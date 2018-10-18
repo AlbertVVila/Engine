@@ -10,9 +10,16 @@ public:
 	ModuleProgram();
 	~ModuleProgram();
 
-	bool            Init();
-	bool            CleanUp();
+	bool Init();
+	bool CleanUp();
 
+	void CompileShader(unsigned int shader);
+
+	void ProcessShader();
+
+	unsigned int vertexShader;
+	unsigned int fragmentShader;
+	unsigned int shaderProgram;
 };
 
 #endif /* __ModuleProgram_h__ */
