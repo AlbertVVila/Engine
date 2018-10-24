@@ -21,4 +21,5 @@ enum update_status
 #define TITLE "Real Engine"
 #define ENGINE_DESCRIPTION "Best Engine EUW"
 #define AUTHOR "Definitely not blitzcrank"
-#define LICENSE "MIT"
+#define REPOSITORY "https://github.com/AlbertVVila/Engine"
+#define LICENSE "https://github.com/AlbertVVila/Engine/blob/master/LICENSE"

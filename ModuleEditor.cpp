@@ -49,7 +49,7 @@ update_status ModuleEditor::PreUpdate()
 update_status ModuleEditor::Update()
 {
 	ShowGUI();
-	//ImGui::ShowDemoWindow();
+	ImGui::ShowDemoWindow();
 	return UPDATE_CONTINUE;
 }
 
@@ -115,6 +115,11 @@ void ModuleEditor::ShowGUI() const
 		ImGui::TextColored(ImVec4(1, 1, 0, 1), ENGINE_DESCRIPTION);
 		ImGui::Separator();
 
+		if (ImGui::SmallButton("Code")) {
+			ShellExecuteA(NULL, "open", REPOSITORY, NULL, NULL, SW_SHOWNORMAL);
+		};
+		ImGui::Separator();
+
 		ImGui::Text("Author:"); ImGui::SameLine();
 		ImGui::TextColored(ImVec4(1, 1, 0, 1), AUTHOR);
 		ImGui::Separator();
@@ -129,9 +134,9 @@ void ModuleEditor::ShowGUI() const
 			ImGui::TreePop();
 		}
 		ImGui::Separator();
-
-		ImGui::Text("License: %s",LICENSE); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), AUTHOR);
+		if (ImGui::SmallButton("License")) {
+			ShellExecuteA(NULL, "open", LICENSE, NULL, NULL, SW_SHOWNORMAL);
+		};
 		ImGui::Separator();
 	}
 
