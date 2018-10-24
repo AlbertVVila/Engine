@@ -1,9 +1,11 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleRender.h"
+#include "ModuleEditor.h"
 #include "ModuleWindow.h"
 #include "SDL.h"
 #include "GL/glew.h"
+#include "imgui.h"
 
 ModuleRender::ModuleRender()
 {
@@ -63,6 +65,16 @@ update_status ModuleRender::Update()
 
 update_status ModuleRender::PostUpdate()
 {
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+	// Update and Render additional Platform Windows
+	if (App->editor->io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+	{
+		ImGui::UpdatePlatformWindows();
+		ImGui::RenderPlatformWindowsDefault();
+	}
+
 	SDL_GL_SwapWindow(App->window->window);
 
 	return UPDATE_CONTINUE;
