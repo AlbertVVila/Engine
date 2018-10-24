@@ -49,6 +49,7 @@ update_status ModuleEditor::PreUpdate()
 update_status ModuleEditor::Update()
 {
 	ShowGUI();
+	//ImGui::ShowDemoWindow();
 	return UPDATE_CONTINUE;
 }
 
@@ -68,6 +69,79 @@ bool ModuleEditor::CleanUp()
 
 void ModuleEditor::ShowGUI() const
 {
-	/*ImGui::Begin("Hello, world!");
-	ImGui::End();*/
+	ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar;
+
+	ImVec2 main_viewport_pos = ImGui::GetMainViewport()->Pos;
+	ImGui::SetNextWindowPos(ImVec2(main_viewport_pos.x + 650, main_viewport_pos.y + 20), ImGuiCond_FirstUseEver);
+	ImGui::SetNextWindowSize(ImVec2(550, 680), ImGuiCond_FirstUseEver);
+
+	if (!ImGui::Begin("GUI Menu", false, window_flags))
+	{
+		ImGui::End();
+		return;
+	}
+
+	ImGui::Text("Welcome to our GUI");
+	ImGui::PushItemWidth(ImGui::GetFontSize() * -12);
+	if (ImGui::BeginMenuBar())
+	{
+		if (ImGui::BeginMenu("Menu"))
+		{
+			ShowMenu();
+			ImGui::EndMenu();
+		}
+		ImGui::EndMenuBar();
+	}
+
+	ImGui::Spacing();
+
+	SDL_version sdlVersion;
+	SDL_GetVersion(&sdlVersion);
+
+	if (ImGui::CollapsingHeader("Hardware"))
+	{
+		//SDL_VERSION
+		ImGui::Text("SDL Version:"); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d.%d.%d",sdlVersion.major, sdlVersion.minor, sdlVersion.patch);
+	}
+
+	if (ImGui::CollapsingHeader("About"))
+	{
+		ImGui::Text("Name:"); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), TITLE);
+		ImGui::Separator();
+
+		ImGui::Text("Description:"); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), ENGINE_DESCRIPTION);
+		ImGui::Separator();
+
+		ImGui::Text("Author:"); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), AUTHOR);
+		ImGui::Separator();
+
+		if (ImGui::TreeNode("Libraries"))
+		{
+			ImGui::BulletText("SDL (version %d.%d.%d)", sdlVersion.major, sdlVersion.minor, sdlVersion.patch);
+			ImGui::BulletText("Imgui (version %s)",IMGUI_VERSION);
+			ImGui::BulletText("MathGeoLib");
+			ImGui::BulletText("glew (version %d.%d)", VER_MAJORVERSION, VER_MINORVERSION);
+
+			ImGui::TreePop();
+		}
+		ImGui::Separator();
+
+		ImGui::Text("License: %s",LICENSE); ImGui::SameLine();
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), AUTHOR);
+		ImGui::Separator();
+	}
+
+	ImGui::End();
+}
+
+void ModuleEditor::ShowMenu() const
+{
+	ImGui::MenuItem("(dummy menu)", NULL, false, false);
+	if (ImGui::MenuItem("New")) {}
+	if (ImGui::MenuItem("Open", "Ctrl+O")) {}
+	if (ImGui::MenuItem("Quit", "Alt+F4")) {}
 }

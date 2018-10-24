@@ -18,4 +18,7 @@ enum update_status
 #define SCREEN_HEIGHT 480
 #define FULLSCREEN false
 #define VSYNC true
-#define TITLE "Super Awesome Engine"
+#define TITLE "Real Engine"
+#define ENGINE_DESCRIPTION "Best Engine EUW"
+#define AUTHOR "Definitely not blitzcrank"
+#define LICENSE "MIT"

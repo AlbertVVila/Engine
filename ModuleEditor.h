@@ -23,6 +23,7 @@ public:
 
 private:
 	void ShowGUI() const;
+	void ShowMenu() const;
 
 };
 
