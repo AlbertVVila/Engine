@@ -100,6 +100,7 @@ void ModuleProgram::ShaderLog(unsigned int shader, char * type) const
 	if (!success)
 	{
 		glGetShaderInfoLog(shader, 512, NULL, infoLog);
-		LOG("ERROR::SHADER::%c::COMPILATION_FAILED\n", type);
+		LOG("ERROR::SHADER::%s::COMPILATION_FAILED\n", type);
+		LOG("ERROR: %s\n", infoLog);
 	}
 }
