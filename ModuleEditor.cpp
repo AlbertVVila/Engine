@@ -48,8 +48,8 @@ update_status ModuleEditor::PreUpdate()
 // Called every draw update
 update_status ModuleEditor::Update()
 {
-	ShowGUI();
-	ImGui::ShowDemoWindow();
+	//ShowGUI();
+	//ImGui::ShowDemoWindow();
 	return UPDATE_CONTINUE;
 }
 
@@ -83,14 +83,14 @@ void ModuleEditor::ShowGUI() const
 
 	ImGui::Text("Welcome to our GUI");
 	ImGui::PushItemWidth(ImGui::GetFontSize() * -12);
-	if (ImGui::BeginMenuBar())
+	if (ImGui::BeginMainMenuBar())
 	{
 		if (ImGui::BeginMenu("Menu"))
 		{
 			ShowMenu();
 			ImGui::EndMenu();
 		}
-		ImGui::EndMenuBar();
+		ImGui::EndMainMenuBar();
 	}
 
 	ImGui::Spacing();

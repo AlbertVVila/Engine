@@ -1,5 +1,5 @@
 #include "Application.h"
-
+#include "ModuleProgram.h"
 #include "ModuleRenderExercise.h"
 #include "ModuleWindow.h"
 
@@ -63,6 +63,7 @@ update_status ModuleRenderExercise::Update()
             (void*)0            // array buffer offset
             );
 
+	glUseProgram(App->program->shaderProgram);
     glDrawArrays(GL_TRIANGLES, 0, 3); // Starting from vertex 0; 3 vertices total -> 1 triangle
 
     glDisableVertexAttribArray(0);

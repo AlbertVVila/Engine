@@ -13,9 +13,12 @@ public:
 	bool Init();
 	bool CleanUp();
 
-	void CompileShader(unsigned int shader);
+	void ProcessVertexShader();
+	void ProcessFragmentShader();
 
-	void ProcessShader();
+	char* ReadShader(char * file_name);
+
+	void ShaderLog(unsigned int shader, char* type) const;
 
 	unsigned int vertexShader;
 	unsigned int fragmentShader;
