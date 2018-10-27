@@ -28,6 +28,7 @@ bool ModuleProgram::Init()
 	if (!success) {
 		glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
 		LOG("ERROR::PROGRAM::CREATION_FAILED\n");
+		LOG("ERROR: %s\n", infoLog);
 	}
 
 	glDeleteShader(vertexShader);
@@ -76,12 +77,13 @@ char* ModuleProgram::ReadShader(char * file_name)
 		fseek(file, 0, SEEK_END);
 		int size = ftell(file);
 		rewind(file);
-		data = (char*)malloc(size);
+		data = (char*)malloc(size+1);
 		if (data == NULL)
 		{ 
 			LOG("Memory error with shader reading\n");
 		}
 		size_t result = fread(data, 1, size, file);
+		data[size] = 0;
 		if (result != size)
 		{
 			LOG("Shader reading error\n");

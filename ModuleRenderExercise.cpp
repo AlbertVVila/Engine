@@ -198,6 +198,26 @@ void ModuleRenderExercise::ProcessInput()
 	{
 		cameraPos += cameraFront.Cross(cameraUp).Normalized() * cameraSpeed * App->time->deltaTime;
 	}
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+	{
+		pitch= MIN(89,pitch+cameraSpeed * App->time->deltaTime * 20);
+		ComputeEulerAngles();
+	}
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+	{
+		pitch= MAX(-89, pitch - cameraSpeed * App->time->deltaTime * 20);
+		ComputeEulerAngles();
+	}
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	{
+		yaw -= cameraSpeed * App->time->deltaTime * 20;
+		ComputeEulerAngles();
+	}
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	{
+		yaw += cameraSpeed * App->time->deltaTime * 20;
+		ComputeEulerAngles();
+	}
 }
 
 math::float4x4 ModuleRenderExercise::LookAt(math::float3 OBS, math::float3 VRP, math::float3 up)
@@ -234,6 +254,14 @@ void ModuleRenderExercise::ModelTransform()
 	math::float4x4 model =  math::float4x4::identity;
 	glUniformMatrix4fv(glGetUniformLocation(App->program->shaderProgram,
 		"model"), 1, GL_TRUE, &model[0][0]);
+}
+
+void ModuleRenderExercise::ComputeEulerAngles()
+{
+	cameraFront.x = cos(math::DegToRad(yaw)) * cos(math::DegToRad(pitch));
+	cameraFront.y = sin(math::DegToRad(pitch));
+	cameraFront.z = sin(math::DegToRad(yaw)) *cos(math::DegToRad(pitch));
+	cameraFront.Normalize();
 }
 
 

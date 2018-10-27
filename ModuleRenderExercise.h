@@ -25,6 +25,8 @@ public:
 	void ProjectionMatrix();
 	void ModelTransform();
 
+	void ComputeEulerAngles();
+
 	math::float4x4 LookAt(math::float3 OBS, math::float3 VRP, math::float3 up);
 
 
@@ -38,6 +40,8 @@ private:
 	float3 cameraUp = float3(0, 1, 0);
 
 	float cameraSpeed = 2.0f;
+	float pitch = 0;
+	float yaw = -90;
 };
 
 #endif /* __ModuleRenderExercise_h__ */
