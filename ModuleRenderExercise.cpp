@@ -39,12 +39,17 @@ update_status ModuleRenderExercise::Update()
 	ProjectionMatrix();
 	ViewMatrix();
 
+	float white[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	glUniform4fv(glGetUniformLocation(App->program->shaderProgram,
+		"Vcolor"), 1, white);
+
 	glBindVertexArray(vao);
     glDrawArrays(GL_TRIANGLES, 0, 12*3); // Starting from vertex 0; 12*3 vertices total -> 12 triangles
+	glBindVertexArray(0);
+
 	DrawLines();
 	DrawAxis();
 
-	glBindVertexArray(0);
 
 	return UPDATE_CONTINUE;
 }
@@ -121,9 +126,15 @@ void ModuleRenderExercise::CreateBuffers()
 
 void ModuleRenderExercise::DrawLines()
 {
+
+	float white[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	glUniform4fv(glGetUniformLocation(App->program->shaderProgram,
+		"Vcolor"), 1, white);
+
 	glLineWidth(1.0f);
 	float d = 200.0f;
 	glBegin(GL_LINES);
+
 	for (float i = -d; i <= d; i += 1.0f)
 	{
 		glVertex3f(i, 0.0f, -d);
@@ -137,28 +148,44 @@ void ModuleRenderExercise::DrawLines()
 void ModuleRenderExercise::DrawAxis()
 {
 	glLineWidth(2.0f);
-	glBegin(GL_LINES);
 
+	float red[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
+	glUniform4fv(glGetUniformLocation(App->program->shaderProgram,
+		"Vcolor"), 1, red);
+
+	glBegin(GL_LINES);
 	// red X
-	glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
+
 	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(1.0f, 0.0f, 0.0f);
 	glVertex3f(1.0f, 0.1f, 0.0f); glVertex3f(1.1f, -0.1f, 0.0f);
 	glVertex3f(1.1f, 0.1f, 0.0f); glVertex3f(1.0f, -0.1f, 0.0f);
+	glEnd;
 
+	float green[4] = { 0.0f, 1.0f, 0.0f, 1.0f };
+	glUniform4fv(glGetUniformLocation(App->program->shaderProgram,
+		"Vcolor"), 1, green);
+
+	glBegin(GL_LINES);
 	// green Y
-	glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
 	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 1.0f, 0.0f);
 	glVertex3f(-0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
 	glVertex3f(0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
 	glVertex3f(0.0f, 1.15f, 0.0f); glVertex3f(0.0f, 1.05f, 0.0f);
+	glEnd();
 
+
+	float blue[4] = { 0.0f, 0.0f, 1.0f, 1.0f };
+	glUniform4fv(glGetUniformLocation(App->program->shaderProgram,
+		"Vcolor"), 1, blue);
+
+	glBegin(GL_LINES);
 	// blue Z
-	glColor4f(0.0f, 0.0f, 1.0f, 1.0f);
 	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 0.0f, 1.0f);
 	glVertex3f(-0.05f, 0.1f, 1.05f); glVertex3f(0.05f, 0.1f, 1.05f);
 	glVertex3f(0.05f, 0.1f, 1.05f); glVertex3f(-0.05f, -0.1f, 1.05f);
 	glVertex3f(-0.05f, -0.1f, 1.05f); glVertex3f(0.05f, -0.1f, 1.05f);
 	glEnd();
+
 	glLineWidth(1.0f);
 }
 
@@ -261,7 +288,7 @@ void ModuleRenderExercise::ComputeEulerAngles()
 	cameraFront.x = cos(math::DegToRad(yaw)) * cos(math::DegToRad(pitch));
 	cameraFront.y = sin(math::DegToRad(pitch));
 	cameraFront.z = sin(math::DegToRad(yaw)) *cos(math::DegToRad(pitch));
-	cameraFront.Normalize();
+	cameraFront.Normalize(); //problema de normalització???
 }
 
 
