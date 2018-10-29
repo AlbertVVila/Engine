@@ -70,7 +70,7 @@ char* ModuleProgram::ReadShader(char * file_name)
 	errno_t err = fopen_s(&file, file_name, "rb");
 	if (err != 0)
 	{
-		LOG("Error, the file %s was not opened opened\n", file_name);
+		LOG("Error, the file %s was not opened\n", file_name);
 	}
 	if (file)
 	{

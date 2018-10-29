@@ -353,14 +353,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Default.vs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="Default.fs">
-      <Filter>Shaders</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Filter Include="GeoLib">
       <UniqueIdentifier>{4e6fa6eb-a274-42c9-a7e6-6e1d502d9cf4}</UniqueIdentifier>
     </Filter>
@@ -376,5 +368,13 @@
     <Filter Include="Utils">
       <UniqueIdentifier>{11066cf8-cf44-4725-9fa8-10243045e1fc}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Game\Default.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Game\Default.vs">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

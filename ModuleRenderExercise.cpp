@@ -3,8 +3,10 @@
 #include "ModuleRenderExercise.h"
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
+#include "ModuleTextures.h"
 #include "ModuleTime.h"
 #include "GL/glew.h"
+#include "DevIL/include/IL/ilut.h"
 #include "SDL.h"
 
 ModuleRenderExercise::ModuleRenderExercise()
@@ -27,6 +29,7 @@ ModuleRenderExercise::~ModuleRenderExercise()
 bool ModuleRenderExercise::Init()
 {
 	CreateBuffers();
+	texture0 = App->textures->Load("Lenna.png");
     return true;
 }
 
@@ -43,56 +46,40 @@ update_status ModuleRenderExercise::Update()
 	glUniform4fv(glGetUniformLocation(App->program->shaderProgram,
 		"Vcolor"), 1, white);
 
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texture0);
+	glUniform1i(glGetUniformLocation(App->program->shaderProgram, "texture0"), 0);
+
 	glBindVertexArray(vao);
-    glDrawArrays(GL_TRIANGLES, 0, 12*3); // Starting from vertex 0; 12*3 vertices total -> 12 triangles
+	glDrawArrays(GL_TRIANGLES, 0, 2 * 3); // Starting from vertex 0; 12*3 vertices total -> 12 triangles
 	glBindVertexArray(0);
 
 	DrawLines();
 	DrawAxis();
 
-
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glUseProgram(0);
 	return UPDATE_CONTINUE;
 }
 
 void ModuleRenderExercise::CreateBuffers()
 {
-	float vertex_buffer_data[] = {
-		-1.0f,-1.0f,-1.0f, // triángulo 1 : comienza
-		-1.0f,-1.0f, 1.0f,
-		-1.0f, 1.0f, 1.0f, // triángulo 1 : termina
-		1.0f, 1.0f,-1.0f, // triángulo 2 : comienza
-		-1.0f,-1.0f,-1.0f,
-		-1.0f, 1.0f,-1.0f, // triángulo 2 : termina
-		1.0f,-1.0f, 1.0f,
-		-1.0f,-1.0f,-1.0f,
-		1.0f,-1.0f,-1.0f,
-		1.0f, 1.0f,-1.0f,
-		1.0f,-1.0f,-1.0f,
-		-1.0f,-1.0f,-1.0f,
-		-1.0f,-1.0f,-1.0f,
-		-1.0f, 1.0f, 1.0f,
-		-1.0f, 1.0f,-1.0f,
-		1.0f,-1.0f, 1.0f,
-		-1.0f,-1.0f, 1.0f,
-		-1.0f,-1.0f,-1.0f,
-		-1.0f, 1.0f, 1.0f,
-		-1.0f,-1.0f, 1.0f,
-		1.0f,-1.0f, 1.0f,
-		1.0f, 1.0f, 1.0f,
-		1.0f,-1.0f,-1.0f,
-		1.0f, 1.0f,-1.0f,
-		1.0f,-1.0f,-1.0f,
-		1.0f, 1.0f, 1.0f,
-		1.0f,-1.0f, 1.0f,
-		1.0f, 1.0f, 1.0f,
-		1.0f, 1.0f,-1.0f,
-		-1.0f, 1.0f,-1.0f,
-		1.0f, 1.0f, 1.0f,
-		-1.0f, 1.0f,-1.0f,
-		-1.0f, 1.0f, 1.0f,
-		1.0f, 1.0f, 1.0f,
-		-1.0f, 1.0f, 1.0f,
-		1.0f,-1.0f, 1.0f
+	float vertex_buffer_data[] = { 
+		-1.0f, -1.0f, 0.0f,
+		1.0f, -1.0f, 0.0f,
+		-1.0f, 1.0f, 0.0f,
+		1.0f, -1.0f, 0.0f,
+		1.0f, 1.0f, 0.0f,
+	  - 1.0f, 1.0f, 0.0f,
+		
+		0.0f, 0.0f,
+		1.0f, 0.0f,
+		0.0f, 1.0f,
+		1.0f, 0.0f,
+		1.0f, 1.0f,
+		0.0f, 1.0f
+	
 	};
 
 	// Creació del Vertex Array Object (VAO) que usarem per pintar
@@ -106,6 +93,7 @@ void ModuleRenderExercise::CreateBuffers()
 	//glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	//Activem atribut que farem servir per vèrtex( el 0 en aquest cas)
+	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(
 		0,                  // attribute 0
 		3,                  // number of componentes (3 floats)
@@ -114,13 +102,23 @@ void ModuleRenderExercise::CreateBuffers()
 		0,                  // stride
 		(void*)0            // array buffer offset
 	);
-	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(
+		1,                  // attribute 0
+		2,                  // number of componentes (3 floats)
+		GL_FLOAT,           // data type
+		GL_FALSE,           // should be normalized?
+		0,                  // stride
+		(void*)(sizeof(float) * 3 * 6)           // array buffer offset
+	);
 
 	// Desactivem el VAO
 	glBindVertexArray(0);
 
-	// Desactivem el VBO
 	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+
+	// Desactivem el VBO
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
