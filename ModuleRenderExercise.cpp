@@ -3,6 +3,7 @@
 #include "ModuleRenderExercise.h"
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
+#include "ModuleModelLoader.h"
 #include "ModuleTextures.h"
 #include "ModuleTime.h"
 #include "GL/glew.h"
@@ -47,18 +48,18 @@ update_status ModuleRenderExercise::Update()
 	glUniform4fv(glGetUniformLocation(App->program->shaderProgram,
 		"Vcolor"), 1, white);
 
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture0);
-	glUniform1i(glGetUniformLocation(App->program->shaderProgram, "texture0"), 0);
+	//glActiveTexture(GL_TEXTURE0);
+	//glBindTexture(GL_TEXTURE_2D, texture0);
+	//glUniform1i(glGetUniformLocation(App->program->shaderProgram, "texture0"), 0);
 
-	glBindVertexArray(vao);
-	glDrawArrays(GL_TRIANGLES, 0, 2 * 3); // Starting from vertex 0; 12*3 vertices total -> 12 triangles
-	glBindVertexArray(0);
-
+	//glBindVertexArray(vao);
+	//glDrawArrays(GL_TRIANGLES, 0, 2 * 3); // Starting from vertex 0; 12*3 vertices total -> 12 triangles
+	//glBindVertexArray(0);
+	App->loader->DrawModel();
 	DrawLines();
 	DrawAxis();
 
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	//glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glUseProgram(0);
 	return UPDATE_CONTINUE;

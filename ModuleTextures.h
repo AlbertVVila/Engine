@@ -22,8 +22,8 @@ public:
 	int pixelDepth = 0;
 
 	bool mipmap = false;
-	bool magfilter = false;
-	bool minfilter = false;
+	bool magfilter = true;
+	bool minfilter = true;
 	bool anisotropic_filter = false;
 	int wrap_mode = 0;
 
