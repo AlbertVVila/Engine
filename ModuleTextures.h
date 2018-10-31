@@ -24,6 +24,7 @@ public:
 	bool mipmap = false;
 	bool magfilter = false;
 	bool minfilter = false;
+	bool anisotropic_filter = false;
 	int wrap_mode = 0;
 
 
