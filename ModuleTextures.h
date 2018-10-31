@@ -16,4 +16,15 @@ public:
 
 	GLuint const Load(const char* path);
 
+	int width = 0;
+	int height = 0;
+	int format = 0;
+	int pixelDepth = 0;
+
+	bool mipmap = false;
+	bool magfilter = false;
+	bool minfilter = false;
+	int wrap_mode = 0;
+
+
 };

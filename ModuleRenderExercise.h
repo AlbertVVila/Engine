@@ -26,11 +26,14 @@ public:
 	void ModelTransform();
 
 	void ComputeEulerAngles();
+	void ShowRenderExerciseDialog();
 
 	math::float4x4 LookAt(math::float3 OBS, math::float3 VRP, math::float3 up);
 
 
 private:
+
+	char * image = "Lenna.png";
     unsigned vbo = 0;
 	unsigned vao = 0;
 	unsigned texture0 = 0;

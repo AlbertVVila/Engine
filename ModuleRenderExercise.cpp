@@ -6,8 +6,9 @@
 #include "ModuleTextures.h"
 #include "ModuleTime.h"
 #include "GL/glew.h"
-#include "DevIL/include/IL/ilut.h"
+#include "IL/ilut.h"
 #include "SDL.h"
+#include "ModuleEditor.h"
 
 ModuleRenderExercise::ModuleRenderExercise()
 {
@@ -29,7 +30,7 @@ ModuleRenderExercise::~ModuleRenderExercise()
 bool ModuleRenderExercise::Init()
 {
 	CreateBuffers();
-	texture0 = App->textures->Load("Lenna.png");
+	texture0 = App->textures->Load(image);
     return true;
 }
 
@@ -287,6 +288,70 @@ void ModuleRenderExercise::ComputeEulerAngles()
 	cameraFront.y = sin(math::DegToRad(pitch));
 	cameraFront.z = sin(math::DegToRad(yaw)) *cos(math::DegToRad(pitch));
 	cameraFront.Normalize(); //problema de normalització???
+}
+
+void ModuleRenderExercise::ShowRenderExerciseDialog()
+{
+	ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar;
+
+	ImVec2 main_viewport_pos = ImGui::GetMainViewport()->Pos;
+	ImGui::SetNextWindowPos(ImVec2(main_viewport_pos.x + 250, main_viewport_pos.y + 20), ImGuiCond_FirstUseEver);
+	ImGui::SetNextWindowSize(ImVec2(550, 680), ImGuiCond_FirstUseEver);
+	if (!ImGui::Begin("Texture Editor", false, window_flags))
+	{
+		ImGui::End();
+		return;
+	}
+
+	ImGui::Text("IMAGES:");
+	static int e = 0;
+	ImGui::RadioButton("Lenna", &e, 0); ImGui::SameLine();
+	ImGui::RadioButton("Black Hole", &e, 1); ImGui::SameLine();
+	ImGui::RadioButton("Not Blitzcrank", &e, 2);
+
+	char* newImage;
+	switch (e)
+	{
+	case 0:
+		newImage = "Lenna.png";
+		break;
+	case 1:
+		newImage = "black_hole.jpg";
+		break;
+	case 2:
+		newImage = "not_blitzcrank.jpg";
+		break;
+	default:
+		break;
+	}
+	if (newImage != image)
+	{
+		texture0 = App->textures->Load(newImage);
+		image = newImage;
+	}
+	ImGui::Separator();
+	ImGui::Text("CURRENT IMAGE INFO:"); 
+
+	ImGui::Text("Width: %dpx",App->textures->width); 
+	ImGui::Text("Height: %dpx", App->textures->height);
+	ImGui::Text("Pixel depth: %d", App->textures->pixelDepth);
+	ImGui::Text("Format: %d", App->textures->format);
+
+	if (ImGui::TreeNode("Image Options"))
+	{
+		ImGui::Checkbox("Mipmap", &App->textures->mipmap);
+		ImGui::Checkbox("MAG filter", &App->textures->magfilter);
+		ImGui::Checkbox("MIN filter", &App->textures->minfilter);
+		ImGui::Checkbox("Anisotropic Filtering", &App->textures->anisotropic_filter);
+
+		ImGui::Text("WRAP MODE:");
+		ImGui::RadioButton("Clamp", &App->textures->wrap_mode, 0); ImGui::SameLine();
+		ImGui::RadioButton("Clamp to Border", &App->textures->wrap_mode, 1);
+		ImGui::RadioButton("Repeat", &App->textures->wrap_mode, 2); ImGui::SameLine();
+		ImGui::RadioButton("Mirrored Repeat", &App->textures->wrap_mode, 3);
+		ImGui::TreePop();
+	}
+	ImGui::End();
 }
 
 

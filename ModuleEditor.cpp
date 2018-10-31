@@ -3,6 +3,7 @@
 #include "ModuleEditor.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
+#include "ModuleRenderExercise.h"
 #include "SDL.h"
 #include "GL/glew.h"
 
@@ -48,8 +49,9 @@ update_status ModuleEditor::PreUpdate()
 // Called every draw update
 update_status ModuleEditor::Update()
 {
-	//ShowGUI();
-	//ImGui::ShowDemoWindow();
+	ShowGUI();
+	App->exercise->ShowRenderExerciseDialog();
+	ImGui::ShowDemoWindow();
 	return UPDATE_CONTINUE;
 }
 
@@ -69,20 +71,9 @@ bool ModuleEditor::CleanUp()
 
 void ModuleEditor::ShowGUI() const
 {
-	ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar;
 
-	ImVec2 main_viewport_pos = ImGui::GetMainViewport()->Pos;
-	ImGui::SetNextWindowPos(ImVec2(main_viewport_pos.x + 650, main_viewport_pos.y + 20), ImGuiCond_FirstUseEver);
-	ImGui::SetNextWindowSize(ImVec2(550, 680), ImGuiCond_FirstUseEver);
-
-	if (!ImGui::Begin("GUI Menu", false, window_flags))
-	{
-		ImGui::End();
-		return;
-	}
-
-	ImGui::Text("Welcome to our GUI");
-	ImGui::PushItemWidth(ImGui::GetFontSize() * -12);
+	//ImGui::Text("Welcome to our GUI");
+	//ImGui::PushItemWidth(ImGui::GetFontSize() * -12);
 	if (ImGui::BeginMainMenuBar())
 	{
 		if (ImGui::BeginMenu("Menu"))
@@ -93,54 +84,53 @@ void ModuleEditor::ShowGUI() const
 		ImGui::EndMainMenuBar();
 	}
 
-	ImGui::Spacing();
+	//ImGui::Spacing();
 
-	SDL_version sdlVersion;
-	SDL_GetVersion(&sdlVersion);
+	//SDL_version sdlVersion;
+	//SDL_GetVersion(&sdlVersion);
 
-	if (ImGui::CollapsingHeader("Hardware"))
-	{
-		//SDL_VERSION
-		ImGui::Text("SDL Version:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d.%d.%d",sdlVersion.major, sdlVersion.minor, sdlVersion.patch);
-	}
+	//if (ImGui::CollapsingHeader("Hardware"))
+	//{
+	//	//SDL_VERSION
+	//	ImGui::Text("SDL Version:"); ImGui::SameLine();
+	//	ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d.%d.%d",sdlVersion.major, sdlVersion.minor, sdlVersion.patch);
+	//}
 
-	if (ImGui::CollapsingHeader("About"))
-	{
-		ImGui::Text("Name:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), TITLE);
-		ImGui::Separator();
+	//if (ImGui::CollapsingHeader("About"))
+	//{
+	//	ImGui::Text("Name:"); ImGui::SameLine();
+	//	ImGui::TextColored(ImVec4(1, 1, 0, 1), TITLE);
+	//	ImGui::Separator();
 
-		ImGui::Text("Description:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), ENGINE_DESCRIPTION);
-		ImGui::Separator();
+	//	ImGui::Text("Description:"); ImGui::SameLine();
+	//	ImGui::TextColored(ImVec4(1, 1, 0, 1), ENGINE_DESCRIPTION);
+	//	ImGui::Separator();
 
-		if (ImGui::SmallButton("Code")) {
-			ShellExecuteA(NULL, "open", REPOSITORY, NULL, NULL, SW_SHOWNORMAL);
-		};
-		ImGui::Separator();
+	//	if (ImGui::SmallButton("Code")) {
+	//		ShellExecuteA(NULL, "open", REPOSITORY, NULL, NULL, SW_SHOWNORMAL);
+	//	};
+	//	ImGui::Separator();
 
-		ImGui::Text("Author:"); ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), AUTHOR);
-		ImGui::Separator();
+	//	ImGui::Text("Author:"); ImGui::SameLine();
+	//	ImGui::TextColored(ImVec4(1, 1, 0, 1), AUTHOR);
+	//	ImGui::Separator();
 
-		if (ImGui::TreeNode("Libraries"))
-		{
-			ImGui::BulletText("SDL (version %d.%d.%d)", sdlVersion.major, sdlVersion.minor, sdlVersion.patch);
-			ImGui::BulletText("Imgui (version %s)",IMGUI_VERSION);
-			ImGui::BulletText("MathGeoLib");
-			ImGui::BulletText("glew (version %d.%d)", VER_MAJORVERSION, VER_MINORVERSION);
+	//	if (ImGui::TreeNode("Libraries"))
+	//	{
+	//		ImGui::BulletText("SDL (version %d.%d.%d)", sdlVersion.major, sdlVersion.minor, sdlVersion.patch);
+	//		ImGui::BulletText("Imgui (version %s)",IMGUI_VERSION);
+	//		ImGui::BulletText("MathGeoLib");
+	//		ImGui::BulletText("glew (version %d.%d)", VER_MAJORVERSION, VER_MINORVERSION);
 
-			ImGui::TreePop();
-		}
-		ImGui::Separator();
-		if (ImGui::SmallButton("License")) {
-			ShellExecuteA(NULL, "open", LICENSE, NULL, NULL, SW_SHOWNORMAL);
-		};
-		ImGui::Separator();
-	}
+	//		ImGui::TreePop();
+	//	}
+	//	ImGui::Separator();
+	//	if (ImGui::SmallButton("License")) {
+	//		ShellExecuteA(NULL, "open", LICENSE, NULL, NULL, SW_SHOWNORMAL);
+	//	};
+	//	ImGui::Separator();
+	//}
 
-	ImGui::End();
 }
 
 void ModuleEditor::ShowMenu() const

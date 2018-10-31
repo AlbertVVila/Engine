@@ -3,9 +3,6 @@
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
 #include "DevIL/include/IL/ilut.h"
-//#include "SDL/include/SDL.h"
-//#include "SDL_image/include/SDL_image.h"
-//#pragma comment( lib, "SDL_image/libx86/SDL2_image.lib" )
 
 using namespace std;
 
@@ -63,12 +60,23 @@ GLuint const ModuleTextures::Load(const char * path)
 		}
 
 		ILubyte* data = ilGetData();
-		int width = ilGetInteger(IL_IMAGE_WIDTH);
-		int height = ilGetInteger(IL_IMAGE_HEIGHT);
+		width = ilGetInteger(IL_IMAGE_WIDTH);
+		height = ilGetInteger(IL_IMAGE_HEIGHT);
+		pixelDepth = ilGetInteger(IL_IMAGE_DEPTH);
+		format = ilGetInteger(IL_IMAGE_FORMAT);
 
-		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), width, height, 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, data);
+		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+		if (mipmap)
+		{
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+			glGenerateMipmap(GL_TEXTURE_2D);
+		}
+		else
+		{
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		}
 
 		ilDeleteImages(1, &imageID);
 
