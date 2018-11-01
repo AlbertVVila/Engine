@@ -250,7 +250,7 @@ void ModuleRenderExercise::ProcessInput()
 math::float4x4 ModuleRenderExercise::LookAt(math::float3 OBS, math::float3 VRP, math::float3 up)
 {
 	math::float3 forward(VRP - OBS); forward.Normalize(); //deprecated with camerafront pos and up
-	math::float3 side(forward.Cross(up)); forward.Normalize();
+	math::float3 side(forward.Cross(up)); side.Normalize();
 	math::float3 u(side.Cross(forward));
 
 	math::float4x4 matrix(math::float4x4::zero);
@@ -288,7 +288,8 @@ void ModuleRenderExercise::ComputeEulerAngles()
 	cameraFront.x = cos(math::DegToRad(yaw)) * cos(math::DegToRad(pitch));
 	cameraFront.y = sin(math::DegToRad(pitch));
 	cameraFront.z = sin(math::DegToRad(yaw)) *cos(math::DegToRad(pitch));
-	cameraFront.Normalize(); //problema de normalització???
+	cameraFront.Normalize();
+
 }
 
 void ModuleRenderExercise::ShowRenderExerciseDialog()
