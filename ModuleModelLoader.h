@@ -7,6 +7,8 @@
 #include <assimp/scene.h>
 #include <assimp/material.h>
 #include <assimp/mesh.h>
+#include <vector>
+
 class ModuleModelLoader :
 	public Module
 {
@@ -17,9 +19,16 @@ public:
 	bool Init();
 	unsigned int Load(const char *path);
 	void GenerateMeshData(aiMesh * mesh);
-	void GenerateMaterialData(aiMaterial * mesh);
+	void GenerateMaterialData(aiMaterial * material);
 	void DrawModel();
 	bool CleanUp();
+
+	std::vector<int> meshVBO;
+	std::vector<int> meshNumVertices;
+	std::vector<int> meshNumIndices;
+	std::vector<int> matIndices;
+	std::vector<int> meshEBO;
+	std::vector<int> MatTexture;
 };
 
 #endif __ModuleModelLoader_h__
