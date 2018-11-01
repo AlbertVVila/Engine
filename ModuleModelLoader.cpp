@@ -57,11 +57,20 @@ void ModuleModelLoader::GenerateMeshData(aiMesh * mesh)
 
 
 	//Creació buffer per indexs
-	/*glGenBuffers(1, &ibo);
+	glGenBuffers(1, &ibo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*mesh->mNumFaces*3, NULL, GL_STATIC_DRAW);
-	glMapBufferRange();*/
-
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int)*mesh->mNumFaces*3, NULL, GL_STATIC_DRAW);
+	int * pbuffer = (int*) glMapBufferRange(GL_ELEMENT_ARRAY_BUFFER,0, sizeof(unsigned int)*mesh->mNumFaces * 3, GL_MAP_WRITE_BIT);
+	for (int i = 0; i < mesh->mNumFaces; i++)
+	{
+		aiFace face = mesh->mFaces[i];
+		assert((int)face.mNumIndices == 3, "Num index per face is not 3");
+		for (int j = 0; j < face.mNumIndices; j++)
+		{
+			*pbuffer++ = face.mIndices[j];
+		}
+	}
+	glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
 
 	//Activem atribut que farem servir per vèrtex( el 0 en aquest cas)
 	glEnableVertexAttribArray(0);
@@ -82,7 +91,9 @@ void ModuleModelLoader::GenerateMeshData(aiMesh * mesh)
 		0,                  // stride
 		(void*)(sizeof(float) * 3 * mesh->mNumVertices)       // array buffer offset
 	);
-	glDrawArrays(GL_TRIANGLES, 0, mesh->mNumVertices);
+	//glDrawArrays(GL_TRIANGLES, 0, mesh->mNumVertices);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+	glDrawElements(GL_TRIANGLES, mesh->mNumFaces * 3, GL_UNSIGNED_INT, 0);
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
@@ -92,7 +103,7 @@ void ModuleModelLoader::GenerateMeshData(aiMesh * mesh)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-void ModuleModelLoader::GenerateMaterialData(aiMaterial * mesh)
+void ModuleModelLoader::GenerateMaterialData(aiMaterial * material)
 {
 
 }
