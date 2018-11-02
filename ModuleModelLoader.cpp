@@ -2,6 +2,7 @@
 #include "GL/glew.h"
 #include "assert.h"
 #include "Application.h"
+#include "ModuleRender.h"
 #include "ModuleTextures.h"
 #include "ModuleProgram.h"
 
@@ -16,30 +17,14 @@ ModuleModelLoader::~ModuleModelLoader()
 
 bool ModuleModelLoader::Init()
 {
-	//Load("BakerHouse.fbx");
 	return true;
 }
 
 
 unsigned int ModuleModelLoader::Load(const char *path)
 {
-	const aiScene* scene = aiImportFile(path, 0);
-	if (scene == NULL)
-	{
-		LOG("ERROR importing file:%s \n", aiGetErrorString());
-	}
-
-	for (unsigned i = 0; i < scene->mNumMeshes; ++i)
-	{
-		GenerateMeshData(scene->mMeshes[i]);
-	}
-
-	for (unsigned i = 0; i < scene->mNumMaterials; ++i)
-	{
-		GenerateMaterialData(scene->mMaterials[i]);
-	}
-
-
+	Model model(path);
+	App->renderer->models.push_back(model);
 
 	return 1;
 }
@@ -60,7 +45,6 @@ void ModuleModelLoader::GenerateMeshData(aiMesh * mesh)
 	//glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(GLfloat) * 3 * mesh->mNumVertices, mesh->mVertices);
-	/*glBufferSubData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 3 * mesh->mNumVertices, sizeof(GLfloat) * 2 * mesh->mNumVertices, NULL);*/
 	float * pbuffer = (float*)glMapBufferRange(GL_ARRAY_BUFFER, sizeof(GLfloat) * 3 * mesh->mNumVertices, sizeof(GLfloat) * 2 * mesh->mNumVertices, GL_MAP_WRITE_BIT);
 	for (int i = 0; i < mesh->mNumVertices; i++)
 	{

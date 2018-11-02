@@ -2,6 +2,8 @@
 #include "Module.h"
 #include "Globals.h"
 #include "MathGeoLib.h"
+#include "Model.h"
+#include <list>
 
 struct SDL_Texture;
 struct SDL_Renderer;
@@ -39,10 +41,10 @@ public:
 public:
 	void* context;
 	Frustum frustum;
-	char * image = "Lenna.png";
-	unsigned vbo = 0;
-	unsigned vao = 0;
-	unsigned texture0 = 0;
+	//char * image = "Lenna.png";
+	std::list<Model> models;
+	//unsigned vao = 0;
+	//unsigned texture0 = 0;
 
 private:
 

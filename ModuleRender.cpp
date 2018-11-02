@@ -7,6 +7,7 @@
 #include "ModuleTextures.h"
 #include "ModuleEditor.h"
 #include "ModuleWindow.h"
+#include "Model.h"
 #include "SDL.h"
 #include "GL/glew.h"
 #include "imgui.h"
@@ -47,21 +48,25 @@ update_status ModuleRender::PreUpdate()
 // Called every draw update
 update_status ModuleRender::Update()
 {
+	//For now we use same program for every model and same tranforms
 	glUseProgram(App->program->shaderProgram);
+	//for now all models have same transformations
 	ModelTransform();
 	ProjectionMatrix();
 	ViewMatrix();
 
-	float white[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
-	glUniform4fv(glGetUniformLocation(App->program->shaderProgram,
-		"Vcolor"), 1, white);
+	//float white[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	//glUniform4fv(glGetUniformLocation(App->program->shaderProgram,
+	//	"Vcolor"), 1, white);
 
-
+	for (std::list<Model>::iterator it = models.begin(); it != models.end(); ++it)
+	{
+	}
 	App->loader->DrawModel();
 	DrawLines();
 	DrawAxis();
 
-	//glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glUseProgram(0);
 	return UPDATE_CONTINUE;
@@ -80,10 +85,10 @@ bool ModuleRender::CleanUp()
 {
 	LOG("Destroying renderer");
 
-	if (vbo != 0)
-	{
-		glDeleteBuffers(1, &vbo);
-	}
+	//if (vbo != 0)
+	//{
+	//	glDeleteBuffers(1, &vbo);
+	//}
 
 	return true;
 }
