@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleWindow.h"
+#include "ModuleRender.h"
 
 ModuleWindow::ModuleWindow()
 {
@@ -84,3 +85,7 @@ bool ModuleWindow::CleanUp()
 	return true;
 }
 
+void ModuleWindow::Resize()
+{
+	App->renderer->frustum.horizontalFov = 2.f * atanf(tanf(App->renderer->frustum.verticalFov * 0.5f) * ((float)App->renderer->width / (float)App->renderer->height));
+}

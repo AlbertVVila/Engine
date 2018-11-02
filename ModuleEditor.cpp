@@ -49,8 +49,8 @@ update_status ModuleEditor::PreUpdate()
 // Called every draw update
 update_status ModuleEditor::Update()
 {
-	ShowGUI();
-	App->exercise->ShowRenderExerciseDialog();
+	//ShowGUI();
+	//App->exercise->ShowRenderExerciseDialog();
 	ImGui::ShowDemoWindow();
 	return UPDATE_CONTINUE;
 }
@@ -69,74 +69,87 @@ bool ModuleEditor::CleanUp()
 	return true;
 }
 
-void ModuleEditor::ShowGUI() const
+void ModuleEditor::RenderGUI()
 {
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-	//ImGui::Text("Welcome to our GUI");
-	//ImGui::PushItemWidth(ImGui::GetFontSize() * -12);
-	if (ImGui::BeginMainMenuBar())
+	// Update and Render additional Platform Windows
+	if (App->editor->io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 	{
-		if (ImGui::BeginMenu("Menu"))
-		{
-			ShowMenu();
-			ImGui::EndMenu();
-		}
-		ImGui::EndMainMenuBar();
+		ImGui::UpdatePlatformWindows();
+		ImGui::RenderPlatformWindowsDefault();
 	}
-
-	//ImGui::Spacing();
-
-	//SDL_version sdlVersion;
-	//SDL_GetVersion(&sdlVersion);
-
-	//if (ImGui::CollapsingHeader("Hardware"))
-	//{
-	//	//SDL_VERSION
-	//	ImGui::Text("SDL Version:"); ImGui::SameLine();
-	//	ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d.%d.%d",sdlVersion.major, sdlVersion.minor, sdlVersion.patch);
-	//}
-
-	//if (ImGui::CollapsingHeader("About"))
-	//{
-	//	ImGui::Text("Name:"); ImGui::SameLine();
-	//	ImGui::TextColored(ImVec4(1, 1, 0, 1), TITLE);
-	//	ImGui::Separator();
-
-	//	ImGui::Text("Description:"); ImGui::SameLine();
-	//	ImGui::TextColored(ImVec4(1, 1, 0, 1), ENGINE_DESCRIPTION);
-	//	ImGui::Separator();
-
-	//	if (ImGui::SmallButton("Code")) {
-	//		ShellExecuteA(NULL, "open", REPOSITORY, NULL, NULL, SW_SHOWNORMAL);
-	//	};
-	//	ImGui::Separator();
-
-	//	ImGui::Text("Author:"); ImGui::SameLine();
-	//	ImGui::TextColored(ImVec4(1, 1, 0, 1), AUTHOR);
-	//	ImGui::Separator();
-
-	//	if (ImGui::TreeNode("Libraries"))
-	//	{
-	//		ImGui::BulletText("SDL (version %d.%d.%d)", sdlVersion.major, sdlVersion.minor, sdlVersion.patch);
-	//		ImGui::BulletText("Imgui (version %s)",IMGUI_VERSION);
-	//		ImGui::BulletText("MathGeoLib");
-	//		ImGui::BulletText("glew (version %d.%d)", VER_MAJORVERSION, VER_MINORVERSION);
-
-	//		ImGui::TreePop();
-	//	}
-	//	ImGui::Separator();
-	//	if (ImGui::SmallButton("License")) {
-	//		ShellExecuteA(NULL, "open", LICENSE, NULL, NULL, SW_SHOWNORMAL);
-	//	};
-	//	ImGui::Separator();
-	//}
-
 }
 
-void ModuleEditor::ShowMenu() const
-{
-	ImGui::MenuItem("(dummy menu)", NULL, false, false);
-	if (ImGui::MenuItem("New")) {}
-	if (ImGui::MenuItem("Open", "Ctrl+O")) {}
-	if (ImGui::MenuItem("Quit", "Alt+F4")) {}
-}
+//void ModuleEditor::ShowGUI() const
+//{
+//
+//	//ImGui::Text("Welcome to our GUI");
+//	//ImGui::PushItemWidth(ImGui::GetFontSize() * -12);
+//	if (ImGui::BeginMainMenuBar())
+//	{
+//		if (ImGui::BeginMenu("Menu"))
+//		{
+//			ShowMenu();
+//			ImGui::EndMenu();
+//		}
+//		ImGui::EndMainMenuBar();
+//	}
+//
+//	//ImGui::Spacing();
+//
+//	//SDL_version sdlVersion;
+//	//SDL_GetVersion(&sdlVersion);
+//
+//	//if (ImGui::CollapsingHeader("Hardware"))
+//	//{
+//	//	//SDL_VERSION
+//	//	ImGui::Text("SDL Version:"); ImGui::SameLine();
+//	//	ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d.%d.%d",sdlVersion.major, sdlVersion.minor, sdlVersion.patch);
+//	//}
+//
+//	//if (ImGui::CollapsingHeader("About"))
+//	//{
+//	//	ImGui::Text("Name:"); ImGui::SameLine();
+//	//	ImGui::TextColored(ImVec4(1, 1, 0, 1), TITLE);
+//	//	ImGui::Separator();
+//
+//	//	ImGui::Text("Description:"); ImGui::SameLine();
+//	//	ImGui::TextColored(ImVec4(1, 1, 0, 1), ENGINE_DESCRIPTION);
+//	//	ImGui::Separator();
+//
+//	//	if (ImGui::SmallButton("Code")) {
+//	//		ShellExecuteA(NULL, "open", REPOSITORY, NULL, NULL, SW_SHOWNORMAL);
+//	//	};
+//	//	ImGui::Separator();
+//
+//	//	ImGui::Text("Author:"); ImGui::SameLine();
+//	//	ImGui::TextColored(ImVec4(1, 1, 0, 1), AUTHOR);
+//	//	ImGui::Separator();
+//
+//	//	if (ImGui::TreeNode("Libraries"))
+//	//	{
+//	//		ImGui::BulletText("SDL (version %d.%d.%d)", sdlVersion.major, sdlVersion.minor, sdlVersion.patch);
+//	//		ImGui::BulletText("Imgui (version %s)",IMGUI_VERSION);
+//	//		ImGui::BulletText("MathGeoLib");
+//	//		ImGui::BulletText("glew (version %d.%d)", VER_MAJORVERSION, VER_MINORVERSION);
+//
+//	//		ImGui::TreePop();
+//	//	}
+//	//	ImGui::Separator();
+//	//	if (ImGui::SmallButton("License")) {
+//	//		ShellExecuteA(NULL, "open", LICENSE, NULL, NULL, SW_SHOWNORMAL);
+//	//	};
+//	//	ImGui::Separator();
+//	//}
+//
+//////}
+
+//void ModuleEditor::ShowMenu() const
+//{
+//	ImGui::MenuItem("(dummy menu)", NULL, false, false);
+//	if (ImGui::MenuItem("New")) {}
+//	if (ImGui::MenuItem("Open", "Ctrl+O")) {}
+//	if (ImGui::MenuItem("Quit", "Alt+F4")) {}
+//}

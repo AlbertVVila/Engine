@@ -21,6 +21,8 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	void Resize();
+
 public:
 	//The window we'll be rendering to
 	SDL_Window* window = NULL;

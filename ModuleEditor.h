@@ -20,10 +20,11 @@ public:
 
 public:
 	ImGuiIO io;
+	void RenderGUI();
 
 private:
-	void ShowGUI() const;
-	void ShowMenu() const;
+	//void ShowGUI() const;
+	//void ShowMenu() const;
 
 };
 

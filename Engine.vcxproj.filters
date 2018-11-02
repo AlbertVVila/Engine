@@ -147,6 +147,9 @@
     <ClCompile Include="ModuleModelLoader.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleCamera.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -355,6 +358,9 @@
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="ModuleModelLoader.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleCamera.h">
       <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
