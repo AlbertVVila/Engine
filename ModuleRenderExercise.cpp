@@ -240,9 +240,9 @@ void ModuleRenderExercise::ProcessInput()
 		yaw += cameraSpeed * App->time->deltaTime * 20;
 		ComputeEulerAngles();
 	}
-	if (App->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_T) == KEY_REPEAT)
+	if (App->input->mouse_wheel != 0)
 	{
-		frustum.verticalFov-=.5f*App->time->deltaTime;
+		frustum.verticalFov -= App->input->mouse_wheel *100.f*App->time->deltaTime;
 		frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * ((float)App->renderer->width / (float)App->renderer->height));
 	}
 }
