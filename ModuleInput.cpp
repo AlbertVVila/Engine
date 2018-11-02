@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleInput.h"
+#include "ModuleModelLoader.h"
 #include "SDL/include/SDL.h"
 
 #define MAX_KEYS 300
@@ -37,6 +38,7 @@ bool ModuleInput::Init()
 // Called before the first frame
 bool ModuleInput::Start()
 {
+	SDL_EventState(SDL_DROPFILE, SDL_ENABLE);
 	return true;
 }
 
@@ -123,6 +125,10 @@ update_status ModuleInput::PreUpdate()
 
 		case SDL_MOUSEWHEEL:
 			mouse_wheel = event.wheel.y;
+			break;
+
+		case SDL_DROPFILE:
+			App->loader->Load(event.drop.file);
 			break;
 		}
 	}

@@ -16,7 +16,7 @@ ModuleModelLoader::~ModuleModelLoader()
 
 bool ModuleModelLoader::Init()
 {
-	Load("BakerHouse.fbx");
+	//Load("BakerHouse.fbx");
 	return true;
 }
 
