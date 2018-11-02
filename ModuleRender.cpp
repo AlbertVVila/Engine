@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleRender.h"
+#include "ModuleRenderExercise.h"
 #include "ModuleEditor.h"
 #include "ModuleWindow.h"
 #include "SDL.h"
@@ -42,7 +43,6 @@ bool ModuleRender::Init()
 	glClearDepth(1.0f);
 	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
 
-    int width, height;
     SDL_GetWindowSize(App->window->window, &width, &height);
     glViewport(0, 0, width, height);
 
@@ -92,6 +92,10 @@ bool ModuleRender::CleanUp()
 
 void ModuleRender::WindowResized(unsigned width, unsigned height)
 {
+	this->width = width;
+	this->height = height;
+
     glViewport(0, 0, width, height); 
+	App->exercise->Resize();
 }
 

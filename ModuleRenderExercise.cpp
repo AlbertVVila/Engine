@@ -4,6 +4,7 @@
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
 #include "ModuleModelLoader.h"
+#include "ModuleRender.h"
 #include "ModuleTextures.h"
 #include "ModuleTime.h"
 #include "GL/glew.h"
@@ -13,15 +14,6 @@
 
 ModuleRenderExercise::ModuleRenderExercise()
 {
-	frustum.type = FrustumType::PerspectiveFrustum;
-	frustum.pos = float3::zero;
-	frustum.front = -float3::unitZ;
-	frustum.up = float3::unitY;
-	frustum.nearPlaneDistance = 0.1f;
-	frustum.farPlaneDistance = 100.0f;
-	frustum.verticalFov = math::pi / 4.0f;
-	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * (SCREEN_WIDTH / SCREEN_HEIGHT));
-
 }
 
 ModuleRenderExercise::~ModuleRenderExercise()
@@ -30,6 +22,15 @@ ModuleRenderExercise::~ModuleRenderExercise()
 
 bool ModuleRenderExercise::Init()
 {
+	frustum.type = FrustumType::PerspectiveFrustum;
+	frustum.pos = float3::zero;
+	frustum.front = -float3::unitZ;
+	frustum.up = float3::unitY;
+	frustum.nearPlaneDistance = 0.1f;
+	frustum.farPlaneDistance = 100.0f;
+	frustum.verticalFov = math::pi / 4.0f;
+	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * ((float)App->renderer->width / (float)App->renderer->height));
+
 	CreateBuffers();
 	texture0 = App->textures->Load(image);
     return true;
@@ -48,13 +49,7 @@ update_status ModuleRenderExercise::Update()
 	glUniform4fv(glGetUniformLocation(App->program->shaderProgram,
 		"Vcolor"), 1, white);
 
-	//glActiveTexture(GL_TEXTURE0);
-	//glBindTexture(GL_TEXTURE_2D, texture0);
-	//glUniform1i(glGetUniformLocation(App->program->shaderProgram, "texture0"), 0);
 
-	//glBindVertexArray(vao);
-	//glDrawArrays(GL_TRIANGLES, 0, 2 * 3); // Starting from vertex 0; 12*3 vertices total -> 12 triangles
-	//glBindVertexArray(0);
 	App->loader->DrawModel();
 	DrawLines();
 	DrawAxis();
@@ -245,6 +240,11 @@ void ModuleRenderExercise::ProcessInput()
 		yaw += cameraSpeed * App->time->deltaTime * 20;
 		ComputeEulerAngles();
 	}
+	if (App->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_T) == KEY_REPEAT)
+	{
+		frustum.verticalFov-=.5f*App->time->deltaTime;
+		frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * ((float)App->renderer->width / (float)App->renderer->height));
+	}
 }
 
 math::float4x4 ModuleRenderExercise::LookAt(math::float3 OBS, math::float3 VRP, math::float3 up)
@@ -357,3 +357,7 @@ void ModuleRenderExercise::ShowRenderExerciseDialog()
 }
 
 
+void ModuleRenderExercise::Resize()
+{
+	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * ((float)App->renderer->width / (float)App->renderer->height));
+}

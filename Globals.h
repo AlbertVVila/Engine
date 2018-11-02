@@ -40,6 +40,9 @@ enum update_status
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 720
 #define FULLSCREEN false
+#define RESIZABLE true
+#define BORDERLESS false
+#define FULLSCREEN_DESKTOP false
 #define VSYNC true
 #define TITLE "Real Engine"
 #define ENGINE_DESCRIPTION "Best Engine EUW"

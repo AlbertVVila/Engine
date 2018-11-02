@@ -18,6 +18,8 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 	void WindowResized(unsigned width, unsigned height);
+	int width = SCREEN_WIDTH;
+	int height = SCREEN_HEIGHT;
 
 public:
 	void* context;

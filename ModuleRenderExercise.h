@@ -28,6 +28,8 @@ public:
 	void ComputeEulerAngles();
 	void ShowRenderExerciseDialog();
 
+	void Resize();
+
 	math::float4x4 LookAt(math::float3 OBS, math::float3 VRP, math::float3 up);
 
 
