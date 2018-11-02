@@ -16,6 +16,9 @@ public:
 
 	void ProcessInput();
 
+	void Move();
+	void Rotate();
+	void Zoom();
 	void ComputeEulerAngles();
 
 
@@ -25,7 +28,8 @@ public:
 
 private:
 
-	float cameraSpeed = 2.0f;
+	float movementSpeed = 4.0f;
+	float rotationSpeed = 50.f;
 	float pitch = 0;
 	float yaw = -90;
 };

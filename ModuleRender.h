@@ -29,6 +29,10 @@ public:
 	void DrawLines();
 	void DrawAxis();
 
+	void InitFrustum();
+	void InitSDL();
+	void InitOpenGL();
+
 	int width = SCREEN_WIDTH;
 	int height = SCREEN_HEIGHT;
 

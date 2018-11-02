@@ -52,6 +52,11 @@ public:
 		return keyboard[id];
 	}
 
+	bool IsKeyPressed(int id) const
+	{
+		return keyboard[id] == KEY_DOWN || keyboard[id] == KEY_REPEAT;
+	}
+
 	KeyState GetMouseButtonDown(int id) const
 	{
 		return mouse_buttons[id - 1];
