@@ -9,6 +9,7 @@
 #include <vector>
 #include <list>
 #include "GL/glew.h"
+#include <string>
 
 class Model
 {
@@ -17,11 +18,14 @@ public:
 	~Model();
 
 	void Draw() const;
+	static const char* modelFolder;
+
 private:
 	void LoadModel(const char *file);
 	void GenerateMaterialData(aiMaterial * material);
 
 	std::list<Mesh> meshes;
 	std::vector<unsigned int> textures;
+	const char* path;
 };
 

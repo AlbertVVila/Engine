@@ -106,7 +106,7 @@ GLuint const ModuleTextures::Load(const char * path)
 	else
 	{
 		error = ilGetError();
-		LOG("Error: %s\n", iluErrorString(error));
+		LOG("Error file %s: %s\n", path, iluErrorString(error));
 	}
 
 	return 0;
