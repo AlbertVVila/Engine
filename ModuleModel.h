@@ -15,6 +15,7 @@ public:
 	bool Init();
 	unsigned int Load(const char *path);
 	void DrawModels();
+	void DeleteModels();
 	bool CleanUp();
 
 	std::list<Model> models;

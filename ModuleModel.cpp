@@ -23,8 +23,10 @@ bool ModuleModel::Init()
 
 unsigned int ModuleModel::Load(const char *path)
 {
-	Model model(path);
-	models.push_back(model);
+	//If we already have models loaded, we erase them 
+	//Only one model at a time for the moment
+	DeleteModels();
+	models.emplace_back(path);
 
 	return 1;
 }
@@ -35,6 +37,11 @@ void ModuleModel::DrawModels()
 	{
 		it.Draw();
 	}
+}
+
+void ModuleModel::DeleteModels()
+{
+	models.clear();
 }
 
 

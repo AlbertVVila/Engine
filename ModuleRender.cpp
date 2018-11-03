@@ -55,16 +55,10 @@ update_status ModuleRender::Update()
 	ProjectionMatrix();
 	ViewMatrix();
 
-	//float white[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
-	//glUniform4fv(glGetUniformLocation(App->program->shaderProgram,
-	//	"Vcolor"), 1, white);
-
 	App->model->DrawModels();
 	DrawLines();
 	DrawAxis();
 
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindTexture(GL_TEXTURE_2D, 0);
 	glUseProgram(0);
 	return UPDATE_CONTINUE;
 }
@@ -81,11 +75,6 @@ update_status ModuleRender::PostUpdate()
 bool ModuleRender::CleanUp()
 {
 	LOG("Destroying renderer");
-
-	//if (vbo != 0)
-	//{
-	//	glDeleteBuffers(1, &vbo);
-	//}
 
 	return true;
 }

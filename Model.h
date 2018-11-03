@@ -7,6 +7,7 @@
 #include <assimp/material.h>
 #include <assimp/mesh.h>
 #include <vector>
+#include <list>
 #include "GL/glew.h"
 
 class Model
@@ -17,11 +18,10 @@ public:
 
 	void Draw() const;
 private:
-	void loadModel(const char *file);
+	void LoadModel(const char *file);
 	void GenerateMaterialData(aiMaterial * material);
-	
-	std::vector<Mesh> meshes;
+
+	std::list<Mesh> meshes;
 	std::vector<unsigned int> textures;
-	const char* file;
 };
 

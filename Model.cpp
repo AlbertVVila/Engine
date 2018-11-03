@@ -6,14 +6,14 @@
 
 Model::Model(const char * file)
 {
-	loadModel(file);
+	LoadModel(file);
 }
 
 Model::~Model()
 {
 }
 
-void Model::loadModel(const char * path)
+void Model::LoadModel(const char * path)
 {
 	const aiScene* scene = aiImportFile(path, 0);
 	if (scene == NULL)
@@ -23,8 +23,7 @@ void Model::loadModel(const char * path)
 
 	for (unsigned i = 0; i < scene->mNumMeshes; ++i)
 	{
-		Mesh mesh(scene->mMeshes[i]);
-		meshes.push_back(mesh);
+		meshes.emplace_back(scene->mMeshes[i]);
 	}
 
 	for (unsigned i = 0; i < scene->mNumMaterials; ++i)
@@ -46,7 +45,7 @@ void Model::GenerateMaterialData(aiMaterial * material)
 
 void Model::Draw() const
 {
-	for (auto mesh : meshes)
+	for (auto &mesh : meshes)
 	{
 		mesh.Draw(App->program->shaderProgram, textures);
 	}

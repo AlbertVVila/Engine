@@ -45,6 +45,18 @@ Mesh::Mesh(aiMesh * mesh)
 
 Mesh::~Mesh()
 {
+	if (VAO != 0)
+	{
+		glDeleteVertexArrays(1, &VAO);
+	}
+	if (VBO != 0)
+	{
+		glDeleteBuffers(1, &VBO);
+	}
+	if (EBO != 0)
+	{
+		glDeleteBuffers(1, &EBO);
+	}
 }
 
 void Mesh::Draw(unsigned int shaderProgram, const std::vector<unsigned int> &textures) const
@@ -85,4 +97,7 @@ void Mesh::Draw(unsigned int shaderProgram, const std::vector<unsigned int> &tex
 	// Desactivem el VBO
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	// Desactivem Textura
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
