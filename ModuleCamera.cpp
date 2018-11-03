@@ -19,7 +19,7 @@ bool ModuleCamera::Init()
 
 update_status ModuleCamera::Update()
 {
-	ProcessInput();
+	CameraInput();
 	return UPDATE_CONTINUE;
 }
 
@@ -29,7 +29,7 @@ bool ModuleCamera::CleanUp()
 	return true;
 }
 
-void ModuleCamera::ProcessInput()
+void ModuleCamera::CameraInput()
 {
 	Move();
 	Rotate();

@@ -12,7 +12,7 @@ class ModuleCamera;
 class ModuleProgram;
 class ModuleEditor;
 class ModuleTime;
-class ModuleModelLoader;
+class ModuleModel;
 
 class Application
 {
@@ -34,7 +34,7 @@ public:
 	ModuleProgram* program = nullptr;
 	ModuleEditor* editor = nullptr;
 	ModuleTime* time = nullptr;
-	ModuleModelLoader* loader = nullptr;
+	ModuleModel* model = nullptr;
 
 
 private:

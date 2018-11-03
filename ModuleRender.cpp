@@ -2,7 +2,7 @@
 #include "Application.h"
 #include "ModuleRender.h"
 #include "ModuleCamera.h"
-#include "ModuleModelLoader.h"
+#include "ModuleModel.h"
 #include "ModuleProgram.h"
 #include "ModuleTextures.h"
 #include "ModuleEditor.h"
@@ -59,10 +59,7 @@ update_status ModuleRender::Update()
 	//glUniform4fv(glGetUniformLocation(App->program->shaderProgram,
 	//	"Vcolor"), 1, white);
 
-	for (std::list<Model>::iterator it = models.begin(); it != models.end(); ++it)
-	{
-	}
-	App->loader->DrawModel();
+	App->model->DrawModels();
 	DrawLines();
 	DrawAxis();
 

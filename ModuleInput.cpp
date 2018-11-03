@@ -1,7 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleInput.h"
-#include "ModuleModelLoader.h"
+#include "ModuleModel.h"
 #include "SDL/include/SDL.h"
 
 #define MAX_KEYS 300
@@ -128,7 +128,7 @@ update_status ModuleInput::PreUpdate()
 			break;
 
 		case SDL_DROPFILE:
-			App->loader->Load(event.drop.file);
+			App->model->Load(event.drop.file);
 			break;
 		}
 	}

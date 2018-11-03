@@ -3,7 +3,7 @@
 #include "ModuleRenderExercise.h"
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
-#include "ModuleModelLoader.h"
+#include "ModuleModel.h"
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
 #include "ModuleTime.h"

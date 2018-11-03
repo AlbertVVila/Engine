@@ -3,7 +3,6 @@
 #include "Globals.h"
 #include "MathGeoLib.h"
 #include "Model.h"
-#include <list>
 
 struct SDL_Texture;
 struct SDL_Renderer;
@@ -42,7 +41,6 @@ public:
 	void* context;
 	Frustum frustum;
 	//char * image = "Lenna.png";
-	std::list<Model> models;
 	//unsigned vao = 0;
 	//unsigned texture0 = 0;
 

@@ -1,5 +1,7 @@
 #include "Model.h"
 #include "Application.h"
+#include "ModuleTextures.h"
+#include "ModuleProgram.h"
 
 
 Model::Model(const char * file)
@@ -21,7 +23,8 @@ void Model::loadModel(const char * path)
 
 	for (unsigned i = 0; i < scene->mNumMeshes; ++i)
 	{
-		GenerateMeshData(scene->mMeshes[i]);
+		Mesh mesh(scene->mMeshes[i]);
+		meshes.push_back(mesh);
 	}
 
 	for (unsigned i = 0; i < scene->mNumMaterials; ++i)
@@ -29,11 +32,22 @@ void Model::loadModel(const char * path)
 		GenerateMaterialData(scene->mMaterials[i]);
 	}
 }
-
-void Model::GenerateMeshData(aiMesh * mesh)
-{
-}
+	
 
 void Model::GenerateMaterialData(aiMaterial * material)
 {
+	aiTextureMapping mapping = aiTextureMapping_UV;
+	aiString file("Baker_house.png");
+	material->GetTexture(aiTextureType_DIFFUSE, 0, &file, &mapping, 0);
+	unsigned int texture = App->textures->Load("Baker_house.png");
+	textures.push_back(texture);
+
+}
+
+void Model::Draw() const
+{
+	for (auto mesh : meshes)
+	{
+		mesh.Draw(App->program->shaderProgram, textures);
+	}
 }
