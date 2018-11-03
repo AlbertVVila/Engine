@@ -37,9 +37,9 @@ void Model::loadModel(const char * path)
 void Model::GenerateMaterialData(aiMaterial * material)
 {
 	aiTextureMapping mapping = aiTextureMapping_UV;
-	aiString file("Baker_house.png");
+	aiString file;
 	material->GetTexture(aiTextureType_DIFFUSE, 0, &file, &mapping, 0);
-	unsigned int texture = App->textures->Load("Baker_house.png");
+	unsigned int texture = App->textures->Load(file.C_Str());
 	textures.push_back(texture);
 
 }
