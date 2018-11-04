@@ -18,6 +18,8 @@ Mesh::Mesh(aiMesh * mesh)
 	{
 		*pbuffer++ = mesh->mTextureCoords[0][i].x;
 		*pbuffer++ = mesh->mTextureCoords[0][i].y;
+
+		vertices.emplace_back(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
 	}
 	glUnmapBuffer(GL_ARRAY_BUFFER);
 
@@ -55,7 +57,7 @@ Mesh::Mesh(aiMesh * mesh)
 		0,                  // stride
 		(void*)(sizeof(float) * 3 * mesh->mNumVertices)       // array buffer offset
 	);
-	numVertices = mesh->mNumVertices;
+
 	numIndices = mesh->mNumFaces * 3;
 	materialIndex = mesh->mMaterialIndex;
 

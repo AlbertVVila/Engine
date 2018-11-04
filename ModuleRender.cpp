@@ -161,7 +161,7 @@ void ModuleRender::InitFrustum()
 	frustum.front = -float3::unitZ;
 	frustum.up = float3::unitY;
 	frustum.nearPlaneDistance = 0.1f;
-	frustum.farPlaneDistance = 100.0f;
+	frustum.farPlaneDistance = 1000.0f;
 	frustum.verticalFov = math::pi / 4.0f;
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * ((float)App->renderer->width / (float)App->renderer->height));
 

@@ -3,6 +3,7 @@
 #include "ModuleInput.h"
 #include "ModuleTime.h"
 #include "ModuleRender.h"
+#include "ModuleModel.h"
 
 ModuleCamera::ModuleCamera()
 {
@@ -33,6 +34,7 @@ void ModuleCamera::CameraInput()
 {
 	Move();
 	Rotate();
+	Center();
 	Zoom();
 }
 
@@ -98,6 +100,23 @@ void ModuleCamera::Zoom()
 	{
 		App->renderer->frustum.verticalFov -= App->input->mouse_wheel *100.f*App->time->deltaTime;
 		App->renderer->frustum.horizontalFov = 2.f * atanf(tanf(App->renderer->frustum.verticalFov * 0.5f) * ((float)App->renderer->width / (float)App->renderer->height));
+	}
+}
+
+void ModuleCamera::Center()
+{
+	if (App->input->IsKeyPressed(SDL_SCANCODE_F))
+	{
+		float3 HalfSize = App->model->models.front().BoundingBox.HalfSize();
+		float distX = HalfSize.x / tanf(App->renderer->frustum.horizontalFov*0.5f);
+		float distY = HalfSize.y / tanf(App->renderer->frustum.verticalFov*0.5f);
+		float camDist = MAX(distX,distY);
+
+		cameraPos = App->model->models.front().BoundingBox.FaceCenterPoint(5) + float3(0,0, camDist);
+
+		cameraFront = float3(0, 0, -1);
+		pitch = 0;
+		yaw = -90;
 	}
 }
 

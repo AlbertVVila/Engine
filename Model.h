@@ -11,6 +11,7 @@
 #include "GL/glew.h"
 #include <string>
 
+
 class Model
 {
 public:
@@ -18,11 +19,14 @@ public:
 	~Model();
 
 	void Draw() const;
+
 	static const char* modelFolder;
+	AABB BoundingBox;
 
 private:
 	void LoadModel(const char *file);
 	void GenerateMaterialData(aiMaterial * material);
+	void GetBoundingBox();
 
 	std::list<Mesh> meshes;
 	std::vector<unsigned int> textures;

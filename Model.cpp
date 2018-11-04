@@ -33,6 +33,7 @@ void Model::LoadModel(const char * path)
 	{
 		GenerateMaterialData(scene->mMaterials[i]);
 	}
+	GetBoundingBox();
 }
 	
 
@@ -55,4 +56,28 @@ void Model::Draw() const
 	{
 		mesh.Draw(App->program->shaderProgram, textures);
 	}
+}
+
+void Model::GetBoundingBox()
+{
+	if (meshes.size() == 0 || meshes.front().vertices.size() == 0) return;
+
+	float3 min, max;
+	min = max = meshes.front().vertices[0];
+	for (auto &mesh : meshes)
+	{
+		for (auto &vertice : mesh.vertices)
+		{
+			min.x = MIN(min.x, vertice.x);
+			min.y = MIN(min.y, vertice.y);
+			min.z = MIN(min.z, vertice.z);
+
+			max.x = MAX(max.x, vertice.x);
+			max.y = MAX(max.y, vertice.y);
+			max.z = MAX(max.z, vertice.z);
+
+		}
+	}
+	BoundingBox.minPoint = min;
+	BoundingBox.maxPoint = max;
 }

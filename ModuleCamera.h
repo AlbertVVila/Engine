@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "MathGeoLib.h"
+#include "Globals.h"
 
 class ModuleCamera : public Module
 {
@@ -19,6 +20,7 @@ public:
 	void Move();
 	void Rotate();
 	void Zoom();
+	void Center();
 	void ComputeEulerAngles();
 
 

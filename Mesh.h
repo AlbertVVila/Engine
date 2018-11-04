@@ -4,13 +4,15 @@
 #include "GL/glew.h"
 #include <assert.h>
 #include <vector>
+#include "MathGeoLib.h"
+#include "Globals.h"
 
 class Mesh
 {
 public:
-	int numVertices;
 	int numIndices;
 	int materialIndex;
+	std::vector<float3> vertices;
 
 	Mesh(aiMesh * mesh);
 	~Mesh();
