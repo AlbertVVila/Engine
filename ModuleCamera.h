@@ -3,8 +3,7 @@
 
 #include "Module.h"
 #include "MathGeoLib.h"
-#include "Globals.h"
-
+#include "SDL.h"
 class ModuleCamera : public Module
 {
 public:
@@ -22,6 +21,7 @@ public:
 	void Zoom();
 	void Center();
 	void ComputeEulerAngles();
+	void Orbit();
 
 
 	float3 cameraPos = float3(0, 5, 20);
@@ -34,6 +34,12 @@ private:
 	float rotationSpeed = 50.f;
 	float pitch = 0;
 	float yaw = -90;
+	float radius = 0;
+
+	float startX = 0;
+	float startY = 0;
+	float startAngleX = 0;
+	float startAngleY = 0;
 };
 
 #endif /* __ModuleCamera_h__ */

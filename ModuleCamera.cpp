@@ -36,6 +36,7 @@ void ModuleCamera::CameraInput()
 	Rotate();
 	Center();
 	Zoom();
+	Orbit();
 }
 
 
@@ -109,14 +110,16 @@ void ModuleCamera::Center()
 	{
 		float3 HalfSize = App->model->models.front().BoundingBox.HalfSize();
 		float distX = HalfSize.x / tanf(App->renderer->frustum.horizontalFov*0.5f);
-		float distY = HalfSize.y / tanf(App->renderer->frustum.verticalFov*0.5f);
+		float distY = HalfSize.y / tanf(App->renderer->frustum.verticalFov*0.5f); //use x*x+y*y+z*z as dist
 		float camDist = MAX(distX,distY);
 
-		cameraPos = App->model->models.front().BoundingBox.FaceCenterPoint(5) + float3(0,0, camDist);
+		float3 center = App->model->models.front().BoundingBox.FaceCenterPoint(5);
+		cameraPos = center + float3(0,0, camDist);
 
 		cameraFront = float3(0, 0, -1);
 		pitch = 0;
 		yaw = -90;
+		//radius = camDist + center.z;
 	}
 }
 
@@ -127,4 +130,29 @@ void ModuleCamera::ComputeEulerAngles()
 	cameraFront.z = sin(math::DegToRad(yaw)) *cos(math::DegToRad(pitch));
 	cameraFront.Normalize();
 
+}
+
+void ModuleCamera::Orbit()
+{
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	{
+		startX = App->input->GetMousePosition().x;
+		startY = App->input->GetMousePosition().y;
+		radius = 20;//App->model->models.front().BoundingBox.CenterPoint().Distance(cameraPos); 
+		startAngleX = math::RadToDeg(atan(cameraPos.y/ cameraPos.x));
+		startAngleY = math::RadToDeg(acos(cameraPos.z/radius));
+
+	}
+	if (App->input->GetMousePosition().x != 0 && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
+	{
+
+		if (App->model->models.size() == 0) return;
+		float angleX = (App->input->GetMousePosition().x-startX) *360+ startAngleX;
+		float angleY = (App->input->GetMousePosition().y-startY) *360+ startAngleY;
+		LOG("angleX:%f angleY:%f\n", angleX, angleY);
+		cameraPos.x = cos(math::DegToRad(angleX)) * cos(math::DegToRad(angleY)) * radius;
+		cameraPos.y = sin(math::DegToRad(angleY)) * radius;;
+		cameraPos.z = sin(math::DegToRad(angleX)) *cos(math::DegToRad(angleY)) * radius;
+		cameraFront = (App->model->models.front().BoundingBox.CenterPoint() - cameraPos).Normalized();
+	}
 }

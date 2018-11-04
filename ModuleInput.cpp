@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "ModuleModel.h"
+#include "ModuleRender.h"
 #include "SDL/include/SDL.h"
 
 #define MAX_KEYS 300
@@ -107,7 +108,7 @@ update_status ModuleInput::PreUpdate()
 				break;
 			}
 			break;
-
+	
 		case SDL_MOUSEBUTTONDOWN:
 			mouse_buttons[event.button.button - 1] = KEY_DOWN;
 			break;
@@ -117,10 +118,10 @@ update_status ModuleInput::PreUpdate()
 			break;
 
 		case SDL_MOUSEMOTION:
-			mouse_motion.x = event.motion.xrel / SCREEN_WIDTH;
-			mouse_motion.y = event.motion.yrel / SCREEN_HEIGHT;
-			mouse.x = event.motion.x / SCREEN_WIDTH;
-			mouse.y = event.motion.y / SCREEN_HEIGHT;
+			mouse_motion.x = (float)event.motion.xrel/ (float)App->renderer->width; //Abans es dividia per mida de la pantalla
+			mouse_motion.y = (float)event.motion.yrel/ (float)App->renderer->height;
+			mouse.x = (float)event.motion.x/ (float)App->renderer->width;
+			mouse.y = (float)event.motion.y/ (float)App->renderer->height;
 			break;
 
 		case SDL_MOUSEWHEEL:
@@ -153,12 +154,12 @@ bool ModuleInput::GetWindowEvent(EventWindow ev) const
 	return windowEvents[ev];
 }
 
-const iPoint& ModuleInput::GetMousePosition() const
+const fPoint& ModuleInput::GetMousePosition() const
 {
 	return mouse;
 }
 
-const iPoint& ModuleInput::GetMouseMotion() const
+const fPoint& ModuleInput::GetMouseMotion() const
 {
 	return mouse_motion;
 }
