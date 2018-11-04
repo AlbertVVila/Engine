@@ -33,9 +33,9 @@ unsigned int ModuleModel::Load(const char *path)
 
 void ModuleModel::DrawModels()
 {
-	for (auto const& it : models)
+	for (auto const& model : models)
 	{
-		it.Draw();
+		model.Draw();
 	}
 }
 

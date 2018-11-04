@@ -50,7 +50,7 @@ update_status ModuleRender::Update()
 {
 	//For now we use same program for every model and same tranforms
 	glUseProgram(App->program->shaderProgram);
-	//for now all models have same transformations
+	//For now all models have same transformations
 	ModelTransform();
 	ProjectionMatrix();
 	ViewMatrix();

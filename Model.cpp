@@ -18,7 +18,7 @@ Model::~Model()
 
 void Model::LoadModel(const char * path)
 {
-	const aiScene* scene = aiImportFile(path, 0);
+	const aiScene* scene = aiImportFile(path, aiProcess_Triangulate);
 	if (scene == NULL)
 	{
 		LOG("ERROR importing file:%s \n", aiGetErrorString());
