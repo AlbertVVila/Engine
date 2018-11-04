@@ -138,7 +138,7 @@ void ModuleCamera::Orbit()
 	{
 		startX = App->input->GetMousePosition().x;
 		startY = App->input->GetMousePosition().y;
-		radius = 20;//App->model->models.front().BoundingBox.CenterPoint().Distance(cameraPos); 
+		radius = App->model->models.front().BoundingBox.CenterPoint().Distance(cameraPos); 
 		startAngleX = math::RadToDeg(atan(cameraPos.y/ cameraPos.x));
 		startAngleY = math::RadToDeg(acos(cameraPos.z/radius));
 
