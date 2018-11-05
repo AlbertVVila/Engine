@@ -139,23 +139,22 @@ void ModuleCamera::Orbit()
 		startX = App->input->GetMousePosition().x;
 		startY = App->input->GetMousePosition().y;
 		radius = App->model->models.front().BoundingBox.CenterPoint().Distance(cameraPos); 
-		startAngleX = math::RadToDeg(atan(cameraPos.y/ cameraPos.x));
-		startAngleY = math::RadToDeg(acos(cameraPos.z/radius));
 
 	}
 	if (App->input->GetMousePosition().x != 0 && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
 	{
 
 		if (App->model->models.size() == 0) return;
-		float angleX = (App->input->GetMousePosition().x-startX) *360+ startAngleX;
-		float angleY = (App->input->GetMousePosition().y-startY) *360+ startAngleY;
-		LOG("angleX:%f angleY:%f\n", angleX, angleY);
-		cameraPos.x = cos(math::DegToRad(angleX)) * cos(math::DegToRad(angleY)) * radius;
-		cameraPos.y = sin(math::DegToRad(angleY)) * radius;;
-		cameraPos.z = sin(math::DegToRad(angleX)) *cos(math::DegToRad(angleY)) * radius;
+		yaw += (App->input->GetMouseMotion().x*200);
+		pitch += (App->input->GetMouseMotion().y*200);
+
+		cameraPos.x = cos(math::DegToRad(yaw)) * cos(math::DegToRad(pitch)) * radius;
+		cameraPos.y = sin(math::DegToRad(pitch)) * radius;;
+		cameraPos.z = sin(math::DegToRad(yaw)) *cos(math::DegToRad(pitch)) * radius;
 		//Quat yrot = Quat::RotateY(math::DegToRad(-App->input->GetMouseMotion().x*100));
 		//Quat xrot = Quat::RotateX(math::DegToRad(-App->input->GetMouseMotion().y*100));
 		//cameraPos = xrot * yrot * cameraPos;
 		cameraFront = (App->model->models.front().BoundingBox.CenterPoint() - cameraPos).Normalized();
+		LOG("REPEAT:%f\n", App->model->models.front().BoundingBox.CenterPoint().Distance(cameraPos));
 	}
 }
