@@ -156,6 +156,9 @@
     <ClCompile Include="ModuleModel.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -374,6 +377,9 @@
     </ClInclude>
     <ClInclude Include="ModuleModel.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

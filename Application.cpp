@@ -9,7 +9,7 @@
 #include "ModuleProgram.h"
 #include "ModuleEditor.h"
 #include "ModuleTime.h"
-
+#include "Timer.h"
 
 using namespace std;
 
@@ -37,16 +37,19 @@ Application::~Application()
 
 bool Application::Init()
 {
+	Timer t;
 	bool ret = true;
 
 	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret; ++it)
 		ret = (*it)->Init();
-
+	LOG("Init time: %f ms",t.Stop());
 	return ret;
 }
 
 update_status Application::Update()
 {
+	//Timer t;
+	//t.StartPrecise();
 	update_status ret = UPDATE_CONTINUE;
 
 	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
@@ -57,16 +60,22 @@ update_status Application::Update()
 
 	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
 		ret = (*it)->PostUpdate();
-
+	//LOG("Update time: %f ms", t.StopPrecise());
 	return ret;
 }
 
 bool Application::CleanUp()
 {
+	Timer t;
+	LOG("readingCleanupINIT %d\n", t.Read());
 	bool ret = true;
 
-	for(list<Module*>::reverse_iterator it = modules.rbegin(); it != modules.rend() && ret; ++it)
+	for (list<Module*>::reverse_iterator it = modules.rbegin(); it != modules.rend() && ret; ++it)
+	{
 		ret = (*it)->CleanUp();
-
+		LOG("readingCleanup %d\n ms", t.Read());
+	}
+	LOG("readingCleanupFIN %d\n", t.Read());
+	LOG("CleanUp time: %d ms", t.Stop());
 	return ret;
 }
