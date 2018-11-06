@@ -36,8 +36,6 @@ private:
 	float yaw = -90;
 	float radius = 0;
 
-	float startX = 0;
-	float startY = 0;
 	float startAngleX = 0;
 	float startAngleY = 0;
 };
