@@ -151,9 +151,8 @@ void ModuleCamera::Orbit()
 		cameraPos.x = cos(math::DegToRad(yaw)) * cos(math::DegToRad(pitch)) * radius;
 		cameraPos.y = sin(math::DegToRad(pitch)) * radius;;
 		cameraPos.z = sin(math::DegToRad(yaw)) *cos(math::DegToRad(pitch)) * radius;
-		//Quat yrot = Quat::RotateY(math::DegToRad(-App->input->GetMouseMotion().x*100));
-		//Quat xrot = Quat::RotateX(math::DegToRad(-App->input->GetMouseMotion().y*100));
-		//cameraPos = xrot * yrot * cameraPos;
+
+		cameraPos += App->model->models.front().BoundingBox.CenterPoint();
 		cameraFront = (App->model->models.front().BoundingBox.CenterPoint() - cameraPos).Normalized();
 		LOG("REPEAT:%f\n", App->model->models.front().BoundingBox.CenterPoint().Distance(cameraPos));
 	}
