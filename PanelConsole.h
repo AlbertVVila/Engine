@@ -10,6 +10,7 @@ public:
 	~PanelConsole();
 
 	void Clear() { Buf.clear(); LineOffsets.clear(); }
+	void AddLog(const char * log);
 	void Draw();
 private:
 	ImGuiTextBuffer     Buf;

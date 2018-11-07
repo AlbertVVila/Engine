@@ -11,6 +11,12 @@ PanelConsole::~PanelConsole()
 {
 }
 
+void PanelConsole::AddLog(const char * log)
+{
+	Buf.appendf(log);
+	ScrollToBottom = true;
+}
+
 void PanelConsole::Draw()
 {
 	ImGui::SetNextWindowSize(ImVec2(500, 400), ImGuiCond_FirstUseEver);
@@ -26,6 +32,8 @@ void PanelConsole::Draw()
 	ImGui::Separator();
 	ImGui::BeginChild("scrolling", ImVec2(0, 0), false, ImGuiWindowFlags_HorizontalScrollbar);
 	if (copy) ImGui::LogToClipboard();
+
+	ImGui::TextUnformatted(Buf.begin());
 
 	if (ScrollToBottom)
 		ImGui::SetScrollHereY(1.0f);
