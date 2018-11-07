@@ -51,6 +51,13 @@ bool ModuleRender::Init()
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 
+	glGenRenderbuffers(1, &RBO);
+	glBindRenderbuffer(GL_RENDERBUFFER, RBO);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, RBO);
+
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		LOG("Framebuffer ERROR");
 
@@ -78,12 +85,13 @@ update_status ModuleRender::Update()
 
 	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
 	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	App->model->DrawModels();
 	DrawLines();
 	DrawAxis();
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 
 	glUseProgram(0);
 
