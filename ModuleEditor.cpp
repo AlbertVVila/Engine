@@ -4,11 +4,14 @@
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
 #include "ModuleRenderExercise.h"
+#include "Panel.h"
+#include "PanelConsole.h"
 #include "SDL.h"
 #include "GL/glew.h"
 
 ModuleEditor::ModuleEditor()
 {
+	panels.push_back(console = new PanelConsole());
 }
 
 // Destructor
@@ -26,8 +29,6 @@ bool ModuleEditor::Init()
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
 	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
-																//io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoTaskBarIcons;
-																//io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoMerge;
 
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer->context);
 	ImGui_ImplOpenGL3_Init(glsl_version);
@@ -43,15 +44,45 @@ update_status ModuleEditor::PreUpdate()
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
+
+	//ImGui::SetNextWindowPos({ 0,0 });
+	//ImGui::SetNextWindowSize({ (float)App->renderer->width, (float)App->renderer->height });
+	//ImGui::SetNextWindowBgAlpha(0.0f);
+
+	//ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoBringToFrontOnFocus;
+
+	//ImGui::Begin("GUI", false, window_flags);
+
 	return UPDATE_CONTINUE;
 }
 
 // Called every draw update
 update_status ModuleEditor::Update()
 {
-	//ShowGUI();
-	//App->exercise->ShowRenderExerciseDialog();
-	ImGui::ShowDemoWindow();
+	if (ImGui::BeginMainMenuBar())
+	{
+		if (ImGui::BeginMenu("File"))
+		{
+			if (ImGui::MenuItem("Exit", "Esc"))
+			{
+				ImGui::EndMenu();
+				ImGui::EndMainMenuBar();
+				ImGui::EndFrame();
+				return UPDATE_ERROR;
+			}
+			ImGui::EndMenu();
+		}
+		if (ImGui::BeginMenu("Windows"))
+		{
+			if (ImGui::MenuItem("Console"), NULL, console->IsEnabled())
+			{
+				console->SetEnabled(true);
+			}
+			ImGui::EndMenu();
+		}
+		ImGui::EndMainMenuBar();
+	}
+	DrawPanels();
 	return UPDATE_CONTINUE;
 }
 
@@ -65,6 +96,8 @@ bool ModuleEditor::CleanUp()
 {
 	LOG("Destroying editor");
 	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
+	ImGui::DestroyContext();
 
 	return true;
 }
@@ -82,6 +115,23 @@ void ModuleEditor::RenderGUI()
 	}
 }
 
+update_status ModuleEditor::QuitMenu()
+{
+	ImGui::EndMainMenuBar();
+	ImGui::EndMenu();
+	ImGui::End();
+	ImGui::EndFrame();
+	return UPDATE_STOP;
+}
+
+void ModuleEditor::DrawPanels()
+{
+	for (std::list<Panel*>::iterator it = panels.begin(); it != panels.end(); ++it)
+		if ((*it)->IsEnabled())
+		{
+			(*it)->Draw();
+		}
+}
 //void ModuleEditor::ShowGUI() const
 //{
 //

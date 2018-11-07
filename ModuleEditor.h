@@ -6,6 +6,9 @@
 #include "imgui_impl_sdl.h"
 #include "imgui_impl_opengl3.h"
 
+class Panel;
+class PanelConsole;
+
 class ModuleEditor :
 	public Module
 {
@@ -22,10 +25,14 @@ public:
 	ImGuiIO io;
 	void RenderGUI();
 
-private:
-	//void ShowGUI() const;
-	//void ShowMenu() const;
+	update_status QuitMenu();
 
+	void DrawPanels();
+
+	PanelConsole *console = nullptr;
+
+private:
+	std::list<Panel*> panels;
 };
 
 #endif __ModuleEditor_h__

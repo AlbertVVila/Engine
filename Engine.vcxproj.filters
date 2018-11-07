@@ -159,6 +159,10 @@
     <ClCompile Include="Timer.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Panel.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelConsole.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -381,6 +385,10 @@
     <ClInclude Include="Timer.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Panel.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelConsole.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GeoLib">
@@ -400,6 +408,9 @@
     </Filter>
     <Filter Include="Model">
       <UniqueIdentifier>{62d90e6c-5376-445f-8bb3-8b9810353cd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Panels">
+      <UniqueIdentifier>{17b8ca95-ad02-4efa-9a19-fcf1fe0c1651}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
