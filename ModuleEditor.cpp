@@ -7,6 +7,8 @@
 #include "Panel.h"
 #include "PanelConsole.h"
 #include "PanelScene.h"
+#include "PanelConfiguration.h"
+#include "PanelProperties.h"
 #include "SDL.h"
 #include "GL/glew.h"
 
@@ -14,6 +16,8 @@ ModuleEditor::ModuleEditor()
 {
 	panels.push_back(console = new PanelConsole());
 	panels.push_back(scene = new PanelScene());
+	panels.push_back(configuration = new PanelConfiguration());
+	panels.push_back(properties = new PanelProperties());
 }
 
 // Destructor
@@ -76,6 +80,14 @@ update_status ModuleEditor::Update()
 			if (ImGui::MenuItem("Scene", NULL, scene->IsEnabled()))
 			{
 				scene->ToggleEnabled();
+			}
+			if (ImGui::MenuItem("Configuration", NULL, configuration->IsEnabled()))
+			{
+				configuration->ToggleEnabled();
+			}
+			if (ImGui::MenuItem("Properties", NULL, properties->IsEnabled()))
+			{
+				properties->ToggleEnabled();
 			}
 			ImGui::EndMenu();
 		}

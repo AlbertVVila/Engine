@@ -9,6 +9,8 @@
 class Panel;
 class PanelConsole;
 class PanelScene;
+class PanelProperties;
+class PanelConfiguration;
 
 class ModuleEditor :
 	public Module
@@ -28,7 +30,9 @@ public:
 	void DrawPanels();
 
 	PanelConsole *console = nullptr;
-	PanelScene *scene = nullptr;
+	PanelScene *scene = nullptr;	
+	PanelConfiguration *configuration = nullptr;
+	PanelProperties *properties = nullptr;
 
 private:
 	std::list<Panel*> panels;

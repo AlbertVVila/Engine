@@ -34,6 +34,8 @@ public:
 	void InitSDL();
 	void InitOpenGL();
 
+	void CreateFrameBuffer();
+
 	int width = SCREEN_WIDTH;
 	int height = SCREEN_HEIGHT;
 

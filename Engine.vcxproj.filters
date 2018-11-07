@@ -165,7 +165,15 @@
     <ClCompile Include="PanelConsole.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
-    <ClCompile Include="PanelScene.cpp" />
+    <ClCompile Include="PanelConfiguration.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelProperties.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelScene.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -394,7 +402,15 @@
     <ClInclude Include="PanelConsole.h">
       <Filter>Panels</Filter>
     </ClInclude>
-    <ClInclude Include="PanelScene.h" />
+    <ClInclude Include="PanelScene.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelConfiguration.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelProperties.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GeoLib">
