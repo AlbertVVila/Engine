@@ -8,6 +8,13 @@ class PanelConsole :
 public:
 	PanelConsole();
 	~PanelConsole();
+
+	void Clear() { Buf.clear(); LineOffsets.clear(); }
+	void Draw();
+private:
+	ImGuiTextBuffer     Buf;
+	ImVector<int>       LineOffsets;        // Index to lines offset
+	bool                ScrollToBottom;
 };
 
 #endif __PanelConsole_h__

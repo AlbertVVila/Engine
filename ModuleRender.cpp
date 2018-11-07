@@ -32,8 +32,29 @@ bool ModuleRender::Init()
 	InitOpenGL();
 	InitFrustum();
 
-	//CreateBuffers();
-	/*texture0 = App->textures->Load(image);*/
+	glGenFramebuffers(1, &FBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+
+	glGenTextures(1, &renderTexture);
+	glBindTexture(GL_TEXTURE_2D, renderTexture);
+
+	glTexImage2D(
+		GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL
+	);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glFramebufferTexture2D(
+		GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderTexture, 0
+	);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		LOG("Framebuffer ERROR");
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	return true;
 }
@@ -55,11 +76,17 @@ update_status ModuleRender::Update()
 	ProjectionMatrix();
 	ViewMatrix();
 
+	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
+	glClear(GL_COLOR_BUFFER_BIT);
+
 	App->model->DrawModels();
 	DrawLines();
 	DrawAxis();
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	glUseProgram(0);
+
 	return UPDATE_CONTINUE;
 }
 
@@ -75,7 +102,7 @@ update_status ModuleRender::PostUpdate()
 bool ModuleRender::CleanUp()
 {
 	LOG("Destroying renderer");
-
+	glDeleteFramebuffers(1, &FBO);
 	return true;
 }
 

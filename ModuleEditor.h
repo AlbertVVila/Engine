@@ -8,6 +8,7 @@
 
 class Panel;
 class PanelConsole;
+class PanelScene;
 
 class ModuleEditor :
 	public Module
@@ -22,14 +23,12 @@ public:
 	bool CleanUp();
 
 public:
-	ImGuiIO io;
 	void RenderGUI();
-
-	update_status QuitMenu();
-
+	void CreateDockSpace();
 	void DrawPanels();
 
 	PanelConsole *console = nullptr;
+	PanelScene *scene = nullptr;
 
 private:
 	std::list<Panel*> panels;

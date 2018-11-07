@@ -1,6 +1,7 @@
 #ifndef __Panel_h__
 #define __Panel_h__
 
+#include "ImGui\imgui.h"
 class Panel
 {
 public:
@@ -14,9 +15,9 @@ public:
 		return enabled;
 	}
 
-	void SetEnabled(bool state)
+	void ToggleEnabled()
 	{
-		enabled = state;
+		enabled = !enabled;
 	}
 protected:
 	bool enabled = true;

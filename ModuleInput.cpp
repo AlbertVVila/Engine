@@ -92,7 +92,10 @@ update_status ModuleInput::PreUpdate()
 		case SDL_WINDOWEVENT:
 			switch (event.window.event)
 			{
-				//case SDL_WINDOWEVENT_LEAVE:
+			case SDL_WINDOWEVENT_RESIZED:
+			case SDL_WINDOWEVENT_SIZE_CHANGED:
+				App->renderer->WindowResized(event.window.data1, event.window.data2);
+				break;
 			case SDL_WINDOWEVENT_HIDDEN:
 			case SDL_WINDOWEVENT_MINIMIZED:
 			case SDL_WINDOWEVENT_FOCUS_LOST:
@@ -108,7 +111,6 @@ update_status ModuleInput::PreUpdate()
 				break;
 			}
 			break;
-	
 		case SDL_MOUSEBUTTONDOWN:
 			mouse_buttons[event.button.button - 1] = KEY_DOWN;
 			break;

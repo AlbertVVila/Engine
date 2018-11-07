@@ -40,10 +40,7 @@ public:
 public:
 	void* context;
 	Frustum frustum;
-	//char * image = "Lenna.png";
-	//unsigned vao = 0;
-	//unsigned texture0 = 0;
-
-private:
+	unsigned int FBO,RBO;
+	unsigned int renderTexture;
 
 };

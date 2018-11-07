@@ -6,12 +6,14 @@
 #include "ModuleRenderExercise.h"
 #include "Panel.h"
 #include "PanelConsole.h"
+#include "PanelScene.h"
 #include "SDL.h"
 #include "GL/glew.h"
 
 ModuleEditor::ModuleEditor()
 {
 	panels.push_back(console = new PanelConsole());
+	panels.push_back(scene = new PanelScene());
 }
 
 // Destructor
@@ -25,10 +27,8 @@ bool ModuleEditor::Init()
 	const char* glsl_version = "#version 130";
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
-	io = ImGui::GetIO(); (void)io;
-	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
+	ImGuiIO& io = ImGui::GetIO(); 
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
-	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
 
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer->context);
 	ImGui_ImplOpenGL3_Init(glsl_version);
@@ -45,14 +45,9 @@ update_status ModuleEditor::PreUpdate()
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
 
-	//ImGui::SetNextWindowPos({ 0,0 });
-	//ImGui::SetNextWindowSize({ (float)App->renderer->width, (float)App->renderer->height });
-	//ImGui::SetNextWindowBgAlpha(0.0f);
+	CreateDockSpace();
 
-	//ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoBringToFrontOnFocus;
-
-	//ImGui::Begin("GUI", false, window_flags);
-
+	/*ImGui::ShowDemoWindow();*/
 	return UPDATE_CONTINUE;
 }
 
@@ -74,9 +69,13 @@ update_status ModuleEditor::Update()
 		}
 		if (ImGui::BeginMenu("Windows"))
 		{
-			if (ImGui::MenuItem("Console"), NULL, console->IsEnabled())
+			if (ImGui::MenuItem("Console", NULL, console->IsEnabled()))
 			{
-				console->SetEnabled(true);
+				console->ToggleEnabled();
+			}
+			if (ImGui::MenuItem("Scene", NULL, scene->IsEnabled()))
+			{
+				scene->ToggleEnabled();
 			}
 			ImGui::EndMenu();
 		}
@@ -99,31 +98,37 @@ bool ModuleEditor::CleanUp()
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
 
+	//Remember destroy panels
 	return true;
 }
 
 void ModuleEditor::RenderGUI()
 {
+	ImGui::End();
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-	// Update and Render additional Platform Windows
-	if (App->editor->io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-	{
-		ImGui::UpdatePlatformWindows();
-		ImGui::RenderPlatformWindowsDefault();
-	}
 }
 
-update_status ModuleEditor::QuitMenu()
+void ModuleEditor::CreateDockSpace()
 {
-	ImGui::EndMainMenuBar();
-	ImGui::EndMenu();
-	ImGui::End();
-	ImGui::EndFrame();
-	return UPDATE_STOP;
-}
+	ImGui::SetNextWindowPos({ 0,0 });
+	ImGui::SetNextWindowSize({ (float)App->renderer->width, (float)App->renderer->height });
+	ImGui::SetNextWindowBgAlpha(0.0f);
 
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+
+	ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+	window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+	window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+	ImGui::Begin("DockSpace", NULL, window_flags);
+	ImGui::PopStyleVar(3);
+
+	ImGuiID dockspace_id = ImGui::GetID("MyDockspace");
+	ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None);
+}
 void ModuleEditor::DrawPanels()
 {
 	for (std::list<Panel*>::iterator it = panels.begin(); it != panels.end(); ++it)
@@ -132,6 +137,7 @@ void ModuleEditor::DrawPanels()
 			(*it)->Draw();
 		}
 }
+
 //void ModuleEditor::ShowGUI() const
 //{
 //
