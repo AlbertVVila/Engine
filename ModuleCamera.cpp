@@ -4,7 +4,7 @@
 #include "ModuleTime.h"
 #include "ModuleRender.h"
 #include "ModuleModel.h"
-
+#include "ModuleEditor.h"
 ModuleCamera::ModuleCamera()
 {
 }
@@ -32,11 +32,14 @@ bool ModuleCamera::CleanUp()
 
 void ModuleCamera::CameraInput()
 {
-	Move();
-	Rotate();
-	Center();
-	Zoom();
-	Orbit();
+	if (App->editor->IsCameraFocused())
+	{
+		Move();
+		Rotate();
+		Center();
+		Zoom();
+		Orbit();
+	}
 }
 
 

@@ -150,6 +150,11 @@ void ModuleEditor::DrawPanels()
 		}
 }
 
+bool ModuleEditor::IsCameraFocused() const
+{
+	return scene->IsFocused();
+}
+
 //void ModuleEditor::ShowGUI() const
 //{
 //

@@ -92,6 +92,8 @@ void ModuleRender::WindowResized(unsigned width, unsigned height)
 
     glViewport(0, 0, width, height); 
 	App->window->Resize();
+	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * ((float)width / (float)height));
+	ProjectionMatrix();
 	CreateFrameBuffer();
 }
 

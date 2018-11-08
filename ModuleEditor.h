@@ -29,6 +29,8 @@ public:
 	void CreateDockSpace();
 	void DrawPanels();
 
+	bool IsCameraFocused() const;
+
 	PanelConsole *console = nullptr;
 	PanelScene *scene = nullptr;	
 	PanelConfiguration *configuration = nullptr;

@@ -10,6 +10,10 @@ public:
 	~PanelScene();
 
 	void Draw();
+	bool IsFocused() const;
+
+	bool focus = false;
+
 };
 
 #endif __PanelScene_h__
