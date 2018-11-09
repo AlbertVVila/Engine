@@ -4,6 +4,7 @@
 #include "ModuleModel.h"
 #include "ModuleTextures.h"
 #include "ModuleRender.h"
+#include "ModuleEditor.h"
 #include "SDL/include/SDL.h"
 
 #define MAX_KEYS 300
@@ -84,6 +85,7 @@ update_status ModuleInput::PreUpdate()
 
 	while (SDL_PollEvent(&event) != 0)
 	{
+		App->editor->processInput(&event);
 		switch (event.type)
 		{
 		case SDL_QUIT:

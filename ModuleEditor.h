@@ -11,6 +11,7 @@ class PanelConsole;
 class PanelScene;
 class PanelProperties;
 class PanelConfiguration;
+class PanelAbout;
 
 class ModuleEditor :
 	public Module
@@ -30,13 +31,14 @@ public:
 	void DrawPanels();
 
 	bool IsCameraFocused() const;
-
 	void AddFpsLog(float fps) const;
+	void processInput(SDL_Event* event) const;
 
 	PanelConsole *console = nullptr;
 	PanelScene *scene = nullptr;	
 	PanelConfiguration *configuration = nullptr;
 	PanelProperties *properties = nullptr;
+	PanelAbout *about = nullptr;
 
 private:
 	std::list<Panel*> panels;
