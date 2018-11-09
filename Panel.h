@@ -19,6 +19,12 @@ public:
 	{
 		enabled = !enabled;
 	}
+
+	void SetEnabled() 
+	{ 
+		enabled = true; 
+	}
+
 protected:
 	bool enabled = true;
 };

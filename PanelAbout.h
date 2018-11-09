@@ -10,7 +10,7 @@ public:
 	~PanelAbout();
 
 	void Draw();
-	void SetEnabled() { enabled = true; }
+
 };
 
 #endif __PanelAbout_h__

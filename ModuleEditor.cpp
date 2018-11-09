@@ -10,6 +10,7 @@
 #include "PanelConfiguration.h"
 #include "PanelProperties.h"
 #include "PanelAbout.h"
+#include "PanelHardware.h"
 #include "SDL.h"
 #include "GL/glew.h"
 
@@ -20,6 +21,7 @@ ModuleEditor::ModuleEditor()
 	panels.push_back(configuration = new PanelConfiguration());
 	panels.push_back(properties = new PanelProperties());
 	panels.push_back(about = new PanelAbout());
+	panels.push_back(hardware = new PanelHardware());
 }
 
 // Destructor
@@ -99,7 +101,7 @@ update_status ModuleEditor::Update()
 			}
 			if (ImGui::MenuItem("Hardware"))
 			{
-				
+				hardware->SetEnabled();
 			}
 			ImGui::EndMenu();
 		}

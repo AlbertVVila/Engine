@@ -56,7 +56,6 @@ void PanelAbout::Draw()
 		ImGui::BulletText("MathGeoLib");
 		ImGui::BulletText("glew (version %s)", glewGetString(GLEW_VERSION));
 		ImGui::BulletText("Assimp (version %d.%d.%d)", aiGetVersionMajor(), aiGetVersionMinor(), aiGetVersionRevision());
-		ImGui::BulletText("OpenGL (version %s)", glewGetString(GL_VERSION));
 
 		ImGui::TreePop();
 	}

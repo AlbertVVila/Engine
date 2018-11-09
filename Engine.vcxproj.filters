@@ -177,6 +177,7 @@
     <ClCompile Include="PanelAbout.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
+    <ClCompile Include="PanelHardware.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -417,6 +418,7 @@
     <ClInclude Include="PanelAbout.h">
       <Filter>Panels</Filter>
     </ClInclude>
+    <ClInclude Include="PanelHardware.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GeoLib">
