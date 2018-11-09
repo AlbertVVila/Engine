@@ -278,8 +278,9 @@ void ModuleRender::DrawGUI()
 	}
 	ImGui::Checkbox("Wireframe", &wireframe);
 	//ImGui::Checkbox("Show Model Bounding Boxes", &boundingBox); //TODO:BoundingBOx
-	//TODO:Fix Fov
-	ImGui::InputFloat("FOV", &frustum.horizontalFov, 1, 2);
+	//TODO:Fix Fov -> recorda de canviar aspect ratio si es modifica etc + maybe use slider
+	float degFov = math::RadToDeg(frustum.verticalFov);
+	ImGui::InputFloat("FOV", &degFov, 1, 2);
 	ImGui::InputFloat("Znear", &frustum.nearPlaneDistance, 1, 10);
 	ImGui::InputFloat("Zfar", &frustum.farPlaneDistance, 1, 10);
 }

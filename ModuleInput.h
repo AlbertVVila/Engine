@@ -70,6 +70,8 @@ public:
 	const fPoint& GetMousePosition() const;
 	int GetMouseWheel() const;
 
+	void DrawGUI();
+
 	int mouse_wheel = 0;
 
 	private:

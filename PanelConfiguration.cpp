@@ -3,6 +3,8 @@
 #include "ModuleTime.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
+#include "ModuleCamera.h"
+#include "ModuleInput.h"
 #include "SDL.h"
 #include "mmgr.h"
 
@@ -34,19 +36,19 @@ void PanelConfiguration::Draw()
 	}
 	if (ImGui::CollapsingHeader("Camera"))
 	{
-
+		App->camera->DrawGUI();
 	}
 	if (ImGui::CollapsingHeader("Render"))
 	{
 		App->renderer->DrawGUI();
 	}
-	if (ImGui::CollapsingHeader("Editor"))
+	if (ImGui::CollapsingHeader("Input"))
 	{
-
+		App->input->DrawGUI();
 	}
 	if (ImGui::CollapsingHeader("Textures"))
 	{
-
+		//TODO: Mipmap type + anisotropic 
 	}
 	ImGui::End();
 }

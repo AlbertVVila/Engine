@@ -188,3 +188,9 @@ int ModuleInput::GetMouseWheel() const
 {
 	return mouse_wheel;
 }
+
+void ModuleInput::DrawGUI()
+{
+	ImGui::Text("Mouse position:");
+	ImGui::Text("X:%.2f | Y:%.2f", mouse.x*App->renderer->width, mouse.y*App->renderer->height);
+}

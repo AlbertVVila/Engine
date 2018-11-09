@@ -158,3 +158,19 @@ void ModuleCamera::Orbit()
 
 	}
 }
+
+void ModuleCamera::DrawGUI()
+{
+	ImGui::Text("Position "); ImGui::SameLine();
+	ImGui::Text("X: %.2f", cameraPos.x, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
+	ImGui::Text("Y: %.2f", cameraPos.y, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
+	ImGui::Text("Z: %.2f", cameraPos.z, ImGuiInputTextFlags_ReadOnly); 
+
+	ImGui::Text("Forward "); ImGui::SameLine();
+	ImGui::Text("X: %.2f", cameraFront.x, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
+	ImGui::Text("Y: %.2f", cameraFront.y, ImGuiInputTextFlags_ReadOnly); ImGui::SameLine();
+	ImGui::Text("Z: %.2f", cameraFront.z, ImGuiInputTextFlags_ReadOnly);
+	ImGui::InputFloat("Movement Speed", &movementSpeed, 1.f, 5.f);
+	ImGui::InputFloat("Rotation Speed", &rotationSpeed, 1.f, 5.f);
+	//TODO: move fov and znearfar here
+}
