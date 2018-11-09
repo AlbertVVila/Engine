@@ -50,8 +50,7 @@ update_status ModuleEditor::PreUpdate()
 	ImGui::NewFrame();
 
 	CreateDockSpace();
-
-	/*ImGui::ShowDemoWindow();*/
+	ImGui::ShowDemoWindow();
 	return UPDATE_CONTINUE;
 }
 
@@ -155,6 +154,10 @@ bool ModuleEditor::IsCameraFocused() const
 	return scene->IsFocused();
 }
 
+void ModuleEditor::AddFpsLog(float fps) const
+{
+	configuration->AddFps(fps);
+}
 //void ModuleEditor::ShowGUI() const
 //{
 //

@@ -61,21 +61,22 @@ update_status Application::Update()
 	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
 		ret = (*it)->PostUpdate();
 	//LOG("Update time: %f ms", t.StopPrecise());
+	editor->AddFpsLog(1/App->time->deltaTime);
+
 	return ret;
 }
 
 bool Application::CleanUp()
 {
-	Timer t;
-	LOG("readingCleanupINIT %d\n", t.Read());
+	//Timer t;
+	//LOG("readingCleanupINIT %d\n", t.Read());
 	bool ret = true;
 
 	for (list<Module*>::reverse_iterator it = modules.rbegin(); it != modules.rend() && ret; ++it)
 	{
 		ret = (*it)->CleanUp();
-		LOG("readingCleanup %d\n ms", t.Read());
 	}
-	LOG("readingCleanupFIN %d\n", t.Read());
-	LOG("CleanUp time: %d ms", t.Stop());
+	//LOG("readingCleanupFIN %d\n", t.Read());
+	//LOG("CleanUp time: %d ms", t.Stop());
 	return ret;
 }

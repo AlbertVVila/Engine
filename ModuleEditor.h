@@ -31,6 +31,8 @@ public:
 
 	bool IsCameraFocused() const;
 
+	void AddFpsLog(float fps) const;
+
 	PanelConsole *console = nullptr;
 	PanelScene *scene = nullptr;	
 	PanelConfiguration *configuration = nullptr;

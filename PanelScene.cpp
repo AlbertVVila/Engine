@@ -22,7 +22,6 @@ void PanelScene::Draw()
 		{ (float)App->renderer->width, (float)App->renderer->height }, { 0,1 }, { 1,0 });
 
 	focus = ImGui::IsWindowFocused();
-	LOG("focus:%d", focus);
 	ImGui::End();
 }
 

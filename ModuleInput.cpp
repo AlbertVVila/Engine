@@ -142,7 +142,7 @@ update_status ModuleInput::PreUpdate()
 			{
 				App->model->Load(dropped_file);
 			}
-			else if (extension == "png" || extension == "jpg")
+			else if (extension == "png" || extension == "jpg" || extension == "dds")
 			{
 				unsigned int newTexture = App->textures->Load(dropped_file);
 				App->model->ApplyTexture(newTexture);
