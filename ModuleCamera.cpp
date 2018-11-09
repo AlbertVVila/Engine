@@ -109,7 +109,7 @@ void ModuleCamera::Zoom()
 
 void ModuleCamera::Center()
 {
-	if (App->input->IsKeyPressed(SDL_SCANCODE_F))
+	if (App->input->IsKeyPressed(SDL_SCANCODE_F) && App->model->models.size() > 0)
 	{
 		float3 HalfSize = App->model->models.front().BoundingBox.HalfSize();
 		float distX = HalfSize.x / tanf(App->renderer->frustum.horizontalFov*0.5f);
@@ -122,17 +122,16 @@ void ModuleCamera::Center()
 		cameraFront = float3(0, 0, -1);
 		pitch = 0;
 		yaw = -90;
-		//radius = camDist + center.z;
+
 	}
 }
 
 void ModuleCamera::ComputeEulerAngles()
-{
+{// ¡Viva Euler, muerte al Quaternion!
 	cameraFront.x = cos(math::DegToRad(yaw)) * cos(math::DegToRad(pitch));
 	cameraFront.y = sin(math::DegToRad(pitch));
 	cameraFront.z = sin(math::DegToRad(yaw)) *cos(math::DegToRad(pitch));
 	cameraFront.Normalize();
-	LOG("yaw: %f, pitch:%f", yaw, pitch);
 }
 
 void ModuleCamera::Orbit()
@@ -149,13 +148,13 @@ void ModuleCamera::Orbit()
 		cameraPos.x = cos(math::DegToRad(startAngleX)) * cos(math::DegToRad(startAngleY)) * radius;
 		cameraPos.y = sin(math::DegToRad(startAngleY)) * radius;;
 		cameraPos.z = sin(math::DegToRad(startAngleX)) *cos(math::DegToRad(startAngleY)) * radius;
-
 		cameraPos += App->model->models.front().BoundingBox.CenterPoint();
+
 		cameraFront = (App->model->models.front().BoundingBox.CenterPoint() - cameraPos).Normalized();
-		LOG("angleX: %f, angleY:%f", startAngleX, startAngleY);
+
 		yaw = math::RadToDeg(atan2(cameraFront.z, cameraFront.x));
 		pitch = math::RadToDeg(asin(cameraFront.y));
-		LOG("yaw: %f, pitch:%f", yaw, pitch);
+
 
 	}
 }

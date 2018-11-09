@@ -16,6 +16,8 @@ public:
 	void DrawFPSgraph();
 	void AddFps(float fps);
 
+	void DrawMemoryStats() const;
+
 private:
 	std::vector<float> fps = std::vector<float>();
 };

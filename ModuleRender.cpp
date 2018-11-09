@@ -58,7 +58,17 @@ update_status ModuleRender::Update()
 	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	if (wireframe)
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
+	else
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	}
+
 	App->model->DrawModels();
+
 	DrawLines();
 	DrawAxis();
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -240,6 +250,38 @@ void ModuleRender::CreateFrameBuffer()
 		LOG("Framebuffer ERROR");
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+void ModuleRender::DrawGUI()
+{
+	if (ImGui::Checkbox("Depth Test", &depthTest))
+	{
+		if (App->renderer->depthTest)
+		{
+			glEnable(GL_DEPTH_TEST);
+		}
+		else
+		{
+			glDisable(GL_DEPTH_TEST);
+		}
+	}
+	if (ImGui::Checkbox("Use Checkers Texture", &useCheckersTexture))
+	{
+		if (useCheckersTexture)
+		{
+			//LoadCheckers(); //TODO:checkers es podria moure a model?
+		}
+		else
+		{
+			//UnLoad it if checkers is applied
+		}
+	}
+	ImGui::Checkbox("Wireframe", &wireframe);
+	//ImGui::Checkbox("Show Model Bounding Boxes", &boundingBox); //TODO:BoundingBOx
+	//TODO:Fix Fov
+	ImGui::InputFloat("FOV", &frustum.horizontalFov, 1, 2);
+	ImGui::InputFloat("Znear", &frustum.nearPlaneDistance, 1, 10);
+	ImGui::InputFloat("Zfar", &frustum.farPlaneDistance, 1, 10);
 }
 
 void ModuleRender::ViewMatrix()

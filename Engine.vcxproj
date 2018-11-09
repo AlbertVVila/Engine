@@ -54,7 +54,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <AdditionalIncludeDirectories>./Assimp/include;./DevIL/include;./glew-2.1.0/include;./SDL/include;MathGeoLib/include;./Imgui</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./mmgr;./Assimp/include;./DevIL/include;./glew-2.1.0/include;./SDL/include;MathGeoLib/include;./Imgui</AdditionalIncludeDirectories>
       <EnablePREfast>false</EnablePREfast>
     </ClCompile>
     <Link>
@@ -209,6 +209,7 @@
     <ClCompile Include="MathGeoLib\include\Math\TransformOps.cpp" />
     <ClCompile Include="MathGeoLib\include\Time\Clock.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="mmgr\mmgr.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="ModuleCamera.cpp" />
     <ClCompile Include="ModuleEditor.cpp" />

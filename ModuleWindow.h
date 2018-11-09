@@ -23,12 +23,21 @@ public:
 
 	void Resize();
 
+	void DrawGUI();
+
 public:
 	//The window we'll be rendering to
 	SDL_Window* window = NULL;
 
 	//The surface contained by the window
 	SDL_Surface* screen_surface = NULL;
+	
+	float brightness = 1.0f;
+	bool fullscreen = false;
+	bool resizable = true;
+	bool borderless = false;
+	bool fullscreen_desktop = false;
+
 };
 
 #endif // __ModuleWindow_H__

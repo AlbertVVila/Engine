@@ -178,6 +178,9 @@
       <Filter>Panels</Filter>
     </ClCompile>
     <ClCompile Include="PanelHardware.cpp" />
+    <ClCompile Include="mmgr\mmgr.cpp">
+      <Filter>MMGR</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -441,6 +444,9 @@
     </Filter>
     <Filter Include="Panels">
       <UniqueIdentifier>{17b8ca95-ad02-4efa-9a19-fcf1fe0c1651}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MMGR">
+      <UniqueIdentifier>{33280eca-c888-4de1-bce6-abc654421e2c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

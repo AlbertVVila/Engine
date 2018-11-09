@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
+#include "imgui.h"
 
 ModuleWindow::ModuleWindow()
 {
@@ -30,22 +31,22 @@ bool ModuleWindow::Init()
 		int height = SCREEN_HEIGHT;
 		Uint32 flags = SDL_WINDOW_SHOWN |  SDL_WINDOW_OPENGL;
 
-		if (FULLSCREEN == true)
+		if (fullscreen)
 		{
 			flags |= SDL_WINDOW_FULLSCREEN;
 		}
 
-		if (RESIZABLE == true)
+		if (resizable)
 		{
 			flags |= SDL_WINDOW_RESIZABLE;
 		}
 
-		if (BORDERLESS == true)
+		if (borderless)
 		{
 			flags |= SDL_WINDOW_BORDERLESS;
 		}
 
-		if (FULLSCREEN_DESKTOP == true)
+		if (fullscreen_desktop)
 		{
 			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 		}
@@ -88,4 +89,58 @@ bool ModuleWindow::CleanUp()
 void ModuleWindow::Resize()
 {
 	App->renderer->frustum.horizontalFov = 2.f * atanf(tanf(App->renderer->frustum.verticalFov * 0.5f) * ((float)App->renderer->width / (float)App->renderer->height));
+}
+
+void ModuleWindow::DrawGUI()
+{
+	if (!fullscreen && (ImGui::InputInt("height", &App->renderer->height,10,50) || ImGui::InputInt("width", &App->renderer->width, 10, 50)))
+	{
+		SDL_SetWindowSize(App->window->window, App->renderer->width, App->renderer->height);
+		App->renderer->WindowResized(App->renderer->width, App->renderer->height);
+	}
+	if (ImGui::SliderFloat("Brightness", &brightness, 0.0f, 1.0f))
+	{
+		SDL_SetWindowBrightness(App->window->window, brightness);
+	}
+	if (ImGui::Checkbox("FullScreen", &fullscreen))
+	{
+		if (fullscreen) {
+			SDL_SetWindowFullscreen(App->window->window, SDL_WINDOW_FULLSCREEN);
+
+			SDL_DisplayMode displayMode;
+			SDL_GetDesktopDisplayMode(0, &displayMode);
+			SDL_SetWindowSize(App->window->window, displayMode.w, displayMode.h);
+			//TODO: remember old width and height to replace it later
+		}
+		else
+			SDL_SetWindowFullscreen(App->window->window, 0);
+	}
+	ImGui::SameLine();
+	if (ImGui::Checkbox("Resizable", &resizable))
+	{
+
+		if (resizable)
+			SDL_SetWindowResizable(App->window->window, (SDL_bool)resizable);
+		else
+			SDL_SetWindowResizable(App->window->window, (SDL_bool)!resizable);
+	}
+
+	ImGui::NewLine();
+	if (ImGui::Checkbox("Borderless", &borderless))
+	{
+		if (borderless)
+			SDL_SetWindowBordered(App->window->window, (SDL_bool)borderless);
+		else
+			SDL_SetWindowBordered(App->window->window, (SDL_bool)!borderless);
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Checkbox("Full Desktop", &fullscreen_desktop))
+	{
+		if (fullscreen_desktop) {
+			SDL_SetWindowFullscreen(App->window->window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+		}
+		else
+			SDL_SetWindowFullscreen(App->window->window, 0);
+	}
 }

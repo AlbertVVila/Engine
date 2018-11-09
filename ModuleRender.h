@@ -36,6 +36,8 @@ public:
 
 	void CreateFrameBuffer();
 
+	void DrawGUI();
+
 	int width = SCREEN_WIDTH;
 	int height = SCREEN_HEIGHT;
 
@@ -44,5 +46,8 @@ public:
 	Frustum frustum;
 	unsigned int FBO,RBO;
 	unsigned int renderTexture;
-
+	bool useCheckersTexture = false;
+	bool depthTest = true;
+	bool wireframe = false;
+	bool boundingBox = false;
 };
