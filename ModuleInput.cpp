@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "ModuleModel.h"
+#include "ModuleTextures.h"
 #include "ModuleRender.h"
 #include "SDL/include/SDL.h"
 
@@ -131,7 +132,22 @@ update_status ModuleInput::PreUpdate()
 			break;
 
 		case SDL_DROPFILE:
-			App->model->Load(event.drop.file);
+			char* dropped_file = event.drop.file;
+
+			std::string extension(dropped_file);
+			std::size_t found = extension.find_last_of(".");
+			extension = extension.substr(found + 1, extension.length());
+
+			if (extension == "fbx")
+			{
+				App->model->Load(dropped_file);
+			}
+			else if (extension == "png" || extension == "jpg")
+			{
+				unsigned int newTexture = App->textures->Load(dropped_file);
+				App->model->ApplyTexture(newTexture);
+			}
+			SDL_free(dropped_file);
 			break;
 		}
 	}

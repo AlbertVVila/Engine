@@ -20,6 +20,8 @@ public:
 
 	void Draw() const;
 
+	void UpdateTexture(unsigned int texture);
+
 	static const char* modelFolder;
 	AABB BoundingBox;
 

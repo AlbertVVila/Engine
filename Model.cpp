@@ -18,6 +18,7 @@ Model::~Model()
 
 void Model::LoadModel(const char * path)
 {
+	assert(path != NULL);
 	const aiScene* scene = aiImportFile(path, aiProcess_Triangulate);
 	if (scene == NULL)
 	{
@@ -55,6 +56,14 @@ void Model::Draw() const
 	for (auto &mesh : meshes)
 	{
 		mesh.Draw(App->program->shaderProgram, textures);
+	}
+}
+
+void Model::UpdateTexture(unsigned int texture)
+{
+	for (auto &Oldtexture : textures)
+	{
+		Oldtexture = texture;
 	}
 }
 

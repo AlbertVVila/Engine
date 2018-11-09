@@ -39,6 +39,14 @@ void ModuleModel::DrawModels()
 	}
 }
 
+void ModuleModel::ApplyTexture(unsigned int texture)
+{
+	for (auto& model : models)
+	{
+		model.UpdateTexture(texture);
+	}
+}
+
 void ModuleModel::DeleteModels()
 {
 	models.clear();
