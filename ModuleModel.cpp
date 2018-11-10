@@ -6,6 +6,14 @@
 #include "ModuleTextures.h"
 #include "ModuleProgram.h"
 #include "imgui.h"
+#include "Globals.h"
+void AddLog(const char* str, char* userData) 
+{
+	std::string info(str);
+	info.pop_back();
+
+	LOG("%s", info.c_str());
+}
 
 ModuleModel::ModuleModel()
 {
@@ -16,8 +24,14 @@ ModuleModel::~ModuleModel()
 {
 }
 
+
 bool ModuleModel::Init()
 {
+	struct aiLogStream streamLog;
+	streamLog = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, NULL);
+	streamLog.callback = AddLog;
+	aiAttachLogStream(&streamLog);
+
 	return true;
 }
 

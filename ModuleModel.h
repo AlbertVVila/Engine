@@ -18,6 +18,7 @@ public:
 	void DrawModelProperties();
 	void ApplyTexture(Texture texture);
 	void DeleteModels();
+
 	bool CleanUp();
 
 	std::list<Model> models;

@@ -18,6 +18,6 @@ void log(const char file[], int line, const char* format, ...)
 	OutputDebugString(tmp_string2);
 	if (App)
 	{
-		//App->editor->console->AddLog(tmp_string2);
+		App->editor->console->AddLog(tmp_string2);
 	}
 }
