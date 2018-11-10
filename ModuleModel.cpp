@@ -10,6 +10,7 @@
 #include "Globals.h"
 
 #define CHECKERS "checkersTexture.jpg"
+#define BAKERHOUSE "Models\\Baker\\BakerHouse.fbx"
 
 void AddLog(const char* str, char* userData) 
 {
@@ -36,6 +37,7 @@ bool ModuleModel::Init()
 	streamLog.callback = AddLog;
 	aiAttachLogStream(&streamLog);
 
+	Load(BAKERHOUSE); //moure al start
 	return true;
 }
 
