@@ -86,18 +86,20 @@ bool ModuleWindow::CleanUp()
 	return true;
 }
 
-void ModuleWindow::Resize()
+void ModuleWindow::Resize(int width, int height)
 {
-	App->renderer->frustum.horizontalFov = 2.f * atanf(tanf(App->renderer->frustum.verticalFov * 0.5f) * ((float)App->renderer->width / (float)App->renderer->height));
+	this->width = width;
+	this->height = height;
+	App->renderer->OnResize();
 }
 
 void ModuleWindow::DrawGUI()
 {
-	if ((!fullscreen || !fullscreen_desktop) && (ImGui::InputInt("width", &App->renderer->width,10,50) || 
-		ImGui::InputInt("height", &App->renderer->height, 10, 50)))
+	if ((!fullscreen || !fullscreen_desktop) && (ImGui::InputInt("width", &width,10,50) ||
+		ImGui::InputInt("height", &height, 10, 50)))
 	{
-		SDL_SetWindowSize(window, App->renderer->width, App->renderer->height);
-		App->renderer->WindowResized(App->renderer->width, App->renderer->height);
+		SDL_SetWindowSize(window, width, height);
+		App->renderer->OnResize();
 	}
 	if (ImGui::SliderFloat("Brightness", &brightness, 0.0f, 1.0f))
 	{

@@ -1,6 +1,7 @@
 #include "PanelHardware.h"
 #include "SDL_cpuinfo.h"
 #include "GL/glew.h"
+#include <string>
 
 PanelHardware::PanelHardware()
 {

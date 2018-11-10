@@ -1,4 +1,3 @@
-#pragma once
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
@@ -38,10 +37,13 @@ Application::~Application()
 bool Application::Init()
 {
 	Timer t;
+	t.Start();
+
 	bool ret = true;
 
 	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret; ++it)
 		ret = (*it)->Init();
+
 	LOG("Init time: %f ms",t.Stop());
 	return ret;
 }
@@ -68,15 +70,11 @@ update_status Application::Update()
 
 bool Application::CleanUp()
 {
-	//Timer t;
-	//LOG("readingCleanupINIT %d\n", t.Read());
 	bool ret = true;
 
 	for (list<Module*>::reverse_iterator it = modules.rbegin(); it != modules.rend() && ret; ++it)
 	{
 		ret = (*it)->CleanUp();
 	}
-	//LOG("readingCleanupFIN %d\n", t.Read());
-	//LOG("CleanUp time: %d ms", t.Stop());
 	return ret;
 }

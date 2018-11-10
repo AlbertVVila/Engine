@@ -36,7 +36,10 @@ void PanelConsole::Draw()
 	ImGui::TextUnformatted(Buf.begin());
 
 	if (ScrollToBottom)
+	{
 		ImGui::SetScrollHereY(1.0f);
+	}
+
 	ScrollToBottom = false;
 	ImGui::EndChild();
 	ImGui::End();

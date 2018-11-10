@@ -21,7 +21,7 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	void Resize();
+	void Resize(int width, int height);
 
 	void DrawGUI();
 
@@ -37,6 +37,9 @@ public:
 	bool resizable = true;
 	bool borderless = false;
 	bool fullscreen_desktop = false;
+
+	int width = SCREEN_WIDTH;
+	int height = SCREEN_HEIGHT;
 
 };
 

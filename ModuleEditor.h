@@ -34,6 +34,7 @@ public:
 	bool IsCameraFocused() const;
 	void AddFpsLog(float fps) const;
 	void processInput(SDL_Event* event) const;
+	void AddLog(const char *log) const;
 
 	PanelConsole *console = nullptr;
 	PanelScene *scene = nullptr;	

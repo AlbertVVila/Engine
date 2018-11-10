@@ -3,6 +3,7 @@
 #include "ModuleInput.h"
 #include "ModuleTime.h"
 #include "ModuleRender.h"
+#include "ModuleWindow.h"
 #include "ModuleModel.h"
 #include "ModuleEditor.h"
 ModuleCamera::ModuleCamera()
@@ -95,7 +96,7 @@ void ModuleCamera::Zoom()
 	if (App->input->mouse_wheel != 0)
 	{
 		App->renderer->frustum.verticalFov -= App->input->mouse_wheel *100.f*App->time->deltaTime;
-		App->renderer->frustum.horizontalFov = 2.f * atanf(tanf(App->renderer->frustum.verticalFov * 0.5f) * ((float)App->renderer->width / (float)App->renderer->height));
+		App->renderer->frustum.horizontalFov = 2.f * atanf(tanf(App->renderer->frustum.verticalFov * 0.5f) * ((float)App->window->width / (float)App->window->height));
 	}
 }
 

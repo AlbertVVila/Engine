@@ -3,7 +3,7 @@
 #include "ModuleEditor.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
-#include "ModuleRenderExercise.h"
+#include "ModuleWindow.h"
 #include "Panel.h"
 #include "PanelConsole.h"
 #include "PanelScene.h"
@@ -139,7 +139,7 @@ void ModuleEditor::RenderGUI()
 void ModuleEditor::CreateDockSpace()
 {
 	ImGui::SetNextWindowPos({ 0,0 });
-	ImGui::SetNextWindowSize({ (float)App->renderer->width, (float)App->renderer->height });
+	ImGui::SetNextWindowSize({ (float)App->window->width, (float)App->window->height });
 	ImGui::SetNextWindowBgAlpha(0.0f);
 
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
@@ -178,4 +178,9 @@ void ModuleEditor::AddFpsLog(float fps) const
 void ModuleEditor::processInput(SDL_Event * event) const
 {
 	ImGui_ImplSDL2_ProcessEvent(event);
+}
+
+void ModuleEditor::AddLog(const char *log) const
+{
+	console->AddLog(log);
 }

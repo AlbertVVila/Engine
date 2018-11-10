@@ -50,7 +50,6 @@ update_status ModuleRender::Update()
 	//For now all models have same transformations
 	//TODO: Move model transform to each model
 
-
 	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
 	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -78,9 +77,6 @@ update_status ModuleRender::Update()
 	glUseProgram(0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-
-
-
 	return UPDATE_CONTINUE;
 }
 
@@ -100,14 +96,10 @@ bool ModuleRender::CleanUp()
 	return true;
 }
 
-void ModuleRender::WindowResized(unsigned width, unsigned height)
+void ModuleRender::OnResize()
 {
-	this->width = width;
-	this->height = height;
-
-    glViewport(0, 0, width, height); 
-	App->window->Resize();
-	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * ((float)width / (float)height));
+    glViewport(0, 0, App->window->width, App->window->height);
+	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * ((float)App->window->width / (float)App->window->height));
 	CreateFrameBuffer();
 }
 
@@ -185,7 +177,7 @@ void ModuleRender::InitFrustum()
 	frustum.nearPlaneDistance = 0.1f;
 	frustum.farPlaneDistance = 1000.0f;
 	frustum.verticalFov = math::pi / 2.0f;
-	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * ((float)App->renderer->width / (float)App->renderer->height));
+	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * ((float)App->window->width / (float)App->window->height));
 
 }
 
@@ -199,7 +191,7 @@ void ModuleRender::InitSDL()
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 
 	context = SDL_GL_CreateContext(App->window->window);
-	SDL_GetWindowSize(App->window->window, &width, &height);
+	SDL_GetWindowSize(App->window->window, &App->window->width, &App->window->height);
 }
 
 void ModuleRender::InitOpenGL()
@@ -215,7 +207,7 @@ void ModuleRender::InitOpenGL()
 	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
 
 
-	glViewport(0, 0, width, height);
+	glViewport(0, 0, App->window->width, App->window->height);
 }
 
 void ModuleRender::CreateFrameBuffer()
@@ -230,7 +222,7 @@ void ModuleRender::CreateFrameBuffer()
 	glBindTexture(GL_TEXTURE_2D, renderTexture);
 
 	glTexImage2D(
-		GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL
+		GL_TEXTURE_2D, 0, GL_RGB, App->window->width, App->window->height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL
 	);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -244,7 +236,7 @@ void ModuleRender::CreateFrameBuffer()
 
 	glGenRenderbuffers(1, &RBO);
 	glBindRenderbuffer(GL_RENDERBUFFER, RBO);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, App->window->width, App->window->height);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, RBO);
 
 	glBindRenderbuffer(GL_RENDERBUFFER, 0);
@@ -276,7 +268,7 @@ void ModuleRender::DrawGUI()
 	if (ImGui::SliderFloat("FOV", &degFov, 40, 120))
 	{
 		frustum.verticalFov = math::DegToRad(degFov);
-		frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov*0.5f)*width/height);
+		frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov*0.5f)*App->window->width/ App->window->height);
 	}
 	ImGui::InputFloat("Znear", &frustum.nearPlaneDistance, 1, 10);
 	ImGui::InputFloat("Zfar", &frustum.farPlaneDistance, 1, 10);

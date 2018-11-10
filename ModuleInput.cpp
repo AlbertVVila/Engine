@@ -3,7 +3,7 @@
 #include "ModuleInput.h"
 #include "ModuleModel.h"
 #include "ModuleTextures.h"
-#include "ModuleRender.h"
+#include "ModuleWindow.h"
 #include "ModuleEditor.h"
 #include "SDL/include/SDL.h"
 
@@ -97,7 +97,7 @@ update_status ModuleInput::PreUpdate()
 			{
 			case SDL_WINDOWEVENT_RESIZED:
 			case SDL_WINDOWEVENT_SIZE_CHANGED:
-				App->renderer->WindowResized(event.window.data1, event.window.data2);
+				App->window->Resize(event.window.data1, event.window.data2);
 				break;
 			case SDL_WINDOWEVENT_HIDDEN:
 			case SDL_WINDOWEVENT_MINIMIZED:
@@ -123,10 +123,10 @@ update_status ModuleInput::PreUpdate()
 			break;
 
 		case SDL_MOUSEMOTION:
-			mouse_motion.x = (float)event.motion.xrel/ (float)App->renderer->width; //Abans es dividia per mida de la pantalla
-			mouse_motion.y = (float)event.motion.yrel/ (float)App->renderer->height;
-			mouse.x = (float)event.motion.x/ (float)App->renderer->width;
-			mouse.y = (float)event.motion.y/ (float)App->renderer->height;
+			mouse_motion.x = (float)event.motion.xrel/ (float)App->window->width; //Abans es dividia per mida de la pantalla
+			mouse_motion.y = (float)event.motion.yrel/ (float)App->window->height;
+			mouse.x = (float)event.motion.x/ (float)App->window->width;
+			mouse.y = (float)event.motion.y/ (float)App->window->height;
 			break;
 
 		case SDL_MOUSEWHEEL:
@@ -192,5 +192,5 @@ int ModuleInput::GetMouseWheel() const
 void ModuleInput::DrawGUI()
 {
 	ImGui::Text("Mouse position:");
-	ImGui::Text("X:%.2f | Y:%.2f", mouse.x*App->renderer->width, mouse.y*App->renderer->height);
+	ImGui::Text("X:%.2f | Y:%.2f", mouse.x*App->window->width, mouse.y*App->window->height);
 }

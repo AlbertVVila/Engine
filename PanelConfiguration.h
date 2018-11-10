@@ -13,9 +13,8 @@ public:
 	~PanelConfiguration();
 
 	void Draw();
-	void DrawFPSgraph();
+	void DrawFPSgraph() const;
 	void AddFps(float fps);
-
 	void DrawMemoryStats() const;
 
 private:

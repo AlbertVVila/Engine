@@ -22,8 +22,7 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 
-	void WindowResized(unsigned width, unsigned height);
-
+	void OnResize();
 	void ViewMatrix(unsigned int program);
 	void ProjectionMatrix(unsigned int program);
 	void ModelTransform(unsigned int program);
@@ -37,17 +36,15 @@ public:
 	void InitOpenGL();
 
 	void CreateFrameBuffer();
-
 	void DrawGUI();
 
-	int width = SCREEN_WIDTH;
-	int height = SCREEN_HEIGHT;
 
 public:
-	void* context;
+	void* context = NULL;
 	Frustum frustum;
-	unsigned int FBO,RBO;
-	unsigned int renderTexture;
+	unsigned int FBO = 0;
+	unsigned int RBO = 0;
+	unsigned int renderTexture = 0;
 	bool useCheckersTexture = false;
 	bool depthTest = true;
 	bool wireframe = false;

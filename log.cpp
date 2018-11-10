@@ -1,8 +1,6 @@
-#pragma once
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleEditor.h"
-#include "PanelConsole.h"
 
 void log(const char file[], int line, const char* format, ...)
 {
@@ -18,6 +16,6 @@ void log(const char file[], int line, const char* format, ...)
 	OutputDebugString(tmp_string2);
 	if (App != nullptr)
 	{
-		App->editor->console->AddLog(tmp_string2);
+		App->editor->AddLog(tmp_string2);
 	}
 }

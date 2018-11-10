@@ -15,7 +15,7 @@ public:
 private:
 	ImGuiTextBuffer     Buf;
 	ImVector<int>       LineOffsets;        // Index to lines offset
-	bool                ScrollToBottom;
+	bool                ScrollToBottom = false;
 };
 
 #endif //__PanelConsole_h__

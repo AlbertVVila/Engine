@@ -59,7 +59,7 @@ void PanelConfiguration::Draw()
 	ImGui::End();
 }
 
-void PanelConfiguration::DrawFPSgraph()
+void PanelConfiguration::DrawFPSgraph() const
 {
 	SDL_GL_SetSwapInterval(1);
 	float total = 0;

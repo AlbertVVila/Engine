@@ -2,7 +2,6 @@
 #define __PanelHardware_h__
 
 #include "Panel.h"
-#include <string>
 
 class PanelHardware :
 	public Panel
