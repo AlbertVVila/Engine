@@ -268,17 +268,7 @@ void ModuleRender::DrawGUI()
 			glDisable(GL_DEPTH_TEST);
 		}
 	}
-	if (ImGui::Checkbox("Use Checkers Texture", &useCheckersTexture))
-	{
-		if (useCheckersTexture)
-		{
-			//LoadCheckers(); //TODO:checkers es podria moure a model?
-		}
-		else
-		{
-			//UnLoad it if checkers is applied
-		}
-	}
+
 	ImGui::Checkbox("Wireframe", &wireframe);
 	//ImGui::Checkbox("Show Model Bounding Boxes", &boundingBox); //TODO:BoundingBOx
 

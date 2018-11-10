@@ -7,6 +7,9 @@
 #include "ModuleProgram.h"
 #include "imgui.h"
 #include "Globals.h"
+
+#define CHECKERS "checkersTexture.jpg"
+
 void AddLog(const char* str, char* userData) 
 {
 	std::string info(str);
@@ -66,6 +69,17 @@ void ModuleModel::DrawModelProperties()
 		ImGui::Text("Properties:");
 		ImGui::Separator();
 		model.DrawProperties();
+	}
+}
+
+void ModuleModel::DrawGUI()
+{
+	if (ImGui::Checkbox("Use Checkers Texture", &checkers))
+	{
+		if (checkers && checkersTexture.id == 0)
+		{
+			checkersTexture = App->textures->Load(CHECKERS);
+		}
 	}
 }
 

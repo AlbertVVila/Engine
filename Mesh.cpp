@@ -1,6 +1,8 @@
 #include "Mesh.h"
 #include "imgui.h"
 #include "Model.h"
+#include "Application.h"
+#include "ModuleModel.h"
 
 Mesh::Mesh(aiMesh * mesh, aiMatrix4x4 transform)
 {
@@ -103,7 +105,14 @@ Mesh::~Mesh()
 void Mesh::Draw(unsigned int shaderProgram, const std::vector<Texture> &textures) const
 {
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, textures[materialIndex].id);
+	if (App->model->checkers)
+	{
+		glBindTexture(GL_TEXTURE_2D, App->model->checkersTexture.id);
+	}
+	else
+	{
+		glBindTexture(GL_TEXTURE_2D, textures[materialIndex].id);
+	}
 	glUniform1i(glGetUniformLocation(shaderProgram, "texture0"), 0);
 
 	glBindVertexArray(VAO);

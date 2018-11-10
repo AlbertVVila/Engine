@@ -3,6 +3,7 @@
 #include "ModuleTime.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
+#include "ModuleModel.h"
 #include "ModuleCamera.h"
 #include "ModuleInput.h"
 #include "SDL.h"
@@ -49,6 +50,10 @@ void PanelConfiguration::Draw()
 	if (ImGui::CollapsingHeader("Textures"))
 	{
 		//TODO: Mipmap type + anisotropic 
+	}
+	if (ImGui::CollapsingHeader("Models"))
+	{
+		App->model->DrawGUI();
 	}
 	ImGui::End();
 }
