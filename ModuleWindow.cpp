@@ -93,9 +93,10 @@ void ModuleWindow::Resize()
 
 void ModuleWindow::DrawGUI()
 {
-	if (!fullscreen && (ImGui::InputInt("height", &App->renderer->height,10,50) || ImGui::InputInt("width", &App->renderer->width, 10, 50)))
+	if ((!fullscreen || !fullscreen_desktop) && (ImGui::InputInt("width", &App->renderer->width,10,50) || 
+		ImGui::InputInt("height", &App->renderer->height, 10, 50)))
 	{
-		SDL_SetWindowSize(App->window->window, App->renderer->width, App->renderer->height);
+		SDL_SetWindowSize(window, App->renderer->width, App->renderer->height);
 		App->renderer->WindowResized(App->renderer->width, App->renderer->height);
 	}
 	if (ImGui::SliderFloat("Brightness", &brightness, 0.0f, 1.0f))
@@ -105,33 +106,34 @@ void ModuleWindow::DrawGUI()
 	if (ImGui::Checkbox("FullScreen", &fullscreen))
 	{
 		if (fullscreen) {
-			SDL_SetWindowFullscreen(App->window->window, SDL_WINDOW_FULLSCREEN);
-
 			SDL_DisplayMode displayMode;
 			SDL_GetDesktopDisplayMode(0, &displayMode);
 			SDL_SetWindowSize(App->window->window, displayMode.w, displayMode.h);
-			//TODO: remember old width and height to replace it later
+			SDL_SetWindowFullscreen(App->window->window, SDL_WINDOW_FULLSCREEN);
+
+			//TODO: store old width and height to replace it when !fullscreen
 		}
 		else
+		{
 			SDL_SetWindowFullscreen(App->window->window, 0);
+		}
 	}
 	ImGui::SameLine();
 	if (ImGui::Checkbox("Resizable", &resizable))
 	{
-
 		if (resizable)
-			SDL_SetWindowResizable(App->window->window, (SDL_bool)resizable);
+			SDL_SetWindowResizable(App->window->window, (SDL_bool)true);
 		else
-			SDL_SetWindowResizable(App->window->window, (SDL_bool)!resizable);
+			SDL_SetWindowResizable(App->window->window, (SDL_bool)false);
 	}
 
 	ImGui::NewLine();
 	if (ImGui::Checkbox("Borderless", &borderless))
 	{
 		if (borderless)
-			SDL_SetWindowBordered(App->window->window, (SDL_bool)borderless);
+			SDL_SetWindowBordered(App->window->window, (SDL_bool)false);
 		else
-			SDL_SetWindowBordered(App->window->window, (SDL_bool)!borderless);
+			SDL_SetWindowBordered(App->window->window, (SDL_bool)true);
 	}
 
 	ImGui::SameLine();

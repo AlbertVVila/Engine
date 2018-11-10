@@ -184,7 +184,7 @@ void ModuleRender::InitFrustum()
 	frustum.up = float3::unitY;
 	frustum.nearPlaneDistance = 0.1f;
 	frustum.farPlaneDistance = 1000.0f;
-	frustum.verticalFov = math::pi / 4.0f;
+	frustum.verticalFov = math::pi / 2.0f;
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * ((float)App->renderer->width / (float)App->renderer->height));
 
 }
@@ -281,9 +281,13 @@ void ModuleRender::DrawGUI()
 	}
 	ImGui::Checkbox("Wireframe", &wireframe);
 	//ImGui::Checkbox("Show Model Bounding Boxes", &boundingBox); //TODO:BoundingBOx
-	//TODO:Fix Fov -> recorda de canviar aspect ratio si es modifica etc + maybe use slider
+
 	float degFov = math::RadToDeg(frustum.verticalFov);
-	ImGui::InputFloat("FOV", &degFov, 1, 2);
+	if (ImGui::SliderFloat("FOV", &degFov, 40, 120))
+	{
+		frustum.verticalFov = math::DegToRad(degFov);
+		frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov*0.5f)*width/height);
+	}
 	ImGui::InputFloat("Znear", &frustum.nearPlaneDistance, 1, 10);
 	ImGui::InputFloat("Zfar", &frustum.farPlaneDistance, 1, 10);
 }
