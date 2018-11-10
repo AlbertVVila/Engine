@@ -48,7 +48,7 @@ update_status ModuleRender::PreUpdate()
 update_status ModuleRender::Update()
 {
 	//For now all models have same transformations
-	//TODO: Move model transform to modelsy
+	//TODO: Move model transform to each model
 
 
 	glBindFramebuffer(GL_FRAMEBUFFER, FBO);

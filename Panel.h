@@ -29,4 +29,4 @@ protected:
 	bool enabled = true;
 };
 
-#endif __Panel_h__
+#endif //__Panel_h__

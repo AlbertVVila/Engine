@@ -16,5 +16,5 @@ public:
 
 };
 
-#endif __PanelScene_h__
+#endif //__PanelScene_h__
 

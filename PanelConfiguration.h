@@ -22,4 +22,4 @@ private:
 	std::vector<float> fps = std::vector<float>();
 };
 
-#endif __PanelConfiguration_h__
+#endif //__PanelConfiguration_h__

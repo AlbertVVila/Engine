@@ -68,8 +68,9 @@ update_status ModuleEditor::Update()
 			{
 				ImGui::EndMenu();
 				ImGui::EndMainMenuBar();
+				ImGui::End();
 				ImGui::EndFrame();
-				return UPDATE_ERROR;
+				return UPDATE_STOP;
 			}
 			ImGui::EndMenu();
 		}

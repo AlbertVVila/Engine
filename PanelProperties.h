@@ -12,5 +12,5 @@ public:
 	void Draw();
 };
 
-#endif __PanelProperties_h__
+#endif //__PanelProperties_h__
 

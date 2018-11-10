@@ -24,5 +24,5 @@ public:
 
 };
 
-#endif	__Timer_h__
+#endif	//__Timer_h__
 

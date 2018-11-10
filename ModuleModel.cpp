@@ -3,6 +3,7 @@
 #include "assert.h"
 #include "Application.h"
 #include "ModuleRender.h"
+#include "ModuleCamera.h"
 #include "ModuleTextures.h"
 #include "ModuleProgram.h"
 #include "imgui.h"
@@ -45,7 +46,7 @@ unsigned int ModuleModel::Load(const char *path)
 	//Only one model at a time for the moment
 	DeleteModels();
 	models.emplace_back(path);
-
+	App->camera->Center();
 	return 1;
 }
 

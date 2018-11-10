@@ -14,4 +14,4 @@ public:
 	void Draw();
 };
 
-#endif __PanelHardware_h__
+#endif //__PanelHardware_h__

@@ -1,5 +1,5 @@
-#pragma once
-
+#ifndef __Mesh_h__
+#define __Mesh_h__
 #include <assimp/mesh.h>
 #include "GL/glew.h"
 #include <assert.h>
@@ -30,3 +30,4 @@ private:
 
 };
 
+#endif //__Mesh_h__

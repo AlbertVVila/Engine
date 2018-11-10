@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __ModuleTextures_h__
+#define __ModuleTextures_h__
+
 #include<list>
 #include "Module.h"
 #include "Globals.h"
@@ -29,6 +31,6 @@ public:
 
 	int filter_type = LINEAR;
 	int wrap_mode = 0;
-
-
 };
+
+#endif /* __ModuleTextures_h__ */

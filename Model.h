@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __Model_h__
+#define __Model_h__
 
 #include "Mesh.h"
 #include <assimp/cimport.h>
@@ -46,3 +47,4 @@ private:
 	const char* path;
 };
 
+#endif //__Model_h__

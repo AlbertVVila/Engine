@@ -46,4 +46,4 @@ private:
 	std::list<Panel*> panels;
 };
 
-#endif __ModuleEditor_h__
+#endif //__ModuleEditor_h__

@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __Globals_h__
+#define __Globals_h__
+
 #include <windows.h>
 #include <stdio.h>
 
@@ -45,3 +47,5 @@ enum update_status
 #define AUTHOR "Definitely not blitzcrank"
 #define REPOSITORY "https://github.com/AlbertVVila/Engine"
 #define LICENSE "https://github.com/AlbertVVila/Engine/blob/master/LICENSE"
+
+#endif  __Globals_h__

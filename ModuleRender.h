@@ -1,4 +1,6 @@
-#pragma once
+#ifndef __ModuleRender_h__
+#define __ModuleRender_h__
+
 #include "Module.h"
 #include "Globals.h"
 #include "MathGeoLib.h"
@@ -51,3 +53,5 @@ public:
 	bool wireframe = false;
 	bool boundingBox = false;
 };
+
+#endif /* __ModuleRender_h__ */

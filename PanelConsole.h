@@ -18,4 +18,4 @@ private:
 	bool                ScrollToBottom;
 };
 
-#endif __PanelConsole_h__
+#endif //__PanelConsole_h__

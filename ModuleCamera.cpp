@@ -105,8 +105,8 @@ void ModuleCamera::Center()
 
 	float3 HalfSize = App->model->models.front().BoundingBox.HalfSize();
 	float distX = HalfSize.x / tanf(App->renderer->frustum.horizontalFov*0.5f);
-	float distY = HalfSize.y / tanf(App->renderer->frustum.verticalFov*0.5f); //use x*x+y*y+z*z as dist
-	float camDist = MAX(distX,distY);
+	float distY = HalfSize.y / tanf(App->renderer->frustum.verticalFov*0.5f); 
+	float camDist = MAX(distX,distY) + HalfSize.z;
 
 	float3 center = App->model->models.front().BoundingBox.FaceCenterPoint(5);
 	cameraPos = center + float3(0,0, camDist);

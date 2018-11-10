@@ -29,4 +29,4 @@ public:
 	Texture checkersTexture = Texture(0,0,0);
 };
 
-#endif __ModuleModel_h__
+#endif //__ModuleModel_h__

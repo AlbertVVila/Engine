@@ -13,4 +13,4 @@ public:
 
 };
 
-#endif __PanelAbout_h__
+#endif //__PanelAbout_h__
