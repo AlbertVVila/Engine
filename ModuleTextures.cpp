@@ -35,7 +35,7 @@ bool ModuleTextures::CleanUp()
 	return true;
 }
 
-GLuint const ModuleTextures::Load(const char * path)
+Texture const ModuleTextures::Load(const char * path)
 {
 	ILuint imageID;
 	GLuint textureID;
@@ -101,7 +101,7 @@ GLuint const ModuleTextures::Load(const char * path)
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 
-		return textureID;
+		return Texture(textureID, width, height);
 	}
 	else
 	{
@@ -109,7 +109,7 @@ GLuint const ModuleTextures::Load(const char * path)
 		LOG("Error file %s: %s\n", path, iluErrorString(error));
 	}
 
-	return 0;
+	return Texture(0, 0, 0);
 }
 
 

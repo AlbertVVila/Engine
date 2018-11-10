@@ -14,7 +14,7 @@ public:
 	bool Init();
 	bool CleanUp();
 
-	GLuint const Load(const char* path);
+	Texture const Load(const char* path);
 
 	int width = 0;
 	int height = 0;

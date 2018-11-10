@@ -11,6 +11,14 @@
 #include "GL/glew.h"
 #include <string>
 
+struct Texture
+{
+	int id;
+	int width;
+	int height;
+	Texture(int id, int width, int height) : id(id), width(width), height(height)
+	{}
+};
 
 class Model
 {
@@ -19,8 +27,11 @@ public:
 	~Model();
 
 	void Draw() const;
+	void DrawProperties();
 
-	void UpdateTexture(unsigned int texture);
+	void UpdateTexture(Texture texture);
+
+	void ProcessNode(aiNode * node, const aiScene * scene);
 
 	static const char* modelFolder;
 	AABB BoundingBox;
@@ -31,7 +42,7 @@ private:
 	void GetBoundingBox();
 
 	std::list<Mesh> meshes;
-	std::vector<unsigned int> textures;
+	std::vector<Texture> textures;
 	const char* path;
 };
 

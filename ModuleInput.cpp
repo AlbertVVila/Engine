@@ -146,7 +146,7 @@ update_status ModuleInput::PreUpdate()
 			}
 			else if (extension == "png" || extension == "jpg" || extension == "dds")
 			{
-				unsigned int newTexture = App->textures->Load(dropped_file);
+				Texture newTexture = App->textures->Load(dropped_file);
 				App->model->ApplyTexture(newTexture);
 			}
 			SDL_free(dropped_file);

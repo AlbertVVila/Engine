@@ -1,7 +1,8 @@
 #include "Mesh.h"
+#include "imgui.h"
+#include "Model.h"
 
-
-Mesh::Mesh(aiMesh * mesh)
+Mesh::Mesh(aiMesh * mesh, aiMatrix4x4 transform)
 {
 	// Creació del Vertex Array Object (VAO) que usarem per pintar
 	glGenVertexArrays(1, &VAO);
@@ -58,9 +59,6 @@ Mesh::Mesh(aiMesh * mesh)
 		(void*)(sizeof(float) * 3 * mesh->mNumVertices)       // array buffer offset
 	);
 
-	numIndices = mesh->mNumFaces * 3;
-	materialIndex = mesh->mMaterialIndex;
-
 	// Desactivem VAO
 	glBindVertexArray(0);
 
@@ -71,6 +69,19 @@ Mesh::Mesh(aiMesh * mesh)
 	// Desactivem el VBO
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	numIndices = mesh->mNumFaces * 3;
+	materialIndex = mesh->mMaterialIndex;
+	
+
+	aiVector3D translation;
+	aiVector3D scaling;
+	aiQuaternion rotation;
+	transform.Decompose(scaling, rotation, translation);
+
+	localPosition = { translation.x, translation.y, translation.z };
+	localScale = { scaling.x, scaling.y, scaling.z };
+	localRotation = Quat(rotation.x, rotation.y, rotation.z, rotation.w);
 }
 
 Mesh::~Mesh()
@@ -89,10 +100,10 @@ Mesh::~Mesh()
 	}
 }
 
-void Mesh::Draw(unsigned int shaderProgram, const std::vector<unsigned int> &textures) const
+void Mesh::Draw(unsigned int shaderProgram, const std::vector<Texture> &textures) const
 {
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, textures[materialIndex]);
+	glBindTexture(GL_TEXTURE_2D, textures[materialIndex].id);
 	glUniform1i(glGetUniformLocation(shaderProgram, "texture0"), 0);
 
 	glBindVertexArray(VAO);
@@ -103,3 +114,4 @@ void Mesh::Draw(unsigned int shaderProgram, const std::vector<unsigned int> &tex
 	// Desactivem Textura
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
+

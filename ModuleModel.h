@@ -15,7 +15,8 @@ public:
 	bool Init();
 	unsigned int Load(const char *path);
 	void DrawModels();
-	void ApplyTexture(unsigned int texture);
+	void DrawModelProperties();
+	void ApplyTexture(Texture texture);
 	void DeleteModels();
 	bool CleanUp();
 
