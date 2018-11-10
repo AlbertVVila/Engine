@@ -233,6 +233,8 @@
   <ItemGroup>
     <None Include="Game\Default.fs" />
     <None Include="Game\Default.vs" />
+    <None Include="Texture.fs" />
+    <None Include="Texture.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -47,12 +47,9 @@ update_status ModuleRender::PreUpdate()
 // Called every draw update
 update_status ModuleRender::Update()
 {
-	//For now we use same program for every model and same tranforms
-	glUseProgram(App->program->shaderProgram);
 	//For now all models have same transformations
-	ModelTransform();
-	ProjectionMatrix();
-	ViewMatrix();
+	//TODO: Move model transform to modelsy
+
 
 	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
 	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
@@ -66,15 +63,23 @@ update_status ModuleRender::Update()
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
+	glUseProgram(App->program->textureProgram);
+	ModelTransform(App->program->textureProgram);
+	ProjectionMatrix(App->program->textureProgram);
+	ViewMatrix(App->program->textureProgram);
 
 	App->model->DrawModels();
-
+	glUseProgram(App->program->defaultProgram);
+	ModelTransform(App->program->defaultProgram);
+	ProjectionMatrix(App->program->defaultProgram);
+	ViewMatrix(App->program->defaultProgram);
 	DrawLines();
 	DrawAxis();
+	glUseProgram(0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 
-	glUseProgram(0);
+
 
 	return UPDATE_CONTINUE;
 }
@@ -103,16 +108,14 @@ void ModuleRender::WindowResized(unsigned width, unsigned height)
     glViewport(0, 0, width, height); 
 	App->window->Resize();
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * ((float)width / (float)height));
-	ProjectionMatrix();
 	CreateFrameBuffer();
 }
 
 
 void ModuleRender::DrawLines()
 {
-
 	float white[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
-	glUniform4fv(glGetUniformLocation(App->program->shaderProgram,
+	glUniform4fv(glGetUniformLocation(App->program->defaultProgram,
 		"Vcolor"), 1, white);
 
 	glLineWidth(1.0f);
@@ -134,7 +137,7 @@ void ModuleRender::DrawAxis()
 	glLineWidth(2.0f);
 
 	float red[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
-	glUniform4fv(glGetUniformLocation(App->program->shaderProgram,
+	glUniform4fv(glGetUniformLocation(App->program->defaultProgram,
 		"Vcolor"), 1, red);
 
 	glBegin(GL_LINES);
@@ -143,10 +146,10 @@ void ModuleRender::DrawAxis()
 	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(1.0f, 0.0f, 0.0f);
 	glVertex3f(1.0f, 0.1f, 0.0f); glVertex3f(1.1f, -0.1f, 0.0f);
 	glVertex3f(1.1f, 0.1f, 0.0f); glVertex3f(1.0f, -0.1f, 0.0f);
-	glEnd;
+	glEnd();
 
 	float green[4] = { 0.0f, 1.0f, 0.0f, 1.0f };
-	glUniform4fv(glGetUniformLocation(App->program->shaderProgram,
+	glUniform4fv(glGetUniformLocation(App->program->defaultProgram,
 		"Vcolor"), 1, green);
 
 	glBegin(GL_LINES);
@@ -159,7 +162,7 @@ void ModuleRender::DrawAxis()
 
 
 	float blue[4] = { 0.0f, 0.0f, 1.0f, 1.0f };
-	glUniform4fv(glGetUniformLocation(App->program->shaderProgram,
+	glUniform4fv(glGetUniformLocation(App->program->defaultProgram,
 		"Vcolor"), 1, blue);
 
 	glBegin(GL_LINES);
@@ -285,24 +288,24 @@ void ModuleRender::DrawGUI()
 	ImGui::InputFloat("Zfar", &frustum.farPlaneDistance, 1, 10);
 }
 
-void ModuleRender::ViewMatrix()
+void ModuleRender::ViewMatrix(unsigned int shader)
 {
 	math::float4x4 view = LookAt(App->camera->cameraPos, App->camera->cameraPos
 		+ App->camera->cameraFront, App->camera->cameraUp);
-	glUniformMatrix4fv(glGetUniformLocation(App->program->shaderProgram,
+	glUniformMatrix4fv(glGetUniformLocation(shader,
 		"view"), 1, GL_TRUE, &view[0][0]);
 }
 
-void ModuleRender::ProjectionMatrix()
+void ModuleRender::ProjectionMatrix(unsigned int shader)
 {
-	glUniformMatrix4fv(glGetUniformLocation(App->program->shaderProgram,
+	glUniformMatrix4fv(glGetUniformLocation(shader,
 		"proj"), 1, GL_TRUE, &frustum.ProjectionMatrix()[0][0]);
 }
 
-void ModuleRender::ModelTransform()
+void ModuleRender::ModelTransform(unsigned int shader)
 {
 	math::float4x4 model = math::float4x4::identity;
-	glUniformMatrix4fv(glGetUniformLocation(App->program->shaderProgram,
+	glUniformMatrix4fv(glGetUniformLocation(shader,
 		"model"), 1, GL_TRUE, &model[0][0]);
 }
 

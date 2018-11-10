@@ -22,9 +22,9 @@ public:
 
 	void WindowResized(unsigned width, unsigned height);
 
-	void ViewMatrix();
-	void ProjectionMatrix();
-	void ModelTransform();
+	void ViewMatrix(unsigned int program);
+	void ProjectionMatrix(unsigned int program);
+	void ModelTransform(unsigned int program);
 	math::float4x4 LookAt(math::float3 OBS, math::float3 VRP, math::float3 up);
 
 	void DrawLines();

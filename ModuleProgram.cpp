@@ -14,56 +14,64 @@ ModuleProgram::~ModuleProgram()
 
 bool ModuleProgram::Init()
 {
-	ProcessVertexShader();
-	ProcessFragmentShader();
+	//Currently we have this 2 progams, one for textures and the other one for axis 
+	defaultProgram = CreateProgram("Default");
+	textureProgram = CreateProgram("Texture");
+	return true;
+}
 
-	shaderProgram = glCreateProgram();
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-	glLinkProgram(shaderProgram);
+
+unsigned int ModuleProgram::CreateProgram(const char * name)
+{
+	unsigned int vertexShader = CreateVertexShader(name);
+	unsigned int fragmentShader = CreateFragmentShader(name);
+
+	unsigned int program = glCreateProgram();
+	glAttachShader(program, vertexShader);
+	glAttachShader(program, fragmentShader);
+	glLinkProgram(program);
 
 	int  success;
 	char infoLog[512];
-	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+	glGetProgramiv(program, GL_LINK_STATUS, &success);
 	if (!success) {
-		glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
+		glGetProgramInfoLog(program, 512, NULL, infoLog);
 		LOG("ERROR::PROGRAM::CREATION_FAILED\n");
 		LOG("ERROR: %s\n", infoLog);
 	}
 
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
-	return true;
+	return program;
 }
 
-bool ModuleProgram::CleanUp()
+unsigned int ModuleProgram::CreateVertexShader(const char *name)
 {
-	return true;
-}
-
-
-
-void ModuleProgram::ProcessVertexShader()
-{
-	char * vertexShaderSource = ReadShader("Default.vs");
-	vertexShader = glCreateShader(GL_VERTEX_SHADER);
+	std::string file(name);
+	file += ".vs";
+	char * vertexShaderSource = ReadShader(file.c_str());
+	unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
 	glCompileShader(vertexShader);
 
 	ShaderLog(vertexShader, "VERTEX");
+	return vertexShader;
 }
 
-void ModuleProgram::ProcessFragmentShader()
+unsigned int ModuleProgram::CreateFragmentShader(const char *name)
 {
-	char * fragmentShaderSource = ReadShader("Default.fs");
-	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	std::string file(name);
+	file += ".fs";
+	char * fragmentShaderSource = ReadShader(file.c_str());
+	unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
 	glCompileShader(fragmentShader);
 
 	ShaderLog(fragmentShader, "FRAGMENT");
+	return fragmentShader;
 }
 
-char* ModuleProgram::ReadShader(char * file_name)
+char* ModuleProgram::ReadShader(const char * file_name) const
 {
 	char* data = nullptr;
 	FILE* file = nullptr;
@@ -106,3 +114,10 @@ void ModuleProgram::ShaderLog(unsigned int shader, char * type) const
 		LOG("ERROR: %s\n", infoLog);
 	}
 }
+
+bool ModuleProgram::CleanUp()
+{
+	//Delete program
+	return true;
+}
+

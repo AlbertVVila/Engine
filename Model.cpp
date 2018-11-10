@@ -52,7 +52,7 @@ void Model::Draw() const
 {
 	for (auto& mesh : meshes)
 	{
-		mesh.Draw(App->program->shaderProgram, textures);
+		mesh.Draw(App->program->textureProgram, textures);
 	}
 }
 

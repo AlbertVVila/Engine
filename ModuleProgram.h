@@ -13,16 +13,18 @@ public:
 	bool Init();
 	bool CleanUp();
 
-	void ProcessVertexShader();
-	void ProcessFragmentShader();
+	unsigned int CreateProgram(const char *name);
+	unsigned int CreateVertexShader(const char *name);
+	unsigned int CreateFragmentShader(const char *name);
 
-	char* ReadShader(char * file_name);
+	char* ReadShader(const char *filename) const;
 
 	void ShaderLog(unsigned int shader, char* type) const;
 
-	unsigned int vertexShader;
-	unsigned int fragmentShader;
-	unsigned int shaderProgram;
+	//TODO: Use container for programs
+	unsigned int defaultProgram = 0;
+	unsigned int textureProgram= 0;
+
 };
 
 #endif /* __ModuleProgram_h__ */
