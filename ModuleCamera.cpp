@@ -20,7 +20,23 @@ bool ModuleCamera::Init()
 
 update_status ModuleCamera::Update()
 {
-	CameraInput();
+	if (App->editor->IsCameraFocused())
+	{
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_REPEAT)
+		{
+			Move();
+			Rotate();
+		}
+		if (App->input->IsKeyPressed(SDL_SCANCODE_F))
+		{
+			Center();
+		}
+		if (App->input->IsKeyPressed(SDL_SCANCODE_LALT) && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
+		{
+			Orbit();
+		}
+		Zoom();
+	}
 	return UPDATE_CONTINUE;
 }
 
@@ -30,23 +46,13 @@ bool ModuleCamera::CleanUp()
 	return true;
 }
 
-void ModuleCamera::CameraInput()
-{
-	if (App->editor->IsCameraFocused())
-	{
-		Move();
-		Rotate();
-		Center();
-		Zoom();
-		Orbit();
-	}
-}
-
-
-
 void ModuleCamera::Move()
 {
 	float distance = movementSpeed * App->time->deltaTime;
+	if (App->input->IsKeyPressed(SDL_SCANCODE_LSHIFT))
+	{
+		distance *= 2;
+	}
 	if (App->input->IsKeyPressed(SDL_SCANCODE_Q))
 	{
 		cameraPos.y += distance;
@@ -75,27 +81,13 @@ void ModuleCamera::Move()
 
 void ModuleCamera::Rotate()
 {
-	float rotation = rotationSpeed * App->time->deltaTime;
-	if (App->input->IsKeyPressed(SDL_SCANCODE_UP))
-	{
-		pitch = MIN(89, pitch + rotation);
-		ComputeEulerAngles();
-	}
-	if (App->input->IsKeyPressed(SDL_SCANCODE_DOWN))
-	{
-		pitch = MAX(-89, pitch - rotation);
-		ComputeEulerAngles();
-	}
-	if (App->input->IsKeyPressed(SDL_SCANCODE_LEFT))
-	{
-		yaw -= rotation;
-		ComputeEulerAngles();
-	}
-	if (App->input->IsKeyPressed(SDL_SCANCODE_RIGHT))
-	{
-		yaw += rotation;
-		ComputeEulerAngles();
-	}
+	float rotation = rotationSpeed * App->time->deltaTime*4000;
+	
+	float deltaPitch = App->input->GetMouseMotion().y*rotation;
+	pitch = deltaPitch <0? MAX(-89, pitch - deltaPitch) : MIN(89, pitch - deltaPitch);
+
+	yaw += App->input->GetMouseMotion().x*rotation;
+	ComputeEulerAngles();
 }
 
 void ModuleCamera::Zoom()
@@ -109,21 +101,19 @@ void ModuleCamera::Zoom()
 
 void ModuleCamera::Center()
 {
-	if (App->input->IsKeyPressed(SDL_SCANCODE_F) && App->model->models.size() > 0)
-	{
-		float3 HalfSize = App->model->models.front().BoundingBox.HalfSize();
-		float distX = HalfSize.x / tanf(App->renderer->frustum.horizontalFov*0.5f);
-		float distY = HalfSize.y / tanf(App->renderer->frustum.verticalFov*0.5f); //use x*x+y*y+z*z as dist
-		float camDist = MAX(distX,distY);
+	if (App->model->models.size() == 0) return;
 
-		float3 center = App->model->models.front().BoundingBox.FaceCenterPoint(5);
-		cameraPos = center + float3(0,0, camDist);
+	float3 HalfSize = App->model->models.front().BoundingBox.HalfSize();
+	float distX = HalfSize.x / tanf(App->renderer->frustum.horizontalFov*0.5f);
+	float distY = HalfSize.y / tanf(App->renderer->frustum.verticalFov*0.5f); //use x*x+y*y+z*z as dist
+	float camDist = MAX(distX,distY);
 
-		cameraFront = float3(0, 0, -1);
-		pitch = 0;
-		yaw = -90;
+	float3 center = App->model->models.front().BoundingBox.FaceCenterPoint(5);
+	cameraPos = center + float3(0,0, camDist);
 
-	}
+	cameraFront = float3(0, 0, -1);
+	pitch = 0;
+	yaw = -90;
 }
 
 void ModuleCamera::ComputeEulerAngles()
@@ -136,27 +126,21 @@ void ModuleCamera::ComputeEulerAngles()
 
 void ModuleCamera::Orbit()
 {
-	if (App->input->GetMousePosition().x != 0 && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
-	{
+	if (App->model->models.size() == 0) return;
+	startAngleX += (App->input->GetMouseMotion().x*200);
+	startAngleY += (App->input->GetMouseMotion().y*200);
 
-		if (App->model->models.size() == 0) return;
-		startAngleX += (App->input->GetMouseMotion().x*200);
-		startAngleY += (App->input->GetMouseMotion().y*200);
+	radius = App->model->models.front().BoundingBox.CenterPoint().Distance(cameraPos);
 
-		radius = App->model->models.front().BoundingBox.CenterPoint().Distance(cameraPos);
+	cameraPos.x = cos(math::DegToRad(startAngleX)) * cos(math::DegToRad(startAngleY)) * radius;
+	cameraPos.y = sin(math::DegToRad(startAngleY)) * radius;;
+	cameraPos.z = sin(math::DegToRad(startAngleX)) *cos(math::DegToRad(startAngleY)) * radius;
+	cameraPos += App->model->models.front().BoundingBox.CenterPoint();
 
-		cameraPos.x = cos(math::DegToRad(startAngleX)) * cos(math::DegToRad(startAngleY)) * radius;
-		cameraPos.y = sin(math::DegToRad(startAngleY)) * radius;;
-		cameraPos.z = sin(math::DegToRad(startAngleX)) *cos(math::DegToRad(startAngleY)) * radius;
-		cameraPos += App->model->models.front().BoundingBox.CenterPoint();
+	cameraFront = (App->model->models.front().BoundingBox.CenterPoint() - cameraPos).Normalized();
 
-		cameraFront = (App->model->models.front().BoundingBox.CenterPoint() - cameraPos).Normalized();
-
-		yaw = math::RadToDeg(atan2(cameraFront.z, cameraFront.x));
-		pitch = math::RadToDeg(asin(cameraFront.y));
-
-
-	}
+	yaw = math::RadToDeg(atan2(cameraFront.z, cameraFront.x));
+	pitch = math::RadToDeg(asin(cameraFront.y));
 }
 
 void ModuleCamera::DrawGUI()

@@ -14,8 +14,6 @@ public:
 	update_status   Update  ();
 	bool            CleanUp ();
 
-	void CameraInput();
-
 	void Move();
 	void Rotate();
 	void Zoom();
