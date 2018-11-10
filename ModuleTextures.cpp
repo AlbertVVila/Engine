@@ -3,6 +3,8 @@
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
 #include "DevIL/include/IL/ilut.h"
+#include "imgui.h"
+
 
 using namespace std;
 
@@ -33,6 +35,13 @@ bool ModuleTextures::CleanUp()
 {
 	LOG("Freeing textures and Image library");
 	return true;
+}
+
+void ModuleTextures::DrawGUI()
+{
+	ImGui::Text("Filter type on load:");
+	ImGui::RadioButton("Linear", &filter_type, LINEAR); ImGui::SameLine();
+	ImGui::RadioButton("Nearest", &filter_type, NEAREST);
 }
 
 Texture const ModuleTextures::Load(const char * path)
@@ -67,15 +76,17 @@ Texture const ModuleTextures::Load(const char * path)
 
 		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
 
-		if (magfilter)
+		if (filter_type == LINEAR)
 		{
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		}
-
-		if(minfilter)
-		{
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		}
+		else
+		{
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		}
+
 		switch (wrap_mode)
 		{
 			case 0:
