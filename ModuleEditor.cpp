@@ -17,11 +17,11 @@
 ModuleEditor::ModuleEditor()
 {
 	panels.push_back(console = new PanelConsole());
-	panels.push_back(scene = new PanelScene());
 	panels.push_back(configuration = new PanelConfiguration());
 	panels.push_back(properties = new PanelProperties());
 	panels.push_back(about = new PanelAbout());
 	panels.push_back(hardware = new PanelHardware());
+	panels.push_back(scene = new PanelScene());
 }
 
 // Destructor

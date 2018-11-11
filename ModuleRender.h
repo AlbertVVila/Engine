@@ -49,7 +49,7 @@ public:
 	bool depthTest = true;
 	bool wireframe = false;
 	bool boundingBox = false;
-	bool vsync = true;
+	bool vsync = false;
 };
 
 #endif /* __ModuleRender_h__ */
