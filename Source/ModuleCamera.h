@@ -9,7 +9,7 @@ public:
     ModuleCamera();
     ~ModuleCamera();
 
-	update_status   Update  ();
+	update_status Update();
 	void DrawGUI();
 	void Center();
 

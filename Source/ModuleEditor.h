@@ -22,19 +22,19 @@ public:
 	bool Init();
 	update_status PreUpdate();
 	update_status Update();
-	update_status PostUpdate();
 	bool CleanUp();
 
-public:
 	void RenderGUI() const;
 	void CreateDockSpace() const;
 	void DrawPanels();
 
 	bool IsCameraFocused() const;
-	void AddFpsLog(const float fps) const;
 	void processInput(SDL_Event* event) const;
+
+	void AddFpsLog(float fps) const;
 	void AddLog(const char *log) const;
 
+public:
 	PanelConsole *console = nullptr;
 	PanelScene *scene = nullptr;	
 	PanelConfiguration *configuration = nullptr;

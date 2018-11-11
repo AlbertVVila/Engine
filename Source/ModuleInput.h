@@ -3,7 +3,6 @@
 
 #include "Module.h"
 #include "Point.h"
-
 #include "SDL/include/SDL_scancode.h"
 
 #define NUM_MOUSE_BUTTONS 5
@@ -30,18 +29,10 @@ class ModuleInput : public Module
 public:
 
 	ModuleInput();
-
 	~ModuleInput();
 
 	bool Init();
-
-	// Called before the first frame
-	bool Start();
-
-	// Called each loop iteration
 	update_status PreUpdate();
-
-	// Called before quitting
 	bool CleanUp();
 
 	// Check key states (includes mouse and joy buttons)
@@ -66,18 +57,18 @@ public:
 	// Get mouse / axis position
 	const fPoint& GetMouseMotion() const;
 	const fPoint& GetMousePosition() const;
-	int GetMouseWheel() const;
+	const float GetMouseWheel() const;
 
 	void DrawGUI();
-
-	int mouse_wheel = 0;
+	void DropFile(char * dropped_file) const;
 
 	private:
 	bool windowEvents[WE_COUNT];
-	KeyState*	keyboard;
+	KeyState*	keyboard = NULL;
 	KeyState	mouse_buttons[NUM_MOUSE_BUTTONS];
-	fPoint mouse_motion;
-	fPoint mouse;
+	fPoint mouse_motion = { 0,0 };
+	float mouse_wheel = 0;
+	fPoint mouse = { 0,0 };
 
 };
 

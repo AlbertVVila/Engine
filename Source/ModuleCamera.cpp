@@ -86,11 +86,12 @@ void ModuleCamera::Rotate()
 
 void ModuleCamera::Zoom()
 {
-	if (App->input->mouse_wheel != 0)
+	float mouse_wheel = App->input->GetMouseWheel();
+	if (mouse_wheel != 0)
 	{
-		App->renderer->frustum.verticalFov = App->input->mouse_wheel > 0 ?
-			MAX(math::DegToRad(MINFOV), App->renderer->frustum.verticalFov - App->input->mouse_wheel*zoomSpeed) :
-			MIN(math::DegToRad(MAXFOV), App->renderer->frustum.verticalFov - App->input->mouse_wheel*zoomSpeed);
+		App->renderer->frustum.verticalFov = mouse_wheel > 0 ?
+			MAX(math::DegToRad(MINFOV), App->renderer->frustum.verticalFov - mouse_wheel*zoomSpeed) :
+			MIN(math::DegToRad(MAXFOV), App->renderer->frustum.verticalFov - mouse_wheel*zoomSpeed);
 		App->renderer->frustum.horizontalFov = 2.f * atanf(tanf(App->renderer->frustum.verticalFov * 0.5f) * ((float)App->window->width / (float)App->window->height));
 	}
 }

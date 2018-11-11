@@ -38,13 +38,6 @@ bool ModuleInput::Init()
 	return ret;
 }
 
-// Called before the first frame
-bool ModuleInput::Start()
-{
-	SDL_EventState(SDL_DROPFILE, SDL_ENABLE);
-	return true;
-}
-
 // Called each loop iteration
 update_status ModuleInput::PreUpdate()
 {
@@ -135,20 +128,7 @@ update_status ModuleInput::PreUpdate()
 
 		case SDL_DROPFILE:
 			char* dropped_file = event.drop.file;
-
-			std::string extension(dropped_file);
-			std::size_t found = extension.find_last_of(".");
-			extension = extension.substr(found + 1, extension.length());
-
-			if (extension == "fbx" || extension == "FBX")
-			{
-				App->model->Load(dropped_file);
-			}
-			else if (extension == "png" || extension == "jpg" || extension == "dds")
-			{
-				Texture newTexture = App->textures->Load(dropped_file);
-				App->model->ApplyTexture(newTexture);
-			}
+			DropFile(dropped_file);
 			SDL_free(dropped_file);
 			break;
 		}
@@ -184,7 +164,7 @@ const fPoint& ModuleInput::GetMouseMotion() const
 	return mouse_motion;
 }
 
-int ModuleInput::GetMouseWheel() const
+const float ModuleInput::GetMouseWheel() const
 {
 	return mouse_wheel;
 }
@@ -193,4 +173,22 @@ void ModuleInput::DrawGUI()
 {
 	ImGui::Text("Mouse position:");
 	ImGui::Text("X:%.2f | Y:%.2f", mouse.x*App->window->width, mouse.y*App->window->height);
+}
+
+void ModuleInput::DropFile(char* dropped_file) const
+{
+	assert(dropped_file != NULL);
+	std::string extension(dropped_file);
+	std::size_t found = extension.find_last_of(".");
+	extension = extension.substr(found + 1, extension.length());
+
+	if (extension == "fbx" || extension == "FBX")
+	{
+		App->model->Load(dropped_file);
+	}
+	else if (extension == "png" || extension == "jpg" || extension == "dds")
+	{
+		Texture newTexture = App->textures->Load(dropped_file);
+		App->model->ApplyTexture(newTexture);
+	}
 }

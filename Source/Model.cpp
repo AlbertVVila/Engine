@@ -25,14 +25,16 @@ void Model::LoadModel(const char * path)
 	{
 		LOG("ERROR importing file:%s \n", aiGetErrorString());
 	}
-
-	ProcessNode(scene->mRootNode, scene, aiMatrix4x4());
-
-	for (unsigned i = 0; i < scene->mNumMaterials; ++i)
+	else
 	{
-		GenerateMaterialData(scene->mMaterials[i]);
+		ProcessNode(scene->mRootNode, scene, aiMatrix4x4());
+		for (unsigned i = 0; i < scene->mNumMaterials; ++i)
+		{
+			GenerateMaterialData(scene->mMaterials[i]);
+		}
+		GetBoundingBox();
+		aiReleaseImport(scene);
 	}
-	GetBoundingBox();
 }
 	
 
@@ -119,8 +121,9 @@ void Model::UpdateTexture(Texture texture)
 	}
 }
 
-void Model::ProcessNode(aiNode *node, const aiScene *scene, const aiMatrix4x4 parentTransform)
+void Model::ProcessNode(const aiNode *node, const aiScene *scene, const aiMatrix4x4 &parentTransform)
 {
+	assert(node != NULL);
 	aiMatrix4x4 transform = node->mTransformation*parentTransform;
 
 	for (unsigned int i = 0; i < node->mNumMeshes; i++)

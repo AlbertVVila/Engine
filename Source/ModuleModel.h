@@ -20,10 +20,12 @@ public:
 	void DrawModelProperties();
 	void DrawGUI();
 	void ApplyTexture(Texture texture);
-	void DeleteModels();
-
 	bool CleanUp();
 
+private:
+	void DeleteModels();
+
+public:
 	std::list<Model> models;
 	bool checkers = false;
 	Texture checkersTexture = Texture(0,0,0);

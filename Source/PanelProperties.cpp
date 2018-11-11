@@ -13,7 +13,7 @@ PanelProperties::~PanelProperties()
 
 void PanelProperties::Draw()
 {
-	if (!ImGui::Begin("Properties:", &enabled))
+	if (!ImGui::Begin("Properties", &enabled))
 	{
 		ImGui::End();
 		return;

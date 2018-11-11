@@ -41,6 +41,7 @@ bool ModuleModel::Init()
 
 unsigned int ModuleModel::Load(const char *path)
 {
+	assert(path != NULL);
 	//If we already have models loaded, we erase them 
 	//Only one model at a time for the moment
 	DeleteModels();

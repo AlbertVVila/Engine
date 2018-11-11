@@ -29,19 +29,19 @@ public:
 
 	void Draw() const;
 	void DrawProperties();
-
 	void UpdateTexture(Texture texture);
+	void ProcessNode(const aiNode * node, const aiScene * scene, const aiMatrix4x4 &parentTransform);
 
-	void ProcessNode(aiNode * node, const aiScene * scene, const aiMatrix4x4 parentTransform);
-
-	static const char* modelFolder;
-	AABB BoundingBox;
 
 private:
 	void LoadModel(const char *file);
 	void GenerateMaterialData(aiMaterial * material);
 	void GetBoundingBox();
 
+public:
+	AABB BoundingBox;
+
+private:
 	std::list<Mesh> meshes;
 	std::vector<Texture> textures;
 	const char* path;

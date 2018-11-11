@@ -30,14 +30,12 @@ ModuleEditor::~ModuleEditor()
 // Called before render is available
 bool ModuleEditor::Init()
 {
-	const char* glsl_version = "#version 130";
-	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); 
-	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer->context);
-	ImGui_ImplOpenGL3_Init(glsl_version);
+	ImGui_ImplOpenGL3_Init("#version 130");
 
 	ImGui::StyleColorsDark();
 
@@ -66,7 +64,6 @@ update_status ModuleEditor::Update()
 				ImGui::EndMenu();
 				ImGui::EndMainMenuBar();
 				ImGui::End();
-				ImGui::EndFrame();
 				return UPDATE_STOP;
 			}
 			ImGui::EndMenu();
@@ -109,11 +106,6 @@ update_status ModuleEditor::Update()
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleEditor::PostUpdate()
-{
-	return UPDATE_CONTINUE;
-}
-
 // Called before quitting
 bool ModuleEditor::CleanUp()
 {
@@ -126,7 +118,7 @@ bool ModuleEditor::CleanUp()
 	{
 		RELEASE(*it);
 	}
-	console = nullptr; //bug if AddLog when console is already removed
+	console = nullptr; //avoid bug when adding a log after releasing panels
 
 	panels.clear();
 
@@ -164,6 +156,7 @@ void ModuleEditor::CreateDockSpace() const
 	ImGuiID dockspace_id = ImGui::GetID("MyDockspace");
 	ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None);
 }
+
 void ModuleEditor::DrawPanels()
 {
 	for (std::list<Panel*>::iterator it = panels.begin(); it != panels.end(); ++it)
@@ -192,11 +185,13 @@ void ModuleEditor::AddFpsLog(float fps) const
 
 void ModuleEditor::processInput(SDL_Event * event) const
 {
+	assert(event != NULL);
 	ImGui_ImplSDL2_ProcessEvent(event);
 }
 
 void ModuleEditor::AddLog(const char *log) const
 {
+	assert(log != NULL);
 	if (console != nullptr)
 	{
 		console->AddLog(log);
