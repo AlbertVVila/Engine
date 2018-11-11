@@ -140,7 +140,7 @@ update_status ModuleInput::PreUpdate()
 			std::size_t found = extension.find_last_of(".");
 			extension = extension.substr(found + 1, extension.length());
 
-			if (extension == "fbx")
+			if (extension == "fbx" || extension == "FBX")
 			{
 				App->model->Load(dropped_file);
 			}
