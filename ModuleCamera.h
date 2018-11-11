@@ -27,14 +27,16 @@ private:
 
 private:
 
-	float movementSpeed = 4.0f;
-	float rotationSpeed = 50.f;
+	float movementSpeed = 5.0f;
+	float rotationSpeed = 200.f;
+	float zoomSpeed = 0.1f;
+
 	float pitch = 0;
 	float yaw = -90;
 	float radius = 0;
 
-	float startAngleX = 0;
-	float startAngleY = 0;
+	float orbitX = 0;
+	float orbitY = 0;
 };
 
 #endif /* __ModuleCamera_h__ */

@@ -7,6 +7,10 @@
 #include "ModuleModel.h"
 #include "ModuleEditor.h"
 #include "imgui.h"
+
+#define MAXFOV 120
+#define MINFOV 40
+
 ModuleCamera::ModuleCamera()
 {
 }
@@ -70,15 +74,13 @@ void ModuleCamera::Move()
 		cameraPos += cameraFront.Cross(cameraUp).Normalized() * distance;
 	}
 }
-
+//TODO: Use mouse position + deltatime and not mouse motion
 void ModuleCamera::Rotate()
 {
-	float rotation = rotationSpeed * App->time->deltaTime*4000;
-	
-	float deltaPitch = App->input->GetMouseMotion().y*rotation;
+	float deltaPitch = App->input->GetMouseMotion().y*rotationSpeed; 
 	pitch = deltaPitch <0? MAX(-89, pitch - deltaPitch) : MIN(89, pitch - deltaPitch);
 
-	yaw += App->input->GetMouseMotion().x*rotation;
+	yaw += App->input->GetMouseMotion().x*rotationSpeed;
 	ComputeEulerAngles();
 }
 
@@ -86,7 +88,9 @@ void ModuleCamera::Zoom()
 {
 	if (App->input->mouse_wheel != 0)
 	{
-		App->renderer->frustum.verticalFov -= App->input->mouse_wheel *100.f*App->time->deltaTime;
+		App->renderer->frustum.verticalFov = App->input->mouse_wheel > 0 ?
+			MAX(math::DegToRad(MINFOV), App->renderer->frustum.verticalFov - App->input->mouse_wheel*zoomSpeed) :
+			MIN(math::DegToRad(MAXFOV), App->renderer->frustum.verticalFov - App->input->mouse_wheel*zoomSpeed);
 		App->renderer->frustum.horizontalFov = 2.f * atanf(tanf(App->renderer->frustum.verticalFov * 0.5f) * ((float)App->window->width / (float)App->window->height));
 	}
 }
@@ -119,14 +123,14 @@ void ModuleCamera::ComputeEulerAngles()
 void ModuleCamera::Orbit()
 {
 	if (App->model->models.size() == 0) return;
-	startAngleX += (App->input->GetMouseMotion().x*200);
-	startAngleY += (App->input->GetMouseMotion().y*200);
+	orbitX += (App->input->GetMouseMotion().x*rotationSpeed);
+	orbitY += (App->input->GetMouseMotion().y*rotationSpeed);
 
 	radius = App->model->models.front().BoundingBox.CenterPoint().Distance(cameraPos);
 
-	cameraPos.x = cos(math::DegToRad(startAngleX)) * cos(math::DegToRad(startAngleY)) * radius;
-	cameraPos.y = sin(math::DegToRad(startAngleY)) * radius;;
-	cameraPos.z = sin(math::DegToRad(startAngleX)) *cos(math::DegToRad(startAngleY)) * radius;
+	cameraPos.x = cos(math::DegToRad(orbitX)) * cos(math::DegToRad(orbitY)) * radius;
+	cameraPos.y = sin(math::DegToRad(orbitY)) * radius;;
+	cameraPos.z = sin(math::DegToRad(orbitX)) *cos(math::DegToRad(orbitY)) * radius;
 	cameraPos += App->model->models.front().BoundingBox.CenterPoint();
 
 	cameraFront = (App->model->models.front().BoundingBox.CenterPoint() - cameraPos).Normalized();
@@ -148,4 +152,5 @@ void ModuleCamera::DrawGUI()
 	ImGui::Text("Z: %.2f", cameraFront.z, ImGuiInputTextFlags_ReadOnly);
 	ImGui::InputFloat("Movement Speed", &movementSpeed, 1.f, 5.f);
 	ImGui::InputFloat("Rotation Speed", &rotationSpeed, 1.f, 5.f);
+	ImGui::InputFloat("Zoom Speed", &zoomSpeed, 1.f, 5.f);
 }
