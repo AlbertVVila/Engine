@@ -1,18 +1,18 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleEditor.h"
-#include "ModuleWindow.h"
 #include "ModuleRender.h"
 #include "ModuleWindow.h"
-#include "Panel.h"
 #include "PanelConsole.h"
 #include "PanelScene.h"
 #include "PanelConfiguration.h"
 #include "PanelProperties.h"
 #include "PanelAbout.h"
 #include "PanelHardware.h"
-#include "SDL.h"
 #include "GL/glew.h"
+#include "imgui_impl_opengl3.h"
+#include "imgui_impl_sdl.h"
+#include "imgui.h"
 
 ModuleEditor::ModuleEditor()
 {
@@ -121,12 +121,23 @@ update_status ModuleEditor::PostUpdate()
 bool ModuleEditor::CleanUp()
 {
 	LOG("Destroying editor");
+
+
+	bool ret = true;
+
+	for (std::list<Panel*>::reverse_iterator it = panels.rbegin(); it != panels.rend() && ret; ++it)
+	{
+		RELEASE(*it);
+	}
+	console = nullptr; //bug if AddLog when console is already removed
+
+	panels.clear();
+
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
 
-	//Remember destroy panels
-	return true;
+	return ret;
 }
 
 void ModuleEditor::RenderGUI()
@@ -167,12 +178,19 @@ void ModuleEditor::DrawPanels()
 
 bool ModuleEditor::IsCameraFocused() const
 {
-	return scene->IsFocused();
+	if (scene != nullptr)
+	{
+		return scene->IsFocused();
+	}
+	return false;
 }
 
 void ModuleEditor::AddFpsLog(float fps) const
 {
-	configuration->AddFps(fps);
+	if (configuration != nullptr)
+	{
+		configuration->AddFps(fps);
+	}
 }
 
 void ModuleEditor::processInput(SDL_Event * event) const
@@ -182,5 +200,8 @@ void ModuleEditor::processInput(SDL_Event * event) const
 
 void ModuleEditor::AddLog(const char *log) const
 {
-	console->AddLog(log);
+	if (console != nullptr)
+	{
+		console->AddLog(log);
+	}
 }

@@ -5,6 +5,7 @@ class Panel
 {
 public:
 	Panel() {};
+
 	virtual ~Panel() {};
 
 	virtual void Draw() {}

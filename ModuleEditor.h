@@ -1,10 +1,9 @@
 #ifndef __ModuleEditor_h__
 #define __ModuleEditor_h__
 
+#include <list>
 #include "Module.h"
-#include "imgui.h"
-#include "imgui_impl_sdl.h"
-#include "imgui_impl_opengl3.h"
+#include "SDL_events.h"
 
 class Panel;
 class PanelConsole;

@@ -12,7 +12,6 @@ ModuleWindow::ModuleWindow()
 // Destructor
 ModuleWindow::~ModuleWindow()
 {
-	RELEASE(window);
 }
 
 // Called before render is available

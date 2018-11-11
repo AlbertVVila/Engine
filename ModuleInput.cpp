@@ -1,11 +1,11 @@
-#include "Globals.h"
 #include "Application.h"
 #include "ModuleInput.h"
 #include "ModuleModel.h"
 #include "ModuleTextures.h"
 #include "ModuleWindow.h"
 #include "ModuleEditor.h"
-#include "SDL/include/SDL.h"
+#include "SDL.h"
+#include "imgui.h"
 
 #define MAX_KEYS 300
 
