@@ -2,7 +2,6 @@
 #include "ModuleModel.h"
 #include "Application.h"
 
-
 PanelProperties::PanelProperties()
 {
 }

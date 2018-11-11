@@ -219,7 +219,6 @@
     <ClCompile Include="ModuleTextures.cpp" />
     <ClCompile Include="ModuleTime.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
-    <ClCompile Include="Panel.cpp" />
     <ClCompile Include="PanelAbout.cpp" />
     <ClCompile Include="PanelConfiguration.cpp" />
     <ClCompile Include="PanelConsole.cpp" />
@@ -231,8 +230,8 @@
   <ItemGroup>
     <None Include="Game\Default.fs" />
     <None Include="Game\Default.vs" />
-    <None Include="Texture.fs" />
-    <None Include="Texture.vs" />
+    <None Include="Game\Texture.fs" />
+    <None Include="Game\Texture.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,12 +1,11 @@
 #ifndef __Panel_h__
 #define __Panel_h__
-
 #include "ImGui\imgui.h"
 class Panel
 {
 public:
-	Panel();
-	~Panel();
+	Panel() {};
+	virtual ~Panel() {};
 
 	virtual void Draw() {}
 

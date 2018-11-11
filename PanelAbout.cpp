@@ -4,8 +4,8 @@
 #include "IL/il.h"
 #include "assimp/version.h"
 #include "GL/glew.h"
+#include "Globals.h"
 
-#define TITLE "REAL ENGINE"
 #define ENGINE_DESCRIPTION "Engine created during the Master of Videogames in UPC School."
 #define AUTHOR "Albert Val Vila"
 #define REPOSITORY "https://github.com/AlbertVVila/Engine"
@@ -53,9 +53,10 @@ void PanelAbout::Draw()
 	{
 		ImGui::BulletText("SDL (version %d.%d.%d)", sdlVersion.major, sdlVersion.minor, sdlVersion.patch);
 		ImGui::BulletText("Imgui (version %s)", ImGui::GetVersion());
-		ImGui::BulletText("MathGeoLib");
+		ImGui::BulletText("MathGeoLib (version 1.5)");
 		ImGui::BulletText("glew (version %s)", glewGetString(GLEW_VERSION));
 		ImGui::BulletText("Assimp (version %d.%d.%d)", aiGetVersionMajor(), aiGetVersionMinor(), aiGetVersionRevision());
+		ImGui::BulletText("DevIL (version %d)", IL_VERSION);
 
 		ImGui::TreePop();
 	}

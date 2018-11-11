@@ -1,5 +1,5 @@
 #include "Timer.h"
-#include "SDL.h"
+#include "SDL_timer.h"
 
 
 Timer::Timer()
@@ -17,7 +17,7 @@ void Timer::Start()
 	timerOn = true;
 }
 
-int Timer::Read()
+int Timer::Read() const
 {
 	if (timerOn)
 	{
@@ -31,26 +31,4 @@ int Timer::Stop()
 	timerOn = false;
 	TotalTime = SDL_GetTicks() - InitTime;
 	return TotalTime;
-}
-
-void Timer::StartPrecise()
-{
-	timerPreciseOn = true;
-	startPrecise = SDL_GetPerformanceCounter();
-}
-
-double Timer::ReadPrecise()
-{
-	if (timerPreciseOn)
-	{
-		return ((double)(SDL_GetPerformanceCounter() - startPrecise) * 1000) / (double)SDL_GetPerformanceFrequency();
-	}
-	else return TotalPrecise;
-}
-
-double Timer::StopPrecise()
-{
-	timerPreciseOn = false;
-	TotalPrecise = ((double)(SDL_GetPerformanceCounter() - startPrecise) * 1000) / (double)SDL_GetPerformanceFrequency();
-	return TotalPrecise;
 }

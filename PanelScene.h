@@ -12,6 +12,7 @@ public:
 	void Draw();
 	bool IsFocused() const;
 
+private:
 	bool focus = false;
 
 };

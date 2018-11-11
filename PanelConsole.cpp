@@ -1,7 +1,6 @@
 #include "PanelConsole.h"
 
 
-
 PanelConsole::PanelConsole()
 {
 }
@@ -19,7 +18,6 @@ void PanelConsole::AddLog(const char * log)
 
 void PanelConsole::Draw()
 {
-	ImGui::SetNextWindowSize(ImVec2(500, 400), ImGuiCond_FirstUseEver);
 	if (!ImGui::Begin("Log", &enabled))
 	{
 		ImGui::End();

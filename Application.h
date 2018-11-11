@@ -2,7 +2,6 @@
 #define __Application_h__
 
 #include<list>
-#include "Globals.h"
 #include "Module.h"
 
 class ModuleRender;

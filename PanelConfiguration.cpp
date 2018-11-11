@@ -1,14 +1,14 @@
 #include "PanelConfiguration.h"
 #include "Application.h"
-#include "ModuleTime.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
 #include "ModuleModel.h"
 #include "ModuleCamera.h"
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
-#include "SDL.h"
 #include "mmgr.h"
+
+#define NUMFPS 100
 
 PanelConfiguration::PanelConfiguration()
 {

@@ -156,9 +156,6 @@
     <ClCompile Include="Timer.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="Panel.cpp">
-      <Filter>Panels</Filter>
-    </ClCompile>
     <ClCompile Include="PanelConsole.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
@@ -454,10 +451,10 @@
     <None Include="Game\Default.vs">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Texture.vs">
+    <None Include="Game\Texture.fs">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Texture.fs">
+    <None Include="Game\Texture.vs">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

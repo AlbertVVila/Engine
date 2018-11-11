@@ -1,7 +1,6 @@
 #ifndef __Globals_h__
 #define __Globals_h__
 
-#include <windows.h>
 #include <stdio.h>
 
 #define LOG(format, ...) log(__FILE__, __LINE__, format, __VA_ARGS__);
@@ -41,11 +40,6 @@ enum update_status
 // Configuration -----------
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 720
-#define VSYNC true
-#define TITLE "Real Engine"
-#define ENGINE_DESCRIPTION "Best Engine EUW"
-#define AUTHOR "Definitely not blitzcrank"
-#define REPOSITORY "https://github.com/AlbertVVila/Engine"
-#define LICENSE "https://github.com/AlbertVVila/Engine/blob/master/LICENSE"
+#define TITLE "REAL ENGINE"
 
 #endif  __Globals_h__

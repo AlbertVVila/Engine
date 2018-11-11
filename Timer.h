@@ -7,21 +7,12 @@ public:
 	~Timer();
 
 	void Start();
-	int Read();
+	int Read() const;
 	int Stop();
 
-	int InitTime;
-	int TotalTime;
-	bool timerOn;
-
-	void StartPrecise();
-	double ReadPrecise();
-	double StopPrecise();
-
-	double startPrecise;
-	bool timerPreciseOn;
-	double TotalPrecise;
-
+	int InitTime = 0;
+	int TotalTime = 0;
+	bool timerOn = false;
 };
 
 #endif	//__Timer_h__

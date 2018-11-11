@@ -4,7 +4,6 @@
 #include "Panel.h"
 #include <vector>
 
-#define NUMFPS 100
 class PanelConfiguration :
 	public Panel
 {
@@ -13,8 +12,10 @@ public:
 	~PanelConfiguration();
 
 	void Draw();
-	void DrawFPSgraph() const;
 	void AddFps(float fps);
+
+private:
+	void DrawFPSgraph() const;
 	void DrawMemoryStats() const;
 
 private:

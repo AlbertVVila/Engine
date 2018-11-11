@@ -3,7 +3,6 @@
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
 
-
 PanelScene::PanelScene()
 {
 }
