@@ -32,7 +32,7 @@ public:
 
 	void UpdateTexture(Texture texture);
 
-	void ProcessNode(aiNode * node, const aiScene * scene);
+	void ProcessNode(aiNode * node, const aiScene * scene, const aiMatrix4x4 parentTransform);
 
 	static const char* modelFolder;
 	AABB BoundingBox;

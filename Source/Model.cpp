@@ -26,7 +26,7 @@ void Model::LoadModel(const char * path)
 		LOG("ERROR importing file:%s \n", aiGetErrorString());
 	}
 
-	ProcessNode(scene->mRootNode, scene);
+	ProcessNode(scene->mRootNode, scene, aiMatrix4x4());
 
 	for (unsigned i = 0; i < scene->mNumMaterials; ++i)
 	{
@@ -58,41 +58,44 @@ void Model::Draw() const
 
 void Model::DrawProperties()
 {
-	if (ImGui::CollapsingHeader("Geometry"))
+	if (ImGui::CollapsingHeader("Model Geometry"))
 	{
 		float3 size = BoundingBox.Size();
-		ImGui::Text("Size:");
-		ImGui::Text("X: %.2f", size.x); ImGui::SameLine();
-		ImGui::Text("Y: %.2f", size.y); ImGui::SameLine();
-		ImGui::Text("Z: %.2f", size.z);
-		ImGui::Separator();
+		ImGui::InputFloat3("Size", (float*)&size, 2, ImGuiInputTextFlags_ReadOnly);
 
+		ImGui::Separator();
+		int numMesh = 0;
+		ImGui::Text("Number of meshes: %d", meshes.size());
 		for (auto& mesh : meshes)
 		{
-			ImGui::Text("Mesh:");
-			ImGui::Text("Number of Triangles: %d", mesh.numIndices / 3);
-			ImGui::Separator();
-
-			if (ImGui::CollapsingHeader("Transformation"))
+			ImGui::PushID("Mesh" + numMesh);
+			if (ImGui::TreeNode("Mesh"))
 			{
+				ImGui::Text("Number of Triangles: %d", mesh.numIndices / 3);
+				ImGui::Separator();
 
-				ImGui::Text("Position:");  ImGui::SameLine();
-				ImGui::Text("X: %.2f", mesh.localPosition.x); ImGui::SameLine();
-				ImGui::Text("Y: %.2f", mesh.localPosition.y); ImGui::SameLine();
-				ImGui::Text("Z: %.2f", mesh.localPosition.z);
+				if (ImGui::TreeNode("Transform"))
+				{
+					ImGui::InputFloat3("Position", (float*)&mesh.localPosition, 2, ImGuiInputTextFlags_ReadOnly);
+
+					float3 rotation = mesh.localRotation.ToEulerXYZ();
+					rotation.x = math::RadToDeg(rotation.x);
+					rotation.y = math::RadToDeg(rotation.y);
+					rotation.z = math::RadToDeg(rotation.z);
+
+					ImGui::InputFloat3("Rotation", (float*)&rotation, 2, ImGuiInputTextFlags_ReadOnly);
 
 
-				ImGui::Text("Rotation:");  ImGui::SameLine();
-				float3 rotation = mesh.localRotation.ToEulerXYZ();
-				ImGui::Text("X: %.2f", math::RadToDeg(rotation.x)); ImGui::SameLine();
-				ImGui::Text("Y: %.2f", math::RadToDeg(rotation.y)); ImGui::SameLine();
-				ImGui::Text("Z: %.2f", math::RadToDeg(rotation.z));
+					ImGui::InputFloat3("Scale", (float*)&mesh.localScale, 2, ImGuiInputTextFlags_ReadOnly);
 
-				ImGui::Text("Scale:");  ImGui::SameLine();
-				ImGui::Text("X: %.2f", mesh.localScale.x); ImGui::SameLine();
-				ImGui::Text("Y: %.2f", mesh.localScale.y); ImGui::SameLine();
-				ImGui::Text("Z: %.2f", mesh.localScale.z);
+					ImGui::TreePop();
+				}
+
+				ImGui::TreePop();
+				ImGui::Separator();
 			}
+			ImGui::PopID();
+			++numMesh;
 		}
 	}
 	if (ImGui::CollapsingHeader("Textures"))
@@ -115,12 +118,10 @@ void Model::UpdateTexture(Texture texture)
 	}
 }
 
-void Model::ProcessNode(aiNode *node, const aiScene *scene)
+void Model::ProcessNode(aiNode *node, const aiScene *scene, const aiMatrix4x4 parentTransform)
 {
-	aiMatrix4x4 transform = node->mTransformation;
-	//aiVector3D scale, translation;
-	//aiQuaternion rotation;
-	//transformation.Decompose(scale, rotation, translation);
+	aiMatrix4x4 transform = node->mTransformation*parentTransform;
+
 	for (unsigned int i = 0; i < node->mNumMeshes; i++)
 	{
 		aiMesh *mesh = scene->mMeshes[node->mMeshes[i]];
@@ -128,7 +129,7 @@ void Model::ProcessNode(aiNode *node, const aiScene *scene)
 	}
 	for (unsigned int i = 0; i < node->mNumChildren; i++)
 	{
-		ProcessNode(node->mChildren[i], scene);
+		ProcessNode(node->mChildren[i], scene, transform);
 	}
 }
 

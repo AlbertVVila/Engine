@@ -66,7 +66,7 @@ void ModuleModel::DrawModelProperties()
 
 	for (auto &model : models)
 	{
-		ImGui::Text("Properties:");
+		ImGui::Text("Model:");
 		ImGui::Separator();
 		model.DrawProperties();
 	}
