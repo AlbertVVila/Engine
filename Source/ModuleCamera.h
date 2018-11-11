@@ -15,7 +15,6 @@ public:
 
 	float3 cameraPos = float3(0, 5, 10);
 	float3 cameraFront = float3(0, 0, -1);
-	float3 cameraUp = float3(0, 1, 0);
 
 private:
 

@@ -44,6 +44,7 @@ void Model::GenerateMaterialData(aiMaterial * material)
 
 	std::string texturePath(path);
 	texturePath += file.C_Str();
+	//TODO: if texture was already loaded by another material, don't load it again
 	Texture texture = App->textures->Load(texturePath.c_str());
 	textures.push_back(texture);
 }

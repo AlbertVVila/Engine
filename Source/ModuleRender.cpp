@@ -279,7 +279,7 @@ void ModuleRender::DrawGUI()
 void ModuleRender::ViewMatrix(unsigned int shader)
 {
 	math::float4x4 view = LookAt(App->camera->cameraPos, App->camera->cameraPos
-		+ App->camera->cameraFront, App->camera->cameraUp);
+		+ App->camera->cameraFront, float3::unitY);
 	glUniformMatrix4fv(glGetUniformLocation(shader,
 		"view"), 1, GL_TRUE, &view[0][0]);
 }
