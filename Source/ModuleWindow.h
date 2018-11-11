@@ -12,31 +12,30 @@ public:
 
 	ModuleWindow();
 
-	// Destructor
-	virtual ~ModuleWindow();
+	~ModuleWindow();
 
-	// Called before quitting
+
 	bool Init();
-
-	// Called before quitting
 	bool CleanUp();
 
 	void Resize(int width, int height);
-
 	void DrawGUI();
 
 public:
 	//The window we'll be rendering to
 	SDL_Window* window = NULL;
 	
+	int width = SCREEN_WIDTH;
+	int height = SCREEN_HEIGHT;
+
+private:
+
 	float brightness = 1.0f;
 	bool fullscreen = false;
 	bool resizable = true;
 	bool borderless = false;
 	bool fullscreen_desktop = false;
 
-	int width = SCREEN_WIDTH;
-	int height = SCREEN_HEIGHT;
 	int previouswidth = SCREEN_WIDTH;
 	int previousheight = SCREEN_HEIGHT;
 

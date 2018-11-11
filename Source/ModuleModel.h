@@ -15,7 +15,7 @@ public:
 	~ModuleModel();
 
 	bool Init();
-	unsigned int Load(const char *path);
+	void Load(const char *path);
 	void DrawModels();
 	void DrawModelProperties();
 	void DrawGUI();

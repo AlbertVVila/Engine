@@ -45,6 +45,7 @@ void ModuleTextures::DrawGUI()
 
 Texture const ModuleTextures::Load(const char * path) const
 {
+	assert(path != NULL);
 	ILuint imageID;
 	ILboolean success;
 	ILenum error;
@@ -89,27 +90,6 @@ Texture const ModuleTextures::Load(const char * path) const
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		}
 
-		switch (wrap_mode)
-		{
-			case 0:
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-				break;
-			case 1:
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-				break;
-			case 2:
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-				break;
-			case 3:
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
-				break;
-			
-		}
-
 		ilDeleteImages(1, &imageID);
 
 		glBindTexture(GL_TEXTURE_2D, 0);
@@ -121,7 +101,6 @@ Texture const ModuleTextures::Load(const char * path) const
 		error = ilGetError();
 		LOG("Error file %s: %s\n", path, iluErrorString(error));
 	}
-
 	return Texture(0, 0, 0);
 }
 

@@ -39,7 +39,7 @@ bool ModuleModel::Init()
 }
 
 
-unsigned int ModuleModel::Load(const char *path)
+void ModuleModel::Load(const char *path)
 {
 	assert(path != NULL);
 	//If we already have models loaded, we erase them 
@@ -47,7 +47,6 @@ unsigned int ModuleModel::Load(const char *path)
 	DeleteModels();
 	models.emplace_back(path);
 	App->camera->Center();
-	return 1;
 }
 
 void ModuleModel::DrawModels()

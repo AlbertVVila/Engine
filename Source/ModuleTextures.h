@@ -22,7 +22,6 @@ public:
 
 public:
 	int filter_type = LINEAR;
-	int wrap_mode = 0;
 };
 
 #endif /* __ModuleTextures_h__ */
