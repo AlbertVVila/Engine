@@ -15,10 +15,6 @@ ModuleCamera::~ModuleCamera()
 {
 }
 
-bool ModuleCamera::Init()
-{
-    return true;
-}
 
 update_status ModuleCamera::Update()
 {
@@ -40,12 +36,6 @@ update_status ModuleCamera::Update()
 		Zoom();
 	}
 	return UPDATE_CONTINUE;
-}
-
-
-bool ModuleCamera::CleanUp()
-{
-	return true;
 }
 
 void ModuleCamera::Move()
@@ -158,5 +148,4 @@ void ModuleCamera::DrawGUI()
 	ImGui::Text("Z: %.2f", cameraFront.z, ImGuiInputTextFlags_ReadOnly);
 	ImGui::InputFloat("Movement Speed", &movementSpeed, 1.f, 5.f);
 	ImGui::InputFloat("Rotation Speed", &rotationSpeed, 1.f, 5.f);
-	//TODO: move fov and znearfar here
 }

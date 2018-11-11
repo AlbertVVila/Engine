@@ -1,4 +1,3 @@
-#include "Globals.h"
 #include "Application.h"
 #include "ModuleEditor.h"
 #include "ModuleRender.h"
@@ -9,7 +8,6 @@
 #include "PanelProperties.h"
 #include "PanelAbout.h"
 #include "PanelHardware.h"
-#include "GL/glew.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_sdl.h"
 #include "imgui.h"
@@ -140,14 +138,14 @@ bool ModuleEditor::CleanUp()
 	return ret;
 }
 
-void ModuleEditor::RenderGUI()
+void ModuleEditor::RenderGUI() const
 {
 	ImGui::End();
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-void ModuleEditor::CreateDockSpace()
+void ModuleEditor::CreateDockSpace() const
 {
 	ImGui::SetNextWindowPos({ 0,0 });
 	ImGui::SetNextWindowSize({ (float)App->window->width, (float)App->window->height });

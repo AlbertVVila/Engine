@@ -1,13 +1,10 @@
 #include "ModuleModel.h"
-#include "GL/glew.h"
-#include "assert.h"
 #include "Application.h"
 #include "ModuleRender.h"
 #include "ModuleCamera.h"
 #include "ModuleTextures.h"
 #include "ModuleProgram.h"
 #include "imgui.h"
-#include "Globals.h"
 
 #define CHECKERS "checkersTexture.jpg"
 #define BAKERHOUSE "Models\\Baker\\BakerHouse.fbx"

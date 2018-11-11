@@ -31,10 +31,8 @@ public:
 
 	ModuleInput();
 
-	// Destructor
-	virtual ~ModuleInput();
+	~ModuleInput();
 
-	// Called before render is available
 	bool Init();
 
 	// Called before the first frame

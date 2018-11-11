@@ -2,30 +2,28 @@
 #define __ModuleCamera_h__
 
 #include "Module.h"
-#include "MathGeoLib.h"
-#include "SDL.h"
+#include "Math/float3.h"
 class ModuleCamera : public Module
 {
 public:
     ModuleCamera();
     ~ModuleCamera();
 
-	bool            Init    ();
 	update_status   Update  ();
-	bool            CleanUp ();
+	void DrawGUI();
+	void Center();
+
+	float3 cameraPos = float3(0, 5, 10);
+	float3 cameraFront = float3(0, 0, -1);
+	float3 cameraUp = float3(0, 1, 0);
+
+private:
 
 	void Move();
 	void Rotate();
 	void Zoom();
-	void Center();
 	void ComputeEulerAngles();
 	void Orbit();
-
-	void DrawGUI();
-
-	float3 cameraPos = float3(0, 5, 20);
-	float3 cameraFront = float3(0, 0, -1);
-	float3 cameraUp = float3(0, 1, 0);
 
 private:
 

@@ -2,6 +2,7 @@
 #define __ModuleTextures_h__
 
 #include "Module.h"
+#include "Model.h"
 
 #define LINEAR 1
 #define NEAREST 0

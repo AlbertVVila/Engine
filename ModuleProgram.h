@@ -2,7 +2,6 @@
 #define __ModuleProgram_h__
 
 #include "Module.h"
-#include "MathGeoLib.h"
 
 class ModuleProgram : public Module
 {

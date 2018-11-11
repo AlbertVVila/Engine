@@ -26,12 +26,12 @@ public:
 	bool CleanUp();
 
 public:
-	void RenderGUI();
-	void CreateDockSpace();
+	void RenderGUI() const;
+	void CreateDockSpace() const;
 	void DrawPanels();
 
 	bool IsCameraFocused() const;
-	void AddFpsLog(float fps) const;
+	void AddFpsLog(const float fps) const;
 	void processInput(SDL_Event* event) const;
 	void AddLog(const char *log) const;
 

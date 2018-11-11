@@ -1,10 +1,9 @@
 #ifndef __ModuleRender_h__
 #define __ModuleRender_h__
 
-#include "Module.h"
-#include "Globals.h"
-#include "MathGeoLib.h"
-#include "Model.h"
+#include "Math/float3.h"
+#include "Math/float4x4.h"
+#include "Geometry/Frustum.h"
 
 struct SDL_Texture;
 struct SDL_Renderer;
