@@ -3,6 +3,7 @@
 #include "Model.h"
 #include "Application.h"
 #include "ModuleModel.h"
+#include <assert.h>
 
 Mesh::Mesh(aiMesh * mesh, aiMatrix4x4 transform)
 {
@@ -17,7 +18,7 @@ Mesh::Mesh(aiMesh * mesh, aiMatrix4x4 transform)
 
 	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(GLfloat) * 3 * mesh->mNumVertices, mesh->mVertices);
 	float * pbuffer = (float*)glMapBufferRange(GL_ARRAY_BUFFER, sizeof(GLfloat) * 3 * mesh->mNumVertices, sizeof(GLfloat) * 2 * mesh->mNumVertices, GL_MAP_WRITE_BIT);
-	for (int i = 0; i < mesh->mNumVertices; i++)
+	for (unsigned int i = 0; i < mesh->mNumVertices; i++)
 	{
 		*pbuffer++ = mesh->mTextureCoords[0][i].x;
 		*pbuffer++ = mesh->mTextureCoords[0][i].y;
@@ -31,11 +32,11 @@ Mesh::Mesh(aiMesh * mesh, aiMatrix4x4 transform)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int)*mesh->mNumFaces * 3, NULL, GL_STATIC_DRAW);
 	int * pbufferIndex = (int*)glMapBufferRange(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(unsigned int)*mesh->mNumFaces * 3, GL_MAP_WRITE_BIT);
-	for (int i = 0; i < mesh->mNumFaces; i++)
+	for (unsigned int i = 0; i < mesh->mNumFaces; i++)
 	{
 		aiFace face = mesh->mFaces[i];
-		assert((int)face.mNumIndices == 3, "Num index per face is not 3");
-		for (int j = 0; j < face.mNumIndices; j++)
+		assert(face.mNumIndices == 3);
+		for (unsigned int j = 0; j < face.mNumIndices; j++)
 		{
 			*pbufferIndex++ = face.mIndices[j];
 		}

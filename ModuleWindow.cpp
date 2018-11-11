@@ -3,6 +3,7 @@
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
 #include "imgui.h"
+#include "SDL.h"
 
 ModuleWindow::ModuleWindow()
 {
@@ -11,6 +12,7 @@ ModuleWindow::ModuleWindow()
 // Destructor
 ModuleWindow::~ModuleWindow()
 {
+	RELEASE(window);
 }
 
 // Called before render is available
@@ -58,11 +60,6 @@ bool ModuleWindow::Init()
 		{
 			LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());
 			ret = false;
-		}
-		else
-		{
-			//Get window surface
-			screen_surface = SDL_GetWindowSurface(window);
 		}
 	}
 

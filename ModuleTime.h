@@ -2,7 +2,7 @@
 #define __ModuleTime_h__
 
 #include "Module.h"
-
+#include "SDL_timer.h"
 class ModuleTime : public Module
 {
 public:
@@ -14,7 +14,7 @@ public:
 
 public:
 	double deltaTime = 0.0f;	// Time between current frame and last frame
-	long before = 0.0f; // Time of last frame
+	Uint64 before = 0; // Time of last frame
 };
 
 #endif /* __ModuleTime_h__ */

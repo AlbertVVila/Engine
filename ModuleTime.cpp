@@ -1,5 +1,4 @@
 #include "ModuleTime.h"
-#include "SDL.h"
 
 
 ModuleTime::ModuleTime()
@@ -19,7 +18,7 @@ bool ModuleTime::Init()
 update_status ModuleTime::PreUpdate()
 {
 
-	long now = SDL_GetPerformanceCounter();
+	Uint64 now = SDL_GetPerformanceCounter();
 	deltaTime = (double)((now - before)) / SDL_GetPerformanceFrequency();
 	before = now;
 

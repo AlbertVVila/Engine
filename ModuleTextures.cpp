@@ -1,8 +1,7 @@
-#include "Globals.h"
 #include "Application.h"
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
-#include "DevIL/include/IL/ilut.h"
+#include "IL/ilut.h"
 #include "imgui.h"
 
 
@@ -44,12 +43,15 @@ void ModuleTextures::DrawGUI()
 	ImGui::RadioButton("Nearest", &filter_type, NEAREST);
 }
 
-Texture const ModuleTextures::Load(const char * path)
+Texture const ModuleTextures::Load(const char * path) const
 {
 	ILuint imageID;
-	GLuint textureID;
 	ILboolean success;
 	ILenum error;
+	int width = 0;
+	int height = 0;
+	int pixelDepth = 0;
+	int format = 0;
 
 	ilGenImages(1, &imageID); 		// Generate the image ID
 	ilBindImage(imageID); 			// Bind the image

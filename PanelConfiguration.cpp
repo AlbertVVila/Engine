@@ -62,11 +62,11 @@ void PanelConfiguration::Draw()
 void PanelConfiguration::DrawFPSgraph() const
 {
 	float total = 0;
-	for (int i = 0; i < fps.size(); i++) {
+	for (unsigned int i = 0; i < fps.size(); i++) {
 		total += fps[i];
 	}
 	char avg[32];
-	sprintf(avg, "%s%.2f", "avg:", total/fps.size());
+	sprintf_s(avg, "%s%.2f", "avg:", total/fps.size());
 	ImGui::PlotHistogram("FPS", &fps[0], fps.size(), 0, avg,  0.0f, 120.0f, ImVec2(0, 80));
 }
 
