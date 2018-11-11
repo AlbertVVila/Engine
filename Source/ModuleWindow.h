@@ -12,7 +12,7 @@ public:
 
 	ModuleWindow();
 
-	~ModuleWindow();
+	virtual ~ModuleWindow();
 
 
 	bool Init();

@@ -8,7 +8,7 @@
 #include "SDL.h"
 #include "GL/glew.h"
 #include "imgui.h"
-
+#include "Math/MathFunc.h"
 ModuleRender::ModuleRender()
 {
 }
@@ -45,9 +45,6 @@ update_status ModuleRender::PreUpdate()
 // Called every draw update
 update_status ModuleRender::Update()
 {
-	//For now all models have same transformations
-	//TODO: Move model transform to each model
-
 	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
 	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -60,19 +57,10 @@ update_status ModuleRender::Update()
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
-	glUseProgram(App->program->textureProgram);
-	ModelTransform(App->program->textureProgram);
-	ProjectionMatrix(App->program->textureProgram);
-	ViewMatrix(App->program->textureProgram);
 
-	App->model->DrawModels();
-	glUseProgram(App->program->defaultProgram);
-	ModelTransform(App->program->defaultProgram);
-	ProjectionMatrix(App->program->defaultProgram);
-	ViewMatrix(App->program->defaultProgram);
-	DrawLines();
-	DrawAxis();
-	glUseProgram(0);
+	DrawModels();
+	DrawGizmos();
+	
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	return UPDATE_CONTINUE;
@@ -91,6 +79,7 @@ bool ModuleRender::CleanUp()
 {
 	LOG("Destroying renderer");
 	glDeleteFramebuffers(1, &FBO);
+	glDeleteRenderbuffers(1, &RBO);
 	return true;
 }
 
@@ -98,11 +87,39 @@ void ModuleRender::OnResize()
 {
     glViewport(0, 0, App->window->width, App->window->height);
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * ((float)App->window->width / (float)App->window->height));
-	CreateFrameBuffer();
+	CreateFrameBuffer(); //We recreate framebuffer with new window size
+}
+
+void ModuleRender::DrawModels() const
+{
+	//For now all models have same transformations
+	//TODO: Move model transform to each model
+	glUseProgram(App->program->textureProgram);
+
+	ModelTransform(App->program->textureProgram);
+	ProjectionMatrix(App->program->textureProgram);
+	ViewMatrix(App->program->textureProgram);
+
+	App->model->DrawModels();
+	glUseProgram(0);
+}
+
+void ModuleRender::DrawGizmos() const
+{
+	//TODO: Use block uniforms for fixed projection and view matrix
+	glUseProgram(App->program->defaultProgram);
+
+	ModelTransform(App->program->defaultProgram);
+	ProjectionMatrix(App->program->defaultProgram);
+	ViewMatrix(App->program->defaultProgram);
+
+	DrawLines();
+	DrawAxis();
+	glUseProgram(0);
 }
 
 
-void ModuleRender::DrawLines()
+void ModuleRender::DrawLines() const
 {
 	float white[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	glUniform4fv(glGetUniformLocation(App->program->defaultProgram,
@@ -122,7 +139,7 @@ void ModuleRender::DrawLines()
 	glEnd();
 }
 
-void ModuleRender::DrawAxis()
+void ModuleRender::DrawAxis() const
 {
 	glLineWidth(2.0f);
 
@@ -192,7 +209,7 @@ void ModuleRender::InitSDL()
 	SDL_GetWindowSize(App->window->window, &App->window->width, &App->window->height);
 }
 
-void ModuleRender::InitOpenGL()
+void ModuleRender::InitOpenGL() const
 {
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -276,7 +293,7 @@ void ModuleRender::DrawGUI()
 	}
 }
 
-void ModuleRender::ViewMatrix(unsigned int shader)
+void ModuleRender::ViewMatrix(unsigned int shader) const
 {
 	math::float4x4 view = LookAt(App->camera->cameraPos, App->camera->cameraPos
 		+ App->camera->cameraFront, float3::unitY);
@@ -284,20 +301,20 @@ void ModuleRender::ViewMatrix(unsigned int shader)
 		"view"), 1, GL_TRUE, &view[0][0]);
 }
 
-void ModuleRender::ProjectionMatrix(unsigned int shader)
+void ModuleRender::ProjectionMatrix(unsigned int shader) const
 {
 	glUniformMatrix4fv(glGetUniformLocation(shader,
 		"proj"), 1, GL_TRUE, &frustum.ProjectionMatrix()[0][0]);
 }
 
-void ModuleRender::ModelTransform(unsigned int shader)
+void ModuleRender::ModelTransform(unsigned int shader) const
 {
 	math::float4x4 model = math::float4x4::identity;
 	glUniformMatrix4fv(glGetUniformLocation(shader,
 		"model"), 1, GL_TRUE, &model[0][0]);
 }
 
-math::float4x4 ModuleRender::LookAt(math::float3 OBS, math::float3 VRP, math::float3 up)
+math::float4x4 ModuleRender::LookAt(math::float3 OBS, math::float3 VRP, math::float3 up) const
 {
 	math::float3 forward(VRP - OBS); forward.Normalize(); //deprecated with camerafront pos and up
 	math::float3 side(forward.Cross(up)); side.Normalize();

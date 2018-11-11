@@ -7,6 +7,7 @@
 #include "ModuleModel.h"
 #include "ModuleEditor.h"
 #include "imgui.h"
+#include "Math/MathFunc.h"
 
 #define MAXFOV 120
 #define MINFOV 40

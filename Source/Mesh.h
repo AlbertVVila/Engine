@@ -1,33 +1,33 @@
 #ifndef __Mesh_h__
 #define __Mesh_h__
 #include <assimp/mesh.h>
-#include "GL/glew.h"
-#include <assert.h>
+#include "Math/float3.h"
+#include "Math/Quat.h"
 #include <vector>
-#include "MathGeoLib.h"
-#include "Globals.h"
 
 struct Texture;
 
 class Mesh
 {
 public:
-	int numIndices;
-	int materialIndex;
-	float3 localPosition;
-	Quat localRotation;
-	float3 localScale;
-
-	std::vector<float3> vertices;
-
 	Mesh(aiMesh * mesh, aiMatrix4x4 transform);
 	~Mesh();
 
 	void Draw(unsigned int shaderProgram, const std::vector<Texture> &textures) const;
 
-private:
-	unsigned int VAO, VBO, EBO;
+public:
+	float3 localPosition = float3::zero;
+	Quat localRotation = Quat::identity;
+	float3 localScale = float3::zero;
 
+	int numIndices = 0;
+	std::vector<float3> vertices;
+
+private:
+	int materialIndex = 0;
+	unsigned int VAO = 0;
+	unsigned int VBO = 0;
+	unsigned int EBO = 0;
 };
 
 #endif //__Mesh_h__

@@ -1,16 +1,13 @@
 #ifndef __Model_h__
 #define __Model_h__
 
-#include "Mesh.h"
-#include <assimp/cimport.h>
-#include <assimp/postprocess.h>
-#include <assimp/scene.h>
-#include <assimp/material.h>
-#include <assimp/mesh.h>
+#include "assimp/scene.h"
+#include "assimp/mesh.h"
+#include "Geometry/AABB.h"
 #include <vector>
 #include <list>
-#include "GL/glew.h"
 #include <string>
+#include "Mesh.h"
 
 struct Texture
 {

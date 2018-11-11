@@ -20,30 +20,31 @@ public:
 	update_status Update();
 	update_status PostUpdate();
 	bool CleanUp();
-
 	void OnResize();
-	void ViewMatrix(unsigned int program);
-	void ProjectionMatrix(unsigned int program);
-	void ModelTransform(unsigned int program);
-	math::float4x4 LookAt(math::float3 OBS, math::float3 VRP, math::float3 up);
-
-	void DrawLines();
-	void DrawAxis();
-
-	void InitFrustum();
-	void InitSDL();
-	void InitOpenGL();
-
-	void CreateFrameBuffer();
 	void DrawGUI();
 
+private:
+	void DrawModels() const;
+	void DrawGizmos() const;
+	void ViewMatrix(unsigned int program) const;
+	void ProjectionMatrix(unsigned int program) const;
+	void ModelTransform(unsigned int program) const;
+	float4x4 LookAt(math::float3 OBS, math::float3 VRP, math::float3 up) const;
+	void CreateFrameBuffer();
+	void DrawLines() const;
+	void DrawAxis() const;
+	void InitFrustum();
+	void InitSDL();
+	void InitOpenGL() const;
 
 public:
-	void* context = NULL;
+	void* context = nullptr;
 	Frustum frustum;
+	unsigned int renderTexture = 0;
+
+private:
 	unsigned int FBO = 0;
 	unsigned int RBO = 0;
-	unsigned int renderTexture = 0;
 	bool useCheckersTexture = false;
 	bool depthTest = true;
 	bool wireframe = false;

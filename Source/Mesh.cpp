@@ -1,9 +1,9 @@
 #include "Mesh.h"
-#include "imgui.h"
 #include "Model.h"
 #include "Application.h"
 #include "ModuleModel.h"
 #include <assert.h>
+#include "GL/glew.h"
 
 Mesh::Mesh(aiMesh * mesh, aiMatrix4x4 transform)
 {

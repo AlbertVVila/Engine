@@ -3,6 +3,10 @@
 #include "ModuleTextures.h"
 #include "ModuleProgram.h"
 #include "imgui.h"
+#include "assimp/postprocess.h"
+#include "assimp/cimport.h"
+#include "Math/MathFunc.h"
+#include "GL/glew.h"
 
 Model::Model(const char * file)
 {
@@ -15,6 +19,10 @@ Model::Model(const char * file)
 
 Model::~Model()
 {
+	for (auto &texture : textures)
+	{
+		glDeleteTextures(1, (GLuint*)&texture.id);
+	}
 }
 
 void Model::LoadModel(const char * path)

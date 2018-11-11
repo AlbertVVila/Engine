@@ -5,6 +5,8 @@
 #include "ModuleTextures.h"
 #include "ModuleProgram.h"
 #include "imgui.h"
+#include "assimp/cimport.h"
+#include "GL/glew.h"
 
 #define CHECKERS "checkersTexture.jpg"
 #define BAKERHOUSE "Models\\Baker\\BakerHouse.fbx"
@@ -24,6 +26,10 @@ ModuleModel::ModuleModel()
 
 ModuleModel::~ModuleModel()
 {
+	if (checkersTexture.id != 0)
+	{
+		glDeleteTextures(1, (GLuint*)&checkersTexture.id);
+	}
 }
 
 

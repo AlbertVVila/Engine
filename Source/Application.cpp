@@ -30,7 +30,7 @@ Application::~Application()
 {
 	for(list<Module*>::iterator it = modules.begin(); it != modules.end(); ++it)
     {
-        delete *it;
+        RELEASE(*it);
     }
 }
 
@@ -76,6 +76,5 @@ bool Application::CleanUp()
 	{
 		ret = (*it)->CleanUp();
 	}
-	modules.clear();
 	return ret;
 }

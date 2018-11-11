@@ -10,9 +10,7 @@ public:
 	{
 	}
 
-	virtual ~Module()
-	{
-	}
+	virtual ~Module() {};
 
 	virtual bool Init() 
 	{
