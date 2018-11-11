@@ -51,7 +51,6 @@ update_status ModuleEditor::PreUpdate()
 	ImGui::NewFrame();
 
 	CreateDockSpace();
-	ImGui::ShowDemoWindow();
 	return UPDATE_CONTINUE;
 }
 

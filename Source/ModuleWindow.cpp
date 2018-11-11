@@ -98,48 +98,53 @@ void ModuleWindow::DrawGUI()
 	}
 	if (ImGui::SliderFloat("Brightness", &brightness, 0.0f, 1.0f))
 	{
-		SDL_SetWindowBrightness(App->window->window, brightness);
+		SDL_SetWindowBrightness(window, brightness);
 	}
 	if (ImGui::Checkbox("FullScreen", &fullscreen))
 	{
 		if (fullscreen) {
+			previousheight = height;
+			previouswidth = width;
+
 			SDL_DisplayMode displayMode;
 			SDL_GetDesktopDisplayMode(0, &displayMode);
-			SDL_SetWindowSize(App->window->window, displayMode.w, displayMode.h);
-			SDL_SetWindowFullscreen(App->window->window, SDL_WINDOW_FULLSCREEN);
-
-			//TODO: store old width and height to replace it when !fullscreen
+			SDL_SetWindowSize(window, displayMode.w, displayMode.h);
+			SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+			Resize(displayMode.w, displayMode.h);
 		}
 		else
 		{
-			SDL_SetWindowFullscreen(App->window->window, 0);
+			SDL_SetWindowFullscreen(window, 0);
+			SDL_SetWindowSize(window, previouswidth, previousheight);
+			Resize(previouswidth, previousheight);
+			
 		}
 	}
 	ImGui::SameLine();
 	if (ImGui::Checkbox("Resizable", &resizable))
 	{
 		if (resizable)
-			SDL_SetWindowResizable(App->window->window, (SDL_bool)true);
+			SDL_SetWindowResizable(window, (SDL_bool)true);
 		else
-			SDL_SetWindowResizable(App->window->window, (SDL_bool)false);
+			SDL_SetWindowResizable(window, (SDL_bool)false);
 	}
 
 	ImGui::NewLine();
 	if (ImGui::Checkbox("Borderless", &borderless))
 	{
 		if (borderless)
-			SDL_SetWindowBordered(App->window->window, (SDL_bool)false);
+			SDL_SetWindowBordered(window, (SDL_bool)false);
 		else
-			SDL_SetWindowBordered(App->window->window, (SDL_bool)true);
+			SDL_SetWindowBordered(window, (SDL_bool)true);
 	}
 
 	ImGui::SameLine();
 	if (ImGui::Checkbox("Full Desktop", &fullscreen_desktop))
 	{
 		if (fullscreen_desktop) {
-			SDL_SetWindowFullscreen(App->window->window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+			SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
 		}
 		else
-			SDL_SetWindowFullscreen(App->window->window, 0);
+			SDL_SetWindowFullscreen(window, 0);
 	}
 }

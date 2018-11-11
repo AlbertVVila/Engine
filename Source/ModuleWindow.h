@@ -37,6 +37,8 @@ public:
 
 	int width = SCREEN_WIDTH;
 	int height = SCREEN_HEIGHT;
+	int previouswidth = SCREEN_WIDTH;
+	int previousheight = SCREEN_HEIGHT;
 
 };
 
