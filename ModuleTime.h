@@ -13,8 +13,8 @@ public:
 	update_status   PreUpdate();
 
 public:
-	float deltaTime = 0.0f;	// Time between current frame and last frame
-	float lastFrame = 0.0f; // Time of last frame
+	double deltaTime = 0.0f;	// Time between current frame and last frame
+	long before = 0.0f; // Time of last frame
 };
 
 #endif /* __ModuleTime_h__ */

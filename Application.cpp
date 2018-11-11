@@ -63,8 +63,8 @@ update_status Application::Update()
 	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
 		ret = (*it)->PostUpdate();
 	//LOG("Update time: %d ms", t.Stop());
-	editor->AddFpsLog(1/App->time->deltaTime);
 
+	editor->AddFpsLog(1 / App->time->deltaTime);
 	return ret;
 }
 

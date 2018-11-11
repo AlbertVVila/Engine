@@ -19,9 +19,9 @@ bool ModuleTime::Init()
 update_status ModuleTime::PreUpdate()
 {
 
-	float currentFrame = SDL_GetTicks();
-	deltaTime = (currentFrame - lastFrame)*0.001f;
-	lastFrame = currentFrame;
+	long now = SDL_GetPerformanceCounter();
+	deltaTime = (double)((now - before)) / SDL_GetPerformanceFrequency();
+	before = now;
 
 	return UPDATE_CONTINUE;
 }

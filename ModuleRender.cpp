@@ -33,6 +33,7 @@ bool ModuleRender::Init()
 	InitFrustum();
 
 	CreateFrameBuffer();
+	SDL_GL_SetSwapInterval((int)vsync);
 
 	return true;
 }
@@ -272,6 +273,10 @@ void ModuleRender::DrawGUI()
 	}
 	ImGui::InputFloat("Znear", &frustum.nearPlaneDistance, 1, 10);
 	ImGui::InputFloat("Zfar", &frustum.farPlaneDistance, 1, 10);
+	if (ImGui::Checkbox("Vsync", &vsync))
+	{
+		SDL_GL_SetSwapInterval((int)vsync);
+	}
 }
 
 void ModuleRender::ViewMatrix(unsigned int shader)

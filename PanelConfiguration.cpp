@@ -61,7 +61,6 @@ void PanelConfiguration::Draw()
 
 void PanelConfiguration::DrawFPSgraph() const
 {
-	SDL_GL_SetSwapInterval(1);
 	float total = 0;
 	for (int i = 0; i < fps.size(); i++) {
 		total += fps[i];

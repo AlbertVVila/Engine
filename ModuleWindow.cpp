@@ -62,7 +62,6 @@ bool ModuleWindow::Init()
 		else
 		{
 			//Get window surface
-			
 			screen_surface = SDL_GetWindowSurface(window);
 		}
 	}
