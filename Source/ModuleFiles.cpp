@@ -1,9 +1,10 @@
-#include "ModuleModel.h"
+#include "ModuleFiles.h"
 #include "Application.h"
 #include "ModuleRender.h"
 #include "ModuleCamera.h"
 #include "ModuleTextures.h"
 #include "ModuleProgram.h"
+#include "ModuleScene.h"
 #include "imgui.h"
 #include "assimp/cimport.h"
 #include "GL/glew.h"
@@ -19,12 +20,12 @@ void AddLog(const char* str, char* userData)
 	LOG("%s", info.c_str());
 }
 
-ModuleModel::ModuleModel()
+ModuleFiles::ModuleFiles()
 {
 }
 
 
-ModuleModel::~ModuleModel()
+ModuleFiles::~ModuleFiles()
 {
 	if (checkersTexture.id != 0)
 	{
@@ -33,19 +34,19 @@ ModuleModel::~ModuleModel()
 }
 
 
-bool ModuleModel::Init()
+bool ModuleFiles::Init()
 {
 	struct aiLogStream streamLog;
 	streamLog = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, NULL);
 	streamLog.callback = AddLog;
 	aiAttachLogStream(&streamLog);
 
-	Load(BAKERHOUSE); //moure al start
+	LoadFile(BAKERHOUSE); //moure al start
 	return true;
 }
 
 
-void ModuleModel::Load(const char *path)
+void ModuleFiles::LoadFile(const char *path)
 {
 	assert(path != NULL);
 	//If we already have models loaded, we erase them 
@@ -53,9 +54,12 @@ void ModuleModel::Load(const char *path)
 	DeleteModels();
 	models.emplace_back(path);
 	App->camera->Center();
+	//Remove everything abov + if file is fbx then go to fbx loader
+	//then in fbx loader, load scene and for each node load gameobject calling
+	//createGameObject scene method? vs load file with multiple gameobjects in scene
 }
 
-void ModuleModel::DrawModels()
+void ModuleFiles::DrawModels()
 {
 	for (auto const& model : models)
 	{
@@ -63,7 +67,7 @@ void ModuleModel::DrawModels()
 	}
 }
 
-void ModuleModel::DrawModelProperties()
+void ModuleFiles::DrawModelProperties()
 {
 	if (models.size() == 0)
 	{
@@ -78,7 +82,7 @@ void ModuleModel::DrawModelProperties()
 	}
 }
 
-void ModuleModel::DrawGUI()
+void ModuleFiles::DrawGUI()
 {
 	if (ImGui::Checkbox("Use Checkers Texture", &checkers))
 	{
@@ -89,7 +93,7 @@ void ModuleModel::DrawGUI()
 	}
 }
 
-void ModuleModel::ApplyTexture(Texture texture)
+void ModuleFiles::ApplyTexture(Texture texture)
 {
 	for (auto& model : models)
 	{
@@ -97,14 +101,14 @@ void ModuleModel::ApplyTexture(Texture texture)
 	}
 }
 
-void ModuleModel::DeleteModels()
+void ModuleFiles::DeleteModels()
 {
 	models.clear();
 }
 
 
 
-bool ModuleModel::CleanUp()
+bool ModuleFiles::CleanUp()
 {
 	return true;
 }

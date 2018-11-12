@@ -1,5 +1,5 @@
-#ifndef __ModuleModel_h__
-#define __ModuleModel_h__
+#ifndef __ModuleFiles_h__
+#define __ModuleFiles_h__
 
 #include "Module.h"
 #include "Model.h"
@@ -7,12 +7,12 @@
 
 struct Texture;
 
-class ModuleModel :
+class ModuleFiles :
 	public Module
 {
 public:
-	ModuleModel();
-	~ModuleModel();
+	ModuleFiles();
+	~ModuleFiles();
 
 	bool Init();
 	void Load(const char *path);
@@ -31,4 +31,4 @@ public:
 	Texture checkersTexture = Texture(0,0,0);
 };
 
-#endif //__ModuleModel_h__
+#endif //__ModuleFiles_h__

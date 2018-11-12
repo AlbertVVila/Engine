@@ -1,5 +1,5 @@
 #include "PanelProperties.h"
-#include "ModuleModel.h"
+#include "ModuleFiles.h"
 #include "Application.h"
 
 PanelProperties::PanelProperties()

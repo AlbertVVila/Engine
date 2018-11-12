@@ -1,6 +1,6 @@
 #include "Application.h"
 #include "ModuleInput.h"
-#include "ModuleModel.h"
+#include "ModuleFiles.h"
 #include "ModuleTextures.h"
 #include "ModuleWindow.h"
 #include "ModuleEditor.h"
@@ -184,7 +184,7 @@ void ModuleInput::DropFile(char* dropped_file) const
 
 	if (extension == "fbx" || extension == "FBX")
 	{
-		App->model->Load(dropped_file);
+		App->model->LoadFile(dropped_file);
 	}
 	else if (extension == "png" || extension == "jpg" || extension == "dds")
 	{
