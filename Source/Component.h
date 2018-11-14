@@ -1,10 +1,18 @@
 #ifndef __Component_h__
 #define __Component_h__
 
+enum ComponentType
+{
+	Transform,
+	Mesh,
+	Material,
+	Light
+};
+
 class Component
 {
 public:
-	Component();
+	Component(ComponentType type);
 	virtual ~Component();
 
 	virtual void Enable()
@@ -19,6 +27,7 @@ public:
 	}
 
 public:
+	ComponentType type;
 	bool enabled = true;
 };
 

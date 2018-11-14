@@ -147,9 +147,6 @@
     <ClCompile Include="Model.cpp">
       <Filter>Model</Filter>
     </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Model</Filter>
-    </ClCompile>
     <ClCompile Include="Timer.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
@@ -186,8 +183,14 @@
     <ClCompile Include="ModuleScene.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleFiles.cpp">
+    <ClCompile Include="ModuleSceneLoader.cpp">
       <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentMesh.cpp">
+      <Filter>Scene\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentMaterial.cpp">
+      <Filter>Scene\Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -399,9 +402,6 @@
     <ClInclude Include="Model.h">
       <Filter>Model</Filter>
     </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Model</Filter>
-    </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -438,8 +438,14 @@
     <ClInclude Include="ModuleScene.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleFiles.h">
+    <ClInclude Include="ModuleSceneLoader.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentMesh.h">
+      <Filter>Scene\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentMaterial.h">
+      <Filter>Scene\Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

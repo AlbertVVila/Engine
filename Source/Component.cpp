@@ -1,11 +1,9 @@
 #include "Component.h"
 
-
-
-Component::Component()
+Component::Component(ComponentType type)
 {
+	this->type = type;
 }
-
 
 Component::~Component()
 {

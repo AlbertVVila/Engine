@@ -4,7 +4,7 @@
 #include "ModuleTextures.h"
 #include "ModuleInput.h"
 #include "ModuleCamera.h"
-#include "ModuleFiles.h"
+#include "ModuleSceneLoader.h"
 #include "ModuleProgram.h"
 #include "ModuleEditor.h"
 #include "ModuleTime.h"
@@ -21,7 +21,7 @@ Application::Application()
 	modules.push_back(textures = new ModuleTextures());
 	modules.push_back(input = new ModuleInput());
     modules.push_back(camera = new ModuleCamera());
-	modules.push_back(model = new ModuleFiles());
+	modules.push_back(sceneLoader = new ModuleSceneLoader());
 	modules.push_back(program = new ModuleProgram());
 	modules.push_back(editor = new ModuleEditor());
 	modules.push_back(time = new ModuleTime());

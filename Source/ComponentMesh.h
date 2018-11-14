@@ -4,27 +4,26 @@
 #include "Math/float3.h"
 #include "Math/Quat.h"
 #include <vector>
-
+#include "Component.h"
 struct Texture;
 
-class Mesh
+class ComponentMesh : public Component
 {
 public:
-	Mesh(aiMesh * mesh, aiMatrix4x4 transform);
-	~Mesh();
+	ComponentMesh(aiMesh * mesh = nullptr);
+	~ComponentMesh();
 
-	void Draw(unsigned int shaderProgram, const std::vector<Texture> &textures) const;
+	void Draw(unsigned int shaderProgram, const Texture* texture) const;
+	void SetMesh(const aiMesh *mesh);
+	unsigned int GetMaterialIndex();
 
 public:
-	float3 localPosition = float3::zero;
-	Quat localRotation = Quat::identity;
-	float3 localScale = float3::zero;
 
 	int numIndices = 0;
 	std::vector<float3> vertices;
 
 private:
-	int materialIndex = 0;
+	unsigned int materialIndex = 0;
 	unsigned int VAO = 0;
 	unsigned int VBO = 0;
 	unsigned int EBO = 0;

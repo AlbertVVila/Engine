@@ -18,7 +18,7 @@ public:
 	bool Init();
 	bool CleanUp();
 	void DrawGUI();
-	Texture const Load(const char* path) const;
+	Texture * Load(const char* path) const;
 
 public:
 	int filter_type = LINEAR;

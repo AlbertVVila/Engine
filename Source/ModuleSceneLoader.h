@@ -1,21 +1,28 @@
-#ifndef __ModuleFiles_h__
-#define __ModuleFiles_h__
+#ifndef __ModuleSceneLoader_h__
+#define __ModuleSceneLoader_h__
 
 #include "Module.h"
 #include "Model.h"
 #include <list>
 
+struct aiScene;
 struct Texture;
 
-class ModuleFiles :
+class ModuleSceneLoader :
 	public Module
 {
 public:
-	ModuleFiles();
-	~ModuleFiles();
+	ModuleSceneLoader();
+	~ModuleSceneLoader();
 
 	bool Init();
-	void Load(const char *path);
+	void LoadFile(const char *path);
+	void LoadScene(const aiScene* scene);
+	void ProcessNode(const aiNode * node, const aiScene * scene, const aiMatrix4x4 &parentTransform);
+
+
+
+
 	void DrawModels();
 	void DrawModelProperties();
 	void DrawGUI();
@@ -31,4 +38,4 @@ public:
 	Texture checkersTexture = Texture(0,0,0);
 };
 
-#endif //__ModuleFiles_h__
+#endif //__ModuleSceneLoader_h__

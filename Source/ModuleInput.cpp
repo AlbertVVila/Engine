@@ -1,6 +1,6 @@
 #include "Application.h"
 #include "ModuleInput.h"
-#include "ModuleFiles.h"
+#include "ModuleSceneLoader.h"
 #include "ModuleTextures.h"
 #include "ModuleWindow.h"
 #include "ModuleEditor.h"
@@ -184,11 +184,11 @@ void ModuleInput::DropFile(char* dropped_file) const
 
 	if (extension == "fbx" || extension == "FBX")
 	{
-		App->model->LoadFile(dropped_file);
+		App->sceneLoader->LoadFile(dropped_file);
 	}
 	else if (extension == "png" || extension == "jpg" || extension == "dds")
 	{
-		Texture newTexture = App->textures->Load(dropped_file);
-		App->model->ApplyTexture(newTexture);
+		//Texture newTexture = App->textures->Load(dropped_file);
+		//App->sceneLoader->ApplyTexture(newTexture);
 	}
 }

@@ -27,7 +27,7 @@ Model::~Model()
 
 void Model::LoadModel(const char * path)
 {
-	assert(path != NULL);
+	/*assert(path != NULL);
 	const aiScene* scene = aiImportFile(path, aiProcess_Triangulate);
 	if (scene == NULL)
 	{
@@ -42,107 +42,107 @@ void Model::LoadModel(const char * path)
 		}
 		GetBoundingBox();
 		aiReleaseImport(scene);
-	}
+	}*/
 }
 	
 
 void Model::GenerateMaterialData(aiMaterial * material)
 {
-	aiTextureMapping mapping = aiTextureMapping_UV;
-	aiString file;
-	material->GetTexture(aiTextureType_DIFFUSE, 0, &file, &mapping, 0);
+	//aiTextureMapping mapping = aiTextureMapping_UV;
+	//aiString file;
+	//material->GetTexture(aiTextureType_DIFFUSE, 0, &file, &mapping, 0);
 
-	std::string texturePath(path);
-	texturePath += file.C_Str();
-	//TODO: if texture was already loaded by another material, don't load it again
-	Texture texture = App->textures->Load(texturePath.c_str());
-	textures.push_back(texture);
+	//std::string texturePath(path);
+	//texturePath += file.C_Str();
+	////TODO: if texture was already loaded by another material, don't load it again
+	//Texture texture = App->textures->Load(texturePath.c_str());
+	//textures.push_back(texture);
 }
 
 void Model::Draw() const
 {
-	for (auto& mesh : meshes)
-	{
-		mesh.Draw(App->program->textureProgram, textures);
-	}
+	//for (auto& mesh : meshes)
+	//{
+	//	mesh.Draw(App->program->textureProgram, textures);
+	//}
 }
 
 void Model::DrawProperties()
 {
-	if (ImGui::CollapsingHeader("Model Geometry"))
-	{
-		float3 size = BoundingBox.Size();
-		ImGui::InputFloat3("Size", (float*)&size, 2, ImGuiInputTextFlags_ReadOnly);
+	//if (ImGui::CollapsingHeader("Model Geometry"))
+	//{
+	//	float3 size = BoundingBox.Size();
+	//	ImGui::InputFloat3("Size", (float*)&size, 2, ImGuiInputTextFlags_ReadOnly);
 
-		ImGui::Separator();
-		int numMesh = 0;
-		ImGui::Text("Number of meshes: %d", meshes.size());
-		for (auto& mesh : meshes)
-		{
-			ImGui::PushID("Mesh" + numMesh);
-			if (ImGui::TreeNode("Mesh"))
-			{
-				ImGui::Text("Number of Triangles: %d", mesh.numIndices / 3);
-				ImGui::Separator();
+	//	ImGui::Separator();
+	//	int numMesh = 0;
+	//	ImGui::Text("Number of meshes: %d", meshes.size());
+	//	for (auto& mesh : meshes)
+	//	{
+	//		ImGui::PushID("Mesh" + numMesh);
+	//		if (ImGui::TreeNode("Mesh"))
+	//		{
+	//			ImGui::Text("Number of Triangles: %d", mesh.numIndices / 3);
+	//			ImGui::Separator();
 
-				if (ImGui::TreeNode("Transform"))
-				{
-					ImGui::InputFloat3("Position", (float*)&mesh.localPosition, 2, ImGuiInputTextFlags_ReadOnly);
+	//			if (ImGui::TreeNode("Transform"))
+	//			{
+	//				ImGui::InputFloat3("Position", (float*)&mesh.localPosition, 2, ImGuiInputTextFlags_ReadOnly);
 
-					float3 rotation = mesh.localRotation.ToEulerXYZ();
-					rotation.x = math::RadToDeg(rotation.x);
-					rotation.y = math::RadToDeg(rotation.y);
-					rotation.z = math::RadToDeg(rotation.z);
+	//				float3 rotation = mesh.localRotation.ToEulerXYZ();
+	//				rotation.x = math::RadToDeg(rotation.x);
+	//				rotation.y = math::RadToDeg(rotation.y);
+	//				rotation.z = math::RadToDeg(rotation.z);
 
-					ImGui::InputFloat3("Rotation", (float*)&rotation, 2, ImGuiInputTextFlags_ReadOnly);
+	//				ImGui::InputFloat3("Rotation", (float*)&rotation, 2, ImGuiInputTextFlags_ReadOnly);
 
 
-					ImGui::InputFloat3("Scale", (float*)&mesh.localScale, 2, ImGuiInputTextFlags_ReadOnly);
+	//				ImGui::InputFloat3("Scale", (float*)&mesh.localScale, 2, ImGuiInputTextFlags_ReadOnly);
 
-					ImGui::TreePop();
-				}
+	//				ImGui::TreePop();
+	//			}
 
-				ImGui::TreePop();
-				ImGui::Separator();
-			}
-			ImGui::PopID();
-			++numMesh;
-		}
-	}
-	if (ImGui::CollapsingHeader("Textures"))
-	{
-		for (auto &texture : textures)
-		{
-			ImGui::Text("Size:  Width: %d | Height: %d",texture.width,texture.height);
-			float size = ImGui::GetWindowWidth();
-			ImGui::Image((ImTextureID)texture.id, { size,size });
-		}
-	}
+	//			ImGui::TreePop();
+	//			ImGui::Separator();
+	//		}
+	//		ImGui::PopID();
+	//		++numMesh;
+	//	}
+	//}
+	//if (ImGui::CollapsingHeader("Textures"))
+	//{
+	//	for (auto &texture : textures)
+	//	{
+	//		ImGui::Text("Size:  Width: %d | Height: %d",texture.width,texture.height);
+	//		float size = ImGui::GetWindowWidth();
+	//		ImGui::Image((ImTextureID)texture.id, { size,size });
+	//	}
+	//}
 
 }
 
 void Model::UpdateTexture(Texture texture)
 {
-	for (auto &Oldtexture : textures)
-	{
-		Oldtexture = texture;
-	}
+	//for (auto &Oldtexture : textures)
+	//{
+	//	Oldtexture = texture;
+	//}
 }
 
 void Model::ProcessNode(const aiNode *node, const aiScene *scene, const aiMatrix4x4 &parentTransform)
 {
-	assert(node != NULL);
-	aiMatrix4x4 transform = node->mTransformation*parentTransform;
+	//assert(node != NULL);
+	//aiMatrix4x4 transform = node->mTransformation*parentTransform;
 
-	for (unsigned int i = 0; i < node->mNumMeshes; i++)
-	{
-		aiMesh *mesh = scene->mMeshes[node->mMeshes[i]];
-		meshes.emplace_back(mesh, transform);
-	}
-	for (unsigned int i = 0; i < node->mNumChildren; i++)
-	{
-		ProcessNode(node->mChildren[i], scene, transform);
-	}
+	//for (unsigned int i = 0; i < node->mNumMeshes; i++)
+	//{
+	//	aiMesh *mesh = scene->mMeshes[node->mMeshes[i]];
+	//	meshes.emplace_back(mesh, transform);
+	//}
+	//for (unsigned int i = 0; i < node->mNumChildren; i++)
+	//{
+	//	ProcessNode(node->mChildren[i], scene, transform);
+	//}
 }
 
 void Model::GetBoundingBox()

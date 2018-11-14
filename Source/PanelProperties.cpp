@@ -1,5 +1,5 @@
 #include "PanelProperties.h"
-#include "ModuleFiles.h"
+#include "ModuleSceneLoader.h"
 #include "Application.h"
 
 PanelProperties::PanelProperties()
@@ -18,6 +18,6 @@ void PanelProperties::Draw()
 		ImGui::End();
 		return;
 	}
-	App->model->DrawModelProperties();
+	App->sceneLoader->DrawModelProperties();
 	ImGui::End();
 }

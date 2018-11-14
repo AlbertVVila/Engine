@@ -4,16 +4,20 @@
 #include "Component.h"
 #include "Math/float3.h"
 #include "Math/Quat.h"
+#include "assimp/matrix4x4.h"
+
 class ComponentTransform : public Component
 {
 public:
-	ComponentTransform();
+	ComponentTransform(const aiMatrix4x4 &transform = aiMatrix4x4());
 	~ComponentTransform();
+
+	void AddTransform(const aiMatrix4x4 &transform);
 
 private:
 	float3 position = float3::zero;
 	Quat rotation = Quat::identity;
-	float3 translation = float3::zero;
+	float3 scale = float3::zero;
 };
 
 #endif __ComponentTransform_h__

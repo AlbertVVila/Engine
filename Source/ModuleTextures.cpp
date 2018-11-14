@@ -43,7 +43,7 @@ void ModuleTextures::DrawGUI()
 	ImGui::RadioButton("Nearest", &filter_type, NEAREST);
 }
 
-Texture const ModuleTextures::Load(const char * path) const
+Texture * ModuleTextures::Load(const char * path) const
 {
 	assert(path != NULL);
 	ILuint imageID;
@@ -94,14 +94,14 @@ Texture const ModuleTextures::Load(const char * path) const
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 
-		return Texture(textureID, width, height);
+		return new Texture(textureID, width, height);
 	}
 	else
 	{
 		error = ilGetError();
 		LOG("Error file %s: %s\n", path, iluErrorString(error));
 	}
-	return Texture(0, 0, 0);
+	return nullptr;
 }
 
 

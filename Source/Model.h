@@ -7,7 +7,7 @@
 #include <vector>
 #include <list>
 #include <string>
-#include "Mesh.h"
+#include "ComponentMesh.h"
 
 struct Texture
 {
@@ -39,7 +39,7 @@ public:
 	AABB BoundingBox;
 
 private:
-	std::list<Mesh> meshes;
+	std::list<ComponentMesh> meshes;
 	std::vector<Texture> textures;
 	const char* path;
 };

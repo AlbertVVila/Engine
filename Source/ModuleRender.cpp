@@ -1,7 +1,7 @@
 #include "Application.h"
 #include "ModuleRender.h"
 #include "ModuleCamera.h"
-#include "ModuleFiles.h"
+#include "ModuleScene.h"
 #include "ModuleProgram.h"
 #include "ModuleEditor.h"
 #include "ModuleWindow.h"
@@ -100,7 +100,7 @@ void ModuleRender::DrawModels() const
 	ProjectionMatrix(App->program->textureProgram);
 	ViewMatrix(App->program->textureProgram);
 
-	App->model->DrawModels();
+	App->scene->Draw();
 	glUseProgram(0);
 }
 
