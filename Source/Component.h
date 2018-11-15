@@ -17,6 +17,7 @@ public:
 	Component(GameObject* gameobject, ComponentType type);
 	virtual ~Component();
 
+	virtual void DrawProperties() {};
 	virtual void Enable()
 	{
 		enabled = true;

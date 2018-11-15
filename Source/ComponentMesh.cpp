@@ -5,7 +5,7 @@
 #include <assert.h>
 #include "GL/glew.h"
 
-ComponentMesh::ComponentMesh(GameObject* gameobject, aiMesh * mesh) : Component(gameobject, ComponentType::Mesh)
+ComponentMesh::ComponentMesh(GameObject* gameobject, const aiMesh * mesh) : Component(gameobject, ComponentType::Mesh)
 {
 	if (mesh != nullptr)
 	{

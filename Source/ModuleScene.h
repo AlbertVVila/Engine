@@ -19,6 +19,7 @@ public:
 	GameObject * CreateGameObject(const aiMatrix4x4& transform, const char* filepath, const char* name);
 public:
 	std::vector<GameObject *> gameobjects;
+	int obj_clicked = 0;
 };
 
 #endif __ModuleScene_h__

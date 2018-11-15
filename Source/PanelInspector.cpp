@@ -1,6 +1,7 @@
 #include "PanelInspector.h"
-#include "ModuleSceneLoader.h"
+#include "ModuleScene.h"
 #include "Application.h"
+#include "GameObject.h"
 
 PanelInspector::PanelInspector()
 {
@@ -13,11 +14,26 @@ PanelInspector::~PanelInspector()
 
 void PanelInspector::Draw()
 {
-	if (!ImGui::Begin("Inspector", &enabled))
+	ImGui::Begin("Inspector", &enabled);
+	//if (!ImGui::Begin("Inspector", &enabled))
+	//{
+	//	ImGui::End();
+	//	return;
+	//}
+	if (focus)
 	{
-		ImGui::End();
-		return;
+		focus = false;
+		ImGui::SetWindowFocus();
 	}
-	App->sceneLoader->DrawModelProperties();
+	if (current_gameobject != nullptr)
+	{
+		current_gameobject->DrawProperties();
+	}
 	ImGui::End();
+}
+
+void PanelInspector::Show(GameObject *gameobject)
+{
+	focus = true;
+	current_gameobject = gameobject;
 }

@@ -13,6 +13,7 @@ class PanelConfiguration;
 class PanelAbout;
 class PanelHardware;
 class PanelHierarchy;
+class GameObject;
 
 class ModuleEditor :
 	public Module
@@ -31,7 +32,7 @@ public:
 
 	bool IsCameraFocused() const;
 	void processInput(SDL_Event* event) const;
-
+	void ShowInspector(GameObject *gameobject);
 	void AddFpsLog(float fps) const;
 	void AddLog(const char *log) const;
 

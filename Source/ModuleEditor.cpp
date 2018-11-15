@@ -196,6 +196,14 @@ void ModuleEditor::processInput(SDL_Event * event) const
 	ImGui_ImplSDL2_ProcessEvent(event);
 }
 
+void ModuleEditor::ShowInspector(GameObject * gameobject)
+{
+	if (inspector != nullptr)
+	{
+		inspector->Show(gameobject);
+	}
+}
+
 void ModuleEditor::AddLog(const char *log) const
 {
 	assert(log != NULL);

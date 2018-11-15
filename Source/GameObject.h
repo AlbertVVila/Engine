@@ -16,6 +16,7 @@ public:
 	GameObject(const aiMatrix4x4& transform, const char* filepath, const char* name);
 	~GameObject();
 	void Draw();
+	void DrawProperties();
 	void SetParent(GameObject* parent);
 	void Update();
 	Component * CreateComponent(ComponentType type);

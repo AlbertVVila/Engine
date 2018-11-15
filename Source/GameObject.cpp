@@ -46,6 +46,14 @@ void GameObject::Draw()
 	}
 }
 
+void GameObject::DrawProperties()
+{
+	for (auto &component : components)
+	{
+		component->DrawProperties();
+	}
+}
+
 void GameObject::SetParent(GameObject * parent)
 {
 	this->parent = parent;

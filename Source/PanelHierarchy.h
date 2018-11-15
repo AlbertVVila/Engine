@@ -2,6 +2,7 @@
 #define __PanelHierarchy_h__
 
 #include "Panel.h"
+
 class PanelHierarchy :
 	public Panel
 {
@@ -10,6 +11,7 @@ public:
 	~PanelHierarchy();
 
 	void Draw();
+
 };
 
 #endif __PanelHierarchy_h__

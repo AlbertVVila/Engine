@@ -13,6 +13,7 @@ public:
 	~ComponentTransform();
 
 	void AddTransform(const aiMatrix4x4 &transform);
+	void DrawProperties() override;
 
 public:
 	float3 position = float3::zero;
