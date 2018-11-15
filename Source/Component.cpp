@@ -1,7 +1,9 @@
 #include "Component.h"
+#include "GameObject.h"
 
-Component::Component(ComponentType type)
+Component::Component(GameObject* gameobject, ComponentType type)
 {
+	this->gameobject = gameobject;
 	this->type = type;
 }
 

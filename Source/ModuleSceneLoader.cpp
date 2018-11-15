@@ -46,8 +46,13 @@ bool ModuleSceneLoader::Init()
 	streamLog = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, NULL);
 	streamLog.callback = AddLog;
 	aiAttachLogStream(&streamLog);
+ 
+	return true;
+}
 
-	LoadFile(BAKERHOUSE); 
+bool ModuleSceneLoader::Start()
+{
+	LoadFile(BAKERHOUSE);
 	return true;
 }
 
@@ -64,6 +69,7 @@ void ModuleSceneLoader::LoadFile(const char *path)
 	}
 	else
 	{
+		filepath = path;
 		LoadScene(scene);
 	}
 	//DeleteModels();
@@ -86,11 +92,11 @@ void ModuleSceneLoader::LoadScene(const aiScene * scene)
 	aiReleaseImport(scene);
 }
 
-void ModuleSceneLoader::ProcessNode(const aiNode * node, const aiScene * scene, const aiMatrix4x4 & parentTransform)
+GameObject* ModuleSceneLoader::ProcessNode(const aiNode * node, const aiScene * scene, const aiMatrix4x4 & parentTransform)
 {
 	assert(node != nullptr); assert(scene != nullptr);
 	aiMatrix4x4 transform = node->mTransformation*parentTransform;
-	GameObject * gameobject = App->scene->CreateGameObject(transform);
+	GameObject * gameobject = App->scene->CreateGameObject(transform, filepath, node->mName.C_Str());
 	
 	for (unsigned int i = 0; i < node->mNumMeshes; i++)
 	{
@@ -102,8 +108,10 @@ void ModuleSceneLoader::ProcessNode(const aiNode * node, const aiScene * scene, 
 	}
 	for (unsigned int i = 0; i < node->mNumChildren; i++)
 	{
-		ProcessNode(node->mChildren[i], scene, transform);
+		GameObject * child = ProcessNode(node->mChildren[i], scene, transform);
+		child->SetParent(gameobject);
 	}
+	return gameobject;
 }
 
 void ModuleSceneLoader::DrawModels()

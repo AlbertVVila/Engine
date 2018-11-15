@@ -1,6 +1,8 @@
 #ifndef __Component_h__
 #define __Component_h__
 
+class GameObject;
+
 enum ComponentType
 {
 	Transform,
@@ -12,7 +14,7 @@ enum ComponentType
 class Component
 {
 public:
-	Component(ComponentType type);
+	Component(GameObject* gameobject, ComponentType type);
 	virtual ~Component();
 
 	virtual void Enable()
@@ -27,6 +29,7 @@ public:
 	}
 
 public:
+	GameObject* gameobject = nullptr;
 	ComponentType type;
 	bool enabled = true;
 };

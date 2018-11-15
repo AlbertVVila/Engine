@@ -12,6 +12,7 @@ class PanelProperties;
 class PanelConfiguration;
 class PanelAbout;
 class PanelHardware;
+class PanelHierarchy;
 
 class ModuleEditor :
 	public Module
@@ -41,6 +42,7 @@ public:
 	PanelProperties *properties = nullptr;
 	PanelAbout *about = nullptr;
 	PanelHardware *hardware = nullptr;
+	PanelHierarchy *hierarchy = nullptr;
 
 private:
 	std::list<Panel*> panels;

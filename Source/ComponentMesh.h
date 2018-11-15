@@ -10,7 +10,7 @@ struct Texture;
 class ComponentMesh : public Component
 {
 public:
-	ComponentMesh(aiMesh * mesh = nullptr);
+	ComponentMesh(GameObject* gameobject, aiMesh * mesh = nullptr);
 	~ComponentMesh();
 
 	void Draw(unsigned int shaderProgram, const Texture* texture) const;

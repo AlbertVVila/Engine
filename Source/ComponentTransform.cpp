@@ -1,7 +1,7 @@
 #include "ComponentTransform.h"
 #include <assimp/scene.h> 
 
-ComponentTransform::ComponentTransform(const aiMatrix4x4 &transform) : Component(ComponentType::Transform)
+ComponentTransform::ComponentTransform(GameObject* gameobject, const aiMatrix4x4 &transform) : Component(gameobject, ComponentType::Transform)
 {
 	AddTransform(transform);
 }

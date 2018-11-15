@@ -10,13 +10,14 @@ class ComponentMaterial :
 	public Component
 {
 public:
-	ComponentMaterial(const aiMaterial * material = nullptr);
+	ComponentMaterial(GameObject* gameobject, const aiMaterial * material = nullptr);
 	~ComponentMaterial();
 	
 	void SetMaterial(const aiMaterial * material);
 	Texture * GetTexture() const;
+	unsigned int GetShader();
 public:
-	unsigned int shader;
+	unsigned int shader = 0;
 	Texture *texture = nullptr;
 };
 

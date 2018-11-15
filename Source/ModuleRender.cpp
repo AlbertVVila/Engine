@@ -96,7 +96,6 @@ void ModuleRender::DrawModels() const
 	//TODO: Move model transform to each model
 	glUseProgram(App->program->textureProgram);
 
-	ModelTransform(App->program->textureProgram);
 	ProjectionMatrix(App->program->textureProgram);
 	ViewMatrix(App->program->textureProgram);
 

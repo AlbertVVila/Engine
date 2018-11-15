@@ -13,18 +13,26 @@ class GameObject
 {
 public:
 	GameObject();
-	GameObject(const aiMatrix4x4& transform);
+	GameObject(const aiMatrix4x4& transform, const char* filepath, const char* name);
 	~GameObject();
 	void Draw();
-
+	void SetParent(GameObject* parent);
 	void Update();
 	Component * CreateComponent(ComponentType type);
+	Component * GetComponent(ComponentType type);
+	std::vector<Component *> GetComponents(ComponentType type);
+	std::string GetFileFolder() const;
 
-	Texture * GetMaterialTexture() const;
+private:
+	void ModelTransform(unsigned int shader) const;
 
 public:
-	//ComponentTransform* transform = nullptr;
+	ComponentTransform * transform = nullptr;
+	GameObject *parent = nullptr;
 	std::vector<Component*> components;
+	std::vector<GameObject*> children;
+	const char * filepath = nullptr; // Change to string 
+	std::string name = "GameObject";
 };
 
 #endif __GameObject_h__

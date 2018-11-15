@@ -166,6 +166,7 @@
     <ClInclude Include="PanelConfiguration.h" />
     <ClInclude Include="PanelConsole.h" />
     <ClInclude Include="PanelHardware.h" />
+    <ClInclude Include="PanelHierarchy.h" />
     <ClInclude Include="PanelProperties.h" />
     <ClInclude Include="PanelScene.h" />
     <ClInclude Include="Point.h" />
@@ -234,6 +235,7 @@
     <ClCompile Include="PanelConfiguration.cpp" />
     <ClCompile Include="PanelConsole.cpp" />
     <ClCompile Include="PanelHardware.cpp" />
+    <ClCompile Include="PanelHierarchy.cpp" />
     <ClCompile Include="PanelProperties.cpp" />
     <ClCompile Include="PanelScene.cpp" />
     <ClCompile Include="Timer.cpp" />

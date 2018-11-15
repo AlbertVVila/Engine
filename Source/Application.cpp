@@ -46,7 +46,11 @@ bool Application::Init()
 	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret; ++it)
 		ret = (*it)->Init();
 
-	LOG("Init time: %d ms",t.Stop());
+	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret; ++it)
+		ret = (*it)->Start();
+
+	LOG("Init + Start time: %d ms",t.Stop());
+
 	return ret;
 }
 

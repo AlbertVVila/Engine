@@ -14,8 +14,9 @@ public:
 	ModuleScene();
 	~ModuleScene();
 	void Draw();
+	void DrawHierarchy();
 
-	GameObject * CreateGameObject(const aiMatrix4x4& transform);
+	GameObject * CreateGameObject(const aiMatrix4x4& transform, const char* filepath, const char* name);
 public:
 	std::vector<GameObject *> gameobjects;
 };

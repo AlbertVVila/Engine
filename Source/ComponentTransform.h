@@ -9,12 +9,12 @@
 class ComponentTransform : public Component
 {
 public:
-	ComponentTransform(const aiMatrix4x4 &transform = aiMatrix4x4());
+	ComponentTransform(GameObject* gameobject, const aiMatrix4x4 &transform = aiMatrix4x4());
 	~ComponentTransform();
 
 	void AddTransform(const aiMatrix4x4 &transform);
 
-private:
+public:
 	float3 position = float3::zero;
 	Quat rotation = Quat::identity;
 	float3 scale = float3::zero;

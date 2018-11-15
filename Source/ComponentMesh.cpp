@@ -5,7 +5,7 @@
 #include <assert.h>
 #include "GL/glew.h"
 
-ComponentMesh::ComponentMesh(aiMesh * mesh) : Component(ComponentType::Mesh)
+ComponentMesh::ComponentMesh(GameObject* gameobject, aiMesh * mesh) : Component(gameobject, ComponentType::Mesh)
 {
 	if (mesh != nullptr)
 	{
@@ -38,7 +38,10 @@ void ComponentMesh::Draw(unsigned int shaderProgram, const Texture* texture) con
 	//}
 	//else
 	//{
-	glBindTexture(GL_TEXTURE_2D, texture->id);
+	if (texture != nullptr)
+	{
+		glBindTexture(GL_TEXTURE_2D, texture->id);
+	}
 	//}
 	glUniform1i(glGetUniformLocation(shaderProgram, "texture0"), 0);
 

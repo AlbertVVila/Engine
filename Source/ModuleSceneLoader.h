@@ -7,6 +7,7 @@
 
 struct aiScene;
 struct Texture;
+class GameObject;
 
 class ModuleSceneLoader :
 	public Module
@@ -16,9 +17,10 @@ public:
 	~ModuleSceneLoader();
 
 	bool Init();
+	bool Start();
 	void LoadFile(const char *path);
 	void LoadScene(const aiScene* scene);
-	void ProcessNode(const aiNode * node, const aiScene * scene, const aiMatrix4x4 &parentTransform);
+	GameObject* ProcessNode(const aiNode * node, const aiScene * scene, const aiMatrix4x4 &parentTransform);
 
 
 
@@ -36,6 +38,7 @@ public:
 	std::list<Model> models;
 	bool checkers = false;
 	Texture checkersTexture = Texture(0,0,0);
+	const char *filepath = nullptr;
 };
 
 #endif //__ModuleSceneLoader_h__
