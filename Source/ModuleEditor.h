@@ -8,7 +8,7 @@
 class Panel;
 class PanelConsole;
 class PanelScene;
-class PanelProperties;
+class PanelInspector;
 class PanelConfiguration;
 class PanelAbout;
 class PanelHardware;
@@ -39,7 +39,7 @@ public:
 	PanelConsole *console = nullptr;
 	PanelScene *scene = nullptr;	
 	PanelConfiguration *configuration = nullptr;
-	PanelProperties *properties = nullptr;
+	PanelInspector *inspector = nullptr;
 	PanelAbout *about = nullptr;
 	PanelHardware *hardware = nullptr;
 	PanelHierarchy *hierarchy = nullptr;
