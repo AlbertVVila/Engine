@@ -17,11 +17,15 @@ public:
 	~GameObject();
 	void Draw();
 	void DrawProperties();
+	void DrawHierarchy(int &obj_clicked, int i);
 	void SetParent(GameObject* parent);
 	void Update();
+
 	Component * CreateComponent(ComponentType type);
 	Component * GetComponent(ComponentType type);
 	std::vector<Component *> GetComponents(ComponentType type);
+	void DeleteComponent(Component * component);
+
 	std::string GetFileFolder() const;
 
 private:

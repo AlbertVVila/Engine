@@ -17,6 +17,8 @@ public:
 	Component(GameObject* gameobject, ComponentType type);
 	virtual ~Component();
 
+	bool DrawComponentState();
+
 	virtual void DrawProperties() {};
 	virtual void Enable()
 	{
@@ -28,6 +30,8 @@ public:
 	{
 		enabled = false;
 	}
+
+	void Remove();
 
 public:
 	GameObject* gameobject = nullptr;

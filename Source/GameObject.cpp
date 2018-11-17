@@ -7,7 +7,10 @@
 #include "ComponentMaterial.h"
 #include "Application.h"
 #include "ModuleProgram.h"
+#include "ModuleEditor.h"
 #include "GL/glew.h"
+#include "imgui.h"
+
 GameObject::GameObject()
 {
 	/*components.push_back(transform = new ComponentTransform());*/
@@ -47,6 +50,11 @@ void GameObject::Draw()
 			((ComponentMesh*)mesh)->Draw(App->program->defaultProgram, texture);
 		}
 	}
+	//Now do it for each child
+	for (const auto &child : children)
+	{
+		child->Draw();
+	}
 }
 
 void GameObject::DrawProperties()
@@ -55,6 +63,29 @@ void GameObject::DrawProperties()
 	{
 		component->DrawProperties();
 	}
+}
+
+void GameObject::DrawHierarchy(int &obj_clicked, int i)
+{
+	ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow
+		| ImGuiTreeNodeFlags_OpenOnDoubleClick | (obj_clicked == i ? ImGuiTreeNodeFlags_Selected : 0);
+
+	ImGui::PushID(this);
+	bool obj_open = ImGui::TreeNodeEx((void*)(intptr_t)i, node_flags, name.c_str());
+	if (ImGui::IsItemClicked())
+	{
+		obj_clicked = i;
+		App->editor->ShowInspector(this);
+	}
+	if (obj_open)
+	{
+		for (auto &child : children)
+		{
+			child->DrawHierarchy(obj_clicked, ++i);
+		}
+		ImGui::TreePop();
+	}
+	ImGui::PopID();
 }
 
 void GameObject::SetParent(GameObject * parent)
@@ -106,6 +137,19 @@ std::vector<Component *> GameObject::GetComponents(ComponentType type)
 		}
 	}
 	return list;
+}
+
+void GameObject::DeleteComponent(Component * component)
+{
+	for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+	{
+		if (*it == component)
+		{
+			components.erase(it);
+			RELEASE(component);
+			return;
+		}
+	}
 }
 
 Component * GameObject::GetComponent(ComponentType type)

@@ -3,7 +3,6 @@
 
 #include "Module.h"
 #include "assimp/matrix4x4.h"
-#include <vector>
 
 class GameObject;
 
@@ -18,8 +17,8 @@ public:
 
 	GameObject * CreateGameObject(const aiMatrix4x4& transform, const char* filepath, const char* name);
 public:
-	std::vector<GameObject *> gameobjects;
-	int obj_clicked = 0;
+	GameObject* root = nullptr;
+	int obj_clicked = -1;
 };
 
 #endif __ModuleScene_h__

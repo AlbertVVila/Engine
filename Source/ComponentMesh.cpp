@@ -60,7 +60,12 @@ void ComponentMesh::DrawProperties()
 	ImGui::PushID(this);
 	if (ImGui::CollapsingHeader("Mesh"))
 	{
-		ImGui::Checkbox("Active", &enabled);
+		bool removed = Component::DrawComponentState();
+		if (removed)
+		{
+			ImGui::PopID();
+			return;
+		}
 		ImGui::Text("Num vertices : %d", vertices.size());
 		ImGui::Text("Num triangles : %d", numIndices / 3);
 		ImGui::Separator();
