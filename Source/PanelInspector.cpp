@@ -14,12 +14,11 @@ PanelInspector::~PanelInspector()
 
 void PanelInspector::Draw()
 {
-	ImGui::Begin("Inspector", &enabled);
-	//if (!ImGui::Begin("Inspector", &enabled))
-	//{
-	//	ImGui::End();
-	//	return;
-	//}
+	if (!ImGui::Begin("Inspector", &enabled))
+	{
+		ImGui::End();
+		return;
+	}
 	if (focus)
 	{
 		focus = false;

@@ -32,7 +32,7 @@ void GameObject::Draw()
 	unsigned int shader = 0;
 	Texture * texture = nullptr;
 
-	if (material != nullptr)
+	if (material != nullptr && material->enabled)
 	{
 		shader = material->GetShader();
 		texture = material->GetTexture();
@@ -42,7 +42,10 @@ void GameObject::Draw()
 	std::vector<Component*> meshes = GetComponents(ComponentType::Mesh);
 	for (auto &mesh: meshes)
 	{
-		((ComponentMesh*)mesh)->Draw(App->program->defaultProgram, texture);
+		if (mesh->enabled)
+		{
+			((ComponentMesh*)mesh)->Draw(App->program->defaultProgram, texture);
+		}
 	}
 }
 

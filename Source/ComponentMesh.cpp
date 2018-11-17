@@ -4,6 +4,7 @@
 #include "ModuleSceneLoader.h"
 #include <assert.h>
 #include "GL/glew.h"
+#include "Imgui/imgui.h"
 
 ComponentMesh::ComponentMesh(GameObject* gameobject, const aiMesh * mesh) : Component(gameobject, ComponentType::Mesh)
 {
@@ -52,6 +53,19 @@ void ComponentMesh::Draw(unsigned int shaderProgram, const Texture* texture) con
 	glBindVertexArray(0);
 	// Desactivem Textura
 	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void ComponentMesh::DrawProperties()
+{
+	ImGui::PushID(this);
+	if (ImGui::CollapsingHeader("Mesh"))
+	{
+		ImGui::Checkbox("Active", &enabled);
+		ImGui::Text("Num vertices : %d", vertices.size());
+		ImGui::Text("Num triangles : %d", numIndices / 3);
+		ImGui::Separator();
+	}
+	ImGui::PopID();
 }
 
 void ComponentMesh::SetMesh(const aiMesh * mesh)

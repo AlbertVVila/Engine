@@ -16,6 +16,9 @@ public:
 	void SetMaterial(const aiMaterial * material);
 	Texture * GetTexture() const;
 	unsigned int GetShader();
+	void DrawProperties() override;
+
+
 public:
 	unsigned int shader = 0;
 	Texture *texture = nullptr;

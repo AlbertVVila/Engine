@@ -3,6 +3,7 @@
 #include "ModuleProgram.h"
 #include "ModuleTextures.h"
 #include "GameObject.h"
+#include "Imgui/imgui.h"
 
 ComponentMaterial::ComponentMaterial(GameObject* gameobject, const aiMaterial * material) : Component(gameobject, ComponentType::Material)
 {
@@ -38,4 +39,19 @@ Texture * ComponentMaterial::GetTexture() const
 unsigned int ComponentMaterial::GetShader()
 {
 	return shader;
+}
+
+void ComponentMaterial::DrawProperties()
+{
+	ImGui::PushID(this);
+	if (ImGui::CollapsingHeader("Material"))
+	{
+		ImGui::Checkbox("Active", &enabled);
+		ImGui::Text("Shader: PlaceHolder");
+		ImGui::Text("Texture width:%d height:%d", texture->width, texture->height);
+		float size = ImGui::GetWindowWidth();
+		ImGui::Image((ImTextureID)texture->id, { size,size });
+		ImGui::Separator();
+	}
+	ImGui::PopID();
 }

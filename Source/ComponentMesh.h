@@ -14,6 +14,7 @@ public:
 	~ComponentMesh();
 
 	void Draw(unsigned int shaderProgram, const Texture* texture) const;
+	void DrawProperties() override;
 	void SetMesh(const aiMesh *mesh);
 	unsigned int GetMaterialIndex();
 
