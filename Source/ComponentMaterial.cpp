@@ -9,27 +9,40 @@
 ComponentMaterial::ComponentMaterial(GameObject* gameobject, const aiMaterial * material) : Component(gameobject, ComponentType::Material)
 {
 	this->shader = App->program->textureProgram;
-	if (material != nullptr)
-	{
-		SetMaterial(material);
-	}
+	SetMaterial(material);
 }
 
 ComponentMaterial::~ComponentMaterial()
 {
-	glDeleteTextures(1, (GLuint*)&texture->id);
+	DeleteTexture();
+}
+
+void ComponentMaterial::DeleteTexture()
+{
+	if (texture != nullptr)
+	{
+		glDeleteTextures(1, (GLuint*)&texture->id);
+	}
 	RELEASE(texture);
 }
 
 void ComponentMaterial::SetMaterial(const aiMaterial * material)
 {
-	aiTextureMapping mapping = aiTextureMapping_UV;
-	aiString file;
-	material->GetTexture(aiTextureType_DIFFUSE, 0, &file, &mapping, 0);
-	//TODO: Relative path 
-	std::string texturePath(gameobject->GetFileFolder());
-	texturePath += file.C_Str();
+	std::string texturePath;
+	if (material != nullptr)
+	{
+		aiTextureMapping mapping = aiTextureMapping_UV;
+		aiString file;
+		material->GetTexture(aiTextureType_DIFFUSE, 0, &file, &mapping, 0);
+		texturePath =gameobject->GetFileFolder() + file.C_Str();
+	}
+	else
+	{
+		texturePath = "checkersTexture.jpg";
+	}
+
 	//TODO: if texture was already loaded by another material, don't load it again
+	DeleteTexture();
 	texture = App->textures->Load(texturePath.c_str());
 	//textures.push_back(texture);
 }

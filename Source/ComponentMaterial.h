@@ -12,6 +12,8 @@ class ComponentMaterial :
 public:
 	ComponentMaterial(GameObject* gameobject, const aiMaterial * material = nullptr);
 	~ComponentMaterial();
+
+	void DeleteTexture();
 	
 	void SetMaterial(const aiMaterial * material);
 	Texture * GetTexture() const;

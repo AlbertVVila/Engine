@@ -3,9 +3,9 @@
 
 class GameObject;
 
-enum ComponentType
+enum ComponentType //TODO: enum class
 {
-	Transform,
+	Transform = 0,
 	Mesh,
 	Material,
 	Light
