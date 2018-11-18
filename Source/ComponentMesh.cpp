@@ -145,10 +145,36 @@ void ComponentMesh::SetMesh(const aiMesh * mesh)
 
 	numIndices = mesh->mNumFaces * 3;
 	materialIndex = mesh->mMaterialIndex;
+	ComputeBBox();
 }
 
 unsigned int ComponentMesh::GetMaterialIndex()
 {
 	return materialIndex;
+}
+
+void ComponentMesh::ComputeBBox()
+{
+	float3 min, max;
+	min = max = vertices[0];
+
+	for (auto &vertice : vertices)
+	{
+		min.x = MIN(min.x, vertice.x);
+		min.y = MIN(min.y, vertice.y);
+		min.z = MIN(min.z, vertice.z);
+
+		max.x = MAX(max.x, vertice.x);
+		max.y = MAX(max.y, vertice.y);
+		max.z = MAX(max.z, vertice.z);
+
+	}
+	boundingBox.minPoint = min;
+	boundingBox.maxPoint = max;
+}
+
+AABB ComponentMesh::GetBoundingBox() const
+{
+	return boundingBox;
 }
 

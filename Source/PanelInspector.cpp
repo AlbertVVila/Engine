@@ -49,6 +49,10 @@ void PanelInspector::Draw()
 
 void PanelInspector::Show(GameObject *gameobject)
 {
+	if (current_gameobject != nullptr)
+	{
+		current_gameobject->DisableBox();
+	}
 	focus = true;
 	current_gameobject = gameobject;
 }

@@ -95,7 +95,7 @@ void ModuleSceneLoader::LoadScene(const aiScene * scene)
 GameObject* ModuleSceneLoader::ProcessNode(const aiNode * node, const aiScene * scene, const aiMatrix4x4 & parentTransform)
 {
 	assert(node != nullptr); assert(scene != nullptr);
-	aiMatrix4x4 transform = node->mTransformation*parentTransform;
+	aiMatrix4x4 transform = parentTransform * node->mTransformation;
 	GameObject * gameobject = App->scene->CreateGameObject(transform, filepath, node->mName.C_Str());
 	
 	for (unsigned int i = 0; i < node->mNumMeshes; i++)

@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "assimp/matrix4x4.h"
+#include "Math/float4x4.h"
 
 class Component;
 class ComponentTransform;
@@ -22,14 +23,22 @@ public:
 	void Update();
 
 	Component * CreateComponent(ComponentType type);
-	Component * GetComponent(ComponentType type);
-	std::vector<Component *> GetComponents(ComponentType type);
+	Component * GetComponent(ComponentType type) const;
+	std::vector<Component *> GetComponents(ComponentType type) const;
 	void DeleteComponent(Component * component);
 
 	std::string GetFileFolder() const;
+	float4x4 GetGlobalTransform() const;
+	void DisableBox();
+
 
 private:
+	float4x4 GetLocalTransform() const;
 	void ModelTransform(unsigned int shader) const;
+	AABB GetBoundingBox() const;
+
+	void DrawBBox() const;
+
 
 public:
 	ComponentTransform * transform = nullptr;
@@ -38,6 +47,11 @@ public:
 	std::vector<GameObject*> children;
 	const char * filepath = nullptr; // Change to string 
 	std::string name = "GameObject";
+
+private:
+	bool drawBBox = false;
+
+
 };
 
 #endif __GameObject_h__

@@ -3,6 +3,7 @@
 #include <assimp/mesh.h>
 #include "Math/float3.h"
 #include "Math/Quat.h"
+#include "Geometry/AABB.h"
 #include <vector>
 #include "Component.h"
 struct Texture;
@@ -18,6 +19,9 @@ public:
 	void SetMesh(const aiMesh *mesh);
 	unsigned int GetMaterialIndex();
 
+	void ComputeBBox();
+	AABB GetBoundingBox() const;
+
 public:
 
 	int numIndices = 0;
@@ -28,6 +32,7 @@ private:
 	unsigned int VAO = 0;
 	unsigned int VBO = 0;
 	unsigned int EBO = 0;
+	AABB boundingBox;
 };
 
 #endif //__Mesh_h__

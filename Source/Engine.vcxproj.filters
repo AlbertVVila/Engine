@@ -487,16 +487,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Game\Default.fs">
+    <None Include="..\Game\Default.fs">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Game\Default.vs">
+    <None Include="..\Game\Default.vs">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Game\Texture.fs">
+    <None Include="..\Game\Texture.fs">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="Game\Texture.vs">
+    <None Include="..\Game\Texture.vs">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

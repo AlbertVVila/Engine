@@ -27,11 +27,17 @@ bool ModuleRender::Init()
 
 	glewInit();
 	InitOpenGL();
-	InitFrustum();
 
-	CreateFrameBuffer();
 	SDL_GL_SetSwapInterval((int)vsync);
 
+	return true;
+}
+
+bool ModuleRender::Start()
+{
+	InitFrustum();
+	CreateFrameBuffer(); //TODO: move frustum and view to camera
+	CreateBlockUniforms();
 	return true;
 }
 
@@ -58,9 +64,12 @@ update_status ModuleRender::Update()
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 
-	DrawModels();
+	ProjectionMatrix();
+	ViewMatrix();
+
+	App->scene->Draw();
+
 	DrawGizmos();
-	
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	return UPDATE_CONTINUE;
@@ -80,6 +89,7 @@ bool ModuleRender::CleanUp()
 	LOG("Destroying renderer");
 	glDeleteFramebuffers(1, &FBO);
 	glDeleteRenderbuffers(1, &RBO);
+	glDeleteBuffers(1, &UBO);
 	return true;
 }
 
@@ -90,30 +100,18 @@ void ModuleRender::OnResize()
 	CreateFrameBuffer(); //We recreate framebuffer with new window size
 }
 
-void ModuleRender::DrawModels() const
-{
-	//For now all models have same transformations
-	//TODO: Move model transform to each model
-	glUseProgram(App->program->textureProgram);
-
-	ProjectionMatrix(App->program->textureProgram);
-	ViewMatrix(App->program->textureProgram);
-
-	App->scene->Draw();
-	glUseProgram(0);
-}
 
 void ModuleRender::DrawGizmos() const
 {
-	//TODO: Use block uniforms for fixed projection and view matrix
-	glUseProgram(App->program->defaultProgram);
 
-	ModelTransform(App->program->defaultProgram);
-	ProjectionMatrix(App->program->defaultProgram);
-	ViewMatrix(App->program->defaultProgram);
+	glUseProgram(App->program->defaultProgram);
+	math::float4x4 model = math::float4x4::identity;
+	glUniformMatrix4fv(glGetUniformLocation(App->program->defaultProgram,
+		"model"), 1, GL_TRUE, &model[0][0]);
 
 	DrawLines();
 	DrawAxis();
+
 	glUseProgram(0);
 }
 
@@ -261,6 +259,22 @@ void ModuleRender::CreateFrameBuffer()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
+void ModuleRender::CreateBlockUniforms()
+{
+	unsigned int uniformBlockIndexDefault = glGetUniformBlockIndex(App->program->defaultProgram, "Matrices");
+	unsigned int uniformBlockIndexTexture = glGetUniformBlockIndex(App->program->textureProgram, "Matrices");
+
+	glUniformBlockBinding(App->program->defaultProgram, uniformBlockIndexDefault, 0);
+	glUniformBlockBinding(App->program->textureProgram, uniformBlockIndexTexture, 0);
+
+	glGenBuffers(1, &UBO);
+	glBindBuffer(GL_UNIFORM_BUFFER, UBO);
+	glBufferData(GL_UNIFORM_BUFFER, 2 * sizeof(float4x4), NULL, GL_STATIC_DRAW);
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+	glBindBufferRange(GL_UNIFORM_BUFFER, 0, UBO, 0, 2 * sizeof(float4x4));
+}
+
 void ModuleRender::DrawGUI()
 {
 	if (ImGui::Checkbox("Depth Test", &depthTest))
@@ -292,25 +306,23 @@ void ModuleRender::DrawGUI()
 	}
 }
 
-void ModuleRender::ViewMatrix(unsigned int shader) const
+void ModuleRender::ViewMatrix() const
 {
 	math::float4x4 view = LookAt(App->camera->cameraPos, App->camera->cameraPos
 		+ App->camera->cameraFront, float3::unitY);
-	glUniformMatrix4fv(glGetUniformLocation(shader,
-		"view"), 1, GL_TRUE, &view[0][0]);
+	view.Transpose();
+	glBindBuffer(GL_UNIFORM_BUFFER, UBO);
+	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(float4x4), sizeof(float4x4), &view[0][0]);
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
-void ModuleRender::ProjectionMatrix(unsigned int shader) const
+void ModuleRender::ProjectionMatrix() const
 {
-	glUniformMatrix4fv(glGetUniformLocation(shader,
-		"proj"), 1, GL_TRUE, &frustum.ProjectionMatrix()[0][0]);
-}
-
-void ModuleRender::ModelTransform(unsigned int shader) const
-{
-	math::float4x4 model = math::float4x4::identity;
-	glUniformMatrix4fv(glGetUniformLocation(shader,
-		"model"), 1, GL_TRUE, &model[0][0]);
+	float4x4 projection = frustum.ProjectionMatrix();
+	projection.Transpose();
+	glBindBuffer(GL_UNIFORM_BUFFER, UBO);
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(float4x4), &projection[0][0]);
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
 math::float4x4 ModuleRender::LookAt(math::float3 OBS, math::float3 VRP, math::float3 up) const

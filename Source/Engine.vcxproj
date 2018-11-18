@@ -241,10 +241,10 @@
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Game\Default.fs" />
-    <None Include="Game\Default.vs" />
-    <None Include="Game\Texture.fs" />
-    <None Include="Game\Texture.vs" />
+    <None Include="..\Game\Default.fs" />
+    <None Include="..\Game\Default.vs" />
+    <None Include="..\Game\Texture.fs" />
+    <None Include="..\Game\Texture.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
