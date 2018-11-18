@@ -31,11 +31,17 @@ void ComponentTransform::DrawProperties()
 	if (ImGui::CollapsingHeader("Local Transformation"))
 	{
 		ImGui::DragFloat3("Position", (float*)&position, 0.1f, -1000.f, 1000.f);
+
 		float3 eulerRotation = rotation.ToEulerXYZ();
 		eulerRotation.x = math::RadToDeg(eulerRotation.x);
 		eulerRotation.y = math::RadToDeg(eulerRotation.y);
 		eulerRotation.z = math::RadToDeg(eulerRotation.z);
-		ImGui::DragFloat3("Rotation", (float*)&eulerRotation, 0.5, 0, 360);
+
+		ImGui::DragFloat3("Rotation", (float*)&eulerRotation, 0.5f, -180.f, 180.f);
+
+		rotation = rotation.FromEulerXYZ(math::DegToRad(eulerRotation.x), 
+			math::DegToRad(eulerRotation.y), math::DegToRad(eulerRotation.z));
+
 		ImGui::DragFloat3("Scale", (float*)&scale, 0.1f, 0.01f, 100.f);
 		ImGui::Separator();
 	}

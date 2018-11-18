@@ -220,8 +220,11 @@ AABB GameObject::GetBoundingBox() const
 	{
 		bbox.Enclose(((ComponentMesh *)mesh)->GetBoundingBox());
 	}
-	//bbox.minPoint = GetLocalTransform().TransformPos(bbox.minPoint);
-	//bbox.maxPoint = GetLocalTransform().TransformPos(bbox.maxPoint);
+	float4x4 globaltransform = GetGlobalTransform();
+	float3 point1 = globaltransform.TransformPos(bbox.minPoint);
+	float3 point2 = globaltransform.TransformPos(bbox.maxPoint);
+	bbox.minPoint = point1.Min(point2);
+	bbox.maxPoint = point1.Max(point2);
 
 	for (const auto &child : children)
 	{
@@ -266,7 +269,7 @@ void GameObject::DrawBBox() const
 
 	float4x4 boxtransform = float4x4::FromTRS(bbox.CenterPoint(), Quat::identity, bbox.Size());
 	glUniformMatrix4fv(glGetUniformLocation(App->program->defaultProgram,
-		"model"), 1, GL_TRUE, &(GetGlobalTransform()*boxtransform)[0][0]);
+		"model"), 1, GL_TRUE, &(boxtransform)[0][0]);
 
 	float green[4] = { 0.0f, 1.0f, 0.0f, 1.0f };
 	glUniform4fv(glGetUniformLocation(App->program->defaultProgram,

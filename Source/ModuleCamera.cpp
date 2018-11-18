@@ -79,8 +79,16 @@ void ModuleCamera::Move()
 void ModuleCamera::Rotate()
 {
 	float deltaPitch = App->input->GetMouseMotion().y*rotationSpeed; 
-	pitch = deltaPitch <0? MAX(-89, pitch - deltaPitch) : MIN(89, pitch - deltaPitch);
-
+	pitch -= deltaPitch;
+	if (pitch > 0)
+	{
+		pitch = MIN(89, pitch);
+	}
+	else
+	{
+		pitch = MAX(-89, pitch);
+	}
+	LOG("pitch:%f", pitch);
 	yaw += App->input->GetMouseMotion().x*rotationSpeed;
 	ComputeEulerAngles();
 }
