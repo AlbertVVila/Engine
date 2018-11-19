@@ -88,7 +88,6 @@ void ModuleCamera::Rotate()
 	{
 		pitch = MAX(-89, pitch);
 	}
-	LOG("pitch:%f", pitch);
 	yaw += App->input->GetMouseMotion().x*rotationSpeed;
 	ComputeEulerAngles();
 }

@@ -18,6 +18,7 @@ public:
 public:
 	float3 position = float3::zero;
 	Quat rotation = Quat::identity;
+	float3 eulerRotation = float3::zero;
 	float3 scale = float3::zero;
 };
 

@@ -23,7 +23,11 @@ void ComponentTransform::AddTransform(const aiMatrix4x4 & transform)
 
 	position = { translation.x, translation.y, translation.z };
 	scale = { scaling.x, scaling.y, scaling.z };
-	rotation = Quat(airotation.x, airotation.y, airotation.z, airotation.w);
+	//rotation = Quat(airotation.x, airotation.y, airotation.z, airotation.w);
+	eulerRotation = rotation.ToEulerXYZ();
+	eulerRotation.x = math::RadToDeg(eulerRotation.x);
+	eulerRotation.y = math::RadToDeg(eulerRotation.y);
+	eulerRotation.z = math::RadToDeg(eulerRotation.z);
 }
 
 void ComponentTransform::DrawProperties()
@@ -32,14 +36,9 @@ void ComponentTransform::DrawProperties()
 	{
 		ImGui::DragFloat3("Position", (float*)&position, 0.1f, -1000.f, 1000.f);
 
-		float3 eulerRotation = rotation.ToEulerXYZ();
-		eulerRotation.x = math::RadToDeg(eulerRotation.x);
-		eulerRotation.y = math::RadToDeg(eulerRotation.y);
-		eulerRotation.z = math::RadToDeg(eulerRotation.z);
-
 		ImGui::DragFloat3("Rotation", (float*)&eulerRotation, 0.5f, -180.f, 180.f);
 
-		rotation = rotation.FromEulerXYZ(math::DegToRad(eulerRotation.x), 
+		rotation =rotation.FromEulerXYZ(math::DegToRad(eulerRotation.x),
 			math::DegToRad(eulerRotation.y), math::DegToRad(eulerRotation.z));
 
 		ImGui::DragFloat3("Scale", (float*)&scale, 0.1f, 0.01f, 100.f);
