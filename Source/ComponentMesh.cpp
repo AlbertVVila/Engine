@@ -155,6 +155,7 @@ unsigned int ComponentMesh::GetMaterialIndex()
 
 void ComponentMesh::ComputeBBox()
 {
+
 	float3 min, max;
 	min = max = vertices[0];
 

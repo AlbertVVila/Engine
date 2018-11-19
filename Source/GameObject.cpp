@@ -220,12 +220,8 @@ AABB GameObject::GetBoundingBox() const
 	{
 		bbox.Enclose(((ComponentMesh *)mesh)->GetBoundingBox());
 	}
-	float4x4 globaltransform = GetGlobalTransform();
-	float3 point1 = globaltransform.TransformPos(bbox.minPoint);
-	float3 point2 = globaltransform.TransformPos(bbox.maxPoint);
-	bbox.minPoint = point1.Min(point2);
-	bbox.maxPoint = point1.Max(point2);
 
+	bbox.TransformAsAABB(GetGlobalTransform());
 	for (const auto &child : children)
 	{
 		bbox.Enclose(child->GetBoundingBox());
