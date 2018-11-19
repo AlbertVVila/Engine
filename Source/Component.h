@@ -31,6 +31,8 @@ public:
 		enabled = false;
 	}
 
+	virtual void CleanUp() {}
+
 	void Remove();
 
 public:

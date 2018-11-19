@@ -32,6 +32,18 @@ GameObject::GameObject(const aiMatrix4x4 & transform, const char * filepath, con
 
 GameObject::~GameObject()
 {
+	for (auto &component : components)
+	{
+		RELEASE(component);
+	}
+
+	for (auto &child : children)
+	{
+		RELEASE(child);
+	}
+
+	transform = nullptr;
+	parent = nullptr;
 }
 
 void GameObject::Draw()
@@ -108,7 +120,33 @@ void GameObject::DrawHierarchy(int &obj_clicked, int i)
 		drawBBox = true;
 		//App->camera->Center(this); TODO: Center camera on gameobject
 	}
-	OptionsDialog();
+	
+	if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	{
+		ImGui::OpenPopup("gameobject_options_popup");
+	}
+
+	if (ImGui::BeginPopup("gameobject_options_popup"))
+	{
+		const char* options[] = { "Create Empty", "Delete" }; //TODO: make static
+		for (int j = 0; j < IM_ARRAYSIZE(options); j++)
+			if (ImGui::Selectable(options[j]))
+			{
+				if (options[j] == "Create Empty")
+				{
+
+				}
+				else if (options[j] == "Delete")
+				{
+					Delete();
+					if (obj_clicked == i)
+					{
+						App->editor->SelectInHierarchy(); //UnSelects
+					}
+				}
+			}
+		ImGui::EndPopup();
+	}
 
 	if (obj_open && children.size()>0)
 	{
@@ -121,32 +159,14 @@ void GameObject::DrawHierarchy(int &obj_clicked, int i)
 	ImGui::PopID();
 }
 
-void GameObject::OptionsDialog()
+
+void GameObject::Delete()
 {
-	const char* options[] = { "Create GameObject", "Delete" };
-	if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	CleanUp();
+	if (this->parent != nullptr)
 	{
-		ImGui::OpenPopup("gameobject_options_popup");
-	}
+		parent->RemoveChild(this);
 
-	if (ImGui::BeginPopup("gameobject_options_popup"))
-	{
-		for (int i = 0; i < IM_ARRAYSIZE(options); i++)
-			if(ImGui::Selectable(options[i]))
-			{
-				if (options[i] == "Create GameObject")
-				{
-
-				}
-				else if (options[i] == "Delete")
-				{
-					//Call CleanUP Gameobject
-					//Call CleanUp Children
-					//Delete reference to parent and from parent to this child
-					//Release this
-				}
-			}
-		ImGui::EndPopup();
 	}
 }
 
@@ -201,7 +221,7 @@ std::vector<Component *> GameObject::GetComponents(ComponentType type) const
 	return list;
 }
 
-void GameObject::DeleteComponent(Component * component)
+void GameObject::RemoveComponent(Component * component)
 {
 	for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
@@ -209,6 +229,19 @@ void GameObject::DeleteComponent(Component * component)
 		{
 			components.erase(it);
 			RELEASE(component);
+			return;
+		}
+	}
+}
+
+void GameObject::RemoveChild(GameObject* bastard)
+{
+	for (std::vector<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
+	{
+		if (*it == bastard)
+		{
+			children.erase(it);
+			RELEASE(bastard);
 			return;
 		}
 	}
@@ -257,7 +290,7 @@ void GameObject::ModelTransform(unsigned int shader) const
 
 AABB GameObject::GetBoundingBox() const
 {
-	AABB bbox;
+	AABB bbox; //Todo: Use pointers and optimize bounding box computation
 	bbox.SetNegativeInfinity();
 	for (const auto &mesh : GetComponents(ComponentType::Mesh))
 	{
@@ -344,4 +377,17 @@ void GameObject::DrawBBox() const
 void GameObject::DisableBox()
 {
 	drawBBox = false;
+}
+
+void GameObject::CleanUp()
+{
+	for (auto &component : components)
+	{
+		component->CleanUp();
+	}
+
+	for (auto &child : children)
+	{
+		child->CleanUp();
+	}
 }

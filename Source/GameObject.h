@@ -19,18 +19,21 @@ public:
 	void Draw();
 	void DrawProperties();
 	void DrawHierarchy(int &obj_clicked, int i);
-	void OptionsDialog();
+	void Delete();
 	void SetParent(GameObject* parent);
 	void Update();
 
 	Component * CreateComponent(ComponentType type);
 	Component * GetComponent(ComponentType type) const;
 	std::vector<Component *> GetComponents(ComponentType type) const;
-	void DeleteComponent(Component * component);
+	void RemoveComponent(Component * component);
+	void RemoveChild(GameObject* child);
 
 	std::string GetFileFolder() const;
 	float4x4 GetGlobalTransform() const;
 	void DisableBox();
+
+	void CleanUp();
 
 
 private:
@@ -46,12 +49,11 @@ public:
 	GameObject *parent = nullptr;
 	std::vector<Component*> components;
 	std::vector<GameObject*> children;
-	const char * filepath = nullptr; // Change to string 
+	std::string filepath = ""; // Change to string 
 	std::string name = "GameObject";
 
 private:
 	bool drawBBox = false;
-
 
 };
 

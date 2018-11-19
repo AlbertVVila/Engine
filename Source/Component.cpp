@@ -29,5 +29,5 @@ bool Component::DrawComponentState()
 
 void Component::Remove()
 {
-	gameobject->DeleteComponent(this);
+	gameobject->RemoveComponent(this);
 }
