@@ -32,7 +32,7 @@ public:
 
 	bool IsCameraFocused() const;
 	void processInput(SDL_Event* event) const;
-	void ShowInspector(GameObject *gameobject);
+	void SelectInHierarchy(GameObject *gameobject);
 	void AddFpsLog(float fps) const;
 	void AddLog(const char *log) const;
 

@@ -3,8 +3,10 @@
 #include "GameObject.h"
 #include "Imgui/imgui.h"
 #include "ModuleEditor.h"
+#include "ModuleInput.h"
 ModuleScene::ModuleScene()
 {
+	root = new GameObject("World");
 }
 
 
@@ -19,15 +21,16 @@ void ModuleScene::Draw()
 
 void ModuleScene::DrawHierarchy()
 {
-	root->DrawHierarchy(obj_clicked,0);
+	root->DrawHierarchy(obj_clicked, 0);
 }
 
 GameObject * ModuleScene::CreateGameObject(const aiMatrix4x4 & transform, const char * filepath, const char * name)
 {
 	GameObject * gameobject = new GameObject(transform, filepath, name);
-	if (root == nullptr)
-	{
-		root = gameobject;
-	}
 	return gameobject;
+}
+
+void ModuleScene::AttachHierarchy(GameObject *rootObject)
+{
+	root->children.push_back(rootObject);
 }

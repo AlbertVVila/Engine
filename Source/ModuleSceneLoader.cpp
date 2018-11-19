@@ -97,7 +97,8 @@ GameObject* ModuleSceneLoader::ProcessNode(const aiNode * node, const aiScene * 
 	assert(node != nullptr); assert(scene != nullptr);
 	aiMatrix4x4 transform = parentTransform * node->mTransformation;
 	GameObject * gameobject = App->scene->CreateGameObject(transform, filepath, node->mName.C_Str());
-	
+	if (node->mParent == nullptr) App->scene->AttachHierarchy(gameobject);
+
 	for (unsigned int i = 0; i < node->mNumMeshes; i++)
 	{
 		ComponentMesh* mesh = (ComponentMesh*) gameobject->CreateComponent(ComponentType::Mesh);
@@ -114,28 +115,6 @@ GameObject* ModuleSceneLoader::ProcessNode(const aiNode * node, const aiScene * 
 	return gameobject;
 }
 
-void ModuleSceneLoader::DrawModels()
-{
-	//for (auto const& model : models)
-	//{
-	//	model.Draw();
-	//}
-}
-
-void ModuleSceneLoader::DrawModelProperties()
-{
-	//if (models.size() == 0)
-	//{
-	//	ImGui::Text("No model loaded");
-	//}
-
-	//for (auto &model : models)
-	//{
-	//	ImGui::Text("Model:");
-	//	ImGui::Separator();
-	//	model.DrawProperties();
-	//}
-}
 
 void ModuleSceneLoader::DrawGUI()
 {

@@ -15,16 +15,16 @@
 #include "ModuleProgram.h"
 #include "ModuleEditor.h"
 #include "ModuleCamera.h"
+#include "ModuleInput.h"
 
+#define MAX_NAME 20
 
-GameObject::GameObject()
+GameObject::GameObject(const char * name) : name(name)
 {
 }
 
-GameObject::GameObject(const aiMatrix4x4 & transform, const char * filepath, const char * name)
+GameObject::GameObject(const aiMatrix4x4 & transform, const char * filepath, const char * name) : filepath(filepath), name(name)
 {
-	this->filepath = filepath;
-	this->name = name;
 	this->transform =  (ComponentTransform*) CreateComponent(ComponentType::Transform);
 	this->transform->AddTransform(transform);
 }
@@ -36,6 +36,13 @@ GameObject::~GameObject()
 
 void GameObject::Draw()
 {
+	for (const auto &child : children)
+	{
+		child->Draw();
+	}
+
+	if (transform == nullptr) return;
+
 	ComponentMaterial* material = (ComponentMaterial*)GetComponent(ComponentType::Material);
 	unsigned int shader = 0;
 	Texture * texture = nullptr;
@@ -67,15 +74,16 @@ void GameObject::Draw()
 		}
 	}
 	glUseProgram(0);
-	//Now do it for each child
-	for (const auto &child : children)
-	{
-		child->Draw();
-	}
 }
 
 void GameObject::DrawProperties()
 {
+	char *go_name = new char[MAX_NAME];
+	strcpy(go_name, name.c_str());
+	ImGui::InputText("Name", go_name, MAX_NAME);
+	name = go_name;
+	delete[] go_name;
+
 	for (auto &component : components)
 	{
 		component->DrawProperties();
@@ -88,15 +96,21 @@ void GameObject::DrawHierarchy(int &obj_clicked, int i)
 		| ImGuiTreeNodeFlags_OpenOnDoubleClick | (obj_clicked == i ? ImGuiTreeNodeFlags_Selected : 0);
 
 	ImGui::PushID(this);
+	if (children.size() == 0)
+	{
+		node_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
+	}
 	bool obj_open = ImGui::TreeNodeEx((void*)(intptr_t)i, node_flags, name.c_str());
 	if (ImGui::IsItemClicked())
 	{
 		obj_clicked = i;
-		App->editor->ShowInspector(this);
+		App->editor->SelectInHierarchy(this);
 		drawBBox = true;
-		//App->camera->Center(this);
+		//App->camera->Center(this); TODO: Center camera on gameobject
 	}
-	if (obj_open)
+	OptionsDialog();
+
+	if (obj_open && children.size()>0)
 	{
 		for (auto &child : children)
 		{
@@ -107,7 +121,36 @@ void GameObject::DrawHierarchy(int &obj_clicked, int i)
 	ImGui::PopID();
 }
 
-void GameObject::SetParent(GameObject * parent)
+void GameObject::OptionsDialog()
+{
+	const char* options[] = { "Create GameObject", "Delete" };
+	if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	{
+		ImGui::OpenPopup("gameobject_options_popup");
+	}
+
+	if (ImGui::BeginPopup("gameobject_options_popup"))
+	{
+		for (int i = 0; i < IM_ARRAYSIZE(options); i++)
+			if(ImGui::Selectable(options[i]))
+			{
+				if (options[i] == "Create GameObject")
+				{
+
+				}
+				else if (options[i] == "Delete")
+				{
+					//Call CleanUP Gameobject
+					//Call CleanUp Children
+					//Delete reference to parent and from parent to this child
+					//Release this
+				}
+			}
+		ImGui::EndPopup();
+	}
+}
+
+void GameObject::SetParent(GameObject * parent) //TODO: set object parent to world?
 {
 	this->parent = parent;
 	if (parent != nullptr)
@@ -224,7 +267,8 @@ AABB GameObject::GetBoundingBox() const
 	bbox.TransformAsAABB(GetGlobalTransform());
 	for (const auto &child : children)
 	{
-		bbox.Enclose(child->GetBoundingBox());
+		if(child->GetComponents(ComponentType::Mesh).size() > 0)
+			bbox.Enclose(child->GetBoundingBox());
 	}
 
 	return bbox;

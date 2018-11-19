@@ -51,7 +51,7 @@ update_status ModuleEditor::PreUpdate()
 	ImGui::NewFrame();
 
 	CreateDockSpace();
-	//ImGui::ShowDemoWindow();
+	ImGui::ShowDemoWindow();
 	return UPDATE_CONTINUE;
 }
 
@@ -196,11 +196,11 @@ void ModuleEditor::processInput(SDL_Event * event) const
 	ImGui_ImplSDL2_ProcessEvent(event);
 }
 
-void ModuleEditor::ShowInspector(GameObject * gameobject)
+void ModuleEditor::SelectInHierarchy(GameObject * gameobject)
 {
-	if (inspector != nullptr)
+	if (hierarchy != nullptr)
 	{
-		inspector->Show(gameobject);
+		hierarchy->SelectGameObject(gameobject);
 	}
 }
 

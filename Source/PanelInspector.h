@@ -12,10 +12,9 @@ public:
 	~PanelInspector();
 
 	void Draw() override;
-	void Show(GameObject *gameobject);
+	void Focus(GameObject *gameobject);
 
 private:
-	GameObject * current_gameobject = nullptr;
 	bool focus = false;
 };
 

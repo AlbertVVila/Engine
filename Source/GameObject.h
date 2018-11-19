@@ -13,12 +13,13 @@ struct Texture;
 class GameObject
 {
 public:
-	GameObject();
+	GameObject(const char* name);
 	GameObject(const aiMatrix4x4& transform, const char* filepath, const char* name);
 	~GameObject();
 	void Draw();
 	void DrawProperties();
 	void DrawHierarchy(int &obj_clicked, int i);
+	void OptionsDialog();
 	void SetParent(GameObject* parent);
 	void Update();
 
