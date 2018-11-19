@@ -16,6 +16,7 @@ public:
 	void DrawHierarchy();
 
 	GameObject * CreateGameObject(const aiMatrix4x4& transform, const char* filepath, const char* name);
+	GameObject * CreateGameObject(const char * name);
 	void AttachHierarchy(GameObject * rootObject);
 public:
 	GameObject* root = nullptr;

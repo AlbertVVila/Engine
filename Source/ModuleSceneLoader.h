@@ -22,17 +22,10 @@ public:
 	void LoadScene(const aiScene* scene);
 	GameObject* ProcessNode(const aiNode * node, const aiScene * scene, const aiMatrix4x4 &parentTransform);
 
-
-
-
-	void DrawModels();
-	void DrawModelProperties();
-	void DrawGUI();
 	void ApplyTexture(Texture texture);
 	bool CleanUp();
 
 private:
-	void DeleteModels();
 
 public:
 	std::list<Model> models;

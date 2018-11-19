@@ -52,10 +52,10 @@ void PanelConfiguration::Draw()
 	{
 		App->textures->DrawGUI();
 	}
-	if (ImGui::CollapsingHeader("Models"))
-	{
-		App->sceneLoader->DrawGUI();
-	}
+	//if (ImGui::CollapsingHeader("Models"))
+	//{
+	//	App->sceneLoader->DrawGUI();
+	//}
 	ImGui::End();
 }
 

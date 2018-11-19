@@ -88,7 +88,6 @@ void ModuleSceneLoader::LoadScene(const aiScene * scene)
 	//{
 	//	GenerateMaterialData(scene->mMaterials[i]);
 	//}
-	//GetBoundingBox();
 	aiReleaseImport(scene);
 }
 
@@ -105,7 +104,7 @@ GameObject* ModuleSceneLoader::ProcessNode(const aiNode * node, const aiScene * 
 		mesh->SetMesh(scene->mMeshes[node->mMeshes[i]]);
 
 		ComponentMaterial* material = (ComponentMaterial*)gameobject->CreateComponent(ComponentType::Material);
-		material->SetMaterial(scene->mMaterials[mesh->GetMaterialIndex()]);
+		material->SetMaterial(scene->mMaterials[mesh->GetMaterialIndex()]); //TODO: Read materials first
 	}
 	for (unsigned int i = 0; i < node->mNumChildren; i++)
 	{
@@ -116,28 +115,12 @@ GameObject* ModuleSceneLoader::ProcessNode(const aiNode * node, const aiScene * 
 }
 
 
-void ModuleSceneLoader::DrawGUI()
-{
-	//if (ImGui::Checkbox("Use Checkers Texture", &checkers))
-	//{
-	//	if (checkers && checkersTexture.id == 0)
-	//	{
-	//		checkersTexture = App->textures->Load(CHECKERS);
-	//	}
-	//}
-}
-
 void ModuleSceneLoader::ApplyTexture(Texture texture)
 {
 	//for (auto& model : models)
 	//{
 	//	model.UpdateTexture(texture);
 	//}
-}
-
-void ModuleSceneLoader::DeleteModels()
-{
-	//models.clear();
 }
 
 

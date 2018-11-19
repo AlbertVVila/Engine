@@ -30,6 +30,12 @@ GameObject * ModuleScene::CreateGameObject(const aiMatrix4x4 & transform, const 
 	return gameobject;
 }
 
+GameObject * ModuleScene::CreateGameObject(const char * name)
+{
+	GameObject * gameobject = new GameObject(name);
+	return gameobject;
+}
+
 void ModuleScene::AttachHierarchy(GameObject *rootObject)
 {
 	root->children.push_back(rootObject);

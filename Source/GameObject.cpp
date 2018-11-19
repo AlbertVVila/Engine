@@ -16,6 +16,7 @@
 #include "ModuleEditor.h"
 #include "ModuleCamera.h"
 #include "ModuleInput.h"
+#include "ModuleScene.h"
 
 #define MAX_NAME 20
 
@@ -134,7 +135,9 @@ void GameObject::DrawHierarchy(int &obj_clicked, int i)
 			{
 				if (options[j] == "Create Empty")
 				{
-
+					GameObject* empty = App->scene->CreateGameObject("Empty");
+					this->children.push_back(empty);
+					empty->parent = this;
 				}
 				else if (options[j] == "Delete")
 				{
