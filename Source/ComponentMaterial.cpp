@@ -80,3 +80,11 @@ void ComponentMaterial::DrawProperties()
 	}
 	ImGui::PopID();
 }
+
+Component* ComponentMaterial::Copy()
+{
+	ComponentMaterial * newComponent = (ComponentMaterial*) Component::Copy();
+	newComponent->texture = texture;
+	newComponent->shader = shader;
+	return newComponent;
+}

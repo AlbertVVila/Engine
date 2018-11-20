@@ -23,6 +23,7 @@ public:
 	void Update();
 
 	Component * CreateComponent(ComponentType type);
+	void AddComponent(Component* component);
 	Component * GetComponent(ComponentType type) const;
 	std::vector<Component *> GetComponents(ComponentType type) const;
 	void RemoveComponent(Component * component);
@@ -48,7 +49,7 @@ public:
 	GameObject *parent = nullptr;
 	std::vector<Component*> components;
 	std::vector<GameObject*> children;
-	std::string filepath = ""; // Change to string 
+	std::string filepath = "";
 	std::string name = "GameObject";
 
 private:

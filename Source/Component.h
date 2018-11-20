@@ -30,6 +30,11 @@ public:
 	{
 		enabled = false;
 	}
+	
+	virtual Component* Copy() {
+		Component* c = new Component(gameobject, type);
+		return c;
+	};
 
 	virtual void CleanUp() {}
 

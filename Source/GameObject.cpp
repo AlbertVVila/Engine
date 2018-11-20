@@ -109,7 +109,7 @@ void GameObject::DrawHierarchy(int &obj_clicked, int i)
 		| ImGuiTreeNodeFlags_OpenOnDoubleClick | (obj_clicked == i ? ImGuiTreeNodeFlags_Selected : 0);
 
 	ImGui::PushID(this);
-	if (children.size() == 0)
+	if (children.empty())
 	{
 		node_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
 	}
@@ -137,10 +137,14 @@ void GameObject::DrawHierarchy(int &obj_clicked, int i)
 				{
 					if (go_options[j] == "Empty GameObject")
 					{
-						GameObject* empty = App->scene->CreateGameObject("Empty", this);
+						App->scene->CreateGameObject("Empty", this);
 					}
 				}
 			ImGui::EndMenu();
+		}
+		if (ImGui::Selectable("Duplicate"))
+		{
+			App->scene->DuplicateGameObject(this);
 		}
 		if (ImGui::Selectable("Delete"))
 		{
@@ -154,6 +158,11 @@ void GameObject::DrawHierarchy(int &obj_clicked, int i)
 	}
 	if (obj_open)
 	{
+		if (!children.empty())
+		{
+			LOG("ChildrenFront%s", children.front()->name.c_str());
+			LOG("ChildrenBack%s", children.back()->name.c_str());
+		}
 		for (auto &child : children)
 		{
 			child->DrawHierarchy(obj_clicked, ++i);
@@ -204,6 +213,11 @@ Component * GameObject::CreateComponent(ComponentType type)
 	}
 	components.push_back(component);
 	return component;
+}
+
+void GameObject::AddComponent(Component * component)
+{
+	components.push_back(component);
 }
 
 std::vector<Component *> GameObject::GetComponents(ComponentType type) const

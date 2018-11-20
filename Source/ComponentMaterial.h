@@ -19,7 +19,7 @@ public:
 	Texture * GetTexture() const;
 	unsigned int GetShader();
 	void DrawProperties() override;
-
+	Component* Copy() override;
 
 public:
 	unsigned int shader = 0;
