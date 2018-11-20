@@ -129,35 +129,39 @@ void GameObject::DrawHierarchy(int &obj_clicked, int i)
 
 	if (ImGui::BeginPopup("gameobject_options_popup"))
 	{
-		const char* options[] = { "Create Empty", "Delete" }; //TODO: make static
-		for (int j = 0; j < IM_ARRAYSIZE(options); j++)
-			if (ImGui::Selectable(options[j]))
-			{
-				if (options[j] == "Create Empty")
+		if (ImGui::BeginMenu("Create"))
+		{
+			const char* go_options[] = { "Empty GameObject","Cube", "Sphere" }; //TODO: Render of Cube, Sphere, Axis, Coordinates in different file?
+			for (int j = 0; j < IM_ARRAYSIZE(go_options); j++)
+				if (ImGui::Selectable(go_options[j]))
 				{
-					GameObject* empty = App->scene->CreateGameObject("Empty");
-					this->children.push_back(empty);
-					empty->parent = this;
-				}
-				else if (options[j] == "Delete")
-				{
-					Delete();
-					if (obj_clicked == i)
+					if (go_options[j] == "Empty GameObject")
 					{
-						App->editor->SelectInHierarchy(); //UnSelects
+						GameObject* empty = App->scene->CreateGameObject("Empty", this);
 					}
 				}
+			ImGui::EndMenu();
+		}
+		if (ImGui::Selectable("Delete"))
+		{
+			Delete();
+			if (obj_clicked == i)
+			{
+				App->editor->SelectInHierarchy(); //TODO: Maybe selected objects must be in scene
 			}
+		}
 		ImGui::EndPopup();
 	}
-
-	if (obj_open && children.size()>0)
+	if (obj_open)
 	{
 		for (auto &child : children)
 		{
 			child->DrawHierarchy(obj_clicked, ++i);
 		}
-		ImGui::TreePop();
+		if (!(node_flags & ImGuiTreeNodeFlags_NoTreePushOnOpen))
+		{
+			ImGui::TreePop();
+		}
 	}
 	ImGui::PopID();
 }
@@ -170,15 +174,6 @@ void GameObject::Delete()
 	{
 		parent->RemoveChild(this);
 
-	}
-}
-
-void GameObject::SetParent(GameObject * parent) //TODO: set object parent to world?
-{
-	this->parent = parent;
-	if (parent != nullptr)
-	{
-		parent->children.push_back(this);
 	}
 }
 
@@ -282,6 +277,7 @@ float4x4 GameObject::GetGlobalTransform() const
 
 float4x4 GameObject::GetLocalTransform() const
 {
+	if (transform == nullptr) return float4x4::identity;
 	return float4x4::FromTRS(transform->position, transform->rotation, transform->scale);
 }
 

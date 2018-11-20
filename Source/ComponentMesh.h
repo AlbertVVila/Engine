@@ -22,6 +22,8 @@ public:
 	void ComputeBBox();
 	AABB GetBoundingBox() const;
 
+	void DeleteBuffers();
+
 public:
 
 	int numIndices = 0;

@@ -2,11 +2,11 @@
 #define __ModuleSceneLoader_h__
 
 #include "Module.h"
-#include "Model.h"
 #include <list>
+#include "assimp/matrix4x4.h"
 
+struct aiNode;
 struct aiScene;
-struct Texture;
 class GameObject;
 
 class ModuleSceneLoader :
@@ -20,17 +20,16 @@ public:
 	bool Start();
 	void LoadFile(const char *path);
 	void LoadScene(const aiScene* scene);
-	GameObject* ProcessNode(const aiNode * node, const aiScene * scene, const aiMatrix4x4 &parentTransform);
+	GameObject* ProcessNode(const aiNode * node, const aiScene * scene, const aiMatrix4x4 &parentTransform, GameObject* parent);
 
-	void ApplyTexture(Texture texture);
+	//void ApplyTexture(Texture* texture);
 	bool CleanUp();
 
 private:
 
 public:
-	std::list<Model> models;
-	bool checkers = false;
-	Texture checkersTexture = Texture(0,0,0);
+	//bool checkers = false;
+	//Texture checkersTexture = Texture(0,0,0);
 	const char *filepath = nullptr;
 };
 

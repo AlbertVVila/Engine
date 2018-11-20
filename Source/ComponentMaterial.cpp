@@ -6,6 +6,7 @@
 #include "Imgui/imgui.h"
 #include "GL/glew.h"
 
+#include "assimp/material.h"
 ComponentMaterial::ComponentMaterial(GameObject* gameobject, const aiMaterial * material) : Component(gameobject, ComponentType::Material)
 {
 	this->shader = App->program->textureProgram;

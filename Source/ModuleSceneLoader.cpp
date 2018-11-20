@@ -1,5 +1,4 @@
 #include "ModuleSceneLoader.h"
-#include "Application.h"
 #include "ModuleRender.h"
 #include "ModuleCamera.h"
 #include "ModuleTextures.h"
@@ -8,7 +7,10 @@
 #include "imgui.h"
 #include "assimp/cimport.h"
 #include "assimp/postprocess.h"
+#include "assimp/scene.h"
 #include "GL/glew.h"
+
+#include "Application.h"
 #include "GameObject.h"
 #include "Component.h"
 #include "ComponentTransform.h"
@@ -83,7 +85,7 @@ void ModuleSceneLoader::LoadFile(const char *path)
 void ModuleSceneLoader::LoadScene(const aiScene * scene)
 {
 	assert(scene != nullptr);
-	ProcessNode(scene->mRootNode, scene, aiMatrix4x4());
+	ProcessNode(scene->mRootNode, scene, aiMatrix4x4(), App->scene->root);
 	//for (unsigned i = 0; i < scene->mNumMaterials; ++i)
 	//{
 	//	GenerateMaterialData(scene->mMaterials[i]);
@@ -91,12 +93,11 @@ void ModuleSceneLoader::LoadScene(const aiScene * scene)
 	aiReleaseImport(scene);
 }
 
-GameObject* ModuleSceneLoader::ProcessNode(const aiNode * node, const aiScene * scene, const aiMatrix4x4 & parentTransform)
+GameObject* ModuleSceneLoader::ProcessNode(const aiNode * node, const aiScene * scene, const aiMatrix4x4 & parentTransform, GameObject* parent)
 {
 	assert(node != nullptr); assert(scene != nullptr);
 	aiMatrix4x4 transform = parentTransform * node->mTransformation;
-	GameObject * gameobject = App->scene->CreateGameObject(transform, filepath, node->mName.C_Str());
-	if (node->mParent == nullptr) App->scene->AttachHierarchy(gameobject);
+	GameObject * gameobject = App->scene->CreateGameObject(transform, filepath, node->mName.C_Str(), parent);
 
 	for (unsigned int i = 0; i < node->mNumMeshes; i++)
 	{
@@ -108,20 +109,19 @@ GameObject* ModuleSceneLoader::ProcessNode(const aiNode * node, const aiScene * 
 	}
 	for (unsigned int i = 0; i < node->mNumChildren; i++)
 	{
-		GameObject * child = ProcessNode(node->mChildren[i], scene, transform);
-		child->SetParent(gameobject);
+		GameObject * child = ProcessNode(node->mChildren[i], scene, transform, gameobject);
 	}
 	return gameobject;
 }
 
 
-void ModuleSceneLoader::ApplyTexture(Texture texture)
-{
+//void ModuleSceneLoader::ApplyTexture(Texture texture)
+//{
 	//for (auto& model : models)
 	//{
 	//	model.UpdateTexture(texture);
 	//}
-}
+//}
 
 
 

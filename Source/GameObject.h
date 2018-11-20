@@ -20,7 +20,6 @@ public:
 	void DrawProperties();
 	void DrawHierarchy(int &obj_clicked, int i);
 	void Delete();
-	void SetParent(GameObject* parent);
 	void Update();
 
 	Component * CreateComponent(ComponentType type);

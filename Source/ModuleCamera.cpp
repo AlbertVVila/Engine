@@ -106,19 +106,19 @@ void ModuleCamera::Zoom()
 
 void ModuleCamera::Center()
 {
-	if (App->sceneLoader->models.size() == 0) return;
+	//if (App->sceneLoader->models.size() == 0) return;
 
-	float3 HalfSize = App->sceneLoader->models.front().BoundingBox.HalfSize();
-	float distX = HalfSize.x / tanf(App->renderer->frustum.horizontalFov*0.5f);
-	float distY = HalfSize.y / tanf(App->renderer->frustum.verticalFov*0.5f); 
-	float camDist = MAX(distX,distY) + HalfSize.z; //camera distance from model
+	//float3 HalfSize = App->sceneLoader->models.front().BoundingBox.HalfSize();
+	//float distX = HalfSize.x / tanf(App->renderer->frustum.horizontalFov*0.5f);
+	//float distY = HalfSize.y / tanf(App->renderer->frustum.verticalFov*0.5f); 
+	//float camDist = MAX(distX,distY) + HalfSize.z; //camera distance from model
 
-	float3 center = App->sceneLoader->models.front().BoundingBox.FaceCenterPoint(5);
-	cameraPos = center + float3(0,0, camDist);
+	//float3 center = App->sceneLoader->models.front().BoundingBox.FaceCenterPoint(5);
+	//cameraPos = center + float3(0,0, camDist);
 
-	cameraFront = float3(0, 0, -1);
-	pitch = 0;
-	yaw = -90;
+	//cameraFront = float3(0, 0, -1);
+	//pitch = 0;
+	//yaw = -90;
 }
 
 void ModuleCamera::ComputeEulerAngles()
@@ -131,21 +131,21 @@ void ModuleCamera::ComputeEulerAngles()
 
 void ModuleCamera::Orbit()
 {
-	if (App->sceneLoader->models.size() == 0) return;
-	orbitX += App->input->GetMouseMotion().x*rotationSpeed;
-	orbitY = MIN(89,orbitY+App->input->GetMouseMotion().y*rotationSpeed);
+	//if (App->sceneLoader->models.size() == 0) return;
+	//orbitX += App->input->GetMouseMotion().x*rotationSpeed;
+	//orbitY = MIN(89,orbitY+App->input->GetMouseMotion().y*rotationSpeed);
 
-	radius = App->sceneLoader->models.front().BoundingBox.CenterPoint().Distance(cameraPos);
+	//radius = App->sceneLoader->models.front().BoundingBox.CenterPoint().Distance(cameraPos);
 
-	cameraPos.x = cos(math::DegToRad(orbitX)) * cos(math::DegToRad(orbitY)) * radius;
-	cameraPos.y = sin(math::DegToRad(orbitY)) * radius;;
-	cameraPos.z = sin(math::DegToRad(orbitX)) *cos(math::DegToRad(orbitY)) * radius;
-	cameraPos += App->sceneLoader->models.front().BoundingBox.CenterPoint();
+	//cameraPos.x = cos(math::DegToRad(orbitX)) * cos(math::DegToRad(orbitY)) * radius;
+	//cameraPos.y = sin(math::DegToRad(orbitY)) * radius;;
+	//cameraPos.z = sin(math::DegToRad(orbitX)) *cos(math::DegToRad(orbitY)) * radius;
+	//cameraPos += App->sceneLoader->models.front().BoundingBox.CenterPoint();
 
-	cameraFront = (App->sceneLoader->models.front().BoundingBox.CenterPoint() - cameraPos).Normalized();
+	//cameraFront = (App->sceneLoader->models.front().BoundingBox.CenterPoint() - cameraPos).Normalized();
 
-	yaw = math::RadToDeg(atan2(cameraFront.z, cameraFront.x));
-	pitch = math::RadToDeg(asin(cameraFront.y));
+	//yaw = math::RadToDeg(atan2(cameraFront.z, cameraFront.x));
+	//pitch = math::RadToDeg(asin(cameraFront.y));
 }
 
 void ModuleCamera::DrawGUI()

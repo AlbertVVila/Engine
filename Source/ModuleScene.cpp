@@ -24,19 +24,24 @@ void ModuleScene::DrawHierarchy()
 	root->DrawHierarchy(obj_clicked, 0);
 }
 
-GameObject * ModuleScene::CreateGameObject(const aiMatrix4x4 & transform, const char * filepath, const char * name)
+GameObject * ModuleScene::CreateGameObject(const aiMatrix4x4 & transform, const char * filepath, const char * name, GameObject* parent)
 {
 	GameObject * gameobject = new GameObject(transform, filepath, name);
+	if (parent != nullptr)
+	{
+		gameobject->parent = parent;
+		parent->children.push_back(gameobject);
+	}
 	return gameobject;
 }
 
-GameObject * ModuleScene::CreateGameObject(const char * name)
+GameObject * ModuleScene::CreateGameObject(const char * name, GameObject* parent)
 {
 	GameObject * gameobject = new GameObject(name);
+	if (parent != nullptr)
+	{
+		gameobject->parent = parent;
+		parent->children.push_back(gameobject);
+	}
 	return gameobject;
-}
-
-void ModuleScene::AttachHierarchy(GameObject *rootObject)
-{
-	root->children.push_back(rootObject);
 }

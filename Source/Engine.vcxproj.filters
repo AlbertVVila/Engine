@@ -144,9 +144,6 @@
     <ClCompile Include="ModuleCamera.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>Model</Filter>
-    </ClCompile>
     <ClCompile Include="Timer.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
@@ -402,9 +399,6 @@
     <ClInclude Include="ModuleCamera.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>Model</Filter>
-    </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -469,9 +463,6 @@
     </Filter>
     <Filter Include="Utils">
       <UniqueIdentifier>{11066cf8-cf44-4725-9fa8-10243045e1fc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Model">
-      <UniqueIdentifier>{62d90e6c-5376-445f-8bb3-8b9810353cd5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Panels">
       <UniqueIdentifier>{17b8ca95-ad02-4efa-9a19-fcf1fe0c1651}</UniqueIdentifier>

@@ -1,7 +1,7 @@
 #include "ComponentMesh.h"
-#include "Model.h"
 #include "Application.h"
 #include "ModuleSceneLoader.h"
+#include "ModuleTextures.h"
 #include <assert.h>
 #include "GL/glew.h"
 #include "Imgui/imgui.h"
@@ -16,18 +16,7 @@ ComponentMesh::ComponentMesh(GameObject* gameobject, const aiMesh * mesh) : Comp
 
 ComponentMesh::~ComponentMesh()
 {
-	if (VAO != 0)
-	{
-		glDeleteVertexArrays(1, &VAO);
-	}
-	if (VBO != 0)
-	{
-		glDeleteBuffers(1, &VBO);
-	}
-	if (EBO != 0)
-	{
-		glDeleteBuffers(1, &EBO);
-	}
+	DeleteBuffers(); //TODO: clean up components or simply call destructor?
 }
 
 void ComponentMesh::Draw(unsigned int shaderProgram, const Texture* texture) const
@@ -76,12 +65,12 @@ void ComponentMesh::DrawProperties()
 void ComponentMesh::SetMesh(const aiMesh * mesh)
 {
 	assert(mesh != nullptr);
-
-	// Creació del Vertex Array Object (VAO) que usarem per pintar
+	DeleteBuffers();
+	// VAO Creation
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 
-	// Creació del buffer amb les dades dels vèrtexs
+	// Buffer Creation with vertex data
 	glGenBuffers(1, &VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*mesh->mNumVertices * 5, NULL, GL_STATIC_DRAW);
@@ -97,7 +86,7 @@ void ComponentMesh::SetMesh(const aiMesh * mesh)
 	}
 	glUnmapBuffer(GL_ARRAY_BUFFER);
 
-	//Creació buffer per indexs
+	//Buffer creation with indices
 	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int)*mesh->mNumFaces * 3, NULL, GL_STATIC_DRAW);
@@ -132,14 +121,14 @@ void ComponentMesh::SetMesh(const aiMesh * mesh)
 		(void*)(sizeof(float) * 3 * mesh->mNumVertices)       // array buffer offset
 	);
 
-	// Desactivem VAO
+	// Disable VAO
 	glBindVertexArray(0);
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
 	
 
-	// Desactivem el VBO
+	// Disable VBO and EBO
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
@@ -147,6 +136,7 @@ void ComponentMesh::SetMesh(const aiMesh * mesh)
 	materialIndex = mesh->mMaterialIndex;
 	ComputeBBox();
 }
+
 
 unsigned int ComponentMesh::GetMaterialIndex()
 {
@@ -179,3 +169,18 @@ AABB ComponentMesh::GetBoundingBox() const
 	return boundingBox;
 }
 
+void ComponentMesh::DeleteBuffers()
+{
+	if (VAO != 0)
+	{
+		glDeleteVertexArrays(1, &VAO);
+	}
+	if (VBO != 0)
+	{
+		glDeleteBuffers(1, &VBO);
+	}
+	if (EBO != 0)
+	{
+		glDeleteBuffers(1, &EBO);
+	}
+}

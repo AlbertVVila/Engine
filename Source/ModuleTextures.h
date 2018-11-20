@@ -2,12 +2,18 @@
 #define __ModuleTextures_h__
 
 #include "Module.h"
-#include "Model.h"
 
 #define LINEAR 1
 #define NEAREST 0
 
-struct SDL_Texture;
+struct Texture
+{
+	int id;
+	int width;
+	int height;
+	Texture(int id, int width, int height) : id(id), width(width), height(height)
+	{}
+};
 
 class ModuleTextures : public Module
 {
