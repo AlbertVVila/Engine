@@ -196,14 +196,6 @@ void ModuleEditor::processInput(SDL_Event * event) const
 	ImGui_ImplSDL2_ProcessEvent(event);
 }
 
-void ModuleEditor::SelectInHierarchy(GameObject * gameobject)
-{
-	if (hierarchy != nullptr)
-	{
-		hierarchy->SelectGameObject(gameobject);
-	}
-}
-
 void ModuleEditor::AddLog(const char *log) const
 {
 	assert(log != NULL);

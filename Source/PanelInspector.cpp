@@ -26,9 +26,9 @@ void PanelInspector::Draw()
 		focus = false;
 		ImGui::SetWindowFocus();
 	}
-	if (App->editor->hierarchy->current_gameobject != nullptr)
+	if (App->scene->selected != nullptr)
 	{
-		App->editor->hierarchy->current_gameobject->DrawProperties();
+		App->scene->selected->DrawProperties();
 		const char* components[] = { "Transform", "Mesh", "Material"};
 
 		if (ImGui::Button("Add Component", ImVec2(ImGui::GetWindowWidth(), 25)))
@@ -40,7 +40,7 @@ void PanelInspector::Draw()
 			ImGui::Separator();
 			for (int i = 0; i < IM_ARRAYSIZE(components); i++)
 				if (ImGui::Selectable(components[i]))
-					App->editor->hierarchy->current_gameobject->CreateComponent((ComponentType)i); //TODO: Improve encapsulation between panels and variables
+					App->scene->selected->CreateComponent((ComponentType)i);
 			ImGui::EndPopup();
 		}
 	}

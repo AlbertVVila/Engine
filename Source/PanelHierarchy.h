@@ -12,11 +12,6 @@ public:
 	~PanelHierarchy();
 
 	void Draw();
-
-	void SelectGameObject(GameObject * object);
-
-public:
-	GameObject* current_gameobject = nullptr;
 };
 
 #endif __PanelHierarchy_h__

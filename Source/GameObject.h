@@ -2,6 +2,7 @@
 #define __GameObject_h__
 
 #include <vector>
+#include <list>
 #include "assimp/matrix4x4.h"
 #include "Math/float4x4.h"
 
@@ -18,8 +19,8 @@ public:
 	~GameObject();
 	void Draw();
 	void DrawProperties();
-	void DrawHierarchy(int &obj_clicked, int i);
-	void Delete();
+	void DrawHierarchy(GameObject * obj_clicked);
+
 	void Update();
 
 	Component * CreateComponent(ComponentType type);
@@ -48,9 +49,12 @@ public:
 	ComponentTransform * transform = nullptr;
 	GameObject *parent = nullptr;
 	std::vector<Component*> components;
-	std::vector<GameObject*> children;
+	std::list<GameObject*> children;
 	std::string filepath = "";
 	std::string name = "GameObject";
+
+	bool copy_flag = false;
+	bool delete_flag = false;
 
 private:
 	bool drawBBox = false;

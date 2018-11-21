@@ -15,6 +15,13 @@ ModuleScene::~ModuleScene()
 {
 }
 
+
+update_status ModuleScene::Update()
+{
+	root->Update();
+	return UPDATE_CONTINUE;
+}
+
 void ModuleScene::Draw()
 {
 		root->Draw();
@@ -22,7 +29,7 @@ void ModuleScene::Draw()
 
 void ModuleScene::DrawHierarchy()
 {
-	root->DrawHierarchy(obj_clicked, 0);
+	root->DrawHierarchy(selected);
 }
 
 GameObject * ModuleScene::CreateGameObject(const aiMatrix4x4 & transform, const char * filepath, const char * name, GameObject* parent)
@@ -65,12 +72,11 @@ GameObject * ModuleScene::DuplicateGameObject(GameObject* gameobject) //TODO: mo
 	//duplicate->parent = gameobject->parent;
 	//duplicate->parent->children.push_back(duplicate);
 
-	GameObject * duplicate = new GameObject("Test");
+	GameObject * copy = new GameObject("Test");
 	if (gameobject->parent != nullptr)
 	{
-		duplicate->parent = gameobject->parent;
-		gameobject->parent->children.push_back(duplicate);
+		copy->parent = gameobject->parent;
+		copy->parent->children.push_back(copy);
 	}
-
-	return duplicate;
+	return copy;
 }

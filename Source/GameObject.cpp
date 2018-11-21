@@ -103,21 +103,20 @@ void GameObject::DrawProperties()
 	}
 }
 
-void GameObject::DrawHierarchy(int &obj_clicked, int i)
+void GameObject::DrawHierarchy(GameObject * selected)
 {
 	ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow
-		| ImGuiTreeNodeFlags_OpenOnDoubleClick | (obj_clicked == i ? ImGuiTreeNodeFlags_Selected : 0);
+		| ImGuiTreeNodeFlags_OpenOnDoubleClick | (selected == this ? ImGuiTreeNodeFlags_Selected : 0);
 
 	ImGui::PushID(this);
 	if (children.empty())
 	{
 		node_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
 	}
-	bool obj_open = ImGui::TreeNodeEx((void*)(intptr_t)i, node_flags, name.c_str());
+	bool obj_open = ImGui::TreeNodeEx(this, node_flags, name.c_str());
 	if (ImGui::IsItemClicked())
 	{
-		obj_clicked = i;
-		App->editor->SelectInHierarchy(this);
+		App->scene->selected = this;
 		drawBBox = true;
 		//App->camera->Center(this); TODO: Center camera on gameobject
 	}
@@ -144,28 +143,23 @@ void GameObject::DrawHierarchy(int &obj_clicked, int i)
 		}
 		if (ImGui::Selectable("Duplicate"))
 		{
-			App->scene->DuplicateGameObject(this);
+			copy_flag = true;
 		}
 		if (ImGui::Selectable("Delete"))
 		{
-			Delete();
-			if (obj_clicked == i)
+			delete_flag = true;
+			if (selected == this)
 			{
-				App->editor->SelectInHierarchy(); //TODO: Maybe selected objects must be in scene
+				App->scene->selected = nullptr;
 			}
 		}
 		ImGui::EndPopup();
 	}
 	if (obj_open)
 	{
-		if (!children.empty())
-		{
-			LOG("ChildrenFront%s", children.front()->name.c_str());
-			LOG("ChildrenBack%s", children.back()->name.c_str());
-		}
 		for (auto &child : children)
 		{
-			child->DrawHierarchy(obj_clicked, ++i);
+			child->DrawHierarchy(selected);
 		}
 		if (!(node_flags & ImGuiTreeNodeFlags_NoTreePushOnOpen))
 		{
@@ -176,18 +170,29 @@ void GameObject::DrawHierarchy(int &obj_clicked, int i)
 }
 
 
-void GameObject::Delete()
-{
-	CleanUp();
-	if (this->parent != nullptr)
-	{
-		parent->RemoveChild(this);
-
-	}
-}
-
 void GameObject::Update()
 {
+	for (std::list<GameObject*>::iterator it_child = children.begin(); it_child != children.end();)
+	{
+		(*it_child)->Update();
+
+		if ((*it_child)->copy_flag)
+		{
+			(*it_child)->copy_flag = false;
+			App->scene->DuplicateGameObject(*it_child);
+		}
+		if ((*it_child)->delete_flag)
+		{
+			(*it_child)->delete_flag = false;
+			(*it_child)->CleanUp();
+			delete *it_child;
+			children.erase(it_child++);
+		}
+		else
+		{
+			++it_child;
+		}
+	}
 }
 
 Component * GameObject::CreateComponent(ComponentType type)
@@ -248,15 +253,8 @@ void GameObject::RemoveComponent(Component * component)
 
 void GameObject::RemoveChild(GameObject* bastard)
 {
-	for (std::vector<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
-	{
-		if (*it == bastard)
-		{
-			children.erase(it);
-			RELEASE(bastard);
-			return;
-		}
-	}
+	children.remove(bastard);
+	RELEASE(bastard);
 }
 
 Component * GameObject::GetComponent(ComponentType type) const

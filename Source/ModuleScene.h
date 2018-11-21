@@ -12,16 +12,18 @@ class ModuleScene :
 public:
 	ModuleScene();
 	~ModuleScene();
+
+	update_status Update() override;
 	void Draw();
 	void DrawHierarchy();
 
 	GameObject * CreateGameObject(const aiMatrix4x4& transform, const char* filepath, const char* name, GameObject* parent);
 	GameObject * CreateGameObject(const char * name, GameObject* parent);
 	GameObject * DuplicateGameObject(GameObject * gameobject);
-	void SetWorldChild(GameObject * rootObject);
+
 public:
 	GameObject* root = nullptr;
-	int obj_clicked = -1;
+	GameObject* selected = nullptr;
 };
 
 #endif __ModuleScene_h__
