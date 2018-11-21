@@ -15,7 +15,10 @@ class Component
 {
 public:
 	Component(GameObject* gameobject, ComponentType type);
+	Component(const Component& component);
+
 	virtual ~Component();
+	virtual Component* Clone() = 0;
 
 	bool DrawComponentState();
 
@@ -31,11 +34,6 @@ public:
 		enabled = false;
 	}
 	
-	virtual Component* Copy() {
-		Component* c = new Component(gameobject, type);
-		return c;
-	};
-
 	virtual void CleanUp() {}
 
 	void Remove();

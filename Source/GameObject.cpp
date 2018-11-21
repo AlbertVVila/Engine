@@ -30,6 +30,28 @@ GameObject::GameObject(const aiMatrix4x4 & transform, const char * filepath, con
 	this->transform->AddTransform(transform);
 }
 
+GameObject::GameObject(const GameObject & gameobject)
+{
+	name = gameobject.name;
+	filepath = gameobject.filepath;
+	parent = gameobject.parent;
+
+	for (const auto& component: gameobject.components)
+	{
+		Component *componentcopy = component->Clone();
+		components.push_back(componentcopy);
+		if (componentcopy->type == ComponentType::Transform)
+		{
+			transform = (ComponentTransform*)componentcopy;
+		}
+	}
+	for (const auto& child : gameobject.children)
+	{
+		GameObject* childcopy = new GameObject(*child);
+		children.push_back(childcopy);
+	}
+}
+
 
 GameObject::~GameObject()
 {
@@ -116,6 +138,10 @@ void GameObject::DrawHierarchy(GameObject * selected)
 	bool obj_open = ImGui::TreeNodeEx(this, node_flags, name.c_str());
 	if (ImGui::IsItemClicked())
 	{
+		if (App->scene->selected != nullptr)
+		{
+			App->scene->selected->drawBBox = false;
+		}
 		App->scene->selected = this;
 		drawBBox = true;
 		//App->camera->Center(this); TODO: Center camera on gameobject
@@ -179,7 +205,8 @@ void GameObject::Update()
 		if ((*it_child)->copy_flag)
 		{
 			(*it_child)->copy_flag = false;
-			App->scene->DuplicateGameObject(*it_child);
+			GameObject *copy = new GameObject(**it_child);
+			this->children.push_back(copy);
 		}
 		if ((*it_child)->delete_flag)
 		{
@@ -218,11 +245,6 @@ Component * GameObject::CreateComponent(ComponentType type)
 	}
 	components.push_back(component);
 	return component;
-}
-
-void GameObject::AddComponent(Component * component)
-{
-	components.push_back(component);
 }
 
 std::vector<Component *> GameObject::GetComponents(ComponentType type) const

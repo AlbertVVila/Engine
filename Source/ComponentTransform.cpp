@@ -9,9 +9,22 @@ ComponentTransform::ComponentTransform(GameObject* gameobject, const aiMatrix4x4
 	AddTransform(transform);
 }
 
+ComponentTransform::ComponentTransform(const ComponentTransform & component) : Component(component)
+{
+	position = component.position;
+	rotation = component.rotation;
+	eulerRotation = component.eulerRotation;
+	scale = component.scale;
+}
+
 
 ComponentTransform::~ComponentTransform()
 {
+}
+
+Component * ComponentTransform::Clone()
+{
+	return new ComponentTransform(*this);
 }
 
 void ComponentTransform::AddTransform(const aiMatrix4x4 & transform)
@@ -45,3 +58,4 @@ void ComponentTransform::DrawProperties()
 		ImGui::Separator();
 	}
 }
+

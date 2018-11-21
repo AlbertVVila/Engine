@@ -53,30 +53,3 @@ GameObject * ModuleScene::CreateGameObject(const char * name, GameObject* parent
 	}
 	return gameobject;
 }
-
-GameObject * ModuleScene::DuplicateGameObject(GameObject* gameobject) //TODO: move to Gameobject
-{
-	/*GameObject * duplicate = new GameObject(gameobject->name.c_str());
-	duplicate->filepath = gameobject->filepath;*/
-
-	//for (const auto& component: gameobject->components)
-	//{
-	//	Component *copy = component->Copy();
-	//	duplicate->AddComponent(copy);
-	//}
-	//for (const auto& child: gameobject->children)
-	//{
-	//	GameObject* copy = DuplicateGameObject(child);
-	//	duplicate->children.push_back(copy);
-	//}
-	//duplicate->parent = gameobject->parent;
-	//duplicate->parent->children.push_back(duplicate);
-
-	GameObject * copy = new GameObject("Test");
-	if (gameobject->parent != nullptr)
-	{
-		copy->parent = gameobject->parent;
-		copy->parent->children.push_back(copy);
-	}
-	return copy;
-}

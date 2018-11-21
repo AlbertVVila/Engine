@@ -16,7 +16,9 @@ class GameObject
 public:
 	GameObject(const char* name);
 	GameObject(const aiMatrix4x4& transform, const char* filepath, const char* name);
+	GameObject(const GameObject& gameobject);
 	~GameObject();
+
 	void Draw();
 	void DrawProperties();
 	void DrawHierarchy(GameObject * obj_clicked);
@@ -24,7 +26,6 @@ public:
 	void Update();
 
 	Component * CreateComponent(ComponentType type);
-	void AddComponent(Component* component);
 	Component * GetComponent(ComponentType type) const;
 	std::vector<Component *> GetComponents(ComponentType type) const;
 	void RemoveComponent(Component * component);

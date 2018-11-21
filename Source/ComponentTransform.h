@@ -10,8 +10,10 @@ class ComponentTransform : public Component
 {
 public:
 	ComponentTransform(GameObject* gameobject, const aiMatrix4x4 &transform = aiMatrix4x4());
+	ComponentTransform(const ComponentTransform& component);
 	~ComponentTransform();
 
+	Component* Clone() override;
 	void AddTransform(const aiMatrix4x4 &transform);
 	void DrawProperties() override;
 

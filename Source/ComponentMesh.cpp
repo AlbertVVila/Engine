@@ -14,9 +14,27 @@ ComponentMesh::ComponentMesh(GameObject* gameobject, const aiMesh * mesh) : Comp
 	}
 }
 
+ComponentMesh::ComponentMesh(const ComponentMesh & component) : Component(component)
+{
+	//TODO: gen new buffers
+	VAO = component.VAO;
+	VBO = component.VBO;
+	EBO = component.EBO;
+	materialIndex = component.materialIndex;
+	numIndices = component.numIndices;
+	vertices.reserve(component.vertices.capacity());
+	vertices = component.vertices;
+	boundingBox = component.boundingBox;
+}
+
 ComponentMesh::~ComponentMesh()
 {
 	DeleteBuffers(); //TODO: clean up components or simply call destructor?
+}
+
+Component * ComponentMesh::Clone()
+{
+	return new ComponentMesh(*this);
 }
 
 void ComponentMesh::Draw(unsigned int shaderProgram, const Texture* texture) const

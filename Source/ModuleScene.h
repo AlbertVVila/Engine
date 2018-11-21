@@ -19,7 +19,6 @@ public:
 
 	GameObject * CreateGameObject(const aiMatrix4x4& transform, const char* filepath, const char* name, GameObject* parent);
 	GameObject * CreateGameObject(const char * name, GameObject* parent);
-	GameObject * DuplicateGameObject(GameObject * gameobject);
 
 public:
 	GameObject* root = nullptr;

@@ -12,8 +12,11 @@ class ComponentMesh : public Component
 {
 public:
 	ComponentMesh(GameObject* gameobject, const aiMesh * mesh = nullptr);
+	ComponentMesh(const ComponentMesh& component);
+
 	~ComponentMesh();
 
+	Component* Clone() override;
 	void Draw(unsigned int shaderProgram, const Texture* texture) const;
 	void DrawProperties() override;
 	void SetMesh(const aiMesh *mesh);

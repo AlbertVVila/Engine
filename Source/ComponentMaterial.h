@@ -11,15 +11,16 @@ class ComponentMaterial :
 {
 public:
 	ComponentMaterial(GameObject* gameobject, const aiMaterial * material = nullptr);
+	ComponentMaterial(const ComponentMaterial& component);
 	~ComponentMaterial();
 
+	Component* Clone() override;
 	void DeleteTexture();
 	
 	void SetMaterial(const aiMaterial * material);
 	Texture * GetTexture() const;
 	unsigned int GetShader();
 	void DrawProperties() override;
-	Component* Copy() override;
 
 public:
 	unsigned int shader = 0;

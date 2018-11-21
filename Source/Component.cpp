@@ -8,6 +8,13 @@ Component::Component(GameObject* gameobject, ComponentType type)
 	this->type = type;
 }
 
+Component::Component(const Component & component)
+{
+	gameobject = component.gameobject;
+	type = component.type;
+	enabled = component.enabled;
+}
+
 Component::~Component()
 {
 }
@@ -25,7 +32,6 @@ bool Component::DrawComponentState()
 	ImGui::PopStyleColor(3);
 	return removed;
 }
-
 
 void Component::Remove()
 {

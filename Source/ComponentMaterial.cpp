@@ -13,9 +13,20 @@ ComponentMaterial::ComponentMaterial(GameObject* gameobject, const aiMaterial * 
 	SetMaterial(material);
 }
 
+ComponentMaterial::ComponentMaterial(const ComponentMaterial& component) : Component(component)
+{
+	texture = component.texture; //TODO: delete texture diferent materials?
+	shader = component.shader;
+}
+
 ComponentMaterial::~ComponentMaterial()
 {
 	DeleteTexture();
+}
+
+Component * ComponentMaterial::Clone()
+{
+	return new ComponentMaterial(*this);
 }
 
 void ComponentMaterial::DeleteTexture()
@@ -79,12 +90,4 @@ void ComponentMaterial::DrawProperties()
 		}
 	}
 	ImGui::PopID();
-}
-
-Component* ComponentMaterial::Copy()
-{
-	ComponentMaterial * newComponent = (ComponentMaterial*) Component::Copy();
-	newComponent->texture = texture;
-	newComponent->shader = shader;
-	return newComponent;
 }
