@@ -92,6 +92,13 @@ void GameObject::Draw()
 		shader = App->program->textureProgram;
 	}
 
+	if (texture == nullptr && material != nullptr)
+	{
+		shader = App->program->defaultProgram;
+		glUniform4fv(glGetUniformLocation(shader,
+			"Vcolor"), 1, (GLfloat*) &material->GetColor());
+	}
+
 	if (drawBBox)
 	{
 		DrawBBox();

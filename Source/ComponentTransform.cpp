@@ -59,3 +59,14 @@ void ComponentTransform::DrawProperties()
 	}
 }
 
+void ComponentTransform::SetRotation(const Quat & rot)
+{
+	rotation = rot;
+	eulerRotation = rotation.ToEulerXYZ();
+}
+
+void ComponentTransform::SetPosition(const float3 & pos)
+{
+	position = pos;
+}
+

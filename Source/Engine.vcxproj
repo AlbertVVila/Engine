@@ -89,6 +89,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentMaterial.h" />
     <ClInclude Include="ComponentTransform.h" />
+    <ClInclude Include="debug_draw.hpp" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="MathGeoLib\include\Algorithm\Random\LCG.h" />
@@ -168,6 +169,7 @@
     <ClInclude Include="PanelHierarchy.h" />
     <ClInclude Include="PanelInspector.h" />
     <ClInclude Include="PanelScene.h" />
+    <ClInclude Include="par_shapes.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Timer.h" />
   </ItemGroup>

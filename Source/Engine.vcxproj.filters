@@ -447,6 +447,12 @@
     <ClInclude Include="PanelInspector.h">
       <Filter>Panels</Filter>
     </ClInclude>
+    <ClInclude Include="debug_draw.hpp">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="par_shapes.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GeoLib">

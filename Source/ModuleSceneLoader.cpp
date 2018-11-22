@@ -9,6 +9,17 @@
 #include "assimp/postprocess.h"
 #include "assimp/scene.h"
 #include "GL/glew.h"
+#include "Math/float4.h"
+
+#pragma warning(push)
+#pragma warning(disable : 4996)  
+#pragma warning(disable : 4244)  
+#pragma warning(disable : 4305)  
+#pragma warning(disable : 4838)  
+
+#define PAR_SHAPES_IMPLEMENTATION
+#include "par_shapes.h"
+#pragma warning(pop)
 
 #include "Application.h"
 #include "GameObject.h"
@@ -16,6 +27,7 @@
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
+
 
 #define CHECKERS "checkersTexture.jpg"
 #define BAKERHOUSE "Models\\Baker\\BakerHouse.fbx"
@@ -55,6 +67,7 @@ bool ModuleSceneLoader::Init()
 bool ModuleSceneLoader::Start()
 {
 	LoadFile(BAKERHOUSE);
+	CreateSphere("sphere0", float3(1.0f, 1.0f, 1.0f), Quat::identity, 1.0f, 20, 20, float4(0.5f, 0.0f, 0.5f, 1.0f));
 	return true;
 }
 
@@ -114,15 +127,31 @@ GameObject* ModuleSceneLoader::ProcessNode(const aiNode * node, const aiScene * 
 	return gameobject;
 }
 
+void ModuleSceneLoader::CreateSphere(const char * name, const float3 & pos, const Quat & rot, float size, unsigned int slices, unsigned int stacks, const float4 & color)
+{
+	par_shapes_mesh* mesh = par_shapes_create_parametric_sphere(int(slices), int(stacks));
+	GameObject * gameobject = App->scene->CreateGameObject(name, App->scene->root);
 
-//void ModuleSceneLoader::ApplyTexture(Texture texture)
-//{
-	//for (auto& model : models)
-	//{
-	//	model.UpdateTexture(texture);
-	//}
-//}
+	ComponentTransform* componenttransform = (ComponentTransform*)gameobject->CreateComponent(ComponentType::Transform);
+	gameobject->transform = componenttransform;
 
+	componenttransform->SetRotation(rot);
+	componenttransform->SetPosition(pos);
+
+	if (mesh)
+	{
+		par_shapes_scale(mesh, size, size, size);
+
+		ComponentMesh* componentmesh = (ComponentMesh*)gameobject->CreateComponent(ComponentType::Mesh);
+		componentmesh->SetMesh(mesh);
+
+		par_shapes_free_mesh(mesh);
+
+		ComponentMaterial* componentmaterial = (ComponentMaterial*)gameobject->CreateComponent(ComponentType::Material);
+		componentmaterial->shader = App->program->defaultProgram;
+		componentmaterial->color = color;
+	}
+}
 
 
 bool ModuleSceneLoader::CleanUp()

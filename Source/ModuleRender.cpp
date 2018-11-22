@@ -9,6 +9,7 @@
 #include "GL/glew.h"
 #include "imgui.h"
 #include "Math/MathFunc.h"
+
 ModuleRender::ModuleRender()
 {
 }
@@ -40,6 +41,7 @@ bool ModuleRender::Start()
 	CreateBlockUniforms();
 	return true;
 }
+
 
 update_status ModuleRender::PreUpdate()
 {

@@ -64,9 +64,14 @@ Texture * ComponentMaterial::GetTexture() const
 	return texture;
 }
 
-unsigned int ComponentMaterial::GetShader()
+unsigned int ComponentMaterial::GetShader() const
 {
 	return shader;
+}
+
+float4 ComponentMaterial::GetColor() const
+{
+	return color;
 }
 
 void ComponentMaterial::DrawProperties()

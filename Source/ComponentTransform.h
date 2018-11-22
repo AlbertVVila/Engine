@@ -16,6 +16,8 @@ public:
 	Component* Clone() override;
 	void AddTransform(const aiMatrix4x4 &transform);
 	void DrawProperties() override;
+	void SetRotation(const Quat& rot);
+	void SetPosition(const float3& pos);
 
 public:
 	float3 position = float3::zero;
