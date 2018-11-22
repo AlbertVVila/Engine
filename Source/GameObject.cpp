@@ -34,7 +34,6 @@ GameObject::GameObject(const GameObject & gameobject)
 {
 	name = gameobject.name;
 	filepath = gameobject.filepath;
-	parent = gameobject.parent;
 
 	for (const auto& component: gameobject.components)
 	{
@@ -48,6 +47,7 @@ GameObject::GameObject(const GameObject & gameobject)
 	for (const auto& child : gameobject.children)
 	{
 		GameObject* childcopy = new GameObject(*child);
+		childcopy->parent = this;
 		children.push_back(childcopy);
 	}
 }
@@ -206,6 +206,7 @@ void GameObject::Update()
 		{
 			(*it_child)->copy_flag = false;
 			GameObject *copy = new GameObject(**it_child);
+			copy->parent = this;
 			this->children.push_back(copy);
 		}
 		if ((*it_child)->delete_flag)
