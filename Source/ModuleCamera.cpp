@@ -4,10 +4,13 @@
 #include "ModuleTime.h"
 #include "ModuleRender.h"
 #include "ModuleWindow.h"
-#include "ModuleModel.h"
+#include "ModuleSceneLoader.h"
+#include "ModuleScene.h"
 #include "ModuleEditor.h"
+#include "GameObject.h"
 #include "imgui.h"
 #include "Math/MathFunc.h"
+#include "Geometry/AABB.h"
 
 #define MAXFOV 120
 #define MINFOV 40
@@ -79,8 +82,15 @@ void ModuleCamera::Move()
 void ModuleCamera::Rotate()
 {
 	float deltaPitch = App->input->GetMouseMotion().y*rotationSpeed; 
-	pitch = deltaPitch <0? MAX(-89, pitch - deltaPitch) : MIN(89, pitch - deltaPitch);
-
+	pitch -= deltaPitch;
+	if (pitch > 0)
+	{
+		pitch = MIN(89, pitch);
+	}
+	else
+	{
+		pitch = MAX(-89, pitch);
+	}
 	yaw += App->input->GetMouseMotion().x*rotationSpeed;
 	ComputeEulerAngles();
 }
@@ -99,14 +109,15 @@ void ModuleCamera::Zoom()
 
 void ModuleCamera::Center()
 {
-	if (App->model->models.size() == 0) return;
+	if (App->scene->selected == nullptr) return;
 
-	float3 HalfSize = App->model->models.front().BoundingBox.HalfSize();
+	AABB bbox = App->scene->selected->GetBoundingBox();
+	float3 HalfSize = bbox.HalfSize();
 	float distX = HalfSize.x / tanf(App->renderer->frustum.horizontalFov*0.5f);
 	float distY = HalfSize.y / tanf(App->renderer->frustum.verticalFov*0.5f); 
 	float camDist = MAX(distX,distY) + HalfSize.z; //camera distance from model
 
-	float3 center = App->model->models.front().BoundingBox.FaceCenterPoint(5);
+	float3 center = bbox.FaceCenterPoint(5);
 	cameraPos = center + float3(0,0, camDist);
 
 	cameraFront = float3(0, 0, -1);
@@ -124,18 +135,19 @@ void ModuleCamera::ComputeEulerAngles()
 
 void ModuleCamera::Orbit()
 {
-	if (App->model->models.size() == 0) return;
+	if (App->scene->selected == nullptr) return;
 	orbitX += App->input->GetMouseMotion().x*rotationSpeed;
 	orbitY = MIN(89,orbitY+App->input->GetMouseMotion().y*rotationSpeed);
 
-	radius = App->model->models.front().BoundingBox.CenterPoint().Distance(cameraPos);
+	AABB bbox = App->scene->selected->GetBoundingBox();
+	radius = bbox.CenterPoint().Distance(cameraPos);
 
 	cameraPos.x = cos(math::DegToRad(orbitX)) * cos(math::DegToRad(orbitY)) * radius;
 	cameraPos.y = sin(math::DegToRad(orbitY)) * radius;;
 	cameraPos.z = sin(math::DegToRad(orbitX)) *cos(math::DegToRad(orbitY)) * radius;
-	cameraPos += App->model->models.front().BoundingBox.CenterPoint();
+	cameraPos += bbox.CenterPoint();
 
-	cameraFront = (App->model->models.front().BoundingBox.CenterPoint() - cameraPos).Normalized();
+	cameraFront = (bbox.CenterPoint() - cameraPos).Normalized();
 
 	yaw = math::RadToDeg(atan2(cameraFront.z, cameraFront.x));
 	pitch = math::RadToDeg(asin(cameraFront.y));

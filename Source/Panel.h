@@ -25,8 +25,14 @@ public:
 		enabled = true; 
 	}
 
+	bool IsFocused() const
+	{
+		return focus;
+	}
+
 protected:
 	bool enabled = true;
+	bool focus = false;
 };
 
 #endif //__Panel_h__

@@ -2,7 +2,7 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
-#include "ModuleModel.h"
+#include "ModuleSceneLoader.h"
 #include "ModuleCamera.h"
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
@@ -52,10 +52,10 @@ void PanelConfiguration::Draw()
 	{
 		App->textures->DrawGUI();
 	}
-	if (ImGui::CollapsingHeader("Models"))
-	{
-		App->model->DrawGUI();
-	}
+	//if (ImGui::CollapsingHeader("Models"))
+	//{
+	//	App->sceneLoader->DrawGUI();
+	//}
 	ImGui::End();
 }
 

@@ -5,9 +5,10 @@
 #include "PanelConsole.h"
 #include "PanelScene.h"
 #include "PanelConfiguration.h"
-#include "PanelProperties.h"
+#include "PanelInspector.h"
 #include "PanelAbout.h"
 #include "PanelHardware.h"
+#include "PanelHierarchy.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_sdl.h"
 #include "imgui.h"
@@ -16,10 +17,11 @@ ModuleEditor::ModuleEditor()
 {
 	panels.push_back(console = new PanelConsole());
 	panels.push_back(configuration = new PanelConfiguration());
-	panels.push_back(properties = new PanelProperties());
+	panels.push_back(inspector = new PanelInspector());
 	panels.push_back(about = new PanelAbout());
 	panels.push_back(hardware = new PanelHardware());
 	panels.push_back(scene = new PanelScene());
+	panels.push_back(hierarchy = new PanelHierarchy());
 }
 
 // Destructor
@@ -49,6 +51,7 @@ update_status ModuleEditor::PreUpdate()
 	ImGui::NewFrame();
 
 	CreateDockSpace();
+	ImGui::ShowDemoWindow();
 	return UPDATE_CONTINUE;
 }
 
@@ -82,9 +85,13 @@ update_status ModuleEditor::Update()
 			{
 				configuration->ToggleEnabled();
 			}
-			if (ImGui::MenuItem("Properties", NULL, properties->IsEnabled()))
+			if (ImGui::MenuItem("Properties", NULL, inspector->IsEnabled()))
 			{
-				properties->ToggleEnabled();
+				inspector->ToggleEnabled();
+			}
+			if (ImGui::MenuItem("Hierarchy", NULL, hierarchy->IsEnabled()))
+			{
+				hierarchy->ToggleEnabled();
 			}
 			ImGui::EndMenu();
 		}
@@ -168,9 +175,9 @@ void ModuleEditor::DrawPanels()
 
 bool ModuleEditor::IsCameraFocused() const
 {
-	if (scene != nullptr)
+	if (scene != nullptr && hierarchy != nullptr)
 	{
-		return scene->IsFocused();
+		return scene->IsFocused() || hierarchy->IsFocused();
 	}
 	return false;
 }
