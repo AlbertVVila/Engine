@@ -151,7 +151,6 @@ void GameObject::DrawHierarchy(GameObject * selected)
 		}
 		App->scene->selected = this;
 		drawBBox = true;
-		//App->camera->Center(this); TODO: Center camera on gameobject
 	}
 	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
 	{

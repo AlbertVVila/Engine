@@ -20,5 +20,6 @@ void PanelHierarchy::Draw()
 		return;
 	}
 	App->scene->DrawHierarchy();
+	focus = ImGui::IsWindowFocused();
 	ImGui::End();
 }

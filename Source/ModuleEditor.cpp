@@ -175,9 +175,9 @@ void ModuleEditor::DrawPanels()
 
 bool ModuleEditor::IsCameraFocused() const
 {
-	if (scene != nullptr)
+	if (scene != nullptr && hierarchy != nullptr)
 	{
-		return scene->IsFocused();
+		return scene->IsFocused() || hierarchy->IsFocused();
 	}
 	return false;
 }

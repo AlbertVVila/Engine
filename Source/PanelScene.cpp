@@ -24,8 +24,3 @@ void PanelScene::Draw()
 	focus = ImGui::IsWindowFocused();
 	ImGui::End();
 }
-
-bool PanelScene::IsFocused() const
-{
-	return focus;
-}

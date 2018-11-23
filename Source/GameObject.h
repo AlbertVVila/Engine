@@ -36,12 +36,11 @@ public:
 	void DisableBox();
 
 	void CleanUp();
-
+	AABB GetBoundingBox() const;
 
 private:
 	float4x4 GetLocalTransform() const;
 	void ModelTransform(unsigned int shader) const;
-	AABB GetBoundingBox() const;
 
 	void DrawBBox() const;
 
