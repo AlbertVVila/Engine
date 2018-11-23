@@ -165,23 +165,23 @@ void ComponentMesh::SetMesh(par_shapes_mesh_s * mesh)
 	glGenBuffers(1, &VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
-	unsigned offset_acc = sizeof(math::float3);
+	unsigned offset_acc = sizeof(float3);
 	unsigned normals_offset = 0;
 
 	if (mesh->normals)
 	{
 		normals_offset = offset_acc;
-		offset_acc += sizeof(math::float3);
+		offset_acc += sizeof(float3);
 	}
 
 	glBufferData(GL_ARRAY_BUFFER, offset_acc*mesh->npoints, nullptr, GL_STATIC_DRAW);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(math::float3)*mesh->npoints, mesh->points);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float3)*mesh->npoints, mesh->points);
 
 	// normals
 
 	if (mesh->normals)
 	{
-		glBufferSubData(GL_ARRAY_BUFFER, normals_offset*mesh->npoints, sizeof(math::float3)*mesh->npoints, mesh->normals);
+		glBufferSubData(GL_ARRAY_BUFFER, normals_offset*mesh->npoints, sizeof(float3)*mesh->npoints, mesh->normals);
 	}
 
 	// indices
@@ -217,9 +217,14 @@ void ComponentMesh::SetMesh(par_shapes_mesh_s * mesh)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	materialIndex = 
+	//materialIndex = 0;
 	numIndices = mesh->ntriangles * 3;
-
+	vertices.reserve(mesh->npoints);
+	for (unsigned int i = 0; i < mesh->npoints; i++)
+	{
+		vertices.push_back(float3((float *)&mesh->points[i]));
+	}
+	ComputeBBox();
 }
 
 

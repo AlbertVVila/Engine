@@ -153,12 +153,42 @@ void GameObject::DrawHierarchy(GameObject * selected)
 		drawBBox = true;
 		//App->camera->Center(this); TODO: Center camera on gameobject
 	}
-	
+	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+	{
+		GameObject * dragged_go = this;
+		ImGui::SetDragDropPayload("DragDropHierarchy", &dragged_go, sizeof(GameObject *), ImGuiCond_Once);
+		ImGui::Text("%s", this->name.c_str());
+		ImGui::EndDragDropSource();
+	}
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropHierarchy"))
+		{
+			IM_ASSERT(payload->DataSize == sizeof(GameObject*));
+			GameObject* dropped_go = (GameObject *)*(const int*)payload->Data;
+			if (dropped_go->parent != this)
+			{
+				this->children.push_back(dropped_go);
+
+				if (dropped_go->transform != nullptr)
+				{
+					dropped_go->transform->SetLocalToWorld(dropped_go->GetGlobalTransform());
+				}
+				dropped_go->parent->children.remove(dropped_go);
+				dropped_go->parent = this;
+				if (dropped_go->transform != nullptr)
+				{
+					dropped_go->transform->SetWorldToLocal(dropped_go->parent->GetGlobalTransform());
+				}
+				//TODO: reconvert transformation
+			}
+		}
+		ImGui::EndDragDropTarget();
+	}
 	if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
 		ImGui::OpenPopup("gameobject_options_popup");
 	}
-
 	if (ImGui::BeginPopup("gameobject_options_popup"))
 	{
 		if (ImGui::BeginMenu("Create"))
@@ -307,7 +337,7 @@ std::string GameObject::GetFileFolder() const
 	return s;
 }
 
-float4x4 GameObject::GetGlobalTransform() const
+float4x4 GameObject::GetGlobalTransform() const //TODO: Move to componentTransform
 {
 	float4x4 mytransform = GetLocalTransform();
 	if (parent != nullptr)

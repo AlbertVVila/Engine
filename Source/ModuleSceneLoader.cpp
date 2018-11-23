@@ -67,7 +67,7 @@ bool ModuleSceneLoader::Init()
 bool ModuleSceneLoader::Start()
 {
 	LoadFile(BAKERHOUSE);
-	CreateSphere("sphere0", float3(1.0f, 1.0f, 1.0f), Quat::identity, 1.0f, 20, 20, float4(0.5f, 0.0f, 0.5f, 1.0f));
+	CreateSphere("sphere0", float3(0.0f, 0.0f, 0.0f), Quat::identity, 1.0f, 20, 20, float4(0.f, 0.0f, 0.f, 1.0f));
 	return true;
 }
 
@@ -136,7 +136,7 @@ void ModuleSceneLoader::CreateSphere(const char * name, const float3 & pos, cons
 	gameobject->transform = componenttransform;
 
 	componenttransform->SetRotation(rot);
-	componenttransform->SetPosition(pos);
+	componenttransform->SetPosition(pos); //TODO: Bounding Box not resizing correctly on rotation + Bug Color selection
 
 	if (mesh)
 	{

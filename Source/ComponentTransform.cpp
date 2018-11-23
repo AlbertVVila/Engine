@@ -2,6 +2,7 @@
 #include <assimp/scene.h> 
 #include "imgui.h"
 #include "Math/MathFunc.h"
+#include "Math/float4x4.h"
 
 
 ComponentTransform::ComponentTransform(GameObject* gameobject, const aiMatrix4x4 &transform) : Component(gameobject, ComponentType::Transform)
@@ -37,10 +38,7 @@ void ComponentTransform::AddTransform(const aiMatrix4x4 & transform)
 	position = { translation.x, translation.y, translation.z };
 	scale = { scaling.x, scaling.y, scaling.z };
 	rotation = Quat(airotation.x, airotation.y, airotation.z, airotation.w);
-	eulerRotation = rotation.ToEulerXYZ();
-	eulerRotation.x = math::RadToDeg(eulerRotation.x);
-	eulerRotation.y = math::RadToDeg(eulerRotation.y);
-	eulerRotation.z = math::RadToDeg(eulerRotation.z);
+	RotationToEuler();
 }
 
 void ComponentTransform::DrawProperties()
@@ -62,11 +60,34 @@ void ComponentTransform::DrawProperties()
 void ComponentTransform::SetRotation(const Quat & rot)
 {
 	rotation = rot;
-	eulerRotation = rotation.ToEulerXYZ();
+	RotationToEuler();
 }
 
+void ComponentTransform::RotationToEuler()
+{
+	eulerRotation = rotation.ToEulerXYZ();
+	eulerRotation.x = math::RadToDeg(eulerRotation.x);
+	eulerRotation.y = math::RadToDeg(eulerRotation.y);
+	eulerRotation.z = math::RadToDeg(eulerRotation.z);
+}
 void ComponentTransform::SetPosition(const float3 & pos)
 {
 	position = pos;
 }
 
+void ComponentTransform::SetLocalToWorld(const float4x4 & myGlobal)
+{
+	float4x4 world = myGlobal;
+	world.Decompose(position, rotation, scale);
+	RotationToEuler();
+}
+
+
+
+void ComponentTransform::SetWorldToLocal(const float4x4 & newparentGlobalMatrix)
+{
+	float4x4 world = float4x4::FromTRS(position, rotation, scale);
+	float4x4 local = newparentGlobalMatrix.Inverted() * world;
+	local.Decompose(position, rotation, scale);
+	RotationToEuler();
+}
