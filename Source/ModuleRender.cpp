@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "ModuleRender.h"
 #include "ModuleCamera.h"
+#include "ComponentCamera.h"
 #include "ModuleScene.h"
 #include "ModuleProgram.h"
 #include "ModuleEditor.h"
@@ -310,8 +311,8 @@ void ModuleRender::DrawGUI()
 
 void ModuleRender::ViewMatrix() const
 {
-	math::float4x4 view = LookAt(App->camera->cameraPos, App->camera->cameraPos
-		+ App->camera->cameraFront, float3::unitY);
+	math::float4x4 view = LookAt(App->camera->editorcamera->cameraPos, App->camera->editorcamera->cameraPos
+		+ App->camera->editorcamera->cameraFront, float3::unitY);
 	view.Transpose();
 	glBindBuffer(GL_UNIFORM_BUFFER, UBO);
 	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(float4x4), sizeof(float4x4), &view[0][0]);

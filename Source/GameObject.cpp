@@ -10,6 +10,7 @@
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
+#include "ComponentCamera.h"
 
 #include "Application.h"
 #include "ModuleProgram.h"
@@ -276,6 +277,9 @@ Component * GameObject::CreateComponent(ComponentType type)
 		component = new ComponentMaterial(this);
 		break;
 	case Light:
+		break;
+	case Camera:
+		component = new ComponentCamera(this);
 		break;
 	default:
 		break;
