@@ -3,6 +3,8 @@
 
 #include "Component.h"
 #include "Math/float3.h"
+#include "Geometry/Frustum.h"
+
 class ComponentCamera :
 	public Component
 {
@@ -12,11 +14,13 @@ public:
 	~ComponentCamera();
 
 	ComponentCamera* Clone();
+	void InitFrustum();
 	void Center();
 	void Move();
 	void Rotate();
 	void Zoom();
 	void Orbit();
+	void Resize(float width, float height);
 
 private:
 	void ComputeEulerAngles();
@@ -27,6 +31,8 @@ public:
 	float movementSpeed = 5.0f;
 	float rotationSpeed = 200.f;
 	float zoomSpeed = 0.1f;
+	Frustum frustum;
+
 
 private:
 

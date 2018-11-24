@@ -2,10 +2,8 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "ModuleTime.h"
-#include "ModuleRender.h"
 #include "ModuleScene.h"
 #include "ModuleWindow.h"
-#include "ModuleEditor.h"
 #include "GameObject.h"
 #include "Math/MathFunc.h"
 #include "Geometry/AABB.h"
@@ -15,10 +13,12 @@
 
 ComponentCamera::ComponentCamera() : Component(nullptr, ComponentType::Camera)
 {
+	InitFrustum();
 }
 
 ComponentCamera::ComponentCamera(GameObject * gameobject) : Component(gameobject, ComponentType::Camera)
 {
+	InitFrustum();
 }
 
 
@@ -31,6 +31,18 @@ ComponentCamera * ComponentCamera::Clone()
 	return new ComponentCamera(*this);
 }
 
+void ComponentCamera::InitFrustum()
+{
+	frustum.type = FrustumType::PerspectiveFrustum;
+	frustum.pos = float3::zero;
+	frustum.front = -float3::unitZ;
+	frustum.up = float3::unitY;
+	frustum.nearPlaneDistance = 0.1f;
+	frustum.farPlaneDistance = 1000.0f;
+	frustum.verticalFov = math::pi / 2.0f;
+	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * ((float)App->window->width / (float)App->window->height));
+
+}
 
 void ComponentCamera::Move()
 {
@@ -86,10 +98,10 @@ void ComponentCamera::Zoom()
 	float mouse_wheel = App->input->GetMouseWheel();
 	if (mouse_wheel != 0)
 	{
-		App->renderer->frustum.verticalFov = mouse_wheel > 0 ?
-			MAX(math::DegToRad(MINFOV), App->renderer->frustum.verticalFov - mouse_wheel * zoomSpeed) :
-			MIN(math::DegToRad(MAXFOV), App->renderer->frustum.verticalFov - mouse_wheel * zoomSpeed);
-		App->renderer->frustum.horizontalFov = 2.f * atanf(tanf(App->renderer->frustum.verticalFov * 0.5f) * ((float)App->window->width / (float)App->window->height));
+		frustum.verticalFov = mouse_wheel > 0 ?
+			MAX(math::DegToRad(MINFOV), frustum.verticalFov - mouse_wheel * zoomSpeed) :
+			MIN(math::DegToRad(MAXFOV), frustum.verticalFov - mouse_wheel * zoomSpeed);
+		frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * ((float)App->window->width / (float)App->window->height));
 	}
 }
 
@@ -99,8 +111,8 @@ void ComponentCamera::Center()
 
 	AABB bbox = App->scene->selected->GetBoundingBox();
 	float3 HalfSize = bbox.HalfSize();
-	float distX = HalfSize.x / tanf(App->renderer->frustum.horizontalFov*0.5f);
-	float distY = HalfSize.y / tanf(App->renderer->frustum.verticalFov*0.5f);
+	float distX = HalfSize.x / tanf(frustum.horizontalFov*0.5f);
+	float distY = HalfSize.y / tanf(frustum.verticalFov*0.5f);
 	float camDist = MAX(distX, distY) + HalfSize.z; //camera distance from model
 
 	float3 center = bbox.FaceCenterPoint(5);
@@ -137,5 +149,10 @@ void ComponentCamera::Orbit()
 
 	yaw = math::RadToDeg(atan2(cameraFront.z, cameraFront.x));
 	pitch = math::RadToDeg(asin(cameraFront.y));
+}
+
+void ComponentCamera::Resize(float width, float height)
+{
+	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * (width / height));
 }
 

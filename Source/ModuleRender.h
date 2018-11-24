@@ -34,13 +34,11 @@ private:
 	void CreateBlockUniforms();
 	void DrawLines() const;
 	void DrawAxis() const;
-	void InitFrustum();
 	void InitSDL();
 	void InitOpenGL() const;
 
 public:
 	void* context = nullptr;
-	Frustum frustum;
 	unsigned int renderTexture = 0;
 
 private:

@@ -2,10 +2,7 @@
 #include "ModuleCamera.h"
 #include "ModuleInput.h"
 #include "ModuleTime.h"
-#include "ModuleRender.h"
 #include "ModuleWindow.h"
-#include "ModuleSceneLoader.h"
-#include "ModuleScene.h"
 #include "ModuleEditor.h"
 #include "GameObject.h"
 #include "imgui.h"
@@ -15,13 +12,17 @@
 
 ModuleCamera::ModuleCamera()
 {
-	editorcamera = new ComponentCamera();
 }
 
 ModuleCamera::~ModuleCamera()
 {
 }
 
+bool ModuleCamera::Init()
+{
+	editorcamera = new ComponentCamera();
+	return true;
+}
 
 update_status ModuleCamera::Update()
 {
@@ -53,4 +54,13 @@ void ModuleCamera::DrawGUI()
 	ImGui::InputFloat("Movement Speed", &editorcamera->movementSpeed, 1.f, 5.f);
 	ImGui::InputFloat("Rotation Speed", &editorcamera->rotationSpeed, 1.f, 5.f);
 	ImGui::InputFloat("Zoom Speed", &editorcamera->zoomSpeed, 1.f, 5.f);
+
+	float degFov = math::RadToDeg(editorcamera->frustum.verticalFov);
+	if (ImGui::SliderFloat("FOV", &degFov, 40, 120))
+	{
+		editorcamera->frustum.verticalFov = math::DegToRad(degFov);
+		editorcamera->frustum.horizontalFov = 2.f * atanf(tanf(editorcamera->frustum.verticalFov*0.5f)*App->window->width / App->window->height);
+	}
+	ImGui::InputFloat("Znear", &editorcamera->frustum.nearPlaneDistance, 1, 10);
+	ImGui::InputFloat("Zfar", &editorcamera->frustum.farPlaneDistance, 1, 10);
 }

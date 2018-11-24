@@ -10,6 +10,7 @@
 #include "GL/glew.h"
 #include "imgui.h"
 #include "Math/MathFunc.h"
+#include "GameObject.h"
 
 ModuleRender::ModuleRender()
 {
@@ -37,7 +38,6 @@ bool ModuleRender::Init()
 
 bool ModuleRender::Start()
 {
-	InitFrustum();
 	CreateFrameBuffer(); //TODO: move frustum and view to camera
 	CreateBlockUniforms();
 	return true;
@@ -99,7 +99,7 @@ bool ModuleRender::CleanUp()
 void ModuleRender::OnResize()
 {
     glViewport(0, 0, App->window->width, App->window->height);
-	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * ((float)App->window->width / (float)App->window->height));
+	App->camera->editorcamera->Resize(App->window->width, App->window->height);
 	CreateFrameBuffer(); //We recreate framebuffer with new window size
 }
 
@@ -181,19 +181,6 @@ void ModuleRender::DrawAxis() const
 	glEnd();
 
 	glLineWidth(1.0f);
-}
-
-void ModuleRender::InitFrustum()
-{
-	frustum.type = FrustumType::PerspectiveFrustum;
-	frustum.pos = float3::zero;
-	frustum.front = -float3::unitZ;
-	frustum.up = float3::unitY;
-	frustum.nearPlaneDistance = 0.1f;
-	frustum.farPlaneDistance = 1000.0f;
-	frustum.verticalFov = math::pi / 2.0f;
-	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * ((float)App->window->width / (float)App->window->height));
-
 }
 
 void ModuleRender::InitSDL()
@@ -293,16 +280,6 @@ void ModuleRender::DrawGUI()
 	}
 
 	ImGui::Checkbox("Wireframe", &wireframe);
-	//ImGui::Checkbox("Show Model Bounding Boxes", &boundingBox); //TODO:BoundingBOx
-
-	float degFov = math::RadToDeg(frustum.verticalFov);
-	if (ImGui::SliderFloat("FOV", &degFov, 40, 120))
-	{
-		frustum.verticalFov = math::DegToRad(degFov);
-		frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov*0.5f)*App->window->width/ App->window->height);
-	}
-	ImGui::InputFloat("Znear", &frustum.nearPlaneDistance, 1, 10);
-	ImGui::InputFloat("Zfar", &frustum.farPlaneDistance, 1, 10);
 	if (ImGui::Checkbox("Vsync", &vsync))
 	{
 		SDL_GL_SetSwapInterval((int)vsync);
@@ -321,7 +298,7 @@ void ModuleRender::ViewMatrix() const
 
 void ModuleRender::ProjectionMatrix() const
 {
-	float4x4 projection = frustum.ProjectionMatrix();
+	float4x4 projection = App->camera->editorcamera->frustum.ProjectionMatrix();
 	projection.Transpose();
 	glBindBuffer(GL_UNIFORM_BUFFER, UBO);
 	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(float4x4), &projection[0][0]);

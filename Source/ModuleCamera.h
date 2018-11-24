@@ -11,6 +11,8 @@ public:
     ModuleCamera();
     ~ModuleCamera();
 
+	bool Init() override;
+
 	update_status Update();
 	void DrawGUI();
 
