@@ -235,6 +235,11 @@ void GameObject::DrawHierarchy(GameObject * selected)
 
 void GameObject::Update()
 {
+	for (auto& component: components)
+	{
+		component->Update();
+	}
+
 	for (std::list<GameObject*>::iterator it_child = children.begin(); it_child != children.end();)
 	{
 		(*it_child)->Update();

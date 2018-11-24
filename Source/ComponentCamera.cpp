@@ -1,4 +1,6 @@
 #include "ComponentCamera.h"
+#include "ComponentTransform.h"
+
 #include "Application.h"
 #include "ModuleInput.h"
 #include "ModuleTime.h"
@@ -164,6 +166,15 @@ void ComponentCamera::Resize(float width, float height)
 	CreateFrameBuffer(); //We recreate framebuffer with new window size
 }
 
+void ComponentCamera::Update() 
+{
+	if (gameobject == nullptr) return;
+	if (gameobject->transform == nullptr) return;
+
+	cameraPos = gameobject->GetBoundingBox().FaceCenterPoint(4);
+	//add rotation
+}
+
 float4x4 ComponentCamera::GetViewMatrix()
 {
 	math::float4x4 view = LookAt(cameraPos, cameraPos + cameraFront, float3::unitY);
@@ -227,4 +238,6 @@ void ComponentCamera::CreateFrameBuffer()
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
+
+
 

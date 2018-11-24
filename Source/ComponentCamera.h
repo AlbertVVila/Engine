@@ -22,6 +22,8 @@ public:
 	void Zoom();
 	void Orbit();
 	void Resize(float width, float height);
+	void Update() override;
+
 	float4x4 GetViewMatrix();
 	float4x4 GetProjectionMatrix();
 	float4x4 LookAt(math::float3 OBS, math::float3 VRP, math::float3 up) const;
