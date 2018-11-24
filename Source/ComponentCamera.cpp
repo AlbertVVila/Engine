@@ -7,6 +7,7 @@
 #include "GameObject.h"
 #include "Math/MathFunc.h"
 #include "Geometry/AABB.h"
+#include "GL/glew.h"
 
 #define MAXFOV 120
 #define MINFOV 40
@@ -14,16 +15,21 @@
 ComponentCamera::ComponentCamera() : Component(nullptr, ComponentType::Camera)
 {
 	InitFrustum();
+	CreateFrameBuffer();
 }
 
 ComponentCamera::ComponentCamera(GameObject * gameobject) : Component(gameobject, ComponentType::Camera)
 {
 	InitFrustum();
+	CreateFrameBuffer();
 }
 
 
 ComponentCamera::~ComponentCamera()
 {
+	glDeleteFramebuffers(1, &FBO); //TODO: Remove cleanup on components to destructor
+	glDeleteRenderbuffers(1, &RBO); //TODO: Destructors not called
+	glDeleteTextures(1, &renderedTexture);
 }
 
 ComponentCamera * ComponentCamera::Clone()
@@ -154,5 +160,70 @@ void ComponentCamera::Orbit()
 void ComponentCamera::Resize(float width, float height)
 {
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * (width / height));
+	CreateFrameBuffer(); //We recreate framebuffer with new window size
+}
+
+float4x4 ComponentCamera::GetViewMatrix()
+{
+	math::float4x4 view = LookAt(cameraPos, cameraPos + cameraFront, float3::unitY);
+	return view.Transposed();
+}
+
+float4x4 ComponentCamera::GetProjectionMatrix()
+{
+	return frustum.ProjectionMatrix().Transposed();
+}
+
+float4x4 ComponentCamera::LookAt(math::float3 OBS, math::float3 VRP, math::float3 up) const
+{
+	math::float3 forward(VRP - OBS); forward.Normalize(); //deprecated with camerafront pos and up
+	math::float3 side(forward.Cross(up)); side.Normalize();
+	math::float3 u(side.Cross(forward));
+
+	math::float4x4 matrix(math::float4x4::zero);
+	matrix[0][0] = side.x; matrix[0][1] = side.y; matrix[0][2] = side.z;
+	matrix[1][0] = u.x; matrix[1][1] = u.y; matrix[1][2] = u.z;
+	matrix[2][0] = -forward.x; matrix[2][1] = -forward.y; matrix[2][2] = -forward.z;
+	matrix[0][3] = -side.Dot(OBS); matrix[1][3] = -u.Dot(OBS); matrix[2][3] = forward.Dot(OBS);
+	matrix[3][3] = 1;
+
+	return matrix;
+}
+
+void ComponentCamera::CreateFrameBuffer()
+{
+	glDeleteFramebuffers(1, &FBO);
+	glDeleteRenderbuffers(1, &RBO);
+
+	glGenFramebuffers(1, &FBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+
+	glGenTextures(1, &renderedTexture);
+	glBindTexture(GL_TEXTURE_2D, renderedTexture);
+
+	glTexImage2D(
+		GL_TEXTURE_2D, 0, GL_RGB, App->window->width, App->window->height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL
+	);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glFramebufferTexture2D(
+		GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderedTexture, 0
+	);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	glGenRenderbuffers(1, &RBO);
+	glBindRenderbuffer(GL_RENDERBUFFER, RBO); //TODO: Render reduced window not all window
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, App->window->width, App->window->height);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, RBO);
+
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		LOG("Framebuffer ERROR");
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 

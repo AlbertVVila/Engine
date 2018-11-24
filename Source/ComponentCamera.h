@@ -3,6 +3,7 @@
 
 #include "Component.h"
 #include "Math/float3.h"
+#include "Math/float4x4.h"
 #include "Geometry/Frustum.h"
 
 class ComponentCamera :
@@ -21,6 +22,10 @@ public:
 	void Zoom();
 	void Orbit();
 	void Resize(float width, float height);
+	float4x4 GetViewMatrix();
+	float4x4 GetProjectionMatrix();
+	float4x4 LookAt(math::float3 OBS, math::float3 VRP, math::float3 up) const;
+	void CreateFrameBuffer();
 
 private:
 	void ComputeEulerAngles();
@@ -32,7 +37,9 @@ public:
 	float rotationSpeed = 200.f;
 	float zoomSpeed = 0.1f;
 	Frustum frustum;
-
+	unsigned int renderedTexture = 0;
+	unsigned int FBO = 0;
+	unsigned int RBO = 0;
 
 private:
 

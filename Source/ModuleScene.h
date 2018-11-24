@@ -5,6 +5,8 @@
 #include "assimp/matrix4x4.h"
 
 class GameObject;
+class ComponentCamera;
+class Texture;
 
 class ModuleScene :
 	public Module
@@ -12,6 +14,8 @@ class ModuleScene :
 public:
 	ModuleScene();
 	~ModuleScene();
+
+	bool Start() override;
 
 	update_status Update() override;
 	void Draw();
@@ -23,6 +27,8 @@ public:
 public:
 	GameObject* root = nullptr;
 	GameObject* selected = nullptr;
+	ComponentCamera* maincamera = nullptr;
+	Texture* camera_notfound_texture = nullptr;
 };
 
 #endif __ModuleScene_h__

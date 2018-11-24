@@ -5,6 +5,7 @@
 #include "Imgui/imgui.h"
 #include "ModuleEditor.h"
 #include "ModuleInput.h"
+#include "ModuleTextures.h"
 ModuleScene::ModuleScene()
 {
 	root = new GameObject("World");
@@ -15,6 +16,11 @@ ModuleScene::~ModuleScene()
 {
 }
 
+bool ModuleScene::Start()
+{
+	camera_notfound_texture = App->textures->Load("nocamera.jpg");
+	return true;
+}
 
 update_status ModuleScene::Update()
 {
