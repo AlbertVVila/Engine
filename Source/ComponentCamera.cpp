@@ -22,6 +22,7 @@ ComponentCamera::ComponentCamera(GameObject * gameobject) : Component(gameobject
 {
 	InitFrustum();
 	CreateFrameBuffer();
+	cameraPos = gameobject->GetBoundingBox().FaceCenterPoint(4);
 }
 
 

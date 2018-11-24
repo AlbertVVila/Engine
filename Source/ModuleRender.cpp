@@ -72,8 +72,19 @@ update_status ModuleRender::Update()
 	App->scene->Draw();
 
 	DrawGizmos();
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	
+	if (App->scene->maincamera != nullptr)
+	{
+		glBindFramebuffer(GL_FRAMEBUFFER, App->scene->maincamera->FBO);
+		glClearColor(0.3f, 0.3f, 0.3f, 1.f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		SetProjectionUniform(App->scene->maincamera);
+		SetViewUniform(App->scene->maincamera);
+
+		App->scene->Draw();
+	}
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	return UPDATE_CONTINUE;
 }
 

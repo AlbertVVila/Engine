@@ -280,6 +280,10 @@ Component * GameObject::CreateComponent(ComponentType type)
 		break;
 	case Camera:
 		component = new ComponentCamera(this);
+		if (App->scene->maincamera == nullptr)
+		{
+			App->scene->maincamera = (ComponentCamera*)component;
+		}
 		break;
 	default:
 		break;
