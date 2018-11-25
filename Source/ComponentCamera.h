@@ -2,6 +2,7 @@
 #define __ComponentCamera_h__
 
 #include "Component.h"
+#include "Math/float2.h"
 #include "Math/float3.h"
 #include "Math/float4x4.h"
 #include "Geometry/Frustum.h"
@@ -17,24 +18,21 @@ public:
 	ComponentCamera* Clone();
 	void InitFrustum();
 	void Center();
-	void Move();
-	void Rotate();
-	void Zoom();
-	void Orbit();
+	void Move(); 
+	void Rotate(float dx, float dy);
+	void Zoom(float mouseWheel);
+	void Orbit(float dx, float dy);
+	void LookAt(float3 target);
 	void Resize(float width, float height);
 	void Update() override;
 
 	float4x4 GetViewMatrix();
 	float4x4 GetProjectionMatrix();
-	float4x4 LookAt(math::float3 OBS, math::float3 VRP, math::float3 up) const;
-	void CreateFrameBuffer();
 
 private:
-	void ComputeEulerAngles();
+	void CreateFrameBuffer();
 
 public:
-	float3 cameraPos = float3(0, 5, 10);
-	float3 cameraFront = float3(0, 0, -1);
 	float movementSpeed = 5.0f;
 	float rotationSpeed = 200.f;
 	float zoomSpeed = 0.1f;
@@ -43,14 +41,6 @@ public:
 	unsigned int FBO = 0;
 	unsigned int RBO = 0;
 
-private:
-
-	float pitch = 0;
-	float yaw = -90;
-	float radius = 0;
-
-	float orbitX = 0;
-	float orbitY = 0;
 };
 
 #endif __ComponentCamera_h__

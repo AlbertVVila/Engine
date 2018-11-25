@@ -24,7 +24,7 @@ ComponentCamera::ComponentCamera(GameObject * gameobject) : Component(gameobject
 {
 	InitFrustum();
 	CreateFrameBuffer();
-	cameraPos = gameobject->GetBoundingBox().FaceCenterPoint(4);
+	frustum.pos =gameobject->GetBoundingBox().FaceCenterPoint(4);
 }
 
 
@@ -53,63 +53,69 @@ void ComponentCamera::InitFrustum()
 
 }
 
-void ComponentCamera::Move()
+void ComponentCamera::Move() //TODO Move with float3 translation
 {
 	float distance = movementSpeed * App->time->deltaTime;
+	float3 movement = float3::zero;
 	if (App->input->IsKeyPressed(SDL_SCANCODE_LSHIFT))
 	{
 		distance *= 2;
 	}
 	if (App->input->IsKeyPressed(SDL_SCANCODE_Q))
 	{
-		cameraPos.y += distance;
+		movement+=float3::unitY*distance;
 	}
 	if (App->input->IsKeyPressed(SDL_SCANCODE_E))
 	{
-		cameraPos.y -= distance;
+		movement -= float3::unitY*distance;
 	}
 	if (App->input->IsKeyPressed(SDL_SCANCODE_S))
 	{
-		cameraPos -= cameraFront * distance;
+		movement -= frustum.front*distance;
 	}
 	if (App->input->IsKeyPressed(SDL_SCANCODE_W))
 	{
-		cameraPos += cameraFront * distance;
+		movement += frustum.front*distance;
 	}
 	if (App->input->IsKeyPressed(SDL_SCANCODE_A))
 	{
-		cameraPos -= cameraFront.Cross(float3::unitY).Normalized() * distance;
+		movement -= frustum.WorldRight()*distance;
 	}
 	if (App->input->IsKeyPressed(SDL_SCANCODE_D))
 	{
-		cameraPos += cameraFront.Cross(float3::unitY).Normalized() * distance;
+		movement += frustum.WorldRight()*distance;
 	}
+	frustum.Translate(movement);
 }
 //TODO: Use mouse position + deltatime and not mouse motion
-void ComponentCamera::Rotate()
+void ComponentCamera::Rotate(float dx, float dy)
 {
-	float deltaPitch = App->input->GetMouseMotion().y*rotationSpeed;
-	pitch -= deltaPitch;
-	if (pitch > 0)
+	if (dx != 0)
 	{
-		pitch = MIN(89, pitch);
+		Quat rotation = Quat::RotateY(math::DegToRad(-dx)).Normalized();
+		frustum.front = rotation.Mul(frustum.front).Normalized();
+		frustum.up = rotation.Mul(frustum.up).Normalized();
 	}
-	else
+	if (dy != 0)
 	{
-		pitch = MAX(-89, pitch);
+		Quat rotation = Quat::RotateAxisAngle(frustum.WorldRight(), math::DegToRad(-dy)).Normalized();
+		float3 valid_up = rotation.Mul(frustum.up).Normalized();
+		if (valid_up.y > 0.0f)
+		{
+			frustum.up = valid_up;
+			frustum.front = rotation.Mul(frustum.front).Normalized();
+		}
 	}
-	yaw += App->input->GetMouseMotion().x*rotationSpeed;
-	ComputeEulerAngles();
 }
 
-void ComponentCamera::Zoom()
+
+void ComponentCamera::Zoom(float mouseWheel)
 {
-	float mouse_wheel = App->input->GetMouseWheel();
-	if (mouse_wheel != 0)
+	if (mouseWheel != 0)
 	{
-		frustum.verticalFov = mouse_wheel > 0 ?
-			MAX(math::DegToRad(MINFOV), frustum.verticalFov - mouse_wheel * zoomSpeed) :
-			MIN(math::DegToRad(MAXFOV), frustum.verticalFov - mouse_wheel * zoomSpeed);
+		frustum.verticalFov = mouseWheel > 0 ?
+			MAX(math::DegToRad(MINFOV), frustum.verticalFov - mouseWheel * zoomSpeed) :
+			MIN(math::DegToRad(MAXFOV), frustum.verticalFov - mouseWheel * zoomSpeed);
 		frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * ((float)App->window->width / (float)App->window->height));
 	}
 }
@@ -125,39 +131,43 @@ void ComponentCamera::Center()
 	float camDist = MAX(distX, distY) + HalfSize.z; //camera distance from model
 
 	float3 center = bbox.FaceCenterPoint(5);
-	cameraPos = center + float3(0, 0, camDist);
+	frustum.pos = center + float3(0, 0, camDist);
 
-	cameraFront = float3(0, 0, -1);
-	pitch = 0;
-	yaw = -90;
+	frustum.front = -float3::unitZ;
+	frustum.up = float3::unitY;
 }
 
-void ComponentCamera::ComputeEulerAngles()
-{// ¡Viva Euler, muerte al Quaternion!
-	cameraFront.x = cos(math::DegToRad(yaw)) * cos(math::DegToRad(pitch));
-	cameraFront.y = sin(math::DegToRad(pitch));
-	cameraFront.z = sin(math::DegToRad(yaw)) *cos(math::DegToRad(pitch));
-	cameraFront.Normalize();
-}
 
-void ComponentCamera::Orbit()
+void ComponentCamera::Orbit(float dx, float dy)
 {
 	if (App->scene->selected == nullptr) return;
-	orbitX += App->input->GetMouseMotion().x*rotationSpeed;
-	orbitY = MIN(89, orbitY + App->input->GetMouseMotion().y*rotationSpeed);
 
 	AABB bbox = App->scene->selected->GetBoundingBox();
-	radius = bbox.CenterPoint().Distance(cameraPos);
+	float3 center = float3::zero;//bbox.CenterPoint();
 
-	cameraPos.x = cos(math::DegToRad(orbitX)) * cos(math::DegToRad(orbitY)) * radius;
-	cameraPos.y = sin(math::DegToRad(orbitY)) * radius;;
-	cameraPos.z = sin(math::DegToRad(orbitX)) *cos(math::DegToRad(orbitY)) * radius;
-	cameraPos += bbox.CenterPoint();
+	if (dx != 0)
+	{
+		Quat rotation = Quat::RotateY(math::DegToRad(-dx)).Normalized();
+		frustum.pos = rotation.Mul(frustum.pos);
+	}
+	if (dy != 0)
+	{
+		Quat rotation = Quat::RotateAxisAngle(frustum.WorldRight(), math::DegToRad(-dy)).Normalized();
+		float3 new_pos = rotation.Mul(frustum.pos);
+		if (!(abs(new_pos.x-center.x) < 0.5f && abs(new_pos.z - center.z) < 0.5f))
+		{
+			frustum.pos = new_pos;
+		}
+	}
+	LookAt(center);
+}
 
-	cameraFront = (bbox.CenterPoint() - cameraPos).Normalized();
-
-	yaw = math::RadToDeg(atan2(cameraFront.z, cameraFront.x));
-	pitch = math::RadToDeg(asin(cameraFront.y));
+void ComponentCamera::LookAt(float3 target)
+{
+	float3 dir = (target - frustum.pos).Normalized();
+	float3x3 look = float3x3::LookAt(frustum.front, dir, frustum.up, float3::unitY);
+	frustum.front = look.Mul(frustum.front).Normalized();
+	frustum.up = look.Mul(frustum.up).Normalized();
 }
 
 void ComponentCamera::Resize(float width, float height)
@@ -171,35 +181,18 @@ void ComponentCamera::Update()
 	if (gameobject == nullptr) return;
 	if (gameobject->transform == nullptr) return;
 
-	cameraPos = gameobject->GetBoundingBox().FaceCenterPoint(4);
-	//add rotation
-}
+	frustum.pos = gameobject->GetBoundingBox().FaceCenterPoint(4);
+} 
 
 float4x4 ComponentCamera::GetViewMatrix()
 {
-	math::float4x4 view = LookAt(cameraPos, cameraPos + cameraFront, float3::unitY);
+	float4x4 view = frustum.ViewMatrix();
 	return view.Transposed();
 }
 
 float4x4 ComponentCamera::GetProjectionMatrix()
 {
 	return frustum.ProjectionMatrix().Transposed();
-}
-
-float4x4 ComponentCamera::LookAt(math::float3 OBS, math::float3 VRP, math::float3 up) const
-{
-	math::float3 forward(VRP - OBS); forward.Normalize(); //deprecated with camerafront pos and up
-	math::float3 side(forward.Cross(up)); side.Normalize();
-	math::float3 u(side.Cross(forward));
-
-	math::float4x4 matrix(math::float4x4::zero);
-	matrix[0][0] = side.x; matrix[0][1] = side.y; matrix[0][2] = side.z;
-	matrix[1][0] = u.x; matrix[1][1] = u.y; matrix[1][2] = u.z;
-	matrix[2][0] = -forward.x; matrix[2][1] = -forward.y; matrix[2][2] = -forward.z;
-	matrix[0][3] = -side.Dot(OBS); matrix[1][3] = -u.Dot(OBS); matrix[2][3] = forward.Dot(OBS);
-	matrix[3][3] = 1;
-
-	return matrix;
 }
 
 void ComponentCamera::CreateFrameBuffer()
@@ -227,7 +220,7 @@ void ComponentCamera::CreateFrameBuffer()
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	glGenRenderbuffers(1, &RBO);
-	glBindRenderbuffer(GL_RENDERBUFFER, RBO); //TODO: Render reduced window not all window
+	glBindRenderbuffer(GL_RENDERBUFFER, RBO);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, App->window->width, App->window->height);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, RBO);
 

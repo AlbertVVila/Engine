@@ -31,25 +31,27 @@ update_status ModuleCamera::Update()
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 		{
 			editorcamera->Move();
-			editorcamera->Rotate();
+			editorcamera->Rotate(editorcamera->rotationSpeed * App->input->GetMouseMotion().x,
+				editorcamera->rotationSpeed * App->input->GetMouseMotion().y);
 		}
-		if (App->input->IsKeyPressed(SDL_SCANCODE_F))
+		if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
 		{
 			editorcamera->Center();
 		}
 		if (App->input->IsKeyPressed(SDL_SCANCODE_LALT) && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
 		{
-			editorcamera->Orbit();
+			editorcamera->Orbit(editorcamera->rotationSpeed * App->input->GetMouseMotion().x,
+				editorcamera->rotationSpeed * App->input->GetMouseMotion().y);
 		}
-		editorcamera->Zoom();
+		editorcamera->Zoom(App->input->GetMouseWheel());
 	}
 	return UPDATE_CONTINUE;
 }
 
 void ModuleCamera::DrawGUI()
 {
-	ImGui::InputFloat3("Position", (float*)&editorcamera->cameraPos, 2, ImGuiInputTextFlags_ReadOnly);
-	ImGui::InputFloat3("Forward ", (float*)&editorcamera->cameraFront, 2, ImGuiInputTextFlags_ReadOnly);
+	ImGui::InputFloat3("Position", (float*)&editorcamera->frustum.pos, 2, ImGuiInputTextFlags_ReadOnly);
+	ImGui::InputFloat3("Forward ", (float*)&editorcamera->frustum.front, 2, ImGuiInputTextFlags_ReadOnly);
 
 	ImGui::InputFloat("Movement Speed", &editorcamera->movementSpeed, 1.f, 5.f);
 	ImGui::InputFloat("Rotation Speed", &editorcamera->rotationSpeed, 1.f, 5.f);

@@ -6,7 +6,7 @@
 
 class GameObject;
 class ComponentCamera;
-class Texture;
+struct Texture;
 
 class ModuleScene :
 	public Module
