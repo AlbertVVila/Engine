@@ -6,6 +6,7 @@
 #include "ModuleTime.h"
 #include "ModuleScene.h"
 #include "ModuleWindow.h"
+#include "ModuleProgram.h"
 #include "GameObject.h"
 #include "Math/MathFunc.h"
 #include "Geometry/AABB.h"
@@ -24,7 +25,7 @@ ComponentCamera::ComponentCamera(GameObject * gameobject) : Component(gameobject
 {
 	InitFrustum();
 	CreateFrameBuffer();
-	frustum.pos =gameobject->GetBoundingBox().FaceCenterPoint(4);
+	frustum.pos = gameobject->GetBoundingBox().CenterPoint();
 }
 
 
@@ -181,7 +182,7 @@ void ComponentCamera::Update()
 	if (gameobject == nullptr) return;
 	if (gameobject->transform == nullptr) return;
 
-	frustum.pos = gameobject->GetBoundingBox().FaceCenterPoint(4);
+	frustum.pos = gameobject->GetGlobalTransform().TranslatePart();
 } 
 
 float4x4 ComponentCamera::GetViewMatrix()
@@ -231,6 +232,5 @@ void ComponentCamera::CreateFrameBuffer()
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
-
 
 

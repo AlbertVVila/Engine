@@ -44,7 +44,6 @@ private:
 
 	void DrawBBox() const;
 
-
 public:
 	ComponentTransform * transform = nullptr;
 	GameObject *parent = nullptr;

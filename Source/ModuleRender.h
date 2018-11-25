@@ -33,6 +33,7 @@ private:
 	void CreateBlockUniforms();
 	void DrawLines() const;
 	void DrawAxis() const;
+	void DrawFrustum() const;
 	void InitSDL();
 	void InitOpenGL() const;
 
