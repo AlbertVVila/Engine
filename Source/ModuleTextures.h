@@ -2,6 +2,8 @@
 #define __ModuleTextures_h__
 
 #include "Module.h"
+#include <vector>
+#include <string>
 
 #define LINEAR 1
 #define NEAREST 0
@@ -25,6 +27,7 @@ public:
 	bool CleanUp();
 	void DrawGUI();
 	Texture * Load(const char* path) const;
+	unsigned int LoadCubeMap(const std::vector<std::string> &faces);
 
 public:
 	int filter_type = LINEAR;

@@ -247,6 +247,8 @@
   <ItemGroup>
     <None Include="..\Game\Default.fs" />
     <None Include="..\Game\Default.vs" />
+    <None Include="..\Game\Skybox.fs" />
+    <None Include="..\Game\Skybox.vs" />
     <None Include="..\Game\Texture.fs" />
     <None Include="..\Game\Texture.vs" />
   </ItemGroup>

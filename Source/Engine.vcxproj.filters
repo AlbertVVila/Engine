@@ -508,5 +508,11 @@
     <None Include="..\Game\Texture.vs">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="..\Game\Skybox.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Skybox.vs">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

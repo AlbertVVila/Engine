@@ -11,6 +11,7 @@
 #include "Math/MathFunc.h"
 #include "Geometry/AABB.h"
 #include "GL/glew.h"
+#include "Imgui/imgui.h"
 
 #define MAXFOV 120
 #define MINFOV 40
@@ -183,7 +184,24 @@ void ComponentCamera::Update()
 	if (gameobject->transform == nullptr) return;
 
 	frustum.pos = gameobject->GetGlobalTransform().TranslatePart();
-} 
+}
+void ComponentCamera::DrawProperties()
+{
+	if (ImGui::CollapsingHeader("Camera"))
+	{
+		ImGui::DragFloat("Znear", (float*)&frustum.nearPlaneDistance, 0.1f, 0.01f, 1000.f);
+		ImGui::DragFloat("Zfar", (float*)&frustum.farPlaneDistance, 0.5f, 1.f, 1000.f);
+		float degFov = math::RadToDeg(frustum.verticalFov);
+		if (ImGui::SliderFloat("FOV", &degFov, 40, 120))
+		{
+			frustum.verticalFov = math::DegToRad(degFov);
+			frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov*0.5f)*App->window->width / App->window->height);
+		}
+
+		ImGui::Separator();
+	}
+}
+
 
 float4x4 ComponentCamera::GetViewMatrix()
 {

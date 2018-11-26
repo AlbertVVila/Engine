@@ -5,9 +5,6 @@
 #include "Math/float4x4.h"
 #include "Geometry/Frustum.h"
 
-struct SDL_Texture;
-struct SDL_Renderer;
-struct SDL_Rect;
 class ComponentCamera;
 
 class ModuleRender : public Module
@@ -34,6 +31,7 @@ private:
 	void DrawLines() const;
 	void DrawAxis() const;
 	void DrawFrustum() const;
+	void DrawSkyBox() const;
 	void InitSDL();
 	void InitOpenGL() const;
 
@@ -42,6 +40,7 @@ public:
 
 private:
 	unsigned int UBO = 0;
+	unsigned int skybox_cubemap = 0;
 	bool useCheckersTexture = false;
 	bool depthTest = true;
 	bool wireframe = false;

@@ -25,6 +25,7 @@ public:
 	void LookAt(float3 target);
 	void Resize(float width, float height);
 	void Update() override;
+	void DrawProperties() override;
 
 	float4x4 GetViewMatrix();
 	float4x4 GetProjectionMatrix();

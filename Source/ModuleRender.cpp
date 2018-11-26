@@ -6,6 +6,7 @@
 #include "ModuleProgram.h"
 #include "ModuleEditor.h"
 #include "ModuleWindow.h"
+#include "ModuleTextures.h"
 #include "SDL.h"
 #include "GL/glew.h"
 #include "imgui.h"
@@ -39,6 +40,16 @@ bool ModuleRender::Init()
 bool ModuleRender::Start()
 {
 	CreateBlockUniforms();
+	std::vector<std::string> faces =
+	{
+			"Skybox/right.jpg",
+			"Skybox/left.jpg",
+			"Skybox/top.jpg",
+			"Skybox/bottom.jpg",
+			"Skybox/back.jpg",
+			"Skybox/front.jpg"
+	};
+	skybox_cubemap = App->textures->LoadCubeMap(faces);
 	return true;
 }
 
@@ -68,6 +79,7 @@ update_status ModuleRender::Update()
 
 	SetProjectionUniform(App->camera->editorcamera);
 	SetViewUniform(App->camera->editorcamera);
+	DrawSkyBox();
 
 	App->scene->Draw();
 
@@ -81,6 +93,7 @@ update_status ModuleRender::Update()
 
 		SetProjectionUniform(App->scene->maincamera);
 		SetViewUniform(App->scene->maincamera);
+		DrawSkyBox();
 
 		App->scene->Draw();
 	}
@@ -100,7 +113,14 @@ update_status ModuleRender::PostUpdate()
 bool ModuleRender::CleanUp()
 {
 	LOG("Destroying renderer");
-	glDeleteBuffers(1, &UBO);
+	if (UBO != 0)
+	{
+		glDeleteBuffers(1, &UBO); //TODO: Remember Clean Textures+Buffers + Optimize VAO+VBO creation
+	}
+	if (skybox_cubemap != 0)
+	{
+		glDeleteTextures(1, &skybox_cubemap);
+	}
 	return true;
 }
 
@@ -196,7 +216,6 @@ void ModuleRender::DrawAxis() const
 void ModuleRender::DrawFrustum() const
 {
 	Frustum *frustum = &App->scene->maincamera->frustum;
-	frustum->farPlaneDistance = 10;
 	glUseProgram(App->program->defaultProgram);
 
 	float3 corners[8];
@@ -213,16 +232,6 @@ void ModuleRender::DrawFrustum() const
 		corners[3].x, corners[3].y, corners[3].z, 1.0,
 	};
 
-	//GLfloat vertices[] = {
-	//	-0.5, -0.5, -0.5, 1.0,
-	//	0.5, -0.5, -0.5, 1.0,
-	//	0.5,  0.5, -0.5, 1.0,
-	//	-0.5,  0.5, -0.5, 1.0,
-	//	-0.5, -0.5,  0.5, 1.0,
-	//	0.5, -0.5,  0.5, 1.0,
-	//	0.5,  0.5,  0.5, 1.0,
-	//	-0.5,  0.5,  0.5, 1.0,
-	//};
 	GLuint vbo_vertices;
 	glGenBuffers(1, &vbo_vertices);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
@@ -282,6 +291,80 @@ void ModuleRender::DrawFrustum() const
 	glUseProgram(0);
 }
 
+void ModuleRender::DrawSkyBox() const
+{
+	Frustum *frustum = &App->camera->editorcamera->frustum;
+	float skyboxVertices[] = {
+		// positions          
+		-1.0f,  1.0f, -1.0f,
+		-1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+		1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+
+		-1.0f, -1.0f,  1.0f,
+		-1.0f, -1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f,  1.0f,
+		-1.0f, -1.0f,  1.0f,
+
+		1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+
+		-1.0f, -1.0f,  1.0f,
+		-1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+		1.0f, -1.0f,  1.0f,
+		-1.0f, -1.0f,  1.0f,
+
+		-1.0f,  1.0f, -1.0f,
+		1.0f,  1.0f, -1.0f,
+		1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+		-1.0f,  1.0f,  1.0f,
+		-1.0f,  1.0f, -1.0f,
+
+		-1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f,  1.0f,
+		1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f,  1.0f,
+		1.0f, -1.0f,  1.0f
+	};
+	unsigned int skyboxVAO, skyboxVBO;
+	glGenVertexArrays(1, &skyboxVAO);
+	glGenBuffers(1, &skyboxVBO);
+	glBindVertexArray(skyboxVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+
+	glDepthMask(GL_FALSE);
+	glUseProgram(App->program->skyboxProgram);
+	glBindVertexArray(skyboxVAO);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, skybox_cubemap);
+	float4x4 model(float4x4::FromTRS(frustum->pos,float4x4::identity,float3::one));
+	glUniformMatrix4fv(glGetUniformLocation(App->program->skyboxProgram,
+		"model"), 1, GL_TRUE, &model[0][0]);
+
+	glUniform1i(glGetUniformLocation(App->program->skyboxProgram, "skybox"), 0);
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+	glDepthMask(GL_TRUE);
+	glUseProgram(0);
+
+	glDeleteBuffers(1, &skyboxVAO);
+	glDeleteBuffers(1, &skyboxVBO);
+}
+
 
 void ModuleRender::InitSDL()
 {
@@ -316,9 +399,11 @@ void ModuleRender::CreateBlockUniforms()
 {
 	unsigned int uniformBlockIndexDefault = glGetUniformBlockIndex(App->program->defaultProgram, "Matrices");
 	unsigned int uniformBlockIndexTexture = glGetUniformBlockIndex(App->program->textureProgram, "Matrices");
+	unsigned int uniformBlockIndexSkybox = glGetUniformBlockIndex(App->program->skyboxProgram, "Matrices");
 
 	glUniformBlockBinding(App->program->defaultProgram, uniformBlockIndexDefault, 0);
 	glUniformBlockBinding(App->program->textureProgram, uniformBlockIndexTexture, 0);
+	glUniformBlockBinding(App->program->skyboxProgram, uniformBlockIndexSkybox, 0);
 
 	glGenBuffers(1, &UBO);
 	glBindBuffer(GL_UNIFORM_BUFFER, UBO);
