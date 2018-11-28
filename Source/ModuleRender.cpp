@@ -46,8 +46,8 @@ bool ModuleRender::Start()
 			"Skybox/left.jpg",
 			"Skybox/top.jpg",
 			"Skybox/bottom.jpg",
-			"Skybox/back.jpg",
-			"Skybox/front.jpg"
+			"Skybox/front.jpg",
+			"Skybox/back.jpg"
 	};
 	skybox_cubemap = App->textures->LoadCubeMap(faces);
 	return true;
@@ -357,12 +357,15 @@ void ModuleRender::DrawSkyBox() const
 
 	glUniform1i(glGetUniformLocation(App->program->skyboxProgram, "skybox"), 0);
 	glDrawArrays(GL_TRIANGLES, 0, 36);
+
+	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
-	glDepthMask(GL_TRUE);
+	glDisableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glUseProgram(0);
 
-	glDeleteBuffers(1, &skyboxVAO);
-	glDeleteBuffers(1, &skyboxVBO);
+	glDepthMask(GL_TRUE);
+
 }
 
 
