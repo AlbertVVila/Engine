@@ -81,7 +81,10 @@ update_status ModuleRender::Update()
 	SetViewUniform(App->camera->editorcamera);
 	DrawSkyBox();
 
-	App->scene->Draw(App->camera->editorcamera->frustum);
+	if (App->scene->maincamera != nullptr)
+	{
+		App->scene->Draw(App->scene->maincamera->frustum);
+	}
 
 	DrawGizmos();
 	
