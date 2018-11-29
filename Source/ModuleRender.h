@@ -31,7 +31,7 @@ private:
 	void DrawLines() const;
 	void DrawAxis() const;
 	void DrawFrustum() const;
-	void DrawSkyBox() const;
+	void DrawSkyBox(const ComponentCamera& camera) const;
 	void InitSDL();
 	void InitOpenGL() const;
 

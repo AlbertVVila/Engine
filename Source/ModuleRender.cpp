@@ -79,7 +79,7 @@ update_status ModuleRender::Update()
 
 	SetProjectionUniform(App->camera->editorcamera);
 	SetViewUniform(App->camera->editorcamera);
-	DrawSkyBox();
+	DrawSkyBox(*App->camera->editorcamera);
 
 	if (App->scene->maincamera != nullptr)
 	{
@@ -96,7 +96,7 @@ update_status ModuleRender::Update()
 
 		SetProjectionUniform(App->scene->maincamera);
 		SetViewUniform(App->scene->maincamera);
-		DrawSkyBox();
+		DrawSkyBox(*App->scene->maincamera);
 
 		App->scene->Draw(App->scene->maincamera->frustum);
 	}
@@ -294,9 +294,8 @@ void ModuleRender::DrawFrustum() const
 	glUseProgram(0);
 }
 
-void ModuleRender::DrawSkyBox() const
+void ModuleRender::DrawSkyBox(const ComponentCamera& camera) const
 {
-	math::Frustum *frustum = &App->camera->editorcamera->frustum;
 	float skyboxVertices[] = {
 		// positions          
 		-1.0f,  1.0f, -1.0f,
@@ -354,7 +353,7 @@ void ModuleRender::DrawSkyBox() const
 	glUseProgram(App->program->skyboxProgram);
 	glBindVertexArray(skyboxVAO);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, skybox_cubemap);
-	float4x4 model(float4x4::FromTRS(frustum->pos,float4x4::identity,float3::one));
+	float4x4 model(float4x4::FromTRS(camera.frustum.pos,float4x4::identity,float3::one));
 	glUniformMatrix4fv(glGetUniformLocation(App->program->skyboxProgram,
 		"model"), 1, GL_TRUE, &model[0][0]);
 

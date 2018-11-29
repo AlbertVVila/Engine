@@ -183,7 +183,10 @@ void ComponentCamera::Update()
 	if (gameobject == nullptr) return;
 	if (gameobject->transform == nullptr) return;
 
-	frustum.pos = gameobject->GetGlobalTransform().TranslatePart();
+	float4x4 transform = gameobject->GetGlobalTransform();
+	frustum.pos = transform.TranslatePart();
+	frustum.front = transform.RotatePart().Mul(float3::unitZ).Normalized();
+	frustum.up = transform.RotatePart().Mul(float3::unitY).Normalized();
 }
 void ComponentCamera::DrawProperties()
 {
