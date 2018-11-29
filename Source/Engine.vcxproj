@@ -93,6 +93,8 @@
     <ClInclude Include="debug_draw.hpp" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="Importer.h" />
+    <ClInclude Include="MaterialImporter.h" />
     <ClInclude Include="MathGeoLib\include\Algorithm\Random\LCG.h" />
     <ClInclude Include="MathGeoLib\include\Geometry\AABB.h" />
     <ClInclude Include="MathGeoLib\include\Geometry\AABB2D.h" />
@@ -151,6 +153,7 @@
     <ClInclude Include="MathGeoLib\include\Math\TransformOps.h" />
     <ClInclude Include="MathGeoLib\include\Time\Clock.h" />
     <ClInclude Include="ComponentMesh.h" />
+    <ClInclude Include="MeshImporter.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="ModuleCamera.h" />
     <ClInclude Include="ModuleEditor.h" />
@@ -188,8 +191,10 @@
     <ClCompile Include="imgui_impl_opengl3.cpp" />
     <ClCompile Include="imgui_impl_sdl.cpp" />
     <ClCompile Include="imgui_widgets.cpp" />
+    <ClCompile Include="Importer.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MaterialImporter.cpp" />
     <ClCompile Include="MathGeoLib\include\Algorithm\Random\LCG.cpp" />
     <ClCompile Include="MathGeoLib\include\Geometry\AABB.cpp" />
     <ClCompile Include="MathGeoLib\include\Geometry\Capsule.cpp" />
@@ -223,6 +228,7 @@
     <ClCompile Include="MathGeoLib\include\Math\TransformOps.cpp" />
     <ClCompile Include="MathGeoLib\include\Time\Clock.cpp" />
     <ClCompile Include="ComponentMesh.cpp" />
+    <ClCompile Include="MeshImporter.cpp" />
     <ClCompile Include="mmgr\mmgr.cpp" />
     <ClCompile Include="ModuleCamera.cpp" />
     <ClCompile Include="ModuleEditor.cpp" />

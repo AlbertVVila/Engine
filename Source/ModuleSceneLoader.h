@@ -11,6 +11,8 @@
 struct aiNode;
 struct aiScene;
 class GameObject;
+class MeshImporter;
+class MaterialImporter;
 
 class ModuleSceneLoader :
 	public Module
@@ -35,7 +37,11 @@ private:
 public:
 	//bool checkers = false;
 	//Texture checkersTexture = Texture(0,0,0);
-	const char *filepath = nullptr;
+	const char *filepath = nullptr; //TODO: refactor class
+
+private:
+	MaterialImporter * matImporter = nullptr;
+	MeshImporter * meshImporter = nullptr;
 };
 
 #endif //__ModuleSceneLoader_h__
