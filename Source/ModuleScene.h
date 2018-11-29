@@ -3,7 +3,7 @@
 
 #include "Module.h"
 #include "assimp/matrix4x4.h"
-
+#include "Geometry/Frustum.h"
 class GameObject;
 class ComponentCamera;
 struct Texture;
@@ -18,7 +18,7 @@ public:
 	bool Start() override;
 
 	update_status Update() override;
-	void Draw();
+	void Draw(const math::Frustum &frustum);
 	void DrawHierarchy();
 
 	GameObject * CreateGameObject(const aiMatrix4x4& transform, const char* filepath, const char* name, GameObject* parent);

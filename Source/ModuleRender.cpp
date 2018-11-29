@@ -81,7 +81,7 @@ update_status ModuleRender::Update()
 	SetViewUniform(App->camera->editorcamera);
 	DrawSkyBox();
 
-	App->scene->Draw();
+	App->scene->Draw(App->camera->editorcamera->frustum);
 
 	DrawGizmos();
 	
@@ -95,7 +95,7 @@ update_status ModuleRender::Update()
 		SetViewUniform(App->scene->maincamera);
 		DrawSkyBox();
 
-		App->scene->Draw();
+		App->scene->Draw(App->scene->maincamera->frustum);
 	}
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	return UPDATE_CONTINUE;
@@ -215,7 +215,7 @@ void ModuleRender::DrawAxis() const
 
 void ModuleRender::DrawFrustum() const
 {
-	Frustum *frustum = &App->scene->maincamera->frustum;
+	math::Frustum *frustum = &App->scene->maincamera->frustum;
 	glUseProgram(App->program->defaultProgram);
 
 	float3 corners[8];
@@ -293,7 +293,7 @@ void ModuleRender::DrawFrustum() const
 
 void ModuleRender::DrawSkyBox() const
 {
-	Frustum *frustum = &App->camera->editorcamera->frustum;
+	math::Frustum *frustum = &App->camera->editorcamera->frustum;
 	float skyboxVertices[] = {
 		// positions          
 		-1.0f,  1.0f, -1.0f,

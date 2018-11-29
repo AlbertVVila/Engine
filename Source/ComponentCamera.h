@@ -37,7 +37,7 @@ public:
 	float movementSpeed = 5.0f;
 	float rotationSpeed = 200.f;
 	float zoomSpeed = 0.1f;
-	Frustum frustum;
+	math::Frustum frustum;
 	unsigned int renderedTexture = 0;
 	unsigned int FBO = 0;
 	unsigned int RBO = 0;

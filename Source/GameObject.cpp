@@ -70,11 +70,13 @@ GameObject::~GameObject()
 	parent = nullptr;
 }
 
-void GameObject::Draw()
+void GameObject::Draw(const math::Frustum& frustum)
 {
+	if (!frustum.IntersectsFaster(GetBoundingBox())) return;
+
 	for (const auto &child : children)
 	{
-		child->Draw();
+		child->Draw(frustum);
 	}
 
 	if (transform == nullptr) return;
