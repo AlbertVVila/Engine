@@ -13,6 +13,7 @@ class PanelConfiguration;
 class PanelAbout;
 class PanelHardware;
 class PanelHierarchy;
+class PanelCamera;
 class GameObject;
 
 class ModuleEditor :
@@ -43,6 +44,7 @@ public:
 	PanelAbout *about = nullptr;
 	PanelHardware *hardware = nullptr;
 	PanelHierarchy *hierarchy = nullptr;
+	PanelCamera *camera = nullptr;
 
 private:
 	std::list<Panel*> panels;

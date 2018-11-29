@@ -192,6 +192,12 @@
     <ClCompile Include="PanelInspector.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
+    <ClCompile Include="ComponentCamera.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelCamera.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -453,6 +459,12 @@
     <ClInclude Include="par_shapes.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="ComponentCamera.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelCamera.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GeoLib">
@@ -494,6 +506,12 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\Game\Texture.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Skybox.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Skybox.vs">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

@@ -8,6 +8,7 @@
 
 class Component;
 class ComponentTransform;
+class Frustum;
 enum ComponentType;
 struct Texture;
 
@@ -19,7 +20,7 @@ public:
 	GameObject(const GameObject& gameobject);
 	~GameObject();
 
-	void Draw();
+	void Draw(const math::Frustum& frustum);
 	void DrawProperties();
 	void DrawHierarchy(GameObject * obj_clicked);
 
@@ -43,7 +44,6 @@ private:
 	void ModelTransform(unsigned int shader) const;
 
 	void DrawBBox() const;
-
 
 public:
 	ComponentTransform * transform = nullptr;

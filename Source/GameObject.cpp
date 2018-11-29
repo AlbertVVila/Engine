@@ -10,6 +10,7 @@
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
+#include "ComponentCamera.h"
 
 #include "Application.h"
 #include "ModuleProgram.h"
@@ -69,11 +70,13 @@ GameObject::~GameObject()
 	parent = nullptr;
 }
 
-void GameObject::Draw()
+void GameObject::Draw(const math::Frustum& frustum)
 {
+	if (!frustum.IntersectsFaster(GetBoundingBox())) return;
+
 	for (const auto &child : children)
 	{
-		child->Draw();
+		child->Draw(frustum);
 	}
 
 	if (transform == nullptr) return;
@@ -234,6 +237,11 @@ void GameObject::DrawHierarchy(GameObject * selected)
 
 void GameObject::Update()
 {
+	for (auto& component: components)
+	{
+		component->Update();
+	}
+
 	for (std::list<GameObject*>::iterator it_child = children.begin(); it_child != children.end();)
 	{
 		(*it_child)->Update();
@@ -276,6 +284,13 @@ Component * GameObject::CreateComponent(ComponentType type)
 		component = new ComponentMaterial(this);
 		break;
 	case Light:
+		break;
+	case Camera:
+		component = new ComponentCamera(this);
+		if (App->scene->maincamera == nullptr)
+		{
+			App->scene->maincamera = (ComponentCamera*)component;
+		}
 		break;
 	default:
 		break;

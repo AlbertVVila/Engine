@@ -17,6 +17,7 @@ bool ModuleProgram::Init()
 	//Currently we have 2 programs, one for textures and a default one for axis
 	defaultProgram = CreateProgram("Default");
 	textureProgram = CreateProgram("Texture");
+	skyboxProgram = CreateProgram("Skybox");
 	return true;
 }
 

@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
+#include "GL/glew.h"
 #include "IL/ilut.h"
 #include "imgui.h"
 
@@ -102,6 +103,61 @@ Texture * ModuleTextures::Load(const char * path) const
 		LOG("Error file %s: %s\n", path, iluErrorString(error));
 	}
 	return nullptr;
+}
+
+unsigned int ModuleTextures::LoadCubeMap(const std::vector<std::string> &faces) //TODO: change to array[6]
+{
+	unsigned int textureID;
+	glGenTextures(1, &textureID);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
+	int width = 0;
+	int height = 0;
+	int pixelDepth = 0;
+	int format = 0;
+
+	for (unsigned int i=0; i< faces.size(); ++i)
+	{
+		ILuint imageID;
+		ILboolean success;
+		ILenum error;
+		ILinfo ImageInfo;
+
+		ilGenImages(1, &imageID); 		// Generate the image ID
+		ilBindImage(imageID); 			// Bind the image
+		success = ilLoadImage(faces[i].c_str());
+		if (success)
+		{
+			//iluGetImageInfo(&ImageInfo);
+			//if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
+			//{
+			//	iluFlipImage();
+			//}
+
+			ILubyte* data = ilGetData();
+			width = ilGetInteger(IL_IMAGE_WIDTH);
+			height = ilGetInteger(IL_IMAGE_HEIGHT);
+			pixelDepth = ilGetInteger(IL_IMAGE_DEPTH);
+			format = ilGetInteger(IL_IMAGE_FORMAT);
+
+			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+				0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data
+			);
+			ilDeleteImages(1, &imageID);
+		}
+		else
+		{
+			error = ilGetError();
+			LOG("Error file %s: %s\n", faces[i], iluErrorString(error));
+		}
+	}
+
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+	return textureID;
 }
 
 

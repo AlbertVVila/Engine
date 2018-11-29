@@ -9,6 +9,7 @@
 #include "PanelAbout.h"
 #include "PanelHardware.h"
 #include "PanelHierarchy.h"
+#include "PanelCamera.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_sdl.h"
 #include "imgui.h"
@@ -22,6 +23,7 @@ ModuleEditor::ModuleEditor()
 	panels.push_back(hardware = new PanelHardware());
 	panels.push_back(scene = new PanelScene());
 	panels.push_back(hierarchy = new PanelHierarchy());
+	panels.push_back(camera = new PanelCamera());
 }
 
 // Destructor
@@ -80,6 +82,10 @@ update_status ModuleEditor::Update()
 			if (ImGui::MenuItem("Scene", NULL, scene->IsEnabled()))
 			{
 				scene->ToggleEnabled();
+			}
+			if (ImGui::MenuItem("Game", NULL, camera->IsEnabled()))
+			{
+				camera->ToggleEnabled();
 			}
 			if (ImGui::MenuItem("Configuration", NULL, configuration->IsEnabled()))
 			{

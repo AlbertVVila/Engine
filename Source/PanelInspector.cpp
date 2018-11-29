@@ -29,7 +29,7 @@ void PanelInspector::Draw()
 	if (App->scene->selected != nullptr)
 	{
 		App->scene->selected->DrawProperties();
-		const char* components[] = { "Transform", "Mesh", "Material"};
+		const char* components[] = { "Transform", "Mesh", "Material", "Camera"};
 
 		if (ImGui::Button("Add Component", ImVec2(ImGui::GetWindowWidth(), 25)))
 			ImGui::OpenPopup("component_popup");

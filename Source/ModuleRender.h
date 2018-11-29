@@ -5,9 +5,7 @@
 #include "Math/float4x4.h"
 #include "Geometry/Frustum.h"
 
-struct SDL_Texture;
-struct SDL_Renderer;
-struct SDL_Rect;
+class ComponentCamera;
 
 class ModuleRender : public Module
 {
@@ -27,26 +25,22 @@ public:
 private:
 
 	void DrawGizmos() const;
-	void ViewMatrix() const;
-	void ProjectionMatrix() const;
-	float4x4 LookAt(math::float3 OBS, math::float3 VRP, math::float3 up) const;
-	void CreateFrameBuffer();
+	void SetViewUniform(ComponentCamera *camera) const;
+	void SetProjectionUniform(ComponentCamera *camera) const;
 	void CreateBlockUniforms();
 	void DrawLines() const;
 	void DrawAxis() const;
-	void InitFrustum();
+	void DrawFrustum() const;
+	void DrawSkyBox(const ComponentCamera& camera) const;
 	void InitSDL();
 	void InitOpenGL() const;
 
 public:
 	void* context = nullptr;
-	Frustum frustum;
-	unsigned int renderTexture = 0;
 
 private:
-	unsigned int FBO = 0;
-	unsigned int RBO = 0;
 	unsigned int UBO = 0;
+	unsigned int skybox_cubemap = 0;
 	bool useCheckersTexture = false;
 	bool depthTest = true;
 	bool wireframe = false;

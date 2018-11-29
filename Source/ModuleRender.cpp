@@ -1,14 +1,17 @@
 #include "Application.h"
 #include "ModuleRender.h"
 #include "ModuleCamera.h"
+#include "ComponentCamera.h"
 #include "ModuleScene.h"
 #include "ModuleProgram.h"
 #include "ModuleEditor.h"
 #include "ModuleWindow.h"
+#include "ModuleTextures.h"
 #include "SDL.h"
 #include "GL/glew.h"
 #include "imgui.h"
 #include "Math/MathFunc.h"
+#include "GameObject.h"
 
 ModuleRender::ModuleRender()
 {
@@ -36,9 +39,17 @@ bool ModuleRender::Init()
 
 bool ModuleRender::Start()
 {
-	InitFrustum();
-	CreateFrameBuffer(); //TODO: move frustum and view to camera
 	CreateBlockUniforms();
+	std::vector<std::string> faces =
+	{
+			"Skybox/right.jpg",
+			"Skybox/left.jpg",
+			"Skybox/top.jpg",
+			"Skybox/bottom.jpg",
+			"Skybox/front.jpg",
+			"Skybox/back.jpg"
+	};
+	skybox_cubemap = App->textures->LoadCubeMap(faces);
 	return true;
 }
 
@@ -53,7 +64,7 @@ update_status ModuleRender::PreUpdate()
 // Called every draw update
 update_status ModuleRender::Update()
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, App->camera->editorcamera->FBO);
 	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -66,14 +77,30 @@ update_status ModuleRender::Update()
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 
-	ProjectionMatrix();
-	ViewMatrix();
+	SetProjectionUniform(App->camera->editorcamera);
+	SetViewUniform(App->camera->editorcamera);
+	DrawSkyBox(*App->camera->editorcamera);
 
-	App->scene->Draw();
+	if (App->scene->maincamera != nullptr)
+	{
+		App->scene->Draw(App->scene->maincamera->frustum);
+	}
 
 	DrawGizmos();
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	
+	if (App->scene->maincamera != nullptr)
+	{
+		glBindFramebuffer(GL_FRAMEBUFFER, App->scene->maincamera->FBO);
+		glClearColor(0.3f, 0.3f, 0.3f, 1.f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		SetProjectionUniform(App->scene->maincamera);
+		SetViewUniform(App->scene->maincamera);
+		DrawSkyBox(*App->scene->maincamera);
+
+		App->scene->Draw(App->scene->maincamera->frustum);
+	}
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	return UPDATE_CONTINUE;
 }
 
@@ -89,17 +116,21 @@ update_status ModuleRender::PostUpdate()
 bool ModuleRender::CleanUp()
 {
 	LOG("Destroying renderer");
-	glDeleteFramebuffers(1, &FBO);
-	glDeleteRenderbuffers(1, &RBO);
-	glDeleteBuffers(1, &UBO);
+	if (UBO != 0)
+	{
+		glDeleteBuffers(1, &UBO); //TODO: Remember Clean Textures+Buffers + Optimize VAO+VBO creation
+	}
+	if (skybox_cubemap != 0)
+	{
+		glDeleteTextures(1, &skybox_cubemap);
+	}
 	return true;
 }
 
 void ModuleRender::OnResize()
 {
     glViewport(0, 0, App->window->width, App->window->height);
-	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * ((float)App->window->width / (float)App->window->height));
-	CreateFrameBuffer(); //We recreate framebuffer with new window size
+	App->camera->editorcamera->Resize(App->window->width, App->window->height);
 }
 
 
@@ -113,7 +144,10 @@ void ModuleRender::DrawGizmos() const
 
 	DrawLines();
 	DrawAxis();
-
+	if (App->scene->maincamera != nullptr)
+	{
+		DrawFrustum();
+	}
 	glUseProgram(0);
 }
 
@@ -182,18 +216,160 @@ void ModuleRender::DrawAxis() const
 	glLineWidth(1.0f);
 }
 
-void ModuleRender::InitFrustum()
+void ModuleRender::DrawFrustum() const
 {
-	frustum.type = FrustumType::PerspectiveFrustum;
-	frustum.pos = float3::zero;
-	frustum.front = -float3::unitZ;
-	frustum.up = float3::unitY;
-	frustum.nearPlaneDistance = 0.1f;
-	frustum.farPlaneDistance = 1000.0f;
-	frustum.verticalFov = math::pi / 2.0f;
-	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * ((float)App->window->width / (float)App->window->height));
+	math::Frustum *frustum = &App->scene->maincamera->frustum;
+	glUseProgram(App->program->defaultProgram);
+
+	float3 corners[8];
+	frustum->GetCornerPoints(corners);
+
+	GLfloat vertices[] = {
+		corners[0].x, corners[0].y, corners[0].z, 1.0,
+		corners[4].x, corners[4].y, corners[4].z, 1.0,
+		corners[6].x, corners[6].y, corners[6].z, 1.0,
+		corners[2].x, corners[2].y, corners[2].z, 1.0,
+		corners[1].x, corners[1].y, corners[1].z, 1.0,
+		corners[5].x, corners[5].y, corners[5].z, 1.0,
+		corners[7].x, corners[7].y, corners[7].z, 1.0,
+		corners[3].x, corners[3].y, corners[3].z, 1.0,
+	};
+
+	GLuint vbo_vertices;
+	glGenBuffers(1, &vbo_vertices);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	GLushort elements[] = {
+		0, 1, 2, 3,
+		4, 5, 6, 7,
+		0, 4, 1, 5, 2, 6, 3, 7
+	};
+	GLuint ibo_elements;
+	glGenBuffers(1, &ibo_elements);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_elements);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	float4x4 model(float4x4::identity);
+	glUniformMatrix4fv(glGetUniformLocation(App->program->defaultProgram,
+		"model"), 1, GL_TRUE, &model[0][0]);
+
+	float4x4 view(App->scene->maincamera->frustum.ViewMatrix());
+	glUniformMatrix4fv(glGetUniformLocation(App->program->defaultProgram,
+		"view"), 1, GL_TRUE, &view.Transposed()[0][0]);
+
+	float4x4 proj(App->scene->maincamera->frustum.ProjectionMatrix());
+	glUniformMatrix4fv(glGetUniformLocation(App->program->defaultProgram,
+		"proj"), 1, GL_TRUE, &proj.Transposed()[0][0]);
+
+	float red[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
+	glUniform4fv(glGetUniformLocation(App->program->defaultProgram,
+		"Vcolor"), 1, red);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(
+		0,  // attribute
+		4,                  // number of elements per vertex, here (x,y,z,w)
+		GL_FLOAT,           // the type of each element
+		GL_FALSE,           // take our values as-is
+		0,                  // no extra data between each position
+		0                   // offset of first element
+	);
+
+	glLineWidth(4.f);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_elements);
+	glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, 0);
+	glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, (GLvoid*)(4 * sizeof(GLushort)));
+	glDrawElements(GL_LINES, 8, GL_UNSIGNED_SHORT, (GLvoid*)(8 * sizeof(GLushort)));
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glLineWidth(1.f);
+
+	glDisableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glDeleteBuffers(1, &vbo_vertices);
+	glDeleteBuffers(1, &ibo_elements);
+	glUseProgram(0);
+}
+
+void ModuleRender::DrawSkyBox(const ComponentCamera& camera) const
+{
+	float skyboxVertices[] = {
+		// positions          
+		-1.0f,  1.0f, -1.0f,
+		-1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+		1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+
+		-1.0f, -1.0f,  1.0f,
+		-1.0f, -1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f, -1.0f,
+		-1.0f,  1.0f,  1.0f,
+		-1.0f, -1.0f,  1.0f,
+
+		1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+
+		-1.0f, -1.0f,  1.0f,
+		-1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+		1.0f, -1.0f,  1.0f,
+		-1.0f, -1.0f,  1.0f,
+
+		-1.0f,  1.0f, -1.0f,
+		1.0f,  1.0f, -1.0f,
+		1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f,
+		-1.0f,  1.0f,  1.0f,
+		-1.0f,  1.0f, -1.0f,
+
+		-1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f,  1.0f,
+		1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f,
+		-1.0f, -1.0f,  1.0f,
+		1.0f, -1.0f,  1.0f
+	};
+	unsigned int skyboxVAO, skyboxVBO;
+	glGenVertexArrays(1, &skyboxVAO);
+	glGenBuffers(1, &skyboxVBO);
+	glBindVertexArray(skyboxVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+
+	glDepthMask(GL_FALSE);
+	glUseProgram(App->program->skyboxProgram);
+	glBindVertexArray(skyboxVAO);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, skybox_cubemap);
+	float4x4 model(float4x4::FromTRS(camera.frustum.pos,float4x4::identity,float3::one));
+	glUniformMatrix4fv(glGetUniformLocation(App->program->skyboxProgram,
+		"model"), 1, GL_TRUE, &model[0][0]);
+
+	glUniform1i(glGetUniformLocation(App->program->skyboxProgram, "skybox"), 0);
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+
+	glBindVertexArray(0);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+	glDisableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glUseProgram(0);
+
+	glDepthMask(GL_TRUE);
 
 }
+
 
 void ModuleRender::InitSDL()
 {
@@ -224,50 +400,15 @@ void ModuleRender::InitOpenGL() const
 	glViewport(0, 0, App->window->width, App->window->height);
 }
 
-void ModuleRender::CreateFrameBuffer()
-{
-	glDeleteFramebuffers(1, &FBO);
-	glDeleteRenderbuffers(1, &RBO);
-
-	glGenFramebuffers(1, &FBO);
-	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
-
-	glGenTextures(1, &renderTexture);
-	glBindTexture(GL_TEXTURE_2D, renderTexture);
-
-	glTexImage2D(
-		GL_TEXTURE_2D, 0, GL_RGB, App->window->width, App->window->height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL
-	);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	glFramebufferTexture2D(
-		GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderTexture, 0
-	);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	glGenRenderbuffers(1, &RBO);
-	glBindRenderbuffer(GL_RENDERBUFFER, RBO);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, App->window->width, App->window->height);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, RBO);
-
-	glBindRenderbuffer(GL_RENDERBUFFER, 0);
-
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-		LOG("Framebuffer ERROR");
-
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-}
-
 void ModuleRender::CreateBlockUniforms()
 {
 	unsigned int uniformBlockIndexDefault = glGetUniformBlockIndex(App->program->defaultProgram, "Matrices");
 	unsigned int uniformBlockIndexTexture = glGetUniformBlockIndex(App->program->textureProgram, "Matrices");
+	unsigned int uniformBlockIndexSkybox = glGetUniformBlockIndex(App->program->skyboxProgram, "Matrices");
 
 	glUniformBlockBinding(App->program->defaultProgram, uniformBlockIndexDefault, 0);
 	glUniformBlockBinding(App->program->textureProgram, uniformBlockIndexTexture, 0);
+	glUniformBlockBinding(App->program->skyboxProgram, uniformBlockIndexSkybox, 0);
 
 	glGenBuffers(1, &UBO);
 	glBindBuffer(GL_UNIFORM_BUFFER, UBO);
@@ -292,53 +433,22 @@ void ModuleRender::DrawGUI()
 	}
 
 	ImGui::Checkbox("Wireframe", &wireframe);
-	//ImGui::Checkbox("Show Model Bounding Boxes", &boundingBox); //TODO:BoundingBOx
-
-	float degFov = math::RadToDeg(frustum.verticalFov);
-	if (ImGui::SliderFloat("FOV", &degFov, 40, 120))
-	{
-		frustum.verticalFov = math::DegToRad(degFov);
-		frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov*0.5f)*App->window->width/ App->window->height);
-	}
-	ImGui::InputFloat("Znear", &frustum.nearPlaneDistance, 1, 10);
-	ImGui::InputFloat("Zfar", &frustum.farPlaneDistance, 1, 10);
 	if (ImGui::Checkbox("Vsync", &vsync))
 	{
 		SDL_GL_SetSwapInterval((int)vsync);
 	}
 }
 
-void ModuleRender::ViewMatrix() const
+void ModuleRender::SetViewUniform(ComponentCamera *camera) const
 {
-	math::float4x4 view = LookAt(App->camera->cameraPos, App->camera->cameraPos
-		+ App->camera->cameraFront, float3::unitY);
-	view.Transpose();
 	glBindBuffer(GL_UNIFORM_BUFFER, UBO);
-	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(float4x4), sizeof(float4x4), &view[0][0]);
+	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(float4x4), sizeof(float4x4), &camera->GetViewMatrix()[0][0]);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
-void ModuleRender::ProjectionMatrix() const
+void ModuleRender::SetProjectionUniform(ComponentCamera *camera) const
 {
-	float4x4 projection = frustum.ProjectionMatrix();
-	projection.Transpose();
 	glBindBuffer(GL_UNIFORM_BUFFER, UBO);
-	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(float4x4), &projection[0][0]);
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(float4x4), &camera->GetProjectionMatrix()[0][0]);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
-}
-
-math::float4x4 ModuleRender::LookAt(math::float3 OBS, math::float3 VRP, math::float3 up) const
-{
-	math::float3 forward(VRP - OBS); forward.Normalize(); //deprecated with camerafront pos and up
-	math::float3 side(forward.Cross(up)); side.Normalize();
-	math::float3 u(side.Cross(forward));
-
-	math::float4x4 matrix(math::float4x4::zero);
-	matrix[0][0] = side.x; matrix[0][1] = side.y; matrix[0][2] = side.z;
-	matrix[1][0] = u.x; matrix[1][1] = u.y; matrix[1][2] = u.z;
-	matrix[2][0] = -forward.x; matrix[2][1] = -forward.y; matrix[2][2] = -forward.z;
-	matrix[0][3] = -side.Dot(OBS); matrix[1][3] = -u.Dot(OBS); matrix[2][3] = forward.Dot(OBS);
-	matrix[3][3] = 1;
-
-	return matrix;
 }

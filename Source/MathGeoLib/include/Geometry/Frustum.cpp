@@ -760,6 +760,37 @@ bool Frustum::Intersects(const Polyhedron &polyhedron) const
 	return this->ToPolyhedron().Intersects(polyhedron);
 }
 
+bool Frustum::IntersectsFaster(const AABB & aabb) const
+{
+	float3 corners[8];
+	int iTotalIn = 0;
+	aabb.GetCornerPoints(corners);
+
+	Plane planes[6];
+	GetPlanes(planes);
+	for (int i = 0; i < 6; i++)
+	{
+		int iInCount = 8;
+		int iPtIn = 1;
+
+		for (int j = 0; j < 8; j++)
+		{
+			if (planes[i].IsOnPositiveSide(corners[j]))
+			{
+				iPtIn = 0;
+				--iInCount;
+			}
+		}
+
+		if (iInCount == 0)
+			return false;
+
+		iTotalIn += iPtIn;
+	}
+
+	return true;
+}
+
 #if defined(MATH_TINYXML_INTEROP) && defined(MATH_CONTAINERLIB_SUPPORT)
 
 void Frustum::DeserializeFromXml(TiXmlElement *e)

@@ -23,6 +23,7 @@ public:
 	//TODO: Use container for programs
 	unsigned int defaultProgram = 0;
 	unsigned int textureProgram = 0;
+	unsigned int skyboxProgram = 0;
 
 };
 
