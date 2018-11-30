@@ -25,7 +25,7 @@ GameObject::GameObject(const char * name) : name(name)
 {
 }
 
-GameObject::GameObject(const aiMatrix4x4 & transform, const char * filepath, const char * name) : filepath(filepath), name(name)
+GameObject::GameObject(const float4x4 & transform, const char * filepath, const char * name) : filepath(filepath), name(name)
 {
 	this->transform =  (ComponentTransform*) CreateComponent(ComponentType::Transform);
 	this->transform->AddTransform(transform);

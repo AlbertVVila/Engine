@@ -184,7 +184,7 @@ void ModuleInput::DropFile(char* dropped_file) const
 
 	if (extension == "fbx" || extension == "FBX")
 	{
-		App->sceneLoader->LoadFile(dropped_file);
+		/*App->sceneLoader->LoadFile(dropped_file);*/ //TODO change dropfile 
 	}
 	else if (extension == "png" || extension == "jpg" || extension == "dds")
 	{

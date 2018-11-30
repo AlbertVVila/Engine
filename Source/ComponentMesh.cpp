@@ -7,7 +7,7 @@
 #include "Imgui/imgui.h"
 #include "par_shapes.h"
 
-ComponentMesh::ComponentMesh(GameObject* gameobject, const aiMesh * mesh) : Component(gameobject, ComponentType::Mesh)
+ComponentMesh::ComponentMesh(GameObject* gameobject, const char * mesh) : Component(gameobject, ComponentType::Mesh)
 {
 	if (mesh != nullptr)
 	{
@@ -81,79 +81,86 @@ void ComponentMesh::DrawProperties()
 	ImGui::PopID();
 }
 
-void ComponentMesh::SetMesh(const aiMesh * mesh)
+void ComponentMesh::SetMesh(const char * mesh)
 {
 	assert(mesh != nullptr);
 	DeleteBuffers();
-	// VAO Creation
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
 
-	// Buffer Creation with vertex data
-	glGenBuffers(1, &VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*mesh->mNumVertices * 5, NULL, GL_STATIC_DRAW);
+	unsigned int numIndices = *mesh;
+	mesh += sizeof(int);
+	unsigned int numVertices = *mesh;
+	mesh += sizeof(int);
 
-	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(GLfloat) * 3 * mesh->mNumVertices, mesh->mVertices);
-	float * pbuffer = (float*)glMapBufferRange(GL_ARRAY_BUFFER, sizeof(GLfloat) * 3 * mesh->mNumVertices, sizeof(GLfloat) * 2 * mesh->mNumVertices, GL_MAP_WRITE_BIT);
-	for (unsigned int i = 0; i < mesh->mNumVertices; i++)
-	{
-		*pbuffer++ = mesh->mTextureCoords[0][i].x;
-		*pbuffer++ = mesh->mTextureCoords[0][i].y;
 
-		vertices.emplace_back(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
-	}
-	glUnmapBuffer(GL_ARRAY_BUFFER);
+	//// VAO Creation
+	//glGenVertexArrays(1, &VAO);
+	//glBindVertexArray(VAO);
 
-	//Buffer creation with indices
-	glGenBuffers(1, &EBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int)*mesh->mNumFaces * 3, NULL, GL_STATIC_DRAW);
-	int * pbufferIndex = (int*)glMapBufferRange(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(unsigned int)*mesh->mNumFaces * 3, GL_MAP_WRITE_BIT);
-	for (unsigned int i = 0; i < mesh->mNumFaces; i++)
-	{
-		aiFace face = mesh->mFaces[i];
-		assert(face.mNumIndices == 3);
-		for (unsigned int j = 0; j < face.mNumIndices; j++)
-		{
-			*pbufferIndex++ = face.mIndices[j];
-		}
-	}
-	glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
+	//// Buffer Creation with vertex data
+	//glGenBuffers(1, &VBO);
+	//glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*mesh->mNumVertices * 5, NULL, GL_STATIC_DRAW);
 
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(
-		0,                  // attribute 0
-		3,                  // number of componentes (3 floats)
-		GL_FLOAT,           // data type
-		GL_FALSE,           // should be normalized?
-		0,                  // stride
-		(void*)0            // array buffer offset
-	);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(
-		1,                  // attribute 0
-		2,                  // number of componentes (3 floats)
-		GL_FLOAT,           // data type
-		GL_FALSE,           // should be normalized?
-		0,                  // stride
-		(void*)(sizeof(float) * 3 * mesh->mNumVertices)       // array buffer offset
-	);
+	//glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(GLfloat) * 3 * mesh->mNumVertices, mesh->mVertices);
+	//float * pbuffer = (float*)glMapBufferRange(GL_ARRAY_BUFFER, sizeof(GLfloat) * 3 * mesh->mNumVertices, sizeof(GLfloat) * 2 * mesh->mNumVertices, GL_MAP_WRITE_BIT);
+	//for (unsigned int i = 0; i < mesh->mNumVertices; i++)
+	//{
+	//	*pbuffer++ = mesh->mTextureCoords[0][i].x;
+	//	*pbuffer++ = mesh->mTextureCoords[0][i].y;
 
-	// Disable VAO
-	glBindVertexArray(0);
+	//	vertices.emplace_back(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
+	//}
+	//glUnmapBuffer(GL_ARRAY_BUFFER);
 
-	glDisableVertexAttribArray(0);
-	glDisableVertexAttribArray(1);
-	
+	////Buffer creation with indices
+	//glGenBuffers(1, &EBO);
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int)*mesh->mNumFaces * 3, NULL, GL_STATIC_DRAW);
+	//int * pbufferIndex = (int*)glMapBufferRange(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(unsigned int)*mesh->mNumFaces * 3, GL_MAP_WRITE_BIT);
+	//for (unsigned int i = 0; i < mesh->mNumFaces; i++)
+	//{
+	//	aiFace face = mesh->mFaces[i];
+	//	assert(face.mNumIndices == 3);
+	//	for (unsigned int j = 0; j < face.mNumIndices; j++)
+	//	{
+	//		*pbufferIndex++ = face.mIndices[j];
+	//	}
+	//}
+	//glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
 
-	// Disable VBO and EBO
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	//glEnableVertexAttribArray(0);
+	//glVertexAttribPointer(
+	//	0,                  // attribute 0
+	//	3,                  // number of componentes (3 floats)
+	//	GL_FLOAT,           // data type
+	//	GL_FALSE,           // should be normalized?
+	//	0,                  // stride
+	//	(void*)0            // array buffer offset
+	//);
+	//glEnableVertexAttribArray(1);
+	//glVertexAttribPointer(
+	//	1,                  // attribute 0
+	//	2,                  // number of componentes (3 floats)
+	//	GL_FLOAT,           // data type
+	//	GL_FALSE,           // should be normalized?
+	//	0,                  // stride
+	//	(void*)(sizeof(float) * 3 * mesh->mNumVertices)       // array buffer offset
+	//);
 
-	numIndices = mesh->mNumFaces * 3;
-	materialIndex = mesh->mMaterialIndex;
-	ComputeBBox();
+	//// Disable VAO
+	//glBindVertexArray(0);
+
+	//glDisableVertexAttribArray(0);
+	//glDisableVertexAttribArray(1);
+	//
+
+	//// Disable VBO and EBO
+	//glBindBuffer(GL_ARRAY_BUFFER, 0);
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	//numIndices = mesh->mNumFaces * 3;
+	//materialIndex = mesh->mMaterialIndex;
+	//ComputeBBox();
 }
 
 void ComponentMesh::SetMesh(par_shapes_mesh_s * mesh)

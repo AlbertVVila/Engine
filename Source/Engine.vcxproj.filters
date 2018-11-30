@@ -201,10 +201,12 @@
     <ClCompile Include="Importer.cpp">
       <Filter>Importer</Filter>
     </ClCompile>
-    <ClCompile Include="MeshImporter.cpp">
+    <ClCompile Include="SceneImporter.cpp">
       <Filter>Importer</Filter>
     </ClCompile>
-    <ClCompile Include="MaterialImporter.cpp" />
+    <ClCompile Include="MaterialImporter.cpp">
+      <Filter>Importer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -472,13 +474,15 @@
     <ClInclude Include="PanelCamera.h">
       <Filter>Panels</Filter>
     </ClInclude>
-    <ClInclude Include="MeshImporter.h">
-      <Filter>Importer</Filter>
-    </ClInclude>
     <ClInclude Include="Importer.h">
       <Filter>Importer</Filter>
     </ClInclude>
-    <ClInclude Include="MaterialImporter.h" />
+    <ClInclude Include="SceneImporter.h">
+      <Filter>Importer</Filter>
+    </ClInclude>
+    <ClInclude Include="MaterialImporter.h">
+      <Filter>Importer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GeoLib">

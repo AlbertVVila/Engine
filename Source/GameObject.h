@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <list>
-#include "assimp/matrix4x4.h"
 #include "Math/float4x4.h"
 
 class Component;
@@ -16,7 +15,7 @@ class GameObject
 {
 public:
 	GameObject(const char* name);
-	GameObject(const aiMatrix4x4& transform, const char* filepath, const char* name);
+	GameObject(const float4x4& transform, const char* filepath, const char* name);
 	GameObject(const GameObject& gameobject);
 	~GameObject();
 

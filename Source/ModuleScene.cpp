@@ -38,7 +38,7 @@ void ModuleScene::DrawHierarchy()
 	root->DrawHierarchy(selected);
 }
 
-GameObject * ModuleScene::CreateGameObject(const aiMatrix4x4 & transform, const char * filepath, const char * name, GameObject* parent)
+GameObject * ModuleScene::CreateGameObject(const float4x4 & transform, const char * filepath, const char * name, GameObject* parent)
 {
 	GameObject * gameobject = new GameObject(transform, filepath, name);
 	if (parent != nullptr)
