@@ -1,6 +1,5 @@
 #ifndef __Mesh_h__
 #define __Mesh_h__
-#include <assimp/mesh.h>
 #include "Math/float3.h"
 #include "Math/Quat.h"
 #include "Geometry/AABB.h"

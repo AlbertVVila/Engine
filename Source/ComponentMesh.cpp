@@ -86,9 +86,10 @@ void ComponentMesh::SetMesh(const char * mesh)
 	assert(mesh != nullptr);
 	DeleteBuffers();
 
-	unsigned int numIndices = *mesh;
+	unsigned int numIndices = *(int*)mesh;
 	mesh += sizeof(int);
-	unsigned int numVertices = *mesh;
+
+	unsigned int numVertices = *(int*)mesh;
 	mesh += sizeof(int);
 
 
@@ -99,11 +100,11 @@ void ComponentMesh::SetMesh(const char * mesh)
 	//// Buffer Creation with vertex data
 	//glGenBuffers(1, &VBO);
 	//glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	//glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*mesh->mNumVertices * 5, NULL, GL_STATIC_DRAW);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*numVertices * 5, NULL, GL_STATIC_DRAW);
 
-	//glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(GLfloat) * 3 * mesh->mNumVertices, mesh->mVertices);
-	//float * pbuffer = (float*)glMapBufferRange(GL_ARRAY_BUFFER, sizeof(GLfloat) * 3 * mesh->mNumVertices, sizeof(GLfloat) * 2 * mesh->mNumVertices, GL_MAP_WRITE_BIT);
-	//for (unsigned int i = 0; i < mesh->mNumVertices; i++)
+	//glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(GLfloat) * 3 * numVertices, mesh->mVertices);
+	//float * pbuffer = (float*)glMapBufferRange(GL_ARRAY_BUFFER, sizeof(GLfloat) * 3 * numVertices, sizeof(GLfloat) * 2 * numVertices, GL_MAP_WRITE_BIT);
+	//for (unsigned int i = 0; i < numVertices; i++)
 	//{
 	//	*pbuffer++ = mesh->mTextureCoords[0][i].x;
 	//	*pbuffer++ = mesh->mTextureCoords[0][i].y;
@@ -115,13 +116,11 @@ void ComponentMesh::SetMesh(const char * mesh)
 	////Buffer creation with indices
 	//glGenBuffers(1, &EBO);
 	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int)*mesh->mNumFaces * 3, NULL, GL_STATIC_DRAW);
-	//int * pbufferIndex = (int*)glMapBufferRange(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(unsigned int)*mesh->mNumFaces * 3, GL_MAP_WRITE_BIT);
-	//for (unsigned int i = 0; i < mesh->mNumFaces; i++)
+	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int)*numIndices, NULL, GL_STATIC_DRAW);
+	//int * pbufferIndex = (int*)glMapBufferRange(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(unsigned int)*numIndices, GL_MAP_WRITE_BIT);
+	//for (unsigned int i = 0; i < numIndices/3; i++)
 	//{
-	//	aiFace face = mesh->mFaces[i];
-	//	assert(face.mNumIndices == 3);
-	//	for (unsigned int j = 0; j < face.mNumIndices; j++)
+	//	for (unsigned int j = 0; j < 3; j++)
 	//	{
 	//		*pbufferIndex++ = face.mIndices[j];
 	//	}
@@ -144,7 +143,7 @@ void ComponentMesh::SetMesh(const char * mesh)
 	//	GL_FLOAT,           // data type
 	//	GL_FALSE,           // should be normalized?
 	//	0,                  // stride
-	//	(void*)(sizeof(float) * 3 * mesh->mNumVertices)       // array buffer offset
+	//	(void*)(sizeof(float) * 3 * numVertices)       // array buffer offset
 	//);
 
 	//// Disable VAO
@@ -158,7 +157,7 @@ void ComponentMesh::SetMesh(const char * mesh)
 	//glBindBuffer(GL_ARRAY_BUFFER, 0);
 	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-	//numIndices = mesh->mNumFaces * 3;
+	//this->numIndices = numIndices;
 	//materialIndex = mesh->mMaterialIndex;
 	//ComputeBBox();
 }

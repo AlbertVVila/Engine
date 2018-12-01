@@ -19,8 +19,8 @@ public:
 	bool SaveScene(const aiScene & scene, std::string & output_file);
 	bool SaveData(const char * data, unsigned int size, std::string & output_file);
 	bool LoadData(std::string & myfile, char * &data);
-	void SaveNode(const aiNode & node, const aiScene & scene, char *cursor, int node_id, int parent_node_id);
-	void SaveMesh(const aiMesh & mesh, char *cursor);
+	void SaveNode(const aiNode & node, const aiScene & scene, char * &cursor, int node_id, int parent_node_id);
+	void SaveMesh(const aiMesh & mesh, char * &cursor);
 };
 
 #endif __MeshImporter_h__

@@ -67,16 +67,16 @@ bool SceneImporter::LoadData(std::string & myfile, char * &data)
 
 unsigned int SceneImporter::GetNodeSize(const aiNode& node, const aiScene& scene) const
 {
-	unsigned int size = sizeof(int)*2 + sizeof(float) * 16 + sizeof(char)*node.mName.length; //ids + transform + name
+	unsigned int size = sizeof(int)*2 + sizeof(float) * 16 + sizeof(char)*(node.mName.length+1); //ids + transform + name
 
 	size += sizeof(int); //numMeshes
 	for (unsigned int i = 0; i < node.mNumMeshes; i++)
 	{
 		aiMesh *mesh = scene.mMeshes[node.mMeshes[i]];
-		unsigned int ranges[2] = { mesh->mNumFaces * 3, mesh->mNumVertices };
-		size += sizeof(ranges);
+		/*unsigned int ranges[2] = { mesh->mNumFaces * 3, mesh->mNumVertices };*/
+		size += sizeof(int); //num vertices
 		size += mesh->mNumFaces * 3 * (sizeof(int)); //indices
-		size += sizeof(int)*ranges[1]; //vertices
+		size += sizeof(float)*mesh->mNumVertices*3; //vertices
 	}
 
 	size += sizeof(int); //numChildren
@@ -87,7 +87,7 @@ unsigned int SceneImporter::GetNodeSize(const aiNode& node, const aiScene& scene
 	return size;
 }
 
-void SceneImporter::SaveNode(const aiNode& node, const aiScene & scene, char *cursor, int node_id, int parent_node_id)
+void SceneImporter::SaveNode(const aiNode& node, const aiScene & scene, char * &cursor, int node_id, int parent_node_id)
 {
 	unsigned int id_bytes = sizeof(int);
 	memcpy(cursor, &node_id, id_bytes);
@@ -101,7 +101,7 @@ void SceneImporter::SaveNode(const aiNode& node, const aiScene & scene, char *cu
 	memcpy(cursor, transform, transformBytes);
 	cursor += transformBytes;
 	
-	unsigned int nameBytes = sizeof(char) * node.mName.length;
+	unsigned int nameBytes = sizeof(char) * (node.mName.length+1);
 	memcpy(cursor, node.mName.C_Str(), nameBytes);
 	cursor += nameBytes;
 
@@ -123,12 +123,11 @@ void SceneImporter::SaveNode(const aiNode& node, const aiScene & scene, char *cu
 	}
 }
 
-void SceneImporter::SaveMesh(const aiMesh& mesh, char *cursor)
+void SceneImporter::SaveMesh(const aiMesh& mesh, char * &cursor)
 {
-	unsigned int ranges[2] = { mesh.mNumFaces * 3, 	mesh.mNumVertices};
-	unsigned int rangeBytes = sizeof(ranges);
-	memcpy(cursor, ranges, rangeBytes);
-	cursor += rangeBytes;
+	unsigned int nverticesBytes = sizeof(int);
+	memcpy(cursor, &mesh.mNumVertices, nverticesBytes);
+	cursor += nverticesBytes;
 
 	//unsigned int faceBytes = mesh.mNumFaces*3*(sizeof(int));
 	for (unsigned int i = 0; i < mesh.mNumFaces; i++)
@@ -139,7 +138,7 @@ void SceneImporter::SaveMesh(const aiMesh& mesh, char *cursor)
 		cursor += sizeof(int) * 3;
 	}
 
-	unsigned int verticesBytes = sizeof(int)*ranges[1];
+	unsigned int verticesBytes = sizeof(float)*mesh.mNumVertices*3;
 	memcpy(cursor, mesh.mVertices, verticesBytes);
 	cursor += verticesBytes;
 }

@@ -90,10 +90,10 @@ GameObject* ModuleSceneLoader::ProcessGameObject(const char *cursor, float4x4 pa
 {
 	assert(cursor != nullptr);
 
-	int id = *cursor;
+	int id = *(int*)cursor;
 	cursor += sizeof(int);
 
-	int parent_id = *cursor;
+	int parent_id = *(int*)cursor;
 	cursor += sizeof(int);
 
 	float4x4 mytransform;
@@ -103,10 +103,10 @@ GameObject* ModuleSceneLoader::ProcessGameObject(const char *cursor, float4x4 pa
 	float4x4 transform = parentTransform * mytransform;
 
 	std::string name(cursor);
-	cursor += name.length()*sizeof(char);
+	cursor += (name.length()+1)*sizeof(char);
 	GameObject * gameobject = App->scene->CreateGameObject(transform, "", name.c_str(), parent); //TODO: refactor filepath variable
 
-	unsigned int numMeshes = *cursor;
+	unsigned int numMeshes = *(int*)cursor;
 	cursor += sizeof(int);
 
 	for (unsigned int i = 0; i < numMeshes; i++)
@@ -118,7 +118,7 @@ GameObject* ModuleSceneLoader::ProcessGameObject(const char *cursor, float4x4 pa
 		//material->SetMaterial(scene->mMaterials[mesh->GetMaterialIndex()]); //TODO: Read materials apart 
 	}
 
-	unsigned int numChildren = *cursor;
+	unsigned int numChildren = *(int*)cursor;
 	cursor += sizeof(int);
 
 	for (unsigned int i = 0; i < numChildren; i++)
