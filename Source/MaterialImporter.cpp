@@ -11,7 +11,7 @@ MaterialImporter::~MaterialImporter()
 {
 }
 
-bool MaterialImporter::Import(const char * file, const char * path, std::string & output_file)
+bool MaterialImporter::ImportFBX(const char * file, const char * path, std::string & output_file)
 {
 	return false;
 }

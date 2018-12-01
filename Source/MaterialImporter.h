@@ -9,7 +9,7 @@ public:
 	MaterialImporter();
 	~MaterialImporter();
 
-	bool Import(const char* file, const char* path, std::string& output_file) override;
+	bool ImportFBX(const char* file, const char* path, std::string& output_file) override;
 };
 
 #endif __MaterialImporter_h__

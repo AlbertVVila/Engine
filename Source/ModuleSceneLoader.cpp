@@ -65,8 +65,9 @@ bool ModuleSceneLoader::Start()
 {
 	//LoadFile(BAKERHOUSE);
 	SceneImporter sceneImporter;
+	sceneImporter.ImportMat("Models\\Baker\\Baker_house.png");
 	std::string outputfile = "BakerHouse.dat";
-	sceneImporter.Import("BakerHouse.fbx",BAKERHOUSE, outputfile);
+	sceneImporter.ImportFBX("BakerHouse.fbx",BAKERHOUSE, outputfile);
 	char* bakerhouse = nullptr;
 	sceneImporter.LoadData(outputfile, bakerhouse);
 	LoadScene(bakerhouse);
@@ -115,6 +116,8 @@ GameObject* ModuleSceneLoader::ProcessGameObject(char * &cursor, float4x4 parent
 		ComponentMesh* mesh = (ComponentMesh*) gameobject->CreateComponent(ComponentType::Mesh);
 		mesh->SetMesh(cursor); //SetMesh moves the cursor at the end of the mesh
 		
+		std::string materialFile(cursor);
+		cursor += sizeof(char)*(materialFile.length() + 1);
 		ComponentMaterial* material = (ComponentMaterial*)gameobject->CreateComponent(ComponentType::Material);
 		//material->SetMaterial(scene->mMaterials[mesh->GetMaterialIndex()]); //TODO: Read materials apart 
 	}
