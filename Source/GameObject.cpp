@@ -72,7 +72,7 @@ GameObject::~GameObject()
 
 void GameObject::Draw(const math::Frustum& frustum)
 {
-	if (!frustum.IntersectsFaster(GetBoundingBox())) return;
+	if (!frustum.Intersects(GetBoundingBox())) return; //TODO: use or compare with intersectsfaster
 
 	for (const auto &child : children)
 	{

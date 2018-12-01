@@ -7,7 +7,7 @@
 #include "Imgui/imgui.h"
 #include "par_shapes.h"
 
-ComponentMesh::ComponentMesh(GameObject* gameobject, const char * mesh) : Component(gameobject, ComponentType::Mesh)
+ComponentMesh::ComponentMesh(GameObject* gameobject, char * mesh) : Component(gameobject, ComponentType::Mesh)
 {
 	if (mesh != nullptr)
 	{
@@ -81,7 +81,7 @@ void ComponentMesh::DrawProperties()
 	ImGui::PopID();
 }
 
-void ComponentMesh::SetMesh(const char * mesh)
+void ComponentMesh::SetMesh(char * &mesh) //TODO: pass by reference or know size of mesh
 {
 	assert(mesh != nullptr);
 	DeleteBuffers();
@@ -92,32 +92,41 @@ void ComponentMesh::SetMesh(const char * mesh)
 	unsigned int numVertices = *(int*)mesh;
 	mesh += sizeof(int);
 
+	float* vertices = (float*)mesh;
+	mesh += sizeof(float) * 3 * numVertices;
+	
+	float* texCoords = (float*)mesh;
+	mesh += sizeof(float) * 2 * numVertices;
 
-	//// VAO Creation
-	//glGenVertexArrays(1, &VAO);
-	//glBindVertexArray(VAO);
+	int* indices = (int*)mesh;
+	mesh += sizeof(int) * numIndices;
+	// VAO Creation
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
 
-	//// Buffer Creation with vertex data
-	//glGenBuffers(1, &VBO);
-	//glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	//glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*numVertices * 5, NULL, GL_STATIC_DRAW);
+	// Buffer Creation with vertex data
+	glGenBuffers(1, &VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*numVertices * 5, NULL, GL_STATIC_DRAW);
 
-	//glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(GLfloat) * 3 * numVertices, mesh->mVertices);
-	//float * pbuffer = (float*)glMapBufferRange(GL_ARRAY_BUFFER, sizeof(GLfloat) * 3 * numVertices, sizeof(GLfloat) * 2 * numVertices, GL_MAP_WRITE_BIT);
-	//for (unsigned int i = 0; i < numVertices; i++)
-	//{
-	//	*pbuffer++ = mesh->mTextureCoords[0][i].x;
-	//	*pbuffer++ = mesh->mTextureCoords[0][i].y;
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(GLfloat) * 3 * numVertices, vertices);
+	float * pbuffer = (float*)glMapBufferRange(GL_ARRAY_BUFFER, sizeof(GLfloat) * 3 * numVertices, sizeof(GLfloat) * 2 * numVertices, GL_MAP_WRITE_BIT);
+	memcpy(pbuffer, texCoords, sizeof(float) * 2 * numVertices);
+	/*for (unsigned int i = 0; i < numVertices; i++)
+	{
+		*pbuffer++ = mesh->mTextureCoords[0][i].x;
+		*pbuffer++ = mesh->mTextureCoords[0][i].y;
 
-	//	vertices.emplace_back(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
-	//}
-	//glUnmapBuffer(GL_ARRAY_BUFFER);
+		vertices.emplace_back(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
+	}*/
+	glUnmapBuffer(GL_ARRAY_BUFFER);
 
-	////Buffer creation with indices
-	//glGenBuffers(1, &EBO);
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	//glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int)*numIndices, NULL, GL_STATIC_DRAW);
-	//int * pbufferIndex = (int*)glMapBufferRange(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(unsigned int)*numIndices, GL_MAP_WRITE_BIT);
+	//Buffer creation with indices
+	glGenBuffers(1, &EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int)*numIndices, NULL, GL_STATIC_DRAW);
+	int * pbufferIndex = (int*)glMapBufferRange(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(unsigned int)*numIndices, GL_MAP_WRITE_BIT);
+	memcpy(pbufferIndex, indices, sizeof(int) * numIndices);
 	//for (unsigned int i = 0; i < numIndices/3; i++)
 	//{
 	//	for (unsigned int j = 0; j < 3; j++)
@@ -125,41 +134,47 @@ void ComponentMesh::SetMesh(const char * mesh)
 	//		*pbufferIndex++ = face.mIndices[j];
 	//	}
 	//}
-	//glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
+	glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
 
-	//glEnableVertexAttribArray(0);
-	//glVertexAttribPointer(
-	//	0,                  // attribute 0
-	//	3,                  // number of componentes (3 floats)
-	//	GL_FLOAT,           // data type
-	//	GL_FALSE,           // should be normalized?
-	//	0,                  // stride
-	//	(void*)0            // array buffer offset
-	//);
-	//glEnableVertexAttribArray(1);
-	//glVertexAttribPointer(
-	//	1,                  // attribute 0
-	//	2,                  // number of componentes (3 floats)
-	//	GL_FLOAT,           // data type
-	//	GL_FALSE,           // should be normalized?
-	//	0,                  // stride
-	//	(void*)(sizeof(float) * 3 * numVertices)       // array buffer offset
-	//);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(
+		0,                  // attribute 0
+		3,                  // number of componentes (3 floats)
+		GL_FLOAT,           // data type
+		GL_FALSE,           // should be normalized?
+		0,                  // stride
+		(void*)0            // array buffer offset
+	);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(
+		1,                  // attribute 0
+		2,                  // number of componentes (3 floats)
+		GL_FLOAT,           // data type
+		GL_FALSE,           // should be normalized?
+		0,                  // stride
+		(void*)(sizeof(float) * 3 * numVertices)       // array buffer offset
+	);
 
-	//// Disable VAO
-	//glBindVertexArray(0);
+	// Disable VAO
+	glBindVertexArray(0);
 
-	//glDisableVertexAttribArray(0);
-	//glDisableVertexAttribArray(1);
-	//
+	glDisableVertexAttribArray(0);
+	glDisableVertexAttribArray(1);
+	
 
-	//// Disable VBO and EBO
-	//glBindBuffer(GL_ARRAY_BUFFER, 0);
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	// Disable VBO and EBO
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-	//this->numIndices = numIndices;
-	//materialIndex = mesh->mMaterialIndex;
-	//ComputeBBox();
+	this->numIndices = numIndices;
+	this->vertices.reserve(numVertices);
+	for (size_t i = 0; i < numVertices; i++)
+	{
+		this->vertices.emplace_back(vertices);
+		vertices += 3;
+	}
+	//materialIndex = mesh->mMaterialIndex; TODO import/load materials
+	ComputeBBox();
 }
 
 void ComponentMesh::SetMesh(par_shapes_mesh_s * mesh)

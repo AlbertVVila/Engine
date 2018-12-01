@@ -12,7 +12,7 @@ struct Texture;
 class ComponentMesh : public Component
 {
 public:
-	ComponentMesh(GameObject* gameobject, const char * mesh = nullptr);
+	ComponentMesh(GameObject* gameobject, char * mesh = nullptr); //TODO: const
 	ComponentMesh(const ComponentMesh& component);
 
 	~ComponentMesh();
@@ -20,7 +20,7 @@ public:
 	Component* Clone() override;
 	void Draw(unsigned int shaderProgram, const Texture* texture) const;
 	void DrawProperties() override;
-	void SetMesh(const char *mesh);
+	void SetMesh(char * &mesh);
 	void SetMesh(par_shapes_mesh_s *mesh);
 	unsigned int GetMaterialIndex();
 

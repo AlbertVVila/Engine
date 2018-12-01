@@ -74,7 +74,7 @@ bool ModuleSceneLoader::Start()
 	return true;
 }
 
-void ModuleSceneLoader::LoadScene(const char *data)
+void ModuleSceneLoader::LoadScene(char *data)//TODO: make data constant and save size of components
 {
 	assert(data != nullptr);
 	if (data == nullptr)
@@ -82,11 +82,12 @@ void ModuleSceneLoader::LoadScene(const char *data)
 		LOG("No content to load!!");
 		return;
 	}
-	ProcessGameObject(data, float4x4::identity, App->scene->root);
+	char* cursor = data;
+	ProcessGameObject(cursor, float4x4::identity, App->scene->root);
 	delete[] data;
 }
 
-GameObject* ModuleSceneLoader::ProcessGameObject(const char *cursor, float4x4 parentTransform, GameObject *parent)
+GameObject* ModuleSceneLoader::ProcessGameObject(char * &cursor, float4x4 parentTransform, GameObject *parent) 
 {
 	assert(cursor != nullptr);
 

@@ -21,8 +21,8 @@ public:
 
 	bool Init();
 	bool Start();
-	void LoadScene(const char * data);
-	GameObject* ProcessGameObject(const char * data, float4x4 parentTransform, GameObject * parent);
+	void LoadScene(char * data);
+	GameObject* ProcessGameObject(char * &data, float4x4 parentTransform, GameObject * parent);
 	/*void LoadFile(const char *path);*/
 	/*void LoadScene(const aiScene* scene);
 	GameObject* ProcessNode(const aiNode * node, const aiScene * scene, const aiMatrix4x4 &parentTransform, GameObject* parent);

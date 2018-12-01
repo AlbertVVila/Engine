@@ -73,10 +73,11 @@ unsigned int SceneImporter::GetNodeSize(const aiNode& node, const aiScene& scene
 	for (unsigned int i = 0; i < node.mNumMeshes; i++)
 	{
 		aiMesh *mesh = scene.mMeshes[node.mMeshes[i]];
-		/*unsigned int ranges[2] = { mesh->mNumFaces * 3, mesh->mNumVertices };*/
-		size += sizeof(int); //num vertices
+		unsigned int ranges[2] = { mesh->mNumFaces * 3, mesh->mNumVertices };
+		size += sizeof(int); //mesh content size
+		size += sizeof(ranges);
 		size += mesh->mNumFaces * 3 * (sizeof(int)); //indices
-		size += sizeof(float)*mesh->mNumVertices*3; //vertices
+		size += sizeof(float)*mesh->mNumVertices*5; //vertices + texCoords
 	}
 
 	size += sizeof(int); //numChildren
@@ -125,9 +126,22 @@ void SceneImporter::SaveNode(const aiNode& node, const aiScene & scene, char * &
 
 void SceneImporter::SaveMesh(const aiMesh& mesh, char * &cursor)
 {
-	unsigned int nverticesBytes = sizeof(int);
-	memcpy(cursor, &mesh.mNumVertices, nverticesBytes);
-	cursor += nverticesBytes;
+	unsigned int ranges[2] = { mesh.mNumFaces * 3, 	mesh.mNumVertices };
+	unsigned int rangeBytes = sizeof(ranges);
+	memcpy(cursor, ranges, rangeBytes);
+	cursor += rangeBytes;
+
+	unsigned int verticesBytes = sizeof(float)*mesh.mNumVertices * 3;
+	memcpy(cursor, mesh.mVertices, verticesBytes);
+	cursor += verticesBytes;
+
+	for (unsigned int i = 0; i < mesh.mNumVertices; i++)
+	{
+		memcpy(cursor, &mesh.mTextureCoords[0][i].x, sizeof(float));
+		cursor += sizeof(float);
+		memcpy(cursor, &mesh.mTextureCoords[0][i].y, sizeof(float));
+		cursor += sizeof(float);
+	}
 
 	//unsigned int faceBytes = mesh.mNumFaces*3*(sizeof(int));
 	for (unsigned int i = 0; i < mesh.mNumFaces; i++)
@@ -137,8 +151,4 @@ void SceneImporter::SaveMesh(const aiMesh& mesh, char * &cursor)
 		memcpy(cursor, face->mIndices, sizeof(int) * 3);
 		cursor += sizeof(int) * 3;
 	}
-
-	unsigned int verticesBytes = sizeof(float)*mesh.mNumVertices*3;
-	memcpy(cursor, mesh.mVertices, verticesBytes);
-	cursor += verticesBytes;
 }
