@@ -4,6 +4,7 @@
 #include "ModuleTextures.h"
 #include "ModuleWindow.h"
 #include "ModuleEditor.h"
+#include "ModuleFileSystem.h"
 #include "SDL.h"
 #include "imgui.h"
 
@@ -178,17 +179,25 @@ void ModuleInput::DrawGUI()
 void ModuleInput::DropFile(char* dropped_file) const
 {
 	assert(dropped_file != NULL);
-	std::string extension(dropped_file);
-	std::size_t found = extension.find_last_of(".");
-	extension = extension.substr(found + 1, extension.length());
+	std::string filename(dropped_file);
+	std::string path(dropped_file);
 
-	if (extension == "fbx" || extension == "FBX")
+	std::size_t found = filename.find_last_of("\\/");
+	if (std::string::npos != found)
 	{
-		/*App->sceneLoader->LoadFile(dropped_file);*/ //TODO change dropfile 
+		filename.erase(0, found + 1);
+		path.erase(found + 1, path.length());
 	}
-	else if (extension == "png" || extension == "jpg" || extension == "dds")
-	{
+
+	//if (extension == "fbx" || extension == "FBX")
+	//{
+	//	/*App->sceneLoader->LoadFile(dropped_file);*/ //TODO change dropfile 
+	//}
+	//else if (extension == "png" || extension == "jpg" || extension == "dds")
+	//{
+	char **content = nullptr;
+	App->fsystem->Load(dropped_file,filename.c_str(), content);
 		//Texture newTexture = App->textures->Load(dropped_file);
 		//App->sceneLoader->ApplyTexture(newTexture);
-	}
+	//}
 }
