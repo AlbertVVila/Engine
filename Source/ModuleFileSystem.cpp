@@ -4,6 +4,7 @@
 #include <sys/stat.h>
 #include <direct.h>
 #include "SceneImporter.h"
+#include "physfs.h"
 
 #define ASSETS "Assets/"
 #define LIBRARY "Library/"
@@ -17,29 +18,37 @@ ModuleFileSystem::ModuleFileSystem()
 
 ModuleFileSystem::~ModuleFileSystem()
 {
+
 }
 
 unsigned int ModuleFileSystem::Load(const char * path, const char * file, char ** buffer) const
 {
-	const char *extension = GetExtension(file);
-	if (extension == "png" || extension == "jpg")
-	{
-		//call matimporter
-	}
-	else if (extension == "dds")
-	{
-		//copy file if not in library/materials
-	}
-	else if (extension == "fbx" || extension == "FBX")
-	{
-		//save to library/meshes as .dat
-	}
-	else if (extension == "dat")
-	{
-		//move to library/meshes 
-	}
-	//SceneImporter sceneImporter;
-	//sceneImporter.ImportMat("Models\\Baker\\Baker_house.png");
+	//const char *extension = GetExtension(file);
+	//if (extension == "png" || extension == "jpg")
+	//{
+	//	//SceneImporter sceneImporter;
+	//	//std::string filepath(path);
+	//	//std::string filename(file);
+	//	//filepath += filename;
+	//	//sceneImporter.ImportMat(filepath.c_str());
+	//}
+	//else if (extension == "dds")
+	//{
+	//	//copy file if not in library/materials
+	//}
+	//else if (extension == "fbx" || extension == "FBX")
+	//{
+	//	//save to library/meshes as .dat
+	//	SceneImporter sceneImporter;
+	//	//std::string outputfile = "BakerHouse.dat";
+	//	//sceneImporter.ImportFBX(path, file, buffer);
+	//}
+	//else if (extension == "dat")
+	//{
+	//	//move to library/meshes 
+	//}
+	////SceneImporter sceneImporter;
+	////sceneImporter.ImportMat("Models\\Baker\\Baker_house.png");
 	return 0;
 }
 
