@@ -7,6 +7,8 @@
 #define LIBRARY "Library/"
 #define MESHES "Meshes/"
 #define MATERIALS "Materials/"
+#define SKYBOX "Skybox/"
+#define DATADIR "Data"
 
 ModuleFileSystem::ModuleFileSystem()
 {
@@ -21,7 +23,10 @@ ModuleFileSystem::~ModuleFileSystem()
 bool ModuleFileSystem::Init()
 {
 	PHYSFS_init(NULL);
-	bool exists = Exists("nocamera.jpg");
+	std::string dir(PHYSFS_getBaseDir());
+	dir += DATADIR;
+	PHYSFS_addToSearchPath(dir.c_str(), 1);
+	PHYSFS_setWriteDir(dir.c_str());
 	return true;
 }
 
@@ -30,16 +35,30 @@ unsigned int ModuleFileSystem::Load(const char * path, const char * file, char *
 	return 0;
 }
 
-unsigned int ModuleFileSystem::Save(const char * file, const char * buffer, unsigned size) const
+bool ModuleFileSystem::Save(const char * file, const char * buffer, unsigned size) const
 {
-	return 0;
+	PHYSFS_file* myfile = PHYSFS_openWrite(file);
+	if (myfile == nullptr)
+	{
+		LOG("Error: %s", PHYSFS_getLastError());
+		return false;
+	}
+	PHYSFS_write(myfile, buffer, size, 1);
+	PHYSFS_close(myfile);
+
+	return true;
 }
 
 bool ModuleFileSystem::Remove(const char * file) const
 {
 	assert(file != nullptr);
 	if (file == nullptr) return false;
-
+	if (PHYSFS_unmount(file) != 0)
+	{
+		LOG("Error: %s", PHYSFS_getLastError());
+		return false;
+	}
+	return true;
 }
 
 bool ModuleFileSystem::Exists(const char * file) const
@@ -78,6 +97,19 @@ bool ModuleFileSystem::IsDirectory(const char * file) const
 	assert(file != nullptr);
 	if (file == nullptr) return false;
 	return PHYSFS_isDirectory(file);
+}
+
+std::list<std::string> ModuleFileSystem::ListFiles(const char * dir) const
+{
+	std::list<std::string> files;
+	char **rc = PHYSFS_enumerateFiles(dir);
+	char **i;
+	
+	for (i = rc; *i != NULL; i++)
+		files.emplace_back(*rc);
+	
+	 PHYSFS_freeList(rc);
+	 return files;
 }
 
 //const char * ModuleFileSystem::GetExtension(const char *file) const
