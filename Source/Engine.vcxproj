@@ -55,7 +55,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <AdditionalIncludeDirectories>./physfs-3.0.1/include;./mmgr;./Assimp/include;./DevIL/include;./glew-2.1.0/include;./SDL/include;MathGeoLib/include;./Imgui;./physfs-3.0.1</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./pcg-cpp-0.98/include;./rapidjson-1.1.0/include;./physfs-3.0.1/include;./mmgr;./Assimp/include;./DevIL/include;./glew-2.1.0/include;./SDL/include;MathGeoLib/include;./Imgui;./physfs-3.0.1</AdditionalIncludeDirectories>
       <EnablePREfast>false</EnablePREfast>
     </ClCompile>
     <Link>

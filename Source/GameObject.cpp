@@ -21,11 +21,11 @@
 
 #define MAX_NAME 20
 
-GameObject::GameObject(const char * name) : name(name)
+GameObject::GameObject(const char * name, unsigned uuid) : name(name), UUID(uuid)
 {
 }
 
-GameObject::GameObject(const float4x4 & transform, const char * filepath, const char * name) : filepath(filepath), name(name)
+GameObject::GameObject(const float4x4 & transform, const char * filepath, const char * name, unsigned uuid) : filepath(filepath), name(name), UUID(uuid)
 {
 	this->transform =  (ComponentTransform*) CreateComponent(ComponentType::Transform);
 	this->transform->AddTransform(transform);
@@ -35,6 +35,7 @@ GameObject::GameObject(const GameObject & gameobject)
 {
 	name = gameobject.name;
 	filepath = gameobject.filepath;
+	UUID = gameobject.UUID;
 
 	for (const auto& component: gameobject.components)
 	{
@@ -270,7 +271,6 @@ void GameObject::Update()
 Component * GameObject::CreateComponent(ComponentType type)
 {
 	Component* component = nullptr;
-
 	switch (type)
 	{
 	case Transform:
@@ -295,7 +295,12 @@ Component * GameObject::CreateComponent(ComponentType type)
 	default:
 		break;
 	}
-	components.push_back(component);
+	if (component != nullptr)
+	{
+		unsigned uuid = App->scene->uuid_rng();
+		component->UUID = uuid;
+		components.push_back(component);
+	}
 	return component;
 }
 

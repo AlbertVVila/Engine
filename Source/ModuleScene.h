@@ -3,6 +3,8 @@
 
 #include "Module.h"
 #include "Geometry/Frustum.h"
+#include "pcg_random.hpp"
+
 class GameObject;
 class ComponentCamera;
 struct Texture;
@@ -14,6 +16,7 @@ public:
 	ModuleScene();
 	~ModuleScene();
 
+	bool Init() override;
 	bool Start() override;
 
 	update_status Update() override;
@@ -28,6 +31,7 @@ public:
 	GameObject* selected = nullptr;
 	ComponentCamera* maincamera = nullptr;
 	Texture* camera_notfound_texture = nullptr;
+	pcg32 uuid_rng;
 };
 
 #endif __ModuleScene_h__

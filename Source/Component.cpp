@@ -2,10 +2,8 @@
 #include "GameObject.h"
 #include "imgui.h"
 
-Component::Component(GameObject* gameobject, ComponentType type)
+Component::Component(GameObject* gameobject, ComponentType type): gameobject(gameobject), type(type)
 {
-	this->gameobject = gameobject;
-	this->type = type;
 }
 
 Component::Component(const Component & component)

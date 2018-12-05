@@ -132,6 +132,7 @@ GameObject* ModuleSceneLoader::ProcessGameObject(char * &cursor, float4x4 parent
 
 	return gameobject;
 }
+
 //
 //void ModuleSceneLoader::LoadFile(const char *path)
 //{

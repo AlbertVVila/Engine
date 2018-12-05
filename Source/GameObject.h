@@ -14,8 +14,8 @@ struct Texture;
 class GameObject
 {
 public:
-	GameObject(const char* name);
-	GameObject(const float4x4& transform, const char* filepath, const char* name);
+	GameObject(const char* name, unsigned uuid);
+	GameObject(const float4x4& transform, const char* filepath, const char* name, unsigned uuid);
 	GameObject(const GameObject& gameobject);
 	~GameObject();
 
@@ -45,6 +45,7 @@ private:
 	void DrawBBox() const;
 
 public:
+	unsigned UUID = 0;
 	ComponentTransform * transform = nullptr;
 	GameObject *parent = nullptr;
 	std::vector<Component*> components;

@@ -40,6 +40,7 @@ public:
 	void Remove();
 
 public:
+	unsigned UUID = 0;
 	GameObject* gameobject = nullptr;
 	ComponentType type;
 	bool enabled = true;
