@@ -19,6 +19,8 @@
 #include "ModuleInput.h"
 #include "ModuleScene.h"
 
+#include "JSON.h"
+
 #define MAX_NAME 20
 
 GameObject::GameObject(const char * name, unsigned uuid) : name(name), UUID(uuid)
@@ -297,8 +299,6 @@ Component * GameObject::CreateComponent(ComponentType type)
 	}
 	if (component != nullptr)
 	{
-		unsigned uuid = App->scene->uuid_rng();
-		component->UUID = uuid;
 		components.push_back(component);
 	}
 	return component;
@@ -480,4 +480,27 @@ void GameObject::CleanUp()
 	{
 		child->CleanUp();
 	}
+}
+
+void GameObject::Save(JSON_value *gameobjects)
+{
+	JSON_value *gameobject = gameobjects->CreateValue();
+	gameobject->AddUint("UID", UUID);
+	if (parent != nullptr)
+	{
+		gameobject->AddUint("ParentUID", parent->UUID);
+	}
+	gameobject->AddString("Name", name.c_str());
+
+	//JSON_value *components = gameobject->CreateValue(rapidjson::kArrayType);
+	for (auto &component : components)
+	{
+		component->Save(gameobject);
+	}
+	
+	for (auto &child : children)
+	{
+		child->Save(gameobjects);
+	}
+	gameobjects->AddValue("", gameobject);
 }

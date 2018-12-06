@@ -4,6 +4,7 @@
 #include "ModuleTextures.h"
 #include "ModuleProgram.h"
 #include "ModuleScene.h"
+#include "ModuleFileSystem.h"
 #include "GL/glew.h"
 #include "Math/float4.h"
 #include "SceneImporter.h"
@@ -72,6 +73,7 @@ bool ModuleSceneLoader::Start()
 	sceneImporter.LoadData(outputfile, bakerhouse);
 	LoadScene(bakerhouse);
 	CreateSphere("sphere0", float3(0.0f, 0.0f, 0.0f), Quat::identity, 1.0f, 20, 20, float4(0.f, 0.0f, 0.f, 1.0f));
+	App->scene->SaveScene();
 	return true;
 }
 

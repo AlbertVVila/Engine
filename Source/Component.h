@@ -2,6 +2,7 @@
 #define __Component_h__
 
 class GameObject;
+struct JSON_value;
 
 enum ComponentType //TODO: enum class
 {
@@ -39,8 +40,9 @@ public:
 
 	void Remove();
 
+	virtual void Save(JSON_value *value);
+
 public:
-	unsigned UUID = 0;
 	GameObject* gameobject = nullptr;
 	ComponentType type;
 	bool enabled = true;

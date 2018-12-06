@@ -40,7 +40,6 @@ public:
 	ModuleScene* scene = nullptr;
 	ModuleFileSystem* fsystem = nullptr;
 
-
 private:
 
 	std::list<Module*> modules;

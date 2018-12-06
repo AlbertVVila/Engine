@@ -6,6 +6,9 @@
 #include "ModuleEditor.h"
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
+#include "ModuleFileSystem.h"
+#include "JSON.h"
+#include "rapidjson/rapidjson.h"
 #include <random>
 
 ModuleScene::ModuleScene()
@@ -67,4 +70,19 @@ GameObject * ModuleScene::CreateGameObject(const char * name, GameObject* parent
 		parent->children.push_back(gameobject);
 	}
 	return gameobject;
+}
+
+void ModuleScene::SaveScene()
+{
+	JSON *json = new JSON();
+	JSON_value *array =json->CreateValue(rapidjson::kArrayType);
+	root->Save(array);
+	json->AddValue("GameObjects", array);
+	char* file = "scene.json";
+	//
+	//JSON_value *uuid = json.CreateValue();
+	//uuid->AddInt("parentUUID", 156);
+	//uuid->AddString("name", "lolaso");
+	//json.AddValue("GameObjects", uuid);
+	App->fsystem->Save(file, json->ToString().c_str(), json->Size());
 }

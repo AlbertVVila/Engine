@@ -1,6 +1,7 @@
 #include "Component.h"
 #include "GameObject.h"
 #include "imgui.h"
+#include "JSON.h"
 
 Component::Component(GameObject* gameobject, ComponentType type): gameobject(gameobject), type(type)
 {
@@ -34,4 +35,10 @@ bool Component::DrawComponentState()
 void Component::Remove()
 {
 	gameobject->RemoveComponent(this);
+}
+
+void Component::Save(JSON_value * value)
+{
+	value->AddUint("Type", type);
+	value->AddInt("Enabled", enabled);
 }

@@ -10,6 +10,7 @@ class ComponentTransform;
 class Frustum;
 enum ComponentType;
 struct Texture;
+struct JSON_value;
 
 class GameObject
 {
@@ -36,6 +37,7 @@ public:
 	void DisableBox();
 
 	void CleanUp();
+	void Save(JSON_value *gameobjects);
 	AABB GetBoundingBox() const;
 
 private:

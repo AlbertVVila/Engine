@@ -154,6 +154,7 @@
     <ClInclude Include="MathGeoLib\include\Time\Clock.h" />
     <ClInclude Include="ComponentMesh.h" />
     <ClInclude Include="ModuleFileSystem.h" />
+    <ClInclude Include="JSON.h" />
     <ClInclude Include="SceneImporter.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="ModuleCamera.h" />
@@ -230,6 +231,7 @@
     <ClCompile Include="MathGeoLib\include\Time\Clock.cpp" />
     <ClCompile Include="ComponentMesh.cpp" />
     <ClCompile Include="ModuleFileSystem.cpp" />
+    <ClCompile Include="JSON.cpp" />
     <ClCompile Include="SceneImporter.cpp" />
     <ClCompile Include="mmgr\mmgr.cpp" />
     <ClCompile Include="ModuleCamera.cpp" />

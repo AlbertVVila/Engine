@@ -26,6 +26,8 @@ public:
 	GameObject * CreateGameObject(const float4x4& transform, const char* filepath, const char* name, GameObject* parent);
 	GameObject * CreateGameObject(const char * name, GameObject* parent);
 
+	void SaveScene();
+
 public:
 	GameObject* root = nullptr;
 	GameObject* selected = nullptr;
