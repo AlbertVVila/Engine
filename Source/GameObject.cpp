@@ -492,15 +492,19 @@ void GameObject::Save(JSON_value *gameobjects)
 	}
 	gameobject->AddString("Name", name.c_str());
 
-	//JSON_value *components = gameobject->CreateValue(rapidjson::kArrayType);
+	JSON_value *componentsJSON = gameobject->CreateValue(rapidjson::kArrayType);
 	for (auto &component : components)
 	{
-		component->Save(gameobject);
+		JSON_value *componentJSON = componentsJSON->CreateValue();
+		component->Save(componentJSON);
+		componentsJSON->AddValue("", componentJSON);
 	}
 	
+	gameobject->AddValue("Components", componentsJSON);
+	gameobjects->AddValue("", gameobject);
+
 	for (auto &child : children)
 	{
 		child->Save(gameobjects);
 	}
-	gameobjects->AddValue("", gameobject);
 }
