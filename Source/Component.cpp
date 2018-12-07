@@ -42,3 +42,9 @@ void Component::Save(JSON_value * value)
 	value->AddUint("Type", type);
 	value->AddInt("Enabled", enabled);
 }
+
+void Component::Load(JSON_value * value)
+{
+	type = (ComponentType) value->GetUint("Type");
+	enabled = (bool) value->GetInt("Enabled");
+}

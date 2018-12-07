@@ -302,3 +302,9 @@ void ComponentMesh::Save(JSON_value * value)
 	Component::Save(value);
 	value->AddString("MeshFile", "test.mesh");
 }
+
+void ComponentMesh::Load(JSON_value * value)
+{
+	Component::Load(value);
+	//value->GetString("MeshFile", "test.mesh");
+}

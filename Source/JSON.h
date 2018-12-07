@@ -32,6 +32,7 @@ public:
 	Quat GetQuat(const char * name);
 	const char* GetString(const char * name);
 	JSON_value* GetValue(unsigned index);
+	JSON_value * GetValue(const char * name);
 	unsigned Size() const;
 
 public:

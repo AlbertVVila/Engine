@@ -29,6 +29,7 @@ public:
 
 	void DeleteBuffers();
 	void Save(JSON_value *value) override;
+	void Load(JSON_value *value) override;
 
 public:
 

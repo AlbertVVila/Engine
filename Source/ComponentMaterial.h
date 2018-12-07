@@ -23,6 +23,7 @@ public:
 	float4 GetColor() const;
 	void DrawProperties() override;
 	void Save(JSON_value *value) override;
+	void Load(JSON_value *value) override;
 
 public:
 	unsigned int shader = 0;

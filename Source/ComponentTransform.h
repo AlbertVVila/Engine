@@ -25,6 +25,7 @@ public:
 	void SetWorldToLocal(const float4x4 & newparentGlobalMatrix);
 
 	void Save(JSON_value *value) override;
+	void Load(JSON_value *value) override;
 
 public:
 	float3 position = float3::zero;

@@ -27,6 +27,7 @@ public:
 	void Update() override;
 	void DrawProperties() override;
 	void Save(JSON_value *value) override;
+	void Load(JSON_value *value) override;
 
 	float4x4 GetViewMatrix();
 	float4x4 GetProjectionMatrix();

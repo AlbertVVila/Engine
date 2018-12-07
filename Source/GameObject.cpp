@@ -514,4 +514,13 @@ void GameObject::Load(JSON_value *gameobject)
 	UUID = gameobject->GetUint("UID");
 	parentUUID = gameobject->GetUint("ParentUID");
 	name = gameobject->GetString("Name");
+
+	JSON_value* componentsJSON = gameobject->GetValue("Components");
+	for (unsigned i = 0; i < componentsJSON->Size(); i++)
+	{
+		JSON_value* componentJSON = componentsJSON->GetValue(i);
+		ComponentType type = (ComponentType) componentJSON->GetUint("Type");
+		Component* component = CreateComponent(type);
+		component->Load(componentJSON);
+	}
 }

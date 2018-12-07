@@ -105,3 +105,11 @@ void ComponentMaterial::Save(JSON_value * value)
 	value->AddFloat4("Color", color);
 	value->AddString("MaterialFile", "test.dds");
 }
+
+void ComponentMaterial::Load(JSON_value * value)
+{
+	Component::Load(value);
+	//TODO: deserialize shader
+	color = value->GetFloat4("Color");
+	//value->GetString("MaterialFile", "test.dds");
+}

@@ -219,6 +219,18 @@ JSON_value* JSON_value::GetValue(unsigned index)
 	return val;
 }
 
+JSON_value * JSON_value::GetValue(const char* name)
+{
+	if (rapidjsonValue->HasMember(name))
+	{
+		JSON_value * val = new JSON_value(allocator);
+		val->rapidjsonValue->CopyFrom(rapidjsonValue->operator[](name), *allocator);
+		valuesAllocated.push_back(val);
+		return val;
+	}
+	return nullptr;
+}
+
 unsigned JSON_value::Size() const
 {
 	bool isArray = this->rapidjsonValue->IsArray();
