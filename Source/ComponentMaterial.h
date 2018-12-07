@@ -22,11 +22,12 @@ public:
 	unsigned int GetShader() const;
 	float4 GetColor() const;
 	void DrawProperties() override;
-	void Save(JSON_value *value) override;
+	void Save(JSON_value *value) const override;
 	void Load(JSON_value *value) override;
 
 public:
 	unsigned int shader = 0;
+	const char* file = nullptr;
 	Texture *texture = nullptr;
 	float4 color = float4::one;
 };

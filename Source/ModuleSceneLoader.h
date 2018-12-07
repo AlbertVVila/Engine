@@ -10,7 +10,7 @@
 struct aiNode;
 struct aiScene;
 class GameObject;
-class SceneImporter;
+class FileImporter;
 
 class ModuleSceneLoader :
 	public Module

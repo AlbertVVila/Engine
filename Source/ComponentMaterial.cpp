@@ -98,12 +98,12 @@ void ComponentMaterial::DrawProperties()
 	ImGui::PopID();
 }
 
-void ComponentMaterial::Save(JSON_value * value)
+void ComponentMaterial::Save(JSON_value * value) const
 {
 	Component::Save(value);
 	//TODO: serialize shader
 	value->AddFloat4("Color", color);
-	value->AddString("MaterialFile", "test.dds");
+	value->AddString("MaterialFile", file);
 }
 
 void ComponentMaterial::Load(JSON_value * value)
@@ -111,5 +111,5 @@ void ComponentMaterial::Load(JSON_value * value)
 	Component::Load(value);
 	//TODO: deserialize shader
 	color = value->GetFloat4("Color");
-	//value->GetString("MaterialFile", "test.dds");
+	file = value->GetString("MaterialFile");
 }

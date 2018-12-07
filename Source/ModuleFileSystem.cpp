@@ -1,14 +1,7 @@
 #include "ModuleFileSystem.h"
 #include <assert.h>
-#include "SceneImporter.h"
+#include "FileImporter.h"
 #include "physfs.h"
-
-#define ASSETS "Assets/"
-#define LIBRARY "Library/"
-#define MESHES "Meshes/"
-#define MATERIALS "Materials/"
-#define SKYBOX "Skybox/"
-#define DATADIR "Data"
 
 ModuleFileSystem::ModuleFileSystem()
 {
@@ -28,6 +21,22 @@ bool ModuleFileSystem::Init()
 	PHYSFS_addToSearchPath(dir.c_str(), 1);
 	PHYSFS_setWriteDir(dir.c_str());
 	return true;
+}
+
+bool ModuleFileSystem::Start()
+{
+	importTimer.Start();
+	return true;
+}
+
+update_status ModuleFileSystem::Update()
+{
+	if (importTimer.Read() > watchThreshold)
+	{
+		WatchFolder(ASSETS);
+		importTimer.Start();
+	}
+	return UPDATE_CONTINUE;
 }
 
 unsigned ModuleFileSystem::Load(const char * file, char ** buffer) const
@@ -130,15 +139,52 @@ std::list<std::string> ModuleFileSystem::ListFiles(const char * dir) const
 	 return files;
 }
 
-//const char * ModuleFileSystem::GetExtension(const char *file) const
-//{
-//	std::string filename(file);
-//	std::size_t found = filename.find_last_of(".");
-//	if (std::string::npos != found)
-//	{
-//		filename.erase(0, found + 1);
-//	}
-//	return filename.c_str();
-//}
+bool ModuleFileSystem::CopyFromOutsideFS(const char * source, const char * destination)
+{
+	char *data;
+	FILE* fp = fopen(source, "rb");
+	if (!fp) {
+		LOG("File opening failed");
+		return false;
+	}
+	fseek(fp, 0, SEEK_END);
+	unsigned size = ftell(fp);
+	data = new char[size];
+	if (size != fread_s(data, size,1 , size, fp))
+	{
+		LOG("Error reading from file %s, : %s", source, PHYSFS_getLastError());
+		RELEASE(data);
+		return false;
+	}
+	Save(destination, data, size);
+	return true;
+}
+
+void ModuleFileSystem::WatchFolder(const char * folder)
+{
+	std::list<std::string> files = ListFiles(folder);
+	for (auto& file: files)
+	{
+		std::set<const char*>::iterator it = importedFiles.find(file.c_str());
+		if (it == importedFiles.end())
+		{
+			FileImporter importer;
+			importer.Import("Assets/test.dds");
+			importedFiles.insert(file.c_str());
+		}
+	}
+	return;
+}
+
+std::string ModuleFileSystem::GetExtension(const char *file) const
+{
+	std::string filename(file);
+	std::size_t found = filename.find_last_of(".");
+	if (std::string::npos != found)
+	{
+		filename.erase(0, found + 1);
+	}
+	return filename;
+}
 
 

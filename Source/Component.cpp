@@ -37,7 +37,7 @@ void Component::Remove()
 	gameobject->RemoveComponent(this);
 }
 
-void Component::Save(JSON_value * value)
+void Component::Save(JSON_value * value) const
 {
 	value->AddUint("Type", type);
 	value->AddInt("Enabled", enabled);

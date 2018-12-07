@@ -206,7 +206,7 @@ void ComponentCamera::DrawProperties()
 	}
 }
 
-void ComponentCamera::Save(JSON_value * value)
+void ComponentCamera::Save(JSON_value * value) const
 {
 	Component::Save(value);
 	value->AddFloat("MovementSpeed", movementSpeed);

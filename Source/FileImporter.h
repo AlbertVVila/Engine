@@ -1,5 +1,5 @@
-#ifndef __MeshImporter_h__
-#define __MeshImporter_h__
+#ifndef __FileImporter_h__
+#define __FileImporter_h__
 
 #include "Importer.h"
 #include <assimp/matrix4x4.h>
@@ -7,12 +7,14 @@ struct aiScene;
 struct aiNode;
 struct aiMesh;
 
-class SceneImporter :
+class FileImporter :
 	public Importer
 {
 public:
-	SceneImporter();
-	~SceneImporter();
+	FileImporter();
+	~FileImporter();
+
+	void Import(const char * file);
 
 	bool ImportFBX(const char* file, const char* path, std::string& output_file) override;
 	unsigned int GetNodeSize(const aiNode& node, const aiScene& scene) const;
@@ -24,5 +26,5 @@ public:
 	void ImportMat(const char * file);
 };
 
-#endif __MeshImporter_h__
+#endif __FileImporter_h__
 

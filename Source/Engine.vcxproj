@@ -155,7 +155,7 @@
     <ClInclude Include="ComponentMesh.h" />
     <ClInclude Include="ModuleFileSystem.h" />
     <ClInclude Include="JSON.h" />
-    <ClInclude Include="SceneImporter.h" />
+    <ClInclude Include="FileImporter.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="ModuleCamera.h" />
     <ClInclude Include="ModuleEditor.h" />
@@ -232,7 +232,7 @@
     <ClCompile Include="ComponentMesh.cpp" />
     <ClCompile Include="ModuleFileSystem.cpp" />
     <ClCompile Include="JSON.cpp" />
-    <ClCompile Include="SceneImporter.cpp" />
+    <ClCompile Include="FileImporter.cpp" />
     <ClCompile Include="mmgr\mmgr.cpp" />
     <ClCompile Include="ModuleCamera.cpp" />
     <ClCompile Include="ModuleEditor.cpp" />

@@ -201,9 +201,6 @@
     <ClCompile Include="Importer.cpp">
       <Filter>Importer</Filter>
     </ClCompile>
-    <ClCompile Include="SceneImporter.cpp">
-      <Filter>Importer</Filter>
-    </ClCompile>
     <ClCompile Include="MaterialImporter.cpp">
       <Filter>Importer</Filter>
     </ClCompile>
@@ -212,6 +209,9 @@
     </ClCompile>
     <ClCompile Include="JSON.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="FileImporter.cpp">
+      <Filter>Importer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -483,9 +483,6 @@
     <ClInclude Include="Importer.h">
       <Filter>Importer</Filter>
     </ClInclude>
-    <ClInclude Include="SceneImporter.h">
-      <Filter>Importer</Filter>
-    </ClInclude>
     <ClInclude Include="MaterialImporter.h">
       <Filter>Importer</Filter>
     </ClInclude>
@@ -494,6 +491,9 @@
     </ClInclude>
     <ClInclude Include="JSON.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="FileImporter.h">
+      <Filter>Importer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

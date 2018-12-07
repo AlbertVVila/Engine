@@ -86,7 +86,7 @@ void ComponentTransform::SetWorldToLocal(const float4x4 & newparentGlobalMatrix)
 	RotationToEuler();
 }
 
-void ComponentTransform::Save(JSON_value * value)
+void ComponentTransform::Save(JSON_value * value) const
 {
 	Component::Save(value);
 	value->AddFloat3("Position", position);

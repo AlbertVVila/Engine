@@ -7,7 +7,6 @@
 #include "ModuleFileSystem.h"
 #include "GL/glew.h"
 #include "Math/float4.h"
-#include "SceneImporter.h"
 
 #pragma warning(push)
 #pragma warning(disable : 4996)  
@@ -65,7 +64,7 @@ bool ModuleSceneLoader::Init()
 bool ModuleSceneLoader::Start()
 {
 	//LoadFile(BAKERHOUSE);
-	//SceneImporter sceneImporter;
+	//FileImporter sceneImporter;
 	//sceneImporter.ImportMat("Models\\Baker\\Baker_house.png");
 	//std::string outputfile = "BakerHouse.dat";
 	//sceneImporter.ImportFBX("BakerHouse.fbx",BAKERHOUSE, outputfile);

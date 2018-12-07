@@ -28,12 +28,13 @@ public:
 	AABB GetBoundingBox() const;
 
 	void DeleteBuffers();
-	void Save(JSON_value *value) override;
+	void Save(JSON_value *value) const override;
 	void Load(JSON_value *value) override;
 
 public:
 
 	int numIndices = 0;
+	const char* file = nullptr;
 	std::vector<float3> vertices;
 
 private:

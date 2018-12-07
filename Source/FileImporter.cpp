@@ -1,4 +1,4 @@
-#include "SceneImporter.h"
+#include "FileImporter.h"
 #include <assert.h>
 #include "assimp/cimport.h"
 #include "assimp/postprocess.h"
@@ -9,20 +9,44 @@
 #include "IL/ilut.h"
 #include "Application.h"
 #include "ModuleTextures.h"
+#include "ModuleFileSystem.h"
 
-#define ASSET_FOLDER "/Assets"
-#define LIBRARY_FOLDER "/Library"
 
-SceneImporter::SceneImporter()
+FileImporter::FileImporter()
 {
 }
 
 
-SceneImporter::~SceneImporter()
+FileImporter::~FileImporter()
 {
 }
 
-bool SceneImporter::ImportFBX(const char * file, const char * path, std::string & output_file)
+void FileImporter::Import(const char *file) 
+{
+	std::string extension (App->fsystem->GetExtension(file));
+	if (extension == "fbx" || extension == "FBX")
+	{
+
+	}
+	else if (extension == "png" || extension == "jpg")
+	{
+
+	}
+	else if (extension == "dds")
+	{
+		std::string myfile(MATERIALS);
+		myfile += file;
+		App->fsystem->CopyFromOutsideFS(file, myfile.c_str()); //TODO: FULL PATH
+	}
+	else if (extension == "mesh")
+	{
+		std::string myfile(MESHES);
+		myfile += file;
+		App->fsystem->CopyFromOutsideFS(file, myfile.c_str());
+	}
+}
+
+bool FileImporter::ImportFBX(const char * file, const char * path, std::string & output_file)
 {
 	assert(path != nullptr);
 	const aiScene* scene = aiImportFile(path, aiProcess_Triangulate);
@@ -33,7 +57,7 @@ bool SceneImporter::ImportFBX(const char * file, const char * path, std::string 
 	return false;
 }
 
-bool SceneImporter::SaveScene(const aiScene & scene, std::string & output_file)
+bool FileImporter::SaveScene(const aiScene & scene, std::string & output_file)
 {
 	unsigned int size = GetNodeSize(*scene.mRootNode, scene);
 	char *data = new char[size];
@@ -44,7 +68,7 @@ bool SceneImporter::SaveScene(const aiScene & scene, std::string & output_file)
 	return SaveData(data, size, output_file);
 }
 
-bool SceneImporter::SaveData(const char *data, unsigned int size, std::string & output_file)
+bool FileImporter::SaveData(const char *data, unsigned int size, std::string & output_file)
 {
 	std::ofstream outfile;
 	outfile.open(output_file, std::ios::binary | std::ios::out);
@@ -54,7 +78,7 @@ bool SceneImporter::SaveData(const char *data, unsigned int size, std::string & 
 	return true;
 }
 
-bool SceneImporter::LoadData(std::string & myfile, char * &data)
+bool FileImporter::LoadData(std::string & myfile, char * &data)
 {
 	std::ifstream file(myfile, std::ios::binary | std::ios::ate);
 	std::streamsize size = file.tellg();
@@ -68,7 +92,7 @@ bool SceneImporter::LoadData(std::string & myfile, char * &data)
 	return false;
 }
 
-unsigned int SceneImporter::GetNodeSize(const aiNode& node, const aiScene& scene) const //TODO: compute size+ copy at same time
+unsigned int FileImporter::GetNodeSize(const aiNode& node, const aiScene& scene) const //TODO: compute size+ copy at same time
 {
 	unsigned int size = sizeof(int)*2 + sizeof(float) * 16 + sizeof(char)*(node.mName.length+1); //ids + transform + name
 
@@ -95,7 +119,7 @@ unsigned int SceneImporter::GetNodeSize(const aiNode& node, const aiScene& scene
 	return size;
 }
 
-void SceneImporter::SaveNode(const aiNode& node, const aiScene & scene, char * &cursor, int node_id, int parent_node_id)
+void FileImporter::SaveNode(const aiNode& node, const aiScene & scene, char * &cursor, int node_id, int parent_node_id)
 {
 	unsigned int id_bytes = sizeof(int);
 	memcpy(cursor, &node_id, id_bytes);
@@ -137,7 +161,7 @@ void SceneImporter::SaveNode(const aiNode& node, const aiScene & scene, char * &
 	}
 }
 
-void SceneImporter::SaveMesh(const aiMesh& mesh, char * &cursor)
+void FileImporter::SaveMesh(const aiMesh& mesh, char * &cursor)
 {
 	unsigned int ranges[2] = { mesh.mNumFaces * 3, 	mesh.mNumVertices };
 	unsigned int rangeBytes = sizeof(ranges);
@@ -167,7 +191,7 @@ void SceneImporter::SaveMesh(const aiMesh& mesh, char * &cursor)
 
 }
 
-void SceneImporter::ImportMat(const char * path)
+void FileImporter::ImportMat(const char * path)
 {
 	ILuint imageID;
 	ILboolean success;

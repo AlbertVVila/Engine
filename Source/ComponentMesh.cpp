@@ -297,14 +297,14 @@ void ComponentMesh::DeleteBuffers()
 	}
 }
 
-void ComponentMesh::Save(JSON_value * value)
+void ComponentMesh::Save(JSON_value * value) const
 {
 	Component::Save(value);
-	value->AddString("MeshFile", "test.mesh");
+	value->AddString("MeshFile", file);
 }
 
 void ComponentMesh::Load(JSON_value * value)
 {
 	Component::Load(value);
-	//value->GetString("MeshFile", "test.mesh");
+	file = value->GetString("MeshFile");
 }
