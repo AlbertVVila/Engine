@@ -15,6 +15,7 @@ struct JSON_value;
 class GameObject
 {
 public:
+	GameObject() {};
 	GameObject(const char* name, unsigned uuid);
 	GameObject(const float4x4& transform, const char* filepath, const char* name, unsigned uuid);
 	GameObject(const GameObject& gameobject);
@@ -38,21 +39,23 @@ public:
 
 	void CleanUp();
 	void Save(JSON_value *gameobjects);
+	void Load(JSON_value * gameobject);
 	AABB GetBoundingBox() const;
 
 private:
 	float4x4 GetLocalTransform() const;
 	void ModelTransform(unsigned int shader) const;
 
-	void DrawBBox() const;
+	void DrawBBox() const; //TODO: improve BBOX draw
 
 public:
 	unsigned UUID = 0;
+	unsigned parentUUID = 0; //only set in Save/Load scene TODO:update on parent change
 	ComponentTransform * transform = nullptr;
 	GameObject *parent = nullptr;
 	std::vector<Component*> components;
 	std::list<GameObject*> children;
-	std::string filepath = "";
+	std::string filepath = "";//TODO: delete field
 	std::string name = "GameObject";
 
 	bool copy_flag = false;

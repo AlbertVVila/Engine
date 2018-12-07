@@ -65,15 +65,16 @@ bool ModuleSceneLoader::Init()
 bool ModuleSceneLoader::Start()
 {
 	//LoadFile(BAKERHOUSE);
-	SceneImporter sceneImporter;
-	sceneImporter.ImportMat("Models\\Baker\\Baker_house.png");
-	std::string outputfile = "BakerHouse.dat";
-	sceneImporter.ImportFBX("BakerHouse.fbx",BAKERHOUSE, outputfile);
-	char* bakerhouse = nullptr;
-	sceneImporter.LoadData(outputfile, bakerhouse);
-	LoadScene(bakerhouse);
-	CreateSphere("sphere0", float3(0.0f, 0.0f, 0.0f), Quat::identity, 1.0f, 20, 20, float4(0.f, 0.0f, 0.f, 1.0f));
-	App->scene->SaveScene();
+	//SceneImporter sceneImporter;
+	//sceneImporter.ImportMat("Models\\Baker\\Baker_house.png");
+	//std::string outputfile = "BakerHouse.dat";
+	//sceneImporter.ImportFBX("BakerHouse.fbx",BAKERHOUSE, outputfile);
+	//char* bakerhouse = nullptr;
+	//sceneImporter.LoadData(outputfile, bakerhouse);
+	//LoadScene(bakerhouse);
+	//CreateSphere("sphere0", float3(0.0f, 0.0f, 0.0f), Quat::identity, 1.0f, 20, 20, float4(0.f, 0.0f, 0.f, 1.0f));
+	//App->scene->SaveScene();
+	App->scene->LoadScene("scene.json");
 	return true;
 }
 

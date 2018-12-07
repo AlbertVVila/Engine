@@ -508,3 +508,10 @@ void GameObject::Save(JSON_value *gameobjects)
 		child->Save(gameobjects);
 	}
 }
+
+void GameObject::Load(JSON_value *gameobject)
+{
+	UUID = gameobject->GetUint("UID");
+	parentUUID = gameobject->GetUint("ParentUID");
+	name = gameobject->GetString("Name");
+}

@@ -108,6 +108,129 @@ void JSON_value::AddValue(const char* name, JSON_value *value)
 	}
 }
 
+int JSON_value::GetInt(const char * name)
+{
+	rapidjson::Value::ConstMemberIterator itr = rapidjsonValue->FindMember(name);
+	if (itr != rapidjsonValue->MemberEnd())
+	{
+		return itr->value.GetInt();
+	}
+	else
+	{
+		LOG("Member %s not found!", name);
+		return 0;
+	}
+}
+
+unsigned JSON_value::GetUint(const char * name)
+{
+	rapidjson::Value::ConstMemberIterator itr = rapidjsonValue->FindMember(name);
+	if (itr != rapidjsonValue->MemberEnd())
+	{
+		return itr->value.GetUint();
+	}
+	else
+	{
+		LOG("Member %s not found!", name);
+		return 0;
+	}
+}
+
+float JSON_value::GetFloat(const char * name)
+{
+	rapidjson::Value::ConstMemberIterator itr = rapidjsonValue->FindMember(name);
+	if (itr != rapidjsonValue->MemberEnd())
+	{
+		return itr->value.GetFloat();
+	}
+	else
+	{
+		LOG("Member %s not found!", name);
+		return 0.f;
+	}
+}
+
+float3 JSON_value::GetFloat3(const char * name)
+{
+	rapidjson::Value::ConstMemberIterator itr = rapidjsonValue->FindMember(name);
+	if (itr != rapidjsonValue->MemberEnd())
+	{
+		float3 ret(itr->value[0].GetFloat(), itr->value[1].GetFloat(), itr->value[2].GetFloat());
+		return ret;
+	}
+	else
+	{
+		LOG("Member %s not found!", name);
+		return float3::zero;
+	}
+}
+
+float4 JSON_value::GetFloat4(const char * name)
+{
+	rapidjson::Value::ConstMemberIterator itr = rapidjsonValue->FindMember(name);
+	if (itr != rapidjsonValue->MemberEnd())
+	{
+		float4 ret(itr->value[0].GetFloat(), itr->value[1].GetFloat(),
+			itr->value[2].GetFloat(), itr->value[3].GetFloat());
+		return ret;
+	}
+	else
+	{
+		LOG("Member %s not found!", name);
+		return float4::zero;
+	}
+}
+
+Quat JSON_value::GetQuat(const char * name)
+{
+	rapidjson::Value::ConstMemberIterator itr = rapidjsonValue->FindMember(name);
+	if (itr != rapidjsonValue->MemberEnd())
+	{
+		Quat ret(itr->value[0].GetFloat(), itr->value[1].GetFloat(),
+			itr->value[2].GetFloat(), itr->value[3].GetFloat());
+		return ret;
+	}
+	else
+	{
+		LOG("Member %s not found!", name);
+		return Quat::identity;
+	}
+}
+
+const char* JSON_value::GetString(const char * name)
+{
+	rapidjson::Value::ConstMemberIterator itr = rapidjsonValue->FindMember(name);
+	if (itr != rapidjsonValue->MemberEnd())
+	{
+		return itr->value.GetString();
+	}
+	else
+	{
+		LOG("Member %s not found!", name);
+		return nullptr;
+	}
+}
+
+JSON_value* JSON_value::GetValue(unsigned index)
+{
+	JSON_value * val = new JSON_value(allocator);
+	val->rapidjsonValue->CopyFrom(rapidjsonValue->operator[](index), *allocator);
+	valuesAllocated.push_back(val);
+	return val;
+}
+
+unsigned JSON_value::Size() const
+{
+	bool isArray = this->rapidjsonValue->IsArray();
+	assert(isArray);
+	if (!isArray)
+	{
+		LOG("This value is not an array!");
+		return 0;
+	}
+	return this->rapidjsonValue->Size();
+}
+
 
 JSON::JSON()
 {
@@ -120,8 +243,8 @@ JSON::JSON()
 JSON::JSON(const char *data)
 {
 	document = new rapidjson::Document();
-	document->Parse(data);
 	document->SetObject();
+	document->Parse(data);
 	allocator = &document->GetAllocator();
 	jsonBuffer = new rapidjson::StringBuffer();
 }

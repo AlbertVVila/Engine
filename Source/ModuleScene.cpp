@@ -10,6 +10,7 @@
 #include "JSON.h"
 #include "rapidjson/rapidjson.h"
 #include <random>
+#include <map>
 
 ModuleScene::ModuleScene()
 {
@@ -84,17 +85,27 @@ void ModuleScene::SaveScene()
 
 void ModuleScene::LoadScene(const char* scene)
 {
-	JSON *json = new JSON(scene);
-	JSON_value* gameobjects = json->GetValue("GameObjects");
-	//JSON *json = new JSON();
-	//JSON_value *array = json->CreateValue(rapidjson::kArrayType);
-	//root->Save(array);
-	//json->AddValue("GameObjects", array);
-	//char* file = "scene.json";
-	////
-	////JSON_value *uuid = json.CreateValue();
-	////uuid->AddInt("parentUUID", 156);
-	////uuid->AddString("name", "lolaso");
-	////json.AddValue("GameObjects", uuid);
-	//App->fsystem->Save(file, json->ToString().c_str(), json->Size());
+	char* data = nullptr;
+	App->fsystem->Load(scene, &data);
+	JSON *json = new JSON(data);
+	JSON_value* gameobjectsJSON = json->GetValue("GameObjects");
+	std::map<unsigned, GameObject*> gameobjectsMap; //Necessary to assign parent-child efficiently
+	for (unsigned i=0; i<gameobjectsJSON->Size(); i++)
+	{
+		JSON_value* gameobjectJSON = gameobjectsJSON->GetValue(i);
+		GameObject *gameobject = new GameObject();
+		gameobject->Load(gameobjectJSON);
+		gameobjectsMap.insert(std::pair<unsigned, GameObject*>(gameobject->UUID, gameobject));
+
+		std::map<unsigned, GameObject*>::iterator it = gameobjectsMap.find(gameobject->parentUUID);
+		if (it != gameobjectsMap.end())
+		{
+			gameobject->parent = it->second;
+			gameobject->parent->children.push_back(gameobject);
+		}
+		if (i == 0) //TODO: replace root on load?
+		{
+			root = gameobject;
+		}
+	}
 }

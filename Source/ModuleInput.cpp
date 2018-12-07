@@ -195,8 +195,8 @@ void ModuleInput::DropFile(char* dropped_file) const
 	//}
 	//else if (extension == "png" || extension == "jpg" || extension == "dds")
 	//{
-	char **content = nullptr;
-	App->fsystem->Load(dropped_file,filename.c_str(), content);
+	//char **content = nullptr;
+	//App->fsystem->Load(dropped_file,filename.c_str(), content);
 		//Texture newTexture = App->textures->Load(dropped_file);
 		//App->sceneLoader->ApplyTexture(newTexture);
 	//}

@@ -30,9 +30,27 @@ bool ModuleFileSystem::Init()
 	return true;
 }
 
-unsigned int ModuleFileSystem::Load(const char * path, const char * file, char ** buffer) const
+unsigned ModuleFileSystem::Load(const char * file, char ** buffer) const
 {
-	return 0;
+	PHYSFS_file* myfile = PHYSFS_openRead(file);
+	if (myfile == nullptr)
+	{
+		LOG("Error: %s", PHYSFS_getLastError());
+		return false;
+	}
+	PHYSFS_sint32 fileSize = PHYSFS_fileLength(myfile);
+
+	*buffer = new char[fileSize+1]();
+	int readed =PHYSFS_read(myfile, *buffer, 1, fileSize);
+	if (readed != fileSize)
+	{
+		LOG("Error reading from file %s, : %s",file, PHYSFS_getLastError());
+		RELEASE(*buffer);
+		return 0;
+	}
+	PHYSFS_close(myfile);
+
+	return readed;
 }
 
 bool ModuleFileSystem::Save(const char * file, const char * buffer, unsigned size) const

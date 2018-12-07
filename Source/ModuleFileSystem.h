@@ -13,7 +13,7 @@ public:
 
 	bool Init();
 
-	unsigned int Load(const char* path, const char* file, char** buffer) const;
+	unsigned Load(const char * file, char ** buffer) const;
 	bool Save(const char* file, const char* buffer, unsigned size) const;
 	bool Remove(const char* file) const;
 	bool Exists(const char* file) const;

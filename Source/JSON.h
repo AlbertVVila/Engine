@@ -24,9 +24,20 @@ public:
 	void AddString(const char * name, const char* value);
 	void AddValue(const char * name, JSON_value *value);
 
+	int GetInt(const char* name);
+	unsigned GetUint(const char * name);
+	float GetFloat(const char * namee);
+	float3 GetFloat3(const char * name);
+	float4 GetFloat4(const char * name);
+	Quat GetQuat(const char * name);
+	const char* GetString(const char * name);
+	JSON_value* GetValue(unsigned index);
+	unsigned Size() const;
+
 public:
 	rapidjson::Value *rapidjsonValue = nullptr;
 	rapidjson::Document::AllocatorType* allocator = nullptr;
+private:
 	std::vector<JSON_value*> valuesAllocated;
 };
 
