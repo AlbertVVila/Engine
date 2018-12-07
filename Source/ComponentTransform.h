@@ -22,8 +22,9 @@ public:
 	void SetPosition(const float3& pos);
 
 	void SetLocalToWorld(const float4x4 & parentGlobalMatrix);
-
 	void SetWorldToLocal(const float4x4 & newparentGlobalMatrix);
+
+	void Save(JSON_value *value) override;
 
 public:
 	float3 position = float3::zero;

@@ -5,6 +5,9 @@
 #include "rapidjson/stringbuffer.h"
 #include <string>
 #include <vector>
+#include "Math/float3.h"
+#include "Math/float4.h"
+#include "Math/Quat.h"
 
 struct JSON_value
 {
@@ -15,6 +18,9 @@ public:
 	void AddInt(const char* name, int value);
 	void AddUint(const char * name, unsigned value);
 	void AddFloat(const char * name, float value);
+	void AddFloat3(const char * name, float3 value);
+	void AddFloat4(const char * name, float4 value);
+	void AddQuat(const char * name, Quat value);
 	void AddString(const char * name, const char* value);
 	void AddValue(const char * name, JSON_value *value);
 
@@ -28,11 +34,12 @@ class JSON
 {
 public:
 	JSON();
+	JSON(const char * data);
 	~JSON();
 
 	JSON_value* CreateValue(rapidjson::Type type = rapidjson::kObjectType);
-	rapidjson::Value* Array(const char* name);
 	void AddValue(const char * name, JSON_value * value);
+	JSON_value * GetValue(const char * name);
 	std::string ToString();
 	unsigned Size();
 

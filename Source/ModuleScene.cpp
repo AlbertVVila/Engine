@@ -79,10 +79,22 @@ void ModuleScene::SaveScene()
 	root->Save(array);
 	json->AddValue("GameObjects", array);
 	char* file = "scene.json";
-	//
-	//JSON_value *uuid = json.CreateValue();
-	//uuid->AddInt("parentUUID", 156);
-	//uuid->AddString("name", "lolaso");
-	//json.AddValue("GameObjects", uuid);
 	App->fsystem->Save(file, json->ToString().c_str(), json->Size());
+}
+
+void ModuleScene::LoadScene(const char* scene)
+{
+	JSON *json = new JSON(scene);
+	JSON_value* gameobjects = json->GetValue("GameObjects");
+	//JSON *json = new JSON();
+	//JSON_value *array = json->CreateValue(rapidjson::kArrayType);
+	//root->Save(array);
+	//json->AddValue("GameObjects", array);
+	//char* file = "scene.json";
+	////
+	////JSON_value *uuid = json.CreateValue();
+	////uuid->AddInt("parentUUID", 156);
+	////uuid->AddString("name", "lolaso");
+	////json.AddValue("GameObjects", uuid);
+	//App->fsystem->Save(file, json->ToString().c_str(), json->Size());
 }

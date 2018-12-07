@@ -3,6 +3,7 @@
 #include "imgui.h"
 #include "Math/MathFunc.h"
 #include "Math/float4x4.h"
+#include "JSON.h"
 
 
 ComponentTransform::ComponentTransform(GameObject* gameobject, const float4x4 &transform) : Component(gameobject, ComponentType::Transform)
@@ -83,4 +84,13 @@ void ComponentTransform::SetWorldToLocal(const float4x4 & newparentGlobalMatrix)
 	float4x4 local = newparentGlobalMatrix.Inverted() * world;
 	local.Decompose(position, rotation, scale);
 	RotationToEuler();
+}
+
+void ComponentTransform::Save(JSON_value * value)
+{
+	Component::Save(value);
+	value->AddFloat3("Position", position);
+	value->AddQuat("Rotation", rotation);
+	value->AddFloat3("Euler", eulerRotation);
+	value->AddFloat3("Scale", scale);
 }

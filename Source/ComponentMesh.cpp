@@ -6,6 +6,7 @@
 #include "GL/glew.h"
 #include "Imgui/imgui.h"
 #include "par_shapes.h"
+#include "JSON.h"
 
 ComponentMesh::ComponentMesh(GameObject* gameobject, char * mesh) : Component(gameobject, ComponentType::Mesh)
 {
@@ -294,4 +295,10 @@ void ComponentMesh::DeleteBuffers()
 	{
 		glDeleteBuffers(1, &EBO);
 	}
+}
+
+void ComponentMesh::Save(JSON_value * value)
+{
+	Component::Save(value);
+	value->AddString("MeshFile", "test.mesh");
 }

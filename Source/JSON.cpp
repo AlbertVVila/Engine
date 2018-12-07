@@ -8,7 +8,7 @@
 JSON_value::JSON_value(rapidjson::Document::AllocatorType * allocator, rapidjson::Type type): allocator(allocator)
 {
 		rapidjsonValue = new rapidjson::Value(type);
-};
+}; //TODO: release Memory
 
 JSON_value* JSON_value::CreateValue(rapidjson::Type type)
 {
@@ -36,6 +36,47 @@ void JSON_value::AddFloat(const char * name, float value)
 	std::string myname(name);
 	rapidjson::Value key(myname.c_str(), myname.size(), *allocator);
 	rapidjsonValue->AddMember(key, value, *allocator);
+}
+
+void JSON_value::AddFloat3(const char * name, float3 value)
+{
+	std::string myname(name);
+	rapidjson::Value key(myname.c_str(), myname.size(), *allocator);
+
+	rapidjson::Value float3(rapidjson::kArrayType);
+	float3.PushBack(value.x, *allocator);
+	float3.PushBack(value.y, *allocator);
+	float3.PushBack(value.z, *allocator);
+
+	rapidjsonValue->AddMember(key, float3, *allocator);
+}
+
+void JSON_value::AddFloat4(const char * name, float4 value)
+{
+	std::string myname(name);
+	rapidjson::Value key(myname.c_str(), myname.size(), *allocator);
+
+	rapidjson::Value float4(rapidjson::kArrayType);
+	float4.PushBack(value.x, *allocator);
+	float4.PushBack(value.y, *allocator);
+	float4.PushBack(value.z, *allocator);
+	float4.PushBack(value.w, *allocator);
+
+	rapidjsonValue->AddMember(key, float4, *allocator);
+}
+
+void JSON_value::AddQuat(const char * name, Quat value)
+{
+	std::string myname(name);
+	rapidjson::Value key(myname.c_str(), myname.size(), *allocator);
+
+	rapidjson::Value quat(rapidjson::kArrayType);
+	quat.PushBack(value.x, *allocator);
+	quat.PushBack(value.y, *allocator);
+	quat.PushBack(value.z, *allocator);
+	quat.PushBack(value.w, *allocator);
+
+	rapidjsonValue->AddMember(key, quat, *allocator);
 }
 
 void JSON_value::AddString(const char * name, const char* value)
@@ -76,6 +117,14 @@ JSON::JSON()
 	jsonBuffer = new rapidjson::StringBuffer();
 }
 
+JSON::JSON(const char *data)
+{
+	document = new rapidjson::Document();
+	document->Parse(data);
+	document->SetObject();
+	allocator = &document->GetAllocator();
+	jsonBuffer = new rapidjson::StringBuffer();
+}
 
 JSON::~JSON()
 {
@@ -90,25 +139,23 @@ JSON_value * JSON::CreateValue(rapidjson::Type type)
 	return ret;
 }
 
-rapidjson::Value* JSON::Array(const char* name)
-{
-	rapidjson::Value *myarray = new rapidjson::Value(rapidjson::kArrayType);
-	rapidjson::StringBuffer s;
-	rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(s);
-
-	std::string str(name);
-	rapidjson::Value key(str.c_str(), str.size(), document->GetAllocator());
-
-	document->AddMember(key, *myarray, document->GetAllocator());
-
-	return myarray;
-}
-
 void JSON::AddValue(const char* name, JSON_value* value)
 {
 	std::string myname(name);
 	rapidjson::Value key(myname.c_str(), myname.size(), *allocator);
 	document->AddMember(key, *value->rapidjsonValue, *allocator);
+}
+
+JSON_value * JSON::GetValue(const char* name)
+{
+	if (document->HasMember(name))
+	{
+		JSON_value * val = new JSON_value(allocator);
+		val->rapidjsonValue->CopyFrom(document->operator[](name), *allocator);
+		valuesAllocated.push_back(val);
+		return val;
+	}
+	return nullptr;
 }
 
 

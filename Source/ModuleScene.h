@@ -28,6 +28,8 @@ public:
 
 	void SaveScene();
 
+	void LoadScene(const char * scene);
+
 public:
 	GameObject* root = nullptr;
 	GameObject* selected = nullptr;

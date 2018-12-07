@@ -7,6 +7,7 @@
 #include "GL/glew.h"
 
 #include "assimp/material.h"
+#include "JSON.h"
 ComponentMaterial::ComponentMaterial(GameObject* gameobject, const aiMaterial * material) : Component(gameobject, ComponentType::Material)
 {
 	this->shader = App->program->textureProgram;
@@ -95,4 +96,12 @@ void ComponentMaterial::DrawProperties()
 		}
 	}
 	ImGui::PopID();
+}
+
+void ComponentMaterial::Save(JSON_value * value)
+{
+	Component::Save(value);
+	//TODO: serialize shader
+	value->AddFloat4("Color", color);
+	value->AddString("MaterialFile", "test.dds");
 }

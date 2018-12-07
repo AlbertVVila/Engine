@@ -28,6 +28,7 @@ public:
 	AABB GetBoundingBox() const;
 
 	void DeleteBuffers();
+	void Save(JSON_value *value) override;
 
 public:
 

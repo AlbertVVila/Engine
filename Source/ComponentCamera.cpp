@@ -12,6 +12,7 @@
 #include "Geometry/AABB.h"
 #include "GL/glew.h"
 #include "Imgui/imgui.h"
+#include "JSON.h"
 
 #define MAXFOV 120
 #define MINFOV 40
@@ -203,6 +204,21 @@ void ComponentCamera::DrawProperties()
 
 		ImGui::Separator();
 	}
+}
+
+void ComponentCamera::Save(JSON_value * value)
+{
+	Component::Save(value);
+	value->AddFloat("MovementSpeed", movementSpeed);
+	value->AddFloat("RotationSpeed", rotationSpeed);
+	value->AddFloat("ZoomSpeed", zoomSpeed);
+	value->AddFloat("Znear", frustum.nearPlaneDistance);
+	value->AddFloat("Zfar", frustum.farPlaneDistance);
+	value->AddFloat("vFOV", frustum.verticalFov);
+	value->AddFloat("hFOV", frustum.horizontalFov);
+	value->AddFloat3("Position", frustum.pos);
+	value->AddFloat3("Front", frustum.front);
+	value->AddFloat3("Up", frustum.up);
 }
 
 
