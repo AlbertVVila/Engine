@@ -65,7 +65,7 @@ bool ModuleSceneLoader::Start()
 {
 	//LoadFile(BAKERHOUSE);
 	//FileImporter sceneImporter;
-	//sceneImporter.ImportMat("Models\\Baker\\Baker_house.png");
+	//sceneImporter.ImportImage("Models\\Baker\\Baker_house.png");
 	//std::string outputfile = "BakerHouse.dat";
 	//sceneImporter.ImportFBX("BakerHouse.fbx",BAKERHOUSE, outputfile);
 	//char* bakerhouse = nullptr;

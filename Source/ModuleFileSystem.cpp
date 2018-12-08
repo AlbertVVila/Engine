@@ -71,8 +71,8 @@ bool ModuleFileSystem::Save(const char * file, const char * buffer, unsigned siz
 		LOG("Error: %s %s", file, PHYSFS_getLastError());
 		return false;
 	}
-	PHYSFS_write(myfile, buffer, size, 1);
-	RELEASE(buffer);
+	PHYSFS_write(myfile, buffer, size, 1); //TODO: check errors in write
+	//RELEASE(buffer); //TODO: fix mem leacks
 	PHYSFS_close(myfile);
 
 	return true;

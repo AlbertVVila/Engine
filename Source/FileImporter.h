@@ -18,6 +18,12 @@ public:
 
 	bool ImportmyFBX(const char * file);
 
+	bool ImportScene(const aiScene & scene);
+
+	void ImportMesh(const aiMesh & mesh, char* data);
+
+	unsigned GetMeshSize(const aiMesh & mesh);
+
 	bool ImportFBX(const char* file, const char* path, std::string& output_file) override;
 	unsigned int GetNodeSize(const aiNode& node, const aiScene& scene) const;
 	bool SaveScene(const aiScene & scene, std::string & output_file);

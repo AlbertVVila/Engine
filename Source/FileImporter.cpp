@@ -10,6 +10,7 @@
 #include "Application.h"
 #include "ModuleTextures.h"
 #include "ModuleFileSystem.h"
+#include "physfs.h"
 
 
 FileImporter::FileImporter()
@@ -26,7 +27,10 @@ void FileImporter::ImportAsset(const char *file)
 	std::string extension (App->fsystem->GetExtension(file));
 	if (extension == "fbx" || extension == "FBX")
 	{
-		ImportmyFBX(file);
+		std::string filepath(PHYSFS_getBaseDir());
+		filepath += ASSETS;
+		filepath += file;
+		ImportmyFBX(filepath.c_str());
 	}
 	else if (extension == "png" || extension == "jpg")
 	{
@@ -34,6 +38,7 @@ void FileImporter::ImportAsset(const char *file)
 	}
 	else if (extension == "dds")
 	{
+		//TODO: remember
 		App->fsystem->Copy(ASSETS, MATERIALS, file); //TODO: FULL PATH when copying outside fs
 	}
 	else if (extension == "mesh")
@@ -42,9 +47,70 @@ void FileImporter::ImportAsset(const char *file)
 	}
 }
 
-bool FileImporter::ImportmyFBX(const char* file)
+bool FileImporter::ImportmyFBX(const char* filepath)
 {
+	assert(filepath != nullptr);
+	if (filepath == nullptr) return false;
+	const aiScene* scene = aiImportFile(filepath, aiProcess_Triangulate);
+	if (scene != nullptr)
+	{
+		return ImportScene(*scene);
+	}
+	return false;
+}
+
+bool FileImporter::ImportScene(const aiScene &scene)
+{
+	for (unsigned i = 0; i < scene.mNumMeshes; i++)
+	{
+		unsigned size = GetMeshSize(*scene.mMeshes[i]);
+		char* data = new char[size];
+		ImportMesh(*scene.mMeshes[i], data);
+		App->fsystem->Save("holi.mesh", data, size);
+	}
 	return true;
+}
+
+void FileImporter::ImportMesh(const aiMesh &mesh, char *data)
+{
+	char *cursor = data;
+
+	unsigned int ranges[2] = { mesh.mNumFaces * 3, 	mesh.mNumVertices };
+	unsigned int rangeBytes = sizeof(ranges);
+	memcpy(cursor, ranges, rangeBytes);
+	cursor += rangeBytes;
+
+	//unsigned int verticesBytes = sizeof(float)*mesh.mNumVertices * 3;
+	//memcpy(cursor, mesh.mVertices, verticesBytes);
+	//cursor += verticesBytes;
+
+	for (unsigned int i = 0; i < mesh.mNumVertices; i++)
+	{
+		memcpy(cursor, &mesh.mTextureCoords[0][i].x, sizeof(float));
+		cursor += sizeof(float);
+		memcpy(cursor, &mesh.mTextureCoords[0][i].y, sizeof(float));
+		cursor += sizeof(float);
+	}
+
+	//unsigned int faceBytes = mesh.mNumFaces*3*(sizeof(int));
+	for (unsigned int i = 0; i < mesh.mNumFaces; i++)
+	{
+		aiFace *face = &mesh.mFaces[i];
+		assert(face->mNumIndices == 3);
+		memcpy(cursor, face->mIndices, sizeof(int) * 3);
+		cursor += sizeof(int) * 3;
+	}
+}
+
+unsigned FileImporter::GetMeshSize(const aiMesh &mesh)
+{
+	unsigned size = 0u;
+	unsigned int ranges[2] = { mesh.mNumFaces * 3, mesh.mNumVertices };
+	//size += sizeof(int); //mesh content size ?
+	size += sizeof(ranges); //numfaces + numvertices
+	size += mesh.mNumFaces * 3 * sizeof(int); //indices
+	size += sizeof(float)*mesh.mNumVertices * 5; //vertices + texCoords
+	return size;
 }
 
 bool FileImporter::ImportFBX(const char * file, const char * path, std::string & output_file)
@@ -220,7 +286,7 @@ void FileImporter::ImportImage(const char * file)
 			// Save to buffer with the ilSaveIL function
 			std::string filepath(MESHES);
 			filepath += file;
-			App->fsystem->Save(filepath.c_str, (char*)data, size);
+			App->fsystem->Save(filepath.c_str(), (char*)data, size);
 		}
 		RELEASE_ARRAY(data);
 	}
