@@ -12694,7 +12694,7 @@ void ImGui::LoadIniSettingsFromMemory(const char* ini_data, size_t ini_size)
             const char* name_start = type_end ? ImStrchrRange(type_end + 1, name_end, '[') : NULL;
             if (!type_end || !name_start)
             {
-                name_start = type_start; // Import legacy entries that have no type
+                name_start = type_start; // ImportAsset legacy entries that have no type
                 type_start = "Window";
             }
             else

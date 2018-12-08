@@ -8,10 +8,9 @@
 
 #define ASSETS "Assets/"
 #define LIBRARY "Library/"
-#define MESHES "Meshes/"
-#define MATERIALS "Materials/"
+#define MESHES LIBRARY "Meshes/"
+#define MATERIALS LIBRARY "Materials/"
 #define SKYBOX "Skybox/"
-#define DATADIR "Data"
 
 class ModuleFileSystem :
 	public Module
@@ -33,6 +32,7 @@ public:
 	bool IsDirectory(const char* file) const;
 	std::list<std::string> ListFiles(const char * dir) const;
 	bool CopyFromOutsideFS(const char* source, const char* destination);
+	bool Copy(const char* source, const char* destination, const char* file);
 
 	void WatchFolder(const char* folder);
 
@@ -41,7 +41,7 @@ public:
 private:
 	float watchThreshold = 1000.f;
 	Timer importTimer;
-	std::set<const char*> importedFiles;
+	std::set<std::string> importedFiles;
 };
 
 #endif __ModuleFileSystem_h__

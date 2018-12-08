@@ -1,6 +1,6 @@
 /*
 ---------------------------------------------------------------------------
-Open Asset Import Library (assimp)
+Open Asset ImportAsset Library (assimp)
 ---------------------------------------------------------------------------
 
 Copyright (c) 2006-2016, assimp team
@@ -40,7 +40,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 /** @file  cimport.h
- *  @brief Defines the C-API to the Open Asset Import Library.
+ *  @brief Defines the C-API to the Open Asset ImportAsset Library.
  */
 #ifndef AI_ASSIMP_H_INC
 #define AI_ASSIMP_H_INC

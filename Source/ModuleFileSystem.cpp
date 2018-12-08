@@ -16,10 +16,11 @@ ModuleFileSystem::~ModuleFileSystem()
 bool ModuleFileSystem::Init()
 {
 	PHYSFS_init(NULL);
-	std::string dir(PHYSFS_getBaseDir());
-	dir += DATADIR;
-	PHYSFS_addToSearchPath(dir.c_str(), 1);
-	PHYSFS_setWriteDir(dir.c_str());
+	PHYSFS_addToSearchPath(PHYSFS_getBaseDir(), 1);
+
+	PHYSFS_mount(LIBRARY, nullptr, 1);
+	PHYSFS_mount(ASSETS, nullptr, 1);
+	PHYSFS_setWriteDir(PHYSFS_getBaseDir());
 	return true;
 }
 
@@ -67,10 +68,11 @@ bool ModuleFileSystem::Save(const char * file, const char * buffer, unsigned siz
 	PHYSFS_file* myfile = PHYSFS_openWrite(file);
 	if (myfile == nullptr)
 	{
-		LOG("Error: %s", PHYSFS_getLastError());
+		LOG("Error: %s %s", file, PHYSFS_getLastError());
 		return false;
 	}
 	PHYSFS_write(myfile, buffer, size, 1);
+	RELEASE(buffer);
 	PHYSFS_close(myfile);
 
 	return true;
@@ -160,17 +162,29 @@ bool ModuleFileSystem::CopyFromOutsideFS(const char * source, const char * desti
 	return true;
 }
 
+bool ModuleFileSystem::Copy(const char * source, const char * destination, const char* file)
+{
+	char * data;
+	std::string filepath(source);
+	filepath += file;
+	unsigned size = Load(filepath.c_str(), &data);
+	std::string filedest(destination);
+	filedest += file;
+	Save(filedest.c_str(), data, size);
+	return true;
+}
+
 void ModuleFileSystem::WatchFolder(const char * folder)
 {
 	std::list<std::string> files = ListFiles(folder);
 	for (auto& file: files)
 	{
-		std::set<const char*>::iterator it = importedFiles.find(file.c_str());
+		std::set<std::string>::iterator it = importedFiles.find(file);
 		if (it == importedFiles.end())
 		{
 			FileImporter importer;
-			importer.Import("Assets/test.dds");
-			importedFiles.insert(file.c_str());
+			importer.ImportAsset(file.c_str());
+			importedFiles.insert(file);
 		}
 	}
 	return;

@@ -14,7 +14,9 @@ public:
 	FileImporter();
 	~FileImporter();
 
-	void Import(const char * file);
+	void ImportAsset(const char * file);
+
+	bool ImportmyFBX(const char * file);
 
 	bool ImportFBX(const char* file, const char* path, std::string& output_file) override;
 	unsigned int GetNodeSize(const aiNode& node, const aiScene& scene) const;
@@ -23,7 +25,7 @@ public:
 	bool LoadData(std::string & myfile, char * &data);
 	void SaveNode(const aiNode & node, const aiScene & scene, char * &cursor, int node_id, int parent_node_id);
 	void SaveMesh(const aiMesh & mesh, char * &cursor);
-	void ImportMat(const char * file);
+	void ImportImage(const char * file);
 };
 
 #endif __FileImporter_h__

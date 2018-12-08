@@ -73,7 +73,7 @@ bool ModuleSceneLoader::Start()
 	//LoadScene(bakerhouse);
 	//CreateSphere("sphere0", float3(0.0f, 0.0f, 0.0f), Quat::identity, 1.0f, 20, 20, float4(0.f, 0.0f, 0.f, 1.0f));
 	//App->scene->SaveScene();
-	App->scene->LoadScene("scene.json");
+	//App->scene->LoadScene("scene.json");
 	return true;
 }
 

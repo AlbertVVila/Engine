@@ -21,29 +21,30 @@ FileImporter::~FileImporter()
 {
 }
 
-void FileImporter::Import(const char *file) 
+void FileImporter::ImportAsset(const char *file) 
 {
 	std::string extension (App->fsystem->GetExtension(file));
 	if (extension == "fbx" || extension == "FBX")
 	{
-
+		ImportmyFBX(file);
 	}
 	else if (extension == "png" || extension == "jpg")
 	{
-
+		ImportImage(file);
 	}
 	else if (extension == "dds")
 	{
-		std::string myfile(MATERIALS);
-		myfile += file;
-		App->fsystem->CopyFromOutsideFS(file, myfile.c_str()); //TODO: FULL PATH
+		App->fsystem->Copy(ASSETS, MATERIALS, file); //TODO: FULL PATH when copying outside fs
 	}
 	else if (extension == "mesh")
 	{
-		std::string myfile(MESHES);
-		myfile += file;
-		App->fsystem->CopyFromOutsideFS(file, myfile.c_str());
+		App->fsystem->Copy(ASSETS, MESHES, file);
 	}
+}
+
+bool FileImporter::ImportmyFBX(const char* file)
+{
+	return true;
 }
 
 bool FileImporter::ImportFBX(const char * file, const char * path, std::string & output_file)
@@ -191,7 +192,7 @@ void FileImporter::SaveMesh(const aiMesh& mesh, char * &cursor)
 
 }
 
-void FileImporter::ImportMat(const char * path)
+void FileImporter::ImportImage(const char * file)
 {
 	ILuint imageID;
 	ILboolean success;
@@ -199,7 +200,7 @@ void FileImporter::ImportMat(const char * path)
 
 	ilGenImages(1, &imageID); 		// Generate the image ID
 	ilBindImage(imageID); 			// Bind the image
-	success = ilLoadImage(path);
+	success = ilLoadImage(file);
 	if (success)
 	{
 
@@ -217,10 +218,9 @@ void FileImporter::ImportMat(const char * path)
 		if (ilSaveL(IL_DDS, data, size) > 0)
 		{
 			// Save to buffer with the ilSaveIL function
-			std::ofstream outfile;
-			outfile.open("test.dds", std::ios::binary | std::ios::out);
-			outfile.write((char*)data, size);
-			outfile.close();
+			std::string filepath(MESHES);
+			filepath += file;
+			App->fsystem->Save(filepath.c_str, (char*)data, size);
 		}
 		RELEASE_ARRAY(data);
 	}
