@@ -15,11 +15,11 @@ public:
 	FileImporter();
 	~FileImporter();
 
-	void ImportAsset(const char * file);
+	void ImportAsset(const char * file, const char* folder);
 
 	GameObject* ProcessNode(const std::map<unsigned,unsigned> &meshmap, const aiNode * node, const aiScene * scene, const aiMatrix4x4 & parentTransform, GameObject * parent);
 
-	bool ImportFBX(const char * file);
+	bool ImportFBX(const char * file, const char* folder);
 
 	bool ImportScene(const aiScene & scene, const char* file);
 

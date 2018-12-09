@@ -129,24 +129,22 @@ unsigned int ModuleTextures::LoadCubeMap(const std::vector<std::string> &faces) 
 
 		ilGenImages(1, &imageID); 		// Generate the image ID
 		ilBindImage(imageID); 			// Bind the image
-		success = ilLoadImage(faces[i].c_str());
+
+		char *data;
+		unsigned size = App->fsystem->Load((MATERIALS + faces[i] + MATERIALEXTENSION).c_str(), &data); //TODO: use mini resource maanger to optimize this
+		success = ilLoadL(IL_DDS, data, size);
 		if (success)
 		{
-			//iluGetImageInfo(&ImageInfo);
-			//if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
-			//{
-			//	iluFlipImage();
-			//}
 
-			ILubyte* data = ilGetData();
+			ILubyte* ildata = ilGetData();
 			width = ilGetInteger(IL_IMAGE_WIDTH);
 			height = ilGetInteger(IL_IMAGE_HEIGHT);
 			pixelDepth = ilGetInteger(IL_IMAGE_DEPTH);
 			format = ilGetInteger(IL_IMAGE_FORMAT);
 
 			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-				0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data
-			);
+				0, format, width, height, 0, format, GL_UNSIGNED_BYTE, ildata);
+
 			ilDeleteImages(1, &imageID);
 		}
 		else
@@ -165,7 +163,7 @@ unsigned int ModuleTextures::LoadCubeMap(const std::vector<std::string> &faces) 
 	return textureID;
 }
 
-void ModuleTextures::ImportImage(const char * file)
+void ModuleTextures::ImportImage(const char * file, const char* folder)
 {
 	ILuint imageID;
 	ILboolean success;
@@ -173,7 +171,8 @@ void ModuleTextures::ImportImage(const char * file)
 
 	ilGenImages(1, &imageID); 		// Generate the image ID
 	ilBindImage(imageID); 			// Bind the image
-	success = ilLoadImage(file);
+	std::string path(folder);
+	success = ilLoadImage((path+file).c_str());
 	if (success)
 	{
 
@@ -191,8 +190,9 @@ void ModuleTextures::ImportImage(const char * file)
 		if (ilSaveL(IL_DDS, data, size) > 0)
 		{
 			// Save to buffer with the ilSaveIL function
-			std::string filepath(MESHES);
-			filepath += file;
+			std::string filepath(MATERIALS);
+			filepath += App->fsystem->RemoveExtension(file);
+			filepath += MATERIALEXTENSION;
 			App->fsystem->Save(filepath.c_str(), (char*)data, size);
 		}
 		RELEASE_ARRAY(data);

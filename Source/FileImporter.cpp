@@ -24,37 +24,37 @@ FileImporter::~FileImporter()
 {
 }
 
-void FileImporter::ImportAsset(const char *file)  //TODO: assimp + load/save scene/files logs
+void FileImporter::ImportAsset(const char *file, const char *folder)  //TODO: assimp + load/save scene/files logs
 {
 	std::string extension (App->fsystem->GetExtension(file));
 	if (extension == FBXEXTENSION || extension == ".FBX")
 	{
-		ImportFBX(file);
+		ImportFBX(file, folder);
 	}
 	else if (extension == ".png" || extension == ".jpg")
 	{
-		App->textures->ImportImage(file);
+		App->textures->ImportImage(file, folder);
 	}
 	else if (extension == MATERIALEXTENSION)
 	{
 		//TODO: remember ¿?
-		App->fsystem->Copy(ASSETS, MATERIALS, file); //TODO: FULL PATH when copying outside fs
+		App->fsystem->Copy(folder, MATERIALS, file); //TODO: FULL PATH when copying outside fs
 	}
 	else if (extension == MESHEXTENSION)
 	{
-		App->fsystem->Copy(ASSETS, MESHES, file);
+		App->fsystem->Copy(folder, MESHES, file);
 	}
 }
 
-bool FileImporter::ImportFBX(const char* filepath)
+bool FileImporter::ImportFBX(const char* fbxfile, const char* folder)
 {
-	assert(filepath != nullptr);
-	if (filepath == nullptr) return false;
-	std::string file(filepath);
-	const aiScene* scene = aiImportFile((ASSETS+file).c_str(), aiProcess_Triangulate);
+	assert(fbxfile != nullptr);
+	if (fbxfile == nullptr) return false;
+	std::string file(fbxfile);
+	const aiScene* scene = aiImportFile((folder+ file).c_str(), aiProcess_Triangulate);
 	if (scene != nullptr)
 	{
-		return ImportScene(*scene, filepath);
+		return ImportScene(*scene, fbxfile);
 	}
 	return false;
 }
@@ -135,7 +135,7 @@ GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshma
 {
 	assert(node != nullptr); assert(scene != nullptr);
 	aiMatrix4x4 transform = parentTransform * node->mTransformation; //TODO: transform conversion
-	GameObject * gameobject = App->scene->CreateGameObject(float4x4::identity, "", node->mName.C_Str(), parent); //TODO: remove deprecated filepath variable
+	GameObject * gameobject = App->scene->CreateGameObject(float4x4::identity, "", node->mName.C_Str(), parent); //TODO: remove deprecated fbxfile variable
 
 	for (unsigned int i = 0; i < node->mNumMeshes; i++)
 	{
@@ -155,7 +155,7 @@ GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshma
 		aiString file;
 		mat->GetTexture(aiTextureType_DIFFUSE, 0, &file, &mapping, 0);
 		material->file = App->fsystem->RemoveExtension(file.C_Str()); //we only save texture name
-	} //TODO: material use file name or use UID?
+	} //TODO: material use fbxfile name or use UID?
 	for (unsigned int i = 0; i < node->mNumChildren; i++)
 	{
 		GameObject * child = ProcessNode(meshmap, node->mChildren[i], scene, transform, gameobject);

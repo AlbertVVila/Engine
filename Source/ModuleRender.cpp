@@ -7,6 +7,7 @@
 #include "ModuleEditor.h"
 #include "ModuleWindow.h"
 #include "ModuleTextures.h"
+#include "ModuleFileSystem.h"
 #include "SDL.h"
 #include "GL/glew.h"
 #include "imgui.h"
@@ -39,15 +40,15 @@ bool ModuleRender::Init()
 
 bool ModuleRender::Start()
 {
-	CreateBlockUniforms();
+	CreateBlockUniforms(); //TODO: refactor skybox
 	std::vector<std::string> faces =
 	{
-			"Skybox/right.jpg",
-			"Skybox/left.jpg",
-			"Skybox/top.jpg",
-			"Skybox/bottom.jpg",
-			"Skybox/front.jpg",
-			"Skybox/back.jpg"
+			"right",
+			"left",
+			"top",
+			"bottom",
+			"front",
+			"back"
 	};
 	skybox_cubemap = App->textures->LoadCubeMap(faces);
 	return true;

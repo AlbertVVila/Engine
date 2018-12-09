@@ -21,6 +21,7 @@ bool ModuleFileSystem::Init()
 	PHYSFS_mount(LIBRARY, nullptr, 1);
 	PHYSFS_mount(ASSETS, nullptr, 1);
 	PHYSFS_setWriteDir(PHYSFS_getBaseDir());
+	WatchFolder(ASSETS);
 	return true;
 }
 
@@ -45,7 +46,7 @@ unsigned ModuleFileSystem::Load(const char * file, char ** buffer) const
 	PHYSFS_file* myfile = PHYSFS_openRead(file);
 	if (myfile == nullptr)
 	{
-		LOG("Error: %s", PHYSFS_getLastError());
+		LOG("Error: %s %s", file, PHYSFS_getLastError());
 		return false;
 	}
 	PHYSFS_sint32 fileSize = PHYSFS_fileLength(myfile);
@@ -135,7 +136,7 @@ std::list<std::string> ModuleFileSystem::ListFiles(const char * dir) const
 	char **i;
 	
 	for (i = rc; *i != NULL; i++)
-		files.emplace_back(*rc);
+		files.emplace_back(*i);
 	
 	 PHYSFS_freeList(rc);
 	 return files;
@@ -179,12 +180,21 @@ void ModuleFileSystem::WatchFolder(const char * folder)
 	std::list<std::string> files = ListFiles(folder);
 	for (auto& file: files)
 	{
-		std::set<std::string>::iterator it = importedFiles.find(file);
-		if (it == importedFiles.end())
+		std::string filefolder(folder);
+		filefolder+=file;
+		if (IsDirectory(filefolder.c_str()))
 		{
-			FileImporter importer;
-			importer.ImportAsset(file.c_str());
-			importedFiles.insert(file);
+			WatchFolder((filefolder + "/").c_str());
+		}
+		else
+		{
+			std::set<std::string>::iterator it = importedFiles.find(file);
+			if (it == importedFiles.end())
+			{
+				FileImporter importer;
+				importer.ImportAsset(file.c_str(), folder);
+				importedFiles.insert(file);
+			}
 		}
 	}
 	return;
