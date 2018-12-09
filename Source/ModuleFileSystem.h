@@ -13,9 +13,12 @@
 #define SCENES LIBRARY "Scenes/"
 #define SKYBOX "Skybox/"
 
+#define FBXEXTENSION ".fbx"
 #define MESHEXTENSION ".m3sh"
+#define MATERIALEXTENSION ".dds"
 #define JSONEXT ".json"
 
+#define CHECKERS "checkersTexture"
 class ModuleFileSystem :
 	public Module
 {
@@ -41,6 +44,8 @@ public:
 	void WatchFolder(const char* folder);
 
 	std::string GetExtension(const char * file) const;
+
+	std::string RemoveExtension(const char * file) const;
 
 private:
 	float watchThreshold = 1000.f;

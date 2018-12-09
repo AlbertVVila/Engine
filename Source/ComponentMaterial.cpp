@@ -2,13 +2,14 @@
 #include "Application.h"
 #include "ModuleProgram.h"
 #include "ModuleTextures.h"
+#include "ModuleFileSystem.h"
 #include "GameObject.h"
 #include "Imgui/imgui.h"
 #include "GL/glew.h"
 
 #include "assimp/material.h"
 #include "JSON.h"
-ComponentMaterial::ComponentMaterial(GameObject* gameobject, const aiMaterial * material) : Component(gameobject, ComponentType::Material)
+ComponentMaterial::ComponentMaterial(GameObject* gameobject, const char * material) : Component(gameobject, ComponentType::Material)
 {
 	this->shader = App->program->textureProgram;
 	SetMaterial(material);
@@ -39,24 +40,21 @@ void ComponentMaterial::DeleteTexture()
 	RELEASE(texture);
 }
 
-void ComponentMaterial::SetMaterial(const aiMaterial * material)
+void ComponentMaterial::SetMaterial(const char * material)
 {
-	std::string texturePath;
 	if (material != nullptr)
 	{
-		aiTextureMapping mapping = aiTextureMapping_UV;
-		aiString file;
-		material->GetTexture(aiTextureType_DIFFUSE, 0, &file, &mapping, 0);
-		texturePath =gameobject->GetFileFolder() + file.C_Str();
+		texture = App->textures->Load(material);
 	}
 	else
 	{
-		texturePath = "checkersTexture.jpg";
+		texture = App->textures->Load(CHECKERS);
+		//texturePath = "checkersTexture.jpg";
 	}
 
 	//TODO: if texture was already loaded by another material, don't load it again
-	DeleteTexture();
-	texture = App->textures->Load(texturePath.c_str());
+	//DeleteTexture();
+	//texture = App->textures->Load(texturePath.c_str());
 	//textures.push_back(texture);
 }
 
@@ -103,9 +101,9 @@ void ComponentMaterial::Save(JSON_value * value) const
 	Component::Save(value);
 	//TODO: serialize shader
 	value->AddFloat4("Color", color);
-	if (file != nullptr)
+	if (!file.empty())
 	{
-		value->AddString("MaterialFile", file);
+		value->AddString("MaterialFile", file.c_str());
 	}
 }
 
@@ -115,4 +113,5 @@ void ComponentMaterial::Load(JSON_value * value)
 	//TODO: deserialize shader
 	color = value->GetFloat4("Color");
 	file = value->GetString("MaterialFile");
+	SetMaterial(file.c_str());
 }

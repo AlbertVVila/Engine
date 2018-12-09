@@ -196,9 +196,19 @@ std::string ModuleFileSystem::GetExtension(const char *file) const
 	std::size_t found = filename.find_last_of(".");
 	if (std::string::npos != found)
 	{
-		filename.erase(0, found + 1);
+		filename.erase(0, found);
 	}
 	return filename;
 }
 
+std::string ModuleFileSystem::RemoveExtension(const char *file) const
+{
+	std::string filename(file);
+	std::size_t found = filename.find_last_of(".");
+	if (std::string::npos != found)
+	{
+		filename.erase(found, filename.size());
+	}
+	return filename;
+}
 
