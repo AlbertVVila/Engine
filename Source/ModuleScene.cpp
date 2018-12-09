@@ -81,13 +81,14 @@ void ModuleScene::SaveScene(const GameObject &rootGO, const char* filename)
 	rootGO.Save(array);
 	json->AddValue("GameObjects", array);
 	std::string file(filename);
-	App->fsystem->Save((file+JSONEXT).c_str(), json->ToString().c_str(), json->Size());
+	App->fsystem->Save((SCENES + file + JSONEXT).c_str(), json->ToString().c_str(), json->Size());
 }
 
 void ModuleScene::LoadScene(const char* scene)
 {
 	char* data = nullptr;
 	std::string sceneName(scene);
+	name = sceneName;
 	App->fsystem->Load((SCENES + sceneName + JSONEXT).c_str(), &data);
 	JSON *json = new JSON(data);
 	JSON_value* gameobjectsJSON = json->GetValue("GameObjects");

@@ -62,6 +62,7 @@ update_status ModuleEditor::PreUpdate()
 // Called every draw update
 update_status ModuleEditor::Update()
 {
+	bool openPopup = false;
 	if (ImGui::BeginMainMenuBar())
 	{
 		if (ImGui::BeginMenu("File"))
@@ -81,7 +82,18 @@ update_status ModuleEditor::Update()
 			}
 			if (ImGui::MenuItem("Save"))
 			{
-				App->scene->SaveScene(*App->scene->root, "savedScene");
+				if (!App->scene->name.empty())
+				{
+					App->scene->SaveScene(*App->scene->root, App->scene->name.c_str());
+				}
+				else
+				{
+					openPopup = true;
+				}
+			}
+			if (ImGui::MenuItem("Save As"))
+			{
+				openPopup = true;
 			}
 			if (ImGui::MenuItem("Exit", "Esc"))
 			{
@@ -91,6 +103,36 @@ update_status ModuleEditor::Update()
 				return UPDATE_STOP;
 			}
 			ImGui::EndMenu();
+		}
+		if (openPopup) ImGui::OpenPopup("SavePopup");
+		if (ImGui::BeginPopupModal("SavePopup", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+		{
+			ImGui::Text("Choose Scene name:\n\n");
+			char name[64] = "";
+			if (!App->scene->name.empty())
+			{
+				strcpy(name, App->scene->name.c_str());
+			}
+			else
+			{
+				strcpy(name, "Unnamed");
+			}
+			ImGui::InputText("name", name, 64);
+			App->scene->name = name;
+			ImGui::Separator();
+
+			if (ImGui::Button("OK", ImVec2(120, 0))) {
+				App->scene->SaveScene(*App->scene->root, App->scene->name.c_str());
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::SetItemDefaultFocus();
+			ImGui::SameLine();
+			if (ImGui::Button("Cancel", ImVec2(120, 0)))
+			{
+				openPopup = false;
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::EndPopup();
 		}
 		if (ImGui::BeginMenu("Windows"))
 		{

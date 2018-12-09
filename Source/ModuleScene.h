@@ -38,6 +38,7 @@ public:
 	ComponentCamera* maincamera = nullptr;
 	Texture* camera_notfound_texture = nullptr;
 	pcg32 uuid_rng;
+	std::string name;
 };
 
 #endif __ModuleScene_h__
