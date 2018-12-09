@@ -19,6 +19,8 @@ ComponentMaterial::ComponentMaterial(const ComponentMaterial& component) : Compo
 {
 	texture = component.texture; //TODO: delete texture diferent materials?
 	shader = component.shader;
+	color = component.color;
+	file = component.file;
 }
 
 ComponentMaterial::~ComponentMaterial()

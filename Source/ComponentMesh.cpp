@@ -28,6 +28,7 @@ ComponentMesh::ComponentMesh(const ComponentMesh & component) : Component(compon
 	vertices.reserve(component.vertices.capacity());
 	vertices = component.vertices;
 	boundingBox = component.boundingBox;
+	meshUID = component.meshUID;
 }
 
 ComponentMesh::~ComponentMesh()

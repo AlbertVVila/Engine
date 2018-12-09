@@ -37,7 +37,8 @@ GameObject::GameObject(const GameObject & gameobject)
 {
 	name = gameobject.name;
 	filepath = gameobject.filepath;
-	UUID = gameobject.UUID;
+	UUID = App->scene->GetNewUID();
+	parentUUID = gameobject.parentUUID;
 
 	for (const auto& component: gameobject.components)
 	{
