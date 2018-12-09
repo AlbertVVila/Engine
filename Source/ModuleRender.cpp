@@ -51,6 +51,7 @@ bool ModuleRender::Start()
 			"back"
 	};
 	skybox_cubemap = App->textures->LoadCubeMap(faces);
+	GenSkyBox();
 	return true;
 }
 
@@ -295,7 +296,8 @@ void ModuleRender::DrawFrustum() const
 	glUseProgram(0);
 }
 
-void ModuleRender::DrawSkyBox(const ComponentCamera& camera) const
+
+void ModuleRender::GenSkyBox()
 {
 	float skyboxVertices[] = {
 		// positions          
@@ -341,7 +343,6 @@ void ModuleRender::DrawSkyBox(const ComponentCamera& camera) const
 		-1.0f, -1.0f,  1.0f,
 		1.0f, -1.0f,  1.0f
 	};
-	unsigned int skyboxVAO, skyboxVBO;
 	glGenVertexArrays(1, &skyboxVAO);
 	glGenBuffers(1, &skyboxVBO);
 	glBindVertexArray(skyboxVAO);
@@ -350,6 +351,13 @@ void ModuleRender::DrawSkyBox(const ComponentCamera& camera) const
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 
+	glBindVertexArray(0);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+	glDisableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+void ModuleRender::DrawSkyBox(const ComponentCamera& camera) const
+{
 	glDepthMask(GL_FALSE);
 	glUseProgram(App->program->skyboxProgram);
 	glBindVertexArray(skyboxVAO);

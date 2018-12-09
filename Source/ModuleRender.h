@@ -31,6 +31,7 @@ private:
 	void DrawLines() const;
 	void DrawAxis() const;
 	void DrawFrustum() const;
+	void GenSkyBox();
 	void DrawSkyBox(const ComponentCamera& camera) const;
 	void InitSDL();
 	void InitOpenGL() const;
@@ -46,6 +47,9 @@ private:
 	bool wireframe = false;
 	bool boundingBox = false;
 	bool vsync = false;
+
+	unsigned skyboxVAO, skyboxVBO;
+
 };
 
 #endif /* __ModuleRender_h__ */
