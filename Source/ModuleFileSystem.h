@@ -19,6 +19,7 @@
 #define JSONEXT ".json"
 
 #define CHECKERS "checkersTexture"
+#define NOCAMERA "nocamera"
 class ModuleFileSystem :
 	public Module
 {

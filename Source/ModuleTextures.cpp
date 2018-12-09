@@ -177,12 +177,12 @@ void ModuleTextures::ImportImage(const char * file)
 	if (success)
 	{
 
-		ILinfo ImageInfo;
-		iluGetImageInfo(&ImageInfo);
-		if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
-		{
-			iluFlipImage();
-		}
+		//ILinfo ImageInfo;
+		//iluGetImageInfo(&ImageInfo);
+		//if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
+		//{
+		//	iluFlipImage();
+		//}
 		ILuint size;
 		ILubyte* data = ilGetData();
 		ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);// To pick a specific DXT compression use

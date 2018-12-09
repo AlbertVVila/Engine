@@ -112,31 +112,18 @@ void ComponentMesh::SetMesh(char * &mesh) //TODO: pass by reference or know size
 	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*numVertices * 5, NULL, GL_STATIC_DRAW);
 
 	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(GLfloat) * 3 * numVertices, vertices);
-	float * pbuffer = (float*)glMapBufferRange(GL_ARRAY_BUFFER, sizeof(GLfloat) * 3 * numVertices, sizeof(GLfloat) * 2 * numVertices, GL_MAP_WRITE_BIT);
-	memcpy(pbuffer, texCoords, sizeof(float) * 2 * numVertices);
-	/*for (unsigned int i = 0; i < numVertices; i++)
-	{
-		*pbuffer++ = mesh->mTextureCoords[0][i].x;
-		*pbuffer++ = mesh->mTextureCoords[0][i].y;
-
-		vertices.emplace_back(mesh->mVertices[i].x, mesh->mVertices[i].y, mesh->mVertices[i].z);
-	}*/
-	glUnmapBuffer(GL_ARRAY_BUFFER);
+	glBufferSubData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 3 * numVertices, sizeof(GLfloat) * 2 * numVertices, texCoords);
+	//float * pbuffer = (float*)glMapBufferRange(GL_ARRAY_BUFFER, sizeof(GLfloat) * 3 * numVertices, sizeof(GLfloat) * 2 * numVertices, GL_MAP_WRITE_BIT);
+	//memcpy(pbuffer, texCoords, sizeof(float) * 2 * numVertices);
+	//glUnmapBuffer(GL_ARRAY_BUFFER);
 
 	//Buffer creation with indices
 	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int)*numIndices, NULL, GL_STATIC_DRAW);
-	int * pbufferIndex = (int*)glMapBufferRange(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(unsigned int)*numIndices, GL_MAP_WRITE_BIT);
-	memcpy(pbufferIndex, indices, sizeof(int) * numIndices);
-	//for (unsigned int i = 0; i < numIndices/3; i++)
-	//{
-	//	for (unsigned int j = 0; j < 3; j++)
-	//	{
-	//		*pbufferIndex++ = face.mIndices[j];
-	//	}
-	//}
-	glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int)*numIndices, indices, GL_STATIC_DRAW);
+	//int * pbufferIndex = (int*)glMapBufferRange(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(unsigned int)*numIndices, GL_MAP_WRITE_BIT);
+	//memcpy(pbufferIndex, indices, sizeof(int) * numIndices);
+	//glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
 
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(

@@ -19,7 +19,7 @@ public:
 
 	GameObject* ProcessNode(const std::map<unsigned,unsigned> &meshmap, const aiNode * node, const aiScene * scene, const aiMatrix4x4 & parentTransform, GameObject * parent);
 
-	bool ImportmyFBX(const char * file);
+	bool ImportFBX(const char * file);
 
 	bool ImportScene(const aiScene & scene, const char* file);
 

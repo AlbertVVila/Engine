@@ -32,7 +32,7 @@ bool ModuleScene::Init()
 
 bool ModuleScene::Start()
 {
-	camera_notfound_texture = App->textures->Load("nocamera"); //TODO: load only through FS
+	camera_notfound_texture = App->textures->Load(NOCAMERA); 
 	return true;
 }
 

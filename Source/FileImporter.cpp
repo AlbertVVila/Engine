@@ -29,7 +29,7 @@ void FileImporter::ImportAsset(const char *file)  //TODO: assimp + load/save sce
 	std::string extension (App->fsystem->GetExtension(file));
 	if (extension == FBXEXTENSION || extension == ".FBX")
 	{
-		ImportmyFBX(file);
+		ImportFBX(file);
 	}
 	else if (extension == ".png" || extension == ".jpg")
 	{
@@ -46,7 +46,7 @@ void FileImporter::ImportAsset(const char *file)  //TODO: assimp + load/save sce
 	}
 }
 
-bool FileImporter::ImportmyFBX(const char* filepath)
+bool FileImporter::ImportFBX(const char* filepath)
 {
 	assert(filepath != nullptr);
 	if (filepath == nullptr) return false;
