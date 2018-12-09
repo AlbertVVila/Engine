@@ -79,61 +79,61 @@ bool ModuleSceneLoader::Start()
 
 void ModuleSceneLoader::LoadScene(char *data)//TODO: make data constant and save size of components
 {
-	assert(data != nullptr);
-	if (data == nullptr)
-	{
-		LOG("No content to load!!");
-		return;
-	}
-	char* cursor = data;
-	ProcessGameObject(cursor, float4x4::identity, App->scene->root);
-	delete[] data;
+	//assert(data != nullptr);
+	//if (data == nullptr)
+	//{
+	//	LOG("No content to load!!");
+	//	return;
+	//}
+	//char* cursor = data;
+	//ProcessGameObject(cursor, float4x4::identity, App->scene->root);
+	//delete[] data;
 }
 
-GameObject* ModuleSceneLoader::ProcessGameObject(char * &cursor, float4x4 parentTransform, GameObject *parent) 
-{
-	assert(cursor != nullptr);
-
-	int id = *(int*)cursor;
-	cursor += sizeof(int);
-
-	int parent_id = *(int*)cursor;
-	cursor += sizeof(int);
-
-	float4x4 mytransform;
-	mytransform.Set((float*)cursor);
-	cursor += sizeof(float) * 16;
-
-	float4x4 transform = parentTransform * mytransform;
-
-	std::string name(cursor);
-	cursor += (name.length()+1)*sizeof(char);
-	GameObject * gameobject = App->scene->CreateGameObject(transform, "", name.c_str(), parent); //TODO: refactor filepath variable
-
-	unsigned int numMeshes = *(int*)cursor;
-	cursor += sizeof(int);
-
-	for (unsigned int i = 0; i < numMeshes; i++)
-	{
-		ComponentMesh* mesh = (ComponentMesh*) gameobject->CreateComponent(ComponentType::Mesh);
-		mesh->SetMesh(cursor); //SetMesh moves the cursor at the end of the mesh
-		
-		std::string materialFile(cursor);
-		cursor += sizeof(char)*(materialFile.length() + 1);
-		ComponentMaterial* material = (ComponentMaterial*)gameobject->CreateComponent(ComponentType::Material);
-		//material->SetMaterial(scene->mMaterials[mesh->GetMaterialIndex()]); //TODO: Read materials apart 
-	}
-
-	unsigned int numChildren = *(int*)cursor;
-	cursor += sizeof(int);
-
-	for (unsigned int i = 0; i < numChildren; i++)
-	{
-		GameObject * child = ProcessGameObject(cursor, transform, gameobject);
-	}
-
-	return gameobject;
-}
+//GameObject* ModuleSceneLoader::ProcessGameObject(char * &cursor, float4x4 parentTransform, GameObject *parent) 
+//{
+//	assert(cursor != nullptr);
+//
+//	int id = *(int*)cursor;
+//	cursor += sizeof(int);
+//
+//	int parent_id = *(int*)cursor;
+//	cursor += sizeof(int);
+//
+//	float4x4 mytransform;
+//	mytransform.Set((float*)cursor);
+//	cursor += sizeof(float) * 16;
+//
+//	float4x4 transform = parentTransform * mytransform;
+//
+//	std::string name(cursor);
+//	cursor += (name.length()+1)*sizeof(char);
+//	GameObject * gameobject = App->scene->CreateGameObject(transform, "", name.c_str(), parent); //TODO: refactor filepath variable
+//
+//	unsigned int numMeshes = *(int*)cursor;
+//	cursor += sizeof(int);
+//
+//	for (unsigned int i = 0; i < numMeshes; i++)
+//	{
+//		ComponentMesh* mesh = (ComponentMesh*) gameobject->CreateComponent(ComponentType::Mesh);
+//		mesh->SetMesh(cursor); //SetMesh moves the cursor at the end of the mesh
+//		
+//		std::string materialFile(cursor);
+//		cursor += sizeof(char)*(materialFile.length() + 1);
+//		ComponentMaterial* material = (ComponentMaterial*)gameobject->CreateComponent(ComponentType::Material);
+//		//material->SetMaterial(scene->mMaterials[mesh->GetMaterialIndex()]); //TODO: Read materials apart 
+//	}
+//
+//	unsigned int numChildren = *(int*)cursor;
+//	cursor += sizeof(int);
+//
+//	for (unsigned int i = 0; i < numChildren; i++)
+//	{
+//		GameObject * child = ProcessGameObject(cursor, transform, gameobject);
+//	}
+//
+//	return gameobject;
+//}
 
 //
 //void ModuleSceneLoader::LoadFile(const char *path)

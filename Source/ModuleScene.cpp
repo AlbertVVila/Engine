@@ -26,9 +26,10 @@ bool ModuleScene::Init()
 	pcg_extras::seed_seq_from<std::random_device> seed_source;
 	pcg32 rng(seed_source);
 	uuid_rng = rng;
-	root = new GameObject("World", uuid_rng());
+	root = new GameObject("World", 0); //Root always has uid 0
 	return true;
 }
+
 bool ModuleScene::Start()
 {
 	camera_notfound_texture = App->textures->Load("nocamera.jpg");
@@ -108,4 +109,9 @@ void ModuleScene::LoadScene(const char* scene)
 			root = gameobject;
 		}
 	}
+}
+
+unsigned ModuleScene::GetNewUID()
+{
+	return uuid_rng();
 }

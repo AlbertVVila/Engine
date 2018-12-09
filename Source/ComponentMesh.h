@@ -34,14 +34,14 @@ public:
 public:
 
 	int numIndices = 0;
-	const char* file = nullptr;
 	std::vector<float3> vertices;
+	unsigned meshUID = 0u;
 
 private:
-	unsigned int materialIndex = 0;
-	unsigned int VAO = 0;
-	unsigned int VBO = 0;
-	unsigned int EBO = 0;
+	unsigned materialIndex = 0u;
+	unsigned VAO = 0u;
+	unsigned VBO = 0u;
+	unsigned EBO = 0u;
 	AABB boundingBox;
 };
 

@@ -11,6 +11,7 @@
 #define MESHES LIBRARY "Meshes/"
 #define MATERIALS LIBRARY "Materials/"
 #define SKYBOX "Skybox/"
+#define MESHEXTENSION ".m3sh"
 
 class ModuleFileSystem :
 	public Module

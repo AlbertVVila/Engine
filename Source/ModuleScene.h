@@ -30,6 +30,8 @@ public:
 
 	void LoadScene(const char * scene);
 
+	unsigned GetNewUID();
+
 public:
 	GameObject* root = nullptr;
 	GameObject* selected = nullptr;

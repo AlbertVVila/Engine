@@ -373,15 +373,15 @@ public:
     // It would be nice to use std::numeric_limits for these, but
     // we can't be sure that it'd be defined for the 128-bit types.
 
-    static constexpr result_type min()
-    {
-        return result_type(0UL);
-    }
+    //static constexpr result_type min()
+    //{
+    //    return result_type(0UL);
+    //}
 
-    static constexpr result_type max()
-    {
-        return ~result_type(0UL);
-    }
+    //static constexpr result_type max()
+    //{
+    //    return ~result_type(0UL);
+    //}
 
 protected:
     itype bump(itype state)

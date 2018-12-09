@@ -300,11 +300,11 @@ void ComponentMesh::DeleteBuffers()
 void ComponentMesh::Save(JSON_value * value) const
 {
 	Component::Save(value);
-	value->AddString("MeshFile", file);
+	value->AddUint("UID", meshUID);
 }
 
 void ComponentMesh::Load(JSON_value * value)
 {
 	Component::Load(value);
-	file = value->GetString("MeshFile");
+	meshUID = value->GetUint("UID");
 }

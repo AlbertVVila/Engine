@@ -3,9 +3,13 @@
 
 #include "Importer.h"
 #include <assimp/matrix4x4.h>
+#include <map>
+#include "GameObject.h"
+
 struct aiScene;
 struct aiNode;
 struct aiMesh;
+
 
 class FileImporter :
 	public Importer
@@ -15,6 +19,8 @@ public:
 	~FileImporter();
 
 	void ImportAsset(const char * file);
+
+	GameObject* ProcessNode(const std::map<unsigned,unsigned> &meshmap, const aiNode * node, const aiScene * scene, const aiMatrix4x4 & parentTransform, GameObject * parent);
 
 	bool ImportmyFBX(const char * file);
 
