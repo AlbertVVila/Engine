@@ -103,7 +103,10 @@ void ComponentMaterial::Save(JSON_value * value) const
 	Component::Save(value);
 	//TODO: serialize shader
 	value->AddFloat4("Color", color);
-	value->AddString("MaterialFile", file);
+	if (file != nullptr)
+	{
+		value->AddString("MaterialFile", file);
+	}
 }
 
 void ComponentMaterial::Load(JSON_value * value)

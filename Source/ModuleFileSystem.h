@@ -10,8 +10,11 @@
 #define LIBRARY "Library/"
 #define MESHES LIBRARY "Meshes/"
 #define MATERIALS LIBRARY "Materials/"
+#define SCENES LIBRARY "Scenes/"
 #define SKYBOX "Skybox/"
+
 #define MESHEXTENSION ".m3sh"
+#define JSONEXT ".json"
 
 class ModuleFileSystem :
 	public Module

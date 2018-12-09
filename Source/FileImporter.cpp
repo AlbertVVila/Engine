@@ -11,7 +11,6 @@
 #include "ModuleTextures.h"
 #include "ModuleFileSystem.h"
 #include "ModuleScene.h"
-#include "physfs.h"
 #include <map>
 #include "ComponentMaterial.h"
 #include "ComponentMesh.h"
@@ -25,15 +24,12 @@ FileImporter::~FileImporter()
 {
 }
 
-void FileImporter::ImportAsset(const char *file) 
+void FileImporter::ImportAsset(const char *file)  //TODO: assimp + load/save scene/files logs
 {
 	std::string extension (App->fsystem->GetExtension(file));
 	if (extension == "fbx" || extension == "FBX")
 	{
-		std::string filepath(PHYSFS_getBaseDir());
-		filepath += ASSETS;
-		filepath += file;
-		ImportmyFBX(filepath.c_str());
+		ImportmyFBX(file);
 	}
 	else if (extension == "png" || extension == "jpg")
 	{
@@ -41,7 +37,7 @@ void FileImporter::ImportAsset(const char *file)
 	}
 	else if (extension == "dds")
 	{
-		//TODO: remember
+		//TODO: remember ¿?
 		App->fsystem->Copy(ASSETS, MATERIALS, file); //TODO: FULL PATH when copying outside fs
 	}
 	else if (extension == "mesh")
@@ -54,15 +50,16 @@ bool FileImporter::ImportmyFBX(const char* filepath)
 {
 	assert(filepath != nullptr);
 	if (filepath == nullptr) return false;
-	const aiScene* scene = aiImportFile(filepath, aiProcess_Triangulate);
+	std::string file(filepath);
+	const aiScene* scene = aiImportFile((ASSETS+file).c_str(), aiProcess_Triangulate);
 	if (scene != nullptr)
 	{
-		return ImportScene(*scene);
+		return ImportScene(*scene, filepath);
 	}
 	return false;
 }
 
-bool FileImporter::ImportScene(const aiScene &scene) //TODO: move everything to sceneLoader?
+bool FileImporter::ImportScene(const aiScene &scene, const char* file) //TODO: move everything to sceneLoader?
 {
 	std::map<unsigned, unsigned> meshMap;
 	for (unsigned i = 0; i < scene.mNumMeshes; i++)
@@ -76,7 +73,17 @@ bool FileImporter::ImportScene(const aiScene &scene) //TODO: move everything to 
 
 		App->fsystem->Save((MESHES + std::to_string(meshUID)+ MESHEXTENSION).c_str(), data, size);
 	}
-	ProcessNode(meshMap, scene.mRootNode, &scene, scene.mRootNode->mTransformation, App->scene->root);
+	GameObject *fake = new GameObject("fake",0);
+	ProcessNode(meshMap, scene.mRootNode, &scene, scene.mRootNode->mTransformation, fake);
+	//Get filename
+	std::string filename(file);
+	std::size_t found = filename.find_last_of(".");
+	if (std::string::npos != found)
+	{
+		filename.erase(found, filename.size());
+	}
+	App->scene->SaveScene(*fake, (SCENES+ filename).c_str()); //TODO: Make AutoCreation of folders or check
+	//TODO: CleanUP on ending import and on saving
 	return true; //TODO: Load specific scene, Save specific scene, Clear
 }
 
@@ -139,6 +146,7 @@ GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshma
 			char *data;
 			App->fsystem->Load((MESHES + std::to_string(it->second) + MESHEXTENSION).c_str(), &data);
 			mesh->SetMesh(data);
+			mesh->meshUID = it->second;
 		}
 
 		ComponentMaterial* material = (ComponentMaterial*)gameobject->CreateComponent(ComponentType::Material);

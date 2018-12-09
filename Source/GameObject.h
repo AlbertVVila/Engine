@@ -38,7 +38,7 @@ public:
 	void DisableBox();
 
 	void CleanUp();
-	void Save(JSON_value *gameobjects);
+	void Save(JSON_value *gameobjects) const;
 	void Load(JSON_value * gameobject);
 	AABB GetBoundingBox() const;
 

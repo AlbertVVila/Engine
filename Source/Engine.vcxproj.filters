@@ -198,12 +198,6 @@
     <ClCompile Include="PanelCamera.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
-    <ClCompile Include="Importer.cpp">
-      <Filter>Importer</Filter>
-    </ClCompile>
-    <ClCompile Include="MaterialImporter.cpp">
-      <Filter>Importer</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleFileSystem.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -479,12 +473,6 @@
     </ClInclude>
     <ClInclude Include="PanelCamera.h">
       <Filter>Panels</Filter>
-    </ClInclude>
-    <ClInclude Include="Importer.h">
-      <Filter>Importer</Filter>
-    </ClInclude>
-    <ClInclude Include="MaterialImporter.h">
-      <Filter>Importer</Filter>
     </ClInclude>
     <ClInclude Include="ModuleFileSystem.h">
       <Filter>Modules</Filter>

@@ -482,26 +482,26 @@ void GameObject::CleanUp()
 	}
 }
 
-void GameObject::Save(JSON_value *gameobjects)
+void GameObject::Save(JSON_value *gameobjects) const
 {
-	JSON_value *gameobject = gameobjects->CreateValue();
-	gameobject->AddUint("UID", UUID);
-	if (parent != nullptr)
+	if (parent != nullptr) // we don't add gameobjects without parent (ex: World)
 	{
+		JSON_value *gameobject = gameobjects->CreateValue();
+		gameobject->AddUint("UID", UUID);
 		gameobject->AddUint("ParentUID", parent->UUID);
-	}
-	gameobject->AddString("Name", name.c_str());
+		gameobject->AddString("Name", name.c_str());
 
-	JSON_value *componentsJSON = gameobject->CreateValue(rapidjson::kArrayType);
-	for (auto &component : components)
-	{
-		JSON_value *componentJSON = componentsJSON->CreateValue();
-		component->Save(componentJSON);
-		componentsJSON->AddValue("", componentJSON);
+		JSON_value *componentsJSON = gameobject->CreateValue(rapidjson::kArrayType);
+		for (auto &component : components)
+		{
+			JSON_value *componentJSON = componentsJSON->CreateValue();
+			component->Save(componentJSON);
+			componentsJSON->AddValue("", componentJSON);
+		}
+
+		gameobject->AddValue("Components", componentsJSON);
+		gameobjects->AddValue("", gameobject);
 	}
-	
-	gameobject->AddValue("Components", componentsJSON);
-	gameobjects->AddValue("", gameobject);
 
 	for (auto &child : children)
 	{

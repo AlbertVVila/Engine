@@ -32,7 +32,7 @@ bool ModuleScene::Init()
 
 bool ModuleScene::Start()
 {
-	camera_notfound_texture = App->textures->Load("nocamera.jpg");
+	camera_notfound_texture = App->textures->Load("nocamera.jpg"); //TODO: load only through FS
 	return true;
 }
 
@@ -44,7 +44,7 @@ update_status ModuleScene::Update()
 
 void ModuleScene::Draw(const math::Frustum &frustum)
 {
-		root->Draw(frustum);
+	root->Draw(frustum);
 }
 
 void ModuleScene::DrawHierarchy()
@@ -74,20 +74,21 @@ GameObject * ModuleScene::CreateGameObject(const char * name, GameObject* parent
 	return gameobject;
 }
 
-void ModuleScene::SaveScene()
+void ModuleScene::SaveScene(const GameObject &rootGO, const char* filename)
 {
 	JSON *json = new JSON();
 	JSON_value *array =json->CreateValue(rapidjson::kArrayType);
-	root->Save(array);
+	rootGO.Save(array);
 	json->AddValue("GameObjects", array);
-	char* file = "scene.json";
-	App->fsystem->Save(file, json->ToString().c_str(), json->Size());
+	std::string file(filename);
+	App->fsystem->Save((file+JSONEXT).c_str(), json->ToString().c_str(), json->Size());
 }
 
 void ModuleScene::LoadScene(const char* scene)
 {
 	char* data = nullptr;
-	App->fsystem->Load(scene, &data);
+	std::string sceneName(scene);
+	App->fsystem->Load((SCENES + sceneName + JSONEXT).c_str(), &data);
 	JSON *json = new JSON(data);
 	JSON_value* gameobjectsJSON = json->GetValue("GameObjects");
 	std::map<unsigned, GameObject*> gameobjectsMap; //Necessary to assign parent-child efficiently
@@ -104,9 +105,10 @@ void ModuleScene::LoadScene(const char* scene)
 			gameobject->parent = it->second;
 			gameobject->parent->children.push_back(gameobject);
 		}
-		if (i == 0) //TODO: replace root on load?
+		else if (gameobject->parentUUID == 0)
 		{
-			root = gameobject;
+			gameobject->parent = App->scene->root;
+			gameobject->parent->children.push_back(gameobject);
 		}
 	}
 }

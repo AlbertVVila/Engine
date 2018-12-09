@@ -21,5 +21,13 @@ void PanelHierarchy::Draw()
 	}
 	App->scene->DrawHierarchy();
 	focus = ImGui::IsWindowFocused();
+	if (ImGui::SmallButton("Save Scene"))
+	{
+		App->scene->SaveScene(*App->scene->root, "savedScene");
+	}
+	if (ImGui::SmallButton("Load Scene"))
+	{
+		App->scene->LoadScene("BakerHouse");
+	}
 	ImGui::End();
 }

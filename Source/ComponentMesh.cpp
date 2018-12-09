@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleSceneLoader.h"
 #include "ModuleTextures.h"
+#include "ModuleFileSystem.h"
 #include <assert.h>
 #include "GL/glew.h"
 #include "Imgui/imgui.h"
@@ -307,4 +308,7 @@ void ComponentMesh::Load(JSON_value * value)
 {
 	Component::Load(value);
 	meshUID = value->GetUint("UID");
+	char *data;
+	App->fsystem->Load((MESHES + std::to_string(meshUID) + MESHEXTENSION).c_str(), &data); //TODO: use mini resource maanger to optimize this
+	SetMesh(data);
 }
