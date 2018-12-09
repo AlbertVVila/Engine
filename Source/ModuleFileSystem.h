@@ -42,12 +42,13 @@ public:
 	bool CopyFromOutsideFS(const char* source, const char* destination);
 	bool Copy(const char* source, const char* destination, const char* file);
 
+	void CheckImportedFiles(const char * folder);
+
 	void WatchFolder(const char* folder);
 
 	std::string GetExtension(const char * file) const;
 
 	std::string RemoveExtension(const char * file) const;
-
 private:
 	float watchThreshold = 1000.f;
 	Timer importTimer;

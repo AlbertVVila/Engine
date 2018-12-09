@@ -2,6 +2,8 @@
 #include "ModuleEditor.h"
 #include "ModuleRender.h"
 #include "ModuleWindow.h"
+#include "ModuleScene.h"
+#include "ModuleFileSystem.h"
 #include "PanelConsole.h"
 #include "PanelScene.h"
 #include "PanelConfiguration.h"
@@ -64,6 +66,23 @@ update_status ModuleEditor::Update()
 	{
 		if (ImGui::BeginMenu("File"))
 		{
+			if (ImGui::BeginMenu("Load"))
+			{
+				std::list<std::string> files = App->fsystem->ListFiles(SCENES);
+				for (auto &file : files)
+				{
+					file = App->fsystem->RemoveExtension(file.c_str());
+					if (ImGui::MenuItem(file.c_str()))
+					{
+						App->scene->LoadScene(file.c_str());
+					}
+				}
+				ImGui::EndMenu();
+			}
+			if (ImGui::MenuItem("Save"))
+			{
+				App->scene->SaveScene(*App->scene->root, "savedScene");
+			}
 			if (ImGui::MenuItem("Exit", "Esc"))
 			{
 				ImGui::EndMenu();
