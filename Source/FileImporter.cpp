@@ -82,7 +82,7 @@ bool FileImporter::ImportScene(const aiScene &scene, const char* file) //TODO: m
 	{
 		filename.erase(found, filename.size());
 	}
-	App->scene->SaveScene(*fake, (SCENES+ filename).c_str()); //TODO: Make AutoCreation of folders or check
+	App->scene->SaveScene(*fake, filename.c_str()); //TODO: Make AutoCreation of folders or check
 	//TODO: CleanUP on ending import and on saving
 	return true; //TODO: Load specific scene, Save specific scene, Clear
 }
@@ -154,7 +154,7 @@ GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshma
 		aiTextureMapping mapping = aiTextureMapping_UV;
 		aiString file;
 		mat->GetTexture(aiTextureType_DIFFUSE, 0, &file, &mapping, 0);
-		material->file = App->fsystem->RemoveExtension(file.C_Str()); //we only save texture name
+		material->file = App->fsystem->GetFilename(file.C_Str()); //we only save texture name
 	} //TODO: material use fbxfile name or use UID?
 	for (unsigned int i = 0; i < node->mNumChildren; i++)
 	{

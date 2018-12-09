@@ -25,10 +25,6 @@
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
 
-
-#define CHECKERS "checkersTexture.jpg"
-#define BAKERHOUSE "Models\\Baker\\BakerHouse.fbx"
-
 void AddLog(const char* str, char* userData) 
 {
 	std::string info(str);

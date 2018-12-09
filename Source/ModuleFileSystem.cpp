@@ -240,3 +240,20 @@ std::string ModuleFileSystem::RemoveExtension(const char *file) const
 	return filename;
 }
 
+std::string ModuleFileSystem::GetFilename(const char *file) const
+{
+	std::string filename(file);
+	std::size_t found = filename.find_last_of(".");
+	if (std::string::npos != found)
+	{
+		filename.erase(found, filename.size());
+	}
+
+	found = filename.find_last_of(PHYSFS_getDirSeparator());
+	if (std::string::npos != found)
+	{
+		filename.erase(0, found+1);
+	}
+	return filename;
+}
+

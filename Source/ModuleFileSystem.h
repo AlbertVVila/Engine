@@ -49,6 +49,7 @@ public:
 	std::string GetExtension(const char * file) const;
 
 	std::string RemoveExtension(const char * file) const;
+	std::string GetFilename(const char *file) const;
 private:
 	float watchThreshold = 1000.f;
 	Timer importTimer;
