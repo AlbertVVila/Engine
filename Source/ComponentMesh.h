@@ -1,6 +1,5 @@
 #ifndef __Mesh_h__
 #define __Mesh_h__
-#include <assimp/mesh.h>
 #include "Math/float3.h"
 #include "Math/Quat.h"
 #include "Geometry/AABB.h"
@@ -13,7 +12,7 @@ struct Texture;
 class ComponentMesh : public Component
 {
 public:
-	ComponentMesh(GameObject* gameobject, const aiMesh * mesh = nullptr);
+	ComponentMesh(GameObject* gameobject, char * mesh = nullptr); //TODO: const
 	ComponentMesh(const ComponentMesh& component);
 
 	~ComponentMesh();
@@ -21,7 +20,7 @@ public:
 	Component* Clone() override;
 	void Draw(unsigned int shaderProgram, const Texture* texture) const;
 	void DrawProperties() override;
-	void SetMesh(const aiMesh *mesh);
+	void SetMesh(char * &mesh);
 	void SetMesh(par_shapes_mesh_s *mesh);
 	unsigned int GetMaterialIndex();
 
@@ -29,17 +28,20 @@ public:
 	AABB GetBoundingBox() const;
 
 	void DeleteBuffers();
+	void Save(JSON_value *value) const override;
+	void Load(JSON_value *value) override;
 
 public:
 
 	int numIndices = 0;
 	std::vector<float3> vertices;
+	unsigned meshUID = 0u;
 
 private:
-	unsigned int materialIndex = 0;
-	unsigned int VAO = 0;
-	unsigned int VBO = 0;
-	unsigned int EBO = 0;
+	unsigned materialIndex = 0u;
+	unsigned VAO = 0u;
+	unsigned VBO = 0u;
+	unsigned EBO = 0u;
 	AABB boundingBox;
 };
 

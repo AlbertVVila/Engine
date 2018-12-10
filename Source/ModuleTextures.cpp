@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
+#include "ModuleFileSystem.h"
 #include "GL/glew.h"
 #include "IL/ilut.h"
 #include "imgui.h"
@@ -44,9 +45,9 @@ void ModuleTextures::DrawGUI()
 	ImGui::RadioButton("Nearest", &filter_type, NEAREST);
 }
 
-Texture * ModuleTextures::Load(const char * path) const
+Texture * ModuleTextures::Load(const char * file) const //TODO: refactor texture load
 {
-	assert(path != NULL);
+	assert(file != NULL);
 	ILuint imageID;
 	ILboolean success;
 	ILenum error;
@@ -55,15 +56,19 @@ Texture * ModuleTextures::Load(const char * path) const
 	int pixelDepth = 0;
 	int format = 0;
 
+	char *data;
+	std::string filename(file);
+	unsigned size = App->fsystem->Load((MATERIALS + filename + MATERIALEXTENSION).c_str(), &data); //TODO: use mini resource maanger to optimize this
 	ilGenImages(1, &imageID); 		// Generate the image ID
 	ilBindImage(imageID); 			// Bind the image
-	success = ilLoadImage(path);
+	success = ilLoadL(IL_DDS, data, size);
 	if (success)
 	{
 		GLuint textureID = 0;
 		glGenTextures(1, &textureID);
 
 		glBindTexture(GL_TEXTURE_2D, textureID);
+
 
 		ILinfo ImageInfo;
 		iluGetImageInfo(&ImageInfo);
@@ -100,7 +105,7 @@ Texture * ModuleTextures::Load(const char * path) const
 	else
 	{
 		error = ilGetError();
-		LOG("Error file %s: %s\n", path, iluErrorString(error));
+		LOG("Error loading data: %s\n", iluErrorString(error));
 	}
 	return nullptr;
 }
@@ -124,24 +129,22 @@ unsigned int ModuleTextures::LoadCubeMap(const std::vector<std::string> &faces) 
 
 		ilGenImages(1, &imageID); 		// Generate the image ID
 		ilBindImage(imageID); 			// Bind the image
-		success = ilLoadImage(faces[i].c_str());
+
+		char *data;
+		unsigned size = App->fsystem->Load((MATERIALS + faces[i] + MATERIALEXTENSION).c_str(), &data); //TODO: use mini resource maanger to optimize this
+		success = ilLoadL(IL_DDS, data, size);
 		if (success)
 		{
-			//iluGetImageInfo(&ImageInfo);
-			//if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
-			//{
-			//	iluFlipImage();
-			//}
 
-			ILubyte* data = ilGetData();
+			ILubyte* ildata = ilGetData();
 			width = ilGetInteger(IL_IMAGE_WIDTH);
 			height = ilGetInteger(IL_IMAGE_HEIGHT);
 			pixelDepth = ilGetInteger(IL_IMAGE_DEPTH);
 			format = ilGetInteger(IL_IMAGE_FORMAT);
 
 			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-				0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data
-			);
+				0, format, width, height, 0, format, GL_UNSIGNED_BYTE, ildata);
+
 			ilDeleteImages(1, &imageID);
 		}
 		else
@@ -158,6 +161,42 @@ unsigned int ModuleTextures::LoadCubeMap(const std::vector<std::string> &faces) 
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 	return textureID;
+}
+
+void ModuleTextures::ImportImage(const char * file, const char* folder)
+{
+	ILuint imageID;
+	ILboolean success;
+	ILenum error;
+
+	ilGenImages(1, &imageID); 		// Generate the image ID
+	ilBindImage(imageID); 			// Bind the image
+	std::string path(folder);
+	success = ilLoadImage((path+file).c_str());
+	if (success)
+	{
+
+		//ILinfo ImageInfo;
+		//iluGetImageInfo(&ImageInfo);
+		//if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
+		//{
+		//	iluFlipImage();
+		//}
+		ILuint size;
+		ILubyte* data = ilGetData();
+		ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);// To pick a specific DXT compression use
+		size = ilSaveL(IL_DDS, NULL, 0);	// Get the size of the data buffer
+		data = new ILubyte[size];// allocate data buffer
+		if (ilSaveL(IL_DDS, data, size) > 0)
+		{
+			// Save to buffer with the ilSaveIL function
+			std::string filepath(MATERIALS);
+			filepath += App->fsystem->RemoveExtension(file);
+			filepath += MATERIALEXTENSION;
+			App->fsystem->Save(filepath.c_str(), (char*)data, size);
+		}
+		RELEASE_ARRAY(data);
+	}
 }
 
 

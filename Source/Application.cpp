@@ -9,6 +9,7 @@
 #include "ModuleEditor.h"
 #include "ModuleTime.h"
 #include "ModuleScene.h"
+#include "ModuleFileSystem.h"
 #include "Timer.h"
 
 using namespace std;
@@ -26,6 +27,7 @@ Application::Application()
 	modules.push_back(editor = new ModuleEditor());
 	modules.push_back(time = new ModuleTime());
 	modules.push_back(scene = new ModuleScene());
+	modules.push_back(fsystem = new ModuleFileSystem());
 }
 
 Application::~Application()

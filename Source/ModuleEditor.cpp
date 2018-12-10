@@ -2,6 +2,8 @@
 #include "ModuleEditor.h"
 #include "ModuleRender.h"
 #include "ModuleWindow.h"
+#include "ModuleScene.h"
+#include "ModuleFileSystem.h"
 #include "PanelConsole.h"
 #include "PanelScene.h"
 #include "PanelConfiguration.h"
@@ -60,10 +62,39 @@ update_status ModuleEditor::PreUpdate()
 // Called every draw update
 update_status ModuleEditor::Update()
 {
+	bool openPopup = false;
 	if (ImGui::BeginMainMenuBar())
 	{
 		if (ImGui::BeginMenu("File"))
 		{
+			if (ImGui::BeginMenu("Load"))
+			{
+				std::list<std::string> files = App->fsystem->ListFiles(SCENES);
+				for (auto &file : files)
+				{
+					file = App->fsystem->RemoveExtension(file.c_str());
+					if (ImGui::MenuItem(file.c_str()))
+					{
+						App->scene->LoadScene(file.c_str());
+					}
+				}
+				ImGui::EndMenu();
+			}
+			if (ImGui::MenuItem("Save"))
+			{
+				if (!App->scene->name.empty())
+				{
+					App->scene->SaveScene(*App->scene->root, App->scene->name.c_str());
+				}
+				else
+				{
+					openPopup = true;
+				}
+			}
+			if (ImGui::MenuItem("Save As"))
+			{
+				openPopup = true;
+			}
 			if (ImGui::MenuItem("Exit", "Esc"))
 			{
 				ImGui::EndMenu();
@@ -72,6 +103,36 @@ update_status ModuleEditor::Update()
 				return UPDATE_STOP;
 			}
 			ImGui::EndMenu();
+		}
+		if (openPopup) ImGui::OpenPopup("SavePopup");
+		if (ImGui::BeginPopupModal("SavePopup", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+		{
+			ImGui::Text("Choose Scene name:\n\n");
+			char name[64] = "";
+			if (!App->scene->name.empty())
+			{
+				strcpy(name, App->scene->name.c_str());
+			}
+			else
+			{
+				strcpy(name, "Unnamed");
+			}
+			ImGui::InputText("name", name, 64);
+			App->scene->name = name;
+			ImGui::Separator();
+
+			if (ImGui::Button("OK", ImVec2(120, 0))) {
+				App->scene->SaveScene(*App->scene->root, App->scene->name.c_str());
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::SetItemDefaultFocus();
+			ImGui::SameLine();
+			if (ImGui::Button("Cancel", ImVec2(120, 0)))
+			{
+				openPopup = false;
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::EndPopup();
 		}
 		if (ImGui::BeginMenu("Windows"))
 		{

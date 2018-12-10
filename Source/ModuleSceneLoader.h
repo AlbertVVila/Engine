@@ -3,7 +3,6 @@
 
 #include "Module.h"
 #include <list>
-#include "assimp/matrix4x4.h"
 #include "Math/float3.h"
 #include "Math/float4.h"
 #include "Math/Quat.h"
@@ -11,6 +10,7 @@
 struct aiNode;
 struct aiScene;
 class GameObject;
+class FileImporter;
 
 class ModuleSceneLoader :
 	public Module
@@ -21,10 +21,12 @@ public:
 
 	bool Init();
 	bool Start();
-	void LoadFile(const char *path);
-	void LoadScene(const aiScene* scene);
+	void LoadScene(char * data);
+	GameObject* ProcessGameObject(char * &data, float4x4 parentTransform, GameObject * parent);
+	/*void LoadFile(const char *path);*/
+	/*void LoadScene(const aiScene* scene);
 	GameObject* ProcessNode(const aiNode * node, const aiScene * scene, const aiMatrix4x4 &parentTransform, GameObject* parent);
-
+*/
 	void CreateSphere(const char * name, const float3 & pos, const Quat & rot, float size, unsigned int slices, unsigned int stacks, const float4 & color);
 
 	//void ApplyTexture(Texture* texture);
@@ -35,7 +37,10 @@ private:
 public:
 	//bool checkers = false;
 	//Texture checkersTexture = Texture(0,0,0);
-	const char *filepath = nullptr;
+	const char *filepath = nullptr; //TODO: refactor class
+
+private:
+
 };
 
 #endif //__ModuleSceneLoader_h__

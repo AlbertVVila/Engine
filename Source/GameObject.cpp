@@ -19,13 +19,15 @@
 #include "ModuleInput.h"
 #include "ModuleScene.h"
 
+#include "JSON.h"
+
 #define MAX_NAME 20
 
-GameObject::GameObject(const char * name) : name(name)
+GameObject::GameObject(const char * name, unsigned uuid) : name(name), UUID(uuid)
 {
 }
 
-GameObject::GameObject(const aiMatrix4x4 & transform, const char * filepath, const char * name) : filepath(filepath), name(name)
+GameObject::GameObject(const float4x4 & transform, const char * filepath, const char * name, unsigned uuid) : filepath(filepath), name(name), UUID(uuid)
 {
 	this->transform =  (ComponentTransform*) CreateComponent(ComponentType::Transform);
 	this->transform->AddTransform(transform);
@@ -35,6 +37,8 @@ GameObject::GameObject(const GameObject & gameobject)
 {
 	name = gameobject.name;
 	filepath = gameobject.filepath;
+	UUID = App->scene->GetNewUID();
+	parentUUID = gameobject.parentUUID;
 
 	for (const auto& component: gameobject.components)
 	{
@@ -72,8 +76,8 @@ GameObject::~GameObject()
 
 void GameObject::Draw(const math::Frustum& frustum)
 {
-	if (!frustum.IntersectsFaster(GetBoundingBox())) return;
-
+	//if (!frustum.Intersects(GetBoundingBox())) return; //TODO: use or compare with intersectsfaster
+	//TODO: UNCOMENT FRUSTUM
 	for (const auto &child : children)
 	{
 		child->Draw(frustum);
@@ -270,7 +274,6 @@ void GameObject::Update()
 Component * GameObject::CreateComponent(ComponentType type)
 {
 	Component* component = nullptr;
-
 	switch (type)
 	{
 	case Transform:
@@ -295,7 +298,10 @@ Component * GameObject::CreateComponent(ComponentType type)
 	default:
 		break;
 	}
-	components.push_back(component);
+	if (component != nullptr)
+	{
+		components.push_back(component);
+	}
 	return component;
 }
 
@@ -474,5 +480,48 @@ void GameObject::CleanUp()
 	for (auto &child : children)
 	{
 		child->CleanUp();
+	}
+}
+
+void GameObject::Save(JSON_value *gameobjects) const
+{
+	if (parent != nullptr) // we don't add gameobjects without parent (ex: World)
+	{
+		JSON_value *gameobject = gameobjects->CreateValue();
+		gameobject->AddUint("UID", UUID);
+		gameobject->AddUint("ParentUID", parent->UUID);
+		gameobject->AddString("Name", name.c_str());
+
+		JSON_value *componentsJSON = gameobject->CreateValue(rapidjson::kArrayType);
+		for (auto &component : components)
+		{
+			JSON_value *componentJSON = componentsJSON->CreateValue();
+			component->Save(componentJSON);
+			componentsJSON->AddValue("", componentJSON);
+		}
+
+		gameobject->AddValue("Components", componentsJSON);
+		gameobjects->AddValue("", gameobject);
+	}
+
+	for (auto &child : children)
+	{
+		child->Save(gameobjects);
+	}
+}
+
+void GameObject::Load(JSON_value *gameobject)
+{
+	UUID = gameobject->GetUint("UID");
+	parentUUID = gameobject->GetUint("ParentUID");
+	name = gameobject->GetString("Name");
+
+	JSON_value* componentsJSON = gameobject->GetValue("Components");
+	for (unsigned i = 0; i < componentsJSON->Size(); i++)
+	{
+		JSON_value* componentJSON = componentsJSON->GetValue(i);
+		ComponentType type = (ComponentType) componentJSON->GetUint("Type");
+		Component* component = CreateComponent(type);
+		component->Load(componentJSON);
 	}
 }

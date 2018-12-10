@@ -12,7 +12,7 @@ ModuleProgram::~ModuleProgram()
 {
 }
 
-bool ModuleProgram::Init()
+bool ModuleProgram::Init() //TODO load shaders through FS
 {
 	//Currently we have 2 programs, one for textures and a default one for axis
 	defaultProgram = CreateProgram("Default");

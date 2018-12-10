@@ -2,6 +2,7 @@
 #define __Component_h__
 
 class GameObject;
+struct JSON_value;
 
 enum ComponentType //TODO: enum class
 {
@@ -38,6 +39,9 @@ public:
 	virtual void CleanUp() {}
 
 	void Remove();
+
+	virtual void Save(JSON_value *value) const;
+	virtual void Load(JSON_value *value);
 
 public:
 	GameObject* gameobject = nullptr;

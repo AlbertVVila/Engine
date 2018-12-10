@@ -3,9 +3,10 @@
 #include "imgui.h"
 #include "Math/MathFunc.h"
 #include "Math/float4x4.h"
+#include "JSON.h"
 
 
-ComponentTransform::ComponentTransform(GameObject* gameobject, const aiMatrix4x4 &transform) : Component(gameobject, ComponentType::Transform)
+ComponentTransform::ComponentTransform(GameObject* gameobject, const float4x4 &transform) : Component(gameobject, ComponentType::Transform)
 {
 	AddTransform(transform);
 }
@@ -28,16 +29,9 @@ Component * ComponentTransform::Clone()
 	return new ComponentTransform(*this);
 }
 
-void ComponentTransform::AddTransform(const aiMatrix4x4 & transform)
+void ComponentTransform::AddTransform(const float4x4 & transform)
 {
-	aiVector3D translation;
-	aiVector3D scaling;
-	aiQuaternion airotation;
-	transform.Decompose(scaling, airotation, translation);
-
-	position = { translation.x, translation.y, translation.z };
-	scale = { scaling.x, scaling.y, scaling.z };
-	rotation = Quat(airotation.x, airotation.y, airotation.z, airotation.w);
+	transform.Decompose(position, rotation, scale);
 	RotationToEuler();
 }
 
@@ -90,4 +84,22 @@ void ComponentTransform::SetWorldToLocal(const float4x4 & newparentGlobalMatrix)
 	float4x4 local = newparentGlobalMatrix.Inverted() * world;
 	local.Decompose(position, rotation, scale);
 	RotationToEuler();
+}
+
+void ComponentTransform::Save(JSON_value * value) const
+{
+	Component::Save(value);
+	value->AddFloat3("Position", position);
+	value->AddQuat("Rotation", rotation);
+	value->AddFloat3("Euler", eulerRotation);
+	value->AddFloat3("Scale", scale);
+}
+
+void ComponentTransform::Load(JSON_value * value)
+{
+	Component::Load(value);
+	position = value->GetFloat3("Position");
+	rotation = value->GetQuat("Rotation");
+	eulerRotation = value->GetFloat3("Euler");
+	scale = value->GetFloat3("Scale");
 }

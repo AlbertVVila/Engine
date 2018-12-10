@@ -14,6 +14,7 @@ class ModuleEditor;
 class ModuleTime;
 class ModuleSceneLoader;
 class ModuleScene;
+class ModuleFileSystem;
 
 class Application
 {
@@ -37,7 +38,7 @@ public:
 	ModuleTime* time = nullptr;
 	ModuleSceneLoader* sceneLoader = nullptr;
 	ModuleScene* scene = nullptr;
-
+	ModuleFileSystem* fsystem = nullptr;
 
 private:
 

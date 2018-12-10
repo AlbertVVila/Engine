@@ -7,6 +7,7 @@
 #include "ModuleEditor.h"
 #include "ModuleWindow.h"
 #include "ModuleTextures.h"
+#include "ModuleFileSystem.h"
 #include "SDL.h"
 #include "GL/glew.h"
 #include "imgui.h"
@@ -39,17 +40,18 @@ bool ModuleRender::Init()
 
 bool ModuleRender::Start()
 {
-	CreateBlockUniforms();
+	CreateBlockUniforms(); //TODO: refactor skybox
 	std::vector<std::string> faces =
 	{
-			"Skybox/right.jpg",
-			"Skybox/left.jpg",
-			"Skybox/top.jpg",
-			"Skybox/bottom.jpg",
-			"Skybox/front.jpg",
-			"Skybox/back.jpg"
+			"right",
+			"left",
+			"top",
+			"bottom",
+			"front",
+			"back"
 	};
 	skybox_cubemap = App->textures->LoadCubeMap(faces);
+	GenSkyBox();
 	return true;
 }
 
@@ -81,10 +83,10 @@ update_status ModuleRender::Update()
 	SetViewUniform(App->camera->editorcamera);
 	DrawSkyBox(*App->camera->editorcamera);
 
-	if (App->scene->maincamera != nullptr)
-	{
+	//if (App->scene->maincamera != nullptr) //TODO: refactor frustum + camera
+	//{
 		App->scene->Draw(App->scene->maincamera->frustum);
-	}
+	//}
 
 	DrawGizmos();
 	
@@ -294,7 +296,8 @@ void ModuleRender::DrawFrustum() const
 	glUseProgram(0);
 }
 
-void ModuleRender::DrawSkyBox(const ComponentCamera& camera) const
+
+void ModuleRender::GenSkyBox()
 {
 	float skyboxVertices[] = {
 		// positions          
@@ -340,7 +343,6 @@ void ModuleRender::DrawSkyBox(const ComponentCamera& camera) const
 		-1.0f, -1.0f,  1.0f,
 		1.0f, -1.0f,  1.0f
 	};
-	unsigned int skyboxVAO, skyboxVBO;
 	glGenVertexArrays(1, &skyboxVAO);
 	glGenBuffers(1, &skyboxVBO);
 	glBindVertexArray(skyboxVAO);
@@ -349,6 +351,13 @@ void ModuleRender::DrawSkyBox(const ComponentCamera& camera) const
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 
+	glBindVertexArray(0);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+	glDisableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+void ModuleRender::DrawSkyBox(const ComponentCamera& camera) const
+{
 	glDepthMask(GL_FALSE);
 	glUseProgram(App->program->skyboxProgram);
 	glBindVertexArray(skyboxVAO);

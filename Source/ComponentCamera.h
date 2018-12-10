@@ -26,6 +26,8 @@ public:
 	void Resize(float width, float height);
 	void Update() override;
 	void DrawProperties() override;
+	void Save(JSON_value *value) const override;
+	void Load(JSON_value *value) override;
 
 	float4x4 GetViewMatrix();
 	float4x4 GetProjectionMatrix();
@@ -37,7 +39,7 @@ public:
 	float movementSpeed = 5.0f;
 	float rotationSpeed = 200.f;
 	float zoomSpeed = 0.1f;
-	math::Frustum frustum;
+	math::Frustum frustum; //TODO: better as a pointer
 	unsigned int renderedTexture = 0;
 	unsigned int FBO = 0;
 	unsigned int RBO = 0;

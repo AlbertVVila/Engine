@@ -29,6 +29,8 @@ public:
 	Texture * Load(const char* path) const;
 	unsigned int LoadCubeMap(const std::vector<std::string> &faces);
 
+	void ImportImage(const char * file, const char* folder);
+
 public:
 	int filter_type = LINEAR;
 };
