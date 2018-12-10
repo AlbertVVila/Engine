@@ -67,7 +67,7 @@ bool ModuleSceneLoader::Start()
 	//char* bakerhouse = nullptr;
 	//sceneImporter.LoadData(outputfile, bakerhouse);
 	//LoadScene(bakerhouse);
-	//CreateSphere("sphere0", float3(0.0f, 0.0f, 0.0f), Quat::identity, 1.0f, 20, 20, float4(0.f, 0.0f, 0.f, 1.0f));
+	CreateSphere("sphere0", float3(0.0f, 0.0f, 0.0f), Quat::identity, 1.0f, 20, 20, float4(1.f, 0.0f, 0.f, 1.0f));
 	//App->scene->SaveScene();
 	//App->scene->LoadScene("scene.json");
 	return true;
@@ -202,7 +202,7 @@ void ModuleSceneLoader::CreateSphere(const char * name, const float3 & pos, cons
 		par_shapes_free_mesh(mesh);
 
 		ComponentMaterial* componentmaterial = (ComponentMaterial*)gameobject->CreateComponent(ComponentType::Material);
-		componentmaterial->shader = App->program->defaultProgram;
+		componentmaterial->shader = App->program->flatProgram;
 		componentmaterial->color = color;
 	}
 }

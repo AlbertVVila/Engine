@@ -414,10 +414,12 @@ void ModuleRender::CreateBlockUniforms()
 	unsigned int uniformBlockIndexDefault = glGetUniformBlockIndex(App->program->defaultProgram, "Matrices");
 	unsigned int uniformBlockIndexTexture = glGetUniformBlockIndex(App->program->textureProgram, "Matrices");
 	unsigned int uniformBlockIndexSkybox = glGetUniformBlockIndex(App->program->skyboxProgram, "Matrices");
+	unsigned int uniformBlockIndexFlat = glGetUniformBlockIndex(App->program->flatProgram, "Matrices");
 
 	glUniformBlockBinding(App->program->defaultProgram, uniformBlockIndexDefault, 0);
 	glUniformBlockBinding(App->program->textureProgram, uniformBlockIndexTexture, 0);
 	glUniformBlockBinding(App->program->skyboxProgram, uniformBlockIndexSkybox, 0);
+	glUniformBlockBinding(App->program->flatProgram, uniformBlockIndexFlat, 0);
 
 	glGenBuffers(1, &UBO);
 	glBindBuffer(GL_UNIFORM_BUFFER, UBO);

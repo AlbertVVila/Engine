@@ -99,19 +99,20 @@ void GameObject::Draw(const math::Frustum& frustum)
 		shader = App->program->textureProgram;
 	}
 
-	if (texture == nullptr && material != nullptr)
-	{
-		shader = App->program->defaultProgram;
-		glUniform4fv(glGetUniformLocation(shader,
-			"Vcolor"), 1, (GLfloat*) &material->GetColor());
-	}
-
 	if (drawBBox)
 	{
 		DrawBBox();
 	}
 
 	glUseProgram(shader);
+
+	if (texture == nullptr && material != nullptr)
+	{
+		glUniform4fv(glGetUniformLocation(shader,
+			"Vcolor"), 1, (GLfloat*)&material->GetColor());
+		glUniform1fv(glGetUniformLocation(shader,
+			"ambient"), 1, (GLfloat*)&material->kAmbient);
+	}
 	ModelTransform(shader);
 
 	std::vector<Component*> meshes = GetComponents(ComponentType::Mesh);

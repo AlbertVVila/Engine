@@ -18,6 +18,7 @@ bool ModuleProgram::Init() //TODO load shaders through FS
 	defaultProgram = CreateProgram("Default");
 	textureProgram = CreateProgram("Texture");
 	skyboxProgram = CreateProgram("Skybox");
+	flatProgram = CreateProgram("Flat");
 	return true;
 }
 

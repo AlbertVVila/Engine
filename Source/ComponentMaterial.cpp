@@ -11,7 +11,7 @@
 #include "JSON.h"
 ComponentMaterial::ComponentMaterial(GameObject* gameobject, const char * material) : Component(gameobject, ComponentType::Material)
 {
-	this->shader = App->program->textureProgram;
+	this->shader = App->program->defaultProgram;
 	SetMaterial(material);
 }
 
@@ -48,11 +48,12 @@ void ComponentMaterial::SetMaterial(const char * material)
 	{
 		texture = App->textures->Load(material);
 	}
-	else
-	{
-		texture = App->textures->Load(CHECKERS);
-		//texturePath = "checkersTexture.jpg";
-	}
+	//else //TODO: case CHECKERS vs color
+	//{
+	//	texture = App->textures->Load(CHECKERS);
+	//	//texturePath = "checkersTexture.jpg";
+	//}
+	//shader = App->program->flatProgram;
 
 	//TODO: if texture was already loaded by another material, don't load it again
 	//DeleteTexture();
@@ -114,6 +115,11 @@ void ComponentMaterial::Load(JSON_value * value)
 	Component::Load(value);
 	//TODO: deserialize shader
 	color = value->GetFloat4("Color");
-	file = value->GetString("MaterialFile");
-	SetMaterial(file.c_str());
+	const char *myfile = value->GetString("MaterialFile");
+	if (myfile != nullptr)
+	{
+		file = myfile;
+		SetMaterial(file.c_str());
+	}
+	shader = App->program->flatProgram;
 }

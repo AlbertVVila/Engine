@@ -30,6 +30,12 @@ public:
 	std::string file;
 	Texture *texture = nullptr;
 	float4 color = float4::one;
+	float kAmbient = 0.2f;
+
+private:
+	float kDiffuse = 0.f;
+	float kSpecular = 0.f;
+	float4 iDiffuse = float4::zero;
 };
 
 #endif //__ComponentMaterial_h__
