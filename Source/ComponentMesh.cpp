@@ -17,7 +17,7 @@ ComponentMesh::ComponentMesh(GameObject* gameobject, char * mesh) : Component(ga
 	}
 }
 
-ComponentMesh::ComponentMesh(const ComponentMesh & component) : Component(component)
+ComponentMesh::ComponentMesh(const ComponentMesh & component) : Component(component) //TODO: SaveMesh (for sphere, cube, etc)
 {
 	//TODO: gen new buffers
 	VAO = component.VAO;

@@ -547,5 +547,17 @@
     <None Include="..\Game\Flat.vs">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="..\Game\Gouraud.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Gouraud.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Phong.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Phong.vs">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

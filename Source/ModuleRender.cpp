@@ -410,16 +410,20 @@ void ModuleRender::InitOpenGL() const
 }
 
 void ModuleRender::CreateBlockUniforms()
-{
+{ //TODO: optimize this calls
 	unsigned int uniformBlockIndexDefault = glGetUniformBlockIndex(App->program->defaultProgram, "Matrices");
 	unsigned int uniformBlockIndexTexture = glGetUniformBlockIndex(App->program->textureProgram, "Matrices");
 	unsigned int uniformBlockIndexSkybox = glGetUniformBlockIndex(App->program->skyboxProgram, "Matrices");
 	unsigned int uniformBlockIndexFlat = glGetUniformBlockIndex(App->program->flatProgram, "Matrices");
+	unsigned int uniformBlockIndexGouraud = glGetUniformBlockIndex(App->program->gouraudProgram, "Matrices");
+	unsigned int uniformBlockIndexPhong = glGetUniformBlockIndex(App->program->phongProgram, "Matrices");
 
 	glUniformBlockBinding(App->program->defaultProgram, uniformBlockIndexDefault, 0);
 	glUniformBlockBinding(App->program->textureProgram, uniformBlockIndexTexture, 0);
 	glUniformBlockBinding(App->program->skyboxProgram, uniformBlockIndexSkybox, 0);
 	glUniformBlockBinding(App->program->flatProgram, uniformBlockIndexFlat, 0);
+	glUniformBlockBinding(App->program->gouraudProgram, uniformBlockIndexGouraud, 0);
+	glUniformBlockBinding(App->program->phongProgram, uniformBlockIndexPhong, 0);
 
 	glGenBuffers(1, &UBO);
 	glBindBuffer(GL_UNIFORM_BUFFER, UBO);

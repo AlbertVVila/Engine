@@ -25,6 +25,8 @@ public:
 	unsigned textureProgram = 0;
 	unsigned skyboxProgram = 0;
 	unsigned flatProgram = 0;
+	unsigned gouraudProgram = 0;
+	unsigned phongProgram = 0;
 
 };
 

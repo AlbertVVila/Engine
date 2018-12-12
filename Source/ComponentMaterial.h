@@ -33,8 +33,8 @@ public:
 
 	float kAmbient = 0.2f;
 	float kDiffuse = 0.5f;
-	float kSpecular = 0.2f;
-	float shininess = 0.1f;
+	float kSpecular = 0.5f;
+	float shininess = 64.f;
 
 private:
 	float4 iDiffuse = float4::zero;

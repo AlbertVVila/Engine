@@ -121,5 +121,5 @@ void ComponentMaterial::Load(JSON_value * value)
 		file = myfile;
 		SetMaterial(file.c_str());
 	}
-	shader = App->program->flatProgram;
+	//shader = App->program->flatProgram;
 }

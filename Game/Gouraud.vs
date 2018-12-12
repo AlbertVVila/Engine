@@ -18,7 +18,7 @@ uniform float k_ambient;
 uniform float k_diffuse;
 uniform float k_specular;
 
-flat out float intensity;
+out float intensity;
 
 void main()
 {
