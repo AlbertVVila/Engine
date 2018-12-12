@@ -27,6 +27,8 @@ public:
 	GameObject * CreateGameObject(const float4x4& transform, const char* filepath, const char* name, GameObject* parent);
 	GameObject * CreateGameObject(const char * name, GameObject* parent);
 
+	void CreateSphere(const char * name, const float3 & pos, const Quat & rot, float size, unsigned int slices, unsigned int stacks, const float4 & color);
+
 	void SaveScene(const GameObject &rootGO, const char* name);
 
 	void LoadScene(const char * scene);

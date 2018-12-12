@@ -115,8 +115,11 @@ void GameObject::Draw(const math::Frustum& frustum)
 		glUniform4fv(glGetUniformLocation(shader,
 			"Vcolor"), 1, (GLfloat*)&material->GetColor());
 
-		glUniform3fv(glGetUniformLocation(shader,
-			"lightPos"), 1, (GLfloat*)&App->scene->light->);
+		if (App->scene->light != nullptr)
+		{
+			glUniform3fv(glGetUniformLocation(shader,
+				"lightPos"), 1, (GLfloat*)&App->scene->light->position);
+		}
 
 		//mat
 		glUniform1fv(glGetUniformLocation(shader,
@@ -219,7 +222,11 @@ void GameObject::DrawHierarchy(GameObject * selected)
 			for (int j = 0; j < IM_ARRAYSIZE(go_options); j++)
 				if (ImGui::Selectable(go_options[j]))
 				{
-					if (go_options[j] == "Empty GameObject")
+					if (go_options[j] == "Sphere")
+					{
+						App->scene->CreateSphere("sphere0", float3(0.0f, 0.0f, 0.0f), Quat::identity, 1.0f, 20, 20, float4(1.f, 1.f, 1.f, 1.0f));
+					}
+					else if (go_options[j] == "Empty GameObject")
 					{
 						App->scene->CreateGameObject("Empty", this);
 					}
@@ -303,6 +310,11 @@ Component * GameObject::CreateComponent(ComponentType type)
 		component = new ComponentMaterial(this);
 		break;
 	case Light:
+		component = new ComponentLight(this);
+		if (App->scene->light == nullptr)
+		{
+			App->scene->light = (ComponentLight*)component;
+		}
 		break;
 	case Camera:
 		component = new ComponentCamera(this);

@@ -207,6 +207,9 @@
     <ClCompile Include="FileImporter.cpp">
       <Filter>Importer</Filter>
     </ClCompile>
+    <ClCompile Include="ComponentLight.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -482,6 +485,9 @@
     </ClInclude>
     <ClInclude Include="FileImporter.h">
       <Filter>Importer</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentLight.h">
+      <Filter>Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,14 +1,31 @@
 #include "ModuleScene.h"
-#include "Application.h"
-#include "GameObject.h"
-#include "Component.h"
-#include "Imgui/imgui.h"
 #include "ModuleEditor.h"
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
 #include "ModuleFileSystem.h"
+#include "ModuleProgram.h"
+
+#include "Component.h"
+#include "ComponentTransform.h"
+#include "ComponentMesh.h"
+#include "ComponentMaterial.h"
+
+#include "Application.h"
+#include "GameObject.h"
 #include "JSON.h"
+
+#include "Imgui/imgui.h"
 #include "rapidjson/rapidjson.h"
+
+#pragma warning(push)
+#pragma warning(disable : 4996)  
+#pragma warning(disable : 4244)  
+#pragma warning(disable : 4305)  
+#pragma warning(disable : 4838)  
+#define PAR_SHAPES_IMPLEMENTATION
+#include "par_shapes.h"
+#pragma warning(pop)
+
 #include <random>
 #include <map>
 
@@ -73,6 +90,34 @@ GameObject * ModuleScene::CreateGameObject(const char * name, GameObject* parent
 	}
 	return gameobject;
 }
+
+
+void ModuleScene::CreateSphere(const char * name, const float3 & pos, const Quat & rot, float size, unsigned int slices, unsigned int stacks, const float4 & color)
+{
+	par_shapes_mesh* mesh = par_shapes_create_parametric_sphere(int(slices), int(stacks));
+	GameObject * gameobject = App->scene->CreateGameObject(name, App->scene->root);
+
+	ComponentTransform* componenttransform = (ComponentTransform*)gameobject->CreateComponent(ComponentType::Transform);
+	gameobject->transform = componenttransform;
+
+	componenttransform->SetRotation(rot);
+	componenttransform->SetPosition(pos); //TODO: Bounding Box not resizing correctly on rotation + Bug Color selection
+
+	if (mesh)
+	{
+		par_shapes_scale(mesh, size, size, size);
+
+		ComponentMesh* componentmesh = (ComponentMesh*)gameobject->CreateComponent(ComponentType::Mesh);
+		componentmesh->SetMesh(mesh);
+
+		par_shapes_free_mesh(mesh);
+
+		ComponentMaterial* componentmaterial = (ComponentMaterial*)gameobject->CreateComponent(ComponentType::Material);
+		componentmaterial->shader = App->program->flatProgram;
+		componentmaterial->color = color;
+	}
+}
+
 
 void ModuleScene::SaveScene(const GameObject &rootGO, const char* filename)
 {

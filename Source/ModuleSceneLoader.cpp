@@ -8,22 +8,11 @@
 #include "GL/glew.h"
 #include "Math/float4.h"
 
-#pragma warning(push)
-#pragma warning(disable : 4996)  
-#pragma warning(disable : 4244)  
-#pragma warning(disable : 4305)  
-#pragma warning(disable : 4838)  
-
-#define PAR_SHAPES_IMPLEMENTATION
-#include "par_shapes.h"
-#pragma warning(pop)
 
 #include "Application.h"
 #include "GameObject.h"
 #include "Component.h"
-#include "ComponentTransform.h"
-#include "ComponentMesh.h"
-#include "ComponentMaterial.h"
+
 
 void AddLog(const char* str, char* userData) 
 {
@@ -67,7 +56,7 @@ bool ModuleSceneLoader::Start()
 	//char* bakerhouse = nullptr;
 	//sceneImporter.LoadData(outputfile, bakerhouse);
 	//LoadScene(bakerhouse);
-	CreateSphere("sphere0", float3(0.0f, 0.0f, 0.0f), Quat::identity, 1.0f, 20, 20, float4(1.f, 0.0f, 0.f, 1.0f));
+	//CreateSphere("sphere0", float3(0.0f, 0.0f, 0.0f), Quat::identity, 1.0f, 20, 20, float4(1.f, 0.0f, 0.f, 1.0f));
 	//App->scene->SaveScene();
 	//App->scene->LoadScene("scene.json");
 	return true;
@@ -180,32 +169,6 @@ void ModuleSceneLoader::LoadScene(char *data)//TODO: make data constant and save
 //	}
 //	return gameobject;
 //}
-
-void ModuleSceneLoader::CreateSphere(const char * name, const float3 & pos, const Quat & rot, float size, unsigned int slices, unsigned int stacks, const float4 & color)
-{
-	par_shapes_mesh* mesh = par_shapes_create_parametric_sphere(int(slices), int(stacks));
-	GameObject * gameobject = App->scene->CreateGameObject(name, App->scene->root);
-
-	ComponentTransform* componenttransform = (ComponentTransform*)gameobject->CreateComponent(ComponentType::Transform);
-	gameobject->transform = componenttransform;
-
-	componenttransform->SetRotation(rot);
-	componenttransform->SetPosition(pos); //TODO: Bounding Box not resizing correctly on rotation + Bug Color selection
-
-	if (mesh)
-	{
-		par_shapes_scale(mesh, size, size, size);
-
-		ComponentMesh* componentmesh = (ComponentMesh*)gameobject->CreateComponent(ComponentType::Mesh);
-		componentmesh->SetMesh(mesh);
-
-		par_shapes_free_mesh(mesh);
-
-		ComponentMaterial* componentmaterial = (ComponentMaterial*)gameobject->CreateComponent(ComponentType::Material);
-		componentmaterial->shader = App->program->flatProgram;
-		componentmaterial->color = color;
-	}
-}
 
 
 bool ModuleSceneLoader::CleanUp()
