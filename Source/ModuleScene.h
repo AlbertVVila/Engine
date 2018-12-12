@@ -7,6 +7,7 @@
 
 class GameObject;
 class ComponentCamera;
+class ComponentLight;
 struct Texture;
 
 class ModuleScene :
@@ -39,6 +40,9 @@ public:
 	Texture* camera_notfound_texture = nullptr;
 	pcg32 uuid_rng;
 	std::string name;
+
+	float ambient = 0.5f;
+	ComponentLight* light = nullptr;
 };
 
 #endif __ModuleScene_h__

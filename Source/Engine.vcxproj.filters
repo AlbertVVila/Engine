@@ -207,9 +207,6 @@
     <ClCompile Include="FileImporter.cpp">
       <Filter>Importer</Filter>
     </ClCompile>
-    <ClCompile Include="ComponentLight.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -471,6 +468,9 @@
     <ClInclude Include="par_shapes.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="ComponentCamera.h">
+      <Filter>Component</Filter>
+    </ClInclude>
     <ClInclude Include="PanelCamera.h">
       <Filter>Panels</Filter>
     </ClInclude>
@@ -482,12 +482,6 @@
     </ClInclude>
     <ClInclude Include="FileImporter.h">
       <Filter>Importer</Filter>
-    </ClInclude>
-    <ClInclude Include="ComponentCamera.h">
-      <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="ComponentLight.h">
-      <Filter>Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

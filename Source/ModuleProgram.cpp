@@ -23,7 +23,7 @@ bool ModuleProgram::Init() //TODO load shaders through FS
 }
 
 
-unsigned int ModuleProgram::CreateProgram(const char * name)
+unsigned int ModuleProgram::CreateProgram(const char * name) //TOFO: Use shader struct or class for abstraction (see LearnOpengl)
 {
 	assert(name != NULL);
 	unsigned int vertexShader = CreateVertexShader(name);

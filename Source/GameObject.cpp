@@ -11,6 +11,7 @@
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
 #include "ComponentCamera.h"
+#include "ComponentLight.h"
 
 #include "Application.h"
 #include "ModuleProgram.h"
@@ -106,12 +107,26 @@ void GameObject::Draw(const math::Frustum& frustum)
 
 	glUseProgram(shader);
 
-	if (texture == nullptr && material != nullptr)
+	if (texture == nullptr && material != nullptr) //TODO: refactor draw workflow
 	{
+		glUniform1fv(glGetUniformLocation(shader,
+			"ambient"), 1, (GLfloat*)&App->scene->ambient);
+
 		glUniform4fv(glGetUniformLocation(shader,
 			"Vcolor"), 1, (GLfloat*)&material->GetColor());
+
+		glUniform3fv(glGetUniformLocation(shader,
+			"lightPos"), 1, (GLfloat*)&App->scene->light->);
+
+		//mat
 		glUniform1fv(glGetUniformLocation(shader,
-			"ambient"), 1, (GLfloat*)&material->kAmbient);
+			"k_ambient"), 1, (GLfloat*)&material->kAmbient);
+		glUniform1fv(glGetUniformLocation(shader,
+			"k_diffuse"), 1, (GLfloat*)&material->kDiffuse);
+		glUniform1fv(glGetUniformLocation(shader,
+			"k_specular"), 1, (GLfloat*)&material->kSpecular);
+		glUniform1fv(glGetUniformLocation(shader,
+			"shininess"), 1, (GLfloat*)&material->shininess);
 	}
 	ModelTransform(shader);
 

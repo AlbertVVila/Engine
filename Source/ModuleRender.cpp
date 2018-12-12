@@ -85,7 +85,7 @@ update_status ModuleRender::Update()
 
 	//if (App->scene->maincamera != nullptr) //TODO: refactor frustum + camera
 	//{
-		App->scene->Draw(App->scene->maincamera->frustum);
+	App->scene->Draw(App->scene->maincamera->frustum);
 	//}
 
 	DrawGizmos();
@@ -146,7 +146,7 @@ void ModuleRender::DrawGizmos() const
 
 	DrawLines();
 	DrawAxis();
-	if (App->scene->maincamera != nullptr)
+	if (App->scene->maincamera != nullptr)//TODO: refactor frustum call
 	{
 		DrawFrustum();
 	}
