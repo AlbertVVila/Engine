@@ -130,17 +130,21 @@ bool ModuleFileSystem::IsDirectory(const char * file) const
 	return PHYSFS_isDirectory(file);
 }
 
-std::list<std::string> ModuleFileSystem::ListFiles(const char * dir) const
+std::vector<const char*> ModuleFileSystem::ListFiles(const char * dir) const
 {
-	std::list<std::string> files;
+	std::vector<const char*> files;
 	char **rc = PHYSFS_enumerateFiles(dir);
 	char **i;
-	
+
 	for (i = rc; *i != NULL; i++)
-		files.emplace_back(*i);
-	
-	 PHYSFS_freeList(rc);
-	 return files;
+	{
+		char *file = new char[strlen(*i)];
+		strcpy(file, *i);
+		files.emplace_back(file); //TODO: copy char*
+	}
+
+	PHYSFS_freeList(rc);
+	return files;
 }
 
 bool ModuleFileSystem::CopyFromOutsideFS(const char * source, const char * destination)
@@ -178,7 +182,7 @@ bool ModuleFileSystem::Copy(const char * source, const char * destination, const
 
 void ModuleFileSystem::CheckImportedFiles(const char * folder)//TODO: improve using extensions otherwise conflict between files with same name and diff extension
 {
-	std::list<std::string> files = ListFiles(folder);
+	std::vector<const char *> files = ListFiles(folder);
 	for (auto& file : files)
 	{
 		std::string filefolder(folder);
@@ -189,13 +193,13 @@ void ModuleFileSystem::CheckImportedFiles(const char * folder)//TODO: improve us
 		}
 		else
 		{
-			importedFiles.insert(RemoveExtension(file.c_str()));
+			importedFiles.insert(RemoveExtension(file));
 		}
 	}
 }
 void ModuleFileSystem::WatchFolder(const char * folder)
 {
-	std::list<std::string> files = ListFiles(folder);
+	std::vector<const char *> files = ListFiles(folder);
 	for (auto& file: files)
 	{
 		std::string filefolder(folder);
@@ -206,12 +210,12 @@ void ModuleFileSystem::WatchFolder(const char * folder)
 		}
 		else
 		{
-			std::set<std::string>::iterator it = importedFiles.find(RemoveExtension(file.c_str()));
+			std::set<std::string>::iterator it = importedFiles.find(RemoveExtension(file));
 			if (it == importedFiles.end())
 			{
 				FileImporter importer;
-				importer.ImportAsset(file.c_str(), folder);
-				importedFiles.insert(RemoveExtension(file.c_str()));
+				importer.ImportAsset(file, folder);
+				importedFiles.insert(RemoveExtension(file));
 			}
 		}
 	}

@@ -15,6 +15,7 @@
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_sdl.h"
 #include "imgui.h"
+#include <vector>
 
 ModuleEditor::ModuleEditor()
 {
@@ -69,13 +70,13 @@ update_status ModuleEditor::Update()
 		{
 			if (ImGui::BeginMenu("Load"))
 			{
-				std::list<std::string> files = App->fsystem->ListFiles(SCENES);
+				std::vector<const char*> files = App->fsystem->ListFiles(SCENES);
 				for (auto &file : files)
 				{
-					file = App->fsystem->RemoveExtension(file.c_str());
-					if (ImGui::MenuItem(file.c_str()))
+					file = App->fsystem->RemoveExtension(file).c_str();
+					if (ImGui::MenuItem(file))
 					{
-						App->scene->LoadScene(file.c_str());
+						App->scene->LoadScene(file);
 					}
 				}
 				ImGui::EndMenu();

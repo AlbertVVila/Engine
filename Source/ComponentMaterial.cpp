@@ -9,6 +9,7 @@
 
 #include "assimp/material.h"
 #include "JSON.h"
+#include <vector>
 ComponentMaterial::ComponentMaterial(GameObject* gameobject, const char * material) : Component(gameobject, ComponentType::Material)
 {
 	this->shader = App->program->defaultProgram;
@@ -87,7 +88,10 @@ void ComponentMaterial::DrawProperties()
 			ImGui::PopID();
 			return;
 		}
-		ImGui::Text("Shader: PlaceHolder");
+		ImGui::Text("Shader: PlaceHolder"); //TODO: optimize list
+		std::vector<const char*> textures = App->fsystem->ListFiles(TEXTURES);
+		int placeholder = 0;
+		ImGui::Combo("Texture", &placeholder, &textures[0], textures.size());
 		if (texture != nullptr)
 		{
 			ImGui::Text("Texture width:%d height:%d", texture->width, texture->height);

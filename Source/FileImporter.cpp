@@ -35,10 +35,10 @@ void FileImporter::ImportAsset(const char *file, const char *folder)  //TODO: as
 	{
 		App->textures->ImportImage(file, folder);
 	}
-	else if (extension == MATERIALEXTENSION)
+	else if (extension == TEXTUREEXT)
 	{
 		//TODO: remember ¿?
-		App->fsystem->Copy(folder, MATERIALS, file); //TODO: FULL PATH when copying outside fs
+		App->fsystem->Copy(folder, TEXTURES, file); //TODO: FULL PATH when copying outside fs
 	}
 	else if (extension == MESHEXTENSION)
 	{

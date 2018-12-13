@@ -58,7 +58,7 @@ Texture * ModuleTextures::Load(const char * file) const //TODO: refactor texture
 
 	char *data;
 	std::string filename(file);
-	unsigned size = App->fsystem->Load((MATERIALS + filename + MATERIALEXTENSION).c_str(), &data); //TODO: use mini resource maanger to optimize this
+	unsigned size = App->fsystem->Load((TEXTURES + filename + TEXTUREEXT).c_str(), &data); //TODO: use mini resource maanger to optimize this
 	ilGenImages(1, &imageID); 		// Generate the image ID
 	ilBindImage(imageID); 			// Bind the image
 	success = ilLoadL(IL_DDS, data, size);
@@ -131,7 +131,7 @@ unsigned int ModuleTextures::LoadCubeMap(const std::vector<std::string> &faces) 
 		ilBindImage(imageID); 			// Bind the image
 
 		char *data;
-		unsigned size = App->fsystem->Load((MATERIALS + faces[i] + MATERIALEXTENSION).c_str(), &data); //TODO: use mini resource maanger to optimize this
+		unsigned size = App->fsystem->Load((TEXTURES + faces[i] + TEXTUREEXT).c_str(), &data); //TODO: use mini resource maanger to optimize this
 		success = ilLoadL(IL_DDS, data, size);
 		if (success)
 		{
@@ -190,9 +190,9 @@ void ModuleTextures::ImportImage(const char * file, const char* folder)
 		if (ilSaveL(IL_DDS, data, size) > 0)
 		{
 			// Save to buffer with the ilSaveIL function
-			std::string filepath(MATERIALS);
+			std::string filepath(TEXTURES);
 			filepath += App->fsystem->RemoveExtension(file);
-			filepath += MATERIALEXTENSION;
+			filepath += TEXTUREEXT;
 			App->fsystem->Save(filepath.c_str(), (char*)data, size);
 		}
 		RELEASE_ARRAY(data);
