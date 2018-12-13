@@ -2,6 +2,7 @@
 #include "ComponentTransform.h"
 
 #include "GameObject.h"
+#include "Imgui/imgui.h"
 
 
 ComponentLight::ComponentLight(GameObject * gameobject) : Component(gameobject, ComponentType::Light)
@@ -22,6 +23,14 @@ void ComponentLight::Update() //TODO: serialize light
 	if (gameobject->transform == nullptr) return;
 	position = gameobject->transform->position;
 
+}
+
+void ComponentLight::DrawProperties()
+{
+	if (ImGui::CollapsingHeader("Light"))
+	{
+		ImGui::Separator();
+	}
 }
 
 ComponentLight * ComponentLight::Clone()

@@ -24,7 +24,7 @@ public:
 
 	bool DrawComponentState();
 
-	virtual void DrawProperties() {};
+	virtual void DrawProperties() = 0;
 	virtual void Enable()
 	{
 		enabled = true;

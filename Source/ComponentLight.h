@@ -13,10 +13,10 @@ public:
 	ComponentLight(GameObject* gameobject);
 	ComponentLight(const ComponentLight& component);
 	~ComponentLight();
+	ComponentLight* Clone();
 
 	void Update() override;
-
-	ComponentLight* Clone();
+	void DrawProperties() override;
 
 public:
 	float3 position = float3::zero;

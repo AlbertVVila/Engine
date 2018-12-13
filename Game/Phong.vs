@@ -15,7 +15,7 @@ out vec3 position;
 
 void main()
 {
-	vec3 position = (model * vec4(vertex_position, 1.0)).xyz;
-	normal = (model * vec4(vertex_normal, 0.0)).xyz; //Avoid translation
+	position = (model * vec4(vertex_position, 1.0)).xyz;
+	normal = (model * vec4(vertex_normal, 0.0)).xyz; 
 	gl_Position = proj*view*vec4(position, 1.0);
 }
