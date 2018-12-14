@@ -44,6 +44,7 @@ GameObject::GameObject(const GameObject & gameobject)
 	for (const auto& component: gameobject.components)
 	{
 		Component *componentcopy = component->Clone();
+		componentcopy->gameobject = this;
 		components.push_back(componentcopy);
 		if (componentcopy->type == ComponentType::Transform)
 		{

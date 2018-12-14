@@ -6,7 +6,6 @@
 #include "assimp/mesh.h"
 #include "assimp/material.h"
 #include "assimp/types.h"
-#include <fstream>
 #include "Application.h"
 #include "ModuleTextures.h"
 #include "ModuleFileSystem.h"
@@ -24,7 +23,7 @@ FileImporter::~FileImporter()
 {
 }
 
-void FileImporter::ImportAsset(const char *file, const char *folder)  //TODO: assimp + load/save scene/files logs
+void FileImporter::ImportAsset(const char *file, const char *folder)  //TODO:files logs
 {
 	std::string extension (App->fsystem->GetExtension(file));
 	if (extension == FBXEXTENSION || extension == ".FBX")
@@ -37,7 +36,6 @@ void FileImporter::ImportAsset(const char *file, const char *folder)  //TODO: as
 	}
 	else if (extension == TEXTUREEXT)
 	{
-		//TODO: remember ¿?
 		App->fsystem->Copy(folder, TEXTURES, file); //TODO: FULL PATH when copying outside fs
 	}
 	else if (extension == MESHEXTENSION)
@@ -75,14 +73,7 @@ bool FileImporter::ImportScene(const aiScene &scene, const char* file) //TODO: m
 	}
 	GameObject *fake = new GameObject("fake",0);
 	ProcessNode(meshMap, scene.mRootNode, &scene, scene.mRootNode->mTransformation, fake);
-	//Get filename
-	std::string filename(file);
-	std::size_t found = filename.find_last_of(".");
-	if (std::string::npos != found)
-	{
-		filename.erase(found, filename.size());
-	}
-	App->scene->SaveScene(*fake, filename.c_str()); //TODO: Make AutoCreation of folders or check
+	App->scene->SaveScene(*fake, App->fsystem->GetFilename(file).c_str()); //TODO: Make AutoCreation of folders or check
 	//TODO: CleanUP on ending import and on saving
 	return true; //TODO: Load specific scene, Save specific scene, Clear
 }
@@ -137,9 +128,19 @@ GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshma
 	aiMatrix4x4 transform = parentTransform * node->mTransformation; //TODO: transform conversion
 	GameObject * gameobject = App->scene->CreateGameObject(float4x4::identity, "", node->mName.C_Str(), parent); //TODO: remove deprecated fbxfile variable
 
-	for (unsigned int i = 0; i < node->mNumMeshes; i++)
+	std::vector<GameObject*> gameobjects;
+	gameobjects.push_back(gameobject);
+	for (unsigned k = 1; k < node->mNumMeshes; k++)
 	{
-		ComponentMesh* mesh = (ComponentMesh*)gameobject->CreateComponent(ComponentType::Mesh);
+		GameObject *copy = new GameObject(*gameobject);
+		gameobjects.push_back(copy);
+		copy->parent = gameobject->parent;
+		parent->children.push_back(copy);
+	}
+
+	for (unsigned i = 0; i < node->mNumMeshes; i++)
+	{
+		ComponentMesh* mesh = (ComponentMesh*)gameobjects[i]->CreateComponent(ComponentType::Mesh);
 		auto it = meshmap.find(node->mMeshes[i]);
 		if (it != meshmap.end())
 		{
@@ -149,7 +150,7 @@ GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshma
 			mesh->meshUID = it->second;
 		}
 
-		ComponentMaterial* material = (ComponentMaterial*)gameobject->CreateComponent(ComponentType::Material); //TODO: avoid map and use resource manager
+		ComponentMaterial* material = (ComponentMaterial*)gameobjects[i]->CreateComponent(ComponentType::Material); //TODO: avoid map and use resource manager
 		aiMaterial * mat = scene->mMaterials[scene->mMeshes[node->mMeshes[i]]->mMaterialIndex];
 		aiTextureMapping mapping = aiTextureMapping_UV;
 		aiString file;
@@ -159,7 +160,7 @@ GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshma
 			material->textureFile = App->fsystem->GetFilename(file.C_Str()); //we only save texture name
 		}
 
-	} //TODO: material use fbxfile name or use UID?
+	} 
 	for (unsigned int i = 0; i < node->mNumChildren; i++)
 	{
 		GameObject * child = ProcessNode(meshmap, node->mChildren[i], scene, transform, gameobject);

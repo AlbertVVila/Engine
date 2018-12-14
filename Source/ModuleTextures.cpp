@@ -75,7 +75,6 @@ Texture * ModuleTextures::Load(const char * file) const //TODO: refactor texture
 
 		glBindTexture(GL_TEXTURE_2D, textureID);
 
-
 		ILinfo ImageInfo;
 		iluGetImageInfo(&ImageInfo);
 		if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)

@@ -16,7 +16,7 @@ ModuleProgram::~ModuleProgram()
 {
 }
 
-bool ModuleProgram::Init() //TODO load shaders through FS
+bool ModuleProgram::Init() 
 {
 	//Currently we have 2 programs, one for textures and a default one for axis
 	defaultProgram = CreateProgram("Default");
@@ -31,7 +31,7 @@ bool ModuleProgram::Init() //TODO load shaders through FS
 
 
 
-unsigned int ModuleProgram::CreateProgram(const char * name) //TOFO: Use shader struct or class for abstraction (see LearnOpengl)
+unsigned int ModuleProgram::CreateProgram(const char * name) //TODO: Use shader struct or class for abstraction (see LearnOpengl)
 {
 	assert(name != NULL);
 	unsigned int vertexShader = CreateVertexShader(name);

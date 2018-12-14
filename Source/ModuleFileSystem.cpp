@@ -22,13 +22,13 @@ bool ModuleFileSystem::Init()
 	PHYSFS_mount(ASSETS, nullptr, 1);
 	PHYSFS_mount(SHADERS, nullptr, 1);
 	PHYSFS_setWriteDir(PHYSFS_getBaseDir());
-	CheckImportedFiles(LIBRARY);
-	WatchFolder(ASSETS);
 	return true;
 }
 
 bool ModuleFileSystem::Start()
 {
+	CheckImportedFiles(LIBRARY);
+	WatchFolder(ASSETS);
 	importTimer.Start();
 	return true;
 }

@@ -121,7 +121,7 @@ void ComponentMaterial::DrawProperties()
 		{
 			ImGui::Text("Texture width:%d height:%d", texture->width, texture->height);
 			float size = ImGui::GetWindowWidth();
-			ImGui::Image((ImTextureID)texture->id, { size,size });
+			ImGui::Image((ImTextureID)texture->id, { size,size }, { 0,1 }, { 1,0 });
 			ImGui::Separator();
 		}
 	}
