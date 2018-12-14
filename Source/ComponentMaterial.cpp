@@ -13,7 +13,7 @@
 ComponentMaterial::ComponentMaterial(GameObject* gameobject, const char * material) : Component(gameobject, ComponentType::Material)
 {
 	this->shader = App->program->defaultProgram;
-	SetMaterial(material);
+	SetTexture(material);
 }
 
 ComponentMaterial::ComponentMaterial(const ComponentMaterial& component) : Component(component)
@@ -21,7 +21,7 @@ ComponentMaterial::ComponentMaterial(const ComponentMaterial& component) : Compo
 	texture = component.texture; //TODO: delete texture diferent materials?
 	shader = component.shader;
 	color = component.color;
-	file = component.file;
+	textureFile = component.textureFile;
 }
 
 ComponentMaterial::~ComponentMaterial()
@@ -43,23 +43,20 @@ void ComponentMaterial::DeleteTexture()
 	RELEASE(texture);
 }
 
-void ComponentMaterial::SetMaterial(const char * material)
+void ComponentMaterial::SetTexture(const char * newTexture)
 {
-	if (material != nullptr)
+	if (newTexture != nullptr)
 	{
-		texture = App->textures->Load(material);
+		texture = App->textures->Load(newTexture);
 	}
-	//else //TODO: case CHECKERS vs color
-	//{
-	//	texture = App->textures->Load(CHECKERS);
-	//	//texturePath = "checkersTexture.jpg";
-	//}
-	//shader = App->program->flatProgram;
+}
 
-	//TODO: if texture was already loaded by another material, don't load it again
-	//DeleteTexture();
-	//texture = App->textures->Load(texturePath.c_str());
-	//textures.push_back(texture);
+void ComponentMaterial::SetShader(const char * shaderName)
+{
+	if (shaderName != 0)
+	{
+		shader = App->program->GetProgram(shaderName);
+	}
 }
 
 Texture * ComponentMaterial::GetTexture() const
@@ -134,24 +131,33 @@ void ComponentMaterial::DrawProperties()
 void ComponentMaterial::Save(JSON_value * value) const
 {
 	Component::Save(value);
-	//TODO: serialize shader
 	value->AddFloat4("Color", color);
-	if (!file.empty())
+	if (!shaderFile.empty())
 	{
-		value->AddString("MaterialFile", file.c_str());
+		value->AddString("ShaderFile", shaderFile.c_str());
+	}
+	if (!textureFile.empty())
+	{
+		value->AddString("MaterialFile", textureFile.c_str());
 	}
 }
 
 void ComponentMaterial::Load(JSON_value * value)
 {
 	Component::Load(value);
-	//TODO: deserialize shader
 	color = value->GetFloat4("Color");
-	const char *myfile = value->GetString("MaterialFile");
+
+	const char *myfile = value->GetString("ShaderFile");
 	if (myfile != nullptr)
 	{
-		file = myfile;
-		SetMaterial(file.c_str());
+		shaderFile = myfile;
+		SetShader(shaderFile.c_str());
 	}
-	//shader = App->program->flatProgram;
+
+	myfile = value->GetString("MaterialFile");
+	if (myfile != nullptr)
+	{
+		textureFile = myfile;
+		SetTexture(textureFile.c_str());
+	}
 }

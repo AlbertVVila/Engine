@@ -17,7 +17,8 @@ public:
 	Component* Clone() override;
 	void DeleteTexture();
 	
-	void SetMaterial(const char * data);
+	void SetTexture(const char * data);
+	void SetShader(const char * shaderName);
 	Texture * GetTexture() const;
 	unsigned int GetShader() const;
 	float4 GetColor() const;
@@ -27,7 +28,8 @@ public:
 
 public:
 	unsigned int shader = 0;
-	std::string file;
+	std::string textureFile;
+	std::string shaderFile;
 	Texture *texture = nullptr;
 	float4 color = float4::one;
 

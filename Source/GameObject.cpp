@@ -107,11 +107,11 @@ void GameObject::Draw(const math::Frustum& frustum)
 
 	glUseProgram(shader);
 
-	glUniform4fv(glGetUniformLocation(shader,
-		"Vcolor"), 1, (GLfloat*)&material->GetColor());
-
-	if (texture == nullptr && material != nullptr) //TODO: refactor draw workflow
+	if (material != nullptr) //TODO: redo workflow draw
 	{
+		glUniform4fv(glGetUniformLocation(shader,
+			"Vcolor"), 1, (GLfloat*)&material->GetColor());
+
 		glUniform1fv(glGetUniformLocation(shader,
 			"ambient"), 1, (GLfloat*)&App->scene->ambient);
 
@@ -132,6 +132,7 @@ void GameObject::Draw(const math::Frustum& frustum)
 		glUniform1fv(glGetUniformLocation(shader,
 			"shininess"), 1, (GLfloat*)&material->shininess);
 	}
+
 	ModelTransform(shader);
 
 	std::vector<Component*> meshes = GetComponents(ComponentType::Mesh);

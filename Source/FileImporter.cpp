@@ -156,7 +156,7 @@ GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshma
 		mat->GetTexture(aiTextureType_DIFFUSE, 0, &file, &mapping, 0);
 		if (file.length > 0)
 		{
-			material->file = App->fsystem->GetFilename(file.C_Str()); //we only save texture name
+			material->textureFile = App->fsystem->GetFilename(file.C_Str()); //we only save texture name
 		}
 
 	} //TODO: material use fbxfile name or use UID?
