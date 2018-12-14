@@ -1,4 +1,8 @@
 #include "ModuleProgram.h"
+#include "ModuleFileSystem.h"
+#include "ModuleResourceManager.h"
+
+#include "Application.h"
 #include "GL/glew.h"
 #include <string>
 #include <assert.h>
@@ -16,14 +20,15 @@ bool ModuleProgram::Init() //TODO load shaders through FS
 {
 	//Currently we have 2 programs, one for textures and a default one for axis
 	defaultProgram = CreateProgram("Default");
-	textureProgram = CreateProgram("Texture");
-	skyboxProgram = CreateProgram("Skybox");
-	flatProgram = CreateProgram("Flat");
-	gouraudProgram = CreateProgram("Gouraud");
-	phongProgram = CreateProgram("Phong");
+	//textureProgram = CreateProgram("Texture");
+	//skyboxProgram = CreateProgram("Skybox");
+	//flatProgram = CreateProgram("Flat");
+	//gouraudProgram = CreateProgram("Gouraud");
+	//phongProgram = CreateProgram("Phong");
 
 	return true;
 }
+
 
 
 unsigned int ModuleProgram::CreateProgram(const char * name) //TOFO: Use shader struct or class for abstraction (see LearnOpengl)
@@ -48,15 +53,26 @@ unsigned int ModuleProgram::CreateProgram(const char * name) //TOFO: Use shader 
 
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
+	App->resManager->AddProgram(name, program);
 	return program;
 }
 
-unsigned int ModuleProgram::CreateVertexShader(const char *name)
+unsigned ModuleProgram::GetProgram(const char * name)
+{
+	unsigned shader = App->resManager->GetProgram(name);
+	if (shader != 0) return shader;
+
+	return CreateProgram(name);
+}
+
+unsigned ModuleProgram::CreateVertexShader(const char *name)
 {
 	assert(name != NULL);
 	std::string file(name);
 	file += ".vs";
-	const char * vertexShaderSource = ReadShader(file.c_str());
+	char * vertexShaderSource = nullptr;
+	App->fsystem->Load((VERTEXSHADERS + file).c_str(), &vertexShaderSource);
+
 	unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
 	glCompileShader(vertexShader);
@@ -66,12 +82,14 @@ unsigned int ModuleProgram::CreateVertexShader(const char *name)
 	return vertexShader;
 }
 
-unsigned int ModuleProgram::CreateFragmentShader(const char *name)
+unsigned ModuleProgram::CreateFragmentShader(const char *name)
 {
 	assert(name != NULL);
 	std::string file(name);
 	file += ".fs";
-	const char * fragmentShaderSource = ReadShader(file.c_str());
+	char * fragmentShaderSource = nullptr;
+	App->fsystem->Load((FRAGSHADERS+file).c_str(), &fragmentShaderSource);
+
 	unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
 	glCompileShader(fragmentShader);
@@ -81,36 +99,36 @@ unsigned int ModuleProgram::CreateFragmentShader(const char *name)
 	return fragmentShader;
 }
 
-const char* ModuleProgram::ReadShader(const char * file_name) const
-{
-	assert(file_name != NULL);
-	char* data = nullptr;
-	FILE* file = nullptr;
-	errno_t err = fopen_s(&file, file_name, "rb");
-	if (err != 0)
-	{
-		LOG("Error, the file %s was not opened\n", file_name);
-	}
-	if (file)
-	{
-		fseek(file, 0, SEEK_END);
-		int size = ftell(file);
-		rewind(file);
-		data = new char[size+1];
-		if (data == NULL)
-		{ 
-			LOG("Memory error with shader reading\n");
-		}
-		size_t result = fread(data, 1, size, file);
-		data[size] = 0;
-		if (result != size)
-		{
-			LOG("Shader reading error\n");
-		}
-		fclose(file);
-	}
-	return data;
-}
+//const char* ModuleProgram::ReadShader(const char * file_name) const
+//{
+//	assert(file_name != NULL);
+//	char* data = nullptr;
+//	FILE* file = nullptr;
+//	errno_t err = fopen_s(&file, file_name, "rb");
+//	if (err != 0)
+//	{
+//		LOG("Error, the file %s was not opened\n", file_name);
+//	}
+//	if (file)
+//	{
+//		fseek(file, 0, SEEK_END);
+//		int size = ftell(file);
+//		rewind(file);
+//		data = new char[size+1];
+//		if (data == NULL)
+//		{ 
+//			LOG("Memory error with shader reading\n");
+//		}
+//		size_t result = fread(data, 1, size, file);
+//		data[size] = 0;
+//		if (result != size)
+//		{
+//			LOG("Shader reading error\n");
+//		}
+//		fclose(file);
+//	}
+//	return data;
+//}
 
 void ModuleProgram::ShaderLog(unsigned int shader, char * type) const
 {
@@ -129,7 +147,7 @@ void ModuleProgram::ShaderLog(unsigned int shader, char * type) const
 
 bool ModuleProgram::CleanUp()
 {
-	glDeleteProgram(textureProgram);
+	//glDeleteProgram(textureProgram);
 	glDeleteProgram(defaultProgram);
 	return true;
 }

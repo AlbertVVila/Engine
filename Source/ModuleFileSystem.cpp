@@ -20,6 +20,7 @@ bool ModuleFileSystem::Init()
 
 	PHYSFS_mount(LIBRARY, nullptr, 1);
 	PHYSFS_mount(ASSETS, nullptr, 1);
+	PHYSFS_mount(SHADERS, nullptr, 1);
 	PHYSFS_setWriteDir(PHYSFS_getBaseDir());
 	CheckImportedFiles(LIBRARY);
 	WatchFolder(ASSETS);
@@ -130,17 +131,25 @@ bool ModuleFileSystem::IsDirectory(const char * file) const
 	return PHYSFS_isDirectory(file);
 }
 
-std::vector<const char*> ModuleFileSystem::ListFiles(const char * dir) const
+std::vector<std::string> ModuleFileSystem::ListFiles(const char * dir, bool extension) const
 {
-	std::vector<const char*> files;
+	std::vector<std::string> files;
 	char **rc = PHYSFS_enumerateFiles(dir);
 	char **i;
 
 	for (i = rc; *i != NULL; i++)
 	{
-		char *file = new char[strlen(*i)];
-		strcpy(file, *i);
-		files.emplace_back(file); //TODO: copy char*
+		if (!extension)
+		{
+			files.emplace_back(RemoveExtension(*i));
+		}
+		else
+		{
+			files.emplace_back(*i);
+		}
+		//char *file = new char[strlen(*i)];
+		//strcpy(file, *i);
+		//files.emplace_back(file); //TODO: copy char*
 	}
 
 	PHYSFS_freeList(rc);
@@ -182,7 +191,7 @@ bool ModuleFileSystem::Copy(const char * source, const char * destination, const
 
 void ModuleFileSystem::CheckImportedFiles(const char * folder)//TODO: improve using extensions otherwise conflict between files with same name and diff extension
 {
-	std::vector<const char *> files = ListFiles(folder);
+	std::vector<std::string> files = ListFiles(folder);
 	for (auto& file : files)
 	{
 		std::string filefolder(folder);
@@ -193,13 +202,13 @@ void ModuleFileSystem::CheckImportedFiles(const char * folder)//TODO: improve us
 		}
 		else
 		{
-			importedFiles.insert(RemoveExtension(file));
+			importedFiles.insert(RemoveExtension(file.c_str()));
 		}
 	}
 }
 void ModuleFileSystem::WatchFolder(const char * folder)
 {
-	std::vector<const char *> files = ListFiles(folder);
+	std::vector<std::string> files = ListFiles(folder);
 	for (auto& file: files)
 	{
 		std::string filefolder(folder);
@@ -210,12 +219,12 @@ void ModuleFileSystem::WatchFolder(const char * folder)
 		}
 		else
 		{
-			std::set<std::string>::iterator it = importedFiles.find(RemoveExtension(file));
+			std::set<std::string>::iterator it = importedFiles.find(RemoveExtension(file.c_str()));
 			if (it == importedFiles.end())
 			{
 				FileImporter importer;
-				importer.ImportAsset(file, folder);
-				importedFiles.insert(RemoveExtension(file));
+				importer.ImportAsset(file.c_str(), folder);
+				importedFiles.insert(RemoveExtension(file.c_str()));
 			}
 		}
 	}

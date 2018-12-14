@@ -358,24 +358,24 @@ void ModuleRender::GenSkyBox()
 }
 void ModuleRender::DrawSkyBox(const ComponentCamera& camera) const
 {
-	glDepthMask(GL_FALSE);
-	glUseProgram(App->program->skyboxProgram);
-	glBindVertexArray(skyboxVAO);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, skybox_cubemap);
-	float4x4 model(float4x4::FromTRS(camera.frustum.pos,float4x4::identity,float3::one));
-	glUniformMatrix4fv(glGetUniformLocation(App->program->skyboxProgram,
-		"model"), 1, GL_TRUE, &model[0][0]);
+	//glDepthMask(GL_FALSE);
+	//glUseProgram(App->program->skyboxProgram);
+	//glBindVertexArray(skyboxVAO);
+	//glBindTexture(GL_TEXTURE_CUBE_MAP, skybox_cubemap);
+	//float4x4 model(float4x4::FromTRS(camera.frustum.pos,float4x4::identity,float3::one));
+	//glUniformMatrix4fv(glGetUniformLocation(App->program->skyboxProgram,
+	//	"model"), 1, GL_TRUE, &model[0][0]);
 
-	glUniform1i(glGetUniformLocation(App->program->skyboxProgram, "skybox"), 0);
-	glDrawArrays(GL_TRIANGLES, 0, 36);
+	//glUniform1i(glGetUniformLocation(App->program->skyboxProgram, "skybox"), 0);
+	//glDrawArrays(GL_TRIANGLES, 0, 36);
 
-	glBindVertexArray(0);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
-	glDisableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glUseProgram(0);
+	//glBindVertexArray(0);
+	//glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+	//glDisableVertexAttribArray(0);
+	//glBindBuffer(GL_ARRAY_BUFFER, 0);
+	//glUseProgram(0);
 
-	glDepthMask(GL_TRUE);
+	//glDepthMask(GL_TRUE);
 
 }
 
@@ -412,18 +412,18 @@ void ModuleRender::InitOpenGL() const
 void ModuleRender::CreateBlockUniforms()
 { //TODO: optimize this calls
 	unsigned int uniformBlockIndexDefault = glGetUniformBlockIndex(App->program->defaultProgram, "Matrices");
-	unsigned int uniformBlockIndexTexture = glGetUniformBlockIndex(App->program->textureProgram, "Matrices");
-	unsigned int uniformBlockIndexSkybox = glGetUniformBlockIndex(App->program->skyboxProgram, "Matrices");
-	unsigned int uniformBlockIndexFlat = glGetUniformBlockIndex(App->program->flatProgram, "Matrices");
-	unsigned int uniformBlockIndexGouraud = glGetUniformBlockIndex(App->program->gouraudProgram, "Matrices");
-	unsigned int uniformBlockIndexPhong = glGetUniformBlockIndex(App->program->phongProgram, "Matrices");
+	//unsigned int uniformBlockIndexTexture = glGetUniformBlockIndex(App->program->textureProgram, "Matrices");
+	//unsigned int uniformBlockIndexSkybox = glGetUniformBlockIndex(App->program->skyboxProgram, "Matrices");
+	//unsigned int uniformBlockIndexFlat = glGetUniformBlockIndex(App->program->flatProgram, "Matrices");
+	//unsigned int uniformBlockIndexGouraud = glGetUniformBlockIndex(App->program->gouraudProgram, "Matrices");
+	//unsigned int uniformBlockIndexPhong = glGetUniformBlockIndex(App->program->phongProgram, "Matrices");
 
 	glUniformBlockBinding(App->program->defaultProgram, uniformBlockIndexDefault, 0);
-	glUniformBlockBinding(App->program->textureProgram, uniformBlockIndexTexture, 0);
-	glUniformBlockBinding(App->program->skyboxProgram, uniformBlockIndexSkybox, 0);
-	glUniformBlockBinding(App->program->flatProgram, uniformBlockIndexFlat, 0);
-	glUniformBlockBinding(App->program->gouraudProgram, uniformBlockIndexGouraud, 0);
-	glUniformBlockBinding(App->program->phongProgram, uniformBlockIndexPhong, 0);
+	//glUniformBlockBinding(App->program->textureProgram, uniformBlockIndexTexture, 0);
+	//glUniformBlockBinding(App->program->skyboxProgram, uniformBlockIndexSkybox, 0);
+	//glUniformBlockBinding(App->program->flatProgram, uniformBlockIndexFlat, 0);
+	//glUniformBlockBinding(App->program->gouraudProgram, uniformBlockIndexGouraud, 0);
+	//glUniformBlockBinding(App->program->phongProgram, uniformBlockIndexPhong, 0);
 
 	glGenBuffers(1, &UBO);
 	glBindBuffer(GL_UNIFORM_BUFFER, UBO);

@@ -2,6 +2,8 @@
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
 #include "ModuleFileSystem.h"
+#include "ModuleResourceManager.h" 
+
 #include "GL/glew.h"
 #include "IL/ilut.h"
 #include "imgui.h"
@@ -48,6 +50,10 @@ void ModuleTextures::DrawGUI()
 Texture * ModuleTextures::Load(const char * file) const //TODO: refactor texture load
 {
 	assert(file != NULL);
+
+	Texture* loadedText = App->resManager->GetTexture(file);
+	if (loadedText != nullptr) return loadedText;
+
 	ILuint imageID;
 	ILboolean success;
 	ILenum error;
@@ -100,7 +106,9 @@ Texture * ModuleTextures::Load(const char * file) const //TODO: refactor texture
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 
-		return new Texture(textureID, width, height);
+		Texture* texture = new Texture(textureID, width, height);
+		App->resManager->AddTexture(file, texture);
+		return texture;
 	}
 	else
 	{

@@ -113,7 +113,7 @@ void ModuleScene::CreateSphere(const char * name, const float3 & pos, const Quat
 		par_shapes_free_mesh(mesh);
 
 		ComponentMaterial* componentmaterial = (ComponentMaterial*)gameobject->CreateComponent(ComponentType::Material);
-		componentmaterial->shader = App->program->phongProgram;
+		componentmaterial->shader = App->program->defaultProgram;
 		componentmaterial->color = color;
 	}
 }

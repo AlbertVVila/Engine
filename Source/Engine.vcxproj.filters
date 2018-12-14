@@ -210,6 +210,7 @@
     <ClCompile Include="ComponentLight.cpp">
       <Filter>Component</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleResourceManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -489,6 +490,7 @@
     <ClInclude Include="ComponentLight.h">
       <Filter>Component</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleResourceManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GeoLib">
@@ -557,6 +559,42 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\Game\Phong.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\FragmentShaders\Default.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\FragmentShaders\Flat.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\FragmentShaders\Gouraud.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\FragmentShaders\Phong.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\FragmentShaders\Skybox.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\FragmentShaders\Texture.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\VertexShaders\Default.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\VertexShaders\Flat.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\VertexShaders\Gouraud.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\VertexShaders\Phong.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\VertexShaders\Skybox.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\VertexShaders\Texture.vs">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

@@ -38,6 +38,8 @@ public:
 
 private:
 	float4 iDiffuse = float4::zero;
+	std::string selected_texture = "None selected";
+	std::string selected_shader = "Default";
 };
 
 #endif //__ComponentMaterial_h__

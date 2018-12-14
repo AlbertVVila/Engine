@@ -11,6 +11,9 @@
 #define MESHES LIBRARY "Meshes/"
 #define TEXTURES LIBRARY "Textures/"
 #define SCENES LIBRARY "Scenes/"
+#define SHADERS "Shaders/"
+#define VERTEXSHADERS SHADERS "VertexShaders/"
+#define FRAGSHADERS SHADERS "FragmentShaders/"
 #define SKYBOX "Skybox/"
 
 #define FBXEXTENSION ".fbx"
@@ -38,7 +41,7 @@ public:
 	unsigned Size(const char* file) const;
 	bool MakeDirectory(const char* directory);
 	bool IsDirectory(const char* file) const;
-	std::vector<const char*> ListFiles(const char * dir) const;
+	std::vector<std::string> ListFiles(const char * dir, bool extension=true) const;
 	bool CopyFromOutsideFS(const char* source, const char* destination);
 	bool Copy(const char* source, const char* destination, const char* file);
 

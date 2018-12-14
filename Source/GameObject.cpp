@@ -97,7 +97,7 @@ void GameObject::Draw(const math::Frustum& frustum)
 	}
 	else
 	{
-		shader = App->program->textureProgram;
+		shader = App->program->defaultProgram;
 	}
 
 	if (drawBBox)
@@ -107,13 +107,14 @@ void GameObject::Draw(const math::Frustum& frustum)
 
 	glUseProgram(shader);
 
+	glUniform4fv(glGetUniformLocation(shader,
+		"Vcolor"), 1, (GLfloat*)&material->GetColor());
+
 	if (texture == nullptr && material != nullptr) //TODO: refactor draw workflow
 	{
 		glUniform1fv(glGetUniformLocation(shader,
 			"ambient"), 1, (GLfloat*)&App->scene->ambient);
 
-		glUniform4fv(glGetUniformLocation(shader,
-			"Vcolor"), 1, (GLfloat*)&material->GetColor());
 
 		if (App->scene->light != nullptr)
 		{

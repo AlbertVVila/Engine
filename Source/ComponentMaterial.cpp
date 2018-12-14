@@ -88,10 +88,38 @@ void ComponentMaterial::DrawProperties()
 			ImGui::PopID();
 			return;
 		}
-		ImGui::Text("Shader: PlaceHolder"); //TODO: optimize list
-		std::vector<const char*> textures = App->fsystem->ListFiles(TEXTURES);
-		int placeholder = 0;
-		ImGui::Combo("Texture", &placeholder, &textures[0], textures.size());
+		std::vector<std::string> shaders = App->fsystem->ListFiles(VERTEXSHADERS, false);
+		if (ImGui::BeginCombo("Shader", selected_shader.c_str())) // The second parameter is the label previewed before opening the combo.
+		{
+			for (int n = 0; n < shaders.size(); n++)
+			{
+				bool is_selected = (selected_shader == shaders[n]);
+				if (ImGui::Selectable(shaders[n].c_str(), is_selected) && selected_shader != shaders[n])
+				{
+					selected_shader = shaders[n];
+					shader = App->program->GetProgram(selected_shader.c_str());
+				}
+				if (is_selected)
+					ImGui::SetItemDefaultFocus();
+			}
+			ImGui::EndCombo();
+		}
+		std::vector<std::string> textures = App->fsystem->ListFiles(TEXTURES, false);
+		if (ImGui::BeginCombo("Textures", selected_texture.c_str())) // The second parameter is the label previewed before opening the combo.
+		{
+			for (int n = 0; n < textures.size(); n++)
+			{
+				bool is_selected = (selected_texture == textures[n]);
+				if (ImGui::Selectable(textures[n].c_str(), is_selected) && selected_texture != textures[n])
+				{
+					selected_texture = textures[n];
+					texture = App->textures->Load(selected_texture.c_str());
+				}
+				if (is_selected)
+					ImGui::SetItemDefaultFocus();
+			}
+			ImGui::EndCombo();
+		}
 		if (texture != nullptr)
 		{
 			ImGui::Text("Texture width:%d height:%d", texture->width, texture->height);

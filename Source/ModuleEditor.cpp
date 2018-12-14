@@ -70,13 +70,13 @@ update_status ModuleEditor::Update()
 		{
 			if (ImGui::BeginMenu("Load"))
 			{
-				std::vector<const char*> files = App->fsystem->ListFiles(SCENES);
+				std::vector<std::string> files = App->fsystem->ListFiles(SCENES);
 				for (auto &file : files)
 				{
-					file = App->fsystem->RemoveExtension(file).c_str();
-					if (ImGui::MenuItem(file))
+					file = App->fsystem->RemoveExtension(file.c_str());
+					if (ImGui::MenuItem(file.c_str()))
 					{
-						App->scene->LoadScene(file);
+						App->scene->LoadScene(file.c_str());
 					}
 				}
 				ImGui::EndMenu();
