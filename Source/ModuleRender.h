@@ -21,13 +21,13 @@ public:
 	bool CleanUp();
 	void OnResize();
 	void DrawGUI();
+	void SetBlockUniforms();
 
 private:
 
 	void DrawGizmos() const;
 	void SetViewUniform(ComponentCamera *camera) const;
 	void SetProjectionUniform(ComponentCamera *camera) const;
-	void CreateBlockUniforms();
 	void DrawLines() const;
 	void DrawAxis() const;
 	void DrawFrustum() const;

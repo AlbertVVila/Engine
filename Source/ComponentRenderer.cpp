@@ -10,18 +10,16 @@
 #include "assimp/material.h"
 #include "JSON.h"
 #include <vector>
-ComponentRenderer::ComponentRenderer(GameObject* gameobject, const char * material) : Component(gameobject, ComponentType::Renderer)
+ComponentRenderer::ComponentRenderer(GameObject* gameobject, const char * texture) : Component(gameobject, ComponentType::Renderer)
 {
-	this->shader = App->program->defaultProgram;
-	SetTexture(material);
+	material = new Material;
+	material->shader = App->program->defaultShader;
+	SetTexture(texture);
 }
 
 ComponentRenderer::ComponentRenderer(const ComponentRenderer& component) : Component(component)
 {
-	texture = component.texture; //TODO: delete texture diferent materials?
-	shader = component.shader;
-	color = component.color;
-	textureFile = component.textureFile;
+	//TODO: deep copy material pointer
 }
 
 ComponentRenderer::~ComponentRenderer()
@@ -36,26 +34,26 @@ Component * ComponentRenderer::Clone()
 
 void ComponentRenderer::DeleteTexture()
 {
-	if (texture != nullptr)
+	if (material->texture != nullptr)
 	{
-		glDeleteTextures(1, (GLuint*)&texture->id);
+		glDeleteTextures(1, (GLuint*)&material->texture->id);
 	}
-	RELEASE(texture);
+	RELEASE(material->texture);
 }
 
 void ComponentRenderer::SetTexture(const char * newTexture)
 {
 	if (newTexture != nullptr)
 	{
-		texture = App->textures->Load(newTexture);
+		material->texture = App->textures->Load(newTexture);
 	}
 }
 
 void ComponentRenderer::SetShader(const char * shaderName)
 {
-	if (shaderName != 0)
+	if (shaderName != nullptr)
 	{
-		shader = App->program->GetProgram(shaderName); //TODO: refactor shader + texture + material
+		material->shader = App->program->GetProgram(shaderName); //TODO: refactor shader + texture + material
 	}
 }
 
@@ -77,7 +75,7 @@ float4 ComponentRenderer::GetColor() const
 void ComponentRenderer::DrawProperties()
 {
 	ImGui::PushID(this);
-	if (ImGui::CollapsingHeader("Material"))
+	if (ImGui::CollapsingHeader("Renderer"))
 	{
 		bool removed = Component::DrawComponentState();
 		if (removed)
@@ -94,7 +92,7 @@ void ComponentRenderer::DrawProperties()
 				if (ImGui::Selectable(shaders[n].c_str(), is_selected) && selected_shader != shaders[n])
 				{
 					selected_shader = shaders[n];
-					shader = App->program->GetProgram(selected_shader.c_str());
+					material->shader = App->program->GetProgram(selected_shader.c_str());
 				}
 				if (is_selected)
 					ImGui::SetItemDefaultFocus();
@@ -110,18 +108,18 @@ void ComponentRenderer::DrawProperties()
 				if (ImGui::Selectable(textures[n].c_str(), is_selected) && selected_texture != textures[n])
 				{
 					selected_texture = textures[n];
-					texture = App->textures->Load(selected_texture.c_str());
+					material->texture = App->textures->Load(selected_texture.c_str());
 				}
 				if (is_selected)
 					ImGui::SetItemDefaultFocus();
 			}
 			ImGui::EndCombo();
 		}
-		if (texture != nullptr)
+		if (material->texture != nullptr)
 		{
-			ImGui::Text("Texture width:%d height:%d", texture->width, texture->height);
+			ImGui::Text("Texture width:%d height:%d", material->texture->width, material->texture->height);
 			float size = ImGui::GetWindowWidth();
-			ImGui::Image((ImTextureID)texture->id, { size,size }, { 0,1 }, { 1,0 });
+			ImGui::Image((ImTextureID)material->texture->id, { size,size }, { 0,1 }, { 1,0 });
 			ImGui::Separator();
 		}
 	}
@@ -131,33 +129,31 @@ void ComponentRenderer::DrawProperties()
 void ComponentRenderer::Save(JSON_value * value) const
 {
 	Component::Save(value);
-	value->AddFloat4("Color", color);
-	if (!shaderFile.empty())
+	value->AddFloat4("Color", material->color);
+	if (material->shader != nullptr && !material->shader->file.empty())
 	{
-		value->AddString("ShaderFile", shaderFile.c_str());
+		value->AddString("ShaderFile", material->shader->file.c_str());
 	}
-	if (!textureFile.empty())
+	if (material->texture != nullptr && !material->texture->file.empty())
 	{
-		value->AddString("MaterialFile", textureFile.c_str());
+		value->AddString("MaterialFile", material->texture->file.c_str());
 	}
 }
 
 void ComponentRenderer::Load(JSON_value * value)
 {
 	Component::Load(value);
-	color = value->GetFloat4("Color");
+	material->color = value->GetFloat4("Color");
 
 	const char *myfile = value->GetString("ShaderFile");
 	if (myfile != nullptr)
 	{
-		shaderFile = myfile;
-		SetShader(shaderFile.c_str());
+		SetShader(myfile);
 	}
 
 	myfile = value->GetString("MaterialFile");
 	if (myfile != nullptr)
 	{
-		textureFile = myfile;
-		SetTexture(textureFile.c_str());
+		SetTexture(myfile);
 	}
 }

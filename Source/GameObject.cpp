@@ -89,7 +89,7 @@ void GameObject::Draw(const math::Frustum& frustum)
 	if (transform == nullptr) return;
 
 	ComponentRenderer* renderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
-	unsigned int shader = 0;
+	Shader* shader = nullptr;
 	Texture * texture = nullptr;
 
 	if (renderer != nullptr && renderer->enabled)
@@ -99,7 +99,7 @@ void GameObject::Draw(const math::Frustum& frustum)
 	}
 	else
 	{
-		shader = App->program->defaultProgram;
+		shader = App->program->defaultShader;
 	}
 
 	if (drawBBox)
@@ -107,7 +107,7 @@ void GameObject::Draw(const math::Frustum& frustum)
 		DrawBBox();
 	}
 
-	glUseProgram(shader);
+	glUseProgram(shader->value);
 
 	if (texture != nullptr)
 	{
@@ -117,42 +117,43 @@ void GameObject::Draw(const math::Frustum& frustum)
 			glBindTexture(GL_TEXTURE_2D, texture->id);
 		}
 		//}
-		glUniform1i(glGetUniformLocation(shader, "texture0"), 0);
+		glUniform1i(glGetUniformLocation(shader->value, "texture0"), 0);
+		glUniform1i(glGetUniformLocation(shader->value, "readTexture"), true);
 	}
 	if (renderer != nullptr) //TODO: redo workflow draw
 	{
-		glUniform4fv(glGetUniformLocation(shader,
+		glUniform4fv(glGetUniformLocation(shader->value,
 			"Vcolor"), 1, (GLfloat*)&renderer->GetColor());
 
-		glUniform1fv(glGetUniformLocation(shader,
+		glUniform1fv(glGetUniformLocation(shader->value,
 			"ambient"), 1, (GLfloat*)&App->scene->ambient);
 
 
 		if (App->scene->light != nullptr)
 		{
-			glUniform3fv(glGetUniformLocation(shader,
+			glUniform3fv(glGetUniformLocation(shader->value,
 				"lightPos"), 1, (GLfloat*)&App->scene->light->position);
 		}
 
 		//mat
-		glUniform1fv(glGetUniformLocation(shader,
-			"k_ambient"), 1, (GLfloat*)&renderer->kAmbient);
-		glUniform1fv(glGetUniformLocation(shader,
-			"k_diffuse"), 1, (GLfloat*)&renderer->kDiffuse);
-		glUniform1fv(glGetUniformLocation(shader,
-			"k_specular"), 1, (GLfloat*)&renderer->kSpecular);
-		glUniform1fv(glGetUniformLocation(shader,
-			"shininess"), 1, (GLfloat*)&renderer->shininess);
+		glUniform1fv(glGetUniformLocation(shader->value,
+			"k_ambient"), 1, (GLfloat*)&renderer->material->kAmbient);
+		glUniform1fv(glGetUniformLocation(shader->value,
+			"k_diffuse"), 1, (GLfloat*)&renderer->material->kDiffuse);
+		glUniform1fv(glGetUniformLocation(shader->value,
+			"k_specular"), 1, (GLfloat*)&renderer->material->kSpecular);
+		glUniform1fv(glGetUniformLocation(shader->value,
+			"shininess"), 1, (GLfloat*)&renderer->material->shininess);
 	}
 
-	ModelTransform(shader);
+	ModelTransform(shader->value);
 
 	std::vector<Component*> meshes = GetComponents(ComponentType::Mesh);
 	for (auto &mesh: meshes)
 	{
 		if (mesh->enabled)
 		{
-			((ComponentMesh*)mesh)->Draw(shader);
+			((ComponentMesh*)mesh)->Draw(shader->value);
 		}
 	}
 	glUseProgram(0);
@@ -320,7 +321,7 @@ Component * GameObject::CreateComponent(ComponentType type)
 	case Mesh:
 		component = new ComponentMesh(this);
 		break;
-	case Material:
+	case Renderer:
 		component = new ComponentRenderer(this);
 		break;
 	case Light:
@@ -443,7 +444,8 @@ AABB GameObject::GetBoundingBox() const
 void GameObject::DrawBBox() const
 { //TODO: optimize with VAO
 
-	glUseProgram(App->program->defaultProgram);
+	unsigned shader = App->program->defaultShader->value;
+	glUseProgram(shader);
 	AABB bbox = GetBoundingBox();
 	GLfloat vertices[] = {
 		-0.5, -0.5, -0.5, 1.0,
@@ -474,11 +476,11 @@ void GameObject::DrawBBox() const
 
 
 	float4x4 boxtransform = float4x4::FromTRS(bbox.CenterPoint(), Quat::identity, bbox.Size());
-	glUniformMatrix4fv(glGetUniformLocation(App->program->defaultProgram,
+	glUniformMatrix4fv(glGetUniformLocation(shader,
 		"model"), 1, GL_TRUE, &(boxtransform)[0][0]);
 
 	float green[4] = { 0.0f, 1.0f, 0.0f, 1.0f };
-	glUniform4fv(glGetUniformLocation(App->program->defaultProgram,
+	glUniform4fv(glGetUniformLocation(shader,
 		"Vcolor"), 1, green);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
 	glEnableVertexAttribArray(0);

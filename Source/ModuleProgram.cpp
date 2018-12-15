@@ -18,20 +18,15 @@ ModuleProgram::~ModuleProgram()
 
 bool ModuleProgram::Init() 
 {
-	//Currently we have 2 programs, one for textures and a default one for axis
-	defaultProgram = CreateProgram("Default");
-	//textureProgram = CreateProgram("Texture");
-	//skyboxProgram = CreateProgram("Skybox");
-	//flatProgram = CreateProgram("Flat");
-	//gouraudProgram = CreateProgram("Gouraud");
-	//phongProgram = CreateProgram("Phong");
+	const char* default = "Default";
+	defaultShader = CreateProgram(default);
 
 	return true;
 }
 
 
 
-unsigned int ModuleProgram::CreateProgram(const char * name) //TODO: Use shader struct or class for abstraction (see LearnOpengl)
+Shader* ModuleProgram::CreateProgram(const char * name) //TODO: Use shader struct or class for abstraction (see LearnOpengl)
 {
 	assert(name != NULL);
 	unsigned int vertexShader = CreateVertexShader(name);
@@ -53,14 +48,15 @@ unsigned int ModuleProgram::CreateProgram(const char * name) //TODO: Use shader 
 
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
-	App->resManager->AddProgram(name, program);
-	return program;
+	Shader* shader = new Shader(program, name);
+	App->resManager->AddProgram(shader);
+	return shader;
 }
 
-unsigned ModuleProgram::GetProgram(const char * name)
+Shader* ModuleProgram::GetProgram(const char * name)
 {
-	unsigned shader = App->resManager->GetProgram(name);
-	if (shader != 0) return shader;
+	Shader* shader = App->resManager->GetProgram(name);
+	if (shader != nullptr) return shader;
 
 	return CreateProgram(name);
 }
@@ -99,37 +95,6 @@ unsigned ModuleProgram::CreateFragmentShader(const char *name)
 	return fragmentShader;
 }
 
-//const char* ModuleProgram::ReadShader(const char * file_name) const
-//{
-//	assert(file_name != NULL);
-//	char* data = nullptr;
-//	FILE* file = nullptr;
-//	errno_t err = fopen_s(&file, file_name, "rb");
-//	if (err != 0)
-//	{
-//		LOG("Error, the file %s was not opened\n", file_name);
-//	}
-//	if (file)
-//	{
-//		fseek(file, 0, SEEK_END);
-//		int size = ftell(file);
-//		rewind(file);
-//		data = new char[size+1];
-//		if (data == NULL)
-//		{ 
-//			LOG("Memory error with shader reading\n");
-//		}
-//		size_t result = fread(data, 1, size, file);
-//		data[size] = 0;
-//		if (result != size)
-//		{
-//			LOG("Shader reading error\n");
-//		}
-//		fclose(file);
-//	}
-//	return data;
-//}
-
 void ModuleProgram::ShaderLog(unsigned int shader, char * type) const
 {
 	assert(type != NULL);
@@ -147,8 +112,8 @@ void ModuleProgram::ShaderLog(unsigned int shader, char * type) const
 
 bool ModuleProgram::CleanUp()
 {
-	//glDeleteProgram(textureProgram);
-	glDeleteProgram(defaultProgram);
+	glDeleteProgram(defaultShader->value);
+	RELEASE(defaultShader);
 	return true;
 }
 

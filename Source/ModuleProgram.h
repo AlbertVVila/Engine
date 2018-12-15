@@ -2,10 +2,13 @@
 #define __ModuleProgram_h__
 
 #include "Module.h"
+#include <string>
+
 struct Shader
 {
-	unsigned program;
+	unsigned value;
 	std::string file;
+	Shader(unsigned program, std::string file) : value(program), file(file) {}
 };
 
 class ModuleProgram : public Module
@@ -17,16 +20,17 @@ public:
 	bool Init();
 	bool CleanUp();
 
-	unsigned CreateProgram(const char *name);
-	unsigned GetProgram(const char * name);
+	Shader* CreateProgram(const char *name);
+	Shader* GetProgram(const char * name); //creates if it doesn't exist
+
+private:
+	void ShaderLog(unsigned int shader, char* type) const;
 	unsigned CreateVertexShader(const char *name);
 	unsigned CreateFragmentShader(const char *name);
 
-	//const char* ReadShader(const char *filename) const;
+public:
 
-	void ShaderLog(unsigned int shader, char* type) const;
-
-	unsigned defaultProgram = 0;
+	Shader * defaultShader = nullptr;
 
 };
 

@@ -154,14 +154,14 @@ GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshma
 			mesh->meshUID = it->second;
 		}
 
-		ComponentRenderer* material = (ComponentRenderer*)gameobjects[i]->CreateComponent(ComponentType::Renderer); //TODO: avoid map and use resource manager
+		ComponentRenderer* renderer = (ComponentRenderer*)gameobjects[i]->CreateComponent(ComponentType::Renderer); //TODO: avoid map and use resource manager
 		aiMaterial * mat = scene->mMaterials[scene->mMeshes[node->mMeshes[i]]->mMaterialIndex];
 		aiTextureMapping mapping = aiTextureMapping_UV;
-		aiString file;
-		mat->GetTexture(aiTextureType_DIFFUSE, 0, &file, &mapping, 0);
-		if (file.length > 0)
+		aiString texture;
+		mat->GetTexture(aiTextureType_DIFFUSE, 0, &texture, &mapping, 0);
+		if (texture.length > 0)
 		{
-			material->textureFile = App->fsystem->GetFilename(file.C_Str()); //we only save texture name
+			renderer->material->texture->file = App->fsystem->GetFilename(texture.C_Str()); //we only save texture name
 		}
 	} 
 	for (unsigned int i = 0; i < node->mNumChildren; i++)

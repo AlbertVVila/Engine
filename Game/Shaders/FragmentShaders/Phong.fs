@@ -9,6 +9,7 @@ layout (std140) uniform Matrices
 out vec4 Fragcolor;
 uniform vec4 Vcolor;
 uniform sampler2D texture0;
+uniform bool readTexture;
 
 uniform vec3  lightPos;
 uniform float ambient;
@@ -38,5 +39,12 @@ void main()
 	}
 
 	float intensity = k_ambient * ambient + k_diffuse*diffuse + k_specular*specular;
-	Fragcolor = texture2D(texture0, uv0)*intensity*Vcolor;
+	
+	if(readTexture)
+	{
+		Fragcolor = texture2D(texture0, uv0)*intensity*Vcolor;
+	}else
+	{
+		Fragcolor = intensity*Vcolor;
+	}
 }

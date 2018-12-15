@@ -1,13 +1,14 @@
 #include "Application.h"
 #include "ModuleRender.h"
 #include "ModuleCamera.h"
-#include "ComponentCamera.h"
 #include "ModuleScene.h"
 #include "ModuleProgram.h"
 #include "ModuleEditor.h"
 #include "ModuleWindow.h"
 #include "ModuleTextures.h"
 #include "ModuleFileSystem.h"
+#include "ModuleResourceManager.h"
+#include "ComponentCamera.h"
 #include "SDL.h"
 #include "GL/glew.h"
 #include "imgui.h"
@@ -40,8 +41,13 @@ bool ModuleRender::Init()
 
 bool ModuleRender::Start()
 {
-	CreateBlockUniforms(); //TODO: refactor skybox
-	std::vector<std::string> faces =
+	glGenBuffers(1, &UBO); //Block uniform creation
+	glBindBuffer(GL_UNIFORM_BUFFER, UBO);
+	glBufferData(GL_UNIFORM_BUFFER, 2 * sizeof(float4x4), NULL, GL_STATIC_DRAW);
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+	glBindBufferRange(GL_UNIFORM_BUFFER, 0, UBO, 0, 2 * sizeof(float4x4));
+	std::vector<std::string> faces = //TODO refactor skybox
 	{
 			"right",
 			"left",
@@ -138,10 +144,10 @@ void ModuleRender::OnResize()
 
 void ModuleRender::DrawGizmos() const
 {
-
-	glUseProgram(App->program->defaultProgram);
+	unsigned shader = App->program->defaultShader->value;
+	glUseProgram(shader);
 	math::float4x4 model = math::float4x4::identity;
-	glUniformMatrix4fv(glGetUniformLocation(App->program->defaultProgram,
+	glUniformMatrix4fv(glGetUniformLocation(shader,
 		"model"), 1, GL_TRUE, &model[0][0]);
 
 	DrawLines();
@@ -157,7 +163,7 @@ void ModuleRender::DrawGizmos() const
 void ModuleRender::DrawLines() const
 {
 	float white[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
-	glUniform4fv(glGetUniformLocation(App->program->defaultProgram,
+	glUniform4fv(glGetUniformLocation(App->program->defaultShader->value,
 		"Vcolor"), 1, white);
 
 	glLineWidth(1.0f);
@@ -176,10 +182,11 @@ void ModuleRender::DrawLines() const
 
 void ModuleRender::DrawAxis() const
 {
+	unsigned shader = App->program->defaultShader->value;
 	glLineWidth(2.0f);
 
 	float red[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
-	glUniform4fv(glGetUniformLocation(App->program->defaultProgram,
+	glUniform4fv(glGetUniformLocation(shader,
 		"Vcolor"), 1, red);
 
 	glBegin(GL_LINES);
@@ -191,7 +198,7 @@ void ModuleRender::DrawAxis() const
 	glEnd();
 
 	float green[4] = { 0.0f, 1.0f, 0.0f, 1.0f };
-	glUniform4fv(glGetUniformLocation(App->program->defaultProgram,
+	glUniform4fv(glGetUniformLocation(shader,
 		"Vcolor"), 1, green);
 
 	glBegin(GL_LINES);
@@ -204,7 +211,7 @@ void ModuleRender::DrawAxis() const
 
 
 	float blue[4] = { 0.0f, 0.0f, 1.0f, 1.0f };
-	glUniform4fv(glGetUniformLocation(App->program->defaultProgram,
+	glUniform4fv(glGetUniformLocation(shader,
 		"Vcolor"), 1, blue);
 
 	glBegin(GL_LINES);
@@ -220,8 +227,9 @@ void ModuleRender::DrawAxis() const
 
 void ModuleRender::DrawFrustum() const
 {
+	unsigned shader = App->program->defaultShader->value;
 	math::Frustum *frustum = &App->scene->maincamera->frustum;
-	glUseProgram(App->program->defaultProgram);
+	glUseProgram(shader);
 
 	float3 corners[8];
 	frustum->GetCornerPoints(corners);
@@ -255,19 +263,19 @@ void ModuleRender::DrawFrustum() const
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 	float4x4 model(float4x4::identity);
-	glUniformMatrix4fv(glGetUniformLocation(App->program->defaultProgram,
+	glUniformMatrix4fv(glGetUniformLocation(shader,
 		"model"), 1, GL_TRUE, &model[0][0]);
 
 	float4x4 view(App->scene->maincamera->frustum.ViewMatrix());
-	glUniformMatrix4fv(glGetUniformLocation(App->program->defaultProgram,
+	glUniformMatrix4fv(glGetUniformLocation(shader,
 		"view"), 1, GL_TRUE, &view.Transposed()[0][0]);
 
 	float4x4 proj(App->scene->maincamera->frustum.ProjectionMatrix());
-	glUniformMatrix4fv(glGetUniformLocation(App->program->defaultProgram,
+	glUniformMatrix4fv(glGetUniformLocation(shader,
 		"proj"), 1, GL_TRUE, &proj.Transposed()[0][0]);
 
 	float red[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
-	glUniform4fv(glGetUniformLocation(App->program->defaultProgram,
+	glUniform4fv(glGetUniformLocation(shader,
 		"Vcolor"), 1, red);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
 	glEnableVertexAttribArray(0);
@@ -409,28 +417,14 @@ void ModuleRender::InitOpenGL() const
 	glViewport(0, 0, App->window->width, App->window->height);
 }
 
-void ModuleRender::CreateBlockUniforms()
-{ //TODO: optimize this calls
-	unsigned int uniformBlockIndexDefault = glGetUniformBlockIndex(App->program->defaultProgram, "Matrices");
-	//unsigned int uniformBlockIndexTexture = glGetUniformBlockIndex(App->program->textureProgram, "Matrices");
-	//unsigned int uniformBlockIndexSkybox = glGetUniformBlockIndex(App->program->skyboxProgram, "Matrices");
-	//unsigned int uniformBlockIndexFlat = glGetUniformBlockIndex(App->program->flatProgram, "Matrices");
-	//unsigned int uniformBlockIndexGouraud = glGetUniformBlockIndex(App->program->gouraudProgram, "Matrices");
-	//unsigned int uniformBlockIndexPhong = glGetUniformBlockIndex(App->program->phongProgram, "Matrices");
-
-	glUniformBlockBinding(App->program->defaultProgram, uniformBlockIndexDefault, 0);
-	//glUniformBlockBinding(App->program->textureProgram, uniformBlockIndexTexture, 0);
-	//glUniformBlockBinding(App->program->skyboxProgram, uniformBlockIndexSkybox, 0);
-	//glUniformBlockBinding(App->program->flatProgram, uniformBlockIndexFlat, 0);
-	//glUniformBlockBinding(App->program->gouraudProgram, uniformBlockIndexGouraud, 0);
-	//glUniformBlockBinding(App->program->phongProgram, uniformBlockIndexPhong, 0);
-
-	glGenBuffers(1, &UBO);
-	glBindBuffer(GL_UNIFORM_BUFFER, UBO);
-	glBufferData(GL_UNIFORM_BUFFER, 2 * sizeof(float4x4), NULL, GL_STATIC_DRAW);
-	glBindBuffer(GL_UNIFORM_BUFFER, 0);
-
-	glBindBufferRange(GL_UNIFORM_BUFFER, 0, UBO, 0, 2 * sizeof(float4x4));
+void ModuleRender::SetBlockUniforms() //TODO: change setup
+{ 
+	std::list<Shader*> shaders = App->resManager->GetAllPrograms();
+	for (auto& shader: shaders)
+	{
+		unsigned int uniformBlockIndex = glGetUniformBlockIndex(shader->value, "Matrices");
+		glUniformBlockBinding(shader->value, uniformBlockIndex, 0);
+	}
 }
 
 void ModuleRender::DrawGUI()

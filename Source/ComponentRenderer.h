@@ -8,13 +8,23 @@ struct Texture;
 struct Shader;
 struct Material
 {
-	Shader* shader;
-	float4 color;
-	Texture* texture;
-	float kAmbient;
-	float kDiffuse;
-	float kSpecular;
-	float shininess;
+	Shader* shader = nullptr;
+	float4 color = float4::one;
+	Texture* texture = nullptr;
+	float kAmbient = 0.3f;
+	float kDiffuse = 0.5f;
+	float kSpecular = 0.3f;
+	float shininess = 32.f;
+
+	void SetShader(Shader* s)
+	{
+		shader = s;
+	}
+
+	void SetTexture(Texture* t)
+	{
+		texture = t;
+	}
 };
 class ComponentRenderer :
 	public Component

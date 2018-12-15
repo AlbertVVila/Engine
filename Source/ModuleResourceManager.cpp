@@ -1,5 +1,9 @@
 #include "ModuleResourceManager.h"
+
+#include "Application.h"
 #include "ModuleTextures.h"
+#include "ModuleProgram.h"
+#include "ModuleRender.h"
 
 
 ModuleResourceManager::ModuleResourceManager()
@@ -52,33 +56,44 @@ void ModuleResourceManager::DeleteTexture(std::string filename)
 	}
 }
 
-unsigned ModuleResourceManager::GetProgram(std::string filename) const
+Shader* ModuleResourceManager::GetProgram(std::string filename) const
 {
-	std::map<std::string, std::pair<unsigned, unsigned>>::const_iterator it = shaderResources.find(filename);
+	std::map<std::string, std::pair<unsigned, Shader*>>::const_iterator it = shaderResources.find(filename);
 	if (it != shaderResources.end())
 	{
 		return it->second.second;
 	}
-	return 0;
+	return nullptr;
 }
 
-void ModuleResourceManager::AddProgram(std::string filename, unsigned program)
+std::list<Shader*> ModuleResourceManager::GetAllPrograms() const
 {
-	std::map<std::string, std::pair<unsigned, unsigned>>::iterator it = shaderResources.find(filename);
+	std::list<Shader*> programlist;
+	for (const auto & resource : shaderResources)
+	{
+		programlist.push_back(resource.second.second);
+	}
+	return programlist;
+}
+
+void ModuleResourceManager::AddProgram(Shader* shader)
+{
+	std::map<std::string, std::pair<unsigned, Shader*>>::iterator it = shaderResources.find(shader->file);
 	if (it != shaderResources.end())
 	{
 		it->second.first++;
 	}
 	else
 	{
-		shaderResources.insert(std::pair<std::string, std::pair<unsigned, unsigned>>
-			(filename, std::pair<unsigned, unsigned>(1, program)));
+		shaderResources.insert(std::pair<std::string, std::pair<unsigned, Shader*>>
+			(shader->file, std::pair<unsigned, Shader*>(1, shader)));
+		App->renderer->SetBlockUniforms(); //add Shader to block uniforms
 	}
 }
 
 void ModuleResourceManager::DeleteProgram(std::string filename)
 {
-	std::map<std::string, std::pair<unsigned, unsigned>>::iterator it = shaderResources.find(filename);
+	std::map<std::string, std::pair<unsigned, Shader*>>::iterator it = shaderResources.find(filename);
 	if (it != shaderResources.end())
 	{
 		if (it->second.first > 1)
