@@ -115,8 +115,8 @@ unsigned FileImporter::GetMeshSize(const aiMesh &mesh)
 	unsigned int ranges[2] = { mesh.mNumFaces * 3, mesh.mNumVertices };
 	//size += sizeof(int); //mesh content size ?
 	size += sizeof(ranges); //numfaces + numvertices
-	size += mesh.mNumFaces * 3 * sizeof(int); //indices
-	size += sizeof(float)*mesh.mNumVertices * 5; //vertices + texCoords
+	size += ranges[0]* 3 * sizeof(int); //indices
+	size += sizeof(float)*ranges[1] * 5; //vertices + texCoords
 	return size;
 }
 
@@ -159,7 +159,6 @@ GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshma
 		{
 			material->textureFile = App->fsystem->GetFilename(file.C_Str()); //we only save texture name
 		}
-
 	} 
 	for (unsigned int i = 0; i < node->mNumChildren; i++)
 	{

@@ -106,15 +106,52 @@ void ModuleScene::CreateSphere(const char * name, const float3 & pos, const Quat
 	if (mesh)
 	{
 		par_shapes_scale(mesh, size, size, size);
-
+		char* data;
+		SaveParShapesMesh(mesh, data);
 		ComponentMesh* componentmesh = (ComponentMesh*)gameobject->CreateComponent(ComponentType::Mesh);
-		componentmesh->SetMesh(mesh);
-
+		componentmesh->SetMesh(data);
+		delete data;
 		par_shapes_free_mesh(mesh);
 
 		ComponentMaterial* componentmaterial = (ComponentMaterial*)gameobject->CreateComponent(ComponentType::Material);
 		componentmaterial->shader = App->program->defaultProgram;
 		componentmaterial->color = color;
+	}
+}
+
+void ModuleScene::SaveParShapesMesh(par_shapes_mesh_s *mesh, char* data) //TODO: unify with importer
+{
+	unsigned size = 0u;
+	unsigned int ranges[2] = { mesh->ntriangles*3, mesh->npoints};
+	size += sizeof(ranges); //numfaces + numvertices
+	size += ranges[0] * 3 * sizeof(int); //indices
+	size += sizeof(float)*ranges[1] * 5; //vertices + texCoords -> change to normals
+
+	char *cursor = data;
+
+	unsigned rangeBytes = sizeof(ranges); //TODO: flag or something to indicate if mesh has texcoords, normals...
+	memcpy(cursor, ranges, rangeBytes);
+	cursor += rangeBytes;
+
+	unsigned int verticesBytes = sizeof(float)*mesh->npoints * 3;
+	memcpy(cursor, mesh->points, verticesBytes);
+	cursor += verticesBytes;
+
+	for (unsigned int i = 0; i < mesh->npoints; i++)
+	{
+		memcpy(cursor, &mesh.mTextureCoords[0][i].x, sizeof(float));
+		cursor += sizeof(float);
+		memcpy(cursor, &mesh.mTextureCoords[0][i].y, sizeof(float));
+		cursor += sizeof(float);
+	}
+
+	//unsigned int faceBytes = mesh.mNumFaces*3*(sizeof(int));
+	for (unsigned int i = 0; i < mesh.mNumFaces; i++)
+	{
+		aiFace *face = &mesh.mFaces[i];
+		assert(face->mNumIndices == 3);
+		memcpy(cursor, face->mIndices, sizeof(int) * 3);
+		cursor += sizeof(int) * 3;
 	}
 }
 

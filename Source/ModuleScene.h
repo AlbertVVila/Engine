@@ -9,6 +9,7 @@ class GameObject;
 class ComponentCamera;
 class ComponentLight;
 struct Texture;
+struct par_shapes_mesh_s;
 
 class ModuleScene :
 	public Module
@@ -28,6 +29,8 @@ public:
 	GameObject * CreateGameObject(const char * name, GameObject* parent);
 
 	void CreateSphere(const char * name, const float3 & pos, const Quat & rot, float size, unsigned int slices, unsigned int stacks, const float4 & color);
+
+	void SaveParShapesMesh(par_shapes_mesh_s * mesh, char* data);
 
 	void SaveScene(const GameObject &rootGO, const char* name);
 

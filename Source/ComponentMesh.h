@@ -6,7 +6,6 @@
 #include <vector>
 #include "Component.h"
 
-struct par_shapes_mesh_s;
 struct Texture;
 
 class ComponentMesh : public Component
@@ -21,7 +20,6 @@ public:
 	void Draw(unsigned int shaderProgram, const Texture* texture) const;
 	void DrawProperties() override;
 	void SetMesh(char * &mesh);
-	void SetMesh(par_shapes_mesh_s *mesh);
 	unsigned int GetMaterialIndex();
 
 	void ComputeBBox();
