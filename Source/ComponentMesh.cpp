@@ -54,7 +54,7 @@ void ComponentMesh::Draw(unsigned int shaderProgram) const
 void ComponentMesh::DrawProperties()
 {
 	ImGui::PushID(this);
-	if (ImGui::CollapsingHeader("Mesh"))
+	if (ImGui::CollapsingHeader("Mesh", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		bool removed = Component::DrawComponentState();
 		if (removed)

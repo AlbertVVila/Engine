@@ -9,6 +9,8 @@
 #include "Math/float4.h"
 #include "Math/Quat.h"
 
+struct Texture;
+
 struct JSON_value
 {
 public:
@@ -23,6 +25,7 @@ public:
 	void AddQuat(const char * name, Quat value);
 	void AddString(const char * name, const char* value);
 	void AddValue(const char * name, JSON_value *value);
+	void AddTexture(const char * name, Texture *texture);
 
 	int GetInt(const char* name);
 	unsigned GetUint(const char * name);
@@ -31,6 +34,8 @@ public:
 	float4 GetFloat4(const char * name);
 	Quat GetQuat(const char * name);
 	const char* GetString(const char * name);
+	Texture* GetTexture(const char * name);
+
 	JSON_value* GetValue(unsigned index);
 	JSON_value * GetValue(const char * name);
 	unsigned Size() const;

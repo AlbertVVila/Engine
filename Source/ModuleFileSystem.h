@@ -8,6 +8,7 @@
 
 #define ASSETS "Assets/"
 #define LIBRARY "Library/"
+#define MATERIALS LIBRARY "Materials/"
 #define MESHES LIBRARY "Meshes/"
 #define TEXTURES LIBRARY "Textures/"
 #define SCENES LIBRARY "Scenes/"

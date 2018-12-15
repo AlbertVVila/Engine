@@ -3,14 +3,29 @@
 
 #include "Component.h"
 #include "Math/float4.h"
+#include <list>
 
 struct Texture;
 struct Shader;
+
+enum class TextureType
+{
+	DIFFUSE=0,
+	SPECULAR,
+	OCCLUSION,
+	EMISSIVE
+};
 struct Material
 {
+	std::string name;
 	Shader* shader = nullptr;
 	float4 color = float4::one;
-	Texture* texture = nullptr;
+
+	Texture* diffuseTexture = nullptr;
+	Texture* specularTexture = nullptr;
+	Texture* occlusionTexture = nullptr;
+	Texture* emissiveTexture = nullptr;
+
 	float kAmbient = 0.3f;
 	float kDiffuse = 0.5f;
 	float kSpecular = 0.3f;
@@ -21,41 +36,62 @@ struct Material
 		shader = s;
 	}
 
-	void SetTexture(Texture* t)
+	void SetTexture(Texture* t, TextureType type)
 	{
-		texture = t;
+		switch (type)
+		{
+			case TextureType::DIFFUSE:
+				diffuseTexture = t;
+				break;
+			case TextureType::SPECULAR:
+				specularTexture = t;
+				break;
+			case TextureType::OCCLUSION:
+				occlusionTexture = t;
+				break;
+			case TextureType::EMISSIVE:
+				emissiveTexture = t;
+				break;
+		}
+	}
+
+	std::list<Texture*> GetTextures() const
+	{
+		std::list<Texture*> textures;
+		textures.push_back(diffuseTexture);
+		textures.push_back(specularTexture);
+		textures.push_back(occlusionTexture);
+		textures.push_back(emissiveTexture);
+		return textures;
 	}
 };
+
 class ComponentRenderer :
 	public Component
 {
 public:
-	ComponentRenderer(GameObject* gameobject, const char * material = nullptr);
+	ComponentRenderer(GameObject* gameobject);
 	ComponentRenderer(const ComponentRenderer& component);
 	~ComponentRenderer();
 
 	Component* Clone() override;
 	void DeleteTexture();
 	
-	void SetTexture(const char * data);
+	void SetTexture(const char * data, TextureType type);
 	void SetShader(const char * shaderName);
-	Texture * GetTexture() const;
+	Texture * GetTexture(TextureType type) const;
 	Shader* GetShader() const;
 	float4 GetColor() const;
 	void DrawProperties() override;
 	void Save(JSON_value *value) const override;
 	void Load(JSON_value *value) override;
 
+	void LoadMaterial(const char * material);
+
+	void SaveMaterial(JSON_value * materialJSON) const;
+
 public:
 	Material* material = nullptr;
-	//unsigned int shader = 0;
-	//Texture *texture = nullptr;
-	//float4 color = float4::one;
-
-	//float kAmbient = 0.2f;
-	//float kDiffuse = 0.5f;
-	//float kSpecular = 0.5f;
-	//float shininess = 64.f;
 
 private:
 	std::string selected_texture = "None selected";

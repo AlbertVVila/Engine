@@ -10,11 +10,11 @@
 
 struct Texture
 {
-	int id;
-	int width;
-	int height;
+	unsigned id;
+	unsigned width;
+	unsigned height;
 	std::string file;
-	Texture(int id, int width, int height, std::string file) : id(id), width(width), height(height), file(file)
+	Texture(unsigned id, unsigned width, unsigned height, std::string file) : id(id), width(width), height(height), file(file)
 	{}
 };
 

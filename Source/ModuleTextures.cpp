@@ -57,14 +57,14 @@ Texture * ModuleTextures::Load(const char * file) const //TODO: refactor texture
 	ILuint imageID;
 	ILboolean success;
 	ILenum error;
-	int width = 0;
-	int height = 0;
-	int pixelDepth = 0;
+	unsigned width = 0;
+	unsigned height = 0;
+	unsigned pixelDepth = 0;
 	int format = 0;
 
 	char *data;
 	std::string filename(file);
-	unsigned size = App->fsystem->Load((TEXTURES + filename + TEXTUREEXT).c_str(), &data); //TODO: use mini resource maanger to optimize this
+	unsigned size = App->fsystem->Load((TEXTURES + filename + TEXTUREEXT).c_str(), &data); 
 	ilGenImages(1, &imageID); 		// Generate the image ID
 	ilBindImage(imageID); 			// Bind the image
 	success = ilLoadL(IL_DDS, data, size);
@@ -122,9 +122,9 @@ unsigned int ModuleTextures::LoadCubeMap(const std::vector<std::string> &faces) 
 	unsigned int textureID;
 	glGenTextures(1, &textureID);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
-	int width = 0;
-	int height = 0;
-	int pixelDepth = 0;
+	unsigned width = 0;
+	unsigned height = 0;
+	unsigned pixelDepth = 0;
 	int format = 0;
 
 	for (unsigned int i=0; i< faces.size(); ++i)
@@ -170,7 +170,7 @@ unsigned int ModuleTextures::LoadCubeMap(const std::vector<std::string> &faces) 
 	return textureID;
 }
 
-void ModuleTextures::ImportImage(const char * file, const char* folder)
+void ModuleTextures::ImportImage(const char * file, const char* folder) //TODO: maybe flip needed to solve bug reversed image
 {
 	ILuint imageID;
 	ILboolean success;
