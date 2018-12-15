@@ -8,7 +8,7 @@
 #include "Component.h"
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
-#include "ComponentMaterial.h"
+#include "ComponentRenderer.h"
 
 #include "Application.h"
 #include "GameObject.h"
@@ -115,9 +115,9 @@ void ModuleScene::CreateSphere(const char * name, const float3 & pos, const Quat
 
 		par_shapes_free_mesh(mesh);
 
-		ComponentMaterial* componentmaterial = (ComponentMaterial*)gameobject->CreateComponent(ComponentType::Material);
-		componentmaterial->shader = App->program->defaultProgram;
-		componentmaterial->color = color;
+		ComponentRenderer* componentrenderer = (ComponentRenderer*)gameobject->CreateComponent(ComponentType::Renderer);
+		componentrenderer->shader = App->program->defaultProgram;
+		componentrenderer->color = color;
 	}
 }
 

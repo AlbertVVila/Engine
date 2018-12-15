@@ -105,7 +105,7 @@ Texture * ModuleTextures::Load(const char * file) const //TODO: refactor texture
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 
-		Texture* texture = new Texture(textureID, width, height);
+		Texture* texture = new Texture(textureID, width, height, file);
 		App->resManager->AddTexture(file, texture);
 		return texture;
 	}

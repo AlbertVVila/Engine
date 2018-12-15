@@ -2,6 +2,11 @@
 #define __ModuleProgram_h__
 
 #include "Module.h"
+struct Shader
+{
+	unsigned program;
+	std::string file;
+};
 
 class ModuleProgram : public Module
 {
@@ -21,13 +26,7 @@ public:
 
 	void ShaderLog(unsigned int shader, char* type) const;
 
-	//TODO: Use container for programs
 	unsigned defaultProgram = 0;
-	//unsigned textureProgram = 0;
-	//unsigned skyboxProgram = 0;
-	//unsigned flatProgram = 0;
-	//unsigned gouraudProgram = 0;
-	//unsigned phongProgram = 0;
 
 };
 

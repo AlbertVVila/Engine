@@ -11,7 +11,7 @@
 #include "ModuleFileSystem.h"
 #include "ModuleScene.h"
 #include <map>
-#include "ComponentMaterial.h"
+#include "ComponentRenderer.h"
 #include "ComponentMesh.h"
 
 FileImporter::FileImporter()
@@ -154,7 +154,7 @@ GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshma
 			mesh->meshUID = it->second;
 		}
 
-		ComponentMaterial* material = (ComponentMaterial*)gameobjects[i]->CreateComponent(ComponentType::Material); //TODO: avoid map and use resource manager
+		ComponentRenderer* material = (ComponentRenderer*)gameobjects[i]->CreateComponent(ComponentType::Renderer); //TODO: avoid map and use resource manager
 		aiMaterial * mat = scene->mMaterials[scene->mMeshes[node->mMeshes[i]]->mMaterialIndex];
 		aiTextureMapping mapping = aiTextureMapping_UV;
 		aiString file;

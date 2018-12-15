@@ -9,7 +9,7 @@
 #include "Component.h"
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
-#include "ComponentMaterial.h"
+#include "ComponentRenderer.h"
 #include "ComponentCamera.h"
 #include "ComponentLight.h"
 
@@ -88,14 +88,14 @@ void GameObject::Draw(const math::Frustum& frustum)
 
 	if (transform == nullptr) return;
 
-	ComponentMaterial* material = (ComponentMaterial*)GetComponent(ComponentType::Material);
+	ComponentRenderer* renderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
 	unsigned int shader = 0;
 	Texture * texture = nullptr;
 
-	if (material != nullptr && material->enabled)
+	if (renderer != nullptr && renderer->enabled)
 	{
-		shader = material->GetShader();
-		texture = material->GetTexture();
+		shader = renderer->GetShader();
+		texture = renderer->GetTexture();
 	}
 	else
 	{
@@ -119,10 +119,10 @@ void GameObject::Draw(const math::Frustum& frustum)
 		//}
 		glUniform1i(glGetUniformLocation(shader, "texture0"), 0);
 	}
-	if (material != nullptr) //TODO: redo workflow draw
+	if (renderer != nullptr) //TODO: redo workflow draw
 	{
 		glUniform4fv(glGetUniformLocation(shader,
-			"Vcolor"), 1, (GLfloat*)&material->GetColor());
+			"Vcolor"), 1, (GLfloat*)&renderer->GetColor());
 
 		glUniform1fv(glGetUniformLocation(shader,
 			"ambient"), 1, (GLfloat*)&App->scene->ambient);
@@ -136,13 +136,13 @@ void GameObject::Draw(const math::Frustum& frustum)
 
 		//mat
 		glUniform1fv(glGetUniformLocation(shader,
-			"k_ambient"), 1, (GLfloat*)&material->kAmbient);
+			"k_ambient"), 1, (GLfloat*)&renderer->kAmbient);
 		glUniform1fv(glGetUniformLocation(shader,
-			"k_diffuse"), 1, (GLfloat*)&material->kDiffuse);
+			"k_diffuse"), 1, (GLfloat*)&renderer->kDiffuse);
 		glUniform1fv(glGetUniformLocation(shader,
-			"k_specular"), 1, (GLfloat*)&material->kSpecular);
+			"k_specular"), 1, (GLfloat*)&renderer->kSpecular);
 		glUniform1fv(glGetUniformLocation(shader,
-			"shininess"), 1, (GLfloat*)&material->shininess);
+			"shininess"), 1, (GLfloat*)&renderer->shininess);
 	}
 
 	ModelTransform(shader);
@@ -321,7 +321,7 @@ Component * GameObject::CreateComponent(ComponentType type)
 		component = new ComponentMesh(this);
 		break;
 	case Material:
-		component = new ComponentMaterial(this);
+		component = new ComponentRenderer(this);
 		break;
 	case Light:
 		component = new ComponentLight(this);

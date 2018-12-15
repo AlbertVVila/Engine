@@ -1,4 +1,4 @@
-#include "ComponentMaterial.h"
+#include "ComponentRenderer.h"
 #include "Application.h"
 #include "ModuleProgram.h"
 #include "ModuleTextures.h"
@@ -10,13 +10,13 @@
 #include "assimp/material.h"
 #include "JSON.h"
 #include <vector>
-ComponentMaterial::ComponentMaterial(GameObject* gameobject, const char * material) : Component(gameobject, ComponentType::Material)
+ComponentRenderer::ComponentRenderer(GameObject* gameobject, const char * material) : Component(gameobject, ComponentType::Renderer)
 {
 	this->shader = App->program->defaultProgram;
 	SetTexture(material);
 }
 
-ComponentMaterial::ComponentMaterial(const ComponentMaterial& component) : Component(component)
+ComponentRenderer::ComponentRenderer(const ComponentRenderer& component) : Component(component)
 {
 	texture = component.texture; //TODO: delete texture diferent materials?
 	shader = component.shader;
@@ -24,17 +24,17 @@ ComponentMaterial::ComponentMaterial(const ComponentMaterial& component) : Compo
 	textureFile = component.textureFile;
 }
 
-ComponentMaterial::~ComponentMaterial()
+ComponentRenderer::~ComponentRenderer()
 {
 	DeleteTexture();
 }
 
-Component * ComponentMaterial::Clone()
+Component * ComponentRenderer::Clone()
 {
-	return new ComponentMaterial(*this);
+	return new ComponentRenderer(*this);
 }
 
-void ComponentMaterial::DeleteTexture()
+void ComponentRenderer::DeleteTexture()
 {
 	if (texture != nullptr)
 	{
@@ -43,7 +43,7 @@ void ComponentMaterial::DeleteTexture()
 	RELEASE(texture);
 }
 
-void ComponentMaterial::SetTexture(const char * newTexture)
+void ComponentRenderer::SetTexture(const char * newTexture)
 {
 	if (newTexture != nullptr)
 	{
@@ -51,30 +51,30 @@ void ComponentMaterial::SetTexture(const char * newTexture)
 	}
 }
 
-void ComponentMaterial::SetShader(const char * shaderName)
+void ComponentRenderer::SetShader(const char * shaderName)
 {
 	if (shaderName != 0)
 	{
-		shader = App->program->GetProgram(shaderName);
+		shader = App->program->GetProgram(shaderName); //TODO: refactor shader + texture + material
 	}
 }
 
-Texture * ComponentMaterial::GetTexture() const
+Texture * ComponentRenderer::GetTexture() const
 {
-	return texture;
+	return material->texture;
 }
 
-unsigned int ComponentMaterial::GetShader() const
+Shader * ComponentRenderer::GetShader() const
 {
-	return shader;
+	return material->shader;
 }
 
-float4 ComponentMaterial::GetColor() const
+float4 ComponentRenderer::GetColor() const
 {
-	return color;
+	return material->color;
 }
 
-void ComponentMaterial::DrawProperties()
+void ComponentRenderer::DrawProperties()
 {
 	ImGui::PushID(this);
 	if (ImGui::CollapsingHeader("Material"))
@@ -128,7 +128,7 @@ void ComponentMaterial::DrawProperties()
 	ImGui::PopID();
 }
 
-void ComponentMaterial::Save(JSON_value * value) const
+void ComponentRenderer::Save(JSON_value * value) const
 {
 	Component::Save(value);
 	value->AddFloat4("Color", color);
@@ -142,7 +142,7 @@ void ComponentMaterial::Save(JSON_value * value) const
 	}
 }
 
-void ComponentMaterial::Load(JSON_value * value)
+void ComponentRenderer::Load(JSON_value * value)
 {
 	Component::Load(value);
 	color = value->GetFloat4("Color");

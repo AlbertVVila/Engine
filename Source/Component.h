@@ -8,7 +8,7 @@ enum ComponentType //TODO: enum class
 {
 	Transform = 0,
 	Mesh,
-	Material,
+	Renderer,
 	Camera,
 	Light
 };
