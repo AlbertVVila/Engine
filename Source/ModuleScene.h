@@ -30,7 +30,7 @@ public:
 
 	void CreateSphere(const char * name, const float3 & pos, const Quat & rot, float size, unsigned int slices, unsigned int stacks, const float4 & color);
 
-	void SaveParShapesMesh(par_shapes_mesh_s * mesh, char* data);
+	unsigned SaveParShapesMesh(const par_shapes_mesh_s & mesh, char** data);
 
 	void SaveScene(const GameObject &rootGO, const char* name);
 

@@ -87,6 +87,7 @@ void ComponentMesh::SetMesh(char * &mesh) //TODO: pass by reference or know size
 {
 	assert(mesh != nullptr);
 	DeleteBuffers();
+	char *data = mesh;
 
 	unsigned int numIndices = *(int*)mesh;
 	mesh += sizeof(int);
@@ -164,6 +165,7 @@ void ComponentMesh::SetMesh(char * &mesh) //TODO: pass by reference or know size
 	}
 	//materialIndex = mesh->mMaterialIndex; TODO import/load materials
 	ComputeBBox();
+	delete[] data;
 }
 
 unsigned int ComponentMesh::GetMaterialIndex()

@@ -101,16 +101,18 @@ void ModuleScene::CreateSphere(const char * name, const float3 & pos, const Quat
 	gameobject->transform = componenttransform;
 
 	componenttransform->SetRotation(rot);
-	componenttransform->SetPosition(pos); //TODO: Bounding Box not resizing correctly on rotation + Bug Color selection
+	componenttransform->SetPosition(pos); //TODO: Bounding Box not resizing correctly on rotation
 
-	if (mesh)
+	if (mesh) //TODO: abstract to multiple primitives
 	{
 		par_shapes_scale(mesh, size, size, size);
-		char* data;
-		SaveParShapesMesh(mesh, data);
+		char* data = nullptr;
 		ComponentMesh* componentmesh = (ComponentMesh*)gameobject->CreateComponent(ComponentType::Mesh);
-		componentmesh->SetMesh(data);
-		delete data;
+		componentmesh->meshUID = GetNewUID();
+		unsigned size = SaveParShapesMesh(*mesh, &data);
+		App->fsystem->Save((MESHES + std::to_string(componentmesh->meshUID) + MESHEXTENSION).c_str(), data, size);
+		componentmesh->SetMesh(data); //TODO: we should reuse mesh files for primitives
+
 		par_shapes_free_mesh(mesh);
 
 		ComponentMaterial* componentmaterial = (ComponentMaterial*)gameobject->CreateComponent(ComponentType::Material);
@@ -119,40 +121,45 @@ void ModuleScene::CreateSphere(const char * name, const float3 & pos, const Quat
 	}
 }
 
-void ModuleScene::SaveParShapesMesh(par_shapes_mesh_s *mesh, char* data) //TODO: unify with importer
+unsigned ModuleScene::SaveParShapesMesh(const par_shapes_mesh_s &mesh, char** data) //TODO: unify with importer
 {
 	unsigned size = 0u;
-	unsigned int ranges[2] = { mesh->ntriangles*3, mesh->npoints};
+	unsigned ranges[2] = { mesh.ntriangles*3, mesh.npoints};
 	size += sizeof(ranges); //numfaces + numvertices
 	size += ranges[0] * 3 * sizeof(int); //indices
-	size += sizeof(float)*ranges[1] * 5; //vertices + texCoords -> change to normals
+	size += sizeof(float)*ranges[1] * 5; //vertices + texCoords -> add normals
 
-	char *cursor = data;
+	*data = new char[size];
+	char *cursor = *data;
 
 	unsigned rangeBytes = sizeof(ranges); //TODO: flag or something to indicate if mesh has texcoords, normals...
 	memcpy(cursor, ranges, rangeBytes);
 	cursor += rangeBytes;
 
-	unsigned int verticesBytes = sizeof(float)*mesh->npoints * 3;
-	memcpy(cursor, mesh->points, verticesBytes);
+	unsigned verticesBytes = sizeof(float)*mesh.npoints * 3;
+	memcpy(cursor, mesh.points, verticesBytes);
 	cursor += verticesBytes;
 
-	for (unsigned int i = 0; i < mesh->npoints; i++)
-	{
-		memcpy(cursor, &mesh.mTextureCoords[0][i].x, sizeof(float));
-		cursor += sizeof(float);
-		memcpy(cursor, &mesh.mTextureCoords[0][i].y, sizeof(float));
-		cursor += sizeof(float);
-	}
+	unsigned tcoordsBytes = sizeof(float)*mesh.npoints * 2;
+	memcpy(cursor, mesh.tcoords, tcoordsBytes);
+	cursor += tcoordsBytes;
 
-	//unsigned int faceBytes = mesh.mNumFaces*3*(sizeof(int));
-	for (unsigned int i = 0; i < mesh.mNumFaces; i++)
+	//for (unsigned i = 0; i < mesh.npoints*2; i++)
+	//{
+	//	memcpy(cursor, &mesh.tcoords[i], sizeof(float));
+	//	cursor += sizeof(float);
+	//}
+	short mask = 0;
+	for (unsigned i = 0; i < mesh.ntriangles*3; i++)
 	{
-		aiFace *face = &mesh.mFaces[i];
-		assert(face->mNumIndices == 3);
-		memcpy(cursor, face->mIndices, sizeof(int) * 3);
-		cursor += sizeof(int) * 3;
+		memcpy(cursor, &mesh.triangles[i], sizeof(short)); 
+		cursor += sizeof(short);
+		memcpy(cursor, &mask, sizeof(short));
+		cursor += sizeof(short); //implicitly converting to unsigned
 	}
+	//memcpy(cursor, mesh.triangles, sizeof(short)*mesh.ntriangles * 3);
+	//cursor += sizeof(int)*mesh.ntriangles * 3; //copy of indices
+	return size;
 }
 
 
