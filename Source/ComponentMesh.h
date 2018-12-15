@@ -17,7 +17,7 @@ public:
 	~ComponentMesh();
 
 	Component* Clone() override;
-	void Draw(unsigned int shaderProgram, const Texture* texture) const;
+	void Draw(unsigned int shaderProgram) const;
 	void DrawProperties() override;
 	void SetMesh(char * &mesh);
 	unsigned int GetMaterialIndex();

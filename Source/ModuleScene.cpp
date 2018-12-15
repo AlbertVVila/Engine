@@ -127,7 +127,7 @@ unsigned ModuleScene::SaveParShapesMesh(const par_shapes_mesh_s &mesh, char** da
 	unsigned ranges[2] = { mesh.ntriangles*3, mesh.npoints};
 	size += sizeof(ranges); //numfaces + numvertices
 	size += ranges[0] * 3 * sizeof(int); //indices
-	size += sizeof(float)*ranges[1] * 5; //vertices + texCoords -> add normals
+	size += sizeof(float)*ranges[1] * 8; //vertices + texCoords + normals //TODO: case Cube with no normals!!
 
 	*data = new char[size];
 	char *cursor = *data;
@@ -140,15 +140,14 @@ unsigned ModuleScene::SaveParShapesMesh(const par_shapes_mesh_s &mesh, char** da
 	memcpy(cursor, mesh.points, verticesBytes);
 	cursor += verticesBytes;
 
+	unsigned normalsBytes = sizeof(float)*mesh.npoints * 3;
+	memcpy(cursor, mesh.normals, normalsBytes);
+	cursor += normalsBytes;
+
 	unsigned tcoordsBytes = sizeof(float)*mesh.npoints * 2;
 	memcpy(cursor, mesh.tcoords, tcoordsBytes);
 	cursor += tcoordsBytes;
 
-	//for (unsigned i = 0; i < mesh.npoints*2; i++)
-	//{
-	//	memcpy(cursor, &mesh.tcoords[i], sizeof(float));
-	//	cursor += sizeof(float);
-	//}
 	short mask = 0;
 	for (unsigned i = 0; i < mesh.ntriangles*3; i++)
 	{
@@ -157,8 +156,7 @@ unsigned ModuleScene::SaveParShapesMesh(const par_shapes_mesh_s &mesh, char** da
 		memcpy(cursor, &mask, sizeof(short));
 		cursor += sizeof(short); //implicitly converting to unsigned
 	}
-	//memcpy(cursor, mesh.triangles, sizeof(short)*mesh.ntriangles * 3);
-	//cursor += sizeof(int)*mesh.ntriangles * 3; //copy of indices
+
 	return size;
 }
 

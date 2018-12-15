@@ -8,6 +8,7 @@ layout (std140) uniform Matrices
 
 out vec4 Fragcolor;
 uniform vec4 Vcolor;
+uniform sampler2D texture0;
 
 uniform vec3  lightPos;
 uniform float ambient;
@@ -18,6 +19,7 @@ uniform float k_specular;
 
 in vec3 normal;
 in vec3 position;
+in vec2 uv0;
 
 void main()
 {
@@ -36,5 +38,5 @@ void main()
 	}
 
 	float intensity = k_ambient * ambient + k_diffuse*diffuse + k_specular*specular;
-	Fragcolor = intensity*Vcolor;
+	Fragcolor = texture2D(texture0, uv0)*intensity*Vcolor;
 }

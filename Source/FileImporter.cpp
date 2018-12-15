@@ -91,6 +91,10 @@ void FileImporter::ImportMesh(const aiMesh &mesh, char *data)
 	memcpy(cursor, mesh.mVertices, verticesBytes);
 	cursor += verticesBytes;
 
+	unsigned int normalBytes = sizeof(float)*mesh.mNumVertices * 3;
+	memcpy(cursor, mesh.mNormals, normalBytes);
+	cursor += verticesBytes;
+
 	for (unsigned int i = 0; i < mesh.mNumVertices; i++)
 	{
 		memcpy(cursor, &mesh.mTextureCoords[0][i].x, sizeof(float));
@@ -116,7 +120,7 @@ unsigned FileImporter::GetMeshSize(const aiMesh &mesh)
 	//size += sizeof(int); //mesh content size ?
 	size += sizeof(ranges); //numfaces + numvertices
 	size += ranges[0]* 3 * sizeof(int); //indices
-	size += sizeof(float)*ranges[1] * 5; //vertices + texCoords
+	size += sizeof(float)*ranges[1] * 8; //vertices + texCoords + normals
 	return size;
 }
 

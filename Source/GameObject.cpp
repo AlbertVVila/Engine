@@ -19,6 +19,7 @@
 #include "ModuleCamera.h"
 #include "ModuleInput.h"
 #include "ModuleScene.h"
+#include "ModuleTextures.h"
 
 #include "JSON.h"
 
@@ -108,6 +109,16 @@ void GameObject::Draw(const math::Frustum& frustum)
 
 	glUseProgram(shader);
 
+	if (texture != nullptr)
+	{
+		glActiveTexture(GL_TEXTURE0);
+		if (texture != nullptr)
+		{
+			glBindTexture(GL_TEXTURE_2D, texture->id);
+		}
+		//}
+		glUniform1i(glGetUniformLocation(shader, "texture0"), 0);
+	}
 	if (material != nullptr) //TODO: redo workflow draw
 	{
 		glUniform4fv(glGetUniformLocation(shader,
@@ -141,7 +152,7 @@ void GameObject::Draw(const math::Frustum& frustum)
 	{
 		if (mesh->enabled)
 		{
-			((ComponentMesh*)mesh)->Draw(shader, texture);
+			((ComponentMesh*)mesh)->Draw(shader);
 		}
 	}
 	glUseProgram(0);

@@ -40,22 +40,8 @@ Component * ComponentMesh::Clone()
 	return new ComponentMesh(*this);
 }
 
-void ComponentMesh::Draw(unsigned int shaderProgram, const Texture* texture) const
+void ComponentMesh::Draw(unsigned int shaderProgram) const
 {
-	glActiveTexture(GL_TEXTURE0);
-	//if (App->sceneLoader->checkers)
-	//{
-	//	glBindTexture(GL_TEXTURE_2D, App->sceneLoader->checkersTexture.id);
-	//}
-	//else
-	//{
-	if (texture != nullptr)
-	{
-		glBindTexture(GL_TEXTURE_2D, texture->id);
-	}
-	//}
-	glUniform1i(glGetUniformLocation(shaderProgram, "texture0"), 0);
-
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, 0);
 
@@ -98,6 +84,9 @@ void ComponentMesh::SetMesh(char * &mesh) //TODO: pass by reference or know size
 	float* vertices = (float*)mesh;
 	mesh += sizeof(float) * 3 * numVertices;
 	
+	float* normals = (float*)mesh;
+	mesh += sizeof(float) * 3 * numVertices;
+
 	float* texCoords = (float*)mesh;
 	mesh += sizeof(float) * 2 * numVertices;
 
@@ -110,10 +99,11 @@ void ComponentMesh::SetMesh(char * &mesh) //TODO: pass by reference or know size
 	// Buffer Creation with vertex data
 	glGenBuffers(1, &VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*numVertices * 5, NULL, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*numVertices * 8, NULL, GL_STATIC_DRAW);
 
 	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(GLfloat) * 3 * numVertices, vertices);
-	glBufferSubData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 3 * numVertices, sizeof(GLfloat) * 2 * numVertices, texCoords);
+	glBufferSubData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 3 * numVertices, sizeof(GLfloat) * 3 * numVertices, normals);
+	glBufferSubData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * numVertices, sizeof(GLfloat) * 2 * numVertices, texCoords);
 	//float * pbuffer = (float*)glMapBufferRange(GL_ARRAY_BUFFER, sizeof(GLfloat) * 3 * numVertices, sizeof(GLfloat) * 2 * numVertices, GL_MAP_WRITE_BIT);
 	//memcpy(pbuffer, texCoords, sizeof(float) * 2 * numVertices);
 	//glUnmapBuffer(GL_ARRAY_BUFFER);
@@ -137,12 +127,21 @@ void ComponentMesh::SetMesh(char * &mesh) //TODO: pass by reference or know size
 	);
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(
-		1,                  // attribute 0
-		2,                  // number of componentes (3 floats)
+		1,                  // attribute 1
+		3,                  // number of componentes (3 floats)
 		GL_FLOAT,           // data type
 		GL_FALSE,           // should be normalized?
 		0,                  // stride
 		(void*)(sizeof(float) * 3 * numVertices)       // array buffer offset
+	);
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(
+		2,                  // attribute 2
+		2,                  // number of componentes (3 floats)
+		GL_FLOAT,           // data type
+		GL_FALSE,           // should be normalized?
+		0,                  // stride
+		(void*)(sizeof(float) * 6 * numVertices)       // array buffer offset
 	);
 
 	// Disable VAO
