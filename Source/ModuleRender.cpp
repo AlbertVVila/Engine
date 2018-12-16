@@ -144,7 +144,7 @@ void ModuleRender::OnResize()
 
 void ModuleRender::DrawGizmos() const
 {
-	unsigned shader = App->program->defaultShader->value;
+	unsigned shader = App->program->defaultShader->id;
 	glUseProgram(shader);
 	math::float4x4 model = math::float4x4::identity;
 	glUniformMatrix4fv(glGetUniformLocation(shader,
@@ -163,7 +163,7 @@ void ModuleRender::DrawGizmos() const
 void ModuleRender::DrawLines() const
 {
 	float white[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
-	glUniform4fv(glGetUniformLocation(App->program->defaultShader->value,
+	glUniform4fv(glGetUniformLocation(App->program->defaultShader->id,
 		"Vcolor"), 1, white);
 
 	glLineWidth(1.0f);
@@ -182,7 +182,7 @@ void ModuleRender::DrawLines() const
 
 void ModuleRender::DrawAxis() const
 {
-	unsigned shader = App->program->defaultShader->value;
+	unsigned shader = App->program->defaultShader->id;
 	glLineWidth(2.0f);
 
 	float red[4] = { 1.0f, 0.0f, 0.0f, 1.0f };
@@ -227,7 +227,7 @@ void ModuleRender::DrawAxis() const
 
 void ModuleRender::DrawFrustum() const
 {
-	unsigned shader = App->program->defaultShader->value;
+	unsigned shader = App->program->defaultShader->id;
 	math::Frustum *frustum = &App->scene->maincamera->frustum;
 	glUseProgram(shader);
 
@@ -422,8 +422,8 @@ void ModuleRender::SetBlockUniforms() //TODO: change setup
 	std::list<Shader*> shaders = App->resManager->GetAllPrograms();
 	for (auto& shader: shaders)
 	{
-		unsigned int uniformBlockIndex = glGetUniformBlockIndex(shader->value, "Matrices");
-		glUniformBlockBinding(shader->value, uniformBlockIndex, 0);
+		unsigned int uniformBlockIndex = glGetUniformBlockIndex(shader->id, "Matrices");
+		glUniformBlockBinding(shader->id, uniformBlockIndex, 0);
 	}
 }
 

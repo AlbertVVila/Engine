@@ -6,9 +6,9 @@
 
 struct Shader
 {
-	unsigned value;
+	unsigned id;
 	std::string file;
-	Shader(unsigned program, std::string file) : value(program), file(file) {}
+	Shader(unsigned program, std::string file) : id(program), file(file) {}
 };
 
 class ModuleProgram : public Module

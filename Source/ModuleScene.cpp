@@ -116,7 +116,7 @@ void ModuleScene::CreateSphere(const char * name, const float3 & pos, const Quat
 		par_shapes_free_mesh(mesh);
 
 		ComponentRenderer* componentrenderer = (ComponentRenderer*)gameobject->CreateComponent(ComponentType::Renderer);
-		componentrenderer->material->color = color;
+		componentrenderer->material->diffuse_color = color;
 	}
 }
 

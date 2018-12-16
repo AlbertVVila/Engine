@@ -157,11 +157,14 @@ GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshma
 		ComponentRenderer* renderer = (ComponentRenderer*)gameobjects[i]->CreateComponent(ComponentType::Renderer); //TODO: avoid map and use resource manager
 		aiMaterial * mat = scene->mMaterials[scene->mMeshes[node->mMeshes[i]]->mMaterialIndex];
 		aiTextureMapping mapping = aiTextureMapping_UV;
-		aiString texture;
-		mat->GetTexture(aiTextureType_DIFFUSE, 0, &texture, &mapping, 0);
-		if (texture.length > 0)
+		for (unsigned i = 1; i <= 4; i++) //Gets diffuse,specular,occlusion and emissive
 		{
-			renderer->material->texture->file = App->fsystem->GetFilename(texture.C_Str()); //we only save texture name
+			aiString texture;
+			mat->GetTexture((aiTextureType)i, 0, &texture, &mapping, 0);
+			if (texture.length > 0)
+			{
+				renderer->material->textures[i]->file = App->fsystem->GetFilename(texture.C_Str()); //we only save texture name
+			}
 		}
 	} 
 	for (unsigned int i = 0; i < node->mNumChildren; i++)

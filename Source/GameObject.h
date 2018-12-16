@@ -44,7 +44,7 @@ public:
 
 private:
 	float4x4 GetLocalTransform() const;
-	void ModelTransform(unsigned int shader) const;
+	void UpdateModel(unsigned int shader) const;
 
 	void DrawBBox() const; //TODO: improve BBOX draw
 

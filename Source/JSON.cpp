@@ -172,7 +172,7 @@ float3 JSON_value::GetFloat3(const char * name)
 	else
 	{
 		LOG("Member %s not found!", name);
-		return float3::zero;
+		return float3::one;
 	}
 }
 

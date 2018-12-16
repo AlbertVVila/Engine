@@ -112,7 +112,7 @@ void ModuleProgram::ShaderLog(unsigned int shader, char * type) const
 
 bool ModuleProgram::CleanUp()
 {
-	glDeleteProgram(defaultShader->value);
+	glDeleteProgram(defaultShader->id);
 	RELEASE(defaultShader);
 	return true;
 }

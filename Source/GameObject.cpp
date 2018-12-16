@@ -88,72 +88,83 @@ void GameObject::Draw(const math::Frustum& frustum)
 
 	if (transform == nullptr) return;
 
-	ComponentRenderer* renderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
-	Shader* shader = nullptr;
-	Texture * texture = nullptr;
-
-	if (renderer != nullptr && renderer->enabled)
-	{
-		shader = renderer->GetShader();
-		texture = renderer->GetTexture();
-	}
-	else
-	{
-		shader = App->program->defaultShader;
-	}
-
 	if (drawBBox)
 	{
 		DrawBBox();
 	}
 
-	glUseProgram(shader->value);
+	ComponentRenderer* renderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
+	if (renderer == nullptr || !renderer->enabled) return;
 
-	if (texture != nullptr)
+	Material* mat = renderer->material;
+	if (mat == nullptr) return;
+	if (mat->shader == nullptr) return;
+	Shader* shader = mat->shader;
+
+	glUseProgram(shader->id);
+
+	for (unsigned int i = 0; i < MAXTEXTURES; i++)
 	{
-		glActiveTexture(GL_TEXTURE0);
-		if (texture != nullptr)
+		if (mat->textures[i] == nullptr) continue;
+
+		glActiveTexture(GL_TEXTURE0 + i); 
+		
+		char* textureName;
+		switch ((TextureType)i)
 		{
-			glBindTexture(GL_TEXTURE_2D, texture->id);
+			case TextureType::DIFFUSE:
+				textureName = "diffuse_texture";
+				glUniform4fv(glGetUniformLocation(shader->id,
+					"diffuse_color"), 1, (GLfloat*)&mat->diffuse_color);
+				break;
+
+			case TextureType::SPECULAR:
+				textureName = "diffuse_texture";
+				glUniform3fv(glGetUniformLocation(shader->id,
+					"specular_color"), 1, (GLfloat*)&mat->specular_color);
+				break;
+
+			case TextureType::OCCLUSION:
+				textureName = "occlusion_texture";
+				break;
+
+			case TextureType::EMISSIVE:
+				textureName = "emissive_texture";
+				glUniform3fv(glGetUniformLocation(shader->id,
+					"emissive_color"), 1, (GLfloat*)&mat->emissive_color);
+				break;
 		}
-		//}
-		glUniform1i(glGetUniformLocation(shader->value, "texture0"), 0);
-		glUniform1i(glGetUniformLocation(shader->value, "readTexture"), true);
+		glUniform1i(glGetUniformLocation(shader->id,  textureName), i);
+		glBindTexture(GL_TEXTURE_2D, mat->textures[i]->id);
 	}
-	if (renderer != nullptr) //TODO: redo workflow draw
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	if (App->scene->light != nullptr)
 	{
-		glUniform4fv(glGetUniformLocation(shader->value,
-			"Vcolor"), 1, (GLfloat*)&renderer->GetColor());
-
-		glUniform1fv(glGetUniformLocation(shader->value,
-			"ambient"), 1, (GLfloat*)&App->scene->ambient);
-
-
-		if (App->scene->light != nullptr)
-		{
-			glUniform3fv(glGetUniformLocation(shader->value,
-				"lightPos"), 1, (GLfloat*)&App->scene->light->position);
-		}
-
-		//mat
-		glUniform1fv(glGetUniformLocation(shader->value,
-			"k_ambient"), 1, (GLfloat*)&renderer->material->kAmbient);
-		glUniform1fv(glGetUniformLocation(shader->value,
-			"k_diffuse"), 1, (GLfloat*)&renderer->material->kDiffuse);
-		glUniform1fv(glGetUniformLocation(shader->value,
-			"k_specular"), 1, (GLfloat*)&renderer->material->kSpecular);
-		glUniform1fv(glGetUniformLocation(shader->value,
-			"shininess"), 1, (GLfloat*)&renderer->material->shininess);
+		glUniform3fv(glGetUniformLocation(shader->id,
+			"lightPos"), 1, (GLfloat*)&App->scene->light->position);
 	}
 
-	ModelTransform(shader->value);
+	//mat
+	glUniform1fv(glGetUniformLocation(shader->id,
+		"k_ambient"), 1, (GLfloat*)&mat->kAmbient);
+	glUniform1fv(glGetUniformLocation(shader->id,
+		"k_diffuse"), 1, (GLfloat*)&mat->kDiffuse);
+	glUniform1fv(glGetUniformLocation(shader->id,
+		"k_specular"), 1, (GLfloat*)&mat->kSpecular);
+	glUniform1fv(glGetUniformLocation(shader->id,
+		"shininess"), 1, (GLfloat*)&mat->shininess);
+
+
+	UpdateModel(shader->id);
 
 	std::vector<Component*> meshes = GetComponents(ComponentType::Mesh);
 	for (auto &mesh: meshes)
 	{
 		if (mesh->enabled)
 		{
-			((ComponentMesh*)mesh)->Draw(shader->value);
+			((ComponentMesh*)mesh)->Draw(shader->id);
 		}
 	}
 	glUseProgram(0);
@@ -416,7 +427,7 @@ float4x4 GameObject::GetLocalTransform() const
 	return float4x4::FromTRS(transform->position, transform->rotation, transform->scale);
 }
 
-void GameObject::ModelTransform(unsigned int shader) const
+void GameObject::UpdateModel(unsigned int shader) const
 {
 	glUniformMatrix4fv(glGetUniformLocation(shader,
 		"model"), 1, GL_TRUE, &GetGlobalTransform()[0][0]);
@@ -444,7 +455,7 @@ AABB GameObject::GetBoundingBox() const
 void GameObject::DrawBBox() const
 { //TODO: optimize with VAO
 
-	unsigned shader = App->program->defaultShader->value;
+	unsigned shader = App->program->defaultShader->id;
 	glUseProgram(shader);
 	AABB bbox = GetBoundingBox();
 	GLfloat vertices[] = {
