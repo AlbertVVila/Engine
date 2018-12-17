@@ -1,4 +1,5 @@
 #version 330 core
+#extension GL_ARB_explicit_uniform_location : enable
 
 struct Material
 {
@@ -19,6 +20,11 @@ struct Material
     float     k_specular;
 };
 
+layout (std140) uniform Matrices
+{
+    mat4 proj;
+    mat4 view;
+};
 
 in vec3 normal;
 in vec3 position;
@@ -28,15 +34,16 @@ out vec4 Fragcolor;
 
 layout(location=0) uniform Material material;
 //uniform vec3 view_pos;
+uniform vec3 lightPos;
 
 vec4 get_diffuse_color()
 {
 	return texture(material.diffuse_texture, uv0)*material.diffuse_color;
 }
 
-vec4 get_specular_color()
+vec3 get_specular_color()
 {
-	return texture(material.specular_texture, uv0)*material.specular_color;
+	return texture(material.specular_texture, uv0).rgb*material.specular_color;
 }
 
 vec3 get_occlusion_color()
@@ -68,25 +75,25 @@ void main()
 
 	float diffuse = lambert(lightDir, normal);
 	float specular = 0.0;
-	if(diffuse> 0.0 && k_specular && shininess > 0.0)
+	if(diffuse> 0.0 && material.k_specular>0.0 && material.shininess > 0.0)
 	{
 		vec3 viewPos = transpose(mat3(view))*(-view[3].xyz);
-		specular = specular_phong(lightDir, position, normal, viewPos, shininess);
+		specular = specular_phong(lightDir, position, normal, viewPos, material.shininess);
 	}
 
-	vec3 emissive_color = texture2D(texture3, uv0).rgb;
-	vec3 occlusion_color= texture2D(texture2, uv0).rgb;
-	vec4 specular_color = texture2D(texture1, uv0);
-	vec4 diffuse_color = texture2D(texture0, uv0);
+	vec3 emissive_color = get_emissive_color();
+	vec3 occlusion_color= get_occlusion_color();
+	vec3 specular_color = get_specular_color();
+	vec4 diffuse_color = get_diffuse_color();
 
 	vec3 color = emissive_color + //emissive
-				 diffuse_color.rgb * occlusion_color * k_ambient + //ambient
-				 diffuse_color.rgb * diffuse * k_diffuse + //diffuse
-				 specular_color.rgb * specular * k_specular + //specular
+				 diffuse_color.rgb * occlusion_color * material.k_ambient + //ambient
+				 diffuse_color.rgb * diffuse * material.k_diffuse + //diffuse
+				 specular_color.rgb * specular * material.k_specular; //specular
 				 
-	Fragcolor = vec4(color, diffuse_color.a);
+	Fragcolor = vec4(emissive_color, diffuse_color.a);
 
-	/*float intensity = k_ambient * ambient + k_diffuse*diffuse + k_specular*specular;
+	/*float intensity = material.k_ambient * ambient + material.k_diffuse*diffuse + material.k_specular*specular;
 	
 	if(readTexture)
 	{

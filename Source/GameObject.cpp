@@ -9,9 +9,9 @@
 #include "Component.h"
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
-#include "ComponentRenderer.h"
 #include "ComponentCamera.h"
 #include "ComponentLight.h"
+#include "ComponentRenderer.h"
 
 #include "Application.h"
 #include "ModuleProgram.h"
