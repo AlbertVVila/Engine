@@ -113,25 +113,25 @@ void GameObject::Draw(const math::Frustum& frustum)
 		switch ((TextureType)i)
 		{
 			case TextureType::DIFFUSE:
-				textureName = "diffuse_texture";
+				textureName = "material.diffuse_texture";
 				glUniform4fv(glGetUniformLocation(shader->id,
-					"diffuse_color"), 1, (GLfloat*)&mat->diffuse_color);
+					"material.diffuse_color"), 1, (GLfloat*)&mat->diffuse_color);
 				break;
 
 			case TextureType::SPECULAR:
-				textureName = "diffuse_texture";
+				textureName = "material.specular_texture";
 				glUniform3fv(glGetUniformLocation(shader->id,
-					"specular_color"), 1, (GLfloat*)&mat->specular_color);
+					"material.specular_color"), 1, (GLfloat*)&mat->specular_color);
 				break;
 
 			case TextureType::OCCLUSION:
-				textureName = "occlusion_texture";
+				textureName = "material.occlusion_texture";
 				break;
 
 			case TextureType::EMISSIVE:
-				textureName = "emissive_texture";
+				textureName = "material.emissive_texture";
 				glUniform3fv(glGetUniformLocation(shader->id,
-					"emissive_color"), 1, (GLfloat*)&mat->emissive_color);
+					"material.emissive_color"), 1, (GLfloat*)&mat->emissive_color);
 				break;
 		}
 		glUniform1i(glGetUniformLocation(shader->id,  textureName), i);
@@ -148,13 +148,13 @@ void GameObject::Draw(const math::Frustum& frustum)
 
 	//mat
 	glUniform1fv(glGetUniformLocation(shader->id,
-		"k_ambient"), 1, (GLfloat*)&mat->kAmbient);
+		"material.k_ambient"), 1, (GLfloat*)&mat->kAmbient);
 	glUniform1fv(glGetUniformLocation(shader->id,
-		"k_diffuse"), 1, (GLfloat*)&mat->kDiffuse);
+		"material.k_diffuse"), 1, (GLfloat*)&mat->kDiffuse);
 	glUniform1fv(glGetUniformLocation(shader->id,
-		"k_specular"), 1, (GLfloat*)&mat->kSpecular);
+		"material.k_specular"), 1, (GLfloat*)&mat->kSpecular);
 	glUniform1fv(glGetUniformLocation(shader->id,
-		"shininess"), 1, (GLfloat*)&mat->shininess);
+		"material.shininess"), 1, (GLfloat*)&mat->shininess);
 
 
 	UpdateModel(shader->id);
