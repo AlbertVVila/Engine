@@ -63,7 +63,8 @@ update_status ModuleEditor::PreUpdate()
 // Called every draw update
 update_status ModuleEditor::Update()
 {
-	bool openPopup = false;
+	bool sceneSavePopUp = false;
+	bool materialCreationPopUp = false;
 	if (ImGui::BeginMainMenuBar())
 	{
 		if (ImGui::BeginMenu("File"))
@@ -89,12 +90,12 @@ update_status ModuleEditor::Update()
 				}
 				else
 				{
-					openPopup = true;
+					sceneSavePopUp = true;
 				}
 			}
 			if (ImGui::MenuItem("Save As"))
 			{
-				openPopup = true;
+				sceneSavePopUp = true;
 			}
 			if (ImGui::MenuItem("Exit", "Esc"))
 			{
@@ -105,7 +106,7 @@ update_status ModuleEditor::Update()
 			}
 			ImGui::EndMenu();
 		}
-		if (openPopup) ImGui::OpenPopup("SavePopup");
+		if (sceneSavePopUp) ImGui::OpenPopup("SavePopup");
 		if (ImGui::BeginPopupModal("SavePopup", NULL, ImGuiWindowFlags_AlwaysAutoResize))
 		{
 			ImGui::Text("Choose Scene name:\n\n");
@@ -130,7 +131,59 @@ update_status ModuleEditor::Update()
 			ImGui::SameLine();
 			if (ImGui::Button("Cancel", ImVec2(120, 0)))
 			{
-				openPopup = false;
+				sceneSavePopUp = false;
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::EndPopup();
+		}
+		if (ImGui::BeginMenu("Create"))
+		{
+			if (ImGui::MenuItem("Empty GameObject"))
+			{
+				App->scene->CreateGameObject("Empty", App->scene->root);
+			}
+			if (ImGui::MenuItem("Sphere"))
+			{
+				App->scene->CreateSphere("sphere0");
+			}
+			if (ImGui::MenuItem("New Material"))
+			{
+				materialCreationPopUp = true;
+			}
+			ImGui::EndMenu();
+		}
+		if (materialCreationPopUp) ImGui::OpenPopup("MaterialPopup");
+		if (ImGui::BeginPopupModal("MaterialPopup", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+		{
+			if (newMat == nullptr)
+			{
+				newMat = new Material();
+			}
+			ImGui::Text("Choose Material name:\n\n");
+			char name[64] = "";
+			if (!newMat->name.empty())
+			{
+				strcpy(name, newMat->name.c_str());
+			}
+			else
+			{
+				strcpy(name, "Unnamed");
+			}
+			ImGui::InputText("name", name, 64);
+			newMat->name = name;
+			ImGui::Separator();
+
+			if (ImGui::Button("OK", ImVec2(120, 0))) {
+				newMat->Save();
+				RELEASE(newMat);
+				materialCreationPopUp = false;
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::SetItemDefaultFocus();
+			ImGui::SameLine();
+			if (ImGui::Button("Cancel", ImVec2(120, 0)))
+			{
+				materialCreationPopUp = false;
 				ImGui::CloseCurrentPopup();
 			}
 			ImGui::EndPopup();

@@ -17,8 +17,9 @@ enum class TextureType
 	OCCLUSION,
 	EMISSIVE
 };
-struct Material
+class Material
 {
+public:
 	std::string name = "Default";
 	Shader* shader = nullptr;
 
@@ -55,6 +56,10 @@ struct Material
 		}
 		return mytextures;
 	}
+
+	void Load(const char * material);
+
+	void Save() const;
 };
 
 class ComponentRenderer :
@@ -75,10 +80,6 @@ public:
 	void DrawProperties() override;
 	void Save(JSON_value *value) const override;
 	void Load(JSON_value *value) override;
-
-	void LoadMaterial(const char * material);
-
-	void SaveMaterial() const;
 
 public:
 	Material* material = nullptr;

@@ -150,7 +150,7 @@ void ComponentRenderer::DrawProperties()
 void ComponentRenderer::Save(JSON_value * value) const
 {
 	Component::Save(value);
-	SaveMaterial();
+	material->Save();
 	value->AddString("Material", material->name.c_str());
 }
 
@@ -160,11 +160,11 @@ void ComponentRenderer::Load(JSON_value * value)
 	const char* materialFile = value->GetString("Material");
 	if (materialFile != nullptr)
 	{
-		LoadMaterial(materialFile);
+		material->Load(materialFile);
 	}
 }
 
-void ComponentRenderer::LoadMaterial(const char* materialfile)
+void Material::Load(const char* materialfile)
 {
 	char* data = nullptr;
 	std::string materialName(materialfile);
@@ -172,79 +172,79 @@ void ComponentRenderer::LoadMaterial(const char* materialfile)
 	JSON *json = new JSON(data);
 	JSON_value *materialJSON = json->GetValue("material");
 
-	material->name = materialName;
-	material->diffuse_color = materialJSON->GetFloat4("diffuseColor");
-	material->specular_color = materialJSON->GetFloat3("specularColor");
-	material->emissive_color = materialJSON->GetFloat3("emissiveColor");
+	name = materialName;
+	diffuse_color = materialJSON->GetFloat4("diffuseColor");
+	specular_color = materialJSON->GetFloat3("specularColor");
+	emissive_color = materialJSON->GetFloat3("emissiveColor");
 
-	material->kAmbient = materialJSON->GetFloat("kAmbient");
-	material->kDiffuse = materialJSON->GetFloat("kDiffuse");
-	material->kSpecular = materialJSON->GetFloat("kSpecular");
-	material->shininess = materialJSON->GetFloat("shininess");
+	kAmbient = materialJSON->GetFloat("kAmbient");
+	kDiffuse = materialJSON->GetFloat("kDiffuse");
+	kSpecular = materialJSON->GetFloat("kSpecular");
+	shininess = materialJSON->GetFloat("shininess");
 
 	JSON_value *textureJSON = materialJSON->GetValue("textures");
 	if (textureJSON != nullptr)
 	{
-		material->textures[(unsigned)TextureType::DIFFUSE] = materialJSON->GetTexture("diffuse");
-		material->textures[(unsigned)TextureType::SPECULAR] = materialJSON->GetTexture("specular");
-		material->textures[(unsigned)TextureType::OCCLUSION] = materialJSON->GetTexture("occlusion");
-		material->textures[(unsigned)TextureType::EMISSIVE] = materialJSON->GetTexture("emissive");
+		textures[(unsigned)TextureType::DIFFUSE] = materialJSON->GetTexture("diffuse");
+		textures[(unsigned)TextureType::SPECULAR] = materialJSON->GetTexture("specular");
+		textures[(unsigned)TextureType::OCCLUSION] = materialJSON->GetTexture("occlusion");
+		textures[(unsigned)TextureType::EMISSIVE] = materialJSON->GetTexture("emissive");
 	}
 	JSON_value *shaderJSON = materialJSON->GetValue("shader");
 	if (shaderJSON != nullptr)
 	{
-		material->shader = new Shader(shaderJSON->GetUint("value"), shaderJSON->GetString("file"));
+		shader = new Shader(shaderJSON->GetUint("value"), shaderJSON->GetString("file"));
 	}
 }
 
-void ComponentRenderer::SaveMaterial() const
+void Material::Save() const
 {
 	JSON *json = new JSON();
 	JSON_value *materialJSON = json->CreateValue();
 
-	if(material->textures[(unsigned) TextureType::DIFFUSE] != nullptr)
-		materialJSON->AddFloat4("diffuseColor", material->diffuse_color);
+	if(textures[(unsigned) TextureType::DIFFUSE] != nullptr)
+		materialJSON->AddFloat4("diffuseColor", diffuse_color);
 
-	if (material->textures[(unsigned)TextureType::SPECULAR] != nullptr)
-		materialJSON->AddFloat3("specularColor", material->specular_color);
+	if (textures[(unsigned)TextureType::SPECULAR] != nullptr)
+		materialJSON->AddFloat3("specularColor", specular_color);
 
-	if (material->textures[(unsigned)TextureType::EMISSIVE] != nullptr)
-		materialJSON->AddFloat3("emissiveColor", material->emissive_color);
+	if (textures[(unsigned)TextureType::EMISSIVE] != nullptr)
+		materialJSON->AddFloat3("emissiveColor", emissive_color);
 
-	materialJSON->AddFloat("kAmbient", material->kAmbient);
-	materialJSON->AddFloat("kDiffuse", material->kDiffuse);
-	materialJSON->AddFloat("kSpecular", material->kSpecular);
-	materialJSON->AddFloat("shininess", material->shininess);
+	materialJSON->AddFloat("kAmbient", kAmbient);
+	materialJSON->AddFloat("kDiffuse", kDiffuse);
+	materialJSON->AddFloat("kSpecular", kSpecular);
+	materialJSON->AddFloat("shininess", shininess);
 
-	if (!material->GetTextures().empty())
+	if (!GetTextures().empty())
 	{
 		JSON_value *texturesJSON = materialJSON->CreateValue(rapidjson::kArrayType);
-		if (material->textures[(unsigned)TextureType::DIFFUSE] != nullptr)
+		if (textures[(unsigned)TextureType::DIFFUSE] != nullptr)
 		{
-			texturesJSON->AddTexture("diffuse", material->textures[(unsigned)TextureType::DIFFUSE]);
+			texturesJSON->AddTexture("diffuse", textures[(unsigned)TextureType::DIFFUSE]);
 		}
-		if (material->textures[(unsigned)TextureType::SPECULAR] != nullptr)
+		if (textures[(unsigned)TextureType::SPECULAR] != nullptr)
 		{
-			texturesJSON->AddTexture("specular", material->textures[(unsigned)TextureType::SPECULAR]);
+			texturesJSON->AddTexture("specular", textures[(unsigned)TextureType::SPECULAR]);
 		}
-		if (material->textures[(unsigned)TextureType::OCCLUSION] != nullptr)
+		if (textures[(unsigned)TextureType::OCCLUSION] != nullptr)
 		{
-			texturesJSON->AddTexture("occlusion", material->textures[(unsigned)TextureType::OCCLUSION]);
+			texturesJSON->AddTexture("occlusion", textures[(unsigned)TextureType::OCCLUSION]);
 		}
-		if (material->textures[(unsigned)TextureType::EMISSIVE] != nullptr)
+		if (textures[(unsigned)TextureType::EMISSIVE] != nullptr)
 		{
-			texturesJSON->AddTexture("emissive", material->textures[(unsigned)TextureType::EMISSIVE]);
+			texturesJSON->AddTexture("emissive", textures[(unsigned)TextureType::EMISSIVE]);
 		}
 		materialJSON->AddValue("textures", texturesJSON);
 	}
 
-	if (material->shader != nullptr)
+	if (shader != nullptr)
 	{
 		JSON_value *shaderJSON = materialJSON->CreateValue();
-		shaderJSON->AddString("file", material->shader->file.c_str());
-		shaderJSON->AddUint("value", material->shader->id);
+		shaderJSON->AddString("file", shader->file.c_str());
+		shaderJSON->AddUint("value", shader->id);
 	}
 	json->AddValue("material", materialJSON);
 
-	App->fsystem->Save((MATERIALS + material->name + JSONEXT).c_str(), json->ToString().c_str(),json->Size());
+	App->fsystem->Save((MATERIALS + name + JSONEXT).c_str(), json->ToString().c_str(),json->Size());
 }
