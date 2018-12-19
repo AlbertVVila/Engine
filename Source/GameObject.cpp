@@ -134,11 +134,9 @@ void GameObject::Draw(const math::Frustum& frustum)
 					"material.emissive_color"), 1, (GLfloat*)&mat->emissive_color);
 				break;
 		}
-		glUniform1i(glGetUniformLocation(shader->id,  textureName), i);
 		glBindTexture(GL_TEXTURE_2D, mat->textures[i]->id);
+		glUniform1i(glGetUniformLocation(shader->id,  textureName), i);
 	}
-
-	glBindTexture(GL_TEXTURE_2D, 0);
 
 	if (App->scene->light != nullptr)
 	{
@@ -167,6 +165,8 @@ void GameObject::Draw(const math::Frustum& frustum)
 			((ComponentMesh*)mesh)->Draw(shader->id);
 		}
 	}
+
+	glBindTexture(GL_TEXTURE_2D, 0);
 	glUseProgram(0);
 }
 

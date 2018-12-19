@@ -1,5 +1,4 @@
 #version 330 core
-#extension GL_ARB_explicit_uniform_location : enable
 
 struct Material
 {
@@ -32,7 +31,7 @@ in vec2 uv0;
 
 out vec4 Fragcolor;
 
-layout(location=0) uniform Material material;
+uniform Material material;
 //uniform vec3 view_pos;
 uniform vec3 lightPos;
 
@@ -91,7 +90,7 @@ void main()
 				 diffuse_color.rgb * diffuse * material.k_diffuse + //diffuse
 				 specular_color.rgb * specular * material.k_specular; //specular
 				 
-	Fragcolor = vec4(emissive_color, diffuse_color.a);
+	Fragcolor = vec4(color, diffuse_color.a);
 
 	/*float intensity = material.k_ambient * ambient + material.k_diffuse*diffuse + material.k_specular*specular;
 	

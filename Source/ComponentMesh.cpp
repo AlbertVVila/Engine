@@ -48,7 +48,6 @@ void ComponentMesh::Draw(unsigned int shaderProgram) const
 	// Desactivem VAO
 	glBindVertexArray(0);
 	// Desactivem Textura
-	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void ComponentMesh::DrawProperties()
@@ -137,7 +136,7 @@ void ComponentMesh::SetMesh(char * &mesh) //TODO: pass by reference or know size
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(
 		2,                  // attribute 2
-		2,                  // number of componentes (3 floats)
+		2,                  // number of componentes (2 floats)
 		GL_FLOAT,           // data type
 		GL_FALSE,           // should be normalized?
 		0,                  // stride

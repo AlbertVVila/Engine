@@ -121,6 +121,18 @@ void ComponentRenderer::DrawProperties()
 				}
 				ImGui::EndCombo();
 			}
+			switch ((TextureType)i)
+			{
+				case TextureType::DIFFUSE:
+					ImGui::ColorEdit4("Diffuse Color", (float*)&material->diffuse_color);
+					break;
+				case TextureType::SPECULAR:
+					ImGui::ColorEdit3("Specular Color", (float*)&material->specular_color);
+					break;
+				case TextureType::EMISSIVE:
+					ImGui::ColorEdit3("Emissive Color", (float*)&material->emissive_color);
+					break;
+			}
 			if (matTexture != nullptr)
 			{
 				ImGui::Text("Texture width:%d height:%d", matTexture->width, matTexture->height);

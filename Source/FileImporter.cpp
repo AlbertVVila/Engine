@@ -30,7 +30,7 @@ void FileImporter::ImportAsset(const char *file, const char *folder)  //TODO:fil
 	{
 		ImportFBX(file, folder);
 	}
-	else if (extension == ".png" || extension == ".jpg")
+	else if (extension == ".png" || extension == ".jpg" || extension == ".tif")
 	{
 		App->textures->ImportImage(file, folder);
 	}
