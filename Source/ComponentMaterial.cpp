@@ -1,4 +1,4 @@
-#include "ComponentRenderer.h"
+#include "ComponentMaterial.h"
 #include "Application.h"
 #include "ModuleProgram.h"
 #include "ModuleTextures.h"
@@ -10,69 +10,65 @@
 #include "assimp/material.h"
 #include "JSON.h"
 #include <vector>
-ComponentRenderer::ComponentRenderer(GameObject* gameobject) : Component(gameobject, ComponentType::Renderer)
+ComponentMaterial::ComponentMaterial(GameObject* gameobject) : Component(gameobject, ComponentType::Renderer)
 {
-	material = new Material;
-	material->shader = App->program->defaultShader;
+	shader = App->program->defaultShader;
 }
 
-ComponentRenderer::ComponentRenderer(const ComponentRenderer& component) : Component(component)
+ComponentMaterial::ComponentMaterial(const ComponentMaterial& component) : Component(component)
 {
-	//TODO: deep copy material pointer
+	
 }
 
-ComponentRenderer::~ComponentRenderer()
+ComponentMaterial::~ComponentMaterial()
 {
 	DeleteTexture();
 }
 
-Component * ComponentRenderer::Clone()
+Component * ComponentMaterial::Clone()
 {
-	return new ComponentRenderer(*this);
+	return new ComponentMaterial(*this);
 }
 
-void ComponentRenderer::DeleteTexture()//TODO delete all textures of materials
+void ComponentMaterial::DeleteTexture()//TODO delete all textures of materials
 {
-	if (material != nullptr)
+	for (unsigned i = 0; i < MAXTEXTURES; i++)
 	{
-		for (unsigned i = 0; i < MAXTEXTURES; i++)
+		if (textures[i] != nullptr)
 		{
-			if (material->textures[i] != nullptr)
-			{
-				RELEASE(material->textures[i]);
-				glDeleteTextures(1, (GLuint*)&material->textures[i]->id);
-			}
+			RELEASE(textures[i]);
+			glDeleteTextures(1, (GLuint*)&textures[i]->id);
 		}
 	}
 }
 
-void ComponentRenderer::SetTexture(const char * newTexture, TextureType type)
+void ComponentMaterial::SetTexture(const char * newTexture, TextureType type)
 {
 	if (newTexture != nullptr)
 	{
-		material->SetTexture(App->textures->Load(newTexture), type);
+		textures[(unsigned)type] = App->textures->Load(newTexture);
 	}
 }
 
-void ComponentRenderer::SetShader(const char * shaderName)
+void ComponentMaterial::SetShader(const char * shaderName)
 {
 	if (shaderName != nullptr)
 	{
-		material->shader = App->program->GetProgram(shaderName); //TODO: refactor shader + texture + material
+		shader = App->program->GetProgram(shaderName); //TODO: refactor shader + texture + material
 	}
 }
 
-Texture * ComponentRenderer::GetTexture(TextureType type) const
+Texture * ComponentMaterial::GetTexture(TextureType type) const
 {
-	return material->textures[(unsigned)type];
+	return textures[(unsigned)type];
 }
 
-Shader * ComponentRenderer::GetShader() const
+Shader * ComponentMaterial::GetShader() const
 {
-	return material->shader;
+	return shader;
 }
 
-void ComponentRenderer::DrawProperties()
+void ComponentMaterial::DrawProperties()
 {
 	ImGui::PushID(this);
 	if (ImGui::CollapsingHeader("Renderer", ImGuiTreeNodeFlags_DefaultOpen))
@@ -92,28 +88,28 @@ void ComponentRenderer::DrawProperties()
 				if (ImGui::Selectable(shaders[n].c_str(), is_selected) && selected_shader != shaders[n])
 				{
 					selected_shader = shaders[n];
-					material->shader = App->program->GetProgram(selected_shader.c_str());
+					shader = App->program->GetProgram(selected_shader.c_str());
 				}
 				if (is_selected)
 					ImGui::SetItemDefaultFocus();
 			}
 			ImGui::EndCombo();
 		}
-		ImGui::Text((material->name + " Material").c_str());
-		std::vector<std::string> textures = App->fsystem->ListFiles(TEXTURES, false);
+		ImGui::Text((name + " Material").c_str());
+		std::vector<std::string> textureFiles = App->fsystem->ListFiles(TEXTURES, false);
 		const char* textureTypes[] = { "Diffuse", "Specular", "Occlusion", "Emissive" };
 		unsigned i = 0;
-		for (auto &matTexture : material->textures)
+		for (auto &matTexture : textures)
 		{
 			ImGui::PushID(&matTexture);
 			if (ImGui::BeginCombo(textureTypes[i], selected_texture[i].c_str())) 
 			{
-				for (int n = 0; n < textures.size(); n++)
+				for (int n = 0; n < textureFiles.size(); n++)
 				{
-					bool is_selected = (selected_texture[i] == textures[n]);
-					if (ImGui::Selectable(textures[n].c_str(), is_selected) && selected_texture[i] != textures[n])
+					bool is_selected = (selected_texture[i] == textureFiles[n]);
+					if (ImGui::Selectable(textureFiles[n].c_str(), is_selected) && selected_texture[i] != textureFiles[n])
 					{
-						selected_texture[i] = textures[n];
+						selected_texture[i] = textureFiles[n];
 						matTexture = App->textures->Load(selected_texture[i].c_str());
 					}
 					if (is_selected)
@@ -124,13 +120,13 @@ void ComponentRenderer::DrawProperties()
 			switch ((TextureType)i)
 			{
 				case TextureType::DIFFUSE:
-					ImGui::ColorEdit4("Diffuse Color", (float*)&material->diffuse_color);
+					ImGui::ColorEdit4("Diffuse Color", (float*)&diffuse_color);
 					break;
 				case TextureType::SPECULAR:
-					ImGui::ColorEdit3("Specular Color", (float*)&material->specular_color);
+					ImGui::ColorEdit3("Specular Color", (float*)&specular_color);
 					break;
 				case TextureType::EMISSIVE:
-					ImGui::ColorEdit3("Emissive Color", (float*)&material->emissive_color);
+					ImGui::ColorEdit3("Emissive Color", (float*)&emissive_color);
 					break;
 			}
 			if (matTexture != nullptr)
@@ -147,24 +143,24 @@ void ComponentRenderer::DrawProperties()
 	ImGui::PopID();
 }
 
-void ComponentRenderer::Save(JSON_value * value) const
+void ComponentMaterial::Save(JSON_value * value) const
 {
 	Component::Save(value);
-	material->Save();
-	value->AddString("Material", material->name.c_str());
+	Save();
+	value->AddString("Material", name.c_str());
 }
 
-void ComponentRenderer::Load(JSON_value * value)
+void ComponentMaterial::Load(JSON_value * value)
 {
 	Component::Load(value);
 	const char* materialFile = value->GetString("Material");
 	if (materialFile != nullptr)
 	{
-		material->Load(materialFile);
+		Load(materialFile);
 	}
 }
 
-void Material::Load(const char* materialfile)
+void ComponentMaterial::Load(const char* materialfile)
 {
 	char* data = nullptr;
 	std::string materialName(materialfile);
@@ -197,7 +193,20 @@ void Material::Load(const char* materialfile)
 	}
 }
 
-void Material::Save() const
+std::list<Texture*> ComponentMaterial::GetTextures() const
+{
+	std::list<Texture*> mytextures;
+	for (unsigned i = 0; i < MAXTEXTURES; i++)
+	{
+		if (textures[i] != nullptr)
+		{
+			mytextures.push_back(textures[i]);
+		}
+	}
+	return mytextures;
+}
+
+void ComponentMaterial::Save() const
 {
 	JSON *json = new JSON();
 	JSON_value *materialJSON = json->CreateValue();

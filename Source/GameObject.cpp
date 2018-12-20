@@ -11,7 +11,7 @@
 #include "ComponentMesh.h"
 #include "ComponentCamera.h"
 #include "ComponentLight.h"
-#include "ComponentRenderer.h"
+#include "ComponentMaterial.h"
 
 #include "Application.h"
 #include "ModuleProgram.h"
@@ -93,19 +93,17 @@ void GameObject::Draw(const math::Frustum& frustum)
 		DrawBBox();
 	}
 
-	ComponentRenderer* renderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
-	if (renderer == nullptr || !renderer->enabled) return;
+	ComponentMaterial* material = (ComponentMaterial*)GetComponent(ComponentType::Renderer);
+	if (material == nullptr || !material->enabled) return;
 
-	Material* mat = renderer->material;
-	if (mat == nullptr) return;
-	if (mat->shader == nullptr) return;
-	Shader* shader = mat->shader;
+	if (material->shader == nullptr) return;
+	Shader* shader = material->shader;
 
 	glUseProgram(shader->id);
 
 	for (unsigned int i = 0; i < MAXTEXTURES; i++)
 	{
-		if (mat->textures[i] == nullptr) continue;
+		if (material->textures[i] == nullptr) continue;
 
 		glActiveTexture(GL_TEXTURE0 + i); 
 		
@@ -115,13 +113,13 @@ void GameObject::Draw(const math::Frustum& frustum)
 			case TextureType::DIFFUSE:
 				textureName = "material.diffuse_texture";
 				glUniform4fv(glGetUniformLocation(shader->id,
-					"material.diffuse_color"), 1, (GLfloat*)&mat->diffuse_color);
+					"material.diffuse_color"), 1, (GLfloat*)&material->diffuse_color);
 				break;
 
 			case TextureType::SPECULAR:
 				textureName = "material.specular_texture";
 				glUniform3fv(glGetUniformLocation(shader->id,
-					"material.specular_color"), 1, (GLfloat*)&mat->specular_color);
+					"material.specular_color"), 1, (GLfloat*)&material->specular_color);
 				break;
 
 			case TextureType::OCCLUSION:
@@ -131,10 +129,10 @@ void GameObject::Draw(const math::Frustum& frustum)
 			case TextureType::EMISSIVE:
 				textureName = "material.emissive_texture";
 				glUniform3fv(glGetUniformLocation(shader->id,
-					"material.emissive_color"), 1, (GLfloat*)&mat->emissive_color);
+					"material.emissive_color"), 1, (GLfloat*)&material->emissive_color);
 				break;
 		}
-		glBindTexture(GL_TEXTURE_2D, mat->textures[i]->id);
+		glBindTexture(GL_TEXTURE_2D, material->textures[i]->id);
 		glUniform1i(glGetUniformLocation(shader->id,  textureName), i);
 	}
 
@@ -146,13 +144,13 @@ void GameObject::Draw(const math::Frustum& frustum)
 
 	//mat
 	glUniform1fv(glGetUniformLocation(shader->id,
-		"material.k_ambient"), 1, (GLfloat*)&mat->kAmbient);
+		"material.k_ambient"), 1, (GLfloat*)&material->kAmbient);
 	glUniform1fv(glGetUniformLocation(shader->id,
-		"material.k_diffuse"), 1, (GLfloat*)&mat->kDiffuse);
+		"material.k_diffuse"), 1, (GLfloat*)&material->kDiffuse);
 	glUniform1fv(glGetUniformLocation(shader->id,
-		"material.k_specular"), 1, (GLfloat*)&mat->kSpecular);
+		"material.k_specular"), 1, (GLfloat*)&material->kSpecular);
 	glUniform1fv(glGetUniformLocation(shader->id,
-		"material.shininess"), 1, (GLfloat*)&mat->shininess);
+		"material.shininess"), 1, (GLfloat*)&material->shininess);
 
 
 	UpdateModel(shader->id);
@@ -333,7 +331,7 @@ Component * GameObject::CreateComponent(ComponentType type)
 		component = new ComponentMesh(this);
 		break;
 	case Renderer:
-		component = new ComponentRenderer(this);
+		component = new ComponentMaterial(this);
 		break;
 	case Light:
 		component = new ComponentLight(this);

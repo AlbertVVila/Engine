@@ -155,27 +155,27 @@ update_status ModuleEditor::Update()
 		if (materialCreationPopUp) ImGui::OpenPopup("MaterialPopup");
 		if (ImGui::BeginPopupModal("MaterialPopup", NULL, ImGuiWindowFlags_AlwaysAutoResize))
 		{
-			if (newMat == nullptr)
-			{
-				newMat = new Material();
-			}
+			//if (newMat == nullptr)
+			//{
+			//	newMat = new ComponentMaterial();
+			//}
 			ImGui::Text("Choose Material name:\n\n");
 			char name[64] = "";
-			if (!newMat->name.empty())
-			{
-				strcpy(name, newMat->name.c_str());
-			}
-			else
-			{
-				strcpy(name, "Unnamed");
-			}
+			//if (!newMat->name.empty())
+			//{
+			//	strcpy(name, newMat->name.c_str());
+			//}
+			//else
+			//{
+			//	strcpy(name, "Unnamed");
+			//}
 			ImGui::InputText("name", name, 64);
-			newMat->name = name;
+			//newMat->name = name;
 			ImGui::Separator();
 
 			if (ImGui::Button("OK", ImVec2(120, 0))) {
-				newMat->Save();
-				RELEASE(newMat);
+				//newMat->Save();
+				//RELEASE(newMat);
 				materialCreationPopUp = false;
 				ImGui::CloseCurrentPopup();
 			}

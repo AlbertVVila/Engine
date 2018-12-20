@@ -210,7 +210,7 @@
     <ClCompile Include="ModuleResourceManager.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="ComponentRenderer.cpp">
+    <ClCompile Include="ComponentMaterial.cpp">
       <Filter>Component</Filter>
     </ClCompile>
   </ItemGroup>
@@ -492,7 +492,7 @@
     <ClInclude Include="ModuleResourceManager.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="ComponentRenderer.h">
+    <ClInclude Include="ComponentMaterial.h">
       <Filter>Component</Filter>
     </ClInclude>
   </ItemGroup>

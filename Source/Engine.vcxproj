@@ -89,7 +89,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentCamera.h" />
     <ClInclude Include="ComponentLight.h" />
-    <ClInclude Include="ComponentRenderer.h" />
+    <ClInclude Include="ComponentMaterial.h" />
     <ClInclude Include="ComponentTransform.h" />
     <ClInclude Include="debug_draw.hpp" />
     <ClInclude Include="GameObject.h" />
@@ -185,7 +185,7 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentCamera.cpp" />
     <ClCompile Include="ComponentLight.cpp" />
-    <ClCompile Include="ComponentRenderer.cpp" />
+    <ClCompile Include="ComponentMaterial.cpp" />
     <ClCompile Include="ComponentTransform.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="imgui.cpp" />

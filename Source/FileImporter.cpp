@@ -11,7 +11,7 @@
 #include "ModuleFileSystem.h"
 #include "ModuleScene.h"
 #include <map>
-#include "ComponentRenderer.h"
+#include "ComponentMaterial.h"
 #include "ComponentMesh.h"
 
 FileImporter::FileImporter()
@@ -154,7 +154,7 @@ GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshma
 			mesh->meshUID = it->second;
 		}
 
-		ComponentRenderer* renderer = (ComponentRenderer*)gameobjects[i]->CreateComponent(ComponentType::Renderer); //TODO: avoid map and use resource manager
+		ComponentMaterial* material = (ComponentMaterial*)gameobjects[i]->CreateComponent(ComponentType::Renderer); //TODO: avoid map and use resource manager
 		aiMaterial * mat = scene->mMaterials[scene->mMeshes[node->mMeshes[i]]->mMaterialIndex];
 		aiTextureMapping mapping = aiTextureMapping_UV;
 		for (unsigned i = 1; i <= 4; i++) //Gets diffuse,specular,occlusion and emissive
@@ -163,7 +163,7 @@ GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshma
 			mat->GetTexture((aiTextureType)i, 0, &texture, &mapping, 0);
 			if (texture.length > 0)
 			{
-				renderer->material->textures[i]->file = App->fsystem->GetFilename(texture.C_Str()); //we only save texture name
+				material->textures[i]->file = App->fsystem->GetFilename(texture.C_Str()); //we only save texture name
 			}
 		}
 	} 
