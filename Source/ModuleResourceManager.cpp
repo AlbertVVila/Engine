@@ -18,7 +18,7 @@ ModuleResourceManager::~ModuleResourceManager() //TODO: deallocate mem on delete
 }
 
 
-Texture* ModuleResourceManager::GetTexture(std::string filename) const
+Texture* ModuleResourceManager::GetTexture(std::string filename) const //TODO: use Get to retrieve or load if not found
 {
 	std::map<std::string, std::pair<unsigned, Texture*>>::const_iterator it = textureResources.find(filename);
 	if (it != textureResources.end())

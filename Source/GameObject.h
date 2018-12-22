@@ -58,6 +58,7 @@ public:
 	std::string filepath = "";//TODO: delete field
 	std::string name = "GameObject";
 
+	bool is_static = false;
 	bool copy_flag = false;
 	bool delete_flag = false;
 

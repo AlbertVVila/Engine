@@ -207,7 +207,7 @@ void ComponentMaterial::Load(const char* materialfile)
 
 	JSON_value *textureJSON = materialJSON->GetValue("textures");
 	if (textureJSON != nullptr)
-	{
+	{ 
 		textures[(unsigned)TextureType::DIFFUSE] = materialJSON->GetTexture("diffuse");
 		textures[(unsigned)TextureType::SPECULAR] = materialJSON->GetTexture("specular");
 		textures[(unsigned)TextureType::OCCLUSION] = materialJSON->GetTexture("occlusion");
