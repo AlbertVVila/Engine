@@ -91,6 +91,7 @@ GameObject * ModuleScene::CreateGameObject(const char * name, GameObject* parent
 	return gameobject;
 }
 
+
 void ModuleScene::CreateSphere(const char * name, const float3 & pos, const Quat & rot, float size, unsigned slices, unsigned stacks, const float4 & color)
 {
 	par_shapes_mesh* mesh = par_shapes_create_parametric_sphere(int(slices), int(stacks));

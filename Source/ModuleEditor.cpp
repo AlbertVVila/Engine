@@ -4,6 +4,11 @@
 #include "ModuleWindow.h"
 #include "ModuleScene.h"
 #include "ModuleFileSystem.h"
+#include "ModuleTextures.h"
+#include "ModuleProgram.h"
+
+#include "ComponentMaterial.h"
+
 #include "PanelConsole.h"
 #include "PanelScene.h"
 #include "PanelConfiguration.h"
@@ -12,9 +17,11 @@
 #include "PanelHardware.h"
 #include "PanelHierarchy.h"
 #include "PanelCamera.h"
+
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_sdl.h"
 #include "imgui.h"
+
 #include <vector>
 
 ModuleEditor::ModuleEditor()
@@ -44,7 +51,60 @@ bool ModuleEditor::Init()
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer->context);
 	ImGui_ImplOpenGL3_Init("#version 130");
 
-	ImGui::StyleColorsDark();
+	//ImGui::StyleColorsDark();
+	ImGuiStyle * style = &ImGui::GetStyle();
+
+	style->WindowPadding = ImVec2(15, 15);
+	style->WindowRounding = 5.0f;
+	style->FramePadding = ImVec2(5, 5);
+	style->FrameRounding = 4.0f;
+	style->ItemSpacing = ImVec2(12, 8);
+	style->ItemInnerSpacing = ImVec2(8, 6);
+	style->IndentSpacing = 25.0f;
+	style->ScrollbarSize = 15.0f;
+	style->ScrollbarRounding = 9.0f;
+	style->GrabMinSize = 5.0f;
+	style->GrabRounding = 3.0f;
+
+	style->Colors[ImGuiCol_Text] = ImVec4(0.80f, 0.80f, 0.83f, 1.00f);
+	style->Colors[ImGuiCol_TextDisabled] = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
+	style->Colors[ImGuiCol_WindowBg] = ImVec4(0.06f, 0.05f, 0.07f, 1.00f);
+	style->Colors[ImGuiCol_ChildWindowBg] = ImVec4(0.07f, 0.07f, 0.09f, 1.00f);
+	style->Colors[ImGuiCol_PopupBg] = ImVec4(0.07f, 0.07f, 0.09f, 1.00f);
+	style->Colors[ImGuiCol_Border] = ImVec4(0.80f, 0.80f, 0.83f, 0.88f);
+	style->Colors[ImGuiCol_BorderShadow] = ImVec4(0.92f, 0.91f, 0.88f, 0.00f);
+	style->Colors[ImGuiCol_FrameBg] = ImVec4(0.10f, 0.09f, 0.12f, 1.00f);
+	style->Colors[ImGuiCol_FrameBgHovered] = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
+	style->Colors[ImGuiCol_FrameBgActive] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
+	style->Colors[ImGuiCol_TitleBg] = ImVec4(0.10f, 0.09f, 0.12f, 1.00f);
+	style->Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(1.00f, 0.98f, 0.95f, 0.75f);
+	style->Colors[ImGuiCol_TitleBgActive] = ImVec4(0.07f, 0.07f, 0.09f, 1.00f);
+	style->Colors[ImGuiCol_MenuBarBg] = ImVec4(0.10f, 0.09f, 0.12f, 1.00f);
+	style->Colors[ImGuiCol_ScrollbarBg] = ImVec4(0.10f, 0.09f, 0.12f, 1.00f);
+	style->Colors[ImGuiCol_ScrollbarGrab] = ImVec4(0.80f, 0.80f, 0.83f, 0.31f);
+	style->Colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
+	style->Colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(0.06f, 0.05f, 0.07f, 1.00f);
+	style->Colors[ImGuiCol_CheckMark] = ImVec4(0.80f, 0.80f, 0.83f, 0.31f);
+	style->Colors[ImGuiCol_SliderGrab] = ImVec4(0.80f, 0.80f, 0.83f, 0.31f);
+	style->Colors[ImGuiCol_SliderGrabActive] = ImVec4(0.06f, 0.05f, 0.07f, 1.00f);
+	style->Colors[ImGuiCol_Button] = ImVec4(0.10f, 0.09f, 0.12f, 1.00f);
+	style->Colors[ImGuiCol_ButtonHovered] = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
+	style->Colors[ImGuiCol_ButtonActive] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
+	style->Colors[ImGuiCol_Header] = ImVec4(0.10f, 0.09f, 0.12f, 1.00f);
+	style->Colors[ImGuiCol_HeaderHovered] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
+	style->Colors[ImGuiCol_HeaderActive] = ImVec4(0.06f, 0.05f, 0.07f, 1.00f);
+	style->Colors[ImGuiCol_Column] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
+	style->Colors[ImGuiCol_ColumnHovered] = ImVec4(0.24f, 0.23f, 0.29f, 1.00f);
+	style->Colors[ImGuiCol_ColumnActive] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
+	style->Colors[ImGuiCol_ResizeGrip] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
+	style->Colors[ImGuiCol_ResizeGripHovered] = ImVec4(0.56f, 0.56f, 0.58f, 1.00f);
+	style->Colors[ImGuiCol_ResizeGripActive] = ImVec4(0.06f, 0.05f, 0.07f, 1.00f);
+	style->Colors[ImGuiCol_PlotLines] = ImVec4(0.40f, 0.39f, 0.38f, 0.63f);
+	style->Colors[ImGuiCol_PlotLinesHovered] = ImVec4(0.25f, 1.00f, 0.00f, 1.00f);
+	style->Colors[ImGuiCol_PlotHistogram] = ImVec4(0.40f, 0.39f, 0.38f, 0.63f);
+	style->Colors[ImGuiCol_PlotHistogramHovered] = ImVec4(0.25f, 1.00f, 0.00f, 1.00f);
+	style->Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.25f, 1.00f, 0.00f, 0.43f);
+	style->Colors[ImGuiCol_ModalWindowDarkening] = ImVec4(1.00f, 0.98f, 0.95f, 0.73f);
 
 	return true;
 }
@@ -152,30 +212,161 @@ update_status ModuleEditor::Update()
 			}
 			ImGui::EndMenu();
 		}
-		if (materialCreationPopUp) ImGui::OpenPopup("MaterialPopup");
-		if (ImGui::BeginPopupModal("MaterialPopup", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+		if (materialCreationPopUp)
 		{
-			//if (newMat == nullptr)
-			//{
-			//	newMat = new ComponentMaterial();
-			//}
-			ImGui::Text("Choose Material name:\n\n");
+			ImGui::OpenPopup("New Material");
+		}
+		if (ImGui::BeginPopupModal("New Material", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+		{
+			if (newMaterial == nullptr) //TODO:move to material component
+			{
+				newMaterial = new ComponentMaterial(nullptr);
+			}
 			char name[64] = "";
-			//if (!newMat->name.empty())
-			//{
-			//	strcpy(name, newMat->name.c_str());
-			//}
-			//else
-			//{
-			//	strcpy(name, "Unnamed");
-			//}
-			ImGui::InputText("name", name, 64);
-			//newMat->name = name;
+			if (!newMaterial->name.empty())
+			{
+				strcpy(name, newMaterial->name.c_str());
+			}
+			else
+			{
+				strcpy(name, "Unnamed");
+			}
+			ImGui::InputText("Name", name, 64);
+			newMaterial->name = name;
 			ImGui::Separator();
 
+			ImGui::DragFloat("kAmbient", &newMaterial->kAmbient, .005f, .0f, 1.f);
+			ImGui::DragFloat("kDiffuse", &newMaterial->kDiffuse, .005f, .0f, 1.f);
+			ImGui::DragFloat("kSpecular", &newMaterial->kSpecular, .005f, .0f, 1.f);
+			ImGui::DragFloat("Shininess", &newMaterial->shininess, .05f, .0f, 256.f);
+
+			std::vector<std::string> shaders = App->fsystem->ListFiles(VERTEXSHADERS, false);
+			static std::string item_current = "None Selected";
+			if (ImGui::BeginCombo("Shader", item_current.c_str())) // The second parameter is the label previewed before opening the combo.
+			{
+				for (int n = 0; n < shaders.size(); n++)
+				{
+					bool is_selected = (item_current == shaders[n]);
+					if (ImGui::Selectable(shaders[n].c_str(), is_selected) && item_current != shaders[n])
+					{
+						item_current = shaders[n];
+						newMaterial->shader = App->program->GetProgram(item_current.c_str());
+					}
+					if (is_selected)
+						ImGui::SetItemDefaultFocus();
+				}
+				ImGui::EndCombo();
+			}
+
+			std::vector<std::string> textureFiles = App->fsystem->ListFiles(TEXTURES, false);
+			if (ImGui::CollapsingHeader("Diffuse"))
+			{
+				ImGui::PushID(&newMaterial->diffuse_color);
+				ImGui::ColorEdit4("Color", (float*)&newMaterial->diffuse_color, ImGuiColorEditFlags_AlphaPreview);
+				static std::string item_current = "None selected";
+				if (ImGui::BeginCombo("Texture", item_current.c_str())) 
+				{
+					for (int n = 0; n < textureFiles.size(); n++)
+					{
+						bool is_selected = (item_current == textureFiles[n]);
+						if (ImGui::Selectable(textureFiles[n].c_str(), is_selected))
+						{
+							item_current = textureFiles[n];
+							newMaterial->textures[(unsigned)TextureType::DIFFUSE] = App->textures->Load(item_current.c_str());
+						}
+						if (is_selected)
+							ImGui::SetItemDefaultFocus();   
+					}
+					ImGui::EndCombo();
+				}
+				if (newMaterial->textures[(unsigned)TextureType::DIFFUSE] != nullptr)
+				{
+					ImGui::Image((ImTextureID)newMaterial->textures[(unsigned)TextureType::DIFFUSE]->id, { 200,200 }, { 0,1 }, { 1,0 });
+				}
+				ImGui::Separator();
+				ImGui::PopID();
+			}
+			if (ImGui::CollapsingHeader("Specular"))
+			{
+				ImGui::PushID(&newMaterial->specular_color);
+				ImGui::ColorEdit3("Color", (float*)&newMaterial->specular_color);
+				static std::string item_current = "None selected";
+				if (ImGui::BeginCombo("Texture", item_current.c_str()))
+				{
+					for (int n = 0; n < textureFiles.size(); n++)
+					{
+						bool is_selected = (item_current == textureFiles[n]);
+						if (ImGui::Selectable(textureFiles[n].c_str(), is_selected))
+						{
+							item_current = textureFiles[n];
+							newMaterial->textures[(unsigned)TextureType::SPECULAR] = App->textures->Load(item_current.c_str());
+						}
+						if (is_selected)
+							ImGui::SetItemDefaultFocus();
+					}
+					ImGui::EndCombo();
+				}
+				if (newMaterial->textures[(unsigned)TextureType::SPECULAR] != nullptr)
+				{
+					ImGui::Image((ImTextureID)newMaterial->textures[(unsigned)TextureType::SPECULAR]->id, { 200,200 }, { 0,1 }, { 1,0 });
+				}
+				ImGui::Separator();
+				ImGui::PopID();
+			}
+			if (ImGui::CollapsingHeader("Occlusion"))
+			{
+				ImGui::PushID(&newMaterial->textures[(unsigned)TextureType::OCCLUSION]);
+				static std::string item_current = "None selected";
+				if (ImGui::BeginCombo("Texture", item_current.c_str()))
+				{
+					for (int n = 0; n < textureFiles.size(); n++)
+					{
+						bool is_selected = (item_current == textureFiles[n]);
+						if (ImGui::Selectable(textureFiles[n].c_str(), is_selected))
+						{
+							item_current = textureFiles[n];
+							newMaterial->textures[(unsigned)TextureType::OCCLUSION] = App->textures->Load(item_current.c_str());
+						}
+						if (is_selected)
+							ImGui::SetItemDefaultFocus();
+					}
+					ImGui::EndCombo();
+				}
+				if (newMaterial->textures[(unsigned)TextureType::OCCLUSION] != nullptr)
+				{
+					ImGui::Image((ImTextureID)newMaterial->textures[(unsigned)TextureType::OCCLUSION]->id, { 200,200 }, { 0,1 }, { 1,0 });
+				}
+				ImGui::Separator();
+				ImGui::PopID();
+			}
+			if (ImGui::CollapsingHeader("Emissive"))
+			{
+				ImGui::ColorEdit3("Color", (float*)&newMaterial->emissive_color);
+				static std::string item_current = "None selected";
+				if (ImGui::BeginCombo("Texture", item_current.c_str()))
+				{
+					for (int n = 0; n < textureFiles.size(); n++)
+					{
+						bool is_selected = (item_current == textureFiles[n]);
+						if (ImGui::Selectable(textureFiles[n].c_str(), is_selected))
+						{
+							item_current = textureFiles[n];
+							newMaterial->textures[(unsigned)TextureType::EMISSIVE] = App->textures->Load(item_current.c_str());
+						}
+						if (is_selected)
+							ImGui::SetItemDefaultFocus();
+					}
+					ImGui::EndCombo();
+				}
+				if (newMaterial->textures[(unsigned)TextureType::EMISSIVE] != nullptr)
+				{
+					ImGui::Image((ImTextureID)newMaterial->textures[(unsigned)TextureType::EMISSIVE]->id, { 200,200 }, { 0,1 }, { 1,0 });
+				}
+				ImGui::Separator();
+			}
 			if (ImGui::Button("OK", ImVec2(120, 0))) {
-				//newMat->Save();
-				//RELEASE(newMat);
+				newMaterial->Save(); //TODO: CleanUP component
+				RELEASE(newMaterial);
 				materialCreationPopUp = false;
 				ImGui::CloseCurrentPopup();
 			}

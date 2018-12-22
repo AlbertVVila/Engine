@@ -3,6 +3,8 @@
 #include "ModuleProgram.h"
 #include "ModuleTextures.h"
 #include "ModuleFileSystem.h"
+#include "ModuleResourceManager.h"
+
 #include "GameObject.h"
 #include "Imgui/imgui.h"
 #include "GL/glew.h"
@@ -36,8 +38,8 @@ void ComponentMaterial::DeleteTexture()//TODO delete all textures of materials
 	{
 		if (textures[i] != nullptr)
 		{
-			RELEASE(textures[i]);
 			glDeleteTextures(1, (GLuint*)&textures[i]->id);
+			RELEASE(textures[i]);
 		}
 	}
 }
@@ -79,23 +81,48 @@ void ComponentMaterial::DrawProperties()
 			ImGui::PopID();
 			return;
 		}
-		std::vector<std::string> shaders = App->fsystem->ListFiles(VERTEXSHADERS, false);
-		if (ImGui::BeginCombo("Shader", selected_shader.c_str())) // The second parameter is the label previewed before opening the combo.
+		std::vector<std::string> materials = App->fsystem->ListFiles(MATERIALS, false);
+		if (ImGui::BeginCombo("Material", name.c_str())) // The second parameter is the label previewed before opening the combo.
 		{
-			for (int n = 0; n < shaders.size(); n++)
+			for (int n = 0; n < materials.size(); n++)
 			{
-				bool is_selected = (selected_shader == shaders[n]);
-				if (ImGui::Selectable(shaders[n].c_str(), is_selected) && selected_shader != shaders[n])
+				bool is_selected = (name == materials[n]);
+				if (ImGui::Selectable(materials[n].c_str(), is_selected) && name != materials[n])
 				{
-					selected_shader = shaders[n];
-					shader = App->program->GetProgram(selected_shader.c_str());
+					name = materials[n];
+					ComponentMaterial *mat = App->resManager->GetMaterial(name);
+					if (mat == nullptr)
+					{
+						Load(name.c_str());
+						App->resManager->AddMaterial(name, this);
+					}
+					else
+					{
+						//TODO: assign it?
+					}
 				}
 				if (is_selected)
 					ImGui::SetItemDefaultFocus();
 			}
 			ImGui::EndCombo();
 		}
-		ImGui::Text((name + " Material").c_str());
+		//std::vector<std::string> shaders = App->fsystem->ListFiles(VERTEXSHADERS, false);
+		//if (ImGui::BeginCombo("Shader", selected_shader.c_str())) // The second parameter is the label previewed before opening the combo.
+		//{
+		//	for (int n = 0; n < shaders.size(); n++)
+		//	{
+		//		bool is_selected = (selected_shader == shaders[n]);
+		//		if (ImGui::Selectable(shaders[n].c_str(), is_selected) && selected_shader != shaders[n])
+		//		{
+		//			selected_shader = shaders[n];
+		//			shader = App->program->GetProgram(selected_shader.c_str());
+		//		}
+		//		if (is_selected)
+		//			ImGui::SetItemDefaultFocus();
+		//	}
+		//	ImGui::EndCombo();
+		//}
+		/*ImGui::Text((name + " Material").c_str());
 		std::vector<std::string> textureFiles = App->fsystem->ListFiles(TEXTURES, false);
 		const char* textureTypes[] = { "Diffuse", "Specular", "Occlusion", "Emissive" };
 		unsigned i = 0;
@@ -138,7 +165,7 @@ void ComponentMaterial::DrawProperties()
 			}
 			ImGui::PopID();
 			++i;
-		}
+		}*/
 	}
 	ImGui::PopID();
 }
@@ -169,9 +196,9 @@ void ComponentMaterial::Load(const char* materialfile)
 	JSON_value *materialJSON = json->GetValue("material");
 
 	name = materialName;
-	diffuse_color = materialJSON->GetFloat4("diffuseColor");
-	specular_color = materialJSON->GetFloat3("specularColor");
-	emissive_color = materialJSON->GetFloat3("emissiveColor");
+	diffuse_color = materialJSON->GetColor4("diffuseColor");
+	specular_color = materialJSON->GetColor3("specularColor");
+	emissive_color = materialJSON->GetColor3("emissiveColor");
 
 	kAmbient = materialJSON->GetFloat("kAmbient");
 	kDiffuse = materialJSON->GetFloat("kDiffuse");
@@ -186,10 +213,11 @@ void ComponentMaterial::Load(const char* materialfile)
 		textures[(unsigned)TextureType::OCCLUSION] = materialJSON->GetTexture("occlusion");
 		textures[(unsigned)TextureType::EMISSIVE] = materialJSON->GetTexture("emissive");
 	}
-	JSON_value *shaderJSON = materialJSON->GetValue("shader");
-	if (shaderJSON != nullptr)
+
+	if (shader == nullptr)
 	{
-		shader = new Shader(shaderJSON->GetUint("value"), shaderJSON->GetString("file"));
+		shader = App->program->CreateProgram(materialJSON->GetString("shader"));
+		App->resManager->AddProgram(shader);
 	}
 }
 
@@ -249,10 +277,9 @@ void ComponentMaterial::Save() const
 
 	if (shader != nullptr)
 	{
-		JSON_value *shaderJSON = materialJSON->CreateValue();
-		shaderJSON->AddString("file", shader->file.c_str());
-		shaderJSON->AddUint("value", shader->id);
+		materialJSON->AddString("shader", shader->file.c_str());
 	}
+
 	json->AddValue("material", materialJSON);
 
 	App->fsystem->Save((MATERIALS + name + JSONEXT).c_str(), json->ToString().c_str(),json->Size());

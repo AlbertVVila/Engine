@@ -176,6 +176,21 @@ float3 JSON_value::GetFloat3(const char * name)
 	}
 }
 
+float3 JSON_value::GetColor3(const char * name)
+{
+	rapidjson::Value::ConstMemberIterator itr = rapidjsonValue->FindMember(name);
+	if (itr != rapidjsonValue->MemberEnd())
+	{
+		float3 ret(itr->value[0].GetFloat(), itr->value[1].GetFloat(), itr->value[2].GetFloat());
+		return ret;
+	}
+	else
+	{
+		LOG("Member %s not found!", name);
+		return float3::one;
+	}
+}
+
 float4 JSON_value::GetFloat4(const char * name)
 {
 	rapidjson::Value::ConstMemberIterator itr = rapidjsonValue->FindMember(name);
@@ -189,6 +204,22 @@ float4 JSON_value::GetFloat4(const char * name)
 	{
 		LOG("Member %s not found!", name);
 		return float4::zero;
+	}
+}
+
+float4 JSON_value::GetColor4(const char * name)
+{
+	rapidjson::Value::ConstMemberIterator itr = rapidjsonValue->FindMember(name);
+	if (itr != rapidjsonValue->MemberEnd())
+	{
+		float4 ret(itr->value[0].GetFloat(), itr->value[1].GetFloat(),
+			itr->value[2].GetFloat(), itr->value[3].GetFloat());
+		return ret;
+	}
+	else
+	{
+		LOG("Member %s not found!", name);
+		return float4::one;
 	}
 }
 

@@ -4,7 +4,6 @@
 #include <list>
 #include "Module.h"
 #include "SDL_events.h"
-#include "ComponentMaterial.h" 
 
 class Panel;
 class PanelConsole;
@@ -16,6 +15,7 @@ class PanelHardware;
 class PanelHierarchy;
 class PanelCamera;
 class GameObject;
+class ComponentMaterial;
 
 class ModuleEditor :
 	public Module
@@ -47,6 +47,7 @@ public:
 	PanelHierarchy *hierarchy = nullptr;
 	PanelCamera *camera = nullptr;
 
+	ComponentMaterial *newMaterial = nullptr;
 private:
 	std::list<Panel*> panels;
 };

@@ -48,9 +48,9 @@ public:
 
 	Texture* textures[MAXTEXTURES]{ nullptr }; //TODO: default specular texture?
 
-	float4 diffuse_color = float4::zero;
-	float3 specular_color = float3::zero;
-	float3 emissive_color = float3::zero;
+	float4 diffuse_color = float4::one;
+	float3 specular_color = float3::one;
+	float3 emissive_color = float3::one;
 
 	float kAmbient = 0.3f;
 	float kDiffuse = 0.2f;
@@ -59,8 +59,8 @@ public:
 
 
 private:
-	std::string selected_texture[MAXTEXTURES]{ "None selected" };
-	std::string selected_shader = "Default";
+	//std::string selected_texture[MAXTEXTURES]{ "None selected" };
+	//std::string selected_shader = "Default";
 };
 
 #endif //__ComponentMaterial_h__

@@ -31,7 +31,9 @@ public:
 	unsigned GetUint(const char * name);
 	float GetFloat(const char * namee);
 	float3 GetFloat3(const char * name);
+	float3 GetColor3(const char * name);
 	float4 GetFloat4(const char * name);
+	float4 GetColor4(const char * name);
 	Quat GetQuat(const char * name);
 	const char* GetString(const char * name);
 	Texture* GetTexture(const char * name);

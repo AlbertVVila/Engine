@@ -5,6 +5,8 @@
 #include "ModuleProgram.h"
 #include "ModuleRender.h"
 
+#include "ComponentMaterial.h"
+
 
 ModuleResourceManager::ModuleResourceManager()
 {
@@ -103,6 +105,46 @@ void ModuleResourceManager::DeleteProgram(std::string filename)
 		else
 		{
 			shaderResources.erase(it);
+		}
+	}
+}
+
+ComponentMaterial * ModuleResourceManager::GetMaterial(std::string filename) const
+{
+	std::map<std::string, std::pair<unsigned, ComponentMaterial*>>::const_iterator it = materialResources.find(filename);
+	if (it != materialResources.end())
+	{
+		return it->second.second;
+	}
+	return nullptr;
+}
+
+void ModuleResourceManager::AddMaterial(std::string filename, ComponentMaterial * material)
+{
+	std::map<std::string, std::pair<unsigned, ComponentMaterial*>>::iterator it = materialResources.find(material->name);
+	if (it != materialResources.end())
+	{
+		it->second.first++;
+	}
+	else
+	{
+		materialResources.insert(std::pair<std::string, std::pair<unsigned, ComponentMaterial*>>
+			(material->name, std::pair<unsigned, ComponentMaterial*>(1, material)));
+	}
+}
+
+void ModuleResourceManager::DeleteMaterial(std::string filename)
+{
+	std::map<std::string, std::pair<unsigned, ComponentMaterial*>>::iterator it = materialResources.find(filename);
+	if (it != materialResources.end())
+	{
+		if (it->second.first > 1)
+		{
+			it->second.first--;
+		}
+		else
+		{
+			materialResources.erase(it);
 		}
 	}
 }
