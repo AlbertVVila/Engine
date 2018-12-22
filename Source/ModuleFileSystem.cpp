@@ -20,14 +20,15 @@ bool ModuleFileSystem::Init()
 
 	PHYSFS_mount(LIBRARY, nullptr, 1);
 	PHYSFS_mount(ASSETS, nullptr, 1);
+	PHYSFS_mount(SHADERS, nullptr, 1);
 	PHYSFS_setWriteDir(PHYSFS_getBaseDir());
-	CheckImportedFiles(LIBRARY);
-	WatchFolder(ASSETS);
 	return true;
 }
 
 bool ModuleFileSystem::Start()
 {
+	CheckImportedFiles(LIBRARY);
+	WatchFolder(ASSETS);
 	importTimer.Start();
 	return true;
 }
@@ -130,17 +131,29 @@ bool ModuleFileSystem::IsDirectory(const char * file) const
 	return PHYSFS_isDirectory(file);
 }
 
-std::list<std::string> ModuleFileSystem::ListFiles(const char * dir) const
+std::vector<std::string> ModuleFileSystem::ListFiles(const char * dir, bool extension) const
 {
-	std::list<std::string> files;
+	std::vector<std::string> files;
 	char **rc = PHYSFS_enumerateFiles(dir);
 	char **i;
-	
+
 	for (i = rc; *i != NULL; i++)
-		files.emplace_back(*i);
-	
-	 PHYSFS_freeList(rc);
-	 return files;
+	{
+		if (!extension)
+		{
+			files.emplace_back(RemoveExtension(*i));
+		}
+		else
+		{
+			files.emplace_back(*i);
+		}
+		//char *file = new char[strlen(*i)];
+		//strcpy(file, *i);
+		//files.emplace_back(file); //TODO: copy char*
+	}
+
+	PHYSFS_freeList(rc);
+	return files;
 }
 
 bool ModuleFileSystem::CopyFromOutsideFS(const char * source, const char * destination)
@@ -178,7 +191,7 @@ bool ModuleFileSystem::Copy(const char * source, const char * destination, const
 
 void ModuleFileSystem::CheckImportedFiles(const char * folder)//TODO: improve using extensions otherwise conflict between files with same name and diff extension
 {
-	std::list<std::string> files = ListFiles(folder);
+	std::vector<std::string> files = ListFiles(folder);
 	for (auto& file : files)
 	{
 		std::string filefolder(folder);
@@ -195,7 +208,7 @@ void ModuleFileSystem::CheckImportedFiles(const char * folder)//TODO: improve us
 }
 void ModuleFileSystem::WatchFolder(const char * folder)
 {
-	std::list<std::string> files = ListFiles(folder);
+	std::vector<std::string> files = ListFiles(folder);
 	for (auto& file: files)
 	{
 		std::string filefolder(folder);

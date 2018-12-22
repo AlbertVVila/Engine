@@ -191,7 +191,7 @@ void ComponentCamera::Update()
 }
 void ComponentCamera::DrawProperties()
 {
-	if (ImGui::CollapsingHeader("Camera"))
+	if (ImGui::CollapsingHeader("Camera", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		ImGui::DragFloat("Znear", (float*)&frustum.nearPlaneDistance, 0.1f, 0.01f, 1000.f);
 		ImGui::DragFloat("Zfar", (float*)&frustum.farPlaneDistance, 0.5f, 1.f, 1000.f);

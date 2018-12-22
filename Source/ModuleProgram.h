@@ -2,6 +2,14 @@
 #define __ModuleProgram_h__
 
 #include "Module.h"
+#include <string>
+
+struct Shader
+{
+	unsigned id;
+	std::string file;
+	Shader(unsigned program, std::string file) : id(program), file(file) {}
+};
 
 class ModuleProgram : public Module
 {
@@ -12,18 +20,17 @@ public:
 	bool Init();
 	bool CleanUp();
 
-	unsigned int CreateProgram(const char *name);
-	unsigned int CreateVertexShader(const char *name);
-	unsigned int CreateFragmentShader(const char *name);
+	Shader* CreateProgram(const char *name);
+	Shader* GetProgram(const char * name); //creates if it doesn't exist
 
-	const char* ReadShader(const char *filename) const;
-
+private:
 	void ShaderLog(unsigned int shader, char* type) const;
+	unsigned CreateVertexShader(const char *name);
+	unsigned CreateFragmentShader(const char *name);
 
-	//TODO: Use container for programs
-	unsigned int defaultProgram = 0;
-	unsigned int textureProgram = 0;
-	unsigned int skyboxProgram = 0;
+public:
+
+	Shader * defaultShader = nullptr;
 
 };
 

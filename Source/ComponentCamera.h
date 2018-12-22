@@ -11,7 +11,7 @@ class ComponentCamera :
 	public Component
 {
 public:
-	ComponentCamera();
+	ComponentCamera(); //TODO: copy constructor in camera
 	ComponentCamera(GameObject* gameobject);
 	~ComponentCamera();
 

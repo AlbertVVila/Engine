@@ -3,24 +3,23 @@
 #include "ModuleProgram.h"
 #include "ModuleTextures.h"
 #include "ModuleFileSystem.h"
+#include "ModuleResourceManager.h"
+
 #include "GameObject.h"
 #include "Imgui/imgui.h"
 #include "GL/glew.h"
 
 #include "assimp/material.h"
 #include "JSON.h"
-ComponentMaterial::ComponentMaterial(GameObject* gameobject, const char * material) : Component(gameobject, ComponentType::Material)
+#include <vector>
+ComponentMaterial::ComponentMaterial(GameObject* gameobject) : Component(gameobject, ComponentType::Renderer)
 {
-	this->shader = App->program->textureProgram;
-	SetMaterial(material);
+	shader = App->program->defaultShader;
 }
 
 ComponentMaterial::ComponentMaterial(const ComponentMaterial& component) : Component(component)
 {
-	texture = component.texture; //TODO: delete texture diferent materials?
-	shader = component.shader;
-	color = component.color;
-	file = component.file;
+	
 }
 
 ComponentMaterial::~ComponentMaterial()
@@ -33,52 +32,48 @@ Component * ComponentMaterial::Clone()
 	return new ComponentMaterial(*this);
 }
 
-void ComponentMaterial::DeleteTexture()
+void ComponentMaterial::DeleteTexture()//TODO delete all textures of materials
 {
-	if (texture != nullptr)
+	for (unsigned i = 0; i < MAXTEXTURES; i++)
 	{
-		glDeleteTextures(1, (GLuint*)&texture->id);
+		if (textures[i] != nullptr)
+		{
+			glDeleteTextures(1, (GLuint*)&textures[i]->id);
+			RELEASE(textures[i]);
+		}
 	}
-	RELEASE(texture);
 }
 
-void ComponentMaterial::SetMaterial(const char * material)
+void ComponentMaterial::SetTexture(const char * newTexture, TextureType type)
 {
-	if (material != nullptr)
+	if (newTexture != nullptr)
 	{
-		texture = App->textures->Load(material);
+		textures[(unsigned)type] = App->textures->Load(newTexture);
 	}
-	else
-	{
-		texture = App->textures->Load(CHECKERS);
-		//texturePath = "checkersTexture.jpg";
-	}
-
-	//TODO: if texture was already loaded by another material, don't load it again
-	//DeleteTexture();
-	//texture = App->textures->Load(texturePath.c_str());
-	//textures.push_back(texture);
 }
 
-Texture * ComponentMaterial::GetTexture() const
+void ComponentMaterial::SetShader(const char * shaderName)
 {
-	return texture;
+	if (shaderName != nullptr)
+	{
+		shader = App->program->GetProgram(shaderName); //TODO: refactor shader + texture + material
+	}
 }
 
-unsigned int ComponentMaterial::GetShader() const
+Texture * ComponentMaterial::GetTexture(TextureType type) const
+{
+	return textures[(unsigned)type];
+}
+
+Shader * ComponentMaterial::GetShader() const
 {
 	return shader;
-}
-
-float4 ComponentMaterial::GetColor() const
-{
-	return color;
 }
 
 void ComponentMaterial::DrawProperties()
 {
 	ImGui::PushID(this);
-	if (ImGui::CollapsingHeader("Material"))
+	if (ImGui::CollapsingHeader("Renderer", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		bool removed = Component::DrawComponentState();
 		if (removed)
@@ -86,14 +81,91 @@ void ComponentMaterial::DrawProperties()
 			ImGui::PopID();
 			return;
 		}
-		ImGui::Text("Shader: PlaceHolder");
-		if (texture != nullptr)
+		std::vector<std::string> materials = App->fsystem->ListFiles(MATERIALS, false);
+		if (ImGui::BeginCombo("Material", name.c_str())) // The second parameter is the label previewed before opening the combo.
 		{
-			ImGui::Text("Texture width:%d height:%d", texture->width, texture->height);
-			float size = ImGui::GetWindowWidth();
-			ImGui::Image((ImTextureID)texture->id, { size,size });
-			ImGui::Separator();
+			for (int n = 0; n < materials.size(); n++)
+			{
+				bool is_selected = (name == materials[n]);
+				if (ImGui::Selectable(materials[n].c_str(), is_selected) && name != materials[n])
+				{
+					name = materials[n];
+					ComponentMaterial *mat = App->resManager->GetMaterial(name);
+					if (mat == nullptr)
+					{
+						Load(name.c_str());
+						App->resManager->AddMaterial(name, this);
+					}
+					else
+					{
+						//TODO: assign it?
+					}
+				}
+				if (is_selected)
+					ImGui::SetItemDefaultFocus();
+			}
+			ImGui::EndCombo();
 		}
+		//std::vector<std::string> shaders = App->fsystem->ListFiles(VERTEXSHADERS, false);
+		//if (ImGui::BeginCombo("Shader", selected_shader.c_str())) // The second parameter is the label previewed before opening the combo.
+		//{
+		//	for (int n = 0; n < shaders.size(); n++)
+		//	{
+		//		bool is_selected = (selected_shader == shaders[n]);
+		//		if (ImGui::Selectable(shaders[n].c_str(), is_selected) && selected_shader != shaders[n])
+		//		{
+		//			selected_shader = shaders[n];
+		//			shader = App->program->GetProgram(selected_shader.c_str());
+		//		}
+		//		if (is_selected)
+		//			ImGui::SetItemDefaultFocus();
+		//	}
+		//	ImGui::EndCombo();
+		//}
+		/*ImGui::Text((name + " Material").c_str());
+		std::vector<std::string> textureFiles = App->fsystem->ListFiles(TEXTURES, false);
+		const char* textureTypes[] = { "Diffuse", "Specular", "Occlusion", "Emissive" };
+		unsigned i = 0;
+		for (auto &matTexture : textures)
+		{
+			ImGui::PushID(&matTexture);
+			if (ImGui::BeginCombo(textureTypes[i], selected_texture[i].c_str())) 
+			{
+				for (int n = 0; n < textureFiles.size(); n++)
+				{
+					bool is_selected = (selected_texture[i] == textureFiles[n]);
+					if (ImGui::Selectable(textureFiles[n].c_str(), is_selected) && selected_texture[i] != textureFiles[n])
+					{
+						selected_texture[i] = textureFiles[n];
+						matTexture = App->textures->Load(selected_texture[i].c_str());
+					}
+					if (is_selected)
+						ImGui::SetItemDefaultFocus();
+				}
+				ImGui::EndCombo();
+			}
+			switch ((TextureType)i)
+			{
+				case TextureType::DIFFUSE:
+					ImGui::ColorEdit4("Diffuse Color", (float*)&diffuse_color);
+					break;
+				case TextureType::SPECULAR:
+					ImGui::ColorEdit3("Specular Color", (float*)&specular_color);
+					break;
+				case TextureType::EMISSIVE:
+					ImGui::ColorEdit3("Emissive Color", (float*)&emissive_color);
+					break;
+			}
+			if (matTexture != nullptr)
+			{
+				ImGui::Text("Texture width:%d height:%d", matTexture->width, matTexture->height);
+				float size = ImGui::GetWindowWidth();
+				ImGui::Image((ImTextureID)matTexture->id, { size,size }, { 0,1 }, { 1,0 });
+				ImGui::Separator();
+			}
+			ImGui::PopID();
+			++i;
+		}*/
 	}
 	ImGui::PopID();
 }
@@ -101,19 +173,114 @@ void ComponentMaterial::DrawProperties()
 void ComponentMaterial::Save(JSON_value * value) const
 {
 	Component::Save(value);
-	//TODO: serialize shader
-	value->AddFloat4("Color", color);
-	if (!file.empty())
-	{
-		value->AddString("MaterialFile", file.c_str());
-	}
+	Save();
+	value->AddString("Material", name.c_str());
 }
 
 void ComponentMaterial::Load(JSON_value * value)
 {
 	Component::Load(value);
-	//TODO: deserialize shader
-	color = value->GetFloat4("Color");
-	file = value->GetString("MaterialFile");
-	SetMaterial(file.c_str());
+	const char* materialFile = value->GetString("Material");
+	if (materialFile != nullptr)
+	{
+		Load(materialFile);
+	}
+}
+
+void ComponentMaterial::Load(const char* materialfile)
+{
+	char* data = nullptr;
+	std::string materialName(materialfile);
+	App->fsystem->Load((MATERIALS + materialName + JSONEXT).c_str(), &data);
+	JSON *json = new JSON(data);
+	JSON_value *materialJSON = json->GetValue("material");
+
+	name = materialName;
+	diffuse_color = materialJSON->GetColor4("diffuseColor");
+	specular_color = materialJSON->GetColor3("specularColor");
+	emissive_color = materialJSON->GetColor3("emissiveColor");
+
+	kAmbient = materialJSON->GetFloat("kAmbient");
+	kDiffuse = materialJSON->GetFloat("kDiffuse");
+	kSpecular = materialJSON->GetFloat("kSpecular");
+	shininess = materialJSON->GetFloat("shininess");
+
+	JSON_value *textureJSON = materialJSON->GetValue("textures");
+	if (textureJSON != nullptr)
+	{
+		textures[(unsigned)TextureType::DIFFUSE] = materialJSON->GetTexture("diffuse");
+		textures[(unsigned)TextureType::SPECULAR] = materialJSON->GetTexture("specular");
+		textures[(unsigned)TextureType::OCCLUSION] = materialJSON->GetTexture("occlusion");
+		textures[(unsigned)TextureType::EMISSIVE] = materialJSON->GetTexture("emissive");
+	}
+
+	if (shader == nullptr)
+	{
+		shader = App->program->CreateProgram(materialJSON->GetString("shader"));
+		App->resManager->AddProgram(shader);
+	}
+}
+
+std::list<Texture*> ComponentMaterial::GetTextures() const
+{
+	std::list<Texture*> mytextures;
+	for (unsigned i = 0; i < MAXTEXTURES; i++)
+	{
+		if (textures[i] != nullptr)
+		{
+			mytextures.push_back(textures[i]);
+		}
+	}
+	return mytextures;
+}
+
+void ComponentMaterial::Save() const
+{
+	JSON *json = new JSON();
+	JSON_value *materialJSON = json->CreateValue();
+
+	if(textures[(unsigned) TextureType::DIFFUSE] != nullptr)
+		materialJSON->AddFloat4("diffuseColor", diffuse_color);
+
+	if (textures[(unsigned)TextureType::SPECULAR] != nullptr)
+		materialJSON->AddFloat3("specularColor", specular_color);
+
+	if (textures[(unsigned)TextureType::EMISSIVE] != nullptr)
+		materialJSON->AddFloat3("emissiveColor", emissive_color);
+
+	materialJSON->AddFloat("kAmbient", kAmbient);
+	materialJSON->AddFloat("kDiffuse", kDiffuse);
+	materialJSON->AddFloat("kSpecular", kSpecular);
+	materialJSON->AddFloat("shininess", shininess);
+
+	if (!GetTextures().empty())
+	{
+		JSON_value *texturesJSON = materialJSON->CreateValue(rapidjson::kArrayType);
+		if (textures[(unsigned)TextureType::DIFFUSE] != nullptr)
+		{
+			texturesJSON->AddTexture("diffuse", textures[(unsigned)TextureType::DIFFUSE]);
+		}
+		if (textures[(unsigned)TextureType::SPECULAR] != nullptr)
+		{
+			texturesJSON->AddTexture("specular", textures[(unsigned)TextureType::SPECULAR]);
+		}
+		if (textures[(unsigned)TextureType::OCCLUSION] != nullptr)
+		{
+			texturesJSON->AddTexture("occlusion", textures[(unsigned)TextureType::OCCLUSION]);
+		}
+		if (textures[(unsigned)TextureType::EMISSIVE] != nullptr)
+		{
+			texturesJSON->AddTexture("emissive", textures[(unsigned)TextureType::EMISSIVE]);
+		}
+		materialJSON->AddValue("textures", texturesJSON);
+	}
+
+	if (shader != nullptr)
+	{
+		materialJSON->AddString("shader", shader->file.c_str());
+	}
+
+	json->AddValue("material", materialJSON);
+
+	App->fsystem->Save((MATERIALS + name + JSONEXT).c_str(), json->ToString().c_str(),json->Size());
 }

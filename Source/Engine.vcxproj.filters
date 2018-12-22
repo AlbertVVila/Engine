@@ -183,9 +183,6 @@
     <ClCompile Include="ComponentMesh.cpp">
       <Filter>Component</Filter>
     </ClCompile>
-    <ClCompile Include="ComponentMaterial.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
     <ClCompile Include="PanelHierarchy.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
@@ -206,6 +203,15 @@
     </ClCompile>
     <ClCompile Include="FileImporter.cpp">
       <Filter>Importer</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentLight.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleResourceManager.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentMaterial.cpp">
+      <Filter>Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -453,9 +459,6 @@
     <ClInclude Include="ComponentMesh.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="ComponentMaterial.h">
-      <Filter>Component</Filter>
-    </ClInclude>
     <ClInclude Include="PanelHierarchy.h">
       <Filter>Panels</Filter>
     </ClInclude>
@@ -482,6 +485,15 @@
     </ClInclude>
     <ClInclude Include="FileImporter.h">
       <Filter>Importer</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentLight.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleResourceManager.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentMaterial.h">
+      <Filter>Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -517,22 +529,40 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Game\Default.fs">
+    <None Include="..\Game\Shaders\FragmentShaders\Default.fs">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="..\Game\Default.vs">
+    <None Include="..\Game\Shaders\FragmentShaders\Flat.fs">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="..\Game\Texture.fs">
+    <None Include="..\Game\Shaders\FragmentShaders\Gouraud.fs">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="..\Game\Texture.vs">
+    <None Include="..\Game\Shaders\FragmentShaders\Phong.fs">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="..\Game\Skybox.fs">
+    <None Include="..\Game\Shaders\FragmentShaders\Skybox.fs">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="..\Game\Skybox.vs">
+    <None Include="..\Game\Shaders\FragmentShaders\Texture.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\VertexShaders\Default.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\VertexShaders\Flat.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\VertexShaders\Gouraud.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\VertexShaders\Phong.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\VertexShaders\Skybox.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\VertexShaders\Texture.vs">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

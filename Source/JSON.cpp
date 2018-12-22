@@ -4,6 +4,7 @@
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/prettywriter.h"
 
+#include "ModuleTextures.h"
 
 JSON_value::JSON_value(rapidjson::Document::AllocatorType * allocator, rapidjson::Type type): allocator(allocator)
 {
@@ -108,6 +109,16 @@ void JSON_value::AddValue(const char* name, JSON_value *value)
 	}
 }
 
+void JSON_value::AddTexture(const char * name, Texture * texture)
+{
+	JSON_value* textureJSON = CreateValue();
+	textureJSON->AddUint("id", texture->id);
+	textureJSON->AddUint("width", texture->width);
+	textureJSON->AddUint("height", texture->height);
+	textureJSON->AddString("file", texture->file.c_str());
+	AddValue(name, textureJSON);
+}
+
 int JSON_value::GetInt(const char * name)
 {
 	rapidjson::Value::ConstMemberIterator itr = rapidjsonValue->FindMember(name);
@@ -165,6 +176,21 @@ float3 JSON_value::GetFloat3(const char * name)
 	}
 }
 
+float3 JSON_value::GetColor3(const char * name)
+{
+	rapidjson::Value::ConstMemberIterator itr = rapidjsonValue->FindMember(name);
+	if (itr != rapidjsonValue->MemberEnd())
+	{
+		float3 ret(itr->value[0].GetFloat(), itr->value[1].GetFloat(), itr->value[2].GetFloat());
+		return ret;
+	}
+	else
+	{
+		LOG("Member %s not found!", name);
+		return float3::one;
+	}
+}
+
 float4 JSON_value::GetFloat4(const char * name)
 {
 	rapidjson::Value::ConstMemberIterator itr = rapidjsonValue->FindMember(name);
@@ -178,6 +204,22 @@ float4 JSON_value::GetFloat4(const char * name)
 	{
 		LOG("Member %s not found!", name);
 		return float4::zero;
+	}
+}
+
+float4 JSON_value::GetColor4(const char * name)
+{
+	rapidjson::Value::ConstMemberIterator itr = rapidjsonValue->FindMember(name);
+	if (itr != rapidjsonValue->MemberEnd())
+	{
+		float4 ret(itr->value[0].GetFloat(), itr->value[1].GetFloat(),
+			itr->value[2].GetFloat(), itr->value[3].GetFloat());
+		return ret;
+	}
+	else
+	{
+		LOG("Member %s not found!", name);
+		return float4::one;
 	}
 }
 
@@ -203,6 +245,24 @@ const char* JSON_value::GetString(const char * name)
 	if (itr != rapidjsonValue->MemberEnd())
 	{
 		return itr->value.GetString();
+	}
+	else
+	{
+		LOG("Member %s not found!", name);
+		return nullptr;
+	}
+}
+
+Texture * JSON_value::GetTexture(const char * name)
+{
+	JSON_value* texture = GetValue(name);
+	if (texture != nullptr)
+	{
+		unsigned id = GetUint("id");
+		unsigned width = GetUint("width");
+		unsigned height = GetUint("height");
+		std::string file = GetString("file");
+		return new Texture(id, width, height, file);
 	}
 	else
 	{

@@ -9,8 +9,9 @@
 #include "Component.h"
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
-#include "ComponentMaterial.h"
 #include "ComponentCamera.h"
+#include "ComponentLight.h"
+#include "ComponentMaterial.h"
 
 #include "Application.h"
 #include "ModuleProgram.h"
@@ -18,6 +19,7 @@
 #include "ModuleCamera.h"
 #include "ModuleInput.h"
 #include "ModuleScene.h"
+#include "ModuleTextures.h"
 
 #include "JSON.h"
 
@@ -43,6 +45,7 @@ GameObject::GameObject(const GameObject & gameobject)
 	for (const auto& component: gameobject.components)
 	{
 		Component *componentcopy = component->Clone();
+		componentcopy->gameobject = this;
 		components.push_back(componentcopy);
 		if (componentcopy->type == ComponentType::Transform)
 		{
@@ -85,43 +88,83 @@ void GameObject::Draw(const math::Frustum& frustum)
 
 	if (transform == nullptr) return;
 
-	ComponentMaterial* material = (ComponentMaterial*)GetComponent(ComponentType::Material);
-	unsigned int shader = 0;
-	Texture * texture = nullptr;
-
-	if (material != nullptr && material->enabled)
-	{
-		shader = material->GetShader();
-		texture = material->GetTexture();
-	}
-	else
-	{
-		shader = App->program->textureProgram;
-	}
-
-	if (texture == nullptr && material != nullptr)
-	{
-		shader = App->program->defaultProgram;
-		glUniform4fv(glGetUniformLocation(shader,
-			"Vcolor"), 1, (GLfloat*) &material->GetColor());
-	}
-
 	if (drawBBox)
 	{
 		DrawBBox();
 	}
 
-	glUseProgram(shader);
-	ModelTransform(shader);
+	ComponentMaterial* material = (ComponentMaterial*)GetComponent(ComponentType::Renderer);
+	if (material == nullptr || !material->enabled) return;
+
+	if (material->shader == nullptr) return;
+	Shader* shader = material->shader;
+
+	glUseProgram(shader->id);
+
+	for (unsigned int i = 0; i < MAXTEXTURES; i++)
+	{
+		if (material->textures[i] == nullptr) continue;
+
+		glActiveTexture(GL_TEXTURE0 + i); 
+		
+		char* textureName;
+		switch ((TextureType)i)
+		{
+			case TextureType::DIFFUSE:
+				textureName = "material.diffuse_texture";
+				glUniform4fv(glGetUniformLocation(shader->id,
+					"material.diffuse_color"), 1, (GLfloat*)&material->diffuse_color);
+				break;
+
+			case TextureType::SPECULAR:
+				textureName = "material.specular_texture";
+				glUniform3fv(glGetUniformLocation(shader->id,
+					"material.specular_color"), 1, (GLfloat*)&material->specular_color);
+				break;
+
+			case TextureType::OCCLUSION:
+				textureName = "material.occlusion_texture";
+				break;
+
+			case TextureType::EMISSIVE:
+				textureName = "material.emissive_texture";
+				glUniform3fv(glGetUniformLocation(shader->id,
+					"material.emissive_color"), 1, (GLfloat*)&material->emissive_color);
+				break;
+		}
+		glBindTexture(GL_TEXTURE_2D, material->textures[i]->id);
+		glUniform1i(glGetUniformLocation(shader->id,  textureName), i);
+	}
+
+	if (App->scene->light != nullptr)
+	{
+		glUniform3fv(glGetUniformLocation(shader->id,
+			"lightPos"), 1, (GLfloat*)&App->scene->light->position);
+	}
+
+	//mat
+	glUniform1fv(glGetUniformLocation(shader->id,
+		"material.k_ambient"), 1, (GLfloat*)&material->kAmbient);
+	glUniform1fv(glGetUniformLocation(shader->id,
+		"material.k_diffuse"), 1, (GLfloat*)&material->kDiffuse);
+	glUniform1fv(glGetUniformLocation(shader->id,
+		"material.k_specular"), 1, (GLfloat*)&material->kSpecular);
+	glUniform1fv(glGetUniformLocation(shader->id,
+		"material.shininess"), 1, (GLfloat*)&material->shininess);
+
+
+	UpdateModel(shader->id);
 
 	std::vector<Component*> meshes = GetComponents(ComponentType::Mesh);
 	for (auto &mesh: meshes)
 	{
 		if (mesh->enabled)
 		{
-			((ComponentMesh*)mesh)->Draw(shader, texture);
+			((ComponentMesh*)mesh)->Draw(shader->id);
 		}
 	}
+
+	glBindTexture(GL_TEXTURE_2D, 0);
 	glUseProgram(0);
 }
 
@@ -141,7 +184,7 @@ void GameObject::DrawProperties()
 
 void GameObject::DrawHierarchy(GameObject * selected)
 {
-	ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow
+	ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_DefaultOpen
 		| ImGuiTreeNodeFlags_OpenOnDoubleClick | (selected == this ? ImGuiTreeNodeFlags_Selected : 0);
 
 	ImGui::PushID(this);
@@ -203,7 +246,11 @@ void GameObject::DrawHierarchy(GameObject * selected)
 			for (int j = 0; j < IM_ARRAYSIZE(go_options); j++)
 				if (ImGui::Selectable(go_options[j]))
 				{
-					if (go_options[j] == "Empty GameObject")
+					if (go_options[j] == "Sphere")
+					{
+						App->scene->CreateSphere("sphere0", float3(0.0f, 0.0f, 0.0f), Quat::identity, 1.0f, 20, 20, float4(1.f, 1.f, 1.f, 1.0f));
+					}
+					else if (go_options[j] == "Empty GameObject")
 					{
 						App->scene->CreateGameObject("Empty", this);
 					}
@@ -283,10 +330,15 @@ Component * GameObject::CreateComponent(ComponentType type)
 	case Mesh:
 		component = new ComponentMesh(this);
 		break;
-	case Material:
+	case Renderer:
 		component = new ComponentMaterial(this);
 		break;
 	case Light:
+		component = new ComponentLight(this);
+		if (App->scene->light == nullptr)
+		{
+			App->scene->light = (ComponentLight*)component;
+		}
 		break;
 	case Camera:
 		component = new ComponentCamera(this);
@@ -373,7 +425,7 @@ float4x4 GameObject::GetLocalTransform() const
 	return float4x4::FromTRS(transform->position, transform->rotation, transform->scale);
 }
 
-void GameObject::ModelTransform(unsigned int shader) const
+void GameObject::UpdateModel(unsigned int shader) const
 {
 	glUniformMatrix4fv(glGetUniformLocation(shader,
 		"model"), 1, GL_TRUE, &GetGlobalTransform()[0][0]);
@@ -401,7 +453,8 @@ AABB GameObject::GetBoundingBox() const
 void GameObject::DrawBBox() const
 { //TODO: optimize with VAO
 
-	glUseProgram(App->program->defaultProgram);
+	unsigned shader = App->program->defaultShader->id;
+	glUseProgram(shader);
 	AABB bbox = GetBoundingBox();
 	GLfloat vertices[] = {
 		-0.5, -0.5, -0.5, 1.0,
@@ -432,11 +485,11 @@ void GameObject::DrawBBox() const
 
 
 	float4x4 boxtransform = float4x4::FromTRS(bbox.CenterPoint(), Quat::identity, bbox.Size());
-	glUniformMatrix4fv(glGetUniformLocation(App->program->defaultProgram,
+	glUniformMatrix4fv(glGetUniformLocation(shader,
 		"model"), 1, GL_TRUE, &(boxtransform)[0][0]);
 
 	float green[4] = { 0.0f, 1.0f, 0.0f, 1.0f };
-	glUniform4fv(glGetUniformLocation(App->program->defaultProgram,
+	glUniform4fv(glGetUniformLocation(shader,
 		"Vcolor"), 1, green);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
 	glEnableVertexAttribArray(0);

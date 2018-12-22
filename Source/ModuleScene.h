@@ -4,10 +4,14 @@
 #include "Module.h"
 #include "Geometry/Frustum.h"
 #include "pcg_random.hpp"
+#include "Math/Quat.h"
+#include "Math/float4.h"
 
 class GameObject;
 class ComponentCamera;
+class ComponentLight;
 struct Texture;
+struct par_shapes_mesh_s;
 
 class ModuleScene :
 	public Module
@@ -26,6 +30,10 @@ public:
 	GameObject * CreateGameObject(const float4x4& transform, const char* filepath, const char* name, GameObject* parent);
 	GameObject * CreateGameObject(const char * name, GameObject* parent);
 
+	void CreateSphere(const char * name, const float3 & pos = float3::zero, const Quat & rot = Quat::identity, float size = 1.f, unsigned slices = 20u, unsigned stacks = 20u, const float4 & color = float4::one);
+
+	unsigned SaveParShapesMesh(const par_shapes_mesh_s & mesh, char** data);
+
 	void SaveScene(const GameObject &rootGO, const char* name);
 
 	void LoadScene(const char * scene);
@@ -39,6 +47,9 @@ public:
 	Texture* camera_notfound_texture = nullptr;
 	pcg32 uuid_rng;
 	std::string name;
+
+	float ambient = 0.5f;
+	ComponentLight* light = nullptr;
 };
 
 #endif __ModuleScene_h__

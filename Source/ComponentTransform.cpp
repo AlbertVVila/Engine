@@ -37,7 +37,7 @@ void ComponentTransform::AddTransform(const float4x4 & transform)
 
 void ComponentTransform::DrawProperties()
 {
-	if (ImGui::CollapsingHeader("Local Transformation"))
+	if (ImGui::CollapsingHeader("Local Transformation", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		ImGui::DragFloat3("Position", (float*)&position, 0.1f, -1000.f, 1000.f);
 

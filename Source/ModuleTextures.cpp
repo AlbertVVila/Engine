@@ -2,6 +2,8 @@
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
 #include "ModuleFileSystem.h"
+#include "ModuleResourceManager.h" 
+
 #include "GL/glew.h"
 #include "IL/ilut.h"
 #include "imgui.h"
@@ -48,17 +50,21 @@ void ModuleTextures::DrawGUI()
 Texture * ModuleTextures::Load(const char * file) const //TODO: refactor texture load
 {
 	assert(file != NULL);
+
+	Texture* loadedText = App->resManager->GetTexture(file);
+	if (loadedText != nullptr) return loadedText;
+
 	ILuint imageID;
 	ILboolean success;
 	ILenum error;
-	int width = 0;
-	int height = 0;
-	int pixelDepth = 0;
+	unsigned width = 0;
+	unsigned height = 0;
+	unsigned pixelDepth = 0;
 	int format = 0;
 
 	char *data;
 	std::string filename(file);
-	unsigned size = App->fsystem->Load((MATERIALS + filename + MATERIALEXTENSION).c_str(), &data); //TODO: use mini resource maanger to optimize this
+	unsigned size = App->fsystem->Load((TEXTURES + filename + TEXTUREEXT).c_str(), &data); 
 	ilGenImages(1, &imageID); 		// Generate the image ID
 	ilBindImage(imageID); 			// Bind the image
 	success = ilLoadL(IL_DDS, data, size);
@@ -68,7 +74,6 @@ Texture * ModuleTextures::Load(const char * file) const //TODO: refactor texture
 		glGenTextures(1, &textureID);
 
 		glBindTexture(GL_TEXTURE_2D, textureID);
-
 
 		ILinfo ImageInfo;
 		iluGetImageInfo(&ImageInfo);
@@ -100,7 +105,9 @@ Texture * ModuleTextures::Load(const char * file) const //TODO: refactor texture
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 
-		return new Texture(textureID, width, height);
+		Texture* texture = new Texture(textureID, width, height, file);
+		App->resManager->AddTexture(file, texture);
+		return texture;
 	}
 	else
 	{
@@ -115,9 +122,9 @@ unsigned int ModuleTextures::LoadCubeMap(const std::vector<std::string> &faces) 
 	unsigned int textureID;
 	glGenTextures(1, &textureID);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
-	int width = 0;
-	int height = 0;
-	int pixelDepth = 0;
+	unsigned width = 0;
+	unsigned height = 0;
+	unsigned pixelDepth = 0;
 	int format = 0;
 
 	for (unsigned int i=0; i< faces.size(); ++i)
@@ -131,7 +138,7 @@ unsigned int ModuleTextures::LoadCubeMap(const std::vector<std::string> &faces) 
 		ilBindImage(imageID); 			// Bind the image
 
 		char *data;
-		unsigned size = App->fsystem->Load((MATERIALS + faces[i] + MATERIALEXTENSION).c_str(), &data); //TODO: use mini resource maanger to optimize this
+		unsigned size = App->fsystem->Load((TEXTURES + faces[i] + TEXTUREEXT).c_str(), &data); //TODO: use mini resource maanger to optimize this
 		success = ilLoadL(IL_DDS, data, size);
 		if (success)
 		{
@@ -163,7 +170,7 @@ unsigned int ModuleTextures::LoadCubeMap(const std::vector<std::string> &faces) 
 	return textureID;
 }
 
-void ModuleTextures::ImportImage(const char * file, const char* folder)
+void ModuleTextures::ImportImage(const char * file, const char* folder) //TODO: maybe flip needed to solve bug reversed image
 {
 	ILuint imageID;
 	ILboolean success;
@@ -190,9 +197,9 @@ void ModuleTextures::ImportImage(const char * file, const char* folder)
 		if (ilSaveL(IL_DDS, data, size) > 0)
 		{
 			// Save to buffer with the ilSaveIL function
-			std::string filepath(MATERIALS);
+			std::string filepath(TEXTURES);
 			filepath += App->fsystem->RemoveExtension(file);
-			filepath += MATERIALEXTENSION;
+			filepath += TEXTUREEXT;
 			App->fsystem->Save(filepath.c_str(), (char*)data, size);
 		}
 		RELEASE_ARRAY(data);

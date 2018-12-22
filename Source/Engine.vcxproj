@@ -88,6 +88,7 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentCamera.h" />
+    <ClInclude Include="ComponentLight.h" />
     <ClInclude Include="ComponentMaterial.h" />
     <ClInclude Include="ComponentTransform.h" />
     <ClInclude Include="debug_draw.hpp" />
@@ -158,6 +159,7 @@
     <ClInclude Include="ModuleCamera.h" />
     <ClInclude Include="ModuleEditor.h" />
     <ClInclude Include="ModuleInput.h" />
+    <ClInclude Include="ModuleResourceManager.h" />
     <ClInclude Include="ModuleSceneLoader.h" />
     <ClInclude Include="ModuleProgram.h" />
     <ClInclude Include="ModuleRender.h" />
@@ -182,6 +184,7 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentCamera.cpp" />
+    <ClCompile Include="ComponentLight.cpp" />
     <ClCompile Include="ComponentMaterial.cpp" />
     <ClCompile Include="ComponentTransform.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -233,6 +236,7 @@
     <ClCompile Include="ModuleCamera.cpp" />
     <ClCompile Include="ModuleEditor.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
+    <ClCompile Include="ModuleResourceManager.cpp" />
     <ClCompile Include="ModuleSceneLoader.cpp" />
     <ClCompile Include="ModuleProgram.cpp" />
     <ClCompile Include="ModuleRender.cpp" />
@@ -251,12 +255,18 @@
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Game\Default.fs" />
-    <None Include="..\Game\Default.vs" />
-    <None Include="..\Game\Skybox.fs" />
-    <None Include="..\Game\Skybox.vs" />
-    <None Include="..\Game\Texture.fs" />
-    <None Include="..\Game\Texture.vs" />
+    <None Include="..\Game\Shaders\FragmentShaders\Default.fs" />
+    <None Include="..\Game\Shaders\FragmentShaders\Flat.fs" />
+    <None Include="..\Game\Shaders\FragmentShaders\Gouraud.fs" />
+    <None Include="..\Game\Shaders\FragmentShaders\Phong.fs" />
+    <None Include="..\Game\Shaders\FragmentShaders\Skybox.fs" />
+    <None Include="..\Game\Shaders\FragmentShaders\Texture.fs" />
+    <None Include="..\Game\Shaders\VertexShaders\Default.vs" />
+    <None Include="..\Game\Shaders\VertexShaders\Flat.vs" />
+    <None Include="..\Game\Shaders\VertexShaders\Gouraud.vs" />
+    <None Include="..\Game\Shaders\VertexShaders\Phong.vs" />
+    <None Include="..\Game\Shaders\VertexShaders\Skybox.vs" />
+    <None Include="..\Game\Shaders\VertexShaders\Texture.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

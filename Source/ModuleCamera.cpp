@@ -24,7 +24,7 @@ bool ModuleCamera::Init()
 	return true;
 }
 
-update_status ModuleCamera::Update()
+update_status ModuleCamera::Update() //TODO: vsync bug rotation smooth
 {
 	if (App->editor->IsCameraFocused())
 	{

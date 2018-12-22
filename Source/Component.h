@@ -8,7 +8,7 @@ enum ComponentType //TODO: enum class
 {
 	Transform = 0,
 	Mesh,
-	Material,
+	Renderer,
 	Camera,
 	Light
 };
@@ -24,7 +24,7 @@ public:
 
 	bool DrawComponentState();
 
-	virtual void DrawProperties() {};
+	virtual void DrawProperties() = 0;
 	virtual void Enable()
 	{
 		enabled = true;

@@ -6,7 +6,6 @@
 #include <assert.h>
 #include "GL/glew.h"
 #include "Imgui/imgui.h"
-#include "par_shapes.h"
 #include "JSON.h"
 
 ComponentMesh::ComponentMesh(GameObject* gameobject, char * mesh) : Component(gameobject, ComponentType::Mesh)
@@ -17,7 +16,7 @@ ComponentMesh::ComponentMesh(GameObject* gameobject, char * mesh) : Component(ga
 	}
 }
 
-ComponentMesh::ComponentMesh(const ComponentMesh & component) : Component(component)
+ComponentMesh::ComponentMesh(const ComponentMesh & component) : Component(component) //TODO: SaveMesh (for sphere, cube, etc)
 {
 	//TODO: gen new buffers
 	VAO = component.VAO;
@@ -41,35 +40,20 @@ Component * ComponentMesh::Clone()
 	return new ComponentMesh(*this);
 }
 
-void ComponentMesh::Draw(unsigned int shaderProgram, const Texture* texture) const
+void ComponentMesh::Draw(unsigned int shaderProgram) const
 {
-	glActiveTexture(GL_TEXTURE0);
-	//if (App->sceneLoader->checkers)
-	//{
-	//	glBindTexture(GL_TEXTURE_2D, App->sceneLoader->checkersTexture.id);
-	//}
-	//else
-	//{
-	if (texture != nullptr)
-	{
-		glBindTexture(GL_TEXTURE_2D, texture->id);
-	}
-	//}
-	glUniform1i(glGetUniformLocation(shaderProgram, "texture0"), 0);
-
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, 0);
 
 	// Desactivem VAO
 	glBindVertexArray(0);
 	// Desactivem Textura
-	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void ComponentMesh::DrawProperties()
 {
 	ImGui::PushID(this);
-	if (ImGui::CollapsingHeader("Mesh"))
+	if (ImGui::CollapsingHeader("Mesh", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		bool removed = Component::DrawComponentState();
 		if (removed)
@@ -88,6 +72,7 @@ void ComponentMesh::SetMesh(char * &mesh) //TODO: pass by reference or know size
 {
 	assert(mesh != nullptr);
 	DeleteBuffers();
+	char *data = mesh;
 
 	unsigned int numIndices = *(int*)mesh;
 	mesh += sizeof(int);
@@ -98,6 +83,9 @@ void ComponentMesh::SetMesh(char * &mesh) //TODO: pass by reference or know size
 	float* vertices = (float*)mesh;
 	mesh += sizeof(float) * 3 * numVertices;
 	
+	float* normals = (float*)mesh;
+	mesh += sizeof(float) * 3 * numVertices;
+
 	float* texCoords = (float*)mesh;
 	mesh += sizeof(float) * 2 * numVertices;
 
@@ -110,10 +98,11 @@ void ComponentMesh::SetMesh(char * &mesh) //TODO: pass by reference or know size
 	// Buffer Creation with vertex data
 	glGenBuffers(1, &VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*numVertices * 5, NULL, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*numVertices * 8, NULL, GL_STATIC_DRAW);
 
 	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(GLfloat) * 3 * numVertices, vertices);
-	glBufferSubData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 3 * numVertices, sizeof(GLfloat) * 2 * numVertices, texCoords);
+	glBufferSubData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 3 * numVertices, sizeof(GLfloat) * 3 * numVertices, normals);
+	glBufferSubData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * numVertices, sizeof(GLfloat) * 2 * numVertices, texCoords);
 	//float * pbuffer = (float*)glMapBufferRange(GL_ARRAY_BUFFER, sizeof(GLfloat) * 3 * numVertices, sizeof(GLfloat) * 2 * numVertices, GL_MAP_WRITE_BIT);
 	//memcpy(pbuffer, texCoords, sizeof(float) * 2 * numVertices);
 	//glUnmapBuffer(GL_ARRAY_BUFFER);
@@ -137,12 +126,21 @@ void ComponentMesh::SetMesh(char * &mesh) //TODO: pass by reference or know size
 	);
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(
-		1,                  // attribute 0
-		2,                  // number of componentes (3 floats)
+		1,                  // attribute 1
+		3,                  // number of componentes (3 floats)
 		GL_FLOAT,           // data type
 		GL_FALSE,           // should be normalized?
 		0,                  // stride
 		(void*)(sizeof(float) * 3 * numVertices)       // array buffer offset
+	);
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(
+		2,                  // attribute 2
+		2,                  // number of componentes (2 floats)
+		GL_FLOAT,           // data type
+		GL_FALSE,           // should be normalized?
+		0,                  // stride
+		(void*)(sizeof(float) * 6 * numVertices)       // array buffer offset
 	);
 
 	// Disable VAO
@@ -165,79 +163,8 @@ void ComponentMesh::SetMesh(char * &mesh) //TODO: pass by reference or know size
 	}
 	//materialIndex = mesh->mMaterialIndex; TODO import/load materials
 	ComputeBBox();
+	delete[] data;
 }
-
-void ComponentMesh::SetMesh(par_shapes_mesh_s * mesh)
-{
-	// VAO Creation
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
-
-	glGenBuffers(1, &VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
-	unsigned offset_acc = sizeof(float3);
-	unsigned normals_offset = 0;
-
-	if (mesh->normals)
-	{
-		normals_offset = offset_acc;
-		offset_acc += sizeof(float3);
-	}
-
-	glBufferData(GL_ARRAY_BUFFER, offset_acc*mesh->npoints, nullptr, GL_STATIC_DRAW);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float3)*mesh->npoints, mesh->points);
-
-	// normals
-
-	if (mesh->normals)
-	{
-		glBufferSubData(GL_ARRAY_BUFFER, normals_offset*mesh->npoints, sizeof(float3)*mesh->npoints, mesh->normals);
-	}
-
-	// indices
-
-	glGenBuffers(1, &EBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned)*mesh->ntriangles * 3, nullptr, GL_STATIC_DRAW);
-
-	unsigned* indices = (unsigned*)glMapBufferRange(GL_ELEMENT_ARRAY_BUFFER, 0,
-		sizeof(unsigned)*mesh->ntriangles * 3, GL_MAP_WRITE_BIT);
-
-	for (unsigned i = 0; i< unsigned(mesh->ntriangles * 3); ++i)
-	{
-		*(indices++) = mesh->triangles[i];
-	}
-
-	glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
-
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-
-	if (normals_offset != 0)
-	{
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)(normals_offset*mesh->npoints));
-	}
-
-	glBindVertexArray(0);
-
-	glDisableVertexAttribArray(0);
-	glDisableVertexAttribArray(1);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	//materialIndex = 0;
-	numIndices = mesh->ntriangles * 3;
-	vertices.reserve(mesh->npoints);
-	for (unsigned int i = 0; i < mesh->npoints; i++)
-	{
-		vertices.push_back(float3((float *)&mesh->points[i]));
-	}
-	ComputeBBox();
-}
-
 
 unsigned int ComponentMesh::GetMaterialIndex()
 {

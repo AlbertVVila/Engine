@@ -3,19 +3,23 @@
 
 #include "Module.h"
 #include "Timer.h"
-#include <list>
+#include <vector>
 #include <set>
 
 #define ASSETS "Assets/"
 #define LIBRARY "Library/"
-#define MESHES LIBRARY "Meshes/"
 #define MATERIALS LIBRARY "Materials/"
+#define MESHES LIBRARY "Meshes/"
+#define TEXTURES LIBRARY "Textures/"
 #define SCENES LIBRARY "Scenes/"
+#define SHADERS "Shaders/"
+#define VERTEXSHADERS SHADERS "VertexShaders/"
+#define FRAGSHADERS SHADERS "FragmentShaders/"
 #define SKYBOX "Skybox/"
 
 #define FBXEXTENSION ".fbx"
 #define MESHEXTENSION ".m3sh"
-#define MATERIALEXTENSION ".dds"
+#define TEXTUREEXT ".dds"
 #define JSONEXT ".json"
 
 #define CHECKERS "checkersTexture"
@@ -38,7 +42,7 @@ public:
 	unsigned Size(const char* file) const;
 	bool MakeDirectory(const char* directory);
 	bool IsDirectory(const char* file) const;
-	std::list<std::string> ListFiles(const char * dir) const;
+	std::vector<std::string> ListFiles(const char * dir, bool extension=true) const;
 	bool CopyFromOutsideFS(const char* source, const char* destination);
 	bool Copy(const char* source, const char* destination, const char* file);
 
