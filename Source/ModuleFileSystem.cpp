@@ -10,7 +10,7 @@ ModuleFileSystem::ModuleFileSystem()
 
 ModuleFileSystem::~ModuleFileSystem()
 {
-	PHYSFS_deinit(); //TODO: Add to list of libraries
+	PHYSFS_deinit();
 }
 
 bool ModuleFileSystem::Init()
@@ -110,7 +110,7 @@ unsigned ModuleFileSystem::Size(const char * file) const
 	return file_size;
 }
 
-bool ModuleFileSystem::MakeDirectory(const char * directory)
+bool ModuleFileSystem::MakeDirectory(const char * directory) const
 {
 	assert(directory != nullptr);
 	if (directory == nullptr) return false;
@@ -156,7 +156,7 @@ std::vector<std::string> ModuleFileSystem::ListFiles(const char * dir, bool exte
 	return files;
 }
 
-bool ModuleFileSystem::CopyFromOutsideFS(const char * source, const char * destination)
+bool ModuleFileSystem::CopyFromOutsideFS(const char * source, const char * destination) const
 {
 	char *data;
 	FILE* fp = fopen(source, "rb");
@@ -166,6 +166,8 @@ bool ModuleFileSystem::CopyFromOutsideFS(const char * source, const char * desti
 	}
 	fseek(fp, 0, SEEK_END);
 	unsigned size = ftell(fp);
+	rewind(fp);
+
 	data = new char[size];
 	if (size != fread_s(data, size,1 , size, fp))
 	{
@@ -177,7 +179,7 @@ bool ModuleFileSystem::CopyFromOutsideFS(const char * source, const char * desti
 	return true;
 }
 
-bool ModuleFileSystem::Copy(const char * source, const char * destination, const char* file)
+bool ModuleFileSystem::Copy(const char * source, const char * destination, const char* file) const
 {
 	char * data;
 	std::string filepath(source);

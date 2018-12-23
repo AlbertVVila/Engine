@@ -45,7 +45,7 @@ bool ModuleCamera::CleanUp()
 	return editorcamera->CleanUp();
 }
 
-void ModuleCamera::InputMove()
+void ModuleCamera::InputMove() const
 {
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
@@ -84,7 +84,7 @@ void ModuleCamera::InputMove()
 	}
 }
 
-void ModuleCamera::InputRotate()//TODO: Use deltatime
+void ModuleCamera::InputRotate() const//TODO: Use deltatime
 {
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
@@ -94,7 +94,7 @@ void ModuleCamera::InputRotate()//TODO: Use deltatime
 	}
 }
 
-void ModuleCamera::InputCenter()
+void ModuleCamera::InputCenter() const
 {
 	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN)
 	{
@@ -102,7 +102,7 @@ void ModuleCamera::InputCenter()
 	}
 }
 
-void ModuleCamera::InputOrbit()
+void ModuleCamera::InputOrbit() const
 {
 	if (App->input->IsKeyPressed(SDL_SCANCODE_LALT) && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
 	{
@@ -111,7 +111,7 @@ void ModuleCamera::InputOrbit()
 	}
 }
 
-void ModuleCamera::InputZoom()
+void ModuleCamera::InputZoom() const
 {
 	editorcamera->Zoom(App->input->GetMouseWheel());
 }

@@ -24,6 +24,7 @@
 
 #define CHECKERS "checkersTexture"
 #define NOCAMERA "nocamera"
+
 class ModuleFileSystem :
 	public Module
 {
@@ -40,20 +41,20 @@ public:
 	bool Remove(const char* file) const;
 	bool Exists(const char* file) const;
 	unsigned Size(const char* file) const;
-	bool MakeDirectory(const char* directory);
+	bool MakeDirectory(const char* directory) const;
 	bool IsDirectory(const char* file) const;
 	std::vector<std::string> ListFiles(const char * dir, bool extension=true) const;
-	bool CopyFromOutsideFS(const char* source, const char* destination);
-	bool Copy(const char* source, const char* destination, const char* file);
-
-	void CheckImportedFiles(const char * folder);
-
-	void WatchFolder(const char* folder);
+	bool CopyFromOutsideFS(const char* source, const char* destination) const;
+	bool Copy(const char* source, const char* destination, const char* file) const;
 
 	std::string GetExtension(const char * file) const;
-
 	std::string RemoveExtension(const char * file) const;
 	std::string GetFilename(const char *file) const;
+
+private:
+	void CheckImportedFiles(const char * folder);
+	void WatchFolder(const char* folder);
+
 private:
 	float watchThreshold = 1000.f;
 	Timer importTimer;

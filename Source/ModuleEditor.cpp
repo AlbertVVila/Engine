@@ -1,4 +1,5 @@
 #include "Application.h"
+
 #include "ModuleEditor.h"
 #include "ModuleRender.h"
 #include "ModuleWindow.h"
@@ -365,7 +366,8 @@ update_status ModuleEditor::Update()
 				ImGui::Separator();
 			}
 			if (ImGui::Button("OK", ImVec2(120, 0))) {
-				newMaterial->Save(); //TODO: CleanUP component
+				newMaterial->Save();
+				newMaterial->CleanUp();
 				RELEASE(newMaterial);
 				materialCreationPopUp = false;
 				ImGui::CloseCurrentPopup();
@@ -374,6 +376,8 @@ update_status ModuleEditor::Update()
 			ImGui::SameLine();
 			if (ImGui::Button("Cancel", ImVec2(120, 0)))
 			{
+				newMaterial->CleanUp();
+				RELEASE(newMaterial);
 				materialCreationPopUp = false;
 				ImGui::CloseCurrentPopup();
 			}

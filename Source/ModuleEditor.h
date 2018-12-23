@@ -23,10 +23,10 @@ class ModuleEditor :
 public:
 	ModuleEditor();
 	~ModuleEditor();
-	bool Init();
-	update_status PreUpdate();
-	update_status Update();
-	bool CleanUp();
+	bool Init() override;
+	update_status PreUpdate() override;
+	update_status Update() override;
+	bool CleanUp() override;
 
 	void RenderGUI() const;
 	void CreateDockSpace() const;

@@ -176,7 +176,7 @@ void ModuleInput::DrawGUI()
 	ImGui::Text("X:%.2f | Y:%.2f", mouse.x*App->window->width, mouse.y*App->window->height);
 }
 
-void ModuleInput::DropFile(char* dropped_file) const
+void ModuleInput::DropFile(char* dropped_file) const //TODO: Popup added to ASSETS
 {
 	assert(dropped_file != NULL);
 	std::string filename(dropped_file);
@@ -188,16 +188,5 @@ void ModuleInput::DropFile(char* dropped_file) const
 		filename.erase(0, found + 1);
 		path.erase(found + 1, path.length());
 	}
-
-	//if (extension == "fbx" || extension == "FBX")
-	//{
-	//	/*App->sceneLoader->LoadFile(dropped_file);*/ //TODO change dropfile 
-	//}
-	//else if (extension == "png" || extension == "jpg" || extension == "dds")
-	//{
-	//char **content = nullptr;
-	//App->fsystem->Load(dropped_file,filename.c_str(), content);
-		//Texture newTexture = App->textures->Load(dropped_file);
-		//App->sceneLoader->ApplyTexture(newTexture);
-	//}
+	App->fsystem->CopyFromOutsideFS(dropped_file, (ASSETS+filename).c_str());
 }

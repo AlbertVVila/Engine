@@ -14,11 +14,11 @@ public:
 	update_status Update() override;
 	bool CleanUp() override;
 
-	void InputMove();
-	void InputRotate();
-	void InputCenter();
-	void InputOrbit();
-	void InputZoom();
+	void InputMove() const;
+	void InputRotate() const;;
+	void InputCenter() const;;
+	void InputOrbit() const;;
+	void InputZoom() const;;
 
 	void DrawGUI();
 
