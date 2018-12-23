@@ -1,19 +1,21 @@
 #include "Application.h"
+
 #include "ModuleRender.h"
 #include "ModuleCamera.h"
 #include "ModuleScene.h"
 #include "ModuleProgram.h"
 #include "ModuleEditor.h"
 #include "ModuleWindow.h"
-#include "ModuleTextures.h"
-#include "ModuleFileSystem.h"
 #include "ModuleResourceManager.h"
+
+#include "GameObject.h"
 #include "ComponentCamera.h"
+#include "Skybox.h"
+
 #include "SDL.h"
 #include "GL/glew.h"
 #include "imgui.h"
 #include "Math/MathFunc.h"
-#include "GameObject.h"
 
 ModuleRender::ModuleRender()
 {
@@ -47,17 +49,8 @@ bool ModuleRender::Start()
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
 	glBindBufferRange(GL_UNIFORM_BUFFER, 0, UBO, 0, 2 * sizeof(float4x4));
-	std::vector<std::string> faces = //TODO refactor skybox
-	{
-			"right",
-			"left",
-			"top",
-			"bottom",
-			"front",
-			"back"
-	};
-	skybox_cubemap = App->textures->LoadCubeMap(faces);
-	GenSkyBox();
+
+	skybox = new Skybox();
 	return true;
 }
 
@@ -72,6 +65,9 @@ update_status ModuleRender::PreUpdate()
 // Called every draw update
 update_status ModuleRender::Update()
 {
+	assert(App->camera->editorcamera != nullptr);
+	if (App->camera->editorcamera == nullptr) return UPDATE_STOP;
+
 	glBindFramebuffer(GL_FRAMEBUFFER, App->camera->editorcamera->FBO);
 	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -85,17 +81,20 @@ update_status ModuleRender::Update()
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 
-	SetProjectionUniform(App->camera->editorcamera);
-	SetViewUniform(App->camera->editorcamera);
-	DrawSkyBox(*App->camera->editorcamera);
-
-	//if (App->scene->maincamera != nullptr) //TODO: refactor frustum + camera
-	//{
-	App->scene->Draw(*App->camera->editorcamera->frustum);
-	//}
-
-
+	SetProjectionUniform(*App->camera->editorcamera);
+	SetViewUniform(*App->camera->editorcamera);
+	skybox->Draw(*App->camera->editorcamera->frustum);
 	DrawGizmos();
+
+	if (useMainCameraFrustum && App->scene->maincamera != nullptr)
+	{
+		App->scene->Draw(*App->scene->maincamera->frustum);
+	}
+	else
+	{
+		App->scene->Draw(*App->camera->editorcamera->frustum);
+	}
+
 	
 	if (App->scene->maincamera != nullptr)
 	{
@@ -103,9 +102,9 @@ update_status ModuleRender::Update()
 		glClearColor(0.3f, 0.3f, 0.3f, 1.f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		SetProjectionUniform(App->scene->maincamera);
-		SetViewUniform(App->scene->maincamera);
-		DrawSkyBox(*App->scene->maincamera);
+		SetProjectionUniform(*App->scene->maincamera);
+		SetViewUniform(*App->scene->maincamera);
+		skybox->Draw(*App->scene->maincamera->frustum);
 
 		App->scene->Draw(*App->scene->maincamera->frustum);
 	}
@@ -128,10 +127,6 @@ bool ModuleRender::CleanUp()
 	if (UBO != 0)
 	{
 		glDeleteBuffers(1, &UBO); //TODO: Remember Clean Textures+Buffers + Optimize VAO+VBO creation
-	}
-	if (skybox_cubemap != 0)
-	{
-		glDeleteTextures(1, &skybox_cubemap);
 	}
 	return true;
 }
@@ -305,90 +300,6 @@ void ModuleRender::DrawFrustum() const
 	glUseProgram(0);
 }
 
-
-void ModuleRender::GenSkyBox()
-{
-	float skyboxVertices[] = {
-		// positions          
-		-1.0f,  1.0f, -1.0f,
-		-1.0f, -1.0f, -1.0f,
-		1.0f, -1.0f, -1.0f,
-		1.0f, -1.0f, -1.0f,
-		1.0f,  1.0f, -1.0f,
-		-1.0f,  1.0f, -1.0f,
-
-		-1.0f, -1.0f,  1.0f,
-		-1.0f, -1.0f, -1.0f,
-		-1.0f,  1.0f, -1.0f,
-		-1.0f,  1.0f, -1.0f,
-		-1.0f,  1.0f,  1.0f,
-		-1.0f, -1.0f,  1.0f,
-
-		1.0f, -1.0f, -1.0f,
-		1.0f, -1.0f,  1.0f,
-		1.0f,  1.0f,  1.0f,
-		1.0f,  1.0f,  1.0f,
-		1.0f,  1.0f, -1.0f,
-		1.0f, -1.0f, -1.0f,
-
-		-1.0f, -1.0f,  1.0f,
-		-1.0f,  1.0f,  1.0f,
-		1.0f,  1.0f,  1.0f,
-		1.0f,  1.0f,  1.0f,
-		1.0f, -1.0f,  1.0f,
-		-1.0f, -1.0f,  1.0f,
-
-		-1.0f,  1.0f, -1.0f,
-		1.0f,  1.0f, -1.0f,
-		1.0f,  1.0f,  1.0f,
-		1.0f,  1.0f,  1.0f,
-		-1.0f,  1.0f,  1.0f,
-		-1.0f,  1.0f, -1.0f,
-
-		-1.0f, -1.0f, -1.0f,
-		-1.0f, -1.0f,  1.0f,
-		1.0f, -1.0f, -1.0f,
-		1.0f, -1.0f, -1.0f,
-		-1.0f, -1.0f,  1.0f,
-		1.0f, -1.0f,  1.0f
-	};
-	glGenVertexArrays(1, &skyboxVAO);
-	glGenBuffers(1, &skyboxVBO);
-	glBindVertexArray(skyboxVAO);
-	glBindBuffer(GL_ARRAY_BUFFER, skyboxVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(skyboxVertices), &skyboxVertices, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-
-	glBindVertexArray(0);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
-	glDisableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-}
-void ModuleRender::DrawSkyBox(const ComponentCamera& camera) const
-{
-	//glDepthMask(GL_FALSE);
-	//glUseProgram(App->program->skyboxProgram);
-	//glBindVertexArray(skyboxVAO);
-	//glBindTexture(GL_TEXTURE_CUBE_MAP, skybox_cubemap);
-	//float4x4 model(float4x4::FromTRS(camera.frustum.pos,float4x4::identity,float3::one));
-	//glUniformMatrix4fv(glGetUniformLocation(App->program->skyboxProgram,
-	//	"model"), 1, GL_TRUE, &model[0][0]);
-
-	//glUniform1i(glGetUniformLocation(App->program->skyboxProgram, "skybox"), 0);
-	//glDrawArrays(GL_TRIANGLES, 0, 36);
-
-	//glBindVertexArray(0);
-	//glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
-	//glDisableVertexAttribArray(0);
-	//glBindBuffer(GL_ARRAY_BUFFER, 0);
-	//glUseProgram(0);
-
-	//glDepthMask(GL_TRUE);
-
-}
-
-
 void ModuleRender::InitSDL()
 {
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
@@ -447,18 +358,20 @@ void ModuleRender::DrawGUI()
 	{
 		SDL_GL_SetSwapInterval((int)vsync);
 	}
+	ImGui::Checkbox("Main Camera Frustum", &useMainCameraFrustum);
+	ImGui::Checkbox("Skybox", &skybox->enabled);
 }
 
-void ModuleRender::SetViewUniform(ComponentCamera *camera) const
+void ModuleRender::SetViewUniform(const ComponentCamera &camera) const
 {
 	glBindBuffer(GL_UNIFORM_BUFFER, UBO);
-	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(float4x4), sizeof(float4x4), &camera->GetViewMatrix()[0][0]);
+	glBufferSubData(GL_UNIFORM_BUFFER, sizeof(float4x4), sizeof(float4x4), &camera.GetViewMatrix()[0][0]);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
-void ModuleRender::SetProjectionUniform(ComponentCamera *camera) const
+void ModuleRender::SetProjectionUniform(const ComponentCamera &camera) const
 {
 	glBindBuffer(GL_UNIFORM_BUFFER, UBO);
-	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(float4x4), &camera->GetProjectionMatrix()[0][0]);
+	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(float4x4), &camera.GetProjectionMatrix()[0][0]);
 	glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }

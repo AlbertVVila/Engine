@@ -117,9 +117,9 @@ Texture * ModuleTextures::Load(const char * file) const //TODO: refactor texture
 	return nullptr;
 }
 
-unsigned int ModuleTextures::LoadCubeMap(const std::vector<std::string> &faces) //TODO: change to array[6]
+unsigned ModuleTextures::LoadCubeMap(const std::string faces[]) //TODO: change to array[6]
 {
-	unsigned int textureID;
+	unsigned textureID;
 	glGenTextures(1, &textureID);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
 	unsigned width = 0;
@@ -127,7 +127,7 @@ unsigned int ModuleTextures::LoadCubeMap(const std::vector<std::string> &faces) 
 	unsigned pixelDepth = 0;
 	int format = 0;
 
-	for (unsigned int i=0; i< faces.size(); ++i)
+	for (unsigned int i=0; i< NUMFACES; ++i)
 	{
 		ILuint imageID;
 		ILboolean success;
@@ -138,7 +138,7 @@ unsigned int ModuleTextures::LoadCubeMap(const std::vector<std::string> &faces) 
 		ilBindImage(imageID); 			// Bind the image
 
 		char *data;
-		unsigned size = App->fsystem->Load((TEXTURES + faces[i] + TEXTUREEXT).c_str(), &data); //TODO: use mini resource maanger to optimize this
+		unsigned size = App->fsystem->Load((TEXTURES + faces[i] + TEXTUREEXT).c_str(), &data); //TODO: add this somehow to resource manager
 		success = ilLoadL(IL_DDS, data, size);
 		if (success)
 		{
@@ -183,12 +183,6 @@ void ModuleTextures::ImportImage(const char * file, const char* folder) //TODO: 
 	if (success)
 	{
 
-		//ILinfo ImageInfo;
-		//iluGetImageInfo(&ImageInfo);
-		//if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
-		//{
-		//	iluFlipImage();
-		//}
 		ILuint size;
 		ILubyte* data = ilGetData();
 		ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);// To pick a specific DXT compression use

@@ -214,6 +214,7 @@
       <Filter>Component</Filter>
     </ClCompile>
     <ClCompile Include="myQuadTree.cpp" />
+    <ClCompile Include="Skybox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -497,6 +498,7 @@
       <Filter>Component</Filter>
     </ClInclude>
     <ClInclude Include="myQuadTree.h" />
+    <ClInclude Include="Skybox.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GeoLib">

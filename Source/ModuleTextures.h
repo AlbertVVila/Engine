@@ -7,6 +7,7 @@
 
 #define LINEAR 1
 #define NEAREST 0
+#define NUMFACES 6
 
 struct Texture
 {
@@ -28,7 +29,7 @@ public:
 	bool CleanUp();
 	void DrawGUI();
 	Texture * Load(const char* path) const;
-	unsigned int LoadCubeMap(const std::vector<std::string> &faces);
+	unsigned LoadCubeMap(const std::string faces[]);
 
 	void ImportImage(const char * file, const char* folder);
 

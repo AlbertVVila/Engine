@@ -3,6 +3,7 @@
 
 #include "Module.h"
 class ComponentCamera;
+class Skybox;
 
 class ModuleRender : public Module
 {
@@ -23,13 +24,11 @@ public:
 private:
 
 	void DrawGizmos() const;
-	void SetViewUniform(ComponentCamera *camera) const;
-	void SetProjectionUniform(ComponentCamera *camera) const;
+	void SetViewUniform(const ComponentCamera &camera) const;
+	void SetProjectionUniform(const ComponentCamera &camera) const;
 	void DrawLines() const;
 	void DrawAxis() const;
 	void DrawFrustum() const;
-	void GenSkyBox();
-	void DrawSkyBox(const ComponentCamera& camera) const;
 	void InitSDL();
 	void InitOpenGL() const;
 
@@ -38,14 +37,15 @@ public:
 
 private:
 	unsigned int UBO = 0;
-	unsigned int skybox_cubemap = 0;
 	bool useCheckersTexture = false;
 	bool depthTest = true;
 	bool wireframe = false;
 	bool boundingBox = false;
 	bool vsync = false;
+	bool useMainCameraFrustum = false;
 
-	unsigned skyboxVAO, skyboxVBO;
+	Skybox* skybox = nullptr;
+	
 
 };
 

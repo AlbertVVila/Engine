@@ -1,10 +1,10 @@
+#include "Application.h"
+
 #include "ModuleProgram.h"
 #include "ModuleFileSystem.h"
 #include "ModuleResourceManager.h"
 
-#include "Application.h"
 #include "GL/glew.h"
-#include <string>
 #include <assert.h>
 
 ModuleProgram::ModuleProgram()
@@ -112,8 +112,8 @@ void ModuleProgram::ShaderLog(unsigned int shader, char * type) const
 
 bool ModuleProgram::CleanUp()
 {
-	glDeleteProgram(defaultShader->id);
-	RELEASE(defaultShader);
+	//glDeleteProgram(defaultShader->id);
+	//RELEASE(defaultShader);
 	return true;
 }
 
