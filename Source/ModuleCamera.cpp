@@ -84,7 +84,7 @@ void ModuleCamera::InputMove()
 	}
 }
 
-void ModuleCamera::InputRotate()
+void ModuleCamera::InputRotate()//TODO: Use deltatime
 {
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{

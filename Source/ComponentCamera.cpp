@@ -61,7 +61,7 @@ void ComponentCamera::Move(float3 dir)
 {
 	frustum->Translate(dir*movementSpeed);
 }
-//TODO: Use deltatime
+
 void ComponentCamera::Rotate(float dx, float dy)
 {
 	if (dx != 0)
@@ -210,9 +210,18 @@ void ComponentCamera::Load(const JSON_value & value)
 
 bool ComponentCamera::CleanUp()
 {
-	glDeleteFramebuffers(1, &FBO); //TODO: Remove cleanup on components to destructor
-	glDeleteRenderbuffers(1, &RBO); //TODO: Destructors not called
-	glDeleteTextures(1, &camTexture);
+	if (FBO != 0)
+	{
+		glDeleteFramebuffers(1, &FBO);
+	}
+	if (RBO != 0)
+	{
+		glDeleteRenderbuffers(1, &RBO);
+	}
+	if (camTexture != 0)
+	{
+		glDeleteTextures(1, &camTexture);
+	}
 	return true;
 }
 
@@ -229,8 +238,7 @@ float4x4 ComponentCamera::GetProjectionMatrix()
 
 void ComponentCamera::CreateFrameBuffer()
 {
-	//glDeleteFramebuffers(1, &FBO);
-	//glDeleteRenderbuffers(1, &RBO);
+	CleanUp(); //Delete old FBO,RBO and texture
 
 	glGenFramebuffers(1, &FBO);
 	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
