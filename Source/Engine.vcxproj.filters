@@ -213,6 +213,7 @@
     <ClCompile Include="ComponentMaterial.cpp">
       <Filter>Component</Filter>
     </ClCompile>
+    <ClCompile Include="myQuadTree.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -495,6 +496,7 @@
     <ClInclude Include="ComponentMaterial.h">
       <Filter>Component</Filter>
     </ClInclude>
+    <ClInclude Include="myQuadTree.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GeoLib">

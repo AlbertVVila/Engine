@@ -8,13 +8,29 @@ class GameObject;
 
 struct Node
 {
-	/// If 0, this node is the root.
 	Node *parent;
-	/// Indicates the quad of child nodes for this node, or 0xFFFFFFFF if this node is a leaf.
 	unsigned childIndex;
-	/// Stores the actual objects in this node/leaf.
-	std::vector<GameObject*> objects;
-}
+
+	bool IsLeaf() const { return childIndex == 0xFFFFFFFF; }
+
+	unsigned TopLeftChildIndex() const { return childIndex; }
+	unsigned TopRightChildIndex() const { return childIndex + 1; }
+	unsigned BottomLeftChildIndex() const { return childIndex + 2; }
+	unsigned BottomRightChildIndex() const { return childIndex + 3; }
+
+	std::vector<const GameObject*> gameobjects;
+
+	void Remove(const GameObject& gameobject)
+	{
+		for (unsigned i = 0; i < gameobjects.size(); i++)
+		{
+			if (&gameobject == gameobjects[i])
+			{
+
+			}
+		}
+	}
+};
 
 class myQuadTree
 {
@@ -22,16 +38,21 @@ public:
 	myQuadTree();
 	~myQuadTree();
 
-	void Create(AABB limits) : limits(limits) {};
+	myQuadTree(AABB limits);
 
 	void Clear();
-	void Insert(GameObject* gameobject);
+	void Insert(const GameObject& gameobject);
+	void Add(const GameObject & gameobject, Node * node, AABB boundingBox);
+	void Split(Node * leaf, AABB leafAABB);
+	int AllocateNode(Node * parent);
+	void Remove(const GameObject& gameobject);
 	//CollectingIntersect(std::vector<GameObject*>&, );
 	
 	unsigned bucketSize = 4;
 private:
 	std::vector<Node*> nodes;
 	AABB limits;
+	unsigned rootIndex = -1;
 };
 
 #endif __myQuadTree_h__
