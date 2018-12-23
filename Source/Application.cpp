@@ -74,7 +74,7 @@ update_status Application::Update()
 		ret = (*it)->PostUpdate();
 	//LOG("Update time: %d ms", t.Stop());
 
-	editor->AddFpsLog(1 / App->time->deltaTime);
+	editor->AddFpsLog(1 / App->time->dt);
 	return ret;
 }
 

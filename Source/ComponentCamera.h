@@ -22,7 +22,7 @@ public:
 
 	ComponentCamera* Clone() const;
 	void Center();
-	void Move(float x, float y); 
+	void Move(float3 dir); 
 	void Rotate(float dx, float dy);
 	void Zoom(float mouseWheel);
 	void Orbit(float dx, float dy);

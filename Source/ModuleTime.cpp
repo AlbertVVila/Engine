@@ -15,11 +15,11 @@ bool ModuleTime::Init()
 	return true;
 }
 
-update_status ModuleTime::PreUpdate()
+update_status ModuleTime::Update() //TODO: not getting time correctly between frames -> change location?
 {
 
 	Uint64 now = SDL_GetPerformanceCounter();
-	deltaTime = (double)((now - before)) / SDL_GetPerformanceFrequency();
+	dt = (double)((now - before)) / SDL_GetPerformanceFrequency();
 	before = now;
 
 	return UPDATE_CONTINUE;

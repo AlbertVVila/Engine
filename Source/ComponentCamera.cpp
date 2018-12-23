@@ -1,7 +1,5 @@
 #include "Application.h"
 
-#include "ModuleInput.h"
-#include "ModuleTime.h"
 #include "ModuleScene.h"
 #include "ModuleWindow.h"
 #include "ModuleProgram.h"
@@ -59,42 +57,11 @@ void ComponentCamera::InitFrustum()
 
 }
 
-void ComponentCamera::Move(float x, float y) //TODO Move with float3 translation
+void ComponentCamera::Move(float3 dir)
 {
-	float distance = movementSpeed * App->time->deltaTime;
-	float3 movement = float3::zero;
-
-	if (App->input->IsKeyPressed(SDL_SCANCODE_LSHIFT))
-	{
-		distance *= 2;
-	}
-	if (App->input->IsKeyPressed(SDL_SCANCODE_Q))
-	{
-		movement+=float3::unitY*distance;
-	}
-	if (App->input->IsKeyPressed(SDL_SCANCODE_E))
-	{
-		movement -= float3::unitY*distance;
-	}
-	if (App->input->IsKeyPressed(SDL_SCANCODE_S))
-	{
-		movement -= frustum->front*distance;
-	}
-	if (App->input->IsKeyPressed(SDL_SCANCODE_W))
-	{
-		movement += frustum->front*distance;
-	}
-	if (App->input->IsKeyPressed(SDL_SCANCODE_A))
-	{
-		movement -= frustum->WorldRight()*distance;
-	}
-	if (App->input->IsKeyPressed(SDL_SCANCODE_D))
-	{
-		movement += frustum->WorldRight()*distance;
-	}
-	frustum->Translate(movement);
+	frustum->Translate(dir*movementSpeed);
 }
-//TODO: Use mouse position + deltatime and not mouse motion
+//TODO: Use deltatime
 void ComponentCamera::Rotate(float dx, float dy)
 {
 	if (dx != 0)
@@ -155,12 +122,12 @@ void ComponentCamera::Orbit(float dx, float dy)
 	if (dx != 0)
 	{
 		Quat rotation = Quat::RotateY(math::DegToRad(-dx)).Normalized();
-		frustum->pos = rotation.Mul(frustum->pos);
+		frustum->pos = rotation.Mul(frustum->pos - center) + center;
 	}
 	if (dy != 0)
 	{
 		Quat rotation = Quat::RotateAxisAngle(frustum->WorldRight(), math::DegToRad(-dy)).Normalized();
-		float3 new_pos = rotation.Mul(frustum->pos);
+		float3 new_pos = rotation.Mul(frustum->pos - center) + center;
 		if (!(abs(new_pos.x-center.x) < 0.5f && abs(new_pos.z - center.z) < 0.5f))
 		{
 			frustum->pos = new_pos;

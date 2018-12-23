@@ -9,11 +9,11 @@ public:
 	ModuleTime();
 	~ModuleTime();
 
-	bool            Init();
-	update_status   PreUpdate();
+	bool            Init() override;
+	update_status   Update() override;
 
 public:
-	double deltaTime = 0.0f;	// Time between current frame and last frame
+	double dt = 0.0f;	// Time between current frame and last frame
 	Uint64 before = 0; // Time of last frame
 };
 

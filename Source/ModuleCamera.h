@@ -14,6 +14,12 @@ public:
 	update_status Update() override;
 	bool CleanUp() override;
 
+	void InputMove();
+	void InputRotate();
+	void InputCenter();
+	void InputOrbit();
+	void InputZoom();
+
 	void DrawGUI();
 
 public:

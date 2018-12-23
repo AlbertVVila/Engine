@@ -117,7 +117,7 @@ update_status ModuleInput::PreUpdate()
 			break;
 
 		case SDL_MOUSEMOTION:
-			mouse_motion.x = (float)event.motion.xrel/ (float)App->window->width; //Abans es dividia per mida de la pantalla
+			mouse_motion.x = (float)event.motion.xrel/ (float)App->window->width; 
 			mouse_motion.y = (float)event.motion.yrel/ (float)App->window->height;
 			mouse.x = (float)event.motion.x/ (float)App->window->width;
 			mouse.y = (float)event.motion.y/ (float)App->window->height;
