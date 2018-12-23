@@ -1,14 +1,15 @@
 #include "Application.h"
+
 #include "ModuleCamera.h"
 #include "ModuleInput.h"
-#include "ModuleTime.h"
 #include "ModuleWindow.h"
 #include "ModuleEditor.h"
-#include "GameObject.h"
+
+#include "ComponentCamera.h"
+
 #include "imgui.h"
 #include "Math/MathFunc.h"
-#include "Geometry/AABB.h"
-#include "ComponentCamera.h"
+#include "Geometry/Frustum.h"
 
 ModuleCamera::ModuleCamera()
 {
@@ -16,6 +17,7 @@ ModuleCamera::ModuleCamera()
 
 ModuleCamera::~ModuleCamera()
 {
+	RELEASE(editorcamera);
 }
 
 bool ModuleCamera::Init()
@@ -48,21 +50,27 @@ update_status ModuleCamera::Update() //TODO: vsync bug rotation smooth
 	return UPDATE_CONTINUE;
 }
 
+bool ModuleCamera::CleanUp()
+{
+	return editorcamera->CleanUp();
+}
+
 void ModuleCamera::DrawGUI()
 {
-	ImGui::InputFloat3("Position", (float*)&editorcamera->frustum.pos, 2, ImGuiInputTextFlags_ReadOnly);
-	ImGui::InputFloat3("Forward ", (float*)&editorcamera->frustum.front, 2, ImGuiInputTextFlags_ReadOnly);
+	math::Frustum *frustum = editorcamera->frustum;
+	ImGui::InputFloat3("Position", (float*)&frustum->pos, 2, ImGuiInputTextFlags_ReadOnly);
+	ImGui::InputFloat3("Forward ", (float*)&frustum->front, 2, ImGuiInputTextFlags_ReadOnly);
 
 	ImGui::InputFloat("Movement Speed", &editorcamera->movementSpeed, 1.f, 5.f);
 	ImGui::InputFloat("Rotation Speed", &editorcamera->rotationSpeed, 1.f, 5.f);
 	ImGui::InputFloat("Zoom Speed", &editorcamera->zoomSpeed, 1.f, 5.f);
 
-	float degFov = math::RadToDeg(editorcamera->frustum.verticalFov);
+	float degFov = math::RadToDeg(frustum->verticalFov);
 	if (ImGui::SliderFloat("FOV", &degFov, 40, 120))
 	{
-		editorcamera->frustum.verticalFov = math::DegToRad(degFov);
-		editorcamera->frustum.horizontalFov = 2.f * atanf(tanf(editorcamera->frustum.verticalFov*0.5f)*App->window->width / App->window->height);
+		frustum->verticalFov = math::DegToRad(degFov);
+		frustum->horizontalFov = 2.f * atanf(tanf(frustum->verticalFov*0.5f)*App->window->width / App->window->height);
 	}
-	ImGui::InputFloat("Znear", &editorcamera->frustum.nearPlaneDistance, 1, 10);
-	ImGui::InputFloat("Zfar", &editorcamera->frustum.farPlaneDistance, 1, 10);
+	ImGui::InputFloat("Znear", &frustum->nearPlaneDistance, 1, 10);
+	ImGui::InputFloat("Zfar", &frustum->farPlaneDistance, 1, 10);
 }

@@ -35,7 +35,7 @@ ComponentMesh::~ComponentMesh()
 	DeleteBuffers(); //TODO: clean up components or simply call destructor?
 }
 
-Component * ComponentMesh::Clone()
+Component * ComponentMesh::Clone() const
 {
 	return new ComponentMesh(*this);
 }
@@ -219,10 +219,10 @@ void ComponentMesh::Save(JSON_value * value) const
 	value->AddUint("UID", meshUID);
 }
 
-void ComponentMesh::Load(JSON_value * value)
+void ComponentMesh::Load(const JSON_value & value)
 {
 	Component::Load(value);
-	meshUID = value->GetUint("UID");
+	meshUID = value.GetUint("UID");
 	char *data;
 	App->fsystem->Load((MESHES + std::to_string(meshUID) + MESHEXTENSION).c_str(), &data); //TODO: use mini resource maanger to optimize this
 	SetMesh(data);

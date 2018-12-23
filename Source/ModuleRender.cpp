@@ -89,10 +89,10 @@ update_status ModuleRender::Update()
 	SetViewUniform(App->camera->editorcamera);
 	DrawSkyBox(*App->camera->editorcamera);
 
-	//if (App->scene->maincamera != nullptr) //TODO: refactor frustum + camera
-	//{
-	App->scene->Draw(App->scene->maincamera->frustum);
-	//}
+	if (App->scene->maincamera != nullptr) //TODO: refactor frustum + camera
+	{
+		App->scene->Draw(*App->scene->maincamera->frustum);
+	}
 
 	DrawGizmos();
 	
@@ -106,7 +106,7 @@ update_status ModuleRender::Update()
 		SetViewUniform(App->scene->maincamera);
 		DrawSkyBox(*App->scene->maincamera);
 
-		App->scene->Draw(App->scene->maincamera->frustum);
+		App->scene->Draw(*App->scene->maincamera->frustum);
 	}
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	return UPDATE_CONTINUE;
@@ -228,7 +228,7 @@ void ModuleRender::DrawAxis() const
 void ModuleRender::DrawFrustum() const
 {
 	unsigned shader = App->program->defaultShader->id;
-	math::Frustum *frustum = &App->scene->maincamera->frustum;
+	math::Frustum *frustum = App->scene->maincamera->frustum;
 	glUseProgram(shader);
 
 	float3 corners[8];
@@ -266,11 +266,11 @@ void ModuleRender::DrawFrustum() const
 	glUniformMatrix4fv(glGetUniformLocation(shader,
 		"model"), 1, GL_TRUE, &model[0][0]);
 
-	float4x4 view(App->scene->maincamera->frustum.ViewMatrix());
+	float4x4 view(frustum->ViewMatrix());
 	glUniformMatrix4fv(glGetUniformLocation(shader,
 		"view"), 1, GL_TRUE, &view.Transposed()[0][0]);
 
-	float4x4 proj(App->scene->maincamera->frustum.ProjectionMatrix());
+	float4x4 proj(frustum->ProjectionMatrix());
 	glUniformMatrix4fv(glGetUniformLocation(shader,
 		"proj"), 1, GL_TRUE, &proj.Transposed()[0][0]);
 

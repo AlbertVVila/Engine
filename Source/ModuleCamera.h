@@ -2,7 +2,6 @@
 #define __ModuleCamera_h__
 
 #include "Module.h"
-#include "Math/float3.h"
 class ComponentCamera;
 
 class ModuleCamera : public Module
@@ -12,8 +11,9 @@ public:
     ~ModuleCamera();
 
 	bool Init() override;
+	update_status Update() override;
+	bool CleanUp() override;
 
-	update_status Update();
 	void DrawGUI();
 
 public:

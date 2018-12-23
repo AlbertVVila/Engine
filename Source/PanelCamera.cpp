@@ -22,7 +22,7 @@ void PanelCamera::Draw()
 	ImGui::SetCursorPos({ -(App->window->width - size.x) / 2,-(App->window->height - size.y) / 2 });
 	if (App->scene->maincamera != nullptr)
 	{
-		ImGui::Image((ImTextureID)App->scene->maincamera->renderedTexture,
+		ImGui::Image((ImTextureID)App->scene->maincamera->camTexture,
 			{ (float)App->window->width, (float)App->window->height }, { 0,1 }, { 1,0 });
 	}
 	else

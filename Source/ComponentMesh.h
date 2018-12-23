@@ -16,7 +16,7 @@ public:
 
 	~ComponentMesh();
 
-	Component* Clone() override;
+	Component* Clone() const override;
 	void Draw(unsigned int shaderProgram) const;
 	void DrawProperties() override;
 	void SetMesh(char * &mesh);
@@ -27,7 +27,7 @@ public:
 
 	void DeleteBuffers();
 	void Save(JSON_value *value) const override;
-	void Load(JSON_value *value) override;
+	void Load(const JSON_value &value) override;
 
 public:
 

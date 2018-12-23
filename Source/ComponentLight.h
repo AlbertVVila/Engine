@@ -13,7 +13,7 @@ public:
 	ComponentLight(GameObject* gameobject);
 	ComponentLight(const ComponentLight& component);
 	~ComponentLight();
-	ComponentLight* Clone();
+	ComponentLight* Clone() const override;
 
 	void Update() override;
 	void DrawProperties() override;

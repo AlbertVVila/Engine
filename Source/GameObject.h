@@ -39,7 +39,7 @@ public:
 
 	void CleanUp();
 	void Save(JSON_value *gameobjects) const;
-	void Load(JSON_value * gameobject);
+	void Load(const JSON_value & gameobject);
 	AABB GetBoundingBox() const;
 
 private:

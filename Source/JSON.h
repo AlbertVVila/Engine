@@ -27,19 +27,19 @@ public:
 	void AddValue(const char * name, JSON_value *value);
 	void AddTexture(const char * name, Texture *texture);
 
-	int GetInt(const char* name);
-	unsigned GetUint(const char * name);
-	float GetFloat(const char * namee);
-	float3 GetFloat3(const char * name);
-	float3 GetColor3(const char * name);
-	float4 GetFloat4(const char * name);
-	float4 GetColor4(const char * name);
-	Quat GetQuat(const char * name);
-	const char* GetString(const char * name);
-	Texture* GetTexture(const char * name);
+	int GetInt(const char* name) const;
+	unsigned GetUint(const char * name) const;
+	float GetFloat(const char * namee) const;
+	float3 GetFloat3(const char * name) const;
+	float3 GetColor3(const char * name) const;
+	float4 GetFloat4(const char * name) const;
+	float4 GetColor4(const char * name) const;
+	Quat GetQuat(const char * name) const;
+	const char* GetString(const char * name) const;
+	Texture* GetTexture(const char * name) const;
 
-	JSON_value* GetValue(unsigned index);
-	JSON_value * GetValue(const char * name);
+	JSON_value* GetValue(unsigned index) const;
+	JSON_value * GetValue(const char * name) const;
 	unsigned Size() const;
 
 public:

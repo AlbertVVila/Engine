@@ -4,9 +4,8 @@
 #include "Component.h"
 #include "Math/float2.h"
 #include "Math/float3.h"
-#include "Math/float4x4.h"
-#include "Geometry/Frustum.h"
 
+class Frustum;
 class ComponentCamera :
 	public Component
 {
@@ -15,34 +14,37 @@ public:
 	ComponentCamera(GameObject* gameobject);
 	~ComponentCamera();
 
-	ComponentCamera* Clone();
-	void InitFrustum();
-	void Center();
-	void Move(); 
-	void Rotate(float dx, float dy);
-	void Zoom(float mouseWheel);
-	void Orbit(float dx, float dy);
-	void LookAt(float3 target);
-	void Resize(float width, float height);
 	void Update() override;
 	void DrawProperties() override;
 	void Save(JSON_value *value) const override;
-	void Load(JSON_value *value) override;
+	void Load(const JSON_value &value) override;
+	bool CleanUp() override;
 
+	ComponentCamera* Clone() const;
+	void Center();
+	void Move(float x, float y); 
+	void Rotate(float dx, float dy);
+	void Zoom(float mouseWheel);
+	void Orbit(float dx, float dy);
+	void Resize(float width, float height);
 	float4x4 GetViewMatrix();
 	float4x4 GetProjectionMatrix();
 
 private:
+	void InitFrustum();
 	void CreateFrameBuffer();
+	void LookAt(float3 target);
 
 public:
+	math::Frustum* frustum = nullptr; 
+
 	float movementSpeed = 5.0f;
 	float rotationSpeed = 200.f;
 	float zoomSpeed = 0.1f;
-	math::Frustum frustum; //TODO: better as a pointer
-	unsigned int renderedTexture = 0;
-	unsigned int FBO = 0;
-	unsigned int RBO = 0;
+
+	unsigned camTexture = 0;
+	unsigned FBO = 0;
+	unsigned RBO = 0;
 
 };
 

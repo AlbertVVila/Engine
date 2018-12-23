@@ -27,7 +27,7 @@ ComponentMaterial::~ComponentMaterial()
 	DeleteTexture();
 }
 
-Component * ComponentMaterial::Clone()
+Component * ComponentMaterial::Clone() const
 {
 	return new ComponentMaterial(*this);
 }
@@ -177,10 +177,10 @@ void ComponentMaterial::Save(JSON_value * value) const
 	value->AddString("Material", name.c_str());
 }
 
-void ComponentMaterial::Load(JSON_value * value)
+void ComponentMaterial::Load(const JSON_value & value)
 {
 	Component::Load(value);
-	const char* materialFile = value->GetString("Material");
+	const char* materialFile = value.GetString("Material");
 	if (materialFile != nullptr)
 	{
 		Load(materialFile);

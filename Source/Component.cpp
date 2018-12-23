@@ -43,8 +43,8 @@ void Component::Save(JSON_value * value) const
 	value->AddInt("Enabled", enabled);
 }
 
-void Component::Load(JSON_value * value)
+void Component::Load(const JSON_value & value)
 {
-	type = (ComponentType) value->GetUint("Type");
-	enabled = (bool) value->GetInt("Enabled");
+	type = (ComponentType) value.GetUint("Type");
+	enabled = (bool) value.GetInt("Enabled");
 }

@@ -24,7 +24,7 @@ ComponentTransform::~ComponentTransform()
 {
 }
 
-Component * ComponentTransform::Clone()
+Component * ComponentTransform::Clone() const
 {
 	return new ComponentTransform(*this);
 }
@@ -95,11 +95,11 @@ void ComponentTransform::Save(JSON_value * value) const
 	value->AddFloat3("Scale", scale);
 }
 
-void ComponentTransform::Load(JSON_value * value)
+void ComponentTransform::Load(const JSON_value & value)
 {
 	Component::Load(value);
-	position = value->GetFloat3("Position");
-	rotation = value->GetQuat("Rotation");
-	eulerRotation = value->GetFloat3("Euler");
-	scale = value->GetFloat3("Scale");
+	position = value.GetFloat3("Position");
+	rotation = value.GetQuat("Rotation");
+	eulerRotation = value.GetFloat3("Euler");
+	scale = value.GetFloat3("Scale");
 }

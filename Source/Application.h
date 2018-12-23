@@ -2,8 +2,8 @@
 #define __Application_h__
 
 #include<list>
-#include "Module.h"
-
+#include "Globals.h"
+class Module;
 class ModuleRender;
 class ModuleWindow;
 class ModuleTextures;
@@ -42,9 +42,7 @@ public:
 	ModuleFileSystem* fsystem = nullptr;
 	ModuleResourceManager* resManager = nullptr;
 
-
 private:
-
 	std::list<Module*> modules;
 
 };

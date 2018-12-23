@@ -14,7 +14,7 @@ public:
 	ComponentTransform(const ComponentTransform& component);
 	~ComponentTransform();
 
-	Component* Clone() override;
+	Component* Clone() const override;
 	void AddTransform(const float4x4 &transform);
 	void DrawProperties() override;
 	void SetRotation(const Quat& rot);
@@ -25,7 +25,7 @@ public:
 	void SetWorldToLocal(const float4x4 & newparentGlobalMatrix);
 
 	void Save(JSON_value *value) const override;
-	void Load(JSON_value *value) override;
+	void Load(const JSON_value &value) override;
 
 public:
 	float3 position = float3::zero;

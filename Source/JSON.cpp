@@ -119,7 +119,7 @@ void JSON_value::AddTexture(const char * name, Texture * texture)
 	AddValue(name, textureJSON);
 }
 
-int JSON_value::GetInt(const char * name)
+int JSON_value::GetInt(const char * name) const
 {
 	rapidjson::Value::ConstMemberIterator itr = rapidjsonValue->FindMember(name);
 	if (itr != rapidjsonValue->MemberEnd())
@@ -133,7 +133,7 @@ int JSON_value::GetInt(const char * name)
 	}
 }
 
-unsigned JSON_value::GetUint(const char * name)
+unsigned JSON_value::GetUint(const char * name) const
 {
 	rapidjson::Value::ConstMemberIterator itr = rapidjsonValue->FindMember(name);
 	if (itr != rapidjsonValue->MemberEnd())
@@ -147,7 +147,7 @@ unsigned JSON_value::GetUint(const char * name)
 	}
 }
 
-float JSON_value::GetFloat(const char * name)
+float JSON_value::GetFloat(const char * name) const
 {
 	rapidjson::Value::ConstMemberIterator itr = rapidjsonValue->FindMember(name);
 	if (itr != rapidjsonValue->MemberEnd())
@@ -161,7 +161,7 @@ float JSON_value::GetFloat(const char * name)
 	}
 }
 
-float3 JSON_value::GetFloat3(const char * name)
+float3 JSON_value::GetFloat3(const char * name) const
 {
 	rapidjson::Value::ConstMemberIterator itr = rapidjsonValue->FindMember(name);
 	if (itr != rapidjsonValue->MemberEnd())
@@ -176,7 +176,7 @@ float3 JSON_value::GetFloat3(const char * name)
 	}
 }
 
-float3 JSON_value::GetColor3(const char * name)
+float3 JSON_value::GetColor3(const char * name) const
 {
 	rapidjson::Value::ConstMemberIterator itr = rapidjsonValue->FindMember(name);
 	if (itr != rapidjsonValue->MemberEnd())
@@ -191,7 +191,7 @@ float3 JSON_value::GetColor3(const char * name)
 	}
 }
 
-float4 JSON_value::GetFloat4(const char * name)
+float4 JSON_value::GetFloat4(const char * name) const
 {
 	rapidjson::Value::ConstMemberIterator itr = rapidjsonValue->FindMember(name);
 	if (itr != rapidjsonValue->MemberEnd())
@@ -207,7 +207,7 @@ float4 JSON_value::GetFloat4(const char * name)
 	}
 }
 
-float4 JSON_value::GetColor4(const char * name)
+float4 JSON_value::GetColor4(const char * name) const
 {
 	rapidjson::Value::ConstMemberIterator itr = rapidjsonValue->FindMember(name);
 	if (itr != rapidjsonValue->MemberEnd())
@@ -223,7 +223,7 @@ float4 JSON_value::GetColor4(const char * name)
 	}
 }
 
-Quat JSON_value::GetQuat(const char * name)
+Quat JSON_value::GetQuat(const char * name) const
 {
 	rapidjson::Value::ConstMemberIterator itr = rapidjsonValue->FindMember(name);
 	if (itr != rapidjsonValue->MemberEnd())
@@ -239,7 +239,7 @@ Quat JSON_value::GetQuat(const char * name)
 	}
 }
 
-const char* JSON_value::GetString(const char * name)
+const char* JSON_value::GetString(const char * name) const
 {
 	rapidjson::Value::ConstMemberIterator itr = rapidjsonValue->FindMember(name);
 	if (itr != rapidjsonValue->MemberEnd())
@@ -253,7 +253,7 @@ const char* JSON_value::GetString(const char * name)
 	}
 }
 
-Texture * JSON_value::GetTexture(const char * name)
+Texture * JSON_value::GetTexture(const char * name) const
 {
 	JSON_value* texture = GetValue(name);
 	if (texture != nullptr)
@@ -271,21 +271,21 @@ Texture * JSON_value::GetTexture(const char * name)
 	}
 }
 
-JSON_value* JSON_value::GetValue(unsigned index)
+JSON_value* JSON_value::GetValue(unsigned index) const
 {
 	JSON_value * val = new JSON_value(allocator);
 	val->rapidjsonValue->CopyFrom(rapidjsonValue->operator[](index), *allocator);
-	valuesAllocated.push_back(val);
+	//valuesAllocated.push_back(val);
 	return val;
 }
 
-JSON_value * JSON_value::GetValue(const char* name)
+JSON_value * JSON_value::GetValue(const char* name)  const
 {
 	if (rapidjsonValue->HasMember(name))
 	{
 		JSON_value * val = new JSON_value(allocator);
 		val->rapidjsonValue->CopyFrom(rapidjsonValue->operator[](name), *allocator);
-		valuesAllocated.push_back(val);
+		//valuesAllocated.push_back(val);
 		return val;
 	}
 	return nullptr;

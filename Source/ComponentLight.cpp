@@ -33,7 +33,7 @@ void ComponentLight::DrawProperties()
 	}
 }
 
-ComponentLight * ComponentLight::Clone()
+ComponentLight * ComponentLight::Clone() const
 {
 	return new ComponentLight(*this);
 }

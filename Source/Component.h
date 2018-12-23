@@ -20,8 +20,8 @@ public:
 	Component(const Component& component);
 
 	virtual ~Component();
-	virtual Component* Clone() = 0;
-
+	virtual Component* Clone() const  = 0;
+	
 	bool DrawComponentState();
 
 	virtual void DrawProperties() = 0;
@@ -36,12 +36,15 @@ public:
 		enabled = false;
 	}
 	
-	virtual void CleanUp() {}
+	virtual bool CleanUp() 
+	{
+		return true; 
+	}
 
 	void Remove();
 
 	virtual void Save(JSON_value *value) const;
-	virtual void Load(JSON_value *value);
+	virtual void Load(const JSON_value &value);
 
 public:
 	GameObject* gameobject = nullptr;

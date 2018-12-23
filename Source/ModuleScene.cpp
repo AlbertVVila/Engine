@@ -183,7 +183,7 @@ void ModuleScene::LoadScene(const char* scene)
 	{
 		JSON_value* gameobjectJSON = gameobjectsJSON->GetValue(i);
 		GameObject *gameobject = new GameObject();
-		gameobject->Load(gameobjectJSON);
+		gameobject->Load(*gameobjectJSON);
 		gameobjectsMap.insert(std::pair<unsigned, GameObject*>(gameobject->UUID, gameobject));
 
 		std::map<unsigned, GameObject*>::iterator it = gameobjectsMap.find(gameobject->parentUUID);

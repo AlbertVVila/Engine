@@ -26,7 +26,7 @@ public:
 	ComponentMaterial(const ComponentMaterial& component);
 	~ComponentMaterial();
 
-	Component* Clone() override;
+	Component* Clone() const override;
 	void DeleteTexture();
 	
 	void SetTexture(const char * data, TextureType type);
@@ -35,7 +35,7 @@ public:
 	Shader* GetShader() const;
 	void DrawProperties() override;
 	void Save(JSON_value *value) const override;
-	void Load(JSON_value *value) override;
+	void Load(const JSON_value &value) override;
 
 	void Load(const char * material);
 	void Save() const;

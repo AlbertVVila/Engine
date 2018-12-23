@@ -1,10 +1,7 @@
 #ifndef __ModuleRender_h__
 #define __ModuleRender_h__
 
-#include "Math/float3.h"
-#include "Math/float4x4.h"
-#include "Geometry/Frustum.h"
-
+#include "Module.h"
 class ComponentCamera;
 
 class ModuleRender : public Module
