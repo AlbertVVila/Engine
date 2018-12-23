@@ -32,6 +32,18 @@ ComponentCamera::ComponentCamera(GameObject * gameobject) : Component(gameobject
 	frustum->pos = gameobject->GetBoundingBox().CenterPoint();
 }
 
+ComponentCamera::ComponentCamera(const ComponentCamera & component) : Component(component)
+{
+	frustum = &math::Frustum(*component.frustum);
+	movementSpeed = component.movementSpeed;
+	rotationSpeed = component.rotationSpeed;
+	zoomSpeed = component.zoomSpeed;
+
+	camTexture = component.camTexture;
+	FBO = component.FBO;
+	RBO = component.RBO;
+}
+
 
 ComponentCamera::~ComponentCamera()
 {
@@ -225,13 +237,13 @@ bool ComponentCamera::CleanUp()
 	return true;
 }
 
-float4x4 ComponentCamera::GetViewMatrix()
+float4x4 ComponentCamera::GetViewMatrix() const
 {
 	float4x4 view = frustum->ViewMatrix();
 	return view.Transposed();
 }
 
-float4x4 ComponentCamera::GetProjectionMatrix()
+float4x4 ComponentCamera::GetProjectionMatrix() const
 {
 	return frustum->ProjectionMatrix().Transposed();
 }
