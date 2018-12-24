@@ -20,6 +20,11 @@ enum class TextureType
 	EMISSIVE
 };
 
+struct Material
+{
+
+};
+
 class ComponentMaterial :
 	public Component
 {

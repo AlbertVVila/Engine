@@ -106,7 +106,7 @@ void ModuleScene::CreateSphere(const char * name, const float3 & pos, const Quat
 void ModuleScene::CreatePrimitive(par_shapes_mesh_s *mesh, const char * name, const float3 & pos, const Quat & rot, float size, const float4 & color)
 {
 	GameObject * gameobject = App->scene->CreateGameObject(name, App->scene->root);
-
+	App->scene->selected = gameobject;
 	ComponentTransform* transform = (ComponentTransform*)gameobject->CreateComponent(ComponentType::Transform);
 	gameobject->transform = transform;
 

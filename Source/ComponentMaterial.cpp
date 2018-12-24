@@ -1,11 +1,14 @@
 #include "ComponentMaterial.h"
 #include "Application.h"
+
+#include "ModuleEditor.h"
 #include "ModuleProgram.h"
 #include "ModuleTextures.h"
 #include "ModuleFileSystem.h"
 #include "ModuleResourceManager.h"
 
 #include "GameObject.h"
+#include "MaterialEditor.h"
 #include "Imgui/imgui.h"
 #include "GL/glew.h"
 
@@ -73,7 +76,7 @@ Shader * ComponentMaterial::GetShader() const
 void ComponentMaterial::DrawProperties()
 {
 	ImGui::PushID(this);
-	if (ImGui::CollapsingHeader("Renderer", ImGuiTreeNodeFlags_DefaultOpen))
+	if (ImGui::CollapsingHeader("Material", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		bool removed = Component::DrawComponentState();
 		if (removed)
@@ -82,7 +85,7 @@ void ComponentMaterial::DrawProperties()
 			return;
 		}
 		std::vector<std::string> materials = App->fsystem->ListFiles(MATERIALS, false);
-		if (ImGui::BeginCombo("Material", name.c_str())) 
+		if (ImGui::BeginCombo("", name.c_str())) 
 		{
 			for (int n = 0; n < materials.size(); n++)
 			{
@@ -95,6 +98,12 @@ void ComponentMaterial::DrawProperties()
 					ImGui::SetItemDefaultFocus();
 			}
 			ImGui::EndCombo();
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("View"))
+		{
+			App->editor->materialEditor->material = this;
+			App->editor->materialEditor->open = true; //materialpopup is only drawn once in module editor
 		}
 	}
 	ImGui::PopID();

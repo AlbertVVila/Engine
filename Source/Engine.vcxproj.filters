@@ -210,8 +210,13 @@
     <ClCompile Include="ComponentMaterial.cpp">
       <Filter>Component</Filter>
     </ClCompile>
-    <ClCompile Include="myQuadTree.cpp" />
-    <ClCompile Include="Skybox.cpp" />
+    <ClCompile Include="Skybox.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="myQuadTree.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="MaterialEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -491,8 +496,13 @@
     <ClInclude Include="ComponentMaterial.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="myQuadTree.h" />
-    <ClInclude Include="Skybox.h" />
+    <ClInclude Include="Skybox.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="myQuadTree.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="MaterialEditor.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GeoLib">

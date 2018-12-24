@@ -8,8 +8,6 @@
 #include "ModuleTextures.h"
 #include "ModuleProgram.h"
 
-#include "ComponentMaterial.h"
-
 #include "PanelConsole.h"
 #include "PanelScene.h"
 #include "PanelConfiguration.h"
@@ -19,6 +17,7 @@
 #include "PanelHierarchy.h"
 #include "PanelCamera.h"
 
+#include "MaterialEditor.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_sdl.h"
 #include "imgui.h"
@@ -35,6 +34,8 @@ ModuleEditor::ModuleEditor()
 	panels.push_back(scene = new PanelScene());
 	panels.push_back(hierarchy = new PanelHierarchy());
 	panels.push_back(camera = new PanelCamera());
+
+	materialEditor = new MaterialEditor();
 }
 
 // Destructor
@@ -125,7 +126,6 @@ update_status ModuleEditor::PreUpdate()
 update_status ModuleEditor::Update()
 {
 	bool sceneSavePopUp = false;
-	bool materialCreationPopUp = false;
 	if (ImGui::BeginMainMenuBar())
 	{
 		if (ImGui::BeginMenu("File"))
@@ -213,180 +213,11 @@ update_status ModuleEditor::Update()
 			}
 			if (ImGui::MenuItem("New Material"))
 			{
-				materialCreationPopUp = true;
+				materialEditor->open = true;
 			}
 			ImGui::EndMenu();
 		}
-		if (materialCreationPopUp)
-		{
-			ImGui::OpenPopup("New Material");
-		}
-		if (ImGui::BeginPopupModal("New Material", NULL, ImGuiWindowFlags_AlwaysAutoResize))
-		{
-			if (newMaterial == nullptr) //TODO:move to material component
-			{
-				newMaterial = new ComponentMaterial(nullptr);
-			}
-			char name[64] = "";
-			if (!newMaterial->name.empty())
-			{
-				strcpy(name, newMaterial->name.c_str());
-			}
-			else
-			{
-				strcpy(name, "Unnamed");
-			}
-			ImGui::InputText("Name", name, 64);
-			newMaterial->name = name;
-			ImGui::Separator();
-
-			ImGui::DragFloat("kAmbient", &newMaterial->kAmbient, .005f, .0f, 1.f);
-			ImGui::DragFloat("kDiffuse", &newMaterial->kDiffuse, .005f, .0f, 1.f);
-			ImGui::DragFloat("kSpecular", &newMaterial->kSpecular, .005f, .0f, 1.f);
-			ImGui::DragFloat("Shininess", &newMaterial->shininess, .05f, .0f, 256.f);
-
-			std::vector<std::string> shaders = App->fsystem->ListFiles(VERTEXSHADERS, false);
-			static std::string item_current = "None Selected";
-			if (ImGui::BeginCombo("Shader", item_current.c_str())) // The second parameter is the label previewed before opening the combo.
-			{
-				for (int n = 0; n < shaders.size(); n++)
-				{
-					bool is_selected = (item_current == shaders[n]);
-					if (ImGui::Selectable(shaders[n].c_str(), is_selected) && item_current != shaders[n])
-					{
-						item_current = shaders[n];
-						newMaterial->shader = App->program->GetProgram(item_current.c_str());
-					}
-					if (is_selected)
-						ImGui::SetItemDefaultFocus();
-				}
-				ImGui::EndCombo();
-			}
-
-			std::vector<std::string> textureFiles = App->fsystem->ListFiles(TEXTURES, false);
-			if (ImGui::CollapsingHeader("Diffuse"))
-			{
-				ImGui::PushID(&newMaterial->diffuse_color);
-				ImGui::ColorEdit4("Color", (float*)&newMaterial->diffuse_color, ImGuiColorEditFlags_AlphaPreview);
-				static std::string item_current = "None selected";
-				if (ImGui::BeginCombo("Texture", item_current.c_str())) 
-				{
-					for (int n = 0; n < textureFiles.size(); n++)
-					{
-						bool is_selected = (item_current == textureFiles[n]);
-						if (ImGui::Selectable(textureFiles[n].c_str(), is_selected))
-						{
-							item_current = textureFiles[n];
-							newMaterial->textures[(unsigned)TextureType::DIFFUSE] = App->textures->GetTexture(item_current.c_str());
-						}
-						if (is_selected)
-							ImGui::SetItemDefaultFocus();   
-					}
-					ImGui::EndCombo();
-				}
-				if (newMaterial->textures[(unsigned)TextureType::DIFFUSE] != nullptr)
-				{
-					ImGui::Image((ImTextureID)newMaterial->textures[(unsigned)TextureType::DIFFUSE]->id, { 200,200 }, { 0,1 }, { 1,0 });
-				}
-				ImGui::Separator();
-				ImGui::PopID();
-			}
-			if (ImGui::CollapsingHeader("Specular"))
-			{
-				ImGui::PushID(&newMaterial->specular_color);
-				ImGui::ColorEdit3("Color", (float*)&newMaterial->specular_color);
-				static std::string item_current = "None selected";
-				if (ImGui::BeginCombo("Texture", item_current.c_str()))
-				{
-					for (int n = 0; n < textureFiles.size(); n++)
-					{
-						bool is_selected = (item_current == textureFiles[n]);
-						if (ImGui::Selectable(textureFiles[n].c_str(), is_selected))
-						{
-							item_current = textureFiles[n];
-							newMaterial->textures[(unsigned)TextureType::SPECULAR] = App->textures->GetTexture(item_current.c_str());
-						}
-						if (is_selected)
-							ImGui::SetItemDefaultFocus();
-					}
-					ImGui::EndCombo();
-				}
-				if (newMaterial->textures[(unsigned)TextureType::SPECULAR] != nullptr)
-				{
-					ImGui::Image((ImTextureID)newMaterial->textures[(unsigned)TextureType::SPECULAR]->id, { 200,200 }, { 0,1 }, { 1,0 });
-				}
-				ImGui::Separator();
-				ImGui::PopID();
-			}
-			if (ImGui::CollapsingHeader("Occlusion"))
-			{
-				ImGui::PushID(&newMaterial->textures[(unsigned)TextureType::OCCLUSION]);
-				static std::string item_current = "None selected";
-				if (ImGui::BeginCombo("Texture", item_current.c_str()))
-				{
-					for (int n = 0; n < textureFiles.size(); n++)
-					{
-						bool is_selected = (item_current == textureFiles[n]);
-						if (ImGui::Selectable(textureFiles[n].c_str(), is_selected))
-						{
-							item_current = textureFiles[n];
-							newMaterial->textures[(unsigned)TextureType::OCCLUSION] = App->textures->GetTexture(item_current.c_str());
-						}
-						if (is_selected)
-							ImGui::SetItemDefaultFocus();
-					}
-					ImGui::EndCombo();
-				}
-				if (newMaterial->textures[(unsigned)TextureType::OCCLUSION] != nullptr)
-				{
-					ImGui::Image((ImTextureID)newMaterial->textures[(unsigned)TextureType::OCCLUSION]->id, { 200,200 }, { 0,1 }, { 1,0 });
-				}
-				ImGui::Separator();
-				ImGui::PopID();
-			}
-			if (ImGui::CollapsingHeader("Emissive"))
-			{
-				ImGui::ColorEdit3("Color", (float*)&newMaterial->emissive_color);
-				static std::string item_current = "None selected";
-				if (ImGui::BeginCombo("Texture", item_current.c_str()))
-				{
-					for (int n = 0; n < textureFiles.size(); n++)
-					{
-						bool is_selected = (item_current == textureFiles[n]);
-						if (ImGui::Selectable(textureFiles[n].c_str(), is_selected))
-						{
-							item_current = textureFiles[n];
-							newMaterial->textures[(unsigned)TextureType::EMISSIVE] = App->textures->GetTexture(item_current.c_str());
-						}
-						if (is_selected)
-							ImGui::SetItemDefaultFocus();
-					}
-					ImGui::EndCombo();
-				}
-				if (newMaterial->textures[(unsigned)TextureType::EMISSIVE] != nullptr)
-				{
-					ImGui::Image((ImTextureID)newMaterial->textures[(unsigned)TextureType::EMISSIVE]->id, { 200,200 }, { 0,1 }, { 1,0 });
-				}
-				ImGui::Separator();
-			}
-			if (ImGui::Button("OK", ImVec2(120, 0))) {
-				newMaterial->Save();
-				newMaterial->CleanUp();
-				RELEASE(newMaterial);
-				materialCreationPopUp = false;
-				ImGui::CloseCurrentPopup();
-			}
-			ImGui::SetItemDefaultFocus();
-			ImGui::SameLine();
-			if (ImGui::Button("Cancel", ImVec2(120, 0)))
-			{
-				newMaterial->CleanUp();
-				RELEASE(newMaterial);
-				materialCreationPopUp = false;
-				ImGui::CloseCurrentPopup();
-			}
-			ImGui::EndPopup();
-		}
+		materialEditor->Draw();
 		if (ImGui::BeginMenu("Windows"))
 		{
 			if (ImGui::MenuItem("Console", NULL, console->IsEnabled()))

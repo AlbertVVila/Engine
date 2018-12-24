@@ -15,7 +15,7 @@ class PanelHardware;
 class PanelHierarchy;
 class PanelCamera;
 class GameObject;
-class ComponentMaterial;
+class MaterialEditor;
 
 class ModuleEditor :
 	public Module
@@ -47,7 +47,7 @@ public:
 	PanelHierarchy *hierarchy = nullptr;
 	PanelCamera *camera = nullptr;
 
-	ComponentMaterial *newMaterial = nullptr;
+	MaterialEditor *materialEditor = nullptr;
 private:
 	std::list<Panel*> panels;
 };
