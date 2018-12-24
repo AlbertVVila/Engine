@@ -144,6 +144,15 @@ void ModuleResourceManager::DeleteMaterial(std::string filename)
 		}
 		else
 		{
+			ComponentMaterial* mat = it->second.second;
+			DeleteProgram(mat->shader->file);
+			for (unsigned i = 0; i < MAXTEXTURES; i++)
+			{
+				if (mat->textures[i] != nullptr)
+				{
+					DeleteTexture(mat->textures[i]->file);
+				}
+			}
 			materialResources.erase(it);
 		}
 	}

@@ -124,7 +124,7 @@ void ModuleScene::CreatePrimitive(par_shapes_mesh_s *mesh, const char * name, co
 	par_shapes_free_mesh(mesh);
 
 	ComponentMaterial* material = (ComponentMaterial*)gameobject->CreateComponent(ComponentType::Renderer);
-	material->diffuse_color = color; //TODO: shader if else diffuse_color
+	material->SetMaterial();
 }
 
 unsigned ModuleScene::SaveParShapesMesh(const par_shapes_mesh_s &mesh, char** data) const //TODO: unify somehow with importer + scene loader

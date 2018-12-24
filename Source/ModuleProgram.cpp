@@ -18,9 +18,7 @@ ModuleProgram::~ModuleProgram()
 
 bool ModuleProgram::Init() 
 {
-	const char* default = "Default";
-	defaultShader = CreateProgram(default);
-
+	defaultShader = CreateProgram("Default");
 	return true;
 }
 

@@ -7,6 +7,8 @@
 #include <list>
 
 #define MAXTEXTURES 4
+#define DEFAULTMAT "Default"
+
 struct Texture;
 struct Shader;
 
@@ -36,10 +38,12 @@ public:
 	void DrawProperties() override;
 	void Save(JSON_value *value) const override;
 	void Load(const JSON_value &value) override;
-
 	void Load(const char * material);
 	void Save() const;
 	std::list<Texture*> GetTextures() const;
+	void SetMaterial(const char * file = nullptr);
+
+	void SetMaterial(const ComponentMaterial & material);
 
 
 public:
