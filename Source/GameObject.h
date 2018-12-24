@@ -37,7 +37,7 @@ public:
 	float4x4 GetGlobalTransform() const;
 	void DisableBox();
 
-	void CleanUp();
+	bool CleanUp();
 	void Save(JSON_value *gameobjects) const;
 	void Load(const JSON_value & gameobject);
 	AABB GetBoundingBox() const;

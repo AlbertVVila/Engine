@@ -324,7 +324,6 @@ void ModuleRender::InitOpenGL() const
 	glViewport(0, 0, App->window->width, App->window->height);
 }
 
-
 void ModuleRender::DrawGUI()
 {
 	if (ImGui::Checkbox("Depth Test", &depthTest))

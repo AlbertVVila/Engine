@@ -522,7 +522,7 @@ void GameObject::DisableBox()
 	drawBBox = false;
 }
 
-void GameObject::CleanUp()
+bool GameObject::CleanUp()
 {
 	for (auto &component : components)
 	{
@@ -533,6 +533,7 @@ void GameObject::CleanUp()
 	{
 		child->CleanUp();
 	}
+	return true;
 }
 
 void GameObject::Save(JSON_value *gameobjects) const

@@ -258,10 +258,10 @@ Texture * JSON_value::GetTexture(const char * name) const
 	JSON_value* texture = GetValue(name);
 	if (texture != nullptr)
 	{
-		unsigned id = GetUint("id");
-		unsigned width = GetUint("width");
-		unsigned height = GetUint("height");
-		std::string file = GetString("file");
+		unsigned id = texture->GetUint("id");
+		unsigned width = texture->GetUint("width");
+		unsigned height = texture->GetUint("height");
+		std::string file = texture->GetString("file");
 		return new Texture(id, width, height, file);
 	}
 	else

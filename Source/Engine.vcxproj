@@ -160,7 +160,6 @@
     <ClInclude Include="ModuleEditor.h" />
     <ClInclude Include="ModuleInput.h" />
     <ClInclude Include="ModuleResourceManager.h" />
-    <ClInclude Include="ModuleSceneLoader.h" />
     <ClInclude Include="ModuleProgram.h" />
     <ClInclude Include="ModuleRender.h" />
     <ClInclude Include="ModuleScene.h" />
@@ -239,7 +238,6 @@
     <ClCompile Include="ModuleEditor.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="ModuleResourceManager.cpp" />
-    <ClCompile Include="ModuleSceneLoader.cpp" />
     <ClCompile Include="ModuleProgram.cpp" />
     <ClCompile Include="ModuleRender.cpp" />
     <ClCompile Include="ModuleScene.cpp" />

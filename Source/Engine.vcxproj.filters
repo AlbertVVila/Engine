@@ -177,9 +177,6 @@
     <ClCompile Include="ModuleScene.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleSceneLoader.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="ComponentMesh.cpp">
       <Filter>Component</Filter>
     </ClCompile>
@@ -453,9 +450,6 @@
       <Filter>Component</Filter>
     </ClInclude>
     <ClInclude Include="ModuleScene.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ModuleSceneLoader.h">
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="ComponentMesh.h">

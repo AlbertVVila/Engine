@@ -1,4 +1,13 @@
+#include "Application.h"
+
+#include "ModuleTextures.h"
+#include "ModuleFileSystem.h"
+#include "ModuleScene.h"
+
+#include "ComponentMaterial.h"
+#include "ComponentMesh.h"
 #include "FileImporter.h"
+
 #include <assert.h>
 #include "assimp/cimport.h"
 #include "assimp/postprocess.h"
@@ -6,16 +15,22 @@
 #include "assimp/mesh.h"
 #include "assimp/material.h"
 #include "assimp/types.h"
-#include "Application.h"
-#include "ModuleTextures.h"
-#include "ModuleFileSystem.h"
-#include "ModuleScene.h"
 #include <map>
-#include "ComponentMaterial.h"
-#include "ComponentMesh.h"
+
+void AddLog(const char* str, char* userData)
+{
+	std::string info(str);
+	info.pop_back();
+
+	LOG("%s", info.c_str());
+}
 
 FileImporter::FileImporter()
 {
+	struct aiLogStream streamLog;
+	streamLog = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, NULL);
+	streamLog.callback = AddLog;
+	aiAttachLogStream(&streamLog);
 }
 
 
@@ -91,16 +106,30 @@ void FileImporter::ImportMesh(const aiMesh &mesh, char *data)
 	memcpy(cursor, mesh.mVertices, verticesBytes);
 	cursor += verticesBytes;
 
-	unsigned int normalBytes = sizeof(float)*mesh.mNumVertices * 3;
-	memcpy(cursor, mesh.mNormals, normalBytes);
-	cursor += verticesBytes;
+	bool hasNormals = mesh.HasNormals();
+	memcpy(cursor, &hasNormals, sizeof(bool));
+	cursor += sizeof(bool);
 
-	for (unsigned int i = 0; i < mesh.mNumVertices; i++)
+	if (hasNormals)
 	{
-		memcpy(cursor, &mesh.mTextureCoords[0][i].x, sizeof(float));
-		cursor += sizeof(float);
-		memcpy(cursor, &mesh.mTextureCoords[0][i].y, sizeof(float));
-		cursor += sizeof(float);
+		unsigned int normalBytes = sizeof(float)*mesh.mNumVertices * 3;
+		memcpy(cursor, mesh.mNormals, normalBytes);
+		cursor += verticesBytes;
+	}
+
+	bool hasTextureCoords = mesh.HasTextureCoords(0);
+	memcpy(cursor, &hasTextureCoords, sizeof(bool));
+	cursor += sizeof(bool);
+
+	if (hasTextureCoords)
+	{
+		for (unsigned int i = 0; i < mesh.mNumVertices; i++)
+		{
+			memcpy(cursor, &mesh.mTextureCoords[0][i].x, sizeof(float));
+			cursor += sizeof(float);
+			memcpy(cursor, &mesh.mTextureCoords[0][i].y, sizeof(float));
+			cursor += sizeof(float);
+		}
 	}
 
 	//unsigned int faceBytes = mesh.mNumFaces*3*(sizeof(int));
@@ -120,7 +149,17 @@ unsigned FileImporter::GetMeshSize(const aiMesh &mesh)
 	//size += sizeof(int); //mesh content size ?
 	size += sizeof(ranges); //numfaces + numvertices
 	size += ranges[0]* 3 * sizeof(int); //indices
-	size += sizeof(float)*ranges[1] * 8; //vertices + texCoords + normals
+
+	size += sizeof(float)*ranges[1] * 3; //vertices
+	size += sizeof(bool) * 2; //has normals + has tcoords
+	if (mesh.HasNormals())
+	{
+		size += sizeof(float)*ranges[1] * 3;
+	}
+	if (mesh.HasTextureCoords(0))
+	{
+		size += sizeof(float)*ranges[1] * 2;
+	}
 	return size;
 }
 
@@ -163,7 +202,7 @@ GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshma
 			mat->GetTexture((aiTextureType)i, 0, &texture, &mapping, 0);
 			if (texture.length > 0)
 			{
-				material->textures[i]->file = App->fsystem->GetFilename(texture.C_Str()); //we only save texture name
+				material->textures[i] = new Texture(App->fsystem->GetFilename(texture.C_Str()));
 			}
 		}
 	} 

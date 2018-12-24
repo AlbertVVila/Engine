@@ -54,6 +54,11 @@ update_status ModuleScene::Update()
 	return UPDATE_CONTINUE;
 }
 
+bool ModuleScene::CleanUp()
+{
+	return root->CleanUp();
+}
+
 void ModuleScene::Draw(const math::Frustum &frustum)
 {
 	root->Draw(frustum);
@@ -113,7 +118,7 @@ void ModuleScene::CreatePrimitive(par_shapes_mesh_s *mesh, const char * name, co
 	ComponentMesh* componentmesh = (ComponentMesh*)gameobject->CreateComponent(ComponentType::Mesh);
 	componentmesh->meshUID = GetNewUID();
 	unsigned meshSize = SaveParShapesMesh(*mesh, &data);
-	App->fsystem->Save((MESHES + std::to_string(componentmesh->meshUID) + MESHEXTENSION).c_str(), data, size);
+	App->fsystem->Save((MESHES + std::to_string(componentmesh->meshUID) + MESHEXTENSION).c_str(), data, meshSize);
 	componentmesh->SetMesh(data);
 
 	par_shapes_free_mesh(mesh);
@@ -124,7 +129,7 @@ void ModuleScene::CreatePrimitive(par_shapes_mesh_s *mesh, const char * name, co
 
 unsigned ModuleScene::SaveParShapesMesh(const par_shapes_mesh_s &mesh, char** data) const //TODO: unify somehow with importer + scene loader
 {
-	unsigned size = 0u;
+	unsigned size = 0;
 	unsigned ranges[2] = { mesh.ntriangles*3, mesh.npoints};
 	size += sizeof(ranges); //numfaces + numvertices
 	size += ranges[0] * 3 * sizeof(int); //indices

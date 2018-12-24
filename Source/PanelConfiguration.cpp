@@ -2,7 +2,6 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
-#include "ModuleSceneLoader.h"
 #include "ModuleCamera.h"
 #include "ModuleInput.h"
 #include "ModuleTextures.h"

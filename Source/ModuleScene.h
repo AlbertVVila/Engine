@@ -22,14 +22,14 @@ public:
 
 	bool Init() override;
 	bool Start() override;
-
 	update_status Update() override;
-	void Draw(const math::Frustum &frustum);
-	void DrawHierarchy();
+	bool CleanUp() override;
 
 	GameObject * CreateGameObject(const float4x4& transform, const char* filepath, const char* name, GameObject* parent);
 	GameObject * CreateGameObject(const char * name, GameObject* parent);
 
+	void Draw(const math::Frustum &frustum);
+	void DrawHierarchy();
 	void CreateCube(const char * name, const float3 & pos = float3::zero, const Quat & rot = Quat::identity, float size = 1.f, const float4 & color = float4::one);
 	void CreateSphere(const char * name, const float3 & pos = float3::zero, const Quat & rot = Quat::identity, float size = 1.f, unsigned slices = 20u, unsigned stacks = 20u, const float4 & color = float4::one);
 	void CreatePrimitive(par_shapes_mesh_s *mesh, const char * name, const float3 & pos, const Quat & rot, float size, const float4 & color);

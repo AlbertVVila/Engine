@@ -205,19 +205,31 @@ void ComponentMaterial::Load(const char* materialfile)
 	kSpecular = materialJSON->GetFloat("kSpecular");
 	shininess = materialJSON->GetFloat("shininess");
 
-	JSON_value *textureJSON = materialJSON->GetValue("textures");
-	if (textureJSON != nullptr)
-	{ 
-		textures[(unsigned)TextureType::DIFFUSE] = materialJSON->GetTexture("diffuse");
-		textures[(unsigned)TextureType::SPECULAR] = materialJSON->GetTexture("specular");
-		textures[(unsigned)TextureType::OCCLUSION] = materialJSON->GetTexture("occlusion");
-		textures[(unsigned)TextureType::EMISSIVE] = materialJSON->GetTexture("emissive");
+	const char *diffuseFile = materialJSON->GetString("diffuse");
+	if (diffuseFile != nullptr)
+	{
+		textures[(unsigned)TextureType::DIFFUSE] = App->textures->GetTexture(diffuseFile);
+	}
+	const char *specularFile = materialJSON->GetString("specular");
+	if (specularFile != nullptr)
+	{
+		textures[(unsigned)TextureType::DIFFUSE] = App->textures->GetTexture(specularFile);
+	}
+	const char *occlusionFile = materialJSON->GetString("occlusion");
+	if (occlusionFile != nullptr)
+	{
+		textures[(unsigned)TextureType::DIFFUSE] = App->textures->GetTexture(occlusionFile);
+	}
+	const char *emissiveFile = materialJSON->GetString("emissive");
+	if (emissiveFile != nullptr)
+	{
+		textures[(unsigned)TextureType::DIFFUSE] = App->textures->GetTexture(emissiveFile);
 	}
 
-	if (shader == nullptr)
+	const char* shaderName = materialJSON->GetString("shader");
+	if (shaderName != nullptr)
 	{
-		shader = App->program->CreateProgram(materialJSON->GetString("shader"));
-		App->resManager->AddProgram(shader);
+		shader = App->program->GetProgram(materialJSON->GetString("shader"));
 	}
 }
 
@@ -253,26 +265,22 @@ void ComponentMaterial::Save() const
 	materialJSON->AddFloat("kSpecular", kSpecular);
 	materialJSON->AddFloat("shininess", shininess);
 
-	if (!GetTextures().empty())
+
+	if (textures[(unsigned)TextureType::DIFFUSE] != nullptr)
 	{
-		JSON_value *texturesJSON = materialJSON->CreateValue(rapidjson::kArrayType);
-		if (textures[(unsigned)TextureType::DIFFUSE] != nullptr)
-		{
-			texturesJSON->AddTexture("diffuse", textures[(unsigned)TextureType::DIFFUSE]);
-		}
-		if (textures[(unsigned)TextureType::SPECULAR] != nullptr)
-		{
-			texturesJSON->AddTexture("specular", textures[(unsigned)TextureType::SPECULAR]);
-		}
-		if (textures[(unsigned)TextureType::OCCLUSION] != nullptr)
-		{
-			texturesJSON->AddTexture("occlusion", textures[(unsigned)TextureType::OCCLUSION]);
-		}
-		if (textures[(unsigned)TextureType::EMISSIVE] != nullptr)
-		{
-			texturesJSON->AddTexture("emissive", textures[(unsigned)TextureType::EMISSIVE]);
-		}
-		materialJSON->AddValue("textures", texturesJSON);
+		materialJSON->AddString("diffuse", textures[(unsigned)TextureType::DIFFUSE]->file.c_str());
+	}
+	if (textures[(unsigned)TextureType::SPECULAR] != nullptr)
+	{
+		materialJSON->AddString("specular", textures[(unsigned)TextureType::SPECULAR]->file.c_str());
+	}
+	if (textures[(unsigned)TextureType::OCCLUSION] != nullptr)
+	{
+		materialJSON->AddString("occlusion", textures[(unsigned)TextureType::OCCLUSION]->file.c_str());
+	}
+	if (textures[(unsigned)TextureType::EMISSIVE] != nullptr)
+	{
+		materialJSON->AddString("emissive", textures[(unsigned)TextureType::EMISSIVE]->file.c_str());
 	}
 
 	if (shader != nullptr)

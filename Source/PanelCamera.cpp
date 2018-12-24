@@ -7,6 +7,7 @@
 
 PanelCamera::PanelCamera()
 {
+	enabled = false;
 }
 
 

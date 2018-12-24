@@ -1,6 +1,5 @@
 #include "ComponentMesh.h"
 #include "Application.h"
-#include "ModuleSceneLoader.h"
 #include "ModuleTextures.h"
 #include "ModuleFileSystem.h"
 #include <assert.h>
@@ -112,7 +111,10 @@ void ComponentMesh::SetMesh(char * &mesh) //TODO: pass by reference or know size
 	// Buffer Creation with vertex data
 	glGenBuffers(1, &VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*numVertices * 8, NULL, GL_STATIC_DRAW);
+	unsigned bufferSize = sizeof(GLfloat)*numVertices * 3;
+	if (hasNormals) bufferSize += sizeof(GLfloat)*numVertices * 3;
+	if (hasTexCoords) bufferSize+= sizeof(GLfloat)*numVertices * 2;
+	glBufferData(GL_ARRAY_BUFFER, bufferSize, NULL, GL_STATIC_DRAW);
 
 	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(GLfloat) * 3 * numVertices, vertices);
 
@@ -126,17 +128,11 @@ void ComponentMesh::SetMesh(char * &mesh) //TODO: pass by reference or know size
 		offsetTexCoords = hasNormals ? sizeof(GLfloat) * 6 * numVertices : sizeof(GLfloat) * 3 * numVertices;
 		glBufferSubData(GL_ARRAY_BUFFER, offsetTexCoords, sizeof(GLfloat) * 2 * numVertices, texCoords);
 	}
-	//float * pbuffer = (float*)glMapBufferRange(GL_ARRAY_BUFFER, sizeof(GLfloat) * 3 * numVertices, sizeof(GLfloat) * 2 * numVertices, GL_MAP_WRITE_BIT);
-	//memcpy(pbuffer, texCoords, sizeof(float) * 2 * numVertices);
-	//glUnmapBuffer(GL_ARRAY_BUFFER);
 
 	//Buffer creation with indices
 	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int)*numIndices, indices, GL_STATIC_DRAW);
-	//int * pbufferIndex = (int*)glMapBufferRange(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(unsigned int)*numIndices, GL_MAP_WRITE_BIT);
-	//memcpy(pbufferIndex, indices, sizeof(int) * numIndices);
-	//glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
 
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(

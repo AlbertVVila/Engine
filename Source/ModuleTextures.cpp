@@ -1,5 +1,4 @@
 #include "Application.h"
-#include "ModuleRender.h"
 #include "ModuleTextures.h"
 #include "ModuleFileSystem.h"
 #include "ModuleResourceManager.h" 
@@ -7,9 +6,6 @@
 #include "GL/glew.h"
 #include "IL/ilut.h"
 #include "imgui.h"
-
-
-using namespace std;
 
 ModuleTextures::ModuleTextures()
 {
@@ -65,6 +61,7 @@ Texture * ModuleTextures::GetTexture(const char * file) const //TODO: refactor t
 	char *data;
 	std::string filename(file);
 	unsigned size = App->fsystem->Load((TEXTURES + filename + TEXTUREEXT).c_str(), &data); 
+
 	ilGenImages(1, &imageID); 		// Generate the image ID
 	ilBindImage(imageID); 			// Bind the image
 	success = ilLoadL(IL_DDS, data, size);
@@ -117,7 +114,7 @@ Texture * ModuleTextures::GetTexture(const char * file) const //TODO: refactor t
 	return nullptr;
 }
 
-unsigned ModuleTextures::LoadCubeMap(const std::string faces[]) //TODO: change to array[6]
+unsigned ModuleTextures::LoadCubeMap(const std::string faces[]) const
 {
 	unsigned textureID;
 	glGenTextures(1, &textureID);
@@ -170,7 +167,7 @@ unsigned ModuleTextures::LoadCubeMap(const std::string faces[]) //TODO: change t
 	return textureID;
 }
 
-void ModuleTextures::ImportImage(const char * file, const char* folder) //TODO: maybe flip needed to solve bug reversed image
+void ModuleTextures::ImportImage(const char * file, const char* folder) const
 {
 	ILuint imageID;
 	ILboolean success;
@@ -197,6 +194,11 @@ void ModuleTextures::ImportImage(const char * file, const char* folder) //TODO: 
 			App->fsystem->Save(filepath.c_str(), (char*)data, size);
 		}
 		RELEASE_ARRAY(data);
+	}
+	else
+	{
+		error = ilGetError();
+		LOG("Error loading data: %s\n", iluErrorString(error));
 	}
 }
 
