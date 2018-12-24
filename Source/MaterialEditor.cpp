@@ -30,7 +30,7 @@ void MaterialEditor::Draw()
 	{
 		if (material == nullptr)
 		{
-			material = new ComponentMaterial(nullptr);
+			material = new Material();
 		}
 		char name[64] = "";
 		if (!material->name.empty())
@@ -190,18 +190,14 @@ void MaterialEditor::Draw()
 }
 
 
-void MaterialEditor::Edit(ComponentMaterial* material)
+void MaterialEditor::Edit(Material* material)
 {
 	this->material = material;
 }
 
 void MaterialEditor::CleanUp()
 {
-	if (material->gameobject == nullptr)
-	{
-		material->CleanUp();
-		RELEASE(material);
-	}
+	//TODO: cleanup
 	open = false;
 	ImGui::CloseCurrentPopup();
 }

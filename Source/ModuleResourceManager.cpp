@@ -109,9 +109,9 @@ void ModuleResourceManager::DeleteProgram(std::string filename)
 	}
 }
 
-ComponentMaterial * ModuleResourceManager::GetMaterial(std::string filename) const
+Material * ModuleResourceManager::GetMaterial(std::string filename) const
 {
-	std::map<std::string, std::pair<unsigned, ComponentMaterial*>>::const_iterator it = materialResources.find(filename);
+	std::map<std::string, std::pair<unsigned, Material*>>::const_iterator it = materialResources.find(filename);
 	if (it != materialResources.end())
 	{
 		return it->second.second;
@@ -119,23 +119,23 @@ ComponentMaterial * ModuleResourceManager::GetMaterial(std::string filename) con
 	return nullptr;
 }
 
-void ModuleResourceManager::AddMaterial(std::string filename, ComponentMaterial * material)
+void ModuleResourceManager::AddMaterial(std::string filename, Material * material)
 {
-	std::map<std::string, std::pair<unsigned, ComponentMaterial*>>::iterator it = materialResources.find(material->name);
+	std::map<std::string, std::pair<unsigned, Material*>>::iterator it = materialResources.find(material->name);
 	if (it != materialResources.end())
 	{
 		it->second.first++;
 	}
 	else
 	{
-		materialResources.insert(std::pair<std::string, std::pair<unsigned, ComponentMaterial*>>
-			(material->name, std::pair<unsigned, ComponentMaterial*>(1, material)));
+		materialResources.insert(std::pair<std::string, std::pair<unsigned, Material*>>
+			(material->name, std::pair<unsigned, Material*>(1, material)));
 	}
 }
 
 void ModuleResourceManager::DeleteMaterial(std::string filename)
 {
-	std::map<std::string, std::pair<unsigned, ComponentMaterial*>>::iterator it = materialResources.find(filename);
+	std::map<std::string, std::pair<unsigned, Material*>>::iterator it = materialResources.find(filename);
 	if (it != materialResources.end())
 	{
 		if (it->second.first > 1)
@@ -144,7 +144,7 @@ void ModuleResourceManager::DeleteMaterial(std::string filename)
 		}
 		else
 		{
-			ComponentMaterial* mat = it->second.second;
+			Material* mat = it->second.second;
 			DeleteProgram(mat->shader->file);
 			for (unsigned i = 0; i < MAXTEXTURES; i++)
 			{

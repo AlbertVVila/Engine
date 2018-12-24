@@ -93,11 +93,12 @@ void GameObject::Draw(const math::Frustum& frustum)
 		DrawBBox();
 	}
 
-	ComponentMaterial* material = (ComponentMaterial*)GetComponent(ComponentType::Renderer);
-	if (material == nullptr || !material->enabled) return;
+	ComponentMaterial* componentMat = (ComponentMaterial*)GetComponent(ComponentType::Renderer);
+	if (componentMat == nullptr || !componentMat->enabled || componentMat->material == nullptr) return;
 
-	if (material->shader == nullptr) return;
+	Material* material = componentMat->material;
 	Shader* shader = material->shader;
+	if (shader == nullptr) return;
 
 	glUseProgram(shader->id);
 

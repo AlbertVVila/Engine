@@ -1,7 +1,7 @@
 #ifndef __MaterialEditor_h__
 #define __MaterialEditor_h__
 
-class ComponentMaterial;
+struct Material;
 
 class MaterialEditor
 {
@@ -10,13 +10,13 @@ public:
 	~MaterialEditor();
 
 	void Draw();
-	void Edit(ComponentMaterial* material);
+	void Edit(Material* material);
 
 	void CleanUp();
 
 public:
 	bool open=false;
-	ComponentMaterial* material = nullptr;
+	Material* material = nullptr;
 };
 
 #endif __MaterialEditor_h__

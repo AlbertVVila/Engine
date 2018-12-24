@@ -22,7 +22,23 @@ enum class TextureType
 
 struct Material
 {
+	std::string name = "Default";
+	Shader* shader = nullptr;
 
+	Texture* textures[MAXTEXTURES]{ nullptr }; //TODO: default specular texture?
+
+	float4 diffuse_color = float4::one;
+	float3 specular_color = float3::one;
+	float3 emissive_color = float3::one;
+
+	float kAmbient = 0.3f;
+	float kDiffuse = 0.2f;
+	float kSpecular = 0.1f;
+	float shininess = 32.f;
+
+
+	void Load(const char * material);
+	void Save() const;
 };
 
 class ComponentMaterial :
@@ -43,33 +59,15 @@ public:
 	void DrawProperties() override;
 	void Save(JSON_value *value) const override;
 	void Load(const JSON_value &value) override;
-	void Load(const char * material);
-	void Save() const;
+
 	std::list<Texture*> GetTextures() const;
 	void SetMaterial(const char * file = nullptr);
-
-	void SetMaterial(const ComponentMaterial & material);
+	void SetMaterial(const Material & material);
 
 
 public:
-	std::string name = "Default";
-	Shader* shader = nullptr;
+	Material * material = nullptr;
 
-	Texture* textures[MAXTEXTURES]{ nullptr }; //TODO: default specular texture?
-
-	float4 diffuse_color = float4::one;
-	float3 specular_color = float3::one;
-	float3 emissive_color = float3::one;
-
-	float kAmbient = 0.3f;
-	float kDiffuse = 0.2f;
-	float kSpecular = 0.1f;
-	float shininess = 32.f;
-
-
-private:
-	//std::string selected_texture[MAXTEXTURES]{ "None selected" };
-	//std::string selected_shader = "Default";
 };
 
 #endif //__ComponentMaterial_h__

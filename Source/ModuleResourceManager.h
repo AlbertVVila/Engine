@@ -7,7 +7,7 @@
 
 struct Texture;
 struct Shader;
-class ComponentMaterial;
+struct Material;
 
 class ModuleResourceManager :
 	public Module
@@ -29,16 +29,16 @@ public:
 
 	void DeleteProgram(std::string filename);
 
-	ComponentMaterial * GetMaterial(std::string filename) const;
+	Material * GetMaterial(std::string filename) const;
 
-	void AddMaterial(std::string filename, ComponentMaterial * texture);
+	void AddMaterial(std::string filename, Material * texture);
 
 	void DeleteMaterial(std::string filename);
 
 private:
 	std::map<std::string, std::pair<unsigned, Texture*>> textureResources; //filename , times used, texture pointer
 	std::map<std::string, std::pair<unsigned, Shader*>> shaderResources; //filename , times used, shader
-	std::map<std::string, std::pair<unsigned, ComponentMaterial*>> materialResources; //filename , times used, material
+	std::map<std::string, std::pair<unsigned, Material*>> materialResources; //filename , times used, material
 };
 
 #endif __ModuleResourceManager_h__

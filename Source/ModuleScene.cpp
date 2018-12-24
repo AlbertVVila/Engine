@@ -123,8 +123,7 @@ void ModuleScene::CreatePrimitive(par_shapes_mesh_s *mesh, const char * name, co
 
 	par_shapes_free_mesh(mesh);
 
-	ComponentMaterial* material = (ComponentMaterial*)gameobject->CreateComponent(ComponentType::Renderer);
-	material->SetMaterial();
+	ComponentMaterial* cmat = (ComponentMaterial*)gameobject->CreateComponent(ComponentType::Renderer);
 }
 
 unsigned ModuleScene::SaveParShapesMesh(const par_shapes_mesh_s &mesh, char** data) const //TODO: unify somehow with importer + scene loader
