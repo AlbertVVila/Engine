@@ -242,19 +242,18 @@ void GameObject::DrawHierarchy(GameObject * selected)
 	{
 		if (ImGui::BeginMenu("Create"))
 		{
-			const char* go_options[] = { "Empty GameObject","Cube", "Sphere" }; //TODO: Render of Cube, Sphere, Axis, Coordinates in different file?
-			for (int j = 0; j < IM_ARRAYSIZE(go_options); j++)
-				if (ImGui::Selectable(go_options[j]))
-				{
-					if (go_options[j] == "Sphere")
-					{
-						App->scene->CreateSphere("sphere0", float3(0.0f, 0.0f, 0.0f), Quat::identity, 1.0f, 20, 20, float4(1.f, 1.f, 1.f, 1.0f));
-					}
-					else if (go_options[j] == "Empty GameObject")
-					{
-						App->scene->CreateGameObject("Empty", this);
-					}
-				}
+			if (ImGui::Selectable("Sphere"))
+			{
+				App->scene->CreateSphere("sphere0", float3(0.0f, 0.0f, 0.0f), Quat::identity, 1.0f, 20, 20, float4(1.f, 1.f, 1.f, 1.0f));
+			}
+			if (ImGui::Selectable("Cube"))
+			{
+				App->scene->CreateCube("cube0", float3(0.0f, 0.0f, 0.0f), Quat::identity, 1.0f, float4(1.f, 1.f, 1.f, 1.0f));
+			}
+			if (ImGui::Selectable("Empty GameObject"))
+			{
+				App->scene->CreateGameObject("Empty", this);
+			}
 			ImGui::EndMenu();
 		}
 		if (ImGui::Selectable("Duplicate"))

@@ -83,11 +83,25 @@ void ComponentMesh::SetMesh(char * &mesh) //TODO: pass by reference or know size
 	float* vertices = (float*)mesh;
 	mesh += sizeof(float) * 3 * numVertices;
 	
-	float* normals = (float*)mesh;
-	mesh += sizeof(float) * 3 * numVertices;
+	bool hasNormals = (bool*)mesh;
+	mesh += sizeof(bool);
 
-	float* texCoords = (float*)mesh;
-	mesh += sizeof(float) * 2 * numVertices;
+	float* normals = nullptr;
+	if (hasNormals)
+	{
+		normals = (float*)mesh;
+		mesh += sizeof(float) * 3 * numVertices;
+	}
+
+	bool hasTexCoords = (bool*)mesh;
+	mesh += sizeof(bool);
+
+	float* texCoords = nullptr;
+	if (hasTexCoords)
+	{
+		texCoords = (float*)mesh;
+		mesh += sizeof(float) * 2 * numVertices;
+	}
 
 	int* indices = (int*)mesh;
 	mesh += sizeof(int) * numIndices;
@@ -101,8 +115,17 @@ void ComponentMesh::SetMesh(char * &mesh) //TODO: pass by reference or know size
 	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*numVertices * 8, NULL, GL_STATIC_DRAW);
 
 	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(GLfloat) * 3 * numVertices, vertices);
-	glBufferSubData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 3 * numVertices, sizeof(GLfloat) * 3 * numVertices, normals);
-	glBufferSubData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 6 * numVertices, sizeof(GLfloat) * 2 * numVertices, texCoords);
+
+	if (hasNormals)
+	{
+		glBufferSubData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 3 * numVertices, sizeof(GLfloat) * 3 * numVertices, normals);
+	}
+	unsigned offsetTexCoords = 0;
+	if (hasTexCoords)
+	{
+		offsetTexCoords = hasNormals ? sizeof(GLfloat) * 6 * numVertices : sizeof(GLfloat) * 3 * numVertices;
+		glBufferSubData(GL_ARRAY_BUFFER, offsetTexCoords, sizeof(GLfloat) * 2 * numVertices, texCoords);
+	}
 	//float * pbuffer = (float*)glMapBufferRange(GL_ARRAY_BUFFER, sizeof(GLfloat) * 3 * numVertices, sizeof(GLfloat) * 2 * numVertices, GL_MAP_WRITE_BIT);
 	//memcpy(pbuffer, texCoords, sizeof(float) * 2 * numVertices);
 	//glUnmapBuffer(GL_ARRAY_BUFFER);
@@ -124,30 +147,37 @@ void ComponentMesh::SetMesh(char * &mesh) //TODO: pass by reference or know size
 		0,                  // stride
 		(void*)0            // array buffer offset
 	);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(
-		1,                  // attribute 1
-		3,                  // number of componentes (3 floats)
-		GL_FLOAT,           // data type
-		GL_FALSE,           // should be normalized?
-		0,                  // stride
-		(void*)(sizeof(float) * 3 * numVertices)       // array buffer offset
-	);
-	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(
-		2,                  // attribute 2
-		2,                  // number of componentes (2 floats)
-		GL_FLOAT,           // data type
-		GL_FALSE,           // should be normalized?
-		0,                  // stride
-		(void*)(sizeof(float) * 6 * numVertices)       // array buffer offset
-	);
+	if (hasNormals)
+	{
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(
+			1,                  // attribute 1
+			3,                  // number of componentes (3 floats)
+			GL_FLOAT,           // data type
+			GL_FALSE,           // should be normalized?
+			0,                  // stride
+			(void*)(sizeof(float) * 3 * numVertices)       // array buffer offset
+		);
+	}
+	if (hasTexCoords)
+	{
+		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(
+			2,                  // attribute 2
+			2,                  // number of componentes (2 floats)
+			GL_FLOAT,           // data type
+			GL_FALSE,           // should be normalized?
+			0,                  // stride
+			(void*)(offsetTexCoords)       // array buffer offset
+		);
+	}
 
 	// Disable VAO
 	glBindVertexArray(0);
 
 	glDisableVertexAttribArray(0);
 	glDisableVertexAttribArray(1);
+	glDisableVertexAttribArray(2);
 	
 
 	// Disable VBO and EBO

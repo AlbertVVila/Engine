@@ -47,7 +47,7 @@ void ModuleTextures::DrawGUI()
 	ImGui::RadioButton("Nearest", &filter_type, NEAREST);
 }
 
-Texture * ModuleTextures::Load(const char * file) const //TODO: refactor texture load
+Texture * ModuleTextures::GetTexture(const char * file) const //TODO: refactor texture load
 {
 	assert(file != NULL);
 

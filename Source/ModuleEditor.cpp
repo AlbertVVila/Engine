@@ -207,6 +207,10 @@ update_status ModuleEditor::Update()
 			{
 				App->scene->CreateSphere("sphere0");
 			}
+			if (ImGui::MenuItem("Cube"))
+			{
+				App->scene->CreateCube("cube0");
+			}
 			if (ImGui::MenuItem("New Material"))
 			{
 				materialCreationPopUp = true;
@@ -273,7 +277,7 @@ update_status ModuleEditor::Update()
 						if (ImGui::Selectable(textureFiles[n].c_str(), is_selected))
 						{
 							item_current = textureFiles[n];
-							newMaterial->textures[(unsigned)TextureType::DIFFUSE] = App->textures->Load(item_current.c_str());
+							newMaterial->textures[(unsigned)TextureType::DIFFUSE] = App->textures->GetTexture(item_current.c_str());
 						}
 						if (is_selected)
 							ImGui::SetItemDefaultFocus();   
@@ -300,7 +304,7 @@ update_status ModuleEditor::Update()
 						if (ImGui::Selectable(textureFiles[n].c_str(), is_selected))
 						{
 							item_current = textureFiles[n];
-							newMaterial->textures[(unsigned)TextureType::SPECULAR] = App->textures->Load(item_current.c_str());
+							newMaterial->textures[(unsigned)TextureType::SPECULAR] = App->textures->GetTexture(item_current.c_str());
 						}
 						if (is_selected)
 							ImGui::SetItemDefaultFocus();
@@ -326,7 +330,7 @@ update_status ModuleEditor::Update()
 						if (ImGui::Selectable(textureFiles[n].c_str(), is_selected))
 						{
 							item_current = textureFiles[n];
-							newMaterial->textures[(unsigned)TextureType::OCCLUSION] = App->textures->Load(item_current.c_str());
+							newMaterial->textures[(unsigned)TextureType::OCCLUSION] = App->textures->GetTexture(item_current.c_str());
 						}
 						if (is_selected)
 							ImGui::SetItemDefaultFocus();
@@ -352,7 +356,7 @@ update_status ModuleEditor::Update()
 						if (ImGui::Selectable(textureFiles[n].c_str(), is_selected))
 						{
 							item_current = textureFiles[n];
-							newMaterial->textures[(unsigned)TextureType::EMISSIVE] = App->textures->Load(item_current.c_str());
+							newMaterial->textures[(unsigned)TextureType::EMISSIVE] = App->textures->GetTexture(item_current.c_str());
 						}
 						if (is_selected)
 							ImGui::SetItemDefaultFocus();

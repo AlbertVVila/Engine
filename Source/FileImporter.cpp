@@ -174,3 +174,4 @@ GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshma
 	return gameobject; //TODO: create a small resource manager for meshes/materials etc
 }
 
+

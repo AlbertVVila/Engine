@@ -4,6 +4,7 @@
 #include "Module.h"
 class ComponentCamera;
 class Skybox;
+struct Shader;
 
 class ModuleRender : public Module
 {
@@ -11,15 +12,16 @@ public:
 	ModuleRender();
 	~ModuleRender();
 
-	bool Init();
+	bool Init() override;
 	bool Start() override;
-	update_status PreUpdate();
-	update_status Update();
-	update_status PostUpdate();
-	bool CleanUp();
+	update_status PreUpdate() override;
+	update_status Update() override;
+	update_status PostUpdate() override;
+	bool CleanUp() override;
 	void OnResize();
 	void DrawGUI();
-	void SetBlockUniforms();
+	void GenBlockUniforms();
+	void AddBlockUniforms(const Shader &s) const;
 
 private:
 
@@ -36,7 +38,7 @@ public:
 	void* context = nullptr;
 
 private:
-	unsigned int UBO = 0;
+	unsigned UBO = 0;
 	bool useCheckersTexture = false;
 	bool depthTest = true;
 	bool wireframe = false;

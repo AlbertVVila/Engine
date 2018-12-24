@@ -89,7 +89,7 @@ void ModuleResourceManager::AddProgram(Shader* shader)
 	{
 		shaderResources.insert(std::pair<std::string, std::pair<unsigned, Shader*>>
 			(shader->file, std::pair<unsigned, Shader*>(1, shader)));
-		App->renderer->SetBlockUniforms(); //add Shader to block uniforms
+		App->renderer->AddBlockUniforms(*shader); 
 	}
 }
 

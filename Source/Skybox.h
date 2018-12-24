@@ -11,15 +11,16 @@ public:
 	Skybox();
 	~Skybox();
 	void Draw(const math::Frustum& frustum) const;
+	bool CleanUp();
 
 public:
 	bool enabled = true;
 	
 private:
-	Shader* shader = nullptr;
-	unsigned skybox_cubemap = 0u;
-	unsigned skyboxVAO = 0u; 
-	unsigned skyboxVBO = 0u;
+	Shader* shader = nullptr; //Deallocated in ResManager
+	unsigned skybox_cubemap = 0;
+	unsigned skyboxVAO = 0; 
+	unsigned skyboxVBO = 0;
 };
 
 #endif __Skybox_h__

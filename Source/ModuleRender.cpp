@@ -24,6 +24,7 @@ ModuleRender::ModuleRender()
 // Destructor
 ModuleRender::~ModuleRender()
 {
+	RELEASE(skybox);
 }
 
 // Called before render is available
@@ -43,13 +44,7 @@ bool ModuleRender::Init()
 
 bool ModuleRender::Start()
 {
-	glGenBuffers(1, &UBO); //Block uniform creation
-	glBindBuffer(GL_UNIFORM_BUFFER, UBO);
-	glBufferData(GL_UNIFORM_BUFFER, 2 * sizeof(float4x4), NULL, GL_STATIC_DRAW);
-	glBindBuffer(GL_UNIFORM_BUFFER, 0);
-
-	glBindBufferRange(GL_UNIFORM_BUFFER, 0, UBO, 0, 2 * sizeof(float4x4));
-
+	GenBlockUniforms();
 	skybox = new Skybox();
 	return true;
 }
@@ -105,7 +100,6 @@ update_status ModuleRender::Update()
 		SetProjectionUniform(*App->scene->maincamera);
 		SetViewUniform(*App->scene->maincamera);
 		skybox->Draw(*App->scene->maincamera->frustum);
-
 		App->scene->Draw(*App->scene->maincamera->frustum);
 	}
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -126,15 +120,16 @@ bool ModuleRender::CleanUp()
 	LOG("Destroying renderer");
 	if (UBO != 0)
 	{
-		glDeleteBuffers(1, &UBO); //TODO: Remember Clean Textures+Buffers + Optimize VAO+VBO creation
+		glDeleteBuffers(1, &UBO);
 	}
+	skybox->CleanUp();
 	return true;
 }
 
 void ModuleRender::OnResize()
 {
     glViewport(0, 0, App->window->width, App->window->height);
-	App->camera->editorcamera->Resize(App->window->width, App->window->height);
+	App->camera->editorcamera->Resize(App->window->width, App->window->height); //TODO: resize other cameras?
 }
 
 
@@ -148,7 +143,7 @@ void ModuleRender::DrawGizmos() const
 
 	DrawLines();
 	DrawAxis();
-	if (App->scene->maincamera != nullptr)//TODO: refactor frustum call
+	if (App->scene->maincamera != nullptr)
 	{
 		DrawFrustum();
 	}
@@ -176,7 +171,7 @@ void ModuleRender::DrawLines() const
 	glEnd();
 }
 
-void ModuleRender::DrawAxis() const
+void ModuleRender::DrawAxis() const //TODO: use debug draw
 {
 	unsigned shader = App->program->defaultShader->id;
 	glLineWidth(2.0f);
@@ -221,7 +216,7 @@ void ModuleRender::DrawAxis() const
 	glLineWidth(1.0f);
 }
 
-void ModuleRender::DrawFrustum() const
+void ModuleRender::DrawFrustum() const //TODO: Create Separate Frustum class drawer
 {
 	unsigned shader = App->program->defaultShader->id;
 	math::Frustum *frustum = App->scene->maincamera->frustum;
@@ -329,15 +324,6 @@ void ModuleRender::InitOpenGL() const
 	glViewport(0, 0, App->window->width, App->window->height);
 }
 
-void ModuleRender::SetBlockUniforms() //TODO: change setup
-{ 
-	std::list<Shader*> shaders = App->resManager->GetAllPrograms();
-	for (auto& shader: shaders)
-	{
-		unsigned int uniformBlockIndex = glGetUniformBlockIndex(shader->id, "Matrices");
-		glUniformBlockBinding(shader->id, uniformBlockIndex, 0);
-	}
-}
 
 void ModuleRender::DrawGUI()
 {
@@ -360,6 +346,22 @@ void ModuleRender::DrawGUI()
 	}
 	ImGui::Checkbox("Main Camera Frustum", &useMainCameraFrustum);
 	ImGui::Checkbox("Skybox", &skybox->enabled);
+}
+
+void ModuleRender::GenBlockUniforms()
+{
+	glGenBuffers(1, &UBO); //Block uniform creation
+	glBindBuffer(GL_UNIFORM_BUFFER, UBO);
+	glBufferData(GL_UNIFORM_BUFFER, 2 * sizeof(float4x4), NULL, GL_STATIC_DRAW);
+	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+	glBindBufferRange(GL_UNIFORM_BUFFER, 0, UBO, 0, 2 * sizeof(float4x4));
+}
+
+void ModuleRender::AddBlockUniforms(const Shader &shader) const
+{ 
+	unsigned int uniformBlockIndex = glGetUniformBlockIndex(shader.id, "Matrices");
+	glUniformBlockBinding(shader.id, uniformBlockIndex, 0);
 }
 
 void ModuleRender::SetViewUniform(const ComponentCamera &camera) const

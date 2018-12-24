@@ -28,7 +28,7 @@ public:
 	bool Init();
 	bool CleanUp();
 	void DrawGUI();
-	Texture * Load(const char* path) const;
+	Texture * GetTexture(const char* path) const;
 	unsigned LoadCubeMap(const std::string faces[]);
 
 	void ImportImage(const char * file, const char* folder);

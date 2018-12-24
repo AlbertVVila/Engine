@@ -48,7 +48,7 @@ void ComponentMaterial::SetTexture(const char * newTexture, TextureType type)
 {
 	if (newTexture != nullptr)
 	{
-		textures[(unsigned)type] = App->textures->Load(newTexture);
+		textures[(unsigned)type] = App->textures->GetTexture(newTexture);
 	}
 }
 
