@@ -217,6 +217,11 @@
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="MaterialEditor.cpp" />
+    <ClCompile Include="Material.cpp" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="ComponentRenderer.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -503,6 +508,11 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="MaterialEditor.h" />
+    <ClInclude Include="Material.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="ComponentRenderer.h">
+      <Filter>Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GeoLib">

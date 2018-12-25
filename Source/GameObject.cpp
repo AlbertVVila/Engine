@@ -8,10 +8,9 @@
 
 #include "Component.h"
 #include "ComponentTransform.h"
-#include "ComponentMesh.h"
 #include "ComponentCamera.h"
 #include "ComponentLight.h"
-#include "ComponentMaterial.h"
+#include "ComponentRenderer.h"
 
 #include "Application.h"
 #include "ModuleProgram.h"
@@ -20,6 +19,9 @@
 #include "ModuleInput.h"
 #include "ModuleScene.h"
 #include "ModuleTextures.h"
+
+#include "Material.h"
+#include "Mesh.h"
 
 #include "JSON.h"
 
@@ -92,10 +94,10 @@ void GameObject::Draw(const math::Frustum& frustum)
 		DrawBBox();
 	}
 
-	ComponentMaterial* componentMat = (ComponentMaterial*)GetComponent(ComponentType::Renderer);
-	if (componentMat == nullptr || !componentMat->enabled || componentMat->material == nullptr) return;
+	ComponentRenderer* crenderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
+	if (crenderer == nullptr || !crenderer->enabled || crenderer->material == nullptr) return;
 
-	Material* material = componentMat->material;
+	Material* material = crenderer->material;
 	Shader* shader = material->shader;
 	if (shader == nullptr) return;
 
@@ -154,15 +156,7 @@ void GameObject::Draw(const math::Frustum& frustum)
 
 
 	UpdateModel(shader->id);
-
-	std::vector<Component*> meshes = GetComponents(ComponentType::Mesh);
-	for (auto &mesh: meshes)
-	{
-		if (mesh->enabled)
-		{
-			((ComponentMesh*)mesh)->Draw(shader->id);
-		}
-	}
+	crenderer->mesh->Draw(shader->id);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glUseProgram(0);
@@ -326,11 +320,8 @@ Component * GameObject::CreateComponent(ComponentType type)
 		component = new ComponentTransform(this);
 		this->transform = (ComponentTransform*)component;
 		break;
-	case ComponentType::Mesh:
-		component = new ComponentMesh(this);
-		break;
 	case ComponentType::Renderer:
-		component = new ComponentMaterial(this);
+		component = new ComponentRenderer(this);
 		break;
 	case ComponentType::Light:
 		component = new ComponentLight(this);
@@ -426,15 +417,16 @@ AABB GameObject::GetBoundingBox() const
 {
 	AABB bbox; //Todo: Use pointers and optimize bounding box computation
 	bbox.SetNegativeInfinity();
-	for (const auto &mesh : GetComponents(ComponentType::Mesh))
+	ComponentRenderer* crenderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
+	if (crenderer != nullptr)
 	{
-		bbox.Enclose(((ComponentMesh *)mesh)->GetBoundingBox());
+		bbox.Enclose(crenderer->mesh->GetBoundingBox());
 	}
 
 	bbox.TransformAsAABB(GetGlobalTransform());
 	for (const auto &child : children)
 	{
-		if(child->GetComponents(ComponentType::Mesh).size() > 0)
+		if(child->GetComponent(ComponentType::Renderer) != nullptr)
 			bbox.Enclose(child->GetBoundingBox());
 	}
 

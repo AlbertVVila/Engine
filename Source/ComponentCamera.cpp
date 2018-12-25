@@ -47,7 +47,10 @@ ComponentCamera::ComponentCamera(const ComponentCamera & component) : Component(
 
 ComponentCamera::~ComponentCamera()
 {
-	RELEASE(frustum);
+	if (frustum != nullptr)
+	{
+		RELEASE(frustum);
+	}
 }
 
 ComponentCamera * ComponentCamera::Clone() const

@@ -3,12 +3,11 @@
 
 #include <assimp/matrix4x4.h>
 #include <map>
-#include "GameObject.h"
 
 struct aiScene;
 struct aiNode;
 struct aiMesh;
-
+class GameObject;
 
 class FileImporter {
 public:

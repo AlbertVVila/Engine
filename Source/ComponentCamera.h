@@ -42,7 +42,7 @@ public:
 	float rotationSpeed = 200.f;
 	float zoomSpeed = 0.1f;
 
-	unsigned camTexture = 0; //TODO: manage buffers+texture resources
+	unsigned camTexture = 0; //Handled allocation inside class
 	unsigned FBO = 0;
 	unsigned RBO = 0;
 

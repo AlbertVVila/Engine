@@ -4,8 +4,7 @@
 #include "ModuleFileSystem.h"
 #include "ModuleTextures.h"
 
-#include "ComponentMaterial.h"
-
+#include "Material.h"
 #include "MaterialEditor.h"
 #include "imgui.h"
 

@@ -5,7 +5,8 @@
 #include "ModuleProgram.h"
 #include "ModuleRender.h"
 
-#include "ComponentMaterial.h"
+#include "Material.h"
+#include "Mesh.h"
 
 
 ModuleResourceManager::ModuleResourceManager()
@@ -119,7 +120,7 @@ Material * ModuleResourceManager::GetMaterial(std::string filename) const
 	return nullptr;
 }
 
-void ModuleResourceManager::AddMaterial(std::string filename, Material * material)
+void ModuleResourceManager::AddMaterial(Material * material)
 {
 	std::map<std::string, std::pair<unsigned, Material*>>::iterator it = materialResources.find(material->name);
 	if (it != materialResources.end())
@@ -154,6 +155,46 @@ void ModuleResourceManager::DeleteMaterial(std::string filename)
 				}
 			}
 			materialResources.erase(it);
+		}
+	}
+}
+
+Mesh * ModuleResourceManager::GetMesh(unsigned uid) const
+{
+	std::map<unsigned, std::pair<unsigned, Mesh*>>::const_iterator it = meshResources.find(uid);
+	if (it != meshResources.end())
+	{
+		return it->second.second;
+	}
+	return nullptr;
+}
+
+void ModuleResourceManager::AddMesh(Mesh * mesh)
+{
+	std::map<unsigned, std::pair<unsigned, Mesh*>>::iterator it = meshResources.find(mesh->UID);
+	if (it != meshResources.end())
+	{
+		it->second.first++;
+	}
+	else
+	{
+		meshResources.insert(std::pair<unsigned, std::pair<unsigned, Mesh*>>
+			(mesh->UID, std::pair<unsigned, Mesh*>(1, mesh)));
+	}
+}
+
+void ModuleResourceManager::DeleteMesh(unsigned uid)
+{
+	std::map<unsigned, std::pair<unsigned, Mesh*>>::iterator it = meshResources.find(uid);
+	if (it != meshResources.end())
+	{
+		if (it->second.first > 1)
+		{
+			it->second.first--;
+		}
+		else
+		{
+			meshResources.erase(it);
 		}
 	}
 }

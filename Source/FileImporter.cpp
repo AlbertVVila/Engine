@@ -4,9 +4,12 @@
 #include "ModuleFileSystem.h"
 #include "ModuleScene.h"
 
-#include "ComponentMaterial.h"
-#include "ComponentMesh.h"
+#include "GameObject.h"
+#include "ComponentRenderer.h"
 #include "FileImporter.h"
+
+#include "Material.h"
+#include "Mesh.h"
 
 #include <assert.h>
 #include "assimp/cimport.h"
@@ -132,7 +135,6 @@ void FileImporter::ImportMesh(const aiMesh &mesh, char *data)
 		}
 	}
 
-	//unsigned int faceBytes = mesh.mNumFaces*3*(sizeof(int));
 	for (unsigned int i = 0; i < mesh.mNumFaces; i++)
 	{
 		aiFace *face = &mesh.mFaces[i];
@@ -182,27 +184,24 @@ GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshma
 
 	for (unsigned i = 0; i < node->mNumMeshes; i++)
 	{
-		ComponentMesh* mesh = (ComponentMesh*)gameobjects[i]->CreateComponent(ComponentType::Mesh);
+		ComponentRenderer* crenderer = (ComponentRenderer*)gameobjects[i]->CreateComponent(ComponentType::Renderer);//TODO: avoid map and use resource manager
 		auto it = meshmap.find(node->mMeshes[i]);
 		if (it != meshmap.end())
 		{
 			char *data;
 			App->fsystem->Load((MESHES + std::to_string(it->second) + MESHEXTENSION).c_str(), &data);
-			mesh->SetMesh(data);
-			mesh->meshUID = it->second;
+			crenderer->mesh->SetMesh(data, it->second);
 		}
 
-		ComponentMaterial* cmat = (ComponentMaterial*)gameobjects[i]->CreateComponent(ComponentType::Renderer); //TODO: avoid map and use resource manager
 		aiMaterial * mat = scene->mMaterials[scene->mMeshes[node->mMeshes[i]]->mMaterialIndex];
 		aiTextureMapping mapping = aiTextureMapping_UV;
 		for (unsigned i = 1; i <= 4; i++) //Gets diffuse,specular,occlusion and emissive
 		{
 			aiString texture;
 			mat->GetTexture((aiTextureType)i, 0, &texture, &mapping, 0);
-			cmat->SetMaterial();
 			if (texture.length > 0)
 			{
-				cmat->material->textures[i] = new Texture(App->fsystem->GetFilename(texture.C_Str()));
+				crenderer->material->textures[i] = new Texture(App->fsystem->GetFilename(texture.C_Str()));
 			}
 		}
 	} 

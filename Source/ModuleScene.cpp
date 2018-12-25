@@ -4,8 +4,10 @@
 #include "ModuleTextures.h"
 
 #include "ComponentTransform.h"
-#include "ComponentMesh.h"
-#include "ComponentMaterial.h"
+#include "ComponentRenderer.h"
+
+#include "Material.h"
+#include "Mesh.h"
 
 #include "Application.h"
 #include "GameObject.h"
@@ -115,15 +117,12 @@ void ModuleScene::CreatePrimitive(par_shapes_mesh_s *mesh, const char * name, co
 
 	par_shapes_scale(mesh, size, size, size);
 	char* data = nullptr;
-	ComponentMesh* componentmesh = (ComponentMesh*)gameobject->CreateComponent(ComponentType::Mesh);
-	componentmesh->meshUID = GetNewUID();
+	ComponentRenderer* crenderer = (ComponentRenderer*)gameobject->CreateComponent(ComponentType::Renderer);
 	unsigned meshSize = SaveParShapesMesh(*mesh, &data);
-	App->fsystem->Save((MESHES + std::to_string(componentmesh->meshUID) + MESHEXTENSION).c_str(), data, meshSize);
-	componentmesh->SetMesh(data);
+	crenderer->mesh->SetMesh(data, GetNewUID());
+	App->fsystem->Save((MESHES + std::to_string(crenderer->mesh->UID) + MESHEXTENSION).c_str(), data, meshSize);
 
 	par_shapes_free_mesh(mesh);
-
-	ComponentMaterial* cmat = (ComponentMaterial*)gameobject->CreateComponent(ComponentType::Renderer);
 }
 
 unsigned ModuleScene::SaveParShapesMesh(const par_shapes_mesh_s &mesh, char** data) const //TODO: unify somehow with importer + scene loader
@@ -206,9 +205,11 @@ void ModuleScene::LoadScene(const char* scene)
 	std::string sceneName(scene);
 	name = sceneName;
 	App->fsystem->Load((SCENES + sceneName + JSONEXT).c_str(), &data);
+
 	JSON *json = new JSON(data);
 	JSON_value* gameobjectsJSON = json->GetValue("GameObjects");
 	std::map<unsigned, GameObject*> gameobjectsMap; //Necessary to assign parent-child efficiently
+
 	for (unsigned i=0; i<gameobjectsJSON->Size(); i++)
 	{
 		JSON_value* gameobjectJSON = gameobjectsJSON->GetValue(i);

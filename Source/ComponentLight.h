@@ -17,6 +17,8 @@ public:
 
 	void Update() override;
 	void DrawProperties() override;
+	void Load(const JSON_value &value) override;
+
 
 public:
 	float3 position = float3::zero;

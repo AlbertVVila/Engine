@@ -48,8 +48,8 @@ void PanelInspector::Draw() //TODO: Add Light component properties in inspector
 				if (ImGui::Selectable(components[i]))
 				{
 					ComponentType type = (ComponentType)i;
-					if (App->scene->selected->GetComponent(type) != nullptr && (type == ComponentType::Mesh 
-						|| type == ComponentType::Renderer || type == ComponentType::Transform))
+					if (App->scene->selected->GetComponent(type) != nullptr && 
+						(type == ComponentType::Renderer || type == ComponentType::Transform))
 					{
 						openPopup = true;
 					}

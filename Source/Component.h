@@ -7,7 +7,6 @@ struct JSON_value;
 enum class ComponentType 
 {
 	Transform = 0,
-	Mesh,
 	Renderer,
 	Camera,
 	Light
