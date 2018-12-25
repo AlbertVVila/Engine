@@ -4,6 +4,7 @@
 #include "ModuleWindow.h"
 #include "ModuleScene.h"
 #include "ComponentCamera.h"
+#include "imgui.h"
 
 PanelCamera::PanelCamera()
 {

@@ -2,9 +2,9 @@
 #define __ModuleWindow_H__
 
 #include "Module.h"
-#include "SDL_video.h"
 
 class Application;
+struct SDL_Window; 
 
 class ModuleWindow : public Module
 {
@@ -15,8 +15,8 @@ public:
 	virtual ~ModuleWindow();
 
 
-	bool Init();
-	bool CleanUp();
+	bool Init() override;
+	bool CleanUp() override;
 
 	void Resize(int width, int height);
 	void DrawGUI();

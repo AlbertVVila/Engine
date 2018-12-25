@@ -26,7 +26,7 @@ public:
 	void Rotate(float dx, float dy);
 	void Zoom(float mouseWheel);
 	void Orbit(float dx, float dy);
-	void Resize(float width, float height);
+	void Resize(int width, int height);
 	float4x4 GetViewMatrix() const;
 	float4x4 GetProjectionMatrix() const;
 

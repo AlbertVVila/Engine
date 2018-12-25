@@ -156,9 +156,9 @@ void ComponentCamera::LookAt(float3 target)
 	frustum->up = look.Mul(frustum->up).Normalized();
 }
 
-void ComponentCamera::Resize(float width, float height)
+void ComponentCamera::Resize(int width, int height)
 {
-	frustum->horizontalFov = 2.f * atanf(tanf(frustum->verticalFov * 0.5f) * (width / height));
+	frustum->horizontalFov = 2.f * atanf(tanf(frustum->verticalFov * 0.5f) * ((float)width / (float)height));
 	CreateFrameBuffer(); //We recreate framebuffer with new window size
 }
 

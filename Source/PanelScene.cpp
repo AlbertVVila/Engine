@@ -3,6 +3,8 @@
 #include "ModuleWindow.h"
 #include "ModuleCamera.h"
 #include "ComponentCamera.h"
+#include "imgui.h"
+
 PanelScene::PanelScene()
 {
 }

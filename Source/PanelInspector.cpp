@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "ModuleEditor.h"
 #include "PanelHierarchy.h"
+#include "imgui.h"
 
 PanelInspector::PanelInspector()
 {

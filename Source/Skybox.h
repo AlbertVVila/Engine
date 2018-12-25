@@ -3,7 +3,7 @@
 
 #include "Geometry/Frustum.h"
 
-class Shader;
+struct Shader;
 
 class Skybox
 {

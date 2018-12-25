@@ -67,7 +67,7 @@ public:
 	KeyState*	keyboard = NULL;
 	KeyState	mouse_buttons[NUM_MOUSE_BUTTONS];
 	fPoint mouse_motion = { 0,0 };
-	float mouse_wheel = 0;
+	int mouse_wheel = 0;
 	fPoint mouse = { 0,0 };
 
 };

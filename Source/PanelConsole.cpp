@@ -1,18 +1,27 @@
 #include "PanelConsole.h"
-
+#include "imgui.h"
+#include "Globals.h"
 
 PanelConsole::PanelConsole()
 {
+	Buf = new ImGuiTextBuffer();
 }
 
 
 PanelConsole::~PanelConsole()
 {
+	RELEASE(Buf);
+}
+
+void PanelConsole::Clear()
+{
+	Buf->clear(); 
+	LineOffsets.clear();
 }
 
 void PanelConsole::AddLog(const char * log)
 {
-	Buf.appendf(log);
+	Buf->appendf(log);
 	ScrollToBottom = true;
 }
 
@@ -31,7 +40,7 @@ void PanelConsole::Draw()
 	ImGui::BeginChild("scrolling", ImVec2(0, 0), false, ImGuiWindowFlags_HorizontalScrollbar);
 	if (copy) ImGui::LogToClipboard();
 
-	ImGui::TextUnformatted(Buf.begin());
+	ImGui::TextUnformatted(Buf->begin());
 
 	if (ScrollToBottom)
 	{

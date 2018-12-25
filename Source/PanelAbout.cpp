@@ -5,6 +5,7 @@
 #include "assimp/version.h"
 #include "GL/glew.h"
 #include "Globals.h"
+#include "imgui.h"
 
 #define ENGINE_DESCRIPTION "Engine created during the Master of Videogames in UPC School."
 #define AUTHOR "Albert Val Vila"

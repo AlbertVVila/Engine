@@ -129,7 +129,6 @@ unsigned ModuleTextures::LoadCubeMap(const std::string faces[]) const
 		ILuint imageID;
 		ILboolean success;
 		ILenum error;
-		ILinfo ImageInfo;
 
 		ilGenImages(1, &imageID); 		// Generate the image ID
 		ilBindImage(imageID); 			// Bind the image

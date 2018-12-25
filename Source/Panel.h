@@ -1,6 +1,6 @@
 #ifndef __Panel_h__
 #define __Panel_h__
-#include "ImGui\imgui.h"
+
 class Panel
 {
 public:

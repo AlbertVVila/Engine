@@ -178,7 +178,7 @@ unsigned ModuleScene::SaveParShapesMesh(const par_shapes_mesh_s &mesh, char** da
 	}
 
 	short mask = 0;
-	for (unsigned i = 0; i < mesh.ntriangles*3; i++)
+	for (int i = 0; i < mesh.ntriangles*3; i++)
 	{
 		memcpy(cursor, &mesh.triangles[i], sizeof(short)); 
 		cursor += sizeof(short);

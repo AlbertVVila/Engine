@@ -2,6 +2,7 @@
 #include "SDL_cpuinfo.h"
 #include "GL/glew.h"
 #include <string>
+#include "imgui.h"
 
 PanelHardware::PanelHardware()
 {

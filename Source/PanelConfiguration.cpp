@@ -5,6 +5,7 @@
 #include "ModuleCamera.h"
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
+#include "imgui.h"
 #include "mmgr.h"
 
 #define NUMFPS 100
