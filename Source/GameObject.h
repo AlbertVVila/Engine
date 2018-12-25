@@ -39,6 +39,7 @@ public:
 	bool CleanUp();
 	void Save(JSON_value *gameobjects) const;
 	void Load(const JSON_value & gameobject);
+	bool IsParented(const GameObject & gameobject);
 	AABB GetBoundingBox() const;
 
 private:

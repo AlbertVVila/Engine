@@ -89,7 +89,6 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentCamera.h" />
     <ClInclude Include="ComponentLight.h" />
-    <ClInclude Include="ComponentMaterial.h" />
     <ClInclude Include="ComponentRenderer.h" />
     <ClInclude Include="ComponentTransform.h" />
     <ClInclude Include="debug_draw.hpp" />
@@ -154,7 +153,6 @@
     <ClInclude Include="MathGeoLib\include\Math\sse_mathfun.h" />
     <ClInclude Include="MathGeoLib\include\Math\TransformOps.h" />
     <ClInclude Include="MathGeoLib\include\Time\Clock.h" />
-    <ClInclude Include="ComponentMesh.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="ModuleFileSystem.h" />
     <ClInclude Include="JSON.h" />
@@ -190,7 +188,6 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentCamera.cpp" />
     <ClCompile Include="ComponentLight.cpp" />
-    <ClCompile Include="ComponentMaterial.cpp" />
     <ClCompile Include="ComponentRenderer.cpp" />
     <ClCompile Include="ComponentTransform.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -236,7 +233,6 @@
     <ClCompile Include="MathGeoLib\include\Math\SSEMath.cpp" />
     <ClCompile Include="MathGeoLib\include\Math\TransformOps.cpp" />
     <ClCompile Include="MathGeoLib\include\Time\Clock.cpp" />
-    <ClCompile Include="ComponentMesh.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="ModuleFileSystem.cpp" />
     <ClCompile Include="JSON.cpp" />

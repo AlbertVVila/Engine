@@ -10,7 +10,10 @@
 #include "PanelHierarchy.h"
 #include "imgui.h"
 
-#define REPEATEDPOPUP "Repeated"
+#define WARNINGPOPUP "WarningPopup"
+#define MAXCOMPONENTS "This GameObject cannot have this component twice! \n\n"
+#define WORLDGO "Cannot add components to World gameobject"
+
 PanelInspector::PanelInspector()
 {
 }
@@ -20,13 +23,14 @@ PanelInspector::~PanelInspector()
 {
 }
 
-void PanelInspector::Draw() //TODO: Add Light component properties in inspector
+void PanelInspector::Draw()
 {
 	if (!ImGui::Begin("Inspector", &enabled))
 	{
 		ImGui::End();
 		return;
 	}
+	ImGui::PushID(this);
 	if (focus)
 	{
 		focus = false;
@@ -52,6 +56,12 @@ void PanelInspector::Draw() //TODO: Add Light component properties in inspector
 						(type == ComponentType::Renderer || type == ComponentType::Transform))
 					{
 						openPopup = true;
+						popUpSentence = MAXCOMPONENTS;
+					}
+					else if (App->scene->selected == App->scene->root)
+					{
+						openPopup = true;
+						popUpSentence = WORLDGO;
 					}
 					else
 					{
@@ -61,7 +71,8 @@ void PanelInspector::Draw() //TODO: Add Light component properties in inspector
 			ImGui::EndPopup();
 		}
 	}
-	DrawRepeatedPopup();
+	DrawWarningPopup();
+	ImGui::PopID();
 	ImGui::End();
 }
 
@@ -71,18 +82,17 @@ void PanelInspector::Focus(GameObject *gameobject)
 }
 
 
-void PanelInspector::DrawRepeatedPopup()
+void PanelInspector::DrawWarningPopup()
 {
-	if (openPopup && !ImGui::IsPopupOpen(REPEATEDPOPUP))
+	if (openPopup && !ImGui::IsPopupOpen(WARNINGPOPUP))
 	{
-		ImGui::OpenPopup(REPEATEDPOPUP);
+		ImGui::OpenPopup(WARNINGPOPUP);
 		openPopup = false;
 	}
-	if (ImGui::BeginPopupModal(REPEATEDPOPUP, NULL))
+	if (ImGui::BeginPopupModal(WARNINGPOPUP, NULL))
 	{
-		ImGui::Text("This GameObject cannot have this component twice! \n\n");
+		ImGui::Text(popUpSentence.c_str());
 		ImGui::Separator();
-
 		if (ImGui::Button("OK", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
 		ImGui::SetItemDefaultFocus();
 		ImGui::EndPopup();

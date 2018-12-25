@@ -28,6 +28,11 @@ void ComponentLight::DrawProperties()
 {
 	if (ImGui::CollapsingHeader("Light"))
 	{
+		bool removed = Component::DrawComponentState();
+		if (removed)
+		{
+			return;
+		}
 		ImGui::Separator();
 	}
 }

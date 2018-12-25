@@ -209,7 +209,7 @@ void GameObject::DrawHierarchy(GameObject * selected)
 		{
 			IM_ASSERT(payload->DataSize == sizeof(GameObject*));
 			GameObject* dropped_go = (GameObject *)*(const int*)payload->Data;
-			if (dropped_go->parent != this)
+			if (dropped_go != App->scene->root && dropped_go->parent != this && !dropped_go->IsParented(*this))
 			{
 				this->children.push_back(dropped_go);
 
@@ -223,7 +223,6 @@ void GameObject::DrawHierarchy(GameObject * selected)
 				{
 					dropped_go->transform->SetWorldToLocal(dropped_go->parent->GetGlobalTransform());
 				}
-				//TODO: reconvert transformation
 			}
 		}
 		ImGui::EndDragDropTarget();
@@ -367,6 +366,7 @@ void GameObject::RemoveComponent(Component * component)
 		if (*it == component)
 		{
 			components.erase(it);
+			component->CleanUp();
 			RELEASE(component);
 			return;
 		}
@@ -561,4 +561,20 @@ void GameObject::Load(const JSON_value &gameobject)
 		Component* component = CreateComponent(type);
 		component->Load(*componentJSON);
 	}
+}
+
+bool GameObject::IsParented(const GameObject & gameobject)
+{
+	if (this == &gameobject) 
+	{
+		return true;
+	}
+	for (const auto child : children)
+	{
+		if (child->IsParented(gameobject))
+		{
+			return true;
+		}
+	}
+	return false;
 }

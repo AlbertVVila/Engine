@@ -177,9 +177,6 @@
     <ClCompile Include="ModuleScene.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="ComponentMesh.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
     <ClCompile Include="PanelHierarchy.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
@@ -206,9 +203,6 @@
     </ClCompile>
     <ClCompile Include="ModuleResourceManager.cpp">
       <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="ComponentMaterial.cpp">
-      <Filter>Component</Filter>
     </ClCompile>
     <ClCompile Include="Skybox.cpp">
       <Filter>Utils</Filter>
@@ -462,9 +456,6 @@
     <ClInclude Include="ModuleScene.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="ComponentMesh.h">
-      <Filter>Component</Filter>
-    </ClInclude>
     <ClInclude Include="PanelHierarchy.h">
       <Filter>Panels</Filter>
     </ClInclude>
@@ -497,9 +488,6 @@
     </ClInclude>
     <ClInclude Include="ModuleResourceManager.h">
       <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ComponentMaterial.h">
-      <Filter>Component</Filter>
     </ClInclude>
     <ClInclude Include="Skybox.h">
       <Filter>Utils</Filter>

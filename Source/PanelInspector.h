@@ -15,11 +15,12 @@ public:
 	void Focus(GameObject *gameobject);
 
 
-	void DrawRepeatedPopup();
+	void DrawWarningPopup();
 
 private:
 	bool openPopup = false;
 	bool focus = false;
+	std::string popUpSentence;
 };
 
 #endif //__PanelInspector_h__

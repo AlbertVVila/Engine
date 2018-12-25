@@ -51,6 +51,10 @@ ComponentCamera::~ComponentCamera()
 	{
 		RELEASE(frustum);
 	}
+	if (App->scene->maincamera == this)
+	{
+		App->scene->maincamera = nullptr;
+	}
 }
 
 ComponentCamera * ComponentCamera::Clone() const
@@ -179,6 +183,12 @@ void ComponentCamera::DrawProperties()
 {
 	if (ImGui::CollapsingHeader("Camera", ImGuiTreeNodeFlags_DefaultOpen))
 	{
+		bool removed = Component::DrawComponentState();
+		if (removed)
+		{
+			return;
+		}
+
 		ImGui::DragFloat("Znear", (float*)&frustum->nearPlaneDistance, 0.1f, 0.01f, 1000.f);
 		ImGui::DragFloat("Zfar", (float*)&frustum->farPlaneDistance, 0.5f, 1.f, 1000.f);
 		float degFov = math::RadToDeg(frustum->verticalFov);
