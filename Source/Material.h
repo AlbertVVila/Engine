@@ -41,7 +41,7 @@ public:
 	void SetMaterial(const Material & material);
 
 public:
-	std::string name = "Default";
+	std::string name;
 	Shader* shader = nullptr;
 	
 	Texture* textures[MAXTEXTURES]{ nullptr }; //TODO: default specular texture?

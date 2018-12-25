@@ -2,6 +2,7 @@
 #include "ModuleFileSystem.h"
 #include "ModuleProgram.h"
 #include "ModuleTextures.h"
+#include "ModuleResourceManager.h"
 
 #include "ComponentTransform.h"
 #include "ComponentRenderer.h"
@@ -93,21 +94,21 @@ GameObject * ModuleScene::CreateGameObject(const char * name, GameObject* parent
 	return gameobject;
 }
 
-void ModuleScene::CreateCube(const char * name, const float3 & pos, const Quat & rot, float size, const float4 & color)
+void ModuleScene::CreateCube(const char * name, GameObject* parent, const float3 & pos, const Quat & rot, float size, const float4 & color)
 {
 	par_shapes_mesh* mesh = par_shapes_create_cube();
-	CreatePrimitive(mesh, name, pos, rot, size, color);
+	CreatePrimitive(mesh, name, pos, rot, size, color, parent);
 }
 
-void ModuleScene::CreateSphere(const char * name, const float3 & pos, const Quat & rot, float size, unsigned slices, unsigned stacks, const float4 & color)
+void ModuleScene::CreateSphere(const char * name, GameObject* parent, const float3 & pos, const Quat & rot, float size, unsigned slices, unsigned stacks, const float4 & color)
 {
 	par_shapes_mesh* mesh = par_shapes_create_parametric_sphere(int(slices), int(stacks));
-	CreatePrimitive(mesh, name, pos, rot, size, color);
+	CreatePrimitive(mesh, name, pos, rot, size, color, parent);
 }
 
-void ModuleScene::CreatePrimitive(par_shapes_mesh_s *mesh, const char * name, const float3 & pos, const Quat & rot, float size, const float4 & color)
+void ModuleScene::CreatePrimitive(par_shapes_mesh_s *mesh, const char * name, const float3 & pos, const Quat & rot, float size, const float4 & color, GameObject* parent)
 {
-	GameObject * gameobject = App->scene->CreateGameObject(name, App->scene->root);
+	GameObject * gameobject = App->scene->CreateGameObject(name, parent);
 	App->scene->selected = gameobject;
 	ComponentTransform* transform = (ComponentTransform*)gameobject->CreateComponent(ComponentType::Transform);
 	gameobject->transform = transform;
@@ -120,6 +121,7 @@ void ModuleScene::CreatePrimitive(par_shapes_mesh_s *mesh, const char * name, co
 	ComponentRenderer* crenderer = (ComponentRenderer*)gameobject->CreateComponent(ComponentType::Renderer);
 	unsigned meshSize = SaveParShapesMesh(*mesh, &data);
 	crenderer->mesh->SetMesh(data, GetNewUID());
+	App->resManager->AddMesh(crenderer->mesh); //TODO: Addresource in class mesh or outside?
 	App->fsystem->Save((MESHES + std::to_string(crenderer->mesh->UID) + MESHEXTENSION).c_str(), data, meshSize);
 
 	par_shapes_free_mesh(mesh);

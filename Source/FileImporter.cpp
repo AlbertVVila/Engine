@@ -3,6 +3,7 @@
 #include "ModuleTextures.h"
 #include "ModuleFileSystem.h"
 #include "ModuleScene.h"
+#include "ModuleResourceManager.h"
 
 #include "GameObject.h"
 #include "ComponentRenderer.h"
@@ -84,10 +85,11 @@ bool FileImporter::ImportScene(const aiScene &scene, const char* file)
 		char* data = new char[size];
 		ImportMesh(*scene.mMeshes[i], data);
 
-		unsigned meshUID = App->scene->GetNewUID();
-		meshMap.insert(std::pair<unsigned, unsigned>(i, meshUID));
-
-		App->fsystem->Save((MESHES + std::to_string(meshUID)+ MESHEXTENSION).c_str(), data, size);
+		Mesh *mesh = new Mesh();
+		mesh->SetMesh(data, App->scene->GetNewUID());
+		App->resManager->AddMesh(mesh);
+		App->fsystem->Save((MESHES + std::to_string(mesh->UID)+ MESHEXTENSION).c_str(), data, size);
+		meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->UID));
 	}
 	GameObject *fake = new GameObject("fake",0);
 	ProcessNode(meshMap, scene.mRootNode, &scene, scene.mRootNode->mTransformation, fake);
@@ -188,9 +190,8 @@ GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshma
 		auto it = meshmap.find(node->mMeshes[i]);
 		if (it != meshmap.end())
 		{
-			char *data;
-			App->fsystem->Load((MESHES + std::to_string(it->second) + MESHEXTENSION).c_str(), &data);
-			crenderer->mesh->SetMesh(data, it->second);
+			Mesh *mesh = App->resManager->GetMesh(it->second);
+			crenderer->mesh = mesh;
 		}
 
 		aiMaterial * mat = scene->mMaterials[scene->mMeshes[node->mMeshes[i]]->mMaterialIndex];

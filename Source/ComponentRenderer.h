@@ -21,7 +21,6 @@ public:
 	void Save(JSON_value *value) const override;
 	void Load(const JSON_value &value) override;
 
-	void SetMesh(unsigned uid);
 	void SetMaterial(const char* material);
 
 public:

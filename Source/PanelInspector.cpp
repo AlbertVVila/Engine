@@ -35,7 +35,7 @@ void PanelInspector::Draw() //TODO: Add Light component properties in inspector
 	if (App->scene->selected != nullptr)
 	{
 		App->scene->selected->DrawProperties();
-		const char* components[] = { "Transform", "Mesh", "Material", "Camera", "Light"};
+		const char* components[] = { "Transform", "Renderer", "Camera", "Light"};
 
 		if (ImGui::Button("Add Component", ImVec2(ImGui::GetWindowWidth(), 25)))
 			ImGui::OpenPopup("component_popup");

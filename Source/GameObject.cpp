@@ -238,11 +238,11 @@ void GameObject::DrawHierarchy(GameObject * selected)
 		{
 			if (ImGui::Selectable("Sphere"))
 			{
-				App->scene->CreateSphere("sphere0", float3(0.0f, 0.0f, 0.0f), Quat::identity, 1.0f, 20, 20, float4(1.f, 1.f, 1.f, 1.0f));
+				App->scene->CreateSphere("sphere0", this, float3(0.0f, 0.0f, 0.0f), Quat::identity, 1.0f, 20, 20, float4(1.f, 1.f, 1.f, 1.0f));
 			}
 			if (ImGui::Selectable("Cube"))
 			{
-				App->scene->CreateCube("cube0", float3(0.0f, 0.0f, 0.0f), Quat::identity, 1.0f, float4(1.f, 1.f, 1.f, 1.0f));
+				App->scene->CreateCube("cube0", this, float3(0.0f, 0.0f, 0.0f), Quat::identity, 1.0f, float4(1.f, 1.f, 1.f, 1.0f));
 			}
 			if (ImGui::Selectable("Empty GameObject"))
 			{

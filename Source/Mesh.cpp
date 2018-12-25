@@ -129,7 +129,7 @@ void Mesh::SetMesh(char *& meshData, unsigned uid)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	
 	UID = uid;
-	numIndices = numIndices;
+	this->numIndices = numIndices;
 	this->vertices.reserve(numVertices);
 	for (size_t i = 0; i < numVertices; i++)
 	{

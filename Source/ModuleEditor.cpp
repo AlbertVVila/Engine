@@ -205,11 +205,11 @@ update_status ModuleEditor::Update()
 			}
 			if (ImGui::MenuItem("Sphere"))
 			{
-				App->scene->CreateSphere("sphere0");
+				App->scene->CreateSphere("sphere0", App->scene->root);
 			}
 			if (ImGui::MenuItem("Cube"))
 			{
-				App->scene->CreateCube("cube0");
+				App->scene->CreateCube("cube0", App->scene->root);
 			}
 			if (ImGui::MenuItem("New Material"))
 			{
