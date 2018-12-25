@@ -36,9 +36,11 @@ struct Material
 	float kSpecular = 0.1f;
 	float shininess = 32.f;
 
+	~Material();
 
 	void Load(const char * material);
 	void Save() const;
+	bool CleanUp();
 };
 
 class ComponentMaterial :
@@ -50,6 +52,8 @@ public:
 	~ComponentMaterial();
 
 	Component* Clone() const override;
+	bool CleanUp() override;
+
 	void DeleteTexture();
 	
 	void SetTexture(const char * data, TextureType type);

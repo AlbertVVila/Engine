@@ -24,5 +24,5 @@ void PanelScene::Draw()
 		{ (float)App->window->width, (float)App->window->height }, { 0,1 }, { 1,0 });
 
 	focus = ImGui::IsWindowFocused();
-	ImGui::End(); //TODO: Remove or move to gitignore .exe file
+	ImGui::End();
 }

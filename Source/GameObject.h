@@ -33,7 +33,6 @@ public:
 	void RemoveComponent(Component * component);
 	void RemoveChild(GameObject* child);
 
-	std::string GetFileFolder() const;
 	float4x4 GetGlobalTransform() const;
 	void DisableBox();
 
@@ -55,7 +54,6 @@ public:
 	GameObject *parent = nullptr;
 	std::vector<Component*> components;
 	std::list<GameObject*> children;
-	std::string filepath = "";//TODO: delete field
 	std::string name = "GameObject";
 
 	bool is_static = false;

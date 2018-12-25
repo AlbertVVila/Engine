@@ -25,7 +25,6 @@ public:
 	void AddQuat(const char * name, Quat value);
 	void AddString(const char * name, const char* value);
 	void AddValue(const char * name, JSON_value *value);
-	void AddTexture(const char * name, Texture *texture);
 
 	int GetInt(const char* name) const;
 	unsigned GetUint(const char * name) const;
@@ -36,7 +35,6 @@ public:
 	float4 GetColor4(const char * name) const;
 	Quat GetQuat(const char * name) const;
 	const char* GetString(const char * name) const;
-	Texture* GetTexture(const char * name) const;
 
 	JSON_value* GetValue(unsigned index) const;
 	JSON_value * GetValue(const char * name) const;

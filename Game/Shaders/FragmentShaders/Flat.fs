@@ -1,10 +1,9 @@
 #version 330 core
 out vec4 Fragcolor;
-uniform vec4 Vcolor;
 
-flat in float intensity;
+flat in vec4 fcolor;
 
 void main()
 {
-	Fragcolor = intensity*Vcolor;
+	Fragcolor = fcolor;
 }

@@ -35,6 +35,15 @@ Component * ComponentMaterial::Clone() const
 	return new ComponentMaterial(*this);
 }
 
+bool ComponentMaterial::CleanUp()
+{
+	if (material != nullptr)
+	{
+		return material->CleanUp();
+	}
+	return true;
+}
+
 void ComponentMaterial::DeleteTexture()//TODO delete all textures of materials
 {
 	for (unsigned i = 0; i < MAXTEXTURES; i++)
@@ -104,6 +113,7 @@ void ComponentMaterial::DrawProperties()
 		{
 			App->editor->materialEditor->material = material;
 			App->editor->materialEditor->open = true; //materialpopup is only drawn once in module editor
+			App->editor->materialEditor->isUsed = true; 
 		}
 	}
 	ImGui::PopID();
@@ -123,6 +133,21 @@ void ComponentMaterial::Load(const JSON_value & value)
 	if (materialFile != nullptr)
 	{
 		material->Load(materialFile);
+	}
+}
+
+Material::~Material()
+{
+	if (shader != nullptr)
+	{
+		RELEASE(shader);
+	}
+	for (unsigned i = 0; i < MAXTEXTURES; i++)
+	{
+		if (textures[i] != nullptr)
+		{
+			RELEASE(textures[i]);
+		}
 	}
 }
 
@@ -219,6 +244,22 @@ void Material::Save() const
 	json->AddValue("material", materialJSON);
 
 	App->fsystem->Save((MATERIALS + name + JSONEXT).c_str(), json->ToString().c_str(),json->Size());
+}
+
+bool Material::CleanUp()
+{
+	if (shader != nullptr)
+	{
+		App->resManager->DeleteProgram(shader->file);
+	}
+	for (unsigned i = 0; i < MAXTEXTURES; i++)
+	{
+		if (textures[i] != nullptr)
+		{
+			App->resManager->DeleteTexture(textures[i]->file);
+		}
+	}
+	return true;
 }
 
 std::list<Texture*> ComponentMaterial::GetTextures() const

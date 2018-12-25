@@ -29,7 +29,7 @@ GameObject::GameObject(const char * name, unsigned uuid) : name(name), UUID(uuid
 {
 }
 
-GameObject::GameObject(const float4x4 & transform, const char * filepath, const char * name, unsigned uuid) : filepath(filepath), name(name), UUID(uuid)
+GameObject::GameObject(const float4x4 & transform, const char * filepath, const char * name, unsigned uuid) : name(name), UUID(uuid)
 {
 	this->transform =  (ComponentTransform*) CreateComponent(ComponentType::Transform);
 	this->transform->AddTransform(transform);
@@ -38,7 +38,6 @@ GameObject::GameObject(const float4x4 & transform, const char * filepath, const 
 GameObject::GameObject(const GameObject & gameobject)
 {
 	name = gameobject.name;
-	filepath = gameobject.filepath;
 	UUID = App->scene->GetNewUID();
 	parentUUID = gameobject.parentUUID;
 
@@ -399,14 +398,6 @@ Component * GameObject::GetComponent(ComponentType type) const
 		}
 	}
 	return nullptr;
-}
-
-std::string GameObject::GetFileFolder() const
-{
-	std::string s(filepath);
-	std::size_t found = s.find_last_of("/\\");
-	s = s.substr(0, found + 1);
-	return s;
 }
 
 float4x4 GameObject::GetGlobalTransform() const //TODO: Move to componentTransform

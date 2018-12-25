@@ -32,7 +32,6 @@ in vec2 uv0;
 out vec4 Fragcolor;
 
 uniform Material material;
-//uniform vec3 view_pos;
 uniform vec3 lightPos;
 
 vec4 get_diffuse_color()
@@ -91,14 +90,4 @@ void main()
 				 specular_color.rgb * specular * material.k_specular; //specular
 				 
 	Fragcolor = vec4(color, diffuse_color.a);
-
-	/*float intensity = material.k_ambient * ambient + material.k_diffuse*diffuse + material.k_specular*specular;
-	
-	if(readTexture)
-	{
-		Fragcolor = texture2D(texture0, uv0)*intensity*Vcolor;
-	}else
-	{
-		Fragcolor = intensity*Vcolor;
-	}*/
 }

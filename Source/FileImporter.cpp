@@ -51,7 +51,7 @@ void FileImporter::ImportAsset(const char *file, const char *folder)  //TODO:fil
 	}
 	else if (extension == TEXTUREEXT)
 	{
-		App->fsystem->Copy(folder, TEXTURES, file); //TODO: FULL PATH when copying outside fs
+		App->fsystem->Copy(folder, TEXTURES, file);
 	}
 	else if (extension == MESHEXTENSION)
 	{
@@ -72,7 +72,7 @@ bool FileImporter::ImportFBX(const char* fbxfile, const char* folder)
 	return false;
 }
 
-bool FileImporter::ImportScene(const aiScene &scene, const char* file) //TODO: move everything to sceneLoader?
+bool FileImporter::ImportScene(const aiScene &scene, const char* file)
 {
 	std::map<unsigned, unsigned> meshMap;
 	for (unsigned i = 0; i < scene.mNumMeshes; i++)
@@ -90,7 +90,7 @@ bool FileImporter::ImportScene(const aiScene &scene, const char* file) //TODO: m
 	ProcessNode(meshMap, scene.mRootNode, &scene, scene.mRootNode->mTransformation, fake);
 	App->scene->SaveScene(*fake, App->fsystem->GetFilename(file).c_str()); //TODO: Make AutoCreation of folders or check
 	//TODO: CleanUP on ending import and on saving
-	return true; //TODO: Load specific scene, Save specific scene, Clear
+	return true; //TODO: Load Clear Scene
 }
 
 void FileImporter::ImportMesh(const aiMesh &mesh, char *data)
@@ -164,7 +164,6 @@ unsigned FileImporter::GetMeshSize(const aiMesh &mesh)
 }
 
 
-//TODO: we could optimize on FBX import
 GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshmap, const aiNode * node, const aiScene * scene, const aiMatrix4x4 & parentTransform, GameObject* parent)
 {
 	assert(node != nullptr); assert(scene != nullptr);

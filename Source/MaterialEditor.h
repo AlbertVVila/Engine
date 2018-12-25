@@ -10,12 +10,11 @@ public:
 	~MaterialEditor();
 
 	void Draw();
-	void Edit(Material* material);
-
 	void CleanUp();
 
 public:
 	bool open=false;
+	bool isUsed = false;
 	Material* material = nullptr;
 };
 

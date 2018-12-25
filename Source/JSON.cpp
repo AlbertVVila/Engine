@@ -109,16 +109,6 @@ void JSON_value::AddValue(const char* name, JSON_value *value)
 	}
 }
 
-void JSON_value::AddTexture(const char * name, Texture * texture)
-{
-	JSON_value* textureJSON = CreateValue();
-	textureJSON->AddUint("id", texture->id);
-	textureJSON->AddUint("width", texture->width);
-	textureJSON->AddUint("height", texture->height);
-	textureJSON->AddString("file", texture->file.c_str());
-	AddValue(name, textureJSON);
-}
-
 int JSON_value::GetInt(const char * name) const
 {
 	rapidjson::Value::ConstMemberIterator itr = rapidjsonValue->FindMember(name);
@@ -245,24 +235,6 @@ const char* JSON_value::GetString(const char * name) const
 	if (itr != rapidjsonValue->MemberEnd())
 	{
 		return itr->value.GetString();
-	}
-	else
-	{
-		LOG("Member %s not found!", name);
-		return nullptr;
-	}
-}
-
-Texture * JSON_value::GetTexture(const char * name) const
-{
-	JSON_value* texture = GetValue(name);
-	if (texture != nullptr)
-	{
-		unsigned id = texture->GetUint("id");
-		unsigned width = texture->GetUint("width");
-		unsigned height = texture->GetUint("height");
-		std::string file = texture->GetString("file");
-		return new Texture(id, width, height, file);
 	}
 	else
 	{

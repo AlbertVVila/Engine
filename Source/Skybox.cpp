@@ -11,7 +11,7 @@
 
 Skybox::Skybox()
 {
-	std::string faces[NUMFACES] = //TODO refactor skybox
+	std::string faces[NUMFACES] =
 	{
 		"right",
 		"left",

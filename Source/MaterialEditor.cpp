@@ -22,11 +22,15 @@ MaterialEditor::~MaterialEditor()
 
 void MaterialEditor::Draw()
 {
-	if (open && !ImGui::IsPopupOpen(materialPopup))
+	if (open)
 	{
-		ImGui::OpenPopup(materialPopup);
+		if (!ImGui::IsPopupOpen(materialPopup))
+		{
+			ImGui::OpenPopup(materialPopup);
+		}
+		ImGui::SetNextWindowSizeConstraints(ImVec2(200, 200), ImVec2(500, 500));
 	}
-	if (ImGui::BeginPopupModal(materialPopup, NULL))
+	if (ImGui::BeginPopupModal(materialPopup, NULL, ImGuiWindowFlags_AlwaysAutoResize))
 	{
 		if (material == nullptr)
 		{
@@ -51,7 +55,15 @@ void MaterialEditor::Draw()
 		ImGui::DragFloat("Shininess", &material->shininess, .05f, .0f, 256.f);
 
 		std::vector<std::string> shaders = App->fsystem->ListFiles(VERTEXSHADERS, false);
-		static std::string item_current = "None Selected";
+		static std::string item_current;
+		if (material->shader == nullptr)
+		{
+			item_current = "None Selected";
+		}
+		else
+		{
+			item_current = material->shader->file;
+		}
 		if (ImGui::BeginCombo("Shader", item_current.c_str())) // The second parameter is the label previewed before opening the combo.
 		{
 			for (int n = 0; n < shaders.size(); n++)
@@ -189,15 +201,13 @@ void MaterialEditor::Draw()
 
 }
 
-
-void MaterialEditor::Edit(Material* material)
-{
-	this->material = material;
-}
-
 void MaterialEditor::CleanUp()
 {
-	//TODO: cleanup
+	if (!isUsed)
+	{
+		material->CleanUp();
+		RELEASE(material);
+	}
 	open = false;
 	ImGui::CloseCurrentPopup();
 }
