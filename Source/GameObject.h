@@ -8,7 +8,7 @@
 class Component;
 class ComponentTransform;
 class Frustum;
-enum ComponentType;
+enum class ComponentType;
 struct Texture;
 struct JSON_value;
 

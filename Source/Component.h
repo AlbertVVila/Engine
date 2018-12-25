@@ -4,7 +4,7 @@
 class GameObject;
 struct JSON_value;
 
-enum ComponentType //TODO: enum class
+enum class ComponentType 
 {
 	Transform = 0,
 	Mesh,

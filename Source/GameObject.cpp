@@ -323,24 +323,24 @@ Component * GameObject::CreateComponent(ComponentType type)
 	Component* component = nullptr;
 	switch (type)
 	{
-	case Transform:
+	case ComponentType::Transform:
 		component = new ComponentTransform(this);
 		this->transform = (ComponentTransform*)component;
 		break;
-	case Mesh:
+	case ComponentType::Mesh:
 		component = new ComponentMesh(this);
 		break;
-	case Renderer:
+	case ComponentType::Renderer:
 		component = new ComponentMaterial(this);
 		break;
-	case Light:
+	case ComponentType::Light:
 		component = new ComponentLight(this);
 		if (App->scene->light == nullptr)
 		{
 			App->scene->light = (ComponentLight*)component;
 		}
 		break;
-	case Camera:
+	case ComponentType::Camera:
 		component = new ComponentCamera(this);
 		if (App->scene->maincamera == nullptr)
 		{

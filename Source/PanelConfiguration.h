@@ -12,14 +12,15 @@ public:
 	~PanelConfiguration();
 
 	void Draw();
-	void AddFps(float fps);
+	void AddFps(float fps); //TODO ms graph
 
 private:
-	void DrawFPSgraph() const;
+	void DrawFPSgraph(); //updates min framerate
 	void DrawMemoryStats() const;
 
 private:
 	std::vector<float> fps = std::vector<float>();
+	float fmin = 2000;
 };
 
 #endif //__PanelConfiguration_h__

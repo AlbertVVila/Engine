@@ -14,7 +14,11 @@ public:
 	void Draw() override;
 	void Focus(GameObject *gameobject);
 
+
+	void DrawRepeatedPopup();
+
 private:
+	bool openPopup = false;
 	bool focus = false;
 };
 

@@ -58,6 +58,9 @@ void PanelAbout::Draw()
 		ImGui::BulletText("glew (version %s)", glewGetString(GLEW_VERSION));
 		ImGui::BulletText("Assimp (version %d.%d.%d)", aiGetVersionMajor(), aiGetVersionMinor(), aiGetVersionRevision());
 		ImGui::BulletText("DevIL (version %d)", IL_VERSION);
+		ImGui::BulletText("RapidJson (version %d)", IL_VERSION); //TODO library versions
+		ImGui::BulletText("Pcg (version %d)", IL_VERSION);
+		ImGui::BulletText("ParShapes (version %d)", IL_VERSION);
 
 		ImGui::TreePop();
 	}

@@ -52,22 +52,22 @@ void PanelConfiguration::Draw()
 	{
 		App->textures->DrawGUI();
 	}
-	//if (ImGui::CollapsingHeader("Models"))
-	//{
-	//	App->sceneLoader->DrawGUI();
-	//}
 	ImGui::End();
 }
 
-void PanelConfiguration::DrawFPSgraph() const
+void PanelConfiguration::DrawFPSgraph()
 {
 	float total = 0;
 	for (unsigned int i = 0; i < fps.size(); i++) {
 		total += fps[i];
+		fmin = MIN(fmin, fps[i]);
 	}
 	char avg[32];
-	sprintf_s(avg, "%s%.2f", "avg:", total/fps.size());
+	char minfps[32];
+	sprintf_s(avg, "%s%.2f", "avg:", total / fps.size());
+	sprintf_s(minfps, "%s%.2f", "min:", fmin);
 	ImGui::PlotHistogram("FPS", &fps[0], fps.size(), 0, avg,  0.0f, 120.0f, ImVec2(0, 80));
+	ImGui::Text(minfps);
 }
 
 void PanelConfiguration::AddFps(float fps_value)

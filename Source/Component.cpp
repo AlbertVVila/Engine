@@ -39,7 +39,7 @@ void Component::Remove()
 
 void Component::Save(JSON_value * value) const
 {
-	value->AddUint("Type", type);
+	value->AddUint("Type", (unsigned)type);
 	value->AddInt("Enabled", enabled);
 }
 
