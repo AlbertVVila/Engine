@@ -1,23 +1,25 @@
-#include "myQuadTree.h"
+#include "Application.h"
+
+#include "ModuleProgram.h"
 #include "GameObject.h"
+
+#include "myQuadTree.h"
+#include "Math/Quat.h"
 #include "Math/float2.h"
-
-
-myQuadTree::myQuadTree()
-{
-}
-
-
-myQuadTree::~myQuadTree()
-{
-}
+#include "Math/MathFunc.h"
+#include "GL/glew.h"
 
 myQuadTree::myQuadTree(AABB limits) : limits(limits)
 {
-	Node * rootNode = new Node();
 	rootIndex = 0;
-	nodes.push_back(rootNode);
+	nodes.reserve(10000);
+	AllocateNode(0);
 }
+
+myQuadTree::~myQuadTree() //TODO: Release Nodes
+{
+}
+
 
 void myQuadTree::Clear()
 {
@@ -26,10 +28,62 @@ void myQuadTree::Clear()
 void myQuadTree::Insert(const GameObject& gameobject) //TODO: make it adaptative
 {
 	AABB bbox = gameobject.GetBoundingBox();
-	if (limits.Contains(bbox))
+
+	if (bbox.minPoint.x >= limits.minPoint.x)
 	{
-		Add(gameobject, nodes[rootIndex], limits);
+		//Fits Left
+		if (bbox.maxPoint.x <= limits.maxPoint.x)
+		{
+			//Fits Left+Right
+			if (bbox.minPoint.z >= limits.minPoint.z)
+			{
+				//Fits Left+Right+Top
+				if (bbox.maxPoint.z <= limits.maxPoint.z)
+				{
+					//Fits root
+					Add(gameobject, nodes[rootIndex], limits);
+					return;
+				}
+				else
+				{
+					//Doesn't fit bot
+					ExtendLimitBotRight();
+				}
+			}
+			else
+			{
+				//Doesn't fit top
+				ExtendLimitTopRight();
+			}
+		}
+		else
+		{
+			//Doesn't fit right
+			if (bbox.minPoint.z < limits.minPoint.z)
+			{
+				//Doesn't fit top
+				ExtendLimitTopRight();
+			}
+			else
+			{
+				ExtendLimitBotRight();
+			}
+		}
 	}
+	else
+	{
+		//Doesn't fit left
+		if (bbox.minPoint.z < limits.minPoint.z)
+		{
+			//Doesn't fit top
+			ExtendLimitTopRight();
+		}
+		else
+		{
+			ExtendLimitBotRight();
+		}
+	}
+	Insert(gameobject); //Try again now
 }
 
 void myQuadTree::Add(const GameObject& gameobject, Node* node, AABB bbox)
@@ -154,6 +208,17 @@ void myQuadTree::Split(Node* leaf, AABB leafAABB)
 	}
 }
 
+void myQuadTree::Remove(const GameObject & gameobject)
+{
+	for (const auto& node : nodes)
+	{
+		if (node->Remove(gameobject))
+		{
+			return;
+		}
+	}
+}
+
 int myQuadTree::AllocateNode(Node *parent)
 {
 	int index = nodes.size();
@@ -161,9 +226,178 @@ int myQuadTree::AllocateNode(Node *parent)
 	{
 		Node *n = new Node();
 		n->parent = parent;
-		n->depth = parent->depth + 1;
+		n->depth = parent != 0 ? parent->depth + 1 : 1;
 		n->childIndex = 0XFFFFFFFF;
 		nodes.push_back(n);
 	}
 	return index;
+}
+
+void myQuadTree::Draw()
+{
+	for (const auto& node: nodes)
+	{
+		Draw(GetBoundingBox(node));
+	}
+}
+
+void myQuadTree::Draw(AABB bbox)
+{
+	unsigned shader = App->program->defaultShader->id;
+	glUseProgram(shader);
+	GLfloat vertices[] = {
+		-0.5, -0.5, -0.5, 1.0,
+		0.5, -0.5, -0.5, 1.0,
+		0.5,  0.5, -0.5, 1.0,
+		-0.5,  0.5, -0.5, 1.0,
+		-0.5, -0.5,  0.5, 1.0,
+		0.5, -0.5,  0.5, 1.0,
+		0.5,  0.5,  0.5, 1.0,
+		-0.5,  0.5,  0.5, 1.0,
+	};
+	GLuint vbo_vertices;
+	glGenBuffers(1, &vbo_vertices);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	GLushort elements[] = {
+		0, 1, 2, 3,
+		4, 5, 6, 7,
+		0, 4, 1, 5, 2, 6, 3, 7
+	};
+	GLuint ibo_elements;
+	glGenBuffers(1, &ibo_elements);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_elements);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+
+	float4x4 boxtransform = float4x4::FromTRS(bbox.CenterPoint(), Quat::identity, bbox.Size());
+	glUniformMatrix4fv(glGetUniformLocation(shader,
+		"model"), 1, GL_TRUE, &(boxtransform)[0][0]);
+
+	float green[4] = { 0.0f, 1.0f, 0.0f, 1.0f };
+	glUniform4fv(glGetUniformLocation(shader,
+		"Vcolor"), 1, green);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(
+		0,  // attribute
+		4,                  // number of elements per vertex, here (x,y,z,w)
+		GL_FLOAT,           // the type of each element
+		GL_FALSE,           // take our values as-is
+		0,                  // no extra data between each position
+		0                   // offset of first element
+	);
+
+	glLineWidth(4.f);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_elements);
+	glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, 0);
+	glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, (GLvoid*)(4 * sizeof(GLushort)));
+	glDrawElements(GL_LINES, 8, GL_UNSIGNED_SHORT, (GLvoid*)(8 * sizeof(GLushort)));
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glLineWidth(1.f);
+
+	glDisableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glDeleteBuffers(1, &vbo_vertices);
+	glDeleteBuffers(1, &ibo_elements);
+	glUseProgram(0);
+}
+
+void myQuadTree::ExtendLimitTopLeft()
+{
+	limits.minPoint.x -= limits.maxPoint.x - limits.minPoint.x;
+	limits.minPoint.z -= limits.maxPoint.z - limits.minPoint.z;
+	RecomputeRoot(QUADRANT::BR); //root becomes bottom right quadrant
+}
+
+void myQuadTree::ExtendLimitTopRight()
+{
+	limits.maxPoint.x += limits.maxPoint.x - limits.minPoint.x;
+	limits.minPoint.z -= limits.maxPoint.z - limits.minPoint.z;
+	RecomputeRoot(QUADRANT::BL);
+}
+
+void myQuadTree::ExtendLimitBotLeft()
+{
+	limits.minPoint.x -= limits.maxPoint.x - limits.minPoint.x;
+	limits.maxPoint.z += limits.maxPoint.z - limits.minPoint.z;
+	RecomputeRoot(QUADRANT::TR);
+}
+
+void myQuadTree::ExtendLimitBotRight()
+{
+	limits.maxPoint.x += limits.maxPoint.x - limits.minPoint.x;
+	limits.maxPoint.z += limits.maxPoint.z - limits.minPoint.z;
+	RecomputeRoot(QUADRANT::TL);
+}
+
+void myQuadTree::RecomputeRoot(QUADRANT q)
+{
+	Node* oldRoot = nodes[rootIndex+(int)q];
+	if (q != QUADRANT::TL)
+	{
+		Swap(nodes[rootIndex], nodes[rootIndex+ (int)q]);
+
+		if (!oldRoot->IsLeaf())
+		{
+			nodes[oldRoot->TopLeftChildIndex()]->parent = oldRoot;
+			nodes[oldRoot->TopRightChildIndex()]->parent = oldRoot;
+			nodes[oldRoot->BottomLeftChildIndex()]->parent = oldRoot;
+			nodes[oldRoot->BottomRightChildIndex()]->parent = oldRoot;
+		}
+	}
+
+	int oldRootNodeIndex = rootIndex;
+	rootIndex = AllocateNode(0);
+	Node *newRoot = nodes[rootIndex];
+	newRoot->childIndex = oldRootNodeIndex;
+	nodes[newRoot->TopLeftChildIndex()]->parent = newRoot;
+	nodes[newRoot->TopRightChildIndex()]->parent = newRoot;
+	nodes[newRoot->BottomLeftChildIndex()]->parent = newRoot;
+	nodes[newRoot->BottomRightChildIndex()]->parent = newRoot;
+}
+AABB myQuadTree::GetBoundingBox(const Node *node) const
+{
+	if (!node->parent)
+	{
+		return limits;
+	}
+	AABB aabb = GetBoundingBox(node->parent);
+	float2 half = float2((aabb.minPoint.x + aabb.maxPoint.x), (aabb.minPoint.z + aabb.maxPoint.z))*0.5f;
+
+	int quadrant = 0;
+	for (unsigned i = 1; i < 4; i++)
+	{
+		if (nodes[node->parent->childIndex + i] == node)
+		{
+			quadrant = i;
+		}
+	}
+	
+	switch ((QUADRANT)quadrant)
+	{
+	case QUADRANT::TL:
+		aabb.maxPoint.x = half.x;
+		aabb.maxPoint.z = half.y;
+		return aabb;
+	case QUADRANT::TR:
+		aabb.minPoint.x = half.x;
+		aabb.maxPoint.z = half.y;
+		return aabb;
+	case QUADRANT::BL:
+		aabb.maxPoint.x = half.x;
+		aabb.minPoint.z = half.y;
+		return aabb;
+	case QUADRANT::BR:
+		aabb.minPoint.x = half.x;
+		aabb.minPoint.z = half.y;
+		return aabb;
+	default:
+		assert(false);
+		return aabb;
+	}
 }

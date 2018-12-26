@@ -22,9 +22,9 @@
 
 #include "Material.h"
 #include "Mesh.h"
+#include "myQuadTree.h"
 
 #include "JSON.h"
-#include "stdlib.h" //TODO: only for testing random numbers
 
 #define MAX_NAME 20
 
@@ -170,6 +170,17 @@ void GameObject::DrawProperties()
 	ImGui::InputText("Name", go_name, MAX_NAME);
 	name = go_name;
 	delete[] go_name;
+	if (ImGui::Checkbox("Static", &isStatic))
+	{
+		if (isStatic && GetComponent(ComponentType::Renderer) != nullptr)
+		{
+			App->scene->quadtree->Insert(*this);
+		}
+		else if (!isStatic)
+		{
+			App->scene->quadtree->Remove(*this);
+		}
+	}
 
 	for (auto &component : components)
 	{

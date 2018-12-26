@@ -57,7 +57,7 @@ public:
 	std::list<GameObject*> children;
 	std::string name = "GameObject";
 
-	bool is_static = false;
+	bool isStatic = false;
 	bool copy_flag = false;
 	bool delete_flag = false;
 

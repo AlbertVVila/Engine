@@ -43,8 +43,11 @@ bool ModuleScene::Init()
 	uuid_rng = rng;
 	root = new GameObject("World", 0); //Root always has uid 0
 
-	AABB limits(float3(-10.f, -100.f, -10.f), float3(100.f, 100.f, 100.f));
+	AABB limits(float3(0.f, 0.f, 0.f), float3(20.f, 0.f, 20.f));
 	quadtree = new myQuadTree(limits);
+	CreateSphere("test", root, float3(5.f, 0.f, 5.f));
+	CreateSphere("test", root, float3(30.f, 0.f, 30.f));
+	CreateSphere("test", root, float3(40.f, 0.f, 40.f));
 	return true;
 }
 
@@ -67,6 +70,7 @@ bool ModuleScene::CleanUp()
 
 void ModuleScene::Draw(const math::Frustum &frustum)
 {
+	quadtree->Draw();
 	root->Draw(frustum);
 }
 
