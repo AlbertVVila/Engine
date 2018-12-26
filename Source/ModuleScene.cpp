@@ -43,11 +43,8 @@ bool ModuleScene::Init()
 	uuid_rng = rng;
 	root = new GameObject("World", 0); //Root always has uid 0
 
-	AABB limits(float3(0.f, 0.f, 0.f), float3(20.f, 0.f, 20.f));
+	AABB limits(float3(-10.f, 0.f, -10.f), float3(10.f, 0.f, 10.f));
 	quadtree = new myQuadTree(limits);
-	CreateSphere("test", root, float3(5.f, 0.f, 5.f));
-	CreateSphere("test", root, float3(30.f, 0.f, 30.f));
-	CreateSphere("test", root, float3(40.f, 0.f, 40.f));
 	return true;
 }
 
@@ -116,7 +113,7 @@ void ModuleScene::CreateSphere(const char * name, GameObject* parent, const floa
 void ModuleScene::CreatePrimitive(par_shapes_mesh_s *mesh, const char * name, const float3 & pos, const Quat & rot, float size, const float4 & color, GameObject* parent)
 {
 	GameObject * gameobject = App->scene->CreateGameObject(name, parent);
-	App->scene->selected = gameobject;
+	App->scene->Select(gameobject);
 	ComponentTransform* transform = (ComponentTransform*)gameobject->CreateComponent(ComponentType::Transform);
 	gameobject->transform = transform;
 
@@ -238,6 +235,16 @@ void ModuleScene::LoadScene(const char* scene)
 			gameobject->parent->children.push_back(gameobject);
 		}
 	}
+}
+
+void ModuleScene::Select(GameObject * gameobject)
+{
+	if (App->scene->selected != nullptr)
+	{
+		App->scene->selected->drawBBox = false;
+	}
+	App->scene->selected = gameobject;
+	gameobject->drawBBox = true;
 }
 
 unsigned ModuleScene::GetNewUID()

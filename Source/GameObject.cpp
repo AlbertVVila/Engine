@@ -178,7 +178,7 @@ void GameObject::DrawProperties()
 		}
 		else if (!isStatic)
 		{
-			App->scene->quadtree->Remove(*this);
+			App->scene->quadtree->Remove(*this); //TODO: doesn't remove on meshrenderer deletion
 		}
 	}
 
@@ -201,12 +201,7 @@ void GameObject::DrawHierarchy(GameObject * selected)
 	bool obj_open = ImGui::TreeNodeEx(this, node_flags, name.c_str());
 	if (ImGui::IsItemClicked())
 	{
-		if (App->scene->selected != nullptr)
-		{
-			App->scene->selected->drawBBox = false;
-		}
-		App->scene->selected = this;
-		drawBBox = true;
+		App->scene->Select(this);
 	}
 	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
 	{
@@ -249,7 +244,7 @@ void GameObject::DrawHierarchy(GameObject * selected)
 		{
 			if (ImGui::Selectable("Sphere"))
 			{
-				App->scene->CreateSphere("sphere0", this, float3(rand() % 100+1, 0.0f, rand() % 100+1));
+				App->scene->CreateSphere("sphere0", this);
 			}
 			if (ImGui::Selectable("Cube"))
 			{
@@ -513,11 +508,6 @@ void GameObject::DrawBBox() const
 	glUseProgram(0);
 }
 
-void GameObject::DisableBox()
-{
-	drawBBox = false;
-}
-
 bool GameObject::CleanUp()
 {
 	for (auto &component : components)
@@ -540,6 +530,7 @@ void GameObject::Save(JSON_value *gameobjects) const
 		gameobject->AddUint("UID", UUID);
 		gameobject->AddUint("ParentUID", parent->UUID);
 		gameobject->AddString("Name", name.c_str());
+		gameobject->AddUint("Static", isStatic);
 
 		JSON_value *componentsJSON = gameobject->CreateValue(rapidjson::kArrayType);
 		for (auto &component : components)
@@ -564,6 +555,7 @@ void GameObject::Load(const JSON_value &gameobject)
 	UUID = gameobject.GetUint("UID");
 	parentUUID = gameobject.GetUint("ParentUID");
 	name = gameobject.GetString("Name");
+	isStatic = gameobject.GetUint("Static");
 
 	JSON_value* componentsJSON = gameobject.GetValue("Components");
 	for (unsigned i = 0; i < componentsJSON->Size(); i++)

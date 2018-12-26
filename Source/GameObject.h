@@ -34,7 +34,6 @@ public:
 	void RemoveChild(GameObject* child);
 
 	float4x4 GetGlobalTransform() const;
-	void DisableBox();
 
 	bool CleanUp();
 	void Save(JSON_value *gameobjects) const;
@@ -60,10 +59,7 @@ public:
 	bool isStatic = false;
 	bool copy_flag = false;
 	bool delete_flag = false;
-
-private:
 	bool drawBBox = false;
-
 };
 
 #endif __GameObject_h__
