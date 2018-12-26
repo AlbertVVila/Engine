@@ -10,6 +10,7 @@
 class GameObject;
 class ComponentCamera;
 class ComponentLight;
+class myQuadTree;
 struct Texture;
 struct par_shapes_mesh_s;
 
@@ -40,12 +41,12 @@ public:
 
 public:
 	GameObject* root = nullptr;
-	GameObject* selected = nullptr;
+	GameObject* selected = nullptr; //Selected in hierarchy
 	ComponentCamera* maincamera = nullptr; //Released by GameObject holding it
 	Texture* camera_notfound_texture = nullptr; //Released in resource manager
 
 	ComponentLight* light = nullptr;//Released by GameObject holding it
-
+	myQuadTree * quadtree = nullptr;
 	pcg32 uuid_rng;
 	std::string name;
 };

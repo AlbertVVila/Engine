@@ -24,6 +24,7 @@
 #include "Mesh.h"
 
 #include "JSON.h"
+#include "stdlib.h" //TODO: only for testing random numbers
 
 #define MAX_NAME 20
 
@@ -237,11 +238,11 @@ void GameObject::DrawHierarchy(GameObject * selected)
 		{
 			if (ImGui::Selectable("Sphere"))
 			{
-				App->scene->CreateSphere("sphere0", this, float3(0.0f, 0.0f, 0.0f), Quat::identity, 1.0f, 20, 20, float4(1.f, 1.f, 1.f, 1.0f));
+				App->scene->CreateSphere("sphere0", this, float3(rand() % 100+1, 0.0f, rand() % 100+1));
 			}
 			if (ImGui::Selectable("Cube"))
 			{
-				App->scene->CreateCube("cube0", this, float3(0.0f, 0.0f, 0.0f), Quat::identity, 1.0f, float4(1.f, 1.f, 1.f, 1.0f));
+				App->scene->CreateCube("cube0", this);
 			}
 			if (ImGui::Selectable("Empty GameObject"))
 			{

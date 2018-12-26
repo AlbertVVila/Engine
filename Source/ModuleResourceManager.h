@@ -7,8 +7,8 @@
 
 struct Texture;
 struct Shader;
-struct Material;
-struct Mesh;
+class Material;
+class Mesh;
 
 class ModuleResourceManager :
 	public Module

@@ -210,11 +210,17 @@
     <ClCompile Include="myQuadTree.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="MaterialEditor.cpp" />
-    <ClCompile Include="Material.cpp" />
-    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="ComponentRenderer.cpp">
       <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="MaterialEditor.cpp">
+      <Filter>Material</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Material</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Mesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -495,11 +501,17 @@
     <ClInclude Include="myQuadTree.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="MaterialEditor.h" />
-    <ClInclude Include="Material.h" />
-    <ClInclude Include="Mesh.h" />
     <ClInclude Include="ComponentRenderer.h">
       <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="MaterialEditor.h">
+      <Filter>Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Mesh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -532,6 +544,12 @@
     </Filter>
     <Filter Include="Importer">
       <UniqueIdentifier>{58053e56-3f23-444e-871d-6418dd18dda7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Material">
+      <UniqueIdentifier>{c4c3d17a-32f9-4c6a-9fda-d5e7091d7f46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mesh">
+      <UniqueIdentifier>{992d56bc-52f4-4d2e-bf7b-27366e318477}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

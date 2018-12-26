@@ -1,7 +1,7 @@
 #ifndef __MaterialEditor_h__
 #define __MaterialEditor_h__
 
-struct Material;
+class Material;
 
 class MaterialEditor
 {

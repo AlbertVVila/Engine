@@ -3,10 +3,12 @@
 #include "ModuleResourceManager.h"
 #include "ModuleFileSystem.h"
 #include "ModuleEditor.h"
+#include "ModuleScene.h"
 
 #include "GameObject.h"
 #include "ComponentRenderer.h"
 
+#include "myQuadTree.h"
 #include "MaterialEditor.h"
 #include "Material.h"
 #include "Mesh.h"
@@ -101,7 +103,7 @@ void ComponentRenderer::Load(const JSON_value & value) //TODO: delete + releases
 	{
 		char *data;
 		App->fsystem->Load((MESHES + std::to_string(mesh->UID) + MESHEXTENSION).c_str(), &data); //TODO: use mini resource maanger to optimize this
-		mesh->SetMesh(data, uid);
+		SetMesh(data, uid);
 	}
 	App->resManager->AddMesh(mesh);
 
@@ -134,5 +136,14 @@ void ComponentRenderer::SetMaterial(const char * materialfile)
 		return;
 	}
 	return;
+}
+
+void ComponentRenderer::SetMesh(char * &data, unsigned UID)
+{
+	mesh->SetMesh(data, UID);
+	if (gameobject != nullptr)
+	{
+		App->scene->quadtree->Insert(*gameobject);
+	}
 }
 

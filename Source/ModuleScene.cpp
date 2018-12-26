@@ -1,19 +1,19 @@
+#include "Application.h"
+
 #include "ModuleScene.h"
 #include "ModuleFileSystem.h"
 #include "ModuleProgram.h"
 #include "ModuleTextures.h"
 #include "ModuleResourceManager.h"
 
+#include "GameObject.h"
 #include "ComponentTransform.h"
 #include "ComponentRenderer.h"
 
 #include "Material.h"
 #include "Mesh.h"
-
-#include "Application.h"
-#include "GameObject.h"
 #include "JSON.h"
-
+#include "myQuadTree.h"
 
 #pragma warning(push)
 #pragma warning(disable : 4996)  
@@ -42,6 +42,9 @@ bool ModuleScene::Init()
 	pcg32 rng(seed_source);
 	uuid_rng = rng;
 	root = new GameObject("World", 0); //Root always has uid 0
+
+	AABB limits(float3(-10.f, -100.f, -10.f), float3(100.f, 100.f, 100.f));
+	quadtree = new myQuadTree(limits);
 	return true;
 }
 
@@ -120,7 +123,7 @@ void ModuleScene::CreatePrimitive(par_shapes_mesh_s *mesh, const char * name, co
 	char* data = nullptr;
 	ComponentRenderer* crenderer = (ComponentRenderer*)gameobject->CreateComponent(ComponentType::Renderer);
 	unsigned meshSize = SaveParShapesMesh(*mesh, &data);
-	crenderer->mesh->SetMesh(data, GetNewUID());
+	crenderer->SetMesh(data, GetNewUID());
 	App->resManager->AddMesh(crenderer->mesh); //TODO: Addresource in class mesh or outside?
 	App->fsystem->Save((MESHES + std::to_string(crenderer->mesh->UID) + MESHEXTENSION).c_str(), data, meshSize);
 

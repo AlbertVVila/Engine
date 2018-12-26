@@ -8,8 +8,9 @@ class GameObject;
 
 struct Node
 {
-	Node *parent;
-	unsigned childIndex;
+	Node *parent = nullptr;
+	unsigned depth = 0;
+	unsigned childIndex = 0xFFFFFFFF; //Leaf by default
 
 	bool IsLeaf() const { return childIndex == 0xFFFFFFFF; }
 
@@ -48,7 +49,8 @@ public:
 	void Remove(const GameObject& gameobject);
 	//CollectingIntersect(std::vector<GameObject*>&, );
 	
-	unsigned bucketSize = 4;
+	unsigned bucketSize = 2;
+	unsigned maxDepth = 1;
 private:
 	std::vector<Node*> nodes;
 	AABB limits;
