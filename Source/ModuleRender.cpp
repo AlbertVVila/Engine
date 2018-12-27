@@ -63,7 +63,8 @@ update_status ModuleRender::Update()
 	assert(App->camera->editorcamera != nullptr);
 	if (App->camera->editorcamera == nullptr) return UPDATE_STOP;
 
-	glBindFramebuffer(GL_FRAMEBUFFER, App->camera->editorcamera->FBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, App->camera->editorcamera->MSAAFBO);
+
 	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -101,6 +102,14 @@ update_status ModuleRender::Update()
 		SetViewUniform(*App->scene->maincamera);
 		skybox->Draw(*App->scene->maincamera->frustum);
 		App->scene->Draw(*App->scene->maincamera->frustum);
+	}
+
+	if (msaa) //TODO apply draws and msaa to each camera in scene ->use viewport class o
+	{
+		glBindFramebuffer(GL_READ_FRAMEBUFFER, App->camera->editorcamera->MSAAFBO);
+		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, App->camera->editorcamera->FBO);
+		glBlitFramebuffer(0, 0, App->window->width, App->window->height,
+			0, 0, App->window->width, App->window->height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
 	}
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	return UPDATE_CONTINUE;
@@ -316,6 +325,7 @@ void ModuleRender::InitOpenGL() const
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CCW);
 	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_MULTISAMPLE);
 
 	glClearDepth(1.0f);
 	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
@@ -345,6 +355,14 @@ void ModuleRender::DrawGUI()
 	}
 	ImGui::Checkbox("Main Camera Frustum", &useMainCameraFrustum);
 	ImGui::Checkbox("Skybox", &skybox->enabled);
+	ImGui::Checkbox("MSAA", &msaa);
+	if (msaa)
+	{
+		ImGui::RadioButton("x2", &msaa_level, 2); ImGui::SameLine();
+		ImGui::RadioButton("x4", &msaa_level, 4); ImGui::SameLine();
+		ImGui::RadioButton("x8", &msaa_level, 8);
+	}
+	
 }
 
 void ModuleRender::GenBlockUniforms()

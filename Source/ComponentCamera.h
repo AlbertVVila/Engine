@@ -33,6 +33,7 @@ public:
 private:
 	void InitFrustum();
 	void CreateFrameBuffer();
+	void CreateMSAABuffers();
 	void LookAt(float3 target);
 
 public:
@@ -45,6 +46,10 @@ public:
 	unsigned camTexture = 0; //Handled allocation inside class
 	unsigned FBO = 0;
 	unsigned RBO = 0;
+
+	unsigned MSAAFBO = 0;
+	unsigned MSAADEPTH = 0;
+	unsigned MSAACOLOR = 0;
 
 };
 

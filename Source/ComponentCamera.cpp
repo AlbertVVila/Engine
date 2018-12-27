@@ -3,6 +3,7 @@
 #include "ModuleScene.h"
 #include "ModuleWindow.h"
 #include "ModuleProgram.h"
+#include "ModuleRender.h"
 
 #include "GameObject.h"
 #include "ComponentCamera.h"
@@ -247,6 +248,18 @@ bool ComponentCamera::CleanUp()
 	{
 		glDeleteTextures(1, &camTexture);
 	}
+	if (MSAAFBO != 0)
+	{
+		glDeleteFramebuffers(1, &MSAAFBO);
+	}
+	if (MSAADEPTH != 0)
+	{
+		glDeleteRenderbuffers(1, &MSAADEPTH);
+	}
+	if (MSAACOLOR != 0)
+	{
+		glDeleteRenderbuffers(1, &MSAACOLOR);
+	}
 	return true;
 }
 
@@ -295,6 +308,34 @@ void ComponentCamera::CreateFrameBuffer()
 		LOG("Framebuffer ERROR");
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	if (App->renderer->msaa)
+	{
+		CreateMSAABuffers();
+	}
 }
 
+void ComponentCamera::CreateMSAABuffers()
+{
+	glGenFramebuffers(1, &MSAAFBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, MSAAFBO);
+
+	glGenRenderbuffers(1, &MSAADEPTH);
+	glBindRenderbuffer(GL_RENDERBUFFER, MSAADEPTH);
+	glRenderbufferStorageMultisample(GL_RENDERBUFFER, App->renderer->msaa_level, GL_DEPTH24_STENCIL8, App->window->width, App->window->height);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, MSAADEPTH);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+	glGenRenderbuffers(1, &MSAACOLOR);
+	glBindRenderbuffer(GL_RENDERBUFFER, MSAACOLOR);
+	glRenderbufferStorageMultisample(GL_RENDERBUFFER, App->renderer->msaa_level, GL_RGBA, App->window->width, App->window->height);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, MSAACOLOR);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+	glDrawBuffer(GL_COLOR_ATTACHMENT0);
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		LOG("Framebuffer ERROR");
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
 
