@@ -26,7 +26,7 @@
 
 #include "JSON.h"
 
-#define MAX_NAME 20
+#define MAX_NAME 64
 
 GameObject::GameObject(const char * name, unsigned uuid) : name(name), UUID(uuid)
 {

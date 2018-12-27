@@ -201,4 +201,3 @@ void ModuleTextures::ImportImage(const char * file, const char* folder) const
 	}
 }
 
-

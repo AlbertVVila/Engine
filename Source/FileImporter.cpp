@@ -190,8 +190,7 @@ GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshma
 		auto it = meshmap.find(node->mMeshes[i]);
 		if (it != meshmap.end())
 		{
-			Mesh *mesh = App->resManager->GetMesh(it->second);
-			crenderer->mesh = mesh;
+			crenderer->mesh = App->resManager->GetMesh(it->second);;
 		}
 
 		aiMaterial * mat = scene->mMaterials[scene->mMeshes[node->mMeshes[i]]->mMaterialIndex];
@@ -202,7 +201,7 @@ GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshma
 			mat->GetTexture((aiTextureType)i, 0, &texture, &mapping, 0);
 			if (texture.length > 0)
 			{
-				crenderer->material->textures[i] = new Texture(App->fsystem->GetFilename(texture.C_Str()));
+				crenderer->material->textures[i] = new Texture(App->fsystem->GetFilename(texture.C_Str()));// TODO: SOBRESCRIUS DEFAULT!!
 			}
 		}
 	} 

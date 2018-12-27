@@ -120,7 +120,7 @@ Material * ModuleResourceManager::GetMaterial(std::string filename) const
 	return nullptr;
 }
 
-void ModuleResourceManager::AddMaterial(Material * material)
+void ModuleResourceManager::AddMaterial(Material * material) //TODO: we should also add textures + shader
 {
 	std::map<std::string, std::pair<unsigned, Material*>>::iterator it = materialResources.find(material->name);
 	if (it != materialResources.end())

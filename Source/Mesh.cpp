@@ -15,11 +15,11 @@ Mesh::~Mesh()
 {
 }
 
-void Mesh::SetMesh(char *& meshData, unsigned uid)
+void Mesh::SetMesh(const char * meshData, unsigned uid)
 {
 	assert(meshData != nullptr);
 	DeleteBuffers();
-	char *data = meshData;
+	const char *data = meshData;
 	
 	unsigned int numIndices = *(int*)meshData;
 	meshData += sizeof(int);
@@ -137,7 +137,6 @@ void Mesh::SetMesh(char *& meshData, unsigned uid)
 		vertices += 3;
 	}
 	ComputeBBox();
-	delete[] data;
 }
 
 void Mesh::Draw(unsigned int shaderProgram) const

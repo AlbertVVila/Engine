@@ -125,9 +125,11 @@ void ModuleScene::CreatePrimitive(par_shapes_mesh_s *mesh, const char * name, co
 	ComponentRenderer* crenderer = (ComponentRenderer*)gameobject->CreateComponent(ComponentType::Renderer);
 	unsigned meshSize = SaveParShapesMesh(*mesh, &data);
 	crenderer->SetMesh(data, GetNewUID());
+	
 	App->resManager->AddMesh(crenderer->mesh); //TODO: Addresource in class mesh or outside?
 	App->fsystem->Save((MESHES + std::to_string(crenderer->mesh->UID) + MESHEXTENSION).c_str(), data, meshSize);
-
+	
+	delete[] data;
 	par_shapes_free_mesh(mesh);
 }
 

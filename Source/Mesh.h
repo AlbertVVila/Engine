@@ -11,7 +11,7 @@ public:
 	Mesh();
 	~Mesh();
 
-	void SetMesh(char * &mesh, unsigned uid);
+	void SetMesh(const char* meshData, unsigned uid);
 	void Draw(unsigned int shaderProgram) const;
 
 	//unsigned int GetMaterialIndex() const;

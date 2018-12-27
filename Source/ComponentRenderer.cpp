@@ -18,7 +18,6 @@
 ComponentRenderer::ComponentRenderer(GameObject * gameobject) : Component(gameobject, ComponentType::Renderer)
 {
 	mesh = new Mesh();
-	material = new Material();
 	SetMaterial(DEFAULTMAT);
 }
 
@@ -102,7 +101,7 @@ void ComponentRenderer::Load(const JSON_value & value) //TODO: delete + releases
 	else
 	{
 		char *data;
-		App->fsystem->Load((MESHES + std::to_string(mesh->UID) + MESHEXTENSION).c_str(), &data); //TODO: use mini resource maanger to optimize this
+		App->fsystem->Load((MESHES + std::to_string(uid) + MESHEXTENSION).c_str(), &data); //TODO: use mini resource maanger to optimize this
 		SetMesh(data, uid);
 	}
 	App->resManager->AddMesh(mesh);
@@ -124,9 +123,12 @@ void ComponentRenderer::Load(const JSON_value & value) //TODO: delete + releases
 
 void ComponentRenderer::SetMaterial(const char * materialfile)
 {
-	assert(materialfile != nullptr); assert(material != nullptr);
+	assert(materialfile != nullptr);
 
-	App->resManager->DeleteMaterial(material->name);
+	if (material != nullptr)
+	{
+		App->resManager->DeleteMaterial(material->name);
+	}
 	material = App->resManager->GetMaterial(materialfile);
 	if (material == nullptr)
 	{
@@ -138,9 +140,9 @@ void ComponentRenderer::SetMaterial(const char * materialfile)
 	return;
 }
 
-void ComponentRenderer::SetMesh(char * &data, unsigned UID)
+void ComponentRenderer::SetMesh(const char* meshData, unsigned UID)
 {
-	mesh->SetMesh(data, UID);
+	mesh->SetMesh(meshData, UID);
 	if (gameobject != nullptr && gameobject->isStatic)
 	{
 		App->scene->quadtree->Insert(*gameobject);
