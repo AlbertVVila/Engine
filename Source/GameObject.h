@@ -33,8 +33,9 @@ public:
 	void RemoveComponent(Component * component);
 	void RemoveChild(GameObject* child);
 
+	void SetGlobalTransform(const float4x4 &global);
 	float4x4 GetGlobalTransform() const;
-	void SetLocalTransform(const float4x4 &model);
+	void SetLocalTransform(const float4x4 &local);
 	float4x4 GetLocalTransform() const;
 
 	bool CleanUp();

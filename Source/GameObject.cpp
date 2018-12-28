@@ -398,6 +398,21 @@ Component * GameObject::GetComponent(ComponentType type) const
 	return nullptr;
 }
 
+void GameObject::SetGlobalTransform(const float4x4 & global)
+{
+	if (transform != nullptr)
+	{
+		transform->SetLocalToWorld(global);
+		float4x4 parentglobal = float4x4::identity;
+
+		if (parent->transform != nullptr)
+		{
+			parentglobal = parent->GetGlobalTransform();
+		}
+		transform->SetWorldToLocal(parentglobal);
+	}
+}
+
 float4x4 GameObject::GetGlobalTransform() const //TODO: Move to componentTransform
 {
 	float4x4 mytransform = GetLocalTransform();

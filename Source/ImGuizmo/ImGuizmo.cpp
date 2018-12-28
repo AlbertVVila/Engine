@@ -1444,7 +1444,7 @@ namespace ImGuizmo
          vec_t dirPlaneX, dirPlaneY, dirAxis;
          bool belowAxisLimit, belowPlaneLimit;
          ComputeTripodAxisAndVisibility(i, dirAxis, dirPlaneX, dirPlaneY, belowAxisLimit, belowPlaneLimit);
-
+		 dirAxis.TransformVector(gContext.mModel);
        const float len = IntersectRayPlane(gContext.mRayOrigin, gContext.mRayVector, BuildPlan(gContext.mModel.v.position, dirAxis));
        vec_t posOnPlan = gContext.mRayOrigin + gContext.mRayVector * len;
 

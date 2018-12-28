@@ -12,7 +12,6 @@ public:
 	void Draw();
 
 private:
-
 };
 
 #endif //__PanelScene_h__
