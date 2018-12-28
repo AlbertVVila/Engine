@@ -408,6 +408,12 @@ float4x4 GameObject::GetGlobalTransform() const //TODO: Move to componentTransfo
 	return mytransform;
 }
 
+void GameObject::SetLocalTransform(const float4x4 &model)
+{
+	if (transform == nullptr) return;
+	model.Decompose(transform->position, transform->rotation, transform->scale);
+}
+
 float4x4 GameObject::GetLocalTransform() const
 {
 	if (transform == nullptr) return float4x4::identity;

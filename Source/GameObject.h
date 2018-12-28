@@ -34,6 +34,7 @@ public:
 	void RemoveChild(GameObject* child);
 
 	float4x4 GetGlobalTransform() const;
+	void SetLocalTransform(const float4x4 &model);
 	float4x4 GetLocalTransform() const;
 
 	bool CleanUp();
