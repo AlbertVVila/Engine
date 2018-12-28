@@ -222,6 +222,9 @@
     <ClCompile Include="Mesh.cpp">
       <Filter>Mesh</Filter>
     </ClCompile>
+    <ClCompile Include="ImGuizmo\ImGuizmo.cpp">
+      <Filter>Imguizmo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -513,6 +516,9 @@
     <ClInclude Include="Mesh.h">
       <Filter>Mesh</Filter>
     </ClInclude>
+    <ClInclude Include="ImGuizmo\ImGuizmo.h">
+      <Filter>Imguizmo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GeoLib">
@@ -550,6 +556,9 @@
     </Filter>
     <Filter Include="Mesh">
       <UniqueIdentifier>{992d56bc-52f4-4d2e-bf7b-27366e318477}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Imguizmo">
+      <UniqueIdentifier>{9e2074d8-5d2f-409c-8cec-92fa39546ba0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

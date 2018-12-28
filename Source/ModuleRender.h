@@ -37,7 +37,7 @@ private:
 public:
 	void* context = nullptr;
 	bool msaa = true;
-	int msaa_level = 4;
+	int msaa_level = 8;
 private:
 	unsigned UBO = 0;
 	bool useCheckersTexture = false;

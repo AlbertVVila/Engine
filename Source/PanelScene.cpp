@@ -1,10 +1,17 @@
-#include "PanelScene.h"
 #include "Application.h"
+
 #include "ModuleWindow.h"
 #include "ModuleCamera.h"
-#include "ComponentCamera.h"
-#include "imgui.h"
+#include "ModuleScene.h"
 
+#include "GameObject.h"
+#include "ComponentCamera.h"
+
+#include "PanelScene.h"
+
+#include "imgui.h"
+#include "ImGuizmo.h"
+#include "Math/float4x4.h"
 PanelScene::PanelScene()
 {
 }
@@ -24,5 +31,21 @@ void PanelScene::Draw()
 		{ (float)App->window->width, (float)App->window->height }, { 0,1 }, { 1,0 });
 
 	focus = ImGui::IsWindowFocused();
+
+	ImGuiIO& io = ImGui::GetIO();
+	ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
+	ImGuizmo::SetDrawlist();
+	static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::TRANSLATE);
+	static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::WORLD);
+
+	if (App->scene->selected != nullptr)
+	{
+		float4x4 model = App->scene->selected->GetGlobalTransform();
+		float4x4 view = App->camera->editorcamera->GetViewMatrix();
+		float4x4 proj = App->camera->editorcamera->GetProjectionMatrix();
+		float4x4 identity = float4x4::identity;
+		ImGuizmo::DrawCube((float*)&view, (float*)&proj, (float*)&model);
+		ImGuizmo::Manipulate((float*)&view, (float*)&proj, mCurrentGizmoOperation, mCurrentGizmoMode, (float*)&model, NULL, NULL, NULL, NULL);
+	}
 	ImGui::End();
 }

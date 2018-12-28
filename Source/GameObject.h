@@ -34,6 +34,7 @@ public:
 	void RemoveChild(GameObject* child);
 
 	float4x4 GetGlobalTransform() const;
+	float4x4 GetLocalTransform() const;
 
 	bool CleanUp();
 	void Save(JSON_value *gameobjects) const;
@@ -42,7 +43,6 @@ public:
 	AABB GetBoundingBox() const;
 
 private:
-	float4x4 GetLocalTransform() const;
 	void UpdateModel(unsigned int shader) const;
 
 	void DrawBBox() const; //TODO: improve BBOX draw

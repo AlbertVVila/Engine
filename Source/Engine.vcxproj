@@ -55,7 +55,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <AdditionalIncludeDirectories>./pcg-cpp-0.98/include;./rapidjson-1.1.0/include;./physfs-3.0.1/include;./mmgr;./Assimp/include;./DevIL/include;./glew-2.1.0/include;./SDL/include;MathGeoLib/include;./Imgui;./physfs-3.0.1</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./ImGuizmo;./pcg-cpp-0.98/include;./rapidjson-1.1.0/include;./physfs-3.0.1/include;./mmgr;./Assimp/include;./DevIL/include;./glew-2.1.0/include;./SDL/include;MathGeoLib/include;./Imgui;./physfs-3.0.1</AdditionalIncludeDirectories>
       <EnablePREfast>false</EnablePREfast>
     </ClCompile>
     <Link>
@@ -94,6 +94,7 @@
     <ClInclude Include="debug_draw.hpp" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="ImGuizmo\ImGuizmo.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="MaterialEditor.h" />
     <ClInclude Include="MathGeoLib\include\Algorithm\Random\LCG.h" />
@@ -192,6 +193,7 @@
     <ClCompile Include="ComponentTransform.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="imgui.cpp" />
+    <ClCompile Include="ImGuizmo\ImGuizmo.cpp" />
     <ClCompile Include="imgui_demo.cpp" />
     <ClCompile Include="imgui_draw.cpp" />
     <ClCompile Include="imgui_impl_opengl3.cpp" />

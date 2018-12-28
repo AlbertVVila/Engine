@@ -21,6 +21,7 @@
 #include "imgui.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_sdl.h"
+#include "ImGuizmo.h"
 
 #include <vector>
 
@@ -116,6 +117,8 @@ update_status ModuleEditor::PreUpdate()
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
+	ImGuizmo::BeginFrame();
+	//ImGuizmo::Enable(true);
 
 	CreateDockSpace();
 	ImGui::ShowDemoWindow();
