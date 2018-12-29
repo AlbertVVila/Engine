@@ -117,7 +117,7 @@ void PanelScene::Draw()
 	{
 		float2 mouse((float*)&App->input->GetMousePosition());
 		float normalized_x = ((mouse.x - pos.x) / current_width) * 2 - 1; //0 to 1 -> -1 to 1
-		float normalized_y = ((mouse.y - pos.y) / current_height) * 2 - 1; //0 to 1 -> -1 to 1
+		float normalized_y = (1 - (mouse.y - pos.y) / current_height) * 2 - 1; //0 to 1 -> -1 to 1
 		LineSegment line = App->camera->editorcamera->frustum->UnProjectLineSegment(normalized_x, normalized_y);
 		std::list<GameObject*> gos = App->scene->CheckIntersections(line);
 		if (gos.size() > 0)
