@@ -253,3 +253,9 @@ unsigned ModuleScene::GetNewUID()
 {
 	return uuid_rng();
 }
+
+
+std::list<GameObject*> ModuleScene::CheckIntersections(const LineSegment & line) const
+{
+	return root->GetIntersections(line);
+}

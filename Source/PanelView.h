@@ -2,12 +2,12 @@
 #define __PanelScene_h__
 
 #include "Panel.h"
-class PanelScene :
+class PanelView :
 	public Panel
 {
 public:
-	PanelScene();
-	~PanelScene();
+	PanelView();
+	~PanelView();
 
 	void Draw();
 
@@ -16,17 +16,18 @@ public:
 	void CreateMSAABuffers(int width, int height);
 
 public:
-	int current_width = 0;
-	int current_height = 0;
-
-	unsigned texture = 0; //Handled allocation inside class
 	unsigned FBO = 0;
 	unsigned RBO = 0;
 
 	unsigned MSAAFBO = 0;
 	unsigned MSAADEPTH = 0;
 	unsigned MSAACOLOR = 0;
+	int current_width = 0;
+	int current_height = 0;
+
 private:
+
+	unsigned texture = 0; //Handled allocation inside class
 };
 
 #endif //__PanelScene_h__

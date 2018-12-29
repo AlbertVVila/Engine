@@ -43,6 +43,7 @@ public:
 	void Load(const JSON_value & gameobject);
 	bool IsParented(const GameObject & gameobject);
 	AABB GetBoundingBox() const;
+	std::list<GameObject*> GetIntersections(const LineSegment & line) const;
 
 private:
 	void UpdateModel(unsigned int shader) const;

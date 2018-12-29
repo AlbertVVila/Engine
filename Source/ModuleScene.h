@@ -39,6 +39,7 @@ public:
 	void LoadScene(const char * scene);
 	void Select(GameObject* gameobject);
 	unsigned GetNewUID();
+	std::list<GameObject*>CheckIntersections(const LineSegment & line) const;
 
 public:
 	GameObject* root = nullptr;

@@ -26,14 +26,13 @@ public:
 	void Rotate(float dx, float dy);
 	void Zoom(float mouseWheel);
 	void Orbit(float dx, float dy);
-	void Resize(int width, int height);
+	void SetAspect(float aspect);
+	void SetFOV(float fov);
 	float4x4 GetViewMatrix() const;
 	float4x4 GetProjectionMatrix() const;
 
 private:
 	void InitFrustum();
-	void CreateFrameBuffer();
-	void CreateMSAABuffers();
 	void LookAt(float3 target);
 
 public:
@@ -42,15 +41,6 @@ public:
 	float movementSpeed = 5.0f;
 	float rotationSpeed = 200.f;
 	float zoomSpeed = 0.1f;
-
-	unsigned camTexture = 0; //Handled allocation inside class
-	unsigned FBO = 0;
-	unsigned RBO = 0;
-
-	unsigned MSAAFBO = 0;
-	unsigned MSAADEPTH = 0;
-	unsigned MSAACOLOR = 0;
-
 };
 
 #endif __ComponentCamera_h__

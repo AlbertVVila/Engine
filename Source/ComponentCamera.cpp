@@ -23,13 +23,11 @@
 ComponentCamera::ComponentCamera() : Component(nullptr, ComponentType::Camera)
 {
 	InitFrustum();
-	CreateFrameBuffer();
 }
 
 ComponentCamera::ComponentCamera(GameObject * gameobject) : Component(gameobject, ComponentType::Camera)
 {
 	InitFrustum();
-	CreateFrameBuffer();
 	frustum->pos = gameobject->GetBoundingBox().CenterPoint();
 }
 
@@ -40,9 +38,6 @@ ComponentCamera::ComponentCamera(const ComponentCamera & component) : Component(
 	rotationSpeed = component.rotationSpeed;
 	zoomSpeed = component.zoomSpeed;
 
-	camTexture = component.camTexture;
-	FBO = component.FBO;
-	RBO = component.RBO;
 }
 
 
@@ -156,6 +151,18 @@ void ComponentCamera::Orbit(float dx, float dy)
 	LookAt(center);
 }
 
+void ComponentCamera::SetAspect(float aspect)
+{
+	frustum->horizontalFov = 2.f * atanf(tanf(frustum->verticalFov * 0.5f) * aspect);
+}
+
+void ComponentCamera::SetFOV(float fov)
+{
+	float aspect = frustum->AspectRatio();
+	frustum->verticalFov = math::DegToRad(fov);
+	SetAspect(aspect);
+}
+
 void ComponentCamera::LookAt(float3 target)
 {
 	float3 dir = (target - frustum->pos).Normalized();
@@ -164,11 +171,11 @@ void ComponentCamera::LookAt(float3 target)
 	frustum->up = look.Mul(frustum->up).Normalized();
 }
 
-void ComponentCamera::Resize(int width, int height)
-{
-	frustum->horizontalFov = 2.f * atanf(tanf(frustum->verticalFov * 0.5f) * ((float)width / (float)height));
-	CreateFrameBuffer(); //We recreate framebuffer with new window size
-}
+//void ComponentCamera::Resize(int width, int height)
+//{
+//	frustum->horizontalFov = 2.f * atanf(tanf(frustum->verticalFov * 0.5f) * ((float)width / (float)height));
+//	//CreateFrameBuffer(); //We recreate framebuffer with new window size
+//}
 
 void ComponentCamera::Update() 
 {
@@ -236,30 +243,6 @@ void ComponentCamera::Load(const JSON_value & value)
 
 bool ComponentCamera::CleanUp()
 {
-	if (FBO != 0)
-	{
-		glDeleteFramebuffers(1, &FBO);
-	}
-	if (RBO != 0)
-	{
-		glDeleteRenderbuffers(1, &RBO);
-	}
-	if (camTexture != 0)
-	{
-		glDeleteTextures(1, &camTexture);
-	}
-	if (MSAAFBO != 0)
-	{
-		glDeleteFramebuffers(1, &MSAAFBO);
-	}
-	if (MSAADEPTH != 0)
-	{
-		glDeleteRenderbuffers(1, &MSAADEPTH);
-	}
-	if (MSAACOLOR != 0)
-	{
-		glDeleteRenderbuffers(1, &MSAACOLOR);
-	}
 	return true;
 }
 
@@ -273,69 +256,3 @@ float4x4 ComponentCamera::GetProjectionMatrix() const
 {
 	return frustum->ProjectionMatrix().Transposed();
 }
-
-void ComponentCamera::CreateFrameBuffer()
-{
-	CleanUp(); //Delete old FBO,RBO and texture
-
-	glGenFramebuffers(1, &FBO);
-	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
-
-	glGenTextures(1, &camTexture);
-	glBindTexture(GL_TEXTURE_2D, camTexture);
-
-	glTexImage2D(
-		GL_TEXTURE_2D, 0, GL_RGB, App->window->width, App->window->height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL
-	);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	glFramebufferTexture2D(
-		GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, camTexture, 0
-	);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	glGenRenderbuffers(1, &RBO);
-	glBindRenderbuffer(GL_RENDERBUFFER, RBO);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, App->window->width, App->window->height);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, RBO);
-
-	glBindRenderbuffer(GL_RENDERBUFFER, 0);
-
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-		LOG("Framebuffer ERROR");
-
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-	if (App->renderer->msaa)
-	{
-		CreateMSAABuffers();
-	}
-}
-
-void ComponentCamera::CreateMSAABuffers()
-{
-	glGenFramebuffers(1, &MSAAFBO);
-	glBindFramebuffer(GL_FRAMEBUFFER, MSAAFBO);
-
-	glGenRenderbuffers(1, &MSAADEPTH);
-	glBindRenderbuffer(GL_RENDERBUFFER, MSAADEPTH);
-	glRenderbufferStorageMultisample(GL_RENDERBUFFER, App->renderer->msaa_level, GL_DEPTH24_STENCIL8, App->window->width, App->window->height);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, MSAADEPTH);
-	glBindRenderbuffer(GL_RENDERBUFFER, 0);
-
-	glGenRenderbuffers(1, &MSAACOLOR);
-	glBindRenderbuffer(GL_RENDERBUFFER, MSAACOLOR);
-	glRenderbufferStorageMultisample(GL_RENDERBUFFER, App->renderer->msaa_level, GL_RGBA, App->window->width, App->window->height);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, MSAACOLOR);
-	glBindRenderbuffer(GL_RENDERBUFFER, 0);
-
-	glDrawBuffer(GL_COLOR_ATTACHMENT0);
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-		LOG("Framebuffer ERROR");
-
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-}
-

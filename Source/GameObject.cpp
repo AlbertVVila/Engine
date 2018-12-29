@@ -2,7 +2,7 @@
 
 #include "assimp/matrix4x4.h"
 #include "Math/float4x4.h"
-#include "Geometry/AABB.h"
+#include "Geometry/LineSegment.h"
 #include "GL/glew.h"
 #include "imgui.h"
 
@@ -459,6 +459,22 @@ AABB GameObject::GetBoundingBox() const
 	}
 
 	return bbox;
+}
+
+std::list<GameObject*> GameObject::GetIntersections(const LineSegment & line) const
+{
+	std::list<GameObject*> test;
+	for (const auto& child : children)
+	{
+		if (child->transform != nullptr)
+		{
+			if (line.Intersects(child->GetBoundingBox()))
+			{
+				test.push_back(child);
+			}
+		}
+	}
+	return test;
 }
 
 void GameObject::DrawBBox() const

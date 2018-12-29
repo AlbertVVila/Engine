@@ -60,11 +60,21 @@ update_status ModuleRender::PreUpdate()
 // Called every draw update
 update_status ModuleRender::Update()
 {
-	assert(App->camera->editorcamera != nullptr);
-	if (App->camera->editorcamera == nullptr) return UPDATE_STOP;
+	return UPDATE_CONTINUE;
+}
 
-	glBindFramebuffer(GL_FRAMEBUFFER, App->camera->editorcamera->MSAAFBO);
 
+update_status ModuleRender::PostUpdate()
+{
+	App->editor->RenderGUI();
+	SDL_GL_SwapWindow(App->window->window);
+
+	return UPDATE_CONTINUE;
+}
+
+void ModuleRender::Draw(const ComponentCamera& cam, int width, int height) const
+{
+	glViewport(0, 0, width, height);
 	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -77,52 +87,33 @@ update_status ModuleRender::Update()
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 
-	SetProjectionUniform(*App->camera->editorcamera);
-	SetViewUniform(*App->camera->editorcamera);
-	skybox->Draw(*App->camera->editorcamera->frustum);
+	SetProjectionUniform(cam);
+	SetViewUniform(cam);
+	skybox->Draw(*cam.frustum);
 	DrawGizmos();
 
-	if (useMainCameraFrustum && App->scene->maincamera != nullptr)
-	{
-		App->scene->Draw(*App->scene->maincamera->frustum);
-	}
-	else
-	{
-		App->scene->Draw(*App->camera->editorcamera->frustum);
-	}
+	//if (useMainCameraFrustum && App->scene->maincamera != nullptr)
+	//{
+	//	App->scene->Draw(*cam.frustum);
+	//}
+	//else
+	//{
+	App->scene->Draw(*cam.frustum);
+	//}
 
-	
-	if (App->scene->maincamera != nullptr)
-	{
-		glBindFramebuffer(GL_FRAMEBUFFER, App->scene->maincamera->FBO);
-		glClearColor(0.3f, 0.3f, 0.3f, 1.f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		SetProjectionUniform(*App->scene->maincamera);
-		SetViewUniform(*App->scene->maincamera);
-		skybox->Draw(*App->scene->maincamera->frustum);
-		App->scene->Draw(*App->scene->maincamera->frustum);
-	}
+	//if (App->scene->maincamera != nullptr)
+	//{
+	//	glBindFramebuffer(GL_FRAMEBUFFER, cam.FBO);
+	//	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
+	//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	if (msaa) //TODO apply draws and msaa to each camera in scene ->use viewport class o
-	{
-		glBindFramebuffer(GL_READ_FRAMEBUFFER, App->camera->editorcamera->MSAAFBO);
-		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, App->camera->editorcamera->FBO);
-		glBlitFramebuffer(0, 0, App->window->width, App->window->height,
-			0, 0, App->window->width, App->window->height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
-	}
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	return UPDATE_CONTINUE;
+	//	SetProjectionUniform(cam);
+	//	SetViewUniform(cam);
+	//	skybox->Draw(*cam.frustum);
+	//	App->scene->Draw(*cam.frustum);
+	//}
 }
-
-update_status ModuleRender::PostUpdate()
-{
-	App->editor->RenderGUI();
-	SDL_GL_SwapWindow(App->window->window);
-
-	return UPDATE_CONTINUE;
-}
-
 // Called before quitting
 bool ModuleRender::CleanUp()
 {
@@ -138,7 +129,8 @@ bool ModuleRender::CleanUp()
 void ModuleRender::OnResize()
 {
     glViewport(0, 0, App->window->width, App->window->height);
-	App->camera->editorcamera->Resize(App->window->width, App->window->height); //TODO: resize other cameras?
+	App->camera->editorcamera->SetAspect((float)App->window->width / (float)App->window->height);
+	//App->camera->editorcamera->Resize(App->window->width, App->window->height); //TODO: resize other cameras?
 }
 
 
