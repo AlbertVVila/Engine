@@ -19,13 +19,19 @@ public:
 	AABB GetBoundingBox() const;
 	void DeleteBuffers();
 
+	bool Intersects(const LineSegment &line, float* distance);
+
 public:
 	unsigned UID = 0;
 	unsigned VAO = 0;
 	unsigned VBO = 0;
 	unsigned EBO = 0;
-	int numIndices = 0;
-	std::vector<float3> vertices;
+
+	unsigned numIndices = 0;
+	unsigned numVertices = 0;
+
+	int* indices = nullptr;
+	float* vertices = nullptr;
 	AABB boundingBox;
 };
 

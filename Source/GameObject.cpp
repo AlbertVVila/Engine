@@ -461,20 +461,19 @@ AABB GameObject::GetBoundingBox() const
 	return bbox;
 }
 
-std::list<GameObject*> GameObject::GetIntersections(const LineSegment & line) const
+bool GameObject::MeshIntersects(const LineSegment & line, float* distance) const
 {
-	std::list<GameObject*> test;
-	for (const auto& child : children)
+	LineSegment globalLine(line);
+	globalLine.Transform(GetGlobalTransform());
+	ComponentRenderer* mesh_renderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
+	if (mesh_renderer != nullptr)
 	{
-		if (child->transform != nullptr)
+		if (mesh_renderer->mesh->Intersects(globalLine, distance))
 		{
-			if (line.Intersects(child->GetBoundingBox()))
-			{
-				test.push_back(child);
-			}
+			return true;
 		}
 	}
-	return test;
+	return false;
 }
 
 void GameObject::DrawBBox() const

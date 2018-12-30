@@ -50,7 +50,7 @@ void ComponentRenderer::DrawProperties()
 			ImGui::PopID();
 			return;
 		}
-		ImGui::Text("Num vertices : %d", mesh->vertices.size());
+		ImGui::Text("Num vertices : %d", mesh->numVertices);
 		ImGui::Text("Num triangles : %d", mesh->numIndices / 3);
 		ImGui::Separator();
 
@@ -148,4 +148,3 @@ void ComponentRenderer::SetMesh(const char* meshData, unsigned UID)
 		App->scene->quadtree->Insert(gameobject);
 	}
 }
-

@@ -30,6 +30,8 @@
 #include <random>
 #include <map>
 
+#define MAX_DEBUG_LINES 5
+
 ModuleScene::ModuleScene()
 {
 }
@@ -258,16 +260,18 @@ void ModuleScene::Pick(float normalized_x, float normalized_y)
 	std::list<GameObject*> gos = quadtree->GetIntersections(line);
 	if (gos.size() > 0)
 	{
-		App->scene->Select(gos.front());
+		float distance = -1.f;
+		if (gos.front()->MeshIntersects(line, &distance)) //returns distance to line if triangle hit else returns neg
+		{
+			App->scene->Select(gos.front());
+		}
 	}
 	debuglines.push_back(line);
+	if (debuglines.size() > MAX_DEBUG_LINES)
+	{
+		debuglines.erase(debuglines.begin());
+	}
 }
-
-std::list<GameObject*> ModuleScene::CheckIntersections(const LineSegment & line) const
-{
-	return root->GetIntersections(line);
-}
-
 
 unsigned ModuleScene::GetNewUID()
 {

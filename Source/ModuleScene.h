@@ -39,7 +39,6 @@ public:
 	void LoadScene(const char * scene);
 	void Select(GameObject* gameobject);
 	void Pick(float normalized_x, float normalized_y);
-	std::list<GameObject*> CheckIntersections(const LineSegment & line) const;
 	unsigned GetNewUID();
 
 public:

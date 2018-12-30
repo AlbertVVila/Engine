@@ -413,7 +413,11 @@ std::list<GameObject*> myQuadTree::GetIntersections(const LineSegment & line) co
 	{
 		Node *n = stack.top();
 		stack.pop();
-		if (line.Intersects(GetBoundingBox(n)))
+		AABB bbox = GetBoundingBox(n); //2D AABB because y coordinate is 0
+		bbox.minPoint.y = -FLOAT_INF;
+		bbox.maxPoint.y = FLOAT_INF;
+
+		if (line.Intersects(bbox))
 		{
 			for (const auto& go : n->gameobjects)
 			{

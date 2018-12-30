@@ -4,7 +4,8 @@
 #include <assert.h>
 #include "GL/glew.h"
 #include "JSON.h"
-
+#include "Geometry/Triangle.h"
+#include "Geometry/LineSegment.h"
 
 Mesh::Mesh()
 {
@@ -130,12 +131,9 @@ void Mesh::SetMesh(const char * meshData, unsigned uid)
 	
 	UID = uid;
 	this->numIndices = numIndices;
-	this->vertices.reserve(numVertices);
-	for (size_t i = 0; i < numVertices; i++)
-	{
-		this->vertices.emplace_back(vertices);
-		vertices += 3;
-	}
+	this->numVertices = numVertices;
+	this->vertices = vertices; //TODO: !!should copy before delete
+	this->indices = indices;
 	ComputeBBox();
 }
 
@@ -152,18 +150,17 @@ void Mesh::Draw(unsigned int shaderProgram) const
 void Mesh::ComputeBBox()
 {
 	float3 min, max;
-	min = max = vertices[0];
+	min = max = float3(vertices);
 	
-	for (auto &vertice : vertices)
+	for (unsigned i=0; i<numVertices*3; i+=3)
 	{
-		min.x = MIN(min.x, vertice.x);
-		min.y = MIN(min.y, vertice.y);
-		min.z = MIN(min.z, vertice.z);
+		min.x = MIN(min.x, vertices[i]); //x
+		min.y = MIN(min.y, vertices[i+1]); //y
+		min.z = MIN(min.z, vertices[i+2]); //z
 	
-		max.x = MAX(max.x, vertice.x);
-		max.y = MAX(max.y, vertice.y);
-		max.z = MAX(max.z, vertice.z);
-	
+		max.x = MAX(max.x, vertices[i]);
+		max.y = MAX(max.y, vertices[i+1]);
+		max.z = MAX(max.z, vertices[i+2]);
 	}
 	boundingBox.minPoint = min;
 	boundingBox.maxPoint = max;
@@ -189,4 +186,24 @@ void Mesh::DeleteBuffers()
 	{
 		glDeleteBuffers(1, &EBO);
 	}
+}
+
+bool Mesh::Intersects(const LineSegment &line, float* distance)
+{
+	bool intersects = false;
+	*distance = -1.f;
+	for (unsigned i = 0; i < numIndices; i+=3) //foreach triangle
+	{
+		float3 v0(&vertices[3*indices[i]]);
+		float3 v1(&vertices[3*indices[i+1]]);
+		float3 v2(&vertices[3*indices[i+2]]);
+		Triangle triangle(v0, v1, v2);
+		float dist = -1.f;
+		if (line.Intersects(triangle, &dist, nullptr))
+		{
+			intersects = true;
+			*distance = *distance < 0 ? dist : MIN(*distance, dist);
+		}
+	}
+	return intersects;
 }
