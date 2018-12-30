@@ -15,6 +15,10 @@ public:
 
 	void CreateMSAABuffers(int width, int height);
 
+	void DrawImGuizmo();
+
+	void Pick();
+
 public:
 	int current_width = 0;
 	int current_height = 0;

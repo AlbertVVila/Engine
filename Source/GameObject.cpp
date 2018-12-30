@@ -174,7 +174,7 @@ void GameObject::DrawProperties()
 	{
 		if (isStatic && GetComponent(ComponentType::Renderer) != nullptr)
 		{
-			App->scene->quadtree->Insert(*this);
+			App->scene->quadtree->Insert(this);
 		}
 		else if (!isStatic)
 		{

@@ -12,7 +12,6 @@ enum class QUADRANT
 	BR
 };
 
-
 class GameObject;
 
 struct Node
@@ -28,11 +27,11 @@ struct Node
 	unsigned BottomLeftChildIndex() const { return childIndex + 2; }
 	unsigned BottomRightChildIndex() const { return childIndex + 3; }
 
-	std::vector<const GameObject*> gameobjects;
+	std::vector<GameObject*> gameobjects;
 
 	bool Remove(const GameObject& gameobject)
 	{
-		for (std::vector<const GameObject*>::const_iterator it = gameobjects.begin(); it != gameobjects.end(); ++it)
+		for (std::vector<GameObject*>::const_iterator it = gameobjects.begin(); it != gameobjects.end(); ++it)
 		{
 			if (*it == &gameobject)
 			{
@@ -51,8 +50,8 @@ public:
 	~myQuadTree();
 
 	void Clear();
-	void Insert(const GameObject& gameobject);
-	void Add(const GameObject & gameobject, Node * node, AABB boundingBox);
+	void Insert(GameObject* gameobject);
+	void Add(GameObject* gameobject, Node * node, AABB boundingBox);
 	void Split(Node * leaf, AABB leafAABB);
 	void Remove(const GameObject& gameobject);
 
@@ -65,6 +64,7 @@ public:
 	void ExtendLimitBotRight();
 	void RecomputeRoot(QUADRANT q);
 	AABB GetBoundingBox(const Node *node) const;
+	std::list<GameObject*> GetIntersections(const LineSegment& line) const;
 	//CollectingIntersect(std::vector<GameObject*>&, );
 
 public:

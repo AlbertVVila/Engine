@@ -38,14 +38,16 @@ public:
 	void SaveScene(const GameObject &rootGO, const char* name) const;
 	void LoadScene(const char * scene);
 	void Select(GameObject* gameobject);
+	void Pick(float normalized_x, float normalized_y);
+	std::list<GameObject*> CheckIntersections(const LineSegment & line) const;
 	unsigned GetNewUID();
-	std::list<GameObject*>CheckIntersections(const LineSegment & line) const;
 
 public:
 	GameObject* root = nullptr;
 	GameObject* selected = nullptr; //Selected in hierarchy
 	ComponentCamera* maincamera = nullptr; //Released by GameObject holding it
 	Texture* camera_notfound_texture = nullptr; //Released in resource manager
+	std::list<LineSegment> debuglines;
 
 	ComponentLight* light = nullptr;//Released by GameObject holding it
 	myQuadTree * quadtree = nullptr;

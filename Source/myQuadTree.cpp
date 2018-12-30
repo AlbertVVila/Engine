@@ -4,10 +4,12 @@
 #include "GameObject.h"
 
 #include "myQuadTree.h"
+#include "Geometry/LineSegment.h"
 #include "Math/Quat.h"
 #include "Math/float2.h"
 #include "Math/MathFunc.h"
 #include "GL/glew.h"
+#include <stack>
 
 myQuadTree::myQuadTree(AABB limits) : limits(limits)
 {
@@ -25,9 +27,9 @@ void myQuadTree::Clear()
 {
 }
 
-void myQuadTree::Insert(const GameObject& gameobject) //TODO: make it adaptative
+void myQuadTree::Insert(GameObject* gameobject) //TODO: make it adaptative
 {
-	AABB bbox = gameobject.GetBoundingBox();
+	AABB bbox = gameobject->GetBoundingBox();
 
 	if (bbox.minPoint.x >= limits.minPoint.x)
 	{
@@ -86,12 +88,12 @@ void myQuadTree::Insert(const GameObject& gameobject) //TODO: make it adaptative
 	Insert(gameobject); //Try again now
 }
 
-void myQuadTree::Add(const GameObject& gameobject, Node* node, AABB bbox)
+void myQuadTree::Add(GameObject* gameobject, Node* node, AABB bbox)
 {
 	while (true) //should look depth
 	{
 		float2 half = float2((bbox.minPoint.x + bbox.maxPoint.x), (bbox.minPoint.z + bbox.maxPoint.z))*0.5f;
-		AABB goBBox = gameobject.GetBoundingBox();
+		AABB goBBox = gameobject->GetBoundingBox();
 
 		bool left = goBBox.minPoint.x < half.x;
 		bool right = goBBox.maxPoint.x > half.x;
@@ -100,7 +102,7 @@ void myQuadTree::Add(const GameObject& gameobject, Node* node, AABB bbox)
 
 		if (node->IsLeaf() || (left && right) || (top && bot))
 		{
-			node->gameobjects.push_back(&gameobject);
+			node->gameobjects.push_back(gameobject);
 			if (node->gameobjects.size() > bucketSize && node->IsLeaf())
 			{
 				if (node->depth < maxDepth)
@@ -152,8 +154,8 @@ void myQuadTree::Split(Node* leaf, AABB leafAABB)
 	unsigned i = 0;
 	while (i < leaf->gameobjects.size())
 	{
-		const GameObject &go = *leaf->gameobjects[i];
-		AABB bbox = go.GetBoundingBox();
+		GameObject *go = leaf->gameobjects[i];
+		AABB bbox = go->GetBoundingBox();
 
 		bool left = bbox.minPoint.x < half.x;
 		bool right = bbox.maxPoint.x > half.x;
@@ -400,4 +402,34 @@ AABB myQuadTree::GetBoundingBox(const Node *node) const
 		assert(false);
 		return aabb;
 	}
+}
+
+std::list<GameObject*> myQuadTree::GetIntersections(const LineSegment & line) const
+{//for now only returns unsorted list of GO
+	std::stack<Node*> stack;
+	stack.push(nodes[rootIndex]);
+	std::list<GameObject*> intersections;
+	while (!stack.empty())
+	{
+		Node *n = stack.top();
+		stack.pop();
+		if (line.Intersects(GetBoundingBox(n)))
+		{
+			for (const auto& go : n->gameobjects)
+			{
+				if (line.Intersects(go->GetBoundingBox()))
+				{
+					intersections.push_back(go);
+				}
+			}
+			if (n->childIndex != 0xFFFFFFFF)
+			{
+				stack.push(nodes[n->TopLeftChildIndex()]);
+				stack.push(nodes[n->TopRightChildIndex()]);
+				stack.push(nodes[n->BottomLeftChildIndex()]);
+				stack.push(nodes[n->BottomRightChildIndex()]);
+			}
+		}
+	}
+	return intersections;
 }

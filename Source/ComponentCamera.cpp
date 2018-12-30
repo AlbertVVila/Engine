@@ -67,7 +67,7 @@ void ComponentCamera::InitFrustum()
 	frustum->up = float3::unitY;
 	frustum->nearPlaneDistance = ZNEARDIST;
 	frustum->farPlaneDistance = ZFARDIST;
-	frustum->verticalFov = math::pi / 2.0f;
+	frustum->verticalFov = math::DegToRad(60);
 	frustum->horizontalFov = 2.f * atanf(tanf(frustum->verticalFov * 0.5f) * ((float)App->window->width / (float)App->window->height));
 
 }
@@ -255,4 +255,9 @@ float4x4 ComponentCamera::GetViewMatrix() const
 float4x4 ComponentCamera::GetProjectionMatrix() const
 {
 	return frustum->ProjectionMatrix().Transposed();
+}
+
+LineSegment ComponentCamera::DrawRay(float x, float y)
+{
+	return frustum->UnProjectLineSegment(x, y);
 }

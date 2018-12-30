@@ -77,54 +77,8 @@ void PanelScene::Draw()
 
 	focus = ImGui::IsWindowFocused();
 
-	ImVec2 pos = ImGui::GetWindowPos();
-	ImGuizmo::SetRect(pos.x, pos.y, current_width, current_height);
-	ImGuizmo::SetDrawlist();
-
-	static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::TRANSLATE);
-
-	if (ImGui::Button("Translate"))
-	{
-		mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
-	}
-	ImGui::SameLine();
-	if (ImGui::Button("Rotate"))
-	{
-		mCurrentGizmoOperation = ImGuizmo::ROTATE;
-	}
-	ImGui::SameLine();
-	if (ImGui::Button("Scale"))
-	{
-		mCurrentGizmoOperation = ImGuizmo::SCALE;
-	}
-
-	if (App->scene->selected != nullptr) //TODO: WORLD translation + rotation, scale? -> LOCAL do it with local !watch rotation
-	{
-
-		float4x4 model = App->scene->selected->GetGlobalTransform();
-		float4x4 view = App->camera->editorcamera->GetViewMatrix();
-		float4x4 proj = App->camera->editorcamera->GetProjectionMatrix();
-		ImGuizmo::SetOrthographic(false);
-		model.Transpose();
-		//ImGuizmo::DrawCube((float*)&view, (float*)&proj, (float*)&model);
-		ImGuizmo::Manipulate((float*)&view, (float*)&proj, mCurrentGizmoOperation, ImGuizmo::LOCAL, (float*)&model, NULL, NULL, NULL, NULL);
-		model.Transpose();
-			
-		App->scene->selected->SetGlobalTransform(model);
-	}
-
-	if (App->input->GetMouseButtonDown(1) == KEY_DOWN && ImGui::IsWindowFocused() && ImGui::IsMouseHoveringWindow())
-	{
-		float2 mouse((float*)&App->input->GetMousePosition());
-		float normalized_x = ((mouse.x - pos.x) / current_width) * 2 - 1; //0 to 1 -> -1 to 1
-		float normalized_y = (1 - (mouse.y - pos.y) / current_height) * 2 - 1; //0 to 1 -> -1 to 1
-		LineSegment line = App->camera->editorcamera->frustum->UnProjectLineSegment(normalized_x, normalized_y);
-		std::list<GameObject*> gos = App->scene->CheckIntersections(line);
-		if (gos.size() > 0)
-		{
-			App->scene->Select(gos.front());
-		}
-	}
+	DrawImGuizmo();
+	Pick();
 
 	ImGui::End();
 }
@@ -216,3 +170,56 @@ void PanelScene::CreateMSAABuffers(int width, int height)
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
+void PanelScene::DrawImGuizmo()
+{
+	ImVec2 pos = ImGui::GetWindowPos();
+	ImGuizmo::SetRect(pos.x, pos.y, current_width, current_height);
+	ImGuizmo::SetDrawlist();
+
+	static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::TRANSLATE);
+
+	ImGui::SetCursorPos({ 20,30 });
+
+
+	if (ImGui::Button("Translate"))
+	{
+		mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Rotate"))
+	{
+		mCurrentGizmoOperation = ImGuizmo::ROTATE;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Scale"))
+	{
+		mCurrentGizmoOperation = ImGuizmo::SCALE;
+	}
+
+	if (App->scene->selected != nullptr) //TODO: WORLD translation + rotation, scale? -> LOCAL do it with local !watch rotation
+	{
+
+		float4x4 model = App->scene->selected->GetGlobalTransform();
+		float4x4 view = App->camera->editorcamera->GetViewMatrix();
+		float4x4 proj = App->camera->editorcamera->GetProjectionMatrix();
+		ImGuizmo::SetOrthographic(false);
+		model.Transpose();
+		//ImGuizmo::DrawCube((float*)&view, (float*)&proj, (float*)&model);
+		ImGuizmo::Manipulate((float*)&view, (float*)&proj, mCurrentGizmoOperation, ImGuizmo::LOCAL, (float*)&model, NULL, NULL, NULL, NULL);
+		model.Transpose();
+
+		App->scene->selected->SetGlobalTransform(model);
+	}
+}
+
+void PanelScene::Pick()
+{
+	if (App->input->GetMouseButtonDown(1) == KEY_DOWN && ImGui::IsWindowFocused() && ImGui::IsMouseHoveringWindow())
+	{
+		ImVec2 pos = ImGui::GetWindowPos();
+		float2 mouse((float*)&App->input->GetMousePosition());
+		float normalized_x = ((mouse.x - pos.x) / current_width) * 2 - 1; //0 to 1 -> -1 to 1
+		float normalized_y = (1 - (mouse.y - pos.y) / current_height) * 2 - 1; //0 to 1 -> -1 to 1
+		App->scene->Pick(normalized_x, normalized_y);
+	}
+}

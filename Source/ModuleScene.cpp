@@ -1,6 +1,7 @@
 #include "Application.h"
 
 #include "ModuleScene.h"
+#include "ModuleCamera.h"
 #include "ModuleFileSystem.h"
 #include "ModuleProgram.h"
 #include "ModuleTextures.h"
@@ -9,11 +10,13 @@
 #include "GameObject.h"
 #include "ComponentTransform.h"
 #include "ComponentRenderer.h"
+#include "ComponentCamera.h"
 
 #include "Material.h"
 #include "Mesh.h"
 #include "JSON.h"
 #include "myQuadTree.h"
+#include "Geometry/LineSegment.h"
 
 #pragma warning(push)
 #pragma warning(disable : 4996)  
@@ -249,13 +252,24 @@ void ModuleScene::Select(GameObject * gameobject)
 	gameobject->drawBBox = true;
 }
 
-unsigned ModuleScene::GetNewUID()
+void ModuleScene::Pick(float normalized_x, float normalized_y)
 {
-	return uuid_rng();
+	LineSegment line = App->camera->editorcamera->DrawRay(normalized_x, normalized_y);
+	std::list<GameObject*> gos = quadtree->GetIntersections(line);
+	if (gos.size() > 0)
+	{
+		App->scene->Select(gos.front());
+	}
+	debuglines.push_back(line);
 }
-
 
 std::list<GameObject*> ModuleScene::CheckIntersections(const LineSegment & line) const
 {
 	return root->GetIntersections(line);
+}
+
+
+unsigned ModuleScene::GetNewUID()
+{
+	return uuid_rng();
 }

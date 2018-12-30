@@ -145,7 +145,7 @@ void ComponentRenderer::SetMesh(const char* meshData, unsigned UID)
 	mesh->SetMesh(meshData, UID);
 	if (gameobject != nullptr && gameobject->isStatic)
 	{
-		App->scene->quadtree->Insert(*gameobject);
+		App->scene->quadtree->Insert(gameobject);
 	}
 }
 

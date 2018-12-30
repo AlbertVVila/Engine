@@ -2,7 +2,7 @@
 #define __ComponentCamera_h__
 
 #include "Component.h"
-#include "Math/float3.h"
+#include "Geometry/LineSegment.h"
 
 class Frustum;
 class ComponentCamera :
@@ -30,7 +30,7 @@ public:
 	void SetFOV(float fov);
 	float4x4 GetViewMatrix() const;
 	float4x4 GetProjectionMatrix() const;
-
+	LineSegment DrawRay(float x, float y);
 private:
 	void InitFrustum();
 	void LookAt(float3 target);
