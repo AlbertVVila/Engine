@@ -64,7 +64,7 @@ public:
 	void ExtendLimitBotRight();
 	void RecomputeRoot(QUADRANT q);
 	AABB GetBoundingBox(const Node *node) const;
-	std::list<GameObject*> GetIntersections(const LineSegment& line) const;
+	std::list<std::pair<float, GameObject*>> GetIntersections(const LineSegment& line) const;
 	//CollectingIntersect(std::vector<GameObject*>&, );
 
 public:

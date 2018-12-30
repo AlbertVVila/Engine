@@ -404,11 +404,11 @@ AABB myQuadTree::GetBoundingBox(const Node *node) const
 	}
 }
 
-std::list<GameObject*> myQuadTree::GetIntersections(const LineSegment & line) const
+std::list<std::pair<float, GameObject*>> myQuadTree::GetIntersections(const LineSegment & line) const
 {//for now only returns unsorted list of GO
 	std::stack<Node*> stack;
 	stack.push(nodes[rootIndex]);
-	std::list<GameObject*> intersections;
+	std::list<std::pair<float, GameObject*>> intersections;
 	while (!stack.empty())
 	{
 		Node *n = stack.top();
@@ -421,9 +421,11 @@ std::list<GameObject*> myQuadTree::GetIntersections(const LineSegment & line) co
 		{
 			for (const auto& go : n->gameobjects)
 			{
-				if (line.Intersects(go->GetBoundingBox()))
+				float dNear = -FLOAT_INF;
+				float dFar = FLOAT_INF;
+				if (line.Intersects(go->GetBoundingBox(), dNear, dFar))
 				{
-					intersections.push_back(go);
+					intersections.push_back(std::pair<float, GameObject*>(dNear, go));
 				}
 			}
 			if (n->childIndex != 0xFFFFFFFF)
@@ -435,5 +437,6 @@ std::list<GameObject*> myQuadTree::GetIntersections(const LineSegment & line) co
 			}
 		}
 	}
+	intersections.sort();
 	return intersections;
 }

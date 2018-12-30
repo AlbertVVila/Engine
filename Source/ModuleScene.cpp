@@ -17,6 +17,7 @@
 #include "JSON.h"
 #include "myQuadTree.h"
 #include "Geometry/LineSegment.h"
+#include "Math/MathConstants.h"
 
 #pragma warning(push)
 #pragma warning(disable : 4996)  
@@ -257,15 +258,35 @@ void ModuleScene::Select(GameObject * gameobject)
 void ModuleScene::Pick(float normalized_x, float normalized_y)
 {
 	LineSegment line = App->camera->editorcamera->DrawRay(normalized_x, normalized_y);
-	std::list<GameObject*> gos = quadtree->GetIntersections(line);
-	if (gos.size() > 0)
+	std::list<std::pair<float, GameObject*>> GOs = quadtree->GetIntersections(line);
+	float closestTriangle = FLOAT_INF;
+	GameObject * closestGO = nullptr;
+
+	for (const auto& go : GOs)
 	{
-		float distance = -1.f;
-		if (gos.front()->MeshIntersects(line, &distance)) //returns distance to line if triangle hit else returns neg
+		if (closestGO != nullptr && !go.second->GetBoundingBox().Intersects(closestGO->GetBoundingBox())) //if no intersection between AABB no need to check triangles
 		{
-			App->scene->Select(gos.front());
+			break;
+		}
+		else
+		{
+			float distance = FLOAT_INF;
+			if (go.second->MeshIntersects(line, &distance)) //returns distance to line if triangle hit
+			{
+				if (distance < closestTriangle)
+				{
+					closestGO = go.second;
+					closestTriangle = distance;
+				}
+			}
 		}
 	}
+
+	if (closestGO != nullptr)
+	{
+		App->scene->Select(closestGO);
+	}
+
 	debuglines.push_back(line);
 	if (debuglines.size() > MAX_DEBUG_LINES)
 	{

@@ -191,7 +191,7 @@ void Mesh::DeleteBuffers()
 bool Mesh::Intersects(const LineSegment &line, float* distance)
 {
 	bool intersects = false;
-	*distance = -1.f;
+	*distance = 0.f;
 	for (unsigned i = 0; i < numIndices; i+=3) //foreach triangle
 	{
 		float3 v0(&vertices[3*indices[i]]);
@@ -202,7 +202,7 @@ bool Mesh::Intersects(const LineSegment &line, float* distance)
 		if (line.Intersects(triangle, &dist, nullptr))
 		{
 			intersects = true;
-			*distance = *distance < 0 ? dist : MIN(*distance, dist);
+			*distance = MIN(*distance, dist);
 		}
 	}
 	return intersects;
