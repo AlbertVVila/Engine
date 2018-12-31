@@ -1,4 +1,6 @@
 #version 330 core
+#define MAX_POINT_LIGHTS 4
+#define MAX_SPOT_LIGHTS 4
 
 struct Material
 {
@@ -19,6 +21,44 @@ struct Material
     float     k_specular;
 };
 
+struct Lights
+{
+	AmbientLight ambient;
+	DirLight     directional;
+	PointLight   points[MAX_POINT_LIGHTS];
+	uint         num_points;
+	SpotLight    spots[MAX_SPOT_LIGHTS];
+	uint         num_spots;
+}
+
+struct AmbientLight
+{
+	vec3 color;
+}
+
+struct DirLight
+{
+	vec3 direction;
+	vec3 color;
+}
+
+struct PointLight
+{
+	vec3  position;
+	vec3  color;
+	vec3  attenuation; //constant + linear + quadratic
+}
+
+struct SpotLight
+{
+	vec3  position;
+	vec3  direction;
+	vec3  color;
+	vec3  attenuation;
+	float inner;
+	float outer;
+}
+
 layout (std140) uniform Matrices
 {
     mat4 proj;
@@ -32,7 +72,7 @@ in vec2 uv0;
 out vec4 Fragcolor;
 
 uniform Material material;
-uniform vec3 lightPos;
+uniform Lights lights;
 
 vec4 get_diffuse_color()
 {
@@ -66,28 +106,60 @@ float specular_phong(vec3 direction, vec3 pos, vec3 normals, vec3 viewPos, float
 	return pow(max(dot(viewDir, reflectDir), 0.0), shininess);
 }
 
+vec3 directional_phong(vec3 normal, vec3 viewPos, DirLight dir, vec4 diffuse_color, vec3 specular_color)
+{
+	float diffuse = lambert(dir.direction, normal);
+	float specular = specular_phong(dir.direction, position, normal, viewPos, material.shininess);
+
+	vec3 color = dir.color * (diffuse_color.rgb * diffuse * material.k_diffuse + //diffuse
+				 specular_color.rgb * specular * material.k_specular); //specular
+	
+	return color;
+}
+
+vec3 point_phong(vec3 normal, vec3 viewPos, PointLight point, vec4 diffuse_color, vec3 specular_color)
+{
+	vec3 lightDir = point.position - position;
+	float distance = length(ligthDir);
+	lightDir = lightDir/distance;
+	float att = get_attenuation(point.attenuation, distance);
+
+	float diffuse = lambert(lightDir, normal);
+	float specular = specular_phong(lightDir, position, normal, viewPos, shininess);
+
+	return att * point.color * (diffuse_color *(diffuse*material.k_diffuse));
+}
+
+vec3 spot_phong(vec3 normal, vec3 viewPos, SpotLight spot, vec4 diffuse_color, vec3 specular_color)
+{
+	return vec3(0,0,0);
+}
+
 void main()
 {
 	vec3 normal = normalize(normal);
-	vec3 lightDir = normalize(lightPos - position);
+	vec3 viewPos = transpose(mat3(view))*(-view[3].xyz);
 
-	float diffuse = lambert(lightDir, normal);
-	float specular = 0.0;
-	if(diffuse> 0.0 && material.k_specular>0.0 && material.shininess > 0.0)
-	{
-		vec3 viewPos = transpose(mat3(view))*(-view[3].xyz);
-		specular = specular_phong(lightDir, position, normal, viewPos, material.shininess);
-	}
-
+	vec4 diffuse_color = get_diffuse_color();
+	vec3 specular_color = get_specular_color();
 	vec3 emissive_color = get_emissive_color();
 	vec3 occlusion_color= get_occlusion_color();
-	vec3 specular_color = get_specular_color();
-	vec4 diffuse_color = get_diffuse_color();
 
-	vec3 color = emissive_color + //emissive
-				 diffuse_color.rgb * occlusion_color * material.k_ambient + //ambient
-				 diffuse_color.rgb * diffuse * material.k_diffuse + //diffuse
-				 specular_color.rgb * specular * material.k_specular; //specular
+	vec3 color = directional_phong(normal, viewPos, lights.DirLight, diffuse_color, specular_color);
+
+	for(uint i=0; i < lights.num_points; ++i )
+	{
+		color+= point_phong(normal, viewPos, lights.PointLight[i], diffuse_color, specular_color);
+	}
+
+	for(uint i=0; i < lights.num_spots; ++i )
+	{
+		color+= spot_phong(normal, viewPos, lights.SpotLight[i], diffuse_color, specular_color);
+	}
+	
+
+	color += 	 emissive_color + //emissive
+				 diffuse_color.rgb * occlusion_color * material.k_ambient; //ambient
 				 
 	Fragcolor = vec4(color, diffuse_color.a);
 }

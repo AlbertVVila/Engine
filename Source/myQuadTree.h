@@ -17,7 +17,7 @@ class GameObject;
 struct Node
 {
 	Node *parent = nullptr;
-	unsigned depth = 0;
+	unsigned height = 0;
 	unsigned childIndex = 0xFFFFFFFF; //Leaf by default
 
 	bool IsLeaf() const { return childIndex == 0xFFFFFFFF; }
@@ -69,7 +69,7 @@ public:
 
 public:
 	unsigned bucketSize = 2;
-	unsigned maxDepth = 4;
+	unsigned maxHeight = 4;
 private:
 	std::vector<Node*> nodes;
 	AABB limits;

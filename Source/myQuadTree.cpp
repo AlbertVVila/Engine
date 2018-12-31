@@ -105,7 +105,7 @@ void myQuadTree::Add(GameObject* gameobject, Node* node, AABB bbox)
 			node->gameobjects.push_back(gameobject);
 			if (node->gameobjects.size() > bucketSize && node->IsLeaf())
 			{
-				if (node->depth < maxDepth)
+				if (node->height < maxHeight)
 				{
 					Split(node, bbox);
 				}
@@ -228,7 +228,7 @@ int myQuadTree::AllocateNode(Node *parent)
 	{
 		Node *n = new Node();
 		n->parent = parent;
-		n->depth = parent != 0 ? parent->depth + 1 : 1;
+		n->height = parent != nullptr ? parent->height + 1 : 1;
 		n->childIndex = 0XFFFFFFFF;
 		nodes.push_back(n);
 	}

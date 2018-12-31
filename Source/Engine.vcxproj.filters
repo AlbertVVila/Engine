@@ -192,9 +192,6 @@
     <ClCompile Include="ModuleFileSystem.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="JSON.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="FileImporter.cpp">
       <Filter>Importer</Filter>
     </ClCompile>
@@ -205,9 +202,6 @@
       <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="Skybox.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="myQuadTree.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="ComponentRenderer.cpp">
@@ -224,6 +218,15 @@
     </ClCompile>
     <ClCompile Include="ImGuizmo\ImGuizmo.cpp">
       <Filter>Imguizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="myQuadTree.cpp">
+      <Filter>Tree</Filter>
+    </ClCompile>
+    <ClCompile Include="JSON.cpp">
+      <Filter>Importer</Filter>
+    </ClCompile>
+    <ClCompile Include="AABBTree.cpp">
+      <Filter>Tree</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -486,9 +489,6 @@
     <ClInclude Include="ModuleFileSystem.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="JSON.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
     <ClInclude Include="FileImporter.h">
       <Filter>Importer</Filter>
     </ClInclude>
@@ -499,9 +499,6 @@
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="Skybox.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="myQuadTree.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="ComponentRenderer.h">
@@ -518,6 +515,15 @@
     </ClInclude>
     <ClInclude Include="ImGuizmo\ImGuizmo.h">
       <Filter>Imguizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="myQuadTree.h">
+      <Filter>Tree</Filter>
+    </ClInclude>
+    <ClInclude Include="JSON.h">
+      <Filter>Importer</Filter>
+    </ClInclude>
+    <ClInclude Include="AABBTree.h">
+      <Filter>Tree</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -559,6 +565,9 @@
     </Filter>
     <Filter Include="Imguizmo">
       <UniqueIdentifier>{9e2074d8-5d2f-409c-8cec-92fa39546ba0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tree">
+      <UniqueIdentifier>{640a2da3-0a48-4b71-8419-e266d3f70572}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
