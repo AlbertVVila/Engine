@@ -463,12 +463,12 @@ AABB GameObject::GetBoundingBox() const
 
 bool GameObject::MeshIntersects(const LineSegment & line, float* distance) const
 {
-	LineSegment globalLine(line);
-	globalLine.Transform(GetGlobalTransform());
+	LineSegment localLine(line);
+	localLine.Transform(GetGlobalTransform().Inverted());
 	ComponentRenderer* mesh_renderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
 	if (mesh_renderer != nullptr)
 	{
-		if (mesh_renderer->mesh->Intersects(globalLine, distance))
+		if (mesh_renderer->mesh->Intersects(localLine, distance))
 		{
 			return true;
 		}
