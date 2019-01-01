@@ -91,21 +91,23 @@ void ModuleRender::Draw(const ComponentCamera& cam, int width, int height) const
 	SetViewUniform(cam);
 	skybox->Draw(*cam.frustum);
 	DrawGizmos();
-	for (const auto & line : App->scene->debuglines)
+	if (picker_debug)
 	{
-		unsigned shader = App->program->defaultShader->id;
-		glUseProgram(shader);
-		math::float4x4 model = math::float4x4::identity;
-		glUniformMatrix4fv(glGetUniformLocation(shader,
-			"model"), 1, GL_TRUE, &model[0][0]);
-		glLineWidth(3.0f);
-		glBegin(GL_LINES);
-		// red X
-		
-		glVertex3f(line.a.x, line.a.y, line.a.z);
-		glVertex3f(line.b.x, line.b.y, line.b.z);
-		glEnd();
-		glUseProgram(0);
+		for (const auto & line : App->scene->debuglines)
+		{
+			unsigned shader = App->program->defaultShader->id;
+			glUseProgram(shader);
+			math::float4x4 model = math::float4x4::identity;
+			glUniformMatrix4fv(glGetUniformLocation(shader,
+				"model"), 1, GL_TRUE, &model[0][0]);
+			glLineWidth(3.0f);
+			glBegin(GL_LINES);
+
+			glVertex3f(line.a.x, line.a.y, line.a.z);
+			glVertex3f(line.b.x, line.b.y, line.b.z);
+			glEnd();
+			glUseProgram(0);
+		}
 	}
 
 	//if (useMainCameraFrustum && App->scene->maincamera != nullptr)
@@ -370,6 +372,8 @@ void ModuleRender::DrawGUI()
 		ImGui::RadioButton("x4", &msaa_level, 4); ImGui::SameLine();
 		ImGui::RadioButton("x8", &msaa_level, 8);
 	}
+	ImGui::Checkbox("Picker Debug", &picker_debug);
+	ImGui::Checkbox("Light Debug", &light_debug);
 	
 }
 

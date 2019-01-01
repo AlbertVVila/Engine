@@ -95,6 +95,12 @@ void GameObject::Draw(const math::Frustum& frustum)
 		DrawBBox();
 	}
 
+	ComponentLight* light = (ComponentLight*)GetComponent(ComponentType::Light);
+	if (light != nullptr)
+	{
+		light->DrawDebugLight();
+	}
+
 	ComponentRenderer* crenderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
 	if (crenderer == nullptr || !crenderer->enabled || crenderer->material == nullptr) return;
 

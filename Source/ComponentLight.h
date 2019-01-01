@@ -3,6 +3,14 @@
 
 #include "Component.h"
 #include "Math/float3.h"
+#define LIGHTTYPES 3
+
+enum class LightType
+{
+	DIRECTIONAL = 0,
+	POINT,
+	SPOT
+};
 
 class GameObject;
 
@@ -15,13 +23,29 @@ public:
 	~ComponentLight();
 	ComponentLight* Clone() const override;
 
+	float3 GetDir() const;
+
+	void ResetValues();
+
+	float GetAttenuationDistance() const;
+
 	void Update() override;
 	void DrawProperties() override;
+	void DrawDebugLight() const;
 	void Load(const JSON_value &value) override;
-
+	void Save(JSON_value *value) const override;
 
 public:
-	float3 position = float3::zero;
+	LightType type = LightType::POINT;
+
+	float3 position = float3::zero; //Captured in transform
+	float3 direction = float3::one;
+	float3 color = float3::one;
+
+	float3 attenuation = float3::zero;
+	float inner = 20.f;
+	float outer = 25.f;
+
 };
 
 #endif __ComponentLight_h__

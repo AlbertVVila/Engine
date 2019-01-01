@@ -39,6 +39,9 @@ public:
 	void* context = nullptr;
 	bool msaa = true;
 	int msaa_level = 8;
+	bool picker_debug = false;
+	bool light_debug = true;
+
 private:
 	unsigned UBO = 0;
 	bool useCheckersTexture = false;

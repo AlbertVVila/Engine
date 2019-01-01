@@ -25,7 +25,7 @@ bool Component::DrawComponentState()
 	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.f / 7.0f, 0.7f, 0.7f));
 	ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.f / 7.0f, 0.8f, 0.8f));
 	
-	bool removed = ImGui::SmallButton("Remove Component");
+	bool removed = ImGui::Button("Remove");
 	if(removed) Remove();
 	
 	ImGui::PopStyleColor(3);
