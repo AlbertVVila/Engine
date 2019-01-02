@@ -23,8 +23,6 @@ public:
 	~ComponentLight();
 	ComponentLight* Clone() const override;
 
-	float3 GetDir() const;
-
 	void ResetValues();
 
 	float GetAttenuationDistance() const;
@@ -42,7 +40,7 @@ public:
 	float3 direction = float3::one;
 	float3 color = float3::one;
 
-	float3 attenuation = float3::zero;
+	float3 attenuation = float3(0.1f,0.1f,0.1f);
 	float inner = 20.f;
 	float outer = 25.f;
 

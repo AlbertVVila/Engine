@@ -40,6 +40,9 @@ public:
 	void Select(GameObject* gameobject);
 	void Pick(float normalized_x, float normalized_y);
 	unsigned GetNewUID();
+	std::list<ComponentLight*>GetClosestSpotLights(float3 position) const;
+	std::list<ComponentLight*>GetClosestPointLights(float3 position) const;
+	ComponentLight* GetDirectionalLight() const;
 
 public:
 	GameObject* root = nullptr;
@@ -48,7 +51,7 @@ public:
 	Texture* camera_notfound_texture = nullptr; //Released in resource manager
 	std::list<LineSegment> debuglines;
 
-	ComponentLight* light = nullptr;//Released by GameObject holding it
+	std::list<ComponentLight*> lights;
 	myQuadTree * quadtree = nullptr;
 	pcg32 uuid_rng;
 	std::string name;

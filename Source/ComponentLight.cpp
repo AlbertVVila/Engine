@@ -71,9 +71,9 @@ void ComponentLight::DrawProperties()
 		if (type != LightType::DIRECTIONAL)
 		{
 			ImGui::Text("Attenuation");
-			ImGui::DragFloat("Constant", (float*)&attenuation.x, 0.1f, 0.f, 100.f);
-			ImGui::DragFloat("Linear", (float*)&attenuation.y, 0.1f, 0.f, 100.f);
-			ImGui::DragFloat("Quadratic", (float*)&attenuation.z, 0.1f, 0.f, 100.f);
+			ImGui::DragFloat("Constant", (float*)&attenuation.x, 0.01f, 0.01f, 10.f);
+			ImGui::DragFloat("Linear", (float*)&attenuation.y, 0.01f, 0.01f, 1.f);
+			ImGui::DragFloat("Quadratic", (float*)&attenuation.z, 0.01f, 0.0f, 1.f);
 		}
 
 		if (type == LightType::SPOT)
@@ -93,6 +93,11 @@ void ComponentLight::DrawDebugLight() const
 	glUniformMatrix4fv(glGetUniformLocation(shader,
 		"model"), 1, GL_TRUE, &model[0][0]);
 	glLineWidth(3.0f);
+
+	float red[4] = { 1.0f, 1.0f, 0.0f, 1.0f };
+	glUniform4fv(glGetUniformLocation(shader,
+		"Vcolor"), 1, red);
+
 	glBegin(GL_LINES);
 	
 	if (type == LightType::DIRECTIONAL)
@@ -104,7 +109,7 @@ void ComponentLight::DrawDebugLight() const
 			float3 debug_position = circle.GetPoint(angle);
 
 			Line line(debug_position, direction.Normalized());
-			float3 farPoint = line.GetPoint(DEBUG_DISTANCE);
+			float3 farPoint = line.GetPoint(-DEBUG_DISTANCE);
 
 			if (i > 0)
 			{
@@ -141,7 +146,30 @@ void ComponentLight::DrawDebugLight() const
 	}
 	else //POINT
 	{
+		float attenuation_distance = GetAttenuationDistance();
+		Circle circle(position, float3::unitX, attenuation_distance);
+		for (unsigned j = 0; j < 3; j++)
+		{
+			float angle = 0;
+			for (unsigned i = 0; i < 8; i++)
+			{
+				float3 debug_position = circle.GetPoint(angle);
 
+				LineSegment segment(position, debug_position);
+				glVertex3f(segment.a.x, segment.a.y, segment.a.z);
+				glVertex3f(segment.b.x, segment.b.y, segment.b.z);
+				angle += math::pi*0.25f;
+
+			}
+			if (j == 0)
+			{
+				circle.normal = float3::unitY;
+			}
+			else
+			{
+				circle.normal = float3::unitZ;
+			}
+		}
 	}
 	glEnd();
 	glUseProgram(0);
@@ -152,7 +180,7 @@ void ComponentLight::Load(const JSON_value & value)
 	Component::Load(value);
 	if (gameobject->transform == nullptr) return;
 
-	type = (LightType)value.GetUint("Type");
+	type = (LightType)value.GetUint("Lighttype");
 	position = gameobject->transform->position;
 	direction = gameobject->transform->rotation*float3::unitZ;
 
@@ -172,7 +200,7 @@ void ComponentLight::Save(JSON_value * value) const
 {
 	Component::Save(value);
 
-	value->AddUint("Type", (unsigned)type);
+	value->AddUint("Lighttype", (unsigned)type);
 
 	if (type != LightType::DIRECTIONAL)
 	{
@@ -196,12 +224,28 @@ void ComponentLight::ResetValues()
 	float polar = 0.f; 
 	float azimuth = 0.f; 
 	color = float3::one;
-	attenuation = float3::zero;
+	attenuation = float3(0.1f, 0.1f, 0.1f);
 	inner = 20.f;
 	outer = 25.f;
 }
 
 float ComponentLight::GetAttenuationDistance() const
 {
-	return 5.f;
+	float a = attenuation[2];
+	float b = attenuation[1];
+	float c = attenuation[0] - 10; // 1(constant+linear*distance...) < 0.1
+	
+	float delta = b * b - 4 * a * c;
+	if (delta < 0)
+	{
+		LOG("Error in Attenuation Distance");
+		return 0.f;
+	}
+
+	if (a == 0) //quadratic is 0
+	{
+		return -c / b;
+	}
+	return (-b + sqrt(delta)) / (2*a);
+
 }

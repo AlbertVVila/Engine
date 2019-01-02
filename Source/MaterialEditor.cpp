@@ -111,15 +111,15 @@ void MaterialEditor::Draw()
 		{
 			ImGui::PushID(&material->specular_color);
 			ImGui::ColorEdit3("Color", (float*)&material->specular_color);
-			static std::string item_current = "None selected";
-			if (ImGui::BeginCombo("Texture", item_current.c_str()))
+			static std::string specular_current = "None selected";
+			if (ImGui::BeginCombo("Texture", specular_current.c_str()))
 			{
 				for (int n = 0; n < textureFiles.size(); n++)
 				{
-					bool is_selected = (item_current == textureFiles[n]);
+					bool is_selected = (specular_current == textureFiles[n]);
 					if (ImGui::Selectable(textureFiles[n].c_str(), is_selected))
 					{
-						item_current = textureFiles[n];
+						specular_current = textureFiles[n];
 						material->textures[(unsigned)TextureType::SPECULAR] = App->textures->GetTexture(item_current.c_str());
 					}
 					if (is_selected)

@@ -11,6 +11,7 @@
 #include "ComponentTransform.h"
 #include "ComponentRenderer.h"
 #include "ComponentCamera.h"
+#include "ComponentLight.h"
 
 #include "Material.h"
 #include "Mesh.h"
@@ -297,4 +298,42 @@ void ModuleScene::Pick(float normalized_x, float normalized_y)
 unsigned ModuleScene::GetNewUID()
 {
 	return uuid_rng();
+}
+
+std::list<ComponentLight*> ModuleScene::GetClosestSpotLights(float3 position) const
+{
+	std::list<ComponentLight*> spots;
+	for (const auto& light : lights)
+	{
+		if (light->type == LightType::SPOT)
+		{
+			spots.push_back(light);
+		}
+	}
+	return spots;
+}
+
+std::list<ComponentLight*> ModuleScene::GetClosestPointLights(float3 position) const
+{
+	std::list<ComponentLight*> points;
+	for (const auto& light : lights)
+	{
+		if (light->type == LightType::POINT)
+		{
+			points.push_back(light);
+		}
+	}
+	return points;
+}
+
+ComponentLight * ModuleScene::GetDirectionalLight() const
+{
+	for (const auto& light : lights)
+	{
+		if (light->type == LightType::DIRECTIONAL)
+		{
+			return light;
+		}
+	}
+	return nullptr;
 }

@@ -143,12 +143,17 @@ void GameObject::Draw(const math::Frustum& frustum)
 		}
 		glBindTexture(GL_TEXTURE_2D, material->textures[i]->id);
 		glUniform1i(glGetUniformLocation(shader->id,  textureName), i);
+		glDisable(GL_TEXTURE_2D);
 	}
-
-	if (App->scene->light != nullptr)
+	//lighting
+	ComponentLight* directional = App->scene->GetDirectionalLight();
+	if (directional != nullptr)
 	{
 		glUniform3fv(glGetUniformLocation(shader->id,
-			"lightPos"), 1, (GLfloat*)&App->scene->light->position);
+			"lights.directional.direction"), 1, (GLfloat*)&directional->direction);
+
+		glUniform3fv(glGetUniformLocation(shader->id,
+			"lights.directional.color"), 1, (GLfloat*)&directional->color);
 	}
 
 	//mat
@@ -165,6 +170,7 @@ void GameObject::Draw(const math::Frustum& frustum)
 	UpdateModel(shader->id);
 	crenderer->mesh->Draw(shader->id);
 
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glUseProgram(0);
 }
@@ -337,10 +343,7 @@ Component * GameObject::CreateComponent(ComponentType type)
 		break;
 	case ComponentType::Light:
 		component = new ComponentLight(this);
-		if (App->scene->light == nullptr)
-		{
-			App->scene->light = (ComponentLight*)component;
-		}
+		App->scene->lights.push_back((ComponentLight*)component);
 		break;
 	case ComponentType::Camera:
 		component = new ComponentCamera(this);
