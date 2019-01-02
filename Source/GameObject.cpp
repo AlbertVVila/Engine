@@ -1,7 +1,7 @@
 #include "GameObject.h"
 
-#include "assimp/matrix4x4.h"
 #include "Math/float4x4.h"
+#include "Math/MathFunc.h"
 #include "Geometry/LineSegment.h"
 #include "GL/glew.h"
 #include "imgui.h"
@@ -155,6 +155,75 @@ void GameObject::Draw(const math::Frustum& frustum)
 		glUniform3fv(glGetUniformLocation(shader->id,
 			"lights.directional.color"), 1, (GLfloat*)&directional->color);
 	}
+	int i = 0;
+	for (const auto & spot : App->scene->GetClosestSpotLights(transform->position))
+	{
+		char buffer[32];
+
+		sprintf(buffer, "lights.spots[%d].position", i);
+		glUniform3fv(glGetUniformLocation(shader->id,
+			buffer), 1, (GLfloat*)&spot->position);
+
+		memset(buffer, 0, 32);
+		sprintf(buffer, "lights.spots[%d].direction", i);
+		glUniform3fv(glGetUniformLocation(shader->id,
+			buffer), 1, (GLfloat*)&spot->direction);
+
+		memset(buffer, 0, 32);
+		sprintf(buffer, "lights.spots[%d].color", i);
+		glUniform3fv(glGetUniformLocation(shader->id,
+			buffer), 1, (GLfloat*)&spot->color);
+
+		memset(buffer, 0, 32);
+		sprintf(buffer, "lights.spots[%d].attenuation", i);
+		glUniform3fv(glGetUniformLocation(shader->id,
+			buffer), 1, (GLfloat*)&spot->attenuation);
+
+		memset(buffer, 0, 32);
+		float innerRad = cosf(math::DegToRad(spot->inner));
+		sprintf(buffer, "lights.spots[%d].inner", i);
+		glUniform1fv(glGetUniformLocation(shader->id,
+			buffer), 1, (GLfloat*)&innerRad);
+
+		memset(buffer, 0, 32);
+		float outerRad = cosf(math::DegToRad(spot->outer));
+		sprintf(buffer, "lights.spots[%d].outer", i);
+		glUniform1fv(glGetUniformLocation(shader->id,
+			buffer), 1, (GLfloat*)&outerRad);
+
+		++i;
+	}
+	glUniform1ui(glGetUniformLocation(shader->id,
+		"lights.num_spots"), i);
+
+	i = 0;
+	for (const auto & point : App->scene->GetClosestPointLights(transform->position))
+	{
+		char buffer[32];
+
+		sprintf(buffer, "lights.points[%d].position", i);
+		glUniform3fv(glGetUniformLocation(shader->id,
+			buffer), 1, (GLfloat*)&point->position);
+
+		memset(buffer, 0, 32);
+		sprintf(buffer, "lights.points[%d].direction", i);
+		glUniform3fv(glGetUniformLocation(shader->id,
+			buffer), 1, (GLfloat*)&point->direction);
+
+		memset(buffer, 0, 32);
+		sprintf(buffer, "lights.points[%d].color", i);
+		glUniform3fv(glGetUniformLocation(shader->id,
+			buffer), 1, (GLfloat*)&point->color);
+
+		memset(buffer, 0, 32);
+		sprintf(buffer, "lights.points[%d].attenuation", i);
+		glUniform3fv(glGetUniformLocation(shader->id,
+			buffer), 1, (GLfloat*)&point->attenuation);
+
+		++i;
+	}
+	glUniform1ui(glGetUniformLocation(shader->id,
+		"lights.num_points"), i);
 
 	//mat
 	glUniform1fv(glGetUniformLocation(shader->id,

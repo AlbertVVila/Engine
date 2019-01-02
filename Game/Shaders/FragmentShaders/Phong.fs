@@ -124,7 +124,7 @@ vec3 directional_phong(vec3 normal, vec3 viewPos, DirLight dir, vec4 diffuse_col
 
 vec3 point_phong(vec3 normal, vec3 viewPos, PointLight point, vec4 diffuse_color, vec3 specular_color)
 {
-	vec3 lightDir = position - point.position;
+	vec3 lightDir = point.position - position;
 	float distance = length(lightDir);
 	lightDir = lightDir/distance;
 	float att = get_attenuation(point.attenuation, distance);
@@ -139,17 +139,22 @@ vec3 point_phong(vec3 normal, vec3 viewPos, PointLight point, vec4 diffuse_color
 
 vec3 spot_phong(vec3 normal, vec3 viewPos, SpotLight spot, vec4 diffuse_color, vec3 specular_color)
 {
-	vec3 lightDir = position - spot.position;
+	vec3 lightDir = spot.position - position;
 	float distance = length(lightDir);
 	lightDir = lightDir/distance;
-	float cos_a = min(1.0, max(0.0, (dot(lightDir, spot.direction) - spot.outer) / max(0.0001, spot.inner-spot.outer)));
-	float att = get_attenuation(spot.attenuation, distance) * cos_a;
+
+	float theta = dot(normalize(lightDir), normalize(-spot.direction));
+	float epsilon = max(0.0001, spot.inner-spot.outer);
+	float cone = clamp((theta - spot.outer) / epsilon, 0.0, 1.0); 
+	
+	float att = get_attenuation(spot.attenuation, distance)* cone;
 
 	float diffuse = lambert(lightDir, normal);
 	float specular = specular_phong(lightDir, position, normal, viewPos, material.shininess);
 
 	vec3 color = att * spot.color * (diffuse_color.rgb *(diffuse * material.k_diffuse +
-				 specular_color.rgb * specular * material.k_specular));
+				specular_color.rgb * specular * material.k_specular));
+
 	return color;
 }
 

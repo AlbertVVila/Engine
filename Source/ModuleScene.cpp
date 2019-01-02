@@ -305,7 +305,7 @@ std::list<ComponentLight*> ModuleScene::GetClosestSpotLights(float3 position) co
 	std::list<ComponentLight*> spots;
 	for (const auto& light : lights)
 	{
-		if (light->type == LightType::SPOT)
+		if (light->type == LightType::SPOT  && light->enabled)
 		{
 			spots.push_back(light);
 		}
@@ -318,7 +318,7 @@ std::list<ComponentLight*> ModuleScene::GetClosestPointLights(float3 position) c
 	std::list<ComponentLight*> points;
 	for (const auto& light : lights)
 	{
-		if (light->type == LightType::POINT)
+		if (light->type == LightType::POINT  && light->enabled)
 		{
 			points.push_back(light);
 		}
@@ -330,7 +330,7 @@ ComponentLight * ModuleScene::GetDirectionalLight() const
 {
 	for (const auto& light : lights)
 	{
-		if (light->type == LightType::DIRECTIONAL)
+		if (light->type == LightType::DIRECTIONAL && light->enabled)
 		{
 			return light;
 		}

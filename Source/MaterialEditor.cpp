@@ -54,24 +54,24 @@ void MaterialEditor::Draw()
 		ImGui::DragFloat("Shininess", &material->shininess, .05f, .0f, 256.f);
 
 		std::vector<std::string> shaders = App->fsystem->ListFiles(VERTEXSHADERS, false);
-		static std::string item_current;
+		static std::string shader_current;
 		if (material->shader == nullptr)
 		{
-			item_current = "None Selected";
+			shader_current = "None Selected";
 		}
 		else
 		{
-			item_current = material->shader->file;
+			shader_current = material->shader->file;
 		}
-		if (ImGui::BeginCombo("Shader", item_current.c_str())) // The second parameter is the label previewed before opening the combo.
+		if (ImGui::BeginCombo("Shader", shader_current.c_str())) // The second parameter is the label previewed before opening the combo.
 		{
 			for (int n = 0; n < shaders.size(); n++)
 			{
-				bool is_selected = (item_current == shaders[n]);
-				if (ImGui::Selectable(shaders[n].c_str(), is_selected) && item_current != shaders[n])
+				bool is_selected = (shader_current == shaders[n]);
+				if (ImGui::Selectable(shaders[n].c_str(), is_selected) && shader_current != shaders[n])
 				{
-					item_current = shaders[n];
-					material->shader = App->program->GetProgram(item_current.c_str());
+					shader_current = shaders[n];
+					material->shader = App->program->GetProgram(shader_current.c_str());
 				}
 				if (is_selected)
 					ImGui::SetItemDefaultFocus();
@@ -84,16 +84,16 @@ void MaterialEditor::Draw()
 		{
 			ImGui::PushID(&material->diffuse_color);
 			ImGui::ColorEdit4("Color", (float*)&material->diffuse_color, ImGuiColorEditFlags_AlphaPreview);
-			static std::string item_current = "None selected";
-			if (ImGui::BeginCombo("Texture", item_current.c_str()))
+			static std::string diffuse_current = "None selected";
+			if (ImGui::BeginCombo("Texture", diffuse_current.c_str()))
 			{
 				for (int n = 0; n < textureFiles.size(); n++)
 				{
-					bool is_selected = (item_current == textureFiles[n]);
+					bool is_selected = (diffuse_current == textureFiles[n]);
 					if (ImGui::Selectable(textureFiles[n].c_str(), is_selected))
 					{
-						item_current = textureFiles[n];
-						material->textures[(unsigned)TextureType::DIFFUSE] = App->textures->GetTexture(item_current.c_str());
+						diffuse_current = textureFiles[n];
+						material->textures[(unsigned)TextureType::DIFFUSE] = App->textures->GetTexture(diffuse_current.c_str());
 					}
 					if (is_selected)
 						ImGui::SetItemDefaultFocus();
@@ -120,7 +120,7 @@ void MaterialEditor::Draw()
 					if (ImGui::Selectable(textureFiles[n].c_str(), is_selected))
 					{
 						specular_current = textureFiles[n];
-						material->textures[(unsigned)TextureType::SPECULAR] = App->textures->GetTexture(item_current.c_str());
+						material->textures[(unsigned)TextureType::SPECULAR] = App->textures->GetTexture(specular_current.c_str());
 					}
 					if (is_selected)
 						ImGui::SetItemDefaultFocus();
@@ -137,16 +137,16 @@ void MaterialEditor::Draw()
 		if (ImGui::CollapsingHeader("Occlusion"))
 		{
 			ImGui::PushID(&material->textures[(unsigned)TextureType::OCCLUSION]);
-			static std::string item_current = "None selected";
-			if (ImGui::BeginCombo("Texture", item_current.c_str()))
+			static std::string occlusion_current = "None selected";
+			if (ImGui::BeginCombo("Texture", occlusion_current.c_str()))
 			{
 				for (int n = 0; n < textureFiles.size(); n++)
 				{
-					bool is_selected = (item_current == textureFiles[n]);
+					bool is_selected = (occlusion_current == textureFiles[n]);
 					if (ImGui::Selectable(textureFiles[n].c_str(), is_selected))
 					{
-						item_current = textureFiles[n];
-						material->textures[(unsigned)TextureType::OCCLUSION] = App->textures->GetTexture(item_current.c_str());
+						occlusion_current = textureFiles[n];
+						material->textures[(unsigned)TextureType::OCCLUSION] = App->textures->GetTexture(occlusion_current.c_str());
 					}
 					if (is_selected)
 						ImGui::SetItemDefaultFocus();
@@ -163,16 +163,16 @@ void MaterialEditor::Draw()
 		if (ImGui::CollapsingHeader("Emissive"))
 		{
 			ImGui::ColorEdit3("Color", (float*)&material->emissive_color);
-			static std::string item_current = "None selected";
-			if (ImGui::BeginCombo("Texture", item_current.c_str()))
+			static std::string emissive_current = "None selected";
+			if (ImGui::BeginCombo("Texture", emissive_current.c_str()))
 			{
 				for (int n = 0; n < textureFiles.size(); n++)
 				{
-					bool is_selected = (item_current == textureFiles[n]);
+					bool is_selected = (emissive_current == textureFiles[n]);
 					if (ImGui::Selectable(textureFiles[n].c_str(), is_selected))
 					{
-						item_current = textureFiles[n];
-						material->textures[(unsigned)TextureType::EMISSIVE] = App->textures->GetTexture(item_current.c_str());
+						emissive_current = textureFiles[n];
+						material->textures[(unsigned)TextureType::EMISSIVE] = App->textures->GetTexture(emissive_current.c_str());
 					}
 					if (is_selected)
 						ImGui::SetItemDefaultFocus();

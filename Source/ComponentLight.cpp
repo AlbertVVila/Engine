@@ -33,8 +33,8 @@ ComponentLight::~ComponentLight()
 void ComponentLight::Update() 
 {
 	if (gameobject->transform == nullptr) return;
-	position = gameobject->transform->position;
-	direction = gameobject->transform->rotation*float3::unitZ;
+	position = gameobject->transform->position; //TODO: global?
+	direction = -(gameobject->transform->rotation*float3::unitZ).Normalized();
 }
 
 void ComponentLight::DrawProperties()
@@ -79,8 +79,8 @@ void ComponentLight::DrawProperties()
 		if (type == LightType::SPOT)
 		{
 			ImGui::Text("Angle");
-			ImGui::DragFloat("Inner", (float*)&inner, 0.1f, 0.f, 100.f);
-			ImGui::DragFloat("Outer", (float*)&outer, 0.1f, 0.f, 100.f);
+			ImGui::DragFloat("Inner", (float*)&inner, 0.1f, 0.f, 90.f);
+			ImGui::DragFloat("Outer", (float*)&outer, 0.1f, 0.f, 90.f);
 		}
 	}
 }
@@ -129,7 +129,7 @@ void ComponentLight::DrawDebugLight() const
 	{
 		float attenuation_distance = GetAttenuationDistance();
 		float3 circleCenter = position + attenuation_distance * direction.Normalized();
-		float radius = attenuation_distance * tanf(math::DegToRad(inner));
+		float radius = attenuation_distance * tanf(math::DegToRad(outer));
 		Circle circle(circleCenter, direction, radius);
 
 		float angle = 0;
@@ -233,7 +233,7 @@ float ComponentLight::GetAttenuationDistance() const
 {
 	float a = attenuation[2];
 	float b = attenuation[1];
-	float c = attenuation[0] - 10; // 1(constant+linear*distance...) < 0.1
+	float c = attenuation[0] - 5; // 1/(constant+linear*distance...) < 0.2
 	
 	float delta = b * b - 4 * a * c;
 	if (delta < 0)
