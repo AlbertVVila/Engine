@@ -19,6 +19,7 @@
 #include "ModuleInput.h"
 #include "ModuleScene.h"
 #include "ModuleTextures.h"
+#include "ModuleRender.h"
 
 #include "Material.h"
 #include "Mesh.h"
@@ -96,7 +97,7 @@ void GameObject::Draw(const math::Frustum& frustum)
 	}
 
 	ComponentLight* light = (ComponentLight*)GetComponent(ComponentType::Light);
-	if (light != nullptr)
+	if (light != nullptr && App->renderer->light_debug)
 	{
 		light->DrawDebugLight();
 	}

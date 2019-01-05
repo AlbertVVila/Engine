@@ -368,9 +368,14 @@ void ModuleRender::DrawGUI()
 	ImGui::Checkbox("MSAA", &msaa);
 	if (msaa)
 	{
+		int previous_msaa_level = msaa_level;
 		ImGui::RadioButton("x2", &msaa_level, 2); ImGui::SameLine();
 		ImGui::RadioButton("x4", &msaa_level, 4); ImGui::SameLine();
 		ImGui::RadioButton("x8", &msaa_level, 8);
+		if (previous_msaa_level != msaa_level)
+		{
+			msaa_lvl_changed = true;
+		}
 	}
 	ImGui::Checkbox("Picker Debug", &picker_debug);
 	ImGui::Checkbox("Light Debug", &light_debug);

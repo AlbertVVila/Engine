@@ -58,7 +58,14 @@ void PanelScene::Draw()
 	current_width = size.x;
 	current_height = size.y;
 
-	glBindFramebuffer(GL_FRAMEBUFFER, MSAAFBO);
+	if (App->renderer->msaa)
+	{
+		glBindFramebuffer(GL_FRAMEBUFFER, MSAAFBO);
+	}
+	else
+	{
+		glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+	}
 	App->renderer->Draw(*App->camera->editorcamera, current_width, current_height);
 	if (App->renderer->msaa) //TODO apply draws and msaa to each camera in scene ->use viewport class o
 	{
@@ -133,6 +140,15 @@ void PanelScene::CreateFrameBuffer(int width, int height)
 		if (App->renderer->msaa)
 		{
 			CreateMSAABuffers(width, height);
+		}
+
+	}
+	else
+	{
+		if (App->renderer->msaa_lvl_changed)
+		{
+			CreateMSAABuffers(width, height);
+			App->renderer->msaa_lvl_changed = false;
 		}
 	}
 }

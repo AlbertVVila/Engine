@@ -37,8 +37,11 @@ private:
 
 public:
 	void* context = nullptr;
+
 	bool msaa = true;
 	int msaa_level = 8;
+	bool msaa_lvl_changed = false;
+
 	bool picker_debug = false;
 	bool light_debug = true;
 
