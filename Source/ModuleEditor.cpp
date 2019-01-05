@@ -133,6 +133,10 @@ update_status ModuleEditor::Update()
 	{
 		if (ImGui::BeginMenu("File"))
 		{
+			if (ImGui::MenuItem("New"))
+			{
+				App->scene->ClearScene();
+			}
 			if (ImGui::BeginMenu("Load"))
 			{
 				std::vector<std::string> files = App->fsystem->ListFiles(SCENES);

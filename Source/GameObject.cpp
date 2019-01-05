@@ -76,6 +76,9 @@ GameObject::~GameObject()
 		RELEASE(child);
 	}
 
+	components.clear();
+	children.clear();
+
 	transform = nullptr;
 	parent = nullptr;
 }
@@ -674,6 +677,10 @@ bool GameObject::CleanUp()
 	{
 		child->CleanUp();
 	}
+
+	transform = nullptr;
+	parent = nullptr;
+
 	return true;
 }
 

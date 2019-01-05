@@ -37,6 +37,7 @@ public:
 	unsigned SaveParShapesMesh(const par_shapes_mesh_s & mesh, char** data) const;
 	void SaveScene(const GameObject &rootGO, const char* name) const;
 	void LoadScene(const char * scene);
+	void ClearScene();
 	void Select(GameObject* gameobject);
 	void Pick(float normalized_x, float normalized_y);
 	unsigned GetNewUID();

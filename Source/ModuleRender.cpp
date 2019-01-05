@@ -379,6 +379,7 @@ void ModuleRender::DrawGUI()
 	}
 	ImGui::Checkbox("Picker Debug", &picker_debug);
 	ImGui::Checkbox("Light Debug", &light_debug);
+	ImGui::Checkbox("QuadTree Debug", &quadtree_debug);
 	
 }
 

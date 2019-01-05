@@ -6,6 +6,7 @@
 #include "ModuleProgram.h"
 #include "ModuleTextures.h"
 #include "ModuleResourceManager.h"
+#include "ModuleRender.h"
 
 #include "GameObject.h"
 #include "ComponentTransform.h"
@@ -69,12 +70,29 @@ update_status ModuleScene::Update()
 
 bool ModuleScene::CleanUp()
 {
-	return root->CleanUp();
+	quadtree->Clear();
+	root->CleanUp();
+	for (auto &child : root->children)
+	{
+		RELEASE(child);
+	}
+	root->children.clear();
+
+	
+	selected = nullptr;
+	maincamera = nullptr;
+	camera_notfound_texture = nullptr;
+	lights.clear();
+
+	return true;
 }
 
 void ModuleScene::Draw(const math::Frustum &frustum)
 {
-	quadtree->Draw();
+	if(App->renderer->quadtree_debug)
+	{
+		quadtree->Draw();
+	}
 	root->Draw(frustum);
 }
 
@@ -245,6 +263,11 @@ void ModuleScene::LoadScene(const char* scene)
 			gameobject->parent->children.push_back(gameobject);
 		}
 	}
+}
+
+void ModuleScene::ClearScene()
+{
+	CleanUp();
 }
 
 void ModuleScene::Select(GameObject * gameobject)
