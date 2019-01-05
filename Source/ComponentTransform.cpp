@@ -1,6 +1,10 @@
 #include "ComponentTransform.h"
+
+#include "GameObject.h"
+
 #include <assimp/scene.h> 
 #include "imgui.h"
+#include "imgui_internal.h"
 #include "Math/MathFunc.h"
 #include "Math/float4x4.h"
 #include "JSON.h"
@@ -39,15 +43,27 @@ void ComponentTransform::DrawProperties()
 {
 	if (ImGui::CollapsingHeader("Local Transformation", ImGuiTreeNodeFlags_DefaultOpen))
 	{
+		if (gameobject->isStatic)
+		{
+			ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+			ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+		}
+
 		ImGui::DragFloat3("Position", (float*)&position, 0.1f, -1000.f, 1000.f);
 
 		ImGui::DragFloat3("Rotation", (float*)&eulerRotation, 0.5f, -180, 180.f);
 
-		rotation =rotation.FromEulerXYZ(math::DegToRad(eulerRotation.x),
+		rotation = rotation.FromEulerXYZ(math::DegToRad(eulerRotation.x),
 			math::DegToRad(eulerRotation.y), math::DegToRad(eulerRotation.z));
 
 		ImGui::DragFloat3("Scale", (float*)&scale, 0.1f, 0.01f, 100.f);
 		ImGui::Separator();
+
+		if (gameobject->isStatic)
+		{
+			ImGui::PopItemFlag();
+			ImGui::PopStyleVar();
+		}
 	}
 }
 

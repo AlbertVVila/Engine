@@ -42,6 +42,7 @@ public:
 	void Save(JSON_value *gameobjects) const;
 	void Load(const JSON_value & gameobject);
 	bool IsParented(const GameObject & gameobject);
+	void SetStaticAncestors();
 	AABB GetBoundingBox() const;
 	bool MeshIntersects(const LineSegment & line, float* distance) const;
 

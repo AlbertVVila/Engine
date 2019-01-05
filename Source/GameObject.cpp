@@ -23,7 +23,7 @@
 #include "Material.h"
 #include "Mesh.h"
 #include "myQuadTree.h"
-
+#include <stack>
 #include "JSON.h"
 
 #define MAX_NAME 64
@@ -287,15 +287,19 @@ void GameObject::DrawProperties()
 	ImGui::InputText("Name", go_name, MAX_NAME);
 	name = go_name;
 	delete[] go_name;
-	if (ImGui::Checkbox("Static", &isStatic))
+	if (this != App->scene->root)
 	{
-		if (isStatic && GetComponent(ComponentType::Renderer) != nullptr)
+		if (ImGui::Checkbox("Static", &isStatic))
 		{
-			App->scene->quadtree->Insert(this);
-		}
-		else if (!isStatic)
-		{
-			App->scene->quadtree->Remove(*this); //TODO: doesn't remove on meshrenderer deletion
+			if (isStatic && GetComponent(ComponentType::Renderer) != nullptr)
+			{
+				SetStaticAncestors();
+				App->scene->quadtree->Insert(this);
+			}
+			else if (!isStatic)
+			{
+				App->scene->quadtree->Remove(*this); //TODO: doesn't remove on meshrenderer deletion
+			}
 		}
 	}
 
@@ -731,4 +735,19 @@ bool GameObject::IsParented(const GameObject & gameobject)
 		}
 	}
 	return false;
+}
+
+void GameObject::SetStaticAncestors()
+{
+	std::stack<GameObject*> parents;
+	parents.push(parent);
+	while (!parents.empty() && parents.top() != App->scene->root)
+	{
+		GameObject* go = parents.top();
+		go->isStatic = true;
+		App->scene->quadtree->Insert(go);
+
+		parents.pop();
+		parents.push(go->parent);
+	}
 }

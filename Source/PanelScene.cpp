@@ -198,7 +198,14 @@ void PanelScene::DrawImGuizmo()
 
 	if (App->scene->selected != nullptr) //TODO: WORLD translation + rotation, scale? -> LOCAL do it with local !watch rotation
 	{
-
+		if (App->scene->selected->isStatic)
+		{
+			ImGuizmo::Enable(false);
+		}
+		else
+		{
+			ImGuizmo::Enable(true);
+		}
 		float4x4 model = App->scene->selected->GetGlobalTransform();
 		float4x4 view = App->camera->editorcamera->GetViewMatrix();
 		float4x4 proj = App->camera->editorcamera->GetProjectionMatrix();
@@ -206,9 +213,12 @@ void PanelScene::DrawImGuizmo()
 		model.Transpose();
 		//ImGuizmo::DrawCube((float*)&view, (float*)&proj, (float*)&model);
 		ImGuizmo::Manipulate((float*)&view, (float*)&proj, mCurrentGizmoOperation, ImGuizmo::LOCAL, (float*)&model, NULL, NULL, NULL, NULL);
-		model.Transpose();
 
-		App->scene->selected->SetGlobalTransform(model);
+		if (ImGuizmo::IsUsing())
+		{
+			model.Transpose();
+			App->scene->selected->SetGlobalTransform(model);
+		}
 	}
 }
 

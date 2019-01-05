@@ -132,8 +132,11 @@ void Mesh::SetMesh(const char * meshData, unsigned uid)
 	UID = uid;
 	this->numIndices = numIndices;
 	this->numVertices = numVertices;
-	this->vertices = vertices; //TODO: !!should copy before delete
-	this->indices = indices;
+
+	this->vertices = new float[numVertices*3];
+	this->indices = new int[numIndices];
+	memcpy(this->vertices, vertices, numVertices * sizeof(float) * 3);
+	memcpy(this->indices, indices, numIndices * sizeof(int));
 	ComputeBBox();
 }
 
