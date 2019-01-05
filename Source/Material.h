@@ -37,8 +37,6 @@ public:
 	//Shader* GetShader() const;
 
 	std::list<Texture*> GetTextures() const;
-	void SetMaterial(const char * file = nullptr);
-	void SetMaterial(const Material & material);
 
 public:
 	std::string name;

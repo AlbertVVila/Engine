@@ -185,7 +185,7 @@ void MaterialEditor::Draw()
 			}
 			ImGui::Separator();
 		}
-		if (ImGui::Button("OK", ImVec2(120, 0))) {
+		if (ImGui::Button("Save", ImVec2(120, 0))) {
 			material->Save();
 			CleanUp();
 		}

@@ -44,17 +44,17 @@ void Material::Load(const char * materialfile)
 	const char *specularFile = materialJSON->GetString("specular");
 	if (specularFile != nullptr)
 	{
-		textures[(unsigned)TextureType::DIFFUSE] = App->textures->GetTexture(specularFile);
+		textures[(unsigned)TextureType::SPECULAR] = App->textures->GetTexture(specularFile);
 	}
 	const char *occlusionFile = materialJSON->GetString("occlusion");
 	if (occlusionFile != nullptr)
 	{
-		textures[(unsigned)TextureType::DIFFUSE] = App->textures->GetTexture(occlusionFile);
+		textures[(unsigned)TextureType::OCCLUSION] = App->textures->GetTexture(occlusionFile);
 	}
 	const char *emissiveFile = materialJSON->GetString("emissive");
 	if (emissiveFile != nullptr)
 	{
-		textures[(unsigned)TextureType::DIFFUSE] = App->textures->GetTexture(emissiveFile);
+		textures[(unsigned)TextureType::EMISSIVE] = App->textures->GetTexture(emissiveFile);
 	}
 	
 	const char* shaderName = materialJSON->GetString("shader");

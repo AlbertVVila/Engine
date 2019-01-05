@@ -183,6 +183,6 @@ void main()
 
 	color += 	 emissive_color + //emissive
 				 diffuse_color.rgb * occlusion_color * material.k_ambient; //ambient
-				 
+
 	Fragcolor = vec4(color, diffuse_color.a);
 }

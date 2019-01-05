@@ -18,7 +18,6 @@
 ComponentRenderer::ComponentRenderer(GameObject * gameobject) : Component(gameobject, ComponentType::Renderer)
 {
 	mesh = new Mesh();
-	SetMaterial(DEFAULTMAT);
 }
 
 ComponentRenderer::ComponentRenderer(const ComponentRenderer & component) : Component(component)
@@ -107,36 +106,33 @@ void ComponentRenderer::Load(const JSON_value & value) //TODO: delete + releases
 	App->resManager->AddMesh(mesh);
 
 	const char* materialFile = value.GetString("materialFile");
-
-	App->resManager->DeleteMaterial(material->name);
-	Material *mat = App->resManager->GetMaterial(materialFile);
-	if (mat != nullptr)
-	{
-		material = mat;
-	}
-	else
-	{
-		material->Load(materialFile);
-	}
-	App->resManager->AddMaterial(material);
+	SetMaterial(materialFile);
 }
 
 void ComponentRenderer::SetMaterial(const char * materialfile)
 {
-	assert(materialfile != nullptr);
-
-	if (material != nullptr)
+	if (material != nullptr && material->name != materialfile)
 	{
 		App->resManager->DeleteMaterial(material->name);
 	}
-	material = App->resManager->GetMaterial(materialfile);
-	if (material == nullptr)
+	if (materialfile == nullptr)
 	{
-		material = new Material();
-		material->Load(materialfile);
-		App->resManager->AddMaterial(material);
-		return;
+		Material *mat = App->resManager->GetMaterial(DEFAULTMAT);
 	}
+	else
+	{
+		Material *mat = App->resManager->GetMaterial(materialfile);
+		if (mat == nullptr)
+		{
+			material = new Material();
+			material->Load(materialfile);
+		}
+		else
+		{
+			material = mat;
+		}
+	}
+	App->resManager->AddMaterial(material);
 	return;
 }
 

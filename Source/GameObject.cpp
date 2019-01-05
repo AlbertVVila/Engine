@@ -112,37 +112,62 @@ void GameObject::Draw(const math::Frustum& frustum)
 
 	for (unsigned int i = 0; i < MAXTEXTURES; i++)
 	{
-		if (material->textures[i] == nullptr) continue;
-
 		glActiveTexture(GL_TEXTURE0 + i); 
 		
-		char* textureName;
+		char* textureType;
+		float* color = nullptr;
 		switch ((TextureType)i)
 		{
 			case TextureType::DIFFUSE:
-				textureName = "material.diffuse_texture";
-				glUniform4fv(glGetUniformLocation(shader->id,
-					"material.diffuse_color"), 1, (GLfloat*)&material->diffuse_color);
+				textureType = "diffuse";
+				color = (float*)&material->diffuse_color;
 				break;
 
 			case TextureType::SPECULAR:
-				textureName = "material.specular_texture";
-				glUniform3fv(glGetUniformLocation(shader->id,
-					"material.specular_color"), 1, (GLfloat*)&material->specular_color);
+				textureType = "specular";
+				color = (float*)&material->specular_color;
 				break;
 
 			case TextureType::OCCLUSION:
-				textureName = "material.occlusion_texture";
+				textureType = "occlusion";
 				break;
 
 			case TextureType::EMISSIVE:
-				textureName = "material.emissive_texture";
-				glUniform3fv(glGetUniformLocation(shader->id,
-					"material.emissive_color"), 1, (GLfloat*)&material->emissive_color);
+				textureType = "emissive";
+				color = (float*)&material->emissive_color;
 				break;
 		}
-		glBindTexture(GL_TEXTURE_2D, material->textures[i]->id);
-		glUniform1i(glGetUniformLocation(shader->id,  textureName), i);
+
+		char texture[32];
+		sprintf(texture, "material.%s_texture", textureType);
+
+		char uniform[32];
+		sprintf(uniform, "material.%s_color", textureType);
+
+		if (material->textures[i] != nullptr)
+		{
+			if (i == (unsigned)TextureType::DIFFUSE)
+			{
+				glUniform4fv(glGetUniformLocation(shader->id,
+					uniform), 1, color);
+			}
+			else
+			{
+				glUniform3fv(glGetUniformLocation(shader->id,
+					uniform), 1, color);
+			}
+			glBindTexture(GL_TEXTURE_2D, material->textures[i]->id);
+
+			glUniform1i(glGetUniformLocation(shader->id, texture), i);
+		}
+		else
+		{
+			float3 noColor = float3::zero;
+
+			glUniform3fv(glGetUniformLocation(shader->id,
+				uniform), 1, (GLfloat*)&noColor);
+			glUniform1i(glGetUniformLocation(shader->id, texture), 0); //Reset uniform if texture not used in shader
+		}
 		glDisable(GL_TEXTURE_2D);
 	}
 	//lighting
@@ -155,6 +180,17 @@ void GameObject::Draw(const math::Frustum& frustum)
 		glUniform3fv(glGetUniformLocation(shader->id,
 			"lights.directional.color"), 1, (GLfloat*)&directional->color);
 	}
+	else
+	{
+		float3 noDirectional = float3::zero;
+		glUniform3fv(glGetUniformLocation(shader->id,
+			"lights.directional.direction"), 1, (GLfloat*)&noDirectional);
+
+		glUniform3fv(glGetUniformLocation(shader->id,
+			"lights.directional.color"), 1, (GLfloat*)&noDirectional);
+	}
+
+
 	int i = 0;
 	for (const auto & spot : App->scene->GetClosestSpotLights(transform->position))
 	{
