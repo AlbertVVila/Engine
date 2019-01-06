@@ -55,6 +55,7 @@ public:
 
 	std::list<ComponentLight*> lights;
 	myQuadTree * quadtree = nullptr;
+	std::list<GameObject*> dynamicGO;
 	pcg32 uuid_rng;
 	std::string name;
 };
