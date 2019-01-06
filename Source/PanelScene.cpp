@@ -193,9 +193,9 @@ void PanelScene::DrawImGuizmo()
 	ImGuizmo::SetDrawlist();
 
 	static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::TRANSLATE);
+	static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::WORLD);
 
 	ImGui::SetCursorPos({ 20,30 });
-
 
 	if (ImGui::Button("Translate"))
 	{
@@ -212,23 +212,36 @@ void PanelScene::DrawImGuizmo()
 		mCurrentGizmoOperation = ImGuizmo::SCALE;
 	}
 
+	ImGui::SameLine();
+	if (mCurrentGizmoMode == ImGuizmo::WORLD)
+	{
+		if (ImGui::Button("Local"))
+		{
+			mCurrentGizmoMode = ImGuizmo::LOCAL;
+		}
+	}
+	else
+	{
+		if (ImGui::Button("World"))
+		{
+			mCurrentGizmoMode = ImGuizmo::WORLD;
+		}
+	}
+
 	if (App->scene->selected != nullptr) //TODO: WORLD translation + rotation, scale? -> LOCAL do it with local !watch rotation
 	{
-		if (App->scene->selected->isStatic)
-		{
-			ImGuizmo::Enable(false);
-		}
-		else
-		{
-			ImGuizmo::Enable(true);
-		}
+
+		ImGuizmo::Enable(!App->scene->selected->isStatic);
+
 		float4x4 model = App->scene->selected->GetGlobalTransform();
 		float4x4 view = App->camera->editorcamera->GetViewMatrix();
 		float4x4 proj = App->camera->editorcamera->GetProjectionMatrix();
+
 		ImGuizmo::SetOrthographic(false);
+
 		model.Transpose();
 		//ImGuizmo::DrawCube((float*)&view, (float*)&proj, (float*)&model);
-		ImGuizmo::Manipulate((float*)&view, (float*)&proj, mCurrentGizmoOperation, ImGuizmo::LOCAL, (float*)&model, NULL, NULL, NULL, NULL);
+		ImGuizmo::Manipulate((float*)&view, (float*)&proj, mCurrentGizmoOperation, mCurrentGizmoMode, (float*)&model, NULL, NULL, NULL, NULL);
 
 		if (ImGuizmo::IsUsing())
 		{
