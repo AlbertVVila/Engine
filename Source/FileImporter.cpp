@@ -201,6 +201,7 @@ GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshma
 			mat->GetTexture((aiTextureType)i, 0, &texture, &mapping, 0);
 			if (texture.length > 0)
 			{
+				crenderer->SetMaterial(DEFAULTMAT);
 				crenderer->material->textures[i] = new Texture(App->fsystem->GetFilename(texture.C_Str()));// TODO: SOBRESCRIUS DEFAULT!!
 			}
 		}

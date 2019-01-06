@@ -30,6 +30,7 @@ public:
 	GameObject * CreateGameObject(const char * name, GameObject* parent);
 
 	void Draw(const math::Frustum &frustum);
+	void DrawGO(const math::Frustum &frustum);
 	void DrawHierarchy();
 	void CreateCube(const char * name, GameObject* parent, const float3 & pos = float3::zero, const Quat & rot = Quat::identity, float size = 1.f, const float4 & color = float4::one);
 	void CreateSphere(const char * name, GameObject* parent, const float3 & pos = float3::zero, const Quat & rot = Quat::identity, float size = 1.f, unsigned slices = 20u, unsigned stacks = 20u, const float4 & color = float4::one);

@@ -38,6 +38,8 @@ public:
 
 	std::list<Texture*> GetTextures() const;
 
+	void SetUniforms(unsigned shader) const;
+
 public:
 	std::string name;
 	Shader* shader = nullptr;

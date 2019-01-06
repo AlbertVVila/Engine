@@ -21,7 +21,6 @@ public:
 	GameObject(const GameObject& gameobject);
 	~GameObject();
 
-	void Draw(const math::Frustum& frustum);
 	void DrawProperties();
 	void DrawHierarchy(GameObject * obj_clicked);
 
@@ -45,11 +44,12 @@ public:
 	void SetStaticAncestors();
 	AABB GetBoundingBox() const;
 	bool MeshIntersects(const LineSegment & line, float* distance) const;
+	void DrawBBox() const; //TODO: improve BBOX draw
+	void UpdateModel(unsigned int shader) const;
+	void SetLightUniforms(unsigned shader) const;
 
 private:
-	void UpdateModel(unsigned int shader) const;
 
-	void DrawBBox() const; //TODO: improve BBOX draw
 
 public:
 	unsigned UUID = 0;

@@ -440,3 +440,37 @@ std::list<std::pair<float, GameObject*>> myQuadTree::GetIntersections(const Line
 	intersections.sort();
 	return intersections;
 }
+
+std::list<GameObject*> myQuadTree::GetIntersections(const math::Frustum & frustum) const
+{
+	std::stack<Node*> stack;
+	stack.push(nodes[rootIndex]);
+	std::list<GameObject*> intersections;
+	while (!stack.empty())
+	{
+		Node *n = stack.top();
+		stack.pop();
+		AABB bbox = GetBoundingBox(n); //2D AABB because y coordinate is 0
+		bbox.minPoint.y = -FLOAT_INF;
+		bbox.maxPoint.y = FLOAT_INF;
+
+		if (frustum.Intersects(bbox))
+		{
+			for (const auto& go : n->gameobjects)
+			{
+				if (frustum.Intersects(go->GetBoundingBox()))
+				{
+					intersections.push_back(go);
+				}
+			}
+			if (n->childIndex != 0xFFFFFFFF)
+			{
+				stack.push(nodes[n->TopLeftChildIndex()]);
+				stack.push(nodes[n->TopRightChildIndex()]);
+				stack.push(nodes[n->BottomLeftChildIndex()]);
+				stack.push(nodes[n->BottomRightChildIndex()]);
+			}
+		}
+	}
+	return intersections;
+}

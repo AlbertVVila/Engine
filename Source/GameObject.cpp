@@ -83,207 +83,6 @@ GameObject::~GameObject()
 	parent = nullptr;
 }
 
-void GameObject::Draw(const math::Frustum& frustum)
-{
-	//if (!frustum.Intersects(GetBoundingBox())) return; //TODO: use or compare with intersectsfaster
-	//TODO: UNCOMENT FRUSTUM
-	for (const auto &child : children)
-	{
-		child->Draw(frustum);
-	}
-
-	if (transform == nullptr) return;
-
-	if (drawBBox)
-	{
-		DrawBBox();
-	}
-
-	ComponentLight* light = (ComponentLight*)GetComponent(ComponentType::Light);
-	if (light != nullptr && App->renderer->light_debug)
-	{
-		light->DrawDebugLight();
-	}
-
-	ComponentRenderer* crenderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
-	if (crenderer == nullptr || !crenderer->enabled || crenderer->material == nullptr) return;
-
-	Material* material = crenderer->material;
-	Shader* shader = material->shader;
-	if (shader == nullptr) return;
-
-	glUseProgram(shader->id);
-
-	for (unsigned int i = 0; i < MAXTEXTURES; i++)
-	{
-		glActiveTexture(GL_TEXTURE0 + i); 
-		
-		char* textureType;
-		float* color = nullptr;
-		switch ((TextureType)i)
-		{
-			case TextureType::DIFFUSE:
-				textureType = "diffuse";
-				color = (float*)&material->diffuse_color;
-				break;
-
-			case TextureType::SPECULAR:
-				textureType = "specular";
-				color = (float*)&material->specular_color;
-				break;
-
-			case TextureType::OCCLUSION:
-				textureType = "occlusion";
-				break;
-
-			case TextureType::EMISSIVE:
-				textureType = "emissive";
-				color = (float*)&material->emissive_color;
-				break;
-		}
-
-		char texture[32];
-		sprintf(texture, "material.%s_texture", textureType);
-
-		char uniform[32];
-		sprintf(uniform, "material.%s_color", textureType);
-
-		if (material->textures[i] != nullptr)
-		{
-			if (i == (unsigned)TextureType::DIFFUSE)
-			{
-				glUniform4fv(glGetUniformLocation(shader->id,
-					uniform), 1, color);
-			}
-			else
-			{
-				glUniform3fv(glGetUniformLocation(shader->id,
-					uniform), 1, color);
-			}
-			glBindTexture(GL_TEXTURE_2D, material->textures[i]->id);
-
-			glUniform1i(glGetUniformLocation(shader->id, texture), i);
-		}
-		else
-		{
-			float3 noColor = float3::zero;
-
-			glUniform3fv(glGetUniformLocation(shader->id,
-				uniform), 1, (GLfloat*)&noColor);
-			glUniform1i(glGetUniformLocation(shader->id, texture), 0); //Reset uniform if texture not used in shader
-		}
-		glDisable(GL_TEXTURE_2D);
-	}
-	//lighting
-	ComponentLight* directional = App->scene->GetDirectionalLight();
-	if (directional != nullptr)
-	{
-		glUniform3fv(glGetUniformLocation(shader->id,
-			"lights.directional.direction"), 1, (GLfloat*)&directional->direction);
-
-		glUniform3fv(glGetUniformLocation(shader->id,
-			"lights.directional.color"), 1, (GLfloat*)&directional->color);
-	}
-	else
-	{
-		float3 noDirectional = float3::zero;
-		glUniform3fv(glGetUniformLocation(shader->id,
-			"lights.directional.direction"), 1, (GLfloat*)&noDirectional);
-
-		glUniform3fv(glGetUniformLocation(shader->id,
-			"lights.directional.color"), 1, (GLfloat*)&noDirectional);
-	}
-
-
-	int i = 0;
-	for (const auto & spot : App->scene->GetClosestSpotLights(transform->position))
-	{
-		char buffer[32];
-
-		sprintf(buffer, "lights.spots[%d].position", i);
-		glUniform3fv(glGetUniformLocation(shader->id,
-			buffer), 1, (GLfloat*)&spot->position);
-
-		memset(buffer, 0, 32);
-		sprintf(buffer, "lights.spots[%d].direction", i);
-		glUniform3fv(glGetUniformLocation(shader->id,
-			buffer), 1, (GLfloat*)&spot->direction);
-
-		memset(buffer, 0, 32);
-		sprintf(buffer, "lights.spots[%d].color", i);
-		glUniform3fv(glGetUniformLocation(shader->id,
-			buffer), 1, (GLfloat*)&spot->color);
-
-		memset(buffer, 0, 32);
-		sprintf(buffer, "lights.spots[%d].attenuation", i);
-		glUniform3fv(glGetUniformLocation(shader->id,
-			buffer), 1, (GLfloat*)&spot->attenuation);
-
-		memset(buffer, 0, 32);
-		float innerRad = cosf(math::DegToRad(spot->inner));
-		sprintf(buffer, "lights.spots[%d].inner", i);
-		glUniform1fv(glGetUniformLocation(shader->id,
-			buffer), 1, (GLfloat*)&innerRad);
-
-		memset(buffer, 0, 32);
-		float outerRad = cosf(math::DegToRad(spot->outer));
-		sprintf(buffer, "lights.spots[%d].outer", i);
-		glUniform1fv(glGetUniformLocation(shader->id,
-			buffer), 1, (GLfloat*)&outerRad);
-
-		++i;
-	}
-	glUniform1ui(glGetUniformLocation(shader->id,
-		"lights.num_spots"), i);
-
-	i = 0;
-	for (const auto & point : App->scene->GetClosestPointLights(transform->position))
-	{
-		char buffer[32];
-
-		sprintf(buffer, "lights.points[%d].position", i);
-		glUniform3fv(glGetUniformLocation(shader->id,
-			buffer), 1, (GLfloat*)&point->position);
-
-		memset(buffer, 0, 32);
-		sprintf(buffer, "lights.points[%d].direction", i);
-		glUniform3fv(glGetUniformLocation(shader->id,
-			buffer), 1, (GLfloat*)&point->direction);
-
-		memset(buffer, 0, 32);
-		sprintf(buffer, "lights.points[%d].color", i);
-		glUniform3fv(glGetUniformLocation(shader->id,
-			buffer), 1, (GLfloat*)&point->color);
-
-		memset(buffer, 0, 32);
-		sprintf(buffer, "lights.points[%d].attenuation", i);
-		glUniform3fv(glGetUniformLocation(shader->id,
-			buffer), 1, (GLfloat*)&point->attenuation);
-
-		++i;
-	}
-	glUniform1ui(glGetUniformLocation(shader->id,
-		"lights.num_points"), i);
-
-	//mat
-	glUniform1fv(glGetUniformLocation(shader->id,
-		"material.k_ambient"), 1, (GLfloat*)&material->kAmbient);
-	glUniform1fv(glGetUniformLocation(shader->id,
-		"material.k_diffuse"), 1, (GLfloat*)&material->kDiffuse);
-	glUniform1fv(glGetUniformLocation(shader->id,
-		"material.k_specular"), 1, (GLfloat*)&material->kSpecular);
-	glUniform1fv(glGetUniformLocation(shader->id,
-		"material.shininess"), 1, (GLfloat*)&material->shininess);
-
-
-	UpdateModel(shader->id);
-	crenderer->mesh->Draw(shader->id);
-
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, 0);
-	glUseProgram(0);
-}
-
 void GameObject::DrawProperties()
 {
 	char *go_name = new char[MAX_NAME];
@@ -561,6 +360,99 @@ void GameObject::UpdateModel(unsigned int shader) const
 {
 	glUniformMatrix4fv(glGetUniformLocation(shader,
 		"model"), 1, GL_TRUE, &GetGlobalTransform()[0][0]);
+}
+
+void GameObject::SetLightUniforms(unsigned shader) const
+{
+	ComponentLight* directional = App->scene->GetDirectionalLight();
+	if (directional != nullptr)
+	{
+		glUniform3fv(glGetUniformLocation(shader,
+			"lights.directional.direction"), 1, (GLfloat*)&directional->direction);
+
+		glUniform3fv(glGetUniformLocation(shader,
+			"lights.directional.color"), 1, (GLfloat*)&directional->color);
+	}
+	else
+	{
+		float3 noDirectional = float3::zero;
+		glUniform3fv(glGetUniformLocation(shader,
+			"lights.directional.direction"), 1, (GLfloat*)&noDirectional);
+
+		glUniform3fv(glGetUniformLocation(shader,
+			"lights.directional.color"), 1, (GLfloat*)&noDirectional);
+	}
+
+
+	int i = 0;
+	for (const auto & spot : App->scene->GetClosestSpotLights(transform->position))
+	{
+		char buffer[32];
+
+		sprintf(buffer, "lights.spots[%d].position", i);
+		glUniform3fv(glGetUniformLocation(shader,
+			buffer), 1, (GLfloat*)&spot->position);
+
+		memset(buffer, 0, 32);
+		sprintf(buffer, "lights.spots[%d].direction", i);
+		glUniform3fv(glGetUniformLocation(shader,
+			buffer), 1, (GLfloat*)&spot->direction);
+
+		memset(buffer, 0, 32);
+		sprintf(buffer, "lights.spots[%d].color", i);
+		glUniform3fv(glGetUniformLocation(shader,
+			buffer), 1, (GLfloat*)&spot->color);
+
+		memset(buffer, 0, 32);
+		sprintf(buffer, "lights.spots[%d].attenuation", i);
+		glUniform3fv(glGetUniformLocation(shader,
+			buffer), 1, (GLfloat*)&spot->attenuation);
+
+		memset(buffer, 0, 32);
+		float innerRad = cosf(math::DegToRad(spot->inner));
+		sprintf(buffer, "lights.spots[%d].inner", i);
+		glUniform1fv(glGetUniformLocation(shader,
+			buffer), 1, (GLfloat*)&innerRad);
+
+		memset(buffer, 0, 32);
+		float outerRad = cosf(math::DegToRad(spot->outer));
+		sprintf(buffer, "lights.spots[%d].outer", i);
+		glUniform1fv(glGetUniformLocation(shader,
+			buffer), 1, (GLfloat*)&outerRad);
+
+		++i;
+	}
+	glUniform1ui(glGetUniformLocation(shader,
+		"lights.num_spots"), i);
+
+	i = 0;
+	for (const auto & point : App->scene->GetClosestPointLights(transform->position))
+	{
+		char buffer[32];
+
+		sprintf(buffer, "lights.points[%d].position", i);
+		glUniform3fv(glGetUniformLocation(shader,
+			buffer), 1, (GLfloat*)&point->position);
+
+		memset(buffer, 0, 32);
+		sprintf(buffer, "lights.points[%d].direction", i);
+		glUniform3fv(glGetUniformLocation(shader,
+			buffer), 1, (GLfloat*)&point->direction);
+
+		memset(buffer, 0, 32);
+		sprintf(buffer, "lights.points[%d].color", i);
+		glUniform3fv(glGetUniformLocation(shader,
+			buffer), 1, (GLfloat*)&point->color);
+
+		memset(buffer, 0, 32);
+		sprintf(buffer, "lights.points[%d].attenuation", i);
+		glUniform3fv(glGetUniformLocation(shader,
+			buffer), 1, (GLfloat*)&point->attenuation);
+
+		++i;
+	}
+	glUniform1ui(glGetUniformLocation(shader,
+		"lights.num_points"), i);
 }
 
 AABB GameObject::GetBoundingBox() const

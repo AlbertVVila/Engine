@@ -20,6 +20,8 @@
 #include "myQuadTree.h"
 #include "Geometry/LineSegment.h"
 #include "Math/MathConstants.h"
+#include "GL/glew.h"
+
 
 #pragma warning(push)
 #pragma warning(disable : 4996)  
@@ -93,7 +95,46 @@ void ModuleScene::Draw(const math::Frustum &frustum)
 	{
 		quadtree->Draw();
 	}
-	root->Draw(frustum);
+	DrawGO(frustum);
+}
+
+void ModuleScene::DrawGO(const math::Frustum & frustum)
+{
+	std::list<GameObject*> drawlist = quadtree->GetIntersections(frustum);
+	for (const auto &go : drawlist)
+	{
+		if (go->drawBBox)
+		{
+			go->DrawBBox();
+		}
+
+		ComponentLight* light = (ComponentLight*)go->GetComponent(ComponentType::Light);
+		if (light != nullptr && App->renderer->light_debug)
+		{
+			light->DrawDebugLight();
+		}
+
+		ComponentRenderer* crenderer = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+		if (crenderer == nullptr || !crenderer->enabled || crenderer->material == nullptr) return;
+
+		Material* material = crenderer->material;
+		Shader* shader = material->shader;
+		if (shader == nullptr) return;
+
+		glUseProgram(shader->id);
+
+		material->SetUniforms(shader->id);
+		go->SetLightUniforms(shader->id);
+
+		go->UpdateModel(shader->id);
+		crenderer->mesh->Draw(shader->id);
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		glUseProgram(0);
+	}
+
+	//if (transform == nullptr) return;
 }
 
 void ModuleScene::DrawHierarchy()

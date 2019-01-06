@@ -1,3 +1,4 @@
+
 #include "Application.h"
 
 #include "ModuleFileSystem.h"
@@ -8,6 +9,7 @@
 #include "Material.h"
 
 #include "JSON.h"
+#include "GL/glew.h"
 
 Material::Material()
 {
@@ -143,4 +145,77 @@ std::list<Texture*> Material::GetTextures() const
 		}
 	}
 	return mytextures;
+}
+
+void Material::SetUniforms(unsigned shader) const
+{
+	for (unsigned int i = 0; i < MAXTEXTURES; i++)
+	{
+		glActiveTexture(GL_TEXTURE0 + i);
+
+		char* textureType;
+		float* color = nullptr;
+		switch ((TextureType)i)
+		{
+		case TextureType::DIFFUSE:
+			textureType = "diffuse";
+			color = (float*)&diffuse_color;
+			break;
+
+		case TextureType::SPECULAR:
+			textureType = "specular";
+			color = (float*)&specular_color;
+			break;
+
+		case TextureType::OCCLUSION:
+			textureType = "occlusion";
+			break;
+
+		case TextureType::EMISSIVE:
+			textureType = "emissive";
+			color = (float*)&emissive_color;
+			break;
+		}
+
+		char texture[32];
+		sprintf(texture, "material.%s_texture", textureType);
+
+		char uniform[32];
+		sprintf(uniform, "material.%s_color", textureType);
+
+		if (textures[i] != nullptr)
+		{
+			if (i == (unsigned)TextureType::DIFFUSE)
+			{
+				glUniform4fv(glGetUniformLocation(shader,
+					uniform), 1, color);
+			}
+			else
+			{
+				glUniform3fv(glGetUniformLocation(shader,
+					uniform), 1, color);
+			}
+			glBindTexture(GL_TEXTURE_2D, textures[i]->id);
+
+			glUniform1i(glGetUniformLocation(shader, texture), i);
+		}
+		else
+		{
+			float3 noColor = float3::zero;
+
+			glUniform3fv(glGetUniformLocation(shader,
+				uniform), 1, (GLfloat*)&noColor);
+			glUniform1i(glGetUniformLocation(shader, texture), 0); //Reset uniform if texture not used in shader
+		}
+		glDisable(GL_TEXTURE_2D);
+	}
+
+	glUniform1fv(glGetUniformLocation(shader,
+		"material.k_ambient"), 1, (GLfloat*)&kAmbient);
+	glUniform1fv(glGetUniformLocation(shader,
+		"material.k_diffuse"), 1, (GLfloat*)&kDiffuse);
+	glUniform1fv(glGetUniformLocation(shader,
+		"material.k_specular"), 1, (GLfloat*)&kSpecular);
+	glUniform1fv(glGetUniformLocation(shader,
+		"material.shininess"), 1, (GLfloat*)&shininess);
 }

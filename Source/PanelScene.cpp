@@ -11,6 +11,7 @@
 #include "PanelScene.h"
 
 #include "imgui.h"
+#include "imgui_internal.h"
 #include "ImGuizmo.h"
 #include "Geometry/LineSegment.h"
 #include "GL/glew.h"
@@ -210,6 +211,12 @@ void PanelScene::DrawImGuizmo()
 	if (ImGui::Button("Scale"))
 	{
 		mCurrentGizmoOperation = ImGuizmo::SCALE;
+		mCurrentGizmoMode = ImGuizmo::LOCAL;
+	}
+	if (mCurrentGizmoOperation == ImGuizmo::SCALE)
+	{
+		ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+		ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
 	}
 
 	ImGui::SameLine();
@@ -226,6 +233,12 @@ void PanelScene::DrawImGuizmo()
 		{
 			mCurrentGizmoMode = ImGuizmo::WORLD;
 		}
+	}
+
+	if (mCurrentGizmoOperation == ImGuizmo::SCALE)
+	{
+		ImGui::PopItemFlag();
+		ImGui::PopStyleVar();
 	}
 
 	if (App->scene->selected != nullptr) //TODO: WORLD translation + rotation, scale? -> LOCAL do it with local !watch rotation

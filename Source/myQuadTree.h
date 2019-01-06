@@ -2,6 +2,7 @@
 #define __myQuadTree_h__
 
 #include "Geometry/AABB.h"
+#include "Geometry/Frustum.h"
 #include <vector>
 
 enum class QUADRANT
@@ -65,6 +66,7 @@ public:
 	void RecomputeRoot(QUADRANT q);
 	AABB GetBoundingBox(const Node *node) const;
 	std::list<std::pair<float, GameObject*>> GetIntersections(const LineSegment& line) const;
+	std::list<GameObject*> GetIntersections(const math::Frustum & frustum) const;
 	//CollectingIntersect(std::vector<GameObject*>&, );
 
 public:

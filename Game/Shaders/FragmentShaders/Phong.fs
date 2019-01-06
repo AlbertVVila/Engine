@@ -54,9 +54,9 @@ struct Lights
 	//AmbientLight ambient;
 	DirLight     directional;
 	PointLight   points[MAX_POINT_LIGHTS];
-	uint         num_points;
+	int         num_points;
 	SpotLight    spots[MAX_SPOT_LIGHTS];
-	uint         num_spots;
+	int         num_spots;
 };
 
 layout (std140) uniform Matrices
@@ -170,12 +170,12 @@ void main()
 
 	vec3 color = directional_phong(normal, viewPos, lights.directional, diffuse_color, specular_color);
 
-	for(uint i=0; i < lights.num_points; ++i )
+	for(int i=0; i < lights.num_points; ++i)
 	{
 		color+= point_phong(normal, viewPos, lights.points[i], diffuse_color, specular_color);
 	}
 
-	for(uint i=0; i < lights.num_spots; ++i )
+	for(int i=0; i < lights.num_spots; ++i)
 	{
 		color+= spot_phong(normal, viewPos, lights.spots[i], diffuse_color, specular_color);
 	}
