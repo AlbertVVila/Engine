@@ -2,6 +2,7 @@
 
 #include "ModuleProgram.h"
 #include "ModuleCamera.h"
+#include "ModuleRender.h"
 
 #include "ComponentLight.h"
 #include "ComponentTransform.h"
@@ -15,7 +16,7 @@
 #include "Geometry/Circle.h"
 #include "Math/MathFunc.h"
 
-#define DEBUG_DISTANCE 5
+#define DEBUG_DISTANCE 5.0f
 
 ComponentLight::ComponentLight(GameObject * gameobject) : Component(gameobject, ComponentType::Light)
 {
@@ -102,14 +103,14 @@ void ComponentLight::DrawDebugLight() const
 	
 	if (type == LightType::DIRECTIONAL)
 	{
-		Circle circle(position, direction, 1.f);
+		Circle circle(position, direction, App->renderer->current_scale);
 		float angle = 0;
 		for (unsigned i = 0; i < 8; i++)
 		{
 			float3 debug_position = circle.GetPoint(angle);
 
 			Line line(debug_position, direction.Normalized());
-			float3 farPoint = line.GetPoint(-DEBUG_DISTANCE);
+			float3 farPoint = line.GetPoint(-DEBUG_DISTANCE*App->renderer->current_scale);
 
 			if (i > 0)
 			{

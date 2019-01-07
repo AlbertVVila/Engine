@@ -29,7 +29,7 @@ private:
 	void DrawGizmos() const;
 	void SetViewUniform(const ComponentCamera &camera) const;
 	void SetProjectionUniform(const ComponentCamera &camera) const;
-	void DrawLines() const;
+	void DrawGrid() const;
 	void DrawAxis() const;
 	void DrawFrustum() const;
 	void InitSDL();
@@ -45,6 +45,7 @@ public:
 	bool picker_debug = false;
 	bool light_debug = true;
 	bool quadtree_debug = true;
+	bool grid_debug = true;
 	unsigned current_scale = 1;
 
 private:

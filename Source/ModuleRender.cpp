@@ -139,7 +139,10 @@ void ModuleRender::DrawGizmos() const
 	glUniformMatrix4fv(glGetUniformLocation(shader,
 		"model"), 1, GL_TRUE, &model[0][0]);
 
-	DrawLines();
+	if (grid_debug)
+	{
+		DrawGrid();
+	}
 	DrawAxis();
 	if (App->scene->maincamera != nullptr)
 	{
@@ -149,7 +152,7 @@ void ModuleRender::DrawGizmos() const
 }
 
 
-void ModuleRender::DrawLines() const
+void ModuleRender::DrawGrid() const
 {
 	float white[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	glUniform4fv(glGetUniformLocation(App->program->defaultShader->id,
@@ -181,9 +184,11 @@ void ModuleRender::DrawAxis() const //TODO: use debug draw
 	glBegin(GL_LINES);
 	// red X
 
-	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(1.0f, 0.0f, 0.0f);
-	glVertex3f(1.0f, 0.1f, 0.0f); glVertex3f(1.1f, -0.1f, 0.0f);
-	glVertex3f(1.1f, 0.1f, 0.0f); glVertex3f(1.0f, -0.1f, 0.0f);
+	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(current_scale, 0.0f, 0.0f);
+	glVertex3f(current_scale, current_scale*0.1f, 0.0f); 
+	glVertex3f(current_scale*1.1f, -0.1f*current_scale, 0.0f);
+	glVertex3f(current_scale*1.1f, current_scale*0.1f, 0.0f); 
+	glVertex3f(current_scale, current_scale *-0.1f, 0.0f);
 	glEnd();
 
 	float green[4] = { 0.0f, 1.0f, 0.0f, 1.0f };
@@ -192,10 +197,13 @@ void ModuleRender::DrawAxis() const //TODO: use debug draw
 
 	glBegin(GL_LINES);
 	// green Y
-	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 1.0f, 0.0f);
-	glVertex3f(-0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
-	glVertex3f(0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
-	glVertex3f(0.0f, 1.15f, 0.0f); glVertex3f(0.0f, 1.05f, 0.0f);
+	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, current_scale, 0.0f);
+	glVertex3f(-0.05f*current_scale, current_scale*1.25f, 0.0f); 
+	glVertex3f(0.0f, current_scale*1.15f, 0.0f);
+	glVertex3f(current_scale*0.05f, current_scale*1.25f, 0.0f); 
+	glVertex3f(0.0f, current_scale*1.15f, 0.0f);
+	glVertex3f(0.0f, current_scale*1.15f, 0.0f); 
+	glVertex3f(0.0f, current_scale*1.05f, 0.0f);
 	glEnd();
 
 
@@ -205,10 +213,13 @@ void ModuleRender::DrawAxis() const //TODO: use debug draw
 
 	glBegin(GL_LINES);
 	// blue Z
-	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 0.0f, 1.0f);
-	glVertex3f(-0.05f, 0.1f, 1.05f); glVertex3f(0.05f, 0.1f, 1.05f);
-	glVertex3f(0.05f, 0.1f, 1.05f); glVertex3f(-0.05f, -0.1f, 1.05f);
-	glVertex3f(-0.05f, -0.1f, 1.05f); glVertex3f(0.05f, -0.1f, 1.05f);
+	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 0.0f, current_scale);
+	glVertex3f(-0.05f*current_scale, current_scale*0.1f, current_scale*1.05f); 
+	glVertex3f(current_scale*0.05f, current_scale*0.1f, current_scale*1.05f);
+	glVertex3f(current_scale*0.05f, current_scale*0.1f, current_scale*1.05f); 
+	glVertex3f(current_scale *-0.05f, current_scale*-0.1f, current_scale*1.05f);
+	glVertex3f(current_scale *-0.05f, current_scale *-0.1f, current_scale*1.05f); 
+	glVertex3f(current_scale *0.05f, current_scale *-0.1f, current_scale *1.05f);
 	glEnd();
 
 	glLineWidth(1.0f);
@@ -359,6 +370,8 @@ void ModuleRender::DrawGUI()
 	ImGui::Checkbox("Picker Debug", &picker_debug);
 	ImGui::Checkbox("Light Debug", &light_debug);
 	ImGui::Checkbox("QuadTree Debug", &quadtree_debug);
+	ImGui::Checkbox("Grid Debug", &grid_debug);
+
 	const char* scales[] = {"1", "10", "100"};
 	static int item_current = 0;
 	ImGui::Combo("Scale", &item_current, scales, 3);

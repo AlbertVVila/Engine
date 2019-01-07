@@ -105,6 +105,11 @@ void ModuleScene::Draw(const math::Frustum &frustum)
 	{
 		DrawGO(*go, frustum);
 	}
+
+	for (const auto light : lights)
+	{
+		light->DrawDebugLight();
+	}
 }
 
 void ModuleScene::DrawGO(const GameObject& go, const math::Frustum & frustum)
@@ -190,7 +195,7 @@ void ModuleScene::CreatePrimitive(par_shapes_mesh_s *mesh, const char * name, co
 	transform->SetRotation(rot);
 	transform->SetPosition(pos);
 
-	par_shapes_scale(mesh, size, size, size);
+	par_shapes_scale(mesh, size*App->renderer->current_scale, size*App->renderer->current_scale, size*App->renderer->current_scale);
 	char* data = nullptr;
 	ComponentRenderer* crenderer = (ComponentRenderer*)gameobject->CreateComponent(ComponentType::Renderer);
 	unsigned meshSize = SaveParShapesMesh(*mesh, &data);
@@ -422,5 +427,6 @@ std::list<std::pair<float, GameObject*>> ModuleScene::GetDynamicIntersections(co
 			gos.push_back(std::pair<float, GameObject*>(dNear, go));
 		}
 	}
+	gos.sort();
 	return gos;
 }
