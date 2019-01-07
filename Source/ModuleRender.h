@@ -45,6 +45,7 @@ public:
 	bool picker_debug = false;
 	bool light_debug = true;
 	bool quadtree_debug = true;
+	unsigned current_scale = 1;
 
 private:
 	unsigned UBO = 0;

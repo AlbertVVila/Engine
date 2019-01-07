@@ -95,45 +95,49 @@ void ModuleScene::Draw(const math::Frustum &frustum)
 	{
 		quadtree->Draw();
 	}
-	DrawGO(frustum);
-}
-
-void ModuleScene::DrawGO(const math::Frustum & frustum)
-{
-	std::list<GameObject*> drawlist = quadtree->GetIntersections(frustum);
-	for (const auto &go : drawlist)
+	std::list<GameObject*> staticGOs = quadtree->GetIntersections(frustum);
+	for (const auto &go : staticGOs)
 	{
-		if (go->drawBBox)
-		{
-			go->DrawBBox();
-		}
-
-		ComponentLight* light = (ComponentLight*)go->GetComponent(ComponentType::Light);
-		if (light != nullptr && App->renderer->light_debug)
-		{
-			light->DrawDebugLight();
-		}
-
-		ComponentRenderer* crenderer = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
-		if (crenderer == nullptr || !crenderer->enabled || crenderer->material == nullptr) return;
-
-		Material* material = crenderer->material;
-		Shader* shader = material->shader;
-		if (shader == nullptr) return;
-
-		glUseProgram(shader->id);
-
-		material->SetUniforms(shader->id);
-		go->SetLightUniforms(shader->id);
-
-		go->UpdateModel(shader->id);
-		crenderer->mesh->Draw(shader->id);
-
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, 0);
-		glUseProgram(0);
+		DrawGO(*go, frustum);
 	}
 
+	for (const auto &go : App->scene->dynamicGOs)
+	{
+		DrawGO(*go, frustum);
+	}
+}
+
+void ModuleScene::DrawGO(const GameObject& go, const math::Frustum & frustum)
+{
+	if (go.drawBBox)
+	{
+		go.DrawBBox();
+	}
+
+	ComponentLight* light = (ComponentLight*)go.GetComponent(ComponentType::Light);
+	if (light != nullptr && App->renderer->light_debug)
+	{
+		light->DrawDebugLight();
+	}
+
+	ComponentRenderer* crenderer = (ComponentRenderer*)go.GetComponent(ComponentType::Renderer);
+	if (crenderer == nullptr || !crenderer->enabled || crenderer->material == nullptr) return;
+
+	Material* material = crenderer->material;
+	Shader* shader = material->shader;
+	if (shader == nullptr) return;
+
+	glUseProgram(shader->id);
+
+	material->SetUniforms(shader->id);
+	go.SetLightUniforms(shader->id);
+
+	go.UpdateModel(shader->id);
+	crenderer->mesh->Draw(shader->id);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glUseProgram(0);
 	//if (transform == nullptr) return;
 }
 
@@ -325,6 +329,9 @@ void ModuleScene::Pick(float normalized_x, float normalized_y)
 {
 	LineSegment line = App->camera->editorcamera->DrawRay(normalized_x, normalized_y);
 	std::list<std::pair<float, GameObject*>> GOs = quadtree->GetIntersections(line);
+	std::list<std::pair<float, GameObject*>> dynamicGOs = GetDynamicIntersections(line);
+	GOs.merge(dynamicGOs);
+
 	float closestTriangle = FLOAT_INF;
 	GameObject * closestGO = nullptr;
 
@@ -401,4 +408,19 @@ ComponentLight * ModuleScene::GetDirectionalLight() const
 		}
 	}
 	return nullptr;
+}
+
+std::list<std::pair<float, GameObject*>> ModuleScene::GetDynamicIntersections(const LineSegment & line)
+{
+	std::list<std::pair<float, GameObject*>> gos; //TODO: reusable code in quadtree intersection
+	for (const auto &go : dynamicGOs)
+	{
+		float dNear = -FLOAT_INF;
+		float dFar = FLOAT_INF;
+		if (line.Intersects(go->GetBoundingBox(), dNear, dFar))
+		{
+			gos.push_back(std::pair<float, GameObject*>(dNear, go));
+		}
+	}
+	return gos;
 }

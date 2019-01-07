@@ -146,4 +146,8 @@ void ComponentRenderer::SetMesh(const char* meshData, unsigned UID)
 	{
 		App->scene->quadtree->Insert(gameobject);
 	}
+	else if (gameobject != nullptr)
+	{
+		App->scene->dynamicGOs.insert(gameobject);
+	}
 }

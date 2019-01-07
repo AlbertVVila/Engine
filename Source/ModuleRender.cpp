@@ -109,28 +109,7 @@ void ModuleRender::Draw(const ComponentCamera& cam, int width, int height) const
 			glUseProgram(0);
 		}
 	}
-
-	//if (useMainCameraFrustum && App->scene->maincamera != nullptr)
-	//{
-	//	App->scene->Draw(*cam.frustum);
-	//}
-	//else
-	//{
 	App->scene->Draw(*cam.frustum);
-	//}
-
-
-	//if (App->scene->maincamera != nullptr)
-	//{
-	//	glBindFramebuffer(GL_FRAMEBUFFER, cam.FBO);
-	//	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
-	//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	//	SetProjectionUniform(cam);
-	//	SetViewUniform(cam);
-	//	skybox->Draw(*cam.frustum);
-	//	App->scene->Draw(*cam.frustum);
-	//}
 }
 // Called before quitting
 bool ModuleRender::CleanUp()
@@ -177,10 +156,10 @@ void ModuleRender::DrawLines() const
 		"Vcolor"), 1, white);
 
 	glLineWidth(1.0f);
-	float d = 200.0f;
+	float d = 200.0f*current_scale;
 	glBegin(GL_LINES);
 
-	for (float i = -d; i <= d; i += 1.0f)
+	for (float i = -d; i <= d; i += current_scale)
 	{
 		glVertex3f(i, 0.0f, -d);
 		glVertex3f(i, 0.0f, d);
@@ -363,7 +342,7 @@ void ModuleRender::DrawGUI()
 	{
 		SDL_GL_SetSwapInterval((int)vsync);
 	}
-	ImGui::Checkbox("Main Camera Frustum", &useMainCameraFrustum);
+	ImGui::Checkbox("Game Frustum", &useMainCameraFrustum);
 	ImGui::Checkbox("Skybox", &skybox->enabled);
 	ImGui::Checkbox("MSAA", &msaa);
 	if (msaa)
@@ -380,6 +359,10 @@ void ModuleRender::DrawGUI()
 	ImGui::Checkbox("Picker Debug", &picker_debug);
 	ImGui::Checkbox("Light Debug", &light_debug);
 	ImGui::Checkbox("QuadTree Debug", &quadtree_debug);
+	const char* scales[] = {"1", "10", "100"};
+	static int item_current = 0;
+	ImGui::Combo("Scale", &item_current, scales, 3);
+	current_scale = atoi(scales[item_current]);
 	
 }
 

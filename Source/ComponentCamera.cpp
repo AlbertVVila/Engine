@@ -18,7 +18,7 @@
 #define MAXFOV 120
 #define MINFOV 40
 #define ZNEARDIST .1f
-#define ZFARDIST 1000.f
+#define ZFARDIST 10000.f
 
 ComponentCamera::ComponentCamera() : Component(nullptr, ComponentType::Camera)
 {
@@ -37,7 +37,6 @@ ComponentCamera::ComponentCamera(const ComponentCamera & component) : Component(
 	movementSpeed = component.movementSpeed;
 	rotationSpeed = component.rotationSpeed;
 	zoomSpeed = component.zoomSpeed;
-
 }
 
 

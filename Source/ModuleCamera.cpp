@@ -5,6 +5,7 @@
 #include "ModuleInput.h"
 #include "ModuleWindow.h"
 #include "ModuleEditor.h"
+#include "ModuleRender.h"
 
 #include "ComponentCamera.h"
 
@@ -80,7 +81,7 @@ void ModuleCamera::InputMove() const
 			movement *= 2;
 		}
 
-		editorcamera->Move(movement*App->time->dt);
+		editorcamera->Move(movement*App->time->dt*App->renderer->current_scale);
 	}
 }
 

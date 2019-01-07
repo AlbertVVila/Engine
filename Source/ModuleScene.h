@@ -6,6 +6,7 @@
 #include "pcg_random.hpp"
 #include "Math/Quat.h"
 #include "Math/float4.h"
+#include <set>
 
 class GameObject;
 class ComponentCamera;
@@ -30,7 +31,7 @@ public:
 	GameObject * CreateGameObject(const char * name, GameObject* parent);
 
 	void Draw(const math::Frustum &frustum);
-	void DrawGO(const math::Frustum &frustum);
+	void DrawGO(const GameObject& go, const math::Frustum & frustum);
 	void DrawHierarchy();
 	void CreateCube(const char * name, GameObject* parent, const float3 & pos = float3::zero, const Quat & rot = Quat::identity, float size = 1.f, const float4 & color = float4::one);
 	void CreateSphere(const char * name, GameObject* parent, const float3 & pos = float3::zero, const Quat & rot = Quat::identity, float size = 1.f, unsigned slices = 20u, unsigned stacks = 20u, const float4 & color = float4::one);
@@ -46,6 +47,8 @@ public:
 	std::list<ComponentLight*>GetClosestPointLights(float3 position) const;
 	ComponentLight* GetDirectionalLight() const;
 
+private:
+	std::list<std::pair<float, GameObject*>>GetDynamicIntersections(const LineSegment& line);
 public:
 	GameObject* root = nullptr;
 	GameObject* selected = nullptr; //Selected in hierarchy
@@ -55,7 +58,7 @@ public:
 
 	std::list<ComponentLight*> lights;
 	myQuadTree * quadtree = nullptr;
-	std::list<GameObject*> dynamicGO;
+	std::set<GameObject*> dynamicGOs;
 	pcg32 uuid_rng;
 	std::string name;
 };

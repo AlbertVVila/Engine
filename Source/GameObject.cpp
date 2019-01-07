@@ -98,10 +98,12 @@ void GameObject::DrawProperties()
 			{
 				SetStaticAncestors();
 				App->scene->quadtree->Insert(this);
+				App->scene->dynamicGOs.erase(this);
 			}
 			else if (!isStatic)
 			{
 				App->scene->quadtree->Remove(*this); //TODO: doesn't remove on meshrenderer deletion
+				App->scene->dynamicGOs.insert(this);
 			}
 		}
 	}
@@ -645,6 +647,8 @@ void GameObject::SetStaticAncestors()
 	{
 		GameObject* go = parents.top();
 		go->isStatic = true;
+
+		App->scene->dynamicGOs.erase(go);
 		App->scene->quadtree->Insert(go);
 
 		parents.pop();
