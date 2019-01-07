@@ -184,6 +184,7 @@
     <ClInclude Include="Point.h" />
     <ClInclude Include="Skybox.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="Viewport.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AABBTree.cpp" />
@@ -263,6 +264,7 @@
     <ClCompile Include="PanelScene.cpp" />
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Viewport.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Game\Shaders\FragmentShaders\Default.fs" />

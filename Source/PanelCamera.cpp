@@ -1,14 +1,15 @@
-#include "PanelCamera.h"
 #include "Application.h"
+#include "PanelCamera.h"
+
 #include "ModuleTextures.h"
 #include "ModuleWindow.h"
 #include "ModuleScene.h"
+
 #include "ComponentCamera.h"
 #include "imgui.h"
 
 PanelCamera::PanelCamera()
 {
-	enabled = false;
 }
 
 
@@ -19,19 +20,20 @@ PanelCamera::~PanelCamera()
 void PanelCamera::Draw()
 {
 	ImGui::Begin("Game", &enabled, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+	
+	if (App->scene->maincamera != nullptr)
+	{
+		viewport.Draw(App->scene->maincamera);
+	}
+	else
+	{
+		ImVec2 size = ImGui::GetWindowSize();
+		size.x = MAX(size.x, 400);
+		size.y = MAX(size.y, 400);
 
-	//ImVec2 size = ImGui::GetWindowSize();
-	//ImGui::SetCursorPos({ -(App->window->width - size.x) / 2,-(App->window->height - size.y) / 2 });
-	//if (App->scene->maincamera != nullptr)
-	//{
-	//	ImGui::Image((ImTextureID)App->scene->maincamera->camTexture,
-	//		{ (float)App->window->width, (float)App->window->height }, { 0,1 }, { 1,0 });
-	//}
-	//else
-	//{
-	//	ImGui::Image((ImTextureID)App->scene->camera_notfound_texture->id,
-	//		{ (float)App->window->width, (float)App->window->height }, { 0,1 }, { 1,0 });
-	//}
-	//
+		ImGui::Image((ImTextureID)App->scene->camera_notfound_texture->id,
+			size, { 0,1 }, { 1,0 });
+	}
+
 	ImGui::End();
 }
