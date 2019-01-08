@@ -228,6 +228,20 @@ void GameObject::Update()
 			GameObject *copy = new GameObject(**it_child);
 			copy->parent = this;
 			this->children.push_back(copy);
+			for (const auto& copychild : copy->children)
+			{
+				if (copychild->GetComponent(ComponentType::Renderer) != nullptr)
+				{
+					if (copychild->isStatic)
+					{
+						App->scene->quadtree->Insert(copychild);
+					}
+					else
+					{
+						App->scene->dynamicGOs.insert(copychild);
+					}
+				}
+			}
 		}
 		if ((*it_child)->delete_flag)
 		{
