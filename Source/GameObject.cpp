@@ -657,8 +657,11 @@ void GameObject::SetStaticAncestors()
 		GameObject* go = parents.top();
 		go->isStatic = true;
 
-		App->scene->dynamicGOs.erase(go);
-		App->scene->quadtree->Insert(go);
+		if (go->GetComponent(ComponentType::Renderer) != nullptr)
+		{
+			App->scene->dynamicGOs.erase(go);
+			App->scene->quadtree->Insert(go);
+		}
 
 		parents.pop();
 		parents.push(go->parent);

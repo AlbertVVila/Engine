@@ -78,11 +78,11 @@ void myQuadTree::Insert(GameObject* gameobject) //TODO: make it adaptative
 		if (bbox.minPoint.z < limits.minPoint.z)
 		{
 			//Doesn't fit top
-			ExtendLimitTopRight();
+			ExtendLimitTopLeft();
 		}
 		else
 		{
-			ExtendLimitBotRight();
+			ExtendLimitBotLeft();
 		}
 	}
 	Insert(gameobject); //Try again now
