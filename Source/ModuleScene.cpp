@@ -315,6 +315,8 @@ void ModuleScene::LoadScene(const char* scene)
 void ModuleScene::ClearScene()
 {
 	CleanUp();
+	camera_notfound_texture = App->textures->GetTexture(NOCAMERA);
+
 }
 
 void ModuleScene::Select(GameObject * gameobject)
