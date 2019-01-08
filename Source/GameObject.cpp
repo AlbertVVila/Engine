@@ -562,6 +562,15 @@ void GameObject::DrawBBox() const
 
 bool GameObject::CleanUp()
 {
+	if (isStatic)
+	{
+		App->scene->quadtree->Remove(*this);
+	}
+	else
+	{
+		App->scene->dynamicGOs.erase(this);
+	}
+
 	for (auto &component : components)
 	{
 		component->CleanUp();

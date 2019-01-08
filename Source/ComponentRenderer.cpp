@@ -32,6 +32,8 @@ ComponentRenderer::ComponentRenderer(const ComponentRenderer & component) : Comp
 
 ComponentRenderer::~ComponentRenderer()
 {
+	material = nullptr; //TODO: Resource Manager Deallocates memory 
+	mesh = nullptr;
 }
 
 Component * ComponentRenderer::Clone() const
@@ -79,6 +81,19 @@ void ComponentRenderer::DrawProperties()
 		}
 	}
 	ImGui::PopID();
+}
+
+bool ComponentRenderer::CleanUp()
+{
+	if (material != nullptr)
+	{
+		App->resManager->DeleteMaterial(material->name);
+	}
+	if (mesh != nullptr)
+	{
+		App->resManager->DeleteMesh(mesh->UID);
+	}
+	return true;
 }
 
 void ComponentRenderer::Save(JSON_value * value) const
