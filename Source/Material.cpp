@@ -18,6 +18,14 @@ Material::Material()
 
 Material::~Material()
 {
+	RELEASE(shader);
+	for (unsigned i = 0; i < MAXTEXTURES; i++)
+	{
+		if (textures[i] != nullptr)
+		{
+			RELEASE(textures[i]);
+		}
+	}
 }
 
 void Material::Load(const char * materialfile)

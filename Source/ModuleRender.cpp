@@ -72,7 +72,7 @@ update_status ModuleRender::PostUpdate()
 	return UPDATE_CONTINUE;
 }
 
-void ModuleRender::Draw(const ComponentCamera& cam, int width, int height) const
+void ModuleRender::Draw(const ComponentCamera& cam, int width, int height, bool isEditor) const
 {
 	glViewport(0, 0, width, height);
 	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
@@ -90,26 +90,11 @@ void ModuleRender::Draw(const ComponentCamera& cam, int width, int height) const
 	SetProjectionUniform(cam);
 	SetViewUniform(cam);
 	skybox->Draw(*cam.frustum);
-	DrawGizmos();
-	if (picker_debug)
+	if (isEditor)
 	{
-		for (const auto & line : App->scene->debuglines)
-		{
-			unsigned shader = App->program->defaultShader->id;
-			glUseProgram(shader);
-			math::float4x4 model = math::float4x4::identity;
-			glUniformMatrix4fv(glGetUniformLocation(shader,
-				"model"), 1, GL_TRUE, &model[0][0]);
-			glLineWidth(3.0f);
-			glBegin(GL_LINES);
-
-			glVertex3f(line.a.x, line.a.y, line.a.z);
-			glVertex3f(line.b.x, line.b.y, line.b.z);
-			glEnd();
-			glUseProgram(0);
-		}
+		DrawGizmos();
 	}
-	App->scene->Draw(*cam.frustum);
+	App->scene->Draw(*cam.frustum, isEditor);
 }
 // Called before quitting
 bool ModuleRender::CleanUp()
@@ -135,6 +120,23 @@ void ModuleRender::DrawGizmos() const
 {
 	unsigned shader = App->program->defaultShader->id;
 	glUseProgram(shader);
+
+	if (picker_debug)
+	{
+		for (const auto & line : App->scene->debuglines)
+		{
+			math::float4x4 model = math::float4x4::identity;
+			glUniformMatrix4fv(glGetUniformLocation(shader,
+				"model"), 1, GL_TRUE, &model[0][0]);
+			glLineWidth(3.0f);
+			glBegin(GL_LINES);
+
+			glVertex3f(line.a.x, line.a.y, line.a.z);
+			glVertex3f(line.b.x, line.b.y, line.b.z);
+			glEnd();
+		}
+	}
+
 	math::float4x4 model = math::float4x4::identity;
 	glUniformMatrix4fv(glGetUniformLocation(shader,
 		"model"), 1, GL_TRUE, &model[0][0]);

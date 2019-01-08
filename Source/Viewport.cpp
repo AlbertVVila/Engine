@@ -65,7 +65,7 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, FBO);
 	}
-	App->renderer->Draw(*cam, current_width, current_height);
+	App->renderer->Draw(*cam, current_width, current_height, isEditor);
 	if (App->renderer->msaa) //TODO apply draws and msaa to each camera in scene ->use viewport class o
 	{
 		glBindFramebuffer(GL_READ_FRAMEBUFFER, MSAAFBO);

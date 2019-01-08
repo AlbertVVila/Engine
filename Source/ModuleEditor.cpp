@@ -221,6 +221,7 @@ update_status ModuleEditor::Update()
 			if (ImGui::MenuItem("New Material"))
 			{
 				materialEditor->open = true;
+				materialEditor->isCreated = true;
 			}
 			ImGui::EndMenu();
 		}

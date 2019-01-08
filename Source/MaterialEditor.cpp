@@ -3,6 +3,7 @@
 #include "ModuleProgram.h"
 #include "ModuleFileSystem.h"
 #include "ModuleTextures.h"
+#include "ModuleResourceManager.h"
 
 #include "Material.h"
 #include "MaterialEditor.h"
@@ -53,25 +54,23 @@ void MaterialEditor::Draw()
 		ImGui::DragFloat("kSpecular", &material->kSpecular, .005f, .0f, 1.f);
 		ImGui::DragFloat("Shininess", &material->shininess, .05f, .0f, 256.f);
 
-		std::vector<std::string> shaders = App->fsystem->ListFiles(VERTEXSHADERS, false);
-		static std::string shader_current;
-		if (material->shader == nullptr)
+		if (shaders.size() == 0)
 		{
-			shader_current = "None Selected";
+			shaders = App->fsystem->ListFiles(VERTEXSHADERS, false);
 		}
-		else
+		if (material->shader != nullptr)
 		{
-			shader_current = material->shader->file;
+			current_shader = material->shader->file;
 		}
-		if (ImGui::BeginCombo("Shader", shader_current.c_str())) // The second parameter is the label previewed before opening the combo.
+		if (ImGui::BeginCombo("Shader", current_shader.c_str()))
 		{
 			for (int n = 0; n < shaders.size(); n++)
 			{
-				bool is_selected = (shader_current == shaders[n]);
-				if (ImGui::Selectable(shaders[n].c_str(), is_selected) && shader_current != shaders[n])
+				bool is_selected = (current_shader == shaders[n]);
+				if (ImGui::Selectable(shaders[n].c_str(), is_selected) && current_shader != shaders[n])
 				{
-					shader_current = shaders[n];
-					material->shader = App->program->GetProgram(shader_current.c_str());
+					current_shader = shaders[n];
+					material->shader = App->program->GetProgram(current_shader.c_str());
 				}
 				if (is_selected)
 					ImGui::SetItemDefaultFocus();
@@ -79,31 +78,16 @@ void MaterialEditor::Draw()
 			ImGui::EndCombo();
 		}
 
-		std::vector<std::string> textureFiles = App->fsystem->ListFiles(TEXTURES, false);
+		if (textureFiles.size() == 0)
+		{
+			textureFiles = App->fsystem->ListFiles(TEXTURES, false);
+		}
+
 		if (ImGui::CollapsingHeader("Diffuse"))
 		{
 			ImGui::PushID(&material->diffuse_color);
 			ImGui::ColorEdit4("Color", (float*)&material->diffuse_color, ImGuiColorEditFlags_AlphaPreview);
-			static std::string diffuse_current = "None selected";
-			if (ImGui::BeginCombo("Texture", diffuse_current.c_str()))
-			{
-				for (int n = 0; n < textureFiles.size(); n++)
-				{
-					bool is_selected = (diffuse_current == textureFiles[n]);
-					if (ImGui::Selectable(textureFiles[n].c_str(), is_selected))
-					{
-						diffuse_current = textureFiles[n];
-						material->textures[(unsigned)TextureType::DIFFUSE] = App->textures->GetTexture(diffuse_current.c_str());
-					}
-					if (is_selected)
-						ImGui::SetItemDefaultFocus();
-				}
-				ImGui::EndCombo();
-			}
-			if (material->textures[(unsigned)TextureType::DIFFUSE] != nullptr)
-			{
-				ImGui::Image((ImTextureID)material->textures[(unsigned)TextureType::DIFFUSE]->id, { 200,200 }, { 0,1 }, { 1,0 });
-			}
+			TextureSelector((unsigned)TextureType::DIFFUSE, current_diffuse);
 			ImGui::Separator();
 			ImGui::PopID();
 		}
@@ -111,78 +95,21 @@ void MaterialEditor::Draw()
 		{
 			ImGui::PushID(&material->specular_color);
 			ImGui::ColorEdit3("Color", (float*)&material->specular_color);
-			static std::string specular_current = "None selected";
-			if (ImGui::BeginCombo("Texture", specular_current.c_str()))
-			{
-				for (int n = 0; n < textureFiles.size(); n++)
-				{
-					bool is_selected = (specular_current == textureFiles[n]);
-					if (ImGui::Selectable(textureFiles[n].c_str(), is_selected))
-					{
-						specular_current = textureFiles[n];
-						material->textures[(unsigned)TextureType::SPECULAR] = App->textures->GetTexture(specular_current.c_str());
-					}
-					if (is_selected)
-						ImGui::SetItemDefaultFocus();
-				}
-				ImGui::EndCombo();
-			}
-			if (material->textures[(unsigned)TextureType::SPECULAR] != nullptr)
-			{
-				ImGui::Image((ImTextureID)material->textures[(unsigned)TextureType::SPECULAR]->id, { 200,200 }, { 0,1 }, { 1,0 });
-			}
+			TextureSelector((unsigned)TextureType::SPECULAR, current_specular);
 			ImGui::Separator();
 			ImGui::PopID();
 		}
 		if (ImGui::CollapsingHeader("Occlusion"))
 		{
 			ImGui::PushID(&material->textures[(unsigned)TextureType::OCCLUSION]);
-			static std::string occlusion_current = "None selected";
-			if (ImGui::BeginCombo("Texture", occlusion_current.c_str()))
-			{
-				for (int n = 0; n < textureFiles.size(); n++)
-				{
-					bool is_selected = (occlusion_current == textureFiles[n]);
-					if (ImGui::Selectable(textureFiles[n].c_str(), is_selected))
-					{
-						occlusion_current = textureFiles[n];
-						material->textures[(unsigned)TextureType::OCCLUSION] = App->textures->GetTexture(occlusion_current.c_str());
-					}
-					if (is_selected)
-						ImGui::SetItemDefaultFocus();
-				}
-				ImGui::EndCombo();
-			}
-			if (material->textures[(unsigned)TextureType::OCCLUSION] != nullptr)
-			{
-				ImGui::Image((ImTextureID)material->textures[(unsigned)TextureType::OCCLUSION]->id, { 200,200 }, { 0,1 }, { 1,0 });
-			}
+			TextureSelector((unsigned)TextureType::OCCLUSION, current_occlusion);
 			ImGui::Separator();
 			ImGui::PopID();
 		}
 		if (ImGui::CollapsingHeader("Emissive"))
 		{
 			ImGui::ColorEdit3("Color", (float*)&material->emissive_color);
-			static std::string emissive_current = "None selected";
-			if (ImGui::BeginCombo("Texture", emissive_current.c_str()))
-			{
-				for (int n = 0; n < textureFiles.size(); n++)
-				{
-					bool is_selected = (emissive_current == textureFiles[n]);
-					if (ImGui::Selectable(textureFiles[n].c_str(), is_selected))
-					{
-						emissive_current = textureFiles[n];
-						material->textures[(unsigned)TextureType::EMISSIVE] = App->textures->GetTexture(emissive_current.c_str());
-					}
-					if (is_selected)
-						ImGui::SetItemDefaultFocus();
-				}
-				ImGui::EndCombo();
-			}
-			if (material->textures[(unsigned)TextureType::EMISSIVE] != nullptr)
-			{
-				ImGui::Image((ImTextureID)material->textures[(unsigned)TextureType::EMISSIVE]->id, { 200,200 }, { 0,1 }, { 1,0 });
-			}
+			TextureSelector((unsigned)TextureType::EMISSIVE, current_emissive);
 			ImGui::Separator();
 		}
 		if (ImGui::Button("Save", ImVec2(120, 0))) {
@@ -200,13 +127,58 @@ void MaterialEditor::Draw()
 
 }
 
+void MaterialEditor::TextureSelector(unsigned i, std::string &current_texture)
+{
+	if (ImGui::BeginCombo("Texture", current_texture.c_str()))
+	{
+		bool none_selected = (current_texture == None);
+		if (ImGui::Selectable(None, none_selected))
+		{
+			current_texture = None;
+			if (material->textures[i] != nullptr)
+			{
+				App->resManager->DeleteTexture(material->textures[i]->file);
+				material->textures[i] = nullptr; //TODO: DELETE on Resource manager?
+			}
+		}
+		if (none_selected)
+			ImGui::SetItemDefaultFocus();
+		for (int n = 0; n < textureFiles.size(); n++)
+		{
+			bool is_selected = (current_texture == textureFiles[n]);
+			if (ImGui::Selectable(textureFiles[n].c_str(), is_selected))
+			{
+				current_texture = textureFiles[n];
+				material->textures[i] = App->textures->GetTexture(current_texture.c_str());
+			}
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
+		}
+		ImGui::EndCombo();
+	}
+	if (material->textures[i] != nullptr)
+	{
+		ImGui::Image((ImTextureID)material->textures[i]->id, { 200,200 }, { 0,1 }, { 1,0 });
+	}
+}
 void MaterialEditor::CleanUp()
 {
-	if (!isUsed)
+	if (isCreated)
 	{
 		material->CleanUp();
 		RELEASE(material);
 	}
+	else
+	{
+		material = nullptr;
+	}
+	current_shader = None;
+	current_diffuse = None;
+	current_specular = None;
+	current_occlusion = None;
+	current_emissive = None;
+	textureFiles.clear();
+	shaders.clear();
 	open = false;
 	ImGui::CloseCurrentPopup();
 }

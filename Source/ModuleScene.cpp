@@ -89,42 +89,40 @@ bool ModuleScene::CleanUp()
 	return true;
 }
 
-void ModuleScene::Draw(const math::Frustum &frustum)
+void ModuleScene::Draw(const math::Frustum &frustum, bool isEditor)
 {
-	if(App->renderer->quadtree_debug)
+	if (isEditor)
 	{
-		quadtree->Draw();
+		if (App->renderer->quadtree_debug)
+		{
+			quadtree->Draw();
+		}
+
+		for (const auto light : lights)
+		{
+			light->DrawDebugLight();
+		}
 	}
+
 	std::list<GameObject*> staticGOs = quadtree->GetIntersections(frustum);
 	for (const auto &go : staticGOs)
 	{
-		DrawGO(*go, frustum);
+		DrawGO(*go, frustum, isEditor);
 	}
 
 	for (const auto &go : App->scene->dynamicGOs)
 	{
-		DrawGO(*go, frustum);
-	}
-
-	for (const auto light : lights)
-	{
-		light->DrawDebugLight();
+		DrawGO(*go, frustum, isEditor);
 	}
 }
 
-void ModuleScene::DrawGO(const GameObject& go, const math::Frustum & frustum)
+void ModuleScene::DrawGO(const GameObject& go, const math::Frustum & frustum, bool isEditor)
 {
-	if (go.drawBBox)
+	if (go.drawBBox && isEditor)
 	{
 		go.DrawBBox();
 	}
-
-	ComponentLight* light = (ComponentLight*)go.GetComponent(ComponentType::Light);
-	if (light != nullptr && App->renderer->light_debug)
-	{
-		light->DrawDebugLight();
-	}
-
+	//TODO on remove components?
 	ComponentRenderer* crenderer = (ComponentRenderer*)go.GetComponent(ComponentType::Renderer);
 	if (crenderer == nullptr || !crenderer->enabled || crenderer->material == nullptr) return;
 
@@ -143,7 +141,6 @@ void ModuleScene::DrawGO(const GameObject& go, const math::Frustum & frustum)
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glUseProgram(0);
-	//if (transform == nullptr) return;
 }
 
 void ModuleScene::DrawHierarchy()

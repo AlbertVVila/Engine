@@ -75,7 +75,7 @@ void ComponentRenderer::DrawProperties()
 		{
 			App->editor->materialEditor->material = material;
 			App->editor->materialEditor->open = true; //materialpopup is only drawn once in module editor
-			App->editor->materialEditor->isUsed = true; 
+			App->editor->materialEditor->isCreated = false; 
 		}
 	}
 	ImGui::PopID();

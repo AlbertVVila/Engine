@@ -17,7 +17,7 @@ public:
 	update_status PreUpdate() override;
 	update_status Update() override;
 	update_status PostUpdate() override;
-	void Draw(const ComponentCamera& cam, int width, int height) const;
+	void Draw(const ComponentCamera& cam, int width, int height, bool isEditor = false) const;
 	bool CleanUp() override;
 	void OnResize();
 	void DrawGUI();
