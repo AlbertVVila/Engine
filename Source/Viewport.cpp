@@ -84,7 +84,10 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 	if (isEditor)
 	{
 		DrawImGuizmo(*cam);
-		Pick();
+		if (!ImGuizmo::IsUsing())
+		{
+			Pick();
+		}
 	}
 }
 
@@ -238,7 +241,7 @@ void Viewport::DrawImGuizmo(const ComponentCamera & cam) const
 		ImGui::PopStyleVar();
 	}
 
-	if (App->scene->selected != nullptr) //TODO: WORLD translation + rotation, scale? -> LOCAL do it with local !watch rotation
+	if (App->scene->selected != nullptr)
 	{
 
 		ImGuizmo::Enable(!App->scene->selected->isStatic);
@@ -250,7 +253,6 @@ void Viewport::DrawImGuizmo(const ComponentCamera & cam) const
 		ImGuizmo::SetOrthographic(false);
 
 		model.Transpose();
-		//ImGuizmo::DrawCube((float*)&view, (float*)&proj, (float*)&model);
 		ImGuizmo::Manipulate((float*)&view, (float*)&proj, mCurrentGizmoOperation, mCurrentGizmoMode, (float*)&model, NULL, NULL, NULL, NULL);
 
 		if (ImGuizmo::IsUsing())

@@ -4,6 +4,9 @@
 #include "Component.h"
 #include "Geometry/LineSegment.h"
 
+#define ZNEARDIST .1f
+#define ZFARDIST 1000.f
+
 class Frustum;
 class ComponentCamera :
 	public Component

@@ -103,10 +103,12 @@ void Skybox::Draw(const math::Frustum& frustum) const
 	if (!enabled) return;
 
 	glDepthMask(GL_FALSE);
+
 	glUseProgram(shader->id);
 	glBindVertexArray(skyboxVAO);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, skybox_cubemap);
-	float4x4 model(float4x4::FromTRS(frustum.pos, float4x4::identity, float3::one));
+	float4x4 model(float4x4::FromTRS(frustum.pos, 
+		float4x4::identity, float3::one));
 	glUniformMatrix4fv(glGetUniformLocation(shader->id,
 		"model"), 1, GL_TRUE, &model[0][0]);
 

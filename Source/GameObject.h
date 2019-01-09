@@ -29,6 +29,7 @@ public:
 	Component * CreateComponent(ComponentType type);
 	Component * GetComponent(ComponentType type) const;
 	std::vector<Component *> GetComponents(ComponentType type) const;
+	std::vector<Component *> GetComponentsInChildren(ComponentType type) const;
 	void RemoveComponent(Component * component);
 	void RemoveChild(GameObject* child);
 

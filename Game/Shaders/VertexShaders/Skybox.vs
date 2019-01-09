@@ -14,4 +14,5 @@ void main()
 {
     TexCoords = aPos;
     gl_Position = proj * view* model* vec4(aPos, 1.0);
+	gl_Position.z = gl_Position.w -0.00001; //fix to far plane.
 }  

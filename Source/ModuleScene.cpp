@@ -114,6 +114,11 @@ void ModuleScene::Draw(const math::Frustum &frustum, bool isEditor)
 	{
 		DrawGO(*go, frustum, isEditor);
 	}
+
+	if (selected != nullptr && selected->GetComponent(ComponentType::Renderer) == nullptr)
+	{
+		DrawGO(*selected, frustum, isEditor); //bcause it could be an object without mesh not in staticGOs or dynamicGOs
+	}
 }
 
 void ModuleScene::DrawGO(const GameObject& go, const math::Frustum & frustum, bool isEditor)

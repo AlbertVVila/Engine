@@ -377,7 +377,19 @@ void ModuleRender::DrawGUI()
 	const char* scales[] = {"1", "10", "100"};
 	static int item_current = 0;
 	ImGui::Combo("Scale", &item_current, scales, 3);
-	current_scale = atoi(scales[item_current]);
+	unsigned new_scale = atoi(scales[item_current]);
+	if (new_scale != current_scale)
+	{
+		current_scale = new_scale;
+		std::vector<Component*> cameras = App->scene->root->GetComponentsInChildren(ComponentType::Camera);
+		for (auto &cam : cameras)
+		{
+			((ComponentCamera*)cam)->frustum->nearPlaneDistance = ZNEARDIST * current_scale;
+			((ComponentCamera*)cam)->frustum->farPlaneDistance = ZFARDIST * current_scale;
+		}
+		App->camera->editorcamera->frustum->nearPlaneDistance = ZNEARDIST * current_scale;
+		App->camera->editorcamera->frustum->farPlaneDistance = ZFARDIST * current_scale;
+	}
 	
 }
 

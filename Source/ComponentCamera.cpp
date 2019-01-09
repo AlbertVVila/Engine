@@ -17,8 +17,6 @@
 
 #define MAXFOV 120
 #define MINFOV 40
-#define ZNEARDIST .1f
-#define ZFARDIST 10000.f
 
 ComponentCamera::ComponentCamera() : Component(nullptr, ComponentType::Camera)
 {
@@ -64,8 +62,8 @@ void ComponentCamera::InitFrustum()
 	frustum->pos = float3::zero;
 	frustum->front = -float3::unitZ;
 	frustum->up = float3::unitY;
-	frustum->nearPlaneDistance = ZNEARDIST;
-	frustum->farPlaneDistance = ZFARDIST;
+	frustum->nearPlaneDistance = ZNEARDIST* App->renderer->current_scale;
+	frustum->farPlaneDistance = ZFARDIST * App->renderer->current_scale;
 	frustum->verticalFov = math::DegToRad(60);
 	frustum->horizontalFov = 2.f * atanf(tanf(frustum->verticalFov * 0.5f) * ((float)App->window->width / (float)App->window->height));
 

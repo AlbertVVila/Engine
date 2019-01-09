@@ -303,6 +303,30 @@ std::vector<Component *> GameObject::GetComponents(ComponentType type) const
 	return list;
 }
 
+std::vector<Component*> GameObject::GetComponentsInChildren(ComponentType type) const
+{
+	std::vector<Component *> list;
+	std::stack<const GameObject *>GOs;
+	GOs.push(this);
+	while (!GOs.empty())
+	{
+		const GameObject* go = GOs.top();
+		GOs.pop();
+		for (const auto &component : go->components)
+		{
+			if (component->type == type)
+			{
+				list.push_back(component);
+			}
+		}
+		for (const auto &child : go->children)
+		{
+			GOs.push(child);
+		}
+	}
+	return list;
+}
+
 void GameObject::RemoveComponent(Component * component)
 {
 	for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
@@ -482,11 +506,10 @@ AABB GameObject::GetBoundingBox() const
 	}
 
 	bbox.TransformAsAABB(GetGlobalTransform());
-	for (const auto &child : children)
-	{
-		if(child->GetComponent(ComponentType::Renderer) != nullptr)
-			bbox.Enclose(child->GetBoundingBox());
-	}
+	//for (const auto &child : children)
+	//{
+	//	bbox.Enclose(child->GetBoundingBox());
+	//}
 
 	return bbox;
 }
@@ -508,6 +531,11 @@ bool GameObject::MeshIntersects(const LineSegment & line, float* distance) const
 
 void GameObject::DrawBBox() const
 { //TODO: optimize with VAO
+
+	for (const auto& child : children)
+	{
+		child->DrawBBox();
+	}
 
 	unsigned shader = App->program->defaultShader->id;
 	glUseProgram(shader);
