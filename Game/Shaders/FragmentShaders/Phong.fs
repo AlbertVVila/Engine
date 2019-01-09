@@ -107,8 +107,9 @@ float lambert(vec3 direction, vec3 normals)
 float specular_phong(vec3 direction, vec3 pos, vec3 normals, vec3 viewPos, float shininess)
 {
 	vec3 viewDir = normalize(viewPos-pos);
-	vec3 reflectDir = normalize(reflect(-direction, normals));
-	return pow(max(dot(viewDir, reflectDir), 0.0), shininess);
+	vec3 halfDir = normalize(viewDir+direction);
+	
+	return pow(max(dot(normals, halfDir), 0.0), shininess);
 }
 
 vec3 directional_phong(vec3 normal, vec3 viewPos, DirLight dir, vec4 diffuse_color, vec3 specular_color)
