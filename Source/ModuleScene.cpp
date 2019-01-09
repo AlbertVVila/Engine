@@ -12,7 +12,6 @@
 #include "ComponentTransform.h"
 #include "ComponentRenderer.h"
 #include "ComponentCamera.h"
-#include "ComponentLight.h"
 
 #include "Material.h"
 #include "Mesh.h"
@@ -36,6 +35,7 @@
 #include <map>
 
 #define MAX_DEBUG_LINES 5
+#define MAX_LIGHTS 4
 
 ModuleScene::ModuleScene()
 {
@@ -381,33 +381,30 @@ unsigned ModuleScene::GetNewUID()
 	return uuid_rng();
 }
 
-std::list<ComponentLight*> ModuleScene::GetClosestSpotLights(float3 position) const
+std::list<ComponentLight*> ModuleScene::GetClosestLights(LightType type, float3 position) const
 {
-	std::list<ComponentLight*> spots;
+	std::map<float, ComponentLight*> lightmap;
 	for (const auto& light : lights)
 	{
-		if (light->type == LightType::SPOT  && light->enabled)
+		if (light->type == type && light->enabled && light->gameobject->transform != nullptr)
 		{
-			spots.push_back(light);
+			float distance = light->gameobject->transform->position.Distance(position);
+			lightmap.insert(std::pair<float, ComponentLight*>(distance,light));
 		}
 	}
-	return spots;
-}
 
-std::list<ComponentLight*> ModuleScene::GetClosestPointLights(float3 position) const
-{
-	std::list<ComponentLight*> points;
-	for (const auto& light : lights)
+	std::list<ComponentLight*> closest;
+	int i = 0;
+	for (const auto& light : lightmap)
 	{
-		if (light->type == LightType::POINT  && light->enabled)
-		{
-			points.push_back(light);
-		}
+		closest.push_back(light.second);
+		++i;
+		if (i == MAX_LIGHTS) break;
 	}
-	return points;
+	return closest;
 }
 
-ComponentLight * ModuleScene::GetDirectionalLight() const
+ComponentLight* ModuleScene::GetDirectionalLight() const
 {
 	for (const auto& light : lights)
 	{

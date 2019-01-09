@@ -2,6 +2,8 @@
 #define __ModuleScene_h__
 
 #include "Module.h"
+#include "ComponentLight.h"
+
 #include "Geometry/Frustum.h"
 #include "pcg_random.hpp"
 #include "Math/Quat.h"
@@ -43,9 +45,9 @@ public:
 	void Select(GameObject* gameobject);
 	void Pick(float normalized_x, float normalized_y);
 	unsigned GetNewUID();
-	std::list<ComponentLight*>GetClosestSpotLights(float3 position) const;
-	std::list<ComponentLight*>GetClosestPointLights(float3 position) const;
-	ComponentLight* GetDirectionalLight() const;
+	std::list<ComponentLight*> GetClosestLights(LightType type, float3 position = float3::zero) const;
+
+	ComponentLight * GetDirectionalLight() const;
 
 private:
 	std::list<std::pair<float, GameObject*>>GetDynamicIntersections(const LineSegment& line);

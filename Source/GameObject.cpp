@@ -425,7 +425,7 @@ void GameObject::SetLightUniforms(unsigned shader) const
 
 
 	int i = 0;
-	for (const auto & spot : App->scene->GetClosestSpotLights(transform->position))
+	for (const auto & spot : App->scene->GetClosestLights(LightType::SPOT, transform->position))
 	{
 		char buffer[32];
 
@@ -462,11 +462,11 @@ void GameObject::SetLightUniforms(unsigned shader) const
 
 		++i;
 	}
-	glUniform1ui(glGetUniformLocation(shader,
+	glUniform1i(glGetUniformLocation(shader,
 		"lights.num_spots"), i);
 
 	i = 0;
-	for (const auto & point : App->scene->GetClosestPointLights(transform->position))
+	for (const auto & point : App->scene->GetClosestLights(LightType::POINT, transform->position))
 	{
 		char buffer[32];
 
@@ -491,7 +491,7 @@ void GameObject::SetLightUniforms(unsigned shader) const
 
 		++i;
 	}
-	glUniform1ui(glGetUniformLocation(shader,
+	glUniform1i(glGetUniformLocation(shader,
 		"lights.num_points"), i);
 }
 
