@@ -178,6 +178,10 @@ GameObject * ModuleScene::CreateGameObject(const char * name, GameObject* parent
 void ModuleScene::CreateCube(const char * name, GameObject* parent, const float3 & pos, const Quat & rot, float size, const float4 & color)
 {
 	par_shapes_mesh* mesh = par_shapes_create_cube();
+	if (mesh->normals == nullptr)
+	{
+		par_shapes_compute_normals(mesh);
+	}
 	CreatePrimitive(mesh, name, pos, rot, size, color, parent);
 }
 

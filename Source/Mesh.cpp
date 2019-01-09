@@ -31,7 +31,7 @@ void Mesh::SetMesh(const char * meshData, unsigned uid)
 	float* vertices = (float*)meshData;
 	meshData += sizeof(float) * 3 * numVertices;
 		
-	bool hasNormals = (bool*)meshData;
+	bool hasNormals = *(bool*)meshData;
 	meshData += sizeof(bool);
 	
 	float* normals = nullptr;
@@ -41,7 +41,7 @@ void Mesh::SetMesh(const char * meshData, unsigned uid)
 		meshData += sizeof(float) * 3 * numVertices;
 	}
 	
-	bool hasTexCoords = (bool*)meshData;
+	bool hasTexCoords = *(bool*)meshData;
 	meshData += sizeof(bool);
 	
 	float* texCoords = nullptr;

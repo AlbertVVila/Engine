@@ -996,12 +996,28 @@ par_shapes_mesh* par_shapes_create_cube()
         4,5,1,0, // left
         7,4,0,3, // bottom
     };
+
+	static float tcoords[8 * 2] = {
+		0, 1,
+		0, 0,
+		1, 0,
+		1, 1,
+		0, 0,
+		0, 1,
+		1, 1,
+		1, 0,
+	};
+
     int nquads = sizeof(quads) / sizeof(quads[0]) / 4;
     par_shapes_mesh* mesh = PAR_CALLOC(par_shapes_mesh, 1);
     int ncorners = sizeof(verts) / sizeof(verts[0]) / 3;
     mesh->npoints = ncorners;
     mesh->points = PAR_MALLOC(float, mesh->npoints * 3);
     memcpy(mesh->points, verts, sizeof(verts));
+
+	mesh->tcoords = PAR_MALLOC(float, mesh->npoints * 2);
+	memcpy(mesh->tcoords, tcoords, sizeof(tcoords));
+
     PAR_SHAPES_T const* quad = quads;
     mesh->ntriangles = nquads * 2;
     mesh->triangles = PAR_MALLOC(PAR_SHAPES_T, mesh->ntriangles * 3);
