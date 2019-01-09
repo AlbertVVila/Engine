@@ -4,6 +4,7 @@
 #include "ModuleRender.h"
 #include "imgui.h"
 #include "SDL.h"
+#include "JSON.h"
 
 ModuleWindow::ModuleWindow()
 {
@@ -15,7 +16,7 @@ ModuleWindow::~ModuleWindow()
 }
 
 // Called before render is available
-bool ModuleWindow::Init()
+bool ModuleWindow::Init(JSON * config)
 {
 	LOG("Init SDL window & surface");
 	bool ret = true;
@@ -27,9 +28,24 @@ bool ModuleWindow::Init()
 	}
 	else
 	{
+		JSON_value* windowConfig = config->GetValue("window");
+		if (windowConfig != nullptr)
+		{
+			fullscreen = windowConfig->GetInt("fullscreen");
+			resizable = windowConfig->GetInt("resizable");
+			borderless = windowConfig->GetInt("borderless");
+			fullscreen_desktop = windowConfig->GetInt("fullscreen_desktop");
+			width = windowConfig->GetInt("width");
+			height = windowConfig->GetInt("height");
+			brightness = windowConfig->GetFloat("brightness");
+		}
+		else
+		{
+			int width = SCREEN_WIDTH;
+			int height = SCREEN_HEIGHT;
+		}
+
 		//Create window
-		int width = SCREEN_WIDTH;
-		int height = SCREEN_HEIGHT;
 		Uint32 flags = SDL_WINDOW_SHOWN |  SDL_WINDOW_OPENGL;
 
 		if (fullscreen)
@@ -60,6 +76,8 @@ bool ModuleWindow::Init()
 			LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());
 			ret = false;
 		}
+
+		SDL_SetWindowBrightness(window, brightness);
 	}
 
 	return ret;
@@ -80,6 +98,22 @@ bool ModuleWindow::CleanUp()
 	SDL_Quit();
 	return true;
 }
+
+void ModuleWindow::SaveConfig(JSON * config)
+{
+	JSON_value* windowConfig = config->CreateValue();
+
+	windowConfig->AddInt("fullscreen", fullscreen);
+	windowConfig->AddInt("resizable", resizable);
+	windowConfig->AddInt("borderless", borderless);
+	windowConfig->AddInt("fullscreen_desktop", fullscreen_desktop);
+	windowConfig->AddInt("width", width);
+	windowConfig->AddInt("height", height);
+	windowConfig->AddFloat("brightness", brightness);
+
+	config->AddValue("window", windowConfig);
+}
+
 
 void ModuleWindow::Resize(int width, int height)
 {

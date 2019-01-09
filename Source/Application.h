@@ -3,6 +3,9 @@
 
 #include<list>
 #include "Globals.h"
+
+#define CONFIG_FILE "config.json"
+
 class Module;
 class ModuleRender;
 class ModuleWindow;

@@ -138,10 +138,7 @@ void Viewport::CreateFrameBuffer(int width, int height)
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-		if (App->renderer->msaa)
-		{
-			CreateMSAABuffers(width, height);
-		}
+		CreateMSAABuffers(width, height);
 
 	}
 	else

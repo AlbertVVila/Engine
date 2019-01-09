@@ -23,7 +23,7 @@ class ModuleEditor :
 public:
 	ModuleEditor();
 	~ModuleEditor();
-	bool Init() override;
+	bool Init(JSON * config) override;
 	update_status PreUpdate() override;
 	update_status Update() override;
 	bool CleanUp() override;

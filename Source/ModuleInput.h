@@ -31,7 +31,7 @@ public:
 	ModuleInput();
 	~ModuleInput();
 
-	bool Init();
+	bool Init(JSON * config);
 	update_status PreUpdate();
 	bool CleanUp();
 

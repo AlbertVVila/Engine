@@ -24,7 +24,7 @@ public:
 	ModuleScene();
 	~ModuleScene();
 
-	bool Init() override;
+	bool Init(JSON * config) override;
 	bool Start() override;
 	update_status Update() override;
 	bool CleanUp() override;

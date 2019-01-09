@@ -2,6 +2,8 @@
 #define __Module_h__
 
 #include "Globals.h"
+class JSON;
+
 class Module
 {
 public:
@@ -12,10 +14,12 @@ public:
 
 	virtual ~Module() {};
 
-	virtual bool Init() 
+	virtual bool Init(JSON* json) 
 	{
 		return true; 
 	}
+
+	virtual void SaveConfig(JSON *config) {};
 
 	virtual bool Start()
 	{

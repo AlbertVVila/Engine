@@ -45,7 +45,7 @@ ModuleEditor::~ModuleEditor()
 }
 
 // Called before render is available
-bool ModuleEditor::Init()
+bool ModuleEditor::Init(JSON * config)
 {
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); 

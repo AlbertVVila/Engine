@@ -17,8 +17,8 @@ public:
 	ModuleProgram();
 	~ModuleProgram();
 
-	bool Init();
-	bool CleanUp();
+	bool Init(JSON * config) override;
+	bool CleanUp() override;
 
 	Shader* CreateProgram(const char *name);
 	Shader* GetProgram(const char * name); //creates new one if it doesn't exist

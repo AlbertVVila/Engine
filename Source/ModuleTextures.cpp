@@ -18,7 +18,7 @@ ModuleTextures::~ModuleTextures()
 }
 
 // Called before render is available
-bool ModuleTextures::Init()
+bool ModuleTextures::Init(JSON * config)
 {
 	LOG("Init Image library");
 	ilutRenderer(ILUT_OPENGL);

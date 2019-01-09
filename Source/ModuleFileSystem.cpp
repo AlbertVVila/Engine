@@ -5,16 +5,6 @@
 
 ModuleFileSystem::ModuleFileSystem()
 {
-}
-
-
-ModuleFileSystem::~ModuleFileSystem()
-{
-	PHYSFS_deinit();
-}
-
-bool ModuleFileSystem::Init()
-{
 	PHYSFS_init(NULL);
 	PHYSFS_addToSearchPath(PHYSFS_getBaseDir(), 1);
 
@@ -22,7 +12,12 @@ bool ModuleFileSystem::Init()
 	PHYSFS_mount(ASSETS, nullptr, 1);
 	PHYSFS_mount(SHADERS, nullptr, 1);
 	PHYSFS_setWriteDir(PHYSFS_getBaseDir());
-	return true;
+}
+
+
+ModuleFileSystem::~ModuleFileSystem()
+{
+	PHYSFS_deinit();
 }
 
 bool ModuleFileSystem::Start()

@@ -10,11 +10,6 @@ ModuleTime::~ModuleTime()
 {
 }
 
-bool ModuleTime::Init()
-{
-	return true;
-}
-
 update_status ModuleTime::Update() //TODO: not getting time correctly between frames -> change location?
 {
 

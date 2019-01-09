@@ -9,6 +9,7 @@
 
 #include "ComponentCamera.h"
 
+#include "JSON.h"
 #include "imgui.h"
 #include "Math/MathFunc.h"
 #include "Geometry/Frustum.h"
@@ -22,10 +23,43 @@ ModuleCamera::~ModuleCamera()
 	RELEASE(editorcamera);
 }
 
-bool ModuleCamera::Init()
+bool ModuleCamera::Init(JSON* config)
 {
 	editorcamera = new ComponentCamera();
+
+	JSON_value* cam = config->GetValue("camera");
+	if (cam == nullptr) return true;
+
+	math::Frustum *frustum = editorcamera->frustum;
+	frustum->pos = cam->GetFloat3("position");
+	frustum->front = cam->GetFloat3("forward");
+	frustum->up = cam->GetFloat3("up");
+
+	editorcamera->movementSpeed = cam->GetFloat("movement");
+	editorcamera->rotationSpeed = cam->GetFloat("rotation");
+	editorcamera->zoomSpeed = cam->GetFloat("zoom");
+	editorcamera->SetFOV(cam->GetFloat("fov"));
+	frustum->nearPlaneDistance = cam->GetFloat("znear");
+	
 	return true;
+}
+
+void ModuleCamera::SaveConfig(JSON * config)
+{
+	JSON_value* cam = config->CreateValue();
+
+	math::Frustum *frustum = editorcamera->frustum;
+	cam->AddFloat3("position", frustum->pos);
+	cam->AddFloat3("forward", frustum->front);
+	cam->AddFloat3("up", frustum->up);
+	cam->AddFloat("movement", editorcamera->movementSpeed);
+	cam->AddFloat("rotation", editorcamera->rotationSpeed);
+	cam->AddFloat("zoom", editorcamera->zoomSpeed);
+	cam->AddFloat("fov", frustum->verticalFov);
+	cam->AddFloat("znear", frustum->nearPlaneDistance);
+	cam->AddFloat("zfar", frustum->farPlaneDistance);
+
+	config->AddValue("camera", cam);
 }
 
 update_status ModuleCamera::Update() //TODO: vsync bug rotation smooth

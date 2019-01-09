@@ -16,7 +16,7 @@ ModuleProgram::~ModuleProgram()
 {
 }
 
-bool ModuleProgram::Init() 
+bool ModuleProgram::Init(JSON * config)
 {
 	defaultShader = CreateProgram("Default");
 	return true;

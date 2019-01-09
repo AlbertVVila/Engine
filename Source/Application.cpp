@@ -10,7 +10,9 @@
 #include "ModuleScene.h"
 #include "ModuleFileSystem.h"
 #include "ModuleResourceManager.h"
+
 #include "Timer.h"
+#include "JSON.h"
 
 using namespace std;
 
@@ -45,9 +47,20 @@ bool Application::Init()
 
 	bool ret = true;
 
-	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret; ++it)
-		ret = (*it)->Init();
+	//Load config
+	char* data = nullptr;
+	fsystem->Load(CONFIG_FILE, &data);
+	JSON *json;
+	if (data != nullptr)
+	{
+		json = new JSON(data);
+	}
 
+	//Init
+	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret; ++it)
+		ret = (*it)->Init(json);
+
+	//Start
 	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret; ++it)
 		ret = (*it)->Start();
 
@@ -80,6 +93,13 @@ bool Application::CleanUp()
 {
 	bool ret = true;
 
+	//Save config
+	JSON *json = new JSON();
+	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
+		(*it)->SaveConfig(json);
+	fsystem->Save(CONFIG_FILE, json->ToString().c_str(), json->Size());
+
+	//CleanUp
 	for (list<Module*>::reverse_iterator it = modules.rbegin(); it != modules.rend() && ret; ++it)
 	{
 		ret = (*it)->CleanUp();

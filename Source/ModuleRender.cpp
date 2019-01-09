@@ -11,6 +11,7 @@
 #include "GameObject.h"
 #include "ComponentCamera.h"
 #include "Skybox.h"
+#include "JSON.h"
 
 #include "SDL.h"
 #include "GL/glew.h"
@@ -28,7 +29,7 @@ ModuleRender::~ModuleRender()
 }
 
 // Called before render is available
-bool ModuleRender::Init()
+bool ModuleRender::Init(JSON * config)
 {
 	LOG("Creating Renderer context");
 
@@ -38,6 +39,23 @@ bool ModuleRender::Init()
 	InitOpenGL();
 
 	SDL_GL_SetSwapInterval((int)vsync);
+	skybox = new Skybox();
+
+	JSON_value* renderer = config->GetValue("renderer");
+	if (renderer == nullptr) return true;
+
+	msaa = renderer->GetInt("msaa");
+	msaa_level = renderer->GetInt("msaa_level");
+	picker_debug = renderer->GetInt("picker_debug");
+	light_debug = renderer->GetInt("light_debug");
+	quadtree_debug = renderer->GetInt("quadtree_debug");
+	grid_debug = renderer->GetInt("grid_debug");
+	current_scale = renderer->GetInt("current_scale");
+	depthTest = renderer->GetInt("depthTest");
+	wireframe = renderer->GetInt("wireframe");
+	vsync = renderer->GetInt("vsync");
+	useMainCameraFrustum = renderer->GetInt("frustumMainCamera");
+	skybox->enabled = renderer->GetInt("skybox");
 
 	return true;
 }
@@ -45,7 +63,6 @@ bool ModuleRender::Init()
 bool ModuleRender::Start()
 {
 	GenBlockUniforms();
-	skybox = new Skybox();
 	return true;
 }
 
@@ -70,6 +87,26 @@ update_status ModuleRender::PostUpdate()
 	SDL_GL_SwapWindow(App->window->window);
 
 	return UPDATE_CONTINUE;
+}
+
+void ModuleRender::SaveConfig(JSON * config)
+{
+	JSON_value* renderer = config->CreateValue();
+
+	renderer->AddInt("msaa", msaa);
+	renderer->AddInt("msaa_level", msaa_level);
+	renderer->AddInt("picker_debug", picker_debug);
+	renderer->AddInt("light_debug", light_debug);
+	renderer->AddInt("quadtree_debug", light_debug);
+	renderer->AddInt("grid_debug", grid_debug);
+	renderer->AddInt("current_scale", current_scale);
+	renderer->AddInt("depthTest", depthTest);
+	renderer->AddInt("wireframe", wireframe);
+	renderer->AddInt("vsync", vsync);
+	renderer->AddInt("frustumMainCamera", useMainCameraFrustum);
+	renderer->AddInt("skybox", skybox->enabled);
+
+	config->AddValue("renderer", renderer);
 }
 
 void ModuleRender::Draw(const ComponentCamera& cam, int width, int height, bool isEditor) const
@@ -99,6 +136,7 @@ void ModuleRender::Draw(const ComponentCamera& cam, int width, int height, bool 
 // Called before quitting
 bool ModuleRender::CleanUp()
 {
+
 	LOG("Destroying renderer");
 	if (UBO != 0)
 	{
@@ -161,10 +199,13 @@ void ModuleRender::DrawGrid() const
 		"Vcolor"), 1, white);
 
 	glLineWidth(1.0f);
+
 	float d = 200.0f*current_scale;
 	glBegin(GL_LINES);
 
-	for (float i = -d; i <= d; i += current_scale)
+	float distance = MAX(1, current_scale);
+
+	for (float i = -d; i <= d; i += distance)
 	{
 		glVertex3f(i, 0.0f, -d);
 		glVertex3f(i, 0.0f, d);

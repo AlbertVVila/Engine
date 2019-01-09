@@ -9,7 +9,6 @@ public:
 	ModuleTime();
 	~ModuleTime();
 
-	bool            Init() override;
 	update_status   Update() override;
 
 public:

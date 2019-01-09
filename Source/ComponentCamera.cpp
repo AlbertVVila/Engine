@@ -156,7 +156,7 @@ void ComponentCamera::SetAspect(float aspect)
 void ComponentCamera::SetFOV(float fov)
 {
 	float aspect = frustum->AspectRatio();
-	frustum->verticalFov = math::DegToRad(fov);
+	frustum->verticalFov = fov;
 	SetAspect(aspect);
 }
 

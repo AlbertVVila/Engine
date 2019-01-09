@@ -46,7 +46,7 @@ ModuleScene::~ModuleScene()
 {
 }
 
-bool ModuleScene::Init()
+bool ModuleScene::Init(JSON * config)
 {
 	pcg_extras::seed_seq_from<std::random_device> seed_source;
 	pcg32 rng(seed_source);

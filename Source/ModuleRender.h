@@ -3,6 +3,7 @@
 
 #include "Module.h"
 class ComponentCamera;
+class JSON;
 class Skybox;
 struct Shader;
 
@@ -12,11 +13,13 @@ public:
 	ModuleRender();
 	~ModuleRender();
 
-	bool Init() override;
+	bool Init(JSON * config) override;
 	bool Start() override;
 	update_status PreUpdate() override;
 	update_status Update() override;
 	update_status PostUpdate() override;
+	void SaveConfig(JSON* config) override;
+
 	void Draw(const ComponentCamera& cam, int width, int height, bool isEditor = false) const;
 	bool CleanUp() override;
 	void OnResize();
@@ -50,10 +53,8 @@ public:
 
 private:
 	unsigned UBO = 0;
-	bool useCheckersTexture = false;
 	bool depthTest = true;
 	bool wireframe = false;
-	bool boundingBox = false;
 	bool vsync = false;
 	bool useMainCameraFrustum = false;
 

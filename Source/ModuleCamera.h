@@ -3,6 +3,7 @@
 
 #include "Module.h"
 class ComponentCamera;
+class JSON;
 
 class ModuleCamera : public Module
 {
@@ -10,7 +11,8 @@ public:
     ModuleCamera();
     ~ModuleCamera();
 
-	bool Init() override;
+	bool Init(JSON * config) override;
+	void SaveConfig(JSON * config) override;
 	update_status Update() override;
 	bool CleanUp() override;
 

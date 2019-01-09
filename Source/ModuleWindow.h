@@ -4,6 +4,7 @@
 #include "Module.h"
 
 class Application;
+class JSON;
 struct SDL_Window; 
 
 class ModuleWindow : public Module
@@ -15,8 +16,10 @@ public:
 	virtual ~ModuleWindow();
 
 
-	bool Init() override;
+	bool Init(JSON * config) override;
+
 	bool CleanUp() override;
+	void SaveConfig(JSON* config) override;
 
 	void Resize(int width, int height);
 	void DrawGUI();

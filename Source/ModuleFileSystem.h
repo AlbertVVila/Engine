@@ -32,7 +32,6 @@ public:
 	ModuleFileSystem();
 	~ModuleFileSystem();
 
-	bool Init() override;
 	bool Start() override;
 	update_status Update() override;
 

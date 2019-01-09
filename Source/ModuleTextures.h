@@ -28,7 +28,7 @@ public:
 	ModuleTextures();
 	~ModuleTextures();
 
-	bool Init() override;
+	bool Init(JSON * config) override;
 	bool CleanUp() override;
 
 	void DrawGUI();
