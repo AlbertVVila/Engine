@@ -10,7 +10,7 @@ ModuleTime::~ModuleTime()
 {
 }
 
-update_status ModuleTime::Update() //TODO: not getting time correctly between frames -> change location?
+update_status ModuleTime::Update(float dt) //TODO: not getting time correctly between frames -> change location?
 {
 
 	Uint64 now = SDL_GetPerformanceCounter();

@@ -117,8 +117,8 @@ update_status ModuleInput::PreUpdate()
 			break;
 
 		case SDL_MOUSEMOTION:
-			mouse_motion.x = (float)event.motion.xrel/ (float)App->window->width; 
-			mouse_motion.y = (float)event.motion.yrel/ (float)App->window->height;
+			mouse_motion.x = (float)event.motion.xrel / (float) App->window->width;
+			mouse_motion.y = (float)event.motion.yrel / (float)App->window->height;
 			mouse.x = (float)event.motion.x;
 			mouse.y = (float)event.motion.y;
 			break;
@@ -160,9 +160,10 @@ const fPoint& ModuleInput::GetMousePosition() const
 	return mouse;
 }
 
-const fPoint& ModuleInput::GetMouseMotion() const
+const void ModuleInput::GetMouseMotion(float &x, float &y) const
 {
-	return mouse_motion;
+	x = mouse_motion.x;
+	y = mouse_motion.y;
 }
 
 const float ModuleInput::GetMouseWheel() const

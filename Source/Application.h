@@ -3,6 +3,7 @@
 
 #include<list>
 #include "Globals.h"
+#include "Timer.h"
 
 #define CONFIG_FILE "config.json"
 
@@ -30,6 +31,8 @@ public:
 	update_status Update();
 	bool CleanUp();
 
+	void SetTimer();
+
 public:
 	ModuleRender* renderer = nullptr;
 	ModuleWindow* window = nullptr;
@@ -45,6 +48,8 @@ public:
 
 private:
 	std::list<Module*> modules;
+	Timer ms_timer;
+	float dt;
 
 };
 

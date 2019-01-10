@@ -33,7 +33,7 @@ public:
 	~ModuleFileSystem();
 
 	bool Start() override;
-	update_status Update() override;
+	update_status Update(float dt) override;
 
 	unsigned Load(const char * file, char ** buffer) const;
 	bool Save(const char* file, const char* buffer, unsigned size) const;

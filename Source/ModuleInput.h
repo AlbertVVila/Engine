@@ -55,7 +55,7 @@ public:
 	bool GetWindowEvent(EventWindow code) const;
 
 	// Get mouse / axis position
-	const fPoint& GetMouseMotion() const;
+	const void ModuleInput::GetMouseMotion(float &x, float &y) const;
 	const fPoint& GetMousePosition() const;
 	const float GetMouseWheel() const;
 

@@ -30,6 +30,7 @@ void PanelConfiguration::Draw()
 	if (ImGui::CollapsingHeader("Application"))
 	{
 		DrawFPSgraph();
+		DrawMSgraph();
 		DrawMemoryStats();
 	}
 	if (ImGui::CollapsingHeader("Window"))
@@ -55,10 +56,13 @@ void PanelConfiguration::Draw()
 	ImGui::End();
 }
 
-void PanelConfiguration::DrawFPSgraph()
+void PanelConfiguration::DrawFPSgraph() const
 {
-	float total = 0;
-	for (unsigned int i = 0; i < fps.size(); i++) {
+	if (fps.size() == 0) return;
+
+	float fmin = fps[0];
+	float total = fps[0];
+	for (unsigned int i = 1; i < fps.size(); i++) {
 		total += fps[i];
 		fmin = MIN(fmin, fps[i]);
 	}
@@ -70,12 +74,36 @@ void PanelConfiguration::DrawFPSgraph()
 	ImGui::Text(minfps);
 }
 
-void PanelConfiguration::AddFps(float fps_value)
+void PanelConfiguration::DrawMSgraph() const
 {
-	fps.insert(fps.begin(), fps_value);
+	if (ms.size() == 0) return;
+
+	float msMAX = ms[0];
+	float total = ms[0];
+	for (unsigned int i = 1; i < ms.size(); i++) {
+		total += ms[i];
+		msMAX = MAX(msMAX, ms[i]);
+	}
+	char avg[32];
+	char maxms[32];
+	sprintf_s(avg, "%s%.2f", "avg:", total / ms.size());
+	sprintf_s(maxms, "%s%.2f", "max:", msMAX);
+	ImGui::PlotHistogram("MS", &ms[0], ms.size(), 0, avg, 0.0f, 5.0f, ImVec2(0, 80));
+	ImGui::Text(maxms);
+}
+
+void PanelConfiguration::AddFps(float dt)
+{
+	fps.insert(fps.begin(), 1 / dt);
+	ms.insert(ms.begin(), dt*1000);
+	if (dt * 1000 > 10)
+	{
+		LOG("high MS: %f", dt * 1000);
+	}
 	if (fps.size() > NUMFPS)
 	{
 		fps.pop_back();
+		ms.pop_back();
 	}
 }
 

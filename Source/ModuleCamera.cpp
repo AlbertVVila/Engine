@@ -62,14 +62,14 @@ void ModuleCamera::SaveConfig(JSON * config)
 	config->AddValue("camera", cam);
 }
 
-update_status ModuleCamera::Update() //TODO: vsync bug rotation smooth
+update_status ModuleCamera::Update(float dt) //TODO: vsync bug rotation smooth
 {
 	if (App->editor->IsCameraFocused())
 	{
-		InputMove();
-		InputRotate();
+		InputMove(dt);
+		InputRotate(dt);
 		InputCenter();
-		InputOrbit();
+		InputOrbit(dt);
 		InputZoom();
 	}
 	return UPDATE_CONTINUE;
@@ -80,7 +80,7 @@ bool ModuleCamera::CleanUp()
 	return editorcamera->CleanUp();
 }
 
-void ModuleCamera::InputMove() const
+void ModuleCamera::InputMove(float dt) const
 {
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
@@ -115,16 +115,19 @@ void ModuleCamera::InputMove() const
 			movement *= 2;
 		}
 
-		editorcamera->Move(movement*App->time->dt*App->renderer->current_scale);
+		editorcamera->Move(movement*dt*App->renderer->current_scale);
 	}
 }
 
-void ModuleCamera::InputRotate() const//TODO: Use deltatime
+void ModuleCamera::InputRotate(float dt) const
 {
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
-		float dx = editorcamera->rotationSpeed * App->input->GetMouseMotion().x; //* App->time->dt;
-		float dy = editorcamera->rotationSpeed * App->input->GetMouseMotion().y; //* App->time->dt;
+		float mouse_motion_x, mouse_motion_y;
+		App->input->GetMouseMotion(mouse_motion_x, mouse_motion_y);
+
+		float dx = editorcamera->rotationSpeed * mouse_motion_x;
+		float dy = editorcamera->rotationSpeed * mouse_motion_y;
 		editorcamera->Rotate(dx,dy);
 	}
 }
@@ -137,12 +140,15 @@ void ModuleCamera::InputCenter() const
 	}
 }
 
-void ModuleCamera::InputOrbit() const
+void ModuleCamera::InputOrbit(float dt) const
 {
 	if (App->input->IsKeyPressed(SDL_SCANCODE_LALT) && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
 	{
-		editorcamera->Orbit(editorcamera->rotationSpeed * App->input->GetMouseMotion().x,
-			editorcamera->rotationSpeed * App->input->GetMouseMotion().y);
+		float mouse_motion_x, mouse_motion_y;
+		App->input->GetMouseMotion(mouse_motion_x, mouse_motion_y);
+
+		editorcamera->Orbit(editorcamera->rotationSpeed * mouse_motion_x,
+			editorcamera->rotationSpeed *  mouse_motion_y);
 	}
 }
 

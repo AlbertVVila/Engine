@@ -126,7 +126,7 @@ update_status ModuleEditor::PreUpdate()
 }
 
 // Called every draw update
-update_status ModuleEditor::Update()
+update_status ModuleEditor::Update(float dt)
 {
 	bool sceneSavePopUp = false;
 	if (ImGui::BeginMainMenuBar())
@@ -341,11 +341,11 @@ bool ModuleEditor::IsCameraFocused() const
 	return false;
 }
 
-void ModuleEditor::AddFpsLog(float fps) const
+void ModuleEditor::AddFpsLog(float dt) const
 {
 	if (configuration != nullptr)
 	{
-		configuration->AddFps(fps);
+		configuration->AddFps(dt);
 	}
 }
 

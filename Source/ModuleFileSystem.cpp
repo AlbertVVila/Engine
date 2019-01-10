@@ -28,7 +28,7 @@ bool ModuleFileSystem::Start()
 	return true;
 }
 
-update_status ModuleFileSystem::Update() //TODO: Separate thread
+update_status ModuleFileSystem::Update(float dt) //TODO: Separate thread
 {
 	if (importTimer.Read() > watchThreshold)
 	{

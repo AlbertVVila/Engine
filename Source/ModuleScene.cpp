@@ -64,7 +64,7 @@ bool ModuleScene::Start()
 	return true;
 }
 
-update_status ModuleScene::Update()
+update_status ModuleScene::Update(float dt)
 {
 	root->Update();
 	return UPDATE_CONTINUE;

@@ -42,7 +42,7 @@ public:
 	math::Frustum* frustum = nullptr; 
 
 	float movementSpeed = 5.0f;
-	float rotationSpeed = 200.f;
+	float rotationSpeed = 200.0f;
 	float zoomSpeed = 0.1f;
 };
 

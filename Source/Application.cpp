@@ -65,27 +65,26 @@ bool Application::Init()
 		ret = (*it)->Start();
 
 	LOG("Init + Start time: %d ms",t.Stop());
+	ms_timer.Start();
 
 	return ret;
 }
 
 update_status Application::Update()
 {
-	//Timer t;
-	//t.Start();
+	SetTimer();
 	update_status ret = UPDATE_CONTINUE;
 
 	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
 		ret = (*it)->PreUpdate();
 
 	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
-		ret = (*it)->Update();
+		ret = (*it)->Update(dt);
 
 	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
 		ret = (*it)->PostUpdate();
-	//LOG("Update time: %d ms", t.Stop());
 
-	editor->AddFpsLog(1 / App->time->dt);
+	editor->AddFpsLog(dt);
 	return ret;
 }
 
@@ -105,4 +104,10 @@ bool Application::CleanUp()
 		ret = (*it)->CleanUp();
 	}
 	return ret;
+}
+
+void Application::SetTimer()
+{
+	dt = (float)ms_timer.Read() / 1000.f;
+	ms_timer.Start();
 }

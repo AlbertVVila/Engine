@@ -13,13 +13,13 @@ public:
 
 	bool Init(JSON * config) override;
 	void SaveConfig(JSON * config) override;
-	update_status Update() override;
+	update_status Update(float dt) override;
 	bool CleanUp() override;
 
-	void InputMove() const;
-	void InputRotate() const;;
+	void InputMove(float dt) const;
+	void InputRotate(float dt) const;;
 	void InputCenter() const;;
-	void InputOrbit() const;;
+	void InputOrbit(float dt) const;;
 	void InputZoom() const;;
 
 	void DrawGUI();

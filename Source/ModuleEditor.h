@@ -25,7 +25,7 @@ public:
 	~ModuleEditor();
 	bool Init(JSON * config) override;
 	update_status PreUpdate() override;
-	update_status Update() override;
+	update_status Update(float dt) override;
 	bool CleanUp() override;
 
 	void RenderGUI() const;
@@ -34,7 +34,7 @@ public:
 
 	bool IsCameraFocused() const;
 	void processInput(SDL_Event* event) const;
-	void AddFpsLog(float fps) const;
+	void AddFpsLog(float dt) const;
 	void AddLog(const char *log) const;
 
 public:

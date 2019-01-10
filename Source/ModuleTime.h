@@ -9,7 +9,7 @@ public:
 	ModuleTime();
 	~ModuleTime();
 
-	update_status   Update() override;
+	update_status   Update(float dt) override;
 
 public:
 	double dt = 0.0f;	// Time between current frame and last frame

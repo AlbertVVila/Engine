@@ -26,7 +26,7 @@ public:
 
 	bool Init(JSON * config) override;
 	bool Start() override;
-	update_status Update() override;
+	update_status Update(float dt) override;
 	bool CleanUp() override;
 
 	GameObject * CreateGameObject(const float4x4& transform, const char* filepath, const char* name, GameObject* parent);
