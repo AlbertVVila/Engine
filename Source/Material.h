@@ -26,15 +26,8 @@ public:
 
 	void Load(const char * material);
 	void Save() const;
-	bool CleanUp();
-
-	//void DeleteTexture();
-
-	/*void SetTexture(const char * data, TextureType type);
-	void SetShader(const char * shaderName);*/
 
 	Texture * GetTexture(TextureType type) const;
-	//Shader* GetShader() const;
 
 	std::list<Texture*> GetTextures() const;
 
@@ -44,7 +37,7 @@ public:
 	std::string name;
 	Shader* shader = nullptr;
 	
-	Texture* textures[MAXTEXTURES]{ nullptr }; //TODO: default specular texture?
+	Texture* textures[MAXTEXTURES]{ nullptr };
 	
 	float4 diffuse_color = float4::one;
 	float3 specular_color = float3::one;

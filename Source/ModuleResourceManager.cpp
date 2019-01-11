@@ -19,7 +19,7 @@ ModuleResourceManager::~ModuleResourceManager() //TODO: deallocate mem on delete
 }
 
 
-Texture* ModuleResourceManager::GetTexture(std::string filename) const //TODO: use Get to retrieve or load if not found
+Texture* ModuleResourceManager::GetTexture(std::string filename) const
 {
 	std::map<std::string, std::pair<unsigned, Texture*>>::const_iterator it = textureResources.find(filename);
 	if (it != textureResources.end())
@@ -120,7 +120,7 @@ Material * ModuleResourceManager::GetMaterial(std::string filename) const
 	return nullptr;
 }
 
-void ModuleResourceManager::AddMaterial(Material * material) //TODO: we should also add textures + shader
+void ModuleResourceManager::AddMaterial(Material * material)
 {
 	std::map<std::string, std::pair<unsigned, Material*>>::iterator it = materialResources.find(material->name);
 	if (it != materialResources.end())

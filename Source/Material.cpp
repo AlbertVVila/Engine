@@ -18,12 +18,17 @@ Material::Material()
 
 Material::~Material()
 {
-	RELEASE(shader);
+	if (shader != nullptr)
+	{
+		App->resManager->DeleteProgram(shader->file);
+		shader = nullptr;
+	}
 	for (unsigned i = 0; i < MAXTEXTURES; i++)
 	{
 		if (textures[i] != nullptr)
 		{
-			RELEASE(textures[i]);
+			App->resManager->DeleteTexture(textures[i]->file);
+			textures[i] = nullptr;
 		}
 	}
 }
@@ -72,6 +77,9 @@ void Material::Load(const char * materialfile)
 	{
 		shader = App->program->GetProgram(materialJSON->GetString("shader"));
 	}
+
+	delete[] data;
+	delete json;
 }
 
 void Material::Save() const
@@ -119,22 +127,7 @@ void Material::Save() const
 	json->AddValue("material", materialJSON);
 	
 	App->fsystem->Save((MATERIALS + name + JSONEXT).c_str(), json->ToString().c_str(),json->Size());
-}
-
-bool Material::CleanUp()
-{
-	if (shader != nullptr)
-	{
-		App->resManager->DeleteProgram(shader->file);
-	}
-	for (unsigned i = 0; i < MAXTEXTURES; i++)
-	{
-		if (textures[i] != nullptr)
-		{
-			App->resManager->DeleteTexture(textures[i]->file);
-		}
-	}
-	return true;
+	delete json;
 }
 
 Texture * Material::GetTexture(TextureType type) const

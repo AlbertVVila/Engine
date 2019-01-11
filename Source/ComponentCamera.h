@@ -31,6 +31,7 @@ public:
 	void Orbit(float dx, float dy);
 	void SetAspect(float aspect);
 	void SetFOV(float fov);
+
 	float4x4 GetViewMatrix() const;
 	float4x4 GetProjectionMatrix() const;
 	LineSegment DrawRay(float x, float y);
@@ -44,6 +45,8 @@ public:
 	float movementSpeed = 5.0f;
 	float rotationSpeed = 200.0f;
 	float zoomSpeed = 0.1f;
+
+	bool isMainCamera = false;
 };
 
 #endif __ComponentCamera_h__

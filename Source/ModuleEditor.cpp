@@ -42,6 +42,14 @@ ModuleEditor::ModuleEditor()
 // Destructor
 ModuleEditor::~ModuleEditor()
 {
+	for (std::list<Panel*>::reverse_iterator it = panels.rbegin(); it != panels.rend() && ret; ++it)
+	{
+		RELEASE(*it);
+	}
+	RELEASE(materialEditor);
+
+	console = nullptr;
+	panels.clear();
 }
 
 // Called before render is available
@@ -277,22 +285,11 @@ bool ModuleEditor::CleanUp()
 {
 	LOG("Destroying editor");
 
-
-	bool ret = true;
-
-	for (std::list<Panel*>::reverse_iterator it = panels.rbegin(); it != panels.rend() && ret; ++it)
-	{
-		RELEASE(*it);
-	}
-	console = nullptr; //avoid bug when adding a log after releasing panels
-
-	panels.clear();
-
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
 
-	return ret;
+	return true;
 }
 
 void ModuleEditor::RenderGUI() const

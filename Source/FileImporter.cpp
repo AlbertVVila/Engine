@@ -86,16 +86,17 @@ bool FileImporter::ImportScene(const aiScene &scene, const char* file)
 		ImportMesh(*scene.mMeshes[i], data);
 
 		Mesh *mesh = new Mesh();
-		mesh->SetMesh(data, App->scene->GetNewUID());
+		unsigned uid = App->scene->GetNewUID();
+		App->fsystem->Save((MESHES + std::to_string(uid)+ MESHEXTENSION).c_str(), data, size);
+		mesh->SetMesh(data, uid); //Deallocates data
 		App->resManager->AddMesh(mesh);
-		App->fsystem->Save((MESHES + std::to_string(mesh->UID)+ MESHEXTENSION).c_str(), data, size);
 		meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->UID));
 	}
 	GameObject *fake = new GameObject("fake",0);
 	ProcessNode(meshMap, scene.mRootNode, &scene, scene.mRootNode->mTransformation, fake);
 	App->scene->SaveScene(*fake, App->fsystem->GetFilename(file).c_str()); //TODO: Make AutoCreation of folders or check
 	//TODO: CleanUP on ending import and on saving
-	return true; //TODO: Load Clear Scene
+	return true;
 }
 
 void FileImporter::ImportMesh(const aiMesh &mesh, char *data)
@@ -186,7 +187,7 @@ GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshma
 
 	for (unsigned i = 0; i < node->mNumMeshes; i++)
 	{
-		ComponentRenderer* crenderer = (ComponentRenderer*)gameobjects[i]->CreateComponent(ComponentType::Renderer);//TODO: avoid map and use resource manager
+		ComponentRenderer* crenderer = (ComponentRenderer*)gameobjects[i]->CreateComponent(ComponentType::Renderer);
 		auto it = meshmap.find(node->mMeshes[i]);
 		if (it != meshmap.end())
 		{
@@ -195,14 +196,14 @@ GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshma
 
 		aiMaterial * mat = scene->mMaterials[scene->mMeshes[node->mMeshes[i]]->mMaterialIndex];
 		aiTextureMapping mapping = aiTextureMapping_UV;
-		for (unsigned i = 1; i <= 4; i++) //Gets diffuse,specular,occlusion and emissive
+		for (unsigned i = 1; i <= 4; i++) //TODO :Get diffuse,specular,occlusion and emissive without overwritting default
 		{
 			aiString texture;
 			mat->GetTexture((aiTextureType)i, 0, &texture, &mapping, 0);
 			if (texture.length > 0)
 			{
 				crenderer->SetMaterial(DEFAULTMAT);
-				crenderer->material->textures[i] = new Texture(App->fsystem->GetFilename(texture.C_Str()));// TODO: SOBRESCRIUS DEFAULT!!
+				crenderer->material->textures[i] = new Texture(App->fsystem->GetFilename(texture.C_Str()));
 			}
 		}
 	} 
@@ -210,7 +211,7 @@ GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshma
 	{
 		GameObject * child = ProcessNode(meshmap, node->mChildren[i], scene, transform, gameobject);
 	}
-	return gameobject; //TODO: create a small resource manager for meshes/materials etc
+	return gameobject;
 }
 
 

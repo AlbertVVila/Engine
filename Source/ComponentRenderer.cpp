@@ -32,7 +32,7 @@ ComponentRenderer::ComponentRenderer(const ComponentRenderer & component) : Comp
 
 ComponentRenderer::~ComponentRenderer()
 {
-	material = nullptr; //TODO: Resource Manager Deallocates memory 
+	material = nullptr; //Resource Manager Deallocates resources (materials, meshes)
 	mesh = nullptr;
 }
 
@@ -103,21 +103,21 @@ void ComponentRenderer::Save(JSON_value * value) const
 	value->AddString("materialFile", material->name.c_str());
 }
 
-void ComponentRenderer::Load(const JSON_value & value) //TODO: delete + releases
+void ComponentRenderer::Load(const JSON_value & value)
 {
 	Component::Load(value);
 	unsigned uid = value.GetUint("meshUID");
-	App->resManager->DeleteMesh(mesh->UID);
-	Mesh *m = App->resManager->GetMesh(uid);
+	App->resManager->DeleteMesh(mesh->UID); //Delete existing old mesh
+	Mesh *m = App->resManager->GetMesh(uid); //Look for loaded meshes
 	if (m != nullptr)
 	{
 		mesh = m;
 	}
-	else
+	else //Case mesh not loaded
 	{
-		char *data;
-		App->fsystem->Load((MESHES + std::to_string(uid) + MESHEXTENSION).c_str(), &data); //TODO: use mini resource maanger to optimize this
-		SetMesh(data, uid);
+		char *data = nullptr;
+		App->fsystem->Load((MESHES + std::to_string(uid) + MESHEXTENSION).c_str(), &data);
+		SetMesh(data, uid); //Deallocates data
 	}
 	App->resManager->AddMesh(mesh);
 

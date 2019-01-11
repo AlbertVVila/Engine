@@ -70,7 +70,7 @@ bool ModuleFileSystem::Save(const char * file, const char * buffer, unsigned siz
 		return false;
 	}
 	PHYSFS_write(myfile, buffer, size, 1); //TODO: check errors in write
-	//RELEASE(buffer); //TODO: fix mem leacks
+	//RELEASE(buffer); //TODO: fix mem leaks
 	PHYSFS_close(myfile);
 
 	return true;
@@ -171,18 +171,21 @@ bool ModuleFileSystem::CopyFromOutsideFS(const char * source, const char * desti
 		return false;
 	}
 	Save(destination, data, size);
+	RELEASE(data);
 	return true;
 }
 
 bool ModuleFileSystem::Copy(const char * source, const char * destination, const char* file) const
 {
-	char * data;
+	char * data = nullptr;
 	std::string filepath(source);
 	filepath += file;
 	unsigned size = Load(filepath.c_str(), &data);
 	std::string filedest(destination);
 	filedest += file;
 	Save(filedest.c_str(), data, size);
+	RELEASE_ARRAY(data);
+
 	return true;
 }
 

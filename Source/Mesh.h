@@ -14,10 +14,8 @@ public:
 	void SetMesh(const char* meshData, unsigned uid);
 	void Draw(unsigned int shaderProgram) const;
 
-	//unsigned int GetMaterialIndex() const;
 	void ComputeBBox();
 	AABB GetBoundingBox() const;
-	void DeleteBuffers();
 
 	bool Intersects(const LineSegment &line, float* distance);
 

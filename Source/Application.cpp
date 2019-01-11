@@ -60,6 +60,12 @@ bool Application::Init()
 	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret; ++it)
 		ret = (*it)->Init(json);
 
+	if (data != nullptr)
+	{
+		RELEASE_ARRAY(data);
+		RELEASE(json);
+	}
+
 	//Start
 	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret; ++it)
 		ret = (*it)->Start();
@@ -97,7 +103,7 @@ bool Application::CleanUp()
 	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
 		(*it)->SaveConfig(json);
 	fsystem->Save(CONFIG_FILE, json->ToString().c_str(), json->Size());
-
+	RELEASE(json);
 	//CleanUp
 	for (list<Module*>::reverse_iterator it = modules.rbegin(); it != modules.rend() && ret; ++it)
 	{

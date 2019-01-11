@@ -18,15 +18,17 @@ ModuleProgram::~ModuleProgram()
 
 bool ModuleProgram::Init(JSON * config)
 {
-	defaultShader = CreateProgram("Default");
+	defaultShader = CreateProgram(DEFAULTPROGRAM);
 	return true;
 }
 
 
 
-Shader* ModuleProgram::CreateProgram(const char * name) //TODO: Use shader struct or class for abstraction (see LearnOpengl)
+Shader* ModuleProgram::CreateProgram(const char * name)
 {
-	assert(name != NULL);
+	assert(name != nullptr);
+	if (name == nullptr) return nullptr;
+
 	unsigned int vertexShader = CreateVertexShader(name);
 	unsigned int fragmentShader = CreateFragmentShader(name);
 
@@ -70,7 +72,7 @@ unsigned ModuleProgram::CreateVertexShader(const char *name)
 	unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
 	glCompileShader(vertexShader);
-	delete[] vertexShaderSource; //dealloacte memory allocated in readshader
+	RELEASE_ARRAY(vertexShaderSource);
 
 	ShaderLog(vertexShader, "VERTEX");
 	return vertexShader;
@@ -87,7 +89,7 @@ unsigned ModuleProgram::CreateFragmentShader(const char *name)
 	unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
 	glCompileShader(fragmentShader);
-	delete [] fragmentShaderSource; //dealloacte memory allocated in readshader
+	RELEASE_ARRAY(fragmentShaderSource);
 
 	ShaderLog(fragmentShader, "FRAGMENT");
 	return fragmentShader;
@@ -110,8 +112,11 @@ void ModuleProgram::ShaderLog(unsigned int shader, char * type) const
 
 bool ModuleProgram::CleanUp()
 {
-	//glDeleteProgram(defaultShader->id);
-	//RELEASE(defaultShader);
+	if (defaultShader != nullptr)
+	{
+		App->resManager->DeleteProgram(defaultShader->file);
+		defaultShader == nullptr;
+	}
 	return true;
 }
 

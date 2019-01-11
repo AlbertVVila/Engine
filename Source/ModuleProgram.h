@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include <string>
+#define DEFAULTPROGRAM "Default"
 
 struct Shader
 {
@@ -21,7 +22,7 @@ public:
 	bool CleanUp() override;
 
 	Shader* CreateProgram(const char *name);
-	Shader* GetProgram(const char * name); //creates new one if it doesn't exist
+	Shader* GetProgram(const char * name); //Creates new one if it doesn't exist
 
 private:
 	void ShaderLog(unsigned int shader, char* type) const;
@@ -30,7 +31,7 @@ private:
 
 public:
 
-	Shader * defaultShader = nullptr; //Deallocated memory in resourcemanager
+	Shader * defaultShader = nullptr; //Deallocated in resourcemanager
 
 };
 

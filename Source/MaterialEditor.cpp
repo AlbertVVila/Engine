@@ -165,7 +165,6 @@ void MaterialEditor::CleanUp()
 {
 	if (isCreated)
 	{
-		material->CleanUp();
 		RELEASE(material);
 	}
 	else
@@ -177,8 +176,10 @@ void MaterialEditor::CleanUp()
 	current_specular = None;
 	current_occlusion = None;
 	current_emissive = None;
+
 	textureFiles.clear();
 	shaders.clear();
 	open = false;
+
 	ImGui::CloseCurrentPopup();
 }

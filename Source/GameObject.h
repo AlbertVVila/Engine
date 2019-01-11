@@ -41,16 +41,15 @@ public:
 	bool CleanUp();
 	void Save(JSON_value *gameobjects) const;
 	void Load(const JSON_value & gameobject);
-	bool IsParented(const GameObject & gameobject);
-	void SetStaticAncestors();
 	AABB GetBoundingBox() const;
-	bool MeshIntersects(const LineSegment & line, float* distance) const;
+	bool Intersects(const LineSegment & line, float* distance) const;
 	void DrawBBox() const; //TODO: improve BBOX draw
 	void UpdateModel(unsigned int shader) const;
 	void SetLightUniforms(unsigned shader) const;
 
 private:
-
+	bool IsParented(const GameObject & gameobject);
+	void SetStaticAncestors();
 
 public:
 	unsigned UUID = 0;

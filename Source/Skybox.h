@@ -11,7 +11,6 @@ public:
 	Skybox();
 	~Skybox();
 	void Draw(const math::Frustum& frustum) const;
-	bool CleanUp();
 
 public:
 	bool enabled = true;

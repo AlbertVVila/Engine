@@ -26,6 +26,10 @@ ComponentTransform::ComponentTransform(const ComponentTransform & component) : C
 
 ComponentTransform::~ComponentTransform()
 {
+	if (gameobject != nullptr)
+	{
+		gameobject->transform = nullptr;
+	}
 }
 
 Component * ComponentTransform::Clone() const

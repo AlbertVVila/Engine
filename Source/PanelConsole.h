@@ -17,9 +17,9 @@ public:
 	void Draw();
 
 private:
-	ImGuiTextBuffer*     Buf = nullptr;
-	std::vector<int>       LineOffsets;        // Index to lines offset
-	bool                ScrollToBottom = false;
+	ImGuiTextBuffer* Buf = nullptr;
+	std::vector<int> LineOffsets;        // Index to lines offset
+	bool ScrollToBottom = false;
 };
 
 #endif //__PanelConsole_h__

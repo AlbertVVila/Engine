@@ -80,10 +80,12 @@ bool ModuleScene::CleanUp()
 	}
 	root->children.clear();
 
-	
 	selected = nullptr;
 	maincamera = nullptr;
+
+	App->resManager->DeleteTexture(camera_notfound_texture->file);
 	camera_notfound_texture = nullptr;
+
 	lights.clear();
 
 	return true;
@@ -202,16 +204,16 @@ void ModuleScene::CreatePrimitive(par_shapes_mesh_s *mesh, const char * name, co
 	transform->SetPosition(pos);
 
 	par_shapes_scale(mesh, size*App->renderer->current_scale, size*App->renderer->current_scale, size*App->renderer->current_scale);
+
 	char* data = nullptr;
 	ComponentRenderer* crenderer = (ComponentRenderer*)gameobject->CreateComponent(ComponentType::Renderer);
 	unsigned meshSize = SaveParShapesMesh(*mesh, &data);
-	crenderer->SetMesh(data, GetNewUID());
+	unsigned uid = GetNewUID();
+	App->fsystem->Save((MESHES + std::to_string(uid) + MESHEXTENSION).c_str(), data, meshSize);
+	crenderer->SetMesh(data, uid);//Deallocates data
 	crenderer->SetMaterial(DEFAULTMAT);
 	
-	App->resManager->AddMesh(crenderer->mesh); //TODO: Addresource in class mesh or outside?
-	App->fsystem->Save((MESHES + std::to_string(crenderer->mesh->UID) + MESHEXTENSION).c_str(), data, meshSize);
-	
-	delete[] data;
+	App->resManager->AddMesh(crenderer->mesh);
 	par_shapes_free_mesh(mesh);
 }
 
@@ -287,6 +289,7 @@ void ModuleScene::SaveScene(const GameObject &rootGO, const char* filename) cons
 	json->AddValue("GameObjects", array);
 	std::string file(filename);
 	App->fsystem->Save((SCENES + file + JSONEXT).c_str(), json->ToString().c_str(), json->Size());
+	RELEASE(json);
 }
 
 void ModuleScene::LoadScene(const char* scene)
@@ -319,6 +322,9 @@ void ModuleScene::LoadScene(const char* scene)
 			gameobject->parent->children.push_back(gameobject);
 		}
 	}
+
+	RELEASE_ARRAY(data);
+	RELEASE(json);
 }
 
 void ModuleScene::ClearScene()
@@ -357,7 +363,7 @@ void ModuleScene::Pick(float normalized_x, float normalized_y)
 		else
 		{
 			float distance = FLOAT_INF;
-			if (go.second->MeshIntersects(line, &distance)) //returns distance to line if triangle hit
+			if (go.second->Intersects(line, &distance)) //returns distance to line if triangle hit
 			{
 				if (distance < closestTriangle)
 				{

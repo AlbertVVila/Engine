@@ -142,7 +142,6 @@ bool ModuleRender::CleanUp()
 	{
 		glDeleteBuffers(1, &UBO);
 	}
-	skybox->CleanUp();
 	return true;
 }
 
@@ -150,7 +149,7 @@ void ModuleRender::OnResize()
 {
     glViewport(0, 0, App->window->width, App->window->height);
 	App->camera->editorcamera->SetAspect((float)App->window->width / (float)App->window->height);
-	//App->camera->editorcamera->Resize(App->window->width, App->window->height); //TODO: resize other cameras?
+	//App->camera->editorcamera->Resize(App->window->width, App->window->height); //TODO: resize main camera
 }
 
 
@@ -268,7 +267,7 @@ void ModuleRender::DrawAxis() const //TODO: use debug draw
 	glLineWidth(1.0f);
 }
 
-void ModuleRender::DrawFrustum() const //TODO: Create Separate Frustum class drawer
+void ModuleRender::DrawFrustum() const //TODO: Create Separate Frustum drawer / Move to component Camera
 {
 	unsigned shader = App->program->defaultShader->id;
 	math::Frustum *frustum = App->scene->maincamera->frustum;
@@ -372,7 +371,6 @@ void ModuleRender::InitOpenGL() const
 
 	glClearDepth(1.0f);
 	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
-
 
 	glViewport(0, 0, App->window->width, App->window->height);
 }

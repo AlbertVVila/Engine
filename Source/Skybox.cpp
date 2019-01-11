@@ -123,20 +123,3 @@ void Skybox::Draw(const math::Frustum& frustum) const
 
 	glDepthMask(GL_TRUE);
 }
-
-bool Skybox::CleanUp()
-{
-	if (skybox_cubemap != 0)
-	{
-		glDeleteTextures(1, &skybox_cubemap);
-	}
-	if (skyboxVAO != 0)
-	{
-		glDeleteTextures(1, &skyboxVAO);
-	}
-	if (skyboxVBO != 0)
-	{
-		glDeleteTextures(1, &skyboxVBO);
-	}
-	return true;
-}

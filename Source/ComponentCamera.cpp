@@ -44,7 +44,8 @@ ComponentCamera::~ComponentCamera()
 	{
 		RELEASE(frustum);
 	}
-	if (App->scene->maincamera == this)
+
+	if (isMainCamera)
 	{
 		App->scene->maincamera = nullptr;
 	}
@@ -168,11 +169,6 @@ void ComponentCamera::LookAt(float3 target)
 	frustum->up = look.Mul(frustum->up).Normalized();
 }
 
-//void ComponentCamera::Resize(int width, int height)
-//{
-//	frustum->horizontalFov = 2.f * atanf(tanf(frustum->verticalFov * 0.5f) * ((float)width / (float)height));
-//	//CreateFrameBuffer(); //We recreate framebuffer with new window size
-//}
 
 void ComponentCamera::Update() 
 {
@@ -194,6 +190,21 @@ void ComponentCamera::DrawProperties()
 			return;
 		}
 
+		if (ImGui::Checkbox("Is Main Camera", &isMainCamera))
+		{
+			if (isMainCamera)
+			{
+				if (App->scene->maincamera != nullptr)
+				{
+					App->scene->maincamera->isMainCamera = false;
+				}
+				App->scene->maincamera = this;
+			}
+			else
+			{
+				App->scene->maincamera = nullptr;
+			}
+		}
 		ImGui::DragFloat("Znear", (float*)&frustum->nearPlaneDistance, 0.1f, 0.01f, 1000.f);
 		ImGui::DragFloat("Zfar", (float*)&frustum->farPlaneDistance, 0.5f, 1.f, 1000.f);
 		float degFov = math::RadToDeg(frustum->verticalFov);
@@ -240,6 +251,10 @@ void ComponentCamera::Load(const JSON_value & value)
 
 bool ComponentCamera::CleanUp()
 {
+	if (this == App->scene->maincamera)
+	{
+		App->scene->maincamera = nullptr;
+	}
 	return true;
 }
 

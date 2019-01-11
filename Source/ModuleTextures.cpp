@@ -14,14 +14,13 @@ ModuleTextures::ModuleTextures()
 // Destructor
 ModuleTextures::~ModuleTextures()
 {
-
+	ilShutDown();
 }
 
 // Called before render is available
 bool ModuleTextures::Init(JSON * config)
 {
 	LOG("Init Image library");
-	ilutRenderer(ILUT_OPENGL);
 	ilInit();
 	iluInit();
 	ilutInit();
@@ -65,6 +64,8 @@ Texture * ModuleTextures::GetTexture(const char * file) const //TODO: refactor t
 	ilGenImages(1, &imageID); 		// Generate the image ID
 	ilBindImage(imageID); 			// Bind the image
 	success = ilLoadL(IL_DDS, data, size);
+	RELEASE_ARRAY(data);
+
 	if (success)
 	{
 		GLuint textureID = 0;
@@ -134,8 +135,10 @@ unsigned ModuleTextures::LoadCubeMap(const std::string faces[]) const
 		ilBindImage(imageID); 			// Bind the image
 
 		char *data;
-		unsigned size = App->fsystem->Load((TEXTURES + faces[i] + TEXTUREEXT).c_str(), &data); //TODO: add this somehow to resource manager
+		unsigned size = App->fsystem->Load((TEXTURES + faces[i] + TEXTUREEXT).c_str(), &data); //TODO: add this somehow to resource manager?
 		success = ilLoadL(IL_DDS, data, size);
+		RELEASE_ARRAY(data);
+
 		if (success)
 		{
 

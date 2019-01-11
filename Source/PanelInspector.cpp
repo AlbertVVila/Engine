@@ -70,6 +70,7 @@ void PanelInspector::Draw()
 				}
 			ImGui::EndPopup();
 		}
+
 	}
 	DrawWarningPopup();
 	ImGui::PopID();

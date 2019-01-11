@@ -14,12 +14,33 @@ Mesh::Mesh()
 
 Mesh::~Mesh()
 {
+	if (VAO != 0)
+	{
+		glDeleteVertexArrays(1, &VAO);
+	}
+	if (VBO != 0)
+	{
+		glDeleteBuffers(1, &VBO);
+	}
+	if (EBO != 0)
+	{
+		glDeleteBuffers(1, &EBO);
+	}
+	if (indices != nullptr)
+	{
+		RELEASE_ARRAY(indices);
+	}
+	if (vertices != nullptr)
+	{
+		RELEASE_ARRAY(vertices);
+	}
 }
 
 void Mesh::SetMesh(const char * meshData, unsigned uid)
 {
 	assert(meshData != nullptr);
-	DeleteBuffers();
+	if (meshData == nullptr) return;
+
 	const char *data = meshData;
 	
 	unsigned int numIndices = *(int*)meshData;
@@ -53,12 +74,19 @@ void Mesh::SetMesh(const char * meshData, unsigned uid)
 	
 	int* indices = (int*)meshData;
 	meshData += sizeof(int) * numIndices;
+
 	// VAO Creation
-	glGenVertexArrays(1, &VAO);
+	if (VAO == 0)
+	{
+		glGenVertexArrays(1, &VAO);
+	}
 	glBindVertexArray(VAO);
 	
 	// Buffer Creation with vertex data
-	glGenBuffers(1, &VBO);
+	if (VBO == 0)
+	{
+		glGenBuffers(1, &VBO);
+	}
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	unsigned bufferSize = sizeof(GLfloat)*numVertices * 3;
 	if (hasNormals) bufferSize += sizeof(GLfloat)*numVertices * 3;
@@ -79,7 +107,10 @@ void Mesh::SetMesh(const char * meshData, unsigned uid)
 	}
 	
 	//Buffer creation with indices
-	glGenBuffers(1, &EBO);
+	if (EBO == 0)
+	{
+		glGenBuffers(1, &EBO);
+	}
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int)*numIndices, indices, GL_STATIC_DRAW);
 	
@@ -138,6 +169,8 @@ void Mesh::SetMesh(const char * meshData, unsigned uid)
 	memcpy(this->vertices, vertices, numVertices * sizeof(float) * 3);
 	memcpy(this->indices, indices, numIndices * sizeof(int));
 	ComputeBBox();
+
+	RELEASE_ARRAY(data);
 }
 
 void Mesh::Draw(unsigned int shaderProgram) const
@@ -147,7 +180,6 @@ void Mesh::Draw(unsigned int shaderProgram) const
 	
 	// We disable VAO
 	glBindVertexArray(0);
-	// We disable Texture
 }
 
 void Mesh::ComputeBBox()
@@ -172,23 +204,6 @@ void Mesh::ComputeBBox()
 AABB Mesh::GetBoundingBox() const
 {
 	return boundingBox;
-}
-
-void Mesh::DeleteBuffers()
-{
-
-	if (VAO != 0)
-	{
-		glDeleteVertexArrays(1, &VAO);
-	}
-	if (VBO != 0)
-	{
-		glDeleteBuffers(1, &VBO);
-	}
-	if (EBO != 0)
-	{
-		glDeleteBuffers(1, &EBO);
-	}
 }
 
 bool Mesh::Intersects(const LineSegment &line, float* distance)

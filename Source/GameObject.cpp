@@ -104,6 +104,7 @@ void GameObject::DrawProperties()
 	ImGui::InputText("Name", go_name, MAX_NAME);
 	name = go_name;
 	delete[] go_name;
+
 	if (this != App->scene->root)
 	{
 		if (ImGui::Checkbox("Static", &isStatic))
@@ -184,11 +185,11 @@ void GameObject::DrawHierarchy(GameObject * selected)
 		{
 			if (ImGui::Selectable("Sphere"))
 			{
-				App->scene->CreateSphere("sphere0", this);
+				App->scene->CreateSphere("sphere", this);
 			}
 			if (ImGui::Selectable("Cube"))
 			{
-				App->scene->CreateCube("cube0", this);
+				App->scene->CreateCube("cube", this);
 			}
 			if (ImGui::Selectable("Empty GameObject"))
 			{
@@ -231,19 +232,19 @@ void GameObject::Update()
 	{
 		component->Update();
 	}
-
+	//TODO: same GO copy and delete?
 	for (std::list<GameObject*>::iterator it_child = children.begin(); it_child != children.end();)
 	{
 		(*it_child)->Update();
 
-		if ((*it_child)->copy_flag)
+		if ((*it_child)->copy_flag) //Copy GO
 		{
 			(*it_child)->copy_flag = false;
 			GameObject *copy = new GameObject(**it_child);
 			copy->parent = this;
 			this->children.push_back(copy);
 		}
-		if ((*it_child)->delete_flag)
+		if ((*it_child)->delete_flag) //Delete GO
 		{
 			(*it_child)->delete_flag = false;
 			(*it_child)->CleanUp();
@@ -278,6 +279,7 @@ Component * GameObject::CreateComponent(ComponentType type)
 		if (App->scene->maincamera == nullptr)
 		{
 			App->scene->maincamera = (ComponentCamera*)component;
+			App->scene->maincamera->isMainCamera = true;
 		}
 		break;
 	default:
@@ -514,7 +516,7 @@ AABB GameObject::GetBoundingBox() const
 	return bbox;
 }
 
-bool GameObject::MeshIntersects(const LineSegment & line, float* distance) const
+bool GameObject::Intersects(const LineSegment & line, float* distance) const
 {
 	LineSegment localLine(line);
 	localLine.Transform(GetGlobalTransform().Inverted());

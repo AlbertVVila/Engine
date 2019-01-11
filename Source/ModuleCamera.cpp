@@ -62,7 +62,7 @@ void ModuleCamera::SaveConfig(JSON * config)
 	config->AddValue("camera", cam);
 }
 
-update_status ModuleCamera::Update(float dt) //TODO: vsync bug rotation smooth
+update_status ModuleCamera::Update(float dt)
 {
 	if (App->editor->IsCameraFocused())
 	{

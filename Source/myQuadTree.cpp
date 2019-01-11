@@ -27,7 +27,7 @@ void myQuadTree::Clear()
 {
 }
 
-void myQuadTree::Insert(GameObject* gameobject) //TODO: make it adaptative
+void myQuadTree::Insert(GameObject* gameobject)
 {
 	AABB bbox = gameobject->GetBoundingBox();
 
