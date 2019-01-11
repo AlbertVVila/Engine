@@ -16,6 +16,7 @@ Component::Component(const Component & component)
 
 Component::~Component()
 {
+	gameobject = nullptr;
 }
 
 bool Component::DrawComponentState()

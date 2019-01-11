@@ -44,6 +44,7 @@ GameObject::GameObject(const GameObject & gameobject)
 	name = gameobject.name;
 	UUID = App->scene->GetNewUID();
 	parentUUID = gameobject.parentUUID;
+	isStatic = gameobject.isStatic;
 
 	for (const auto& component: gameobject.components)
 	{
@@ -55,6 +56,19 @@ GameObject::GameObject(const GameObject & gameobject)
 			transform = (ComponentTransform*)componentcopy;
 		}
 	}
+
+	if (GetComponent(ComponentType::Renderer) != nullptr)
+	{
+		if (isStatic)
+		{
+			App->scene->quadtree->Insert(this);
+		}
+		else
+		{
+			App->scene->dynamicGOs.insert(this);
+		}
+	}
+
 	for (const auto& child : gameobject.children)
 	{
 		GameObject* childcopy = new GameObject(*child);
@@ -228,20 +242,6 @@ void GameObject::Update()
 			GameObject *copy = new GameObject(**it_child);
 			copy->parent = this;
 			this->children.push_back(copy);
-			for (const auto& copychild : copy->children)
-			{
-				if (copychild->GetComponent(ComponentType::Renderer) != nullptr)
-				{
-					if (copychild->isStatic)
-					{
-						App->scene->quadtree->Insert(copychild);
-					}
-					else
-					{
-						App->scene->dynamicGOs.insert(copychild);
-					}
-				}
-			}
 		}
 		if ((*it_child)->delete_flag)
 		{
