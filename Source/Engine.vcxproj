@@ -242,7 +242,6 @@
     <ClCompile Include="ModuleFileSystem.cpp" />
     <ClCompile Include="JSON.cpp" />
     <ClCompile Include="FileImporter.cpp" />
-    <ClCompile Include="mmgr\mmgr.cpp" />
     <ClCompile Include="ModuleCamera.cpp" />
     <ClCompile Include="ModuleEditor.cpp" />
     <ClCompile Include="ModuleInput.cpp" />

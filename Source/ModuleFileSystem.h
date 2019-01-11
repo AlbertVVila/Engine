@@ -4,7 +4,9 @@
 #include "Module.h"
 #include "Timer.h"
 #include <vector>
+#include <list>
 #include <set>
+#include <thread>
 
 #define ASSETS "Assets/"
 #define LIBRARY "Library/"
@@ -34,6 +36,7 @@ public:
 
 	bool Start() override;
 	update_status Update(float dt) override;
+	bool CleanUp() override;
 
 	unsigned Load(const char * file, char ** buffer) const;
 	bool Save(const char* file, const char* buffer, unsigned size) const;
@@ -52,12 +55,16 @@ public:
 
 private:
 	void CheckImportedFiles(const char * folder);
-	void WatchFolder(const char* folder);
+	void WatchFolder(const char * folder);
+	void Monitorize(const char * folder);
+	void ImportFiles();
 
 private:
-	float watchThreshold = 1000.f;
+	bool monitorize = true;
 	Timer importTimer;
 	std::set<std::string> importedFiles;
+	std::list<std::pair<std::string, std::string>> filesToImport; //File and folder
+	std::thread *monitor_thread = nullptr;
 };
 
 #endif __ModuleFileSystem_h__

@@ -8,9 +8,6 @@
 #include "Material.h"
 #include "Mesh.h"
 
-#define	TEST_MEMORY_MANAGER
-#include <mmgr.h>
-
 ModuleResourceManager::ModuleResourceManager()
 {
 }

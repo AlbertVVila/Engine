@@ -159,9 +159,6 @@
     <ClCompile Include="PanelAbout.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
-    <ClCompile Include="mmgr\mmgr.cpp">
-      <Filter>MMGR</Filter>
-    </ClCompile>
     <ClCompile Include="PanelHardware.cpp">
       <Filter>Panels</Filter>
     </ClCompile>

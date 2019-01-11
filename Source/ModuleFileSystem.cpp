@@ -1,7 +1,15 @@
 #include "ModuleFileSystem.h"
-#include <assert.h>
 #include "FileImporter.h"
+
 #include "physfs.h"
+#include "nommgr.h"
+#include "SDL_timer.h"
+#include "SDL_atomic.h"
+
+#include <assert.h>
+#include <stack>
+
+#define MONITORIZE_TIME 5000
 
 ModuleFileSystem::ModuleFileSystem()
 {
@@ -23,19 +31,21 @@ ModuleFileSystem::~ModuleFileSystem()
 bool ModuleFileSystem::Start()
 {
 	CheckImportedFiles(LIBRARY);
-	WatchFolder(ASSETS);
-	importTimer.Start();
+	monitor_thread = new std::thread(&ModuleFileSystem::Monitorize, this, ASSETS);
+	monitor_thread->detach();
 	return true;
 }
 
 update_status ModuleFileSystem::Update(float dt) //TODO: Separate thread
 {
-	if (importTimer.Read() > watchThreshold)
-	{
-		WatchFolder(ASSETS);
-		importTimer.Start();
-	}
+	if (filesToImport.size() > 0) ImportFiles();
 	return UPDATE_CONTINUE;
+}
+
+bool ModuleFileSystem::CleanUp()
+{
+	monitorize = false;
+	return true;
 }
 
 unsigned ModuleFileSystem::Load(const char * file, char ** buffer) const
@@ -208,27 +218,54 @@ void ModuleFileSystem::CheckImportedFiles(const char * folder)//TODO: improve us
 }
 void ModuleFileSystem::WatchFolder(const char * folder)
 {
-	std::vector<std::string> files = ListFiles(folder);
-	for (auto& file: files)
+	std::vector<std::string> files;
+	std::stack<std::string> watchfolder;
+	watchfolder.push(folder);
+	std::string current_folder;
+
+	while (!watchfolder.empty())
 	{
-		std::string filefolder(folder);
-		filefolder+=file;
-		if (IsDirectory(filefolder.c_str()))
+		current_folder = watchfolder.top();
+		watchfolder.pop();
+
+		files = ListFiles(current_folder.c_str());
+		for (auto& file : files)
 		{
-			WatchFolder((filefolder + "/").c_str());
-		}
-		else
-		{
-			std::set<std::string>::iterator it = importedFiles.find(RemoveExtension(file.c_str()));
-			if (it == importedFiles.end())
+			if (IsDirectory((current_folder + file).c_str()))
 			{
-				FileImporter importer;
-				importer.ImportAsset(file.c_str(), folder);
-				importedFiles.insert(RemoveExtension(file.c_str()));
+				watchfolder.push(current_folder + file + "/");
+			}
+			else
+			{
+				std::set<std::string>::iterator it = importedFiles.find(RemoveExtension(file.c_str()));
+				if (it == importedFiles.end())
+				{
+					filesToImport.push_back(std::pair<std::string, std::string>(file, current_folder));
+				}
 			}
 		}
 	}
 	return;
+}
+
+void ModuleFileSystem::Monitorize(const char * folder)
+{
+	while (monitorize)
+	{
+		WatchFolder(folder);
+		SDL_Delay(MONITORIZE_TIME);
+	}
+}
+
+void ModuleFileSystem::ImportFiles()
+{
+	for (auto & file : filesToImport)
+	{
+		FileImporter importer;
+		importer.ImportAsset(file.first.c_str(), file.second.c_str());
+		importedFiles.insert(RemoveExtension(file.first.c_str()));
+	}
+	filesToImport.clear();
 }
 
 std::string ModuleFileSystem::GetExtension(const char *file) const

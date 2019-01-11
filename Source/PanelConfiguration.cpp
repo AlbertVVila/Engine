@@ -6,7 +6,6 @@
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
 #include "imgui.h"
-#include "mmgr.h"
 
 #define NUMFPS 100
 
@@ -109,16 +108,16 @@ void PanelConfiguration::AddFps(float dt)
 
 void PanelConfiguration::DrawMemoryStats() const
 {
-	sMStats stats = m_getMemoryStatistics();
-	ImGui::Text("Total Reported Mem: %u", stats.totalReportedMemory);
-	ImGui::Text("Total Actual Mem: %u", stats.totalActualMemory);
-	ImGui::Text("Peak Reported Mem: %u", stats.peakReportedMemory);
-	ImGui::Text("Peak Actual Mem: %u", stats.peakActualMemory);
-	ImGui::Text("Accumulated Reported Mem: %u", stats.accumulatedReportedMemory);
-	ImGui::Text("Accumulated Actual Mem: %u", stats.accumulatedActualMemory);
-	ImGui::Text("Accumulated Alloc Unit Count: %u", stats.accumulatedAllocUnitCount);
-	ImGui::Text("Total Alloc Unit Count: %u", stats.totalAllocUnitCount);
-	ImGui::Text("Peak Alloc Unit Count: %u", stats.peakAllocUnitCount);
+	//sMStats stats = m_getMemoryStatistics();
+	//ImGui::Text("Total Reported Mem: %u", stats.totalReportedMemory);
+	//ImGui::Text("Total Actual Mem: %u", stats.totalActualMemory);
+	//ImGui::Text("Peak Reported Mem: %u", stats.peakReportedMemory);
+	//ImGui::Text("Peak Actual Mem: %u", stats.peakActualMemory);
+	//ImGui::Text("Accumulated Reported Mem: %u", stats.accumulatedReportedMemory);
+	//ImGui::Text("Accumulated Actual Mem: %u", stats.accumulatedActualMemory);
+	//ImGui::Text("Accumulated Alloc Unit Count: %u", stats.accumulatedAllocUnitCount);
+	//ImGui::Text("Total Alloc Unit Count: %u", stats.totalAllocUnitCount);
+	//ImGui::Text("Peak Alloc Unit Count: %u", stats.peakAllocUnitCount);
 }
 
 
