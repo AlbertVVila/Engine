@@ -8,13 +8,15 @@
 #include "Material.h"
 #include "Mesh.h"
 
+#define	TEST_MEMORY_MANAGER
+#include <mmgr.h>
 
 ModuleResourceManager::ModuleResourceManager()
 {
 }
 
 
-ModuleResourceManager::~ModuleResourceManager() //TODO: deallocate mem on delete resource
+ModuleResourceManager::~ModuleResourceManager()
 {
 }
 
@@ -54,6 +56,7 @@ void ModuleResourceManager::DeleteTexture(std::string filename)
 		}
 		else
 		{
+			RELEASE(it->second.second);
 			textureResources.erase(it);
 		}
 	}
@@ -105,6 +108,7 @@ void ModuleResourceManager::DeleteProgram(std::string filename)
 		}
 		else
 		{
+			RELEASE(it->second.second);
 			shaderResources.erase(it);
 		}
 	}
@@ -145,15 +149,7 @@ void ModuleResourceManager::DeleteMaterial(std::string filename)
 		}
 		else
 		{
-			Material* mat = it->second.second;
-			DeleteProgram(mat->shader->file);
-			for (unsigned i = 0; i < MAXTEXTURES; i++)
-			{
-				if (mat->textures[i] != nullptr)
-				{
-					DeleteTexture(mat->textures[i]->file);
-				}
-			}
+			RELEASE(it->second.second);
 			materialResources.erase(it);
 		}
 	}
@@ -194,6 +190,7 @@ void ModuleResourceManager::DeleteMesh(unsigned uid)
 		}
 		else
 		{
+			RELEASE(it->second.second);
 			meshResources.erase(it);
 		}
 	}

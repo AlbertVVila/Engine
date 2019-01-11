@@ -33,7 +33,7 @@ GameObject::GameObject(const char * name, unsigned uuid) : name(name), UUID(uuid
 {
 }
 
-GameObject::GameObject(const float4x4 & transform, const char * filepath, const char * name, unsigned uuid) : name(name), UUID(uuid)
+GameObject::GameObject(const float4x4 & transform, const char * name, unsigned uuid) : name(name), UUID(uuid)
 {
 	this->transform =  (ComponentTransform*) CreateComponent(ComponentType::Transform);
 	this->transform->AddTransform(transform);
@@ -659,14 +659,14 @@ void GameObject::Save(JSON_value *gameobjects) const
 	}
 }
 
-void GameObject::Load(const JSON_value &gameobject)
+void GameObject::Load(JSON_value *value)
 {
-	UUID = gameobject.GetUint("UID");
-	parentUUID = gameobject.GetUint("ParentUID");
-	name = gameobject.GetString("Name");
-	isStatic = gameobject.GetUint("Static");
+	UUID = value->GetUint("UID");
+	parentUUID = value->GetUint("ParentUID");
+	name = value->GetString("Name");
+	isStatic = value->GetUint("Static");
 
-	JSON_value* componentsJSON = gameobject.GetValue("Components");
+	JSON_value* componentsJSON = value->GetValue("Components");
 	for (unsigned i = 0; i < componentsJSON->Size(); i++)
 	{
 		JSON_value* componentJSON = componentsJSON->GetValue(i);

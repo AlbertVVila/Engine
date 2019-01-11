@@ -24,7 +24,7 @@ public:
 
 	void ImportMesh(const aiMesh & mesh, char* data);
 
-	unsigned GetMeshSize(const aiMesh & mesh);
+	unsigned GetMeshSize(const aiMesh & mesh) const;
 };
 
 #endif __FileImporter_h__

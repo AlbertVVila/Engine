@@ -8,8 +8,17 @@
 
 JSON_value::JSON_value(rapidjson::Document::AllocatorType * allocator, rapidjson::Type type): allocator(allocator)
 {
-		rapidjsonValue = new rapidjson::Value(type);
-}; //TODO: release Memory
+	rapidjsonValue = new rapidjson::Value(type);
+}
+
+JSON_value::~JSON_value()
+{
+	RELEASE(rapidjsonValue);
+	for (auto value : valuesAllocated)
+	{
+		RELEASE(value);
+	}
+}
 
 JSON_value* JSON_value::CreateValue(rapidjson::Type type)
 {
@@ -102,7 +111,6 @@ void JSON_value::AddValue(const char* name, JSON_value *value)
 		this->rapidjsonValue->AddMember(key, *value->rapidjsonValue, *allocator);
 	}
 	break;
-
 	case rapidjson::kArrayType:
 		this->rapidjsonValue->PushBack(*value->rapidjsonValue, *allocator);
 		break;
@@ -243,21 +251,21 @@ const char* JSON_value::GetString(const char * name) const
 	}
 }
 
-JSON_value* JSON_value::GetValue(unsigned index) const
+JSON_value* JSON_value::GetValue(unsigned index)
 {
 	JSON_value * val = new JSON_value(allocator);
 	val->rapidjsonValue->CopyFrom(rapidjsonValue->operator[](index), *allocator);
-	//valuesAllocated.push_back(val);
+	valuesAllocated.push_back(val);
 	return val;
 }
 
-JSON_value * JSON_value::GetValue(const char* name)  const
+JSON_value * JSON_value::GetValue(const char* name)
 {
 	if (rapidjsonValue->HasMember(name))
 	{
 		JSON_value * val = new JSON_value(allocator);
 		val->rapidjsonValue->CopyFrom(rapidjsonValue->operator[](name), *allocator);
-		//valuesAllocated.push_back(val);
+		valuesAllocated.push_back(val);
 		return val;
 	}
 	return nullptr;
@@ -295,7 +303,12 @@ JSON::JSON(const char *data)
 
 JSON::~JSON()
 {
+	for (auto &value : valuesAllocated)
+	{
+		RELEASE(value);
+	}
 	RELEASE(document);
+	RELEASE(jsonBuffer);
 }
 
 
@@ -326,7 +339,7 @@ JSON_value * JSON::GetValue(const char* name)
 }
 
 
-std::string JSON::ToString()
+std::string JSON::ToString() const
 {
 	jsonBuffer->Clear();
 	rapidjson::Writer<rapidjson::StringBuffer> writer(*jsonBuffer);

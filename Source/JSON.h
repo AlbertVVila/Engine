@@ -11,10 +11,12 @@
 
 struct Texture;
 
-struct JSON_value
+class JSON_value
 {
 public:
 	JSON_value(rapidjson::Document::AllocatorType* allocator, rapidjson::Type type = rapidjson::kObjectType);
+	~JSON_value();
+
 	JSON_value * CreateValue(rapidjson::Type type = rapidjson::kObjectType);
 
 	void AddInt(const char* name, int value);
@@ -36,8 +38,8 @@ public:
 	Quat GetQuat(const char * name) const;
 	const char* GetString(const char * name) const;
 
-	JSON_value* GetValue(unsigned index) const;
-	JSON_value * GetValue(const char * name) const;
+	JSON_value* GetValue(unsigned index); //Allocates value
+	JSON_value * GetValue(const char * name); //Allocates value
 	unsigned Size() const;
 
 public:
@@ -56,8 +58,8 @@ public:
 
 	JSON_value* CreateValue(rapidjson::Type type = rapidjson::kObjectType);
 	void AddValue(const char * name, JSON_value * value);
-	JSON_value * GetValue(const char * name);
-	std::string ToString();
+	JSON_value * GetValue(const char * name);  //Allocates value
+	std::string ToString() const;
 	unsigned Size();
 
 private:

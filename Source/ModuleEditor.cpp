@@ -42,7 +42,7 @@ ModuleEditor::ModuleEditor()
 // Destructor
 ModuleEditor::~ModuleEditor()
 {
-	for (std::list<Panel*>::reverse_iterator it = panels.rbegin(); it != panels.rend() && ret; ++it)
+	for (std::list<Panel*>::reverse_iterator it = panels.rbegin(); it != panels.rend(); ++it)
 	{
 		RELEASE(*it);
 	}

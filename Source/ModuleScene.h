@@ -29,7 +29,7 @@ public:
 	update_status Update(float dt) override;
 	bool CleanUp() override;
 
-	GameObject * CreateGameObject(const float4x4& transform, const char* filepath, const char* name, GameObject* parent);
+	GameObject * CreateGameObject(const float4x4& transform, const char* name, GameObject* parent);
 	GameObject * CreateGameObject(const char * name, GameObject* parent);
 
 	void Draw(const math::Frustum &frustum, bool isEditor = false);

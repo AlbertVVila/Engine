@@ -20,6 +20,8 @@ struct Texture
 
 	Texture(std::string file) : file(file)
 	{}
+
+	~Texture();
 };
 
 class ModuleTextures : public Module

@@ -17,7 +17,7 @@ class GameObject
 public:
 	GameObject() {};
 	GameObject(const char* name, unsigned uuid);
-	GameObject(const float4x4& transform, const char* filepath, const char* name, unsigned uuid);
+	GameObject(const float4x4& transform, const char* name, unsigned uuid);
 	GameObject(const GameObject& gameobject);
 	~GameObject();
 
@@ -40,7 +40,7 @@ public:
 
 	bool CleanUp();
 	void Save(JSON_value *gameobjects) const;
-	void Load(const JSON_value & gameobject);
+	void Load(JSON_value * gameobject);
 	AABB GetBoundingBox() const;
 	bool Intersects(const LineSegment & line, float* distance) const;
 	void DrawBBox() const; //TODO: improve BBOX draw

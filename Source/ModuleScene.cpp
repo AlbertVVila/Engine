@@ -155,9 +155,9 @@ void ModuleScene::DrawHierarchy()
 	root->DrawHierarchy(selected);
 }
 
-GameObject * ModuleScene::CreateGameObject(const float4x4 & transform, const char * filepath, const char * name, GameObject* parent)
+GameObject * ModuleScene::CreateGameObject(const float4x4 & transform, const char * name, GameObject* parent)
 {
-	GameObject * gameobject = new GameObject(transform, filepath, name, GetNewUID());
+	GameObject * gameobject = new GameObject(transform, name, GetNewUID());
 	if (parent != nullptr)
 	{
 		gameobject->parent = parent;
@@ -307,7 +307,7 @@ void ModuleScene::LoadScene(const char* scene)
 	{
 		JSON_value* gameobjectJSON = gameobjectsJSON->GetValue(i);
 		GameObject *gameobject = new GameObject();
-		gameobject->Load(*gameobjectJSON);
+		gameobject->Load(gameobjectJSON);
 		gameobjectsMap.insert(std::pair<unsigned, GameObject*>(gameobject->UUID, gameobject));
 
 		std::map<unsigned, GameObject*>::iterator it = gameobjectsMap.find(gameobject->parentUUID);

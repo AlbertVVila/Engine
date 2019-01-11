@@ -67,6 +67,7 @@ bool FileImporter::ImportFBX(const char* fbxfile, const char* folder)
 {
 	assert(fbxfile != nullptr);
 	if (fbxfile == nullptr) return false;
+
 	std::string file(fbxfile);
 	const aiScene* scene = aiImportFile((folder+ file).c_str(), aiProcess_Triangulate);
 	if (scene != nullptr)
@@ -76,14 +77,14 @@ bool FileImporter::ImportFBX(const char* fbxfile, const char* folder)
 	return false;
 }
 
-bool FileImporter::ImportScene(const aiScene &scene, const char* file)
+bool FileImporter::ImportScene(const aiScene &aiscene, const char* file)
 {
 	std::map<unsigned, unsigned> meshMap;
-	for (unsigned i = 0; i < scene.mNumMeshes; i++)
+	for (unsigned i = 0; i < aiscene.mNumMeshes; i++)
 	{
-		unsigned size = GetMeshSize(*scene.mMeshes[i]);
+		unsigned size = GetMeshSize(*aiscene.mMeshes[i]);
 		char* data = new char[size];
-		ImportMesh(*scene.mMeshes[i], data);
+		ImportMesh(*aiscene.mMeshes[i], data);
 
 		Mesh *mesh = new Mesh();
 		unsigned uid = App->scene->GetNewUID();
@@ -93,9 +94,12 @@ bool FileImporter::ImportScene(const aiScene &scene, const char* file)
 		meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->UID));
 	}
 	GameObject *fake = new GameObject("fake",0);
-	ProcessNode(meshMap, scene.mRootNode, &scene, scene.mRootNode->mTransformation, fake);
+	ProcessNode(meshMap, aiscene.mRootNode, &aiscene, aiscene.mRootNode->mTransformation, fake);
 	App->scene->SaveScene(*fake, App->fsystem->GetFilename(file).c_str()); //TODO: Make AutoCreation of folders or check
-	//TODO: CleanUP on ending import and on saving
+	fake->CleanUp();
+	RELEASE(fake);
+
+	aiReleaseImport(&aiscene);
 	return true;
 }
 
@@ -147,7 +151,7 @@ void FileImporter::ImportMesh(const aiMesh &mesh, char *data)
 	}
 }
 
-unsigned FileImporter::GetMeshSize(const aiMesh &mesh)
+unsigned FileImporter::GetMeshSize(const aiMesh &mesh) const
 {
 	unsigned size = 0u;
 	unsigned int ranges[2] = { mesh.mNumFaces * 3, mesh.mNumVertices };
@@ -171,13 +175,15 @@ unsigned FileImporter::GetMeshSize(const aiMesh &mesh)
 
 GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshmap, const aiNode * node, const aiScene * scene, const aiMatrix4x4 & parentTransform, GameObject* parent)
 {
-	assert(node != nullptr); assert(scene != nullptr);
+	assert(node != nullptr);
+	if (node == nullptr) return nullptr;
+
 	aiMatrix4x4 transform = parentTransform * node->mTransformation; //TODO: transform conversion
-	GameObject * gameobject = App->scene->CreateGameObject(float4x4::identity, "", node->mName.C_Str(), parent); //TODO: remove deprecated fbxfile variable
+	GameObject * gameobject = App->scene->CreateGameObject(float4x4::identity, node->mName.C_Str(), parent);
 
 	std::vector<GameObject*> gameobjects;
 	gameobjects.push_back(gameobject);
-	for (unsigned k = 1; k < node->mNumMeshes; k++)
+	for (unsigned k = 1; k < node->mNumMeshes; k++) //Splits meshes of same node into diferent gameobjects 
 	{
 		GameObject *copy = new GameObject(*gameobject);
 		gameobjects.push_back(copy);
@@ -191,21 +197,23 @@ GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshma
 		auto it = meshmap.find(node->mMeshes[i]);
 		if (it != meshmap.end())
 		{
+			RELEASE(crenderer->mesh);
 			crenderer->mesh = App->resManager->GetMesh(it->second);;
 		}
 
-		aiMaterial * mat = scene->mMaterials[scene->mMeshes[node->mMeshes[i]]->mMaterialIndex];
-		aiTextureMapping mapping = aiTextureMapping_UV;
-		for (unsigned i = 1; i <= 4; i++) //TODO :Get diffuse,specular,occlusion and emissive without overwritting default
-		{
-			aiString texture;
-			mat->GetTexture((aiTextureType)i, 0, &texture, &mapping, 0);
-			if (texture.length > 0)
-			{
-				crenderer->SetMaterial(DEFAULTMAT);
-				crenderer->material->textures[i] = new Texture(App->fsystem->GetFilename(texture.C_Str()));
-			}
-		}
+		//aiMaterial * mat = scene->mMaterials[scene->mMeshes[node->mMeshes[i]]->mMaterialIndex];
+		//aiTextureMapping mapping = aiTextureMapping_UV;
+		//for (unsigned i = 1; i <= 4; i++) //TODO :Get diffuse,specular,occlusion and emissive without overwritting default
+		//{
+		//	aiString texture;
+		//	mat->GetTexture((aiTextureType)i, 0, &texture, &mapping, 0);
+		//	if (texture.length > 0)
+		//	{
+		//		Texture *tex = new Texture(App->fsystem->GetFilename(texture.C_Str()));//Save texture name
+		//		crenderer->material->textures[i] = tex;
+		//		App->resManager->AddTexture(texture.C_Str(),tex);
+		//	}
+		//}
 	} 
 	for (unsigned int i = 0; i < node->mNumChildren; i++)
 	{

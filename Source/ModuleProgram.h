@@ -7,9 +7,10 @@
 
 struct Shader
 {
-	unsigned id;
+	unsigned id = 0;
 	std::string file;
 	Shader(unsigned program, std::string file) : id(program), file(file) {}
+	~Shader();
 };
 
 class ModuleProgram : public Module

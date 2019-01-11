@@ -7,6 +7,14 @@
 #include "IL/ilut.h"
 #include "imgui.h"
 
+Texture::~Texture()
+{
+	if (id != 0)
+	{
+		glDeleteTextures(1, &id);
+	}
+}
+
 ModuleTextures::ModuleTextures()
 {
 }
@@ -47,7 +55,11 @@ Texture * ModuleTextures::GetTexture(const char * file) const //TODO: refactor t
 	assert(file != NULL);
 
 	Texture* loadedText = App->resManager->GetTexture(file);
-	if (loadedText != nullptr) return loadedText;
+	if (loadedText != nullptr)
+	{
+		App->resManager->AddTexture(file, loadedText);
+		return loadedText;
+	}
 
 	ILuint imageID;
 	ILboolean success;
@@ -135,7 +147,7 @@ unsigned ModuleTextures::LoadCubeMap(const std::string faces[]) const
 		ilBindImage(imageID); 			// Bind the image
 
 		char *data;
-		unsigned size = App->fsystem->Load((TEXTURES + faces[i] + TEXTUREEXT).c_str(), &data); //TODO: add this somehow to resource manager?
+		unsigned size = App->fsystem->Load((TEXTURES + faces[i] + TEXTUREEXT).c_str(), &data);
 		success = ilLoadL(IL_DDS, data, size);
 		RELEASE_ARRAY(data);
 

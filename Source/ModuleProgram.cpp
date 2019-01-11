@@ -7,6 +7,14 @@
 #include "GL/glew.h"
 #include <assert.h>
 
+Shader::~Shader()
+{
+	if (id != 0)
+	{
+		glDeleteProgram(id);
+	}
+}
+
 ModuleProgram::ModuleProgram()
 {
 }
@@ -119,4 +127,3 @@ bool ModuleProgram::CleanUp()
 	}
 	return true;
 }
-
