@@ -199,7 +199,8 @@ GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshma
 		if (it != meshmap.end())
 		{
 			RELEASE(crenderer->mesh);
-			crenderer->mesh = App->resManager->GetMesh(it->second);;
+			crenderer->mesh = App->resManager->GetMesh(it->second);
+			gameobjects[i]->UpdateBBox();
 		}
 
 		//aiMaterial * mat = scene->mMaterials[scene->mMeshes[node->mMeshes[i]]->mMaterialIndex];

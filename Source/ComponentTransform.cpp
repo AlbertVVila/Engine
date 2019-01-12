@@ -44,6 +44,11 @@ void ComponentTransform::AddTransform(const float4x4 & transform)
 	transform.Decompose(position, rotation, scale);
 	RotationToEuler();
 	local = transform;
+	GameObject* parent = gameobject->parent;
+	if (parent != nullptr && parent->transform != nullptr)
+	{
+		global = parent->transform->global;
+	}
 }
 
 void ComponentTransform::DrawProperties()
@@ -74,12 +79,15 @@ void ComponentTransform::DrawProperties()
 
 		if (old_position != position || old_euler != eulerRotation || old_scale != scale)
 		{
-			gameobject->moved_flag = true;
 			UpdateOldTransform();
+
 
 			global = global * local.Inverted();
 			local = float4x4::FromTRS(position, rotation, scale);
 			global = global * local;
+
+			gameobject->moved_flag = true;
+			gameobject->UpdateBBox();
 		}
 	}
 }
@@ -131,6 +139,7 @@ void ComponentTransform::Save(JSON_value * value) const
 	value->AddQuat("Rotation", rotation);
 	value->AddFloat3("Euler", eulerRotation);
 	value->AddFloat3("Scale", scale);
+	value->AddFloat4x4("Global", global);
 }
 
 void ComponentTransform::Load(const JSON_value & value)
@@ -140,4 +149,6 @@ void ComponentTransform::Load(const JSON_value & value)
 	rotation = value.GetQuat("Rotation");
 	eulerRotation = value.GetFloat3("Euler");
 	scale = value.GetFloat3("Scale");
+	global = value.GetFloat4x4("Global");
+	local = float4x4::FromTRS(position, rotation, scale);
 }

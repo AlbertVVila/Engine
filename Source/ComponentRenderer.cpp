@@ -120,6 +120,10 @@ void ComponentRenderer::Load(const JSON_value & value)
 		SetMesh(data, uid); //Deallocates data
 	}
 	App->resManager->AddMesh(mesh);
+	if (gameobject != nullptr)
+	{
+		gameobject->UpdateBBox();
+	}
 
 	const char* materialFile = value.GetString("materialFile");
 	SetMaterial(materialFile);

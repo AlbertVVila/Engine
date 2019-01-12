@@ -198,8 +198,6 @@ void ModuleScene::CreatePrimitive(par_shapes_mesh_s *mesh, const char * name, co
 	GameObject * gameobject = App->scene->CreateGameObject(name, parent);
 	App->scene->Select(gameobject);
 	ComponentTransform* transform = (ComponentTransform*)gameobject->CreateComponent(ComponentType::Transform);
-	gameobject->transform = transform;
-	gameobject->UpdateGlobalTransform();
 
 	par_shapes_scale(mesh, size*App->renderer->current_scale, size*App->renderer->current_scale, size*App->renderer->current_scale);
 
@@ -209,6 +207,8 @@ void ModuleScene::CreatePrimitive(par_shapes_mesh_s *mesh, const char * name, co
 	unsigned uid = GetNewUID();
 	App->fsystem->Save((MESHES + std::to_string(uid) + MESHEXTENSION).c_str(), data, meshSize);
 	crenderer->SetMesh(data, uid);//Deallocates data
+	gameobject->UpdateBBox();
+
 	crenderer->SetMaterial(DEFAULTMAT);
 	
 	App->resManager->AddMesh(crenderer->mesh);

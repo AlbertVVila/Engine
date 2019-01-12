@@ -36,17 +36,18 @@ public:
 	void UpdateGlobalTransform();
 	void SetGlobalTransform(const float4x4 &global);
 	float4x4 GetGlobalTransform() const;
-	void SetLocalTransform(const float4x4 &local);
 	float4x4 GetLocalTransform() const;
+
+	void UpdateBBox();
+	void DrawBBox() const; //TODO: improve BBOX draw
+	AABB GetBoundingBox() const;
+	bool Intersects(const LineSegment & line, float* distance) const;
+	void UpdateModel(unsigned int shader) const;
+	void SetLightUniforms(unsigned shader) const;
 
 	bool CleanUp();
 	void Save(JSON_value *gameobjects) const;
 	void Load(JSON_value * gameobject);
-	AABB GetBoundingBox() const;
-	bool Intersects(const LineSegment & line, float* distance) const;
-	void DrawBBox() const; //TODO: improve BBOX draw
-	void UpdateModel(unsigned int shader) const;
-	void SetLightUniforms(unsigned shader) const;
 
 private:
 	bool IsParented(const GameObject & gameobject);

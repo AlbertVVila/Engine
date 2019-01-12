@@ -1,10 +1,11 @@
-#include "Globals.h"
+#include "ModuleTextures.h"
 #include "JSON.h"
+
+#include "Globals.h"
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/prettywriter.h"
-
-#include "ModuleTextures.h"
+#include "Math/float4x4.h"
 
 JSON_value::JSON_value(rapidjson::Document::AllocatorType * allocator, rapidjson::Type type): allocator(allocator)
 {
@@ -73,6 +74,23 @@ void JSON_value::AddFloat4(const char * name, float4 value)
 	float4.PushBack(value.w, *allocator);
 
 	rapidjsonValue->AddMember(key, float4, *allocator);
+}
+
+void JSON_value::AddFloat4x4(const char * name, float4x4 value)
+{
+	std::string myname(name);
+	rapidjson::Value key(myname.c_str(), myname.size(), *allocator);
+
+	rapidjson::Value mat(rapidjson::kArrayType);
+	for (unsigned i = 0; i < 4; i++)
+	{
+		for (unsigned j = 0; j < 4; j++)
+		{
+			mat.PushBack(value[i][j], *allocator);
+		}
+	}
+
+	rapidjsonValue->AddMember(key, mat, *allocator);
 }
 
 void JSON_value::AddQuat(const char * name, Quat value)
@@ -218,6 +236,29 @@ float4 JSON_value::GetColor4(const char * name) const
 	{
 		LOG("Member %s not found!", name);
 		return float4::one;
+	}
+}
+
+float4x4 JSON_value::GetFloat4x4(const char * name) const
+{
+	rapidjson::Value::ConstMemberIterator itr = rapidjsonValue->FindMember(name);
+	if (itr != rapidjsonValue->MemberEnd())
+	{
+		float4x4 mat;
+		for (unsigned i = 0; i < 4; i++)
+		{
+			for (unsigned j = 0; j < 4; j++)
+			{
+				mat.v[i][j] = itr->value[4*i+j].GetFloat();
+			}
+		}
+
+		return mat;
+	}
+	else
+	{
+		LOG("Member %s not found!", name);
+		return float4x4::identity;
 	}
 }
 

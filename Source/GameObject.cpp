@@ -249,8 +249,9 @@ void GameObject::Update()
 			for (auto child : (*it_child)->children)
 			{
 				child->UpdateGlobalTransform();
-			} //TODO: recalc bbox;
+			}
 			(*it_child)->moved_flag = false;
+			(*it_child)->UpdateBBox();
 		}
 		if ((*it_child)->delete_flag) //Delete GO
 		{
@@ -377,6 +378,12 @@ void GameObject::UpdateGlobalTransform()
 		mytransform = parent->GetGlobalTransform() * mytransform;
 	}
 	transform->global = mytransform;
+	UpdateBBox();
+
+	for (auto &child : children)
+	{
+		child->UpdateGlobalTransform();
+	}
 }
 
 void GameObject::SetGlobalTransform(const float4x4 & global)
@@ -398,12 +405,6 @@ float4x4 GameObject::GetGlobalTransform() const //TODO: Move to componentTransfo
 	if (transform != nullptr)
 		return transform->global;
 	return float4x4::identity;
-}
-
-void GameObject::SetLocalTransform(const float4x4 &model)
-{
-	if (transform == nullptr) return;
-	model.Decompose(transform->position, transform->rotation, transform->scale);
 }
 
 float4x4 GameObject::GetLocalTransform() const
@@ -532,6 +533,16 @@ bool GameObject::Intersects(const LineSegment & line, float* distance) const
 	return false;
 }
 
+void GameObject::UpdateBBox()
+{
+	ComponentRenderer* renderer = (ComponentRenderer*) GetComponent(ComponentType::Renderer);
+	if (renderer != nullptr)
+	{
+		bbox = renderer->mesh->GetBoundingBox();
+		bbox.TransformAsAABB(GetGlobalTransform());
+	}
+}
+
 void GameObject::DrawBBox() const
 { //TODO: optimize with VAO
 
@@ -540,9 +551,11 @@ void GameObject::DrawBBox() const
 		child->DrawBBox();
 	}
 
+	if (GetComponent(ComponentType::Renderer) == nullptr) return;
+
 	unsigned shader = App->program->defaultShader->id;
 	glUseProgram(shader);
-	AABB bbox = GetBoundingBox();
+
 	GLfloat vertices[] = {
 		-0.5, -0.5, -0.5, 1.0,
 		0.5, -0.5, -0.5, 1.0,

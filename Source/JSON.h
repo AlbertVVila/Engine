@@ -24,6 +24,7 @@ public:
 	void AddFloat(const char * name, float value);
 	void AddFloat3(const char * name, float3 value);
 	void AddFloat4(const char * name, float4 value);
+	void AddFloat4x4(const char * name, float4x4 value);
 	void AddQuat(const char * name, Quat value);
 	void AddString(const char * name, const char* value);
 	void AddValue(const char * name, JSON_value *value);
@@ -35,6 +36,7 @@ public:
 	float3 GetColor3(const char * name) const;
 	float4 GetFloat4(const char * name) const;
 	float4 GetColor4(const char * name) const;
+	float4x4 GetFloat4x4(const char * name) const;
 	Quat GetQuat(const char * name) const;
 	const char* GetString(const char * name) const;
 
