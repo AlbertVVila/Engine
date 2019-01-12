@@ -163,7 +163,7 @@ void GameObject::DrawHierarchy(GameObject * selected)
 
 				if (dropped_go->transform != nullptr)
 				{
-					dropped_go->transform->SetLocalToWorld(dropped_go->GetGlobalTransform());
+					dropped_go->transform->SetLocalToWorld();
 				}
 				dropped_go->parent->children.remove(dropped_go);
 				dropped_go->parent = this;
@@ -243,6 +243,14 @@ void GameObject::Update()
 			GameObject *copy = new GameObject(**it_child);
 			copy->parent = this;
 			this->children.push_back(copy);
+		}
+		if ((*it_child)->moved_flag)
+		{
+			for (auto child : (*it_child)->children)
+			{
+				child->UpdateGlobalTransform();
+			} //TODO: recalc bbox;
+			(*it_child)->moved_flag = false;
 		}
 		if ((*it_child)->delete_flag) //Delete GO
 		{
@@ -361,29 +369,35 @@ Component * GameObject::GetComponent(ComponentType type) const
 	return nullptr;
 }
 
-void GameObject::SetGlobalTransform(const float4x4 & global)
-{
-	if (transform != nullptr)
-	{
-		transform->SetLocalToWorld(global);
-		float4x4 parentglobal = float4x4::identity;
-
-		if (parent->transform != nullptr)
-		{
-			parentglobal = parent->GetGlobalTransform();
-		}
-		transform->SetWorldToLocal(parentglobal);
-	}
-}
-
-float4x4 GameObject::GetGlobalTransform() const //TODO: Move to componentTransform
+void GameObject::UpdateGlobalTransform()
 {
 	float4x4 mytransform = GetLocalTransform();
 	if (parent != nullptr)
 	{
 		mytransform = parent->GetGlobalTransform() * mytransform;
 	}
-	return mytransform;
+	transform->global = mytransform;
+}
+
+void GameObject::SetGlobalTransform(const float4x4 & global)
+{
+	moved_flag = true;
+	if (transform != nullptr)
+	{
+		float4x4 parentglobal = float4x4::identity;
+		if (parent != nullptr && parent->transform != nullptr)
+		{
+			parentglobal = parent->transform->global;
+		}
+		transform->SetGlobalTransform(global, parentglobal);
+	}
+}
+
+float4x4 GameObject::GetGlobalTransform() const //TODO: Move to componentTransform
+{
+	if (transform != nullptr)
+		return transform->global;
+	return float4x4::identity;
 }
 
 void GameObject::SetLocalTransform(const float4x4 &model)
@@ -394,8 +408,9 @@ void GameObject::SetLocalTransform(const float4x4 &model)
 
 float4x4 GameObject::GetLocalTransform() const
 {
-	if (transform == nullptr) return float4x4::identity;
-	return float4x4::FromTRS(transform->position, transform->rotation, transform->scale);
+	if (transform != nullptr) 
+		return transform->local;
+	return float4x4::identity;
 }
 
 void GameObject::UpdateModel(unsigned int shader) const
@@ -499,20 +514,6 @@ void GameObject::SetLightUniforms(unsigned shader) const
 
 AABB GameObject::GetBoundingBox() const
 {
-	AABB bbox; //Todo: Use pointers and optimize bounding box computation
-	bbox.SetNegativeInfinity();
-	ComponentRenderer* crenderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
-	if (crenderer != nullptr)
-	{
-		bbox.Enclose(crenderer->mesh->GetBoundingBox());
-	}
-
-	bbox.TransformAsAABB(GetGlobalTransform());
-	//for (const auto &child : children)
-	//{
-	//	bbox.Enclose(child->GetBoundingBox());
-	//}
-
 	return bbox;
 }
 

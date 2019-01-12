@@ -156,6 +156,10 @@ public:
 	/** @return A reference to this. */
 	float3 &operator /=(float scalar);
 
+	///Compares two float3
+	/** @returns true if different. */
+	bool operator !=(const float3 &other);
+
 #ifdef MATH_ENABLE_UNCOMMON_OPERATIONS
 	float3 operator *(const float3 &vector) const { return this->Mul(vector); }
 	float3 operator /(const float3 &vector) const { return this->Div(vector); }

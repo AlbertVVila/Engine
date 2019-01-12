@@ -21,6 +21,8 @@ ComponentTransform::ComponentTransform(const ComponentTransform & component) : C
 	rotation = component.rotation;
 	eulerRotation = component.eulerRotation;
 	scale = component.scale;
+	local = component.local;
+	global = component.global;
 }
 
 
@@ -41,6 +43,7 @@ void ComponentTransform::AddTransform(const float4x4 & transform)
 {
 	transform.Decompose(position, rotation, scale);
 	RotationToEuler();
+	local = transform;
 }
 
 void ComponentTransform::DrawProperties()
@@ -68,13 +71,17 @@ void ComponentTransform::DrawProperties()
 			ImGui::PopItemFlag();
 			ImGui::PopStyleVar();
 		}
-	}
-}
 
-void ComponentTransform::SetRotation(const Quat & rot)
-{
-	rotation = rot;
-	RotationToEuler();
+		if (old_position != position || old_euler != eulerRotation || old_scale != scale)
+		{
+			gameobject->moved_flag = true;
+			UpdateOldTransform();
+
+			global = global * local.Inverted();
+			local = float4x4::FromTRS(position, rotation, scale);
+			global = global * local;
+		}
+	}
 }
 
 void ComponentTransform::RotationToEuler()
@@ -84,26 +91,37 @@ void ComponentTransform::RotationToEuler()
 	eulerRotation.y = math::RadToDeg(eulerRotation.y);
 	eulerRotation.z = math::RadToDeg(eulerRotation.z);
 }
-void ComponentTransform::SetPosition(const float3 & pos)
+
+void ComponentTransform::UpdateOldTransform()
 {
-	position = pos;
+	old_position = position;
+	old_euler = eulerRotation;
+	old_scale = scale;
 }
 
-void ComponentTransform::SetLocalToWorld(const float4x4 & myGlobal)
+void ComponentTransform::SetLocalToWorld()
 {
-	float4x4 world = myGlobal;
-	world.Decompose(position, rotation, scale);
+	local = global;
+	global.Decompose(position, rotation, scale);
+	UpdateOldTransform();
 	RotationToEuler();
 }
-
-
 
 void ComponentTransform::SetWorldToLocal(const float4x4 & newparentGlobalMatrix)
 {
-	float4x4 world = float4x4::FromTRS(position, rotation, scale);
-	float4x4 local = newparentGlobalMatrix.Inverted() * world;
+	local = newparentGlobalMatrix.Inverted() * local;
 	local.Decompose(position, rotation, scale);
+	UpdateOldTransform();
+	global = newparentGlobalMatrix * local;
 	RotationToEuler();
+}
+
+void ComponentTransform::SetGlobalTransform(const float4x4 & newglobal, const float4x4 &parentglobal)
+{
+	global = newglobal;
+	local = parentglobal.Inverted() * global;
+	local.Decompose(position, rotation, scale);
+	UpdateOldTransform();
 }
 
 void ComponentTransform::Save(JSON_value * value) const

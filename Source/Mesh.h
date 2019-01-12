@@ -19,18 +19,18 @@ public:
 
 	bool Intersects(const LineSegment &line, float* distance);
 
-public:
-	unsigned UID = 0;
+private:
 	unsigned VAO = 0;
 	unsigned VBO = 0;
 	unsigned EBO = 0;
+	AABB boundingBox;
 
+public:
+	unsigned UID = 0;
 	unsigned numIndices = 0;
 	unsigned numVertices = 0;
-
 	int* indices = nullptr;
 	float* vertices = nullptr;
-	AABB boundingBox;
 };
 
 #endif

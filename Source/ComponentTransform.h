@@ -17,21 +17,31 @@ public:
 	Component* Clone() const override;
 	void AddTransform(const float4x4 &transform);
 	void DrawProperties() override;
-	void SetRotation(const Quat& rot);
-	void RotationToEuler();
-	void SetPosition(const float3& pos);
 
-	void SetLocalToWorld(const float4x4 & parentGlobalMatrix);
+	void SetLocalToWorld();
 	void SetWorldToLocal(const float4x4 & newparentGlobalMatrix);
+	void SetGlobalTransform(const float4x4 & newglobal, const float4x4 &parentglobal);
 
 	void Save(JSON_value *value) const override;
 	void Load(const JSON_value &value) override;
+
+private:
+	void RotationToEuler();
+	void UpdateOldTransform();
 
 public:
 	float3 position = float3::zero;
 	Quat rotation = Quat::identity;
 	float3 eulerRotation = float3::zero;
 	float3 scale = float3::zero;
+	
+	float4x4 local = float4x4::identity;
+	float4x4 global = float4x4::identity;
+
+private:
+	float3 old_position = float3::zero;
+	float3 old_euler = float3::zero;
+	float3 old_scale = float3::zero;
 };
 
 #endif __ComponentTransform_h__

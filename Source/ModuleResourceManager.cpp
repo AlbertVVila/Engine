@@ -28,9 +28,9 @@ Texture* ModuleResourceManager::GetTexture(std::string filename) const
 	return nullptr;
 }
 
-void ModuleResourceManager::AddTexture(std::string filename, Texture* texture)
+void ModuleResourceManager::AddTexture(Texture* texture)
 {
-	std::map<std::string, std::pair<unsigned, Texture*>>::iterator it = textureResources.find(filename);
+	std::map<std::string, std::pair<unsigned, Texture*>>::iterator it = textureResources.find(texture->file);
 	if (it != textureResources.end())
 	{
 		it->second.first++;
@@ -38,7 +38,7 @@ void ModuleResourceManager::AddTexture(std::string filename, Texture* texture)
 	else
 	{
 		textureResources.insert(std::pair<std::string, std::pair<unsigned, Texture*>>
-			(filename, std::pair<unsigned, Texture*>(1,texture)));
+			(texture->file, std::pair<unsigned, Texture*>(1,texture)));
 	}
 }
 

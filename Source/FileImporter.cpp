@@ -19,6 +19,7 @@
 #include "assimp/mesh.h"
 #include "assimp/material.h"
 #include "assimp/types.h"
+#include "Math/float4x4.h"
 #include <map>
 
 void AddLog(const char* str, char* userData)

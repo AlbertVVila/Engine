@@ -14,6 +14,7 @@
 #include "imgui_internal.h"
 #include "ImGuizmo.h"
 #include "Geometry/LineSegment.h"
+#include "Math/float4x4.h"
 
 Viewport::Viewport()
 {

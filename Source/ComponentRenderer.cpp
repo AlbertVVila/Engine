@@ -157,12 +157,16 @@ void ComponentRenderer::SetMaterial(const char * materialfile)
 void ComponentRenderer::SetMesh(const char* meshData, unsigned UID)
 {
 	mesh->SetMesh(meshData, UID);
-	if (gameobject != nullptr && gameobject->isStatic)
+	if (gameobject != nullptr)
 	{
-		App->scene->quadtree->Insert(gameobject);
-	}
-	else if (gameobject != nullptr)
-	{
-		App->scene->dynamicGOs.insert(gameobject);
+		gameobject->bbox = mesh->GetBoundingBox();
+		if (gameobject->isStatic)
+		{
+			App->scene->quadtree->Insert(gameobject);
+		}
+		else
+		{
+			App->scene->dynamicGOs.insert(gameobject);
+		}
 	}
 }

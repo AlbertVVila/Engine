@@ -10,7 +10,7 @@ struct Shader;
 class Material;
 class Mesh;
 
-class ModuleResourceManager :
+class ModuleResourceManager : //TODO: Divide into subclasses for each resource type
 	public Module
 {
 public:
@@ -19,7 +19,7 @@ public:
 
 	Texture * GetTexture(std::string filename) const;
 
-	void AddTexture(std::string filename, Texture * texture);
+	void AddTexture(Texture * texture);
 
 	void DeleteTexture(std::string filename);
 

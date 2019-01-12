@@ -57,7 +57,7 @@ Texture * ModuleTextures::GetTexture(const char * file) const //TODO: refactor t
 	Texture* loadedText = App->resManager->GetTexture(file);
 	if (loadedText != nullptr)
 	{
-		App->resManager->AddTexture(file, loadedText);
+		App->resManager->AddTexture(loadedText);
 		return loadedText;
 	}
 
@@ -116,7 +116,7 @@ Texture * ModuleTextures::GetTexture(const char * file) const //TODO: refactor t
 		glBindTexture(GL_TEXTURE_2D, 0);
 
 		Texture* texture = new Texture(textureID, width, height, file);
-		App->resManager->AddTexture(file, texture);
+		App->resManager->AddTexture(texture);
 		return texture;
 	}
 	else

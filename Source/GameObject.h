@@ -3,7 +3,7 @@
 
 #include <vector>
 #include <list>
-#include "Math/float4x4.h"
+#include "Geometry/AABB.h"
 
 class Component;
 class ComponentTransform;
@@ -33,6 +33,7 @@ public:
 	void RemoveComponent(Component * component);
 	void RemoveChild(GameObject* child);
 
+	void UpdateGlobalTransform();
 	void SetGlobalTransform(const float4x4 &global);
 	float4x4 GetGlobalTransform() const;
 	void SetLocalTransform(const float4x4 &local);
@@ -54,16 +55,21 @@ private:
 public:
 	unsigned UUID = 0;
 	unsigned parentUUID = 0; //only set in Save/Load scene TODO:update on parent change
-	ComponentTransform * transform = nullptr;
-	GameObject *parent = nullptr;
-	std::vector<Component*> components;
-	std::list<GameObject*> children;
-	std::string name = "GameObject";
-
 	bool isStatic = false;
+	bool moved_flag = false;
 	bool copy_flag = false;
 	bool delete_flag = false;
 	bool drawBBox = false;
+	AABB bbox;
+
+	ComponentTransform * transform = nullptr;
+	GameObject *parent = nullptr;
+
+	std::vector<Component*> components;
+	std::list<GameObject*> children;
+
+	std::string name = "GameObject";
+
 };
 
 #endif __GameObject_h__

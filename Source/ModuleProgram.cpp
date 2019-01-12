@@ -64,7 +64,11 @@ Shader* ModuleProgram::CreateProgram(const char * name)
 Shader* ModuleProgram::GetProgram(const char * name)
 {
 	Shader* shader = App->resManager->GetProgram(name);
-	if (shader != nullptr) return shader;
+	if (shader != nullptr)
+	{
+		App->resManager->AddProgram(shader); //Add to number of usages
+		return shader;
+	}
 
 	return CreateProgram(name);
 }

@@ -199,9 +199,7 @@ void ModuleScene::CreatePrimitive(par_shapes_mesh_s *mesh, const char * name, co
 	App->scene->Select(gameobject);
 	ComponentTransform* transform = (ComponentTransform*)gameobject->CreateComponent(ComponentType::Transform);
 	gameobject->transform = transform;
-
-	transform->SetRotation(rot);
-	transform->SetPosition(pos);
+	gameobject->UpdateGlobalTransform();
 
 	par_shapes_scale(mesh, size*App->renderer->current_scale, size*App->renderer->current_scale, size*App->renderer->current_scale);
 

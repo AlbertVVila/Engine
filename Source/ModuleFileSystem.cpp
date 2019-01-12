@@ -36,7 +36,7 @@ bool ModuleFileSystem::Start()
 	return true;
 }
 
-update_status ModuleFileSystem::Update(float dt) //TODO: Separate thread
+update_status ModuleFileSystem::Update(float dt)
 {
 	if (filesToImport.size() > 0) ImportFiles();
 	return UPDATE_CONTINUE;
@@ -79,8 +79,13 @@ bool ModuleFileSystem::Save(const char * file, const char * buffer, unsigned siz
 		LOG("Error: %s %s", file, PHYSFS_getLastError());
 		return false;
 	}
-	PHYSFS_write(myfile, buffer, size, 1); //TODO: check errors in write
-	//RELEASE(buffer); //TODO: fix mem leaks
+	int readedObj = PHYSFS_write(myfile, buffer, size, 1);
+	if (readedObj < 1)
+	{
+		LOG("Error: %s %s", file, PHYSFS_getLastError());
+		return false;
+	}
+
 	PHYSFS_close(myfile);
 
 	return true;

@@ -7,6 +7,7 @@
 #include "Geometry/LineSegment.h"
 #include "Math/Quat.h"
 #include "Math/float2.h"
+#include "Math/float4x4.h"
 #include "Math/MathFunc.h"
 #include "GL/glew.h"
 #include <stack>

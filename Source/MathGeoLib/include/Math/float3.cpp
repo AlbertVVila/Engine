@@ -827,6 +827,11 @@ float3 &float3::operator /=(float scalar)
 	return *this;
 }
 
+bool float3::operator !=(const float3 & other)
+{
+	return other.x != x || other.y != y || other.z != z;
+}
+
 #ifdef MATH_ENABLE_STL_SUPPORT
 std::ostream &operator <<(std::ostream &out, const float3 &rhs)
 {
