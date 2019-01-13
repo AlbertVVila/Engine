@@ -49,6 +49,7 @@ public:
 	bool light_debug = true;
 	bool quadtree_debug = true;
 	bool grid_debug = true;
+	bool useMainCameraFrustum = false;
 
 	unsigned current_scale = 1;
 	int item_current = 0;
@@ -58,7 +59,6 @@ private:
 	bool depthTest = true;
 	bool wireframe = false;
 	bool vsync = false;
-	bool useMainCameraFrustum = false;
 
 	Skybox* skybox = nullptr;
 	

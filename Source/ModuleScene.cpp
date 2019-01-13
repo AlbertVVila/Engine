@@ -105,16 +105,23 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 			light->DrawDebugLight();
 		}
 	}
-
-	std::list<GameObject*> staticGOs = quadtree->GetIntersections(frustum);
+	Frustum camFrustum = frustum;
+	if (maincamera != nullptr && App->renderer->useMainCameraFrustum)
+	{
+		camFrustum = *maincamera->frustum;
+	}
+	std::list<GameObject*> staticGOs = quadtree->GetIntersections(camFrustum);
 	for (const auto &go : staticGOs)
 	{
-		DrawGO(*go, frustum, isEditor);
+		DrawGO(*go, camFrustum, isEditor);
 	}
 
-	for (const auto &go : App->scene->dynamicGOs)
+	for (const auto &go : dynamicGOs)
 	{
-		DrawGO(*go, frustum, isEditor);
+		if (camFrustum.Intersects(go->GetBoundingBox()))
+		{
+			DrawGO(*go, camFrustum, isEditor);
+		}
 	}
 
 	if (selected != nullptr && selected->GetComponent(ComponentType::Renderer) == nullptr)
@@ -195,8 +202,8 @@ void ModuleScene::CreateSphere(const char * name, GameObject* parent, const floa
 
 void ModuleScene::CreatePrimitive(par_shapes_mesh_s *mesh, const char * name, const float3 & pos, const Quat & rot, float size, const float4 & color, GameObject* parent)
 {
-	GameObject * gameobject = App->scene->CreateGameObject(name, parent);
-	App->scene->Select(gameobject);
+	GameObject * gameobject = CreateGameObject(name, parent);
+	Select(gameobject);
 	ComponentTransform* transform = (ComponentTransform*)gameobject->CreateComponent(ComponentType::Transform);
 
 	par_shapes_scale(mesh, size*App->renderer->current_scale, size*App->renderer->current_scale, size*App->renderer->current_scale);
@@ -316,7 +323,7 @@ void ModuleScene::LoadScene(const char* scene)
 		}
 		else if (gameobject->parentUUID == 0)
 		{
-			gameobject->parent = App->scene->root;
+			gameobject->parent = root;
 			gameobject->parent->children.push_back(gameobject);
 		}
 	}
@@ -334,11 +341,11 @@ void ModuleScene::ClearScene()
 
 void ModuleScene::Select(GameObject * gameobject)
 {
-	if (App->scene->selected != nullptr)
+	if (selected != nullptr)
 	{
-		App->scene->selected->drawBBox = false;
+		selected->drawBBox = false;
 	}
-	App->scene->selected = gameobject;
+	selected = gameobject;
 	gameobject->drawBBox = true;
 }
 
@@ -374,7 +381,7 @@ void ModuleScene::Pick(float normalized_x, float normalized_y)
 
 	if (closestGO != nullptr)
 	{
-		App->scene->Select(closestGO);
+		Select(closestGO);
 	}
 
 	debuglines.push_back(line);
