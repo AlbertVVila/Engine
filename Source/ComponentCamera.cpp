@@ -14,6 +14,7 @@
 #include "Geometry/AABB.h"
 #include "GL/glew.h"
 #include "Imgui/imgui.h"
+#include "Geometry/Frustum.h"
 
 #define MAXFOV 120
 #define MINFOV 40
@@ -31,7 +32,7 @@ ComponentCamera::ComponentCamera(GameObject * gameobject) : Component(gameobject
 
 ComponentCamera::ComponentCamera(const ComponentCamera & component) : Component(component)
 {
-	frustum = &math::Frustum(*component.frustum);
+	frustum = new Frustum (*component.frustum);
 	movementSpeed = component.movementSpeed;
 	rotationSpeed = component.rotationSpeed;
 	zoomSpeed = component.zoomSpeed;
@@ -58,14 +59,14 @@ ComponentCamera * ComponentCamera::Clone() const
 
 void ComponentCamera::InitFrustum()
 {
-	frustum = new math::Frustum();
+	frustum = new Frustum();
 	frustum->type = FrustumType::PerspectiveFrustum;
 	frustum->pos = float3::zero;
 	frustum->front = -float3::unitZ;
 	frustum->up = float3::unitY;
 	frustum->nearPlaneDistance = ZNEARDIST* App->renderer->current_scale;
 	frustum->farPlaneDistance = ZFARDIST * App->renderer->current_scale;
-	frustum->verticalFov = math::DegToRad(60);
+	frustum->verticalFov = DegToRad(60);
 	frustum->horizontalFov = 2.f * atanf(tanf(frustum->verticalFov * 0.5f) * ((float)App->window->width / (float)App->window->height));
 
 }

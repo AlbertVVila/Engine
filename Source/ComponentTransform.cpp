@@ -111,6 +111,7 @@ void ComponentTransform::SetLocalToWorld()
 {
 	local = global;
 	global.Decompose(position, rotation, scale);
+	RotationToEuler();
 	UpdateOldTransform();
 	RotationToEuler();
 }
@@ -119,6 +120,7 @@ void ComponentTransform::SetWorldToLocal(const float4x4 & newparentGlobalMatrix)
 {
 	local = newparentGlobalMatrix.Inverted() * local;
 	local.Decompose(position, rotation, scale);
+	RotationToEuler();
 	UpdateOldTransform();
 	global = newparentGlobalMatrix * local;
 	RotationToEuler();
@@ -129,6 +131,7 @@ void ComponentTransform::SetGlobalTransform(const float4x4 & newglobal, const fl
 	global = newglobal;
 	local = parentglobal.Inverted() * global;
 	local.Decompose(position, rotation, scale);
+	RotationToEuler();
 	UpdateOldTransform();
 }
 
@@ -151,4 +154,5 @@ void ComponentTransform::Load(const JSON_value & value)
 	scale = value.GetFloat3("Scale");
 	global = value.GetFloat4x4("Global");
 	local = float4x4::FromTRS(position, rotation, scale);
+	RotationToEuler();
 }

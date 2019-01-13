@@ -91,7 +91,7 @@ bool ModuleScene::CleanUp()
 	return true;
 }
 
-void ModuleScene::Draw(const math::Frustum &frustum, bool isEditor)
+void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 {
 	if (isEditor)
 	{
@@ -123,7 +123,7 @@ void ModuleScene::Draw(const math::Frustum &frustum, bool isEditor)
 	}
 }
 
-void ModuleScene::DrawGO(const GameObject& go, const math::Frustum & frustum, bool isEditor)
+void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isEditor)
 {
 	if (go.drawBBox && isEditor)
 	{

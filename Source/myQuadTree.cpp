@@ -442,7 +442,7 @@ std::list<std::pair<float, GameObject*>> myQuadTree::GetIntersections(const Line
 	return intersections;
 }
 
-std::list<GameObject*> myQuadTree::GetIntersections(const math::Frustum & frustum) const
+std::list<GameObject*> myQuadTree::GetIntersections(const Frustum & frustum) const
 {
 	std::stack<Node*> stack;
 	stack.push(nodes[rootIndex]);

@@ -30,7 +30,7 @@ bool ModuleCamera::Init(JSON* config)
 	JSON_value* cam = config->GetValue("camera");
 	if (cam == nullptr) return true;
 
-	math::Frustum *frustum = editorcamera->frustum;
+	Frustum *frustum = editorcamera->frustum;
 	frustum->pos = cam->GetFloat3("position");
 	frustum->front = cam->GetFloat3("forward");
 	frustum->up = cam->GetFloat3("up");
@@ -48,7 +48,7 @@ void ModuleCamera::SaveConfig(JSON * config)
 {
 	JSON_value* cam = config->CreateValue();
 
-	math::Frustum *frustum = editorcamera->frustum;
+	Frustum *frustum = editorcamera->frustum;
 	cam->AddFloat3("position", frustum->pos);
 	cam->AddFloat3("forward", frustum->front);
 	cam->AddFloat3("up", frustum->up);
@@ -159,7 +159,7 @@ void ModuleCamera::InputZoom() const
 
 void ModuleCamera::DrawGUI()
 {
-	math::Frustum *frustum = editorcamera->frustum;
+	Frustum *frustum = editorcamera->frustum;
 	ImGui::InputFloat3("Position", (float*)&frustum->pos, 2, ImGuiInputTextFlags_ReadOnly);
 	ImGui::InputFloat3("Forward ", (float*)&frustum->front, 2, ImGuiInputTextFlags_ReadOnly);
 

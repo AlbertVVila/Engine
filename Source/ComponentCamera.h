@@ -7,7 +7,6 @@
 #define ZNEARDIST .1f
 #define ZFARDIST 1000.f
 
-class Frustum;
 class ComponentCamera :
 	public Component
 {
@@ -40,7 +39,7 @@ private:
 	void LookAt(float3 target);
 
 public:
-	math::Frustum* frustum = nullptr; 
+	Frustum* frustum = nullptr; 
 
 	float movementSpeed = 5.0f;
 	float rotationSpeed = 200.0f;

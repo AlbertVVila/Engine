@@ -3,6 +3,7 @@
 #include "ModuleProgram.h"
 #include "ModuleCamera.h"
 #include "ModuleRender.h"
+#include "ModuleScene.h"
 
 #include "ComponentLight.h"
 #include "ComponentTransform.h"
@@ -25,16 +26,25 @@ ComponentLight::ComponentLight(GameObject * gameobject) : Component(gameobject, 
 ComponentLight::ComponentLight(const ComponentLight & component) : Component(component)
 {
 	position = component.position;
+	direction = component.direction;
+	color = component.color;
+
+	attenuation = component.attenuation;
+	inner = component.inner;
+	outer = component.outer;
+	App->scene->lights.push_back(this);
 }
 
 ComponentLight::~ComponentLight()
 {
+	App->scene->lights.remove(this);
 }
 
 void ComponentLight::Update() 
 {
 	if (gameobject->transform == nullptr) return;
-	position = gameobject->transform->position; //TODO: global?
+	position = gameobject->transform->global.TranslatePart(); 
+
 	direction = -(gameobject->transform->rotation*float3::unitZ).Normalized();
 }
 

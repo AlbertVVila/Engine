@@ -10,7 +10,7 @@ class Skybox
 public:
 	Skybox();
 	~Skybox();
-	void Draw(const math::Frustum& frustum) const;
+	void Draw(const Frustum& frustum) const;
 
 public:
 	bool enabled = true;

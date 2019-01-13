@@ -98,7 +98,7 @@ Skybox::~Skybox()
 	}
 }
 
-void Skybox::Draw(const math::Frustum& frustum) const
+void Skybox::Draw(const Frustum& frustum) const
 {
 	if (!enabled) return;
 

@@ -49,7 +49,9 @@ public:
 	bool light_debug = true;
 	bool quadtree_debug = true;
 	bool grid_debug = true;
+
 	unsigned current_scale = 1;
+	int item_current = 0;
 
 private:
 	unsigned UBO = 0;

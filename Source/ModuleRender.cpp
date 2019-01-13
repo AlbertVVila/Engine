@@ -51,12 +51,24 @@ bool ModuleRender::Init(JSON * config)
 	light_debug = renderer->GetInt("light_debug");
 	quadtree_debug = renderer->GetInt("quadtree_debug");
 	grid_debug = renderer->GetInt("grid_debug");
-	current_scale = renderer->GetInt("current_scale");
 	depthTest = renderer->GetInt("depthTest");
 	wireframe = renderer->GetInt("wireframe");
 	vsync = renderer->GetInt("vsync");
 	useMainCameraFrustum = renderer->GetInt("frustumMainCamera");
 	skybox->enabled = renderer->GetInt("skybox");
+	current_scale = renderer->GetInt("current_scale");
+	switch (current_scale)
+	{
+		case 1:
+			item_current = 0;
+			break;
+		case 10:
+			item_current = 1;
+			break;
+		case 100:
+			item_current = 2;
+			break;
+	}
 
 	return true;
 }
@@ -271,7 +283,7 @@ void ModuleRender::DrawAxis() const //TODO: use debug draw
 void ModuleRender::DrawFrustum() const //TODO: Create Separate Frustum drawer / Move to component Camera
 {
 	unsigned shader = App->program->defaultShader->id;
-	math::Frustum *frustum = App->scene->maincamera->frustum;
+	Frustum *frustum = App->scene->maincamera->frustum;
 	glUseProgram(shader);
 
 	float3 corners[8];
@@ -415,7 +427,6 @@ void ModuleRender::DrawGUI()
 	ImGui::Checkbox("Grid Debug", &grid_debug);
 
 	const char* scales[] = {"1", "10", "100"};
-	static int item_current = 0;
 	ImGui::Combo("Scale", &item_current, scales, 3);
 	unsigned new_scale = atoi(scales[item_current]);
 	if (new_scale != current_scale)
