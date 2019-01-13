@@ -36,6 +36,7 @@
 
 #define MAX_DEBUG_LINES 5
 #define MAX_LIGHTS 4
+#define DEFAULT_SPHERE_SHAPE 20
 
 ModuleScene::ModuleScene()
 {
@@ -55,6 +56,13 @@ bool ModuleScene::Init(JSON * config)
 
 	AABB limits(float3(-10.f, 0.f, -10.f), float3(10.f, 0.f, 10.f));
 	quadtree = new myQuadTree(limits);
+
+	JSON_value* scene = config->GetValue("scene");
+	if (scene != nullptr)
+	{
+		primitivesUID[(unsigned)PRIMITIVES::SPHERE] = scene->GetUint("sphereUID");
+		primitivesUID[(unsigned)PRIMITIVES::CUBE] = scene->GetUint("cubeUID");
+	}
 	return true;
 }
 
@@ -89,6 +97,16 @@ bool ModuleScene::CleanUp()
 	lights.clear();
 
 	return true;
+}
+
+void ModuleScene::SaveConfig(JSON * config)
+{
+	JSON_value* scene = config->CreateValue();
+
+	scene->AddUint("sphereUID", primitivesUID[(unsigned)PRIMITIVES::SPHERE]);
+	scene->AddUint("cubeUID", primitivesUID[(unsigned)PRIMITIVES::CUBE]);
+
+	config->AddValue("scene", scene);
 }
 
 void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
@@ -184,41 +202,54 @@ GameObject * ModuleScene::CreateGameObject(const char * name, GameObject* parent
 	return gameobject;
 }
 
-void ModuleScene::CreateCube(const char * name, GameObject* parent, const float3 & pos, const Quat & rot, float size, const float4 & color)
+void ModuleScene::CreateCube(const char * name, GameObject* parent, float size)
 {
-	par_shapes_mesh* mesh = par_shapes_create_cube();
-	if (mesh->normals == nullptr)
+	if (!primitivesUID[(unsigned)PRIMITIVES::CUBE])
 	{
-		par_shapes_compute_normals(mesh);
+		par_shapes_mesh* mesh = par_shapes_create_cube();
+		if (mesh->normals == nullptr)
+		{
+			par_shapes_compute_normals(mesh);
+		}
+		SetPrimitiveMesh(mesh, size, PRIMITIVES::CUBE);
 	}
-	CreatePrimitive(mesh, name, pos, rot, size, color, parent);
+	CreatePrimitive(name, parent, PRIMITIVES::CUBE);
 }
 
-void ModuleScene::CreateSphere(const char * name, GameObject* parent, const float3 & pos, const Quat & rot, float size, unsigned slices, unsigned stacks, const float4 & color)
+void ModuleScene::CreateSphere(const char * name, GameObject* parent, float size)
 {
-	par_shapes_mesh* mesh = par_shapes_create_parametric_sphere(int(slices), int(stacks));
-	CreatePrimitive(mesh, name, pos, rot, size, color, parent);
+	if (!primitivesUID[(unsigned)PRIMITIVES::SPHERE])
+	{
+		par_shapes_mesh* mesh = par_shapes_create_parametric_sphere(DEFAULT_SPHERE_SHAPE, DEFAULT_SPHERE_SHAPE);
+		SetPrimitiveMesh(mesh, size, PRIMITIVES::SPHERE);
+	}
+	CreatePrimitive(name, parent, PRIMITIVES::SPHERE);
 }
 
-void ModuleScene::CreatePrimitive(par_shapes_mesh_s *mesh, const char * name, const float3 & pos, const Quat & rot, float size, const float4 & color, GameObject* parent)
+void ModuleScene::CreatePrimitive(const char * name, GameObject* parent, PRIMITIVES type)
 {
 	GameObject * gameobject = CreateGameObject(name, parent);
 	Select(gameobject);
 	ComponentTransform* transform = (ComponentTransform*)gameobject->CreateComponent(ComponentType::Transform);
-
-	par_shapes_scale(mesh, size*App->renderer->current_scale, size*App->renderer->current_scale, size*App->renderer->current_scale);
-
-	char* data = nullptr;
 	ComponentRenderer* crenderer = (ComponentRenderer*)gameobject->CreateComponent(ComponentType::Renderer);
+
+	unsigned uid = primitivesUID[(unsigned)type];
+	char *data = nullptr;
+	App->fsystem->Load((MESHES + std::to_string(uid) + MESHEXTENSION).c_str(), &data);
+	crenderer->SetMesh(data, uid);//Deallocates data
+	crenderer->SetMaterial(DEFAULTMAT);
+	gameobject->UpdateBBox();
+	App->resManager->AddMesh(crenderer->mesh);
+}
+
+void ModuleScene::SetPrimitiveMesh(par_shapes_mesh_s *mesh, float size, PRIMITIVES type)
+{
+	par_shapes_scale(mesh, size*App->renderer->current_scale, size*App->renderer->current_scale, size*App->renderer->current_scale);
+	char* data = nullptr;
 	unsigned meshSize = SaveParShapesMesh(*mesh, &data);
 	unsigned uid = GetNewUID();
 	App->fsystem->Save((MESHES + std::to_string(uid) + MESHEXTENSION).c_str(), data, meshSize);
-	crenderer->SetMesh(data, uid);//Deallocates data
-	gameobject->UpdateBBox();
-
-	crenderer->SetMaterial(DEFAULTMAT);
-	
-	App->resManager->AddMesh(crenderer->mesh);
+	primitivesUID[(unsigned)type] = uid;
 	par_shapes_free_mesh(mesh);
 }
 
@@ -349,6 +380,15 @@ void ModuleScene::Select(GameObject * gameobject)
 	gameobject->drawBBox = true;
 }
 
+void ModuleScene::UnSelect()
+{
+	if (selected != nullptr)
+	{
+		selected->drawBBox = false;
+	}
+	selected = nullptr;
+}
+
 void ModuleScene::Pick(float normalized_x, float normalized_y)
 {
 	LineSegment line = App->camera->editorcamera->DrawRay(normalized_x, normalized_y);
@@ -382,6 +422,10 @@ void ModuleScene::Pick(float normalized_x, float normalized_y)
 	if (closestGO != nullptr)
 	{
 		Select(closestGO);
+	}
+	else
+	{
+		UnSelect();
 	}
 
 	debuglines.push_back(line);

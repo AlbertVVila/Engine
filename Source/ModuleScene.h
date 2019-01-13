@@ -10,12 +10,19 @@
 #include "Math/float4.h"
 #include <set>
 
+#define NBPRIMITIVES 2
 class GameObject;
 class ComponentCamera;
 class ComponentLight;
 class myQuadTree;
 struct Texture;
 struct par_shapes_mesh_s;
+
+enum class PRIMITIVES
+{
+	SPHERE,
+	CUBE,
+};
 
 class ModuleScene :
 	public Module
@@ -28,6 +35,7 @@ public:
 	bool Start() override;
 	update_status Update(float dt) override;
 	bool CleanUp() override;
+	void SaveConfig(JSON * config) override;
 
 	GameObject * CreateGameObject(const float4x4& transform, const char* name, GameObject* parent);
 	GameObject * CreateGameObject(const char * name, GameObject* parent);
@@ -35,15 +43,21 @@ public:
 	void Draw(const Frustum &frustum, bool isEditor = false);
 	void DrawGO(const GameObject& go, const Frustum & frustum, bool isEditor = false);
 	void DrawHierarchy();
-	void CreateCube(const char * name, GameObject* parent, const float3 & pos = float3::zero, const Quat & rot = Quat::identity, float size = 1.f, const float4 & color = float4::one);
-	void CreateSphere(const char * name, GameObject* parent, const float3 & pos = float3::zero, const Quat & rot = Quat::identity, float size = 1.f, unsigned slices = 20u, unsigned stacks = 20u, const float4 & color = float4::one);
-	void CreatePrimitive(par_shapes_mesh_s *mesh, const char * name, const float3 & pos, const Quat & rot, float size, const float4 & color, GameObject* parent);
+
+	void CreateCube(const char * name, GameObject* parent, float size = 1.f);
+	void CreateSphere(const char * name, GameObject* parent, float size = 1.f);
+	void CreatePrimitive(const char * name, GameObject* parent, PRIMITIVES type);
+	void SetPrimitiveMesh(par_shapes_mesh_s * mesh, float size, PRIMITIVES type);
 	unsigned SaveParShapesMesh(const par_shapes_mesh_s & mesh, char** data) const;
+
 	void SaveScene(const GameObject &rootGO, const char* name) const;
 	void LoadScene(const char * scene);
 	void ClearScene();
+
 	void Select(GameObject* gameobject);
+	void UnSelect();
 	void Pick(float normalized_x, float normalized_y);
+
 	unsigned GetNewUID();
 	std::list<ComponentLight*> GetClosestLights(LightType type, float3 position = float3::zero) const;
 
@@ -51,6 +65,8 @@ public:
 
 private:
 	std::list<std::pair<float, GameObject*>>GetDynamicIntersections(const LineSegment& line);
+	unsigned primitivesUID[NBPRIMITIVES] = {0};
+
 public:
 	GameObject* root = nullptr;
 	GameObject* selected = nullptr; //Selected in hierarchy

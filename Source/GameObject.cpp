@@ -45,6 +45,7 @@ GameObject::GameObject(const GameObject & gameobject)
 	UUID = App->scene->GetNewUID();
 	parentUUID = gameobject.parentUUID;
 	isStatic = gameobject.isStatic;
+	bbox = gameobject.bbox;
 
 	for (const auto& component: gameobject.components)
 	{

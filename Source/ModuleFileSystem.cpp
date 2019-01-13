@@ -2,7 +2,6 @@
 #include "FileImporter.h"
 
 #include "physfs.h"
-#include "nommgr.h"
 #include "SDL_timer.h"
 #include "SDL_atomic.h"
 
