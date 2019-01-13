@@ -15,6 +15,30 @@ Material::Material()
 {
 }
 
+Material::Material(const Material& material)
+{
+	name = material.name;
+	if (material.shader != nullptr)
+	{
+		shader = App->program->GetProgram(material.shader->file.c_str());
+	}
+	for (unsigned i = 0; i < MAXTEXTURES; ++i)
+	{
+		if (material.textures[i] != nullptr)
+		{
+			textures[i] = App->textures->GetTexture(material.textures[i]->file.c_str());
+		}
+	}
+
+	diffuse_color = material.diffuse_color;
+	specular_color = material.specular_color;
+	emissive_color = material.emissive_color;
+
+	kAmbient = material.kAmbient;
+	kDiffuse = material.kDiffuse;
+	kSpecular = material.kSpecular;
+	shininess = material.shininess;
+}
 
 Material::~Material()
 {
@@ -128,6 +152,39 @@ void Material::Save() const
 	
 	App->fsystem->Save((MATERIALS + name + JSONEXT).c_str(), json->ToString().c_str(),json->Size());
 	delete json;
+}
+
+void Material::Reset(const Material & material)
+{
+	name = material.name;
+
+	if (shader != nullptr)
+	{
+		App->resManager->DeleteProgram(shader->file);
+	}
+	if (material.shader != nullptr)
+	{
+		shader = App->program->GetProgram(material.shader->file.c_str());
+	}
+	for (unsigned i = 0; i < MAXTEXTURES; ++i)
+	{
+		if (textures[i] != nullptr)
+		{
+			App->resManager->DeleteTexture(textures[i]->file);
+		}
+		if (material.textures[i] != nullptr)
+		{
+			textures[i] = App->textures->GetTexture(material.textures[i]->file.c_str());
+		}
+	}
+	diffuse_color = material.diffuse_color;
+	specular_color = material.specular_color;
+	emissive_color = material.emissive_color;
+
+	kAmbient = material.kAmbient;
+	kDiffuse = material.kDiffuse;
+	kSpecular = material.kSpecular;
+	shininess = material.shininess;
 }
 
 Texture * Material::GetTexture(TextureType type) const

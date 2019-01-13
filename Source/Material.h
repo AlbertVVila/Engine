@@ -22,10 +22,13 @@ class Material
 {
 public:
 	Material();
+	Material(const Material& material);
+
 	~Material();
 
 	void Load(const char * material);
 	void Save() const;
+	void Reset(const Material& material);
 
 	Texture * GetTexture(TextureType type) const;
 

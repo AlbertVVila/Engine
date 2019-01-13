@@ -27,15 +27,19 @@ void MaterialEditor::Draw()
 		if (!ImGui::IsPopupOpen(materialPopup))
 		{
 			ImGui::OpenPopup(materialPopup);
+			if (isCreated)
+			{
+				material = new Material();
+			}
+			else
+			{
+				previous = new Material(*material);
+			}
 		}
 		ImGui::SetNextWindowSizeConstraints(ImVec2(200, 200), ImVec2(500, 500));
 	}
 	if (ImGui::BeginPopupModal(materialPopup, NULL, ImGuiWindowFlags_AlwaysAutoResize))
 	{
-		if (material == nullptr)
-		{
-			material = new Material();
-		}
 		char name[64] = "";
 		if (!material->name.empty())
 		{
@@ -120,6 +124,10 @@ void MaterialEditor::Draw()
 		ImGui::SameLine();
 		if (ImGui::Button("Cancel", ImVec2(120, 0))) //TODO: discard changes made in material
 		{
+			if(!isCreated)
+			{
+				material->Reset(*previous);
+			}
 			CleanUp();
 		}
 		ImGui::EndPopup();
@@ -163,14 +171,8 @@ void MaterialEditor::TextureSelector(unsigned i, std::string &current_texture)
 }
 void MaterialEditor::CleanUp()
 {
-	if (isCreated)
-	{
-		RELEASE(material);
-	}
-	else
-	{
-		material = nullptr;
-	}
+	if (isCreated) RELEASE(material);
+
 	current_shader = None;
 	current_diffuse = None;
 	current_specular = None;
@@ -180,6 +182,11 @@ void MaterialEditor::CleanUp()
 	textureFiles.clear();
 	shaders.clear();
 	open = false;
+	material = nullptr;
+	if (previous != nullptr)
+	{
+		RELEASE(previous);
+	}
 
 	ImGui::CloseCurrentPopup();
 }
