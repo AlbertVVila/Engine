@@ -6,7 +6,7 @@ class ComponentCamera;
 class Viewport
 {
 public:
-	Viewport();
+	Viewport(std::string name);
 	~Viewport();
 
 	void Draw(ComponentCamera* cam, bool isEditor = false);
@@ -30,7 +30,11 @@ public:
 	unsigned MSAAFBO = 0;
 	unsigned MSAADEPTH = 0;
 	unsigned MSAACOLOR = 0;
+	bool focus = true;
 
+private:
+	bool enabled = true;
+	std::string name = "Viewport";
 };
 
 #endif __Viewport_h__

@@ -5,6 +5,7 @@
 class ComponentCamera;
 class JSON;
 class Skybox;
+class Viewport;
 struct Shader;
 
 class ModuleRender : public Module
@@ -21,6 +22,8 @@ public:
 	void SaveConfig(JSON* config) override;
 
 	void Draw(const ComponentCamera& cam, int width, int height, bool isEditor = false) const;
+	bool IsSceneViewFocused() const;
+	void setSceneViewFocus();
 	bool CleanUp() override;
 	void OnResize();
 	void DrawGUI();
@@ -61,6 +64,8 @@ private:
 	bool vsync = false;
 
 	Skybox* skybox = nullptr;
+	Viewport* viewScene = nullptr;
+	Viewport* viewGame = nullptr;
 	
 
 };

@@ -153,9 +153,6 @@
     <ClCompile Include="PanelConfiguration.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
-    <ClCompile Include="PanelScene.cpp">
-      <Filter>Panels</Filter>
-    </ClCompile>
     <ClCompile Include="PanelAbout.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
@@ -182,9 +179,6 @@
     </ClCompile>
     <ClCompile Include="ComponentCamera.cpp">
       <Filter>Component</Filter>
-    </ClCompile>
-    <ClCompile Include="PanelCamera.cpp">
-      <Filter>Panels</Filter>
     </ClCompile>
     <ClCompile Include="ModuleFileSystem.cpp">
       <Filter>Modules</Filter>
@@ -442,9 +436,6 @@
     <ClInclude Include="PanelConsole.h">
       <Filter>Panels</Filter>
     </ClInclude>
-    <ClInclude Include="PanelScene.h">
-      <Filter>Panels</Filter>
-    </ClInclude>
     <ClInclude Include="PanelConfiguration.h">
       <Filter>Panels</Filter>
     </ClInclude>
@@ -480,9 +471,6 @@
     </ClInclude>
     <ClInclude Include="ComponentCamera.h">
       <Filter>Component</Filter>
-    </ClInclude>
-    <ClInclude Include="PanelCamera.h">
-      <Filter>Panels</Filter>
     </ClInclude>
     <ClInclude Include="ModuleFileSystem.h">
       <Filter>Modules</Filter>

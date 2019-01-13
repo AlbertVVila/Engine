@@ -13,6 +13,7 @@
 #include "imgui.h"
 #include "Math/MathFunc.h"
 #include "Geometry/Frustum.h"
+#include "Brofiler.h"
 
 ModuleCamera::ModuleCamera()
 {
@@ -64,7 +65,9 @@ void ModuleCamera::SaveConfig(JSON * config)
 
 update_status ModuleCamera::Update(float dt)
 {
-	if (App->editor->IsCameraFocused())
+	BROFILER_CATEGORY("Camera Update", Profiler::Color::Red)
+
+	if (App->renderer->IsSceneViewFocused())
 	{
 		InputMove(dt);
 		InputRotate(dt);

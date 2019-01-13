@@ -7,6 +7,7 @@
 
 #include "SDL.h"
 #include "imgui.h"
+#include "Brofiler.h"
 
 #define MAX_KEYS 300
 
@@ -42,6 +43,8 @@ bool ModuleInput::Init(JSON * config)
 // Called each loop iteration
 update_status ModuleInput::PreUpdate()
 {
+	BROFILER_CATEGORY("Input PreUpdate", Profiler::Color::Magenta);
+
 	static SDL_Event event;
 
 	mouse_motion = { 0, 0 };

@@ -20,6 +20,7 @@
 #include "Geometry/LineSegment.h"
 #include "Math/MathConstants.h"
 #include "GL/glew.h"
+#include "Brofiler.h"
 
 
 #pragma warning(push)
@@ -74,6 +75,7 @@ bool ModuleScene::Start()
 
 update_status ModuleScene::Update(float dt)
 {
+	BROFILER_CATEGORY("Scene Update", Profiler::Color::Green);
 	root->Update();
 	return UPDATE_CONTINUE;
 }
@@ -111,6 +113,7 @@ void ModuleScene::SaveConfig(JSON * config)
 
 void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 {
+	PROFILE;
 	if (isEditor)
 	{
 		if (App->renderer->quadtree_debug)
@@ -150,6 +153,7 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 
 void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isEditor)
 {
+	PROFILE;
 	if (go.drawBBox && isEditor)
 	{
 		go.DrawBBox();

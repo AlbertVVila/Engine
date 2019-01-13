@@ -6,6 +6,7 @@
 #include "Math/float4x4.h"
 #include "Geometry/Frustum.h"
 #include "GL/glew.h"
+#include "Brofiler.h"
 
 #define SKYBOX "Skybox"
 
@@ -100,6 +101,7 @@ Skybox::~Skybox()
 
 void Skybox::Draw(const Frustum& frustum) const
 {
+	PROFILE;
 	if (!enabled) return;
 
 	glDepthMask(GL_FALSE);

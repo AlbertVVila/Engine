@@ -11,6 +11,7 @@
 #include "GameObject.h"
 #include "ComponentCamera.h"
 #include "Skybox.h"
+#include "Viewport.h"
 #include "JSON.h"
 
 #include "SDL.h"
@@ -18,6 +19,7 @@
 #include "imgui.h"
 #include "Math/MathFunc.h"
 #include "Math/float4x4.h"
+#include "Brofiler.h"
 
 ModuleRender::ModuleRender()
 {
@@ -27,6 +29,8 @@ ModuleRender::ModuleRender()
 ModuleRender::~ModuleRender()
 {
 	RELEASE(skybox);
+	RELEASE(viewScene);
+	RELEASE(viewGame);
 }
 
 // Called before render is available
@@ -41,6 +45,8 @@ bool ModuleRender::Init(JSON * config)
 
 	SDL_GL_SetSwapInterval((int)vsync);
 	skybox = new Skybox();
+	viewScene = new Viewport("Scene");
+	viewGame = new Viewport("Game");
 
 	JSON_value* renderer = config->GetValue("renderer");
 	if (renderer == nullptr) return true;
@@ -89,14 +95,19 @@ update_status ModuleRender::PreUpdate()
 
 // Called every draw update
 update_status ModuleRender::Update(float dt)
-{
+{ 
 	return UPDATE_CONTINUE;
 }
 
 
 update_status ModuleRender::PostUpdate()
 {
+	BROFILER_CATEGORY("Render PostUpdate", Profiler::Color::Black)
+
+	viewScene->Draw(App->camera->editorcamera, true);
+	viewGame->Draw(App->scene->maincamera);
 	App->editor->RenderGUI();
+
 	SDL_GL_SwapWindow(App->window->window);
 
 	return UPDATE_CONTINUE;
@@ -124,6 +135,7 @@ void ModuleRender::SaveConfig(JSON * config)
 
 void ModuleRender::Draw(const ComponentCamera& cam, int width, int height, bool isEditor) const
 {
+	PROFILE;
 	glViewport(0, 0, width, height);
 	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -146,6 +158,12 @@ void ModuleRender::Draw(const ComponentCamera& cam, int width, int height, bool 
 	}
 	App->scene->Draw(*cam.frustum, isEditor);
 }
+
+bool ModuleRender::IsSceneViewFocused() const
+{
+	return viewScene->focus;
+}
+
 // Called before quitting
 bool ModuleRender::CleanUp()
 {
@@ -168,6 +186,7 @@ void ModuleRender::OnResize()
 
 void ModuleRender::DrawGizmos() const
 {
+	PROFILE;
 	unsigned shader = App->program->defaultShader->id;
 	glUseProgram(shader);
 

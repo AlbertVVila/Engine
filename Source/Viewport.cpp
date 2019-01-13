@@ -3,6 +3,7 @@
 #include "ModuleRender.h"
 #include "ModuleScene.h"
 #include "ModuleInput.h"
+#include "ModuleTextures.h"
 
 #include "GameObject.h"
 #include "ComponentCamera.h"
@@ -15,11 +16,9 @@
 #include "ImGuizmo.h"
 #include "Geometry/LineSegment.h"
 #include "Math/float4x4.h"
+#include "Brofiler.h"
 
-Viewport::Viewport()
-{
-}
-
+Viewport::Viewport(std::string name) : name(name) {}
 
 Viewport::~Viewport()
 {
@@ -51,6 +50,23 @@ Viewport::~Viewport()
 
 void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 {
+	PROFILE;
+	ImGui::Begin(name.c_str(), &enabled, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+
+	if (cam == nullptr)
+	{
+		ImVec2 size = ImGui::GetWindowSize();
+		size.x = MAX(size.x, 400);
+		size.y = MAX(size.y, 400);
+
+		ImGui::Image((ImTextureID)App->scene->camera_notfound_texture->id,
+			size, { 0,1 }, { 1,0 });
+		ImGui::End();
+		return;
+	}
+
+	focus = ImGui::IsWindowFocused();
+
 	ImVec2 size = ImGui::GetWindowSize();
 
 	cam->SetAspect(size.x / size.y);
@@ -90,6 +106,8 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 			Pick();
 		}
 	}
+
+	ImGui::End();
 }
 
 void Viewport::CreateFrameBuffer(int width, int height)
@@ -187,6 +205,7 @@ void Viewport::CreateMSAABuffers(int width, int height)
 
 void Viewport::DrawImGuizmo(const ComponentCamera & cam) const
 {
+	PROFILE;
 	ImVec2 pos = ImGui::GetWindowPos();
 	ImGuizmo::SetRect(pos.x, pos.y, current_width, current_height);
 	ImGuizmo::SetDrawlist();
@@ -263,7 +282,8 @@ void Viewport::DrawImGuizmo(const ComponentCamera & cam) const
 
 void Viewport::Pick()
 {
-	if (App->input->GetMouseButtonDown(1) == KEY_DOWN && ImGui::IsWindowFocused() && ImGui::IsMouseHoveringWindow())
+	PROFILE;
+	if (App->input->GetMouseButtonDown(1) == KEY_DOWN && ImGui::IsWindowFocused && ImGui::IsMouseHoveringWindow())
 	{
 		ImVec2 pos = ImGui::GetWindowPos();
 		float2 mouse((float*)&App->input->GetMousePosition());

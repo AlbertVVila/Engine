@@ -9,19 +9,18 @@
 #include "ModuleProgram.h"
 
 #include "PanelConsole.h"
-#include "PanelScene.h"
 #include "PanelConfiguration.h"
 #include "PanelInspector.h"
 #include "PanelAbout.h"
 #include "PanelHardware.h"
 #include "PanelHierarchy.h"
-#include "PanelCamera.h"
 
 #include "MaterialEditor.h"
 #include "imgui.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_sdl.h"
 #include "ImGuizmo.h"
+#include "Brofiler.h"
 
 #include <vector>
 
@@ -32,9 +31,7 @@ ModuleEditor::ModuleEditor()
 	panels.push_back(inspector = new PanelInspector());
 	panels.push_back(about = new PanelAbout());
 	panels.push_back(hardware = new PanelHardware());
-	panels.push_back(scene = new PanelScene());
 	panels.push_back(hierarchy = new PanelHierarchy());
-	panels.push_back(camera = new PanelCamera());
 
 	materialEditor = new MaterialEditor();
 }
@@ -122,6 +119,8 @@ bool ModuleEditor::Init(JSON * config)
 
 update_status ModuleEditor::PreUpdate()
 {
+	BROFILER_CATEGORY("Editor PreUpdate", Profiler::Color::Pink)
+
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
@@ -136,6 +135,8 @@ update_status ModuleEditor::PreUpdate()
 // Called every draw update
 update_status ModuleEditor::Update(float dt)
 {
+	BROFILER_CATEGORY("Editor Update", Profiler::Color::Blue)
+
 	bool sceneSavePopUp = false;
 	if (ImGui::BeginMainMenuBar())
 	{
@@ -240,14 +241,6 @@ update_status ModuleEditor::Update(float dt)
 			{
 				console->ToggleEnabled();
 			}
-			if (ImGui::MenuItem("Scene", NULL, scene->IsEnabled()))
-			{
-				scene->ToggleEnabled();
-			}
-			if (ImGui::MenuItem("Game", NULL, camera->IsEnabled()))
-			{
-				camera->ToggleEnabled();
-			}
 			if (ImGui::MenuItem("Configuration", NULL, configuration->IsEnabled()))
 			{
 				configuration->ToggleEnabled();
@@ -294,6 +287,7 @@ bool ModuleEditor::CleanUp()
 
 void ModuleEditor::RenderGUI() const
 {
+	PROFILE;
 	ImGui::End();
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -322,20 +316,12 @@ void ModuleEditor::CreateDockSpace() const
 
 void ModuleEditor::DrawPanels()
 {
+	PROFILE;
 	for (std::list<Panel*>::iterator it = panels.begin(); it != panels.end(); ++it)
 		if ((*it)->IsEnabled())
 		{
 			(*it)->Draw();
 		}
-}
-
-bool ModuleEditor::IsCameraFocused() const
-{
-	if (scene != nullptr && hierarchy != nullptr)
-	{
-		return scene->IsFocused() || hierarchy->IsFocused();
-	}
-	return false;
 }
 
 void ModuleEditor::AddFpsLog(float dt) const

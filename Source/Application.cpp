@@ -13,6 +13,7 @@
 
 #include "Timer.h"
 #include "JSON.h"
+#include "Brofiler.h"
 
 using namespace std;
 
@@ -78,6 +79,8 @@ bool Application::Init()
 
 update_status Application::Update()
 {
+	PROFILE;
+
 	SetTimer();
 	update_status ret = UPDATE_CONTINUE;
 
