@@ -34,10 +34,12 @@
 
 #include <random>
 #include <map>
+#include <stack>
 
 #define MAX_DEBUG_LINES 5
 #define MAX_LIGHTS 4
 #define DEFAULT_SPHERE_SHAPE 20
+#define QUADTREE_SIZE 20
 
 ModuleScene::ModuleScene()
 {
@@ -55,8 +57,9 @@ bool ModuleScene::Init(JSON * config)
 	uuid_rng = rng;
 	root = new GameObject("World", 0); //Root always has uid 0
 
-	AABB limits(float3(-10.f, 0.f, -10.f), float3(10.f, 0.f, 10.f));
-	quadtree = new myQuadTree(limits);
+	int size = QUADTREE_SIZE * App->renderer->current_scale;
+	AABB limit(float3(-size, 0.f, -size), float3(size, 0.f, size));
+	quadtree = new myQuadTree(limit);
 
 	JSON_value* scene = config->GetValue("scene");
 	if (scene != nullptr)
@@ -82,13 +85,13 @@ update_status ModuleScene::Update(float dt)
 
 bool ModuleScene::CleanUp()
 {
-	quadtree->Clear();
 	root->CleanUp();
 	for (auto &child : root->children)
 	{
 		RELEASE(child);
 	}
 	root->children.clear();
+	ResetQuadTree();
 
 	selected = nullptr;
 	maincamera = nullptr;
@@ -206,6 +209,40 @@ GameObject * ModuleScene::CreateGameObject(const char * name, GameObject* parent
 	return gameobject;
 }
 
+void ModuleScene::AddToSpacePartition(GameObject *gameobject) const
+{
+	assert(gameobject != nullptr);
+	if (gameobject == nullptr)	return;
+
+	if (gameobject->isStatic)
+	{
+		App->scene->quadtree->Insert(gameobject);
+	}
+	else
+	{
+		App->scene->dynamicGOs.insert(gameobject);
+	}
+}
+
+void ModuleScene::ResetQuadTree()
+{
+	int size = QUADTREE_SIZE * App->renderer->current_scale;
+	AABB limit(float3(-size, 0.f, -size), float3(size, 0.f, size));
+	quadtree->Clear(limit);
+	std::stack<GameObject*> gos;
+	gos.push(root);
+
+	while (!gos.empty())
+	{
+		GameObject* go = gos.top();
+		gos.pop();
+		if (go->isStatic)
+		{
+			quadtree->Insert(go);
+		}
+	}
+}
+
 void ModuleScene::CreateCube(const char * name, GameObject* parent, float size)
 {
 	if (!primitivesUID[(unsigned)PRIMITIVES::CUBE])
@@ -240,7 +277,7 @@ void ModuleScene::CreatePrimitive(const char * name, GameObject* parent, PRIMITI
 	unsigned uid = primitivesUID[(unsigned)type];
 	char *data = nullptr;
 	App->fsystem->Load((MESHES + std::to_string(uid) + MESHEXTENSION).c_str(), &data);
-	crenderer->SetMesh(data, uid);//Deallocates data
+	crenderer->UpdateMesh(data, uid);//Deallocates data
 	crenderer->SetMaterial(DEFAULTMAT);
 	gameobject->UpdateBBox();
 	App->resManager->AddMesh(crenderer->mesh);

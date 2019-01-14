@@ -15,7 +15,7 @@
 myQuadTree::myQuadTree(AABB limits) : limits(limits)
 {
 	rootIndex = 0;
-	nodes.reserve(10000);
+	nodes.reserve(100);
 	AllocateNode(0);
 }
 
@@ -24,8 +24,16 @@ myQuadTree::~myQuadTree() //TODO: Release Nodes
 }
 
 
-void myQuadTree::Clear()
+void myQuadTree::Clear(AABB limits)
 {
+	this->limits = limits;
+	for (auto &node : nodes)
+	{
+		RELEASE(node);
+	}
+	nodes.clear();
+	rootIndex = 0;
+	AllocateNode(0);
 }
 
 void myQuadTree::Insert(GameObject* gameobject)
@@ -236,7 +244,7 @@ int myQuadTree::AllocateNode(Node *parent)
 	return index;
 }
 
-void myQuadTree::Draw()
+void myQuadTree::Draw() const
 {
 	for (const auto& node: nodes)
 	{
@@ -244,7 +252,7 @@ void myQuadTree::Draw()
 	}
 }
 
-void myQuadTree::Draw(AABB bbox)
+void myQuadTree::Draw(AABB bbox) const
 {
 	unsigned shader = App->program->defaultShader->id;
 	glUseProgram(shader);

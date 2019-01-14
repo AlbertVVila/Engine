@@ -12,8 +12,10 @@
 #include "MaterialEditor.h"
 #include "Material.h"
 #include "Mesh.h"
-#include "imgui.h"
 #include "JSON.h"
+
+#include "imgui.h"
+#include "Math/float4x4.h"
 
 ComponentRenderer::ComponentRenderer(GameObject * gameobject) : Component(gameobject, ComponentType::Renderer)
 {
@@ -117,13 +119,10 @@ void ComponentRenderer::Load(const JSON_value & value)
 	{
 		char *data = nullptr;
 		App->fsystem->Load((MESHES + std::to_string(uid) + MESHEXTENSION).c_str(), &data);
-		SetMesh(data, uid); //Deallocates data
+		mesh->SetMesh(data, uid); //Deallocates data
 	}
 	App->resManager->AddMesh(mesh);
-	if (gameobject != nullptr)
-	{
-		gameobject->UpdateBBox();
-	}
+	UpdateGameObject();
 
 	const char* materialFile = value.GetString("materialFile");
 	SetMaterial(materialFile);
@@ -158,19 +157,17 @@ void ComponentRenderer::SetMaterial(const char * materialfile)
 	return;
 }
 
-void ComponentRenderer::SetMesh(const char* meshData, unsigned UID) const
+void ComponentRenderer::UpdateMesh(const char * data, unsigned uid)
 {
-	mesh->SetMesh(meshData, UID);
+	mesh->SetMesh(data, uid);
+	UpdateGameObject();
+}
+
+void ComponentRenderer::UpdateGameObject()
+{
 	if (gameobject != nullptr)
 	{
-		gameobject->bbox = mesh->GetBoundingBox();
-		if (gameobject->isStatic)
-		{
-			App->scene->quadtree->Insert(gameobject);
-		}
-		else
-		{
-			App->scene->dynamicGOs.insert(gameobject);
-		}
+		gameobject->UpdateBBox();
+		App->scene->AddToSpacePartition(gameobject);
 	}
 }

@@ -50,15 +50,15 @@ public:
 	myQuadTree(AABB limits);
 	~myQuadTree();
 
-	void Clear();
+	void Clear(AABB limits);
 	void Insert(GameObject* gameobject);
 	void Add(GameObject* gameobject, Node * node, AABB boundingBox);
 	void Split(Node * leaf, AABB leafAABB);
 	void Remove(const GameObject& gameobject);
 
 	int AllocateNode(Node * parent);
-	void Draw();
-	void Draw(AABB bbox);
+	void Draw() const;
+	void Draw(AABB bbox) const;
 	void ExtendLimitTopLeft();
 	void ExtendLimitTopRight();
 	void ExtendLimitBotLeft();

@@ -60,14 +60,7 @@ GameObject::GameObject(const GameObject & gameobject)
 
 	if (GetComponent(ComponentType::Renderer) != nullptr)
 	{
-		if (isStatic)
-		{
-			App->scene->quadtree->Insert(this);
-		}
-		else
-		{
-			App->scene->dynamicGOs.insert(this);
-		}
+		App->scene->AddToSpacePartition(this);
 	}
 
 	for (const auto& child : gameobject.children)

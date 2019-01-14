@@ -5,6 +5,7 @@
 #include "ModuleCamera.h"
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
+#include "ModuleScene.h"
 #include "imgui.h"
 
 #define NUMFPS 100
@@ -51,6 +52,13 @@ void PanelConfiguration::Draw()
 	if (ImGui::CollapsingHeader("Textures"))
 	{
 		App->textures->DrawGUI();
+	}
+	if (ImGui::CollapsingHeader("Scene"))
+	{
+		if (ImGui::Button("Reset QuadTree"))
+		{
+			App->scene->ResetQuadTree();
+		}
 	}
 	ImGui::End();
 }

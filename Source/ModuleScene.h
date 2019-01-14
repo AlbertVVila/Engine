@@ -40,6 +40,9 @@ public:
 	GameObject * CreateGameObject(const float4x4& transform, const char* name, GameObject* parent);
 	GameObject * CreateGameObject(const char * name, GameObject* parent);
 
+	void AddToSpacePartition(GameObject * gameobject) const;
+	void ResetQuadTree();
+
 	void Draw(const Frustum &frustum, bool isEditor = false);
 	void DrawGO(const GameObject& go, const Frustum & frustum, bool isEditor = false);
 	void DrawHierarchy();
