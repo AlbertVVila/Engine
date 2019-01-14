@@ -460,7 +460,12 @@ void ModuleRender::DrawGUI()
 		App->camera->editorcamera->frustum->nearPlaneDistance = ZNEARDIST * current_scale;
 		App->camera->editorcamera->frustum->farPlaneDistance = ZFARDIST * current_scale;
 	}
+
+	ImGui::Checkbox("Snap", &useSnap);
 	
+	ImGui::InputFloat3("Snap Translation", (float*)&snapSettings);
+	ImGui::InputFloat("Snap Angle", (float*)&snapSettings);
+	ImGui::InputFloat("Snap Scale", (float*)&snapSettings);
 }
 
 void ModuleRender::GenBlockUniforms()

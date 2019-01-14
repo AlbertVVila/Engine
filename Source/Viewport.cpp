@@ -270,7 +270,8 @@ void Viewport::DrawImGuizmo(const ComponentCamera & cam) const
 		ImGuizmo::SetOrthographic(false);
 
 		model.Transpose();
-		ImGuizmo::Manipulate((float*)&view, (float*)&proj, mCurrentGizmoOperation, mCurrentGizmoMode, (float*)&model, NULL, NULL, NULL, NULL);
+
+		ImGuizmo::Manipulate((float*)&view, (float*)&proj, mCurrentGizmoOperation, mCurrentGizmoMode, (float*)&model, NULL, App->renderer->useSnap ? (float*)&App->renderer->snapSettings : NULL, NULL, NULL);
 
 		if (ImGuizmo::IsUsing())
 		{

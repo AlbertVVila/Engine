@@ -2,6 +2,7 @@
 #define __ModuleRender_h__
 
 #include "Module.h"
+#include "Math/float3.h"
 class ComponentCamera;
 class JSON;
 class Skybox;
@@ -23,7 +24,6 @@ public:
 
 	void Draw(const ComponentCamera& cam, int width, int height, bool isEditor = false) const;
 	bool IsSceneViewFocused() const;
-	void setSceneViewFocus();
 	bool CleanUp() override;
 	void OnResize();
 	void DrawGUI();
@@ -56,6 +56,9 @@ public:
 
 	unsigned current_scale = 1;
 	int item_current = 0;
+
+	bool useSnap = false; //TODO: save in config
+	float3 snapSettings = float3::one;
 
 private:
 	unsigned UBO = 0;
