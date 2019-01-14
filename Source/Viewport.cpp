@@ -258,16 +258,17 @@ void Viewport::DrawImGuizmo(const ComponentCamera & cam)
 		ImGui::PopStyleVar();
 	}
 
+	ImGui::SameLine();
 	if (ImGui::Button("Snap"))
 	{
 		useSnap = !useSnap;
 	}
-	if (ImGui::Begin("SnapSettings", &useSnap))
+	if (useSnap)
 	{
+		ImGui::Begin("SnapSettings");
 		ImGui::InputFloat3("Snap Translation", (float*)&snapSettings);
 		ImGui::InputFloat("Snap Angle", (float*)&snapSettings);
 		ImGui::InputFloat("Snap Scale", (float*)&snapSettings);
-
 		ImGui::End();
 	}
 
