@@ -79,17 +79,19 @@ void ComponentTransform::DrawProperties()
 
 		if (old_position != position || old_euler != eulerRotation || old_scale != scale)
 		{
-			UpdateOldTransform();
-
-
-			global = global * local.Inverted();
-			local = float4x4::FromTRS(position, rotation, scale);
-			global = global * local;
-
+			UpdateTransform();
 			gameobject->moved_flag = true;
 			gameobject->UpdateBBox();
 		}
 	}
+}
+
+void ComponentTransform::UpdateTransform()
+{
+	UpdateOldTransform();
+	global = global * local.Inverted();
+	local = float4x4::FromTRS(position, rotation, scale);
+	global = global * local;
 }
 
 void ComponentTransform::RotationToEuler()

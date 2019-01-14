@@ -233,7 +233,7 @@ void ModuleScene::ResetQuadTree()
 	}
 }
 
-void ModuleScene::CreateCube(const char * name, GameObject* parent, float size)
+void ModuleScene::CreateCube(const char * name, GameObject* parent)
 {
 	if (!primitivesUID[(unsigned)PRIMITIVES::CUBE])
 	{
@@ -242,17 +242,17 @@ void ModuleScene::CreateCube(const char * name, GameObject* parent, float size)
 		{
 			par_shapes_compute_normals(mesh);
 		}
-		SetPrimitiveMesh(mesh, size, PRIMITIVES::CUBE);
+		SetPrimitiveMesh(mesh, PRIMITIVES::CUBE);
 	}
 	CreatePrimitive(name, parent, PRIMITIVES::CUBE);
 }
 
-void ModuleScene::CreateSphere(const char * name, GameObject* parent, float size)
+void ModuleScene::CreateSphere(const char * name, GameObject* parent)
 {
 	if (!primitivesUID[(unsigned)PRIMITIVES::SPHERE])
 	{
 		par_shapes_mesh* mesh = par_shapes_create_parametric_sphere(DEFAULT_SPHERE_SHAPE, DEFAULT_SPHERE_SHAPE);
-		SetPrimitiveMesh(mesh, size, PRIMITIVES::SPHERE);
+		SetPrimitiveMesh(mesh, PRIMITIVES::SPHERE);
 	}
 	CreatePrimitive(name, parent, PRIMITIVES::SPHERE);
 }
@@ -262,6 +262,8 @@ void ModuleScene::CreatePrimitive(const char * name, GameObject* parent, PRIMITI
 	GameObject * gameobject = CreateGameObject(name, parent);
 	Select(gameobject);
 	ComponentTransform* transform = (ComponentTransform*)gameobject->CreateComponent(ComponentType::Transform);
+	transform->scale.SetFromScalar(App->renderer->current_scale);
+	transform->UpdateTransform();
 	ComponentRenderer* crenderer = (ComponentRenderer*)gameobject->CreateComponent(ComponentType::Renderer);
 
 	unsigned uid = primitivesUID[(unsigned)type];
@@ -269,13 +271,12 @@ void ModuleScene::CreatePrimitive(const char * name, GameObject* parent, PRIMITI
 	App->fsystem->Load((MESHES + std::to_string(uid) + MESHEXTENSION).c_str(), &data);
 	crenderer->UpdateMesh(data, uid);//Deallocates data
 	crenderer->SetMaterial(DEFAULTMAT);
-	gameobject->UpdateBBox();
 	App->resManager->AddMesh(crenderer->mesh);
 }
 
-void ModuleScene::SetPrimitiveMesh(par_shapes_mesh_s *mesh, float size, PRIMITIVES type)
+void ModuleScene::SetPrimitiveMesh(par_shapes_mesh_s *mesh, PRIMITIVES type)
 {
-	par_shapes_scale(mesh, size*App->renderer->current_scale, size*App->renderer->current_scale, size*App->renderer->current_scale);
+	par_shapes_scale(mesh, 1.f, 1.f, 1.f);
 	char* data = nullptr;
 	unsigned meshSize = SaveParShapesMesh(*mesh, &data);
 	unsigned uid = GetNewUID();

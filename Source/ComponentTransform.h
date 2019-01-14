@@ -18,6 +18,8 @@ public:
 	void AddTransform(const float4x4 &transform);
 	void DrawProperties() override;
 
+	void UpdateTransform();
+
 	void SetLocalToWorld();
 	void SetWorldToLocal(const float4x4 & newparentGlobalMatrix);
 	void SetGlobalTransform(const float4x4 & newglobal, const float4x4 &parentglobal);

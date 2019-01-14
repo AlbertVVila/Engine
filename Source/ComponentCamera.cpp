@@ -110,7 +110,8 @@ void ComponentCamera::Zoom(float mouseWheel)
 
 void ComponentCamera::Center()
 {
-	if (App->scene->selected == nullptr) return;
+	if (App->scene->selected == nullptr 
+		|| App->scene->selected->GetComponent(ComponentType::Renderer) == nullptr) return;
 
 	AABB bbox = App->scene->selected->GetBoundingBox();
 	float3 HalfSize = bbox.HalfSize();

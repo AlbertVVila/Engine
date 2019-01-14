@@ -46,10 +46,10 @@ public:
 	void DrawGO(const GameObject& go, const Frustum & frustum, bool isEditor = false);
 	void DrawHierarchy();
 
-	void CreateCube(const char * name, GameObject* parent, float size = 1.f);
-	void CreateSphere(const char * name, GameObject* parent, float size = 1.f);
+	void CreateCube(const char * name, GameObject* parent);
+	void CreateSphere(const char * name, GameObject* parent);
 	void CreatePrimitive(const char * name, GameObject* parent, PRIMITIVES type);
-	void SetPrimitiveMesh(par_shapes_mesh_s * mesh, float size, PRIMITIVES type);
+	void SetPrimitiveMesh(par_shapes_mesh_s * mesh, PRIMITIVES type);
 	unsigned SaveParShapesMesh(const par_shapes_mesh_s & mesh, char** data) const;
 
 	void SaveScene(const GameObject &rootGO, const char* name) const;
