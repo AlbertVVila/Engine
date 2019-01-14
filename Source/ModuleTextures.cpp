@@ -207,6 +207,7 @@ void ModuleTextures::ImportImage(const char * file, const char* folder) const
 			filepath += TEXTUREEXT;
 			App->fsystem->Save(filepath.c_str(), (char*)data, size);
 		}
+		ilDeleteImages(1, &imageID);
 		RELEASE_ARRAY(data);
 	}
 	else
