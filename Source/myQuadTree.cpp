@@ -19,8 +19,12 @@ myQuadTree::myQuadTree(AABB limits) : limits(limits)
 	AllocateNode(0);
 }
 
-myQuadTree::~myQuadTree() //TODO: Release Nodes
+myQuadTree::~myQuadTree()
 {
+	for (auto &node : nodes)
+	{
+		RELEASE(node);
+	}
 }
 
 

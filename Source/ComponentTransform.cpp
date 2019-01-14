@@ -47,7 +47,7 @@ void ComponentTransform::AddTransform(const float4x4 & transform)
 	GameObject* parent = gameobject->parent;
 	if (parent != nullptr && parent->transform != nullptr)
 	{
-		global = parent->transform->global;
+		global = parent->transform->global * local;
 	}
 }
 

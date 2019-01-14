@@ -37,7 +37,6 @@ public:
 	bool CleanUp() override;
 	void SaveConfig(JSON * config) override;
 
-	GameObject * CreateGameObject(const float4x4& transform, const char* name, GameObject* parent);
 	GameObject * CreateGameObject(const char * name, GameObject* parent);
 
 	void AddToSpacePartition(GameObject * gameobject) const;

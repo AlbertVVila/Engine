@@ -7,8 +7,9 @@
 
 #include "GameObject.h"
 #include "ComponentRenderer.h"
-#include "FileImporter.h"
+#include "ComponentTransform.h"
 
+#include "FileImporter.h"
 #include "Material.h"
 #include "Mesh.h"
 
@@ -95,7 +96,7 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file)
 		meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->UID));
 	}
 	GameObject *fake = new GameObject("fake",0);
-	ProcessNode(meshMap, aiscene.mRootNode, &aiscene, aiscene.mRootNode->mTransformation, fake);
+	ProcessNode(meshMap, aiscene.mRootNode, &aiscene, fake);
 	App->scene->SaveScene(*fake, App->fsystem->GetFilename(file).c_str()); //TODO: Make AutoCreation of folders or check
 	fake->CleanUp();
 	RELEASE(fake);
@@ -174,13 +175,17 @@ unsigned FileImporter::GetMeshSize(const aiMesh &mesh) const
 }
 
 
-GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshmap, const aiNode * node, const aiScene * scene, const aiMatrix4x4 & parentTransform, GameObject* parent)
+GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshmap, const aiNode * node, const aiScene * scene, GameObject* parent)
 {
 	assert(node != nullptr);
 	if (node == nullptr) return nullptr;
 
-	aiMatrix4x4 transform = parentTransform * node->mTransformation; //TODO: transform conversion
-	GameObject * gameobject = App->scene->CreateGameObject(float4x4::identity, node->mName.C_Str(), parent);
+	GameObject * gameobject = App->scene->CreateGameObject(node->mName.C_Str(), parent);
+
+	aiMatrix4x4 m = node->mTransformation;
+	float4x4 transform(m.a1, m.a2, m.a3, m.a4, m.b1, m.b2, m.b3, m.b4, m.c1, m.c2, m.c3, m.c4, m.d1, m.d2, m.d3, m.d4);
+	ComponentTransform* t = (ComponentTransform *)gameobject->CreateComponent(ComponentType::Transform);
+	t->AddTransform(transform);
 
 	std::vector<GameObject*> gameobjects;
 	gameobjects.push_back(gameobject);
@@ -219,7 +224,7 @@ GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshma
 	} 
 	for (unsigned int i = 0; i < node->mNumChildren; i++)
 	{
-		GameObject * child = ProcessNode(meshmap, node->mChildren[i], scene, transform, gameobject);
+		GameObject * child = ProcessNode(meshmap, node->mChildren[i], scene, gameobject);
 	}
 	return gameobject;
 }

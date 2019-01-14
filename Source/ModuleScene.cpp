@@ -48,6 +48,7 @@ ModuleScene::ModuleScene()
 
 ModuleScene::~ModuleScene()
 {
+	RELEASE(quadtree);
 }
 
 bool ModuleScene::Init(JSON * config)
@@ -185,17 +186,6 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 void ModuleScene::DrawHierarchy()
 {
 	root->DrawHierarchy(selected);
-}
-
-GameObject * ModuleScene::CreateGameObject(const float4x4 & transform, const char * name, GameObject* parent)
-{
-	GameObject * gameobject = new GameObject(transform, name, GetNewUID());
-	if (parent != nullptr)
-	{
-		gameobject->parent = parent;
-		parent->children.push_back(gameobject);
-	}
-	return gameobject;
 }
 
 GameObject * ModuleScene::CreateGameObject(const char * name, GameObject* parent)
@@ -414,7 +404,6 @@ void ModuleScene::ClearScene()
 {
 	CleanUp();
 	camera_notfound_texture = App->textures->GetTexture(NOCAMERA);
-
 }
 
 void ModuleScene::Select(GameObject * gameobject)
