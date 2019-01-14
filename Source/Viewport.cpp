@@ -203,7 +203,7 @@ void Viewport::CreateMSAABuffers(int width, int height)
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void Viewport::DrawImGuizmo(const ComponentCamera & cam) const
+void Viewport::DrawImGuizmo(const ComponentCamera & cam)
 {
 	PROFILE;
 	ImVec2 pos = ImGui::GetWindowPos();
@@ -258,6 +258,19 @@ void Viewport::DrawImGuizmo(const ComponentCamera & cam) const
 		ImGui::PopStyleVar();
 	}
 
+	if (ImGui::Button("Snap"))
+	{
+		useSnap = !useSnap;
+	}
+	if (ImGui::Begin("SnapSettings", &useSnap))
+	{
+		ImGui::InputFloat3("Snap Translation", (float*)&snapSettings);
+		ImGui::InputFloat("Snap Angle", (float*)&snapSettings);
+		ImGui::InputFloat("Snap Scale", (float*)&snapSettings);
+
+		ImGui::End();
+	}
+
 	if (App->scene->selected != nullptr)
 	{
 
@@ -271,7 +284,7 @@ void Viewport::DrawImGuizmo(const ComponentCamera & cam) const
 
 		model.Transpose();
 
-		ImGuizmo::Manipulate((float*)&view, (float*)&proj, mCurrentGizmoOperation, mCurrentGizmoMode, (float*)&model, NULL, App->renderer->useSnap ? (float*)&App->renderer->snapSettings : NULL, NULL, NULL);
+		ImGuizmo::Manipulate((float*)&view, (float*)&proj, mCurrentGizmoOperation, mCurrentGizmoMode, (float*)&model, NULL, useSnap ? (float*)&snapSettings : NULL, NULL, NULL);
 
 		if (ImGuizmo::IsUsing())
 		{

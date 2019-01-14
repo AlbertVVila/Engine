@@ -1,6 +1,7 @@
 #ifndef __Viewport_h__
 #define __Viewport_h__
 
+#include "Math/float3.h"
 class ComponentCamera;
 
 class Viewport
@@ -15,7 +16,7 @@ public:
 
 	void CreateMSAABuffers(int width, int height);
 
-	void DrawImGuizmo(const ComponentCamera & cam) const;
+	void DrawImGuizmo(const ComponentCamera & cam);
 
 	void Pick();
 
@@ -35,6 +36,9 @@ public:
 private:
 	bool enabled = true;
 	std::string name = "Viewport";
+
+	bool useSnap = false; //TODO: save in config
+	float3 snapSettings = float3::one;
 };
 
 #endif __Viewport_h__

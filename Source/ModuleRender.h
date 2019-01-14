@@ -57,9 +57,6 @@ public:
 	unsigned current_scale = 1;
 	int item_current = 0;
 
-	bool useSnap = false; //TODO: save in config
-	float3 snapSettings = float3::one;
-
 private:
 	unsigned UBO = 0;
 	bool depthTest = true;
