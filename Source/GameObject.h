@@ -38,7 +38,7 @@ public:
 	float4x4 GetLocalTransform() const;
 
 	void UpdateBBox();
-	void DrawBBox() const; //TODO: improve BBOX draw
+	void DrawBBox() const;
 	AABB GetBoundingBox() const;
 	bool Intersects(const LineSegment & line, float* distance) const;
 	void UpdateModel(unsigned int shader) const;

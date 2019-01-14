@@ -52,6 +52,7 @@ public:
 
 	void SaveScene(const GameObject &rootGO, const char* name) const;
 	void LoadScene(const char * scene);
+	void AddScene(const char* scene);
 	void ClearScene();
 
 	void Select(GameObject* gameobject);

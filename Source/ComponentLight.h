@@ -34,7 +34,7 @@ public:
 	void Save(JSON_value *value) const override;
 
 public:
-	LightType type = LightType::POINT;
+	LightType lightType = LightType::POINT;
 
 	float3 position = float3::zero; //Captured in transform
 	float3 direction = float3::one;

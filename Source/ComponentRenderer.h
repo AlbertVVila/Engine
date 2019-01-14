@@ -23,7 +23,7 @@ public:
 	void Load(const JSON_value &value) override;
 
 	void SetMaterial(const char* material);
-	void SetMesh(const char* meshData, unsigned UID); //TODO: should be const data
+	void SetMesh(const char* meshData, unsigned UID) const;
 
 public:
 	Mesh * mesh = nullptr;

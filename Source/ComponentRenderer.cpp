@@ -158,7 +158,7 @@ void ComponentRenderer::SetMaterial(const char * materialfile)
 	return;
 }
 
-void ComponentRenderer::SetMesh(const char* meshData, unsigned UID)
+void ComponentRenderer::SetMesh(const char* meshData, unsigned UID) const
 {
 	mesh->SetMesh(meshData, UID);
 	if (gameobject != nullptr)

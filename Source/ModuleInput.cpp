@@ -180,7 +180,7 @@ void ModuleInput::DrawGUI()
 	ImGui::Text("X:%.2f | Y:%.2f", mouse.x*App->window->width, mouse.y*App->window->height);
 }
 
-void ModuleInput::DropFile(char* dropped_file) const //TODO: Popup added to ASSETS
+void ModuleInput::DropFile(char* dropped_file) const //TODO: Popup when added to ASSETS
 {
 	assert(dropped_file != NULL);
 	std::string filename(dropped_file);

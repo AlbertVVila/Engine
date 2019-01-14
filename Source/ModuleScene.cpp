@@ -158,7 +158,7 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 	{
 		go.DrawBBox();
 	}
-	//TODO on remove components?
+
 	ComponentRenderer* crenderer = (ComponentRenderer*)go.GetComponent(ComponentType::Renderer);
 	if (crenderer == nullptr || !crenderer->enabled || crenderer->material == nullptr) return;
 
@@ -257,7 +257,7 @@ void ModuleScene::SetPrimitiveMesh(par_shapes_mesh_s *mesh, float size, PRIMITIV
 	par_shapes_free_mesh(mesh);
 }
 
-unsigned ModuleScene::SaveParShapesMesh(const par_shapes_mesh_s &mesh, char** data) const //TODO: unify somehow with importer + scene loader
+unsigned ModuleScene::SaveParShapesMesh(const par_shapes_mesh_s &mesh, char** data) const //TODO: unify somehow with importer
 {
 	unsigned size = 0;
 	unsigned ranges[2] = { mesh.ntriangles*3, mesh.npoints};
@@ -334,16 +334,22 @@ void ModuleScene::SaveScene(const GameObject &rootGO, const char* filename) cons
 
 void ModuleScene::LoadScene(const char* scene)
 {
+	ClearScene();
+	AddScene(scene);
+	name = scene;
+}
+
+void ModuleScene::AddScene(const char * scene)
+{
 	char* data = nullptr;
 	std::string sceneName(scene);
-	name = sceneName;
 	App->fsystem->Load((SCENES + sceneName + JSONEXT).c_str(), &data);
 
 	JSON *json = new JSON(data);
 	JSON_value* gameobjectsJSON = json->GetValue("GameObjects");
 	std::map<unsigned, GameObject*> gameobjectsMap; //Necessary to assign parent-child efficiently
 
-	for (unsigned i=0; i<gameobjectsJSON->Size(); i++)
+	for (unsigned i = 0; i<gameobjectsJSON->Size(); i++)
 	{
 		JSON_value* gameobjectJSON = gameobjectsJSON->GetValue(i);
 		GameObject *gameobject = new GameObject();
@@ -449,7 +455,7 @@ std::list<ComponentLight*> ModuleScene::GetClosestLights(LightType type, float3 
 	std::map<float, ComponentLight*> lightmap;
 	for (const auto& light : lights)
 	{
-		if (light->type == type && light->enabled && light->gameobject->transform != nullptr)
+		if (light->lightType == type && light->enabled && light->gameobject->transform != nullptr)
 		{
 			float distance = light->gameobject->transform->position.Distance(position);
 			lightmap.insert(std::pair<float, ComponentLight*>(distance,light));
@@ -471,7 +477,7 @@ ComponentLight* ModuleScene::GetDirectionalLight() const
 {
 	for (const auto& light : lights)
 	{
-		if (light->type == LightType::DIRECTIONAL && light->enabled)
+		if (light->lightType == LightType::DIRECTIONAL && light->enabled)
 		{
 			return light;
 		}

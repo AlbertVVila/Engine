@@ -33,7 +33,7 @@ void MaterialEditor::Draw()
 			}
 			else
 			{
-				previous = new Material(*material);
+				previous = new Material(*material); //Save changes if cancel
 			}
 		}
 		ImGui::SetNextWindowSizeConstraints(ImVec2(200, 200), ImVec2(500, 500));
@@ -122,7 +122,7 @@ void MaterialEditor::Draw()
 		}
 		ImGui::SetItemDefaultFocus();
 		ImGui::SameLine();
-		if (ImGui::Button("Cancel", ImVec2(120, 0))) //TODO: discard changes made in material
+		if (ImGui::Button("Cancel", ImVec2(120, 0)))
 		{
 			if(!isCreated)
 			{
@@ -146,7 +146,7 @@ void MaterialEditor::TextureSelector(unsigned i, std::string &current_texture)
 			if (material->textures[i] != nullptr)
 			{
 				App->resManager->DeleteTexture(material->textures[i]->file);
-				material->textures[i] = nullptr; //TODO: DELETE on Resource manager?
+				material->textures[i] = nullptr;
 			}
 		}
 		if (none_selected)

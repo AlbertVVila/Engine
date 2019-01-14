@@ -60,14 +60,14 @@ void ComponentLight::DrawProperties()
 		ImGui::Separator();
 		ImGui::Text("Type");
 		const char * types[] = {"Directional","Point", "Spot"};
-		if (ImGui::BeginCombo("",types[(int)type]))
+		if (ImGui::BeginCombo("",types[(int)lightType]))
 		{
 			for (int n = 0; n < LIGHTTYPES; n++)
 			{
-				bool is_selected = ((int)type == n);
-				if (ImGui::Selectable(types[n], is_selected) && (int)type != n)
+				bool is_selected = ((int)lightType == n);
+				if (ImGui::Selectable(types[n], is_selected) && (int)lightType != n)
 				{
-					type = (LightType)n;
+					lightType = (LightType)n;
 					ResetValues();
 				}
 				if (is_selected)
@@ -79,7 +79,7 @@ void ComponentLight::DrawProperties()
 
 		ImGui::ColorEdit3("Color", (float*)&color);
 
-		if (type != LightType::DIRECTIONAL)
+		if (lightType != LightType::DIRECTIONAL)
 		{
 			ImGui::Text("Attenuation");
 			ImGui::DragFloat("Constant", (float*)&attenuation.x, 0.01f, 0.01f, 10.f);
@@ -87,7 +87,7 @@ void ComponentLight::DrawProperties()
 			ImGui::DragFloat("Quadratic", (float*)&attenuation.z, 0.01f, 0.0f, 1.f);
 		}
 
-		if (type == LightType::SPOT)
+		if (lightType == LightType::SPOT)
 		{
 			ImGui::Text("Angle");
 			ImGui::DragFloat("Inner", (float*)&inner, 0.1f, 0.f, 90.f);
@@ -111,7 +111,7 @@ void ComponentLight::DrawDebugLight() const
 
 	glBegin(GL_LINES);
 	
-	if (type == LightType::DIRECTIONAL)
+	if (lightType == LightType::DIRECTIONAL)
 	{
 		Circle circle(position, direction, App->renderer->current_scale);
 		float angle = 0;
@@ -136,7 +136,7 @@ void ComponentLight::DrawDebugLight() const
 		Line line(circle.GetPoint(0), direction.Normalized());
 		glVertex3f(line.pos.x, line.pos.y, line.pos.z); //Close circle
 	}
-	else if (type == LightType::SPOT)
+	else if (lightType == LightType::SPOT)
 	{
 		float attenuation_distance = GetAttenuationDistance();
 		float3 circleCenter = position + attenuation_distance * direction.Normalized();
@@ -191,16 +191,16 @@ void ComponentLight::Load(const JSON_value & value)
 	Component::Load(value);
 	if (gameobject->transform == nullptr) return;
 
-	type = (LightType)value.GetUint("Lighttype");
+	lightType = (LightType)value.GetUint("Lighttype");
 	position = gameobject->transform->position;
 	direction = gameobject->transform->rotation*float3::unitZ;
 
-	if (type != LightType::DIRECTIONAL)
+	if (lightType != LightType::DIRECTIONAL)
 	{
 		attenuation = value.GetFloat3("attenuation");
 	}
 
-	if (type == LightType::SPOT)
+	if (lightType == LightType::SPOT)
 	{
 		inner = value.GetFloat("inner");
 		outer = value.GetFloat("outer");
@@ -211,14 +211,14 @@ void ComponentLight::Save(JSON_value * value) const
 {
 	Component::Save(value);
 
-	value->AddUint("Lighttype", (unsigned)type);
+	value->AddUint("Lighttype", (unsigned)lightType);
 
-	if (type != LightType::DIRECTIONAL)
+	if (lightType != LightType::DIRECTIONAL)
 	{
 		value->AddFloat3("attenuation", attenuation);
 	}
 
-	if (type == LightType::SPOT)
+	if (lightType == LightType::SPOT)
 	{
 		value->AddFloat("inner", inner);
 		value->AddFloat("outer", outer);

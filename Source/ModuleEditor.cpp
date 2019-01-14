@@ -8,6 +8,7 @@
 #include "ModuleTextures.h"
 #include "ModuleProgram.h"
 
+#include "GameObject.h"
 #include "PanelConsole.h"
 #include "PanelConfiguration.h"
 #include "PanelInspector.h"
@@ -125,7 +126,6 @@ update_status ModuleEditor::PreUpdate()
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
 	ImGuizmo::BeginFrame();
-	//ImGuizmo::Enable(true);
 
 	CreateDockSpace();
 	ImGui::ShowDemoWindow();
@@ -146,7 +146,7 @@ update_status ModuleEditor::Update(float dt)
 			{
 				App->scene->ClearScene();
 			}
-			if (ImGui::BeginMenu("Load"))
+			if (ImGui::BeginMenu("Load Scene"))
 			{
 				std::vector<std::string> files = App->fsystem->ListFiles(SCENES);
 				for (auto &file : files)
@@ -155,6 +155,19 @@ update_status ModuleEditor::Update(float dt)
 					if (ImGui::MenuItem(file.c_str()))
 					{
 						App->scene->LoadScene(file.c_str());
+					}
+				}
+				ImGui::EndMenu();
+			}
+			if (ImGui::BeginMenu("Add Scene"))
+			{
+				std::vector<std::string> files = App->fsystem->ListFiles(SCENES);
+				for (auto &file : files)
+				{
+					file = App->fsystem->RemoveExtension(file.c_str());
+					if (ImGui::MenuItem(file.c_str()))
+					{
+						App->scene->AddScene(file.c_str());
 					}
 				}
 				ImGui::EndMenu();
@@ -218,6 +231,21 @@ update_status ModuleEditor::Update(float dt)
 			if (ImGui::MenuItem("Empty GameObject"))
 			{
 				App->scene->CreateGameObject("Empty", App->scene->root);
+			}
+			if (ImGui::BeginMenu("Light"))
+			{
+				const char* lights[LIGHTTYPES] = { "Directional", "Point", "Spot"};
+				for (unsigned i = 0; i < LIGHTTYPES; ++i)
+				{
+					if (ImGui::MenuItem(lights[i]))
+					{
+						GameObject *light = App->scene->CreateGameObject(lights[i], App->scene->root);
+						light->CreateComponent(ComponentType::Transform);
+						ComponentLight* lighttype = (ComponentLight *)light->CreateComponent(ComponentType::Light);
+						lighttype->lightType = (LightType)i;
+					}
+				}
+				ImGui::EndMenu();
 			}
 			if (ImGui::MenuItem("Sphere"))
 			{

@@ -205,7 +205,7 @@ GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshma
 
 		//aiMaterial * mat = scene->mMaterials[scene->mMeshes[node->mMeshes[i]]->mMaterialIndex];
 		//aiTextureMapping mapping = aiTextureMapping_UV;
-		//for (unsigned i = 1; i <= 4; i++) //TODO :Get diffuse,specular,occlusion and emissive without overwritting default
+		//for (unsigned i = 1; i <= 4; i++)
 		//{
 		//	aiString texture;
 		//	mat->GetTexture((aiTextureType)i, 0, &texture, &mapping, 0);
