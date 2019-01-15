@@ -24,6 +24,7 @@ public:
 
 	void Draw(const ComponentCamera& cam, int width, int height, bool isEditor = false) const;
 	bool IsSceneViewFocused() const;
+	bool IsSceneHovered() const;
 	bool CleanUp() override;
 	void OnResize();
 	void DrawGUI() override;

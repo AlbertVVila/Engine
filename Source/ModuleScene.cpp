@@ -129,9 +129,12 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 			quadtree->Draw();
 		}
 
-		for (const auto light : lights)
+		if (App->renderer->light_debug)
 		{
-			light->DrawDebugLight();
+			for (const auto light : lights)
+			{
+				light->DrawDebugLight();
+			}
 		}
 	}
 	Frustum camFrustum = frustum;

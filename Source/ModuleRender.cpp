@@ -102,7 +102,7 @@ update_status ModuleRender::Update(float dt)
 
 update_status ModuleRender::PostUpdate()
 {
-	BROFILER_CATEGORY("Render PostUpdate", Profiler::Color::Black)
+	BROFILER_CATEGORY("Render PostUpdate", Profiler::Color::Black);
 
 	viewScene->Draw(App->camera->editorcamera, true);
 	viewGame->Draw(App->scene->maincamera);
@@ -164,6 +164,10 @@ bool ModuleRender::IsSceneViewFocused() const
 	return viewScene->focus;
 }
 
+bool ModuleRender::IsSceneHovered() const
+{
+	return  viewScene->hover;
+}
 // Called before quitting
 bool ModuleRender::CleanUp()
 {

@@ -32,6 +32,7 @@ public:
 	unsigned MSAADEPTH = 0;
 	unsigned MSAACOLOR = 0;
 	bool focus = true;
+	bool hover = false;
 
 private:
 	bool enabled = true;

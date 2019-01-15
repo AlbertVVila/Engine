@@ -58,6 +58,7 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 		ImGui::SetWindowFocus();
 	}
 	focus = ImGui::IsWindowFocused();
+	hover = ImGui::IsWindowHovered();
 
 	if (cam == nullptr)
 	{
@@ -114,7 +115,7 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 	if (isEditor)
 	{
 		DrawImGuizmo(*cam);
-		if (!ImGuizmo::IsUsing())
+		if (!ImGuizmo::IsUsing() && !ImGui::IsAnyItemHovered())
 		{
 			Pick();
 		}

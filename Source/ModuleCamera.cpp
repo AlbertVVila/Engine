@@ -73,6 +73,9 @@ update_status ModuleCamera::Update(float dt)
 		InputRotate(dt);
 		InputCenter();
 		InputOrbit(dt);
+	}
+	if (App->renderer->IsSceneHovered())
+	{
 		InputZoom();
 	}
 	return UPDATE_CONTINUE;
