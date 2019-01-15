@@ -51,9 +51,9 @@ Viewport::~Viewport()
 void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 {
 	PROFILE;
-	ImGui::Begin(name.c_str(), &enabled, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoFocusOnAppearing);
+	ImGui::Begin(name.c_str(), &enabled, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoBringToFrontOnFocus);
 
-	if (ImGui::IsWindowHovered())
+	if (ImGui::IsWindowHovered() || ImGui::IsWindowAppearing())
 	{
 		ImGui::SetWindowFocus();
 	}
@@ -72,6 +72,14 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 	}
 
 
+	if (isEditor && App->renderer->viewGame->focus || !isEditor && App->renderer->viewScene->focus)
+	{
+		ImVec2 size = ImGui::GetWindowSize();
+		ImGui::SetCursorPos({ 0,0 });
+		ImGui::Image((ImTextureID)texture, size, ImVec2(0, 1), ImVec2(1, 0));
+		ImGui::End();
+		return;
+	}
 	ImVec2 size = ImGui::GetWindowSize();
 
 	cam->SetAspect(size.x / size.y);

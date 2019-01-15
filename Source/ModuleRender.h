@@ -26,7 +26,7 @@ public:
 	bool IsSceneViewFocused() const;
 	bool CleanUp() override;
 	void OnResize();
-	void DrawGUI();
+	void DrawGUI() override;
 	void GenBlockUniforms();
 	void AddBlockUniforms(const Shader &s) const;
 
@@ -56,6 +56,8 @@ public:
 
 	unsigned current_scale = 1;
 	int item_current = 0;
+	Viewport* viewGame = nullptr;
+	Viewport* viewScene = nullptr;
 
 private:
 	unsigned UBO = 0;
@@ -64,8 +66,6 @@ private:
 	bool vsync = false;
 
 	Skybox* skybox = nullptr;
-	Viewport* viewScene = nullptr;
-	Viewport* viewGame = nullptr;
 	
 
 };

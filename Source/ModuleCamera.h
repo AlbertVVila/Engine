@@ -22,7 +22,7 @@ public:
 	void InputOrbit(float dt) const;;
 	void InputZoom() const;;
 
-	void DrawGUI();
+	void DrawGUI() override;
 
 public:
 	ComponentCamera * editorcamera = nullptr;

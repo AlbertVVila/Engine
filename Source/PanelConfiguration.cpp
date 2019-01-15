@@ -55,10 +55,7 @@ void PanelConfiguration::Draw()
 	}
 	if (ImGui::CollapsingHeader("Scene"))
 	{
-		if (ImGui::Button("Reset QuadTree"))
-		{
-			App->scene->ResetQuadTree();
-		}
+		App->scene->DrawGUI();
 	}
 	ImGui::End();
 }

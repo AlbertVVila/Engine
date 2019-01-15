@@ -46,6 +46,7 @@ public:
 	void Draw(const Frustum &frustum, bool isEditor = false);
 	void DrawGO(const GameObject& go, const Frustum & frustum, bool isEditor = false);
 	void DrawHierarchy();
+	void DrawGUI() override;
 
 	void CreateCube(const char * name, GameObject* parent);
 	void CreateSphere(const char * name, GameObject* parent);
@@ -83,6 +84,8 @@ public:
 	std::set<GameObject*> dynamicGOs;
 	pcg32 uuid_rng;
 	std::string name;
+
+	float3 ambientColor = float3::one;
 };
 
 #endif __ModuleScene_h__

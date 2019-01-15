@@ -21,6 +21,8 @@ public:
 
 	virtual void SaveConfig(JSON *config) {};
 
+	virtual void DrawGUI() {};
+
 	virtual bool Start()
 	{
 		return true;

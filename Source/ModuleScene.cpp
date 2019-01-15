@@ -18,6 +18,7 @@
 #include "Mesh.h"
 #include "JSON.h"
 #include "myQuadTree.h"
+#include "Imgui.h"
 #include "Geometry/LineSegment.h"
 #include "Math/MathConstants.h"
 #include "GL/glew.h"
@@ -68,6 +69,7 @@ bool ModuleScene::Init(JSON * config)
 	{
 		primitivesUID[(unsigned)PRIMITIVES::SPHERE] = scene->GetUint("sphereUID");
 		primitivesUID[(unsigned)PRIMITIVES::CUBE] = scene->GetUint("cubeUID");
+		ambientColor = scene->GetColor3("ambient");
 	}
 	return true;
 }
@@ -112,6 +114,7 @@ void ModuleScene::SaveConfig(JSON * config)
 
 	scene->AddUint("sphereUID", primitivesUID[(unsigned)PRIMITIVES::SPHERE]);
 	scene->AddUint("cubeUID", primitivesUID[(unsigned)PRIMITIVES::CUBE]);
+	scene->AddFloat3("ambient", ambientColor);
 
 	config->AddValue("scene", scene);
 }
@@ -174,6 +177,9 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 	glUseProgram(shader->id);
 
 	material->SetUniforms(shader->id);
+
+	glUniform3fv(glGetUniformLocation(shader->id,
+		"lights.ambient_color"), 1, (GLfloat*)&ambientColor);
 	go.SetLightUniforms(shader->id);
 
 	go.UpdateModel(shader->id);
@@ -187,6 +193,15 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 void ModuleScene::DrawHierarchy()
 {
 	root->DrawHierarchy(selected);
+}
+
+void ModuleScene::DrawGUI()
+{
+	ImGui::ColorEdit3("Color", (float*)&ambientColor);
+	if(ImGui::Button("Reset QuadTree"))
+	{
+		ResetQuadTree();
+	}
 }
 
 GameObject * ModuleScene::CreateGameObject(const char * name, GameObject* parent)

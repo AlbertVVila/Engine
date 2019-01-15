@@ -34,7 +34,7 @@ public:
 	bool CleanUp() override;
 	void SaveConfig(JSON * config) override;
 
-	void DrawGUI();
+	void DrawGUI() override;
 	Texture * GetTexture(const char* path) const;
 	unsigned LoadCubeMap(const std::string faces[]) const;
 	void ImportImage(const char * file, const char* folder) const;

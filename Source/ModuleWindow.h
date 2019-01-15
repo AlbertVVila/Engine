@@ -22,7 +22,7 @@ public:
 	void SaveConfig(JSON* config) override;
 
 	void Resize(int width, int height);
-	void DrawGUI();
+	void DrawGUI() override;
 
 public:
 	//The window we'll be rendering to

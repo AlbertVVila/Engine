@@ -59,7 +59,7 @@ public:
 	const fPoint& GetMousePosition() const;
 	const float GetMouseWheel() const;
 
-	void DrawGUI();
+	void DrawGUI() override;
 	void DropFile(char * dropped_file) const;
 
 	private:
