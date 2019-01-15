@@ -21,11 +21,6 @@ struct Material
     float     k_specular;
 };
 
-struct AmbientLight
-{
-	vec3 color;
-};
-
 struct DirLight
 {
 	vec3 direction;
@@ -51,11 +46,11 @@ struct SpotLight
 
 struct Lights
 {
-	//AmbientLight ambient;
-	DirLight     directional;
-	PointLight   points[MAX_POINT_LIGHTS];
+	vec3        ambient_color; 
+	DirLight    directional;
+	PointLight  points[MAX_POINT_LIGHTS];
 	int         num_points;
-	SpotLight    spots[MAX_SPOT_LIGHTS];
+	SpotLight   spots[MAX_SPOT_LIGHTS];
 	int         num_spots;
 };
 
@@ -183,7 +178,7 @@ void main()
 	
 
 	color += 	 emissive_color + //emissive
-				 diffuse_color.rgb * occlusion_color * material.k_ambient; //ambient
+				 diffuse_color.rgb * lights.ambient_color * occlusion_color * material.k_ambient; //ambient
 
 	Fragcolor = vec4(color, diffuse_color.a);
 }
