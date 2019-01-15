@@ -177,7 +177,7 @@ const float ModuleInput::GetMouseWheel() const
 void ModuleInput::DrawGUI()
 {
 	ImGui::Text("Mouse position:");
-	ImGui::Text("X:%.2f | Y:%.2f", mouse.x*App->window->width, mouse.y*App->window->height);
+	ImGui::Text("X:%.2f | Y:%.2f", mouse.x, mouse.y);
 }
 
 void ModuleInput::DropFile(char* dropped_file) const //TODO: Popup when added to ASSETS

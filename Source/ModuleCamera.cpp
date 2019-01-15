@@ -178,4 +178,9 @@ void ModuleCamera::DrawGUI()
 	}
 	ImGui::InputFloat("Znear", &frustum->nearPlaneDistance, 1, 10);
 	ImGui::InputFloat("Zfar", &frustum->farPlaneDistance, 1, 10);
+
+	if(ImGui::Button("Reset Camera"))
+	{
+		editorcamera->ResetFrustum();
+	}
 }

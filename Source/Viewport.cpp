@@ -53,6 +53,12 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 	PROFILE;
 	ImGui::Begin(name.c_str(), &enabled, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoFocusOnAppearing);
 
+	if (ImGui::IsWindowHovered())
+	{
+		ImGui::SetWindowFocus();
+	}
+	focus = ImGui::IsWindowFocused();
+
 	if (cam == nullptr)
 	{
 		ImVec2 size = ImGui::GetWindowSize();
@@ -65,7 +71,6 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 		return;
 	}
 
-	focus = ImGui::IsWindowFocused();
 
 	ImVec2 size = ImGui::GetWindowSize();
 

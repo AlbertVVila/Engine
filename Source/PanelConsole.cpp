@@ -32,6 +32,10 @@ void PanelConsole::Draw()
 		ImGui::End();
 		return;
 	}
+	if (ImGui::IsWindowHovered())
+	{
+		ImGui::SetWindowFocus();
+	}
 	if (ImGui::Button("Clear")) Clear();
 	ImGui::SameLine();
 	bool copy = ImGui::Button("Copy");

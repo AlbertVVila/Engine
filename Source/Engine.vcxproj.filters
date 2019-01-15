@@ -220,9 +220,6 @@
       <Filter>Tree</Filter>
     </ClCompile>
     <ClCompile Include="Viewport.cpp" />
-    <ClCompile Include="mmgr\mmgr.cpp">
-      <Filter>MMGR</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -515,9 +512,6 @@
       <Filter>Tree</Filter>
     </ClInclude>
     <ClInclude Include="Viewport.h" />
-    <ClInclude Include="mmgr\mmgr.h">
-      <Filter>MMGR</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GeoLib">

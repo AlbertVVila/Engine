@@ -30,6 +30,7 @@ public:
 	void Orbit(float dx, float dy);
 	void SetAspect(float aspect);
 	void SetFOV(float fov);
+	void ResetFrustum();
 
 	float4x4 GetViewMatrix() const;
 	float4x4 GetProjectionMatrix() const;

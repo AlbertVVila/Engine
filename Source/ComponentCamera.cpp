@@ -14,6 +14,7 @@
 #include "Geometry/AABB.h"
 #include "GL/glew.h"
 #include "Imgui/imgui.h"
+#include "Imguizmo.h"
 #include "Geometry/Frustum.h"
 
 #define MAXFOV 120
@@ -129,7 +130,7 @@ void ComponentCamera::Center()
 
 void ComponentCamera::Orbit(float dx, float dy)
 {
-	if (App->scene->selected == nullptr) return;
+	if (App->scene->selected == nullptr || ImGuizmo::IsUsing()) return;
 
 	AABB bbox = App->scene->selected->GetBoundingBox();
 	float3 center = bbox.CenterPoint();
@@ -161,6 +162,12 @@ void ComponentCamera::SetFOV(float fov)
 	float aspect = frustum->AspectRatio();
 	frustum->verticalFov = fov;
 	SetAspect(aspect);
+}
+
+void ComponentCamera::ResetFrustum()
+{
+	RELEASE(frustum);
+	InitFrustum();
 }
 
 void ComponentCamera::LookAt(float3 target)

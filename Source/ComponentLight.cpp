@@ -246,7 +246,7 @@ float ComponentLight::GetAttenuationDistance() const
 {
 	float a = attenuation[2];
 	float b = attenuation[1];
-	float c = attenuation[0] - 5; // 1/(constant+linear*distance...) < 0.2
+	float c = attenuation[0] - 2.5f; // 1/(constant+linear*distance...) < 0.4
 	
 	float delta = b * b - 4 * a * c;
 	if (delta < 0)
