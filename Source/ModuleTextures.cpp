@@ -6,6 +6,7 @@
 #include "GL/glew.h"
 #include "IL/ilut.h"
 #include "imgui.h"
+#include "JSON.h"
 
 Texture::~Texture()
 {
@@ -33,6 +34,12 @@ bool ModuleTextures::Init(JSON * config)
 	iluInit();
 	ilutInit();
 	ilutRenderer(ILUT_OPENGL);
+
+	JSON_value* textureConfig = config->GetValue("textures");
+	if (textureConfig == nullptr) return true;
+
+	filter_type = textureConfig->GetInt("filter");
+
 	return true;
 }
 
@@ -41,6 +48,14 @@ bool ModuleTextures::CleanUp()
 {
 	LOG("Freeing textures and Image library");
 	return true;
+}
+
+void ModuleTextures::SaveConfig(JSON * config)
+{
+	JSON_value* textureConfig = config->CreateValue();
+
+	textureConfig->AddInt("filter", filter_type);
+	config->AddValue("textures", textureConfig);
 }
 
 void ModuleTextures::DrawGUI()
@@ -193,7 +208,7 @@ void ModuleTextures::ImportImage(const char * file, const char* folder) const
 	success = ilLoadImage((path+file).c_str());
 	if (success)
 	{
-
+		LOG("Imported image %s", file);
 		ILuint size;
 		ILubyte* data = ilGetData();
 		ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);// To pick a specific DXT compression use
@@ -213,7 +228,7 @@ void ModuleTextures::ImportImage(const char * file, const char* folder) const
 	else
 	{
 		error = ilGetError();
-		LOG("Error loading data: %s\n", iluErrorString(error));
+		LOG("Error loading file %s, error: %s\n", file, iluErrorString(error));
 	}
 }
 

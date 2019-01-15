@@ -199,18 +199,30 @@ GameObject * ModuleScene::CreateGameObject(const char * name, GameObject* parent
 	return gameobject;
 }
 
-void ModuleScene::AddToSpacePartition(GameObject *gameobject) const
+void ModuleScene::AddToSpacePartition(GameObject *gameobject)
 {
 	assert(gameobject != nullptr);
 	if (gameobject == nullptr)	return;
 
 	if (gameobject->isStatic)
 	{
-		App->scene->quadtree->Insert(gameobject);
+		quadtree->Insert(gameobject);
 	}
 	else
 	{
-		App->scene->dynamicGOs.insert(gameobject);
+		dynamicGOs.insert(gameobject);
+	}
+}
+
+void ModuleScene::DeleteFromSpacePartition(const GameObject &gameobject)
+{
+	if (gameobject.isStatic)
+	{
+		quadtree->Remove(gameobject);
+	}
+	else
+	{
+		dynamicGOs.erase((GameObject*) &gameobject);
 	}
 }
 
@@ -280,7 +292,15 @@ void ModuleScene::SetPrimitiveMesh(par_shapes_mesh_s *mesh, PRIMITIVES type)
 	char* data = nullptr;
 	unsigned meshSize = SaveParShapesMesh(*mesh, &data);
 	unsigned uid = GetNewUID();
-	App->fsystem->Save((MESHES + std::to_string(uid) + MESHEXTENSION).c_str(), data, meshSize);
+	bool saved = App->fsystem->Save((MESHES + std::to_string(uid) + MESHEXTENSION).c_str(), data, meshSize);
+	if (saved)
+	{
+		LOG("Primitive mesh %u saved", uid);
+	}
+	else
+	{
+		LOG("Error saving primitive mesh %u", uid);
+	}
 	primitivesUID[(unsigned)type] = uid;
 	par_shapes_free_mesh(mesh);
 }

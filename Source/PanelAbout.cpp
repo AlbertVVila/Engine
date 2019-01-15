@@ -6,6 +6,8 @@
 #include "GL/glew.h"
 #include "Globals.h"
 #include "imgui.h"
+#include "rapidjson/rapidjson.h"
+#include "physfs.h"
 
 #define ENGINE_DESCRIPTION "Engine created during the Master of Videogames in UPC School."
 #define AUTHOR "Albert Val Vila"
@@ -52,15 +54,18 @@ void PanelAbout::Draw()
 
 	if (ImGui::TreeNode("Libraries"))
 	{
-		ImGui::BulletText("SDL (version %d.%d.%d)", sdlVersion.major, sdlVersion.minor, sdlVersion.patch);
-		ImGui::BulletText("Imgui (version %s)", ImGui::GetVersion());
-		ImGui::BulletText("MathGeoLib (version 1.5)");
-		ImGui::BulletText("glew (version %s)", glewGetString(GLEW_VERSION));
-		ImGui::BulletText("Assimp (version %d.%d.%d)", aiGetVersionMajor(), aiGetVersionMinor(), aiGetVersionRevision());
-		ImGui::BulletText("DevIL (version %d)", IL_VERSION);
-		ImGui::BulletText("RapidJson (version %d)", IL_VERSION); //TODO library versions
-		ImGui::BulletText("Pcg (version %d)", IL_VERSION);
-		ImGui::BulletText("ParShapes (version %d)", IL_VERSION);
+		ImGui::BulletText("Assimp (v%d.%d.%d)", aiGetVersionMajor(), aiGetVersionMinor(), aiGetVersionRevision());
+		ImGui::BulletText("Brofiler (v1.1.2)");
+		ImGui::BulletText("DevIL (v%d)", IL_VERSION);
+		ImGui::BulletText("glew (v%s)", glewGetString(GLEW_VERSION));
+		ImGui::BulletText("Imgui (v%s)", ImGui::GetVersion());
+		ImGui::BulletText("Imguizmo");
+		ImGui::BulletText("MathGeoLib (v1.5)");
+		ImGui::BulletText("ParShapes");
+		ImGui::BulletText("Pcg (v0.98)");
+		ImGui::BulletText("Physfs (v%d.%d.%d)", PHYSFS_VER_MAJOR, PHYSFS_VER_MINOR, PHYSFS_VER_PATCH);
+		ImGui::BulletText("RapidJson (v%d)", RAPIDJSON_VERSION_STRING); //TODO library versions
+		ImGui::BulletText("SDL (v%d.%d.%d)", sdlVersion.major, sdlVersion.minor, sdlVersion.patch);
 
 		ImGui::TreePop();
 	}

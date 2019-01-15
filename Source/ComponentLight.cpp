@@ -192,6 +192,7 @@ void ComponentLight::Load(const JSON_value & value)
 	if (gameobject->transform == nullptr) return;
 
 	lightType = (LightType)value.GetUint("Lighttype");
+	color = value.GetColor3("color");
 	position = gameobject->transform->position;
 	direction = gameobject->transform->rotation*float3::unitZ;
 
@@ -212,6 +213,7 @@ void ComponentLight::Save(JSON_value * value) const
 	Component::Save(value);
 
 	value->AddUint("Lighttype", (unsigned)lightType);
+	value->AddFloat3("color", color);
 
 	if (lightType != LightType::DIRECTIONAL)
 	{

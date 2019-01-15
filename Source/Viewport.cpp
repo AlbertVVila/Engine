@@ -266,9 +266,18 @@ void Viewport::DrawImGuizmo(const ComponentCamera & cam)
 	if (useSnap)
 	{
 		ImGui::Begin("SnapSettings");
-		ImGui::InputFloat3("Snap Translation", (float*)&snapSettings);
-		ImGui::InputFloat("Snap Angle", (float*)&snapSettings);
-		ImGui::InputFloat("Snap Scale", (float*)&snapSettings);
+		if (mCurrentGizmoOperation == ImGuizmo::TRANSLATE)
+		{
+			ImGui::InputFloat3("Snap Translation", (float*)&snapSettings);
+		}
+		else if (mCurrentGizmoOperation == ImGuizmo::ROTATE)
+		{
+			ImGui::InputFloat("Snap Angle", (float*)&snapSettings);
+		}
+		else
+		{
+			ImGui::InputFloat("Snap Scale", (float*)&snapSettings);
+		}
 		ImGui::End();
 	}
 

@@ -6,6 +6,7 @@
 #include "JSON.h"
 #include "Geometry/Triangle.h"
 #include "Geometry/LineSegment.h"
+#include "Math/MathConstants.h"
 
 Mesh::Mesh()
 {
@@ -209,7 +210,7 @@ AABB Mesh::GetBoundingBox() const
 bool Mesh::Intersects(const LineSegment &line, float* distance)
 {
 	bool intersects = false;
-	*distance = 0.f;
+	*distance = FLOAT_INF;
 	for (unsigned i = 0; i < numIndices; i+=3) //foreach triangle
 	{
 		float3 v0(&vertices[3*indices[i]]);

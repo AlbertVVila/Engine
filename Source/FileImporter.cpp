@@ -74,8 +74,10 @@ bool FileImporter::ImportFBX(const char* fbxfile, const char* folder)
 	const aiScene* scene = aiImportFile((folder+ file).c_str(), aiProcess_Triangulate);
 	if (scene != nullptr)
 	{
+		LOG("Imported FBX %s", fbxfile);
 		return ImportScene(*scene, fbxfile);
 	}
+	LOG("Error importing FBX %s", fbxfile);
 	return false;
 }
 

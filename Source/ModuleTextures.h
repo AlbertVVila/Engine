@@ -32,6 +32,7 @@ public:
 
 	bool Init(JSON * config) override;
 	bool CleanUp() override;
+	void SaveConfig(JSON * config) override;
 
 	void DrawGUI();
 	Texture * GetTexture(const char* path) const;

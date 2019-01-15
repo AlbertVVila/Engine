@@ -39,7 +39,8 @@ public:
 
 	GameObject * CreateGameObject(const char * name, GameObject* parent);
 
-	void AddToSpacePartition(GameObject * gameobject) const;
+	void AddToSpacePartition(GameObject * gameobject);
+	void DeleteFromSpacePartition(const GameObject & gameobject);
 	void ResetQuadTree();
 
 	void Draw(const Frustum &frustum, bool isEditor = false);

@@ -29,7 +29,8 @@ ModuleFileSystem::~ModuleFileSystem()
 
 bool ModuleFileSystem::Start()
 {
-	CheckImportedFiles(LIBRARY);
+	CheckImportedFiles(TEXTURES);
+	CheckImportedFiles(SCENES);
 	monitor_thread = new std::thread(&ModuleFileSystem::Monitorize, this, ASSETS);
 	monitor_thread->detach();
 	return true;
