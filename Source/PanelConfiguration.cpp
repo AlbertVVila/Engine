@@ -7,11 +7,14 @@
 #include "ModuleTextures.h"
 #include "ModuleScene.h"
 #include "imgui.h"
+#include "Math/MathConstants.h"
 
 #define NUMFPS 100
 
 PanelConfiguration::PanelConfiguration()
 {
+	fps.reserve(NUMFPS);
+	ms.reserve(NUMFPS);
 }
 
 
@@ -29,6 +32,7 @@ void PanelConfiguration::Draw()
 	}
 	if (ImGui::CollapsingHeader("Application"))
 	{
+		UpdateExtrems();
 		DrawFPSgraph();
 		DrawMSgraph();
 		DrawMemoryStats();
@@ -64,50 +68,55 @@ void PanelConfiguration::DrawFPSgraph() const
 {
 	if (fps.size() == 0) return;
 
-	float fmin = fps[0];
-	float total = fps[0];
-	for (unsigned int i = 1; i < fps.size(); i++) {
-		total += fps[i];
-		fmin = MIN(fmin, fps[i]);
-	}
 	char avg[32];
-	char minfps[32];
-	sprintf_s(avg, "%s%.2f", "avg:", total / fps.size());
-	sprintf_s(minfps, "%s%.2f", "min:", fmin);
+	char showmin[32];
+	sprintf_s(avg, "%s%.2f", "avg:", totalfps / fps.size());
+	sprintf_s(showmin, "%s%.2f", "min:", minfps);
 	ImGui::PlotHistogram("FPS", &fps[0], fps.size(), 0, avg,  0.0f, 120.0f, ImVec2(0, 80));
-	ImGui::Text(minfps);
+	ImGui::Text(showmin);
 }
 
 void PanelConfiguration::DrawMSgraph() const
 {
 	if (ms.size() == 0) return;
 
-	float msMAX = ms[0];
-	float total = ms[0];
-	for (unsigned int i = 1; i < ms.size(); i++) {
-		total += ms[i];
-		msMAX = MAX(msMAX, ms[i]);
-	}
+
 	char avg[32];
-	char maxms[32];
-	sprintf_s(avg, "%s%.2f", "avg:", total / ms.size());
-	sprintf_s(maxms, "%s%.2f", "max:", msMAX);
+	char showmax[32];
+	sprintf_s(avg, "%s%.2f", "avg:", totalms / ms.size());
+	sprintf_s(showmax, "%s%.2f", "max:", maxms);
 	ImGui::PlotHistogram("MS", &ms[0], ms.size(), 0, avg, 0.0f, 5.0f, ImVec2(0, 80));
-	ImGui::Text(maxms);
+	ImGui::Text(showmax);
 }
 
 void PanelConfiguration::AddFps(float dt)
 {
-	fps.insert(fps.begin(), 1 / dt);
-	ms.insert(ms.begin(), dt*1000);
-	if (dt * 1000 > 10)
+	if (dt == 0.0f) return;
+	if (fps.size() == NUMFPS)
 	{
-		LOG("high MS: %f", dt * 1000);
-	}
-	if (fps.size() > NUMFPS)
-	{
+		totalfps -= fps.back();
 		fps.pop_back();
+		totalms -= ms.back();
 		ms.pop_back();
+	}
+	
+	float newfps = 1 / dt;
+	float newms = dt * 1000;
+	fps.insert(fps.begin(), newfps);
+	ms.insert(ms.begin(), newms);
+
+	totalfps += newfps;
+	totalms += newms;
+}
+
+void PanelConfiguration::UpdateExtrems()
+{
+	minfps = 1000.f;
+	maxms = 0.f;
+	for (unsigned i = 0; i < fps.size(); i++)
+	{
+		minfps = MIN(minfps, fps[i]);
+		maxms = MAX(maxms, ms[i]);
 	}
 }
 

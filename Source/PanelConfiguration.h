@@ -14,6 +14,8 @@ public:
 	void Draw();
 	void AddFps(float dt);
 
+	void UpdateExtrems();
+
 private:
 	void DrawFPSgraph() const;
 	void DrawMSgraph() const;
@@ -22,6 +24,11 @@ private:
 private:
 	std::vector<float> fps;
 	std::vector<float> ms;
+	float totalfps = 0.f;
+	float minfps;
+
+	float totalms = 0.f;
+	float maxms;
 };
 
 #endif //__PanelConfiguration_h__

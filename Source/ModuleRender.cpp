@@ -166,7 +166,7 @@ bool ModuleRender::IsSceneViewFocused() const
 
 bool ModuleRender::IsSceneHovered() const
 {
-	return  viewScene->hover;
+	return viewScene->hover;
 }
 // Called before quitting
 bool ModuleRender::CleanUp()
