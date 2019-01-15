@@ -29,6 +29,7 @@ public:
 	void RenderGUI() const;
 	void CreateDockSpace() const;
 	void DrawPanels();
+	void ShowInspector();
 
 	void processInput(SDL_Event* event) const;
 	void AddFpsLog(float dt) const;

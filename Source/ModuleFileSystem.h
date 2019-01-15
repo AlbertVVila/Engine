@@ -7,6 +7,7 @@
 #include <list>
 #include <set>
 #include <thread>
+#include "FileImporter.h"
 
 #define ASSETS "Assets/"
 #define LIBRARY "Library/"
@@ -20,12 +21,24 @@
 #define SKYBOX "Skybox/"
 
 #define FBXEXTENSION ".fbx"
+#define FBXCAPITAL ".FBX"
 #define MESHEXTENSION ".m3sh"
+#define PNG ".png"
+#define TIF	".tif"
+#define JPG	".jpg"
 #define TEXTUREEXT ".dds"
 #define JSONEXT ".json"
 
 #define CHECKERS "checkersTexture"
 #define NOCAMERA "nocamera"
+
+enum class FILETYPE
+{
+	TEXTURE,
+	MODEL,
+	MESH,
+	SCENE
+};
 
 class ModuleFileSystem :
 	public Module
@@ -49,22 +62,24 @@ public:
 	bool CopyFromOutsideFS(const char* source, const char* destination) const;
 	bool Copy(const char* source, const char* destination, const char* file) const;
 
-	std::string GetExtension(const char * file) const;
-	std::string RemoveExtension(const char * file) const;
-	std::string GetFilename(const char *file) const;
+	std::string GetExtension(std::string file) const;
+	std::string RemoveExtension(std::string file) const;
+	std::string GetFilename(std::string file) const;
 
 private:
-	void CheckImportedFiles(const char * folder);
-	void WatchFolder(const char * folder);
+	void CheckImportedFiles(const char * folder, std::set<std::string>& importedFiles);
+	void WatchFolder(const char * folder, const std::set<std::string> &textures, const std::set<std::string> &models);
 	void Monitorize(const char * folder);
 	void ImportFiles();
+	FILETYPE GetFileType(std::string) const;
 
 private:
 	bool monitorize = true;
+	bool threadIsWorking = false;
 	Timer importTimer;
-	std::set<std::string> importedFiles;
 	std::list<std::pair<std::string, std::string>> filesToImport; //File and folder
-	std::thread *monitor_thread = nullptr;
+	std::thread monitor_thread;
+	FileImporter importer;
 };
 
 #endif __ModuleFileSystem_h__

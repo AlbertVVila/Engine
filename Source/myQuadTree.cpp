@@ -292,9 +292,9 @@ void myQuadTree::Draw(AABB bbox) const
 	glUniformMatrix4fv(glGetUniformLocation(shader,
 		"model"), 1, GL_TRUE, &(boxtransform)[0][0]);
 
-	float green[4] = { 0.0f, 1.0f, 0.0f, 1.0f };
+	float blue[4] = { 0.0f, 0.0f, 1.0f, 1.0f };
 	glUniform4fv(glGetUniformLocation(shader,
-		"Vcolor"), 1, green);
+		"Vcolor"), 1, blue);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(

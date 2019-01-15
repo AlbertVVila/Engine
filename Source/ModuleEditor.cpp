@@ -151,7 +151,7 @@ update_status ModuleEditor::Update(float dt)
 				std::vector<std::string> files = App->fsystem->ListFiles(SCENES);
 				for (auto &file : files)
 				{
-					file = App->fsystem->RemoveExtension(file.c_str());
+					file = App->fsystem->RemoveExtension(file);
 					if (ImGui::MenuItem(file.c_str()))
 					{
 						App->scene->LoadScene(file.c_str());
@@ -164,7 +164,7 @@ update_status ModuleEditor::Update(float dt)
 				std::vector<std::string> files = App->fsystem->ListFiles(SCENES);
 				for (auto &file : files)
 				{
-					file = App->fsystem->RemoveExtension(file.c_str());
+					file = App->fsystem->RemoveExtension(file);
 					if (ImGui::MenuItem(file.c_str()))
 					{
 						App->scene->AddScene(file.c_str());
@@ -350,6 +350,14 @@ void ModuleEditor::DrawPanels()
 		{
 			(*it)->Draw();
 		}
+}
+
+void ModuleEditor::ShowInspector()
+{
+	if (inspector != nullptr)
+	{
+		inspector->SetFocus();
+	}
 }
 
 void ModuleEditor::AddFpsLog(float dt) const

@@ -12,7 +12,7 @@ public:
 	~PanelInspector();
 
 	void Draw() override;
-	void Focus(GameObject *gameobject);
+	void SetFocus();
 
 
 	void DrawWarningPopup();

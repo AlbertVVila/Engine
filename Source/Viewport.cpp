@@ -51,7 +51,7 @@ Viewport::~Viewport()
 void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 {
 	PROFILE;
-	ImGui::Begin(name.c_str(), &enabled, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+	ImGui::Begin(name.c_str(), &enabled, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoFocusOnAppearing);
 
 	if (cam == nullptr)
 	{

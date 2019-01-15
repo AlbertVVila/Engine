@@ -8,7 +8,7 @@
 #include <assert.h>
 #include <stack>
 
-#define MONITORIZE_TIME 5000
+#define MONITORIZE_TIME 10000
 
 ModuleFileSystem::ModuleFileSystem()
 {
@@ -29,10 +29,8 @@ ModuleFileSystem::~ModuleFileSystem()
 
 bool ModuleFileSystem::Start()
 {
-	CheckImportedFiles(TEXTURES);
-	CheckImportedFiles(SCENES);
-	monitor_thread = new std::thread(&ModuleFileSystem::Monitorize, this, ASSETS);
-	monitor_thread->detach();
+	monitor_thread = std::thread(&ModuleFileSystem::Monitorize, this, ASSETS);
+	monitor_thread.detach();
 	return true;
 }
 
@@ -45,6 +43,10 @@ update_status ModuleFileSystem::Update(float dt)
 bool ModuleFileSystem::CleanUp()
 {
 	monitorize = false;
+	while (threadIsWorking)
+	{
+		SDL_Delay(100);
+	}
 	return true;
 }
 
@@ -157,9 +159,6 @@ std::vector<std::string> ModuleFileSystem::ListFiles(const char * dir, bool exte
 		{
 			files.emplace_back(*i);
 		}
-		//char *file = new char[strlen(*i)];
-		//strcpy(file, *i);
-		//files.emplace_back(file); //TODO: copy char*
 	}
 
 	PHYSFS_freeList(rc);
@@ -204,8 +203,9 @@ bool ModuleFileSystem::Copy(const char * source, const char * destination, const
 	return true;
 }
 
-void ModuleFileSystem::CheckImportedFiles(const char * folder)//TODO: improve using extensions otherwise conflict between files with same name and diff extension
+void ModuleFileSystem::CheckImportedFiles(const char * folder, std::set<std::string>& importedFiles)//TODO: improve using extensions otherwise conflict between files with same name and diff extension
 {
+	importedFiles.clear();
 	std::vector<std::string> files = ListFiles(folder);
 	for (auto& file : files)
 	{
@@ -213,15 +213,15 @@ void ModuleFileSystem::CheckImportedFiles(const char * folder)//TODO: improve us
 		filefolder += file;
 		if (IsDirectory(filefolder.c_str()))
 		{
-			CheckImportedFiles((filefolder + "/").c_str());
+			CheckImportedFiles((filefolder + "/").c_str(), importedFiles);
 		}
 		else
 		{
-			importedFiles.insert(RemoveExtension(file.c_str()));
+			importedFiles.insert(RemoveExtension(file));
 		}
 	}
 }
-void ModuleFileSystem::WatchFolder(const char * folder)
+void ModuleFileSystem::WatchFolder(const char * folder, const std::set<std::string> &textures, const std::set<std::string> &models)
 {
 	std::vector<std::string> files;
 	std::stack<std::string> watchfolder;
@@ -242,10 +242,22 @@ void ModuleFileSystem::WatchFolder(const char * folder)
 			}
 			else
 			{
-				std::set<std::string>::iterator it = importedFiles.find(RemoveExtension(file.c_str()));
-				if (it == importedFiles.end())
+				FILETYPE type = GetFileType(GetExtension(file));
+				if (type == FILETYPE::TEXTURE)
 				{
-					filesToImport.push_back(std::pair<std::string, std::string>(file, current_folder));
+					std::set<std::string>::iterator it = textures.find(RemoveExtension(file));
+					if (it == textures.end())
+					{
+						filesToImport.push_back(std::pair<std::string, std::string>(file, current_folder));
+					}
+				}
+				else if (type == FILETYPE::MODEL)
+				{
+					std::set<std::string>::iterator it = models.find(RemoveExtension(file));
+					if (it == models.end())
+					{
+						filesToImport.push_back(std::pair<std::string, std::string>(file, current_folder));
+					}
 				}
 			}
 		}
@@ -255,9 +267,15 @@ void ModuleFileSystem::WatchFolder(const char * folder)
 
 void ModuleFileSystem::Monitorize(const char * folder)
 {
+	std::set<std::string> importedTextures;
+	std::set<std::string> importedModels;
 	while (monitorize)
 	{
-		WatchFolder(folder);
+		threadIsWorking = true;
+		CheckImportedFiles(TEXTURES, importedTextures);
+		CheckImportedFiles(SCENES, importedModels);
+		WatchFolder(folder, importedTextures, importedModels);
+		threadIsWorking = false;
 		SDL_Delay(MONITORIZE_TIME);
 	}
 }
@@ -266,16 +284,30 @@ void ModuleFileSystem::ImportFiles()
 {
 	for (auto & file : filesToImport)
 	{
-		FileImporter importer;
 		importer.ImportAsset(file.first.c_str(), file.second.c_str());
-		importedFiles.insert(RemoveExtension(file.first.c_str()));
 	}
 	filesToImport.clear();
 }
 
-std::string ModuleFileSystem::GetExtension(const char *file) const
+FILETYPE ModuleFileSystem::GetFileType(std::string extension) const
 {
-	std::string filename(file);
+	if (extension == PNG || extension == TIF || extension == JPG)
+	{
+		return FILETYPE::TEXTURE;
+	}
+	if (extension == FBXEXTENSION || extension == FBXCAPITAL)
+	{
+		return FILETYPE::MODEL;
+	}
+	if (extension == MESHEXTENSION)
+	{
+		return FILETYPE::MESH;
+	}
+	return FILETYPE::SCENE;
+}
+
+std::string ModuleFileSystem::GetExtension(std::string filename) const
+{
 	std::size_t found = filename.find_last_of(".");
 	if (std::string::npos != found)
 	{
@@ -284,9 +316,8 @@ std::string ModuleFileSystem::GetExtension(const char *file) const
 	return filename;
 }
 
-std::string ModuleFileSystem::RemoveExtension(const char *file) const
+std::string ModuleFileSystem::RemoveExtension(std::string filename) const
 {
-	std::string filename(file);
 	std::size_t found = filename.find_last_of(".");
 	if (std::string::npos != found)
 	{
@@ -295,9 +326,8 @@ std::string ModuleFileSystem::RemoveExtension(const char *file) const
 	return filename;
 }
 
-std::string ModuleFileSystem::GetFilename(const char *file) const
+std::string ModuleFileSystem::GetFilename(std::string filename) const
 {
-	std::string filename(file);
 	std::size_t found = filename.find_last_of(".");
 	if (std::string::npos != found)
 	{

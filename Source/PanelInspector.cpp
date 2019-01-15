@@ -25,17 +25,17 @@ PanelInspector::~PanelInspector()
 
 void PanelInspector::Draw()
 {
+	if (focus)
+	{
+		focus = false;
+		ImGui::SetNextWindowFocus();
+	}
 	if (!ImGui::Begin("Inspector", &enabled))
 	{
 		ImGui::End();
 		return;
 	}
 	ImGui::PushID(this);
-	if (focus)
-	{
-		focus = false;
-		ImGui::SetWindowFocus();
-	}
 	if (App->scene->selected != nullptr)
 	{
 		App->scene->selected->DrawProperties();
@@ -77,7 +77,7 @@ void PanelInspector::Draw()
 	ImGui::End();
 }
 
-void PanelInspector::Focus(GameObject *gameobject)
+void PanelInspector::SetFocus()
 {
 	focus = true;
 }

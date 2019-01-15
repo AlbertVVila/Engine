@@ -47,11 +47,11 @@ FileImporter::~FileImporter()
 void FileImporter::ImportAsset(const char *file, const char *folder)  //TODO:files logs
 {
 	std::string extension (App->fsystem->GetExtension(file));
-	if (extension == FBXEXTENSION || extension == ".FBX")
+	if (extension == FBXEXTENSION || extension == FBXCAPITAL)
 	{
 		ImportFBX(file, folder);
 	}
-	else if (extension == ".png" || extension == ".jpg" || extension == ".tif")
+	else if (extension == PNG || extension == TIF || extension == JPG)
 	{
 		App->textures->ImportImage(file, folder);
 	}

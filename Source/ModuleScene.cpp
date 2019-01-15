@@ -7,6 +7,7 @@
 #include "ModuleTextures.h"
 #include "ModuleResourceManager.h"
 #include "ModuleRender.h"
+#include "ModuleEditor.h"
 
 #include "GameObject.h"
 #include "ComponentTransform.h"
@@ -435,6 +436,7 @@ void ModuleScene::Select(GameObject * gameobject)
 	}
 	selected = gameobject;
 	gameobject->drawBBox = true;
+	App->editor->ShowInspector();
 }
 
 void ModuleScene::UnSelect()
