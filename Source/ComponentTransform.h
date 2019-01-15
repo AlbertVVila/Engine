@@ -4,7 +4,6 @@
 #include "Component.h"
 #include "Math/float3.h"
 #include "Math/Quat.h"
-#include "assimp/matrix4x4.h"
 #include "Math/float4x4.h"
 
 class ComponentTransform : public Component
@@ -19,7 +18,6 @@ public:
 	void DrawProperties() override;
 
 	void UpdateTransform();
-
 	void SetLocalToWorld();
 	void SetWorldToLocal(const float4x4 & newparentGlobalMatrix);
 	void SetGlobalTransform(const float4x4 & newglobal, const float4x4 &parentglobal);

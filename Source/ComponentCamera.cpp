@@ -2,7 +2,6 @@
 
 #include "ModuleScene.h"
 #include "ModuleWindow.h"
-#include "ModuleProgram.h"
 #include "ModuleRender.h"
 
 #include "GameObject.h"
@@ -11,8 +10,6 @@
 
 #include "JSON.h"
 #include "Math/MathFunc.h"
-#include "Geometry/AABB.h"
-#include "GL/glew.h"
 #include "Imgui/imgui.h"
 #include "Imguizmo.h"
 #include "Geometry/Frustum.h"
@@ -28,6 +25,8 @@ ComponentCamera::ComponentCamera() : Component(nullptr, ComponentType::Camera)
 ComponentCamera::ComponentCamera(GameObject * gameobject) : Component(gameobject, ComponentType::Camera)
 {
 	InitFrustum();
+	assert(gameobject != nullptr);
+	if (gameobject == nullptr) return;
 	frustum->pos = gameobject->GetBoundingBox().CenterPoint();
 }
 
@@ -189,6 +188,7 @@ void ComponentCamera::Update()
 	frustum->front = transform.RotatePart().Mul(float3::unitZ).Normalized();
 	frustum->up = transform.RotatePart().Mul(float3::unitY).Normalized();
 }
+
 void ComponentCamera::DrawProperties()
 {
 	if (ImGui::CollapsingHeader("Camera", ImGuiTreeNodeFlags_DefaultOpen))
@@ -257,16 +257,6 @@ void ComponentCamera::Load(const JSON_value & value)
 	frustum->up = value.GetFloat3("Up");
 }
 
-
-bool ComponentCamera::CleanUp()
-{
-	if (this == App->scene->maincamera)
-	{
-		App->scene->maincamera = nullptr;
-	}
-	return true;
-}
-
 float4x4 ComponentCamera::GetViewMatrix() const
 {
 	float4x4 view = frustum->ViewMatrix();
@@ -278,7 +268,7 @@ float4x4 ComponentCamera::GetProjectionMatrix() const
 	return frustum->ProjectionMatrix().Transposed();
 }
 
-LineSegment ComponentCamera::DrawRay(float x, float y)
+LineSegment ComponentCamera::DrawRay(float x, float y) const
 {
 	return frustum->UnProjectLineSegment(x, y);
 }

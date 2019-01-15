@@ -40,6 +40,8 @@ void Component::Remove()
 
 void Component::Save(JSON_value * value) const
 {
+	assert(value != nullptr);
+	if (value == nullptr) return;
 	value->AddUint("Type", (unsigned)type);
 	value->AddInt("Enabled", enabled);
 }

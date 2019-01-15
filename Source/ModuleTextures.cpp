@@ -38,7 +38,7 @@ bool ModuleTextures::Init(JSON * config)
 	JSON_value* textureConfig = config->GetValue("textures");
 	if (textureConfig == nullptr) return true;
 
-	filter_type = textureConfig->GetInt("filter");
+	filter_type = (FILTERTYPE)textureConfig->GetUint("filter");
 
 	return true;
 }
@@ -54,15 +54,17 @@ void ModuleTextures::SaveConfig(JSON * config)
 {
 	JSON_value* textureConfig = config->CreateValue();
 
-	textureConfig->AddInt("filter", filter_type);
+	textureConfig->AddUint("filter", (unsigned)filter_type);
 	config->AddValue("textures", textureConfig);
 }
 
 void ModuleTextures::DrawGUI()
 {
 	ImGui::Text("Filter type on load:");
-	ImGui::RadioButton("Linear", &filter_type, LINEAR); ImGui::SameLine();
-	ImGui::RadioButton("Nearest", &filter_type, NEAREST);
+	ImGui::RadioButton("Linear", (int*)&filter_type, (unsigned)FILTERTYPE::LINEAR);
+	ImGui::RadioButton("Nearest", (int*)&filter_type, (unsigned)FILTERTYPE::NEAREST);
+	ImGui::RadioButton("Nearest MipMap", (int*)&filter_type, (unsigned)FILTERTYPE::NEAREST_MIPMAP_NEAREST);
+	ImGui::RadioButton("Linear MipMap", (int*)&filter_type, (unsigned)FILTERTYPE::LINEAR_MIPMAP_LINEAR);
 }
 
 Texture * ModuleTextures::GetTexture(const char * file) const
@@ -115,15 +117,27 @@ Texture * ModuleTextures::GetTexture(const char * file) const
 
 		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
 
-		if (filter_type == LINEAR)
+		if (filter_type == FILTERTYPE::LINEAR)
 		{
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		}
-		else
+		else if(filter_type == FILTERTYPE::NEAREST)
 		{
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		}
+		else if (filter_type == FILTERTYPE::NEAREST_MIPMAP_NEAREST)
+		{
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glGenerateMipmap(GL_TEXTURE_2D);
+		}
+		else
+		{
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+			glGenerateMipmap(GL_TEXTURE_2D);
 		}
 
 		ilDeleteImages(1, &imageID);

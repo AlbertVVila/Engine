@@ -25,13 +25,18 @@ public:
 
 	void ResetValues();
 
-	float GetAttenuationDistance() const;
-
 	void Update() override;
 	void DrawProperties() override;
 	void DrawDebugLight() const;
 	void Load(const JSON_value &value) override;
 	void Save(JSON_value *value) const override;
+
+private:
+	void DrawDebugDirectional() const;
+	void DrawDebugSpot() const;
+	void DrawDebugPoint() const;
+	void DrawDebugArea(const Circle & circle) const;
+	float GetAttenuationDistance() const;
 
 public:
 	LightType lightType = LightType::POINT;

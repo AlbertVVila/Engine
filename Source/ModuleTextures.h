@@ -5,10 +5,15 @@
 #include <vector>
 #include <string>
 
-#define LINEAR 1
-#define NEAREST 0
 #define NUMFACES 6
 
+enum class FILTERTYPE
+{
+	LINEAR,
+	NEAREST,
+	NEAREST_MIPMAP_NEAREST,
+	LINEAR_MIPMAP_LINEAR
+};
 struct Texture
 {
 	unsigned id = 0;
@@ -40,7 +45,7 @@ public:
 	void ImportImage(const char * file, const char* folder) const;
 
 public:
-	int filter_type = LINEAR;
+	FILTERTYPE filter_type = FILTERTYPE::LINEAR;
 };
 
 #endif /* __ModuleTextures_h__ */

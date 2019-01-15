@@ -20,7 +20,6 @@ public:
 	void DrawProperties() override;
 	void Save(JSON_value *value) const override;
 	void Load(const JSON_value &value) override;
-	bool CleanUp() override;
 
 	ComponentCamera* Clone() const;
 	void Center();
@@ -34,7 +33,7 @@ public:
 
 	float4x4 GetViewMatrix() const;
 	float4x4 GetProjectionMatrix() const;
-	LineSegment DrawRay(float x, float y);
+	LineSegment DrawRay(float x, float y) const;
 private:
 	void InitFrustum();
 	void LookAt(float3 target);

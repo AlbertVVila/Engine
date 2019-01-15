@@ -2,11 +2,9 @@
 
 #include "GameObject.h"
 
-#include <assimp/scene.h> 
 #include "imgui.h"
 #include "imgui_internal.h"
 #include "Math/MathFunc.h"
-#include "Math/float4x4.h"
 #include "JSON.h"
 
 
