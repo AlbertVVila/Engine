@@ -15,7 +15,6 @@ class ModuleInput;
 class ModuleCamera;
 class ModuleProgram;
 class ModuleEditor;
-class ModuleTime;
 class ModuleScene;
 class ModuleFileSystem;
 class ModuleResourceManager;
@@ -41,7 +40,6 @@ public:
     ModuleCamera* camera = nullptr;
 	ModuleProgram* program = nullptr;
 	ModuleEditor* editor = nullptr;
-	ModuleTime* time = nullptr;
 	ModuleScene* scene = nullptr;
 	ModuleFileSystem* fsystem = nullptr;
 	ModuleResourceManager* resManager = nullptr;

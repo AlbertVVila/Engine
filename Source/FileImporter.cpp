@@ -19,9 +19,6 @@
 #include "assimp/scene.h"
 #include "assimp/mesh.h"
 #include "assimp/material.h"
-#include "assimp/types.h"
-#include "Math/float4x4.h"
-#include <map>
 
 void AddLog(const char* str, char* userData)
 {
@@ -44,7 +41,7 @@ FileImporter::~FileImporter()
 {
 }
 
-void FileImporter::ImportAsset(const char *file, const char *folder)  //TODO:files logs
+void FileImporter::ImportAsset(const char *file, const char *folder)
 {
 	std::string extension (App->fsystem->GetExtension(file));
 	if (extension == FBXEXTENSION || extension == FBXCAPITAL)
@@ -159,7 +156,6 @@ unsigned FileImporter::GetMeshSize(const aiMesh &mesh) const
 {
 	unsigned size = 0u;
 	unsigned int ranges[2] = { mesh.mNumFaces * 3, mesh.mNumVertices };
-	//size += sizeof(int); //mesh content size ?
 	size += sizeof(ranges); //numfaces + numvertices
 	size += ranges[0]* 3 * sizeof(int); //indices
 
@@ -209,20 +205,6 @@ GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshma
 			crenderer->mesh = App->resManager->GetMesh(it->second);
 			gameobjects[i]->UpdateBBox();
 		}
-
-		//aiMaterial * mat = scene->mMaterials[scene->mMeshes[node->mMeshes[i]]->mMaterialIndex];
-		//aiTextureMapping mapping = aiTextureMapping_UV;
-		//for (unsigned i = 1; i <= 4; i++)
-		//{
-		//	aiString texture;
-		//	mat->GetTexture((aiTextureType)i, 0, &texture, &mapping, 0);
-		//	if (texture.length > 0)
-		//	{
-		//		Texture *tex = new Texture(App->fsystem->GetFilename(texture.C_Str()));//Save texture name
-		//		crenderer->material->textures[i] = tex;
-		//		App->resManager->AddTexture(texture.C_Str(),tex);
-		//	}
-		//}
 	} 
 	for (unsigned int i = 0; i < node->mNumChildren; i++)
 	{

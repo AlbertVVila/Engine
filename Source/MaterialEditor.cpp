@@ -57,31 +57,8 @@ void MaterialEditor::Draw()
 		ImGui::DragFloat("kDiffuse", &material->kDiffuse, .005f, .0f, 1.f);
 		ImGui::DragFloat("kSpecular", &material->kSpecular, .005f, .0f, 1.f);
 		ImGui::DragFloat("Shininess", &material->shininess, .05f, .0f, 256.f);
-
-		if (shaders.size() == 0)
-		{
-			shaders = App->fsystem->ListFiles(VERTEXSHADERS, false);
-		}
-		if (material->shader != nullptr)
-		{
-			current_shader = material->shader->file;
-		}
-		if (ImGui::BeginCombo("Shader", current_shader.c_str()))
-		{
-			for (int n = 0; n < shaders.size(); n++)
-			{
-				bool is_selected = (current_shader == shaders[n]);
-				if (ImGui::Selectable(shaders[n].c_str(), is_selected) && current_shader != shaders[n])
-				{
-					current_shader = shaders[n];
-					material->shader = App->program->GetProgram(current_shader.c_str());
-				}
-				if (is_selected)
-					ImGui::SetItemDefaultFocus();
-			}
-			ImGui::EndCombo();
-		}
-
+		ShaderSelector(current_shader);
+		
 		if (textureFiles.size() == 0)
 		{
 			textureFiles = App->fsystem->ListFiles(TEXTURES, false);
@@ -132,7 +109,33 @@ void MaterialEditor::Draw()
 		}
 		ImGui::EndPopup();
 	}
+}
 
+void MaterialEditor::ShaderSelector(std::string & current_shader)
+{
+	if (shaders.size() == 0)
+	{
+		shaders = App->fsystem->ListFiles(VERTEXSHADERS, false);
+	}
+	if (material->shader != nullptr)
+	{
+		current_shader = material->shader->file;
+	}
+	if (ImGui::BeginCombo("Shader", current_shader.c_str()))
+	{
+		for (int n = 0; n < shaders.size(); n++)
+		{
+			bool is_selected = (current_shader == shaders[n]);
+			if (ImGui::Selectable(shaders[n].c_str(), is_selected) && current_shader != shaders[n])
+			{
+				current_shader = shaders[n];
+				material->shader = App->program->GetProgram(current_shader.c_str());
+			}
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
+		}
+		ImGui::EndCombo();
+	}
 }
 
 void MaterialEditor::TextureSelector(unsigned i, std::string &current_texture)

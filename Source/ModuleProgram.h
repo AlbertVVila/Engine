@@ -31,9 +31,7 @@ private:
 	unsigned CreateFragmentShader(const char *name);
 
 public:
-
 	Shader * defaultShader = nullptr; //Deallocated in resourcemanager
 
 };
-
 #endif /* __ModuleProgram_h__ */

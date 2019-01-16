@@ -265,7 +265,7 @@ Component * GameObject::GetComponent(ComponentType type) const
 	return nullptr;
 }
 
-void GameObject::UpdateGlobalTransform()
+void GameObject::UpdateGlobalTransform() //Updates global transform when moving
 {
 	float4x4 mytransform = GetLocalTransform();
 	if (parent != nullptr)
@@ -281,7 +281,7 @@ void GameObject::UpdateGlobalTransform()
 	}
 }
 
-void GameObject::SetGlobalTransform(const float4x4 & global)
+void GameObject::SetGlobalTransform(const float4x4 & global) //Replaces global transform
 {
 	moved_flag = true;
 	if (transform != nullptr)
@@ -436,78 +436,16 @@ void GameObject::UpdateBBox()
 }
 
 void GameObject::DrawBBox() const
-{ //TODO: optimize with VAO
-
+{
 	for (const auto& child : children)
 	{
 		child->DrawBBox();
 	}
 
-	if (GetComponent(ComponentType::Renderer) == nullptr) return;
+	ComponentRenderer *renderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
+	if (renderer == nullptr) return;
 
-	unsigned shader = App->program->defaultShader->id;
-	glUseProgram(shader);
-
-	GLfloat vertices[] = {
-		-0.5, -0.5, -0.5, 1.0,
-		0.5, -0.5, -0.5, 1.0,
-		0.5,  0.5, -0.5, 1.0,
-		-0.5,  0.5, -0.5, 1.0,
-		-0.5, -0.5,  0.5, 1.0,
-		0.5, -0.5,  0.5, 1.0,
-		0.5,  0.5,  0.5, 1.0,
-		-0.5,  0.5,  0.5, 1.0,
-	};
-	GLuint vbo_vertices;
-	glGenBuffers(1, &vbo_vertices);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	GLushort elements[] = {
-		0, 1, 2, 3,
-		4, 5, 6, 7,
-		0, 4, 1, 5, 2, 6, 3, 7
-	};
-	GLuint ibo_elements;
-	glGenBuffers(1, &ibo_elements);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_elements);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-
-	float4x4 boxtransform = float4x4::FromTRS(bbox.CenterPoint(), Quat::identity, bbox.Size());
-	glUniformMatrix4fv(glGetUniformLocation(shader,
-		"model"), 1, GL_TRUE, &(boxtransform)[0][0]);
-
-	float green[4] = { 0.0f, 1.0f, 0.0f, 1.0f };
-	glUniform4fv(glGetUniformLocation(shader,
-		"Vcolor"), 1, green);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(
-		0,  // attribute
-		4,                  // number of elements per vertex, here (x,y,z,w)
-		GL_FLOAT,           // the type of each element
-		GL_FALSE,           // take our values as-is
-		0,                  // no extra data between each position
-		0                   // offset of first element
-	);
-
-	glLineWidth(4.f);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_elements);
-	glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, 0);
-	glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, (GLvoid*)(4 * sizeof(GLushort)));
-	glDrawElements(GL_LINES, 8, GL_UNSIGNED_SHORT, (GLvoid*)(8 * sizeof(GLushort)));
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	glLineWidth(1.f);
-
-	glDisableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	glDeleteBuffers(1, &vbo_vertices);
-	glDeleteBuffers(1, &ibo_elements);
-	glUseProgram(0);
+	renderer->mesh->DrawBbox(App->program->defaultShader->id, bbox);
 }
 
 bool GameObject::CleanUp()
@@ -552,11 +490,11 @@ void GameObject::Save(JSON_value *gameobjects) const
 		{
 			JSON_value *componentJSON = componentsJSON->CreateValue();
 			component->Save(componentJSON);
-			componentsJSON->AddValue("", componentJSON);
+			componentsJSON->AddValue("", *componentJSON);
 		}
 
-		gameobject->AddValue("Components", componentsJSON);
-		gameobjects->AddValue("", gameobject);
+		gameobject->AddValue("Components", *componentsJSON);
+		gameobjects->AddValue("", *gameobject);
 	}
 
 	for (auto &child : children)
@@ -612,7 +550,6 @@ void GameObject::SetStaticAncestors()
 			App->scene->dynamicGOs.erase(go);
 			App->scene->quadtree->Insert(go);
 		}
-
 		parents.pop();
 		parents.push(go->parent);
 	}

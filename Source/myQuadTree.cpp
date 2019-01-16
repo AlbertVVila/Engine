@@ -252,7 +252,7 @@ void myQuadTree::Draw() const
 {
 	for (const auto& node: nodes)
 	{
-		Draw(GetBoundingBox(node));
+		Draw(GetBoundingBox(*node));
 	}
 }
 
@@ -286,7 +286,6 @@ void myQuadTree::Draw(AABB bbox) const
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_elements);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
 
 	float4x4 boxtransform = float4x4::FromTRS(bbox.CenterPoint(), Quat::identity, bbox.Size());
 	glUniformMatrix4fv(glGetUniformLocation(shader,
@@ -375,19 +374,19 @@ void myQuadTree::RecomputeRoot(QUADRANT q)
 	nodes[newRoot->BottomLeftChildIndex()]->parent = newRoot;
 	nodes[newRoot->BottomRightChildIndex()]->parent = newRoot;
 }
-AABB myQuadTree::GetBoundingBox(const Node *node) const
+AABB myQuadTree::GetBoundingBox(const Node &node) const
 {
-	if (!node->parent)
+	if (!node.parent)
 	{
 		return limits;
 	}
-	AABB aabb = GetBoundingBox(node->parent);
+	AABB aabb = GetBoundingBox(*node.parent);
 	float2 half = float2((aabb.minPoint.x + aabb.maxPoint.x), (aabb.minPoint.z + aabb.maxPoint.z))*0.5f;
 
 	int quadrant = 0;
 	for (unsigned i = 1; i < 4; i++)
 	{
-		if (nodes[node->parent->childIndex + i] == node)
+		if (nodes[node.parent->childIndex + i] == &node)
 		{
 			quadrant = i;
 		}
@@ -426,7 +425,7 @@ std::list<std::pair<float, GameObject*>> myQuadTree::GetIntersections(const Line
 	{
 		Node *n = stack.top();
 		stack.pop();
-		AABB bbox = GetBoundingBox(n); //2D AABB because y coordinate is 0
+		AABB bbox = GetBoundingBox(*n); //2D AABB because y coordinate is 0
 		bbox.minPoint.y = -FLOAT_INF;
 		bbox.maxPoint.y = FLOAT_INF;
 
@@ -463,7 +462,7 @@ std::list<GameObject*> myQuadTree::GetIntersections(const Frustum & frustum) con
 	{
 		Node *n = stack.top();
 		stack.pop();
-		AABB bbox = GetBoundingBox(n); //2D AABB because y coordinate is 0
+		AABB bbox = GetBoundingBox(*n); //2D AABB because y coordinate is 0
 		bbox.minPoint.y = -FLOAT_INF;
 		bbox.maxPoint.y = FLOAT_INF;
 

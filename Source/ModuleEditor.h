@@ -27,13 +27,18 @@ public:
 	bool CleanUp() override;
 
 	void RenderGUI() const;
-	void CreateDockSpace() const;
-	void DrawPanels();
 	void ShowInspector();
 
 	void processInput(SDL_Event* event) const;
 	void AddFpsLog(float dt) const;
 	void AddLog(const char *log) const;
+
+private:
+	void CreateDockSpace() const;
+	void DrawPanels();
+	void SceneSavePopup(bool scenepopup);
+	void WindowsMenu();
+	void HelpMenu();
 
 public:
 	PanelConsole *console = nullptr;

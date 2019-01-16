@@ -203,7 +203,7 @@ bool ModuleFileSystem::Copy(const char * source, const char * destination, const
 	return true;
 }
 
-void ModuleFileSystem::CheckImportedFiles(const char * folder, std::set<std::string>& importedFiles)//TODO: improve using extensions otherwise conflict between files with same name and diff extension
+void ModuleFileSystem::CheckImportedFiles(const char * folder, std::set<std::string>& importedFiles)
 {
 	importedFiles.clear();
 	std::vector<std::string> files = ListFiles(folder);

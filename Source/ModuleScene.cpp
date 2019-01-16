@@ -118,7 +118,7 @@ void ModuleScene::SaveConfig(JSON * config)
 	scene->AddUint("cubeUID", primitivesUID[(unsigned)PRIMITIVES::CUBE]);
 	scene->AddFloat3("ambient", ambientColor);
 
-	config->AddValue("scene", scene);
+	config->AddValue("scene", *scene);
 }
 
 void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
@@ -482,7 +482,7 @@ void ModuleScene::SaveScene(const GameObject &rootGO, const char* filename) cons
 	JSON *json = new JSON();
 	JSON_value *array =json->CreateValue(rapidjson::kArrayType);
 	rootGO.Save(array);
-	json->AddValue("GameObjects", array);
+	json->AddValue("GameObjects", *array);
 	std::string file(filename);
 	App->fsystem->Save((SCENES + file + JSONEXT).c_str(), json->ToString().c_str(), json->Size());
 	RELEASE(json);

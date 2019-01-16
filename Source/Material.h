@@ -31,7 +31,6 @@ public:
 	void Reset(const Material& material);
 
 	Texture * GetTexture(TextureType type) const;
-
 	std::list<Texture*> GetTextures() const;
 
 	void SetUniforms(unsigned shader) const;

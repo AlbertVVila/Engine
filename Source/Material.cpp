@@ -8,6 +8,7 @@
 
 #include "Material.h"
 
+#include "Globals.h"
 #include "JSON.h"
 #include "GL/glew.h"
 
@@ -102,8 +103,8 @@ void Material::Load(const char * materialfile)
 		shader = App->program->GetProgram(materialJSON->GetString("shader"));
 	}
 
-	delete[] data;
-	delete json;
+	RELEASE_ARRAY(data);
+	RELEASE(json);
 }
 
 void Material::Save() const
@@ -148,10 +149,10 @@ void Material::Save() const
 		materialJSON->AddString("shader", shader->file.c_str());
 	}
 	
-	json->AddValue("material", materialJSON);
+	json->AddValue("material", *materialJSON);
 	
 	App->fsystem->Save((MATERIALS + name + JSONEXT).c_str(), json->ToString().c_str(),json->Size());
-	delete json;
+	RELEASE(json);
 }
 
 void Material::Reset(const Material & material)

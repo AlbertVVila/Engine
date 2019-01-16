@@ -111,7 +111,7 @@ void ModuleWindow::SaveConfig(JSON * config)
 	windowConfig->AddInt("height", height);
 	windowConfig->AddFloat("brightness", brightness);
 
-	config->AddValue("window", windowConfig);
+	config->AddValue("window", *windowConfig);
 }
 
 

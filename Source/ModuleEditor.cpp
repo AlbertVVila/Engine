@@ -61,7 +61,6 @@ bool ModuleEditor::Init(JSON * config)
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer->context);
 	ImGui_ImplOpenGL3_Init("#version 130");
 
-	//ImGui::StyleColorsDark();
 	ImGuiStyle * style = &ImGui::GetStyle();
 
 	style->WindowPadding = ImVec2(15, 15);
@@ -138,7 +137,7 @@ update_status ModuleEditor::Update(float dt)
 {
 	BROFILER_CATEGORY("Editor Update", Profiler::Color::Blue)
 
-	bool sceneSavePopUp = false;
+	bool savepopup = false;
 	if (ImGui::BeginMainMenuBar())
 	{
 		if (ImGui::BeginMenu("File"))
@@ -181,12 +180,12 @@ update_status ModuleEditor::Update(float dt)
 				}
 				else
 				{
-					sceneSavePopUp = true;
+					savepopup = true;
 				}
 			}
 			if (ImGui::MenuItem("Save As"))
 			{
-				sceneSavePopUp = true;
+				savepopup = true;
 			}
 			if (ImGui::MenuItem("Exit", "Esc"))
 			{
@@ -197,70 +196,11 @@ update_status ModuleEditor::Update(float dt)
 			}
 			ImGui::EndMenu();
 		}
-		if (sceneSavePopUp) ImGui::OpenPopup("SavePopup");
-		if (ImGui::BeginPopupModal("SavePopup", NULL, ImGuiWindowFlags_AlwaysAutoResize))
-		{
-			ImGui::Text("Choose Scene name:\n\n");
-			char name[64] = "";
-			if (!App->scene->name.empty())
-			{
-				strcpy(name, App->scene->name.c_str());
-			}
-			else
-			{
-				strcpy(name, "Unnamed");
-			}
-			ImGui::InputText("name", name, 64);
-			App->scene->name = name;
-			ImGui::Separator();
-
-			if (ImGui::Button("OK", ImVec2(120, 0))) {
-				App->scene->SaveScene(*App->scene->root, App->scene->name.c_str());
-				ImGui::CloseCurrentPopup();
-			}
-			ImGui::SetItemDefaultFocus();
-			ImGui::SameLine();
-			if (ImGui::Button("Cancel", ImVec2(120, 0)))
-			{
-				sceneSavePopUp = false;
-				ImGui::CloseCurrentPopup();
-			}
-			ImGui::EndPopup();
-		}
+		SceneSavePopup(savepopup);
 		GUICreator::CreateElements(App->scene->root);
 		materialEditor->Draw();
-		if (ImGui::BeginMenu("Windows"))
-		{
-			if (ImGui::MenuItem("Console", NULL, console->IsEnabled()))
-			{
-				console->ToggleEnabled();
-			}
-			if (ImGui::MenuItem("Configuration", NULL, configuration->IsEnabled()))
-			{
-				configuration->ToggleEnabled();
-			}
-			if (ImGui::MenuItem("Properties", NULL, inspector->IsEnabled()))
-			{
-				inspector->ToggleEnabled();
-			}
-			if (ImGui::MenuItem("Hierarchy", NULL, hierarchy->IsEnabled()))
-			{
-				hierarchy->ToggleEnabled();
-			}
-			ImGui::EndMenu();
-		}
-		if (ImGui::BeginMenu("Help"))
-		{
-			if (ImGui::MenuItem("About"))
-			{
-				about->SetEnabled();
-			}
-			if (ImGui::MenuItem("Hardware"))
-			{
-				hardware->SetEnabled();
-			}
-			ImGui::EndMenu();
-		}
+		WindowsMenu();
+		HelpMenu();
 		ImGui::EndMainMenuBar();
 	}
 	DrawPanels();
@@ -318,6 +258,81 @@ void ModuleEditor::DrawPanels()
 		}
 }
 
+void ModuleEditor::SceneSavePopup(bool savepopup)
+{
+	if (savepopup) ImGui::OpenPopup("SavePopup");
+	if (ImGui::BeginPopupModal("SavePopup", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		ImGui::Text("Choose Scene name:\n\n");
+		char name[64] = "";
+		if (!App->scene->name.empty())
+		{
+			strcpy(name, App->scene->name.c_str());
+		}
+		else
+		{
+			strcpy(name, "Unnamed");
+		}
+		ImGui::InputText("name", name, 64);
+		App->scene->name = name;
+		ImGui::Separator();
+
+		if (ImGui::Button("OK", ImVec2(120, 0))) {
+			App->scene->SaveScene(*App->scene->root, App->scene->name.c_str());
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::SetItemDefaultFocus();
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel", ImVec2(120, 0)))
+		{
+			savepopup = false;
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::EndPopup();
+	}
+
+}
+
+void ModuleEditor::WindowsMenu()
+{
+	if (ImGui::BeginMenu("Windows"))
+	{
+		if (ImGui::MenuItem("Console", NULL, console->IsEnabled()))
+		{
+			console->ToggleEnabled();
+		}
+		if (ImGui::MenuItem("Configuration", NULL, configuration->IsEnabled()))
+		{
+			configuration->ToggleEnabled();
+		}
+		if (ImGui::MenuItem("Properties", NULL, inspector->IsEnabled()))
+		{
+			inspector->ToggleEnabled();
+		}
+		if (ImGui::MenuItem("Hierarchy", NULL, hierarchy->IsEnabled()))
+		{
+			hierarchy->ToggleEnabled();
+		}
+		ImGui::EndMenu();
+	}
+}
+
+void ModuleEditor::HelpMenu()
+{
+	if (ImGui::BeginMenu("Help"))
+	{
+		if (ImGui::MenuItem("About"))
+		{
+			about->SetEnabled();
+		}
+		if (ImGui::MenuItem("Hardware"))
+		{
+			hardware->SetEnabled();
+		}
+		ImGui::EndMenu();
+	}
+}
+
 void ModuleEditor::ShowInspector()
 {
 	if (inspector != nullptr)
@@ -334,12 +349,6 @@ void ModuleEditor::AddFpsLog(float dt) const
 	}
 }
 
-void ModuleEditor::processInput(SDL_Event * event) const
-{
-	assert(event != NULL);
-	ImGui_ImplSDL2_ProcessEvent(event);
-}
-
 void ModuleEditor::AddLog(const char *log) const
 {
 	assert(log != NULL);
@@ -348,3 +357,9 @@ void ModuleEditor::AddLog(const char *log) const
 		console->AddLog(log);
 	}
 }
+void ModuleEditor::processInput(SDL_Event * event) const
+{
+	assert(event != NULL);
+	ImGui_ImplSDL2_ProcessEvent(event);
+}
+

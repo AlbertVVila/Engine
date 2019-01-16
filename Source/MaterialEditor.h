@@ -11,6 +11,7 @@ public:
 	~MaterialEditor();
 
 	void Draw();
+	void ShaderSelector(std::string &current_shader);
 	void TextureSelector(unsigned i, std::string &current_texture);
 	void CleanUp();
 

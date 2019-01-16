@@ -12,18 +12,27 @@ public:
 	~Mesh();
 
 	void SetMesh(const char* meshData, unsigned uid);
-	void Draw(unsigned int shaderProgram) const;
+	void Draw(unsigned shaderProgram) const;
+	void DrawBbox(unsigned shaderProgram, const AABB &globalBBOX) const;
 
-	void ComputeBBox();
 	AABB GetBoundingBox() const;
 
 	bool Intersects(const LineSegment &line, float* distance);
 
 private:
+	void ComputeBBox();
+	void SetMeshBuffers(bool hasNormals, bool hasTexCoords, float* normals, float* texCoords);
+	void SetBboxBuffers();
+
+private:
 	unsigned VAO = 0;
 	unsigned VBO = 0;
 	unsigned EBO = 0;
+
 	AABB boundingBox;
+	unsigned VAObox = 0;
+	unsigned VBObox = 0;
+	unsigned EBObox = 0;
 
 public:
 	unsigned UID = 0;

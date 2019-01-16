@@ -12,13 +12,13 @@ public:
 
 	void Draw(ComponentCamera* cam, bool isEditor = false);
 
-	void CreateFrameBuffer(int width, int height);
-
-	void CreateMSAABuffers(int width, int height);
-
 	void DrawImGuizmo(const ComponentCamera & cam);
 
 	void Pick();
+private:
+	void DrawGuizmoButtons();
+	void CreateFrameBuffer(int width, int height);
+	void CreateMSAABuffers(int width, int height);
 
 public:
 	int current_width = 0;
@@ -40,6 +40,9 @@ private:
 
 	bool useSnap = false; //TODO: save in config
 	float3 snapSettings = float3::one;
+
+	unsigned mCurrentGizmoOperation = 0; //Translate //We avoid imguizmo .h inclusion
+	unsigned mCurrentGizmoMode = 1;//World
 };
 
 #endif __Viewport_h__

@@ -1,7 +1,6 @@
 #include "Application.h"
 
 #include "ModuleCamera.h"
-#include "ModuleTime.h"
 #include "ModuleInput.h"
 #include "ModuleWindow.h"
 #include "ModuleEditor.h"
@@ -60,7 +59,7 @@ void ModuleCamera::SaveConfig(JSON * config)
 	cam->AddFloat("znear", frustum->nearPlaneDistance);
 	cam->AddFloat("zfar", frustum->farPlaneDistance);
 
-	config->AddValue("camera", cam);
+	config->AddValue("camera", *cam);
 }
 
 update_status ModuleCamera::Update(float dt)

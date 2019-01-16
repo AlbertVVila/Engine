@@ -17,10 +17,10 @@ public:
 	bool CleanUp() override;
 
 	void InputMove(float dt) const;
-	void InputRotate(float dt) const;;
-	void InputCenter() const;;
-	void InputOrbit(float dt) const;;
-	void InputZoom() const;;
+	void InputRotate(float dt) const;
+	void InputCenter() const;
+	void InputOrbit(float dt) const;
+	void InputZoom() const;
 
 	void DrawGUI() override;
 

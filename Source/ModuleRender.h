@@ -28,6 +28,7 @@ public:
 	bool CleanUp() override;
 	void OnResize();
 	void DrawGUI() override;
+
 	void GenBlockUniforms();
 	void AddBlockUniforms(const Shader &s) const;
 
@@ -38,7 +39,6 @@ private:
 	void SetProjectionUniform(const ComponentCamera &camera) const;
 	void DrawGrid() const;
 	void DrawAxis() const;
-	void DrawFrustum() const;
 	void InitSDL();
 	void InitOpenGL() const;
 
@@ -56,7 +56,6 @@ public:
 	bool useMainCameraFrustum = false;
 
 	unsigned current_scale = 1;
-	int item_current = 0;
 	Viewport* viewGame = nullptr;
 	Viewport* viewScene = nullptr;
 
@@ -65,6 +64,7 @@ private:
 	bool depthTest = true;
 	bool wireframe = false;
 	bool vsync = false;
+	int item_current = 0;//scale index
 
 	Skybox* skybox = nullptr;
 	

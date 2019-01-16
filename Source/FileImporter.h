@@ -1,7 +1,6 @@
 #ifndef __FileImporter_h__
 #define __FileImporter_h__
 
-#include <assimp/matrix4x4.h>
 #include <map>
 
 struct aiScene;

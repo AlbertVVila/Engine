@@ -124,6 +124,76 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 	ImGui::End();
 }
 
+void Viewport::DrawGuizmoButtons()
+{
+
+	if (ImGui::Button("Translate"))
+	{
+		mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Rotate"))
+	{
+		mCurrentGizmoOperation = ImGuizmo::ROTATE;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Scale"))
+	{
+		mCurrentGizmoOperation = ImGuizmo::SCALE;
+		mCurrentGizmoMode = ImGuizmo::LOCAL;
+	}
+	if (mCurrentGizmoOperation == ImGuizmo::SCALE)
+	{
+		ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+		ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+	}
+
+	ImGui::SameLine();
+	if (mCurrentGizmoMode == ImGuizmo::WORLD)
+	{
+		if (ImGui::Button("Local"))
+		{
+			mCurrentGizmoMode = ImGuizmo::LOCAL;
+		}
+	}
+	else
+	{
+		if (ImGui::Button("World"))
+		{
+			mCurrentGizmoMode = ImGuizmo::WORLD;
+		}
+	}
+
+	if (mCurrentGizmoOperation == ImGuizmo::SCALE)
+	{
+		ImGui::PopItemFlag();
+		ImGui::PopStyleVar();
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("Snap"))
+	{
+		useSnap = !useSnap;
+	}
+	if (useSnap)
+	{
+		ImGui::Begin("SnapSettings");
+		if (mCurrentGizmoOperation == ImGuizmo::TRANSLATE)
+		{
+			ImGui::InputFloat3("Snap Translation", (float*)&snapSettings);
+		}
+		else if (mCurrentGizmoOperation == ImGuizmo::ROTATE)
+		{
+			ImGui::InputFloat("Snap Angle", (float*)&snapSettings);
+		}
+		else
+		{
+			ImGui::InputFloat("Snap Scale", (float*)&snapSettings);
+		}
+		ImGui::End();
+	}
+}
+
 void Viewport::CreateFrameBuffer(int width, int height)
 {
 	//CleanUp(); //Delete old FBO,RBO and texture
@@ -224,76 +294,8 @@ void Viewport::DrawImGuizmo(const ComponentCamera & cam)
 	ImGuizmo::SetRect(pos.x, pos.y, current_width, current_height);
 	ImGuizmo::SetDrawlist();
 
-	static ImGuizmo::OPERATION mCurrentGizmoOperation(ImGuizmo::TRANSLATE);
-	static ImGuizmo::MODE mCurrentGizmoMode(ImGuizmo::WORLD);
-
 	ImGui::SetCursorPos({ 20,30 });
-
-	if (ImGui::Button("Translate"))
-	{
-		mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
-	}
-	ImGui::SameLine();
-	if (ImGui::Button("Rotate"))
-	{
-		mCurrentGizmoOperation = ImGuizmo::ROTATE;
-	}
-	ImGui::SameLine();
-	if (ImGui::Button("Scale"))
-	{
-		mCurrentGizmoOperation = ImGuizmo::SCALE;
-		mCurrentGizmoMode = ImGuizmo::LOCAL;
-	}
-	if (mCurrentGizmoOperation == ImGuizmo::SCALE)
-	{
-		ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
-		ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
-	}
-
-	ImGui::SameLine();
-	if (mCurrentGizmoMode == ImGuizmo::WORLD)
-	{
-		if (ImGui::Button("Local"))
-		{
-			mCurrentGizmoMode = ImGuizmo::LOCAL;
-		}
-	}
-	else
-	{
-		if (ImGui::Button("World"))
-		{
-			mCurrentGizmoMode = ImGuizmo::WORLD;
-		}
-	}
-
-	if (mCurrentGizmoOperation == ImGuizmo::SCALE)
-	{
-		ImGui::PopItemFlag();
-		ImGui::PopStyleVar();
-	}
-
-	ImGui::SameLine();
-	if (ImGui::Button("Snap"))
-	{
-		useSnap = !useSnap;
-	}
-	if (useSnap)
-	{
-		ImGui::Begin("SnapSettings");
-		if (mCurrentGizmoOperation == ImGuizmo::TRANSLATE)
-		{
-			ImGui::InputFloat3("Snap Translation", (float*)&snapSettings);
-		}
-		else if (mCurrentGizmoOperation == ImGuizmo::ROTATE)
-		{
-			ImGui::InputFloat("Snap Angle", (float*)&snapSettings);
-		}
-		else
-		{
-			ImGui::InputFloat("Snap Scale", (float*)&snapSettings);
-		}
-		ImGui::End();
-	}
+	DrawGuizmoButtons();
 
 	if (App->scene->selected != nullptr)
 	{
@@ -308,7 +310,9 @@ void Viewport::DrawImGuizmo(const ComponentCamera & cam)
 
 		model.Transpose();
 
-		ImGuizmo::Manipulate((float*)&view, (float*)&proj, mCurrentGizmoOperation, mCurrentGizmoMode, (float*)&model, NULL, useSnap ? (float*)&snapSettings : NULL, NULL, NULL);
+		ImGuizmo::Manipulate((float*)&view, (float*)&proj, 
+			(ImGuizmo::OPERATION)mCurrentGizmoOperation, (ImGuizmo::MODE)mCurrentGizmoMode, 
+			(float*)&model, NULL, useSnap ? (float*)&snapSettings : NULL, NULL, NULL);
 
 		if (ImGuizmo::IsUsing())
 		{

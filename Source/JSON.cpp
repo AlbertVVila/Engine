@@ -118,7 +118,7 @@ void JSON_value::AddString(const char * name, const char* value)
 	rapidjsonValue->AddMember(key, rvalue, *allocator);
 }
 
-void JSON_value::AddValue(const char* name, JSON_value *value)
+void JSON_value::AddValue(const char* name, const JSON_value &value)
 {
 	switch (this->rapidjsonValue->GetType())
 	{
@@ -126,11 +126,11 @@ void JSON_value::AddValue(const char* name, JSON_value *value)
 	{
 		std::string myname(name);
 		rapidjson::Value key(myname.c_str(), myname.size(), *allocator);
-		this->rapidjsonValue->AddMember(key, *value->rapidjsonValue, *allocator);
+		this->rapidjsonValue->AddMember(key, *value.rapidjsonValue, *allocator);
 	}
 	break;
 	case rapidjson::kArrayType:
-		this->rapidjsonValue->PushBack(*value->rapidjsonValue, *allocator);
+		this->rapidjsonValue->PushBack(*value.rapidjsonValue, *allocator);
 		break;
 	}
 }
@@ -360,11 +360,11 @@ JSON_value * JSON::CreateValue(rapidjson::Type type)
 	return ret;
 }
 
-void JSON::AddValue(const char* name, JSON_value* value)
+void JSON::AddValue(const char* name, const JSON_value& value)
 {
 	std::string myname(name);
 	rapidjson::Value key(myname.c_str(), myname.size(), *allocator);
-	document->AddMember(key, *value->rapidjsonValue, *allocator);
+	document->AddMember(key, *value.rapidjsonValue, *allocator);
 }
 
 JSON_value * JSON::GetValue(const char* name)

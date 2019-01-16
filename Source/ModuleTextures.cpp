@@ -55,7 +55,7 @@ void ModuleTextures::SaveConfig(JSON * config)
 	JSON_value* textureConfig = config->CreateValue();
 
 	textureConfig->AddUint("filter", (unsigned)filter_type);
-	config->AddValue("textures", textureConfig);
+	config->AddValue("textures", *textureConfig);
 }
 
 void ModuleTextures::DrawGUI()

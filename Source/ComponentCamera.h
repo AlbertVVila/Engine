@@ -29,13 +29,16 @@ public:
 	void Orbit(float dx, float dy);
 	void SetAspect(float aspect);
 	void SetFOV(float fov);
+
 	void ResetFrustum();
+	void DrawFrustum(unsigned shader) const;
 
 	float4x4 GetViewMatrix() const;
 	float4x4 GetProjectionMatrix() const;
 	LineSegment DrawRay(float x, float y) const;
 private:
 	void InitFrustum();
+	void SetFrustumBuffers();
 	void LookAt(float3 target);
 
 public:
@@ -46,6 +49,11 @@ public:
 	float zoomSpeed = 0.1f;
 
 	bool isMainCamera = false;
+
+private:
+	unsigned frustumVAO = 0;
+	unsigned frustumVBO = 0;
+	unsigned frustumEBO = 0;
 };
 
 #endif __ComponentCamera_h__

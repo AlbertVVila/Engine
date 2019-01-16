@@ -27,7 +27,7 @@ public:
 	void AddFloat4x4(const char * name, float4x4 value);
 	void AddQuat(const char * name, Quat value);
 	void AddString(const char * name, const char* value);
-	void AddValue(const char * name, JSON_value *value);
+	void AddValue(const char * name, const JSON_value &value);
 
 	int GetInt(const char* name) const;
 	unsigned GetUint(const char * name) const;
@@ -59,10 +59,10 @@ public:
 	~JSON();
 
 	JSON_value* CreateValue(rapidjson::Type type = rapidjson::kObjectType);
-	void AddValue(const char * name, JSON_value * value);
+	void AddValue(const char * name, const JSON_value & value);
 	JSON_value * GetValue(const char * name);  //Allocates value
 	std::string ToString() const;
-	unsigned Size();
+	unsigned Size(); //Clears old buffer
 
 private:
 	rapidjson::Document *document = nullptr;

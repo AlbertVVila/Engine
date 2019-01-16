@@ -51,15 +51,16 @@ public:
 		return mouse_buttons[id - 1];
 	}
 
-	// Check for window events last frame
-	bool GetWindowEvent(EventWindow code) const;
-
 	// Get mouse / axis position
 	const void ModuleInput::GetMouseMotion(float &x, float &y) const;
 	const fPoint& GetMousePosition() const;
 	const float GetMouseWheel() const;
 
 	void DrawGUI() override;
+
+private:
+	// Check for window events last frame
+	bool GetWindowEvent(EventWindow code) const;
 	void DropFile(char * dropped_file) const;
 
 	private:
