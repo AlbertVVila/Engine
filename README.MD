@@ -38,7 +38,7 @@ Here you have different sections that lets you modify different visualization op
 In the console you we'll see a list of relevant logs about importing, loading or saving files.
 
 ## More information
-[Last Release Notes](https://github.com/AlbertVVila/Engine/releases)
+[Last Release Notes](https://github.com/AlbertVVila/Engine/releases),
 [Github](https://github.com/AlbertVVila/Engine) and
 [License](https://github.com/AlbertVVila/Engine/blob/master/LICENSE)
 
