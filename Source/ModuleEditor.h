@@ -49,6 +49,7 @@ public:
 	PanelHierarchy *hierarchy = nullptr;
 
 	MaterialEditor *materialEditor = nullptr;
+
 private:
 	std::list<Panel*> panels;
 };

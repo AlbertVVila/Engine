@@ -29,6 +29,9 @@ public:
 public:
 	Mesh * mesh = nullptr;
 	Material * material = nullptr;
+
+private:
+	std::vector<std::string> guiMaterials;
 };
 
 #endif __ComponentRenderer_h__

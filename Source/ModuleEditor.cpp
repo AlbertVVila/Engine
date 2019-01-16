@@ -23,9 +23,7 @@
 #include "imgui_impl_sdl.h"
 #include "ImGuizmo.h"
 #include "Brofiler.h"
-
 #include <vector>
-
 ModuleEditor::ModuleEditor()
 {
 	panels.push_back(console = new PanelConsole());
@@ -146,9 +144,9 @@ update_status ModuleEditor::Update(float dt)
 			{
 				App->scene->ClearScene();
 			}
+			std::vector<std::string> files = App->fsystem->ListFiles(SCENES);
 			if (ImGui::BeginMenu("Load Scene"))
 			{
-				std::vector<std::string> files = App->fsystem->ListFiles(SCENES);
 				for (auto &file : files)
 				{
 					file = App->fsystem->RemoveExtension(file);
@@ -161,7 +159,6 @@ update_status ModuleEditor::Update(float dt)
 			}
 			if (ImGui::BeginMenu("Add Scene"))
 			{
-				std::vector<std::string> files = App->fsystem->ListFiles(SCENES);
 				for (auto &file : files)
 				{
 					file = App->fsystem->RemoveExtension(file);

@@ -539,6 +539,7 @@ void ModuleScene::ClearScene()
 {
 	CleanUp();
 	camera_notfound_texture = App->textures->GetTexture(NOCAMERA);
+	name.clear();
 }
 
 void ModuleScene::Select(GameObject * gameobject)

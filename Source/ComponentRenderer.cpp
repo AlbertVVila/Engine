@@ -63,18 +63,24 @@ void ComponentRenderer::DrawProperties()
 		ImGui::Separator();
 
 		ImGui::Text("Material");
-		std::vector<std::string> materials = App->fsystem->ListFiles(MATERIALS, false);
 		if (ImGui::BeginCombo("", material->name.c_str()))
 		{
-			for (int n = 0; n < materials.size(); n++)
+			if (guiMaterials.empty())
 			{
-				bool is_selected = (material->name == materials[n]);
-				if (ImGui::Selectable(materials[n].c_str(), is_selected) && material->name != materials[n])
+				guiMaterials = App->fsystem->ListFiles(MATERIALS, false);
+			}
+			for (int n = 0; n < guiMaterials.size(); n++)
+			{
+				bool is_selected = (material->name == guiMaterials[n]);
+				if (ImGui::Selectable(guiMaterials[n].c_str(), is_selected) && material->name != guiMaterials[n])
 				{
-					SetMaterial(materials[n].c_str());
+					SetMaterial(guiMaterials[n].c_str());
 				}
 				if (is_selected)
+				{
 					ImGui::SetItemDefaultFocus();
+					guiMaterials.clear();
+				}
 			}
 			ImGui::EndCombo();
 		}
