@@ -46,6 +46,7 @@ public:
 	void Draw(const Frustum &frustum, bool isEditor = false);
 	void DrawGO(const GameObject& go, const Frustum & frustum, bool isEditor = false);
 	void DrawHierarchy();
+	void DragNDrop(GameObject * go);
 	void DrawGUI() override;
 
 	void CreateCube(const char * name, GameObject* parent);

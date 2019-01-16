@@ -17,6 +17,7 @@
 #include "PanelHierarchy.h"
 
 #include "MaterialEditor.h"
+#include "GUICreator.h"
 #include "imgui.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_sdl.h"
@@ -226,42 +227,7 @@ update_status ModuleEditor::Update(float dt)
 			}
 			ImGui::EndPopup();
 		}
-		if (ImGui::BeginMenu("Create"))
-		{
-			if (ImGui::MenuItem("Empty GameObject"))
-			{
-				App->scene->CreateGameObject("Empty", App->scene->root);
-			}
-			if (ImGui::BeginMenu("Light"))
-			{
-				const char* lights[LIGHTTYPES] = { "Directional", "Point", "Spot"};
-				for (unsigned i = 0; i < LIGHTTYPES; ++i)
-				{
-					if (ImGui::MenuItem(lights[i]))
-					{
-						GameObject *light = App->scene->CreateGameObject(lights[i], App->scene->root);
-						light->CreateComponent(ComponentType::Transform);
-						ComponentLight* lighttype = (ComponentLight *)light->CreateComponent(ComponentType::Light);
-						lighttype->lightType = (LightType)i;
-					}
-				}
-				ImGui::EndMenu();
-			}
-			if (ImGui::MenuItem("Sphere"))
-			{
-				App->scene->CreateSphere("sphere0", App->scene->root);
-			}
-			if (ImGui::MenuItem("Cube"))
-			{
-				App->scene->CreateCube("cube0", App->scene->root);
-			}
-			if (ImGui::MenuItem("New Material"))
-			{
-				materialEditor->open = true;
-				materialEditor->isCreated = true;
-			}
-			ImGui::EndMenu();
-		}
+		GUICreator::CreateElements(App->scene->root);
 		materialEditor->Draw();
 		if (ImGui::BeginMenu("Windows"))
 		{

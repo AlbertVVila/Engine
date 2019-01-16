@@ -97,6 +97,7 @@
     <ClInclude Include="debug_draw.hpp" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="GUICreator.h" />
     <ClInclude Include="ImGuizmo\ImGuizmo.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="MaterialEditor.h" />
@@ -195,6 +196,7 @@
     <ClCompile Include="ComponentRenderer.cpp" />
     <ClCompile Include="ComponentTransform.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GUICreator.cpp" />
     <ClCompile Include="imgui.cpp" />
     <ClCompile Include="ImGuizmo\ImGuizmo.cpp" />
     <ClCompile Include="imgui_demo.cpp" />

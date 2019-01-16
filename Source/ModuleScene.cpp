@@ -1,29 +1,31 @@
 #include "Application.h"
 
-#include "ModuleScene.h"
 #include "ModuleCamera.h"
+#include "ModuleEditor.h"
 #include "ModuleFileSystem.h"
+#include "ModuleInput.h"
 #include "ModuleProgram.h"
-#include "ModuleTextures.h"
 #include "ModuleResourceManager.h"
 #include "ModuleRender.h"
-#include "ModuleEditor.h"
+#include "ModuleScene.h"
+#include "ModuleTextures.h"
 
 #include "GameObject.h"
-#include "ComponentTransform.h"
-#include "ComponentRenderer.h"
 #include "ComponentCamera.h"
+#include "ComponentRenderer.h"
+#include "ComponentTransform.h"
 
 #include "Material.h"
 #include "Mesh.h"
 #include "JSON.h"
 #include "myQuadTree.h"
+#include "GUICreator.h"
+
 #include "Imgui.h"
 #include "Geometry/LineSegment.h"
 #include "Math/MathConstants.h"
 #include "GL/glew.h"
 #include "Brofiler.h"
-
 
 #pragma warning(push)
 #pragma warning(disable : 4996)  
@@ -189,13 +191,100 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 	crenderer->mesh->Draw(shader->id);
 
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, 0);
 	glUseProgram(0);
 }
 
 void ModuleScene::DrawHierarchy()
 {
-	root->DrawHierarchy(selected);
+	std::stack<GameObject*> hierarchy;
+	hierarchy.push(root);
+	while (!hierarchy.empty())
+	{
+		GameObject* current = hierarchy.top();
+		hierarchy.pop();
+		ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_DefaultOpen
+			| ImGuiTreeNodeFlags_OpenOnDoubleClick | (selected == current ? ImGuiTreeNodeFlags_Selected : 0);
+
+		ImGui::PushID(current);
+		if (current->children.empty())
+		{
+			node_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
+		}
+		bool obj_open = ImGui::TreeNodeEx(current, node_flags, current->name.c_str());
+		if (ImGui::IsItemClicked())
+		{
+			Select(current);
+		}
+		DragNDrop(current);
+		if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+		{
+			ImGui::OpenPopup("gameobject_options_popup");
+		}
+		if (ImGui::BeginPopup("gameobject_options_popup"))
+		{
+			GUICreator::CreateElements(current);
+			if (ImGui::Selectable("Duplicate"))
+			{
+				current->copy_flag = true;
+			}
+			if (ImGui::Selectable("Delete"))
+			{
+				current->delete_flag = true;
+				if (selected == current)
+				{
+					selected = nullptr;
+				}
+			}
+			ImGui::EndPopup();
+		}
+		if (obj_open)
+		{
+			for (auto &child : current->children)
+			{
+				hierarchy.push(child);
+			}
+			if (!(node_flags & ImGuiTreeNodeFlags_NoTreePushOnOpen))
+			{
+				ImGui::TreePop();
+			}
+		}
+		ImGui::PopID();
+	}
+}
+
+void ModuleScene::DragNDrop(GameObject* go)
+{
+	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+	{
+		GameObject * dragged_go = go;
+		ImGui::SetDragDropPayload("DragDropHierarchy", &dragged_go, sizeof(GameObject *), ImGuiCond_Once);
+		ImGui::Text("%s", go->name.c_str());
+		ImGui::EndDragDropSource();
+	}
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropHierarchy"))
+		{
+			IM_ASSERT(payload->DataSize == sizeof(GameObject*));
+			GameObject* dropped_go = (GameObject *)*(const int*)payload->Data;
+			if (dropped_go != App->scene->root && dropped_go->parent != go && !dropped_go->IsParented(*go))
+			{
+				go->children.push_back(dropped_go);
+
+				if (dropped_go->transform != nullptr)
+				{
+					dropped_go->transform->SetLocalToWorld();
+				}
+				dropped_go->parent->children.remove(dropped_go);
+				dropped_go->parent = go;
+				if (dropped_go->transform != nullptr)
+				{
+					dropped_go->transform->SetWorldToLocal(dropped_go->parent->GetGlobalTransform());
+				}
+			}
+		}
+		ImGui::EndDragDropTarget();
+	}
 }
 
 void ModuleScene::DrawGUI()
@@ -485,7 +574,7 @@ void ModuleScene::Pick(float normalized_x, float normalized_y)
 		else
 		{
 			float distance = FLOAT_INF;
-			if (go.second->Intersects(line, &distance)) //returns distance to line if triangle hit
+			if (go.second->Intersects(line, distance)) //returns distance to line if triangle hit
 			{
 				if (distance < closestTriangle)
 				{

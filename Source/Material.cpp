@@ -263,7 +263,6 @@ void Material::SetUniforms(unsigned shader) const
 
 			glUniform3fv(glGetUniformLocation(shader,
 				uniform), 1, (GLfloat*)&noColor);
-			glUniform1i(glGetUniformLocation(shader, texture), 0); //Reset uniform if texture not used in shader
 		}
 		glDisable(GL_TEXTURE_2D);
 	}

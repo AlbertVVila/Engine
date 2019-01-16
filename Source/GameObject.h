@@ -21,7 +21,6 @@ public:
 	~GameObject();
 
 	void DrawProperties();
-	void DrawHierarchy(GameObject * obj_clicked);
 
 	void Update();
 
@@ -29,8 +28,9 @@ public:
 	Component * GetComponent(ComponentType type) const;
 	std::vector<Component *> GetComponents(ComponentType type) const;
 	std::vector<Component *> GetComponentsInChildren(ComponentType type) const;
-	void RemoveComponent(Component * component);
+	void RemoveComponent(const Component & component);
 	void RemoveChild(GameObject* child);
+	bool IsParented(const GameObject & gameobject) const;
 
 	void UpdateGlobalTransform();
 	void SetGlobalTransform(const float4x4 &global);
@@ -40,7 +40,7 @@ public:
 	void UpdateBBox();
 	void DrawBBox() const;
 	AABB GetBoundingBox() const;
-	bool Intersects(const LineSegment & line, float* distance) const;
+	bool Intersects(const LineSegment & line, float & distance) const;
 	void UpdateModel(unsigned int shader) const;
 	void SetLightUniforms(unsigned shader) const;
 
@@ -49,7 +49,6 @@ public:
 	void Load(JSON_value * gameobject);
 
 private:
-	bool IsParented(const GameObject & gameobject);
 	void SetStaticAncestors();
 
 public:

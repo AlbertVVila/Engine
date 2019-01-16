@@ -35,7 +35,7 @@ bool Component::DrawComponentState()
 
 void Component::Remove()
 {
-	gameobject->RemoveComponent(this);
+	gameobject->RemoveComponent(*this);
 }
 
 void Component::Save(JSON_value * value) const

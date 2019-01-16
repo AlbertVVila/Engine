@@ -220,6 +220,7 @@
       <Filter>Tree</Filter>
     </ClCompile>
     <ClCompile Include="Viewport.cpp" />
+    <ClCompile Include="GUICreator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -512,6 +513,7 @@
       <Filter>Tree</Filter>
     </ClInclude>
     <ClInclude Include="Viewport.h" />
+    <ClInclude Include="GUICreator.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GeoLib">

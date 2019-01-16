@@ -1,17 +1,5 @@
 #include "GameObject.h"
 
-#include "Math/float4x4.h"
-#include "Math/MathFunc.h"
-#include "Geometry/LineSegment.h"
-#include "GL/glew.h"
-#include "imgui.h"
-
-#include "Component.h"
-#include "ComponentTransform.h"
-#include "ComponentCamera.h"
-#include "ComponentLight.h"
-#include "ComponentRenderer.h"
-
 #include "Application.h"
 #include "ModuleProgram.h"
 #include "ModuleEditor.h"
@@ -21,12 +9,23 @@
 #include "ModuleTextures.h"
 #include "ModuleRender.h"
 
+#include "Component.h"
+#include "ComponentTransform.h"
+#include "ComponentCamera.h"
+#include "ComponentLight.h"
+#include "ComponentRenderer.h"
+
 #include "Material.h"
 #include "Mesh.h"
 #include "myQuadTree.h"
 #include <stack>
 #include "JSON.h"
 
+#include "Math/float4x4.h"
+#include "Math/MathFunc.h"
+#include "Geometry/LineSegment.h"
+#include "GL/glew.h"
+#include "imgui.h"
 #define MAX_NAME 64
 
 GameObject::GameObject(const char * name, unsigned uuid) : name(name), UUID(uuid)
@@ -111,7 +110,7 @@ void GameObject::DrawProperties()
 			}
 			else if (!isStatic)
 			{
-				App->scene->quadtree->Remove(*this); //TODO: doesn't remove on meshrenderer deletion
+				App->scene->quadtree->Remove(*this);
 				App->scene->dynamicGOs.insert(this);
 			}
 		}
@@ -123,125 +122,12 @@ void GameObject::DrawProperties()
 	}
 }
 
-void GameObject::DrawHierarchy(GameObject * selected)
-{
-	ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_DefaultOpen
-		| ImGuiTreeNodeFlags_OpenOnDoubleClick | (selected == this ? ImGuiTreeNodeFlags_Selected : 0);
-
-	ImGui::PushID(this);
-	if (children.empty())
-	{
-		node_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
-	}
-	bool obj_open = ImGui::TreeNodeEx(this, node_flags, name.c_str());
-	if (ImGui::IsItemClicked())
-	{
-		App->scene->Select(this);
-	}
-	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
-	{
-		GameObject * dragged_go = this;
-		ImGui::SetDragDropPayload("DragDropHierarchy", &dragged_go, sizeof(GameObject *), ImGuiCond_Once);
-		ImGui::Text("%s", this->name.c_str());
-		ImGui::EndDragDropSource();
-	}
-	if (ImGui::BeginDragDropTarget())
-	{
-		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropHierarchy"))
-		{
-			IM_ASSERT(payload->DataSize == sizeof(GameObject*));
-			GameObject* dropped_go = (GameObject *)*(const int*)payload->Data;
-			if (dropped_go != App->scene->root && dropped_go->parent != this && !dropped_go->IsParented(*this))
-			{
-				this->children.push_back(dropped_go);
-
-				if (dropped_go->transform != nullptr)
-				{
-					dropped_go->transform->SetLocalToWorld();
-				}
-				dropped_go->parent->children.remove(dropped_go);
-				dropped_go->parent = this;
-				if (dropped_go->transform != nullptr)
-				{
-					dropped_go->transform->SetWorldToLocal(dropped_go->parent->GetGlobalTransform());
-				}
-			}
-		}
-		ImGui::EndDragDropTarget();
-	}
-	if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
-	{
-		ImGui::OpenPopup("gameobject_options_popup");
-	}
-	if (ImGui::BeginPopup("gameobject_options_popup"))
-	{
-		if (ImGui::BeginMenu("Create"))
-		{
-			if (ImGui::Selectable("Empty GameObject"))
-			{
-				App->scene->CreateGameObject("Empty", this);
-			}
-			if (ImGui::BeginMenu("Light"))
-			{
-				const char* lights[LIGHTTYPES] = { "Directional", "Point", "Spot" };
-				for (unsigned i = 0; i < LIGHTTYPES; ++i)
-				{
-					if (ImGui::MenuItem(lights[i]))
-					{
-						GameObject *light = App->scene->CreateGameObject(lights[i], App->scene->root);
-						light->CreateComponent(ComponentType::Transform);
-						ComponentLight* lighttype = (ComponentLight *)light->CreateComponent(ComponentType::Light);
-						lighttype->lightType = (LightType)i;
-					}
-				}
-				ImGui::EndMenu();
-			}
-			if (ImGui::Selectable("Sphere"))
-			{
-				App->scene->CreateSphere("sphere", this);
-			}
-			if (ImGui::Selectable("Cube"))
-			{
-				App->scene->CreateCube("cube", this);
-			}
-			ImGui::EndMenu();
-		}
-		if (ImGui::Selectable("Duplicate"))
-		{
-			copy_flag = true;
-		}
-		if (ImGui::Selectable("Delete"))
-		{
-			delete_flag = true;
-			if (selected == this)
-			{
-				App->scene->selected = nullptr;
-			}
-		}
-		ImGui::EndPopup();
-	}
-	if (obj_open)
-	{
-		for (auto &child : children)
-		{
-			child->DrawHierarchy(selected);
-		}
-		if (!(node_flags & ImGuiTreeNodeFlags_NoTreePushOnOpen))
-		{
-			ImGui::TreePop();
-		}
-	}
-	ImGui::PopID();
-}
-
-
 void GameObject::Update()
 {
 	for (auto& component: components)
 	{
 		component->Update();
 	}
-	//TODO: same GO copy and delete?
 	for (std::list<GameObject*>::iterator it_child = children.begin(); it_child != children.end();)
 	{
 		(*it_child)->Update();
@@ -253,14 +139,14 @@ void GameObject::Update()
 			copy->parent = this;
 			this->children.push_back(copy);
 		}
-		if ((*it_child)->moved_flag)
+		if ((*it_child)->moved_flag) //Moved GO
 		{
 			for (auto child : (*it_child)->children)
 			{
 				child->UpdateGlobalTransform();
 			}
-			(*it_child)->moved_flag = false;
 			(*it_child)->UpdateBBox();
+			(*it_child)->moved_flag = false;
 		}
 		if ((*it_child)->delete_flag) //Delete GO
 		{
@@ -347,15 +233,15 @@ std::vector<Component*> GameObject::GetComponentsInChildren(ComponentType type) 
 	return list;
 }
 
-void GameObject::RemoveComponent(Component * component)
+void GameObject::RemoveComponent(const Component & component)
 {
 	for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
-		if (*it == component)
+		if (*it == &component)
 		{
+			(*it)->CleanUp();
 			components.erase(it);
-			component->CleanUp();
-			RELEASE(component);
+			RELEASE(*it);
 			return;
 		}
 	}
@@ -445,9 +331,6 @@ void GameObject::SetLightUniforms(unsigned shader) const
 		float3 noDirectional = float3::zero;
 		glUniform3fv(glGetUniformLocation(shader,
 			"lights.directional.direction"), 1, (GLfloat*)&noDirectional);
-
-		glUniform3fv(glGetUniformLocation(shader,
-			"lights.directional.color"), 1, (GLfloat*)&noDirectional);
 	}
 
 
@@ -527,14 +410,14 @@ AABB GameObject::GetBoundingBox() const
 	return bbox;
 }
 
-bool GameObject::Intersects(const LineSegment & line, float* distance) const
+bool GameObject::Intersects(const LineSegment & line, float &distance) const
 {
 	LineSegment localLine(line);
 	localLine.Transform(GetGlobalTransform().Inverted());
 	ComponentRenderer* mesh_renderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
 	if (mesh_renderer != nullptr)
 	{
-		if (mesh_renderer->mesh->Intersects(localLine, distance))
+		if (mesh_renderer->mesh->Intersects(localLine, &distance))
 		{
 			return true;
 		}
@@ -699,7 +582,7 @@ void GameObject::Load(JSON_value *value)
 	}
 }
 
-bool GameObject::IsParented(const GameObject & gameobject)
+bool GameObject::IsParented(const GameObject & gameobject) const
 {
 	if (this == &gameobject) 
 	{
