@@ -201,7 +201,9 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 
 void ModuleScene::DrawHierarchy()
 {
+	ImGui::PushStyleColor(ImGuiCol_Header,ImVec4(0.2f, 0.2f, 0.5f, 1.00f));
 	root->DrawHierarchy(selected);
+	ImGui::PopStyleColor();
 }
 
 void ModuleScene::DragNDrop(GameObject* go)

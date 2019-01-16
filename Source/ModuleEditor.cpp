@@ -126,7 +126,6 @@ update_status ModuleEditor::PreUpdate()
 	ImGuizmo::BeginFrame();
 
 	CreateDockSpace();
-	ImGui::ShowDemoWindow();
 	return UPDATE_CONTINUE;
 }
 
