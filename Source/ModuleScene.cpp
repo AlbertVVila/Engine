@@ -72,6 +72,8 @@ bool ModuleScene::Init(JSON * config)
 		primitivesUID[(unsigned)PRIMITIVES::SPHERE] = scene->GetUint("sphereUID");
 		primitivesUID[(unsigned)PRIMITIVES::CUBE] = scene->GetUint("cubeUID");
 		ambientColor = scene->GetColor3("ambient");
+		const char* dscene = scene->GetString("defaultscene");
+		if (dscene != nullptr) defaultScene = dscene;
 	}
 	return true;
 }
@@ -79,6 +81,10 @@ bool ModuleScene::Init(JSON * config)
 bool ModuleScene::Start()
 {
 	camera_notfound_texture = App->textures->GetTexture(NOCAMERA); 
+	if (defaultScene.size() > 0)
+	{
+		LoadScene(defaultScene.c_str());
+	}
 	return true;
 }
 
@@ -117,7 +123,7 @@ void ModuleScene::SaveConfig(JSON * config)
 	scene->AddUint("sphereUID", primitivesUID[(unsigned)PRIMITIVES::SPHERE]);
 	scene->AddUint("cubeUID", primitivesUID[(unsigned)PRIMITIVES::CUBE]);
 	scene->AddFloat3("ambient", ambientColor);
-
+	scene->AddString("defaultscene", defaultScene.c_str());
 	config->AddValue("scene", *scene);
 }
 

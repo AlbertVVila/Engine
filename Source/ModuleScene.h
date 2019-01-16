@@ -85,6 +85,7 @@ public:
 	std::set<GameObject*> dynamicGOs;
 	pcg32 uuid_rng;
 	std::string name;
+	std::string defaultScene;
 
 	float3 ambientColor = float3::one;
 };

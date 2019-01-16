@@ -276,9 +276,15 @@ void ModuleEditor::SceneSavePopup(bool savepopup)
 		ImGui::InputText("name", name, 64);
 		App->scene->name = name;
 		ImGui::Separator();
+		static bool defaultScene = false;
+		ImGui::Checkbox("Set as Starting Scene", &defaultScene);
 
 		if (ImGui::Button("OK", ImVec2(120, 0))) {
 			App->scene->SaveScene(*App->scene->root, App->scene->name.c_str());
+			if (defaultScene)
+			{
+				App->scene->defaultScene = name;
+			}
 			ImGui::CloseCurrentPopup();
 		}
 		ImGui::SetItemDefaultFocus();
