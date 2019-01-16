@@ -4,8 +4,7 @@ Currently under development.
 
 ![alt text](https://imgur.com/cOOPIAO.png)
 
-## Assets
-## Window
+## Windows
 ### Scene & Game
 In the scene window you can visualize the editor camera, and you can visualize the geometry loaded.
 You can select different gameobjects by picking them with the mouse.
@@ -38,7 +37,10 @@ Here you have different sections that lets you modify different visualization op
 In the console you we'll see a list of relevant logs about importing, loading or saving files.
 
 ## More information
-[Last Release Notes](https://github.com/AlbertVVila/Engine/releases),
+For more information about new features read
+[last Release Notes](https://github.com/AlbertVVila/Engine/releases).
+
+
 [Github](https://github.com/AlbertVVila/Engine) and
 [License](https://github.com/AlbertVVila/Engine/blob/master/LICENSE)
 
