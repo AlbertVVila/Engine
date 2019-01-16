@@ -15,6 +15,7 @@
 #include "ComponentLight.h"
 #include "ComponentRenderer.h"
 
+#include "GUICreator.h"
 #include "Material.h"
 #include "Mesh.h"
 #include "myQuadTree.h"
@@ -534,6 +535,57 @@ bool GameObject::IsParented(const GameObject & gameobject) const
 		}
 	}
 	return false;
+}
+
+void GameObject::DrawHierarchy(GameObject * selected)
+{
+	ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_DefaultOpen
+		| ImGuiTreeNodeFlags_OpenOnDoubleClick | (selected == this ? ImGuiTreeNodeFlags_Selected : 0);
+
+	ImGui::PushID(this);
+	if (children.empty())
+	{
+		node_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
+	}
+	bool obj_open = ImGui::TreeNodeEx(this, node_flags, name.c_str());
+	if (ImGui::IsItemClicked())
+	{
+		App->scene->Select(this);
+	}
+	App->scene->DragNDrop(this);
+	if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	{
+		ImGui::OpenPopup("gameobject_options_popup");
+	}
+	if (ImGui::BeginPopup("gameobject_options_popup"))
+	{
+		GUICreator::CreateElements(this);
+		if (ImGui::Selectable("Duplicate"))
+		{
+			copy_flag = true;
+		}
+		if (ImGui::Selectable("Delete"))
+		{
+			delete_flag = true;
+			if (selected == this)
+			{
+				App->scene->selected = nullptr;
+			}
+		}
+		ImGui::EndPopup();
+	}
+	if (obj_open)
+	{
+		for (auto &child : children)
+		{
+			child->DrawHierarchy(selected);
+		}
+		if (!(node_flags & ImGuiTreeNodeFlags_NoTreePushOnOpen))
+		{
+			ImGui::TreePop();
+		}
+	}
+	ImGui::PopID();
 }
 
 void GameObject::SetStaticAncestors()

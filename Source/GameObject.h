@@ -32,6 +32,8 @@ public:
 	void RemoveChild(GameObject* child);
 	bool IsParented(const GameObject & gameobject) const;
 
+	void DrawHierarchy(GameObject * selected);
+
 	void UpdateGlobalTransform();
 	void SetGlobalTransform(const float4x4 &global);
 	float4x4 GetGlobalTransform() const;

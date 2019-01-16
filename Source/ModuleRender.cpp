@@ -218,7 +218,7 @@ void ModuleRender::DrawGizmos() const
 		DrawGrid();
 	}
 	DrawAxis();
-	if (App->scene->maincamera != nullptr)
+	if (App->scene->maincamera != nullptr && App->renderer->useMainCameraFrustum)
 	{
 		App->scene->maincamera->DrawFrustum(shader);
 	}

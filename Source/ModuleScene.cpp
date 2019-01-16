@@ -19,7 +19,6 @@
 #include "Mesh.h"
 #include "JSON.h"
 #include "myQuadTree.h"
-#include "GUICreator.h"
 
 #include "Imgui.h"
 #include "Geometry/LineSegment.h"
@@ -202,60 +201,7 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 
 void ModuleScene::DrawHierarchy()
 {
-	std::stack<GameObject*> hierarchy;
-	hierarchy.push(root);
-	while (!hierarchy.empty())
-	{
-		GameObject* current = hierarchy.top();
-		hierarchy.pop();
-		ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_DefaultOpen
-			| ImGuiTreeNodeFlags_OpenOnDoubleClick | (selected == current ? ImGuiTreeNodeFlags_Selected : 0);
-
-		ImGui::PushID(current);
-		if (current->children.empty())
-		{
-			node_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
-		}
-		bool obj_open = ImGui::TreeNodeEx(current, node_flags, current->name.c_str());
-		if (ImGui::IsItemClicked())
-		{
-			Select(current);
-		}
-		DragNDrop(current);
-		if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
-		{
-			ImGui::OpenPopup("gameobject_options_popup");
-		}
-		if (ImGui::BeginPopup("gameobject_options_popup"))
-		{
-			GUICreator::CreateElements(current);
-			if (ImGui::Selectable("Duplicate"))
-			{
-				current->copy_flag = true;
-			}
-			if (ImGui::Selectable("Delete"))
-			{
-				current->delete_flag = true;
-				if (selected == current)
-				{
-					selected = nullptr;
-				}
-			}
-			ImGui::EndPopup();
-		}
-		if (obj_open)
-		{
-			for (auto &child : current->children)
-			{
-				hierarchy.push(child);
-			}
-			if (!(node_flags & ImGuiTreeNodeFlags_NoTreePushOnOpen))
-			{
-				ImGui::TreePop();
-			}
-		}
-		ImGui::PopID();
-	}
+	root->DrawHierarchy(selected);
 }
 
 void ModuleScene::DragNDrop(GameObject* go)
@@ -295,7 +241,7 @@ void ModuleScene::DragNDrop(GameObject* go)
 
 void ModuleScene::DrawGUI()
 {
-	ImGui::ColorEdit3("Color", (float*)&ambientColor);
+	ImGui::ColorEdit3("Ambient", (float*)&ambientColor);
 	if(ImGui::Button("Reset QuadTree"))
 	{
 		ResetQuadTree();
@@ -398,6 +344,7 @@ void ModuleScene::CreatePrimitive(const char * name, GameObject* parent, PRIMITI
 	crenderer->UpdateMesh(data, uid);//Deallocates data
 	crenderer->SetMaterial(DEFAULTMAT);
 	App->resManager->AddMesh(crenderer->mesh);
+	App->scene->Select(gameobject);
 }
 
 void ModuleScene::SetPrimitiveMesh(par_shapes_mesh_s *mesh, PRIMITIVES type)

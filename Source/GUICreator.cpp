@@ -23,7 +23,8 @@ void GUICreator::CreateElements(GameObject* go)
 	{
 		if (ImGui::Selectable("Empty GameObject"))
 		{
-			App->scene->CreateGameObject("Empty", go);
+			GameObject *newgo = App->scene->CreateGameObject("Empty", go);
+			App->scene->Select(newgo);
 		}
 		if (ImGui::BeginMenu("Light"))
 		{
@@ -32,13 +33,21 @@ void GUICreator::CreateElements(GameObject* go)
 			{
 				if (ImGui::MenuItem(lights[i]))
 				{
-					GameObject *light = App->scene->CreateGameObject(lights[i], App->scene->root);
+					GameObject *light = App->scene->CreateGameObject(lights[i], go);
 					light->CreateComponent(ComponentType::Transform);
 					ComponentLight* lighttype = (ComponentLight *)light->CreateComponent(ComponentType::Light);
 					lighttype->lightType = (LightType)i;
+					App->scene->Select(light);
 				}
 			}
 			ImGui::EndMenu();
+		}
+		if (ImGui::Selectable("Camera"))
+		{
+			GameObject *cam = App->scene->CreateGameObject("Camera", go);
+			cam->CreateComponent(ComponentType::Transform);
+			cam->CreateComponent(ComponentType::Camera);
+			App->scene->Select(cam);
 		}
 		if (ImGui::Selectable("Sphere"))
 		{

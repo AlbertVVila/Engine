@@ -72,7 +72,7 @@ void PanelConfiguration::DrawFPSgraph() const
 	char showmin[32];
 	sprintf_s(avg, "%s%.2f", "avg:", totalfps / fps.size());
 	sprintf_s(showmin, "%s%.2f", "min:", minfps);
-	ImGui::PlotHistogram("FPS", &fps[0], fps.size(), 0, avg,  0.0f, 120.0f, ImVec2(0, 80));
+	ImGui::PlotHistogram("FPS", &fps[0], fps.size(), 0, avg,  0.0f, 300.0f, ImVec2(0, 80));
 	ImGui::Text(showmin);
 }
 
@@ -85,7 +85,7 @@ void PanelConfiguration::DrawMSgraph() const
 	char showmax[32];
 	sprintf_s(avg, "%s%.2f", "avg:", totalms / ms.size());
 	sprintf_s(showmax, "%s%.2f", "max:", maxms);
-	ImGui::PlotHistogram("MS", &ms[0], ms.size(), 0, avg, 0.0f, 5.0f, ImVec2(0, 80));
+	ImGui::PlotHistogram("MS", &ms[0], ms.size(), 0, avg, 0.0f, 20.0f, ImVec2(0, 80));
 	ImGui::Text(showmax);
 }
 
