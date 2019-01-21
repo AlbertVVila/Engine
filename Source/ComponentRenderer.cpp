@@ -79,10 +79,13 @@ void ComponentRenderer::DrawProperties()
 				if (is_selected)
 				{
 					ImGui::SetItemDefaultFocus();
-					guiMaterials.clear();
 				}
 			}
 			ImGui::EndCombo();
+		}
+		else
+		{
+			guiMaterials.clear();
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("View"))

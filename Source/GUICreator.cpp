@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "ModuleScene.h"
 
+#include "MaterialEditor.h"
 #include "GameObject.h"
 #include "GUICreator.h"
 #include "imgui.h"

@@ -24,6 +24,7 @@
 #include "ImGuizmo.h"
 #include "Brofiler.h"
 #include <vector>
+
 ModuleEditor::ModuleEditor()
 {
 	panels.push_back(console = new PanelConsole());
@@ -194,6 +195,11 @@ update_status ModuleEditor::Update(float dt)
 		}
 		SceneSavePopup(savepopup);
 		GUICreator::CreateElements(App->scene->root);
+		if (ImGui::MenuItem("New Material"))
+		{
+			materialEditor->open = true;
+			materialEditor->isCreated = true;
+		}
 		materialEditor->Draw();
 		WindowsMenu();
 		HelpMenu();
