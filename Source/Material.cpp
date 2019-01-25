@@ -249,7 +249,7 @@ void Material::SetUniforms(unsigned shader) const
 				glUniform4fv(glGetUniformLocation(shader,
 					uniform), 1, color);
 			}
-			else
+			else if(i != (unsigned)TextureType::OCCLUSION)
 			{
 				glUniform3fv(glGetUniformLocation(shader,
 					uniform), 1, color);
