@@ -212,8 +212,8 @@ void Material::SetUniforms(unsigned shader) const
 	{
 		glActiveTexture(GL_TEXTURE0 + i);
 
-		char* textureType;
-		float* color = nullptr;
+		char* textureType = nullptr;
+		float* color = (float*)&float3::zero;
 		switch ((TextureType)i)
 		{
 		case TextureType::DIFFUSE:
@@ -249,7 +249,7 @@ void Material::SetUniforms(unsigned shader) const
 				glUniform4fv(glGetUniformLocation(shader,
 					uniform), 1, color);
 			}
-			else if(i != (unsigned)TextureType::OCCLUSION)
+			else
 			{
 				glUniform3fv(glGetUniformLocation(shader,
 					uniform), 1, color);
@@ -260,7 +260,9 @@ void Material::SetUniforms(unsigned shader) const
 		}
 		else
 		{
-			float3 noColor = float3::zero;
+			glBindTexture(GL_TEXTURE_2D, 0);
+			glUniform1i(glGetUniformLocation(shader, texture), i);
+			float3 noColor = float3::zero; //Used as a fallback
 
 			glUniform3fv(glGetUniformLocation(shader,
 				uniform), 1, (GLfloat*)&noColor);

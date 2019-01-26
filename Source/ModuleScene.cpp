@@ -195,6 +195,7 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 	go.UpdateModel(shader->id);
 	crenderer->mesh->Draw(shader->id);
 
+	glBindTexture(GL_TEXTURE_2D, 0);
 	glActiveTexture(GL_TEXTURE0);
 	glUseProgram(0);
 }
