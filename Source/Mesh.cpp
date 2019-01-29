@@ -263,6 +263,7 @@ void Mesh::SetBboxBuffers()
 
 void Mesh::DrawBbox(unsigned shader, const AABB &globalBBOX) const
 {
+	if (globalBBOX.Volume() <= 0) return;
 	glUseProgram(shader);
 
 	float4x4 boxtransform = float4x4::FromTRS(globalBBOX.CenterPoint(), Quat::identity, globalBBOX.Size());
