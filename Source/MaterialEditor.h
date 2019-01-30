@@ -13,10 +13,11 @@ public:
 	void Draw();
 	void ShaderSelector(std::string &current_shader);
 	void TextureSelector(unsigned i, std::string &current_texture);
+	void SetCurrentTextures();	// Sets current textures strings with the corresponding texture file string
 	void CleanUp();
 
 public:
-	bool open=false;
+	bool open = false;
 	bool isCreated = false;
 	Material* material = nullptr;
 	Material* previous = nullptr;
