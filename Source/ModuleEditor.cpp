@@ -17,6 +17,7 @@
 #include "PanelHierarchy.h"
 
 #include "MaterialEditor.h"
+#include "FileExplorer.h"
 #include "GUICreator.h"
 #include "imgui.h"
 #include "imgui_impl_opengl3.h"
@@ -35,6 +36,7 @@ ModuleEditor::ModuleEditor()
 	panels.push_back(hierarchy = new PanelHierarchy());
 
 	materialEditor = new MaterialEditor();
+	fileExplorer = new FileExplorer();
 }
 
 // Destructor
@@ -145,17 +147,10 @@ update_status ModuleEditor::Update(float dt)
 				App->scene->ClearScene();
 			}
 			std::vector<std::string> files = App->fsystem->ListFiles(SCENES);
-			if (ImGui::BeginMenu("Load Scene"))
+			if (ImGui::MenuItem("Load Scene"))
 			{
-				for (auto &file : files)
-				{
-					file = App->fsystem->RemoveExtension(file);
-					if (ImGui::MenuItem(file.c_str()))
-					{
-						App->scene->LoadScene(file.c_str());
-					}
-				}
-				ImGui::EndMenu();
+				fileExplorer->currentOperation = MenuOperations::LOAD;
+				fileExplorer->openFileExplorer = true;
 			}
 			if (ImGui::BeginMenu("Add Scene"))
 			{
@@ -177,12 +172,14 @@ update_status ModuleEditor::Update(float dt)
 				}
 				else
 				{
-					savepopup = true;
+					fileExplorer->currentOperation = MenuOperations::SAVE;
+					fileExplorer->openFileExplorer = true;
 				}
 			}
-			if (ImGui::MenuItem("Save As"))
+			if (ImGui::MenuItem("Save As..."))
 			{
-				savepopup = true;
+				fileExplorer->currentOperation = MenuOperations::SAVE;
+				fileExplorer->openFileExplorer = true;
 			}
 			if (ImGui::MenuItem("Exit", "Esc"))
 			{
@@ -193,13 +190,13 @@ update_status ModuleEditor::Update(float dt)
 			}
 			ImGui::EndMenu();
 		}
-		SceneSavePopup(savepopup);
 		GUICreator::CreateElements(App->scene->root);
 		if (ImGui::MenuItem("New Material"))
 		{
 			materialEditor->open = true;
 			materialEditor->isCreated = true;
 		}
+		fileExplorer->Draw();
 		materialEditor->Draw();
 		WindowsMenu();
 		HelpMenu();
@@ -258,47 +255,6 @@ void ModuleEditor::DrawPanels()
 		{
 			(*it)->Draw();
 		}
-}
-
-void ModuleEditor::SceneSavePopup(bool savepopup)
-{
-	if (savepopup) ImGui::OpenPopup("SavePopup");
-	if (ImGui::BeginPopupModal("SavePopup", NULL, ImGuiWindowFlags_AlwaysAutoResize))
-	{
-		ImGui::Text("Choose Scene name:\n\n");
-		char name[64] = "";
-		if (!App->scene->name.empty())
-		{
-			strcpy(name, App->scene->name.c_str());
-		}
-		else
-		{
-			strcpy(name, "Unnamed");
-		}
-		ImGui::InputText("name", name, 64);
-		App->scene->name = name;
-		ImGui::Separator();
-		static bool defaultScene = false;
-		ImGui::Checkbox("Set as Starting Scene", &defaultScene);
-
-		if (ImGui::Button("OK", ImVec2(120, 0))) {
-			App->scene->SaveScene(*App->scene->root, App->scene->name.c_str());
-			if (defaultScene)
-			{
-				App->scene->defaultScene = name;
-			}
-			ImGui::CloseCurrentPopup();
-		}
-		ImGui::SetItemDefaultFocus();
-		ImGui::SameLine();
-		if (ImGui::Button("Cancel", ImVec2(120, 0)))
-		{
-			savepopup = false;
-			ImGui::CloseCurrentPopup();
-		}
-		ImGui::EndPopup();
-	}
-
 }
 
 void ModuleEditor::WindowsMenu()

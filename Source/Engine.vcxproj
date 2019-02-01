@@ -95,6 +95,7 @@
     <ClInclude Include="ComponentRenderer.h" />
     <ClInclude Include="ComponentTransform.h" />
     <ClInclude Include="debug_draw.hpp" />
+    <ClInclude Include="FileExplorer.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="GUICreator.h" />
@@ -194,6 +195,7 @@
     <ClCompile Include="ComponentLight.cpp" />
     <ClCompile Include="ComponentRenderer.cpp" />
     <ClCompile Include="ComponentTransform.cpp" />
+    <ClCompile Include="FileExplorer.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GUICreator.cpp" />
     <ClCompile Include="imgui.cpp" />
