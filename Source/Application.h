@@ -18,6 +18,7 @@ class ModuleEditor;
 class ModuleScene;
 class ModuleFileSystem;
 class ModuleResourceManager;
+class ModuleScript;
 
 class Application
 {
@@ -43,6 +44,7 @@ public:
 	ModuleScene* scene = nullptr;
 	ModuleFileSystem* fsystem = nullptr;
 	ModuleResourceManager* resManager = nullptr;
+	ModuleScript* scripting = nullptr;
 
 private:
 	std::list<Module*> modules;
