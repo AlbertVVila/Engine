@@ -236,14 +236,11 @@ std::vector<Component*> GameObject::GetComponentsInChildren(ComponentType type) 
 
 void GameObject::RemoveComponent(const Component & component)
 {
-	for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
-	{
-		if (*it == &component)
-		{
-			(*it)->CleanUp();
-			components.erase(it);
-			RELEASE(*it);
-			return;
+	for (int i = 0; i < components.size(); ++i) {
+		if (components[i] == &component) {
+			components[i]->CleanUp();
+			RELEASE(components[i]);
+			components.erase(components.begin() + i);
 		}
 	}
 }
