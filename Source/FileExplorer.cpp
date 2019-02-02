@@ -17,7 +17,7 @@ FileExplorer::~FileExplorer()
 
 void FileExplorer::Reset()
 {
-	path = App->fsystem->baseDir;
+	path = "";
 	extensionToFilter = FILETYPE::NONE;
 	while (!pathStack.empty())
 		pathStack.pop();
@@ -27,8 +27,7 @@ bool FileExplorer::Open()
 {
 	if (ImGui::BeginPopupModal(title, &openFileExplorer))
 	{
-		ImGui::Text((path + "/").c_str());
-
+		DrawPath();
 		// List of files and directories box: [..] [Directories] [Files]
 		std::vector<std::string> files;
 		std::vector<std::string> dirs;
@@ -153,6 +152,48 @@ void FileExplorer::Draw()
 				App->scene->LoadScene(file);
 				currentOperation = MenuOperations::NONE;
 				break;
+			}
+		}
+	}
+}
+
+void FileExplorer::DrawPath()
+{
+	std::vector<int> separatorLocations;
+	std::vector<std::string> folders;
+	for (int i = 0; i < path.size(); i++)
+		if (path[i] == '/')
+			separatorLocations.push_back(i);
+	for (std::vector<int>::iterator it = separatorLocations.begin(); it != separatorLocations.end(); ++it)
+	{
+		if (it != separatorLocations.end() - 1)
+		{
+			folders.push_back(path.substr((*it), (*(it + 1)) - (*it)));
+		}
+		else {
+			folders.push_back(path.substr((*it), (path.size() - (*it))));
+		}
+	}
+	if (ImGui::Button("."))
+	{
+		Reset();
+	}
+	for each (std::string folder in folders)
+	{
+		ImGui::SameLine();
+		if (ImGui::Button(folder.c_str()))
+		{
+			if (folder != folders[folders.size() - 1])
+			{
+				while (pathStack.top().substr(pathStack.top().find_last_of("/")) != folder)
+				{
+					pathStack.pop();
+				}
+				if (pathStack.top().substr(pathStack.top().find_last_of("/")) == folder)
+				{
+					path = pathStack.top();
+					pathStack.pop();
+				}
 			}
 		}
 	}

@@ -22,6 +22,7 @@ public:
 	void Reset(); //set up a new file dialog request
 	bool Open(); //returns true on accepted, false on cancelled or running
 	void Draw();
+	void DrawPath();
 
 	//members
 public:
