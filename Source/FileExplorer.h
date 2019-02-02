@@ -4,6 +4,8 @@
 #include <string>
 #include <stack>
 
+enum class FILETYPE;
+
 enum class MenuOperations
 {
 	NONE = 0,
@@ -29,6 +31,7 @@ public:
 	std::string path = "";
 	std::stack<std::string> pathStack;
 
+	FILETYPE extensionToFilter;
 	MenuOperations currentOperation = MenuOperations::NONE;
 };
 

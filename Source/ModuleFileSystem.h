@@ -37,7 +37,8 @@ enum class FILETYPE
 	TEXTURE,
 	MODEL,
 	MESH,
-	SCENE
+	SCENE,
+	NONE
 };
 
 class ModuleFileSystem :
