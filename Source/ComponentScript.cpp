@@ -6,8 +6,8 @@
 
 ComponentScript::ComponentScript(GameObject * gameobject) : Component(gameobject, ComponentType::Script)
 {
-	script = CreateScript();
-	script->SetGameObject(gameobject);
+	//script = CreateScript();
+	//script->SetGameObject(gameobject);
 }
 
 ComponentScript::ComponentScript(const ComponentScript & component) : Component(component)

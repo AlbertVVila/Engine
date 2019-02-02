@@ -25,6 +25,4 @@ protected:
 
 };
 
-BASESCRIPT_API Script* CreateScript();
-
-#endif
+#endif __BaseScript_h__
