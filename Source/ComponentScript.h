@@ -24,7 +24,7 @@ public:
 	void DrawProperties();
 
 private:
-	std::string script_name = "Script";
+	std::string scriptName = "No Script";
 	Script* script;
 };
 

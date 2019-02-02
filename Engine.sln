@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BaseScript", "BaseScript\Ba
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TemplateScript", "TemplateScript\TemplateScript.vcxproj", "{98CDDD01-19EB-46DF-8825-4E5CB235AF7E}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PlayerMovement", "PlayerMovement\PlayerMovement.vcxproj", "{DA319D4A-70A8-42C8-A54F-DB7EAD02CA0D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -39,6 +41,14 @@ Global
 		{98CDDD01-19EB-46DF-8825-4E5CB235AF7E}.Release|Win32.Build.0 = Release|Win32
 		{98CDDD01-19EB-46DF-8825-4E5CB235AF7E}.Release|x64.ActiveCfg = Release|x64
 		{98CDDD01-19EB-46DF-8825-4E5CB235AF7E}.Release|x64.Build.0 = Release|x64
+		{DA319D4A-70A8-42C8-A54F-DB7EAD02CA0D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{DA319D4A-70A8-42C8-A54F-DB7EAD02CA0D}.Debug|Win32.Build.0 = Debug|Win32
+		{DA319D4A-70A8-42C8-A54F-DB7EAD02CA0D}.Debug|x64.ActiveCfg = Debug|x64
+		{DA319D4A-70A8-42C8-A54F-DB7EAD02CA0D}.Debug|x64.Build.0 = Debug|x64
+		{DA319D4A-70A8-42C8-A54F-DB7EAD02CA0D}.Release|Win32.ActiveCfg = Release|Win32
+		{DA319D4A-70A8-42C8-A54F-DB7EAD02CA0D}.Release|Win32.Build.0 = Release|Win32
+		{DA319D4A-70A8-42C8-A54F-DB7EAD02CA0D}.Release|x64.ActiveCfg = Release|x64
+		{DA319D4A-70A8-42C8-A54F-DB7EAD02CA0D}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

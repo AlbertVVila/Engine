@@ -2,7 +2,7 @@
 #define __ModuleScript_h__
 
 #include "Module.h"
-#include <list>
+#include <vector>
 class Script;
 
 class ModuleScript :
@@ -16,8 +16,13 @@ public:
 	bool Start() override;
 	update_status Update(float dt) override;
 
+	Script* AddScript(std::string script);
+	void RemoveScript(Script* script);
+
 public:
-	std::list<Script*> scripts;
+	std::vector<std::string> scripts;
+private:
+	std::list<Script*> scriptInstances;
 };
 
 #endif __ModuleScript_h__

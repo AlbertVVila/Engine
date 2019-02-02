@@ -16,6 +16,7 @@
 #define TEXTURES LIBRARY "Textures/"
 #define SCENES LIBRARY "Scenes/"
 #define SHADERS "Shaders/"
+#define SCRIPTS "Scripts/"
 #define VERTEXSHADERS SHADERS "VertexShaders/"
 #define FRAGSHADERS SHADERS "FragmentShaders/"
 #define SKYBOX "Skybox/"
@@ -28,6 +29,7 @@
 #define JPG	".jpg"
 #define TEXTUREEXT ".dds"
 #define JSONEXT ".json"
+#define DLL ".dll"
 
 #define CHECKERS "checkersTexture"
 #define NOCAMERA "nocamera"

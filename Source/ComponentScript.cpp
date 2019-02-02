@@ -1,7 +1,11 @@
+#include "Application.h"
+
+#include "ModuleScript.h"
 #include "ComponentScript.h"
+
 #include "GameObject.h"
-#include "JSON.h"
 #include "BaseScript.h"
+#include "JSON.h"
 #include "imgui.h"
 
 ComponentScript::ComponentScript(GameObject * gameobject) : Component(gameobject, ComponentType::Script)
@@ -12,7 +16,7 @@ ComponentScript::ComponentScript(GameObject * gameobject) : Component(gameobject
 
 ComponentScript::ComponentScript(const ComponentScript & component) : Component(component)
 {
-	script_name = component.script_name;
+	scriptName = component.scriptName;
 }
 
 ComponentScript::~ComponentScript()
@@ -26,20 +30,42 @@ ComponentScript * ComponentScript::Clone() const
 
 void ComponentScript::Update()
 {
-	script->Update();
+
 }
 
 void ComponentScript::DrawProperties()
 {
-	if (ImGui::CollapsingHeader(script_name.c_str(), ImGuiTreeNodeFlags_DefaultOpen))
+	if (ImGui::CollapsingHeader(scriptName.c_str(), ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		bool removed = Component::DrawComponentState();
 		if (removed)
 		{
 			return;
 		}
+
+		ImGui::Text("Select Script");
+		if (ImGui::BeginCombo("", scriptName.c_str()))
+		{
+			for (int n = 0; n < App->scripting->scripts.size(); n++)
+			{
+				bool is_selected = (scriptName == App->scripting->scripts[n]);
+				if (ImGui::Selectable(App->scripting->scripts[n].c_str(), is_selected) && scriptName != App->scripting->scripts[n])
+				{
+					script = App->scripting->AddScript(App->scripting->scripts[n]);
+					scriptName = App->scripting->scripts[n];
+				}
+				if (is_selected)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+			ImGui::EndCombo();
+		}
 		ImGuiContext * context = ImGui::GetCurrentContext();
-		script->Expose(context);
+		if (script != nullptr)
+		{
+			script->Expose(context);
+		}
 	}
 }
 
