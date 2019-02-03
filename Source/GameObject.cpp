@@ -146,6 +146,7 @@ void GameObject::Update()
 			{
 				child->UpdateGlobalTransform();
 			}
+			UpdateBBox();
 			(*it_child)->UpdateBBox();
 			(*it_child)->moved_flag = false;
 		}
