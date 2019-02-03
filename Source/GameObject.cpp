@@ -441,8 +441,7 @@ void GameObject::UpdateBBox()
 		for (auto &child : children)
 		{
 			bbox.Enclose(child->bbox);
-		}
-		bbox.TransformAsAABB(GetGlobalTransform());
+		}		
 	}
 }
 
@@ -454,6 +453,7 @@ void GameObject::DrawBBox() const
 	}
 
 	ComponentRenderer *renderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
+
 	if (renderer == nullptr) return;
 
 	renderer->mesh->DrawBbox(App->program->defaultShader->id, bbox);

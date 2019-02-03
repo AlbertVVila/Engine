@@ -172,15 +172,6 @@ void MaterialEditor::TextureSelector(unsigned i, std::string &current_texture)
 		ImGui::Image((ImTextureID)material->textures[i]->id, { 200,200 }, { 0,1 }, { 1,0 });
 	}
 }
-
-void MaterialEditor::SetCurrentTextures()
-{
-	// Get material textures
-	Texture* diffuse_texture = material->GetTexture(TextureType::DIFFUSE);
-	Texture* specular_texture = material->GetTexture(TextureType::SPECULAR);
-	Texture* occlusion_texture = material->GetTexture(TextureType::OCCLUSION);
-}
-
 void MaterialEditor::CleanUp()
 {
 	if (isCreated) RELEASE(material);
