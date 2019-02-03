@@ -13,12 +13,15 @@ FileExplorer::FileExplorer()
 
 FileExplorer::~FileExplorer()
 {
+	Reset();
 }
 
 void FileExplorer::Reset()
 {
 	path = "";
+	sprintf_s(filename, "");
 	extensionToFilter = FILETYPE::NONE;
+	currentOperation = MenuOperations::NONE;
 	while (!pathStack.empty())
 		pathStack.pop();
 }
@@ -45,59 +48,19 @@ bool FileExplorer::Open()
 			}
 		}
 		// [Directories]
-		for each (std::string s in dirs)
+		for each (std::string dir in dirs)
 		{
-			std::string slash_dir = s + "/";
+			std::string slash_dir = dir + "/";
 			if (ImGui::Selectable(slash_dir.c_str(), false))
 			{
 				pathStack.push(path);
-				path = path + "/" + s;
+				path = path + "/" + dir;
 			}
 		}
 		// [Files]
-		for each (std::string s in files)
+		for each (std::string file in files)
 		{
-			std::string extension = "";
-			switch (extensionToFilter)
-			{
-			case FILETYPE::TEXTURE:		
-				extension = App->fsystem->GetExtension(s);
-				if (extension == TEXTUREEXT || extension == PNG || extension == TIF || extension == JPG)
-				{
-					if (ImGui::Selectable(s.c_str(), false))
-						sprintf_s(file, App->fsystem->RemoveExtension(s).c_str());
-				}
-				break;
-			case FILETYPE::MODEL:
-				extension = App->fsystem->GetExtension(s);
-				if (extension == FBXEXTENSION || extension == FBXCAPITAL)
-				{
-					if (ImGui::Selectable(s.c_str(), false))
-						sprintf_s(file, App->fsystem->RemoveExtension(s).c_str());
-				}
-				break;
-			case FILETYPE::MESH:
-				extension = App->fsystem->GetExtension(s);
-				if (extension == MESHEXTENSION)
-				{
-					if (ImGui::Selectable(s.c_str(), false))
-						sprintf_s(file, App->fsystem->RemoveExtension(s).c_str());
-				}
-				break;
-			case FILETYPE::SCENE:
-				extension = App->fsystem->GetExtension(s);
-				if (extension == JSONEXT)
-				{
-					if (ImGui::Selectable(s.c_str(), false))
-						sprintf_s(file, App->fsystem->RemoveExtension(s).c_str());
-				}
-				break;
-			default:
-			case FILETYPE::NONE:
-				if (ImGui::Selectable(s.c_str(), false))
-					sprintf_s(file, App->fsystem->RemoveExtension(s).c_str());
-				break;
-			}
+			FilterByFileType(file);
 		}
 		ImGui::PopStyleVar();
 		ImGui::EndChild();
@@ -106,7 +69,7 @@ bool FileExplorer::Open()
 		ImGui::Text("File Name:");
 		ImGui::SameLine();
 		ImGui::PushItemWidth(ImGui::GetWindowContentRegionWidth() * 0.55f);
-		ImGui::InputText("", &file[0], sizeof(file));
+		ImGui::InputText("", &filename[0], sizeof(filename));
 		ImGui::PopItemWidth();
 		ImGui::SameLine();
 		ImGui::PushItemWidth(ImGui::GetWindowContentRegionWidth() * 0.3f);
@@ -125,6 +88,7 @@ bool FileExplorer::Open()
 		if (ImGui::Button("Cancel", ImVec2(100, 20)))
 		{
 			openFileExplorer = false;
+			Reset();
 			ImGui::EndPopup();
 			return false;
 		}
@@ -142,15 +106,16 @@ void FileExplorer::Draw()
 
 		if (Open())
 		{
+			std::string file_string(filename);
 			switch (currentOperation)
 			{
 			case MenuOperations::SAVE:
-				App->scene->SaveScene(*App->scene->root, file);
-				currentOperation = MenuOperations::NONE;
+				App->scene->SaveScene(*App->scene->root,file_string, (path + "/"));
+				Reset();
 				break;
 			case MenuOperations::LOAD:
-				App->scene->LoadScene(file);
-				currentOperation = MenuOperations::NONE;
+				App->scene->LoadScene(file_string, (path + "/"));
+				Reset();
 				break;
 			}
 		}
@@ -170,7 +135,8 @@ void FileExplorer::DrawPath()
 		{
 			folders.push_back(path.substr((*it), (*(it + 1)) - (*it)));
 		}
-		else {
+		else 
+		{
 			folders.push_back(path.substr((*it), (path.size() - (*it))));
 		}
 	}
@@ -196,5 +162,50 @@ void FileExplorer::DrawPath()
 				}
 			}
 		}
+	}
+}
+
+void FileExplorer::FilterByFileType(std::string file)
+{
+	std::string extension = "";
+	switch (extensionToFilter)
+	{
+	case FILETYPE::TEXTURE:
+		extension = App->fsystem->GetExtension(file);
+		if (extension == TEXTUREEXT || extension == PNG || extension == TIF || extension == JPG)
+		{
+			if (ImGui::Selectable(file.c_str(), false))
+				sprintf_s(filename, App->fsystem->GetFilename(file).c_str());
+		}
+		break;
+	case FILETYPE::MODEL:
+		extension = App->fsystem->GetExtension(file);
+		if (extension == FBXEXTENSION || extension == FBXCAPITAL)
+		{
+			if (ImGui::Selectable(file.c_str(), false))
+				sprintf_s(filename, App->fsystem->GetFilename(file).c_str());
+		}
+		break;
+	case FILETYPE::MESH:
+		extension = App->fsystem->GetExtension(file);
+		if (extension == MESHEXTENSION)
+		{
+			if (ImGui::Selectable(file.c_str(), false))
+				sprintf_s(filename, App->fsystem->GetFilename(file).c_str());
+		}
+		break;
+	case FILETYPE::SCENE:
+		extension = App->fsystem->GetExtension(file);
+		if (extension == JSONEXT)
+		{
+			if (ImGui::Selectable(file.c_str(), false))
+				sprintf_s(filename, App->fsystem->GetFilename(file).c_str());
+		}
+		break;
+	default:
+	case FILETYPE::NONE:
+		if (ImGui::Selectable(file.c_str(), false))
+			sprintf_s(filename, App->fsystem->GetFilename(file).c_str());
+		break;
 	}
 }

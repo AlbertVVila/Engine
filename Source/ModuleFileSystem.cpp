@@ -366,4 +366,3 @@ std::string ModuleFileSystem::GetFilename(std::string filename) const
 	}
 	return filename;
 }
-

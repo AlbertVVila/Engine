@@ -156,11 +156,8 @@ update_status ModuleEditor::Update(float dt)
 			{
 				for (auto &file : files)
 				{
-					file = App->fsystem->RemoveExtension(file);
-					if (ImGui::MenuItem(file.c_str()))
-					{
-						App->scene->AddScene(file.c_str());
-					}
+					//fileExplorer->currentOperation = MenuOperations::LOAD;
+					//fileExplorer->openFileExplorer = true;
 				}
 				ImGui::EndMenu();
 			}
@@ -168,7 +165,7 @@ update_status ModuleEditor::Update(float dt)
 			{
 				if (!App->scene->name.empty())
 				{
-					App->scene->SaveScene(*App->scene->root, App->scene->name.c_str());
+					App->scene->SaveScene(*App->scene->root, App->scene->name, App->scene->path);
 				}
 				else
 				{
