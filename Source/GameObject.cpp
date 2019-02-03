@@ -429,9 +429,19 @@ bool GameObject::Intersects(const LineSegment & line, float &distance) const
 void GameObject::UpdateBBox()
 {
 	ComponentRenderer* renderer = (ComponentRenderer*) GetComponent(ComponentType::Renderer);
+
 	if (renderer != nullptr)
 	{
 		bbox = renderer->mesh->GetBoundingBox();
+		bbox.TransformAsAABB(GetGlobalTransform());
+	}
+	else
+	{
+		bbox.SetNegativeInfinity();
+		for (auto &child : children)
+		{
+			bbox.Enclose(child->bbox);
+		}
 		bbox.TransformAsAABB(GetGlobalTransform());
 	}
 }

@@ -218,6 +218,9 @@
     </ClCompile>
     <ClCompile Include="Viewport.cpp" />
     <ClCompile Include="GUICreator.cpp" />
+    <ClCompile Include="PanelView.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -508,6 +511,9 @@
     </ClInclude>
     <ClInclude Include="Viewport.h" />
     <ClInclude Include="GUICreator.h" />
+    <ClInclude Include="PanelView.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GeoLib">
