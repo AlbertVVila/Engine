@@ -96,7 +96,8 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file)
 	}
 	GameObject *fake = new GameObject("fake",0);
 	ProcessNode(meshMap, aiscene.mRootNode, &aiscene, fake);
-	App->scene->SaveScene(*fake, App->fsystem->GetFilename(file), SCENES); //TODO: Make AutoCreation of folders or check
+	std::string path(SCENES);
+	App->scene->SaveScene(*fake, App->fsystem->GetFilename(file), path); //TODO: Make AutoCreation of folders or check
 	fake->CleanUp();
 	RELEASE(fake);
 

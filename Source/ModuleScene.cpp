@@ -434,14 +434,17 @@ unsigned ModuleScene::SaveParShapesMesh(const par_shapes_mesh_s &mesh, char** da
 	return size;
 }
 
-void ModuleScene::SaveScene(const GameObject &rootGO, std::string& name, std::string path) const
+void ModuleScene::SaveScene(const GameObject &rootGO, std::string& scene, std::string& scene_path) const
 {
 	JSON *json = new JSON();
 	JSON_value *array =json->CreateValue(rapidjson::kArrayType);
 	rootGO.Save(array);
 	json->AddValue("GameObjects", *array);
-	App->fsystem->Save((path + name + JSONEXT).c_str(), json->ToString().c_str(), json->Size());
+	App->fsystem->Save((scene_path + scene + JSONEXT).c_str(), json->ToString().c_str(), json->Size());
 	RELEASE(json);
+
+	//name = scene;
+	//path = scene_path;
 }
 
 void ModuleScene::LoadScene(std::string& scene, std::string& scene_path)

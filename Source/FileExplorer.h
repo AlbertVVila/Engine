@@ -20,7 +20,8 @@ public:
 	FileExplorer();
 	~FileExplorer();
 
-	void Reset();
+	void Reset();		// Resets the file explorer
+	void ResetPath();	// Resets only path related variables
 	bool Open();		// Returns true on accepted, false on cancelled or running
 	void Draw();		// Draws the modal pop-up
 	void DrawPath();	// Draws the path directories bar

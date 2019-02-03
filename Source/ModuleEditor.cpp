@@ -150,11 +150,15 @@ update_status ModuleEditor::Update(float dt)
 			if (ImGui::MenuItem("Load Scene"))
 			{
 				fileExplorer->currentOperation = MenuOperations::LOAD;
+				fileExplorer->extensionToFilter = FILETYPE::SCENE;
+				fileExplorer->path = "/Scenes";
 				fileExplorer->openFileExplorer = true;
 			}
 			if (ImGui::MenuItem("Add Scene"))
 			{
 				fileExplorer->currentOperation = MenuOperations::ADD;
+				fileExplorer->extensionToFilter = FILETYPE::SCENE;
+				fileExplorer->path = "/Scenes";
 				fileExplorer->openFileExplorer = true;
 			}
 			if (ImGui::MenuItem("Save"))
@@ -166,12 +170,17 @@ update_status ModuleEditor::Update(float dt)
 				else
 				{
 					fileExplorer->currentOperation = MenuOperations::SAVE;
+					fileExplorer->extensionToFilter = FILETYPE::SCENE;
+					fileExplorer->path = "/Scenes";
 					fileExplorer->openFileExplorer = true;
 				}
 			}
 			if (ImGui::MenuItem("Save As..."))
 			{
 				fileExplorer->currentOperation = MenuOperations::SAVE;
+				fileExplorer->extensionToFilter = FILETYPE::SCENE;
+				fileExplorer->path = "/Scenes";
+				sprintf_s(fileExplorer->filename, App->scene->name.c_str());
 				fileExplorer->openFileExplorer = true;
 			}
 			if (ImGui::MenuItem("Exit", "Esc"))

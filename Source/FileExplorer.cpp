@@ -26,6 +26,13 @@ void FileExplorer::Reset()
 		pathStack.pop();
 }
 
+void FileExplorer::ResetPath()
+{
+	path = "";
+	while (!pathStack.empty())
+		pathStack.pop();
+}
+
 bool FileExplorer::Open()
 {
 	if (ImGui::BeginPopupModal(title, &openFileExplorer))
@@ -143,7 +150,7 @@ void FileExplorer::DrawPath()
 	}
 	if (ImGui::Button("."))
 	{
-		Reset();
+		ResetPath();
 	}
 	for each (std::string folder in folders)
 	{
