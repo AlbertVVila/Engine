@@ -152,14 +152,10 @@ update_status ModuleEditor::Update(float dt)
 				fileExplorer->currentOperation = MenuOperations::LOAD;
 				fileExplorer->openFileExplorer = true;
 			}
-			if (ImGui::BeginMenu("Add Scene"))
+			if (ImGui::MenuItem("Add Scene"))
 			{
-				for (auto &file : files)
-				{
-					//fileExplorer->currentOperation = MenuOperations::LOAD;
-					//fileExplorer->openFileExplorer = true;
-				}
-				ImGui::EndMenu();
+				fileExplorer->currentOperation = MenuOperations::ADD;
+				fileExplorer->openFileExplorer = true;
 			}
 			if (ImGui::MenuItem("Save"))
 			{

@@ -111,13 +111,14 @@ void FileExplorer::Draw()
 			{
 			case MenuOperations::SAVE:
 				App->scene->SaveScene(*App->scene->root,file_string, (path + "/"));
-				Reset();
 				break;
 			case MenuOperations::LOAD:
 				App->scene->LoadScene(file_string, (path + "/"));
-				Reset();
 				break;
+			case MenuOperations::ADD:
+				App->scene->AddScene(file_string, (path + "/"));
 			}
+			Reset();
 		}
 	}
 }

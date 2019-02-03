@@ -10,6 +10,7 @@ enum class MenuOperations
 {
 	NONE = 0,
 	LOAD,
+	ADD,
 	SAVE
 };
 
