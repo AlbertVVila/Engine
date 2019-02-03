@@ -57,7 +57,7 @@ unsigned ModuleFileSystem::Load(const char * file, char ** buffer) const
 	if (myfile == nullptr)
 	{
 		LOG("Error: %s %s", file, PHYSFS_getLastError());
-		return false;
+		return 0;
 	}
 	PHYSFS_sint32 fileSize = PHYSFS_fileLength(myfile);
 

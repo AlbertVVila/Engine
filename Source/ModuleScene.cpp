@@ -434,17 +434,6 @@ unsigned ModuleScene::SaveParShapesMesh(const par_shapes_mesh_s &mesh, char** da
 	return size;
 }
 
-void ModuleScene::SaveScene(const GameObject &rootGO, const char* filename) const
-{
-	JSON *json = new JSON();
-	JSON_value *array = json->CreateValue(rapidjson::kArrayType);
-	rootGO.Save(array);
-	json->AddValue("GameObjects", *array);
-	std::string file(filename);
-	App->fsystem->Save((SCENES + file + JSONEXT).c_str(), json->ToString().c_str(), json->Size());
-	RELEASE(json);
-}
-
 void ModuleScene::SaveScene(const GameObject &rootGO, std::string& name, std::string path) const
 {
 	JSON *json = new JSON();
@@ -458,15 +447,21 @@ void ModuleScene::SaveScene(const GameObject &rootGO, std::string& name, std::st
 void ModuleScene::LoadScene(std::string& scene, std::string& scene_path)
 {
 	ClearScene();
-	AddScene(scene, scene_path);
-	path = scene_path;
-	name = scene;
+	if (AddScene(scene, scene_path))
+	{
+		path = scene_path;
+		name = scene;
+	}
 }
 
-void ModuleScene::AddScene(std::string& scene, std::string& path)
+bool ModuleScene::AddScene(std::string& scene, std::string& path)
 {
 	char* data = nullptr;
-	App->fsystem->Load((path + scene + JSONEXT).c_str(), &data);
+	if (App->fsystem->Load((path + scene + JSONEXT).c_str(), &data) == 0)
+	{
+		RELEASE_ARRAY(data);
+		return false;
+	}
 
 	JSON *json = new JSON(data);
 	JSON_value* gameobjectsJSON = json->GetValue("GameObjects");
@@ -494,6 +489,7 @@ void ModuleScene::AddScene(std::string& scene, std::string& path)
 
 	RELEASE_ARRAY(data);
 	RELEASE(json);
+	return true;
 }
 
 void ModuleScene::ClearScene()

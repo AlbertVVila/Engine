@@ -55,10 +55,9 @@ public:
 	void SetPrimitiveMesh(par_shapes_mesh_s * mesh, PRIMITIVES type);
 	unsigned SaveParShapesMesh(const par_shapes_mesh_s & mesh, char** data) const;
 
-	void SaveScene(const GameObject &rootGO, const char* filename) const;	// Deprecated
 	void SaveScene(const GameObject &rootGO, std::string& file, std::string path) const;
 	void LoadScene(std::string& scene, std::string& path);
-	void AddScene(std::string& scene, std::string& scene_path);
+	bool AddScene(std::string& scene, std::string& scene_path);								// Adds a scene to current opened scene from a scene file (returns true if it was loaded correctly)
 	void ClearScene();
 
 	void Select(GameObject* gameobject);
