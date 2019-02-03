@@ -18,6 +18,7 @@ FileExplorer::~FileExplorer()
 
 void FileExplorer::Reset()
 {
+	sprintf_s(title, "File Explorer");
 	path = "";
 	sprintf_s(filename, "");
 	extensionToFilter = FILETYPE::NONE;
@@ -84,14 +85,46 @@ bool FileExplorer::Open()
 		ImGui::Combo(" ", (int*)&extensionToFilter, program_names, (int)FILETYPE::NONE + 1);
 		ImGui::PopItemWidth();
 
-		// Accept and Cancel buttons
-		if (ImGui::Button("Accept", ImVec2(100, 20)))
+		// Accept button (changes text depending on operation)
+		switch (currentOperation)
 		{
-			openFileExplorer = false;
-			ImGui::EndPopup();
-			return true;
+		case MenuOperations::SAVE:
+			if (ImGui::Button("Save", ImVec2(100, 20)))
+			{
+				openFileExplorer = false;
+				ImGui::EndPopup();
+				return true;
+			}
+			break;
+		case MenuOperations::ADD:
+			if (ImGui::Button("Add", ImVec2(100, 20)))
+			{
+				openFileExplorer = false;
+				ImGui::EndPopup();
+				return true;
+			}
+			break;
+		case MenuOperations::LOAD:
+			if (ImGui::Button("Load", ImVec2(100, 20)))
+			{
+				openFileExplorer = false;
+				ImGui::EndPopup();
+				return true;
+			}
+			break;
+		default:
+		case MenuOperations::NONE:
+			if (ImGui::Button("Accept", ImVec2(100, 20)))
+			{
+				openFileExplorer = false;
+				ImGui::EndPopup();
+				return true;
+			}
+			break;
 		}
 		ImGui::SameLine();
+
+		// Cancel button
 		if (ImGui::Button("Cancel", ImVec2(100, 20)))
 		{
 			openFileExplorer = false;
