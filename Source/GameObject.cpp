@@ -146,7 +146,6 @@ void GameObject::Update()
 			{
 				child->UpdateGlobalTransform();
 			}
-			UpdateBBox();
 			(*it_child)->UpdateBBox();
 			(*it_child)->moved_flag = false;
 		}
@@ -435,14 +434,6 @@ void GameObject::UpdateBBox()
 	{
 		bbox = renderer->mesh->GetBoundingBox();
 		bbox.TransformAsAABB(GetGlobalTransform());
-	}
-	else
-	{
-		bbox.SetNegativeInfinity();
-		for (auto &child : children)
-		{
-			bbox.Enclose(child->bbox);
-		}		
 	}
 }
 

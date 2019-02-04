@@ -180,7 +180,6 @@
     <ClInclude Include="PanelHardware.h" />
     <ClInclude Include="PanelHierarchy.h" />
     <ClInclude Include="PanelInspector.h" />
-    <ClInclude Include="PanelView.h" />
     <ClInclude Include="par_shapes.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Skybox.h" />
@@ -260,7 +259,6 @@
     <ClCompile Include="PanelHardware.cpp" />
     <ClCompile Include="PanelHierarchy.cpp" />
     <ClCompile Include="PanelInspector.cpp" />
-    <ClCompile Include="PanelView.cpp" />
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Viewport.cpp" />

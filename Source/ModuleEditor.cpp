@@ -15,7 +15,6 @@
 #include "PanelAbout.h"
 #include "PanelHardware.h"
 #include "PanelHierarchy.h"
-#include "PanelView.h"
 
 #include "MaterialEditor.h"
 #include "GUICreator.h"
@@ -34,7 +33,6 @@ ModuleEditor::ModuleEditor()
 	panels.push_back(about = new PanelAbout());
 	panels.push_back(hardware = new PanelHardware());
 	panels.push_back(hierarchy = new PanelHierarchy());
-	panels.push_back(view = new PanelView());
 
 	materialEditor = new MaterialEditor();
 }

@@ -12,7 +12,6 @@ class PanelConfiguration;
 class PanelAbout;
 class PanelHardware;
 class PanelHierarchy;
-class PanelView;
 class GameObject;
 class MaterialEditor;
 
@@ -48,7 +47,6 @@ public:
 	PanelAbout *about = nullptr;
 	PanelHardware *hardware = nullptr;
 	PanelHierarchy *hierarchy = nullptr;
-	PanelView* view = nullptr;
 
 	MaterialEditor *materialEditor = nullptr;
 
