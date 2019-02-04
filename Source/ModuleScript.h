@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include <vector>
+ 
 class Script;
 
 class ModuleScript :
@@ -21,6 +22,7 @@ public:
 
 public:
 	std::vector<std::string> scripts;
+	//std::vector<std::pair<std::string, int>> scripts; //name, modification date
 private:
 	std::list<Script*> scriptInstances;
 };

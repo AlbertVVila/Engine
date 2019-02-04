@@ -2,6 +2,7 @@
 #define __BaseScript_h__
 
 class GameObject;
+class JSON;
 struct ImGuiContext;
 
 #ifdef BASESCRIPT_EXPORTS
@@ -15,8 +16,9 @@ class BASESCRIPT_API Script
 {
 public:
 	void SetGameObject(GameObject* go);
-	void Expose(ImGuiContext *context);
-
+	virtual void Expose(ImGuiContext *context);
+	//virtual void Serialize(JSON* json) const = 0;
+	//virtual void DeSerialize(JSON * json) = 0;
 	virtual void Start();
 	virtual void Update();
 

@@ -10,26 +10,29 @@
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
     <Filter Include="ImGui">
-      <UniqueIdentifier>{758bb3ac-b7fd-4820-9bea-1bd45a681818}</UniqueIdentifier>
+      <UniqueIdentifier>{211caa4e-ad7a-4e03-8fa5-24af2fdfa07a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseScript.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\imgui.cpp">
+    <ClCompile Include="..\..\Source\imgui.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\imgui_draw.cpp">
+    <ClCompile Include="..\..\Source\imgui_demo.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\imgui_impl_opengl3.cpp">
+    <ClCompile Include="..\..\Source\imgui_draw.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\imgui_impl_sdl.cpp">
+    <ClCompile Include="..\..\Source\imgui_impl_opengl3.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\imgui_widgets.cpp">
+    <ClCompile Include="..\..\Source\imgui_impl_sdl.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\imgui_widgets.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
   </ItemGroup>

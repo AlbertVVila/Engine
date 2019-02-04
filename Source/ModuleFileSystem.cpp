@@ -307,6 +307,11 @@ FILETYPE ModuleFileSystem::GetFileType(std::string extension) const
 	return FILETYPE::SCENE;
 }
 
+int ModuleFileSystem::GetModTime(const char * file) const
+{
+	return PHYSFS_getLastModTime(file);
+}
+
 std::string ModuleFileSystem::GetExtension(std::string filename) const
 {
 	std::size_t found = filename.find_last_of(".");

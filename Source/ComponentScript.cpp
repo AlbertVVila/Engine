@@ -10,8 +10,6 @@
 
 ComponentScript::ComponentScript(GameObject * gameobject) : Component(gameobject, ComponentType::Script)
 {
-	//script = CreateScript();
-	//script->SetGameObject(gameobject);
 }
 
 ComponentScript::ComponentScript(const ComponentScript & component) : Component(component)
@@ -30,7 +28,6 @@ ComponentScript * ComponentScript::Clone() const
 
 void ComponentScript::Update()
 {
-
 }
 
 void ComponentScript::DrawProperties()
@@ -52,6 +49,7 @@ void ComponentScript::DrawProperties()
 				if (ImGui::Selectable(App->scripting->scripts[n].c_str(), is_selected) && scriptName != App->scripting->scripts[n])
 				{
 					script = App->scripting->AddScript(App->scripting->scripts[n]);
+					script->SetGameObject(gameobject);
 					scriptName = App->scripting->scripts[n];
 				}
 				if (is_selected)

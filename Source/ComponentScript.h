@@ -25,7 +25,7 @@ public:
 
 private:
 	std::string scriptName = "No Script";
-	Script* script;
+	Script* script = nullptr;
 };
 
 #endif

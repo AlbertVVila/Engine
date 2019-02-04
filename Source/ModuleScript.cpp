@@ -20,14 +20,19 @@ ModuleScript::~ModuleScript()
 
 bool ModuleScript::Start()
 {
-	scripts = App->fsystem->ListFiles(SCRIPTS, false);
+	/*std::vector<std::string> */scripts = App->fsystem->ListFiles(SCRIPTS, false);
+	for (const auto& script : scripts)
+	{
+		int time = App->fsystem->GetModTime(script.c_str());
+
+	}
 	return true;
 }
 
 update_status ModuleScript::Update(float dt)
 {
 	//TODO: Listen script folder for DLL updates
-	// We should use a thread component to listen to folders asynchronously
+	//TODO: We should use a thread component to listen to folders asynchronously
 	return UPDATE_CONTINUE;
 }
 
@@ -54,6 +59,8 @@ Script* ModuleScript::AddScript(std::string script)
 
 void ModuleScript::RemoveScript(Script* script)
 {
+	//TODO: check if script is used in any other component and if not then freelibrary
+	//FreeLibrary()
 	scriptInstances.remove(script);
 	RELEASE(script);
 }
