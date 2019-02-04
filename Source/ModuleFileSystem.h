@@ -14,7 +14,7 @@
 #define MATERIALS LIBRARY "Materials/"
 #define MESHES LIBRARY "Meshes/"
 #define TEXTURES LIBRARY "Textures/"
-#define SCENES LIBRARY "Scenes/"
+#define SCENES ASSETS "Scenes/"
 #define SHADERS "Shaders/"
 #define VERTEXSHADERS SHADERS "VertexShaders/"
 #define FRAGSHADERS SHADERS "FragmentShaders/"

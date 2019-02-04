@@ -16,19 +16,12 @@ ModuleFileSystem::ModuleFileSystem()
 	baseDir = PHYSFS_getBaseDir();
 	PHYSFS_addToSearchPath(baseDir.c_str(), 1);
 
-	//PHYSFS_mount changed for PHYSFS_mkdir for File Explorer to work
-	//PHYSFS_mount(LIBRARY, nullptr, 1);
-	//PHYSFS_mount(ASSETS, nullptr, 1);
-	//PHYSFS_mount(SHADERS, nullptr, 1);
-
-	if (!Exists(LIBRARY))
-		PHYSFS_mkdir(LIBRARY);
+	PHYSFS_mount(LIBRARY, nullptr, 1);
+	PHYSFS_mount(ASSETS, nullptr, 1);
+	PHYSFS_mount(SHADERS, nullptr, 1);
 
 	if (!Exists(ASSETS))
 		PHYSFS_mkdir(ASSETS);
-
-	if (!Exists(SHADERS))
-		PHYSFS_mkdir(SHADERS);
 
 	PHYSFS_setWriteDir(baseDir.c_str());
 }
