@@ -20,12 +20,7 @@ ModuleScript::~ModuleScript()
 
 bool ModuleScript::Start()
 {
-	/*std::vector<std::string> */scripts = App->fsystem->ListFiles(SCRIPTS, false);
-	for (const auto& script : scripts)
-	{
-		int time = App->fsystem->GetModTime(script.c_str());
-
-	}
+	CheckScripts();
 	return true;
 }
 
@@ -33,6 +28,8 @@ update_status ModuleScript::Update(float dt)
 {
 	//TODO: Listen script folder for DLL updates
 	//TODO: We should use a thread component to listen to folders asynchronously
+	CheckScripts();
+
 	return UPDATE_CONTINUE;
 }
 
@@ -63,5 +60,30 @@ void ModuleScript::RemoveScript(Script* script)
 	//FreeLibrary()
 	scriptInstances.remove(script);
 	RELEASE(script);
+}
+
+void ModuleScript::CheckScripts()
+{
+	std::vector<std::string> scriptNames = App->fsystem->ListFiles(SCRIPTS, false);
+	std::map<std::string, int>::iterator it;
+
+	for (const auto& script : scriptNames)
+	{
+		int time = App->fsystem->GetModTime((SCRIPTS + script + DLL).c_str());
+		it = scripts.find(script);
+		if (it != scripts.end())
+		{
+			if (time > it->second)
+			{
+				//Update DLL but only if already loaded!!
+				it->second = time;
+				LOG("Scripts %s updated", script.c_str());
+			}
+		}
+		else
+		{
+			scripts.insert(std::pair<std::string, int>(script, time));
+		}
+	}
 }
 

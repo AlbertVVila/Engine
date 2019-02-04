@@ -8,6 +8,8 @@
 #include "JSON.h"
 #include "imgui.h"
 
+#include <map>
+
 ComponentScript::ComponentScript(GameObject * gameobject) : Component(gameobject, ComponentType::Script)
 {
 }
@@ -43,14 +45,15 @@ void ComponentScript::DrawProperties()
 		ImGui::Text("Select Script");
 		if (ImGui::BeginCombo("", scriptName.c_str()))
 		{
-			for (int n = 0; n < App->scripting->scripts.size(); n++)
+			std::map<std::string, int>::const_iterator it;
+			for (it = App->scripting->scripts.begin(); it != App->scripting->scripts.end(); it++)
 			{
-				bool is_selected = (scriptName == App->scripting->scripts[n]);
-				if (ImGui::Selectable(App->scripting->scripts[n].c_str(), is_selected) && scriptName != App->scripting->scripts[n])
+				bool is_selected = (scriptName == it->first);
+				if (ImGui::Selectable(it->first.c_str(), is_selected) && scriptName != it->first)
 				{
-					script = App->scripting->AddScript(App->scripting->scripts[n]);
+					script = App->scripting->AddScript(it->first);
 					script->SetGameObject(gameobject);
-					scriptName = App->scripting->scripts[n];
+					scriptName = it->first;
 				}
 				if (is_selected)
 				{

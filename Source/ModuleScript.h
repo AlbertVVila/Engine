@@ -2,8 +2,8 @@
 #define __ModuleScript_h__
 
 #include "Module.h"
-#include <vector>
- 
+#include <map>
+
 class Script;
 
 class ModuleScript :
@@ -20,9 +20,11 @@ public:
 	Script* AddScript(std::string script);
 	void RemoveScript(Script* script);
 
+private:
+	void CheckScripts();
+
 public:
-	std::vector<std::string> scripts;
-	//std::vector<std::pair<std::string, int>> scripts; //name, modification date
+	std::map<std::string, int> scripts; //name, modification date
 private:
 	std::list<Script*> scriptInstances;
 };
