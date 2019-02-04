@@ -189,11 +189,11 @@ void FileExplorer::DrawPath()
 		{
 			if (folder != folders[folders.size() - 1])
 			{
-				while (pathStack.top().substr(pathStack.top().find_last_of("/")) != folder)
+				while (pathStack.top().substr(pathStack.top().find_last_of('/')) != folder)
 				{
 					pathStack.pop();
 				}
-				if (pathStack.top().substr(pathStack.top().find_last_of("/")) == folder)
+				if (pathStack.top().substr(pathStack.top().find_last_of('/')) == folder)
 				{
 					path = pathStack.top();
 					pathStack.pop();
