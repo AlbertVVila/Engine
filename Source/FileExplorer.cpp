@@ -19,17 +19,15 @@ FileExplorer::~FileExplorer()
 void FileExplorer::Reset()
 {
 	sprintf_s(title, "File Explorer");
-	path = "";
 	sprintf_s(filename, "");
 	extensionToFilter = FILETYPE::NONE;
 	currentOperation = MenuOperations::NONE;
-	while (!pathStack.empty())
-		pathStack.pop();
+	ResetPath();
 }
 
 void FileExplorer::ResetPath()
 {
-	path = "";
+	path = "Assets";
 	while (!pathStack.empty())
 		pathStack.pop();
 }
@@ -180,7 +178,7 @@ void FileExplorer::DrawPath()
 			folders.push_back(path.substr((*it), (path.size() - (*it))));
 		}
 	}
-	if (ImGui::Button("."))
+	if (ImGui::Button("Assets"))
 	{
 		ResetPath();
 	}
