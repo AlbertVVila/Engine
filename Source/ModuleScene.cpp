@@ -84,7 +84,7 @@ bool ModuleScene::Start()
 	if (defaultScene.size() > 0)
 	{
 		path = SCENES;
-		LoadScene(defaultScene, path);
+		LoadScene(*defaultScene.c_str(), *path.c_str());
 	}
 	return true;
 }
@@ -434,33 +434,43 @@ unsigned ModuleScene::SaveParShapesMesh(const par_shapes_mesh_s &mesh, char** da
 	return size;
 }
 
-void ModuleScene::SaveScene(const GameObject &rootGO, std::string& scene, std::string& scene_path) const
+void ModuleScene::SaveScene(const GameObject &rootGO, const char& scene, const char& scenePath)
 {
 	JSON *json = new JSON();
 	JSON_value *array =json->CreateValue(rapidjson::kArrayType);
 	rootGO.Save(array);
 	json->AddValue("GameObjects", *array);
-	App->fsystem->Save((scene_path + scene + JSONEXT).c_str(), json->ToString().c_str(), json->Size());
+
+	std::string file(&scenePath);
+	file += &scene;
+	file += JSONEXT;
+
+	App->fsystem->Save(file.c_str(), json->ToString().c_str(), json->Size());
 	RELEASE(json);
 
-	//name = scene;
-	//path = scene_path;
+	// Update scene info
+	name = &scene;
+	path = &scenePath;
 }
 
-void ModuleScene::LoadScene(std::string& scene, std::string& scene_path)
+void ModuleScene::LoadScene(const char& scene, const char& scenePath)
 {
 	ClearScene();
-	if (AddScene(scene, scene_path))
+	if (AddScene(scene, scenePath))
 	{
-		path = scene_path;
-		name = scene;
+		path = &scenePath;
+		name = &scene;
 	}
 }
 
-bool ModuleScene::AddScene(std::string& scene, std::string& path)
+bool ModuleScene::AddScene(const char& scene, const char& path)
 {
 	char* data = nullptr;
-	if (App->fsystem->Load((path + scene + JSONEXT).c_str(), &data) == 0)
+	std::string file(&path);
+	file += &scene;
+	file += JSONEXT;
+
+	if (App->fsystem->Load(file.c_str(), &data) == 0)
 	{
 		RELEASE_ARRAY(data);
 		return false;

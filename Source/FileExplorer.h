@@ -25,7 +25,7 @@ public:
 	bool Open();		// Returns true on accepted, false on cancelled or running
 	void Draw();		// Draws the modal pop-up
 	void DrawPath();	// Draws the path directories bar
-	void FilterByFileType(std::string file);	// Draws a selectable for the file given if has the extension selected to filter
+	void FilterByFileType(const char& file);	// Draws a selectable for the file given if has the extension selected to filter
 
 public:
 	bool openFileExplorer = false;

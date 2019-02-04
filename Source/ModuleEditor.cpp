@@ -47,7 +47,7 @@ ModuleEditor::~ModuleEditor()
 		RELEASE(*it);
 	}
 	RELEASE(materialEditor);
-
+	RELEASE(fileExplorer);
 	console = nullptr;
 	panels.clear();
 }
@@ -167,7 +167,7 @@ update_status ModuleEditor::Update(float dt)
 			{
 				if (!App->scene->name.empty())
 				{
-					App->scene->SaveScene(*App->scene->root, App->scene->name, App->scene->path);
+					App->scene->SaveScene(*App->scene->root, *App->scene->name.c_str(), *App->scene->path.c_str());
 				}
 				else
 				{
