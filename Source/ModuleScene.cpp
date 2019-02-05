@@ -157,7 +157,9 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 		DrawGO(*go, camFrustum, isEditor);
 	}
 
-	for (const auto &go : dynamicGOs)
+	std::unordered_set<GameObject*> dynamicFilteredGOs;
+	App->spacePartitioning->aabbTree.GetIntersections(camFrustum, dynamicFilteredGOs);
+	for (const auto &go : dynamicFilteredGOs)
 	{
 		if (camFrustum.Intersects(go->GetBoundingBox()))
 		{
