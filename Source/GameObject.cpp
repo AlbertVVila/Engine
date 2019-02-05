@@ -243,6 +243,7 @@ void GameObject::RemoveComponent(const Component & component)
 			components[i]->CleanUp();
 			RELEASE(components[i]);
 			components.erase(components.begin() + i);
+			return;
 		}
 	}
 }
