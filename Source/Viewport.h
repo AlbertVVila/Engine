@@ -15,6 +15,10 @@ public:
 	void DrawImGuizmo(const ComponentCamera & cam);
 
 	void Pick();
+
+	void ToggleEnabled();
+	bool IsEnabled() { return enabled; }
+
 private:
 	void DrawGuizmoButtons();
 	void CreateFrameBuffer(int width, int height);

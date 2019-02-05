@@ -8,6 +8,8 @@
 #include "ModuleTextures.h"
 #include "ModuleProgram.h"
 
+#include "Viewport.h"
+
 #include "GameObject.h"
 #include "PanelConsole.h"
 #include "PanelConfiguration.h"
@@ -320,6 +322,14 @@ void ModuleEditor::WindowsMenu()
 		if (ImGui::MenuItem("Hierarchy", NULL, hierarchy->IsEnabled()))
 		{
 			hierarchy->ToggleEnabled();
+		}
+		if (ImGui::MenuItem("Scene", NULL, App->renderer->viewScene->IsEnabled()))
+		{
+			App->renderer->viewScene->ToggleEnabled();
+		}
+		if (ImGui::MenuItem("Game Camera", NULL, App->renderer->viewGame->IsEnabled()))
+		{
+			App->renderer->viewGame->ToggleEnabled();
 		}
 		ImGui::EndMenu();
 	}
