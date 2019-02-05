@@ -21,6 +21,7 @@ ComponentRenderer::ComponentRenderer(GameObject * gameobject) : Component(gameob
 {
 	mesh = new Mesh();
 	SetMaterial(DEFAULTMAT);
+	gameobject->isVolumetric = true;
 }
 
 ComponentRenderer::ComponentRenderer(const ComponentRenderer & component) : Component(component)
@@ -38,7 +39,7 @@ ComponentRenderer::~ComponentRenderer()
 	mesh = nullptr;
 	if (gameobject != nullptr)
 	{
-		App->scene->DeleteFromSpacePartition(*gameobject);
+		App->scene->DeleteFromSpacePartition(*gameobject); //TODO_AABBTREE: Delete from kdtree / aabbtree
 	}
 }
 

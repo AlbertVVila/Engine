@@ -1,15 +1,13 @@
 #include "AABBTree.h"
-#include "debugdraw.h"
 #include "Application.h"
-#include "Transform.h"
 #include "Application.h"
 #include "ModuleScene.h"
 #include "ComponentLight.h"
+#include "Globals.h"
 
-void AABBTree::Init(GameObject::GameObjectLayers layer) 
+void AABBTree::Init() 
 {
-	treeLayer = layer;
-	LOG("AABBTree Init - Layer %d", (int)treeLayer);
+	LOG("AABBTree Init");
 	nodesFreePool = new AABBTreeNode*[MAX_AABB_TREE_NODES];
 	nodesCreatedPool = new AABBTreeNode*[MAX_AABB_TREE_NODES];
 	for (unsigned i = 0u; i < MAX_AABB_TREE_NODES; ++i)
@@ -22,7 +20,7 @@ void AABBTree::Init(GameObject::GameObjectLayers layer)
 
 void AABBTree::CleanUp()
 {
-	LOG("AABBTree CleanUp - Layer %d", (int)treeLayer);
+	LOG("AABBTree CleanUp");
 	for (unsigned i = 0u; i < MAX_AABB_TREE_NODES; ++i)
 		RELEASE(nodesCreatedPool[i]);
 	
@@ -34,52 +32,13 @@ void AABBTree::CleanUp()
 
 void AABBTree::Reset()
 {
-	LOG("Reset AABBTREE - Layer %d", (int)treeLayer);
+	LOG("Reset AABBTREE");
 	CleanUp();
-	Init(treeLayer);
-}
-
-void AABBTree::Calculate()
-{	
-	LOG("Recalculate AABBTREE - Layer %d", (int)treeLayer);
-	Reset();
-	switch (treeLayer)
-	{
-	case GameObject::GameObjectLayers::WORLD_VOLUME:
-	{
-		static AABB* a = new AABB();
-		std::vector<GameObject*> GOs;
-		GOs.resize(MAX_NON_STATIC_GAMEOBJECTS);
-		unsigned k = 0u;
-		App->scene->GetNonStaticGlobalAABB(a, GOs, k);
-
-		for (unsigned i = 1u; i <= k; ++i)
-		{
-			InsertGO(GOs[i]);
-		}
-		break;
-	}
-	case GameObject::GameObjectLayers::LIGHTING:
-		for (GameObject* fgo : App->scene->lightingFakeGameObjects)
-		{	
-			ComponentLight* cL = (ComponentLight*)fgo->components.front();
-			cL->pointSphere.pos = fgo->components.front()->owner->transform->getGlobalPosition();
-			fgo->aaBBGlobal->SetNegativeInfinity();
-			fgo->aaBBGlobal->Enclose(cL->pointSphere);
-			InsertGO(fgo);
-			LOG("Light sphere inserted - Position (%.3f, %.3f, %.3f) Radius %.3f", cL->pointSphere.pos.x, cL->pointSphere.pos.y, 
-				cL->pointSphere.pos.z, cL->pointSphere.r);
-			LOG("Enclosing AABB - Min (%.3f, %.3f, %.3f) Max (%.3f, %.3f, %.3f)", fgo->aaBBGlobal->MinX(), fgo->aaBBGlobal->MinY(),
-				fgo->aaBBGlobal->MinZ(), fgo->aaBBGlobal->MaxX(), fgo->aaBBGlobal->MaxY(), fgo->aaBBGlobal->MaxZ());
-		}
-	}
-	LOG("AABBTREE Completed - Layer %d", (int)treeLayer);
+	Init();
 }
 
 void AABBTree::InsertGO(GameObject* go)
-{
-	if (go->layer != treeLayer) 
-		return;
+{	
 	assert(go != nullptr); //tried to insert a null GameObject in the AABBTree
 	
 	std::stack<AABBTreeNode*> S;
@@ -90,7 +49,7 @@ void AABBTree::InsertGO(GameObject* go)
 		|| (treeRoot->leftSon == nullptr && treeRoot->rightSon == nullptr))
 	{
 		treeRoot->leftSon = GetFreeNode(treeRoot);
-		treeRoot->leftSon->aabb.SetFromCenterAndSize(go->aaBBGlobal->CenterPoint(), go->aaBBGlobal->Size() * FAT_FACTOR);
+		treeRoot->leftSon->aabb.SetFromCenterAndSize(go->bbox.CenterPoint(), go->bbox.Size() * FAT_FACTOR);
 		treeRoot->leftSon->go = go;
 		go->treeNode = treeRoot->leftSon;
 		treeRoot->leftSon->isLeaf = true;
@@ -100,7 +59,7 @@ void AABBTree::InsertGO(GameObject* go)
 	else if (treeRoot->leftSon != nullptr && treeRoot->rightSon == nullptr)
 	{
 		treeRoot->rightSon = GetFreeNode(treeRoot);
-		treeRoot->rightSon->aabb.SetFromCenterAndSize(go->aaBBGlobal->CenterPoint(), go->aaBBGlobal->Size() * FAT_FACTOR);
+		treeRoot->rightSon->aabb.SetFromCenterAndSize(go->bbox.CenterPoint(), go->bbox.Size() * FAT_FACTOR);
 		treeRoot->rightSon->go = go;
 		go->treeNode = treeRoot->rightSon;
 		treeRoot->rightSon->isLeaf = true;
@@ -110,9 +69,9 @@ void AABBTree::InsertGO(GameObject* go)
 	else
 	{
 		AABB tempLeft = AABB(treeRoot->leftSon->aabb);
-		tempLeft.Enclose(*go->aaBBGlobal);
+		tempLeft.Enclose(go->bbox);
 		AABB tempRight = AABB(treeRoot->rightSon->aabb);
-		tempRight.Enclose(*go->aaBBGlobal);
+		tempRight.Enclose(go->bbox);
 		if (tempLeft.Size().Length() < tempRight.Size().Length()) //heuristic to keep the tree as spatial balanced as possible
 			S.push(treeRoot->leftSon);
 		else
@@ -139,7 +98,7 @@ void AABBTree::InsertGO(GameObject* go)
 			newNode->rightSon->isLeft = false;
 			node->parent = newNode;
 			newNode->leftSon = GetFreeNode(newNode);
-			newNode->leftSon->aabb.SetFromCenterAndSize(go->aaBBGlobal->CenterPoint(), go->aaBBGlobal->Size() * FAT_FACTOR);
+			newNode->leftSon->aabb.SetFromCenterAndSize(go->bbox.CenterPoint(), go->bbox.Size() * FAT_FACTOR);
 			newNode->leftSon->go = go;
 			go->treeNode = newNode->leftSon;
 			newNode->leftSon->isLeaf = true;
@@ -151,9 +110,9 @@ void AABBTree::InsertGO(GameObject* go)
 		else
 		{
 			AABB tempLeft = AABB(node->leftSon->aabb);
-			tempLeft.Enclose(*go->aaBBGlobal);
+			tempLeft.Enclose(go->bbox);
 			AABB tempRight = AABB(node->rightSon->aabb);
-			tempRight.Enclose(*go->aaBBGlobal);
+			tempRight.Enclose(go->bbox);
 			if (tempLeft.Size().Length() < tempRight.Size().Length()) //heuristic to keep the tree as balanced as possible
 				S.push(node->leftSon);
 			else
@@ -164,6 +123,8 @@ void AABBTree::InsertGO(GameObject* go)
 
 void AABBTree::Draw() const
 {
+	//Blocked by: https://trello.com/c/eM3mfc3I/1-opengl-directmode-to-debugdraw
+	/*
 	static ddVec3 colors[6] = { dd::colors::AliceBlue, dd::colors::BlueViolet, dd::colors::Crimson, dd::colors::DarkOliveGreen, dd::colors::DarkViolet, dd::colors::GhostWhite };
 	std::stack<AABBTreeNode*> S;
 	S.push(treeRoot);
@@ -185,6 +146,7 @@ void AABBTree::Draw() const
 		dd::aabb(node->aabb.minPoint, node->aabb.maxPoint, color);
 
 	}
+	*/
 }
 inline void AABBTree::RecalculateBoxes(AABBTreeNode* node)
 {

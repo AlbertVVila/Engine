@@ -9,6 +9,7 @@
 #include "ModuleRender.h"
 #include "ModuleScene.h"
 #include "ModuleTextures.h"
+#include "ModuleSpacePartitioning.h"
 
 #include "GameObject.h"
 #include "ComponentCamera.h"
@@ -19,6 +20,7 @@
 #include "Mesh.h"
 #include "JSON.h"
 #include "myQuadTree.h"
+#include "AABBTree.h"
 
 #include "Imgui.h"
 #include "Geometry/LineSegment.h"
@@ -479,6 +481,10 @@ void ModuleScene::AddScene(const char * scene)
 			gameobject->parent = root;
 			gameobject->parent->children.push_back(gameobject);
 		}
+		if (gameobject->isVolumetric && !gameobject->isStatic)
+		{
+			App->spacePartitioning->aabbTree.InsertGO(gameobject);
+		}
 	}
 
 	RELEASE_ARRAY(data);
@@ -490,6 +496,7 @@ void ModuleScene::ClearScene()
 	CleanUp();
 	camera_notfound_texture = App->textures->GetTexture(NOCAMERA);
 	name.clear();
+	App->spacePartitioning->aabbTree.Reset();
 }
 
 void ModuleScene::Select(GameObject * gameobject)
@@ -558,6 +565,7 @@ void ModuleScene::Pick(float normalized_x, float normalized_y)
 	}
 }
 
+
 unsigned ModuleScene::GetNewUID()
 {
 	return uuid_rng();
@@ -600,8 +608,10 @@ ComponentLight* ModuleScene::GetDirectionalLight() const
 
 std::list<std::pair<float, GameObject*>> ModuleScene::GetDynamicIntersections(const LineSegment & line)
 {
-	std::list<std::pair<float, GameObject*>> gos; //TODO: reusable code in quadtree intersection
-	for (const auto &go : dynamicGOs)
+	std::list<std::pair<float, GameObject*>> gos; 
+	std::unordered_set<GameObject*> intersections;
+	App->spacePartitioning->aabbTree.GetIntersections(line, intersections);
+	for (const auto &go : intersections)
 	{
 		float dNear = -FLOAT_INF;
 		float dFar = FLOAT_INF;

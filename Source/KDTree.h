@@ -7,11 +7,9 @@
 #include <vector>
 #include <unordered_set>
 #include "GameObject.h"
-#include "debugdraw.h"
+//#include "debugdraw.h"
 #include <queue>
 #include <algorithm>
-#include "Brofiler/ProfilerCore/Brofiler.h"
-#include "Transform.h"
 
 #define BUCKET_MAX 1024
 

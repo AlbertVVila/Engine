@@ -2,7 +2,6 @@
 #define _MODULE_SPACE_PARTITIONING_H
 
 #include "Module.h"
-#include "QuadTree.h"
 #include "KDTree.h"
 #include "AABBTree.h"
 
@@ -12,15 +11,14 @@ class ModuleSpacePartitioning :
 {
 public:
 
-	bool Init() override;
-	update_status Update() override;
+	bool Init(JSON * config) override;
+	update_status Update(float dt) override;
 	bool CleanUp() override;	
 
 	//members
 
 	bool newThreadReady = true;
 	unsigned currentKDTree = 0u;
-	QuadTree quadTree;
 	KDTree kDTree;
 	AABBTree aabbTree;
 	AABBTree aabbTreeLighting;

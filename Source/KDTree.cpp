@@ -93,6 +93,7 @@ void KDTree::Init()
 
 void KDTree::Calculate()
 {
+	/*
 	BROFILER_CATEGORY("Calculate KD-Tree", Profiler::Color::AliceBlue);
 	treeRoot->bucketOccupation = 0u;
 	App->scene->GetStaticGlobalAABB(treeRoot->aabb, treeRoot->bucket, treeRoot->bucketOccupation);
@@ -144,12 +145,13 @@ void KDTree::Calculate()
 		{
 			current->isLeaf = true;
 		}
-	}
+	}*/
 }
 
 void KDTree::DebugDraw() const
 {
-	if (treeRoot == nullptr)
+	//Blocked by: https://trello.com/c/eM3mfc3I/1-opengl-directmode-to-debugdraw
+	/*if (treeRoot == nullptr)
 		return;
 	std::queue<KDTNode*> Q;
 	Q.push(treeRoot);
@@ -167,5 +169,5 @@ void KDTree::DebugDraw() const
 		else
 			dd::aabb(node->aabb->minPoint, node->aabb->maxPoint, dd::colors::Aquamarine);
 	}
-
+	*/
 }

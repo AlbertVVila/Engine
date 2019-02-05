@@ -8,6 +8,7 @@
 #include "GameObject.h"
 
 #define MAX_AABB_TREE_NODES 4096
+#define MAX_NON_STATIC_GAMEOBJECTS 4096
 #define FAT_FACTOR	1.1f
 
 class AABBTreeNode
@@ -29,10 +30,9 @@ class AABBTree
 {
 public:
 
-	void Init(GameObject::GameObjectLayers layer);
+	void Init();
 	void CleanUp();
 	void Reset();
-	void Calculate();
 	void InsertGO(GameObject* go);
 	void ReleaseNode(AABBTreeNode* node);
 	void Draw() const;
@@ -41,7 +41,7 @@ public:
 	inline void RecalculateBoxes(AABBTreeNode* node);
 	inline AABBTreeNode* GetFreeNode(AABBTreeNode* parent);
 	template<typename T>
-	void GetIntersections(T &intersector, std::unordered_set<GameObject*> &intersections) const;
+	void GetIntersections(T &intersector, std::unordered_set<GameObject*> &intersections);
 
 	//members
 
@@ -50,37 +50,47 @@ public:
 	AABBTreeNode** nodesCreatedPool = nullptr; //all created nodes container to cleaning pourposes
 	bool showOnEditor = false;
 	unsigned lastFreeNode = MAX_AABB_TREE_NODES - 1;
-	GameObject::GameObjectLayers treeLayer = GameObject::GameObjectLayers::DEFAULT;
 };
 
 template<typename T>
-inline void AABBTree::GetIntersections(T &intersector, std::unordered_set<GameObject*> &intersections) const
+inline void AABBTree::GetIntersections(T &intersector, std::unordered_set<GameObject*> &intersections) 
 {
-	BROFILER_CATEGORY("AABBTree intersections", Profiler::Color::Azure);
 	std::stack<AABBTreeNode*> S;
 	S.push(treeRoot);
 	while (!S.empty())
 	{
 		AABBTreeNode* node = S.top();
 		S.pop();
-		if (node->isLeaf && node->aabb.ContainsQTree(intersector)) //check if is not outside
+		if (node->go != nullptr && !node->aabb.Contains(node->go->bbox)) //AABBTree WatchDog - If the gameobject is outside his AABB should be reinserted && rechecked
 		{
-			intersections.insert(node->go);
+			ReleaseNode(node);
+			InsertGO(node->go);
+			while (!S.empty())
+			{
+				S.pop();
+			}
+			S.push(treeRoot);
 		}
-		if (!node->isLeaf)
+		else
 		{
-			if (node->leftSon != nullptr && node->leftSon->aabb.ContainsQTree(intersector))
+			if (node->isLeaf && node->aabb.ContainsQTree(intersector)) //check if is not outside
 			{
-				S.push(node->leftSon);
+				intersections.insert(node->go);
 			}
-
-			if (node->rightSon != nullptr && node->rightSon->aabb.ContainsQTree(intersector))
+			if (!node->isLeaf)
 			{
-				S.push(node->rightSon);
-			}
+				if (node->leftSon != nullptr && node->leftSon->aabb.ContainsQTree(intersector))
+				{
+					S.push(node->leftSon);
+				}
 
+				if (node->rightSon != nullptr && node->rightSon->aabb.ContainsQTree(intersector))
+				{
+					S.push(node->rightSon);
+				}
+
+			}
 		}
-		
 	}
 
 }

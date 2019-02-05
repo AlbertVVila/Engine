@@ -218,6 +218,12 @@
     </ClCompile>
     <ClCompile Include="Viewport.cpp" />
     <ClCompile Include="GUICreator.cpp" />
+    <ClCompile Include="KDTree.cpp">
+      <Filter>Tree</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleSpacePartitioning.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -508,6 +514,12 @@
     </ClInclude>
     <ClInclude Include="Viewport.h" />
     <ClInclude Include="GUICreator.h" />
+    <ClInclude Include="KDTree.h">
+      <Filter>Tree</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleSpacePartitioning.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GeoLib">
