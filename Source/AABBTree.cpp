@@ -48,23 +48,11 @@ void AABBTree::InsertGO(GameObject* go)
 	if ((treeRoot->leftSon == nullptr && treeRoot->rightSon != nullptr)
 		|| (treeRoot->leftSon == nullptr && treeRoot->rightSon == nullptr))
 	{
-		treeRoot->leftSon = GetFreeNode(treeRoot);
-		treeRoot->leftSon->aabb.SetFromCenterAndSize(go->bbox.CenterPoint(), go->bbox.Size() * FAT_FACTOR);
-		treeRoot->leftSon->go = go;
-		go->treeNode = treeRoot->leftSon;
-		treeRoot->leftSon->isLeaf = true;
-		treeRoot->leftSon->isLeft = true;
-		treeRoot->leftSon->color = treeRoot->color + 1;
+		MakeLeaf(treeRoot->leftSon, treeRoot, go, true, treeRoot->color + 1);
 	}
 	else if (treeRoot->leftSon != nullptr && treeRoot->rightSon == nullptr)
 	{
-		treeRoot->rightSon = GetFreeNode(treeRoot);
-		treeRoot->rightSon->aabb.SetFromCenterAndSize(go->bbox.CenterPoint(), go->bbox.Size() * FAT_FACTOR);
-		treeRoot->rightSon->go = go;
-		go->treeNode = treeRoot->rightSon;
-		treeRoot->rightSon->isLeaf = true;
-		treeRoot->rightSon->isLeft = false;
-		treeRoot->rightSon->color = treeRoot->color + 1;
+		MakeLeaf(treeRoot->rightSon, treeRoot, go, false, treeRoot->color + 1);
 	}
 	else
 	{
@@ -94,17 +82,12 @@ void AABBTree::InsertGO(GameObject* go)
 			else
 				node->parent->rightSon = newNode;
 
+
 			newNode->rightSon = node; //put the old leaf on the right & create a new leaf on the left with the new GO
 			newNode->rightSon->isLeft = false;
-			node->parent = newNode;
-			newNode->leftSon = GetFreeNode(newNode);
-			newNode->leftSon->aabb.SetFromCenterAndSize(go->bbox.CenterPoint(), go->bbox.Size() * FAT_FACTOR);
-			newNode->leftSon->go = go;
-			go->treeNode = newNode->leftSon;
-			newNode->leftSon->isLeaf = true;
-			newNode->leftSon->isLeft = true;
-			newNode->leftSon->color = newNode->color + 1;
 			newNode->rightSon->color = newNode->color + 1;
+			node->parent = newNode;
+			MakeLeaf(newNode->leftSon, newNode, go, true, newNode->color + 1);
 			RecalculateBoxes(newNode);
 		}
 		else
@@ -229,4 +212,20 @@ inline AABBTreeNode* AABBTree::GetFreeNode(AABBTreeNode* parent)
 	nodesFreePool[lastFreeNode]->leftSon = nullptr;
 	nodesFreePool[lastFreeNode]->rightSon = nullptr;
 	return nodesFreePool[lastFreeNode--];
+}
+
+inline void AABBTree::MakeLeaf(AABBTreeNode * node, AABBTreeNode *parent, GameObject* go, bool isLeft, unsigned color)
+{
+	node = GetFreeNode(parent);
+	node->aabb.SetFromCenterAndSize(go->bbox.CenterPoint(), go->bbox.Size() * FAT_FACTOR);
+	node->go = go;
+	go->treeNode = node;
+	node->isLeaf = true;
+	node->isLeft = isLeft;
+	if (isLeft)
+		parent->leftSon = node;
+	else
+		parent->rightSon = node;
+
+	node->color = color;
 }

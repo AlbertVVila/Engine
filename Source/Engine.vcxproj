@@ -45,7 +45,7 @@
     <TargetName>RealEngine</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>..\Game</OutDir>
+    <OutDir>$(IntDir)</OutDir>
     <CodeAnalysisRuleSet>CppCoreCheckLifetimeRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
   </PropertyGroup>

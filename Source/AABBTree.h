@@ -40,6 +40,7 @@ public:
 	inline void ResetReleaseNode(AABBTreeNode* node);
 	inline void RecalculateBoxes(AABBTreeNode* node);
 	inline AABBTreeNode* GetFreeNode(AABBTreeNode* parent);
+	inline void MakeLeaf(AABBTreeNode *node, AABBTreeNode *parent, GameObject* go, bool isLeft, unsigned color);
 	template<typename T>
 	void GetIntersections(T &intersector, std::unordered_set<GameObject*> &intersections);
 
