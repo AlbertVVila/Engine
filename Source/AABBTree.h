@@ -66,7 +66,7 @@ inline void AABBTree::GetIntersections(T &intersector, std::unordered_set<GameOb
 		{
 			ReleaseNode(node);
 			InsertGO(node->go);
-			while (!S.empty())
+			while (!S.empty()) //dirty tree - Should begin to find again
 			{
 				S.pop();
 			}

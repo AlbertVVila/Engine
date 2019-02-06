@@ -8,6 +8,7 @@
 #include "ModuleScene.h"
 #include "ModuleTextures.h"
 #include "ModuleRender.h"
+#include "ModuleSpacePartitioning.h"
 
 #include "Component.h"
 #include "ComponentTransform.h"
@@ -19,6 +20,7 @@
 #include "Material.h"
 #include "Mesh.h"
 #include "myQuadTree.h"
+#include "AABBTree.h"
 #include <stack>
 #include "JSON.h"
 
@@ -112,8 +114,10 @@ void GameObject::DrawProperties()
 			}
 			else if (!isStatic)
 			{
+				//TODO: Propagate staticness & update aabbtree
 				App->scene->quadtree->Remove(*this);
 				App->scene->dynamicGOs.insert(this);
+				App->spacePartitioning->aabbTree.InsertGO(this); //TODO: remove this when propagation is corrected
 			}
 		}
 	}
@@ -600,7 +604,9 @@ void GameObject::SetStaticAncestors()
 
 		if (go->GetComponent(ComponentType::Renderer) != nullptr)
 		{
-			App->scene->dynamicGOs.erase(go);
+			if (go->treeNode != nullptr)
+				App->spacePartitioning->aabbTree.ReleaseNode(go->treeNode);
+
 			App->scene->quadtree->Insert(go);
 		}
 		parents.pop();
