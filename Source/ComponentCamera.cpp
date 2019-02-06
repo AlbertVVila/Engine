@@ -196,13 +196,13 @@ void ComponentCamera::Center()
 		float camDist = MAX(distX, distY) + HalfSize.z; //camera distance from model
 
 		float3 center = bbox.FaceCenterPoint(5);
-		frustum->pos = center + float3(0, 0, camDist);
+		frustum->pos = center + float3(0.0f, 0.0f, camDist);
 	}
 	else
 	{
-		float camDist = 50;
+		float camDist = 50.0f;
 		float3 center = ((ComponentTransform*)(App->scene->selected->GetComponent(ComponentType::Transform)))->position;
-		frustum->pos = center + float3(0, 0, camDist);
+		frustum->pos = center + float3(0.0f, 0.0f, camDist);
 	}
 
 	frustum->front = -float3::unitZ;
