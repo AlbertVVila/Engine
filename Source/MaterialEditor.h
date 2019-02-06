@@ -27,6 +27,7 @@ public:
 	std::string current_specular = None;
 	std::string current_occlusion = None;
 	std::string current_emissive = None;
+	std::string current_normal = None;
 
 	std::vector<std::string> textureFiles;
 	std::vector<std::string> shaders;

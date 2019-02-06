@@ -4,7 +4,7 @@
 #include "Math/float4.h"
 #include <list>
 
-#define MAXTEXTURES 4
+#define MAXTEXTURES 5
 #define DEFAULTMAT "Default"
 
 struct Shader;
@@ -15,7 +15,8 @@ enum class TextureType
 	DIFFUSE = 0,
 	SPECULAR,
 	OCCLUSION,
-	EMISSIVE
+	EMISSIVE,
+	NORMAL
 };
 
 class Material

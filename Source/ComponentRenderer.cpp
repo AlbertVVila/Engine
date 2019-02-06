@@ -60,7 +60,7 @@ void ComponentRenderer::DrawProperties()
 		}
 		ImGui::Text("Num vertices : %d", mesh->numVertices);
 		ImGui::Text("Num triangles : %d", mesh->numIndices / 3);
-		ImGui::Separator();
+		ImGui::Spacing();
 
 		ImGui::Text("Material");
 		if (ImGui::BeginCombo("", material->name.c_str()))
@@ -87,13 +87,29 @@ void ComponentRenderer::DrawProperties()
 		{
 			guiMaterials.clear();
 		}
+
 		ImGui::SameLine();
-		if (ImGui::Button("View"))
+		if (App->editor->materialEditor->open)
+		{
+			if (ImGui::Button("Hide"))
+			{
+				App->editor->materialEditor->open = false;
+			}
+		}
+		else
+		{
+			if (ImGui::Button("Show"))
+			{
+				App->editor->materialEditor->open = true;
+			}
+		}
+
+		if (App->editor->materialEditor->open)
 		{
 			App->editor->materialEditor->material = material;
-			App->editor->materialEditor->open = true; //materialpopup is only drawn once in module editor
-			App->editor->materialEditor->isCreated = false; 
+			App->editor->materialEditor->Draw();
 		}
+		ImGui::Separator();
 	}
 	ImGui::PopID();
 }

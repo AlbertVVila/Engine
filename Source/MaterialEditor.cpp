@@ -22,93 +22,71 @@ MaterialEditor::~MaterialEditor()
 
 void MaterialEditor::Draw()
 {
-	if (open)
+	if (material == NULL)
 	{
-		if (!ImGui::IsPopupOpen(materialPopup))
-		{
-			ImGui::OpenPopup(materialPopup);
-			SetCurrentTextures();
-			if (isCreated)
-			{
-				material = new Material();
-			}
-			else
-			{
-				previous = new Material(*material); //Save changes if cancel
-			}
-		}
-		ImGui::SetNextWindowSizeConstraints(ImVec2(200, 200), ImVec2(500, 500));
+		return;
 	}
-	if (ImGui::BeginPopupModal(materialPopup, NULL, ImGuiWindowFlags_AlwaysAutoResize))
+
+	SetCurrentTextures();
+
+	char name[64] = "";
+	if (!material->name.empty())
 	{
-		char name[64] = "";
-		if (!material->name.empty())
-		{
-			strcpy(name, material->name.c_str());
-		}
-		else
-		{
-			strcpy(name, "Unnamed");
-		}
-		ImGui::InputText("Name", name, 64);
-		material->name = name;
+		strcpy(name, material->name.c_str());
+	}
+	else
+	{
+		strcpy(name, "Unnamed");
+	}
+
+	ImGui::Spacing();
+
+	ImGui::InputText("Name", name, 64);
+	material->name = name;
+
+	ImGui::DragFloat("kAmbient", &material->kAmbient, .005f, .0f, 1.f);
+	ImGui::DragFloat("kDiffuse", &material->kDiffuse, .005f, .0f, 1.f);
+	ImGui::DragFloat("kSpecular", &material->kSpecular, .005f, .0f, 1.f);
+	ImGui::DragFloat("Shininess", &material->shininess, .05f, .0f, 256.f);
+	ShaderSelector(current_shader);
+
+	if (textureFiles.size() == 0)
+	{
+		textureFiles = App->fsystem->ListFiles(TEXTURES, false);
+	}
+
+	if (ImGui::CollapsingHeader("Diffuse"))
+	{
+		ImGui::PushID(&material->diffuse_color);
+		ImGui::ColorEdit4("Color", (float*)&material->diffuse_color, ImGuiColorEditFlags_AlphaPreview);
+		TextureSelector((unsigned)TextureType::DIFFUSE, current_diffuse);
 		ImGui::Separator();
-
-		ImGui::DragFloat("kAmbient", &material->kAmbient, .005f, .0f, 1.f);
-		ImGui::DragFloat("kDiffuse", &material->kDiffuse, .005f, .0f, 1.f);
-		ImGui::DragFloat("kSpecular", &material->kSpecular, .005f, .0f, 1.f);
-		ImGui::DragFloat("Shininess", &material->shininess, .05f, .0f, 256.f);
-		ShaderSelector(current_shader);
-		
-		if (textureFiles.size() == 0)
-		{
-			textureFiles = App->fsystem->ListFiles(TEXTURES, false);
-		}
-
-		if (ImGui::CollapsingHeader("Diffuse"))
-		{
-			ImGui::PushID(&material->diffuse_color);
-			ImGui::ColorEdit4("Color", (float*)&material->diffuse_color, ImGuiColorEditFlags_AlphaPreview);
-			TextureSelector((unsigned)TextureType::DIFFUSE, current_diffuse);
-			ImGui::Separator();
-			ImGui::PopID();
-		}
-		if (ImGui::CollapsingHeader("Specular"))
-		{
-			ImGui::PushID(&material->specular_color);
-			ImGui::ColorEdit3("Color", (float*)&material->specular_color);
-			TextureSelector((unsigned)TextureType::SPECULAR, current_specular);
-			ImGui::Separator();
-			ImGui::PopID();
-		}
-		if (ImGui::CollapsingHeader("Occlusion"))
-		{
-			ImGui::PushID(&material->textures[(unsigned)TextureType::OCCLUSION]);
-			TextureSelector((unsigned)TextureType::OCCLUSION, current_occlusion);
-			ImGui::Separator();
-			ImGui::PopID();
-		}
-		if (ImGui::CollapsingHeader("Emissive"))
-		{
-			ImGui::ColorEdit3("Color", (float*)&material->emissive_color);
-			TextureSelector((unsigned)TextureType::EMISSIVE, current_emissive);
-			ImGui::Separator();
-		}
-		if (ImGui::Button("Save", ImVec2(120, 0))) {
-			material->Save();
-			CleanUp();
-		}
-		ImGui::SetItemDefaultFocus();
-		ImGui::SameLine();
-		if (ImGui::Button("Cancel", ImVec2(120, 0)))
-		{
-			if(!isCreated)
-			{
-				material->Reset(*previous);
-			}
-			CleanUp();
-		}
-		ImGui::EndPopup();
+		ImGui::PopID();
+	}
+	if (ImGui::CollapsingHeader("Specular"))
+	{
+		ImGui::PushID(&material->specular_color);
+		ImGui::ColorEdit3("Color", (float*)&material->specular_color);
+		TextureSelector((unsigned)TextureType::SPECULAR, current_specular);
+		ImGui::Separator();
+		ImGui::PopID();
+	}
+	if (ImGui::CollapsingHeader("Occlusion"))
+	{
+		ImGui::PushID(&material->textures[(unsigned)TextureType::OCCLUSION]);
+		TextureSelector((unsigned)TextureType::OCCLUSION, current_occlusion);
+		ImGui::Separator();
+		ImGui::PopID();
+	}
+	if (ImGui::CollapsingHeader("Emissive"))
+	{
+		ImGui::ColorEdit3("Color", (float*)&material->emissive_color);
+		TextureSelector((unsigned)TextureType::EMISSIVE, current_emissive);
+		ImGui::Separator();
+	}
+	if (ImGui::CollapsingHeader("Normal"))
+	{
+		TextureSelector((unsigned)TextureType::NORMAL, current_normal);
 	}
 }
 
@@ -183,12 +161,19 @@ void MaterialEditor::SetCurrentTextures()
 	Texture* specular_texture = material->GetTexture(TextureType::SPECULAR);
 	Texture* occlusion_texture = material->GetTexture(TextureType::OCCLUSION);
 	Texture* emissive_texture = material->GetTexture(TextureType::EMISSIVE);
+	Texture* normal_texture = material->GetTexture(TextureType::NORMAL);
 
 	// Set current textures strings
 	if (diffuse_texture != nullptr)		{ current_diffuse = diffuse_texture->file; }
+		else { current_diffuse = None; }
 	if (specular_texture != nullptr)	{ current_specular = specular_texture->file; }
+		else { current_specular = None; }
 	if (occlusion_texture != nullptr)	{ current_occlusion = occlusion_texture->file; }
+		else { current_occlusion = None; }
 	if (emissive_texture != nullptr)	{ current_emissive = emissive_texture->file; }
+		else { current_emissive = None; }
+	if (normal_texture != nullptr)		{ current_normal = normal_texture->file; }
+		else { current_normal = None; }
 }
 
 void MaterialEditor::CleanUp()
