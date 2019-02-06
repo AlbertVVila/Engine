@@ -289,7 +289,10 @@ void ModuleScene::DeleteFromSpacePartition(const GameObject &gameobject)
 	}
 	else
 	{
-		dynamicGOs.erase((GameObject*) &gameobject);
+		if (gameobject.isVolumetric && gameobject.treeNode != nullptr)
+		{
+			App->spacePartitioning->aabbTree.ReleaseNode(gameobject.treeNode);
+		}
 	}
 }
 
