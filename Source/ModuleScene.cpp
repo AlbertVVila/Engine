@@ -277,7 +277,10 @@ void ModuleScene::AddToSpacePartition(GameObject *gameobject)
 	}
 	else
 	{
-		dynamicGOs.insert(gameobject);
+		if (gameobject->isVolumetric)
+		{
+			App->spacePartitioning->aabbTree.InsertGO(gameobject);
+		}
 	}
 }
 

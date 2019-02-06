@@ -60,6 +60,7 @@ GameObject::GameObject(const GameObject & gameobject)
 
 	if (GetComponent(ComponentType::Renderer) != nullptr)
 	{
+		isVolumetric = true;
 		App->scene->AddToSpacePartition(this);
 	}
 
