@@ -366,7 +366,6 @@ void ModuleRender::DrawGUI()
 	}
 	ImGui::Checkbox("Picker Debug", &picker_debug);
 	ImGui::Checkbox("Light Debug", &light_debug);
-	ImGui::Checkbox("QuadTree Debug", &quadtree_debug);
 	ImGui::Checkbox("Grid Debug", &grid_debug);
 
 	const char* scales[] = {"1", "10", "100"};

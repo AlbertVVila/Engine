@@ -37,10 +37,6 @@ ComponentRenderer::~ComponentRenderer()
 {
 	material = nullptr; //Resource Manager Deallocates resources (materials, meshes)
 	mesh = nullptr;
-	if (gameobject != nullptr)
-	{
-		App->scene->DeleteFromSpacePartition(*gameobject); //TODO_AABBTREE: Delete from kdtree / aabbtree
-	}
 }
 
 Component * ComponentRenderer::Clone() const

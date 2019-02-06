@@ -40,8 +40,8 @@ public:
 	GameObject * CreateGameObject(const char * name, GameObject* parent);
 
 	void AddToSpacePartition(GameObject * gameobject);
-	void DeleteFromSpacePartition(const GameObject & gameobject);
-	void ResetQuadTree();
+	void DeleteFromSpacePartition(GameObject & gameobject);
+	void ResetQuadTree(); //deprecated
 
 	void Draw(const Frustum &frustum, bool isEditor = false);
 	void DrawGO(const GameObject& go, const Frustum & frustum, bool isEditor = false);
@@ -64,6 +64,8 @@ public:
 	void UnSelect();
 	void Pick(float normalized_x, float normalized_y);
 
+	void GetStaticGlobalAABB(AABB &aabb, std::vector<GameObject*> &bucket, unsigned int &bucketOccupation);
+
 	unsigned GetNewUID();
 	std::list<ComponentLight*> GetClosestLights(LightType type, float3 position = float3::zero) const;
 
@@ -71,6 +73,7 @@ public:
 
 private:
 	std::list<std::pair<float, GameObject*>>GetDynamicIntersections(const LineSegment& line);
+	std::list<std::pair<float, GameObject*>>GetStaticIntersections(const LineSegment& line);
 	unsigned primitivesUID[NBPRIMITIVES] = {0};
 
 public:
@@ -83,6 +86,7 @@ public:
 	std::list<ComponentLight*> lights;
 	myQuadTree * quadtree = nullptr;
 	std::set<GameObject*> dynamicGOs;
+	std::set<GameObject*> staticGOs;
 	pcg32 uuid_rng;
 	std::string name;
 	std::string defaultScene;

@@ -58,7 +58,6 @@ public:
 template<typename T>
 inline void KDTree::GetIntersections(T &intersector, std::unordered_set<GameObject*> &intersections) const
 {
-	BROFILER_CATEGORY("KDTree intersections", Profiler::Color::Azure);
 	std::queue<KDTNode*> Q;
 	Q.push(treeRoot);
 

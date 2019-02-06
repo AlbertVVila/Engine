@@ -5,7 +5,7 @@
 #include "ComponentLight.h"
 #include "Globals.h"
 
-void AABBTree::Init() 
+void AABBTree::Init()
 {
 	LOG("AABBTree Init");
 	nodesFreePool = new AABBTreeNode*[MAX_AABB_TREE_NODES];
@@ -20,10 +20,11 @@ void AABBTree::Init()
 
 void AABBTree::CleanUp()
 {
-	LOG("AABBTree CleanUp");
-	for (unsigned i = 0u; i < MAX_AABB_TREE_NODES; ++i)
-		RELEASE(nodesCreatedPool[i]);
-	
+	if (nodesCreatedPool != nullptr)
+	{
+		for (unsigned i = 0u; i < MAX_AABB_TREE_NODES; ++i)
+			RELEASE(nodesCreatedPool[i]);
+	}
 	RELEASE_ARRAY(nodesFreePool);
 	RELEASE_ARRAY(nodesCreatedPool);
 	lastFreeNode = MAX_AABB_TREE_NODES - 1;
@@ -32,7 +33,6 @@ void AABBTree::CleanUp()
 
 void AABBTree::Reset()
 {
-	LOG("Reset AABBTREE");
 	CleanUp();
 	Init();
 }

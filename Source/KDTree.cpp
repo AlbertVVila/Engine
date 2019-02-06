@@ -1,4 +1,6 @@
 #include "KDTree.h"
+#include "GameObject.h"
+#include "ComponentTransform.h"
 
 KDTNode::~KDTNode()
 {
@@ -93,10 +95,8 @@ void KDTree::Init()
 
 void KDTree::Calculate()
 {
-	/*
-	BROFILER_CATEGORY("Calculate KD-Tree", Profiler::Color::AliceBlue);
 	treeRoot->bucketOccupation = 0u;
-	App->scene->GetStaticGlobalAABB(treeRoot->aabb, treeRoot->bucket, treeRoot->bucketOccupation);
+	App->scene->GetStaticGlobalAABB(*treeRoot->aabb, treeRoot->bucket, treeRoot->bucketOccupation);
 	std::queue<KDTNode*> Q;
 	Q.push(treeRoot);
 	while (!Q.empty())
@@ -109,17 +109,17 @@ void KDTree::Calculate()
 			{
 				if (go2 == nullptr)
 					return false;
-				return go1->transform->getGlobalPosition()[dimension] > go2->transform->getGlobalPosition()[dimension];
+				return go1->transform->GetGlobalPosition()[dimension] > go2->transform->GetGlobalPosition()[dimension];
 			});
 			if (current->bucketOccupation % 2 == 0)
 			{
 				unsigned middle = (current->bucketOccupation * 0.5f) + 1u; //the first is always null due the preincrement on filling the bucket
-				current->median = (current->bucket[middle - 1]->transform->getGlobalPosition()[dimension] + current->bucket[middle]->transform->getGlobalPosition()[dimension]) / 2.f;
+				current->median = (current->bucket[middle - 1]->transform->GetGlobalPosition()[dimension] + current->bucket[middle]->transform->GetGlobalPosition()[dimension]) / 2.f;
 			}
 			else
 			{
 				unsigned middle = (current->bucketOccupation * 0.5f) + 1u; //the first is always null due the preincrement on filling the bucket
-				current->median = current->bucket[middle]->transform->getGlobalPosition()[dimension];
+				current->median = current->bucket[middle]->transform->GetGlobalPosition()[dimension];
 			}
 			current->leftBranch->bucketOccupation = 0u;
 			current->rightBranch->bucketOccupation = 0u;
@@ -130,11 +130,11 @@ void KDTree::Calculate()
 
 			for (unsigned i = 1u; i <= current->bucketOccupation; ++i) //the first is always null due the preincrement on filling the bucket
 			{
-				if (current->leftBranch->aabb->ContainsQTree(*current->bucket[i]->aaBBGlobal))
+				if (current->leftBranch->aabb->ContainsQTree(current->bucket[i]->bbox))
 				{
 					current->leftBranch->bucket[++current->leftBranch->bucketOccupation] = current->bucket[i];
 				}
-				if (current->rightBranch->aabb->ContainsQTree(*current->bucket[i]->aaBBGlobal))
+				if (current->rightBranch->aabb->ContainsQTree(current->bucket[i]->bbox))
 				{
 					current->rightBranch->bucket[++current->rightBranch->bucketOccupation] = current->bucket[i];
 				}
@@ -145,7 +145,7 @@ void KDTree::Calculate()
 		{
 			current->isLeaf = true;
 		}
-	}*/
+	}
 }
 
 void KDTree::DebugDraw() const

@@ -16,8 +16,7 @@ update_status ModuleSpacePartitioning::Update(float dt)
 
 bool ModuleSpacePartitioning::CleanUp()
 {
-	//TODO_AABBTREE: Clean kdtree?
-	aabbTree.CleanUp();	
+	aabbTree.CleanUp();
 	return true;
 }
 

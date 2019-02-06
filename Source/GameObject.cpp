@@ -108,16 +108,18 @@ void GameObject::DrawProperties()
 		{
 			if (isStatic && GetComponent(ComponentType::Renderer) != nullptr)
 			{
-				SetStaticAncestors();
-				App->scene->quadtree->Insert(this);
+				SetStaticAncestors(); //TODO: Propagate staticness & update aabbtree
 				App->scene->dynamicGOs.erase(this);
+				App->scene->staticGOs.insert(this);
+				App->spacePartitioning->kDTree.Calculate();
 			}
 			else if (!isStatic)
 			{
 				//TODO: Propagate staticness & update aabbtree
-				App->scene->quadtree->Remove(*this);
 				App->scene->dynamicGOs.insert(this);
-				App->spacePartitioning->aabbTree.InsertGO(this); //TODO: remove this when propagation is corrected
+				App->scene->staticGOs.erase(this);
+				App->spacePartitioning->kDTree.Calculate();
+				App->spacePartitioning->aabbTree.InsertGO(this); //TODO: remove this when propagation is corrected 
 			}
 		}
 	}
@@ -178,7 +180,7 @@ Component * GameObject::CreateComponent(ComponentType type)
 		this->transform = (ComponentTransform*)component;
 		break;
 	case ComponentType::Renderer:
-		component = new ComponentRenderer(this);
+		component = new ComponentRenderer(this);		
 		break;
 	case ComponentType::Light:
 		component = new ComponentLight(this);

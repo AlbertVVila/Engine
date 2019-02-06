@@ -21,6 +21,7 @@
 #include "JSON.h"
 #include "myQuadTree.h"
 #include "AABBTree.h"
+#include "KDTree.h"
 
 #include "Imgui.h"
 #include "Geometry/LineSegment.h"
@@ -104,7 +105,8 @@ bool ModuleScene::CleanUp()
 		RELEASE(child);
 	}
 	root->children.clear();
-	ResetQuadTree();
+	
+	App->spacePartitioning->aabbTree.Reset();
 
 	selected = nullptr;
 	maincamera = nullptr;
@@ -151,26 +153,27 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	{
 		camFrustum = *maincamera->frustum;
 	}
-	std::list<GameObject*> staticGOs = quadtree->GetIntersections(camFrustum);
-	for (const auto &go : staticGOs)
+std::unordered_set<GameObject*> staticFilteredGOs;
+App->spacePartitioning->kDTree.GetIntersections(camFrustum, staticFilteredGOs);
+for (const auto &go : staticFilteredGOs)
+{
+	DrawGO(*go, camFrustum, isEditor);
+}
+
+std::unordered_set<GameObject*> dynamicFilteredGOs;
+App->spacePartitioning->aabbTree.GetIntersections(camFrustum, dynamicFilteredGOs);
+for (const auto &go : dynamicFilteredGOs)
+{
+	if (camFrustum.Intersects(go->GetBoundingBox()))
 	{
 		DrawGO(*go, camFrustum, isEditor);
 	}
+}
 
-	std::unordered_set<GameObject*> dynamicFilteredGOs;
-	App->spacePartitioning->aabbTree.GetIntersections(camFrustum, dynamicFilteredGOs);
-	for (const auto &go : dynamicFilteredGOs)
-	{
-		if (camFrustum.Intersects(go->GetBoundingBox()))
-		{
-			DrawGO(*go, camFrustum, isEditor);
-		}
-	}
-
-	if (selected != nullptr && selected->GetComponent(ComponentType::Renderer) == nullptr)
-	{
-		DrawGO(*selected, frustum, isEditor); //bcause it could be an object without mesh not in staticGOs or dynamicGOs
-	}
+if (selected != nullptr && selected->GetComponent(ComponentType::Renderer) == nullptr)
+{
+	DrawGO(*selected, frustum, isEditor); //bcause it could be an object without mesh not in staticGOs or dynamicGOs
+}
 }
 
 void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isEditor)
@@ -206,7 +209,7 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 
 void ModuleScene::DrawHierarchy()
 {
-	ImGui::PushStyleColor(ImGuiCol_Header,ImVec4(0.2f, 0.2f, 0.5f, 1.00f));
+	ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.2f, 0.2f, 0.5f, 1.00f));
 	root->DrawHierarchy(selected);
 	ImGui::PopStyleColor();
 }
@@ -249,9 +252,25 @@ void ModuleScene::DragNDrop(GameObject* go)
 void ModuleScene::DrawGUI()
 {
 	ImGui::ColorEdit3("Ambient", (float*)&ambientColor);
-	if(ImGui::Button("Reset QuadTree"))
+	if (ImGui::InputInt("KdTree bucket size", &App->spacePartitioning->kDTree.bucketSize))
 	{
-		ResetQuadTree();
+		if (App->spacePartitioning->kDTree.bucketSize <= 0)
+		{
+			App->spacePartitioning->kDTree.bucketSize = 1;
+		}
+		App->spacePartitioning->kDTree.Calculate();
+	}
+	if (ImGui::InputInt("KdTree max depth", &App->spacePartitioning->kDTree.maxDepth))
+	{
+		if (App->spacePartitioning->kDTree.maxDepth <= 0)
+		{
+			App->spacePartitioning->kDTree.maxDepth = 1;
+		}
+		App->spacePartitioning->kDTree.Calculate();
+	}
+	if(ImGui::Button("Reset kdTree"))
+	{
+		App->spacePartitioning->kDTree.Calculate();
 	}
 }
 
@@ -273,7 +292,10 @@ void ModuleScene::AddToSpacePartition(GameObject *gameobject)
 
 	if (gameobject->isStatic)
 	{
-		quadtree->Insert(gameobject);
+		if (gameobject->isVolumetric)
+		{
+			staticGOs.insert(gameobject);
+		}
 	}
 	else
 	{
@@ -284,11 +306,11 @@ void ModuleScene::AddToSpacePartition(GameObject *gameobject)
 	}
 }
 
-void ModuleScene::DeleteFromSpacePartition(const GameObject &gameobject)
+void ModuleScene::DeleteFromSpacePartition(GameObject &gameobject)
 {
-	if (gameobject.isStatic)
+	if (gameobject.isStatic && gameobject.isVolumetric)
 	{
-		quadtree->Remove(gameobject);
+		staticGOs.erase(&gameobject);
 	}
 	else
 	{
@@ -299,7 +321,7 @@ void ModuleScene::DeleteFromSpacePartition(const GameObject &gameobject)
 	}
 }
 
-void ModuleScene::ResetQuadTree()
+void ModuleScene::ResetQuadTree() //deprecated
 {
 	int size = QUADTREE_SIZE * App->renderer->current_scale;
 	AABB limit(float3(-size, 0.f, -size), float3(size, 0.f, size));
@@ -459,6 +481,7 @@ void ModuleScene::LoadScene(const char* scene)
 	ClearScene();
 	AddScene(scene);
 	name = scene;
+	App->spacePartitioning->kDTree.Calculate();
 }
 
 void ModuleScene::AddScene(const char * scene)
@@ -489,10 +512,8 @@ void ModuleScene::AddScene(const char * scene)
 			gameobject->parent = root;
 			gameobject->parent->children.push_back(gameobject);
 		}
-		if (gameobject->isVolumetric && !gameobject->isStatic)
-		{
-			App->spacePartitioning->aabbTree.InsertGO(gameobject);
-		}
+	
+		AddToSpacePartition(gameobject);
 	}
 
 	RELEASE_ARRAY(data);
@@ -530,9 +551,9 @@ void ModuleScene::UnSelect()
 void ModuleScene::Pick(float normalized_x, float normalized_y)
 {
 	LineSegment line = App->camera->editorcamera->DrawRay(normalized_x, normalized_y);
-	std::list<std::pair<float, GameObject*>> GOs = quadtree->GetIntersections(line);
-	std::list<std::pair<float, GameObject*>> dynamicGOs = GetDynamicIntersections(line);
-	GOs.merge(dynamicGOs);
+	std::list<std::pair<float, GameObject*>> GOs = GetStaticIntersections(line);
+	std::list<std::pair<float, GameObject*>> dGOs = GetDynamicIntersections(line);
+	GOs.merge(dGOs);
 
 	float closestTriangle = FLOAT_INF;
 	GameObject * closestGO = nullptr;
@@ -570,6 +591,16 @@ void ModuleScene::Pick(float normalized_x, float normalized_y)
 	if (debuglines.size() > MAX_DEBUG_LINES)
 	{
 		debuglines.erase(debuglines.begin());
+	}
+}
+
+void ModuleScene::GetStaticGlobalAABB(AABB & aabb, std::vector<GameObject*>& bucket, unsigned int & bucketOccupation)
+{
+	aabb.SetNegativeInfinity();
+	for (GameObject* go : staticGOs)
+	{
+		aabb.Enclose(go->bbox);
+		bucket[++bucketOccupation] = go;
 	}
 }
 
@@ -619,6 +650,24 @@ std::list<std::pair<float, GameObject*>> ModuleScene::GetDynamicIntersections(co
 	std::list<std::pair<float, GameObject*>> gos; 
 	std::unordered_set<GameObject*> intersections;
 	App->spacePartitioning->aabbTree.GetIntersections(line, intersections);
+	for (const auto &go : intersections)
+	{
+		float dNear = -FLOAT_INF;
+		float dFar = FLOAT_INF;
+		if (line.Intersects(go->GetBoundingBox(), dNear, dFar))
+		{
+			gos.push_back(std::pair<float, GameObject*>(dNear, go));
+		}
+	}
+	gos.sort();
+	return gos;
+}
+
+std::list<std::pair<float, GameObject*>> ModuleScene::GetStaticIntersections(const LineSegment & line)
+{
+	std::list<std::pair<float, GameObject*>> gos;
+	std::unordered_set<GameObject*> intersections;
+	App->spacePartitioning->kDTree.GetIntersections(line, intersections);
 	for (const auto &go : intersections)
 	{
 		float dNear = -FLOAT_INF;
