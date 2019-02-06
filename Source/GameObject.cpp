@@ -429,6 +429,7 @@ bool GameObject::Intersects(const LineSegment & line, float &distance) const
 void GameObject::UpdateBBox()
 {
 	ComponentRenderer* renderer = (ComponentRenderer*) GetComponent(ComponentType::Renderer);
+
 	if (renderer != nullptr)
 	{
 		bbox = renderer->mesh->GetBoundingBox();
@@ -444,6 +445,7 @@ void GameObject::DrawBBox() const
 	}
 
 	ComponentRenderer *renderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
+
 	if (renderer == nullptr) return;
 
 	renderer->mesh->DrawBbox(App->program->defaultShader->id, bbox);
