@@ -27,7 +27,6 @@ void MaterialEditor::Draw()
 		if (!ImGui::IsPopupOpen(materialPopup))
 		{
 			ImGui::OpenPopup(materialPopup);
-			SetCurrentTextures();
 			if (isCreated)
 			{
 				material = new Material();
