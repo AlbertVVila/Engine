@@ -50,9 +50,9 @@ Viewport::~Viewport()
 
 void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 {
+	PROFILE;
 	if (enabled) {
 
-		PROFILE;
 		ImGui::Begin(name.c_str(), &enabled, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoBringToFrontOnFocus);
 
 		if (ImGui::IsWindowHovered() || ImGui::IsWindowAppearing())
@@ -337,6 +337,7 @@ void Viewport::Pick()
 	}
 }
 
-void Viewport::ToggleEnabled() {
+void Viewport::ToggleEnabled() 
+{
 	enabled = !enabled;
 }
