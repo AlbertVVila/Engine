@@ -228,6 +228,12 @@ void ComponentCamera::Orbit(float dx, float dy)
 
 void ComponentCamera::SetAspect(float aspect)
 {
+	aspectDirty = false;
+	if (aspect != oldAspect)
+	{
+		aspectDirty = true;
+		oldAspect = aspect;
+	}
 	frustum->horizontalFov = 2.f * atanf(tanf(frustum->verticalFov * 0.5f) * aspect);
 }
 

@@ -56,6 +56,7 @@ public:
 template<typename T>
 inline void AABBTree::GetIntersections(T &intersector, std::unordered_set<GameObject*> &intersections) 
 {
+	BROFILER_CATEGORY("AABBTree intersections", Profiler::Color::Azure);
 	std::stack<AABBTreeNode*> S;
 	S.push(treeRoot);
 	while (!S.empty())

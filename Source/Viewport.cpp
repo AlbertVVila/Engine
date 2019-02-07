@@ -75,7 +75,10 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 	ImVec2 size = ImGui::GetWindowSize();
 
 	cam->SetAspect(size.x / size.y);
-	CreateFrameBuffer(size.x, size.y);
+	if (cam->aspectDirty)
+	{
+		CreateFrameBuffer(size.x, size.y);
+	}
 	current_width = size.x;
 	current_height = size.y;
 
@@ -187,6 +190,7 @@ void Viewport::DrawGuizmoButtons()
 
 void Viewport::CreateFrameBuffer(int width, int height)
 {
+	BROFILER_CATEGORY("Create FrameBuffer", Profiler::Color::Azure);
 	//CleanUp(); //Delete old FBO,RBO and texture
 	if (width != current_width || height != current_height)
 	{

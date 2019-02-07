@@ -153,27 +153,27 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	{
 		camFrustum = *maincamera->frustum;
 	}
-std::unordered_set<GameObject*> staticFilteredGOs;
-App->spacePartitioning->kDTree.GetIntersections(camFrustum, staticFilteredGOs);
-for (const auto &go : staticFilteredGOs)
-{
-	DrawGO(*go, camFrustum, isEditor);
-}
-
-std::unordered_set<GameObject*> dynamicFilteredGOs;
-App->spacePartitioning->aabbTree.GetIntersections(camFrustum, dynamicFilteredGOs);
-for (const auto &go : dynamicFilteredGOs)
-{
-	if (camFrustum.Intersects(go->GetBoundingBox()))
+	std::unordered_set<GameObject*> staticFilteredGOs;
+	App->spacePartitioning->kDTree.GetIntersections(camFrustum, staticFilteredGOs);
+	for (const auto &go : staticFilteredGOs)
 	{
 		DrawGO(*go, camFrustum, isEditor);
 	}
-}
 
-if (selected != nullptr && selected->GetComponent(ComponentType::Renderer) == nullptr)
-{
-	DrawGO(*selected, frustum, isEditor); //bcause it could be an object without mesh not in staticGOs or dynamicGOs
-}
+	std::unordered_set<GameObject*> dynamicFilteredGOs;
+	App->spacePartitioning->aabbTree.GetIntersections(camFrustum, dynamicFilteredGOs);
+	for (const auto &go : dynamicFilteredGOs)
+	{
+		if (camFrustum.Intersects(go->GetBoundingBox()))
+		{
+			DrawGO(*go, camFrustum, isEditor);
+		}
+	}
+
+	if (selected != nullptr && selected->GetComponent(ComponentType::Renderer) == nullptr)
+	{
+		DrawGO(*selected, frustum, isEditor); //bcause it could be an object without mesh not in staticGOs or dynamicGOs
+	}
 }
 
 void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isEditor)
@@ -513,7 +513,7 @@ void ModuleScene::AddScene(const char * scene)
 			gameobject->parent->children.push_back(gameobject);
 		}
 	
-		AddToSpacePartition(gameobject);
+		//AddToSpacePartition(gameobject);
 	}
 
 	RELEASE_ARRAY(data);
@@ -524,8 +524,11 @@ void ModuleScene::ClearScene()
 {
 	CleanUp();
 	camera_notfound_texture = App->textures->GetTexture(NOCAMERA);
-	name.clear();
+	name.clear();	
+	staticGOs.clear();
+	dynamicGOs.clear();
 	App->spacePartitioning->aabbTree.Reset();
+	App->spacePartitioning->kDTree.Calculate();
 }
 
 void ModuleScene::Select(GameObject * gameobject)
