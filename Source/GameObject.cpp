@@ -243,13 +243,13 @@ std::vector<Component*> GameObject::GetComponentsInChildren(ComponentType type) 
 
 void GameObject::RemoveComponent(const Component & component)
 {
-	for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+	for (int i = 0; i < components.size(); ++i) 
 	{
-		if (*it == &component)
+		if (components[i] == &component) 
 		{
-			(*it)->CleanUp();
-			components.erase(it);
-			RELEASE(*it);
+			components[i]->CleanUp();
+			RELEASE(components[i]);
+			components.erase(components.begin() + i);
 			return;
 		}
 	}
@@ -436,6 +436,7 @@ bool GameObject::Intersects(const LineSegment & line, float &distance) const
 void GameObject::UpdateBBox()
 {
 	ComponentRenderer* renderer = (ComponentRenderer*) GetComponent(ComponentType::Renderer);
+
 	if (renderer != nullptr)
 	{
 		bbox = renderer->mesh->GetBoundingBox();
@@ -451,6 +452,7 @@ void GameObject::DrawBBox() const
 	}
 
 	ComponentRenderer *renderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
+
 	if (renderer == nullptr) return;
 
 	renderer->mesh->DrawBbox(App->program->defaultShader->id, bbox);
