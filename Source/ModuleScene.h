@@ -9,6 +9,7 @@
 #include "Math/Quat.h"
 #include "Math/float4.h"
 #include <set>
+#include <unordered_set>
 
 #define NBPRIMITIVES 2
 class GameObject;
@@ -33,6 +34,7 @@ public:
 
 	bool Init(JSON * config) override;
 	bool Start() override;
+	update_status PreUpdate() override;
 	update_status Update(float dt) override;
 	bool CleanUp() override;
 	void SaveConfig(JSON * config) override;
@@ -43,6 +45,7 @@ public:
 	void DeleteFromSpacePartition(GameObject & gameobject);
 	void ResetQuadTree(); //deprecated
 
+	void FrustumCulling(const Frustum &frustum);
 	void Draw(const Frustum &frustum, bool isEditor = false);
 	void DrawGO(const GameObject& go, const Frustum & frustum, bool isEditor = false);
 	void DrawHierarchy();
@@ -75,6 +78,8 @@ private:
 	std::list<std::pair<float, GameObject*>>GetDynamicIntersections(const LineSegment& line);
 	std::list<std::pair<float, GameObject*>>GetStaticIntersections(const LineSegment& line);
 	unsigned primitivesUID[NBPRIMITIVES] = {0};
+	std::unordered_set<GameObject*> dynamicFilteredGOs;
+	std::unordered_set<GameObject*> staticFilteredGOs;
 
 public:
 	GameObject* root = nullptr;

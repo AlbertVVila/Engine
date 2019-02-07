@@ -90,6 +90,12 @@ bool ModuleScene::Start()
 	return true;
 }
 
+update_status ModuleScene::PreUpdate()
+{
+	FrustumCulling(*App->camera->editorcamera->frustum);
+	return UPDATE_CONTINUE;
+}
+
 update_status ModuleScene::Update(float dt)
 {
 	BROFILER_CATEGORY("Scene Update", Profiler::Color::Green);
@@ -130,6 +136,18 @@ void ModuleScene::SaveConfig(JSON * config)
 	config->AddValue("scene", *scene);
 }
 
+void ModuleScene::FrustumCulling(const Frustum & frustum)
+{
+	Frustum camFrustum = frustum;
+
+	if (maincamera != nullptr && App->renderer->useMainCameraFrustum)
+	{
+		camFrustum = *maincamera->frustum;
+	}
+	App->spacePartitioning->kDTree.GetIntersections(camFrustum, staticFilteredGOs);
+	App->spacePartitioning->aabbTree.GetIntersections(camFrustum, dynamicFilteredGOs);
+}
+
 void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 {
 	PROFILE;
@@ -153,15 +171,12 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	{
 		camFrustum = *maincamera->frustum;
 	}
-	std::unordered_set<GameObject*> staticFilteredGOs;
-	App->spacePartitioning->kDTree.GetIntersections(camFrustum, staticFilteredGOs);
+	
 	for (const auto &go : staticFilteredGOs)
 	{
 		DrawGO(*go, camFrustum, isEditor);
 	}
 
-	std::unordered_set<GameObject*> dynamicFilteredGOs;
-	App->spacePartitioning->aabbTree.GetIntersections(camFrustum, dynamicFilteredGOs);
 	for (const auto &go : dynamicFilteredGOs)
 	{
 		if (camFrustum.Intersects(go->GetBoundingBox()))
@@ -527,6 +542,8 @@ void ModuleScene::ClearScene()
 	name.clear();	
 	staticGOs.clear();
 	dynamicGOs.clear();
+	staticFilteredGOs.clear();
+	dynamicFilteredGOs.clear();
 	App->spacePartitioning->aabbTree.Reset();
 	App->spacePartitioning->kDTree.Calculate();
 }
