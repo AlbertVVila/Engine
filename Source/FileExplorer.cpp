@@ -162,22 +162,7 @@ void FileExplorer::Draw()
 
 void FileExplorer::DrawPath()
 {
-	std::vector<int> separatorLocations;
-	std::vector<std::string> folders;
-	for (int i = 0; i < path.size(); i++)
-		if (path[i] == '/')
-			separatorLocations.push_back(i);
-	for (std::vector<int>::iterator it = separatorLocations.begin(); it != separatorLocations.end(); ++it)
-	{
-		if (it != separatorLocations.end() - 1)
-		{
-			folders.push_back(path.substr((*it), (*(it + 1)) - (*it)));
-		}
-		else 
-		{
-			folders.push_back(path.substr((*it), (path.size() - (*it))));
-		}
-	}
+	std::vector<std::string> folders = GetPath();
 	if (ImGui::Button("Assets"))
 	{
 		ResetPath();
@@ -246,4 +231,46 @@ void FileExplorer::FilterByFileType(const char& file)
 			sprintf_s(filename, App->fsystem->GetFilename(&file).c_str());
 		break;
 	}
+}
+
+std::vector<std::string> FileExplorer::GetPath()
+{
+	std::vector<int> separatorLocations;
+	std::vector<std::string> auxFolders;
+	for (int i = 0; i < path.size(); i++)
+		if (path[i] == '/')
+			separatorLocations.push_back(i);
+	for (std::vector<int>::iterator it = separatorLocations.begin(); it != separatorLocations.end(); ++it)
+	{
+		if (it != separatorLocations.end() - 1)
+		{
+			auxFolders.push_back(path.substr((*it), (*(it + 1)) - (*it)));
+		}
+		else
+		{
+			auxFolders.push_back(path.substr((*it), (path.size() - (*it))));
+		}
+	}
+	return auxFolders;
+}
+
+std::vector<std::string> FileExplorer::GetPath(std::string prevPath)
+{
+	std::vector<int> separatorLocations;
+	std::vector<std::string> auxFolders;
+	for (int i = 0; i < prevPath.size(); i++)
+		if (prevPath[i] == '/')
+			separatorLocations.push_back(i);
+	for (std::vector<int>::iterator it = separatorLocations.begin(); it != (separatorLocations.end()); ++it)
+	{
+		if (it == separatorLocations.begin())
+		{
+			auxFolders.push_back(prevPath.substr(0, *it));
+		}
+		else
+		{
+			auxFolders.push_back(prevPath.substr(*(it-1), *it-*(it-1)));
+		}
+	}
+	return auxFolders;
 }

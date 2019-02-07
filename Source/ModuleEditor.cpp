@@ -56,7 +56,7 @@ ModuleEditor::~ModuleEditor()
 bool ModuleEditor::Init(JSON * config)
 {
 	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO(); 
+	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer->context);
@@ -123,7 +123,7 @@ update_status ModuleEditor::PreUpdate()
 {
 	BROFILER_CATEGORY("Editor PreUpdate", Profiler::Color::Pink)
 
-	ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
 	ImGuizmo::BeginFrame();
@@ -137,7 +137,7 @@ update_status ModuleEditor::Update(float dt)
 {
 	BROFILER_CATEGORY("Editor Update", Profiler::Color::Blue)
 
-	bool savepopup = false;
+		bool savepopup = false;
 	if (ImGui::BeginMainMenuBar())
 	{
 		if (ImGui::BeginMenu("File"))
@@ -148,12 +148,17 @@ update_status ModuleEditor::Update(float dt)
 			}
 			std::vector<std::string> files = App->fsystem->ListFiles(SCENES);
 			std::string scenePath = SCENES;
-			scenePath = scenePath.substr(scenePath.find_first_of('/'), scenePath.size() - scenePath.find_first_of('/')-1);
+			std::vector<std::string> prevPath = fileExplorer->GetPath(scenePath.substr(0,scenePath.size()-1));
+			scenePath = scenePath.substr(scenePath.find_first_of('/'), scenePath.size() - scenePath.find_first_of('/') - 1);
 			if (ImGui::MenuItem("Load Scene"))
 			{
 				fileExplorer->currentOperation = MenuOperations::LOAD;
 				fileExplorer->extensionToFilter = FILETYPE::SCENE;
 				fileExplorer->path = scenePath;
+				for (int i = 0; i < prevPath.size();++i)
+				{
+					fileExplorer->pathStack.push(prevPath[i]);
+				}
 				sprintf_s(fileExplorer->title, "Load Scene");
 				fileExplorer->openFileExplorer = true;
 			}
@@ -162,6 +167,10 @@ update_status ModuleEditor::Update(float dt)
 				fileExplorer->currentOperation = MenuOperations::ADD;
 				fileExplorer->extensionToFilter = FILETYPE::SCENE;
 				fileExplorer->path = scenePath;
+				for (int i = 0; i < prevPath.size(); ++i)
+				{
+					fileExplorer->pathStack.push(prevPath[i]);
+				}
 				sprintf_s(fileExplorer->title, "Add Scene");
 				fileExplorer->openFileExplorer = true;
 			}
@@ -176,6 +185,10 @@ update_status ModuleEditor::Update(float dt)
 					fileExplorer->currentOperation = MenuOperations::SAVE;
 					fileExplorer->extensionToFilter = FILETYPE::SCENE;
 					fileExplorer->path = scenePath;
+					for (int i = 0; i < prevPath.size(); ++i)
+					{
+						fileExplorer->pathStack.push(prevPath[i]);
+					}
 					sprintf_s(fileExplorer->title, "Save Scene");
 					fileExplorer->openFileExplorer = true;
 				}
@@ -185,6 +198,10 @@ update_status ModuleEditor::Update(float dt)
 				fileExplorer->currentOperation = MenuOperations::SAVE;
 				fileExplorer->extensionToFilter = FILETYPE::SCENE;
 				fileExplorer->path = scenePath;
+				for (int i = 0; i < prevPath.size(); ++i)
+				{
+					fileExplorer->pathStack.push(prevPath[i]);
+				}
 				sprintf_s(fileExplorer->title, "Save Scene");
 				sprintf_s(fileExplorer->filename, App->scene->name.c_str());
 				fileExplorer->openFileExplorer = true;
@@ -334,4 +351,3 @@ void ModuleEditor::processInput(SDL_Event * event) const
 	assert(event != NULL);
 	ImGui_ImplSDL2_ProcessEvent(event);
 }
-

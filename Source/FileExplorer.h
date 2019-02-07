@@ -3,6 +3,7 @@
 
 #include <string>
 #include <stack>
+#include <vector>
 
 enum class FILETYPE;
 
@@ -21,10 +22,12 @@ public:
 	~FileExplorer();
 
 	void Draw();		// Draws the modal pop-up
+	std::vector<std::string> GetPath(std::string prevPath); //Get path previous to actual folder
 
 private:
 	void Reset();		// Resets the file explorer
 	void ResetPath();	// Resets only path related variables
+	std::vector<std::string> GetPath(); //Get path for direction bar
 
 	bool Open();		// Returns true on accepted, false on cancelled or running
 	void DrawPath();	// Draws the path directories bar
