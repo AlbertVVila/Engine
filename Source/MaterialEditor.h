@@ -12,7 +12,7 @@ public:
 
 	void Draw();
 	void ShaderSelector(std::string &current_shader);
-	void TextureSelector(unsigned i, std::string &current_texture);
+	void TextureSelector(unsigned i, std::string &current_texture, int id);
 	void SetCurrentTextures();	// Sets current textures strings with the corresponding texture file string
 	void CleanUp();
 

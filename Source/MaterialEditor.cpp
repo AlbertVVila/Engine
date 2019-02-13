@@ -57,7 +57,7 @@ void MaterialEditor::Draw()
 	{
 		ImGui::PushID(&material->diffuse_color);
 		ImGui::ColorEdit4("Color", (float*)&material->diffuse_color, ImGuiColorEditFlags_AlphaPreview);
-		TextureSelector((unsigned)TextureType::DIFFUSE, current_diffuse);
+		TextureSelector((unsigned)TextureType::DIFFUSE, current_diffuse, 0);
 		ImGui::Separator();
 		ImGui::PopID();
 	}
@@ -65,32 +65,33 @@ void MaterialEditor::Draw()
 	{
 		ImGui::PushID(&material->specular_color);
 		ImGui::ColorEdit3("Color", (float*)&material->specular_color);
-		TextureSelector((unsigned)TextureType::SPECULAR, current_specular);
+		TextureSelector((unsigned)TextureType::SPECULAR, current_specular, 1);
 		ImGui::Separator();
 		ImGui::PopID();
 	}
 	if (ImGui::CollapsingHeader("Occlusion"))
 	{
 		ImGui::PushID(&material->textures[(unsigned)TextureType::OCCLUSION]);
-		TextureSelector((unsigned)TextureType::OCCLUSION, current_occlusion);
+		TextureSelector((unsigned)TextureType::OCCLUSION, current_occlusion, 2);
 		ImGui::Separator();
 		ImGui::PopID();
 	}
 	if (ImGui::CollapsingHeader("Emissive"))
 	{
 		ImGui::ColorEdit3("Color", (float*)&material->emissive_color);
-		TextureSelector((unsigned)TextureType::EMISSIVE, current_emissive);
+		TextureSelector((unsigned)TextureType::EMISSIVE, current_emissive, 3);
 		ImGui::Separator();
 	}
 	if (ImGui::CollapsingHeader("Normal"))
 	{
-		TextureSelector((unsigned)TextureType::NORMAL, current_normal);
+		TextureSelector((unsigned)TextureType::NORMAL, current_normal, 4);
 	}
 
-	ImGui::SetCursorPosX(ImGui::GetWindowWidth()/2 - ImGui::CalcTextSize("Revert Changes").x /2);
-	if (ImGui::Button("Revert Changes"))
+	ImGui::SetCursorPosX(ImGui::GetWindowWidth()/2 - ImGui::CalcTextSize("Cancel Changes").x /2);
+	if (ImGui::Button("Cancel Changes"))
 	{
 		material->Reset(*previous);
+		SetCurrentTextures();
 	}
 
 }
@@ -122,8 +123,10 @@ void MaterialEditor::ShaderSelector(std::string & current_shader)
 	}
 }
 
-void MaterialEditor::TextureSelector(unsigned i, std::string &current_texture)
+void MaterialEditor::TextureSelector(unsigned i, std::string &current_texture, int id)
 {
+	ImGui::PushID(id);
+
 	if (ImGui::BeginCombo("Texture", current_texture.c_str()))
 	{
 		bool none_selected = (current_texture == None);
@@ -155,6 +158,8 @@ void MaterialEditor::TextureSelector(unsigned i, std::string &current_texture)
 	{
 		ImGui::Image((ImTextureID)material->textures[i]->id, { 200,200 }, { 0,1 }, { 1,0 });
 	}
+
+	ImGui::PopID();
 }
 
 void MaterialEditor::SetCurrentTextures()

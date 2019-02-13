@@ -186,6 +186,10 @@ void Material::Reset(const Material & material)
 		{
 			textures[i] = App->textures->GetTexture(material.textures[i]->file.c_str());
 		}
+		else
+		{
+			textures[i] = nullptr;
+		}
 	}
 	diffuse_color = material.diffuse_color;
 	specular_color = material.specular_color;
