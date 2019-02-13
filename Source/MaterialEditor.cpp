@@ -164,16 +164,46 @@ void MaterialEditor::SetCurrentTextures()
 	Texture* normal_texture = material->GetTexture(TextureType::NORMAL);
 
 	// Set current textures strings
-	if (diffuse_texture != nullptr)		{ current_diffuse = diffuse_texture->file; }
-		else { current_diffuse = None; }
-	if (specular_texture != nullptr)	{ current_specular = specular_texture->file; }
-		else { current_specular = None; }
-	if (occlusion_texture != nullptr)	{ current_occlusion = occlusion_texture->file; }
-		else { current_occlusion = None; }
-	if (emissive_texture != nullptr)	{ current_emissive = emissive_texture->file; }
-		else { current_emissive = None; }
-	if (normal_texture != nullptr)		{ current_normal = normal_texture->file; }
-		else { current_normal = None; }
+	if (diffuse_texture != nullptr)		
+	{ 
+		current_diffuse = diffuse_texture->file; 
+	}
+	else 
+	{ 
+		current_diffuse = None; 
+	}
+	if (specular_texture != nullptr)	
+	{ 
+		current_specular = specular_texture->file;
+	}
+	else 
+	{ 
+		current_specular = None;
+	}
+	if (occlusion_texture != nullptr)	
+	{ 
+		current_occlusion = occlusion_texture->file;
+	}
+	else 
+	{ 
+		current_occlusion = None;
+	}
+	if (emissive_texture != nullptr)	
+	{ 
+		current_emissive = emissive_texture->file; 
+	}
+	else 
+	{ 
+		current_emissive = None; 
+	}
+	if (normal_texture != nullptr)		
+	{ 
+		current_normal = normal_texture->file; 
+	}
+	else 
+	{ 
+		current_normal = None; 
+	}
 }
 
 void MaterialEditor::CleanUp()

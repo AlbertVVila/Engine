@@ -96,6 +96,11 @@ void Material::Load(const char * materialfile)
 	{
 		textures[(unsigned)TextureType::EMISSIVE] = App->textures->GetTexture(emissiveFile);
 	}
+	const char *normalFile = materialJSON->GetString("normal");
+	if (normalFile != nullptr)
+	{
+		textures[(unsigned)TextureType::NORMAL] = App->textures->GetTexture(normalFile);
+	}
 	
 	const char* shaderName = materialJSON->GetString("shader");
 	if (shaderName != nullptr)
@@ -142,6 +147,10 @@ void Material::Save() const
 	if (textures[(unsigned)TextureType::EMISSIVE] != nullptr)
 	{
 		materialJSON->AddString("emissive", textures[(unsigned)TextureType::EMISSIVE]->file.c_str());
+	}
+	if (textures[(unsigned)TextureType::NORMAL] != nullptr)
+	{
+		materialJSON->AddString("normal", textures[(unsigned)TextureType::NORMAL]->file.c_str());
 	}
 	
 	if (shader != nullptr)
