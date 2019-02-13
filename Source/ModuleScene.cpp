@@ -495,6 +495,12 @@ void ModuleScene::ClearScene()
 
 void ModuleScene::Select(GameObject * gameobject)
 {
+	if (App->editor->materialEditor->material != nullptr)
+	{
+		App->editor->materialEditor->material->Save();
+		App->editor->materialEditor->open = false;
+	}
+
 	if (selected != nullptr)
 	{
 		selected->drawBBox = false;
@@ -502,7 +508,6 @@ void ModuleScene::Select(GameObject * gameobject)
 	selected = gameobject;
 	gameobject->drawBBox = true;
 	App->editor->ShowInspector();
-	App->editor->materialEditor->open = false;
 }
 
 void ModuleScene::UnSelect()

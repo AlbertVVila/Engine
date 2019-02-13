@@ -87,10 +87,10 @@ void MaterialEditor::Draw()
 		TextureSelector((unsigned)TextureType::NORMAL, current_normal);
 	}
 
-	ImGui::SetCursorPosX(ImGui::GetWindowWidth()/2 - ImGui::CalcTextSize("SAVE").x /2);
-	if (ImGui::Button("SAVE"))
+	ImGui::SetCursorPosX(ImGui::GetWindowWidth()/2 - ImGui::CalcTextSize("Revert Changes").x /2);
+	if (ImGui::Button("Revert Changes"))
 	{
-		material->Save();
+		material->Reset(*previous);
 	}
 
 }

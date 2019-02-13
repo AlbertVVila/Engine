@@ -102,6 +102,7 @@ void ComponentRenderer::DrawProperties()
 			{
 				App->editor->materialEditor->open = true;
 				App->editor->materialEditor->material = material;
+				App->editor->materialEditor->previous = material;
 				App->editor->materialEditor->SetCurrentTextures();
 			}
 		}
