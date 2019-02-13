@@ -131,7 +131,7 @@ void AABBTree::Draw() const
 	}
 	*/
 }
-inline void AABBTree::RecalculateBoxes(AABBTreeNode* node)
+void AABBTree::RecalculateBoxes(AABBTreeNode* node)
 {
 	std::stack<AABBTreeNode*> S2;
 	S2.push(node);

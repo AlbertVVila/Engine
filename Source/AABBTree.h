@@ -38,7 +38,7 @@ public:
 	void Draw() const;
 	
 	inline void ResetReleaseNode(AABBTreeNode* node);
-	inline void RecalculateBoxes(AABBTreeNode* node);
+	void RecalculateBoxes(AABBTreeNode* node);
 	inline AABBTreeNode* GetFreeNode(AABBTreeNode* parent);
 	inline void MakeLeaf(AABBTreeNode *node, AABBTreeNode *parent, GameObject* go, bool isLeft, unsigned color);
 	template<typename T>
@@ -54,7 +54,7 @@ public:
 };
 
 template<typename T>
-inline void AABBTree::GetIntersections(T &intersector, std::unordered_set<GameObject*> &intersections) 
+void AABBTree::GetIntersections(T &intersector, std::unordered_set<GameObject*> &intersections) 
 {
 	BROFILER_CATEGORY("AABBTree intersections", Profiler::Color::Azure);
 	std::stack<AABBTreeNode*> S;
