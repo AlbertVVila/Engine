@@ -101,12 +101,13 @@ void ComponentRenderer::DrawProperties()
 			if (ImGui::Button("Show"))
 			{
 				App->editor->materialEditor->open = true;
+				App->editor->materialEditor->material = material;
+				App->editor->materialEditor->SetCurrentTextures();
 			}
 		}
 
 		if (App->editor->materialEditor->open)
 		{
-			App->editor->materialEditor->material = material;
 			App->editor->materialEditor->Draw();
 		}
 		ImGui::Separator();

@@ -27,8 +27,6 @@ void MaterialEditor::Draw()
 		return;
 	}
 
-	SetCurrentTextures();
-
 	char name[64] = "";
 	if (!material->name.empty())
 	{
