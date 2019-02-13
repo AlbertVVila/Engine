@@ -88,6 +88,13 @@ void MaterialEditor::Draw()
 	{
 		TextureSelector((unsigned)TextureType::NORMAL, current_normal);
 	}
+
+	ImGui::SetCursorPosX(ImGui::GetWindowWidth()/2 - ImGui::CalcTextSize("SAVE").x /2);
+	if (ImGui::Button("SAVE"))
+	{
+		material->Save();
+	}
+
 }
 
 void MaterialEditor::ShaderSelector(std::string & current_shader)
