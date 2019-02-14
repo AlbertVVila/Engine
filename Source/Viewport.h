@@ -17,7 +17,10 @@ public:
 	void Pick();
 
 	void ToggleEnabled();
-	inline bool IsEnabled() { return enabled; }
+	inline bool IsEnabled() 
+	{ 
+		return enabled; 
+	}
 
 private:
 	void DrawGuizmoButtons();
