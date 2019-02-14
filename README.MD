@@ -1,6 +1,6 @@
 # RealEngine
-Game Engine developed by Albert Val during the Master Degree in Video Game Design and Development at UPC School. 
-Currently under development.
+Game Engine created by Albert Val during the Master Degree in Video Game Design and Development at UPC School. 
+**Currently under development by Fractal Puppy [here](https://github.com/fractal-puppy/Engine)** .
 
 ![alt text](https://imgur.com/cOOPIAO.png)
 
