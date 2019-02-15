@@ -12,6 +12,7 @@ class PanelConfiguration;
 class PanelAbout;
 class PanelHardware;
 class PanelHierarchy;
+class PanelTime;
 class GameObject;
 class MaterialEditor;
 
@@ -47,6 +48,7 @@ public:
 	PanelAbout *about = nullptr;
 	PanelHardware *hardware = nullptr;
 	PanelHierarchy *hierarchy = nullptr;
+	PanelTime *time = nullptr;
 
 	MaterialEditor *materialEditor = nullptr;
 
