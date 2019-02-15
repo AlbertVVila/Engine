@@ -55,9 +55,9 @@ public:
 	void SetPrimitiveMesh(par_shapes_mesh_s * mesh, PRIMITIVES type);
 	unsigned SaveParShapesMesh(const par_shapes_mesh_s & mesh, char** data) const;
 
-	void SaveScene(const GameObject &rootGO, const char* name) const;
-	void LoadScene(const char * scene);
-	void AddScene(const char* scene);
+	void SaveScene(const GameObject &rootGO, const char& scene, const char& scenePath);
+	void LoadScene(const char& scene, const char& path);
+	bool AddScene(const char& scene, const char& scenePath);								// Adds a scene to current opened scene from a scene file (returns true if it was loaded correctly)
 	void ClearScene();
 
 	void Select(GameObject* gameobject);
@@ -85,6 +85,7 @@ public:
 	std::set<GameObject*> dynamicGOs;
 	pcg32 uuid_rng;
 	std::string name;
+	std::string path;
 	std::string defaultScene;
 
 	float3 ambientColor = float3::one;

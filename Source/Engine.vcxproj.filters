@@ -218,6 +218,7 @@
     </ClCompile>
     <ClCompile Include="Viewport.cpp" />
     <ClCompile Include="GUICreator.cpp" />
+    <ClCompile Include="FileExplorer.cpp" />
     <ClCompile Include="PanelTime.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
@@ -514,6 +515,7 @@
     </ClInclude>
     <ClInclude Include="Viewport.h" />
     <ClInclude Include="GUICreator.h" />
+    <ClInclude Include="FileExplorer.h" />
     <ClInclude Include="PanelTime.h">
       <Filter>Panels</Filter>
     </ClInclude>

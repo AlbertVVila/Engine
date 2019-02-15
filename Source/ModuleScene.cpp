@@ -38,6 +38,7 @@
 #include <random>
 #include <map>
 #include <stack>
+#include <string>
 
 #define MAX_DEBUG_LINES 5
 #define MAX_LIGHTS 4
@@ -72,7 +73,7 @@ bool ModuleScene::Init(JSON * config)
 		primitivesUID[(unsigned)PRIMITIVES::CUBE] = scene->GetUint("cubeUID");
 		ambientColor = scene->GetColor3("ambient");
 		const char* dscene = scene->GetString("defaultscene");
-		if (dscene != nullptr) defaultScene = dscene;
+		defaultScene = dscene;
 	}
 	return true;
 }
@@ -82,7 +83,8 @@ bool ModuleScene::Start()
 	camera_notfound_texture = App->textures->GetTexture(NOCAMERA); 
 	if (defaultScene.size() > 0)
 	{
-		LoadScene(defaultScene.c_str());
+		path = SCENES;
+		LoadScene(*defaultScene.c_str(), *path.c_str());
 	}
 	return true;
 }
@@ -432,30 +434,47 @@ unsigned ModuleScene::SaveParShapesMesh(const par_shapes_mesh_s &mesh, char** da
 	return size;
 }
 
-
-void ModuleScene::SaveScene(const GameObject &rootGO, const char* filename) const
+void ModuleScene::SaveScene(const GameObject &rootGO, const char& scene, const char& scenePath)
 {
 	JSON *json = new JSON();
 	JSON_value *array =json->CreateValue(rapidjson::kArrayType);
 	rootGO.Save(array);
 	json->AddValue("GameObjects", *array);
-	std::string file(filename);
-	App->fsystem->Save((SCENES + file + JSONEXT).c_str(), json->ToString().c_str(), json->Size());
+
+	std::string file(&scenePath);
+	file += &scene;
+	file += JSONEXT;
+
+	App->fsystem->Save(file.c_str(), json->ToString().c_str(), json->Size());
 	RELEASE(json);
+
+	// Update scene info
+	name = &scene;
+	path = &scenePath;
 }
 
-void ModuleScene::LoadScene(const char* scene)
+void ModuleScene::LoadScene(const char& scene, const char& scenePath)
 {
 	ClearScene();
-	AddScene(scene);
-	name = scene;
+	if (AddScene(scene, scenePath))
+	{
+		path = &scenePath;
+		name = &scene;
+	}
 }
 
-void ModuleScene::AddScene(const char * scene)
+bool ModuleScene::AddScene(const char& scene, const char& path)
 {
 	char* data = nullptr;
-	std::string sceneName(scene);
-	App->fsystem->Load((SCENES + sceneName + JSONEXT).c_str(), &data);
+	std::string file(&path);
+	file += &scene;
+	file += JSONEXT;
+
+	if (App->fsystem->Load(file.c_str(), &data) == 0)
+	{
+		RELEASE_ARRAY(data);
+		return false;
+	}
 
 	JSON *json = new JSON(data);
 	JSON_value* gameobjectsJSON = json->GetValue("GameObjects");
@@ -483,6 +502,7 @@ void ModuleScene::AddScene(const char * scene)
 
 	RELEASE_ARRAY(data);
 	RELEASE(json);
+	return true;
 }
 
 void ModuleScene::ClearScene()
