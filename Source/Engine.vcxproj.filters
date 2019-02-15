@@ -219,6 +219,12 @@
     <ClCompile Include="Viewport.cpp" />
     <ClCompile Include="GUICreator.cpp" />
     <ClCompile Include="FileExplorer.cpp" />
+    <ClCompile Include="PanelTime.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleTime.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -510,6 +516,12 @@
     <ClInclude Include="Viewport.h" />
     <ClInclude Include="GUICreator.h" />
     <ClInclude Include="FileExplorer.h" />
+    <ClInclude Include="PanelTime.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleTime.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GeoLib">
