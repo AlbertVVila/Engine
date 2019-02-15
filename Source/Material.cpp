@@ -43,6 +43,11 @@ Material::Material(const Material& material)
 
 Material::~Material()
 {
+	if (changesDone)
+	{
+		Save();
+	}
+
 	if (shader != nullptr)
 	{
 		App->resManager->DeleteProgram(shader->file);
@@ -199,6 +204,8 @@ void Material::Reset(const Material & material)
 	kDiffuse = material.kDiffuse;
 	kSpecular = material.kSpecular;
 	shininess = material.shininess;
+
+	changesDone = false;
 }
 
 Texture * Material::GetTexture(TextureType type) const

@@ -495,9 +495,11 @@ void ModuleScene::ClearScene()
 
 void ModuleScene::Select(GameObject * gameobject)
 {
-	if (App->editor->materialEditor->material != nullptr)
+	Material* mat = App->editor->materialEditor->material;
+	if (mat != nullptr && mat->changesDone)
 	{
-		App->editor->materialEditor->material->Save();
+		mat->Save();
+		mat->changesDone = false;
 		App->editor->materialEditor->open = false;
 	}
 

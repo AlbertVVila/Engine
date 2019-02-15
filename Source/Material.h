@@ -50,6 +50,8 @@ public:
 	float kDiffuse = 0.2f;
 	float kSpecular = 0.1f;
 	float shininess = 32.f;
+
+	bool changesDone = false;
 	
 };
 

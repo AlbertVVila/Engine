@@ -137,6 +137,7 @@ void MaterialEditor::TextureSelector(unsigned i, std::string &current_texture, i
 			{
 				App->resManager->DeleteTexture(material->textures[i]->file);
 				material->textures[i] = nullptr;
+				material->changesDone = true;
 			}
 		}
 		if (none_selected)
@@ -148,6 +149,7 @@ void MaterialEditor::TextureSelector(unsigned i, std::string &current_texture, i
 			{
 				current_texture = textureFiles[n];
 				material->textures[i] = App->textures->GetTexture(current_texture.c_str());
+				material->changesDone = true;
 			}
 			if (is_selected)
 				ImGui::SetItemDefaultFocus();
