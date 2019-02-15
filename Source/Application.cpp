@@ -9,6 +9,7 @@
 #include "ModuleScene.h"
 #include "ModuleFileSystem.h"
 #include "ModuleResourceManager.h"
+#include "ModuleTime.h"
 
 #include "Timer.h"
 #include "JSON.h"
@@ -29,6 +30,7 @@ Application::Application()
 	modules.push_back(editor = new ModuleEditor());
 	modules.push_back(scene = new ModuleScene());
 	modules.push_back(resManager = new ModuleResourceManager());
+	modules.push_back(time = new ModuleTime());
 }
 
 Application::~Application()
