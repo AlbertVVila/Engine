@@ -27,6 +27,7 @@ void MaterialEditor::Draw()
 		if (!ImGui::IsPopupOpen(materialPopup))
 		{
 			ImGui::OpenPopup(materialPopup);
+			SetCurrentTextures();
 			if (isCreated)
 			{
 				material = new Material();
@@ -172,6 +173,24 @@ void MaterialEditor::TextureSelector(unsigned i, std::string &current_texture)
 		ImGui::Image((ImTextureID)material->textures[i]->id, { 200,200 }, { 0,1 }, { 1,0 });
 	}
 }
+
+void MaterialEditor::SetCurrentTextures()
+{
+	if (material == nullptr) return;
+
+	// Get material textures
+	Texture* diffuse_texture = material->GetTexture(TextureType::DIFFUSE);
+	Texture* specular_texture = material->GetTexture(TextureType::SPECULAR);
+	Texture* occlusion_texture = material->GetTexture(TextureType::OCCLUSION);
+	Texture* emissive_texture = material->GetTexture(TextureType::EMISSIVE);
+
+	// Set current textures strings
+	if (diffuse_texture != nullptr)		{ current_diffuse = diffuse_texture->file; }
+	if (specular_texture != nullptr)	{ current_specular = specular_texture->file; }
+	if (occlusion_texture != nullptr)	{ current_occlusion = occlusion_texture->file; }
+	if (emissive_texture != nullptr)	{ current_emissive = emissive_texture->file; }
+}
+
 void MaterialEditor::CleanUp()
 {
 	if (isCreated) RELEASE(material);

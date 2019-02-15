@@ -17,6 +17,7 @@
 #include "PanelAbout.h"
 #include "PanelHardware.h"
 #include "PanelHierarchy.h"
+#include "PanelTime.h"
 
 #include "MaterialEditor.h"
 #include "GUICreator.h"
@@ -35,6 +36,7 @@ ModuleEditor::ModuleEditor()
 	panels.push_back(about = new PanelAbout());
 	panels.push_back(hardware = new PanelHardware());
 	panels.push_back(hierarchy = new PanelHierarchy());
+	panels.push_back(time = new PanelTime());
 
 	materialEditor = new MaterialEditor();
 }
@@ -152,7 +154,7 @@ update_status ModuleEditor::Update(float dt)
 				for (auto &file : files)
 				{
 					file = App->fsystem->RemoveExtension(file);
-					if (ImGui::MenuItem(file.c_str()))
+					if (strcmp(file.c_str(), time->temprarySceneFileName) != 0 && ImGui::MenuItem(file.c_str()))
 					{
 						App->scene->LoadScene(file.c_str());
 					}
@@ -330,6 +332,10 @@ void ModuleEditor::WindowsMenu()
 		if (ImGui::MenuItem("Game Camera", NULL, App->renderer->viewGame->IsEnabled()))
 		{
 			App->renderer->viewGame->ToggleEnabled();
+    }
+		if (ImGui::MenuItem("Time control", NULL, time->IsEnabled()))
+		{
+			time->ToggleEnabled();
 		}
 		ImGui::EndMenu();
 	}

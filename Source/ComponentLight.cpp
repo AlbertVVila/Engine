@@ -82,9 +82,9 @@ void ComponentLight::DrawProperties()
 		if (lightType != LightType::DIRECTIONAL)
 		{
 			ImGui::Text("Attenuation");
-			ImGui::DragFloat("Constant", (float*)&attenuation.x, 0.01f, 0.001f, 10.f);
-			ImGui::DragFloat("Linear", (float*)&attenuation.y, 0.0001f, 0.0001f, 1.f);
-			ImGui::DragFloat("Quadratic", (float*)&attenuation.z, 0.0001f, 0.0f, 1.f);
+			ImGui::DragFloat("Constant", (float*)&attenuation.x, 0.01f, 0.001f, 10.f,"%.12f");
+			ImGui::DragFloat("Linear", (float*)&attenuation.y, 0.0001f, 0.0001f, 1.f, "%.12f");
+			ImGui::DragFloat("Quadratic", (float*)&attenuation.z, 0.0001f, 0.0f, 1.f, "%.12f");
 		}
 
 		if (lightType == LightType::SPOT)
