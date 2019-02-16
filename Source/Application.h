@@ -19,6 +19,7 @@ class ModuleScene;
 class ModuleFileSystem;
 class ModuleResourceManager;
 class ModuleTime;
+class ModuleSpacePartitioning;
 
 class Application
 {
@@ -45,6 +46,7 @@ public:
 	ModuleFileSystem* fsystem = nullptr;
 	ModuleResourceManager* resManager = nullptr;
 	ModuleTime* time = nullptr;
+	ModuleSpacePartitioning* spacePartitioning = nullptr;
 
 private:
 	std::list<Module*> modules;
