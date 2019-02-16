@@ -182,25 +182,17 @@ void ComponentCamera::Zoom(float mouseWheel)
 
 void ComponentCamera::Center()
 {
-	if (App->scene->selected == nullptr || App->scene->selected->GetComponent(ComponentType::Transform) == nullptr) return;
+	if (App->scene->selected == nullptr 
+		|| App->scene->selected->GetComponent(ComponentType::Renderer) == nullptr) return;
 
-	if (App->scene->selected->GetComponent(ComponentType::Renderer) != nullptr)
-	{
-		AABB bbox = App->scene->selected->GetBoundingBox();
-		float3 HalfSize = bbox.HalfSize();
-		float distX = HalfSize.x / tanf(frustum->horizontalFov*0.5f);
-		float distY = HalfSize.y / tanf(frustum->verticalFov*0.5f);
-		float camDist = MAX(distX, distY) + HalfSize.z; //camera distance from model
+	AABB bbox = App->scene->selected->GetBoundingBox();
+	float3 HalfSize = bbox.HalfSize();
+	float distX = HalfSize.x / tanf(frustum->horizontalFov*0.5f);
+	float distY = HalfSize.y / tanf(frustum->verticalFov*0.5f);
+	float camDist = MAX(distX, distY) + HalfSize.z; //camera distance from model
 
-		float3 center = bbox.FaceCenterPoint(5);
-		frustum->pos = center + float3(0.0f, 0.0f, camDist);
-	}
-	else
-	{
-		float camDist = 50.0f;
-		float3 center = ((ComponentTransform*)(App->scene->selected->GetComponent(ComponentType::Transform)))->position;
-		frustum->pos = center + float3(0.0f, 0.0f, camDist);
-	}
+	float3 center = bbox.FaceCenterPoint(5);
+	frustum->pos = center + float3(0, 0, camDist);
 
 	frustum->front = -float3::unitZ;
 	frustum->up = float3::unitY;
@@ -233,6 +225,12 @@ void ComponentCamera::Orbit(float dx, float dy)
 
 void ComponentCamera::SetAspect(float aspect)
 {
+	aspectDirty = false;
+	if (aspect != oldAspect)
+	{
+		aspectDirty = true;
+		oldAspect = aspect;
+	}
 	frustum->horizontalFov = 2.f * atanf(tanf(frustum->verticalFov * 0.5f) * aspect);
 }
 
