@@ -73,14 +73,14 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 	}
 
 
-	if (isEditor && App->renderer->viewGame->focus || !isEditor && App->renderer->viewScene->focus)
-	{
-		ImVec2 size = ImGui::GetWindowSize();
-		ImGui::SetCursorPos({ 0,0 });
-		ImGui::Image((ImTextureID)texture, size, ImVec2(0, 1), ImVec2(1, 0));
-		ImGui::End();
-		return;
-	}
+	//if (isEditor && App->renderer->viewGame->focus || !isEditor && App->renderer->viewScene->focus)
+	//{
+	//	ImVec2 size = ImGui::GetWindowSize();
+	//	ImGui::SetCursorPos({ 0,0 });
+	//	ImGui::Image((ImTextureID)texture, size, ImVec2(0, 1), ImVec2(1, 0));
+	//	ImGui::End();
+	//	return;
+	//}
 	ImVec2 size = ImGui::GetWindowSize();
 
 	cam->SetAspect(size.x / size.y);

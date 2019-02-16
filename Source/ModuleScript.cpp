@@ -9,6 +9,11 @@
 
 typedef Script*(__cdecl *CreatePointer)();
 
+extern "C"
+{
+	Script* CreateScript();
+}
+
 ModuleScript::ModuleScript()
 {
 }
@@ -20,7 +25,8 @@ ModuleScript::~ModuleScript()
 
 bool ModuleScript::Start()
 {
-	CheckScripts();
+	//CheckScripts();
+	Script* script = CreateScript();
 	return true;
 }
 
@@ -28,7 +34,8 @@ update_status ModuleScript::Update(float dt)
 {
 	//TODO: Listen script folder for DLL updates
 	//TODO: We should use a thread component to listen to folders asynchronously
-	CheckScripts();
+	//CheckScripts();
+	//Script* playerMovement = GetProcAddress()
 
 	return UPDATE_CONTINUE;
 }

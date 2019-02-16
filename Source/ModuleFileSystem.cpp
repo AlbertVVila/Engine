@@ -244,7 +244,7 @@ void ModuleFileSystem::WatchFolder(const char * folder, const std::set<std::stri
 			else
 			{
 				FILETYPE type = GetFileType(GetExtension(file));
-				if (type == FILETYPE::TEXTURE)
+				if (type == FILETYPE::TEXTURE) // PNG, TIF, LO QUE SEA	
 				{
 					std::set<std::string>::iterator it = textures.find(RemoveExtension(file));
 					if (it == textures.end())
@@ -252,7 +252,7 @@ void ModuleFileSystem::WatchFolder(const char * folder, const std::set<std::stri
 						filesToImport.push_back(std::pair<std::string, std::string>(file, current_folder));
 					}
 				}
-				else if (type == FILETYPE::MODEL)
+				else if (type == FILETYPE::MODEL) //FBX
 				{
 					std::set<std::string>::iterator it = models.find(RemoveExtension(file));
 					if (it == models.end())

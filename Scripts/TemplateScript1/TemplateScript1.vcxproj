@@ -20,10 +20,15 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{da319d4a-70a8-42c8-a54f-db7ead02ca0d}</ProjectGuid>
+    <ProjectGuid>{d421b332-4257-4502-b482-66438ceafb60}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>PlayerMovement</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <RootNamespace>TemplateScript1</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(WindowsTargetPlatformVersion)'==''">
+    <!-- Latest Target Version property -->
+    <LatestTargetPlatformVersion>$([Microsoft.Build.Utilities.ToolLocationHelper]::GetLatestSDKTargetPlatformVersion('Windows', '10.0'))</LatestTargetPlatformVersion>
+    <WindowsTargetPlatformVersion Condition="'$(WindowsTargetPlatformVersion)' == ''">$(LatestTargetPlatformVersion)</WindowsTargetPlatformVersion>
+    <TargetPlatformVersion>$(WindowsTargetPlatformVersion)</TargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -90,9 +95,9 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;PlayerMovement_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;TemplateScript1_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\..\Source\Imgui;..\BaseScript;..\..\Source\SDL\include;..\..\Source\glew-2.1.0\include;..\Source\MathGeoLib\include;..\..\Source\Imgui\;..\..\Source</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\BaseScript; ..\..\Source\SDL\include;..\..\Source\glew-2.1.0\include;..\..\Source\MathGeoLib\include;..\..\Source\Imgui\;..\..\Source;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -110,7 +115,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;PlayerMovement_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;TemplateScript1_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -126,9 +131,9 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;PlayerMovement_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;TemplateScript1_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\..\Source\Imgui;..\BaseScript;..\..\Source\SDL\include;..\..\Source\glew-2.1.0\include;..\Source\MathGeoLib\include;..\..\Source\Imgui\;..\..\Source</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\BaseScript; ..\..\Source\SDL\include;..\..\Source\glew-2.1.0\include;..\..\Source\MathGeoLib\include;..\..\Source\Imgui\;..\..\Source;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -150,7 +155,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;PlayerMovement_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;TemplateScript1_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -161,16 +166,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\imgui.cpp" />
-    <ClCompile Include="..\..\Source\imgui_demo.cpp" />
-    <ClCompile Include="..\..\Source\imgui_draw.cpp" />
-    <ClCompile Include="..\..\Source\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="..\..\Source\imgui_impl_sdl.cpp" />
-    <ClCompile Include="..\..\Source\imgui_widgets.cpp" />
-    <ClCompile Include="PlayerMovement.cpp" />
+    <ClCompile Include="TemplateScript1.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="PlayerMovement.h" />
+    <ClInclude Include="TemplateScript1.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
