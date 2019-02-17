@@ -27,13 +27,13 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -92,7 +92,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;PlayerMovement_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\..\Source\Imgui;..\BaseScript;..\..\Source\SDL\include;..\..\Source\glew-2.1.0\include;..\Source\MathGeoLib\include;..\..\Source\Imgui\;..\..\Source</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Source\Imgui;..\BaseScript;..\..\Source\SDL\include;..\..\Source\glew-2.1.0\include;..\Source\MathGeoLib\include;..\..\Source\Imgui\;..\..\Source;..\..\Source\MathGeoLib\include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -128,7 +128,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;PlayerMovement_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\..\Source\Imgui;..\BaseScript;..\..\Source\SDL\include;..\..\Source\glew-2.1.0\include;..\Source\MathGeoLib\include;..\..\Source\Imgui\;..\..\Source</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\Source\Imgui;..\BaseScript;..\..\Source\SDL\include;..\..\Source\glew-2.1.0\include;..\Source\MathGeoLib\include;..\..\Source\Imgui\;..\..\Source;..\..\Source\MathGeoLib\include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

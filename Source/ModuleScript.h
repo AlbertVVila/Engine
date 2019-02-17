@@ -17,6 +17,8 @@ public:
 	bool Start() override;
 	update_status Update(float dt) override;
 
+	void LoadFromMemory();
+
 	Script* AddScript(std::string script);
 	void RemoveScript(Script* script);
 

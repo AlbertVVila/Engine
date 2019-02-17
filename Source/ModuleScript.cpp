@@ -6,6 +6,9 @@
 #include "BaseScript.h"
 #include <assert.h>
 #include <windows.h>
+#include "resource.h"
+#include "MemoryModule.h"
+#include <iostream>
 
 typedef Script*(__cdecl *CreatePointer)();
 
@@ -25,8 +28,9 @@ ModuleScript::~ModuleScript()
 
 bool ModuleScript::Start()
 {
-	//CheckScripts();
-	Script* script = CreateScript();
+	CheckScripts();
+	
+	//Script* script = CreateScript();
 	return true;
 }
 
@@ -34,10 +38,38 @@ update_status ModuleScript::Update(float dt)
 {
 	//TODO: Listen script folder for DLL updates
 	//TODO: We should use a thread component to listen to folders asynchronously
-	//CheckScripts();
+	CheckScripts();
+	for (const auto& script : scriptInstances)
+	{
+		script->Update();
+	}
 	//Script* playerMovement = GetProcAddress()
 
 	return UPDATE_CONTINUE;
+}
+
+void ModuleScript::LoadFromMemory()
+{
+	HRSRC hResource = FindResourceA(nullptr, MAKEINTRESOURCEA(IDR_TEXT2), "TEXT");
+	HGLOBAL hMemory = LoadResource(nullptr, hResource);
+
+	int size_bytes = SizeofResource(nullptr, hResource);
+	void *ptr = LockResource(hMemory);
+
+	HMEMORYMODULE dll = MemoryLoadLibrary(ptr);
+	if (dll != nullptr)
+	{
+		CreatePointer Create = (CreatePointer)MemoryGetProcAddress(dll, "CreateScript");
+		if (Create != nullptr)
+		{
+			Script* script = Create();
+			scriptInstances.push_back(script);
+			script->Start();
+			script->Update();
+			int stub = script->GetWord();
+			LOG("NICE");
+		}
+	}
 }
 
 Script* ModuleScript::AddScript(std::string script)

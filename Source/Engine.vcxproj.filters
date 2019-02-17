@@ -224,6 +224,9 @@
     <ClCompile Include="ModuleScript.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="MemoryModule.c">
+      <Filter>MemoryModule</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -520,6 +523,12 @@
     <ClInclude Include="ModuleScript.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="MemoryModule.h">
+      <Filter>MemoryModule</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GeoLib">
@@ -567,6 +576,12 @@
     <Filter Include="ImGui">
       <UniqueIdentifier>{ce38ee00-97d2-4555-a8e4-3e52ad53abd7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{a8985cb3-e6af-4a8f-9bbd-8725d91da508}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MemoryModule">
+      <UniqueIdentifier>{5b310d04-360e-4d69-8639-294a124632a2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Game\Shaders\FragmentShaders\Flat.fs">
@@ -599,5 +614,8 @@
     <None Include="..\Game\Shaders\VertexShaders\Default.vs">
       <Filter>Shaders</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Engine - Master 1.rc" />
   </ItemGroup>
 </Project>

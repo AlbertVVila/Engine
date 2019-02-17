@@ -19,8 +19,6 @@ public:
 	void Update() override;
 	//void Serialize(JSON* json) const override;
 	//void DeSerialize(JSON * json) override;
-protected:
-	GameObject * gameObject;
 
 private:
 	float speed = 2.0f;

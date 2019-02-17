@@ -21,6 +21,7 @@ public:
 	//virtual void DeSerialize(JSON * json) = 0;
 	virtual void Start();
 	virtual void Update();
+	virtual int GetWord();
 
 protected:
 	GameObject * gameObject;
