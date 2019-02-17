@@ -223,6 +223,8 @@
       <Filter>Panels</Filter>
     </ClCompile>
     <ClCompile Include="ModuleTime.cpp">
+	  <Filter>Modules</Filter>
+    </ClCompile>
     <ClCompile Include="KDTree.cpp">
       <Filter>Tree</Filter>
     </ClCompile>
@@ -524,6 +526,8 @@
       <Filter>Panels</Filter>
     </ClInclude>
     <ClInclude Include="ModuleTime.h">
+	  <Filter>Modules</Filter>
+    </ClInclude>
     <ClInclude Include="KDTree.h">
       <Filter>Tree</Filter>
     </ClInclude>
