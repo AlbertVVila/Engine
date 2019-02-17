@@ -9,6 +9,8 @@
 #include "ModuleScene.h"
 #include "ModuleFileSystem.h"
 #include "ModuleResourceManager.h"
+#include "ModuleTime.h"
+#include "ModuleSpacePartitioning.h"
 #include "ModuleScript.h"
 
 #include "Timer.h"
@@ -30,6 +32,8 @@ Application::Application()
 	modules.push_back(editor = new ModuleEditor());
 	modules.push_back(scene = new ModuleScene());
 	modules.push_back(resManager = new ModuleResourceManager());
+	modules.push_back(time = new ModuleTime());
+	modules.push_back(spacePartitioning = new ModuleSpacePartitioning());
 	modules.push_back(scripting = new ModuleScript());
 }
 

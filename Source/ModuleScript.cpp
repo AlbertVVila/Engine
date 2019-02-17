@@ -50,7 +50,7 @@ update_status ModuleScript::Update(float dt)
 
 void ModuleScript::LoadFromMemory()
 {
-	HRSRC hResource = FindResourceA(nullptr, MAKEINTRESOURCEA(IDR_TEXT2), "TEXT");
+	HRSRC hResource = FindResourceA(nullptr, MAKEINTRESOURCEA(IDR_TEXT1), "TEXT");
 	HGLOBAL hMemory = LoadResource(nullptr, hResource);
 
 	int size_bytes = SizeofResource(nullptr, hResource);

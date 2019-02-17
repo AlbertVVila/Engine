@@ -8,6 +8,7 @@
 #include "ModuleScene.h"
 #include "ModuleTextures.h"
 #include "ModuleRender.h"
+#include "ModuleSpacePartitioning.h"
 
 #include "Component.h"
 #include "ComponentTransform.h"
@@ -20,6 +21,7 @@
 #include "Material.h"
 #include "Mesh.h"
 #include "myQuadTree.h"
+#include "AABBTree.h"
 #include <stack>
 #include "JSON.h"
 
@@ -61,6 +63,7 @@ GameObject::GameObject(const GameObject & gameobject)
 
 	if (GetComponent(ComponentType::Renderer) != nullptr)
 	{
+		isVolumetric = true;
 		App->scene->AddToSpacePartition(this);
 	}
 
@@ -106,14 +109,18 @@ void GameObject::DrawProperties()
 		{
 			if (isStatic && GetComponent(ComponentType::Renderer) != nullptr)
 			{
-				SetStaticAncestors();
-				App->scene->quadtree->Insert(this);
+				SetStaticAncestors(); //TODO: Propagate staticness & update aabbtree
 				App->scene->dynamicGOs.erase(this);
+				App->scene->staticGOs.insert(this);
+				App->spacePartitioning->kDTree.Calculate();
 			}
 			else if (!isStatic)
 			{
-				App->scene->quadtree->Remove(*this);
+				//TODO: Propagate staticness & update aabbtree
 				App->scene->dynamicGOs.insert(this);
+				App->scene->staticGOs.erase(this);
+				App->spacePartitioning->kDTree.Calculate();
+				App->spacePartitioning->aabbTree.InsertGO(this); //TODO: remove this when propagation is corrected 
 			}
 		}
 	}
@@ -174,7 +181,7 @@ Component * GameObject::CreateComponent(ComponentType type)
 		this->transform = (ComponentTransform*)component;
 		break;
 	case ComponentType::Renderer:
-		component = new ComponentRenderer(this);
+		component = new ComponentRenderer(this);		
 		break;
 	case ComponentType::Light:
 		component = new ComponentLight(this);
@@ -603,7 +610,9 @@ void GameObject::SetStaticAncestors()
 
 		if (go->GetComponent(ComponentType::Renderer) != nullptr)
 		{
-			App->scene->dynamicGOs.erase(go);
+			if (go->treeNode != nullptr)
+				App->spacePartitioning->aabbTree.ReleaseNode(go->treeNode);
+
 			App->scene->quadtree->Insert(go);
 		}
 		parents.pop();

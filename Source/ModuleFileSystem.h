@@ -14,7 +14,7 @@
 #define MATERIALS LIBRARY "Materials/"
 #define MESHES LIBRARY "Meshes/"
 #define TEXTURES LIBRARY "Textures/"
-#define SCENES LIBRARY "Scenes/"
+#define SCENES ASSETS "Scenes/"
 #define SHADERS "Shaders/"
 #define SCRIPTS "Scripts/"
 #define VERTEXSHADERS SHADERS "VertexShaders/"
@@ -39,7 +39,8 @@ enum class FILETYPE
 	TEXTURE,
 	MODEL,
 	MESH,
-	SCENE
+	SCENE,
+	NONE
 };
 
 class ModuleFileSystem :
@@ -61,6 +62,7 @@ public:
 	bool MakeDirectory(const char* directory) const;
 	bool IsDirectory(const char* file) const;
 	std::vector<std::string> ListFiles(const char * dir, bool extension=true) const;
+	void ListFolderContent(const char * dir, std::vector<std::string>& files, std::vector<std::string>& dirs) const; // Saves all files found on dir on files vector and all directories on dirs vector
 	bool CopyFromOutsideFS(const char* source, const char* destination) const;
 	bool Copy(const char* source, const char* destination, const char* file) const;
 
@@ -75,6 +77,9 @@ private:
 	void Monitorize(const char * folder);
 	void ImportFiles();
 	FILETYPE GetFileType(std::string) const;
+
+public:
+	std::string baseDir = "";
 
 private:
 	bool monitorize = true;

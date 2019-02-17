@@ -13,13 +13,18 @@
 ModuleFileSystem::ModuleFileSystem()
 {
 	PHYSFS_init(NULL);
-	PHYSFS_addToSearchPath(PHYSFS_getBaseDir(), 1);
+	baseDir = PHYSFS_getBaseDir();
+	PHYSFS_addToSearchPath(baseDir.c_str(), 1);
 
 	PHYSFS_mount(LIBRARY, nullptr, 1);
 	PHYSFS_mount(ASSETS, nullptr, 1);
 	PHYSFS_mount(SHADERS, nullptr, 1);
 	PHYSFS_mount(SCRIPTS, nullptr, 1);
-	PHYSFS_setWriteDir(PHYSFS_getBaseDir());
+
+	if (!Exists(ASSETS))
+		PHYSFS_mkdir(ASSETS);
+
+	PHYSFS_setWriteDir(baseDir.c_str());
 }
 
 
@@ -57,7 +62,7 @@ unsigned ModuleFileSystem::Load(const char * file, char ** buffer) const
 	if (myfile == nullptr)
 	{
 		LOG("Error: %s %s", file, PHYSFS_getLastError());
-		return false;
+		return 0;
 	}
 	PHYSFS_sint32 fileSize = PHYSFS_fileLength(myfile);
 
@@ -164,6 +169,29 @@ std::vector<std::string> ModuleFileSystem::ListFiles(const char * dir, bool exte
 
 	PHYSFS_freeList(rc);
 	return files;
+}
+
+void ModuleFileSystem::ListFolderContent(const char * dir, std::vector<std::string>& files, std::vector<std::string>& dirs) const
+{
+	char** filesList = PHYSFS_enumerateFiles(dir);
+	char **i;
+
+	for (i = filesList; *i != nullptr; i++)
+	{
+		std::string completePath = dir;
+		completePath += "/";
+		completePath += *i;
+		if (IsDirectory(completePath.c_str()))
+		{
+			dirs.push_back(*i);
+		}
+		else
+		{
+			files.push_back(*i);
+		}
+	}
+
+	PHYSFS_freeList(filesList);
 }
 
 bool ModuleFileSystem::CopyFromOutsideFS(const char * source, const char * destination) const
@@ -347,4 +375,3 @@ std::string ModuleFileSystem::GetFilename(std::string filename) const
 	}
 	return filename;
 }
-
