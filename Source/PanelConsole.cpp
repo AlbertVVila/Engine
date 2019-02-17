@@ -52,6 +52,11 @@ void PanelConsole::Draw()
 	}
 
 	ScrollToBottom = false;
+	if (first)
+	{
+		ScrollToBottom = true;
+		first = false;
+	}
 	ImGui::EndChild();
 	ImGui::End();
 }
