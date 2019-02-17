@@ -140,7 +140,7 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 
 		if (App->renderer->light_debug)
 		{
-			for (const auto light : lights)
+			for (const auto &light : lights)
 			{
 				light->DrawDebugLight();
 			}

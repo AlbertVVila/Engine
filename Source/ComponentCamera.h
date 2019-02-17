@@ -23,7 +23,7 @@ public:
 
 	ComponentCamera* Clone() const;
 	void Center();
-	void Move(float3 dir); 
+	void Move(math::float3 dir); 
 	void Rotate(float dx, float dy);
 	void Zoom(float mouseWheel);
 	void Orbit(float dx, float dy);
@@ -31,15 +31,13 @@ public:
 	void SetFOV(float fov);
 
 	void ResetFrustum();
-	void DrawFrustum(unsigned shader) const;
 
-	float4x4 GetViewMatrix() const;
-	float4x4 GetProjectionMatrix() const;
-	LineSegment DrawRay(float x, float y) const;
+	math::float4x4 GetViewMatrix() const;
+	math::float4x4 GetProjectionMatrix() const;
+	math::LineSegment DrawRay(float x, float y) const;
 private:
 	void InitFrustum();
-	void SetFrustumBuffers();
-	void LookAt(float3 target);
+	void LookAt(math::float3 target);
 
 public:
 	Frustum* frustum = nullptr; 
@@ -50,10 +48,6 @@ public:
 
 	bool isMainCamera = false;
 
-private:
-	unsigned frustumVAO = 0;
-	unsigned frustumVBO = 0;
-	unsigned frustumEBO = 0;
 };
 
 #endif __ComponentCamera_h__

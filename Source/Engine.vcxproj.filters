@@ -225,6 +225,9 @@
     <ClCompile Include="ModuleTime.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleDebugDraw.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -520,6 +523,12 @@
       <Filter>Panels</Filter>
     </ClInclude>
     <ClInclude Include="ModuleTime.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="debugdraw.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleDebugDraw.h">
       <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
