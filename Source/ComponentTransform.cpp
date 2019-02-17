@@ -135,6 +135,11 @@ void ComponentTransform::SetGlobalTransform(const float4x4 & newglobal, const fl
 	UpdateOldTransform();
 }
 
+float3 ComponentTransform::GetGlobalPosition()
+{
+	return global.Col3(3);
+}
+
 void ComponentTransform::Save(JSON_value * value) const
 {
 	Component::Save(value);
