@@ -176,10 +176,7 @@ void ComponentCamera::Zoom(float mouseWheel)
 {
 	if (mouseWheel != 0)
 	{
-		frustum->verticalFov = mouseWheel > 0 ?
-			MAX(math::DegToRad(MINFOV), frustum->verticalFov - mouseWheel * zoomSpeed) :
-			MIN(math::DegToRad(MAXFOV), frustum->verticalFov - mouseWheel * zoomSpeed);
-		frustum->horizontalFov = 2.f * atanf(tanf(frustum->verticalFov * 0.5f) * ((float)App->window->width / (float)App->window->height));
+		frustum->Translate(frustum->front * mouseWheel * zoomSpeed);
 	}
 }
 
@@ -228,6 +225,12 @@ void ComponentCamera::Orbit(float dx, float dy)
 
 void ComponentCamera::SetAspect(float aspect)
 {
+	aspectDirty = false;
+	if (aspect != oldAspect)
+	{
+		aspectDirty = true;
+		oldAspect = aspect;
+	}
 	frustum->horizontalFov = 2.f * atanf(tanf(frustum->verticalFov * 0.5f) * aspect);
 }
 

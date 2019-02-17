@@ -49,6 +49,8 @@ public:
 	float zoomSpeed = 0.1f;
 
 	bool isMainCamera = false;
+	float oldAspect = 0.f;
+	bool aspectDirty = false;
 
 private:
 	unsigned frustumVAO = 0;

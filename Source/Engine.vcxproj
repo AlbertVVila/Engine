@@ -95,10 +95,12 @@
     <ClInclude Include="ComponentRenderer.h" />
     <ClInclude Include="ComponentTransform.h" />
     <ClInclude Include="debug_draw.hpp" />
+    <ClInclude Include="FileExplorer.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="GUICreator.h" />
     <ClInclude Include="ImGuizmo\ImGuizmo.h" />
+    <ClInclude Include="KDTree.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="MaterialEditor.h" />
     <ClInclude Include="MathGeoLib\include\Algorithm\Random\LCG.h" />
@@ -170,7 +172,9 @@
     <ClInclude Include="ModuleProgram.h" />
     <ClInclude Include="ModuleRender.h" />
     <ClInclude Include="ModuleScene.h" />
+    <ClInclude Include="ModuleSpacePartitioning.h" />
     <ClInclude Include="ModuleTextures.h" />
+    <ClInclude Include="ModuleTime.h" />
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="myQuadTree.h" />
     <ClInclude Include="Panel.h" />
@@ -180,6 +184,7 @@
     <ClInclude Include="PanelHardware.h" />
     <ClInclude Include="PanelHierarchy.h" />
     <ClInclude Include="PanelInspector.h" />
+    <ClInclude Include="PanelTime.h" />
     <ClInclude Include="par_shapes.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Skybox.h" />
@@ -194,6 +199,7 @@
     <ClCompile Include="ComponentLight.cpp" />
     <ClCompile Include="ComponentRenderer.cpp" />
     <ClCompile Include="ComponentTransform.cpp" />
+    <ClCompile Include="FileExplorer.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GUICreator.cpp" />
     <ClCompile Include="imgui.cpp" />
@@ -203,6 +209,7 @@
     <ClCompile Include="imgui_impl_opengl3.cpp" />
     <ClCompile Include="imgui_impl_sdl.cpp" />
     <ClCompile Include="imgui_widgets.cpp" />
+    <ClCompile Include="KDTree.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Material.cpp" />
@@ -250,7 +257,9 @@
     <ClCompile Include="ModuleProgram.cpp" />
     <ClCompile Include="ModuleRender.cpp" />
     <ClCompile Include="ModuleScene.cpp" />
+    <ClCompile Include="ModuleSpacePartitioning.cpp" />
     <ClCompile Include="ModuleTextures.cpp" />
+    <ClCompile Include="ModuleTime.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="myQuadTree.cpp" />
     <ClCompile Include="PanelAbout.cpp" />
@@ -259,6 +268,7 @@
     <ClCompile Include="PanelHardware.cpp" />
     <ClCompile Include="PanelHierarchy.cpp" />
     <ClCompile Include="PanelInspector.cpp" />
+    <ClCompile Include="PanelTime.cpp" />
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Viewport.cpp" />
