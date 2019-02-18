@@ -91,6 +91,11 @@ void ComponentRenderer::DrawProperties()
 			App->editor->materialEditor->open = true; //materialpopup is only drawn once in module editor
 			App->editor->materialEditor->isCreated = false; 
 		}
+		if (material != nullptr)
+		{
+			ImGui::DragFloat("Roughness", &material->roughness, .01f, .001f, 1.f);
+			ImGui::DragFloat("Metallic", &material->metallic, .01f, .001f, 1.f);
+		}
 	}
 	ImGui::PopID();
 }

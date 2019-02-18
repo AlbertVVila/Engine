@@ -223,6 +223,8 @@
       <Filter>Panels</Filter>
     </ClCompile>
     <ClCompile Include="ModuleTime.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
     <ClCompile Include="KDTree.cpp">
       <Filter>Tree</Filter>
     </ClCompile>
@@ -524,6 +526,8 @@
       <Filter>Panels</Filter>
     </ClInclude>
     <ClInclude Include="ModuleTime.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
     <ClInclude Include="KDTree.h">
       <Filter>Tree</Filter>
     </ClInclude>
@@ -604,6 +608,18 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\Game\Shaders\VertexShaders\Default.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\FragmentShaders\PBR.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\FragmentShaders\Phong_Normal_Maps.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\VertexShaders\PBR.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\VertexShaders\Phong_Normal_Maps.vs">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

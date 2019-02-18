@@ -58,6 +58,7 @@ void MaterialEditor::Draw()
 		ImGui::DragFloat("kDiffuse", &material->kDiffuse, .005f, .0f, 1.f);
 		ImGui::DragFloat("kSpecular", &material->kSpecular, .005f, .0f, 1.f);
 		ImGui::DragFloat("Shininess", &material->shininess, .05f, .0f, 256.f);
+		ImGui::DragFloat("Roughness", &material->roughness, .01f, .001f, 1.f);
 		ShaderSelector(current_shader);
 		
 		if (textureFiles.size() == 0)

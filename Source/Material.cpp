@@ -269,9 +269,11 @@ void Material::SetUniforms(unsigned shader) const
 		}
 		glDisable(GL_TEXTURE_2D);
 	}
-
+	
 	glUniform1fv(glGetUniformLocation(shader,
-		"material.k_ambient"), 1, (GLfloat*)&kAmbient);
+		"material.roughness"), 1, (GLfloat*)&roughness);
+	glUniform1fv(glGetUniformLocation(shader,
+		"material.metallic"), 1, (GLfloat*)&metallic);
 	glUniform1fv(glGetUniformLocation(shader,
 		"material.k_diffuse"), 1, (GLfloat*)&kDiffuse);
 	glUniform1fv(glGetUniformLocation(shader,

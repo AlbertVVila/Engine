@@ -49,6 +49,8 @@ public:
 	float kDiffuse = 0.2f;
 	float kSpecular = 0.1f;
 	float shininess = 32.f;
+	float roughness = .5f;
+	float metallic = .5f;
 	
 };
 
