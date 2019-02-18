@@ -22,6 +22,11 @@ MaterialEditor::~MaterialEditor()
 
 void MaterialEditor::Draw()
 {
+	if (newMaterial)
+	{
+
+	}
+
 	if (material == NULL)
 	{
 		return;
@@ -216,6 +221,11 @@ void MaterialEditor::SetCurrentTextures()
 	{ 
 		current_normal = None; 
 	}
+}
+
+void MaterialEditor::NewMaterial()
+{
+
 }
 
 void MaterialEditor::CleanUp()
