@@ -220,8 +220,6 @@ void MaterialEditor::SetCurrentTextures()
 
 void MaterialEditor::CleanUp()
 {
-	if (isCreated) RELEASE(material);
-
 	current_shader = None;
 	current_diffuse = None;
 	current_specular = None;

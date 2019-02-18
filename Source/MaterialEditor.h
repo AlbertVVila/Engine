@@ -18,7 +18,7 @@ public:
 
 public:
 	bool open = false;
-	bool isCreated = false;
+
 	Material* material = nullptr;
 	Material* previous = nullptr;
 

@@ -198,7 +198,6 @@ update_status ModuleEditor::Update(float dt)
 		if (ImGui::MenuItem("New Material"))
 		{
 			materialEditor->open = true;
-			materialEditor->isCreated = true;
 		}
 		materialEditor->Draw();
 		WindowsMenu();
