@@ -99,19 +99,18 @@ float D(vec3 H, vec3 N)
 	float NdotH2 = pow(NdotH, 2);
 	float num = pow(r2, 2);
 	float den = NdotH2 * (num - 1.f) + 1.f;
-	return num / den;
+	return num / max(den, 0.001);
 }
 
 float GGX(vec3 M, vec3 N)
 {
-	float r2 = pow(material.roughness, 2);
-	float NdotM = dot(N,M);
+	float NdotM = max(dot(N,M), 0.001);
 
 	float r = (material.roughness + 1.0);
     float k = (r*r) / 8.0;
 
     float num   = NdotM;
-    float denom = NdotM * (1.0 - k) + k;
+    float denom = max(NdotM * (1.0 - k) + k, 0.001f);
 	
     return num / denom;
 }
@@ -138,13 +137,13 @@ vec3 CalculateNormal()
 {
 	vec3 normalM = texture(material.occlusion_texture, uv0).xyz;
 	normalM = normalize(normalM * 2.0 - 1.0);
-
-	vec3 T = normalize(tan);
-	vec3 B = normalize(bitan);
-	vec3 N = normalize(normalIn);	
+	vec3 N = normalize(normalIn);
+	vec3 T = normalize(normalize(tan) - N *dot(N, normalize(tan)));
+	vec3 B = cross(T, normalIn);	
 	mat3 TBN = mat3(T, B, N);
 
 	return normalize(TBN * normalM);
+
 }
 
 
@@ -161,7 +160,7 @@ void main()
 	F0 = mix(F0, albedo.rgb, material.metallic);
 	//vec3 color = directional_phong(normal, viewPos, lights.directional, diffuse_color, specular_color);
 
-	vec3 color = vec3(0,0,0);
+	vec3 color = vec3(0, 0, 0);
 	vec3 N = normal;
 	vec3 V = normalize(viewPos - position);
 
@@ -206,7 +205,6 @@ void main()
 		color += (kD * albedo.rgb / PI + BRDF(F, L, V, N, H)) * radiance * NdotL;
 	}
 	
-
 	/*color += 	 emissive_color + //emissive
 				 diffuse_color.rgb * lights.ambient_color * occlusion_color * material.k_ambient; //ambient
 				 */

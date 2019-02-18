@@ -22,10 +22,10 @@ void main()
 	position = (model * vec4(vertex_position, 1.0)).xyz;
 	gl_Position = proj*view*vec4(position, 1.0);
 
-	normalIn = mat3(transpose(inverse(model))) * vertex_normal;
-	//normalIn = (model * vec4(vertex_normal, 1.0)).xyz; 
-	tan = (model * vec4(vertex_tangent, 1.0)).xyz;
-	bitan = (model * vec4(cross(vertex_tangent, vertex_normal), 1.0)).xyz;
+	//normalIn = mat3(transpose(inverse(model))) * vertex_normal;
+	normalIn = mat3(model) * vertex_normal;
+	tan = mat3(model) * vertex_tangent;
+	bitan = cross(vertex_tangent, vertex_normal);
 
 	uv0 = vertex_uv0;
 }
