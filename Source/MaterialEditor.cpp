@@ -230,20 +230,20 @@ void MaterialEditor::NewMaterial()
 	{
 		ImGui::Text("Create new material:");
 		ImGui::Separator();
-		char name[64] = "New Material";
+		char name[64] = "new mat";
 		ImGui::InputText("Name", name, 64);
 
-		ImGui::SetCursorPosX(ImGui::GetWindowWidth()/2 - ImGui::CalcTextSize(" SAVE  ").x);
-		if (ImGui::Button("Save"))
+		if (ImGui::Button("Save", ImVec2(120, 0)))
 		{
-			Material* newMaterial = new Material();
+			Material* newMaterial = new Material(name);
 			newMaterial->Save();
 			newMaterial = false;
+			RELEASE(newMaterial);
+			
 		}
 		ImGui::SameLine();
-		if (ImGui::Button("Cancel"))
+		if (ImGui::Button("Cancel", ImVec2(120, 0)))
 		{
-
 			newMaterial = false;
 		}
 	}

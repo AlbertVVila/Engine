@@ -199,7 +199,11 @@ update_status ModuleEditor::Update(float dt)
 		{
 			materialEditor->newMaterial = true;
 		}
-		materialEditor->Draw();
+		//materialEditor->Draw();
+		if (materialEditor->newMaterial)
+		{
+			materialEditor->NewMaterial();
+		}
 		WindowsMenu();
 		HelpMenu();
 		ImGui::EndMainMenuBar();
