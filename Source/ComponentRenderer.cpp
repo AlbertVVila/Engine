@@ -111,8 +111,15 @@ void ComponentRenderer::DrawProperties()
 		{
 			App->editor->materialEditor->Draw();
 		}
+
 		ImGui::Separator();
 	}
+
+	if (App->editor->materialEditor->newMaterial)
+	{
+		App->editor->materialEditor->NewMaterial();
+	}
+
 	ImGui::PopID();
 }
 

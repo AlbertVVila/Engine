@@ -197,7 +197,7 @@ update_status ModuleEditor::Update(float dt)
 		GUICreator::CreateElements(App->scene->root);
 		if (ImGui::MenuItem("New Material"))
 		{
-			materialEditor->open = true;
+			materialEditor->newMaterial = true;
 		}
 		materialEditor->Draw();
 		WindowsMenu();
