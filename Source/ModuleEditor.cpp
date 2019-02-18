@@ -150,7 +150,7 @@ update_status ModuleEditor::Update(float dt)
 			}
 			std::string scenePath = SCENES;
 			std::vector<std::string> prevPath = fileExplorer->GetPath(scenePath.substr(0,scenePath.size()-1));
-			scenePath = scenePath.substr(scenePath.find_first_of('/'), scenePath.size() - scenePath.find_first_of('/') - 1);
+			scenePath = scenePath.substr(0, scenePath.size() - 1);
 			if (ImGui::MenuItem("Load Scene"))
 			{
 				fileExplorer->currentOperation = MenuOperations::LOAD;
