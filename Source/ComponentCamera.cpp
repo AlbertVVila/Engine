@@ -15,6 +15,8 @@
 #include "Imguizmo.h"
 #include "Geometry/Frustum.h"
 
+#include <stack>
+
 #define MAXFOV 120
 #define MINFOV 40
 
@@ -107,17 +109,39 @@ void ComponentCamera::Zoom(float mouseWheel)
 
 void ComponentCamera::Center()
 {
-	if (App->scene->selected == nullptr 
-		|| App->scene->selected->GetComponent(ComponentType::Renderer) == nullptr) return;
+	if (App->scene->selected == nullptr || App->scene->selected->GetComponent(ComponentType::Transform) == nullptr) return;
 
-	AABB bbox = App->scene->selected->GetBoundingBox();
-	float3 HalfSize = bbox.HalfSize();
-	float distX = HalfSize.x / tanf(frustum->horizontalFov*0.5f);
-	float distY = HalfSize.y / tanf(frustum->verticalFov*0.5f);
-	float camDist = MAX(distX, distY) + HalfSize.z; //camera distance from model
+	if (App->scene->selected->GetComponent(ComponentType::Renderer) != nullptr)
+	{
+		AABB bbox = App->scene->selected->GetBoundingBox();
+		float3 HalfSize = bbox.HalfSize();
+		float distX = HalfSize.x / tanf(frustum->horizontalFov*0.5f);
+		float distY = HalfSize.y / tanf(frustum->verticalFov*0.5f);
+		float camDist = MAX(distX, distY) + HalfSize.z; //camera distance from model
 
-	float3 center = bbox.FaceCenterPoint(5);
-	frustum->pos = center + float3(0, 0, camDist);
+		float3 center = bbox.FaceCenterPoint(5);
+		frustum->pos = center + float3(0.0f, 0.0f, camDist);
+	}
+	else
+	{
+		AABB childBboxes;
+		childBboxes.SetNegativeInfinity();
+		std::stack<GameObject*> descendents;
+		while (!descendents.empty())
+		{
+			GameObject* currentGo = descendents.top();
+			descendents.pop();
+			childBboxes.Enclose(currentGo->GetBoundingBox());
+			for (const auto &child : currentGo->children)
+			{
+				descendents.push(child);
+			}
+		}
+
+		float camDist = App->renderer->current_scale;
+		float3 center = ((ComponentTransform*)(App->scene->selected->GetComponent(ComponentType::Transform)))->position;
+		frustum->pos = center + float3(0.0f, 0.0f, camDist);
+	}
 
 	frustum->front = -float3::unitZ;
 	frustum->up = float3::unitY;

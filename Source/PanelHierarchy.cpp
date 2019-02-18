@@ -22,5 +22,6 @@ void PanelHierarchy::Draw()
 	}
 	App->scene->DrawHierarchy();
 	focus = ImGui::IsWindowFocused();
+	hover = ImGui::IsWindowHovered();
 	ImGui::End();
 }

@@ -12,6 +12,7 @@ public:
 	~PanelHierarchy();
 
 	void Draw();
+
 };
 
 #endif __PanelHierarchy_h__
