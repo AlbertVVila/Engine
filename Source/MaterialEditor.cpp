@@ -225,6 +225,7 @@ void MaterialEditor::SetCurrentTextures()
 
 void MaterialEditor::NewMaterial()
 {
+	ImGui::OpenPopup(materialPopup);
 	if (ImGui::BeginPopupModal(materialPopup, NULL, ImGuiWindowFlags_AlwaysAutoResize))
 	{
 		ImGui::Text("Create new material:");
@@ -232,11 +233,20 @@ void MaterialEditor::NewMaterial()
 		char name[64] = "New Material";
 		ImGui::InputText("Name", name, 64);
 
-		if (ImGui::Button("Cancel"))
+		ImGui::SetCursorPosX(ImGui::GetWindowWidth()/2 - ImGui::CalcTextSize(" SAVE  ").x);
+		if (ImGui::Button("Save"))
 		{
 			newMaterial = false;
 		}
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel"))
+		{
+
+			newMaterial = false;
+		}
 	}
+
+	ImGui::EndPopup();
 }
 
 void MaterialEditor::CleanUp()
