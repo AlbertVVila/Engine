@@ -236,6 +236,8 @@ void MaterialEditor::NewMaterial()
 		ImGui::SetCursorPosX(ImGui::GetWindowWidth()/2 - ImGui::CalcTextSize(" SAVE  ").x);
 		if (ImGui::Button("Save"))
 		{
+			Material* newMaterial = new Material();
+			newMaterial->Save();
 			newMaterial = false;
 		}
 		ImGui::SameLine();

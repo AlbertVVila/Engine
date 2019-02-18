@@ -16,6 +16,11 @@ Material::Material()
 {
 }
 
+Material::Material(const char * name)
+{
+	this->name = name;
+}
+
 Material::Material(const Material& material)
 {
 	name = material.name;

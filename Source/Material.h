@@ -23,6 +23,7 @@ class Material
 {
 public:
 	Material();
+	Material(const char* name);
 	Material(const Material& material);
 
 	~Material();
