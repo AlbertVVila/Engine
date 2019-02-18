@@ -52,7 +52,7 @@ public:
 	}
 
 	// Get mouse / axis position
-	const void ModuleInput::GetMouseMotion(float &x, float &y) const;
+	const void GetMouseMotion(float &x, float &y) const;
 	const fPoint& GetMousePosition() const;
 	const float GetMouseWheel() const;
 

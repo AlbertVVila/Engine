@@ -34,6 +34,7 @@ public:
 	bool CleanUp();
 
 	void SetTimer();
+	void Log(const char* buffer);
 
 public:
 	ModuleRender* renderer = nullptr;

@@ -93,7 +93,12 @@ void ComponentScript::Load(const JSON_value & value)
 
 void ComponentScript::SetScript(const std::string &name)
 {
+	if (script != nullptr)
+	{
+		App->scripting->RemoveScript(scriptName, script);
+	}
 	script = App->scripting->AddScript(name);
+	script->SetApp(App);
 	script->SetGameObject(gameobject);
 	scriptName = name;
 }

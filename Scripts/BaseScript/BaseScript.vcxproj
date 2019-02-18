@@ -27,13 +27,13 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -165,6 +165,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseScript.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PlayerMovement\PlayerMovement.vcxproj">
+      <Project>{da319d4a-70a8-42c8-a54f-db7ead02ca0d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\TemplateScript1\TemplateScript1.vcxproj">
+      <Project>{d421b332-4257-4502-b482-66438ceafb60}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
