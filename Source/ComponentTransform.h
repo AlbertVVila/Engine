@@ -15,6 +15,7 @@ public:
 
 	Component* Clone() const override;
 	void AddTransform(const float4x4 &transform);
+	void Update() override;
 	void DrawProperties() override;
 
 	void UpdateTransform();

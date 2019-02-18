@@ -17,19 +17,23 @@ ComponentScript::ComponentScript(GameObject * gameobject) : Component(gameobject
 ComponentScript::ComponentScript(const ComponentScript & component) : Component(component)
 {
 	scriptName = component.scriptName;
+	if (component.script != nullptr)
+	{
+		SetScript(scriptName);
+	}
 }
 
 ComponentScript::~ComponentScript()
 {
+	if (script != nullptr)
+	{
+		App->scripting->RemoveScript(scriptName, script);
+	}
 }
 
 ComponentScript * ComponentScript::Clone() const
 {
 	return new ComponentScript(*this);
-}
-
-void ComponentScript::Update()
-{
 }
 
 void ComponentScript::DrawProperties()
@@ -51,9 +55,7 @@ void ComponentScript::DrawProperties()
 				bool is_selected = (scriptName == it->first);
 				if (ImGui::Selectable(it->first.c_str(), is_selected) && scriptName != it->first)
 				{
-					script = App->scripting->AddScript(it->first);
-					script->SetGameObject(gameobject);
-					scriptName = it->first;
+					SetScript(it->first);
 				}
 				if (is_selected)
 				{
@@ -68,5 +70,31 @@ void ComponentScript::DrawProperties()
 			script->Expose(context);
 		}
 	}
+}
+
+void ComponentScript::Save(JSON_value * value) const
+{
+	Component::Save(value);
+	if (script != nullptr)
+	{
+		value->AddString("script", scriptName.c_str());
+	}
+}
+
+void ComponentScript::Load(const JSON_value & value)
+{
+	Component::Load(value);
+	const char* retrievedName = value.GetString("script");
+	if (retrievedName != nullptr)
+	{
+		SetScript(retrievedName);
+	}
+}
+
+void ComponentScript::SetScript(const std::string &name)
+{
+	script = App->scripting->AddScript(name);
+	script->SetGameObject(gameobject);
+	scriptName = name;
 }
 

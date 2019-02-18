@@ -2,6 +2,7 @@
 
 #include "ModuleScript.h"
 #include "ModuleFileSystem.h"
+#include "ModuleTime.h"
 
 #include "BaseScript.h"
 #include <assert.h>
@@ -23,34 +24,54 @@ ModuleScript::ModuleScript()
 
 ModuleScript::~ModuleScript()
 {
-}
+	for (auto& script : scriptInstances)
+	{
+		RELEASE(script);
+	}
 
+	for (const auto& dll : loadedDLLs)
+	{
+		if (!FreeLibrary(dll.second.first))
+		{
+			LOG("CAN'T RELEASE %s", dll.first);
+		}
+	}
+}
 
 bool ModuleScript::Start()
 {
 	CheckScripts();
-	
-	//Script* script = CreateScript();
 	return true;
 }
 
 update_status ModuleScript::Update(float dt)
 {
-	//TODO: Listen script folder for DLL updates
-	//TODO: We should use a thread component to listen to folders asynchronously
-	CheckScripts();
-	for (const auto& script : scriptInstances)
+	if (App->time->gameState == GameState::RUN)
 	{
-		script->Update();
+		if (onStart)
+		{
+			for (const auto& script : scriptInstances)
+			{
+				script->Start();
+			}
+		}
+		for (const auto& script : scriptInstances)
+		{
+			script->Update();
+		}
 	}
-	//Script* playerMovement = GetProcAddress()
-
+	else
+	{
+		//TODO: We should use a thread component to listen to script folder asynchronously
+		CheckScripts();
+	}
+	onStart = App->time->gameState != GameState::RUN;
 	return UPDATE_CONTINUE;
 }
 
-void ModuleScript::LoadFromMemory()
+void ModuleScript::LoadFromMemory(int resource)
 {
-	HRSRC hResource = FindResourceA(nullptr, MAKEINTRESOURCEA(IDR_TEXT1), "TEXT");
+	HRSRC hResource = FindResourceA(nullptr, MAKEINTRESOURCEA(resource), "TEXT");
 	HGLOBAL hMemory = LoadResource(nullptr, hResource);
 
 	int size_bytes = SizeofResource(nullptr, hResource);
@@ -66,39 +87,65 @@ void ModuleScript::LoadFromMemory()
 			scriptInstances.push_back(script);
 			script->Start();
 			script->Update();
-			int stub = script->GetWord();
-			LOG("NICE");
 		}
 	}
 }
 
-Script* ModuleScript::AddScript(std::string script)
+Script* ModuleScript::AddScript(const std::string& script)
 {
-	HMODULE dll = LoadLibrary((SCRIPTS + script + DLL).c_str()); //TODO: don't load library if already script loaded
-	assert(dll != nullptr);
-	if (dll != nullptr)
+	HINSTANCE dll;
+	std::map<std::string, std::pair<HINSTANCE, int>>::iterator dll_it = loadedDLLs.find(script);
+	if (dll_it != loadedDLLs.end())
 	{
-		CreatePointer Create = (CreatePointer)GetProcAddress(dll, "CreateScript");
-		assert(Create != nullptr);
-		if (Create != nullptr)
-		{
-			Script* script = Create();
-			scriptInstances.push_back(script);
-			return script;
-		}
-		//if (!FreeLibrary(dll))
-		//{
-		//	LOG("CAN'T RELEASE %s", script);
-		//}
+		dll = dll_it->second.first;
 	}
+	else
+	{
+		dll = LoadLibrary((SCRIPTS + script + DLL).c_str());
+		assert(dll != nullptr);
+		if (dll != nullptr)
+		{
+			loadedDLLs.insert(std::pair<std::string,
+				std::pair<HINSTANCE, int>>(script, std::pair<HINSTANCE, int>(dll, 1)));
+		}
+	}
+	CreatePointer Create = (CreatePointer)GetProcAddress(dll, "CreateScript");
+	assert(Create != nullptr);
+	if (Create != nullptr)
+	{
+		Script* script = Create();
+		scriptInstances.push_back(script);
+		return script;
+	}
+	return nullptr;
 }
 
-void ModuleScript::RemoveScript(Script* script)
+void ModuleScript::RemoveScript(const std::string& name, Script* script)
 {
 	//TODO: check if script is used in any other component and if not then freelibrary
-	//FreeLibrary()
-	scriptInstances.remove(script);
-	RELEASE(script);
+	std::map<std::string, std::pair<HINSTANCE,int>>::iterator dll = loadedDLLs.find(name);
+	if (dll != loadedDLLs.end())
+	{
+		if (dll->second.second <= 1)
+		{
+			if (!FreeLibrary(dll->second.first))
+			{
+				LOG("CAN'T RELEASE %s", name);
+			}
+			loadedDLLs.erase(dll);
+		}
+		else
+		{
+			dll->second.second--;
+		}
+		scriptInstances.remove(script);
+		RELEASE(script);
+	}
+	else
+	{
+		LOG("Script %s Not Found!", name);
+		assert(false);
+	}
 }
 
 void ModuleScript::CheckScripts()

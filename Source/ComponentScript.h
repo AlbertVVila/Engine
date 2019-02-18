@@ -13,15 +13,16 @@ class ComponentScript :
 
 public:
 	ComponentScript(GameObject* gameobject);
-
 	ComponentScript(const ComponentScript & component);
-
 	~ComponentScript();
 
-	ComponentScript * Clone() const;
-
-	void Update() override;
 	void DrawProperties();
+	void Save(JSON_value *value) const override;
+	void Load(const JSON_value &value) override;
+
+	void SetScript(const std::string &name);
+
+	ComponentScript* Clone() const;
 
 private:
 	std::string scriptName = "No Script";

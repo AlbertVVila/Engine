@@ -49,6 +49,16 @@ void ComponentTransform::AddTransform(const float4x4 & transform)
 	}
 }
 
+void ComponentTransform::Update()
+{
+	if (old_position != position || old_euler != eulerRotation || old_scale != scale)
+	{
+		UpdateTransform();
+		gameobject->moved_flag = true;
+		gameobject->UpdateBBox();
+	}
+}
+
 void ComponentTransform::DrawProperties()
 {
 	if (ImGui::CollapsingHeader("Local Transformation", ImGuiTreeNodeFlags_DefaultOpen))
@@ -73,13 +83,6 @@ void ComponentTransform::DrawProperties()
 		{
 			ImGui::PopItemFlag();
 			ImGui::PopStyleVar();
-		}
-
-		if (old_position != position || old_euler != eulerRotation || old_scale != scale)
-		{
-			UpdateTransform();
-			gameobject->moved_flag = true;
-			gameobject->UpdateBBox();
 		}
 	}
 }
