@@ -148,18 +148,13 @@ update_status ModuleEditor::Update(float dt)
 			{
 				App->scene->ClearScene();
 			}
-			std::string scenePath = SCENES;
-			std::vector<std::string> prevPath = fileExplorer->GetPath(scenePath.substr(0,scenePath.size()-1));
-			scenePath = scenePath.substr(0, scenePath.size() - 1);
 			if (ImGui::MenuItem("Load Scene"))
 			{
 				fileExplorer->currentOperation = MenuOperations::LOAD;
 				fileExplorer->extensionToFilter = FILETYPE::SCENE;
-				fileExplorer->path = scenePath;
-				for (int i = 0; i < prevPath.size();++i)
-				{
-					fileExplorer->pathStack.push(prevPath[i]);
-				}
+				std::string scenePath = SCENES;
+				scenePath = scenePath.substr(0, scenePath.size() - 1);
+				fileExplorer->SetPath(*scenePath.c_str());
 				sprintf_s(fileExplorer->title, "Load Scene");
 				fileExplorer->openFileExplorer = true;
 			}
@@ -167,11 +162,9 @@ update_status ModuleEditor::Update(float dt)
 			{
 				fileExplorer->currentOperation = MenuOperations::ADD;
 				fileExplorer->extensionToFilter = FILETYPE::SCENE;
-				fileExplorer->path = scenePath;
-				for (int i = 0; i < prevPath.size(); ++i)
-				{
-					fileExplorer->pathStack.push(prevPath[i]);
-				}
+				std::string scenePath = SCENES;
+				scenePath = scenePath.substr(0, scenePath.size() - 1);
+				fileExplorer->SetPath(*scenePath.c_str());
 				sprintf_s(fileExplorer->title, "Add Scene");
 				fileExplorer->openFileExplorer = true;
 			}
@@ -185,11 +178,9 @@ update_status ModuleEditor::Update(float dt)
 				{
 					fileExplorer->currentOperation = MenuOperations::SAVE;
 					fileExplorer->extensionToFilter = FILETYPE::SCENE;
-					fileExplorer->path = scenePath;
-					for (int i = 0; i < prevPath.size(); ++i)
-					{
-						fileExplorer->pathStack.push(prevPath[i]);
-					}
+					std::string scenePath = SCENES;
+					scenePath = scenePath.substr(0, scenePath.size() - 1);
+					fileExplorer->SetPath(*scenePath.c_str());
 					sprintf_s(fileExplorer->title, "Save Scene");
 					fileExplorer->openFileExplorer = true;
 				}
@@ -198,11 +189,9 @@ update_status ModuleEditor::Update(float dt)
 			{
 				fileExplorer->currentOperation = MenuOperations::SAVE;
 				fileExplorer->extensionToFilter = FILETYPE::SCENE;
-				fileExplorer->path = scenePath;
-				for (int i = 0; i < prevPath.size(); ++i)
-				{
-					fileExplorer->pathStack.push(prevPath[i]);
-				}
+				std::string scenePath = SCENES;
+				scenePath = scenePath.substr(0, scenePath.size() - 1);
+				fileExplorer->SetPath(*scenePath.c_str());
 				sprintf_s(fileExplorer->title, "Save Scene");
 				sprintf_s(fileExplorer->filename, App->scene->name.c_str());
 				fileExplorer->openFileExplorer = true;
