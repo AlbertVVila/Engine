@@ -148,7 +148,6 @@ update_status ModuleEditor::Update(float dt)
 			{
 				App->scene->ClearScene();
 			}
-			std::vector<std::string> files = App->fsystem->ListFiles(SCENES);
 			std::string scenePath = SCENES;
 			std::vector<std::string> prevPath = fileExplorer->GetPath(scenePath.substr(0,scenePath.size()-1));
 			scenePath = scenePath.substr(scenePath.find_first_of('/'), scenePath.size() - scenePath.find_first_of('/') - 1);
