@@ -2,7 +2,7 @@
 Developed during the UPC Master's Degree in Video Game Design and Development. 
 Currently under development.
 
-![alt text](https://imgur.com/cOOPIAO.png)
+![Fractal gif example](ReadmeGifExample.gif)
 
 ## Windows
 ### Scene & Game
@@ -36,7 +36,10 @@ The current configuration is saved when the engine exits.
 This will print any relevant log about importing, loading or saving files.
 
 ## More information
-For more information about new features read
+C++ coding style,  Guide step by step, etc.
+[Fractal Wiki](https://github.com/fractal-puppy/Engine/wiki)
+
+Changelog with new features and fixes
 [last Release Notes](https://github.com/fractal-puppy/Engine/releases).
 
 [Github](https://github.com/fractal-puppy/Engine) and
