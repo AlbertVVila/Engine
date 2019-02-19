@@ -75,6 +75,13 @@ void ComponentRenderer::DrawProperties()
 				if (ImGui::Selectable(guiMaterials[n].c_str(), is_selected) && material->name != guiMaterials[n])
 				{
 					SetMaterial(guiMaterials[n].c_str());
+
+					if (App->editor->materialEditor->open)
+					{
+						App->editor->materialEditor->material = material;
+						App->editor->materialEditor->previous = new Material(*material);
+						App->editor->materialEditor->SetCurrentTextures();
+					}
 				}
 				if (is_selected)
 				{
@@ -94,6 +101,11 @@ void ComponentRenderer::DrawProperties()
 			if (ImGui::Button("Hide"))
 			{
 				App->editor->materialEditor->open = false;
+
+				if (!App->editor->materialEditor->material->Compare(*App->editor->materialEditor->previous))
+				{
+					App->editor->materialEditor->material->Save();
+				}
 			}
 		}
 		else

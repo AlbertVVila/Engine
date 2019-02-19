@@ -142,7 +142,6 @@ void MaterialEditor::TextureSelector(unsigned i, std::string &current_texture, i
 			{
 				App->resManager->DeleteTexture(material->textures[i]->file);
 				material->textures[i] = nullptr;
-				material->changesDone = true;
 			}
 		}
 		if (none_selected)
@@ -154,7 +153,6 @@ void MaterialEditor::TextureSelector(unsigned i, std::string &current_texture, i
 			{
 				current_texture = textureFiles[n];
 				material->textures[i] = App->textures->GetTexture(current_texture.c_str());
-				material->changesDone = true;
 			}
 			if (is_selected)
 				ImGui::SetItemDefaultFocus();
@@ -225,34 +223,42 @@ void MaterialEditor::SetCurrentTextures()
 
 void MaterialEditor::NewMaterial()
 {
-	ImGui::OpenPopup(materialPopup);
+	if (!ImGui::IsPopupOpen(materialPopup))
+	{
+		ImGui::OpenPopup(materialPopup);
+	}
 	if (ImGui::BeginPopupModal(materialPopup, NULL, ImGuiWindowFlags_AlwaysAutoResize))
 	{
 		ImGui::Text("Create new material:");
 		ImGui::Separator();
-		char name[64] = "new mat";
-		ImGui::InputText("Name", name, 64);
+		ImGui::InputText("NewName", newName, 64);
 
 		if (ImGui::Button("Save", ImVec2(120, 0)))
 		{
-			Material* newMaterial = new Material(name);
-			newMaterial->Save();
+			Material* newMaterialCreated = new Material(newName);
+			newMaterialCreated->Save();
 			newMaterial = false;
-			RELEASE(newMaterial);
+			RELEASE(newMaterialCreated);
+			strcpy(newName, "New Material");
 			
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Cancel", ImVec2(120, 0)))
 		{
 			newMaterial = false;
+			strcpy(newName, "New Material");
 		}
+		ImGui::EndPopup();
 	}
-
-	ImGui::EndPopup();
 }
 
 void MaterialEditor::CleanUp()
 {
+	if (!material->Compare(*previous))
+	{
+		material->Save();
+	}
+
 	current_shader = None;
 	current_diffuse = None;
 	current_specular = None;

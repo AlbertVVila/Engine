@@ -48,10 +48,10 @@ Material::Material(const Material& material)
 
 Material::~Material()
 {
-	if (changesDone)
+	/*if (changesDone)
 	{
 		Save();
-	}
+	}*/
 
 	if (shader != nullptr)
 	{
@@ -209,8 +209,40 @@ void Material::Reset(const Material & material)
 	kDiffuse = material.kDiffuse;
 	kSpecular = material.kSpecular;
 	shininess = material.shininess;
+}
 
-	changesDone = false;
+bool Material::Compare(const Material & material)
+{
+	if (name.compare(material.name) != 0)
+		return false;
+
+	if (shader != material.shader)
+		return false;
+
+	for (unsigned i = 0; i < MAXTEXTURES; ++i)
+	{
+		if (textures[i] != material.textures[i])
+			return false;
+	}
+
+	if (!diffuse_color.Equals(material.diffuse_color))
+		return false;
+	if (!specular_color.Equals(material.specular_color))
+		return false;
+	if (!emissive_color.Equals(material.emissive_color))
+		return false;
+
+	if (kDiffuse != material.kDiffuse)
+		return false;
+	if (kSpecular != material.kSpecular)
+		return false;
+	if (kAmbient != material.kAmbient)
+		return false;
+
+	if (shininess != material.shininess)
+		return false;
+
+	return true;
 }
 
 Texture * Material::GetTexture(TextureType type) const

@@ -31,6 +31,7 @@ public:
 	void Load(const char * material);
 	void Save() const;
 	void Reset(const Material& material);
+	bool Compare(const Material& material);
 
 	Texture * GetTexture(TextureType type) const;
 	std::list<Texture*> GetTextures() const;
@@ -52,7 +53,7 @@ public:
 	float kSpecular = 0.1f;
 	float shininess = 32.f;
 
-	bool changesDone = false;
+	//bool changesDone = false;
 	
 };
 

@@ -19,6 +19,8 @@ public:
 
 public:
 	bool open = false;
+	//Material creation
+	char newName[64] = "New Material";
 	bool newMaterial = false;
 
 	Material* material = nullptr;
