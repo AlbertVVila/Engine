@@ -92,7 +92,9 @@ Texture * ModuleTextures::GetTexture(const char * file) const
 
 	ilGenImages(1, &imageID); 		// Generate the image ID
 	ilBindImage(imageID); 			// Bind the image
-	success = ilLoadL(IL_DDS, data, size);
+	success = ilLoadL(IL_TYPE_UNKNOWN, data, size); //Temporary!! Should use not compressed format for normal mapping!!!!!!!!!!!!!!!!
+	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//TODO: Resource manager load not compressed texture on normal mapping
 	RELEASE_ARRAY(data);
 
 	if (success)

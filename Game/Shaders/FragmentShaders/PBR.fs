@@ -64,8 +64,8 @@ layout (std140) uniform Matrices
 in vec3 normalIn;
 in vec3 position;
 in vec2 uv0;
-in vec3 tan;
-in vec3 bitan;
+in mat3 TBNMat;
+in vec3 viewPos;
 
 out vec4 Fragcolor;
 
@@ -137,12 +137,7 @@ vec3 CalculateNormal()
 {
 	vec3 normalM = texture(material.occlusion_texture, uv0).xyz;
 	normalM = normalize(normalM * 2.0 - 1.0);
-	vec3 N = normalize(normalIn);
-	vec3 T = normalize(normalize(tan) - N *dot(N, normalize(tan)));
-	vec3 B = cross(T, normalIn);	
-	mat3 TBN = mat3(T, B, N);
-
-	return normalize(TBN * normalM);
+	return normalM;
 
 }
 
@@ -150,8 +145,7 @@ vec3 CalculateNormal()
 
 void main()
 {
-	vec3 normal = CalculateNormal();
-	vec3 viewPos = transpose(mat3(view))*(-view[3].xyz);	
+	vec3 normal = CalculateNormal();		
 	vec4 albedo = get_albedo();
 	vec3 emissive_color = get_emissive_color();
 	//vec3 occlusion_color= get_occlusion_color();
@@ -166,9 +160,9 @@ void main()
 
 	for(int i=0; i < lights.num_points; ++i)
 	{
-		vec3 L = normalize(lights.points[i].position - position);
+		vec3 L = normalize(TBNMat * lights.points[i].position - position);
 		vec3 H = normalize(V + L);
-		float distance = length(lights.points[i].position - position);
+		float distance = length(TBNMat * lights.points[i].position - position);
 		vec3 radiance = lights.points[i].color * get_attenuation(lights.points[i].attenuation, distance);				
 		
 		vec3 F = FSchlick(max(dot(H, V), 0.0), F0);   
@@ -183,11 +177,11 @@ void main()
 
 	for(int i=0; i < lights.num_spots; ++i)
 	{
-		vec3 L = normalize(lights.spots[i].position - position);
+		vec3 L = normalize(TBNMat * lights.spots[i].position - position);
 		vec3 H = normalize(V + L);
-		float distance = length(lights.spots[i].position - position);
+		float distance = length(TBNMat * lights.spots[i].position - position);
 
-		float theta = dot(normalize(L), normalize(-lights.spots[i].direction));
+		float theta = dot(normalize(L), normalize(-(TBNMat * lights.spots[i].direction)));
 		float epsilon = max(0.0001, lights.spots[i].inner - lights.spots[i].outer);
 		float cone = clamp((theta - lights.spots[i].outer) / epsilon, 0.0, 1.0); 
 	
