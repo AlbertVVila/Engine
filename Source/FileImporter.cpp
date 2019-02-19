@@ -93,6 +93,8 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file)
 		mesh->SetMesh(data, uid); //Deallocates data
 		App->resManager->AddMesh(mesh);
 		meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->UID));
+
+		//TODO, do the same as above for bones
 	}
 	GameObject *fake = new GameObject("fake",0);
 	ProcessNode(meshMap, aiscene.mRootNode, &aiscene, fake);
@@ -136,9 +138,20 @@ void FileImporter::ImportMesh(const aiMesh &mesh, char *data)
 	for (unsigned i = 0u; i < mesh.mNumBones; i++)
 	{
 		aiBone* bone = mesh.mBones[i];
-		// memcpy(cursor, bone->mName, sizeof(int) * 3);
+		memcpy(cursor, bone->mName, bone->mName.length());  //Name
+		cursor += bone->mName.length();
+		memcpy(cursor, bone->mNumWeights, sizeof(unsigned));  //numWieghts
+		cursor += sizeof(int) * 3;
+		memcpy(cursor, bone->mName, sizeof(int) * 3);  //offsetmatrix
+		cursor += sizeof(int) * 3;
+		memcpy(cursor, bone->mName, sizeof(int) * 3);  //weights
 		cursor += sizeof(int) * 3;
 	}
+
+	//TODO
+
+	//Create ResourceBone no struct
+	//Create ResourceAnimation
 
 	bool hasTextureCoords = mesh.HasTextureCoords(0);
 	memcpy(cursor, &hasTextureCoords, sizeof(bool));
