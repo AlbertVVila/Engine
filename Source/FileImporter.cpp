@@ -129,6 +129,17 @@ void FileImporter::ImportMesh(const aiMesh &mesh, char *data)
 		cursor += verticesBytes;
 	}
 
+	bool hasBones = mesh.HasBones();
+	memcpy(cursor, &hasBones, sizeof(bool));
+	cursor += sizeof(bool);
+
+	for (unsigned i = 0u; i < mesh.mNumBones; i++)
+	{
+		aiBone* bone = mesh.mBones[i];
+		// memcpy(cursor, bone->mName, sizeof(int) * 3);
+		cursor += sizeof(int) * 3;
+	}
+
 	bool hasTextureCoords = mesh.HasTextureCoords(0);
 	memcpy(cursor, &hasTextureCoords, sizeof(bool));
 	cursor += sizeof(bool);
