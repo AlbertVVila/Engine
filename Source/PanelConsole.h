@@ -17,7 +17,7 @@ public:
 	void Draw();
 
 private:
-	bool first = true;
+	bool ForceScrollToBottom = true;
 	ImGuiTextBuffer* Buf = nullptr;
 	std::vector<int> LineOffsets;        // Index to lines offset
 	bool ScrollToBottom = false;
