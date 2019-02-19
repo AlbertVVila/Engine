@@ -195,15 +195,6 @@
     <ClCompile Include="ComponentRenderer.cpp">
       <Filter>Component</Filter>
     </ClCompile>
-    <ClCompile Include="MaterialEditor.cpp">
-      <Filter>Material</Filter>
-    </ClCompile>
-    <ClCompile Include="Material.cpp">
-      <Filter>Material</Filter>
-    </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Mesh</Filter>
-    </ClCompile>
     <ClCompile Include="ImGuizmo\ImGuizmo.cpp">
       <Filter>Imguizmo</Filter>
     </ClCompile>
@@ -223,7 +214,7 @@
       <Filter>Panels</Filter>
     </ClCompile>
     <ClCompile Include="ModuleTime.cpp">
-	  <Filter>Modules</Filter>
+      <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="KDTree.cpp">
       <Filter>Tree</Filter>
@@ -233,6 +224,18 @@
     </ClCompile>
     <ClCompile Include="ModuleDebugDraw.cpp">
       <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Resources\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="MaterialEditor.cpp">
+      <Filter>Resources\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Resources\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Bone.cpp">
+      <Filter>Resources\Animation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -501,15 +504,6 @@
     <ClInclude Include="ComponentRenderer.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="MaterialEditor.h">
-      <Filter>Material</Filter>
-    </ClInclude>
-    <ClInclude Include="Material.h">
-      <Filter>Material</Filter>
-    </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Mesh</Filter>
-    </ClInclude>
     <ClInclude Include="ImGuizmo\ImGuizmo.h">
       <Filter>Imguizmo</Filter>
     </ClInclude>
@@ -529,7 +523,7 @@
       <Filter>Panels</Filter>
     </ClInclude>
     <ClInclude Include="ModuleTime.h">
-	  <Filter>Modules</Filter>
+      <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="KDTree.h">
       <Filter>Tree</Filter>
@@ -542,6 +536,18 @@
     </ClInclude>
     <ClInclude Include="ModuleDebugDraw.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="MaterialEditor.h">
+      <Filter>Resources\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Resources\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Resources\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Bone.h">
+      <Filter>Resources\Animation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -575,17 +581,23 @@
     <Filter Include="Importer">
       <UniqueIdentifier>{58053e56-3f23-444e-871d-6418dd18dda7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Material">
-      <UniqueIdentifier>{c4c3d17a-32f9-4c6a-9fda-d5e7091d7f46}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Mesh">
-      <UniqueIdentifier>{992d56bc-52f4-4d2e-bf7b-27366e318477}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Imguizmo">
       <UniqueIdentifier>{9e2074d8-5d2f-409c-8cec-92fa39546ba0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Tree">
       <UniqueIdentifier>{640a2da3-0a48-4b71-8419-e266d3f70572}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{4897d976-1851-4910-b1c3-6bfd32bc8e6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Mesh">
+      <UniqueIdentifier>{992d56bc-52f4-4d2e-bf7b-27366e318477}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Material">
+      <UniqueIdentifier>{c4c3d17a-32f9-4c6a-9fda-d5e7091d7f46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Animation">
+      <UniqueIdentifier>{fd45cf3b-e41c-4e13-8152-1ee3554cd7dd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

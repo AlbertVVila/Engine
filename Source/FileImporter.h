@@ -6,6 +6,7 @@
 struct aiScene;
 struct aiNode;
 struct aiMesh;
+struct aiAnimation;
 class GameObject;
 
 class FileImporter {
@@ -13,17 +14,21 @@ public:
 	FileImporter();
 	~FileImporter();
 
-	void ImportAsset(const char * file, const char* folder);
+	void ImportAsset(const char* file, const char* folder);
 
-	GameObject* ProcessNode(const std::map<unsigned,unsigned> &meshmap, const aiNode * node, const aiScene * scene, GameObject * parent);
+	GameObject* ProcessNode(const std::map<unsigned,unsigned>& meshmap, const aiNode* node, const aiScene* scene, GameObject* parent);
 
-	bool ImportFBX(const char * file, const char* folder);
+	bool ImportFBX(const char* file, const char* folder);
 
-	bool ImportScene(const aiScene & scene, const char* file);
+	bool ImportScene(const aiScene& scene, const char* file);
 
-	void ImportMesh(const aiMesh & mesh, char* data);
+	void ImportAnimation(const aiAnimation& animation, char* data);
 
-	unsigned GetMeshSize(const aiMesh & mesh) const;
+	void ImportMeshAndBones(const aiMesh& mesh, char* data);
+
+	unsigned GetMeshSize(const aiMesh& mesh) const;
+
+	unsigned GetAnimationSize(const aiAnimation& animation) const;
 };
 
 #endif __FileImporter_h__

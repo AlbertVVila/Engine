@@ -12,6 +12,7 @@
 #include "FileImporter.h"
 #include "Material.h"
 #include "Mesh.h"
+#include "Bone.h"
 
 #include <assert.h>
 #include "assimp/cimport.h"
@@ -78,26 +79,38 @@ bool FileImporter::ImportFBX(const char* fbxfile, const char* folder)
 	return false;
 }
 
-bool FileImporter::ImportScene(const aiScene &aiscene, const char* file)
+bool FileImporter::ImportScene(const aiScene& aiscene, const char* file)
 {
 	std::map<unsigned, unsigned> meshMap;
 	for (unsigned i = 0; i < aiscene.mNumMeshes; i++)
 	{
 		unsigned size = GetMeshSize(*aiscene.mMeshes[i]);
 		char* data = new char[size];
-		ImportMesh(*aiscene.mMeshes[i], data);
+		ImportMeshAndBones(*aiscene.mMeshes[i], data);
 
-		Mesh *mesh = new Mesh();
+		Mesh* mesh = new Mesh();
 		unsigned uid = App->scene->GetNewUID();
 		App->fsystem->Save((MESHES + std::to_string(uid)+ MESHEXTENSION).c_str(), data, size);
 		mesh->SetMesh(data, uid); //Deallocates data
 		App->resManager->AddMesh(mesh);
 		meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->UID));
 
-		//TODO, do the same as above for bones
+		// This needs to load the entire bone estructure and then store it as a unique resource
+		Bone* bone = new Bone();
+		uid = App->scene->GetNewUID(); // every bone needs to have his own UID? 
+		App->fsystem->Save((BONES + std::to_string(uid) + BONEEXTENSION).c_str(), data, size); //Is this ok? :'D created extensions and stuff
+		bone->Load(data, uid);
+		// App->resManager->AddBone(mesh); //Do we need the ress manager to load every bone?
+		// meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->UID));
 	}
-	GameObject *fake = new GameObject("fake",0);
+	GameObject* fake = new GameObject("fake", 0u);
 	ProcessNode(meshMap, aiscene.mRootNode, &aiscene, fake);
+
+	std::map<unsigned, unsigned> animationMap;
+	for (unsigned i = 0u; i < aiscene.mNumAnimations; i++) 
+	{
+		// ImportAnimation(*aiscene.mAnimations[i], data);
+	}
 
 	App->scene->SaveScene(*fake, *App->fsystem->GetFilename(file).c_str(), *SCENES); //TODO: Make AutoCreation of folders or check
 	fake->CleanUp();
@@ -107,9 +120,9 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file)
 	return true;
 }
 
-void FileImporter::ImportMesh(const aiMesh &mesh, char *data)
+void FileImporter::ImportMeshAndBones(const aiMesh& mesh, char* data)
 {
-	char *cursor = data;
+	char* cursor = data;
 
 	unsigned ranges[2] = { mesh.mNumFaces * 3, 	mesh.mNumVertices };
 	unsigned rangeBytes = sizeof(ranges);
@@ -138,14 +151,14 @@ void FileImporter::ImportMesh(const aiMesh &mesh, char *data)
 	for (unsigned i = 0u; i < mesh.mNumBones; i++)
 	{
 		aiBone* bone = mesh.mBones[i];
-		memcpy(cursor, bone->mName, bone->mName.length());  //Name
-		cursor += bone->mName.length();
-		memcpy(cursor, bone->mNumWeights, sizeof(unsigned));  //numWieghts
-		cursor += sizeof(int) * 3;
-		memcpy(cursor, bone->mName, sizeof(int) * 3);  //offsetmatrix
-		cursor += sizeof(int) * 3;
-		memcpy(cursor, bone->mName, sizeof(int) * 3);  //weights
-		cursor += sizeof(int) * 3;
+		memcpy(cursor, bone->mName.C_Str(), bone->mName.length);  //Name
+		cursor += bone->mName.length;
+		memcpy(cursor, &bone->mNumWeights, sizeof(unsigned));  //numWieghts
+		cursor += sizeof(unsigned);
+		memcpy(cursor, &bone->mOffsetMatrix, sizeof(aiMatrix4x4));  //offsetmatrix
+		cursor += sizeof(aiMatrix4x4);
+		memcpy(cursor, &bone->mNumWeights, sizeof(unsigned));  //weights
+		cursor += sizeof(unsigned);
 	}
 
 	//TODO
@@ -175,6 +188,27 @@ void FileImporter::ImportMesh(const aiMesh &mesh, char *data)
 		memcpy(cursor, face->mIndices, sizeof(int) * 3);
 		cursor += sizeof(int) * 3;
 	}
+}
+
+void FileImporter::ImportAnimation(const aiAnimation& animation, char* data) {
+	//TODO: as ImportMeshAndBones
+}
+
+//TODO: Obtain animations size in order to store their content
+unsigned FileImporter::GetAnimationSize(const aiAnimation& animation) const {
+	unsigned size = 0u;
+	//unsigned int ranges[2] = { animation.mNumChannels, animation.mNumMeshChannels};
+	//size += sizeof(ranges); //numfaces + numvertices
+	//size += ranges[0] * 3 * sizeof(int); //indices
+
+	//size += sizeof(float)*ranges[1] * 3; //vertices
+	//size += sizeof(bool) * 2; //has normals + has tcoords
+	if (animation.mNumChannels < 0u)
+	{
+		size += sizeof(aiNodeAnim) * animation.mNumChannels;
+	}
+
+	return size;
 }
 
 unsigned FileImporter::GetMeshSize(const aiMesh &mesh) const
