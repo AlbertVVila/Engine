@@ -6,6 +6,7 @@
 struct aiScene;
 struct aiNode;
 struct aiMesh;
+struct aiBone;
 struct aiAnimation;
 class GameObject;
 
@@ -28,7 +29,11 @@ public:
 
 	void ImportBones(const aiMesh& mesh, char* data);
 
+	void ImportSingleBone(const aiBone& bone, char* data);
+
 	unsigned GetMeshSize(const aiMesh& mesh) const;
+
+	unsigned GetSingleBoneSize(const aiBone& bone) const;
 
 	unsigned GetBonesSize(const aiMesh& mesh) const;
 

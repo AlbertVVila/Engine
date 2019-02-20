@@ -18,12 +18,21 @@ void Bone::Load(const char* boneData, unsigned uid)
 	if (boneData == nullptr) return;
 
 	const char* data = boneData;
+	
+	char* newName = new char[30];
 
 	unsigned nameLength = *(int*)boneData;
 	boneData += sizeof(int);
 
-	//option2
-	memcpy(boneName, boneData, sizeof(char) * nameLength); //Gives error
+	for (int i = 0; i < nameLength; i++)
+	{
+		memcpy(newName, boneData, sizeof(char)); 
+		boneName[i] = *newName;
+		newName++;
+		boneData += sizeof(char);
+	}
+
+	UID = uid;
 
 	//unsigned int numIndices = *(int*)meshData;
 	//meshData += sizeof(int);
@@ -68,8 +77,6 @@ void Bone::Load(const char* boneData, unsigned uid)
 	//ComputeBBox();
 	//SetMeshBuffers(hasNormals, hasTexCoords, normals, texCoords);
 	//SetBboxBuffers();
-
-	RELEASE_ARRAY(data);
 }
 
 void Bone::Unload() 

@@ -86,13 +86,14 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file)
 	{
 		//Separated data for both Bones and Mesh, data is now independent from one another
 		unsigned meshSize = GetMeshSize(*aiscene.mMeshes[i]);
-		unsigned bonesSize = GetBonesSize(*aiscene.mMeshes[i]);
+		/*unsigned bonesSize = GetBonesSize(*aiscene.mMeshes[i]); not currently in use*/
+
 		char* meshData = new char[meshSize];
-		char* bonesData = new char[bonesSize];
+		/*char* bonesData = new char[bonesSize]; not currently in use*/
 
 		//Imports Mesh and Bones separately
 		ImportMesh(*aiscene.mMeshes[i], meshData);
-		ImportBones(*aiscene.mMeshes[i], bonesData);
+		/*ImportBones(*aiscene.mMeshes[i], bonesData); not currently in use */
 
 		Mesh* mesh = new Mesh();
 		unsigned uid = App->scene->GetNewUID();
@@ -105,9 +106,12 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file)
 		for (unsigned j = 0u; j < aiscene.mMeshes[i]->mNumBones; j++)
 		{
 			Bone* bone = new Bone();
+			unsigned boneSingleSize = GetSingleBoneSize(*aiscene.mMeshes[i]->mBones[j]); 
+			char* boneSingleData = new char[boneSingleSize];
+			ImportSingleBone(*aiscene.mMeshes[i]->mBones[j], boneSingleData); //We import a single bone each time so we don't need to offset the data
 			uid = App->scene->GetNewUID(); // every bone needs to have his own UID? 
 			//App->fsystem->Save((BONES + std::to_string(uid) + BONEEXTENSION).c_str(), bonesData, bonesSize); //Is this ok? :'D created extensions and stuff
-			bone->Load(bonesData, uid);
+			bone->Load(boneSingleData, uid);
 			// App->resManager->AddBone(mesh); //Do we need the ress manager to load every bone?
 			// meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->UID));
 		}
@@ -178,37 +182,45 @@ void FileImporter::ImportMesh(const aiMesh& mesh, char* data)
 
 }
 
-//For now it only saves the Name, for testing purposes, WIP saving all the other vbles
 void FileImporter::ImportBones(const aiMesh& mesh, char* data)
+{
+	if (mesh.HasBones())
+	{
+		for (int i = 0; i < mesh.mNumBones; i++)
+		{
+			ImportSingleBone(*mesh.mBones[i],data);
+		}
+	}
+}
+
+//For now it only saves the Name, for testing purposes, WIP saving all the other vbles
+void FileImporter::ImportSingleBone(const aiBone& bone, char* data)
 {
 	char* cursor = data;
 
-	for (unsigned i = 0u; i < mesh.mNumBones; i++)
-	{
-		aiBone* bone = mesh.mBones[i];
+	//Allocates the size of the string name
+	memcpy(cursor, &bone.mName.length, sizeof(int));
+	cursor += sizeof(int);
 
-		//Allocates the size of the string name
-		memcpy(cursor, &bone->mName.length, sizeof(int));
-		cursor += sizeof(int);
+	memcpy(cursor, bone.mName.C_Str(), sizeof(char) * bone.mName.length);  //Name
+	cursor += sizeof(char) * bone.mName.length;
 
-		memcpy(cursor, bone->mName.C_Str(), sizeof(char) * bone->mName.length);  //Name
-		cursor += sizeof(char) * bone->mName.length;
-		//memcpy(cursor, &bone->mNumWeights, sizeof(unsigned));  //numWieghts
-		//cursor += sizeof(unsigned);
-		//memcpy(cursor, &bone->mOffsetMatrix, sizeof(aiMatrix4x4));  //offsetmatrix
-		//cursor += sizeof(aiMatrix4x4);
+	//memcpy(cursor, &bone->mNumWeights, sizeof(unsigned));  //numWieghts
+	//cursor += sizeof(unsigned);
+	//memcpy(cursor, &bone->mOffsetMatrix, sizeof(aiMatrix4x4));  //offsetmatrix
+	//cursor += sizeof(aiMatrix4x4);
 
-		//for (unsigned j = 0u; j < bone->mNumWeights; j++)					//wieghts
-		//{
-		//	memcpy(cursor, &bone->mWeights[j], sizeof(aiVertexWeight));  //weights
-		//	cursor += sizeof(aiVertexWeight);
+	//for (unsigned j = 0u; j < bone->mNumWeights; j++)					//wieghts
+	//{
+	//	memcpy(cursor, &bone->mWeights[j], sizeof(aiVertexWeight));  //weights
+	//	cursor += sizeof(aiVertexWeight);
 
-		/*	memcpy(cursor, &bone->mWeights->mVertexId, sizeof(unsigned));
-		//	cursor += sizeof(unsigned);
-		//	memcpy(cursor, &bone->mWeights->mWeight, sizeof(float));
-		//	cursor += sizeof(float);*/
-		//}	
-	}
+	/*	memcpy(cursor, &bone->mWeights->mVertexId, sizeof(unsigned));
+	//	cursor += sizeof(unsigned);
+	//	memcpy(cursor, &bone->mWeights->mWeight, sizeof(float));
+	//	cursor += sizeof(float);*/
+	//}	
+
 
 }
 
@@ -265,14 +277,19 @@ unsigned FileImporter::GetBonesSize(const aiMesh &mesh) const
 	{
 		for (int i = 1; i < mesh.mNumBones; i++)
 		{
-			size += sizeof(int) + sizeof(char) * mesh.mBones[i]->mName.length;
+			size += GetSingleBoneSize(*mesh.mBones[i]);
 		}
 	}
 
 	return size;
 }
 
+unsigned FileImporter::GetSingleBoneSize(const aiBone &bone) const
+{
+	unsigned size = 0u;
 
+	return (sizeof(int) + sizeof(char) * bone.mName.length);
+}
 
 GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshmap, const aiNode * node, const aiScene * scene, GameObject* parent)
 {

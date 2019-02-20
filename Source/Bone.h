@@ -11,7 +11,8 @@ class Bone
 		void Load(const char* meshData, unsigned uid);
 		void Unload();
 	public:
-		char* boneName = nullptr;
+		char boneName[30];
+		unsigned UID = 0;
 };
 
 #endif // __BONE_H__
