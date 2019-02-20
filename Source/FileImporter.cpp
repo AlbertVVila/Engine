@@ -208,8 +208,14 @@ void FileImporter::ImportSingleBone(const aiBone& bone, char* data)
 	memcpy(cursor, &bone.mNumWeights, sizeof(int));
 	cursor += sizeof(int);
 
+	memcpy(cursor, &bone.mWeights->mVertexId, sizeof(int));
+	cursor += sizeof(int);
 
+	memcpy(cursor, &bone.mWeights->mWeight, sizeof(float));
+	cursor += sizeof(float);
 
+	memcpy(cursor, &bone.mOffsetMatrix, sizeof(float4x4));
+	cursor += sizeof(float4x4);
 
 	//memcpy(cursor, &bone->mNumWeights, sizeof(unsigned));  //numWieghts
 	//cursor += sizeof(unsigned);
@@ -294,7 +300,9 @@ unsigned FileImporter::GetSingleBoneSize(const aiBone &bone) const
 {
 	unsigned size = 0u;
 
-	return (sizeof(int) + sizeof(char) * bone.mName.length);
+	size += sizeof(int) + sizeof(char) * bone.mName.length + sizeof(int) + sizeof(int) +sizeof(float) + sizeof(float4x4);
+
+	return size;
 }
 
 GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshmap, const aiNode * node, const aiScene * scene, GameObject* parent)
