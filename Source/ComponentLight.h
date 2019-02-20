@@ -3,6 +3,7 @@
 
 #include "Component.h"
 #include "Math/float3.h"
+#include "MathGeoLib/include/Geometry/Sphere.h"
 #define LIGHTTYPES 3
 
 enum class LightType
@@ -30,13 +31,12 @@ public:
 	void DrawDebugLight() const;
 	void Load(const JSON_value &value) override;
 	void Save(JSON_value *value) const override;
+	bool ConeContainsAABB(const AABB &aabb) const;  // returns true if the aabb is inside or intersects the spot light cone
+	void CalculateGuizmos();
 
 private:
-	void DrawDebugDirectional() const;
-	void DrawDebugSpot() const;
-	void DrawDebugPoint() const;
-	void DrawDebugArea(const Circle & circle) const;
-	float GetAttenuationDistance() const;
+	void DrawDebug() const;
+	
 
 public:
 	LightType lightType = LightType::POINT;
@@ -49,6 +49,14 @@ public:
 	float inner = 20.f;
 	float outer = 25.f;
 
+	
+	//members
+	float spotDistance = .0f;
+	float spotOutterDistance = .0f;
+	float spotEndRadius = .0f;
+	Sphere pointSphere;
+	float intensity = 1.f;
+	float range = 100.f;
 };
 
 #endif __ComponentLight_h__

@@ -362,9 +362,14 @@ void GameObject::SetLightUniforms(unsigned shader) const
 			buffer), 1, (GLfloat*)&spot->color);
 
 		memset(buffer, 0, 32);
-		sprintf(buffer, "lights.spots[%d].attenuation", i);
-		glUniform3fv(glGetUniformLocation(shader,
-			buffer), 1, (GLfloat*)&spot->attenuation);
+		sprintf(buffer, "lights.spots[%d].radius", i);
+		glUniform1f(glGetUniformLocation(shader,
+			buffer), spot->pointSphere.r);
+
+		memset(buffer, 0, 32);
+		sprintf(buffer, "lights.spots[%d].intensity", i);
+		glUniform1f(glGetUniformLocation(shader,
+			buffer), spot->intensity);
 
 		memset(buffer, 0, 32);
 		float innerRad = cosf(math::DegToRad(spot->inner));
@@ -403,9 +408,14 @@ void GameObject::SetLightUniforms(unsigned shader) const
 			buffer), 1, (GLfloat*)&point->color);
 
 		memset(buffer, 0, 32);
-		sprintf(buffer, "lights.points[%d].attenuation", i);
-		glUniform3fv(glGetUniformLocation(shader,
-			buffer), 1, (GLfloat*)&point->attenuation);
+		sprintf(buffer, "lights.points[%d].radius", i);
+		glUniform1f(glGetUniformLocation(shader,
+			buffer), point->pointSphere.r);
+
+		memset(buffer, 0, 32);
+		sprintf(buffer, "lights.points[%d].intensity", i);
+		glUniform1f(glGetUniformLocation(shader,
+			buffer), point->intensity);
 
 		++i;
 	}
@@ -526,6 +536,8 @@ void GameObject::Load(JSON_value *value)
 		Component* component = CreateComponent(type);
 		component->Load(*componentJSON);
 	}
+
+	transform->UpdateTransform();
 }
 
 bool GameObject::IsParented(const GameObject & gameobject) const

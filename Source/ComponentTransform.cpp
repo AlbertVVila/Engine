@@ -90,6 +90,10 @@ void ComponentTransform::UpdateTransform()
 	global = global * local.Inverted();
 	local = float4x4::FromTRS(position, rotation, scale);
 	global = global * local;
+
+	front = -global.Col3(2);
+	up = global.Col3(1);
+	right = global.Col3(0);
 }
 
 void ComponentTransform::RotationToEuler()
@@ -133,6 +137,10 @@ void ComponentTransform::SetGlobalTransform(const float4x4 & newglobal, const fl
 	local.Decompose(position, rotation, scale);
 	RotationToEuler();
 	UpdateOldTransform();
+
+	front = -global.Col3(2);
+	up = global.Col3(1);
+	right = global.Col3(0);
 }
 
 float3 ComponentTransform::GetGlobalPosition()

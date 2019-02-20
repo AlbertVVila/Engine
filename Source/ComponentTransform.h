@@ -23,7 +23,7 @@ public:
 	void SetGlobalTransform(const float4x4 & newglobal, const float4x4 &parentglobal);
 
 	float3 GetGlobalPosition();
-
+	
 	void Save(JSON_value *value) const override;
 	void Load(const JSON_value &value) override;
 
@@ -39,6 +39,10 @@ public:
 	
 	float4x4 local = float4x4::identity;
 	float4x4 global = float4x4::identity;
+
+	float3 up = float3::zero;
+	float3 right = float3::zero;
+	float3 front = float3::zero;
 
 private:
 	float3 old_position = float3::zero;

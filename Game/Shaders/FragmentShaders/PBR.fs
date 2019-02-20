@@ -32,7 +32,8 @@ struct PointLight
 {
 	vec3  position;
 	vec3  color;
-	vec3  attenuation; //constant + linear + quadratic
+	float radius;
+	float intensity;
 };
 
 struct SpotLight
@@ -40,9 +41,10 @@ struct SpotLight
 	vec3  position;
 	vec3  direction;
 	vec3  color;
-	vec3  attenuation;
 	float inner;
 	float outer;
+	float radius;
+	float intensity;
 };
 
 struct Lights
@@ -64,8 +66,10 @@ layout (std140) uniform Matrices
 in vec3 normalIn;
 in vec3 position;
 in vec2 uv0;
-in mat3 TBNMat;
 in vec3 viewPos;
+in vec3 pointPositions[MAX_POINT_LIGHTS]; //positions in tangent space
+in vec3 spotPositions[MAX_SPOT_LIGHTS];   //positions in tangent space
+in vec3 spotDirections[MAX_SPOT_LIGHTS];  //directions in tangent space
 
 out vec4 Fragcolor;
 
@@ -87,9 +91,10 @@ vec3 get_emissive_color()
 	return texture(material.emissive_texture, uv0).rgb*material.emissive_color;
 }
 
-float get_attenuation(vec3 attenuation, float distance)
-{
-	return 1/(attenuation[0] + distance * attenuation[1] + distance*distance*attenuation[2]);
+float get_attenuation(float distance, float radius, float intensity)
+{	
+	float att = intensity / pow((max(distance, radius) / radius + 1), 2);
+	return mix(att, 0, distance / radius);
 }
 
 float D(vec3 H, vec3 N)
@@ -159,11 +164,15 @@ void main()
 	vec3 V = normalize(viewPos - position);
 
 	for(int i=0; i < lights.num_points; ++i)
-	{
-		vec3 L = normalize(TBNMat * lights.points[i].position - position);
+	{	
+		vec3 lightPos = pointPositions[i];
+		vec3 L = normalize(lightPos - position);
 		vec3 H = normalize(V + L);
-		float distance = length(TBNMat * lights.points[i].position - position);
-		vec3 radiance = lights.points[i].color * get_attenuation(lights.points[i].attenuation, distance);				
+		float distance = length(lightPos - position);
+
+		float att = max(get_attenuation(distance, lights.points[i].radius, lights.points[i].intensity), 0);
+
+		vec3 radiance = lights.points[i].color * att;				
 		
 		vec3 F = FSchlick(max(dot(H, V), 0.0), F0);   
 
@@ -174,20 +183,20 @@ void main()
 		float NdotL = max(dot(N, L), 0.0);        
 		color += (kD * albedo.rgb / PI + BRDF(F, L, V, N, H)) * radiance * NdotL;  
 	}
-
+	
 	for(int i=0; i < lights.num_spots; ++i)
 	{
-		vec3 L = normalize(TBNMat * lights.spots[i].position - position);
+		vec3 lightPos = spotPositions[i];
+		vec3 L = normalize(lightPos - position);
 		vec3 H = normalize(V + L);
-		float distance = length(TBNMat * lights.spots[i].position - position);
+		float distance = length(lightPos - position);
 
-		float theta = dot(normalize(L), normalize(-(TBNMat * lights.spots[i].direction)));
+		float theta = dot(normalize(L), normalize(-(spotDirections[i])));
 		float epsilon = max(0.0001, lights.spots[i].inner - lights.spots[i].outer);
 		float cone = clamp((theta - lights.spots[i].outer) / epsilon, 0.0, 1.0); 
 	
-		float att = get_attenuation(lights.spots[i].attenuation, distance) * cone;
-		
-		vec3 radiance = lights.spots[i].color * att;				
+		float att = max(get_attenuation(distance, lights.spots[i].radius, lights.spots[i].intensity), 0);
+		vec3 radiance = lights.spots[i].color * att * cone;
 		
 		vec3 F = FSchlick(max(dot(H, V), 0.0), F0);   
 
