@@ -43,8 +43,11 @@
 
 MATH_BEGIN_NAMESPACE
 
+#ifndef ENGINE_API
+#define ENGINE_API __declspec( dllexport )
+#endif 
 /// A vector of form (x,y,z).
-class float3
+class ENGINE_API float3
 {
 public:
 	enum
