@@ -32,6 +32,9 @@ void Bone::Load(const char* boneData, unsigned uid)
 		boneData += sizeof(char);
 	}
 
+	memcpy(&numVertexAffected, boneData, sizeof(int));
+	boneData += sizeof(int);
+
 	UID = uid;
 
 	//unsigned int numIndices = *(int*)meshData;

@@ -13,6 +13,7 @@ class Bone
 	public:
 		char boneName[30];
 		unsigned UID = 0;
+		unsigned numVertexAffected = 0;
 };
 
 #endif // __BONE_H__

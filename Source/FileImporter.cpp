@@ -205,6 +205,12 @@ void FileImporter::ImportSingleBone(const aiBone& bone, char* data)
 	memcpy(cursor, bone.mName.C_Str(), sizeof(char) * bone.mName.length);  //Name
 	cursor += sizeof(char) * bone.mName.length;
 
+	memcpy(cursor, &bone.mNumWeights, sizeof(int));
+	cursor += sizeof(int);
+
+
+
+
 	//memcpy(cursor, &bone->mNumWeights, sizeof(unsigned));  //numWieghts
 	//cursor += sizeof(unsigned);
 	//memcpy(cursor, &bone->mOffsetMatrix, sizeof(aiMatrix4x4));  //offsetmatrix
