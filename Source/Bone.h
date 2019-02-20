@@ -10,7 +10,8 @@ class Bone
 	public:
 		void Load(const char* meshData, unsigned uid);
 		void Unload();
-		//TODO: set up bone structure
+	public:
+		char* boneName = nullptr;
 };
 
 #endif // __BONE_H__

@@ -1,6 +1,8 @@
-#include "Bone.h"
+#include "Application.h"
 
+#include "Bone.h"
 #include "Globals.h"
+
 #include <assert.h>
 
 Bone::Bone()
@@ -11,11 +13,17 @@ Bone::~Bone()
 {
 }
 
-void Bone::Load(const char* meshData, unsigned uid)
+void Bone::Load(const char* boneData, unsigned uid)
 {
-	if (meshData == nullptr) return;
+	if (boneData == nullptr) return;
 
-	const char* data = meshData;
+	const char* data = boneData;
+
+	unsigned nameLength = *(int*)boneData;
+	boneData += sizeof(int);
+
+	//option2
+	memcpy(boneName, boneData, sizeof(char) * nameLength); //Gives error
 
 	//unsigned int numIndices = *(int*)meshData;
 	//meshData += sizeof(int);
@@ -64,7 +72,8 @@ void Bone::Load(const char* meshData, unsigned uid)
 	RELEASE_ARRAY(data);
 }
 
-void Bone::Unload() {
+void Bone::Unload() 
+{
 	// Release bone stuff that we aint gonna need
 }
 

@@ -50,7 +50,7 @@ Mesh::~Mesh()
 	}
 }
 
-void Mesh::SetMesh(const char * meshData, unsigned uid)
+void Mesh::SetMesh(const char* meshData, unsigned uid)
 {
 	assert(meshData != nullptr);
 	if (meshData == nullptr) return;
@@ -100,8 +100,6 @@ void Mesh::SetMesh(const char * meshData, unsigned uid)
 	ComputeBBox();
 	SetMeshBuffers(hasNormals, hasTexCoords, normals, texCoords);
 	SetBboxBuffers();
-
-	RELEASE_ARRAY(data);
 }
 
 void Mesh::SetMeshBuffers(bool hasNormals, bool hasTexCoords, float* normals, float* texCoords)

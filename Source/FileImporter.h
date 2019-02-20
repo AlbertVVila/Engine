@@ -24,9 +24,13 @@ public:
 
 	void ImportAnimation(const aiAnimation& animation, char* data);
 
-	void ImportMeshAndBones(const aiMesh& mesh, char* data);
+	void ImportMesh(const aiMesh& mesh, char* data);
+
+	void ImportBones(const aiMesh& mesh, char* data);
 
 	unsigned GetMeshSize(const aiMesh& mesh) const;
+
+	unsigned GetBonesSize(const aiMesh& mesh) const;
 
 	unsigned GetAnimationSize(const aiAnimation& animation) const;
 };
