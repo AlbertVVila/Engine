@@ -14,6 +14,8 @@ enum class FILTERTYPE
 	NEAREST_MIPMAP_NEAREST,
 	LINEAR_MIPMAP_LINEAR
 };
+
+// TODO: Deprecate and use ResourceTexture instead
 struct Texture
 {
 	unsigned id = 0;

@@ -40,6 +40,7 @@ protected:
 	std::string exportedFile;
 
 	TYPE type = TYPE::UNKNOWN;
+	//unsigned loaded = 0;
 };
 
 #endif __Resource_h__
