@@ -223,7 +223,7 @@
       <Filter>Panels</Filter>
     </ClCompile>
     <ClCompile Include="ModuleTime.cpp">
-	  <Filter>Modules</Filter>
+      <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="KDTree.cpp">
       <Filter>Tree</Filter>
@@ -233,6 +233,9 @@
     </ClCompile>
     <ClCompile Include="ModuleDebugDraw.cpp">
       <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource.cpp">
+      <Filter>Resources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -529,7 +532,7 @@
       <Filter>Panels</Filter>
     </ClInclude>
     <ClInclude Include="ModuleTime.h">
-	  <Filter>Modules</Filter>
+      <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="KDTree.h">
       <Filter>Tree</Filter>
@@ -542,6 +545,9 @@
     </ClInclude>
     <ClInclude Include="ModuleDebugDraw.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -586,6 +592,9 @@
     </Filter>
     <Filter Include="Tree">
       <UniqueIdentifier>{640a2da3-0a48-4b71-8419-e266d3f70572}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{ac4b91ed-d0d3-4ac9-8aa1-1df418c1fd91}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
