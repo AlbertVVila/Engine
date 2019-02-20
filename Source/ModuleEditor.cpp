@@ -8,6 +8,8 @@
 #include "ModuleTextures.h"
 #include "ModuleProgram.h"
 
+#include "Viewport.h"
+
 #include "GameObject.h"
 #include "PanelConsole.h"
 #include "PanelConfiguration.h"
@@ -276,23 +278,31 @@ void ModuleEditor::WindowsMenu()
 {
 	if (ImGui::BeginMenu("Windows"))
 	{
-		if (ImGui::MenuItem("Console", NULL, console->IsEnabled()))
+		if (ImGui::MenuItem("Console", nullptr, console->IsEnabled()))
 		{
 			console->ToggleEnabled();
 		}
-		if (ImGui::MenuItem("Configuration", NULL, configuration->IsEnabled()))
+		if (ImGui::MenuItem("Configuration", nullptr, configuration->IsEnabled()))
 		{
 			configuration->ToggleEnabled();
 		}
-		if (ImGui::MenuItem("Properties", NULL, inspector->IsEnabled()))
+		if (ImGui::MenuItem("Properties", nullptr, inspector->IsEnabled()))
 		{
 			inspector->ToggleEnabled();
 		}
-		if (ImGui::MenuItem("Hierarchy", NULL, hierarchy->IsEnabled()))
+		if (ImGui::MenuItem("Hierarchy", nullptr, hierarchy->IsEnabled()))
 		{
 			hierarchy->ToggleEnabled();
 		}
-		if (ImGui::MenuItem("Time controll", NULL, time->IsEnabled()))
+		if (ImGui::MenuItem("Scene", nullptr, App->renderer->viewScene->IsEnabled()))
+		{
+			App->renderer->viewScene->ToggleEnabled();
+		}
+		if (ImGui::MenuItem("Game Camera", nullptr, App->renderer->viewGame->IsEnabled()))
+		{
+			App->renderer->viewGame->ToggleEnabled();
+    }
+		if (ImGui::MenuItem("Time control", nullptr, time->IsEnabled()))
 		{
 			time->ToggleEnabled();
 		}
