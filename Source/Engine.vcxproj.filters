@@ -116,24 +116,6 @@
     <ClCompile Include="ModuleEditor.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="imgui.cpp">
-      <Filter>Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_demo.cpp">
-      <Filter>Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_draw.cpp">
-      <Filter>Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_impl_opengl3.cpp">
-      <Filter>Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_impl_sdl.cpp">
-      <Filter>Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_widgets.cpp">
-      <Filter>Imgui</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleCamera.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -565,9 +547,6 @@
     </Filter>
     <Filter Include="Shaders">
       <UniqueIdentifier>{db4ddeed-7944-48a0-9a56-611e8baabcdd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Imgui">
-      <UniqueIdentifier>{ce38ee00-97d2-4555-a8e4-3e52ad53abd7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Utils">
       <UniqueIdentifier>{11066cf8-cf44-4725-9fa8-10243045e1fc}</UniqueIdentifier>

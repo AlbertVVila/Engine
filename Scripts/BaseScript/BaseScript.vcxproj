@@ -92,15 +92,18 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;BASESCRIPT_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\..\Source\SDL\include;..\..\Source\glew-2.1.0\include;..\..\Source\MathGeoLib\include;..\..\Source\Imgui;..\..\Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source;$(SolutionDir)\Source\Imgui\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\Albert\source\repos\Engine2\Game;..\..\Source\Imgui\lib;..\..\Source\glew-2.1.0\lib;..\..\Source\SDL\libx86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Engine.lib;ImGui.lib;glew32.lib; opengl32.lib;SDL2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\Game;$(SolutionDir)\Source\Imgui\lib%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Engine - Master 1.lib;ImGui.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y /d "$(OutDir)$(ProjectName).dll" "$(SolutionDir)\Game"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -126,7 +129,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;BASESCRIPT_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\..\Source\SDL\include;..\..\Source\glew-2.1.0\include;..\..\Source\MathGeoLib\include;..\..\Source\Imgui;..\..\Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source;$(SolutionDir)\Source\Imgui\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -134,9 +137,12 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\Albert\source\repos\Engine2\Game;..\..\Source\Imgui\lib;..\..\Source\glew-2.1.0\lib;..\..\Source\SDL\libx86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>Engine.lib;ImGui.lib;glew32.lib; opengl32.lib;SDL2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\Game;$(SolutionDir)\Source\Imgui\lib%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Engine - Master 1.lib;ImGui.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y /d "$(OutDir)$(ProjectName).dll" "$(SolutionDir)\Game"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -157,9 +163,97 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\MathGeoLib\include\Algorithm\Random\LCG.cpp" />
+    <ClCompile Include="..\..\Source\MathGeoLib\include\Geometry\AABB.cpp" />
+    <ClCompile Include="..\..\Source\MathGeoLib\include\Geometry\Capsule.cpp" />
+    <ClCompile Include="..\..\Source\MathGeoLib\include\Geometry\Circle.cpp" />
+    <ClCompile Include="..\..\Source\MathGeoLib\include\Geometry\Cone.cpp" />
+    <ClCompile Include="..\..\Source\MathGeoLib\include\Geometry\Cylinder.cpp" />
+    <ClCompile Include="..\..\Source\MathGeoLib\include\Geometry\Frustum.cpp" />
+    <ClCompile Include="..\..\Source\MathGeoLib\include\Geometry\Line.cpp" />
+    <ClCompile Include="..\..\Source\MathGeoLib\include\Geometry\LineSegment.cpp" />
+    <ClCompile Include="..\..\Source\MathGeoLib\include\Geometry\OBB.cpp" />
+    <ClCompile Include="..\..\Source\MathGeoLib\include\Geometry\Plane.cpp" />
+    <ClCompile Include="..\..\Source\MathGeoLib\include\Geometry\Polygon.cpp" />
+    <ClCompile Include="..\..\Source\MathGeoLib\include\Geometry\Polyhedron.cpp" />
+    <ClCompile Include="..\..\Source\MathGeoLib\include\Geometry\Ray.cpp" />
+    <ClCompile Include="..\..\Source\MathGeoLib\include\Geometry\Sphere.cpp" />
+    <ClCompile Include="..\..\Source\MathGeoLib\include\Geometry\Triangle.cpp" />
+    <ClCompile Include="..\..\Source\MathGeoLib\include\Geometry\TriangleMesh.cpp" />
+    <ClCompile Include="..\..\Source\MathGeoLib\include\Math\BitOps.cpp" />
+    <ClCompile Include="..\..\Source\MathGeoLib\include\Math\float2.cpp" />
+    <ClCompile Include="..\..\Source\MathGeoLib\include\Math\float3.cpp" />
+    <ClCompile Include="..\..\Source\MathGeoLib\include\Math\float3x3.cpp" />
+    <ClCompile Include="..\..\Source\MathGeoLib\include\Math\float3x4.cpp" />
+    <ClCompile Include="..\..\Source\MathGeoLib\include\Math\float4.cpp" />
+    <ClCompile Include="..\..\Source\MathGeoLib\include\Math\float4x4.cpp" />
+    <ClCompile Include="..\..\Source\MathGeoLib\include\Math\MathFunc.cpp" />
+    <ClCompile Include="..\..\Source\MathGeoLib\include\Math\MathLog.cpp" />
+    <ClCompile Include="..\..\Source\MathGeoLib\include\Math\MathOps.cpp" />
+    <ClCompile Include="..\..\Source\MathGeoLib\include\Math\Polynomial.cpp" />
+    <ClCompile Include="..\..\Source\MathGeoLib\include\Math\Quat.cpp" />
+    <ClCompile Include="..\..\Source\MathGeoLib\include\Math\SSEMath.cpp" />
+    <ClCompile Include="..\..\Source\MathGeoLib\include\Math\TransformOps.cpp" />
+    <ClCompile Include="..\..\Source\MathGeoLib\include\Time\Clock.cpp" />
     <ClCompile Include="BaseScript.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Algorithm\Random\LCG.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Geometry\AABB.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Geometry\AABB2D.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Geometry\Capsule.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Geometry\Circle.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Geometry\Cone.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Geometry\Cylinder.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Geometry\Frustum.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Geometry\GeometryAll.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Geometry\GeomType.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Geometry\HitInfo.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Geometry\KDTree.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Geometry\Line.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Geometry\LineSegment.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Geometry\OBB.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Geometry\PBVolume.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Geometry\Plane.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Geometry\Polygon.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Geometry\Polyhedron.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Geometry\QuadTree.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Geometry\Ray.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Geometry\Sphere.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Geometry\Triangle.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Geometry\TriangleMesh.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Math\assume.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Math\BitOps.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Math\Complex.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Math\CoordinateAxisConvention.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Math\FixedPoint.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Math\float2.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Math\float3.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Math\float3x3.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Math\float3x4.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Math\float4.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Math\float4x4.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Math\float4x4_neon.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Math\float4x4_sse.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Math\float4_neon.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Math\float4_sse.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Math\FloatCmp.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Math\MathAll.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Math\MathConstants.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Math\MathFunc.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Math\MathLog.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Math\MathNamespace.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Math\MathTypes.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Math\MatrixProxy.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Math\Polynomial.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Math\Quat.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Math\quat_simd.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Math\Rect.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Math\Reinterpret.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Math\SSEMath.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Math\sse_mathfun.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Math\TransformOps.h" />
+    <ClInclude Include="..\..\Source\MathGeoLib\include\Time\Clock.h" />
     <ClInclude Include="BaseScript.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

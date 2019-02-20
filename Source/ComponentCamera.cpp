@@ -11,7 +11,7 @@
 #include "JSON.h"
 #include "GL/glew.h"
 #include "Math/MathFunc.h"
-#include "Imgui/imgui.h"
+#include "imgui.h"
 #include "Imguizmo.h"
 #include "Geometry/Frustum.h"
 

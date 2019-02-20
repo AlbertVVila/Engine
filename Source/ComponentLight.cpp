@@ -9,7 +9,7 @@
 #include "ComponentTransform.h"
 
 #include "GameObject.h"
-#include "Imgui/imgui.h"
+#include "imgui.h"
 #include "JSON.h"
 #include "GL/glew.h"
 #include "Geometry/Line.h"
