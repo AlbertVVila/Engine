@@ -27,13 +27,13 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -93,12 +93,13 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;BASESCRIPT_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\..\Source\SDL\include;..\..\Source\glew-2.1.0\include;..\..\Source\MathGeoLib\include;..\..\Source\Imgui;..\..\Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\Source\glew-2.1.0\lib;..\..\Source\SDL\libx86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32.lib; opengl32.lib;SDL2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\Albert\source\repos\Engine2\Game;..\..\Source\Imgui\lib;..\..\Source\glew-2.1.0\lib;..\..\Source\SDL\libx86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Engine.lib;ImGui.lib;glew32.lib; opengl32.lib;SDL2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -126,14 +127,15 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;BASESCRIPT_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\..\Source\SDL\include;..\..\Source\glew-2.1.0\include;..\..\Source\MathGeoLib\include;..\..\Source\Imgui;..\..\Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\..\Source\glew-2.1.0\lib;..\..\Source\SDL\libx86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32.lib; opengl32.lib;SDL2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\Albert\source\repos\Engine2\Game;..\..\Source\Imgui\lib;..\..\Source\glew-2.1.0\lib;..\..\Source\SDL\libx86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Engine.lib;ImGui.lib;glew32.lib; opengl32.lib;SDL2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -155,24 +157,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Source\imgui.cpp" />
-    <ClCompile Include="..\..\Source\imgui_demo.cpp" />
-    <ClCompile Include="..\..\Source\imgui_draw.cpp" />
-    <ClCompile Include="..\..\Source\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="..\..\Source\imgui_impl_sdl.cpp" />
-    <ClCompile Include="..\..\Source\imgui_widgets.cpp" />
     <ClCompile Include="BaseScript.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseScript.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\PlayerMovement\PlayerMovement.vcxproj">
-      <Project>{da319d4a-70a8-42c8-a54f-db7ead02ca0d}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\TemplateScript1\TemplateScript1.vcxproj">
-      <Project>{d421b332-4257-4502-b482-66438ceafb60}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

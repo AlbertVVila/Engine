@@ -55,7 +55,7 @@ bool Application::Init()
 	//Load config
 	char* data = nullptr;
 	fsystem->Load(CONFIG_FILE, &data);
-	JSON *json;
+	JSON *json = nullptr;
 	if (data != nullptr)
 	{
 		json = new JSON(data);

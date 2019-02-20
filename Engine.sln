@@ -11,6 +11,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PlayerMovement", "Scripts\P
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TemplateScript1", "Scripts\TemplateScript1\TemplateScript1.vcxproj", "{D421B332-4257-4502-B482-66438CEAFB60}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{B0BA8D83-BE07-4405-ADE1-C771D081A8CD}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImGui", "Source\Imgui\ImGui.vcxproj", "{F6A7A8E0-7FB3-40EC-8ED9-B837E24FEF22}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -49,9 +53,22 @@ Global
 		{D421B332-4257-4502-B482-66438CEAFB60}.Release|Win32.Build.0 = Release|Win32
 		{D421B332-4257-4502-B482-66438CEAFB60}.Release|x64.ActiveCfg = Release|x64
 		{D421B332-4257-4502-B482-66438CEAFB60}.Release|x64.Build.0 = Release|x64
+		{F6A7A8E0-7FB3-40EC-8ED9-B837E24FEF22}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F6A7A8E0-7FB3-40EC-8ED9-B837E24FEF22}.Debug|Win32.Build.0 = Debug|Win32
+		{F6A7A8E0-7FB3-40EC-8ED9-B837E24FEF22}.Debug|x64.ActiveCfg = Debug|x64
+		{F6A7A8E0-7FB3-40EC-8ED9-B837E24FEF22}.Debug|x64.Build.0 = Debug|x64
+		{F6A7A8E0-7FB3-40EC-8ED9-B837E24FEF22}.Release|Win32.ActiveCfg = Release|Win32
+		{F6A7A8E0-7FB3-40EC-8ED9-B837E24FEF22}.Release|Win32.Build.0 = Release|Win32
+		{F6A7A8E0-7FB3-40EC-8ED9-B837E24FEF22}.Release|x64.ActiveCfg = Release|x64
+		{F6A7A8E0-7FB3-40EC-8ED9-B837E24FEF22}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FCF21EEF-120D-460B-BA5B-96CA67F84365} = {B0BA8D83-BE07-4405-ADE1-C771D081A8CD}
+		{DA319D4A-70A8-42C8-A54F-DB7EAD02CA0D} = {B0BA8D83-BE07-4405-ADE1-C771D081A8CD}
+		{D421B332-4257-4502-B482-66438CEAFB60} = {B0BA8D83-BE07-4405-ADE1-C771D081A8CD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7938FFD4-0765-4A85-95CB-3908D56E6F3D}

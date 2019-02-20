@@ -6,7 +6,13 @@ class GameObject;
 class JSON;
 struct ImGuiContext;
 
-class Script
+#ifdef BASESCRIPT_EXPORTS
+#define  BASESCRIPT_API __declspec(dllexport)
+#else
+#define BASESCRIPT_API __declspec(dllimport)
+#endif
+
+class BASESCRIPT_API Script
 {
 public:
 	void SetApp(Application * app);

@@ -2,8 +2,9 @@
 #define __Globals_h__
 
 #define LOG(format, ...) log(__FILE__, __LINE__, format, __VA_ARGS__);
+#define ENGINE_API __declspec( dllexport )
 
-void log(const char file[], int line, const char* format, ...);
+ENGINE_API void log(const char file[], int line, const char* format, ...);
 
 enum update_status
 {
