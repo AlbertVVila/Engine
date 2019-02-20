@@ -7,6 +7,8 @@
 
 #define NUMFACES 6
 
+class ResourceTexture;
+
 enum class FILTERTYPE
 {
 	LINEAR,
@@ -42,9 +44,9 @@ public:
 	void SaveConfig(JSON * config) override;
 
 	void DrawGUI() override;
-	Texture * GetTexture(const char* path) const;
+	ResourceTexture * GetTexture(const char* path) const;
 	unsigned LoadCubeMap(const std::string faces[]) const;
-	void ImportImage(const char * file, const char* folder) const;
+	bool ImportImage(const char* file, const char* folder, const char* exportedFile) const;
 
 public:
 	FILTERTYPE filter_type = FILTERTYPE::LINEAR;

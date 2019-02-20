@@ -25,9 +25,40 @@ inline const char* Resource::GetFile() const
 	return file.c_str();
 }
 
+inline void Resource::SetFile(const char* newFile)
+{
+	file = newFile;
+}
+
 inline const char* Resource::GetExportedFile() const
 {
 	return exportedFile.c_str();
+}
+
+inline void Resource::SetExportedFile(const char* newExportedFile)
+{
+	exportedFile = newExportedFile;
+}
+
+inline bool Resource::IsLoadedToMemory() const
+{
+	return loaded > 0 ? true : false;
+}
+
+bool Resource::LoadToMemory()
+{
+	if (IsLoadedToMemory())
+		return false;
+	else
+	{
+		++loaded;
+		return true;
+	}
+}
+
+inline unsigned Resource::CountReferences() const
+{
+	return loaded;
 }
 
 void Resource::Save(JSON_value &config) const

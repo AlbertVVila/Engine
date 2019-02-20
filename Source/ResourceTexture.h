@@ -22,7 +22,7 @@ public:
 	ResourceTexture(unsigned uid);
 	virtual ~ResourceTexture();
 
-	//bool LoadInMemory() override;
+	bool LoadInMemory() override;
 	void Save(JSON_value &config) const override;
 	void Load(const JSON_value &config) override;
 

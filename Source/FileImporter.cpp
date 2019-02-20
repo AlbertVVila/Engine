@@ -50,7 +50,8 @@ void FileImporter::ImportAsset(const char *file, const char *folder)
 	}
 	else if (extension == PNG || extension == TIF || extension == JPG)
 	{
-		App->textures->ImportImage(file, folder);
+		//App->textures->ImportImage(file, folder);
+		App->resManager->ImportFile(file, folder, TYPE::TEXTURE);
 	}
 	else if (extension == TEXTUREEXT)
 	{

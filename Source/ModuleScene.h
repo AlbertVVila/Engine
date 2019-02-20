@@ -15,6 +15,7 @@
 class GameObject;
 class ComponentCamera;
 class ComponentLight;
+class ResourceTexture;
 class myQuadTree;
 struct Texture;
 struct par_shapes_mesh_s;
@@ -85,7 +86,7 @@ public:
 	GameObject* root = nullptr;
 	GameObject* selected = nullptr; //Selected in hierarchy
 	ComponentCamera* maincamera = nullptr; //Released by GameObject holding it
-	Texture* camera_notfound_texture = nullptr; //Released in resource manager
+	ResourceTexture* camera_notfound_texture = nullptr; //Released in resource manager
 	std::list<LineSegment> debuglines;
 
 	std::list<ComponentLight*> lights;

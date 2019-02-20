@@ -16,6 +16,8 @@
 #include "ComponentRenderer.h"
 #include "ComponentTransform.h"
 
+#include "ResourceTexture.h"
+
 #include "Material.h"
 #include "Mesh.h"
 #include "JSON.h"
@@ -119,7 +121,9 @@ bool ModuleScene::CleanUp()
 	selected = nullptr;
 	maincamera = nullptr;
 
-	App->resManager->DeleteTexture(camera_notfound_texture->file);
+	//App->resManager->DeleteTexture(camera_notfound_texture->file);
+	if (camera_notfound_texture->IsLoadedToMemory())
+		RELEASE(camera_notfound_texture);
 	camera_notfound_texture = nullptr;
 
 	lights.clear();

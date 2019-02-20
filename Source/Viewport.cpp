@@ -8,6 +8,8 @@
 #include "GameObject.h"
 #include "ComponentCamera.h"
 
+#include "ResourceTexture.h"
+
 #include "Viewport.h"
 #include "GL/glew.h"
 
@@ -68,7 +70,7 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 			size.x = MAX(size.x, 400);
 			size.y = MAX(size.y, 400);
 
-			ImGui::Image((ImTextureID)App->scene->camera_notfound_texture->id,
+			ImGui::Image((ImTextureID)App->scene->camera_notfound_texture->gpuID,
 				size, { 0,1 }, { 1,0 });
 			ImGui::End();
 			return;

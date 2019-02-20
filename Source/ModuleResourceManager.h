@@ -2,6 +2,7 @@
 #define __ModuleResourceManager_h__
 
 #include "Module.h"
+#include "Resource.h"
 #include <map>
 #include <list>
 
@@ -17,11 +18,10 @@ public:
 	ModuleResourceManager();
 	~ModuleResourceManager();
 
-	Texture * GetTexture(std::string filename) const;
-
+	// Deprecated Texture functions
+	/*Texture * GetTexture(std::string filename) const;
 	void AddTexture(Texture * texture);
-
-	void DeleteTexture(std::string filename);
+	void DeleteTexture(std::string filename);*/
 
 	Shader* GetProgram(std::string filename) const;
 	std::list<Shader*>GetAllPrograms() const;
@@ -42,8 +42,21 @@ public:
 
 	void DeleteMesh(unsigned uid);
 
+	// New ResourceManager functions
+	unsigned Find(const char* fileInAssets);
+	unsigned ImportFile(const char* newFileInAssets, const char* filePath, TYPE type, bool force = false);
+	unsigned GenerateNewUID();
+	//const Resource* Get(unsigned uid) const;
+	Resource* Get(unsigned uid);
+	Resource* CreateNewResource(TYPE type, unsigned forceUid = 0);
+
 private:
-	std::map<std::string, std::pair<unsigned, Texture*>> textureResources; //filename , times used, texture pointer
+
+	unsigned last_uid = 1u;
+	std::map<unsigned, Resource*> resources;	// map<UID, pointer to resource>
+
+	// Deprecated
+	//std::map<std::string, std::pair<unsigned, Texture*>> textureResources; //filename , times used, texture pointer
 	std::map<std::string, std::pair<unsigned, Shader*>> shaderResources; //filename , times used, shader
 	std::map<std::string, std::pair<unsigned, Material*>> materialResources; //filename , times used, material
 	std::map<unsigned, std::pair<unsigned, Mesh*>> meshResources; // uid, times used, mesh

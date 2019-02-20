@@ -4,9 +4,14 @@
 #include "ModuleTextures.h"
 #include "ModuleProgram.h"
 #include "ModuleRender.h"
+#include "ModuleScene.h"
+#include "ModuleFileSystem.h"
 
 #include "Material.h"
 #include "Mesh.h"
+#include "Resource.h"
+#include "ResourceTexture.h"
+#include "ResourceMesh.h"
 
 ModuleResourceManager::ModuleResourceManager()
 {
@@ -18,7 +23,8 @@ ModuleResourceManager::~ModuleResourceManager()
 }
 
 
-Texture* ModuleResourceManager::GetTexture(std::string filename) const
+// Deprecated Texture functions
+/*Texture* ModuleResourceManager::GetTexture(std::string filename) const
 {
 	std::map<std::string, std::pair<unsigned, Texture*>>::const_iterator it = textureResources.find(filename);
 	if (it != textureResources.end())
@@ -57,7 +63,7 @@ void ModuleResourceManager::DeleteTexture(std::string filename)
 			textureResources.erase(it);
 		}
 	}
-}
+}*/
 
 Shader* ModuleResourceManager::GetProgram(std::string filename) const
 {
@@ -191,4 +197,76 @@ void ModuleResourceManager::DeleteMesh(unsigned uid)
 			meshResources.erase(it);
 		}
 	}
+}
+
+unsigned ModuleResourceManager::Find(const char* fileInAssets)
+{
+	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		if (it->second->GetFile() == fileInAssets)
+			return it->first;
+	}
+	return 0;
+}
+
+unsigned ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* filePath, TYPE type, bool force)
+{
+	unsigned ret = 0; 
+	bool success = false; 
+	const char* written_file;
+
+	switch (type) 
+	{
+	case TYPE::TEXTURE: 
+		success = App->textures->ImportImage(newFileInAssets, filePath, written_file);
+		break;
+	case TYPE::MESH:	
+
+		break;
+	//case TYPE::AUDIO: import_ok = App->audio->Import(newFileInAssets, written_file); break;
+	//case TYPE::SCENE: import_ok = App->scene->Import(newFileInAssets, written_file); break;
+	}
+
+	// If export was successful, create a new resource
+	if (success) 
+	{ 
+		Resource* res = CreateNewResource(type);
+		res->SetFile(newFileInAssets);
+		res->SetExportedFile(written_file);
+	}
+	return ret;
+}
+
+Resource * ModuleResourceManager::CreateNewResource(TYPE type, unsigned forceUid)
+{
+	Resource* resource = nullptr;
+	unsigned uid = (forceUid == 0) ? GenerateNewUID() : forceUid;
+
+	switch (type) 
+	{
+	case TYPE::TEXTURE: resource = (Resource*) new ResourceTexture(uid); break;
+	//case TYPE::MESH:	resource = (Resource*) new ResourceMesh(uid); break;
+	/*case TYPE::AUDIO:	resource = (Resource*) new ResourceAudio(uid); break;
+	case TYPE::SCENE:	resource = (Resource*) new ResourceScene(uid); break;
+	case TYPE::BONE:	resource = (Resource*) new ResourceBone(uid); break;
+	case TYPE::ANIMATION: resource = (Resource*) new ResourceAnimation(uid); break;*/
+	}
+
+	if (resource != nullptr)
+		resources[uid] = resource;
+
+	return resource;
+}
+
+unsigned ModuleResourceManager::GenerateNewUID()
+{
+	return App->scene->GetNewUID();
+}
+
+Resource * ModuleResourceManager::Get(unsigned uid)
+{
+	std::map<unsigned, Resource*>::iterator it = resources.find(uid);
+	if (it != resources.end())
+		return it->second;
+	return nullptr;
 }

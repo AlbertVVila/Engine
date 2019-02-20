@@ -2,6 +2,7 @@
 #include "ModuleTextures.h"
 #include "ModuleFileSystem.h"
 #include "ModuleResourceManager.h" 
+#include "ResourceTexture.h"
 
 #include "GL/glew.h"
 #include "IL/ilut.h"
@@ -67,93 +68,27 @@ void ModuleTextures::DrawGUI()
 	ImGui::RadioButton("Linear MipMap", (int*)&filter_type, (unsigned)FILTERTYPE::LINEAR_MIPMAP_LINEAR);
 }
 
-Texture * ModuleTextures::GetTexture(const char * file) const
+ResourceTexture * ModuleTextures::GetTexture(const char * file) const
 {
 	assert(file != NULL);
 
-	Texture* loadedText = App->resManager->GetTexture(file);
-	if (loadedText != nullptr)
+	// Look for it on the resource list
+	unsigned uid = App->resManager->Find(file);
+	if (uid == 0) 
+		return nullptr;
+		
+	// Check if is already loaded in memory
+	ResourceTexture* textureResource = (ResourceTexture*)App->resManager->Get(uid);
+	if (!textureResource->IsLoadedToMemory())
 	{
-		App->resManager->AddTexture(loadedText);
-		return loadedText;
-	}
-
-	ILuint imageID;
-	ILboolean success;
-	ILenum error;
-	unsigned width = 0;
-	unsigned height = 0;
-	unsigned pixelDepth = 0;
-	int format = 0;
-
-	char *data;
-	std::string filename(file);
-	unsigned size = App->fsystem->Load((TEXTURES + filename + TEXTUREEXT).c_str(), &data); 
-
-	ilGenImages(1, &imageID); 		// Generate the image ID
-	ilBindImage(imageID); 			// Bind the image
-	success = ilLoadL(IL_DDS, data, size);
-	RELEASE_ARRAY(data);
-
-	if (success)
-	{
-		GLuint textureID = 0;
-		glGenTextures(1, &textureID);
-
-		glBindTexture(GL_TEXTURE_2D, textureID);
-
-		ILinfo ImageInfo;
-		iluGetImageInfo(&ImageInfo);
-		if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
-		{
-			iluFlipImage();
-		}
-
-		ILubyte* data = ilGetData();
-		width = ilGetInteger(IL_IMAGE_WIDTH);
-		height = ilGetInteger(IL_IMAGE_HEIGHT);
-		pixelDepth = ilGetInteger(IL_IMAGE_DEPTH);
-		format = ilGetInteger(IL_IMAGE_FORMAT);
-
-		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-
-		if (filter_type == FILTERTYPE::LINEAR)
-		{
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		}
-		else if(filter_type == FILTERTYPE::NEAREST)
-		{
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		}
-		else if (filter_type == FILTERTYPE::NEAREST_MIPMAP_NEAREST)
-		{
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			glGenerateMipmap(GL_TEXTURE_2D);
-		}
+		// Load in memory
+		if (textureResource->LoadToMemory())
+			return textureResource;
 		else
-		{
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-			glGenerateMipmap(GL_TEXTURE_2D);
-		}
-
-		ilDeleteImages(1, &imageID);
-
-		glBindTexture(GL_TEXTURE_2D, 0);
-
-		Texture* texture = new Texture(textureID, width, height, file);
-		App->resManager->AddTexture(texture);
-		return texture;
+			return nullptr;
 	}
-	else
-	{
-		error = ilGetError();
-		LOG("Error loading data: %s\n", iluErrorString(error));
-	}
-	return nullptr;
+	else	
+		return textureResource;
 }
 
 unsigned ModuleTextures::LoadCubeMap(const std::string faces[]) const
@@ -210,7 +145,7 @@ unsigned ModuleTextures::LoadCubeMap(const std::string faces[]) const
 	return textureID;
 }
 
-void ModuleTextures::ImportImage(const char * file, const char* folder) const
+bool ModuleTextures::ImportImage(const char * file, const char* folder, const char* exportedFile) const
 {
 	ILuint imageID;
 	ILboolean success;
@@ -235,6 +170,7 @@ void ModuleTextures::ImportImage(const char * file, const char* folder) const
 			filepath += App->fsystem->RemoveExtension(file);
 			filepath += TEXTUREEXT;
 			App->fsystem->Save(filepath.c_str(), (char*)data, size);
+			exportedFile = filepath.c_str();
 		}
 		ilDeleteImages(1, &imageID);
 		RELEASE_ARRAY(data);
@@ -244,5 +180,6 @@ void ModuleTextures::ImportImage(const char * file, const char* folder) const
 		error = ilGetError();
 		LOG("Error loading file %s, error: %s\n", file, iluErrorString(error));
 	}
+	return success;
 }
 
