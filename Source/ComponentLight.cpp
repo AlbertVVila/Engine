@@ -18,6 +18,7 @@
 #include "Geometry/LineSegment.h"
 #include "Geometry/Circle.h"
 #include "Math/MathFunc.h"
+#include "MathGeoLib/include/Geometry/AABB.h"
 #include "debugdraw.h"
 
 #define INITIAL_RADIUS 1000.f
@@ -174,10 +175,11 @@ void ComponentLight::DrawDebug() const
 	{
 	case LightType::POINT:
 		dd::sphere(pointSphere.pos, dd::colors::Gold, pointSphere.r);
+		dd::aabb(gameobject->bbox.minPoint, gameobject->bbox.maxPoint, dd::colors::BurlyWood);
 		break;
 	case LightType::SPOT:
-		//dd::sphere(pointSphere.pos, dd::colors::LightGray, pointSphere.r);
-		dd::cone(gameobject->transform->GetGlobalPosition(), gameobject->transform->front * range, dd::colors::Gold, spotEndRadius, .01f);
+		dd::cone(gameobject->transform->GetGlobalPosition(), direction * range, dd::colors::Gold, spotEndRadius, .01f);
+		dd::aabb(gameobject->bbox.minPoint, gameobject->bbox.maxPoint, dd::colors::BurlyWood);	
 	}
 }
 
@@ -189,12 +191,24 @@ void ComponentLight::CalculateGuizmos()
 		{
 		case LightType::POINT:
 			pointSphere.pos = gameobject->transform->GetGlobalPosition();
+			gameobject->bbox.SetNegativeInfinity();
+			gameobject->bbox.Enclose(pointSphere);
 			break;
-		case LightType::SPOT:			
+		case LightType::SPOT:	
+		{
 			spotEndRadius = range * tan(DegToRad(outer));
 			pointSphere.pos = gameobject->transform->GetGlobalPosition();
 			pointSphere.r = sqrt(pow(spotEndRadius, 2) + pow(range, 2));
+			gameobject->bbox.SetNegativeInfinity();
+			float3 p0 = pointSphere.pos + gameobject->transform->front * range;
+			float3 p1 = p0 + gameobject->transform->right * spotEndRadius;
+			float3 p2 = p0 - gameobject->transform->right * spotEndRadius;
+			float3 p3 = p0 + gameobject->transform->up * spotEndRadius;
+			float3 p4 = p0 - gameobject->transform->up * spotEndRadius;
+			float3 points[6] = { pointSphere.pos, p0, p1, p2, p3, p4 };
+			gameobject->bbox.SetFrom(points, 6);
 			break;
+		}
 		case LightType::DIRECTIONAL:
 			pointSphere.pos = float3::zero;
 			if (App->scene->maincamera != nullptr)

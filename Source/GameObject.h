@@ -71,6 +71,7 @@ public:
 	AABBTreeNode *treeNode = nullptr; //Direct reference to the aabtree node holding the gameobject
 	bool isVolumetric = false; //Indicates if the gameObject has a mesh
 	//
+	bool hasLight = false;
 
 	std::vector<Component*> components;
 	std::list<GameObject*> children;

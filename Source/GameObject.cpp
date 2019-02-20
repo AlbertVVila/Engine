@@ -183,8 +183,16 @@ Component * GameObject::CreateComponent(ComponentType type)
 		component = new ComponentRenderer(this);		
 		break;
 	case ComponentType::Light:
-		component = new ComponentLight(this);
-		App->scene->lights.push_back((ComponentLight*)component);
+		if (!hasLight)
+		{
+			component = new ComponentLight(this);
+			App->scene->lights.push_back((ComponentLight*)component);
+			hasLight = true;
+		}
+		else
+		{
+			LOG("Only 1 light component allowed");
+		}
 		break;
 	case ComponentType::Camera:
 		component = new ComponentCamera(this);
