@@ -5,6 +5,7 @@
 #include "Math/float3.h"
 #include "Geometry/AABB.h"
 
+//TODO: Deprecate and use ResourceMesh
 class Mesh
 {
 public:

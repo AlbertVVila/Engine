@@ -27,6 +27,8 @@ void ResourceTexture::Save(JSON_value &config) const
 
 void ResourceTexture::Load(const JSON_value &config)
 {
+	Resource::Load(config);
+
 	width = config.GetUint("Width");
 	height = config.GetUint("Height");
 	depth = config.GetUint("Depth");

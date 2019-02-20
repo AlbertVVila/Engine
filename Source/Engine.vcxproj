@@ -190,6 +190,7 @@
     <ClInclude Include="par_shapes.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="ResourceMesh.h" />
     <ClInclude Include="ResourceTexture.h" />
     <ClInclude Include="Skybox.h" />
     <ClInclude Include="Timer.h" />
@@ -275,6 +276,7 @@
     <ClCompile Include="PanelInspector.cpp" />
     <ClCompile Include="PanelTime.cpp" />
     <ClCompile Include="Resource.cpp" />
+    <ClCompile Include="ResourceMesh.cpp" />
     <ClCompile Include="ResourceTexture.cpp" />
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="Timer.cpp" />

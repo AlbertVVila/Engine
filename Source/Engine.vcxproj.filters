@@ -240,6 +240,9 @@
     <ClCompile Include="ResourceTexture.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
+    <ClCompile Include="ResourceMesh.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -553,6 +556,9 @@
       <Filter>Resources</Filter>
     </ClInclude>
     <ClInclude Include="ResourceTexture.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceMesh.h">
       <Filter>Resources</Filter>
     </ClInclude>
   </ItemGroup>
