@@ -108,19 +108,34 @@ void GameObject::DrawProperties()
 		{
 			if (isStatic && GetComponent(ComponentType::Renderer) != nullptr)
 			{
-				SetStaticAncestors(); //TODO: Propagate staticness & update aabbtree
+				SetStaticAncestors();
 				App->scene->dynamicGOs.erase(this);
 				App->scene->staticGOs.insert(this);
-				App->spacePartitioning->kDTree.Calculate();
+				assert(!(hasLight && isVolumetric)); //Impossible combination
+				if (hasLight && treeNode != nullptr)
+				{
+					App->spacePartitioning->aabbTreeLighting.ReleaseNode(treeNode);
+				}
+				if (isVolumetric && treeNode != nullptr)
+				{
+					App->spacePartitioning->aabbTree.ReleaseNode(treeNode);
+				}
 			}
 			else if (!isStatic)
 			{
-				//TODO: Propagate staticness & update aabbtree
 				App->scene->dynamicGOs.insert(this);
 				App->scene->staticGOs.erase(this);
-				App->spacePartitioning->kDTree.Calculate();
-				App->spacePartitioning->aabbTree.InsertGO(this); //TODO: remove this when propagation is corrected 
+				assert(!(hasLight && isVolumetric)); //Impossible combination
+				if (hasLight)
+				{
+					App->spacePartitioning->aabbTreeLighting.InsertGO(this);
+				}
+				if (isVolumetric)
+				{
+					App->spacePartitioning->aabbTree.InsertGO(this);
+				}
 			}
+			App->spacePartitioning->kDTree.Calculate();
 		}
 	}
 
@@ -670,12 +685,14 @@ void GameObject::SetStaticAncestors()
 
 		if (go->GetComponent(ComponentType::Renderer) != nullptr)
 		{
-			if (go->treeNode != nullptr)
+			if (go->treeNode != nullptr && isVolumetric)
 				App->spacePartitioning->aabbTree.ReleaseNode(go->treeNode);
-
-			App->scene->quadtree->Insert(go);
+			if (go->treeNode != nullptr && hasLight)
+				App->spacePartitioning->aabbTreeLighting.ReleaseNode(go->treeNode);
+			
 		}
 		parents.pop();
 		parents.push(go->parent);
 	}
+	
 }

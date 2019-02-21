@@ -100,14 +100,29 @@ void ComponentTransform::UpdateTransform()
 	up = global.Col3(1);
 	right = global.Col3(0);
 
-	if (gameobject->treeNode != nullptr && gameobject->hasLight)
+	if (!gameobject->isStatic)
 	{
-		gameobject->light->CalculateGuizmos();
-		if (!gameobject->treeNode->aabb.ContainsQTree(gameobject->bbox))
+		if (gameobject->treeNode != nullptr && gameobject->hasLight)
 		{
-			App->spacePartitioning->aabbTreeLighting.ReleaseNode(gameobject->treeNode);
-			App->spacePartitioning->aabbTreeLighting.InsertGO(gameobject);
+			gameobject->light->CalculateGuizmos();
+			if (!gameobject->treeNode->aabb.ContainsQTree(gameobject->bbox))
+			{
+				App->spacePartitioning->aabbTreeLighting.ReleaseNode(gameobject->treeNode);
+				App->spacePartitioning->aabbTreeLighting.InsertGO(gameobject);
+			}
 		}
+		if (gameobject->treeNode != nullptr && gameobject->isVolumetric)
+		{
+			if (!gameobject->treeNode->aabb.Contains(gameobject->bbox))
+			{
+				App->spacePartitioning->aabbTree.ReleaseNode(gameobject->treeNode);
+				App->spacePartitioning->aabbTree.InsertGO(gameobject);
+			}
+		}
+	}
+	else
+	{
+		App->spacePartitioning->kDTree.Calculate();
 	}
 }
 
@@ -157,14 +172,29 @@ void ComponentTransform::SetGlobalTransform(const float4x4 & newglobal, const fl
 	up = global.Col3(1);
 	right = global.Col3(0);
 
-	if (gameobject->hasLight)
+	if (!gameobject->isStatic)
 	{
-		gameobject->light->CalculateGuizmos();
-		if (!gameobject->treeNode->aabb.Contains(gameobject->bbox))
+		if (gameobject->treeNode != nullptr && gameobject->hasLight)
 		{
-			App->spacePartitioning->aabbTreeLighting.ReleaseNode(gameobject->treeNode);
-			App->spacePartitioning->aabbTreeLighting.InsertGO(gameobject);
+			gameobject->light->CalculateGuizmos();
+			if (!gameobject->treeNode->aabb.ContainsQTree(gameobject->bbox))
+			{
+				App->spacePartitioning->aabbTreeLighting.ReleaseNode(gameobject->treeNode);
+				App->spacePartitioning->aabbTreeLighting.InsertGO(gameobject);
+			}
 		}
+		if (gameobject->treeNode != nullptr && gameobject->isVolumetric)
+		{
+			if (!gameobject->treeNode->aabb.Contains(gameobject->bbox))
+			{
+				App->spacePartitioning->aabbTree.ReleaseNode(gameobject->treeNode);
+				App->spacePartitioning->aabbTree.InsertGO(gameobject);
+			}
+		}
+	}
+	else
+	{
+		App->spacePartitioning->kDTree.Calculate();
 	}
 }
 

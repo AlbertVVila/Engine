@@ -150,6 +150,9 @@ void AABBTree::RecalculateBoxes(AABBTreeNode* node)
 				S2.push(node->parent);
 		}
 	}
+	treeRoot->aabb.SetNegativeInfinity();
+	treeRoot->aabb.Enclose(treeRoot->leftSon->aabb);
+	treeRoot->aabb.Enclose(treeRoot->rightSon->aabb);
 }
 void AABBTree::ReleaseNode(AABBTreeNode* node)
 {

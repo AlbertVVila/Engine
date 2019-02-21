@@ -69,6 +69,11 @@ void AABBTree::GetIntersections(T &intersector, std::unordered_set<GameObject*> 
 		}
 		if (!node->isLeaf)
 		{
+			//keep the aabb as small as possible
+			node->aabb.SetNegativeInfinity(); 
+			node->aabb.Enclose(node->leftSon->aabb);
+			node->aabb.Enclose(node->rightSon->aabb);
+
 			if (node->leftSon != nullptr && node->leftSon->aabb.ContainsQTree(intersector))
 			{
 				S.push(node->leftSon);

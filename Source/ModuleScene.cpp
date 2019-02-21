@@ -158,9 +158,13 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	PROFILE;
 	if (isEditor)
 	{
-		if (App->renderer->quadtree_debug)
+		if (App->renderer->aabbTreeDebug)
 		{
-			quadtree->Draw();
+			App->spacePartitioning->aabbTree.Draw();
+		}
+		if (App->renderer->kDTreeDebug)
+		{
+			App->spacePartitioning->kDTree.DebugDraw();
 		}
 
 		if (App->renderer->light_debug)
