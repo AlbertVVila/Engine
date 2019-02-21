@@ -4,6 +4,8 @@
 #include "ModuleFileSystem.h"
 #include "ModuleTextures.h"
 #include "ModuleResourceManager.h"
+
+#include "Resource.h"
 #include "ResourceTexture.h"
 
 #include "Material.h"

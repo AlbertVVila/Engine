@@ -13,6 +13,8 @@
 #include "Material.h"
 #include "Mesh.h"
 
+#include "Resource.h"
+
 #include <assert.h>
 #include "assimp/cimport.h"
 #include "assimp/postprocess.h"

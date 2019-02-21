@@ -23,14 +23,15 @@ public:
 	virtual ~Resource();
 
 	inline TYPE GetType() const;
-	inline unsigned GetUID() const;
-	inline const char* GetFile() const;
-	inline void SetFile(const char* newFile);
-	inline const char* GetExportedFile() const;
-	inline void SetExportedFile(const char* newExportedFile);
+	unsigned GetUID() const;
+	const char* GetFile() const;
+	void SetFile(const char* newFile);
+	const char* GetExportedFile() const;
+	void SetExportedFile(const char* newExportedFile);
 	inline bool IsLoadedToMemory() const;
 	bool LoadToMemory();
-	inline unsigned CountReferences() const;
+	unsigned CountReferences() const;
+	void DecreaseReferences();
 	
 	virtual void Save(JSON_value &config) const;
 	virtual void Load(const JSON_value &config);
@@ -40,9 +41,9 @@ protected:
 	unsigned UID = 0u;
 	std::string file;
 	std::string exportedFile;
+	unsigned loaded = 0;
 
 	TYPE type = TYPE::UNKNOWN;
-	unsigned loaded = 0;
 };
 
 #endif __Resource_h__

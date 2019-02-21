@@ -16,11 +16,17 @@ ResourceTexture::ResourceTexture(unsigned uid) : Resource(uid, TYPE::TEXTURE)
 
 ResourceTexture::~ResourceTexture()
 {
+
+	if (IsLoadedToMemory())
+	{
+		if (gpuID != 0)
+			glDeleteTextures(1, &gpuID);
+	}
 }
 
 bool ResourceTexture::LoadInMemory()
 {
-	if (!Resource::LoadInMemory())
+	if (Resource::IsLoadedToMemory())
 		return false;
 
 	ILboolean success;
@@ -29,7 +35,7 @@ bool ResourceTexture::LoadInMemory()
 
 	char *data;
 	std::string filename(file);
-	unsigned size = App->fsystem->Load((TEXTURES + filename + TEXTUREEXT).c_str(), &data);
+	unsigned size = App->fsystem->Load((TEXTURES + filename).c_str(), &data);
 
 	ilGenImages(1, &imageID); 		// Generate the image ID
 	ilBindImage(imageID); 			// Bind the image
@@ -85,7 +91,7 @@ bool ResourceTexture::LoadInMemory()
 		ilDeleteImages(1, &gpuID);
 
 		glBindTexture(GL_TEXTURE_2D, 0);
-		return true;
+		return LoadToMemory();
 	}
 	else
 	{

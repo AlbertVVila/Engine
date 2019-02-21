@@ -6,6 +6,7 @@
 #include "ModuleProgram.h"
 #include "ModuleResourceManager.h"
 
+#include "Resource.h"
 #include "ResourceTexture.h"
 #include "Material.h"
 
@@ -53,9 +54,7 @@ Material::~Material()
 	{
 		if (textures[i] != nullptr)
 		{
-			//App->resManager->DeleteTexture(textures[i]->file);
-			if(textures[i]->IsLoadedToMemory())
-				RELEASE(textures[i]);
+			App->resManager->DeleteTexture(textures[i]->GetUID());
 			textures[i] = nullptr;
 		}
 	}
@@ -174,9 +173,7 @@ void Material::Reset(const Material & material)
 	{
 		if (textures[i] != nullptr)
 		{
-			//App->resManager->DeleteTexture(textures[i]->file);
-			if (textures[i]->IsLoadedToMemory())
-				RELEASE(textures[i]);
+			App->resManager->DeleteTexture(textures[i]->GetUID());
 		}
 		if (material.textures[i] != nullptr)
 		{

@@ -1,5 +1,6 @@
 #include "ModuleResourceManager.h"
 
+#include "Globals.h"
 #include "Application.h"
 #include "ModuleTextures.h"
 #include "ModuleProgram.h"
@@ -22,6 +23,20 @@ ModuleResourceManager::~ModuleResourceManager()
 {
 }
 
+bool ModuleResourceManager::Start()
+{
+	//TODO: Read metafiles from Assets/ instead and import or add to resources
+	std::vector<std::string> files;
+	std::vector<std::string> dirs;
+	App->fsystem->ListFolderContent(TEXTURES, files, dirs);
+	for each (std::string file in files)
+	{
+		Resource* res = CreateNewResource(TYPE::TEXTURE);
+		res->SetFile(file.c_str());
+		//res->exportedFile = written_file;
+	}
+	return true;
+}
 
 // Deprecated Texture functions
 /*Texture* ModuleResourceManager::GetTexture(std::string filename) const
@@ -203,8 +218,10 @@ unsigned ModuleResourceManager::Find(const char* fileInAssets)
 {
 	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
 	{
-		if (it->second->GetFile() == fileInAssets)
+		if (strcmp(it->second->GetFile(), fileInAssets) == 0)
+		{
 			return it->first;
+		}
 	}
 	return 0;
 }
@@ -213,12 +230,12 @@ unsigned ModuleResourceManager::ImportFile(const char* newFileInAssets, const ch
 {
 	unsigned ret = 0; 
 	bool success = false; 
-	const char* written_file;
+	std::string written_file = "";
 
 	switch (type) 
 	{
 	case TYPE::TEXTURE: 
-		success = App->textures->ImportImage(newFileInAssets, filePath, written_file);
+		success = App->textures->ImportImage(newFileInAssets, filePath, written_file.c_str());
 		break;
 	case TYPE::MESH:	
 
@@ -232,7 +249,7 @@ unsigned ModuleResourceManager::ImportFile(const char* newFileInAssets, const ch
 	{ 
 		Resource* res = CreateNewResource(type);
 		res->SetFile(newFileInAssets);
-		res->SetExportedFile(written_file);
+		res->SetExportedFile(written_file.c_str());
 	}
 	return ret;
 }
@@ -269,4 +286,24 @@ Resource * ModuleResourceManager::Get(unsigned uid)
 	if (it != resources.end())
 		return it->second;
 	return nullptr;
+}
+
+bool ModuleResourceManager::DeleteTexture(unsigned uid)
+{
+	std::map<unsigned, Resource*>::iterator it = resources.find(uid);
+	if (it != resources.end())
+	{
+		if (it->second->CountReferences() > 1)
+		{
+			it->second->DecreaseReferences();
+			return true;
+		}
+		else if(it->second->IsLoadedToMemory())
+		{
+			RELEASE(it->second);
+			resources.erase(it);
+			return true;
+		}
+	}
+	return false;
 }

@@ -3,8 +3,6 @@
 
 #include "Resource.h"
 
-struct Texture;
-
 enum class FORMAT 
 {
 	COLOR_INDEX,

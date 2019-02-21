@@ -15,34 +15,34 @@ inline TYPE Resource::GetType() const
 	return type;
 }
 
-inline unsigned Resource::GetUID() const
+unsigned Resource::GetUID() const
 {
 	return UID;
 }
 
-inline const char* Resource::GetFile() const
+const char* Resource::GetFile() const
 {
 	return file.c_str();
 }
 
-inline void Resource::SetFile(const char* newFile)
+void Resource::SetFile(const char* newFile)
 {
 	file = newFile;
 }
 
-inline const char* Resource::GetExportedFile() const
+const char* Resource::GetExportedFile() const
 {
 	return exportedFile.c_str();
 }
 
-inline void Resource::SetExportedFile(const char* newExportedFile)
+void Resource::SetExportedFile(const char* newExportedFile)
 {
 	exportedFile = newExportedFile;
 }
 
 inline bool Resource::IsLoadedToMemory() const
 {
-	return loaded > 0 ? true : false;
+	return (loaded > 0) ? true : false;
 }
 
 bool Resource::LoadToMemory()
@@ -56,9 +56,15 @@ bool Resource::LoadToMemory()
 	}
 }
 
-inline unsigned Resource::CountReferences() const
+unsigned Resource::CountReferences() const
 {
 	return loaded;
+}
+
+void Resource::DecreaseReferences()
+{
+	if(loaded > 1)
+		--loaded;
 }
 
 void Resource::Save(JSON_value &config) const

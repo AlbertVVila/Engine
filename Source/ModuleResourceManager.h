@@ -2,7 +2,7 @@
 #define __ModuleResourceManager_h__
 
 #include "Module.h"
-#include "Resource.h"
+
 #include <map>
 #include <list>
 
@@ -10,6 +10,8 @@ struct Texture;
 struct Shader;
 class Material;
 class Mesh;
+class Resource;
+enum class TYPE;
 
 class ModuleResourceManager : //TODO: Divide into subclasses for each resource type
 	public Module
@@ -17,6 +19,8 @@ class ModuleResourceManager : //TODO: Divide into subclasses for each resource t
 public:
 	ModuleResourceManager();
 	~ModuleResourceManager();
+
+	bool Start() override;
 
 	// Deprecated Texture functions
 	/*Texture * GetTexture(std::string filename) const;
@@ -49,6 +53,9 @@ public:
 	//const Resource* Get(unsigned uid) const;
 	Resource* Get(unsigned uid);
 	Resource* CreateNewResource(TYPE type, unsigned forceUid = 0);
+
+	// Textures
+	bool DeleteTexture(unsigned uid);
 
 private:
 

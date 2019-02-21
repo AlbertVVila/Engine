@@ -85,6 +85,7 @@ bool ModuleScene::Init(JSON * config)
 
 bool ModuleScene::Start()
 {
+	//App->textures-> ("nocamera.dds", TEXTURES, TYPE::TEXTURE);
 	camera_notfound_texture = App->textures->GetTexture(NOCAMERA); 
 	if (defaultScene.size() > 0)
 	{
@@ -121,9 +122,7 @@ bool ModuleScene::CleanUp()
 	selected = nullptr;
 	maincamera = nullptr;
 
-	//App->resManager->DeleteTexture(camera_notfound_texture->file);
-	if (camera_notfound_texture->IsLoadedToMemory())
-		RELEASE(camera_notfound_texture);
+	App->resManager->DeleteTexture(camera_notfound_texture->GetUID());
 	camera_notfound_texture = nullptr;
 
 	lights.clear();
@@ -562,6 +561,8 @@ bool ModuleScene::AddScene(const char& scene, const char& path)
 void ModuleScene::ClearScene()
 {
 	CleanUp();
+	Resource* res = App->resManager->CreateNewResource(TYPE::TEXTURE);
+	res->SetFile(NOCAMERA);
 	camera_notfound_texture = App->textures->GetTexture(NOCAMERA);
 	name.clear();	
 	staticGOs.clear();

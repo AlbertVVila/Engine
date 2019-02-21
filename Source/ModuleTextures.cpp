@@ -73,7 +73,8 @@ ResourceTexture * ModuleTextures::GetTexture(const char * file) const
 	assert(file != NULL);
 
 	// Look for it on the resource list
-	unsigned uid = App->resManager->Find(file);
+	std::string fileName(file);
+	unsigned uid = App->resManager->Find((fileName + TEXTUREEXT).c_str());
 	if (uid == 0) 
 		return nullptr;
 		
@@ -82,7 +83,7 @@ ResourceTexture * ModuleTextures::GetTexture(const char * file) const
 	if (!textureResource->IsLoadedToMemory())
 	{
 		// Load in memory
-		if (textureResource->LoadToMemory())
+		if (textureResource->LoadInMemory())
 			return textureResource;
 		else
 			return nullptr;
