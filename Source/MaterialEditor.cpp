@@ -22,11 +22,6 @@ MaterialEditor::~MaterialEditor()
 
 void MaterialEditor::Draw()
 {
-	/*if (newMaterial)
-	{
-		NewMaterial();
-	}*/
-
 	if (material == NULL)
 	{
 		return;

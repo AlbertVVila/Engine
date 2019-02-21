@@ -199,7 +199,7 @@ update_status ModuleEditor::Update(float dt)
 		{
 			materialEditor->newMaterial = true;
 		}
-		//materialEditor->Draw();
+
 		if (materialEditor->newMaterial)
 		{
 			materialEditor->NewMaterial();
