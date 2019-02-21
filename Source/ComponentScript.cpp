@@ -72,26 +72,37 @@ void ComponentScript::DrawProperties()
 	}
 }
 
-void ComponentScript::Save(JSON_value * value) const
+void ComponentScript::Save(JSON_value* value) const
 {
 	Component::Save(value);
 	if (script != nullptr)
 	{
 		value->AddString("script", scriptName.c_str());
+		JSON_value *scriptInfo = value->CreateValue();
+		script->Serialize(scriptInfo);
+		value->AddValue("scriptInfo", *scriptInfo);;
 	}
 }
 
-void ComponentScript::Load(const JSON_value & value)
+void ComponentScript::Load(JSON_value* value)
 {
 	Component::Load(value);
-	const char* retrievedName = value.GetString("script");
+	const char* retrievedName = value->GetString("script");
 	if (retrievedName != nullptr)
 	{
 		SetScript(retrievedName);
+		if (script != nullptr)
+		{
+			JSON_value* scriptInfo = value->GetValue("scriptInfo");
+			if (scriptInfo != nullptr)
+			{
+				script->DeSerialize(scriptInfo);
+			}
+		}
 	}
 }
 
-void ComponentScript::SetScript(const std::string &name)
+void ComponentScript::SetScript(const std::string& name)
 {
 	if (script != nullptr)
 	{

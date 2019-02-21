@@ -57,6 +57,7 @@
       <ExceptionHandling>Sync</ExceptionHandling>
       <AdditionalIncludeDirectories>$(SolutionDir)\Source\Imgui\include;..\Scripts\BaseScript;./Brofiler-1.1.2;./ImGuizmo;./pcg-cpp-0.98/include;./rapidjson-1.1.0/include;./physfs-3.0.1/include;./mmgr;./Assimp/include;./DevIL/include;./glew-2.1.0/include;./SDL/include;MathGeoLib/include;./Imgui;./physfs-3.0.1</AdditionalIncludeDirectories>
       <EnablePREfast>false</EnablePREfast>
+      <PreprocessorDefinitions>_MBCS;ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -79,6 +80,7 @@
       <SDLCheck>false</SDLCheck>
       <ExceptionHandling>Sync</ExceptionHandling>
       <AdditionalIncludeDirectories>$(SolutionDir)\Source\Imgui\include;..\Scripts\BaseScript;./Brofiler-1.1.2;./ImGuizmo;./pcg-cpp-0.98/include;./rapidjson-1.1.0/include;./physfs-3.0.1/include;./mmgr;./Assimp/include;./DevIL/include;./glew-2.1.0/include;./SDL/include;MathGeoLib/include;./Imgui;./physfs-3.0.1</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_MBCS;ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -283,6 +285,7 @@
     <ClCompile Include="Viewport.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Game\Scripts\PlayerMovement.dll" />
     <None Include="..\Game\Shaders\FragmentShaders\Default.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\Flat.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\Gouraud.fs" />

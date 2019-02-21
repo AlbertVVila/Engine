@@ -26,7 +26,7 @@ public:
 	float3 GetGlobalPosition();
 
 	void Save(JSON_value *value) const override;
-	void Load(const JSON_value &value) override;
+	void Load(JSON_value *value) override;
 
 private:
 	void RotationToEuler();

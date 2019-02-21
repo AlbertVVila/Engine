@@ -528,7 +528,7 @@ void GameObject::Load(JSON_value *value)
 		JSON_value* componentJSON = componentsJSON->GetValue(i);
 		ComponentType type = (ComponentType) componentJSON->GetUint("Type");
 		Component* component = CreateComponent(type);
-		component->Load(*componentJSON);
+		component->Load(componentJSON);
 	}
 }
 

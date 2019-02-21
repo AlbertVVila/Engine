@@ -115,10 +115,10 @@ void ComponentRenderer::Save(JSON_value * value) const
 	value->AddString("materialFile", material->name.c_str());
 }
 
-void ComponentRenderer::Load(const JSON_value & value)
+void ComponentRenderer::Load(JSON_value* value)
 {
 	Component::Load(value);
-	unsigned uid = value.GetUint("meshUID");
+	unsigned uid = value->GetUint("meshUID");
 	App->resManager->DeleteMesh(mesh->UID); //Delete existing old mesh
 	Mesh *m = App->resManager->GetMesh(uid); //Look for loaded meshes
 	if (m != nullptr)
@@ -134,7 +134,7 @@ void ComponentRenderer::Load(const JSON_value & value)
 	App->resManager->AddMesh(mesh);
 	UpdateGameObject();
 
-	const char* materialFile = value.GetString("materialFile");
+	const char* materialFile = value->GetString("materialFile");
 	SetMaterial(materialFile);
 }
 

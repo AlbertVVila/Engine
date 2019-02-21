@@ -143,7 +143,7 @@ float3 ComponentTransform::GetGlobalPosition()
 	return global.Col3(3);
 }
 
-void ComponentTransform::Save(JSON_value * value) const
+void ComponentTransform::Save(JSON_value* value) const
 {
 	Component::Save(value);
 	value->AddFloat3("Position", position);
@@ -153,14 +153,14 @@ void ComponentTransform::Save(JSON_value * value) const
 	value->AddFloat4x4("Global", global);
 }
 
-void ComponentTransform::Load(const JSON_value & value)
+void ComponentTransform::Load(JSON_value* value)
 {
 	Component::Load(value);
-	position = value.GetFloat3("Position");
-	rotation = value.GetQuat("Rotation");
-	eulerRotation = value.GetFloat3("Euler");
-	scale = value.GetFloat3("Scale");
-	global = value.GetFloat4x4("Global");
+	position = value->GetFloat3("Position");
+	rotation = value->GetQuat("Rotation");
+	eulerRotation = value->GetFloat3("Euler");
+	scale = value->GetFloat3("Scale");
+	global = value->GetFloat4x4("Global");
 	local = float4x4::FromTRS(position, rotation, scale);
 	RotationToEuler();
 }

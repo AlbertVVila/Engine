@@ -18,7 +18,7 @@ public:
 
 	void DrawProperties();
 	void Save(JSON_value *value) const override;
-	void Load(const JSON_value &value) override;
+	void Load(JSON_value *value) override;
 
 	void SetScript(const std::string &name);
 

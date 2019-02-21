@@ -3,6 +3,7 @@
 #include "ModuleScript.h"
 #include "ModuleFileSystem.h"
 #include "ModuleTime.h"
+#include "ModuleScene.h" //TODO remove this
 
 #include "BaseScript.h"
 #include <assert.h>
@@ -41,6 +42,7 @@ ModuleScript::~ModuleScript()
 bool ModuleScript::Start()
 {
 	CheckScripts();
+	//LoadFromMemory(IDR_DLL1);
 	return true;
 }
 
@@ -71,12 +73,13 @@ update_status ModuleScript::Update(float dt)
 
 void ModuleScript::LoadFromMemory(int resource)
 {
-	HRSRC hResource = FindResourceA(nullptr, MAKEINTRESOURCEA(resource), "TEXT");
+	HRSRC hResource = FindResourceA(nullptr, MAKEINTRESOURCEA(resource), "DLL");
 	HGLOBAL hMemory = LoadResource(nullptr, hResource);
 
+	assert(hMemory != nullptr);
 	int size_bytes = SizeofResource(nullptr, hResource);
 	void *ptr = LockResource(hMemory);
-
+	assert(ptr != nullptr);
 	HMEMORYMODULE dll = MemoryLoadLibrary(ptr);
 	if (dll != nullptr)
 	{
@@ -84,12 +87,16 @@ void ModuleScript::LoadFromMemory(int resource)
 		if (Create != nullptr)
 		{
 			Script* script = Create();
+			script->SetApp(App);
+			script->SetGameObject(App->scene->root);
 			scriptInstances.push_back(script);
 			script->Start();
 			script->Update();
 		}
 	}
 }
+
+//void ModuleScript::Map
 
 Script* ModuleScript::AddScript(const std::string& script)
 {
@@ -123,20 +130,20 @@ Script* ModuleScript::AddScript(const std::string& script)
 void ModuleScript::RemoveScript(const std::string& name, Script* script)
 {
 	//TODO: check if script is used in any other component and if not then freelibrary
-	std::map<std::string, std::pair<HINSTANCE,int>>::iterator dll = loadedDLLs.find(name);
-	if (dll != loadedDLLs.end())
+	std::map<std::string, std::pair<HINSTANCE,int>>::iterator dll_it = loadedDLLs.find(name);
+	if (dll_it != loadedDLLs.end())
 	{
-		if (dll->second.second <= 1)
+		if (dll_it->second.second <= 1)
 		{
-			if (!FreeLibrary(dll->second.first))
+			if (!FreeLibrary(dll_it->second.first))
 			{
 				LOG("CAN'T RELEASE %s", name);
 			}
-			loadedDLLs.erase(dll);
+			loadedDLLs.erase(dll_it);
 		}
 		else
 		{
-			dll->second.second--;
+			dll_it->second.second--;
 		}
 		scriptInstances.remove(script);
 		RELEASE(script);

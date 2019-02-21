@@ -2,6 +2,7 @@
 #define  __PlayerMovement_h__
 
 class GameObject;
+class JSON_value;
 struct ImGuiContext;
 #include "BaseScript.h"
 
@@ -17,8 +18,8 @@ class PlayerMovement_API PlayerMovement : public Script
 public:
 	void Expose(ImGuiContext *context) override;
 	void Update() override;
-	//void Serialize(JSON* json) const override;
-	//void DeSerialize(JSON * json) override;
+	void Serialize(JSON_value* json) const override;
+	void DeSerialize(JSON_value * json) override;
 
 private:
 	float speed = 2.0f;

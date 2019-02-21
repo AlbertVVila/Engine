@@ -3,7 +3,7 @@
 
 class Application;
 class GameObject;
-class JSON;
+class JSON_value;
 struct ImGuiContext;
 
 #ifdef BASESCRIPT_EXPORTS
@@ -18,14 +18,14 @@ public:
 	void SetApp(Application * app);
 	void SetGameObject(GameObject* go);
 	virtual void Expose(ImGuiContext *context);
-	//virtual void Serialize(JSON* json) const = 0;
-	//virtual void DeSerialize(JSON * json) = 0;
+	virtual void Serialize(JSON_value* json) const {}
+	virtual void DeSerialize(JSON_value * json) {}
 	virtual void Start() {}
 	virtual void Update() {}
 
 protected:
-	GameObject* gameObject;
-	Application* App;
+	GameObject* gameObject = nullptr;
+	Application* App = nullptr;
 
 };
 
