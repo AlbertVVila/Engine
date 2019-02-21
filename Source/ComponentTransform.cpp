@@ -1,6 +1,7 @@
 #include "ComponentTransform.h"
 
 #include "GameObject.h"
+#include "ComponentLight.h"
 
 #include "imgui.h"
 #include "imgui_internal.h"
@@ -94,6 +95,11 @@ void ComponentTransform::UpdateTransform()
 	front = -global.Col3(2);
 	up = global.Col3(1);
 	right = global.Col3(0);
+
+	if (gameobject->hasLight)
+	{
+		gameobject->light->CalculateGuizmos();
+	}
 }
 
 void ComponentTransform::RotationToEuler()
@@ -141,6 +147,11 @@ void ComponentTransform::SetGlobalTransform(const float4x4 & newglobal, const fl
 	front = -global.Col3(2);
 	up = global.Col3(1);
 	right = global.Col3(0);
+
+	if (gameobject->hasLight)
+	{
+		gameobject->light->CalculateGuizmos();
+	}
 }
 
 float3 ComponentTransform::GetGlobalPosition()

@@ -188,6 +188,7 @@ Component * GameObject::CreateComponent(ComponentType type)
 			component = new ComponentLight(this);
 			App->scene->lights.push_back((ComponentLight*)component);
 			hasLight = true;
+			light = (ComponentLight*)component;
 		}
 		else
 		{

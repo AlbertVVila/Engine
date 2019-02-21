@@ -7,6 +7,7 @@
 
 class Component;
 class ComponentTransform;
+class ComponentLight;
 class AABBTreeNode;
 enum class ComponentType;
 struct Texture;
@@ -72,6 +73,7 @@ public:
 	bool isVolumetric = false; //Indicates if the gameObject has a mesh
 	//
 	bool hasLight = false;
+	ComponentLight* light = nullptr;
 
 	std::vector<Component*> components;
 	std::list<GameObject*> children;

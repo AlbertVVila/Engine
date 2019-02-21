@@ -164,7 +164,6 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 		{
 			for (const auto &light : lights)
 			{
-				light->CalculateGuizmos();
 				light->DrawDebugLight();
 			}
 		}

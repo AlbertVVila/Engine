@@ -76,19 +76,26 @@ out vec4 Fragcolor;
 uniform Material material;
 uniform Lights lights;
 
+vec4 textureGammaCorrected(sampler2D tex)
+{
+	vec4 texRaw = texture2D(tex, uv0);
+	return vec4(pow(texRaw.r, 2.2), pow(texRaw.g, 2.2), pow(texRaw.b, 2.2), texRaw.a);
+}
+
+
 vec4 get_albedo()
 {
-	return texture(material.diffuse_texture, uv0)*material.diffuse_color;
+	return textureGammaCorrected(material.diffuse_texture) * material.diffuse_color;
 }
 
 vec3 get_occlusion_color()
 {
-	return texture(material.occlusion_texture, uv0).rgb;
+	return textureGammaCorrected(material.occlusion_texture).rgb;
 }
 
 vec3 get_emissive_color()
 {
-	return texture(material.emissive_texture, uv0).rgb*material.emissive_color;
+	return textureGammaCorrected(material.emissive_texture).rgb * material.emissive_color;
 }
 
 float get_attenuation(float distance, float radius, float intensity)
@@ -154,6 +161,7 @@ void main()
 	vec4 albedo = get_albedo();
 	vec3 emissive_color = get_emissive_color();
 	//vec3 occlusion_color= get_occlusion_color();
+	
 	vec3 occlusion_color = vec3(1,1,1);	
 	vec3 F0 = vec3(.04f);
 	F0 = mix(F0, albedo.rgb, material.metallic);
@@ -208,6 +216,8 @@ void main()
 		color += (kD * albedo.rgb / PI + BRDF(F, L, V, N, H)) * radiance * NdotL;
 	}
 	
+	color += emissive_color;
+	color = vec3(pow(color.r, (1.0 / 2.2)), pow(color.g, (1.0 / 2.2)), pow(color.b, (1.0 / 2.2)));
 	/*color += 	 emissive_color + //emissive
 				 diffuse_color.rgb * lights.ambient_color * occlusion_color * material.k_ambient; //ambient
 				 */
