@@ -31,7 +31,6 @@ public:
 	void DrawDebugLight() const;
 	void Load(const JSON_value &value) override;
 	void Save(JSON_value *value) const override;
-	bool ConeContainsAABB(const AABB &aabb) const;  // returns true if the aabb is inside or intersects the spot light cone
 	void CalculateGuizmos();
 
 private:
@@ -44,19 +43,17 @@ public:
 	float3 position = float3::zero; //Captured in transform
 	float3 direction = float3::one;
 	float3 color = float3::one;
-
-	float3 attenuation = float3(0.1f,0.1f,0.1f);
+	
 	float inner = 20.f;
 	float outer = 25.f;
-
-	
-	//members
-	float spotDistance = .0f;
-	float spotOutterDistance = .0f;
-	float spotEndRadius = .0f;
-	Sphere pointSphere;
 	float intensity = 1.f;
 	float range = 100.f;
+
+	Sphere pointSphere;
+private:
+
+	float spotDistance = .0f;	
+	float spotEndRadius = .0f;		
 };
 
 #endif __ComponentLight_h__

@@ -5,6 +5,7 @@
 #include "ModuleRender.h"
 #include "ModuleScene.h"
 #include "ModuleEditor.h"
+#include "ModuleSpacePartitioning.h"
 
 #include "ComponentLight.h"
 #include "ComponentTransform.h"
@@ -20,6 +21,7 @@
 #include "Math/MathFunc.h"
 #include "MathGeoLib/include/Geometry/AABB.h"
 #include "debugdraw.h"
+#include "AABBTree.h"
 
 #define INITIAL_RADIUS 1000.f
 
@@ -34,7 +36,6 @@ ComponentLight::ComponentLight(const ComponentLight & component) : Component(com
 	direction = component.direction;
 	color = component.color;
 
-	attenuation = component.attenuation;
 	inner = component.inner;
 	outer = component.outer;
 	App->scene->lights.push_back(this);
@@ -107,6 +108,7 @@ void ComponentLight::DrawProperties()
 void ComponentLight::DrawDebugLight() const
 {
 	DrawDebug();
+	App->spacePartitioning->aabbTreeLighting.Draw();
 }
 
 void ComponentLight::Load(const JSON_value & value)
@@ -164,7 +166,6 @@ void ComponentLight::ResetValues()
 	float polar = 0.f; 
 	float azimuth = 0.f; 
 	color = float3::one;
-	attenuation = float3(0.1f, 0.1f, 0.1f);
 	inner = 20.f;
 	outer = 25.f;
 }
@@ -209,24 +210,21 @@ void ComponentLight::CalculateGuizmos()
 			gameobject->bbox.SetFrom(points, 6);
 			break;
 		}
-		case LightType::DIRECTIONAL:
-			pointSphere.pos = float3::zero;
+		case LightType::DIRECTIONAL:			
 			if (App->scene->maincamera != nullptr)
+			{
+				pointSphere.pos = App->scene->maincamera->frustum->pos;
 				pointSphere.r = App->scene->maincamera->frustum->farPlaneDistance;
+			}
 			else
+			{
+				pointSphere.pos = App->camera->editorcamera->frustum->pos;
 				pointSphere.r = App->camera->editorcamera->frustum->farPlaneDistance;
+			}
+			gameobject->bbox.SetNegativeInfinity();
+			gameobject->bbox.Enclose(pointSphere);
 			break;
-		}
-		/*
-		if (owner->fakeGameObjectReference != nullptr)
-		{
-			App->spacePartitioning->aabbTreeLighting.ReleaseNode(owner->fakeGameObjectReference->treeNode);
-			owner->fakeGameObjectReference->treeNode = nullptr;
-			owner->fakeGameObjectReference->aaBBGlobal->SetNegativeInfinity();
-			owner->fakeGameObjectReference->aaBBGlobal->Enclose(pointSphere);
-			App->spacePartitioning->aabbTreeLighting.InsertGO(owner->fakeGameObjectReference);
-		}
-		*/
+		}		
 	}
 }
 

@@ -1,6 +1,7 @@
 #version 330 core
-#define MAX_POINT_LIGHTS 4
-#define MAX_SPOT_LIGHTS 4
+#define MAX_DIRECTIONAL_LIGHTS 4
+#define MAX_POINT_LIGHTS 8
+#define MAX_SPOT_LIGHTS 8
 
 const float PI = 3.14159265359f; 
 
@@ -50,12 +51,14 @@ struct SpotLight
 struct Lights
 {
 	vec3        ambient_color; 
-	DirLight    directional;
+	DirLight    directional[MAX_DIRECTIONAL_LIGHTS];
+	int			num_directionals;
 	PointLight  points[MAX_POINT_LIGHTS];
 	int         num_points;
 	SpotLight   spots[MAX_SPOT_LIGHTS];
 	int         num_spots;
 };
+
 
 layout (std140) uniform Matrices
 {
@@ -70,6 +73,7 @@ in vec3 viewPos;
 in vec3 pointPositions[MAX_POINT_LIGHTS]; //positions in tangent space
 in vec3 spotPositions[MAX_SPOT_LIGHTS];   //positions in tangent space
 in vec3 spotDirections[MAX_SPOT_LIGHTS];  //directions in tangent space
+in vec3 directionalDirections[MAX_DIRECTIONAL_LIGHTS]; //directions in tangent space
 
 out vec4 Fragcolor;
 
@@ -170,7 +174,22 @@ void main()
 	vec3 color = vec3(0, 0, 0);
 	vec3 N = normal;
 	vec3 V = normalize(viewPos - position);
+	for(int i=0; i < lights.num_directionals; ++i)
+	{
+		vec3 L = directionalDirections[i];
+		vec3 H = normalize(V + L);	
 
+		vec3 radiance = lights.directional[i].color;				
+		
+		vec3 F = FSchlick(max(dot(H, V), 0.0), F0);   
+
+		vec3 kS = F;
+        vec3 kD = vec3(1.0) - kS;
+        kD *= 1.0 - material.metallic; //albedo amount		
+
+		float NdotL = max(dot(N, L), 0.0);        
+		color += (kD * albedo.rgb / PI + BRDF(F, L, V, N, H)) * radiance * NdotL;  
+	}
 	for(int i=0; i < lights.num_points; ++i)
 	{	
 		vec3 lightPos = pointPositions[i];

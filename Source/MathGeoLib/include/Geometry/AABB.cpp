@@ -576,6 +576,10 @@ bool AABB::ContainsQTree(const LineSegment &line) const
 {
 	return Contains(line) || Intersects(line);
 }
+bool AABB::ContainsQTree(const Sphere & sphere) const
+{
+	return Contains(sphere) || Intersects(sphere);
+}
 bool AABB::ContainsQTree(const Frustum &frustum) const
 {
 	return Contains(frustum) || Intersects(frustum);

@@ -1,6 +1,7 @@
 #version 330
-#define MAX_POINT_LIGHTS 4
-#define MAX_SPOT_LIGHTS 4
+#define MAX_DIRECTIONAL_LIGHTS 4
+#define MAX_POINT_LIGHTS 8
+#define MAX_SPOT_LIGHTS 8
 
 
 layout(location = 0) in vec3 vertex_position;
@@ -42,7 +43,8 @@ struct SpotLight
 struct Lights
 {
 	vec3        ambient_color; 
-	DirLight    directional;
+	DirLight    directional[MAX_DIRECTIONAL_LIGHTS];
+	int			num_directionals;
 	PointLight  points[MAX_POINT_LIGHTS];
 	int         num_points;
 	SpotLight   spots[MAX_SPOT_LIGHTS];
@@ -60,6 +62,7 @@ out vec3 viewPos;
 out vec3 pointPositions[MAX_POINT_LIGHTS];
 out vec3 spotPositions[MAX_SPOT_LIGHTS];
 out vec3 spotDirections[MAX_SPOT_LIGHTS];
+out vec3 directionalDirections[MAX_DIRECTIONAL_LIGHTS];
 
 void main()
 {
@@ -78,6 +81,14 @@ void main()
 	position = TBNMat * position;
 	viewPos = TBNMat * (transpose(mat3(view))*(-view[3].xyz));	
 	uv0 = vertex_uv0;
+
+	//transform lights to tangent space
+
+	for(int i=0; i < lights.num_directionals; ++i)
+	{
+		directionalDirections[i] = TBNMat * lights.directional[i].direction;
+	}
+
 	for(int i=0; i < lights.num_points; ++i)
 	{
 		pointPositions[i] = TBNMat * lights.points[i].position;

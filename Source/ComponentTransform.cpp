@@ -1,5 +1,8 @@
 #include "ComponentTransform.h"
 
+#include "Application.h"
+#include "ModuleSpacePartitioning.h"
+
 #include "GameObject.h"
 #include "ComponentLight.h"
 
@@ -7,6 +10,7 @@
 #include "imgui_internal.h"
 #include "Math/MathFunc.h"
 #include "JSON.h"
+#include "AABBTree.h"
 
 
 ComponentTransform::ComponentTransform(GameObject* gameobject, const float4x4 &transform) : Component(gameobject, ComponentType::Transform)
@@ -96,9 +100,14 @@ void ComponentTransform::UpdateTransform()
 	up = global.Col3(1);
 	right = global.Col3(0);
 
-	if (gameobject->hasLight)
+	if (gameobject->treeNode != nullptr && gameobject->hasLight)
 	{
 		gameobject->light->CalculateGuizmos();
+		if (!gameobject->treeNode->aabb.ContainsQTree(gameobject->bbox))
+		{
+			App->spacePartitioning->aabbTreeLighting.ReleaseNode(gameobject->treeNode);
+			App->spacePartitioning->aabbTreeLighting.InsertGO(gameobject);
+		}
 	}
 }
 
@@ -151,6 +160,11 @@ void ComponentTransform::SetGlobalTransform(const float4x4 & newglobal, const fl
 	if (gameobject->hasLight)
 	{
 		gameobject->light->CalculateGuizmos();
+		if (!gameobject->treeNode->aabb.Contains(gameobject->bbox))
+		{
+			App->spacePartitioning->aabbTreeLighting.ReleaseNode(gameobject->treeNode);
+			App->spacePartitioning->aabbTreeLighting.InsertGO(gameobject);
+		}
 	}
 }
 

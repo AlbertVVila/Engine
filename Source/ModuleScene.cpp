@@ -114,7 +114,10 @@ bool ModuleScene::CleanUp()
 	}
 	root->children.clear();
 	
+	LOG("Reset volumetric AABBTree");
 	App->spacePartitioning->aabbTree.Reset();
+	LOG("Reset lighting AABBTree");
+	App->spacePartitioning->aabbTreeLighting.Reset();
 
 	selected = nullptr;
 	maincamera = nullptr;
@@ -564,7 +567,10 @@ void ModuleScene::ClearScene()
 	dynamicGOs.clear();
 	staticFilteredGOs.clear();
 	dynamicFilteredGOs.clear();
+	LOG("Reset volumetric AABBTree");
 	App->spacePartitioning->aabbTree.Reset();
+	LOG("Reset lighting AABBTree");
+	App->spacePartitioning->aabbTreeLighting.Reset();
 	App->spacePartitioning->kDTree.Calculate();
 }
 

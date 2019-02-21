@@ -62,38 +62,24 @@ void AABBTree::GetIntersections(T &intersector, std::unordered_set<GameObject*> 
 	while (!S.empty())
 	{
 		AABBTreeNode* node = S.top();
-		S.pop();
-		if (node->go != nullptr && !node->aabb.Contains(node->go->bbox)) //AABBTree WatchDog - If the gameobject is outside his AABB should be reinserted && rechecked
+		S.pop();		
+		if (node->isLeaf && node->aabb.ContainsQTree(intersector)) //check if is not outside
 		{
-			ReleaseNode(node);
-			InsertGO(node->go);
-			while (!S.empty()) //dirty tree - Should begin to find again
-			{
-				S.pop();
-			}
-			S.push(treeRoot);
+			intersections.insert(node->go);
 		}
-		else
+		if (!node->isLeaf)
 		{
-			if (node->isLeaf && node->aabb.ContainsQTree(intersector)) //check if is not outside
+			if (node->leftSon != nullptr && node->leftSon->aabb.ContainsQTree(intersector))
 			{
-				intersections.insert(node->go);
+				S.push(node->leftSon);
 			}
-			if (!node->isLeaf)
+
+			if (node->rightSon != nullptr && node->rightSon->aabb.ContainsQTree(intersector))
 			{
-				if (node->leftSon != nullptr && node->leftSon->aabb.ContainsQTree(intersector))
-				{
-					S.push(node->leftSon);
-				}
-
-				if (node->rightSon != nullptr && node->rightSon->aabb.ContainsQTree(intersector))
-				{
-					S.push(node->rightSon);
-				}
-
+				S.push(node->rightSon);
 			}
+
 		}
 	}
-
 }
 #endif

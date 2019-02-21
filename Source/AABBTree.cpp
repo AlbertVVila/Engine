@@ -4,6 +4,7 @@
 #include "ModuleScene.h"
 #include "ComponentLight.h"
 #include "Globals.h"
+#include "debugDraw.h"
 
 void AABBTree::Init()
 {
@@ -105,9 +106,7 @@ void AABBTree::InsertGO(GameObject* go)
 }
 
 void AABBTree::Draw() const
-{
-	//Blocked by: https://trello.com/c/eM3mfc3I/1-opengl-directmode-to-debugdraw
-	/*
+{	
 	static ddVec3 colors[6] = { dd::colors::AliceBlue, dd::colors::BlueViolet, dd::colors::Crimson, dd::colors::DarkOliveGreen, dd::colors::DarkViolet, dd::colors::GhostWhite };
 	std::stack<AABBTreeNode*> S;
 	S.push(treeRoot);
@@ -128,8 +127,7 @@ void AABBTree::Draw() const
 
 		dd::aabb(node->aabb.minPoint, node->aabb.maxPoint, color);
 
-	}
-	*/
+	}	
 }
 void AABBTree::RecalculateBoxes(AABBTreeNode* node)
 {

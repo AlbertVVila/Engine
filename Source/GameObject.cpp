@@ -180,19 +180,35 @@ Component * GameObject::CreateComponent(ComponentType type)
 		this->transform = (ComponentTransform*)component;
 		break;
 	case ComponentType::Renderer:
-		component = new ComponentRenderer(this);		
+		if (!hasLight)
+		{
+			component = new ComponentRenderer(this);
+		}
+		else
+		{
+			LOG("Light + Renderer combination not allowed");			
+		}
 		break;
 	case ComponentType::Light:
-		if (!hasLight)
+		if (!hasLight && !isVolumetric)
 		{
 			component = new ComponentLight(this);
 			App->scene->lights.push_back((ComponentLight*)component);
 			hasLight = true;
 			light = (ComponentLight*)component;
+			light->CalculateGuizmos();
+			App->spacePartitioning->aabbTreeLighting.InsertGO(this);
 		}
 		else
 		{
-			LOG("Only 1 light component allowed");
+			if (isVolumetric)
+			{
+				LOG("Light + Renderer combination not allowed");
+			}
+			else
+			{
+				LOG("Only 1 light component allowed");
+			}
 		}
 		break;
 	case ComponentType::Camera:
@@ -252,15 +268,33 @@ std::vector<Component*> GameObject::GetComponentsInChildren(ComponentType type) 
 
 void GameObject::RemoveComponent(const Component & component)
 {
+	Component* trash = nullptr;
+	std::vector<Component*>::iterator trashIt;
 	for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
 		if (*it == &component)
 		{
-			(*it)->CleanUp();
-			components.erase(it);
-			RELEASE(*it);
-			return;
+			(*it)->CleanUp();			
+			trash = *it; // Delete elements of an iterated container causes crashes inside the loop
+			trashIt = it;			
 		}
+	}
+	if (trash != nullptr) // Safely remove component
+	{
+		if (trash->type == ComponentType::Light)
+		{
+			App->spacePartitioning->aabbTreeLighting.ReleaseNode(treeNode);
+			hasLight = false;
+			treeNode = nullptr;
+		}		
+		else if (trash->type == ComponentType::Renderer && treeNode != nullptr)
+		{
+			App->spacePartitioning->aabbTree.ReleaseNode(treeNode);
+			treeNode = nullptr;
+			isVolumetric = false;
+		}
+		components.erase(trashIt);
+		RELEASE(trash);
 	}
 }
 
@@ -334,102 +368,101 @@ void GameObject::UpdateModel(unsigned int shader) const
 
 void GameObject::SetLightUniforms(unsigned shader) const
 {
-	ComponentLight* directional = App->scene->GetDirectionalLight();
-	if (directional != nullptr)
+	std::unordered_set<GameObject*> lights;
+	App->spacePartitioning->aabbTreeLighting.GetIntersections(bbox, lights);
+	unsigned directionals = 0u;
+	unsigned points = 0u;
+	unsigned spots = 0u;
+	char buffer[32];
+	//LOG("%s got %d lights", name.c_str(), lights.size());
+	for (GameObject* go : lights)
 	{
-		glUniform3fv(glGetUniformLocation(shader,
-			"lights.directional.direction"), 1, (GLfloat*)&directional->direction);
+		assert(go->light != nullptr);
+		switch (go->light->lightType)
+		{
+		case LightType::DIRECTIONAL:
+			sprintf(buffer, "lights.directional[%d].direction", directionals);
+			glUniform3fv(glGetUniformLocation(shader,
+				buffer), 1, (GLfloat*)&go->light->direction);
+			sprintf(buffer, "lights.directional[%d].color", directionals);
+			glUniform3fv(glGetUniformLocation(shader,
+				buffer), 1, (GLfloat*)&go->light->color);
+			++directionals;
+			break;
+		case LightType::POINT:
+			sprintf(buffer, "lights.points[%d].position", points);
+			glUniform3fv(glGetUniformLocation(shader,
+				buffer), 1, (GLfloat*)&go->light->position);
 
-		glUniform3fv(glGetUniformLocation(shader,
-			"lights.directional.color"), 1, (GLfloat*)&directional->color);
-	}
-	else
-	{
-		float3 noDirectional = float3::zero;
-		glUniform3fv(glGetUniformLocation(shader,
-			"lights.directional.direction"), 1, (GLfloat*)&noDirectional);
-	}
+			memset(buffer, 0, 32);
+			sprintf(buffer, "lights.points[%d].direction", points);
+			glUniform3fv(glGetUniformLocation(shader,
+				buffer), 1, (GLfloat*)&go->light->direction);
 
+			memset(buffer, 0, 32);
+			sprintf(buffer, "lights.points[%d].color", points);
+			glUniform3fv(glGetUniformLocation(shader,
+				buffer), 1, (GLfloat*)&go->light->color);
 
-	int i = 0;
-	for (const auto & spot : App->scene->GetClosestLights(LightType::SPOT, transform->position))
-	{
-		char buffer[32];
+			memset(buffer, 0, 32);
+			sprintf(buffer, "lights.points[%d].radius", points);
+			glUniform1f(glGetUniformLocation(shader,
+				buffer), go->light->pointSphere.r);
 
-		sprintf(buffer, "lights.spots[%d].position", i);
-		glUniform3fv(glGetUniformLocation(shader,
-			buffer), 1, (GLfloat*)&spot->position);
+			memset(buffer, 0, 32);
+			sprintf(buffer, "lights.points[%d].intensity", points);
+			glUniform1f(glGetUniformLocation(shader,
+				buffer), go->light->intensity);
 
-		memset(buffer, 0, 32);
-		sprintf(buffer, "lights.spots[%d].direction", i);
-		glUniform3fv(glGetUniformLocation(shader,
-			buffer), 1, (GLfloat*)&spot->direction);
+			++points;
+			break;
+		case LightType::SPOT:
+			sprintf(buffer, "lights.spots[%d].position", spots);
+			glUniform3fv(glGetUniformLocation(shader,
+				buffer), 1, (GLfloat*)&go->light->position);
 
-		memset(buffer, 0, 32);
-		sprintf(buffer, "lights.spots[%d].color", i);
-		glUniform3fv(glGetUniformLocation(shader,
-			buffer), 1, (GLfloat*)&spot->color);
+			memset(buffer, 0, 32);
+			sprintf(buffer, "lights.spots[%d].direction", spots);
+			glUniform3fv(glGetUniformLocation(shader,
+				buffer), 1, (GLfloat*)&go->light->direction);
 
-		memset(buffer, 0, 32);
-		sprintf(buffer, "lights.spots[%d].radius", i);
-		glUniform1f(glGetUniformLocation(shader,
-			buffer), spot->pointSphere.r);
+			memset(buffer, 0, 32);
+			sprintf(buffer, "lights.spots[%d].color", spots);
+			glUniform3fv(glGetUniformLocation(shader,
+				buffer), 1, (GLfloat*)&go->light->color);
 
-		memset(buffer, 0, 32);
-		sprintf(buffer, "lights.spots[%d].intensity", i);
-		glUniform1f(glGetUniformLocation(shader,
-			buffer), spot->intensity);
+			memset(buffer, 0, 32);
+			sprintf(buffer, "lights.spots[%d].radius", spots);
+			glUniform1f(glGetUniformLocation(shader,
+				buffer), go->light->pointSphere.r);
 
-		memset(buffer, 0, 32);
-		float innerRad = cosf(math::DegToRad(spot->inner));
-		sprintf(buffer, "lights.spots[%d].inner", i);
-		glUniform1fv(glGetUniformLocation(shader,
-			buffer), 1, (GLfloat*)&innerRad);
+			memset(buffer, 0, 32);
+			sprintf(buffer, "lights.spots[%d].intensity", spots);
+			glUniform1f(glGetUniformLocation(shader,
+				buffer), go->light->intensity);
 
-		memset(buffer, 0, 32);
-		float outerRad = cosf(math::DegToRad(spot->outer));
-		sprintf(buffer, "lights.spots[%d].outer", i);
-		glUniform1fv(glGetUniformLocation(shader,
-			buffer), 1, (GLfloat*)&outerRad);
+			memset(buffer, 0, 32);
+			float innerRad = cosf(math::DegToRad(go->light->inner));
+			sprintf(buffer, "lights.spots[%d].inner", spots);
+			glUniform1fv(glGetUniformLocation(shader,
+				buffer), 1, (GLfloat*)&innerRad);
 
-		++i;
-	}
-	glUniform1i(glGetUniformLocation(shader,
-		"lights.num_spots"), i);
+			memset(buffer, 0, 32);
+			float outerRad = cosf(math::DegToRad(go->light->outer));
+			sprintf(buffer, "lights.spots[%d].outer", spots);
+			glUniform1fv(glGetUniformLocation(shader,
+				buffer), 1, (GLfloat*)&outerRad);
 
-	i = 0;
-	for (const auto & point : App->scene->GetClosestLights(LightType::POINT, transform->position))
-	{
-		char buffer[32];
-
-		sprintf(buffer, "lights.points[%d].position", i);
-		glUniform3fv(glGetUniformLocation(shader,
-			buffer), 1, (GLfloat*)&point->position);
-
-		memset(buffer, 0, 32);
-		sprintf(buffer, "lights.points[%d].direction", i);
-		glUniform3fv(glGetUniformLocation(shader,
-			buffer), 1, (GLfloat*)&point->direction);
-
-		memset(buffer, 0, 32);
-		sprintf(buffer, "lights.points[%d].color", i);
-		glUniform3fv(glGetUniformLocation(shader,
-			buffer), 1, (GLfloat*)&point->color);
-
-		memset(buffer, 0, 32);
-		sprintf(buffer, "lights.points[%d].radius", i);
-		glUniform1f(glGetUniformLocation(shader,
-			buffer), point->pointSphere.r);
-
-		memset(buffer, 0, 32);
-		sprintf(buffer, "lights.points[%d].intensity", i);
-		glUniform1f(glGetUniformLocation(shader,
-			buffer), point->intensity);
-
-		++i;
+			++spots;
+			break;
+		}
 	}
 	glUniform1i(glGetUniformLocation(shader,
-		"lights.num_points"), i);
+		"lights.num_directionals"), directionals);
+	glUniform1i(glGetUniformLocation(shader,
+		"lights.num_points"), points);
+	glUniform1i(glGetUniformLocation(shader,
+		"lights.num_spots"), spots);	
 }
 
 AABB GameObject::GetBoundingBox() const
@@ -547,6 +580,16 @@ void GameObject::Load(JSON_value *value)
 	}
 
 	transform->UpdateTransform();
+
+	if (hasLight)
+	{
+		if (treeNode != nullptr)
+		{
+			App->spacePartitioning->aabbTreeLighting.ReleaseNode(treeNode);
+		}
+		light->CalculateGuizmos();
+		App->spacePartitioning->aabbTreeLighting.InsertGO(this);
+	}
 }
 
 bool GameObject::IsParented(const GameObject & gameobject) const
