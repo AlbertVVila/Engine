@@ -13,7 +13,8 @@
 ModuleFileSystem::ModuleFileSystem()
 {
 	PHYSFS_init(NULL);
-	baseDir = PHYSFS_getBaseDir();
+	PHYSFS_setWriteDir("../Game");
+	baseDir = PHYSFS_getWriteDir();
 	PHYSFS_addToSearchPath(baseDir.c_str(), 1);
 
 	PHYSFS_mount(LIBRARY, nullptr, 1);
