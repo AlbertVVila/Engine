@@ -15,6 +15,7 @@ public:
 	void TextureSelector(unsigned i, std::string &current_texture, int id);
 	void SetCurrentTextures();	// Sets current textures strings with the corresponding texture file string
 	void NewMaterial();
+	bool Exists(const char* material);
 	void CleanUp();
 
 public:

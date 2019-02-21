@@ -233,7 +233,16 @@ void MaterialEditor::NewMaterial()
 		ImGui::Separator();
 		ImGui::InputText("NewName", newName, 64);
 
-		if (ImGui::Button("Save", ImVec2(120, 0)))
+		bool exists = false;
+
+		if (Exists(newName))
+		{
+			std::string nameTest = newName + std::string(" already exists!");
+			ImGui::Text(nameTest.c_str());
+			exists = true;
+		}
+
+		if (ImGui::Button("Save", ImVec2(120, 0)) && !exists)
 		{
 			Material* newMaterialCreated = new Material(newName);
 			newMaterialCreated->Save();
@@ -250,6 +259,13 @@ void MaterialEditor::NewMaterial()
 		}
 		ImGui::EndPopup();
 	}
+}
+
+bool MaterialEditor::Exists(const char * material)
+{
+	char* data = nullptr;
+	std::string materialName(material);
+	return App->fsystem->Load((MATERIALS + materialName + JSONEXT).c_str(), &data);
 }
 
 void MaterialEditor::CleanUp()
