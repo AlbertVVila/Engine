@@ -4,6 +4,7 @@
 #include "ModuleScene.h"
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
+#include "ModuleTime.h"
 
 #include "GameObject.h"
 #include "ComponentCamera.h"
@@ -295,7 +296,7 @@ void Viewport::DrawImGuizmo(const ComponentCamera & cam)
 	if (App->scene->selected != nullptr)
 	{
 
-		ImGuizmo::Enable(!App->scene->selected->isStatic);
+		ImGuizmo::Enable(!App->scene->selected->isStatic || App->time->gameState == GameState::RUN);
 
 		float4x4 model = App->scene->selected->GetGlobalTransform();
 		float4x4 view = cam.GetViewMatrix();
