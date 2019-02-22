@@ -90,7 +90,7 @@ ResourceTexture * ModuleTextures::GetTexture(const char * file) const
 	}
 	else
 	{
-		textureResource->IncreaseReferences();
+		textureResource->SetReferences(textureResource->GetReferences() + 1);
 		return textureResource;
 	}
 }

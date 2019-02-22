@@ -34,16 +34,15 @@ public:
 	Resource(unsigned uid, TYPE type);
 	virtual ~Resource();
 
-	inline TYPE GetType() const;
-	unsigned GetUID() const;
-	const char* GetFile() const;
-	void SetFile(const char* newFile);
-	const char* GetExportedFile() const;
-	void SetExportedFile(const char* newExportedFile);
-	virtual inline bool IsLoadedToMemory() const;
-	unsigned CountReferences() const;
-	void IncreaseReferences();
-	void DecreaseReferences();
+	inline TYPE			GetType() const	{return type;};
+	inline unsigned		GetUID() const	{ return UID; };
+	inline const char*	GetFile() const	{ return file.c_str(); };
+	inline void			SetFile(const char* newFile) { file = newFile; };
+	inline const char*	GetExportedFile() const {return exportedFile.c_str();};
+	inline void			SetExportedFile(const char* newExportedFile) { exportedFile = newExportedFile; };
+	inline bool			IsLoadedToMemory() const { return loaded > 0; };
+	inline unsigned		GetReferences() const { return loaded; };
+	inline void			SetReferences(unsigned references) { loaded = references; };
 	
 	virtual void Save(JSON_value &config) const;
 	virtual void Load(const JSON_value &config);

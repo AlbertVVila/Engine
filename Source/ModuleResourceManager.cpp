@@ -293,9 +293,9 @@ bool ModuleResourceManager::DeleteTexture(unsigned uid)
 	std::map<unsigned, Resource*>::iterator it = resources.find(uid);
 	if (it != resources.end())
 	{
-		if (it->second->CountReferences() > 1)
+		if (it->second->GetReferences() > 1)
 		{
-			it->second->DecreaseReferences();
+			it->second->SetReferences(it->second->GetReferences() - 1);
 			return true;
 		}
 		else if(it->second->IsLoadedToMemory())

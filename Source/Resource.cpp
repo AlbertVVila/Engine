@@ -10,57 +10,6 @@ Resource::~Resource()
 {
 }
 
-inline TYPE Resource::GetType() const
-{
-	return type;
-}
-
-unsigned Resource::GetUID() const
-{
-	return UID;
-}
-
-const char* Resource::GetFile() const
-{
-	return file.c_str();
-}
-
-void Resource::SetFile(const char* newFile)
-{
-	file = newFile;
-}
-
-const char* Resource::GetExportedFile() const
-{
-	return exportedFile.c_str();
-}
-
-void Resource::SetExportedFile(const char* newExportedFile)
-{
-	exportedFile = newExportedFile;
-}
-
-bool Resource::IsLoadedToMemory() const
-{
-	return (loaded > 0) ? true : false;
-}
-
-void Resource::IncreaseReferences()
-{
-	++loaded;
-}
-
-unsigned Resource::CountReferences() const
-{
-	return loaded;
-}
-
-void Resource::DecreaseReferences()
-{
-	if(loaded > 1)
-		--loaded;
-}
-
 void Resource::Save(JSON_value &config) const
 {
 	JSON_value *resource = config.CreateValue();
