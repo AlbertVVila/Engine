@@ -330,19 +330,25 @@ void ModuleScene::AddToSpacePartition(GameObject *gameobject)
 	}
 }
 
-void ModuleScene::DeleteFromSpacePartition(GameObject &gameobject)
+void ModuleScene::DeleteFromSpacePartition(GameObject* gameobject)
 {
-	if (gameobject.isStatic && gameobject.isVolumetric)
+	if (gameobject->isStatic && gameobject->isVolumetric)
 	{
-		staticGOs.erase(&gameobject);
+		staticGOs.erase(gameobject);
 	}
 	else
 	{
-		if (gameobject.isVolumetric && gameobject.treeNode != nullptr)
+		if (gameobject->isVolumetric && gameobject->treeNode != nullptr)
 		{
-			App->spacePartitioning->aabbTree.ReleaseNode(gameobject.treeNode);
+			App->spacePartitioning->aabbTree.ReleaseNode(gameobject->treeNode);
+		}
+		if (gameobject->hasLight && gameobject->treeNode != nullptr)
+		{
+			App->spacePartitioning->aabbTreeLighting.ReleaseNode(gameobject->treeNode);
 		}
 	}
+	dynamicFilteredGOs.erase(gameobject);
+	staticFilteredGOs.erase(gameobject);
 }
 
 void ModuleScene::ResetQuadTree() //deprecated

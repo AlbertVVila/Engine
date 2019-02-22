@@ -570,7 +570,7 @@ bool AABB::Contains(const Polyhedron &polyhedron) const
 
 bool AABB::ContainsQTree(const AABB &aabb) const
 {
-	return Contains(aabb) || Intersects(aabb);
+	return Contains(aabb) || Intersects(aabb) || aabb.Contains(*this);
 }
 bool AABB::ContainsQTree(const LineSegment &line) const
 {

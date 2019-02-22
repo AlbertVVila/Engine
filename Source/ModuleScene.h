@@ -42,7 +42,7 @@ public:
 	GameObject * CreateGameObject(const char * name, GameObject* parent);
 
 	void AddToSpacePartition(GameObject * gameobject);
-	void DeleteFromSpacePartition(GameObject & gameobject);
+	void DeleteFromSpacePartition(GameObject* gameobject);
 	void ResetQuadTree(); //deprecated
 
 	void FrustumCulling(const Frustum &frustum);

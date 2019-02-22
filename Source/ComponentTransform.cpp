@@ -110,7 +110,7 @@ void ComponentTransform::UpdateTransform()
 		if (gameobject->treeNode != nullptr && gameobject->hasLight)
 		{
 			gameobject->light->CalculateGuizmos();
-			if (!gameobject->treeNode->aabb.ContainsQTree(gameobject->bbox))
+			if (!gameobject->treeNode->aabb.Contains(gameobject->bbox))
 			{
 				App->spacePartitioning->aabbTreeLighting.ReleaseNode(gameobject->treeNode);
 				App->spacePartitioning->aabbTreeLighting.InsertGO(gameobject);
@@ -182,7 +182,7 @@ void ComponentTransform::SetGlobalTransform(const float4x4 & newglobal, const fl
 		if (gameobject->treeNode != nullptr && gameobject->hasLight)
 		{
 			gameobject->light->CalculateGuizmos();
-			if (!gameobject->treeNode->aabb.ContainsQTree(gameobject->bbox))
+			if (!gameobject->treeNode->aabb.Contains(gameobject->bbox))
 			{
 				App->spacePartitioning->aabbTreeLighting.ReleaseNode(gameobject->treeNode);
 				App->spacePartitioning->aabbTreeLighting.InsertGO(gameobject);

@@ -42,6 +42,11 @@ void AABBTree::InsertGO(GameObject* go)
 {	
 	assert(go != nullptr); //tried to insert a null GameObject in the AABBTree
 	
+	if (go->hasLight)
+	{
+		go->light->CalculateGuizmos();
+	}
+
 	std::stack<AABBTreeNode*> S;
 	
 	//tree root behaves different it could not be binary

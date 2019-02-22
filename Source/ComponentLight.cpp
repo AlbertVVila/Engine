@@ -75,6 +75,9 @@ void ComponentLight::DrawProperties()
 				{
 					lightType = (LightType)n;
 					ResetValues();
+					App->spacePartitioning->aabbTreeLighting.ReleaseNode(gameobject->treeNode);
+					CalculateGuizmos();
+					App->spacePartitioning->aabbTreeLighting.InsertGO(gameobject);
 				}
 				if (is_selected)
 					ImGui::SetItemDefaultFocus();
@@ -84,23 +87,31 @@ void ComponentLight::DrawProperties()
 		
 
 		ImGui::ColorEdit3("Color", (float*)&color);
-
+		
+		bool somethingChanged = false;
+		
 		if (lightType != LightType::DIRECTIONAL)
 		{
 			ImGui::Text("Attenuation");
 			if (lightType == LightType::POINT)
-				ImGui::DragFloat("Radius", &pointSphere.r);
+				somethingChanged = somethingChanged || ImGui::DragFloat("Radius", &pointSphere.r);
 			else
-				ImGui::DragFloat("Range", &range);
+				somethingChanged = somethingChanged || ImGui::DragFloat("Range", &range);
 
-			ImGui::DragFloat("Intensity", &intensity);
+			somethingChanged = somethingChanged || ImGui::DragFloat("Intensity", &intensity);
 		}
 
 		if (lightType == LightType::SPOT)
 		{
 			ImGui::Text("Angle");
-			ImGui::DragFloat("Inner", (float*)&inner, 0.1f, 0.f, 90.f);
-			ImGui::DragFloat("Outer", (float*)&outer, 0.1f, 0.f, 90.f);
+			somethingChanged = somethingChanged || ImGui::DragFloat("Inner", (float*)&inner, 0.1f, 0.f, 90.f);
+			somethingChanged = somethingChanged || ImGui::DragFloat("Outer", (float*)&outer, 0.1f, 0.f, 90.f);
+		}
+
+		if (somethingChanged)
+		{
+			App->spacePartitioning->aabbTreeLighting.ReleaseNode(gameobject->treeNode);
+			App->spacePartitioning->aabbTreeLighting.InsertGO(gameobject);
 		}
 	}
 }
@@ -158,7 +169,17 @@ void ComponentLight::Save(JSON_value * value) const
 
 ComponentLight * ComponentLight::Clone() const
 {
-	return new ComponentLight(*this);
+	ComponentLight* newLight = new ComponentLight(gameobject);
+	newLight->range = range;
+	newLight->inner = inner;
+	newLight->outer = outer;
+	newLight->intensity = intensity;
+	newLight->type = type;
+	newLight->lightType = lightType;
+	newLight->color = color;
+	newLight->direction = direction;
+	newLight->CalculateGuizmos();
+	return newLight;
 }
 
 void ComponentLight::ResetValues()

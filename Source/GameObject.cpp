@@ -160,6 +160,34 @@ void GameObject::Update()
 			(*it_child)->copy_flag = false;
 			GameObject *copy = new GameObject(**it_child);
 			copy->parent = this;
+			copy->isVolumetric = (*it_child)->isVolumetric;
+			copy->hasLight = (*it_child)->hasLight;
+			assert(!(copy->isVolumetric && copy->hasLight)); //incompatible component configuration
+			if (copy->isVolumetric)
+			{
+				if (isStatic)
+				{
+					App->scene->staticGOs.insert(copy);
+				}
+				else
+				{
+					App->spacePartitioning->aabbTree.InsertGO(copy);
+				}
+			}
+			if (copy->hasLight)
+			{
+				for (Component* component : copy->components)
+				{
+					if (component->type == ComponentType::Light)
+					{
+						copy->light = (ComponentLight*)component;
+					}
+				}
+				App->spacePartitioning->aabbTreeLighting.InsertGO(copy);
+				App->scene->lights.push_back(copy->light);
+			}
+			copy->transform->position += copy->transform->front;
+			copy->transform->UpdateTransform();
 			this->children.push_back(copy);
 		}
 		if ((*it_child)->moved_flag) //Moved GO
@@ -175,8 +203,9 @@ void GameObject::Update()
 		{
 			(*it_child)->delete_flag = false;
 			(*it_child)->CleanUp();
-			delete *it_child;
-			children.erase(it_child++);
+			App->scene->DeleteFromSpacePartition(*it_child);
+			delete *it_child;			
+			children.erase(it_child++);			
 		}
 		else
 		{
@@ -211,7 +240,6 @@ Component * GameObject::CreateComponent(ComponentType type)
 			App->scene->lights.push_back((ComponentLight*)component);
 			hasLight = true;
 			light = (ComponentLight*)component;
-			light->CalculateGuizmos();
 			App->spacePartitioning->aabbTreeLighting.InsertGO(this);
 		}
 		else
@@ -656,7 +684,7 @@ void GameObject::DrawHierarchy(GameObject * selected)
 			if (selected == this)
 			{
 				App->scene->selected = nullptr;
-			}
+			}			
 		}
 		ImGui::EndPopup();
 	}

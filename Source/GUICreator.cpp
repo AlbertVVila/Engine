@@ -1,10 +1,12 @@
 #include "Application.h"
 #include "ModuleScene.h"
+#include "ModuleSpacePartitioning.h"
 
 #include "MaterialEditor.h"
 #include "GameObject.h"
 #include "GUICreator.h"
 #include "imgui.h"
+#include "AABBTree.h"
 
 GUICreator::GUICreator()
 {
@@ -39,6 +41,8 @@ void GUICreator::CreateElements(GameObject* go)
 					ComponentLight* lighttype = (ComponentLight *)light->CreateComponent(ComponentType::Light);
 					lighttype->lightType = (LightType)i;
 					App->scene->Select(light);
+					App->spacePartitioning->aabbTreeLighting.ReleaseNode(light->treeNode); //The aabbtree should be updated with the new light type
+					App->spacePartitioning->aabbTreeLighting.InsertGO(light);
 				}
 			}
 			ImGui::EndMenu();
