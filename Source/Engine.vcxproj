@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -41,13 +41,15 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>..\Game</OutDir>
+    <OutDir>../Release</OutDir>
     <TargetName>RealEngine</TargetName>
+    <IntDir>../Release</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>..\Game</OutDir>
+    <OutDir>../Debug</OutDir>
     <CodeAnalysisRuleSet>CppCoreCheckLifetimeRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
+    <IntDir>../Debug</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -94,6 +96,7 @@
     <ClInclude Include="ComponentLight.h" />
     <ClInclude Include="ComponentRenderer.h" />
     <ClInclude Include="ComponentTransform.h" />
+    <ClInclude Include="debugdraw.h" />
     <ClInclude Include="debug_draw.hpp" />
     <ClInclude Include="FileExplorer.h" />
     <ClInclude Include="GameObject.h" />
@@ -161,6 +164,7 @@
     <ClInclude Include="MathGeoLib\include\Math\TransformOps.h" />
     <ClInclude Include="MathGeoLib\include\Time\Clock.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="ModuleDebugDraw.h" />
     <ClInclude Include="ModuleFileSystem.h" />
     <ClInclude Include="JSON.h" />
     <ClInclude Include="FileImporter.h" />
@@ -247,6 +251,7 @@
     <ClCompile Include="MathGeoLib\include\Math\TransformOps.cpp" />
     <ClCompile Include="MathGeoLib\include\Time\Clock.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="ModuleDebugDraw.cpp" />
     <ClCompile Include="ModuleFileSystem.cpp" />
     <ClCompile Include="JSON.cpp" />
     <ClCompile Include="FileImporter.cpp" />
