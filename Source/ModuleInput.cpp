@@ -163,10 +163,15 @@ const fPoint& ModuleInput::GetMousePosition() const
 	return mouse;
 }
 
-const void ModuleInput::GetMouseMotion(float &x, float &y) const
+const void ModuleInput::SetMouseMotion(float &x, float &y) const
 {
 	x = mouse_motion.x;
 	y = mouse_motion.y;
+}
+
+const fPoint & ModuleInput::GetMouseMotion() const
+{
+	return mouse_motion;
 }
 
 const float ModuleInput::GetMouseWheel() const
