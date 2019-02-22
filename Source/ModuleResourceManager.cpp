@@ -231,11 +231,13 @@ unsigned ModuleResourceManager::ImportFile(const char* newFileInAssets, const ch
 	unsigned ret = 0; 
 	bool success = false; 
 	std::string written_file = "";
+	std::string importedFilePath(filePath);
+	Resource* resource = CreateNewResource(type);
 
 	switch (type) 
 	{
 	case TYPE::TEXTURE: 
-		success = App->textures->ImportImage(newFileInAssets, filePath, written_file.c_str());
+		success = App->textures->ImportImage(newFileInAssets, filePath, written_file, (ResourceTexture*)resource);
 		break;
 	case TYPE::MESH:	
 
@@ -247,9 +249,12 @@ unsigned ModuleResourceManager::ImportFile(const char* newFileInAssets, const ch
 	// If export was successful, create a new resource
 	if (success) 
 	{ 
-		Resource* res = CreateNewResource(type);
-		res->SetFile(newFileInAssets);
-		res->SetExportedFile(written_file.c_str());
+		resource->SetFile((importedFilePath + newFileInAssets).c_str());
+		resource->SetExportedFile(written_file.c_str());
+	}
+	else
+	{
+		RELEASE(resource);
 	}
 	return ret;
 }

@@ -55,8 +55,8 @@ bool ResourceTexture::LoadInMemory()
 		height = ilGetInteger(IL_IMAGE_HEIGHT);
 		depth = ilGetInteger(IL_IMAGE_DEPTH);
 		format = ilGetInteger(IL_IMAGE_FORMAT);
-		
-		//TODO: Switch to save format variable
+		bytes = ilGetInteger(GL_UNSIGNED_BYTE);
+		mips = 0u;
 
 		glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
 
@@ -72,15 +72,17 @@ bool ResourceTexture::LoadInMemory()
 		}
 		else if (App->textures->filter_type == FILTERTYPE::NEAREST_MIPMAP_NEAREST)
 		{
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			glGenerateMipmap(GL_TEXTURE_2D);
-		}
-		else
-		{
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_NEAREST);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 			glGenerateMipmap(GL_TEXTURE_2D);
+			mips = 1u;
+		}
+		else
+		{
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glGenerateMipmap(GL_TEXTURE_2D);
+			mips = 2u;
 		}
 
 		ilDeleteImages(1, &gpuID);
@@ -117,7 +119,7 @@ void ResourceTexture::Save(JSON_value &config) const
 	config.AddUint("Bytes", bytes);
 	config.AddUint("GpuID", gpuID);
 
-	config.AddUint("Format", (unsigned)format);
+	config.AddUint("Format", format);
 }
 
 void ResourceTexture::Load(const JSON_value &config)
@@ -131,5 +133,5 @@ void ResourceTexture::Load(const JSON_value &config)
 	bytes = config.GetUint("Bytes");
 	gpuID = config.GetUint("GpuID");
 
-	format = (FORMAT)config.GetUint("Format");
+	format = config.GetUint("Format");
 }

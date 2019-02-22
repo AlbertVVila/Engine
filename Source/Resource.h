@@ -34,18 +34,18 @@ public:
 	Resource(unsigned uid, TYPE type);
 	virtual ~Resource();
 
-	inline TYPE			GetType() const	{return type;};
-	inline unsigned		GetUID() const	{ return UID; };
-	inline const char*	GetFile() const	{ return file.c_str(); };
-	inline void			SetFile(const char* newFile) { file = newFile; };
-	inline const char*	GetExportedFile() const {return exportedFile.c_str();};
+	inline TYPE			GetType() const					{return type;};
+	inline unsigned		GetUID() const					{ return UID; };
+	inline const char*	GetFile() const					{ return file.c_str(); };
+	inline void			SetFile(const char* newFile)	{ file = newFile; };
+	inline const char*	GetExportedFile() const			{return exportedFile.c_str();};
 	inline void			SetExportedFile(const char* newExportedFile) { exportedFile = newExportedFile; };
-	inline bool			IsLoadedToMemory() const { return loaded > 0; };
-	inline unsigned		GetReferences() const { return loaded; };
-	inline void			SetReferences(unsigned references) { loaded = references; };
+	inline bool			IsLoadedToMemory() const		{ return loaded > 0; };
+	inline unsigned		GetReferences() const			{ return loaded; };
+	inline void			SetReferences(unsigned references)	{ loaded = references; };
 	
-	virtual void Save(JSON_value &config) const;
-	virtual void Load(const JSON_value &config);
+	virtual void Save(JSON_value& config) const;
+	virtual void Load(const JSON_value& config);
 	virtual bool LoadInMemory() = 0;
 	virtual void DeleteFromMemory() { loaded = 0; };
 

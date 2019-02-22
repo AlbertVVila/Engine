@@ -1,5 +1,4 @@
 #include "Resource.h"
-
 #include "JSON.h"
 
 Resource::Resource(unsigned uid, TYPE type): UID(uid), type(type)

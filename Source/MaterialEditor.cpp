@@ -97,7 +97,8 @@ void MaterialEditor::Draw()
 			TextureSelector((unsigned)TextureType::EMISSIVE, current_emissive);
 			ImGui::Separator();
 		}
-		if (ImGui::Button("Save", ImVec2(120, 0))) {
+		if (ImGui::Button("Save", ImVec2(120, 0))) 
+		{
 			material->Save();
 			CleanUp();
 		}

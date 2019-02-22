@@ -3,17 +3,6 @@
 
 #include "Resource.h"
 
-enum class FORMAT 
-{
-	COLOR_INDEX,
-	RGB,
-	RGBA,
-	BGR,
-	BGRA,
-	LUMINANCE,
-	UNKNOWN
-};
-
 class ResourceTexture : public Resource
 {
 public:
@@ -29,10 +18,10 @@ public:
 	unsigned width = 0u;
 	unsigned height = 0u;
 	unsigned depth = 0u;
-	unsigned mips = 0u;
+	unsigned mips = 0u;		// Type of mipmaps (None = 0, Nearest = 1, Linear = 2)
 	unsigned bytes = 0u;
 	unsigned gpuID = 0u;
-	FORMAT format = FORMAT::UNKNOWN;
+	unsigned format = 0u;
 };
 
 #endif __ResourceTexture_h__
