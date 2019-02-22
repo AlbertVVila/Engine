@@ -14,11 +14,6 @@
 
 typedef Script*(__cdecl *CreatePointer)();
 
-extern "C"
-{
-	Script* CreateScript();
-}
-
 ModuleScript::ModuleScript()
 {
 }
@@ -71,7 +66,7 @@ update_status ModuleScript::Update(float dt)
 	return UPDATE_CONTINUE;
 }
 
-void ModuleScript::LoadFromMemory(int resource)
+void ModuleScript::LoadFromMemory(int resource) //TODO: Load from memory in shipping build
 {
 	HRSRC hResource = FindResourceA(nullptr, MAKEINTRESOURCEA(resource), "DLL");
 	HGLOBAL hMemory = LoadResource(nullptr, hResource);
@@ -96,8 +91,6 @@ void ModuleScript::LoadFromMemory(int resource)
 	}
 }
 
-//void ModuleScript::Map
-
 Script* ModuleScript::AddScript(const std::string& script)
 {
 	HINSTANCE dll;
@@ -105,6 +98,7 @@ Script* ModuleScript::AddScript(const std::string& script)
 	if (dll_it != loadedDLLs.end())
 	{
 		dll = dll_it->second.first;
+		dll_it->second.second++;
 	}
 	else
 	{

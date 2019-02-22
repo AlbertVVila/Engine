@@ -18,6 +18,8 @@ class PlayerMovement_API PlayerMovement : public Script
 {
 public:
 	void Expose(ImGuiContext *context) override;
+
+	void Start() override;
 	void Update() override;
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value * json) override;

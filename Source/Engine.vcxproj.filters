@@ -618,7 +618,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="Engine - Master 1.rc">
+    <ResourceCompile Include="Engine.rc">
       <Filter>Resources</Filter>
     </ResourceCompile>
   </ItemGroup>

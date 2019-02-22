@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Archivo de inclusión generado de Microsoft Visual C++.
-// Usado por Engine - Master 1.rc
+// Usado por Engine.rc
 //
 #define IDR_DLL1                        101
 
