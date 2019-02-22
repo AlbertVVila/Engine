@@ -32,8 +32,6 @@ public:
 	void Load(const JSON_value &value) override;
 	void Save(JSON_value *value) const override;
 	void CalculateGuizmos();
-
-private:
 	void DrawDebug() const;
 	
 

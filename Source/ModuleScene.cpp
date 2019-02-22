@@ -173,6 +173,7 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 			{
 				light->DrawDebugLight();
 			}
+			App->spacePartitioning->aabbTreeLighting.Draw();
 		}
 	}
 	Frustum camFrustum = frustum;
@@ -206,6 +207,10 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 	if (go.drawBBox && isEditor)
 	{
 		go.DrawBBox();
+		if (go.light != nullptr)
+		{
+			go.light->DrawDebug();
+		}
 	}
 
 	ComponentRenderer* crenderer = (ComponentRenderer*)go.GetComponent(ComponentType::Renderer);

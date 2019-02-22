@@ -424,15 +424,24 @@ void GameObject::SetLightUniforms(unsigned shader) const
 		switch (go->light->lightType)
 		{
 		case LightType::DIRECTIONAL:
+			memset(buffer, 0, 32);
 			sprintf(buffer, "lights.directional[%d].direction", directionals);
 			glUniform3fv(glGetUniformLocation(shader,
 				buffer), 1, (GLfloat*)&go->light->direction);
+			
+			memset(buffer, 0, 32);
 			sprintf(buffer, "lights.directional[%d].color", directionals);
 			glUniform3fv(glGetUniformLocation(shader,
 				buffer), 1, (GLfloat*)&go->light->color);
+
+			memset(buffer, 0, 32);
+			sprintf(buffer, "lights.directional[%d].intensity", points);
+			glUniform1f(glGetUniformLocation(shader,
+				buffer), go->light->intensity);
 			++directionals;
 			break;
 		case LightType::POINT:
+			memset(buffer, 0, 32);
 			sprintf(buffer, "lights.points[%d].position", points);
 			glUniform3fv(glGetUniformLocation(shader,
 				buffer), 1, (GLfloat*)&go->light->position);
@@ -460,6 +469,7 @@ void GameObject::SetLightUniforms(unsigned shader) const
 			++points;
 			break;
 		case LightType::SPOT:
+			memset(buffer, 0, 32);
 			sprintf(buffer, "lights.spots[%d].position", spots);
 			glUniform3fv(glGetUniformLocation(shader,
 				buffer), 1, (GLfloat*)&go->light->position);
@@ -547,7 +557,7 @@ void GameObject::DrawBBox() const
 
 	ComponentRenderer *renderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
 	if (renderer == nullptr) return;
-
+	
 	renderer->mesh->DrawBbox(App->program->defaultShader->id, bbox);
 }
 

@@ -27,6 +27,7 @@ struct DirLight
 {
 	vec3 direction;
 	vec3 color;
+	float intensity;
 };
 
 struct PointLight
@@ -179,7 +180,7 @@ void main()
 		vec3 L = directionalDirections[i];
 		vec3 H = normalize(V + L);	
 
-		vec3 radiance = lights.directional[i].color;				
+		vec3 radiance = lights.directional[i].color * lights.directional[i].intensity;				
 		
 		vec3 F = FSchlick(max(dot(H, V), 0.0), F0);   
 
@@ -236,6 +237,7 @@ void main()
 	}
 	
 	color += emissive_color;
+	color *= lights.ambient_color;
 	color = vec3(pow(color.r, (1.0 / 2.2)), pow(color.g, (1.0 / 2.2)), pow(color.b, (1.0 / 2.2)));
 	/*color += 	 emissive_color + //emissive
 				 diffuse_color.rgb * lights.ambient_color * occlusion_color * material.k_ambient; //ambient

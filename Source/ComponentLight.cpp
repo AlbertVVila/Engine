@@ -96,10 +96,10 @@ void ComponentLight::DrawProperties()
 			if (lightType == LightType::POINT)
 				somethingChanged = somethingChanged || ImGui::DragFloat("Radius", &pointSphere.r);
 			else
-				somethingChanged = somethingChanged || ImGui::DragFloat("Range", &range);
-
-			somethingChanged = somethingChanged || ImGui::DragFloat("Intensity", &intensity);
+				somethingChanged = somethingChanged || ImGui::DragFloat("Range", &range);			
 		}
+
+		somethingChanged = somethingChanged || ImGui::DragFloat("Intensity", &intensity);
 
 		if (lightType == LightType::SPOT)
 		{
@@ -118,8 +118,7 @@ void ComponentLight::DrawProperties()
 
 void ComponentLight::DrawDebugLight() const
 {
-	DrawDebug();
-	App->spacePartitioning->aabbTreeLighting.Draw();
+	DrawDebug();	
 }
 
 void ComponentLight::Load(const JSON_value & value)
@@ -134,8 +133,7 @@ void ComponentLight::Load(const JSON_value & value)
 
 	if (lightType != LightType::DIRECTIONAL)
 	{
-		pointSphere.r = value.GetFloat("radius");
-		intensity = value.GetFloat("intensity");		
+		pointSphere.r = value.GetFloat("radius");			
 		range = value.GetFloat("range");		
 	}
 
@@ -144,6 +142,7 @@ void ComponentLight::Load(const JSON_value & value)
 		inner = value.GetFloat("inner");
 		outer = value.GetFloat("outer");
 	}
+	intensity = value.GetFloat("intensity");
 }
 
 void ComponentLight::Save(JSON_value * value) const
@@ -156,7 +155,6 @@ void ComponentLight::Save(JSON_value * value) const
 	if (lightType != LightType::DIRECTIONAL)
 	{
 		value->AddFloat("radius", pointSphere.r);
-		value->AddFloat("intensity", intensity);
 		value->AddFloat("range", range);
 	}
 
@@ -165,6 +163,9 @@ void ComponentLight::Save(JSON_value * value) const
 		value->AddFloat("inner", inner);
 		value->AddFloat("outer", outer);
 	}
+
+	value->AddFloat("intensity", intensity);
+
 }
 
 ComponentLight * ComponentLight::Clone() const
@@ -195,6 +196,10 @@ void ComponentLight::DrawDebug() const
 {
 	switch (lightType)
 	{
+	case LightType::DIRECTIONAL:
+		dd::cone(gameobject->transform->GetGlobalPosition(), direction * App->renderer->current_scale, dd::colors::Green, App->renderer->current_scale, .01f);
+		dd::line(gameobject->transform->GetGlobalPosition(), gameobject->transform->GetGlobalPosition() + direction * App->renderer->current_scale * 10, dd::colors::Green);
+		break;
 	case LightType::POINT:
 		dd::sphere(pointSphere.pos, dd::colors::Gold, pointSphere.r);
 		dd::aabb(gameobject->bbox.minPoint, gameobject->bbox.maxPoint, dd::colors::BurlyWood);
