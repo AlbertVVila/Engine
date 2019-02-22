@@ -103,9 +103,15 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file)
 		//For now it loads each bone separately
 		if (aiscene.mMeshes[i]->HasBones())
 		{
+			//TODO: Generar array de bones tamaño numbones
+			
+
 			for (unsigned j = 0u; j < aiscene.mMeshes[i]->mNumBones; j++)
 			{
 				Bone* bone = new Bone();
+				//TODO: Array de bones.Addbone(*aiscene.mMeshes[i]->mBones[j])
+
+
 				unsigned boneSingleSize = GetSingleBoneSize(*aiscene.mMeshes[i]->mBones[j]);
 				char* boneSingleData = new char[boneSingleSize];
 				ImportSingleBone(*aiscene.mMeshes[i]->mBones[j], boneSingleData); //We import a single bone each time so we don't need to offset the data
@@ -128,7 +134,7 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file)
 		Animation* anim = new Animation();
 		unsigned animationSize = GetAnimationSize(*aiscene.mAnimations[i]);
 		char* animationData = new char[animationSize];
-
+		unsigned uid = App->scene->GetNewUID();
 		ImportAnimation(*aiscene.mAnimations[i], animationData);
 		anim->Load(animationData);
 	}
@@ -224,8 +230,8 @@ void FileImporter::ImportSingleBone(const aiBone& bone, char* data)
 		cursor += sizeof(float);
 	}
 
-	memcpy(cursor, &bone.mOffsetMatrix, sizeof(float4x4));
-	cursor += sizeof(float4x4);
+	memcpy(cursor, &bone.mOffsetMatrix, sizeof(math::float4x4));
+	cursor += sizeof(math::float4x4);
 }
 
 
@@ -300,7 +306,7 @@ unsigned FileImporter::GetBonesSize(const aiMesh &mesh) const
 	return size;
 }
 
-unsigned FileImporter::GetSingleBoneSize(const aiBone &bone) const
+unsigned FileImporter::GetSingleBoneSize(const aiBone& bone) const
 {
 	unsigned size = 0u;
 
@@ -308,7 +314,7 @@ unsigned FileImporter::GetSingleBoneSize(const aiBone &bone) const
 
 	size += sizeof(int) + (sizeof(int) + sizeof(float)) * bone.mNumWeights; //Number of affected vertex + their id and weights
 
-	size += sizeof(float4x4); //Offset matrix of the bone
+	size += sizeof(math::float4x4); //Offset matrix of the bone
 
 	return size;
 }

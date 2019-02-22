@@ -16,10 +16,9 @@ Bone::~Bone()
 void Bone::Load(const char* boneData, unsigned uid)
 {
 	if (boneData == nullptr) return;
-
-	const char* data = boneData; //We dont use data anywhere? Y tho?
 	
 	//Bone name
+	
 	char* newName = new char[30];
 
 	unsigned nameLength = *(int*)boneData;
@@ -38,8 +37,8 @@ void Bone::Load(const char* boneData, unsigned uid)
 	boneData += sizeof(int);
 
 	//Weights and Ids of such vertexes
-	this->vertexId = new int[numVertexAffected];
-	this->vertexWeight = new float[numVertexAffected];
+	vertexId = new int[numVertexAffected];
+	vertexWeight = new float[numVertexAffected];
 
 	for (int i = 0; i < numVertexAffected; i++)
 	{
@@ -63,8 +62,6 @@ void Bone::Load(const char* boneData, unsigned uid)
 	}
 
 	UID = uid;
-
-	RELEASE_ARRAY(data);
 }
 
 void Bone::Unload() 

@@ -14,11 +14,11 @@ class Bone
 		void Unload();
 	public:
 		char boneName[30];
-		unsigned UID = 0;
-		unsigned numVertexAffected = 0;
+		unsigned UID = 0u;
+		unsigned numVertexAffected = 0u;
 		int* vertexId = nullptr;
 		float* vertexWeight = nullptr;
-		float4x4 offsetMatrix = float4x4::zero;
+		math::float4x4 offsetMatrix = math::float4x4::zero;
 };
 
 #endif // __BONE_H__
