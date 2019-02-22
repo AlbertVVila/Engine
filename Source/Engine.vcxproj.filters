@@ -237,6 +237,9 @@
     <ClCompile Include="Bone.cpp">
       <Filter>Resources\Animation</Filter>
     </ClCompile>
+    <ClCompile Include="Animation.cpp">
+      <Filter>Resources\Animation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -547,6 +550,9 @@
       <Filter>Resources\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="Bone.h">
+      <Filter>Resources\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
       <Filter>Resources\Animation</Filter>
     </ClInclude>
   </ItemGroup>
