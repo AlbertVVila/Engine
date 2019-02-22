@@ -300,8 +300,8 @@ bool ModuleResourceManager::DeleteTexture(unsigned uid)
 		}
 		else if(it->second->IsLoadedToMemory())
 		{
-			RELEASE(it->second);
-			resources.erase(it);
+			it->second->DeleteFromMemory();
+			//RELEASE(it->second);
 			return true;
 		}
 	}

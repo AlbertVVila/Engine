@@ -561,8 +561,6 @@ bool ModuleScene::AddScene(const char& scene, const char& path)
 void ModuleScene::ClearScene()
 {
 	CleanUp();
-	Resource* res = App->resManager->CreateNewResource(TYPE::TEXTURE);
-	res->SetFile(NOCAMERA);
 	camera_notfound_texture = App->textures->GetTexture(NOCAMERA);
 	name.clear();	
 	staticGOs.clear();

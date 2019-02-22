@@ -36,6 +36,7 @@ public:
 	virtual void Save(JSON_value &config) const;
 	virtual void Load(const JSON_value &config);
 	virtual bool LoadInMemory() = 0;
+	virtual void DeleteFromMemory() { loaded = 0; };
 
 protected:
 	unsigned UID = 0u;

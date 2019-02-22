@@ -16,12 +16,7 @@ ResourceTexture::ResourceTexture(unsigned uid) : Resource(uid, TYPE::TEXTURE)
 
 ResourceTexture::~ResourceTexture()
 {
-
-	if (IsLoadedToMemory())
-	{
-		if (gpuID != 0)
-			glDeleteTextures(1, &gpuID);
-	}
+	DeleteFromMemory();
 }
 
 bool ResourceTexture::LoadInMemory()
@@ -99,6 +94,13 @@ bool ResourceTexture::LoadInMemory()
 		LOG("Error loading data: %s\n", iluErrorString(error));
 		return false;
 	}
+}
+
+void ResourceTexture::DeleteFromMemory()
+{
+	Resource::DeleteFromMemory();
+	if (gpuID != 0)
+		glDeleteTextures(1, &gpuID);
 }
 
 void ResourceTexture::Save(JSON_value &config) const
