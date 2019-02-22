@@ -16,6 +16,7 @@ public:
 	void SetCurrentTextures();	// Sets current textures strings with the corresponding texture file string
 	void NewMaterial();
 	bool Exists(const char* material);
+	void Save();
 	void CleanUp();
 
 public:

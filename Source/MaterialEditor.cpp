@@ -263,12 +263,17 @@ bool MaterialEditor::Exists(const char * material)
 	return App->fsystem->Load((MATERIALS + materialName + JSONEXT).c_str(), &data);
 }
 
-void MaterialEditor::CleanUp()
+void MaterialEditor::Save()
 {
 	if (!material->Compare(*previous))
 	{
 		material->Save();
 	}
+}
+
+void MaterialEditor::CleanUp()
+{
+	Save();
 
 	current_shader = None;
 	current_diffuse = None;
@@ -285,5 +290,5 @@ void MaterialEditor::CleanUp()
 		RELEASE(previous);
 	}
 
-	ImGui::CloseCurrentPopup();
+	//ImGui::CloseCurrentPopup();
 }

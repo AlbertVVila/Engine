@@ -174,6 +174,7 @@ update_status ModuleEditor::Update(float dt)
 				if (!App->scene->name.empty())
 				{
 					App->scene->SaveScene(*App->scene->root, App->scene->name.c_str());
+					materialEditor->Save();
 				}
 				else
 				{
@@ -286,6 +287,7 @@ void ModuleEditor::SceneSavePopup(bool savepopup)
 
 		if (ImGui::Button("OK", ImVec2(120, 0))) {
 			App->scene->SaveScene(*App->scene->root, App->scene->name.c_str());
+			materialEditor->Save();
 			if (defaultScene)
 			{
 				App->scene->defaultScene = name;
