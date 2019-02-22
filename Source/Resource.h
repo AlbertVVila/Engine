@@ -16,6 +16,18 @@ enum class TYPE
 	UNKNOWN
 };
 
+/*	A Resource is any file with a known format dropped in /Assets/
+	A copy of this will be automaticaly imported to /Library/ with 
+	the engine own format and a .meta file saved next to the /Assets/ file.
+
+	WARNING:
+	- Do not delete the .meta file.
+	- Do not delete the files saved in Library.
+	- Deleting, moving or renaming of any file located on /Assets/ from 
+	external file browsers is highly discouraged. Always use the engine
+	to perform this actions.
+*/
+
 class Resource
 {
 public:
@@ -40,11 +52,11 @@ public:
 
 protected:
 	unsigned UID = 0u;
-	std::string file;
-	std::string exportedFile;
-	unsigned loaded = 0;
+	std::string file;			// The file located in /Assets/
+	std::string exportedFile;	// The file located in /Library/
+	unsigned loaded = 0;		// Number of times this resource is being used in memory
 
-	TYPE type = TYPE::UNKNOWN;
+	TYPE type = TYPE::UNKNOWN;	// Type of resource
 };
 
 #endif __Resource_h__
