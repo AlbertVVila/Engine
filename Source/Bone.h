@@ -16,8 +16,8 @@ class Bone
 		char boneName[30];
 		unsigned UID = 0;
 		unsigned numVertexAffected = 0;
-		unsigned vertexId = 0;
-		float vertexWeight = 0.0f;
+		int* vertexId = nullptr;
+		float* vertexWeight = nullptr;
 		float4x4 offsetMatrix = float4x4::zero;
 };
 

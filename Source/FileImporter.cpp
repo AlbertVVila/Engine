@@ -84,16 +84,14 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file)
 	std::map<unsigned, unsigned> meshMap;
 	for (unsigned i = 0; i < aiscene.mNumMeshes; i++)
 	{
+		//-------------------------------MESH------------------------------------
 		//Separated data for both Bones and Mesh, data is now independent from one another
 		unsigned meshSize = GetMeshSize(*aiscene.mMeshes[i]);
-		/*unsigned bonesSize = GetBonesSize(*aiscene.mMeshes[i]); not currently in use*/
 
 		char* meshData = new char[meshSize];
-		/*char* bonesData = new char[bonesSize]; not currently in use*/
 
 		//Imports Mesh and Bones separately
 		ImportMesh(*aiscene.mMeshes[i], meshData);
-		/*ImportBones(*aiscene.mMeshes[i], bonesData); not currently in use */
 
 		Mesh* mesh = new Mesh();
 		unsigned uid = App->scene->GetNewUID();
@@ -102,7 +100,9 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file)
 		App->resManager->AddMesh(mesh);
 		meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->UID));
 
+		//------------------------BONES---------------------------------------
 		// This needs to load the entire bone estructure and then store it as a unique resource
+		//For now it loads each bone separately
 		for (unsigned j = 0u; j < aiscene.mMeshes[i]->mNumBones; j++)
 		{
 			Bone* bone = new Bone();
@@ -119,6 +119,7 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file)
 	GameObject* fake = new GameObject("fake", 0u);
 	ProcessNode(meshMap, aiscene.mRootNode, &aiscene, fake);
 
+	//-----------------------------ANIMATIONS---------------------------------------------------
 	std::map<unsigned, unsigned> animationMap;
 	for (unsigned i = 0u; i < aiscene.mNumAnimations; i++) 
 	{
@@ -208,11 +209,14 @@ void FileImporter::ImportSingleBone(const aiBone& bone, char* data)
 	memcpy(cursor, &bone.mNumWeights, sizeof(int));
 	cursor += sizeof(int);
 
-	memcpy(cursor, &bone.mWeights->mVertexId, sizeof(int));
-	cursor += sizeof(int);
+	for (unsigned i = 0u; i < bone.mNumWeights; i++)
+	{
+		memcpy(cursor, &bone.mWeights[i].mVertexId, sizeof(int));
+		cursor += sizeof(int);
 
-	memcpy(cursor, &bone.mWeights->mWeight, sizeof(float));
-	cursor += sizeof(float);
+		memcpy(cursor, &bone.mWeights[i].mWeight, sizeof(float));
+		cursor += sizeof(float);
+	}
 
 	memcpy(cursor, &bone.mOffsetMatrix, sizeof(float4x4));
 	cursor += sizeof(float4x4);
@@ -300,7 +304,11 @@ unsigned FileImporter::GetSingleBoneSize(const aiBone &bone) const
 {
 	unsigned size = 0u;
 
-	size += sizeof(int) + sizeof(char) * bone.mName.length + sizeof(int) + sizeof(int) +sizeof(float) + sizeof(float4x4);
+	size += sizeof(int) + sizeof(char) * bone.mName.length; //name and its size
+
+	size += sizeof(int) + (sizeof(int) + sizeof(float)) * bone.mNumWeights; //Number of affected vertex + their id and weights
+
+	size += sizeof(float4x4); //Offset matrix of the bone
 
 	return size;
 }

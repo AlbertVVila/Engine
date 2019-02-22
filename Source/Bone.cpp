@@ -19,6 +19,7 @@ void Bone::Load(const char* boneData, unsigned uid)
 
 	const char* data = boneData;
 	
+	//Bone name
 	char* newName = new char[30];
 
 	unsigned nameLength = *(int*)boneData;
@@ -32,15 +33,26 @@ void Bone::Load(const char* boneData, unsigned uid)
 		boneData += sizeof(char);
 	}
 
+	//Number of vertex affected
 	memcpy(&numVertexAffected, boneData, sizeof(int));
 	boneData += sizeof(int);
 
-	memcpy(&vertexId, boneData, sizeof(int));
-	boneData += sizeof(int);
+	//Weights and Ids of such vertexes
+	this->vertexId = new int[numVertexAffected];
+	this->vertexWeight = new float[numVertexAffected];
 
-	memcpy(&vertexWeight, boneData, sizeof(float));
-	boneData += sizeof(float);
+	for (int i = 0; i < numVertexAffected; i++)
+	{
+		memcpy(vertexId, boneData, sizeof(int));
+		boneData += sizeof(int);
+		vertexId++;
 
+		memcpy(vertexWeight, boneData, sizeof(float));
+		boneData += sizeof(float);
+		vertexWeight++;
+	}
+
+	//Offset matrix for the bone
 	for (int i = 0; i < 4; i++)
 	{
 		for (int j = 0; j < 4; j++)
@@ -52,49 +64,6 @@ void Bone::Load(const char* boneData, unsigned uid)
 
 	UID = uid;
 
-	//unsigned int numIndices = *(int*)meshData;
-	//meshData += sizeof(int);
-
-	//unsigned int numVertices = *(int*)meshData;
-	//meshData += sizeof(int);
-
-	//float* vertices = (float*)meshData;
-	//meshData += sizeof(float) * 3 * numVertices;
-
-	//bool hasNormals = *(bool*)meshData;
-	//meshData += sizeof(bool);
-
-	//float* normals = nullptr;
-	//if (hasNormals)
-	//{
-	//	normals = (float*)meshData;
-	//	meshData += sizeof(float) * 3 * numVertices;
-	//}
-
-	//bool hasTexCoords = *(bool*)meshData;
-	//meshData += sizeof(bool);
-
-	//float* texCoords = nullptr;
-	//if (hasTexCoords)
-	//{
-	//	texCoords = (float*)meshData;
-	//	meshData += sizeof(float) * 2 * numVertices;
-	//}
-
-	//int* indices = (int*)meshData;
-	//meshData += sizeof(int) * numIndices;
-
-	//UID = uid;
-	//this->numIndices = numIndices;
-	//this->numVertices = numVertices;
-
-	//this->vertices = new float[numVertices * 3];
-	//this->indices = new int[numIndices];
-	//memcpy(this->vertices, vertices, numVertices * sizeof(float) * 3);
-	//memcpy(this->indices, indices, numIndices * sizeof(int));
-	//ComputeBBox();
-	//SetMeshBuffers(hasNormals, hasTexCoords, normals, texCoords);
-	//SetBboxBuffers();
 }
 
 void Bone::Unload() 
