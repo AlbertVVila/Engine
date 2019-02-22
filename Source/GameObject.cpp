@@ -139,15 +139,7 @@ void GameObject::Update()
 	}
 	for (std::list<GameObject*>::iterator it_child = children.begin(); it_child != children.end();)
 	{
-		(*it_child)->Update();
 
-		if ((*it_child)->copy_flag) //Copy GO
-		{
-			(*it_child)->copy_flag = false;
-			GameObject *copy = new GameObject(**it_child);
-			copy->parent = this;
-			this->children.push_back(copy);
-		}
 		if ((*it_child)->moved_flag) //Moved GO
 		{
 			for (auto child : (*it_child)->children)
@@ -156,6 +148,16 @@ void GameObject::Update()
 			}
 			(*it_child)->UpdateBBox();
 			(*it_child)->moved_flag = false;
+		}
+
+		(*it_child)->Update(); //Update after moved_flag check
+
+		if ((*it_child)->copy_flag) //Copy GO
+		{
+			(*it_child)->copy_flag = false;
+			GameObject *copy = new GameObject(**it_child);
+			copy->parent = this;
+			this->children.push_back(copy);
 		}
 		if ((*it_child)->delete_flag) //Delete GO
 		{
@@ -347,7 +349,7 @@ void GameObject::SetLightUniforms(unsigned shader) const
 
 
 	int i = 0;
-	for (const auto & spot : App->scene->GetClosestLights(LightType::SPOT, transform->position))
+	for (const auto & spot : App->scene->GetClosestLights(LightType::SPOT, transform->GetPosition()))
 	{
 		char buffer[32];
 
@@ -388,7 +390,7 @@ void GameObject::SetLightUniforms(unsigned shader) const
 		"lights.num_spots"), i);
 
 	i = 0;
-	for (const auto & point : App->scene->GetClosestLights(LightType::POINT, transform->position))
+	for (const auto & point : App->scene->GetClosestLights(LightType::POINT, transform->GetPosition()))
 	{
 		char buffer[32];
 

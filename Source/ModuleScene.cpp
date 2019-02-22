@@ -657,7 +657,7 @@ std::list<ComponentLight*> ModuleScene::GetClosestLights(LightType type, float3 
 	{
 		if (light->lightType == type && light->enabled && light->gameobject->transform != nullptr)
 		{
-			float distance = light->gameobject->transform->position.Distance(position);
+			float distance = light->gameobject->transform->GetPosition().Distance(position);
 			lightmap.insert(std::pair<float, ComponentLight*>(distance,light));
 		}
 	}

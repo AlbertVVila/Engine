@@ -134,7 +134,7 @@ void ComponentLight::Load(JSON_value* value)
 
 	lightType = (LightType)value->GetUint("Lighttype");
 	color = value->GetColor3("color");
-	position = gameobject->transform->position;
+	position = gameobject->transform->GetPosition();
 	direction = gameobject->transform->rotation*float3::unitZ;
 
 	if (lightType != LightType::DIRECTIONAL)

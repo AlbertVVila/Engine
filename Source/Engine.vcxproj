@@ -300,6 +300,11 @@
   <ItemGroup>
     <ResourceCompile Include="Engine - Master 1.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Scripts\BaseScript\BaseScript.vcxproj">
+      <Project>{fcf21eef-120d-460b-ba5b-96ca67f84365}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

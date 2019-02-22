@@ -5,6 +5,7 @@ class GameObject;
 class JSON_value;
 struct ImGuiContext;
 #include "BaseScript.h"
+#include "Math/float3.h"
 
 #ifdef PlayerMovement_EXPORTS
 #define PlayerMovement_API __declspec(dllexport)
@@ -23,6 +24,7 @@ public:
 
 private:
 	float speed = 2.0f;
+	float3 a = float3(0, 0, 0); //TODO ZERO
 };
 
 extern "C" PlayerMovement_API PlayerMovement* CreateScript();
