@@ -9,14 +9,6 @@
 #include "imgui.h"
 #include "JSON.h"
 
-Texture::~Texture()
-{
-	if (id != 0)
-	{
-		glDeleteTextures(1, &id);
-	}
-}
-
 ModuleTextures::ModuleTextures()
 {
 }

@@ -17,22 +17,6 @@ enum class FILTERTYPE
 	LINEAR_MIPMAP_LINEAR
 };
 
-// TODO: Deprecate and use ResourceTexture instead
-struct Texture
-{
-	unsigned id = 0;
-	unsigned width = 0;
-	unsigned height = 0;
-	std::string file;
-	Texture(unsigned id, unsigned width, unsigned height, std::string file) : id(id), width(width), height(height), file(file)
-	{}
-
-	Texture(std::string file) : file(file)
-	{}
-
-	~Texture();
-};
-
 class ModuleTextures : public Module
 {
 public:

@@ -6,7 +6,6 @@
 #include <map>
 #include <list>
 
-struct Texture;
 struct Shader;
 class Material;
 class Mesh;
