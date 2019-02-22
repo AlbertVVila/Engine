@@ -86,7 +86,8 @@ bool ResourceTexture::LoadInMemory()
 		ilDeleteImages(1, &gpuID);
 
 		glBindTexture(GL_TEXTURE_2D, 0);
-		return LoadToMemory();
+		IncreaseReferences();
+		return true;
 	}
 	else
 	{

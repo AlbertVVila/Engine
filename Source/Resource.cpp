@@ -40,20 +40,14 @@ void Resource::SetExportedFile(const char* newExportedFile)
 	exportedFile = newExportedFile;
 }
 
-inline bool Resource::IsLoadedToMemory() const
+bool Resource::IsLoadedToMemory() const
 {
 	return (loaded > 0) ? true : false;
 }
 
-bool Resource::LoadToMemory()
+void Resource::IncreaseReferences()
 {
-	if (IsLoadedToMemory())
-		return false;
-	else
-	{
-		++loaded;
-		return true;
-	}
+	++loaded;
 }
 
 unsigned Resource::CountReferences() const

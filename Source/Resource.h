@@ -28,9 +28,9 @@ public:
 	void SetFile(const char* newFile);
 	const char* GetExportedFile() const;
 	void SetExportedFile(const char* newExportedFile);
-	inline bool IsLoadedToMemory() const;
-	bool LoadToMemory();
+	virtual inline bool IsLoadedToMemory() const;
 	unsigned CountReferences() const;
+	void IncreaseReferences();
 	void DecreaseReferences();
 	
 	virtual void Save(JSON_value &config) const;

@@ -88,8 +88,11 @@ ResourceTexture * ModuleTextures::GetTexture(const char * file) const
 		else
 			return nullptr;
 	}
-	else	
+	else
+	{
+		textureResource->IncreaseReferences();
 		return textureResource;
+	}
 }
 
 unsigned ModuleTextures::LoadCubeMap(const std::string faces[]) const
