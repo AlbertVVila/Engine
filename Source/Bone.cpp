@@ -17,7 +17,7 @@ void Bone::Load(const char* boneData, unsigned uid)
 {
 	if (boneData == nullptr) return;
 
-	const char* data = boneData;
+	const char* data = boneData; //We dont use data anywhere? Y tho?
 	
 	//Bone name
 	char* newName = new char[30];
@@ -64,6 +64,7 @@ void Bone::Load(const char* boneData, unsigned uid)
 
 	UID = uid;
 
+	RELEASE_ARRAY(data);
 }
 
 void Bone::Unload() 

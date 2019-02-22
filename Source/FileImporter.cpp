@@ -13,6 +13,7 @@
 #include "Material.h"
 #include "Mesh.h"
 #include "Bone.h"
+#include "Animation.h"
 
 #include <assert.h>
 #include "assimp/cimport.h"
@@ -85,12 +86,9 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file)
 	for (unsigned i = 0; i < aiscene.mNumMeshes; i++)
 	{
 		//-------------------------------MESH------------------------------------
-		//Separated data for both Bones and Mesh, data is now independent from one another
 		unsigned meshSize = GetMeshSize(*aiscene.mMeshes[i]);
-
 		char* meshData = new char[meshSize];
 
-		//Imports Mesh and Bones separately
 		ImportMesh(*aiscene.mMeshes[i], meshData);
 
 		Mesh* mesh = new Mesh();
@@ -103,18 +101,22 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file)
 		//------------------------BONES---------------------------------------
 		// This needs to load the entire bone estructure and then store it as a unique resource
 		//For now it loads each bone separately
-		for (unsigned j = 0u; j < aiscene.mMeshes[i]->mNumBones; j++)
+		if (aiscene.mMeshes[i]->HasBones())
 		{
-			Bone* bone = new Bone();
-			unsigned boneSingleSize = GetSingleBoneSize(*aiscene.mMeshes[i]->mBones[j]); 
-			char* boneSingleData = new char[boneSingleSize];
-			ImportSingleBone(*aiscene.mMeshes[i]->mBones[j], boneSingleData); //We import a single bone each time so we don't need to offset the data
-			uid = App->scene->GetNewUID(); // every bone needs to have his own UID? 
-			//App->fsystem->Save((BONES + std::to_string(uid) + BONEEXTENSION).c_str(), bonesData, bonesSize); //Is this ok? :'D created extensions and stuff
-			bone->Load(boneSingleData, uid);
-			// App->resManager->AddBone(mesh); //Do we need the ress manager to load every bone?
-			// meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->UID));
+			for (unsigned j = 0u; j < aiscene.mMeshes[i]->mNumBones; j++)
+			{
+				Bone* bone = new Bone();
+				unsigned boneSingleSize = GetSingleBoneSize(*aiscene.mMeshes[i]->mBones[j]);
+				char* boneSingleData = new char[boneSingleSize];
+				ImportSingleBone(*aiscene.mMeshes[i]->mBones[j], boneSingleData); //We import a single bone each time so we don't need to offset the data
+				uid = App->scene->GetNewUID(); // every bone needs to have his own UID? 
+				//App->fsystem->Save((BONES + std::to_string(uid) + BONEEXTENSION).c_str(), bonesData, bonesSize); //Is this ok? :'D created extensions and stuff
+				bone->Load(boneSingleData, uid);
+				// App->resManager->AddBone(mesh); //Do we need the ress manager to load every bone?
+				// meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->UID));
+			}
 		}
+		
 	}
 	GameObject* fake = new GameObject("fake", 0u);
 	ProcessNode(meshMap, aiscene.mRootNode, &aiscene, fake);
@@ -123,7 +125,12 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file)
 	std::map<unsigned, unsigned> animationMap;
 	for (unsigned i = 0u; i < aiscene.mNumAnimations; i++) 
 	{
-		// ImportAnimation(*aiscene.mAnimations[i], data);
+		Animation* anim = new Animation();
+		unsigned animationSize = GetAnimationSize(*aiscene.mAnimations[i]);
+		char* animationData = new char[animationSize];
+
+		ImportAnimation(*aiscene.mAnimations[i], animationData);
+		anim->Load(animationData);
 	}
 
 	App->scene->SaveScene(*fake, *App->fsystem->GetFilename(file).c_str(), *SCENES); //TODO: Make AutoCreation of folders or check
@@ -185,13 +192,12 @@ void FileImporter::ImportMesh(const aiMesh& mesh, char* data)
 
 void FileImporter::ImportBones(const aiMesh& mesh, char* data)
 {
-	if (mesh.HasBones())
+	
+	for (int i = 0; i < mesh.mNumBones; i++)
 	{
-		for (int i = 0; i < mesh.mNumBones; i++)
-		{
-			ImportSingleBone(*mesh.mBones[i],data);
-		}
+		ImportSingleBone(*mesh.mBones[i],data);
 	}
+	
 }
 
 //For now it only saves the Name, for testing purposes, WIP saving all the other vbles
@@ -220,44 +226,38 @@ void FileImporter::ImportSingleBone(const aiBone& bone, char* data)
 
 	memcpy(cursor, &bone.mOffsetMatrix, sizeof(float4x4));
 	cursor += sizeof(float4x4);
-
-	//memcpy(cursor, &bone->mNumWeights, sizeof(unsigned));  //numWieghts
-	//cursor += sizeof(unsigned);
-	//memcpy(cursor, &bone->mOffsetMatrix, sizeof(aiMatrix4x4));  //offsetmatrix
-	//cursor += sizeof(aiMatrix4x4);
-
-	//for (unsigned j = 0u; j < bone->mNumWeights; j++)					//wieghts
-	//{
-	//	memcpy(cursor, &bone->mWeights[j], sizeof(aiVertexWeight));  //weights
-	//	cursor += sizeof(aiVertexWeight);
-
-	/*	memcpy(cursor, &bone->mWeights->mVertexId, sizeof(unsigned));
-	//	cursor += sizeof(unsigned);
-	//	memcpy(cursor, &bone->mWeights->mWeight, sizeof(float));
-	//	cursor += sizeof(float);*/
-	//}	
-
-
 }
 
 
-void FileImporter::ImportAnimation(const aiAnimation& animation, char* data) {
-	//TODO: as ImportMeshAndBones
+void FileImporter::ImportAnimation(const aiAnimation& animation, char* data) 
+{
+	char* cursor = data;
+
+	memcpy(cursor, &animation.mDuration, sizeof(double));
+	cursor += sizeof(double);
+
+	memcpy(cursor, &animation.mTicksPerSecond, sizeof(double));
+	cursor += sizeof(double);
+
+	memcpy(cursor, &animation.mNumChannels, sizeof(int));
+	cursor += sizeof(int);
+
+
+	//TODO: as ImportBones
 }
 
 //TODO: Obtain animations size in order to store their content
-unsigned FileImporter::GetAnimationSize(const aiAnimation& animation) const {
+unsigned FileImporter::GetAnimationSize(const aiAnimation& animation) const 
+{
 	unsigned size = 0u;
-	//unsigned int ranges[2] = { animation.mNumChannels, animation.mNumMeshChannels};
-	//size += sizeof(ranges); //numfaces + numvertices
-	//size += ranges[0] * 3 * sizeof(int); //indices
 
-	//size += sizeof(float)*ranges[1] * 3; //vertices
-	//size += sizeof(bool) * 2; //has normals + has tcoords
-	if (animation.mNumChannels < 0u)
-	{
-		size += sizeof(aiNodeAnim) * animation.mNumChannels;
-	}
+	size += sizeof(double) * 2 + sizeof(int); //Duration, ticks per second and number of channels
+
+
+	//if (animation.mNumChannels < 0u)
+	//{
+	//	size += sizeof(aiNodeAnim) * animation.mNumChannels;
+	//}
 
 	return size;
 }

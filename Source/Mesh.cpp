@@ -55,7 +55,7 @@ void Mesh::SetMesh(const char* meshData, unsigned uid)
 	assert(meshData != nullptr);
 	if (meshData == nullptr) return;
 
-	const char *data = meshData;
+	const char *data = meshData; //Does this make sense? we are not using data anywhere
 	
 	unsigned int numIndices = *(int*)meshData;
 	meshData += sizeof(int);
@@ -100,6 +100,8 @@ void Mesh::SetMesh(const char* meshData, unsigned uid)
 	ComputeBBox();
 	SetMeshBuffers(hasNormals, hasTexCoords, normals, texCoords);
 	SetBboxBuffers();
+
+	RELEASE_ARRAY(data);
 }
 
 void Mesh::SetMeshBuffers(bool hasNormals, bool hasTexCoords, float* normals, float* texCoords)

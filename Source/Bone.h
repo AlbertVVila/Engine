@@ -10,7 +10,7 @@ class Bone
 		~Bone();
 
 	public:
-		void Load(const char* meshData, unsigned uid);
+		void Load(const char* boneData, unsigned uid);
 		void Unload();
 	public:
 		char boneName[30];
