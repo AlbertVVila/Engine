@@ -29,16 +29,16 @@ bool ResourceTexture::LoadInMemory()
 	unsigned imageID;
 
 	char *data;
-	std::string filename(file);
-	unsigned size = App->fsystem->Load((TEXTURES + filename).c_str(), &data);
+	std::string filename(exportedFileName);
+	unsigned size = App->fsystem->Load((TEXTURES + filename + TEXTUREEXT).c_str(), &data);
 
 	ilGenImages(1, &imageID); 		// Generate the image ID
 	ilBindImage(imageID); 			// Bind the image
 	success = ilLoadL(IL_DDS, data, size);
-	RELEASE_ARRAY(data);
 
 	if (success)
 	{
+		RELEASE_ARRAY(data);
 		glGenTextures(1, &gpuID);
 
 		glBindTexture(GL_TEXTURE_2D, gpuID);

@@ -38,8 +38,8 @@ public:
 	inline unsigned		GetUID() const					{ return UID; };
 	inline const char*	GetFile() const					{ return file.c_str(); };
 	inline void			SetFile(const char* newFile)	{ file = newFile; };
-	inline const char*	GetExportedFile() const			{return exportedFile.c_str();};
-	inline void			SetExportedFile(const char* newExportedFile) { exportedFile = newExportedFile; };
+	inline const char*	GetExportedFile() const			{return exportedFileName.c_str();};
+	inline void			SetExportedFile(const char* newExportedFile) { exportedFileName = newExportedFile; };
 	inline bool			IsLoadedToMemory() const		{ return loaded > 0; };
 	inline unsigned		GetReferences() const			{ return loaded; };
 	inline void			SetReferences(unsigned references)	{ loaded = references; };
@@ -51,11 +51,11 @@ public:
 
 protected:
 	unsigned UID = 0u;
-	std::string file;			// The file located in /Assets/
-	std::string exportedFile;	// The file located in /Library/
-	unsigned loaded = 0;		// Number of times this resource is being used in memory
+	std::string file;				// The file located in /Assets/ (Path + filename + extension)
+	std::string exportedFileName;	// The name of the file located in /Library/
+	unsigned loaded = 0;			// Number of times this resource is being used in memory
 
-	TYPE type = TYPE::UNKNOWN;	// Type of resource
+	TYPE type = TYPE::UNKNOWN;		// Type of resource
 };
 
 #endif __Resource_h__

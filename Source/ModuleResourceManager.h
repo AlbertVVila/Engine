@@ -22,11 +22,6 @@ public:
 
 	bool Start() override;
 
-	// Deprecated Texture functions
-	/*Texture * GetTexture(std::string filename) const;
-	void AddTexture(Texture * texture);
-	void DeleteTexture(std::string filename);*/
-
 	Shader* GetProgram(std::string filename) const;
 	std::list<Shader*>GetAllPrograms() const;
 
@@ -34,6 +29,7 @@ public:
 
 	void DeleteProgram(std::string filename);
 
+	// About to be deprecated for the new ResourceManager
 	Material * GetMaterial(std::string filename) const;
 
 	void AddMaterial(Material * material);
@@ -50,20 +46,16 @@ public:
 	unsigned Find(const char* fileInAssets);
 	unsigned ImportFile(const char* newFileInAssets, const char* filePath, TYPE type, bool force = false);
 	unsigned GenerateNewUID();
-	//const Resource* Get(unsigned uid) const;
 	Resource* Get(unsigned uid);
 	Resource* CreateNewResource(TYPE type, unsigned forceUid = 0);
 
 	// Textures
-	bool DeleteTexture(unsigned uid);
+	bool DeleteTexture(unsigned uid);	// If references < 1 delete it from memory
 
 private:
-
-	unsigned last_uid = 1u;
 	std::map<unsigned, Resource*> resources;	// map<UID, pointer to resource>
 
-	// Deprecated
-	//std::map<std::string, std::pair<unsigned, Texture*>> textureResources; //filename , times used, texture pointer
+	// About to be deprecated for the new ResourceManager
 	std::map<std::string, std::pair<unsigned, Shader*>> shaderResources; //filename , times used, shader
 	std::map<std::string, std::pair<unsigned, Material*>> materialResources; //filename , times used, material
 	std::map<unsigned, std::pair<unsigned, Mesh*>> meshResources; // uid, times used, mesh

@@ -187,10 +187,10 @@ void MaterialEditor::SetCurrentTextures()
 	ResourceTexture* emissive_texture = material->GetTexture(TextureType::EMISSIVE);
 
 	// Set current textures strings
-	if (diffuse_texture != nullptr)		{ current_diffuse	= App->fsystem->GetFilename(diffuse_texture->GetFile()); }
-	if (specular_texture != nullptr)	{ current_specular	= App->fsystem->GetFilename(specular_texture->GetFile()); }
-	if (occlusion_texture != nullptr)	{ current_occlusion = App->fsystem->GetFilename(occlusion_texture->GetFile()); }
-	if (emissive_texture != nullptr)	{ current_emissive	= App->fsystem->GetFilename(emissive_texture->GetFile()); }
+	if (diffuse_texture != nullptr)		{ current_diffuse	= diffuse_texture->GetExportedFile(); }
+	if (specular_texture != nullptr)	{ current_specular	= specular_texture->GetExportedFile(); }
+	if (occlusion_texture != nullptr)	{ current_occlusion = occlusion_texture->GetExportedFile(); }
+	if (emissive_texture != nullptr)	{ current_emissive	= emissive_texture->GetExportedFile(); }
 }
 
 void MaterialEditor::CleanUp()

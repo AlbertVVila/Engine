@@ -32,7 +32,7 @@ bool ModuleResourceManager::Start()
 	for each (std::string file in files)
 	{
 		Resource* res = CreateNewResource(TYPE::TEXTURE);
-		res->SetFile(file.c_str());
+		res->SetExportedFile(App->fsystem->GetFilename(file.c_str()).c_str());
 		//res->exportedFile = written_file;
 	}
 	return true;
@@ -218,7 +218,7 @@ unsigned ModuleResourceManager::Find(const char* fileInAssets)
 {
 	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
 	{
-		if (strcmp(it->second->GetFile(), fileInAssets) == 0)
+		if (strcmp(it->second->GetExportedFile(), fileInAssets) == 0)
 		{
 			return it->first;
 		}
@@ -306,7 +306,6 @@ bool ModuleResourceManager::DeleteTexture(unsigned uid)
 		else if(it->second->IsLoadedToMemory())
 		{
 			it->second->DeleteFromMemory();
-			//RELEASE(it->second);
 			return true;
 		}
 	}

@@ -73,8 +73,7 @@ ResourceTexture * ModuleTextures::GetTexture(const char * file) const
 	assert(file != NULL);
 
 	// Look for it on the resource list
-	std::string fileName(file);
-	unsigned uid = App->resManager->Find((fileName + TEXTUREEXT).c_str());
+	unsigned uid = App->resManager->Find(file);
 	if (uid == 0) 
 		return nullptr;
 		

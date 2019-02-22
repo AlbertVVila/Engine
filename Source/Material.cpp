@@ -29,7 +29,7 @@ Material::Material(const Material& material)
 	{
 		if (material.textures[i] != nullptr)
 		{
-			textures[i] = App->textures->GetTexture(App->fsystem->GetFilename(material.textures[i]->GetFile()).c_str());
+			textures[i] = App->textures->GetTexture(material.textures[i]->GetExportedFile());
 		}
 	}
 
@@ -131,19 +131,19 @@ void Material::Save() const
 	
 	if (textures[(unsigned)TextureType::DIFFUSE] != nullptr)
 	{
-		materialJSON->AddString("diffuse", App->fsystem->GetFilename(textures[(unsigned)TextureType::DIFFUSE]->GetFile()).c_str());
+		materialJSON->AddString("diffuse", textures[(unsigned)TextureType::DIFFUSE]->GetFile());
 	}
 	if (textures[(unsigned)TextureType::SPECULAR] != nullptr)
 	{
-		materialJSON->AddString("specular", App->fsystem->GetFilename(textures[(unsigned)TextureType::SPECULAR]->GetFile()).c_str());
+		materialJSON->AddString("specular", textures[(unsigned)TextureType::SPECULAR]->GetFile());
 	}
 	if (textures[(unsigned)TextureType::OCCLUSION] != nullptr)
 	{
-		materialJSON->AddString("occlusion", App->fsystem->GetFilename(textures[(unsigned)TextureType::OCCLUSION]->GetFile()).c_str());
+		materialJSON->AddString("occlusion", textures[(unsigned)TextureType::OCCLUSION]->GetFile());
 	}
 	if (textures[(unsigned)TextureType::EMISSIVE] != nullptr)
 	{
-		materialJSON->AddString("emissive", App->fsystem->GetFilename(textures[(unsigned)TextureType::EMISSIVE]->GetFile()).c_str());
+		materialJSON->AddString("emissive", textures[(unsigned)TextureType::EMISSIVE]->GetFile());
 	}
 	
 	if (shader != nullptr)
@@ -177,7 +177,7 @@ void Material::Reset(const Material & material)
 		}
 		if (material.textures[i] != nullptr)
 		{
-			textures[i] = App->textures->GetTexture(App->fsystem->GetFilename(material.textures[i]->GetFile()).c_str());
+			textures[i] = App->textures->GetTexture(material.textures[i]->GetExportedFile());
 		}
 	}
 	diffuse_color = material.diffuse_color;
