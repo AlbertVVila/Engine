@@ -70,20 +70,32 @@ bool FileImporter::ImportFBX(const char* fbxfile, const char* folder)
 	if (fbxfile == nullptr) return false;
 
 	std::string file(fbxfile);
+	std::vector<unsigned> meshesUID;
+	std::vector<unsigned> animationsUID;
+	std::vector<unsigned> bonesUID;
+
 	const aiScene* scene = aiImportFile((folder+ file).c_str(), aiProcess_Triangulate);
 	if (scene != nullptr)
 	{
 		LOG("Imported FBX %s", fbxfile);
-		return ImportScene(*scene, fbxfile);
+		return ImportScene(*scene, fbxfile, meshesUID, animationsUID, bonesUID);
 	}
 	LOG("Error importing FBX %s", fbxfile);
 	return false;
 }
 
-bool FileImporter::ImportScene(const aiScene& aiscene, const char* file)
+bool FileImporter::ImportScene(const aiScene& aiscene, const char* file, 
+	std::vector<unsigned>& meshesUID, std::vector<unsigned>& animationsUID, 
+	std::vector<unsigned>& bonesUID)
 {
+
+	std::vector<std::string> boneNames;
 	std::map<unsigned, unsigned> meshMap;
-	for (unsigned i = 0; i < aiscene.mNumMeshes; i++)
+	std::map<std::string*, unsigned> boneMap;
+
+	std::vector<unsigned> rBonesUIDs;
+
+	for (unsigned i = 0u; i < aiscene.mNumMeshes; i++)
 	{
 		//-------------------------------MESH------------------------------------
 		unsigned meshSize = GetMeshSize(*aiscene.mMeshes[i]);
@@ -95,6 +107,7 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file)
 		unsigned uid = App->scene->GetNewUID();
 		App->fsystem->Save((MESHES + std::to_string(uid)+ MESHEXTENSION).c_str(), meshData, meshSize);
 		mesh->SetMesh(meshData, uid); //No longer deallocates data
+		// meshesUID.push_back(uid); //same as below?
 		App->resManager->AddMesh(mesh);
 		meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->UID));
 
@@ -103,23 +116,9 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file)
 		//For now it loads each bone separately
 		if (aiscene.mMeshes[i]->HasBones())
 		{
-			//TODO: Generar array de bones tamaño numbones
-			
-
 			for (unsigned j = 0u; j < aiscene.mMeshes[i]->mNumBones; j++)
 			{
-				Bone* bone = new Bone();
-				//TODO: Array de bones.Addbone(*aiscene.mMeshes[i]->mBones[j])
-
-
-				unsigned boneSingleSize = GetSingleBoneSize(*aiscene.mMeshes[i]->mBones[j]);
-				char* boneSingleData = new char[boneSingleSize];
-				ImportSingleBone(*aiscene.mMeshes[i]->mBones[j], boneSingleData); //We import a single bone each time so we don't need to offset the data
-				uid = App->scene->GetNewUID(); // every bone needs to have his own UID? 
-				//App->fsystem->Save((BONES + std::to_string(uid) + BONEEXTENSION).c_str(), bonesData, bonesSize); //Is this ok? :'D created extensions and stuff
-				bone->Load(boneSingleData, uid);
-				// App->resManager->AddBone(mesh); //Do we need the ress manager to load every bone?
-				// meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->UID));
+				rBonesUIDs = ImportBones(*aiscene.mMeshes[i], bonesUID, boneMap, boneNames);
 			}
 		}
 		
@@ -134,7 +133,7 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file)
 		Animation* anim = new Animation();
 		unsigned animationSize = GetAnimationSize(*aiscene.mAnimations[i]);
 		char* animationData = new char[animationSize];
-		unsigned uid = App->scene->GetNewUID();
+
 		ImportAnimation(*aiscene.mAnimations[i], animationData);
 		anim->Load(animationData);
 	}
@@ -196,12 +195,63 @@ void FileImporter::ImportMesh(const aiMesh& mesh, char* data)
 
 }
 
-void FileImporter::ImportBones(const aiMesh& mesh, char* data)
+std::vector<unsigned> FileImporter::ImportBones(const aiMesh& mesh, 
+	std::vector<unsigned>& bonesUID, std::map<std::string*, unsigned>& boneMap,
+	std::vector<std::string>& boneNames)
 {
 	
 	for (int i = 0; i < mesh.mNumBones; i++)
 	{
-		ImportSingleBone(*mesh.mBones[i],data);
+		std::vector<unsigned> mBonesUIds;
+
+		/*ImportSingleBone(*mesh.mBones[i], data);*/
+
+		aiBone* bone = mesh.mBones[i];
+		std::string boneName = (bone->mName.length > 0) ? bone->mName.C_Str() : "Bone"; // Use fileName+Stuff
+		boneNames.push_back(boneName);
+		// Comprobar que el nombre del name no existe en el array de bones, si existe darle un +1 or sthmng
+		// App->fileSystem->getAvailableNameFromArray(bonesNames, boneName);
+
+
+		//std::string exportedFile;
+		Bone* boneResource = nullptr;
+		// check if the bone is used by any animations of the fbx
+		//if (App->animations->importBones(bone, UID, exportedFile))
+		//{
+
+		unsigned uid = App->scene->GetNewUID();
+		mBonesUIds.push_back(uid);
+		bonesUID.push_back(uid);
+
+		std::string* nameAlloc = new std::string(boneName); 
+		boneMap[nameAlloc] = uid;
+		// Relevo
+		bonesNames.push_back(nameAlloc);
+
+		boneResource = (ResourceBone*)App->resources->AddResource(R_BONE, UID);
+		boneResource->name = bone->mName.C_Str();
+		boneResource->file = path;
+		boneResource->exported_file = exportedFile;
+		boneResource->boneMeshUID = meshUID;
+		//}
+
+		// Si existe el hueso metelo en el array
+		if (boneResource != nullptr)
+		{
+			rBonesUID.push_back(boneResource->UID);
+			rBones.push_back(boneResource);
+		}
+
+		//Bone* bone = new Bone();
+		//unsigned boneSingleSize = GetSingleBoneSize(*aiscene.mMeshes[i]->mBones[j]);
+		//char* boneSingleData = new char[boneSingleSize];
+		//ImportSingleBone(*aiscene.mMeshes[i]->mBones[j], boneSingleData); //We import a single bone each time so we don't need to offset the data
+		//uid = App->scene->GetNewUID(); // every bone needs to have his own UID? 
+		////App->fsystem->Save((BONES + std::to_string(uid) + BONEEXTENSION).c_str(), bonesData, bonesSize); //Is this ok? :'D created extensions and stuff
+		//bone->Load(boneSingleData, uid);
+		//// App->resManager->AddBone(mesh); //Do we need the ress manager to load every bone?
+		//// meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->UID));
+
 	}
 	
 }
@@ -289,7 +339,7 @@ unsigned FileImporter::GetMeshSize(const aiMesh &mesh) const
 	return size;
 }
 
-unsigned FileImporter::GetBonesSize(const aiMesh &mesh) const
+unsigned FileImporter::GetBonesSize(const aiMesh& mesh) const
 {
 
 	//Bones
