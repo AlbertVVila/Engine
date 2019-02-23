@@ -7,6 +7,7 @@ class ResourceTexture : public Resource
 {
 public:
 	ResourceTexture(unsigned uid);
+	ResourceTexture(const ResourceTexture& resource);
 	virtual ~ResourceTexture();
 
 	bool LoadInMemory() override;

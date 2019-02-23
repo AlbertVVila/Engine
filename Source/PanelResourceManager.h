@@ -13,6 +13,15 @@ public:
 	~PanelResourceManager();
 
 	void Draw() override;
+
+	void OpenResourceEditor(Resource* resource);
+
+public:
+
+	Resource* auxResource;
+	Resource* previous;
+
+	bool openEditor = false;
 };
 
 #endif __PanelResourceManager_h__

@@ -8,9 +8,10 @@ class ResourceMesh : public Resource
 {
 public:
 	ResourceMesh(unsigned uid);
+	ResourceMesh(const ResourceMesh& resource);
 	virtual ~ResourceMesh();
 
-	//bool LoadInMemory() override;
+	bool LoadInMemory() override { return false; };
 	void Save(JSON_value &config) const override;
 	void Load(const JSON_value &config) override;
 

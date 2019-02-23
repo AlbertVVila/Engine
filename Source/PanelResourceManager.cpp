@@ -86,10 +86,99 @@ void PanelResourceManager::Draw()
 		// Edit button
 		if (ImGui::Button("Edit"))
 		{
-
+			openEditor = true;
 		}
 		ImGui::NextColumn();
 		
+		if (openEditor)
+			OpenResourceEditor(resource);
 	}
 	ImGui::End();
+}
+
+void PanelResourceManager::OpenResourceEditor(Resource* resource)
+{
+	if (!ImGui::IsPopupOpen(resourcePopup))
+	{
+		ImGui::OpenPopup(resourcePopup);
+		switch (resource->GetType())
+		{
+		case TYPE::TEXTURE:
+			previous = new ResourceTexture((ResourceTexture&)resource);
+			break;
+		case TYPE::MESH:
+			previous = new ResourceMesh((ResourceMesh&)resource);
+			break;
+		case TYPE::AUDIO:
+			ImGui::Text("Audio");
+			break;
+		case TYPE::SCENE:
+			ImGui::Text("Scene");
+			break;
+		case TYPE::BONE:
+			ImGui::Text("Bone");
+			break;
+		case TYPE::ANIMATION:
+			ImGui::Text("Animation");
+			break;
+		default:
+		case TYPE::UNKNOWN:
+			ImGui::Text("Unknown");
+			break;
+		}
+	}
+	ImGui::SetNextWindowSizeConstraints(ImVec2(200, 200), ImVec2(500, 500));
+	if (ImGui::BeginPopupModal(resourcePopup, NULL, ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		// UID
+		unsigned uid = auxResource->GetUID();
+		ImGui::Text("UID: %u", uid);
+
+		// File
+		char* file = new char[MAX_FILE];
+		strcpy(file, auxResource->GetFile());
+		ImGui::InputText("File", file, MAX_FILE);
+		delete[] file;
+
+		// Exported File
+		char *exportedFile = new char[MAX_FILE];
+		strcpy(exportedFile, auxResource->GetExportedFile());
+		ImGui::InputText("Exported File", exportedFile, MAX_FILE);
+		delete[] exportedFile;
+		ImGui::NextColumn();
+
+		// Loaded
+		int loaded = auxResource->GetReferences();
+		ImGui::InputInt("References", &loaded);
+		ImGui::NextColumn();
+
+		// Type
+		const char * types[] = { "Texture", "Mesh", "Audio", "Scene", "Bone", "Animation", "Unknown" };
+		int type = (int)auxResource->GetType();
+		if (ImGui::BeginCombo("Type", types[type]))
+		{
+			for (int n = 0; n < (int)TYPE::UNKNOWN; n++)
+			{
+				bool is_selected = (type == n);
+				if (ImGui::Selectable(types[n], is_selected) && type != n)
+				{
+					auxResource->SetType((TYPE)type);
+				}
+				if (is_selected)
+					ImGui::SetItemDefaultFocus();
+			}
+			ImGui::EndCombo();
+		}
+		if (ImGui::Button("Apply"))
+		{
+			resource = auxResource;
+			openEditor = false;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel"))
+		{
+			openEditor = false;
+		}
+		ImGui::EndPopup();
+	}
 }

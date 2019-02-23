@@ -5,6 +5,15 @@ Resource::Resource(unsigned uid, TYPE type): UID(uid), type(type)
 {
 }
 
+Resource::Resource(const Resource& resource)
+{
+	UID = resource.UID;
+	file = resource.file;
+	exportedFileName = resource.exportedFileName;
+	loaded = resource.loaded;
+	type = resource.type;
+}
+
 Resource::~Resource()
 {
 }

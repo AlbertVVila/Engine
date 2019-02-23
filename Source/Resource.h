@@ -32,9 +32,11 @@ class Resource
 {
 public:
 	Resource(unsigned uid, TYPE type);
+	Resource(const Resource& resource);
 	virtual ~Resource();
 
 	inline TYPE			GetType() const					{return type;};
+	inline void			SetType(TYPE newType)			{ type = newType; }
 	inline unsigned		GetUID() const					{ return UID; };
 	inline const char*	GetFile() const					{ return file.c_str(); };
 	inline void			SetFile(const char* newFile)	{ file = newFile; };

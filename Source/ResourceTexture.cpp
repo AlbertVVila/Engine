@@ -13,6 +13,17 @@ ResourceTexture::ResourceTexture(unsigned uid) : Resource(uid, TYPE::TEXTURE)
 {
 }
 
+ResourceTexture::ResourceTexture(const ResourceTexture& resource) : Resource(resource)
+{
+	width = resource.width;
+	height = resource.height;
+	depth = resource.depth;
+	mips = resource.mips;
+	bytes = resource.bytes;
+	gpuID = resource.gpuID;
+	format = resource.format;
+}
+
 
 ResourceTexture::~ResourceTexture()
 {
