@@ -10,6 +10,7 @@
 
 #include "Material.h"
 #include "Mesh.h"
+
 #include "Resource.h"
 #include "ResourceTexture.h"
 #include "ResourceMesh.h"
@@ -310,4 +311,14 @@ bool ModuleResourceManager::DeleteTexture(unsigned uid)
 		}
 	}
 	return false;
+}
+
+std::list<Resource*> ModuleResourceManager::GetResourcesList()
+{
+	std::list<Resource*> resourcesList;
+	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		resourcesList.push_back(it->second);
+	}
+	return resourcesList;
 }

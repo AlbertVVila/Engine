@@ -13,6 +13,7 @@ class PanelAbout;
 class PanelHardware;
 class PanelHierarchy;
 class PanelTime;
+class PanelResourceManager;
 class GameObject;
 class MaterialEditor;
 class FileExplorer;
@@ -39,6 +40,7 @@ private:
 	void CreateDockSpace() const;
 	void DrawPanels();
 	void WindowsMenu();
+	void ToolsMenu();
 	void HelpMenu();
 
 public:
@@ -49,6 +51,7 @@ public:
 	PanelHardware *hardware = nullptr;
 	PanelHierarchy *hierarchy = nullptr;
 	PanelTime *time = nullptr;
+	PanelResourceManager *resource = nullptr;
 
 	MaterialEditor *materialEditor = nullptr;
 	FileExplorer *fileExplorer = nullptr;

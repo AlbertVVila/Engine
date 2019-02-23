@@ -48,6 +48,8 @@ public:
 	Resource* Get(unsigned uid);
 	Resource* CreateNewResource(TYPE type, unsigned forceUid = 0);
 
+	std::list<Resource*> GetResourcesList();
+
 	// Textures
 	bool DeleteTexture(unsigned uid);	// If references < 1 delete it from memory
 
