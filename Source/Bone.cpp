@@ -13,24 +13,14 @@ Bone::~Bone()
 {
 }
 
-void Bone::Load(const char* boneData, unsigned uid)
+void Bone::Load(const char* boneData, unsigned uid, unsigned meshUid)
 {
 	if (boneData == nullptr) return;
 	
 	//Bone name
 	
-	char* newName = new char[30];
-
 	unsigned nameLength = *(int*)boneData;
-	boneData += sizeof(int);
-
-	for (int i = 0; i < nameLength; i++)
-	{
-		memcpy(newName, boneData, sizeof(char)); 
-		boneName[i] = *newName;
-		newName++;
-		boneData += sizeof(char);
-	}
+	boneData += sizeof(int) + sizeof(char) * nameLength;
 
 	//Number of vertex affected
 	memcpy(&numVertexAffected, boneData, sizeof(int));
@@ -62,6 +52,8 @@ void Bone::Load(const char* boneData, unsigned uid)
 	}
 
 	UID = uid;
+
+	meshUID = meshUid;
 }
 
 void Bone::Unload() 

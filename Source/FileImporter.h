@@ -9,6 +9,7 @@ struct aiMesh;
 struct aiBone;
 struct aiAnimation;
 class GameObject;
+class Bone;
 
 class FileImporter {
 public:
@@ -30,9 +31,9 @@ public:
 
 	void ImportMesh(const aiMesh& mesh, char* data);
 
-	std::vector<unsigned> ImportBones(const aiMesh& mesh,
+	std::vector<unsigned> ImportBones(const aiMesh& mesh, std::vector<Bone*> rBones,
 		std::vector<unsigned>& bonesUID, std::map<std::string*, unsigned>& boneMap,
-		std::vector<std::string>& boneNames);
+		std::vector<std::string*> boneNames, unsigned meshUID);
 
 	void ImportSingleBone(const aiBone& bone, char* data);
 

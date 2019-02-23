@@ -89,11 +89,12 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file,
 	std::vector<unsigned>& bonesUID)
 {
 
-	std::vector<std::string> boneNames;
+	std::vector<std::string*> boneNames;
 	std::map<unsigned, unsigned> meshMap;
 	std::map<std::string*, unsigned> boneMap;
 
 	std::vector<unsigned> rBonesUIDs;
+	std::vector<Bone*> rBones;
 
 	for (unsigned i = 0u; i < aiscene.mNumMeshes; i++)
 	{
@@ -118,7 +119,7 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file,
 		{
 			for (unsigned j = 0u; j < aiscene.mMeshes[i]->mNumBones; j++)
 			{
-				rBonesUIDs = ImportBones(*aiscene.mMeshes[i], bonesUID, boneMap, boneNames);
+				rBonesUIDs = ImportBones(*aiscene.mMeshes[i], rBones, bonesUID, boneMap, boneNames, mesh->UID);
 			}
 		}
 		
@@ -141,7 +142,6 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file,
 	App->scene->SaveScene(*fake, *App->fsystem->GetFilename(file).c_str(), *SCENES); //TODO: Make AutoCreation of folders or check
 	fake->CleanUp();
 	RELEASE(fake);
-
 	aiReleaseImport(&aiscene);
 	return true;
 }
@@ -206,11 +206,12 @@ void FileImporter::ImportMesh(const aiMesh& mesh, char* data)
 
 }
 
-std::vector<unsigned> FileImporter::ImportBones(const aiMesh& mesh, 
+std::vector<unsigned> FileImporter::ImportBones(const aiMesh& mesh, std::vector<Bone*> rBones,
 	std::vector<unsigned>& bonesUID, std::map<std::string*, unsigned>& boneMap,
-	std::vector<std::string>& boneNames)
+	std::vector<std::string*> boneNames, unsigned meshUID)
 {
-	
+	std::vector<unsigned> rBonesUID;
+
 	for (int i = 0; i < mesh.mNumBones; i++)
 	{
 		std::vector<unsigned> mBonesUIds;
@@ -219,13 +220,13 @@ std::vector<unsigned> FileImporter::ImportBones(const aiMesh& mesh,
 
 		aiBone* bone = mesh.mBones[i];
 		std::string boneName = (bone->mName.length > 0) ? bone->mName.C_Str() : "Bone"; // Use fileName+Stuff
-		boneNames.push_back(boneName);
 		// Comprobar que el nombre del name no existe en el array de bones, si existe darle un +1 or sthmng
 		// App->fileSystem->getAvailableNameFromArray(bonesNames, boneName);
 
 
 		//std::string exportedFile;
-		Bone* boneResource = nullptr;
+		Bone* boneResource = new Bone(); // REMEMBER TO DELETE BONEª!
+
 		// check if the bone is used by any animations of the fbx
 		//if (App->animations->importBones(bone, UID, exportedFile))
 		//{
@@ -236,15 +237,16 @@ std::vector<unsigned> FileImporter::ImportBones(const aiMesh& mesh,
 
 		std::string* nameAlloc = new std::string(boneName); 
 		boneMap[nameAlloc] = uid;
-		// Relevo
-		bonesNames.push_back(nameAlloc);
+		boneNames.push_back(nameAlloc);
 
-		boneResource = (ResourceBone*)App->resources->AddResource(R_BONE, UID);
-		boneResource->name = bone->mName.C_Str();
-		boneResource->file = path;
-		boneResource->exported_file = exportedFile;
-		boneResource->boneMeshUID = meshUID;
-		//}
+		unsigned boneSingleSize = GetSingleBoneSize(*mesh.mBones[i]);
+		char* boneSingleData = new char[boneSingleSize];
+
+		ImportSingleBone(*mesh.mBones[i], boneSingleData); //We import a single bone each time so we don't need to offset the data
+
+		boneResource->Load(boneSingleData, uid, meshUID); // Load all the data from the cursor
+			
+		boneResource->boneName = boneName;
 
 		// Si existe el hueso metelo en el array
 		if (boneResource != nullptr)
@@ -252,6 +254,7 @@ std::vector<unsigned> FileImporter::ImportBones(const aiMesh& mesh,
 			rBonesUID.push_back(boneResource->UID);
 			rBones.push_back(boneResource);
 		}
+
 
 		//Bone* bone = new Bone();
 		//unsigned boneSingleSize = GetSingleBoneSize(*aiscene.mMeshes[i]->mBones[j]);
@@ -261,10 +264,9 @@ std::vector<unsigned> FileImporter::ImportBones(const aiMesh& mesh,
 		////App->fsystem->Save((BONES + std::to_string(uid) + BONEEXTENSION).c_str(), bonesData, bonesSize); //Is this ok? :'D created extensions and stuff
 		//bone->Load(boneSingleData, uid);
 		//// App->resManager->AddBone(mesh); //Do we need the ress manager to load every bone?
-		//// meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->UID));
-
+		//// meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->UID))
 	}
-	
+	return rBonesUID;
 }
 
 //For now it only saves the Name, for testing purposes, WIP saving all the other vbles
@@ -308,8 +310,6 @@ void FileImporter::ImportAnimation(const aiAnimation& animation, char* data)
 
 	memcpy(cursor, &animation.mNumChannels, sizeof(int));
 	cursor += sizeof(int);
-
-
 	//TODO: as ImportBones
 }
 
