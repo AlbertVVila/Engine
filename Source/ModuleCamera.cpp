@@ -124,8 +124,7 @@ void ModuleCamera::InputMove(float dt) const
 	else if (App->input->GetMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_REPEAT)
 	{
 		float3 motion = { App->input->GetMouseMotion().x, App->input->GetMouseMotion().y, 0 };
-
-		float3 movement = (-motion.x * editorcamera->frustum->WorldRight() * 1000) + (motion.y * float3::unitY * 1000);
+		float3 movement = (-motion.x * editorcamera->frustum->WorldRight() * mouseSens) + (motion.y * float3::unitY * mouseSens);
 
 		editorcamera->Move(movement*dt*App->renderer->current_scale);
 	}
