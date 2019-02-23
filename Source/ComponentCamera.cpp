@@ -97,11 +97,14 @@ void ComponentCamera::Rotate(float dx, float dy)
 }
 
 
-void ComponentCamera::Zoom(float mouseWheel)
+void ComponentCamera::Zoom(float mouseWheel, bool shiftPressed)
 {
 	if (mouseWheel != 0)
 	{
-		frustum->Translate(frustum->front * mouseWheel * zoomSpeed);
+		if (shiftPressed)
+			mouseWheel *= 2;
+		
+		frustum->Translate(frustum->front * mouseWheel * App->renderer->current_scale * zoomSpeed);
 	}
 }
 
