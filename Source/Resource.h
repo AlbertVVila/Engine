@@ -35,6 +35,8 @@ public:
 	Resource(const Resource& resource);
 	virtual ~Resource();
 
+	virtual void Copy(Resource& resource);
+
 	inline TYPE			GetType() const					{return type;};
 	inline void			SetType(TYPE newType)			{ type = newType; }
 	inline unsigned		GetUID() const					{ return UID; };

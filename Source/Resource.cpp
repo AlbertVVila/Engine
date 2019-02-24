@@ -18,6 +18,15 @@ Resource::~Resource()
 {
 }
 
+void Resource::Copy(Resource& resource)
+{
+	UID = resource.UID;
+	file = resource.file;
+	exportedFileName = resource.exportedFileName;
+	loaded = resource.loaded;
+	type = resource.type;
+}
+
 void Resource::Save(JSON_value &config) const
 {
 	JSON_value *resource = config.CreateValue();

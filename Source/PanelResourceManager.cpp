@@ -173,15 +173,25 @@ void PanelResourceManager::OpenResourceEditor()
 			}
 			if (ImGui::Button("Apply"))
 			{
-				openEditor = false;
+				CleanUp();
 			}
 			ImGui::SameLine();
 			if (ImGui::Button("Cancel"))
 			{
-				auxResource = previous;
-				openEditor = false;
+				auxResource->Copy(*previous);
+				CleanUp();
 			}
 			ImGui::EndPopup();
 		}
 	}
+}
+
+void PanelResourceManager::CleanUp()
+{
+	auxResource = nullptr;
+
+	if (previous != nullptr)
+		RELEASE(previous);
+
+	openEditor = false;
 }
