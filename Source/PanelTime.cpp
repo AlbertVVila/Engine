@@ -3,6 +3,7 @@
 #include "ModuleWindow.h"
 #include "ModuleTime.h"
 #include "ModuleScene.h"
+#include "ModuleFileSystem.h"
 
 #include "PanelTime.h"
 
@@ -43,12 +44,12 @@ void PanelTime::Draw()
 		{
 			App->time->StartGameClock();
 
-			App->scene->SaveScene(*App->scene->root, temprarySceneFileName);
+			App->scene->SaveScene(*App->scene->root, *temprarySceneFileName, *SCENES);
 		}
 		else 
 		{
 			App->time->StopGameClock();
-			App->scene->LoadScene(temprarySceneFileName);
+			App->scene->LoadScene(*temprarySceneFileName, *SCENES);
 		}
 	}
 

@@ -126,7 +126,7 @@ void ModuleCamera::InputMove(float dt) const
 		float3 motion = { App->input->GetMouseMotion().x, App->input->GetMouseMotion().y, 0 };
 		float3 movement = (-motion.x * editorcamera->frustum->WorldRight() * mouseSens) + (motion.y * editorcamera->frustum->up * mouseSens);
 
-		editorcamera->Move(movement*dt*App->renderer->current_scale);
+    editorcamera->Move(movement*dt*App->renderer->current_scale);
 	}
 }
 
@@ -159,13 +159,13 @@ void ModuleCamera::InputOrbit(float dt) const
 		App->input->SetMouseMotion(mouse_motion_x, mouse_motion_y);
 
 		editorcamera->Orbit(editorcamera->rotationSpeed * mouse_motion_x,
-			editorcamera->rotationSpeed *  mouse_motion_y);
+		editorcamera->rotationSpeed *  mouse_motion_y);
 	}
 }
 
 void ModuleCamera::InputZoom() const
 {
-	editorcamera->Zoom(App->input->GetMouseWheel());
+	editorcamera->Zoom(App->input->GetMouseWheel(), App->input->IsKeyPressed(SDL_SCANCODE_LSHIFT));
 }
 
 void ModuleCamera::DrawGUI()

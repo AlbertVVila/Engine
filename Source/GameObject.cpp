@@ -8,6 +8,7 @@
 #include "ModuleScene.h"
 #include "ModuleTextures.h"
 #include "ModuleRender.h"
+#include "ModuleSpacePartitioning.h"
 
 #include "Component.h"
 #include "ComponentTransform.h"
@@ -19,6 +20,7 @@
 #include "Material.h"
 #include "Mesh.h"
 #include "myQuadTree.h"
+#include "AABBTree.h"
 #include <stack>
 #include "JSON.h"
 
@@ -60,6 +62,7 @@ GameObject::GameObject(const GameObject & gameobject)
 
 	if (GetComponent(ComponentType::Renderer) != nullptr)
 	{
+		isVolumetric = true;
 		App->scene->AddToSpacePartition(this);
 	}
 
@@ -105,14 +108,18 @@ void GameObject::DrawProperties()
 		{
 			if (isStatic && GetComponent(ComponentType::Renderer) != nullptr)
 			{
-				SetStaticAncestors();
-				App->scene->quadtree->Insert(this);
+				SetStaticAncestors(); //TODO: Propagate staticness & update aabbtree
 				App->scene->dynamicGOs.erase(this);
+				App->scene->staticGOs.insert(this);
+				App->spacePartitioning->kDTree.Calculate();
 			}
 			else if (!isStatic)
 			{
-				App->scene->quadtree->Remove(*this);
+				//TODO: Propagate staticness & update aabbtree
 				App->scene->dynamicGOs.insert(this);
+				App->scene->staticGOs.erase(this);
+				App->spacePartitioning->kDTree.Calculate();
+				App->spacePartitioning->aabbTree.InsertGO(this); //TODO: remove this when propagation is corrected 
 			}
 		}
 	}
@@ -173,7 +180,7 @@ Component * GameObject::CreateComponent(ComponentType type)
 		this->transform = (ComponentTransform*)component;
 		break;
 	case ComponentType::Renderer:
-		component = new ComponentRenderer(this);
+		component = new ComponentRenderer(this);		
 		break;
 	case ComponentType::Light:
 		component = new ComponentLight(this);
@@ -236,9 +243,9 @@ std::vector<Component*> GameObject::GetComponentsInChildren(ComponentType type) 
 
 void GameObject::RemoveComponent(const Component & component)
 {
-	for (int i = 0; i < components.size(); ++i) 
+	for (int i = 0; i < components.size(); ++i)
 	{
-		if (components[i] == &component) 
+		if (components[i] == &component)
 		{
 			components[i]->CleanUp();
 			RELEASE(components[i]);
@@ -429,7 +436,6 @@ bool GameObject::Intersects(const LineSegment & line, float &distance) const
 void GameObject::UpdateBBox()
 {
 	ComponentRenderer* renderer = (ComponentRenderer*) GetComponent(ComponentType::Renderer);
-
 	if (renderer != nullptr)
 	{
 		bbox = renderer->mesh->GetBoundingBox();
@@ -445,7 +451,6 @@ void GameObject::DrawBBox() const
 	}
 
 	ComponentRenderer *renderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
-
 	if (renderer == nullptr) return;
 
 	renderer->mesh->DrawBbox(App->program->defaultShader->id, bbox);
@@ -601,7 +606,9 @@ void GameObject::SetStaticAncestors()
 
 		if (go->GetComponent(ComponentType::Renderer) != nullptr)
 		{
-			App->scene->dynamicGOs.erase(go);
+			if (go->treeNode != nullptr)
+				App->spacePartitioning->aabbTree.ReleaseNode(go->treeNode);
+
 			App->scene->quadtree->Insert(go);
 		}
 		parents.pop();
