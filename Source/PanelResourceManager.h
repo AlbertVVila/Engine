@@ -14,7 +14,7 @@ public:
 
 	void Draw() override;
 
-	void OpenResourceEditor(Resource* resource);
+	void OpenResourceEditor();
 
 public:
 
