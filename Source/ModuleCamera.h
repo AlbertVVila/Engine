@@ -26,6 +26,9 @@ public:
 
 public:
 	ComponentCamera * editorcamera = nullptr;
+
+private:
+	int mouseSens = 1000;
 };
 
 #endif /* __ModuleCamera_h__ */
