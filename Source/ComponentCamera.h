@@ -25,7 +25,7 @@ public:
 	void Center();
 	void Move(math::float3 dir); 
 	void Rotate(float dx, float dy);
-	void Zoom(float mouseWheel);
+	void Zoom(float mouseWheel, bool shiftPressed);
 	void Orbit(float dx, float dy);
 	void SetAspect(float aspect);
 	void SetFOV(float fov);
@@ -44,7 +44,7 @@ public:
 
 	float movementSpeed = 5.0f;
 	float rotationSpeed = 200.0f;
-	float zoomSpeed = 0.1f;
+	float zoomSpeed = 0.4f;
 
 	bool isMainCamera = false;
 	float oldAspect = 0.f;
