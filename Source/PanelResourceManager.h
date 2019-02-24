@@ -4,6 +4,8 @@
 #include "Panel.h"
 
 class Resource;
+class ResourceTexture;
+struct ImVec2;
 
 class PanelResourceManager : 
 	public Panel
@@ -15,14 +17,15 @@ public:
 	void Draw() override;
 
 	void OpenResourceEditor();
+	void DrawResourceTexture();
 	void CleanUp();
 
-public:
-
-	Resource* auxResource;
-	Resource* previous;
+private:
+	Resource* auxResource = nullptr;
+	Resource* previous = nullptr;
 
 	bool openEditor = false;
+	bool openTextureWindow = false;
 };
 
 #endif __PanelResourceManager_h__

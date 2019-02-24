@@ -83,7 +83,13 @@ void PanelResourceManager::Draw()
 			break;
 		}
 		ImGui::NextColumn();
-
+		// View button
+		if (ImGui::Button("View"))
+		{
+			openTextureWindow = true;
+			auxResource = resource;
+		}
+		ImGui::SameLine();
 		// Edit button
 		if (ImGui::Button("Edit"))
 		{
@@ -94,6 +100,8 @@ void PanelResourceManager::Draw()
 		ImGui::PopID();
 	}
 	OpenResourceEditor();
+	if (openTextureWindow)
+		DrawResourceTexture();
 	ImGui::End();
 }
 
@@ -110,7 +118,7 @@ void PanelResourceManager::OpenResourceEditor()
 				previous = new ResourceTexture(*(ResourceTexture*)auxResource);
 				break;
 			case TYPE::MESH:
-				previous = new ResourceMesh((ResourceMesh&)auxResource);
+				previous = new ResourceMesh(*(ResourceMesh*)auxResource);
 				break;
 			case TYPE::AUDIO:
 				ImGui::Text("Audio");
@@ -186,9 +194,32 @@ void PanelResourceManager::OpenResourceEditor()
 	}
 }
 
+void PanelResourceManager::DrawResourceTexture()
+{
+	if (!ImGui::Begin("Texture Manager", &openTextureWindow))
+	{
+		ImGui::End();
+		return;
+	}
+	ResourceTexture& texture = *(ResourceTexture*)auxResource;
+	ImGui::Columns(2);
+	ImGui::Text("Width: %u", texture.width);
+	ImGui::Text("Height: %u", texture.height);
+	ImGui::Text("Depth: %u", texture.depth);
+	ImGui::Text("Mips: %u", texture.mips);
+	ImGui::Text("Bytes: %u", texture.bytes);
+	ImGui::Text("GPU ID: %u", texture.gpuID);
+	ImGui::Text("Format: %u", texture.format);
+	ImGui::NextColumn();
+	ImGui::Image((ImTextureID)texture.gpuID, ImVec2(160.0f, 160.0f), ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f));
+	
+	ImGui::End();
+}
+
 void PanelResourceManager::CleanUp()
 {
-	auxResource = nullptr;
+	if(!openTextureWindow)
+		auxResource = nullptr;
 
 	if (previous != nullptr)
 		RELEASE(previous);
