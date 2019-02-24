@@ -140,7 +140,7 @@ unsigned ModuleTextures::LoadCubeMap(const std::string faces[]) const
 	return textureID;
 }
 
-bool ModuleTextures::ImportImage(const char* file, const char* folder, std::string& exportedFile, ResourceTexture* resource) const
+bool ModuleTextures::ImportImage(const char* file, const char* folder, std::string& exportedFile, ResourceTexture* resource)
 {
 	ILuint imageID;
 	ILboolean success;
@@ -173,6 +173,7 @@ bool ModuleTextures::ImportImage(const char* file, const char* folder, std::stri
 			resource->format = ilGetInteger(IL_IMAGE_FORMAT);
 			resource->bytes = ilGetInteger(GL_UNSIGNED_BYTE);
 			exportedFile = App->fsystem->RemoveExtension(file);
+			SaveMetafile(filepath, resource);
 		}
 		ilDeleteImages(1, &imageID);
 		RELEASE_ARRAY(data);
@@ -185,3 +186,14 @@ bool ModuleTextures::ImportImage(const char* file, const char* folder, std::stri
 	return success;
 }
 
+void ModuleTextures::SaveMetafile(std::string filepath, ResourceTexture* resource)
+{
+	std::string c = "guid: " + std::to_string(resource->GetUID()) + "\n";
+	c += "width: " + std::to_string(resource->width) + "\n";
+	c += "heigth: " + std::to_string(resource->height) + "\n";
+	c += "depth: " + std::to_string(resource->depth) + "\n";
+	c += "mips: " + std::to_string(resource->mips) + "\n";
+	c += "format: " + std::to_string(resource->format) + "\n";
+	filepath += ".meta";
+	App->fsystem->Save(filepath.c_str(), c.c_str(), c.size());
+}
