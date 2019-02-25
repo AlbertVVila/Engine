@@ -30,6 +30,22 @@ ResourceTexture::~ResourceTexture()
 	DeleteFromMemory();
 }
 
+void ResourceTexture::Copy(const Resource& resource)
+{
+	Resource::Copy(resource);
+	if (resource.GetType() == TYPE::TEXTURE)
+	{
+		ResourceTexture& texture = (ResourceTexture&)resource;
+		width = texture.width;
+		height = texture.height;
+		depth = texture.depth;
+		mips = texture.mips;
+		bytes = texture.bytes;
+		gpuID = texture.gpuID;
+		format = texture.format;
+	}
+}
+
 bool ResourceTexture::LoadInMemory()
 {
 	if (Resource::IsLoadedToMemory())

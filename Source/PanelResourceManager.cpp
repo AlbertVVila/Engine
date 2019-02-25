@@ -222,7 +222,14 @@ void PanelResourceManager::CleanUp()
 		previous = nullptr;
 
 	if (auxResource != nullptr)
+	{
+		if (auxResource->GetType() == TYPE::TEXTURE)
+		{
+			ResourceTexture* texture = (ResourceTexture*)auxResource;
+			texture->gpuID = 0u;
+		}	
 		RELEASE(auxResource);
+	}
 
 	openEditor = false;
 }

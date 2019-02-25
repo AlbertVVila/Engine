@@ -10,6 +10,8 @@ public:
 	ResourceTexture(const ResourceTexture& resource);
 	virtual ~ResourceTexture();
 
+	void Copy(const Resource& resource) override;
+
 	bool LoadInMemory() override;
 	void DeleteFromMemory() override;
 	void Save(JSON_value &config) const override;

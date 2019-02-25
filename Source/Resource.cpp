@@ -18,9 +18,8 @@ Resource::~Resource()
 {
 }
 
-void Resource::Copy(Resource& resource)
+void Resource::Copy(const Resource& resource)
 {
-	UID = resource.UID;
 	file = resource.file;
 	exportedFileName = resource.exportedFileName;
 	loaded = resource.loaded;

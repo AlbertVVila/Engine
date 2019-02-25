@@ -35,7 +35,7 @@ public:
 	Resource(const Resource& resource);
 	virtual ~Resource();
 
-	virtual void Copy(Resource& resource);
+	virtual void Copy(const Resource& resource);	// Copies all variables from other Resource excluding UID
 
 	inline TYPE			GetType() const					{return type;};
 	inline void			SetType(TYPE newType)			{ type = newType; }
