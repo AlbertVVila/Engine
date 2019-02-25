@@ -196,9 +196,9 @@ void ModuleTextures::SaveMetafile(const char* file, ResourceTexture* resource)
 	filepath = App->fsystem->RemoveExtension(filepath);
 	filepath += ".meta";
 	App->fsystem->Save(filepath.c_str(), c.c_str(), c.size());*/
-	std::string filepath(TEXTURES);
-	filepath += App->fsystem->RemoveExtension(file);
-	filepath += TEXTUREEXT;
+	std::string filepath(App->fsystem->RemoveExtension(file));
+	//filepath += App->fsystem->RemoveExtension(file);
+	//filepath += TEXTUREEXT;
 
 	JSON *json = new JSON();
 	JSON_value *array = json->CreateValue();
