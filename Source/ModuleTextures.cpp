@@ -140,7 +140,7 @@ unsigned ModuleTextures::LoadCubeMap(const std::string faces[]) const
 	return textureID;
 }
 
-bool ModuleTextures::ImportImage(const char* file, const char* folder, std::string& exportedFile, ResourceTexture* resource)
+bool ModuleTextures::ImportImage(const char* file, const char* folder, std::string& exportedFile, ResourceTexture* resource) const
 {
 	ILuint imageID;
 	ILboolean success;
@@ -173,7 +173,6 @@ bool ModuleTextures::ImportImage(const char* file, const char* folder, std::stri
 			resource->format = ilGetInteger(IL_IMAGE_FORMAT);
 			resource->bytes = ilGetInteger(GL_UNSIGNED_BYTE);
 			exportedFile = App->fsystem->RemoveExtension(file);
-			SaveMetafile(filepath, resource);
 		}
 		ilDeleteImages(1, &imageID);
 		RELEASE_ARRAY(data);
