@@ -41,16 +41,16 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>../Release</OutDir>
+    <OutDir>$(SolutionDir)$(Configuration)</OutDir>
     <TargetName>$(SolutionName)</TargetName>
-    <IntDir>../Release</IntDir>
+    <IntDir>$(SolutionDir)$(Configuration)</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>../Debug</OutDir>
+    <OutDir>$(SolutionDir)$(Configuration)</OutDir>
     <CodeAnalysisRuleSet>CppCoreCheckLifetimeRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <TargetName>$(SolutionName)</TargetName>
-    <IntDir>../Debug</IntDir>
+    <IntDir>$(SolutionDir)$(Configuration)</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
