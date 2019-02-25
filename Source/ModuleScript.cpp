@@ -3,13 +3,13 @@
 #include "ModuleScript.h"
 #include "ModuleFileSystem.h"
 #include "ModuleTime.h"
-#include "ModuleScene.h" //TODO remove this
 
 #include "BaseScript.h"
-#include <assert.h>
-#include <windows.h>
 #include "resource.h"
 #include "MemoryModule.h"
+
+#include <assert.h>
+#include <windows.h>
 #include <iostream>
 
 typedef Script*(__cdecl *CreatePointer)();
@@ -82,11 +82,11 @@ void ModuleScript::LoadFromMemory(int resource) //TODO: Load from memory in ship
 		if (Create != nullptr)
 		{
 			Script* script = Create();
-			script->SetApp(App);
-			script->SetGameObject(App->scene->root);
-			scriptInstances.push_back(script);
-			script->Start();
-			script->Update();
+			//script->SetApp(App);
+			//script->SetGameObject(App->scene->root);
+			//scriptInstances.push_back(script);
+			//script->Start();
+			//script->Update();
 		}
 	}
 }
@@ -103,13 +103,17 @@ Script* ModuleScript::AddScript(const std::string& script)
 	else
 	{
 		dll = LoadLibrary((SCRIPTS + script + DLL).c_str());
-		assert(dll != nullptr);
 		if (dll != nullptr)
 		{
 			loadedDLLs.insert(std::pair<std::string,
 				std::pair<HINSTANCE, int>>(script, std::pair<HINSTANCE, int>(dll, 1)));
 		}
+		else
+		{
+			return nullptr;
+		}
 	}
+	assert(dll != nullptr);
 	CreatePointer Create = (CreatePointer)GetProcAddress(dll, "CreateScript");
 	assert(Create != nullptr);
 	if (Create != nullptr)

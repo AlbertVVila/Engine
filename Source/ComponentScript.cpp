@@ -109,8 +109,15 @@ void ComponentScript::SetScript(const std::string& name)
 		App->scripting->RemoveScript(scriptName, script);
 	}
 	script = App->scripting->AddScript(name);
-	script->SetApp(App);
-	script->SetGameObject(gameobject);
-	scriptName = name;
+	if (script != nullptr)
+	{
+		script->SetApp(App);
+		script->SetGameObject(gameobject);
+		scriptName = name;
+	}
+	else
+	{
+		scriptName = "Script Not Found";
+	}
 }
 
