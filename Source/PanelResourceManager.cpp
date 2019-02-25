@@ -87,14 +87,14 @@ void PanelResourceManager::Draw()
 		if (ImGui::Button("View"))
 		{
 			openTextureWindow = true;
-			auxResource = resource;
+			previous = resource;
 		}
 		ImGui::SameLine();
 		// Edit button
 		if (ImGui::Button("Edit"))
 		{
 			openEditor = true;
-			auxResource = resource;
+			previous = resource;
 		}
 		ImGui::NextColumn();
 		ImGui::PopID();
@@ -112,13 +112,13 @@ void PanelResourceManager::OpenResourceEditor()
 		if (!ImGui::IsPopupOpen(resourcePopup))
 		{
 			ImGui::OpenPopup(resourcePopup);
-			switch (auxResource->GetType())
+			switch (previous->GetType())
 			{
 			case TYPE::TEXTURE:
-				previous = new ResourceTexture(*(ResourceTexture*)auxResource);
+				auxResource = new ResourceTexture(*(ResourceTexture*)previous);
 				break;
 			case TYPE::MESH:
-				previous = new ResourceMesh(*(ResourceMesh*)auxResource);
+				auxResource = new ResourceMesh(*(ResourceMesh*)previous);
 				break;
 			case TYPE::AUDIO:
 				ImGui::Text("Audio");
@@ -181,12 +181,12 @@ void PanelResourceManager::OpenResourceEditor()
 			}
 			if (ImGui::Button("Apply"))
 			{
+				previous->Copy(*auxResource);
 				CleanUp();
 			}
 			ImGui::SameLine();
 			if (ImGui::Button("Cancel"))
 			{
-				auxResource->Copy(*previous);
 				CleanUp();
 			}
 			ImGui::EndPopup();
@@ -201,7 +201,7 @@ void PanelResourceManager::DrawResourceTexture()
 		ImGui::End();
 		return;
 	}
-	ResourceTexture& texture = *(ResourceTexture*)auxResource;
+	ResourceTexture& texture = *(ResourceTexture*)previous;
 	ImGui::Columns(2);
 	ImGui::Text("Width: %u", texture.width);
 	ImGui::Text("Height: %u", texture.height);
@@ -219,10 +219,10 @@ void PanelResourceManager::DrawResourceTexture()
 void PanelResourceManager::CleanUp()
 {
 	if(!openTextureWindow)
-		auxResource = nullptr;
+		previous = nullptr;
 
-	if (previous != nullptr)
-		RELEASE(previous);
+	if (auxResource != nullptr)
+		RELEASE(auxResource);
 
 	openEditor = false;
 }
