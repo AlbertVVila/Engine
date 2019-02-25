@@ -44,6 +44,6 @@ enum update_status
 // Configuration -----------
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 720
-#define TITLE "REAL ENGINE"
+#define TITLE "FRACTAL ENGINE"
 
 #endif  __Globals_h__

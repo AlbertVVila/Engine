@@ -119,6 +119,12 @@ void ModuleCamera::InputMove(float dt) const
 		{
 			movement *= 2;
 		}
+		editorcamera->Move(movement*dt*App->renderer->current_scale);
+	}
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_REPEAT)
+	{
+		math::float3 motion = { App->input->GetMouseMotion().x, App->input->GetMouseMotion().y, 0.0f };
+		math::float3 movement = (-motion.x * editorcamera->frustum->WorldRight() * mouseSens) + (motion.y * editorcamera->frustum->up * mouseSens);
 
 		editorcamera->Move(movement*dt*App->renderer->current_scale);
 	}
@@ -129,7 +135,7 @@ void ModuleCamera::InputRotate(float dt) const
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
 		float mouse_motion_x, mouse_motion_y;
-		App->input->GetMouseMotion(mouse_motion_x, mouse_motion_y);
+		App->input->SetMouseMotion(mouse_motion_x, mouse_motion_y);
 
 		float dx = editorcamera->rotationSpeed * mouse_motion_x;
 		float dy = editorcamera->rotationSpeed * mouse_motion_y;
@@ -150,16 +156,16 @@ void ModuleCamera::InputOrbit(float dt) const
 	if (App->input->IsKeyPressed(SDL_SCANCODE_LALT) && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
 	{
 		float mouse_motion_x, mouse_motion_y;
-		App->input->GetMouseMotion(mouse_motion_x, mouse_motion_y);
+		App->input->SetMouseMotion(mouse_motion_x, mouse_motion_y);
 
 		editorcamera->Orbit(editorcamera->rotationSpeed * mouse_motion_x,
-			editorcamera->rotationSpeed *  mouse_motion_y);
+		editorcamera->rotationSpeed *  mouse_motion_y);
 	}
 }
 
 void ModuleCamera::InputZoom() const
 {
-	editorcamera->Zoom(App->input->GetMouseWheel());
+	editorcamera->Zoom(App->input->GetMouseWheel(), App->input->IsKeyPressed(SDL_SCANCODE_LSHIFT));
 }
 
 void ModuleCamera::DrawGUI()
