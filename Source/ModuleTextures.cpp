@@ -188,12 +188,25 @@ bool ModuleTextures::ImportImage(const char* file, const char* folder, std::stri
 
 void ModuleTextures::SaveMetafile(std::string filepath, ResourceTexture* resource)
 {
-	std::string c = "guid: " + std::to_string(resource->GetUID()) + "\n";
+	/*std::string c = "guid: " + std::to_string(resource->GetUID()) + "\n";
 	c += "width: " + std::to_string(resource->width) + "\n";
 	c += "heigth: " + std::to_string(resource->height) + "\n";
 	c += "depth: " + std::to_string(resource->depth) + "\n";
 	c += "mips: " + std::to_string(resource->mips) + "\n";
 	c += "format: " + std::to_string(resource->format) + "\n";
+	filepath = App->fsystem->RemoveExtension(filepath);
 	filepath += ".meta";
-	App->fsystem->Save(filepath.c_str(), c.c_str(), c.size());
+	App->fsystem->Save(filepath.c_str(), c.c_str(), c.size());*/
+
+	JSON *json = new JSON();
+	JSON_value *array = json->CreateValue();
+	array->AddString("GUID",(std::to_string(resource->GetUID())).c_str());
+	array->AddInt("width", resource->width);
+	array->AddInt("height", resource->height);
+	array->AddInt("depth", resource->depth);
+	array->AddInt("mips", resource->mips);
+	array->AddInt("format", resource->format);
+	json->AddValue("Texture", *array);
+	filepath += ".meta";
+	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
 }
