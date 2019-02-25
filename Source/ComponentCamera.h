@@ -35,7 +35,9 @@ public:
 	math::float4x4 GetViewMatrix() const;
 	math::float4x4 GetProjectionMatrix() const;
 	math::LineSegment DrawRay(float x, float y) const;
+
 private:
+	void CenterBbox(const math::AABB & bbox);
 	void InitFrustum();
 	void LookAt(math::float3 target);
 

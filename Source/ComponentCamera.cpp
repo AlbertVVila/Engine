@@ -107,44 +107,48 @@ void ComponentCamera::Zoom(float mouseWheel)
 	}
 }
 
-void ComponentCamera::Center()
+void ComponentCamera::Center() //TODO: Shouldn't be specfic to editor camera
 {
 	if (App->scene->selected == nullptr || App->scene->selected->GetComponent(ComponentType::Transform) == nullptr) return;
 
 	if (App->scene->selected->GetComponent(ComponentType::Renderer) != nullptr)
 	{
 		AABB bbox = App->scene->selected->GetBoundingBox();
-		float3 HalfSize = bbox.HalfSize();
-		float distX = HalfSize.x / tanf(frustum->horizontalFov*0.5f);
-		float distY = HalfSize.y / tanf(frustum->verticalFov*0.5f);
-		float camDist = MAX(distX, distY) + HalfSize.z; //camera distance from model
-
-		float3 center = bbox.FaceCenterPoint(5);
-		frustum->pos = center + float3(0.0f, 0.0f, camDist);
+		CenterBbox(bbox);
 	}
 	else
 	{
-		AABB childBboxes;
+		AABB childBboxes; //Center using children bboxs
 		childBboxes.SetNegativeInfinity();
-		std::stack<GameObject*> descendents;
-		while (!descendents.empty())
+		for (const auto &child : App->scene->selected->children)
 		{
-			GameObject* currentGo = descendents.top();
-			descendents.pop();
-			childBboxes.Enclose(currentGo->GetBoundingBox());
-			for (const auto &child : currentGo->children)
-			{
-				descendents.push(child);
-			}
+			childBboxes.Enclose(child->GetBoundingBox());
 		}
-
-		float camDist = App->renderer->current_scale;
-		float3 center = ((ComponentTransform*)(App->scene->selected->GetComponent(ComponentType::Transform)))->position;
-		frustum->pos = center + float3(0.0f, 0.0f, camDist);
+		if (childBboxes.Volume() > 0)
+		{
+			CenterBbox(childBboxes);
+		}
+		else
+		{
+			float camDist = App->renderer->current_scale;
+			float3 center = ((ComponentTransform*)(App->scene->selected->GetComponent(ComponentType::Transform)))->position;
+			frustum->pos = center + float3(0.0f, 0.0f, camDist);
+		}
 	}
 
 	frustum->front = -float3::unitZ;
 	frustum->up = float3::unitY;
+}
+
+void ComponentCamera::CenterBbox(const math::AABB& bbox)
+{
+	float3 HalfSize = bbox.HalfSize();
+	float distX = HalfSize.x / tanf(frustum->horizontalFov*0.5f);
+	float distY = HalfSize.y / tanf(frustum->verticalFov*0.5f);
+	float camDist = MAX(distX, distY) + HalfSize.z; //camera distance from model
+
+	float3 center = bbox.FaceCenterPoint(5);
+	frustum->pos = center + float3(0.0f, 0.0f, camDist);
 }
 
 
