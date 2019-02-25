@@ -185,7 +185,7 @@ bool ModuleTextures::ImportImage(const char* file, const char* folder, std::stri
 	return success;
 }
 
-void ModuleTextures::SaveMetafile(std::string filepath, ResourceTexture* resource)
+void ModuleTextures::SaveMetafile(const char* file, ResourceTexture* resource)
 {
 	/*std::string c = "guid: " + std::to_string(resource->GetUID()) + "\n";
 	c += "width: " + std::to_string(resource->width) + "\n";
@@ -196,6 +196,9 @@ void ModuleTextures::SaveMetafile(std::string filepath, ResourceTexture* resourc
 	filepath = App->fsystem->RemoveExtension(filepath);
 	filepath += ".meta";
 	App->fsystem->Save(filepath.c_str(), c.c_str(), c.size());*/
+	std::string filepath(TEXTURES);
+	filepath += App->fsystem->RemoveExtension(file);
+	filepath += TEXTUREEXT;
 
 	JSON *json = new JSON();
 	JSON_value *array = json->CreateValue();

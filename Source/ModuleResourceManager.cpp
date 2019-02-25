@@ -238,7 +238,7 @@ unsigned ModuleResourceManager::ImportFile(const char* newFileInAssets, const ch
 	{
 	case TYPE::TEXTURE: 
 		success = App->textures->ImportImage(newFileInAssets, filePath, written_file, (ResourceTexture*)resource);
-		App->textures->SaveMetafile(filePath, (ResourceTexture*)resource);
+		App->textures->SaveMetafile(newFileInAssets, (ResourceTexture*)resource);
 		break;
 	case TYPE::MESH:	
 
