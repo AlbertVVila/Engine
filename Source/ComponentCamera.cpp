@@ -15,8 +15,6 @@
 #include "Imguizmo.h"
 #include "Geometry/Frustum.h"
 
-#include <stack>
-
 #define MAXFOV 120
 #define MINFOV 40
 
