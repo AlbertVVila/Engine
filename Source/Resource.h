@@ -46,7 +46,7 @@ public:
 	inline void			SetExportedFile(const char* newExportedFile) { exportedFileName = newExportedFile; };
 	inline bool			IsLoadedToMemory() const		{ return loaded > 0; };
 	inline unsigned		GetReferences() const			{ return loaded; };
-	inline void			SetReferences(unsigned references)	{ loaded = references; };
+	void				SetReferences(unsigned references);
 	
 	virtual void Save(JSON_value& config) const;
 	virtual void Load(const JSON_value& config);

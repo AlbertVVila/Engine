@@ -24,6 +24,8 @@ private:
 	Resource* auxResource = nullptr;
 	Resource* previous = nullptr;
 
+	int auxReferences = 0u;
+
 	bool openEditor = false;
 	bool openTextureWindow = false;
 };

@@ -116,6 +116,9 @@ void PanelResourceManager::OpenResourceEditor()
 			{
 			case TYPE::TEXTURE:
 				auxResource = new ResourceTexture(*(ResourceTexture*)previous);
+				// To avoid deleting the texture from memory using a fake ID and reference
+				auxReferences = auxResource->GetReferences();
+				((ResourceTexture*)auxResource)->gpuID = 0u;	
 				break;
 			case TYPE::MESH:
 				auxResource = new ResourceMesh(*(ResourceMesh*)previous);
@@ -158,9 +161,11 @@ void PanelResourceManager::OpenResourceEditor()
 			auxResource->SetExportedFile(exportedFile);
 
 			// Loaded
-			int loaded = auxResource->GetReferences();
-			ImGui::InputInt("References", &loaded);
-			auxResource->SetReferences(loaded);
+			if (ImGui::InputInt("References", &auxReferences))
+			{
+				if (auxReferences < 0)
+					auxReferences = 0;
+			}
 
 			// Type
 			const char * types[] = { "Texture", "Mesh", "Audio", "Scene", "Bone", "Animation", "Unknown" };
@@ -181,7 +186,8 @@ void PanelResourceManager::OpenResourceEditor()
 			}
 			if (ImGui::Button("Apply"))
 			{
-				previous->Copy(*auxResource);
+				auxResource->SetReferences(auxReferences);
+				previous->Resource::Copy(*auxResource);
 				CleanUp();
 			}
 			ImGui::SameLine();
@@ -222,14 +228,7 @@ void PanelResourceManager::CleanUp()
 		previous = nullptr;
 
 	if (auxResource != nullptr)
-	{
-		if (auxResource->GetType() == TYPE::TEXTURE)
-		{
-			ResourceTexture* texture = (ResourceTexture*)auxResource;
-			texture->gpuID = 0u;
-		}	
 		RELEASE(auxResource);
-	}
 
 	openEditor = false;
 }
