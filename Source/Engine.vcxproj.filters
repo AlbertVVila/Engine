@@ -246,6 +246,9 @@
     <ClCompile Include="PanelResourceManager.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
+    <ClCompile Include="ResourceMaterial.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -566,6 +569,9 @@
     </ClInclude>
     <ClInclude Include="PanelResourceManager.h">
       <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceMaterial.h">
+      <Filter>Resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
