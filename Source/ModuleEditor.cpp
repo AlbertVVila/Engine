@@ -165,7 +165,7 @@ update_status ModuleEditor::Update(float dt)
 				}
 				else
 				{
-					LOG("You must exit play mode before loading a scene.");
+					GenerateGenericPopUp("Warning", "You must exit play mode before loading a scene.");
 				}
 			}
 			if (ImGui::MenuItem("Add Scene"))
@@ -182,7 +182,7 @@ update_status ModuleEditor::Update(float dt)
 				}
 				else
 				{
-					LOG("You must exit play mode before adding a scene.");
+					GenerateGenericPopUp("Warning", "You must exit play mode before adding a scene.");
 				}
 			}
 			if (ImGui::MenuItem("Save"))
@@ -206,7 +206,7 @@ update_status ModuleEditor::Update(float dt)
 				}
 				else
 				{
-					LOG("You must exit play mode before saving the scene.");
+					GenerateGenericPopUp("Warning", "You must exit play mode before saving the scene.");
 				}
 			}
 			if (ImGui::MenuItem("Save As..."))
@@ -224,7 +224,7 @@ update_status ModuleEditor::Update(float dt)
 				}
 				else
 				{
-					LOG("You must exit play mode before saving the scene.");
+					GenerateGenericPopUp("Warning", "You must exit play mode before saving the scene.");
 				}
 			}
 			if (ImGui::MenuItem("Exit", "Esc"))
@@ -249,6 +249,7 @@ update_status ModuleEditor::Update(float dt)
 		ImGui::EndMainMenuBar();
 	}
 	DrawPanels();
+	if (openGenericPopUp) OpenGenericPopUp();
 	return UPDATE_CONTINUE;
 }
 
@@ -330,7 +331,7 @@ void ModuleEditor::WindowsMenu()
 		if (ImGui::MenuItem("Game Camera", nullptr, App->renderer->viewGame->IsEnabled()))
 		{
 			App->renderer->viewGame->ToggleEnabled();
-    }
+		}
 		if (ImGui::MenuItem("Time control", nullptr, time->IsEnabled()))
 		{
 			time->ToggleEnabled();
@@ -352,6 +353,29 @@ void ModuleEditor::HelpMenu()
 			hardware->SetEnabled();
 		}
 		ImGui::EndMenu();
+	}
+}
+
+void ModuleEditor::GenerateGenericPopUp(const char* title, const char* text)
+{
+	popUpTitle = (title != nullptr) ? title : "Pop Up";
+	popUpText = (text != nullptr) ? text : "";
+	openGenericPopUp = true;
+}
+
+void ModuleEditor::OpenGenericPopUp()
+{
+	ImGui::OpenPopup(popUpTitle.c_str());
+	if (ImGui::BeginPopupModal(popUpTitle.c_str(), NULL, ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		ImGui::Text(popUpText.c_str());
+		if (ImGui::Button("Accept"))
+		{
+			openGenericPopUp = false;
+			popUpTitle = "Pop Up";
+			popUpText = "";
+		}
+		ImGui::EndPopup();
 	}
 }
 
