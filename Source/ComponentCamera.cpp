@@ -111,12 +111,12 @@ void ComponentCamera::Center() //TODO: Shouldn't be specfic to editor camera
 
 	if (App->scene->selected->GetComponent(ComponentType::Renderer) != nullptr)
 	{
-		AABB bbox = App->scene->selected->GetBoundingBox();
+		math::AABB bbox = App->scene->selected->GetBoundingBox();
 		CenterBbox(bbox);
 	}
 	else
 	{
-		AABB childBboxes; //Center using children bboxs
+		math::AABB childBboxes; //Center using children bboxs
 		childBboxes.SetNegativeInfinity();
 		for (const auto &child : App->scene->selected->children)
 		{
@@ -129,24 +129,25 @@ void ComponentCamera::Center() //TODO: Shouldn't be specfic to editor camera
 		else
 		{
 			float camDist = App->renderer->current_scale;
-			float3 center = ((ComponentTransform*)(App->scene->selected->GetComponent(ComponentType::Transform)))->position;
-			frustum->pos = center + float3(0.0f, 0.0f, camDist);
+			math::float3 center = ((ComponentTransform*)
+				(App->scene->selected->GetComponent(ComponentType::Transform)))->position;
+			frustum->pos = center + math::float3(0.0f, 0.0f, camDist);
 		}
 	}
 
-	frustum->front = -float3::unitZ;
-	frustum->up = float3::unitY;
+	frustum->front = -math::float3::unitZ;
+	frustum->up = math::float3::unitY;
 }
 
 void ComponentCamera::CenterBbox(const math::AABB& bbox)
 {
-	float3 HalfSize = bbox.HalfSize();
+	math::float3 HalfSize = bbox.HalfSize();
 	float distX = HalfSize.x / tanf(frustum->horizontalFov*0.5f);
 	float distY = HalfSize.y / tanf(frustum->verticalFov*0.5f);
 	float camDist = MAX(distX, distY) + HalfSize.z; //camera distance from model
 
-	float3 center = bbox.FaceCenterPoint(5);
-	frustum->pos = center + float3(0.0f, 0.0f, camDist);
+	math::float3 center = bbox.FaceCenterPoint(5);
+	frustum->pos = center + math::float3(0.0f, 0.0f, camDist);
 }
 
 
