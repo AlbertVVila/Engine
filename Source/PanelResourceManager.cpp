@@ -208,6 +208,8 @@ void PanelResourceManager::DrawResourceTexture()
 		return;
 	}
 	ResourceTexture& texture = *(ResourceTexture*)previous;
+	std::string exportedFile(texture.GetExportedFile());
+	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), (exportedFile +":").c_str());
 	ImGui::Columns(2);
 	ImGui::Text("Width: %u", texture.width);
 	ImGui::Text("Height: %u", texture.height);
