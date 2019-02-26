@@ -89,7 +89,8 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file,
 	std::vector<unsigned>& bonesUID)
 {
 
-	std::vector<std::string*> boneNames;
+	std::vector<std::string*>* boneNames = new std::vector<std::string*>();
+
 	std::map<unsigned, unsigned> meshMap;
 	std::map<std::string*, unsigned> boneMap;
 
@@ -125,7 +126,7 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file,
 		
 	}
 	GameObject* fake = new GameObject("fake", 0u);
-	ProcessNode(meshMap, aiscene.mRootNode, &aiscene, fake);
+	ProcessNode(meshMap, aiscene.mRootNode, &aiscene, fake, boneNames);
 
 	//-----------------------------ANIMATIONS---------------------------------------------------
 	std::map<unsigned, unsigned> animationMap;
@@ -208,7 +209,7 @@ void FileImporter::ImportMesh(const aiMesh& mesh, char* data)
 
 std::vector<unsigned> FileImporter::ImportBones(const aiMesh& mesh, std::vector<Bone*> rBones,
 	std::vector<unsigned>& bonesUID, std::map<std::string*, unsigned>& boneMap,
-	std::vector<std::string*> boneNames, unsigned meshUID)
+	std::vector<std::string*>* boneNames, unsigned meshUID)
 {
 	std::vector<unsigned> rBonesUID;
 
@@ -216,6 +217,7 @@ std::vector<unsigned> FileImporter::ImportBones(const aiMesh& mesh, std::vector<
 	{
 		std::vector<unsigned> mBonesUIds;
 
+		bool boneNameFound = false;
 		/*ImportSingleBone(*mesh.mBones[i], data);*/
 
 		aiBone* bone = mesh.mBones[i];
@@ -237,7 +239,28 @@ std::vector<unsigned> FileImporter::ImportBones(const aiMesh& mesh, std::vector<
 
 		std::string* nameAlloc = new std::string(boneName); 
 		boneMap[nameAlloc] = uid;
-		boneNames.push_back(nameAlloc);
+
+		if (boneNames->empty())
+		{
+			boneNames->push_back(nameAlloc);
+		}
+		else
+		{
+			for (const auto singleBoneName : *boneNames)
+			{
+				if (strcmp(nameAlloc->c_str(), singleBoneName->c_str()) == 0)
+				{
+					boneNameFound = true;
+					break;
+				}
+			}
+			if (!boneNameFound)
+			{
+				boneNames->push_back(nameAlloc);
+				boneNameFound = false;
+			}
+
+		}
 
 		unsigned boneSingleSize = GetSingleBoneSize(*mesh.mBones[i]);
 		char* boneSingleData = new char[boneSingleSize];
@@ -384,7 +407,8 @@ unsigned FileImporter::GetSingleBoneSize(const aiBone& bone) const
 	return size;
 }
 
-GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshmap, const aiNode * node, const aiScene * scene, GameObject* parent)
+GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshmap,
+	const aiNode * node, const aiScene * scene, GameObject* parent, std::vector<std::string*>* boneNames)
 {
 	assert(node != nullptr);
 	if (node == nullptr) return nullptr;
@@ -398,28 +422,42 @@ GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshma
 
 	std::vector<GameObject*> gameobjects;
 	gameobjects.push_back(gameobject);
-	for (unsigned k = 1; k < node->mNumMeshes; k++) //Splits meshes of same node into diferent gameobjects 
+
+	for (unsigned k = 0u; k < node->mNumChildren; k++) //Splits meshes of same node into diferent gameobjects 
 	{
-		GameObject *copy = new GameObject(*gameobject);
-		gameobjects.push_back(copy);
-		copy->parent = gameobject->parent;
-		parent->children.push_back(copy);
+		
+
+		//comparar nombre node con array de bones, si concuerda generamos GO, si no a casa
+
+		for (const auto& boneName : *boneNames) 
+		{
+			if (strcmp(node->mName.C_Str(), boneName->c_str())) 
+			{
+				GameObject *copy = new GameObject(*gameobject);
+				gameobjects.push_back(copy);
+				copy->parent = gameobject->parent;
+				parent->children.push_back(copy);
+			}
+		}
+		
+
+
 	}
 
-	for (unsigned i = 0; i < node->mNumMeshes; i++)
-	{
-		ComponentRenderer* crenderer = (ComponentRenderer*)gameobjects[i]->CreateComponent(ComponentType::Renderer);
-		auto it = meshmap.find(node->mMeshes[i]);
-		if (it != meshmap.end())
-		{
-			RELEASE(crenderer->mesh);
-			crenderer->mesh = App->resManager->GetMesh(it->second);
-			gameobjects[i]->UpdateBBox();
-		}
-	} 
+	//for (unsigned i = 0u; i < node->mNumMeshes; i++)
+	//{
+	//	ComponentRenderer* crenderer = (ComponentRenderer*)gameobjects[i]->CreateComponent(ComponentType::Renderer);
+	//	auto it = meshmap.find(node->mMeshes[i]);
+	//	if (it != meshmap.end())
+	//	{
+	//		RELEASE(crenderer->mesh);
+	//		crenderer->mesh = App->resManager->GetMesh(it->second);
+	//		gameobjects[i]->UpdateBBox();
+	//	}
+	//} 
 	for (unsigned int i = 0; i < node->mNumChildren; i++)
 	{
-		GameObject * child = ProcessNode(meshmap, node->mChildren[i], scene, gameobject);
+		GameObject * child = ProcessNode(meshmap, node->mChildren[i], scene, gameobject, boneNames);
 	}
 	return gameobject;
 }

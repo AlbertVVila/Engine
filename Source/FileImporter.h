@@ -19,7 +19,7 @@ public:
 	void ImportAsset(const char* file, const char* folder);
 
 	GameObject* ProcessNode(const std::map<unsigned,unsigned>& meshmap, 
-		const aiNode* node, const aiScene* scene, GameObject* parent);
+		const aiNode* node, const aiScene* scene, GameObject* parent, std::vector<std::string*>* boneNames);
 
 	bool ImportFBX(const char* file, const char* folder);
 
@@ -33,7 +33,7 @@ public:
 
 	std::vector<unsigned> ImportBones(const aiMesh& mesh, std::vector<Bone*> rBones,
 		std::vector<unsigned>& bonesUID, std::map<std::string*, unsigned>& boneMap,
-		std::vector<std::string*> boneNames, unsigned meshUID);
+		std::vector<std::string*>* boneNames, unsigned meshUID);
 
 	void ImportSingleBone(const aiBone& bone, char* data);
 
