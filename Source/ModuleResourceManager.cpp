@@ -39,48 +39,6 @@ bool ModuleResourceManager::Start()
 	return true;
 }
 
-// Deprecated Texture functions
-/*Texture* ModuleResourceManager::GetTexture(std::string filename) const
-{
-	std::map<std::string, std::pair<unsigned, Texture*>>::const_iterator it = textureResources.find(filename);
-	if (it != textureResources.end())
-	{
-		return it->second.second;
-	}
-	return nullptr;
-}
-
-void ModuleResourceManager::AddTexture(Texture* texture)
-{
-	std::map<std::string, std::pair<unsigned, Texture*>>::iterator it = textureResources.find(texture->file);
-	if (it != textureResources.end())
-	{
-		it->second.first++;
-	}
-	else
-	{
-		textureResources.insert(std::pair<std::string, std::pair<unsigned, Texture*>>
-			(texture->file, std::pair<unsigned, Texture*>(1,texture)));
-	}
-}
-
-void ModuleResourceManager::DeleteTexture(std::string filename)
-{
-	std::map<std::string, std::pair<unsigned, Texture*>>::iterator it = textureResources.find(filename);
-	if (it != textureResources.end())
-	{
-		if (it->second.first > 1)
-		{
-			it->second.first--;
-		}
-		else
-		{
-			RELEASE(it->second.second);
-			textureResources.erase(it);
-		}
-	}
-}*/
-
 Shader* ModuleResourceManager::GetProgram(std::string filename) const
 {
 	std::map<std::string, std::pair<unsigned, Shader*>>::const_iterator it = shaderResources.find(filename);
@@ -294,7 +252,7 @@ Resource * ModuleResourceManager::Get(unsigned uid)
 	return nullptr;
 }
 
-bool ModuleResourceManager::DeleteTexture(unsigned uid)
+bool ModuleResourceManager::DeleteResource(unsigned uid)
 {
 	std::map<unsigned, Resource*>::iterator it = resources.find(uid);
 	if (it != resources.end())

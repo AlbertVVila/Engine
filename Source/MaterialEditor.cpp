@@ -153,7 +153,7 @@ void MaterialEditor::TextureSelector(unsigned i, std::string &current_texture)
 			current_texture = None;
 			if (material->textures[i] != nullptr)
 			{
-				App->resManager->DeleteTexture(material->textures[i]->GetUID());
+				App->resManager->DeleteResource(material->textures[i]->GetUID());
 				material->textures[i] = nullptr;
 			}
 		}

@@ -9,7 +9,6 @@ class Component;
 class ComponentTransform;
 class AABBTreeNode;
 enum class ComponentType;
-struct Texture;
 struct JSON_value;
 
 class GameObject

@@ -47,11 +47,9 @@ public:
 	unsigned GenerateNewUID();
 	Resource* Get(unsigned uid);
 	Resource* CreateNewResource(TYPE type, unsigned forceUid = 0);
+	bool DeleteResource(unsigned uid);	// If references < 1 delete it from memory
 
 	std::list<Resource*> GetResourcesList();
-
-	// Textures
-	bool DeleteTexture(unsigned uid);	// If references < 1 delete it from memory
 
 private:
 	std::map<unsigned, Resource*> resources;	// map<UID, pointer to resource>

@@ -54,7 +54,7 @@ Material::~Material()
 	{
 		if (textures[i] != nullptr)
 		{
-			App->resManager->DeleteTexture(textures[i]->GetUID());
+			App->resManager->DeleteResource(textures[i]->GetUID());
 			textures[i] = nullptr;
 		}
 	}
@@ -173,7 +173,7 @@ void Material::Reset(const Material & material)
 	{
 		if (textures[i] != nullptr)
 		{
-			App->resManager->DeleteTexture(textures[i]->GetUID());
+			App->resManager->DeleteResource(textures[i]->GetUID());
 		}
 		if (material.textures[i] != nullptr)
 		{

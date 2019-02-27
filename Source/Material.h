@@ -8,7 +8,6 @@
 #define DEFAULTMAT "Default"
 
 struct Shader;
-struct Texture;
 class ResourceTexture;
 
 enum class TextureType

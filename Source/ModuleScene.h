@@ -17,7 +17,6 @@ class ComponentCamera;
 class ComponentLight;
 class ResourceTexture;
 class myQuadTree;
-struct Texture;
 struct par_shapes_mesh_s;
 
 enum class PRIMITIVES

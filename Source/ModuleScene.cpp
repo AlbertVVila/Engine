@@ -122,7 +122,7 @@ bool ModuleScene::CleanUp()
 	selected = nullptr;
 	maincamera = nullptr;
 
-	App->resManager->DeleteTexture(camera_notfound_texture->GetUID());
+	App->resManager->DeleteResource(camera_notfound_texture->GetUID());
 	camera_notfound_texture = nullptr;
 
 	lights.clear();
