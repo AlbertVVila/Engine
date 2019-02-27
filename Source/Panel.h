@@ -30,9 +30,16 @@ public:
 		return focus;
 	}
 
+	bool IsHovered() const
+	{
+		return hover;
+	}
+
 protected:
 	bool enabled = true;
 	bool focus = false;
+	bool hover = false;
+
 };
 
 #endif //__Panel_h__
