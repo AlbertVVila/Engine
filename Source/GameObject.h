@@ -59,7 +59,7 @@ public:
 	unsigned parentUUID = 0; //only set in Save/Load scene TODO:update on parent change
 	bool isStatic = false;
 	bool moved_flag = false;
-	bool copy_flag = false;
+	bool copyFlag = false;
 	bool delete_flag = false;
 	bool drawBBox = false;
 	AABB bbox;
