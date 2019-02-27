@@ -8,10 +8,12 @@
 #include "GameObject.h"
 #include "ComponentRenderer.h"
 
+#include "Resource.h"
+#include "ResourceMesh.h"
+
 #include "myQuadTree.h"
 #include "MaterialEditor.h"
 #include "Material.h"
-#include "Mesh.h"
 #include "JSON.h"
 
 #include "imgui.h"
@@ -19,7 +21,7 @@
 
 ComponentRenderer::ComponentRenderer(GameObject * gameobject) : Component(gameobject, ComponentType::Renderer)
 {
-	mesh = new Mesh();
+	mesh = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH);
 	SetMaterial(DEFAULTMAT);
 	gameobject->isVolumetric = true;
 }
@@ -29,7 +31,8 @@ ComponentRenderer::ComponentRenderer(const ComponentRenderer & component) : Comp
 	mesh = component.mesh;
 	material = component.material;
 
-	App->resManager->AddMesh(mesh);
+	/*ResourceMesh* resMesh = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH);
+	App->resManager->AddMesh(mesh);*/
 	App->resManager->AddMaterial(material);
 }
 
@@ -103,7 +106,7 @@ bool ComponentRenderer::CleanUp()
 	}
 	if (mesh != nullptr)
 	{
-		App->resManager->DeleteMesh(mesh->UID);
+		App->resManager->DeleteResource(mesh->GetUID());
 	}
 	return true;
 }
@@ -111,7 +114,7 @@ bool ComponentRenderer::CleanUp()
 void ComponentRenderer::Save(JSON_value * value) const
 {
 	Component::Save(value);
-	value->AddUint("meshUID", mesh->UID);
+	value->AddUint("meshUID", mesh->GetUID());
 	value->AddString("materialFile", material->name.c_str());
 }
 
@@ -119,8 +122,8 @@ void ComponentRenderer::Load(const JSON_value & value)
 {
 	Component::Load(value);
 	unsigned uid = value.GetUint("meshUID");
-	App->resManager->DeleteMesh(mesh->UID); //Delete existing old mesh
-	Mesh *m = App->resManager->GetMesh(uid); //Look for loaded meshes
+	App->resManager->DeleteResource(mesh->GetUID()); //Delete existing old mesh
+	ResourceMesh* m = App->resManager->GetMesh(uid); //Look for loaded meshes
 	if (m != nullptr)
 	{
 		mesh = m;
@@ -131,7 +134,7 @@ void ComponentRenderer::Load(const JSON_value & value)
 		App->fsystem->Load((MESHES + std::to_string(uid) + MESHEXTENSION).c_str(), &data);
 		mesh->SetMesh(data, uid); //Deallocates data
 	}
-	App->resManager->AddMesh(mesh);
+	//App->resManager->AddMesh(mesh);
 	UpdateGameObject();
 
 	const char* materialFile = value.GetString("materialFile");

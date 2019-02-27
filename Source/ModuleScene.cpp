@@ -17,9 +17,9 @@
 #include "ComponentTransform.h"
 
 #include "ResourceTexture.h"
+#include "ResourceMesh.h"
 
 #include "Material.h"
-#include "Mesh.h"
 #include "JSON.h"
 #include "myQuadTree.h"
 #include "AABBTree.h"
@@ -398,7 +398,7 @@ void ModuleScene::CreatePrimitive(const char * name, GameObject* parent, PRIMITI
 	App->fsystem->Load((MESHES + std::to_string(uid) + MESHEXTENSION).c_str(), &data);
 	crenderer->UpdateMesh(data, uid);//Deallocates data
 	crenderer->SetMaterial(DEFAULTMAT);
-	App->resManager->AddMesh(crenderer->mesh);
+	//App->resManager->AddMesh(crenderer->mesh);
 	App->scene->Select(gameobject);
 }
 

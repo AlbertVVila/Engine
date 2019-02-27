@@ -16,9 +16,10 @@
 #include "ComponentLight.h"
 #include "ComponentRenderer.h"
 
+#include "ResourceMesh.h"
+
 #include "GUICreator.h"
 #include "Material.h"
-#include "Mesh.h"
 #include "myQuadTree.h"
 #include "AABBTree.h"
 #include <stack>
