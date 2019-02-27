@@ -10,11 +10,11 @@
 
 #include <map>
 
-ComponentScript::ComponentScript(GameObject * gameobject) : Component(gameobject, ComponentType::Script)
+ComponentScript::ComponentScript(GameObject* gameobject) : Component(gameobject, ComponentType::Script)
 {
 }
 
-ComponentScript::ComponentScript(const ComponentScript & component) : Component(component)
+ComponentScript::ComponentScript(const ComponentScript& component) : Component(component)
 {
 	scriptName = component.scriptName;
 	if (component.script != nullptr)

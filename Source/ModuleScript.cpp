@@ -73,7 +73,7 @@ void ModuleScript::LoadFromMemory(int resource) //TODO: Load from memory in ship
 
 	assert(hMemory != nullptr);
 	int size_bytes = SizeofResource(nullptr, hResource);
-	void *ptr = LockResource(hMemory);
+	void* ptr = LockResource(hMemory);
 	assert(ptr != nullptr);
 	HMEMORYMODULE dll = MemoryLoadLibrary(ptr);
 	if (dll != nullptr)

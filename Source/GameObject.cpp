@@ -137,38 +137,38 @@ void GameObject::Update()
 	{
 		component->Update();
 	}
-	for (std::list<GameObject*>::iterator it_child = children.begin(); it_child != children.end();)
+	for (std::list<GameObject*>::iterator itChild = children.begin(); itChild != children.end();)
 	{
 
-		if ((*it_child)->moved_flag) //Moved GO
+		if ((*itChild)->moved_flag) //Moved GO
 		{
-			for (auto child : (*it_child)->children)
+			for (auto child : (*itChild)->children)
 			{
 				child->UpdateGlobalTransform();
 			}
-			(*it_child)->UpdateBBox();
-			(*it_child)->moved_flag = false;
+			(*itChild)->UpdateBBox();
+			(*itChild)->moved_flag = false;
 		}
 
-		(*it_child)->Update(); //Update after moved_flag check
+		(*itChild)->Update(); //Update after moved_flag check
 
-		if ((*it_child)->copy_flag) //Copy GO
+		if ((*itChild)->copyFlag) //Copy GO
 		{
-			(*it_child)->copy_flag = false;
-			GameObject *copy = new GameObject(**it_child);
+			(*itChild)->copyFlag = false;
+			GameObject *copy = new GameObject(**itChild);
 			copy->parent = this;
 			this->children.push_back(copy);
 		}
-		if ((*it_child)->delete_flag) //Delete GO
+		if ((*itChild)->delete_flag) //Delete GO
 		{
-			(*it_child)->delete_flag = false;
-			(*it_child)->CleanUp();
-			delete *it_child;
-			children.erase(it_child++);
+			(*itChild)->delete_flag = false;
+			(*itChild)->CleanUp();
+			delete *itChild;
+			children.erase(itChild++);
 		}
 		else
 		{
-			++it_child;
+			++itChild;
 		}
 	}
 }
@@ -575,7 +575,7 @@ void GameObject::DrawHierarchy(GameObject * selected)
 		GUICreator::CreateElements(this);
 		if (ImGui::Selectable("Duplicate"))
 		{
-			copy_flag = true;
+			copyFlag = true;
 		}
 		if (ImGui::Selectable("Delete"))
 		{

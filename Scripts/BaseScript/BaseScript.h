@@ -15,9 +15,9 @@ struct ImGuiContext;
 class BASESCRIPT_API Script
 {
 public:
-	void SetApp(Application * app);
+	void SetApp(Application* app);
 	void SetGameObject(GameObject* go);
-	virtual void Expose(ImGuiContext *context);
+	virtual void Expose(ImGuiContext* context);
 	virtual void Serialize(JSON_value* json) const {}
 	virtual void DeSerialize(JSON_value * json) {}
 	virtual void Start() {}
