@@ -126,7 +126,7 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file,
 		
 	}
 	GameObject* fake = new GameObject("fake", 0u);
-	ProcessNode(meshMap, aiscene.mRootNode, &aiscene, fake, boneNames); //this function return a pointer to a GameObject? any reasons??? could be void
+	ProcessNode(meshMap, aiscene.mRootNode, &aiscene, fake, boneNames);
 
 	//-----------------------------ANIMATIONS---------------------------------------------------
 	std::map<unsigned, unsigned> animationMap;
@@ -409,17 +409,17 @@ unsigned FileImporter::GetSingleBoneSize(const aiBone& bone) const
 	return size;
 }
 
-GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshmap,
-	const aiNode * node, const aiScene * scene, GameObject* parent, std::vector<std::string*>* boneNames)
+void FileImporter::ProcessNode(const std::map<unsigned, unsigned>& meshmap,
+	const aiNode* node, const aiScene* scene, GameObject* parent, std::vector<std::string*>* boneNames)
 {
 	assert(node != nullptr);
-	if (node == nullptr) return nullptr;
+	if (node == nullptr) return;
 
-	GameObject * gameObject = nullptr;
-	GameObject * meshGO = nullptr;
+	GameObject* gameObject = nullptr;
+	GameObject* meshGO = nullptr;
 	
-	std::vector<GameObject*> gameobjects; 
-	gameobjects.push_back(gameObject);
+	//std::vector<GameObject*> gameobjects; 
+	//gameobjects.push_back(gameObject);
 
 	for (unsigned k = 0u; k < node->mNumChildren; k++) //Splits meshes of same node into diferent gameobjects 
 	{
@@ -432,8 +432,8 @@ GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshma
 				gameObject = App->scene->CreateGameObject(node->mName.C_Str(), parent); //Creating GO inside the conditional now
 
 				aiMatrix4x4 m = node->mTransformation;
-				float4x4 transform(m.a1, m.a2, m.a3, m.a4, m.b1, m.b2, m.b3, m.b4, m.c1, m.c2, m.c3, m.c4, m.d1, m.d2, m.d3, m.d4);
-				ComponentTransform* t = (ComponentTransform *)gameObject->CreateComponent(ComponentType::Transform);
+				math::float4x4 transform(m.a1, m.a2, m.a3, m.a4, m.b1, m.b2, m.b3, m.b4, m.c1, m.c2, m.c3, m.c4, m.d1, m.d2, m.d3, m.d4);
+				ComponentTransform* t = (ComponentTransform*)gameObject->CreateComponent(ComponentType::Transform);
 				t->AddTransform(transform);
 
 				(*boneName)->erase(0); //erases the name on the boneNames array, it would be better to delete the position but iterator suffers
@@ -441,19 +441,19 @@ GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshma
 		}			
 	}
 	
-
 	//This below WORKS, but it's not optimal since we are creating two GOs at the same time, needs a lot more work but for now Meshes and bones imported
 
 	for (unsigned j = 0u; j < node->mNumMeshes; j++) //Splits meshes of same node into diferent gameobjects 
 	{
+		//TODO: this should be the mesh name or if empty, node-name+mesh
 		meshGO = App->scene->CreateGameObject(node->mName.C_Str(), parent);
 
 		aiMatrix4x4 m = node->mTransformation;
-		float4x4 transform(m.a1, m.a2, m.a3, m.a4, m.b1, m.b2, m.b3, m.b4, m.c1, m.c2, m.c3, m.c4, m.d1, m.d2, m.d3, m.d4);
+		math::float4x4 transform(m.a1, m.a2, m.a3, m.a4, m.b1, m.b2, m.b3, m.b4, m.c1, m.c2, m.c3, m.c4, m.d1, m.d2, m.d3, m.d4);
 		ComponentTransform* t = (ComponentTransform *)meshGO->CreateComponent(ComponentType::Transform);
 		t->AddTransform(transform);
 
-		gameobjects.push_back(meshGO);
+		/*gameobjects.push_back(meshGO);*/
 		meshGO->parent = parent;
 		ComponentRenderer* crenderer = (ComponentRenderer*)meshGO->CreateComponent(ComponentType::Renderer);
 		auto it = meshmap.find(node->mMeshes[j]);
@@ -465,11 +465,6 @@ GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshma
 		}
 	}
 
-	//for (unsigned i = 0u; i < node->mNumMeshes; i++)
-	//{
-	//	ComponentRenderer* crenderer = (ComponentRenderer*)gameobjects[i]->CreateComponent(ComponentType::Renderer);
-
-	//}
 
 	//To simplify hierarchy, if in this iteration GO was not created and we didnt have this, it would give an error next iteration since next parent would be nullptr
 
@@ -481,10 +476,9 @@ GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshma
 
 	for (unsigned i = 0u; i < node->mNumChildren; i++)
 	{
-		GameObject * child = ProcessNode(meshmap, node->mChildren[i], scene, gameObject, boneNames); //We don't use this child anywhere!!!!!
+		ProcessNode(meshmap, node->mChildren[i], scene, gameObject, boneNames);
 	}
 
-	return gameObject; //WHYYYYYYYYYY?"?"???!!?
 }
 
 
