@@ -132,7 +132,7 @@ void ComponentRenderer::Load(const JSON_value & value)
 	{
 		char *data = nullptr;
 		App->fsystem->Load((MESHES + std::to_string(uid) + MESHEXTENSION).c_str(), &data);
-		mesh->SetMesh(data, uid); //Deallocates data
+		mesh->SetMesh(data); //Deallocates data
 	}
 	//App->resManager->AddMesh(mesh);
 	UpdateGameObject();
@@ -172,7 +172,7 @@ void ComponentRenderer::SetMaterial(const char * materialfile)
 
 void ComponentRenderer::UpdateMesh(const char * data, unsigned uid)
 {
-	mesh->SetMesh(data, uid);
+	mesh->SetMesh(data);
 	UpdateGameObject();
 }
 

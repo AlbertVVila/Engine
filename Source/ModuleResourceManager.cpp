@@ -47,7 +47,7 @@ bool ModuleResourceManager::Start()
 		char *data = nullptr;
 		App->fsystem->Load((MESHES + std::to_string(uid) + MESHEXTENSION).c_str(), &data);
 		ResourceMesh* res = (ResourceMesh*)CreateNewResource(TYPE::MESH, uid);
-		res->SetMesh(data, uid); //Deallocates data
+		res->SetMesh(data); //Deallocates data
 		
 		res->SetExportedFile(name.c_str());
 		//res->exportedFile = written_file;

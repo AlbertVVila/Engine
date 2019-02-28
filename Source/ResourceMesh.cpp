@@ -182,7 +182,7 @@ void ResourceMesh::Load(const JSON_value &config)
 	//TODO: Add variables to load
 }
 
-void ResourceMesh::SetMesh(const char * meshData, unsigned uid)
+void ResourceMesh::SetMesh(const char * meshData)
 {
 	assert(meshData != nullptr);
 	if (meshData == nullptr) return;
@@ -219,7 +219,6 @@ void ResourceMesh::SetMesh(const char * meshData, unsigned uid)
 	int* indices = (int*)meshData;
 	meshData += sizeof(int) * numIndices;
 
-	UID = uid;
 	this->numIndices = numIndices;
 	this->numVertices = numVertices;
 

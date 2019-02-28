@@ -91,7 +91,7 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file)
 
 		ResourceMesh* mesh = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH);
 		App->fsystem->Save((MESHES + std::to_string(mesh->GetUID()) + MESHEXTENSION).c_str(), data, size);
-		mesh->SetMesh(data, mesh->GetUID()); //Deallocates data
+		mesh->SetMesh(data); //Deallocates data
 		//App->resManager->AddMesh(mesh);
 		meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->GetUID()));
 	}

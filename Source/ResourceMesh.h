@@ -17,7 +17,7 @@ public:
 	void Load(const JSON_value &config) override;
 
 	// Mesh specific
-	void SetMesh(const char * meshData, unsigned uid);
+	void SetMesh(const char* meshData);
 	void Draw(unsigned shaderProgram) const;
 	void DrawBbox(unsigned shaderProgram, const AABB &globalBBOX) const;
 	AABB GetBoundingBox() const;
