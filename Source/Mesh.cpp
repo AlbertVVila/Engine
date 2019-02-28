@@ -50,12 +50,12 @@ Mesh::~Mesh()
 	}
 }
 
-void Mesh::SetMesh(const char * meshData, unsigned uid)
+void Mesh::SetMesh(const char* meshData, unsigned uid)
 {
 	assert(meshData != nullptr);
 	if (meshData == nullptr) return;
 
-	const char *data = meshData;
+	const char *data = meshData; //Does this make sense? we are not using data anywhere
 	
 	unsigned int numIndices = *(int*)meshData;
 	meshData += sizeof(int);
