@@ -28,11 +28,8 @@ ComponentRenderer::ComponentRenderer(GameObject * gameobject) : Component(gameob
 
 ComponentRenderer::ComponentRenderer(const ComponentRenderer & component) : Component(component)
 {
-	mesh = component.mesh;
+	mesh = App->resManager->GetMesh(component.mesh->GetUID());
 	material = component.material;
-
-	/*ResourceMesh* resMesh = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH);
-	App->resManager->AddMesh(mesh);*/
 	App->resManager->AddMaterial(material);
 }
 
