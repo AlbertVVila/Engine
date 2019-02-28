@@ -1,7 +1,11 @@
 #include "ResourceMesh.h"
 
 #include "Globals.h"
+#include "Application.h"
+#include "ModuleFileSystem.h"
+
 #include "JSON.h"
+
 #include "GL/glew.h"
 #include "Geometry/Triangle.h"
 #include "Geometry/LineSegment.h"
@@ -35,6 +39,141 @@ ResourceMesh::~ResourceMesh()
 }
 
 bool ResourceMesh::LoadInMemory()
+{
+	char *data = nullptr;
+	App->fsystem->Load((MESHES + std::to_string(UID) + MESHEXTENSION).c_str(), &data);	// Load mesh file
+
+	SetMesh(data); //Deallocates data
+	SetMeshBuffers();
+	SetBboxBuffers();
+	++loaded;
+
+	return true;
+}
+
+void ResourceMesh::DeleteFromMemory()
+{
+	if (VAO != 0)
+	{
+		glDeleteVertexArrays(1, &VAO);
+	}
+	if (VBO != 0)
+	{
+		glDeleteBuffers(1, &VBO);
+	}
+	if (EBO != 0)
+	{
+		glDeleteBuffers(1, &EBO);
+	}
+	if (indices != nullptr)
+	{
+		RELEASE_ARRAY(indices);
+	}
+	if (vertices != nullptr)
+	{
+		RELEASE_ARRAY(vertices);
+	}
+	if (normals != nullptr)
+	{
+		RELEASE_ARRAY(normals);
+	}
+	if (texCoords != nullptr)
+	{
+		RELEASE_ARRAY(texCoords);
+	}
+	if (VAObox != 0)
+	{
+		glDeleteVertexArrays(1, &VAObox);
+	}
+	if (VBObox != 0)
+	{
+		glDeleteBuffers(1, &VBObox);
+	}
+	if (EBObox != 0)
+	{
+		glDeleteBuffers(1, &EBObox);
+	}
+}
+
+void ResourceMesh::Save(JSON_value &config) const
+{
+	Resource::Save(config);
+	//TODO: Add variables to save
+}
+
+void ResourceMesh::Load(const JSON_value &config)
+{
+	Resource::Load(config);
+	//TODO: Add variables to load
+}
+
+void ResourceMesh::Draw(unsigned shaderProgram) const
+{
+	glBindVertexArray(VAO);
+	glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, 0);
+
+	// We disable VAO
+	glBindVertexArray(0);
+}
+
+void ResourceMesh::SetMesh(const char * meshData)
+{
+	assert(meshData != nullptr);
+	if (meshData == nullptr) return;
+
+	const char *data = meshData;
+
+	unsigned int numIndices = *(int*)meshData;
+	meshData += sizeof(int);
+
+	unsigned int numVertices = *(int*)meshData;
+	meshData += sizeof(int);
+
+	float* vertices = (float*)meshData;
+	meshData += sizeof(float) * 3 * numVertices;
+
+	bool hasNormals = *(bool*)meshData;
+	meshData += sizeof(bool);
+
+	float* normals = nullptr;
+	if (hasNormals)
+	{
+		normals = (float*)meshData;
+		meshData += sizeof(float) * 3 * numVertices;
+	}
+
+	bool hasTexCoords = *(bool*)meshData;
+	meshData += sizeof(bool);
+
+	float* texCoords = nullptr;
+	if (hasTexCoords)
+	{
+		texCoords = (float*)meshData;
+		meshData += sizeof(float) * 2 * numVertices;
+	}
+
+	int* indices = (int*)meshData;
+	meshData += sizeof(int) * numIndices;
+
+	this->numIndices = numIndices;
+	this->numVertices = numVertices;
+
+	this->vertices = new float[numVertices * 3];
+	this->indices = new int[numIndices];
+	this->normals = new float[numVertices * 3];
+	this->texCoords = new float[numVertices * 2];
+
+	memcpy(this->vertices, vertices, numVertices * sizeof(float) * 3);
+	memcpy(this->indices, indices, numIndices * sizeof(int));
+	memcpy(this->normals, normals, numVertices * sizeof(float) * 3);
+	memcpy(this->texCoords, texCoords, numVertices * sizeof(float) * 2);
+
+	ComputeBBox();
+
+	RELEASE_ARRAY(data);
+}
+
+void ResourceMesh::SetMeshBuffers()
 {
 	// VAO Creation
 	if (VAO == 0)
@@ -120,135 +259,6 @@ bool ResourceMesh::LoadInMemory()
 	// Disable VBO and EBO
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-	SetBboxBuffers();
-	++loaded;
-
-	return true;
-}
-
-void ResourceMesh::DeleteFromMemory()
-{
-	if (VAO != 0)
-	{
-		glDeleteVertexArrays(1, &VAO);
-	}
-	if (VBO != 0)
-	{
-		glDeleteBuffers(1, &VBO);
-	}
-	if (EBO != 0)
-	{
-		glDeleteBuffers(1, &EBO);
-	}
-	if (indices != nullptr)
-	{
-		RELEASE_ARRAY(indices);
-	}
-	if (vertices != nullptr)
-	{
-		RELEASE_ARRAY(vertices);
-	}
-	if (normals != nullptr)
-	{
-		RELEASE_ARRAY(normals);
-	}
-	if (texCoords != nullptr)
-	{
-		RELEASE_ARRAY(texCoords);
-	}
-	if (VAObox != 0)
-	{
-		glDeleteVertexArrays(1, &VAObox);
-	}
-	if (VBObox != 0)
-	{
-		glDeleteBuffers(1, &VBObox);
-	}
-	if (EBObox != 0)
-	{
-		glDeleteBuffers(1, &EBObox);
-	}
-}
-
-void ResourceMesh::Save(JSON_value &config) const
-{
-	Resource::Save(config);
-	//TODO: Add variables to save
-}
-
-void ResourceMesh::Load(const JSON_value &config)
-{
-	Resource::Load(config);
-	//TODO: Add variables to load
-}
-
-void ResourceMesh::SetMesh(const char * meshData)
-{
-	assert(meshData != nullptr);
-	if (meshData == nullptr) return;
-
-	const char *data = meshData;
-
-	unsigned int numIndices = *(int*)meshData;
-	meshData += sizeof(int);
-
-	unsigned int numVertices = *(int*)meshData;
-	meshData += sizeof(int);
-
-	float* vertices = (float*)meshData;
-	meshData += sizeof(float) * 3 * numVertices;
-
-	bool hasNormals = *(bool*)meshData;
-	meshData += sizeof(bool);
-
-	float* normals = nullptr;
-	if (hasNormals)
-	{
-		normals = (float*)meshData;
-		meshData += sizeof(float) * 3 * numVertices;
-	}
-
-	bool hasTexCoords = *(bool*)meshData;
-	meshData += sizeof(bool);
-
-	float* texCoords = nullptr;
-	if (hasTexCoords)
-	{
-		texCoords = (float*)meshData;
-		meshData += sizeof(float) * 2 * numVertices;
-	}
-
-	int* indices = (int*)meshData;
-	meshData += sizeof(int) * numIndices;
-
-	this->numIndices = numIndices;
-	this->numVertices = numVertices;
-
-	this->vertices = new float[numVertices * 3];
-	this->indices = new int[numIndices];
-	this->normals = new float[numVertices * 3];
-	this->texCoords = new float[numVertices * 2];
-
-	memcpy(this->vertices, vertices, numVertices * sizeof(float) * 3);
-	memcpy(this->indices, indices, numIndices * sizeof(int));
-	memcpy(this->normals, normals, numVertices * sizeof(float) * 3);
-	memcpy(this->texCoords, texCoords, numVertices * sizeof(float) * 2);
-
-	ComputeBBox();
-	LoadInMemory();
-	//SetBboxBuffers();
-
-	RELEASE_ARRAY(data);
-}
-
-void ResourceMesh::Draw(unsigned shaderProgram) const
-{
-	glBindVertexArray(VAO);
-	glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, 0);
-
-	// We disable VAO
-	glBindVertexArray(0);
 }
 
 void ResourceMesh::SetBboxBuffers()

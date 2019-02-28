@@ -393,9 +393,12 @@ void ModuleScene::CreatePrimitive(const char * name, GameObject* parent, PRIMITI
 	ComponentRenderer* crenderer = (ComponentRenderer*)gameobject->CreateComponent(ComponentType::Renderer);
 
 	unsigned uid = primitivesUID[(unsigned)type];
-	char *data = nullptr;
-	App->fsystem->Load((MESHES + std::to_string(uid) + MESHEXTENSION).c_str(), &data);
-	crenderer->UpdateMesh(data, uid);//Deallocates data
+	// TODO [MeshRefactor] - Refactor sphere/Cube creation
+	//char *data = nullptr;
+	//App->fsystem->Load((MESHES + std::to_string(uid) + MESHEXTENSION).c_str(), &data);
+	//crenderer->UpdateMesh(data, uid);//Deallocates data
+	App->resManager->GetMesh(uid);
+	crenderer->UpdateGameObject();
 	crenderer->SetMaterial(DEFAULTMAT);
 	//App->resManager->AddMesh(crenderer->mesh);
 	App->scene->Select(gameobject);

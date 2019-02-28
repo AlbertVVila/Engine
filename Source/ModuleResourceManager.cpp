@@ -44,11 +44,7 @@ bool ModuleResourceManager::Start()
 	{
 		std::string name = App->fsystem->GetFilename(file.c_str());
 		unsigned uid = std::stoul(name);
-		char *data = nullptr;
-		App->fsystem->Load((MESHES + std::to_string(uid) + MESHEXTENSION).c_str(), &data);
-		ResourceMesh* res = (ResourceMesh*)CreateNewResource(TYPE::MESH, uid);
-		res->SetMesh(data); //Deallocates data
-		
+		ResourceMesh* res = (ResourceMesh*)CreateNewResource(TYPE::MESH, uid);	
 		res->SetExportedFile(name.c_str());
 		//res->exportedFile = written_file;
 	}
@@ -307,6 +303,7 @@ ResourceMesh* ModuleResourceManager::GetMesh(const char* file) const
 
 	// Check if is already loaded in memory
 	ResourceMesh* meshResource = (ResourceMesh*)App->resManager->Get(uid);
+	if (meshResource == nullptr) return nullptr;
 	if (!meshResource->IsLoadedToMemory())
 	{
 		// Load in memory
@@ -329,6 +326,7 @@ ResourceMesh* ModuleResourceManager::GetMesh(unsigned uid) const
 
 	// Check if is already loaded in memory
 	ResourceMesh* meshResource = (ResourceMesh*)App->resManager->Get(uid);
+	if (meshResource == nullptr) return nullptr;
 	if (!meshResource->IsLoadedToMemory())
 	{
 		// Load in memory

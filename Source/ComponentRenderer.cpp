@@ -119,7 +119,6 @@ void ComponentRenderer::Load(const JSON_value & value)
 {
 	Component::Load(value);
 	unsigned uid = value.GetUint("meshUID");
-	App->resManager->DeleteResource(mesh->GetUID()); //Delete existing old mesh
 	ResourceMesh* m = App->resManager->GetMesh(uid); //Look for loaded meshes
 	if (m != nullptr)
 	{
@@ -127,11 +126,12 @@ void ComponentRenderer::Load(const JSON_value & value)
 	}
 	else //Case mesh not loaded
 	{
-		char *data = nullptr;
-		App->fsystem->Load((MESHES + std::to_string(uid) + MESHEXTENSION).c_str(), &data);
-		mesh->SetMesh(data); //Deallocates data
+		ResourceMesh* res = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH, uid);
+		res->SetExportedFile(std::to_string(uid).c_str());
+		m = App->resManager->GetMesh(uid); //Look for loaded meshes
+		if (m != nullptr)
+			m = res;
 	}
-	//App->resManager->AddMesh(mesh);
 	UpdateGameObject();
 
 	const char* materialFile = value.GetString("materialFile");
@@ -169,7 +169,7 @@ void ComponentRenderer::SetMaterial(const char * materialfile)
 
 void ComponentRenderer::UpdateMesh(const char * data, unsigned uid)
 {
-	mesh->SetMesh(data);
+	//mesh->SetMesh(data);
 	UpdateGameObject();
 }
 
