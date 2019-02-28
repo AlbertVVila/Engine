@@ -85,7 +85,6 @@ bool ModuleScene::Init(JSON * config)
 
 bool ModuleScene::Start()
 {
-	//App->textures-> ("nocamera.dds", TEXTURES, TYPE::TEXTURE);
 	camera_notfound_texture = App->textures->GetTexture(NOCAMERA); 
 	if (defaultScene.size() > 0)
 	{
