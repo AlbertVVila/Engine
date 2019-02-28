@@ -150,7 +150,7 @@ void ComponentLight::Load(JSON_value* value)
 	}
 }
 
-void ComponentLight::Save(JSON_value * value) const
+void ComponentLight::Save(JSON_value* value) const
 {
 	Component::Save(value);
 

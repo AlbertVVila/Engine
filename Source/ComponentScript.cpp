@@ -52,12 +52,12 @@ void ComponentScript::DrawProperties()
 			std::map<std::string, int>::const_iterator it;
 			for (it = App->scripting->scripts.begin(); it != App->scripting->scripts.end(); it++)
 			{
-				bool is_selected = (scriptName == it->first);
-				if (ImGui::Selectable(it->first.c_str(), is_selected) && scriptName != it->first)
+				bool isSelected = (scriptName == it->first);
+				if (ImGui::Selectable(it->first.c_str(), isSelected) && scriptName != it->first)
 				{
 					SetScript(it->first);
 				}
-				if (is_selected)
+				if (isSelected)
 				{
 					ImGui::SetItemDefaultFocus();
 				}

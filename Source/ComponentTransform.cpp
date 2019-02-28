@@ -80,7 +80,7 @@ void ComponentTransform::DrawProperties()
 		if (old_position != position || old_euler != eulerRotation || old_scale != scale)
 		{
 			UpdateTransform();
-			gameobject->moved_flag = true;
+			gameobject->movedFlag = true;
 		}
 	}
 }
@@ -139,7 +139,7 @@ void ComponentTransform::SetGlobalTransform(const math::float4x4& newglobal, con
 void ComponentTransform::SetPosition(const math::float3 & newPosition)
 {
 	position = newPosition;
-	gameobject->moved_flag = true;
+	gameobject->movedFlag = true;
 	UpdateTransform();
 }
 

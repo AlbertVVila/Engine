@@ -19,7 +19,7 @@ public:
 	void SetGameObject(GameObject* go);
 	virtual void Expose(ImGuiContext* context);
 	virtual void Serialize(JSON_value* json) const {}
-	virtual void DeSerialize(JSON_value * json) {}
+	virtual void DeSerialize(JSON_value* json) {}
 	virtual void Start() {}
 	virtual void Update() {}
 

@@ -108,7 +108,7 @@ bool ComponentRenderer::CleanUp()
 	return true;
 }
 
-void ComponentRenderer::Save(JSON_value * value) const
+void ComponentRenderer::Save(JSON_value* value) const
 {
 	Component::Save(value);
 	value->AddUint("meshUID", mesh->UID);

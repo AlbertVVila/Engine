@@ -140,14 +140,14 @@ void GameObject::Update()
 	for (std::list<GameObject*>::iterator itChild = children.begin(); itChild != children.end();)
 	{
 
-		if ((*itChild)->moved_flag) //Moved GO
+		if ((*itChild)->movedFlag) //Moved GO
 		{
 			for (auto child : (*itChild)->children)
 			{
 				child->UpdateGlobalTransform();
 			}
 			(*itChild)->UpdateBBox();
-			(*itChild)->moved_flag = false;
+			(*itChild)->movedFlag = false;
 		}
 
 		(*itChild)->Update(); //Update after moved_flag check
@@ -297,7 +297,7 @@ void GameObject::UpdateGlobalTransform() //Updates global transform when moving
 
 void GameObject::SetGlobalTransform(const float4x4 & global) //Replaces global transform
 {
-	moved_flag = true;
+	movedFlag = true;
 	if (transform != nullptr)
 	{
 		float4x4 parentglobal = float4x4::identity;

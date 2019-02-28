@@ -43,8 +43,8 @@ public:
 
 	void Remove();
 
-	virtual void Save(JSON_value *value) const;
-	virtual void Load(JSON_value *value);
+	virtual void Save(JSON_value* value) const;
+	virtual void Load(JSON_value* value);
 
 public:
 	GameObject* gameobject = nullptr;

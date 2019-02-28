@@ -94,11 +94,11 @@ void ModuleScript::LoadFromMemory(int resource) //TODO: Load from memory in ship
 Script* ModuleScript::AddScript(const std::string& script)
 {
 	HINSTANCE dll;
-	std::map<std::string, std::pair<HINSTANCE, int>>::iterator dll_it = loadedDLLs.find(script);
-	if (dll_it != loadedDLLs.end())
+	std::map<std::string, std::pair<HINSTANCE, int>>::iterator itDll = loadedDLLs.find(script);
+	if (itDll != loadedDLLs.end())
 	{
-		dll = dll_it->second.first;
-		dll_it->second.second++;
+		dll = itDll->second.first;
+		itDll->second.second++;
 	}
 	else
 	{
@@ -128,20 +128,20 @@ Script* ModuleScript::AddScript(const std::string& script)
 void ModuleScript::RemoveScript(const std::string& name, Script* script)
 {
 	//TODO: check if script is used in any other component and if not then freelibrary
-	std::map<std::string, std::pair<HINSTANCE,int>>::iterator dll_it = loadedDLLs.find(name);
-	if (dll_it != loadedDLLs.end())
+	std::map<std::string, std::pair<HINSTANCE,int>>::iterator itDll = loadedDLLs.find(name);
+	if (itDll != loadedDLLs.end())
 	{
-		if (dll_it->second.second <= 1)
+		if (itDll->second.second <= 1)
 		{
-			if (!FreeLibrary(dll_it->second.first))
+			if (!FreeLibrary(itDll->second.first))
 			{
 				LOG("CAN'T RELEASE %s", name);
 			}
-			loadedDLLs.erase(dll_it);
+			loadedDLLs.erase(itDll);
 		}
 		else
 		{
-			dll_it->second.second--;
+			itDll->second.second--;
 		}
 		scriptInstances.remove(script);
 		RELEASE(script);
