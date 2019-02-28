@@ -121,6 +121,7 @@ bool ResourceMesh::LoadInMemory()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
+	SetBboxBuffers();
 	++loaded;
 
 	return true;
@@ -201,6 +202,7 @@ void ResourceMesh::SetMesh(const char * meshData)
 	bool hasNormals = *(bool*)meshData;
 	meshData += sizeof(bool);
 
+	float* normals = nullptr;
 	if (hasNormals)
 	{
 		normals = (float*)meshData;
@@ -210,6 +212,7 @@ void ResourceMesh::SetMesh(const char * meshData)
 	bool hasTexCoords = *(bool*)meshData;
 	meshData += sizeof(bool);
 
+	float* texCoords = nullptr;
 	if (hasTexCoords)
 	{
 		texCoords = (float*)meshData;
@@ -224,11 +227,17 @@ void ResourceMesh::SetMesh(const char * meshData)
 
 	this->vertices = new float[numVertices * 3];
 	this->indices = new int[numIndices];
+	this->normals = new float[numVertices * 3];
+	this->texCoords = new float[numVertices * 2];
+
 	memcpy(this->vertices, vertices, numVertices * sizeof(float) * 3);
 	memcpy(this->indices, indices, numIndices * sizeof(int));
+	memcpy(this->normals, normals, numVertices * sizeof(float) * 3);
+	memcpy(this->texCoords, texCoords, numVertices * sizeof(float) * 2);
+
 	ComputeBBox();
 	LoadInMemory();
-	SetBboxBuffers();
+	//SetBboxBuffers();
 
 	RELEASE_ARRAY(data);
 }
