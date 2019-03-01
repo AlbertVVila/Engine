@@ -44,9 +44,9 @@ public:
 	
 	Texture* textures[MAXTEXTURES]{ nullptr };
 	
-	float4 diffuse_color = float4::one;
-	float3 specular_color = float3::one;
-	float3 emissive_color = float3::one;
+	float4 diffuseColor = float4::one;
+	float3 specularColor = float3::one;
+	float3 emissiveColor = float3::one;
 	
 	float kAmbient = 0.3f;
 	float kDiffuse = 0.2f;

@@ -28,12 +28,12 @@ public:
 	Material* material = nullptr;
 	Material* previous = nullptr;
 
-	std::string current_shader = None;
-	std::string current_diffuse = None;
-	std::string current_specular = None;
-	std::string current_occlusion = None;
-	std::string current_emissive = None;
-	std::string current_normal = None;
+	std::string currentShader = None;
+	std::string currentDiffuse = None;
+	std::string currentSpecular = None;
+	std::string currentOcclusion = None;
+	std::string currentEmissive = None;
+	std::string currentNormal = None;
 
 	std::vector<std::string> textureFiles;
 	std::vector<std::string> shaders;

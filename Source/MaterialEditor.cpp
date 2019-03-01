@@ -46,7 +46,7 @@ void MaterialEditor::Draw()
 	ImGui::DragFloat("kDiffuse", &material->kDiffuse, .005f, .0f, 1.f);
 	ImGui::DragFloat("kSpecular", &material->kSpecular, .005f, .0f, 1.f);
 	ImGui::DragFloat("Shininess", &material->shininess, .05f, .0f, 256.f);
-	ShaderSelector(current_shader);
+	ShaderSelector(currentShader);
 
 	if (textureFiles.size() == 0)
 	{
@@ -55,36 +55,36 @@ void MaterialEditor::Draw()
 
 	if (ImGui::CollapsingHeader("Diffuse"))
 	{
-		ImGui::PushID(&material->diffuse_color);
-		ImGui::ColorEdit4("Color", (float*)&material->diffuse_color, ImGuiColorEditFlags_AlphaPreview);
-		TextureSelector((unsigned)TextureType::DIFFUSE, current_diffuse, 0);
+		ImGui::PushID(&material->diffuseColor);
+		ImGui::ColorEdit4("Color", (float*)&material->diffuseColor, ImGuiColorEditFlags_AlphaPreview);
+		TextureSelector((unsigned)TextureType::DIFFUSE, currentDiffuse, 0);
 		ImGui::Separator();
 		ImGui::PopID();
 	}
 	if (ImGui::CollapsingHeader("Specular"))
 	{
-		ImGui::PushID(&material->specular_color);
-		ImGui::ColorEdit3("Color", (float*)&material->specular_color);
-		TextureSelector((unsigned)TextureType::SPECULAR, current_specular, 1);
+		ImGui::PushID(&material->specularColor);
+		ImGui::ColorEdit3("Color", (float*)&material->specularColor);
+		TextureSelector((unsigned)TextureType::SPECULAR, currentSpecular, 1);
 		ImGui::Separator();
 		ImGui::PopID();
 	}
 	if (ImGui::CollapsingHeader("Occlusion"))
 	{
 		ImGui::PushID(&material->textures[(unsigned)TextureType::OCCLUSION]);
-		TextureSelector((unsigned)TextureType::OCCLUSION, current_occlusion, 2);
+		TextureSelector((unsigned)TextureType::OCCLUSION, currentOcclusion, 2);
 		ImGui::Separator();
 		ImGui::PopID();
 	}
 	if (ImGui::CollapsingHeader("Emissive"))
 	{
-		ImGui::ColorEdit3("Color", (float*)&material->emissive_color);
-		TextureSelector((unsigned)TextureType::EMISSIVE, current_emissive, 3);
+		ImGui::ColorEdit3("Color", (float*)&material->emissiveColor);
+		TextureSelector((unsigned)TextureType::EMISSIVE, currentEmissive, 3);
 		ImGui::Separator();
 	}
 	if (ImGui::CollapsingHeader("Normal"))
 	{
-		TextureSelector((unsigned)TextureType::NORMAL, current_normal, 4);
+		TextureSelector((unsigned)TextureType::NORMAL, currentNormal, 4);
 	}
 
 	ImGui::SetCursorPosX(ImGui::GetWindowWidth()/2 - ImGui::CalcTextSize("Cancel Changes").x /2);
@@ -174,43 +174,43 @@ void MaterialEditor::SetCurrentTextures()
 	// Set current textures strings
 	if (diffuse_texture != nullptr)		
 	{ 
-		current_diffuse = diffuse_texture->file; 
+		currentDiffuse = diffuse_texture->file; 
 	}
 	else 
 	{ 
-		current_diffuse = None; 
+		currentDiffuse = None; 
 	}
 	if (specular_texture != nullptr)	
 	{ 
-		current_specular = specular_texture->file;
+		currentSpecular = specular_texture->file;
 	}
 	else 
 	{ 
-		current_specular = None;
+		currentSpecular = None;
 	}
 	if (occlusion_texture != nullptr)	
 	{ 
-		current_occlusion = occlusion_texture->file;
+		currentOcclusion = occlusion_texture->file;
 	}
 	else 
 	{ 
-		current_occlusion = None;
+		currentOcclusion = None;
 	}
 	if (emissive_texture != nullptr)	
 	{ 
-		current_emissive = emissive_texture->file; 
+		currentEmissive = emissive_texture->file; 
 	}
 	else 
 	{ 
-		current_emissive = None; 
+		currentEmissive = None; 
 	}
 	if (normal_texture != nullptr)		
 	{ 
-		current_normal = normal_texture->file; 
+		currentNormal = normal_texture->file; 
 	}
 	else 
 	{ 
-		current_normal = None; 
+		currentNormal = None; 
 	}
 }
 
@@ -273,11 +273,11 @@ void MaterialEditor::CleanUp()
 {
 	Save();
 
-	current_shader = None;
-	current_diffuse = None;
-	current_specular = None;
-	current_occlusion = None;
-	current_emissive = None;
+	currentShader = None;
+	currentDiffuse = None;
+	currentSpecular = None;
+	currentOcclusion = None;
+	currentEmissive = None;
 
 	textureFiles.clear();
 	shaders.clear();

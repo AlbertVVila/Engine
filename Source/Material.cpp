@@ -16,7 +16,7 @@ Material::Material()
 {
 }
 
-Material::Material(const char * name)
+Material::Material(const char* name)
 {
 	this->name = name;
 }
@@ -36,9 +36,9 @@ Material::Material(const Material& material)
 		}
 	}
 
-	diffuse_color = material.diffuse_color;
-	specular_color = material.specular_color;
-	emissive_color = material.emissive_color;
+	diffuseColor = material.diffuseColor;
+	specularColor = material.specularColor;
+	emissiveColor = material.emissiveColor;
 
 	kAmbient = material.kAmbient;
 	kDiffuse = material.kDiffuse;
@@ -77,36 +77,36 @@ void Material::Load(const char * materialfile)
 	JSON_value *materialJSON = json->GetValue("material");
 	
 	name = materialName;
-	diffuse_color = materialJSON->GetColor4("diffuseColor");
-	specular_color = materialJSON->GetColor3("specularColor");
-	emissive_color = materialJSON->GetColor3("emissiveColor");
+	diffuseColor = materialJSON->GetColor4("diffuseColor");
+	specularColor = materialJSON->GetColor3("specularColor");
+	emissiveColor = materialJSON->GetColor3("emissiveColor");
 	
 	kAmbient = materialJSON->GetFloat("kAmbient");
 	kDiffuse = materialJSON->GetFloat("kDiffuse");
 	kSpecular = materialJSON->GetFloat("kSpecular");
 	shininess = materialJSON->GetFloat("shininess");
 	
-	const char *diffuseFile = materialJSON->GetString("diffuse");
+	const char* diffuseFile = materialJSON->GetString("diffuse");
 	if (diffuseFile != nullptr)
 	{
 		textures[(unsigned)TextureType::DIFFUSE] = App->textures->GetTexture(diffuseFile);
 	}
-	const char *specularFile = materialJSON->GetString("specular");
+	const char* specularFile = materialJSON->GetString("specular");
 	if (specularFile != nullptr)
 	{
 		textures[(unsigned)TextureType::SPECULAR] = App->textures->GetTexture(specularFile);
 	}
-	const char *occlusionFile = materialJSON->GetString("occlusion");
+	const char* occlusionFile = materialJSON->GetString("occlusion");
 	if (occlusionFile != nullptr)
 	{
 		textures[(unsigned)TextureType::OCCLUSION] = App->textures->GetTexture(occlusionFile);
 	}
-	const char *emissiveFile = materialJSON->GetString("emissive");
+	const char* emissiveFile = materialJSON->GetString("emissive");
 	if (emissiveFile != nullptr)
 	{
 		textures[(unsigned)TextureType::EMISSIVE] = App->textures->GetTexture(emissiveFile);
 	}
-	const char *normalFile = materialJSON->GetString("normal");
+	const char* normalFile = materialJSON->GetString("normal");
 	if (normalFile != nullptr)
 	{
 		textures[(unsigned)TextureType::NORMAL] = App->textures->GetTexture(normalFile);
@@ -128,13 +128,13 @@ void Material::Save() const
 	JSON_value *materialJSON = json->CreateValue();
 	
 	if(textures[(unsigned) TextureType::DIFFUSE] != nullptr)
-		materialJSON->AddFloat4("diffuseColor", diffuse_color);
+		materialJSON->AddFloat4("diffuseColor", diffuseColor);
 	
 	if (textures[(unsigned)TextureType::SPECULAR] != nullptr)
-		materialJSON->AddFloat3("specularColor", specular_color);
+		materialJSON->AddFloat3("specularColor", specularColor);
 	
 	if (textures[(unsigned)TextureType::EMISSIVE] != nullptr)
-		materialJSON->AddFloat3("emissiveColor", emissive_color);
+		materialJSON->AddFloat3("emissiveColor", emissiveColor);
 	
 	materialJSON->AddFloat("kAmbient", kAmbient);
 	materialJSON->AddFloat("kDiffuse", kDiffuse);
@@ -201,9 +201,9 @@ void Material::Reset(const Material & material)
 			textures[i] = nullptr;
 		}
 	}
-	diffuse_color = material.diffuse_color;
-	specular_color = material.specular_color;
-	emissive_color = material.emissive_color;
+	diffuseColor = material.diffuseColor;
+	specularColor = material.specularColor;
+	emissiveColor = material.emissiveColor;
 
 	kAmbient = material.kAmbient;
 	kDiffuse = material.kDiffuse;
@@ -211,7 +211,7 @@ void Material::Reset(const Material & material)
 	shininess = material.shininess;
 }
 
-bool Material::Compare(const Material & material)
+bool Material::Compare(const Material& material)
 {
 	if (name.compare(material.name) != 0)
 		return false;
@@ -225,11 +225,11 @@ bool Material::Compare(const Material & material)
 			return false;
 	}
 
-	if (!diffuse_color.Equals(material.diffuse_color))
+	if (!diffuseColor.Equals(material.diffuseColor))
 		return false;
-	if (!specular_color.Equals(material.specular_color))
+	if (!specularColor.Equals(material.specularColor))
 		return false;
-	if (!emissive_color.Equals(material.emissive_color))
+	if (!emissiveColor.Equals(material.emissiveColor))
 		return false;
 
 	if (kDiffuse != material.kDiffuse)
@@ -275,12 +275,12 @@ void Material::SetUniforms(unsigned shader) const
 		{
 		case TextureType::DIFFUSE:
 			textureType = "diffuse";
-			color = (float*)&diffuse_color;
+			color = (float*)&diffuseColor;
 			break;
 
 		case TextureType::SPECULAR:
 			textureType = "specular";
-			color = (float*)&specular_color;
+			color = (float*)&specularColor;
 			break;
 
 		case TextureType::OCCLUSION:
@@ -289,7 +289,7 @@ void Material::SetUniforms(unsigned shader) const
 
 		case TextureType::EMISSIVE:
 			textureType = "emissive";
-			color = (float*)&emissive_color;
+			color = (float*)&emissiveColor;
 			break;
 		}
 
