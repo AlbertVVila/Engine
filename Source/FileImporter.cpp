@@ -97,6 +97,22 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file,
 	std::vector<unsigned> rBonesUIDs;
 	std::vector<Bone*> rBones;
 
+	//Insted of creating a fake GO we create at the beginning the sceneGO, will have the same purposes but inside will only have two children:
+	//meshesGO and bonesGO
+
+	//WARNING, doing the thing above created 2 skeletons, this means each mesh has bones!!
+
+	GameObject* sceneGO = App->scene->CreateGameObject("Scene", App->scene->root);
+
+	GameObject* meshesGO = nullptr;
+
+	if (aiscene.HasMeshes())
+	{
+		meshesGO = App->scene->CreateGameObject("Meshes", sceneGO);
+	}
+
+
+
 	for (unsigned i = 0u; i < aiscene.mNumMeshes; i++)
 	{
 		//-------------------------------MESH------------------------------------
@@ -108,25 +124,23 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file,
 		Mesh* mesh = new Mesh();
 		unsigned uid = App->scene->GetNewUID();
 		App->fsystem->Save((MESHES + std::to_string(uid)+ MESHEXTENSION).c_str(), meshData, meshSize);
-		mesh->SetMesh(meshData, uid); //No longer deallocates data
+		mesh->SetMesh(meshData, uid); //deallocates data
 		// meshesUID.push_back(uid); //same as below?
 		App->resManager->AddMesh(mesh);
 		meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->UID));
 
 		//------------------------BONES---------------------------------------
 		// This needs to load the entire bone estructure and then store it as a unique resource
-		//For now it loads each bone separately
 		if (aiscene.mMeshes[i]->HasBones())
 		{
-			for (unsigned j = 0u; j < aiscene.mMeshes[i]->mNumBones; j++)
-			{
-				rBonesUIDs = ImportBones(*aiscene.mMeshes[i], rBones, bonesUID, boneMap, boneNames, mesh->UID);
-			}
+			GameObject* bonesGO = App->scene->CreateGameObject("Skeleton", sceneGO);
+
+			rBonesUIDs = ImportBones(*aiscene.mMeshes[i], rBones, bonesUID, boneMap, boneNames, mesh->UID);		
 		}
 		
 	}
-	GameObject* fake = new GameObject("fake", 0u);
-	ProcessNode(meshMap, aiscene.mRootNode, &aiscene, fake, boneNames);
+
+	ProcessNode(meshMap, aiscene.mRootNode, &aiscene, sceneGO, meshesGO, boneNames);
 
 	//-----------------------------ANIMATIONS---------------------------------------------------
 	std::map<unsigned, unsigned> animationMap;
@@ -140,9 +154,9 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file,
 		anim->Load(animationData);
 	}
 
-	App->scene->SaveScene(*fake, *App->fsystem->GetFilename(file).c_str(), *SCENES); //TODO: Make AutoCreation of folders or check
-	fake->CleanUp();
-	RELEASE(fake);
+	App->scene->SaveScene(*sceneGO, *App->fsystem->GetFilename(file).c_str(), *SCENES); //TODO: Make AutoCreation of folders or check
+	//sceneGO->CleanUp(); we don't want to delete it, we need it
+	//RELEASE(sceneGO);
 	aiReleaseImport(&aiscene);
 	return true;
 }
@@ -218,11 +232,9 @@ std::vector<unsigned> FileImporter::ImportBones(const aiMesh& mesh, std::vector<
 		std::vector<unsigned> mBonesUIds;
 
 		bool boneNameFound = false;
-		/*ImportSingleBone(*mesh.mBones[i], data);*/
 
 		aiBone* bone = mesh.mBones[i];
 		std::string boneName = (bone->mName.length > 0) ? bone->mName.C_Str() : "Bone"; // Use fileName+Stuff
-		// Comprobar que el nombre del name no existe en el array de bones, si existe darle un +1 or sthmng
 		// App->fileSystem->getAvailableNameFromArray(bonesNames, boneName);
 
 
@@ -410,16 +422,13 @@ unsigned FileImporter::GetSingleBoneSize(const aiBone& bone) const
 }
 
 void FileImporter::ProcessNode(const std::map<unsigned, unsigned>& meshmap,
-	const aiNode* node, const aiScene* scene, GameObject* parent, std::vector<std::string*>* boneNames)
+	const aiNode* node, const aiScene* scene, GameObject* parent, GameObject* meshParent, std::vector<std::string*>* boneNames)
 {
 	assert(node != nullptr);
 	if (node == nullptr) return;
 
 	GameObject* gameObject = nullptr;
 	GameObject* meshGO = nullptr;
-	
-	//std::vector<GameObject*> gameobjects; 
-	//gameobjects.push_back(gameObject);
 
 	for (unsigned k = 0u; k < node->mNumChildren; k++) //Splits meshes of same node into diferent gameobjects 
 	{
@@ -436,7 +445,9 @@ void FileImporter::ProcessNode(const std::map<unsigned, unsigned>& meshmap,
 				ComponentTransform* t = (ComponentTransform*)gameObject->CreateComponent(ComponentType::Transform);
 				t->AddTransform(transform);
 
-				(*boneName)->erase(0); //erases the name on the boneNames array, it would be better to delete the position but iterator suffers
+				//boneNames->erase(boneName);
+				break;
+				//erases the name on the boneNames array and exits for iteration
 			}
 		}			
 	}
@@ -446,7 +457,7 @@ void FileImporter::ProcessNode(const std::map<unsigned, unsigned>& meshmap,
 	for (unsigned j = 0u; j < node->mNumMeshes; j++) //Splits meshes of same node into diferent gameobjects 
 	{
 		//TODO: this should be the mesh name or if empty, node-name+mesh
-		meshGO = App->scene->CreateGameObject(node->mName.C_Str(), parent);
+		meshGO = App->scene->CreateGameObject(node->mName.C_Str(), meshParent);
 
 		aiMatrix4x4 m = node->mTransformation;
 		math::float4x4 transform(m.a1, m.a2, m.a3, m.a4, m.b1, m.b2, m.b3, m.b4, m.c1, m.c2, m.c3, m.c4, m.d1, m.d2, m.d3, m.d4);
@@ -454,7 +465,7 @@ void FileImporter::ProcessNode(const std::map<unsigned, unsigned>& meshmap,
 		t->AddTransform(transform);
 
 		/*gameobjects.push_back(meshGO);*/
-		meshGO->parent = parent;
+		/*meshGO->parent = meshParent;*/
 		ComponentRenderer* crenderer = (ComponentRenderer*)meshGO->CreateComponent(ComponentType::Renderer);
 		auto it = meshmap.find(node->mMeshes[j]);
 		if (it != meshmap.end())
@@ -466,19 +477,18 @@ void FileImporter::ProcessNode(const std::map<unsigned, unsigned>& meshmap,
 	}
 
 
-	//To simplify hierarchy, if in this iteration GO was not created and we didnt have this, it would give an error next iteration since next parent would be nullptr
+	////To simplify hierarchy, if in this iteration GO was not created and we didnt have this, it would give an error next iteration since next parent would be nullptr
 
 	if (gameObject == nullptr)
 	{
 		gameObject = parent;
 	}
-	
 
 	for (unsigned i = 0u; i < node->mNumChildren; i++)
 	{
-		ProcessNode(meshmap, node->mChildren[i], scene, gameObject, boneNames);
+		ProcessNode(meshmap, node->mChildren[i], scene, gameObject, meshParent, boneNames);
 	}
-
+	
 }
 
 

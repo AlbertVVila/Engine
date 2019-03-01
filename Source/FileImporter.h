@@ -19,7 +19,7 @@ public:
 	void ImportAsset(const char* file, const char* folder);
 
 	void ProcessNode(const std::map<unsigned,unsigned>& meshmap, 
-		const aiNode* node, const aiScene* scene, GameObject* parent, std::vector<std::string*>* boneNames);
+		const aiNode* node, const aiScene* scene, GameObject* parent, GameObject* meshParent, std::vector<std::string*>* boneNames);
 
 	bool ImportFBX(const char* file, const char* folder);
 
