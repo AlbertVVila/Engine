@@ -226,29 +226,40 @@ void MaterialEditor::NewMaterial()
 		ImGui::Separator();
 		ImGui::InputText("NewName", newName, 64);
 
-		bool exists = false;
+		if (strcmp(newName, newNamePrev) != 0)
+		{
+			if (Exists(newName))
+			{
+				newMatExists = true;
+			}
+			else
+			{
+				newMatExists = false;
+			}
+			strcpy(newNamePrev, newName);
+		}
 
-		if (Exists(newName))
+		if (newMatExists)
 		{
 			std::string nameTest = newName + std::string(" already exists!");
 			ImGui::Text(nameTest.c_str());
-			exists = true;
 		}
 
-		if (ImGui::Button("Save", ImVec2(120, 0)) && !exists)
+		if (ImGui::Button("Save", ImVec2(120, 0)) && !newMatExists)
 		{
 			Material* newMaterialCreated = new Material(newName);
 			newMaterialCreated->Save();
 			newMaterial = false;
 			RELEASE(newMaterialCreated);
 			strcpy(newName, "New Material");
-			
+			strcpy(newNamePrev, "");
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Cancel", ImVec2(120, 0)))
 		{
 			newMaterial = false;
 			strcpy(newName, "New Material");
+			strcpy(newNamePrev, "");
 		}
 		ImGui::EndPopup();
 	}
@@ -256,9 +267,8 @@ void MaterialEditor::NewMaterial()
 
 bool MaterialEditor::Exists(const char * material)
 {
-	char* data = nullptr;
 	std::string materialName(material);
-	return App->fsystem->Load((MATERIALS + materialName + JSONEXT).c_str(), &data);
+	return App->fsystem->Exists((MATERIALS + materialName + JSONEXT).c_str());
 }
 
 void MaterialEditor::Save()

@@ -22,8 +22,10 @@ public:
 public:
 	bool open = false;
 
+	char newNamePrev[64] = "";
 	char newName[64] = "New Material";
 	bool newMaterial = false;
+	bool newMatExists = false;
 
 	Material* material = nullptr;
 	Material* previous = nullptr;
