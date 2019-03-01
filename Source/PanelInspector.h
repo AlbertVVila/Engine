@@ -19,7 +19,6 @@ public:
 
 private:
 	bool openPopup = false;
-	bool focus = false;
 	std::string popUpSentence;
 };
 

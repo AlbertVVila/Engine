@@ -27,13 +27,13 @@ void MaterialEditor::Draw()
 		if (!ImGui::IsPopupOpen(materialPopup))
 		{
 			ImGui::OpenPopup(materialPopup);
-			SetCurrentTextures();
 			if (isCreated)
 			{
 				material = new Material();
 			}
 			else
 			{
+				SetCurrentTextures();
 				previous = new Material(*material); //Save changes if cancel
 			}
 		}
@@ -176,8 +176,6 @@ void MaterialEditor::TextureSelector(unsigned i, std::string &current_texture)
 
 void MaterialEditor::SetCurrentTextures()
 {
-	if (material == nullptr) return;
-
 	// Get material textures
 	Texture* diffuse_texture = material->GetTexture(TextureType::DIFFUSE);
 	Texture* specular_texture = material->GetTexture(TextureType::SPECULAR);
