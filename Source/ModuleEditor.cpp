@@ -16,6 +16,7 @@
 #include "PanelHardware.h"
 #include "PanelHierarchy.h"
 #include "PanelTime.h"
+#include "PanelBrowser.h"
 
 #include "MaterialEditor.h"
 #include "GUICreator.h"
@@ -34,6 +35,7 @@ ModuleEditor::ModuleEditor()
 	panels.push_back(about = new PanelAbout());
 	panels.push_back(hardware = new PanelHardware());
 	panels.push_back(hierarchy = new PanelHierarchy());
+	panels.push_back(assets = new PanelBrowser());
 	panels.push_back(time = new PanelTime());
 
 	materialEditor = new MaterialEditor();
@@ -326,6 +328,10 @@ void ModuleEditor::WindowsMenu()
 		if (ImGui::MenuItem("Time controll", NULL, time->IsEnabled()))
 		{
 			time->ToggleEnabled();
+		}
+		if (ImGui::MenuItem("Assets", nullptr, assets->IsEnabled()))
+		{
+			assets->ToggleEnabled();
 		}
 		ImGui::EndMenu();
 	}
