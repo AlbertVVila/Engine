@@ -7,6 +7,7 @@
 #include "ModuleRender.h"
 
 #include "ComponentCamera.h"
+#include "PanelHierarchy.h"
 
 #include "JSON.h"
 #include "imgui.h"
@@ -66,7 +67,7 @@ update_status ModuleCamera::Update(float dt)
 {
 	BROFILER_CATEGORY("Camera Update", Profiler::Color::Red)
 
-	if (App->renderer->IsSceneViewFocused())
+	if (App->renderer->IsSceneViewFocused() || App->editor->hierarchy->IsHovered())
 	{
 		InputMove(dt);
 		InputRotate(dt);
