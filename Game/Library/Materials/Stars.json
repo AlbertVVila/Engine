@@ -1,1 +1,1 @@
-{"material":{"emissiveColor":[0.9959016442298889,0.8832695484161377,0.0],"kAmbient":0.30000001192092898,"kDiffuse":0.20000000298023225,"kSpecular":0.10000000149011612,"shininess":32.0,"emissive":"White","shader":"PBR"}}
+{"material":{"emissiveColor":[1.0,0.8868974447250366,0.0],"metallic":0.0,"roughness":0.0,"occlusion":"White","emissive":"White","shader":"PBR"}}

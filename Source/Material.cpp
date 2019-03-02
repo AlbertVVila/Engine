@@ -81,10 +81,8 @@ void Material::Load(const char * materialfile)
 	specularColor = materialJSON->GetColor3("specularColor");
 	emissiveColor = materialJSON->GetColor3("emissiveColor");
 	
-	kAmbient = materialJSON->GetFloat("kAmbient");
-	kDiffuse = materialJSON->GetFloat("kDiffuse");
-	kSpecular = materialJSON->GetFloat("kSpecular");
-	shininess = materialJSON->GetFloat("shininess");
+	metallic = materialJSON->GetFloat("metallic");
+	roughness = materialJSON->GetFloat("roughness");
 	
 	const char* diffuseFile = materialJSON->GetString("diffuse");
 	if (diffuseFile != nullptr)
@@ -136,11 +134,9 @@ void Material::Save() const
 	if (textures[(unsigned)TextureType::EMISSIVE] != nullptr)
 		materialJSON->AddFloat3("emissiveColor", emissiveColor);
 	
-	materialJSON->AddFloat("kAmbient", kAmbient);
-	materialJSON->AddFloat("kDiffuse", kDiffuse);
-	materialJSON->AddFloat("kSpecular", kSpecular);
-	materialJSON->AddFloat("shininess", shininess);
-	
+	materialJSON->AddFloat("metallic", metallic);
+	materialJSON->AddFloat("roughness", roughness);
+		
 	
 	if (textures[(unsigned)TextureType::DIFFUSE] != nullptr)
 	{
@@ -241,7 +237,7 @@ bool Material::Compare(const Material& material)
 
 	if (shininess != material.shininess)
 		return false;
-
+		
 	return true;
 }
 
@@ -291,6 +287,9 @@ void Material::SetUniforms(unsigned shader) const
 			textureType = "emissive";
 			color = (float*)&emissiveColor;
 			break;
+		case TextureType::NORMAL:
+			textureType = "normal";
+			break;
 		}
 
 		char texture[32];
@@ -298,6 +297,15 @@ void Material::SetUniforms(unsigned shader) const
 
 		char uniform[32];
 		sprintf(uniform, "material.%s_color", textureType);
+
+		if (textures[(int)TextureType::NORMAL] == nullptr)
+		{
+			glUniform1i(glGetUniformLocation(shader, "hasNormalMap"), 0);
+		}
+		else
+		{
+			glUniform1i(glGetUniformLocation(shader, "hasNormalMap"), 1);
+		}
 
 		if (textures[i] != nullptr)
 		{
@@ -330,10 +338,5 @@ void Material::SetUniforms(unsigned shader) const
 		"material.roughness"), 1, (GLfloat*)&roughness);
 	glUniform1fv(glGetUniformLocation(shader,
 		"material.metallic"), 1, (GLfloat*)&metallic);
-	glUniform1fv(glGetUniformLocation(shader,
-		"material.k_diffuse"), 1, (GLfloat*)&kDiffuse);
-	glUniform1fv(glGetUniformLocation(shader,
-		"material.k_specular"), 1, (GLfloat*)&kSpecular);
-	glUniform1fv(glGetUniformLocation(shader,
-		"material.shininess"), 1, (GLfloat*)&shininess);
+	
 }

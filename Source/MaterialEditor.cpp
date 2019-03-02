@@ -42,10 +42,9 @@ void MaterialEditor::Draw()
 	ImGui::InputText("Name", name, 64);
 	material->name = name;
 
-	ImGui::DragFloat("kAmbient", &material->kAmbient, .005f, .0f, 1.f);
-	ImGui::DragFloat("kDiffuse", &material->kDiffuse, .005f, .0f, 1.f);
-	ImGui::DragFloat("kSpecular", &material->kSpecular, .005f, .0f, 1.f);
-	ImGui::DragFloat("Shininess", &material->shininess, .05f, .0f, 256.f);
+	ImGui::DragFloat("Metallic", &material->metallic, .01f, .001f, 1.f);
+	ImGui::DragFloat("Roughness", &material->roughness, .01f, .001f, 1.f);
+	
 	ShaderSelector(currentShader);
 
 	if (textureFiles.size() == 0)
@@ -273,10 +272,7 @@ bool MaterialEditor::Exists(const char * material)
 
 void MaterialEditor::Save()
 {
-	if (!material->Compare(*previous))
-	{
-		material->Save();
-	}
+	material->Save();
 }
 
 void MaterialEditor::CleanUp()

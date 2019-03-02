@@ -11,10 +11,10 @@ struct Material
     vec4      diffuse_color;
 
     sampler2D specular_texture;
-    vec3      specular_color;
     float     shininess;
 
     sampler2D occlusion_texture;
+    sampler2D normal_texture;
 
     sampler2D emissive_texture;
     vec3      emissive_color;
@@ -71,6 +71,7 @@ in vec3 normalIn;
 in vec3 position;
 in vec2 uv0;
 in vec3 viewPos;
+
 in vec3 pointPositions[MAX_POINT_LIGHTS]; //positions in tangent space
 in vec3 spotPositions[MAX_SPOT_LIGHTS];   //positions in tangent space
 in vec3 spotDirections[MAX_SPOT_LIGHTS];  //directions in tangent space
@@ -80,6 +81,7 @@ out vec4 Fragcolor;
 
 uniform Material material;
 uniform Lights lights;
+uniform int hasNormalMap;
 
 vec4 textureGammaCorrected(sampler2D tex)
 {
@@ -116,12 +118,12 @@ float D(vec3 H, vec3 N)
 	float NdotH2 = pow(NdotH, 2);
 	float num = pow(r2, 2);
 	float den = NdotH2 * (num - 1.f) + 1.f;
-	return num / max(den, 0.001);
+	return num / max(den, 0.001f);
 }
 
 float GGX(vec3 M, vec3 N)
 {
-	float NdotM = max(dot(N,M), 0.001);
+	float NdotM = max(dot(N,M), 0.001f);
 
 	float r = (material.roughness + 1.0);
     float k = (r*r) / 8.0;
@@ -152,27 +154,21 @@ vec3 FSchlick(float cosTheta, vec3 F0)
 
 vec3 CalculateNormal()
 {
-	vec3 normalM = texture(material.occlusion_texture, uv0).xyz;
+	vec3 normalM = texture(material.normal_texture, uv0).xyz;
 	normalM = normalize(normalM * 2.0 - 1.0);
-	return normalM;
-
+	return hasNormalMap * normalM + (1 - hasNormalMap) * normalIn;	
 }
-
-
 
 void main()
 {
-	vec3 normal = CalculateNormal();		
+	vec3 normal = CalculateNormal();	
 	vec4 albedo = get_albedo();
-	vec3 emissive_color = get_emissive_color();
-	//vec3 occlusion_color= get_occlusion_color();
 	
-	vec3 occlusion_color = vec3(1,1,1);	
 	vec3 F0 = vec3(.04f);
 	F0 = mix(F0, albedo.rgb, material.metallic);
-	//vec3 color = directional_phong(normal, viewPos, lights.directional, diffuse_color, specular_color);
 
-	vec3 color = vec3(0, 0, 0);
+	vec3 color = vec3(0); 
+
 	vec3 N = normal;
 	vec3 V = normalize(viewPos - position);
 	for(int i=0; i < lights.num_directionals; ++i)
@@ -236,11 +232,10 @@ void main()
 		color += (kD * albedo.rgb / PI + BRDF(F, L, V, N, H)) * radiance * NdotL;
 	}
 	
-	color += emissive_color;
+	
 	color *= lights.ambient_color;
+	color *= get_occlusion_color();
+	color += get_emissive_color();
 	color = vec3(pow(color.r, (1.0 / 2.2)), pow(color.g, (1.0 / 2.2)), pow(color.b, (1.0 / 2.2)));
-	/*color += 	 emissive_color + //emissive
-				 diffuse_color.rgb * lights.ambient_color * occlusion_color * material.k_ambient; //ambient
-				 */
 	Fragcolor = vec4(color, albedo.a);
 }
