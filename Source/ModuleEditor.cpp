@@ -221,6 +221,7 @@ update_status ModuleEditor::Update(float dt)
 					sprintf_s(fileExplorer->title, "Save Scene");
 					sprintf_s(fileExplorer->filename, App->scene->name.c_str());
 					fileExplorer->openFileExplorer = true;
+          materialEditor->Save();
 				}
 				else
 				{
@@ -239,11 +240,14 @@ update_status ModuleEditor::Update(float dt)
 		GUICreator::CreateElements(App->scene->root);
 		if (ImGui::MenuItem("New Material"))
 		{
-			materialEditor->open = true;
-			materialEditor->isCreated = true;
+			materialEditor->newMaterial = true;
 		}
-		fileExplorer->Draw();
-		materialEditor->Draw();
+
+		if (materialEditor->newMaterial)
+		{
+			materialEditor->NewMaterial();
+		}
+    fileExplorer->Draw();
 		WindowsMenu();
 		HelpMenu();
 		ImGui::EndMainMenuBar();
