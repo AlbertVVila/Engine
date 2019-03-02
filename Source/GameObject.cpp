@@ -317,9 +317,9 @@ void GameObject::RemoveComponent(const Component & component)
 	{
 		if (*it == &component)
 		{
-			(*it)->CleanUp();			
+			(*it)->CleanUp();
 			trash = *it; // Delete elements of an iterated container causes crashes inside the loop
-			trashIt = it;			
+			trashIt = it;
 		}
 	}
 	if (trash != nullptr) // Safely remove component
@@ -327,9 +327,10 @@ void GameObject::RemoveComponent(const Component & component)
 		if (trash->type == ComponentType::Light)
 		{
 			App->spacePartitioning->aabbTreeLighting.ReleaseNode(treeNode);
+			this->light = nullptr;
 			hasLight = false;
 			treeNode = nullptr;
-		}		
+		}
 		else if (trash->type == ComponentType::Renderer && treeNode != nullptr)
 		{
 			App->spacePartitioning->aabbTree.ReleaseNode(treeNode);

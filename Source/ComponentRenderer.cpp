@@ -57,7 +57,7 @@ void ComponentRenderer::DrawProperties()
 		}
 		ImGui::Text("Num vertices : %d", mesh->numVertices);
 		ImGui::Text("Num triangles : %d", mesh->numIndices / 3);
-		ImGui::Separator();
+		ImGui::Spacing();
 
 		ImGui::Text("Material");
 		if (ImGui::BeginCombo("", material->name.c_str()))
@@ -72,6 +72,13 @@ void ComponentRenderer::DrawProperties()
 				if (ImGui::Selectable(guiMaterials[n].c_str(), is_selected) && material->name != guiMaterials[n])
 				{
 					SetMaterial(guiMaterials[n].c_str());
+
+					if (App->editor->materialEditor->open)
+					{
+						App->editor->materialEditor->material = material;
+						App->editor->materialEditor->previous = new Material(*material);
+						App->editor->materialEditor->SetCurrentTextures();
+					}
 				}
 				if (is_selected)
 				{
@@ -84,19 +91,39 @@ void ComponentRenderer::DrawProperties()
 		{
 			guiMaterials.clear();
 		}
+
 		ImGui::SameLine();
-		if (ImGui::Button("View"))
+		if (App->editor->materialEditor->open)
 		{
-			App->editor->materialEditor->material = material;
-			App->editor->materialEditor->open = true; //materialpopup is only drawn once in module editor
-			App->editor->materialEditor->isCreated = false; 
+			if (ImGui::Button("Hide"))
+			{
+				App->editor->materialEditor->open = false;
+
+				if (!App->editor->materialEditor->material->Compare(*App->editor->materialEditor->previous))
+				{
+					App->editor->materialEditor->material->Save();
+				}
+			}
 		}
-		if (material != nullptr)
+		else
 		{
-			ImGui::DragFloat("Roughness", &material->roughness, .01f, .001f, 1.f);
-			ImGui::DragFloat("Metallic", &material->metallic, .01f, .001f, 1.f);
+			if (ImGui::Button("Show"))
+			{
+				App->editor->materialEditor->open = true;
+				App->editor->materialEditor->material = material;
+				App->editor->materialEditor->previous = new Material(*material);
+				App->editor->materialEditor->SetCurrentTextures();
+			}
 		}
+
+		if (App->editor->materialEditor->open)
+		{
+			App->editor->materialEditor->Draw();
+		}
+
+		ImGui::Separator();
 	}
+
 	ImGui::PopID();
 }
 

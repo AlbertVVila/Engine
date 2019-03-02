@@ -17,6 +17,7 @@
 #include "ComponentTransform.h"
 
 #include "Material.h"
+#include "MaterialEditor.h"
 #include "Mesh.h"
 #include "JSON.h"
 #include "myQuadTree.h"
@@ -591,6 +592,12 @@ void ModuleScene::ClearScene()
 
 void ModuleScene::Select(GameObject * gameobject)
 {
+	if (App->editor->materialEditor->material != nullptr)
+	{
+		App->editor->materialEditor->Save();
+		App->editor->materialEditor->open = false;
+	}
+
 	if (selected != nullptr)
 	{
 		selected->drawBBox = false;

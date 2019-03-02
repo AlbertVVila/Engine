@@ -4,7 +4,7 @@
 #include "Math/float4.h"
 #include <list>
 
-#define MAXTEXTURES 4
+#define MAXTEXTURES 5
 #define DEFAULTMAT "Default"
 
 struct Shader;
@@ -15,13 +15,15 @@ enum class TextureType
 	DIFFUSE = 0,
 	SPECULAR,
 	OCCLUSION,
-	EMISSIVE
+	EMISSIVE,
+	NORMAL
 };
 
 class Material
 {
 public:
 	Material();
+	Material(const char* name);
 	Material(const Material& material);
 
 	~Material();
@@ -29,6 +31,7 @@ public:
 	void Load(const char * material);
 	void Save() const;
 	void Reset(const Material& material);
+	bool Compare(const Material& material);
 
 	Texture * GetTexture(TextureType type) const;
 	std::list<Texture*> GetTextures() const;
@@ -41,16 +44,18 @@ public:
 	
 	Texture* textures[MAXTEXTURES]{ nullptr };
 	
-	float4 diffuse_color = float4::one;
-	float3 specular_color = float3::one;
-	float3 emissive_color = float3::one;
+	float4 diffuseColor = float4::one;
+	float3 specularColor = float3::one;
+	float3 emissiveColor = float3::one;
 	
 	float kAmbient = 0.3f;
 	float kDiffuse = 0.2f;
 	float kSpecular = 0.1f;
 	float shininess = 32.f;
+
 	float roughness = .5f;
 	float metallic = .5f;
+
 	
 };
 
