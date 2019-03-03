@@ -56,43 +56,55 @@ void ResourceMesh::DeleteFromMemory()
 	if (VAO != 0)
 	{
 		glDeleteVertexArrays(1, &VAO);
+		VAO = 0u;
 	}
 	if (VBO != 0)
 	{
 		glDeleteBuffers(1, &VBO);
+		VBO = 0u;
 	}
 	if (EBO != 0)
 	{
 		glDeleteBuffers(1, &EBO);
+		EBO = 0u;
 	}
 	if (indices != nullptr)
 	{
 		RELEASE_ARRAY(indices);
+		indices = nullptr;
 	}
 	if (vertices != nullptr)
 	{
 		RELEASE_ARRAY(vertices);
+		vertices = nullptr;
 	}
 	if (normals != nullptr)
 	{
 		RELEASE_ARRAY(normals);
+		normals = nullptr;
 	}
 	if (texCoords != nullptr)
 	{
 		RELEASE_ARRAY(texCoords);
+		texCoords = nullptr;
 	}
 	if (VAObox != 0)
 	{
 		glDeleteVertexArrays(1, &VAObox);
+		VAObox = 0u;
 	}
 	if (VBObox != 0)
 	{
 		glDeleteBuffers(1, &VBObox);
+		VBObox = 0u;
 	}
 	if (EBObox != 0)
 	{
 		glDeleteBuffers(1, &EBObox);
+		EBObox = 0u;
 	}
+	numIndices = 0u;
+	numVertices = 0u;
 }
 
 void ResourceMesh::Save(JSON_value &config) const

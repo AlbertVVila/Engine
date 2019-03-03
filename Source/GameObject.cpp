@@ -454,7 +454,8 @@ void GameObject::DrawBBox() const
 	ComponentRenderer *renderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
 	if (renderer == nullptr) return;
 
-	renderer->mesh->DrawBbox(App->program->defaultShader->id, bbox);
+	if(renderer->mesh->GetReferences() > 0u)
+		renderer->mesh->DrawBbox(App->program->defaultShader->id, bbox);
 }
 
 bool GameObject::CleanUp()

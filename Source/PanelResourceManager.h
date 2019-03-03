@@ -16,8 +16,10 @@ public:
 
 	void Draw() override;
 
+private:
 	void OpenResourceEditor();
 	void DrawResourceTexture();
+	void DrawResourceMesh();
 	void CleanUp();
 
 private:
@@ -28,6 +30,7 @@ private:
 
 	bool openEditor = false;
 	bool openTextureWindow = false;
+	bool openMeshWindow = false;
 };
 
 #endif __PanelResourceManager_h__

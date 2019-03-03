@@ -11,6 +11,11 @@ public:
 	ResourceMesh(const ResourceMesh& resource);
 	virtual ~ResourceMesh();
 
+	// Getters
+	inline unsigned GetVAO() { return VAO; };
+	inline unsigned GetVBO() { return VBO; };
+	inline unsigned GetEBO() { return EBO; };
+
 	bool LoadInMemory() override;
 	void DeleteFromMemory() override;
 	void Save(JSON_value &config) const override;
