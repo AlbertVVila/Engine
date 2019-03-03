@@ -54,7 +54,19 @@ void ComponentBone::DrawDebug()
 		gameobject->GetGlobalTransform().Decompose(position, rotation, scale);
 
 		dd::sphere(position, dd::colors::Red, 5.0f);
+
+		for (const auto& child : gameobject->children)
+		{
+			math::float3 childPosition;
+			math::float3 childScale;
+			math::Quat childRotation;
+
+			child->GetGlobalTransform().Decompose(childPosition, childRotation, childScale);
+
+			dd::line(position, childPosition, dd::colors::Red);
+		}
 	}
+	
 }
 
 

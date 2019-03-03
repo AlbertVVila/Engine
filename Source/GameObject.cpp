@@ -509,7 +509,6 @@ void GameObject::Save(JSON_value *gameobjects) const
 		gameobject->AddUint("ParentUID", parent->UUID);
 		gameobject->AddString("Name", name.c_str());
 		gameobject->AddUint("Static", isStatic);
-		gameobject->AddUint("Bone", isBone);
 
 		JSON_value *componentsJSON = gameobject->CreateValue(rapidjson::kArrayType);
 		for (auto &component : components)
@@ -535,7 +534,6 @@ void GameObject::Load(JSON_value *value)
 	parentUUID = value->GetUint("ParentUID");
 	name = value->GetString("Name");
 	isStatic = value->GetUint("Static");
-	isBone = value->GetUint("Bone");
 
 	JSON_value* componentsJSON = value->GetValue("Components");
 	for (unsigned i = 0; i < componentsJSON->Size(); i++)

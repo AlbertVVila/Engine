@@ -208,10 +208,12 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 
 	ComponentBone* cBone = (ComponentBone*)go.GetComponent(ComponentType::Bone);
 
-	if (App->renderer->boneDebug && cBone != nullptr)
+	if (App->renderer->boneDebug && cBone != nullptr && isEditor)
 	{
 		cBone->DrawDebug();
 	}
+
+	
 
 	ComponentRenderer* crenderer = (ComponentRenderer*)go.GetComponent(ComponentType::Renderer);
 	if (crenderer == nullptr || !crenderer->enabled || crenderer->material == nullptr) return;
