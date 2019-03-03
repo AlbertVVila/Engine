@@ -308,9 +308,9 @@ void Viewport::DrawImGuizmo(const ComponentCamera & cam)
 
 		ImGuizmo::Enable(!App->scene->selected->isStatic || App->time->gameState == GameState::RUN);
 
-		float4x4 model = App->scene->selected->GetGlobalTransform();
-		float4x4 view = cam.GetViewMatrix();
-		float4x4 proj = cam.GetProjectionMatrix();
+		math::float4x4 model = App->scene->selected->GetGlobalTransform();
+		math::float4x4 view = cam.GetViewMatrix();
+		math::float4x4 proj = cam.GetProjectionMatrix();
 
 		ImGuizmo::SetOrthographic(false);
 

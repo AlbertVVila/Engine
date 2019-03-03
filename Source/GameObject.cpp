@@ -15,6 +15,7 @@
 #include "ComponentCamera.h"
 #include "ComponentLight.h"
 #include "ComponentRenderer.h"
+#include "ComponentBone.h"
 
 #include "GUICreator.h"
 #include "Material.h"
@@ -193,6 +194,9 @@ Component * GameObject::CreateComponent(ComponentType type)
 			App->scene->maincamera = (ComponentCamera*)component;
 			App->scene->maincamera->isMainCamera = true;
 		}
+		break;
+	case ComponentType::Bone:
+		component = new ComponentBone(this);
 		break;
 	default:
 		break;
@@ -456,6 +460,19 @@ void GameObject::DrawBBox() const
 	renderer->mesh->DrawBbox(App->program->defaultShader->id, bbox);
 }
 
+//void GameObject::DrawBones() const
+//{
+//	for (const auto& child : children)
+//	{
+//		child->DrawBones();
+//	}
+//
+//	if (isBone)
+//	{
+//		dd::sphere(((ComponentTransform*)GetComponent(ComponentType::Transform))->position, dd::colors::Red, 5.0f);
+//	}
+//}
+
 bool GameObject::CleanUp()
 {
 	if (isStatic)
@@ -492,6 +509,7 @@ void GameObject::Save(JSON_value *gameobjects) const
 		gameobject->AddUint("ParentUID", parent->UUID);
 		gameobject->AddString("Name", name.c_str());
 		gameobject->AddUint("Static", isStatic);
+		gameobject->AddUint("Bone", isBone);
 
 		JSON_value *componentsJSON = gameobject->CreateValue(rapidjson::kArrayType);
 		for (auto &component : components)
@@ -517,6 +535,7 @@ void GameObject::Load(JSON_value *value)
 	parentUUID = value->GetUint("ParentUID");
 	name = value->GetString("Name");
 	isStatic = value->GetUint("Static");
+	isBone = value->GetUint("Bone");
 
 	JSON_value* componentsJSON = value->GetValue("Components");
 	for (unsigned i = 0; i < componentsJSON->Size(); i++)
@@ -543,6 +562,8 @@ bool GameObject::IsParented(const GameObject & gameobject) const
 	}
 	return false;
 }
+
+
 
 void GameObject::DrawHierarchy(GameObject * selected)
 {

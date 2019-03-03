@@ -209,7 +209,7 @@ void ModuleRender::DrawGizmos(const ComponentCamera &camera) const
 	{
 		dd::xzSquareGrid(-500.0f * current_scale, 500.0f * current_scale, 0.0f, 1.0f * current_scale, math::float3(0.65f, 0.65f, 0.65f));
 	}
-	
+
 	dd::axisTriad(math::float4x4::identity, 0.5f * current_scale, 5.0f * current_scale, 0, true);
 
 	if (App->scene->maincamera != nullptr && App->renderer->useMainCameraFrustum)
@@ -286,6 +286,7 @@ void ModuleRender::DrawGUI()
 	ImGui::Checkbox("Picker Debug", &picker_debug);
 	ImGui::Checkbox("Light Debug", &light_debug);
 	ImGui::Checkbox("Grid Debug", &grid_debug);
+	ImGui::Checkbox("Bone Debug", &boneDebug);
 
 	const char* scales[] = {"1", "10", "100"};
 	ImGui::Combo("Scale", &item_current, scales, 3);

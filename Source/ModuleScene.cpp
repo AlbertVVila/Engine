@@ -15,6 +15,7 @@
 #include "ComponentCamera.h"
 #include "ComponentRenderer.h"
 #include "ComponentTransform.h"
+#include "ComponentBone.h"
 
 #include "Material.h"
 #include "Mesh.h"
@@ -23,11 +24,13 @@
 #include "AABBTree.h"
 #include "KDTree.h"
 
+
 #include "Imgui.h"
 #include "Geometry/LineSegment.h"
 #include "Math/MathConstants.h"
 #include "GL/glew.h"
 #include "Brofiler.h"
+#include "debugdraw.h"
 
 #pragma warning(push)
 #pragma warning(disable : 4996)  
@@ -152,7 +155,8 @@ void ModuleScene::FrustumCulling(const Frustum & frustum)
 
 void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 {
-	PROFILE;
+	BROFILER_CATEGORY("Render scene", Profiler::Color::AliceBlue);;
+
 	if (isEditor)
 	{
 		if (App->renderer->quadtree_debug)
@@ -195,10 +199,18 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 
 void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isEditor)
 {
-	PROFILE;
+	BROFILER_CATEGORY("Render scene", Profiler::Color::AliceBlue);;
+
 	if (go.drawBBox && isEditor)
 	{
 		go.DrawBBox();
+	}
+
+	ComponentBone* cBone = (ComponentBone*)go.GetComponent(ComponentType::Bone);
+
+	if (App->renderer->boneDebug && cBone != nullptr)
+	{
+		cBone->DrawDebug();
 	}
 
 	ComponentRenderer* crenderer = (ComponentRenderer*)go.GetComponent(ComponentType::Renderer);
@@ -386,7 +398,7 @@ void ModuleScene::CreatePrimitive(const char * name, GameObject* parent, PRIMITI
 	GameObject * gameobject = CreateGameObject(name, parent);
 	Select(gameobject);
 	ComponentTransform* transform = (ComponentTransform*)gameobject->CreateComponent(ComponentType::Transform);
-	transform->scale.SetFromScalar(5);
+	transform->scale.SetFromScalar(App->renderer->current_scale);
 	transform->UpdateTransform();
 	ComponentRenderer* crenderer = (ComponentRenderer*)gameobject->CreateComponent(ComponentType::Renderer);
 

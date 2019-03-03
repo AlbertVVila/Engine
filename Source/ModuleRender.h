@@ -51,6 +51,7 @@ public:
 	bool light_debug = true;
 	bool quadtree_debug = true;
 	bool grid_debug = true;
+	bool boneDebug = false;
 	bool useMainCameraFrustum = false;
 
 	unsigned current_scale = 1;

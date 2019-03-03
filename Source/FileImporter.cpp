@@ -8,6 +8,7 @@
 #include "GameObject.h"
 #include "ComponentRenderer.h"
 #include "ComponentTransform.h"
+#include "ComponentBone.h"
 
 #include "FileImporter.h"
 #include "Material.h"
@@ -122,8 +123,6 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file,
 		meshesGO = App->scene->CreateGameObject("Meshes", sceneGO);
 	}
 
-
-
 	for (unsigned i = 0u; i < aiscene.mNumMeshes; i++)
 	{
 		//-------------------------------MESH------------------------------------
@@ -146,7 +145,6 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file,
 		{
 			rBonesUIDs = ImportBones(*aiscene.mMeshes[i], rBones, bonesUID, boneMap, boneNames, mesh->UID);		
 		}
-		
 	}
 
 	ProcessNode(meshMap, aiscene.mRootNode, &aiscene, bonesGO, meshesGO, boneNames);
@@ -164,6 +162,9 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file,
 	}
 
 	App->scene->SaveScene(*sceneGO, *App->fsystem->GetFilename(file).c_str(), *SCENES); //TODO: Make AutoCreation of folders or check
+
+
+
 	//sceneGO->CleanUp(); we don't want to delete it, we need it
 	//RELEASE(sceneGO);
 	aiReleaseImport(&aiscene);
@@ -460,14 +461,18 @@ void FileImporter::ProcessNode(const std::map<unsigned, unsigned>& meshmap,
 			//tBone->AddTransform(bTransform);
 			//break;
 
-			//Crea la esfera en el hueso
+		
 
-			App->scene->CreateSphere("Sphere", boneParent); //He cambiado el tamaño de la esfera que se crea!! hay que revertirlo al final a App->renderer->scale
+			boneGO->CreateComponent(ComponentType::Bone);
 
-			aiMatrix4x4 mBone = node->mTransformation;
-			math::float4x4 bTransform(mBone.a1, mBone.a2, mBone.a3, mBone.a4, mBone.b1, mBone.b2, mBone.b3, mBone.b4, mBone.c1, mBone.c2, mBone.c3, mBone.c4, mBone.d1, mBone.d2, mBone.d3, mBone.d4);
-			ComponentTransform* tBone = (ComponentTransform*)boneGO->CreateComponent(ComponentType::Transform);
-			tBone->AddTransform(bTransform);
+			ComponentBone* Bone = (ComponentBone*)boneGO->GetComponent(ComponentType::Bone);
+
+			Bone->UID = App->scene->GetNewUID();
+
+			//aiMatrix4x4 mBone = node->mTransformation;
+			//math::float4x4 bTransform(mBone.a1, mBone.a2, mBone.a3, mBone.a4, mBone.b1, mBone.b2, mBone.b3, mBone.b4, mBone.c1, mBone.c2, mBone.c3, mBone.c4, mBone.d1, mBone.d2, mBone.d3, mBone.d4);
+			//ComponentTransform* tBone = (ComponentTransform*)boneGO->CreateComponent(ComponentType::Transform);
+			//tBone->AddTransform(bTransform);
 			break;	
 
 		}
