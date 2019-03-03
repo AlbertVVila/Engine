@@ -19,14 +19,13 @@
 #include "imgui.h"
 #include "Math/float4x4.h"
 
-ComponentRenderer::ComponentRenderer(GameObject * gameobject) : Component(gameobject, ComponentType::Renderer)
+ComponentRenderer::ComponentRenderer(GameObject* gameobject) : Component(gameobject, ComponentType::Renderer)
 {
-	mesh = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH);
 	SetMaterial(DEFAULTMAT);
 	gameobject->isVolumetric = true;
 }
 
-ComponentRenderer::ComponentRenderer(const ComponentRenderer & component) : Component(component)
+ComponentRenderer::ComponentRenderer(const ComponentRenderer& component) : Component(component)
 {
 	mesh = App->resManager->GetMesh(component.mesh->GetUID());
 	material = component.material;
