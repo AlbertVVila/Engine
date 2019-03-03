@@ -35,6 +35,7 @@ ComponentRenderer::ComponentRenderer(const ComponentRenderer& component) : Compo
 ComponentRenderer::~ComponentRenderer()
 {
 	material = nullptr; //Resource Manager Deallocates resources (materials, meshes)
+	App->resManager->DeleteResource(mesh->GetUID());
 	mesh = nullptr;
 }
 
