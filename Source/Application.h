@@ -21,6 +21,7 @@ class ModuleFileSystem;
 class ModuleResourceManager;
 class ModuleTime;
 class ModuleSpacePartitioning;
+class ModuleUI;
 
 class Application
 {
@@ -49,6 +50,7 @@ public:
 	ModuleResourceManager* resManager = nullptr;
 	ModuleTime* time = nullptr;
 	ModuleSpacePartitioning* spacePartitioning = nullptr;
+	ModuleUI* ui = nullptr;
 
 private:
 	std::list<Module*> modules;
