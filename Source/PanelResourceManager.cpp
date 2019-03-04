@@ -120,6 +120,9 @@ void PanelResourceManager::Draw()
 		case TYPE::ANIMATION:
 			ImGui::Text("Animation");
 			break;
+		case TYPE::MATERIAL:
+			ImGui::Text("Material");
+			break;
 		default:
 		case TYPE::UNKNOWN:
 			ImGui::Text("Unknown");
