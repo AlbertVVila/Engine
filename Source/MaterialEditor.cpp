@@ -164,6 +164,16 @@ void MaterialEditor::TextureSelector(unsigned i, std::string &current_texture, i
 
 void MaterialEditor::SetCurrentTextures()
 {
+	// Get shader
+	if (material->shader != nullptr)
+	{
+		currentShader = material->shader->file;
+	}
+	else
+	{
+		currentShader = None;
+	}
+
 	// Get material textures
 	Texture* diffuse_texture = material->GetTexture(TextureType::DIFFUSE);
 	Texture* specular_texture = material->GetTexture(TextureType::SPECULAR);
@@ -273,12 +283,12 @@ bool MaterialEditor::Exists(const char * material)
 
 void MaterialEditor::Save()
 {
-	if (!material->Compare(*previous))
-	{
-		material->Save();
-	}
 	if (previous != nullptr)
 	{
+		if (!material->Compare(*previous))
+		{
+			material->Save();
+		}
 		RELEASE(previous);
 	}
 }
