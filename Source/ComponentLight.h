@@ -28,8 +28,8 @@ public:
 	void Update() override;
 	void DrawProperties() override;
 	void DrawDebugLight() const;
-	void Load(const JSON_value &value) override;
-	void Save(JSON_value *value) const override;
+	void Load(JSON_value* value) override;
+	void Save(JSON_value* value) const override;
 
 private:
 	void DrawDebugDirectional() const;

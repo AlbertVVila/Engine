@@ -4,7 +4,7 @@
 #include "ModuleFileSystem.h"
 #include "ModuleScene.h"
 
-#include "imgui/imgui.h"
+#include "imgui.h"
 
 FileExplorer::FileExplorer()
 {

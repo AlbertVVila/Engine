@@ -16,6 +16,7 @@
 #define TEXTURES LIBRARY "Textures/"
 #define SCENES ASSETS "Scenes/"
 #define SHADERS "Shaders/"
+#define SCRIPTS "Scripts/"
 #define VERTEXSHADERS SHADERS "VertexShaders/"
 #define FRAGSHADERS SHADERS "FragmentShaders/"
 #define SKYBOX "Skybox/"
@@ -28,6 +29,7 @@
 #define JPG	".jpg"
 #define TEXTUREEXT ".dds"
 #define JSONEXT ".json"
+#define DLL ".dll"
 
 #define CHECKERS "checkersTexture"
 #define NOCAMERA "nocamera"
@@ -64,6 +66,7 @@ public:
 	bool CopyFromOutsideFS(const char* source, const char* destination) const;
 	bool Copy(const char* source, const char* destination, const char* file) const;
 
+	int GetModTime(const char* file) const;
 	std::string GetExtension(std::string file) const;
 	std::string RemoveExtension(std::string file) const;
 	std::string GetFilename(std::string file) const;

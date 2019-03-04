@@ -15,6 +15,7 @@
 #include "ComponentCamera.h"
 #include "ComponentLight.h"
 #include "ComponentRenderer.h"
+#include "ComponentScript.h"
 
 #include "GUICreator.h"
 #include "Material.h"
@@ -136,36 +137,38 @@ void GameObject::Update()
 	{
 		component->Update();
 	}
-	for (std::list<GameObject*>::iterator it_child = children.begin(); it_child != children.end();)
+	for (std::list<GameObject*>::iterator itChild = children.begin(); itChild != children.end();)
 	{
-		(*it_child)->Update();
 
-		if ((*it_child)->copy_flag) //Copy GO
+		if ((*itChild)->movedFlag) //Moved GO
 		{
-			(*it_child)->copy_flag = false;
-			GameObject *copy = new GameObject(**it_child);
-			copy->parent = this;
-			this->children.push_back(copy);
-		}
-		if ((*it_child)->moved_flag) //Moved GO
-		{
-			for (auto child : (*it_child)->children)
+			for (auto child : (*itChild)->children)
 			{
 				child->UpdateGlobalTransform();
 			}
-			(*it_child)->UpdateBBox();
-			(*it_child)->moved_flag = false;
+			(*itChild)->UpdateBBox();
+			(*itChild)->movedFlag = false;
 		}
-		if ((*it_child)->delete_flag) //Delete GO
+
+		(*itChild)->Update(); //Update after moved_flag check
+
+		if ((*itChild)->copyFlag) //Copy GO
 		{
-			(*it_child)->delete_flag = false;
-			(*it_child)->CleanUp();
-			delete *it_child;
-			children.erase(it_child++);
+			(*itChild)->copyFlag = false;
+			GameObject *copy = new GameObject(**itChild);
+			copy->parent = this;
+			this->children.push_back(copy);
+		}
+		if ((*itChild)->delete_flag) //Delete GO
+		{
+			(*itChild)->delete_flag = false;
+			(*itChild)->CleanUp();
+			delete *itChild;
+			children.erase(itChild++);
 		}
 		else
 		{
-			++it_child;
+			++itChild;
 		}
 	}
 }
@@ -193,6 +196,9 @@ Component * GameObject::CreateComponent(ComponentType type)
 			App->scene->maincamera = (ComponentCamera*)component;
 			App->scene->maincamera->isMainCamera = true;
 		}
+		break;
+	case ComponentType::Script:
+		component = new ComponentScript(this);
 		break;
 	default:
 		break;
@@ -291,7 +297,7 @@ void GameObject::UpdateGlobalTransform() //Updates global transform when moving
 
 void GameObject::SetGlobalTransform(const float4x4 & global) //Replaces global transform
 {
-	moved_flag = true;
+	movedFlag = true;
 	if (transform != nullptr)
 	{
 		float4x4 parentglobal = float4x4::identity;
@@ -343,7 +349,7 @@ void GameObject::SetLightUniforms(unsigned shader) const
 
 
 	int i = 0;
-	for (const auto & spot : App->scene->GetClosestLights(LightType::SPOT, transform->position))
+	for (const auto & spot : App->scene->GetClosestLights(LightType::SPOT, transform->GetPosition()))
 	{
 		char buffer[32];
 
@@ -384,7 +390,7 @@ void GameObject::SetLightUniforms(unsigned shader) const
 		"lights.num_spots"), i);
 
 	i = 0;
-	for (const auto & point : App->scene->GetClosestLights(LightType::POINT, transform->position))
+	for (const auto & point : App->scene->GetClosestLights(LightType::POINT, transform->GetPosition()))
 	{
 		char buffer[32];
 
@@ -524,7 +530,7 @@ void GameObject::Load(JSON_value *value)
 		JSON_value* componentJSON = componentsJSON->GetValue(i);
 		ComponentType type = (ComponentType) componentJSON->GetUint("Type");
 		Component* component = CreateComponent(type);
-		component->Load(*componentJSON);
+		component->Load(componentJSON);
 	}
 }
 
@@ -569,7 +575,7 @@ void GameObject::DrawHierarchy(GameObject * selected)
 		GUICreator::CreateElements(this);
 		if (ImGui::Selectable("Duplicate"))
 		{
-			copy_flag = true;
+			copyFlag = true;
 		}
 		if (ImGui::Selectable("Delete"))
 		{

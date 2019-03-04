@@ -9,7 +9,7 @@
 #include "ComponentTransform.h"
 
 #include "GameObject.h"
-#include "Imgui/imgui.h"
+#include "imgui.h"
 #include "JSON.h"
 #include "GL/glew.h"
 #include "Geometry/Line.h"
@@ -128,29 +128,29 @@ void ComponentLight::DrawDebugLight() const
 	glUseProgram(0);
 }
 
-void ComponentLight::Load(const JSON_value & value)
+void ComponentLight::Load(JSON_value* value)
 {
 	Component::Load(value);
 	if (gameobject->transform == nullptr) return;
 
-	lightType = (LightType)value.GetUint("Lighttype");
-	color = value.GetColor3("color");
-	position = gameobject->transform->position;
+	lightType = (LightType)value->GetUint("Lighttype");
+	color = value->GetColor3("color");
+	position = gameobject->transform->GetPosition();
 	direction = gameobject->transform->rotation*float3::unitZ;
 
 	if (lightType != LightType::DIRECTIONAL)
 	{
-		attenuation = value.GetFloat3("attenuation");
+		attenuation = value->GetFloat3("attenuation");
 	}
 
 	if (lightType == LightType::SPOT)
 	{
-		inner = value.GetFloat("inner");
-		outer = value.GetFloat("outer");
+		inner = value->GetFloat("inner");
+		outer = value->GetFloat("outer");
 	}
 }
 
-void ComponentLight::Save(JSON_value * value) const
+void ComponentLight::Save(JSON_value* value) const
 {
 	Component::Save(value);
 
