@@ -97,6 +97,7 @@ void KDTree::Init()
 void KDTree::Calculate()
 {
 	treeRoot->bucketOccupation = 0u;
+	treeRoot->isLeaf = false;
 	App->scene->GetStaticGlobalAABB(*treeRoot->aabb, treeRoot->bucket, treeRoot->bucketOccupation);
 	std::queue<KDTNode*> Q;
 	Q.push(treeRoot);

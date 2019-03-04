@@ -38,8 +38,6 @@ private:
 
 public:
 	unsigned UID = 0;
-	unsigned numIndices = 0;
-	unsigned numVertices = 0;
 	std::vector<float3> meshVertices;
 	std::vector<float3> meshNormals;
 	std::vector<float3> meshTangents;

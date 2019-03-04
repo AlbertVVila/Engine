@@ -61,7 +61,7 @@ public:
 	bool isStatic = false;
 	bool movedFlag = false;
 	bool copyFlag = false;
-	bool delete_flag = false;
+	bool deleteFlag = false;
 	bool drawBBox = false;
 	AABB bbox;
 

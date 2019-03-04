@@ -50,10 +50,10 @@ void Mesh::SetMesh(const char * meshData, unsigned uid)
 
 	const char *data = meshData;
 	
-	numIndices = *(int*)meshData;
+	unsigned numIndices = *(int*)meshData;
 	meshData += sizeof(int);
 	
-	numVertices = *(int*)meshData;
+	unsigned numVertices = *(int*)meshData;
 	meshData += sizeof(int);
 	
 	float* vertices = (float*)meshData;
@@ -128,7 +128,7 @@ void Mesh::ProcessVertexTangent(const float vIndex1, const float vIndex2, const 
 
 void Mesh::CalculateTangents()
 {
-	assert(numIndices % 3 == 0); //not triangulated
+	assert(meshIndices.size() % 3 == 0); //not triangulated
 	if (meshTexCoords.size() == 0)
 	{
 		LOG("Unnable to set tangents - Not found in mesh & the mesh doesn't have texture coordinates.");
@@ -136,7 +136,7 @@ void Mesh::CalculateTangents()
 	}
 	meshTangents.resize(meshVertices.size(), float3::zero);
 
-	for (unsigned i = 0u; i < numIndices; i += 3) //for all the triangles of the mesh
+	for (unsigned i = 0u; i < meshIndices.size(); i += 3) //for all the triangles of the mesh
 	{
 		//calculate tangents for each vertex of the triangle
 		//V1
@@ -157,7 +157,7 @@ void Mesh::CalculateTangents()
 
 	}
 
-	for (unsigned i = 0u; i < numVertices; ++i)
+	for (unsigned i = 0u; i < meshVertices.size(); ++i)
 	{
 		meshTangents[i] = meshTangents[i].Normalized();
 	}
@@ -169,7 +169,7 @@ void Mesh::SetMeshBuffers()
 	if (meshTangents.size() == 0) //if the mesh don't have tangents -> calculate them
 		CalculateTangents();
 	
-	unsigned offsetTexCoords = numVertices * sizeof(float3);
+	unsigned offsetTexCoords = meshVertices.size() * sizeof(float3);
 	unsigned offsetNormals = offsetTexCoords + (meshTexCoords.size() * sizeof(float) * 2);
 	unsigned offsetTangents = offsetNormals + (meshNormals.size() * sizeof(float3));
 
@@ -196,7 +196,7 @@ void Mesh::SetMeshBuffers()
 
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * numIndices, &meshIndices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * meshIndices.size(), &meshIndices[0], GL_STATIC_DRAW);
 
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
@@ -221,7 +221,7 @@ void Mesh::Draw(unsigned shaderProgram) const
 {
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, meshIndices.size(), GL_UNSIGNED_INT, 0);
 	
 	// We disable VAO
 	glBindVertexArray(0);
@@ -319,7 +319,7 @@ void Mesh::ComputeBBox()
 	float3 min, max;
 	min = max = float3(meshVertices[0]);
 	
-	for (unsigned i=0; i<numVertices; ++i)
+	for (unsigned i=0; i<meshVertices.size(); ++i)
 	{
 		min.x = MIN(min.x, meshVertices[i].x); //x
 		min.y = MIN(min.y, meshVertices[i].y); //y
@@ -342,7 +342,7 @@ bool Mesh::Intersects(const LineSegment &line, float* distance)
 {
 	bool intersects = false;
 	*distance = FLOAT_INF;
-	for (unsigned i = 0; i < numIndices; i+=3) //foreach triangle
+	for (unsigned i = 0; i < meshIndices.size(); i+=3) //foreach triangle
 	{
 		float3 v0(meshVertices[meshIndices[i]]);
 		float3 v1(meshVertices[meshIndices[i+1]]);

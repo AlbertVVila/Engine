@@ -133,8 +133,8 @@ void ComponentLight::Load(JSON_value* value)
 
 	if (lightType != LightType::DIRECTIONAL)
 	{
-		pointSphere.r = value.GetFloat("radius");			
-		range = value.GetFloat("range");		
+		pointSphere.r = value->GetFloat("radius");			
+		range = value->GetFloat("range");		
 	}
 
 	if (lightType == LightType::SPOT)
@@ -142,7 +142,7 @@ void ComponentLight::Load(JSON_value* value)
 		inner = value->GetFloat("inner");
 		outer = value->GetFloat("outer");
 	}
-	intensity = value.GetFloat("intensity");
+	intensity = value->GetFloat("intensity");
 }
 
 void ComponentLight::Save(JSON_value* value) const

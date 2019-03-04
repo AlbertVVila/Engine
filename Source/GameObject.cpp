@@ -155,10 +155,10 @@ void GameObject::Update()
 	for (std::list<GameObject*>::iterator itChild = children.begin(); itChild != children.end();)
 	{
 
-		if ((*itChild)->movedFlag) //Moved GO
+		if ((*itChild)->copyFlag) //Moved GO
 		{
-			(*itChild)->copy_flag = false;
-			GameObject *copy = new GameObject(**it_child);
+			(*itChild)->copyFlag = false;
+			GameObject *copy = new GameObject(**itChild);
 			copy->parent = this;
 			copy->isVolumetric = (*itChild)->isVolumetric;
 			copy->hasLight = (*itChild)->hasLight;
@@ -186,11 +186,11 @@ void GameObject::Update()
 				App->spacePartitioning->aabbTreeLighting.InsertGO(copy);
 				App->scene->lights.push_back(copy->light);
 			}
-			copy->transform->position += copy->transform->front;
+			copy->transform->SetPosition(copy->transform->GetPosition() + copy->transform->front);
 			copy->transform->UpdateTransform();
 			this->children.push_back(copy);
 		}
-		if ((*itChild)->moved_flag) //Moved GO
+		if ((*itChild)->movedFlag) //Moved GO
 		{
 			for (auto child : (*itChild)->children)
 			{
@@ -209,11 +209,11 @@ void GameObject::Update()
 			copy->parent = this;
 			this->children.push_back(copy);
 		}
-		if ((*itChild)->delete_flag) //Delete GO
+		if ((*itChild)->deleteFlag) //Delete GO
 		{
-			(*itChild)->delete_flag = false;
+			(*itChild)->deleteFlag = false;
 			(*itChild)->CleanUp();
-      App->scene->DeleteFromSpacePartition(*it_child);
+			App->scene->DeleteFromSpacePartition(*itChild);
 			delete *itChild;
 			children.erase(itChild++);
 		}
@@ -704,7 +704,7 @@ void GameObject::DrawHierarchy(GameObject * selected)
 		}
 		if (ImGui::Selectable("Delete"))
 		{
-			delete_flag = true;
+			deleteFlag = true;
 			if (selected == this)
 			{
 				App->scene->selected = nullptr;

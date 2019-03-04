@@ -22,7 +22,7 @@ public:
 	void SetWorldToLocal(const math::float4x4& newparentGlobalMatrix);
 	void SetGlobalTransform(const math::float4x4& newglobal, const math::float4x4& parentglobal);
 
-  ENGINE_API void SetPosition(const math::float3& position);
+	ENGINE_API void SetPosition(const math::float3& position);
 	ENGINE_API math::float3 GetPosition();
 
 	math::float3 GetGlobalPosition();
@@ -45,9 +45,9 @@ public:
 	float3 right = float3::zero;
 	float3 front = float3::zero;
 
+
 private:
 	math::float3 position = math::float3::zero;
-
 	math::float3 old_position = math::float3::zero;
 	math::float3 old_euler = math::float3::zero;
 	math::float3 old_scale = math::float3::zero;
