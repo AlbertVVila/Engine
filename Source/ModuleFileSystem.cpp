@@ -1,6 +1,9 @@
 #include "ModuleFileSystem.h"
 #include "FileImporter.h"
 
+#include <sys/types.h>
+#include <sys/stat.h>
+
 #include "physfs.h"
 #include "SDL_timer.h"
 #include "SDL_atomic.h"
@@ -9,6 +12,7 @@
 #include <stack>
 
 #define MONITORIZE_TIME 10000
+#define stat _stat
 
 ModuleFileSystem::ModuleFileSystem()
 {
@@ -255,6 +259,8 @@ void ModuleFileSystem::WatchFolder(const char * folder, const std::set<std::stri
 	std::stack<std::string> watchfolder;
 	watchfolder.push(folder);
 	std::string current_folder;
+	struct stat statFile;
+	struct stat statMeta;
 
 	while (!watchfolder.empty())
 	{
@@ -270,11 +276,13 @@ void ModuleFileSystem::WatchFolder(const char * folder, const std::set<std::stri
 			}
 			else
 			{
+				stat((current_folder + file).c_str(), &statFile);
+				stat((current_folder + RemoveExtension(file) + ".meta").c_str(), &statMeta);
 				FILETYPE type = GetFileType(GetExtension(file));
 				if (type == FILETYPE::TEXTURE)
 				{
 					std::set<std::string>::iterator it = textures.find(RemoveExtension(file));
-					if (it == textures.end())
+					if (it == textures.end() || statFile.st_mtime > statMeta.st_mtime)
 					{
 						filesToImport.push_back(std::pair<std::string, std::string>(file, current_folder));
 					}
