@@ -8,8 +8,46 @@
 #include "ResourceMesh.h"
 
 #include "imgui.h"
+#include <algorithm>
 #define MAX_FILE 128
 #define resourcePopup "Resource"
+
+#pragma region sorting functions
+bool sortByUIDAscending(const Resource* a, const Resource* b) { return a->GetUID() < b->GetUID(); };
+bool sortByUIDDescending(const Resource* a, const Resource* b) { return a->GetUID() > b->GetUID(); };
+bool sortByFileAscending(const Resource* a, const Resource* b)
+{
+	std::string stringA(a->GetFile());
+	std::string stringB(b->GetFile());
+	return stringA < stringB;
+};
+
+bool sortByFileDescending(const Resource* a, const Resource* b)
+{
+	std::string stringA(a->GetFile());
+	std::string stringB(b->GetFile());
+	return stringA > stringB;
+};
+
+bool sortByExportedFileAscending(const Resource* a, const Resource* b)
+{
+	std::string stringA(a->GetExportedFile());
+	std::string stringB(b->GetExportedFile());
+	return stringA < stringB;
+};
+
+bool sortByExportedFileDescending(const Resource* a, const Resource* b)
+{
+	std::string stringA(a->GetExportedFile());
+	std::string stringB(b->GetExportedFile());
+	return stringA > stringB;
+};
+
+bool sortByReferenceAscending(const Resource* a, const Resource* b) { return a->GetReferences() < b->GetReferences(); };
+bool sortByReferenceDescending(const Resource* a, const Resource* b) { return a->GetReferences() > b->GetReferences(); };
+bool sortByTypeAscending(const Resource* a, const Resource* b) { return a->GetType() < b->GetType(); };
+bool sortByTypeDescending(const Resource* a, const Resource* b) { return a->GetType() > b->GetType(); };
+#pragma endregion
 
 PanelResourceManager::PanelResourceManager()
 {
@@ -27,16 +65,21 @@ void PanelResourceManager::Draw()
 		ImGui::End();
 		return;
 	}
+	if(auxResource == nullptr)
+		UpdateResourcesList();
 
 	ImGui::Columns(6);
-	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "UID"); ImGui::SameLine(); ImGui::NextColumn();
-	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "File"); ImGui::SameLine(); ImGui::NextColumn();
-	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Exported File"); ImGui::SameLine(); ImGui::NextColumn();
-	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "References"); ImGui::SameLine(); ImGui::NextColumn();
-	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Type"); ImGui::SameLine(); ImGui::NextColumn();
-	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), ""); ImGui::NextColumn(); ImGui::Separator();
+	// Table references: UID | File | Exported File | References | Type |
+	ImGui::PushStyleColor(ImGuiCol_Text, (ImVec4)ImColor::HSV(0.0f, 1.0f, 1.0f));
+	if (ImGui::Selectable("UID"))			{ if (sortList == SORTING::UID) descending = !descending; sortList = SORTING::UID; }				ImGui::SameLine(); ImGui::NextColumn();
+	if (ImGui::Selectable("File"))			{ if (sortList == SORTING::FILE) descending = !descending; sortList = SORTING::FILE;}				ImGui::SameLine(); ImGui::NextColumn();
+	if (ImGui::Selectable("Exported File"))	{ if (sortList == SORTING::EXPORTED) descending = !descending; sortList = SORTING::EXPORTED;}		ImGui::SameLine(); ImGui::NextColumn();
+	if (ImGui::Selectable("References"))	{ if (sortList == SORTING::REFERENCES) descending = !descending; sortList = SORTING::REFERENCES;}	ImGui::SameLine(); ImGui::NextColumn();
+	if (ImGui::Selectable("Type"))			{ if (sortList == SORTING::TYPE) descending = !descending; sortList = SORTING::TYPE;}				ImGui::SameLine(); ImGui::NextColumn();
+	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "");																						ImGui::NextColumn(); ImGui::Separator();
+	ImGui::PopStyleColor(1);
 
-	for each (auto resource in App->resManager->GetResourcesList())
+	for each (auto resource in resourcesList)
 	{
 		unsigned uid = resource->GetUID();
 		ImGui::PushID(uid);
@@ -86,7 +129,11 @@ void PanelResourceManager::Draw()
 		// View button
 		if (ImGui::Button("View"))
 		{
-			openTextureWindow = true;
+			switch (resource->GetType())
+			{
+			case TYPE::TEXTURE: openTextureWindow = true; break;
+			case TYPE::MESH: openMeshWindow = true; break;
+			}
 			previous = resource;
 		}
 		ImGui::SameLine();
@@ -102,7 +149,41 @@ void PanelResourceManager::Draw()
 	OpenResourceEditor();
 	if (openTextureWindow)
 		DrawResourceTexture();
+	if (openMeshWindow)
+		DrawResourceMesh();
 	ImGui::End();
+}
+
+void PanelResourceManager::UpdateResourcesList()
+{
+	resourcesList = App->resManager->GetResourcesList();
+
+	switch (sortList)
+	{
+	default:
+	case SORTING::NONE:
+		break;
+	case SORTING::UID:
+		if(!descending) std::sort(resourcesList.begin(), resourcesList.end(), sortByUIDAscending);
+		else 			std::sort(resourcesList.begin(), resourcesList.end(), sortByUIDDescending);
+		break;
+	case SORTING::FILE:
+		if (!descending) std::sort(resourcesList.begin(), resourcesList.end(), sortByFileAscending);
+		else			 std::sort(resourcesList.begin(), resourcesList.end(), sortByFileDescending);
+		break;
+	case SORTING::EXPORTED:
+		if (!descending) std::sort(resourcesList.begin(), resourcesList.end(), sortByExportedFileAscending);
+		else			 std::sort(resourcesList.begin(), resourcesList.end(), sortByExportedFileDescending);
+		break;
+	case SORTING::REFERENCES:
+		if (!descending) std::sort(resourcesList.begin(), resourcesList.end(), sortByReferenceAscending);
+		else			 std::sort(resourcesList.begin(), resourcesList.end(), sortByReferenceDescending);
+		break;
+	case SORTING::TYPE:
+		if (!descending) std::sort(resourcesList.begin(), resourcesList.end(), sortByTypeAscending);
+		else			 std::sort(resourcesList.begin(), resourcesList.end(), sortByTypeDescending);
+		break;
+	}
 }
 
 void PanelResourceManager::OpenResourceEditor()
@@ -112,35 +193,11 @@ void PanelResourceManager::OpenResourceEditor()
 		if (!ImGui::IsPopupOpen(resourcePopup))
 		{
 			ImGui::OpenPopup(resourcePopup);
-			switch (previous->GetType())
-			{
-			case TYPE::TEXTURE:
-				auxResource = new ResourceTexture(*(ResourceTexture*)previous);
-				// To avoid deleting the texture from memory using a fake ID and reference
-				auxReferences = auxResource->GetReferences();
-				((ResourceTexture*)auxResource)->gpuID = 0u;	
-				break;
-			case TYPE::MESH:
-				auxResource = new ResourceMesh(*(ResourceMesh*)previous);
-				break;
-			case TYPE::AUDIO:
-				ImGui::Text("Audio");
-				break;
-			case TYPE::SCENE:
-				ImGui::Text("Scene");
-				break;
-			case TYPE::BONE:
-				ImGui::Text("Bone");
-				break;
-			case TYPE::ANIMATION:
-				ImGui::Text("Animation");
-				break;
-			default:
-			case TYPE::UNKNOWN:
-				ImGui::Text("Unknown");
-				break;
-			}
+			auxResource = new Resource(*previous);
+			// To avoid deleting the texture from memory using a fake reference
+			auxReferences = auxResource->GetReferences();
 		}
+
 		ImGui::SetNextWindowSizeConstraints(ImVec2(200, 200), ImVec2(500, 500));
 		if (ImGui::BeginPopupModal(resourcePopup, NULL, ImGuiWindowFlags_AlwaysAutoResize))
 		{
@@ -224,9 +281,31 @@ void PanelResourceManager::DrawResourceTexture()
 	ImGui::End();
 }
 
+void PanelResourceManager::DrawResourceMesh()
+{
+	if (!ImGui::Begin("Texture Manager", &openMeshWindow))
+	{
+		ImGui::End();
+		return;
+	}
+	ResourceMesh& mesh = *(ResourceMesh*)previous;
+	std::string exportedFile(mesh.GetExportedFile());
+	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), (exportedFile + ":").c_str());
+	ImGui::Columns(2);
+	ImGui::Text("VAO: %u", mesh.GetVAO());
+	ImGui::Text("VBO: %u", mesh.GetVBO());
+	ImGui::Text("EBO: %u", mesh.GetEBO());
+	ImGui::Text("Number of Indices: %u", mesh.numIndices);
+	ImGui::Text("Number of Vertices: %u", mesh.numVertices);
+	ImGui::NextColumn();
+	// TODO: [Resource Manager] Add preview of the mesh
+
+	ImGui::End();
+}
+
 void PanelResourceManager::CleanUp()
 {
-	if(!openTextureWindow)
+	if(!openTextureWindow && !openMeshWindow)
 		previous = nullptr;
 
 	if (auxResource != nullptr)

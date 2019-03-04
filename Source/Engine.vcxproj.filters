@@ -201,9 +201,6 @@
     <ClCompile Include="Material.cpp">
       <Filter>Material</Filter>
     </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Mesh</Filter>
-    </ClCompile>
     <ClCompile Include="ImGuizmo\ImGuizmo.cpp">
       <Filter>Imguizmo</Filter>
     </ClCompile>
@@ -522,9 +519,6 @@
     <ClInclude Include="Material.h">
       <Filter>Material</Filter>
     </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Mesh</Filter>
-    </ClInclude>
     <ClInclude Include="ImGuizmo\ImGuizmo.h">
       <Filter>Imguizmo</Filter>
     </ClInclude>
@@ -607,9 +601,6 @@
     </Filter>
     <Filter Include="Material">
       <UniqueIdentifier>{c4c3d17a-32f9-4c6a-9fda-d5e7091d7f46}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Mesh">
-      <UniqueIdentifier>{992d56bc-52f4-4d2e-bf7b-27366e318477}</UniqueIdentifier>
     </Filter>
     <Filter Include="Imguizmo">
       <UniqueIdentifier>{9e2074d8-5d2f-409c-8cec-92fa39546ba0}</UniqueIdentifier>

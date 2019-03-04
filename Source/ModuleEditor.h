@@ -8,6 +8,7 @@
 class Panel;
 class PanelConsole;
 class PanelInspector;
+class PanelBrowser;
 class PanelConfiguration;
 class PanelAbout;
 class PanelHardware;
@@ -51,6 +52,7 @@ public:
 	PanelHardware *hardware = nullptr;
 	PanelHierarchy *hierarchy = nullptr;
 	PanelTime *time = nullptr;
+	PanelBrowser *assets = nullptr;
 	PanelResourceManager *resource = nullptr;
 
 	MaterialEditor *materialEditor = nullptr;

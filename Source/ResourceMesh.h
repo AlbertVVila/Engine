@@ -11,9 +11,27 @@ public:
 	ResourceMesh(const ResourceMesh& resource);
 	virtual ~ResourceMesh();
 
-	bool LoadInMemory() override { return false; };
+	// Getters
+	inline unsigned GetVAO() { return VAO; };
+	inline unsigned GetVBO() { return VBO; };
+	inline unsigned GetEBO() { return EBO; };
+
+	bool LoadInMemory() override;
+	void DeleteFromMemory() override;
 	void Save(JSON_value &config) const override;
 	void Load(const JSON_value &config) override;
+
+	// Mesh specific
+	void Draw(unsigned shaderProgram) const;
+	void DrawBbox(unsigned shaderProgram, const AABB &globalBBOX) const;
+	AABB GetBoundingBox() const;
+	bool Intersects(const LineSegment &line, float* distance);
+
+private:
+	void ComputeBBox();
+	void SetMesh(const char* meshData);
+	void SetMeshBuffers();
+	void SetBboxBuffers();
 
 private:
 	unsigned VAO = 0;
@@ -30,6 +48,10 @@ public:
 	unsigned numVertices = 0;
 	int* indices = nullptr;
 	float* vertices = nullptr;
+
+	// New added on refactor
+	float* normals = nullptr;
+	float* texCoords = nullptr;
 };
 
 #endif __ResourceMesh_h__

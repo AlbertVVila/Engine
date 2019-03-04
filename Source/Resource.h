@@ -37,20 +37,20 @@ public:
 
 	virtual void Copy(const Resource& resource);	// Copies all variables from other Resource excluding UID
 
-	inline TYPE			GetType() const					{return type;};
+	inline TYPE			GetType() const					{ return type; };
 	inline void			SetType(TYPE newType)			{ type = newType; }
 	inline unsigned		GetUID() const					{ return UID; };
 	inline const char*	GetFile() const					{ return file.c_str(); };
 	inline void			SetFile(const char* newFile)	{ file = newFile; };
-	inline const char*	GetExportedFile() const			{return exportedFileName.c_str();};
+	inline const char*	GetExportedFile() const			{ return exportedFileName.c_str(); };
 	inline void			SetExportedFile(const char* newExportedFile) { exportedFileName = newExportedFile; };
 	inline bool			IsLoadedToMemory() const		{ return loaded > 0; };
 	inline unsigned		GetReferences() const			{ return loaded; };
 	void				SetReferences(unsigned references);
-	
+
 	virtual void Save(JSON_value& config) const;
 	virtual void Load(const JSON_value& config);
-	virtual bool LoadInMemory() = 0;
+	virtual bool LoadInMemory() {return true;};
 	virtual void DeleteFromMemory() { loaded = 0; };
 
 protected:

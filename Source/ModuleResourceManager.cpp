@@ -9,11 +9,12 @@
 #include "ModuleFileSystem.h"
 
 #include "Material.h"
-#include "Mesh.h"
 
 #include "Resource.h"
 #include "ResourceTexture.h"
 #include "ResourceMesh.h"
+
+#include "FileImporter.h"
 
 ModuleResourceManager::ModuleResourceManager()
 {
@@ -36,50 +37,19 @@ bool ModuleResourceManager::Start()
 		res->SetExportedFile(App->fsystem->GetFilename(file.c_str()).c_str());
 		//res->exportedFile = written_file;
 	}
+	files.clear();
+	dirs.clear();
+	App->fsystem->ListFolderContent(MESHES, files, dirs);
+	for each (std::string file in files)
+	{
+		std::string name = App->fsystem->GetFilename(file.c_str());
+		unsigned uid = std::stoul(name);
+		ResourceMesh* res = (ResourceMesh*)CreateNewResource(TYPE::MESH, uid);	
+		res->SetExportedFile(name.c_str());
+		//res->exportedFile = written_file;
+	}
 	return true;
 }
-
-// Deprecated Texture functions
-/*Texture* ModuleResourceManager::GetTexture(std::string filename) const
-{
-	std::map<std::string, std::pair<unsigned, Texture*>>::const_iterator it = textureResources.find(filename);
-	if (it != textureResources.end())
-	{
-		return it->second.second;
-	}
-	return nullptr;
-}
-
-void ModuleResourceManager::AddTexture(Texture* texture)
-{
-	std::map<std::string, std::pair<unsigned, Texture*>>::iterator it = textureResources.find(texture->file);
-	if (it != textureResources.end())
-	{
-		it->second.first++;
-	}
-	else
-	{
-		textureResources.insert(std::pair<std::string, std::pair<unsigned, Texture*>>
-			(texture->file, std::pair<unsigned, Texture*>(1,texture)));
-	}
-}
-
-void ModuleResourceManager::DeleteTexture(std::string filename)
-{
-	std::map<std::string, std::pair<unsigned, Texture*>>::iterator it = textureResources.find(filename);
-	if (it != textureResources.end())
-	{
-		if (it->second.first > 1)
-		{
-			it->second.first--;
-		}
-		else
-		{
-			RELEASE(it->second.second);
-			textureResources.erase(it);
-		}
-	}
-}*/
 
 Shader* ModuleResourceManager::GetProgram(std::string filename) const
 {
@@ -174,7 +144,7 @@ void ModuleResourceManager::DeleteMaterial(std::string filename)
 	}
 }
 
-Mesh * ModuleResourceManager::GetMesh(unsigned uid) const
+/*Mesh * ModuleResourceManager::GetMesh(unsigned uid) const
 {
 	std::map<unsigned, std::pair<unsigned, Mesh*>>::const_iterator it = meshResources.find(uid);
 	if (it != meshResources.end())
@@ -213,7 +183,7 @@ void ModuleResourceManager::DeleteMesh(unsigned uid)
 			meshResources.erase(it);
 		}
 	}
-}
+}*/
 
 unsigned ModuleResourceManager::Find(const char* fileInAssets)
 {
@@ -231,17 +201,16 @@ unsigned ModuleResourceManager::ImportFile(const char* newFileInAssets, const ch
 {
 	unsigned ret = 0; 
 	bool success = false; 
-	std::string written_file = "";
 	std::string importedFilePath(filePath);
 	Resource* resource = CreateNewResource(type);
 
 	switch (type) 
 	{
 	case TYPE::TEXTURE: 
-		success = App->textures->ImportImage(newFileInAssets, filePath, written_file, (ResourceTexture*)resource);
+		success = App->textures->ImportImage(newFileInAssets, filePath, (ResourceTexture*)resource);
 		break;
 	case TYPE::MESH:	
-
+		success = App->fsystem->importer.ImportFBX(newFileInAssets, filePath);
 		break;
 	//case TYPE::AUDIO: import_ok = App->audio->Import(newFileInAssets, written_file); break;
 	//case TYPE::SCENE: import_ok = App->scene->Import(newFileInAssets, written_file); break;
@@ -251,7 +220,7 @@ unsigned ModuleResourceManager::ImportFile(const char* newFileInAssets, const ch
 	if (success) 
 	{ 
 		resource->SetFile((importedFilePath + newFileInAssets).c_str());
-		resource->SetExportedFile(written_file.c_str());
+		resource->SetExportedFile(App->fsystem->RemoveExtension(newFileInAssets).c_str());
 	}
 	else
 	{
@@ -268,7 +237,7 @@ Resource * ModuleResourceManager::CreateNewResource(TYPE type, unsigned forceUid
 	switch (type) 
 	{
 	case TYPE::TEXTURE: resource = (Resource*) new ResourceTexture(uid); break;
-	//case TYPE::MESH:	resource = (Resource*) new ResourceMesh(uid); break;
+	case TYPE::MESH:	resource = (Resource*) new ResourceMesh(uid); break;
 	/*case TYPE::AUDIO:	resource = (Resource*) new ResourceAudio(uid); break;
 	case TYPE::SCENE:	resource = (Resource*) new ResourceScene(uid); break;
 	case TYPE::BONE:	resource = (Resource*) new ResourceBone(uid); break;
@@ -294,7 +263,7 @@ Resource * ModuleResourceManager::Get(unsigned uid)
 	return nullptr;
 }
 
-bool ModuleResourceManager::DeleteTexture(unsigned uid)
+bool ModuleResourceManager::DeleteResource(unsigned uid)
 {
 	std::map<unsigned, Resource*>::iterator it = resources.find(uid);
 	if (it != resources.end())
@@ -313,12 +282,62 @@ bool ModuleResourceManager::DeleteTexture(unsigned uid)
 	return false;
 }
 
-std::list<Resource*> ModuleResourceManager::GetResourcesList()
+std::vector<Resource*> ModuleResourceManager::GetResourcesList()
 {
-	std::list<Resource*> resourcesList;
+	std::vector<Resource*> resourcesList;
 	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
 	{
 		resourcesList.push_back(it->second);
 	}
 	return resourcesList;
+}
+
+ResourceMesh* ModuleResourceManager::GetMesh(const char* file) const
+{
+	assert(file != NULL);
+
+	// Look for it on the resource list
+	unsigned uid = App->resManager->Find(file);
+	if (uid == 0)
+		return nullptr;
+
+	// Check if is already loaded in memory
+	ResourceMesh* meshResource = (ResourceMesh*)App->resManager->Get(uid);
+	if (meshResource == nullptr) return nullptr;
+	if (!meshResource->IsLoadedToMemory())
+	{
+		// Load in memory
+		if (meshResource->LoadInMemory())
+			return meshResource;
+		else
+			return nullptr;
+	}
+	else
+	{
+		meshResource->SetReferences(meshResource->GetReferences() + 1);
+		return meshResource;
+	}
+}
+
+ResourceMesh* ModuleResourceManager::GetMesh(unsigned uid) const
+{
+	if (uid == 0)
+		return nullptr;
+
+	// Check if is already loaded in memory
+	ResourceMesh* meshResource = (ResourceMesh*)App->resManager->Get(uid);
+	if (meshResource == nullptr) return nullptr;
+	if (!meshResource->IsLoadedToMemory())
+	{
+		// Load in memory
+		if (meshResource->LoadInMemory())
+			return meshResource;
+		else
+			return nullptr;
+	}
+	else
+	{
+		meshResource->SetReferences(meshResource->GetReferences() + 1);
+		return meshResource;
+	}
 }

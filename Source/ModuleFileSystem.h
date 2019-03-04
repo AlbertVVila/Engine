@@ -77,6 +77,7 @@ private:
 
 public:
 	std::string baseDir = "";
+	FileImporter importer;
 
 private:
 	bool monitorize = true;
@@ -84,7 +85,6 @@ private:
 	Timer importTimer;
 	std::list<std::pair<std::string, std::string>> filesToImport; //File and folder
 	std::thread monitor_thread;
-	FileImporter importer;
 };
 
 #endif __ModuleFileSystem_h__

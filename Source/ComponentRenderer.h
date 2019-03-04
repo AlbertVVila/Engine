@@ -3,7 +3,7 @@
 
 #include "Component.h"
 
-class Mesh;
+class ResourceMesh;
 class Material;
 
 class ComponentRenderer :
@@ -27,7 +27,7 @@ public:
 	void UpdateGameObject();
 
 public:
-	Mesh * mesh = nullptr;
+	ResourceMesh * mesh = nullptr;
 	Material * material = nullptr;
 
 private:

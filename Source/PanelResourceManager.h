@@ -2,10 +2,13 @@
 #define __PanelResourceManager_h__
 
 #include "Panel.h"
+#include <vector>
 
 class Resource;
 class ResourceTexture;
 struct ImVec2;
+
+enum class SORTING { NONE, UID, FILE, EXPORTED, TYPE, REFERENCES};
 
 class PanelResourceManager : 
 	public Panel
@@ -16,8 +19,11 @@ public:
 
 	void Draw() override;
 
+private:
+	void UpdateResourcesList();
 	void OpenResourceEditor();
 	void DrawResourceTexture();
+	void DrawResourceMesh();
 	void CleanUp();
 
 private:
@@ -28,6 +34,11 @@ private:
 
 	bool openEditor = false;
 	bool openTextureWindow = false;
+	bool openMeshWindow = false;
+
+	SORTING sortList = SORTING::REFERENCES;
+	bool descending = false;
+	std::vector<Resource*> resourcesList;
 };
 
 #endif __PanelResourceManager_h__
