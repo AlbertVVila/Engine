@@ -27,8 +27,8 @@ ComponentRenderer::ComponentRenderer(GameObject* gameobject) : Component(gameobj
 
 ComponentRenderer::ComponentRenderer(const ComponentRenderer& component) : Component(component)
 {
-	mesh = App->resManager->GetMesh(component.mesh->GetUID());
-	App->resManager->GetMaterial(component.material->GetUID());
+	mesh = (ResourceMesh*)App->resManager->Get(component.mesh->GetUID());
+	material = (ResourceMaterial*)App->resManager->Get(component.material->GetUID());
 }
 
 ComponentRenderer::~ComponentRenderer()
@@ -119,7 +119,7 @@ void ComponentRenderer::Load(const JSON_value & value)
 {
 	Component::Load(value);
 	unsigned uid = value.GetUint("meshUID");
-	ResourceMesh* m = App->resManager->GetMesh(uid); //Look for loaded meshes
+	ResourceMesh* m = (ResourceMesh*)App->resManager->Get(uid); //Look for loaded meshes
 	if (m != nullptr)
 	{
 		mesh = m;
@@ -128,7 +128,7 @@ void ComponentRenderer::Load(const JSON_value & value)
 	{
 		ResourceMesh* res = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH, uid);
 		res->SetExportedFile(std::to_string(uid).c_str());
-		m = App->resManager->GetMesh(uid); //Look for loaded meshes
+		m = (ResourceMesh*)App->resManager->Get(uid); //Look for loaded meshes
 		if (m != nullptr)
 			m = res;
 	}
@@ -152,7 +152,7 @@ void ComponentRenderer::SetMaterial(const char * materialfile)
 			App->resManager->DeleteResource(material->GetUID());
 		}
 
-		ResourceMaterial *mat = App->resManager->GetMaterial(materialfile);
+		ResourceMaterial* mat = (ResourceMaterial*)App->resManager->Get(materialfile);
 		if (mat == nullptr)
 		{
 			//material = new Material();

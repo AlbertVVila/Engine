@@ -36,34 +36,22 @@ public:
 
 	//void DeleteMaterial(std::string filename);
 
-	//Mesh * GetMesh(unsigned uid) const;
-
-	//void AddMesh(Mesh * mesh);
-
-	//void DeleteMesh(unsigned uid);
-
 	// New ResourceManager functions
-	unsigned Find(const char* fileInAssets);
+	unsigned Find(const char* fileInAssets) const;
 	unsigned ImportFile(const char* newFileInAssets, const char* filePath, TYPE type, bool force = false);
 	unsigned GenerateNewUID();
-	Resource* Get(unsigned uid);
+	Resource* Get(unsigned uid) const;
+	Resource* Get(const char* file) const;
 	Resource* CreateNewResource(TYPE type, unsigned forceUid = 0);
 	bool DeleteResource(unsigned uid);	// If references < 1 delete it from memory
 
 	std::vector<Resource*> GetResourcesList();
-
-	// Meshes
-	ResourceMesh* GetMesh(const char* file) const;
-	ResourceMesh* GetMesh(unsigned uid) const;
-	ResourceMaterial* GetMaterial(const char* file) const;
-	ResourceMaterial* GetMaterial(unsigned uid) const;
 
 private:
 	std::map<unsigned, Resource*> resources;	// map<UID, pointer to resource>
 
 	// About to be deprecated for the new ResourceManager
 	std::map<std::string, std::pair<unsigned, Shader*>> shaderResources; //filename , times used, shader
-	//std::map<std::string, std::pair<unsigned, Material*>> materialResources; //filename , times used, material
 };
 
 #endif __ModuleResourceManager_h__

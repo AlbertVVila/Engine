@@ -27,7 +27,7 @@ ResourceMaterial::ResourceMaterial(const ResourceMaterial& resource) : Resource(
 	{
 		if (resource.textures[i] != nullptr)
 		{
-			textures[i] = App->textures->GetTexture(resource.textures[i]->GetExportedFile());
+			textures[i] = (ResourceTexture*)App->resManager->Get(resource.textures[i]->GetExportedFile());
 		}
 	}
 
@@ -92,22 +92,22 @@ void ResourceMaterial::Load(const char* materialfile)
 	const char *diffuseFile = materialJSON->GetString("diffuse");
 	if (diffuseFile != nullptr)
 	{
-		textures[(unsigned)TextureType::DIFFUSE] = App->textures->GetTexture(diffuseFile);
+		textures[(unsigned)TextureType::DIFFUSE] = (ResourceTexture*)App->resManager->Get(diffuseFile);
 	}
 	const char *specularFile = materialJSON->GetString("specular");
 	if (specularFile != nullptr)
 	{
-		textures[(unsigned)TextureType::SPECULAR] = App->textures->GetTexture(specularFile);
+		textures[(unsigned)TextureType::SPECULAR] = (ResourceTexture*)App->resManager->Get(specularFile);
 	}
 	const char *occlusionFile = materialJSON->GetString("occlusion");
 	if (occlusionFile != nullptr)
 	{
-		textures[(unsigned)TextureType::OCCLUSION] = App->textures->GetTexture(occlusionFile);
+		textures[(unsigned)TextureType::OCCLUSION] = (ResourceTexture*)App->resManager->Get(occlusionFile);
 	}
 	const char *emissiveFile = materialJSON->GetString("emissive");
 	if (emissiveFile != nullptr)
 	{
-		textures[(unsigned)TextureType::EMISSIVE] = App->textures->GetTexture(emissiveFile);
+		textures[(unsigned)TextureType::EMISSIVE] = (ResourceTexture*)App->resManager->Get(emissiveFile);
 	}
 
 	const char* shaderName = materialJSON->GetString("shader");
@@ -161,7 +161,7 @@ void ResourceMaterial::Save() const
 	{
 		materialJSON->AddString("shader", shader->file.c_str());
 	}
-
+	
 	json->AddValue("material", *materialJSON);
 
 	App->fsystem->Save((MATERIALS + name + JSONEXT).c_str(), json->ToString().c_str(), json->Size());
@@ -280,7 +280,7 @@ void ResourceMaterial::Reset(const ResourceMaterial & material)
 		}
 		if (material.textures[i] != nullptr)
 		{
-			textures[i] = App->textures->GetTexture(material.textures[i]->GetExportedFile());
+			textures[i] = (ResourceTexture*)App->resManager->Get(material.textures[i]->GetExportedFile());
 		}
 	}
 	diffuse_color = material.diffuse_color;

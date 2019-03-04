@@ -28,7 +28,6 @@ public:
 	void SaveConfig(JSON * config) override;
 
 	void DrawGUI() override;
-	ResourceTexture * GetTexture(const char* path) const;
 	unsigned LoadCubeMap(const std::string faces[]) const;
 	bool ImportImage(const char* file, const char* folder, ResourceTexture* resource) const;
 

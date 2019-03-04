@@ -166,7 +166,7 @@ void MaterialEditor::TextureSelector(unsigned i, std::string &current_texture)
 			if (ImGui::Selectable(textureFiles[n].c_str(), is_selected))
 			{
 				current_texture = textureFiles[n];
-				material->textures[i] = App->textures->GetTexture(current_texture.c_str());
+				material->textures[i] = (ResourceTexture*)App->resManager->Get(current_texture.c_str());
 			}
 			if (is_selected)
 				ImGui::SetItemDefaultFocus();
