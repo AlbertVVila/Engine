@@ -57,6 +57,7 @@ public:
 	unsigned Load(const char * file, char ** buffer) const;
 	bool Save(const char* file, const char* buffer, unsigned size) const;
 	bool Remove(const char* file) const;
+	bool Delete(const char* file) const;
 	bool Exists(const char* file) const;
 	unsigned Size(const char* file) const;
 	bool MakeDirectory(const char* directory) const;

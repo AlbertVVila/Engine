@@ -112,6 +112,19 @@ bool ModuleFileSystem::Remove(const char * file) const
 	return true;
 }
 
+bool ModuleFileSystem::Delete(const char * file) const
+{
+	assert(file != nullptr);
+	if (file == nullptr) return false;
+
+	if (PHYSFS_delete(file) != 0)
+	{
+		LOG("Error: %s", PHYSFS_getLastError());
+		return false;
+	}
+	return true;
+}
+
 bool ModuleFileSystem::Exists(const char * file) const
 {
 	assert(file != nullptr);

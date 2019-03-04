@@ -275,10 +275,10 @@ void MaterialEditor::NewMaterial()
 	}
 }
 
-bool MaterialEditor::Exists(const char * material)
+bool MaterialEditor::Exists(const std::string& material) const
 {
-	std::string materialName(material);
-	return App->fsystem->Exists((MATERIALS + materialName + JSONEXT).c_str());
+	//std::string materialName(material);
+	return App->fsystem->Exists((MATERIALS + material + JSONEXT).c_str());
 }
 
 void MaterialEditor::Save()
@@ -287,6 +287,11 @@ void MaterialEditor::Save()
 	{
 		if (!material->Compare(*previous))
 		{
+			if (Exists(previous->name))
+			{
+				App->fsystem->Delete((MATERIALS + previous->name + JSONEXT).c_str());
+			}
+
 			material->Save();
 		}
 		RELEASE(previous);
