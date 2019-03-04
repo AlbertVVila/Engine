@@ -133,7 +133,7 @@ void ComponentCamera::Center() //TODO: Shouldn't be specfic to editor camera
 		{
 			float camDist = App->renderer->current_scale;
 			math::float3 center = ((ComponentTransform*)
-				(App->scene->selected->GetComponent(ComponentType::Transform)))->position;
+				(App->scene->selected->GetComponent(ComponentType::Transform)))->GetPosition();
 			frustum->pos = center + math::float3(0.0f, 0.0f, camDist);
 		}
 	}

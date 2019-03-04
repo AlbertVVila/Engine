@@ -277,6 +277,10 @@ void MaterialEditor::Save()
 	{
 		material->Save();
 	}
+	if (previous != nullptr)
+	{
+		RELEASE(previous);
+	}
 }
 
 void MaterialEditor::CleanUp()
