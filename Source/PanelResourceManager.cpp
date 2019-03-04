@@ -8,8 +8,16 @@
 #include "ResourceMesh.h"
 
 #include "imgui.h"
+#include <algorithm>
 #define MAX_FILE 128
 #define resourcePopup "Resource"
+
+// Shorting functions
+bool sortByUID(const Resource* a, const Resource* b) { return a->GetUID() > b->GetUID(); };
+bool sortByFile(const Resource* a, const Resource* b) { return a->GetFile() > b->GetFile(); };
+bool sortByExportedFile(const Resource* a, const Resource* b) { return a->GetExportedFile() > b->GetExportedFile(); };
+bool sortByReference(const Resource* a, const Resource* b) { return a->GetReferences() > b->GetReferences(); };
+bool sortByType(const Resource* a, const Resource* b) { return a->GetType() > b->GetType(); };
 
 PanelResourceManager::PanelResourceManager()
 {
@@ -31,12 +39,15 @@ void PanelResourceManager::Draw()
 		UpdateResourcesList();
 
 	ImGui::Columns(6);
-	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "UID"); ImGui::SameLine(); ImGui::NextColumn();
-	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "File"); ImGui::SameLine(); ImGui::NextColumn();
-	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Exported File"); ImGui::SameLine(); ImGui::NextColumn();
-	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "References"); ImGui::SameLine(); ImGui::NextColumn();
-	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Type"); ImGui::SameLine(); ImGui::NextColumn();
-	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), ""); ImGui::NextColumn(); ImGui::Separator();
+	// Table references: UID | File | Exported File | References | Type |
+	ImGui::PushStyleColor(ImGuiCol_Text, (ImVec4)ImColor::HSV(0.0f, 1.0f, 1.0f));
+	if (ImGui::Selectable("UID"))			{sortList = SORTING::UID;}			ImGui::SameLine(); ImGui::NextColumn();
+	if (ImGui::Selectable("File"))			{sortList = SORTING::FILE;}			ImGui::SameLine(); ImGui::NextColumn();
+	if (ImGui::Selectable("Exported File"))	{sortList = SORTING::EXPORTED;}		ImGui::SameLine(); ImGui::NextColumn();
+	if (ImGui::Selectable("References"))	{sortList = SORTING::REFERENCES;}	ImGui::SameLine(); ImGui::NextColumn();
+	if (ImGui::Selectable("Type"))			{sortList = SORTING::TYPE;}			ImGui::SameLine(); ImGui::NextColumn();
+	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "");						ImGui::NextColumn(); ImGui::Separator();
+	ImGui::PopStyleColor(1);
 
 	for each (auto resource in resourcesList)
 	{
@@ -116,6 +127,28 @@ void PanelResourceManager::Draw()
 void PanelResourceManager::UpdateResourcesList()
 {
 	resourcesList = App->resManager->GetResourcesList();
+
+	switch (sortList)
+	{
+	default:
+	case SORTING::NONE:
+		break;
+	case SORTING::UID:
+		std::sort(resourcesList.begin(), resourcesList.end(), sortByUID);
+		break;
+	case SORTING::FILE:
+		std::sort(resourcesList.begin(), resourcesList.end(), sortByFile);
+		break;
+	case SORTING::EXPORTED:
+		std::sort(resourcesList.begin(), resourcesList.end(), sortByExportedFile);
+		break;
+	case SORTING::REFERENCES:
+		std::sort(resourcesList.begin(), resourcesList.end(), sortByReference);
+		break;
+	case SORTING::TYPE:
+		std::sort(resourcesList.begin(), resourcesList.end(), sortByType);
+		break;
+	}
 }
 
 void PanelResourceManager::OpenResourceEditor()

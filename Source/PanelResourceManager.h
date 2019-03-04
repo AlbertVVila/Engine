@@ -8,6 +8,8 @@ class Resource;
 class ResourceTexture;
 struct ImVec2;
 
+enum class SORTING { NONE, UID, FILE, EXPORTED, TYPE, REFERENCES};
+
 class PanelResourceManager : 
 	public Panel
 {
@@ -16,9 +18,9 @@ public:
 	~PanelResourceManager();
 
 	void Draw() override;
-	void UpdateResourcesList();
 
 private:
+	void UpdateResourcesList();
 	void OpenResourceEditor();
 	void DrawResourceTexture();
 	void DrawResourceMesh();
@@ -34,6 +36,7 @@ private:
 	bool openTextureWindow = false;
 	bool openMeshWindow = false;
 
+	SORTING sortList = SORTING::REFERENCES;
 	std::vector<Resource*> resourcesList;
 };
 
