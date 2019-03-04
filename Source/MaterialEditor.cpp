@@ -5,6 +5,9 @@
 #include "ModuleTextures.h"
 #include "ModuleResourceManager.h"
 
+#include "Resource.h"
+#include "ResourceTexture.h"
+
 #include "Material.h"
 #include "MaterialEditor.h"
 #include "imgui.h"
@@ -27,13 +30,13 @@ void MaterialEditor::Draw()
 		if (!ImGui::IsPopupOpen(materialPopup))
 		{
 			ImGui::OpenPopup(materialPopup);
-			SetCurrentTextures();
 			if (isCreated)
 			{
 				material = new Material();
 			}
 			else
 			{
+				SetCurrentTextures();
 				previous = new Material(*material); //Save changes if cancel
 			}
 		}
@@ -94,7 +97,8 @@ void MaterialEditor::Draw()
 			TextureSelector((unsigned)TextureType::EMISSIVE, current_emissive);
 			ImGui::Separator();
 		}
-		if (ImGui::Button("Save", ImVec2(120, 0))) {
+		if (ImGui::Button("Save", ImVec2(120, 0))) 
+		{
 			material->Save();
 			CleanUp();
 		}
@@ -149,7 +153,7 @@ void MaterialEditor::TextureSelector(unsigned i, std::string &current_texture)
 			current_texture = None;
 			if (material->textures[i] != nullptr)
 			{
-				App->resManager->DeleteTexture(material->textures[i]->file);
+				App->resManager->DeleteResource(material->textures[i]->GetUID());
 				material->textures[i] = nullptr;
 			}
 		}
@@ -170,25 +174,23 @@ void MaterialEditor::TextureSelector(unsigned i, std::string &current_texture)
 	}
 	if (material->textures[i] != nullptr)
 	{
-		ImGui::Image((ImTextureID)material->textures[i]->id, { 200,200 }, { 0,1 }, { 1,0 });
+		ImGui::Image((ImTextureID)material->textures[i]->gpuID, { 200,200 }, { 0,1 }, { 1,0 });
 	}
 }
 
 void MaterialEditor::SetCurrentTextures()
 {
-	if (material == nullptr) return;
-
 	// Get material textures
-	Texture* diffuse_texture = material->GetTexture(TextureType::DIFFUSE);
-	Texture* specular_texture = material->GetTexture(TextureType::SPECULAR);
-	Texture* occlusion_texture = material->GetTexture(TextureType::OCCLUSION);
-	Texture* emissive_texture = material->GetTexture(TextureType::EMISSIVE);
+	ResourceTexture* diffuse_texture = material->GetTexture(TextureType::DIFFUSE);
+	ResourceTexture* specular_texture = material->GetTexture(TextureType::SPECULAR);
+	ResourceTexture* occlusion_texture = material->GetTexture(TextureType::OCCLUSION);
+	ResourceTexture* emissive_texture = material->GetTexture(TextureType::EMISSIVE);
 
 	// Set current textures strings
-	if (diffuse_texture != nullptr)		{ current_diffuse = diffuse_texture->file; }
-	if (specular_texture != nullptr)	{ current_specular = specular_texture->file; }
-	if (occlusion_texture != nullptr)	{ current_occlusion = occlusion_texture->file; }
-	if (emissive_texture != nullptr)	{ current_emissive = emissive_texture->file; }
+	if (diffuse_texture != nullptr)		{ current_diffuse	= diffuse_texture->GetExportedFile(); }
+	if (specular_texture != nullptr)	{ current_specular	= specular_texture->GetExportedFile(); }
+	if (occlusion_texture != nullptr)	{ current_occlusion = occlusion_texture->GetExportedFile(); }
+	if (emissive_texture != nullptr)	{ current_emissive	= emissive_texture->GetExportedFile(); }
 }
 
 void MaterialEditor::CleanUp()

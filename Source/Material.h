@@ -8,7 +8,7 @@
 #define DEFAULTMAT "Default"
 
 struct Shader;
-struct Texture;
+class ResourceTexture;
 
 enum class TextureType
 {
@@ -30,8 +30,8 @@ public:
 	void Save() const;
 	void Reset(const Material& material);
 
-	Texture * GetTexture(TextureType type) const;
-	std::list<Texture*> GetTextures() const;
+	ResourceTexture * GetTexture(TextureType type) const;
+	std::list<ResourceTexture*> GetTextures() const;
 
 	void SetUniforms(unsigned shader) const;
 
@@ -39,7 +39,7 @@ public:
 	std::string name;
 	Shader* shader = nullptr;
 	
-	Texture* textures[MAXTEXTURES]{ nullptr };
+	ResourceTexture* textures[MAXTEXTURES]{ nullptr };
 	
 	float4 diffuse_color = float4::one;
 	float3 specular_color = float3::one;

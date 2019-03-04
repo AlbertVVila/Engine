@@ -14,8 +14,10 @@ class PanelAbout;
 class PanelHardware;
 class PanelHierarchy;
 class PanelTime;
+class PanelResourceManager;
 class GameObject;
 class MaterialEditor;
+class FileExplorer;
 
 class ModuleEditor :
 	public Module
@@ -38,8 +40,8 @@ public:
 private:
 	void CreateDockSpace() const;
 	void DrawPanels();
-	void SceneSavePopup(bool scenepopup);
 	void WindowsMenu();
+	void ToolsMenu();
 	void HelpMenu();
 
 public:
@@ -51,8 +53,10 @@ public:
 	PanelHierarchy *hierarchy = nullptr;
 	PanelTime *time = nullptr;
 	PanelBrowser *assets = nullptr;
+	PanelResourceManager *resource = nullptr;
 
 	MaterialEditor *materialEditor = nullptr;
+	FileExplorer *fileExplorer = nullptr;
 
 private:
 	std::list<Panel*> panels;

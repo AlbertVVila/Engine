@@ -2,6 +2,8 @@
 #define __MaterialEditor_h__
 #define None "None Selected"
 
+#include <string>
+
 class Material;
 
 class MaterialEditor

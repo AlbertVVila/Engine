@@ -7,10 +7,11 @@
 #include "ModuleProgram.h"
 #include "ModuleEditor.h"
 #include "ModuleScene.h"
+#include "ModuleDebugDraw.h"
 #include "ModuleFileSystem.h"
 #include "ModuleResourceManager.h"
 #include "ModuleTime.h"
-
+#include "ModuleSpacePartitioning.h"
 #include "Timer.h"
 #include "JSON.h"
 #include "Brofiler.h"
@@ -25,12 +26,14 @@ Application::Application()
 	modules.push_back(input = new ModuleInput());
 	modules.push_back(renderer = new ModuleRender());
     modules.push_back(camera = new ModuleCamera());
+	modules.push_back(resManager = new ModuleResourceManager());
 	modules.push_back(textures = new ModuleTextures());
 	modules.push_back(program = new ModuleProgram());
 	modules.push_back(editor = new ModuleEditor());
+	modules.push_back(debug = new ModuleDebugDraw());
 	modules.push_back(scene = new ModuleScene());
-	modules.push_back(resManager = new ModuleResourceManager());
 	modules.push_back(time = new ModuleTime());
+	modules.push_back(spacePartitioning = new ModuleSpacePartitioning());
 }
 
 Application::~Application()

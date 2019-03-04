@@ -7,8 +7,8 @@
 
 class Component;
 class ComponentTransform;
+class AABBTreeNode;
 enum class ComponentType;
-struct Texture;
 struct JSON_value;
 
 class GameObject
@@ -65,6 +65,11 @@ public:
 
 	ComponentTransform * transform = nullptr;
 	GameObject *parent = nullptr;
+	
+	//ABBTree Stuff
+	AABBTreeNode *treeNode = nullptr; //Direct reference to the aabtree node holding the gameobject
+	bool isVolumetric = false; //Indicates if the gameObject has a mesh
+	//
 
 	std::vector<Component*> components;
 	std::list<GameObject*> children;

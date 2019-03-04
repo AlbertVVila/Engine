@@ -11,7 +11,9 @@
 
 #include "FileImporter.h"
 #include "Material.h"
-#include "Mesh.h"
+
+#include "Resource.h"
+#include "ResourceMesh.h"
 
 #include <assert.h>
 #include "assimp/cimport.h"
@@ -46,11 +48,11 @@ void FileImporter::ImportAsset(const char *file, const char *folder)
 	std::string extension (App->fsystem->GetExtension(file));
 	if (extension == FBXEXTENSION || extension == FBXCAPITAL)
 	{
-		ImportFBX(file, folder);
+		App->resManager->ImportFile(file, folder, TYPE::MESH);
 	}
 	else if (extension == PNG || extension == TIF || extension == JPG)
 	{
-		App->textures->ImportImage(file, folder);
+		App->resManager->ImportFile(file, folder, TYPE::TEXTURE);
 	}
 	else if (extension == TEXTUREEXT)
 	{
@@ -87,16 +89,16 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file)
 		char* data = new char[size];
 		ImportMesh(*aiscene.mMeshes[i], data);
 
-		Mesh *mesh = new Mesh();
-		unsigned uid = App->scene->GetNewUID();
-		App->fsystem->Save((MESHES + std::to_string(uid)+ MESHEXTENSION).c_str(), data, size);
-		mesh->SetMesh(data, uid); //Deallocates data
-		App->resManager->AddMesh(mesh);
-		meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->UID));
+		ResourceMesh* mesh = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH);
+		App->fsystem->Save((MESHES + std::to_string(mesh->GetUID()) + MESHEXTENSION).c_str(), data, size);
+		//mesh->LoadInMemory();
+		//mesh->SetMesh(data); //Deallocates data
+		meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->GetUID()));
 	}
 	GameObject *fake = new GameObject("fake",0);
 	ProcessNode(meshMap, aiscene.mRootNode, &aiscene, fake);
-	App->scene->SaveScene(*fake, App->fsystem->GetFilename(file).c_str()); //TODO: Make AutoCreation of folders or check
+
+	App->scene->SaveScene(*fake, *App->fsystem->GetFilename(file).c_str(), *SCENES); //TODO: Make AutoCreation of folders or check
 	fake->CleanUp();
 	RELEASE(fake);
 

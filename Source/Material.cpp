@@ -6,6 +6,8 @@
 #include "ModuleProgram.h"
 #include "ModuleResourceManager.h"
 
+#include "Resource.h"
+#include "ResourceTexture.h"
 #include "Material.h"
 
 #include "Globals.h"
@@ -27,7 +29,7 @@ Material::Material(const Material& material)
 	{
 		if (material.textures[i] != nullptr)
 		{
-			textures[i] = App->textures->GetTexture(material.textures[i]->file.c_str());
+			textures[i] = App->textures->GetTexture(material.textures[i]->GetExportedFile());
 		}
 	}
 
@@ -52,7 +54,7 @@ Material::~Material()
 	{
 		if (textures[i] != nullptr)
 		{
-			App->resManager->DeleteTexture(textures[i]->file);
+			App->resManager->DeleteResource(textures[i]->GetUID());
 			textures[i] = nullptr;
 		}
 	}
@@ -129,19 +131,19 @@ void Material::Save() const
 	
 	if (textures[(unsigned)TextureType::DIFFUSE] != nullptr)
 	{
-		materialJSON->AddString("diffuse", textures[(unsigned)TextureType::DIFFUSE]->file.c_str());
+		materialJSON->AddString("diffuse", textures[(unsigned)TextureType::DIFFUSE]->GetFile());
 	}
 	if (textures[(unsigned)TextureType::SPECULAR] != nullptr)
 	{
-		materialJSON->AddString("specular", textures[(unsigned)TextureType::SPECULAR]->file.c_str());
+		materialJSON->AddString("specular", textures[(unsigned)TextureType::SPECULAR]->GetFile());
 	}
 	if (textures[(unsigned)TextureType::OCCLUSION] != nullptr)
 	{
-		materialJSON->AddString("occlusion", textures[(unsigned)TextureType::OCCLUSION]->file.c_str());
+		materialJSON->AddString("occlusion", textures[(unsigned)TextureType::OCCLUSION]->GetFile());
 	}
 	if (textures[(unsigned)TextureType::EMISSIVE] != nullptr)
 	{
-		materialJSON->AddString("emissive", textures[(unsigned)TextureType::EMISSIVE]->file.c_str());
+		materialJSON->AddString("emissive", textures[(unsigned)TextureType::EMISSIVE]->GetFile());
 	}
 	
 	if (shader != nullptr)
@@ -171,11 +173,11 @@ void Material::Reset(const Material & material)
 	{
 		if (textures[i] != nullptr)
 		{
-			App->resManager->DeleteTexture(textures[i]->file);
+			App->resManager->DeleteResource(textures[i]->GetUID());
 		}
 		if (material.textures[i] != nullptr)
 		{
-			textures[i] = App->textures->GetTexture(material.textures[i]->file.c_str());
+			textures[i] = App->textures->GetTexture(material.textures[i]->GetExportedFile());
 		}
 	}
 	diffuse_color = material.diffuse_color;
@@ -188,14 +190,14 @@ void Material::Reset(const Material & material)
 	shininess = material.shininess;
 }
 
-Texture * Material::GetTexture(TextureType type) const
+ResourceTexture * Material::GetTexture(TextureType type) const
 {
 	return textures[(unsigned)type];
 }
 
-std::list<Texture*> Material::GetTextures() const
+std::list<ResourceTexture*> Material::GetTextures() const
 {
-	std::list<Texture*> mytextures;
+	std::list<ResourceTexture*> mytextures;
 	for (unsigned i = 0; i < MAXTEXTURES; i++)
 	{
 		if (textures[i] != nullptr)
@@ -254,7 +256,7 @@ void Material::SetUniforms(unsigned shader) const
 				glUniform3fv(glGetUniformLocation(shader,
 					uniform), 1, color);
 			}
-			glBindTexture(GL_TEXTURE_2D, textures[i]->id);
+			glBindTexture(GL_TEXTURE_2D, textures[i]->gpuID);
 
 			glUniform1i(glGetUniformLocation(shader, texture), i);
 		}
