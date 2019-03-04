@@ -14,11 +14,13 @@
 
 Material::Material()
 {
+	shader = App->program->GetProgram(DEFAULTPROGRAM);
 }
 
 Material::Material(const char* name)
 {
 	this->name = name;
+	shader = App->program->GetProgram(DEFAULTPROGRAM);
 }
 
 Material::Material(const Material& material)

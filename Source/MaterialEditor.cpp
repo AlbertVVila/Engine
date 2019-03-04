@@ -171,7 +171,7 @@ void MaterialEditor::SetCurrentTextures()
 	}
 	else
 	{
-		currentShader = None;
+		currentShader = DEFAULTPROGRAM;
 	}
 
 	// Get material textures
