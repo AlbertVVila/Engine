@@ -285,15 +285,21 @@ void MaterialEditor::Save()
 {
 	if (previous != nullptr)
 	{
-		if (!material->Compare(*previous))
+		int ret = material->Compare(*previous);
+
+		if (ret == -1)
 		{
 			if (Exists(previous->name))
 			{
 				App->fsystem->Delete((MATERIALS + previous->name + JSONEXT).c_str());
 			}
-
 			material->Save();
 		}
+		else if (ret == 0)
+		{
+			material->Save();
+		}
+
 		RELEASE(previous);
 	}
 }
