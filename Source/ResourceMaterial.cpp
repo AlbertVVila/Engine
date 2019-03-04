@@ -64,6 +64,13 @@ void ResourceMaterial::DeleteFromMemory()
 	}
 }
 
+bool ResourceMaterial::LoadInMemory()
+{
+	Load(GetExportedFile());
+	++loaded;
+	return true;
+}
+
 void ResourceMaterial::Load(const char* materialfile)
 {
 	char* data = nullptr;

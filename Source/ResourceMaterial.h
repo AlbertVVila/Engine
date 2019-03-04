@@ -27,7 +27,7 @@ public:
 	ResourceMaterial(const ResourceMaterial& resource);
 	~ResourceMaterial();
 
-	//bool LoadInMemory() override;
+	bool LoadInMemory() override;
 	void DeleteFromMemory() override;
 	void Save() const;
 	void Load(const char* materialfile);
