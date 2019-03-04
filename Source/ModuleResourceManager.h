@@ -8,9 +8,9 @@
 #include <vector>
 
 struct Shader;
-class Material;
 class Resource;
 class ResourceMesh;
+class ResourceMaterial;
 enum class TYPE;
 
 class ModuleResourceManager : //TODO: Divide into subclasses for each resource type
@@ -30,11 +30,11 @@ public:
 	void DeleteProgram(std::string filename);
 
 	// About to be deprecated for the new ResourceManager
-	Material * GetMaterial(std::string filename) const;
+	//Material * GetMaterial(std::string filename) const;
 
-	void AddMaterial(Material * material);
+	//void AddMaterial(Material * material);
 
-	void DeleteMaterial(std::string filename);
+	//void DeleteMaterial(std::string filename);
 
 	//Mesh * GetMesh(unsigned uid) const;
 
@@ -55,14 +55,15 @@ public:
 	// Meshes
 	ResourceMesh* GetMesh(const char* file) const;
 	ResourceMesh* GetMesh(unsigned uid) const;
+	ResourceMaterial* GetMaterial(const char* file) const;
+	ResourceMaterial* GetMaterial(unsigned uid) const;
 
 private:
 	std::map<unsigned, Resource*> resources;	// map<UID, pointer to resource>
 
 	// About to be deprecated for the new ResourceManager
 	std::map<std::string, std::pair<unsigned, Shader*>> shaderResources; //filename , times used, shader
-	std::map<std::string, std::pair<unsigned, Material*>> materialResources; //filename , times used, material
-	//std::map<unsigned, std::pair<unsigned, Mesh*>> meshResources; // uid, times used, mesh
+	//std::map<std::string, std::pair<unsigned, Material*>> materialResources; //filename , times used, material
 };
 
 #endif __ModuleResourceManager_h__

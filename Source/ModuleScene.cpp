@@ -18,8 +18,8 @@
 
 #include "ResourceTexture.h"
 #include "ResourceMesh.h"
+#include "ResourceMaterial.h"
 
-#include "Material.h"
 #include "JSON.h"
 #include "myQuadTree.h"
 #include "AABBTree.h"
@@ -206,7 +206,7 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 	ComponentRenderer* crenderer = (ComponentRenderer*)go.GetComponent(ComponentType::Renderer);
 	if (crenderer == nullptr || !crenderer->enabled || crenderer->material == nullptr) return;
 
-	Material* material = crenderer->material;
+	ResourceMaterial* material = crenderer->material;
 	Shader* shader = material->shader;
 	if (shader == nullptr) return;
 

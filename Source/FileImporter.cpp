@@ -10,7 +10,6 @@
 #include "ComponentTransform.h"
 
 #include "FileImporter.h"
-#include "Material.h"
 
 #include "Resource.h"
 #include "ResourceMesh.h"

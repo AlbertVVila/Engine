@@ -10,10 +10,10 @@
 
 #include "Resource.h"
 #include "ResourceMesh.h"
+#include "ResourceMaterial.h"
 
 #include "myQuadTree.h"
 #include "MaterialEditor.h"
-#include "Material.h"
 #include "JSON.h"
 
 #include "imgui.h"
@@ -28,12 +28,12 @@ ComponentRenderer::ComponentRenderer(GameObject* gameobject) : Component(gameobj
 ComponentRenderer::ComponentRenderer(const ComponentRenderer& component) : Component(component)
 {
 	mesh = App->resManager->GetMesh(component.mesh->GetUID());
-	material = component.material;
-	App->resManager->AddMaterial(material);
+	App->resManager->GetMaterial(component.material->GetUID());
 }
 
 ComponentRenderer::~ComponentRenderer()
 {
+	App->resManager->DeleteResource(material->GetUID());
 	material = nullptr; //Resource Manager Deallocates resources (materials, meshes)
 	App->resManager->DeleteResource(mesh->GetUID());
 	mesh = nullptr;
@@ -99,7 +99,7 @@ bool ComponentRenderer::CleanUp()
 {
 	if (material != nullptr)
 	{
-		App->resManager->DeleteMaterial(material->name);
+		App->resManager->DeleteResource(material->GetUID());
 	}
 	if (mesh != nullptr)
 	{
@@ -149,20 +149,21 @@ void ComponentRenderer::SetMaterial(const char * materialfile)
 	{
 		if (material != nullptr)
 		{
-			App->resManager->DeleteMaterial(material->name);
+			App->resManager->DeleteResource(material->GetUID());
 		}
 
-		Material *mat = App->resManager->GetMaterial(materialfile);
+		ResourceMaterial *mat = App->resManager->GetMaterial(materialfile);
 		if (mat == nullptr)
 		{
-			material = new Material();
+			//material = new Material();
+			mat = (ResourceMaterial*)App->resManager->CreateNewResource(TYPE::MATERIAL);
 			material->Load(materialfile);
 		}
 		else
 		{
 			material = mat;
 		}
-		App->resManager->AddMaterial(material);
+		//App->resManager->AddMaterial(material);
 	}
 	return;
 }

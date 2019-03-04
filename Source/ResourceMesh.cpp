@@ -35,6 +35,7 @@ ResourceMesh::ResourceMesh(const ResourceMesh& resource) : Resource(resource)
 
 ResourceMesh::~ResourceMesh()
 {
+	Resource::DeleteFromMemory();
 	DeleteFromMemory();
 }
 

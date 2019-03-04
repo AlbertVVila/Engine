@@ -8,11 +8,10 @@
 #include "ModuleScene.h"
 #include "ModuleFileSystem.h"
 
-#include "Material.h"
-
 #include "Resource.h"
 #include "ResourceTexture.h"
 #include "ResourceMesh.h"
+#include "ResourceMaterial.h"
 
 #include "FileImporter.h"
 
@@ -103,7 +102,7 @@ void ModuleResourceManager::DeleteProgram(std::string filename)
 	}
 }
 
-Material * ModuleResourceManager::GetMaterial(std::string filename) const
+/*Material * ModuleResourceManager::GetMaterial(std::string filename) const
 {
 	std::map<std::string, std::pair<unsigned, Material*>>::const_iterator it = materialResources.find(filename);
 	if (it != materialResources.end())
@@ -140,47 +139,6 @@ void ModuleResourceManager::DeleteMaterial(std::string filename)
 		{
 			RELEASE(it->second.second);
 			materialResources.erase(it);
-		}
-	}
-}
-
-/*Mesh * ModuleResourceManager::GetMesh(unsigned uid) const
-{
-	std::map<unsigned, std::pair<unsigned, Mesh*>>::const_iterator it = meshResources.find(uid);
-	if (it != meshResources.end())
-	{
-		return it->second.second;
-	}
-	return nullptr;
-}
-
-void ModuleResourceManager::AddMesh(Mesh * mesh)
-{
-	std::map<unsigned, std::pair<unsigned, Mesh*>>::iterator it = meshResources.find(mesh->UID);
-	if (it != meshResources.end())
-	{
-		it->second.first++;
-	}
-	else
-	{
-		meshResources.insert(std::pair<unsigned, std::pair<unsigned, Mesh*>>
-			(mesh->UID, std::pair<unsigned, Mesh*>(1, mesh)));
-	}
-}
-
-void ModuleResourceManager::DeleteMesh(unsigned uid)
-{
-	std::map<unsigned, std::pair<unsigned, Mesh*>>::iterator it = meshResources.find(uid);
-	if (it != meshResources.end())
-	{
-		if (it->second.first > 1)
-		{
-			it->second.first--;
-		}
-		else
-		{
-			RELEASE(it->second.second);
-			meshResources.erase(it);
 		}
 	}
 }*/
@@ -242,6 +200,7 @@ Resource * ModuleResourceManager::CreateNewResource(TYPE type, unsigned forceUid
 	case TYPE::SCENE:	resource = (Resource*) new ResourceScene(uid); break;
 	case TYPE::BONE:	resource = (Resource*) new ResourceBone(uid); break;
 	case TYPE::ANIMATION: resource = (Resource*) new ResourceAnimation(uid); break;*/
+	case TYPE::MATERIAL: resource = (Resource*) new ResourceMaterial(uid); break;
 	}
 
 	if (resource != nullptr)
@@ -326,6 +285,56 @@ ResourceMesh* ModuleResourceManager::GetMesh(unsigned uid) const
 
 	// Check if is already loaded in memory
 	ResourceMesh* meshResource = (ResourceMesh*)App->resManager->Get(uid);
+	if (meshResource == nullptr) return nullptr;
+	if (!meshResource->IsLoadedToMemory())
+	{
+		// Load in memory
+		if (meshResource->LoadInMemory())
+			return meshResource;
+		else
+			return nullptr;
+	}
+	else
+	{
+		meshResource->SetReferences(meshResource->GetReferences() + 1);
+		return meshResource;
+	}
+}
+
+ResourceMaterial* ModuleResourceManager::GetMaterial(const char* file) const
+{
+	assert(file != NULL);
+
+	// Look for it on the resource list
+	unsigned uid = App->resManager->Find(file);
+	if (uid == 0)
+		return nullptr;
+
+	// Check if is already loaded in memory
+	ResourceMaterial* meshResource = (ResourceMaterial*)App->resManager->Get(uid);
+	if (meshResource == nullptr) return nullptr;
+	if (!meshResource->IsLoadedToMemory())
+	{
+		// Load in memory
+		if (meshResource->LoadInMemory())
+			return meshResource;
+		else
+			return nullptr;
+	}
+	else
+	{
+		meshResource->SetReferences(meshResource->GetReferences() + 1);
+		return meshResource;
+	}
+}
+
+ResourceMaterial* ModuleResourceManager::GetMaterial(unsigned uid) const
+{
+	if (uid == 0)
+		return nullptr;
+
+	// Check if is already loaded in memory
+	ResourceMaterial* meshResource = (ResourceMaterial*)App->resManager->Get(uid);
 	if (meshResource == nullptr) return nullptr;
 	if (!meshResource->IsLoadedToMemory())
 	{

@@ -23,13 +23,19 @@ class ResourceMaterial :
 	public Resource
 {
 public:
-	ResourceMaterial();
+	ResourceMaterial(unsigned uid);
+	ResourceMaterial(const ResourceTexture& resource);
 	~ResourceMaterial();
 
 	//bool LoadInMemory() override;
-	//void DeleteFromMemory() override;
-	//void Save(JSON_value &config) const override;
-	//void Load(const JSON_value &config) override;
+	void DeleteFromMemory() override;
+	void Save() const;
+	void Load(const char* materialfile);
+	void Reset(const ResourceMaterial& material);
+
+	ResourceTexture* GetTexture(TextureType type) const;
+	std::list<ResourceTexture*> GetTextures() const;
+	void SetUniforms(unsigned shader) const;
 
 public:
 	std::string name;
