@@ -96,6 +96,7 @@
     <ClInclude Include="ComponentLight.h" />
     <ClInclude Include="ComponentRenderer.h" />
     <ClInclude Include="ComponentTransform.h" />
+    <ClInclude Include="ComponentTransform2D.h" />
     <ClInclude Include="debugdraw.h" />
     <ClInclude Include="debug_draw.hpp" />
     <ClInclude Include="FileExplorer.h" />
@@ -204,6 +205,7 @@
     <ClCompile Include="ComponentLight.cpp" />
     <ClCompile Include="ComponentRenderer.cpp" />
     <ClCompile Include="ComponentTransform.cpp" />
+    <ClCompile Include="ComponentTransform2D.cpp" />
     <ClCompile Include="FileExplorer.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GUICreator.cpp" />
@@ -286,11 +288,13 @@
     <None Include="..\Game\Shaders\FragmentShaders\Gouraud.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\Phong.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\Skybox.fs" />
+    <None Include="..\Game\Shaders\FragmentShaders\UI.fs" />
     <None Include="..\Game\Shaders\VertexShaders\Default.vs" />
     <None Include="..\Game\Shaders\VertexShaders\Flat.vs" />
     <None Include="..\Game\Shaders\VertexShaders\Gouraud.vs" />
     <None Include="..\Game\Shaders\VertexShaders\Phong.vs" />
     <None Include="..\Game\Shaders\VertexShaders\Skybox.vs" />
+    <None Include="..\Game\Shaders\VertexShaders\UI.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

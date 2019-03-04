@@ -102,6 +102,7 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 			glBindFramebuffer(GL_FRAMEBUFFER, FBO);
 		}
 		App->renderer->Draw(*cam, current_width, current_height, isEditor);
+		
 		if (App->renderer->msaa)
 		{
 			glBindFramebuffer(GL_READ_FRAMEBUFFER, MSAAFBO);
