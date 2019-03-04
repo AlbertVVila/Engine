@@ -66,20 +66,12 @@ void ResourceMaterial::DeleteFromMemory()
 
 bool ResourceMaterial::LoadInMemory()
 {
-	Load(GetExportedFile());
-	++loaded;
-	return true;
-}
-
-void ResourceMaterial::Load(const char* materialfile)
-{
 	char* data = nullptr;
-	std::string materialName(materialfile);
-	App->fsystem->Load((MATERIALS + materialName + JSONEXT).c_str(), &data);
+	App->fsystem->Load((MATERIALS + exportedFileName + JSONEXT).c_str(), &data);
 	JSON *json = new JSON(data);
 	JSON_value *materialJSON = json->GetValue("material");
 
-	name = materialName;
+	name = exportedFileName;
 	diffuse_color = materialJSON->GetColor4("diffuseColor");
 	specular_color = materialJSON->GetColor3("specularColor");
 	emissive_color = materialJSON->GetColor3("emissiveColor");
@@ -118,6 +110,8 @@ void ResourceMaterial::Load(const char* materialfile)
 
 	RELEASE_ARRAY(data);
 	RELEASE(json);
+	++loaded;
+	return true;
 }
 
 void ResourceMaterial::Save() const

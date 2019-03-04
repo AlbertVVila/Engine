@@ -30,7 +30,6 @@ public:
 	bool LoadInMemory() override;
 	void DeleteFromMemory() override;
 	void Save() const;
-	void Load(const char* materialfile);
 	void Reset(const ResourceMaterial& material);
 
 	ResourceTexture* GetTexture(TextureType type) const;

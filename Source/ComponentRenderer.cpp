@@ -152,18 +152,7 @@ void ComponentRenderer::SetMaterial(const char * materialfile)
 			App->resManager->DeleteResource(material->GetUID());
 		}
 
-		ResourceMaterial* mat = (ResourceMaterial*)App->resManager->Get(materialfile);
-		if (mat == nullptr)
-		{
-			//material = new Material();
-			mat = (ResourceMaterial*)App->resManager->CreateNewResource(TYPE::MATERIAL);
-			material->Load(materialfile);
-		}
-		else
-		{
-			material = mat;
-		}
-		//App->resManager->AddMaterial(material);
+		ResourceMaterial* material = (ResourceMaterial*)App->resManager->Get(materialfile);
 	}
 	return;
 }
