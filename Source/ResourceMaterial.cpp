@@ -64,7 +64,7 @@ void ResourceMaterial::DeleteFromMemory()
 	}
 }
 
-void ResourceMaterial::Load(const char * materialfile)
+void ResourceMaterial::Load(const char* materialfile)
 {
 	char* data = nullptr;
 	std::string materialName(materialfile);

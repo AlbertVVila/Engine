@@ -47,6 +47,15 @@ bool ModuleResourceManager::Start()
 		res->SetExportedFile(name.c_str());
 		//res->exportedFile = written_file;
 	}
+	files.clear();
+	dirs.clear();
+	App->fsystem->ListFolderContent(MATERIALS, files, dirs);
+	for each (std::string file in files)
+	{
+		ResourceMaterial* res = (ResourceMaterial*)CreateNewResource(TYPE::MATERIAL);
+		res->SetExportedFile(App->fsystem->GetFilename(file.c_str()).c_str());
+		//res->exportedFile = written_file;
+	}
 	return true;
 }
 

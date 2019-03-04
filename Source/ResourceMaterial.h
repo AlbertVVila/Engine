@@ -24,7 +24,7 @@ class ResourceMaterial :
 {
 public:
 	ResourceMaterial(unsigned uid);
-	ResourceMaterial(const ResourceTexture& resource);
+	ResourceMaterial(const ResourceMaterial& resource);
 	~ResourceMaterial();
 
 	//bool LoadInMemory() override;
