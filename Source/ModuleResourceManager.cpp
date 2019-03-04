@@ -144,50 +144,9 @@ void ModuleResourceManager::DeleteMaterial(std::string filename)
 	}
 }
 
-/*Mesh * ModuleResourceManager::GetMesh(unsigned uid) const
+unsigned ModuleResourceManager::Find(const char* fileInAssets) const
 {
-	std::map<unsigned, std::pair<unsigned, Mesh*>>::const_iterator it = meshResources.find(uid);
-	if (it != meshResources.end())
-	{
-		return it->second.second;
-	}
-	return nullptr;
-}
-
-void ModuleResourceManager::AddMesh(Mesh * mesh)
-{
-	std::map<unsigned, std::pair<unsigned, Mesh*>>::iterator it = meshResources.find(mesh->UID);
-	if (it != meshResources.end())
-	{
-		it->second.first++;
-	}
-	else
-	{
-		meshResources.insert(std::pair<unsigned, std::pair<unsigned, Mesh*>>
-			(mesh->UID, std::pair<unsigned, Mesh*>(1, mesh)));
-	}
-}
-
-void ModuleResourceManager::DeleteMesh(unsigned uid)
-{
-	std::map<unsigned, std::pair<unsigned, Mesh*>>::iterator it = meshResources.find(uid);
-	if (it != meshResources.end())
-	{
-		if (it->second.first > 1)
-		{
-			it->second.first--;
-		}
-		else
-		{
-			RELEASE(it->second.second);
-			meshResources.erase(it);
-		}
-	}
-}*/
-
-unsigned ModuleResourceManager::Find(const char* fileInAssets)
-{
-	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
+	for (std::map<unsigned, Resource*>::const_iterator it = resources.begin(); it != resources.end(); ++it)
 	{
 		if (strcmp(it->second->GetExportedFile(), fileInAssets) == 0)
 		{
@@ -255,12 +214,55 @@ unsigned ModuleResourceManager::GenerateNewUID()
 	return App->scene->GetNewUID();
 }
 
-Resource * ModuleResourceManager::Get(unsigned uid)
+Resource* ModuleResourceManager::Get(unsigned uid) const
 {
-	std::map<unsigned, Resource*>::iterator it = resources.find(uid);
-	if (it != resources.end())
-		return it->second;
+	std::map<unsigned, Resource*>::const_iterator it = resources.find(uid);
+	if (it == resources.end())
+		return nullptr;
+
+	Resource* resource = it->second;
+	// Check if is already loaded in memory
+	if (!resource->IsLoadedToMemory())
+	{
+		// Load in memory
+		if (resource->LoadInMemory())
+			return resource;
+		else
+			return nullptr;
+	}
+	else
+	{
+		resource->SetReferences(resource->GetReferences() + 1);
+		return resource;
+	}
 	return nullptr;
+}
+
+Resource* ModuleResourceManager::Get(const char* file) const
+{
+	assert(file != NULL);
+
+	// Look for it on the resource list
+	unsigned uid = Find(file);
+	if (uid == 0)
+		return nullptr;
+
+	// Check if is already loaded in memory
+	Resource* resource = Get(uid);
+	if (resource == nullptr) return nullptr;
+	if (!resource->IsLoadedToMemory())
+	{
+		// Load in memory
+		if (resource->LoadInMemory())
+			return resource;
+		else
+			return nullptr;
+	}
+	else
+	{
+		resource->SetReferences(resource->GetReferences() + 1);
+		return resource;
+	}
 }
 
 bool ModuleResourceManager::DeleteResource(unsigned uid)
@@ -290,54 +292,4 @@ std::vector<Resource*> ModuleResourceManager::GetResourcesList()
 		resourcesList.push_back(it->second);
 	}
 	return resourcesList;
-}
-
-ResourceMesh* ModuleResourceManager::GetMesh(const char* file) const
-{
-	assert(file != NULL);
-
-	// Look for it on the resource list
-	unsigned uid = App->resManager->Find(file);
-	if (uid == 0)
-		return nullptr;
-
-	// Check if is already loaded in memory
-	ResourceMesh* meshResource = (ResourceMesh*)App->resManager->Get(uid);
-	if (meshResource == nullptr) return nullptr;
-	if (!meshResource->IsLoadedToMemory())
-	{
-		// Load in memory
-		if (meshResource->LoadInMemory())
-			return meshResource;
-		else
-			return nullptr;
-	}
-	else
-	{
-		meshResource->SetReferences(meshResource->GetReferences() + 1);
-		return meshResource;
-	}
-}
-
-ResourceMesh* ModuleResourceManager::GetMesh(unsigned uid) const
-{
-	if (uid == 0)
-		return nullptr;
-
-	// Check if is already loaded in memory
-	ResourceMesh* meshResource = (ResourceMesh*)App->resManager->Get(uid);
-	if (meshResource == nullptr) return nullptr;
-	if (!meshResource->IsLoadedToMemory())
-	{
-		// Load in memory
-		if (meshResource->LoadInMemory())
-			return meshResource;
-		else
-			return nullptr;
-	}
-	else
-	{
-		meshResource->SetReferences(meshResource->GetReferences() + 1);
-		return meshResource;
-	}
 }

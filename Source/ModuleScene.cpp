@@ -85,7 +85,7 @@ bool ModuleScene::Init(JSON * config)
 
 bool ModuleScene::Start()
 {
-	camera_notfound_texture = App->textures->GetTexture(NOCAMERA); 
+	camera_notfound_texture = (ResourceTexture*)App->resManager->Get(NOCAMERA);
 	if (defaultScene.size() > 0)
 	{
 		path = SCENES;
@@ -397,7 +397,7 @@ void ModuleScene::CreatePrimitive(const char * name, GameObject* parent, PRIMITI
 	//char *data = nullptr;
 	//App->fsystem->Load((MESHES + std::to_string(uid) + MESHEXTENSION).c_str(), &data);
 	//crenderer->UpdateMesh(data, uid);//Deallocates data
-	App->resManager->GetMesh(uid);
+	App->resManager->Get(uid);
 	crenderer->UpdateGameObject();
 	crenderer->SetMaterial(DEFAULTMAT);
 	//App->resManager->AddMesh(crenderer->mesh);
@@ -563,7 +563,7 @@ bool ModuleScene::AddScene(const char& scene, const char& path)
 void ModuleScene::ClearScene()
 {
 	CleanUp();
-	camera_notfound_texture = App->textures->GetTexture(NOCAMERA);
+	camera_notfound_texture = (ResourceTexture*)App->resManager->Get(NOCAMERA);
 	name.clear();	
 	staticGOs.clear();
 	dynamicGOs.clear();
