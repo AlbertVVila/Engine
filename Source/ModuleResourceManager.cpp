@@ -203,11 +203,14 @@ unsigned ModuleResourceManager::ImportFile(const char* newFileInAssets, const ch
 	bool success = false; 
 	std::string importedFilePath(filePath);
 	Resource* resource = CreateNewResource(type);
+	std::string assetPath(filePath);
+	assetPath += newFileInAssets;
 
 	switch (type) 
 	{
 	case TYPE::TEXTURE: 
-		success = App->textures->ImportImage(newFileInAssets, filePath, (ResourceTexture*)resource);
+		success = App->textures->ImportImage(newFileInAssets, filePath, written_file, (ResourceTexture*)resource);
+		App->textures->SaveMetafile(assetPath.c_str(), (ResourceTexture*)resource);
 		break;
 	case TYPE::MESH:	
 		success = App->fsystem->importer.ImportFBX(newFileInAssets, filePath);

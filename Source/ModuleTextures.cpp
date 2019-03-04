@@ -3,6 +3,9 @@
 #include "ModuleFileSystem.h"
 #include "ModuleResourceManager.h" 
 #include "ResourceTexture.h"
+#include "rapidjson/document.h"
+#include "rapidjson/filewritestream.h"
+#include "rapidjson/prettywriter.h"
 
 #include "GL/glew.h"
 #include "IL/ilut.h"
@@ -184,3 +187,37 @@ bool ModuleTextures::ImportImage(const char* file, const char* folder, ResourceT
 	return success;
 }
 
+void ModuleTextures::SaveMetafile(const char* file, ResourceTexture* resource)
+{
+	/*std::string c = "guid: " + std::to_string(resource->GetUID()) + "\n";
+	c += "width: " + std::to_string(resource->width) + "\n";
+	c += "heigth: " + std::to_string(resource->height) + "\n";
+	c += "depth: " + std::to_string(resource->depth) + "\n";
+	c += "mips: " + std::to_string(resource->mips) + "\n";
+	c += "format: " + std::to_string(resource->format) + "\n";
+	filepath = App->fsystem->RemoveExtension(filepath);
+	filepath += ".meta";
+	App->fsystem->Save(filepath.c_str(), c.c_str(), c.size());*/
+	std::string filepath(App->fsystem->RemoveExtension(file));
+	//filepath += App->fsystem->RemoveExtension(file);
+	//filepath += TEXTUREEXT;
+
+	JSON *json = new JSON();
+	rapidjson::Document* meta = new rapidjson::Document();
+	rapidjson::Document::AllocatorType& alloc = meta->GetAllocator();
+	filepath += ".meta";
+	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
+	FILE* fp = fopen(filepath.c_str(), "wb");
+	char writeBuffer[65536];
+	rapidjson::FileWriteStream* os = new rapidjson::FileWriteStream(fp, writeBuffer, sizeof(writeBuffer));
+	rapidjson::PrettyWriter<rapidjson::FileWriteStream> writer(*os);
+	meta->SetObject();
+	meta->AddMember("GUID", resource->GetUID(), alloc);
+	meta->AddMember("height", resource->height, alloc);
+	meta->AddMember("width", resource->width, alloc);
+	meta->AddMember("depth", resource->depth, alloc);
+	meta->AddMember("mips", resource->mips, alloc);
+	meta->AddMember("format", resource->format, alloc);
+	meta->Accept(writer);
+	fclose(fp);
+}

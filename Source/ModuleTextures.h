@@ -30,7 +30,8 @@ public:
 	void DrawGUI() override;
 	ResourceTexture * GetTexture(const char* path) const;
 	unsigned LoadCubeMap(const std::string faces[]) const;
-	bool ImportImage(const char* file, const char* folder, ResourceTexture* resource) const;
+	bool ImportImage(const char* file, const char* folder, std::string& exportedFile, ResourceTexture* resource) const;
+	void SaveMetafile(const char* file, ResourceTexture * resource);
 
 public:
 	FILTERTYPE filter_type = FILTERTYPE::LINEAR;
