@@ -5,6 +5,7 @@
 
 #include <map>
 #include <list>
+#include <vector>
 
 struct Shader;
 class Material;
@@ -49,7 +50,7 @@ public:
 	Resource* CreateNewResource(TYPE type, unsigned forceUid = 0);
 	bool DeleteResource(unsigned uid);	// If references < 1 delete it from memory
 
-	std::list<Resource*> GetResourcesList();
+	std::vector<Resource*> GetResourcesList();
 
 	// Meshes
 	ResourceMesh* GetMesh(const char* file) const;

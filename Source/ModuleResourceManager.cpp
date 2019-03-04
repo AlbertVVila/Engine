@@ -282,9 +282,9 @@ bool ModuleResourceManager::DeleteResource(unsigned uid)
 	return false;
 }
 
-std::list<Resource*> ModuleResourceManager::GetResourcesList()
+std::vector<Resource*> ModuleResourceManager::GetResourcesList()
 {
-	std::list<Resource*> resourcesList;
+	std::vector<Resource*> resourcesList;
 	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
 	{
 		resourcesList.push_back(it->second);
