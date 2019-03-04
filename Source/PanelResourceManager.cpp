@@ -12,17 +12,42 @@
 #define MAX_FILE 128
 #define resourcePopup "Resource"
 
-// Shorting functions
+#pragma region sorting functions
 bool sortByUIDAscending(const Resource* a, const Resource* b) { return a->GetUID() < b->GetUID(); };
 bool sortByUIDDescending(const Resource* a, const Resource* b) { return a->GetUID() > b->GetUID(); };
-bool sortByFileAscending(const Resource* a, const Resource* b) { return a->GetFile() < b->GetFile(); };
-bool sortByFileDescending(const Resource* a, const Resource* b) { return a->GetFile() > b->GetFile(); };
-bool sortByExportedFileAscending(const Resource* a, const Resource* b) { return a->GetExportedFile() < b->GetExportedFile(); };
-bool sortByExportedFileDescending(const Resource* a, const Resource* b) { return a->GetExportedFile() > b->GetExportedFile(); };
+bool sortByFileAscending(const Resource* a, const Resource* b)
+{
+	std::string stringA(a->GetFile());
+	std::string stringB(b->GetFile());
+	return stringA < stringB;
+};
+
+bool sortByFileDescending(const Resource* a, const Resource* b)
+{
+	std::string stringA(a->GetFile());
+	std::string stringB(b->GetFile());
+	return stringA > stringB;
+};
+
+bool sortByExportedFileAscending(const Resource* a, const Resource* b)
+{
+	std::string stringA(a->GetExportedFile());
+	std::string stringB(b->GetExportedFile());
+	return stringA < stringB;
+};
+
+bool sortByExportedFileDescending(const Resource* a, const Resource* b)
+{
+	std::string stringA(a->GetExportedFile());
+	std::string stringB(b->GetExportedFile());
+	return stringA > stringB;
+};
+
 bool sortByReferenceAscending(const Resource* a, const Resource* b) { return a->GetReferences() < b->GetReferences(); };
 bool sortByReferenceDescending(const Resource* a, const Resource* b) { return a->GetReferences() > b->GetReferences(); };
 bool sortByTypeAscending(const Resource* a, const Resource* b) { return a->GetType() < b->GetType(); };
 bool sortByTypeDescending(const Resource* a, const Resource* b) { return a->GetType() > b->GetType(); };
+#pragma endregion
 
 PanelResourceManager::PanelResourceManager()
 {
