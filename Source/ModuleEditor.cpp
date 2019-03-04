@@ -203,6 +203,7 @@ update_status ModuleEditor::Update(float dt)
 						sprintf_s(fileExplorer->title, "Save Scene");
 						fileExplorer->openFileExplorer = true;
 					}
+					materialEditor->Save();
 				}
 				else
 				{
