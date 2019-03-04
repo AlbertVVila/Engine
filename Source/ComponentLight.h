@@ -33,7 +33,6 @@ public:
 	void Save(JSON_value *value) const override;
 	void CalculateGuizmos();
 	void DrawDebug() const;
-	
 
 public:
 	LightType lightType = LightType::POINT;

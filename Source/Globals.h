@@ -3,7 +3,13 @@
 
 #define LOG(format, ...) log(__FILE__, __LINE__, format, __VA_ARGS__);
 
-void log(const char file[], int line, const char* format, ...);
+#ifdef ENGINE_EXPORTS
+#define ENGINE_API __declspec( dllexport )
+#else
+#define ENGINE_API __declspec( dllimport )
+#endif
+
+ENGINE_API void log(const char file[], int line, const char* format, ...);
 
 enum update_status
 {
@@ -38,6 +44,6 @@ enum update_status
 // Configuration -----------
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 720
-#define TITLE "REAL ENGINE"
+#define TITLE "FRACTAL ENGINE"
 
 #endif  __Globals_h__

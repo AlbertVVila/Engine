@@ -11,7 +11,7 @@ class ComponentLight;
 class AABBTreeNode;
 enum class ComponentType;
 struct Texture;
-struct JSON_value;
+class JSON_value;
 
 class GameObject
 {
@@ -59,8 +59,8 @@ public:
 	unsigned UUID = 0;
 	unsigned parentUUID = 0; //only set in Save/Load scene TODO:update on parent change
 	bool isStatic = false;
-	bool moved_flag = false;
-	bool copy_flag = false;
+	bool movedFlag = false;
+	bool copyFlag = false;
 	bool delete_flag = false;
 	bool drawBBox = false;
 	AABB bbox;

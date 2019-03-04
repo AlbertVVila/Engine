@@ -17,12 +17,12 @@
 #include "AABBTree.h"
 
 
-ComponentTransform::ComponentTransform(GameObject* gameobject, const float4x4 &transform) : Component(gameobject, ComponentType::Transform)
+ComponentTransform::ComponentTransform(GameObject* gameobject, const math::float4x4 &transform) : Component(gameobject, ComponentType::Transform)
 {
 	AddTransform(transform);
 }
 
-ComponentTransform::ComponentTransform(const ComponentTransform & component) : Component(component)
+ComponentTransform::ComponentTransform(const ComponentTransform& component) : Component(component)
 {
 	position = component.position;
 	rotation = component.rotation;
@@ -46,7 +46,7 @@ Component * ComponentTransform::Clone() const
 	return new ComponentTransform(*this);
 }
 
-void ComponentTransform::AddTransform(const float4x4 & transform)
+void ComponentTransform::AddTransform(const math::float4x4& transform)
 {
 	transform.Decompose(position, rotation, scale);
 	RotationToEuler();
@@ -88,8 +88,7 @@ void ComponentTransform::DrawProperties()
 		if (old_position != position || old_euler != eulerRotation || old_scale != scale)
 		{
 			UpdateTransform();
-			gameobject->moved_flag = true;
-			gameobject->UpdateBBox();
+			gameobject->movedFlag = true;
 		}
 	}
 }
@@ -98,7 +97,7 @@ void ComponentTransform::UpdateTransform()
 {
 	UpdateOldTransform();
 	global = global * local.Inverted();
-	local = float4x4::FromTRS(position, rotation, scale);
+	local = math::float4x4::FromTRS(position, rotation, scale);
 	global = global * local;
 
 	front = -global.Col3(2);
@@ -155,7 +154,7 @@ void ComponentTransform::SetLocalToWorld()
 	RotationToEuler();
 }
 
-void ComponentTransform::SetWorldToLocal(const float4x4 & newparentGlobalMatrix)
+void ComponentTransform::SetWorldToLocal(const math::float4x4& newparentGlobalMatrix)
 {
 	local = newparentGlobalMatrix.Inverted() * local;
 	local.Decompose(position, rotation, scale);
@@ -165,7 +164,7 @@ void ComponentTransform::SetWorldToLocal(const float4x4 & newparentGlobalMatrix)
 	RotationToEuler();
 }
 
-void ComponentTransform::SetGlobalTransform(const float4x4 & newglobal, const float4x4 &parentglobal)
+void ComponentTransform::SetGlobalTransform(const math::float4x4& newglobal, const math::float4x4&parentglobal)
 {
 	global = newglobal;
 	local = parentglobal.Inverted() * global;
@@ -203,12 +202,24 @@ void ComponentTransform::SetGlobalTransform(const float4x4 & newglobal, const fl
 	}
 }
 
-float3 ComponentTransform::GetGlobalPosition()
+void ComponentTransform::SetPosition(const math::float3 & newPosition)
+{
+	position = newPosition;
+	gameobject->movedFlag = true;
+	UpdateTransform();
+}
+
+math::float3 ComponentTransform::GetPosition()
+{
+	return position;
+}
+
+math::float3 ComponentTransform::GetGlobalPosition()
 {
 	return global.Col3(3);
 }
 
-void ComponentTransform::Save(JSON_value * value) const
+void ComponentTransform::Save(JSON_value* value) const
 {
 	Component::Save(value);
 	value->AddFloat3("Position", position);
@@ -218,14 +229,14 @@ void ComponentTransform::Save(JSON_value * value) const
 	value->AddFloat4x4("Global", global);
 }
 
-void ComponentTransform::Load(const JSON_value & value)
+void ComponentTransform::Load(JSON_value* value)
 {
 	Component::Load(value);
-	position = value.GetFloat3("Position");
-	rotation = value.GetQuat("Rotation");
-	eulerRotation = value.GetFloat3("Euler");
-	scale = value.GetFloat3("Scale");
-	global = value.GetFloat4x4("Global");
-	local = float4x4::FromTRS(position, rotation, scale);
+	position = value->GetFloat3("Position");
+	rotation = value->GetQuat("Rotation");
+	eulerRotation = value->GetFloat3("Euler");
+	scale = value->GetFloat3("Scale");
+	global = value->GetFloat4x4("Global");
+	local = math::float4x4::FromTRS(position, rotation, scale);
 	RotationToEuler();
 }

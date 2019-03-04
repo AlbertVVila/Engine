@@ -19,6 +19,7 @@
 
 #include "MathBuildConfig.h"
 #include "Math/MathNamespace.h"
+#include "../../Globals.h"
 
 // The CONST_WIN32 is a #define which resolves to 'const' on Windows, and null on other
 // platforms. This #define is used on Windows to detect accidental programming errors

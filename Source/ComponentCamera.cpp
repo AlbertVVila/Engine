@@ -11,7 +11,7 @@
 #include "JSON.h"
 #include "GL/glew.h"
 #include "Math/MathFunc.h"
-#include "Imgui/imgui.h"
+#include "imgui.h"
 #include "Imguizmo.h"
 #include "Geometry/Frustum.h"
 
@@ -260,7 +260,7 @@ void ComponentCamera::DrawProperties()
 	}
 }
 
-void ComponentCamera::Save(JSON_value * value) const
+void ComponentCamera::Save(JSON_value* value) const
 {
 	Component::Save(value);
 	value->AddFloat("MovementSpeed", movementSpeed);
@@ -275,19 +275,19 @@ void ComponentCamera::Save(JSON_value * value) const
 	value->AddFloat3("Up", frustum->up);
 }
 
-void ComponentCamera::Load(const JSON_value & value)
+void ComponentCamera::Load(JSON_value* value)
 {
 	Component::Load(value);
-	movementSpeed = value.GetFloat("MovementSpeed");
-	rotationSpeed = value.GetFloat("RotationSpeed");
-	zoomSpeed = value.GetFloat("ZoomSpeed");
-	frustum->nearPlaneDistance = value.GetFloat("Znear");
-	frustum->farPlaneDistance = value.GetFloat("Zfar");
-	frustum->verticalFov = value.GetFloat("vFOV");
-	frustum->horizontalFov = value.GetFloat("hFOV");
-	frustum->pos = value.GetFloat3("Position");
-	frustum->front = value.GetFloat3("Front");
-	frustum->up = value.GetFloat3("Up");
+	movementSpeed = value->GetFloat("MovementSpeed");
+	rotationSpeed = value->GetFloat("RotationSpeed");
+	zoomSpeed = value->GetFloat("ZoomSpeed");
+	frustum->nearPlaneDistance = value->GetFloat("Znear");
+	frustum->farPlaneDistance = value->GetFloat("Zfar");
+	frustum->verticalFov = value->GetFloat("vFOV");
+	frustum->horizontalFov = value->GetFloat("hFOV");
+	frustum->pos = value->GetFloat3("Position");
+	frustum->front = value->GetFloat3("Front");
+	frustum->up = value->GetFloat3("Up");
 }
 
 float4x4 ComponentCamera::GetViewMatrix() const

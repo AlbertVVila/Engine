@@ -20,6 +20,7 @@ ModuleFileSystem::ModuleFileSystem()
 	PHYSFS_mount(LIBRARY, nullptr, 1);
 	PHYSFS_mount(ASSETS, nullptr, 1);
 	PHYSFS_mount(SHADERS, nullptr, 1);
+	PHYSFS_mount(SCRIPTS, nullptr, 1);
 
 	if (!Exists(ASSETS))
 		PHYSFS_mkdir(ASSETS);
@@ -272,7 +273,7 @@ void ModuleFileSystem::WatchFolder(const char * folder, const std::set<std::stri
 			else
 			{
 				FILETYPE type = GetFileType(GetExtension(file));
-				if (type == FILETYPE::TEXTURE)
+				if (type == FILETYPE::TEXTURE) // PNG, TIF, LO QUE SEA	
 				{
 					std::set<std::string>::iterator it = textures.find(RemoveExtension(file));
 					if (it == textures.end())
@@ -280,7 +281,7 @@ void ModuleFileSystem::WatchFolder(const char * folder, const std::set<std::stri
 						filesToImport.push_back(std::pair<std::string, std::string>(file, current_folder));
 					}
 				}
-				else if (type == FILETYPE::MODEL)
+				else if (type == FILETYPE::MODEL) //FBX
 				{
 					std::set<std::string>::iterator it = models.find(RemoveExtension(file));
 					if (it == models.end())
@@ -333,6 +334,11 @@ FILETYPE ModuleFileSystem::GetFileType(std::string extension) const
 		return FILETYPE::MESH;
 	}
 	return FILETYPE::SCENE;
+}
+
+int ModuleFileSystem::GetModTime(const char * file) const
+{
+	return PHYSFS_getLastModTime(file);
 }
 
 std::string ModuleFileSystem::GetExtension(std::string filename) const
