@@ -15,7 +15,6 @@
 #include "ComponentCamera.h"
 #include "ComponentRenderer.h"
 #include "ComponentTransform.h"
-#include "ComponentBone.h"
 
 #include "Material.h"
 #include "Mesh.h"
@@ -159,6 +158,31 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 
 	if (isEditor)
 	{
+		if (App->scene->selected != nullptr && App->scene->selected->isBoneRoot)
+		{
+			std::stack<GameObject*> S;
+			S.push(App->scene->selected);
+			while (!S.empty())
+			{
+				GameObject* node = S.top();S.pop();
+				if (node->parent->transform != nullptr)
+				{
+					math::float3 childPosition;
+					math::float3 childScale;
+					math::Quat childRotation;
+
+					node->GetGlobalTransform().Decompose(childPosition, childRotation, childScale);
+
+					float3 position = node->parent->transform->GetGlobalPosition();
+					dd::line(position, childPosition, dd::colors::Red);
+				}
+				
+				for (GameObject* go : node->children)
+				{
+					S.push(go);
+				}
+			}
+		}
 		if (App->renderer->quadtree_debug)
 		{
 			quadtree->Draw();
@@ -208,15 +232,6 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 	{
 		go.DrawBBox();
 	}
-
-	ComponentBone* cBone = (ComponentBone*)go.GetComponent(ComponentType::Bone);
-
-	if (App->renderer->boneDebug && cBone != nullptr && isEditor)
-	{
-		cBone->DrawDebug();
-	}
-
-	
 
 	ComponentRenderer* crenderer = (ComponentRenderer*)go.GetComponent(ComponentType::Renderer);
 	if (crenderer == nullptr || !crenderer->enabled || crenderer->material == nullptr) return;

@@ -40,6 +40,7 @@ public:
 	unsigned numVertices = 0;
 	int* indices = nullptr;
 	float* vertices = nullptr;
+
 };
 
 #endif

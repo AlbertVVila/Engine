@@ -240,7 +240,7 @@
     <ClCompile Include="Animation.cpp">
       <Filter>Resources\Animation</Filter>
     </ClCompile>
-    <ClCompile Include="ComponentBone.cpp">
+    <ClCompile Include="ComponentAnimation.cpp">
       <Filter>Component</Filter>
     </ClCompile>
   </ItemGroup>
@@ -558,7 +558,7 @@
     <ClInclude Include="Animation.h">
       <Filter>Resources\Animation</Filter>
     </ClInclude>
-    <ClInclude Include="ComponentBone.h">
+    <ClInclude Include="ComponentAnimation.h">
       <Filter>Component</Filter>
     </ClInclude>
   </ItemGroup>

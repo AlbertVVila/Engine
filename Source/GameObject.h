@@ -58,6 +58,7 @@ public:
 	unsigned UUID = 0;
 	unsigned parentUUID = 0; //only set in Save/Load scene TODO:update on parent change
 	bool isStatic = false;
+	bool isBoneRoot = false;
 	bool moved_flag = false;
 	bool copy_flag = false;
 	bool delete_flag = false;

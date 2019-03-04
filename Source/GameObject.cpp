@@ -15,7 +15,7 @@
 #include "ComponentCamera.h"
 #include "ComponentLight.h"
 #include "ComponentRenderer.h"
-#include "ComponentBone.h"
+#include "ComponentAnimation.h"
 
 #include "GUICreator.h"
 #include "Material.h"
@@ -195,8 +195,8 @@ Component * GameObject::CreateComponent(ComponentType type)
 			App->scene->maincamera->isMainCamera = true;
 		}
 		break;
-	case ComponentType::Bone:
-		component = new ComponentBone(this);
+	case ComponentType::Animation:
+		component = new ComponentAnimation(this);
 		break;
 	default:
 		break;
@@ -508,7 +508,8 @@ void GameObject::Save(JSON_value *gameobjects) const
 		gameobject->AddUint("UID", UUID);
 		gameobject->AddUint("ParentUID", parent->UUID);
 		gameobject->AddString("Name", name.c_str());
-		gameobject->AddUint("Static", isStatic);
+		gameobject->AddUint("isStatic", isStatic);
+		gameobject->AddUint("isBoneRoot", isBoneRoot);
 
 		JSON_value *componentsJSON = gameobject->CreateValue(rapidjson::kArrayType);
 		for (auto &component : components)
@@ -533,7 +534,8 @@ void GameObject::Load(JSON_value *value)
 	UUID = value->GetUint("UID");
 	parentUUID = value->GetUint("ParentUID");
 	name = value->GetString("Name");
-	isStatic = value->GetUint("Static");
+	isStatic = value->GetUint("isStatic");
+	isBoneRoot = value->GetUint("isBoneRoot");
 
 	JSON_value* componentsJSON = value->GetValue("Components");
 	for (unsigned i = 0; i < componentsJSON->Size(); i++)

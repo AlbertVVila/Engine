@@ -10,7 +10,7 @@ enum class ComponentType
 	Renderer,
 	Camera,
 	Light,
-	Bone
+	Animation
 };
 
 class Component
