@@ -25,4 +25,5 @@ void PanelBrowser::Draw()
 		ImGui::End();
 		return;
 	}
+	ImGui::End();
 }
