@@ -25,10 +25,10 @@ private:
 	const char* shaderFile = "UI";
 	Shader* shader = nullptr;
 
-	unsigned IBO = 0;
+	unsigned VAO = 0;
 	unsigned VBO = 0;
-	unsigned UBO = 0;
-	
+	unsigned EBO = 0;
+
 	Texture* texture = nullptr;
 };
 
