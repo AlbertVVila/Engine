@@ -37,6 +37,7 @@ private:
 	bool openMeshWindow = false;
 
 	SORTING sortList = SORTING::REFERENCES;
+	bool descending = false;
 	std::vector<Resource*> resourcesList;
 };
 

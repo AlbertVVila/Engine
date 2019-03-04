@@ -13,11 +13,16 @@
 #define resourcePopup "Resource"
 
 // Shorting functions
-bool sortByUID(const Resource* a, const Resource* b) { return a->GetUID() > b->GetUID(); };
-bool sortByFile(const Resource* a, const Resource* b) { return a->GetFile() > b->GetFile(); };
-bool sortByExportedFile(const Resource* a, const Resource* b) { return a->GetExportedFile() > b->GetExportedFile(); };
-bool sortByReference(const Resource* a, const Resource* b) { return a->GetReferences() > b->GetReferences(); };
-bool sortByType(const Resource* a, const Resource* b) { return a->GetType() > b->GetType(); };
+bool sortByUIDAscending(const Resource* a, const Resource* b) { return a->GetUID() < b->GetUID(); };
+bool sortByUIDDescending(const Resource* a, const Resource* b) { return a->GetUID() > b->GetUID(); };
+bool sortByFileAscending(const Resource* a, const Resource* b) { return a->GetFile() < b->GetFile(); };
+bool sortByFileDescending(const Resource* a, const Resource* b) { return a->GetFile() > b->GetFile(); };
+bool sortByExportedFileAscending(const Resource* a, const Resource* b) { return a->GetExportedFile() < b->GetExportedFile(); };
+bool sortByExportedFileDescending(const Resource* a, const Resource* b) { return a->GetExportedFile() > b->GetExportedFile(); };
+bool sortByReferenceAscending(const Resource* a, const Resource* b) { return a->GetReferences() < b->GetReferences(); };
+bool sortByReferenceDescending(const Resource* a, const Resource* b) { return a->GetReferences() > b->GetReferences(); };
+bool sortByTypeAscending(const Resource* a, const Resource* b) { return a->GetType() < b->GetType(); };
+bool sortByTypeDescending(const Resource* a, const Resource* b) { return a->GetType() > b->GetType(); };
 
 PanelResourceManager::PanelResourceManager()
 {
@@ -41,12 +46,12 @@ void PanelResourceManager::Draw()
 	ImGui::Columns(6);
 	// Table references: UID | File | Exported File | References | Type |
 	ImGui::PushStyleColor(ImGuiCol_Text, (ImVec4)ImColor::HSV(0.0f, 1.0f, 1.0f));
-	if (ImGui::Selectable("UID"))			{sortList = SORTING::UID;}			ImGui::SameLine(); ImGui::NextColumn();
-	if (ImGui::Selectable("File"))			{sortList = SORTING::FILE;}			ImGui::SameLine(); ImGui::NextColumn();
-	if (ImGui::Selectable("Exported File"))	{sortList = SORTING::EXPORTED;}		ImGui::SameLine(); ImGui::NextColumn();
-	if (ImGui::Selectable("References"))	{sortList = SORTING::REFERENCES;}	ImGui::SameLine(); ImGui::NextColumn();
-	if (ImGui::Selectable("Type"))			{sortList = SORTING::TYPE;}			ImGui::SameLine(); ImGui::NextColumn();
-	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "");						ImGui::NextColumn(); ImGui::Separator();
+	if (ImGui::Selectable("UID"))			{ if (sortList == SORTING::UID) descending = !descending; sortList = SORTING::UID; }				ImGui::SameLine(); ImGui::NextColumn();
+	if (ImGui::Selectable("File"))			{ if (sortList == SORTING::FILE) descending = !descending; sortList = SORTING::FILE;}				ImGui::SameLine(); ImGui::NextColumn();
+	if (ImGui::Selectable("Exported File"))	{ if (sortList == SORTING::EXPORTED) descending = !descending; sortList = SORTING::EXPORTED;}		ImGui::SameLine(); ImGui::NextColumn();
+	if (ImGui::Selectable("References"))	{ if (sortList == SORTING::REFERENCES) descending = !descending; sortList = SORTING::REFERENCES;}	ImGui::SameLine(); ImGui::NextColumn();
+	if (ImGui::Selectable("Type"))			{ if (sortList == SORTING::TYPE) descending = !descending; sortList = SORTING::TYPE;}				ImGui::SameLine(); ImGui::NextColumn();
+	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "");																						ImGui::NextColumn(); ImGui::Separator();
 	ImGui::PopStyleColor(1);
 
 	for each (auto resource in resourcesList)
@@ -134,19 +139,24 @@ void PanelResourceManager::UpdateResourcesList()
 	case SORTING::NONE:
 		break;
 	case SORTING::UID:
-		std::sort(resourcesList.begin(), resourcesList.end(), sortByUID);
+		if(!descending) std::sort(resourcesList.begin(), resourcesList.end(), sortByUIDAscending);
+		else 			std::sort(resourcesList.begin(), resourcesList.end(), sortByUIDDescending);
 		break;
 	case SORTING::FILE:
-		std::sort(resourcesList.begin(), resourcesList.end(), sortByFile);
+		if (!descending) std::sort(resourcesList.begin(), resourcesList.end(), sortByFileAscending);
+		else			 std::sort(resourcesList.begin(), resourcesList.end(), sortByFileDescending);
 		break;
 	case SORTING::EXPORTED:
-		std::sort(resourcesList.begin(), resourcesList.end(), sortByExportedFile);
+		if (!descending) std::sort(resourcesList.begin(), resourcesList.end(), sortByExportedFileAscending);
+		else			 std::sort(resourcesList.begin(), resourcesList.end(), sortByExportedFileDescending);
 		break;
 	case SORTING::REFERENCES:
-		std::sort(resourcesList.begin(), resourcesList.end(), sortByReference);
+		if (!descending) std::sort(resourcesList.begin(), resourcesList.end(), sortByReferenceAscending);
+		else			 std::sort(resourcesList.begin(), resourcesList.end(), sortByReferenceDescending);
 		break;
 	case SORTING::TYPE:
-		std::sort(resourcesList.begin(), resourcesList.end(), sortByType);
+		if (!descending) std::sort(resourcesList.begin(), resourcesList.end(), sortByTypeAscending);
+		else			 std::sort(resourcesList.begin(), resourcesList.end(), sortByTypeDescending);
 		break;
 	}
 }
