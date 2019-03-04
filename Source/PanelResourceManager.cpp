@@ -27,6 +27,8 @@ void PanelResourceManager::Draw()
 		ImGui::End();
 		return;
 	}
+	if(auxResource == nullptr)
+		UpdateResourcesList();
 
 	ImGui::Columns(6);
 	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "UID"); ImGui::SameLine(); ImGui::NextColumn();
@@ -36,7 +38,7 @@ void PanelResourceManager::Draw()
 	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Type"); ImGui::SameLine(); ImGui::NextColumn();
 	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), ""); ImGui::NextColumn(); ImGui::Separator();
 
-	for each (auto resource in App->resManager->GetResourcesList())
+	for each (auto resource in resourcesList)
 	{
 		unsigned uid = resource->GetUID();
 		ImGui::PushID(uid);
@@ -109,6 +111,11 @@ void PanelResourceManager::Draw()
 	if (openMeshWindow)
 		DrawResourceMesh();
 	ImGui::End();
+}
+
+void PanelResourceManager::UpdateResourcesList()
+{
+	resourcesList = App->resManager->GetResourcesList();
 }
 
 void PanelResourceManager::OpenResourceEditor()

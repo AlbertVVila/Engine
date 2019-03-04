@@ -2,6 +2,7 @@
 #define __PanelResourceManager_h__
 
 #include "Panel.h"
+#include <vector>
 
 class Resource;
 class ResourceTexture;
@@ -15,6 +16,7 @@ public:
 	~PanelResourceManager();
 
 	void Draw() override;
+	void UpdateResourcesList();
 
 private:
 	void OpenResourceEditor();
@@ -31,6 +33,8 @@ private:
 	bool openEditor = false;
 	bool openTextureWindow = false;
 	bool openMeshWindow = false;
+
+	std::vector<Resource*> resourcesList;
 };
 
 #endif __PanelResourceManager_h__
