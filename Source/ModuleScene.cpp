@@ -171,6 +171,9 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 				light->DrawDebugLight();
 			}
 		}
+
+
+
 	}
 	Frustum camFrustum = frustum;
 	if (maincamera != nullptr && App->renderer->useMainCameraFrustum)

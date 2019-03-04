@@ -17,6 +17,7 @@
 #include "Animation.h"
 
 #include <assert.h>
+#include "Math/float4x4.h"
 #include "assimp/cimport.h"
 #include "assimp/postprocess.h"
 #include "assimp/scene.h"
@@ -147,7 +148,11 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file,
 		}
 	}
 
-	ProcessNode(meshMap, aiscene.mRootNode, &aiscene, bonesGO, meshesGO, boneNames);
+	math::float4x4 transform = math::float4x4::identity;
+
+	transform.FromTRS(math::float3::zero, math::Quat::identity, math::float3::one);
+
+	ProcessNode(meshMap, aiscene.mRootNode, &aiscene, bonesGO, meshesGO, boneNames, transform);
 
 	//-----------------------------ANIMATIONS---------------------------------------------------
 	std::map<unsigned, unsigned> animationMap;
@@ -432,19 +437,34 @@ unsigned FileImporter::GetSingleBoneSize(const aiBone& bone) const
 }
 
 void FileImporter::ProcessNode(const std::map<unsigned, unsigned>& meshmap,
-	const aiNode* node, const aiScene* scene, GameObject* boneParent, GameObject* meshParent, std::vector<std::string*>* boneNames)
+	const aiNode* node, const aiScene* scene, GameObject* boneParent, GameObject* meshParent, std::vector<std::string*>* boneNames, math::float4x4 parentTransform)
 {
 	assert(node != nullptr);
 	if (node == nullptr) return;
 
-	GameObject* boneGO = App->scene->CreateGameObject(node->mName.C_Str(), boneParent);
-
 	aiMatrix4x4 mBone = node->mTransformation;
-	math::float4x4 bTransform(mBone.a1, mBone.a2, mBone.a3, mBone.a4, mBone.b1, mBone.b2, mBone.b3, mBone.b4, mBone.c1, mBone.c2, mBone.c3, mBone.c4, mBone.d1, mBone.d2, mBone.d3, mBone.d4);
-	ComponentTransform* tBone = (ComponentTransform*)boneGO->CreateComponent(ComponentType::Transform);
-	tBone->AddTransform(bTransform);
+	math::float4x4 bTransform(mBone.a1, mBone.a2, mBone.a3, mBone.a4, mBone.b1, mBone.b2, mBone.b3, mBone.b4,
+		mBone.c1, mBone.c2, mBone.c3, mBone.c4, mBone.d1, mBone.d2, mBone.d3, mBone.d4);
 
-	//GameObject* boneGO = nullptr;
+
+	math::float3 position;
+	math::float3 scale;
+	math::Quat rotation;
+	bTransform.Decompose(position, rotation, scale);
+
+	math::float3 parentPosition;
+	math::float3 parentScale;
+	math::Quat parentRotation;
+	parentTransform.Decompose(parentPosition, parentRotation, parentScale);
+
+	math::Quat sumQuat = rotation * parentRotation;
+
+	math::float4x4 newTransform;
+
+	math::float3 newPosition = { position.x + parentPosition.x, position.y + parentPosition.y, position.z + parentPosition.z };
+	newTransform.FromTRS(newPosition, sumQuat, scale.Mul(parentScale));
+
+	GameObject* boneGO = nullptr;
 	GameObject* meshGO = nullptr;
 
 	////comparar nombre node con array de bones, si concuerda generamos GO, si no a casa
@@ -453,20 +473,14 @@ void FileImporter::ProcessNode(const std::map<unsigned, unsigned>& meshmap,
 	{
 		if (strcmp(node->mName.C_Str(), (*boneName)->c_str() ) == 0) 
 		{
-			//boneGO = App->scene->CreateGameObject(node->mName.C_Str(), boneParent); //Creating GO inside the conditional now
+			boneGO = App->scene->CreateGameObject(node->mName.C_Str(), boneParent); //Creating GO inside the conditional now
 
-			//aiMatrix4x4 mBone = node->mTransformation;
-			//math::float4x4 bTransform(mBone.a1, mBone.a2, mBone.a3, mBone.a4, mBone.b1, mBone.b2, mBone.b3, mBone.b4, mBone.c1, mBone.c2, mBone.c3, mBone.c4, mBone.d1, mBone.d2, mBone.d3, mBone.d4);
-			//ComponentTransform* tBone = (ComponentTransform*)boneGO->CreateComponent(ComponentType::Transform);
-			//tBone->AddTransform(bTransform);
-			//break;
-
-		
+			ComponentTransform* tBone = (ComponentTransform*)boneGO->CreateComponent(ComponentType::Transform);
+			tBone->AddTransform(bTransform);
 
 			boneGO->CreateComponent(ComponentType::Bone);
 
 			ComponentBone* Bone = (ComponentBone*)boneGO->GetComponent(ComponentType::Bone);
-
 			Bone->UID = App->scene->GetNewUID();
 
 			//aiMatrix4x4 mBone = node->mTransformation;
@@ -501,16 +515,16 @@ void FileImporter::ProcessNode(const std::map<unsigned, unsigned>& meshmap,
 	}
 
 
-	//////To simplify hierarchy, if in this iteration GO was not created and we didnt have this, it would give an error next iteration since next parent would be nullptr
+	//To simplify hierarchy, if in this iteration GO was not created and we didnt have this, it would give an error next iteration since next parent would be nullptr
 
-	//if (boneGO == nullptr)
-	//{
-	//	boneGO = boneParent;
-	//}
+	if (boneGO == nullptr)
+	{
+		boneGO = boneParent;
+	}
 
 	for (unsigned i = 0u; i < node->mNumChildren; i++)
 	{
-		ProcessNode(meshmap, node->mChildren[i], scene, boneGO, meshParent, boneNames);
+		ProcessNode(meshmap, node->mChildren[i], scene, boneGO, meshParent, boneNames, newTransform);
 	}
 	
 }

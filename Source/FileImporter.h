@@ -2,6 +2,7 @@
 #define __FileImporter_h__
 
 #include <map>
+#include "Math/float4x4.h"
 
 struct aiScene;
 struct aiNode;
@@ -19,7 +20,8 @@ public:
 	void ImportAsset(const char* file, const char* folder);
 
 	void ProcessNode(const std::map<unsigned,unsigned>& meshmap, 
-		const aiNode* node, const aiScene* scene, GameObject* parent, GameObject* meshParent, std::vector<std::string*>* boneNames);
+		const aiNode* node, const aiScene* scene, GameObject* parent, GameObject* meshParent,
+		std::vector<std::string*>* boneNames, math::float4x4 parentTransform);
 
 	bool ImportFBX(const char* file, const char* folder);
 
