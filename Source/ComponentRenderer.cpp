@@ -142,7 +142,7 @@ void ComponentRenderer::SetMaterial(const char * materialfile)
 {
 	if (materialfile == nullptr)
 	{
-		materialfile = DEFAULTMAT;
+		materialfile = App->resManager->Get(DEFAULTMAT)->GetExportedFile();
 	}
 
 	if (material == nullptr || material->name != materialfile)
@@ -152,7 +152,7 @@ void ComponentRenderer::SetMaterial(const char * materialfile)
 			App->resManager->DeleteResource(material->GetUID());
 		}
 
-		ResourceMaterial* material = (ResourceMaterial*)App->resManager->Get(materialfile);
+		material = (ResourceMaterial*)App->resManager->Get(materialfile);
 	}
 	return;
 }

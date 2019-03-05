@@ -67,7 +67,10 @@ void ResourceMaterial::DeleteFromMemory()
 bool ResourceMaterial::LoadInMemory()
 {
 	char* data = nullptr;
-	App->fsystem->Load((MATERIALS + exportedFileName + JSONEXT).c_str(), &data);
+	// Load JSON
+	if (App->fsystem->Load((MATERIALS + exportedFileName + JSONEXT).c_str(), &data) == 0)
+		return false;
+
 	JSON *json = new JSON(data);
 	JSON_value *materialJSON = json->GetValue("material");
 
