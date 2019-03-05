@@ -277,7 +277,6 @@ void MaterialEditor::NewMaterial()
 
 bool MaterialEditor::Exists(const std::string& material) const
 {
-	//std::string materialName(material);
 	return App->fsystem->Exists((MATERIALS + material + JSONEXT).c_str());
 }
 
