@@ -41,9 +41,9 @@ public:
 	math::float4x4 local = math::float4x4::identity;
 	math::float4x4 global = math::float4x4::identity;
 
-	math::float3 up = float3::zero;
-	math::float3 right = float3::zero;
-	math::float3 front = float3::zero;
+	math::float3 up = math::float3::zero;
+	math::float3 right = math::float3::zero;
+	math::float3 front = math::float3::zero;
 
 
 private:
