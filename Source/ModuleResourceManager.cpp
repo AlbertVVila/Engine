@@ -215,22 +215,8 @@ Resource* ModuleResourceManager::Get(const char* file) const
 	if (uid == 0)
 		return nullptr;
 
-	// Check if is already loaded in memory
-	Resource* resource = Get(uid);
-	if (resource == nullptr) return nullptr;
-	if (!resource->IsLoadedToMemory())
-	{
-		// Load in memory
-		if (resource->LoadInMemory())
-			return resource;
-		else
-			return nullptr;
-	}
-	else
-	{
-		resource->SetReferences(resource->GetReferences() + 1);
-		return resource;
-	}
+	// Get resource by uid
+	return Get(uid);
 }
 
 bool ModuleResourceManager::DeleteResource(unsigned uid)

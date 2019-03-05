@@ -33,10 +33,18 @@ ComponentRenderer::ComponentRenderer(const ComponentRenderer& component) : Compo
 
 ComponentRenderer::~ComponentRenderer()
 {
-	App->resManager->DeleteResource(material->GetUID());
-	material = nullptr; //Resource Manager Deallocates resources (materials, meshes)
-	App->resManager->DeleteResource(mesh->GetUID());
-	mesh = nullptr;
+	//Resource Manager Deallocates resources (materials, meshes)
+	if (mesh != nullptr)
+	{
+		App->resManager->DeleteResource(mesh->GetUID());
+		mesh = nullptr;
+	}
+
+	if (material != nullptr)
+	{
+		App->resManager->DeleteResource(material->GetUID());
+		material = nullptr;
+	}
 }
 
 Component * ComponentRenderer::Clone() const
@@ -97,13 +105,16 @@ void ComponentRenderer::DrawProperties()
 
 bool ComponentRenderer::CleanUp()
 {
-	if (material != nullptr)
-	{
-		App->resManager->DeleteResource(material->GetUID());
-	}
 	if (mesh != nullptr)
 	{
 		App->resManager->DeleteResource(mesh->GetUID());
+		mesh = nullptr;
+	}
+
+	if (material != nullptr)
+	{
+		App->resManager->DeleteResource(material->GetUID());
+		material = nullptr;
 	}
 	return true;
 }
