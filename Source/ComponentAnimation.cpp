@@ -1,11 +1,28 @@
+#include "Animation.h"
+
 #include "ComponentAnimation.h"
+
 
 #include "Imgui/imgui.h"
 #include "JSON.h"
 
 void ComponentAnimation::DrawProperties()
 {
-	ImGui::Text("Yo");
+	//We need to have here:
+	//Name of the animation
+	ImGui::Text("");
+
+	//Duration of the animation
+	ImGui::Text("%f Frames", anim->duration);
+	//Number of frames the animation has
+
+	//Switch between animation frames
+	/*ImGui::InputInt("Frames", )*/
+	//Play
+	ImGui::ArrowButton("Play", ImGuiDir_Right);
+
+
+
 }
 
 Component* ComponentAnimation::Clone() const

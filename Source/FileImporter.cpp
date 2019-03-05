@@ -116,6 +116,12 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file,
 			bonesGO = App->scene->CreateGameObject("Skeleton", sceneGO);
 			bonesGO->CreateComponent(ComponentType::Transform);
 			bonesGO->isBoneRoot = true;
+
+			if (aiscene.HasAnimations())
+			{
+				bonesGO->CreateComponent(ComponentType::Animation);
+			}
+
 			break;
 		}
 	}
@@ -164,6 +170,7 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file,
 		char* animationData = new char[animationSize];
 
 		ImportAnimation(*aiscene.mAnimations[i], animationData);
+
 		anim->Load(animationData);
 	}
 
@@ -359,6 +366,22 @@ void FileImporter::ImportAnimation(const aiAnimation& animation, char* data)
 
 	memcpy(cursor, &animation.mNumChannels, sizeof(int));
 	cursor += sizeof(int);
+
+	for (unsigned j = 0u; j < animation.mNumChannels; j++)
+	{
+		memcpy(cursor, &animation.mChannels[j]->mNodeName.length, sizeof(int));
+		cursor += sizeof(int);
+
+		memcpy(cursor, animation.mChannels[j]->mNodeName.C_Str(), sizeof(char) * animation.mChannels[j]->mNodeName.length);  //Name
+		cursor += sizeof(char) * animation.mChannels[j]->mNodeName.length;
+
+		memcpy(cursor, animation.mChannels[j]->mPositionKeys, sizeof(float) * 3);
+		cursor += sizeof(float) * 3;
+
+		memcpy(cursor, animation.mChannels[j]->mRotationKeys, sizeof(float) * 3);
+		cursor += sizeof(float) * 3;
+	}
+
 	//TODO: as ImportBones
 }
 
@@ -369,11 +392,16 @@ unsigned FileImporter::GetAnimationSize(const aiAnimation& animation) const
 
 	size += sizeof(double) * 2 + sizeof(int); //Duration, ticks per second and number of channels
 
+	for (unsigned i = 0u; i < animation.mNumChannels; i++)
+	{
+		size += sizeof(int);
 
-	//if (animation.mNumChannels < 0u)
-	//{
-	//	size += sizeof(aiNodeAnim) * animation.mNumChannels;
-	//}
+		size += sizeof(char) * animation.mChannels[i]->mNodeName.length;
+
+		size += sizeof(float) * 3;
+
+		size += sizeof(float) * 3;
+	}
 
 	return size;
 }

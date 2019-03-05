@@ -25,4 +25,6 @@ void Animation::Load(const char* animationData)
 
 	memcpy(&numberOfChannels, animationData, sizeof(int));
 	animationData += sizeof(int);
+
+
 }

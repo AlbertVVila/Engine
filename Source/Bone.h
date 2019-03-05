@@ -22,10 +22,6 @@ class Bone
 		int* vertexId = nullptr;
 		float* vertexWeight = nullptr;
 		math::float4x4 offsetMatrix = math::float4x4::zero;
-
-		Bone* boneParent = nullptr;
-		std::vector<Bone*> boneChildren;
-		
 };
 
 #endif // __BONE_H__
