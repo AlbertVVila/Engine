@@ -681,7 +681,7 @@ unsigned ModuleScene::GetNewUID()
 	return uuid_rng();
 }
 
-std::list<ComponentLight*> ModuleScene::GetClosestLights(LightType type, float3 position) const
+std::list<ComponentLight*> ModuleScene::GetClosestLights(LightType type, math::float3 position) const
 {
 	std::map<float, ComponentLight*> lightmap;
 	for (const auto& light : lights)

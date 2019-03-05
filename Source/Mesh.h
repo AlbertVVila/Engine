@@ -38,9 +38,9 @@ private:
 
 public:
 	unsigned UID = 0;
-	std::vector<float3> meshVertices;
-	std::vector<float3> meshNormals;
-	std::vector<float3> meshTangents;
+	std::vector<math::float3> meshVertices;
+	std::vector<math::float3> meshNormals;
+	std::vector<math::float3> meshTangents;
 	std::vector<float> meshTexCoords;
 	std::vector<unsigned> meshIndices;
 };

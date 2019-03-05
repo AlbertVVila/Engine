@@ -340,7 +340,7 @@ void GameObject::RemoveComponent(const Component & component)
 		if (trash->type == ComponentType::Light)
 		{
 			App->spacePartitioning->aabbTreeLighting.ReleaseNode(treeNode);
-			this->light = nullptr;
+			light = nullptr;
 			hasLight = false;
 			treeNode = nullptr;
 		}

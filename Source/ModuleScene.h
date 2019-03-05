@@ -70,7 +70,7 @@ public:
 	void GetStaticGlobalAABB(AABB &aabb, std::vector<GameObject*> &bucket, unsigned int &bucketOccupation);
 
 	unsigned GetNewUID();
-	std::list<ComponentLight*> GetClosestLights(LightType type, float3 position = float3::zero) const;
+	std::list<ComponentLight*> GetClosestLights(LightType type, math::float3 position = math::float3::zero) const;
 
 	ComponentLight * GetDirectionalLight() const;
 

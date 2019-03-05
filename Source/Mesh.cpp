@@ -104,17 +104,17 @@ void Mesh::SetMesh(const char * meshData, unsigned uid)
 
 void Mesh::ProcessVertexTangent(const float vIndex1, const float vIndex2, const float vIndex3)
 {
-	float3 tangent;
+	math::float3 tangent;
 
-	float2 UV = float2(meshTexCoords[vIndex1 * 2], meshTexCoords[vIndex1 * 2 + 1]);
-	float2 UV1 = float2(meshTexCoords[vIndex2 * 2], meshTexCoords[vIndex2 * 2 + 1]);
-	float2 UV2 = float2(meshTexCoords[vIndex3 * 2], meshTexCoords[vIndex3 * 2 + 1]);
+	math::float2 UV = float2(meshTexCoords[vIndex1 * 2], meshTexCoords[vIndex1 * 2 + 1]);
+	math::float2 UV1 = float2(meshTexCoords[vIndex2 * 2], meshTexCoords[vIndex2 * 2 + 1]);
+	math::float2 UV2 = float2(meshTexCoords[vIndex3 * 2], meshTexCoords[vIndex3 * 2 + 1]);
 
-	float2 deltaUV1 = UV1 - UV;
-	float2 deltaUV2 = UV2 - UV;
+	math::float2 deltaUV1 = UV1 - UV;
+	math::float2 deltaUV2 = UV2 - UV;
 
-	float3 edge1 = meshVertices[vIndex2] - meshVertices[vIndex1];
-	float3 edge2 = meshVertices[vIndex3] - meshVertices[vIndex1];
+	math::float3 edge1 = meshVertices[vIndex2] - meshVertices[vIndex1];
+	math::float3 edge2 = meshVertices[vIndex3] - meshVertices[vIndex1];
 
 	float f = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV2.x * deltaUV1.y);
 
@@ -134,7 +134,7 @@ void Mesh::CalculateTangents()
 		LOG("Unnable to set tangents - Not found in mesh & the mesh doesn't have texture coordinates.");
 		return;
 	}
-	meshTangents.resize(meshVertices.size(), float3::zero);
+	meshTangents.resize(meshVertices.size(), math::float3::zero);
 
 	for (unsigned i = 0u; i < meshIndices.size(); i += 3) //for all the triangles of the mesh
 	{
@@ -169,11 +169,11 @@ void Mesh::SetMeshBuffers()
 	if (meshTangents.size() == 0) //if the mesh don't have tangents -> calculate them
 		CalculateTangents();
 	
-	unsigned offsetTexCoords = meshVertices.size() * sizeof(float3);
+	unsigned offsetTexCoords = meshVertices.size() * sizeof(math::float3);
 	unsigned offsetNormals = offsetTexCoords + (meshTexCoords.size() * sizeof(float) * 2);
-	unsigned offsetTangents = offsetNormals + (meshNormals.size() * sizeof(float3));
+	unsigned offsetTangents = offsetNormals + (meshNormals.size() * sizeof(math::float3));
 
-	unsigned totalSize = offsetTangents + (meshTangents.size() * sizeof(float3));
+	unsigned totalSize = offsetTangents + (meshTangents.size() * sizeof(math::float3));
 
 	if (VAO == 0)
 	{
@@ -189,10 +189,10 @@ void Mesh::SetMeshBuffers()
 		glBufferSubData(GL_ARRAY_BUFFER, offsetTexCoords, sizeof(float) * meshTexCoords.size(), &meshTexCoords[0]);
 
 	if (meshNormals.size() > 0)
-		glBufferSubData(GL_ARRAY_BUFFER, offsetNormals, sizeof(float3) * meshNormals.size(), &meshNormals[0]);
+		glBufferSubData(GL_ARRAY_BUFFER, offsetNormals, sizeof(math::float3) * meshNormals.size(), &meshNormals[0]);
 
 	if (meshTangents.size() > 0)
-		glBufferSubData(GL_ARRAY_BUFFER, offsetTangents, sizeof(float3) * meshTangents.size(), &meshTangents[0]);
+		glBufferSubData(GL_ARRAY_BUFFER, offsetTangents, sizeof(math::float3) * meshTangents.size(), &meshTangents[0]);
 
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
@@ -316,10 +316,10 @@ void Mesh::DrawBbox(unsigned shader, const AABB &globalBBOX) const
 
 void Mesh::ComputeBBox()
 {
-	float3 min, max;
-	min = max = float3(meshVertices[0]);
+	math::float3 min, max;
+	min = max = math::float3(meshVertices[0]);
 	
-	for (unsigned i=0; i<meshVertices.size(); ++i)
+	for (unsigned i=0u; i<meshVertices.size(); ++i)
 	{
 		min.x = MIN(min.x, meshVertices[i].x); //x
 		min.y = MIN(min.y, meshVertices[i].y); //y
@@ -344,9 +344,9 @@ bool Mesh::Intersects(const LineSegment &line, float* distance)
 	*distance = FLOAT_INF;
 	for (unsigned i = 0; i < meshIndices.size(); i+=3) //foreach triangle
 	{
-		float3 v0(meshVertices[meshIndices[i]]);
-		float3 v1(meshVertices[meshIndices[i+1]]);
-		float3 v2(meshVertices[meshIndices[i+2]]);
+		math::float3 v0(meshVertices[meshIndices[i]]);
+		math::float3 v1(meshVertices[meshIndices[i+1]]);
+		math::float3 v2(meshVertices[meshIndices[i+2]]);
 		Triangle triangle(v0, v1, v2);
 		float dist = -1.f;
 		if (line.Intersects(triangle, &dist, nullptr))
