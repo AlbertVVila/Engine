@@ -4,24 +4,30 @@
 #include "ModuleCamera.h"
 #include "ModuleRender.h"
 #include "ModuleScene.h"
+#include "ModuleEditor.h"
+#include "ModuleSpacePartitioning.h"
 
 #include "ComponentLight.h"
 #include "ComponentTransform.h"
+#include "ComponentCamera.h"
 
 #include "GameObject.h"
-#include "Imgui/imgui.h"
+#include "imgui.h"
 #include "JSON.h"
 #include "GL/glew.h"
 #include "Geometry/Line.h"
 #include "Geometry/LineSegment.h"
 #include "Geometry/Circle.h"
 #include "Math/MathFunc.h"
+#include "MathGeoLib/include/Geometry/AABB.h"
 #include "debugdraw.h"
+#include "AABBTree.h"
 
-#define DEBUG_DISTANCE 5.0f
+#define INITIAL_RADIUS 1000.f
 
 ComponentLight::ComponentLight(GameObject * gameobject) : Component(gameobject, ComponentType::Light)
 {
+	pointSphere.r = INITIAL_RADIUS;
 }
 
 ComponentLight::ComponentLight(const ComponentLight & component) : Component(component)
@@ -30,7 +36,6 @@ ComponentLight::ComponentLight(const ComponentLight & component) : Component(com
 	direction = component.direction;
 	color = component.color;
 
-	attenuation = component.attenuation;
 	inner = component.inner;
 	outer = component.outer;
 	App->scene->lights.push_back(this);
@@ -70,6 +75,9 @@ void ComponentLight::DrawProperties()
 				{
 					lightType = (LightType)n;
 					ResetValues();
+					App->spacePartitioning->aabbTreeLighting.ReleaseNode(gameobject->treeNode);
+					CalculateGuizmos();
+					App->spacePartitioning->aabbTreeLighting.InsertGO(gameobject);
 				}
 				if (is_selected)
 					ImGui::SetItemDefaultFocus();
@@ -79,78 +87,65 @@ void ComponentLight::DrawProperties()
 		
 
 		ImGui::ColorEdit3("Color", (float*)&color);
-
+		
+		bool somethingChanged = false;
+		
 		if (lightType != LightType::DIRECTIONAL)
 		{
 			ImGui::Text("Attenuation");
-			ImGui::DragFloat("Constant", (float*)&attenuation.x, 0.01f, 0.001f, 10.f,"%.12f");
-			ImGui::DragFloat("Linear", (float*)&attenuation.y, 0.0001f, 0.0001f, 1.f, "%.12f");
-			ImGui::DragFloat("Quadratic", (float*)&attenuation.z, 0.0001f, 0.0f, 1.f, "%.12f");
+			if (lightType == LightType::POINT)
+				somethingChanged = somethingChanged || ImGui::DragFloat("Radius", &pointSphere.r);
+			else
+				somethingChanged = somethingChanged || ImGui::DragFloat("Range", &range);			
 		}
+
+		somethingChanged = somethingChanged || ImGui::DragFloat("Intensity", &intensity);
 
 		if (lightType == LightType::SPOT)
 		{
 			ImGui::Text("Angle");
-			ImGui::DragFloat("Inner", (float*)&inner, 0.1f, 0.f, 90.f);
-			ImGui::DragFloat("Outer", (float*)&outer, 0.1f, 0.f, 90.f);
+			somethingChanged = somethingChanged || ImGui::DragFloat("Inner", (float*)&inner, 0.1f, 0.f, 90.f);
+			somethingChanged = somethingChanged || ImGui::DragFloat("Outer", (float*)&outer, 0.1f, 0.f, 90.f);
+		}
+
+		if (somethingChanged)
+		{
+			App->spacePartitioning->aabbTreeLighting.ReleaseNode(gameobject->treeNode);
+			App->spacePartitioning->aabbTreeLighting.InsertGO(gameobject);
 		}
 	}
 }
 
 void ComponentLight::DrawDebugLight() const
 {
-	unsigned shader = App->program->defaultShader->id;
-	glUseProgram(shader);
-	math::float4x4 model = math::float4x4::identity;
-	glUniformMatrix4fv(glGetUniformLocation(shader,
-		"model"), 1, GL_TRUE, &model[0][0]);
-	glLineWidth(3.0f);
-
-	float red[4] = { 1.0f, 1.0f, 0.0f, 1.0f };
-	glUniform4fv(glGetUniformLocation(shader,
-		"Vcolor"), 1, red);
-
-	glBegin(GL_LINES);
-	
-	if (lightType == LightType::DIRECTIONAL)
-	{
-		DrawDebugDirectional();
-	}
-	else if (lightType == LightType::SPOT)
-	{
-		DrawDebugSpot();
-	}
-	else //POINT
-	{
-		DrawDebugPoint();
-	}
-	glEnd();
-	glUseProgram(0);
+	DrawDebug();	
 }
 
-void ComponentLight::Load(const JSON_value & value)
+void ComponentLight::Load(JSON_value* value)
 {
 	Component::Load(value);
 	if (gameobject->transform == nullptr) return;
 
-	lightType = (LightType)value.GetUint("Lighttype");
-	color = value.GetColor3("color");
-	position = gameobject->transform->position;
+	lightType = (LightType)value->GetUint("Lighttype");
+	color = value->GetColor3("color");
+	position = gameobject->transform->GetPosition();
 	direction = gameobject->transform->rotation*float3::unitZ;
 
 	if (lightType != LightType::DIRECTIONAL)
 	{
-		attenuation = value.GetFloat3("attenuation");
+		pointSphere.r = value->GetFloat("radius");			
+		range = value->GetFloat("range");		
 	}
 
 	if (lightType == LightType::SPOT)
 	{
-		inner = value.GetFloat("inner");
-		outer = value.GetFloat("outer");
+		inner = value->GetFloat("inner");
+		outer = value->GetFloat("outer");
 	}
+	intensity = value->GetFloat("intensity");
 }
 
-void ComponentLight::Save(JSON_value * value) const
+void ComponentLight::Save(JSON_value* value) const
 {
 	Component::Save(value);
 
@@ -159,7 +154,8 @@ void ComponentLight::Save(JSON_value * value) const
 
 	if (lightType != LightType::DIRECTIONAL)
 	{
-		value->AddFloat3("attenuation", attenuation);
+		value->AddFloat("radius", pointSphere.r);
+		value->AddFloat("range", range);
 	}
 
 	if (lightType == LightType::SPOT)
@@ -167,11 +163,24 @@ void ComponentLight::Save(JSON_value * value) const
 		value->AddFloat("inner", inner);
 		value->AddFloat("outer", outer);
 	}
+
+	value->AddFloat("intensity", intensity);
+
 }
 
 ComponentLight * ComponentLight::Clone() const
 {
-	return new ComponentLight(*this);
+	ComponentLight* newLight = new ComponentLight(gameobject);
+	newLight->range = range;
+	newLight->inner = inner;
+	newLight->outer = outer;
+	newLight->intensity = intensity;
+	newLight->type = type;
+	newLight->lightType = lightType;
+	newLight->color = color;
+	newLight->direction = direction;
+	newLight->CalculateGuizmos();
+	return newLight;
 }
 
 void ComponentLight::ResetValues()
@@ -179,89 +188,70 @@ void ComponentLight::ResetValues()
 	float polar = 0.f; 
 	float azimuth = 0.f; 
 	color = float3::one;
-	attenuation = float3(0.1f, 0.1f, 0.1f);
 	inner = 20.f;
 	outer = 25.f;
 }
 
-float ComponentLight::GetAttenuationDistance() const
+void ComponentLight::DrawDebug() const
 {
-	float a = attenuation[2];
-	float b = attenuation[1];
-	float c = attenuation[0] - 2.5f; // 1/(constant+linear*distance...) < 0.4
-	
-	float delta = b * b - 4 * a * c;
-	if (delta < 0)
+	switch (lightType)
 	{
-		LOG("Error in Attenuation Distance");
-		return 0.f;
-	}
-
-	if (a == 0) //quadratic is 0
-	{
-		return -c / b;
-	}
-	return (-b + sqrt(delta)) / (2*a);
-
-}
-
-void ComponentLight::DrawDebugDirectional() const
-{
-	math::Circle circle(position, direction, App->renderer->current_scale);
-	float angle = 0;
-	for (unsigned i = 0; i < 8; i++)
-	{
-		math::float3 debug_position = circle.GetPoint(angle);
-
-		math::Line line(debug_position, direction.Normalized());
-		math::float3 farPoint = line.GetPoint(-DEBUG_DISTANCE * App->renderer->current_scale);
-
-		//Getting next point from the angle
-		dd::line(line.pos, farPoint, dd::colors::Yellow);
-		angle += math::pi * 0.25f;
-
-		// Drawing the circle of the gizmo
-		math::float3 next_debug_position = circle.GetPoint(angle);
-		math::Line next_circle_line(next_debug_position, direction.Normalized());
-		dd::line(line.pos, next_circle_line.pos , dd::colors::Yellow);
+	case LightType::DIRECTIONAL:
+		dd::cone(gameobject->transform->GetGlobalPosition(), direction * App->renderer->current_scale, dd::colors::Green, App->renderer->current_scale, .01f);
+		dd::line(gameobject->transform->GetGlobalPosition(), gameobject->transform->GetGlobalPosition() + direction * App->renderer->current_scale * 10, dd::colors::Green);
+		break;
+	case LightType::POINT:
+		dd::sphere(pointSphere.pos, dd::colors::Gold, pointSphere.r);
+		dd::aabb(gameobject->bbox.minPoint, gameobject->bbox.maxPoint, dd::colors::BurlyWood);
+		break;
+	case LightType::SPOT:
+		dd::cone(gameobject->transform->GetGlobalPosition(), direction * range, dd::colors::Gold, spotEndRadius, .01f);
+		dd::aabb(gameobject->bbox.minPoint, gameobject->bbox.maxPoint, dd::colors::BurlyWood);	
 	}
 }
 
-void ComponentLight::DrawDebugSpot() const
+void ComponentLight::CalculateGuizmos()
 {
-	float attenuation_distance = GetAttenuationDistance();
-	math::float3 circleCenter = position + attenuation_distance * direction.Normalized();
-	float radius = attenuation_distance * tanf(math::DegToRad(outer));
-	math::Circle circle(circleCenter, direction, radius);
-	DrawDebugArea(circle);
-}
-
-void ComponentLight::DrawDebugPoint() const
-{
-	float attenuation_distance = GetAttenuationDistance();
-	math::Circle circle(position, math::float3::unitX, attenuation_distance);
-	for (unsigned j = 0; j < 3; j++)
+	if (gameobject != nullptr)
 	{
-		DrawDebugArea(circle);
-		if (j == 0)
+		switch (lightType)
 		{
-			circle.normal = math::float3::unitY;
-		}
-		else
+		case LightType::POINT:
+			pointSphere.pos = gameobject->transform->GetGlobalPosition();
+			gameobject->bbox.SetNegativeInfinity();
+			gameobject->bbox.Enclose(pointSphere);
+			break;
+		case LightType::SPOT:	
 		{
-			circle.normal = math::float3::unitZ;
+			spotEndRadius = range * tan(DegToRad(outer));
+			pointSphere.pos = gameobject->transform->GetGlobalPosition();
+			pointSphere.r = sqrt(pow(spotEndRadius, 2) + pow(range, 2));
+			gameobject->bbox.SetNegativeInfinity();
+			float3 p0 = pointSphere.pos + gameobject->transform->front * range;
+			float3 p1 = p0 + gameobject->transform->right * spotEndRadius;
+			float3 p2 = p0 - gameobject->transform->right * spotEndRadius;
+			float3 p3 = p0 + gameobject->transform->up * spotEndRadius;
+			float3 p4 = p0 - gameobject->transform->up * spotEndRadius;
+			float3 points[6] = { pointSphere.pos, p0, p1, p2, p3, p4 };
+			gameobject->bbox.SetFrom(points, 6);
+			break;
 		}
+		case LightType::DIRECTIONAL:			
+			if (App->scene->maincamera != nullptr)
+			{
+				pointSphere.pos = App->scene->maincamera->frustum->pos;
+				pointSphere.r = App->scene->maincamera->frustum->farPlaneDistance;
+			}
+			else
+			{
+				pointSphere.pos = App->camera->editorcamera->frustum->pos;
+				pointSphere.r = App->camera->editorcamera->frustum->farPlaneDistance;
+			}
+			gameobject->bbox.SetNegativeInfinity();
+			gameobject->bbox.Enclose(pointSphere);
+			break;
+		}		
 	}
 }
 
-void ComponentLight::DrawDebugArea(const math::Circle &circle) const
-{
-	float angle = 0.f;
-	for (unsigned i = 0; i < 8; i++)
-	{
-		math::float3 debug_position = circle.GetPoint(angle);
-		math::LineSegment segment(position, debug_position);
-		dd::line(segment.a, segment.b, dd::colors::Yellow);
-		angle += math::pi * 0.25f;
-	}
-}
+

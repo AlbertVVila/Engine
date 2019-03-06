@@ -49,7 +49,8 @@ public:
 
 	bool picker_debug = false;
 	bool light_debug = true;
-	bool quadtree_debug = true;
+	bool kDTreeDebug = false;
+	bool aabbTreeDebug = false;
 	bool grid_debug = true;
 	bool boneDebug = false;
 	bool useMainCameraFrustum = false;

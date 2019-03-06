@@ -260,3 +260,4 @@ paket-files/
 __pycache__/
 *.pyc
 /Game/Engine - Master 1.exe
+/Engine.sln

@@ -17,6 +17,7 @@
 #include "ComponentTransform.h"
 
 #include "Material.h"
+#include "MaterialEditor.h"
 #include "Mesh.h"
 #include "JSON.h"
 #include "myQuadTree.h"
@@ -116,7 +117,10 @@ bool ModuleScene::CleanUp()
 	}
 	root->children.clear();
 	
+	LOG("Reset volumetric AABBTree");
 	App->spacePartitioning->aabbTree.Reset();
+	LOG("Reset lighting AABBTree");
+	App->spacePartitioning->aabbTreeLighting.Reset();
 
 	selected = nullptr;
 	maincamera = nullptr;
@@ -183,9 +187,14 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 				}
 			}
 		}
-		if (App->renderer->quadtree_debug)
+
+		if (App->renderer->aabbTreeDebug)
 		{
-			quadtree->Draw();
+			App->spacePartitioning->aabbTree.Draw();
+		}
+		if (App->renderer->kDTreeDebug)
+		{
+			App->spacePartitioning->kDTree.DebugDraw();
 		}
 
 		if (App->renderer->light_debug)
@@ -194,6 +203,7 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 			{
 				light->DrawDebugLight();
 			}
+			App->spacePartitioning->aabbTreeLighting.Draw();
 		}
 
 
@@ -207,7 +217,10 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	
 	for (const auto &go : staticFilteredGOs)
 	{
-		DrawGO(*go, camFrustum, isEditor);
+		if (camFrustum.Intersects(go->GetBoundingBox()))
+		{
+			DrawGO(*go, camFrustum, isEditor);
+		}
 	}
 
 	for (const auto &go : dynamicFilteredGOs)
@@ -231,6 +244,10 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 	if (go.drawBBox && isEditor)
 	{
 		go.DrawBBox();
+		if (go.light != nullptr)
+		{
+			go.light->DrawDebug();
+		}
 	}
 
 	ComponentRenderer* crenderer = (ComponentRenderer*)go.GetComponent(ComponentType::Renderer);
@@ -355,19 +372,25 @@ void ModuleScene::AddToSpacePartition(GameObject *gameobject)
 	}
 }
 
-void ModuleScene::DeleteFromSpacePartition(GameObject &gameobject)
+void ModuleScene::DeleteFromSpacePartition(GameObject* gameobject)
 {
-	if (gameobject.isStatic && gameobject.isVolumetric)
+	if (gameobject->isStatic && gameobject->isVolumetric)
 	{
-		staticGOs.erase(&gameobject);
+		staticGOs.erase(gameobject);
 	}
 	else
 	{
-		if (gameobject.isVolumetric && gameobject.treeNode != nullptr)
+		if (gameobject->isVolumetric && gameobject->treeNode != nullptr)
 		{
-			App->spacePartitioning->aabbTree.ReleaseNode(gameobject.treeNode);
+			App->spacePartitioning->aabbTree.ReleaseNode(gameobject->treeNode);
+		}
+		if (gameobject->hasLight && gameobject->treeNode != nullptr)
+		{
+			App->spacePartitioning->aabbTreeLighting.ReleaseNode(gameobject->treeNode);
 		}
 	}
+	dynamicFilteredGOs.erase(gameobject);
+	staticFilteredGOs.erase(gameobject);
 }
 
 void ModuleScene::ResetQuadTree() //deprecated
@@ -596,12 +619,21 @@ void ModuleScene::ClearScene()
 	dynamicGOs.clear();
 	staticFilteredGOs.clear();
 	dynamicFilteredGOs.clear();
+	LOG("Reset volumetric AABBTree");
 	App->spacePartitioning->aabbTree.Reset();
+	LOG("Reset lighting AABBTree");
+	App->spacePartitioning->aabbTreeLighting.Reset();
 	App->spacePartitioning->kDTree.Calculate();
 }
 
 void ModuleScene::Select(GameObject * gameobject)
 {
+	if (App->editor->materialEditor->material != nullptr)
+	{
+		App->editor->materialEditor->Save();
+		App->editor->materialEditor->open = false;
+	}
+
 	if (selected != nullptr)
 	{
 		selected->drawBBox = false;
@@ -682,14 +714,14 @@ unsigned ModuleScene::GetNewUID()
 	return uuid_rng();
 }
 
-std::list<ComponentLight*> ModuleScene::GetClosestLights(LightType type, float3 position) const
+std::list<ComponentLight*> ModuleScene::GetClosestLights(LightType type, math::float3 position) const
 {
 	std::map<float, ComponentLight*> lightmap;
 	for (const auto& light : lights)
 	{
 		if (light->lightType == type && light->enabled && light->gameobject->transform != nullptr)
 		{
-			float distance = light->gameobject->transform->position.Distance(position);
+			float distance = light->gameobject->transform->GetPosition().Distance(position);
 			lightmap.insert(std::pair<float, ComponentLight*>(distance,light));
 		}
 	}

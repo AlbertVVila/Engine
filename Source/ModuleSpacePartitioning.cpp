@@ -6,6 +6,7 @@ bool ModuleSpacePartitioning::Init(JSON * config)
 {
 	kDTree.Init();
 	aabbTree.Init();
+	aabbTreeLighting.Init();
 	return true;
 }
 

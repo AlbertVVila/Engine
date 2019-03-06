@@ -4,6 +4,7 @@
 #include "ModuleScene.h"
 #include "ComponentLight.h"
 #include "Globals.h"
+#include "debugDraw.h"
 
 void AABBTree::Init()
 {
@@ -41,6 +42,11 @@ void AABBTree::InsertGO(GameObject* go)
 {	
 	assert(go != nullptr); //tried to insert a null GameObject in the AABBTree
 	
+	if (go->hasLight)
+	{
+		go->light->CalculateGuizmos();
+	}
+
 	std::stack<AABBTreeNode*> S;
 	
 	//tree root behaves different it could not be binary
@@ -105,9 +111,7 @@ void AABBTree::InsertGO(GameObject* go)
 }
 
 void AABBTree::Draw() const
-{
-	//Blocked by: https://trello.com/c/eM3mfc3I/1-opengl-directmode-to-debugdraw
-	/*
+{	
 	static ddVec3 colors[6] = { dd::colors::AliceBlue, dd::colors::BlueViolet, dd::colors::Crimson, dd::colors::DarkOliveGreen, dd::colors::DarkViolet, dd::colors::GhostWhite };
 	std::stack<AABBTreeNode*> S;
 	S.push(treeRoot);
@@ -128,8 +132,7 @@ void AABBTree::Draw() const
 
 		dd::aabb(node->aabb.minPoint, node->aabb.maxPoint, color);
 
-	}
-	*/
+	}	
 }
 void AABBTree::RecalculateBoxes(AABBTreeNode* node)
 {
@@ -152,6 +155,9 @@ void AABBTree::RecalculateBoxes(AABBTreeNode* node)
 				S2.push(node->parent);
 		}
 	}
+	treeRoot->aabb.SetNegativeInfinity();
+	treeRoot->aabb.Enclose(treeRoot->leftSon->aabb);
+	treeRoot->aabb.Enclose(treeRoot->rightSon->aabb);
 }
 void AABBTree::ReleaseNode(AABBTreeNode* node)
 {
