@@ -600,7 +600,6 @@
       <UniqueIdentifier>{640a2da3-0a48-4b71-8419-e266d3f70572}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resources">
-<<<<<<< HEAD
       <UniqueIdentifier>{4897d976-1851-4910-b1c3-6bfd32bc8e6f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resources\Mesh">
@@ -611,10 +610,7 @@
     </Filter>
     <Filter Include="Resources\Animation">
       <UniqueIdentifier>{fd45cf3b-e41c-4e13-8152-1ee3554cd7dd}</UniqueIdentifier>
-=======
-      <UniqueIdentifier>{3caabedb-7473-40ca-99fc-312732dd7b04}</UniqueIdentifier>
->>>>>>> origin/develop
-    </Filter>
+	</Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Game\Shaders\FragmentShaders\Skybox.fs">
