@@ -21,40 +21,57 @@ void Animation::Load(const char* animationData, unsigned uid)
 
 	//TODO: COPY THE NAME OF THE ANIMATION
 
-	memcpy(&duration, animationData, sizeof(double));
+	memcpy(&numberFrames, animationData, sizeof(double));
 	animationData += sizeof(double);
 
-	memcpy(&ticksPerSecond, animationData, sizeof(double));
+	memcpy(&framesPerSecond, animationData, sizeof(double));
 	animationData += sizeof(double);
 
-	numberFrames = duration * ticksPerSecond;
+	durationInSeconds = numberFrames * 1/framesPerSecond;
 
 	memcpy(&numberOfChannels, animationData, sizeof(int));
 	animationData += sizeof(int);
 
-	for (unsigned i = 0u; i < numberOfChannels; i++)
+	for (unsigned j = 0u; j < numberFrames; j++)
 	{
-		channel* newChannel = new channel();
+		frame* newFrame = new frame();
 
-		unsigned nameLength = *(int*)animationData;
-		animationData += sizeof(int);
+		for (unsigned i = 0u; i < numberOfChannels; i++)
+		{
+			channel* newChannel = new channel();
 
-		char* name = new char[nameLength];
-	
-		memcpy(name, animationData, sizeof(char) * nameLength);
-		animationData += sizeof(char) * nameLength;
+			unsigned nameLength = *(int*)animationData;
+			animationData += sizeof(int);
 
-		std::string cName(name);
-		newChannel->channelName = cName;
+			char* name = new char[nameLength];
 
-		memcpy(&newChannel->channelTranslation, animationData, sizeof(float) * 3);
-		animationData += sizeof(float) * 3;
+			memcpy(name, animationData, sizeof(char) * nameLength);
+			animationData += sizeof(char) * nameLength;
 
-		memcpy(&newChannel->channelRotation, animationData, sizeof(float) * 3);
-		animationData += sizeof(float) * 3;
+		
 
-		channels.push_back(newChannel);
+			std::string cName(name); 	//Crashes sometimes
+			newChannel->channelName = cName;
 
+			math::float3 translation = math::float3::zero;
+			math::Quat rotation = math::Quat::identity;
+			math::float3 scaling = math::float3::one;
+
+			memcpy(&translation, animationData, sizeof(float) * 3);
+			animationData += sizeof(float) * 3;
+
+			memcpy(&rotation, animationData, sizeof(Quat));
+			animationData += sizeof(Quat);
+
+			math::float4x4 transform = math::float4x4::FromTRS(translation, rotation, scaling);
+
+			newChannel->channelTransform = transform;
+
+			newFrame->channels.push_back(newChannel);
+		}
+
+		animationFrames.push_back(newFrame);
 	}
-	currentChannel = channels.front();
+
+	currentFrame = animationFrames.front();
 }

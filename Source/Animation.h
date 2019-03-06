@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "Math/float3.h"
+#include "Math/float4x4.h"
 #include "Math/Quat.h"
 
 class Animation
@@ -17,23 +18,28 @@ public:
 
 	std::string animationName;
 	double duration = 0;
-	double ticksPerSecond = 0;
-	float numberFrames = 0.0f;
+	double framesPerSecond = 0;
+	double numberFrames = 0;
 	unsigned numberOfChannels = 0u;
+	unsigned durationInSeconds = 0u;
 
 	unsigned UID = 0u;
 
 	struct channel
 	{
 		std::string channelName;
-		math::float3 channelTranslation = math::float3::zero;
-		math::Quat channelRotation = math::Quat::identity;
+		math::float4x4 channelTransform = math::float4x4::identity;
 	};
-		
-	int currentFrame = 0;
-	channel* currentChannel;
+	
+	struct frame
+	{
+		int time;
+		std::vector<channel*> channels;
+	};
 
-	std::vector<channel*> channels;
+	int currentFrameNumber = 0;
+	frame* currentFrame = nullptr;
+	std::vector<frame*> animationFrames;
 };
 
 #endif // __ANIMATION_H_

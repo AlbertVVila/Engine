@@ -16,32 +16,31 @@ void ComponentAnimation::DrawProperties()
 	//Name of the animation
 	ImGui::Text(anim->animationName.c_str());
 
-	//Duration of the animation
-	ImGui::Text("%f seconds", anim->duration);
+	//Duration of the animation in ticks
+	ImGui::Text("%f ticks", anim->duration);
 
 	//Number of frames the animation has
 	ImGui::Text("%f frames", anim->numberFrames);
 
 	//Switch between animation frames
-	ImGui::Text("Current Frame: %s", anim->animationName.c_str());
+	if (ImGui::InputInt("Frame #", &anim->currentFrameNumber))
+	{
+		if (anim->currentFrameNumber < 0)
+		{
+			anim->currentFrameNumber = anim->numberFrames - 1;
+		}
+		else if(anim->currentFrameNumber >= anim->numberFrames)
+		{
+			anim->currentFrameNumber = 0;
+		}
+		anim->currentFrame = anim->animationFrames[anim->currentFrameNumber];
+	}
 
-
-	//this is wrong, we dont want to iterate channels but frames
-
-	//if (ImGui::InputInt("Frame #", &anim->currentFrame))
-	//{
-	//	if (anim->currentFrame < 0)
-	//	{
-	//		anim->currentFrame = anim->numberFrames - 1;
-	//	}
-	//	else if(anim->currentFrame >= anim->currentFrame)
-	//	{
-	//		anim->currentFrame = 0;
-	//	}
-	//	anim->currentChannel = anim->channels[anim->currentFrame];
-	//}
 	//Play
 	ImGui::ArrowButton("Play", ImGuiDir_Right);
+
+
+
 }
 
 Component* ComponentAnimation::Clone() const

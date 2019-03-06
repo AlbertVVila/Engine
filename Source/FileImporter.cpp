@@ -160,10 +160,6 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file,
 		}
 	}
 
-	math::float4x4 transform = math::float4x4::identity;
-
-	transform.FromTRS(math::float3::zero, math::Quat::identity, math::float3::one);
-
 	ProcessNode(meshMap, aiscene.mRootNode, &aiscene, bonesGO, meshesGO, boneNames);
 
 	//-----------------------------ANIMATIONS---------------------------------------------------
@@ -382,22 +378,23 @@ void FileImporter::ImportAnimation(const aiAnimation& animation, char* data)
 	memcpy(cursor, &animation.mNumChannels, sizeof(int));
 	cursor += sizeof(int);
 
-	for (unsigned j = 0u; j < animation.mNumChannels; j++)
+	for (unsigned i = 0u; i < animation.mDuration; i++)
 	{
-		memcpy(cursor, &animation.mChannels[j]->mNodeName.length, sizeof(int));
-		cursor += sizeof(int);
+		for (unsigned j = 0u; j < animation.mNumChannels; j++)
+		{
+			memcpy(cursor, &animation.mChannels[j]->mNodeName.length, sizeof(int));
+			cursor += sizeof(int);
 
-		memcpy(cursor, animation.mChannels[j]->mNodeName.C_Str(), sizeof(char) * animation.mChannels[j]->mNodeName.length);  //Name
-		cursor += sizeof(char) * animation.mChannels[j]->mNodeName.length;
+			memcpy(cursor, animation.mChannels[j]->mNodeName.C_Str(), sizeof(char) * animation.mChannels[j]->mNodeName.length);  //Name
+			cursor += sizeof(char) * animation.mChannels[j]->mNodeName.length;
 
-		memcpy(cursor, animation.mChannels[j]->mPositionKeys, sizeof(float) * 3);
-		cursor += sizeof(float) * 3;
+			memcpy(cursor, &animation.mChannels[j]->mPositionKeys[i], sizeof(float) * 3);
+			cursor += sizeof(float) * 3;
 
-		memcpy(cursor, animation.mChannels[j]->mRotationKeys, sizeof(float) * 3);
-		cursor += sizeof(float) * 3;
+			memcpy(cursor, &animation.mChannels[j]->mRotationKeys[i], sizeof(math::Quat));
+			cursor += sizeof(math::Quat);
+		}
 	}
-
-	//TODO: as ImportBones
 }
 
 //TODO: Obtain animations size in order to store their content
@@ -407,15 +404,19 @@ unsigned FileImporter::GetAnimationSize(const aiAnimation& animation) const
 
 	size += sizeof(double) * 2 + sizeof(int); //Duration, ticks per second and number of channels
 
-	for (unsigned i = 0u; i < animation.mNumChannels; i++)
+	for (unsigned j = 0u; j < animation.mDuration; j++)
 	{
-		size += sizeof(int);
 
-		size += sizeof(char) * animation.mChannels[i]->mNodeName.length;
+		for (unsigned i = 0u; i < animation.mNumChannels; i++)
+		{
+			size += sizeof(int);
 
-		size += sizeof(float) * 3;
+			size += sizeof(char) * animation.mChannels[i]->mNodeName.length;
 
-		size += sizeof(float) * 3;
+			size += sizeof(float) * 3;
+
+			size += sizeof(math::Quat);
+		}
 	}
 
 	return size;
