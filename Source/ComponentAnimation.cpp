@@ -6,7 +6,7 @@
 #include "Animation.h"
 #include "ComponentAnimation.h"
 
-#include "Imgui/imgui.h"
+#include "Imgui/include/imgui.h"
 #include "JSON.h"
 
 void ComponentAnimation::DrawProperties()
@@ -81,16 +81,16 @@ bool ComponentAnimation::CleanUp()
 	return true;
 }
 
-void ComponentAnimation::Save(JSON_value * value) const
+void ComponentAnimation::Save(JSON_value* value) const
 {
 	Component::Save(value);
 	value->AddUint("animUID", anim->UID);
 }
 
-void ComponentAnimation::Load(const JSON_value & value)
+void ComponentAnimation::Load(JSON_value* value)
 {
 	Component::Load(value);
-	unsigned uid = value.GetUint("animUID");
+	unsigned uid = value->GetUint("animUID");
 
 	//Does this work? not sure
 
