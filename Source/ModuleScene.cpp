@@ -1,3 +1,4 @@
+#include "debugdraw.h"
 #include "Application.h"
 
 #include "ModuleCamera.h"
@@ -30,7 +31,7 @@
 #include "Math/MathConstants.h"
 #include "GL/glew.h"
 #include "Brofiler.h"
-#include "debugdraw.h"
+
 
 #pragma warning(push)
 #pragma warning(disable : 4996)  
@@ -177,7 +178,7 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 
 					node->GetGlobalTransform().Decompose(childPosition, childRotation, childScale);
 
-					float3 position = node->parent->transform->GetGlobalPosition();
+					math::float3 position = node->parent->transform->GetGlobalPosition();
 					dd::line(position, childPosition, dd::colors::Red);
 				}
 				
