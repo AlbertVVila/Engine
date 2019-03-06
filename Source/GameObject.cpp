@@ -666,7 +666,10 @@ void GameObject::Load(JSON_value *value)
 		component->Load(componentJSON);
 	}
 
-	transform->UpdateTransform();
+	if (transform != nullptr)
+	{
+		transform->UpdateTransform();
+	}
 
 	if (hasLight)
 	{
