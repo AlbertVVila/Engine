@@ -106,9 +106,9 @@ void Mesh::ProcessVertexTangent(const float vIndex1, const float vIndex2, const 
 {
 	math::float3 tangent;
 
-	math::float2 UV = float2(meshTexCoords[vIndex1 * 2], meshTexCoords[vIndex1 * 2 + 1]);
-	math::float2 UV1 = float2(meshTexCoords[vIndex2 * 2], meshTexCoords[vIndex2 * 2 + 1]);
-	math::float2 UV2 = float2(meshTexCoords[vIndex3 * 2], meshTexCoords[vIndex3 * 2 + 1]);
+	math::float2 UV = math::float2(meshTexCoords[vIndex1 * 2], meshTexCoords[vIndex1 * 2 + 1]);
+	math::float2 UV1 = math::float2(meshTexCoords[vIndex2 * 2], meshTexCoords[vIndex2 * 2 + 1]);
+	math::float2 UV2 = math::float2(meshTexCoords[vIndex3 * 2], meshTexCoords[vIndex3 * 2 + 1]);
 
 	math::float2 deltaUV1 = UV1 - UV;
 	math::float2 deltaUV2 = UV2 - UV;

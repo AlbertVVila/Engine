@@ -37,9 +37,9 @@ public:
 public:
 	LightType lightType = LightType::POINT;
 
-	math::float3 position = float3::zero; //Captured in transform
-	math::float3 direction = float3::one;
-	math::float3 color = float3::one;
+	math::float3 position = math::float3::zero; //Captured in transform
+	math::float3 direction = math::float3::one;
+	math::float3 color = math::float3::one;
 	
 	float inner = 20.f;
 	float outer = 25.f;
