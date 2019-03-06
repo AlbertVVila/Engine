@@ -53,7 +53,9 @@ public:
 	float kSpecular = 0.1f;
 	float shininess = 32.f;
 
-	//bool changesDone = false;
+	float roughness = .5f;
+	float metallic = .5f;
+
 	
 };
 

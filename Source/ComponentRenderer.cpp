@@ -55,8 +55,8 @@ void ComponentRenderer::DrawProperties()
 			ImGui::PopID();
 			return;
 		}
-		ImGui::Text("Num vertices : %d", mesh->numVertices);
-		ImGui::Text("Num triangles : %d", mesh->numIndices / 3);
+		ImGui::Text("Num vertices : %d", mesh->meshVertices.size());
+		ImGui::Text("Num triangles : %d", mesh->meshIndices.size() / 3);
 		ImGui::Spacing();
 
 		ImGui::Text("Material");

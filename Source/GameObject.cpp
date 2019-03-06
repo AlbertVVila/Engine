@@ -109,19 +109,34 @@ void GameObject::DrawProperties()
 		{
 			if (isStatic && GetComponent(ComponentType::Renderer) != nullptr)
 			{
-				SetStaticAncestors(); //TODO: Propagate staticness & update aabbtree
+				SetStaticAncestors();
 				App->scene->dynamicGOs.erase(this);
 				App->scene->staticGOs.insert(this);
-				App->spacePartitioning->kDTree.Calculate();
+				assert(!(hasLight && isVolumetric)); //Impossible combination
+				if (hasLight && treeNode != nullptr)
+				{
+					App->spacePartitioning->aabbTreeLighting.ReleaseNode(treeNode);
+				}
+				if (isVolumetric && treeNode != nullptr)
+				{
+					App->spacePartitioning->aabbTree.ReleaseNode(treeNode);
+				}
 			}
 			else if (!isStatic)
 			{
-				//TODO: Propagate staticness & update aabbtree
 				App->scene->dynamicGOs.insert(this);
 				App->scene->staticGOs.erase(this);
-				App->spacePartitioning->kDTree.Calculate();
-				App->spacePartitioning->aabbTree.InsertGO(this); //TODO: remove this when propagation is corrected 
+				assert(!(hasLight && isVolumetric)); //Impossible combination
+				if (hasLight)
+				{
+					App->spacePartitioning->aabbTreeLighting.InsertGO(this);
+				}
+				if (isVolumetric)
+				{
+					App->spacePartitioning->aabbTree.InsertGO(this);
+				}
 			}
+			App->spacePartitioning->kDTree.Calculate();
 		}
 	}
 
@@ -140,6 +155,41 @@ void GameObject::Update()
 	for (std::list<GameObject*>::iterator itChild = children.begin(); itChild != children.end();)
 	{
 
+		if ((*itChild)->copyFlag) //Moved GO
+		{
+			(*itChild)->copyFlag = false;
+			GameObject *copy = new GameObject(**itChild);
+			copy->parent = this;
+			copy->isVolumetric = (*itChild)->isVolumetric;
+			copy->hasLight = (*itChild)->hasLight;
+			assert(!(copy->isVolumetric && copy->hasLight)); //incompatible component configuration
+			if (copy->isVolumetric)
+			{
+				if (isStatic)
+				{
+					App->scene->staticGOs.insert(copy);
+				}
+				else
+				{
+					App->spacePartitioning->aabbTree.InsertGO(copy);
+				}
+			}
+			if (copy->hasLight)
+			{
+				for (Component* component : copy->components)
+				{
+					if (component->type == ComponentType::Light)
+					{
+						copy->light = (ComponentLight*)component;
+					}
+				}
+				App->spacePartitioning->aabbTreeLighting.InsertGO(copy);
+				App->scene->lights.push_back(copy->light);
+			}
+			copy->transform->SetPosition(copy->transform->GetPosition() + copy->transform->front);
+			copy->transform->UpdateTransform();
+			this->children.push_back(copy);
+		}
 		if ((*itChild)->movedFlag) //Moved GO
 		{
 			for (auto child : (*itChild)->children)
@@ -159,10 +209,11 @@ void GameObject::Update()
 			copy->parent = this;
 			this->children.push_back(copy);
 		}
-		if ((*itChild)->delete_flag) //Delete GO
+		if ((*itChild)->deleteFlag) //Delete GO
 		{
-			(*itChild)->delete_flag = false;
+			(*itChild)->deleteFlag = false;
 			(*itChild)->CleanUp();
+			App->scene->DeleteFromSpacePartition(*itChild);
 			delete *itChild;
 			children.erase(itChild++);
 		}
@@ -183,11 +234,35 @@ Component * GameObject::CreateComponent(ComponentType type)
 		this->transform = (ComponentTransform*)component;
 		break;
 	case ComponentType::Renderer:
-		component = new ComponentRenderer(this);		
+		if (!hasLight)
+		{
+			component = new ComponentRenderer(this);
+		}
+		else
+		{
+			LOG("Light + Renderer combination not allowed");			
+		}
 		break;
 	case ComponentType::Light:
-		component = new ComponentLight(this);
-		App->scene->lights.push_back((ComponentLight*)component);
+		if (!hasLight && !isVolumetric)
+		{
+			component = new ComponentLight(this);
+			App->scene->lights.push_back((ComponentLight*)component);
+			hasLight = true;
+			light = (ComponentLight*)component;
+			App->spacePartitioning->aabbTreeLighting.InsertGO(this);
+		}
+		else
+		{
+			if (isVolumetric)
+			{
+				LOG("Light + Renderer combination not allowed");
+			}
+			else
+			{
+				LOG("Only 1 light component allowed");
+			}
+		}
 		break;
 	case ComponentType::Camera:
 		component = new ComponentCamera(this);
@@ -249,15 +324,34 @@ std::vector<Component*> GameObject::GetComponentsInChildren(ComponentType type) 
 
 void GameObject::RemoveComponent(const Component & component)
 {
-	for (int i = 0; i < components.size(); ++i)
+	Component* trash = nullptr;
+	std::vector<Component*>::iterator trashIt;
+	for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
-		if (components[i] == &component)
+		if (*it == &component)
 		{
-			components[i]->CleanUp();
-			RELEASE(components[i]);
-			components.erase(components.begin() + i);
-			return;
+			(*it)->CleanUp();
+			trash = *it; // Delete elements of an iterated container causes crashes inside the loop
+			trashIt = it;
 		}
+	}
+	if (trash != nullptr) // Safely remove component
+	{
+		if (trash->type == ComponentType::Light)
+		{
+			App->spacePartitioning->aabbTreeLighting.ReleaseNode(treeNode);
+			light = nullptr;
+			hasLight = false;
+			treeNode = nullptr;
+		}
+		else if (trash->type == ComponentType::Renderer && treeNode != nullptr)
+		{
+			App->spacePartitioning->aabbTree.ReleaseNode(treeNode);
+			treeNode = nullptr;
+			isVolumetric = false;
+		}
+		components.erase(trashIt);
+		RELEASE(trash);
 	}
 }
 
@@ -331,92 +425,111 @@ void GameObject::UpdateModel(unsigned int shader) const
 
 void GameObject::SetLightUniforms(unsigned shader) const
 {
-	ComponentLight* directional = App->scene->GetDirectionalLight();
-	if (directional != nullptr)
+	std::unordered_set<GameObject*> lights;
+	App->spacePartitioning->aabbTreeLighting.GetIntersections(bbox, lights);
+	unsigned directionals = 0u;
+	unsigned points = 0u;
+	unsigned spots = 0u;
+	char buffer[32];
+	//LOG("%s got %d lights", name.c_str(), lights.size());
+	for (GameObject* go : lights)
 	{
-		glUniform3fv(glGetUniformLocation(shader,
-			"lights.directional.direction"), 1, (GLfloat*)&directional->direction);
+		assert(go->light != nullptr);
+		switch (go->light->lightType)
+		{
+		case LightType::DIRECTIONAL:
+			memset(buffer, 0, 32);
+			sprintf(buffer, "lights.directional[%d].direction", directionals);
+			glUniform3fv(glGetUniformLocation(shader,
+				buffer), 1, (GLfloat*)&go->light->direction);
+			
+			memset(buffer, 0, 32);
+			sprintf(buffer, "lights.directional[%d].color", directionals);
+			glUniform3fv(glGetUniformLocation(shader,
+				buffer), 1, (GLfloat*)&go->light->color);
 
-		glUniform3fv(glGetUniformLocation(shader,
-			"lights.directional.color"), 1, (GLfloat*)&directional->color);
-	}
-	else
-	{
-		float3 noDirectional = float3::zero;
-		glUniform3fv(glGetUniformLocation(shader,
-			"lights.directional.direction"), 1, (GLfloat*)&noDirectional);
-	}
+			memset(buffer, 0, 32);
+			sprintf(buffer, "lights.directional[%d].intensity", points);
+			glUniform1f(glGetUniformLocation(shader,
+				buffer), go->light->intensity);
+			++directionals;
+			break;
+		case LightType::POINT:
+			memset(buffer, 0, 32);
+			sprintf(buffer, "lights.points[%d].position", points);
+			glUniform3fv(glGetUniformLocation(shader,
+				buffer), 1, (GLfloat*)&go->light->position);
 
+			memset(buffer, 0, 32);
+			sprintf(buffer, "lights.points[%d].direction", points);
+			glUniform3fv(glGetUniformLocation(shader,
+				buffer), 1, (GLfloat*)&go->light->direction);
 
-	int i = 0;
-	for (const auto & spot : App->scene->GetClosestLights(LightType::SPOT, transform->GetPosition()))
-	{
-		char buffer[32];
+			memset(buffer, 0, 32);
+			sprintf(buffer, "lights.points[%d].color", points);
+			glUniform3fv(glGetUniformLocation(shader,
+				buffer), 1, (GLfloat*)&go->light->color);
 
-		sprintf(buffer, "lights.spots[%d].position", i);
-		glUniform3fv(glGetUniformLocation(shader,
-			buffer), 1, (GLfloat*)&spot->position);
+			memset(buffer, 0, 32);
+			sprintf(buffer, "lights.points[%d].radius", points);
+			glUniform1f(glGetUniformLocation(shader,
+				buffer), go->light->pointSphere.r);
 
-		memset(buffer, 0, 32);
-		sprintf(buffer, "lights.spots[%d].direction", i);
-		glUniform3fv(glGetUniformLocation(shader,
-			buffer), 1, (GLfloat*)&spot->direction);
+			memset(buffer, 0, 32);
+			sprintf(buffer, "lights.points[%d].intensity", points);
+			glUniform1f(glGetUniformLocation(shader,
+				buffer), go->light->intensity);
 
-		memset(buffer, 0, 32);
-		sprintf(buffer, "lights.spots[%d].color", i);
-		glUniform3fv(glGetUniformLocation(shader,
-			buffer), 1, (GLfloat*)&spot->color);
+			++points;
+			break;
+		case LightType::SPOT:
+			memset(buffer, 0, 32);
+			sprintf(buffer, "lights.spots[%d].position", spots);
+			glUniform3fv(glGetUniformLocation(shader,
+				buffer), 1, (GLfloat*)&go->light->position);
 
-		memset(buffer, 0, 32);
-		sprintf(buffer, "lights.spots[%d].attenuation", i);
-		glUniform3fv(glGetUniformLocation(shader,
-			buffer), 1, (GLfloat*)&spot->attenuation);
+			memset(buffer, 0, 32);
+			sprintf(buffer, "lights.spots[%d].direction", spots);
+			glUniform3fv(glGetUniformLocation(shader,
+				buffer), 1, (GLfloat*)&go->light->direction);
 
-		memset(buffer, 0, 32);
-		float innerRad = cosf(math::DegToRad(spot->inner));
-		sprintf(buffer, "lights.spots[%d].inner", i);
-		glUniform1fv(glGetUniformLocation(shader,
-			buffer), 1, (GLfloat*)&innerRad);
+			memset(buffer, 0, 32);
+			sprintf(buffer, "lights.spots[%d].color", spots);
+			glUniform3fv(glGetUniformLocation(shader,
+				buffer), 1, (GLfloat*)&go->light->color);
 
-		memset(buffer, 0, 32);
-		float outerRad = cosf(math::DegToRad(spot->outer));
-		sprintf(buffer, "lights.spots[%d].outer", i);
-		glUniform1fv(glGetUniformLocation(shader,
-			buffer), 1, (GLfloat*)&outerRad);
+			memset(buffer, 0, 32);
+			sprintf(buffer, "lights.spots[%d].radius", spots);
+			glUniform1f(glGetUniformLocation(shader,
+				buffer), go->light->pointSphere.r);
 
-		++i;
+			memset(buffer, 0, 32);
+			sprintf(buffer, "lights.spots[%d].intensity", spots);
+			glUniform1f(glGetUniformLocation(shader,
+				buffer), go->light->intensity);
+
+			memset(buffer, 0, 32);
+			float innerRad = cosf(math::DegToRad(go->light->inner));
+			sprintf(buffer, "lights.spots[%d].inner", spots);
+			glUniform1fv(glGetUniformLocation(shader,
+				buffer), 1, (GLfloat*)&innerRad);
+
+			memset(buffer, 0, 32);
+			float outerRad = cosf(math::DegToRad(go->light->outer));
+			sprintf(buffer, "lights.spots[%d].outer", spots);
+			glUniform1fv(glGetUniformLocation(shader,
+				buffer), 1, (GLfloat*)&outerRad);
+
+			++spots;
+			break;
+		}
 	}
 	glUniform1i(glGetUniformLocation(shader,
-		"lights.num_spots"), i);
-
-	i = 0;
-	for (const auto & point : App->scene->GetClosestLights(LightType::POINT, transform->GetPosition()))
-	{
-		char buffer[32];
-
-		sprintf(buffer, "lights.points[%d].position", i);
-		glUniform3fv(glGetUniformLocation(shader,
-			buffer), 1, (GLfloat*)&point->position);
-
-		memset(buffer, 0, 32);
-		sprintf(buffer, "lights.points[%d].direction", i);
-		glUniform3fv(glGetUniformLocation(shader,
-			buffer), 1, (GLfloat*)&point->direction);
-
-		memset(buffer, 0, 32);
-		sprintf(buffer, "lights.points[%d].color", i);
-		glUniform3fv(glGetUniformLocation(shader,
-			buffer), 1, (GLfloat*)&point->color);
-
-		memset(buffer, 0, 32);
-		sprintf(buffer, "lights.points[%d].attenuation", i);
-		glUniform3fv(glGetUniformLocation(shader,
-			buffer), 1, (GLfloat*)&point->attenuation);
-
-		++i;
-	}
+		"lights.num_directionals"), directionals);
 	glUniform1i(glGetUniformLocation(shader,
-		"lights.num_points"), i);
+		"lights.num_points"), points);
+	glUniform1i(glGetUniformLocation(shader,
+		"lights.num_spots"), spots);	
 }
 
 AABB GameObject::GetBoundingBox() const
@@ -458,7 +571,7 @@ void GameObject::DrawBBox() const
 
 	ComponentRenderer *renderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
 	if (renderer == nullptr) return;
-
+	
 	renderer->mesh->DrawBbox(App->program->defaultShader->id, bbox);
 }
 
@@ -532,6 +645,18 @@ void GameObject::Load(JSON_value *value)
 		Component* component = CreateComponent(type);
 		component->Load(componentJSON);
 	}
+
+	transform->UpdateTransform();
+
+	if (hasLight)
+	{
+		if (treeNode != nullptr)
+		{
+			App->spacePartitioning->aabbTreeLighting.ReleaseNode(treeNode);
+		}
+		light->CalculateGuizmos();
+		App->spacePartitioning->aabbTreeLighting.InsertGO(this);
+	}
 }
 
 bool GameObject::IsParented(const GameObject & gameobject) const
@@ -579,11 +704,11 @@ void GameObject::DrawHierarchy(GameObject * selected)
 		}
 		if (ImGui::Selectable("Delete"))
 		{
-			delete_flag = true;
+			deleteFlag = true;
 			if (selected == this)
 			{
 				App->scene->selected = nullptr;
-			}
+			}			
 		}
 		ImGui::EndPopup();
 	}
@@ -612,12 +737,14 @@ void GameObject::SetStaticAncestors()
 
 		if (go->GetComponent(ComponentType::Renderer) != nullptr)
 		{
-			if (go->treeNode != nullptr)
+			if (go->treeNode != nullptr && isVolumetric)
 				App->spacePartitioning->aabbTree.ReleaseNode(go->treeNode);
-
-			App->scene->quadtree->Insert(go);
+			if (go->treeNode != nullptr && hasLight)
+				App->spacePartitioning->aabbTreeLighting.ReleaseNode(go->treeNode);
+			
 		}
 		parents.pop();
 		parents.push(go->parent);
 	}
+	
 }

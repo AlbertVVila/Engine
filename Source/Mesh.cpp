@@ -8,6 +8,7 @@
 #include "Geometry/LineSegment.h"
 #include "Math/MathConstants.h"
 #include "Math/float4x4.h"
+#include "Math/float2.h"
 
 Mesh::Mesh()
 {
@@ -27,15 +28,7 @@ Mesh::~Mesh()
 	if (EBO != 0)
 	{
 		glDeleteBuffers(1, &EBO);
-	}
-	if (indices != nullptr)
-	{
-		RELEASE_ARRAY(indices);
-	}
-	if (vertices != nullptr)
-	{
-		RELEASE_ARRAY(vertices);
-	}
+	}	
 	if (VAObox != 0)
 	{
 		glDeleteVertexArrays(1, &VAObox);
@@ -57,10 +50,10 @@ void Mesh::SetMesh(const char * meshData, unsigned uid)
 
 	const char *data = meshData;
 	
-	unsigned int numIndices = *(int*)meshData;
+	unsigned numIndices = *(int*)meshData;
 	meshData += sizeof(int);
 	
-	unsigned int numVertices = *(int*)meshData;
+	unsigned numVertices = *(int*)meshData;
 	meshData += sizeof(int);
 	
 	float* vertices = (float*)meshData;
@@ -73,7 +66,10 @@ void Mesh::SetMesh(const char * meshData, unsigned uid)
 	if (hasNormals)
 	{
 		normals = (float*)meshData;
-		meshData += sizeof(float) * 3 * numVertices;
+		int nNormals = sizeof(float) * 3 * numVertices;
+		meshData += nNormals;
+		meshNormals.resize(numVertices);
+		memcpy(&meshNormals[0], normals, nNormals);
 	}
 	
 	bool hasTexCoords = *(bool*)meshData;
@@ -83,119 +79,149 @@ void Mesh::SetMesh(const char * meshData, unsigned uid)
 	if (hasTexCoords)
 	{
 		texCoords = (float*)meshData;
-		meshData += sizeof(float) * 2 * numVertices;
+		int nTCoords = sizeof(float) * 2 * numVertices;
+		meshData += nTCoords;
+		meshTexCoords.resize(numVertices * 2);
+		memcpy(&meshTexCoords[0], texCoords, nTCoords);
 	}
 	
 	int* indices = (int*)meshData;
 	meshData += sizeof(int) * numIndices;
 	
 	UID = uid;
-	this->numIndices = numIndices;
-	this->numVertices = numVertices;
+	
+	meshVertices.resize(numVertices);
+	meshIndices.resize(numIndices);
+	memcpy(&meshVertices[0], vertices, numVertices * sizeof(float) * 3);
+	memcpy(&meshIndices[0], indices, numIndices * sizeof(int));
 
-	this->vertices = new float[numVertices*3];
-	this->indices = new int[numIndices];
-	memcpy(this->vertices, vertices, numVertices * sizeof(float) * 3);
-	memcpy(this->indices, indices, numIndices * sizeof(int));
 	ComputeBBox();
-	SetMeshBuffers(hasNormals, hasTexCoords, normals, texCoords);
+	SetMeshBuffers();
 	SetBboxBuffers();
 
 	RELEASE_ARRAY(data);
 }
 
-void Mesh::SetMeshBuffers(bool hasNormals, bool hasTexCoords, float* normals, float* texCoords)
+void Mesh::ProcessVertexTangent(const float vIndex1, const float vIndex2, const float vIndex3)
 {
-	// VAO Creation
+	math::float3 tangent;
+
+	math::float2 UV = math::float2(meshTexCoords[vIndex1 * 2], meshTexCoords[vIndex1 * 2 + 1]);
+	math::float2 UV1 = math::float2(meshTexCoords[vIndex2 * 2], meshTexCoords[vIndex2 * 2 + 1]);
+	math::float2 UV2 = math::float2(meshTexCoords[vIndex3 * 2], meshTexCoords[vIndex3 * 2 + 1]);
+
+	math::float2 deltaUV1 = UV1 - UV;
+	math::float2 deltaUV2 = UV2 - UV;
+
+	math::float3 edge1 = meshVertices[vIndex2] - meshVertices[vIndex1];
+	math::float3 edge2 = meshVertices[vIndex3] - meshVertices[vIndex1];
+
+	float f = 1.0f / (deltaUV1.x * deltaUV2.y - deltaUV2.x * deltaUV1.y);
+
+	tangent.x = f * (deltaUV2.y * edge1.x - deltaUV1.y * edge2.x);
+	tangent.y = f * (deltaUV2.y * edge1.y - deltaUV1.y * edge2.y);
+	tangent.z = f * (deltaUV2.y * edge1.z - deltaUV1.y * edge2.z);
+	tangent = tangent.Normalized();
+
+	meshTangents[vIndex1] = meshTangents[vIndex1] + tangent;
+}
+
+void Mesh::CalculateTangents()
+{
+	assert(meshIndices.size() % 3 == 0); //not triangulated
+	if (meshTexCoords.size() == 0)
+	{
+		LOG("Unnable to set tangents - Not found in mesh & the mesh doesn't have texture coordinates.");
+		return;
+	}
+	meshTangents.resize(meshVertices.size(), math::float3::zero);
+
+	for (unsigned i = 0u; i < meshIndices.size(); i += 3) //for all the triangles of the mesh
+	{
+		//calculate tangents for each vertex of the triangle
+		//V1
+		unsigned vIndex1 = meshIndices[i];
+		unsigned vIndex2 = meshIndices[i + 1];
+		unsigned vIndex3 = meshIndices[i + 2];
+		ProcessVertexTangent(vIndex1, vIndex2, vIndex3);
+		//V2
+		vIndex1 = meshIndices[i + 1];
+		vIndex2 = meshIndices[i];
+		vIndex3 = meshIndices[i + 2];
+		ProcessVertexTangent(vIndex1, vIndex2, vIndex3);
+		//V3
+		vIndex1 = meshIndices[i + 2];
+		vIndex2 = meshIndices[i + 1];
+		vIndex3 = meshIndices[i];
+		ProcessVertexTangent(vIndex1, vIndex2, vIndex3);
+
+	}
+
+	for (unsigned i = 0u; i < meshVertices.size(); ++i)
+	{
+		meshTangents[i] = meshTangents[i].Normalized();
+	}
+}
+
+
+void Mesh::SetMeshBuffers()
+{
+	if (meshTangents.size() == 0) //if the mesh don't have tangents -> calculate them
+		CalculateTangents();
+	
+	unsigned offsetTexCoords = meshVertices.size() * sizeof(math::float3);
+	unsigned offsetNormals = offsetTexCoords + (meshTexCoords.size() * sizeof(float) * 2);
+	unsigned offsetTangents = offsetNormals + (meshNormals.size() * sizeof(math::float3));
+
+	unsigned totalSize = offsetTangents + (meshTangents.size() * sizeof(math::float3));
+
 	if (VAO == 0)
 	{
 		glGenVertexArrays(1, &VAO);
-	}
-	glBindVertexArray(VAO);
-
-	// Buffer Creation with vertex data
-	if (VBO == 0)
-	{
 		glGenBuffers(1, &VBO);
-	}
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	unsigned bufferSize = sizeof(GLfloat)*numVertices * 3;
-	if (hasNormals) bufferSize += sizeof(GLfloat)*numVertices * 3;
-	if (hasTexCoords) bufferSize += sizeof(GLfloat)*numVertices * 2;
-	glBufferData(GL_ARRAY_BUFFER, bufferSize, NULL, GL_STATIC_DRAW);
-
-	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(GLfloat) * 3 * numVertices, vertices);
-
-	if (hasNormals)
-	{
-		glBufferSubData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 3 * numVertices, sizeof(GLfloat) * 3 * numVertices, normals);
-	}
-	unsigned offsetTexCoords = 0;
-	if (hasTexCoords)
-	{
-		offsetTexCoords = hasNormals ? sizeof(GLfloat) * 6 * numVertices : sizeof(GLfloat) * 3 * numVertices;
-		glBufferSubData(GL_ARRAY_BUFFER, offsetTexCoords, sizeof(GLfloat) * 2 * numVertices, texCoords);
-	}
-
-	//Buffer creation with indices
-	if (EBO == 0)
-	{
 		glGenBuffers(1, &EBO);
 	}
+	glBindVertexArray(VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, totalSize, NULL, GL_STATIC_DRAW);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, offsetTexCoords, &meshVertices[0]);
+	if (meshTexCoords.size() > 0)
+		glBufferSubData(GL_ARRAY_BUFFER, offsetTexCoords, sizeof(float) * meshTexCoords.size(), &meshTexCoords[0]);
+
+	if (meshNormals.size() > 0)
+		glBufferSubData(GL_ARRAY_BUFFER, offsetNormals, sizeof(math::float3) * meshNormals.size(), &meshNormals[0]);
+
+	if (meshTangents.size() > 0)
+		glBufferSubData(GL_ARRAY_BUFFER, offsetTangents, sizeof(math::float3) * meshTangents.size(), &meshTangents[0]);
+
+
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int)*numIndices, indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * meshIndices.size(), &meshIndices[0], GL_STATIC_DRAW);
 
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(
-		0,                  // attribute 0
-		3,                  // number of componentes (3 floats)
-		GL_FLOAT,           // data type
-		GL_FALSE,           // should be normalized?
-		0,                  // stride
-		(void*)0            // array buffer offset
-	);
-	if (hasNormals)
-	{
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(
-			1,                  // attribute 1
-			3,                  // number of componentes (3 floats)
-			GL_FLOAT,           // data type
-			GL_FALSE,           // should be normalized?
-			0,                  // stride
-			(void*)(sizeof(float) * 3 * numVertices)       // array buffer offset
-		);
-	}
-	if (hasTexCoords)
-	{
-		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(
-			2,                  // attribute 2
-			2,                  // number of componentes (2 floats)
-			GL_FLOAT,           // data type
-			GL_FALSE,           // should be normalized?
-			0,                  // stride
-			(void*)(offsetTexCoords)       // array buffer offset
-		);
-	}
-
-	// Disable VAO
-	glBindVertexArray(0);
-
-	glDisableVertexAttribArray(0);
-	glDisableVertexAttribArray(1);
-	glDisableVertexAttribArray(2);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)offsetTexCoords);
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, (void*)offsetNormals);
+	glEnableVertexAttribArray(3);
+	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 0, (void*)offsetTangents);
 
 
-	// Disable VBO and EBO
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+	if (VAO == 0 || VBO == 0 || EBO == 0)
+	{
+		LOG("Error sending mesh to GPU");
+	}
 }
 
 void Mesh::Draw(unsigned shaderProgram) const
 {
 	glBindVertexArray(VAO);
-	glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glDrawElements(GL_TRIANGLES, meshIndices.size(), GL_UNSIGNED_INT, 0);
 	
 	// We disable VAO
 	glBindVertexArray(0);
@@ -290,18 +316,18 @@ void Mesh::DrawBbox(unsigned shader, const AABB &globalBBOX) const
 
 void Mesh::ComputeBBox()
 {
-	float3 min, max;
-	min = max = float3(vertices);
+	math::float3 min, max;
+	min = max = math::float3(meshVertices[0]);
 	
-	for (unsigned i=0; i<numVertices*3; i+=3)
+	for (unsigned i=0u; i<meshVertices.size(); ++i)
 	{
-		min.x = MIN(min.x, vertices[i]); //x
-		min.y = MIN(min.y, vertices[i+1]); //y
-		min.z = MIN(min.z, vertices[i+2]); //z
+		min.x = MIN(min.x, meshVertices[i].x); //x
+		min.y = MIN(min.y, meshVertices[i].y); //y
+		min.z = MIN(min.z, meshVertices[i].z); //z
 	
-		max.x = MAX(max.x, vertices[i]);
-		max.y = MAX(max.y, vertices[i+1]);
-		max.z = MAX(max.z, vertices[i+2]);
+		max.x = MAX(max.x, meshVertices[i].x);
+		max.y = MAX(max.y, meshVertices[i].y);
+		max.z = MAX(max.z, meshVertices[i].z);
 	}
 	boundingBox.minPoint = min;
 	boundingBox.maxPoint = max;
@@ -316,11 +342,11 @@ bool Mesh::Intersects(const LineSegment &line, float* distance)
 {
 	bool intersects = false;
 	*distance = FLOAT_INF;
-	for (unsigned i = 0; i < numIndices; i+=3) //foreach triangle
+	for (unsigned i = 0; i < meshIndices.size(); i+=3) //foreach triangle
 	{
-		float3 v0(&vertices[3*indices[i]]);
-		float3 v1(&vertices[3*indices[i+1]]);
-		float3 v2(&vertices[3*indices[i+2]]);
+		math::float3 v0(meshVertices[meshIndices[i]]);
+		math::float3 v1(meshVertices[meshIndices[i+1]]);
+		math::float3 v2(meshVertices[meshIndices[i+2]]);
 		Triangle triangle(v0, v1, v2);
 		float dist = -1.f;
 		if (line.Intersects(triangle, &dist, nullptr))

@@ -42,10 +42,9 @@ void MaterialEditor::Draw()
 	ImGui::InputText("Name", name, 64);
 	material->name = name;
 
-	ImGui::DragFloat("kAmbient", &material->kAmbient, .005f, .0f, 1.f);
-	ImGui::DragFloat("kDiffuse", &material->kDiffuse, .005f, .0f, 1.f);
-	ImGui::DragFloat("kSpecular", &material->kSpecular, .005f, .0f, 1.f);
-	ImGui::DragFloat("Shininess", &material->shininess, .05f, .0f, 256.f);
+	ImGui::DragFloat("Metallic", &material->metallic, .01f, .001f, 1.f);
+	ImGui::DragFloat("Roughness", &material->roughness, .01f, .001f, 1.f);
+	
 	ShaderSelector(currentShader);
 
 	if (textureFiles.size() == 0)
@@ -61,6 +60,7 @@ void MaterialEditor::Draw()
 		ImGui::Separator();
 		ImGui::PopID();
 	}
+	/* DEPRECATED
 	if (ImGui::CollapsingHeader("Specular"))
 	{
 		ImGui::PushID(&material->specularColor);
@@ -69,6 +69,7 @@ void MaterialEditor::Draw()
 		ImGui::Separator();
 		ImGui::PopID();
 	}
+	*/
 	if (ImGui::CollapsingHeader("Occlusion"))
 	{
 		ImGui::PushID(&material->textures[(unsigned)TextureType::OCCLUSION]);

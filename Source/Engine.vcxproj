@@ -293,14 +293,10 @@
   <ItemGroup>
     <None Include="..\Game\Scripts\PlayerMovement.dll" />
     <None Include="..\Game\Shaders\FragmentShaders\Default.fs" />
-    <None Include="..\Game\Shaders\FragmentShaders\Flat.fs" />
-    <None Include="..\Game\Shaders\FragmentShaders\Gouraud.fs" />
-    <None Include="..\Game\Shaders\FragmentShaders\Phong.fs" />
+    <None Include="..\Game\Shaders\FragmentShaders\PBR.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\Skybox.fs" />
     <None Include="..\Game\Shaders\VertexShaders\Default.vs" />
-    <None Include="..\Game\Shaders\VertexShaders\Flat.vs" />
-    <None Include="..\Game\Shaders\VertexShaders\Gouraud.vs" />
-    <None Include="..\Game\Shaders\VertexShaders\Phong.vs" />
+    <None Include="..\Game\Shaders\VertexShaders\PBR.vs" />
     <None Include="..\Game\Shaders\VertexShaders\Skybox.vs" />
   </ItemGroup>
   <ItemGroup>
