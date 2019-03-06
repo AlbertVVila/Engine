@@ -13,8 +13,8 @@
 #define LIBRARY "Library/"
 #define MATERIALS LIBRARY "Materials/"
 #define MESHES LIBRARY "Meshes/"
-#define BONES LIBRARY "Animation/Bones/"
-#define ANIMATIONS LIBRARY "Animation/"
+#define BONES LIBRARY "Animations/Bones/"
+#define ANIMATIONS LIBRARY "Animations/"
 #define TEXTURES LIBRARY "Textures/"
 #define SCENES ASSETS "Scenes/"
 #define SHADERS "Shaders/"
@@ -26,6 +26,7 @@
 #define FBXCAPITAL ".FBX"
 #define MESHEXTENSION ".m3sh"
 #define BONEEXTENSION ".b0ne"
+#define ANIMATIONEXTENSION ".animati0n"
 #define PNG ".png"
 #define TIF	".tif"
 #define JPG	".jpg"
@@ -41,7 +42,9 @@ enum class FILETYPE
 	MODEL,
 	MESH,
 	SCENE,
-	NONE
+	NONE,
+	BONE,
+	ANIMATION
 };
 
 class ModuleFileSystem :

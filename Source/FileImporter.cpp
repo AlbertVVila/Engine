@@ -8,6 +8,7 @@
 #include "GameObject.h"
 #include "ComponentRenderer.h"
 #include "ComponentTransform.h"
+#include "ComponentAnimation.h"
 
 #include "FileImporter.h"
 #include "Material.h"
@@ -62,6 +63,10 @@ void FileImporter::ImportAsset(const char *file, const char *folder)
 	else if (extension == MESHEXTENSION)
 	{
 		App->fsystem->Copy(folder, MESHES, file);
+	}
+	else if (extension == ANIMATIONEXTENSION)
+	{
+		App->fsystem->Copy(folder, ANIMATIONS, file);
 	}
 }
 
@@ -140,9 +145,9 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file,
 		ImportMesh(*aiscene.mMeshes[i], meshData);
 
 		Mesh* mesh = new Mesh();
-		unsigned uid = App->scene->GetNewUID();
-		App->fsystem->Save((MESHES + std::to_string(uid)+ MESHEXTENSION).c_str(), meshData, meshSize);
-		mesh->SetMesh(meshData, uid); //deallocates data
+		unsigned meshUid = App->scene->GetNewUID();
+		App->fsystem->Save((MESHES + std::to_string(meshUid)+ MESHEXTENSION).c_str(), meshData, meshSize);
+		mesh->SetMesh(meshData, meshUid); //deallocates data
 		// meshesUID.push_back(uid); //same as below?
 		App->resManager->AddMesh(mesh);
 		meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->UID));
@@ -165,13 +170,23 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file,
 	std::map<unsigned, unsigned> animationMap;
 	for (unsigned i = 0u; i < aiscene.mNumAnimations; i++) 
 	{
-		Animation* anim = new Animation();
+		Animation* animation = new Animation();
+
+		animation->animationName = aiscene.mAnimations[i]->mName.C_Str();
 		unsigned animationSize = GetAnimationSize(*aiscene.mAnimations[i]);
 		char* animationData = new char[animationSize];
 
 		ImportAnimation(*aiscene.mAnimations[i], animationData);
 
-		anim->Load(animationData);
+		unsigned animUid = App->scene->GetNewUID();
+		animation->Load(animationData, animUid);
+
+		((ComponentAnimation*)(bonesGO->GetComponent(ComponentType::Animation)))->anim = animation;
+
+		App->fsystem->Save((ANIMATIONS + std::to_string(animUid) + ANIMATIONEXTENSION).c_str(), animationData, animationSize);
+
+		App->resManager->AddAnim(animation);
+
 	}
 
 	App->scene->SaveScene(*sceneGO, *App->fsystem->GetFilename(file).c_str(), *SCENES); //TODO: Make AutoCreation of folders or check

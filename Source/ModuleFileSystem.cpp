@@ -332,6 +332,14 @@ FILETYPE ModuleFileSystem::GetFileType(std::string extension) const
 	{
 		return FILETYPE::MESH;
 	}
+	if (extension == BONEEXTENSION)
+	{
+		return FILETYPE::BONE;
+	}
+	if (extension == ANIMATIONEXTENSION)
+	{
+		return FILETYPE::ANIMATION;
+	}
 	return FILETYPE::SCENE;
 }
 

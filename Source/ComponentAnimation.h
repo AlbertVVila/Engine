@@ -19,7 +19,10 @@ public:
 
 	void Save(JSON_value *value) const override;
 	void Load(const JSON_value &value) override;
+
+	bool CleanUp();
 public:
+
 	Animation* anim = nullptr;
 };
 
