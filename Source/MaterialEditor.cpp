@@ -165,6 +165,16 @@ void MaterialEditor::TextureSelector(unsigned i, std::string &current_texture, i
 
 void MaterialEditor::SetCurrentTextures()
 {
+	// Get shader
+	if (material->shader != nullptr)
+	{
+		currentShader = material->shader->file;
+	}
+	else
+	{
+		currentShader = DEFAULTPROGRAM;
+	}
+
 	// Get material textures
 	Texture* diffuse_texture = material->GetTexture(TextureType::DIFFUSE);
 	Texture* specular_texture = material->GetTexture(TextureType::SPECULAR);
@@ -266,15 +276,32 @@ void MaterialEditor::NewMaterial()
 	}
 }
 
-bool MaterialEditor::Exists(const char * material)
+bool MaterialEditor::Exists(const std::string& material) const
 {
-	std::string materialName(material);
-	return App->fsystem->Exists((MATERIALS + materialName + JSONEXT).c_str());
+	return App->fsystem->Exists((MATERIALS + material + JSONEXT).c_str());
 }
 
 void MaterialEditor::Save()
 {
-	material->Save();
+	if (previous != nullptr)
+	{
+		int ret = material->Compare(*previous);
+
+		if (ret == -1)
+		{
+			if (Exists(previous->name))
+			{
+				App->fsystem->Delete((MATERIALS + previous->name + JSONEXT).c_str());
+			}
+			material->Save();
+		}
+		else if (ret == 0)
+		{
+			material->Save();
+		}
+
+		RELEASE(previous);
+	}
 }
 
 void MaterialEditor::CleanUp()
