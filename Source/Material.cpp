@@ -14,11 +14,13 @@
 
 Material::Material()
 {
+	shader = App->program->GetProgram(DEFAULTPROGRAM);
 }
 
 Material::Material(const char* name)
 {
 	this->name = name;
+	shader = App->program->GetProgram(DEFAULTPROGRAM);
 }
 
 Material::Material(const Material& material)
@@ -211,38 +213,38 @@ void Material::Reset(const Material & material)
 	shininess = material.shininess;
 }
 
-bool Material::Compare(const Material& material)
+int Material::Compare(const Material& material)
 {
 	if (name.compare(material.name) != 0)
-		return false;
+		return -1;
 
 	if (shader != material.shader)
-		return false;
+		return 0;
 
 	for (unsigned i = 0; i < MAXTEXTURES; ++i)
 	{
 		if (textures[i] != material.textures[i])
-			return false;
+			return 0;
 	}
 
 	if (!diffuseColor.Equals(material.diffuseColor))
-		return false;
+		return 0;
 	if (!specularColor.Equals(material.specularColor))
-		return false;
+		return 0;
 	if (!emissiveColor.Equals(material.emissiveColor))
-		return false;
+		return 0;
 
 	if (kDiffuse != material.kDiffuse)
-		return false;
+		return 0;
 	if (kSpecular != material.kSpecular)
-		return false;
+		return 0;
 	if (kAmbient != material.kAmbient)
-		return false;
+		return 0;
 
 	if (shininess != material.shininess)
-		return false;
+		return 0;
 
-	return true;
+	return 1;
 }
 
 Texture * Material::GetTexture(TextureType type) const

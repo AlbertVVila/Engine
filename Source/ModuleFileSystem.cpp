@@ -100,7 +100,7 @@ bool ModuleFileSystem::Save(const char * file, const char * buffer, unsigned siz
 	return true;
 }
 
-bool ModuleFileSystem::Remove(const char * file) const
+bool ModuleFileSystem::Remove(const char* file) const
 {
 	assert(file != nullptr);
 	if (file == nullptr) return false;
@@ -112,14 +112,27 @@ bool ModuleFileSystem::Remove(const char * file) const
 	return true;
 }
 
-bool ModuleFileSystem::Exists(const char * file) const
+bool ModuleFileSystem::Delete(const char* file) const
+{
+	assert(file != nullptr);
+	if (file == nullptr) return false;
+
+	if (PHYSFS_delete(file) != 0)
+	{
+		LOG("Error: %s", PHYSFS_getLastError());
+		return false;
+	}
+	return true;
+}
+
+bool ModuleFileSystem::Exists(const char* file) const
 {
 	assert(file != nullptr);
 	if (file == nullptr) return false;
 	return PHYSFS_exists(file);
 }
 
-unsigned ModuleFileSystem::Size(const char * file) const
+unsigned ModuleFileSystem::Size(const char* file) const
 {
 	assert(file != nullptr);
 	if (file == nullptr) return 0;
@@ -129,7 +142,7 @@ unsigned ModuleFileSystem::Size(const char * file) const
 	return file_size;
 }
 
-bool ModuleFileSystem::MakeDirectory(const char * directory) const
+bool ModuleFileSystem::MakeDirectory(const char* directory) const
 {
 	assert(directory != nullptr);
 	if (directory == nullptr) return false;
@@ -143,14 +156,14 @@ bool ModuleFileSystem::MakeDirectory(const char * directory) const
 	return true;
 }
 
-bool ModuleFileSystem::IsDirectory(const char * file) const
+bool ModuleFileSystem::IsDirectory(const char* file) const
 {
 	assert(file != nullptr);
 	if (file == nullptr) return false;
 	return PHYSFS_isDirectory(file);
 }
 
-std::vector<std::string> ModuleFileSystem::ListFiles(const char * dir, bool extension) const
+std::vector<std::string> ModuleFileSystem::ListFiles(const char* dir, bool extension) const
 {
 	std::vector<std::string> files;
 	char **rc = PHYSFS_enumerateFiles(dir);
@@ -172,7 +185,7 @@ std::vector<std::string> ModuleFileSystem::ListFiles(const char * dir, bool exte
 	return files;
 }
 
-void ModuleFileSystem::ListFolderContent(const char * dir, std::vector<std::string>& files, std::vector<std::string>& dirs) const
+void ModuleFileSystem::ListFolderContent(const char* dir, std::vector<std::string>& files, std::vector<std::string>& dirs) const
 {
 	char** filesList = PHYSFS_enumerateFiles(dir);
 	char **i;
@@ -195,7 +208,7 @@ void ModuleFileSystem::ListFolderContent(const char * dir, std::vector<std::stri
 	PHYSFS_freeList(filesList);
 }
 
-bool ModuleFileSystem::CopyFromOutsideFS(const char * source, const char * destination) const
+bool ModuleFileSystem::CopyFromOutsideFS(const char* source, const char* destination) const
 {
 	char *data;
 	FILE* fp = fopen(source, "rb");
@@ -219,7 +232,7 @@ bool ModuleFileSystem::CopyFromOutsideFS(const char * source, const char * desti
 	return true;
 }
 
-bool ModuleFileSystem::Copy(const char * source, const char * destination, const char* file) const
+bool ModuleFileSystem::Copy(const char* source, const char* destination, const char* file) const
 {
 	char * data = nullptr;
 	std::string filepath(source);
@@ -233,7 +246,7 @@ bool ModuleFileSystem::Copy(const char * source, const char * destination, const
 	return true;
 }
 
-void ModuleFileSystem::CheckImportedFiles(const char * folder, std::set<std::string>& importedFiles)
+void ModuleFileSystem::CheckImportedFiles(const char* folder, std::set<std::string>& importedFiles)
 {
 	importedFiles.clear();
 	std::vector<std::string> files = ListFiles(folder);
@@ -251,7 +264,7 @@ void ModuleFileSystem::CheckImportedFiles(const char * folder, std::set<std::str
 		}
 	}
 }
-void ModuleFileSystem::WatchFolder(const char * folder, const std::set<std::string> &textures, const std::set<std::string> &models)
+void ModuleFileSystem::WatchFolder(const char* folder, const std::set<std::string> &textures, const std::set<std::string> &models)
 {
 	std::vector<std::string> files;
 	std::stack<std::string> watchfolder;
@@ -295,7 +308,7 @@ void ModuleFileSystem::WatchFolder(const char * folder, const std::set<std::stri
 	return;
 }
 
-void ModuleFileSystem::Monitorize(const char * folder)
+void ModuleFileSystem::Monitorize(const char* folder)
 {
 	std::set<std::string> importedTextures;
 	std::set<std::string> importedModels;
@@ -336,7 +349,7 @@ FILETYPE ModuleFileSystem::GetFileType(std::string extension) const
 	return FILETYPE::SCENE;
 }
 
-int ModuleFileSystem::GetModTime(const char * file) const
+int ModuleFileSystem::GetModTime(const char* file) const
 {
 	return PHYSFS_getLastModTime(file);
 }

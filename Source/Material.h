@@ -31,7 +31,7 @@ public:
 	void Load(const char * material);
 	void Save() const;
 	void Reset(const Material& material);
-	bool Compare(const Material& material);
+	int Compare(const Material& material);
 
 	Texture * GetTexture(TextureType type) const;
 	std::list<Texture*> GetTextures() const;
