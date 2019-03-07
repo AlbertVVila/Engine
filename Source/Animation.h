@@ -6,6 +6,19 @@
 #include "Math/float4x4.h"
 #include "Math/Quat.h"
 
+
+struct channel
+{
+	std::string channelName;
+	math::float4x4 channelTransform = math::float4x4::identity;
+};
+
+struct frame
+{
+	int time;
+	std::vector<channel*> channels;
+};
+
 class Animation
 {
 public:
@@ -24,18 +37,6 @@ public:
 	unsigned durationInSeconds = 0u;
 
 	unsigned UID = 0u;
-
-	struct channel
-	{
-		std::string channelName;
-		math::float4x4 channelTransform = math::float4x4::identity;
-	};
-	
-	struct frame
-	{
-		int time;
-		std::vector<channel*> channels;
-	};
 
 	int currentFrameNumber = 0;
 	frame* currentFrame = nullptr;

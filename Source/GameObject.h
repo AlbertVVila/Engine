@@ -8,10 +8,13 @@
 class Component;
 class ComponentTransform;
 class ComponentLight;
+class ComponentAnimation;
 class AABBTreeNode;
 enum class ComponentType;
+struct frame;
 struct Texture;
 class JSON_value;
+class Animation;
 
 class GameObject
 {
@@ -25,6 +28,8 @@ public:
 	void DrawProperties();
 
 	void Update();
+
+	void Animate(frame* frame, Animation* anim);
 
 	Component * CreateComponent(ComponentType type);
 	Component * GetComponent(ComponentType type) const;

@@ -106,8 +106,6 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file,
 	//Insted of creating a fake GO we create at the beginning the sceneGO, will have the same purposes but inside will only have two children:
 	//meshesGO and bonesGO
 
-	//WARNING, doing the thing above created 2 skeletons, this means each mesh has bones!!
-
 	GameObject* sceneGO = App->scene->CreateGameObject("Scene", App->scene->root);
 
 	GameObject* meshesGO = nullptr;

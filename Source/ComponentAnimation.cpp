@@ -22,6 +22,9 @@ void ComponentAnimation::DrawProperties()
 	//Number of frames the animation has
 	ImGui::Text("%f frames", anim->numberFrames);
 
+	//Duration of the animation
+	ImGui::Text("%f seconds", anim->durationInSeconds);
+
 	//Switch between animation frames
 	if (ImGui::InputInt("Frame #", &anim->currentFrameNumber))
 	{
@@ -38,8 +41,6 @@ void ComponentAnimation::DrawProperties()
 
 	//Play
 	ImGui::ArrowButton("Play", ImGuiDir_Right);
-
-
 
 }
 
@@ -109,3 +110,64 @@ void ComponentAnimation::Load(JSON_value* value)
 	}
 }
 
+frame* ComponentAnimation::InterpolateFrame(const frame* first, const frame* second, float lambda) const
+{
+	frame* newFrame;
+	for (unsigned i = 0u; i < anim->numberOfChannels; i++)
+	{
+		math::float4x4 newTransform = InterpolateFloat4x4(first->channels[i]->channelTransform, second->channels[i]->channelTransform, lambda);
+		newFrame->channels[i]->channelName = first->channels[i]->channelName;
+		newFrame->channels[i]->channelTransform = newTransform;
+	}
+
+	return newFrame;
+}
+
+math::float4x4 ComponentAnimation::InterpolateFloat4x4(const math::float4x4& first, const math::float4x4& second, float lambda) const
+{
+	math::float3 firstPosition;
+	math::Quat firstRotation;
+	math::float3 firstScale;
+	first.Decompose(firstPosition, firstRotation, firstScale);
+
+	math::float3 secondPosition;
+	math::Quat secondRotation;
+	math::float3 secondScale;
+	second.Decompose(secondPosition, secondRotation, secondScale);
+
+	math::float3 newPosition = InterpolateFloat3(firstPosition, secondPosition, lambda);
+	math::Quat newRotation = InterpolateQuat(firstRotation, secondRotation, lambda);
+
+	math::float4x4 newMatrix = math::float4x4::FromTRS(newPosition, newRotation, math::float3::one);
+
+	return newMatrix;
+}
+
+math::float3 ComponentAnimation::InterpolateFloat3(const math::float3& first, const math::float3& second, float lambda) const
+{
+	return first * (1.0f - lambda) + second * lambda; 
+}
+
+math::Quat ComponentAnimation::InterpolateQuat(const math::Quat& first, const math::Quat& second, float lambda) const
+{
+	Quat result;    
+	float dot = first.Dot(second);
+
+	if (dot >= 0.0f) // Interpolate through the shortest path
+	{        result.x = first.x*(1.0f-lambda)+second.x*lambda; 
+			result.y = first.y*(1.0f-lambda)+second.y*lambda;
+			result.z = first.z*(1.0f-lambda)+second.z*lambda;
+			result.w = first.w*(1.0f-lambda)+second.w*lambda;
+	} 
+	else
+	{   
+		result.x = first.x*(1.0f-lambda)-second.x*lambda;
+		result.y = first.y*(1.0f-lambda)-second.y*lambda;
+		result.z = first.z*(1.0f-lambda)-second.z*lambda;
+		result.w = first.w*(1.0f-lambda)-second.w*lambda;
+	}
+
+	result.Normalize();
+
+	return result;
+}

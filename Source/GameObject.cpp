@@ -21,6 +21,7 @@
 #include "GUICreator.h"
 #include "Material.h"
 #include "Mesh.h"
+#include "Animation.h"
 #include "myQuadTree.h"
 #include "AABBTree.h"
 #include <stack>
@@ -149,6 +150,16 @@ void GameObject::DrawProperties()
 
 void GameObject::Update()
 {
+	//Animation shhit
+	if (isBoneRoot)
+	{
+		frame* frame = ((ComponentAnimation*)(GetComponent(ComponentType::Animation)))->anim->currentFrame;
+		Animation* animation = ((ComponentAnimation*)(GetComponent(ComponentType::Animation)))->anim;
+
+		Animate(frame, animation);
+	}
+
+
 	for (auto& component: components)
 	{
 		component->Update();
@@ -222,6 +233,23 @@ void GameObject::Update()
 		{
 			++itChild;
 		}
+	}
+}
+
+void GameObject::Animate(frame* frame, Animation* anim)
+{
+
+	for (unsigned i = 0u; i < anim->numberOfChannels; i++)
+	{
+		if (strcmp(name.c_str(), frame->channels[i]->channelName.c_str()) == 0)
+		{
+			transform->AddTransform(frame->channels[i]->channelTransform);
+		}
+	}
+
+	for (const auto& child : children)
+	{
+		child->Animate(frame, anim);
 	}
 }
 
@@ -739,9 +767,12 @@ void GameObject::DrawHierarchy(GameObject * selected)
 	}
 	if (obj_open)
 	{
-		for (auto &child : children)
+		if (!this->isBoneRoot)
 		{
-			child->DrawHierarchy(selected);
+			for (auto &child : children)
+			{
+				child->DrawHierarchy(selected);
+			}
 		}
 		if (!(node_flags & ImGuiTreeNodeFlags_NoTreePushOnOpen))
 		{

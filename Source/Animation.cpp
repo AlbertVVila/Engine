@@ -19,8 +19,6 @@ void Animation::Load(const char* animationData, unsigned uid)
 {
 	UID = uid;
 
-	//TODO: COPY THE NAME OF THE ANIMATION
-
 	memcpy(&numberFrames, animationData, sizeof(double));
 	animationData += sizeof(double);
 
@@ -40,15 +38,15 @@ void Animation::Load(const char* animationData, unsigned uid)
 		{
 			channel* newChannel = new channel();
 
-			unsigned nameLength = *(int*)animationData;
+			unsigned nameLength = 0u;
+
+			memcpy(&nameLength, animationData, sizeof(int));
 			animationData += sizeof(int);
 
 			char* name = new char[nameLength];
 
-			memcpy(name, animationData, sizeof(char) * nameLength);
-			animationData += sizeof(char) * nameLength;
-
-		
+			memcpy(name, animationData, sizeof(char*) * nameLength);
+			animationData += sizeof(char)* nameLength;
 
 			std::string cName(name); 	//Crashes sometimes
 			newChannel->channelName = cName;
@@ -64,7 +62,6 @@ void Animation::Load(const char* animationData, unsigned uid)
 			animationData += sizeof(Quat);
 
 			math::float4x4 transform = math::float4x4::FromTRS(translation, rotation, scaling);
-
 			newChannel->channelTransform = transform;
 
 			newFrame->channels.push_back(newChannel);
