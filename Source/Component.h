@@ -41,6 +41,7 @@ public:
 		return true; 
 	}
 
+	virtual void Options() {}
 	void Remove();
 
 	virtual void Save(JSON_value* value) const;

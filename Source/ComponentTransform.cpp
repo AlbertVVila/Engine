@@ -2,6 +2,7 @@
 #include "ComponentTransform.h"
 #include "GameObject.h"
 #include "ModuleTime.h"
+#include "ModuleScene.h"
 
 #include "imgui.h"
 #include "imgui_internal.h"
@@ -52,9 +53,10 @@ void ComponentTransform::AddTransform(const math::float4x4& transform)
 
 void ComponentTransform::DrawProperties()
 {
-	
 	if (ImGui::CollapsingHeader("Local Transformation", ImGuiTreeNodeFlags_DefaultOpen))
 	{
+		Options();
+
 		if (gameobject->isStatic && App->time->gameState != GameState::RUN)
 		{
 			ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
@@ -173,4 +175,44 @@ void ComponentTransform::Load(JSON_value* value)
 	global = value->GetFloat4x4("Global");
 	local = math::float4x4::FromTRS(position, rotation, scale);
 	RotationToEuler();
+}
+
+void ComponentTransform::Options()
+{
+	ImGui::SetCursorPosX(ImGui::GetWindowWidth() - ImGui::CalcTextSize("Opt   ").x);
+	if (ImGui::Button("Opt"))
+	{
+		ImGui::OpenPopup("Options");
+	}
+
+	const char* options[] = { "Copy Component Values", "Paste Component Values", "Reset"};
+
+	if (ImGui::BeginPopup("Options"))
+	{
+		for (int i = 0; i < IM_ARRAYSIZE(options); i++)
+			if (ImGui::Selectable(options[i]))
+			{
+				if (i == 0) // Copy
+				{
+					App->scene->copyComp = new ComponentTransform(*this);
+				}
+				else if (i == 1) // Paste
+				{
+					if (App->scene->copyComp != nullptr && App->scene->copyComp->type == this->type)
+					{
+						ComponentTransform* comp = (ComponentTransform*)App->scene->copyComp;
+						position = comp->position;
+						eulerRotation = comp->eulerRotation;
+						scale = comp->scale;
+					}
+				}
+				else if (i == 2) // Reset
+				{
+					position = math::float3(0.f, 0.f, 0.f);
+					eulerRotation = math::float3(0.f, 0.f, 0.f);
+					scale = math::float3(1.0f, 1.0f, 1.0f);
+				}
+			}
+		ImGui::EndPopup();
+	}
 }
