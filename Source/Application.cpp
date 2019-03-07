@@ -13,6 +13,7 @@
 #include "ModuleTime.h"
 #include "ModuleSpacePartitioning.h"
 #include "ModuleUI.h"
+#include "ModuleFontLoader.h"
 #include "Timer.h"
 #include "JSON.h"
 #include "Brofiler.h"
@@ -36,6 +37,7 @@ Application::Application()
 	modules.push_back(time = new ModuleTime());
 	modules.push_back(spacePartitioning = new ModuleSpacePartitioning());
 	modules.push_back(ui = new ModuleUI());
+	modules.push_back(fonts = new ModuleFontLoader());
 }
 
 Application::~Application()

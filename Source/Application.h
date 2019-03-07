@@ -22,6 +22,7 @@ class ModuleResourceManager;
 class ModuleTime;
 class ModuleSpacePartitioning;
 class ModuleUI;
+class ModuleFontLoader;
 
 class Application
 {
@@ -51,6 +52,7 @@ public:
 	ModuleTime* time = nullptr;
 	ModuleSpacePartitioning* spacePartitioning = nullptr;
 	ModuleUI* ui = nullptr;
+	ModuleFontLoader* fonts = nullptr;
 
 private:
 	std::list<Module*> modules;

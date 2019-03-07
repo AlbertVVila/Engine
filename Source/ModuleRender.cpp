@@ -9,6 +9,7 @@
 #include "ModuleDebugDraw.h"
 #include "ModuleResourceManager.h"
 #include "ModuleUI.h"
+#include "ModuleFontLoader.h"
 
 #include "GameObject.h"
 #include "ComponentCamera.h"
@@ -162,6 +163,7 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 	App->scene->Draw(*cam.frustum, isEditor);
 
 	App->ui->Draw(cam);
+	App->fonts->Draw();
 	
 }
 

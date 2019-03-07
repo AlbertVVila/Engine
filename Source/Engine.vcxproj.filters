@@ -240,6 +240,7 @@
     <ClCompile Include="ComponentTransform2D.cpp">
       <Filter>Component</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleFontLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -555,6 +556,7 @@
     <ClInclude Include="ComponentTransform2D.h">
       <Filter>Component</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleFontLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GeoLib">
@@ -635,6 +637,12 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\Game\Shaders\FragmentShaders\UI.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\FragmentShaders\Fonts.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\VertexShaders\Fonts.vs">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
