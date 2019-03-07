@@ -51,8 +51,10 @@ void ComponentTransform::AddTransform(const math::float4x4& transform)
 	}
 }
 
-void ComponentTransform::DrawProperties()
+void ComponentTransform::DrawProperties(int id)
 {
+	ImGui::PushID(id);
+
 	if (ImGui::CollapsingHeader("Local Transformation", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		Options();
@@ -85,6 +87,7 @@ void ComponentTransform::DrawProperties()
 			gameobject->movedFlag = true;
 		}
 	}
+	ImGui::PopID();
 }
 
 void ComponentTransform::UpdateTransform()

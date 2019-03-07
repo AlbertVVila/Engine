@@ -26,10 +26,12 @@ public:
 	void ResetValues();
 
 	void Update() override;
-	void DrawProperties() override;
+	void DrawProperties(int id) override;
 	void DrawDebugLight() const;
+
 	void Load(JSON_value* value) override;
 	void Save(JSON_value* value) const override;
+	void Options() override;
 
 private:
 	void DrawDebugDirectional() const;

@@ -15,7 +15,7 @@ public:
 
 	Component* Clone() const override;
 	void AddTransform(const math::float4x4 &transform);
-	void DrawProperties() override;
+	void DrawProperties(int id) override;
 
 	void UpdateTransform();
 	void SetLocalToWorld();

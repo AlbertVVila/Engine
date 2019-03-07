@@ -16,7 +16,7 @@ public:
 
 
 	Component* Clone() const override;
-	void DrawProperties() override;
+	void DrawProperties(int id) override;
 	bool CleanUp() override;
 
 	void Save(JSON_value* value) const override;

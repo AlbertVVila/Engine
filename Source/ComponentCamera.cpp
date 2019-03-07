@@ -222,8 +222,9 @@ void ComponentCamera::Update()
 	frustum->up = transform.RotatePart().Mul(float3::unitY).Normalized();
 }
 
-void ComponentCamera::DrawProperties()
+void ComponentCamera::DrawProperties(int id)
 {
+	ImGui::PushID(id);
 	if (ImGui::CollapsingHeader("Camera", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		bool removed = Component::DrawComponentState();
@@ -258,6 +259,7 @@ void ComponentCamera::DrawProperties()
 
 		ImGui::Separator();
 	}
+	ImGui::PopID();
 }
 
 void ComponentCamera::Save(JSON_value* value) const

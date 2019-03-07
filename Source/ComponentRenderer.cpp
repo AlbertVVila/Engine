@@ -44,9 +44,9 @@ Component * ComponentRenderer::Clone() const
 	return new ComponentRenderer(*this);
 }
 
-void ComponentRenderer::DrawProperties()
+void ComponentRenderer::DrawProperties(int id)
 {
-	ImGui::PushID(this);
+	ImGui::PushID(id);
 	if (ImGui::CollapsingHeader("Mesh Renderer", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		bool removed = Component::DrawComponentState();

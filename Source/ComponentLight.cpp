@@ -49,8 +49,9 @@ void ComponentLight::Update()
 	direction = -(gameobject->transform->rotation*float3::unitZ).Normalized();
 }
 
-void ComponentLight::DrawProperties()
+void ComponentLight::DrawProperties(int id)
 {
+	ImGui::PushID(id);
 	if (ImGui::CollapsingHeader("Light"))
 	{
 		bool removed = Component::DrawComponentState();
@@ -58,6 +59,10 @@ void ComponentLight::DrawProperties()
 		{
 			return;
 		}
+
+		ImGui::SameLine();
+		Options();
+
 		ImGui::Separator();
 		ImGui::Text("Type");
 		const char * types[] = {"Directional","Point", "Spot"};
@@ -95,6 +100,7 @@ void ComponentLight::DrawProperties()
 			ImGui::DragFloat("Outer", (float*)&outer, 0.1f, 0.f, 90.f);
 		}
 	}
+	ImGui::PopID();
 }
 
 void ComponentLight::DrawDebugLight() const
@@ -166,6 +172,42 @@ void ComponentLight::Save(JSON_value* value) const
 	{
 		value->AddFloat("inner", inner);
 		value->AddFloat("outer", outer);
+	}
+}
+
+void ComponentLight::Options()
+{
+	ImGui::SetCursorPosX(ImGui::GetWindowWidth() - ImGui::CalcTextSize("Opt   ").x);
+	if (ImGui::Button("Opt"))
+	{
+		ImGui::OpenPopup("Options");
+	}
+
+	const char* options[] = { "Copy Component Values", "Paste Component Values", "Reset" };
+
+	if (ImGui::BeginPopup("Options"))
+	{
+		for (int i = 0; i < IM_ARRAYSIZE(options); i++)
+			if (ImGui::Selectable(options[i]))
+			{
+				if (i == 0) // Copy
+				{
+					App->scene->copyComp = new ComponentLight(*this);
+				}
+				else if (i == 1) // Paste
+				{
+					if (App->scene->copyComp != nullptr && App->scene->copyComp->type == this->type)
+					{
+						ComponentLight* comp = (ComponentLight*)App->scene->copyComp;
+						
+					}
+				}
+				else if (i == 2) // Reset
+				{
+					
+				}
+			}
+		ImGui::EndPopup();
 	}
 }
 
