@@ -48,6 +48,8 @@ public:
 	inline bool			IsLoadedToMemory() const		{ return loaded > 0; };
 	inline unsigned		GetReferences() const			{ return loaded; };
 	void				SetReferences(unsigned references);
+	bool				IsUsedByEngine()				{ return engineUsed; };
+	void				SetUsedByEngine(bool used)		{ engineUsed = used; };
 
 	virtual void Save(JSON_value& config) const;
 	virtual void Load(const JSON_value& config);
@@ -59,6 +61,7 @@ protected:
 	std::string file;				// The file located in /Assets/ (Path + filename + extension)
 	std::string exportedFileName;	// The name of the file located in /Library/
 	unsigned loaded = 0;			// Number of times this resource is being used in memory
+	bool engineUsed = false;		// True if the resource is used by default by the engine, false if it was added by the user
 
 	TYPE type = TYPE::UNKNOWN;		// Type of resource
 };

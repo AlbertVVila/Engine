@@ -236,6 +236,13 @@ void PanelResourceManager::OpenResourceEditor()
 					auxReferences = 0;
 			}
 
+			// Used by engine
+			bool used = auxResource->IsUsedByEngine();
+			if (ImGui::Checkbox("Used by engine", &used))
+			{
+				auxResource->SetUsedByEngine(used);
+			}
+
 			// Type
 			const char * types[] = { "Texture", "Mesh", "Audio", "Scene", "Bone", "Animation", "Unknown" };
 			int type = (int)auxResource->GetType();
@@ -253,6 +260,7 @@ void PanelResourceManager::OpenResourceEditor()
 				}
 				ImGui::EndCombo();
 			}
+
 			if (ImGui::Button("Apply"))
 			{
 				auxResource->SetReferences(auxReferences);
