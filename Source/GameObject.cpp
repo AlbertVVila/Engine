@@ -664,6 +664,7 @@ void GameObject::Save(JSON_value *gameobjects) const
 		gameobject->AddString("Name", name.c_str());
 		gameobject->AddUint("isStatic", isStatic);
 		gameobject->AddUint("isBoneRoot", isBoneRoot);
+		gameobject->AddUint("hasSkeleton", hasSkeleton);
 		gameobject->AddFloat4x4("baseState", baseState);
 
 		JSON_value *componentsJSON = gameobject->CreateValue(rapidjson::kArrayType);
@@ -691,6 +692,7 @@ void GameObject::Load(JSON_value *value)
 	name = value->GetString("Name");
 	isStatic = value->GetUint("isStatic");
 	isBoneRoot = value->GetUint("isBoneRoot");
+	hasSkeleton = value->GetUint("hasSkeleton");
 	baseState = value->GetFloat4x4("baseState");
 
 	JSON_value* componentsJSON = value->GetValue("Components");

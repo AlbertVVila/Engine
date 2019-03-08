@@ -120,6 +120,7 @@ void Material::Load(const char * materialfile)
 
 	RELEASE_ARRAY(data);
 	RELEASE(json);
+	
 }
 
 void Material::Save() const

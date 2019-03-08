@@ -600,7 +600,14 @@ bool ModuleScene::AddScene(const char& scene, const char& path)
 			gameobject->parent->children.push_back(gameobject);
 		}
 	
-		//AddToSpacePartition(gameobject);
+		//Link Bones
+
+		ComponentRenderer* renderer = nullptr;
+		renderer = (ComponentRenderer*)gameobject->GetComponent(ComponentType::Renderer);
+		if (renderer != nullptr)
+		{
+			renderer->LinkBones();
+		}
 	}
 
 	RELEASE_ARRAY(data);

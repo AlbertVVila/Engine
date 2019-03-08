@@ -3,7 +3,13 @@
 
 #include <vector>
 #include "Math/float3.h"
+#include "Math/float4x4.h"
 #include "Geometry/AABB.h"
+
+#define MAX_WEIGHTS_PER_BONE 4
+
+class GameObject;
+class ComponentRenderer;
 
 class Mesh
 {
@@ -14,7 +20,7 @@ public:
 	void SetMesh(const char* meshData, unsigned uid);
 	void Draw(unsigned shaderProgram) const;
 	void DrawBbox(unsigned shaderProgram, const AABB &globalBBOX) const;
-
+	void LinkBones(const ComponentRenderer* renderer);
 	AABB GetBoundingBox() const;
 
 	bool Intersects(const LineSegment &line, float* distance);
@@ -23,13 +29,15 @@ private:
 
 	struct BindBone
 	{
-		//float4x4 transform; //Transforms from mesh space to bone space
+		math::float4x4 transform; //Transforms from mesh space to bone space
 		std::string name;
+		GameObject* go = nullptr;
 	};
 	struct BindAttach
 	{
-		unsigned bones[4];
-		float weights[4];
+		unsigned nBones = 0u;
+		unsigned bones[MAX_WEIGHTS_PER_BONE];
+		float weights[MAX_WEIGHTS_PER_BONE];
 	};
 
 

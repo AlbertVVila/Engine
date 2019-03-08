@@ -66,6 +66,7 @@ public:
 	unsigned parentUUID = 0; //only set in Save/Load scene TODO:update on parent change
 	bool isStatic = false;
 	bool isBoneRoot = false;
+	bool hasSkeleton = false;
 	bool movedFlag = false;
 	bool copyFlag = false;
 	bool deleteFlag = false;

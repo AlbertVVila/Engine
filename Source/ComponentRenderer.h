@@ -23,8 +23,9 @@ public:
 	void Load(JSON_value* value) override;
 
 	void SetMaterial(const char* material);
-	void UpdateMesh(const char * meshData, unsigned uid);
+	void UpdateMesh(const char* meshData, unsigned uid);
 	void UpdateGameObject();
+	void LinkBones() const;
 
 public:
 	Mesh * mesh = nullptr;
