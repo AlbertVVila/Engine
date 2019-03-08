@@ -1,7 +1,6 @@
 #include "ModuleUI.h"
 
 #include "Application.h"
-
 #include "ModuleProgram.h"
 #include "ModuleResourceManager.h"
 #include "ModuleTextures.h"
@@ -9,7 +8,6 @@
 #include "ComponentCamera.h"
 
 #include "GL/glew.h"
-#include "Math/float4x4.h"
 
 ModuleUI::ModuleUI()
 {
@@ -19,13 +17,16 @@ ModuleUI::~ModuleUI()
 {
 }
 
+
+
 bool ModuleUI::Init(JSON* json)
 {
-	shader = App->program->GetProgram(shaderFile);
+	shaderCanvas = App->program->GetProgram(shaderFile);
 
-	texture = App->textures->GetTexture("Lenna");
+	texture = App->textures->GetTexture("checkersTexture");
 
-	float vertices[] = {
+	float quadVertices[] =
+	{
 			-0.5f, -0.5f, 0.0f,  // bottom left
 			-0.5f,  0.5f, 0.0f,   // top left 
 			 0.5f, -0.5f, 0.0f,  // bottom right
@@ -37,7 +38,8 @@ bool ModuleUI::Init(JSON* json)
 			1.0f, 1.0f
 	};
 
-	unsigned int indices[] = {  
+	unsigned int quadIndices[] = 
+	{  
 		0,2,1,
 		1,2,3
 	};
@@ -49,10 +51,10 @@ bool ModuleUI::Init(JSON* json)
 	glBindVertexArray(VAO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), quadVertices, GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(quadIndices), quadIndices, GL_STATIC_DRAW);
 
 	//Vertex
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
@@ -65,7 +67,7 @@ bool ModuleUI::Init(JSON* json)
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
-
+	
 	return true;
 }
 
@@ -81,32 +83,32 @@ update_status ModuleUI::PostUpdate()
 
 bool ModuleUI::CleanUp()
 {
-	if (shader != nullptr)
+	if (shaderCanvas != nullptr)
 	{
-		App->resManager->DeleteProgram(shader->file);
-		shader = nullptr;
+		App->resManager->DeleteProgram(shaderCanvas->file);
+		shaderCanvas = nullptr;
 	}
-
 	return true;
 }
 
 void ModuleUI::Draw(const ComponentCamera &camera)
 {
-	if (shader == nullptr) return;
+	if (shaderCanvas == nullptr) return;
+	//drawCanvas();
+	
+}
 
-
-	glUseProgram(shader->id);
+void ModuleUI::drawCanvas()
+{
+	glUseProgram(shaderCanvas->id);
 	glBindVertexArray(VAO);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture->id);
-	glUniform1i(glGetUniformLocation(shader->id, "texture0"), 0);
+	glUniform1i(glGetUniformLocation(shaderCanvas->id, "texture0"), 0);
 
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 	glBindVertexArray(0);
 	glUseProgram(0);
-
-
 }
-

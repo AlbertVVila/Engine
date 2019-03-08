@@ -21,9 +21,17 @@ public:
 	bool CleanUp() override;
 
 	void Draw(const ComponentCamera &camera);
+	
+
 private:
+
+	void drawCanvas();
+
+	//variables
 	const char* shaderFile = "UI";
-	Shader* shader = nullptr;
+	
+	Shader* shaderCanvas = nullptr;
+	
 
 	unsigned VAO = 0;
 	unsigned VBO = 0;
