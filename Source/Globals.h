@@ -46,4 +46,6 @@ enum update_status
 #define SCREEN_HEIGHT 720
 #define TITLE "FRACTAL ENGINE"
 
+#define MAX_BONE_NAME_LENGTH 1024
+
 #endif  __Globals_h__

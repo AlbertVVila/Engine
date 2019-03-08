@@ -11,6 +11,7 @@ struct aiBone;
 struct aiAnimation;
 class GameObject;
 class Bone;
+class Mesh;
 
 class FileImporter {
 public:
@@ -33,17 +34,9 @@ public:
 
 	void ImportMesh(const aiMesh& mesh, char* data);
 
-	std::vector<unsigned> ImportBones(const aiMesh& mesh, std::vector<Bone*> rBones,
-		std::vector<unsigned>& bonesUID, std::map<std::string*, unsigned>& boneMap,
-		std::vector<std::string*>* boneNames, unsigned meshUID);
-
-	void ImportSingleBone(const aiBone& bone, char* data);
+	void ImportBones(aiBone** bones, unsigned numBones, char* data) const;
 
 	unsigned GetMeshSize(const aiMesh& mesh) const;
-
-	unsigned GetSingleBoneSize(const aiBone& bone) const;
-
-	unsigned GetBonesSize(const aiMesh& mesh) const;
 
 	unsigned GetAnimationSize(const aiAnimation& animation) const;
 };

@@ -20,6 +20,20 @@ public:
 	bool Intersects(const LineSegment &line, float* distance);
 
 private:
+
+	struct BindBone
+	{
+		//float4x4 transform; //Transforms from mesh space to bone space
+		std::string name;
+	};
+	struct BindAttach
+	{
+		unsigned bones[4];
+		float weights[4];
+	};
+
+
+private:
 	void ComputeBBox();
 	void ProcessVertexTangent(const float vIndex1, const float vIndex2, const float vIndex3);
 	void CalculateTangents();
@@ -44,6 +58,9 @@ public:
 	std::vector<math::float3> meshTangents;
 	std::vector<float> meshTexCoords;
 	std::vector<unsigned> meshIndices;
+
+	std::vector<BindAttach> bindAttaches;
+	std::vector<BindBone> bindBones;
 };
 
 #endif

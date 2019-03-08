@@ -5,7 +5,6 @@
 
 #include <assert.h>
 
-#define MAX_NAME_LENGTH 1024
 
 Animation::Animation()
 {
@@ -46,7 +45,7 @@ void Animation::Load(const char* animationData, unsigned uid)
 			memcpy(&nameLength, animationData, sizeof(int));
 			animationData += sizeof(int);
 
-			char* name = new char[MAX_NAME_LENGTH]; //crash fix - Here we don't need to care of namelength. The /0 marks the end of the string. Notice the strings are length + 1 ALWAYS
+			char* name = new char[MAX_BONE_NAME_LENGTH]; //crash fix - Here we don't need to care of namelength. The /0 marks the end of the string. Notice the strings are length + 1 ALWAYS
 
 			memcpy(name, animationData, sizeof(char*) * nameLength);
 			animationData += sizeof(char)* nameLength;
