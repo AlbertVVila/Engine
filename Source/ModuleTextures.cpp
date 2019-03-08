@@ -80,7 +80,7 @@ unsigned ModuleTextures::LoadCubeMap(const std::string faces[]) const
 		ilBindImage(imageID); 			// Bind the image
 
 		char *data;
-		unsigned size = App->fsystem->Load((TEXTURES + faces[i] + TEXTUREEXT).c_str(), &data);
+		unsigned size = App->fsystem->Load((IMPORTED_RESOURCES + faces[i] + TEXTUREEXT).c_str(), &data);
 		success = ilLoadL(IL_DDS, data, size);
 		RELEASE_ARRAY(data);
 

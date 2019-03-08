@@ -11,6 +11,8 @@
 
 #define ASSETS "Assets/"
 #define LIBRARY "Library/"
+#define RESOURCES "Resources/"
+#define IMPORTED_RESOURCES RESOURCES "Imported/"
 #define MATERIALS LIBRARY "Materials/"
 #define MESHES LIBRARY "Meshes/"
 #define TEXTURES LIBRARY "Textures/"
@@ -18,7 +20,7 @@
 #define SHADERS "Shaders/"
 #define VERTEXSHADERS SHADERS "VertexShaders/"
 #define FRAGSHADERS SHADERS "FragmentShaders/"
-#define SKYBOX "Skybox/"
+#define SKYBOX RESOURCES "Skybox/"
 
 #define FBXEXTENSION ".fbx"
 #define FBXCAPITAL ".FBX"

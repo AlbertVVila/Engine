@@ -19,6 +19,7 @@ ModuleFileSystem::ModuleFileSystem()
 	PHYSFS_mount(LIBRARY, nullptr, 1);
 	PHYSFS_mount(ASSETS, nullptr, 1);
 	PHYSFS_mount(SHADERS, nullptr, 1);
+	PHYSFS_mount(RESOURCES, nullptr, 1);
 
 	if (!Exists(ASSETS))
 		PHYSFS_mkdir(ASSETS);
