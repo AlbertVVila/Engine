@@ -25,7 +25,6 @@ void ModuleFontLoader::LoadFonts(const char* newFont)
 		return;
 	}
 
-
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	//float4x4 projection = glm::ortho(0.0f, static_cast<GLfloat>(WIDTH), 0.0f, static_cast<GLfloat>(HEIGHT));
@@ -120,6 +119,7 @@ bool ModuleFontLoader::CleanUp()
 		App->resManager->DeleteProgram(shaderFonts->file);
 		shaderFonts = nullptr;
 	}
+	//free maps and data structures.
 	return true;
 }
 
@@ -132,7 +132,7 @@ void ModuleFontLoader::Draw()
 void ModuleFontLoader::drawText()
 {
 	//positions between -1 and 1, size 0.01 is already pretty big
-	RenderText(*shaderFonts, "EASY xd", -1.0f, -1.0f, 0.02f, float3(0.0, 0.0f, 0.0f), defaultFont);
+	RenderText(*shaderFonts, "EASY xd", 0.0f, 0.0f, 0.002f, float3(0.0, 0.0f, 0.0f), defaultFont);
 }
 
 void ModuleFontLoader::RenderText(Shader &s, std::string text, GLfloat x, GLfloat y, GLfloat scale, float3 color, const char* font)
@@ -143,14 +143,10 @@ void ModuleFontLoader::RenderText(Shader &s, std::string text, GLfloat x, GLfloa
 	glActiveTexture(GL_TEXTURE0);
 	glBindVertexArray(VAOText);
 
-	//load font characters
-	//std::vector<Character>* Characters = &fonts.find(font);
-
 	// Iterate through all characters
 	std::string::const_iterator c;
 	for (c = text.begin(); c != text.end(); c++)
 	{
-		//Character ch = fonts.find(font)[*c];
 		Character ch = fonts[font][static_cast<int>(*c)];
 
 		GLfloat xpos = x + ch.Bearing.x * scale;
