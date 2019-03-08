@@ -52,7 +52,7 @@ public:
 	ModuleTime* time = nullptr;
 	ModuleSpacePartitioning* spacePartitioning = nullptr;
 	ModuleUI* ui = nullptr;
-	ModuleFontLoader* fonts = nullptr;
+	ModuleFontLoader* fontLoader = nullptr;
 
 private:
 	std::list<Module*> modules;

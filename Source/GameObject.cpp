@@ -15,6 +15,7 @@
 #include "ComponentCamera.h"
 #include "ComponentLight.h"
 #include "ComponentRenderer.h"
+#include "ComponentText.h"
 
 #include "GUICreator.h"
 #include "Material.h"
@@ -193,6 +194,9 @@ Component * GameObject::CreateComponent(ComponentType type)
 			App->scene->maincamera = (ComponentCamera*)component;
 			App->scene->maincamera->isMainCamera = true;
 		}
+		break;
+	case ComponentType::Text:
+		component = new ComponentText(this);
 		break;
 	default:
 		break;

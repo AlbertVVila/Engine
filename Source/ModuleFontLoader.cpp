@@ -2,6 +2,8 @@
 #include "ModuleProgram.h"
 #include "Application.h"
 #include "ModuleResourceManager.h"
+#include <assert.h>
+#include "ComponentText.h"
 //fonts lib
 #include <ft2build.h>
 #include FT_FREETYPE_H 
@@ -126,26 +128,24 @@ bool ModuleFontLoader::CleanUp()
 void ModuleFontLoader::Draw()
 {
 	if (shaderFonts == nullptr)return;
-	drawText();
+	for(int i = 0; i < texts.size(); ++i)
+	{
+		RenderText(std::string(texts[i]->text), 0.0f, 0.0f, texts[i]->fontSize, texts[i]->color, texts[i]->font);
+	}
 }
 
-void ModuleFontLoader::drawText()
+void ModuleFontLoader::RenderText(std::string text, GLfloat x, GLfloat y, GLfloat scale, float3 color, const char* font)
 {
-	//positions between -1 and 1, size 0.01 is already pretty big
-	RenderText(*shaderFonts, "EASY xd", 0.0f, 0.0f, 0.002f, float3(0.0, 0.0f, 0.0f), defaultFont);
-}
-
-void ModuleFontLoader::RenderText(Shader &s, std::string text, GLfloat x, GLfloat y, GLfloat scale, float3 color, const char* font)
-{
+	assert(fonts.find(font) != fonts.end());
 	// Activate corresponding render state	
-	glUseProgram(s.id);
-	glUniform3f(glGetUniformLocation(s.id, "textColor"), color.x, color.y, color.z);
+	glUseProgram(shaderFonts->id);
+	glUniform3f(glGetUniformLocation(shaderFonts->id, "textColor"), color.x, color.y, color.z);
 	glActiveTexture(GL_TEXTURE0);
 	glBindVertexArray(VAOText);
 
 	// Iterate through all characters
 	std::string::const_iterator c;
-	for (c = text.begin(); c != text.end(); c++)
+	for (c = text.begin(); c != text.end(); ++c)
 	{
 		Character ch = fonts[font][static_cast<int>(*c)];
 
@@ -166,6 +166,7 @@ void ModuleFontLoader::RenderText(Shader &s, std::string text, GLfloat x, GLfloa
 		};
 		// Render glyph texture over quad
 		glBindTexture(GL_TEXTURE_2D, ch.TextureID);
+		//glUniform1i(glGetUniformLocation(shaderFonts->id, "fontTexture"), 0);
 		// Update content of VBO memory
 		glBindBuffer(GL_ARRAY_BUFFER, VBOText);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
