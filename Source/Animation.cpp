@@ -33,26 +33,19 @@ void Animation::Load(const char* animationData, unsigned uid)
 	
 	for (unsigned j = 0u; j < numberFrames; j++)
 	{
-		frame* newFrame = new frame();
+		frame* newFrame = new frame();//TODO:The classes or structs must begin with uppercase
 		newFrame->channels.resize(numberOfChannels); //push_back is not efficient
 
 		for (unsigned i = 0u; i < numberOfChannels; i++)
 		{
-			channel* newChannel = new channel(); //The classes must begin with uppercase
+			channel* newChannel = new channel(); //TODO:The classes or structs must begin with uppercase
 
-			unsigned nameLength = 0u;
+			char name[MAX_BONE_NAME_LENGTH]; //crash fix - Here we don't need to care of namelength. The /0 marks the end of the string. Notice the strings are length + 1 ALWAYS
 
-			memcpy(&nameLength, animationData, sizeof(int));
-			animationData += sizeof(int);
+			memcpy(name, animationData, sizeof(char) * MAX_BONE_NAME_LENGTH);
+			animationData += sizeof(char)* MAX_BONE_NAME_LENGTH;
 
-			char* name = new char[MAX_BONE_NAME_LENGTH]; //crash fix - Here we don't need to care of namelength. The /0 marks the end of the string. Notice the strings are length + 1 ALWAYS
-
-			memcpy(name, animationData, sizeof(char*) * nameLength);
-			animationData += sizeof(char)* nameLength;
-
-			newChannel->channelName = name;
-
-			RELEASE_ARRAY(name); //We don't need this anymore - Memory leak fixed
+			newChannel->channelName = std::string(name);
 
 			math::float3 translation = math::float3::zero;
 			math::Quat rotation = math::Quat::identity;

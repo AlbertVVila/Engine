@@ -158,7 +158,6 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file,
 		meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->UID));
 
 		//------------------------BONES---------------------------------------
-		// This needs to load the entire bone estructure and then store it as a unique resource
 		if (aiscene.mMeshes[i]->HasBones())
 		{
 			ImportBones(aiscene.mMeshes[i]->mBones, aiscene.mMeshes[i]->mNumBones, meshData);
@@ -321,11 +320,8 @@ void FileImporter::ImportAnimation(const aiAnimation& animation, char* data)
 	{
 		for (unsigned j = 0u; j < animation.mNumChannels; j++)
 		{
-			memcpy(cursor, &animation.mChannels[j]->mNodeName.length, sizeof(int));
-			cursor += sizeof(int);
-
-			memcpy(cursor, animation.mChannels[j]->mNodeName.C_Str(), sizeof(char) * animation.mChannels[j]->mNodeName.length);  //Name
-			cursor += sizeof(char) * animation.mChannels[j]->mNodeName.length;
+			memcpy(cursor, animation.mChannels[j]->mNodeName.C_Str(), sizeof(char) * MAX_BONE_NAME_LENGTH);  //Name
+			cursor += sizeof(char) * MAX_BONE_NAME_LENGTH;
 
 			memcpy(cursor, &animation.mChannels[j]->mPositionKeys[i], sizeof(float) * 3);
 			cursor += sizeof(float) * 3;
@@ -345,12 +341,9 @@ unsigned FileImporter::GetAnimationSize(const aiAnimation& animation) const
 
 	for (unsigned j = 0u; j < animation.mDuration; j++)
 	{
-
 		for (unsigned i = 0u; i < animation.mNumChannels; i++)
 		{
-			size += sizeof(int);
-
-			size += sizeof(char) * animation.mChannels[i]->mNodeName.length;
+			size += sizeof(char) * MAX_BONE_NAME_LENGTH;
 
 			size += sizeof(float) * 3;
 
@@ -389,37 +382,6 @@ unsigned FileImporter::GetMeshSize(const aiMesh &mesh) const
 	return size;
 }
 
-/*
-unsigned FileImporter::GetBonesSize(const aiMesh& mesh) const
-{
-
-	//Bones
-	unsigned size = 0u;
-
-	if (mesh.HasBones())
-	{
-		for (int i = 1; i < mesh.mNumBones; i++)
-		{
-			size += GetSingleBoneSize(*mesh.mBones[i]);
-		}
-	}
-
-	return size;
-}
-
-unsigned FileImporter::GetSingleBoneSize(const aiBone& bone) const
-{
-	unsigned size = 0u;
-
-	size += sizeof(int) + sizeof(char) * bone.mName.length; //name and its size
-
-	size += sizeof(int) + (sizeof(int) + sizeof(float)) * bone.mNumWeights; //Number of affected vertex + their id and weights
-
-	size += sizeof(math::float4x4); //Offset matrix of the bone
-
-	return size;
-}
-*/
 
 void FileImporter::ProcessNode(const std::map<unsigned, unsigned>& meshmap,
 	const aiNode* node, const aiScene* scene, GameObject* boneParent, GameObject* meshParent, std::vector<std::string*>* boneNames)

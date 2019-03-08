@@ -88,6 +88,17 @@ void Mesh::SetMesh(const char* meshData, unsigned uid)
 	int* indices = (int*)meshData;
 	meshData += sizeof(int) * numIndices;
 	
+	bool hasTangents = *(bool*)meshData;
+	meshData += sizeof(bool);
+
+	if (hasTangents)
+	{
+		/*int nTangents = sizeof(float3) * numVertices;
+		meshTangents.resize(numVertices);
+		memcpy(&meshTangents[0], meshData, nTangents);
+		meshData += nTangents;*/
+	}
+
 	UID = uid;
 	
 	meshVertices.resize(numVertices);

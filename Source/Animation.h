@@ -9,7 +9,7 @@
 
 struct channel
 {
-	std::string channelName;
+	std::string channelName = "";
 	math::float4x4 channelTransform = math::float4x4::identity;
 };
 
