@@ -10,7 +10,8 @@ enum class ComponentType
 	Renderer,
 	Camera,
 	Light,
-	Text
+	Text,
+	Transform2D
 };
 
 class Component

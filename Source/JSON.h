@@ -22,6 +22,7 @@ public:
 	void AddInt(const char* name, int value);
 	void AddUint(const char * name, unsigned value);
 	void AddFloat(const char * name, float value);
+	void AddFloat2(const char * name, float2 value);
 	void AddFloat3(const char * name, float3 value);
 	void AddFloat4(const char * name, float4 value);
 	void AddFloat4x4(const char * name, float4x4 value);
@@ -31,7 +32,8 @@ public:
 
 	int GetInt(const char* name) const;
 	unsigned GetUint(const char * name) const;
-	float GetFloat(const char * namee) const;
+	float GetFloat(const char * name) const;
+	float2 GetFloat2(const char * name) const;
 	float3 GetFloat3(const char * name) const;
 	float3 GetColor3(const char * name) const;
 	float4 GetFloat4(const char * name) const;
