@@ -48,8 +48,6 @@ void Mesh::SetMesh(const char* meshData, unsigned uid)
 	assert(meshData != nullptr);
 	if (meshData == nullptr) return;
 
-	const char *data = meshData; //Does this make sense? we are not using data anywhere
-	
 	unsigned numIndices = *(int*)meshData;
 	meshData += sizeof(int);
 	
@@ -99,18 +97,62 @@ void Mesh::SetMesh(const char* meshData, unsigned uid)
 		meshData += nTangents;
 	}
 
+	unsigned numBones = *(unsigned*)meshData;
+	meshData += sizeof(unsigned);
+
+	char boneName[MAX_BONE_NAME_LENGTH];
+
+	bindBones.resize(numBones);
+	bindAttaches.resize(numVertices);
+
+	for (unsigned i = 0u; i < numBones; ++i)
+	{
+		memcpy(&boneName[0], meshData, MAX_BONE_NAME_LENGTH);
+		meshData += MAX_BONE_NAME_LENGTH;
+		bindBones[i].name = boneName;
+		memcpy(&bindBones[i].transform[0][0], meshData, sizeof(math::float4x4));
+		meshData += sizeof(math::float4x4);
+
+		unsigned numWeights;
+		memcpy(&numWeights, meshData, sizeof(unsigned));
+		meshData += sizeof(unsigned);
+
+		for (unsigned j = 0u; j < numWeights; ++j)
+		{
+			unsigned vertex;
+			memcpy(&vertex, meshData, sizeof(unsigned));
+			meshData += sizeof(unsigned);
+
+			unsigned weight;
+			memcpy(&weight, meshData, sizeof(float));
+			meshData += sizeof(float);
+
+			assert(vertex < numVertices);
+
+			if (bindAttaches[vertex].nBones < MAX_WEIGHTS_PER_BONE)
+			{
+				bindAttaches[vertex].bones[bindAttaches[vertex].nBones] = i;
+				bindAttaches[vertex].weights[bindAttaches[vertex].nBones] = weight;
+				++bindAttaches[vertex].nBones;
+			}
+			else
+			{
+				LOG("Warning: Vertex %d has more weights assigned than the maxim allowed");
+			}
+		}
+	}
+
 	UID = uid;
 	
 	meshVertices.resize(numVertices);
 	meshIndices.resize(numIndices);
-	memcpy(&meshVertices[0], vertices, numVertices * sizeof(float) * 3);
-	memcpy(&meshIndices[0], indices, numIndices * sizeof(int));
+	memcpy(&meshVertices[0], vertices, numVertices * sizeof(math::float3));
+	memcpy(&meshIndices[0], indices, numIndices * sizeof(unsigned));
 
 	ComputeBBox();
 	SetMeshBuffers();
 	SetBboxBuffers();
 
-	RELEASE_ARRAY(data);
 }
 
 void Mesh::ProcessVertexTangent(const float vIndex1, const float vIndex2, const float vIndex3)

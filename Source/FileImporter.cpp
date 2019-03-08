@@ -152,16 +152,13 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file,
 		Mesh* mesh = new Mesh();
 		unsigned meshUid = App->scene->GetNewUID();
 		App->fsystem->Save((MESHES + std::to_string(meshUid)+ MESHEXTENSION).c_str(), meshData, meshSize);
-		mesh->SetMesh(meshData, meshUid); //deallocates data
+		mesh->SetMesh(meshData, meshUid); 
+		RELEASE_ARRAY(meshData);
 		// meshesUID.push_back(uid); //same as below?
 		App->resManager->AddMesh(mesh);
 		meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->UID));
 
-		//------------------------BONES---------------------------------------
-		if (aiscene.mMeshes[i]->HasBones())
-		{
-			ImportBones(aiscene.mMeshes[i]->mBones, aiscene.mMeshes[i]->mNumBones, meshData);
-		}
+		
 	}
 
 	ProcessNode(meshMap, aiscene.mRootNode, &aiscene, bonesGO, meshesGO, boneNames);
@@ -254,9 +251,22 @@ void FileImporter::ImportMesh(const aiMesh& mesh, char* data)
 		cursor += verticesBytes;
 	}
 
+	//------------------------BONES---------------------------------------
+	if (mesh.HasBones())
+	{
+		memcpy(cursor, &mesh.mNumBones, sizeof(unsigned));
+		cursor += sizeof(unsigned);
+		ImportBones(mesh.mBones, mesh.mNumBones, cursor);
+	}
+	else
+	{
+		memcpy(cursor, (unsigned)0u, sizeof(unsigned));
+		cursor += sizeof(unsigned);
+	}
+	
 }
 
-void FileImporter::ImportBones(aiBone** bones, unsigned numBones, char* data)const
+void FileImporter::ImportBones(aiBone** bones, unsigned numBones, char* data) const
 {
 	char* cursor = data;
 
@@ -297,7 +307,7 @@ void FileImporter::ImportBones(aiBone** bones, unsigned numBones, char* data)con
 			memcpy(cursor, &bones[i]->mWeights[j].mVertexId, sizeof(unsigned));
 			cursor += sizeof(unsigned);
 			memcpy(cursor, &bones[i]->mWeights[j].mWeight, sizeof(float));
-			cursor += sizeof(unsigned);
+			cursor += sizeof(float);
 		}
 	}
 }
@@ -377,7 +387,11 @@ unsigned FileImporter::GetMeshSize(const aiMesh &mesh) const
 	}
 	if (mesh.HasBones())
 	{
-		size += sizeof(mesh.mNumBones * sizeof(aiBone) * (AI_MAX_BONE_WEIGHTS * (sizeof(float) + sizeof(unsigned)))); 
+		unsigned boneSize = sizeof(char) * MAX_BONE_NAME_LENGTH;
+		boneSize += sizeof(unsigned);
+		boneSize += sizeof(math::float4x4);
+		boneSize += mesh.mNumVertices * (sizeof(unsigned) + sizeof(float));
+		size += mesh.mNumBones * boneSize;
 	}
 	return size;
 }
