@@ -26,6 +26,8 @@ ModuleResourceManager::~ModuleResourceManager()
 
 bool ModuleResourceManager::Start()
 {
+	LoadEngineResources();
+
 	//TODO: Read metafiles from Assets/ instead and import or add to resources
 	std::vector<std::string> files;
 	std::vector<std::string> dirs;
@@ -57,6 +59,19 @@ bool ModuleResourceManager::Start()
 		//res->exportedFile = written_file;
 	}
 	return true;
+}
+
+void ModuleResourceManager::LoadEngineResources()
+{
+	std::vector<std::string> files;
+	std::vector<std::string> dirs;
+	App->fsystem->ListFolderContent(IMPORTED_RESOURCES, files, dirs);
+	for each (std::string file in files)
+	{
+		Resource* res = CreateNewResource(TYPE::TEXTURE);
+		res->SetExportedFile(App->fsystem->GetFilename(file.c_str()).c_str());
+		res->SetUsedByEngine(true);
+	}
 }
 
 Shader* ModuleResourceManager::GetProgram(std::string filename) const

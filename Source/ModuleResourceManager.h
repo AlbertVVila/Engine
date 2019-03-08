@@ -46,6 +46,7 @@ public:
 	bool DeleteResource(unsigned uid);	// If references < 1 delete it from memory
 
 	std::vector<Resource*> GetResourcesList();
+	void LoadEngineResources();			// Loads resources needed by the engine (Skybox, white, no camera textures...)
 
 private:
 	std::map<unsigned, Resource*> resources;	// map<UID, pointer to resource>
