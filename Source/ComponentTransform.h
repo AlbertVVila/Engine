@@ -45,6 +45,7 @@ public:
 	math::float3 right = math::float3::zero;
 	math::float3 front = math::float3::zero;
 
+	bool isLocked = false;
 
 private:
 	math::float3 position = math::float3::zero;

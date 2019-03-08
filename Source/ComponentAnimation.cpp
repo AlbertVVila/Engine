@@ -108,6 +108,8 @@ void ComponentAnimation::Load(JSON_value* value)
 		anim->Load(data, uid);
 		App->resManager->AddAnim(anim);
 	}
+
+
 }
 
 frame* ComponentAnimation::InterpolateFrame(const frame* first, const frame* second, float lambda) const

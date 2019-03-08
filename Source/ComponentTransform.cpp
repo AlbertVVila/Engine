@@ -60,7 +60,10 @@ void ComponentTransform::AddTransform(const math::float4x4& transform)
 
 void ComponentTransform::DrawProperties()
 {
-	
+	if (isLocked)
+	{
+		return;
+	}
 	if (ImGui::CollapsingHeader("Local Transformation", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		if (gameobject->isStatic && App->time->gameState != GameState::RUN)
@@ -227,6 +230,7 @@ void ComponentTransform::Save(JSON_value* value) const
 	value->AddFloat3("Euler", eulerRotation);
 	value->AddFloat3("Scale", scale);
 	value->AddFloat4x4("Global", global);
+	value->AddUint("isLocked", isLocked);
 }
 
 void ComponentTransform::Load(JSON_value* value)
@@ -237,6 +241,7 @@ void ComponentTransform::Load(JSON_value* value)
 	eulerRotation = value->GetFloat3("Euler");
 	scale = value->GetFloat3("Scale");
 	global = value->GetFloat4x4("Global");
+	isLocked = value->GetUint("isLocked");
 	local = math::float4x4::FromTRS(position, rotation, scale);
 	RotationToEuler();
 }

@@ -8,6 +8,7 @@
 
 #include "GameObject.h"
 #include "ComponentCamera.h"
+#include "ComponentTransform.h"
 
 #include "Viewport.h"
 #include "GL/glew.h"
@@ -303,7 +304,7 @@ void Viewport::DrawImGuizmo(const ComponentCamera & cam)
 	ImGui::SetCursorPos({ 20,30 });
 	DrawGuizmoButtons();
 
-	if (App->scene->selected != nullptr)
+	if (App->scene->selected != nullptr && !((ComponentTransform*)App->scene->selected->GetComponent(ComponentType::Transform))->isLocked)
 	{
 
 		ImGuizmo::Enable(!App->scene->selected->isStatic || App->time->gameState == GameState::RUN);

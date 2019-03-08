@@ -107,7 +107,7 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file,
 	//meshesGO and bonesGO
 
 	GameObject* sceneGO = App->scene->CreateGameObject("Scene", App->scene->root);
-
+	sceneGO->CreateComponent(ComponentType::Transform); // To move all around
 	GameObject* meshesGO = nullptr;
 
 	GameObject* bonesGO = nullptr;
@@ -118,7 +118,8 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file,
 		{
 			bonesGO = App->scene->CreateGameObject("Skeleton", sceneGO);
 			bonesGO->CreateComponent(ComponentType::Transform);
-			bonesGO->isBoneRoot = true;
+			bonesGO->transform->isLocked = true;
+			bonesGO->isBoneRoot = true; 
 
 			if (aiscene.HasAnimations())
 			{
@@ -132,6 +133,11 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file,
 	if (aiscene.HasMeshes())
 	{
 		meshesGO = App->scene->CreateGameObject("Meshes", sceneGO);
+
+		ComponentTransform* meshTransform = new ComponentTransform(meshesGO);
+		meshTransform->isLocked = true;
+		meshesGO->components.push_back(meshTransform);
+		
 	}
 
 	for (unsigned i = 0u; i < aiscene.mNumMeshes; i++)
@@ -161,7 +167,8 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file,
 	ProcessNode(meshMap, aiscene.mRootNode, &aiscene, bonesGO, meshesGO, boneNames);
 
 	//-----------------------------ANIMATIONS---------------------------------------------------
-	std::map<unsigned, unsigned> animationMap;
+	std::map<unsigned, unsigned> animationMap; //TODO: REmove unused map?
+
 	for (unsigned i = 0u; i < aiscene.mNumAnimations; i++) 
 	{
 		Animation* animation = new Animation();
@@ -372,7 +379,7 @@ void FileImporter::ImportAnimation(const aiAnimation& animation, char* data)
 
 	memcpy(cursor, &animation.mTicksPerSecond, sizeof(double));
 	cursor += sizeof(double);
-
+	
 	memcpy(cursor, &animation.mNumChannels, sizeof(int));
 	cursor += sizeof(int);
 
@@ -502,6 +509,11 @@ void FileImporter::ProcessNode(const std::map<unsigned, unsigned>& meshmap,
 		aiMatrix4x4 mMesh = node->mTransformation;
 		math::float4x4 mTransform(mMesh.a1, mMesh.a2, mMesh.a3, mMesh.a4, mMesh.b1, mMesh.b2, mMesh.b3, mMesh.b4, mMesh.c1, mMesh.c2, mMesh.c3, mMesh.c4, mMesh.d1, mMesh.d2, mMesh.d3, mMesh.d4);
 		ComponentTransform* tMesh = (ComponentTransform *)meshGO->CreateComponent(ComponentType::Transform);
+		if (boneParent != nullptr)
+		{
+			tMesh->isLocked = true; //Lock transform. Only The root can be moved
+		}
+
 		tMesh->AddTransform(mTransform);
 
 		ComponentRenderer* crenderer = (ComponentRenderer*)meshGO->CreateComponent(ComponentType::Renderer);

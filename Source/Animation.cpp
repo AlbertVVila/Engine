@@ -5,6 +5,7 @@
 
 #include <assert.h>
 
+#define MAX_NAME_LENGTH 1024
 
 Animation::Animation()
 {
@@ -30,26 +31,29 @@ void Animation::Load(const char* animationData, unsigned uid)
 	memcpy(&numberOfChannels, animationData, sizeof(int));
 	animationData += sizeof(int);
 
+	
 	for (unsigned j = 0u; j < numberFrames; j++)
 	{
 		frame* newFrame = new frame();
+		newFrame->channels.resize(numberOfChannels); //push_back is not efficient
 
 		for (unsigned i = 0u; i < numberOfChannels; i++)
 		{
-			channel* newChannel = new channel();
+			channel* newChannel = new channel(); //The classes must begin with uppercase
 
 			unsigned nameLength = 0u;
 
 			memcpy(&nameLength, animationData, sizeof(int));
 			animationData += sizeof(int);
 
-			char* name = new char[nameLength];
+			char* name = new char[MAX_NAME_LENGTH]; //crash fix - Here we don't need to care of namelength. The /0 marks the end of the string. Notice the strings are length + 1 ALWAYS
 
 			memcpy(name, animationData, sizeof(char*) * nameLength);
 			animationData += sizeof(char)* nameLength;
 
-			std::string cName(name); 	//Crashes sometimes
-			newChannel->channelName = cName;
+			newChannel->channelName = name;
+
+			RELEASE_ARRAY(name); //We don't need this anymore - Memory leak fixed
 
 			math::float3 translation = math::float3::zero;
 			math::Quat rotation = math::Quat::identity;
@@ -58,13 +62,13 @@ void Animation::Load(const char* animationData, unsigned uid)
 			memcpy(&translation, animationData, sizeof(float) * 3);
 			animationData += sizeof(float) * 3;
 
-			memcpy(&rotation, animationData, sizeof(Quat));
-			animationData += sizeof(Quat);
+			memcpy(&rotation, animationData, sizeof(math::Quat));
+			animationData += sizeof(math::Quat);
 
 			math::float4x4 transform = math::float4x4::FromTRS(translation, rotation, scaling);
 			newChannel->channelTransform = transform;
 
-			newFrame->channels.push_back(newChannel);
+			newFrame->channels[i] = newChannel; 
 		}
 
 		animationFrames.push_back(newFrame);
