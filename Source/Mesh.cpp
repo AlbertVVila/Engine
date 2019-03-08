@@ -93,10 +93,10 @@ void Mesh::SetMesh(const char* meshData, unsigned uid)
 
 	if (hasTangents)
 	{
-		/*int nTangents = sizeof(float3) * numVertices;
+		int nTangents = sizeof(float3) * numVertices;
 		meshTangents.resize(numVertices);
 		memcpy(&meshTangents[0], meshData, nTangents);
-		meshData += nTangents;*/
+		meshData += nTangents;
 	}
 
 	UID = uid;
