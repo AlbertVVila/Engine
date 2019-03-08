@@ -172,13 +172,10 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 				GameObject* node = S.top();S.pop();
 				if (node->parent->transform != nullptr)
 				{
-					math::float3 childPosition;
-					math::float3 childScale;
-					math::Quat childRotation;
-
-					node->GetGlobalTransform().Decompose(childPosition, childRotation, childScale);
+					math::float3 childPosition = node->transform->GetGlobalPosition();
 
 					math::float3 position = node->parent->transform->GetGlobalPosition();
+
 					dd::line(position, childPosition, dd::colors::Red);
 				}
 				

@@ -39,6 +39,7 @@ public:
 	math::float3 eulerRotation = math::float3::zero;
 	math::float3 scale = math::float3::zero;
 	math::float4x4 local = math::float4x4::identity;
+	math::float4x4 animatedLocal = math::float4x4::identity;
 	math::float4x4 global = math::float4x4::identity;
 
 	math::float3 up = math::float3::zero;

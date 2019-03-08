@@ -4,6 +4,7 @@
 #include <vector>
 #include <list>
 #include "Geometry/AABB.h"
+#include "Math/float4x4.h"
 
 class Component;
 class ComponentTransform;
@@ -11,7 +12,7 @@ class ComponentLight;
 class ComponentAnimation;
 class AABBTreeNode;
 enum class ComponentType;
-struct frame;
+struct Frame;
 struct Texture;
 class JSON_value;
 class Animation;
@@ -29,7 +30,7 @@ public:
 
 	void Update();
 
-	void Animate(frame* frame, Animation* anim);
+	void Animate(Frame* frame, Animation* anim);
 
 	Component * CreateComponent(ComponentType type);
 	Component * GetComponent(ComponentType type) const;
@@ -70,6 +71,8 @@ public:
 	bool deleteFlag = false;
 	bool drawBBox = false;
 	AABB bbox;
+
+	math::float4x4 baseState = math::float4x4::identity;
 
 	ComponentTransform * transform = nullptr;
 	GameObject *parent = nullptr;

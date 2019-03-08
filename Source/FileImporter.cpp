@@ -184,6 +184,8 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file,
 
 		((ComponentAnimation*)(bonesGO->GetComponent(ComponentType::Animation)))->anim = animation;
 
+		//((ComponentAnimation*)(bonesGO->GetComponent(ComponentType::Animation)))->SetBaseFrame();
+
 		App->fsystem->Save((ANIMATIONS + std::to_string(animUid) + ANIMATIONEXTENSION).c_str(), animationData, animationSize);
 
 		App->resManager->AddAnim(animation);
@@ -318,15 +320,22 @@ void FileImporter::ImportAnimation(const aiAnimation& animation, char* data)
 
 	for (unsigned i = 0u; i < animation.mDuration; i++)
 	{
+		memcpy(cursor, &i, sizeof(int));
+		cursor += sizeof(int);
+
 		for (unsigned j = 0u; j < animation.mNumChannels; j++)
 		{
 			memcpy(cursor, animation.mChannels[j]->mNodeName.C_Str(), sizeof(char) * MAX_BONE_NAME_LENGTH);  //Name
 			cursor += sizeof(char) * MAX_BONE_NAME_LENGTH;
 
-			memcpy(cursor, &animation.mChannels[j]->mPositionKeys[i], sizeof(float) * 3);
+			//importar longitud array de posiciones e iterar
+
+			memcpy(cursor, &animation.mChannels[j]->mPositionKeys[i].mValue, sizeof(float) * 3);
 			cursor += sizeof(float) * 3;
 
-			memcpy(cursor, &animation.mChannels[j]->mRotationKeys[i], sizeof(math::Quat));
+			//importar longitud array de rotaciones e iterar
+
+			memcpy(cursor, &animation.mChannels[j]->mRotationKeys[i].mValue, sizeof(math::Quat));
 			cursor += sizeof(math::Quat);
 		}
 	}
@@ -341,6 +350,8 @@ unsigned FileImporter::GetAnimationSize(const aiAnimation& animation) const
 
 	for (unsigned j = 0u; j < animation.mDuration; j++)
 	{
+		size += sizeof(int);
+
 		for (unsigned i = 0u; i < animation.mNumChannels; i++)
 		{
 			size += sizeof(char) * MAX_BONE_NAME_LENGTH;
@@ -396,11 +407,12 @@ void FileImporter::ProcessNode(const std::map<unsigned, unsigned>& meshmap,
 	math::float4x4 bTransform(mBone.a1, mBone.a2, mBone.a3, mBone.a4, mBone.b1, mBone.b2, mBone.b3, mBone.b4,
 		mBone.c1, mBone.c2, mBone.c3, mBone.c4, mBone.d1, mBone.d2, mBone.d3, mBone.d4);
 
-	boneGO = App->scene->CreateGameObject(node->mName.C_Str(), boneParent); //Creating GO inside the conditional now
+	boneGO = App->scene->CreateGameObject(node->mName.C_Str(), boneParent);
 
 	ComponentTransform* tBone = (ComponentTransform*)boneGO->CreateComponent(ComponentType::Transform);
 	tBone->AddTransform(bTransform);
 
+	boneGO->baseState = bTransform;
 
 	for (unsigned j = 0u; j < node->mNumMeshes; j++) //Splits meshes of same node into diferent gameobjects 
 	{

@@ -17,6 +17,7 @@ Animation::~Animation()
 
 void Animation::Load(const char* animationData, unsigned uid)
 {
+
 	UID = uid;
 
 	memcpy(&numberFrames, animationData, sizeof(double));
@@ -30,15 +31,17 @@ void Animation::Load(const char* animationData, unsigned uid)
 	memcpy(&numberOfChannels, animationData, sizeof(int));
 	animationData += sizeof(int);
 
-	
 	for (unsigned j = 0u; j < numberFrames; j++)
 	{
-		frame* newFrame = new frame();//TODO:The classes or structs must begin with uppercase
+		Frame* newFrame = new Frame();//TODO:The classes or structs must begin with uppercase
 		newFrame->channels.resize(numberOfChannels); //push_back is not efficient
+
+		memcpy(&newFrame->number, animationData, sizeof(int));
+		animationData += sizeof(int);
 
 		for (unsigned i = 0u; i < numberOfChannels; i++)
 		{
-			channel* newChannel = new channel(); //TODO:The classes or structs must begin with uppercase
+			Channel* newChannel = new Channel(); //TODO:The classes or structs must begin with uppercase
 
 			char name[MAX_BONE_NAME_LENGTH]; //crash fix - Here we don't need to care of namelength. The /0 marks the end of the string. Notice the strings are length + 1 ALWAYS
 

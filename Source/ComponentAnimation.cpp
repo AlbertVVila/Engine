@@ -3,8 +3,10 @@
 #include "ModuleResourceManager.h"
 #include "ModuleFileSystem.h"
 
+#include "GameObject.h"
 #include "Animation.h"
 #include "ComponentAnimation.h"
+#include "ComponentTransform.h"
 
 #include "Imgui/include/imgui.h"
 #include "JSON.h"
@@ -16,14 +18,11 @@ void ComponentAnimation::DrawProperties()
 	//Name of the animation
 	ImGui::Text(anim->animationName.c_str());
 
-	//Duration of the animation in ticks
-	ImGui::Text("%f ticks", anim->duration);
-
 	//Number of frames the animation has
 	ImGui::Text("%f frames", anim->numberFrames);
 
 	//Duration of the animation
-	ImGui::Text("%f seconds", anim->durationInSeconds);
+	ImGui::Text("%i seconds", anim->durationInSeconds);
 
 	//Switch between animation frames
 	if (ImGui::InputInt("Frame #", &anim->currentFrameNumber))
@@ -42,6 +41,11 @@ void ComponentAnimation::DrawProperties()
 	//Play
 	ImGui::ArrowButton("Play", ImGuiDir_Right);
 
+}
+
+void ComponentAnimation::Update(Frame* frame, Channel* channel)
+{
+	
 }
 
 Component* ComponentAnimation::Clone() const
@@ -112,9 +116,9 @@ void ComponentAnimation::Load(JSON_value* value)
 
 }
 
-frame* ComponentAnimation::InterpolateFrame(const frame* first, const frame* second, float lambda) const
+Frame* ComponentAnimation::InterpolateFrame(const Frame* first, const Frame* second, float lambda) const
 {
-	frame* newFrame;
+	Frame* newFrame;
 	for (unsigned i = 0u; i < anim->numberOfChannels; i++)
 	{
 		math::float4x4 newTransform = InterpolateFloat4x4(first->channels[i]->channelTransform, second->channels[i]->channelTransform, lambda);

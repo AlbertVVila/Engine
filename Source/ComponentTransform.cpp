@@ -167,7 +167,7 @@ void ComponentTransform::SetWorldToLocal(const math::float4x4& newparentGlobalMa
 	RotationToEuler();
 }
 
-void ComponentTransform::SetGlobalTransform(const math::float4x4& newglobal, const math::float4x4&parentglobal)
+void ComponentTransform::SetGlobalTransform(const math::float4x4& newglobal, const math::float4x4& parentglobal)
 {
 	global = newglobal;
 	local = parentglobal.Inverted() * global;

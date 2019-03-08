@@ -153,7 +153,7 @@ void GameObject::Update()
 	//Animation shhit
 	if (isBoneRoot)
 	{
-		frame* frame = ((ComponentAnimation*)(GetComponent(ComponentType::Animation)))->anim->currentFrame;
+		Frame* frame = ((ComponentAnimation*)(GetComponent(ComponentType::Animation)))->anim->currentFrame;
 		Animation* animation = ((ComponentAnimation*)(GetComponent(ComponentType::Animation)))->anim;
 
 		Animate(frame, animation);
@@ -212,7 +212,10 @@ void GameObject::Update()
 			(*itChild)->movedFlag = false;
 		}
 
-		(*itChild)->Update(); //Update after moved_flag check
+		if (!isBoneRoot)
+		{
+			(*itChild)->Update(); //Update after moved_flag check
+		}
 
 		if ((*itChild)->copyFlag) //Copy GO
 		{
@@ -236,14 +239,17 @@ void GameObject::Update()
 	}
 }
 
-void GameObject::Animate(frame* frame, Animation* anim)
+void GameObject::Animate(Frame* frame, Animation* anim)
 {
 
 	for (unsigned i = 0u; i < anim->numberOfChannels; i++)
 	{
 		if (strcmp(name.c_str(), frame->channels[i]->channelName.c_str()) == 0)
 		{
-			transform->AddTransform(frame->channels[i]->channelTransform);
+			transform->local = frame->channels[i]->channelTransform;
+			movedFlag = true;
+			UpdateGlobalTransform();
+			break;
 		}
 	}
 
@@ -658,6 +664,7 @@ void GameObject::Save(JSON_value *gameobjects) const
 		gameobject->AddString("Name", name.c_str());
 		gameobject->AddUint("isStatic", isStatic);
 		gameobject->AddUint("isBoneRoot", isBoneRoot);
+		gameobject->AddFloat4x4("baseState", baseState);
 
 		JSON_value *componentsJSON = gameobject->CreateValue(rapidjson::kArrayType);
 		for (auto &component : components)
@@ -684,6 +691,7 @@ void GameObject::Load(JSON_value *value)
 	name = value->GetString("Name");
 	isStatic = value->GetUint("isStatic");
 	isBoneRoot = value->GetUint("isBoneRoot");
+	baseState = value->GetFloat4x4("baseState");
 
 	JSON_value* componentsJSON = value->GetValue("Components");
 	for (unsigned i = 0; i < componentsJSON->Size(); i++)
@@ -767,13 +775,13 @@ void GameObject::DrawHierarchy(GameObject * selected)
 	}
 	if (obj_open)
 	{
-		if (!this->isBoneRoot)
-		{
+	/*	if (!this->isBoneRoot)
+		{*/
 			for (auto &child : children)
 			{
 				child->DrawHierarchy(selected);
 			}
-		}
+		/*}*/
 		if (!(node_flags & ImGuiTreeNodeFlags_NoTreePushOnOpen))
 		{
 			ImGui::TreePop();

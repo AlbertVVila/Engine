@@ -7,16 +7,16 @@
 #include "Math/Quat.h"
 
 
-struct channel
+struct Channel
 {
 	std::string channelName = "";
 	math::float4x4 channelTransform = math::float4x4::identity;
 };
 
-struct frame
+struct Frame
 {
-	int time;
-	std::vector<channel*> channels;
+	unsigned number = 0u;
+	std::vector<Channel*> channels;
 };
 
 class Animation
@@ -39,8 +39,8 @@ public:
 	unsigned UID = 0u;
 
 	int currentFrameNumber = 0;
-	frame* currentFrame = nullptr;
-	std::vector<frame*> animationFrames;
+	Frame* currentFrame = nullptr;
+	std::vector<Frame*> animationFrames;
 };
 
 #endif // __ANIMATION_H_
