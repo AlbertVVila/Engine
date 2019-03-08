@@ -19,7 +19,7 @@ void ModuleFontLoader::LoadFonts(const char* newFont)
 {
 	//check if we already have this font loaded
 	std::map<const char*, std::vector<Character>>::iterator it = fonts.find(newFont);
-	if (it == fonts.end())
+	if (it != fonts.end())
 	{
 		LOG("This font was already loaded");
 		return;
@@ -46,7 +46,7 @@ void ModuleFontLoader::LoadFonts(const char* newFont)
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // Disable byte-alignment restriction
 
 	//create the map of characters of the font
-	std::vector<Character> Characters;
+	std::vector<Character> Characters(128);
 
 	for (GLubyte c = 0; c < 128; c++)
 	{
@@ -85,7 +85,7 @@ void ModuleFontLoader::LoadFonts(const char* newFont)
 			face->glyph->advance.x
 		};
 		//Characters.insert(std::pair<GLchar, Character>(c, character));
-		Characters.push_back(character);
+		Characters[c] = character;
 	}
 	fonts.insert(std::pair<const char*, std::vector<Character>>(newFont, Characters) );
 	//when we are done processing glyphs
@@ -131,7 +131,8 @@ void ModuleFontLoader::Draw()
 
 void ModuleFontLoader::drawText()
 {
-	RenderText(*shaderFonts, "EASY xd", -1.0f, -1.0f, 0.01f, float3(0.0, 0.0f, 0.0f), defaultFont);
+	//positions between -1 and 1, size 0.01 is already pretty big
+	RenderText(*shaderFonts, "EASY xd", -1.0f, -1.0f, 0.02f, float3(0.0, 0.0f, 0.0f), defaultFont);
 }
 
 void ModuleFontLoader::RenderText(Shader &s, std::string text, GLfloat x, GLfloat y, GLfloat scale, float3 color, const char* font)
@@ -143,16 +144,14 @@ void ModuleFontLoader::RenderText(Shader &s, std::string text, GLfloat x, GLfloa
 	glBindVertexArray(VAOText);
 
 	//load font characters
-	fonts.find(font);
-	std::vector<Character> Characters = fonts.find(font);
-	//std::map<GLchar, ModuleFontLoader::Character> Characters = fonts.find(font);
+	//std::vector<Character>* Characters = &fonts.find(font);
 
 	// Iterate through all characters
 	std::string::const_iterator c;
 	for (c = text.begin(); c != text.end(); c++)
 	{
 		//Character ch = fonts.find(font)[*c];
-		Character ch = fonts.find(font)[static_cast<int>(*c)];
+		Character ch = fonts[font][static_cast<int>(*c)];
 
 		GLfloat xpos = x + ch.Bearing.x * scale;
 		GLfloat ypos = y - (ch.Size.y - ch.Bearing.y) * scale;
