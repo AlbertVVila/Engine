@@ -51,7 +51,7 @@ void ComponentText::DrawProperties()
 		strcpy(text_value, text);
 		ImGui::InputText("##", text_value, MAX_TEXT_LENGTH);
 		text = text_value;
-		delete[] text_value;
+		//delete[] text_value;
 
 		//font selector
 		if (ImGui::BeginCombo("Font", font))

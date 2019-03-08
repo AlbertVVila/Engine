@@ -18,8 +18,8 @@ public:
 	void Load(const JSON_value &value) override;
 
 	//variables
-	float fontSize = 0.005;
-	const char* text = "OLI";
+	float fontSize = 14;
+	const char* text = "Fractal Text";
 	const char* font = "";
 	float3 color = float3::zero;
 };

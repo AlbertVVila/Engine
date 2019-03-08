@@ -130,7 +130,7 @@ void ModuleFontLoader::Draw()
 	if (shaderFonts == nullptr)return;
 	for(int i = 0; i < texts.size(); ++i)
 	{
-		RenderText(std::string(texts[i]->text), 0.0f, 0.0f, texts[i]->fontSize, texts[i]->color, texts[i]->font);
+		RenderText(std::string(texts[i]->text), 0.0f, 0.0f, texts[i]->fontSize*0.0001, texts[i]->color, texts[i]->font);
 	}
 }
 
