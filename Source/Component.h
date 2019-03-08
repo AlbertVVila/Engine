@@ -9,7 +9,8 @@ enum class ComponentType
 	Transform = 0,
 	Renderer,
 	Camera,
-	Light
+	Light,
+	Text
 };
 
 class Component

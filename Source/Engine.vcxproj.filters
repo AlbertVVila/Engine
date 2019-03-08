@@ -240,7 +240,10 @@
     <ClCompile Include="ComponentTransform2D.cpp">
       <Filter>Component</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleFontLoader.cpp" />
+    <ClCompile Include="ComponentText.cpp" />
+    <ClCompile Include="ModuleFontLoader.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -556,7 +559,10 @@
     <ClInclude Include="ComponentTransform2D.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleFontLoader.h" />
+    <ClInclude Include="ComponentText.h" />
+    <ClInclude Include="ModuleFontLoader.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GeoLib">

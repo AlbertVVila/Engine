@@ -95,6 +95,7 @@
     <ClInclude Include="ComponentCamera.h" />
     <ClInclude Include="ComponentLight.h" />
     <ClInclude Include="ComponentRenderer.h" />
+    <ClInclude Include="ComponentText.h" />
     <ClInclude Include="ComponentTransform.h" />
     <ClInclude Include="ComponentTransform2D.h" />
     <ClInclude Include="debugdraw.h" />
@@ -205,6 +206,7 @@
     <ClCompile Include="ComponentCamera.cpp" />
     <ClCompile Include="ComponentLight.cpp" />
     <ClCompile Include="ComponentRenderer.cpp" />
+    <ClCompile Include="ComponentText.cpp" />
     <ClCompile Include="ComponentTransform.cpp" />
     <ClCompile Include="ComponentTransform2D.cpp" />
     <ClCompile Include="FileExplorer.cpp" />

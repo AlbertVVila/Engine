@@ -31,7 +31,6 @@ public:
 	void LoadFonts(const char* newFont);
 
 	//variables
-	//std::map<const char*, std::map<GLchar, Character>> fonts;
 	std::map<const char*, std::vector<Character>> fonts;
 	const char* defaultFont = "Fonts/DroidSans.ttf";
 
