@@ -121,7 +121,7 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file,
 			bonesGO->CreateComponent(ComponentType::Transform);
 			bonesGO->transform->isLocked = true;
 			bonesGO->isBoneRoot = true; 
-
+			sceneGO->hasSkeleton = true;
 			if (aiscene.HasAnimations())
 			{
 				bonesGO->CreateComponent(ComponentType::Animation);
@@ -157,8 +157,6 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file,
 		// meshesUID.push_back(uid); //same as below?
 		App->resManager->AddMesh(mesh);
 		meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->UID));
-
-		
 	}
 
 	ProcessNode(meshMap, aiscene.mRootNode, &aiscene, bonesGO, meshesGO, boneNames);

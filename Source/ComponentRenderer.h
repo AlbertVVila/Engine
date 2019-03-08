@@ -25,6 +25,7 @@ public:
 	void SetMaterial(const char* material);
 	void UpdateMesh(const char* meshData, unsigned uid);
 	void UpdateGameObject();
+	void LinkBones() const;
 
 public:
 	Mesh * mesh = nullptr;

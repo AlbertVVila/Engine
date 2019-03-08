@@ -9,6 +9,10 @@
 #include "Math/MathConstants.h"
 #include "Math/float4x4.h"
 #include "Math/float2.h"
+#include <stack>
+
+#include "ComponentRenderer.h"
+#include "GameObject.h"
 
 Mesh::Mesh()
 {
@@ -365,6 +369,50 @@ void Mesh::DrawBbox(unsigned shader, const AABB &globalBBOX) const
 	glBindVertexArray(0);
 
 	glUseProgram(0);
+}
+
+void Mesh::LinkBones(const ComponentRenderer* renderer)
+{
+	if (bindBones.size() == 0)
+	{
+		return;
+	}
+	unsigned linkedCount = 0u;
+
+	for (unsigned i = 0u; i < bindBones.size(); ++i)
+	{
+		GameObject* node = renderer->gameobject;
+		while (!node->hasSkeleton)
+		{
+			node = node->parent;
+		}
+		
+		bool found = false;
+
+		std::stack<GameObject*> S;
+		S.push(node);
+
+		while (!S.empty() && !found)
+		{
+			node = S.top();
+			S.pop();
+			if (node->name == bindBones[i].name)
+			{
+				found = true;
+				bindBones[i].go = node;
+				++linkedCount;
+			}
+			else
+			{
+				for (GameObject* go : node->children)
+				{
+					S.push(go);
+				}
+			}
+		}
+	}
+
+	LOG("Linked %d bones from %s", linkedCount, renderer->gameobject->name.c_str());
 }
 
 void Mesh::ComputeBBox()

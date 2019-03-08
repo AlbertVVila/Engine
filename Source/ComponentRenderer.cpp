@@ -161,7 +161,7 @@ void ComponentRenderer::Load(JSON_value* value)
 	{
 		char *data = nullptr;
 		App->fsystem->Load((MESHES + std::to_string(uid) + MESHEXTENSION).c_str(), &data);
-		mesh->SetMesh(data, uid); //Deallocates data
+		mesh->SetMesh(data, uid); //Deallocates data		
 	}
 	App->resManager->AddMesh(mesh);
 	UpdateGameObject();
@@ -212,4 +212,9 @@ void ComponentRenderer::UpdateGameObject()
 		gameobject->UpdateBBox();
 		App->scene->AddToSpacePartition(gameobject);
 	}
+}
+
+void ComponentRenderer::LinkBones() const
+{
+	mesh->LinkBones(this);
 }
