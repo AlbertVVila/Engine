@@ -20,7 +20,7 @@ ModuleFontLoader::~ModuleFontLoader()
 void ModuleFontLoader::LoadFonts(const char* newFont)
 {
 	//check if we already have this font loaded
-	std::map<const char*, std::vector<Character>>::iterator it = fonts.find(newFont);
+	std::map<std::string, std::vector<Character>>::iterator it = fonts.find(newFont);
 	if (it != fonts.end())
 	{
 		LOG("This font was already loaded");
@@ -133,7 +133,7 @@ void ModuleFontLoader::Draw()
 	{
 		if ((*it)->enabled)
 		{
-			RenderText(std::string((*it)->text), 0.0f, 0.0f, (*it)->fontSize*0.0001, (*it)->color, (*it)->font);
+			RenderText(std::string((*it)->text), 0.0f, 0.0f, (*it)->fontSize*0.0001, (*it)->color, (*it)->font.c_str());
 		}
 	}
 }

@@ -31,7 +31,7 @@ public:
 	void LoadFonts(const char* newFont);
 	void RenderText(std::string text, GLfloat x, GLfloat y, GLfloat scale, float4 color, const char* font);
 public:
-	std::map<const char*, std::vector<Character>> fonts;
+	std::map<std::string, std::vector<Character>> fonts;
 	const char* defaultFont = "Fonts/DroidSans.ttf";
 	std::list<ComponentText*> texts;
 private:

@@ -51,20 +51,20 @@ void ComponentText::DrawProperties()
 		}
 		
 		//text value
-		char* text_value = new char[MAX_TEXT_LENGTH];
-		strcpy(text_value, text);
-		ImGui::InputText("##", text_value, MAX_TEXT_LENGTH);
-		text = text_value;
-		//delete[] text_value;
+		char* imguiText = new char[MAX_TEXT_LENGTH];
+		strcpy(imguiText, text.c_str());
+		ImGui::InputText("##", imguiText, MAX_TEXT_LENGTH);
+		text = imguiText;
+		delete[] imguiText;
 
 		//font selector
-		if (ImGui::BeginCombo("Font", font))
+		if (ImGui::BeginCombo("Font", font.c_str()))
 		{
-			for (std::map<const char*, std::vector<ModuleFontLoader::Character>>::iterator it = App->fontLoader->fonts.begin(); 
+			for (std::map<std::string, std::vector<ModuleFontLoader::Character>>::iterator it = App->fontLoader->fonts.begin(); 
 				it != App->fontLoader->fonts.end(); ++it)
 			{
 				bool is_selected = (*it).first == font;
-				if (ImGui::Selectable((*it).first, is_selected))
+				if (ImGui::Selectable((*it).first.c_str(), is_selected))
 				{
 					font = (*it).first;
 				}
@@ -90,8 +90,8 @@ void ComponentText::Save(JSON_value *value)const
 {
 	Component::Save(value);
 	value->AddFloat("FontSize", fontSize);
-	value->AddString("text", text);
-	value->AddString("font", font);
+	value->AddString("text", text.c_str());
+	value->AddString("font", font.c_str());
 	value->AddFloat4("color", color);
 }
 

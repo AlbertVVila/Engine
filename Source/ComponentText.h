@@ -20,8 +20,8 @@ public:
 	void Load(const JSON_value &value) override;
 public:
 	float fontSize = 14;
-	const char* text = "Fractal Text";
-	const char* font = "";
+	std::string text = "Fractal Text";
+	std::string font = "";
 	float4 color = float4(1.0f, 1.0f, 1.0f, 0.0f);
 };
 

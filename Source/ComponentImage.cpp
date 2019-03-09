@@ -61,7 +61,7 @@ void ComponentImage::DrawProperties()
 		}
 
 		//texture selector
-		if (ImGui::BeginCombo("Texture", textureName))
+		if (ImGui::BeginCombo("Texture", textureName.c_str()))
 		{
 			bool none_selected = (textureName == None);
 			if (ImGui::Selectable(None, none_selected))
@@ -81,7 +81,7 @@ void ComponentImage::DrawProperties()
 				if (ImGui::Selectable(textureFiles[n].c_str(), is_selected))
 				{
 					textureName = textureFiles[n].c_str();
-					texture = App->textures->GetTexture(textureName);
+					texture = App->textures->GetTexture(textureName.c_str());
 				}
 				if (is_selected)
 					ImGui::SetItemDefaultFocus();
@@ -103,12 +103,14 @@ void ComponentImage::DrawProperties()
 void ComponentImage::Save(JSON_value *value)const
 {
 	Component::Save(value);
-	value->AddString("textureName", textureName);
+	value->AddString("textureName", textureName.c_str());
 	value->AddFloat4("color", color);
 }
+
 void ComponentImage::Load(const JSON_value &value)
 {
 	Component::Load(value);
 	textureName = value.GetString("textureName");
 	color = value.GetFloat4("color");
+	texture = App->textures->GetTexture(textureName.c_str());
 }

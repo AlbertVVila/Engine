@@ -20,7 +20,7 @@ public:
 	void Save(JSON_value *value) const override;
 	void Load(const JSON_value &value) override;
 
-	const char* textureName = "None Selected";
+	std::string textureName = "None Selected";
 	float4 color = float4(1.0f, 1.0f, 1.0f, 1.0f);
 	Texture* texture = nullptr;
 
