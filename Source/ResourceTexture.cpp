@@ -76,10 +76,18 @@ bool ResourceTexture::LoadTexture()
 	unsigned imageID;
 
 	char *data;
+	unsigned size;
 	std::string filename(exportedFileName);
 
 	// Load image file
-	unsigned size = App->fsystem->Load((TEXTURES + filename + TEXTUREEXT).c_str(), &data);;
+	if (IsUsedByEngine)
+	{
+		size = App->fsystem->Load((IMPORTED_RESOURCES + filename + TEXTUREEXT).c_str(), &data);
+	}
+	else
+	{
+		size = App->fsystem->Load((TEXTURES + filename + TEXTUREEXT).c_str(), &data);
+	}
 
 	if (size == 0u)
 	{
@@ -158,9 +166,18 @@ bool ResourceTexture::LoadCubemap()
 	unsigned imageID;
 
 	char *data;
+	unsigned size;
 	std::string filename(exportedFileName);
 
-	unsigned size = App->fsystem->Load((IMPORTED_RESOURCES + filename + TEXTUREEXT).c_str(), &data);
+	// Load image file
+	if (IsUsedByEngine)
+	{
+		size = App->fsystem->Load((IMPORTED_RESOURCES + filename + TEXTUREEXT).c_str(), &data);
+	}
+	else
+	{
+		size = App->fsystem->Load((TEXTURES + filename + TEXTUREEXT).c_str(), &data);
+	}
 
 	if (size == 0u)
 	{
