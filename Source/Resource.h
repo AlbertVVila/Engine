@@ -13,6 +13,7 @@ enum class TYPE
 	SCENE,
 	BONE,
 	ANIMATION,
+	MATERIAL,
 	UNKNOWN
 };
 

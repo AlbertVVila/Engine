@@ -198,9 +198,6 @@
     <ClCompile Include="MaterialEditor.cpp">
       <Filter>Material</Filter>
     </ClCompile>
-    <ClCompile Include="Material.cpp">
-      <Filter>Material</Filter>
-    </ClCompile>
     <ClCompile Include="ImGuizmo\ImGuizmo.cpp">
       <Filter>Imguizmo</Filter>
     </ClCompile>
@@ -243,6 +240,10 @@
     <ClCompile Include="PanelResourceManager.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
+    <ClCompile Include="ResourceMaterial.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelBrowser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -513,9 +514,6 @@
     <ClInclude Include="MaterialEditor.h">
       <Filter>Material</Filter>
     </ClInclude>
-    <ClInclude Include="Material.h">
-      <Filter>Material</Filter>
-    </ClInclude>
     <ClInclude Include="ImGuizmo\ImGuizmo.h">
       <Filter>Imguizmo</Filter>
     </ClInclude>
@@ -561,6 +559,10 @@
     <ClInclude Include="PanelResourceManager.h">
       <Filter>Panels</Filter>
     </ClInclude>
+    <ClInclude Include="ResourceMaterial.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelBrowser.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GeoLib">

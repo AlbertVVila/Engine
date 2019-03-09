@@ -4,7 +4,7 @@
 
 #include <string>
 
-class Material;
+class ResourceMaterial;
 
 class MaterialEditor
 {
@@ -21,8 +21,8 @@ public:
 public:
 	bool open = false;
 	bool isCreated = false;
-	Material* material = nullptr;
-	Material* previous = nullptr;
+	ResourceMaterial* material = nullptr;
+	ResourceMaterial* previous = nullptr;
 
 	std::string current_shader = None;
 	std::string current_diffuse = None;

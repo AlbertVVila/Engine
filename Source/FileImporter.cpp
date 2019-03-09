@@ -10,7 +10,6 @@
 #include "ComponentTransform.h"
 
 #include "FileImporter.h"
-#include "Material.h"
 
 #include "Resource.h"
 #include "ResourceMesh.h"
@@ -204,7 +203,7 @@ GameObject* FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshma
 		if (it != meshmap.end())
 		{
 			RELEASE(crenderer->mesh);
-			crenderer->mesh = App->resManager->GetMesh(it->second);
+			crenderer->mesh = (ResourceMesh*)App->resManager->Get(it->second);
 			gameobjects[i]->UpdateBBox();
 		}
 	} 

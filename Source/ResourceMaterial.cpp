@@ -1,50 +1,54 @@
-
-#include "Application.h"
-
-#include "ModuleFileSystem.h"
-#include "ModuleTextures.h"
-#include "ModuleProgram.h"
-#include "ModuleResourceManager.h"
-
-#include "Resource.h"
-#include "ResourceTexture.h"
-#include "Material.h"
+#include "ResourceMaterial.h"
 
 #include "Globals.h"
+#include "Application.h"
+#include "ModuleProgram.h"
+#include "ModuleTextures.h"
+#include "ModuleResourceManager.h"
+#include "ModuleFileSystem.h"
+
+#include "ResourceTexture.h"
+
 #include "JSON.h"
 #include "GL/glew.h"
 
-Material::Material()
+ResourceMaterial::ResourceMaterial(unsigned uid) : Resource(uid, TYPE::MATERIAL)
 {
 }
 
-Material::Material(const Material& material)
+ResourceMaterial::ResourceMaterial(const ResourceMaterial& resource) : Resource(resource)
 {
-	name = material.name;
-	if (material.shader != nullptr)
+	name = resource.name;
+	if (resource.shader != nullptr)
 	{
-		shader = App->program->GetProgram(material.shader->file.c_str());
+		shader = App->program->GetProgram(resource.shader->file.c_str());
 	}
 	for (unsigned i = 0; i < MAXTEXTURES; ++i)
 	{
-		if (material.textures[i] != nullptr)
+		if (resource.textures[i] != nullptr)
 		{
-			textures[i] = App->textures->GetTexture(material.textures[i]->GetExportedFile());
+			textures[i] = (ResourceTexture*)App->resManager->Get(resource.textures[i]->GetExportedFile());
 		}
 	}
 
-	diffuse_color = material.diffuse_color;
-	specular_color = material.specular_color;
-	emissive_color = material.emissive_color;
+	diffuse_color = resource.diffuse_color;
+	specular_color = resource.specular_color;
+	emissive_color = resource.emissive_color;
 
-	kAmbient = material.kAmbient;
-	kDiffuse = material.kDiffuse;
-	kSpecular = material.kSpecular;
-	shininess = material.shininess;
+	kAmbient = resource.kAmbient;
+	kDiffuse = resource.kDiffuse;
+	kSpecular = resource.kSpecular;
+	shininess = resource.shininess;
 }
 
-Material::~Material()
+ResourceMaterial::~ResourceMaterial()
 {
+	DeleteFromMemory();
+}
+
+void ResourceMaterial::DeleteFromMemory()
+{
+	Resource::DeleteFromMemory();
 	if (shader != nullptr)
 	{
 		App->resManager->DeleteProgram(shader->file);
@@ -60,45 +64,47 @@ Material::~Material()
 	}
 }
 
-void Material::Load(const char * materialfile)
+bool ResourceMaterial::LoadInMemory()
 {
 	char* data = nullptr;
-	std::string materialName(materialfile);
-	App->fsystem->Load((MATERIALS + materialName + JSONEXT).c_str(), &data);
+	// Load JSON
+	if (App->fsystem->Load((MATERIALS + exportedFileName + JSONEXT).c_str(), &data) == 0)
+		return false;
+
 	JSON *json = new JSON(data);
 	JSON_value *materialJSON = json->GetValue("material");
-	
-	name = materialName;
+
+	name = exportedFileName;
 	diffuse_color = materialJSON->GetColor4("diffuseColor");
 	specular_color = materialJSON->GetColor3("specularColor");
 	emissive_color = materialJSON->GetColor3("emissiveColor");
-	
+
 	kAmbient = materialJSON->GetFloat("kAmbient");
 	kDiffuse = materialJSON->GetFloat("kDiffuse");
 	kSpecular = materialJSON->GetFloat("kSpecular");
 	shininess = materialJSON->GetFloat("shininess");
-	
+
 	const char *diffuseFile = materialJSON->GetString("diffuse");
 	if (diffuseFile != nullptr)
 	{
-		textures[(unsigned)TextureType::DIFFUSE] = App->textures->GetTexture(diffuseFile);
+		textures[(unsigned)TextureType::DIFFUSE] = (ResourceTexture*)App->resManager->Get(diffuseFile);
 	}
 	const char *specularFile = materialJSON->GetString("specular");
 	if (specularFile != nullptr)
 	{
-		textures[(unsigned)TextureType::SPECULAR] = App->textures->GetTexture(specularFile);
+		textures[(unsigned)TextureType::SPECULAR] = (ResourceTexture*)App->resManager->Get(specularFile);
 	}
 	const char *occlusionFile = materialJSON->GetString("occlusion");
 	if (occlusionFile != nullptr)
 	{
-		textures[(unsigned)TextureType::OCCLUSION] = App->textures->GetTexture(occlusionFile);
+		textures[(unsigned)TextureType::OCCLUSION] = (ResourceTexture*)App->resManager->Get(occlusionFile);
 	}
 	const char *emissiveFile = materialJSON->GetString("emissive");
 	if (emissiveFile != nullptr)
 	{
-		textures[(unsigned)TextureType::EMISSIVE] = App->textures->GetTexture(emissiveFile);
+		textures[(unsigned)TextureType::EMISSIVE] = (ResourceTexture*)App->resManager->Get(emissiveFile);
 	}
-	
+
 	const char* shaderName = materialJSON->GetString("shader");
 	if (shaderName != nullptr)
 	{
@@ -107,28 +113,30 @@ void Material::Load(const char * materialfile)
 
 	RELEASE_ARRAY(data);
 	RELEASE(json);
+	++loaded;
+	return true;
 }
 
-void Material::Save() const
+void ResourceMaterial::Save() const
 {
 	JSON *json = new JSON();
 	JSON_value *materialJSON = json->CreateValue();
-	
-	if(textures[(unsigned) TextureType::DIFFUSE] != nullptr)
+
+	if (textures[(unsigned)TextureType::DIFFUSE] != nullptr)
 		materialJSON->AddFloat4("diffuseColor", diffuse_color);
-	
+
 	if (textures[(unsigned)TextureType::SPECULAR] != nullptr)
 		materialJSON->AddFloat3("specularColor", specular_color);
-	
+
 	if (textures[(unsigned)TextureType::EMISSIVE] != nullptr)
 		materialJSON->AddFloat3("emissiveColor", emissive_color);
-	
+
 	materialJSON->AddFloat("kAmbient", kAmbient);
 	materialJSON->AddFloat("kDiffuse", kDiffuse);
 	materialJSON->AddFloat("kSpecular", kSpecular);
 	materialJSON->AddFloat("shininess", shininess);
-	
-	
+
+
 	if (textures[(unsigned)TextureType::DIFFUSE] != nullptr)
 	{
 		materialJSON->AddString("diffuse", textures[(unsigned)TextureType::DIFFUSE]->GetFile());
@@ -145,57 +153,24 @@ void Material::Save() const
 	{
 		materialJSON->AddString("emissive", textures[(unsigned)TextureType::EMISSIVE]->GetFile());
 	}
-	
+
 	if (shader != nullptr)
 	{
 		materialJSON->AddString("shader", shader->file.c_str());
 	}
 	
 	json->AddValue("material", *materialJSON);
-	
-	App->fsystem->Save((MATERIALS + name + JSONEXT).c_str(), json->ToString().c_str(),json->Size());
+
+	App->fsystem->Save((MATERIALS + name + JSONEXT).c_str(), json->ToString().c_str(), json->Size());
 	RELEASE(json);
 }
 
-void Material::Reset(const Material & material)
-{
-	name = material.name;
-
-	if (shader != nullptr)
-	{
-		App->resManager->DeleteProgram(shader->file);
-	}
-	if (material.shader != nullptr)
-	{
-		shader = App->program->GetProgram(material.shader->file.c_str());
-	}
-	for (unsigned i = 0; i < MAXTEXTURES; ++i)
-	{
-		if (textures[i] != nullptr)
-		{
-			App->resManager->DeleteResource(textures[i]->GetUID());
-		}
-		if (material.textures[i] != nullptr)
-		{
-			textures[i] = App->textures->GetTexture(material.textures[i]->GetExportedFile());
-		}
-	}
-	diffuse_color = material.diffuse_color;
-	specular_color = material.specular_color;
-	emissive_color = material.emissive_color;
-
-	kAmbient = material.kAmbient;
-	kDiffuse = material.kDiffuse;
-	kSpecular = material.kSpecular;
-	shininess = material.shininess;
-}
-
-ResourceTexture * Material::GetTexture(TextureType type) const
+ResourceTexture* ResourceMaterial::GetTexture(TextureType type) const
 {
 	return textures[(unsigned)type];
 }
 
-std::list<ResourceTexture*> Material::GetTextures() const
+std::list<ResourceTexture*> ResourceMaterial::GetTextures() const
 {
 	std::list<ResourceTexture*> mytextures;
 	for (unsigned i = 0; i < MAXTEXTURES; i++)
@@ -208,7 +183,7 @@ std::list<ResourceTexture*> Material::GetTextures() const
 	return mytextures;
 }
 
-void Material::SetUniforms(unsigned shader) const
+void ResourceMaterial::SetUniforms(unsigned shader) const
 {
 	for (unsigned int i = 0; i < MAXTEXTURES; i++)
 	{
@@ -280,4 +255,37 @@ void Material::SetUniforms(unsigned shader) const
 		"material.k_specular"), 1, (GLfloat*)&kSpecular);
 	glUniform1fv(glGetUniformLocation(shader,
 		"material.shininess"), 1, (GLfloat*)&shininess);
+}
+
+void ResourceMaterial::Reset(const ResourceMaterial & material)
+{
+	name = material.name;
+
+	if (shader != nullptr)
+	{
+		App->resManager->DeleteProgram(shader->file);
+	}
+	if (material.shader != nullptr)
+	{
+		shader = App->program->GetProgram(material.shader->file.c_str());
+	}
+	for (unsigned i = 0; i < MAXTEXTURES; ++i)
+	{
+		if (textures[i] != nullptr)
+		{
+			App->resManager->DeleteResource(textures[i]->GetUID());
+		}
+		if (material.textures[i] != nullptr)
+		{
+			textures[i] = (ResourceTexture*)App->resManager->Get(material.textures[i]->GetExportedFile());
+		}
+	}
+	diffuse_color = material.diffuse_color;
+	specular_color = material.specular_color;
+	emissive_color = material.emissive_color;
+
+	kAmbient = material.kAmbient;
+	kDiffuse = material.kDiffuse;
+	kSpecular = material.kSpecular;
+	shininess = material.shininess;
 }

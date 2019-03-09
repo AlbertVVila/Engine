@@ -10,10 +10,10 @@
 
 #include "Resource.h"
 #include "ResourceMesh.h"
+#include "ResourceMaterial.h"
 
 #include "myQuadTree.h"
 #include "MaterialEditor.h"
-#include "Material.h"
 #include "JSON.h"
 
 #include "imgui.h"
@@ -27,16 +27,24 @@ ComponentRenderer::ComponentRenderer(GameObject* gameobject) : Component(gameobj
 
 ComponentRenderer::ComponentRenderer(const ComponentRenderer& component) : Component(component)
 {
-	mesh = App->resManager->GetMesh(component.mesh->GetUID());
-	material = component.material;
-	App->resManager->AddMaterial(material);
+	mesh = (ResourceMesh*)App->resManager->Get(component.mesh->GetUID());
+	material = (ResourceMaterial*)App->resManager->Get(component.material->GetUID());
 }
 
 ComponentRenderer::~ComponentRenderer()
 {
-	material = nullptr; //Resource Manager Deallocates resources (materials, meshes)
-	App->resManager->DeleteResource(mesh->GetUID());
-	mesh = nullptr;
+	//Resource Manager Deallocates resources (materials, meshes)
+	if (mesh != nullptr)
+	{
+		App->resManager->DeleteResource(mesh->GetUID());
+		mesh = nullptr;
+	}
+
+	if (material != nullptr)
+	{
+		App->resManager->DeleteResource(material->GetUID());
+		material = nullptr;
+	}
 }
 
 Component * ComponentRenderer::Clone() const
@@ -97,13 +105,16 @@ void ComponentRenderer::DrawProperties()
 
 bool ComponentRenderer::CleanUp()
 {
-	if (material != nullptr)
-	{
-		App->resManager->DeleteMaterial(material->name);
-	}
 	if (mesh != nullptr)
 	{
 		App->resManager->DeleteResource(mesh->GetUID());
+		mesh = nullptr;
+	}
+
+	if (material != nullptr)
+	{
+		App->resManager->DeleteResource(material->GetUID());
+		material = nullptr;
 	}
 	return true;
 }
@@ -119,7 +130,7 @@ void ComponentRenderer::Load(const JSON_value & value)
 {
 	Component::Load(value);
 	unsigned uid = value.GetUint("meshUID");
-	ResourceMesh* m = App->resManager->GetMesh(uid); //Look for loaded meshes
+	ResourceMesh* m = (ResourceMesh*)App->resManager->Get(uid); //Look for loaded meshes
 	if (m != nullptr)
 	{
 		mesh = m;
@@ -128,7 +139,7 @@ void ComponentRenderer::Load(const JSON_value & value)
 	{
 		ResourceMesh* res = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH, uid);
 		res->SetExportedFile(std::to_string(uid).c_str());
-		m = App->resManager->GetMesh(uid); //Look for loaded meshes
+		m = (ResourceMesh*)App->resManager->Get(uid); //Look for loaded meshes
 		if (m != nullptr)
 			m = res;
 	}
@@ -142,27 +153,17 @@ void ComponentRenderer::SetMaterial(const char * materialfile)
 {
 	if (materialfile == nullptr)
 	{
-		materialfile = DEFAULTMAT;
+		materialfile = App->resManager->Get(DEFAULTMAT)->GetExportedFile();
 	}
 
 	if (material == nullptr || material->name != materialfile)
 	{
 		if (material != nullptr)
 		{
-			App->resManager->DeleteMaterial(material->name);
+			App->resManager->DeleteResource(material->GetUID());
 		}
 
-		Material *mat = App->resManager->GetMaterial(materialfile);
-		if (mat == nullptr)
-		{
-			material = new Material();
-			material->Load(materialfile);
-		}
-		else
-		{
-			material = mat;
-		}
-		App->resManager->AddMaterial(material);
+		material = (ResourceMaterial*)App->resManager->Get(materialfile);
 	}
 	return;
 }

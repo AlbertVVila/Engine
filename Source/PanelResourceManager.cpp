@@ -2,10 +2,12 @@
 
 #include "Application.h"
 #include "ModuleResourceManager.h"
+#include "ModuleProgram.h"
 
 #include "Resource.h"
 #include "ResourceTexture.h"
 #include "ResourceMesh.h"
+#include "ResourceMaterial.h"
 
 #include "imgui.h"
 #include <algorithm>
@@ -120,6 +122,9 @@ void PanelResourceManager::Draw()
 		case TYPE::ANIMATION:
 			ImGui::Text("Animation");
 			break;
+		case TYPE::MATERIAL:
+			ImGui::Text("Material");
+			break;
 		default:
 		case TYPE::UNKNOWN:
 			ImGui::Text("Unknown");
@@ -131,8 +136,13 @@ void PanelResourceManager::Draw()
 		{
 			switch (resource->GetType())
 			{
-			case TYPE::TEXTURE: openTextureWindow = true; break;
-			case TYPE::MESH: openMeshWindow = true; break;
+			case TYPE::TEXTURE:		openTextureWindow = true; break;
+			case TYPE::MESH:		openMeshWindow = true; break;
+			/*case TYPE::AUDIO:		break;
+			case TYPE::SCENE:		break;
+			case TYPE::BONE:		break;
+			case TYPE::ANIMATION:	break;*/
+			case TYPE::MATERIAL:	openMaterialWindow = true; break;
 			}
 			previous = resource;
 		}
@@ -151,6 +161,8 @@ void PanelResourceManager::Draw()
 		DrawResourceTexture();
 	if (openMeshWindow)
 		DrawResourceMesh();
+	if (openMaterialWindow)
+		DrawResourceMaterial();
 	ImGui::End();
 }
 
@@ -303,9 +315,67 @@ void PanelResourceManager::DrawResourceMesh()
 	ImGui::End();
 }
 
+void PanelResourceManager::DrawResourceMaterial()
+{
+	if (!ImGui::Begin("Texture Manager", &openMaterialWindow))
+	{
+		ImGui::End();
+		return;
+	}
+	ResourceMaterial& material = *(ResourceMaterial*)previous;
+	std::string exportedFile(material.GetExportedFile());
+	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), (exportedFile + ":").c_str());
+	ImGui::Columns(2);
+
+	float kAmbient = 0.3f;
+	float kDiffuse = 0.2f;
+	float kSpecular = 0.1f;
+	float shininess = 32.f;
+
+	ImGui::Text("Name: %s", material.name.c_str());
+	if(material.shader != nullptr)
+		ImGui::Text("Shader: %s", material.shader->file.c_str());
+
+	// Colors
+	math::float4 diffuse_color = material.diffuse_color;
+	ImGui::ColorEdit4("Diffuse Color", &(float&)diffuse_color, ImGuiColorEditFlags_NoInputs);
+	math::float3 specular_color = material.specular_color;
+	ImGui::ColorEdit3("Specular Color", &(float&)specular_color, ImGuiColorEditFlags_NoInputs);
+	math::float3 emissive_color = material.emissive_color;
+	ImGui::ColorEdit3("Emissive Color", &(float&)emissive_color, ImGuiColorEditFlags_NoInputs);
+
+	ImGui::Text("K Ambient: %f", material.kAmbient);
+	ImGui::Text("K Diffuse: %f", material.kDiffuse);
+	ImGui::Text("K Specular: %f", material.kSpecular);
+	ImGui::Text("Shininess: %f", material.shininess);
+	ImGui::NextColumn();
+
+	// Textures
+	unsigned i = 0;
+	for each(auto texture in material.textures)
+	{
+		i++;
+		ImGui::Text("Texture %u:", i); ImGui::SameLine();
+		if (texture != nullptr)
+		{
+			ImGui::Text(texture->GetExportedFile());
+			ImGui::Image((ImTextureID)texture->gpuID, ImVec2(100.0f, 100.0f), ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f));
+		}
+		else
+		{
+			ImGui::Text("NULL");
+			ImGui::Image(0, ImVec2(100.0f, 100.0f), ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f));
+		}
+	}
+	ImGui::NextColumn();
+	// TODO: [Resource Manager] Add preview of the material on a sphere
+
+	ImGui::End();
+}
+
 void PanelResourceManager::CleanUp()
 {
-	if(!openTextureWindow && !openMeshWindow)
+	if(!openTextureWindow && !openMeshWindow && !openMaterialWindow)
 		previous = nullptr;
 
 	if (auxResource != nullptr)

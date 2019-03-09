@@ -4,7 +4,7 @@
 #include "Component.h"
 
 class ResourceMesh;
-class Material;
+class ResourceMaterial;
 
 class ComponentRenderer :
 	public Component
@@ -27,8 +27,8 @@ public:
 	void UpdateGameObject();
 
 public:
-	ResourceMesh * mesh = nullptr;
-	Material * material = nullptr;
+	ResourceMesh* mesh = nullptr;
+	ResourceMaterial* material = nullptr;
 
 private:
 	std::vector<std::string> guiMaterials;

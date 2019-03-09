@@ -35,6 +35,7 @@ ResourceMesh::ResourceMesh(const ResourceMesh& resource) : Resource(resource)
 
 ResourceMesh::~ResourceMesh()
 {
+	Resource::DeleteFromMemory();
 	DeleteFromMemory();
 }
 
@@ -53,6 +54,7 @@ bool ResourceMesh::LoadInMemory()
 
 void ResourceMesh::DeleteFromMemory()
 {
+	Resource::DeleteFromMemory();
 	if (VAO != 0)
 	{
 		glDeleteVertexArrays(1, &VAO);

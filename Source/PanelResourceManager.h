@@ -24,6 +24,7 @@ private:
 	void OpenResourceEditor();
 	void DrawResourceTexture();
 	void DrawResourceMesh();
+	void DrawResourceMaterial();
 	void CleanUp();
 
 private:
@@ -35,6 +36,7 @@ private:
 	bool openEditor = false;
 	bool openTextureWindow = false;
 	bool openMeshWindow = false;
+	bool openMaterialWindow = false;
 
 	SORTING sortList = SORTING::REFERENCES;
 	bool descending = false;

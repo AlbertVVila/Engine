@@ -7,8 +7,8 @@
 
 #include "Resource.h"
 #include "ResourceTexture.h"
+#include "ResourceMaterial.h"
 
-#include "Material.h"
 #include "MaterialEditor.h"
 #include "imgui.h"
 
@@ -32,12 +32,13 @@ void MaterialEditor::Draw()
 			ImGui::OpenPopup(materialPopup);
 			if (isCreated)
 			{
-				material = new Material();
+				//material = new ResourceMaterial();
+				App->resManager->CreateNewResource(TYPE::MATERIAL);
 			}
 			else
 			{
 				SetCurrentTextures();
-				previous = new Material(*material); //Save changes if cancel
+				previous = new ResourceMaterial(*material); //Save changes if cancel
 			}
 		}
 		ImGui::SetNextWindowSizeConstraints(ImVec2(200, 200), ImVec2(500, 500));
@@ -165,7 +166,7 @@ void MaterialEditor::TextureSelector(unsigned i, std::string &current_texture)
 			if (ImGui::Selectable(textureFiles[n].c_str(), is_selected))
 			{
 				current_texture = textureFiles[n];
-				material->textures[i] = App->textures->GetTexture(current_texture.c_str());
+				material->textures[i] = (ResourceTexture*)App->resManager->Get(current_texture.c_str());
 			}
 			if (is_selected)
 				ImGui::SetItemDefaultFocus();

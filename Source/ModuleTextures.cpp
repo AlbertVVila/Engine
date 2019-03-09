@@ -63,32 +63,6 @@ void ModuleTextures::DrawGUI()
 	ImGui::RadioButton("Linear MipMap", (int*)&filter_type, (unsigned)FILTERTYPE::LINEAR_MIPMAP_LINEAR);
 }
 
-ResourceTexture * ModuleTextures::GetTexture(const char * file) const
-{
-	assert(file != NULL);
-
-	// Look for it on the resource list
-	unsigned uid = App->resManager->Find(file);
-	if (uid == 0) 
-		return nullptr;
-		
-	// Check if is already loaded in memory
-	ResourceTexture* textureResource = (ResourceTexture*)App->resManager->Get(uid);
-	if (!textureResource->IsLoadedToMemory())
-	{
-		// Load in memory
-		if (textureResource->LoadInMemory())
-			return textureResource;
-		else
-			return nullptr;
-	}
-	else
-	{
-		textureResource->SetReferences(textureResource->GetReferences() + 1);
-		return textureResource;
-	}
-}
-
 unsigned ModuleTextures::LoadCubeMap(const std::string faces[]) const
 {
 	unsigned textureID;
