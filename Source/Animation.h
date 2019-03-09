@@ -10,13 +10,10 @@
 struct Channel
 {
 	std::string channelName = "";
-	math::float4x4 channelTransform = math::float4x4::identity;
-};
-
-struct Frame
-{
-	unsigned number = 0u;
-	std::vector<Channel*> channels;
+	unsigned numPositionKeys = 0u;
+	unsigned numRotationKeys = 0u;
+	std::vector<math::float3> positionSamples;
+	std::vector<math::Quat> rotationSamples;
 };
 
 class Animation
@@ -27,6 +24,15 @@ public:
 public:
 	void Load(const char* animationData, unsigned uid);
 	void Unload();
+
+	unsigned GetNumPositions(unsigned indexChannel) const;
+	const math::float3 GetPosition(unsigned indexChannel, unsigned indexPosition) const;
+	
+	unsigned GetNumRotations(unsigned indexChannel) const;
+	const math::Quat GetRotation(unsigned indexChannel, unsigned indexPosition) const;
+
+	unsigned GetIndexChannel(std::string name) const;
+
 public:
 
 	std::string animationName;
@@ -38,9 +44,9 @@ public:
 
 	unsigned UID = 0u;
 
-	int currentFrameNumber = 0;
-	Frame* currentFrame = nullptr;
-	std::vector<Frame*> animationFrames;
+	unsigned currentSample = 0u;
+
+	std::vector<Channel*> channels;
 };
 
 #endif // __ANIMATION_H_

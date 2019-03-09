@@ -24,19 +24,19 @@ void ComponentAnimation::DrawProperties()
 	//Duration of the animation
 	ImGui::Text("%i seconds", anim->durationInSeconds);
 
-	//Switch between animation frames
-	if (ImGui::InputInt("Frame #", &anim->currentFrameNumber))
-	{
-		if (anim->currentFrameNumber < 0)
-		{
-			anim->currentFrameNumber = anim->numberFrames - 1;
-		}
-		else if(anim->currentFrameNumber >= anim->numberFrames)
-		{
-			anim->currentFrameNumber = 0;
-		}
-		anim->currentFrame = anim->animationFrames[anim->currentFrameNumber];
-	}
+	////Switch between animation frames
+	//if (ImGui::InputInt("Frame #", &anim->currentFrameNumber))
+	//{
+	//	if (anim->currentFrameNumber < 0)
+	//	{
+	//		anim->currentFrameNumber = anim->numberFrames - 1;
+	//	}
+	//	else if(anim->currentFrameNumber >= anim->numberFrames)
+	//	{
+	//		anim->currentFrameNumber = 0;
+	//	}
+	//	anim->currentFrame = anim->animationFrames[anim->currentFrameNumber];
+	//}
 
 	//Play
 	ImGui::ArrowButton("Play", ImGuiDir_Right);
@@ -119,12 +119,12 @@ void ComponentAnimation::Load(JSON_value* value)
 Frame* ComponentAnimation::InterpolateFrame(const Frame* first, const Frame* second, float lambda) const
 {
 	Frame* newFrame;
-	for (unsigned i = 0u; i < anim->numberOfChannels; i++)
-	{
-		math::float4x4 newTransform = InterpolateFloat4x4(first->channels[i]->channelTransform, second->channels[i]->channelTransform, lambda);
-		newFrame->channels[i]->channelName = first->channels[i]->channelName;
-		newFrame->channels[i]->channelTransform = newTransform;
-	}
+	//for (unsigned i = 0u; i < anim->numberOfChannels; i++)
+	//{
+	//	math::float4x4 newTransform = InterpolateFloat4x4(first->channels[i]->channelTransform, second->channels[i]->channelTransform, lambda);
+	//	newFrame->channels[i]->channelName = first->channels[i]->channelName;
+	//	newFrame->channels[i]->channelTransform = newTransform;
+	//}
 
 	return newFrame;
 }

@@ -234,6 +234,7 @@
     <ClCompile Include="Bone.cpp">
       <Filter>Animation</Filter>
     </ClCompile>
+    <ClCompile Include="AnimationController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -564,6 +565,7 @@
     <ClInclude Include="Bone.h">
       <Filter>Animation</Filter>
     </ClInclude>
+    <ClInclude Include="AnimationController.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GeoLib">

@@ -31,43 +31,71 @@ void Animation::Load(const char* animationData, unsigned uid)
 	memcpy(&numberOfChannels, animationData, sizeof(int));
 	animationData += sizeof(int);
 
-	for (unsigned j = 0u; j < numberFrames; j++)
+	for (unsigned i = 0u; i < numberOfChannels; i++)
 	{
-		Frame* newFrame = new Frame();//TODO:The classes or structs must begin with uppercase
-		newFrame->channels.resize(numberOfChannels); //push_back is not efficient
+		Channel* newChannel = new Channel(); //TODO:The classes or structs must begin with uppercase
 
-		memcpy(&newFrame->number, animationData, sizeof(int));
+		char name[MAX_BONE_NAME_LENGTH]; //crash fix - Here we don't need to care of namelength. The /0 marks the end of the string. Notice the strings are length + 1 ALWAYS
+
+		memcpy(name, animationData, sizeof(char) * MAX_BONE_NAME_LENGTH);
+		animationData += sizeof(char)* MAX_BONE_NAME_LENGTH;
+
+		newChannel->channelName = std::string(name);
+
+		memcpy(&newChannel->numPositionKeys, animationData, sizeof(int));
 		animationData += sizeof(int);
 
-		for (unsigned i = 0u; i < numberOfChannels; i++)
+		memcpy(&newChannel->numRotationKeys, animationData, sizeof(int));
+		animationData += sizeof(int);
+
+		for (unsigned j = 0u; j < newChannel->numPositionKeys; j++)
 		{
-			Channel* newChannel = new Channel(); //TODO:The classes or structs must begin with uppercase
-
-			char name[MAX_BONE_NAME_LENGTH]; //crash fix - Here we don't need to care of namelength. The /0 marks the end of the string. Notice the strings are length + 1 ALWAYS
-
-			memcpy(name, animationData, sizeof(char) * MAX_BONE_NAME_LENGTH);
-			animationData += sizeof(char)* MAX_BONE_NAME_LENGTH;
-
-			newChannel->channelName = std::string(name);
-
-			math::float3 translation = math::float3::zero;
-			math::Quat rotation = math::Quat::identity;
-			math::float3 scaling = math::float3::one;
-
-			memcpy(&translation, animationData, sizeof(float) * 3);
+			math::float3 position = math::float3::one;
+			memcpy(&position, animationData, sizeof(float) * 3);
 			animationData += sizeof(float) * 3;
-
-			memcpy(&rotation, animationData, sizeof(math::Quat));
-			animationData += sizeof(math::Quat);
-
-			math::float4x4 transform = math::float4x4::FromTRS(translation, rotation, scaling);
-			newChannel->channelTransform = transform;
-
-			newFrame->channels[i] = newChannel; 
+			newChannel->positionSamples.push_back(position);
 		}
 
-		animationFrames.push_back(newFrame);
-	}
+		for (unsigned k = 0u; k < newChannel->numRotationKeys; k++)
+		{
+			math::Quat rotation = math::Quat::identity;
+			memcpy(&rotation, animationData, sizeof(math::Quat));
+			animationData += sizeof(math::Quat);
+			newChannel->rotationSamples.push_back(rotation);
+		}
 
-	currentFrame = animationFrames.front();
+		channels.push_back(newChannel);
+	}
+}
+
+unsigned Animation::GetNumPositions(unsigned indexChannel) const
+{
+	return channels[indexChannel]->numPositionKeys;
+}
+
+unsigned Animation::GetNumRotations(unsigned indexChannel) const
+{
+	return channels[indexChannel]->numRotationKeys;
+}
+
+const math::float3 Animation::GetPosition(unsigned indexChannel, unsigned indexPosition) const
+{
+	return channels[indexChannel]->positionSamples[indexPosition];
+}
+
+const math::Quat Animation::GetRotation(unsigned indexChannel, unsigned indexPosition) const
+{
+	return channels[indexChannel]->rotationSamples[indexPosition];
+}
+
+unsigned Animation::GetIndexChannel(std::string name) const
+{
+	for (unsigned i = 0u; i < numberOfChannels; i++)
+	{
+		if (strcmp(name.c_str(), channels[i]->channelName.c_str()) == 0)
+		{
+			return i;
+		}
+	}
+	return 0u;
 }

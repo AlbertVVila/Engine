@@ -150,13 +150,13 @@ void GameObject::DrawProperties()
 
 void GameObject::Update()
 {
-	//Animation shhit
+	//animation shit
 	if (isBoneRoot)
 	{
-		Frame* frame = ((ComponentAnimation*)(GetComponent(ComponentType::Animation)))->anim->currentFrame;
-		Animation* animation = ((ComponentAnimation*)(GetComponent(ComponentType::Animation)))->anim;
+		Animation* anim = ((ComponentAnimation*)GetComponent(ComponentType::Animation))->anim;
+		unsigned indexChannel = ((ComponentAnimation*)GetComponent(ComponentType::Animation))->anim->currentSample;
 
-		Animate(frame, animation);
+		Animate(indexChannel, anim);
 	}
 
 
@@ -239,23 +239,21 @@ void GameObject::Update()
 	}
 }
 
-void GameObject::Animate(Frame* frame, Animation* anim)
+void GameObject::Animate(unsigned indexSample,Animation* anim)
 {
+	unsigned index = anim->GetIndexChannel(name.c_str());
 
-	for (unsigned i = 0u; i < anim->numberOfChannels; i++)
-	{
-		if (strcmp(name.c_str(), frame->channels[i]->channelName.c_str()) == 0)
-		{
-			transform->local = frame->channels[i]->channelTransform;
-			movedFlag = true;
-			UpdateGlobalTransform();
-			break;
-		}
-	}
+	math::float4x4 transformMatrix = math::float4x4::FromTRS(anim->channels[index]->positionSamples[indexSample],
+		anim->channels[index]->rotationSamples[indexSample], math::float3::one);
+
+	transform->local = transformMatrix;
+
+	movedFlag = true;
+	UpdateGlobalTransform();
 
 	for (const auto& child : children)
 	{
-		child->Animate(frame, anim);
+		child->Animate(indexSample, anim);
 	}
 }
 
@@ -664,7 +662,6 @@ void GameObject::Save(JSON_value *gameobjects) const
 		gameobject->AddString("Name", name.c_str());
 		gameobject->AddUint("isStatic", isStatic);
 		gameobject->AddUint("isBoneRoot", isBoneRoot);
-		gameobject->AddUint("hasSkeleton", hasSkeleton);
 		gameobject->AddFloat4x4("baseState", baseState);
 
 		JSON_value *componentsJSON = gameobject->CreateValue(rapidjson::kArrayType);
@@ -692,7 +689,6 @@ void GameObject::Load(JSON_value *value)
 	name = value->GetString("Name");
 	isStatic = value->GetUint("isStatic");
 	isBoneRoot = value->GetUint("isBoneRoot");
-	hasSkeleton = value->GetUint("hasSkeleton");
 	baseState = value->GetFloat4x4("baseState");
 
 	JSON_value* componentsJSON = value->GetValue("Components");

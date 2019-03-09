@@ -30,7 +30,7 @@ public:
 
 	void Update();
 
-	void Animate(Frame* frame, Animation* anim);
+	void Animate(unsigned indexSample,Animation* anim);
 
 	Component * CreateComponent(ComponentType type);
 	Component * GetComponent(ComponentType type) const;

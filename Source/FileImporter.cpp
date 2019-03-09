@@ -121,7 +121,7 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file,
 			bonesGO->CreateComponent(ComponentType::Transform);
 			bonesGO->transform->isLocked = true;
 			bonesGO->isBoneRoot = true; 
-			sceneGO->hasSkeleton = true;
+
 			if (aiscene.HasAnimations())
 			{
 				bonesGO->CreateComponent(ComponentType::Animation);
@@ -152,11 +152,16 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file,
 		Mesh* mesh = new Mesh();
 		unsigned meshUid = App->scene->GetNewUID();
 		App->fsystem->Save((MESHES + std::to_string(meshUid)+ MESHEXTENSION).c_str(), meshData, meshSize);
-		mesh->SetMesh(meshData, meshUid); 
-		RELEASE_ARRAY(meshData);
+		mesh->SetMesh(meshData, meshUid); //deallocates data
 		// meshesUID.push_back(uid); //same as below?
 		App->resManager->AddMesh(mesh);
 		meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->UID));
+
+		//------------------------BONES---------------------------------------
+		if (aiscene.mMeshes[i]->HasBones())
+		{
+			ImportBones(aiscene.mMeshes[i]->mBones, aiscene.mMeshes[i]->mNumBones, meshData);
+		}
 	}
 
 	ProcessNode(meshMap, aiscene.mRootNode, &aiscene, bonesGO, meshesGO, boneNames);
@@ -178,8 +183,6 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file,
 		animation->Load(animationData, animUid);
 
 		((ComponentAnimation*)(bonesGO->GetComponent(ComponentType::Animation)))->anim = animation;
-
-		//((ComponentAnimation*)(bonesGO->GetComponent(ComponentType::Animation)))->SetBaseFrame();
 
 		App->fsystem->Save((ANIMATIONS + std::to_string(animUid) + ANIMATIONEXTENSION).c_str(), animationData, animationSize);
 
@@ -251,22 +254,9 @@ void FileImporter::ImportMesh(const aiMesh& mesh, char* data)
 		cursor += verticesBytes;
 	}
 
-	//------------------------BONES---------------------------------------
-	if (mesh.HasBones())
-	{
-		memcpy(cursor, &mesh.mNumBones, sizeof(unsigned));
-		cursor += sizeof(unsigned);
-		ImportBones(mesh.mBones, mesh.mNumBones, cursor);
-	}
-	else
-	{
-		memcpy(cursor, (unsigned)0u, sizeof(unsigned));
-		cursor += sizeof(unsigned);
-	}
-	
 }
 
-void FileImporter::ImportBones(aiBone** bones, unsigned numBones, char* data) const
+void FileImporter::ImportBones(aiBone** bones, unsigned numBones, char* data)const
 {
 	char* cursor = data;
 
@@ -307,7 +297,7 @@ void FileImporter::ImportBones(aiBone** bones, unsigned numBones, char* data) co
 			memcpy(cursor, &bones[i]->mWeights[j].mVertexId, sizeof(unsigned));
 			cursor += sizeof(unsigned);
 			memcpy(cursor, &bones[i]->mWeights[j].mWeight, sizeof(float));
-			cursor += sizeof(float);
+			cursor += sizeof(unsigned);
 		}
 	}
 }
@@ -326,24 +316,30 @@ void FileImporter::ImportAnimation(const aiAnimation& animation, char* data)
 	memcpy(cursor, &animation.mNumChannels, sizeof(int));
 	cursor += sizeof(int);
 
-	for (unsigned i = 0u; i < animation.mDuration; i++)
+	for (unsigned j = 0u; j < animation.mNumChannels; j++)
 	{
-		memcpy(cursor, &i, sizeof(int));
+		memcpy(cursor, animation.mChannels[j]->mNodeName.C_Str(), sizeof(char) * MAX_BONE_NAME_LENGTH);  //Name
+		cursor += sizeof(char) * MAX_BONE_NAME_LENGTH;
+
+		memcpy(cursor, &animation.mChannels[j]->mNumPositionKeys, sizeof(int));
 		cursor += sizeof(int);
 
-		for (unsigned j = 0u; j < animation.mNumChannels; j++)
+		memcpy(cursor, &animation.mChannels[j]->mNumRotationKeys, sizeof(int));
+		cursor += sizeof(int);
+
+		//importar longitud array de posiciones e iterar
+
+		for (unsigned i = 0u; i < animation.mChannels[j]->mNumPositionKeys; i++)
 		{
-			memcpy(cursor, animation.mChannels[j]->mNodeName.C_Str(), sizeof(char) * MAX_BONE_NAME_LENGTH);  //Name
-			cursor += sizeof(char) * MAX_BONE_NAME_LENGTH;
-
-			//importar longitud array de posiciones e iterar
-
 			memcpy(cursor, &animation.mChannels[j]->mPositionKeys[i].mValue, sizeof(float) * 3);
 			cursor += sizeof(float) * 3;
+		}
 
-			//importar longitud array de rotaciones e iterar
+		//importar longitud array de rotaciones e iterar
 
-			memcpy(cursor, &animation.mChannels[j]->mRotationKeys[i].mValue, sizeof(math::Quat));
+		for (unsigned k = 0u; k < animation.mChannels[j]->mNumRotationKeys; k++)
+		{
+			memcpy(cursor, &animation.mChannels[j]->mRotationKeys[k].mValue, sizeof(math::Quat));
 			cursor += sizeof(math::Quat);
 		}
 	}
@@ -356,16 +352,21 @@ unsigned FileImporter::GetAnimationSize(const aiAnimation& animation) const
 
 	size += sizeof(double) * 2 + sizeof(int); //Duration, ticks per second and number of channels
 
-	for (unsigned j = 0u; j < animation.mDuration; j++)
+	size += sizeof(int);
+
+	for (unsigned j = 0u; j < animation.mNumChannels; j++)
 	{
-		size += sizeof(int);
+		size += sizeof(char) * MAX_BONE_NAME_LENGTH;
 
-		for (unsigned i = 0u; i < animation.mNumChannels; i++)
+		size += sizeof(int) * 2;
+
+		for (unsigned i = 0u; i < animation.mChannels[j]->mNumPositionKeys; i++)
 		{
-			size += sizeof(char) * MAX_BONE_NAME_LENGTH;
-
 			size += sizeof(float) * 3;
+		}
 
+		for (unsigned i = 0u; i < animation.mChannels[j]->mNumRotationKeys; i++)
+		{
 			size += sizeof(math::Quat);
 		}
 	}
@@ -396,11 +397,7 @@ unsigned FileImporter::GetMeshSize(const aiMesh &mesh) const
 	}
 	if (mesh.HasBones())
 	{
-		unsigned boneSize = sizeof(char) * MAX_BONE_NAME_LENGTH;
-		boneSize += sizeof(unsigned);
-		boneSize += sizeof(math::float4x4);
-		boneSize += mesh.mNumVertices * (sizeof(unsigned) + sizeof(float));
-		size += mesh.mNumBones * boneSize;
+		size += sizeof(mesh.mNumBones * sizeof(aiBone) * (AI_MAX_BONE_WEIGHTS * (sizeof(float) + sizeof(unsigned)))); 
 	}
 	return size;
 }
