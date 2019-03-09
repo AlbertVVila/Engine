@@ -2,7 +2,7 @@
 #define __ModuleUI_H__
 
 #include "Module.h"
-#include <vector>
+#include <list>
 
 struct Shader; 
 struct Texture;
@@ -23,23 +23,17 @@ public:
 	bool CleanUp() override;
 
 	void Draw(const ComponentCamera &camera);
-	
-	std::vector<ComponentImage*> images;
-
+public:
+	std::list<ComponentImage*> images;
 private:
-
 	void RenderImage(const ComponentImage& componentImage);
-
-	//variables
+private:
 	const char* shaderFile = "UI";
+	Shader* shader = nullptr;
 	
-	Shader* shaderCanvas = nullptr;
-	
-
 	unsigned VAO = 0;
 	unsigned VBO = 0;
 	unsigned EBO = 0;
-
 };
 
 #endif // __ModuleUI_H__

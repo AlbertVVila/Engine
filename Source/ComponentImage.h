@@ -2,7 +2,7 @@
 #define __ComponentImage_h__
 
 #include "Component.h"
-#include "Math/float3.h"
+#include "Math/float4.h"
 #include <vector>
 
 struct Texture;
@@ -21,7 +21,7 @@ public:
 	void Load(const JSON_value &value) override;
 
 	const char* textureName = "None Selected";
-	float3 color = float3::zero;
+	float4 color = float4(1.0f, 1.0f, 1.0f, 1.0f);
 	Texture* texture = nullptr;
 
 	std::vector<std::string> textureFiles;

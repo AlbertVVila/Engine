@@ -128,18 +128,22 @@ bool ModuleFontLoader::CleanUp()
 void ModuleFontLoader::Draw()
 {
 	if (shaderFonts == nullptr)return;
-	for(int i = 0; i < texts.size(); ++i)
+
+	for (std::list<ComponentText*>::iterator it = texts.begin(); it != texts.end(); ++it)
 	{
-		RenderText(std::string(texts[i]->text), 0.0f, 0.0f, texts[i]->fontSize*0.0001, texts[i]->color, texts[i]->font);
+		if ((*it)->enabled)
+		{
+			RenderText(std::string((*it)->text), 0.0f, 0.0f, (*it)->fontSize*0.0001, (*it)->color, (*it)->font);
+		}
 	}
 }
 
-void ModuleFontLoader::RenderText(std::string text, GLfloat x, GLfloat y, GLfloat scale, float3 color, const char* font)
+void ModuleFontLoader::RenderText(std::string text, GLfloat x, GLfloat y, GLfloat scale, float4 color, const char* font)
 {
 	assert(fonts.find(font) != fonts.end());
 	// Activate corresponding render state	
 	glUseProgram(shaderFonts->id);
-	glUniform3f(glGetUniformLocation(shaderFonts->id, "textColor"), color.x, color.y, color.z);
+	glUniform4f(glGetUniformLocation(shaderFonts->id, "textColor"), color.x, color.y, color.z, color.w);
 	glActiveTexture(GL_TEXTURE0);
 	glBindVertexArray(VAOText);
 

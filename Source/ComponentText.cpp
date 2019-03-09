@@ -32,7 +32,7 @@ ComponentText::ComponentText(const ComponentText &copy) : Component(copy)
 
 ComponentText::~ComponentText()
 {
-
+	App->fontLoader->texts.remove(this);
 }
 
 Component * ComponentText::Clone() const
@@ -44,7 +44,11 @@ void ComponentText::DrawProperties()
 {
 	if (ImGui::CollapsingHeader("Text", ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		ImGui::Checkbox("Enabled", &enabled);
+		bool removed = Component::DrawComponentState();
+		if (removed)
+		{
+			return;
+		}
 		
 		//text value
 		char* text_value = new char[MAX_TEXT_LENGTH];
@@ -76,7 +80,7 @@ void ComponentText::DrawProperties()
 		ImGui::DragFloat("Font size", &fontSize, 1.0f, 1.0f, MAX_FONT_SIZE);
 
 		//color
-		ImGui::ColorEdit3("Font color", (float*)&color);
+		ImGui::ColorEdit4("Font color", (float*)&color);
 		
 		ImGui::Separator();
 	}
@@ -88,7 +92,7 @@ void ComponentText::Save(JSON_value *value)const
 	value->AddFloat("FontSize", fontSize);
 	value->AddString("text", text);
 	value->AddString("font", font);
-	value->AddFloat3("color", color);
+	value->AddFloat4("color", color);
 }
 
 void ComponentText::Load(const JSON_value &value)
@@ -97,5 +101,5 @@ void ComponentText::Load(const JSON_value &value)
 	fontSize = value.GetFloat("FontSize");
 	text = value.GetString("text");
 	font = value.GetString("font");
-	color = value.GetFloat3("color");
+	color = value.GetFloat4("color");
 }

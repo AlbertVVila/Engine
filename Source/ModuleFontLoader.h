@@ -4,9 +4,9 @@
 #include "Module.h"
 #include "GL/glew.h"
 #include "Math/float2.h"
-#include "Math/float3.h"
+#include "Math/float4.h"
 #include <map>
-#include <vector>
+#include <list>
 
 class ComponentText;
 struct Shader;
@@ -23,27 +23,22 @@ public:
 		GLuint		Advance;    // Offset to advance to next glyph
 	};
 
-	//functions
 	ModuleFontLoader();
 	~ModuleFontLoader();
 	bool Init(JSON* json) override;
 	void Draw();
 	bool CleanUp() override;
 	void LoadFonts(const char* newFont);
-	void RenderText(std::string text, GLfloat x, GLfloat y, GLfloat scale, float3 color, const char* font);
-
-	//variables
+	void RenderText(std::string text, GLfloat x, GLfloat y, GLfloat scale, float4 color, const char* font);
+public:
 	std::map<const char*, std::vector<Character>> fonts;
 	const char* defaultFont = "Fonts/DroidSans.ttf";
-	std::vector<ComponentText*> texts;
-
+	std::list<ComponentText*> texts;
 private:
-
-	//variables
 	Shader* shaderFonts = nullptr;
 	const char* shaderFontsFile = "Fonts";
 	unsigned VAOText = 0;
 	unsigned VBOText = 0;
 };
 
-#endif
+#endif // __ModuleFontLoader_H__

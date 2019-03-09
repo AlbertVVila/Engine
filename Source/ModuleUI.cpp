@@ -22,19 +22,15 @@ ModuleUI::~ModuleUI()
 
 bool ModuleUI::Init(JSON* json)
 {
-	shaderCanvas = App->program->GetProgram(shaderFile);
+	shader = App->program->GetProgram(shaderFile);
 
 	float quadVertices[] =
 	{
-			-0.5f, -0.5f, 0.0f,  // bottom left
-			-0.5f,  0.5f, 0.0f,   // top left 
-			 0.5f, -0.5f, 0.0f,  // bottom right
-			 0.5f,  0.5f, 0.0f,  // top right
-
-			0.0f, 0.0f,
-			0.0f, 1.0f,
-			1.0f, 0.0f,
-			1.0f, 1.0f
+			-0.5f, -0.5f, 0.0f, 0.0f, // bottom left
+			-0.5f,  0.5f, 0.0f, 1.0f, // top left 
+			 0.5f, -0.5f, 1.0f, 0.0f, // bottom right
+			 0.5f,  0.5f, 1.0f, 1.0f  // top right
+			
 	};
 
 	unsigned int quadIndices[] =
@@ -55,14 +51,10 @@ bool ModuleUI::Init(JSON* json)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(quadIndices), quadIndices, GL_STATIC_DRAW);
 
-	//Vertex
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-
-	//UV position
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * 4));
+	//Vertex + UV position
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
 
 	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
@@ -82,33 +74,39 @@ update_status ModuleUI::PostUpdate()
 
 bool ModuleUI::CleanUp()
 {
-	if (shaderCanvas != nullptr)
+	if (shader != nullptr)
 	{
-		App->resManager->DeleteProgram(shaderCanvas->file);
-		shaderCanvas = nullptr;
+		App->resManager->DeleteProgram(shader->file);
+		shader = nullptr;
 	}
 	return true;
 }
 
 void ModuleUI::Draw(const ComponentCamera &camera)
 {
-	if (shaderCanvas == nullptr) return;
-	for (int i = 0; i < images.size(); ++i)
-	{
-		if (images[i]->texture != nullptr && images[i]->texture != 0)
-			RenderImage(*images[i]);
-	}
+	if (shader == nullptr) return;
 
+	for (std::list<ComponentImage*>::iterator it = images.begin(); it != images.end(); ++it)
+	{
+		if ((*it)->texture != nullptr && (*it)->texture != 0 && (*it)->enabled)
+		{
+			RenderImage(*(*it));
+		}
+	}
 }
+
 
 void ModuleUI::RenderImage(const ComponentImage& componentImage)
 {
-	glUseProgram(shaderCanvas->id);
+	glUseProgram(shader->id);
+
+	glUniform4f(glGetUniformLocation(shader->id, "textColor"), componentImage.color.x, componentImage.color.y, componentImage.color.z, componentImage.color.w);
+
 	glBindVertexArray(VAO);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, componentImage.texture->id);
-	glUniform1i(glGetUniformLocation(shaderCanvas->id, "texture0"), 0);
+	glUniform1i(glGetUniformLocation(shader->id, "texture0"), 0);
 
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 

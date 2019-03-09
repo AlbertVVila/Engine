@@ -1,12 +1,14 @@
 #include "ComponentImage.h"
-#include "JSON.h"
-#include "Imgui/imgui.h"
+
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleResourceManager.h"
 #include "ModuleTextures.h"
 #include "ModuleFileSystem.h"
 #include "ModuleUI.h"
+
+#include "JSON.h"
+#include "Imgui/imgui.h"
 
 #define None "None Selected"
 
@@ -38,10 +40,12 @@ ComponentImage::ComponentImage(const ComponentImage &copy) : Component(copy)
 
 ComponentImage::~ComponentImage()
 {
-	
+	App->ui->images.remove(this);
+	App->resManager->DeleteTexture(textureName);
+	texture = nullptr;
 }
 
-Component * ComponentImage::Clone() const
+Component* ComponentImage::Clone() const
 {
 	return new ComponentImage(*this);
 }
@@ -50,7 +54,11 @@ void ComponentImage::DrawProperties()
 {
 	if (ImGui::CollapsingHeader("Image", ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		ImGui::Checkbox("Enabled", &enabled);
+		bool removed = Component::DrawComponentState();
+		if (removed)
+		{
+			return;
+		}
 
 		//texture selector
 		if (ImGui::BeginCombo("Texture", textureName))
@@ -86,7 +94,7 @@ void ComponentImage::DrawProperties()
 		}
 		
 		//color
-		ImGui::ColorEdit3("Font color", (float*)&color);
+		ImGui::ColorEdit4("Image color", (float*)&color);
 
 		ImGui::Separator();
 	}
@@ -96,11 +104,11 @@ void ComponentImage::Save(JSON_value *value)const
 {
 	Component::Save(value);
 	value->AddString("textureName", textureName);
-	value->AddFloat3("color", color);
+	value->AddFloat4("color", color);
 }
 void ComponentImage::Load(const JSON_value &value)
 {
 	Component::Load(value);
 	textureName = value.GetString("textureName");
-	color = value.GetFloat3("color");
+	color = value.GetFloat4("color");
 }

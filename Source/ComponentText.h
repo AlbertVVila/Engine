@@ -2,7 +2,9 @@
 #define __ComponentText_h__
 
 #include "Component.h"
-#include "Math/float3.h"
+
+#include "Math/float4.h"
+
 class ComponentText :
 	public Component
 {
@@ -16,12 +18,11 @@ public:
 	void DrawProperties() override;
 	void Save(JSON_value *value) const override;
 	void Load(const JSON_value &value) override;
-
-	//variables
+public:
 	float fontSize = 14;
 	const char* text = "Fractal Text";
 	const char* font = "";
-	float3 color = float3::zero;
+	float4 color = float4(1.0f, 1.0f, 1.0f, 0.0f);
 };
 
 #endif
