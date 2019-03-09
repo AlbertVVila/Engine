@@ -20,7 +20,6 @@
 #define SHADERS "Shaders/"
 #define VERTEXSHADERS SHADERS "VertexShaders/"
 #define FRAGSHADERS SHADERS "FragmentShaders/"
-#define SKYBOX RESOURCES "Skybox/"
 
 #define FBXEXTENSION ".fbx"
 #define FBXCAPITAL ".FBX"

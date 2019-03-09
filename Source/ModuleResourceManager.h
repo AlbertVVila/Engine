@@ -20,6 +20,7 @@ public:
 	ModuleResourceManager();
 	~ModuleResourceManager();
 
+	bool Init(JSON * config) override;
 	bool Start() override;
 
 	Shader* GetProgram(std::string filename) const;
@@ -42,6 +43,8 @@ public:
 	unsigned GenerateNewUID();
 	Resource* Get(unsigned uid) const;
 	Resource* Get(const char* file) const;
+	Resource* GetWithoutLoad(unsigned uid) const;
+	Resource* GetWithoutLoad(const char* file) const;
 	Resource* CreateNewResource(TYPE type, unsigned forceUid = 0);
 	bool DeleteResource(unsigned uid);	// If references < 1 delete it from memory
 

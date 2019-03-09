@@ -12,6 +12,7 @@
 #include "ResourceTexture.h"
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
+#include "ResourceSkybox.h"
 
 #include "FileImporter.h"
 
@@ -24,10 +25,14 @@ ModuleResourceManager::~ModuleResourceManager()
 {
 }
 
-bool ModuleResourceManager::Start()
+bool ModuleResourceManager::Init(JSON * config)
 {
 	LoadEngineResources();
+	return true;
+}
 
+bool ModuleResourceManager::Start()
+{
 	//TODO: Read metafiles from Assets/ instead and import or add to resources
 	std::vector<std::string> files;
 	std::vector<std::string> dirs;
@@ -184,6 +189,7 @@ Resource * ModuleResourceManager::CreateNewResource(TYPE type, unsigned forceUid
 	case TYPE::BONE:	resource = (Resource*) new ResourceBone(uid); break;
 	case TYPE::ANIMATION: resource = (Resource*) new ResourceAnimation(uid); break;*/
 	case TYPE::MATERIAL: resource = (Resource*) new ResourceMaterial(uid); break;
+	case TYPE::SKYBOX: resource = (Resource*) new ResourceSkybox(uid); break;
 	}
 
 	if (resource != nullptr)
@@ -232,6 +238,28 @@ Resource* ModuleResourceManager::Get(const char* file) const
 
 	// Get resource by uid
 	return Get(uid);
+}
+
+Resource* ModuleResourceManager::GetWithoutLoad(unsigned uid) const
+{
+	std::map<unsigned, Resource*>::const_iterator it = resources.find(uid);
+	if (it == resources.end())
+		return nullptr;
+
+	return it->second;
+}
+
+Resource* ModuleResourceManager::GetWithoutLoad(const char* file) const
+{
+	assert(file != NULL);
+
+	// Look for it on the resource list
+	unsigned uid = Find(file);
+	if (uid == 0)
+		return nullptr;
+
+	// Get resource by uid
+	return GetWithoutLoad(uid);
 }
 
 bool ModuleResourceManager::DeleteResource(unsigned uid)
