@@ -81,6 +81,7 @@ void ComponentText::DrawProperties()
 		ImGui::Separator();
 	}
 }
+
 void ComponentText::Save(JSON_value *value)const
 {
 	Component::Save(value);
@@ -89,6 +90,7 @@ void ComponentText::Save(JSON_value *value)const
 	value->AddString("font", font);
 	value->AddFloat3("color", color);
 }
+
 void ComponentText::Load(const JSON_value &value)
 {
 	Component::Load(value);

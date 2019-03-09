@@ -11,7 +11,8 @@ enum class ComponentType
 	Camera,
 	Light,
 	Text,
-	Transform2D
+	Transform2D,
+	Image
 };
 
 class Component

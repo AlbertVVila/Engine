@@ -16,6 +16,7 @@
 #include "ComponentLight.h"
 #include "ComponentRenderer.h"
 #include "ComponentText.h"
+#include "ComponentImage.h"
 
 #include "GUICreator.h"
 #include "Material.h"
@@ -197,6 +198,9 @@ Component * GameObject::CreateComponent(ComponentType type)
 		break;
 	case ComponentType::Text:
 		component = new ComponentText(this);
+		break;
+	case ComponentType::Image:
+		component = new ComponentImage(this);
 		break;
 	default:
 		break;

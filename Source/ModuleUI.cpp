@@ -6,6 +6,7 @@
 #include "ModuleTextures.h"
 
 #include "ComponentCamera.h"
+#include "ComponentImage.h"
 
 #include "GL/glew.h"
 
@@ -23,8 +24,6 @@ bool ModuleUI::Init(JSON* json)
 {
 	shaderCanvas = App->program->GetProgram(shaderFile);
 
-	texture = App->textures->GetTexture("checkersTexture");
-
 	float quadVertices[] =
 	{
 			-0.5f, -0.5f, 0.0f,  // bottom left
@@ -38,8 +37,8 @@ bool ModuleUI::Init(JSON* json)
 			1.0f, 1.0f
 	};
 
-	unsigned int quadIndices[] = 
-	{  
+	unsigned int quadIndices[] =
+	{
 		0,2,1,
 		1,2,3
 	};
@@ -67,7 +66,7 @@ bool ModuleUI::Init(JSON* json)
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
-	
+
 	return true;
 }
 
@@ -94,17 +93,21 @@ bool ModuleUI::CleanUp()
 void ModuleUI::Draw(const ComponentCamera &camera)
 {
 	if (shaderCanvas == nullptr) return;
-	//drawCanvas();
-	
+	for (int i = 0; i < images.size(); ++i)
+	{
+		if (images[i]->texture != nullptr && images[i]->texture != 0)
+			RenderImage(*images[i]);
+	}
+
 }
 
-void ModuleUI::drawCanvas()
+void ModuleUI::RenderImage(const ComponentImage& componentImage)
 {
 	glUseProgram(shaderCanvas->id);
 	glBindVertexArray(VAO);
 
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture->id);
+	glBindTexture(GL_TEXTURE_2D, componentImage.texture->id);
 	glUniform1i(glGetUniformLocation(shaderCanvas->id, "texture0"), 0);
 
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

@@ -93,6 +93,7 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentCamera.h" />
+    <ClInclude Include="ComponentImage.h" />
     <ClInclude Include="ComponentLight.h" />
     <ClInclude Include="ComponentRenderer.h" />
     <ClInclude Include="ComponentText.h" />
@@ -204,6 +205,7 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentCamera.cpp" />
+    <ClCompile Include="ComponentImage.cpp" />
     <ClCompile Include="ComponentLight.cpp" />
     <ClCompile Include="ComponentRenderer.cpp" />
     <ClCompile Include="ComponentText.cpp" />

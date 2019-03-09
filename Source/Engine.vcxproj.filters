@@ -246,6 +246,9 @@
     <ClCompile Include="ComponentText.cpp">
       <Filter>Component</Filter>
     </ClCompile>
+    <ClCompile Include="ComponentImage.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -565,6 +568,9 @@
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="ComponentText.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentImage.h">
       <Filter>Component</Filter>
     </ClInclude>
   </ItemGroup>

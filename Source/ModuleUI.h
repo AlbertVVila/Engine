@@ -2,11 +2,13 @@
 #define __ModuleUI_H__
 
 #include "Module.h"
+#include <vector>
 
 struct Shader; 
 struct Texture;
 
 class ComponentCamera;
+class ComponentImage;
 
 class ModuleUI :
 	public Module
@@ -22,10 +24,11 @@ public:
 
 	void Draw(const ComponentCamera &camera);
 	
+	std::vector<ComponentImage*> images;
 
 private:
 
-	void drawCanvas();
+	void RenderImage(const ComponentImage& componentImage);
 
 	//variables
 	const char* shaderFile = "UI";
@@ -37,7 +40,6 @@ private:
 	unsigned VBO = 0;
 	unsigned EBO = 0;
 
-	Texture* texture = nullptr;
 };
 
 #endif // __ModuleUI_H__
