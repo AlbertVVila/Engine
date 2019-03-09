@@ -13,7 +13,7 @@ class ResourceSkybox :
 {
 public:
 	ResourceSkybox(unsigned uid);
-	ResourceSkybox(unsigned uid, std::string faces[NUMFACES]);
+	ResourceSkybox(const ResourceSkybox& resource);
 	~ResourceSkybox();
 
 	bool LoadInMemory() override;
@@ -21,6 +21,10 @@ public:
 
 	void SetTextures(std::string faces[NUMFACES]);
 	void Draw(const Frustum& frustum) const;
+
+	unsigned GetCubemap() { return skybox_cubemap; };
+	unsigned GetVAO() { return skyboxVAO; };
+	unsigned GetVBO() { return skyboxVBO; };
 
 private:
 	unsigned LoadCubeMap(ResourceTexture* faces[]) const;

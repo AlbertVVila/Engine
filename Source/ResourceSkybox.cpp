@@ -21,18 +21,19 @@ ResourceSkybox::ResourceSkybox(unsigned uid) : Resource(uid, TYPE::SKYBOX)
 	shader = App->program->GetProgram(SKYBOX_SHADER);
 }
 
-ResourceSkybox::ResourceSkybox(unsigned uid, std::string faces[NUMFACES]) : Resource(uid, TYPE::SKYBOX)
+ResourceSkybox::ResourceSkybox(const ResourceSkybox& resource) : Resource(resource)
 {
+	enabled = resource.enabled;
 	for (unsigned int i = 0; i < NUMFACES; ++i)
 	{
-		textures[i] = (ResourceTexture*)App->resManager->Get(faces[i].c_str());
-		textures[i]->imageType = IMAGE_TYPE::CUBEMAP;
-		textures[i]->cubemapIndex = i;
+		textures[i] = resource.textures[i];
 	}
+	shader = resource.shader;
 
-	shader = App->program->GetProgram(SKYBOX_SHADER);
+	skybox_cubemap = resource.skybox_cubemap;
+	skyboxVAO = resource.skyboxVAO;
+	skyboxVBO = resource.skyboxVBO;
 }
-
 
 ResourceSkybox::~ResourceSkybox()
 {
@@ -107,8 +108,12 @@ bool ResourceSkybox::LoadInMemory()
 void ResourceSkybox::DeleteFromMemory()
 {
 	Resource::DeleteFromMemory();
-	//Delete used textures
 
+	//Delete used textures
+	for (unsigned int i = 0; i < NUMFACES; ++i)
+	{
+		textures[i]->DeleteFromMemory();
+	}
 
 	if (skybox_cubemap != 0)
 	{

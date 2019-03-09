@@ -80,7 +80,7 @@ bool ResourceTexture::LoadTexture()
 	std::string filename(exportedFileName);
 
 	// Load image file
-	if (IsUsedByEngine)
+	if (engineUsed)
 	{
 		size = App->fsystem->Load((IMPORTED_RESOURCES + filename + TEXTUREEXT).c_str(), &data);
 	}
@@ -170,7 +170,7 @@ bool ResourceTexture::LoadCubemap()
 	std::string filename(exportedFileName);
 
 	// Load image file
-	if (IsUsedByEngine)
+	if (engineUsed)
 	{
 		size = App->fsystem->Load((IMPORTED_RESOURCES + filename + TEXTUREEXT).c_str(), &data);
 	}

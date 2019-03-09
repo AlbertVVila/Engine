@@ -25,6 +25,7 @@ private:
 	void DrawResourceTexture();
 	void DrawResourceMesh();
 	void DrawResourceMaterial();
+	void DrawResourceSkybox();
 	void CleanUp();
 
 private:
@@ -37,6 +38,7 @@ private:
 	bool openTextureWindow = false;
 	bool openMeshWindow = false;
 	bool openMaterialWindow = false;
+	bool openSkyboxWindow = false;
 
 	SORTING sortList = SORTING::REFERENCES;
 	bool descending = false;
