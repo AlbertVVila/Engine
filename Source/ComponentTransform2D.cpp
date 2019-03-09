@@ -7,7 +7,7 @@
 #include "imgui_internal.h"
 #include "JSON.h"
 
-ComponentTransform2D::ComponentTransform2D(GameObject * gameobject) : Component(gameobject, ComponentType::Transform2D)
+ComponentTransform2D::ComponentTransform2D(GameObject* gameobject) : Component(gameobject, ComponentType::Transform2D)
 {
 }
 

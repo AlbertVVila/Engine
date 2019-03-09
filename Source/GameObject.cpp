@@ -15,6 +15,7 @@
 #include "ComponentCamera.h"
 #include "ComponentLight.h"
 #include "ComponentRenderer.h"
+#include "ComponentTransform2D.h"
 #include "ComponentText.h"
 #include "ComponentImage.h"
 
@@ -195,6 +196,9 @@ Component * GameObject::CreateComponent(ComponentType type)
 			App->scene->maincamera = (ComponentCamera*)component;
 			App->scene->maincamera->isMainCamera = true;
 		}
+		break;
+	case ComponentType::Transform2D:
+		component = new ComponentTransform2D(this);
 		break;
 	case ComponentType::Text:
 		component = new ComponentText(this);
