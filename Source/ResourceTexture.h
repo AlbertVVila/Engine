@@ -3,6 +3,8 @@
 
 #include "Resource.h"
 
+enum class IMAGE_TYPE {TEXTURE, CUBEMAP};
+
 class ResourceTexture : public Resource
 {
 public:
@@ -17,6 +19,10 @@ public:
 	void Save(JSON_value &config) const override;
 	void Load(const JSON_value &config) override;
 
+private:
+	bool LoadTexture();
+	bool LoadCubemap();
+
 public:
 	unsigned width = 0u;
 	unsigned height = 0u;
@@ -25,6 +31,9 @@ public:
 	unsigned bytes = 0u;
 	unsigned gpuID = 0u;
 	unsigned format = 0u;
+
+	IMAGE_TYPE imageType = IMAGE_TYPE::TEXTURE;
+	unsigned cubemapIndex = 0u;		// If the image is a cubemap this variable will tell the index ( 0=right, 1=left, 2=top, 3=bottom, 4=front, 5=back)
 };
 
 #endif __ResourceTexture_h__

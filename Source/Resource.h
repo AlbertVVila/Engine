@@ -14,6 +14,7 @@ enum class TYPE
 	BONE,
 	ANIMATION,
 	MATERIAL,
+	SKYBOX,
 	UNKNOWN
 };
 

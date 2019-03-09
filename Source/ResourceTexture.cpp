@@ -51,17 +51,45 @@ bool ResourceTexture::LoadInMemory()
 	if (Resource::IsLoadedToMemory())
 		return false;
 
-	ILboolean success;
+	bool success = false;
+
+	switch (imageType)
+	{
+	default:
+	case IMAGE_TYPE::TEXTURE:
+		success = LoadTexture();
+		break;
+	case IMAGE_TYPE::CUBEMAP:
+		success =  LoadCubemap();
+		break;
+	}
+
+	// Increase references
+	if (success) ++loaded;
+
+	return success;
+}
+
+bool ResourceTexture::LoadTexture()
+{
 	int format = 0;
 	unsigned imageID;
 
 	char *data;
 	std::string filename(exportedFileName);
-	unsigned size = App->fsystem->Load((TEXTURES + filename + TEXTUREEXT).c_str(), &data);
+
+	// Load image file
+	unsigned size = App->fsystem->Load((TEXTURES + filename + TEXTUREEXT).c_str(), &data);;
+
+	if (size == 0u)
+	{
+		LOG("Error loading image file.");
+		return false;
+	}
 
 	ilGenImages(1, &imageID); 		// Generate the image ID
 	ilBindImage(imageID); 			// Bind the image
-	success = ilLoadL(IL_DDS, data, size);
+	ILboolean success = ilLoadL(IL_DDS, data, size);
 
 	if (success)
 	{
@@ -115,10 +143,58 @@ bool ResourceTexture::LoadInMemory()
 		ilDeleteImages(1, &gpuID);
 
 		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+	else
+	{
+		ILenum error = ilGetError();
+		LOG("Error loading data: %s\n", iluErrorString(error));
+		return false;
+	}
+}
 
-		// Increase references
-		++loaded;
-		return true;
+bool ResourceTexture::LoadCubemap()
+{
+	int format = 0;
+	unsigned imageID;
+
+	char *data;
+	std::string filename(exportedFileName);
+
+	unsigned size = App->fsystem->Load((IMPORTED_RESOURCES + filename + TEXTUREEXT).c_str(), &data);
+
+	if (size == 0u)
+	{
+		LOG("Error loading image file.");
+		return false;
+	}
+
+	ilGenImages(1, &imageID); 		// Generate the image ID
+	ilBindImage(imageID); 			// Bind the image
+	ILboolean success = ilLoadL(IL_DDS, data, size);
+
+	if (success)
+	{
+		RELEASE_ARRAY(data);
+		glGenTextures(1, &gpuID);
+
+		glBindTexture(GL_TEXTURE_2D, gpuID);
+
+		ILinfo ImageInfo;
+		iluGetImageInfo(&ImageInfo);
+		if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT && imageType == IMAGE_TYPE::TEXTURE)
+		{
+			iluFlipImage();
+		}
+
+		ILubyte* data = ilGetData();
+		width = ilGetInteger(IL_IMAGE_WIDTH);
+		height = ilGetInteger(IL_IMAGE_HEIGHT);
+		depth = ilGetInteger(IL_IMAGE_DEPTH);
+		format = ilGetInteger(IL_IMAGE_FORMAT);
+		bytes = ilGetInteger(GL_UNSIGNED_BYTE);
+		mips = 0u;
+
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + cubemapIndex, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
 	}
 	else
 	{
