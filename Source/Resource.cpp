@@ -46,6 +46,10 @@ void Resource::Save(JSON_value &config) const
 	resource->AddUint("Type", (unsigned)type);
 }
 
+void Resource::SaveMetafile(const char * file) const
+{
+}
+
 void Resource::Load(const JSON_value &config)
 {
 	UID = config.GetUint("UID");

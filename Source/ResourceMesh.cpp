@@ -11,6 +11,9 @@
 #include "Geometry/LineSegment.h"
 #include "Math/MathConstants.h"
 #include "Math/float4x4.h"
+#include "rapidjson/document.h"
+#include "rapidjson/filewritestream.h"
+#include "rapidjson/prettywriter.h"
 
 ResourceMesh::ResourceMesh(unsigned uid) : Resource(uid, TYPE::MESH)
 {
@@ -114,6 +117,67 @@ void ResourceMesh::Save(JSON_value &config) const
 	Resource::Save(config);
 	//TODO: Add variables to save
 }
+
+void ResourceMesh::SaveMetafile(const char* file) const
+{
+	std::string filepath;
+	filepath.append(file);
+	JSON *json = new JSON();
+	rapidjson::Document* meta = new rapidjson::Document();
+	rapidjson::Document::AllocatorType& alloc = meta->GetAllocator();
+	filepath += ".meta";
+	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
+	FILE* fp = fopen(filepath.c_str(), "wb");
+	char writeBuffer[65536];
+	rapidjson::FileWriteStream* os = new rapidjson::FileWriteStream(fp, writeBuffer, sizeof(writeBuffer));
+	rapidjson::PrettyWriter<rapidjson::FileWriteStream> writer(*os);
+	meta->SetObject();
+	meta->AddMember("GUID", GetUID(), alloc);
+	meta->AddMember("VBO", VBO, alloc);
+	meta->AddMember("EBO", EBO, alloc);
+	meta->AddMember("VAObox", VAObox, alloc);
+	meta->AddMember("VBObox", VBObox, alloc);
+	meta->AddMember("EBObox", EBObox, alloc);
+	meta->AddMember("numIndices", numIndices, alloc);
+	meta->AddMember("numVertices", numIndices, alloc);
+	if (indices != nullptr)
+		meta->AddMember("Indices", *indices, alloc);
+	else
+		meta->AddMember("Indices", "NULL", alloc);
+	if (vertices != nullptr)
+		meta->AddMember("Vertices", *vertices, alloc);
+	else
+		meta->AddMember("Vertices", "NULL", alloc);
+	if (indices != nullptr)
+		meta->AddMember("Normals", *normals, alloc);
+	else
+		meta->AddMember("Normals", "NULL", alloc);
+	if (indices != nullptr)
+		meta->AddMember("TexCoords", *texCoords, alloc);
+	else
+		meta->AddMember("TexCoords", "NULL", alloc);
+	meta->Accept(writer);
+	fclose(fp);
+}
+
+/*unsigned VAO = 0;
+	unsigned VBO = 0;
+	unsigned EBO = 0;
+
+	AABB boundingBox;
+	unsigned VAObox = 0;
+	unsigned VBObox = 0;
+	unsigned EBObox = 0;
+
+public:
+	unsigned numIndices = 0;
+	unsigned numVertices = 0;
+	int* indices = nullptr;
+	float* vertices = nullptr;
+
+	// New added on refactor
+	float* normals = nullptr;
+	float* texCoords = nullptr;*/
 
 void ResourceMesh::Load(const JSON_value &config)
 {

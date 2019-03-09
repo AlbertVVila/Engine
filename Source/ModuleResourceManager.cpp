@@ -128,6 +128,7 @@ unsigned ModuleResourceManager::ImportFile(const char* newFileInAssets, const ch
 	unsigned ret = 0; 
 	bool success = false; 
 	std::string importedFilePath(filePath);
+	//std::string written_file;
 	Resource* resource = CreateNewResource(type);
 	std::string assetPath(filePath);
 	assetPath += newFileInAssets;
@@ -135,11 +136,12 @@ unsigned ModuleResourceManager::ImportFile(const char* newFileInAssets, const ch
 	switch (type) 
 	{
 	case TYPE::TEXTURE: 
-		success = App->textures->ImportImage(newFileInAssets, filePath, written_file, (ResourceTexture*)resource);
+		success = App->textures->ImportImage(newFileInAssets, filePath, (ResourceTexture*)resource);
 		App->textures->SaveMetafile(assetPath.c_str(), (ResourceTexture*)resource);
 		break;
 	case TYPE::MESH:	
 		success = App->fsystem->importer.ImportFBX(newFileInAssets, filePath);
+		resource->SaveMetafile(assetPath.c_str());
 		break;
 	//case TYPE::AUDIO: import_ok = App->audio->Import(newFileInAssets, written_file); break;
 	//case TYPE::SCENE: import_ok = App->scene->Import(newFileInAssets, written_file); break;

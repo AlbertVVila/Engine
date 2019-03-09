@@ -163,19 +163,8 @@ bool ModuleTextures::ImportImage(const char* file, const char* folder, ResourceT
 
 void ModuleTextures::SaveMetafile(const char* file, ResourceTexture* resource)
 {
-	/*std::string c = "guid: " + std::to_string(resource->GetUID()) + "\n";
-	c += "width: " + std::to_string(resource->width) + "\n";
-	c += "heigth: " + std::to_string(resource->height) + "\n";
-	c += "depth: " + std::to_string(resource->depth) + "\n";
-	c += "mips: " + std::to_string(resource->mips) + "\n";
-	c += "format: " + std::to_string(resource->format) + "\n";
-	filepath = App->fsystem->RemoveExtension(filepath);
-	filepath += ".meta";
-	App->fsystem->Save(filepath.c_str(), c.c_str(), c.size());*/
-	std::string filepath(App->fsystem->RemoveExtension(file));
-	//filepath += App->fsystem->RemoveExtension(file);
-	//filepath += TEXTUREEXT;
-
+	std::string filepath;
+	filepath.append(file);
 	JSON *json = new JSON();
 	rapidjson::Document* meta = new rapidjson::Document();
 	rapidjson::Document::AllocatorType& alloc = meta->GetAllocator();

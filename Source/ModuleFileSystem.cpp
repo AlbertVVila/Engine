@@ -277,7 +277,7 @@ void ModuleFileSystem::WatchFolder(const char * folder, const std::set<std::stri
 			else
 			{
 				stat((current_folder + file).c_str(), &statFile);
-				stat((current_folder + RemoveExtension(file) + ".meta").c_str(), &statMeta);
+				stat((current_folder + file + ".meta").c_str(), &statMeta);
 				FILETYPE type = GetFileType(GetExtension(file));
 				if (type == FILETYPE::TEXTURE)
 				{
@@ -290,7 +290,7 @@ void ModuleFileSystem::WatchFolder(const char * folder, const std::set<std::stri
 				else if (type == FILETYPE::MODEL)
 				{
 					std::set<std::string>::iterator it = models.find(RemoveExtension(file));
-					if (it == models.end())
+					if (it == models.end() || statFile.st_mtime > statMeta.st_mtime)
 					{
 						filesToImport.push_back(std::pair<std::string, std::string>(file, current_folder));
 					}
