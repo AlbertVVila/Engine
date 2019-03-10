@@ -20,7 +20,7 @@ public:
 public:
 
 	math::float2 position = math::float2::zero;
-	math::float2 size = math::float2::zero;
+	math::float2 size = math::float2(100.0f, 100.0f);
 
 };
 

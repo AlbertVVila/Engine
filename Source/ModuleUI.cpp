@@ -5,10 +5,13 @@
 #include "ModuleResourceManager.h"
 #include "ModuleTextures.h"
 
-#include "ComponentCamera.h"
+#include "GameObject.h"
+#include "ComponentTransform2D.h"
 #include "ComponentImage.h"
 
 #include "GL/glew.h"
+#include "Math/float4x4.h"
+#include "Math/TransformOps.h"
 
 ModuleUI::ModuleUI()
 {
@@ -30,7 +33,6 @@ bool ModuleUI::Init(JSON* json)
 			-0.5f,  0.5f, 0.0f, 1.0f, // top left 
 			 0.5f, -0.5f, 1.0f, 0.0f, // bottom right
 			 0.5f,  0.5f, 1.0f, 1.0f  // top right
-			
 	};
 
 	unsigned int quadIndices[] =
@@ -82,7 +84,7 @@ bool ModuleUI::CleanUp()
 	return true;
 }
 
-void ModuleUI::Draw(const ComponentCamera &camera)
+void ModuleUI::Draw(int currentWidth, int currentHeight)
 {
 	if (shader == nullptr) return;
 
@@ -90,13 +92,13 @@ void ModuleUI::Draw(const ComponentCamera &camera)
 	{
 		if ((*it)->texture != nullptr && (*it)->texture != 0 && (*it)->enabled)
 		{
-			RenderImage(*(*it));
+			RenderImage(*(*it), currentWidth, currentHeight);
 		}
 	}
 }
 
 
-void ModuleUI::RenderImage(const ComponentImage& componentImage)
+void ModuleUI::RenderImage(const ComponentImage& componentImage, int currentWidth, int currentHeight)
 {
 	glUseProgram(shader->id);
 
@@ -104,12 +106,30 @@ void ModuleUI::RenderImage(const ComponentImage& componentImage)
 
 	glBindVertexArray(VAO);
 
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, componentImage.texture->id);
-	glUniform1i(glGetUniformLocation(shader->id, "texture0"), 0);
+	math::float4x4 projection = math::float4x4::D3DOrthoProjRH(-1.0f, 1.0f, currentWidth, currentHeight);
+	math::float4x4 model = math::float4x4::identity;
 
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	ComponentTransform2D* transform2D = (ComponentTransform2D*)componentImage.gameobject->GetComponent(ComponentType::Transform2D);
 
+	if (transform2D != nullptr)
+	{
+
+		math::float3 scale = math::float3(transform2D->size.x, transform2D->size.y, 1.0f);
+		math::float3 center = math::float3(transform2D->position.x, transform2D->position.y, 0.0f);
+
+		model = model.Scale(scale, center);
+
+
+		glUniformMatrix4fv(glGetUniformLocation(shader->id, "model"), 1, GL_TRUE, (const float*)&model);
+		glUniformMatrix4fv(glGetUniformLocation(shader->id, "projection"), 1, GL_TRUE, (const float*)&projection);
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, componentImage.texture->id);
+		glUniform1i(glGetUniformLocation(shader->id, "texture0"), 0);
+
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	}
+	
 	glBindVertexArray(0);
 	glUseProgram(0);
 }

@@ -22,11 +22,11 @@ public:
 	update_status PostUpdate() override;
 	bool CleanUp() override;
 
-	void Draw(const ComponentCamera &camera);
+	void Draw(int currentWidth, int currentHeight);
 public:
 	std::list<ComponentImage*> images;
 private:
-	void RenderImage(const ComponentImage& componentImage);
+	void RenderImage(const ComponentImage& componentImage, int currentWidth, int currentHeight);
 private:
 	const char* shaderFile = "UI";
 	Shader* shader = nullptr;

@@ -162,7 +162,7 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 	}
 	App->scene->Draw(*cam.frustum, isEditor);
 
-	App->ui->Draw(cam);
+	App->ui->Draw(width, height);
 	App->fontLoader->Draw();
 	
 }
