@@ -24,19 +24,18 @@ void ComponentAnimation::DrawProperties()
 	//Duration of the animation
 	ImGui::Text("%i seconds", anim->durationInSeconds);
 
-	////Switch between animation frames
-	//if (ImGui::InputInt("Frame #", &anim->currentFrameNumber))
-	//{
-	//	if (anim->currentFrameNumber < 0)
-	//	{
-	//		anim->currentFrameNumber = anim->numberFrames - 1;
-	//	}
-	//	else if(anim->currentFrameNumber >= anim->numberFrames)
-	//	{
-	//		anim->currentFrameNumber = 0;
-	//	}
-	//	anim->currentFrame = anim->animationFrames[anim->currentFrameNumber];
-	//}
+	//Switch between animation frames
+	if (ImGui::InputInt("Frame #", &anim->currentSample))
+	{
+		if (anim->currentSample < 0)
+		{
+			anim->currentSample = anim->numberFrames - 1;
+		}
+		else if(anim->currentSample >= anim->numberFrames)
+		{
+			anim->currentSample = 0;
+		}
+	}
 
 	//Play
 	ImGui::ArrowButton("Play", ImGuiDir_Right);

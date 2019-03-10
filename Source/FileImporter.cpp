@@ -141,28 +141,28 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file,
 		
 	}
 
-	for (unsigned i = 0u; i < aiscene.mNumMeshes; i++)
-	{
-		//-------------------------------MESH------------------------------------
-		unsigned meshSize = GetMeshSize(*aiscene.mMeshes[i]);
-		char* meshData = new char[meshSize];
+	//for (unsigned i = 0u; i < aiscene.mNumMeshes; i++)
+	//{
+	//	//-------------------------------MESH------------------------------------
+	//	unsigned meshSize = GetMeshSize(*aiscene.mMeshes[i]);
+	//	char* meshData = new char[meshSize];
 
-		ImportMesh(*aiscene.mMeshes[i], meshData);
+	//	ImportMesh(*aiscene.mMeshes[i], meshData);
 
-		Mesh* mesh = new Mesh();
-		unsigned meshUid = App->scene->GetNewUID();
-		App->fsystem->Save((MESHES + std::to_string(meshUid)+ MESHEXTENSION).c_str(), meshData, meshSize);
-		mesh->SetMesh(meshData, meshUid); //deallocates data
-		// meshesUID.push_back(uid); //same as below?
-		App->resManager->AddMesh(mesh);
-		meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->UID));
+	//	Mesh* mesh = new Mesh();
+	//	unsigned meshUid = App->scene->GetNewUID();
+	//	App->fsystem->Save((MESHES + std::to_string(meshUid)+ MESHEXTENSION).c_str(), meshData, meshSize);
+	//	mesh->SetMesh(meshData, meshUid); //deallocates data
+	//	// meshesUID.push_back(uid); //same as below?
+	//	App->resManager->AddMesh(mesh);
+	//	meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->UID));
 
-		//------------------------BONES---------------------------------------
-		if (aiscene.mMeshes[i]->HasBones())
-		{
-			ImportBones(aiscene.mMeshes[i]->mBones, aiscene.mMeshes[i]->mNumBones, meshData);
-		}
-	}
+	//	//------------------------BONES---------------------------------------
+	//	if (aiscene.mMeshes[i]->HasBones())
+	//	{
+	//		ImportBones(aiscene.mMeshes[i]->mBones, aiscene.mMeshes[i]->mNumBones, meshData);
+	//	}
+	//}
 
 	ProcessNode(meshMap, aiscene.mRootNode, &aiscene, bonesGO, meshesGO, boneNames);
 
@@ -423,30 +423,30 @@ void FileImporter::ProcessNode(const std::map<unsigned, unsigned>& meshmap,
 
 	boneGO->baseState = bTransform;
 
-	for (unsigned j = 0u; j < node->mNumMeshes; j++) //Splits meshes of same node into diferent gameobjects 
-	{
-		//TODO: this should be the mesh name or if empty, node-name+mesh
-		meshGO = App->scene->CreateGameObject(node->mName.C_Str(), meshParent);
+	//for (unsigned j = 0u; j < node->mNumMeshes; j++) //Splits meshes of same node into diferent gameobjects 
+	//{
+	//	//TODO: this should be the mesh name or if empty, node-name+mesh
+	//	meshGO = App->scene->CreateGameObject(node->mName.C_Str(), meshParent);
 
-		aiMatrix4x4 mMesh = node->mTransformation;
-		math::float4x4 mTransform(mMesh.a1, mMesh.a2, mMesh.a3, mMesh.a4, mMesh.b1, mMesh.b2, mMesh.b3, mMesh.b4, mMesh.c1, mMesh.c2, mMesh.c3, mMesh.c4, mMesh.d1, mMesh.d2, mMesh.d3, mMesh.d4);
-		ComponentTransform* tMesh = (ComponentTransform *)meshGO->CreateComponent(ComponentType::Transform);
-		if (boneParent != nullptr)
-		{
-			tMesh->isLocked = true; //Lock transform. Only The root can be moved
-		}
+	//	aiMatrix4x4 mMesh = node->mTransformation;
+	//	math::float4x4 mTransform(mMesh.a1, mMesh.a2, mMesh.a3, mMesh.a4, mMesh.b1, mMesh.b2, mMesh.b3, mMesh.b4, mMesh.c1, mMesh.c2, mMesh.c3, mMesh.c4, mMesh.d1, mMesh.d2, mMesh.d3, mMesh.d4);
+	//	ComponentTransform* tMesh = (ComponentTransform *)meshGO->CreateComponent(ComponentType::Transform);
+	//	if (boneParent != nullptr)
+	//	{
+	//		tMesh->isLocked = true; //Lock transform. Only The root can be moved
+	//	}
 
-		tMesh->AddTransform(mTransform);
+	//	tMesh->AddTransform(mTransform);
 
-		ComponentRenderer* crenderer = (ComponentRenderer*)meshGO->CreateComponent(ComponentType::Renderer);
-		auto it = meshmap.find(node->mMeshes[j]);
-		if (it != meshmap.end())
-		{
-			RELEASE(crenderer->mesh);
-			crenderer->mesh = App->resManager->GetMesh(it->second);
-			meshGO->UpdateBBox();
-		}
-	}
+	//	ComponentRenderer* crenderer = (ComponentRenderer*)meshGO->CreateComponent(ComponentType::Renderer);
+	//	auto it = meshmap.find(node->mMeshes[j]);
+	//	if (it != meshmap.end())
+	//	{
+	//		RELEASE(crenderer->mesh);
+	//		crenderer->mesh = App->resManager->GetMesh(it->second);
+	//		meshGO->UpdateBBox();
+	//	}
+	//}
 
 
 	//To simplify hierarchy, if in this iteration GO was not created and we didnt have this, it would give an error next iteration since next parent

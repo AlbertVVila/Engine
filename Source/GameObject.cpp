@@ -156,7 +156,10 @@ void GameObject::Update()
 		Animation* anim = ((ComponentAnimation*)GetComponent(ComponentType::Animation))->anim;
 		unsigned indexChannel = ((ComponentAnimation*)GetComponent(ComponentType::Animation))->anim->currentSample;
 
-		Animate(indexChannel, anim);
+		for (const auto& child : children)
+		{
+			Animate(indexChannel, anim);
+		}
 	}
 
 
@@ -241,19 +244,26 @@ void GameObject::Update()
 
 void GameObject::Animate(unsigned indexSample,Animation* anim)
 {
-	unsigned index = anim->GetIndexChannel(name.c_str());
-
-	math::float4x4 transformMatrix = math::float4x4::FromTRS(anim->channels[index]->positionSamples[indexSample],
-		anim->channels[index]->rotationSamples[indexSample], math::float3::one);
-
-	transform->local = transformMatrix;
-
-	movedFlag = true;
-	UpdateGlobalTransform();
-
 	for (const auto& child : children)
 	{
 		child->Animate(indexSample, anim);
+	}
+	if (!isBoneRoot)
+	{
+		unsigned index = anim->GetIndexChannel(name.c_str());
+
+		if (index == 999u) return;
+
+		math::float3 positionSample = anim->GetPosition(index, indexSample);
+		math::Quat rotationSample = anim->GetRotation(index, indexSample);
+
+		math::float4x4 transformMatrix = math::float4x4::FromTRS(positionSample,
+			rotationSample, math::float3::one);
+
+		transform->local = transformMatrix;
+
+		movedFlag = true;
+		UpdateGlobalTransform();
 	}
 }
 

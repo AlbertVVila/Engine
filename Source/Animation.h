@@ -44,7 +44,7 @@ public:
 
 	unsigned UID = 0u;
 
-	unsigned currentSample = 0u;
+	int currentSample = 0u;
 
 	std::vector<Channel*> channels;
 };

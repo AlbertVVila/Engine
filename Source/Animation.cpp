@@ -80,12 +80,18 @@ unsigned Animation::GetNumRotations(unsigned indexChannel) const
 
 const math::float3 Animation::GetPosition(unsigned indexChannel, unsigned indexPosition) const
 {
-	return channels[indexChannel]->positionSamples[indexPosition];
+	if(channels[indexChannel]->numPositionKeys > 1)
+		return channels[indexChannel]->positionSamples[indexPosition];
+	else
+		return channels[indexChannel]->positionSamples[0];
 }
 
 const math::Quat Animation::GetRotation(unsigned indexChannel, unsigned indexPosition) const
 {
-	return channels[indexChannel]->rotationSamples[indexPosition];
+	if (channels[indexChannel]->numRotationKeys > 1)
+		return channels[indexChannel]->rotationSamples[indexPosition];
+	else
+		return channels[indexChannel]->rotationSamples[0];
 }
 
 unsigned Animation::GetIndexChannel(std::string name) const
@@ -97,5 +103,5 @@ unsigned Animation::GetIndexChannel(std::string name) const
 			return i;
 		}
 	}
-	return 0u;
+	return 999u;
 }
