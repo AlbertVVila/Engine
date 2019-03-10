@@ -22,6 +22,8 @@ ResourceTexture::ResourceTexture(const ResourceTexture& resource) : Resource(res
 	bytes = resource.bytes;
 	gpuID = resource.gpuID;
 	format = resource.format;
+	imageType = resource.imageType;
+	cubemapIndex = resource.cubemapIndex;
 }
 
 
@@ -43,6 +45,8 @@ void ResourceTexture::Copy(const Resource& resource)
 		bytes = texture.bytes;
 		gpuID = texture.gpuID;
 		format = texture.format;
+		imageType = texture.imageType;
+		cubemapIndex = texture.cubemapIndex;
 	}
 }
 
@@ -218,6 +222,17 @@ bool ResourceTexture::LoadCubemap()
 		ILenum error = ilGetError();
 		LOG("Error loading data: %s\n", iluErrorString(error));
 		return false;
+	}
+}
+
+void ResourceTexture::SetImageType(IMAGE_TYPE type)
+{
+	imageType = type;
+	if (IsLoadedToMemory())
+	{
+		unsigned references = loaded;
+		DeleteFromMemory();
+		SetReferences(references);
 	}
 }
 

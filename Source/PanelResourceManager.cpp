@@ -251,7 +251,7 @@ void PanelResourceManager::OpenResourceEditor()
 			}
 
 			// Type
-			const char * types[] = { "Texture", "Mesh", "Audio", "Scene", "Bone", "Animation", "Unknown" };
+			const char* types[] = { "Texture", "Mesh", "Audio", "Scene", "Bone", "Animation", "Material", "Skybox", "Unknown" };
 			int type = (int)auxResource->GetType();
 			if (ImGui::BeginCombo("Type", types[type]))
 			{
@@ -303,6 +303,23 @@ void PanelResourceManager::DrawResourceTexture()
 	ImGui::Text("GPU ID: %u", texture.gpuID);
 	ImGui::Text("Format: %u", texture.format);
 	ImGui::NextColumn();
+	// Texture Type
+	const char* imageTypes[] = { "Texture", "Cubemap" };
+	int type = (int)texture.GetImageType();
+	if (ImGui::BeginCombo("Image type", imageTypes[type]))
+	{
+		for (int n = 0; n < (int)IMAGE_TYPE::CUBEMAP + 1; n++)
+		{
+			bool is_selected = (type == n);
+			if (ImGui::Selectable(imageTypes[n], is_selected) && type != n)
+			{
+				texture.SetImageType((IMAGE_TYPE)n);
+			}
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
+		}
+		ImGui::EndCombo();
+	}
 	ImGui::Image((ImTextureID)texture.gpuID, ImVec2(160.0f, 160.0f), ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f));
 	
 	ImGui::End();
@@ -402,25 +419,6 @@ void PanelResourceManager::DrawResourceSkybox()
 	ImGui::Text("Cubemap: %u", skybox.GetCubemap());
 	ImGui::Text("VAO: %u", skybox.GetVAO());
 	ImGui::Text("VBO: %u", skybox.GetVBO());
-	ImGui::NextColumn();
-
-	// Textures
-	unsigned i = 0;
-	for each(auto texture in skybox.textures)
-	{
-		i++;
-		ImGui::Text("Texture %u:", i); ImGui::SameLine();
-		if (texture != nullptr)
-		{
-			ImGui::Text(texture->GetExportedFile());
-			ImGui::Image((ImTextureID)texture->gpuID, ImVec2(100.0f, 100.0f), ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f));
-		}
-		else
-		{
-			ImGui::Text("NULL");
-			ImGui::Image(0, ImVec2(100.0f, 100.0f), ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f));
-		}
-	}
 	ImGui::NextColumn();
 	// TODO: [Resource Manager] Add preview of the skybox on a sphere
 

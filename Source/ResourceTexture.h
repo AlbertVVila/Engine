@@ -19,6 +19,11 @@ public:
 	void Save(JSON_value &config) const override;
 	void Load(const JSON_value &config) override;
 
+	inline IMAGE_TYPE GetImageType() { return imageType; };
+	void SetImageType(IMAGE_TYPE type);
+	inline unsigned GetCubemapIndex() { return cubemapIndex; };
+	inline void SetCubemapIndex(unsigned index) { cubemapIndex = index; };
+
 private:
 	bool LoadTexture();
 	bool LoadCubemap();
@@ -32,6 +37,7 @@ public:
 	unsigned gpuID = 0u;
 	unsigned format = 0u;
 
+private:
 	IMAGE_TYPE imageType = IMAGE_TYPE::TEXTURE;
 	unsigned cubemapIndex = 0u;		// If the image is a cubemap this variable will tell the index ( 0=right, 1=left, 2=top, 3=bottom, 4=front, 5=back)
 };

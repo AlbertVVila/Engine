@@ -134,8 +134,8 @@ void ResourceSkybox::SetTextures(std::string faces[NUMFACES])
 	for (unsigned int i = 0; i < NUMFACES; ++i)
 	{
 		textures[i] = (ResourceTexture*)App->resManager->GetWithoutLoad(faces[i].c_str());
-		textures[i]->imageType = IMAGE_TYPE::CUBEMAP;
-		textures[i]->cubemapIndex = i;
+		textures[i]->SetImageType(IMAGE_TYPE::CUBEMAP);
+		textures[i]->SetCubemapIndex(i);
 	}
 }
 
