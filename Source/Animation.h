@@ -9,14 +9,20 @@
 
 struct channel
 {
-	std::string channelName = "";
-	math::float4x4 channelTransform = math::float4x4::identity;
+	char channelName[MAX_BONE_NAME_LENGTH] = "";
+	float rawTransform[16];
+	float4x4 channelTransform = math::float4x4::identity;
 };
 
 struct frame
 {
+	~frame()
+	{
+		RELEASE_ARRAY(channels);
+	}
+
 	int time;
-	std::vector<channel*> channels;
+	channel** channels;
 };
 
 class Animation
@@ -32,7 +38,7 @@ public:
 	std::string animationName;
 	double duration = 0;
 	double framesPerSecond = 0;
-	double numberFrames = 0;
+	int numberFrames = 0;
 	unsigned numberOfChannels = 0u;
 	unsigned durationInSeconds = 0u;
 
@@ -40,7 +46,7 @@ public:
 
 	int currentFrameNumber = 0;
 	frame* currentFrame = nullptr;
-	std::vector<frame*> animationFrames;
+	frame** animationFrames = nullptr;
 };
 
 #endif // __ANIMATION_H_

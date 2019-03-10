@@ -92,9 +92,6 @@ void ComponentAnimation::Load(JSON_value* value)
 	Component::Load(value);
 	unsigned uid = value->GetUint("animUID");
 
-	//Does this work? not sure
-
-	App->resManager->DeleteAnim(anim->UID);
 	Animation* a = App->resManager->GetAnim(uid);
 
 	if (a != nullptr)
@@ -114,11 +111,11 @@ void ComponentAnimation::Load(JSON_value* value)
 
 frame* ComponentAnimation::InterpolateFrame(const frame* first, const frame* second, float lambda) const
 {
-	frame* newFrame;
+	frame* newFrame; //TODO: OJO!!! ESTO SERA NULL SIEMPRE MAS ABAJO
 	for (unsigned i = 0u; i < anim->numberOfChannels; i++)
 	{
 		math::float4x4 newTransform = InterpolateFloat4x4(first->channels[i]->channelTransform, second->channels[i]->channelTransform, lambda);
-		newFrame->channels[i]->channelName = first->channels[i]->channelName;
+		sprintf_s(newFrame->channels[i]->channelName, first->channels[i]->channelName);
 		newFrame->channels[i]->channelTransform = newTransform;
 	}
 

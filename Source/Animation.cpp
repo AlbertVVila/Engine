@@ -13,58 +13,47 @@ Animation::Animation()
 
 Animation::~Animation()
 {
+	RELEASE_ARRAY(animationFrames);
 }
 
 void Animation::Load(const char* animationData, unsigned uid)
 {
 	UID = uid;
 
-	memcpy(&numberFrames, animationData, sizeof(double));
+	double mDuration;
+	memcpy(&mDuration, animationData, sizeof(double));
 	animationData += sizeof(double);
 
 	memcpy(&framesPerSecond, animationData, sizeof(double));
 	animationData += sizeof(double);
 
-	durationInSeconds = numberFrames * 1/framesPerSecond;
+	durationInSeconds = mDuration * (1/framesPerSecond);
 
 	memcpy(&numberOfChannels, animationData, sizeof(int));
 	animationData += sizeof(int);
-
 	
+	numberFrames = (int)mDuration;
+
+	animationFrames = new frame*[numberFrames];
+
+	channel newChannel; //TODO:The classes or structs must begin with uppercase
+
 	for (unsigned j = 0u; j < numberFrames; j++)
 	{
-		frame* newFrame = new frame();//TODO:The classes or structs must begin with uppercase
-		newFrame->channels.resize(numberOfChannels); //push_back is not efficient
-
+		animationFrames[j] = new frame();
+		animationFrames[j]->channels = new channel*[numberOfChannels];
 		for (unsigned i = 0u; i < numberOfChannels; i++)
 		{
-			channel* newChannel = new channel(); //TODO:The classes or structs must begin with uppercase
-
-			char name[MAX_BONE_NAME_LENGTH]; //crash fix - Here we don't need to care of namelength. The /0 marks the end of the string. Notice the strings are length + 1 ALWAYS
-
-			memcpy(name, animationData, sizeof(char) * MAX_BONE_NAME_LENGTH);
-			animationData += sizeof(char)* MAX_BONE_NAME_LENGTH;
-
-			newChannel->channelName = std::string(name);
-
-			math::float3 translation = math::float3::zero;
-			math::Quat rotation = math::Quat::identity;
-			math::float3 scaling = math::float3::one;
-
-			memcpy(&translation, animationData, sizeof(float) * 3);
-			animationData += sizeof(float) * 3;
-
-			memcpy(&rotation, animationData, sizeof(math::Quat));
-			animationData += sizeof(math::Quat);
-
-			math::float4x4 transform = math::float4x4::FromTRS(translation, rotation, scaling);
-			newChannel->channelTransform = transform;
-
-			newFrame->channels[i] = newChannel; 
+			memcpy(&newChannel, animationData, sizeof(channel));
+			newChannel.channelTransform = math::float4x4::identity;
+			memcpy(&newChannel.channelTransform[0][0], newChannel.rawTransform, sizeof(newChannel.rawTransform));
+			animationData += sizeof(channel);
+			animationFrames[j]->channels[i] = new channel();
+			sprintf_s(animationFrames[j]->channels[i]->channelName, newChannel.channelName);
+			animationFrames[j]->channels[i]->channelTransform = math::float4x4(newChannel.channelTransform);
 		}
-
-		animationFrames.push_back(newFrame);
+		animationFrames[j]->time = j;
 	}
 
-	currentFrame = animationFrames.front();
+	currentFrame = animationFrames[0];
 }

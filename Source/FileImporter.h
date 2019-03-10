@@ -20,15 +20,9 @@ public:
 
 	void ImportAsset(const char* file, const char* folder);
 
-	void ProcessNode(const std::map<unsigned,unsigned>& meshmap, 
-		const aiNode* node, const aiScene* scene, GameObject* parent, GameObject* meshParent,
-		std::vector<std::string*>* boneNames);
-
 	bool ImportFBX(const char* file, const char* folder);
 
-	bool ImportScene(const aiScene& aiscene, const char* file,
-		std::vector<unsigned>& meshesUID, std::vector<unsigned>& animationsUID,
-		std::vector<unsigned>& bonesUID);
+	bool ImportScene(const aiScene& aiscene, const char* file);
 
 	void ImportAnimation(const aiAnimation& animation, char* data);
 
@@ -38,7 +32,6 @@ public:
 
 	unsigned GetMeshSize(const aiMesh& mesh) const;
 
-	unsigned GetAnimationSize(const aiAnimation& animation) const;
 };
 
 #endif __FileImporter_h__

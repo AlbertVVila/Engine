@@ -231,9 +231,6 @@
     <ClCompile Include="Animation.cpp">
       <Filter>Animation</Filter>
     </ClCompile>
-    <ClCompile Include="Bone.cpp">
-      <Filter>Animation</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -559,9 +556,6 @@
       <Filter>Component</Filter>
     </ClInclude>
     <ClInclude Include="Animation.h">
-      <Filter>Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="Bone.h">
       <Filter>Animation</Filter>
     </ClInclude>
   </ItemGroup>

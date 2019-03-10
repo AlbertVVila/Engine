@@ -37,6 +37,7 @@ public:
 	std::vector<Component *> GetComponentsInChildren(ComponentType type) const;
 	void RemoveComponent(const Component & component);
 	void RemoveChild(GameObject* child);
+	void InsertChild(GameObject* child);
 	bool IsParented(const GameObject & gameobject) const;
 
 	void DrawHierarchy(GameObject * selected);
@@ -65,7 +66,6 @@ public:
 	unsigned parentUUID = 0; //only set in Save/Load scene TODO:update on parent change
 	bool isStatic = false;
 	bool isBoneRoot = false;
-	bool hasSkeleton = false;
 	bool movedFlag = false;
 	bool copyFlag = false;
 	bool deleteFlag = false;
