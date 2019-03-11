@@ -144,7 +144,7 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file)
 	for (unsigned i = 0u; i < aiscene.mNumAnimations; i++)
 	{
 		char* animationData = nullptr;
-		unsigned animationSize = sizeof(double) * 2 + sizeof(int) + aiscene.mAnimations[i]->mDuration * aiscene.mAnimations[i]->mNumChannels * sizeof(Channel);
+		unsigned animationSize = GetAnimationSize(*aiscene.mAnimations[i]);
 		animationData = new char[animationSize];
 		
 		ImportAnimation(*aiscene.mAnimations[i], animationData);

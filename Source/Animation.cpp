@@ -21,11 +21,14 @@ void Animation::Load(const char* animationData, unsigned uid)
 	UID = uid;
 
 	double mDuration;
+
 	memcpy(&mDuration, animationData, sizeof(double));
 	animationData += sizeof(double);
 
 	memcpy(&framesPerSecond, animationData, sizeof(double));
 	animationData += sizeof(double);
+
+	numberFrames = mDuration;
 
 	durationInSeconds = mDuration * (1/framesPerSecond);
 
@@ -97,7 +100,7 @@ const math::Quat Animation::GetRotation(unsigned indexChannel, unsigned indexPos
 
 unsigned Animation::GetIndexChannel(std::string name) const
 {
-	for (unsigned i = 0u; i < numberOfChannels; i++)
+	for (unsigned i = 0u; i < numberOfChannels; i++) //TODO, guardar map, en el anim controller
 	{
 		if (strcmp(name.c_str(), channels[i]->channelName.c_str()) == 0)
 		{
