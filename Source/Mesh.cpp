@@ -107,7 +107,8 @@ void Mesh::SetMesh(const char* meshData, unsigned uid)
 	char boneName[MAX_BONE_NAME_LENGTH];
 
 	bindBones.resize(numBones);
-	bindAttaches.resize(numVertices);
+	bindBoneVertexAttaches.resize(numVertices);
+	bindWeightVertexAttaches.resize(numVertices);
 
 	for (unsigned i = 0u; i < numBones; ++i)
 	{
@@ -127,25 +128,50 @@ void Mesh::SetMesh(const char* meshData, unsigned uid)
 			memcpy(&vertex, meshData, sizeof(unsigned));
 			meshData += sizeof(unsigned);
 
-			unsigned weight;
+			float weight;
 			memcpy(&weight, meshData, sizeof(float));
 			meshData += sizeof(float);
 
 			assert(vertex < numVertices);
 
-			if (bindAttaches[vertex].nBones < MAX_WEIGHTS_PER_BONE)
+			unsigned freeSlot = 0u;
+
+			while (freeSlot < MAX_WEIGHTS_PER_BONE && bindWeightVertexAttaches[vertex].weight[freeSlot++] > 0); // Find empty slot
+
+			if (freeSlot <= MAX_WEIGHTS_PER_BONE)
 			{
-				bindAttaches[vertex].bones[bindAttaches[vertex].nBones] = i;
-				bindAttaches[vertex].weights[bindAttaches[vertex].nBones] = weight;
-				++bindAttaches[vertex].nBones;
-			}
-			else
-			{
-				LOG("Warning: Vertex %d has more weights assigned than the maxim allowed");
+				freeSlot--;
+				bindBoneVertexAttaches[vertex].boneID[freeSlot] = i;
+				bindWeightVertexAttaches[vertex].weight[freeSlot] = weight;
 			}
 		}
 	}
 
+	unsigned boneWeightCorrected = 0u;
+	
+	for (unsigned c = 0u; c < bindWeightVertexAttaches.size(); ++c)
+	{
+		float totalWeight = 0.f;
+		for (unsigned k = 0u; k < MAX_WEIGHTS_PER_BONE; ++k)
+		{
+			totalWeight += bindWeightVertexAttaches[c].weight[k];
+		}
+
+		if (totalWeight > 1.f)
+		{
+			++boneWeightCorrected;
+			for (unsigned k = 0u; k < MAX_WEIGHTS_PER_BONE; ++k)
+			{
+				bindWeightVertexAttaches[c].weight[k] /= totalWeight;
+			}
+		}
+	
+	}
+
+	if (boneWeightCorrected > 0u)
+	{
+		LOG("Corrected %d vertex weights", boneWeightCorrected);
+	}
 	UID = uid;
 	
 	meshVertices.resize(numVertices);
@@ -229,8 +255,10 @@ void Mesh::SetMeshBuffers()
 	unsigned offsetTexCoords = meshVertices.size() * sizeof(math::float3);
 	unsigned offsetNormals = offsetTexCoords + (meshTexCoords.size() * sizeof(float) * 2);
 	unsigned offsetTangents = offsetNormals + (meshNormals.size() * sizeof(math::float3));
-
-	unsigned totalSize = offsetTangents + (meshTangents.size() * sizeof(math::float3));
+	unsigned offsetBones = offsetTangents + (bindBoneVertexAttaches.size() * sizeof(int) * 4);
+	unsigned offsetWeights = offsetBones + (bindBoneVertexAttaches.size() * sizeof(float) * 4);
+	
+	unsigned totalSize = offsetWeights + (meshTangents.size() * sizeof(float) * 4);
 
 	if (VAO == 0)
 	{
@@ -251,6 +279,11 @@ void Mesh::SetMeshBuffers()
 	if (meshTangents.size() > 0)
 		glBufferSubData(GL_ARRAY_BUFFER, offsetTangents, sizeof(math::float3) * meshTangents.size(), &meshTangents[0]);
 
+	if (bindBoneVertexAttaches.size() > 0)
+	{
+		glBufferSubData(GL_ARRAY_BUFFER, offsetBones, sizeof(int) * 4 * bindBoneVertexAttaches.size(), &bindBoneVertexAttaches[0]);
+		glBufferSubData(GL_ARRAY_BUFFER, offsetWeights, sizeof(float) * 4 * bindWeightVertexAttaches.size(), &bindWeightVertexAttaches[0]);
+	}
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * meshIndices.size(), &meshIndices[0], GL_STATIC_DRAW);
@@ -265,6 +298,14 @@ void Mesh::SetMeshBuffers()
 	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 0, (void*)offsetTangents);
 
 
+	if (bindBones.size() != 0)
+	{
+		glEnableVertexAttribArray(4);
+		glVertexAttribIPointer(4, 4, GL_UNSIGNED_INT, 0, (void*)offsetBones);
+		glEnableVertexAttribArray(5);
+		glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, 0, (void*)offsetWeights);
+	}
+	
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
@@ -276,6 +317,18 @@ void Mesh::SetMeshBuffers()
 
 void Mesh::Draw(unsigned shaderProgram) const
 {
+	if (bindBones.size() > 0)
+	{
+		std::vector<math::float4x4> palette(bindBones.size());
+		unsigned i = 0u;
+		for (BindBone bb : bindBones)
+		{
+			palette[i++] = bb.go->GetGlobalTransform() * bb.transform;
+		}
+		
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram,
+			"palette"), bindBones.size(), GL_TRUE, palette[0].ptr());
+	}
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glDrawElements(GL_TRIANGLES, meshIndices.size(), GL_UNSIGNED_INT, 0);
@@ -382,11 +435,16 @@ void Mesh::LinkBones(const ComponentRenderer* renderer)
 	for (unsigned i = 0u; i < bindBones.size(); ++i)
 	{
 		GameObject* node = renderer->gameobject;
-		while (!node->hasSkeleton)
+		while (node != nullptr && !node->isBoneRoot)
 		{
 			node = node->parent;
 		}
 		
+		if (node == nullptr)
+		{
+			return;
+		}
+
 		bool found = false;
 
 		std::stack<GameObject*> S;

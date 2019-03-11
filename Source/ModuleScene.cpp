@@ -97,7 +97,7 @@ bool ModuleScene::Start()
 }
 
 update_status ModuleScene::PreUpdate()
-{
+{	
 	FrustumCulling(*App->camera->editorcamera->frustum);
 	return UPDATE_CONTINUE;
 }
@@ -147,6 +147,9 @@ void ModuleScene::SaveConfig(JSON * config)
 
 void ModuleScene::FrustumCulling(const Frustum & frustum)
 {
+	staticFilteredGOs.clear();
+	dynamicFilteredGOs.clear();
+
 	Frustum camFrustum = frustum;
 
 	if (maincamera != nullptr && App->renderer->useMainCameraFrustum)
@@ -159,7 +162,7 @@ void ModuleScene::FrustumCulling(const Frustum & frustum)
 
 void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 {
-	BROFILER_CATEGORY("Render scene", Profiler::Color::AliceBlue);;
+	BROFILER_CATEGORY("Render scene", Profiler::Color::AliceBlue);
 
 	if (isEditor)
 	{
@@ -172,11 +175,9 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 				GameObject* node = S.top();S.pop();
 				if (node->parent->transform != nullptr)
 				{
-					math::float3 childPosition = node->transform->GetGlobalPosition();
-
-					math::float3 position = node->parent->transform->GetGlobalPosition();
-
-					dd::line(position, childPosition, dd::colors::Red);
+					ComponentTransform*  nT = (ComponentTransform*)node->GetComponent(ComponentType::Transform);
+					ComponentTransform*  pT = (ComponentTransform*)node->parent->GetComponent(ComponentType::Transform);
+					dd::line(nT->GetGlobalPosition(), pT->GetGlobalPosition(), dd::colors::Red);
 				}
 				
 				for (GameObject* go : node->children)
@@ -367,6 +368,10 @@ void ModuleScene::AddToSpacePartition(GameObject *gameobject)
 		{
 			App->spacePartitioning->aabbTree.InsertGO(gameobject);
 		}
+	}
+	if (gameobject->hasLight)
+	{
+		App->spacePartitioning->aabbTreeLighting.InsertGO(gameobject);
 	}
 }
 

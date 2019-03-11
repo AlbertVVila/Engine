@@ -7,7 +7,6 @@
 
 #include "Material.h"
 #include "Mesh.h"
-#include "Bone.h"
 #include "Animation.h"
 
 ModuleResourceManager::ModuleResourceManager()
@@ -191,57 +190,6 @@ void ModuleResourceManager::DeleteMesh(unsigned uid)
 		{
 			RELEASE(it->second.second);
 			meshResources.erase(it);
-		}
-	}
-}
-
-Bone* ModuleResourceManager::GetBone(unsigned uid) const
-{
-	std::map<unsigned, std::pair<unsigned, Bone*>>::const_iterator it = boneResources.find(uid);
-	if (it != boneResources.end())
-	{
-		return it->second.second;
-	}
-	return nullptr;
-}
-
-std::list<Bone*> ModuleResourceManager::GetAllBones() const
-{
-	std::list<Bone*> bonesList;
-	for (const auto& bone : boneResources)
-	{
-		bonesList.push_back(bone.second.second);
-	}
-	return bonesList;
-}
-
-void ModuleResourceManager::AddBone(Bone* bone)
-{
-	std::map<unsigned, std::pair<unsigned, Bone*>>::iterator it = boneResources.find(bone->UID);
-	if (it != boneResources.end())
-	{
-		it->second.first++;
-	}
-	else
-	{
-		boneResources.insert(std::pair<unsigned, std::pair<unsigned, Bone*>>
-			(bone->UID, std::pair<unsigned, Bone*>(1, bone)));
-	}
-}
-
-void ModuleResourceManager::DeleteBone(unsigned uid)
-{
-	std::map<unsigned, std::pair<unsigned, Bone*>>::iterator it = boneResources.find(uid);
-	if (it != boneResources.end())
-	{
-		if (it->second.first > 1)
-		{
-			it->second.first--;
-		}
-		else
-		{
-			RELEASE(it->second.second);
-			boneResources.erase(it);
 		}
 	}
 }

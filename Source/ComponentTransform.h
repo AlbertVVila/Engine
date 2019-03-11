@@ -21,6 +21,7 @@ public:
 	void SetLocalToWorld();
 	void SetWorldToLocal(const math::float4x4& newparentGlobalMatrix);
 	void SetGlobalTransform(const math::float4x4& newglobal, const math::float4x4& parentglobal);
+	void SetLocalTransform(const math::float4x4& newLocal, const math::float4x4& parentGlobal); //only for importing purposes / if used later watch the trees
 
 	ENGINE_API void SetPosition(const math::float3& position);
 	ENGINE_API math::float3 GetPosition();

@@ -205,6 +205,14 @@ void ComponentTransform::SetGlobalTransform(const math::float4x4& newglobal, con
 	}
 }
 
+void ComponentTransform::SetLocalTransform(const math::float4x4& newLocal, const math::float4x4& parentGlobal)
+{
+	local = newLocal;
+	global = parentGlobal.Mul(local);
+	local.Decompose(position, rotation, scale);
+	RotationToEuler();
+}
+
 void ComponentTransform::SetPosition(const math::float3 & newPosition)
 {
 	position = newPosition;

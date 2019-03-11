@@ -33,14 +33,17 @@ private:
 		std::string name;
 		GameObject* go = nullptr;
 	};
-	struct BindAttach
+
+	struct BoneVertex
 	{
-		unsigned nBones = 0u;
-		unsigned bones[MAX_WEIGHTS_PER_BONE];
-		float weights[MAX_WEIGHTS_PER_BONE];
+		int boneID[MAX_WEIGHTS_PER_BONE] = { 0, 0, 0, 0 };
 	};
 
-
+	struct BoneWeight
+	{
+		float weight[MAX_WEIGHTS_PER_BONE] = { 0.f, 0.f, 0.f, 0.f };
+	};
+	
 private:
 	void ComputeBBox();
 	void ProcessVertexTangent(const float vIndex1, const float vIndex2, const float vIndex3);
@@ -67,7 +70,8 @@ public:
 	std::vector<float> meshTexCoords;
 	std::vector<unsigned> meshIndices;
 
-	std::vector<BindAttach> bindAttaches;
+	std::vector<BoneVertex> bindBoneVertexAttaches;
+	std::vector<BoneWeight> bindWeightVertexAttaches;
 	std::vector<BindBone> bindBones;
 };
 

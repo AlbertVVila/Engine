@@ -13,6 +13,7 @@ Animation::Animation()
 
 Animation::~Animation()
 {
+	RELEASE_ARRAY(animationFrames);
 }
 
 void Animation::Load(const char* animationData, unsigned uid)
@@ -20,13 +21,14 @@ void Animation::Load(const char* animationData, unsigned uid)
 
 	UID = uid;
 
-	memcpy(&numberFrames, animationData, sizeof(double));
+	double mDuration;
+	memcpy(&mDuration, animationData, sizeof(double));
 	animationData += sizeof(double);
 
 	memcpy(&framesPerSecond, animationData, sizeof(double));
 	animationData += sizeof(double);
 
-	durationInSeconds = numberFrames * 1/framesPerSecond;
+	durationInSeconds = mDuration * (1/framesPerSecond);
 
 	memcpy(&numberOfChannels, animationData, sizeof(int));
 	animationData += sizeof(int);

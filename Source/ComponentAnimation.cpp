@@ -95,9 +95,6 @@ void ComponentAnimation::Load(JSON_value* value)
 	Component::Load(value);
 	unsigned uid = value->GetUint("animUID");
 
-	//Does this work? not sure
-
-	App->resManager->DeleteAnim(anim->UID);
 	Animation* a = App->resManager->GetAnim(uid);
 
 	if (a != nullptr)

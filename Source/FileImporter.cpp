@@ -13,10 +13,10 @@
 #include "FileImporter.h"
 #include "Material.h"
 #include "Mesh.h"
-#include "Bone.h"
 #include "Animation.h"
 
 #include <assert.h>
+#include <stack>
 #include "Math/float4x4.h"
 #include "assimp/cimport.h"
 #include "assimp/postprocess.h"
@@ -77,122 +77,99 @@ bool FileImporter::ImportFBX(const char* fbxfile, const char* folder)
 	if (fbxfile == nullptr) return false;
 
 	std::string file(fbxfile);
-	std::vector<unsigned> meshesUID;
-	std::vector<unsigned> animationsUID;
-	std::vector<unsigned> bonesUID;
-
+	
 	const aiScene* scene = aiImportFile((folder+ file).c_str(), aiProcess_Triangulate);
 	if (scene != nullptr)
 	{
 		LOG("Imported FBX %s", fbxfile);
-		return ImportScene(*scene, fbxfile, meshesUID, animationsUID, bonesUID);
+		return ImportScene(*scene, fbxfile);
 	}
 	LOG("Error importing FBX %s", fbxfile);
 	return false;
 }
 
-bool FileImporter::ImportScene(const aiScene& aiscene, const char* file, 
-	std::vector<unsigned>& meshesUID, std::vector<unsigned>& animationsUID, 
-	std::vector<unsigned>& bonesUID)
+bool FileImporter::ImportScene(const aiScene& aiscene, const char* file)
 {
-
-	std::vector<std::string*>* boneNames = new std::vector<std::string*>();
-
-	std::map<unsigned, unsigned> meshMap;
-	std::map<std::string*, unsigned> boneMap;
-
-	std::vector<unsigned> rBonesUIDs;
-	std::vector<Bone*> rBones;
-
-	//Insted of creating a fake GO we create at the beginning the sceneGO, will have the same purposes but inside will only have two children:
-	//meshesGO and bonesGO
-
 	GameObject* sceneGO = App->scene->CreateGameObject("Scene", App->scene->root);
 	sceneGO->CreateComponent(ComponentType::Transform); // To move all around
-	GameObject* meshesGO = nullptr;
+	sceneGO->isBoneRoot = true;
+	std::stack<aiNode*> stackNode;
+	std::stack<GameObject*> stackParent;
 
-	GameObject* bonesGO = nullptr;
-
-	for (unsigned j = 0u; j < aiscene.mNumMeshes; j++)
+	for (unsigned i = 0; i < aiscene.mRootNode->mNumChildren; ++i) //skip rootnode
 	{
-		if (aiscene.mMeshes[j]->HasBones())
+		stackNode.push(aiscene.mRootNode->mChildren[i]);
+		stackParent.push(sceneGO);
+	}
+
+	while (!stackNode.empty())
+	{
+		aiNode* aNode = stackNode.top(); stackNode.pop();
+		GameObject* goNode = new GameObject(aNode->mName.C_Str(), App->scene->GetNewUID());
+		stackParent.top()->InsertChild(goNode); stackParent.pop();
+		
+		ComponentTransform* nodeTransform = (ComponentTransform*)goNode->CreateComponent(ComponentType::Transform);
+		ComponentTransform* nodeParentTransform = (ComponentTransform*)goNode->parent->GetComponent(ComponentType::Transform);
+		nodeTransform->UpdateTransform();
+		nodeTransform->SetLocalTransform(reinterpret_cast<const math::float4x4&>(aNode->mTransformation), nodeParentTransform->global);		
+		for (unsigned i = 0u; i < aNode->mNumMeshes; ++i)
 		{
-			bonesGO = App->scene->CreateGameObject("Skeleton", sceneGO);
-			bonesGO->CreateComponent(ComponentType::Transform);
-			bonesGO->transform->isLocked = true;
-			bonesGO->isBoneRoot = true; 
+			aiMesh* aMesh = aiscene.mMeshes[aNode->mMeshes[i]];
+			unsigned meshSize = GetMeshSize(*aMesh);
+			char* meshData = new char[meshSize];
 
-			if (aiscene.HasAnimations())
-			{
-				bonesGO->CreateComponent(ComponentType::Animation);
-			}
+			ImportMesh(*aMesh, meshData);
 
-			break;
+			Mesh* mesh = new Mesh();
+			unsigned meshUid = App->scene->GetNewUID();
+			App->fsystem->Save((MESHES + std::to_string(meshUid) + MESHEXTENSION).c_str(), meshData, meshSize);
+			mesh->SetMesh(meshData, meshUid);
+			RELEASE_ARRAY(meshData);
+			App->resManager->AddMesh(mesh);
+			GameObject* meshGO = new GameObject();
+			ComponentRenderer* crenderer = (ComponentRenderer*)meshGO->CreateComponent(ComponentType::Renderer);
+			crenderer->mesh = mesh;
+			meshGO->CreateComponent(ComponentType::Transform);
+			meshGO->name = "Mesh";
+			goNode->InsertChild(meshGO);
+		}
+
+		for (unsigned i = 0u; i < aNode->mNumChildren; ++i)
+		{
+			stackNode.push(aNode->mChildren[i]);
+			stackParent.push(goNode);
 		}
 	}
-	
-	if (aiscene.HasMeshes())
-	{
-		meshesGO = App->scene->CreateGameObject("Meshes", sceneGO);
 
-		ComponentTransform* meshTransform = new ComponentTransform(meshesGO);
-		meshTransform->isLocked = true;
-		meshesGO->components.push_back(meshTransform);
+	for (unsigned i = 0u; i < aiscene.mNumAnimations; i++)
+	{
+		char* animationData = nullptr;
+		unsigned animationSize = sizeof(double) * 2 + sizeof(int) + aiscene.mAnimations[i]->mDuration * aiscene.mAnimations[i]->mNumChannels * sizeof(channel);
+		animationData = new char[animationSize];
 		
-	}
-
-	//for (unsigned i = 0u; i < aiscene.mNumMeshes; i++)
-	//{
-	//	//-------------------------------MESH------------------------------------
-	//	unsigned meshSize = GetMeshSize(*aiscene.mMeshes[i]);
-	//	char* meshData = new char[meshSize];
-
-	//	ImportMesh(*aiscene.mMeshes[i], meshData);
-
-	//	Mesh* mesh = new Mesh();
-	//	unsigned meshUid = App->scene->GetNewUID();
-	//	App->fsystem->Save((MESHES + std::to_string(meshUid)+ MESHEXTENSION).c_str(), meshData, meshSize);
-	//	mesh->SetMesh(meshData, meshUid); //deallocates data
-	//	// meshesUID.push_back(uid); //same as below?
-	//	App->resManager->AddMesh(mesh);
-	//	meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->UID));
-
-	//	//------------------------BONES---------------------------------------
-	//	if (aiscene.mMeshes[i]->HasBones())
-	//	{
-	//		ImportBones(aiscene.mMeshes[i]->mBones, aiscene.mMeshes[i]->mNumBones, meshData);
-	//	}
-	//}
-
-	ProcessNode(meshMap, aiscene.mRootNode, &aiscene, bonesGO, meshesGO, boneNames);
-
-	//-----------------------------ANIMATIONS---------------------------------------------------
-	std::map<unsigned, unsigned> animationMap; //TODO: REmove unused map?
-
-	for (unsigned i = 0u; i < aiscene.mNumAnimations; i++) 
-	{
-		Animation* animation = new Animation();
-
-		animation->animationName = aiscene.mAnimations[i]->mName.C_Str();
-		unsigned animationSize = GetAnimationSize(*aiscene.mAnimations[i]);
-		char* animationData = new char[animationSize];
-
 		ImportAnimation(*aiscene.mAnimations[i], animationData);
 
+		sceneGO->CreateComponent(ComponentType::Animation);
+		ComponentAnimation* animationComponent = (ComponentAnimation*)sceneGO->GetComponent(ComponentType::Animation);
 		unsigned animUid = App->scene->GetNewUID();
+		Animation* animation = new Animation();
 		animation->Load(animationData, animUid);
 
-		((ComponentAnimation*)(bonesGO->GetComponent(ComponentType::Animation)))->anim = animation;
+		animation->animationName = aiscene.mAnimations[i]->mName.C_Str();
 
 		App->fsystem->Save((ANIMATIONS + std::to_string(animUid) + ANIMATIONEXTENSION).c_str(), animationData, animationSize);
 
 		App->resManager->AddAnim(animation);
 
-	}
+		animationComponent->anim = animation;
 
+		RELEASE_ARRAY(animationData);
+	}
+	
 	App->scene->SaveScene(*sceneGO, *App->fsystem->GetFilename(file).c_str(), *SCENES); //TODO: Make AutoCreation of folders or check
 
 	aiReleaseImport(&aiscene);
+
 	return true;
 }
 
@@ -265,27 +242,9 @@ void FileImporter::ImportBones(aiBone** bones, unsigned numBones, char* data)con
 		memcpy(cursor, bones[i]->mName.C_Str(), MAX_BONE_NAME_LENGTH);
 		cursor += MAX_BONE_NAME_LENGTH;
 		
-		math::float4x4 boneOffset; //Translate from assimp to math geolib
-		boneOffset[0][0] = bones[i]->mOffsetMatrix.a1;
-		boneOffset[0][1] = bones[i]->mOffsetMatrix.a2;
-		boneOffset[0][2] = bones[i]->mOffsetMatrix.a3;
-		boneOffset[0][3] = bones[i]->mOffsetMatrix.a4;
-
-		boneOffset[1][0] = bones[i]->mOffsetMatrix.b1;
-		boneOffset[1][1] = bones[i]->mOffsetMatrix.b2;
-		boneOffset[1][2] = bones[i]->mOffsetMatrix.b3;
-		boneOffset[1][3] = bones[i]->mOffsetMatrix.b4;
-
-		boneOffset[2][0] = bones[i]->mOffsetMatrix.c1;
-		boneOffset[2][1] = bones[i]->mOffsetMatrix.c2;
-		boneOffset[2][2] = bones[i]->mOffsetMatrix.c3;
-		boneOffset[2][3] = bones[i]->mOffsetMatrix.c4;
-
-		boneOffset[3][0] = bones[i]->mOffsetMatrix.d1;
-		boneOffset[3][1] = bones[i]->mOffsetMatrix.d2;
-		boneOffset[3][2] = bones[i]->mOffsetMatrix.d3;
-		boneOffset[3][3] = bones[i]->mOffsetMatrix.d4;
-
+		math::float4x4 boneOffset = reinterpret_cast<const math::float4x4&>(bones[i]->mOffsetMatrix);
+		
+		
 		memcpy(cursor, &boneOffset[0][0], sizeof(math::float4x4));
 		cursor += sizeof(math::float4x4);
 
@@ -403,58 +362,5 @@ unsigned FileImporter::GetMeshSize(const aiMesh &mesh) const
 }
 
 
-void FileImporter::ProcessNode(const std::map<unsigned, unsigned>& meshmap,
-	const aiNode* node, const aiScene* scene, GameObject* boneParent, GameObject* meshParent, std::vector<std::string*>* boneNames)
-{
-	assert(node != nullptr);
-	if (node == nullptr) return;
-
-	GameObject* boneGO = nullptr;
-	GameObject* meshGO = nullptr;
-
-	aiMatrix4x4 mBone = node->mTransformation;
-	math::float4x4 bTransform(mBone.a1, mBone.a2, mBone.a3, mBone.a4, mBone.b1, mBone.b2, mBone.b3, mBone.b4,
-		mBone.c1, mBone.c2, mBone.c3, mBone.c4, mBone.d1, mBone.d2, mBone.d3, mBone.d4);
-
-	boneGO = App->scene->CreateGameObject(node->mName.C_Str(), boneParent);
-
-	ComponentTransform* tBone = (ComponentTransform*)boneGO->CreateComponent(ComponentType::Transform);
-	tBone->AddTransform(bTransform);
-
-	boneGO->baseState = bTransform;
-
-	//for (unsigned j = 0u; j < node->mNumMeshes; j++) //Splits meshes of same node into diferent gameobjects 
-	//{
-	//	//TODO: this should be the mesh name or if empty, node-name+mesh
-	//	meshGO = App->scene->CreateGameObject(node->mName.C_Str(), meshParent);
-
-	//	aiMatrix4x4 mMesh = node->mTransformation;
-	//	math::float4x4 mTransform(mMesh.a1, mMesh.a2, mMesh.a3, mMesh.a4, mMesh.b1, mMesh.b2, mMesh.b3, mMesh.b4, mMesh.c1, mMesh.c2, mMesh.c3, mMesh.c4, mMesh.d1, mMesh.d2, mMesh.d3, mMesh.d4);
-	//	ComponentTransform* tMesh = (ComponentTransform *)meshGO->CreateComponent(ComponentType::Transform);
-	//	if (boneParent != nullptr)
-	//	{
-	//		tMesh->isLocked = true; //Lock transform. Only The root can be moved
-	//	}
-
-	//	tMesh->AddTransform(mTransform);
-
-	//	ComponentRenderer* crenderer = (ComponentRenderer*)meshGO->CreateComponent(ComponentType::Renderer);
-	//	auto it = meshmap.find(node->mMeshes[j]);
-	//	if (it != meshmap.end())
-	//	{
-	//		RELEASE(crenderer->mesh);
-	//		crenderer->mesh = App->resManager->GetMesh(it->second);
-	//		meshGO->UpdateBBox();
-	//	}
-	//}
-
-
-	//To simplify hierarchy, if in this iteration GO was not created and we didnt have this, it would give an error next iteration since next parent
-	for (unsigned i = 0u; i < node->mNumChildren; i++)
-	{
-		ProcessNode(meshmap, node->mChildren[i], scene, boneGO, meshParent, boneNames);
-	}
-	
-}
 
 

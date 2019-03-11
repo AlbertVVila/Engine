@@ -233,7 +233,7 @@ void GameObject::Update()
 			(*itChild)->CleanUp();
 			App->scene->DeleteFromSpacePartition(*itChild);
 			delete *itChild;
-			children.erase(itChild++);
+			children.erase(itChild++);				
 		}
 		else
 		{
@@ -406,6 +406,12 @@ void GameObject::RemoveChild(GameObject* bastard)
 {
 	children.remove(bastard);
 	RELEASE(bastard);
+}
+
+void GameObject::InsertChild(GameObject* child)
+{
+	children.push_back(child);
+	child->parent = this;
 }
 
 Component * GameObject::GetComponent(ComponentType type) const
@@ -622,19 +628,6 @@ void GameObject::DrawBBox() const
 	renderer->mesh->DrawBbox(App->program->defaultShader->id, bbox);
 }
 
-//void GameObject::DrawBones() const
-//{
-//	for (const auto& child : children)
-//	{
-//		child->DrawBones();
-//	}
-//
-//	if (isBone)
-//	{
-//		dd::sphere(((ComponentTransform*)GetComponent(ComponentType::Transform))->position, dd::colors::Red, 5.0f);
-//	}
-//}
-
 bool GameObject::CleanUp()
 {
 	if (isStatic)
@@ -715,15 +708,7 @@ void GameObject::Load(JSON_value *value)
 		transform->UpdateTransform();
 	}
 
-	if (hasLight)
-	{
-		if (treeNode != nullptr)
-		{
-			App->spacePartitioning->aabbTreeLighting.ReleaseNode(treeNode);
-		}
-		light->CalculateGuizmos();
-		App->spacePartitioning->aabbTreeLighting.InsertGO(this);
-	}
+	//App->scene->AddToSpacePartition(this);
 }
 
 bool GameObject::IsParented(const GameObject & gameobject) const
@@ -777,7 +762,19 @@ void GameObject::DrawHierarchy(GameObject * selected)
 			if (selected == this)
 			{
 				App->scene->selected = nullptr;
-			}			
+			}	
+			std::stack<GameObject*> S;
+			S.push(this);
+			while (!S.empty())
+			{
+				GameObject* node = S.top();
+				S.pop();
+				node->deleteFlag = true;
+				for (GameObject* go : node->children)
+				{
+					S.push(go);
+				}
+			}
 		}
 		ImGui::EndPopup();
 	}

@@ -68,7 +68,7 @@ unsigned ModuleFileSystem::Load(const char * file, char ** buffer) const
 	PHYSFS_sint32 fileSize = PHYSFS_fileLength(myfile);
 
 	*buffer = new char[fileSize+1]();
-	int readed =PHYSFS_read(myfile, *buffer, 1, fileSize);
+	int readed = PHYSFS_read(myfile, *buffer, 1, fileSize);
 	if (readed != fileSize)
 	{
 		LOG("Error reading from file %s, : %s",file, PHYSFS_getLastError());
