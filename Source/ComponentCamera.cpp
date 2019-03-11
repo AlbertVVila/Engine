@@ -233,6 +233,9 @@ void ComponentCamera::DrawProperties(int id)
 			return;
 		}
 
+		ImGui::SameLine();
+		Options();
+
 		if (ImGui::Checkbox("Is Main Camera", &isMainCamera))
 		{
 			if (isMainCamera)
@@ -290,6 +293,47 @@ void ComponentCamera::Load(JSON_value* value)
 	frustum->pos = value->GetFloat3("Position");
 	frustum->front = value->GetFloat3("Front");
 	frustum->up = value->GetFloat3("Up");
+}
+
+void ComponentCamera::Options()
+{
+	ImGui::SetCursorPosX(ImGui::GetWindowWidth() - ImGui::CalcTextSize("Opt   ").x);
+	if (ImGui::Button("Opt"))
+	{
+		ImGui::OpenPopup("Options");
+	}
+
+	const char* options[] = { "Copy Component Values", "Paste Component Values", "Reset" };
+
+	if (ImGui::BeginPopup("Options"))
+	{
+		for (int i = 0; i < IM_ARRAYSIZE(options); i++)
+			if (ImGui::Selectable(options[i]))
+			{
+				if (i == 0) // Copy
+				{
+					App->scene->copyComp = Clone();
+				}
+				else if (i == 1) // Paste
+				{
+					if (App->scene->copyComp != nullptr && App->scene->copyComp->type == this->type)
+					{
+						ComponentCamera* comp = (ComponentCamera*)App->scene->copyComp;
+
+						frustum->verticalFov = comp->frustum->verticalFov;
+						frustum->farPlaneDistance = comp->frustum->farPlaneDistance;
+						frustum->nearPlaneDistance = comp->frustum->nearPlaneDistance;
+					}
+				}
+				else if (i == 2) // Reset
+				{
+					frustum->verticalFov = math::DegToRad(60.f);
+					frustum->farPlaneDistance = 100000.f;
+					frustum->nearPlaneDistance = 10.f;
+				}
+			}
+		ImGui::EndPopup();
+	}
 }
 
 float4x4 ComponentCamera::GetViewMatrix() const

@@ -197,7 +197,7 @@ void ComponentTransform::Options()
 			{
 				if (i == 0) // Copy
 				{
-					App->scene->copyComp = new ComponentTransform(*this);
+					App->scene->copyComp = Clone();
 				}
 				else if (i == 1) // Paste
 				{

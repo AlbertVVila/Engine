@@ -63,7 +63,7 @@ void ComponentLight::DrawProperties(int id)
 		ImGui::SameLine();
 		Options();
 
-		ImGui::Separator();
+		ImGui::Spacing();
 		ImGui::Text("Type");
 		const char * types[] = {"Directional","Point", "Spot"};
 		if (ImGui::BeginCombo("",types[(int)lightType]))
@@ -192,19 +192,27 @@ void ComponentLight::Options()
 			{
 				if (i == 0) // Copy
 				{
-					App->scene->copyComp = new ComponentLight(*this);
+					App->scene->copyComp = Clone();
 				}
 				else if (i == 1) // Paste
 				{
 					if (App->scene->copyComp != nullptr && App->scene->copyComp->type == this->type)
 					{
 						ComponentLight* comp = (ComponentLight*)App->scene->copyComp;
-						
+
+						lightType = comp->lightType;
+						color = comp->color;
+						attenuation = comp->attenuation;
+						inner = comp->inner;
+						outer = comp->outer;						
 					}
 				}
 				else if (i == 2) // Reset
 				{
-					
+					color = float3::one;
+					attenuation = float3(0.1f, 0.1f, 0.1f);
+					inner = 20.f;
+					outer = 25.f;
 				}
 			}
 		ImGui::EndPopup();
