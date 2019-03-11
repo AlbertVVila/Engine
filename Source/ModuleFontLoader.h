@@ -8,6 +8,7 @@
 #include <map>
 #include <list>
 
+class ComponentText;
 struct Shader;
 class ModuleFontLoader :
 	public Module
@@ -28,7 +29,7 @@ public:
 	void Draw();
 	bool CleanUp() override;
 	void LoadFonts(const char* newFont);
-	void RenderText(std::string text, GLfloat x, GLfloat y, GLfloat scale, float4 color, const char* font);
+	void RenderText(const ComponentText& compText, GLfloat x, GLfloat y, GLfloat scale, float4 color, const char* font, int currentWidth, int currentHeight);
 public:
 	std::map<std::string, std::vector<Character>> fonts;
 	const char* defaultFont = "Fonts/DroidSans.ttf";

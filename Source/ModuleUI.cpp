@@ -101,7 +101,7 @@ void ModuleUI::Draw(int currentWidth, int currentHeight)
 	{
 		if ((*it)->enabled)
 		{
-			App->fontLoader->RenderText(std::string((*it)->text), 0.0f, 0.0f, (*it)->fontSize*0.0001, (*it)->color, (*it)->font.c_str());
+			App->fontLoader->RenderText(*(*it), 0.0f, 0.0f, (*it)->fontSize*0.0001, (*it)->color, (*it)->font.c_str(), currentWidth, currentHeight);
 		}
 	}
 }

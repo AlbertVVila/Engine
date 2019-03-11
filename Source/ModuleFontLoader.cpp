@@ -1,9 +1,14 @@
+#include "Application.h"
+#include "GameObject.h"
+
 #include "ModuleFontLoader.h"
 #include "ModuleProgram.h"
-#include "Application.h"
 #include "ModuleResourceManager.h"
+
 #include <assert.h>
+
 #include "ComponentText.h"
+#include "ComponentTransform2D.h"
 //fonts lib
 #include <ft2build.h>
 #include FT_FREETYPE_H 
@@ -125,10 +130,22 @@ bool ModuleFontLoader::CleanUp()
 	return true;
 }
 
-void ModuleFontLoader::RenderText(std::string text, GLfloat x, GLfloat y, GLfloat scale, float4 color, const char* font)
+void ModuleFontLoader::RenderText(const ComponentText& compText, GLfloat x, GLfloat y, GLfloat scale, float4 color, const char* font, int currentWidth, int currentHeight)
 {
 	if (shaderFonts == nullptr)return;
 	assert(fonts.find(font) != fonts.end());
+	std::string text = compText.text;
+
+	//now we get the component transform 2D and the transf matrices
+	ComponentTransform2D* transform2D = (ComponentTransform2D*)compText.gameobject->GetComponent(ComponentType::Transform2D);
+
+	if (transform2D != nullptr)
+	{
+		x += transform2D->position.x*0.01;
+		y += transform2D->position.y*0.01;
+
+	}
+
 	// Activate corresponding render state	
 	glUseProgram(shaderFonts->id);
 	glUniform4f(glGetUniformLocation(shaderFonts->id, "textColor"), color.x, color.y, color.z, color.w);
