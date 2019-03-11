@@ -317,9 +317,9 @@ void Mesh::SetMeshBuffers()
 
 void Mesh::Draw(unsigned shaderProgram) const
 {
-	/*if (bindBones.size() > 0)
+	if (bindBones.size() > 0)
 	{
-		std::vector<math::float4x4> palette(bindBones.size());
+		std::vector<math::float4x4> palette(bindBones.size()); //TODO: Declare on .h
 		unsigned i = 0u;
 		for (BindBone bb : bindBones)
 		{
@@ -328,7 +328,7 @@ void Mesh::Draw(unsigned shaderProgram) const
 		
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram,
 			"palette"), bindBones.size(), GL_TRUE, palette[0].ptr());
-	}*/
+	}
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glDrawElements(GL_TRIANGLES, meshIndices.size(), GL_UNSIGNED_INT, 0);

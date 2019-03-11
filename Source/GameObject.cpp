@@ -151,7 +151,7 @@ void GameObject::DrawProperties()
 void GameObject::Update()
 {
 	//animation shit
-	if (isBoneRoot)
+	/*if (isBoneRoot)
 	{
 		Animation* anim = ((ComponentAnimation*)GetComponent(ComponentType::Animation))->anim;
 		unsigned indexChannel = ((ComponentAnimation*)GetComponent(ComponentType::Animation))->anim->currentSample;
@@ -162,7 +162,7 @@ void GameObject::Update()
 		}
 	}
 
-
+	*/
 	for (auto& component: components)
 	{
 		component->Update();
