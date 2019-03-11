@@ -49,6 +49,7 @@ public:
 	void Draw(const Frustum &frustum, bool isEditor = false);
 	void DrawGO(const GameObject& go, const Frustum & frustum, bool isEditor = false);
 	void DrawHierarchy();
+	void DragNDropMove(GameObject* target) const;
 	void DragNDrop(GameObject * go);
 	void DrawGUI() override;
 
@@ -87,7 +88,7 @@ public:
 	ComponentCamera* maincamera = nullptr; //Released by GameObject holding it
 	Texture* camera_notfound_texture = nullptr; //Released in resource manager
 	std::list<LineSegment> debuglines;
-
+	std::list<GameObject*> selection;
 	std::list<ComponentLight*> lights;
 	myQuadTree * quadtree = nullptr;
 	std::set<GameObject*> dynamicGOs;

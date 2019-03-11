@@ -342,7 +342,8 @@ bool Mesh::Intersects(const LineSegment &line, float* distance)
 {
 	bool intersects = false;
 	*distance = FLOAT_INF;
-	for (unsigned i = 0; i < meshIndices.size(); i+=3) //foreach triangle
+
+  for (unsigned i = 0u; i < meshIndices.size(); i+=3u) //foreach triangle
 	{
 		math::float3 v0(meshVertices[meshIndices[i]]);
 		math::float3 v1(meshVertices[meshIndices[i+1]]);

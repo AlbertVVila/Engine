@@ -93,14 +93,38 @@ void ComponentTransform::DrawProperties()
 	}
 }
 
+
+void ComponentTransform::MultiSelectionTransform(float4x4 &difference)
+{
+	for (GameObject* go : App->scene->selection)
+	{
+		if (go != App->scene->selected)
+		{
+			go->SetGlobalTransform(go->transform->global + difference);
+			if (go->parent->transform != nullptr)
+			{
+				go->transform->local = go->parent->transform->global.Inverted().Mul(go->transform->global);
+			}
+			else
+			{
+				go->transform->local = go->transform->global;
+			}
+		}
+	}
+}
+
 void ComponentTransform::UpdateTransform()
 {
 	UpdateOldTransform();
+	math::float4x4 originalGlobal = global;
 	global = global * local.Inverted();
 	local = math::float4x4::FromTRS(position, rotation, scale);
 	global = global * local;
 
-	front = -global.Col3(2);
+	math::float4x4 difference = global - originalGlobal;
+	MultiSelectionTransform(difference);
+
+  front = -global.Col3(2);
 	up = global.Col3(1);
 	right = global.Col3(0);
 
