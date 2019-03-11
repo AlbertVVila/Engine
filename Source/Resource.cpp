@@ -11,6 +11,7 @@ Resource::Resource(const Resource& resource)
 	file = resource.file;
 	exportedFileName = resource.exportedFileName;
 	loaded = resource.loaded;
+	engineUsed = resource.engineUsed;
 	type = resource.type;
 }
 
@@ -23,6 +24,7 @@ void Resource::Copy(const Resource& resource)
 	file = resource.file;
 	exportedFileName = resource.exportedFileName;
 	SetReferences(resource.loaded);
+	engineUsed = resource.engineUsed;
 	type = resource.type;
 }
 

@@ -5,7 +5,7 @@
 #include "Math/float3.h"
 class ComponentCamera;
 class JSON;
-class Skybox;
+class ResourceSkybox;
 class Viewport;
 struct Shader;
 
@@ -64,7 +64,7 @@ private:
 	bool vsync = false;
 	int item_current = 0;//scale index
 
-	Skybox* skybox = nullptr;
+	ResourceSkybox* skybox = nullptr;
 	
 
 };

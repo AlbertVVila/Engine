@@ -5,8 +5,6 @@
 #include <vector>
 #include <string>
 
-#define NUMFACES 6
-
 class ResourceTexture;
 
 enum class FILTERTYPE
@@ -28,7 +26,6 @@ public:
 	void SaveConfig(JSON * config) override;
 
 	void DrawGUI() override;
-	unsigned LoadCubeMap(const std::string faces[]) const;
 	bool ImportImage(const char* file, const char* folder, ResourceTexture* resource) const;
 	void SaveMetafile(const char* file, ResourceTexture * resource);
 

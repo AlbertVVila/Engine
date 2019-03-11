@@ -8,6 +8,7 @@
 #include "ResourceTexture.h"
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
+#include "ResourceSkybox.h"
 
 #include "imgui.h"
 #include <algorithm>
@@ -125,6 +126,9 @@ void PanelResourceManager::Draw()
 		case TYPE::MATERIAL:
 			ImGui::Text("Material");
 			break;
+		case TYPE::SKYBOX:
+			ImGui::Text("Skybox");
+			break;
 		default:
 		case TYPE::UNKNOWN:
 			ImGui::Text("Unknown");
@@ -143,6 +147,7 @@ void PanelResourceManager::Draw()
 			case TYPE::BONE:		break;
 			case TYPE::ANIMATION:	break;*/
 			case TYPE::MATERIAL:	openMaterialWindow = true; break;
+			case TYPE::SKYBOX:		openSkyboxWindow = true; break;
 			}
 			previous = resource;
 		}
@@ -163,6 +168,8 @@ void PanelResourceManager::Draw()
 		DrawResourceMesh();
 	if (openMaterialWindow)
 		DrawResourceMaterial();
+	if (openSkyboxWindow)
+		DrawResourceSkybox();
 	ImGui::End();
 }
 
@@ -236,8 +243,15 @@ void PanelResourceManager::OpenResourceEditor()
 					auxReferences = 0;
 			}
 
+			// Used by engine
+			bool used = auxResource->IsUsedByEngine();
+			if (ImGui::Checkbox("Used by engine", &used))
+			{
+				auxResource->SetUsedByEngine(used);
+			}
+
 			// Type
-			const char * types[] = { "Texture", "Mesh", "Audio", "Scene", "Bone", "Animation", "Unknown" };
+			const char* types[] = { "Texture", "Mesh", "Audio", "Scene", "Bone", "Animation", "Material", "Skybox", "Unknown" };
 			int type = (int)auxResource->GetType();
 			if (ImGui::BeginCombo("Type", types[type]))
 			{
@@ -253,6 +267,7 @@ void PanelResourceManager::OpenResourceEditor()
 				}
 				ImGui::EndCombo();
 			}
+
 			if (ImGui::Button("Apply"))
 			{
 				auxResource->SetReferences(auxReferences);
@@ -288,6 +303,23 @@ void PanelResourceManager::DrawResourceTexture()
 	ImGui::Text("GPU ID: %u", texture.gpuID);
 	ImGui::Text("Format: %u", texture.format);
 	ImGui::NextColumn();
+	// Texture Type
+	const char* imageTypes[] = { "Texture", "Cubemap" };
+	int type = (int)texture.GetImageType();
+	if (ImGui::BeginCombo("Image type", imageTypes[type]))
+	{
+		for (int n = 0; n < (int)IMAGE_TYPE::CUBEMAP + 1; n++)
+		{
+			bool is_selected = (type == n);
+			if (ImGui::Selectable(imageTypes[n], is_selected) && type != n)
+			{
+				texture.SetImageType((IMAGE_TYPE)n);
+			}
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
+		}
+		ImGui::EndCombo();
+	}
 	ImGui::Image((ImTextureID)texture.gpuID, ImVec2(160.0f, 160.0f), ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f));
 	
 	ImGui::End();
@@ -295,7 +327,7 @@ void PanelResourceManager::DrawResourceTexture()
 
 void PanelResourceManager::DrawResourceMesh()
 {
-	if (!ImGui::Begin("Texture Manager", &openMeshWindow))
+	if (!ImGui::Begin("Mesh Manager", &openMeshWindow))
 	{
 		ImGui::End();
 		return;
@@ -317,7 +349,7 @@ void PanelResourceManager::DrawResourceMesh()
 
 void PanelResourceManager::DrawResourceMaterial()
 {
-	if (!ImGui::Begin("Texture Manager", &openMaterialWindow))
+	if (!ImGui::Begin("Material Manager", &openMaterialWindow))
 	{
 		ImGui::End();
 		return;
@@ -326,11 +358,6 @@ void PanelResourceManager::DrawResourceMaterial()
 	std::string exportedFile(material.GetExportedFile());
 	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), (exportedFile + ":").c_str());
 	ImGui::Columns(2);
-
-	float kAmbient = 0.3f;
-	float kDiffuse = 0.2f;
-	float kSpecular = 0.1f;
-	float shininess = 32.f;
 
 	ImGui::Text("Name: %s", material.name.c_str());
 	if(material.shader != nullptr)
@@ -373,9 +400,34 @@ void PanelResourceManager::DrawResourceMaterial()
 	ImGui::End();
 }
 
+void PanelResourceManager::DrawResourceSkybox()
+{
+	if (!ImGui::Begin("Skybox Manager", &openSkyboxWindow))
+	{
+		ImGui::End();
+		return;
+	}
+	ResourceSkybox& skybox = *(ResourceSkybox*)previous;
+	std::string exportedFile(skybox.GetExportedFile());
+	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), (exportedFile + ":").c_str());
+	ImGui::Columns(2);
+
+	// Skybox variables
+	if (skybox.shader != nullptr)
+		ImGui::Text("Shader: %s", skybox.shader->file.c_str());
+
+	ImGui::Text("Cubemap: %u", skybox.GetCubemap());
+	ImGui::Text("VAO: %u", skybox.GetVAO());
+	ImGui::Text("VBO: %u", skybox.GetVBO());
+	ImGui::NextColumn();
+	// TODO: [Resource Manager] Add preview of the skybox on a sphere
+
+	ImGui::End();
+}
+
 void PanelResourceManager::CleanUp()
 {
-	if(!openTextureWindow && !openMeshWindow && !openMaterialWindow)
+	if(!openTextureWindow && !openMeshWindow && !openMaterialWindow && !openSkyboxWindow)
 		previous = nullptr;
 
 	if (auxResource != nullptr)
