@@ -2,7 +2,6 @@
 #include "ModuleTextures.h"
 #include "ModuleFileSystem.h"
 #include "ModuleResourceManager.h" 
-
 #include "ResourceTexture.h"
 #include "rapidjson/document.h"
 #include "rapidjson/filewritestream.h"
@@ -10,6 +9,7 @@
 
 #include "GL/glew.h"
 #include "IL/ilut.h"
+#include "IL/ilu.h"
 #include "imgui.h"
 #include "JSON.h"
 
@@ -62,6 +62,60 @@ void ModuleTextures::DrawGUI()
 	ImGui::RadioButton("Nearest", (int*)&filter_type, (unsigned)FILTERTYPE::NEAREST);
 	ImGui::RadioButton("Nearest MipMap", (int*)&filter_type, (unsigned)FILTERTYPE::NEAREST_MIPMAP_NEAREST);
 	ImGui::RadioButton("Linear MipMap", (int*)&filter_type, (unsigned)FILTERTYPE::LINEAR_MIPMAP_LINEAR);
+}
+
+unsigned ModuleTextures::LoadCubeMap(const std::string faces[]) const
+{
+	unsigned textureID;
+	glGenTextures(1, &textureID);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
+	unsigned width = 0;
+	unsigned height = 0;
+	unsigned pixelDepth = 0;
+	int format = 0;
+
+	for (unsigned int i=0; i< NUMFACES; ++i)
+	{
+		ILuint imageID;
+		ILboolean success;
+		ILenum error;
+
+		ilGenImages(1, &imageID); 		// Generate the image ID
+		ilBindImage(imageID); 			// Bind the image
+
+		char *data;
+		unsigned size = App->fsystem->Load((TEXTURES + faces[i] + TEXTUREEXT).c_str(), &data);
+		success = ilLoadL(IL_DDS, data, size);
+		RELEASE_ARRAY(data);
+
+		if (success)
+		{
+
+			ILubyte* ildata = ilGetData();
+			width = ilGetInteger(IL_IMAGE_WIDTH);
+			height = ilGetInteger(IL_IMAGE_HEIGHT);
+			pixelDepth = ilGetInteger(IL_IMAGE_DEPTH);
+			format = ilGetInteger(IL_IMAGE_FORMAT);
+
+			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+				0, format, width, height, 0, format, GL_UNSIGNED_BYTE, ildata);
+
+			ilDeleteImages(1, &imageID);
+		}
+		else
+		{
+			error = ilGetError();
+			LOG("Error file %s: %s\n", faces[i], iluErrorString(error));
+		}
+	}
+
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+	return textureID;
 }
 
 bool ModuleTextures::ImportImage(const char* file, const char* folder, ResourceTexture* resource) const
@@ -117,17 +171,22 @@ void ModuleTextures::SaveMetafile(const char* file, ResourceTexture* resource)
 	rapidjson::Document::AllocatorType& alloc = meta->GetAllocator();
 	filepath += ".meta";
 	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
+	struct stat statFile;
+	stat(filepath.c_str(), &statFile);
 	FILE* fp = fopen(filepath.c_str(), "wb");
 	char writeBuffer[65536];
 	rapidjson::FileWriteStream* os = new rapidjson::FileWriteStream(fp, writeBuffer, sizeof(writeBuffer));
 	rapidjson::PrettyWriter<rapidjson::FileWriteStream> writer(*os);
 	meta->SetObject();
 	meta->AddMember("GUID", resource->GetUID(), alloc);
+	meta->AddMember("timeCreated",statFile.st_ctime, alloc);
 	meta->AddMember("height", resource->height, alloc);
 	meta->AddMember("width", resource->width, alloc);
 	meta->AddMember("depth", resource->depth, alloc);
 	meta->AddMember("mips", resource->mips, alloc);
 	meta->AddMember("format", resource->format, alloc);
+	meta->AddMember("DX compresion", ilGetInteger(IL_DXTC_FORMAT), alloc);
+	meta->AddMember("mipmap", ilGetInteger(IL_ACTIVE_MIPMAP), alloc);
 	meta->Accept(writer);
 	fclose(fp);
 }
