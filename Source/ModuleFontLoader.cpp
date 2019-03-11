@@ -125,21 +125,9 @@ bool ModuleFontLoader::CleanUp()
 	return true;
 }
 
-void ModuleFontLoader::Draw()
-{
-	if (shaderFonts == nullptr)return;
-
-	for (std::list<ComponentText*>::iterator it = texts.begin(); it != texts.end(); ++it)
-	{
-		if ((*it)->enabled)
-		{
-			RenderText(std::string((*it)->text), 0.0f, 0.0f, (*it)->fontSize*0.0001, (*it)->color, (*it)->font.c_str());
-		}
-	}
-}
-
 void ModuleFontLoader::RenderText(std::string text, GLfloat x, GLfloat y, GLfloat scale, float4 color, const char* font)
 {
+	if (shaderFonts == nullptr)return;
 	assert(fonts.find(font) != fonts.end());
 	// Activate corresponding render state	
 	glUseProgram(shaderFonts->id);

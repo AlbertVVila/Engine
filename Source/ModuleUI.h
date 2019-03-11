@@ -9,6 +9,7 @@ struct Texture;
 
 class ComponentCamera;
 class ComponentImage;
+class ComponentText;
 
 class ModuleUI :
 	public Module
@@ -25,6 +26,7 @@ public:
 	void Draw(int currentWidth, int currentHeight);
 public:
 	std::list<ComponentImage*> images;
+	std::list<ComponentText*> texts;
 private:
 	void RenderImage(const ComponentImage& componentImage, int currentWidth, int currentHeight);
 private:

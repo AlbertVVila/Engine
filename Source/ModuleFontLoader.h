@@ -8,7 +8,6 @@
 #include <map>
 #include <list>
 
-class ComponentText;
 struct Shader;
 class ModuleFontLoader :
 	public Module
@@ -33,7 +32,7 @@ public:
 public:
 	std::map<std::string, std::vector<Character>> fonts;
 	const char* defaultFont = "Fonts/DroidSans.ttf";
-	std::list<ComponentText*> texts;
+	
 private:
 	Shader* shaderFonts = nullptr;
 	const char* shaderFontsFile = "Fonts";

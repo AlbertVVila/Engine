@@ -4,10 +4,12 @@
 #include "ModuleProgram.h"
 #include "ModuleResourceManager.h"
 #include "ModuleTextures.h"
+#include "ModuleFontLoader.h"
 
 #include "GameObject.h"
 #include "ComponentTransform2D.h"
 #include "ComponentImage.h"
+#include "ComponentText.h"
 
 #include "GL/glew.h"
 #include "Math/float4x4.h"
@@ -93,6 +95,13 @@ void ModuleUI::Draw(int currentWidth, int currentHeight)
 		if ((*it)->texture != nullptr && (*it)->texture != 0 && (*it)->enabled)
 		{
 			RenderImage(*(*it), currentWidth, currentHeight);
+		}
+	}
+	for (std::list<ComponentText*>::iterator it = texts.begin(); it != texts.end(); ++it)
+	{
+		if ((*it)->enabled)
+		{
+			App->fontLoader->RenderText(std::string((*it)->text), 0.0f, 0.0f, (*it)->fontSize*0.0001, (*it)->color, (*it)->font.c_str());
 		}
 	}
 }

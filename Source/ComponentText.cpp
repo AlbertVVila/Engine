@@ -4,6 +4,7 @@
 #include "Imgui/imgui.h"
 #include "Application.h"
 #include "ModuleFontLoader.h"
+#include "ModuleUI.h"
 #include <vector>
 #define MAX_TEXT_LENGTH 64
 #define MAX_FONT_SIZE 64
@@ -11,13 +12,13 @@
 ComponentText::ComponentText() : Component(nullptr, ComponentType::Text)
 {
 	font = App->fontLoader->defaultFont;
-	App->fontLoader->texts.push_back(this);
+	App->ui->texts.push_back(this);
 }
 
 ComponentText::ComponentText(GameObject* gameobject) : Component(gameobject, ComponentType::Text)
 {
 	font = App->fontLoader->defaultFont;
-	App->fontLoader->texts.push_back(this);
+	App->ui->texts.push_back(this);
 }
 
 ComponentText::ComponentText(const ComponentText &copy) : Component(copy)
@@ -27,12 +28,12 @@ ComponentText::ComponentText(const ComponentText &copy) : Component(copy)
 	fontSize = copy.fontSize;
 	text = copy.text;
 	color = copy.color;
-	App->fontLoader->texts.push_back(this);
+	App->ui->texts.push_back(this);
 }
 
 ComponentText::~ComponentText()
 {
-	App->fontLoader->texts.remove(this);
+	App->ui->texts.remove(this);
 }
 
 Component * ComponentText::Clone() const
