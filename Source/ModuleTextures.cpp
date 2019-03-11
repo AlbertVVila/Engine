@@ -64,60 +64,6 @@ void ModuleTextures::DrawGUI()
 	ImGui::RadioButton("Linear MipMap", (int*)&filter_type, (unsigned)FILTERTYPE::LINEAR_MIPMAP_LINEAR);
 }
 
-unsigned ModuleTextures::LoadCubeMap(const std::string faces[]) const
-{
-	unsigned textureID;
-	glGenTextures(1, &textureID);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
-	unsigned width = 0;
-	unsigned height = 0;
-	unsigned pixelDepth = 0;
-	int format = 0;
-
-	for (unsigned int i=0; i< NUMFACES; ++i)
-	{
-		ILuint imageID;
-		ILboolean success;
-		ILenum error;
-
-		ilGenImages(1, &imageID); 		// Generate the image ID
-		ilBindImage(imageID); 			// Bind the image
-
-		char *data;
-		unsigned size = App->fsystem->Load((TEXTURES + faces[i] + TEXTUREEXT).c_str(), &data);
-		success = ilLoadL(IL_DDS, data, size);
-		RELEASE_ARRAY(data);
-
-		if (success)
-		{
-
-			ILubyte* ildata = ilGetData();
-			width = ilGetInteger(IL_IMAGE_WIDTH);
-			height = ilGetInteger(IL_IMAGE_HEIGHT);
-			pixelDepth = ilGetInteger(IL_IMAGE_DEPTH);
-			format = ilGetInteger(IL_IMAGE_FORMAT);
-
-			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-				0, format, width, height, 0, format, GL_UNSIGNED_BYTE, ildata);
-
-			ilDeleteImages(1, &imageID);
-		}
-		else
-		{
-			error = ilGetError();
-			LOG("Error file %s: %s\n", faces[i], iluErrorString(error));
-		}
-	}
-
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-
-	return textureID;
-}
-
 bool ModuleTextures::ImportImage(const char* file, const char* folder, ResourceTexture* resource) const
 {
 	ILuint imageID;
