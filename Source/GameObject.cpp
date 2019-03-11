@@ -244,7 +244,7 @@ void GameObject::Update()
 
 void GameObject::Animate(unsigned indexSample,Animation* anim)
 {
-	for (const auto& child : children)
+	/*for (const auto& child : children)
 	{
 		child->Animate(indexSample, anim);
 	}
@@ -264,7 +264,7 @@ void GameObject::Animate(unsigned indexSample,Animation* anim)
 
 		movedFlag = true;
 		UpdateGlobalTransform();
-	}
+	}*/
 }
 
 Component * GameObject::CreateComponent(ComponentType type)

@@ -144,7 +144,7 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file)
 	for (unsigned i = 0u; i < aiscene.mNumAnimations; i++)
 	{
 		char* animationData = nullptr;
-		unsigned animationSize = sizeof(double) * 2 + sizeof(int) + aiscene.mAnimations[i]->mDuration * aiscene.mAnimations[i]->mNumChannels * sizeof(channel);
+		unsigned animationSize = sizeof(double) * 2 + sizeof(int) + aiscene.mAnimations[i]->mDuration * aiscene.mAnimations[i]->mNumChannels * sizeof(Channel);
 		animationData = new char[animationSize];
 		
 		ImportAnimation(*aiscene.mAnimations[i], animationData);
@@ -229,6 +229,19 @@ void FileImporter::ImportMesh(const aiMesh& mesh, char* data)
 		unsigned int tangentBytes = sizeof(float)*mesh.mNumVertices * 3;
 		memcpy(cursor, mesh.mTangents, tangentBytes);
 		cursor += verticesBytes;
+	}
+
+	//------------------------BONES---------------------------------------
+	if (mesh.HasBones())
+	{
+		memcpy(cursor, &mesh.mNumBones, sizeof(unsigned));
+		cursor += sizeof(unsigned);
+		ImportBones(mesh.mBones, mesh.mNumBones, cursor);
+	}
+	else
+	{
+		memcpy(cursor, (unsigned)0u, sizeof(unsigned));
+		cursor += sizeof(unsigned);
 	}
 
 }
@@ -338,7 +351,7 @@ unsigned FileImporter::GetMeshSize(const aiMesh &mesh) const
 	unsigned size = 0u;
 	unsigned int ranges[2] = { mesh.mNumFaces * 3, mesh.mNumVertices };
 	size += sizeof(ranges); //numfaces + numvertices
-	size += ranges[0]* 3 * sizeof(int); //indices
+	size += ranges[0] * 3 * sizeof(int); //indices
 
 	size += sizeof(float)*ranges[1] * 3; //vertices
 	size += sizeof(bool) * 3; //has normals + has tcoords + has tangents
@@ -356,7 +369,11 @@ unsigned FileImporter::GetMeshSize(const aiMesh &mesh) const
 	}
 	if (mesh.HasBones())
 	{
-		size += sizeof(mesh.mNumBones * sizeof(aiBone) * (AI_MAX_BONE_WEIGHTS * (sizeof(float) + sizeof(unsigned)))); 
+		unsigned boneSize = sizeof(char) * MAX_BONE_NAME_LENGTH;
+		boneSize += sizeof(unsigned);
+		boneSize += sizeof(math::float4x4);
+		boneSize += mesh.mNumVertices * (sizeof(unsigned) + sizeof(float));
+		size += mesh.mNumBones * boneSize;
 	}
 	return size;
 }

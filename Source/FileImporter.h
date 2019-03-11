@@ -32,6 +32,8 @@ public:
 
 	unsigned GetMeshSize(const aiMesh& mesh) const;
 
+	unsigned GetAnimationSize(const aiAnimation& animation) const;
+
 };
 
 #endif __FileImporter_h__

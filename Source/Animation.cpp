@@ -13,7 +13,6 @@ Animation::Animation()
 
 Animation::~Animation()
 {
-	RELEASE_ARRAY(animationFrames);
 }
 
 void Animation::Load(const char* animationData, unsigned uid)
