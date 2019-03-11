@@ -88,27 +88,27 @@ void ComponentLight::DrawProperties()
 
 		ImGui::ColorEdit3("Color", (float*)&color);
 		
-		bool somethingChanged = false;
+		bool lightDirty = false;
 		
 		if (lightType != LightType::DIRECTIONAL)
 		{
 			ImGui::Text("Attenuation");
 			if (lightType == LightType::POINT)
-				somethingChanged = somethingChanged || ImGui::DragFloat("Radius", &pointSphere.r);
+				lightDirty = lightDirty || ImGui::DragFloat("Radius", &pointSphere.r);
 			else
-				somethingChanged = somethingChanged || ImGui::DragFloat("Range", &range);			
+				lightDirty = lightDirty || ImGui::DragFloat("Range", &range);
 		}
 
-		somethingChanged = somethingChanged || ImGui::DragFloat("Intensity", &intensity);
+		lightDirty = lightDirty || ImGui::DragFloat("Intensity", &intensity);
 
 		if (lightType == LightType::SPOT)
 		{
 			ImGui::Text("Angle");
-			somethingChanged = somethingChanged || ImGui::DragFloat("Inner", (float*)&inner, 0.1f, 0.f, 90.f);
-			somethingChanged = somethingChanged || ImGui::DragFloat("Outer", (float*)&outer, 0.1f, 0.f, 90.f);
+			lightDirty = lightDirty || ImGui::DragFloat("Inner", (float*)&inner, 0.1f, 0.f, 90.f);
+			lightDirty = lightDirty || ImGui::DragFloat("Outer", (float*)&outer, 0.1f, 0.f, 90.f);
 		}
 
-		if (somethingChanged)
+		if (lightDirty)
 		{
 			App->spacePartitioning->aabbTreeLighting.ReleaseNode(gameobject->treeNode);
 			App->spacePartitioning->aabbTreeLighting.InsertGO(gameobject);

@@ -60,16 +60,6 @@ void MaterialEditor::Draw()
 		ImGui::Separator();
 		ImGui::PopID();
 	}
-	/* DEPRECATED
-	if (ImGui::CollapsingHeader("Specular"))
-	{
-		ImGui::PushID(&material->specularColor);
-		ImGui::ColorEdit3("Color", (float*)&material->specularColor);
-		TextureSelector((unsigned)TextureType::SPECULAR, currentSpecular, 1);
-		ImGui::Separator();
-		ImGui::PopID();
-	}
-	*/
 	if (ImGui::CollapsingHeader("Occlusion"))
 	{
 		ImGui::PushID(&material->textures[(unsigned)TextureType::OCCLUSION]);

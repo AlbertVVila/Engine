@@ -111,7 +111,7 @@ update_status ModuleInput::PreUpdate()
 				break;
 			}
 			break;
-		case SDL_MOUSEBUTTONDOWN:
+		case SDL_MOUSEBUTTONDOWN:			
 			mouse_buttons[event.button.button - 1] = KEY_DOWN;
 			break;
 

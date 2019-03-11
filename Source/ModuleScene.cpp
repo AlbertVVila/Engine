@@ -216,7 +216,6 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 			go.light->DrawDebug();
 		}
 	}
-
 	ComponentRenderer* crenderer = (ComponentRenderer*)go.GetComponent(ComponentType::Renderer);
 	if (crenderer == nullptr || !crenderer->enabled || crenderer->material == nullptr) return;
 
@@ -243,8 +242,43 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 void ModuleScene::DrawHierarchy()
 {
 	ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.2f, 0.2f, 0.5f, 1.00f));
-	root->DrawHierarchy(selected);
+	root->DrawHierarchy();
 	ImGui::PopStyleColor();
+}
+
+void ModuleScene::DragNDropMove(GameObject* target) const
+{
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropHierarchy"))
+		{
+			IM_ASSERT(payload->DataSize == sizeof(GameObject*));
+			GameObject* droppedGo = (GameObject *)*(const int*)payload->Data;
+			if (droppedGo != App->scene->root && target != droppedGo)
+			{
+				for (GameObject* droppedGo : App->scene->selection)
+				{
+					droppedGo->parent->children.remove(droppedGo);
+
+					std::list<GameObject*>::iterator it = std::find(target->parent->children.begin(), target->parent->children.end(), target);
+
+					target->parent->children.insert(it, droppedGo);
+
+					if (droppedGo->transform != nullptr)
+					{
+						droppedGo->transform->SetLocalToWorld();
+					}
+
+					droppedGo->parent = target->parent;
+					if (droppedGo->transform != nullptr)
+					{
+						droppedGo->transform->SetWorldToLocal(droppedGo->parent->GetGlobalTransform());
+					}
+				}
+			}
+		}
+		ImGui::EndDragDropTarget();
+	}
 }
 
 void ModuleScene::DragNDrop(GameObject* go)
@@ -253,7 +287,8 @@ void ModuleScene::DragNDrop(GameObject* go)
 	{
 		GameObject * dragged_go = go;
 		ImGui::SetDragDropPayload("DragDropHierarchy", &dragged_go, sizeof(GameObject *), ImGuiCond_Once);
-		ImGui::Text("%s", go->name.c_str());
+		for (GameObject* selectionGO : selection)
+			ImGui::Text("%s", selectionGO->name.c_str());
 		ImGui::EndDragDropSource();
 	}
 	if (ImGui::BeginDragDropTarget())
@@ -261,20 +296,24 @@ void ModuleScene::DragNDrop(GameObject* go)
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropHierarchy"))
 		{
 			IM_ASSERT(payload->DataSize == sizeof(GameObject*));
-			GameObject* dropped_go = (GameObject *)*(const int*)payload->Data;
-			if (dropped_go != App->scene->root && dropped_go->parent != go && !dropped_go->IsParented(*go))
+			GameObject* droppedGo = (GameObject *)*(const int*)payload->Data;
+			if (droppedGo != App->scene->root && droppedGo->parent != go && !droppedGo->IsParented(*go) 
+				&& std::find(App->scene->selection.begin(), App->scene->selection.end(), go) == App->scene->selection.end())
 			{
-				go->children.push_back(dropped_go);
+				for (GameObject* droppedGo : App->scene->selection)
+				{
+					go->children.push_back(droppedGo);
 
-				if (dropped_go->transform != nullptr)
-				{
-					dropped_go->transform->SetLocalToWorld();
-				}
-				dropped_go->parent->children.remove(dropped_go);
-				dropped_go->parent = go;
-				if (dropped_go->transform != nullptr)
-				{
-					dropped_go->transform->SetWorldToLocal(dropped_go->parent->GetGlobalTransform());
+					if (droppedGo->transform != nullptr)
+					{
+						droppedGo->transform->SetLocalToWorld();
+					}
+					droppedGo->parent->children.remove(droppedGo);
+					droppedGo->parent = go;
+					if (droppedGo->transform != nullptr)
+					{
+						droppedGo->transform->SetWorldToLocal(droppedGo->parent->GetGlobalTransform());
+					}
 				}
 			}
 		}
@@ -344,6 +383,7 @@ void ModuleScene::DeleteFromSpacePartition(GameObject* gameobject)
 	if (gameobject->isStatic && gameobject->isVolumetric)
 	{
 		staticGOs.erase(gameobject);
+		App->spacePartitioning->kDTree.Calculate();
 	}
 	else
 	{
@@ -568,8 +608,6 @@ bool ModuleScene::AddScene(const char& scene, const char& path)
 			gameobject->parent = root;
 			gameobject->parent->children.push_back(gameobject);
 		}
-	
-		//AddToSpacePartition(gameobject);
 	}
 
 	RELEASE_ARRAY(data);
@@ -600,14 +638,35 @@ void ModuleScene::Select(GameObject * gameobject)
 		App->editor->materialEditor->Save();
 		App->editor->materialEditor->open = false;
 	}
-
-	if (selected != nullptr)
+	if (App->input->IsKeyPressed(SDLK_LCTRL))
 	{
-		selected->drawBBox = false;
+		std::list<GameObject*>::iterator it = std::find(selection.begin(), selection.end(), gameobject);
+		if (it == selection.end())
+		{
+			selection.push_back(gameobject);
+			selected = gameobject;
+			selected->isSelected = true;
+			App->editor->ShowInspector();
+		}
+		else
+		{
+			(*it)->isSelected = false;
+			selection.erase(it);
+		}		
 	}
-	selected = gameobject;
-	gameobject->drawBBox = true;
-	App->editor->ShowInspector();
+	else
+	{
+		for (GameObject* go : App->scene->selection)
+		{
+			go->isSelected = false;
+		}
+		selection.clear();
+		selection.push_back(gameobject);
+		selected = gameobject;
+		selected->isSelected = true;
+		App->editor->ShowInspector();
+	}
+	
 }
 
 void ModuleScene::UnSelect()

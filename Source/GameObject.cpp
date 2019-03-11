@@ -30,7 +30,9 @@
 #include "Geometry/LineSegment.h"
 #include "GL/glew.h"
 #include "imgui.h"
+
 #define MAX_NAME 64
+#define IMGUI_RIGHT_MOUSE_BUTTON 1
 
 GameObject::GameObject(const char * name, unsigned uuid) : name(name), UUID(uuid)
 {
@@ -380,6 +382,7 @@ void GameObject::UpdateGlobalTransform() //Updates global transform when moving
 	{
 		mytransform = parent->GetGlobalTransform() * mytransform;
 	}
+
 	transform->global = mytransform;
 	UpdateBBox();
 
@@ -400,7 +403,16 @@ void GameObject::SetGlobalTransform(const float4x4 & global) //Replaces global t
 			parentglobal = parent->transform->global;
 		}
 		transform->SetGlobalTransform(global, parentglobal);
+
+		for (GameObject* go : App->scene->selection)
+		{
+			if (go != App->scene->selected)
+			{
+				go->UpdateGlobalTransform();
+			}
+		}
 	}
+	
 }
 
 float4x4 GameObject::GetGlobalTransform() const
@@ -675,23 +687,20 @@ bool GameObject::IsParented(const GameObject & gameobject) const
 	return false;
 }
 
-void GameObject::DrawHierarchy(GameObject * selected)
+void GameObject::DrawHierarchy()
 {
 	ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_DefaultOpen
-		| ImGuiTreeNodeFlags_OpenOnDoubleClick | (selected == this ? ImGuiTreeNodeFlags_Selected : 0);
+		| ImGuiTreeNodeFlags_OpenOnDoubleClick | (isSelected ? ImGuiTreeNodeFlags_Selected : 0);
 
 	ImGui::PushID(this);
 	if (children.empty())
 	{
 		node_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
 	}
+	ImGui::Text("|"); ImGui::SameLine();
+	App->scene->DragNDropMove(this);
 	bool obj_open = ImGui::TreeNodeEx(this, node_flags, name.c_str());
-	if (ImGui::IsItemClicked())
-	{
-		App->scene->Select(this);
-	}
-	App->scene->DragNDrop(this);
-	if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	if (isSelected && ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
 		ImGui::OpenPopup("gameobject_options_popup");
 	}
@@ -700,23 +709,36 @@ void GameObject::DrawHierarchy(GameObject * selected)
 		GUICreator::CreateElements(this);
 		if (ImGui::Selectable("Duplicate"))
 		{
-			copyFlag = true;
+			for each (GameObject* go in App->scene->selection)
+			{
+				go->copyFlag = true;
+			}
 		}
 		if (ImGui::Selectable("Delete"))
 		{
-			deleteFlag = true;
-			if (selected == this)
+			for each (GameObject* go in App->scene->selection)
 			{
-				App->scene->selected = nullptr;
-			}			
+				go->deleteFlag = true;
+			}
+			App->scene->selected = nullptr;
+			App->scene->selection.clear();
 		}
 		ImGui::EndPopup();
 	}
+	else if (ImGui::IsItemClicked() && (std::find(App->scene->selection.begin(), App->scene->selection.end(), this) == App->scene->selection.end() || App->input->IsKeyPressed(SDLK_LCTRL)))
+	{
+		App->scene->Select(this);				
+	}
+	else if (!App->input->IsKeyPressed(SDLK_LCTRL))
+	{
+		App->scene->DragNDrop(this);
+	}
+	
 	if (obj_open)
 	{
 		for (auto &child : children)
 		{
-			child->DrawHierarchy(selected);
+			child->DrawHierarchy();
 		}
 		if (!(node_flags & ImGuiTreeNodeFlags_NoTreePushOnOpen))
 		{

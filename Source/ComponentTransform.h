@@ -17,6 +17,8 @@ public:
 	void AddTransform(const math::float4x4 &transform);
 	void DrawProperties() override;
 
+	void MultiSelectionTransform(float4x4 &difference); //checks if multi transform is required & do it
+
 	void UpdateTransform();
 	void SetLocalToWorld();
 	void SetWorldToLocal(const math::float4x4& newparentGlobalMatrix);
