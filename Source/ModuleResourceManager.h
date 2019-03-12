@@ -50,6 +50,7 @@ public:
 
 	std::vector<Resource*> GetResourcesList();
 	void LoadEngineResources();			// Loads resources needed by the engine (Skybox, white, no camera textures...)
+	void ModuleResourceManager::CheckMetaFiles(const char* directory);
 
 private:
 	std::map<unsigned, Resource*> resources;	// map<UID, pointer to resource>

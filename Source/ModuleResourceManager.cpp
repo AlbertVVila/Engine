@@ -66,6 +66,31 @@ bool ModuleResourceManager::Start()
 	return true;
 }
 
+void ModuleResourceManager::CheckMetaFiles(const char* directory)
+{
+	std::vector<std::string> files;
+	std::vector<std::string> dirs;
+	App->fsystem->ListFolderContent(directory, files, dirs);
+
+	// [Directories]
+	for each (std::string dir in dirs)
+	{
+		std::string path(directory);
+		path += "/" + dir;
+		CheckMetaFiles(path.c_str());
+	}
+	// [Files]
+	for each (std::string file in files)
+	{
+		std::string path(directory);
+		path += "/" + file + ".meta";
+		if (App->fsystem->Exists((path).c_str()))
+		{
+			LOG("Exists, %s", file);
+		}
+	}
+}
+
 void ModuleResourceManager::LoadEngineResources()
 {
 	std::vector<std::string> files;
