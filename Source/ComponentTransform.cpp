@@ -232,6 +232,12 @@ math::float3 ComponentTransform::GetPosition()
 	return position;
 }
 
+math::Quat ComponentTransform::GetRotation()
+{
+	return rotation;
+}
+
+
 math::float3 ComponentTransform::GetGlobalPosition()
 {
 	return global.Col3(3);

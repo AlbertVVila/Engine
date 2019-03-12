@@ -10,6 +10,8 @@
 
 #include "Imgui/include/imgui.h"
 #include "JSON.h"
+#include "Math/Quat.h"
+#include "Math/float3.h"
 
 void ComponentAnimation::DrawProperties()
 {
@@ -31,7 +33,7 @@ void ComponentAnimation::DrawProperties()
 		{
 			anim->currentSample = anim->numberFrames - 1;
 		}
-		else if(anim->currentSample >= anim->numberFrames)
+		else if (anim->currentSample >= anim->numberFrames)
 		{
 			anim->currentSample = 0;
 		}
@@ -44,7 +46,7 @@ void ComponentAnimation::DrawProperties()
 
 void ComponentAnimation::Update(Frame* frame, Channel* channel)
 {
-	
+
 }
 
 Component* ComponentAnimation::Clone() const
@@ -100,6 +102,7 @@ void ComponentAnimation::Load(JSON_value* value)
 	if (a != nullptr)
 	{
 		anim = a;
+
 	}
 	else
 	{
@@ -108,8 +111,6 @@ void ComponentAnimation::Load(JSON_value* value)
 		anim->Load(data, uid);
 		App->resManager->AddAnim(anim);
 	}
-
-
 }
 
 Frame* ComponentAnimation::InterpolateFrame(const Frame* first, const Frame* second, float lambda) const
@@ -147,29 +148,62 @@ math::float4x4 ComponentAnimation::InterpolateFloat4x4(const math::float4x4& fir
 
 math::float3 ComponentAnimation::InterpolateFloat3(const math::float3& first, const math::float3& second, float lambda) const
 {
-	return first * (1.0f - lambda) + second * lambda; 
+	return first * (1.0f - lambda) + second * lambda;
 }
 
 math::Quat ComponentAnimation::InterpolateQuat(const math::Quat& first, const math::Quat& second, float lambda) const
 {
-	Quat result;    
+	Quat result;
 	float dot = first.Dot(second);
 
 	if (dot >= 0.0f) // Interpolate through the shortest path
-	{        result.x = first.x*(1.0f-lambda)+second.x*lambda; 
-			result.y = first.y*(1.0f-lambda)+second.y*lambda;
-			result.z = first.z*(1.0f-lambda)+second.z*lambda;
-			result.w = first.w*(1.0f-lambda)+second.w*lambda;
-	} 
+	{
+		result.x = first.x*(1.0f - lambda) + second.x*lambda;
+		result.y = first.y*(1.0f - lambda) + second.y*lambda;
+		result.z = first.z*(1.0f - lambda) + second.z*lambda;
+		result.w = first.w*(1.0f - lambda) + second.w*lambda;
+	}
 	else
-	{   
-		result.x = first.x*(1.0f-lambda)-second.x*lambda;
-		result.y = first.y*(1.0f-lambda)-second.y*lambda;
-		result.z = first.z*(1.0f-lambda)-second.z*lambda;
-		result.w = first.w*(1.0f-lambda)-second.w*lambda;
+	{
+		result.x = first.x*(1.0f - lambda) - second.x*lambda;
+		result.y = first.y*(1.0f - lambda) - second.y*lambda;
+		result.z = first.z*(1.0f - lambda) - second.z*lambda;
+		result.w = first.w*(1.0f - lambda) - second.w*lambda;
 	}
 
 	result.Normalize();
 
 	return result;
+}
+
+void ComponentAnimation::OffsetChannels(GameObject* GO)
+{
+	//for (const auto& currentChannel : anim->channels)
+	//{
+
+	math::float3 positionOffset = math::float3::zero;
+	math::Quat rotationOffset = math::Quat::identity;
+
+	unsigned index = anim->GetIndexChannel(GO->name.c_str());
+
+	if (index != 999u)
+	{
+		positionOffset = anim->channels[index]->positionSamples[0] - GO->transform->GetPosition();
+		rotationOffset = anim->channels[index]->rotationSamples[0].Inverted()*GO->transform->GetRotation();
+		for (unsigned i = 0u; i < anim->channels[index]->numPositionKeys; i++)
+		{
+			anim->channels[index]->positionSamples[i] += positionOffset;
+		}
+		for (unsigned j = 0u; j < anim->channels[index]->numRotationKeys; j++)
+		{
+			anim->channels[index]->rotationSamples[j] = anim->channels[index]->rotationSamples[j] * rotationOffset;
+		}
+	}
+
+	for (const auto& child : GO->children)
+	{
+		OffsetChannels(child);
+	}
+
+	//}
 }

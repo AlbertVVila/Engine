@@ -24,6 +24,8 @@ public:
 	ComponentAnimation(const ComponentAnimation &copy);
 	~ComponentAnimation();
 
+	void OffsetChannels(GameObject* GO);
+
 	void Save(JSON_value* value) const override;
 	void Load(JSON_value* value) override;
 

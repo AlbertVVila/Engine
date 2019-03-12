@@ -48,7 +48,7 @@ FileImporter::~FileImporter()
 
 void FileImporter::ImportAsset(const char *file, const char *folder)
 {
-	std::string extension (App->fsystem->GetExtension(file));
+	std::string extension(App->fsystem->GetExtension(file));
 	if (extension == FBXEXTENSION || extension == FBXCAPITAL)
 	{
 		ImportFBX(file, folder);
@@ -77,8 +77,8 @@ bool FileImporter::ImportFBX(const char* fbxfile, const char* folder)
 	if (fbxfile == nullptr) return false;
 
 	std::string file(fbxfile);
-	
-	const aiScene* scene = aiImportFile((folder+ file).c_str(), aiProcess_Triangulate);
+
+	const aiScene* scene = aiImportFile((folder + file).c_str(), aiProcess_Triangulate);
 	if (scene != nullptr)
 	{
 		LOG("Imported FBX %s", fbxfile);
@@ -107,11 +107,11 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file)
 		aiNode* aNode = stackNode.top(); stackNode.pop();
 		GameObject* goNode = new GameObject(aNode->mName.C_Str(), App->scene->GetNewUID());
 		stackParent.top()->InsertChild(goNode); stackParent.pop();
-		
+
 		ComponentTransform* nodeTransform = (ComponentTransform*)goNode->CreateComponent(ComponentType::Transform);
 		ComponentTransform* nodeParentTransform = (ComponentTransform*)goNode->parent->GetComponent(ComponentType::Transform);
 		nodeTransform->UpdateTransform();
-		nodeTransform->SetLocalTransform(reinterpret_cast<const math::float4x4&>(aNode->mTransformation), nodeParentTransform->global);		
+		nodeTransform->SetLocalTransform(reinterpret_cast<const math::float4x4&>(aNode->mTransformation), nodeParentTransform->global);
 		for (unsigned i = 0u; i < aNode->mNumMeshes; ++i)
 		{
 			aiMesh* aMesh = aiscene.mMeshes[aNode->mMeshes[i]];
@@ -146,7 +146,7 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file)
 		char* animationData = nullptr;
 		unsigned animationSize = GetAnimationSize(*aiscene.mAnimations[i]);
 		animationData = new char[animationSize];
-		
+
 		ImportAnimation(*aiscene.mAnimations[i], animationData);
 
 		sceneGO->CreateComponent(ComponentType::Animation);
@@ -163,9 +163,13 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file)
 
 		animationComponent->anim = animation;
 
+		((ComponentAnimation*)sceneGO->GetComponent(ComponentType::Animation))->OffsetChannels(sceneGO);
+
 		RELEASE_ARRAY(animationData);
 	}
-	
+
+
+
 	App->scene->SaveScene(*sceneGO, *App->fsystem->GetFilename(file).c_str(), *SCENES); //TODO: Make AutoCreation of folders or check
 
 	aiReleaseImport(&aiscene);
@@ -254,10 +258,10 @@ void FileImporter::ImportBones(aiBone** bones, unsigned numBones, char* data)con
 	{
 		memcpy(cursor, bones[i]->mName.C_Str(), MAX_BONE_NAME_LENGTH);
 		cursor += MAX_BONE_NAME_LENGTH;
-		
+
 		math::float4x4 boneOffset = reinterpret_cast<const math::float4x4&>(bones[i]->mOffsetMatrix);
-		
-		
+
+
 		memcpy(cursor, &boneOffset[0][0], sizeof(math::float4x4));
 		cursor += sizeof(math::float4x4);
 
@@ -275,7 +279,7 @@ void FileImporter::ImportBones(aiBone** bones, unsigned numBones, char* data)con
 }
 
 
-void FileImporter::ImportAnimation(const aiAnimation& animation, char* data) 
+void FileImporter::ImportAnimation(const aiAnimation& animation, char* data)
 {
 	char* cursor = data;
 
@@ -284,7 +288,7 @@ void FileImporter::ImportAnimation(const aiAnimation& animation, char* data)
 
 	memcpy(cursor, &animation.mTicksPerSecond, sizeof(double));
 	cursor += sizeof(double);
-	
+
 	memcpy(cursor, &animation.mNumChannels, sizeof(int));
 	cursor += sizeof(int);
 
@@ -318,7 +322,7 @@ void FileImporter::ImportAnimation(const aiAnimation& animation, char* data)
 }
 
 //TODO: Obtain animations size in order to store their content
-unsigned FileImporter::GetAnimationSize(const aiAnimation& animation) const 
+unsigned FileImporter::GetAnimationSize(const aiAnimation& animation) const
 {
 	unsigned size = 0u;
 

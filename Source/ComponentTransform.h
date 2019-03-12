@@ -26,6 +26,7 @@ public:
 	ENGINE_API void SetPosition(const math::float3& position);
 	ENGINE_API void SetRotation(const math::Quat& newQuat);
 	ENGINE_API math::float3 GetPosition();
+	ENGINE_API math::Quat GetRotation();
 
 	math::float3 GetGlobalPosition();
 
