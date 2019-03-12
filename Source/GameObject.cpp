@@ -258,6 +258,7 @@ void GameObject::Animate(unsigned indexSample,Animation* anim)
 	{
 		child->Animate(indexSample, anim);
 	}
+	movedFlag = true;
 }
 
 Component * GameObject::CreateComponent(ComponentType type)

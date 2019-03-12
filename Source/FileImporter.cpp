@@ -144,28 +144,38 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file)
 	for (unsigned i = 0u; i < aiscene.mNumAnimations; i++)
 	{
 		char* animationData = nullptr;
+		char* correctedAnimationData = nullptr;
 		unsigned animationSize = GetAnimationSize(*aiscene.mAnimations[i]);
 		animationData = new char[animationSize];
-
+		correctedAnimationData = new char[animationSize];
 		ImportAnimation(*aiscene.mAnimations[i], animationData);
 
 		sceneGO->CreateComponent(ComponentType::Animation);
 		ComponentAnimation* animationComponent = (ComponentAnimation*)sceneGO->GetComponent(ComponentType::Animation);
 		unsigned animUid = App->scene->GetNewUID();
+
+		Animation* fakeAnim = new Animation();
 		Animation* animation = new Animation();
-		animation->Load(animationData, animUid);
+
+		fakeAnim->Load(animationData, animUid); //TODO: we need to delete this one!
+		animationComponent->anim = fakeAnim;
+
+		//this below corrects the offset, since we dont have a ResourceModel we use the GO generated earlier
+		animationComponent->OffsetChannels(sceneGO);
+		RewriteAnimationData(fakeAnim, correctedAnimationData);
+		animation->Load(correctedAnimationData, animUid);
+		animationComponent->anim = animation;
 
 		animation->animationName = aiscene.mAnimations[i]->mName.C_Str();
 
-		App->fsystem->Save((ANIMATIONS + std::to_string(animUid) + ANIMATIONEXTENSION).c_str(), animationData, animationSize);
+		App->fsystem->Save((ANIMATIONS + std::to_string(animUid) + ANIMATIONEXTENSION).c_str(), correctedAnimationData, animationSize);
 
 		App->resManager->AddAnim(animation);
 
-		animationComponent->anim = animation;
-
-		((ComponentAnimation*)sceneGO->GetComponent(ComponentType::Animation))->OffsetChannels(sceneGO);
+		
 
 		RELEASE_ARRAY(animationData);
+		RELEASE_ARRAY(correctedAnimationData);
 	}
 
 
@@ -316,6 +326,48 @@ void FileImporter::ImportAnimation(const aiAnimation& animation, char* data)
 		for (unsigned k = 0u; k < animation.mChannels[j]->mNumRotationKeys; k++)
 		{
 			memcpy(cursor, &animation.mChannels[j]->mRotationKeys[k].mValue, sizeof(math::Quat));
+			cursor += sizeof(math::Quat);
+		}
+	}
+}
+
+void FileImporter::RewriteAnimationData(Animation* anim, char* data)
+{
+	char* cursor = data;
+
+	memcpy(cursor, &anim->duration, sizeof(double));
+	cursor += sizeof(double);
+
+	memcpy(cursor, &anim->framesPerSecond, sizeof(double));
+	cursor += sizeof(double);
+
+	memcpy(cursor, &anim->numberOfChannels, sizeof(int));
+	cursor += sizeof(int);
+
+	for (unsigned j = 0u; j < anim->numberOfChannels; j++)
+	{
+		memcpy(cursor, anim->channels[j]->channelName.c_str(), sizeof(char) * MAX_BONE_NAME_LENGTH);  //Name
+		cursor += sizeof(char) * MAX_BONE_NAME_LENGTH;
+
+		memcpy(cursor, &anim->channels[j]->numPositionKeys, sizeof(int));
+		cursor += sizeof(int);
+
+		memcpy(cursor, &anim->channels[j]->numRotationKeys, sizeof(int));
+		cursor += sizeof(int);
+
+		//importar longitud array de posiciones e iterar
+
+		for (unsigned i = 0u; i < anim->channels[j]->numPositionKeys; i++)
+		{
+			memcpy(cursor, &anim->channels[j]->positionSamples[i], sizeof(float) * 3);
+			cursor += sizeof(float) * 3;
+		}
+
+		//importar longitud array de rotaciones e iterar
+
+		for (unsigned k = 0u; k < anim->channels[j]->numRotationKeys; k++)
+		{
+			memcpy(cursor, &anim->channels[j]->rotationSamples[k], sizeof(math::Quat));
 			cursor += sizeof(math::Quat);
 		}
 	}

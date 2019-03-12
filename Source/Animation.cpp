@@ -20,17 +20,15 @@ void Animation::Load(const char* animationData, unsigned uid)
 
 	UID = uid;
 
-	double mDuration;
-
-	memcpy(&mDuration, animationData, sizeof(double));
+	memcpy(&duration, animationData, sizeof(double));
 	animationData += sizeof(double);
 
 	memcpy(&framesPerSecond, animationData, sizeof(double));
 	animationData += sizeof(double);
 
-	numberFrames = mDuration;
+	numberFrames = duration;
 
-	durationInSeconds = mDuration * (1/framesPerSecond);
+	durationInSeconds = duration * (1/framesPerSecond);
 
 	memcpy(&numberOfChannels, animationData, sizeof(int));
 	animationData += sizeof(int);
