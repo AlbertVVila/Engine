@@ -36,8 +36,9 @@
 enum class FILETYPE
 {
 	TEXTURE,
+	IMPORTED_TEXTURE,
 	MODEL,
-	MESH,
+	IMPORTED_MESH,
 	SCENE,
 	NONE
 };
@@ -75,6 +76,10 @@ private:
 	void Monitorize(const char * folder);
 	void ImportFiles();
 	FILETYPE GetFileType(std::string) const;
+
+	// Resource Management
+	void CheckMetaFiles(const char* directory);
+	bool CheckImportedFile(const char* file);
 
 public:
 	std::string baseDir = "";

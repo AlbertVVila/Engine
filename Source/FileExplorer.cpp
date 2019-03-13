@@ -209,7 +209,7 @@ void FileExplorer::FilterByFileType(const char& file)
 				sprintf_s(filename, App->fsystem->GetFilename(&file).c_str());
 		}
 		break;
-	case FILETYPE::MESH:
+	case FILETYPE::IMPORTED_MESH:
 		extension = App->fsystem->GetExtension(&file);
 		if (extension == MESHEXTENSION)
 		{

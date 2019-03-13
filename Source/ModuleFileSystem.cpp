@@ -29,6 +29,8 @@ ModuleFileSystem::ModuleFileSystem()
 		PHYSFS_mkdir(ASSETS);
 
 	PHYSFS_setWriteDir(baseDir.c_str());
+
+	CheckMetaFiles(ASSETS);
 }
 
 
@@ -39,6 +41,7 @@ ModuleFileSystem::~ModuleFileSystem()
 
 bool ModuleFileSystem::Start()
 {
+	if (filesToImport.size() > 0) ImportFiles();
 	monitor_thread = std::thread(&ModuleFileSystem::Monitorize, this, ASSETS);
 	monitor_thread.detach();
 	return true;
@@ -332,15 +335,23 @@ FILETYPE ModuleFileSystem::GetFileType(std::string extension) const
 	{
 		return FILETYPE::TEXTURE;
 	}
+	if (extension == TEXTUREEXT)
+	{
+		return FILETYPE::IMPORTED_TEXTURE;
+	}
 	if (extension == FBXEXTENSION || extension == FBXCAPITAL)
 	{
 		return FILETYPE::MODEL;
 	}
 	if (extension == MESHEXTENSION)
 	{
-		return FILETYPE::MESH;
+		return FILETYPE::IMPORTED_MESH;
 	}
-	return FILETYPE::SCENE;
+	if (extension == JSONEXT)
+	{
+		return FILETYPE::SCENE;
+	}
+	return FILETYPE::NONE;
 }
 
 std::string ModuleFileSystem::GetExtension(std::string filename) const
@@ -377,4 +388,92 @@ std::string ModuleFileSystem::GetFilename(std::string filename) const
 		filename.erase(0, found+1);
 	}
 	return filename;
+}
+
+void ModuleFileSystem::CheckMetaFiles(const char* directory)
+{
+	std::vector<std::string> files;
+	std::vector<std::string> dirs;
+	ListFolderContent(directory, files, dirs);
+
+	// [Directories]
+	for each (std::string dir in dirs)
+	{
+		std::string path(directory);
+		path += "/" + dir;
+		CheckMetaFiles(path.c_str());
+	}
+	// [Files]
+	for each (std::string file in files)
+	{
+		bool import = false;
+		FILETYPE type = GetFileType(GetExtension(file));
+		if (type == FILETYPE::SCENE || type == FILETYPE::NONE)
+			continue;
+
+		std::string metaFile(directory);
+		metaFile += "/" + file + ".meta";
+		if (Exists((metaFile).c_str()))
+		{
+			if (CheckImportedFile(file.c_str()))
+			{
+				LOG("Exists, %s", file.c_str());
+				//TODO: Add resource to list
+				/*Resource* res = App->resManager->CreateNewResource(TYPE::TEXTURE);
+				std::string path(directory);
+				res->SetExportedFile((path + "/").c_str());*/
+			}
+			else
+			{
+				import = true;
+			}
+		}
+		else
+		{
+			import = true;
+		}
+
+		if (import)
+		{
+			std::string path(directory);
+			filesToImport.push_back(std::pair<std::string, std::string>(file, path + "/"));
+		}
+	}
+}
+
+bool ModuleFileSystem::CheckImportedFile(const char* file)
+{
+	std::string extension = GetExtension(file);
+	std::set<std::string> importedFiles;
+	switch (GetFileType(extension))
+	{
+	case FILETYPE::TEXTURE:
+		// Look in imported textures folder 
+		CheckImportedFiles(TEXTURES, importedFiles);
+		for (std::set<std::string>::const_iterator it = importedFiles.begin(); it != importedFiles.end(); ++it)
+		{
+			if (strcmp((*it).c_str(), GetFilename(file).c_str()) == 0)
+			{
+				return true;
+			}
+		}
+		break;
+	case FILETYPE::MODEL:
+		// Look in imported textures folder 
+		CheckImportedFiles(MESHES, importedFiles);
+		// TODO: Check meta file UID and compare it with the files imported
+		/*for (std::set<std::string>::const_iterator it = importedFiles.begin(); it != importedFiles.end(); ++it)
+		{
+			if (strcmp((*it).c_str(), GetFilename(file).c_str()) == 0)
+			{
+				return true;
+			}
+		}*/
+		return true;
+		break;
+	default:
+		break;
+	}
+
+	return true;
 }

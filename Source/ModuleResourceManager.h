@@ -30,13 +30,6 @@ public:
 
 	void DeleteProgram(std::string filename);
 
-	// About to be deprecated for the new ResourceManager
-	//Material * GetMaterial(std::string filename) const;
-
-	//void AddMaterial(Material * material);
-
-	//void DeleteMaterial(std::string filename);
-
 	// New ResourceManager functions
 	unsigned Find(const char* fileInAssets) const;
 	unsigned ImportFile(const char* newFileInAssets, const char* filePath, TYPE type, bool force = false);
@@ -50,7 +43,7 @@ public:
 
 	std::vector<Resource*> GetResourcesList();
 	void LoadEngineResources();			// Loads resources needed by the engine (Skybox, white, no camera textures...)
-	void ModuleResourceManager::CheckMetaFiles(const char* directory);
+	//void AddResource(const char* file, const char* directory);
 
 private:
 	std::map<unsigned, Resource*> resources;	// map<UID, pointer to resource>

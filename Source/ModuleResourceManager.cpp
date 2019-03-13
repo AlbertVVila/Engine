@@ -34,7 +34,7 @@ bool ModuleResourceManager::Init(JSON * config)
 bool ModuleResourceManager::Start()
 {
 	//TODO: Read metafiles from Assets/ instead and import or add to resources
-	std::vector<std::string> files;
+	/*std::vector<std::string> files;
 	std::vector<std::string> dirs;
 	App->fsystem->ListFolderContent(TEXTURES, files, dirs);
 	for each (std::string file in files)
@@ -62,33 +62,8 @@ bool ModuleResourceManager::Start()
 		ResourceMaterial* res = (ResourceMaterial*)CreateNewResource(TYPE::MATERIAL);
 		res->SetExportedFile(App->fsystem->GetFilename(file.c_str()).c_str());
 		//res->exportedFile = written_file;
-	}
+	}*/
 	return true;
-}
-
-void ModuleResourceManager::CheckMetaFiles(const char* directory)
-{
-	std::vector<std::string> files;
-	std::vector<std::string> dirs;
-	App->fsystem->ListFolderContent(directory, files, dirs);
-
-	// [Directories]
-	for each (std::string dir in dirs)
-	{
-		std::string path(directory);
-		path += "/" + dir;
-		CheckMetaFiles(path.c_str());
-	}
-	// [Files]
-	for each (std::string file in files)
-	{
-		std::string path(directory);
-		path += "/" + file + ".meta";
-		if (App->fsystem->Exists((path).c_str()))
-		{
-			LOG("Exists, %s", file);
-		}
-	}
 }
 
 void ModuleResourceManager::LoadEngineResources()
