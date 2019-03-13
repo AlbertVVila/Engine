@@ -134,15 +134,14 @@ void Mesh::SetMesh(const char* meshData, unsigned uid)
 
 			assert(vertex < numVertices);
 
-			unsigned freeSlot = 0u;
-
-			while (freeSlot < MAX_WEIGHTS_PER_BONE && bindWeightVertexAttaches[vertex].weight[freeSlot++] > 0); // Find empty slot
-
-			if (freeSlot <= MAX_WEIGHTS_PER_BONE)
+			for (unsigned k = 0u; k < MAX_WEIGHTS_PER_BONE; ++k)
 			{
-				freeSlot--;
-				bindBoneVertexAttaches[vertex].boneID[freeSlot] = i;
-				bindWeightVertexAttaches[vertex].weight[freeSlot] = weight;
+				if (bindWeightVertexAttaches[vertex].weight[k] == 0.f)
+				{
+					bindBoneVertexAttaches[vertex].boneID[k] = i;
+					bindWeightVertexAttaches[vertex].weight[k] = weight;
+					break;
+				}
 			}
 		}
 	}
@@ -319,13 +318,13 @@ void Mesh::Draw(unsigned shaderProgram) const
 {
 	if (bindBones.size() > 0)
 	{
-		std::vector<math::float4x4> palette(bindBones.size()); //TODO: Declare on .h
+		std::vector<math::float4x4> palette(bindBones.size(), math::float4x4::identity); //TODO: Declare on .h
 		unsigned i = 0u;
-		for (BindBone bb : bindBones)
+		/*for (BindBone bb : bindBones)
 		{
 			palette[i++] = bb.go->GetGlobalTransform() * bb.transform;
 		}
-		
+		*/
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram,
 			"palette"), bindBones.size(), GL_TRUE, palette[0].ptr());
 	}
