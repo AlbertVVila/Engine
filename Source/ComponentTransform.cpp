@@ -1,13 +1,21 @@
 #include "Application.h"
 #include "ComponentTransform.h"
+
+#include "Application.h"
+#include "ModuleSpacePartitioning.h"
+
+#include "GameObject.h"
+#include "ComponentLight.h"
 #include "GameObject.h"
 #include "ModuleTime.h"
 #include "ModuleScene.h"
+
 
 #include "imgui.h"
 #include "imgui_internal.h"
 #include "Math/MathFunc.h"
 #include "JSON.h"
+#include "AABBTree.h"
 
 
 ComponentTransform::ComponentTransform(GameObject* gameobject, const math::float4x4 &transform) : Component(gameobject, ComponentType::Transform)
@@ -90,12 +98,65 @@ void ComponentTransform::DrawProperties(int id)
 	ImGui::PopID();
 }
 
+
+void ComponentTransform::MultiSelectionTransform(float4x4 &difference)
+{
+	for (GameObject* go : App->scene->selection)
+	{
+		if (go != App->scene->selected)
+		{
+			go->SetGlobalTransform(go->transform->global + difference);
+			if (go->parent->transform != nullptr)
+			{
+				go->transform->local = go->parent->transform->global.Inverted().Mul(go->transform->global);
+			}
+			else
+			{
+				go->transform->local = go->transform->global;
+			}
+		}
+	}
+}
+
 void ComponentTransform::UpdateTransform()
 {
 	UpdateOldTransform();
+	math::float4x4 originalGlobal = global;
 	global = global * local.Inverted();
 	local = math::float4x4::FromTRS(position, rotation, scale);
 	global = global * local;
+
+	math::float4x4 difference = global - originalGlobal;
+	MultiSelectionTransform(difference);
+
+  front = -global.Col3(2);
+	up = global.Col3(1);
+	right = global.Col3(0);
+
+	if (!gameobject->isStatic)
+	{
+		if (gameobject->treeNode != nullptr && gameobject->hasLight)
+		{
+			gameobject->light->CalculateGuizmos();
+			if (!gameobject->treeNode->aabb.Contains(gameobject->bbox))
+			{
+				App->spacePartitioning->aabbTreeLighting.ReleaseNode(gameobject->treeNode);
+				App->spacePartitioning->aabbTreeLighting.InsertGO(gameobject);
+			}
+		}
+		if (gameobject->treeNode != nullptr && gameobject->isVolumetric)
+		{
+			if (!gameobject->treeNode->aabb.Contains(gameobject->bbox))
+			{
+				App->spacePartitioning->aabbTree.ReleaseNode(gameobject->treeNode);
+				App->spacePartitioning->aabbTree.InsertGO(gameobject);
+			}
+		}
+	}
+	else
+	{
+		App->spacePartitioning->kDTree.Calculate();
+	}
 }
 
 void ComponentTransform::RotationToEuler()
@@ -139,6 +200,35 @@ void ComponentTransform::SetGlobalTransform(const math::float4x4& newglobal, con
 	local.Decompose(position, rotation, scale);
 	RotationToEuler();
 	UpdateOldTransform();
+
+	front = -global.Col3(2);
+	up = global.Col3(1);
+	right = global.Col3(0);
+
+	if (!gameobject->isStatic)
+	{
+		if (gameobject->treeNode != nullptr && gameobject->hasLight)
+		{
+			gameobject->light->CalculateGuizmos();
+			if (!gameobject->treeNode->aabb.Contains(gameobject->bbox))
+			{
+				App->spacePartitioning->aabbTreeLighting.ReleaseNode(gameobject->treeNode);
+				App->spacePartitioning->aabbTreeLighting.InsertGO(gameobject);
+			}
+		}
+		if (gameobject->treeNode != nullptr && gameobject->isVolumetric)
+		{
+			if (!gameobject->treeNode->aabb.Contains(gameobject->bbox))
+			{
+				App->spacePartitioning->aabbTree.ReleaseNode(gameobject->treeNode);
+				App->spacePartitioning->aabbTree.InsertGO(gameobject);
+			}
+		}
+	}
+	else
+	{
+		App->spacePartitioning->kDTree.Calculate();
+	}
 }
 
 void ComponentTransform::SetPosition(const math::float3 & newPosition)

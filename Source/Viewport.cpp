@@ -8,6 +8,7 @@
 
 #include "GameObject.h"
 #include "ComponentCamera.h"
+#include "ComponentTransform.h"
 
 #include "Viewport.h"
 #include "GL/glew.h"
@@ -82,18 +83,18 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 			return;
 		}
 
-	ImVec2 size = ImGui::GetWindowSize();
+		ImVec2 size = ImGui::GetWindowSize();
 
-	cam->SetAspect(size.x / size.y);
-	if (cam->aspectDirty)
-	{
-		CreateFrameBuffer(size.x, size.y);
-	}
-	current_width = size.x;
-	current_height = size.y;
+		cam->SetAspect(size.x / size.y);
+		if (cam->aspectDirty)
+		{
+			CreateFrameBuffer(size.x, size.y);
+		}
+		current_width = size.x;
+		current_height = size.y;
 
 
-		if (App->renderer->msaa)
+		if (App->renderer->msaa && !isEditor)
 		{
 			glBindFramebuffer(GL_FRAMEBUFFER, MSAAFBO);
 		}
@@ -102,7 +103,19 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 			glBindFramebuffer(GL_FRAMEBUFFER, FBO);
 		}
 		App->renderer->Draw(*cam, current_width, current_height, isEditor);
-		if (App->renderer->msaa)
+
+    if (isEditor)
+		{
+			for (GameObject* go : App->scene->selection)
+			{
+				go->DrawBBox();
+				if (go->light != nullptr)
+				{
+					go->light->DrawDebug();
+				}
+			}
+		}
+		if (App->renderer->msaa && !isEditor)
 		{
 			glBindFramebuffer(GL_READ_FRAMEBUFFER, MSAAFBO);
 			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, FBO);
@@ -308,22 +321,27 @@ void Viewport::DrawImGuizmo(const ComponentCamera & cam)
 
 		ImGuizmo::Enable(!App->scene->selected->isStatic || App->time->gameState == GameState::RUN);
 
-		float4x4 model = App->scene->selected->GetGlobalTransform();
-		float4x4 view = cam.GetViewMatrix();
-		float4x4 proj = cam.GetProjectionMatrix();
+		math::float4x4 model = App->scene->selected->GetGlobalTransform();
+		math::float4x4 originalModel = model;
+		math::float4x4 difference = math::float4x4::zero;
+
+		math::float4x4 view = cam.GetViewMatrix();
+		math::float4x4 proj = cam.GetProjectionMatrix();
 
 		ImGuizmo::SetOrthographic(false);
 
 		model.Transpose();
 
-		ImGuizmo::Manipulate((float*)&view, (float*)&proj, 
-			(ImGuizmo::OPERATION)mCurrentGizmoOperation, (ImGuizmo::MODE)mCurrentGizmoMode, 
+		ImGuizmo::Manipulate((float*)&view, (float*)&proj,
+			(ImGuizmo::OPERATION)mCurrentGizmoOperation, (ImGuizmo::MODE)mCurrentGizmoMode,
 			(float*)&model, NULL, useSnap ? (float*)&snapSettings : NULL, NULL, NULL);
 
 		if (ImGuizmo::IsUsing())
 		{
 			model.Transpose();
 			App->scene->selected->SetGlobalTransform(model);
+			difference = model - originalModel;
+			App->scene->selected->transform->MultiSelectionTransform(difference); //checks if multi transform is required & do it
 		}
 	}
 }

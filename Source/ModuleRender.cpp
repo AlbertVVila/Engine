@@ -57,7 +57,6 @@ bool ModuleRender::Init(JSON * config)
 	msaa_level = renderer->GetInt("msaa_level");
 	picker_debug = renderer->GetInt("picker_debug");
 	light_debug = renderer->GetInt("light_debug");
-	quadtree_debug = renderer->GetInt("quadtree_debug");
 	grid_debug = renderer->GetInt("grid_debug");
 	depthTest = renderer->GetInt("depthTest");
 	wireframe = renderer->GetInt("wireframe");
@@ -285,6 +284,8 @@ void ModuleRender::DrawGUI()
 	}
 	ImGui::Checkbox("Picker Debug", &picker_debug);
 	ImGui::Checkbox("Light Debug", &light_debug);
+	ImGui::Checkbox("Dynamic AABBTree Debug", &aabbTreeDebug);
+	ImGui::Checkbox("Static KDTree Debug", &kDTreeDebug);
 	ImGui::Checkbox("Grid Debug", &grid_debug);
 
 	const char* scales[] = {"1", "10", "100"};
