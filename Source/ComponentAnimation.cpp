@@ -113,74 +113,8 @@ void ComponentAnimation::Load(JSON_value* value)
 	}
 }
 
-Frame* ComponentAnimation::InterpolateFrame(const Frame* first, const Frame* second, float lambda) const
-{
-	Frame* newFrame;
-	//for (unsigned i = 0u; i < anim->numberOfChannels; i++)
-	//{
-	//	math::float4x4 newTransform = InterpolateFloat4x4(first->channels[i]->channelTransform, second->channels[i]->channelTransform, lambda);
-	//	newFrame->channels[i]->channelName = first->channels[i]->channelName;
-	//	newFrame->channels[i]->channelTransform = newTransform;
-	//}
-
-	return newFrame;
-}
-
-math::float4x4 ComponentAnimation::InterpolateFloat4x4(const math::float4x4& first, const math::float4x4& second, float lambda) const
-{
-	math::float3 firstPosition;
-	math::Quat firstRotation;
-	math::float3 firstScale;
-	first.Decompose(firstPosition, firstRotation, firstScale);
-
-	math::float3 secondPosition;
-	math::Quat secondRotation;
-	math::float3 secondScale;
-	second.Decompose(secondPosition, secondRotation, secondScale);
-
-	math::float3 newPosition = InterpolateFloat3(firstPosition, secondPosition, lambda);
-	math::Quat newRotation = InterpolateQuat(firstRotation, secondRotation, lambda);
-
-	math::float4x4 newMatrix = math::float4x4::FromTRS(newPosition, newRotation, math::float3::one);
-
-	return newMatrix;
-}
-
-math::float3 ComponentAnimation::InterpolateFloat3(const math::float3& first, const math::float3& second, float lambda) const
-{
-	return first * (1.0f - lambda) + second * lambda;
-}
-
-math::Quat ComponentAnimation::InterpolateQuat(const math::Quat& first, const math::Quat& second, float lambda) const
-{
-	Quat result;
-	float dot = first.Dot(second);
-
-	if (dot >= 0.0f) // Interpolate through the shortest path
-	{
-		result.x = first.x*(1.0f - lambda) + second.x*lambda;
-		result.y = first.y*(1.0f - lambda) + second.y*lambda;
-		result.z = first.z*(1.0f - lambda) + second.z*lambda;
-		result.w = first.w*(1.0f - lambda) + second.w*lambda;
-	}
-	else
-	{
-		result.x = first.x*(1.0f - lambda) - second.x*lambda;
-		result.y = first.y*(1.0f - lambda) - second.y*lambda;
-		result.z = first.z*(1.0f - lambda) - second.z*lambda;
-		result.w = first.w*(1.0f - lambda) - second.w*lambda;
-	}
-
-	result.Normalize();
-
-	return result;
-}
-
 void ComponentAnimation::OffsetChannels(GameObject* GO)
 {
-	//for (const auto& currentChannel : anim->channels)
-	//{
-
 	math::float3 positionOffset = math::float3::zero;
 	math::Quat rotationOffset = math::Quat::identity;
 

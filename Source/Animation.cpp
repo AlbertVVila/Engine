@@ -35,7 +35,7 @@ void Animation::Load(const char* animationData, unsigned uid)
 
 	for (unsigned i = 0u; i < numberOfChannels; i++)
 	{
-		Channel* newChannel = new Channel(); //TODO:The classes or structs must begin with uppercase
+		Channel* newChannel = new Channel();
 
 		char name[MAX_BONE_NAME_LENGTH]; //crash fix - Here we don't need to care of namelength. The /0 marks the end of the string. Notice the strings are length + 1 ALWAYS
 
