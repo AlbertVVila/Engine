@@ -34,9 +34,9 @@ bool ModuleResourceManager::Init(JSON * config)
 bool ModuleResourceManager::Start()
 {
 	//TODO: Read metafiles from Assets/ instead and import or add to resources
-	/*std::vector<std::string> files;
+	std::vector<std::string> files;
 	std::vector<std::string> dirs;
-	App->fsystem->ListFolderContent(TEXTURES, files, dirs);
+	/*App->fsystem->ListFolderContent(TEXTURES, files, dirs);
 	for each (std::string file in files)
 	{
 		Resource* res = CreateNewResource(TYPE::TEXTURE);
@@ -55,14 +55,14 @@ bool ModuleResourceManager::Start()
 		//res->exportedFile = written_file;
 	}
 	files.clear();
-	dirs.clear();
+	dirs.clear();*/
 	App->fsystem->ListFolderContent(MATERIALS, files, dirs);
 	for each (std::string file in files)
 	{
 		ResourceMaterial* res = (ResourceMaterial*)CreateNewResource(TYPE::MATERIAL);
 		res->SetExportedFile(App->fsystem->GetFilename(file.c_str()).c_str());
 		//res->exportedFile = written_file;
-	}*
+	}
 	return true;
 }
 
