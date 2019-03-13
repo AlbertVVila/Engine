@@ -155,22 +155,12 @@ void Mesh::SetMesh(const char* meshData, unsigned uid)
 		{
 			totalWeight += bindWeightVertexAttaches[c].weight[k];
 		}
-
-		if (totalWeight > 1.f)
+		for (unsigned k = 0u; k < MAX_WEIGHTS_PER_BONE; ++k)
 		{
-			++boneWeightCorrected;
-			for (unsigned k = 0u; k < MAX_WEIGHTS_PER_BONE; ++k)
-			{
-				bindWeightVertexAttaches[c].weight[k] /= totalWeight;
-			}
+			bindWeightVertexAttaches[c].weight[k] /= totalWeight;
 		}
-	
 	}
 
-	if (boneWeightCorrected > 0u)
-	{
-		LOG("Corrected %d vertex weights", boneWeightCorrected);
-	}
 	UID = uid;
 	
 	meshVertices.resize(numVertices);
@@ -320,11 +310,11 @@ void Mesh::Draw(unsigned shaderProgram) const
 	{
 		std::vector<math::float4x4> palette(bindBones.size(), math::float4x4::identity); //TODO: Declare on .h
 		unsigned i = 0u;
-		/*for (BindBone bb : bindBones)
+		for (BindBone bb : bindBones)
 		{
 			palette[i++] = bb.go->GetGlobalTransform() * bb.transform;
 		}
-		*/
+		
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram,
 			"palette"), bindBones.size(), GL_TRUE, palette[0].ptr());
 	}

@@ -163,7 +163,6 @@ void GameObject::Update()
 		}
 	}
 
-
 	for (auto& component: components)
 	{
 		component->Update();
