@@ -586,6 +586,8 @@ bool ModuleScene::AddScene(const char& scene, const char& path)
 	JSON_value* gameobjectsJSON = json->GetValue("GameObjects");
 	std::map<unsigned, GameObject*> gameobjectsMap; //Necessary to assign parent-child efficiently
 
+	std::list<ComponentRenderer*> renderers;
+
 	for (unsigned i = 0; i<gameobjectsJSON->Size(); i++)
 	{
 		JSON_value* gameobjectJSON = gameobjectsJSON->GetValue(i);
@@ -605,14 +607,20 @@ bool ModuleScene::AddScene(const char& scene, const char& path)
 			gameobject->parent->children.push_back(gameobject);
 		}
 	
-		//Link Bones
-
 		ComponentRenderer* renderer = nullptr;
 		renderer = (ComponentRenderer*)gameobject->GetComponent(ComponentType::Renderer);
 		if (renderer != nullptr)
 		{
-			renderer->LinkBones();
+			renderers.push_back(renderer);
 		}
+	}
+
+
+	//Link Bones after all the hierarchy is imported
+
+	for (ComponentRenderer* cr : renderers)
+	{
+		cr->LinkBones();
 	}
 
 	RELEASE_ARRAY(data);
