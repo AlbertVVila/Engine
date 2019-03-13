@@ -1,6 +1,11 @@
 #include "ModuleFileSystem.h"
 #include "FileImporter.h"
 
+#include "Application.h"
+#include "ModuleResourceManager.h"
+
+#include "Resource.h"
+
 #include <sys/types.h>
 #include <sys/stat.h>
 
@@ -29,8 +34,6 @@ ModuleFileSystem::ModuleFileSystem()
 		PHYSFS_mkdir(ASSETS);
 
 	PHYSFS_setWriteDir(baseDir.c_str());
-
-	CheckMetaFiles(ASSETS);
 }
 
 
@@ -39,9 +42,15 @@ ModuleFileSystem::~ModuleFileSystem()
 	PHYSFS_deinit();
 }
 
+bool ModuleFileSystem::Init(JSON* config)
+{
+	CheckMetaFiles(ASSETS);
+	if (filesToImport.size() > 0) ImportFiles();
+	return true;
+}
+
 bool ModuleFileSystem::Start()
 {
-	if (filesToImport.size() > 0) ImportFiles();
 	monitor_thread = std::thread(&ModuleFileSystem::Monitorize, this, ASSETS);
 	monitor_thread.detach();
 	return true;
@@ -418,10 +427,8 @@ void ModuleFileSystem::CheckMetaFiles(const char* directory)
 			if (CheckImportedFile(file.c_str()))
 			{
 				LOG("Exists, %s", file.c_str());
-				//TODO: Add resource to list
-				/*Resource* res = App->resManager->CreateNewResource(TYPE::TEXTURE);
 				std::string path(directory);
-				res->SetExportedFile((path + "/").c_str());*/
+				App->resManager->AddResource(file.c_str(), (path + "/").c_str(), (type == FILETYPE::TEXTURE) ? TYPE::TEXTURE : TYPE::MESH);
 			}
 			else
 			{

@@ -50,6 +50,7 @@ public:
 	ModuleFileSystem();
 	~ModuleFileSystem();
 
+	bool Init(JSON* config) override;
 	bool Start() override;
 	update_status Update(float dt) override;
 	bool CleanUp() override;

@@ -62,7 +62,7 @@ bool ModuleResourceManager::Start()
 		ResourceMaterial* res = (ResourceMaterial*)CreateNewResource(TYPE::MATERIAL);
 		res->SetExportedFile(App->fsystem->GetFilename(file.c_str()).c_str());
 		//res->exportedFile = written_file;
-	}*/
+	}*
 	return true;
 }
 
@@ -294,4 +294,13 @@ std::vector<Resource*> ModuleResourceManager::GetResourcesList()
 		resourcesList.push_back(it->second);
 	}
 	return resourcesList;
+}
+
+Resource* ModuleResourceManager::AddResource(const char* file, const char* directory, TYPE type)
+{
+	Resource* res = CreateNewResource(type);
+	res->SetExportedFile(App->fsystem->GetFilename(file).c_str());
+	std::string path(directory);
+	res->SetFile((path + file).c_str());
+	return res;
 }

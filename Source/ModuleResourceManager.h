@@ -43,7 +43,7 @@ public:
 
 	std::vector<Resource*> GetResourcesList();
 	void LoadEngineResources();			// Loads resources needed by the engine (Skybox, white, no camera textures...)
-	//void AddResource(const char* file, const char* directory);
+	Resource* AddResource(const char* file, const char* directory, TYPE type);
 
 private:
 	std::map<unsigned, Resource*> resources;	// map<UID, pointer to resource>
