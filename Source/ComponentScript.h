@@ -16,7 +16,7 @@ public:
 	ComponentScript(const ComponentScript& component);
 	~ComponentScript();
 
-	void DrawProperties(int id);
+	void DrawProperties();
 	void Save(JSON_value* value) const override;
 	void Load(JSON_value* value) override;
 

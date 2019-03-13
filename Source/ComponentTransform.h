@@ -15,7 +15,7 @@ public:
 
 	Component* Clone() const override;
 	void AddTransform(const math::float4x4 &transform);
-	void DrawProperties(int id) override;
+	void DrawProperties() override;
 
 	void MultiSelectionTransform(float4x4 &difference); //checks if multi transform is required & do it
 

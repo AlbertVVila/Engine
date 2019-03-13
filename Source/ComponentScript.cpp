@@ -36,9 +36,9 @@ ComponentScript * ComponentScript::Clone() const
 	return new ComponentScript(*this);
 }
 
-void ComponentScript::DrawProperties(int id)
+void ComponentScript::DrawProperties()
 {
-	ImGui::PushID(id);
+	ImGui::PushID(this);
 	if (ImGui::CollapsingHeader(scriptName.c_str(), ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		bool removed = Component::DrawComponentState();

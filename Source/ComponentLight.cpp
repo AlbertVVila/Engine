@@ -54,9 +54,9 @@ void ComponentLight::Update()
 	direction = -(gameobject->transform->rotation*float3::unitZ).Normalized();
 }
 
-void ComponentLight::DrawProperties(int id)
+void ComponentLight::DrawProperties()
 {
-	ImGui::PushID(id);
+	ImGui::PushID(this);
 	if (ImGui::CollapsingHeader("Light"))
 	{
 		bool removed = Component::DrawComponentState();
@@ -195,23 +195,29 @@ void ComponentLight::Options()
 				}
 				else if (i == 1) // Paste
 				{
-					if (App->scene->copyComp != nullptr && App->scene->copyComp->type == this->type)
+					if (App->scene->copyComp != nullptr && App->scene->copyComp->type == type)
 					{
 						ComponentLight* comp = (ComponentLight*)App->scene->copyComp;
 
 						lightType = comp->lightType;
 						color = comp->color;
-						attenuation = comp->attenuation;
+						intensity = comp->intensity;
+						range = comp->range;
+						pointSphere.r = comp->pointSphere.r;
 						inner = comp->inner;
-						outer = comp->outer;						
+						outer = comp->outer;
+						CalculateGuizmos();
 					}
 				}
 				else if (i == 2) // Reset
 				{
-					color = float3::one;
-					attenuation = float3(0.1f, 0.1f, 0.1f);
+					color = math::float3::one;
+					intensity = 1.f;
+					range = 200;
+					pointSphere.r = 200;
 					inner = 20.f;
 					outer = 25.f;
+					CalculateGuizmos();
 				}
 			}
 		ImGui::EndPopup();

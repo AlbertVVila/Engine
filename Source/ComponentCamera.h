@@ -17,7 +17,7 @@ public:
 	~ComponentCamera();
 
 	void Update() override;
-	void DrawProperties(int id) override;
+	void DrawProperties() override;
 	void Save(JSON_value* value) const override;
 	void Load(JSON_value* value) override;
 	void Options() override;

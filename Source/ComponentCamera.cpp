@@ -222,9 +222,9 @@ void ComponentCamera::Update()
 	frustum->up = transform.RotatePart().Mul(float3::unitY).Normalized();
 }
 
-void ComponentCamera::DrawProperties(int id)
+void ComponentCamera::DrawProperties()
 {
-	ImGui::PushID(id);
+	ImGui::PushID(this);
 	if (ImGui::CollapsingHeader("Camera", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		bool removed = Component::DrawComponentState();

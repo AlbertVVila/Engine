@@ -142,11 +142,9 @@ void GameObject::DrawProperties()
 		}
 	}
 
-	int i = 0;
 	for (auto &component : components)
 	{
-		component->DrawProperties(i);
-		i++;
+		component->DrawProperties();
 	}
 }
 

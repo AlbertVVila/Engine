@@ -27,7 +27,7 @@ public:
 	void ResetValues();
 
 	void Update() override;
-	void DrawProperties(int id) override;
+	void DrawProperties() override;
 	void DrawDebugLight() const;
 
 	void Load(JSON_value* value) override;

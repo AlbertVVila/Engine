@@ -59,9 +59,9 @@ void ComponentTransform::AddTransform(const math::float4x4& transform)
 	}
 }
 
-void ComponentTransform::DrawProperties(int id)
+void ComponentTransform::DrawProperties()
 {
-	ImGui::PushID(id);
+	ImGui::PushID(this);
 
 	if (ImGui::CollapsingHeader("Local Transformation", ImGuiTreeNodeFlags_DefaultOpen))
 	{
