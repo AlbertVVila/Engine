@@ -150,8 +150,9 @@ void GameObject::DrawProperties()
 
 void GameObject::Update()
 {
+
 	//animation shit
-	/*if (isBoneRoot)
+	if (isBoneRoot)
 	{
 		Animation* anim = ((ComponentAnimation*)GetComponent(ComponentType::Animation))->anim;
 		unsigned indexChannel = ((ComponentAnimation*)GetComponent(ComponentType::Animation))->anim->currentSample;
@@ -162,7 +163,7 @@ void GameObject::Update()
 		}
 	}
 
-	*/
+
 	for (auto& component: components)
 	{
 		component->Update();
@@ -213,7 +214,7 @@ void GameObject::Update()
 			}
 			(*itChild)->UpdateBBox();
 			(*itChild)->movedFlag = false;
-		}
+		}	
 
 		if (!isBoneRoot)
 		{
@@ -244,27 +245,21 @@ void GameObject::Update()
 
 void GameObject::Animate(unsigned indexSample,Animation* anim)
 {
-	/*for (const auto& child : children)
+	unsigned index = anim->GetIndexChannel(name.c_str());
+
+	if (index == 999u)
+	{
+	}
+	else
+	{
+		transform->SetRotation(anim->GetRotation(index, indexSample));
+		transform->SetPosition(anim->GetPosition(index, indexSample));
+	}
+	for (const auto& child : children)
 	{
 		child->Animate(indexSample, anim);
 	}
-	if (!isBoneRoot)
-	{
-		unsigned index = anim->GetIndexChannel(name.c_str());
-
-		if (index == 999u) return;
-
-		math::float3 positionSample = anim->GetPosition(index, indexSample);
-		math::Quat rotationSample = anim->GetRotation(index, indexSample);
-
-		math::float4x4 transformMatrix = math::float4x4::FromTRS(positionSample,
-			rotationSample, math::float3::one);
-
-		transform->local = transformMatrix;
-
-		movedFlag = true;
-		UpdateGlobalTransform();
-	}*/
+	movedFlag = true;
 }
 
 Component * GameObject::CreateComponent(ComponentType type)

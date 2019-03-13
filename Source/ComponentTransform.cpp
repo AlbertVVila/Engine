@@ -220,10 +220,23 @@ void ComponentTransform::SetPosition(const math::float3 & newPosition)
 	UpdateTransform();
 }
 
+void ComponentTransform::SetRotation(const math::Quat& newQuat)
+{
+	rotation = newQuat;
+	gameobject->movedFlag = true;
+	UpdateTransform();
+}
+
 math::float3 ComponentTransform::GetPosition()
 {
 	return position;
 }
+
+math::Quat ComponentTransform::GetRotation()
+{
+	return rotation;
+}
+
 
 math::float3 ComponentTransform::GetGlobalPosition()
 {
