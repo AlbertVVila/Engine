@@ -303,10 +303,12 @@
   <ItemGroup>
     <None Include="..\Game\Scripts\PlayerMovement.dll" />
     <None Include="..\Game\Shaders\FragmentShaders\Default.fs" />
+    <None Include="..\Game\Shaders\FragmentShaders\Fonts.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\PBR.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\Skybox.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\UI.fs" />
     <None Include="..\Game\Shaders\VertexShaders\Default.vs" />
+    <None Include="..\Game\Shaders\VertexShaders\Fonts.vs" />
     <None Include="..\Game\Shaders\VertexShaders\PBR.vs" />
     <None Include="..\Game\Shaders\VertexShaders\Skybox.vs" />
     <None Include="..\Game\Shaders\VertexShaders\UI.vs" />
