@@ -113,6 +113,11 @@ update_status ModuleScene::Update(float dt)
 	{
 		RestoreLastPhoto();
 	}
+	if ((App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_Y) == KEY_REPEAT)
+		|| (App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN))
+	{
+		Redo();
+	}
 	return UPDATE_CONTINUE;
 }
 
@@ -573,62 +578,81 @@ void ModuleScene::SaveScene(const GameObject &rootGO, const char& scene, const c
 	name = &scene;
 	path = &scenePath;
 }
-
 void ModuleScene::TakePhoto()
+{
+	TakePhoto(scenePhotos);
+}
+
+void ModuleScene::TakePhoto(std::list<GameObject*>& target)
 {
 	photoTimer = TIME_BETWEEN_PHOTOS;
 	photoEnabled = true;	
-	scenePhotos.push_back(new GameObject(*root));
-	if (scenePhotos.size() > MAX_PHOTOS)
+	target.push_back(new GameObject(*root));
+	if (target.size() > MAX_PHOTOS)
 	{
-		scenePhotos.pop_front();
+		target.pop_front();
 	}
 	photoEnabled = false;
+}
+void ModuleScene::RestorePhoto(GameObject* photo)
+{
+	root = photo;
+	std::stack<GameObject*> S;
+	S.push(root);
+	while (!S.empty())
+	{
+		GameObject* go = S.top(); S.pop();
+
+		for (Component* c : go->components)
+		{
+			switch (c->type)
+			{
+			case ComponentType::Renderer:
+				if (!go->isStatic)
+				{
+					App->spacePartitioning->aabbTree.InsertGO(go);
+				}
+				else
+				{
+					staticGOs.insert(go);
+					App->spacePartitioning->kDTree.Calculate();
+				}
+				break;
+			case ComponentType::Light:
+				App->spacePartitioning->aabbTreeLighting.InsertGO(go);
+				go->light = (ComponentLight*)c;
+				break;
+			}
+		}
+
+		for (GameObject* child : go->children)
+		{
+			S.push(child);
+		}
+	}
 }
 
 void ModuleScene::RestoreLastPhoto()
 {
 	if (App->scene->scenePhotos.size() > 0)
 	{
+		TakePhoto(scenePhotosUndoed);
 		ClearScene();
-		root = App->scene->scenePhotos.back();
+		RestorePhoto(scenePhotos.back());		
 		scenePhotos.pop_back();
-		std::stack<GameObject*> S;
-		S.push(root);
-		while (!S.empty())
-		{
-			GameObject* go = S.top(); S.pop();
-
-			for (Component* c : go->components)
-			{
-				switch (c->type)
-				{
-				case ComponentType::Renderer:
-					if (!go->isStatic)
-					{
-						App->spacePartitioning->aabbTree.InsertGO(go);
-					}
-					else
-					{
-						staticGOs.insert(go);
-						App->spacePartitioning->kDTree.Calculate();
-					}
-					break;
-				case ComponentType::Light:
-					App->spacePartitioning->aabbTreeLighting.InsertGO(go);
-					go->light = (ComponentLight*)c;
-					break;
-				}
-			}
-
-			for (GameObject* child : go->children)
-			{
-				S.push(child);
-			}
-		}
 	}
 }
 
+void ModuleScene::Redo()
+{
+	if (scenePhotosUndoed.size() > 0)
+	{
+		TakePhoto(scenePhotos);
+		ClearScene();
+		RestorePhoto(scenePhotosUndoed.back());
+		scenePhotosUndoed.pop_back();
+	}
+}
 
 void ModuleScene::LoadScene(const char& scene, const char& scenePath)
 {

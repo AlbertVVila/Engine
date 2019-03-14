@@ -69,7 +69,10 @@ public:
 
 	void SaveScene(const GameObject &rootGO, const char& scene, const char& scenePath);
 	void TakePhoto();
+	void TakePhoto(std::list<GameObject*>& target);
+	void RestorePhoto(GameObject* photo);
 	void RestoreLastPhoto();
+	void Redo();
 	void LoadScene(const char& scene, const char& path);
 	bool AddScene(const char& scene, const char& scenePath);								// Adds a scene to current opened scene from a scene file (returns true if it was loaded correctly)
 	void ClearScene();
@@ -93,6 +96,7 @@ private:
 	std::unordered_set<GameObject*> staticFilteredGOs;
 
 	std::list<GameObject*> scenePhotos;
+	std::list<GameObject*> scenePhotosUndoed;
 
 public:
 	GameObject* root = nullptr;
