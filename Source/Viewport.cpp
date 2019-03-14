@@ -338,10 +338,19 @@ void Viewport::DrawImGuizmo(const ComponentCamera & cam)
 
 		if (ImGuizmo::IsUsing())
 		{
+			if (!startImguizmoUse)
+			{
+				App->scene->TakePhoto();
+				startImguizmoUse = true;
+			}
 			model.Transpose();
 			App->scene->selected->SetGlobalTransform(model);
 			difference = model - originalModel;
 			App->scene->selected->transform->MultiSelectionTransform(difference); //checks if multi transform is required & do it
+		}
+		else
+		{
+			startImguizmoUse = false;
 		}
 	}
 }
