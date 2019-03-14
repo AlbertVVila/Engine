@@ -33,7 +33,7 @@ void MaterialEditor::Draw()
 			if (isCreated)
 			{
 				//material = new ResourceMaterial();
-				App->resManager->CreateNewResource(TYPE::MATERIAL);
+				material = (ResourceMaterial*)App->resManager->CreateNewResource(TYPE::MATERIAL);
 			}
 			else
 			{
