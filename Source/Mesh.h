@@ -21,7 +21,9 @@ public:
 
 private:
 	void ComputeBBox();
-	void SetMeshBuffers(bool hasNormals, bool hasTexCoords, float* normals, float* texCoords);
+	void ProcessVertexTangent(const float vIndex1, const float vIndex2, const float vIndex3);
+	void CalculateTangents();
+	void SetMeshBuffers();
 	void SetBboxBuffers();
 
 private:
@@ -36,10 +38,11 @@ private:
 
 public:
 	unsigned UID = 0;
-	unsigned numIndices = 0;
-	unsigned numVertices = 0;
-	int* indices = nullptr;
-	float* vertices = nullptr;
+	std::vector<math::float3> meshVertices;
+	std::vector<math::float3> meshNormals;
+	std::vector<math::float3> meshTangents;
+	std::vector<float> meshTexCoords;
+	std::vector<unsigned> meshIndices;
 };
 
 #endif

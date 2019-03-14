@@ -14,6 +14,8 @@
 #include "ModuleSpacePartitioning.h"
 #include "ModuleUI.h"
 #include "ModuleFontLoader.h"
+#include "ModuleScript.h"
+
 #include "Timer.h"
 #include "JSON.h"
 #include "Brofiler.h"
@@ -26,6 +28,7 @@ Application::Application()
 	modules.push_back(window = new ModuleWindow());
 	modules.push_back(fsystem = new ModuleFileSystem());
 	modules.push_back(input = new ModuleInput());
+	modules.push_back(scripting = new ModuleScript());
 	modules.push_back(renderer = new ModuleRender());
     modules.push_back(camera = new ModuleCamera());
 	modules.push_back(textures = new ModuleTextures());
@@ -58,7 +61,7 @@ bool Application::Init()
 	//Load config
 	char* data = nullptr;
 	fsystem->Load(CONFIG_FILE, &data);
-	JSON *json;
+	JSON* json = nullptr;
 	if (data != nullptr)
 	{
 		json = new JSON(data);

@@ -3,6 +3,7 @@
 
 #include "Component.h"
 #include "Math/float3.h"
+#include "MathGeoLib/include/Geometry/Sphere.h"
 #define LIGHTTYPES 3
 
 enum class LightType
@@ -28,27 +29,28 @@ public:
 	void Update() override;
 	void DrawProperties() override;
 	void DrawDebugLight() const;
-	void Load(const JSON_value &value) override;
+	void Load(JSON_value* value) override;
 	void Save(JSON_value *value) const override;
-
-private:
-	void DrawDebugDirectional() const;
-	void DrawDebugSpot() const;
-	void DrawDebugPoint() const;
-	void DrawDebugArea(const Circle & circle) const;
-	float GetAttenuationDistance() const;
+	void CalculateGuizmos();
+	void DrawDebug() const;
 
 public:
 	LightType lightType = LightType::POINT;
 
-	float3 position = float3::zero; //Captured in transform
-	float3 direction = float3::one;
-	float3 color = float3::one;
-
-	float3 attenuation = float3(0.1f,0.1f,0.1f);
+	math::float3 position = math::float3::zero; //Captured in transform
+	math::float3 direction = math::float3::one;
+	math::float3 color = math::float3::one;
+	
 	float inner = 20.f;
 	float outer = 25.f;
+	float intensity = 1.f;
+	float range = 100.f;
 
+	Sphere pointSphere;
+private:
+
+	float spotDistance = .0f;	
+	float spotEndRadius = .0f;		
 };
 
 #endif __ComponentLight_h__

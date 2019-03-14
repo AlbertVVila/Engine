@@ -8,7 +8,7 @@
 #include "ModuleUI.h"
 
 #include "JSON.h"
-#include "Imgui/imgui.h"
+#include "imgui.h"
 
 #define None "None Selected"
 
@@ -107,10 +107,10 @@ void ComponentImage::Save(JSON_value *value)const
 	value->AddFloat4("color", color);
 }
 
-void ComponentImage::Load(const JSON_value &value)
+void ComponentImage::Load(JSON_value* value)
 {
 	Component::Load(value);
-	textureName = value.GetString("textureName");
-	color = value.GetFloat4("color");
+	textureName = value->GetString("textureName");
+	color = value->GetFloat4("color");
 	texture = App->textures->GetTexture(textureName.c_str());
 }

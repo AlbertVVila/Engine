@@ -1,1 +1,1 @@
-{"material":{"diffuseColor":[1.0,1.0,1.0,1.0],"specularColor":[1.0,1.0,1.0],"kAmbient":0.06499999761581421,"kDiffuse":0.6549999713897705,"kSpecular":0.36000001430511477,"shininess":30.700000762939454,"diffuse":"DrawersDiffuse","specular":"DrawersSpecular","occlusion":"DrawersOcclusion","shader":"Phong"}}
+{"material":{"diffuseColor":[1.0,1.0,1.0,1.0],"specularColor":[1.0,1.0,1.0],"metallic":0.09000000357627869,"roughness":0.9900000095367432,"diffuse":"DrawersDiffuse","specular":"DrawersSpecular","occlusion":"DrawersOcclusion","normal":"DrawersNormals","shader":"PBR"}}

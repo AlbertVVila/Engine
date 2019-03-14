@@ -55,8 +55,8 @@ void ComponentRenderer::DrawProperties()
 			ImGui::PopID();
 			return;
 		}
-		ImGui::Text("Num vertices : %d", mesh->numVertices);
-		ImGui::Text("Num triangles : %d", mesh->numIndices / 3);
+		ImGui::Text("Num vertices : %d", mesh->meshVertices.size());
+		ImGui::Text("Num triangles : %d", mesh->meshIndices.size() / 3);
 		ImGui::Spacing();
 
 		ImGui::Text("Material");
@@ -140,17 +140,17 @@ bool ComponentRenderer::CleanUp()
 	return true;
 }
 
-void ComponentRenderer::Save(JSON_value * value) const
+void ComponentRenderer::Save(JSON_value* value) const
 {
 	Component::Save(value);
 	value->AddUint("meshUID", mesh->UID);
 	value->AddString("materialFile", material->name.c_str());
 }
 
-void ComponentRenderer::Load(const JSON_value & value)
+void ComponentRenderer::Load(JSON_value* value)
 {
 	Component::Load(value);
-	unsigned uid = value.GetUint("meshUID");
+	unsigned uid = value->GetUint("meshUID");
 	App->resManager->DeleteMesh(mesh->UID); //Delete existing old mesh
 	Mesh *m = App->resManager->GetMesh(uid); //Look for loaded meshes
 	if (m != nullptr)
@@ -166,7 +166,7 @@ void ComponentRenderer::Load(const JSON_value & value)
 	App->resManager->AddMesh(mesh);
 	UpdateGameObject();
 
-	const char* materialFile = value.GetString("materialFile");
+	const char* materialFile = value->GetString("materialFile");
 	SetMaterial(materialFile);
 }
 

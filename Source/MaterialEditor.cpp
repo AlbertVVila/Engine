@@ -42,10 +42,9 @@ void MaterialEditor::Draw()
 	ImGui::InputText("Name", name, 64);
 	material->name = name;
 
-	ImGui::DragFloat("kAmbient", &material->kAmbient, .005f, .0f, 1.f);
-	ImGui::DragFloat("kDiffuse", &material->kDiffuse, .005f, .0f, 1.f);
-	ImGui::DragFloat("kSpecular", &material->kSpecular, .005f, .0f, 1.f);
-	ImGui::DragFloat("Shininess", &material->shininess, .05f, .0f, 256.f);
+	ImGui::DragFloat("Metallic", &material->metallic, .01f, .001f, 1.f);
+	ImGui::DragFloat("Roughness", &material->roughness, .01f, .001f, 1.f);
+	
 	ShaderSelector(currentShader);
 
 	if (textureFiles.size() == 0)
@@ -58,14 +57,6 @@ void MaterialEditor::Draw()
 		ImGui::PushID(&material->diffuseColor);
 		ImGui::ColorEdit4("Color", (float*)&material->diffuseColor, ImGuiColorEditFlags_AlphaPreview);
 		TextureSelector((unsigned)TextureType::DIFFUSE, currentDiffuse, 0);
-		ImGui::Separator();
-		ImGui::PopID();
-	}
-	if (ImGui::CollapsingHeader("Specular"))
-	{
-		ImGui::PushID(&material->specularColor);
-		ImGui::ColorEdit3("Color", (float*)&material->specularColor);
-		TextureSelector((unsigned)TextureType::SPECULAR, currentSpecular, 1);
 		ImGui::Separator();
 		ImGui::PopID();
 	}
@@ -164,6 +155,16 @@ void MaterialEditor::TextureSelector(unsigned i, std::string &current_texture, i
 
 void MaterialEditor::SetCurrentTextures()
 {
+	// Get shader
+	if (material->shader != nullptr)
+	{
+		currentShader = material->shader->file;
+	}
+	else
+	{
+		currentShader = DEFAULTPROGRAM;
+	}
+
 	// Get material textures
 	Texture* diffuse_texture = material->GetTexture(TextureType::DIFFUSE);
 	Texture* specular_texture = material->GetTexture(TextureType::SPECULAR);
@@ -265,17 +266,31 @@ void MaterialEditor::NewMaterial()
 	}
 }
 
-bool MaterialEditor::Exists(const char * material)
+bool MaterialEditor::Exists(const std::string& material) const
 {
-	std::string materialName(material);
-	return App->fsystem->Exists((MATERIALS + materialName + JSONEXT).c_str());
+	return App->fsystem->Exists((MATERIALS + material + JSONEXT).c_str());
 }
 
 void MaterialEditor::Save()
 {
-	if (!material->Compare(*previous))
+	if (previous != nullptr)
 	{
-		material->Save();
+		int ret = material->Compare(*previous);
+
+		if (ret == -1)
+		{
+			if (Exists(previous->name))
+			{
+				App->fsystem->Delete((MATERIALS + previous->name + JSONEXT).c_str());
+			}
+			material->Save();
+		}
+		else if (ret == 0)
+		{
+			material->Save();
+		}
+
+		RELEASE(previous);
 	}
 }
 

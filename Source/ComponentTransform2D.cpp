@@ -56,9 +56,9 @@ void ComponentTransform2D::Save(JSON_value * value) const
 	value->AddFloat2("Size", size);
 }
 
-void ComponentTransform2D::Load(const JSON_value & value)
+void ComponentTransform2D::Load(JSON_value* value)
 {
 	Component::Load(value);
-	position = value.GetFloat2("Position");
-	size = value.GetFloat2("Size");
+	position = value->GetFloat2("Position");
+	size = value->GetFloat2("Size");
 }

@@ -1,7 +1,7 @@
 #include "ComponentText.h"
 #include "GameObject.h"
 #include "JSON.h"
-#include "Imgui/imgui.h"
+#include "imgui.h"
 #include "Application.h"
 #include "ModuleFontLoader.h"
 #include "ModuleUI.h"
@@ -96,11 +96,11 @@ void ComponentText::Save(JSON_value *value)const
 	value->AddFloat4("color", color);
 }
 
-void ComponentText::Load(const JSON_value &value)
+void ComponentText::Load(JSON_value* value)
 {
 	Component::Load(value);
-	fontSize = value.GetFloat("FontSize");
-	text = value.GetString("text");
-	font = value.GetString("font");
-	color = value.GetFloat4("color");
+	fontSize = value->GetFloat("FontSize");
+	text = value->GetString("text");
+	font = value->GetString("font");
+	color = value->GetFloat4("color");
 }

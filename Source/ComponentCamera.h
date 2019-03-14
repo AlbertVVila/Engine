@@ -18,8 +18,8 @@ public:
 
 	void Update() override;
 	void DrawProperties() override;
-	void Save(JSON_value *value) const override;
-	void Load(const JSON_value &value) override;
+	void Save(JSON_value* value) const override;
+	void Load(JSON_value* value) override;
 
 	ComponentCamera* Clone() const;
 	void Center();

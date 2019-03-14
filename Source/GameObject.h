@@ -7,10 +7,11 @@
 
 class Component;
 class ComponentTransform;
+class ComponentLight;
 class AABBTreeNode;
 enum class ComponentType;
 struct Texture;
-struct JSON_value;
+class JSON_value;
 
 class GameObject
 {
@@ -33,7 +34,7 @@ public:
 	void RemoveChild(GameObject* child);
 	bool IsParented(const GameObject & gameobject) const;
 
-	void DrawHierarchy(GameObject * selected);
+	void DrawHierarchy();
 
 	void UpdateGlobalTransform();
 	void SetGlobalTransform(const float4x4 &global);
@@ -58,9 +59,10 @@ public:
 	unsigned UUID = 0;
 	unsigned parentUUID = 0; //only set in Save/Load scene TODO:update on parent change
 	bool isStatic = false;
-	bool moved_flag = false;
-	bool copy_flag = false;
-	bool delete_flag = false;
+	bool isSelected = false;
+	bool movedFlag = false;
+	bool copyFlag = false;
+	bool deleteFlag = false;
 	bool drawBBox = false;
 	AABB bbox;
 
@@ -71,9 +73,11 @@ public:
 	AABBTreeNode *treeNode = nullptr; //Direct reference to the aabtree node holding the gameobject
 	bool isVolumetric = false; //Indicates if the gameObject has a mesh
 	//
+	bool hasLight = false;
+	ComponentLight* light = nullptr;
 
 	std::vector<Component*> components;
-	std::list<GameObject*> children;
+	std::list<GameObject*> children;	
 
 	std::string name = "GameObject";
 
