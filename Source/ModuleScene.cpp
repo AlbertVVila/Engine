@@ -590,6 +590,7 @@ void ModuleScene::TakePhoto(std::list<GameObject*>& target)
 	target.push_back(new GameObject(*root));
 	if (target.size() > MAX_PHOTOS)
 	{
+		RELEASE(target.front());
 		target.pop_front();
 	}
 	photoEnabled = false;
@@ -638,7 +639,7 @@ void ModuleScene::RestoreLastPhoto()
 	{
 		TakePhoto(scenePhotosUndoed);
 		ClearScene();
-		RestorePhoto(scenePhotos.back());		
+		RestorePhoto(scenePhotos.back());	
 		scenePhotos.pop_back();
 	}
 }
