@@ -275,9 +275,9 @@ std::vector<std::string> FileExplorer::GetPath(std::string prevPath)
 	return auxFolders;
 }
 
-void FileExplorer::SetPath(const char& newPath)
+void FileExplorer::SetPath(const char* newPath)
 {
-	std::string scenePath = &newPath;
+	std::string scenePath(newPath);
 	std::vector<std::string> prevPath = GetPath(scenePath.substr(0, scenePath.size() - 1));
 
 	path = scenePath;
@@ -285,4 +285,14 @@ void FileExplorer::SetPath(const char& newPath)
 	{
 		pathStack.push(prevPath[i]);
 	}
+}
+
+void FileExplorer::OpenFileExplorer(MenuOperations operation, FILETYPE typeToFilter, const char* startPath, const char* windowTitle, const char* fileName) 
+{
+	currentOperation = operation;
+	extensionToFilter = typeToFilter;
+	SetPath(startPath);
+	sprintf_s(title, windowTitle);
+	sprintf_s(filename, fileName);
+	openFileExplorer = true;
 }
