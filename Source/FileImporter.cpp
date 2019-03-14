@@ -160,18 +160,18 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file)
 		fakeAnim->Load(animationData, animUid); //TODO: we need to delete this one!
 		animationComponent->anim = fakeAnim;
 
-		//this below corrects the offset, since we dont have a ResourceModel we use the GO generated earlier
-		animationComponent->OffsetChannels(sceneGO);
-		RewriteAnimationData(fakeAnim, correctedAnimationData);
+		////this below corrects the offset, since we dont have a ResourceModel we use the GO generated earlier
+		//animationComponent->OffsetChannels(sceneGO);
+		//RewriteAnimationData(fakeAnim, correctedAnimationData);
 
-		delete fakeAnim;
+		//delete fakeAnim;
 
-		animation->Load(correctedAnimationData, animUid);
-		animationComponent->anim = animation;
+		//animation->Load(correctedAnimationData, animUid);
+		//animationComponent->anim = animation;
 
 		animation->animationName = aiscene.mAnimations[i]->mName.C_Str();
 
-		App->fsystem->Save((ANIMATIONS + std::to_string(animUid) + ANIMATIONEXTENSION).c_str(), correctedAnimationData, animationSize);
+		App->fsystem->Save((ANIMATIONS + std::to_string(animUid) + ANIMATIONEXTENSION).c_str(), animationData, animationSize);
 
 		App->resManager->AddAnim(animation);
 

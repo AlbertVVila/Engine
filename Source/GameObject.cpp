@@ -161,6 +161,20 @@ void GameObject::Update()
 		{
 			Animate(indexChannel, anim);
 		}
+
+		std::queue<GameObject*> Q;
+		Q.push(this);
+
+		while(!Q.empty())
+		{
+			GameObject* node = Q.front();
+			Q.pop();
+			node->transform->UpdateTransform();
+			for (GameObject* go : node->children)
+			{
+				Q.push(go);
+			}
+		}
 	}
 
 	for (auto& component: components)
@@ -214,12 +228,6 @@ void GameObject::Update()
 			(*itChild)->UpdateBBox();
 			(*itChild)->movedFlag = false;
 		}	
-
-		if (!isBoneRoot)
-		{
-			(*itChild)->Update(); //Update after moved_flag check
-		}
-
 		if ((*itChild)->copyFlag) //Copy GO
 		{
 			(*itChild)->copyFlag = false;
@@ -240,6 +248,7 @@ void GameObject::Update()
 			++itChild;
 		}
 	}
+
 }
 
 void GameObject::Animate(unsigned indexSample,Animation* anim)
