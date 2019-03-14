@@ -163,6 +163,9 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file)
 		//this below corrects the offset, since we dont have a ResourceModel we use the GO generated earlier
 		animationComponent->OffsetChannels(sceneGO);
 		RewriteAnimationData(fakeAnim, correctedAnimationData);
+
+		delete fakeAnim;
+
 		animation->Load(correctedAnimationData, animUid);
 		animationComponent->anim = animation;
 

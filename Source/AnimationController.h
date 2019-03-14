@@ -5,11 +5,32 @@
 #include "Math/float3.h"
 #include "Math/Quat.h"
 
+class Animation;
+
 class AnimationController
 {
 public:
+
+	struct Instance
+	{
+		unsigned clipUID = 0u;
+		unsigned time = 0u;
+		bool loop = true;
+		float speed = 1.0f;
+
+		Instance* next = nullptr;
+		unsigned fadeDuration = 0u;
+		unsigned fadeTime = 0u;
+	};
+
+	Instance* current = nullptr;
+
+
 	AnimationController();
 	~AnimationController();
+
+	void Update(float dt);
+	void UpdateInstance(Instance* ins, float dt);
 
 public:
 	void SetTransform();

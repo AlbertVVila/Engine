@@ -13,6 +13,10 @@ Animation::Animation()
 
 Animation::~Animation()
 {
+	for (const auto& channel : channels)
+	{
+		delete channel;
+	}
 }
 
 void Animation::Load(const char* animationData, unsigned uid)
