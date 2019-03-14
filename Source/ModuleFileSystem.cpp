@@ -44,13 +44,18 @@ ModuleFileSystem::~ModuleFileSystem()
 
 bool ModuleFileSystem::Init(JSON* config)
 {
-	CheckMetaFiles(ASSETS);
-	if (filesToImport.size() > 0) ImportFiles();
+	//CheckMetaFiles(ASSETS);
+
 	return true;
 }
 
 bool ModuleFileSystem::Start()
 {
+	// Check files in Assets and add them to ResManager
+	CheckResourcesInFolder(ASSETS);
+	if (filesToImport.size() > 0) ImportFiles();
+
+	// Set thread to monitorize Assets folder
 	monitor_thread = std::thread(&ModuleFileSystem::Monitorize, this, ASSETS);
 	monitor_thread.detach();
 	return true;
@@ -299,6 +304,10 @@ void ModuleFileSystem::WatchFolder(const char * folder, const std::set<std::stri
 					{
 						filesToImport.push_back(std::pair<std::string, std::string>(file, current_folder));
 					}
+					else
+					{
+						App->resManager->AddResource(file.c_str(), current_folder.c_str(), (type == FILETYPE::TEXTURE) ? TYPE::TEXTURE : TYPE::MESH);
+					}
 				}
 				else if (type == FILETYPE::MODEL)
 				{
@@ -314,19 +323,24 @@ void ModuleFileSystem::WatchFolder(const char * folder, const std::set<std::stri
 	return;
 }
 
-void ModuleFileSystem::Monitorize(const char * folder)
+void ModuleFileSystem::Monitorize(const char* folder)
 {
-	std::set<std::string> importedTextures;
-	std::set<std::string> importedModels;
 	while (monitorize)
 	{
 		threadIsWorking = true;
-		CheckImportedFiles(TEXTURES, importedTextures);
-		CheckImportedFiles(SCENES, importedModels);
-		WatchFolder(folder, importedTextures, importedModels);
+		CheckResourcesInFolder(folder);
 		threadIsWorking = false;
 		SDL_Delay(MONITORIZE_TIME);
 	}
+}
+
+void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
+{
+	std::set<std::string> importedTextures;
+	std::set<std::string> importedModels;
+	CheckImportedFiles(TEXTURES, importedTextures);
+	CheckImportedFiles(SCENES, importedModels);
+	WatchFolder(folder, importedTextures, importedModels);
 }
 
 void ModuleFileSystem::ImportFiles()

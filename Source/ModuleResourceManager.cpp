@@ -131,11 +131,23 @@ void ModuleResourceManager::DeleteProgram(std::string filename)
 	}
 }
 
-unsigned ModuleResourceManager::Find(const char* fileInAssets) const
+unsigned ModuleResourceManager::FindByFileInAssets(const char* fileInAssets) const
 {
 	for (std::map<unsigned, Resource*>::const_iterator it = resources.begin(); it != resources.end(); ++it)
 	{
-		if (strcmp(it->second->GetExportedFile(), fileInAssets) == 0)
+		if (strcmp(it->second->GetFile(), fileInAssets) == 0)
+		{
+			return it->first;
+		}
+	}
+	return 0;
+}
+
+unsigned ModuleResourceManager::FindByExportedFile(const char* exportedFileName) const
+{
+	for (std::map<unsigned, Resource*>::const_iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		if (strcmp(it->second->GetExportedFile(), exportedFileName) == 0)
 		{
 			return it->first;
 		}
@@ -232,12 +244,12 @@ Resource* ModuleResourceManager::Get(unsigned uid) const
 	return nullptr;
 }
 
-Resource* ModuleResourceManager::Get(const char* file) const
+Resource* ModuleResourceManager::Get(const char* exportedFileName) const
 {
-	assert(file != NULL);
+	assert(exportedFileName != NULL);
 
 	// Look for it on the resource list
-	unsigned uid = Find(file);
+	unsigned uid = FindByExportedFile(exportedFileName);
 	if (uid == 0)
 		return nullptr;
 
@@ -254,12 +266,12 @@ Resource* ModuleResourceManager::GetWithoutLoad(unsigned uid) const
 	return it->second;
 }
 
-Resource* ModuleResourceManager::GetWithoutLoad(const char* file) const
+Resource* ModuleResourceManager::GetWithoutLoad(const char* exportedFileName) const
 {
-	assert(file != NULL);
+	assert(exportedFileName != NULL);
 
 	// Look for it on the resource list
-	unsigned uid = Find(file);
+	unsigned uid = FindByExportedFile(exportedFileName);
 	if (uid == 0)
 		return nullptr;
 
@@ -298,9 +310,21 @@ std::vector<Resource*> ModuleResourceManager::GetResourcesList()
 
 Resource* ModuleResourceManager::AddResource(const char* file, const char* directory, TYPE type)
 {
-	Resource* res = CreateNewResource(type);
-	res->SetExportedFile(App->fsystem->GetFilename(file).c_str());
 	std::string path(directory);
-	res->SetFile((path + file).c_str());
-	return res;
+	path += file;
+	// Check if resource was already added
+	unsigned UID = FindByFileInAssets(path.c_str());
+	if ( UID == 0)
+	{
+		// Create new resource 
+		Resource* res = CreateNewResource(type);
+		res->SetExportedFile(App->fsystem->GetFilename(file).c_str());
+		res->SetFile((path).c_str());
+		return res;
+	}
+	else
+	{
+		// Resource already exist
+		return GetWithoutLoad(UID);
+	}
 }

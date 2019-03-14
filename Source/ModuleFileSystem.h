@@ -72,9 +72,10 @@ public:
 	std::string GetFilename(std::string file) const;
 
 private:
-	void CheckImportedFiles(const char * folder, std::set<std::string>& importedFiles);
-	void WatchFolder(const char * folder, const std::set<std::string> &textures, const std::set<std::string> &models);
-	void Monitorize(const char * folder);
+	void CheckImportedFiles(const char* folder, std::set<std::string>& importedFiles);
+	void WatchFolder(const char* folder, const std::set<std::string> &textures, const std::set<std::string> &models);
+	void Monitorize(const char* folder);
+	void CheckResourcesInFolder(const char* folder); // Checks the resource files located in the folder to import and add them to Resources list (if not already)
 	void ImportFiles();
 	FILETYPE GetFileType(std::string) const;
 

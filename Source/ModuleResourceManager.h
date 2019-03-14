@@ -31,7 +31,8 @@ public:
 	void DeleteProgram(std::string filename);
 
 	// New ResourceManager functions
-	unsigned Find(const char* fileInAssets) const;
+	unsigned FindByFileInAssets(const char* fileInAssets) const;
+	unsigned FindByExportedFile(const char* exportedFileName) const;
 	unsigned ImportFile(const char* newFileInAssets, const char* filePath, TYPE type, bool force = false);
 	unsigned GenerateNewUID();
 	Resource* Get(unsigned uid) const;
