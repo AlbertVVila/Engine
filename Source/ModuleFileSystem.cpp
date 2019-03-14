@@ -6,6 +6,8 @@
 
 #include "Resource.h"
 
+#include "JSON.h"
+
 #include <sys/types.h>
 #include <sys/stat.h>
 
@@ -311,11 +313,13 @@ void ModuleFileSystem::WatchFolder(const char * folder, const std::set<std::stri
 				}
 				else if (type == FILETYPE::MODEL)
 				{
-					std::set<std::string>::iterator it = models.find(RemoveExtension(file));
+					//TODO: Get UID from metafile 
+					/*unsigned uid = GetMetaUID((current_folder + file + ".meta").c_str());
+					std::set<std::string>::iterator it = models.find(std::to_string(uid));
 					if (it == models.end() || statFile.st_mtime > statMeta.st_mtime)
 					{
 						filesToImport.push_back(std::pair<std::string, std::string>(file, current_folder));
-					}
+					}*/
 				}
 			}
 		}

@@ -44,7 +44,7 @@ bool ModuleResourceManager::Start()
 		//res->exportedFile = written_file;
 	}
 	files.clear();
-	dirs.clear();
+	dirs.clear();*/
 	App->fsystem->ListFolderContent(MESHES, files, dirs);
 	for each (std::string file in files)
 	{
@@ -55,7 +55,7 @@ bool ModuleResourceManager::Start()
 		//res->exportedFile = written_file;
 	}
 	files.clear();
-	dirs.clear();*/
+	dirs.clear();
 	App->fsystem->ListFolderContent(MATERIALS, files, dirs);
 	for each (std::string file in files)
 	{
