@@ -270,42 +270,25 @@ void ComponentTransform::Load(JSON_value* value)
 	RotationToEuler();
 }
 
-void ComponentTransform::Options()
+/*void ComponentTransform::Copy()
 {
-	ImGui::SetCursorPosX(ImGui::GetWindowWidth() - ImGui::CalcTextSize("Opt   ").x);
-	if (ImGui::Button("Opt"))
-	{
-		ImGui::OpenPopup("Options");
-	}
+	App->scene->copyComp = Clone();
+}*/
 
-	const char* options[] = { "Copy Component Values", "Paste Component Values", "Reset"};
-
-	if (ImGui::BeginPopup("Options"))
+void ComponentTransform::Paste()
+{
+	if (App->scene->copyComp != nullptr && App->scene->copyComp->type == this->type)
 	{
-		for (int i = 0; i < IM_ARRAYSIZE(options); i++)
-			if (ImGui::Selectable(options[i]))
-			{
-				if (i == 0) // Copy
-				{
-					App->scene->copyComp = Clone();
-				}
-				else if (i == 1) // Paste
-				{
-					if (App->scene->copyComp != nullptr && App->scene->copyComp->type == this->type)
-					{
-						ComponentTransform* comp = (ComponentTransform*)App->scene->copyComp;
-						position = comp->position;
-						eulerRotation = comp->eulerRotation;
-						scale = comp->scale;
-					}
-				}
-				else if (i == 2) // Reset
-				{
-					position = math::float3(0.f, 0.f, 0.f);
-					eulerRotation = math::float3(0.f, 0.f, 0.f);
-					scale = math::float3(1.0f, 1.0f, 1.0f);
-				}
-			}
-		ImGui::EndPopup();
+		ComponentTransform* comp = (ComponentTransform*)App->scene->copyComp;
+		position = comp->position;
+		eulerRotation = comp->eulerRotation;
+		scale = comp->scale;
 	}
+}
+
+void ComponentTransform::Reset()
+{
+	position = math::float3(0.f, 0.f, 0.f);
+	eulerRotation = math::float3(0.f, 0.f, 0.f);
+	scale = math::float3(1.0f, 1.0f, 1.0f);
 }

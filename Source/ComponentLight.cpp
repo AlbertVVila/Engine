@@ -148,6 +148,7 @@ void ComponentLight::Load(JSON_value* value)
 		inner = value->GetFloat("inner");
 		outer = value->GetFloat("outer");
 	}
+
 	intensity = value->GetFloat("intensity");
 }
 
@@ -171,57 +172,34 @@ void ComponentLight::Save(JSON_value* value) const
 	}
 
 	value->AddFloat("intensity", intensity);
-
 }
 
-void ComponentLight::Options()
+void ComponentLight::Paste()
 {
-	ImGui::SetCursorPosX(ImGui::GetWindowWidth() - ImGui::CalcTextSize("Opt   ").x);
-	if (ImGui::Button("Opt"))
+	if (App->scene->copyComp != nullptr && App->scene->copyComp->type == type)
 	{
-		ImGui::OpenPopup("Options");
+		ComponentLight* comp = (ComponentLight*)App->scene->copyComp;
+
+		lightType = comp->lightType;
+		color = comp->color;
+		intensity = comp->intensity;
+		range = comp->range;
+		//pointSphere.r = comp->pointSphere.r;
+		inner = comp->inner;
+		outer = comp->outer;
+		CalculateGuizmos();
 	}
+}
 
-	const char* options[] = { "Copy Component Values", "Paste Component Values", "Reset" };
-
-	if (ImGui::BeginPopup("Options"))
-	{
-		for (int i = 0; i < IM_ARRAYSIZE(options); i++)
-			if (ImGui::Selectable(options[i]))
-			{
-				if (i == 0) // Copy
-				{
-					App->scene->copyComp = Clone();
-				}
-				else if (i == 1) // Paste
-				{
-					if (App->scene->copyComp != nullptr && App->scene->copyComp->type == type)
-					{
-						ComponentLight* comp = (ComponentLight*)App->scene->copyComp;
-
-						lightType = comp->lightType;
-						color = comp->color;
-						intensity = comp->intensity;
-						range = comp->range;
-						pointSphere.r = comp->pointSphere.r;
-						inner = comp->inner;
-						outer = comp->outer;
-						CalculateGuizmos();
-					}
-				}
-				else if (i == 2) // Reset
-				{
-					color = math::float3::one;
-					intensity = 1.f;
-					range = 200;
-					pointSphere.r = 200;
-					inner = 20.f;
-					outer = 25.f;
-					CalculateGuizmos();
-				}
-			}
-		ImGui::EndPopup();
-	}
+void ComponentLight::Reset()
+{
+	color = math::float3::one;
+	intensity = 1.f;
+	range = 200;
+	pointSphere.r = 200;
+	inner = 20.f;
+	outer = 25.f;
+	CalculateGuizmos();
 }
 
 ComponentLight * ComponentLight::Clone() const

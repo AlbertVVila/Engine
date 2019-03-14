@@ -32,7 +32,9 @@ public:
 
 	void Load(JSON_value* value) override;
 	void Save(JSON_value* value) const override;
-	void Options() override;
+	
+	void Paste() override;
+	void Reset() override;
 
 	void CalculateGuizmos();
 	void DrawDebug() const;
