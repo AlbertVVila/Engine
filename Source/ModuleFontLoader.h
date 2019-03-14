@@ -29,12 +29,13 @@ public:
 	void Draw();
 	bool CleanUp() override;
 	void LoadFonts(const char* newFont);
-	void RenderText(const ComponentText& compText, GLfloat x, GLfloat y, GLfloat scale, float4 color, const char* font, int currentWidth, int currentHeight);
+	void RenderText(const ComponentText& compText, int currentWidth, int currentHeight);
 public:
 	std::map<std::string, std::vector<Character>> fonts;
 	const char* defaultFont = "Fonts/DroidSans.ttf";
 	
 private:
+	static const float FontScaleFactor;
 	Shader* shaderFonts = nullptr;
 	const char* shaderFontsFile = "Fonts";
 	unsigned VAOText = 0;
