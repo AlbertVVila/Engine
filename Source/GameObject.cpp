@@ -62,11 +62,13 @@ GameObject::GameObject(const GameObject & gameobject)
 			transform = (ComponentTransform*)componentcopy;
 		}
 	}
-
-	if (GetComponent(ComponentType::Renderer) != nullptr)
+	if (!App->scene->photoEnabled)
 	{
-		isVolumetric = true;
-		App->scene->AddToSpacePartition(this);
+		if (GetComponent(ComponentType::Renderer) != nullptr)
+		{
+			isVolumetric = true;
+			App->scene->AddToSpacePartition(this);
+		}
 	}
 
 	for (const auto& child : gameobject.children)
@@ -709,6 +711,7 @@ void GameObject::DrawHierarchy()
 		GUICreator::CreateElements(this);
 		if (ImGui::Selectable("Duplicate"))
 		{
+			App->scene->TakePhoto();
 			for each (GameObject* go in App->scene->selection)
 			{
 				go->copyFlag = true;
@@ -716,6 +719,7 @@ void GameObject::DrawHierarchy()
 		}
 		if (ImGui::Selectable("Delete"))
 		{
+			App->scene->TakePhoto();
 			for each (GameObject* go in App->scene->selection)
 			{
 				go->deleteFlag = true;

@@ -51,7 +51,6 @@
 
 ModuleScene::ModuleScene()
 {
-	watchDog = new SceneStateWatchDog();
 }
 
 
@@ -104,6 +103,10 @@ update_status ModuleScene::Update(float dt)
 {
 	BROFILER_CATEGORY("Scene Update", Profiler::Color::Green);
 	root->Update();
+	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+	{
+		RestoreLastPhoto();
+	}
 	return UPDATE_CONTINUE;
 }
 
@@ -247,13 +250,14 @@ void ModuleScene::DrawHierarchy()
 	ImGui::PopStyleColor();
 }
 
-void ModuleScene::DragNDropMove(GameObject* target) const
+void ModuleScene::DragNDropMove(GameObject* target) 
 {
 	if (ImGui::BeginDragDropTarget())
 	{
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropHierarchy"))
 		{
 			IM_ASSERT(payload->DataSize == sizeof(GameObject*));
+			TakePhoto();
 			GameObject* droppedGo = (GameObject *)*(const int*)payload->Data;
 			if (droppedGo != App->scene->root && target != droppedGo)
 			{
@@ -301,6 +305,7 @@ void ModuleScene::DragNDrop(GameObject* go)
 			if (droppedGo != App->scene->root && droppedGo->parent != go && !droppedGo->IsParented(*go) 
 				&& std::find(App->scene->selection.begin(), App->scene->selection.end(), go) == App->scene->selection.end())
 			{
+				TakePhoto();
 				for (GameObject* droppedGo : App->scene->selection)
 				{
 					go->children.push_back(droppedGo);
@@ -563,25 +568,56 @@ void ModuleScene::SaveScene(const GameObject &rootGO, const char& scene, const c
 	path = &scenePath;
 }
 
-void ModuleScene::SaveSceneToUndo(const GameObject *rootGO, std::list<std::string>& states, unsigned maxBuffer)
+void ModuleScene::TakePhoto()
 {
-	JSON *json = new JSON();
-	JSON_value *array = json->CreateValue(rapidjson::kArrayType);
-	rootGO->Save(array);
-	json->AddValue("GameObjects", *array);
-	std::string current = json->ToString();
-	if (current != states.back())
+	photoEnabled = true;
+	scenePhotos.push_back(new GameObject(*root));
+	photoEnabled = false;
+}
+
+void ModuleScene::RestoreLastPhoto()
+{
+	if (App->scene->scenePhotos.size() > 0)
 	{
-		states.push_back(current);
-		if (states.size() > maxBuffer)
+		ClearScene();
+		root = App->scene->scenePhotos.back();
+		scenePhotos.pop_back();
+		std::stack<GameObject*> S;
+		S.push(root);
+		while (!S.empty())
 		{
-			states.pop_front();
+			GameObject* go = S.top(); S.pop();
+
+			for (Component* c : go->components)
+			{
+				switch (c->type)
+				{
+				case ComponentType::Renderer:
+					if (!go->isStatic)
+					{
+						App->spacePartitioning->aabbTree.InsertGO(go);
+					}
+					else
+					{
+						staticGOs.insert(go);
+						App->spacePartitioning->kDTree.Calculate();
+					}
+					break;
+				case ComponentType::Light:
+					App->spacePartitioning->aabbTreeLighting.InsertGO(go);
+					go->light = (ComponentLight*)c;
+					break;
+				}
+			}
+
+			for (GameObject* child : go->children)
+			{
+				S.push(child);
+			}
 		}
 	}
-
-	RELEASE(json);
-
 }
+
 
 void ModuleScene::LoadScene(const char& scene, const char& scenePath)
 {
@@ -592,6 +628,7 @@ void ModuleScene::LoadScene(const char& scene, const char& scenePath)
 		name = &scene;
 	}
 	App->spacePartitioning->kDTree.Calculate();
+	scenePhotos.clear();
 }
 
 bool ModuleScene::AddScene(const char& scene, const char& path)
@@ -645,6 +682,7 @@ void ModuleScene::ClearScene()
 	dynamicGOs.clear();
 	staticFilteredGOs.clear();
 	dynamicFilteredGOs.clear();
+	selection.clear();
 	LOG("Reset volumetric AABBTree");
 	App->spacePartitioning->aabbTree.Reset();
 	LOG("Reset lighting AABBTree");
