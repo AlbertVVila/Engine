@@ -51,6 +51,7 @@
 
 ModuleScene::ModuleScene()
 {
+	watchDog = new SceneStateWatchDog();
 }
 
 
@@ -560,6 +561,26 @@ void ModuleScene::SaveScene(const GameObject &rootGO, const char& scene, const c
 	// Update scene info
 	name = &scene;
 	path = &scenePath;
+}
+
+void ModuleScene::SaveSceneToUndo(const GameObject *rootGO, std::list<std::string>& states, unsigned maxBuffer)
+{
+	JSON *json = new JSON();
+	JSON_value *array = json->CreateValue(rapidjson::kArrayType);
+	rootGO->Save(array);
+	json->AddValue("GameObjects", *array);
+	std::string current = json->ToString();
+	if (current != states.back())
+	{
+		states.push_back(current);
+		if (states.size() > maxBuffer)
+		{
+			states.pop_front();
+		}
+	}
+
+	RELEASE(json);
+
 }
 
 void ModuleScene::LoadScene(const char& scene, const char& scenePath)

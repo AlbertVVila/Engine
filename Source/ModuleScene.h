@@ -10,6 +10,8 @@
 #include "Math/float4.h"
 #include <set>
 #include <unordered_set>
+#include <string>
+#include <thread>
 
 #define NBPRIMITIVES 2
 class GameObject;
@@ -29,6 +31,33 @@ class ModuleScene :
 	public Module
 {
 public:
+
+
+	struct SceneStateWatchDog
+	{
+
+		SceneStateWatchDog()
+		{
+			std::list<std::string> states;
+			unsigned maxBuffer = 10u;
+
+			std::thread watchThread([&states, maxBuffer]()
+			{
+				while (1 == 1)
+				{
+					if (App != nullptr)
+					{
+						App->scene->SaveSceneToUndo(App->scene->root, states, maxBuffer);
+					}
+				}
+				LOG("States size %d", states.size());
+			});
+
+			watchThread.detach();
+		};
+
+	};
+
 	ModuleScene();
 	~ModuleScene();
 
@@ -60,6 +89,7 @@ public:
 	unsigned SaveParShapesMesh(const par_shapes_mesh_s & mesh, char** data) const;
 
 	void SaveScene(const GameObject &rootGO, const char& scene, const char& scenePath);
+	void SaveSceneToUndo(const GameObject* rootGO, std::list<std::string>& states, unsigned maxBuffer);
 	void LoadScene(const char& scene, const char& path);
 	bool AddScene(const char& scene, const char& scenePath);								// Adds a scene to current opened scene from a scene file (returns true if it was loaded correctly)
 	void ClearScene();
@@ -81,6 +111,7 @@ private:
 	unsigned primitivesUID[NBPRIMITIVES] = {0};
 	std::unordered_set<GameObject*> dynamicFilteredGOs;
 	std::unordered_set<GameObject*> staticFilteredGOs;
+	SceneStateWatchDog* watchDog = nullptr;
 
 public:
 	GameObject* root = nullptr;
@@ -99,6 +130,9 @@ public:
 	std::string defaultScene;
 
 	float3 ambientColor = float3::one;
+
 };
+
+
 
 #endif __ModuleScene_h__
