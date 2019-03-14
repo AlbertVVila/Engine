@@ -49,7 +49,7 @@ void FileImporter::ImportAsset(const char *file, const char *folder)
 	{
 		App->resManager->ImportFile(file, folder, TYPE::MESH);
 	}
-	else if (extension == PNG || extension == TIF || extension == JPG)
+	else if (extension == PNG || extension == TIF || extension == JPG || extension == TGA)
 	{
 		App->resManager->ImportFile(file, folder, TYPE::TEXTURE);
 	}

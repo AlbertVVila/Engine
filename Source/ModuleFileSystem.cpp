@@ -272,6 +272,7 @@ void ModuleFileSystem::CheckImportedFiles(const char * folder, std::set<std::str
 		}
 	}
 }
+
 void ModuleFileSystem::WatchFolder(const char * folder, const std::set<std::string> &textures, const std::set<std::string> &models, const std::set<std::string> &materials)
 {
 	std::vector<std::string> files;
@@ -343,7 +344,8 @@ void ModuleFileSystem::Monitorize(const char* folder)
 	while (monitorize)
 	{
 		threadIsWorking = true;
-		CheckResourcesInFolder(folder);
+		//CheckResourcesInFolder(folder);
+		LookForNewResourceFiles(folder);
 		threadIsWorking = false;
 		SDL_Delay(MONITORIZE_TIME);
 	}
@@ -360,6 +362,56 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 	WatchFolder(folder, importedTextures, importedModels, importedMaterials);
 }
 
+void ModuleFileSystem::LookForNewResourceFiles(const char* folder)
+{
+	std::vector<std::string> files;
+	std::stack<std::string> watchfolder;
+	watchfolder.push(folder);
+	std::string current_folder;
+	struct stat statFile;
+	struct stat statMeta;
+
+	while (!watchfolder.empty())
+	{
+		current_folder = watchfolder.top();
+		watchfolder.pop();
+
+		files = ListFiles(current_folder.c_str());
+		for (auto& file : files)
+		{
+			if (IsDirectory((current_folder + file).c_str()))
+			{
+				watchfolder.push(current_folder + file + "/");
+			}
+			else
+			{
+				if (GetExtension(file) == ".meta")
+					continue;
+				stat((current_folder + file).c_str(), &statFile);
+				stat((current_folder + file + ".meta").c_str(), &statMeta);
+				std::vector<Resource*> resources = App->resManager->GetResourcesList();
+				bool found = false;
+				for (std::vector<Resource*>::const_iterator it = resources.begin(); it != resources.end(); ++it)
+				{
+					if (strcmp((*it)->GetFile(), (current_folder + file).c_str()) == 0)
+					{
+						found = true;
+						break;
+					}
+				}
+				if (!found || statFile.st_mtime > statMeta.st_mtime)
+				{
+					// TODO: Enable FBX also
+					FILETYPE type = GetFileType(GetExtension(file));
+					if(type != FILETYPE::MODEL && type != FILETYPE::SCENE)
+						filesToImport.push_back(std::pair<std::string, std::string>(file, current_folder));
+				}
+			}
+		}
+	}
+	return;
+}
+
 void ModuleFileSystem::ImportFiles()
 {
 	for (auto & file : filesToImport)
@@ -371,7 +423,7 @@ void ModuleFileSystem::ImportFiles()
 
 FILETYPE ModuleFileSystem::GetFileType(std::string extension) const
 {
-	if (extension == PNG || extension == TIF || extension == JPG)
+	if (extension == PNG || extension == TIF || extension == JPG || extension == TGA)
 	{
 		return FILETYPE::TEXTURE;
 	}

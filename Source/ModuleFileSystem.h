@@ -28,6 +28,7 @@
 #define PNG ".png"
 #define TIF	".tif"
 #define JPG	".jpg"
+#define TGA ".tga"
 #define TEXTUREEXT ".dds"
 #define MATERIALEXT ".m4t"
 #define JSONEXT ".json"
@@ -79,6 +80,7 @@ private:
 	void WatchFolder(const char* folder, const std::set<std::string> &textures, const std::set<std::string> &models, const std::set<std::string> &materials);
 	void Monitorize(const char* folder);
 	void CheckResourcesInFolder(const char* folder); // Checks the resource files located in the folder to import and add them to Resources list (if not already)
+	void LookForNewResourceFiles(const char* folder);
 	void ImportFiles();
 	FILETYPE GetFileType(std::string) const;
 
