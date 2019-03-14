@@ -110,6 +110,10 @@ void ComponentLight::DrawProperties()
 
 		if (lightDirty)
 		{
+			if (App->scene->photoTimer <= 0.f)
+			{
+				App->scene->TakePhoto();
+			}
 			App->spacePartitioning->aabbTreeLighting.ReleaseNode(gameobject->treeNode);
 			App->spacePartitioning->aabbTreeLighting.InsertGO(gameobject);
 		}

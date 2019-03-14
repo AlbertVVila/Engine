@@ -17,6 +17,7 @@
 
 #define NBPRIMITIVES 2
 #define TIME_BETWEEN_PHOTOS 1000.f
+#define MAX_PHOTOS 10
 
 class GameObject;
 class ComponentCamera;

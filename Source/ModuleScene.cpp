@@ -108,7 +108,8 @@ update_status ModuleScene::Update(float dt)
 		photoTimer -= dt;
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+	if ((App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_Z) == KEY_REPEAT)
+		|| (App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN))
 	{
 		RestoreLastPhoto();
 	}
@@ -576,8 +577,12 @@ void ModuleScene::SaveScene(const GameObject &rootGO, const char& scene, const c
 void ModuleScene::TakePhoto()
 {
 	photoTimer = TIME_BETWEEN_PHOTOS;
-	photoEnabled = true;
+	photoEnabled = true;	
 	scenePhotos.push_back(new GameObject(*root));
+	if (scenePhotos.size() > MAX_PHOTOS)
+	{
+		scenePhotos.pop_front();
+	}
 	photoEnabled = false;
 }
 
