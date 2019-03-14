@@ -103,6 +103,11 @@ update_status ModuleScene::Update(float dt)
 {
 	BROFILER_CATEGORY("Scene Update", Profiler::Color::Green);
 	root->Update();
+	if (photoTimer > 0)
+	{
+		photoTimer -= dt;
+	}
+
 	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
 	{
 		RestoreLastPhoto();
@@ -570,6 +575,7 @@ void ModuleScene::SaveScene(const GameObject &rootGO, const char& scene, const c
 
 void ModuleScene::TakePhoto()
 {
+	photoTimer = TIME_BETWEEN_PHOTOS;
 	photoEnabled = true;
 	scenePhotos.push_back(new GameObject(*root));
 	photoEnabled = false;

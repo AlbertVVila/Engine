@@ -16,6 +16,8 @@
 #include <mutex>
 
 #define NBPRIMITIVES 2
+#define TIME_BETWEEN_PHOTOS 1000.f
+
 class GameObject;
 class ComponentCamera;
 class ComponentLight;
@@ -107,6 +109,7 @@ public:
 	std::string path;
 	std::string defaultScene;
 	bool photoEnabled = false;
+	float photoTimer = 0.f;
 	float3 ambientColor = float3::one;
 
 };
