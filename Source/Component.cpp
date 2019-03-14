@@ -1,5 +1,7 @@
 #include "Component.h"
 #include "GameObject.h"
+#include "ModuleScene.h"
+#include "Application.h"
 #include "imgui.h"
 #include "JSON.h"
 
@@ -35,6 +37,7 @@ bool Component::DrawComponentState()
 
 void Component::Remove()
 {
+	App->scene->TakePhoto();
 	gameobject->RemoveComponent(*this);
 }
 
