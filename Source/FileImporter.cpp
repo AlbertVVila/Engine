@@ -61,6 +61,10 @@ void FileImporter::ImportAsset(const char *file, const char *folder)
 	{
 		App->fsystem->Copy(folder, MESHES, file);
 	}
+	else if (extension == MATERIALEXT)
+	{
+		App->resManager->ImportFile(file, folder, TYPE::MATERIAL);
+	}
 }
 
 bool FileImporter::ImportFBX(const char* fbxfile, const char* folder)

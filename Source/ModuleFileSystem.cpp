@@ -46,7 +46,6 @@ ModuleFileSystem::~ModuleFileSystem()
 
 bool ModuleFileSystem::Init(JSON* config)
 {
-	//CheckMetaFiles(ASSETS);
 
 	return true;
 }
@@ -273,7 +272,7 @@ void ModuleFileSystem::CheckImportedFiles(const char * folder, std::set<std::str
 		}
 	}
 }
-void ModuleFileSystem::WatchFolder(const char * folder, const std::set<std::string> &textures, const std::set<std::string> &models)
+void ModuleFileSystem::WatchFolder(const char * folder, const std::set<std::string> &textures, const std::set<std::string> &models, const std::set<std::string> &materials)
 {
 	std::vector<std::string> files;
 	std::stack<std::string> watchfolder;
@@ -308,7 +307,7 @@ void ModuleFileSystem::WatchFolder(const char * folder, const std::set<std::stri
 					}
 					else
 					{
-						App->resManager->AddResource(file.c_str(), current_folder.c_str(), (type == FILETYPE::TEXTURE) ? TYPE::TEXTURE : TYPE::MESH);
+						App->resManager->AddResource(file.c_str(), current_folder.c_str(), TYPE::TEXTURE);
 					}
 				}
 				else if (type == FILETYPE::MODEL)
@@ -320,6 +319,18 @@ void ModuleFileSystem::WatchFolder(const char * folder, const std::set<std::stri
 					{
 						filesToImport.push_back(std::pair<std::string, std::string>(file, current_folder));
 					}*/
+				}
+				else if (type == FILETYPE::MATERIAL)
+				{
+					std::set<std::string>::iterator it = materials.find(RemoveExtension(file));
+					if (it == materials.end() || statFile.st_mtime > statMeta.st_mtime)
+					{
+						filesToImport.push_back(std::pair<std::string, std::string>(file, current_folder));
+					}
+					else
+					{
+						App->resManager->AddResource(file.c_str(), current_folder.c_str(), TYPE::MATERIAL);
+					}
 				}
 			}
 		}
@@ -342,9 +353,11 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 {
 	std::set<std::string> importedTextures;
 	std::set<std::string> importedModels;
+	std::set<std::string> importedMaterials;
 	CheckImportedFiles(TEXTURES, importedTextures);
 	CheckImportedFiles(SCENES, importedModels);
-	WatchFolder(folder, importedTextures, importedModels);
+	CheckImportedFiles(IMPORTED_MATERIALS, importedMaterials);
+	WatchFolder(folder, importedTextures, importedModels, importedMaterials);
 }
 
 void ModuleFileSystem::ImportFiles()
@@ -377,6 +390,10 @@ FILETYPE ModuleFileSystem::GetFileType(std::string extension) const
 	if (extension == JSONEXT)
 	{
 		return FILETYPE::SCENE;
+	}
+	if (extension == MATERIALEXT)
+	{
+		return FILETYPE::MATERIAL;
 	}
 	return FILETYPE::NONE;
 }

@@ -10,6 +10,9 @@
 #include "ResourceTexture.h"
 
 #include "JSON.h"
+#include "rapidjson/document.h"
+#include "rapidjson/filewritestream.h"
+#include "rapidjson/prettywriter.h"
 #include "GL/glew.h"
 
 ResourceMaterial::ResourceMaterial(unsigned uid) : Resource(uid, TYPE::MATERIAL)
@@ -68,7 +71,7 @@ bool ResourceMaterial::LoadInMemory()
 {
 	char* data = nullptr;
 	// Load JSON
-	if (App->fsystem->Load((MATERIALS + exportedFileName + JSONEXT).c_str(), &data) == 0)
+	if (App->fsystem->Load((IMPORTED_MATERIALS + exportedFileName + MATERIALEXT).c_str(), &data) == 0)
 		return false;
 
 	JSON *json = new JSON(data);
@@ -161,8 +164,27 @@ void ResourceMaterial::Save() const
 	
 	json->AddValue("material", *materialJSON);
 
-	App->fsystem->Save((MATERIALS + name + JSONEXT).c_str(), json->ToString().c_str(), json->Size());
+	App->fsystem->Save((MATERIALS + name + MATERIALEXT).c_str(), json->ToString().c_str(), json->Size());
 	RELEASE(json);
+}
+
+void ResourceMaterial::SaveMetafile(const char* file) const
+{
+	std::string filepath;
+	filepath.append(file);
+	JSON *json = new JSON();
+	rapidjson::Document* meta = new rapidjson::Document();
+	rapidjson::Document::AllocatorType& alloc = meta->GetAllocator();
+	filepath += ".meta";
+	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
+	FILE* fp = fopen(filepath.c_str(), "wb");
+	char writeBuffer[65536];
+	rapidjson::FileWriteStream* os = new rapidjson::FileWriteStream(fp, writeBuffer, sizeof(writeBuffer));
+	rapidjson::PrettyWriter<rapidjson::FileWriteStream> writer(*os);
+	meta->SetObject();
+	meta->AddMember("GUID", GetUID(), alloc);
+	meta->Accept(writer);
+	fclose(fp);
 }
 
 ResourceTexture* ResourceMaterial::GetTexture(TextureType type) const

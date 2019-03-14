@@ -13,7 +13,8 @@
 #define LIBRARY "Library/"
 #define RESOURCES "Resources/"
 #define IMPORTED_RESOURCES RESOURCES "Imported/"
-#define MATERIALS LIBRARY "Materials/"
+#define IMPORTED_MATERIALS LIBRARY "Materials/"
+#define MATERIALS ASSETS "Materials/"
 #define MESHES LIBRARY "Meshes/"
 #define TEXTURES LIBRARY "Textures/"
 #define SCENES ASSETS "Scenes/"
@@ -28,6 +29,7 @@
 #define TIF	".tif"
 #define JPG	".jpg"
 #define TEXTUREEXT ".dds"
+#define MATERIALEXT ".m4t"
 #define JSONEXT ".json"
 
 #define CHECKERS "checkersTexture"
@@ -40,6 +42,7 @@ enum class FILETYPE
 	MODEL,
 	IMPORTED_MESH,
 	SCENE,
+	MATERIAL,
 	NONE
 };
 
@@ -73,7 +76,7 @@ public:
 
 private:
 	void CheckImportedFiles(const char* folder, std::set<std::string>& importedFiles);
-	void WatchFolder(const char* folder, const std::set<std::string> &textures, const std::set<std::string> &models);
+	void WatchFolder(const char* folder, const std::set<std::string> &textures, const std::set<std::string> &models, const std::set<std::string> &materials);
 	void Monitorize(const char* folder);
 	void CheckResourcesInFolder(const char* folder); // Checks the resource files located in the folder to import and add them to Resources list (if not already)
 	void ImportFiles();

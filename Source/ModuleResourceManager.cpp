@@ -56,13 +56,13 @@ bool ModuleResourceManager::Start()
 	}
 	files.clear();
 	dirs.clear();
-	App->fsystem->ListFolderContent(MATERIALS, files, dirs);
+	/*App->fsystem->ListFolderContent(IMPORTED_MATERIALS, files, dirs);
 	for each (std::string file in files)
 	{
 		ResourceMaterial* res = (ResourceMaterial*)CreateNewResource(TYPE::MATERIAL);
 		res->SetExportedFile(App->fsystem->GetFilename(file.c_str()).c_str());
 		//res->exportedFile = written_file;
-	}
+	}*/
 	return true;
 }
 
@@ -177,6 +177,10 @@ unsigned ModuleResourceManager::ImportFile(const char* newFileInAssets, const ch
 		break;
 	//case TYPE::AUDIO: import_ok = App->audio->Import(newFileInAssets, written_file); break;
 	//case TYPE::SCENE: import_ok = App->scene->Import(newFileInAssets, written_file); break;
+	case TYPE::MATERIAL:
+		success = App->fsystem->Copy(filePath, IMPORTED_MATERIALS, newFileInAssets);
+		resource->SaveMetafile(assetPath.c_str());
+		break;
 	}
 
 	// If export was successful, create a new resource
