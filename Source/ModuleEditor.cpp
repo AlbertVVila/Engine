@@ -184,7 +184,7 @@ update_status ModuleEditor::Update(float dt)
 				{
 					if (!App->scene->name.empty())
 					{
-						App->scene->SaveScene(*App->scene->root, *App->scene->name.c_str(), *App->scene->path.c_str());
+						App->scene->SaveScene(*App->scene->root, App->scene->name.c_str(), App->scene->path.c_str());
 					}
 					else
 					{
