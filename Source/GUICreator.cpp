@@ -65,6 +65,14 @@ void GUICreator::CreateElements(GameObject* go)
 				newgo->CreateComponent(ComponentType::Image);
 				App->scene->Select(newgo);
 			}
+
+			if (ImGui::Selectable("Button"))
+			{
+				GameObject *newgo = App->scene->CreateGameObject("Button", go);
+				newgo->CreateComponent(ComponentType::Transform2D);
+				newgo->CreateComponent(ComponentType::Button);
+				App->scene->Select(newgo);
+			}
 			ImGui::EndMenu();
 		}
 

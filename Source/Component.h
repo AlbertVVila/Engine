@@ -13,6 +13,7 @@ enum class ComponentType
 	Transform2D,
 	Text,
 	Image,
+	Button,
 	Script
 };
 

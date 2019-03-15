@@ -18,6 +18,7 @@
 #include "ComponentTransform2D.h"
 #include "ComponentText.h"
 #include "ComponentImage.h"
+#include "ComponentButton.h"
 #include "ComponentScript.h"
 
 #include "GUICreator.h"
@@ -153,6 +154,12 @@ void GameObject::DrawProperties()
 
 void GameObject::Update()
 {
+	Component* button = GetComponent(ComponentType::Button); //ESTO LO TIENE QUE HACER EL CANVAAS RECORRIENDO SUS HIJOS / ES DE PRUEBA
+	if (button != nullptr)
+	{
+		button->Update();
+	}
+
 	for (auto& component: components)
 	{
 		component->Update();
@@ -229,7 +236,7 @@ void GameObject::Update()
 	}
 }
 
-Component * GameObject::CreateComponent(ComponentType type)
+Component* GameObject::CreateComponent(ComponentType type)
 {
 	Component* component = nullptr;
 	switch (type)
@@ -285,6 +292,9 @@ Component * GameObject::CreateComponent(ComponentType type)
 		break;
 	case ComponentType::Image:
 		component = new ComponentImage(this);
+		break;
+	case ComponentType::Button:
+		component = new ComponentButton(this);
 		break;
 	case ComponentType::Script:
 		component = new ComponentScript(this);
@@ -394,8 +404,10 @@ void GameObject::UpdateGlobalTransform() //Updates global transform when moving
 	{
 		mytransform = parent->GetGlobalTransform() * mytransform;
 	}
-
-	transform->global = mytransform;
+	if (transform != nullptr)
+	{
+		transform->global = mytransform;
+	}
 	UpdateBBox();
 
 	for (auto &child : children)

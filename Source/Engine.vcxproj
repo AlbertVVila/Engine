@@ -103,6 +103,7 @@
     <ClInclude Include="AABBTree.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="ComponentButton.h" />
     <ClInclude Include="ComponentCamera.h" />
     <ClInclude Include="ComponentImage.h" />
     <ClInclude Include="ComponentLight.h" />
@@ -219,6 +220,7 @@
     <ClCompile Include="AABBTree.cpp" />
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="ComponentButton.cpp" />
     <ClCompile Include="ComponentCamera.cpp" />
     <ClCompile Include="ComponentImage.cpp" />
     <ClCompile Include="ComponentLight.cpp" />

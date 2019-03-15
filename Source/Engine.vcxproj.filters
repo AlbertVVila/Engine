@@ -240,6 +240,7 @@
     <ClCompile Include="ComponentText.cpp">
       <Filter>Component</Filter>
     </ClCompile>
+    <ClCompile Include="ComponentButton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -576,6 +577,7 @@
     <ClInclude Include="ComponentText.h">
       <Filter>Component</Filter>
     </ClInclude>
+    <ClInclude Include="ComponentButton.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GeoLib">
