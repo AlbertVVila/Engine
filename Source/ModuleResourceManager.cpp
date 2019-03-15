@@ -36,15 +36,6 @@ bool ModuleResourceManager::Start()
 	//TODO: Read metafiles from Assets/ instead and import or add to resources
 	std::vector<std::string> files;
 	std::vector<std::string> dirs;
-	/*App->fsystem->ListFolderContent(TEXTURES, files, dirs);
-	for each (std::string file in files)
-	{
-		Resource* res = CreateNewResource(TYPE::TEXTURE);
-		res->SetExportedFile(App->fsystem->GetFilename(file.c_str()).c_str());
-		//res->exportedFile = written_file;
-	}
-	files.clear();
-	dirs.clear();*/
 	App->fsystem->ListFolderContent(MESHES, files, dirs);
 	for each (std::string file in files)
 	{
@@ -52,17 +43,9 @@ bool ModuleResourceManager::Start()
 		unsigned uid = std::stoul(name);
 		ResourceMesh* res = (ResourceMesh*)CreateNewResource(TYPE::MESH, uid);	
 		res->SetExportedFile(name.c_str());
-		//res->exportedFile = written_file;
 	}
 	files.clear();
 	dirs.clear();
-	/*App->fsystem->ListFolderContent(IMPORTED_MATERIALS, files, dirs);
-	for each (std::string file in files)
-	{
-		ResourceMaterial* res = (ResourceMaterial*)CreateNewResource(TYPE::MATERIAL);
-		res->SetExportedFile(App->fsystem->GetFilename(file.c_str()).c_str());
-		//res->exportedFile = written_file;
-	}*/
 	return true;
 }
 
@@ -75,6 +58,8 @@ void ModuleResourceManager::LoadEngineResources()
 	{
 		Resource* res = CreateNewResource(TYPE::TEXTURE);
 		res->SetExportedFile(App->fsystem->GetFilename(file.c_str()).c_str());
+		std::string filePath(IMPORTED_RESOURCES);
+		res->SetFile((filePath + file).c_str());
 		res->SetUsedByEngine(true);
 	}
 }
@@ -160,7 +145,7 @@ unsigned ModuleResourceManager::ImportFile(const char* newFileInAssets, const ch
 	unsigned ret = 0; 
 	bool success = false; 
 	std::string importedFilePath(filePath);
-	//std::string written_file;
+
 	Resource* resource = CreateNewResource(type);
 	std::string assetPath(filePath);
 	assetPath += newFileInAssets;
