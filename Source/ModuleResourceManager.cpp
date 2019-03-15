@@ -317,3 +317,10 @@ Resource* ModuleResourceManager::AddResource(const char* file, const char* direc
 		return GetWithoutLoad(UID);
 	}
 }
+
+void ModuleResourceManager::DeleteResourceFromList(unsigned uid)
+{
+	std::map<unsigned, Resource*>::const_iterator it = resources.find(uid);
+	if (it != resources.end())
+		resources.erase(it);
+}

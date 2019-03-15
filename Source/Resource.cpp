@@ -17,6 +17,7 @@ Resource::Resource(const Resource& resource)
 
 Resource::~Resource()
 {
+	DeleteFromMemory();
 }
 
 void Resource::Copy(const Resource& resource)
@@ -32,7 +33,7 @@ void Resource::SetReferences(unsigned references)
 {
 	if (references < 1 && IsLoadedToMemory())		// Delete from memory on loaded changed from > 0 to 0 
 		DeleteFromMemory();
-	else if (references > 0 && !IsLoadedToMemory())// Load to memory on increase of loaded from 0 to > 0
+	else if (references > 0 && !IsLoadedToMemory())	// Load to memory on increase of loaded from 0 to > 0
 		LoadInMemory();
 
 	loaded = references;

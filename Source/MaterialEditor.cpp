@@ -111,6 +111,7 @@ void MaterialEditor::Draw()
 			{
 				material->Reset(*previous);
 			}
+
 			CleanUp();
 		}
 		ImGui::EndPopup();
@@ -196,8 +197,11 @@ void MaterialEditor::SetCurrentTextures()
 
 void MaterialEditor::CleanUp()
 {
-	if (isCreated) RELEASE(material);
-
+	if (isCreated)
+	{
+		App->resManager->DeleteResourceFromList(material->GetUID());
+		RELEASE(material);
+	}
 	current_shader = None;
 	current_diffuse = None;
 	current_specular = None;
