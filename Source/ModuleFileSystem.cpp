@@ -94,7 +94,7 @@ bool ModuleFileSystem::CleanUp()
 	return true;
 }
 
-unsigned ModuleFileSystem::Load(const char * file, char ** buffer) const
+unsigned ModuleFileSystem::Load(const char* file, char** buffer) const
 {
 	PHYSFS_file* myfile = PHYSFS_openRead(file);
 	if (myfile == nullptr)
@@ -117,7 +117,7 @@ unsigned ModuleFileSystem::Load(const char * file, char ** buffer) const
 	return readed;
 }
 
-bool ModuleFileSystem::Save(const char * file, const char * buffer, unsigned size) const
+bool ModuleFileSystem::Save(const char* file, const char* buffer, unsigned size) const
 {
 	PHYSFS_file* myfile = PHYSFS_openWrite(file);
 	if (myfile == nullptr)
@@ -137,7 +137,7 @@ bool ModuleFileSystem::Save(const char * file, const char * buffer, unsigned siz
 	return true;
 }
 
-bool ModuleFileSystem::Remove(const char * file) const
+bool ModuleFileSystem::Remove(const char* file) const
 {
 	assert(file != nullptr);
 	if (file == nullptr) return false;
@@ -149,14 +149,14 @@ bool ModuleFileSystem::Remove(const char * file) const
 	return true;
 }
 
-bool ModuleFileSystem::Exists(const char * file) const
+bool ModuleFileSystem::Exists(const char* file) const
 {
 	assert(file != nullptr);
 	if (file == nullptr) return false;
 	return PHYSFS_exists(file);
 }
 
-unsigned ModuleFileSystem::Size(const char * file) const
+unsigned ModuleFileSystem::Size(const char* file) const
 {
 	assert(file != nullptr);
 	if (file == nullptr) return 0;
@@ -166,7 +166,7 @@ unsigned ModuleFileSystem::Size(const char * file) const
 	return file_size;
 }
 
-bool ModuleFileSystem::MakeDirectory(const char * directory) const
+bool ModuleFileSystem::MakeDirectory(const char* directory) const
 {
 	assert(directory != nullptr);
 	if (directory == nullptr) return false;
@@ -180,14 +180,14 @@ bool ModuleFileSystem::MakeDirectory(const char * directory) const
 	return true;
 }
 
-bool ModuleFileSystem::IsDirectory(const char * file) const
+bool ModuleFileSystem::IsDirectory(const char* file) const
 {
 	assert(file != nullptr);
 	if (file == nullptr) return false;
 	return PHYSFS_isDirectory(file);
 }
 
-std::vector<std::string> ModuleFileSystem::ListFiles(const char * dir, bool extension) const
+std::vector<std::string> ModuleFileSystem::GetFolderContent(const char* dir, bool extension) const
 {
 	std::vector<std::string> files;
 	char **rc = PHYSFS_enumerateFiles(dir);
@@ -209,7 +209,7 @@ std::vector<std::string> ModuleFileSystem::ListFiles(const char * dir, bool exte
 	return files;
 }
 
-void ModuleFileSystem::ListFolderContent(const char * dir, std::vector<std::string>& files, std::vector<std::string>& dirs) const
+void ModuleFileSystem::ListFolderContent(const char* dir, std::vector<std::string>& files, std::vector<std::string>& dirs) const
 {
 	char** filesList = PHYSFS_enumerateFiles(dir);
 	char **i;
@@ -232,7 +232,7 @@ void ModuleFileSystem::ListFolderContent(const char * dir, std::vector<std::stri
 	PHYSFS_freeList(filesList);
 }
 
-bool ModuleFileSystem::CopyFromOutsideFS(const char * source, const char * destination) const
+bool ModuleFileSystem::CopyFromOutsideFS(const char* source, const char* destination) const
 {
 	char *data;
 	FILE* fp = fopen(source, "rb");
@@ -256,7 +256,7 @@ bool ModuleFileSystem::CopyFromOutsideFS(const char * source, const char * desti
 	return true;
 }
 
-bool ModuleFileSystem::Copy(const char * source, const char * destination, const char* file) const
+bool ModuleFileSystem::Copy(const char* source, const char* destination, const char* file) const
 {
 	char * data = nullptr;
 	std::string filepath(source);
@@ -270,26 +270,36 @@ bool ModuleFileSystem::Copy(const char * source, const char * destination, const
 	return true;
 }
 
-void ModuleFileSystem::CheckImportedFiles(const char * folder, std::set<std::string>& importedFiles)
+void ModuleFileSystem::ListFiles(const char* dir, std::set<std::string>& files)
 {
-	importedFiles.clear();
-	std::vector<std::string> files = ListFiles(folder);
-	for (auto& file : files)
+	files.clear();
+	std::vector<std::string> foundFiles;
+	std::stack<std::string> folderStack;
+	folderStack.push(dir);
+	std::string currentFolder;
+	while (!folderStack.empty())
 	{
-		std::string filefolder(folder);
-		filefolder += file;
-		if (IsDirectory(filefolder.c_str()))
+		currentFolder = folderStack.top();
+		folderStack.pop();
+
+		foundFiles = GetFolderContent(currentFolder.c_str());
+		for (auto& file : foundFiles)
 		{
-			CheckImportedFiles((filefolder + "/").c_str(), importedFiles);
-		}
-		else
-		{
-			importedFiles.insert(RemoveExtension(file));
+			std::string filefolder(currentFolder);
+			filefolder += file;
+			if (IsDirectory((currentFolder + file).c_str()))
+			{
+				folderStack.push(dir + file + "/");
+			}
+			else
+			{
+				files.insert(RemoveExtension(file));
+			}
 		}
 	}
 }
 
-void ModuleFileSystem::WatchFolder(const char * folder, const std::set<std::string> &textures, const std::set<std::string> &models, const std::set<std::string> &materials)
+void ModuleFileSystem::WatchFolder(const char* folder, const std::set<std::string> &textures, const std::set<std::string> &models, const std::set<std::string> &materials)
 {
 	std::vector<std::string> files;
 	std::stack<std::string> watchfolder;
@@ -303,7 +313,7 @@ void ModuleFileSystem::WatchFolder(const char * folder, const std::set<std::stri
 		current_folder = watchfolder.top();
 		watchfolder.pop();
 
-		files = ListFiles(current_folder.c_str());
+		files = GetFolderContent(current_folder.c_str());
 		for (auto& file : files)
 		{
 			if (IsDirectory((current_folder + file).c_str()))
@@ -371,9 +381,9 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 	std::set<std::string> importedTextures;
 	std::set<std::string> importedModels;
 	std::set<std::string> importedMaterials;
-	CheckImportedFiles(TEXTURES, importedTextures);
-	CheckImportedFiles(SCENES, importedModels);
-	CheckImportedFiles(IMPORTED_MATERIALS, importedMaterials);
+	ListFiles(TEXTURES, importedTextures);
+	ListFiles(SCENES, importedModels);
+	ListFiles(IMPORTED_MATERIALS, importedMaterials);
 	WatchFolder(folder, importedTextures, importedModels, importedMaterials);
 }
 
@@ -391,7 +401,7 @@ void ModuleFileSystem::LookForNewResourceFiles(const char* folder)
 		current_folder = watchfolder.top();
 		watchfolder.pop();
 
-		files = ListFiles(current_folder.c_str());
+		files = GetFolderContent(current_folder.c_str());
 		for (auto& file : files)
 		{
 			if (IsDirectory((current_folder + file).c_str()))
@@ -499,90 +509,4 @@ std::string ModuleFileSystem::GetFilename(std::string filename) const
 		filename.erase(0, found+1);
 	}
 	return filename;
-}
-
-void ModuleFileSystem::CheckMetaFiles(const char* directory)
-{
-	std::vector<std::string> files;
-	std::vector<std::string> dirs;
-	ListFolderContent(directory, files, dirs);
-
-	// [Directories]
-	for each (std::string dir in dirs)
-	{
-		std::string path(directory);
-		path += "/" + dir;
-		CheckMetaFiles(path.c_str());
-	}
-	// [Files]
-	for each (std::string file in files)
-	{
-		bool import = false;
-		FILETYPE type = GetFileType(GetExtension(file));
-		if (type == FILETYPE::SCENE || type == FILETYPE::NONE)
-			continue;
-
-		std::string metaFile(directory);
-		metaFile += "/" + file + ".meta";
-		if (Exists((metaFile).c_str()))
-		{
-			if (CheckImportedFile(file.c_str()))
-			{
-				LOG("Exists, %s", file.c_str());
-				std::string path(directory);
-				App->resManager->AddResource(file.c_str(), (path + "/").c_str(), (type == FILETYPE::TEXTURE) ? TYPE::TEXTURE : TYPE::MESH);
-			}
-			else
-			{
-				import = true;
-			}
-		}
-		else
-		{
-			import = true;
-		}
-
-		if (import)
-		{
-			std::string path(directory);
-			filesToImport.push_back(std::pair<std::string, std::string>(file, path + "/"));
-		}
-	}
-}
-
-bool ModuleFileSystem::CheckImportedFile(const char* file)
-{
-	std::string extension = GetExtension(file);
-	std::set<std::string> importedFiles;
-	switch (GetFileType(extension))
-	{
-	case FILETYPE::TEXTURE:
-		// Look in imported textures folder 
-		CheckImportedFiles(TEXTURES, importedFiles);
-		for (std::set<std::string>::const_iterator it = importedFiles.begin(); it != importedFiles.end(); ++it)
-		{
-			if (strcmp((*it).c_str(), GetFilename(file).c_str()) == 0)
-			{
-				return true;
-			}
-		}
-		break;
-	case FILETYPE::MODEL:
-		// Look in imported textures folder 
-		CheckImportedFiles(MESHES, importedFiles);
-		// TODO: Check meta file UID and compare it with the files imported
-		/*for (std::set<std::string>::const_iterator it = importedFiles.begin(); it != importedFiles.end(); ++it)
-		{
-			if (strcmp((*it).c_str(), GetFilename(file).c_str()) == 0)
-			{
-				return true;
-			}
-		}*/
-		return true;
-		break;
-	default:
-		break;
-	}
-
-	return true;
 }

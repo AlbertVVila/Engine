@@ -66,7 +66,7 @@ void MaterialEditor::Draw()
 		
 		if (textureFiles.size() == 0)
 		{
-			textureFiles = App->fsystem->ListFiles(TEXTURES, false);
+			textureFiles = App->fsystem->GetFolderContent(TEXTURES, false);
 		}
 
 		if (ImGui::CollapsingHeader("Diffuse"))
@@ -121,7 +121,7 @@ void MaterialEditor::ShaderSelector(std::string & current_shader)
 {
 	if (shaders.size() == 0)
 	{
-		shaders = App->fsystem->ListFiles(VERTEXSHADERS, false);
+		shaders = App->fsystem->GetFolderContent(VERTEXSHADERS, false);
 	}
 	if (material->shader != nullptr)
 	{
