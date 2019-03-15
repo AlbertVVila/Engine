@@ -232,6 +232,35 @@ void ModuleFileSystem::ListFolderContent(const char* dir, std::vector<std::strin
 	PHYSFS_freeList(filesList);
 }
 
+void ModuleFileSystem::ListFiles(const char* dir, std::set<std::string>& files)
+{
+	files.clear();
+	std::vector<std::string> foundFiles;
+	std::stack<std::string> folderStack;
+	folderStack.push(dir);
+	std::string currentFolder;
+	while (!folderStack.empty())
+	{
+		currentFolder = folderStack.top();
+		folderStack.pop();
+
+		foundFiles = GetFolderContent(currentFolder.c_str());
+		for (auto& file : foundFiles)
+		{
+			std::string filefolder(currentFolder);
+			filefolder += file;
+			if (IsDirectory((currentFolder + file).c_str()))
+			{
+				folderStack.push(dir + file + "/");
+			}
+			else
+			{
+				files.insert(RemoveExtension(file));
+			}
+		}
+	}
+}
+
 bool ModuleFileSystem::CopyFromOutsideFS(const char* source, const char* destination) const
 {
 	char *data;
@@ -270,101 +299,6 @@ bool ModuleFileSystem::Copy(const char* source, const char* destination, const c
 	return true;
 }
 
-void ModuleFileSystem::ListFiles(const char* dir, std::set<std::string>& files)
-{
-	files.clear();
-	std::vector<std::string> foundFiles;
-	std::stack<std::string> folderStack;
-	folderStack.push(dir);
-	std::string currentFolder;
-	while (!folderStack.empty())
-	{
-		currentFolder = folderStack.top();
-		folderStack.pop();
-
-		foundFiles = GetFolderContent(currentFolder.c_str());
-		for (auto& file : foundFiles)
-		{
-			std::string filefolder(currentFolder);
-			filefolder += file;
-			if (IsDirectory((currentFolder + file).c_str()))
-			{
-				folderStack.push(dir + file + "/");
-			}
-			else
-			{
-				files.insert(RemoveExtension(file));
-			}
-		}
-	}
-}
-
-void ModuleFileSystem::WatchFolder(const char* folder, const std::set<std::string> &textures, const std::set<std::string> &models, const std::set<std::string> &materials)
-{
-	std::vector<std::string> files;
-	std::stack<std::string> watchfolder;
-	watchfolder.push(folder);
-	std::string current_folder;
-	struct stat statFile;
-	struct stat statMeta;
-
-	while (!watchfolder.empty())
-	{
-		current_folder = watchfolder.top();
-		watchfolder.pop();
-
-		files = GetFolderContent(current_folder.c_str());
-		for (auto& file : files)
-		{
-			if (IsDirectory((current_folder + file).c_str()))
-			{
-				watchfolder.push(current_folder + file + "/");
-			}
-			else
-			{
-				stat((current_folder + file).c_str(), &statFile);
-				stat((current_folder + file + ".meta").c_str(), &statMeta);
-				FILETYPE type = GetFileType(GetExtension(file));
-				if (type == FILETYPE::TEXTURE)
-				{
-					std::set<std::string>::iterator it = textures.find(RemoveExtension(file));
-					if (it == textures.end() || statFile.st_mtime > statMeta.st_mtime)
-					{
-						filesToImport.push_back(std::pair<std::string, std::string>(file, current_folder));
-					}
-					else
-					{
-						App->resManager->AddResource(file.c_str(), current_folder.c_str(), TYPE::TEXTURE);
-					}
-				}
-				else if (type == FILETYPE::MODEL)
-				{
-					//TODO: Get UID from metafile 
-					/*unsigned uid = GetMetaUID((current_folder + file + ".meta").c_str());
-					std::set<std::string>::iterator it = models.find(std::to_string(uid));
-					if (it == models.end() || statFile.st_mtime > statMeta.st_mtime)
-					{
-						filesToImport.push_back(std::pair<std::string, std::string>(file, current_folder));
-					}*/
-				}
-				else if (type == FILETYPE::MATERIAL)
-				{
-					std::set<std::string>::iterator it = materials.find(RemoveExtension(file));
-					if (it == materials.end() || statFile.st_mtime > statMeta.st_mtime)
-					{
-						filesToImport.push_back(std::pair<std::string, std::string>(file, current_folder));
-					}
-					else
-					{
-						App->resManager->AddResource(file.c_str(), current_folder.c_str(), TYPE::MATERIAL);
-					}
-				}
-			}
-		}
-	}
-	return;
-}
-
 void ModuleFileSystem::Monitorize(const char* folder)
 {
 	while (monitorize)
@@ -378,13 +312,82 @@ void ModuleFileSystem::Monitorize(const char* folder)
 
 void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 {
+	// Get lists with all imported resources
 	std::set<std::string> importedTextures;
 	std::set<std::string> importedModels;
 	std::set<std::string> importedMaterials;
 	ListFiles(TEXTURES, importedTextures);
 	ListFiles(SCENES, importedModels);
 	ListFiles(IMPORTED_MATERIALS, importedMaterials);
-	WatchFolder(folder, importedTextures, importedModels, importedMaterials);
+
+	// Look for files in folder passed as argument
+	std::vector<std::string> files;
+	std::stack<std::string> folderStack;
+	folderStack.push(folder);
+	std::string currentFolder;
+	struct stat statFile;
+	struct stat statMeta;
+
+	while (!folderStack.empty())
+	{
+		currentFolder = folderStack.top();
+		folderStack.pop();
+
+		files = GetFolderContent(currentFolder.c_str());
+		for (auto& file : files)
+		{
+			// Check if file is directory instead
+			if (IsDirectory((currentFolder + file).c_str()))
+			{
+				folderStack.push(currentFolder + file + "/");
+			}
+			else
+			{
+				stat((currentFolder + file).c_str(), &statFile);
+				stat((currentFolder + file + ".meta").c_str(), &statMeta);
+				FILETYPE type = GetFileType(GetExtension(file));
+				if (type == FILETYPE::TEXTURE)
+				{
+					std::set<std::string>::iterator it = importedTextures.find(RemoveExtension(file));
+					if (it == importedTextures.end() || statFile.st_mtime > statMeta.st_mtime)
+					{
+						// File modified or not imported, send it to import
+						filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
+					}
+					else
+					{
+						// File already imported, add it to the resources list
+						App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::TEXTURE);
+					}
+				}
+				else if (type == FILETYPE::MODEL)
+				{
+					//TODO: Get UID from metafile 
+					/*unsigned uid = GetMetaUID((current_folder + file + ".meta").c_str());
+					std::set<std::string>::iterator it = importedModels.find(std::to_string(uid));
+					if (it == importedModels.end() || statFile.st_mtime > statMeta.st_mtime)
+					{
+						filesToImport.push_back(std::pair<std::string, std::string>(file, current_folder));
+					}*/
+				}
+				else if (type == FILETYPE::MATERIAL)
+				{
+					std::set<std::string>::iterator it = importedMaterials.find(RemoveExtension(file));
+					if (it == importedMaterials.end() || statFile.st_mtime > statMeta.st_mtime)
+					{
+						// File modified or not imported, send it to import
+						filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
+					}
+					else
+					{
+						// File already imported, add it to the resources list
+						App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::MATERIAL);
+					}
+				}
+			}
+		}
+	}
+	return;
 }
 
 void ModuleFileSystem::LookForNewResourceFiles(const char* folder)
@@ -434,7 +437,6 @@ void ModuleFileSystem::LookForNewResourceFiles(const char* folder)
 			}
 		}
 	}
-	return;
 }
 
 void ModuleFileSystem::ImportFiles()
@@ -444,35 +446,6 @@ void ModuleFileSystem::ImportFiles()
 		importer.ImportAsset(file.first.c_str(), file.second.c_str());
 	}
 	filesToImport.clear();
-}
-
-FILETYPE ModuleFileSystem::GetFileType(std::string extension) const
-{
-	if (extension == PNG || extension == TIF || extension == JPG || extension == TGA)
-	{
-		return FILETYPE::TEXTURE;
-	}
-	if (extension == TEXTUREEXT)
-	{
-		return FILETYPE::IMPORTED_TEXTURE;
-	}
-	if (extension == FBXEXTENSION || extension == FBXCAPITAL)
-	{
-		return FILETYPE::MODEL;
-	}
-	if (extension == MESHEXTENSION)
-	{
-		return FILETYPE::IMPORTED_MESH;
-	}
-	if (extension == JSONEXT)
-	{
-		return FILETYPE::SCENE;
-	}
-	if (extension == MATERIALEXT)
-	{
-		return FILETYPE::MATERIAL;
-	}
-	return FILETYPE::NONE;
 }
 
 std::string ModuleFileSystem::GetExtension(std::string filename) const
@@ -509,4 +482,33 @@ std::string ModuleFileSystem::GetFilename(std::string filename) const
 		filename.erase(0, found+1);
 	}
 	return filename;
+}
+
+FILETYPE ModuleFileSystem::GetFileType(std::string extension) const
+{
+	if (extension == PNG || extension == TIF || extension == JPG || extension == TGA)
+	{
+		return FILETYPE::TEXTURE;
+	}
+	if (extension == TEXTUREEXT)
+	{
+		return FILETYPE::IMPORTED_TEXTURE;
+	}
+	if (extension == FBXEXTENSION || extension == FBXCAPITAL)
+	{
+		return FILETYPE::MODEL;
+	}
+	if (extension == MESHEXTENSION)
+	{
+		return FILETYPE::IMPORTED_MESH;
+	}
+	if (extension == JSONEXT)
+	{
+		return FILETYPE::SCENE;
+	}
+	if (extension == MATERIALEXT)
+	{
+		return FILETYPE::MATERIAL;
+	}
+	return FILETYPE::NONE;
 }

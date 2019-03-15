@@ -68,23 +68,21 @@ public:
 	bool IsDirectory(const char* file) const;
 	std::vector<std::string> GetFolderContent(const char* dir, bool extension=true) const;								// Returns a vector with all the files and directories found on dir
 	void ListFolderContent(const char * dir, std::vector<std::string>& files, std::vector<std::string>& dirs) const;	// Saves all files found on dir on files vector and all directories on dirs vector
-	void ListFiles(const char* dir, std::set<std::string>& files);											// Saves all files found on dir and subdirs on a set
+	void ListFiles(const char* dir, std::set<std::string>& files);														// Saves all files found on dir and subdirs on a set
 	bool CopyFromOutsideFS(const char* source, const char* destination) const;
 	bool Copy(const char* source, const char* destination, const char* file) const;
 
 	std::string GetExtension(std::string file) const;
 	std::string RemoveExtension(std::string file) const;
 	std::string GetFilename(std::string file) const;
+	FILETYPE GetFileType(std::string) const;
 
 private:
-	// Resource Management
-	void WatchFolder(const char* folder, const std::set<std::string> &textures, const std::set<std::string> &models, const std::set<std::string> &materials);	// Compares the resource files located in the folder to the ones in textures, models and materials, these files are added to the Resource Manager and imported if not already. (Used on App start)
+	// Resources Management
 	void Monitorize(const char* folder);				// Monitorizes the files in the selected folder to import the new ones. 
-	void CheckResourcesInFolder(const char* folder);	// Compares the resource files located in the folder to the ones already imported, these files are added to the Resource Manager and imported if not already.
+	void CheckResourcesInFolder(const char* folder);	// Compares the resource files located in the folder to the ones already imported, these files are added to the Resource Manager and imported if not already. (Used on App start)
 	void LookForNewResourceFiles(const char* folder);	// Compares the resource files located in the folder to the ones in the Resource Manager list, if a new or modfied file is found it gets imported.
-	void ImportFiles();
-
-	FILETYPE GetFileType(std::string) const;
+	void ImportFiles();									// Imports files stored on filesToImport list
 
 public:
 	std::string baseDir = "";
