@@ -26,16 +26,32 @@ ModuleFileSystem::ModuleFileSystem()
 	PHYSFS_init(NULL);
 	baseDir = PHYSFS_getBaseDir();
 	PHYSFS_addToSearchPath(baseDir.c_str(), 1);
+	PHYSFS_setWriteDir(baseDir.c_str());
 
-	PHYSFS_mount(LIBRARY, nullptr, 1);
-	PHYSFS_mount(ASSETS, nullptr, 1);
 	PHYSFS_mount(SHADERS, nullptr, 1);
 	PHYSFS_mount(RESOURCES, nullptr, 1);
 
+	// Assets Folder
 	if (!Exists(ASSETS))
-		PHYSFS_mkdir(ASSETS);
+	{
+		MakeDirectory(ASSETS);
+	}
+	PHYSFS_mount(ASSETS, nullptr, 1);
 
-	PHYSFS_setWriteDir(baseDir.c_str());
+	// Library Folder
+	if (!Exists(LIBRARY))
+	{
+		MakeDirectory(LIBRARY);
+	}
+	PHYSFS_mount(LIBRARY, nullptr, 1);
+
+	if (!Exists(IMPORTED_MATERIALS))
+		MakeDirectory(IMPORTED_MATERIALS);
+	if (!Exists(MESHES))
+		MakeDirectory(MESHES);
+	if (!Exists(TEXTURES))
+		MakeDirectory(TEXTURES);
+
 }
 
 
@@ -344,7 +360,6 @@ void ModuleFileSystem::Monitorize(const char* folder)
 	while (monitorize)
 	{
 		threadIsWorking = true;
-		//CheckResourcesInFolder(folder);
 		LookForNewResourceFiles(folder);
 		threadIsWorking = false;
 		SDL_Delay(MONITORIZE_TIME);
