@@ -12,6 +12,7 @@
 #include "ComponentTransform2D.h"
 //fonts lib
 #include <ft2build.h>
+#include "MathGeoLib/include/Math/float4x4.h"
 #include FT_FREETYPE_H 
 
 ModuleFontLoader::ModuleFontLoader()
@@ -146,10 +147,10 @@ void ModuleFontLoader::RenderText(const ComponentText& compText, int currentWidt
 	float y = 0;
 	if (transform2D != nullptr)
 	{
-		x += transform2D->position.x*0.01;
-		y += transform2D->position.y*0.01;
+		x = (compText.offset.x + transform2D->position.x) / (currentWidth * 0.5f);
+		y = (compText.offset.y + transform2D->position.y) / (currentHeight * 0.5f);
 	}
-
+	
 	// Activate corresponding render state	
 	glUseProgram(shaderFonts->id);
 	glUniform4f(glGetUniformLocation(shaderFonts->id, "textColor"), compText.color.x, compText.color.y, compText.color.z, compText.color.w);

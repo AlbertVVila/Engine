@@ -3,11 +3,12 @@
 #include "ModuleInput.h"
 #include "ModuleRender.h"
 
-
 #include "ComponentButton.h"
 #include "ComponentImage.h"
 #include "ComponentText.h"
+#include "ComponentTransform2D.h"
 
+#include "GameObject.h"
 #include "Viewport.h"
 #include "imgui.h"
 #include "MathGeoLib/include/Math/float2.h"
@@ -81,6 +82,7 @@ void ComponentButton::Update()
 {
 	math::float2 mousePos = reinterpret_cast<const float2&>(App->input->GetMousePosition());
 	LOG("Mouse x %.3f y %.3f", mousePos.x, mousePos.y);
+	
 }
 
 void ComponentButton::AssemblyButton() 
@@ -90,4 +92,5 @@ void ComponentButton::AssemblyButton()
 	buttonImage->gameobject = gameobject;
 	highlightedImage->gameobject = gameobject;
 	pressedImage->gameobject = gameobject;
+	rectTransform = (ComponentTransform2D*)gameobject->GetComponent(ComponentType::Transform2D);
 }

@@ -4,6 +4,7 @@
 #include "Component.h"
 
 #include "Math/float4.h"
+#include "Math/float2.h"
 
 class ComponentText :
 	public Component
@@ -22,7 +23,8 @@ public:
 	float fontSize = 14;
 	std::string text = "Fractal Text";
 	std::string font = "";
-	float4 color = float4(1.0f, 1.0f, 1.0f, 0.0f);
+	math::float4 color = math::float4(1.0f, 1.0f, 1.0f, 0.0f);
+	math::float2 offset = math::float2::zero;
 };
 
 #endif

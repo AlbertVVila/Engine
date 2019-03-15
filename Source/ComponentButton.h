@@ -5,6 +5,7 @@
 
 class ComponentImage;
 class ComponentText;
+class ComponentTransform2D;
 
 class ComponentButton :	public Component
 {
@@ -29,6 +30,7 @@ public:
 	ComponentImage* highlightedImage = nullptr;
 	ComponentImage* pressedImage = nullptr;
 	ComponentText* text = nullptr;
+	ComponentTransform2D* rectTransform = nullptr;
 
 	Component* Clone() const override;
 

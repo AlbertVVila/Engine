@@ -125,9 +125,9 @@ void ModuleUI::RenderImage(const ComponentImage& componentImage, int currentWidt
 
 		math::float3 scale = math::float3(transform2D->size.x, transform2D->size.y, 1.0f);
 		math::float3 center = math::float3(transform2D->position.x, transform2D->position.y, 0.0f);
-
+		LOG("Img pos x %.3f y %.3f", transform2D->position.x, transform2D->position.y);
 		model = model.Scale(scale, center);
-
+		model.SetTranslatePart(center);
 
 		glUniformMatrix4fv(glGetUniformLocation(shader->id, "model"), 1, GL_TRUE, (const float*)&model);
 		glUniformMatrix4fv(glGetUniformLocation(shader->id, "projection"), 1, GL_TRUE, (const float*)&projection);

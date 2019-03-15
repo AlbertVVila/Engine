@@ -82,7 +82,7 @@ void ComponentText::DrawProperties()
 
 		//color
 		ImGui::ColorEdit4("Font color", (float*)&color);
-		
+		ImGui::DragFloat2("Text offset", &offset[0]);
 		ImGui::Separator();
 	}
 }
