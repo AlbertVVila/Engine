@@ -124,7 +124,7 @@ void ComponentTransform::UpdateTransform()
 	math::float4x4 difference = global - originalGlobal;
 	MultiSelectionTransform(difference);
 
-  front = -global.Col3(2);
+	front = -global.Col3(2);
 	up = global.Col3(1);
 	right = global.Col3(0);
 
