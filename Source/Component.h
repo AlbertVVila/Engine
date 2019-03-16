@@ -14,7 +14,7 @@ enum class ComponentType
 	Transform2D,
 	Text,
 	Image,
-	Button
+	Button,
 };
 
 class Component
