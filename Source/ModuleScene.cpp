@@ -64,8 +64,7 @@ bool ModuleScene::Init(JSON * config)
 	pcg_extras::seed_seq_from<std::random_device> seed_source;
 	pcg32 rng(seed_source);
 	uuid_rng = rng;
-	root = new GameObject("World", 0); //Root always has uid 0
-
+	root = new GameObject("World", 0); //Root always has uid 0	
 	int size = QUADTREE_SIZE * App->renderer->current_scale;
 	AABB limit(float3(-size, 0.f, -size), float3(size, 0.f, size));
 	quadtree = new myQuadTree(limit);
@@ -589,24 +588,28 @@ bool ModuleScene::AddScene(const char& scene, const char& path)
 	JSON *json = new JSON(data);
 	JSON_value* gameobjectsJSON = json->GetValue("GameObjects");
 	std::map<unsigned, GameObject*> gameobjectsMap; //Necessary to assign parent-child efficiently
+	gameobjectsMap.insert(std::pair<unsigned, GameObject*>(canvas->UUID, canvas));
 
 	for (unsigned i = 0; i<gameobjectsJSON->Size(); i++)
-	{
+	{		
 		JSON_value* gameobjectJSON = gameobjectsJSON->GetValue(i);
 		GameObject *gameobject = new GameObject();
 		gameobject->Load(gameobjectJSON);
-		gameobjectsMap.insert(std::pair<unsigned, GameObject*>(gameobject->UUID, gameobject));
+		if (gameobject->UUID != 1)
+		{
+			gameobjectsMap.insert(std::pair<unsigned, GameObject*>(gameobject->UUID, gameobject));
 
-		std::map<unsigned, GameObject*>::iterator it = gameobjectsMap.find(gameobject->parentUUID);
-		if (it != gameobjectsMap.end())
-		{
-			gameobject->parent = it->second;
-			gameobject->parent->children.push_back(gameobject);
-		}
-		else if (gameobject->parentUUID == 0)
-		{
-			gameobject->parent = root;
-			gameobject->parent->children.push_back(gameobject);
+			std::map<unsigned, GameObject*>::iterator it = gameobjectsMap.find(gameobject->parentUUID);
+			if (it != gameobjectsMap.end())
+			{
+				gameobject->parent = it->second;
+				gameobject->parent->children.push_back(gameobject);
+			}
+			else if (gameobject->parentUUID == 0)
+			{
+				gameobject->parent = root;
+				gameobject->parent->children.push_back(gameobject);
+			}
 		}
 	}
 
@@ -629,6 +632,8 @@ void ModuleScene::ClearScene()
 	LOG("Reset lighting AABBTree");
 	App->spacePartitioning->aabbTreeLighting.Reset();
 	App->spacePartitioning->kDTree.Calculate();
+	canvas = new GameObject("Canvas", 1);
+	root->InsertChild(canvas);
 }
 
 void ModuleScene::Select(GameObject * gameobject)

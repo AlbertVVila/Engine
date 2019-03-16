@@ -13,6 +13,7 @@
 #include "Viewport.h"
 #include "imgui.h"
 #include "MathGeoLib/include/Math/float2.h"
+#include "JSON.h"
 
 
 ComponentButton::ComponentButton() : Component(nullptr, ComponentType::Button)
@@ -24,7 +25,7 @@ ComponentButton::ComponentButton() : Component(nullptr, ComponentType::Button)
 	AssemblyButton();
 }
 
-ComponentButton::ComponentButton(GameObject* gameobject) : Component(gameobject, ComponentType::Image)
+ComponentButton::ComponentButton(GameObject* gameobject) : Component(gameobject, ComponentType::Button)
 {
 	text = new ComponentText();
 	buttonImage = new ComponentImage();
@@ -45,9 +46,13 @@ ComponentButton::ComponentButton(const ComponentButton& copy) : Component(copy)
 
 ComponentButton::~ComponentButton()
 {
+	RELEASE(text);
+	RELEASE(buttonImage);
+	RELEASE(highlightedImage);
+	RELEASE(pressedImage);
 }
 
-Component * ComponentButton::Clone() const
+Component* ComponentButton::Clone() const
 {
 	return nullptr;
 }
@@ -71,12 +76,39 @@ void ComponentButton::DrawProperties()
 	ImGui::PopID();
 }
 
-void ComponentButton::Save(JSON_value * value) const
+void ComponentButton::Save(JSON_value* value) const
 {
+	Component::Save(value);
+	JSON_value* textValue = value->CreateValue(rapidjson::kObjectType);	
+	text->Save(textValue);
+	JSON_value* bValue = value->CreateValue(rapidjson::kObjectType);
+	buttonImage->Save(bValue);
+	JSON_value* hValue = value->CreateValue(rapidjson::kObjectType);
+	highlightedImage->Save(hValue);
+	JSON_value* pValue = value->CreateValue(rapidjson::kObjectType);
+	pressedImage->Save(pValue);
+	value->AddValue("text", *textValue);
+	value->AddValue("buttonImage", *bValue);
+	value->AddValue("highlightedImage", *hValue);
+	value->AddValue("pressedImage", *pValue);
 }
 
-void ComponentButton::Load(JSON_value * value)
+void ComponentButton::Load(JSON_value* value)
 {
+	RELEASE(text);
+	RELEASE(buttonImage);
+	RELEASE(highlightedImage);
+	RELEASE(pressedImage);	
+	Component::Load(value);
+	text = new ComponentText();
+	text->Load(value->GetValue("text"));
+	buttonImage = new ComponentImage();
+	buttonImage->Load(value->GetValue("buttonImage"));
+	highlightedImage = new ComponentImage();
+	highlightedImage->Load(value->GetValue("highlightedImage"));
+	pressedImage = new ComponentImage();
+	pressedImage->Load(value->GetValue("pressedImage"));	
+	AssemblyButton();
 }
 
 void ComponentButton::Update()

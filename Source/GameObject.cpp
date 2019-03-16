@@ -385,6 +385,12 @@ void GameObject::RemoveChild(GameObject* bastard)
 	RELEASE(bastard);
 }
 
+void GameObject::InsertChild(GameObject* child)
+{
+	children.push_back(child);
+	child->parent = this;
+}
+
 Component * GameObject::GetComponent(ComponentType type) const
 {
 	for (auto &component : components)
@@ -640,7 +646,7 @@ bool GameObject::CleanUp()
 
 void GameObject::Save(JSON_value *gameobjects) const
 {
-	if (parent != nullptr) // we don't add gameobjects without parent (ex: World)
+	if (parent != nullptr && App->scene->canvas != this) // we don't add gameobjects without parent (ex: World)
 	{
 		JSON_value *gameobject = gameobjects->CreateValue();
 		gameobject->AddUint("UID", UUID);
@@ -682,7 +688,10 @@ void GameObject::Load(JSON_value *value)
 		component->Load(componentJSON);
 	}
 
-	transform->UpdateTransform();
+	if (transform != nullptr)
+	{
+		transform->UpdateTransform();
+	}
 
 	if (hasLight)
 	{

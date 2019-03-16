@@ -94,6 +94,7 @@ void ComponentText::Save(JSON_value *value)const
 	value->AddString("text", text.c_str());
 	value->AddString("font", font.c_str());
 	value->AddFloat4("color", color);
+	value->AddFloat2("offset", offset);
 }
 
 void ComponentText::Load(JSON_value* value)
@@ -103,4 +104,5 @@ void ComponentText::Load(JSON_value* value)
 	text = value->GetString("text");
 	font = value->GetString("font");
 	color = value->GetFloat4("color");
+	offset = value->GetFloat2("offset");
 }

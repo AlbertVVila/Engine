@@ -111,6 +111,9 @@ void ComponentImage::Load(JSON_value* value)
 {
 	Component::Load(value);
 	textureName = value->GetString("textureName");
-	color = value->GetFloat4("color");
-	texture = App->textures->GetTexture(textureName.c_str());
+	color = value->GetFloat4("color");	
+	if (textureName != "None Selected")
+	{
+		texture = App->textures->GetTexture(textureName.c_str());
+	}
 }
