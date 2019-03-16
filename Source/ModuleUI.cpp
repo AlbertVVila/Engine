@@ -14,6 +14,7 @@
 #include "GL/glew.h"
 #include "Math/float4x4.h"
 #include "Math/TransformOps.h"
+#include "Imgui.h"
 
 ModuleUI::ModuleUI()
 {
@@ -147,4 +148,9 @@ void ModuleUI::RenderImage(const ComponentImage& componentImage, int currentWidt
 	
 	glBindVertexArray(0);
 	glUseProgram(0);
+}
+
+void ModuleUI::DrawGUI()
+{
+	ImGui::Checkbox("Draw UI in Scene", &showUIinSceneViewport);
 }
