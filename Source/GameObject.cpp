@@ -15,6 +15,10 @@
 #include "ComponentCamera.h"
 #include "ComponentLight.h"
 #include "ComponentRenderer.h"
+#include "ComponentTransform2D.h"
+#include "ComponentText.h"
+#include "ComponentImage.h"
+#include "ComponentButton.h"
 #include "ComponentScript.h"
 
 #include "GUICreator.h"
@@ -150,6 +154,12 @@ void GameObject::DrawProperties()
 
 void GameObject::Update()
 {
+	Component* button = GetComponent(ComponentType::Button); //ESTO LO TIENE QUE HACER EL CANVAAS RECORRIENDO SUS HIJOS / ES DE PRUEBA
+	if (button != nullptr)
+	{
+		button->Update();
+	}
+
 	for (auto& component: components)
 	{
 		component->Update();
@@ -226,7 +236,7 @@ void GameObject::Update()
 	}
 }
 
-Component * GameObject::CreateComponent(ComponentType type)
+Component* GameObject::CreateComponent(ComponentType type)
 {
 	Component* component = nullptr;
 	switch (type)
@@ -273,6 +283,18 @@ Component * GameObject::CreateComponent(ComponentType type)
 			App->scene->maincamera = (ComponentCamera*)component;
 			App->scene->maincamera->isMainCamera = true;
 		}
+		break;
+	case ComponentType::Transform2D:
+		component = new ComponentTransform2D(this);
+		break;
+	case ComponentType::Text:
+		component = new ComponentText(this);
+		break;
+	case ComponentType::Image:
+		component = new ComponentImage(this);
+		break;
+	case ComponentType::Button:
+		component = new ComponentButton(this);
 		break;
 	case ComponentType::Script:
 		component = new ComponentScript(this);
@@ -363,6 +385,12 @@ void GameObject::RemoveChild(GameObject* bastard)
 	RELEASE(bastard);
 }
 
+void GameObject::InsertChild(GameObject* child)
+{
+	children.push_back(child);
+	child->parent = this;
+}
+
 Component * GameObject::GetComponent(ComponentType type) const
 {
 	for (auto &component : components)
@@ -382,8 +410,10 @@ void GameObject::UpdateGlobalTransform() //Updates global transform when moving
 	{
 		mytransform = parent->GetGlobalTransform() * mytransform;
 	}
-
-	transform->global = mytransform;
+	if (transform != nullptr)
+	{
+		transform->global = mytransform;
+	}
 	UpdateBBox();
 
 	for (auto &child : children)
@@ -616,7 +646,7 @@ bool GameObject::CleanUp()
 
 void GameObject::Save(JSON_value *gameobjects) const
 {
-	if (parent != nullptr) // we don't add gameobjects without parent (ex: World)
+	if (parent != nullptr && App->scene->canvas != this) // we don't add gameobjects without parent (ex: World)
 	{
 		JSON_value *gameobject = gameobjects->CreateValue();
 		gameobject->AddUint("UID", UUID);
@@ -658,7 +688,10 @@ void GameObject::Load(JSON_value *value)
 		component->Load(componentJSON);
 	}
 
-	transform->UpdateTransform();
+	if (transform != nullptr)
+	{
+		transform->UpdateTransform();
+	}
 
 	if (hasLight)
 	{

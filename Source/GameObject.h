@@ -32,6 +32,7 @@ public:
 	std::vector<Component *> GetComponentsInChildren(ComponentType type) const;
 	void RemoveComponent(const Component & component);
 	void RemoveChild(GameObject* child);
+	void InsertChild(GameObject* child);
 	bool IsParented(const GameObject & gameobject) const;
 
 	void DrawHierarchy();

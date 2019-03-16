@@ -97,7 +97,7 @@ public:
 	std::string name;
 	std::string path;
 	std::string defaultScene;
-
+	GameObject* canvas = nullptr;
 	float3 ambientColor = float3::one;
 };
 
