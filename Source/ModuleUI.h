@@ -23,12 +23,16 @@ public:
 	update_status PostUpdate() override;
 	bool CleanUp() override;
 
+	void DrawGUI() override;
+
 	void Draw(int currentWidth, int currentHeight);
 public:
 	std::list<ComponentImage*> images;
 	std::list<ComponentText*> texts;
 	int currentWidth;
 	int currentHeight;
+	bool showUIinSceneViewport = true;
+
 private:
 	void RenderImage(const ComponentImage& componentImage, int currentWidth, int currentHeight);
 private:
