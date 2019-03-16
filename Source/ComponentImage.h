@@ -25,7 +25,7 @@ public:
 	Texture* texture = nullptr;
 
 	std::vector<std::string> textureFiles;
-
+	bool enabled = true;
 };
 
 #endif // __ComponentImage_h__

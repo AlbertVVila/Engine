@@ -88,6 +88,9 @@ bool ModuleUI::CleanUp()
 
 void ModuleUI::Draw(int currentWidth, int currentHeight)
 {
+	this->currentHeight = currentHeight;
+	this->currentWidth = currentWidth;
+
 	if (shader == nullptr) return;
 
 	for (std::list<ComponentImage*>::iterator it = images.begin(); it != images.end(); ++it)
@@ -109,6 +112,10 @@ void ModuleUI::Draw(int currentWidth, int currentHeight)
 
 void ModuleUI::RenderImage(const ComponentImage& componentImage, int currentWidth, int currentHeight)
 {
+	if (!componentImage.enabled)
+	{
+		return;
+	}
 	glUseProgram(shader->id);
 
 	glUniform4f(glGetUniformLocation(shader->id, "textColor"), componentImage.color.x, componentImage.color.y, componentImage.color.z, componentImage.color.w);
@@ -125,7 +132,6 @@ void ModuleUI::RenderImage(const ComponentImage& componentImage, int currentWidt
 
 		math::float3 scale = math::float3(transform2D->size.x, transform2D->size.y, 1.0f);
 		math::float3 center = math::float3(transform2D->position.x, transform2D->position.y, 0.0f);
-		LOG("Img pos x %.3f y %.3f", transform2D->position.x, transform2D->position.y);
 		model = model.Scale(scale, center);
 		model.SetTranslatePart(center);
 

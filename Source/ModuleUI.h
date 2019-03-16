@@ -27,6 +27,8 @@ public:
 public:
 	std::list<ComponentImage*> images;
 	std::list<ComponentText*> texts;
+	int currentWidth;
+	int currentHeight;
 private:
 	void RenderImage(const ComponentImage& componentImage, int currentWidth, int currentHeight);
 private:

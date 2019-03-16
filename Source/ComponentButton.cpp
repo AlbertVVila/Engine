@@ -2,6 +2,7 @@
 
 #include "ModuleInput.h"
 #include "ModuleRender.h"
+#include "ModuleUI.h"
 
 #include "ComponentButton.h"
 #include "ComponentImage.h"
@@ -80,9 +81,37 @@ void ComponentButton::Load(JSON_value * value)
 
 void ComponentButton::Update()
 {
-	math::float2 mousePos = reinterpret_cast<const float2&>(App->input->GetMousePosition());
-	LOG("Mouse x %.3f y %.3f", mousePos.x, mousePos.y);
+	math::float2 mouse = reinterpret_cast<const float2&>(App->input->GetMousePosition());	
+	float screenX = mouse.x - App->renderer->viewGame->winPos.x - (App->ui->currentWidth * .5f);
+	float screenY = mouse.y - App->renderer->viewGame->winPos.y - (App->ui->currentHeight * .5f);
 	
+	float buttonX = rectTransform->position.x;
+	float buttonY = rectTransform->position.y;
+	
+	math::float2 buttonMin = float2(buttonX - rectTransform->size.x *.5f, buttonY - rectTransform->size.y *.5f);
+	math::float2 buttonMax = float2(buttonX + rectTransform->size.x *.5f, buttonY + rectTransform->size.y *.5f);
+	if (screenX > buttonMin.x && screenX < buttonMax.x && screenY > buttonMin.y && screenY < buttonMax.y)
+	{
+		isHovered = true;
+		buttonImage->enabled = false;
+		highlightedImage->enabled = true;
+		pressedImage->enabled = false;
+	}
+	else
+	{
+		isHovered = false;
+		buttonImage->enabled = true;
+		highlightedImage->enabled = false;
+		pressedImage->enabled = false;
+	}
+
+	if (isHovered && App->input->GetMouseButtonDown(1) == KEY_REPEAT)
+	{
+		isPressed = true;
+		buttonImage->enabled = false;
+		highlightedImage->enabled = false;
+		pressedImage->enabled = true;
+	}
 }
 
 void ComponentButton::AssemblyButton() 
@@ -93,4 +122,7 @@ void ComponentButton::AssemblyButton()
 	highlightedImage->gameobject = gameobject;
 	pressedImage->gameobject = gameobject;
 	rectTransform = (ComponentTransform2D*)gameobject->GetComponent(ComponentType::Transform2D);
+	buttonImage->enabled = true;
+	highlightedImage->enabled = false;
+	pressedImage->enabled = false;
 }
