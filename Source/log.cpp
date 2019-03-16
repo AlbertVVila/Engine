@@ -1,6 +1,6 @@
 #include "Application.h"
 #include "ModuleEditor.h"
-#include "windows.h"
+#include <windows.h>
 
 void log(const char file[], int line, const char* format, ...)
 {

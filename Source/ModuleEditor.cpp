@@ -7,6 +7,7 @@
 #include "ModuleFileSystem.h"
 #include "ModuleTextures.h"
 #include "ModuleProgram.h"
+#include "ModuleTime.h"
 
 #include "Viewport.h"
 
@@ -152,31 +153,66 @@ update_status ModuleEditor::Update(float dt)
 			}
 			if (ImGui::MenuItem("Load Scene"))
 			{
-				fileExplorer->currentOperation = MenuOperations::LOAD;
-				fileExplorer->extensionToFilter = FILETYPE::SCENE;
-				std::string scenePath = SCENES;
-				scenePath = scenePath.substr(0, scenePath.size() - 1);
-				fileExplorer->SetPath(*scenePath.c_str());
-				sprintf_s(fileExplorer->title, "Load Scene");
-				fileExplorer->openFileExplorer = true;
+				if (App->time->gameState == GameState::STOP)
+				{
+					fileExplorer->currentOperation = MenuOperations::LOAD;
+					fileExplorer->extensionToFilter = FILETYPE::SCENE;
+					std::string scenePath = SCENES;
+					scenePath = scenePath.substr(0, scenePath.size() - 1);
+					fileExplorer->SetPath(*scenePath.c_str());
+					sprintf_s(fileExplorer->title, "Load Scene");
+					fileExplorer->openFileExplorer = true;
+				}
+				else
+				{
+					GenerateGenericPopUp("Warning", "You must exit play mode before loading a scene.");
+				}
 			}
 			if (ImGui::MenuItem("Add Scene"))
 			{
-				fileExplorer->currentOperation = MenuOperations::ADD;
-				fileExplorer->extensionToFilter = FILETYPE::SCENE;
-				std::string scenePath = SCENES;
-				scenePath = scenePath.substr(0, scenePath.size() - 1);
-				fileExplorer->SetPath(*scenePath.c_str());
-				sprintf_s(fileExplorer->title, "Add Scene");
-				fileExplorer->openFileExplorer = true;
+				if (App->time->gameState == GameState::STOP)
+				{
+					fileExplorer->currentOperation = MenuOperations::ADD;
+					fileExplorer->extensionToFilter = FILETYPE::SCENE;
+					std::string scenePath = SCENES;
+					scenePath = scenePath.substr(0, scenePath.size() - 1);
+					fileExplorer->SetPath(*scenePath.c_str());
+					sprintf_s(fileExplorer->title, "Add Scene");
+					fileExplorer->openFileExplorer = true;
+				}
+				else
+				{
+					GenerateGenericPopUp("Warning", "You must exit play mode before adding a scene.");
+				}
 			}
 			if (ImGui::MenuItem("Save"))
 			{
-				if (!App->scene->name.empty())
+				if (App->time->gameState == GameState::STOP)
 				{
-					App->scene->SaveScene(*App->scene->root, *App->scene->name.c_str(), *App->scene->path.c_str());
+					if (!App->scene->name.empty())
+					{
+						App->scene->SaveScene(*App->scene->root, *App->scene->name.c_str(), *App->scene->path.c_str());
+					}
+					else
+					{
+						fileExplorer->currentOperation = MenuOperations::SAVE;
+						fileExplorer->extensionToFilter = FILETYPE::SCENE;
+						std::string scenePath = SCENES;
+						scenePath = scenePath.substr(0, scenePath.size() - 1);
+						fileExplorer->SetPath(*scenePath.c_str());
+						sprintf_s(fileExplorer->title, "Save Scene");
+						fileExplorer->openFileExplorer = true;
+					}
+					materialEditor->Save();
 				}
 				else
+				{
+					GenerateGenericPopUp("Warning", "You must exit play mode before saving the scene.");
+				}
+			}
+			if (ImGui::MenuItem("Save As..."))
+			{
+				if (App->time->gameState == GameState::STOP)
 				{
 					fileExplorer->currentOperation = MenuOperations::SAVE;
 					fileExplorer->extensionToFilter = FILETYPE::SCENE;
@@ -184,19 +220,14 @@ update_status ModuleEditor::Update(float dt)
 					scenePath = scenePath.substr(0, scenePath.size() - 1);
 					fileExplorer->SetPath(*scenePath.c_str());
 					sprintf_s(fileExplorer->title, "Save Scene");
+					sprintf_s(fileExplorer->filename, App->scene->name.c_str());
 					fileExplorer->openFileExplorer = true;
+          				materialEditor->Save();
 				}
-			}
-			if (ImGui::MenuItem("Save As..."))
-			{
-				fileExplorer->currentOperation = MenuOperations::SAVE;
-				fileExplorer->extensionToFilter = FILETYPE::SCENE;
-				std::string scenePath = SCENES;
-				scenePath = scenePath.substr(0, scenePath.size() - 1);
-				fileExplorer->SetPath(*scenePath.c_str());
-				sprintf_s(fileExplorer->title, "Save Scene");
-				sprintf_s(fileExplorer->filename, App->scene->name.c_str());
-				fileExplorer->openFileExplorer = true;
+				else
+				{
+					GenerateGenericPopUp("Warning", "You must exit play mode before saving the scene.");
+				}
 			}
 			if (ImGui::MenuItem("Exit", "Esc"))
 			{
@@ -210,16 +241,20 @@ update_status ModuleEditor::Update(float dt)
 		GUICreator::CreateElements(App->scene->root);
 		if (ImGui::MenuItem("New Material"))
 		{
-			materialEditor->open = true;
-			materialEditor->isCreated = true;
+			materialEditor->newMaterial = true;
 		}
-		fileExplorer->Draw();
-		materialEditor->Draw();
+
+		if (materialEditor->newMaterial)
+		{
+			materialEditor->NewMaterial();
+		}
+    fileExplorer->Draw();
 		WindowsMenu();
 		HelpMenu();
 		ImGui::EndMainMenuBar();
 	}
 	DrawPanels();
+	if (openGenericPopUp) OpenGenericPopUp();
 	return UPDATE_CONTINUE;
 }
 
@@ -301,7 +336,7 @@ void ModuleEditor::WindowsMenu()
 		if (ImGui::MenuItem("Game Camera", nullptr, App->renderer->viewGame->IsEnabled()))
 		{
 			App->renderer->viewGame->ToggleEnabled();
-    }
+		}
 		if (ImGui::MenuItem("Time control", nullptr, time->IsEnabled()))
 		{
 			time->ToggleEnabled();
@@ -323,6 +358,29 @@ void ModuleEditor::HelpMenu()
 			hardware->SetEnabled();
 		}
 		ImGui::EndMenu();
+	}
+}
+
+void ModuleEditor::GenerateGenericPopUp(const char* title, const char* text)
+{
+	popUpTitle = (title != nullptr) ? title : "Pop Up";
+	popUpText = (text != nullptr) ? text : "";
+	openGenericPopUp = true;
+}
+
+void ModuleEditor::OpenGenericPopUp()
+{
+	ImGui::OpenPopup(popUpTitle.c_str());
+	if (ImGui::BeginPopupModal(popUpTitle.c_str(), NULL, ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		ImGui::Text(popUpText.c_str());
+		if (ImGui::Button("Accept"))
+		{
+			openGenericPopUp = false;
+			popUpTitle = "Pop Up";
+			popUpText = "";
+		}
+		ImGui::EndPopup();
 	}
 }
 

@@ -114,29 +114,8 @@
     <ClCompile Include="ModuleWindow.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="log.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleEditor.cpp">
       <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui.cpp">
-      <Filter>Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_demo.cpp">
-      <Filter>Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_draw.cpp">
-      <Filter>Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_impl_opengl3.cpp">
-      <Filter>Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_impl_sdl.cpp">
-      <Filter>Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_widgets.cpp">
-      <Filter>Imgui</Filter>
     </ClCompile>
     <ClCompile Include="ModuleCamera.cpp">
       <Filter>Modules</Filter>
@@ -223,13 +202,25 @@
       <Filter>Panels</Filter>
     </ClCompile>
     <ClCompile Include="ModuleTime.cpp">
-	  <Filter>Modules</Filter>
+      <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="KDTree.cpp">
       <Filter>Tree</Filter>
     </ClCompile>
     <ClCompile Include="ModuleSpacePartitioning.cpp">
       <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentScript.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleScript.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="MemoryModule.c">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="log.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="ModuleDebugDraw.cpp">
       <Filter>Modules</Filter>
@@ -529,13 +520,25 @@
       <Filter>Panels</Filter>
     </ClInclude>
     <ClInclude Include="ModuleTime.h">
-	  <Filter>Modules</Filter>
+      <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="KDTree.h">
       <Filter>Tree</Filter>
     </ClInclude>
     <ClInclude Include="ModuleSpacePartitioning.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentScript.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleScript.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="MemoryModule.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Resources</Filter>
     </ClInclude>
     <ClInclude Include="debugdraw.h">
       <Filter>Utils</Filter>
@@ -553,9 +556,6 @@
     </Filter>
     <Filter Include="Shaders">
       <UniqueIdentifier>{db4ddeed-7944-48a0-9a56-611e8baabcdd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Imgui">
-      <UniqueIdentifier>{ce38ee00-97d2-4555-a8e4-3e52ad53abd7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Utils">
       <UniqueIdentifier>{11066cf8-cf44-4725-9fa8-10243045e1fc}</UniqueIdentifier>
@@ -587,27 +587,12 @@
     <Filter Include="Tree">
       <UniqueIdentifier>{640a2da3-0a48-4b71-8419-e266d3f70572}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{3caabedb-7473-40ca-99fc-312732dd7b04}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Game\Shaders\FragmentShaders\Flat.fs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\Game\Shaders\FragmentShaders\Gouraud.fs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\Game\Shaders\FragmentShaders\Phong.fs">
-      <Filter>Shaders</Filter>
-    </None>
     <None Include="..\Game\Shaders\FragmentShaders\Skybox.fs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\Game\Shaders\VertexShaders\Flat.vs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\Game\Shaders\VertexShaders\Gouraud.vs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\Game\Shaders\VertexShaders\Phong.vs">
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\Game\Shaders\VertexShaders\Skybox.vs">
@@ -619,5 +604,19 @@
     <None Include="..\Game\Shaders\VertexShaders\Default.vs">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="..\Game\Shaders\FragmentShaders\PBR.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\VertexShaders\PBR.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Scripts\PlayerMovement.dll">
+      <Filter>Resources</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Engine.rc">
+      <Filter>Resources</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

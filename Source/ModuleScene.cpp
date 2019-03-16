@@ -17,6 +17,7 @@
 #include "ComponentTransform.h"
 
 #include "Material.h"
+#include "MaterialEditor.h"
 #include "Mesh.h"
 #include "JSON.h"
 #include "myQuadTree.h"
@@ -114,7 +115,10 @@ bool ModuleScene::CleanUp()
 	}
 	root->children.clear();
 	
+	LOG("Reset volumetric AABBTree");
 	App->spacePartitioning->aabbTree.Reset();
+	LOG("Reset lighting AABBTree");
+	App->spacePartitioning->aabbTreeLighting.Reset();
 
 	selected = nullptr;
 	maincamera = nullptr;
@@ -155,9 +159,13 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	PROFILE;
 	if (isEditor)
 	{
-		if (App->renderer->quadtree_debug)
+		if (App->renderer->aabbTreeDebug)
 		{
-			quadtree->Draw();
+			App->spacePartitioning->aabbTree.Draw();
+		}
+		if (App->renderer->kDTreeDebug)
+		{
+			App->spacePartitioning->kDTree.DebugDraw();
 		}
 
 		if (App->renderer->light_debug)
@@ -166,6 +174,7 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 			{
 				light->DrawDebugLight();
 			}
+			App->spacePartitioning->aabbTreeLighting.Draw();
 		}
 	}
 	Frustum camFrustum = frustum;
@@ -176,7 +185,10 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	
 	for (const auto &go : staticFilteredGOs)
 	{
-		DrawGO(*go, camFrustum, isEditor);
+		if (camFrustum.Intersects(go->GetBoundingBox()))
+		{
+			DrawGO(*go, camFrustum, isEditor);
+		}
 	}
 
 	for (const auto &go : dynamicFilteredGOs)
@@ -199,8 +211,11 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 	if (go.drawBBox && isEditor)
 	{
 		go.DrawBBox();
+		if (go.light != nullptr)
+		{
+			go.light->DrawDebug();
+		}
 	}
-
 	ComponentRenderer* crenderer = (ComponentRenderer*)go.GetComponent(ComponentType::Renderer);
 	if (crenderer == nullptr || !crenderer->enabled || crenderer->material == nullptr) return;
 
@@ -227,8 +242,43 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 void ModuleScene::DrawHierarchy()
 {
 	ImGui::PushStyleColor(ImGuiCol_Header, ImVec4(0.2f, 0.2f, 0.5f, 1.00f));
-	root->DrawHierarchy(selected);
+	root->DrawHierarchy();
 	ImGui::PopStyleColor();
+}
+
+void ModuleScene::DragNDropMove(GameObject* target) const
+{
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropHierarchy"))
+		{
+			IM_ASSERT(payload->DataSize == sizeof(GameObject*));
+			GameObject* droppedGo = (GameObject *)*(const int*)payload->Data;
+			if (droppedGo != App->scene->root && target != droppedGo)
+			{
+				for (GameObject* droppedGo : App->scene->selection)
+				{
+					droppedGo->parent->children.remove(droppedGo);
+
+					std::list<GameObject*>::iterator it = std::find(target->parent->children.begin(), target->parent->children.end(), target);
+
+					target->parent->children.insert(it, droppedGo);
+
+					if (droppedGo->transform != nullptr)
+					{
+						droppedGo->transform->SetLocalToWorld();
+					}
+
+					droppedGo->parent = target->parent;
+					if (droppedGo->transform != nullptr)
+					{
+						droppedGo->transform->SetWorldToLocal(droppedGo->parent->GetGlobalTransform());
+					}
+				}
+			}
+		}
+		ImGui::EndDragDropTarget();
+	}
 }
 
 void ModuleScene::DragNDrop(GameObject* go)
@@ -237,7 +287,8 @@ void ModuleScene::DragNDrop(GameObject* go)
 	{
 		GameObject * dragged_go = go;
 		ImGui::SetDragDropPayload("DragDropHierarchy", &dragged_go, sizeof(GameObject *), ImGuiCond_Once);
-		ImGui::Text("%s", go->name.c_str());
+		for (GameObject* selectionGO : selection)
+			ImGui::Text("%s", selectionGO->name.c_str());
 		ImGui::EndDragDropSource();
 	}
 	if (ImGui::BeginDragDropTarget())
@@ -245,20 +296,24 @@ void ModuleScene::DragNDrop(GameObject* go)
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropHierarchy"))
 		{
 			IM_ASSERT(payload->DataSize == sizeof(GameObject*));
-			GameObject* dropped_go = (GameObject *)*(const int*)payload->Data;
-			if (dropped_go != App->scene->root && dropped_go->parent != go && !dropped_go->IsParented(*go))
+			GameObject* droppedGo = (GameObject *)*(const int*)payload->Data;
+			if (droppedGo != App->scene->root && droppedGo->parent != go && !droppedGo->IsParented(*go) 
+				&& std::find(App->scene->selection.begin(), App->scene->selection.end(), go) == App->scene->selection.end())
 			{
-				go->children.push_back(dropped_go);
+				for (GameObject* droppedGo : App->scene->selection)
+				{
+					go->children.push_back(droppedGo);
 
-				if (dropped_go->transform != nullptr)
-				{
-					dropped_go->transform->SetLocalToWorld();
-				}
-				dropped_go->parent->children.remove(dropped_go);
-				dropped_go->parent = go;
-				if (dropped_go->transform != nullptr)
-				{
-					dropped_go->transform->SetWorldToLocal(dropped_go->parent->GetGlobalTransform());
+					if (droppedGo->transform != nullptr)
+					{
+						droppedGo->transform->SetLocalToWorld();
+					}
+					droppedGo->parent->children.remove(droppedGo);
+					droppedGo->parent = go;
+					if (droppedGo->transform != nullptr)
+					{
+						droppedGo->transform->SetWorldToLocal(droppedGo->parent->GetGlobalTransform());
+					}
 				}
 			}
 		}
@@ -323,19 +378,26 @@ void ModuleScene::AddToSpacePartition(GameObject *gameobject)
 	}
 }
 
-void ModuleScene::DeleteFromSpacePartition(GameObject &gameobject)
+void ModuleScene::DeleteFromSpacePartition(GameObject* gameobject)
 {
-	if (gameobject.isStatic && gameobject.isVolumetric)
+	if (gameobject->isStatic && gameobject->isVolumetric)
 	{
-		staticGOs.erase(&gameobject);
+		staticGOs.erase(gameobject);
+		App->spacePartitioning->kDTree.Calculate();
 	}
 	else
 	{
-		if (gameobject.isVolumetric && gameobject.treeNode != nullptr)
+		if (gameobject->isVolumetric && gameobject->treeNode != nullptr)
 		{
-			App->spacePartitioning->aabbTree.ReleaseNode(gameobject.treeNode);
+			App->spacePartitioning->aabbTree.ReleaseNode(gameobject->treeNode);
+		}
+		if (gameobject->hasLight && gameobject->treeNode != nullptr)
+		{
+			App->spacePartitioning->aabbTreeLighting.ReleaseNode(gameobject->treeNode);
 		}
 	}
+	dynamicFilteredGOs.erase(gameobject);
+	staticFilteredGOs.erase(gameobject);
 }
 
 void ModuleScene::ResetQuadTree() //deprecated
@@ -546,8 +608,6 @@ bool ModuleScene::AddScene(const char& scene, const char& path)
 			gameobject->parent = root;
 			gameobject->parent->children.push_back(gameobject);
 		}
-	
-		//AddToSpacePartition(gameobject);
 	}
 
 	RELEASE_ARRAY(data);
@@ -564,19 +624,49 @@ void ModuleScene::ClearScene()
 	dynamicGOs.clear();
 	staticFilteredGOs.clear();
 	dynamicFilteredGOs.clear();
+	LOG("Reset volumetric AABBTree");
 	App->spacePartitioning->aabbTree.Reset();
+	LOG("Reset lighting AABBTree");
+	App->spacePartitioning->aabbTreeLighting.Reset();
 	App->spacePartitioning->kDTree.Calculate();
 }
 
 void ModuleScene::Select(GameObject * gameobject)
 {
-	if (selected != nullptr)
+	if (App->editor->materialEditor->material != nullptr)
 	{
-		selected->drawBBox = false;
+		App->editor->materialEditor->Save();
+		App->editor->materialEditor->open = false;
 	}
-	selected = gameobject;
-	gameobject->drawBBox = true;
-	App->editor->ShowInspector();
+	if (App->input->IsKeyPressed(SDLK_LCTRL))
+	{
+		std::list<GameObject*>::iterator it = std::find(selection.begin(), selection.end(), gameobject);
+		if (it == selection.end())
+		{
+			selection.push_back(gameobject);
+			selected = gameobject;
+			selected->isSelected = true;
+			App->editor->ShowInspector();
+		}
+		else
+		{
+			(*it)->isSelected = false;
+			selection.erase(it);
+		}		
+	}
+	else
+	{
+		for (GameObject* go : App->scene->selection)
+		{
+			go->isSelected = false;
+		}
+		selection.clear();
+		selection.push_back(gameobject);
+		selected = gameobject;
+		selected->isSelected = true;
+		App->editor->ShowInspector();
+	}
+	
 }
 
 void ModuleScene::UnSelect()
@@ -650,14 +740,14 @@ unsigned ModuleScene::GetNewUID()
 	return uuid_rng();
 }
 
-std::list<ComponentLight*> ModuleScene::GetClosestLights(LightType type, float3 position) const
+std::list<ComponentLight*> ModuleScene::GetClosestLights(LightType type, math::float3 position) const
 {
 	std::map<float, ComponentLight*> lightmap;
 	for (const auto& light : lights)
 	{
 		if (light->lightType == type && light->enabled && light->gameobject->transform != nullptr)
 		{
-			float distance = light->gameobject->transform->position.Distance(position);
+			float distance = light->gameobject->transform->GetPosition().Distance(position);
 			lightmap.insert(std::pair<float, ComponentLight*>(distance,light));
 		}
 	}

@@ -41,6 +41,9 @@ private:
 	void WindowsMenu();
 	void HelpMenu();
 
+	void GenerateGenericPopUp(const char* title, const char* text);
+	void OpenGenericPopUp();
+
 public:
 	PanelConsole *console = nullptr;
 	PanelConfiguration *configuration = nullptr;
@@ -55,6 +58,11 @@ public:
 
 private:
 	std::list<Panel*> panels;
+
+	// Generic Pop-Up variables
+	std::string popUpTitle;
+	std::string popUpText;
+	bool openGenericPopUp = false;
 };
 
 #endif //__ModuleEditor_h__
