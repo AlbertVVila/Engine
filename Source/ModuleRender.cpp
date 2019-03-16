@@ -8,6 +8,8 @@
 #include "ModuleWindow.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleResourceManager.h"
+#include "ModuleUI.h"
+#include "ModuleFontLoader.h"
 
 #include "GameObject.h"
 #include "ComponentCamera.h"
@@ -158,6 +160,9 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 		DrawGizmos(cam);
 	}
 	App->scene->Draw(*cam.frustum, isEditor);
+
+	App->ui->Draw(width, height);
+	
 }
 
 bool ModuleRender::IsSceneViewFocused() const
@@ -236,6 +241,7 @@ void ModuleRender::InitSDL()
 void ModuleRender::InitOpenGL() const
 {
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
