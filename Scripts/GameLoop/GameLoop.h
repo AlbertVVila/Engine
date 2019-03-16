@@ -24,6 +24,8 @@ class GameLoop_API GameLoop : public Script
 	void Start() override;
 	void Update() override;
 
+	void ChangeGameState(GameState newState); //Set initial conditions for each state here if required
+
 	GameState gameState = GameState::MENU;
 };
 
