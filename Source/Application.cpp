@@ -12,6 +12,8 @@
 #include "ModuleResourceManager.h"
 #include "ModuleTime.h"
 #include "ModuleSpacePartitioning.h"
+#include "ModuleUI.h"
+#include "ModuleFontLoader.h"
 #include "ModuleScript.h"
 
 #include "Timer.h"
@@ -37,6 +39,8 @@ Application::Application()
 	modules.push_back(resManager = new ModuleResourceManager());
 	modules.push_back(time = new ModuleTime());
 	modules.push_back(spacePartitioning = new ModuleSpacePartitioning());
+	modules.push_back(ui = new ModuleUI());
+	modules.push_back(fontLoader = new ModuleFontLoader());
 }
 
 Application::~Application()
