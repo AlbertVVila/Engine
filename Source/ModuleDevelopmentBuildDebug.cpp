@@ -85,7 +85,7 @@ update_status ModuleDevelopmentBuildDebug::PreUpdate()
 // Called every draw update
 update_status ModuleDevelopmentBuildDebug::Update(float dt)
 {
-	ImGui::Begin("Vertical Slice 1 - Development build debug");
+	ImGui::Begin("Neta - Vertical Slice 1 - Development build debug");
 	++frames;
 	float avgTime = (totalTime / (float)frames);
 	float fps = 1 / avgTime;	
