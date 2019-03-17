@@ -96,33 +96,24 @@ void ModuleUI::Draw(int currentWidth, int currentHeight)
 	this->currentWidth = currentWidth;
 
 	if (shader == nullptr) return;
-	/*
-	for (std::list<ComponentImage*>::iterator it = images.begin(); it != images.end(); ++it)
-	{
-		if ((*it)->texture != nullptr && (*it)->texture != 0 && (*it)->enabled)
-		{
-			RenderImage(*(*it), currentWidth, currentHeight);
-		}
-	}
-	for (std::list<ComponentText*>::iterator it = texts.begin(); it != texts.end(); ++it)
-	{
-		if ((*it)->enabled)
-		{
-			App->fontLoader->RenderText(*(*it), currentWidth, currentHeight);
-		}
-	}*/
-	std::stack<GameObject*> S;
+
+	std::stack<GameObject*> stack;
 	for (GameObject* go : App->scene->canvas->children)
 	{
-		S.push(go);
+		stack.push(go);
 	}
 
-	while (!S.empty())
+	while (!stack.empty())
 	{
-		GameObject* go = S.top();
-		S.pop();
+		GameObject* gameObjectToRender = stack.top();
+		stack.pop();
 
-		for (Component* comp : go->components)
+		for (GameObject* gameObjectChildren : gameObjectToRender->children)
+		{
+			stack.push(gameObjectChildren);
+		}
+
+		for (Component* comp : gameObjectToRender->components)
 		{
 			switch (comp->type)
 			{
