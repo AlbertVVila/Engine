@@ -10,6 +10,7 @@
 #include "ModuleScene.h"
 #include "ModuleTextures.h"
 #include "ModuleSpacePartitioning.h"
+#include "ModuleWindow.h"
 
 #include "GameObject.h"
 #include "ComponentCamera.h"
@@ -94,7 +95,11 @@ bool ModuleScene::Start()
 
 update_status ModuleScene::PreUpdate()
 {
+#ifndef GAME_BUILD
 	FrustumCulling(*App->camera->editorcamera->frustum);
+#else
+	FrustumCulling(*maincamera->frustum);
+#endif
 	return UPDATE_CONTINUE;
 }
 
@@ -130,7 +135,7 @@ bool ModuleScene::CleanUp()
 	return true;
 }
 
-void ModuleScene::SaveConfig(JSON * config)
+void ModuleScene::SaveConfig(JSON* config)
 {
 	JSON_value* scene = config->CreateValue();
 
@@ -141,20 +146,22 @@ void ModuleScene::SaveConfig(JSON * config)
 	config->AddValue("scene", *scene);
 }
 
-void ModuleScene::FrustumCulling(const Frustum & frustum)
+void ModuleScene::FrustumCulling(const Frustum& frustum)
 {
 	Frustum camFrustum = frustum;
-
+#ifndef GAME_BUILD
 	if (maincamera != nullptr && App->renderer->useMainCameraFrustum)
 	{
 		camFrustum = *maincamera->frustum;
 	}
+#endif
 	App->spacePartitioning->kDTree.GetIntersections(camFrustum, staticFilteredGOs);
 	App->spacePartitioning->aabbTree.GetIntersections(camFrustum, dynamicFilteredGOs);
 }
 
 void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 {
+#ifndef GAME_BUILD
 	PROFILE;
 	if (isEditor)
 	{
@@ -202,8 +209,49 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	{
 		DrawGO(*selected, frustum, isEditor); //bcause it could be an object without mesh not in staticGOs or dynamicGOs
 	}
+#else
+	for (const auto &go : staticFilteredGOs)
+	{
+		if (maincamera->frustum->Intersects(go->GetBoundingBox()))
+		{
+			DrawGOGame(*go);
+		}
+	}
+
+	for (const auto &go : dynamicFilteredGOs)
+	{
+		if (maincamera->frustum->Intersects(go->GetBoundingBox()))
+		{
+			DrawGOGame(*go);
+		}
+	}	
+#endif
 }
 
+void ModuleScene::DrawGOGame(const GameObject& go)
+{
+	ComponentRenderer* crenderer = (ComponentRenderer*)go.GetComponent(ComponentType::Renderer);
+	if (crenderer == nullptr || !crenderer->enabled || crenderer->material == nullptr) return;
+
+	Material* material = crenderer->material;
+	Shader* shader = material->shader;
+	if (shader == nullptr) return;
+
+	glUseProgram(shader->id);
+
+	material->SetUniforms(shader->id);
+
+	glUniform3fv(glGetUniformLocation(shader->id,
+		"lights.ambient_color"), 1, (GLfloat*)&ambientColor);
+	go.SetLightUniforms(shader->id);
+
+	go.UpdateModel(shader->id);
+	crenderer->mesh->Draw(shader->id);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glActiveTexture(GL_TEXTURE0);
+	glUseProgram(0);
+}
 void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isEditor)
 {
 	PROFILE;
@@ -570,6 +618,7 @@ void ModuleScene::LoadScene(const char& scene, const char& scenePath)
 		name = &scene;
 	}
 	App->spacePartitioning->kDTree.Calculate();
+	App->scene->maincamera->SetAspect((float)App->window->width / (float)App->window->height);
 }
 
 bool ModuleScene::AddScene(const char& scene, const char& path)

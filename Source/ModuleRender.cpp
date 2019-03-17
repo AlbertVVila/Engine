@@ -10,6 +10,7 @@
 #include "ModuleResourceManager.h"
 #include "ModuleUI.h"
 #include "ModuleFontLoader.h"
+#include "ModuleDevelopmentBuildDebug.h"
 
 #include "GameObject.h"
 #include "ComponentCamera.h"
@@ -107,10 +108,14 @@ update_status ModuleRender::PostUpdate()
 {
 	BROFILER_CATEGORY("Render PostUpdate", Profiler::Color::Black);
 
+#ifndef GAME_BUILD
 	viewScene->Draw(App->camera->editorcamera, true);
 	viewGame->Draw(App->scene->maincamera);
 	App->editor->RenderGUI();
-
+#else
+	App->renderer->Draw(*App->scene->maincamera, App->window->width, App->window->height, false);
+	App->developDebug->RenderGUI();
+#endif
 	SDL_GL_SwapWindow(App->window->window);
 
 	return UPDATE_CONTINUE;
@@ -137,7 +142,7 @@ void ModuleRender::SaveConfig(JSON * config)
 }
 
 void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool isEditor) const
-{
+{	
 	BROFILER_CATEGORY("Render_Draw()", Profiler::Color::AliceBlue);
 	glViewport(0, 0, width, height);
 	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
@@ -192,7 +197,10 @@ bool ModuleRender::CleanUp()
 void ModuleRender::OnResize()
 {
     glViewport(0, 0, App->window->width, App->window->height);
+#ifndef GAME_BUILD
 	App->camera->editorcamera->SetAspect((float)App->window->width / (float)App->window->height);
+#endif
+	App->scene->maincamera->SetAspect((float)App->window->width / (float)App->window->height);
 }
 
 void ModuleRender::DrawGizmos(const ComponentCamera &camera) const

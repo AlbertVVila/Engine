@@ -47,6 +47,7 @@ public:
 
 	void FrustumCulling(const Frustum &frustum);
 	void Draw(const Frustum &frustum, bool isEditor = false);
+	void DrawGOGame(const GameObject& go);
 	void DrawGO(const GameObject& go, const Frustum & frustum, bool isEditor = false);
 	void DrawHierarchy();
 	void DragNDropMove(GameObject* target) const;
