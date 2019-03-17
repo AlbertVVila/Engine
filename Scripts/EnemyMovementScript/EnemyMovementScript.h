@@ -20,10 +20,10 @@ public:
 
 	void Start() override;
 	void Update() override;
-	//void Serialize(JSON_value* json) const override;
-	//void DeSerialize(JSON_value* json) override;
+	void Serialize(JSON_value* json) const override;
+	void DeSerialize(JSON_value* json) override;
 private:
-	GameObject* GetGameObjectByName(GameObject* gameObject, const char* name);
+	GameObject* GetGameObjectRecursiveByName(GameObject* gameObject, const char* name);
 private:
 	float speed = 0.5f;
 	std::string playerName = "Player";
