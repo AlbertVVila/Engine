@@ -19,7 +19,6 @@ ComponentImage::ComponentImage() : Component(nullptr, ComponentType::Image)
 	{
 		textureFiles = App->fsystem->ListFiles(TEXTURES, false);
 	}
-	App->ui->images.push_back(this);
 }
 
 ComponentImage::ComponentImage(GameObject* gameobject) : Component(gameobject, ComponentType::Image)
@@ -28,19 +27,16 @@ ComponentImage::ComponentImage(GameObject* gameobject) : Component(gameobject, C
 	{
 		textureFiles = App->fsystem->ListFiles(TEXTURES, false);
 	}
-	App->ui->images.push_back(this);
 }
 
 ComponentImage::ComponentImage(const ComponentImage &copy) : Component(copy)
 {
 	color = copy.color;
 	textureName = copy.textureName;
-	App->ui->images.push_back(this);
 }
 
 ComponentImage::~ComponentImage()
 {
-	App->ui->images.remove(this);
 	App->resManager->DeleteTexture(textureName);
 	texture = nullptr;
 }

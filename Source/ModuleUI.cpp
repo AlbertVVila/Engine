@@ -5,13 +5,16 @@
 #include "ModuleResourceManager.h"
 #include "ModuleTextures.h"
 #include "ModuleFontLoader.h"
+#include "ModuleScene.h"
 
 #include "GameObject.h"
 #include "ComponentTransform2D.h"
 #include "ComponentImage.h"
 #include "ComponentText.h"
+#include "ComponentButton.h"
 
 #include "GL/glew.h"
+#include <stack>
 #include "Math/float4x4.h"
 #include "Math/TransformOps.h"
 #include "Imgui.h"
@@ -93,7 +96,7 @@ void ModuleUI::Draw(int currentWidth, int currentHeight)
 	this->currentWidth = currentWidth;
 
 	if (shader == nullptr) return;
-
+	/*
 	for (std::list<ComponentImage*>::iterator it = images.begin(); it != images.end(); ++it)
 	{
 		if ((*it)->texture != nullptr && (*it)->texture != 0 && (*it)->enabled)
@@ -107,13 +110,46 @@ void ModuleUI::Draw(int currentWidth, int currentHeight)
 		{
 			App->fontLoader->RenderText(*(*it), currentWidth, currentHeight);
 		}
+	}*/
+	std::stack<GameObject*> S;
+	for (GameObject* go : App->scene->canvas->children)
+	{
+		S.push(go);
+	}
+
+	while (!S.empty())
+	{
+		GameObject* go = S.top();
+		S.pop();
+
+		for (Component* comp : go->components)
+		{
+			switch (comp->type)
+			{
+			case ComponentType::Button:
+			{
+				ComponentButton* button = (ComponentButton*)comp;
+				RenderImage(*button->buttonImage, currentWidth, currentHeight);
+				RenderImage(*button->highlightedImage, currentWidth, currentHeight);
+				RenderImage(*button->pressedImage, currentWidth, currentHeight);
+				App->fontLoader->RenderText(*button->text, currentWidth, currentHeight);
+				break;
+			}
+			case ComponentType::Image:
+				RenderImage(*(ComponentImage*)comp, currentWidth, currentHeight);
+				break;
+			case ComponentType::Text:
+				App->fontLoader->RenderText(*(ComponentText*)comp, currentWidth, currentHeight);
+				break;
+			}
+		}
 	}
 }
 
 
 void ModuleUI::RenderImage(const ComponentImage& componentImage, int currentWidth, int currentHeight)
 {
-	if (!componentImage.enabled)
+	if (componentImage.texture == nullptr || componentImage.texture == 0 || !componentImage.enabled)
 	{
 		return;
 	}

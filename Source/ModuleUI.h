@@ -27,8 +27,7 @@ public:
 
 	void Draw(int currentWidth, int currentHeight);
 public:
-	std::list<ComponentImage*> images;
-	std::list<ComponentText*> texts;
+
 	int currentWidth;
 	int currentHeight;
 	bool showUIinSceneViewport = true;

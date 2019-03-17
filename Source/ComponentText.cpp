@@ -12,13 +12,11 @@
 ComponentText::ComponentText() : Component(nullptr, ComponentType::Text)
 {
 	font = App->fontLoader->defaultFont;
-	App->ui->texts.push_back(this);
 }
 
 ComponentText::ComponentText(GameObject* gameobject) : Component(gameobject, ComponentType::Text)
 {
 	font = App->fontLoader->defaultFont;
-	App->ui->texts.push_back(this);
 }
 
 ComponentText::ComponentText(const ComponentText &copy) : Component(copy)
@@ -28,12 +26,10 @@ ComponentText::ComponentText(const ComponentText &copy) : Component(copy)
 	fontSize = copy.fontSize;
 	text = copy.text;
 	color = copy.color;
-	App->ui->texts.push_back(this);
 }
 
 ComponentText::~ComponentText()
 {
-	App->ui->texts.remove(this);
 }
 
 Component * ComponentText::Clone() const

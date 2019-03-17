@@ -5,7 +5,7 @@
 #include "ComponentLight.h"
 
 #include "Geometry/Frustum.h"
-#include "pcg_random.hpp"
+#include "pcg-cpp-0.98/include/pcg_random.hpp"
 #include "Math/Quat.h"
 #include "Math/float4.h"
 #include <set>

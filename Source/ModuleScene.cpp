@@ -634,6 +634,7 @@ void ModuleScene::ClearScene()
 	App->spacePartitioning->kDTree.Calculate();
 	canvas = new GameObject("Canvas", 1);
 	root->InsertChild(canvas);
+	selection.clear();
 }
 
 void ModuleScene::Select(GameObject * gameobject)

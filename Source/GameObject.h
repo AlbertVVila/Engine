@@ -65,6 +65,7 @@ public:
 	bool copyFlag = false;
 	bool deleteFlag = false;
 	bool drawBBox = false;
+
 	AABB bbox;
 
 	ComponentTransform * transform = nullptr;
