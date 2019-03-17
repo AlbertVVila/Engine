@@ -85,6 +85,27 @@ update_status ModuleDevelopmentBuildDebug::PreUpdate()
 // Called every draw update
 update_status ModuleDevelopmentBuildDebug::Update(float dt)
 {
+	ImGui::Begin("Vertical Slice 1 - Development build debug");
+	++frames;
+	float avgTime = (totalTime / (float)frames);
+	float fps = 1 / avgTime;	
+	totalTime += dt;
+	ImGui::Text("Performance");
+	ImGui::Separator();
+	ImGui::Text("Average fps %.3f | Average frame time %.3f", fps, avgTime);
+	if (frames > 1000)
+	{
+		minFps = MIN(minFps, fps);
+		maxFps = MAX(maxFps, fps);
+		minTime = MIN(minTime, dt);
+		maxTime = MAX(maxTime, dt);
+		ImGui::Text("Min fps %.3f | Max fps %.3f", minFps, maxFps);
+		ImGui::Text("Min time %.3f | Max time %.3f", minTime, maxTime);
+	}
+	ImGui::Separator();
+	ImGui::Separator();
+	ImGui::Text("Camera selector");
+	ImGui::End();
 	return UPDATE_CONTINUE;
 }
 

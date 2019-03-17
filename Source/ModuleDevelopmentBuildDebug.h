@@ -31,6 +31,12 @@ public:
 
 	void processInput(SDL_Event* event) const;
 
+	unsigned frames = 0u;
+	float totalTime = .0f;
+	float maxFps = .0f;
+	float minFps = 100000000.f;
+	float minTime = 100000000.f;
+	float maxTime = .0f;
 
 };
 
