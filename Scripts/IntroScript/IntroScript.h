@@ -1,6 +1,7 @@
 #ifndef  __IntroScript_h__
 #define  __IntroScript_h__
 
+class JSON_value;
 #include "BaseScript.h"
 #include "Math/float3.h"
 
@@ -16,6 +17,9 @@ class IntroScript_API IntroScript : public Script
 
 	void Start() override;
 	void Update() override;
+
+	void Serialize(JSON_value* json) const override;
+	void DeSerialize(JSON_value* json) override;
 
 	bool introDone = false;
 
