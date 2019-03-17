@@ -23,6 +23,9 @@ private:
 	math::float3 cameraPosition = math::float3(0, 0, 0);
 	math::float3 finalPosition = math::float3(0, 0, 1000);
 	float speed = 2.0f;
+	float speedX = 1.0f;
+	float speedY = 1.0f;
+	float speedZ = 1.0f;
 	float distanceToMove = 0.0f;
 	float distanceMoved = 0.0f;
 };
