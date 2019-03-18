@@ -16,6 +16,11 @@ AnimationController::~AnimationController()
 {
 }
 
+void AnimationController::Play(unsigned clipUID, bool loop, unsigned fadeTime)
+{
+	Instance* newInstance = new Instance;
+}
+
 void AnimationController::Update(float dt)
 {
 	if (current != nullptr)
@@ -58,24 +63,101 @@ void AnimationController::UpdateInstance(Instance* instance, float dt)
 		}
 		else
 		{
-		/*	ReleaseInstance(instance->next);*/
+			ReleaseInstance(instance->next);
+			instance->next = nullptr;
+			instance->fadeTime = instance->fadeDuration = 0;
 			
 		}
 	}
 
 }
 
-//void AnimationController::ReleaseInstance(Instance* instance)
-//{
-//
-//}
+void AnimationController::ReleaseInstance(Instance* instance)
+{
+	do
+	{
+		Instance* next = instance->next;
+		delete instance;
+		instance = next;
+	} while (instance != nullptr);
+}
 
-math::float3 AnimationController::InterpolateFloat3(const math::float3 first, const math::float3 second, float lambda) const
+bool AnimationController::GetTransform(std::string channelName, math::float3& position, math::Quat& rotation)
+{
+	if (current != nullptr)
+	{
+		return GetTransformInstance(current, channelName, position, rotation);
+	}
+	else
+		return false;
+}
+
+bool AnimationController::GetTransformInstance(Instance* instance, std::string channelName, math::float3& position, math::Quat& rotation)
+{
+	Animation* anim = static_cast<Animation*>(App->resManager->GetAnim(instance->clipUID));
+
+	if (anim != nullptr)
+	{
+		unsigned channelIndex = anim->GetIndexChannel(channelName.c_str());
+
+		if (channelIndex != 999u)
+		{
+			assert(instance->time <= anim->duration);
+		
+			//this here is so weird, it's just a check if we are between frames or in a key frame
+
+			float positionKey = float(instance->time*(anim->GetNumPositions(channelIndex) - 1)) / float(anim->duration);
+			float rotationKey = float(instance->time*(anim->GetNumRotations(channelIndex) - 1)) / float(anim->duration);
+
+			unsigned positionIndex = unsigned(positionKey);
+			unsigned rotationIndex = unsigned(rotationKey);
+
+			float positionLambda = positionKey - float(positionIndex);
+			float rotationLambda = rotationKey - float(rotationIndex);
+
+			if (positionLambda > 0.0f)
+			{
+				position = InterpolateFloat3(anim->GetPosition(channelIndex, positionIndex), anim->GetPosition(channelIndex, positionIndex + 1), positionLambda);
+			}
+			else
+			{
+				position = anim->GetPosition(channelIndex, positionIndex);
+			}
+			if (rotationLambda > 0.0f)
+			{
+				rotation = InterpolateQuat(anim->GetRotation(channelIndex, rotationIndex), anim->GetRotation(channelIndex, rotationIndex + 1), rotationLambda);
+			}
+			else
+			{
+				rotation = anim->GetRotation(channelIndex, positionIndex);
+			}
+			if (instance->next != nullptr)
+			{
+				assert(instance->fadeDuration > 0.0f);
+
+				math::float3 nextPosition = math::float3::zero;
+				math::Quat nextRotation = math::Quat::identity;
+
+				if (GetTransformInstance(instance->next, channelName, nextPosition, nextRotation))
+				{
+					float blend_lambda = float(instance->fadeTime) / float(instance->fadeDuration);
+
+					position = InterpolateFloat3(nextPosition, position, blend_lambda);
+					rotation = InterpolateQuat(nextRotation, rotation, blend_lambda);
+				}
+			}
+			return true;
+		}
+	}
+	return false;
+}
+
+math::float3 AnimationController::InterpolateFloat3(const math::float3& first, const math::float3& second, float lambda) const
 {
 	return first * (1.0f - lambda) + second * lambda;
 }
 
-math::Quat AnimationController::InterpolateQuat(const math::Quat first, const math::Quat second, float lambda) const
+math::Quat AnimationController::InterpolateQuat(const math::Quat& first, const math::Quat& second, float lambda) const
 {
 	Quat result;
 	float dot = first.Dot(second);

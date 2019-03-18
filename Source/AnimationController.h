@@ -29,17 +29,21 @@ public:
 	AnimationController();
 	~AnimationController();
 
+	void Play(unsigned clipUID, bool loop, unsigned fadeTime);
 	void Update(float dt);
 	void UpdateInstance(Instance* ins, float dt);
+	void ReleaseInstance(Instance* ins);
 
 public:
 	void SetTransform();
 
+	bool GetTransformInstance(Instance* instance, std::string channelName, math::float3& position, math::Quat& rotation);
 
+	bool GetTransform(std::string name, math::float3& position, math::Quat& rotation);
 
-	math::float3 InterpolateFloat3(const math::float3 first, const math::float3 second, float lambda) const;
+	math::float3 InterpolateFloat3(const math::float3& first, const math::float3& second, float lambda) const;
 
-	math::Quat InterpolateQuat(const math::Quat first, const math::Quat second, float lambda) const;
+	math::Quat InterpolateQuat(const math::Quat& first, const math::Quat& second, float lambda) const;
 };
 
 #endif // __ANIMATIONCONTROLLER_H_

@@ -159,7 +159,7 @@ void GameObject::Update()
 
 		for (const auto& child : children)
 		{
-			Animate(indexChannel, anim);
+			child->Animate(indexChannel, anim);
 		}
 
 		std::queue<GameObject*> Q;
@@ -183,6 +183,8 @@ void GameObject::Update()
 	}
 	for (std::list<GameObject*>::iterator itChild = children.begin(); itChild != children.end();)
 	{
+
+		(*itChild)->Update();
 
 		if ((*itChild)->copyFlag) //Moved GO
 		{
