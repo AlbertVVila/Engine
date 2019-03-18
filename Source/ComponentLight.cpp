@@ -118,7 +118,9 @@ void ComponentLight::DrawProperties()
 			App->spacePartitioning->aabbTreeLighting.ReleaseNode(gameobject->treeNode);
 			App->spacePartitioning->aabbTreeLighting.InsertGO(gameobject);
 		}
+		ImGui::Separator();
 	}
+
 	ImGui::PopID();
 }
 
