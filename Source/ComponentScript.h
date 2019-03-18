@@ -21,6 +21,17 @@ public:
 	void Load(JSON_value* value) override;
 
 	void SetScript(const std::string& name);
+
+	inline Script* GetScript() const
+	{
+		return script;
+	}
+
+	inline std::string GetScriptName() const
+	{
+		return scriptName;
+	}
+
 	void ScriptStart() const;
 	void ScriptUpdate() const;
 

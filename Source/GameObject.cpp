@@ -399,6 +399,29 @@ void GameObject::RemoveComponent(const Component & component)
 	}
 }
 
+Script * GameObject::GetScript() const
+{
+	ComponentScript* component = (ComponentScript*)GetComponent(ComponentType::Script);
+	if (component != nullptr)
+	{
+		return component->GetScript();
+	}
+	return nullptr;
+}
+
+Script * GameObject::FindScriptByName(const char * name) const
+{
+	std::vector<Component*> components = GetComponents(ComponentType::Script);
+	for (const auto& component : components)
+	{
+		if (((ComponentScript*)component)->GetScriptName() == name)
+		{
+			return ((ComponentScript*)component)->GetScript();
+		}
+	}
+	return nullptr;
+}
+
 void GameObject::RemoveChild(GameObject* bastard)
 {
 	children.remove(bastard);

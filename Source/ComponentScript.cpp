@@ -27,6 +27,7 @@ ComponentScript::~ComponentScript()
 {
 	if (script != nullptr)
 	{
+		RELEASE(script);
 		App->scripting->RemoveScript(*this, scriptName);
 	}
 }
