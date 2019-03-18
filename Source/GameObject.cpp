@@ -53,7 +53,10 @@ GameObject::GameObject(const GameObject & gameobject)
 	name = gameobject.name;
 	UUID = App->scene->GetNewUID();
 	parentUUID = gameobject.parentUUID;
+	parentUUID = gameobject.parentUUID;
 	isStatic = gameobject.isStatic;
+	activeInHierarchy = gameobject.activeInHierarchy;
+	activeSelf = gameobject.activeSelf;
 	bbox = gameobject.bbox;
 
 	for (const auto& component: gameobject.components)
@@ -111,6 +114,12 @@ void GameObject::DrawProperties()
 
 	if (this != App->scene->root)
 	{
+		if (ImGui::Checkbox("Active", &activeSelf))
+		{
+			SetActive(activeSelf);
+		}
+
+		ImGui::SameLine();
 		if (ImGui::Checkbox("Static", &isStatic))
 		{
 			if (isStatic && GetComponent(ComponentType::Renderer) != nullptr)
@@ -154,6 +163,8 @@ void GameObject::DrawProperties()
 
 void GameObject::Update()
 {
+	if (!isActive()) return;
+
 	Component* button = GetComponent(ComponentType::Button); //ESTO LO TIENE QUE HACER EL CANVAAS RECORRIENDO SUS HIJOS / ES DE PRUEBA
 	if (button != nullptr)
 	{
@@ -233,6 +244,15 @@ void GameObject::Update()
 		{
 			++itChild;
 		}
+	}
+}
+
+void GameObject::SetActive(bool active)
+{
+	activeSelf = active;
+	for(auto& child : children)
+	{
+		child->activeInHierarchy = active;
 	}
 }
 
@@ -476,6 +496,8 @@ void GameObject::SetLightUniforms(unsigned shader) const
 	//LOG("%s got %d lights", name.c_str(), lights.size());
 	for (GameObject* go : lights)
 	{
+		if (!go->light->enabled) continue;
+
 		assert(go->light != nullptr);
 		switch (go->light->lightType)
 		{
@@ -653,6 +675,8 @@ void GameObject::Save(JSON_value *gameobjects) const
 		gameobject->AddUint("ParentUID", parent->UUID);
 		gameobject->AddString("Name", name.c_str());
 		gameobject->AddUint("Static", isStatic);
+		gameobject->AddUint("ActiveInHierarchy", activeInHierarchy);
+		gameobject->AddUint("ActiveSelf", activeSelf);
 
 		JSON_value *componentsJSON = gameobject->CreateValue(rapidjson::kArrayType);
 		for (auto &component : components)
@@ -678,6 +702,8 @@ void GameObject::Load(JSON_value *value)
 	parentUUID = value->GetUint("ParentUID");
 	name = value->GetString("Name");
 	isStatic = value->GetUint("Static");
+	activeInHierarchy = value->GetUint("ActiveInHierarchy", 1);
+	activeSelf = value->GetUint("ActiveSelf", 1);
 
 	JSON_value* componentsJSON = value->GetValue("Components");
 	for (unsigned i = 0; i < componentsJSON->Size(); i++)

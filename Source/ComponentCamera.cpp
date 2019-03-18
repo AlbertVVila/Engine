@@ -224,11 +224,13 @@ void ComponentCamera::Update()
 
 void ComponentCamera::DrawProperties()
 {
+	ImGui::PushID(this);
 	if (ImGui::CollapsingHeader("Camera", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		bool removed = Component::DrawComponentState();
 		if (removed)
 		{
+			ImGui::PopID();
 			return;
 		}
 
@@ -258,6 +260,7 @@ void ComponentCamera::DrawProperties()
 
 		ImGui::Separator();
 	}
+	ImGui::PopID();
 }
 
 void ComponentCamera::Save(JSON_value* value) const

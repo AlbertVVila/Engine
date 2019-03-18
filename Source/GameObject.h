@@ -25,6 +25,13 @@ public:
 	void DrawProperties();
 
 	void Update();
+	inline bool isActive() const
+	{
+		if (!activeInHierarchy) return false;
+		return activeSelf;
+	}
+
+	void SetActive(bool active);
 
 	Component * CreateComponent(ComponentType type);
 	Component * GetComponent(ComponentType type) const;
@@ -59,6 +66,9 @@ private:
 public:
 	unsigned UUID = 0;
 	unsigned parentUUID = 0; //only set in Save/Load scene TODO:update on parent change
+	bool activeInHierarchy = true;
+	bool activeSelf = true;
+
 	bool isStatic = false;
 	bool isSelected = false;
 	bool movedFlag = false;

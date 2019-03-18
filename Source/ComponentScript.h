@@ -21,6 +21,8 @@ public:
 	void Load(JSON_value* value) override;
 
 	void SetScript(const std::string& name);
+	void ScriptStart() const;
+	void ScriptUpdate() const;
 
 	ComponentScript* Clone() const;
 
