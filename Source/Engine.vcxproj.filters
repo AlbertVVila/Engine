@@ -228,7 +228,6 @@
     <ClCompile Include="ResourceMaterial.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
-    <ClCompile Include="PanelBrowser.cpp" />
     <ClCompile Include="ResourceSkybox.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
@@ -247,9 +246,14 @@
     <ClCompile Include="ComponentText.cpp">
       <Filter>Component</Filter>
     </ClCompile>
-    <ClCompile Include="ComponentButton.cpp" />
     <ClCompile Include="MemoryModule.c">
       <Filter>ScriptingResources</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentButton.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelBrowser.cpp">
+      <Filter>Panels</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -572,7 +576,6 @@
     <ClInclude Include="ResourceMaterial.h">
       <Filter>Resources</Filter>
     </ClInclude>
-    <ClInclude Include="PanelBrowser.h" />
     <ClInclude Include="ResourceSkybox.h">
       <Filter>Resources</Filter>
     </ClInclude>
@@ -591,7 +594,6 @@
     <ClInclude Include="ComponentText.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="ComponentButton.h" />
     <ClInclude Include="Skybox.h" />
     <ClInclude Include="engineResource.h" />
     <ClInclude Include="MemoryModule.h">
@@ -602,6 +604,12 @@
     </ClInclude>
     <ClInclude Include="Resource.h">
       <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentButton.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelBrowser.h">
+      <Filter>Panels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

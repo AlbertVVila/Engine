@@ -10,7 +10,7 @@
 
 PanelBrowser::PanelBrowser() 
 {
-
+	enabled = false;
 }
 
 PanelBrowser::~PanelBrowser() 
