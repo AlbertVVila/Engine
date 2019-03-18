@@ -5,6 +5,7 @@
 
 #include "GameObject.h"
 #include "Animation.h"
+#include "AnimationController.h"
 #include "ComponentAnimation.h"
 #include "ComponentTransform.h"
 
@@ -44,9 +45,26 @@ void ComponentAnimation::DrawProperties()
 
 }
 
-void ComponentAnimation::Update(Frame* frame, Channel* channel)
+void ComponentAnimation::Update()
 {
+	UpdateGO(gameobject);
+}
 
+void ComponentAnimation::UpdateGO(GameObject* go)
+{
+	float3 position;
+	Quat rotation;
+
+	if (controller->GetTransform(go->name.c_str(), position, rotation))
+	{
+		gameobject->transform->SetPosition(position);
+		gameobject->transform->SetRotation(rotation);
+	}
+
+	for (std::list<GameObject*>::iterator it = go->children.begin(); it != go->children.end(); ++it)
+	{
+		UpdateGO(*it);
+	}
 }
 
 Component* ComponentAnimation::Clone() const
@@ -69,6 +87,7 @@ ComponentAnimation::ComponentAnimation(const ComponentAnimation& component) : Co
 
 ComponentAnimation::ComponentAnimation() : Component(nullptr, ComponentType::Animation)
 {
+	controller = new AnimationController();
 }
 
 
@@ -111,33 +130,4 @@ void ComponentAnimation::Load(JSON_value* value)
 		anim->Load(data, uid);
 		App->resManager->AddAnim(anim);
 	}
-}
-
-void ComponentAnimation::OffsetChannels(GameObject* GO)
-{
-	math::float3 positionOffset = math::float3::zero;
-	math::Quat rotationOffset = math::Quat::identity;
-
-	unsigned index = anim->GetIndexChannel(GO->name.c_str());
-
-	if (index != 999u)
-	{
-		positionOffset = anim->channels[index]->positionSamples[0] - GO->transform->GetPosition();
-		rotationOffset = anim->channels[index]->rotationSamples[0].Inverted()*GO->transform->GetRotation();
-		for (unsigned i = 0u; i < anim->channels[index]->numPositionKeys; i++)
-		{
-			anim->channels[index]->positionSamples[i] += positionOffset;
-		}
-		for (unsigned j = 0u; j < anim->channels[index]->numRotationKeys; j++)
-		{
-			anim->channels[index]->rotationSamples[j] = anim->channels[index]->rotationSamples[j] * rotationOffset;
-		}
-	}
-
-	for (const auto& child : GO->children)
-	{
-		OffsetChannels(child);
-	}
-
-	//}
 }

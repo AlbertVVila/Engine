@@ -19,6 +19,12 @@ AnimationController::~AnimationController()
 void AnimationController::Play(unsigned clipUID, bool loop, unsigned fadeTime)
 {
 	Instance* newInstance = new Instance;
+	newInstance->clipUID = clipUID;
+	newInstance->loop = loop;
+	newInstance->fadeDuration = fadeTime;
+	newInstance->next = current;
+
+	current = newInstance;
 }
 
 void AnimationController::Update(float dt)
@@ -69,7 +75,6 @@ void AnimationController::UpdateInstance(Instance* instance, float dt)
 			
 		}
 	}
-
 }
 
 void AnimationController::ReleaseInstance(Instance* instance)

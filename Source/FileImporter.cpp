@@ -112,6 +112,7 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file)
 		ComponentTransform* nodeParentTransform = (ComponentTransform*)goNode->parent->GetComponent(ComponentType::Transform);
 		nodeTransform->UpdateTransform();
 		nodeTransform->SetLocalTransform(reinterpret_cast<const math::float4x4&>(aNode->mTransformation), nodeParentTransform->global);
+
 		for (unsigned i = 0u; i < aNode->mNumMeshes; ++i)
 		{
 			aiMesh* aMesh = aiscene.mMeshes[aNode->mMeshes[i]];
@@ -147,44 +148,25 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file)
 		char* correctedAnimationData = nullptr;
 		unsigned animationSize = GetAnimationSize(*aiscene.mAnimations[i]);
 		animationData = new char[animationSize];
-		correctedAnimationData = new char[animationSize];
 		ImportAnimation(*aiscene.mAnimations[i], animationData);
 
 		sceneGO->CreateComponent(ComponentType::Animation);
 		ComponentAnimation* animationComponent = (ComponentAnimation*)sceneGO->GetComponent(ComponentType::Animation);
 		unsigned animUid = App->scene->GetNewUID();
 
-		Animation* fakeAnim = new Animation();
 		Animation* animation = new Animation();
 
-		fakeAnim->Load(animationData, animUid); //TODO: we need to delete this one!
-		animationComponent->anim = fakeAnim;
-
-		//this below corrects the offset, since we dont have a ResourceModel we use the GO generated earlier
-		//animationComponent->OffsetChannels(sceneGO);
-		//RewriteAnimationData(fakeAnim, correctedAnimationData);
-
-		//delete fakeAnim;
-
-		//animation->Load(correctedAnimationData, animUid);
-		//animationComponent->anim = animation;
-
-		//fakeAnim->animationName = aiscene.mAnimations[i]->mName.C_Str();
+		animation->Load(animationData, animUid);
+		animationComponent->anim = animation;
 
 		App->fsystem->Save((ANIMATIONS + std::to_string(animUid) + ANIMATIONEXTENSION).c_str(), animationData, animationSize);
 
 		App->resManager->AddAnim(animation);
 
-		
-
 		RELEASE_ARRAY(animationData);
 		RELEASE_ARRAY(correctedAnimationData);
 	}
-
-
-
 	App->scene->SaveScene(*sceneGO, *App->fsystem->GetFilename(file).c_str(), *SCENES); //TODO: Make AutoCreation of folders or check
-
 	aiReleaseImport(&aiscene);
 
 	return true;
