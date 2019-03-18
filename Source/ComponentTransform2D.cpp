@@ -11,6 +11,15 @@
 
 ComponentTransform2D::ComponentTransform2D(GameObject* gameobject) : Component(gameobject, ComponentType::Transform2D)
 {
+	alignments[TOPLEFT] = math::float2(-1.0f, 1.0f);
+	alignments[TOPCENTER] = math::float2(0.0f, 1.0f);
+	alignments[TOPRIGHT] = math::float2(1.0f, 1.0f);
+	alignments[MIDDLELEFT] = math::float2(-1.0f, 0.0f);
+	alignments[MIDDLECENTER] = math::float2(0.0f, 0.0f);
+	alignments[MIDDLERIGHT] = math::float2(1.0f, 0.0f);
+	alignments[BOTTOMLEFT] = math::float2(-1.0f, -1.0f);
+	alignments[BOTTOMCENTER] = math::float2(0.0f, -1.0f);
+	alignments[BOTTOMRIGHT] = math::float2(1.0f, -1.0f);
 }
 
 ComponentTransform2D::ComponentTransform2D(const ComponentTransform2D & component) : Component(component)
@@ -110,8 +119,6 @@ void ComponentTransform2D::DrawProperties()
 				position = math::float2(width*0.5 - size.x / 2, -height*0.5 + size.y / 2);
 			}
 		}
-
-
 	}
 }
 

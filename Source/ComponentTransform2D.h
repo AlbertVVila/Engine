@@ -3,6 +3,7 @@
 
 #include "Component.h"
 #include "Math/float2.h"
+#include <vector>
 
 class ComponentTransform2D : public Component
 {
@@ -22,6 +23,23 @@ public:
 	math::float2 position = math::float2::zero;
 	math::float2 size = math::float2(100.0f, 100.0f);
 
+private:
+	enum aligns {
+		TOPLEFT = 0,
+		TOPCENTER = 1,
+		TOPRIGHT,
+		MIDDLELEFT,
+		MIDDLECENTER,
+		MIDDLERIGHT,
+		BOTTOMLEFT,
+		BOTTOMCENTER,
+		BOTTOMRIGHT
+	};
+
+	//variables
+	int currentAnchor = MIDDLECENTER;
+	std::vector<float2> alignments = std::vector<float2>(9);
+	
 };
 
 #endif
