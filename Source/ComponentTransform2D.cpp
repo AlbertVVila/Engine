@@ -2,6 +2,8 @@
 #include "Application.h"
 #include "GameObject.h"
 #include "ModuleTime.h"
+#include "ModuleRender.h"
+#include "Viewport.h"
 
 #include "imgui.h"
 #include "imgui_internal.h"
@@ -46,6 +48,70 @@ void ComponentTransform2D::DrawProperties()
 			ImGui::PopItemFlag();
 			ImGui::PopStyleVar();
 		}
+
+
+		if (ImGui::CollapsingHeader("Anchor", ImGuiTreeNodeFlags_DefaultOpen))
+		{
+
+			if (ImGui::Button("Top Left"))
+			{
+				float width = (float)App->renderer->viewGame->current_width;
+				float height = (float)App->renderer->viewGame->current_height;
+				position = math::float2(-width*0.5 + size.x/2, height*0.5 - size.y / 2);
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Top Center"))
+			{
+				float height = (float)App->renderer->viewGame->current_height;
+				position = math::float2(0.0f, height*0.5 - size.y / 2);
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Top Right"))
+			{
+				float width = (float)App->renderer->viewGame->current_width;
+				float height = (float)App->renderer->viewGame->current_height;
+				position = math::float2(width*0.5 - size.x / 2, height*0.5 - size.y / 2);
+			}
+
+			if (ImGui::Button("Middle Left"))
+			{
+				float width = (float)App->renderer->viewGame->current_width;
+				position = math::float2(-width*0.5 + size.x / 2, 0.0f);
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Middle Center"))
+			{
+				position = math::float2(0.0f, 0.0f);
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Middle Right"))
+			{
+				float width = (float)App->renderer->viewGame->current_width;
+				position = math::float2(width*0.5 - size.x / 2, 0.0f);
+			}
+
+			if (ImGui::Button("Bottom Left"))
+			{
+				float width = (float)App->renderer->viewGame->current_width;
+				float height = (float)App->renderer->viewGame->current_height;
+				position = math::float2(-width*0.5 + size.x / 2,- height*0.5 + size.y / 2);
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Bottom Center"))
+			{
+				float height = (float)App->renderer->viewGame->current_height;
+				position = math::float2(0.0f, -height*0.5 + size.y / 2);
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Bottom Right"))
+			{
+				float width = (float)App->renderer->viewGame->current_width;
+				float height = (float)App->renderer->viewGame->current_height;
+				position = math::float2(width*0.5 - size.x / 2, -height*0.5 + size.y / 2);
+			}
+		}
+
+
 	}
 }
 
