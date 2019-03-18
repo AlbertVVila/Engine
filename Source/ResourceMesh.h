@@ -2,6 +2,9 @@
 #define __ResourceMesh_h__
 
 #include "Resource.h"
+
+#include <vector>
+#include "Math/float3.h"
 #include "Geometry/AABB.h"
 
 class ResourceMesh : public Resource
@@ -30,6 +33,8 @@ public:
 
 private:
 	void ComputeBBox();
+	void ProcessVertexTangent(const float vIndex1, const float vIndex2, const float vIndex3);
+	void CalculateTangents();
 	void SetMesh(const char* meshData);
 	void SetMeshBuffers();
 	void SetBboxBuffers();
@@ -45,14 +50,11 @@ private:
 	unsigned EBObox = 0;
 
 public:
-	unsigned numIndices = 0;
-	unsigned numVertices = 0;
-	int* indices = nullptr;
-	float* vertices = nullptr;
-
-	// New added on refactor
-	float* normals = nullptr;
-	float* texCoords = nullptr;
+	std::vector<math::float3> meshVertices;
+	std::vector<math::float3> meshNormals;
+	std::vector<math::float3> meshTangents;
+	std::vector<float> meshTexCoords;
+	std::vector<unsigned> meshIndices;
 };
 
 #endif __ResourceMesh_h__

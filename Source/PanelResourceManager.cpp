@@ -339,8 +339,8 @@ void PanelResourceManager::DrawResourceMesh()
 	ImGui::Text("VAO: %u", mesh.GetVAO());
 	ImGui::Text("VBO: %u", mesh.GetVBO());
 	ImGui::Text("EBO: %u", mesh.GetEBO());
-	ImGui::Text("Number of Indices: %u", mesh.numIndices);
-	ImGui::Text("Number of Vertices: %u", mesh.numVertices);
+	ImGui::Text("Number of Triangles: %u", mesh.meshVertices.size());
+	ImGui::Text("Number of Vertices: %u", mesh.meshIndices.size() / 2);
 	ImGui::NextColumn();
 	// TODO: [Resource Manager] Add preview of the mesh
 
