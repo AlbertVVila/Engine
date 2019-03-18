@@ -111,7 +111,7 @@ update_status ModuleInput::PreUpdate()
 				break;
 			}
 			break;
-		case SDL_MOUSEBUTTONDOWN:
+		case SDL_MOUSEBUTTONDOWN:			
 			mouse_buttons[event.button.button - 1] = KEY_DOWN;
 			break;
 
@@ -163,10 +163,15 @@ const fPoint& ModuleInput::GetMousePosition() const
 	return mouse;
 }
 
-const void ModuleInput::GetMouseMotion(float &x, float &y) const
+const void ModuleInput::SetMouseMotion(float &x, float &y) const
 {
 	x = mouse_motion.x;
 	y = mouse_motion.y;
+}
+
+const fPoint & ModuleInput::GetMouseMotion() const
+{
+	return mouse_motion;
 }
 
 const float ModuleInput::GetMouseWheel() const

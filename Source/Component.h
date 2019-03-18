@@ -2,14 +2,19 @@
 #define __Component_h__
 
 class GameObject;
-struct JSON_value;
+class JSON_value;
 
 enum class ComponentType 
 {
 	Transform = 0,
 	Renderer,
 	Camera,
-	Light
+	Light,
+	Transform2D,
+	Text,
+	Image,
+	Button,
+	Script
 };
 
 class Component
@@ -42,8 +47,8 @@ public:
 
 	void Remove();
 
-	virtual void Save(JSON_value *value) const;
-	virtual void Load(const JSON_value &value);
+	virtual void Save(JSON_value* value) const;
+	virtual void Load(JSON_value* value);
 
 public:
 	GameObject* gameobject = nullptr;

@@ -4,9 +4,11 @@
 #include "ModuleScene.h"
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
+#include "ModuleTime.h"
 
 #include "GameObject.h"
 #include "ComponentCamera.h"
+#include "ComponentTransform.h"
 
 #include "ResourceTexture.h"
 
@@ -57,6 +59,13 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 	{
 		ImGui::Begin(name.c_str(), &enabled, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoBringToFrontOnFocus);
 
+		//if the viewport is hidden, it is not rendered
+		if (ImGui::GetCurrentWindow()->Hidden)
+		{
+			ImGui::End();
+			return;
+		}
+
 		if (ImGui::IsWindowHovered() || ImGui::IsWindowAppearing())
 		{
 			ImGui::SetWindowFocus();
@@ -76,18 +85,18 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 			return;
 		}
 
-	ImVec2 size = ImGui::GetWindowSize();
+		ImVec2 size = ImGui::GetWindowSize();
 
-	cam->SetAspect(size.x / size.y);
-	if (cam->aspectDirty)
-	{
-		CreateFrameBuffer(size.x, size.y);
-	}
-	current_width = size.x;
-	current_height = size.y;
+		cam->SetAspect(size.x / size.y);
+		if (cam->aspectDirty)
+		{
+			CreateFrameBuffer(size.x, size.y);
+		}
+		current_width = size.x;
+		current_height = size.y;
 
 
-		if (App->renderer->msaa)
+		if (App->renderer->msaa && !isEditor)
 		{
 			glBindFramebuffer(GL_FRAMEBUFFER, MSAAFBO);
 		}
@@ -96,7 +105,19 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 			glBindFramebuffer(GL_FRAMEBUFFER, FBO);
 		}
 		App->renderer->Draw(*cam, current_width, current_height, isEditor);
-		if (App->renderer->msaa)
+
+    if (isEditor)
+		{
+			for (GameObject* go : App->scene->selection)
+			{
+				go->DrawBBox();
+				if (go->light != nullptr)
+				{
+					go->light->DrawDebug();
+				}
+			}
+		}
+		if (App->renderer->msaa && !isEditor)
 		{
 			glBindFramebuffer(GL_READ_FRAMEBUFFER, MSAAFBO);
 			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, FBO);
@@ -107,7 +128,8 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		ImGui::SetCursorPos({ 0,0 });
-
+		ImVec2 pos = ImGui::GetWindowPos();
+		winPos = reinterpret_cast<math::float2&>(pos);
 
 		ImGui::Image((ImTextureID)texture, size, ImVec2(0, 1), ImVec2(1, 0));
 
@@ -300,24 +322,29 @@ void Viewport::DrawImGuizmo(const ComponentCamera & cam)
 	if (App->scene->selected != nullptr)
 	{
 
-		ImGuizmo::Enable(!App->scene->selected->isStatic);
+		ImGuizmo::Enable(!App->scene->selected->isStatic || App->time->gameState == GameState::RUN);
 
-		float4x4 model = App->scene->selected->GetGlobalTransform();
-		float4x4 view = cam.GetViewMatrix();
-		float4x4 proj = cam.GetProjectionMatrix();
+		math::float4x4 model = App->scene->selected->GetGlobalTransform();
+		math::float4x4 originalModel = model;
+		math::float4x4 difference = math::float4x4::zero;
+
+		math::float4x4 view = cam.GetViewMatrix();
+		math::float4x4 proj = cam.GetProjectionMatrix();
 
 		ImGuizmo::SetOrthographic(false);
 
 		model.Transpose();
 
-		ImGuizmo::Manipulate((float*)&view, (float*)&proj, 
-			(ImGuizmo::OPERATION)mCurrentGizmoOperation, (ImGuizmo::MODE)mCurrentGizmoMode, 
+		ImGuizmo::Manipulate((float*)&view, (float*)&proj,
+			(ImGuizmo::OPERATION)mCurrentGizmoOperation, (ImGuizmo::MODE)mCurrentGizmoMode,
 			(float*)&model, NULL, useSnap ? (float*)&snapSettings : NULL, NULL, NULL);
 
 		if (ImGuizmo::IsUsing())
 		{
 			model.Transpose();
 			App->scene->selected->SetGlobalTransform(model);
+			difference = model - originalModel;
+			App->scene->selected->transform->MultiSelectionTransform(difference); //checks if multi transform is required & do it
 		}
 	}
 }
@@ -327,7 +354,7 @@ void Viewport::Pick()
 	PROFILE;
 	if (App->input->GetMouseButtonDown(1) == KEY_DOWN && ImGui::IsWindowFocused && ImGui::IsMouseHoveringWindow())
 	{
-		ImVec2 pos = ImGui::GetWindowPos();
+		ImVec2 pos = ImGui::GetWindowPos();		
 		float2 mouse((float*)&App->input->GetMousePosition());
 		float normalized_x = ((mouse.x - pos.x) / current_width) * 2 - 1; //0 to 1 -> -1 to 1
 		float normalized_y = (1 - (mouse.y - pos.y) / current_height) * 2 - 1; //0 to 1 -> -1 to 1

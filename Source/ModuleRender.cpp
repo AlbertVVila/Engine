@@ -8,6 +8,8 @@
 #include "ModuleWindow.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleResourceManager.h"
+#include "ModuleUI.h"
+#include "ModuleFontLoader.h"
 
 #include "GameObject.h"
 #include "ComponentCamera.h"
@@ -67,7 +69,6 @@ bool ModuleRender::Init(JSON * config)
 	msaa_level = renderer->GetInt("msaa_level");
 	picker_debug = renderer->GetInt("picker_debug");
 	light_debug = renderer->GetInt("light_debug");
-	quadtree_debug = renderer->GetInt("quadtree_debug");
 	grid_debug = renderer->GetInt("grid_debug");
 	depthTest = renderer->GetInt("depthTest");
 	wireframe = renderer->GetInt("wireframe");
@@ -169,6 +170,9 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 		DrawGizmos(cam);
 	}
 	App->scene->Draw(*cam.frustum, isEditor);
+
+	App->ui->Draw(width, height);
+	
 }
 
 bool ModuleRender::IsSceneViewFocused() const
@@ -247,6 +251,7 @@ void ModuleRender::InitSDL()
 void ModuleRender::InitOpenGL() const
 {
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -295,6 +300,8 @@ void ModuleRender::DrawGUI()
 	}
 	ImGui::Checkbox("Picker Debug", &picker_debug);
 	ImGui::Checkbox("Light Debug", &light_debug);
+	ImGui::Checkbox("Dynamic AABBTree Debug", &aabbTreeDebug);
+	ImGui::Checkbox("Static KDTree Debug", &kDTreeDebug);
 	ImGui::Checkbox("Grid Debug", &grid_debug);
 
 	const char* scales[] = {"1", "10", "100"};

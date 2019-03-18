@@ -19,6 +19,7 @@
 #define TEXTURES LIBRARY "Textures/"
 #define SCENES ASSETS "Scenes/"
 #define SHADERS "Shaders/"
+#define SCRIPTS "Scripts/"
 #define VERTEXSHADERS SHADERS "VertexShaders/"
 #define FRAGSHADERS SHADERS "FragmentShaders/"
 
@@ -32,6 +33,7 @@
 #define TEXTUREEXT ".dds"
 #define MATERIALEXT ".m4t"
 #define JSONEXT ".json"
+#define DLL ".dll"
 
 #define CHECKERS "checkersTexture"
 #define NOCAMERA "nocamera"
@@ -62,6 +64,7 @@ public:
 	unsigned Load(const char * file, char ** buffer) const;
 	bool Save(const char* file, const char* buffer, unsigned size) const;
 	bool Remove(const char* file) const;
+	bool Delete(const char* file) const;
 	bool Exists(const char* file) const;
 	unsigned Size(const char* file) const;
 	bool MakeDirectory(const char* directory) const;
@@ -72,6 +75,7 @@ public:
 	bool CopyFromOutsideFS(const char* source, const char* destination) const;
 	bool Copy(const char* source, const char* destination, const char* file) const;
 
+	int GetModTime(const char* file) const;
 	std::string GetExtension(std::string file) const;
 	std::string RemoveExtension(std::string file) const;
 	std::string GetFilename(std::string file) const;

@@ -1,19 +1,28 @@
+#include "Application.h"
 #include "ComponentTransform.h"
 
+#include "Application.h"
+#include "ModuleSpacePartitioning.h"
+
 #include "GameObject.h"
+#include "ComponentLight.h"
+#include "GameObject.h"
+#include "ModuleTime.h"
+
 
 #include "imgui.h"
 #include "imgui_internal.h"
 #include "Math/MathFunc.h"
 #include "JSON.h"
+#include "AABBTree.h"
 
 
-ComponentTransform::ComponentTransform(GameObject* gameobject, const float4x4 &transform) : Component(gameobject, ComponentType::Transform)
+ComponentTransform::ComponentTransform(GameObject* gameobject, const math::float4x4 &transform) : Component(gameobject, ComponentType::Transform)
 {
 	AddTransform(transform);
 }
 
-ComponentTransform::ComponentTransform(const ComponentTransform & component) : Component(component)
+ComponentTransform::ComponentTransform(const ComponentTransform& component) : Component(component)
 {
 	position = component.position;
 	rotation = component.rotation;
@@ -37,7 +46,7 @@ Component * ComponentTransform::Clone() const
 	return new ComponentTransform(*this);
 }
 
-void ComponentTransform::AddTransform(const float4x4 & transform)
+void ComponentTransform::AddTransform(const math::float4x4& transform)
 {
 	transform.Decompose(position, rotation, scale);
 	RotationToEuler();
@@ -51,9 +60,10 @@ void ComponentTransform::AddTransform(const float4x4 & transform)
 
 void ComponentTransform::DrawProperties()
 {
+	
 	if (ImGui::CollapsingHeader("Local Transformation", ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		if (gameobject->isStatic)
+		if (gameobject->isStatic && App->time->gameState != GameState::RUN)
 		{
 			ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
 			ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
@@ -69,7 +79,7 @@ void ComponentTransform::DrawProperties()
 		ImGui::DragFloat3("Scale", (float*)&scale, 0.1f, 0.01f, 100.f);
 		ImGui::Separator();
 
-		if (gameobject->isStatic)
+		if (gameobject->isStatic && App->time->gameState != GameState::RUN)
 		{
 			ImGui::PopItemFlag();
 			ImGui::PopStyleVar();
@@ -78,8 +88,27 @@ void ComponentTransform::DrawProperties()
 		if (old_position != position || old_euler != eulerRotation || old_scale != scale)
 		{
 			UpdateTransform();
-			gameobject->moved_flag = true;
-			gameobject->UpdateBBox();
+			gameobject->movedFlag = true;
+		}
+	}
+}
+
+
+void ComponentTransform::MultiSelectionTransform(float4x4 &difference)
+{
+	for (GameObject* go : App->scene->selection)
+	{
+		if (go != App->scene->selected)
+		{
+			go->SetGlobalTransform(go->transform->global + difference);
+			if (go->parent->transform != nullptr)
+			{
+				go->transform->local = go->parent->transform->global.Inverted().Mul(go->transform->global);
+			}
+			else
+			{
+				go->transform->local = go->transform->global;
+			}
 		}
 	}
 }
@@ -87,9 +116,42 @@ void ComponentTransform::DrawProperties()
 void ComponentTransform::UpdateTransform()
 {
 	UpdateOldTransform();
+	math::float4x4 originalGlobal = global;
 	global = global * local.Inverted();
-	local = float4x4::FromTRS(position, rotation, scale);
+	local = math::float4x4::FromTRS(position, rotation, scale);
 	global = global * local;
+
+	math::float4x4 difference = global - originalGlobal;
+	MultiSelectionTransform(difference);
+
+  front = -global.Col3(2);
+	up = global.Col3(1);
+	right = global.Col3(0);
+
+	if (!gameobject->isStatic)
+	{
+		if (gameobject->treeNode != nullptr && gameobject->hasLight)
+		{
+			gameobject->light->CalculateGuizmos();
+			if (!gameobject->treeNode->aabb.Contains(gameobject->bbox))
+			{
+				App->spacePartitioning->aabbTreeLighting.ReleaseNode(gameobject->treeNode);
+				App->spacePartitioning->aabbTreeLighting.InsertGO(gameobject);
+			}
+		}
+		if (gameobject->treeNode != nullptr && gameobject->isVolumetric)
+		{
+			if (!gameobject->treeNode->aabb.Contains(gameobject->bbox))
+			{
+				App->spacePartitioning->aabbTree.ReleaseNode(gameobject->treeNode);
+				App->spacePartitioning->aabbTree.InsertGO(gameobject);
+			}
+		}
+	}
+	else
+	{
+		App->spacePartitioning->kDTree.Calculate();
+	}
 }
 
 void ComponentTransform::RotationToEuler()
@@ -116,7 +178,7 @@ void ComponentTransform::SetLocalToWorld()
 	RotationToEuler();
 }
 
-void ComponentTransform::SetWorldToLocal(const float4x4 & newparentGlobalMatrix)
+void ComponentTransform::SetWorldToLocal(const math::float4x4& newparentGlobalMatrix)
 {
 	local = newparentGlobalMatrix.Inverted() * local;
 	local.Decompose(position, rotation, scale);
@@ -126,21 +188,62 @@ void ComponentTransform::SetWorldToLocal(const float4x4 & newparentGlobalMatrix)
 	RotationToEuler();
 }
 
-void ComponentTransform::SetGlobalTransform(const float4x4 & newglobal, const float4x4 &parentglobal)
+void ComponentTransform::SetGlobalTransform(const math::float4x4& newglobal, const math::float4x4&parentglobal)
 {
 	global = newglobal;
 	local = parentglobal.Inverted() * global;
 	local.Decompose(position, rotation, scale);
 	RotationToEuler();
 	UpdateOldTransform();
+
+	front = -global.Col3(2);
+	up = global.Col3(1);
+	right = global.Col3(0);
+
+	if (!gameobject->isStatic)
+	{
+		if (gameobject->treeNode != nullptr && gameobject->hasLight)
+		{
+			gameobject->light->CalculateGuizmos();
+			if (!gameobject->treeNode->aabb.Contains(gameobject->bbox))
+			{
+				App->spacePartitioning->aabbTreeLighting.ReleaseNode(gameobject->treeNode);
+				App->spacePartitioning->aabbTreeLighting.InsertGO(gameobject);
+			}
+		}
+		if (gameobject->treeNode != nullptr && gameobject->isVolumetric)
+		{
+			if (!gameobject->treeNode->aabb.Contains(gameobject->bbox))
+			{
+				App->spacePartitioning->aabbTree.ReleaseNode(gameobject->treeNode);
+				App->spacePartitioning->aabbTree.InsertGO(gameobject);
+			}
+		}
+	}
+	else
+	{
+		App->spacePartitioning->kDTree.Calculate();
+	}
 }
 
-float3 ComponentTransform::GetGlobalPosition()
+void ComponentTransform::SetPosition(const math::float3 & newPosition)
+{
+	position = newPosition;
+	gameobject->movedFlag = true;
+	UpdateTransform();
+}
+
+math::float3 ComponentTransform::GetPosition()
+{
+	return position;
+}
+
+math::float3 ComponentTransform::GetGlobalPosition()
 {
 	return global.Col3(3);
 }
 
-void ComponentTransform::Save(JSON_value * value) const
+void ComponentTransform::Save(JSON_value* value) const
 {
 	Component::Save(value);
 	value->AddFloat3("Position", position);
@@ -150,14 +253,14 @@ void ComponentTransform::Save(JSON_value * value) const
 	value->AddFloat4x4("Global", global);
 }
 
-void ComponentTransform::Load(const JSON_value & value)
+void ComponentTransform::Load(JSON_value* value)
 {
 	Component::Load(value);
-	position = value.GetFloat3("Position");
-	rotation = value.GetQuat("Rotation");
-	eulerRotation = value.GetFloat3("Euler");
-	scale = value.GetFloat3("Scale");
-	global = value.GetFloat4x4("Global");
-	local = float4x4::FromTRS(position, rotation, scale);
+	position = value->GetFloat3("Position");
+	rotation = value->GetQuat("Rotation");
+	eulerRotation = value->GetFloat3("Euler");
+	scale = value->GetFloat3("Scale");
+	global = value->GetFloat4x4("Global");
+	local = math::float4x4::FromTRS(position, rotation, scale);
 	RotationToEuler();
 }

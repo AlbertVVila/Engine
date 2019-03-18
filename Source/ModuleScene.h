@@ -42,13 +42,14 @@ public:
 	GameObject * CreateGameObject(const char * name, GameObject* parent);
 
 	void AddToSpacePartition(GameObject * gameobject);
-	void DeleteFromSpacePartition(GameObject & gameobject);
+	void DeleteFromSpacePartition(GameObject* gameobject);
 	void ResetQuadTree(); //deprecated
 
 	void FrustumCulling(const Frustum &frustum);
 	void Draw(const Frustum &frustum, bool isEditor = false);
 	void DrawGO(const GameObject& go, const Frustum & frustum, bool isEditor = false);
 	void DrawHierarchy();
+	void DragNDropMove(GameObject* target) const;
 	void DragNDrop(GameObject * go);
 	void DrawGUI() override;
 
@@ -70,7 +71,7 @@ public:
 	void GetStaticGlobalAABB(AABB &aabb, std::vector<GameObject*> &bucket, unsigned int &bucketOccupation);
 
 	unsigned GetNewUID();
-	std::list<ComponentLight*> GetClosestLights(LightType type, float3 position = float3::zero) const;
+	std::list<ComponentLight*> GetClosestLights(LightType type, math::float3 position = math::float3::zero) const;
 
 	ComponentLight * GetDirectionalLight() const;
 
@@ -87,7 +88,7 @@ public:
 	ComponentCamera* maincamera = nullptr; //Released by GameObject holding it
 	ResourceTexture* camera_notfound_texture = nullptr; //Released in resource manager
 	std::list<LineSegment> debuglines;
-
+	std::list<GameObject*> selection;
 	std::list<ComponentLight*> lights;
 	myQuadTree * quadtree = nullptr;
 	std::set<GameObject*> dynamicGOs;
@@ -96,7 +97,7 @@ public:
 	std::string name;
 	std::string path;
 	std::string defaultScene;
-
+	GameObject* canvas = nullptr;
 	float3 ambientColor = float3::one;
 };
 

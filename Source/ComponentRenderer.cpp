@@ -80,6 +80,13 @@ void ComponentRenderer::DrawProperties()
 				if (ImGui::Selectable(guiMaterials[n].c_str(), is_selected) && material->name != guiMaterials[n])
 				{
 					SetMaterial(guiMaterials[n].c_str());
+
+					if (App->editor->materialEditor->open)
+					{
+						App->editor->materialEditor->material = material;
+						App->editor->materialEditor->previous = new ResourceMaterial(*material);
+						App->editor->materialEditor->SetCurrentTextures();
+					}
 				}
 				if (is_selected)
 				{
@@ -92,14 +99,39 @@ void ComponentRenderer::DrawProperties()
 		{
 			guiMaterials.clear();
 		}
+
 		ImGui::SameLine();
-		if (ImGui::Button("View"))
+		if (App->editor->materialEditor->open)
 		{
-			App->editor->materialEditor->material = material;
-			App->editor->materialEditor->open = true; //materialpopup is only drawn once in module editor
-			App->editor->materialEditor->isCreated = false; 
+			if (ImGui::Button("Hide"))
+			{
+				App->editor->materialEditor->open = false;
+
+				if (!App->editor->materialEditor->material->Compare(*App->editor->materialEditor->previous))
+				{
+					App->editor->materialEditor->material->Save();
+				}
+			}
 		}
+		else
+		{
+			if (ImGui::Button("Show"))
+			{
+				App->editor->materialEditor->open = true;
+				App->editor->materialEditor->material = material;
+				App->editor->materialEditor->previous = new ResourceMaterial(*material);
+				App->editor->materialEditor->SetCurrentTextures();
+			}
+		}
+
+		if (App->editor->materialEditor->open)
+		{
+			App->editor->materialEditor->Draw();
+		}
+
+		ImGui::Separator();
 	}
+
 	ImGui::PopID();
 }
 
@@ -119,18 +151,20 @@ bool ComponentRenderer::CleanUp()
 	return true;
 }
 
-void ComponentRenderer::Save(JSON_value * value) const
+void ComponentRenderer::Save(JSON_value* value) const
 {
 	Component::Save(value);
 	value->AddUint("meshUID", mesh->GetUID());
 	value->AddString("materialFile", material->name.c_str());
 }
 
-void ComponentRenderer::Load(const JSON_value & value)
+void ComponentRenderer::Load(JSON_value* value)
 {
 	Component::Load(value);
-	unsigned uid = value.GetUint("meshUID");
+
+	unsigned uid = value->GetUint("meshUID");
 	ResourceMesh* m = (ResourceMesh*)App->resManager->Get(uid); //Look for loaded meshes
+
 	if (m != nullptr)
 	{
 		mesh = m;
@@ -145,7 +179,7 @@ void ComponentRenderer::Load(const JSON_value & value)
 	}
 	UpdateGameObject();
 
-	const char* materialFile = value.GetString("materialFile");
+	const char* materialFile = value->GetString("materialFile");
 	SetMaterial(materialFile);
 }
 

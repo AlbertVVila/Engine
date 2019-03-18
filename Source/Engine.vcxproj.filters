@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
@@ -114,29 +114,8 @@
     <ClCompile Include="ModuleWindow.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="log.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleEditor.cpp">
       <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui.cpp">
-      <Filter>Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_demo.cpp">
-      <Filter>Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_draw.cpp">
-      <Filter>Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_impl_opengl3.cpp">
-      <Filter>Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_impl_sdl.cpp">
-      <Filter>Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_widgets.cpp">
-      <Filter>Imgui</Filter>
     </ClCompile>
     <ClCompile Include="ModuleCamera.cpp">
       <Filter>Modules</Filter>
@@ -222,6 +201,15 @@
     <ClCompile Include="ModuleSpacePartitioning.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="ComponentScript.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleScript.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="log.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
     <ClCompile Include="ModuleDebugDraw.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -243,6 +231,25 @@
     <ClCompile Include="PanelBrowser.cpp" />
     <ClCompile Include="ResourceSkybox.cpp">
       <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleUI.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentTransform2D.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleFontLoader.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentImage.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentText.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentButton.cpp" />
+    <ClCompile Include="MemoryModule.c">
+      <Filter>ScriptingResources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -538,6 +545,12 @@
     <ClInclude Include="ModuleSpacePartitioning.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="ComponentScript.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleScript.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
     <ClInclude Include="debugdraw.h">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -563,6 +576,33 @@
     <ClInclude Include="ResourceSkybox.h">
       <Filter>Resources</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleUI.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentTransform2D.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleFontLoader.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentImage.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentText.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentButton.h" />
+    <ClInclude Include="Skybox.h" />
+    <ClInclude Include="engineResource.h" />
+    <ClInclude Include="MemoryModule.h">
+      <Filter>ScriptingResources</Filter>
+    </ClInclude>
+    <ClInclude Include="engineResource.h">
+      <Filter>ScriptingResources</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GeoLib">
@@ -573,9 +613,6 @@
     </Filter>
     <Filter Include="Shaders">
       <UniqueIdentifier>{db4ddeed-7944-48a0-9a56-611e8baabcdd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Imgui">
-      <UniqueIdentifier>{ce38ee00-97d2-4555-a8e4-3e52ad53abd7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Utils">
       <UniqueIdentifier>{11066cf8-cf44-4725-9fa8-10243045e1fc}</UniqueIdentifier>
@@ -605,29 +642,14 @@
       <UniqueIdentifier>{640a2da3-0a48-4b71-8419-e266d3f70572}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resources">
-      <UniqueIdentifier>{ac4b91ed-d0d3-4ac9-8aa1-1df418c1fd91}</UniqueIdentifier>
+      <UniqueIdentifier>{3caabedb-7473-40ca-99fc-312732dd7b04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ScriptingResources">
+      <UniqueIdentifier>{4106b4cd-c836-4c93-8119-c03c1ba0d34b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Game\Shaders\FragmentShaders\Flat.fs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\Game\Shaders\FragmentShaders\Gouraud.fs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\Game\Shaders\FragmentShaders\Phong.fs">
-      <Filter>Shaders</Filter>
-    </None>
     <None Include="..\Game\Shaders\FragmentShaders\Skybox.fs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\Game\Shaders\VertexShaders\Flat.vs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\Game\Shaders\VertexShaders\Gouraud.vs">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\Game\Shaders\VertexShaders\Phong.vs">
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\Game\Shaders\VertexShaders\Skybox.vs">
@@ -639,5 +661,31 @@
     <None Include="..\Game\Shaders\VertexShaders\Default.vs">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="..\Game\Shaders\FragmentShaders\PBR.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\VertexShaders\PBR.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\VertexShaders\UI.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\FragmentShaders\UI.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\FragmentShaders\Fonts.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\VertexShaders\Fonts.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Scripts\PlayerMovement.dll">
+      <Filter>ScriptingResources</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Engine.rc">
+      <Filter>ScriptingResources</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

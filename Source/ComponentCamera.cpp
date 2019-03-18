@@ -11,7 +11,7 @@
 #include "JSON.h"
 #include "GL/glew.h"
 #include "Math/MathFunc.h"
-#include "Imgui/imgui.h"
+#include "imgui.h"
 #include "Imguizmo.h"
 #include "Geometry/Frustum.h"
 
@@ -97,30 +97,60 @@ void ComponentCamera::Rotate(float dx, float dy)
 }
 
 
-void ComponentCamera::Zoom(float mouseWheel)
+void ComponentCamera::Zoom(float mouseWheel, bool shiftPressed)
 {
 	if (mouseWheel != 0)
 	{
-		frustum->Translate(frustum->front * mouseWheel * zoomSpeed);
+		if (shiftPressed)
+			mouseWheel *= 2;
+		
+		frustum->Translate(frustum->front * mouseWheel * App->renderer->current_scale * zoomSpeed);
 	}
 }
 
-void ComponentCamera::Center()
+void ComponentCamera::Center() //TODO: Shouldn't be specfic to editor camera
 {
-	if (App->scene->selected == nullptr 
-		|| App->scene->selected->GetComponent(ComponentType::Renderer) == nullptr) return;
+	if (App->scene->selected == nullptr || App->scene->selected->GetComponent(ComponentType::Transform) == nullptr) return;
 
-	AABB bbox = App->scene->selected->GetBoundingBox();
-	float3 HalfSize = bbox.HalfSize();
+	if (App->scene->selected->GetComponent(ComponentType::Renderer) != nullptr)
+	{
+		math::AABB bbox = App->scene->selected->GetBoundingBox();
+		CenterBbox(bbox);
+	}
+	else
+	{
+		math::AABB childBboxes; //Center using children bboxs
+		childBboxes.SetNegativeInfinity();
+		for (const auto &child : App->scene->selected->children)
+		{
+			childBboxes.Enclose(child->GetBoundingBox());
+		}
+		if (childBboxes.Volume() > 0)
+		{
+			CenterBbox(childBboxes);
+		}
+		else
+		{
+			float camDist = App->renderer->current_scale;
+			math::float3 center = ((ComponentTransform*)
+				(App->scene->selected->GetComponent(ComponentType::Transform)))->GetPosition();
+			frustum->pos = center + math::float3(0.0f, 0.0f, camDist);
+		}
+	}
+
+	frustum->front = -math::float3::unitZ;
+	frustum->up = math::float3::unitY;
+}
+
+void ComponentCamera::CenterBbox(const math::AABB& bbox)
+{
+	math::float3 HalfSize = bbox.HalfSize();
 	float distX = HalfSize.x / tanf(frustum->horizontalFov*0.5f);
 	float distY = HalfSize.y / tanf(frustum->verticalFov*0.5f);
 	float camDist = MAX(distX, distY) + HalfSize.z; //camera distance from model
 
-	float3 center = bbox.FaceCenterPoint(5);
-	frustum->pos = center + float3(0, 0, camDist);
-
-	frustum->front = -float3::unitZ;
-	frustum->up = float3::unitY;
+	math::float3 center = bbox.FaceCenterPoint(5);
+	frustum->pos = center + math::float3(0.0f, 0.0f, camDist);
 }
 
 
@@ -230,7 +260,7 @@ void ComponentCamera::DrawProperties()
 	}
 }
 
-void ComponentCamera::Save(JSON_value * value) const
+void ComponentCamera::Save(JSON_value* value) const
 {
 	Component::Save(value);
 	value->AddFloat("MovementSpeed", movementSpeed);
@@ -245,19 +275,19 @@ void ComponentCamera::Save(JSON_value * value) const
 	value->AddFloat3("Up", frustum->up);
 }
 
-void ComponentCamera::Load(const JSON_value & value)
+void ComponentCamera::Load(JSON_value* value)
 {
 	Component::Load(value);
-	movementSpeed = value.GetFloat("MovementSpeed");
-	rotationSpeed = value.GetFloat("RotationSpeed");
-	zoomSpeed = value.GetFloat("ZoomSpeed");
-	frustum->nearPlaneDistance = value.GetFloat("Znear");
-	frustum->farPlaneDistance = value.GetFloat("Zfar");
-	frustum->verticalFov = value.GetFloat("vFOV");
-	frustum->horizontalFov = value.GetFloat("hFOV");
-	frustum->pos = value.GetFloat3("Position");
-	frustum->front = value.GetFloat3("Front");
-	frustum->up = value.GetFloat3("Up");
+	movementSpeed = value->GetFloat("MovementSpeed");
+	rotationSpeed = value->GetFloat("RotationSpeed");
+	zoomSpeed = value->GetFloat("ZoomSpeed");
+	frustum->nearPlaneDistance = value->GetFloat("Znear");
+	frustum->farPlaneDistance = value->GetFloat("Zfar");
+	frustum->verticalFov = value->GetFloat("vFOV");
+	frustum->horizontalFov = value->GetFloat("hFOV");
+	frustum->pos = value->GetFloat3("Position");
+	frustum->front = value->GetFloat3("Front");
+	frustum->up = value->GetFloat3("Up");
 }
 
 float4x4 ComponentCamera::GetViewMatrix() const

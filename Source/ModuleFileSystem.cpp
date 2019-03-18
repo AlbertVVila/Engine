@@ -24,12 +24,14 @@
 ModuleFileSystem::ModuleFileSystem()
 {
 	PHYSFS_init(NULL);
-	baseDir = PHYSFS_getBaseDir();
+	PHYSFS_setWriteDir("../Game");
+	baseDir = PHYSFS_getWriteDir();
 	PHYSFS_addToSearchPath(baseDir.c_str(), 1);
 	PHYSFS_setWriteDir(baseDir.c_str());
 
 	PHYSFS_mount(SHADERS, nullptr, 1);
 	PHYSFS_mount(RESOURCES, nullptr, 1);
+	PHYSFS_mount(SCRIPTS, nullptr, 1);
 
 	// Assets Folder
 	if (!Exists(ASSETS))
@@ -142,6 +144,19 @@ bool ModuleFileSystem::Remove(const char* file) const
 	assert(file != nullptr);
 	if (file == nullptr) return false;
 	if (PHYSFS_unmount(file) != 0)
+	{
+		LOG("Error: %s", PHYSFS_getLastError());
+		return false;
+	}
+	return true;
+}
+
+bool ModuleFileSystem::Delete(const char* file) const
+{
+	assert(file != nullptr);
+	if (file == nullptr) return false;
+
+	if (PHYSFS_delete(file) != 0)
 	{
 		LOG("Error: %s", PHYSFS_getLastError());
 		return false;
@@ -346,7 +361,7 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 				stat((currentFolder + file).c_str(), &statFile);
 				stat((currentFolder + file + ".meta").c_str(), &statMeta);
 				FILETYPE type = GetFileType(GetExtension(file));
-				if (type == FILETYPE::TEXTURE)
+				if (type == FILETYPE::TEXTURE) // PNG, TIF, LO QUE SEA	
 				{
 					std::set<std::string>::iterator it = importedTextures.find(RemoveExtension(file));
 					if (it == importedTextures.end() || statFile.st_mtime > statMeta.st_mtime)
@@ -360,7 +375,7 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 						App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::TEXTURE);
 					}
 				}
-				else if (type == FILETYPE::MODEL)
+				else if (type == FILETYPE::MODEL) //FBX
 				{
 					//TODO: Get UID from metafile 
 					/*unsigned uid = GetMetaUID((current_folder + file + ".meta").c_str());
@@ -446,6 +461,11 @@ void ModuleFileSystem::ImportFiles()
 		importer.ImportAsset(file.first.c_str(), file.second.c_str());
 	}
 	filesToImport.clear();
+}
+
+int ModuleFileSystem::GetModTime(const char* file) const
+{
+	return PHYSFS_getLastModTime(file);
 }
 
 std::string ModuleFileSystem::GetExtension(std::string filename) const
