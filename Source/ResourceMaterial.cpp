@@ -309,6 +309,9 @@ void ResourceMaterial::SetUniforms(unsigned shader) const
 			textureType = "emissive";
 			color = (float*)&emissiveColor;
 			break;
+		case TextureType::NORMAL:
+			textureType = "normal";
+			break;
 		}
 
 		char texture[32];
@@ -316,6 +319,15 @@ void ResourceMaterial::SetUniforms(unsigned shader) const
 
 		char uniform[32];
 		sprintf(uniform, "material.%s_color", textureType);
+
+		if (textures[(int)TextureType::NORMAL] == nullptr)
+		{
+			glUniform1i(glGetUniformLocation(shader, "hasNormalMap"), 0);
+		}
+		else
+		{
+			glUniform1i(glGetUniformLocation(shader, "hasNormalMap"), 1);
+		}
 
 		if (textures[i] != nullptr)
 		{
@@ -342,15 +354,10 @@ void ResourceMaterial::SetUniforms(unsigned shader) const
 			glUniform3fv(glGetUniformLocation(shader,
 				uniform), 1, (GLfloat*)&noColor);
 		}
-		glDisable(GL_TEXTURE_2D);
 	}
 
 	glUniform1fv(glGetUniformLocation(shader,
-		"material.k_ambient"), 1, (GLfloat*)&kAmbient);
+		"material.roughness"), 1, (GLfloat*)&roughness);
 	glUniform1fv(glGetUniformLocation(shader,
-		"material.k_diffuse"), 1, (GLfloat*)&kDiffuse);
-	glUniform1fv(glGetUniformLocation(shader,
-		"material.k_specular"), 1, (GLfloat*)&kSpecular);
-	glUniform1fv(glGetUniformLocation(shader,
-		"material.shininess"), 1, (GLfloat*)&shininess);
+		"material.metallic"), 1, (GLfloat*)&metallic);
 }
