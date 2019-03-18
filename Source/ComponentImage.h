@@ -5,7 +5,7 @@
 #include "Math/float4.h"
 #include <vector>
 
-struct Texture;
+class ResourceTexture;
 
 class ComponentImage : public Component
 {
@@ -22,7 +22,7 @@ public:
 
 	std::string textureName = "None Selected";
 	float4 color = float4(1.0f, 1.0f, 1.0f, 1.0f);
-	Texture* texture = nullptr;
+	ResourceTexture* texture = nullptr;
 
 	std::vector<std::string> textureFiles;
 	bool enabled = true;

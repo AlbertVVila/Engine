@@ -7,6 +7,8 @@
 #include "ModuleFileSystem.h"
 #include "ModuleUI.h"
 
+#include "ResourceTexture.h"
+
 #include "JSON.h"
 #include "imgui.h"
 
@@ -17,7 +19,7 @@ ComponentImage::ComponentImage() : Component(nullptr, ComponentType::Image)
 	//Refact
 	if (textureFiles.size() == 0)
 	{
-		textureFiles = App->fsystem->ListFiles(TEXTURES, false);
+		textureFiles = App->fsystem->GetFolderContent(TEXTURES, false);
 	}
 	App->ui->images.push_back(this);
 }
@@ -26,7 +28,7 @@ ComponentImage::ComponentImage(GameObject* gameobject) : Component(gameobject, C
 {
 	if (textureFiles.size() == 0)
 	{
-		textureFiles = App->fsystem->ListFiles(TEXTURES, false);
+		textureFiles = App->fsystem->GetFolderContent(TEXTURES, false);
 	}
 	App->ui->images.push_back(this);
 }
@@ -41,7 +43,8 @@ ComponentImage::ComponentImage(const ComponentImage &copy) : Component(copy)
 ComponentImage::~ComponentImage()
 {
 	App->ui->images.remove(this);
-	App->resManager->DeleteTexture(textureName);
+	//App->resManager->DeleteTexture(textureName);
+	App->resManager->DeleteResource(App->resManager->FindByExportedFile(textureName.c_str()));
 	texture = nullptr;
 }
 
@@ -69,7 +72,8 @@ void ComponentImage::DrawProperties()
 				textureName = None;
 				if (texture != nullptr)
 				{
-					App->resManager->DeleteTexture(textureName);
+					//App->resManager->DeleteTexture(textureName);
+					App->resManager->DeleteResource(App->resManager->FindByExportedFile(textureName.c_str()));
 					texture = nullptr;
 				}
 			}
@@ -81,7 +85,8 @@ void ComponentImage::DrawProperties()
 				if (ImGui::Selectable(textureFiles[n].c_str(), is_selected))
 				{
 					textureName = textureFiles[n].c_str();
-					texture = App->textures->GetTexture(textureName.c_str());
+					//texture = App->textures->GetTexture(textureName.c_str());
+					App->resManager->DeleteResource(App->resManager->FindByExportedFile(textureName.c_str()));
 				}
 				if (is_selected)
 					ImGui::SetItemDefaultFocus();
@@ -90,7 +95,7 @@ void ComponentImage::DrawProperties()
 		}
 		if (texture != nullptr)
 		{
-			ImGui::Image((ImTextureID)texture->id, { 200,200 }, { 0,1 }, { 1,0 });
+			ImGui::Image((ImTextureID)texture->gpuID, { 200,200 }, { 0,1 }, { 1,0 });
 		}
 		
 		//color
@@ -114,6 +119,7 @@ void ComponentImage::Load(JSON_value* value)
 	color = value->GetFloat4("color");	
 	if (textureName != "None Selected")
 	{
-		texture = App->textures->GetTexture(textureName.c_str());
+		//texture = App->textures->GetTexture(textureName.c_str());
+		texture = (ResourceTexture*)App->resManager->Get(textureName.c_str());
 	}
 }
