@@ -195,8 +195,8 @@ void ComponentLight::Reset()
 {
 	color = math::float3::one;
 	intensity = 1.f;
-	range = 200;
-	pointSphere.r = 200;
+	range = 200.f;
+	pointSphere.r = 200.f;
 	inner = 20.f;
 	outer = 25.f;
 	CalculateGuizmos();
