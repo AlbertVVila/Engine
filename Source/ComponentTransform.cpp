@@ -99,9 +99,17 @@ void ComponentTransform::DrawProperties()
 void ComponentTransform::UpdateTransform()
 {
 	UpdateOldTransform();
-	global = global * local.Inverted();
+
 	local = math::float4x4::FromTRS(position, rotation, scale);
-	global = global * local;
+
+	if (gameobject->parent != nullptr && gameobject->parent->transform != nullptr)
+	{
+		global = gameobject->parent->transform->global * local;
+	}
+	else
+	{
+		global = local;
+	}
 
 	front = -global.Col3(2);
 	up = global.Col3(1);
@@ -208,7 +216,8 @@ void ComponentTransform::SetGlobalTransform(const math::float4x4& newglobal, con
 void ComponentTransform::SetLocalTransform(const math::float4x4& newLocal, const math::float4x4& parentGlobal)
 {
 	local = newLocal;
-	global = parentGlobal.Mul(local);
+	
+	//global = parentGlobal.Mul(local);
 	local.Decompose(position, rotation, scale);
 	RotationToEuler();
 }

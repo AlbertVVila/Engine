@@ -223,6 +223,7 @@ void GameObject::Update()
 		}
 		if ((*itChild)->movedFlag) //Moved GO
 		{
+			UpdateGlobalTransform();
 			for (auto child : (*itChild)->children)
 			{
 				child->UpdateGlobalTransform();
@@ -264,6 +265,7 @@ void GameObject::Animate(unsigned indexSample,Animation* anim)
 	{
 		transform->SetRotation(anim->GetRotation(index, indexSample));
 		transform->SetPosition(anim->GetPosition(index, indexSample));
+		transform->UpdateTransform();
 	}
 	for (const auto& child : children)
 	{

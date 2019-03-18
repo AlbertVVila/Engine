@@ -169,7 +169,7 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file)
 		//animation->Load(correctedAnimationData, animUid);
 		//animationComponent->anim = animation;
 
-		animation->animationName = aiscene.mAnimations[i]->mName.C_Str();
+		//fakeAnim->animationName = aiscene.mAnimations[i]->mName.C_Str();
 
 		App->fsystem->Save((ANIMATIONS + std::to_string(animUid) + ANIMATIONEXTENSION).c_str(), animationData, animationSize);
 

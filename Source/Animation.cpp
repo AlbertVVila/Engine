@@ -64,9 +64,11 @@ void Animation::Load(const char* animationData, unsigned uid)
 
 		for (unsigned k = 0u; k < newChannel->numRotationKeys; k++)
 		{
-			math::Quat rotation = math::Quat::identity;
-			memcpy(&rotation, animationData, sizeof(math::Quat));
+			math::Quat assimpRotation = math::Quat::identity;
+			memcpy(&assimpRotation, animationData, sizeof(math::Quat));
 			animationData += sizeof(math::Quat);
+
+			math::Quat rotation = math::Quat(assimpRotation.y, assimpRotation.z, assimpRotation.w, assimpRotation.x);
 			newChannel->rotationSamples.push_back(rotation);
 		}
 
