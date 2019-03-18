@@ -27,7 +27,7 @@ ComponentScript::~ComponentScript()
 {
 	if (script != nullptr)
 	{
-		App->scripting->RemoveScript(scriptName, script);
+		App->scripting->RemoveScript(*this, scriptName);
 	}
 }
 
@@ -106,9 +106,10 @@ void ComponentScript::SetScript(const std::string& name)
 {
 	if (script != nullptr)
 	{
-		App->scripting->RemoveScript(scriptName, script);
+		RELEASE(script);
+		App->scripting->RemoveScript(*this, scriptName);
 	}
-	script = App->scripting->AddScript(name);
+	script = App->scripting->GetScript(*this, name);
 	if (script != nullptr)
 	{
 		script->SetApp(App);
@@ -118,6 +119,26 @@ void ComponentScript::SetScript(const std::string& name)
 	else
 	{
 		scriptName = "Script Not Found";
+	}
+}
+
+void ComponentScript::ScriptStart() const
+{
+	if (script != nullptr && this->enabled && gameobject->isActive())
+	{
+		script->Start();
+	}
+	else
+	{
+		LOG("Component Script without script assigned!");
+	}
+}
+
+void ComponentScript::ScriptUpdate() const
+{
+	if (script != nullptr && this->enabled && gameobject->isActive())
+	{
+		script->Update();
 	}
 }
 

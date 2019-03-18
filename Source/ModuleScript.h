@@ -5,6 +5,8 @@
 #include <map>
 
 class Script;
+class ComponentScript;
+
 #ifndef _WINDEF_
 struct HINSTANCE__; // Forward or never
 typedef HINSTANCE__* HINSTANCE;
@@ -23,8 +25,8 @@ public:
 
 	void LoadFromMemory(int resource);
 
-	Script* AddScript(const std::string& script);
-	void RemoveScript(const std::string& name, Script* script);
+	Script* GetScript(const ComponentScript& component, const std::string& name);
+	void RemoveScript(const ComponentScript& component, const std::string& name);
 
 private:
 	void CheckScripts();
@@ -32,7 +34,7 @@ private:
 public:
 	std::map<std::string, int> scripts; //name, modification date
 private:
-	std::list<Script*> scriptInstances;
+	std::list <const ComponentScript*> componentsScript;
 	std::map<std::string, std::pair<HINSTANCE, int>> loadedDLLs; // name, dll, instances
 	
 	bool onStart = true;
