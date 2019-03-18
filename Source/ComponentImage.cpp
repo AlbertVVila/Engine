@@ -43,6 +43,7 @@ ComponentImage::ComponentImage(const ComponentImage &copy) : Component(copy)
 ComponentImage::~ComponentImage()
 {
 	App->ui->images.remove(this);
+	// ResManager refactored:
 	//App->resManager->DeleteTexture(textureName);
 	App->resManager->DeleteResource(App->resManager->FindByExportedFile(textureName.c_str()));
 	texture = nullptr;
@@ -69,24 +70,27 @@ void ComponentImage::DrawProperties()
 			bool none_selected = (textureName == None);
 			if (ImGui::Selectable(None, none_selected))
 			{
-				textureName = None;
 				if (texture != nullptr)
 				{
+					// ResManager refactored:
 					//App->resManager->DeleteTexture(textureName);
 					App->resManager->DeleteResource(App->resManager->FindByExportedFile(textureName.c_str()));
 					texture = nullptr;
 				}
+				textureName = None;
 			}
 			if (none_selected)
 				ImGui::SetItemDefaultFocus();
 			for (int n = 0; n < textureFiles.size(); n++)
 			{
 				bool is_selected = (textureName == textureFiles[n]);
-				if (ImGui::Selectable(textureFiles[n].c_str(), is_selected))
+				if (ImGui::Selectable(textureFiles[n].c_str(), is_selected) && textureName != textureFiles[n])
 				{
-					textureName = textureFiles[n].c_str();
-					//texture = App->textures->GetTexture(textureName.c_str());
 					App->resManager->DeleteResource(App->resManager->FindByExportedFile(textureName.c_str()));
+					textureName = textureFiles[n].c_str();
+					// ResManager refactored:
+					//texture = App->textures->GetTexture(textureName.c_str());
+					texture = (ResourceTexture*)App->resManager->Get(App->resManager->FindByExportedFile(textureName.c_str()));
 				}
 				if (is_selected)
 					ImGui::SetItemDefaultFocus();
@@ -119,6 +123,7 @@ void ComponentImage::Load(JSON_value* value)
 	color = value->GetFloat4("color");	
 	if (textureName != "None Selected")
 	{
+		// ResManager refactored:
 		//texture = App->textures->GetTexture(textureName.c_str());
 		texture = (ResourceTexture*)App->resManager->Get(textureName.c_str());
 	}
