@@ -364,12 +364,12 @@ void PanelResourceManager::DrawResourceMaterial()
 		ImGui::Text("Shader: %s", material.shader->file.c_str());
 
 	// Colors
-	math::float4 diffuse_color = material.diffuse_color;
-	ImGui::ColorEdit4("Diffuse Color", &(float&)diffuse_color, ImGuiColorEditFlags_NoInputs);
-	math::float3 specular_color = material.specular_color;
-	ImGui::ColorEdit3("Specular Color", &(float&)specular_color, ImGuiColorEditFlags_NoInputs);
-	math::float3 emissive_color = material.emissive_color;
-	ImGui::ColorEdit3("Emissive Color", &(float&)emissive_color, ImGuiColorEditFlags_NoInputs);
+	math::float4 diffuseColor = material.diffuseColor;
+	ImGui::ColorEdit4("Diffuse Color", &(float&)diffuseColor, ImGuiColorEditFlags_NoInputs);
+	math::float3 specularColor = material.specularColor;
+	ImGui::ColorEdit3("Specular Color", &(float&)specularColor, ImGuiColorEditFlags_NoInputs);
+	math::float3 emissiveColor = material.emissiveColor;
+	ImGui::ColorEdit3("Emissive Color", &(float&)emissiveColor, ImGuiColorEditFlags_NoInputs);
 
 	ImGui::Text("K Ambient: %f", material.kAmbient);
 	ImGui::Text("K Diffuse: %f", material.kDiffuse);

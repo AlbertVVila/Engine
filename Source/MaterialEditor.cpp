@@ -71,16 +71,16 @@ void MaterialEditor::Draw()
 
 		if (ImGui::CollapsingHeader("Diffuse"))
 		{
-			ImGui::PushID(&material->diffuse_color);
-			ImGui::ColorEdit4("Color", (float*)&material->diffuse_color, ImGuiColorEditFlags_AlphaPreview);
+			ImGui::PushID(&material->diffuseColor);
+			ImGui::ColorEdit4("Color", (float*)&material->diffuseColor, ImGuiColorEditFlags_AlphaPreview);
 			TextureSelector((unsigned)TextureType::DIFFUSE, current_diffuse);
 			ImGui::Separator();
 			ImGui::PopID();
 		}
 		if (ImGui::CollapsingHeader("Specular"))
 		{
-			ImGui::PushID(&material->specular_color);
-			ImGui::ColorEdit3("Color", (float*)&material->specular_color);
+			ImGui::PushID(&material->specularColor);
+			ImGui::ColorEdit3("Color", (float*)&material->specularColor);
 			TextureSelector((unsigned)TextureType::SPECULAR, current_specular);
 			ImGui::Separator();
 			ImGui::PopID();
@@ -94,7 +94,7 @@ void MaterialEditor::Draw()
 		}
 		if (ImGui::CollapsingHeader("Emissive"))
 		{
-			ImGui::ColorEdit3("Color", (float*)&material->emissive_color);
+			ImGui::ColorEdit3("Color", (float*)&material->emissiveColor);
 			TextureSelector((unsigned)TextureType::EMISSIVE, current_emissive);
 			ImGui::Separator();
 		}
