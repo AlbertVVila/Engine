@@ -17,6 +17,7 @@ class PanelState;
 class GameObject;
 class MaterialEditor;
 class FileExplorer;
+class PanelAnimation;
 
 class ModuleEditor :
 	public Module
@@ -54,6 +55,7 @@ public:
 	PanelHierarchy *hierarchy = nullptr;
 	PanelTime *time = nullptr;
 	PanelState *states = nullptr;
+	PanelAnimation *animation = nullptr;
 
 	MaterialEditor *materialEditor = nullptr;
 	FileExplorer *fileExplorer = nullptr;

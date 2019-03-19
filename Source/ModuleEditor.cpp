@@ -20,6 +20,7 @@
 #include "PanelHierarchy.h"
 #include "PanelTime.h"
 #include "PanelState.h"
+#include "PanelAnimation.h"
 
 #include "MaterialEditor.h"
 #include "FileExplorer.h"
@@ -41,6 +42,7 @@ ModuleEditor::ModuleEditor()
 	panels.push_back(hierarchy = new PanelHierarchy());
 	panels.push_back(time = new PanelTime());
 	panels.push_back(states = new PanelState());
+	panels.push_back(animation = new PanelAnimation());
 
 	materialEditor = new MaterialEditor();
 	fileExplorer = new FileExplorer();
@@ -342,6 +344,10 @@ void ModuleEditor::WindowsMenu()
 		if (ImGui::MenuItem("Time control", nullptr, time->IsEnabled()))
 		{
 			time->ToggleEnabled();
+		}
+		if (ImGui::MenuItem("Animation", nullptr, animation->IsEnabled()))
+		{
+			animation->ToggleEnabled();
 		}
 		ImGui::EndMenu();
 	}
