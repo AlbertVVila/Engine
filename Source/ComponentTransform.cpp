@@ -238,9 +238,35 @@ math::float3 ComponentTransform::GetPosition()
 	return position;
 }
 
+void ComponentTransform::SetRotation(const math::Quat & newRotation)
+{
+	rotation = newRotation;
+	RotationToEuler();
+	gameobject->movedFlag = true;
+	UpdateTransform();
+}
+
+math::Quat ComponentTransform::GetRotation()
+{
+	return rotation;
+}
+
 math::float3 ComponentTransform::GetGlobalPosition()
 {
 	return global.Col3(3);
+}
+
+void ComponentTransform::LookAt(const math::float3 & targetPosition)
+{
+	math::float3 direction = (targetPosition - GetGlobalPosition());
+	math::Quat newRotation = rotation.LookAt(front.Normalized(), direction.Normalized(), up, float3::unitY);
+	SetRotation(newRotation);
+}
+
+void ComponentTransform::Align(const math::float3 & targetFront)
+{
+	Quat newRotation = Quat::RotateFromTo(front.Normalized(), targetFront.Normalized());
+	SetRotation(rotation.Mul(newRotation));
 }
 
 void ComponentTransform::Save(JSON_value* value) const

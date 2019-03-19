@@ -25,9 +25,14 @@ public:
 	void SetGlobalTransform(const math::float4x4& newglobal, const math::float4x4& parentglobal);
 
 	ENGINE_API void SetPosition(const math::float3& position);
+	ENGINE_API void SetRotation(const math::Quat & newRotation);
+	ENGINE_API math::Quat GetRotation();
 	ENGINE_API math::float3 GetPosition();
 
 	math::float3 GetGlobalPosition();
+
+	ENGINE_API void LookAt(const math::float3& target);
+	ENGINE_API void Align(const math::float3& target);
 
 	void Save(JSON_value* value) const override;
 	void Load(JSON_value* value) override;
