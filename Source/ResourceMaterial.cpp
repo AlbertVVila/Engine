@@ -42,6 +42,9 @@ ResourceMaterial::ResourceMaterial(const ResourceMaterial& resource) : Resource(
 	kDiffuse = resource.kDiffuse;
 	kSpecular = resource.kSpecular;
 	shininess = resource.shininess;
+
+	metallic = resource.metallic;
+	roughness = resource.roughness;
 }
 
 ResourceMaterial::~ResourceMaterial()
@@ -192,7 +195,7 @@ void ResourceMaterial::SaveMetafile(const char* file) const
 	fclose(fp);
 }
 
-void ResourceMaterial::Reset(const ResourceMaterial & material)
+void ResourceMaterial::Reset(const ResourceMaterial& material)
 {
 	name = material.name;
 
@@ -227,6 +230,9 @@ void ResourceMaterial::Reset(const ResourceMaterial & material)
 	kDiffuse = material.kDiffuse;
 	kSpecular = material.kSpecular;
 	shininess = material.shininess;
+
+	metallic = material.metallic;
+	roughness = material.roughness;
 }
 
 int ResourceMaterial::Compare(const ResourceMaterial& material)

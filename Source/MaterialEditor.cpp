@@ -138,8 +138,11 @@ void MaterialEditor::TextureSelector(unsigned i, std::string &current_texture, i
 		for (int n = 0; n < textureFiles.size(); n++)
 		{
 			bool is_selected = (current_texture == textureFiles[n]);
-			if (ImGui::Selectable(textureFiles[n].c_str(), is_selected))
+			if (ImGui::Selectable(textureFiles[n].c_str(), is_selected) && !is_selected)
 			{
+				if(material->textures[i] != nullptr)
+					App->resManager->DeleteResource(material->textures[i]->GetUID());
+
 				current_texture = textureFiles[n];
 				material->textures[i] = (ResourceTexture*)App->resManager->Get(current_texture.c_str());
 			}
@@ -306,7 +309,6 @@ void MaterialEditor::CleanUp()
 		App->resManager->DeleteResourceFromList(material->GetUID());
 		RELEASE(material);
 	}*/
-	Save();
 
 	currentShader = None;
 	currentDiffuse = None;
@@ -317,11 +319,9 @@ void MaterialEditor::CleanUp()
 	textureFiles.clear();
 	shaders.clear();
 	open = false;
-	material = nullptr;
+
 	if (previous != nullptr)
 	{
 		RELEASE(previous);
 	}
-
-	//ImGui::CloseCurrentPopup();
 }

@@ -111,6 +111,7 @@ void ComponentRenderer::DrawProperties()
 				{
 					App->editor->materialEditor->material->Save();
 				}
+				App->editor->materialEditor->CleanUp();
 			}
 		}
 		else

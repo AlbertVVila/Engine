@@ -84,7 +84,7 @@ void ComponentImage::DrawProperties()
 			for (int n = 0; n < textureFiles.size(); n++)
 			{
 				bool is_selected = (textureName == textureFiles[n]);
-				if (ImGui::Selectable(textureFiles[n].c_str(), is_selected) && textureName != textureFiles[n])
+				if (ImGui::Selectable(textureFiles[n].c_str(), is_selected) && !is_selected)
 				{
 					App->resManager->DeleteResource(App->resManager->FindByExportedFile(textureName.c_str()));
 					textureName = textureFiles[n].c_str();
