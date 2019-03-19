@@ -1,13 +1,16 @@
 #include "Resource.h"
 #include "JSON.h"
 
+#include "Application.h"
+#include "ModuleResourceManager.h"
+
 Resource::Resource(unsigned uid, TYPE type): UID(uid), type(type)
 {
 }
 
 Resource::Resource(const Resource& resource)
 {
-	UID = resource.UID;
+	UID = App->resManager->GenerateNewUID();
 	file = resource.file;
 	exportedFileName = resource.exportedFileName;
 	loaded = resource.loaded;
