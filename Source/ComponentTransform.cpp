@@ -69,16 +69,9 @@ void ComponentTransform::DrawProperties()
 			ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
 		}
 
-		if (ImGui::DragFloat3("Position", (float*)&position, 0.1f, -1000.f, 1000.f)
-			|| ImGui::DragFloat3("Rotation", (float*)&eulerRotation, 0.5f, -180, 180.f)
-			|| ImGui::DragFloat3("Scale", (float*)&scale, 0.1f, 0.01f, 100.f))
-		{
-			if (App->scene->photoTimer <= 0.f)
-			{
-				App->scene->TakePhoto();
-			}
-		}
-
+		ImGui::DragFloat3("Position", (float*)&position, 0.1f, -1000.f, 1000.f);
+		ImGui::DragFloat3("Rotation", (float*)&eulerRotation, 0.5f, -180, 180.f);
+		ImGui::DragFloat3("Scale", (float*)&scale, 0.1f, 0.01f, 100.f);
 		rotation = rotation.FromEulerXYZ(math::DegToRad(eulerRotation.x),
 			math::DegToRad(eulerRotation.y), math::DegToRad(eulerRotation.z));
 		
@@ -94,6 +87,10 @@ void ComponentTransform::DrawProperties()
 		{
 			UpdateTransform();
 			gameobject->movedFlag = true;
+			if (App->scene->photoTimer <= 0.f)
+			{
+				App->scene->TakePhoto();
+			}
 		}
 	}
 }

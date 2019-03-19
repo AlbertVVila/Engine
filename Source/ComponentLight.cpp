@@ -97,18 +97,18 @@ void ComponentLight::DrawProperties()
 		{
 			ImGui::Text("Attenuation");
 			if (lightType == LightType::POINT)
-				lightDirty = lightDirty || ImGui::DragFloat("Radius", &pointSphere.r);
+				lightDirty = lightDirty | ImGui::DragFloat("Radius", &pointSphere.r);
 			else
-				lightDirty = lightDirty || ImGui::DragFloat("Range", &range);
+				lightDirty = lightDirty | ImGui::DragFloat("Range", &range);
 		}
 
-		lightDirty = lightDirty || ImGui::DragFloat("Intensity", &intensity);
+		lightDirty = lightDirty | ImGui::DragFloat("Intensity", &intensity);
 
 		if (lightType == LightType::SPOT)
 		{
 			ImGui::Text("Angle");
-			lightDirty = lightDirty || ImGui::DragFloat("Inner", (float*)&inner, 0.1f, 0.f, 90.f);
-			lightDirty = lightDirty || ImGui::DragFloat("Outer", (float*)&outer, 0.1f, 0.f, 90.f);
+			lightDirty = lightDirty | ImGui::DragFloat("Inner", (float*)&inner, 0.1f, 0.f, 90.f);
+			lightDirty = lightDirty | ImGui::DragFloat("Outer", (float*)&outer, 0.1f, 0.f, 90.f);
 		}
 
 		if (lightDirty)
