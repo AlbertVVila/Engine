@@ -154,23 +154,21 @@ unsigned ModuleResourceManager::ImportFile(const char* newFileInAssets, const ch
 	{
 	case TYPE::TEXTURE: 
 		success = App->textures->ImportImage(newFileInAssets, filePath, (ResourceTexture*)resource);
-		App->textures->SaveMetafile(assetPath.c_str(), (ResourceTexture*)resource);
 		break;
 	case TYPE::MESH:	
 		success = App->fsystem->importer.ImportFBX(newFileInAssets, filePath);
-		resource->SaveMetafile(assetPath.c_str());
 		break;
 	//case TYPE::AUDIO: import_ok = App->audio->Import(newFileInAssets, written_file); break;
 	//case TYPE::SCENE: import_ok = App->scene->Import(newFileInAssets, written_file); break;
 	case TYPE::MATERIAL:
 		success = App->fsystem->Copy(filePath, IMPORTED_MATERIALS, newFileInAssets);
-		resource->SaveMetafile(assetPath.c_str());
 		break;
 	}
 
 	// If export was successful, create a new resource
 	if (success) 
 	{ 
+		resource->SaveMetafile(assetPath.c_str());
 		resource->SetFile((importedFilePath + newFileInAssets).c_str());
 		resource->SetExportedFile(App->fsystem->RemoveExtension(newFileInAssets).c_str());
 	}

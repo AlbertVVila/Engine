@@ -27,7 +27,6 @@ public:
 
 	void DrawGUI() override;
 	bool ImportImage(const char* file, const char* folder, ResourceTexture* resource) const;
-	void SaveMetafile(const char* file, ResourceTexture * resource);
 
 public:
 	FILTERTYPE filter_type = FILTERTYPE::LINEAR;

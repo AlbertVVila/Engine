@@ -97,12 +97,6 @@ void ResourceMesh::DeleteFromMemory()
 	meshIndices.clear();
 }
 
-void ResourceMesh::Save(JSON_value &config) const
-{
-	Resource::Save(config);
-	//TODO: Add variables to save
-}
-
 void ResourceMesh::SaveMetafile(const char* file) const
 {
 	std::string filepath;

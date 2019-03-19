@@ -39,16 +39,6 @@ void Resource::SetReferences(unsigned references)
 	loaded = references;
 }
 
-void Resource::Save(JSON_value &config) const
-{
-	JSON_value *resource = config.CreateValue();
-	resource->AddUint("UID", UID);
-	resource->AddString("File", file.c_str());
-	resource->AddString("ExportedFile", exportedFileName.c_str());
-
-	resource->AddUint("Type", (unsigned)type);
-}
-
 void Resource::SaveMetafile(const char * file) const
 {
 }

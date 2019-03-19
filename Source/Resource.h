@@ -52,7 +52,6 @@ public:
 	bool				IsUsedByEngine()				{ return engineUsed; };
 	void				SetUsedByEngine(bool used)		{ engineUsed = used; };
 
-	virtual void Save(JSON_value& config) const;
 	virtual void SaveMetafile(const char* file) const;
 	virtual void Load(const JSON_value& config);
 	virtual bool LoadInMemory() {return true;};

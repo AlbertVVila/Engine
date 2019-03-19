@@ -9,6 +9,10 @@
 #include "IL/ilut.h"
 #include "JSON.h"
 
+#include "rapidjson/document.h"
+#include "rapidjson/filewritestream.h"
+#include "rapidjson/prettywriter.h"
+
 ResourceTexture::ResourceTexture(unsigned uid) : Resource(uid, TYPE::TEXTURE)
 {
 }
@@ -243,18 +247,33 @@ void ResourceTexture::DeleteFromMemory()
 		glDeleteTextures(1, &gpuID);
 }
 
-void ResourceTexture::Save(JSON_value &config) const
+void ResourceTexture::SaveMetafile(const char* file) const
 {
-	Resource::Save(config);
-
-	config.AddUint("Width", width);
-	config.AddUint("Height", height);
-	config.AddUint("Depth", depth);
-	config.AddUint("Mips", mips);
-	config.AddUint("Bytes", bytes);
-	config.AddUint("GpuID", gpuID);
-
-	config.AddUint("Format", format);
+	std::string filepath;
+	filepath.append(file);
+	JSON *json = new JSON();
+	rapidjson::Document* meta = new rapidjson::Document();
+	rapidjson::Document::AllocatorType& alloc = meta->GetAllocator();
+	filepath += ".meta";
+	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
+	struct stat statFile;
+	stat(filepath.c_str(), &statFile);
+	FILE* fp = fopen(filepath.c_str(), "wb");
+	char writeBuffer[65536];
+	rapidjson::FileWriteStream* os = new rapidjson::FileWriteStream(fp, writeBuffer, sizeof(writeBuffer));
+	rapidjson::PrettyWriter<rapidjson::FileWriteStream> writer(*os);
+	meta->SetObject();
+	meta->AddMember("GUID", UID, alloc);
+	meta->AddMember("timeCreated", statFile.st_ctime, alloc);
+	meta->AddMember("height", height, alloc);
+	meta->AddMember("width", width, alloc);
+	meta->AddMember("depth", depth, alloc);
+	meta->AddMember("mips", mips, alloc);
+	meta->AddMember("format", format, alloc);
+	meta->AddMember("DX compresion", ilGetInteger(IL_DXTC_FORMAT), alloc);
+	meta->AddMember("mipmap", ilGetInteger(IL_ACTIVE_MIPMAP), alloc);
+	meta->Accept(writer);
+	fclose(fp);
 }
 
 void ResourceTexture::Load(const JSON_value &config)

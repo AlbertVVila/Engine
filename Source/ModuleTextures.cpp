@@ -3,9 +3,6 @@
 #include "ModuleFileSystem.h"
 #include "ModuleResourceManager.h" 
 #include "ResourceTexture.h"
-#include "rapidjson/document.h"
-#include "rapidjson/filewritestream.h"
-#include "rapidjson/prettywriter.h"
 
 #include "GL/glew.h"
 #include "IL/ilut.h"
@@ -106,33 +103,4 @@ bool ModuleTextures::ImportImage(const char* file, const char* folder, ResourceT
 		LOG("Error loading file %s, error: %s\n", file, iluErrorString(error));
 	}
 	return success;
-}
-
-void ModuleTextures::SaveMetafile(const char* file, ResourceTexture* resource)
-{
-	std::string filepath;
-	filepath.append(file);
-	JSON *json = new JSON();
-	rapidjson::Document* meta = new rapidjson::Document();
-	rapidjson::Document::AllocatorType& alloc = meta->GetAllocator();
-	filepath += ".meta";
-	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
-	struct stat statFile;
-	stat(filepath.c_str(), &statFile);
-	FILE* fp = fopen(filepath.c_str(), "wb");
-	char writeBuffer[65536];
-	rapidjson::FileWriteStream* os = new rapidjson::FileWriteStream(fp, writeBuffer, sizeof(writeBuffer));
-	rapidjson::PrettyWriter<rapidjson::FileWriteStream> writer(*os);
-	meta->SetObject();
-	meta->AddMember("GUID", resource->GetUID(), alloc);
-	meta->AddMember("timeCreated",statFile.st_ctime, alloc);
-	meta->AddMember("height", resource->height, alloc);
-	meta->AddMember("width", resource->width, alloc);
-	meta->AddMember("depth", resource->depth, alloc);
-	meta->AddMember("mips", resource->mips, alloc);
-	meta->AddMember("format", resource->format, alloc);
-	meta->AddMember("DX compresion", ilGetInteger(IL_DXTC_FORMAT), alloc);
-	meta->AddMember("mipmap", ilGetInteger(IL_ACTIVE_MIPMAP), alloc);
-	meta->Accept(writer);
-	fclose(fp);
 }
