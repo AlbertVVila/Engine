@@ -66,7 +66,7 @@ bool FileExplorer::Open()
 		// [Files]
 		for each (std::string file in files)
 		{
-			FilterByFileType(*file.c_str());
+			FilterByFileType(file.c_str());
 		}
 		ImGui::PopStyleVar();
 		ImGui::EndChild();
@@ -147,13 +147,13 @@ void FileExplorer::Draw()
 			switch (currentOperation)
 			{
 			case MenuOperations::SAVE:
-				App->scene->SaveScene(*App->scene->root, *filename, *(path + "/").c_str());
+				App->scene->SaveScene(*App->scene->root, filename, (path + "/").c_str());
 				break;
 			case MenuOperations::LOAD:
-				App->scene->LoadScene(*filename, *(path + "/").c_str());
+				App->scene->LoadScene(filename, (path + "/").c_str());
 				break;
 			case MenuOperations::ADD:
-				App->scene->AddScene(*filename, *(path + "/").c_str());
+				App->scene->AddScene(filename, (path + "/").c_str());
 			}
 			Reset();
 		}
@@ -188,63 +188,63 @@ void FileExplorer::DrawPath()
 	}
 }
 
-void FileExplorer::FilterByFileType(const char& file)
+void FileExplorer::FilterByFileType(const char* file)
 {
 	std::string extension = "";
 	switch (extensionToFilter)
 	{
 	case FILETYPE::TEXTURE:
-		extension = App->fsystem->GetExtension(&file);
+		extension = App->fsystem->GetExtension(file);
 		if (extension == PNG || extension == TIF || extension == JPG)
 		{
-			if (ImGui::Selectable(&file, false))
-				sprintf_s(filename, App->fsystem->GetFilename(&file).c_str());
+			if (ImGui::Selectable(file, false))
+				sprintf_s(filename, App->fsystem->GetFilename(file).c_str());
 		}
 		break;
 	case FILETYPE::IMPORTED_TEXTURE:
-		extension = App->fsystem->GetExtension(&file);
+		extension = App->fsystem->GetExtension(file);
 		if (extension == TEXTUREEXT)
 		{
-			if (ImGui::Selectable(&file, false))
-				sprintf_s(filename, App->fsystem->GetFilename(&file).c_str());
+			if (ImGui::Selectable(file, false))
+				sprintf_s(filename, App->fsystem->GetFilename(file).c_str());
 		}
 		break;
 	case FILETYPE::MODEL:
-		extension = App->fsystem->GetExtension(&file);
+		extension = App->fsystem->GetExtension(file);
 		if (extension == FBXEXTENSION || extension == FBXCAPITAL)
 		{
-			if (ImGui::Selectable(&file, false))
-				sprintf_s(filename, App->fsystem->GetFilename(&file).c_str());
+			if (ImGui::Selectable(file, false))
+				sprintf_s(filename, App->fsystem->GetFilename(file).c_str());
 		}
 		break;
 	case FILETYPE::IMPORTED_MESH:
-		extension = App->fsystem->GetExtension(&file);
+		extension = App->fsystem->GetExtension(file);
 		if (extension == MESHEXTENSION)
 		{
-			if (ImGui::Selectable(&file, false))
-				sprintf_s(filename, App->fsystem->GetFilename(&file).c_str());
+			if (ImGui::Selectable(file, false))
+				sprintf_s(filename, App->fsystem->GetFilename(file).c_str());
 		}
 		break;
 	case FILETYPE::SCENE:
-		extension = App->fsystem->GetExtension(&file);
+		extension = App->fsystem->GetExtension(file);
 		if (extension == JSONEXT)
 		{
-			if (ImGui::Selectable(&file, false))
-				sprintf_s(filename, App->fsystem->GetFilename(&file).c_str());
+			if (ImGui::Selectable(file, false))
+				sprintf_s(filename, App->fsystem->GetFilename(file).c_str());
 		}
 		break;
 	case FILETYPE::MATERIAL:
-		extension = App->fsystem->GetExtension(&file);
+		extension = App->fsystem->GetExtension(file);
 		if (extension == MATERIALEXT)
 		{
-			if (ImGui::Selectable(&file, false))
-				sprintf_s(filename, App->fsystem->GetFilename(&file).c_str());
+			if (ImGui::Selectable(file, false))
+				sprintf_s(filename, App->fsystem->GetFilename(file).c_str());
 		}
 		break;
 	default:
 	case FILETYPE::NONE:
-		if (ImGui::Selectable(&file, false))
-			sprintf_s(filename, App->fsystem->GetFilename(&file).c_str());
+		if (ImGui::Selectable(file, false))
+			sprintf_s(filename, App->fsystem->GetFilename(file).c_str());
 		break;
 	}
 }
@@ -291,9 +291,9 @@ std::vector<std::string> FileExplorer::GetPath(std::string prevPath)
 	return auxFolders;
 }
 
-void FileExplorer::SetPath(const char& newPath)
+void FileExplorer::SetPath(const char* newPath)
 {
-	std::string scenePath = &newPath;
+	std::string scenePath(newPath);
 	std::vector<std::string> prevPath = GetPath(scenePath.substr(0, scenePath.size() - 1));
 
 	path = scenePath;
@@ -301,4 +301,14 @@ void FileExplorer::SetPath(const char& newPath)
 	{
 		pathStack.push(prevPath[i]);
 	}
+}
+
+void FileExplorer::OpenFileExplorer(MenuOperations operation, FILETYPE typeToFilter, const char* startPath, const char* windowTitle, const char* fileName) 
+{
+	currentOperation = operation;
+	extensionToFilter = typeToFilter;
+	SetPath(startPath);
+	sprintf_s(title, windowTitle);
+	sprintf_s(filename, fileName);
+	openFileExplorer = true;
 }
