@@ -14,10 +14,11 @@ class PanelHardware;
 class PanelHierarchy;
 class PanelTime;
 class PanelState;
+class PanelAnimation;
 class GameObject;
 class MaterialEditor;
 class FileExplorer;
-class PanelAnimation;
+
 
 class ModuleEditor :
 	public Module

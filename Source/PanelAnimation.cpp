@@ -1,3 +1,9 @@
+#include "Application.h"
+
+#include "ModuleScene.h"
+
+#include "GameObject.h"
+#include "ComponentAnimation.h"
 #include "PanelAnimation.h"
 #include "imgui.h"
 #include "Globals.h"
@@ -15,6 +21,11 @@ void PanelAnimation::Draw()
 {
 	if (!ImGui::Begin("Animation", &enabled))
 	{
+		if (App->scene->selected->isBoneRoot)
+		{
+			Animation* anim = ((ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)))->anim;
+
+		}
 		ImGui::End();
 		return;
 	}

@@ -36,7 +36,7 @@ public:
 public:
 
 	std::string animationName;
-	double duration = 0;
+	double duration = 0; //frames
 	double framesPerSecond = 0;
 	int numberFrames = 0;
 	unsigned numberOfChannels = 0u;

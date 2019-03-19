@@ -200,6 +200,7 @@
     <ClInclude Include="myQuadTree.h" />
     <ClInclude Include="Panel.h" />
     <ClInclude Include="PanelAbout.h" />
+    <ClInclude Include="PanelAnimation.h" />
     <ClInclude Include="PanelConfiguration.h" />
     <ClInclude Include="PanelConsole.h" />
     <ClInclude Include="PanelHardware.h" />
@@ -288,6 +289,7 @@
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="myQuadTree.cpp" />
     <ClCompile Include="PanelAbout.cpp" />
+    <ClCompile Include="PanelAnimation.cpp" />
     <ClCompile Include="PanelConfiguration.cpp" />
     <ClCompile Include="PanelConsole.cpp" />
     <ClCompile Include="PanelHardware.cpp" />
