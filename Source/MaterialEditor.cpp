@@ -254,11 +254,14 @@ void MaterialEditor::NewMaterial()
 
 		if (ImGui::Button("Save", ImVec2(120, 0)) && !newMatExists)
 		{
-			//ResourceMaterial* newMaterialCreated = new ResourceMaterial(newName);
 			ResourceMaterial* newMaterialCreated = (ResourceMaterial*)App->resManager->CreateNewResource(TYPE::MATERIAL);
+			newMaterialCreated->name = newName;
 			newMaterialCreated->SetExportedFile(newName);
 			newMaterialCreated->Save();
 			newMaterial = false;
+
+			// Delete new material (It will be added to resources when the file on Assets is imported)
+			App->resManager->DeleteResourceFromList(newMaterialCreated->GetUID());
 			RELEASE(newMaterialCreated);
 			strcpy(newName, "New Material");
 			strcpy(newNamePrev, "");
