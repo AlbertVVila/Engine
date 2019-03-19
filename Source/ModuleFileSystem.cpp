@@ -62,12 +62,6 @@ ModuleFileSystem::~ModuleFileSystem()
 	PHYSFS_deinit();
 }
 
-bool ModuleFileSystem::Init(JSON* config)
-{
-
-	return true;
-}
-
 bool ModuleFileSystem::Start()
 {
 	// Check files in Assets and add them to ResManager
