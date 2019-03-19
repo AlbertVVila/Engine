@@ -117,6 +117,8 @@ public:
 	float photoTimer = 0.f;
 	float3 ambientColor = float3::one;
 
+	GameObject* canvas = nullptr;
+	float3 ambientColor = float3::one;
 };
 
 

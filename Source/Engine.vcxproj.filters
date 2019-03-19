@@ -225,6 +225,22 @@
     <ClCompile Include="ModuleDebugDraw.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleUI.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentTransform2D.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleFontLoader.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentImage.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentText.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentButton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -546,6 +562,22 @@
     <ClInclude Include="ModuleDebugDraw.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleUI.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentTransform2D.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleFontLoader.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentImage.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentText.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentButton.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GeoLib">
@@ -612,6 +644,18 @@
     </None>
     <None Include="..\Game\Scripts\PlayerMovement.dll">
       <Filter>Resources</Filter>
+    </None>
+    <None Include="..\Game\Shaders\VertexShaders\UI.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\FragmentShaders\UI.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\FragmentShaders\Fonts.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\VertexShaders\Fonts.vs">
+      <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
