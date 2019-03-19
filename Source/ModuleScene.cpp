@@ -596,6 +596,7 @@ void ModuleScene::TakePhoto(std::list<GameObject*>& target)
 }
 void ModuleScene::RestorePhoto(GameObject* photo)
 {
+	photoTimer = 0.f;
 	root = photo;
 	std::stack<GameObject*> S;
 	S.push(root);
@@ -621,6 +622,7 @@ void ModuleScene::RestorePhoto(GameObject* photo)
 			case ComponentType::Light:
 				App->spacePartitioning->aabbTreeLighting.InsertGO(go);
 				go->light = (ComponentLight*)c;
+				go->light->CalculateGuizmos();
 				break;
 			}
 		}

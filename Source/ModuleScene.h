@@ -118,7 +118,6 @@ public:
 	float3 ambientColor = float3::one;
 
 	GameObject* canvas = nullptr;
-	float3 ambientColor = float3::one;
 };
 
 
