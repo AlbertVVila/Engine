@@ -52,7 +52,7 @@ void ComponentAnimation::Update()
 
 void ComponentAnimation::UpdateGO(GameObject* go)
 {
-	float3 position;
+	/*float3 position;
 	Quat rotation;
 
 	if (controller->GetTransform(go->name.c_str(), position, rotation))
@@ -64,7 +64,7 @@ void ComponentAnimation::UpdateGO(GameObject* go)
 	for (std::list<GameObject*>::iterator it = go->children.begin(); it != go->children.end(); ++it)
 	{
 		UpdateGO(*it);
-	}
+	}*/
 }
 
 Component* ComponentAnimation::Clone() const

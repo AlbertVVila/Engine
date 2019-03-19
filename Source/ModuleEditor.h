@@ -13,6 +13,7 @@ class PanelAbout;
 class PanelHardware;
 class PanelHierarchy;
 class PanelTime;
+class PanelState;
 class GameObject;
 class MaterialEditor;
 class FileExplorer;
@@ -52,6 +53,7 @@ public:
 	PanelHardware *hardware = nullptr;
 	PanelHierarchy *hierarchy = nullptr;
 	PanelTime *time = nullptr;
+	PanelState *states = nullptr;
 
 	MaterialEditor *materialEditor = nullptr;
 	FileExplorer *fileExplorer = nullptr;

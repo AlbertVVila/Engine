@@ -4,14 +4,20 @@
 #include "Component.h"
 #include "Animation.h"
 #include "AnimationController.h"
+#include "StateMachine.h"
+#include "NodeEditor.h"
 
 #include "Math/float4x4.h"
 #include "Math/float3.h"
 #include "Math/Quat.h"
 
+class StateMachine;
+
 class ComponentAnimation : public Component
 {
 public:
+	typedef ax::NodeEditor::EditorContext EditorContext;
+
 
 	void DrawProperties();
 
@@ -28,6 +34,8 @@ public:
 
 	void Update() override;
 	bool CleanUp();
+
+	EditorContext* GetEditorContext();
 public:
 
 	AnimationController* controller = nullptr;

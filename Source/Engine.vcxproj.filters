@@ -231,6 +231,11 @@
     <ClCompile Include="Animation.cpp">
       <Filter>Animation</Filter>
     </ClCompile>
+    <ClCompile Include="AnimationController.cpp" />
+    <ClCompile Include="StateMachine.cpp" />
+    <ClCompile Include="PanelState.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -557,6 +562,11 @@
     </ClInclude>
     <ClInclude Include="Animation.h">
       <Filter>Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationController.h" />
+    <ClInclude Include="StateMachine.h" />
+    <ClInclude Include="PanelState.h">
+      <Filter>Panels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

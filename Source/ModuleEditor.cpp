@@ -19,6 +19,7 @@
 #include "PanelHardware.h"
 #include "PanelHierarchy.h"
 #include "PanelTime.h"
+#include "PanelState.h"
 
 #include "MaterialEditor.h"
 #include "FileExplorer.h"
@@ -39,6 +40,7 @@ ModuleEditor::ModuleEditor()
 	panels.push_back(hardware = new PanelHardware());
 	panels.push_back(hierarchy = new PanelHierarchy());
 	panels.push_back(time = new PanelTime());
+	panels.push_back(states = new PanelState());
 
 	materialEditor = new MaterialEditor();
 	fileExplorer = new FileExplorer();
