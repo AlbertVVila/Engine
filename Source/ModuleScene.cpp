@@ -624,6 +624,11 @@ void ModuleScene::RestorePhoto(GameObject* photo)
 				go->light = (ComponentLight*)c;
 				go->light->CalculateGuizmos();
 				break;
+			case ComponentType::Camera:
+				if (((ComponentCamera*)c)->isMainClone)
+				{
+					maincamera = (ComponentCamera*)c;
+				}
 			}
 		}
 
