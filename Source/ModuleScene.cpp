@@ -618,11 +618,13 @@ void ModuleScene::RestorePhoto(GameObject* photo)
 					staticGOs.insert(go);
 					App->spacePartitioning->kDTree.Calculate();
 				}
+				go->isVolumetric = true;
 				break;
 			case ComponentType::Light:
 				App->spacePartitioning->aabbTreeLighting.InsertGO(go);
 				go->light = (ComponentLight*)c;
 				go->light->CalculateGuizmos();
+				lights.push_back((ComponentLight*)c);
 				break;
 			case ComponentType::Camera:
 				if (((ComponentCamera*)c)->isMainClone)
