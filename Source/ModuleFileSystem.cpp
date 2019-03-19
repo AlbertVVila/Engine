@@ -18,7 +18,7 @@
 #include <assert.h>
 #include <stack>
 
-#define MONITORIZE_TIME 10000
+#define MONITORIZE_TIME 1000
 #define stat _stat
 
 ModuleFileSystem::ModuleFileSystem()
