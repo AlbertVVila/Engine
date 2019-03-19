@@ -93,7 +93,7 @@ void GUICreator::CreateElements(GameObject* go)
 		if (ImGui::Selectable("Cube"))
 		{
 			App->scene->CreateCube("cube", go);
-		}
+		}		
 		ImGui::EndMenu();
 	}
 }

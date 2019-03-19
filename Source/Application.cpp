@@ -15,6 +15,7 @@
 #include "ModuleUI.h"
 #include "ModuleFontLoader.h"
 #include "ModuleScript.h"
+#include "ModuleParticles.h"
 
 #include "Timer.h"
 #include "JSON.h"
@@ -30,6 +31,7 @@ Application::Application()
 	modules.push_back(input = new ModuleInput());
 	modules.push_back(scripting = new ModuleScript());
 	modules.push_back(renderer = new ModuleRender());
+	modules.push_back(particles = new ModuleParticles());
     modules.push_back(camera = new ModuleCamera());
 	modules.push_back(textures = new ModuleTextures());
 	modules.push_back(program = new ModuleProgram());

@@ -20,6 +20,7 @@
 #include "ComponentImage.h"
 #include "ComponentButton.h"
 #include "ComponentScript.h"
+#include "ComponentParticles.h"
 
 #include "GUICreator.h"
 #include "Material.h"
@@ -298,6 +299,9 @@ Component* GameObject::CreateComponent(ComponentType type)
 		break;
 	case ComponentType::Script:
 		component = new ComponentScript(this);
+		break;
+	case ComponentType::Particles:
+		component = new ComponentParticles(this);
 		break;
 	default:
 		break;

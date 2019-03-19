@@ -10,6 +10,8 @@
 #include "ModuleResourceManager.h"
 #include "ModuleUI.h"
 #include "ModuleFontLoader.h"
+#include "ModuleParticles.h"
+#include "ModuleTime.h"
 
 #include "GameObject.h"
 #include "ComponentCamera.h"
@@ -160,7 +162,7 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 		DrawGizmos(cam);
 	}
 	App->scene->Draw(*cam.frustum, isEditor);
-
+	App->particles->Render(App->time->gameDeltaTime, &cam);
 	App->ui->Draw(width, height);
 	
 }

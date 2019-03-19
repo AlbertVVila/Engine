@@ -24,6 +24,7 @@ class ModuleSpacePartitioning;
 class ModuleUI;
 class ModuleFontLoader;
 class ModuleScript;
+class ModuleParticles;
 
 class Application
 {
@@ -55,6 +56,7 @@ public:
 	ModuleUI* ui = nullptr;
 	ModuleFontLoader* fontLoader = nullptr;
 	ModuleScript* scripting = nullptr;
+	ModuleParticles* particles = nullptr;
 
 private:
 	std::list<Module*> modules;
