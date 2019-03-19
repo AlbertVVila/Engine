@@ -213,7 +213,7 @@ void PanelResourceManager::OpenResourceEditor()
 		{
 			ImGui::OpenPopup(resourcePopup);
 			auxResource = new Resource(*previous);
-			// To avoid deleting the texture from memory using a fake reference
+			// Use a fake reference to avoid deleting the texture from memory 
 			auxReferences = auxResource->GetReferences();
 		}
 

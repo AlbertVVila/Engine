@@ -61,7 +61,7 @@ protected:
 	unsigned UID = 0u;
 	std::string file;				// The file located in /Assets/ (Path + filename + extension)
 	std::string exportedFileName;	// The name of the file located in /Library/
-	unsigned loaded = 0;			// Number of times this resource is being used in memory
+	unsigned loaded = 0;			// Number of times this resource is being used
 	bool engineUsed = false;		// True if the resource is used by default by the engine, false if it was added by the user
 
 	TYPE type = TYPE::UNKNOWN;		// Type of resource

@@ -307,12 +307,6 @@ void MaterialEditor::Save()
 
 void MaterialEditor::CleanUp()
 {
-	/*if (isCreated)
-	{
-		App->resManager->DeleteResourceFromList(material->GetUID());
-		RELEASE(material);
-	}*/
-
 	currentShader = None;
 	currentDiffuse = None;
 	currentSpecular = None;

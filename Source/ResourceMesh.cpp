@@ -117,46 +117,9 @@ void ResourceMesh::SaveMetafile(const char* file) const
 	meta->AddMember("VAObox", VAObox, alloc);
 	meta->AddMember("VBObox", VBObox, alloc);
 	meta->AddMember("EBObox", EBObox, alloc);
-	/*meta->AddMember("numIndices", numIndices, alloc);
-	meta->AddMember("numVertices", numIndices, alloc);
-	if (indices != nullptr)
-		meta->AddMember("Indices", *indices, alloc);
-	else
-		meta->AddMember("Indices", "NULL", alloc);
-	if (vertices != nullptr)
-		meta->AddMember("Vertices", *vertices, alloc);
-	else
-		meta->AddMember("Vertices", "NULL", alloc);
-	if (indices != nullptr)
-		meta->AddMember("Normals", *normals, alloc);
-	else
-		meta->AddMember("Normals", "NULL", alloc);
-	if (indices != nullptr)
-		meta->AddMember("TexCoords", *texCoords, alloc);
-	else
-		meta->AddMember("TexCoords", "NULL", alloc);*/
 	meta->Accept(writer);
 	fclose(fp);
 }
-
-/*unsigned VAO = 0;
-	unsigned VBO = 0;
-	unsigned EBO = 0;
-
-	AABB boundingBox;
-	unsigned VAObox = 0;
-	unsigned VBObox = 0;
-	unsigned EBObox = 0;
-
-public:
-	unsigned numIndices = 0;
-	unsigned numVertices = 0;
-	int* indices = nullptr;
-	float* vertices = nullptr;
-
-	// New added on refactor
-	float* normals = nullptr;
-	float* texCoords = nullptr;*/
 
 void ResourceMesh::Load(const JSON_value &config)
 {
@@ -415,7 +378,6 @@ void ResourceMesh::DrawBbox(unsigned shader, const AABB &globalBBOX) const
 	float green[4] = { 0.0f, 1.0f, 0.0f, 1.0f };
 	glUniform4fv(glGetUniformLocation(shader,
 		"Vcolor"), 1, green);
-
 
 	glLineWidth(4.f);
 	glBindVertexArray(VAObox);

@@ -276,7 +276,7 @@ void ResourceTexture::SaveMetafile(const char* file) const
 	fclose(fp);
 }
 
-void ResourceTexture::Load(const JSON_value &config)
+void ResourceTexture::Load(const JSON_value& config)
 {
 	Resource::Load(config);
 
