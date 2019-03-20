@@ -39,8 +39,7 @@ void PanelInspector::Draw()
 	if (App->scene->selected != nullptr)
 	{
 		App->scene->selected->DrawProperties();
-		const char* components[] = { "Transform", "Renderer", "Camera", "Light", "Particle System", "Script", "Transform2D", 
-			"Text", "Image"};
+		const char* components[] = { "Transform", "Renderer", "Camera", "Light", "Particle System", "Script", "Transform2D", "Text", "Image", "Button"};
 
 		if (ImGui::Button("Add Component", ImVec2(ImGui::GetWindowWidth(), 25)))
 			ImGui::OpenPopup("component_popup");
