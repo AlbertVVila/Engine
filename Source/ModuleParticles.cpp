@@ -72,6 +72,7 @@ void ModuleParticles::Render(float dt, const ComponentCamera* camera)
 
 	for (ComponentParticles* cp : particleSystems)
 	{
+		cp->gameobject->transform->LookAt(camera->frustum->pos);
 		switch (type)
 		{
 		case ParticleSystemType::ANIMATION_STATIC:
@@ -105,7 +106,7 @@ void ModuleParticles::DrawAnimationStatic(ComponentParticles* cp, const Componen
 	glBindVertexArray(VAO);
 	glUniformMatrix4fv(glGetUniformLocation(shader->id, "projection"), 1, GL_FALSE, &camera->GetProjectionMatrix()[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(shader->id, "view"), 1, GL_FALSE, &camera->GetViewMatrix()[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(shader->id, "model"), 1, GL_FALSE, (const float*)&cp->gameobject->transform->global);
+	glUniformMatrix4fv(glGetUniformLocation(shader->id, "model"), 1, GL_TRUE, (const float*)&cp->gameobject->transform->global);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, cp->texture->id);
 	glUniform1i(glGetUniformLocation(shader->id, "texture0"), 0);

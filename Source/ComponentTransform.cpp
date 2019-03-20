@@ -259,7 +259,7 @@ math::float3 ComponentTransform::GetGlobalPosition()
 void ComponentTransform::LookAt(const math::float3 & targetPosition)
 {
 	math::float3 direction = (targetPosition - GetGlobalPosition());
-	math::Quat newRotation = rotation.LookAt(front.Normalized(), direction.Normalized(), up, float3::unitY);
+	math::Quat newRotation = rotation.LookAt(float3::unitZ, direction.Normalized(), float3::unitY, float3::unitY);	
 	SetRotation(newRotation);
 }
 
