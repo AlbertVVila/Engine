@@ -37,9 +37,9 @@ void ComponentTransform2D::DrawProperties()
 			ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
 		}
 
-		ImGui::DragFloat2("Position", (float*)&position, 0.1f, -1000.f, 1000.f);
+		ImGui::DragFloat2("Position", (float*)&position, 0.1f, -10000.f, 10000.f);
 
-		ImGui::DragFloat2("Size", (float*)&size, 0.5f, 0.f, 1000.f);
+		ImGui::DragFloat2("Size", (float*)&size, 0.5f, 0.f, 10000.f);
 	
 		if (gameobject->isStatic && App->time->gameState != GameState::RUN)
 		{

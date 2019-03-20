@@ -120,6 +120,9 @@ bool ModuleFontLoader::Init(JSON* json)
 {
 	shaderFonts = App->program->GetProgram(shaderFontsFile);
 	LoadFonts(defaultFont);
+	LoadFonts("Fonts/MATADOR.ttf");
+	LoadFonts("Fonts/TACOM.ttf");
+	LoadFonts("Fonts/TACOSRG.ttf");
 	return true;
 }
 
