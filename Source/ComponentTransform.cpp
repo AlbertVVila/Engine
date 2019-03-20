@@ -8,6 +8,7 @@
 #include "ComponentLight.h"
 #include "GameObject.h"
 #include "ModuleTime.h"
+#include "ModuleScene.h"
 
 
 #include "imgui.h"
@@ -60,9 +61,12 @@ void ComponentTransform::AddTransform(const math::float4x4& transform)
 
 void ComponentTransform::DrawProperties()
 {
-	
+	ImGui::PushID(this);
+
 	if (ImGui::CollapsingHeader("Local Transformation", ImGuiTreeNodeFlags_DefaultOpen))
 	{
+		Options();
+
 		if (gameobject->isStatic && App->time->gameState != GameState::RUN)
 		{
 			ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
@@ -91,6 +95,7 @@ void ComponentTransform::DrawProperties()
 			gameobject->movedFlag = true;
 		}
 	}
+	ImGui::PopID();
 }
 
 
@@ -263,4 +268,27 @@ void ComponentTransform::Load(JSON_value* value)
 	global = value->GetFloat4x4("Global");
 	local = math::float4x4::FromTRS(position, rotation, scale);
 	RotationToEuler();
+}
+
+/*void ComponentTransform::Copy()
+{
+	App->scene->copyComp = Clone();
+}*/
+
+void ComponentTransform::Paste()
+{
+	if (App->scene->copyComp != nullptr && App->scene->copyComp->type == this->type)
+	{
+		ComponentTransform* comp = (ComponentTransform*)App->scene->copyComp;
+		position = comp->position;
+		eulerRotation = comp->eulerRotation;
+		scale = comp->scale;
+	}
+}
+
+void ComponentTransform::Reset()
+{
+	position = math::float3(0.f, 0.f, 0.f);
+	eulerRotation = math::float3(0.f, 0.f, 0.f);
+	scale = math::float3(1.0f, 1.0f, 1.0f);
 }

@@ -85,6 +85,7 @@ private:
 public:
 	GameObject* root = nullptr;
 	GameObject* selected = nullptr; //Selected in hierarchy
+	Component* copyComp = nullptr; // Copied values in inspector
 	ComponentCamera* maincamera = nullptr; //Released by GameObject holding it
 	ResourceTexture* camera_notfound_texture = nullptr; //Released in resource manager
 	std::list<LineSegment> debuglines;

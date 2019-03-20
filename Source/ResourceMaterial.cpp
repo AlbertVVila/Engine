@@ -38,8 +38,8 @@ ResourceMaterial::ResourceMaterial(const ResourceMaterial& resource) : Resource(
 	specularColor = resource.specularColor;
 	emissiveColor = resource.emissiveColor;
 
-	metallic = resource.metallic;
 	roughness = resource.roughness;
+	metallic = resource.metallic;
 }
 
 ResourceMaterial::~ResourceMaterial()
@@ -221,8 +221,8 @@ void ResourceMaterial::Reset(const ResourceMaterial& material)
 	specularColor = material.specularColor;
 	emissiveColor = material.emissiveColor;
 
-	metallic = material.metallic;
 	roughness = material.roughness;
+	metallic = material.metallic;
 }
 
 int ResourceMaterial::Compare(const ResourceMaterial& material)
