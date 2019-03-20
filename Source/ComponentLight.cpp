@@ -41,7 +41,7 @@ ComponentLight::ComponentLight(const ComponentLight & component) : Component(com
 	range = component.range;
 	intensity = component.intensity;
 	pointSphere = Sphere(component.pointSphere);
-	App->scene->lights.push_back(this);
+	//App->scene->lights.push_back(this);
 }
 
 ComponentLight::~ComponentLight()

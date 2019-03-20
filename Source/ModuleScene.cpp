@@ -632,6 +632,7 @@ void ModuleScene::RestorePhoto(GameObject* photo)
 				{
 					maincamera = (ComponentCamera*)c;
 				}
+				break;
 			}
 		}
 
