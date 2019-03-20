@@ -12,6 +12,7 @@
 #include "ComponentParticles.h"
 
 #include "imgui.h"
+#include "JSON.h"
 
 #define None "None Selected"
 
@@ -81,7 +82,12 @@ void ComponentParticles::DrawProperties()
 	
 	ImGui::InputInt("X Tiles", &xTiles);
 	ImGui::InputInt("Y Tiles", &yTiles);
-	ImGui::InputFloat("FPS", &fps, 1.f);
+	xTiles = MAX(xTiles, 1);
+	yTiles = MAX(yTiles, 1);
+	if (ImGui::InputFloat("FPS", &fps, 1.f))
+	{
+		timer = 0.f;
+	}
 	ImGui::PopID();
 }
 
@@ -92,13 +98,34 @@ bool ComponentParticles::CleanUp()
 
 void ComponentParticles::Update(float dt)
 {
-
+	timer += dt;
+	float currentFrame = timer / (1 / fps);
+	float frame;
+	frameMix = modf(currentFrame, &frame);
+	f1Xpos = ((int)frame) % xTiles;
+	f2Xpos = (f1Xpos + 1) % xTiles;
+	f1Ypos = (((int)frame) / xTiles) % yTiles;
+	f2Ypos = f1Xpos < f2Xpos ? f1Ypos : f1Ypos + 1;	
 }
 
 void ComponentParticles::Save(JSON_value* value) const
 {
+	Component::Save(value);
+	value->AddInt("xTiles", xTiles);
+	value->AddInt("yTiles", yTiles);
+	value->AddFloat("fps", fps);
+	value->AddString("textureName", textureName.c_str());
 }
 
 void ComponentParticles::Load(JSON_value* value)
 {
+	Component::Load(value);
+	xTiles = value->GetInt("xTiles");
+	yTiles = value->GetInt("yTiles");
+	fps = value->GetFloat("fps");
+	textureName = std::string(value->GetString("textureName"));
+	if (textureName != "None Selected")
+	{
+		texture = App->textures->GetTexture(textureName.c_str());
+	}
 }

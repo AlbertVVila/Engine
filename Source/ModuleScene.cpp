@@ -10,6 +10,7 @@
 #include "ModuleScene.h"
 #include "ModuleTextures.h"
 #include "ModuleSpacePartitioning.h"
+#include "ModuleParticles.h"
 
 #include "GameObject.h"
 #include "ComponentCamera.h"
@@ -634,6 +635,9 @@ void ModuleScene::ClearScene()
 	App->spacePartitioning->kDTree.Calculate();
 	canvas = new GameObject("Canvas", 1);
 	root->InsertChild(canvas);
+	App->particles->CleanUp();
+	App->particles->Start();
+	selection.clear();
 }
 
 void ModuleScene::Select(GameObject * gameobject)

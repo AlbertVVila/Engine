@@ -12,6 +12,13 @@
 
 #include "GL/glew.h"
 
+ModuleParticles::~ModuleParticles()
+{
+	glDeleteBuffers(1, &VAO);
+	glDeleteBuffers(1, &EBO);
+	glDeleteBuffers(1, &VBO);
+}
+
 bool ModuleParticles::Start()
 {
 	float quadVertices[] =
@@ -41,9 +48,12 @@ bool ModuleParticles::Start()
 		0.0f, 1.0f
 	};
 
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
+	if (VAO == 0)
+	{
+		glGenVertexArrays(1, &VAO);
+		glGenBuffers(1, &VBO);
+		glGenBuffers(1, &EBO);
+	}
 
 	glBindVertexArray(VAO);
 
@@ -69,10 +79,12 @@ bool ModuleParticles::Start()
 
 void ModuleParticles::Render(float dt, const ComponentCamera* camera)
 {
-
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_ONE, GL_ONE);
 	for (ComponentParticles* cp : particleSystems)
 	{
 		cp->gameobject->transform->LookAt(camera->frustum->pos);
+		cp->Update(dt);
 		switch (type)
 		{
 		case ParticleSystemType::ANIMATION_STATIC:
@@ -80,14 +92,13 @@ void ModuleParticles::Render(float dt, const ComponentCamera* camera)
 			break;
 		}
 	}
+	glDisable(GL_BLEND);
 	glUseProgram(0);
 }
 
 bool ModuleParticles::CleanUp()
-{
-	glDeleteBuffers(1, &VAO);
-	glDeleteBuffers(1, &EBO);
-	glDeleteBuffers(1, &VBO);
+{	
+	particleSystems.clear();
 	return true;
 }
 
@@ -110,6 +121,14 @@ void ModuleParticles::DrawAnimationStatic(ComponentParticles* cp, const Componen
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, cp->texture->id);
 	glUniform1i(glGetUniformLocation(shader->id, "texture0"), 0);
+	glUniform1i(glGetUniformLocation(shader->id, "xTiles"), cp->xTiles);
+	glUniform1i(glGetUniformLocation(shader->id, "yTiles"), cp->yTiles);
+	glUniform1i(glGetUniformLocation(shader->id, "f1Xpos"), cp->f1Xpos);
+	glUniform1i(glGetUniformLocation(shader->id, "f1Ypos"), cp->f1Ypos);
+	glUniform1i(glGetUniformLocation(shader->id, "f2Xpos"), cp->f2Xpos);
+	glUniform1i(glGetUniformLocation(shader->id, "f2Ypos"), cp->f2Ypos);
+	glUniform1f(glGetUniformLocation(shader->id, "mixAmount"), cp->frameMix);
+
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }

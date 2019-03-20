@@ -19,7 +19,7 @@ public:
 	};
 
 	//ModuleParticles();
-	//~ModuleParticles();
+	~ModuleParticles();
 
 	bool Start() override;
 	bool CleanUp() override;
