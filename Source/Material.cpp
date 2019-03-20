@@ -42,10 +42,8 @@ Material::Material(const Material& material)
 	specularColor = material.specularColor;
 	emissiveColor = material.emissiveColor;
 
-	kAmbient = material.kAmbient;
-	kDiffuse = material.kDiffuse;
-	kSpecular = material.kSpecular;
-	shininess = material.shininess;
+	roughness = material.roughness;
+	metallic = material.metallic;
 }
 
 Material::~Material()
@@ -203,10 +201,8 @@ void Material::Reset(const Material & material)
 	specularColor = material.specularColor;
 	emissiveColor = material.emissiveColor;
 
-	kAmbient = material.kAmbient;
-	kDiffuse = material.kDiffuse;
-	kSpecular = material.kSpecular;
-	shininess = material.shininess;
+	roughness = material.roughness;
+	metallic = material.metallic;
 }
 
 int Material::Compare(const Material& material)
@@ -230,14 +226,9 @@ int Material::Compare(const Material& material)
 	if (!emissiveColor.Equals(material.emissiveColor))
 		return 0;
 
-	if (kDiffuse != material.kDiffuse)
+	if (roughness != material.roughness)
 		return 0;
-	if (kSpecular != material.kSpecular)
-		return 0;
-	if (kAmbient != material.kAmbient)
-		return 0;
-
-	if (shininess != material.shininess)
+	if (metallic != material.metallic)
 		return 0;
 
 	return 1;
