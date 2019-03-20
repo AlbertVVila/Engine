@@ -28,9 +28,10 @@ public:
 
 	void AddParticleSystem(ComponentParticles* cp);
 
+
 private:
 	
-	void DrawAnimationStatic(ComponentParticles* cp);
+	void DrawAnimationStatic(ComponentParticles * cp, const ComponentCamera * camera) const;
 	
 	std::list<ComponentParticles*> particleSystems;
 

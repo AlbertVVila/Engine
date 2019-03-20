@@ -16,16 +16,29 @@ bool ModuleParticles::Start()
 {
 	float quadVertices[] =
 	{
-			-0.5f, -0.5f, 0.0f, // bottom left
-			-0.5f,  0.5f, 0.0f, // top left 
-			 0.5f, -0.5f, 0.0f, // bottom right
-			 0.5f,  0.5f, 0.0f // top right
+		-0.5f, -0.5f, 0.0f, // bottom left
+		-0.5f,  0.5f, 0.0f, // top left 
+		0.5f, -0.5f, 0.0f, // bottom right
+		0.5f,  0.5f, 0.0f, // top right
+
+		0.0f, 0.0f,
+		0.0f, 1.0f,
+		1.0f, 0.0f,
+		1.0f, 1.0f
 	};
 
 	unsigned int quadIndices[] =
 	{
 		0,2,1,
 		1,2,3
+	};
+
+	float quadUVS[] =
+	{
+		0.0f, 0.0f,
+		1.0f, 1.0f,
+		1.0f, 0.0f,
+		0.0f, 1.0f
 	};
 
 	glGenVertexArrays(1, &VAO);
@@ -43,6 +56,9 @@ bool ModuleParticles::Start()
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 12));
+
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 
@@ -53,17 +69,13 @@ bool ModuleParticles::Start()
 
 void ModuleParticles::Render(float dt, const ComponentCamera* camera)
 {
-	glUseProgram(shader->id);
-	glBindVertexArray(VAO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glUniformMatrix4fv(glGetUniformLocation(shader->id, "projection"), 1, GL_TRUE, &camera->GetProjectionMatrix()[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(shader->id, "view"), 1, GL_TRUE, &camera->GetViewMatrix()[0][0]);
+
 	for (ComponentParticles* cp : particleSystems)
 	{
 		switch (type)
 		{
 		case ParticleSystemType::ANIMATION_STATIC:
-			DrawAnimationStatic(cp);
+			DrawAnimationStatic(cp, camera);
 			break;
 		}
 	}
@@ -72,7 +84,10 @@ void ModuleParticles::Render(float dt, const ComponentCamera* camera)
 
 bool ModuleParticles::CleanUp()
 {
-	return false;
+	glDeleteBuffers(1, &VAO);
+	glDeleteBuffers(1, &EBO);
+	glDeleteBuffers(1, &VBO);
+	return true;
 }
 
 void ModuleParticles::AddParticleSystem(ComponentParticles* cp)
@@ -80,16 +95,20 @@ void ModuleParticles::AddParticleSystem(ComponentParticles* cp)
 	particleSystems.push_back(cp);
 }
 
-void ModuleParticles::DrawAnimationStatic(ComponentParticles* cp)
+void ModuleParticles::DrawAnimationStatic(ComponentParticles* cp, const ComponentCamera* camera) const
 {
 	if (cp->texture == nullptr)
 	{
 		return;
 	}
-
-	glUniformMatrix4fv(glGetUniformLocation(shader->id, "model"), 1, GL_TRUE, (const float*)&cp->gameobject->transform->global);
-	/*glActiveTexture(GL_TEXTURE0);
+	glUseProgram(shader->id);
+	glBindVertexArray(VAO);
+	glUniformMatrix4fv(glGetUniformLocation(shader->id, "projection"), 1, GL_FALSE, &camera->GetProjectionMatrix()[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(shader->id, "view"), 1, GL_FALSE, &camera->GetViewMatrix()[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(shader->id, "model"), 1, GL_FALSE, (const float*)&cp->gameobject->transform->global);
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, cp->texture->id);
-	glUniform1i(glGetUniformLocation(shader->id, "texture0"), 0);*/
+	glUniform1i(glGetUniformLocation(shader->id, "texture0"), 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
