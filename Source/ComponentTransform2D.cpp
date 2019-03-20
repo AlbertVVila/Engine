@@ -61,63 +61,32 @@ void ComponentTransform2D::DrawProperties()
 
 		if (ImGui::CollapsingHeader("Anchor", ImGuiTreeNodeFlags_DefaultOpen))
 		{
+			//top
+			if (ImGui::Button("Top Left")) currentAnchor = TOPLEFT;
+			
+			ImGui::SameLine();
+			if (ImGui::Button("Top Center")) currentAnchor = TOPCENTER;
 
-			if (ImGui::Button("Top Left"))
-			{
-				float width = (float)App->renderer->viewGame->current_width;
-				float height = (float)App->renderer->viewGame->current_height;
-				position = math::float2(-width*0.5 + size.x/2, height*0.5 - size.y / 2);
-			}
 			ImGui::SameLine();
-			if (ImGui::Button("Top Center"))
-			{
-				float height = (float)App->renderer->viewGame->current_height;
-				position = math::float2(0.0f, height*0.5 - size.y / 2);
-			}
-			ImGui::SameLine();
-			if (ImGui::Button("Top Right"))
-			{
-				float width = (float)App->renderer->viewGame->current_width;
-				float height = (float)App->renderer->viewGame->current_height;
-				position = math::float2(width*0.5 - size.x / 2, height*0.5 - size.y / 2);
-			}
+			if (ImGui::Button("Top Right")) currentAnchor = TOPRIGHT;
 
-			if (ImGui::Button("Middle Left"))
-			{
-				float width = (float)App->renderer->viewGame->current_width;
-				position = math::float2(-width*0.5 + size.x / 2, 0.0f);
-			}
-			ImGui::SameLine();
-			if (ImGui::Button("Middle Center"))
-			{
-				position = math::float2(0.0f, 0.0f);
-			}
-			ImGui::SameLine();
-			if (ImGui::Button("Middle Right"))
-			{
-				float width = (float)App->renderer->viewGame->current_width;
-				position = math::float2(width*0.5 - size.x / 2, 0.0f);
-			}
+			//middle
+			if (ImGui::Button("Middle Left")) currentAnchor = MIDDLELEFT;
 
-			if (ImGui::Button("Bottom Left"))
-			{
-				float width = (float)App->renderer->viewGame->current_width;
-				float height = (float)App->renderer->viewGame->current_height;
-				position = math::float2(-width*0.5 + size.x / 2,- height*0.5 + size.y / 2);
-			}
 			ImGui::SameLine();
-			if (ImGui::Button("Bottom Center"))
-			{
-				float height = (float)App->renderer->viewGame->current_height;
-				position = math::float2(0.0f, -height*0.5 + size.y / 2);
-			}
+			if (ImGui::Button("Middle Center"))	currentAnchor = MIDDLECENTER;
+
 			ImGui::SameLine();
-			if (ImGui::Button("Bottom Right"))
-			{
-				float width = (float)App->renderer->viewGame->current_width;
-				float height = (float)App->renderer->viewGame->current_height;
-				position = math::float2(width*0.5 - size.x / 2, -height*0.5 + size.y / 2);
-			}
+			if (ImGui::Button("Middle Right")) currentAnchor = MIDDLERIGHT;
+
+			//bottom
+			if (ImGui::Button("Bottom Left")) currentAnchor = BOTTOMLEFT;
+
+			ImGui::SameLine();
+			if (ImGui::Button("Bottom Center"))	currentAnchor = BOTTOMCENTER;
+
+			ImGui::SameLine();
+			if (ImGui::Button("Bottom Right")) currentAnchor = BOTTOMRIGHT;
 		}
 	}
 }
@@ -134,4 +103,14 @@ void ComponentTransform2D::Load(JSON_value* value)
 	Component::Load(value);
 	position = value->GetFloat2("Position");
 	size = value->GetFloat2("Size");
+}
+
+math::float2 ComponentTransform2D::getPosition() const
+{
+	float width = (float)App->renderer->viewGame->current_width;
+	float height = (float)App->renderer->viewGame->current_height;
+	float horizontalCalculation = alignments[currentAnchor].x * width * 0.5 - alignments[currentAnchor].x*(size.x / 2);
+	float verticalCalculation = alignments[currentAnchor].y * height * 0.5 - alignments[currentAnchor].y*(size.y / 2);
+
+	return math::float2(horizontalCalculation + position.x, verticalCalculation + position.y);
 }

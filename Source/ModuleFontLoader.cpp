@@ -145,10 +145,12 @@ void ModuleFontLoader::RenderText(const ComponentText& compText, int currentWidt
 	ComponentTransform2D* transform2D = (ComponentTransform2D*)compText.gameobject->GetComponent(ComponentType::Transform2D);
 	float x = 0;
 	float y = 0;
+	math::float2 textPos = transform2D->getPosition();
+
 	if (transform2D != nullptr)
 	{
-		x = (compText.offset.x + transform2D->position.x) / (currentWidth * 0.5f);
-		y = (compText.offset.y + transform2D->position.y) / (currentHeight * 0.5f);
+		x = (compText.offset.x + textPos.x) / (currentWidth * 0.5f);
+		y = (compText.offset.y + textPos.y) / (currentHeight * 0.5f);
 	}
 	
 	// Activate corresponding render state	
@@ -158,7 +160,7 @@ void ModuleFontLoader::RenderText(const ComponentText& compText, int currentWidt
 	glBindVertexArray(VAOText);
 
 	// Iterate through all characters
-	float scale = compText.fontSize*FontScaleFactor;
+	float scale = compText.fontSize*FontScaleFactor;//this scale does not change with the window size, its something else
 	std::string::const_iterator c;
 	for (c = text.begin(); c != text.end(); ++c)
 	{

@@ -157,9 +157,9 @@ void ModuleUI::RenderImage(const ComponentImage& componentImage, int currentWidt
 
 	if (transform2D != nullptr)
 	{
-
+		math::float2 imgPos = transform2D->getPosition();
 		math::float3 scale = math::float3(transform2D->size.x, transform2D->size.y, 1.0f);
-		math::float3 center = math::float3(transform2D->position.x, transform2D->position.y, 0.0f);
+		math::float3 center = math::float3(imgPos.x, imgPos.y, 0.0f);
 		model = model.Scale(scale, center);
 		model.SetTranslatePart(center);
 
