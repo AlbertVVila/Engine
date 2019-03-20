@@ -349,6 +349,10 @@ void ModuleEditor::WindowsMenu()
 		{
 			animation->ToggleEnabled();
 		}
+		if (ImGui::MenuItem("StateMachine", nullptr, states->IsEnabled()))
+		{
+			states->ToggleEnabled();
+		}
 		ImGui::EndMenu();
 	}
 }

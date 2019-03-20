@@ -147,9 +147,6 @@
     <ClCompile Include="ModuleScene.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="PanelHierarchy.cpp">
-      <Filter>Panels</Filter>
-    </ClCompile>
     <ClCompile Include="PanelInspector.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
@@ -158,9 +155,6 @@
     </ClCompile>
     <ClCompile Include="ModuleFileSystem.cpp">
       <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="FileImporter.cpp">
-      <Filter>Importer</Filter>
     </ClCompile>
     <ClCompile Include="ComponentLight.cpp">
       <Filter>Component</Filter>
@@ -231,13 +225,23 @@
     <ClCompile Include="Animation.cpp">
       <Filter>Animation</Filter>
     </ClCompile>
-    <ClCompile Include="AnimationController.cpp" />
-    <ClCompile Include="StateMachine.cpp" />
     <ClCompile Include="PanelState.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
     <ClCompile Include="PanelAnimation.cpp">
       <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="FileImporter.cpp">
+      <Filter>Importer</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelHierarchy.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationController.cpp">
+      <Filter>Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="StateMachine.cpp">
+      <Filter>Animation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -566,13 +570,17 @@
     <ClInclude Include="Animation.h">
       <Filter>Animation</Filter>
     </ClInclude>
-    <ClInclude Include="AnimationController.h" />
-    <ClInclude Include="StateMachine.h" />
     <ClInclude Include="PanelState.h">
       <Filter>Panels</Filter>
     </ClInclude>
     <ClInclude Include="PanelAnimation.h">
       <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationController.h">
+      <Filter>Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="StateMachine.h">
+      <Filter>Animation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

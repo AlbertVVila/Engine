@@ -21,7 +21,7 @@ void PanelAnimation::Draw()
 {
 	if (!ImGui::Begin("Animation", &enabled))
 	{
-		if (App->scene->selected->isBoneRoot)
+		if (App->scene->selected != nullptr && App->scene->selected->isBoneRoot)
 		{
 			Animation* anim = ((ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)))->anim;
 
