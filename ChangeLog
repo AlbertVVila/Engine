@@ -1,5 +1,1 @@
-· PBR Shading
-· Normal mapping
-· GameObject multiselection
-· Improved lighting pipeline
-· Space Partitioning graphical debug
+· Added a Resource Manager and a tool to take a look to all resources loaded on the engine.
