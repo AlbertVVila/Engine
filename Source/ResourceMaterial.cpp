@@ -38,11 +38,6 @@ ResourceMaterial::ResourceMaterial(const ResourceMaterial& resource) : Resource(
 	specularColor = resource.specularColor;
 	emissiveColor = resource.emissiveColor;
 
-	kAmbient = resource.kAmbient;
-	kDiffuse = resource.kDiffuse;
-	kSpecular = resource.kSpecular;
-	shininess = resource.shininess;
-
 	metallic = resource.metallic;
 	roughness = resource.roughness;
 }
@@ -226,11 +221,6 @@ void ResourceMaterial::Reset(const ResourceMaterial& material)
 	specularColor = material.specularColor;
 	emissiveColor = material.emissiveColor;
 
-	kAmbient = material.kAmbient;
-	kDiffuse = material.kDiffuse;
-	kSpecular = material.kSpecular;
-	shininess = material.shininess;
-
 	metallic = material.metallic;
 	roughness = material.roughness;
 }
@@ -249,21 +239,16 @@ int ResourceMaterial::Compare(const ResourceMaterial& material)
 			return 0;
 	}
 
-	if (!diffuseColor.Equals(diffuseColor))
+	if (!diffuseColor.Equals(material.diffuseColor))
 		return 0;
-	if (!specularColor.Equals(specularColor))
+	if (!specularColor.Equals(material.specularColor))
 		return 0;
-	if (!emissiveColor.Equals(emissiveColor))
-		return 0;
-
-	if (kDiffuse != kDiffuse)
-		return 0;
-	if (kSpecular != kSpecular)
-		return 0;
-	if (kAmbient != kAmbient)
+	if (!emissiveColor.Equals(material.emissiveColor))
 		return 0;
 
-	if (shininess != shininess)
+	if (roughness != material.roughness)
+		return 0;
+	if (metallic != material.metallic)
 		return 0;
 
 	return 1;
