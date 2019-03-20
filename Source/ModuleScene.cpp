@@ -624,6 +624,7 @@ void ModuleScene::RestorePhoto(GameObject* photo)
 				App->spacePartitioning->aabbTreeLighting.InsertGO(go);
 				go->light = (ComponentLight*)c;
 				go->light->CalculateGuizmos();
+				go->hasLight = true;
 				lights.push_back((ComponentLight*)c);
 				break;
 			case ComponentType::Camera:
