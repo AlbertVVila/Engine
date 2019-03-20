@@ -71,7 +71,7 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 		focus = ImGui::IsWindowFocused();
 		hover = ImGui::IsWindowHovered();
 
-		if (cam == nullptr)
+		if (cam == nullptr  || !isEditor && (!cam->enabled || !cam->gameobject->isActive()))
 		{
 			ImVec2 size = ImGui::GetWindowSize();
 			size.x = MAX(size.x, 400);

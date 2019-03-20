@@ -60,7 +60,7 @@ void ComponentTransform::AddTransform(const math::float4x4& transform)
 
 void ComponentTransform::DrawProperties()
 {
-	
+
 	if (ImGui::CollapsingHeader("Local Transformation", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		if (gameobject->isStatic && App->time->gameState != GameState::RUN)
@@ -124,9 +124,9 @@ void ComponentTransform::UpdateTransform()
 	math::float4x4 difference = global - originalGlobal;
 	MultiSelectionTransform(difference);
 
-	front = -global.Col3(2);
-	up = global.Col3(1);
-	right = global.Col3(0);
+	front = -local.Col3(2);
+	up = local.Col3(1);
+	right = local.Col3(0);
 
 	if (!gameobject->isStatic)
 	{
@@ -236,6 +236,19 @@ void ComponentTransform::SetPosition(const math::float3 & newPosition)
 math::float3 ComponentTransform::GetPosition()
 {
 	return position;
+}
+
+void ComponentTransform::SetRotation(const math::Quat & newRotation)
+{
+	rotation = newRotation;
+	RotationToEuler();
+	gameobject->movedFlag = true;
+	UpdateTransform();
+}
+
+math::Quat ComponentTransform::GetRotation()
+{
+	return rotation;
 }
 
 math::float3 ComponentTransform::GetGlobalPosition()

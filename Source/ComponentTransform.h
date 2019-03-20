@@ -19,21 +19,24 @@ public:
 
 	void MultiSelectionTransform(float4x4 &difference); //checks if multi transform is required & do it
 
-	void UpdateTransform();
+	ENGINE_API void UpdateTransform();
 	void SetLocalToWorld();
 	void SetWorldToLocal(const math::float4x4& newparentGlobalMatrix);
 	void SetGlobalTransform(const math::float4x4& newglobal, const math::float4x4& parentglobal);
 
 	ENGINE_API void SetPosition(const math::float3& position);
+	ENGINE_API void SetRotation(const math::Quat & newRotation);
+	ENGINE_API math::Quat GetRotation();
 	ENGINE_API math::float3 GetPosition();
 
-	math::float3 GetGlobalPosition();
+	ENGINE_API math::float3 GetGlobalPosition();
 
 	void Save(JSON_value* value) const override;
 	void Load(JSON_value* value) override;
 
+	ENGINE_API void RotationToEuler();
+
 private:
-	void RotationToEuler();
 	void UpdateOldTransform();
 
 public:
@@ -47,13 +50,11 @@ public:
 	math::float3 right = math::float3::zero;
 	math::float3 front = math::float3::zero;
 
-
-private:
 	math::float3 position = math::float3::zero;
+private:
 	math::float3 old_position = math::float3::zero;
 	math::float3 old_euler = math::float3::zero;
 	math::float3 old_scale = math::float3::zero;
 };
 
 #endif __ComponentTransform_h__
-

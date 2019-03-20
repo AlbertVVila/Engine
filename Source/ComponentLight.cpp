@@ -56,11 +56,13 @@ void ComponentLight::Update()
 
 void ComponentLight::DrawProperties()
 {
+	ImGui::PushID(this);
 	if (ImGui::CollapsingHeader("Light"))
 	{
 		bool removed = Component::DrawComponentState();
 		if (removed)
 		{
+			ImGui::PopID();
 			return;
 		}
 		ImGui::Separator();
@@ -114,6 +116,7 @@ void ComponentLight::DrawProperties()
 			App->spacePartitioning->aabbTreeLighting.InsertGO(gameobject);
 		}
 	}
+	ImGui::PopID();
 }
 
 void ComponentLight::DrawDebugLight() const

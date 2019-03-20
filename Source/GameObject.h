@@ -4,6 +4,7 @@
 #include <vector>
 #include <list>
 #include "Geometry/AABB.h"
+#include "Globals.h"
 
 class Component;
 class ComponentTransform;
@@ -12,6 +13,7 @@ class AABBTreeNode;
 enum class ComponentType;
 struct Texture;
 class JSON_value;
+class Script;
 
 class GameObject
 {
@@ -25,9 +27,20 @@ public:
 	void DrawProperties();
 
 	void Update();
+	inline bool isActive() const
+	{
+		if (!activeInHierarchy) return false;
+		return activeSelf;
+	}
 
-	Component * CreateComponent(ComponentType type);
-	Component * GetComponent(ComponentType type) const;
+	void SetActive(bool active);
+
+	Component* CreateComponent(ComponentType type);
+	Component* GetComponent(ComponentType type) const;
+
+	ENGINE_API Script* GetScript() const; //Returns first script found in GameObject
+	ENGINE_API Script* FindScriptByName(const char* name) const;
+
 	std::vector<Component *> GetComponents(ComponentType type) const;
 	std::vector<Component *> GetComponentsInChildren(ComponentType type) const;
 	void RemoveComponent(const Component & component);
@@ -59,6 +72,9 @@ private:
 public:
 	unsigned UUID = 0;
 	unsigned parentUUID = 0; //only set in Save/Load scene TODO:update on parent change
+	bool activeInHierarchy = true;
+	bool activeSelf = true;
+
 	bool isStatic = false;
 	bool isSelected = false;
 	bool movedFlag = false;

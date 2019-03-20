@@ -6,6 +6,8 @@ class JSON_value;
 struct ImGuiContext;
 #include "BaseScript.h"
 #include "Math/float3.h"
+#include "Math/Quat.h"
+#include "Math/float4x4.h"
 
 #ifdef EnemyMovementScript_EXPORTS
 #define EnemyMovementScript_API __declspec(dllexport)
@@ -25,9 +27,10 @@ public:
 private:
 	GameObject* GetGameObjectRecursiveByName(GameObject* gameObject, const char* name);
 private:
-	float speed = 0.5f;
+	float speed = 100.0f;
 	std::string playerName = "Player";
 	GameObject* player = nullptr;
+
 };
 
 extern "C" EnemyMovementScript_API EnemyMovementScript* CreateScript();

@@ -255,6 +255,8 @@ void ModuleScene::DrawGOGame(const GameObject& go)
 void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isEditor)
 {
 	PROFILE;
+	if (!go.isActive()) return;
+
 	if (go.drawBBox && isEditor)
 	{
 		go.DrawBBox();
@@ -837,6 +839,7 @@ std::list<std::pair<float, GameObject*>> ModuleScene::GetDynamicIntersections(co
 	App->spacePartitioning->aabbTree.GetIntersections(line, intersections);
 	for (const auto &go : intersections)
 	{
+		if (!go->isActive()) continue;
 		float dNear = -FLOAT_INF;
 		float dFar = FLOAT_INF;
 		if (line.Intersects(go->GetBoundingBox(), dNear, dFar))
@@ -855,6 +858,7 @@ std::list<std::pair<float, GameObject*>> ModuleScene::GetStaticIntersections(con
 	App->spacePartitioning->kDTree.GetIntersections(line, intersections);
 	for (const auto &go : intersections)
 	{
+		if (!go->isActive()) continue;
 		float dNear = -FLOAT_INF;
 		float dFar = FLOAT_INF;
 		if (line.Intersects(go->GetBoundingBox(), dNear, dFar))

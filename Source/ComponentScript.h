@@ -22,6 +22,19 @@ public:
 
 	void SetScript(const std::string& name);
 
+	inline Script* GetScript() const
+	{
+		return script;
+	}
+
+	inline std::string GetScriptName() const
+	{
+		return scriptName;
+	}
+
+	void ScriptStart() const;
+	void ScriptUpdate() const;
+
 	ComponentScript* Clone() const;
 
 private:
