@@ -26,6 +26,15 @@ ComponentTransform2D::ComponentTransform2D(const ComponentTransform2D & componen
 {
 	position = component.position;
 	size = component.size;
+	alignments[TOPLEFT] = math::float2(-1.0f, 1.0f);
+	alignments[TOPCENTER] = math::float2(0.0f, 1.0f);
+	alignments[TOPRIGHT] = math::float2(1.0f, 1.0f);
+	alignments[MIDDLELEFT] = math::float2(-1.0f, 0.0f);
+	alignments[MIDDLECENTER] = math::float2(0.0f, 0.0f);
+	alignments[MIDDLERIGHT] = math::float2(1.0f, 0.0f);
+	alignments[BOTTOMLEFT] = math::float2(-1.0f, -1.0f);
+	alignments[BOTTOMCENTER] = math::float2(0.0f, -1.0f);
+	alignments[BOTTOMRIGHT] = math::float2(1.0f, -1.0f);
 }
 
 ComponentTransform2D::~ComponentTransform2D()
@@ -91,11 +100,19 @@ void ComponentTransform2D::DrawProperties()
 	}
 }
 
+bool ComponentTransform2D::CleanUp()
+{
+	alignments.clear();//clears array
+	alignments.shrink_to_fit();//reduces the capacity to fit its size, which is 0
+	return true;
+}
+
 void ComponentTransform2D::Save(JSON_value * value) const
 {
 	Component::Save(value);
 	value->AddFloat2("Position", position);
 	value->AddFloat2("Size", size);
+	value->AddInt("Anchor", currentAnchor);
 }
 
 void ComponentTransform2D::Load(JSON_value* value)
@@ -103,6 +120,7 @@ void ComponentTransform2D::Load(JSON_value* value)
 	Component::Load(value);
 	position = value->GetFloat2("Position");
 	size = value->GetFloat2("Size");
+	currentAnchor = value->GetInt("Anchor");
 }
 
 math::float2 ComponentTransform2D::getPosition() const
