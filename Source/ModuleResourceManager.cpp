@@ -190,7 +190,6 @@ Resource * ModuleResourceManager::CreateNewResource(TYPE type, unsigned forceUid
 	case TYPE::MESH:	resource = (Resource*) new ResourceMesh(uid); break;
 	/*case TYPE::AUDIO:	resource = (Resource*) new ResourceAudio(uid); break;
 	case TYPE::SCENE:	resource = (Resource*) new ResourceScene(uid); break;
-	case TYPE::BONE:	resource = (Resource*) new ResourceBone(uid); break;
 	case TYPE::ANIMATION: resource = (Resource*) new ResourceAnimation(uid); break;*/
 	case TYPE::MATERIAL: resource = (Resource*) new ResourceMaterial(uid); break;
 	case TYPE::SKYBOX: resource = (Resource*) new ResourceSkybox(uid); break;
