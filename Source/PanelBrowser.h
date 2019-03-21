@@ -25,7 +25,14 @@ private:
 	// Icons
 	ResourceTexture* folderIcon;	
 	ResourceTexture* fileIcon;
-	ResourceTexture* FBXIcon;
+	ResourceTexture* fbxIcon;
+	ResourceTexture* pngIcon;
+	ResourceTexture* jpgIcon;
+	ResourceTexture* tgaIcon;
+	ResourceTexture* tifIcon;
+	ResourceTexture* ddsIcon;
+	ResourceTexture* m4tIcon;
+	ResourceTexture* jsonIcon;
 };
 
 #endif //__PanelBrowser_h__

@@ -19,9 +19,16 @@
 #include "ModuleInput.h"
 #include "GameObject.h"
 
-#define FOLDER_ICON "FolderIcon"
-#define FILE_ICON "FileIcon"
-#define FBX_ICON "FBXFileIcon"
+#define FOLDER_ICON "folderIcon"
+#define FILE_ICON "fileIcon"
+#define FBX_ICON "fbxIcon"
+#define PNG_ICON "pngIcon"
+#define JPG_ICON "jpgIcon"
+#define TGA_ICON "tgaIcon"
+#define TIF_ICON "tifIcon"
+#define DDS_ICON "ddsIcon"
+#define M4T_ICON "m4tIcon"
+#define JSON_ICON "jsonIcon"
 
 PanelBrowser::PanelBrowser() : path(ASSETS)
 {
@@ -36,7 +43,22 @@ bool PanelBrowser::Init()
 {
 	folderIcon = (ResourceTexture*)App->resManager->Get(FOLDER_ICON);
 	fileIcon = (ResourceTexture*)App->resManager->Get(FILE_ICON);
-	FBXIcon = (ResourceTexture*)App->resManager->Get(FBX_ICON);
+	fbxIcon = (ResourceTexture*)App->resManager->Get(FBX_ICON);
+	pngIcon = (ResourceTexture*)App->resManager->Get(PNG_ICON);
+	jpgIcon = (ResourceTexture*)App->resManager->Get(JPG_ICON);
+	tgaIcon = (ResourceTexture*)App->resManager->Get(TGA_ICON);
+	tifIcon = (ResourceTexture*)App->resManager->Get(TIF_ICON);
+	ddsIcon = (ResourceTexture*)App->resManager->Get(DDS_ICON);
+	m4tIcon = (ResourceTexture*)App->resManager->Get(M4T_ICON);
+	jsonIcon = (ResourceTexture*)App->resManager->Get(JSON_ICON);
+
+	if (folderIcon == nullptr || fileIcon == nullptr || fbxIcon == nullptr || pngIcon == nullptr || jpgIcon == nullptr
+		|| tgaIcon == nullptr || tifIcon == nullptr || ddsIcon == nullptr || m4tIcon == nullptr || jsonIcon == nullptr)
+	{
+		LOG("Warning: Some icons missing");
+		return false;
+	}
+
 	return true;
 }
 
@@ -48,9 +70,9 @@ void PanelBrowser::Draw()
 		return;
 	}
 
+	// Get list of all files and directories
 	std::vector<std::string> files;
 	std::vector<std::string> dirs;
-
 	App->fsystem->ListFolderContent(path.c_str(), files, dirs);	
 		
 	ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(.0f, 0.5f));
@@ -124,13 +146,68 @@ void PanelBrowser::Draw()
 	{
 		ImGuiContext* context = ImGui::GetCurrentContext();
 		ImVec2 size = context->CurrentWindow->Size;
+
 		int max_number_elements = size.x / 60;
 		if (max_number_elements < 1) max_number_elements = 1;
 
-		ImGui::SetCursorPosX(15 + 60 * (j%max_number_elements));
-		ImGui::SetCursorPosY(180 + 72 * (j / max_number_elements));
+		// Filter by extension
+		std::string extension = App->fsystem->GetExtension(file);
+		if (extension == PNG)
+		{
+			ImGui::SetCursorPosX(15 + 60 * (j%max_number_elements));
+			ImGui::SetCursorPosY(180 + 72 * (j / max_number_elements));
+			ImGui::ImageButton((ImTextureID)pngIcon->gpuID, ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0), 1);
+		}
+		else if (extension == TIF)
+		{
+			ImGui::SetCursorPosX(15 + 60 * (j%max_number_elements));
+			ImGui::SetCursorPosY(180 + 72 * (j / max_number_elements));
+			ImGui::ImageButton((ImTextureID)tifIcon->gpuID, ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0), 1);
+		}
+		else if (extension == JPG)
+		{
+			ImGui::SetCursorPosX(15 + 60 * (j%max_number_elements));
+			ImGui::SetCursorPosY(180 + 72 * (j / max_number_elements));
+			ImGui::ImageButton((ImTextureID)jpgIcon->gpuID, ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0), 1);
+		}
+		else if (extension == TGA)
+		{
+			ImGui::SetCursorPosX(15 + 60 * (j%max_number_elements));
+			ImGui::SetCursorPosY(180 + 72 * (j / max_number_elements));
+			ImGui::ImageButton((ImTextureID)tgaIcon->gpuID, ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0), 1);
+		}
+		else if (extension == TEXTUREEXT)
+		{
+			ImGui::SetCursorPosX(15 + 60 * (j%max_number_elements));
+			ImGui::SetCursorPosY(180 + 72 * (j / max_number_elements));
+			ImGui::ImageButton((ImTextureID)ddsIcon->gpuID, ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0), 1);
+		}
+		else if (extension == FBXEXTENSION)
+		{
+			ImGui::SetCursorPosX(15 + 60 * (j%max_number_elements));
+			ImGui::SetCursorPosY(180 + 72 * (j / max_number_elements));
+			ImGui::ImageButton((ImTextureID)fbxIcon->gpuID, ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0), 1);
+		}
+		else if (extension == MATERIALEXT)
+		{
+			ImGui::SetCursorPosX(15 + 60 * (j%max_number_elements));
+			ImGui::SetCursorPosY(180 + 72 * (j / max_number_elements));
+			ImGui::ImageButton((ImTextureID)m4tIcon->gpuID, ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0), 1);
+		}
+		else if (extension == JSONEXT)
+		{
+			ImGui::SetCursorPosX(15 + 60 * (j%max_number_elements));
+			ImGui::SetCursorPosY(180 + 72 * (j / max_number_elements));
+			ImGui::ImageButton((ImTextureID)jsonIcon->gpuID, ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0), 1);
+		}
+		else
+		{
+			ImGui::SetCursorPosX(15 + 60 * (j%max_number_elements));
+			ImGui::SetCursorPosY(180 + 72 * (j / max_number_elements));
+			ImGui::ImageButton((ImTextureID)fileIcon->gpuID, ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0), 1);
+		}
 
-		ImGui::ImageButton((ImTextureID)fileIcon->gpuID, ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0), 1);
+		
 
 		if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 		{
