@@ -19,14 +19,25 @@
 #include "ModuleInput.h"
 #include "GameObject.h"
 
+#define FOLDER_ICON "FolderIcon"
+#define FILE_ICON "FileIcon"
+#define FBX_ICON "FBXFileIcon"
+
 PanelBrowser::PanelBrowser() : path(ASSETS)
 {
-
 }
 
 PanelBrowser::~PanelBrowser() 
 {
 
+}
+
+bool PanelBrowser::Init()
+{
+	folderIcon = (ResourceTexture*)App->resManager->Get(FOLDER_ICON);
+	fileIcon = (ResourceTexture*)App->resManager->Get(FILE_ICON);
+	FBXIcon = (ResourceTexture*)App->resManager->Get(FBX_ICON);
+	return true;
 }
 
 void PanelBrowser::Draw() 
@@ -41,16 +52,15 @@ void PanelBrowser::Draw()
 	std::vector<std::string> dirs;
 
 	App->fsystem->ListFolderContent(path.c_str(), files, dirs);	
-
-	//dir_text = (ResourceTexture*)App->resManager->Get("");
 		
 	ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(.0f, 0.5f));
 	
 	ImGui::Text(path.c_str());
 
+	// If we are inside a folder show icon to go back
 	if(path != ASSETS)
 	{
-		ImGui::ImageButton(dir_text, ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0), 1);
+		ImGui::ImageButton((ImTextureID)folderIcon->gpuID, ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0), 1);
 		if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 		{
 			path = pathStack.top();
@@ -80,7 +90,7 @@ void PanelBrowser::Draw()
 		ImGui::SetCursorPosX(15 + 60 * (i%max_number_elements));
 		ImGui::SetCursorPosY(120 + 72 * (i / max_number_elements));
 
-		ImGui::ImageButton(dir_text, ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0), 1);
+		ImGui::ImageButton((ImTextureID)folderIcon->gpuID, ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0), 1);
 		
 		if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 		{
@@ -120,7 +130,7 @@ void PanelBrowser::Draw()
 		ImGui::SetCursorPosX(15 + 60 * (j%max_number_elements));
 		ImGui::SetCursorPosY(180 + 72 * (j / max_number_elements));
 
-		ImGui::ImageButton(dir_text, ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0), 1);
+		ImGui::ImageButton((ImTextureID)fileIcon->gpuID, ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0), 1);
 
 		if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 		{

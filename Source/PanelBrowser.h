@@ -14,13 +14,18 @@ public:
 	PanelBrowser();
 	~PanelBrowser();
 
+	bool Init() override;
 	void Draw();
 
 private:
 	std::string path;
 	std::string fileSelected;
 	std::stack<std::string> pathStack;
-	ResourceTexture* dir_text;
+
+	// Icons
+	ResourceTexture* folderIcon;	
+	ResourceTexture* fileIcon;
+	ResourceTexture* FBXIcon;
 };
 
 #endif //__PanelBrowser_h__
