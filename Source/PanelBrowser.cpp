@@ -85,7 +85,7 @@ void PanelBrowser::Draw()
 	// If we are inside a folder show icon to go back
 	if(path != ASSETS)
 	{
-		ImGui::ImageButton((ImTextureID)folderIcon->gpuID, ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0), 1);
+		ImGui::ImageButton(folderIcon != nullptr? (ImTextureID)folderIcon->gpuID : 0, ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0), 1);
 		if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 		{
 			path = pathStack.top();
@@ -198,7 +198,7 @@ void PanelBrowser::DrawFolderIcon(const char* dir, int itemNumber)
 	ImGui::SetCursorPosX(15 + 60 * (itemNumber % maxNumberElements));
 	ImGui::SetCursorPosY(120 + 72 * (itemNumber / maxNumberElements));
 
-	ImGui::ImageButton((ImTextureID)folderIcon->gpuID, ImVec2(iconSize.x, iconSize.y), ImVec2(0, 1), ImVec2(1, 0), 1);
+	ImGui::ImageButton(folderIcon != nullptr ? (ImTextureID)folderIcon->gpuID : 0, ImVec2(iconSize.x, iconSize.y), ImVec2(0, 1), ImVec2(1, 0), 1);
 
 	if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
@@ -241,15 +241,15 @@ void PanelBrowser::DrawFileIcon(const char* file, int itemNumber)
 
 	// Select icon by extension
 	std::string extension = App->fsystem->GetExtension(file);
-	if		(extension == PNG)			{ ImGui::ImageButton((ImTextureID)pngIcon->gpuID, ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0), 1); }
-	else if (extension == TIF)			{ ImGui::ImageButton((ImTextureID)tifIcon->gpuID, ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0), 1); }
-	else if (extension == JPG)			{ ImGui::ImageButton((ImTextureID)jpgIcon->gpuID, ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0), 1); }
-	else if (extension == TGA)			{ ImGui::ImageButton((ImTextureID)tgaIcon->gpuID, ImVec2(iconSize.x, iconSize.y), ImVec2(0, 1), ImVec2(1, 0), 1); }
-	else if (extension == TEXTUREEXT)	{ ImGui::ImageButton((ImTextureID)ddsIcon->gpuID, ImVec2(iconSize.x, iconSize.y), ImVec2(0, 1), ImVec2(1, 0), 1); }
-	else if (extension == FBXEXTENSION)	{ ImGui::ImageButton((ImTextureID)fbxIcon->gpuID, ImVec2(iconSize.x, iconSize.y), ImVec2(0, 1), ImVec2(1, 0), 1); }
-	else if (extension == MATERIALEXT)	{ ImGui::ImageButton((ImTextureID)m4tIcon->gpuID, ImVec2(iconSize.x, iconSize.y), ImVec2(0, 1), ImVec2(1, 0), 1); }
-	else if (extension == JSONEXT)		{ ImGui::ImageButton((ImTextureID)jsonIcon->gpuID, ImVec2(iconSize.x, iconSize.y), ImVec2(0, 1), ImVec2(1, 0), 1); }
-	else								{ ImGui::ImageButton((ImTextureID)fileIcon->gpuID, ImVec2(iconSize.x, iconSize.y), ImVec2(0, 1), ImVec2(1, 0), 1); }
+	if		(extension == PNG)			{ ImGui::ImageButton(pngIcon != nullptr ? (ImTextureID)pngIcon->gpuID : 0, ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0), 1); }
+	else if (extension == TIF)			{ ImGui::ImageButton(tifIcon != nullptr ? (ImTextureID)tifIcon->gpuID : 0, ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0), 1); }
+	else if (extension == JPG)			{ ImGui::ImageButton(jpgIcon != nullptr ? (ImTextureID)jpgIcon->gpuID : 0, ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0), 1); }
+	else if (extension == TGA)			{ ImGui::ImageButton(tgaIcon != nullptr ? (ImTextureID)tgaIcon->gpuID : 0, ImVec2(iconSize.x, iconSize.y), ImVec2(0, 1), ImVec2(1, 0), 1); }
+	else if (extension == TEXTUREEXT)	{ ImGui::ImageButton(ddsIcon != nullptr ? (ImTextureID)ddsIcon->gpuID : 0, ImVec2(iconSize.x, iconSize.y), ImVec2(0, 1), ImVec2(1, 0), 1); }
+	else if (extension == FBXEXTENSION)	{ ImGui::ImageButton(fbxIcon != nullptr ? (ImTextureID)fbxIcon->gpuID : 0, ImVec2(iconSize.x, iconSize.y), ImVec2(0, 1), ImVec2(1, 0), 1); }
+	else if (extension == MATERIALEXT)	{ ImGui::ImageButton(m4tIcon != nullptr ? (ImTextureID)m4tIcon->gpuID : 0, ImVec2(iconSize.x, iconSize.y), ImVec2(0, 1), ImVec2(1, 0), 1); }
+	else if (extension == JSONEXT)		{ ImGui::ImageButton(jsonIcon != nullptr ? (ImTextureID)jsonIcon->gpuID : 0, ImVec2(iconSize.x, iconSize.y), ImVec2(0, 1), ImVec2(1, 0), 1); }
+	else								{ ImGui::ImageButton(fileIcon != nullptr ? (ImTextureID)fileIcon->gpuID : 0, ImVec2(iconSize.x, iconSize.y), ImVec2(0, 1), ImVec2(1, 0), 1); }
 
 	if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
