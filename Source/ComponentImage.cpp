@@ -31,8 +31,16 @@ ComponentImage::ComponentImage(GameObject* gameobject) : Component(gameobject, C
 
 ComponentImage::ComponentImage(const ComponentImage &copy) : Component(copy)
 {
+	if (textureFiles.size() == 0)
+	{
+		textureFiles = App->fsystem->ListFiles(TEXTURES, false);
+	}
 	color = copy.color;
 	textureName = copy.textureName;
+	if (textureName != "None Selected")
+	{
+		texture = App->textures->GetTexture(textureName.c_str());
+	}
 }
 
 ComponentImage::~ComponentImage()

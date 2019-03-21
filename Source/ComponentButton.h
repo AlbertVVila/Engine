@@ -36,7 +36,7 @@ public:
 
 	bool isHovered = false;
 	bool isPressed = false;
-	
+	bool isSelected = false;
 };
 
 #endif // __ComponentButton_h__

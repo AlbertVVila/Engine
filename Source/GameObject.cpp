@@ -209,8 +209,11 @@ void GameObject::Update()
 				App->spacePartitioning->aabbTreeLighting.InsertGO(copy);
 				App->scene->lights.push_back(copy->light);
 			}
-			copy->transform->SetPosition(copy->transform->GetPosition() + copy->transform->front);
-			copy->transform->UpdateTransform();
+			if (copy->transform != nullptr)
+			{
+				copy->transform->SetPosition(copy->transform->GetPosition() + copy->transform->front);
+				copy->transform->UpdateTransform();
+			}
 			this->children.push_back(copy);
 		}
 		if ((*itChild)->movedFlag) //Moved GO
