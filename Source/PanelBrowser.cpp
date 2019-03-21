@@ -11,10 +11,10 @@
 
 #include "Application.h"
 #include "ModuleWindow.h"
-#include "GUICreator.h"
 #include "ModuleResourceManager.h"
 #include "ModuleFileSystem.h"
 #include "ModuleInput.h"
+#include "ModuleTextures.h"
 #include "GameObject.h"
 
 #define FOLDER_ICON "folderIcon"
@@ -137,13 +137,14 @@ void PanelBrowser::Draw()
 		ImGui::Text("Delete");
 		if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 		{
-			App->fsystem->Remove(fileSelected.c_str());
+			App->fsystem->Remove(fileSelected->GetExportedFile());
 			//ImGui::EndPopup();
 		}
-		if (ImGui::Selectable("Import"), false)
+		if (ImGui::Selectable("Import Configuration"))
 		{
-			//Code to import file
+			//Code to change import settings
 			//ImGui::EndPopup();
+			importConfigPopUp = true;
 		}
 
 		if (ImGui::BeginPopup("Rename File"))
@@ -156,7 +157,7 @@ void PanelBrowser::Draw()
 			size_t pos2 = 0;
 			std::vector<std::string> result;
 			char separator = '/';
-			while (pos2 != fileSelected.npos)
+			/*while (pos2 != fileSelected.npos)
 			{
 				pos2 = fileSelected.find(separator, pos1);
 				if (pos2 != fileSelected.npos)
@@ -176,10 +177,36 @@ void PanelBrowser::Draw()
 			{
 				App->fsystem->Rename(ruteToFile.c_str(), filename.c_str(), newName);
 				ImGui::EndPopup();
-			}
+			}*/
 			ImGui::EndPopup();
 		}
 
+		ImGui::EndPopup();
+	}
+	if(importConfigPopUp)
+		ImGui::OpenPopup("Import configuration");
+
+	if (ImGui::BeginPopupModal("Import configuration", &importConfigPopUp))
+	{
+
+		ImGui::Text("%s", fileSelected->GetExportedFile());
+		switch (fileSelected->GetType())
+		{
+		case TYPE::TEXTURE:
+			App->textures->DrawImportConfiguration((ResourceTexture*)fileSelected);
+			break;
+		}
+
+		if (ImGui::Button("Accept"))
+		{
+			// Add accept logic
+			importConfigPopUp = false;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel"))
+		{
+			importConfigPopUp = false;
+		}
 		ImGui::EndPopup();
 	}
 
@@ -253,7 +280,8 @@ void PanelBrowser::DrawFileIcon(const char* file, int itemNumber)
 
 	if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
-		fileSelected = path + file;
+		//fileSelected = path + file;
+		fileSelected = App->resManager->GetWithoutLoad(App->fsystem->GetFilename(file).c_str());
 		ImGui::OpenPopup("File Context Menu");
 	}
 
@@ -269,7 +297,8 @@ void PanelBrowser::DrawFileIcon(const char* file, int itemNumber)
 
 	if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
-		fileSelected = path + file;
+		//fileSelected = path + file;
+		fileSelected = App->resManager->GetWithoutLoad(App->fsystem->GetFilename(file).c_str());
 		ImGui::OpenPopup("File Context Menu");
 	}
 }

@@ -104,3 +104,23 @@ bool ModuleTextures::ImportImage(const char* file, const char* folder, ResourceT
 	}
 	return success;
 }
+
+void ModuleTextures::DrawImportConfiguration(ResourceTexture* resource)
+{
+	const char* compressionTypes[] = { "No Compression", "DXT1", "DXT2", "DXT3", "DXT4", "DXT5"};
+	//int type = (int)auxResource->GetType();
+	if (ImGui::BeginCombo("Compression type", compressionTypes[5]))
+	{
+		for (int n = 0; n < 6; n++)
+		{
+			bool is_selected = (5 == n);
+			if (ImGui::Selectable(compressionTypes[n], is_selected) && 5 != n)
+			{
+				//auxResource->SetCompression();
+			}
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
+		}
+		ImGui::EndCombo();
+	}
+}
