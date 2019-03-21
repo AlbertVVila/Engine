@@ -20,6 +20,9 @@ public:
 	void Draw();
 
 private:
+	void DrawFileIcon(const char* file, int itemNumber);
+
+private:
 	std::string path;
 	std::string fileSelected;
 	std::stack<std::string> pathStack;
@@ -37,7 +40,7 @@ private:
 	ResourceTexture* jsonIcon;
 
 	// ImGui elements size
-	math::float2 fileSize = math::float2(40.0f, 40.0f);
+	math::float2 iconSize = math::float2(40.0f, 40.0f);
 };
 
 #endif //__PanelBrowser_h__

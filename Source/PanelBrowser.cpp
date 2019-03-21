@@ -104,11 +104,11 @@ void PanelBrowser::Draw()
 	{
 		ImGuiContext* context = ImGui::GetCurrentContext();
 		ImVec2 size = context->CurrentWindow->Size;
-		int max_number_elements = size.x / 60;
-		if (max_number_elements < 1) max_number_elements = 1;
+		int maxNumberElements = size.x / 60;
+		if (maxNumberElements < 1) maxNumberElements = 1;
 
-		ImGui::SetCursorPosX(15 + 60 * (i%max_number_elements));
-		ImGui::SetCursorPosY(120 + 72 * (i / max_number_elements));
+		ImGui::SetCursorPosX(15 + 60 * (i%maxNumberElements));
+		ImGui::SetCursorPosY(120 + 72 * (i / maxNumberElements));
 
 		ImGui::ImageButton((ImTextureID)folderIcon->gpuID, ImVec2(iconSize.x, iconSize.y), ImVec2(0, 1), ImVec2(1, 0), 1);
 		
@@ -122,8 +122,8 @@ void PanelBrowser::Draw()
 		ImGui::SetNextWindowPos(ImVec2((App->window->width / 2) - nextWinSize.x / 2, (App->window->height / 2) - nextWinSize.y / 2));
 		ImGui::SetNextWindowSize(ImVec2(nextWinSize.x, nextWinSize.y));
 
-		ImGui::SetCursorPosX(15 + 60*(i%max_number_elements));
-		ImGui::SetCursorPosY(iconSize.y + 120 + 72*(i / max_number_elements));
+		ImGui::SetCursorPosX(15 + 60*(i%maxNumberElements));
+		ImGui::SetCursorPosY(iconSize.y + 120 + 72*(i / maxNumberElements));
 
 		
 		ImGui::PushTextWrapPos(ImGui::GetCursorPos().x + 52);
@@ -141,92 +141,12 @@ void PanelBrowser::Draw()
 	int j = 0;
 	for each (std::string file in files)
 	{
-		ImGuiContext* context = ImGui::GetCurrentContext();
-		ImVec2 size = context->CurrentWindow->Size;
-
-		int maxNumberElements = size.x / 60;
-		if (maxNumberElements < 1) maxNumberElements = 1;
-
-		// Filter by extension
-		std::string extension = App->fsystem->GetExtension(file);
-		if (extension == PNG)
+		// Check that the file has been loaded on the Resource Manager
+		if (App->resManager->FindByFileInAssets((path + file).c_str()) > 0)
 		{
-			ImGui::SetCursorPosX(15 + 60 * (j%maxNumberElements));
-			ImGui::SetCursorPosY(180 + 72 * (j / maxNumberElements));
-			ImGui::ImageButton((ImTextureID)pngIcon->gpuID, ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0), 1);
+			DrawFileIcon(file.c_str(), j);
+			j++;
 		}
-		else if (extension == TIF)
-		{
-			ImGui::SetCursorPosX(15 + 60 * (j%maxNumberElements));
-			ImGui::SetCursorPosY(180 + 72 * (j / maxNumberElements));
-			ImGui::ImageButton((ImTextureID)tifIcon->gpuID, ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0), 1);
-		}
-		else if (extension == JPG)
-		{
-			ImGui::SetCursorPosX(15 + 60 * (j%maxNumberElements));
-			ImGui::SetCursorPosY(180 + 72 * (j / maxNumberElements));
-			ImGui::ImageButton((ImTextureID)jpgIcon->gpuID, ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0), 1);
-		}
-		else if (extension == TGA)
-		{
-			ImGui::SetCursorPosX(15 + 60 * (j%maxNumberElements));
-			ImGui::SetCursorPosY(180 + 72 * (j / maxNumberElements));
-			ImGui::ImageButton((ImTextureID)tgaIcon->gpuID, ImVec2(iconSize.x, iconSize.y), ImVec2(0, 1), ImVec2(1, 0), 1);
-		}
-		else if (extension == TEXTUREEXT)
-		{
-			ImGui::SetCursorPosX(15 + 60 * (j%maxNumberElements));
-			ImGui::SetCursorPosY(180 + 72 * (j / maxNumberElements));
-			ImGui::ImageButton((ImTextureID)ddsIcon->gpuID, ImVec2(iconSize.x, iconSize.y), ImVec2(0, 1), ImVec2(1, 0), 1);
-		}
-		else if (extension == FBXEXTENSION)
-		{
-			ImGui::SetCursorPosX(15 + 60 * (j%maxNumberElements));
-			ImGui::SetCursorPosY(180 + 72 * (j / maxNumberElements));
-			ImGui::ImageButton((ImTextureID)fbxIcon->gpuID, ImVec2(iconSize.x, iconSize.y), ImVec2(0, 1), ImVec2(1, 0), 1);
-		}
-		else if (extension == MATERIALEXT)
-		{
-			ImGui::SetCursorPosX(15 + 60 * (j%maxNumberElements));
-			ImGui::SetCursorPosY(180 + 72 * (j / maxNumberElements));
-			ImGui::ImageButton((ImTextureID)m4tIcon->gpuID, ImVec2(iconSize.x, iconSize.y), ImVec2(0, 1), ImVec2(1, 0), 1);
-		}
-		else if (extension == JSONEXT)
-		{
-			ImGui::SetCursorPosX(15 + 60 * (j%maxNumberElements));
-			ImGui::SetCursorPosY(180 + 72 * (j / maxNumberElements));
-			ImGui::ImageButton((ImTextureID)jsonIcon->gpuID, ImVec2(iconSize.x, iconSize.y), ImVec2(0, 1), ImVec2(1, 0), 1);
-		}
-		else
-		{
-			ImGui::SetCursorPosX(15 + 60 * (j%maxNumberElements));
-			ImGui::SetCursorPosY(180 + 72 * (j / maxNumberElements));
-			ImGui::ImageButton((ImTextureID)fileIcon->gpuID, ImVec2(iconSize.x, iconSize.y), ImVec2(0, 1), ImVec2(1, 0), 1);
-		}
-
-		if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
-		{
-			fileSelected = path + file;
-			ImGui::OpenPopup("File Context Menu");
-		}
-
-		float2 nextWinSize = float2(350, 100);
-		ImGui::SetNextWindowPos(ImVec2((App->window->width / 2) - nextWinSize.x / 2, (App->window->height / 2) - nextWinSize.y / 2));
-		ImGui::SetNextWindowSize(ImVec2(nextWinSize.x, nextWinSize.y));
-
-		ImGui::SetCursorPosX(15 + 60 * (j%maxNumberElements));
-		ImGui::SetCursorPosY(iconSize.y + 180 + 72 * (j / maxNumberElements));
-
-		ImGui::PushTextWrapPos(ImGui::GetCursorPos().x + 52);
-		ImGui::Text((file).c_str());
-
-		if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
-		{
-			fileSelected = path + file;
-			ImGui::OpenPopup("File Context Menu");
-		}
-
-		j++;
 	}
 
 	if (ImGui::BeginPopup("File Context Menu"))
@@ -251,6 +171,7 @@ void PanelBrowser::Draw()
 
 		if (ImGui::BeginPopup("Rename File"))
 		{
+			// TODO: Add function for rename and rename file also on Resource Manager 
 			ImGui::Text("Write the new name for the file");
 			char* newName = new char[30];
 			memset(newName, 0, 30);
@@ -288,4 +209,50 @@ void PanelBrowser::Draw()
 
 	ImGui::PopStyleVar();
 	ImGui::End();	
+}
+
+void PanelBrowser::DrawFileIcon(const char* file, int itemNumber)
+{
+	ImGuiContext* context = ImGui::GetCurrentContext();
+	ImVec2 size = context->CurrentWindow->Size;
+
+	int maxNumberElements = size.x / 60;
+	if (maxNumberElements < 1) maxNumberElements = 1;
+
+	ImGui::SetCursorPosX(15 + 60 * (itemNumber % maxNumberElements));
+	ImGui::SetCursorPosY(180 + 72 * (itemNumber / maxNumberElements));
+
+	// Select icon by extension
+	std::string extension = App->fsystem->GetExtension(file);
+	if		(extension == PNG)			{ ImGui::ImageButton((ImTextureID)pngIcon->gpuID, ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0), 1); }
+	else if (extension == TIF)			{ ImGui::ImageButton((ImTextureID)tifIcon->gpuID, ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0), 1); }
+	else if (extension == JPG)			{ ImGui::ImageButton((ImTextureID)jpgIcon->gpuID, ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0), 1); }
+	else if (extension == TGA)			{ ImGui::ImageButton((ImTextureID)tgaIcon->gpuID, ImVec2(iconSize.x, iconSize.y), ImVec2(0, 1), ImVec2(1, 0), 1); }
+	else if (extension == TEXTUREEXT)	{ ImGui::ImageButton((ImTextureID)ddsIcon->gpuID, ImVec2(iconSize.x, iconSize.y), ImVec2(0, 1), ImVec2(1, 0), 1); }
+	else if (extension == FBXEXTENSION)	{ ImGui::ImageButton((ImTextureID)fbxIcon->gpuID, ImVec2(iconSize.x, iconSize.y), ImVec2(0, 1), ImVec2(1, 0), 1); }
+	else if (extension == MATERIALEXT)	{ ImGui::ImageButton((ImTextureID)m4tIcon->gpuID, ImVec2(iconSize.x, iconSize.y), ImVec2(0, 1), ImVec2(1, 0), 1); }
+	else if (extension == JSONEXT)		{ ImGui::ImageButton((ImTextureID)jsonIcon->gpuID, ImVec2(iconSize.x, iconSize.y), ImVec2(0, 1), ImVec2(1, 0), 1); }
+	else								{ ImGui::ImageButton((ImTextureID)fileIcon->gpuID, ImVec2(iconSize.x, iconSize.y), ImVec2(0, 1), ImVec2(1, 0), 1); }
+
+	if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	{
+		fileSelected = path + file;
+		ImGui::OpenPopup("File Context Menu");
+	}
+
+	float2 nextWinSize = float2(350, 100);
+	ImGui::SetNextWindowPos(ImVec2((App->window->width / 2) - nextWinSize.x / 2, (App->window->height / 2) - nextWinSize.y / 2));
+	ImGui::SetNextWindowSize(ImVec2(nextWinSize.x, nextWinSize.y));
+
+	ImGui::SetCursorPosX(15 + 60 * (itemNumber % maxNumberElements));
+	ImGui::SetCursorPosY(iconSize.y + 180 + 72 * (itemNumber / maxNumberElements));
+
+	ImGui::PushTextWrapPos(ImGui::GetCursorPos().x + 52);
+	ImGui::Text(file);
+
+	if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	{
+		fileSelected = path + file;
+		ImGui::OpenPopup("File Context Menu");
+	}
 }
