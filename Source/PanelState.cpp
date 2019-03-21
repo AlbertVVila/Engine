@@ -12,8 +12,11 @@ PanelState::~PanelState()
 
 void PanelState::Draw()
 {
-	ImGui::Begin("StateMachine", &enabled, ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoCollapse);
-
+	if (!ImGui::Begin("State Machine", &enabled))
+	{
+		ImGui::End();
+		return;
+	}
 
 	ImGui::End();
 }

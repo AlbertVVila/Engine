@@ -21,13 +21,18 @@ void PanelAnimation::Draw()
 {
 	if (!ImGui::Begin("Animation", &enabled))
 	{
-		if (App->scene->selected != nullptr && App->scene->selected->isBoneRoot)
-		{
-			Animation* anim = ((ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)))->anim;
-
-		}
 		ImGui::End();
 		return;
+	}
+	if (App->scene->selected != nullptr && App->scene->selected->isBoneRoot)
+	{
+		Animation* anim = ((ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)))->anim;
+
+		ImGui::Text("GAMEOBJECT");
+
+		ImGui::Separator();
+		ImGui::Text(App->scene->selected->name.c_str());
+
 	}
 
 	ImGui::End();
