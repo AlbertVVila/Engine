@@ -127,8 +127,8 @@ math::float2 ComponentTransform2D::getPosition() const
 {
 	float width = (float)App->renderer->viewGame->current_width;
 	float height = (float)App->renderer->viewGame->current_height;
-	float horizontalCalculation = alignments[currentAnchor].x * width * 0.5 - alignments[currentAnchor].x*(size.x / 2);
-	float verticalCalculation = alignments[currentAnchor].y * height * 0.5 - alignments[currentAnchor].y*(size.y / 2);
+	float horizontalCalculation = alignments[currentAnchor].x * width * 0.5;// -alignments[currentAnchor].x*(size.x / 2);
+	float verticalCalculation = alignments[currentAnchor].y * height * 0.5;// -alignments[currentAnchor].y*(size.y / 2);
 
 	return math::float2(horizontalCalculation + position.x, verticalCalculation + position.y);
 }
