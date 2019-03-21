@@ -308,6 +308,38 @@ bool ModuleFileSystem::Copy(const char* source, const char* destination, const c
 	return true;
 }
 
+bool ModuleFileSystem::Move(const char * source, const char* file, const char* newFile) const
+{
+	char * data = nullptr;
+	std::string filepath(source);
+	filepath += file;
+	unsigned size = Load(filepath.c_str(), &data);
+	std::string filedest(source);
+	filedest += newFile;
+	Save(filedest.c_str(), data, size);
+	RELEASE_ARRAY(data);
+
+	return true;
+}
+
+void ModuleFileSystem::Rename(const char* route, const char* file, const char* newName) const
+{
+	std::string filepath(route);
+	filepath += file;
+	assert(filepath.c_str() != nullptr);
+	if (PHYSFS_unmount(filepath.c_str()) != 0)
+	{
+		LOG("Error: %s", PHYSFS_getLastError());
+	}
+	std::string filenewpath(route);
+	filenewpath += newName;
+	if (Exists(filenewpath.c_str()) == 0)
+	{
+		Move(route, file, newName);
+		Remove((const char*)filepath.c_str());
+	}
+}
+
 void ModuleFileSystem::Monitorize(const char* folder)
 {
 	while (monitorize)
