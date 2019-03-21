@@ -98,46 +98,15 @@ void PanelBrowser::Draw()
 		ImGui::SetCursorPosY(10);
 	}
 
+	// Draw folder icons
 	int i = 0;
-
 	for each(std::string dir in dirs)
 	{
-		ImGuiContext* context = ImGui::GetCurrentContext();
-		ImVec2 size = context->CurrentWindow->Size;
-		int maxNumberElements = size.x / 60;
-		if (maxNumberElements < 1) maxNumberElements = 1;
-
-		ImGui::SetCursorPosX(15 + 60 * (i%maxNumberElements));
-		ImGui::SetCursorPosY(120 + 72 * (i / maxNumberElements));
-
-		ImGui::ImageButton((ImTextureID)folderIcon->gpuID, ImVec2(iconSize.x, iconSize.y), ImVec2(0, 1), ImVec2(1, 0), 1);
-		
-		if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
-		{
-			pathStack.push(path);
-			path += dir + "/";
-		}
-
-		float2 nextWinSize = float2(350, 100);
-		ImGui::SetNextWindowPos(ImVec2((App->window->width / 2) - nextWinSize.x / 2, (App->window->height / 2) - nextWinSize.y / 2));
-		ImGui::SetNextWindowSize(ImVec2(nextWinSize.x, nextWinSize.y));
-
-		ImGui::SetCursorPosX(15 + 60*(i%maxNumberElements));
-		ImGui::SetCursorPosY(iconSize.y + 120 + 72*(i / maxNumberElements));
-
-		
-		ImGui::PushTextWrapPos(ImGui::GetCursorPos().x + 52);
-		ImGui::Text(dir.c_str());
-
-		if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
-		{
-			pathStack.push(path);
-			path += dir + "/";
-		}
-		
+		DrawFolderIcon(dir.c_str(), i);		
 		i++;
 	}
 	
+	// Draw files icons
 	int j = 0;
 	for each (std::string file in files)
 	{
@@ -149,6 +118,7 @@ void PanelBrowser::Draw()
 		}
 	}
 
+	// Right click menu
 	if (ImGui::BeginPopup("File Context Menu"))
 	{
 		ImGui::Text("Rename");
@@ -209,6 +179,44 @@ void PanelBrowser::Draw()
 
 	ImGui::PopStyleVar();
 	ImGui::End();	
+}
+
+void PanelBrowser::DrawFolderIcon(const char* dir, int itemNumber)
+{
+	ImGuiContext* context = ImGui::GetCurrentContext();
+	ImVec2 size = context->CurrentWindow->Size;
+	int maxNumberElements = size.x / 60;
+	if (maxNumberElements < 1) maxNumberElements = 1;
+
+	ImGui::SetCursorPosX(15 + 60 * (itemNumber % maxNumberElements));
+	ImGui::SetCursorPosY(120 + 72 * (itemNumber / maxNumberElements));
+
+	ImGui::ImageButton((ImTextureID)folderIcon->gpuID, ImVec2(iconSize.x, iconSize.y), ImVec2(0, 1), ImVec2(1, 0), 1);
+
+	if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	{
+		pathStack.push(path);
+		path += dir;
+		path += "/";
+	}
+
+	float2 nextWinSize = float2(350, 100);
+	ImGui::SetNextWindowPos(ImVec2((App->window->width / 2) - nextWinSize.x / 2, (App->window->height / 2) - nextWinSize.y / 2));
+	ImGui::SetNextWindowSize(ImVec2(nextWinSize.x, nextWinSize.y));
+
+	ImGui::SetCursorPosX(15 + 60 * (itemNumber % maxNumberElements));
+	ImGui::SetCursorPosY(iconSize.y + 120 + 72 * (itemNumber / maxNumberElements));
+
+
+	ImGui::PushTextWrapPos(ImGui::GetCursorPos().x + 52);
+	ImGui::Text(dir);
+
+	if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	{
+		pathStack.push(path);
+		path += dir;
+		path += "/";
+	}
 }
 
 void PanelBrowser::DrawFileIcon(const char* file, int itemNumber)

@@ -20,6 +20,7 @@ public:
 	void Draw();
 
 private:
+	void DrawFolderIcon(const char* dir, int itemNumber);
 	void DrawFileIcon(const char* file, int itemNumber);
 
 private:
