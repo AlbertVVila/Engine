@@ -14,7 +14,7 @@
 #include "ComponentButton.h"
 
 #include "GL/glew.h"
-#include <stack>
+#include <queue>
 #include "Math/float4x4.h"
 #include "Math/TransformOps.h"
 #include "Imgui.h"
@@ -97,21 +97,16 @@ void ModuleUI::Draw(int currentWidth, int currentHeight)
 
 	if (shader == nullptr) return;
 
-	std::stack<GameObject*> stack;
-	for (GameObject* go : App->scene->canvas->children)
+	std::queue<GameObject*> Q;
+	Q.push(App->scene->canvas);
+	
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glDisable(GL_DEPTH_TEST);
+	while (!Q.empty())
 	{
-		stack.push(go);
-	}
-
-	while (!stack.empty())
-	{
-		GameObject* gameObjectToRender = stack.top();
-		stack.pop();
-
-		for (GameObject* gameObjectChildren : gameObjectToRender->children)
-		{
-			stack.push(gameObjectChildren);
-		}
+		GameObject* gameObjectToRender = Q.front();
+		Q.pop();
 
 		for (Component* comp : gameObjectToRender->components)
 		{
@@ -134,7 +129,13 @@ void ModuleUI::Draw(int currentWidth, int currentHeight)
 				break;
 			}
 		}
+		for (GameObject* gameObjectChildren : gameObjectToRender->children)
+		{
+			Q.push(gameObjectChildren);
+		}
 	}
+	glDisable(GL_BLEND);
+	glEnable(GL_DEPTH_TEST);
 }
 
 
@@ -157,9 +158,9 @@ void ModuleUI::RenderImage(const ComponentImage& componentImage, int currentWidt
 
 	if (transform2D != nullptr)
 	{
-
+		math::float2 imgPos = transform2D->getPosition();
 		math::float3 scale = math::float3(transform2D->size.x, transform2D->size.y, 1.0f);
-		math::float3 center = math::float3(transform2D->position.x, transform2D->position.y, 0.0f);
+		math::float3 center = math::float3(imgPos.x, imgPos.y, 0.0f);
 		model = model.Scale(scale, center);
 		model.SetTranslatePart(center);
 

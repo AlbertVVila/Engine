@@ -148,29 +148,30 @@ void ModuleFontLoader::RenderText(const ComponentText& compText, int currentWidt
 	ComponentTransform2D* transform2D = (ComponentTransform2D*)compText.gameobject->GetComponent(ComponentType::Transform2D);
 	float x = 0;
 	float y = 0;
+	math::float2 pos = transform2D->getPosition();
 	if (transform2D != nullptr)
 	{
-		x = (compText.offset.x + transform2D->position.x);// (currentWidth * 0.5f);
-		y = (compText.offset.y + transform2D->position.y);// (currentHeight * 0.5f);
+		x = (compText.offset.x + pos.x) / (transform2D->size.x * compText.scaleOffset.x);
+		y = (compText.offset.y + pos.y) / (transform2D->size.y * compText.scaleOffset.y);
 	}
 
 	math::float4x4 model = math::float4x4::identity;
 	math::float4x4 projection = math::float4x4::D3DOrthoProjRH(-1.0f, 1.0f, currentWidth, currentHeight);
-	math::float3 scl = math::float3(transform2D->size.x, transform2D->size.y, 1.0f);
+	math::float3 scl = math::float3(transform2D->size.x * compText.scaleOffset.x, transform2D->size.y * compText.scaleOffset.y, 1.0f);
 	math::float3 center = math::float3(x, y, 0.0f);
 	model = model.Scale(scl, center);
 	model.SetTranslatePart(center);
 
 	// Activate corresponding render state	
 	glUseProgram(shaderFonts->id);
-	glUniformMatrix4fv(glGetUniformLocation(shaderFonts->id, "projection"), 1, GL_FALSE, (const float*)&projection);
-	glUniformMatrix4fv(glGetUniformLocation(shaderFonts->id, "model"), 1, GL_FALSE, (const float*)&model);
+	glUniformMatrix4fv(glGetUniformLocation(shaderFonts->id, "projection"), 1, GL_TRUE, (const float*)&projection);
+	glUniformMatrix4fv(glGetUniformLocation(shaderFonts->id, "model"), 1, GL_TRUE, (const float*)&model);
 	glUniform4f(glGetUniformLocation(shaderFonts->id, "textColor"), compText.color.x, compText.color.y, compText.color.z, compText.color.w);
 	glActiveTexture(GL_TEXTURE0);
 	glBindVertexArray(VAOText);
 
 	// Iterate through all characters
-	float scale = compText.fontSize*FontScaleFactor;
+	float scale = compText.fontSize*FontScaleFactor;//this scale does not change with the window size, its something else
 	std::string::const_iterator c;
 	for (c = text.begin(); c != text.end(); ++c)
 	{

@@ -78,7 +78,8 @@ void ComponentText::DrawProperties()
 
 		//color
 		ImGui::ColorEdit4("Font color", (float*)&color);
-		ImGui::DragFloat2("Text offset", &offset[0]);
+		ImGui::DragFloat2("Text position offset", &offset[0]);
+		ImGui::DragFloat2("Text scale offset", &scaleOffset[0]);
 		ImGui::Separator();
 	}
 }
@@ -91,6 +92,7 @@ void ComponentText::Save(JSON_value *value)const
 	value->AddString("font", font.c_str());
 	value->AddFloat4("color", color);
 	value->AddFloat2("offset", offset);
+	value->AddFloat2("scaleOffset", scaleOffset);
 }
 
 void ComponentText::Load(JSON_value* value)
@@ -101,4 +103,5 @@ void ComponentText::Load(JSON_value* value)
 	font = value->GetString("font");
 	color = value->GetFloat4("color");
 	offset = value->GetFloat2("offset");
+	scaleOffset = value->GetFloat2("scaleOffset");
 }

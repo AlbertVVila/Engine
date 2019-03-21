@@ -227,7 +227,7 @@ void ModuleTextures::ImportImage(const char * file, const char* folder) const
 		LOG("Imported image %s", file);
 		ILuint size;
 		ILubyte* data = ilGetData();
-		ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);// To pick a specific DXT compression use
+		ilSetInteger(IL_DXTC_FORMAT, IL_DXT_NO_COMP);// To pick a specific DXT compression use
 		size = ilSaveL(IL_DDS, NULL, 0);	// Get the size of the data buffer
 		data = new ILubyte[size];// allocate data buffer
 		if (ilSaveL(IL_DDS, data, size) > 0)

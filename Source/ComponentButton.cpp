@@ -116,12 +116,12 @@ void ComponentButton::Update()
 	math::float2 mouse = reinterpret_cast<const float2&>(App->input->GetMousePosition());	
 	float screenX = mouse.x - App->renderer->viewGame->winPos.x - (App->ui->currentWidth * .5f);
 	float screenY = mouse.y - App->renderer->viewGame->winPos.y - (App->ui->currentHeight * .5f);
+	math::float2 pos = rectTransform->getPosition();
+	float buttonX = pos.x;
+	float buttonY = pos.y;
 	
-	float buttonX = rectTransform->position.x;
-	float buttonY = rectTransform->position.y;
-	
-	math::float2 buttonMin = float2(buttonX - rectTransform->size.x *.5f, buttonY - rectTransform->size.y *.5f);
-	math::float2 buttonMax = float2(buttonX + rectTransform->size.x *.5f, buttonY + rectTransform->size.y *.5f);
+	math::float2 buttonMin = float2(buttonX - rectTransform->size.x *.5f, -buttonY - rectTransform->size.y *.5f);
+	math::float2 buttonMax = float2(buttonX + rectTransform->size.x *.5f, -buttonY + rectTransform->size.y *.5f);
 	if (screenX > buttonMin.x && screenX < buttonMax.x && screenY > buttonMin.y && screenY < buttonMax.y)
 	{
 		isHovered = true;
@@ -132,8 +132,8 @@ void ComponentButton::Update()
 	else
 	{
 		isHovered = false;
-		buttonImage->enabled = true;
-		highlightedImage->enabled = false;
+		buttonImage->enabled = true && !isSelected;
+		highlightedImage->enabled = false || isSelected;
 		pressedImage->enabled = false;
 	}
 
