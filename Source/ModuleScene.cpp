@@ -68,6 +68,7 @@ bool ModuleScene::Init(JSON * config)
 	pcg32 rng(seed_source);
 	uuid_rng = rng;
 	root = new GameObject("World", 0); //Root always has uid 0
+	root->CreateComponent(ComponentType::Transform);
 
 	int size = QUADTREE_SIZE * App->renderer->current_scale;
 	AABB limit(float3(-size, 0.f, -size), float3(size, 0.f, size));
