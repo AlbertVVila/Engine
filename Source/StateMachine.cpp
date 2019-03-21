@@ -11,9 +11,9 @@ StateMachine::~StateMachine()
 {
 }
 
-void StateMachine::AddClip(const std::string name, const unsigned UID, const bool loop)
+void StateMachine::AddClip(const std::string name, Animation* anim, const bool loop)
 {
-	clips.push_back(Clip(name, UID, loop));
+	clips.push_back(Clip(name, anim, loop));
 }
 
 void StateMachine::AddNode(const std::string name, const std::string clipName)
@@ -73,9 +73,9 @@ std::string StateMachine::GetClipName(unsigned index)
 	return clips[index].name;
 }
 
-unsigned StateMachine::GetClipUID(unsigned index)
+Animation* StateMachine::GetClipAnimation(unsigned index)
 {
-	return clips[index].UID;
+	return clips[index].anim;
 }
 
 bool StateMachine::GetClipLoop(unsigned index)
@@ -133,9 +133,9 @@ void StateMachine::SetClipName(unsigned index, std::string name)
 	clips[index].name = name;
 }
 
-void StateMachine::SetClipUID(unsigned index, unsigned UID)
+void StateMachine::SetClipAnimation(unsigned index, Animation* anim)
 {
-	clips[index].UID = UID;
+	clips[index].anim = anim;
 }
 
 void StateMachine::SetClipLoop(unsigned index, bool loop)

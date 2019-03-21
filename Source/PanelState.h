@@ -5,12 +5,23 @@
 
 #include "NodeEditor.h"
 
-class PanelState :
-	public Panel
+namespace ed = ax::NodeEditor;
+
+class StateMachine;
+
+enum class PinKind
+{
+	Output,
+	Input
+};
+
+class PanelState : public Panel
 {
 public:
 	PanelState();
 	~PanelState();
+
+	ax::NodeEditor::EditorContext* context = nullptr;
 
 	void Draw() override;
 

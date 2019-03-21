@@ -1,7 +1,11 @@
 #ifndef __STATEMACHINE_H_
 #define __STATEMACHINE_H_
 
+
+
 #include <vector>
+
+class Animation;
 
 class StateMachine
 {
@@ -13,7 +17,7 @@ public:
 
 public:
 	
-	void AddClip(const std::string name, unsigned UID, bool loop);
+	void AddClip(const std::string name, Animation* anim, bool loop);
 	void AddNode(const std::string name,const std::string clipName);
 	void AddTransition(const std::string origin, const std::string destiny, const std::string trigger, unsigned blend);
 
@@ -24,10 +28,10 @@ public:
 	//Clips setters and getters
 
 	std::string GetClipName(unsigned index);
-	unsigned GetClipUID(unsigned index);
+	Animation* GetClipAnimation(unsigned index);
 	bool GetClipLoop(unsigned index);
 	void SetClipName(unsigned index, std::string name);
-	void SetClipUID(unsigned index, unsigned UID);
+	void SetClipAnimation(unsigned index, Animation* anim);
 	void SetClipLoop(unsigned index, bool loop);
 
 	//Transitions setters and getters
@@ -61,11 +65,11 @@ private:
 	struct Clip
 	{
 		std::string name;
-		unsigned UID = 0u;
+		Animation* anim = nullptr;
 		bool loop = false;
 
 		Clip() { ; }
-		Clip(std::string n, unsigned u, bool l) : name(n), UID(u), loop(l) { ; }
+		Clip(std::string n, Animation* a, bool l) : name(n), anim(a), loop(l) { ; }
 	};
 
 	struct Transition
