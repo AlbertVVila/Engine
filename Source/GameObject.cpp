@@ -639,6 +639,27 @@ bool GameObject::Intersects(const LineSegment & line, float &distance) const
 	return false;
 }
 
+bool GameObject::BboxIntersects(const GameObject* target) const
+{
+	bool intersects = false;
+	bool allchecked = false;
+	std::list<GameObject*>::const_iterator iti = children.begin();
+	while (!intersects && !allchecked)
+	{
+		for (std::list<GameObject*>::const_iterator itj = target->children.begin(); itj != target->children.end(); ++itj)
+		{
+			if ((*iti)->bbox.Intersects((*itj)->bbox))
+			{
+				intersects = true;
+				break;
+			}
+		}
+		++iti;
+		if (iti == children.end()) allchecked = true;
+	}
+	return intersects;
+}
+
 void GameObject::UpdateBBox()
 {
 	ComponentRenderer* renderer = (ComponentRenderer*) GetComponent(ComponentType::Renderer);
