@@ -68,10 +68,15 @@ void PanelBrowser::Draw()
 		return;
 	}
 
-	// Get list of all files and directories
-	std::vector<std::string> files;
-	std::vector<std::string> dirs;
-	App->fsystem->ListFolderContent(path.c_str(), files, dirs);	
+	// Get list of all files and directories when changes are detected
+	if (folderContentDirty)
+	{
+		files.clear();
+		dirs.clear();
+		App->fsystem->ListFolderContent(path.c_str(), files, dirs);
+		folderContentDirty = false;
+	}
+
 		
 	ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(.0f, 0.5f));
 	
@@ -85,6 +90,7 @@ void PanelBrowser::Draw()
 		{
 			path = pathStack.top();
 			pathStack.pop();
+			folderContentDirty = true;
 		}
 		
 		ImGui::PushTextWrapPos(ImGui::GetCursorPos().x + 52);
@@ -93,6 +99,7 @@ void PanelBrowser::Draw()
 		{
 			path = pathStack.top();
 			pathStack.pop();
+			folderContentDirty = true;
 		}
 		ImGui::SetCursorPosX(15);
 		ImGui::SetCursorPosY(10);
@@ -198,6 +205,7 @@ void PanelBrowser::DrawFolderIcon(const char* dir, int itemNumber)
 		pathStack.push(path);
 		path += dir;
 		path += "/";
+		folderContentDirty = true;
 	}
 
 	float2 nextWinSize = float2(350, 100);
@@ -216,6 +224,7 @@ void PanelBrowser::DrawFolderIcon(const char* dir, int itemNumber)
 		pathStack.push(path);
 		path += dir;
 		path += "/";
+		folderContentDirty = true;
 	}
 }
 

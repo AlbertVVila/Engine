@@ -3,6 +3,9 @@
 
 #include "Application.h"
 #include "ModuleResourceManager.h"
+#include "ModuleEditor.h"
+
+#include "PanelBrowser.h"
 
 #include "Resource.h"
 
@@ -487,6 +490,9 @@ void ModuleFileSystem::ImportFiles()
 		importer.ImportAsset(file.first.c_str(), file.second.c_str());
 	}
 	filesToImport.clear();
+
+	// Refresh Assets panel browser
+	App->editor->assets->folderContentDirty = true;
 }
 
 int ModuleFileSystem::GetModTime(const char* file) const

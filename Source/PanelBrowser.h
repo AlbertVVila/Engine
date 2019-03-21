@@ -23,10 +23,15 @@ private:
 	void DrawFolderIcon(const char* dir, int itemNumber);
 	void DrawFileIcon(const char* file, int itemNumber);
 
+public:
+	bool folderContentDirty = true;
+
 private:
 	std::string path;
 	std::string fileSelected;
 	std::stack<std::string> pathStack;
+	std::vector<std::string> files;		// List of the files in current path
+	std::vector<std::string> dirs;		// List of the folders in current path
 
 	// Icons
 	ResourceTexture* folderIcon;	
