@@ -24,6 +24,7 @@ private:
 	void DrawFileIcon(const char* file, int itemNumber);
 
 	void DrawImportConfigurationPopUp();
+	void DrawFileContextMenu();
 
 public:
 	bool folderContentDirty = true;
@@ -49,9 +50,6 @@ private:
 	ResourceTexture* ddsIcon;
 	ResourceTexture* m4tIcon;
 	ResourceTexture* jsonIcon;
-
-	// ImGui elements size
-	math::float2 iconSize = math::float2(40.0f, 40.0f);
 };
 
 #endif //__PanelBrowser_h__
