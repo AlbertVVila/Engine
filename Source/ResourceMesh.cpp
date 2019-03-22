@@ -12,9 +12,7 @@
 #include "Math/MathConstants.h"
 #include "Math/float4x4.h"
 #include "Math/float2.h"
-#include "rapidjson/document.h"
-#include "rapidjson/filewritestream.h"
-#include "rapidjson/prettywriter.h"
+
 
 ResourceMesh::ResourceMesh(unsigned uid) : Resource(uid, TYPE::MESH)
 {
@@ -102,23 +100,19 @@ void ResourceMesh::SaveMetafile(const char* file) const
 	std::string filepath;
 	filepath.append(file);
 	JSON *json = new JSON();
-	rapidjson::Document* meta = new rapidjson::Document();
-	rapidjson::Document::AllocatorType& alloc = meta->GetAllocator();
-	filepath += ".meta";
+	JSON_value* meta = json->CreateValue();
+	struct stat statFile;
+	stat(filepath.c_str(), &statFile);
+	meta->AddUint("GUID", UID);
+	meta->AddUint("timeCreated", statFile.st_ctime);
+	meta->AddUint("VBO", VBO);
+	meta->AddUint("EBO", EBO);
+	meta->AddUint("VAObox", VAObox);
+	meta->AddUint("VBObox", VBObox);
+	meta->AddUint("EBObox", EBObox);
+	json->AddValue("Mesh", *meta);
+	filepath += ".meta";	
 	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
-	FILE* fp = fopen(filepath.c_str(), "wb");
-	char writeBuffer[65536];
-	rapidjson::FileWriteStream* os = new rapidjson::FileWriteStream(fp, writeBuffer, sizeof(writeBuffer));
-	rapidjson::PrettyWriter<rapidjson::FileWriteStream> writer(*os);
-	meta->SetObject();
-	meta->AddMember("GUID", GetUID(), alloc);
-	meta->AddMember("VBO", VBO, alloc);
-	meta->AddMember("EBO", EBO, alloc);
-	meta->AddMember("VAObox", VAObox, alloc);
-	meta->AddMember("VBObox", VBObox, alloc);
-	meta->AddMember("EBObox", EBObox, alloc);
-	meta->Accept(writer);
-	fclose(fp);
 }
 
 void ResourceMesh::Load(const JSON_value &config)
