@@ -34,7 +34,23 @@ PanelBrowser::PanelBrowser() : path(ASSETS)
 
 PanelBrowser::~PanelBrowser() 
 {
+	/*App->resManager->DeleteResource(folderIcon->GetUID());
+	App->resManager->DeleteResource(fileIcon->GetUID());
+	App->resManager->DeleteResource(fbxIcon->GetUID());
+	App->resManager->DeleteResource(pngIcon->GetUID());
+	App->resManager->DeleteResource(jpgIcon->GetUID());
+	App->resManager->DeleteResource(tgaIcon->GetUID());
+	App->resManager->DeleteResource(ddsIcon->GetUID());
+	App->resManager->DeleteResource(m4tIcon->GetUID());
+	App->resManager->DeleteResource(jsonIcon->GetUID());*/
 
+	while (!pathStack.empty())
+		pathStack.pop();
+
+	files.clear();
+	dirs.clear();
+
+	fileSelected = nullptr;
 }
 
 bool PanelBrowser::Init()
