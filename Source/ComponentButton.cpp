@@ -54,7 +54,7 @@ ComponentButton::~ComponentButton()
 
 Component* ComponentButton::Clone() const
 {
-	return nullptr;
+	return new ComponentButton(*this);;
 }
 
 void ComponentButton::DrawProperties()
@@ -149,7 +149,6 @@ void ComponentButton::Update()
 void ComponentButton::AssemblyButton() 
 {
 	text->gameobject = gameobject;
-	text->text = "Best button EUW";
 	buttonImage->gameobject = gameobject;
 	highlightedImage->gameobject = gameobject;
 	pressedImage->gameobject = gameobject;
