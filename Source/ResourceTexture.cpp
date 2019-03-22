@@ -83,7 +83,7 @@ bool ResourceTexture::LoadTexture()
 	int format = 0;
 	unsigned imageID;
 
-	char *data;
+	char* data;
 	unsigned size;
 	std::string filename(exportedFileName);
 
@@ -173,7 +173,7 @@ bool ResourceTexture::LoadCubemap()
 	int format = 0;
 	unsigned imageID;
 
-	char *data;
+	char* data;
 	unsigned size;
 	std::string filename(exportedFileName);
 
@@ -251,7 +251,7 @@ void ResourceTexture::SaveMetafile(const char* file) const
 {
 	std::string filepath;
 	filepath.append(file);
-	JSON *json = new JSON();
+	JSON* json = new JSON();
 	rapidjson::Document* meta = new rapidjson::Document();
 	rapidjson::Document::AllocatorType& alloc = meta->GetAllocator();
 	filepath += ".meta";

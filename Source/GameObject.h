@@ -10,7 +10,7 @@ class ComponentTransform;
 class ComponentLight;
 class AABBTreeNode;
 enum class ComponentType;
-struct JSON_value;
+class JSON_value;
 
 class GameObject
 {
