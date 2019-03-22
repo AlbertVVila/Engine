@@ -13,9 +13,11 @@
 
 #include "GameObject.h"
 #include "ComponentCamera.h"
-#include "Skybox.h"
 #include "Viewport.h"
 #include "JSON.h"
+
+#include "Resource.h"
+#include "ResourceSkybox.h"
 
 #include "SDL.h"
 #include "GL/glew.h"
@@ -48,9 +50,17 @@ bool ModuleRender::Init(JSON * config)
 	InitOpenGL();
 
 	SDL_GL_SetSwapInterval((int)vsync);
-	skybox = new Skybox();
+
 	viewScene = new Viewport("Scene");
 	viewGame = new Viewport("Game");
+
+	// Set default Skybox
+	skybox = (ResourceSkybox*)App->resManager->CreateNewResource(TYPE::SKYBOX);
+	std::string faces[NUMFACES] = { "right", "left", "top", "bottom", "front", "back" };
+	skybox->SetExportedFile("Default Skybox");
+	skybox->SetTextures(faces);
+	skybox->SetUsedByEngine(true);
+	skybox->LoadInMemory();
 
 	JSON_value* renderer = config->GetValue("renderer");
 	if (renderer == nullptr) return true;

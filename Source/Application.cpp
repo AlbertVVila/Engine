@@ -26,6 +26,7 @@ Application::Application()
 {
 	// Order matters: they will Init/start/update in this order
 	modules.push_back(window = new ModuleWindow());
+	modules.push_back(resManager = new ModuleResourceManager());
 	modules.push_back(fsystem = new ModuleFileSystem());
 	modules.push_back(input = new ModuleInput());
 	modules.push_back(scripting = new ModuleScript());
@@ -36,7 +37,6 @@ Application::Application()
 	modules.push_back(editor = new ModuleEditor());
 	modules.push_back(debug = new ModuleDebugDraw());
 	modules.push_back(scene = new ModuleScene());
-	modules.push_back(resManager = new ModuleResourceManager());
 	modules.push_back(time = new ModuleTime());
 	modules.push_back(spacePartitioning = new ModuleSpacePartitioning());
 	modules.push_back(ui = new ModuleUI());

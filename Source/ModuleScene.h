@@ -15,8 +15,8 @@
 class GameObject;
 class ComponentCamera;
 class ComponentLight;
+class ResourceTexture;
 class myQuadTree;
-struct Texture;
 struct par_shapes_mesh_s;
 
 enum class PRIMITIVES
@@ -87,7 +87,7 @@ public:
 	GameObject* selected = nullptr; //Selected in hierarchy
 	Component* copyComp = nullptr; // Copied values in inspector
 	ComponentCamera* maincamera = nullptr; //Released by GameObject holding it
-	Texture* camera_notfound_texture = nullptr; //Released in resource manager
+	ResourceTexture* camera_notfound_texture = nullptr; //Released in resource manager
 	std::list<LineSegment> debuglines;
 	std::list<GameObject*> selection;
 	std::list<ComponentLight*> lights;

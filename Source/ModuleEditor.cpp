@@ -19,6 +19,8 @@
 #include "PanelHardware.h"
 #include "PanelHierarchy.h"
 #include "PanelTime.h"
+#include "PanelBrowser.h"
+#include "PanelResourceManager.h"
 
 #include "MaterialEditor.h"
 #include "FileExplorer.h"
@@ -38,7 +40,9 @@ ModuleEditor::ModuleEditor()
 	panels.push_back(about = new PanelAbout());
 	panels.push_back(hardware = new PanelHardware());
 	panels.push_back(hierarchy = new PanelHierarchy());
+	panels.push_back(assets = new PanelBrowser());
 	panels.push_back(time = new PanelTime());
+	panels.push_back(resource = new PanelResourceManager());
 
 	materialEditor = new MaterialEditor();
 	fileExplorer = new FileExplorer();
@@ -235,6 +239,7 @@ update_status ModuleEditor::Update(float dt)
 		}
     fileExplorer->Draw();
 		WindowsMenu();
+		ToolsMenu();
 		HelpMenu();
 		ImGui::EndMainMenuBar();
 	}
@@ -325,6 +330,22 @@ void ModuleEditor::WindowsMenu()
 		if (ImGui::MenuItem("Time control", nullptr, time->IsEnabled()))
 		{
 			time->ToggleEnabled();
+		}
+		if (ImGui::MenuItem("Assets", nullptr, assets->IsEnabled()))
+		{
+			assets->ToggleEnabled();
+		}
+		ImGui::EndMenu();
+	}
+}
+
+void ModuleEditor::ToolsMenu()
+{
+	if (ImGui::BeginMenu("Tools"))
+	{
+		if (ImGui::MenuItem("Resource Manager", nullptr, resource->IsEnabled()))
+		{
+			resource->ToggleEnabled();
 		}
 		ImGui::EndMenu();
 	}
