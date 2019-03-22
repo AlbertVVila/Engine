@@ -5,6 +5,16 @@
 
 enum class IMAGE_TYPE {TEXTURE, CUBEMAP};
 
+enum DXT
+{
+	DXT1 = 0x0706,
+	DXT2 = 0x0707,
+	DXT3 = 0x0708,
+	DXT4 = 0x0709,
+	DXT5 = 0x070A,
+	DXT_NO_COMP = 0x070B,
+};
+
 class ResourceTexture : public Resource
 {
 public:
@@ -36,6 +46,10 @@ public:
 	unsigned bytes = 0u;
 	unsigned gpuID = 0u;
 	unsigned format = 0u;
+
+	// Compression type
+	DXT dxtFormat = DXT5;
+	int compression = 4;
 
 private:
 	IMAGE_TYPE imageType = IMAGE_TYPE::TEXTURE;

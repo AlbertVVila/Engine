@@ -270,7 +270,7 @@ void ResourceTexture::SaveMetafile(const char* file) const
 	meta->AddMember("depth", depth, alloc);
 	meta->AddMember("mips", mips, alloc);
 	meta->AddMember("format", format, alloc);
-	meta->AddMember("DX compresion", ilGetInteger(IL_DXTC_FORMAT), alloc);
+	meta->AddMember("DX compresion", dxtFormat, alloc);
 	meta->AddMember("mipmap", ilGetInteger(IL_ACTIVE_MIPMAP), alloc);
 	meta->Accept(writer);
 	fclose(fp);
