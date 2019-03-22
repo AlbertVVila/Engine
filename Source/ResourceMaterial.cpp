@@ -176,18 +176,13 @@ void ResourceMaterial::SaveMetafile(const char* file) const
 	std::string filepath;
 	filepath.append(file);
 	JSON* json = new JSON();
-	rapidjson::Document* meta = new rapidjson::Document();
-	rapidjson::Document::AllocatorType& alloc = meta->GetAllocator();
+	JSON_value* meta = json->CreateValue();
+	struct stat statFile;
+	stat(filepath.c_str(), &statFile);
+	meta->AddUint("GUID", UID);
+	meta->AddUint("timeCreated", statFile.st_ctime);
 	filepath += ".meta";
 	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
-	FILE* fp = fopen(filepath.c_str(), "wb");
-	char writeBuffer[65536];
-	rapidjson::FileWriteStream* os = new rapidjson::FileWriteStream(fp, writeBuffer, sizeof(writeBuffer));
-	rapidjson::PrettyWriter<rapidjson::FileWriteStream> writer(*os);
-	meta->SetObject();
-	meta->AddMember("GUID", GetUID(), alloc);
-	meta->Accept(writer);
-	fclose(fp);
 }
 
 void ResourceMaterial::Reset(const ResourceMaterial& material)
