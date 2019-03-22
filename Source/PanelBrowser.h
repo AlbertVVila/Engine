@@ -23,6 +23,8 @@ private:
 	void DrawFolderIcon(const char* dir, int itemNumber);
 	void DrawFileIcon(const char* file, int itemNumber);
 
+	void DrawImportConfigurationPopUp();
+
 public:
 	bool folderContentDirty = true;
 
@@ -33,7 +35,7 @@ private:
 	std::vector<std::string> files;		// List of the files in current path
 	std::vector<std::string> dirs;		// List of the folders in current path
 
-	bool importConfigPopUp = false;
+	bool openImportConfigPopUp = false;
 	Resource* fileSelected = nullptr;
 
 	// Icons

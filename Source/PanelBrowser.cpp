@@ -160,7 +160,7 @@ void PanelBrowser::Draw()
 		{
 			//Code to change import settings
 			//ImGui::EndPopup();
-			importConfigPopUp = true;
+			openImportConfigPopUp = true;
 		}
 
 		if (ImGui::BeginPopup("Rename File"))
@@ -199,33 +199,10 @@ void PanelBrowser::Draw()
 
 		ImGui::EndPopup();
 	}
-	if(importConfigPopUp)
-		ImGui::OpenPopup("Import configuration");
 
-	if (ImGui::BeginPopupModal("Import configuration", &importConfigPopUp))
-	{
-
-		ImGui::Text("%s", fileSelected->GetExportedFile());
-		switch (fileSelected->GetType())
-		{
-		case TYPE::TEXTURE:
-			App->textures->DrawImportConfiguration((ResourceTexture*)fileSelected);
-			break;
-		}
-
-		if (ImGui::Button("Accept"))
-		{
-			// Add accept logic
-			importConfigPopUp = false;
-		}
-		ImGui::SameLine();
-		if (ImGui::Button("Cancel"))
-		{
-			importConfigPopUp = false;
-		}
-		ImGui::EndPopup();
-	}
-
+	// Import Configuration Pop-up
+	if (openImportConfigPopUp)
+		DrawImportConfigurationPopUp();
 
 	ImGui::PopStyleVar();
 	ImGui::End();	
@@ -316,5 +293,34 @@ void PanelBrowser::DrawFileIcon(const char* file, int itemNumber)
 		//fileSelected = path + file;
 		fileSelected = App->resManager->GetWithoutLoad(App->fsystem->GetFilename(file).c_str());
 		ImGui::OpenPopup("File Context Menu");
+	}
+}
+
+void PanelBrowser::DrawImportConfigurationPopUp()
+{
+	ImGui::OpenPopup("Import configuration");
+
+	if (ImGui::BeginPopupModal("Import configuration", &openImportConfigPopUp))
+	{
+
+		ImGui::Text("%s", fileSelected->GetExportedFile());
+		switch (fileSelected->GetType())
+		{
+		case TYPE::TEXTURE:
+			App->textures->DrawImportConfiguration((ResourceTexture*)fileSelected);
+			break;
+		}
+
+		if (ImGui::Button("Accept"))
+		{
+			// Add accept logic
+			openImportConfigPopUp = false;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel"))
+		{
+			openImportConfigPopUp = false;
+		}
+		ImGui::EndPopup();
 	}
 }
