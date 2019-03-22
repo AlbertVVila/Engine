@@ -25,12 +25,12 @@
 
 #define INITIAL_RADIUS 1000.f
 
-ComponentLight::ComponentLight(GameObject * gameobject) : Component(gameobject, ComponentType::Light)
+ComponentLight::ComponentLight(GameObject* gameobject) : Component(gameobject, ComponentType::Light)
 {
 	pointSphere.r = INITIAL_RADIUS;
 }
 
-ComponentLight::ComponentLight(const ComponentLight & component) : Component(component)
+ComponentLight::ComponentLight(const ComponentLight& component) : Component(component)
 {
 	position = component.position;
 	direction = component.direction;
@@ -41,7 +41,7 @@ ComponentLight::ComponentLight(const ComponentLight & component) : Component(com
 	range = component.range;
 	intensity = component.intensity;
 	pointSphere = Sphere(component.pointSphere);
-	//App->scene->lights.push_back(this);
+	App->scene->lights.push_back(this);
 }
 
 ComponentLight::~ComponentLight()
@@ -211,7 +211,7 @@ void ComponentLight::Reset()
 	CalculateGuizmos();
 }
 
-ComponentLight * ComponentLight::Clone() const
+ComponentLight* ComponentLight::Clone() const
 {
 	ComponentLight* newLight = new ComponentLight(gameobject);
 	newLight->range = range;

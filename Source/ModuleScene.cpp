@@ -580,6 +580,7 @@ void ModuleScene::SaveScene(const GameObject& rootGO, const char* scene, const c
 void ModuleScene::TakePhoto()
 {
 	TakePhoto(scenePhotos);
+	scenePhotosUndoed.clear();
 }
 
 void ModuleScene::TakePhoto(std::list<GameObject*>& target)
@@ -592,7 +593,7 @@ void ModuleScene::TakePhoto(std::list<GameObject*>& target)
 		RELEASE(target.front());
 		target.pop_front();
 	}
-	photoEnabled = false;
+	photoEnabled = false;	
 }
 void ModuleScene::RestorePhoto(GameObject* photo)
 {
@@ -621,9 +622,9 @@ void ModuleScene::RestorePhoto(GameObject* photo)
 				go->isVolumetric = true;
 				break;
 			case ComponentType::Light:
-				App->spacePartitioning->aabbTreeLighting.InsertGO(go);
 				go->light = (ComponentLight*)c;
 				go->light->CalculateGuizmos();
+				App->spacePartitioning->aabbTreeLighting.InsertGO(go);
 				go->hasLight = true;
 				lights.push_back((ComponentLight*)c);
 				break;
@@ -639,6 +640,10 @@ void ModuleScene::RestorePhoto(GameObject* photo)
 		for (GameObject* child : go->children)
 		{
 			S.push(child);
+		}
+		if (go->transform != nullptr)
+		{
+			go->transform->UpdateTransform();
 		}
 	}
 }
