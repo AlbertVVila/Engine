@@ -108,30 +108,33 @@ void ModuleUI::Draw(int currentWidth, int currentHeight)
 		GameObject* gameObjectToRender = Q.front();
 		Q.pop();
 
-		for (Component* comp : gameObjectToRender->components)
+		if (gameObjectToRender->isActive())
 		{
-			switch (comp->type)
+			for (Component* comp : gameObjectToRender->components)
 			{
-			case ComponentType::Button:
+				switch (comp->type)
+				{
+				case ComponentType::Button:
+				{
+					ComponentButton* button = (ComponentButton*)comp;
+					RenderImage(*button->buttonImage, currentWidth, currentHeight);
+					RenderImage(*button->highlightedImage, currentWidth, currentHeight);
+					RenderImage(*button->pressedImage, currentWidth, currentHeight);
+					App->fontLoader->RenderText(*button->text, currentWidth, currentHeight);
+					break;
+				}
+				case ComponentType::Image:
+					RenderImage(*(ComponentImage*)comp, currentWidth, currentHeight);
+					break;
+				case ComponentType::Text:
+					App->fontLoader->RenderText(*(ComponentText*)comp, currentWidth, currentHeight);
+					break;
+				}
+			}
+			for (GameObject* gameObjectChildren : gameObjectToRender->children)
 			{
-				ComponentButton* button = (ComponentButton*)comp;
-				RenderImage(*button->buttonImage, currentWidth, currentHeight);
-				RenderImage(*button->highlightedImage, currentWidth, currentHeight);
-				RenderImage(*button->pressedImage, currentWidth, currentHeight);
-				App->fontLoader->RenderText(*button->text, currentWidth, currentHeight);
-				break;
+				Q.push(gameObjectChildren);
 			}
-			case ComponentType::Image:
-				RenderImage(*(ComponentImage*)comp, currentWidth, currentHeight);
-				break;
-			case ComponentType::Text:
-				App->fontLoader->RenderText(*(ComponentText*)comp, currentWidth, currentHeight);
-				break;
-			}
-		}
-		for (GameObject* gameObjectChildren : gameObjectToRender->children)
-		{
-			Q.push(gameObjectChildren);
 		}
 	}
 	glDisable(GL_BLEND);
