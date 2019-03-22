@@ -17,16 +17,16 @@
 #include "ModuleTextures.h"
 #include "GameObject.h"
 
-#define FOLDER_ICON "folderIcon"
-#define FILE_ICON "fileIcon"
-#define FBX_ICON "fbxIcon"
-#define PNG_ICON "pngIcon"
-#define JPG_ICON "jpgIcon"
-#define TGA_ICON "tgaIcon"
-#define TIF_ICON "tifIcon"
-#define DDS_ICON "ddsIcon"
-#define M4T_ICON "m4tIcon"
-#define JSON_ICON "jsonIcon"
+#define FOLDER_ICON "folderIconBlue"
+#define FILE_ICON "fileIconBlue"
+#define FBX_ICON "fbxIconBlue"
+#define PNG_ICON "pngIconBlue"
+#define JPG_ICON "jpgIconBlue"
+#define TGA_ICON "tgaIconBlue"
+#define TIF_ICON "tifIconBlue"
+#define DDS_ICON "ddsIconBlue"
+#define M4T_ICON "m4tIconBlue"
+#define JSON_ICON "jsonIconBlue"
 
 PanelBrowser::PanelBrowser() : path(ASSETS)
 {

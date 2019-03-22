@@ -51,9 +51,8 @@ bool ModuleResourceManager::Start()
 
 void ModuleResourceManager::LoadEngineResources()
 {
-	std::vector<std::string> files;
-	std::vector<std::string> dirs;
-	App->fsystem->ListFolderContent(IMPORTED_RESOURCES, files, dirs);
+	std::set<std::string> files;
+	App->fsystem->ListFiles(IMPORTED_RESOURCES, files);
 	for each (std::string file in files)
 	{
 		Resource* res = CreateNewResource(TYPE::TEXTURE);
