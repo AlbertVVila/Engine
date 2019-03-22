@@ -599,15 +599,15 @@ void ModuleScene::RestorePhoto(GameObject* photo)
 {
 	photoTimer = 0.f;
 	root = photo;
-	std::stack<GameObject*> S;
-	S.push(root);
-	while (!S.empty())
+	std::stack<GameObject*> goStack;
+	goStack.push(root);
+	while (!goStack.empty())
 	{
-		GameObject* go = S.top(); S.pop();
+		GameObject* go = goStack.top(); goStack.pop();
 
-		for (Component* c : go->components)
+		for (Component* comp : go->components)
 		{
-			switch (c->type)
+			switch (comp->type)
 			{
 			case ComponentType::Renderer:
 				if (!go->isStatic)
@@ -622,16 +622,16 @@ void ModuleScene::RestorePhoto(GameObject* photo)
 				go->isVolumetric = true;
 				break;
 			case ComponentType::Light:
-				go->light = (ComponentLight*)c;
+				go->light = (ComponentLight*)comp;
 				go->light->CalculateGuizmos();
 				App->spacePartitioning->aabbTreeLighting.InsertGO(go);
 				go->hasLight = true;
-				lights.push_back((ComponentLight*)c);
+				lights.push_back((ComponentLight*)comp);
 				break;
 			case ComponentType::Camera:
-				if (((ComponentCamera*)c)->isMainClone)
+				if (((ComponentCamera*)comp)->isMainClone)
 				{
-					maincamera = (ComponentCamera*)c;
+					maincamera = (ComponentCamera*)comp;
 				}
 				break;
 			}
@@ -639,7 +639,7 @@ void ModuleScene::RestorePhoto(GameObject* photo)
 
 		for (GameObject* child : go->children)
 		{
-			S.push(child);
+			goStack.push(child);
 		}
 		if (go->transform != nullptr)
 		{
