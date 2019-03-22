@@ -21,11 +21,12 @@ ComponentText::ComponentText(GameObject* gameobject) : Component(gameobject, Com
 
 ComponentText::ComponentText(const ComponentText &copy) : Component(copy)
 {
-	//copy all the shiet madafaka
 	font = copy.font;
 	fontSize = copy.fontSize;
 	text = copy.text;
 	color = copy.color;
+	offset = copy.offset;
+	scaleOffset = copy.scaleOffset;
 }
 
 ComponentText::~ComponentText()

@@ -68,6 +68,14 @@ GameObject::GameObject(const GameObject & gameobject)
 		{
 			transform = (ComponentTransform*)componentcopy;
 		}
+		if (componentcopy->type == ComponentType::Button)
+		{
+			((ComponentButton*)componentcopy)->text->gameobject = this;
+			((ComponentButton*)componentcopy)->buttonImage->gameobject = this;
+			((ComponentButton*)componentcopy)->highlightedImage->gameobject = this;
+			((ComponentButton*)componentcopy)->pressedImage->gameobject = this;
+			((ComponentButton*)componentcopy)->rectTransform->gameobject = this;
+		}
 	}
 
 	if (GetComponent(ComponentType::Renderer) != nullptr)

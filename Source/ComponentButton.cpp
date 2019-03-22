@@ -40,7 +40,7 @@ ComponentButton::ComponentButton(const ComponentButton& copy) : Component(copy)
 	buttonImage = (ComponentImage*)copy.buttonImage->Clone();
 	highlightedImage = (ComponentImage*)copy.highlightedImage->Clone();
 	pressedImage = (ComponentImage*)copy.pressedImage->Clone();
-	AssemblyButton();
+	rectTransform = (ComponentTransform2D*)copy.rectTransform->Clone();
 }
 
 

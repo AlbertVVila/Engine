@@ -240,9 +240,11 @@
     <ClCompile Include="ComponentText.cpp">
       <Filter>Component</Filter>
     </ClCompile>
-    <ClCompile Include="ComponentButton.cpp" />
     <ClCompile Include="ModuleDevelopmentBuildDebug.cpp">
       <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentButton.cpp">
+      <Filter>Component</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -580,9 +582,11 @@
     <ClInclude Include="ComponentText.h">
       <Filter>Component</Filter>
     </ClInclude>
-    <ClInclude Include="ComponentButton.h" />
     <ClInclude Include="ModuleDevelopmentBuildDebug.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentButton.h">
+      <Filter>Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
