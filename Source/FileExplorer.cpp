@@ -79,7 +79,7 @@ bool FileExplorer::Open()
 		ImGui::PopItemWidth();
 		ImGui::SameLine();
 		ImGui::PushItemWidth(ImGui::GetWindowContentRegionWidth() * 0.3f);
-		char* program_names[(int)FILETYPE::NONE+1] = { "Texture Files (*.png, *.tif, *.jpg, *.dds)", "Model Files (*.fbx, *.FBX)", "Imported Mesh Files (*.m3sh)", "Scene Files (*.json)", "All files" };
+		char* program_names[(int)FILETYPE::NONE+1] = { "Texture Files (*.png, *.tif, *.jpg)", "Imported Texture Files (*.dds)", "Model Files (*.fbx, *.FBX)", "Imported Mesh Files (*.m3sh)", "Scene Files (*.json)", "Material (*.m4t)", "All files" };
 		ImGui::Combo(" ", (int*)&extensionToFilter, program_names, (int)FILETYPE::NONE + 1);
 		ImGui::PopItemWidth();
 
@@ -195,7 +195,15 @@ void FileExplorer::FilterByFileType(const char* file)
 	{
 	case FILETYPE::TEXTURE:
 		extension = App->fsystem->GetExtension(file);
-		if (extension == TEXTUREEXT || extension == PNG || extension == TIF || extension == JPG)
+		if (extension == PNG || extension == TIF || extension == JPG)
+		{
+			if (ImGui::Selectable(file, false))
+				sprintf_s(filename, App->fsystem->GetFilename(file).c_str());
+		}
+		break;
+	case FILETYPE::IMPORTED_TEXTURE:
+		extension = App->fsystem->GetExtension(file);
+		if (extension == TEXTUREEXT)
 		{
 			if (ImGui::Selectable(file, false))
 				sprintf_s(filename, App->fsystem->GetFilename(file).c_str());
@@ -209,7 +217,7 @@ void FileExplorer::FilterByFileType(const char* file)
 				sprintf_s(filename, App->fsystem->GetFilename(file).c_str());
 		}
 		break;
-	case FILETYPE::MESH:
+	case FILETYPE::IMPORTED_MESH:
 		extension = App->fsystem->GetExtension(file);
 		if (extension == MESHEXTENSION)
 		{
@@ -220,6 +228,14 @@ void FileExplorer::FilterByFileType(const char* file)
 	case FILETYPE::SCENE:
 		extension = App->fsystem->GetExtension(file);
 		if (extension == JSONEXT)
+		{
+			if (ImGui::Selectable(file, false))
+				sprintf_s(filename, App->fsystem->GetFilename(file).c_str());
+		}
+		break;
+	case FILETYPE::MATERIAL:
+		extension = App->fsystem->GetExtension(file);
+		if (extension == MATERIALEXT)
 		{
 			if (ImGui::Selectable(file, false))
 				sprintf_s(filename, App->fsystem->GetFilename(file).c_str());

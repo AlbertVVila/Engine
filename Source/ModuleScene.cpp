@@ -16,9 +16,12 @@
 #include "ComponentRenderer.h"
 #include "ComponentTransform.h"
 
-#include "Material.h"
+#include "ResourceTexture.h"
+#include "ResourceMesh.h"
+#include "ResourceMaterial.h"
+
 #include "MaterialEditor.h"
-#include "Mesh.h"
+
 #include "JSON.h"
 #include "myQuadTree.h"
 #include "AABBTree.h"
@@ -83,7 +86,7 @@ bool ModuleScene::Init(JSON * config)
 
 bool ModuleScene::Start()
 {
-	camera_notfound_texture = App->textures->GetTexture(NOCAMERA); 
+	camera_notfound_texture = (ResourceTexture*)App->resManager->Get(NOCAMERA);
 	if (defaultScene.size() > 0)
 	{
 		path = SCENES;
@@ -137,7 +140,7 @@ bool ModuleScene::CleanUp()
 	selected = nullptr;
 	maincamera = nullptr;
 
-	App->resManager->DeleteTexture(camera_notfound_texture->file);
+	App->resManager->DeleteResource(camera_notfound_texture->GetUID());
 	camera_notfound_texture = nullptr;
 
 	lights.clear();
@@ -233,7 +236,7 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 	ComponentRenderer* crenderer = (ComponentRenderer*)go.GetComponent(ComponentType::Renderer);
 	if (crenderer == nullptr || !crenderer->enabled || crenderer->material == nullptr) return;
 
-	Material* material = crenderer->material;
+	ResourceMaterial* material = crenderer->material;
 	Shader* shader = material->shader;
 	if (shader == nullptr) return;
 
@@ -469,11 +472,14 @@ void ModuleScene::CreatePrimitive(const char * name, GameObject* parent, PRIMITI
 	ComponentRenderer* crenderer = (ComponentRenderer*)gameobject->CreateComponent(ComponentType::Renderer);
 
 	unsigned uid = primitivesUID[(unsigned)type];
-	char *data = nullptr;
-	App->fsystem->Load((MESHES + std::to_string(uid) + MESHEXTENSION).c_str(), &data);
-	crenderer->UpdateMesh(data, uid);//Deallocates data
+	// TODO [MeshRefactor] - Refactor sphere/Cube creation
+	//char *data = nullptr;
+	//App->fsystem->Load((MESHES + std::to_string(uid) + MESHEXTENSION).c_str(), &data);
+	//crenderer->UpdateMesh(data, uid);//Deallocates data
+	App->resManager->Get(uid);
+	crenderer->UpdateGameObject();
 	crenderer->SetMaterial(DEFAULTMAT);
-	App->resManager->AddMesh(crenderer->mesh);
+	//App->resManager->AddMesh(crenderer->mesh);
 	App->scene->Select(gameobject);
 }
 
@@ -731,7 +737,7 @@ bool ModuleScene::AddScene(const char* scene, const char* path)
 void ModuleScene::ClearScene()
 {
 	CleanUp();
-	camera_notfound_texture = App->textures->GetTexture(NOCAMERA);
+	camera_notfound_texture = (ResourceTexture*)App->resManager->Get(NOCAMERA);
 	name.clear();	
 	staticGOs.clear();
 	dynamicGOs.clear();

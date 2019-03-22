@@ -11,6 +11,8 @@
 #include "ComponentImage.h"
 #include "ComponentText.h"
 
+#include "ResourceTexture.h"
+
 #include "GL/glew.h"
 #include "Math/float4x4.h"
 #include "Math/TransformOps.h"
@@ -139,7 +141,7 @@ void ModuleUI::RenderImage(const ComponentImage& componentImage, int currentWidt
 		glUniformMatrix4fv(glGetUniformLocation(shader->id, "projection"), 1, GL_TRUE, (const float*)&projection);
 
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, componentImage.texture->id);
+		glBindTexture(GL_TEXTURE_2D, componentImage.texture->gpuID);
 		glUniform1i(glGetUniformLocation(shader->id, "texture0"), 0);
 
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);

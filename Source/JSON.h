@@ -9,8 +9,6 @@
 #include "Math/float4.h"
 #include "Math/Quat.h"
 
-struct Texture;
-
 class JSON_value
 {
 public:
