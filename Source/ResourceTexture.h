@@ -34,6 +34,8 @@ public:
 	inline unsigned GetCubemapIndex() { return cubemapIndex; };
 	inline void SetCubemapIndex(unsigned index) { cubemapIndex = index; };
 
+	void SetImportConfiguration();
+
 private:
 	bool LoadTexture();
 	bool LoadCubemap();

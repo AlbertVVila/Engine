@@ -289,3 +289,35 @@ void ResourceTexture::Load(const JSON_value& config)
 
 	format = config.GetUint("Format");
 }
+
+void ResourceTexture::SetImportConfiguration()
+{
+	char* data = nullptr;
+	std::string metaFile(file);
+	metaFile += ".meta";
+
+	if (App->fsystem->Load(metaFile.c_str(), &data) == 0)
+	{
+		LOG("Warning: %s couldn't be loaded", metaFile.c_str());
+		RELEASE_ARRAY(data);
+		return;
+	}
+
+	rapidjson::Document* meta = new rapidjson::Document();
+	meta->SetObject();
+
+	rapidjson::Document::ConstMemberIterator itr = meta->FindMember("DX compresion");
+	if (itr != meta->MemberEnd())
+	{
+		compression = itr->value.GetInt();
+		switch (compression)
+		{
+		case 0:	dxtFormat = DXT1; break;
+		case 1:	dxtFormat = DXT2; break;
+		case 2:	dxtFormat = DXT3; break;
+		case 3:	dxtFormat = DXT4; break;
+		case 4:	dxtFormat = DXT5; break;
+		case 5: dxtFormat = DXT_NO_COMP; break;
+		}
+	}
+}
