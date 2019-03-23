@@ -139,3 +139,13 @@ math::float2 ComponentTransform2D::getPosition() const
 
 	return math::float2(horizontalCalculation + position.x, verticalCalculation + position.y);
 }
+
+void ComponentTransform2D::setPosition(const math::float2& position)
+{
+	this->position = position;
+}
+
+math::float2 ComponentTransform2D::getSize() const
+{
+	return size;
+}

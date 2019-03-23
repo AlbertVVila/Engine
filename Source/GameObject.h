@@ -36,7 +36,7 @@ public:
 	void SetActive(bool active);
 
 	Component* CreateComponent(ComponentType type);
-	Component* GetComponent(ComponentType type) const;
+	ENGINE_API Component* GetComponent(ComponentType type) const;
 
 	ENGINE_API Script* GetScript() const; //Returns first script found in GameObject
 	ENGINE_API Script* FindScriptByName(const char* name) const;

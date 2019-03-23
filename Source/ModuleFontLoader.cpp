@@ -149,15 +149,16 @@ void ModuleFontLoader::RenderText(const ComponentText& compText, int currentWidt
 	float x = 0;
 	float y = 0;
 	math::float2 pos = transform2D->getPosition();
+	math::float2 size = transform2D->getSize();
 	if (transform2D != nullptr)
 	{
-		x = (compText.offset.x + pos.x) / (transform2D->size.x * compText.scaleOffset.x);
-		y = (compText.offset.y + pos.y) / (transform2D->size.y * compText.scaleOffset.y);
+		x = (compText.offset.x + pos.x) / (size.x * compText.scaleOffset.x);
+		y = (compText.offset.y + pos.y) / (size.y * compText.scaleOffset.y);
 	}
 
 	math::float4x4 model = math::float4x4::identity;
 	math::float4x4 projection = math::float4x4::D3DOrthoProjRH(-1.0f, 1.0f, currentWidth, currentHeight);
-	math::float3 scl = math::float3(transform2D->size.x * compText.scaleOffset.x, transform2D->size.y * compText.scaleOffset.y, 1.0f);
+	math::float3 scl = math::float3(size.x * compText.scaleOffset.x, size.y * compText.scaleOffset.y, 1.0f);
 	math::float3 center = math::float3(x, y, 0.0f);
 	model = model.Scale(scl, center);
 	model.SetTranslatePart(center);

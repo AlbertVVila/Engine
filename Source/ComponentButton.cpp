@@ -117,11 +117,12 @@ void ComponentButton::Update()
 	float screenX = mouse.x - App->renderer->viewGame->winPos.x - (App->ui->currentWidth * .5f);
 	float screenY = mouse.y - App->renderer->viewGame->winPos.y - (App->ui->currentHeight * .5f);
 	math::float2 pos = rectTransform->getPosition();
+	math::float2 size = rectTransform->getSize();
 	float buttonX = pos.x;
 	float buttonY = pos.y;
 	
-	math::float2 buttonMin = float2(buttonX - rectTransform->size.x *.5f, -buttonY - rectTransform->size.y *.5f);
-	math::float2 buttonMax = float2(buttonX + rectTransform->size.x *.5f, -buttonY + rectTransform->size.y *.5f);
+	math::float2 buttonMin = float2(buttonX - size.x *.5f, -buttonY - size.y *.5f);
+	math::float2 buttonMax = float2(buttonX + size.x *.5f, -buttonY + size.y *.5f);
 	if (screenX > buttonMin.x && screenX < buttonMax.x && screenY > buttonMin.y && screenY < buttonMax.y)
 	{
 		isHovered = true;

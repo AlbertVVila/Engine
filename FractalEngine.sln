@@ -19,6 +19,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IntroScript", "Scripts\Intr
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EnemyMovementScript", "Scripts\EnemyMovementScript\EnemyMovementScript.vcxproj", "{34167E15-EAD7-46CC-A371-36AEBFC0E628}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CreditsScript", "Scripts\CreditsScript\CreditsScript.vcxproj", "{CF4ADE84-8B3D-45A4-80EF-5B52CC795B6C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -110,6 +112,18 @@ Global
 		{34167E15-EAD7-46CC-A371-36AEBFC0E628}.Release|Win32.Build.0 = Release|Win32
 		{34167E15-EAD7-46CC-A371-36AEBFC0E628}.Release|x64.ActiveCfg = Release|x64
 		{34167E15-EAD7-46CC-A371-36AEBFC0E628}.Release|x64.Build.0 = Release|x64
+		{CF4ADE84-8B3D-45A4-80EF-5B52CC795B6C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CF4ADE84-8B3D-45A4-80EF-5B52CC795B6C}.Debug|Win32.Build.0 = Debug|Win32
+		{CF4ADE84-8B3D-45A4-80EF-5B52CC795B6C}.Debug|x64.ActiveCfg = Debug|x64
+		{CF4ADE84-8B3D-45A4-80EF-5B52CC795B6C}.Debug|x64.Build.0 = Debug|x64
+		{CF4ADE84-8B3D-45A4-80EF-5B52CC795B6C}.GameBuild|Win32.ActiveCfg = Release|Win32
+		{CF4ADE84-8B3D-45A4-80EF-5B52CC795B6C}.GameBuild|Win32.Build.0 = Release|Win32
+		{CF4ADE84-8B3D-45A4-80EF-5B52CC795B6C}.GameBuild|x64.ActiveCfg = Release|x64
+		{CF4ADE84-8B3D-45A4-80EF-5B52CC795B6C}.GameBuild|x64.Build.0 = Release|x64
+		{CF4ADE84-8B3D-45A4-80EF-5B52CC795B6C}.Release|Win32.ActiveCfg = Release|Win32
+		{CF4ADE84-8B3D-45A4-80EF-5B52CC795B6C}.Release|Win32.Build.0 = Release|Win32
+		{CF4ADE84-8B3D-45A4-80EF-5B52CC795B6C}.Release|x64.ActiveCfg = Release|x64
+		{CF4ADE84-8B3D-45A4-80EF-5B52CC795B6C}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -120,6 +134,7 @@ Global
 		{A5975BB3-268D-4AAA-A04B-9398A16B9280} = {B0BA8D83-BE07-4405-ADE1-C771D081A8CD}
 		{55A33768-7FC9-40D5-9E16-9CC484F406BC} = {B0BA8D83-BE07-4405-ADE1-C771D081A8CD}
 		{34167E15-EAD7-46CC-A371-36AEBFC0E628} = {B0BA8D83-BE07-4405-ADE1-C771D081A8CD}
+		{CF4ADE84-8B3D-45A4-80EF-5B52CC795B6C} = {B0BA8D83-BE07-4405-ADE1-C771D081A8CD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7938FFD4-0765-4A85-95CB-3908D56E6F3D}
