@@ -25,12 +25,12 @@
 
 #define INITIAL_RADIUS 1000.f
 
-ComponentLight::ComponentLight(GameObject * gameobject) : Component(gameobject, ComponentType::Light)
+ComponentLight::ComponentLight(GameObject* gameobject) : Component(gameobject, ComponentType::Light)
 {
 	pointSphere.r = INITIAL_RADIUS;
 }
 
-ComponentLight::ComponentLight(const ComponentLight & component) : Component(component)
+ComponentLight::ComponentLight(const ComponentLight& component) : Component(component)
 {
 	position = component.position;
 	direction = component.direction;
@@ -38,6 +38,9 @@ ComponentLight::ComponentLight(const ComponentLight & component) : Component(com
 
 	inner = component.inner;
 	outer = component.outer;
+	range = component.range;
+	intensity = component.intensity;
+	pointSphere = Sphere(component.pointSphere);
 	App->scene->lights.push_back(this);
 }
 
@@ -99,22 +102,26 @@ void ComponentLight::DrawProperties()
 		{
 			ImGui::Text("Attenuation");
 			if (lightType == LightType::POINT)
-				lightDirty = lightDirty || ImGui::DragFloat("Radius", &pointSphere.r);
+				lightDirty = lightDirty | ImGui::DragFloat("Radius", &pointSphere.r);
 			else
-				lightDirty = lightDirty || ImGui::DragFloat("Range", &range);
+				lightDirty = lightDirty | ImGui::DragFloat("Range", &range);
 		}
 
-		lightDirty = lightDirty || ImGui::DragFloat("Intensity", &intensity);
+		lightDirty = lightDirty | ImGui::DragFloat("Intensity", &intensity);
 
 		if (lightType == LightType::SPOT)
 		{
 			ImGui::Text("Angle");
-			lightDirty = lightDirty || ImGui::DragFloat("Inner", (float*)&inner, 0.1f, 0.f, 90.f);
-			lightDirty = lightDirty || ImGui::DragFloat("Outer", (float*)&outer, 0.1f, 0.f, 90.f);
+			lightDirty = lightDirty | ImGui::DragFloat("Inner", (float*)&inner, 0.1f, 0.f, 90.f);
+			lightDirty = lightDirty | ImGui::DragFloat("Outer", (float*)&outer, 0.1f, 0.f, 90.f);
 		}
 
 		if (lightDirty)
 		{
+			if (App->scene->photoTimer <= 0.f)
+			{
+				App->scene->TakePhoto();
+			}
 			App->spacePartitioning->aabbTreeLighting.ReleaseNode(gameobject->treeNode);
 			App->spacePartitioning->aabbTreeLighting.InsertGO(gameobject);
 		}
@@ -204,7 +211,7 @@ void ComponentLight::Reset()
 	CalculateGuizmos();
 }
 
-ComponentLight * ComponentLight::Clone() const
+ComponentLight* ComponentLight::Clone() const
 {
 	ComponentLight* newLight = new ComponentLight(gameobject);
 	newLight->range = range;
@@ -215,6 +222,7 @@ ComponentLight * ComponentLight::Clone() const
 	newLight->lightType = lightType;
 	newLight->color = color;
 	newLight->direction = direction;
+	newLight->pointSphere = Sphere(pointSphere);
 	newLight->CalculateGuizmos();
 	return newLight;
 }
