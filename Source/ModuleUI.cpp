@@ -33,7 +33,8 @@ bool ModuleUI::Init(JSON* json)
 {
 	shader = App->program->GetProgram(shaderFile);
 
-	float quadVertices[] =
+	//Normal
+	float quadVertices[16] =
 	{
 			-0.5f, -0.5f, 0.0f, 0.0f, // bottom left
 			-0.5f,  0.5f, 0.0f, 1.0f, // top left 
@@ -41,20 +42,50 @@ bool ModuleUI::Init(JSON* json)
 			 0.5f,  0.5f, 1.0f, 1.0f  // top right
 	};
 
+	//Del reves vert
+	float quadVerticesFlipVer[16] =
+	{
+			-0.5f, -0.5f,  0.0f, 1.0f, // bottom left
+			-0.5f,  0.5f, 0.0f, 0.0f, // top left 
+			 0.5f, -0.5f, 1.0f, 1.0f, // bottom right
+			 0.5f,  0.5f, 1.0f, 0.0f  // top right
+	};
+
+	//Del reves hor
+	float quadVerticesFlipHor[16] =
+	{
+			-0.5f, -0.5f,  1.0f, 0.0f, // bottom left
+			-0.5f,  0.5f,  1.0f, 1.0f, // top left 
+			 0.5f, -0.5f, 0.0f, 0.0f, // bottom right
+			 0.5f,  0.5f,  0.0f, 1.0f // top right
+	};
+
+
+
+	GenerateVAO(VAO, quadVertices);
+	GenerateVAO(VAO_FV, quadVerticesFlipVer);
+	GenerateVAO(VAO_FH, quadVerticesFlipHor);
+
+	return true;
+}
+
+void ModuleUI::GenerateVAO(unsigned& vao, float quadVertices[16])
+{
+
 	unsigned int quadIndices[] =
 	{
 		0,2,1,
 		1,2,3
 	};
 
-	glGenVertexArrays(1, &VAO);
+	glGenVertexArrays(1, &vao);
 	glGenBuffers(1, &VBO);
 	glGenBuffers(1, &EBO);
 
-	glBindVertexArray(VAO);
+	glBindVertexArray(vao);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), quadVertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 16 * sizeof(quadVertices[0]), &quadVertices[0], GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(quadIndices), quadIndices, GL_STATIC_DRAW);
@@ -66,8 +97,6 @@ bool ModuleUI::Init(JSON* json)
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
-
-	return true;
 }
 
 update_status ModuleUI::Update(float dt)
@@ -99,7 +128,7 @@ void ModuleUI::Draw(int currentWidth, int currentHeight)
 
 	std::queue<GameObject*> Q;
 	Q.push(App->scene->canvas);
-	
+
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glDisable(GL_DEPTH_TEST);
@@ -152,7 +181,18 @@ void ModuleUI::RenderImage(const ComponentImage& componentImage, int currentWidt
 
 	glUniform4f(glGetUniformLocation(shader->id, "textColor"), componentImage.color.x, componentImage.color.y, componentImage.color.z, componentImage.color.w);
 
-	glBindVertexArray(VAO);
+	if (componentImage.flipVertical)
+	{
+		glBindVertexArray(VAO_FV);
+	}
+	else if (componentImage.flipHorizontal)
+	{
+		glBindVertexArray(VAO_FH);
+	}
+	else
+	{
+		glBindVertexArray(VAO);
+	}
 
 	math::float4x4 projection = math::float4x4::D3DOrthoProjRH(-1.0f, 1.0f, currentWidth, currentHeight);
 	math::float4x4 model = math::float4x4::identity;
@@ -176,7 +216,7 @@ void ModuleUI::RenderImage(const ComponentImage& componentImage, int currentWidt
 
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	}
-	
+
 	glBindVertexArray(0);
 	glUseProgram(0);
 }

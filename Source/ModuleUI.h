@@ -33,12 +33,15 @@ public:
 	bool showUIinSceneViewport = true;
 
 private:
+	void GenerateVAO(unsigned& vao, float quadVertices[16]);
 	void RenderImage(const ComponentImage& componentImage, int currentWidth, int currentHeight);
 private:
 	const char* shaderFile = "UI";
 	Shader* shader = nullptr;
 	
 	unsigned VAO = 0;
+	unsigned VAO_FV = 0;
+	unsigned VAO_FH = 0;
 	unsigned VBO = 0;
 	unsigned EBO = 0;
 };

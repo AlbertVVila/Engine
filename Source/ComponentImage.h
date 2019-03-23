@@ -23,6 +23,8 @@ public:
 	std::string textureName = "None Selected";
 	float4 color = float4(1.0f, 1.0f, 1.0f, 1.0f);
 	Texture* texture = nullptr;
+	bool flipVertical = false;
+	bool flipHorizontal = false;
 
 	std::vector<std::string> textureFiles;
 	bool enabled = true;
