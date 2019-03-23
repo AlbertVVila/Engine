@@ -31,7 +31,7 @@ public:
 		enabled = true;
 	}
 
-	virtual void Update() {}
+	virtual void Update(float dt) {}
 	virtual void Disable()
 	{
 		enabled = false;

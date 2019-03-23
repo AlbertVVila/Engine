@@ -22,6 +22,8 @@ public:
 	void DrawProperties();
 
 	Component* Clone() const;
+
+	void PlayAnimation(unsigned blend);
 	void UpdateGO(GameObject* gameobject);
 
 	ComponentAnimation();
@@ -32,12 +34,10 @@ public:
 	void Save(JSON_value* value) const override;
 	void Load(JSON_value* value) override;
 
-	void Update() override;
+	void Update(float dt) override;
 	bool CleanUp();
 
-	EditorContext* GetEditorContext();
 public:
-
 	AnimationController* controller = nullptr;
 	Animation* anim = nullptr;
 };

@@ -16,18 +16,17 @@ AnimationController::~AnimationController()
 {
 }
 
-void AnimationController::Play(unsigned clipUID, bool loop, unsigned fadeTime)
+void AnimationController::Play(Animation* anim, bool loop, unsigned fadeTime)
 {
 	Instance* newInstance = new Instance;
-	newInstance->clipUID = clipUID;
+	newInstance->anim = anim;
 	newInstance->loop = loop;
 	newInstance->fadeDuration = fadeTime;
 	newInstance->next = current;
-
 	current = newInstance;
 }
 
-void AnimationController::Update(float dt)
+void AnimationController::Update(unsigned dt)
 {
 	if (current != nullptr)
 	{
@@ -35,23 +34,23 @@ void AnimationController::Update(float dt)
 	}
 }
 
-void AnimationController::UpdateInstance(Instance* instance, float dt)
+void AnimationController::UpdateInstance(Instance* instance, unsigned dt)
 {
-	Animation* anim = static_cast<Animation*>(App->resManager->GetAnim(instance->clipUID));
+	Animation* anim = instance->anim;
 
 	if (anim != nullptr && anim->duration > 0)
 	{
 		unsigned trueDt = (unsigned)(dt * instance->speed);
-		trueDt = trueDt % ((unsigned)(anim->duration));
-		unsigned timeRemaining = anim->duration - instance->time;
+		trueDt = trueDt % ((unsigned)(anim->durationInSeconds));
+		unsigned timeRemainingA = anim->durationInSeconds - instance->time;
 
-		if (trueDt <= timeRemaining)
+		if (trueDt <= timeRemainingA)
 		{
 			instance->time += trueDt;
 		}
 		else if (instance->loop)
 		{
-			instance->time = trueDt - timeRemaining;
+			instance->time = trueDt - timeRemainingA;
 		}
 		else
 		{
@@ -61,8 +60,8 @@ void AnimationController::UpdateInstance(Instance* instance, float dt)
 
 	if (instance->next != nullptr)
 	{
-		unsigned timeRemaining = instance->fadeDuration - instance->fadeTime;
-		if (dt <= timeRemaining)
+		unsigned timeRemainingB = instance->fadeDuration - instance->fadeTime;
+		if (dt <= timeRemainingB)
 		{
 			instance->fadeTime += dt;
 			UpdateInstance(instance->next, dt);
@@ -72,7 +71,6 @@ void AnimationController::UpdateInstance(Instance* instance, float dt)
 			ReleaseInstance(instance->next);
 			instance->next = nullptr;
 			instance->fadeTime = instance->fadeDuration = 0;
-			
 		}
 	}
 }
@@ -99,7 +97,7 @@ bool AnimationController::GetTransform(std::string channelName, math::float3& po
 
 bool AnimationController::GetTransformInstance(Instance* instance, std::string channelName, math::float3& position, math::Quat& rotation)
 {
-	Animation* anim = static_cast<Animation*>(App->resManager->GetAnim(instance->clipUID));
+	Animation* anim = instance->anim;
 
 	if (anim != nullptr)
 	{
@@ -107,12 +105,12 @@ bool AnimationController::GetTransformInstance(Instance* instance, std::string c
 
 		if (channelIndex != 999u)
 		{
-			assert(instance->time <= anim->duration);
+			assert(instance->time <= anim->durationInSeconds);
 		
-			//this here is so weird, it's just a check if we are between frames or in a key frame
+			//which key frame are we on? This will always return an enter, how?
 
-			float positionKey = float(instance->time*(anim->GetNumPositions(channelIndex) - 1)) / float(anim->duration);
-			float rotationKey = float(instance->time*(anim->GetNumRotations(channelIndex) - 1)) / float(anim->duration);
+			float positionKey = float(instance->time*(anim->GetNumPositions(channelIndex) - 1)) / float(anim->durationInSeconds);
+			float rotationKey = float(instance->time*(anim->GetNumRotations(channelIndex) - 1)) / float(anim->durationInSeconds);
 
 			unsigned positionIndex = unsigned(positionKey);
 			unsigned rotationIndex = unsigned(rotationKey);

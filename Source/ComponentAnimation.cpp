@@ -14,76 +14,6 @@
 #include "Math/Quat.h"
 #include "Math/float3.h"
 
-void ComponentAnimation::DrawProperties()
-{
-	//We need to have here:
-
-	//Name of the animation
-	ImGui::Text(anim->animationName.c_str());
-
-	//Number of frames the animation has
-	ImGui::Text("%f frames", anim->numberFrames);
-
-	//Duration of the animation
-	ImGui::Text("%i seconds", anim->durationInSeconds);
-
-	//Switch between animation frames
-	if (ImGui::InputInt("Frame #", &anim->currentSample))
-	{
-		if (anim->currentSample < 0)
-		{
-			anim->currentSample = anim->numberFrames - 1;
-		}
-		else if (anim->currentSample >= anim->numberFrames)
-		{
-			anim->currentSample = 0;
-		}
-	}
-
-	//Play
-	ImGui::ArrowButton("Play", ImGuiDir_Right);
-
-}
-
-void ComponentAnimation::Update()
-{
-	UpdateGO(gameobject);
-}
-
-void ComponentAnimation::UpdateGO(GameObject* go)
-{
-	/*float3 position;
-	Quat rotation;
-
-	if (controller->GetTransform(go->name.c_str(), position, rotation))
-	{
-		gameobject->transform->SetPosition(position);
-		gameobject->transform->SetRotation(rotation);
-	}
-
-	for (std::list<GameObject*>::iterator it = go->children.begin(); it != go->children.end(); ++it)
-	{
-		UpdateGO(*it);
-	}*/
-}
-
-Component* ComponentAnimation::Clone() const
-{
-	return new ComponentAnimation(*this);
-}
-
-ComponentAnimation::ComponentAnimation(GameObject * gameobject) : Component(gameobject, ComponentType::Animation)
-{
-	anim = new Animation();
-}
-
-ComponentAnimation::ComponentAnimation(const ComponentAnimation& component) : Component(component)
-{
-	anim = component.anim;
-
-	App->resManager->AddAnim(anim);
-}
-
 
 ComponentAnimation::ComponentAnimation() : Component(nullptr, ComponentType::Animation)
 {
@@ -95,6 +25,83 @@ ComponentAnimation::~ComponentAnimation()
 {
 	anim = nullptr;
 }
+
+
+void ComponentAnimation::DrawProperties()
+{
+	if (ImGui::CollapsingHeader("Animation", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+
+		//Name of the animation
+		ImGui::Text(anim->animationName.c_str());
+
+		//Number of frames the animation has
+		ImGui::Text("%i frames", anim->numberFrames);
+
+		//Duration of the animation
+		ImGui::Text("%i seconds", anim->durationInSeconds);
+
+		//Play
+		if (ImGui::ArrowButton("Play", ImGuiDir_Right))
+		{
+			PlayAnimation(100u);
+		}
+	}
+}
+
+void ComponentAnimation::Update(float dt)
+{
+	controller->Update(unsigned(dt * 1000.0f));
+
+	if (gameobject != nullptr)
+	{
+		UpdateGO(gameobject);
+	}
+}
+
+void ComponentAnimation::UpdateGO(GameObject* go)
+{
+	float3 position;
+	Quat rotation;
+
+	if (controller->GetTransform(go->name.c_str(), position, rotation))
+	{
+		gameobject->transform->SetPosition(position);
+		gameobject->transform->SetRotation(rotation);
+ 		
+	}
+
+	gameobject->movedFlag = true;
+
+	for (std::list<GameObject*>::iterator it = go->children.begin(); it != go->children.end(); ++it)
+	{
+		UpdateGO(*it);
+	}
+}
+
+void ComponentAnimation::PlayAnimation(unsigned blend)
+{
+	controller->Play(anim, true, blend);
+}
+
+Component* ComponentAnimation::Clone() const
+{
+	return new ComponentAnimation(*this);
+}
+
+ComponentAnimation::ComponentAnimation(GameObject * gameobject) : Component(gameobject, ComponentType::Animation)
+{
+	anim = new Animation();
+	controller = new AnimationController();
+}
+
+ComponentAnimation::ComponentAnimation(const ComponentAnimation& component) : Component(component)
+{
+	anim = component.anim;
+
+	App->resManager->AddAnim(anim);
+}
+
 
 bool ComponentAnimation::CleanUp()
 {

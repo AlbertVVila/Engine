@@ -148,24 +148,31 @@ void GameObject::DrawProperties()
 	}
 }
 
-void GameObject::Update()
+void GameObject::Update(float dt)
 {
 
 	//animation shit
+	
+
+	for (auto& component: components)
+	{
+		component->Update(dt);
+	}
+
 	if (isBoneRoot)
 	{
-		Animation* anim = ((ComponentAnimation*)GetComponent(ComponentType::Animation))->anim;
+		/*Animation* anim = ((ComponentAnimation*)GetComponent(ComponentType::Animation))->anim;
 		unsigned indexChannel = ((ComponentAnimation*)GetComponent(ComponentType::Animation))->anim->currentSample;
 
 		for (const auto& child : children)
 		{
 			child->Animate(indexChannel, anim);
 		}
-
+*/
 		std::queue<GameObject*> Q;
 		Q.push(this);
 
-		while(!Q.empty())
+		while (!Q.empty())
 		{
 			GameObject* node = Q.front();
 			Q.pop();
@@ -177,14 +184,10 @@ void GameObject::Update()
 		}
 	}
 
-	for (auto& component: components)
-	{
-		component->Update();
-	}
 	for (std::list<GameObject*>::iterator itChild = children.begin(); itChild != children.end();)
 	{
 
-		(*itChild)->Update();
+		(*itChild)->Update(dt);
 
 		if ((*itChild)->copyFlag) //Moved GO
 		{
@@ -256,7 +259,7 @@ void GameObject::Update()
 
 void GameObject::Animate(unsigned indexSample,Animation* anim)
 {
-	unsigned index = anim->GetIndexChannel(name.c_str());
+	/*unsigned index = anim->GetIndexChannel(name.c_str());
 
 	if (index == 999u)
 	{
@@ -271,7 +274,7 @@ void GameObject::Animate(unsigned indexSample,Animation* anim)
 	{
 		child->Animate(indexSample, anim);
 	}
-	movedFlag = true;
+	movedFlag = true;*/
 }
 
 Component * GameObject::CreateComponent(ComponentType type)
@@ -439,9 +442,10 @@ void GameObject::UpdateGlobalTransform() //Updates global transform when moving
 	if (parent != nullptr)
 	{
 		mytransform = parent->GetGlobalTransform() * mytransform;
+		transform->global = mytransform;
+		UpdateBBox();
 	}
-	transform->global = mytransform;
-	UpdateBBox();
+
 
 	for (auto &child : children)
 	{

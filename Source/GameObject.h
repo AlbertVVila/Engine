@@ -28,7 +28,7 @@ public:
 
 	void DrawProperties();
 
-	void Update();
+	void Update(float dt);
 
 	void Animate(unsigned indexSample,Animation* anim);
 
