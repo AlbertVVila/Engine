@@ -5,14 +5,14 @@
 
 enum class IMAGE_TYPE {TEXTURE, CUBEMAP};
 
-enum DXT
+enum class DXT
 {
-	DXT1 = 0x0706,
-	DXT2 = 0x0707,
-	DXT3 = 0x0708,
-	DXT4 = 0x0709,
-	DXT5 = 0x070A,
-	DXT_NO_COMP = 0x070B,
+	DXT1 = 0x0706, // Working
+	DXT2 = 0x0707, // Error
+	DXT3 = 0x0708, // Working
+	DXT4 = 0x0709, // Error
+	DXT5 = 0x070A, // Working
+	DXT_NO_COMP = 0x070B,// Error
 };
 
 class ResourceTexture : public Resource
@@ -34,7 +34,7 @@ public:
 	inline unsigned GetCubemapIndex() { return cubemapIndex; };
 	inline void SetCubemapIndex(unsigned index) { cubemapIndex = index; };
 
-	void SetImportConfiguration();
+	void SetImportConfiguration() override;
 
 private:
 	bool LoadTexture();
@@ -50,7 +50,7 @@ public:
 	unsigned format = 0u;
 
 	// Compression type
-	DXT dxtFormat = DXT5;
+	DXT dxtFormat = DXT::DXT5;
 	int compression = 4;
 
 private:

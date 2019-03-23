@@ -262,7 +262,7 @@ void ResourceTexture::SaveMetafile(const char* file) const
 	meta->AddUint("depth", depth);
 	meta->AddUint("mips", mips);
 	meta->AddUint("format", format);
-	meta->AddUint("DX compresion", dxtFormat);
+	meta->AddInt("DX compresion", (int)dxtFormat);
 	meta->AddUint("mipmap", ilGetInteger(IL_ACTIVE_MIPMAP));
 	json->AddValue("Texture", *meta);
 	filepath += ".meta";
@@ -299,13 +299,13 @@ void ResourceTexture::SetImportConfiguration()
 	JSON_value* value = json->GetValue("Texture");
 	dxtFormat = (DXT)value->GetInt("DX compresion");
 
-	/*switch (compression)
+	switch (dxtFormat)
 	{
-	case 0:	dxtFormat = DXT1; break;
-	case 1:	dxtFormat = DXT2; break;
-	case 2:	dxtFormat = DXT3; break;
-	case 3:	dxtFormat = DXT4; break;
-	case 4:	dxtFormat = DXT5; break;
-	case 5: dxtFormat = DXT_NO_COMP; break;
-	}*/
+	case DXT::DXT1:	compression = 0; break;
+	case DXT::DXT2:	compression = 1; break;
+	case DXT::DXT3:	compression = 2; break;
+	case DXT::DXT4:	compression = 3; break;
+	case DXT::DXT5:	compression = 4; break;
+	case DXT::DXT_NO_COMP:	compression = 5; break;
+	}
 }

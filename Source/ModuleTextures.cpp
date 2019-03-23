@@ -73,10 +73,9 @@ bool ModuleTextures::ImportImage(const char* file, const char* folder, ResourceT
 	success = ilLoadImage((path+file).c_str());
 	if (success)
 	{
-		LOG("Imported image %s", file);
 		ILuint size;
 		ILubyte* data = ilGetData();
-		ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);	// To pick a specific DXT compression use
+		ilSetInteger(IL_DXTC_FORMAT, (ILint)resource->dxtFormat);	// To pick a specific DXT compression use
 		size = ilSaveL(IL_DDS, NULL, 0);		// Get the size of the data buffer
 		data = new ILubyte[size];				// allocate data buffer
 		if (ilSaveL(IL_DDS, data, size) > 0)
@@ -93,6 +92,10 @@ bool ModuleTextures::ImportImage(const char* file, const char* folder, ResourceT
 			resource->depth = ilGetInteger(IL_IMAGE_DEPTH);
 			resource->format = ilGetInteger(IL_IMAGE_FORMAT);
 			resource->bytes = ilGetInteger(GL_UNSIGNED_BYTE);
+		}
+		else
+		{
+			success = false;
 		}
 		ilDeleteImages(1, &imageID);
 		RELEASE_ARRAY(data);
@@ -112,12 +115,12 @@ void ModuleTextures::DrawImportConfiguration(ResourceTexture* resource)
 	{
 		switch (resource->compression)
 		{
-		case 0:	resource->dxtFormat = DXT1; break;
-		case 1:	resource->dxtFormat = DXT2; break;
-		case 2:	resource->dxtFormat = DXT3; break;
-		case 3:	resource->dxtFormat = DXT4; break;
-		case 4:	resource->dxtFormat = DXT5; break;
-		case 5: resource->dxtFormat = DXT_NO_COMP; break;
+		case 0:	resource->dxtFormat = DXT::DXT1; break;
+		case 1:	resource->dxtFormat = DXT::DXT2; break;
+		case 2:	resource->dxtFormat = DXT::DXT3; break;
+		case 3:	resource->dxtFormat = DXT::DXT4; break;
+		case 4:	resource->dxtFormat = DXT::DXT5; break;
+		case 5: resource->dxtFormat = DXT::DXT_NO_COMP; break;
 		}
 	}
 }

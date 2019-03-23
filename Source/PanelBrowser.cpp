@@ -292,6 +292,7 @@ void PanelBrowser::DrawImportConfigurationPopUp()
 		{
 			// Add accept logic
 			openImportConfigPopUp = false;
+			App->resManager->ReImportFile(fileSelected, path.c_str(), fileSelected->GetType());
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Cancel"))

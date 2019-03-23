@@ -54,6 +54,7 @@ public:
 
 	virtual void SaveMetafile(const char* file) const;
 	virtual void Load(const JSON_value& config);
+	virtual void SetImportConfiguration() {};
 	virtual bool LoadInMemory() {return true;};
 	virtual void DeleteFromMemory() { loaded = 0; };
 

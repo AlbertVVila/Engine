@@ -139,7 +139,7 @@ unsigned ModuleResourceManager::FindByExportedFile(const char* exportedFileName)
 	return 0;
 }
 
-unsigned ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* filePath, TYPE type, bool force)
+unsigned ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* filePath, TYPE type)
 {
 	unsigned ret = 0; 
 	bool success = false; 
@@ -148,6 +148,7 @@ unsigned ModuleResourceManager::ImportFile(const char* newFileInAssets, const ch
 	Resource* resource = CreateNewResource(type);
 	std::string assetPath(filePath);
 	assetPath += newFileInAssets;
+	//resource->SetImportConfiguration();
 
 	switch (type) 
 	{
@@ -170,10 +171,49 @@ unsigned ModuleResourceManager::ImportFile(const char* newFileInAssets, const ch
 		resource->SaveMetafile(assetPath.c_str());
 		resource->SetFile((importedFilePath + newFileInAssets).c_str());
 		resource->SetExportedFile(App->fsystem->RemoveExtension(newFileInAssets).c_str());
+		LOG("%s imported.", resource->GetExportedFile());
 	}
 	else
 	{
 		RELEASE(resource);
+	}
+	return ret;
+}
+
+unsigned ModuleResourceManager::ReImportFile(Resource* resource, const char* filePath, TYPE type)
+{
+	unsigned ret = 0;
+	bool success = false;
+
+	std::string file = resource->GetExportedFile();
+	file += App->fsystem->GetExtension(resource->GetFile());
+
+	switch (type)
+	{
+	case TYPE::TEXTURE:
+		success = App->textures->ImportImage(file.c_str(), filePath, (ResourceTexture*)resource);
+		break;
+	case TYPE::MESH:
+		success = App->fsystem->importer.ImportFBX(file.c_str(), filePath);
+		break;
+		//case TYPE::AUDIO: import_ok = App->audio->Import(newFileInAssets, written_file); break;
+		//case TYPE::SCENE: import_ok = App->scene->Import(newFileInAssets, written_file); break;
+	case TYPE::MATERIAL:
+		success = App->fsystem->Copy(filePath, IMPORTED_MATERIALS, file.c_str());
+		break;
+	}
+
+	// If export was successful, create a new resource
+	if (success)
+	{
+		std::string assetPath(filePath);
+		assetPath += file;
+		resource->SaveMetafile(assetPath.c_str());
+		LOG("%s reimported.", resource->GetExportedFile());
+	}
+	else
+	{
+		LOG("Error: %s failed on reimport.", resource->GetExportedFile());
 	}
 	return ret;
 }
