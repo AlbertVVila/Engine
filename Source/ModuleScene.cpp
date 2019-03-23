@@ -781,6 +781,29 @@ void ModuleScene::Pick(float normalized_x, float normalized_y)
 	}
 }
 
+GameObject * ModuleScene::FindGameObjectByName(const char* name) const
+{
+	return FindGameObjectByName(App->scene->root, name);
+}
+
+GameObject * ModuleScene::FindGameObjectByName(GameObject* parent, const char* name) const
+{
+	std::stack<GameObject*> GOs;
+	GOs.push(parent);
+	while (!GOs.empty())
+	{
+		GameObject* go = GOs.top();
+		if (go->name == name) return go;
+
+		GOs.pop();
+		for (const auto& child : go->children)
+		{
+			GOs.push(child);
+		}
+	}
+	return nullptr;
+}
+
 void ModuleScene::GetStaticGlobalAABB(AABB & aabb, std::vector<GameObject*>& bucket, unsigned int & bucketOccupation)
 {
 	aabb.SetNegativeInfinity();

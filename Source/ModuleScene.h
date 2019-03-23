@@ -69,6 +69,9 @@ public:
 	void UnSelect();
 	void Pick(float normalized_x, float normalized_y);
 
+	ENGINE_API GameObject * FindGameObjectByName(const char* name) const;
+	ENGINE_API GameObject * FindGameObjectByName(GameObject* parent, const char* name) const;
+
 	void GetStaticGlobalAABB(AABB &aabb, std::vector<GameObject*> &bucket, unsigned int &bucketOccupation);
 
 	unsigned GetNewUID();

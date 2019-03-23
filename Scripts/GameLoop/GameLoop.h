@@ -9,6 +9,8 @@
 #define GameLoop_API __declspec(dllimport)
 #endif
 
+class ComponentButton;
+
 class GameLoop_API GameLoop : public Script
 {
 	enum class GameState
@@ -37,7 +39,10 @@ class GameLoop_API GameLoop : public Script
 
 	//Buttons
 
-	GameObject* playButton = nullptr;
+	ComponentButton* playButton = nullptr;
+
+	//GO
+	GameObject* menu = nullptr;
 };
 
 extern "C" GameLoop_API GameLoop* CreateScript();

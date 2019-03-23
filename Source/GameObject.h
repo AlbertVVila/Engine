@@ -33,7 +33,7 @@ public:
 		return activeSelf;
 	}
 
-	void SetActive(bool active);
+	ENGINE_API void SetActive(bool active);
 
 	Component* CreateComponent(ComponentType type);
 	ENGINE_API Component* GetComponent(ComponentType type) const;
