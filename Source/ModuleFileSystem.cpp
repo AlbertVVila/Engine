@@ -402,7 +402,7 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 					{
 						// File already imported, add it to the resources list
 						ResourceTexture* res = (ResourceTexture*)App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::TEXTURE);
-						//res->setImportCon
+						res->SetImportConfiguration();
 					}
 				}
 				else if (type == FILETYPE::MODEL) //FBX

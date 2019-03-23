@@ -295,22 +295,17 @@ void ResourceTexture::SetImportConfiguration()
 		RELEASE_ARRAY(data);
 		return;
 	}
+	JSON* json = new JSON(data);
+	JSON_value* value = json->GetValue("Texture");
+	dxtFormat = (DXT)value->GetInt("DX compresion");
 
-	rapidjson::Document* meta = new rapidjson::Document();
-	meta->SetObject();
-
-	rapidjson::Document::ConstMemberIterator itr = meta->FindMember("DX compresion");
-	if (itr != meta->MemberEnd())
+	/*switch (compression)
 	{
-		compression = itr->value.GetInt();
-		switch (compression)
-		{
-		case 0:	dxtFormat = DXT1; break;
-		case 1:	dxtFormat = DXT2; break;
-		case 2:	dxtFormat = DXT3; break;
-		case 3:	dxtFormat = DXT4; break;
-		case 4:	dxtFormat = DXT5; break;
-		case 5: dxtFormat = DXT_NO_COMP; break;
-		}
-	}
+	case 0:	dxtFormat = DXT1; break;
+	case 1:	dxtFormat = DXT2; break;
+	case 2:	dxtFormat = DXT3; break;
+	case 3:	dxtFormat = DXT4; break;
+	case 4:	dxtFormat = DXT5; break;
+	case 5: dxtFormat = DXT_NO_COMP; break;
+	}*/
 }
