@@ -34,7 +34,4 @@ private:
 	GameObject* player = nullptr;
 
 };
-
-extern "C" EnemyMovementScript_API EnemyMovementScript* CreateScript();
-
 #endif __EnemyMovementScript_h__

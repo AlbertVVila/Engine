@@ -29,7 +29,4 @@ private:
 	math::float3 cameraPosition = math::float3::zero;
 	float speed = 2.0f;
 };
-
-extern "C" IntroScript_API IntroScript* CreateScript();
-
 #endif __IntroScript_h__

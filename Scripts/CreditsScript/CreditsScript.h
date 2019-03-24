@@ -29,7 +29,4 @@ private:
 	float speed = 100.0f;
 	float stopValue = 900.0f;
 };
-
-extern "C" CreditsScript_API CreditsScript* CreateScript();
-
 #endif __CreditsScript_h__

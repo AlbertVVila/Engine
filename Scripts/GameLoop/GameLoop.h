@@ -71,6 +71,4 @@ class GameLoop_API GameLoop : public Script
 	Script* playerScript = nullptr;
 };
 
-extern "C" GameLoop_API GameLoop* CreateScript();
-
 #endif __GameLoop_h__
