@@ -181,7 +181,7 @@ void GameObject::Update()
 
 	for (auto& component: components)
 	{
-		component->Update();
+		component->Update(); //TODO: don't execute update if Component is disabled
 	}
 	for (std::list<GameObject*>::iterator itChild = children.begin(); itChild != children.end();)
 	{
@@ -452,6 +452,26 @@ Component * GameObject::GetComponent(ComponentType type) const
 		if (component->type == type)
 		{
 			return component;
+		}
+	}
+	return nullptr;
+}
+
+ENGINE_API Component * GameObject::GetComponentInChildren(ComponentType type) const
+{
+	std::stack<const GameObject *>GOs;
+	GOs.push(this);
+	while (!GOs.empty())
+	{
+		const GameObject* go = GOs.top();
+		GOs.pop();
+		
+		Component* component = go->GetComponent(type);
+		if (component != nullptr) return component;
+
+		for (const auto &child : go->children)
+		{
+			GOs.push(child);
 		}
 	}
 	return nullptr;

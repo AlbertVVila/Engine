@@ -37,12 +37,13 @@ public:
 
 	Component* CreateComponent(ComponentType type);
 	ENGINE_API Component* GetComponent(ComponentType type) const;
+	ENGINE_API Component* GetComponentInChildren(ComponentType type) const;
 
 	ENGINE_API Script* GetScript() const; //Returns first script found in GameObject
 	ENGINE_API Script* FindScriptByName(const char* name) const;
 
-	std::vector<Component *> GetComponents(ComponentType type) const;
-	std::vector<Component *> GetComponentsInChildren(ComponentType type) const;
+	ENGINE_API std::vector<Component *> GetComponents(ComponentType type) const;
+	ENGINE_API std::vector<Component *> GetComponentsInChildren(ComponentType type) const;
 	void RemoveComponent(const Component & component);
 	void RemoveChild(GameObject* child);
 	void InsertChild(GameObject* child);

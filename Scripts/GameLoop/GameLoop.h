@@ -19,6 +19,7 @@ class GameLoop_API GameLoop : public Script
 		INTRO,
 		PLAYING,
 		PAUSED,
+		OPTIONS,
 		CREDITS,
 		QUIT
 	};
@@ -30,6 +31,7 @@ class GameLoop_API GameLoop : public Script
 	void ManageIntro();
 	void ManagePlaying();
 	void ManagePaused();
+	void ManageOptions();
 	void ManageCredits();
 	void ManageQuit();
 
@@ -40,9 +42,16 @@ class GameLoop_API GameLoop : public Script
 	//Buttons
 
 	ComponentButton* playButton = nullptr;
+	ComponentButton* optionButton = nullptr;
+	ComponentButton* backOptionButton = nullptr;
+
 
 	//GO
 	GameObject* menu = nullptr;
+	GameObject* options = nullptr;
+
+	//Script
+	//Script* intro = nullptr;
 };
 
 extern "C" GameLoop_API GameLoop* CreateScript();
