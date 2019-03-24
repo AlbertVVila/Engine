@@ -20,6 +20,7 @@ public:
 	void Load(JSON_value* value) override;
 
 	void Update() override;
+	void Enable(bool enable) override;
 
 	void AssemblyButton();
 

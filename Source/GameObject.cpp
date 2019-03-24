@@ -173,15 +173,18 @@ void GameObject::Update()
 {
 	if (!isActive()) return;
 
-	Component* button = GetComponent(ComponentType::Button); //ESTO LO TIENE QUE HACER EL CANVAAS RECORRIENDO SUS HIJOS / ES DE PRUEBA
-	if (button != nullptr)
-	{
-		button->Update();
-	}
+	//Component* button = GetComponent(ComponentType::Button); //ESTO LO TIENE QUE HACER EL CANVAAS RECORRIENDO SUS HIJOS / ES DE PRUEBA
+	//if (button != nullptr)
+	//{
+	//	button->Update();
+	//}
 
 	for (auto& component: components)
 	{
-		component->Update(); //TODO: don't execute update if Component is disabled
+		if (component->enabled)
+		{
+			component->Update();
+		}
 	}
 	for (std::list<GameObject*>::iterator itChild = children.begin(); itChild != children.end();)
 	{
@@ -356,11 +359,11 @@ std::vector<Component *> GameObject::GetComponents(ComponentType type) const
 std::vector<Component*> GameObject::GetComponentsInChildren(ComponentType type) const
 {
 	std::vector<Component *> list;
-	std::stack<const GameObject *>GOs;
+	std::queue<const GameObject *>GOs;
 	GOs.push(this);
 	while (!GOs.empty())
 	{
-		const GameObject* go = GOs.top();
+		const GameObject* go = GOs.front();
 		GOs.pop();
 		for (const auto &component : go->components)
 		{

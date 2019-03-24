@@ -9,7 +9,11 @@
 #define GameLoop_API __declspec(dllimport)
 #endif
 
+#include <vector>
+
+class Component;
 class ComponentButton;
+class ComponentText;
 
 class GameLoop_API GameLoop : public Script
 {
@@ -35,20 +39,32 @@ class GameLoop_API GameLoop : public Script
 	void ManageCredits();
 	void ManageQuit();
 
+	void EnableMenuButtons(bool enable);
+	void VolumeManagement();
+
 	void ChangeGameState(GameState newState); //Set initial conditions for each state here if required
 
 	GameState gameState = GameState::MENU;
 
-	//Buttons
+	//UI Values
+	int volume = 10;
+	int minVolume = 0;
+	int maxVolume = 20;
 
-	ComponentButton* playButton = nullptr;
+	//UI
+
+	//Buttons
+	std::vector<Component*> menuButtons;
 	ComponentButton* optionButton = nullptr;
 	ComponentButton* backOptionButton = nullptr;
-
+	std::vector<Component*> volumeButtons;
 
 	//GO
 	GameObject* menu = nullptr;
 	GameObject* options = nullptr;
+
+	//TEXT
+	ComponentText* volumeText = nullptr;
 
 	//Script
 	//Script* intro = nullptr;

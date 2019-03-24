@@ -138,13 +138,29 @@ void ComponentButton::Update()
 		pressedImage->enabled = false;
 	}
 
-	if (isHovered && App->input->GetMouseButtonDown(1) == KEY_REPEAT)
+	if (isHovered && App->input->GetMouseButtonDown(1) == KEY_DOWN)
 	{
 		isPressed = true;
 		buttonImage->enabled = false;
 		highlightedImage->enabled = false;
 		pressedImage->enabled = true;
 	}
+	else
+	{
+		isPressed = false;
+		pressedImage->enabled = false;
+	}
+}
+
+void ComponentButton::Enable(bool enable)
+{
+	Component::Enable(enable);
+	isPressed = false;
+	isHovered = false;
+	isSelected = false;
+	highlightedImage->enabled = false;
+	pressedImage->enabled = false;
+	buttonImage->enabled = true;
 }
 
 void ComponentButton::AssemblyButton() 
