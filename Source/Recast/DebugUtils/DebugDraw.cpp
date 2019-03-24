@@ -18,9 +18,9 @@
 
 #define _USE_MATH_DEFINES
 #include <string.h>
-#include "DebugDraw.h"
-#include "DetourMath.h"
-#include "DetourNavMesh.h"
+#include "DebugDraw.h"  // TODO: CHECK if SECOND DegubDraw exists
+#include "Detour/DetourMath.h"
+#include "Detour/DetourNavMesh.h"
 
 
 duDebugDraw::~duDebugDraw()

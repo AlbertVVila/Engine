@@ -14,7 +14,7 @@
     <ProjectGuid>{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}</ProjectGuid>
     <RootNamespace>SDLGame</RootNamespace>
     <ProjectName>Engine</ProjectName>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -41,12 +41,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)$(Configuration)</OutDir>
+    <OutDir>./Game</OutDir>
     <TargetName>$(SolutionName)</TargetName>
     <IntDir>$(SolutionDir)$(Configuration)</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)$(Configuration)</OutDir>
+    <OutDir>./Game</OutDir>
     <CodeAnalysisRuleSet>CppCoreCheckLifetimeRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <TargetName>$(SolutionName)</TargetName>
@@ -58,7 +58,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Source\Imgui\include;..\Scripts\BaseScript;./Brofiler-1.1.2;./ImGuizmo;./pcg-cpp-0.98/include;./rapidjson-1.1.0/include;./physfs-3.0.1/include;./mmgr;./Assimp/include;./DevIL/include;./glew-2.1.0/include;./SDL/include;MathGeoLib/include;./Imgui;./physfs-3.0.1;./freeType/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Source\Imgui\include;..\Scripts\BaseScript;./Brofiler-1.1.2;./ImGuizmo;./pcg-cpp-0.98/include;./rapidjson-1.1.0/include;./physfs-3.0.1/include;./mmgr;./Assimp/include;./DevIL/include;./glew-2.1.0/include;./SDL/include;MathGeoLib/include;./Imgui;./physfs-3.0.1;./freeType/include;.\Recast</AdditionalIncludeDirectories>
       <EnablePREfast>false</EnablePREfast>
       <PreprocessorDefinitions>_MBCS;ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
@@ -82,7 +82,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Source\Imgui\include;..\Scripts\BaseScript;./Brofiler-1.1.2;./ImGuizmo;./pcg-cpp-0.98/include;./rapidjson-1.1.0/include;./physfs-3.0.1/include;./mmgr;./Assimp/include;./DevIL/include;./glew-2.1.0/include;./SDL/include;MathGeoLib/include;./Imgui;./physfs-3.0.1;./freeType/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Source\Imgui\include;..\Scripts\BaseScript;./Brofiler-1.1.2;./ImGuizmo;./pcg-cpp-0.98/include;./rapidjson-1.1.0/include;./physfs-3.0.1/include;./mmgr;./Assimp/include;./DevIL/include;./glew-2.1.0/include;./SDL/include;MathGeoLib/include;./Imgui;./physfs-3.0.1;./freeType/include;.\Recast</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_MBCS;ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -212,6 +212,30 @@
     <ClInclude Include="par_shapes.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="engineResource.h" />
+    <ClInclude Include="Recast\DebugUtils\DebugDraw.h" />
+    <ClInclude Include="Recast\DebugUtils\DetourDebugDraw.h" />
+    <ClInclude Include="Recast\DebugUtils\RecastDebugDraw.h" />
+    <ClInclude Include="Recast\DebugUtils\RecastDump.h" />
+    <ClInclude Include="Recast\DetourCrowd\DetourCrowd.h" />
+    <ClInclude Include="Recast\DetourCrowd\DetourLocalBoundary.h" />
+    <ClInclude Include="Recast\DetourCrowd\DetourObstacleAvoidance.h" />
+    <ClInclude Include="Recast\DetourCrowd\DetourPathCorridor.h" />
+    <ClInclude Include="Recast\DetourCrowd\DetourPathQueue.h" />
+    <ClInclude Include="Recast\DetourCrowd\DetourProximityGrid.h" />
+    <ClInclude Include="Recast\DetourTileCache\DetourTileCache.h" />
+    <ClInclude Include="Recast\DetourTileCache\DetourTileCacheBuilder.h" />
+    <ClInclude Include="Recast\Detour\DetourAlloc.h" />
+    <ClInclude Include="Recast\Detour\DetourAssert.h" />
+    <ClInclude Include="Recast\Detour\DetourCommon.h" />
+    <ClInclude Include="Recast\Detour\DetourMath.h" />
+    <ClInclude Include="Recast\Detour\DetourNavMesh.h" />
+    <ClInclude Include="Recast\Detour\DetourNavMeshBuilder.h" />
+    <ClInclude Include="Recast\Detour\DetourNavMeshQuery.h" />
+    <ClInclude Include="Recast\Detour\DetourNode.h" />
+    <ClInclude Include="Recast\Detour\DetourStatus.h" />
+    <ClInclude Include="Recast\Recast\Recast.h" />
+    <ClInclude Include="Recast\Recast\RecastAlloc.h" />
+    <ClInclude Include="Recast\Recast\RecastAssert.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ResourceMaterial.h" />
     <ClInclude Include="ResourceMesh.h" />
@@ -303,6 +327,36 @@
     <ClCompile Include="PanelInspector.cpp" />
     <ClCompile Include="PanelResourceManager.cpp" />
     <ClCompile Include="PanelTime.cpp" />
+    <ClCompile Include="Recast\DebugUtils\DebugDraw.cpp" />
+    <ClCompile Include="Recast\DebugUtils\DetourDebugDraw.cpp" />
+    <ClCompile Include="Recast\DebugUtils\RecastDebugDraw.cpp" />
+    <ClCompile Include="Recast\DebugUtils\RecastDump.cpp" />
+    <ClCompile Include="Recast\DetourCrowd\DetourCrowd.cpp" />
+    <ClCompile Include="Recast\DetourCrowd\DetourLocalBoundary.cpp" />
+    <ClCompile Include="Recast\DetourCrowd\DetourObstacleAvoidance.cpp" />
+    <ClCompile Include="Recast\DetourCrowd\DetourPathCorridor.cpp" />
+    <ClCompile Include="Recast\DetourCrowd\DetourPathQueue.cpp" />
+    <ClCompile Include="Recast\DetourCrowd\DetourProximityGrid.cpp" />
+    <ClCompile Include="Recast\DetourTileCache\DetourTileCache.cpp" />
+    <ClCompile Include="Recast\DetourTileCache\DetourTileCacheBuilder.cpp" />
+    <ClCompile Include="Recast\Detour\DetourAlloc.cpp" />
+    <ClCompile Include="Recast\Detour\DetourAssert.cpp" />
+    <ClCompile Include="Recast\Detour\DetourCommon.cpp" />
+    <ClCompile Include="Recast\Detour\DetourNavMesh.cpp" />
+    <ClCompile Include="Recast\Detour\DetourNavMeshBuilder.cpp" />
+    <ClCompile Include="Recast\Detour\DetourNavMeshQuery.cpp" />
+    <ClCompile Include="Recast\Detour\DetourNode.cpp" />
+    <ClCompile Include="Recast\Recast\Recast.cpp" />
+    <ClCompile Include="Recast\Recast\RecastAlloc.cpp" />
+    <ClCompile Include="Recast\Recast\RecastArea.cpp" />
+    <ClCompile Include="Recast\Recast\RecastAssert.cpp" />
+    <ClCompile Include="Recast\Recast\RecastContour.cpp" />
+    <ClCompile Include="Recast\Recast\RecastFilter.cpp" />
+    <ClCompile Include="Recast\Recast\RecastLayers.cpp" />
+    <ClCompile Include="Recast\Recast\RecastMesh.cpp" />
+    <ClCompile Include="Recast\Recast\RecastMeshDetail.cpp" />
+    <ClCompile Include="Recast\Recast\RecastRasterization.cpp" />
+    <ClCompile Include="Recast\Recast\RecastRegion.cpp" />
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="ResourceMaterial.cpp" />
     <ClCompile Include="ResourceMesh.cpp" />
