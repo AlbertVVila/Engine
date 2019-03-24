@@ -26,7 +26,7 @@ void AnimationController::Play(Animation* anim, bool loop, unsigned fadeTime)
 	current = newInstance;
 }
 
-void AnimationController::Update(unsigned dt)
+void AnimationController::Update(float dt)
 {
 	if (current != nullptr)
 	{
@@ -34,27 +34,41 @@ void AnimationController::Update(unsigned dt)
 	}
 }
 
-void AnimationController::UpdateInstance(Instance* instance, unsigned dt)
+void AnimationController::UpdateInstance(Instance* instance, float dt)
 {
 	Animation* anim = instance->anim;
 
-	if (anim != nullptr && anim->duration > 0)
+	if (anim != nullptr && anim->durationInSeconds > 0)
 	{
-		unsigned trueDt = (unsigned)(dt * instance->speed);
-		trueDt = trueDt % ((unsigned)(anim->durationInSeconds));
-		unsigned timeRemainingA = anim->durationInSeconds - instance->time;
+		float trueDt = dt * instance->speed;
+		float timeRemainingA = anim->durationInSeconds - instance->time;
 
+		
 		if (trueDt <= timeRemainingA)
 		{
 			instance->time += trueDt;
 		}
 		else if (instance->loop)
 		{
-			instance->time = trueDt - timeRemainingA;
+			if (instance->speed < 0.0f)
+			{
+				instance->time = timeRemainingA - trueDt;
+			}
+			else
+			{
+				instance->time = trueDt - timeRemainingA;
+			}
 		}
 		else
 		{
-			instance->time = anim->duration;
+			if (instance->speed < 0.0f)
+			{
+				instance->time = 0.0f;
+			}
+			else
+			{
+				instance->time = anim->durationInSeconds;
+			}
 		}
 	}
 

@@ -14,7 +14,7 @@ public:
 	struct Instance
 	{
 		Animation* anim = nullptr;
-		unsigned time = 0u;
+		float time = 0.0f;
 		bool loop = true;
 		float speed = 1.0f;
 
@@ -30,8 +30,8 @@ public:
 	~AnimationController();
 
 	void Play(Animation* anim, bool loop, unsigned fadeTime);
-	void Update(unsigned dt);
-	void UpdateInstance(Instance* ins, unsigned dt);
+	void Update(float dt);
+	void UpdateInstance(Instance* ins, float dt);
 	void ReleaseInstance(Instance* ins);
 
 public:

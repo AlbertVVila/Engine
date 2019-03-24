@@ -2,6 +2,7 @@
 
 #include "ModuleResourceManager.h"
 #include "ModuleFileSystem.h"
+#include "ModuleTime.h"
 
 #include "GameObject.h"
 #include "Animation.h"
@@ -42,20 +43,20 @@ void ComponentAnimation::DrawProperties()
 		ImGui::Text("%i seconds", anim->durationInSeconds);
 
 		//Play
-		if (ImGui::ArrowButton("Play", ImGuiDir_Right))
-		{
-			PlayAnimation(100u);
-		}
+		ImGui::DragFloat("Animation Speed", &controller->current->speed, 0.01f, -2.0f, 2.0f);
 	}
 }
 
 void ComponentAnimation::Update(float dt)
 {
-	controller->Update(unsigned(dt * 1000.0f));
-
-	if (gameobject != nullptr)
+	if (App->time->gameState == GameState::RUN)
 	{
-		UpdateGO(gameobject);
+		controller->Update(App->time->gameDeltaTime);
+
+		if (gameobject != nullptr)
+		{
+			UpdateGO(gameobject);
+		}
 	}
 }
 
@@ -66,8 +67,8 @@ void ComponentAnimation::UpdateGO(GameObject* go)
 
 	if (controller->GetTransform(go->name.c_str(), position, rotation))
 	{
-		gameobject->transform->SetPosition(position);
-		gameobject->transform->SetRotation(rotation);
+		go->transform->SetPosition(position);
+		go->transform->SetRotation(rotation);
  		
 	}
 
@@ -93,6 +94,7 @@ ComponentAnimation::ComponentAnimation(GameObject * gameobject) : Component(game
 {
 	anim = new Animation();
 	controller = new AnimationController();
+	PlayAnimation(100u);
 }
 
 ComponentAnimation::ComponentAnimation(const ComponentAnimation& component) : Component(component)
