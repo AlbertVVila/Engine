@@ -68,6 +68,7 @@ class GameLoop_API GameLoop : public Script
 
 	//Script
 	//Script* intro = nullptr;
+	Script* playerScript = nullptr;
 };
 
 extern "C" GameLoop_API GameLoop* CreateScript();

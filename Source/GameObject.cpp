@@ -413,7 +413,7 @@ void GameObject::RemoveComponent(const Component & component)
 	}
 }
 
-Script * GameObject::GetScript() const
+Script* GameObject::GetScript() const
 {
 	ComponentScript* component = (ComponentScript*)GetComponent(ComponentType::Script);
 	if (component != nullptr)
