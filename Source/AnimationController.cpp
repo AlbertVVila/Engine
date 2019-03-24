@@ -41,34 +41,39 @@ void AnimationController::UpdateInstance(Instance* instance, float dt)
 	if (anim != nullptr && anim->durationInSeconds > 0)
 	{
 		float trueDt = dt * instance->speed;
-		float timeRemainingA = anim->durationInSeconds - instance->time;
 
-		
-		if (trueDt <= timeRemainingA)
+		if (trueDt > 0.0f)
 		{
-			instance->time += trueDt;
-		}
-		else if (instance->loop)
-		{
-			if (instance->speed < 0.0f)
+			float timeRemainingA = anim->durationInSeconds - instance->time;
+			if (trueDt <= timeRemainingA)
 			{
-				instance->time = timeRemainingA - trueDt;
+				instance->time += trueDt;
 			}
-			else
+			else if (instance->loop)
 			{
 				instance->time = trueDt - timeRemainingA;
-			}
-		}
-		else
-		{
-			if (instance->speed < 0.0f)
-			{
-				instance->time = 0.0f;
 			}
 			else
 			{
 				instance->time = anim->durationInSeconds;
 			}
+		}
+		else
+		{
+			float timeRemainingA = - (instance->time);
+			if (trueDt >= timeRemainingA)
+			{
+				instance->time += trueDt;
+			}
+			else if (instance->loop)
+			{
+				instance->time = anim->durationInSeconds - timeRemainingA + trueDt;
+			}
+			else
+			{
+				instance->time = 0.0f;
+			}
+
 		}
 	}
 
