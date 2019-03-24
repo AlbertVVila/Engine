@@ -28,6 +28,7 @@ private:
 	GameObject* GetGameObjectRecursiveByName(GameObject* gameObject, const char* name);
 private:
 	float speed = 100.0f;
+	float maxPlayerDistance = 200000.0f;
 	std::string playerName = "Player";
 	GameObject* player = nullptr;
 

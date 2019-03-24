@@ -30,7 +30,7 @@ public:
 
 	int currentWidth;
 	int currentHeight;
-	bool showUIinSceneViewport = true;
+	bool showUIinSceneViewport = false;
 
 private:
 	void GenerateVAO(unsigned& vao, float quadVertices[16]);
