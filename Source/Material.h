@@ -37,6 +37,7 @@ public:
 	std::list<Texture*> GetTextures() const;
 
 	void SetUniforms(unsigned shader) const;
+	void CalculateVariation();
 
 public:
 	std::string name;
@@ -56,7 +57,7 @@ public:
 	float roughness = .5f;
 	float metallic = .5f;
 
-	
+	unsigned variation = 0u;
 };
 
 #endif __Material_h__
