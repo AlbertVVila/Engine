@@ -71,16 +71,6 @@ PanelBrowser::PanelBrowser() : path(ASSETS)
 
 PanelBrowser::~PanelBrowser() 
 {
-	/*App->resManager->DeleteResource(folderIcon->GetUID());
-	App->resManager->DeleteResource(fileIcon->GetUID());
-	App->resManager->DeleteResource(fbxIcon->GetUID());
-	App->resManager->DeleteResource(pngIcon->GetUID());
-	App->resManager->DeleteResource(jpgIcon->GetUID());
-	App->resManager->DeleteResource(tgaIcon->GetUID());
-	App->resManager->DeleteResource(ddsIcon->GetUID());
-	App->resManager->DeleteResource(m4tIcon->GetUID());
-	App->resManager->DeleteResource(jsonIcon->GetUID());*/
-
 	while (!pathStack.empty())
 		pathStack.pop();
 
@@ -88,6 +78,7 @@ PanelBrowser::~PanelBrowser()
 	dirs.clear();
 
 	fileSelected = nullptr;
+	newName = "";
 }
 
 bool PanelBrowser::Init()
@@ -285,6 +276,7 @@ void PanelBrowser::DrawFileContextMenu()
 	{
 		if (ImGui::Selectable("Rename"))
 		{
+			newName = fileSelected->GetExportedFile();
 			openRenamePopUp = true;
 		}
 		if(ImGui::Selectable("Delete"))
