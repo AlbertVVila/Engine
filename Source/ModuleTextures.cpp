@@ -100,10 +100,11 @@ bool ModuleTextures::ImportImage(const char* file, const char* folder, ResourceT
 		ilDeleteImages(1, &imageID);
 		RELEASE_ARRAY(data);
 	}
-	else
+	
+	if(!success)
 	{
 		error = ilGetError();
-		LOG("Error loading file %s, error: %s\n", file, iluErrorString(error));
+		LOG("Error loading file %s, error: %s", file, iluErrorString(error));
 	}
 	return success;
 }
