@@ -26,7 +26,7 @@ public:
 
 	void ResetValues();
 
-	void Update() override;
+	void Update(float dt) override;
 	void DrawProperties() override;
 	void DrawDebugLight() const;
 	void Load(JSON_value* value) override;

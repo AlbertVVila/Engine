@@ -13,8 +13,8 @@ public:
 
 	struct Instance
 	{
-		unsigned clipUID = 0u;
-		unsigned time = 0u;
+		Animation* anim = nullptr;
+		float time = 0.0f;
 		bool loop = true;
 		float speed = 1.0f;
 
@@ -29,13 +29,12 @@ public:
 	AnimationController();
 	~AnimationController();
 
-	void Play(unsigned clipUID, bool loop, unsigned fadeTime);
+	void Play(Animation* anim, bool loop, unsigned fadeTime);
 	void Update(float dt);
 	void UpdateInstance(Instance* ins, float dt);
 	void ReleaseInstance(Instance* ins);
 
 public:
-	void SetTransform();
 
 	bool GetTransformInstance(Instance* instance, std::string channelName, math::float3& position, math::Quat& rotation);
 

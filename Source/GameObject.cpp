@@ -148,43 +148,21 @@ void GameObject::DrawProperties()
 	}
 }
 
-void GameObject::Update()
+void GameObject::Update(float dt)
 {
 
 	//animation shit
-	if (isBoneRoot)
-	{
-		Animation* anim = ((ComponentAnimation*)GetComponent(ComponentType::Animation))->anim;
-		unsigned indexChannel = ((ComponentAnimation*)GetComponent(ComponentType::Animation))->anim->currentSample;
 
-		for (const auto& child : children)
-		{
-			child->Animate(indexChannel, anim);
-		}
-
-		std::queue<GameObject*> Q;
-		Q.push(this);
-
-		while(!Q.empty())
-		{
-			GameObject* node = Q.front();
-			Q.pop();
-			node->transform->UpdateTransform();
-			for (GameObject* go : node->children)
-			{
-				Q.push(go);
-			}
-		}
-	}
 
 	for (auto& component: components)
 	{
-		component->Update();
+		component->Update(dt);
 	}
+
 	for (std::list<GameObject*>::iterator itChild = children.begin(); itChild != children.end();)
 	{
 
-		(*itChild)->Update();
+		(*itChild)->Update(dt);
 
 		if ((*itChild)->copyFlag) //Moved GO
 		{
@@ -221,16 +199,16 @@ void GameObject::Update()
 			copy->transform->UpdateTransform();
 			this->children.push_back(copy);
 		}
-		if ((*itChild)->movedFlag) //Moved GO
-		{
-			UpdateGlobalTransform();
-			for (auto child : (*itChild)->children)
-			{
-				child->UpdateGlobalTransform();
-			}
-			(*itChild)->UpdateBBox();
-			(*itChild)->movedFlag = false;
-		}	
+		//if ((*itChild)->movedFlag) //Moved GO
+		//{
+		//	UpdateGlobalTransform();
+		//	for (auto child : (*itChild)->children)
+		//	{
+		//		child->UpdateGlobalTransform();
+		//	}
+		//	(*itChild)->UpdateBBox();
+		//	(*itChild)->movedFlag = false;
+		//}	
 		if ((*itChild)->copyFlag) //Copy GO
 		{
 			(*itChild)->copyFlag = false;
@@ -252,26 +230,6 @@ void GameObject::Update()
 		}
 	}
 
-}
-
-void GameObject::Animate(unsigned indexSample,Animation* anim)
-{
-	unsigned index = anim->GetIndexChannel(name.c_str());
-
-	if (index == 999u)
-	{
-	}
-	else
-	{
-		transform->SetRotation(anim->GetRotation(index, indexSample));
-		transform->SetPosition(anim->GetPosition(index, indexSample));
-		transform->UpdateTransform();
-	}
-	for (const auto& child : children)
-	{
-		child->Animate(indexSample, anim);
-	}
-	movedFlag = true;
 }
 
 Component * GameObject::CreateComponent(ComponentType type)
@@ -439,9 +397,10 @@ void GameObject::UpdateGlobalTransform() //Updates global transform when moving
 	if (parent != nullptr)
 	{
 		mytransform = parent->GetGlobalTransform() * mytransform;
+		transform->global = mytransform;
+		UpdateBBox();
 	}
-	transform->global = mytransform;
-	UpdateBBox();
+
 
 	for (auto &child : children)
 	{
@@ -632,7 +591,7 @@ void GameObject::DrawBBox() const
 	ComponentRenderer *renderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
 	if (renderer == nullptr) return;
 	
-	renderer->mesh->DrawBbox(App->program->defaultShader->id, bbox);
+	renderer->mesh->DrawBbox(App->program->defaultShader->id[0], bbox);
 }
 
 bool GameObject::CleanUp()
@@ -823,4 +782,29 @@ void GameObject::SetStaticAncestors()
 		parents.push(go->parent);
 	}
 	
+}
+
+void GameObject::UpdateTransforms(math::float4x4 parentGlobal)
+{
+
+	if (movedFlag)
+	{
+		transform->local = math::float4x4::FromTRS(transform->position, transform->rotation, transform->scale);
+		movedFlag = false;
+	}
+
+	math::float4x4 global = math::float4x4::identity;
+	if (this != App->scene->root)
+	{
+		transform->global = parentGlobal * transform->local;
+		global = transform->global;
+		transform->UpdateTransform();
+	}
+
+	for (const auto& child : children)
+	{
+		child->UpdateTransforms(global);
+	}
+
+	UpdateBBox();
 }

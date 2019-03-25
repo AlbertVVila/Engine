@@ -190,7 +190,7 @@ void ModuleRender::OnResize()
 void ModuleRender::DrawGizmos(const ComponentCamera &camera) const
 {
 	BROFILER_CATEGORY("Render_DrawGizmos()", Profiler::Color::AliceBlue);
-	unsigned shader = App->program->defaultShader->id;
+	unsigned shader = App->program->defaultShader->id[0];
 	glUseProgram(shader);
 
 	if (picker_debug)
@@ -319,8 +319,11 @@ void ModuleRender::GenBlockUniforms()
 
 void ModuleRender::AddBlockUniforms(const Shader &shader) const
 { 
-	unsigned int uniformBlockIndex = glGetUniformBlockIndex(shader.id, "Matrices");
-	glUniformBlockBinding(shader.id, uniformBlockIndex, 0);
+	for (auto id : shader.id)
+	{
+		unsigned int uniformBlockIndex = glGetUniformBlockIndex(id.second, "Matrices");
+		glUniformBlockBinding(id.second, uniformBlockIndex, 0);
+	}
 }
 
 void ModuleRender::SetViewUniform(const ComponentCamera &camera) const

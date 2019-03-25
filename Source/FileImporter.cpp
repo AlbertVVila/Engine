@@ -239,7 +239,8 @@ void FileImporter::ImportMesh(const aiMesh& mesh, char* data)
 	}
 	else
 	{
-		memcpy(cursor, (unsigned)0u, sizeof(unsigned));
+		unsigned zero = 0u;
+		memcpy(cursor, &zero, sizeof(unsigned));
 		cursor += sizeof(unsigned);
 	}
 

@@ -100,16 +100,16 @@ void ComponentTransform::UpdateTransform()
 {
 	UpdateOldTransform();
 
-	local = math::float4x4::FromTRS(position, rotation, scale);
+	//local = math::float4x4::FromTRS(position, rotation, scale);
 
-	if (gameobject->parent != nullptr && gameobject->parent->transform != nullptr)
-	{
-		global = gameobject->parent->transform->global * local;
-	}
-	else
-	{
-		global = local;
-	}
+	//if (gameobject->parent != nullptr && gameobject->parent->transform != nullptr)
+	//{
+	//	global = gameobject->parent->transform->global * local;
+	//}
+	//else
+	//{
+	//	global = local;
+	//}
 
 	front = -global.Col3(2);
 	up = global.Col3(1);
@@ -231,6 +231,7 @@ void ComponentTransform::SetPosition(const math::float3 & newPosition)
 void ComponentTransform::SetRotation(const math::Quat& newQuat)
 {
 	rotation = newQuat;
+	RotationToEuler();
 	gameobject->movedFlag = true;
 }
 

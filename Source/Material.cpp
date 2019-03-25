@@ -118,6 +118,8 @@ void Material::Load(const char * materialfile)
 		shader = App->program->GetProgram(materialJSON->GetString("shader"));
 	}
 
+	CalculateVariation();
+
 	RELEASE_ARRAY(data);
 	RELEASE(json);
 	
@@ -342,4 +344,9 @@ void Material::SetUniforms(unsigned shader) const
 	glUniform1fv(glGetUniformLocation(shader,
 		"material.metallic"), 1, (GLfloat*)&metallic);
 	
+}
+
+void Material::CalculateVariation()  //set combination of textures to get the appropiate shader
+{
+
 }
