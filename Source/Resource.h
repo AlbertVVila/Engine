@@ -59,6 +59,7 @@ public:
 
 	// File in asset specific
 	virtual void Rename(const char* newName);
+	virtual void Delete();
 
 protected:
 	unsigned UID = 0u;

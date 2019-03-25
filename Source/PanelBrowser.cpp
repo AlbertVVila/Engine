@@ -281,8 +281,8 @@ void PanelBrowser::DrawFileContextMenu()
 		}
 		if(ImGui::Selectable("Delete"))
 		{
-			// TODO: Add delete function to resource
-			//App->fsystem->Remove(fileSelected->GetExportedFile());
+			fileSelected->Delete();
+			folderContentDirty = true;
 		}
 		if (ImGui::Selectable("Import Configuration"))
 		{

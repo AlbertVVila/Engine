@@ -66,3 +66,17 @@ void Resource::Rename(const char* newName)
 
 	// Rename of file in Library and update of exportedFileName is called on child class
 }
+
+void Resource::Delete()
+{
+	// Delete Resource from ResourceManager
+	App->resManager->DeleteResourceFromList(UID);
+
+	// Delete file in Assets
+	App->fsystem->Delete(file.c_str());
+
+	// Delete meta file in Assets
+	App->fsystem->Delete((file + ".meta").c_str());
+
+	// Deletion of file in Library is called on child class
+}

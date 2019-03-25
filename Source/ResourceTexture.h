@@ -30,7 +30,8 @@ public:
 	void LoadConfigFromMeta() override;
 
 	// File in asset specific
-	void ResourceTexture::Rename(const char* newName) override;
+	void Rename(const char* newName) override;
+	void Delete() override;
 
 	inline IMAGE_TYPE GetImageType() { return imageType; };
 	void SetImageType(IMAGE_TYPE type);

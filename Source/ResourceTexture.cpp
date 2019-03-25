@@ -305,3 +305,15 @@ void ResourceTexture::Rename(const char* newName)
 
 	exportedFileName = newName;
 }
+
+void ResourceTexture::Delete()
+{
+	Resource::Delete();
+
+	// Delete file in Library
+	std::string fileInLibrary(TEXTURES);
+	fileInLibrary += exportedFileName;
+	fileInLibrary += TEXTUREEXT;
+	App->fsystem->Delete(fileInLibrary.c_str());
+	DeleteFromMemory();
+}
