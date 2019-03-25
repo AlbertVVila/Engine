@@ -347,6 +347,7 @@ void PanelBrowser::DrawRenamePopUp()
 		if (ImGui::Button("Accept"))
 		{
 			fileSelected->Rename(newName.c_str());
+			folderContentDirty = true;
 			newName = "";
 			openRenamePopUp = false;
 		}
