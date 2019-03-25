@@ -114,12 +114,7 @@ void ComponentImage::DrawProperties()
 void ComponentImage::UpdateTexturesList()
 {
 	textureFiles.clear();
-	std::vector<ResourceTexture*> textureResources = App->resManager->GetTexturesList();
-	for (std::vector<ResourceTexture*>::iterator it = textureResources.begin(); it != textureResources.end(); ++it)
-	{
-		textureFiles.push_back((*it)->GetExportedFile());
-	}
-	textureResources.clear();
+	textureFiles = App->resManager->GetTexturesNameList();
 }
 
 void ComponentImage::Save(JSON_value *value)const

@@ -50,11 +50,6 @@ void MaterialEditor::Draw()
 	
 	ShaderSelector(currentShader);
 
-	if (textureFiles.size() == 0)
-	{
-		textureFiles = App->fsystem->GetFolderContent(TEXTURES, false);
-	}
-
 	if (ImGui::CollapsingHeader("Diffuse"))
 	{
 		ImGui::PushID(&material->diffuseColor);
@@ -219,6 +214,13 @@ void MaterialEditor::SetCurrentTextures()
 	{ 
 		currentNormal = None; 
 	}
+}
+
+void MaterialEditor::UpdateTexturesList()
+{
+	textureFiles.clear();
+	textureFiles = App->resManager->GetTexturesNameList();
+	SetCurrentTextures();
 }
 
 void MaterialEditor::NewMaterial()

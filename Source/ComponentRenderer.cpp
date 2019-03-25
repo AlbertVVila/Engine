@@ -113,6 +113,11 @@ void ComponentRenderer::DrawProperties()
 				}
 				App->editor->materialEditor->CleanUp();
 			}
+
+			if (ImGui::Button("Refresh Material"))
+			{
+				App->editor->materialEditor->UpdateTexturesList();
+			}
 		}
 		else
 		{
@@ -122,6 +127,9 @@ void ComponentRenderer::DrawProperties()
 				App->editor->materialEditor->material = material;
 				App->editor->materialEditor->previous = new ResourceMaterial(*material);
 				App->editor->materialEditor->SetCurrentTextures();
+
+				// Update texture list
+				App->editor->materialEditor->UpdateTexturesList();
 			}
 		}
 

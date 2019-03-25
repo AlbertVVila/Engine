@@ -16,6 +16,7 @@ public:
 	void ShaderSelector(std::string &current_shader);
 	void TextureSelector(unsigned i, std::string &current_texture, int id);
 	void SetCurrentTextures();	// Sets current textures strings with the corresponding texture file string
+	void UpdateTexturesList();
 	void NewMaterial();
 	bool Exists(const std::string& material) const;
 	void Save();
