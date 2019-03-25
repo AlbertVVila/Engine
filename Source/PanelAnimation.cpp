@@ -29,7 +29,6 @@ void PanelAnimation::Draw()
 		Animation* anim = ((ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)))->anim;
 
 		ImGui::Text("GAMEOBJECT");
-
 		ImGui::Separator();
 		ImGui::Text(App->scene->selected->name.c_str());
 
@@ -65,7 +64,7 @@ void PanelAnimation::Draw()
 		}
 
 		ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 - 43);
-		if (ImGui::Button("<<", ImVec2(20, 20)))
+		if (ImGui::Button("<<", ImVec2(23, 23)))
 		{
 			if (isCliping && anim->currentFrame - 1 > minFrame)
 			{
@@ -83,7 +82,7 @@ void PanelAnimation::Draw()
 
 		}
 		ImGui::SameLine();
-		if (ImGui::Button(">>", ImVec2(20, 20)))
+		if (ImGui::Button(">>", ImVec2(23, 23)))
 		{
 			if(anim->currentFrame < anim->duration)
 				anim->currentFrame++;
