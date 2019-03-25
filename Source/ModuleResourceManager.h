@@ -32,8 +32,8 @@ public:
 	// New ResourceManager functions
 	unsigned FindByFileInAssets(const char* fileInAssets) const;		// Returns UID of resource by file variable 
 	unsigned FindByExportedFile(const char* exportedFileName) const;	// Returns UID of resource by exportedFileName variable
-	unsigned ImportFile(const char* newFileInAssets, const char* filePath, TYPE type);
-	unsigned ReImportFile(Resource* resource, const char* filePath, TYPE type);		// Imports again an already loaded resource
+	bool ImportFile(const char* newFileInAssets, const char* filePath, TYPE type);
+	bool ReImportFile(Resource* resource, const char* filePath, TYPE type);		// Imports again an already loaded resource
 	unsigned GenerateNewUID();
 	Resource* Get(unsigned uid) const;									// Returns the resource using UID adding one to the references count and loads it to memory if not already
 	Resource* Get(const char* file) const;								// Returns the resource using exportedFileName adding one to the references count and loads it to memory if not already

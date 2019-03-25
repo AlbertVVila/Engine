@@ -139,16 +139,19 @@ unsigned ModuleResourceManager::FindByExportedFile(const char* exportedFileName)
 	return 0;
 }
 
-unsigned ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* filePath, TYPE type)
+bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* filePath, TYPE type)
 {
-	unsigned ret = 0; 
 	bool success = false; 
-	std::string importedFilePath(filePath);
 
 	Resource* resource = CreateNewResource(type);
 	std::string assetPath(filePath);
 	assetPath += newFileInAssets;
-	//resource->SetImportConfiguration();
+
+	// Save file to import on Resource file variable
+	resource->SetFile((assetPath).c_str());
+
+	// If a .meta file is found import it with the configuration saved
+	resource->SetImportConfiguration();
 
 	switch (type) 
 	{
@@ -168,8 +171,7 @@ unsigned ModuleResourceManager::ImportFile(const char* newFileInAssets, const ch
 	// If export was successful, create a new resource
 	if (success) 
 	{ 
-		resource->SaveMetafile(assetPath.c_str());
-		resource->SetFile((importedFilePath + newFileInAssets).c_str());
+		resource->SaveMetafile(assetPath.c_str());	
 		resource->SetExportedFile(App->fsystem->RemoveExtension(newFileInAssets).c_str());
 		LOG("%s imported.", resource->GetExportedFile());
 	}
@@ -177,12 +179,11 @@ unsigned ModuleResourceManager::ImportFile(const char* newFileInAssets, const ch
 	{
 		RELEASE(resource);
 	}
-	return ret;
+	return success;
 }
 
-unsigned ModuleResourceManager::ReImportFile(Resource* resource, const char* filePath, TYPE type)
+bool ModuleResourceManager::ReImportFile(Resource* resource, const char* filePath, TYPE type)
 {
-	unsigned ret = 0;
 	bool success = false;
 
 	std::string file = resource->GetExportedFile();
@@ -215,7 +216,7 @@ unsigned ModuleResourceManager::ReImportFile(Resource* resource, const char* fil
 	{
 		LOG("Error: %s failed on reimport.", resource->GetExportedFile());
 	}
-	return ret;
+	return success;
 }
 
 Resource * ModuleResourceManager::CreateNewResource(TYPE type, unsigned forceUid)
