@@ -22,7 +22,6 @@ public:
 	bool LoadInMemory() override;
 	void DeleteFromMemory() override;
 	void SaveMetafile(const char* file)const override;
-	void Load(const JSON_value &config) override;
 
 	// Mesh specific
 	void Draw(unsigned shaderProgram) const;

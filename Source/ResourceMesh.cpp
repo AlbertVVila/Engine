@@ -117,12 +117,6 @@ void ResourceMesh::SaveMetafile(const char* file) const
 	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
 }
 
-void ResourceMesh::Load(const JSON_value &config)
-{
-	Resource::Load(config);
-	//TODO: Add variables to load
-}
-
 void ResourceMesh::Draw(unsigned shaderProgram) const
 {
 	glBindVertexArray(VAO);

@@ -45,12 +45,3 @@ void Resource::SetReferences(unsigned references)
 void Resource::SaveMetafile(const char * file) const
 {
 }
-
-void Resource::Load(const JSON_value &config)
-{
-	UID = config.GetUint("UID");
-	file = config.GetString("File");
-	exportedFileName = config.GetString("ExportedFile");
-
-	type = (TYPE)config.GetUint("Type");
-}

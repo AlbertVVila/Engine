@@ -151,7 +151,7 @@ bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* 
 	resource->SetFile((assetPath).c_str());
 
 	// If a .meta file is found import it with the configuration saved
-	resource->SetImportConfiguration();
+	resource->LoadConfigFromMeta();
 
 	switch (type) 
 	{

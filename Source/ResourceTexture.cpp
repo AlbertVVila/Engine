@@ -269,21 +269,7 @@ void ResourceTexture::SaveMetafile(const char* file) const
 	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
 }
 
-void ResourceTexture::Load(const JSON_value& config)
-{
-	Resource::Load(config);
-
-	width = config.GetUint("Width");
-	height = config.GetUint("Height");
-	depth = config.GetUint("Depth");
-	mips = config.GetUint("Mips");
-	bytes = config.GetUint("Bytes");
-	gpuID = config.GetUint("GpuID");
-
-	format = config.GetUint("Format");
-}
-
-void ResourceTexture::SetImportConfiguration()
+void ResourceTexture::LoadConfigFromMeta()
 {
 	char* data = nullptr;
 	std::string metaFile(file);
