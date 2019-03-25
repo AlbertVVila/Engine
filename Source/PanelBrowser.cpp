@@ -17,6 +17,8 @@
 #include "ModuleTextures.h"
 #include "GameObject.h"
 
+#define MAX_FILENAME 30
+
 // Icons
 #define FOLDER_ICON "folderIconBlue"
 #define FILE_ICON "fileIconBlue"
@@ -183,6 +185,10 @@ void PanelBrowser::Draw()
 	if (openImportConfigPopUp)
 		DrawImportConfigurationPopUp();
 
+	// Rename Pop-up
+	if (openRenamePopUp)
+		DrawRenamePopUp();
+
 	ImGui::End();	
 }
 
@@ -273,13 +279,34 @@ void PanelBrowser::DrawFileIcon(const char* file, int itemNumber)
 	ImGui::PopID();
 }
 
+void PanelBrowser::DrawFileContextMenu()
+{
+	if (ImGui::BeginPopup("File Context Menu"))
+	{
+		if (ImGui::Selectable("Rename"))
+		{
+			openRenamePopUp = true;
+		}
+		if(ImGui::Selectable("Delete"))
+		{
+			// TODO: Add delete function to resource
+			//App->fsystem->Remove(fileSelected->GetExportedFile());
+		}
+		if (ImGui::Selectable("Import Configuration"))
+		{
+			//Code to change import settings
+			openImportConfigPopUp = true;
+		}	
+		ImGui::EndPopup();
+	}
+}
+
 void PanelBrowser::DrawImportConfigurationPopUp()
 {
 	ImGui::OpenPopup("Import configuration");
 
 	if (ImGui::BeginPopupModal("Import configuration", &openImportConfigPopUp))
 	{
-
 		ImGui::Text("%s", fileSelected->GetExportedFile());
 		switch (fileSelected->GetType())
 		{
@@ -303,61 +330,31 @@ void PanelBrowser::DrawImportConfigurationPopUp()
 	}
 }
 
-void PanelBrowser::DrawFileContextMenu()
+void PanelBrowser::DrawRenamePopUp()
 {
-	if (ImGui::BeginPopup("File Context Menu"))
-	{
-		ImGui::Text("Rename");
-		if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
-		{
-			ImGui::OpenPopup("Rename File");
-			//ImGui::EndPopup();
-		}
-		ImGui::Text("Delete");
-		if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
-		{
-			App->fsystem->Remove(fileSelected->GetExportedFile());
-			//ImGui::EndPopup();
-		}
-		if (ImGui::Selectable("Import Configuration"))
-		{
-			//Code to change import settings
-			//ImGui::EndPopup();
-			openImportConfigPopUp = true;
-		}
+	ImGui::OpenPopup("Rename File");
 
-		if (ImGui::BeginPopup("Rename File"))
+	if (ImGui::BeginPopupModal("Rename File", &openRenamePopUp))
+	{
+		ImGui::Text("New name:");
+
+		char *name = new char[MAX_FILENAME];
+		strcpy(name, newName.c_str());
+		ImGui::InputText("", name, MAX_FILENAME);
+		newName = name;
+		delete[] name;
+
+		if (ImGui::Button("Accept"))
 		{
-			// TODO: Add function for rename and rename file also on Resource Manager 
-			ImGui::Text("Write the new name for the file");
-			char* newName = new char[30];
-			memset(newName, 0, 30);
-			size_t pos1 = 0;
-			size_t pos2 = 0;
-			std::vector<std::string> result;
-			char separator = '/';
-			/*while (pos2 != fileSelected.npos)
-			{
-				pos2 = fileSelected.find(separator, pos1);
-				if (pos2 != fileSelected.npos)
-				{
-					if (pos2 > pos1)
-						result.push_back(fileSelected.substr(pos1, pos2 - pos1));
-					pos1 = pos2 + 1;
-				}
-			}
-			result.push_back(fileSelected.substr(pos1, fileSelected.size() - pos1));
-			std::string filename = result.back();
-			std::string auxRoute = fileSelected;
-			std::string ruteToFile = auxRoute.replace(fileSelected.size() - filename.size() - 1, fileSelected.size() - 1, "/");
-			ImGui::InputText(newName, newName, (size_t)30);
-			ImGui::Button("Rename it");
-			if (newName != "" && ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
-			{
-				App->fsystem->Rename(ruteToFile.c_str(), filename.c_str(), newName);
-				ImGui::EndPopup();
-			}*/
-			ImGui::EndPopup();
+			fileSelected->Rename(newName.c_str());
+			newName = "";
+			openRenamePopUp = false;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel"))
+		{
+			newName = "";
+			openRenamePopUp = false;
 		}
 		ImGui::EndPopup();
 	}

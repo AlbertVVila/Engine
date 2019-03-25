@@ -140,7 +140,7 @@ bool ModuleFileSystem::Remove(const char* file) const
 {
 	assert(file != nullptr);
 	if (file == nullptr) return false;
-	if (PHYSFS_unmount(file) != 0)
+	if (PHYSFS_unmount(file) == 0)
 	{
 		LOG("Error: %s", PHYSFS_getLastError());
 		return false;
@@ -153,7 +153,7 @@ bool ModuleFileSystem::Delete(const char* file) const
 	assert(file != nullptr);
 	if (file == nullptr) return false;
 
-	if (PHYSFS_delete(file) != 0)
+	if (PHYSFS_delete(file) == 0)
 	{
 		LOG("Error: %s", PHYSFS_getLastError());
 		return false;
@@ -333,14 +333,12 @@ void ModuleFileSystem::Rename(const char* route, const char* file, const char* n
 	if (PHYSFS_unmount(filepath.c_str()) != 0)
 	{
 		LOG("Error: %s", PHYSFS_getLastError());
+		return;
 	}
-	std::string filenewpath(route);
-	filenewpath += newName;
-	if (Exists(filenewpath.c_str()) == 0)
-	{
-		Move(route, file, newName);
-		Remove((const char*)filepath.c_str());
-	}
+
+	std::string extension = GetExtension(file);
+	Move(route, file, (newName + extension).c_str());
+	Delete(filepath.c_str());
 }
 
 void ModuleFileSystem::Monitorize(const char* folder)
@@ -523,18 +521,46 @@ std::string ModuleFileSystem::RemoveExtension(std::string filename) const
 
 std::string ModuleFileSystem::GetFilename(std::string filename) const
 {
-	std::size_t found = filename.find_last_of(".");
+	filename = RemoveExtension(filename);
+	filename = GetFile(filename);
+	return filename;
+}
+
+std::string ModuleFileSystem::GetFile(std::string filename) const
+{
+	std::size_t found = filename.find_last_of(PHYSFS_getDirSeparator()); // Gets dir separator symbol for current OS
 	if (std::string::npos != found)
 	{
-		filename.erase(found, filename.size());
+		filename.erase(0, found + 1);
+	}
+	else
+	{
+		found = filename.find_last_of("/");	// Try with "/" 
+		if (std::string::npos != found)
+		{
+			filename.erase(0, found + 1);
+		}
 	}
 
-	found = filename.find_last_of(PHYSFS_getDirSeparator());
+	return filename;
+}
+
+std::string ModuleFileSystem::GetFilePath(std::string file) const
+{
+	std::size_t found = file.find_last_of(PHYSFS_getDirSeparator()); // Gets dir separator symbol for current OS
 	if (std::string::npos != found)
 	{
-		filename.erase(0, found+1);
+		file.erase(found + 1, file.size());
 	}
-	return filename;
+	else
+	{
+		found = file.find_last_of("/");	// Try with "/" 
+		if (std::string::npos != found)
+		{
+			file.erase(found + 1, file.size());
+		}
+	}
+	return file;
 }
 
 FILETYPE ModuleFileSystem::GetFileType(std::string extension) const

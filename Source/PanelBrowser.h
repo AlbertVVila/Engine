@@ -23,8 +23,9 @@ private:
 	void DrawFolderIcon(const char* dir, int itemNumber);
 	void DrawFileIcon(const char* file, int itemNumber);
 
-	void DrawImportConfigurationPopUp();
 	void DrawFileContextMenu();
+	void DrawImportConfigurationPopUp();
+	void DrawRenamePopUp();
 
 public:
 	bool folderContentDirty = true;
@@ -37,7 +38,10 @@ private:
 	std::vector<std::string> dirs;		// List of the folders in current path
 
 	bool openImportConfigPopUp = false;
+	bool openRenamePopUp = false;
 	Resource* fileSelected = nullptr;
+
+	std::string newName;				// Aux string for rename
 
 	// Icons
 	ResourceTexture* folderIcon;	

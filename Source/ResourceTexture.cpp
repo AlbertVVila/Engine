@@ -295,3 +295,13 @@ void ResourceTexture::LoadConfigFromMeta()
 	case DXT::DXT_NO_COMP:	compression = 5; break;
 	}
 }
+
+void ResourceTexture::Rename(const char* newName)
+{
+	Resource::Rename(newName);
+
+	// Rename file in Library
+	App->fsystem->Rename(TEXTURES, (exportedFileName + TEXTUREEXT).c_str(), newName);
+
+	exportedFileName = newName;
+}

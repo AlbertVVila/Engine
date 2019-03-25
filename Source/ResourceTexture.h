@@ -29,6 +29,9 @@ public:
 	void SaveMetafile(const char* file) const override;
 	void LoadConfigFromMeta() override;
 
+	// File in asset specific
+	void ResourceTexture::Rename(const char* newName) override;
+
 	inline IMAGE_TYPE GetImageType() { return imageType; };
 	void SetImageType(IMAGE_TYPE type);
 	inline unsigned GetCubemapIndex() { return cubemapIndex; };
@@ -47,9 +50,9 @@ public:
 	unsigned gpuID = 0u;
 	unsigned format = 0u;
 
-	// Compression type
-	DXT dxtFormat = DXT::DXT5;
-	int compression = 4;
+	// Import configuration
+	DXT dxtFormat = DXT::DXT5;	// Compression type
+	int compression = 4;		// Compression enum number
 
 private:
 	IMAGE_TYPE imageType = IMAGE_TYPE::TEXTURE;

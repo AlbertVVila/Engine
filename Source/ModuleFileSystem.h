@@ -77,9 +77,12 @@ public:
 	void Rename(const char* route, const char* file, const char* newName) const;
 
 	int GetModTime(const char* file) const;
-	std::string GetExtension(std::string file) const;
-	std::string RemoveExtension(std::string file) const;
-	std::string GetFilename(std::string file) const;
+
+	std::string GetExtension(std::string file) const;		// In: Dir/FileName.Extension | Out: Extension
+	std::string RemoveExtension(std::string file) const;	// In: Dir/FileName.Extension | Out: Dir/FileName
+	std::string GetFilename(std::string file) const;		// In: Dir/FileName.Extension | Out: FileName
+	std::string GetFile(std::string filename) const;		// In: Dir/FileName.Extension | Out: FileName.Extension
+	std::string GetFilePath(std::string file) const;		// In: Dir/FileName.Extension | Out: Dir/
 	FILETYPE GetFileType(std::string) const;
 
 private:

@@ -57,6 +57,9 @@ public:
 	virtual bool LoadInMemory() {return true;};
 	virtual void DeleteFromMemory() { loaded = 0; };
 
+	// File in asset specific
+	virtual void Rename(const char* newName);
+
 protected:
 	unsigned UID = 0u;
 	std::string file;				// The file located in /Assets/ (Path + filename + extension)
