@@ -219,7 +219,7 @@ void MaterialEditor::SetCurrentTextures()
 void MaterialEditor::UpdateTexturesList()
 {
 	textureFiles.clear();
-	textureFiles = App->resManager->GetTexturesNameList();
+	textureFiles = App->resManager->GetTexturesNameList(true);
 	SetCurrentTextures();
 }
 

@@ -16,6 +16,10 @@
 
 #include "FileImporter.h"
 
+#include <algorithm>
+
+bool sortByNameAscending(const std::string a, std::string b) { return a < b; };
+
 ModuleResourceManager::ModuleResourceManager()
 {
 }
@@ -345,7 +349,7 @@ std::vector<ResourceTexture*> ModuleResourceManager::GetTexturesList()
 	return resourcesList;
 }
 
-std::vector<std::string> ModuleResourceManager::GetTexturesNameList()
+std::vector<std::string> ModuleResourceManager::GetTexturesNameList(bool ordered)
 {
 	std::vector<std::string> resourcesList;
 	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
@@ -353,6 +357,10 @@ std::vector<std::string> ModuleResourceManager::GetTexturesNameList()
 		if (it->second->GetType() == TYPE::TEXTURE)
 			resourcesList.push_back(it->second->GetExportedFile());
 	}
+
+	if(ordered)	// Short by ascending order
+		std::sort(resourcesList.begin(), resourcesList.end(), sortByNameAscending);
+
 	return resourcesList;
 }
 
