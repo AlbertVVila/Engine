@@ -9,9 +9,9 @@
 
 Shader::~Shader()
 {
-	if (id[0] != 0)
+	for (auto program : id)	
 	{
-		glDeleteProgram(id[0]);
+		glDeleteProgram(program.second);
 	}
 }
 
