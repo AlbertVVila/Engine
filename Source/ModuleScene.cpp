@@ -105,6 +105,7 @@ update_status ModuleScene::PreUpdate()
 update_status ModuleScene::Update(float dt)
 {
 	BROFILER_CATEGORY("Scene Update", Profiler::Color::Green);
+	root->UpdateTransforms(math::float4x4::identity);
 	root->Update(dt);
 	return UPDATE_CONTINUE;
 }

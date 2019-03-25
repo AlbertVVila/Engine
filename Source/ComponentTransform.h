@@ -18,6 +18,8 @@ public:
 	void DrawProperties() override;
 
 	void UpdateTransform();
+	void UpdateOldTransform();
+
 	void SetLocalToWorld();
 	void SetWorldToLocal(const math::float4x4& newparentGlobalMatrix);
 	void SetGlobalTransform(const math::float4x4& newglobal, const math::float4x4& parentglobal);
@@ -35,7 +37,6 @@ public:
 
 private:
 	void RotationToEuler();
-	void UpdateOldTransform();
 
 public:
 	math::float3 position = math::float3::zero;

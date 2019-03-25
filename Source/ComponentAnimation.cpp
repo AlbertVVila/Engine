@@ -19,6 +19,7 @@
 ComponentAnimation::ComponentAnimation() : Component(nullptr, ComponentType::Animation)
 {
 	controller = new AnimationController();
+	PlayAnimation(100u);
 }
 
 

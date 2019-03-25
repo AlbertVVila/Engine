@@ -47,6 +47,7 @@ public:
 	void SetGlobalTransform(const float4x4 &global);
 	float4x4 GetGlobalTransform() const;
 	float4x4 GetLocalTransform() const;
+	void UpdateTransforms(math::float4x4 parentGlobal);
 
 	void UpdateBBox();
 	void DrawBBox() const;
