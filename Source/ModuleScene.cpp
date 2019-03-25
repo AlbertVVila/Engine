@@ -255,17 +255,27 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 	Material* material = crenderer->material;
 	Shader* shader = material->shader;
 	if (shader == nullptr) return;
+	
+	unsigned variation = 0u;
+	if (shader->id.size() > 1) //If exists variations use it
+	{
+		variation = material->variation;
+		if (crenderer->mesh->bindBones.size() > 0)
+		{
+			variation |= (unsigned)ModuleProgram::PBR_Variations::SKINNED;
+		}
+	}
 
-	glUseProgram(shader->id);
+	glUseProgram(shader->id[variation]);
 
-	material->SetUniforms(shader->id);
+	material->SetUniforms(shader->id[variation]);
 
-	glUniform3fv(glGetUniformLocation(shader->id,
+	glUniform3fv(glGetUniformLocation(shader->id[variation],
 		"lights.ambient_color"), 1, (GLfloat*)&ambientColor);
-	go.SetLightUniforms(shader->id);
+	go.SetLightUniforms(shader->id[variation]);
 
-	go.UpdateModel(shader->id);
-	crenderer->mesh->Draw(shader->id);
+	go.UpdateModel(shader->id[variation]);
+	crenderer->mesh->Draw(shader->id[variation]);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glActiveTexture(GL_TEXTURE0);
