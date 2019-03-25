@@ -30,8 +30,6 @@ public:
 
 	void Update(float dt);
 
-	void Animate(unsigned indexSample,Animation* anim);
-
 	Component * CreateComponent(ComponentType type);
 	Component * GetComponent(ComponentType type) const;
 	std::vector<Component *> GetComponents(ComponentType type) const;
@@ -47,7 +45,9 @@ public:
 	void SetGlobalTransform(const float4x4 &global);
 	float4x4 GetGlobalTransform() const;
 	float4x4 GetLocalTransform() const;
+
 	void UpdateTransforms(math::float4x4 parentGlobal);
+	bool CheckDelete();
 
 	void UpdateBBox();
 	void DrawBBox() const;
