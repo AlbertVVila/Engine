@@ -11,6 +11,10 @@ public:
 
 	void Draw() override;
 
+public:
+	int minFrame;
+	bool isCliping = false;
+
 };
 
 #endif // !__PanelAnimation_h__
