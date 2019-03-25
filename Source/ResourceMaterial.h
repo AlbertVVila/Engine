@@ -35,6 +35,9 @@ public:
 	void Reset(const ResourceMaterial& material);
 	int Compare(const ResourceMaterial& material);
 
+	// File in asset specific
+	void Rename(const char* newName) override;
+
 	ResourceTexture* GetTexture(TextureType type) const;
 	std::list<ResourceTexture*> GetTextures() const;
 	void SetUniforms(unsigned shader) const;

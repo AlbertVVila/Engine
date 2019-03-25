@@ -347,3 +347,13 @@ void ResourceMaterial::SetUniforms(unsigned shader) const
 	glUniform1fv(glGetUniformLocation(shader,
 		"material.metallic"), 1, (GLfloat*)&metallic);
 }
+
+void ResourceMaterial::Rename(const char* newName)
+{
+	Resource::Rename(newName);
+
+	// Rename file in Library
+	App->fsystem->Rename(IMPORTED_MATERIALS, (exportedFileName + MATERIALEXT).c_str(), newName);
+
+	exportedFileName = newName;
+}
