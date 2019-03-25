@@ -19,7 +19,7 @@ ComponentImage::ComponentImage() : Component(nullptr, ComponentType::Image)
 	//Refact
 	if (textureFiles.size() == 0)
 	{
-		textureFiles = App->fsystem->GetFolderContent(TEXTURES, false);
+		UpdateTexturesList();
 	}
 	App->ui->images.push_back(this);
 }
@@ -28,7 +28,7 @@ ComponentImage::ComponentImage(GameObject* gameobject) : Component(gameobject, C
 {
 	if (textureFiles.size() == 0)
 	{
-		textureFiles = App->fsystem->GetFolderContent(TEXTURES, false);
+		UpdateTexturesList();
 	}
 	App->ui->images.push_back(this);
 }
@@ -43,8 +43,6 @@ ComponentImage::ComponentImage(const ComponentImage &copy) : Component(copy)
 ComponentImage::~ComponentImage()
 {
 	App->ui->images.remove(this);
-	// ResManager refactored:
-	//App->resManager->DeleteTexture(textureName);
 	unsigned imageUID = App->resManager->FindByExportedFile(textureName.c_str());
 	App->resManager->DeleteResource(imageUID);
 	texture = nullptr;
@@ -56,7 +54,7 @@ Component* ComponentImage::Clone() const
 }
 
 void ComponentImage::DrawProperties()
-{
+{	
 	if (ImGui::CollapsingHeader("Image", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		bool removed = Component::DrawComponentState();
@@ -64,7 +62,6 @@ void ComponentImage::DrawProperties()
 		{
 			return;
 		}
-
 		//texture selector
 		if (ImGui::BeginCombo("Texture", textureName.c_str()))
 		{
@@ -73,8 +70,6 @@ void ComponentImage::DrawProperties()
 			{
 				if (texture != nullptr)
 				{
-					// ResManager refactored:
-					//App->resManager->DeleteTexture(textureName);
 					unsigned imageUID = App->resManager->FindByExportedFile(textureName.c_str());
 					App->resManager->DeleteResource(imageUID);
 					texture = nullptr;
@@ -100,6 +95,10 @@ void ComponentImage::DrawProperties()
 			}
 			ImGui::EndCombo();
 		}
+		if (ImGui::Button("Refresh List"))
+		{
+			UpdateTexturesList();
+		}
 		if (texture != nullptr)
 		{
 			ImGui::Image((ImTextureID)texture->gpuID, { 200,200 }, { 0,1 }, { 1,0 });
@@ -110,6 +109,17 @@ void ComponentImage::DrawProperties()
 
 		ImGui::Separator();
 	}
+}
+
+void ComponentImage::UpdateTexturesList()
+{
+	textureFiles.clear();
+	std::vector<ResourceTexture*> textureResources = App->resManager->GetTexturesList();
+	for (std::vector<ResourceTexture*>::iterator it = textureResources.begin(); it != textureResources.end(); ++it)
+	{
+		textureFiles.push_back((*it)->GetExportedFile());
+	}
+	textureResources.clear();
 }
 
 void ComponentImage::Save(JSON_value *value)const

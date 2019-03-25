@@ -334,6 +334,17 @@ std::vector<Resource*> ModuleResourceManager::GetResourcesList()
 	return resourcesList;
 }
 
+std::vector<ResourceTexture*> ModuleResourceManager::GetTexturesList()
+{
+	std::vector<ResourceTexture*> resourcesList;
+	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		if(it->second->GetType() == TYPE::TEXTURE)
+			resourcesList.push_back((ResourceTexture*)it->second);
+	}
+	return resourcesList;
+}
+
 Resource* ModuleResourceManager::AddResource(const char* file, const char* directory, TYPE type)
 {
 	std::string path(directory);

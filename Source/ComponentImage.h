@@ -16,6 +16,8 @@ public:
 	~ComponentImage();
 	Component* Clone() const override;
 
+	void UpdateTexturesList();
+
 	void DrawProperties() override;
 	void Save(JSON_value* value) const override;
 	void Load(JSON_value* value) override;
@@ -26,6 +28,8 @@ public:
 
 	std::vector<std::string> textureFiles;
 	bool enabled = true;
+
+	bool updateImageList = false;
 };
 
 #endif // __ComponentImage_h__

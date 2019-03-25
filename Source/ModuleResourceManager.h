@@ -9,8 +9,7 @@
 
 struct Shader;
 class Resource;
-class ResourceMesh;
-class ResourceMaterial;
+class ResourceTexture;
 enum class TYPE;
 
 class ModuleResourceManager :
@@ -43,6 +42,8 @@ public:
 	bool DeleteResource(unsigned uid);									// If references < 1 delete it from memory
 
 	std::vector<Resource*> GetResourcesList();
+	std::vector<ResourceTexture*> GetTexturesList();
+
 	void LoadEngineResources();											// Loads resources needed by the engine (Skybox, white, no camera textures...)
 	Resource* AddResource(const char* file, const char* directory, TYPE type);
 	void DeleteResourceFromList(unsigned uid);
