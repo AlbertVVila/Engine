@@ -1,4 +1,3 @@
-#version 330
 #define MAX_DIRECTIONAL_LIGHTS 2
 #define MAX_POINT_LIGHTS 4
 #define MAX_SPOT_LIGHTS 4
@@ -67,8 +66,6 @@ out vec3 pointPositions[MAX_POINT_LIGHTS];
 out vec3 spotPositions[MAX_SPOT_LIGHTS];
 out vec3 spotDirections[MAX_SPOT_LIGHTS];
 out vec3 directionalDirections[MAX_DIRECTIONAL_LIGHTS];
-
-#define SKINNED
 
 void main()
 {
