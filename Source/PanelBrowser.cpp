@@ -127,6 +127,7 @@ void PanelBrowser::Draw()
 	// Icons area
 	ImGui::BeginChild("Files", ImVec2(ImGui::GetWindowContentRegionWidth(), ImGui::GetWindowContentRegionMax().y - WINDOW_LOW_MARGIN), true, ImGuiWindowFlags_HorizontalScrollbar);
 
+	int i = 0;
 	// If we are inside a folder show icon to go back
 	if (path != ASSETS)
 	{
@@ -146,10 +147,10 @@ void PanelBrowser::Draw()
 			pathStack.pop();
 			folderContentDirty = true;
 		}
+		i++;
 	}
 
 	// Draw folder icons
-	int i = 0;
 	for each(std::string dir in dirs)
 	{
 		ImGui::PushID(dir.c_str());
@@ -159,14 +160,13 @@ void PanelBrowser::Draw()
 	}
 	
 	// Draw files icons
-	int j = 0;
 	for each (std::string file in files)
 	{
 		// Check that the file has been loaded on the Resource Manager
 		if (App->resManager->FindByFileInAssets((path + file).c_str()) > 0)
 		{
-			DrawFileIcon(file.c_str(), j);
-			j++;
+			DrawFileIcon(file.c_str(), i);
+			i++;
 		}
 	}
 
