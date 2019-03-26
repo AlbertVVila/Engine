@@ -148,17 +148,17 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 void Viewport::DrawGuizmoButtons()
 {
 
-	if (ImGui::Button("Translate"))
+	if (ImGui::Button("Translate") || App->input->IsKeyPressed(SDL_SCANCODE_W))
 	{
 		mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
 	}
 	ImGui::SameLine();
-	if (ImGui::Button("Rotate"))
+	if (ImGui::Button("Rotate") || App->input->IsKeyPressed(SDL_SCANCODE_E))
 	{
 		mCurrentGizmoOperation = ImGuizmo::ROTATE;
 	}
 	ImGui::SameLine();
-	if (ImGui::Button("Scale"))
+	if (ImGui::Button("Scale") || App->input->IsKeyPressed(SDL_SCANCODE_R))
 	{
 		mCurrentGizmoOperation = ImGuizmo::SCALE;
 		mCurrentGizmoMode = ImGuizmo::LOCAL;
