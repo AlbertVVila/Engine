@@ -7,12 +7,18 @@ enum class IMAGE_TYPE {TEXTURE, CUBEMAP};
 
 enum class DXT
 {
-	DXT1 = 0x0706,			// Working
-	//DXT2 = 0x0707,		// Error
-	DXT3 = 0x0708,			// Working
-	//DXT4 = 0x0709,		// Error
-	DXT5 = 0x070A,			// Working
-	//DXT_NO_COMP = 0x070B, // Error
+	DXT1 = 0x0706,				// Working
+	//DXT2 = 0x0707,			// Error
+	DXT3 = 0x0708,				// Working
+	//DXT4 = 0x0709,			// Error
+	DXT5 = 0x070A,				// Working
+	//DXT_NO_COMP = 0x070B,		// Error
+	//KEEP_DXTC_DATA = 0x070C,	// Error
+	//DXTC_DATA_FORMAT = 0x070D,// Error
+	THREE_DC = 0x070E,			// Working
+	RXGB = 0x070F,				// Working
+	ATI1N = 0x0710,				// Working
+	DXT1A = 0x0711				// Working
 };
 
 class ResourceTexture : public Resource

@@ -111,7 +111,7 @@ bool ModuleTextures::ImportImage(const char* file, const char* folder, ResourceT
 
 void ModuleTextures::DrawImportConfiguration(ResourceTexture* resource)
 {
-	const char* compressionTypes[] = { "DXT1", /*"DXT2",*/ "DXT3", /*"DXT4",*/ "DXT5", /*"DXT_NO_COMP"*/};
+	const char* compressionTypes[] = { "DXT1", /*"DXT2",*/ "DXT3", /*"DXT4",*/ "DXT5", /*"DXT_NO_COMP", "KEEP_DXTC_DATA", "DXTC_DATA_FORMAT",*/ "THREE_DC", "RXGB", "ATI1N", "DXT1A"};
 	if (ImGui::Combo("Compression type", &resource->compression, compressionTypes, IM_ARRAYSIZE(compressionTypes)))
 	{
 		switch (resource->compression)
@@ -122,6 +122,12 @@ void ModuleTextures::DrawImportConfiguration(ResourceTexture* resource)
 		//case 3:	resource->dxtFormat = DXT::DXT4; break;
 		case 2:	resource->dxtFormat = DXT::DXT5; break;
 		//case 5: resource->dxtFormat = DXT::DXT_NO_COMP; break;
+		//case 3:	resource->dxtFormat = DXT::KEEP_DXTC_DATA; break;
+		//case 4:	resource->dxtFormat = DXT::DXTC_DATA_FORMAT; break;
+		case 3:	resource->dxtFormat = DXT::THREE_DC; break;
+		case 4:	resource->dxtFormat = DXT::RXGB; break;
+		case 5:	resource->dxtFormat = DXT::ATI1N; break;
+		case 6:	resource->dxtFormat = DXT::DXT1A; break;
 		}
 	}
 }
