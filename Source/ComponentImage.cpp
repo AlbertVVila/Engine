@@ -37,6 +37,8 @@ ComponentImage::ComponentImage(const ComponentImage &copy) : Component(copy)
 	}
 	color = copy.color;
 	textureName = copy.textureName;
+	flipHorizontal = copy.flipHorizontal;
+	flipVertical = copy.flipVertical;
 	if (textureName != "None Selected")
 	{
 		texture = App->textures->GetTexture(textureName.c_str());

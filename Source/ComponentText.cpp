@@ -25,6 +25,7 @@ ComponentText::ComponentText(const ComponentText &copy) : Component(copy)
 	fontSize = copy.fontSize;
 	text = copy.text;
 	color = copy.color;
+	colorHovered = copy.colorHovered;
 	offset = copy.offset;
 	scaleOffset = copy.scaleOffset;
 }
