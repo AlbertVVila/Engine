@@ -216,12 +216,21 @@ bool ModuleResourceManager::ReImportFile(Resource* resource, const char* filePat
 		break;
 	}
 
-	// If export was successful, create a new resource
+	// If export was successful, update resource
 	if (success)
 	{
 		std::string assetPath(filePath);
 		assetPath += file;
 		resource->SaveMetafile(assetPath.c_str());
+
+		// Reload in memory
+		if (resource->IsLoadedToMemory())
+		{
+			unsigned references = resource->GetReferences();
+			resource->DeleteFromMemory();
+			resource->SetReferences(references);
+		}
+
 		LOG("%s reimported.", resource->GetExportedFile());
 	}
 	else
