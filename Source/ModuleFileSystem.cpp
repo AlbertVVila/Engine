@@ -489,7 +489,7 @@ void ModuleFileSystem::LookForNewResourceFiles(const char* folder)
 				{
 					// TODO: Enable FBX also
 					FILETYPE type = GetFileType(GetExtension(file));
-					if(type != FILETYPE::MODEL && type != FILETYPE::SCENE)
+					if(type != FILETYPE::MODEL && type != FILETYPE::SCENE && type != FILETYPE::NONE)
 						filesToImport.push_back(std::pair<std::string, std::string>(file, current_folder));
 				}
 			}
