@@ -248,7 +248,7 @@ void PanelResourceManager::OpenResourceEditor()
 			}
 
 			// Type
-			const char* types[] = { "Texture", "Mesh", "Audio", "Scene", "Bone", "Animation", "Material", "Skybox", "Unknown" };
+			const char* types[] = { "Texture", "Mesh", "Audio", "Scene", "Animation", "Material", "Skybox", "Unknown" };
 			int type = (int)auxResource->GetType();
 			if (ImGui::BeginCombo("Type", types[type]))
 			{
