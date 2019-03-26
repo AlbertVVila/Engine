@@ -356,7 +356,7 @@ void PanelResourceManager::DrawResourceMaterial()
 	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), (exportedFile + ":").c_str());
 	ImGui::Columns(2);
 
-	ImGui::Text("Name: %s", material.name.c_str());
+	ImGui::Text("Name: %s", material.GetExportedFile());
 	if(material.shader != nullptr)
 		ImGui::Text("Shader: %s", material.shader->file.c_str());
 

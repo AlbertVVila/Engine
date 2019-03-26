@@ -43,7 +43,6 @@ public:
 	void SetUniforms(unsigned shader) const;
 
 public:
-	std::string name;
 	Shader* shader = nullptr;
 
 	ResourceTexture* textures[MAXTEXTURES]{ nullptr };

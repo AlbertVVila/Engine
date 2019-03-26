@@ -21,7 +21,6 @@ ResourceMaterial::ResourceMaterial(unsigned uid) : Resource(uid, TYPE::MATERIAL)
 
 ResourceMaterial::ResourceMaterial(const ResourceMaterial& resource) : Resource(resource)
 {
-	name = resource.name;
 	if (resource.shader != nullptr)
 	{
 		shader = App->program->GetProgram(resource.shader->file.c_str());
@@ -75,7 +74,6 @@ bool ResourceMaterial::LoadInMemory()
 	JSON* json = new JSON(data);
 	JSON_value* materialJSON = json->GetValue("material");
 
-	name = exportedFileName;
 	diffuseColor = materialJSON->GetColor4("diffuseColor");
 	specularColor = materialJSON->GetColor3("specularColor");
 	emissiveColor = materialJSON->GetColor3("emissiveColor");
@@ -167,7 +165,7 @@ void ResourceMaterial::Save() const
 	
 	json->AddValue("material", *materialJSON);
 
-	App->fsystem->Save((MATERIALS + name + MATERIALEXT).c_str(), json->ToString().c_str(), json->Size());
+	App->fsystem->Save((MATERIALS + exportedFileName + MATERIALEXT).c_str(), json->ToString().c_str(), json->Size());
 	RELEASE(json);
 }
 
@@ -187,8 +185,6 @@ void ResourceMaterial::SaveMetafile(const char* file) const
 
 void ResourceMaterial::Reset(const ResourceMaterial& material)
 {
-	name = material.name;
-
 	if (shader != nullptr)
 	{
 		App->resManager->DeleteProgram(shader->file);
@@ -222,9 +218,6 @@ void ResourceMaterial::Reset(const ResourceMaterial& material)
 
 int ResourceMaterial::Compare(const ResourceMaterial& material)
 {
-	if (name.compare(material.name) != 0)
-		return -1;
-
 	if (shader != material.shader)
 		return 0;
 

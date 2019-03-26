@@ -30,20 +30,7 @@ void MaterialEditor::Draw()
 		return;
 	}
 
-	char name[64] = "";
-	if (!material->name.empty())
-	{
-		strcpy(name, material->name.c_str());
-	}
-	else
-	{
-		strcpy(name, "Unnamed");
-	}
-
 	ImGui::Spacing();
-
-	ImGui::InputText("Name", name, 64);
-	material->name = name;
 
 	ImGui::DragFloat("Metallic", &material->metallic, .01f, .001f, 1.f);
 	ImGui::DragFloat("Roughness", &material->roughness, .01f, .001f, 1.f);
@@ -257,7 +244,6 @@ void MaterialEditor::NewMaterial()
 		if (ImGui::Button("Save", ImVec2(120, 0)) && !newMatExists)
 		{
 			ResourceMaterial* newMaterialCreated = (ResourceMaterial*)App->resManager->CreateNewResource(TYPE::MATERIAL);
-			newMaterialCreated->name = newName;
 			newMaterialCreated->SetExportedFile(newName);
 			newMaterialCreated->Save();
 			newMaterial = false;
@@ -292,9 +278,11 @@ void MaterialEditor::Save()
 
 		if (ret == -1)
 		{
-			if (Exists(previous->name))
+			if (Exists(previous->GetExportedFile()))
 			{
-				App->fsystem->Delete((MATERIALS + previous->name + JSONEXT).c_str());
+				std::string materialFile(MATERIALS);
+				materialFile += previous->GetExportedFile();
+				App->fsystem->Delete((materialFile + JSONEXT).c_str());
 			}
 			material->Save();
 		}

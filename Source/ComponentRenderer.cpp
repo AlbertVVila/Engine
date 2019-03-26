@@ -77,7 +77,7 @@ void ComponentRenderer::DrawProperties()
 		ImGui::Spacing();
 
 		ImGui::Text("Material");
-		if (ImGui::BeginCombo("", material->name.c_str()))
+		if (ImGui::BeginCombo("", material->GetExportedFile()))
 		{
 			if (guiMaterials.empty())
 			{
@@ -85,8 +85,8 @@ void ComponentRenderer::DrawProperties()
 			}
 			for (int n = 0; n < guiMaterials.size(); n++)
 			{
-				bool is_selected = (material->name == guiMaterials[n]);
-				if (ImGui::Selectable(guiMaterials[n].c_str(), is_selected) && material->name != guiMaterials[n])
+				bool is_selected = (material->GetExportedFile() == guiMaterials[n]);
+				if (ImGui::Selectable(guiMaterials[n].c_str(), is_selected) && material->GetExportedFile() != guiMaterials[n])
 				{
 					SetMaterial(guiMaterials[n].c_str());
 
@@ -173,7 +173,7 @@ void ComponentRenderer::Save(JSON_value* value) const
 {
 	Component::Save(value);
 	value->AddUint("meshUID", mesh->GetUID());
-	value->AddString("materialFile", material->name.c_str());
+	value->AddString("materialFile", material->GetExportedFile());
 }
 
 void ComponentRenderer::Load(JSON_value* value)
@@ -208,7 +208,7 @@ void ComponentRenderer::SetMaterial(const char * materialfile)
 		materialfile = App->resManager->Get(DEFAULTMAT)->GetExportedFile();
 	}
 
-	if (material == nullptr || material->name != materialfile)
+	if (material == nullptr || material->GetExportedFile() != materialfile)
 	{
 		if (material != nullptr)
 		{
