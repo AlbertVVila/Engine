@@ -63,8 +63,17 @@ void ComponentRenderer::DrawProperties()
 			ImGui::PopID();
 			return;
 		}
-		ImGui::Text("Num vertices : %d", mesh->meshVertices.size());
-		ImGui::Text("Num triangles : %d", mesh->meshIndices.size() / 3);
+
+		if (mesh == nullptr)
+		{
+			// TODO: Add mesh selector
+			ImGui::Text("No mesh selected.");
+		}
+		else
+		{
+			ImGui::Text("Num vertices : %d", mesh->meshVertices.size());
+			ImGui::Text("Num triangles : %d", mesh->meshIndices.size() / 3);
+		}
 		ImGui::Spacing();
 
 		ImGui::Text("Material");
