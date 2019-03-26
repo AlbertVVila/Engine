@@ -37,6 +37,7 @@ public:
 
 	// File in asset specific
 	void Rename(const char* newName) override;
+	void Delete() override;
 
 	ResourceTexture* GetTexture(TextureType type) const;
 	std::list<ResourceTexture*> GetTextures() const;

@@ -350,3 +350,15 @@ void ResourceMaterial::Rename(const char* newName)
 
 	exportedFileName = newName;
 }
+
+void ResourceMaterial::Delete()
+{
+	Resource::Delete();
+
+	// Delete file in Library
+	std::string fileInLibrary(IMPORTED_MATERIALS);
+	fileInLibrary += exportedFileName;
+	fileInLibrary += MATERIALEXT;
+	App->fsystem->Delete(fileInLibrary.c_str());
+	DeleteFromMemory();
+}
