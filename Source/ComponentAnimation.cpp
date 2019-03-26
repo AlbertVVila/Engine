@@ -54,6 +54,12 @@ void ComponentAnimation::Update(float dt)
 	PROFILE;
 	if (App->time->gameState == GameState::RUN)
 	{
+		if (!channelsSetted)
+		{
+			SetIndexChannels(gameobject);
+			channelsSetted = true;
+		}
+
 		controller->Update(App->time->gameDeltaTime);
 
 		if (gameobject != nullptr)
@@ -69,7 +75,7 @@ void ComponentAnimation::UpdateGO(GameObject* go)
 	float3 position;
 	Quat rotation;
 
-	if (controller->GetTransform(go->name.c_str(), position, rotation))
+	if (controller->GetTransform(go->animationIndexChannel, position, rotation))
 	{
 		go->transform->SetPosition(position);
 		go->transform->SetRotation(rotation);
@@ -143,4 +149,15 @@ void ComponentAnimation::Load(JSON_value* value)
 		anim->Load(data, uid);
 		App->resManager->AddAnim(anim);
 	}
+}
+
+void ComponentAnimation::SetIndexChannels(GameObject* GO)
+{
+	GO->animationIndexChannel = anim->GetIndexChannel(GO->name.c_str());
+
+	for (const auto& child : GO->children)
+	{
+		SetIndexChannels(child);
+	}
+
 }
