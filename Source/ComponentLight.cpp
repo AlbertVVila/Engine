@@ -245,11 +245,13 @@ void ComponentLight::CalculateGuizmos()
 				pointSphere.pos = App->scene->maincamera->frustum->pos;
 				pointSphere.r = App->scene->maincamera->frustum->farPlaneDistance;
 			}
+#ifndef GAME_BUILD
 			else
 			{
 				pointSphere.pos = App->camera->editorcamera->frustum->pos;
 				pointSphere.r = App->camera->editorcamera->frustum->farPlaneDistance;
 			}
+#endif
 			gameobject->bbox.SetNegativeInfinity();
 			gameobject->bbox.Enclose(pointSphere);
 			break;
