@@ -284,11 +284,11 @@ void ResourceTexture::LoadConfigFromMeta()
 	switch (dxtFormat)
 	{
 	case DXT::DXT1:	compression = 0; break;
-	case DXT::DXT2:	compression = 1; break;
-	case DXT::DXT3:	compression = 2; break;
-	case DXT::DXT4:	compression = 3; break;
-	case DXT::DXT5:	compression = 4; break;
-	case DXT::DXT_NO_COMP:	compression = 5; break;
+	//case DXT::DXT2:	compression = 1; break;
+	case DXT::DXT3:	compression = 1; break;
+	//case DXT::DXT4:	compression = 3; break;
+	case DXT::DXT5:	compression = 2; break;
+	//case DXT::DXT_NO_COMP:	compression = 5; break;
 	}
 }
 

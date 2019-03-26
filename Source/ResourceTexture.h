@@ -7,12 +7,12 @@ enum class IMAGE_TYPE {TEXTURE, CUBEMAP};
 
 enum class DXT
 {
-	DXT1 = 0x0706, // Working
-	DXT2 = 0x0707, // Error
-	DXT3 = 0x0708, // Working
-	DXT4 = 0x0709, // Error
-	DXT5 = 0x070A, // Working
-	DXT_NO_COMP = 0x070B,// Error
+	DXT1 = 0x0706,			// Working
+	//DXT2 = 0x0707,		// Error
+	DXT3 = 0x0708,			// Working
+	//DXT4 = 0x0709,		// Error
+	DXT5 = 0x070A,			// Working
+	//DXT_NO_COMP = 0x070B, // Error
 };
 
 class ResourceTexture : public Resource
@@ -53,7 +53,7 @@ public:
 
 	// Import configuration
 	DXT dxtFormat = DXT::DXT5;	// Compression type
-	int compression = 4;		// Compression enum number
+	int compression = 3;		// Compression enum number
 
 private:
 	IMAGE_TYPE imageType = IMAGE_TYPE::TEXTURE;
