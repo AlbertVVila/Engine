@@ -297,6 +297,7 @@ void PanelBrowser::DrawImportConfigurationPopUp()
 {
 	ImGui::OpenPopup("Import configuration");
 
+	ImGui::SetNextWindowSizeConstraints(ImVec2(250.0f, 130.0f), ImVec2((float)App->window->width, (float)App->window->height));
 	if (ImGui::BeginPopupModal("Import configuration", &openImportConfigPopUp))
 	{
 		ImGui::Text("%s", fileSelected->GetExportedFile());
@@ -304,6 +305,9 @@ void PanelBrowser::DrawImportConfigurationPopUp()
 		{
 		case TYPE::TEXTURE:
 			App->textures->DrawImportConfiguration((ResourceTexture*)fileSelected);
+			break;
+		default:
+			ImGui::Text("No import options.");
 			break;
 		}
 
@@ -326,15 +330,19 @@ void PanelBrowser::DrawRenamePopUp()
 {
 	ImGui::OpenPopup("Rename File");
 
+	ImGui::SetNextWindowSizeConstraints(ImVec2(250.0f, 130.0f), ImVec2((float)App->window->width, (float)App->window->height));
 	if (ImGui::BeginPopupModal("Rename File", &openRenamePopUp))
 	{
 		ImGui::Text("New name:");
+		ImGui::SameLine();
 
 		char *name = new char[MAX_FILENAME];
 		strcpy(name, newName.c_str());
 		ImGui::InputText("", name, MAX_FILENAME);
 		newName = name;
 		delete[] name;
+
+		ImGui::NewLine();
 
 		if (ImGui::Button("Accept"))
 		{
@@ -343,7 +351,7 @@ void PanelBrowser::DrawRenamePopUp()
 			newName = "";
 			openRenamePopUp = false;
 		}
-		ImGui::SameLine();
+		ImGui::SameLine(0, 110);
 		if (ImGui::Button("Cancel"))
 		{
 			newName = "";
