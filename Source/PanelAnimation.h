@@ -15,6 +15,8 @@ public:
 	int minFrame;
 	bool isCliping = false;
 
+	//bool isPlaying = false;
+
 };
 
 #endif // !__PanelAnimation_h__

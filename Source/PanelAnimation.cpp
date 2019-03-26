@@ -27,6 +27,7 @@ void PanelAnimation::Draw()
 	if (App->scene->selected != nullptr && App->scene->selected->isBoneRoot)
 	{
 		Animation* anim = ((ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)))->anim;
+		ComponentAnimation* compAnim = ((ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)));
 
 		ImGui::Text("GAMEOBJECT");
 		ImGui::Separator();
@@ -77,10 +78,32 @@ void PanelAnimation::Draw()
 
 		}
 		ImGui::SameLine();
-		if (ImGui::ArrowButton("play", ImGuiDir_Right))
-		{
 
+		if (compAnim->isPlaying)
+		{
+			ImGui::PushStyleColor(ImGuiCol_Button, { 0.5f, 0.3f, 0.3f, 0.7f });
+
+			if (ImGui::ArrowButton("play", ImGuiDir_Right))
+			{
+				if (compAnim->isPlaying)
+					compAnim->isPlaying = false;
+				else
+					compAnim->isPlaying = true;
+			}
+
+			ImGui::PopStyleColor();
 		}
+		else
+		{
+			if (ImGui::ArrowButton("play", ImGuiDir_Right))
+			{
+				if (compAnim->isPlaying)
+					compAnim->isPlaying = false;
+				else
+					compAnim->isPlaying = true;
+			}
+		}
+
 		ImGui::SameLine();
 		if (ImGui::Button(">>", ImVec2(23, 23)))
 		{

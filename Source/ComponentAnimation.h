@@ -40,6 +40,8 @@ public:
 public:
 	AnimationController* controller = nullptr;
 	Animation* anim = nullptr;
+
+	bool isPlaying = false;
 };
 
 #endif //  __COMPONENTANIMATION_H_

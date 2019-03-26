@@ -33,7 +33,6 @@ void ComponentAnimation::DrawProperties()
 {
 	if (ImGui::CollapsingHeader("Animation", ImGuiTreeNodeFlags_DefaultOpen))
 	{
-
 		//Name of the animation
 		ImGui::Text(anim->animationName.c_str());
 
@@ -53,6 +52,15 @@ void ComponentAnimation::Update(float dt)
 	if (App->time->gameState == GameState::RUN)
 	{
 		controller->Update(App->time->gameDeltaTime);
+
+		if (gameobject != nullptr)
+		{
+			UpdateGO(gameobject);
+		}
+	}
+	else if (isPlaying)
+	{
+		controller->Update(App->time->realDeltaTime);
 
 		if (gameobject != nullptr)
 		{

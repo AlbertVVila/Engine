@@ -34,6 +34,8 @@ public:
 	void UpdateInstance(Instance* ins, float dt);
 	void ReleaseInstance(Instance* ins);
 
+	void PlayAnimation();
+
 public:
 
 	bool GetTransformInstance(Instance* instance, std::string channelName, math::float3& position, math::Quat& rotation);

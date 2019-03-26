@@ -73,7 +73,6 @@ void AnimationController::UpdateInstance(Instance* instance, float dt)
 			{
 				instance->time = 0.0f;
 			}
-
 		}
 	}
 
