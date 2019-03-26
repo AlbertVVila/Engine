@@ -23,9 +23,10 @@ public:
 	void Update() override;
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
-
+public:
+	bool isPlayerDead = false;
+	float3 currentPosition = float3(0, 0, 0); //TODO ZERO
 private:
 	float speed = 2.0f;
-	float3 a = float3(0, 0, 0); //TODO ZERO
 };
 #endif __PlayerMovement_h__

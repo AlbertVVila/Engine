@@ -61,7 +61,7 @@ public:
 	unsigned SaveParShapesMesh(const par_shapes_mesh_s & mesh, char** data) const;
 
 	void SaveScene(const GameObject &rootGO, const char& scene, const char& scenePath);
-	void LoadScene(const char& scene, const char& path);
+	ENGINE_API void LoadScene(const char& scene, const char& path);
 	bool AddScene(const char& scene, const char& scenePath);								// Adds a scene to current opened scene from a scene file (returns true if it was loaded correctly)
 	void ClearScene();
 

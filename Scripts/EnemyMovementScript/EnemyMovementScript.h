@@ -3,6 +3,7 @@
 
 class GameObject;
 class JSON_value;
+class PlayerMovement;
 struct ImGuiContext;
 #include "BaseScript.h"
 #include "Math/float3.h"
@@ -27,11 +28,11 @@ public:
 private:
 	GameObject* GetGameObjectRecursiveByName(GameObject* gameObject, const char* name);
 private:
-	bool stopFollow = false;
 	float speed = 100.0f;
 	float maxPlayerDistance = 200000.0f;
 	std::string playerName = "Player";
 	GameObject* player = nullptr;
+	PlayerMovement* playerScript = nullptr;
 
 };
 #endif __EnemyMovementScript_h__

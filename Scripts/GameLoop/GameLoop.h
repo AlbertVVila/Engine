@@ -14,6 +14,7 @@
 class Component;
 class ComponentButton;
 class ComponentText;
+class PlayerMovement;
 
 class GameLoop_API GameLoop : public Script
 {
@@ -22,6 +23,7 @@ class GameLoop_API GameLoop : public Script
 		MENU,
 		INTRO,
 		PLAYING,
+		DEAD,
 		PAUSED,
 		OPTIONS,
 		CREDITS,
@@ -65,6 +67,7 @@ class GameLoop_API GameLoop : public Script
 	ComponentButton* controlsButton = nullptr;
 	ComponentButton* backOptionButton = nullptr;
 	ComponentButton* backControlsButton = nullptr;
+	ComponentButton* toTheAltarButton = nullptr;
 	std::vector<Component*> volumeButtons;
 	std::vector<Component*> soundButtons;
 
@@ -72,6 +75,9 @@ class GameLoop_API GameLoop : public Script
 	GameObject* menu = nullptr;
 	GameObject* options = nullptr;
 	GameObject* controls = nullptr;
+	GameObject* loseWindow = nullptr;
+	GameObject* winWindow = nullptr;
+	GameObject* playerGO = nullptr;
 
 	//TEXT
 	ComponentText* volumeText = nullptr;
@@ -79,7 +85,7 @@ class GameLoop_API GameLoop : public Script
 
 	//Script
 	//Script* intro = nullptr;
-	Script* playerScript = nullptr;
+	PlayerMovement* playerScript = nullptr;
 };
 
 #endif __GameLoop_h__
