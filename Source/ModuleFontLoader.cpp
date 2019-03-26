@@ -167,7 +167,14 @@ void ModuleFontLoader::RenderText(const ComponentText& compText, int currentWidt
 	glUseProgram(shaderFonts->id);
 	glUniformMatrix4fv(glGetUniformLocation(shaderFonts->id, "projection"), 1, GL_TRUE, (const float*)&projection);
 	glUniformMatrix4fv(glGetUniformLocation(shaderFonts->id, "model"), 1, GL_TRUE, (const float*)&model);
-	glUniform4f(glGetUniformLocation(shaderFonts->id, "textColor"), compText.color.x, compText.color.y, compText.color.z, compText.color.w);
+	if (compText.isHovered)
+	{
+		glUniform4f(glGetUniformLocation(shaderFonts->id, "textColor"), compText.colorHovered.x, compText.colorHovered.y, compText.colorHovered.z, compText.colorHovered.w);
+	}
+	else
+	{
+		glUniform4f(glGetUniformLocation(shaderFonts->id, "textColor"), compText.color.x, compText.color.y, compText.color.z, compText.color.w);
+	}
 	glActiveTexture(GL_TEXTURE0);
 	glBindVertexArray(VAOText);
 

@@ -129,6 +129,7 @@ void ComponentButton::Update()
 		buttonImage->enabled = false;
 		highlightedImage->enabled = true;
 		pressedImage->enabled = false;
+		text->isHovered = true;
 	}
 	else
 	{
@@ -136,6 +137,7 @@ void ComponentButton::Update()
 		buttonImage->enabled = true && !isSelected;
 		highlightedImage->enabled = false || isSelected;
 		pressedImage->enabled = false;
+		text->isHovered = false;
 	}
 
 	if (isHovered && App->input->GetMouseButtonDown(1) == KEY_DOWN)
