@@ -147,9 +147,17 @@ bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* 
 {
 	bool success = false; 
 
-	Resource* resource = CreateNewResource(type);
 	std::string assetPath(filePath);
 	assetPath += newFileInAssets;
+
+	// Check if the file was already imported
+	unsigned uid = FindByFileInAssets(assetPath.c_str());
+	if (uid != 0)
+	{
+		return ReImportFile(GetWithoutLoad(uid), filePath, type);
+	}
+
+	Resource* resource = CreateNewResource(type);
 
 	// Save file to import on Resource file variable
 	resource->SetFile((assetPath).c_str());
