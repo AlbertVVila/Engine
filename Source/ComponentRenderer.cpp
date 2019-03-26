@@ -201,21 +201,26 @@ void ComponentRenderer::Load(JSON_value* value)
 	SetMaterial(materialFile);
 }
 
-void ComponentRenderer::SetMaterial(const char * materialfile)
+void ComponentRenderer::SetMaterial(const char* materialfile)
 {
-	if (materialfile == nullptr)
+	// Delete previous material
+	if (material != nullptr)
 	{
-		materialfile = App->resManager->Get(DEFAULTMAT)->GetExportedFile();
+		App->resManager->DeleteResource(material->GetUID());
 	}
 
-	if (material == nullptr || material->GetExportedFile() != materialfile)
+	if (materialfile == nullptr)
 	{
-		if (material != nullptr)
-		{
-			App->resManager->DeleteResource(material->GetUID());
-		}
-
+		material = (ResourceMaterial*)App->resManager->Get(DEFAULTMAT);
+		return;
+	}
+	else
+	{
 		material = (ResourceMaterial*)App->resManager->Get(materialfile);
+
+		// Material can't be found
+		if(material == nullptr)
+			material = (ResourceMaterial*)App->resManager->Get(DEFAULTMAT);
 	}
 	return;
 }
