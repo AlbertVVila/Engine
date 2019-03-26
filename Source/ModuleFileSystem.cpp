@@ -341,6 +341,21 @@ void ModuleFileSystem::Rename(const char* route, const char* file, const char* n
 	Delete(filepath.c_str());
 }
 
+bool ModuleFileSystem::ChangeExtension(const char* source, const char* file, const char* newExtension) const
+{
+	char * data = nullptr;
+	std::string filepath(source);
+	filepath += file;
+	unsigned size = Load(filepath.c_str(), &data);
+	std::string newFile(source);
+	newFile += GetFilename(file) + newExtension;
+	Save((newFile).c_str(), data, size);
+	Delete(filepath.c_str());
+	RELEASE_ARRAY(data);
+
+	return true;
+}
+
 void ModuleFileSystem::Monitorize(const char* folder)
 {
 	while (monitorize)
