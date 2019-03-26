@@ -793,7 +793,7 @@ GameObject * ModuleScene::FindGameObjectByName(GameObject* parent, const char* n
 	while (!GOs.empty())
 	{
 		GameObject* go = GOs.top();
-		if (go->name == name) return go;
+		if (go->name == std::string(name)) return go;
 
 		GOs.pop();
 		for (const auto& child : go->children)

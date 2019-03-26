@@ -5,6 +5,10 @@
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="GameBuild Debug|Win32">
+      <Configuration>GameBuild Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="GameBuild|Win32">
       <Configuration>GameBuild</Configuration>
       <Platform>Win32</Platform>
@@ -22,6 +26,12 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='GameBuild Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
@@ -45,6 +55,9 @@
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='GameBuild Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -71,6 +84,13 @@
     <TargetName>$(SolutionName)</TargetName>
     <IntDir>$(SolutionDir)$(Configuration)</IntDir>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='GameBuild Debug|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)</OutDir>
+    <CodeAnalysisRuleSet>CppCoreCheckLifetimeRules.ruleset</CodeAnalysisRuleSet>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <TargetName>$(SolutionName)</TargetName>
+    <IntDir>$(SolutionDir)$(Configuration)</IntDir>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -80,6 +100,28 @@
       <AdditionalIncludeDirectories>$(SolutionDir)\Source\Imgui\include;..\Scripts\BaseScript;./Brofiler-1.1.2;./ImGuizmo;./pcg-cpp-0.98/include;./rapidjson-1.1.0/include;./physfs-3.0.1/include;./mmgr;./Assimp/include;./DevIL/include;./glew-2.1.0/include;./SDL/include;MathGeoLib/include;./Imgui;./physfs-3.0.1;./freeType/include</AdditionalIncludeDirectories>
       <EnablePREfast>false</EnablePREfast>
       <PreprocessorDefinitions>_MBCS;ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <AdditionalLibraryDirectories>$(SolutionDir)Source\Imgui\lib;$(SolutionDir)Scripts\BaseScript\$(Configuration);Brofiler-1.1.2;physfs-3.0.1/lib;Assimp/lib;./DevIL/lib;./glew-2.1.0/lib;./freeType/lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>ImGui.lib;BaseScript.lib;ProfilerCore32.lib;physfs.lib;assimp.lib;Ilut.lib;Ilu.lib;DevIL.lib;glew32.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <PerUserRedirection>true</PerUserRedirection>
+    </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='GameBuild Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>false</SDLCheck>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Source\Imgui\include;..\Scripts\BaseScript;./Brofiler-1.1.2;./ImGuizmo;./pcg-cpp-0.98/include;./rapidjson-1.1.0/include;./physfs-3.0.1/include;./mmgr;./Assimp/include;./DevIL/include;./glew-2.1.0/include;./SDL/include;MathGeoLib/include;./Imgui;./physfs-3.0.1;./freeType/include</AdditionalIncludeDirectories>
+      <EnablePREfast>false</EnablePREfast>
+      <PreprocessorDefinitions>GAME_BUILD;_MBCS;ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -121,7 +163,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='GameBuild|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
