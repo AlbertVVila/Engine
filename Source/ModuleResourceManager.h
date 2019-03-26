@@ -45,9 +45,7 @@ public:
 	std::vector<Resource*> GetResourcesList();
 	std::vector<ResourceTexture*> GetTexturesList();
 	std::vector<ResourceMaterial*> GetMaterialsList();
-	std::vector<std::string> GetTexturesNameList(bool ordered);			// Returns a vector with the exportedFileName of every ResourceTexture.
-	std::vector<std::string> GetMaterialsNameList(bool ordered);
-
+	std::vector<std::string> GetResourceNamesList(TYPE resourceType, bool ordered); // Returns a vector with the exportedFileName of every Resource of the type given.		
 
 	void LoadEngineResources();											// Loads resources needed by the engine (Skybox, white, no camera textures...)
 	Resource* AddResource(const char* file, const char* directory, TYPE type);

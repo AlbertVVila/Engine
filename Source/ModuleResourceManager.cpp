@@ -360,27 +360,12 @@ std::vector<ResourceMaterial*> ModuleResourceManager::GetMaterialsList()
 	return resourcesList;
 }
 
-std::vector<std::string> ModuleResourceManager::GetTexturesNameList(bool ordered)
+std::vector<std::string> ModuleResourceManager::GetResourceNamesList(TYPE resourceType, bool ordered)
 {
 	std::vector<std::string> resourcesList;
 	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
 	{
-		if (it->second->GetType() == TYPE::TEXTURE)
-			resourcesList.push_back(it->second->GetExportedFile());
-	}
-
-	if(ordered)	// Short by ascending order
-		std::sort(resourcesList.begin(), resourcesList.end(), sortByNameAscending);
-
-	return resourcesList;
-}
-
-std::vector<std::string> ModuleResourceManager::GetMaterialsNameList(bool ordered)
-{
-	std::vector<std::string> resourcesList;
-	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
-	{
-		if (it->second->GetType() == TYPE::MATERIAL)
+		if (it->second->GetType() == resourceType)
 			resourcesList.push_back(it->second->GetExportedFile());
 	}
 

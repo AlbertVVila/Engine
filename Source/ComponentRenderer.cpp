@@ -81,7 +81,7 @@ void ComponentRenderer::DrawProperties()
 		{
 			if (guiMaterials.empty())
 			{
-				guiMaterials = App->resManager->GetMaterialsNameList(true);
+				guiMaterials = App->resManager->GetResourceNamesList(TYPE::MATERIAL, true);
 			}
 			for (int n = 0; n < guiMaterials.size(); n++)
 			{

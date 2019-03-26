@@ -117,9 +117,6 @@ void PanelResourceManager::Draw()
 		case TYPE::SCENE:
 			ImGui::Text("Scene");
 			break;
-		case TYPE::BONE:
-			ImGui::Text("Bone");
-			break;
 		case TYPE::ANIMATION:
 			ImGui::Text("Animation");
 			break;

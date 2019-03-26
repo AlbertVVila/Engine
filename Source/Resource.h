@@ -11,7 +11,6 @@ enum class TYPE
 	MESH,
 	AUDIO,
 	SCENE,
-	BONE,
 	ANIMATION,
 	MATERIAL,
 	SKYBOX,

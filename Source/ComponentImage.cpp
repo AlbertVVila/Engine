@@ -114,7 +114,7 @@ void ComponentImage::DrawProperties()
 void ComponentImage::UpdateTexturesList()
 {
 	textureFiles.clear();
-	textureFiles = App->resManager->GetTexturesNameList(true);
+	textureFiles = App->resManager->GetResourceNamesList(TYPE::TEXTURE, true);
 }
 
 void ComponentImage::Save(JSON_value *value)const
