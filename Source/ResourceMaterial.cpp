@@ -10,9 +10,6 @@
 #include "ResourceTexture.h"
 
 #include "JSON.h"
-#include "rapidjson/document.h"
-#include "rapidjson/filewritestream.h"
-#include "rapidjson/prettywriter.h"
 #include "GL/glew.h"
 
 ResourceMaterial::ResourceMaterial(unsigned uid) : Resource(uid, TYPE::MATERIAL)

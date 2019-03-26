@@ -9,10 +9,6 @@
 #include "IL/ilut.h"
 #include "JSON.h"
 
-#include "rapidjson/document.h"
-#include "rapidjson/filewritestream.h"
-#include "rapidjson/prettywriter.h"
-
 ResourceTexture::ResourceTexture(unsigned uid) : Resource(uid, TYPE::TEXTURE)
 {
 }
