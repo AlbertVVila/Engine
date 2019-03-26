@@ -3,6 +3,8 @@
 
 #include "BaseScript.h"
 
+#include "Math/float3.h"
+
 #ifdef GameLoop_EXPORTS
 #define GameLoop_API __declspec(dllexport)
 #else
@@ -33,6 +35,8 @@ class GameLoop_API GameLoop : public Script
 
 	void Start() override;
 	void Update() override;
+
+	void ManageDead();
 
 	void ManageMenu();
 	void ManageIntro();
@@ -77,6 +81,7 @@ class GameLoop_API GameLoop : public Script
 	GameObject* controls = nullptr;
 	GameObject* loseWindow = nullptr;
 	GameObject* winWindow = nullptr;
+	GameObject* hud = nullptr;
 	GameObject* playerGO = nullptr;
 
 	//TEXT
@@ -86,6 +91,7 @@ class GameLoop_API GameLoop : public Script
 	//Script
 	//Script* intro = nullptr;
 	PlayerMovement* playerScript = nullptr;
+	float3 playerStartPosition = float3::zero;
 };
 
 #endif __GameLoop_h__
