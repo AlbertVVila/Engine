@@ -216,30 +216,30 @@ void ResourceMaterial::Reset(const ResourceMaterial& material)
 	metallic = material.metallic;
 }
 
-int ResourceMaterial::Compare(const ResourceMaterial& material)
+bool ResourceMaterial::Compare(const ResourceMaterial& material) const
 {
 	if (shader != material.shader)
-		return 0;
+		return false;
 
 	for (unsigned i = 0; i < MAXTEXTURES; ++i)
 	{
 		if (textures[i] != material.textures[i])
-			return 0;
+			return false;
 	}
 
 	if (!diffuseColor.Equals(material.diffuseColor))
-		return 0;
+		return false;
 	if (!specularColor.Equals(material.specularColor))
-		return 0;
+		return false;
 	if (!emissiveColor.Equals(material.emissiveColor))
-		return 0;
+		return false;
 
 	if (roughness != material.roughness)
-		return 0;
+		return false;
 	if (metallic != material.metallic)
-		return 0;
+		return false;
 
-	return 1;
+	return true;
 }
 
 ResourceTexture* ResourceMaterial::GetTexture(TextureType type) const

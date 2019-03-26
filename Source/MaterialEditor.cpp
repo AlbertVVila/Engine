@@ -274,22 +274,8 @@ void MaterialEditor::Save()
 {
 	if (previous != nullptr)
 	{
-		int ret = material->Compare(*previous);
-
-		if (ret == -1)
-		{
-			if (Exists(previous->GetExportedFile()))
-			{
-				std::string materialFile(MATERIALS);
-				materialFile += previous->GetExportedFile();
-				App->fsystem->Delete((materialFile + JSONEXT).c_str());
-			}
+		if (!material->Compare(*previous))
 			material->Save();
-		}
-		else if (ret == 0)
-		{
-			material->Save();
-		}
 
 		RELEASE(previous);
 	}
