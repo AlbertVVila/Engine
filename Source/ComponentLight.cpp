@@ -100,6 +100,10 @@ void ComponentLight::DrawProperties()
 			else
 				lightDirty = lightDirty || ImGui::DragFloat("Range", &range);
 		}
+		else
+		{
+			lightDirty = lightDirty || ImGui::DragFloat("Radius", &directionalRadius);
+		}
 
 		lightDirty = lightDirty || ImGui::DragFloat("Intensity", &intensity);
 
@@ -140,6 +144,8 @@ void ComponentLight::Load(JSON_value* value)
 		range = value->GetFloat("range");		
 	}
 
+	directionalRadius = value->GetFloat("directionalRadius");
+
 	if (lightType == LightType::SPOT)
 	{
 		inner = value->GetFloat("inner");
@@ -154,13 +160,13 @@ void ComponentLight::Save(JSON_value* value) const
 
 	value->AddUint("Lighttype", (unsigned)lightType);
 	value->AddFloat3("color", color);
-
+	value->AddFloat("directionalRadius", directionalRadius);
 	if (lightType != LightType::DIRECTIONAL)
 	{
 		value->AddFloat("radius", pointSphere.r);
 		value->AddFloat("range", range);
 	}
-
+	
 	if (lightType == LightType::SPOT)
 	{
 		value->AddFloat("inner", inner);
@@ -240,18 +246,9 @@ void ComponentLight::CalculateGuizmos()
 			break;
 		}
 		case LightType::DIRECTIONAL:			
-			if (App->scene->maincamera != nullptr)
-			{
-				pointSphere.pos = App->scene->maincamera->frustum->pos;
-				pointSphere.r = App->scene->maincamera->frustum->farPlaneDistance;
-			}
-#ifndef GAME_BUILD
-			else
-			{
-				pointSphere.pos = App->camera->editorcamera->frustum->pos;
-				pointSphere.r = App->camera->editorcamera->frustum->farPlaneDistance;
-			}
-#endif
+			pointSphere.pos = math::float3::zero;
+			pointSphere.r = directionalRadius;
+
 			gameobject->bbox.SetNegativeInfinity();
 			gameobject->bbox.Enclose(pointSphere);
 			break;
