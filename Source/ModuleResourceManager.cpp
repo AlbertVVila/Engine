@@ -349,6 +349,17 @@ std::vector<ResourceTexture*> ModuleResourceManager::GetTexturesList()
 	return resourcesList;
 }
 
+std::vector<ResourceMaterial*> ModuleResourceManager::GetMaterialsList()
+{
+	std::vector<ResourceMaterial*> resourcesList;
+	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		if (it->second->GetType() == TYPE::MATERIAL)
+			resourcesList.push_back((ResourceMaterial*)it->second);
+	}
+	return resourcesList;
+}
+
 std::vector<std::string> ModuleResourceManager::GetTexturesNameList(bool ordered)
 {
 	std::vector<std::string> resourcesList;
@@ -359,6 +370,21 @@ std::vector<std::string> ModuleResourceManager::GetTexturesNameList(bool ordered
 	}
 
 	if(ordered)	// Short by ascending order
+		std::sort(resourcesList.begin(), resourcesList.end(), sortByNameAscending);
+
+	return resourcesList;
+}
+
+std::vector<std::string> ModuleResourceManager::GetMaterialsNameList(bool ordered)
+{
+	std::vector<std::string> resourcesList;
+	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		if (it->second->GetType() == TYPE::MATERIAL)
+			resourcesList.push_back(it->second->GetExportedFile());
+	}
+
+	if (ordered)	// Short by ascending order
 		std::sort(resourcesList.begin(), resourcesList.end(), sortByNameAscending);
 
 	return resourcesList;

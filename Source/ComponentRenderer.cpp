@@ -81,7 +81,7 @@ void ComponentRenderer::DrawProperties()
 		{
 			if (guiMaterials.empty())
 			{
-				guiMaterials = App->fsystem->GetFolderContent(IMPORTED_MATERIALS, false);
+				guiMaterials = App->resManager->GetMaterialsNameList(true);
 			}
 			for (int n = 0; n < guiMaterials.size(); n++)
 			{

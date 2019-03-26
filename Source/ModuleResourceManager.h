@@ -10,6 +10,7 @@
 struct Shader;
 class Resource;
 class ResourceTexture;
+class ResourceMaterial;
 enum class TYPE;
 
 class ModuleResourceManager :
@@ -43,7 +44,10 @@ public:
 
 	std::vector<Resource*> GetResourcesList();
 	std::vector<ResourceTexture*> GetTexturesList();
+	std::vector<ResourceMaterial*> GetMaterialsList();
 	std::vector<std::string> GetTexturesNameList(bool ordered);			// Returns a vector with the exportedFileName of every ResourceTexture.
+	std::vector<std::string> GetMaterialsNameList(bool ordered);
+
 
 	void LoadEngineResources();											// Loads resources needed by the engine (Skybox, white, no camera textures...)
 	Resource* AddResource(const char* file, const char* directory, TYPE type);
