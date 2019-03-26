@@ -14,6 +14,7 @@
 #include "JSON.h"
 #include "Math/Quat.h"
 #include "Math/float3.h"
+#include "Brofiler.h"
 
 
 ComponentAnimation::ComponentAnimation() : Component(nullptr, ComponentType::Animation)
@@ -50,6 +51,7 @@ void ComponentAnimation::DrawProperties()
 
 void ComponentAnimation::Update(float dt)
 {
+	PROFILE;
 	if (App->time->gameState == GameState::RUN)
 	{
 		controller->Update(App->time->gameDeltaTime);
@@ -63,6 +65,7 @@ void ComponentAnimation::Update(float dt)
 
 void ComponentAnimation::UpdateGO(GameObject* go)
 {
+	PROFILE;
 	float3 position;
 	Quat rotation;
 

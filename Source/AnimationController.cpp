@@ -6,6 +6,7 @@
 #include "ModuleResourceManager.h"
 
 #include "Animation.h"
+#include "Brofiler.h"
 
 AnimationController::AnimationController()
 {
@@ -28,6 +29,7 @@ void AnimationController::Play(Animation* anim, bool loop, unsigned fadeTime)
 
 void AnimationController::Update(float dt)
 {
+	PROFILE;
 	if (current != nullptr)
 	{
 		UpdateInstance(current, dt);
