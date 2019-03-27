@@ -66,7 +66,7 @@ update_status ModuleScript::Update(float dt)
 		CheckScripts();
 	}
 	onStart = App->time->gameState == GameState::STOP;
-	return UPDATE_CONTINUE;
+	return status;
 }
 
 void ModuleScript::LoadFromMemory(int resource) //TODO: Load from memory in shipping build

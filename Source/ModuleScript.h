@@ -33,6 +33,7 @@ private:
 
 public:
 	std::map<std::string, int> scripts; //name, modification date
+	update_status status = UPDATE_CONTINUE;
 private:
 	std::list <const ComponentScript*> componentsScript;
 	std::map<std::string, std::pair<HINSTANCE, int>> loadedDLLs; // name, dll, instances

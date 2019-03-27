@@ -13,6 +13,7 @@ class JSON_value;
 
 class IntroScript_API IntroScript : public Script
 {
+public:
 	void Expose(ImGuiContext* context) override;
 
 	void Start() override;
@@ -20,9 +21,8 @@ class IntroScript_API IntroScript : public Script
 
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
-
+public:
 	bool introDone = false;
-
 private:
 	math::float3 distanceNormalized = math::float3::zero;
 	math::float3 finalPosition = math::float3(0, 0, 1000);

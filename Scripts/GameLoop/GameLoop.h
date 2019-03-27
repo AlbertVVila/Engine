@@ -16,8 +16,10 @@
 class Component;
 class ComponentButton;
 class ComponentText;
+class ComponentScript;
 class PlayerMovement;
 class EnemyMovementScript;
+class IntroScript;
 
 class GameLoop_API GameLoop : public Script
 {
@@ -96,9 +98,12 @@ class GameLoop_API GameLoop : public Script
 	ComponentText* volumeText = nullptr;
 	ComponentText* soundText = nullptr;
 
+	ComponentScript* componentIntroScript = nullptr;
+
 	//Script
 	PlayerMovement* playerScript = nullptr;
 	EnemyMovementScript* enemyMovementScript = nullptr;
+	IntroScript* introScript = nullptr;
 
 	float3 playerStartPosition = float3::zero;
 	float3 enemyStartPosition = float3::zero;
