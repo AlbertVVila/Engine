@@ -17,6 +17,7 @@ class Component;
 class ComponentButton;
 class ComponentText;
 class PlayerMovement;
+class EnemyMovementScript;
 
 class GameLoop_API GameLoop : public Script
 {
@@ -83,15 +84,18 @@ class GameLoop_API GameLoop : public Script
 	GameObject* winWindow = nullptr;
 	GameObject* hud = nullptr;
 	GameObject* playerGO = nullptr;
+	GameObject* enemyGO = nullptr;
 
 	//TEXT
 	ComponentText* volumeText = nullptr;
 	ComponentText* soundText = nullptr;
 
 	//Script
-	//Script* intro = nullptr;
 	PlayerMovement* playerScript = nullptr;
+	EnemyMovementScript* enemyMovementScript = nullptr;
+
 	float3 playerStartPosition = float3::zero;
+	float3 enemyStartPosition = float3::zero;
 };
 
 #endif __GameLoop_h__

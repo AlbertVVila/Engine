@@ -25,6 +25,8 @@ public:
 	void Update() override;
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
+public:
+	bool stop = false;
 private:
 	GameObject* GetGameObjectRecursiveByName(GameObject* gameObject, const char* name);
 private:
