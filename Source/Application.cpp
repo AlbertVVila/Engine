@@ -15,6 +15,7 @@
 #include "ModuleUI.h"
 #include "ModuleFontLoader.h"
 #include "ModuleScript.h"
+#include "ModuleNavigation.h"
 
 #include "Timer.h"
 #include "JSON.h"
@@ -38,9 +39,11 @@ Application::Application()
 	modules.push_back(debug = new ModuleDebugDraw());
 	modules.push_back(scene = new ModuleScene());
 	modules.push_back(time = new ModuleTime());
+	modules.push_back(navigation = new ModuleNavigation());
 	modules.push_back(spacePartitioning = new ModuleSpacePartitioning());
 	modules.push_back(ui = new ModuleUI());
 	modules.push_back(fontLoader = new ModuleFontLoader());
+	
 }
 
 Application::~Application()

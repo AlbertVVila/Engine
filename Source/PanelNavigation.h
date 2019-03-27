@@ -10,6 +10,9 @@ public:
 	~PanelNavigation();
 
 	void Draw();
+
+private:
+	
 };
 
 #endif

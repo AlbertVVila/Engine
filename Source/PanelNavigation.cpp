@@ -1,4 +1,6 @@
 #include "PanelNavigation.h"
+#include "Application.h"
+#include "ModuleNavigation.h"
 #include "imgui.h"
 
 
@@ -19,21 +21,6 @@ void PanelNavigation::Draw()
 		ImGui::End();
 		return;
 	}
-	if (ImGui::CollapsingHeader("Agents"))
-	{
-		
-	}
-	if (ImGui::CollapsingHeader("Areas"))
-	{
-		
-	}
-	if (ImGui::CollapsingHeader("Bake"))
-	{
-		
-	}
-	if (ImGui::CollapsingHeader("Object"))
-	{
-		
-	}
+	App->navigation->DrawGUI();
 	ImGui::End();
 }

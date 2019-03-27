@@ -9,6 +9,7 @@
 #include "ModuleTextures.h"
 #include "ModuleRender.h"
 #include "ModuleSpacePartitioning.h"
+#include "ModuleNavigation.h"
 
 #include "Component.h"
 #include "ComponentTransform.h"
@@ -38,23 +39,25 @@
 #define MAX_NAME 64
 #define IMGUI_RIGHT_MOUSE_BUTTON 1
 
-GameObject::GameObject(const char * name, unsigned uuid) : name(name), UUID(uuid), navigable(false)
+GameObject::GameObject(const char * name, unsigned uuid) : name(name), UUID(uuid)
 {
 }
 
-GameObject::GameObject(const float4x4 & transform, const char * name, unsigned uuid) : name(name), UUID(uuid), navigable(false)
+GameObject::GameObject(const float4x4 & transform, const char * name, unsigned uuid) : name(name), UUID(uuid)
 {
 	this->transform =  (ComponentTransform*) CreateComponent(ComponentType::Transform);
 	this->transform->AddTransform(transform);
 }
 
-GameObject::GameObject(const GameObject & gameobject) : navigable(gameobject.navigable)
+GameObject::GameObject(const GameObject & gameobject)
 {
 	name = gameobject.name;
 	UUID = App->scene->GetNewUID();
 	parentUUID = gameobject.parentUUID;
 	isStatic = gameobject.isStatic;
 	bbox = gameobject.bbox;
+	navigable = gameobject.navigable;
+	walkable = gameobject.walkable;
 
 	for (const auto& component: gameobject.components)
 	{
@@ -112,7 +115,18 @@ void GameObject::DrawProperties()
 	if (this != App->scene->root)
 	{
 		//navigability
-		if (isVolumetric && isStatic)	ImGui::Checkbox("Navigable", &navigable);
+		if (isVolumetric && isStatic) 
+		{
+			if (ImGui::Checkbox("Navigable", &navigable))
+			{
+				App->navigation->navigableObjectToggled(this, navigable);
+			}
+			if (navigable)
+			{
+				//defines walls and this stuff
+				ImGui::Checkbox("Walkable", &walkable);
+			}
+		}
 
 		if (ImGui::Checkbox("Static", &isStatic))
 		{
@@ -658,6 +672,7 @@ void GameObject::Save(JSON_value *gameobjects) const
 		gameobject->AddString("Name", name.c_str());
 		gameobject->AddUint("Static", isStatic);
 		gameobject->AddUint("Navigable", navigable);
+		gameobject->AddUint("Walkable", walkable);
 
 		JSON_value *componentsJSON = gameobject->CreateValue(rapidjson::kArrayType);
 		for (auto &component : components)
@@ -684,6 +699,7 @@ void GameObject::Load(JSON_value *value)
 	name = value->GetString("Name");
 	isStatic = value->GetUint("Static");
 	navigable = value->GetUint("Navigable");
+	walkable = value->GetUint("Walkable");
 
 	JSON_value* componentsJSON = value->GetValue("Components");
 	for (unsigned i = 0; i < componentsJSON->Size(); i++)

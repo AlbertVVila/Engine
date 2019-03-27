@@ -60,6 +60,7 @@ public:
 	unsigned parentUUID = 0; //only set in Save/Load scene TODO:update on parent change
 	bool isStatic = false;
 	bool navigable = false;
+	bool walkable = false;
 	bool isSelected = false;
 	bool movedFlag = false;
 	bool copyFlag = false;
