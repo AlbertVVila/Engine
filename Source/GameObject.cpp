@@ -38,17 +38,17 @@
 #define MAX_NAME 64
 #define IMGUI_RIGHT_MOUSE_BUTTON 1
 
-GameObject::GameObject(const char * name, unsigned uuid) : name(name), UUID(uuid)
+GameObject::GameObject(const char * name, unsigned uuid) : name(name), UUID(uuid), navigable(false)
 {
 }
 
-GameObject::GameObject(const float4x4 & transform, const char * name, unsigned uuid) : name(name), UUID(uuid)
+GameObject::GameObject(const float4x4 & transform, const char * name, unsigned uuid) : name(name), UUID(uuid), navigable(false)
 {
 	this->transform =  (ComponentTransform*) CreateComponent(ComponentType::Transform);
 	this->transform->AddTransform(transform);
 }
 
-GameObject::GameObject(const GameObject & gameobject)
+GameObject::GameObject(const GameObject & gameobject) : navigable(gameobject.navigable)
 {
 	name = gameobject.name;
 	UUID = App->scene->GetNewUID();
@@ -111,6 +111,9 @@ void GameObject::DrawProperties()
 
 	if (this != App->scene->root)
 	{
+		//navigability
+		if (isVolumetric && isStatic)	ImGui::Checkbox("Navigable", &navigable);
+
 		if (ImGui::Checkbox("Static", &isStatic))
 		{
 			if (isStatic && GetComponent(ComponentType::Renderer) != nullptr)
@@ -654,6 +657,7 @@ void GameObject::Save(JSON_value *gameobjects) const
 		gameobject->AddUint("ParentUID", parent->UUID);
 		gameobject->AddString("Name", name.c_str());
 		gameobject->AddUint("Static", isStatic);
+		gameobject->AddUint("Navigable", navigable);
 
 		JSON_value *componentsJSON = gameobject->CreateValue(rapidjson::kArrayType);
 		for (auto &component : components)
@@ -679,6 +683,7 @@ void GameObject::Load(JSON_value *value)
 	parentUUID = value->GetUint("ParentUID");
 	name = value->GetString("Name");
 	isStatic = value->GetUint("Static");
+	navigable = value->GetUint("Navigable");
 
 	JSON_value* componentsJSON = value->GetValue("Components");
 	for (unsigned i = 0; i < componentsJSON->Size(); i++)

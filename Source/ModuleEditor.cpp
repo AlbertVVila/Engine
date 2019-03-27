@@ -21,6 +21,7 @@
 #include "PanelTime.h"
 #include "PanelBrowser.h"
 #include "PanelResourceManager.h"
+#include "PanelNavigation.h"
 
 #include "MaterialEditor.h"
 #include "FileExplorer.h"
@@ -43,6 +44,7 @@ ModuleEditor::ModuleEditor()
 	panels.push_back(assets = new PanelBrowser());
 	panels.push_back(time = new PanelTime());
 	panels.push_back(resource = new PanelResourceManager());
+	panels.push_back(navigation = new PanelNavigation());
 
 	materialEditor = new MaterialEditor();
 	fileExplorer = new FileExplorer();
@@ -334,6 +336,10 @@ void ModuleEditor::WindowsMenu()
 		if (ImGui::MenuItem("Assets", nullptr, assets->IsEnabled()))
 		{
 			assets->ToggleEnabled();
+		}
+		if (ImGui::MenuItem("Navigation", nullptr, navigation->IsEnabled()))
+		{
+			navigation->ToggleEnabled();
 		}
 		ImGui::EndMenu();
 	}

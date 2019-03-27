@@ -94,6 +94,29 @@ void GUICreator::CreateElements(GameObject* go)
 		{
 			App->scene->CreateCube("cube", go);
 		}
+
+		/*if (ImGui::BeginMenu("Navigation"))
+		{
+			if (ImGui::Selectable("Agent"))
+			{
+				GameObject *newgo = new GameObject("Text", App->scene->GetNewUID());
+				newgo->CreateComponent(ComponentType::Transform2D);
+				newgo->CreateComponent(ComponentType::Text);
+				App->scene->canvas->InsertChild(newgo);
+				App->scene->Select(newgo);
+			}
+
+			if (ImGui::Selectable("Obstacle"))
+			{
+				GameObject *newgo = new GameObject("Button", App->scene->GetNewUID());
+				newgo->CreateComponent(ComponentType::Transform2D);
+				newgo->CreateComponent(ComponentType::Button);
+				App->scene->canvas->InsertChild(newgo);
+				App->scene->Select(newgo);
+			}
+			ImGui::EndMenu();
+		}*/
+
 		ImGui::EndMenu();
 	}
 }

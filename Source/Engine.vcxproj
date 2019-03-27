@@ -188,6 +188,7 @@
     <ClInclude Include="ModuleEditor.h" />
     <ClInclude Include="ModuleFontLoader.h" />
     <ClInclude Include="ModuleInput.h" />
+    <ClInclude Include="ModuleNavigation.h" />
     <ClInclude Include="ModuleResourceManager.h" />
     <ClInclude Include="ModuleProgram.h" />
     <ClInclude Include="ModuleRender.h" />
@@ -207,6 +208,7 @@
     <ClInclude Include="PanelHardware.h" />
     <ClInclude Include="PanelHierarchy.h" />
     <ClInclude Include="PanelInspector.h" />
+    <ClInclude Include="PanelNavigation.h" />
     <ClInclude Include="PanelResourceManager.h" />
     <ClInclude Include="PanelTime.h" />
     <ClInclude Include="par_shapes.h" />
@@ -307,6 +309,7 @@
     <ClCompile Include="ModuleEditor.cpp" />
     <ClCompile Include="ModuleFontLoader.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
+    <ClCompile Include="ModuleNavigation.cpp" />
     <ClCompile Include="ModuleResourceManager.cpp" />
     <ClCompile Include="ModuleProgram.cpp" />
     <ClCompile Include="ModuleRender.cpp" />
@@ -325,6 +328,7 @@
     <ClCompile Include="PanelHardware.cpp" />
     <ClCompile Include="PanelHierarchy.cpp" />
     <ClCompile Include="PanelInspector.cpp" />
+    <ClCompile Include="PanelNavigation.cpp" />
     <ClCompile Include="PanelResourceManager.cpp" />
     <ClCompile Include="PanelTime.cpp" />
     <ClCompile Include="Recast\DebugUtils\DebugDraw.cpp" />
