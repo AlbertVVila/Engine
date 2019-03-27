@@ -131,6 +131,7 @@ void PanelBrowser::Draw()
 	// If we are inside a folder show icon to go back
 	if (path != ASSETS)
 	{
+		ImGui::SetCursorPosY(ICON_Y_MARGIN);
 		if (ImGui::ImageButton(folderIcon != nullptr ? (ImTextureID)folderIcon->gpuID : 0, ImVec2(ICON_SIZE, ICON_SIZE), ImVec2(0, 1), ImVec2(1, 0), 1))
 		{
 			path = pathStack.top();
@@ -138,7 +139,7 @@ void PanelBrowser::Draw()
 			folderContentDirty = true;
 		}
 
-		ImGui::SetCursorPosY(ICON_SIZE + ICON_Y_MARGIN - 20);	
+		ImGui::SetCursorPosY(ICON_SIZE + ICON_Y_MARGIN);	
 		ImGui::PushTextWrapPos(ImGui::GetCursorPos().x + ICON_NAME_SIZE);
 		ImGui::Text("..");
 		if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
@@ -194,7 +195,7 @@ void PanelBrowser::DrawFolderIcon(const char* dir, int itemNumber)
 
 	// Folder icon position
 	ImGui::SetCursorPosX(LEFT_INDENTATION + (ICON_SIZE + ICON_X_MARGIN) * (itemNumber % maxNumberElements));
-	ImGui::SetCursorPosY((ICON_SIZE + ICON_Y_MARGIN) + (ICON_SIZE + ICON_Y_MARGIN) * (itemNumber / maxNumberElements));
+	ImGui::SetCursorPosY(ICON_Y_MARGIN + (ICON_SIZE + ICON_Y_MARGIN) * (itemNumber / maxNumberElements));
 
 	if (ImGui::ImageButton(folderIcon != nullptr ? (ImTextureID)folderIcon->gpuID : 0, ImVec2(ICON_SIZE, ICON_SIZE), ImVec2(0, 1), ImVec2(1, 0), 1))
 	{
@@ -206,7 +207,7 @@ void PanelBrowser::DrawFolderIcon(const char* dir, int itemNumber)
 
 	// Folder name text
 	ImGui::SetCursorPosX(LEFT_INDENTATION + (ICON_SIZE + ICON_X_MARGIN) * (itemNumber % maxNumberElements));
-	ImGui::SetCursorPosY(ICON_SIZE + (ICON_SIZE + ICON_Y_MARGIN) + (ICON_SIZE + ICON_Y_MARGIN) * (itemNumber / maxNumberElements));
+	ImGui::SetCursorPosY((ICON_SIZE + ICON_Y_MARGIN) + (ICON_SIZE + ICON_Y_MARGIN) * (itemNumber / maxNumberElements));
 	ImGui::PushTextWrapPos(ImGui::GetCursorPos().x + ICON_NAME_SIZE);
 
 	ImGui::Text(dir);
@@ -231,7 +232,7 @@ void PanelBrowser::DrawFileIcon(const char* file, int itemNumber)
 
 	// File icon position
 	ImGui::SetCursorPosX(LEFT_INDENTATION + (ICON_SIZE + ICON_X_MARGIN) * (itemNumber % maxNumberElements));
-	ImGui::SetCursorPosY((ICON_SIZE + ICON_Y_MARGIN) + (ICON_SIZE + ICON_Y_MARGIN) * (itemNumber / maxNumberElements));
+	ImGui::SetCursorPosY(ICON_Y_MARGIN + (ICON_SIZE + ICON_Y_MARGIN) * (itemNumber / maxNumberElements));
 
 	// Select icon by extension
 	std::string extension = App->fsystem->GetExtension(file);
@@ -253,7 +254,7 @@ void PanelBrowser::DrawFileIcon(const char* file, int itemNumber)
 	}
 
 	ImGui::SetCursorPosX(LEFT_INDENTATION + (ICON_SIZE + ICON_X_MARGIN) * (itemNumber % maxNumberElements));
-	ImGui::SetCursorPosY(ICON_SIZE + (ICON_SIZE + ICON_Y_MARGIN) + (ICON_SIZE + ICON_Y_MARGIN) * (itemNumber / maxNumberElements));
+	ImGui::SetCursorPosY((ICON_SIZE + ICON_Y_MARGIN) + (ICON_SIZE + ICON_Y_MARGIN) * (itemNumber / maxNumberElements));
 
 	ImGui::PushTextWrapPos(ImGui::GetCursorPos().x + 52);
 	ImGui::Text(file);

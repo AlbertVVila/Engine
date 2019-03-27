@@ -88,7 +88,7 @@ bool ModuleFileSystem::CleanUp()
 	monitorize = false;
 	while (threadIsWorking)
 	{
-		SDL_Delay(100);
+		SDL_Delay(1000);
 	}
 	return true;
 }
