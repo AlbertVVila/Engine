@@ -32,8 +32,8 @@ public:
 		return scriptName;
 	}
 
-	void ScriptStart() const;
-	void ScriptUpdate() const;
+	ENGINE_API void ScriptStart() const;
+	ENGINE_API void ScriptUpdate() const;
 
 	ComponentScript* Clone() const;
 

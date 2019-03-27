@@ -27,6 +27,7 @@ class GameLoop_API GameLoop : public Script
 		INTRO,
 		PLAYING,
 		DEAD,
+		WIN,
 		PAUSED,
 		OPTIONS,
 		CREDITS,
@@ -42,6 +43,7 @@ class GameLoop_API GameLoop : public Script
 	void ManageMenu();
 	void ManageIntro();
 	void ManagePlaying();
+	void ManageWin();
 	void ManagePaused();
 	void ManageOptions();
 	void ManageCredits();
@@ -64,6 +66,8 @@ class GameLoop_API GameLoop : public Script
 	int minSound = 0;
 	int maxSound = 10;
 
+	int loading = 0;
+
 	//UI
 
 	//Buttons
@@ -82,9 +86,11 @@ class GameLoop_API GameLoop : public Script
 	GameObject* controls = nullptr;
 	GameObject* loseWindow = nullptr;
 	GameObject* winWindow = nullptr;
-	GameObject* hud = nullptr;
+	GameObject* hudGO = nullptr;
 	GameObject* playerGO = nullptr;
 	GameObject* enemyGO = nullptr;
+	GameObject* winGO = nullptr;
+	GameObject* creditsGO = nullptr;
 
 	//TEXT
 	ComponentText* volumeText = nullptr;
@@ -96,6 +102,8 @@ class GameLoop_API GameLoop : public Script
 
 	float3 playerStartPosition = float3::zero;
 	float3 enemyStartPosition = float3::zero;
+
+	bool runningCredits = false;
 };
 
 #endif __GameLoop_h__
