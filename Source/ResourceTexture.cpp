@@ -8,6 +8,7 @@
 #include "GL/glew.h"
 #include "IL/ilut.h"
 #include "JSON.h"
+#include "imgui.h"
 
 ResourceTexture::ResourceTexture(unsigned uid) : Resource(uid, TYPE::TEXTURE)
 {
@@ -318,4 +319,27 @@ void ResourceTexture::Delete()
 	fileInLibrary += TEXTUREEXT;
 	App->fsystem->Delete(fileInLibrary.c_str());
 	DeleteFromMemory();
+}
+
+void ResourceTexture::DrawImportConfiguration()
+{
+	const char* compressionTypes[] = { "DXT1", /*"DXT2",*/ "DXT3", /*"DXT4",*/ "DXT5", /*"DXT_NO_COMP", "KEEP_DXTC_DATA", "DXTC_DATA_FORMAT",*/ "THREE_DC", "RXGB", "ATI1N", "DXT1A" };
+	if (ImGui::Combo("Compression type", &compression, compressionTypes, IM_ARRAYSIZE(compressionTypes)))
+	{
+		switch (compression)
+		{
+		case 0:	dxtFormat = DXT::DXT1; break;
+			//case 1:	resource->dxtFormat = DXT::DXT2; break;
+		case 1:	dxtFormat = DXT::DXT3; break;
+			//case 3:	resource->dxtFormat = DXT::DXT4; break;
+		case 2:	dxtFormat = DXT::DXT5; break;
+			//case 5: resource->dxtFormat = DXT::DXT_NO_COMP; break;
+			//case 3:	resource->dxtFormat = DXT::KEEP_DXTC_DATA; break;
+			//case 4:	resource->dxtFormat = DXT::DXTC_DATA_FORMAT; break;
+		case 3:	dxtFormat = DXT::THREE_DC; break;
+		case 4:	dxtFormat = DXT::RXGB; break;
+		case 5:	dxtFormat = DXT::ATI1N; break;
+		case 6:	dxtFormat = DXT::DXT1A; break;
+		}
+	}
 }

@@ -32,15 +32,14 @@ public:
 
 private:
 	std::string path;
-	//std::string fileSelected;
 	std::stack<std::string> pathStack;
 	std::vector<std::string> files;		// List of the files in current path
 	std::vector<std::string> dirs;		// List of the folders in current path
 
 	bool openImportConfigPopUp = false;
 	bool openRenamePopUp = false;
-	Resource* fileSelected = nullptr;
 
+	Resource* fileSelected = nullptr;
 	std::string newName;				// Aux string for rename
 
 	// Icons

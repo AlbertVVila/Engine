@@ -302,15 +302,7 @@ void PanelBrowser::DrawImportConfigurationPopUp()
 	if (ImGui::BeginPopupModal("Import configuration", &openImportConfigPopUp))
 	{
 		ImGui::Text("%s", fileSelected->GetExportedFile());
-		switch (fileSelected->GetType())
-		{
-		case TYPE::TEXTURE:
-			App->textures->DrawImportConfiguration((ResourceTexture*)fileSelected);
-			break;
-		default:
-			ImGui::Text("No import options.");
-			break;
-		}
+		fileSelected->DrawImportConfiguration();
 
 		if (ImGui::Button("Accept"))
 		{

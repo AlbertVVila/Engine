@@ -60,6 +60,8 @@ public:
 	virtual void Rename(const char* newName);
 	virtual void Delete();
 
+	virtual void DrawImportConfiguration();
+
 protected:
 	unsigned UID = 0u;
 	std::string file;				// The file located in /Assets/ (Path + filename + extension)

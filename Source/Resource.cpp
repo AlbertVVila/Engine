@@ -5,6 +5,8 @@
 #include "ModuleResourceManager.h"
 #include "ModuleFileSystem.h"
 
+#include "imgui.h"
+
 Resource::Resource(unsigned uid, TYPE type): UID(uid), type(type)
 {
 }
@@ -79,4 +81,9 @@ void Resource::Delete()
 	App->fsystem->Delete((file + ".meta").c_str());
 
 	// Deletion of file in Library is called on child class
+}
+
+void Resource::DrawImportConfiguration()
+{
+	ImGui::Text("No import options.");
 }
