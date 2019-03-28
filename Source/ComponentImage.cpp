@@ -45,7 +45,8 @@ ComponentImage::~ComponentImage()
 	App->ui->images.remove(this);
 	// ResManager refactored:
 	//App->resManager->DeleteTexture(textureName);
-	App->resManager->DeleteResource(App->resManager->FindByExportedFile(textureName.c_str()));
+	unsigned imageUID = App->resManager->FindByExportedFile(textureName.c_str());
+	App->resManager->DeleteResource(imageUID);
 	texture = nullptr;
 }
 
@@ -74,7 +75,8 @@ void ComponentImage::DrawProperties()
 				{
 					// ResManager refactored:
 					//App->resManager->DeleteTexture(textureName);
-					App->resManager->DeleteResource(App->resManager->FindByExportedFile(textureName.c_str()));
+					unsigned imageUID = App->resManager->FindByExportedFile(textureName.c_str());
+					App->resManager->DeleteResource(imageUID);
 					texture = nullptr;
 				}
 				textureName = None;
@@ -90,7 +92,8 @@ void ComponentImage::DrawProperties()
 					textureName = textureFiles[n].c_str();
 					// ResManager refactored:
 					//texture = App->textures->GetTexture(textureName.c_str());
-					texture = (ResourceTexture*)App->resManager->Get(App->resManager->FindByExportedFile(textureName.c_str()));
+					unsigned imageUID = App->resManager->FindByExportedFile(textureName.c_str());
+					texture = (ResourceTexture*)App->resManager->Get(imageUID);
 				}
 				if (is_selected)
 					ImGui::SetItemDefaultFocus();

@@ -29,6 +29,7 @@ public:
 	void DrawBbox(unsigned shaderProgram, const AABB& globalBBOX) const;
 	AABB GetBoundingBox() const;
 	bool Intersects(const LineSegment& line, float* distance);
+	void AddMesh(unsigned uid);
 
 private:
 	void ComputeBBox();
@@ -54,6 +55,12 @@ public:
 	std::vector<math::float3> meshTangents;
 	std::vector<float> meshTexCoords;
 	std::vector<unsigned> meshIndices;
+
+	unsigned int numMeshes = 0;
+	std::vector<unsigned int> meshList;
+
+	bool isMesh = false;
+
 };
 
 #endif __ResourceMesh_h__

@@ -371,10 +371,8 @@ void PanelResourceManager::DrawResourceMaterial()
 	math::float3 emissiveColor = material.emissiveColor;
 	ImGui::ColorEdit3("Emissive Color", &(float&)emissiveColor, ImGuiColorEditFlags_NoInputs);
 
-	ImGui::Text("K Ambient: %f", material.kAmbient);
-	ImGui::Text("K Diffuse: %f", material.kDiffuse);
-	ImGui::Text("K Specular: %f", material.kSpecular);
-	ImGui::Text("Shininess: %f", material.shininess);
+	ImGui::Text("Roughness: %f", material.roughness);
+	ImGui::Text("Metallic: %f", material.metallic);
 	ImGui::NextColumn();
 
 	// Textures

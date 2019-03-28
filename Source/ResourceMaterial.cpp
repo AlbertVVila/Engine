@@ -38,13 +38,8 @@ ResourceMaterial::ResourceMaterial(const ResourceMaterial& resource) : Resource(
 	specularColor = resource.specularColor;
 	emissiveColor = resource.emissiveColor;
 
-	kAmbient = resource.kAmbient;
-	kDiffuse = resource.kDiffuse;
-	kSpecular = resource.kSpecular;
-	shininess = resource.shininess;
-
-	metallic = resource.metallic;
 	roughness = resource.roughness;
+	metallic = resource.metallic;
 }
 
 ResourceMaterial::~ResourceMaterial()
@@ -77,8 +72,8 @@ bool ResourceMaterial::LoadInMemory()
 	if (App->fsystem->Load((IMPORTED_MATERIALS + exportedFileName + MATERIALEXT).c_str(), &data) == 0)
 		return false;
 
-	JSON *json = new JSON(data);
-	JSON_value *materialJSON = json->GetValue("material");
+	JSON* json = new JSON(data);
+	JSON_value* materialJSON = json->GetValue("material");
 
 	name = exportedFileName;
 	diffuseColor = materialJSON->GetColor4("diffuseColor");
@@ -88,22 +83,22 @@ bool ResourceMaterial::LoadInMemory()
 	metallic = materialJSON->GetFloat("metallic");
 	roughness = materialJSON->GetFloat("roughness");
 
-	const char *diffuseFile = materialJSON->GetString("diffuse");
+	const char* diffuseFile = materialJSON->GetString("diffuse");
 	if (diffuseFile != nullptr)
 	{
 		textures[(unsigned)TextureType::DIFFUSE] = (ResourceTexture*)App->resManager->Get(diffuseFile);
 	}
-	const char *specularFile = materialJSON->GetString("specular");
+	const char* specularFile = materialJSON->GetString("specular");
 	if (specularFile != nullptr)
 	{
 		textures[(unsigned)TextureType::SPECULAR] = (ResourceTexture*)App->resManager->Get(specularFile);
 	}
-	const char *occlusionFile = materialJSON->GetString("occlusion");
+	const char* occlusionFile = materialJSON->GetString("occlusion");
 	if (occlusionFile != nullptr)
 	{
 		textures[(unsigned)TextureType::OCCLUSION] = (ResourceTexture*)App->resManager->Get(occlusionFile);
 	}
-	const char *emissiveFile = materialJSON->GetString("emissive");
+	const char* emissiveFile = materialJSON->GetString("emissive");
 	if (emissiveFile != nullptr)
 	{
 		textures[(unsigned)TextureType::EMISSIVE] = (ResourceTexture*)App->resManager->Get(emissiveFile);
@@ -128,8 +123,8 @@ bool ResourceMaterial::LoadInMemory()
 
 void ResourceMaterial::Save() const
 {
-	JSON *json = new JSON();
-	JSON_value *materialJSON = json->CreateValue();
+	JSON* json = new JSON();
+	JSON_value* materialJSON = json->CreateValue();
 
 	if (textures[(unsigned)TextureType::DIFFUSE] != nullptr)
 		materialJSON->AddFloat4("diffuseColor", diffuseColor);
@@ -180,19 +175,15 @@ void ResourceMaterial::SaveMetafile(const char* file) const
 {
 	std::string filepath;
 	filepath.append(file);
-	JSON *json = new JSON();
-	rapidjson::Document* meta = new rapidjson::Document();
-	rapidjson::Document::AllocatorType& alloc = meta->GetAllocator();
-	filepath += ".meta";
+	JSON* json = new JSON();
+	JSON_value* meta = json->CreateValue();
+	struct stat statFile;
+	stat(filepath.c_str(), &statFile);
+	meta->AddUint("GUID", UID);
+	meta->AddUint("timeCreated", statFile.st_ctime);
+	json->AddValue("Material", *meta);
+	filepath += METAEXT;
 	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
-	FILE* fp = fopen(filepath.c_str(), "wb");
-	char writeBuffer[65536];
-	rapidjson::FileWriteStream* os = new rapidjson::FileWriteStream(fp, writeBuffer, sizeof(writeBuffer));
-	rapidjson::PrettyWriter<rapidjson::FileWriteStream> writer(*os);
-	meta->SetObject();
-	meta->AddMember("GUID", GetUID(), alloc);
-	meta->Accept(writer);
-	fclose(fp);
 }
 
 void ResourceMaterial::Reset(const ResourceMaterial& material)
@@ -226,13 +217,8 @@ void ResourceMaterial::Reset(const ResourceMaterial& material)
 	specularColor = material.specularColor;
 	emissiveColor = material.emissiveColor;
 
-	kAmbient = material.kAmbient;
-	kDiffuse = material.kDiffuse;
-	kSpecular = material.kSpecular;
-	shininess = material.shininess;
-
-	metallic = material.metallic;
 	roughness = material.roughness;
+	metallic = material.metallic;
 }
 
 int ResourceMaterial::Compare(const ResourceMaterial& material)
@@ -249,21 +235,16 @@ int ResourceMaterial::Compare(const ResourceMaterial& material)
 			return 0;
 	}
 
-	if (!diffuseColor.Equals(diffuseColor))
+	if (!diffuseColor.Equals(material.diffuseColor))
 		return 0;
-	if (!specularColor.Equals(specularColor))
+	if (!specularColor.Equals(material.specularColor))
 		return 0;
-	if (!emissiveColor.Equals(emissiveColor))
-		return 0;
-
-	if (kDiffuse != kDiffuse)
-		return 0;
-	if (kSpecular != kSpecular)
-		return 0;
-	if (kAmbient != kAmbient)
+	if (!emissiveColor.Equals(material.emissiveColor))
 		return 0;
 
-	if (shininess != shininess)
+	if (roughness != material.roughness)
+		return 0;
+	if (metallic != material.metallic)
 		return 0;
 
 	return 1;

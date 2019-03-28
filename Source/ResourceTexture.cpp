@@ -83,7 +83,7 @@ bool ResourceTexture::LoadTexture()
 	int format = 0;
 	unsigned imageID;
 
-	char *data;
+	char* data;
 	unsigned size;
 	std::string filename(exportedFileName);
 
@@ -173,7 +173,7 @@ bool ResourceTexture::LoadCubemap()
 	int format = 0;
 	unsigned imageID;
 
-	char *data;
+	char* data;
 	unsigned size;
 	std::string filename(exportedFileName);
 
@@ -251,29 +251,22 @@ void ResourceTexture::SaveMetafile(const char* file) const
 {
 	std::string filepath;
 	filepath.append(file);
-	JSON *json = new JSON();
-	rapidjson::Document* meta = new rapidjson::Document();
-	rapidjson::Document::AllocatorType& alloc = meta->GetAllocator();
-	filepath += ".meta";
-	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
+	JSON* json = new JSON();
+	JSON_value* meta = json->CreateValue();
 	struct stat statFile;
 	stat(filepath.c_str(), &statFile);
-	FILE* fp = fopen(filepath.c_str(), "wb");
-	char writeBuffer[65536];
-	rapidjson::FileWriteStream* os = new rapidjson::FileWriteStream(fp, writeBuffer, sizeof(writeBuffer));
-	rapidjson::PrettyWriter<rapidjson::FileWriteStream> writer(*os);
-	meta->SetObject();
-	meta->AddMember("GUID", UID, alloc);
-	meta->AddMember("timeCreated", statFile.st_ctime, alloc);
-	meta->AddMember("height", height, alloc);
-	meta->AddMember("width", width, alloc);
-	meta->AddMember("depth", depth, alloc);
-	meta->AddMember("mips", mips, alloc);
-	meta->AddMember("format", format, alloc);
-	meta->AddMember("DX compresion", ilGetInteger(IL_DXTC_FORMAT), alloc);
-	meta->AddMember("mipmap", ilGetInteger(IL_ACTIVE_MIPMAP), alloc);
-	meta->Accept(writer);
-	fclose(fp);
+	meta->AddUint("GUID", UID);
+	meta->AddUint("timeCreated", statFile.st_ctime);
+	meta->AddUint("height", height);
+	meta->AddUint("width", width);
+	meta->AddUint("depth", depth);
+	meta->AddUint("mips", mips);
+	meta->AddUint("format", format);
+	meta->AddUint("DX compresion", ilGetInteger(IL_DXTC_FORMAT));
+	meta->AddUint("mipmap", ilGetInteger(IL_ACTIVE_MIPMAP));
+	json->AddValue("Texture", *meta);
+	filepath += METAEXT;
+	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
 }
 
 void ResourceTexture::Load(const JSON_value& config)

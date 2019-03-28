@@ -159,13 +159,9 @@ update_status ModuleEditor::Update(float dt)
 			{
 				if (App->time->gameState == GameState::STOP)
 				{
-					fileExplorer->currentOperation = MenuOperations::LOAD;
-					fileExplorer->extensionToFilter = FILETYPE::SCENE;
 					std::string scenePath = SCENES;
 					scenePath = scenePath.substr(0, scenePath.size() - 1);
-					fileExplorer->SetPath(*scenePath.c_str());
-					sprintf_s(fileExplorer->title, "Load Scene");
-					fileExplorer->openFileExplorer = true;
+					fileExplorer->OpenFileExplorer(MenuOperations::LOAD, FILETYPE::SCENE, scenePath.c_str(), "Load Scene", App->scene->name.c_str());
 				}
 				else
 				{
@@ -176,13 +172,10 @@ update_status ModuleEditor::Update(float dt)
 			{
 				if (App->time->gameState == GameState::STOP)
 				{
-					fileExplorer->currentOperation = MenuOperations::ADD;
-					fileExplorer->extensionToFilter = FILETYPE::SCENE;
 					std::string scenePath = SCENES;
 					scenePath = scenePath.substr(0, scenePath.size() - 1);
-					fileExplorer->SetPath(*scenePath.c_str());
-					sprintf_s(fileExplorer->title, "Add Scene");
 					fileExplorer->openFileExplorer = true;
+					fileExplorer->OpenFileExplorer(MenuOperations::ADD, FILETYPE::SCENE, scenePath.c_str(), "Add Scene", App->scene->name.c_str());
 				}
 				else
 				{
@@ -195,17 +188,13 @@ update_status ModuleEditor::Update(float dt)
 				{
 					if (!App->scene->name.empty())
 					{
-						App->scene->SaveScene(*App->scene->root, *App->scene->name.c_str(), *App->scene->path.c_str());
+						App->scene->SaveScene(*App->scene->root, App->scene->name.c_str(), App->scene->path.c_str());
 					}
 					else
 					{
-						fileExplorer->currentOperation = MenuOperations::SAVE;
-						fileExplorer->extensionToFilter = FILETYPE::SCENE;
 						std::string scenePath = SCENES;
 						scenePath = scenePath.substr(0, scenePath.size() - 1);
-						fileExplorer->SetPath(*scenePath.c_str());
-						sprintf_s(fileExplorer->title, "Save Scene");
-						fileExplorer->openFileExplorer = true;
+						fileExplorer->OpenFileExplorer(MenuOperations::SAVE, FILETYPE::SCENE, scenePath.c_str(), "Save Scene");
 					}
 					materialEditor->Save();
 				}
@@ -218,15 +207,11 @@ update_status ModuleEditor::Update(float dt)
 			{
 				if (App->time->gameState == GameState::STOP)
 				{
-					fileExplorer->currentOperation = MenuOperations::SAVE;
-					fileExplorer->extensionToFilter = FILETYPE::SCENE;
 					std::string scenePath = SCENES;
 					scenePath = scenePath.substr(0, scenePath.size() - 1);
-					fileExplorer->SetPath(*scenePath.c_str());
-					sprintf_s(fileExplorer->title, "Save Scene");
-					sprintf_s(fileExplorer->filename, App->scene->name.c_str());
-					fileExplorer->openFileExplorer = true;
-          				materialEditor->Save();
+					fileExplorer->OpenFileExplorer(MenuOperations::SAVE);
+					//fileExplorer->OpenFileExplorer(MenuOperations::SAVE, FILETYPE::SCENE, scenePath.c_str(), "Save Scene", App->scene->name.c_str());
+          			materialEditor->Save();
 				}
 				else
 				{

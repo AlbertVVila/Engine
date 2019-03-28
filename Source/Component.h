@@ -45,7 +45,12 @@ public:
 		return true; 
 	}
 
+	virtual void Options();
 	void Remove();
+
+	virtual void Copy();
+	virtual void Paste() {}
+	virtual void Reset() {}
 
 	virtual void Save(JSON_value* value) const;
 	virtual void Load(JSON_value* value);

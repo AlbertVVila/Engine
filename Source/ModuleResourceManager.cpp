@@ -149,6 +149,7 @@ unsigned ModuleResourceManager::ImportFile(const char* newFileInAssets, const ch
 	Resource* resource = CreateNewResource(type);
 	std::string assetPath(filePath);
 	assetPath += newFileInAssets;
+	AddResource(newFileInAssets, filePath, type);
 
 	switch (type) 
 	{
@@ -156,7 +157,7 @@ unsigned ModuleResourceManager::ImportFile(const char* newFileInAssets, const ch
 		success = App->textures->ImportImage(newFileInAssets, filePath, (ResourceTexture*)resource);
 		break;
 	case TYPE::MESH:	
-		success = App->fsystem->importer.ImportFBX(newFileInAssets, filePath);
+		success = App->fsystem->importer.ImportFBX(newFileInAssets, filePath, (ResourceMesh*)resource);
 		break;
 	//case TYPE::AUDIO: import_ok = App->audio->Import(newFileInAssets, written_file); break;
 	//case TYPE::SCENE: import_ok = App->scene->Import(newFileInAssets, written_file); break;
@@ -190,7 +191,6 @@ Resource * ModuleResourceManager::CreateNewResource(TYPE type, unsigned forceUid
 	case TYPE::MESH:	resource = (Resource*) new ResourceMesh(uid); break;
 	/*case TYPE::AUDIO:	resource = (Resource*) new ResourceAudio(uid); break;
 	case TYPE::SCENE:	resource = (Resource*) new ResourceScene(uid); break;
-	case TYPE::BONE:	resource = (Resource*) new ResourceBone(uid); break;
 	case TYPE::ANIMATION: resource = (Resource*) new ResourceAnimation(uid); break;*/
 	case TYPE::MATERIAL: resource = (Resource*) new ResourceMaterial(uid); break;
 	case TYPE::SKYBOX: resource = (Resource*) new ResourceSkybox(uid); break;

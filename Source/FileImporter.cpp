@@ -11,8 +11,7 @@
 
 #include "FileImporter.h"
 
-#include "Resource.h"
-#include "ResourceMesh.h"
+#include "JSON.h"
 
 #include <assert.h>
 #include "assimp/cimport.h"
@@ -67,7 +66,7 @@ void FileImporter::ImportAsset(const char *file, const char *folder)
 	}
 }
 
-bool FileImporter::ImportFBX(const char* fbxfile, const char* folder)
+bool FileImporter::ImportFBX(const char* fbxfile, const char* folder, ResourceMesh* resource)
 {
 	assert(fbxfile != nullptr);
 	if (fbxfile == nullptr) return false;
@@ -77,23 +76,40 @@ bool FileImporter::ImportFBX(const char* fbxfile, const char* folder)
 	if (scene != nullptr)
 	{
 		LOG("Imported FBX %s", fbxfile);
-		return ImportScene(*scene, fbxfile);
+		return ImportScene(*scene, fbxfile, folder, resource);
 	}
 	LOG("Error importing FBX %s", fbxfile);
 	return false;
 }
 
-bool FileImporter::ImportScene(const aiScene &aiscene, const char* file)
+bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const char* folder, ResourceMesh* resource)
 {
 	std::map<unsigned, unsigned> meshMap;
+	std::string path(folder);
+	path += file;
+	std::string meta(path + METAEXT);
 	for (unsigned i = 0; i < aiscene.mNumMeshes; i++)
 	{
 		unsigned size = GetMeshSize(*aiscene.mMeshes[i]);
 		char* data = new char[size];
 		ImportMesh(*aiscene.mMeshes[i], data);
-
-		ResourceMesh* mesh = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH);
+		ResourceMesh* mesh = nullptr;
+		if (App->fsystem->Load(meta.c_str(), &data) == 0)
+		{
+			mesh = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH);
+			
+		}
+		else
+		{
+			JSON *json = new JSON(data);
+			JSON_value* meshValue = json->GetValue((std::string("Mesh") + std::to_string(i)).c_str());
+			mesh = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH);
+		}
 		App->fsystem->Save((MESHES + std::to_string(mesh->GetUID()) + MESHEXTENSION).c_str(), data, size);
+		resource->AddMesh(mesh->GetUID());
+		mesh->SetFile(path.c_str());
+		mesh->SetExportedFile(std::to_string(mesh->GetUID()).c_str());
+		mesh->isMesh = true;
 		//mesh->LoadInMemory();
 		//mesh->SetMesh(data); //Deallocates data
 		meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->GetUID()));
@@ -101,7 +117,7 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file)
 	GameObject *fake = new GameObject("fake",0);
 	ProcessNode(meshMap, aiscene.mRootNode, &aiscene, fake);
 
-	App->scene->SaveScene(*fake, *App->fsystem->GetFilename(file).c_str(), *SCENES); //TODO: Make AutoCreation of folders or check
+	App->scene->SaveScene(*fake, App->fsystem->GetFilename(file).c_str(), SCENES); //TODO: Make AutoCreation of folders or check
 	fake->CleanUp();
 	RELEASE(fake);
 

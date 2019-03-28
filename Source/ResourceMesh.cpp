@@ -47,13 +47,15 @@ ResourceMesh::~ResourceMesh()
 bool ResourceMesh::LoadInMemory()
 {
 	char *data = nullptr;
-	App->fsystem->Load((MESHES + std::to_string(UID) + MESHEXTENSION).c_str(), &data);	// Load mesh file
+	if (isMesh)
+	{
+		App->fsystem->Load((MESHES + std::to_string(UID) + MESHEXTENSION).c_str(), &data);	// Load mesh file
 
-	SetMesh(data); //Deallocates data
-	SetMeshBuffers();
-	SetBboxBuffers();
-	++loaded;
-
+		SetMesh(data); //Deallocates data
+		SetMeshBuffers();
+		SetBboxBuffers();
+		++loaded;
+	}
 	return true;
 }
 
@@ -102,23 +104,24 @@ void ResourceMesh::SaveMetafile(const char* file) const
 	std::string filepath;
 	filepath.append(file);
 	JSON *json = new JSON();
-	rapidjson::Document* meta = new rapidjson::Document();
-	rapidjson::Document::AllocatorType& alloc = meta->GetAllocator();
-	filepath += ".meta";
+	JSON_value* meta = json->CreateValue();
+	struct stat statFile;
+	stat(filepath.c_str(), &statFile);
+	meta->AddUint("GUID", UID);
+	meta->AddUint("timeCreated", statFile.st_ctime);
+	meta->AddUint("VBO", VBO);
+	meta->AddUint("EBO", EBO);
+	meta->AddUint("VAObox", VAObox);
+	meta->AddUint("VBObox", VBObox);
+	meta->AddUint("EBObox", EBObox);
+	meta->AddUint("NumMeshes", numMeshes);
+	for (int i = 0; i < numMeshes; ++i)
+	{
+		meta->AddUint(("Mesh" + std::to_string(i)).c_str(), meshList[i]);
+	}
+	json->AddValue("Mesh", *meta);
+	filepath += METAEXT;
 	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
-	FILE* fp = fopen(filepath.c_str(), "wb");
-	char writeBuffer[65536];
-	rapidjson::FileWriteStream* os = new rapidjson::FileWriteStream(fp, writeBuffer, sizeof(writeBuffer));
-	rapidjson::PrettyWriter<rapidjson::FileWriteStream> writer(*os);
-	meta->SetObject();
-	meta->AddMember("GUID", GetUID(), alloc);
-	meta->AddMember("VBO", VBO, alloc);
-	meta->AddMember("EBO", EBO, alloc);
-	meta->AddMember("VAObox", VAObox, alloc);
-	meta->AddMember("VBObox", VBObox, alloc);
-	meta->AddMember("EBObox", EBObox, alloc);
-	meta->Accept(writer);
-	fclose(fp);
 }
 
 void ResourceMesh::Load(const JSON_value &config)
@@ -435,4 +438,10 @@ bool ResourceMesh::Intersects(const LineSegment &line, float* distance)
 		}
 	}
 	return intersects;
+}
+
+void ResourceMesh::AddMesh(unsigned uid)
+{
+	++numMeshes;
+	meshList.push_back(uid);
 }

@@ -5,6 +5,7 @@
 #include "ModuleResourceManager.h"
 
 #include "Resource.h"
+#include "ResourceMesh.h"
 
 #include "JSON.h"
 
@@ -325,9 +326,11 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 	std::set<std::string> importedTextures;
 	std::set<std::string> importedModels;
 	std::set<std::string> importedMaterials;
+	std::set<std::string> importedMeshes;
 	ListFiles(TEXTURES, importedTextures);
 	ListFiles(SCENES, importedModels);
 	ListFiles(IMPORTED_MATERIALS, importedMaterials);
+	ListFiles(MESHES, importedMeshes);
 
 	// Look for files in folder passed as argument
 	std::vector<std::string> files;
@@ -353,7 +356,8 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 			else
 			{
 				stat((currentFolder + file).c_str(), &statFile);
-				stat((currentFolder + file + ".meta").c_str(), &statMeta);
+				stat((currentFolder + file + METAEXT).c_str(), &statMeta);
+
 				FILETYPE type = GetFileType(GetExtension(file));
 				if (type == FILETYPE::TEXTURE) // PNG, TIF, LO QUE SEA	
 				{
@@ -363,16 +367,44 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 						// File modified or not imported, send it to import
 						filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
 					}
-					else
 					{
 						// File already imported, add it to the resources list
 						App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::TEXTURE);
 					}
 				}
 				else if (type == FILETYPE::MODEL) //FBX
-				{
+				{	
+					std::set<std::string>::iterator it = importedModels.find(RemoveExtension(file));
+					if (it == importedModels.end() || statFile.st_mtime > statMeta.st_mtime)
+					{
+						filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
+
+					}
+					else
+					{
+						App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::MESH);
+					}
+					/*else
+					{
+						for (int i = 0; i < ((ResourceMesh*)App->resManager->GetWithoutLoad
+						(RemoveExtension(file).c_str()))->numMeshes; ++i)
+						{
+							std::set<std::string>::iterator it = importedMeshes.find
+							(std::to_string(((ResourceMesh*)App->resManager->GetWithoutLoad
+							(RemoveExtension(file).c_str()))->meshList[i]));
+							if (it == importedMeshes.end())
+							{
+								filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
+							}
+
+						}
+					}*/
+					/*else
+					{
+						App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::MESH);
+					}*/
 					//TODO: Get UID from metafile 
-					/*unsigned uid = GetMetaUID((current_folder + file + ".meta").c_str());
+					/*unsigned uid = GetMetaUID((current_folder + file + METAEXT).c_str());
 					std::set<std::string>::iterator it = importedModels.find(std::to_string(uid));
 					if (it == importedModels.end() || statFile.st_mtime > statMeta.st_mtime)
 					{
@@ -422,10 +454,10 @@ void ModuleFileSystem::LookForNewResourceFiles(const char* folder)
 			}
 			else
 			{
-				if (GetExtension(file) == ".meta")
+				if (GetExtension(file) == METAEXT)
 					continue;
 				stat((current_folder + file).c_str(), &statFile);
-				stat((current_folder + file + ".meta").c_str(), &statMeta);
+				stat((current_folder + file + METAEXT).c_str(), &statMeta);
 				std::vector<Resource*> resources = App->resManager->GetResourcesList();
 				bool found = false;
 				for (std::vector<Resource*>::const_iterator it = resources.begin(); it != resources.end(); ++it)
@@ -436,11 +468,11 @@ void ModuleFileSystem::LookForNewResourceFiles(const char* folder)
 						break;
 					}
 				}
-				if (!found || statFile.st_mtime > statMeta.st_mtime)
+				if (statFile.st_mtime > statMeta.st_mtime)
 				{
 					// TODO: Enable FBX also
 					FILETYPE type = GetFileType(GetExtension(file));
-					if(type != FILETYPE::MODEL && type != FILETYPE::SCENE)
+					if (/*type != FILETYPE::MODEL && */type != FILETYPE::SCENE);
 						filesToImport.push_back(std::pair<std::string, std::string>(file, current_folder));
 				}
 			}

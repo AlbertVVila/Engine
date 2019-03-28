@@ -56,6 +56,7 @@ void ComponentLight::Update()
 
 void ComponentLight::DrawProperties()
 {
+	ImGui::PushID(this);
 	if (ImGui::CollapsingHeader("Light"))
 	{
 		bool removed = Component::DrawComponentState();
@@ -63,7 +64,11 @@ void ComponentLight::DrawProperties()
 		{
 			return;
 		}
-		ImGui::Separator();
+
+		ImGui::SameLine();
+		Options();
+
+		ImGui::Spacing();
 		ImGui::Text("Type");
 		const char * types[] = {"Directional","Point", "Spot"};
 		if (ImGui::BeginCombo("",types[(int)lightType]))
@@ -113,7 +118,10 @@ void ComponentLight::DrawProperties()
 			App->spacePartitioning->aabbTreeLighting.ReleaseNode(gameobject->treeNode);
 			App->spacePartitioning->aabbTreeLighting.InsertGO(gameobject);
 		}
+		ImGui::Separator();
 	}
+
+	ImGui::PopID();
 }
 
 void ComponentLight::DrawDebugLight() const
@@ -142,6 +150,7 @@ void ComponentLight::Load(JSON_value* value)
 		inner = value->GetFloat("inner");
 		outer = value->GetFloat("outer");
 	}
+
 	intensity = value->GetFloat("intensity");
 }
 
@@ -165,7 +174,34 @@ void ComponentLight::Save(JSON_value* value) const
 	}
 
 	value->AddFloat("intensity", intensity);
+}
 
+void ComponentLight::Paste()
+{
+	if (App->scene->copyComp != nullptr && App->scene->copyComp->type == type)
+	{
+		ComponentLight* comp = (ComponentLight*)App->scene->copyComp;
+
+		lightType = comp->lightType;
+		color = comp->color;
+		intensity = comp->intensity;
+		range = comp->range;
+		//pointSphere.r = comp->pointSphere.r;
+		inner = comp->inner;
+		outer = comp->outer;
+		CalculateGuizmos();
+	}
+}
+
+void ComponentLight::Reset()
+{
+	color = math::float3::one;
+	intensity = 1.f;
+	range = 200.f;
+	pointSphere.r = 200.f;
+	inner = 20.f;
+	outer = 25.f;
+	CalculateGuizmos();
 }
 
 ComponentLight * ComponentLight::Clone() const

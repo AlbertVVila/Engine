@@ -33,6 +33,7 @@
 #define TEXTUREEXT ".dds"
 #define MATERIALEXT ".m4t"
 #define JSONEXT ".json"
+#define METAEXT ".meta"
 #define DLL ".dll"
 
 #define CHECKERS "checkersTexture"
