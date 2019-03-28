@@ -74,13 +74,11 @@ void ComponentTransform::DrawProperties()
 		}
 
 		ImGui::DragFloat3("Position", (float*)&position, 0.1f, -1000.f, 1000.f);
-
 		ImGui::DragFloat3("Rotation", (float*)&eulerRotation, 0.5f, -180, 180.f);
-
+		ImGui::DragFloat3("Scale", (float*)&scale, 0.1f, 0.01f, 100.f);
 		rotation = rotation.FromEulerXYZ(math::DegToRad(eulerRotation.x),
 			math::DegToRad(eulerRotation.y), math::DegToRad(eulerRotation.z));
-
-		ImGui::DragFloat3("Scale", (float*)&scale, 0.1f, 0.01f, 100.f);
+		
 		ImGui::Separator();
 
 		if (gameobject->isStatic && App->time->gameState != GameState::RUN)
@@ -93,6 +91,10 @@ void ComponentTransform::DrawProperties()
 		{
 			UpdateTransform();
 			gameobject->movedFlag = true;
+			if (App->scene->photoTimer <= 0.f)
+			{
+				App->scene->TakePhoto();
+			}
 		}
 	}
 	ImGui::PopID();
@@ -171,7 +173,7 @@ void ComponentTransform::UpdateOldTransform()
 {
 	old_position = position;
 	old_euler = eulerRotation;
-	old_scale = scale;
+	old_scale = scale;	
 }
 
 void ComponentTransform::SetLocalToWorld()

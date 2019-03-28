@@ -44,6 +44,8 @@ public:
 	math::float2 winPos;
 private:
 	bool enabled = true;
+	bool startImguizmoUse = false;
+
 	std::string name = "Viewport";
 
 	bool useSnap = false; //TODO: save in config

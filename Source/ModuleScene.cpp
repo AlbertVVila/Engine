@@ -105,6 +105,21 @@ update_status ModuleScene::Update(float dt)
 {
 	BROFILER_CATEGORY("Scene Update", Profiler::Color::Green);
 	root->Update();
+	if (photoTimer > 0)
+	{
+		photoTimer -= dt;
+	}
+
+	if ((App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_Z) == KEY_REPEAT)
+		|| (App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN))
+	{
+		RestoreLastPhoto();
+	}
+	if ((App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_Y) == KEY_REPEAT)
+		|| (App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN))
+	{
+		Redo();
+	}
 	return UPDATE_CONTINUE;
 }
 
@@ -248,13 +263,14 @@ void ModuleScene::DrawHierarchy()
 	ImGui::PopStyleColor();
 }
 
-void ModuleScene::DragNDropMove(GameObject* target) const
+void ModuleScene::DragNDropMove(GameObject* target) 
 {
 	if (ImGui::BeginDragDropTarget())
 	{
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("DragDropHierarchy"))
 		{
 			IM_ASSERT(payload->DataSize == sizeof(GameObject*));
+			TakePhoto();
 			GameObject* droppedGo = (GameObject *)*(const int*)payload->Data;
 			if (droppedGo != App->scene->root && target != droppedGo)
 			{
@@ -302,6 +318,7 @@ void ModuleScene::DragNDrop(GameObject* go)
 			if (droppedGo != App->scene->root && droppedGo->parent != go && !droppedGo->IsParented(*go) 
 				&& std::find(App->scene->selection.begin(), App->scene->selection.end(), go) == App->scene->selection.end())
 			{
+				TakePhoto();
 				for (GameObject* droppedGo : App->scene->selection)
 				{
 					go->children.push_back(droppedGo);
@@ -566,6 +583,98 @@ void ModuleScene::SaveScene(const GameObject& rootGO, const char* scene, const c
 	name = scene;
 	path = scenePath;
 }
+void ModuleScene::TakePhoto()
+{
+	TakePhoto(scenePhotos);
+	scenePhotosUndoed.clear();
+}
+
+void ModuleScene::TakePhoto(std::list<GameObject*>& target)
+{
+	photoTimer = TIME_BETWEEN_PHOTOS;
+	photoEnabled = true;	
+	target.push_back(new GameObject(*root));
+	if (target.size() > MAX_PHOTOS)
+	{
+		RELEASE(target.front());
+		target.pop_front();
+	}
+	photoEnabled = false;	
+}
+void ModuleScene::RestorePhoto(GameObject* photo)
+{
+	photoTimer = 0.f;
+	root = photo;
+	std::stack<GameObject*> goStack;
+	goStack.push(root);
+	while (!goStack.empty())
+	{
+		GameObject* go = goStack.top(); goStack.pop();
+
+		for (Component* comp : go->components)
+		{
+			switch (comp->type)
+			{
+			case ComponentType::Renderer:
+				if (!go->isStatic)
+				{
+					App->spacePartitioning->aabbTree.InsertGO(go);
+				}
+				else
+				{
+					staticGOs.insert(go);
+					App->spacePartitioning->kDTree.Calculate();
+				}
+				go->isVolumetric = true;
+				break;
+			case ComponentType::Light:
+				go->light = (ComponentLight*)comp;
+				go->light->CalculateGuizmos();
+				App->spacePartitioning->aabbTreeLighting.InsertGO(go);
+				go->hasLight = true;
+				lights.push_back((ComponentLight*)comp);
+				break;
+			case ComponentType::Camera:
+				if (((ComponentCamera*)comp)->isMainClone)
+				{
+					maincamera = (ComponentCamera*)comp;
+				}
+				break;
+			}
+		}
+
+		for (GameObject* child : go->children)
+		{
+			goStack.push(child);
+		}
+		if (go->transform != nullptr)
+		{
+			go->transform->UpdateTransform();
+		}
+	}
+}
+
+void ModuleScene::RestoreLastPhoto()
+{
+	if (App->scene->scenePhotos.size() > 0)
+	{
+		TakePhoto(scenePhotosUndoed);
+		ClearScene();
+		RestorePhoto(scenePhotos.back());	
+		scenePhotos.pop_back();
+	}
+}
+
+void ModuleScene::Redo()
+{
+	if (scenePhotosUndoed.size() > 0)
+	{
+		TakePhoto(scenePhotos);
+		ClearScene();
+		RestorePhoto(scenePhotosUndoed.back());
+		scenePhotosUndoed.pop_back();
+	}
+}
 
 void ModuleScene::LoadScene(const char* scene, const char* scenePath)
 {
@@ -576,6 +685,7 @@ void ModuleScene::LoadScene(const char* scene, const char* scenePath)
 		name = scene;
 	}
 	App->spacePartitioning->kDTree.Calculate();
+	scenePhotos.clear();
 }
 
 bool ModuleScene::AddScene(const char* scene, const char* path)
@@ -633,6 +743,7 @@ void ModuleScene::ClearScene()
 	dynamicGOs.clear();
 	staticFilteredGOs.clear();
 	dynamicFilteredGOs.clear();
+	selection.clear();
 	LOG("Reset volumetric AABBTree");
 	App->spacePartitioning->aabbTree.Reset();
 	LOG("Reset lighting AABBTree");

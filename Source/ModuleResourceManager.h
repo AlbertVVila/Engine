@@ -9,7 +9,7 @@
 
 struct Shader;
 class Resource;
-class ResourceMesh;
+class ResourceTexture;
 class ResourceMaterial;
 enum class TYPE;
 
@@ -32,7 +32,8 @@ public:
 	// New ResourceManager functions
 	unsigned FindByFileInAssets(const char* fileInAssets) const;		// Returns UID of resource by file variable 
 	unsigned FindByExportedFile(const char* exportedFileName) const;	// Returns UID of resource by exportedFileName variable
-	unsigned ImportFile(const char* newFileInAssets, const char* filePath, TYPE type, bool force = false);
+	bool ImportFile(const char* newFileInAssets, const char* filePath, TYPE type);
+	bool ReImportFile(Resource* resource, const char* filePath, TYPE type);		// Imports again an already loaded resource
 	unsigned GenerateNewUID();
 	Resource* Get(unsigned uid) const;									// Returns the resource using UID adding one to the references count and loads it to memory if not already
 	Resource* Get(const char* file) const;								// Returns the resource using exportedFileName adding one to the references count and loads it to memory if not already
@@ -42,6 +43,10 @@ public:
 	bool DeleteResource(unsigned uid);									// If references < 1 delete it from memory
 
 	std::vector<Resource*> GetResourcesList();
+	std::vector<ResourceTexture*> GetTexturesList();
+	std::vector<ResourceMaterial*> GetMaterialsList();
+	std::vector<std::string> GetResourceNamesList(TYPE resourceType, bool ordered); // Returns a vector with the exportedFileName of every Resource of the type given.		
+
 	void LoadEngineResources();											// Loads resources needed by the engine (Skybox, white, no camera textures...)
 	Resource* AddResource(const char* file, const char* directory, TYPE type);
 	void DeleteResourceFromList(unsigned uid);

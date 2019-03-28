@@ -117,9 +117,6 @@ void PanelResourceManager::Draw()
 		case TYPE::SCENE:
 			ImGui::Text("Scene");
 			break;
-		case TYPE::BONE:
-			ImGui::Text("Bone");
-			break;
 		case TYPE::ANIMATION:
 			ImGui::Text("Animation");
 			break;
@@ -251,7 +248,7 @@ void PanelResourceManager::OpenResourceEditor()
 			}
 
 			// Type
-			const char* types[] = { "Texture", "Mesh", "Audio", "Scene", "Bone", "Animation", "Material", "Skybox", "Unknown" };
+			const char* types[] = { "Texture", "Mesh", "Audio", "Scene", "Animation", "Material", "Skybox", "Unknown" };
 			int type = (int)auxResource->GetType();
 			if (ImGui::BeginCombo("Type", types[type]))
 			{
@@ -359,7 +356,7 @@ void PanelResourceManager::DrawResourceMaterial()
 	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), (exportedFile + ":").c_str());
 	ImGui::Columns(2);
 
-	ImGui::Text("Name: %s", material.name.c_str());
+	ImGui::Text("Name: %s", material.GetExportedFile());
 	if(material.shader != nullptr)
 		ImGui::Text("Shader: %s", material.shader->file.c_str());
 

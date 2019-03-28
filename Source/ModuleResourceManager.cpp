@@ -16,6 +16,10 @@
 
 #include "FileImporter.h"
 
+#include <algorithm>
+
+bool sortByNameAscending(const std::string a, std::string b) { return a < b; };
+
 ModuleResourceManager::ModuleResourceManager()
 {
 }
@@ -51,9 +55,8 @@ bool ModuleResourceManager::Start()
 
 void ModuleResourceManager::LoadEngineResources()
 {
-	std::vector<std::string> files;
-	std::vector<std::string> dirs;
-	App->fsystem->ListFolderContent(IMPORTED_RESOURCES, files, dirs);
+	std::set<std::string> files;
+	App->fsystem->ListFiles(IMPORTED_RESOURCES, files);
 	for each (std::string file in files)
 	{
 		Resource* res = CreateNewResource(TYPE::TEXTURE);
@@ -140,16 +143,28 @@ unsigned ModuleResourceManager::FindByExportedFile(const char* exportedFileName)
 	return 0;
 }
 
-unsigned ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* filePath, TYPE type, bool force)
+bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* filePath, TYPE type)
 {
-	unsigned ret = 0; 
 	bool success = false; 
-	std::string importedFilePath(filePath);
 
-	Resource* resource = CreateNewResource(type);
 	std::string assetPath(filePath);
 	assetPath += newFileInAssets;
 	AddResource(newFileInAssets, filePath, type);
+
+	// Check if the file was already imported
+	unsigned uid = FindByFileInAssets(assetPath.c_str());
+	if (uid != 0)
+	{
+		return ReImportFile(GetWithoutLoad(uid), filePath, type);
+	}
+
+	Resource* resource = CreateNewResource(type);
+
+	// Save file to import on Resource file variable
+	resource->SetFile((assetPath).c_str());
+
+	// If a .meta file is found import it with the configuration saved
+	resource->LoadConfigFromMeta();
 
 	switch (type) 
 	{
@@ -169,15 +184,61 @@ unsigned ModuleResourceManager::ImportFile(const char* newFileInAssets, const ch
 	// If export was successful, create a new resource
 	if (success) 
 	{ 
-		resource->SaveMetafile(assetPath.c_str());
-		resource->SetFile((importedFilePath + newFileInAssets).c_str());
+		resource->SaveMetafile(assetPath.c_str());	
 		resource->SetExportedFile(App->fsystem->RemoveExtension(newFileInAssets).c_str());
+		LOG("%s imported.", resource->GetExportedFile());
 	}
 	else
 	{
 		RELEASE(resource);
 	}
-	return ret;
+	return success;
+}
+
+bool ModuleResourceManager::ReImportFile(Resource* resource, const char* filePath, TYPE type)
+{
+	bool success = false;
+
+	std::string file = resource->GetExportedFile();
+	file += App->fsystem->GetExtension(resource->GetFile());
+
+	switch (type)
+	{
+	case TYPE::TEXTURE:
+		success = App->textures->ImportImage(file.c_str(), filePath, (ResourceTexture*)resource);
+		break;
+	case TYPE::MESH:
+		success = App->fsystem->importer.ImportFBX(file.c_str(), filePath);
+		break;
+		//case TYPE::AUDIO: import_ok = App->audio->Import(newFileInAssets, written_file); break;
+		//case TYPE::SCENE: import_ok = App->scene->Import(newFileInAssets, written_file); break;
+	case TYPE::MATERIAL:
+		success = App->fsystem->Copy(filePath, IMPORTED_MATERIALS, file.c_str());
+		break;
+	}
+
+	// If export was successful, update resource
+	if (success)
+	{
+		std::string assetPath(filePath);
+		assetPath += file;
+		resource->SaveMetafile(assetPath.c_str());
+
+		// Reload in memory
+		if (resource->IsLoadedToMemory())
+		{
+			unsigned references = resource->GetReferences();
+			resource->DeleteFromMemory();
+			resource->SetReferences(references);
+		}
+
+		LOG("%s reimported.", resource->GetExportedFile());
+	}
+	else
+	{
+		LOG("Error: %s failed on reimport.", resource->GetExportedFile());
+	}
+	return success;
 }
 
 Resource * ModuleResourceManager::CreateNewResource(TYPE type, unsigned forceUid)
@@ -292,6 +353,43 @@ std::vector<Resource*> ModuleResourceManager::GetResourcesList()
 	{
 		resourcesList.push_back(it->second);
 	}
+	return resourcesList;
+}
+
+std::vector<ResourceTexture*> ModuleResourceManager::GetTexturesList()
+{
+	std::vector<ResourceTexture*> resourcesList;
+	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		if(it->second->GetType() == TYPE::TEXTURE)
+			resourcesList.push_back((ResourceTexture*)it->second);
+	}
+	return resourcesList;
+}
+
+std::vector<ResourceMaterial*> ModuleResourceManager::GetMaterialsList()
+{
+	std::vector<ResourceMaterial*> resourcesList;
+	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		if (it->second->GetType() == TYPE::MATERIAL)
+			resourcesList.push_back((ResourceMaterial*)it->second);
+	}
+	return resourcesList;
+}
+
+std::vector<std::string> ModuleResourceManager::GetResourceNamesList(TYPE resourceType, bool ordered)
+{
+	std::vector<std::string> resourcesList;
+	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		if (it->second->GetType() == resourceType)
+			resourcesList.push_back(it->second->GetExportedFile());
+	}
+
+	if (ordered)	// Short by ascending order
+		std::sort(resourcesList.begin(), resourcesList.end(), sortByNameAscending);
+
 	return resourcesList;
 }
 
