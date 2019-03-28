@@ -875,9 +875,14 @@ void GameObject::UpdateTransforms(math::float4x4 parentGlobal)
 	math::float4x4 global = math::float4x4::identity;
 	if (this != App->scene->root && transform != nullptr)
 	{
+		math::float4x4 original = transform->global;
 		transform->global = parentGlobal * transform->local;
 		global = transform->global;
 		transform->UpdateTransform();
+		if (this == App->scene->selected)
+		{
+			transform->MultiSelectionTransform(global - original);
+		}
 	}
 
 	for (const auto& child : children)

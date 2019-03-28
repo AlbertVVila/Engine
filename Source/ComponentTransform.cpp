@@ -116,10 +116,6 @@ void ComponentTransform::MultiSelectionTransform(float4x4 &difference)
 void ComponentTransform::UpdateTransform()
 {
 	UpdateOldTransform();
-	math::float4x4 originalGlobal = global;
-
-	math::float4x4 difference = global - originalGlobal;
-	MultiSelectionTransform(difference);
 	
 	front = -global.Col3(2);
 	up = global.Col3(1);

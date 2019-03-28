@@ -127,7 +127,7 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file)
 			mesh->SetMesh(meshData, meshUid);
 			RELEASE_ARRAY(meshData);
 			App->resManager->AddMesh(mesh);
-			GameObject* meshGO = new GameObject("Mesh", App->scene->GetNewUID());
+			GameObject* meshGO = new GameObject("mesh", App->scene->GetNewUID());
 			ComponentRenderer* crenderer = (ComponentRenderer*)meshGO->CreateComponent(ComponentType::Renderer);
 			crenderer->mesh = mesh;
 			meshGO->CreateComponent(ComponentType::Transform);
