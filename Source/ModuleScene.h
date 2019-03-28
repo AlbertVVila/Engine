@@ -72,7 +72,7 @@ public:
 	ENGINE_API GameObject * FindGameObjectByName(const char* name) const;
 	ENGINE_API GameObject * FindGameObjectByName(GameObject* parent, const char* name) const;
 
-	void GetStaticGlobalAABB(AABB &aabb, std::vector<GameObject*> &bucket, unsigned int &bucketOccupation);
+	void GetStaticGlobalAABB(math::AABB &aabb, std::vector<GameObject*> &bucket, unsigned int &bucketOccupation);
 
 	unsigned GetNewUID();
 	std::list<ComponentLight*> GetClosestLights(LightType type, math::float3 position = math::float3::zero) const;

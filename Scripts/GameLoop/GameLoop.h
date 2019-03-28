@@ -20,6 +20,7 @@ class ComponentScript;
 class PlayerMovement;
 class EnemyMovementScript;
 class IntroScript;
+class AABB;
 
 class GameLoop_API GameLoop : public Script
 {
@@ -92,8 +93,11 @@ class GameLoop_API GameLoop : public Script
 	GameObject* hudGO = nullptr;
 	GameObject* playerGO = nullptr;
 	GameObject* enemyGO = nullptr;
-	GameObject* winGO = nullptr;
 	GameObject* creditsGO = nullptr;
+
+	//BBOX
+	math::AABB* playerBbox = nullptr;
+	math::AABB* winBbox = nullptr;
 
 	//TEXT
 	ComponentText* volumeText = nullptr;

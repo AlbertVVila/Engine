@@ -52,6 +52,7 @@ public:
 	bool kDTreeDebug = false;
 	bool aabbTreeDebug = false;
 	bool grid_debug = true;
+	bool boneDebug = false;
 	bool useMainCameraFrustum = false;
 
 	unsigned current_scale = 1;

@@ -4,11 +4,15 @@
 class GameObject;
 class JSON_value;
 class PlayerMovement;
+class AABB;
 struct ImGuiContext;
+
 #include "BaseScript.h"
 #include "Math/float3.h"
 #include "Math/Quat.h"
 #include "Math/float4x4.h"
+#include "Geometry/AABB.h"
+
 
 #ifdef EnemyMovementScript_EXPORTS
 #define EnemyMovementScript_API __declspec(dllexport)
@@ -35,6 +39,9 @@ private:
 	std::string playerName = "Player";
 	GameObject* player = nullptr;
 	PlayerMovement* playerScript = nullptr;
+
+	math::AABB *myBbox = nullptr;
+	math::AABB *targetBbox = nullptr;
 
 };
 #endif __EnemyMovementScript_h__

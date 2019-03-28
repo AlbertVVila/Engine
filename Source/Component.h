@@ -16,6 +16,7 @@ enum class ComponentType
 	Text,
 	Image,
 	Button,
+	Animation
 };
 
 class Component

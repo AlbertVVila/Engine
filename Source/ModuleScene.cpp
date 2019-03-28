@@ -1,3 +1,4 @@
+#include "debugdraw.h"
 #include "Application.h"
 
 #include "ModuleCamera.h"
@@ -25,11 +26,13 @@
 #include "AABBTree.h"
 #include "KDTree.h"
 
+
 #include "Imgui.h"
 #include "Geometry/LineSegment.h"
 #include "Math/MathConstants.h"
 #include "GL/glew.h"
 #include "Brofiler.h"
+
 
 #pragma warning(push)
 #pragma warning(disable : 4996)  
@@ -88,7 +91,7 @@ bool ModuleScene::Start()
 	if (defaultScene.size() > 0)
 	{
 		path = SCENES;
-		LoadScene(*defaultScene.c_str(), *path.c_str());
+		//LoadScene(*defaultScene.c_str(), *path.c_str());
 	}
 	return true;
 }
@@ -106,7 +109,9 @@ update_status ModuleScene::PreUpdate()
 update_status ModuleScene::Update(float dt)
 {
 	BROFILER_CATEGORY("Scene Update", Profiler::Color::Green);
+	root->UpdateTransforms(math::float4x4::identity);
 	root->Update();
+	root->CheckDelete();
 	return UPDATE_CONTINUE;
 }
 
@@ -148,6 +153,9 @@ void ModuleScene::SaveConfig(JSON* config)
 
 void ModuleScene::FrustumCulling(const Frustum& frustum)
 {
+	staticFilteredGOs.clear();
+	dynamicFilteredGOs.clear();
+
 	Frustum camFrustum = frustum;
 #ifndef GAME_BUILD
 	if (maincamera != nullptr && App->renderer->useMainCameraFrustum)
@@ -165,6 +173,27 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	PROFILE;
 	if (isEditor)
 	{
+		if (App->scene->selected != nullptr && App->scene->selected->isBoneRoot)
+		{
+			std::stack<GameObject*> S;
+			S.push(App->scene->selected);
+			while (!S.empty())
+			{
+				GameObject* node = S.top();S.pop();
+				if (node->parent->transform != nullptr)
+				{
+					ComponentTransform*  nT = (ComponentTransform*)node->GetComponent(ComponentType::Transform);
+					ComponentTransform*  pT = (ComponentTransform*)node->parent->GetComponent(ComponentType::Transform);
+					dd::line(nT->GetGlobalPosition(), pT->GetGlobalPosition(), dd::colors::Red);
+				}
+				
+				for (GameObject* go : node->children)
+				{
+					S.push(go);
+				}
+			}
+		}
+
 		if (App->renderer->aabbTreeDebug)
 		{
 			App->spacePartitioning->aabbTree.Draw();
@@ -182,6 +211,9 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 			}
 			App->spacePartitioning->aabbTreeLighting.Draw();
 		}
+
+
+
 	}
 	Frustum camFrustum = frustum;
 	if (maincamera != nullptr && App->renderer->useMainCameraFrustum)
@@ -237,16 +269,26 @@ void ModuleScene::DrawGOGame(const GameObject& go)
 	Shader* shader = material->shader;
 	if (shader == nullptr) return;
 
-	glUseProgram(shader->id);
+	unsigned variation = 0u;
+	if (shader->id.size() > 1) //If exists variations use it
+	{
+		variation = material->variation;
+		if (crenderer->mesh->bindBones.size() > 0)
+		{
+			variation |= (unsigned)ModuleProgram::PBR_Variations::SKINNED;
+		}
+	}
+	
+	glUseProgram(shader->id[variation]);
 
-	material->SetUniforms(shader->id);
+	material->SetUniforms(shader->id[variation]);
 
-	glUniform3fv(glGetUniformLocation(shader->id,
+	glUniform3fv(glGetUniformLocation(shader->id[variation],
 		"lights.ambient_color"), 1, (GLfloat*)&ambientColor);
-	go.SetLightUniforms(shader->id);
+	go.SetLightUniforms(shader->id[variation]);
 
-	go.UpdateModel(shader->id);
-	crenderer->mesh->Draw(shader->id);
+	go.UpdateModel(shader->id[variation]);
+	crenderer->mesh->Draw(shader->id[variation]);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glActiveTexture(GL_TEXTURE0);
@@ -271,17 +313,27 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 	Material* material = crenderer->material;
 	Shader* shader = material->shader;
 	if (shader == nullptr) return;
+	
+	unsigned variation = 0u;
+	if (shader->id.size() > 1) //If exists variations use it
+	{
+		variation = material->variation;
+		if (crenderer->mesh->bindBones.size() > 0)
+		{
+			variation |= (unsigned)ModuleProgram::PBR_Variations::SKINNED;
+		}
+	}
 
-	glUseProgram(shader->id);
+	glUseProgram(shader->id[variation]);
 
-	material->SetUniforms(shader->id);
+	material->SetUniforms(shader->id[variation]);
 
-	glUniform3fv(glGetUniformLocation(shader->id,
+	glUniform3fv(glGetUniformLocation(shader->id[variation],
 		"lights.ambient_color"), 1, (GLfloat*)&ambientColor);
-	go.SetLightUniforms(shader->id);
+	go.SetLightUniforms(shader->id[variation]);
 
-	go.UpdateModel(shader->id);
-	crenderer->mesh->Draw(shader->id);
+	go.UpdateModel(shader->id[variation]);
+	crenderer->mesh->Draw(shader->id[variation]);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glActiveTexture(GL_TEXTURE0);
@@ -424,6 +476,10 @@ void ModuleScene::AddToSpacePartition(GameObject *gameobject)
 		{
 			App->spacePartitioning->aabbTree.InsertGO(gameobject);
 		}
+	}
+	if (gameobject->hasLight)
+	{
+		App->spacePartitioning->aabbTreeLighting.InsertGO(gameobject);
 	}
 }
 
@@ -620,7 +676,7 @@ void ModuleScene::LoadScene(const char& scene, const char& scenePath)
 		name = &scene;
 	}
 	App->spacePartitioning->kDTree.Calculate();
-	App->scene->maincamera->SetAspect((float)App->window->width / (float)App->window->height);
+	//App->scene->maincamera->SetAspect((float)App->window->width / (float)App->window->height);
 }
 
 bool ModuleScene::AddScene(const char& scene, const char& path)
@@ -640,6 +696,8 @@ bool ModuleScene::AddScene(const char& scene, const char& path)
 	JSON_value* gameobjectsJSON = json->GetValue("GameObjects");
 	std::map<unsigned, GameObject*> gameobjectsMap; //Necessary to assign parent-child efficiently
 	gameobjectsMap.insert(std::pair<unsigned, GameObject*>(canvas->UUID, canvas));
+
+	std::list<ComponentRenderer*> renderers;
 
 	for (unsigned i = 0; i<gameobjectsJSON->Size(); i++)
 	{		
@@ -662,6 +720,21 @@ bool ModuleScene::AddScene(const char& scene, const char& path)
 				gameobject->parent->children.push_back(gameobject);
 			}
 		}
+	
+		ComponentRenderer* renderer = nullptr;
+		renderer = (ComponentRenderer*)gameobject->GetComponent(ComponentType::Renderer);
+		if (renderer != nullptr)
+		{
+			renderers.push_back(renderer);
+		}
+	}
+
+
+	//Link Bones after all the hierarchy is imported
+
+	for (ComponentRenderer* cr : renderers)
+	{
+		cr->LinkBones();
 	}
 
 	RELEASE_ARRAY(data);

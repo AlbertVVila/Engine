@@ -164,16 +164,16 @@ void ModuleFontLoader::RenderText(const ComponentText& compText, int currentWidt
 	model.SetTranslatePart(center);
 
 	// Activate corresponding render state	
-	glUseProgram(shaderFonts->id);
-	glUniformMatrix4fv(glGetUniformLocation(shaderFonts->id, "projection"), 1, GL_TRUE, (const float*)&projection);
-	glUniformMatrix4fv(glGetUniformLocation(shaderFonts->id, "model"), 1, GL_TRUE, (const float*)&model);
+	glUseProgram(shaderFonts->id[0]);
+	glUniformMatrix4fv(glGetUniformLocation(shaderFonts->id[0], "projection"), 1, GL_TRUE, (const float*)&projection);
+	glUniformMatrix4fv(glGetUniformLocation(shaderFonts->id[0], "model"), 1, GL_TRUE, (const float*)&model);
 	if (compText.isHovered)
 	{
-		glUniform4f(glGetUniformLocation(shaderFonts->id, "textColor"), compText.colorHovered.x, compText.colorHovered.y, compText.colorHovered.z, compText.colorHovered.w);
+		glUniform4f(glGetUniformLocation(shaderFonts->id[0], "textColor"), compText.colorHovered.x, compText.colorHovered.y, compText.colorHovered.z, compText.colorHovered.w);
 	}
 	else
 	{
-		glUniform4f(glGetUniformLocation(shaderFonts->id, "textColor"), compText.color.x, compText.color.y, compText.color.z, compText.color.w);
+		glUniform4f(glGetUniformLocation(shaderFonts->id[0], "textColor"), compText.color.x, compText.color.y, compText.color.z, compText.color.w);
 	}
 	glActiveTexture(GL_TEXTURE0);
 	glBindVertexArray(VAOText);
