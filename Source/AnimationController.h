@@ -25,7 +25,6 @@ public:
 
 	Instance* current = nullptr;
 
-
 	AnimationController();
 	~AnimationController();
 

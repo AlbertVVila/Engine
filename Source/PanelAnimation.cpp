@@ -37,7 +37,11 @@ void PanelAnimation::Draw()
 		ImGui::Text("FRAMES");
 
 		ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 5.7f);
-		ImGui::SliderInt("##label", &anim->currentFrame, 0, anim->duration);
+		if (ImGui::SliderInt("##label", (int *)&anim->currentFrame, 0, anim->duration))
+		{
+			int i = 0;
+			i += i;
+		}
 
 		ImGui::SameLine(ImGui::GetWindowWidth() - ImGui::GetWindowWidth() / 6);
 

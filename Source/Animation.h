@@ -60,7 +60,7 @@ public:
 
 	unsigned UID = 0u;
 
-	int currentFrame = 0u;
+	unsigned currentFrame = 0u;
 
 	std::vector<Channel*> channels;
 	std::vector<ClipAnimation*> clips;

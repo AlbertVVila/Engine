@@ -132,7 +132,7 @@ bool AnimationController::GetTransformInstance(Instance* instance, std::string c
 
 			unsigned positionIndex = unsigned(positionKey);
 			unsigned rotationIndex = unsigned(rotationKey);
-
+			
 			float positionLambda = positionKey - float(positionIndex);
 			float rotationLambda = rotationKey - float(rotationIndex);
 
