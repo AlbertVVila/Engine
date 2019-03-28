@@ -117,16 +117,13 @@ void ComponentTransform::UpdateTransform()
 {
 	UpdateOldTransform();
 	math::float4x4 originalGlobal = global;
-	global = global * local.Inverted();
-	local = math::float4x4::FromTRS(position, rotation, scale);
-	global = global * local;
 
 	math::float4x4 difference = global - originalGlobal;
 	MultiSelectionTransform(difference);
-
-	front = -local.Col3(2);
-	up = local.Col3(1);
-	right = local.Col3(0);
+	
+	front = -global.Col3(2);
+	up = global.Col3(1);
+	right = global.Col3(0);
 
 	if (!gameobject->isStatic)
 	{
@@ -188,7 +185,7 @@ void ComponentTransform::SetWorldToLocal(const math::float4x4& newparentGlobalMa
 	RotationToEuler();
 }
 
-void ComponentTransform::SetGlobalTransform(const math::float4x4& newglobal, const math::float4x4&parentglobal)
+void ComponentTransform::SetGlobalTransform(const math::float4x4& newglobal, const math::float4x4& parentglobal)
 {
 	global = newglobal;
 	local = parentglobal.Inverted() * global;
@@ -226,11 +223,26 @@ void ComponentTransform::SetGlobalTransform(const math::float4x4& newglobal, con
 	}
 }
 
+void ComponentTransform::SetLocalTransform(const math::float4x4& newLocal, const math::float4x4& parentGlobal)
+{
+	local = newLocal;
+	
+	//global = parentGlobal.Mul(local);
+	local.Decompose(position, rotation, scale);
+	RotationToEuler();
+}
+
 void ComponentTransform::SetPosition(const math::float3 & newPosition)
 {
 	position = newPosition;
 	gameobject->movedFlag = true;
-	UpdateTransform();
+}
+
+void ComponentTransform::SetRotation(const math::Quat& newQuat)
+{
+	rotation = newQuat;
+	RotationToEuler();
+	gameobject->movedFlag = true;
 }
 
 math::float3 ComponentTransform::GetPosition()
@@ -238,18 +250,11 @@ math::float3 ComponentTransform::GetPosition()
 	return position;
 }
 
-void ComponentTransform::SetRotation(const math::Quat & newRotation)
-{
-	rotation = newRotation;
-	RotationToEuler();
-	gameobject->movedFlag = true;
-	UpdateTransform();
-}
-
 math::Quat ComponentTransform::GetRotation()
 {
 	return rotation;
 }
+
 
 math::float3 ComponentTransform::GetGlobalPosition()
 {

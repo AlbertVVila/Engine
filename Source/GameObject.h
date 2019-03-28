@@ -4,15 +4,19 @@
 #include <vector>
 #include <list>
 #include "Geometry/AABB.h"
+#include "Math/float4x4.h"
 #include "Globals.h"
 
 class Component;
 class ComponentTransform;
 class ComponentLight;
+class ComponentAnimation;
 class AABBTreeNode;
 enum class ComponentType;
+struct Frame;
 struct Texture;
 class JSON_value;
+class Animation;
 class Script;
 
 class GameObject
@@ -56,6 +60,9 @@ public:
 	float4x4 GetGlobalTransform() const;
 	float4x4 GetLocalTransform() const;
 
+	void UpdateTransforms(math::float4x4 parentGlobal);
+	bool CheckDelete();
+
 	void UpdateBBox();
 	void DrawBBox() const;
 	AABB GetBoundingBox() const;
@@ -74,10 +81,12 @@ private:
 public:
 	unsigned UUID = 0;
 	unsigned parentUUID = 0; //only set in Save/Load scene TODO:update on parent change
+	unsigned animationIndexChannel = 999u;
+	bool isStatic = false;
+	bool isBoneRoot = false;
 	bool activeInHierarchy = true;
 	bool activeSelf = true;
 
-	bool isStatic = false;
 	bool isSelected = false;
 	bool movedFlag = false;
 	bool copyFlag = false;
@@ -85,6 +94,8 @@ public:
 	bool drawBBox = false;
 
 	AABB bbox;
+
+	math::float4x4 baseState = math::float4x4::identity;
 
 	ComponentTransform * transform = nullptr;
 	GameObject *parent = nullptr;

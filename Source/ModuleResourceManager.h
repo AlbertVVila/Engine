@@ -9,44 +9,43 @@ struct Texture;
 struct Shader;
 class Material;
 class Mesh;
+class Animation;
 
-class ModuleResourceManager : //TODO: Divide into subclasses for each resource type
-	public Module
+//TODO: Divide into subclasses for each resource type
+class ModuleResourceManager : public Module
 {
-public:
-	ModuleResourceManager();
-	~ModuleResourceManager();
+	public:
+		ModuleResourceManager();
+		~ModuleResourceManager();
 
-	Texture * GetTexture(std::string filename) const;
+		Texture* GetTexture(std::string filename) const;
+		void AddTexture(Texture * texture);
+		void DeleteTexture(std::string filename);
 
-	void AddTexture(Texture * texture);
+		Shader* GetProgram(std::string filename) const;
+		std::list<Shader*>GetAllPrograms() const;
+		void AddProgram(Shader* shader);
+		void DeleteProgram(std::string filename);
 
-	void DeleteTexture(std::string filename);
+		Material* GetMaterial(std::string filename) const;
+		void AddMaterial(Material* material);
+		void DeleteMaterial(std::string filename);
 
-	Shader* GetProgram(std::string filename) const;
-	std::list<Shader*>GetAllPrograms() const;
+		Mesh* GetMesh(unsigned uid) const;
+		void AddMesh(Mesh* mesh);
+		void DeleteMesh(unsigned uid);
 
-	void AddProgram(Shader* shader);
+		Animation* GetAnim(unsigned uid) const;
+		void AddAnim(Animation* bone);
+		std::list<Animation*>GetAllAnims() const;
+		void DeleteAnim(unsigned bone);
 
-	void DeleteProgram(std::string filename);
-
-	Material * GetMaterial(std::string filename) const;
-
-	void AddMaterial(Material * material);
-
-	void DeleteMaterial(std::string filename);
-
-	Mesh * GetMesh(unsigned uid) const;
-
-	void AddMesh(Mesh * mesh);
-
-	void DeleteMesh(unsigned uid);
-
-private:
-	std::map<std::string, std::pair<unsigned, Texture*>> textureResources; //filename , times used, texture pointer
-	std::map<std::string, std::pair<unsigned, Shader*>> shaderResources; //filename , times used, shader
-	std::map<std::string, std::pair<unsigned, Material*>> materialResources; //filename , times used, material
-	std::map<unsigned, std::pair<unsigned, Mesh*>> meshResources; // uid, times used, mesh
+	private:
+		std::map<std::string, std::pair<unsigned, Texture*>> textureResources; //filename , times used, texture pointer
+		std::map<std::string, std::pair<unsigned, Shader*>> shaderResources; //filename , times used, shader
+		std::map<std::string, std::pair<unsigned, Material*>> materialResources; //filename , times used, material
+		std::map<unsigned, std::pair<unsigned, Mesh*>> meshResources; // uid, times used, mesh
+		std::map<unsigned, std::pair<unsigned, Animation*>> animResources; //uid, times used, animations
 };
 
 #endif __ModuleResourceManager_h__

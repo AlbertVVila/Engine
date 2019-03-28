@@ -12,10 +12,11 @@ enum class ComponentType
 	Camera,
 	Light,
 	Script,
+	Animation,
 	Transform2D,
 	Text,
 	Image,
-	Button,
+	Button
 };
 
 class Component

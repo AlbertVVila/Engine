@@ -81,10 +81,10 @@ Global
 		{F6A7A8E0-7FB3-40EC-8ED9-B837E24FEF22}.Debug|Win32.Build.0 = Debug|Win32
 		{F6A7A8E0-7FB3-40EC-8ED9-B837E24FEF22}.Debug|x64.ActiveCfg = Debug|x64
 		{F6A7A8E0-7FB3-40EC-8ED9-B837E24FEF22}.Debug|x64.Build.0 = Debug|x64
-		{F6A7A8E0-7FB3-40EC-8ED9-B837E24FEF22}.GameBuild Debug|Win32.ActiveCfg = GameBuild Debug|Win32
-		{F6A7A8E0-7FB3-40EC-8ED9-B837E24FEF22}.GameBuild Debug|Win32.Build.0 = GameBuild Debug|Win32
-		{F6A7A8E0-7FB3-40EC-8ED9-B837E24FEF22}.GameBuild Debug|x64.ActiveCfg = GameBuild Debug|x64
-		{F6A7A8E0-7FB3-40EC-8ED9-B837E24FEF22}.GameBuild Debug|x64.Build.0 = GameBuild Debug|x64
+		{F6A7A8E0-7FB3-40EC-8ED9-B837E24FEF22}.GameBuild Debug|Win32.ActiveCfg = GameBuild|Win32
+		{F6A7A8E0-7FB3-40EC-8ED9-B837E24FEF22}.GameBuild Debug|Win32.Build.0 = GameBuild|Win32
+		{F6A7A8E0-7FB3-40EC-8ED9-B837E24FEF22}.GameBuild Debug|x64.ActiveCfg = GameBuild|x64
+		{F6A7A8E0-7FB3-40EC-8ED9-B837E24FEF22}.GameBuild Debug|x64.Build.0 = GameBuild|x64
 		{F6A7A8E0-7FB3-40EC-8ED9-B837E24FEF22}.GameBuild|Win32.ActiveCfg = GameBuild|Win32
 		{F6A7A8E0-7FB3-40EC-8ED9-B837E24FEF22}.GameBuild|Win32.Build.0 = GameBuild|Win32
 		{F6A7A8E0-7FB3-40EC-8ED9-B837E24FEF22}.GameBuild|x64.ActiveCfg = GameBuild|x64
