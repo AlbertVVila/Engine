@@ -58,6 +58,7 @@ GameObject::GameObject(const GameObject & gameobject)
 	bbox = gameobject.bbox;
 	navigable = gameobject.navigable;
 	walkable = gameobject.walkable;
+	noWalkable = gameobject.noWalkable;
 
 	for (const auto& component: gameobject.components)
 	{
@@ -125,6 +126,7 @@ void GameObject::DrawProperties()
 			{
 				//defines walls and this stuff
 				ImGui::Checkbox("Walkable", &walkable);
+				ImGui::Checkbox("No Walkable", &noWalkable);
 			}
 		}
 
@@ -673,6 +675,7 @@ void GameObject::Save(JSON_value *gameobjects) const
 		gameobject->AddUint("Static", isStatic);
 		gameobject->AddUint("Navigable", navigable);
 		gameobject->AddUint("Walkable", walkable);
+		gameobject->AddUint("No Walkable", noWalkable);
 
 		JSON_value *componentsJSON = gameobject->CreateValue(rapidjson::kArrayType);
 		for (auto &component : components)
@@ -700,6 +703,7 @@ void GameObject::Load(JSON_value *value)
 	isStatic = value->GetUint("Static");
 	navigable = value->GetUint("Navigable");
 	walkable = value->GetUint("Walkable");
+	noWalkable = value->GetUint("No Walkable");
 
 	JSON_value* componentsJSON = value->GetValue("Components");
 	for (unsigned i = 0; i < componentsJSON->Size(); i++)

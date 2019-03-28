@@ -61,6 +61,7 @@ public:
 	bool isStatic = false;
 	bool navigable = false;
 	bool walkable = false;
+	bool noWalkable = false;
 	bool isSelected = false;
 	bool movedFlag = false;
 	bool copyFlag = false;

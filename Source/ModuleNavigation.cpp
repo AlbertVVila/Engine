@@ -16,7 +16,12 @@ void ModuleNavigation::DrawGUI()
 {
 	if (ImGui::CollapsingHeader("Agents"))
 	{
-
+		ImGui::InputText("New Character", newCharacter, 64);
+		ImGui::DragFloat("Character Radius", &characterMaxRadius, sliderIncreaseSpeed, minSliderValue, maxSliderValue);
+		ImGui::DragFloat("Height", &characterMaxHeight, sliderIncreaseSpeed, minSliderValue, maxSliderValue);
+		ImGui::DragFloat("Max slope", &characterMaxSlopeScaling, sliderIncreaseSpeed, minSliderValue, maxSlopeValue);
+		ImGui::DragFloat("Max step height", &characterMaxStepHeightScaling, sliderIncreaseSpeed, minSliderValue, maxSlopeValue);
+		ImGui::Button("Add Character", ImVec2(ImGui::GetWindowWidth(), 25));
 	}
 	if (ImGui::CollapsingHeader("Areas"))
 	{
@@ -28,11 +33,10 @@ void ModuleNavigation::DrawGUI()
 		ImGui::DragFloat("Agent max height", &maxHeight, sliderIncreaseSpeed, minSliderValue, maxSliderValue);
 		ImGui::DragFloat("Max slope scaling", &maxSlopeScaling, sliderIncreaseSpeed, minSliderValue, maxSlopeValue);
 		ImGui::DragFloat("Max step height", &maxStepHeightScaling, sliderIncreaseSpeed, minSliderValue, maxSlopeValue);
-
 	}
 	if (ImGui::CollapsingHeader("Object"))
 	{
-
+		
 	}
 }
 
