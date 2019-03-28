@@ -136,6 +136,7 @@ bool ComponentRenderer::CleanUp()
 	if (mesh != nullptr)
 	{
 		App->resManager->DeleteMesh(mesh->UID);
+		App->scene->DeleteFromSpacePartition(gameobject);
 	}
 	return true;
 }

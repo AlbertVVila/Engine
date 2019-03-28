@@ -14,6 +14,7 @@
 #include "JSON.h"
 #include "Math/Quat.h"
 #include "Math/float3.h"
+#include "Brofiler.h"
 
 
 ComponentAnimation::ComponentAnimation() : Component(nullptr, ComponentType::Animation)
@@ -49,8 +50,15 @@ void ComponentAnimation::DrawProperties()
 
 void ComponentAnimation::Update(float dt)
 {
+	PROFILE;
 	if (App->time->gameState == GameState::RUN)
 	{
+		if (!channelsSetted)
+		{
+			SetIndexChannels(gameobject);
+			channelsSetted = true;
+		}
+
 		controller->Update(App->time->gameDeltaTime);
 
 		if (gameobject != nullptr)
@@ -71,10 +79,11 @@ void ComponentAnimation::Update(float dt)
 
 void ComponentAnimation::UpdateGO(GameObject* go)
 {
+	PROFILE;
 	float3 position;
 	Quat rotation;
 
-	if (controller->GetTransform(go->name.c_str(), position, rotation))
+	if (controller->GetTransform(go->animationIndexChannel, position, rotation))
 	{
 		go->transform->SetPosition(position);
 		go->transform->SetRotation(rotation);
@@ -148,4 +157,15 @@ void ComponentAnimation::Load(JSON_value* value)
 		anim->Load(data, uid);
 		App->resManager->AddAnim(anim);
 	}
+}
+
+void ComponentAnimation::SetIndexChannels(GameObject* GO)
+{
+	GO->animationIndexChannel = anim->GetIndexChannel(GO->name.c_str());
+
+	for (const auto& child : GO->children)
+	{
+		SetIndexChannels(child);
+	}
+
 }

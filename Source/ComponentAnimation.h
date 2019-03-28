@@ -23,6 +23,7 @@ public:
 
 	Component* Clone() const;
 
+	void SetIndexChannels(GameObject* GO);
 	void PlayAnimation(unsigned blend);
 	void UpdateGO(GameObject* gameobject);
 
@@ -36,6 +37,10 @@ public:
 
 	void Update(float dt) override;
 	bool CleanUp();
+public:
+
+	bool channelsSetted = false;
+
 
 public:
 	AnimationController* controller = nullptr;

@@ -37,9 +37,9 @@ public:
 
 public:
 
-	bool GetTransformInstance(Instance* instance, std::string channelName, math::float3& position, math::Quat& rotation);
+	bool GetTransformInstance(Instance* instance, unsigned channelIndex, math::float3& position, math::Quat& rotation);
 
-	bool GetTransform(std::string name, math::float3& position, math::Quat& rotation);
+	bool GetTransform(unsigned channelIndex, math::float3& position, math::Quat& rotation);
 
 	math::float3 InterpolateFloat3(const math::float3& first, const math::float3& second, float lambda) const;
 

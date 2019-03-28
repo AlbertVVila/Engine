@@ -6,6 +6,7 @@
 #include "ModuleResourceManager.h"
 
 #include "Animation.h"
+#include "Brofiler.h"
 
 AnimationController::AnimationController()
 {
@@ -28,6 +29,7 @@ void AnimationController::Play(Animation* anim, bool loop, unsigned fadeTime)
 
 void AnimationController::Update(float dt)
 {
+	PROFILE;
 	if (current != nullptr)
 	{
 		UpdateInstance(current, dt);
@@ -103,24 +105,22 @@ void AnimationController::ReleaseInstance(Instance* instance)
 	} while (instance != nullptr);
 }
 
-bool AnimationController::GetTransform(std::string channelName, math::float3& position, math::Quat& rotation)
+bool AnimationController::GetTransform(unsigned channelIndex, math::float3& position, math::Quat& rotation)
 {
 	if (current != nullptr)
 	{
-		return GetTransformInstance(current, channelName, position, rotation);
+		return GetTransformInstance(current, channelIndex, position, rotation);
 	}
 	else
 		return false;
 }
 
-bool AnimationController::GetTransformInstance(Instance* instance, std::string channelName, math::float3& position, math::Quat& rotation)
+bool AnimationController::GetTransformInstance(Instance* instance, unsigned channelIndex, math::float3& position, math::Quat& rotation)
 {
 	Animation* anim = instance->anim;
 
 	if (anim != nullptr)
 	{
-		unsigned channelIndex = anim->GetIndexChannel(channelName.c_str());
-
 		if (channelIndex != 999u)
 		{
 			assert(instance->time <= anim->durationInSeconds);
@@ -159,7 +159,7 @@ bool AnimationController::GetTransformInstance(Instance* instance, std::string c
 				math::float3 nextPosition = math::float3::zero;
 				math::Quat nextRotation = math::Quat::identity;
 
-				if (GetTransformInstance(instance->next, channelName, nextPosition, nextRotation))
+				if (GetTransformInstance(instance->next, channelIndex, nextPosition, nextRotation))
 				{
 					float blend_lambda = float(instance->fadeTime) / float(instance->fadeDuration);
 
