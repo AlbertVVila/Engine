@@ -127,11 +127,10 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file)
 			mesh->SetMesh(meshData, meshUid);
 			RELEASE_ARRAY(meshData);
 			App->resManager->AddMesh(mesh);
-			GameObject* meshGO = new GameObject();
+			GameObject* meshGO = new GameObject("Mesh", App->scene->GetNewUID());
 			ComponentRenderer* crenderer = (ComponentRenderer*)meshGO->CreateComponent(ComponentType::Renderer);
 			crenderer->mesh = mesh;
 			meshGO->CreateComponent(ComponentType::Transform);
-			meshGO->name = "Mesh";
 			goNode->InsertChild(meshGO);
 		}
 
@@ -168,6 +167,8 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file)
 	}
 	App->scene->SaveScene(*sceneGO, *App->fsystem->GetFilename(file).c_str(), *SCENES); //TODO: Make AutoCreation of folders or check
 	aiReleaseImport(&aiscene);
+
+	sceneGO->deleteFlag = true;
 
 	return true;
 }
