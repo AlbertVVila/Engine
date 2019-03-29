@@ -8,9 +8,7 @@ uniform vec4 textColor;
 void main()
 {    
     vec4 FragColor = texture2D(fontTexture, TexCoords);
-	if (FragColor.a < 0.1)
-		discard;
     vec4 sampled = vec4(1.0, 1.0, 1.0, texture(fontTexture, TexCoords).r);
-    color = vec4(textColor.xyz, 1.0) * sampled * FragColor;
-    color.w = textColor.w;
+    color = textColor * sampled * FragColor;
+	color.a = min(FragColor.a, textColor.a);
 }  
