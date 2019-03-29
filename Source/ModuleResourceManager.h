@@ -47,6 +47,8 @@ public:
 	std::vector<ResourceMaterial*> GetMaterialsList();
 	std::vector<std::string> GetResourceNamesList(TYPE resourceType, bool ordered); // Returns a vector with the exportedFileName of every Resource of the type given.		
 
+	bool Exists(const char* exportedFileName);						// Checks if a resource with that exported filename already exist
+
 	void LoadEngineResources();											// Loads resources needed by the engine (Skybox, white, no camera textures...)
 	Resource* AddResource(const char* file, const char* directory, TYPE type);
 	void DeleteResourceFromList(unsigned uid);

@@ -9,6 +9,8 @@
 #include <vector>
 #include <stack>
 
+#define MAX_FILENAME 30
+
 class PanelBrowser :
 	public Panel
 {
@@ -40,7 +42,10 @@ private:
 	bool openRenamePopUp = false;
 
 	Resource* fileSelected = nullptr;
-	std::string newName;				// Aux string for rename
+
+	// Rename variables
+	char newName[MAX_FILENAME] = "";				// Aux string for rename
+	bool invalidName = false;
 
 	// Icons
 	ResourceTexture* folderIcon;	
