@@ -113,7 +113,10 @@ update_status ModuleRender::PostUpdate()
 	viewGame->Draw(App->scene->maincamera);
 	App->editor->RenderGUI();
 #else
-	App->renderer->Draw(*App->scene->maincamera, App->window->width, App->window->height, false);
+	if (App->scene->maincamera != nullptr)
+	{
+		App->renderer->Draw(*App->scene->maincamera, App->window->width, App->window->height, false);
+	}
 	App->developDebug->RenderGUI();
 #endif
 	SDL_GL_SwapWindow(App->window->window);

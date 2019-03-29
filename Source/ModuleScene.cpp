@@ -91,7 +91,7 @@ bool ModuleScene::Start()
 	if (defaultScene.size() > 0)
 	{
 		path = SCENES;
-		//LoadScene(*defaultScene.c_str(), *path.c_str());
+		LoadScene(*defaultScene.c_str(), *path.c_str());
 	}
 	return true;
 }
@@ -101,7 +101,10 @@ update_status ModuleScene::PreUpdate()
 #ifndef GAME_BUILD
 	FrustumCulling(*App->camera->editorcamera->frustum);
 #else
-	FrustumCulling(*maincamera->frustum);
+	if (maincamera != nullptr)
+	{
+		FrustumCulling(*maincamera->frustum);
+	}
 #endif
 	return UPDATE_CONTINUE;
 }

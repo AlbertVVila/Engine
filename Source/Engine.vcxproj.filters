@@ -258,6 +258,8 @@
     <ClCompile Include="ComponentButton.cpp">
       <Filter>Component</Filter>
     </ClCompile>
+    <ClCompile Include="FileImporter.cpp" />
+    <ClCompile Include="PanelHierarchy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
