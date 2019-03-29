@@ -742,6 +742,8 @@ bool ModuleScene::AddScene(const char& scene, const char& path)
 
 	RELEASE_ARRAY(data);
 	RELEASE(json);
+
+	App->renderer->OnResize();
 	return true;
 }
 
