@@ -149,8 +149,8 @@ Global
 		{CF4ADE84-8B3D-45A4-80EF-5B52CC795B6C}.GameBuild Debug|Win32.Build.0 = GameBuild Debug|Win32
 		{CF4ADE84-8B3D-45A4-80EF-5B52CC795B6C}.GameBuild Debug|x64.ActiveCfg = GameBuild Debug|x64
 		{CF4ADE84-8B3D-45A4-80EF-5B52CC795B6C}.GameBuild Debug|x64.Build.0 = GameBuild Debug|x64
-		{CF4ADE84-8B3D-45A4-80EF-5B52CC795B6C}.GameBuild|Win32.ActiveCfg = Release|Win32
-		{CF4ADE84-8B3D-45A4-80EF-5B52CC795B6C}.GameBuild|Win32.Build.0 = Release|Win32
+		{CF4ADE84-8B3D-45A4-80EF-5B52CC795B6C}.GameBuild|Win32.ActiveCfg = GameBuild|Win32
+		{CF4ADE84-8B3D-45A4-80EF-5B52CC795B6C}.GameBuild|Win32.Build.0 = GameBuild|Win32
 		{CF4ADE84-8B3D-45A4-80EF-5B52CC795B6C}.GameBuild|x64.ActiveCfg = Release|x64
 		{CF4ADE84-8B3D-45A4-80EF-5B52CC795B6C}.GameBuild|x64.Build.0 = Release|x64
 		{CF4ADE84-8B3D-45A4-80EF-5B52CC795B6C}.Release|Win32.ActiveCfg = Release|Win32

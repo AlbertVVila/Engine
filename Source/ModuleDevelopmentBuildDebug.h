@@ -5,17 +5,7 @@
 #include "Module.h"
 #include "SDL_events.h"
 
-class Panel;
-class PanelConsole;
-class PanelInspector;
-class PanelConfiguration;
-class PanelAbout;
-class PanelHardware;
-class PanelHierarchy;
-class PanelTime;
-class GameObject;
-class MaterialEditor;
-class FileExplorer;
+class ComponentCamera;
 
 class ModuleDevelopmentBuildDebug:
 	public Module
@@ -38,6 +28,7 @@ public:
 	float minTime = 100000000.f;
 	float maxTime = .0f;
 
+	ComponentCamera* godModeCamera = nullptr;
 };
 
 #endif //__ModuleEditor_h__

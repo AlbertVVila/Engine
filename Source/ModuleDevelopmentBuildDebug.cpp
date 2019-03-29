@@ -2,6 +2,11 @@
 #include "ModuleDevelopmentBuildDebug.h"
 #include "ModuleWindow.h"
 #include "ModuleRender.h"
+#include "ModuleScene.h"
+#include "ModuleInput.h"
+#include "GameObject.h"
+#include "ComponentCamera.h"
+#include "ComponentTransform.h"
 
 #include "imgui.h"
 #include "imgui_impl_opengl3.h"
@@ -105,6 +110,90 @@ update_status ModuleDevelopmentBuildDebug::Update(float dt)
 	ImGui::Separator();
 	ImGui::Separator();
 	ImGui::Text("Camera selector");
+
+	if (ImGui::Button("Player Camera"))
+	{
+		GameObject* playerCam = App->scene->FindGameObjectByName("PlayerCamera");
+		App->scene->maincamera->isMainCamera = false;
+		ComponentCamera* cam = (ComponentCamera*) playerCam->GetComponent(ComponentType::Camera);
+		cam->isMainCamera = true;
+		App->scene->maincamera = cam;
+	}
+	if (ImGui::Button("God Mode Camera"))
+	{
+		GameObject* godModeCam = App->scene->FindGameObjectByName("GodModeCamera");		
+		App->scene->maincamera->isMainCamera = false;
+		godModeCamera = (ComponentCamera*)godModeCam->GetComponent(ComponentType::Camera);
+		godModeCamera->SetAspect((float)App->window->width / (float)App->window->height);
+		godModeCamera->isMainCamera = true;
+		App->scene->maincamera = godModeCamera;
+		godModeCamera->gameobject = nullptr;
+	}
+	if (ImGui::Button("Static Camera 1"))
+	{
+		GameObject* staticModeCam = App->scene->FindGameObjectByName("StaticCamera1");
+		App->scene->maincamera->isMainCamera = false;
+		ComponentCamera* cam = (ComponentCamera*)staticModeCam->GetComponent(ComponentType::Camera);
+		cam->SetAspect((float)App->window->width / (float)App->window->height);
+		cam->isMainCamera = true;
+		App->scene->maincamera = cam;
+	}
+	if (ImGui::Button("Static Camera 2"))
+	{
+		GameObject* staticModeCam = App->scene->FindGameObjectByName("StaticCamera2");
+		App->scene->maincamera->isMainCamera = false;
+		ComponentCamera* cam = (ComponentCamera*)staticModeCam->GetComponent(ComponentType::Camera);
+		cam->SetAspect((float)App->window->width / (float)App->window->height);
+		cam->isMainCamera = true;
+		App->scene->maincamera = cam;
+	}
+	
+
+	if (godModeCamera == App->scene->maincamera)
+	{
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_REPEAT)
+		{
+			float mouse_motion_x, mouse_motion_y;
+			App->input->SetMouseMotion(mouse_motion_x, mouse_motion_y);
+
+			float dx = godModeCamera->rotationSpeed *  mouse_motion_x;
+			float dy = godModeCamera->rotationSpeed *  mouse_motion_y;
+			godModeCamera->Rotate(dx, dy);
+
+			float3 movement = float3::zero;
+
+			if (App->input->IsKeyPressed(SDL_SCANCODE_Q))
+			{
+				movement += float3::unitY;
+			}
+			if (App->input->IsKeyPressed(SDL_SCANCODE_E))
+			{
+				movement -= float3::unitY;
+			}
+			if (App->input->IsKeyPressed(SDL_SCANCODE_DOWN))
+			{
+				movement -= godModeCamera->frustum->front;
+			}
+			if (App->input->IsKeyPressed(SDL_SCANCODE_UP))
+			{
+				movement += godModeCamera->frustum->front;
+			}
+			if (App->input->IsKeyPressed(SDL_SCANCODE_LEFT))
+			{
+				movement -= godModeCamera->frustum->WorldRight();
+			}
+			if (App->input->IsKeyPressed(SDL_SCANCODE_RIGHT))
+			{
+				movement += godModeCamera->frustum->WorldRight();
+			}
+			if (App->input->IsKeyPressed(SDL_SCANCODE_LSHIFT))
+			{
+				movement *= 2;
+			}
+			godModeCamera->Move(movement*dt*App->renderer->current_scale);
+
+		}
+	}
 	ImGui::End();
 	return UPDATE_CONTINUE;
 }
