@@ -20,6 +20,7 @@ class ComponentScript;
 class PlayerMovement;
 class EnemyMovementScript;
 class IntroScript;
+class CreditsScript;
 class AABB;
 
 class GameLoop_API GameLoop : public Script
@@ -77,9 +78,11 @@ class GameLoop_API GameLoop : public Script
 	std::vector<Component*> menuButtons;
 	ComponentButton* optionButton = nullptr;
 	ComponentButton* controlsButton = nullptr;
+	ComponentButton* creditsButton = nullptr;
 	ComponentButton* exitButton = nullptr;
 	ComponentButton* backOptionButton = nullptr;
 	ComponentButton* backControlsButton = nullptr;
+	ComponentButton* backCreditsButton = nullptr;
 	ComponentButton* toTheAltarButton = nullptr;
 	std::vector<Component*> volumeButtons;
 	std::vector<Component*> soundButtons;
@@ -104,11 +107,12 @@ class GameLoop_API GameLoop : public Script
 	ComponentText* soundText = nullptr;
 
 	ComponentScript* componentIntroScript = nullptr;
+	ComponentScript* componentCreditsScript = nullptr;
 
 	//Script
 	PlayerMovement* playerScript = nullptr;
 	EnemyMovementScript* enemyMovementScript = nullptr;
-	IntroScript* introScript = nullptr;
+	CreditsScript* creditsScript = nullptr;
 
 	float3 playerStartPosition = float3::zero;
 	float3 enemyStartPosition = float3::zero;
