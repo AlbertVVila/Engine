@@ -329,7 +329,7 @@ void PanelBrowser::DrawRenamePopUp()
 		ImGui::InputText("", newName, MAX_FILENAME);
 
 		// Check if there isn't already a file with the same name
-		invalidName = App->resManager->Exists(newName);
+		invalidName = App->resManager->Exists(newName, fileSelected->GetType());
 
 		if(invalidName)
 			ImGui::Text("A file with that name already exists!");

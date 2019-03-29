@@ -406,7 +406,28 @@ bool ModuleResourceManager::Exists(const char* exportedFileName)
 			if (firstName == secondName)
 				return true;
 		}
+	}
+	return false;
+}
 
+bool ModuleResourceManager::Exists(const char* exportedFileName, TYPE type)
+{
+	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		if (it->second->GetType() == type)
+		{
+			std::string firstName(it->second->GetExportedFile());
+			std::string secondName(exportedFileName);
+			if (firstName == secondName)
+				return true;
+			else
+			{
+				for (auto & c1 : firstName) c1 = toupper(c1);
+				for (auto & c2 : secondName) c2 = toupper(c2);
+				if (firstName == secondName)
+					return true;
+			}
+		}
 	}
 	return false;
 }
