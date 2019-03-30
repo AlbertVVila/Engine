@@ -143,6 +143,18 @@ unsigned ModuleResourceManager::FindByExportedFile(const char* exportedFileName)
 	return 0;
 }
 
+unsigned ModuleResourceManager::FindByExportedFile(const char* exportedFileName, TYPE type) const
+{
+	for (std::map<unsigned, Resource*>::const_iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		if (strcmp(it->second->GetExportedFile(), exportedFileName) == 0 && it->second->GetType() == type)
+		{
+			return it->first;
+		}
+	}
+	return 0;
+}
+
 bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* filePath, TYPE type)
 {
 	bool success = false; 
@@ -305,6 +317,19 @@ Resource* ModuleResourceManager::Get(const char* exportedFileName) const
 	return Get(uid);
 }
 
+Resource* ModuleResourceManager::Get(const char* exportedFileName, TYPE type) const
+{
+	assert(exportedFileName != NULL);
+
+	// Look for it on the resource list
+	unsigned uid = FindByExportedFile(exportedFileName, type);
+	if (uid == 0)
+		return nullptr;
+
+	// Get resource by uid
+	return Get(uid);
+}
+
 Resource* ModuleResourceManager::GetWithoutLoad(unsigned uid) const
 {
 	std::map<unsigned, Resource*>::const_iterator it = resources.find(uid);
@@ -320,6 +345,19 @@ Resource* ModuleResourceManager::GetWithoutLoad(const char* exportedFileName) co
 
 	// Look for it on the resource list
 	unsigned uid = FindByExportedFile(exportedFileName);
+	if (uid == 0)
+		return nullptr;
+
+	// Get resource by uid
+	return GetWithoutLoad(uid);
+}
+
+Resource* ModuleResourceManager::GetWithoutLoad(const char* exportedFileName, TYPE type) const
+{
+	assert(exportedFileName != NULL);
+
+	// Look for it on the resource list
+	unsigned uid = FindByExportedFile(exportedFileName,type);
 	if (uid == 0)
 		return nullptr;
 

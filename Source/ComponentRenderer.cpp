@@ -211,16 +211,16 @@ void ComponentRenderer::SetMaterial(const char* materialfile)
 
 	if (materialfile == nullptr)
 	{
-		material = (ResourceMaterial*)App->resManager->Get(DEFAULTMAT);
+		material = (ResourceMaterial*)App->resManager->Get(DEFAULTMAT,TYPE::MATERIAL);
 		return;
 	}
 	else
 	{
-		material = (ResourceMaterial*)App->resManager->Get(materialfile);
+		material = (ResourceMaterial*)App->resManager->Get(materialfile, TYPE::MATERIAL);
 
 		// Material can't be found
 		if(material == nullptr)
-			material = (ResourceMaterial*)App->resManager->Get(DEFAULTMAT);
+			material = (ResourceMaterial*)App->resManager->Get(DEFAULTMAT, TYPE::MATERIAL);
 	}
 	return;
 }
