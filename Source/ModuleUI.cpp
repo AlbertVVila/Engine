@@ -118,9 +118,9 @@ void ModuleUI::RenderImage(const ComponentImage& componentImage, int currentWidt
 	{
 		return;
 	}
-	glUseProgram(shader->id);
+	glUseProgram(shader->id[0]);
 
-	glUniform4f(glGetUniformLocation(shader->id, "textColor"), componentImage.color.x, componentImage.color.y, componentImage.color.z, componentImage.color.w);
+	glUniform4f(glGetUniformLocation(shader->id[0], "textColor"), componentImage.color.x, componentImage.color.y, componentImage.color.z, componentImage.color.w);
 
 	glBindVertexArray(VAO);
 
@@ -137,12 +137,12 @@ void ModuleUI::RenderImage(const ComponentImage& componentImage, int currentWidt
 		model = model.Scale(scale, center);
 		model.SetTranslatePart(center);
 
-		glUniformMatrix4fv(glGetUniformLocation(shader->id, "model"), 1, GL_TRUE, (const float*)&model);
-		glUniformMatrix4fv(glGetUniformLocation(shader->id, "projection"), 1, GL_TRUE, (const float*)&projection);
+		glUniformMatrix4fv(glGetUniformLocation(shader->id[0], "model"), 1, GL_TRUE, (const float*)&model);
+		glUniformMatrix4fv(glGetUniformLocation(shader->id[0], "projection"), 1, GL_TRUE, (const float*)&projection);
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, componentImage.texture->gpuID);
-		glUniform1i(glGetUniformLocation(shader->id, "texture0"), 0);
+		glUniform1i(glGetUniformLocation(shader->id[0], "texture0"), 0);
 
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	}

@@ -4,6 +4,9 @@
 #include "Application.h"
 #include "ModuleFileSystem.h"
 
+#include "GameObject.h"
+#include "ComponentRenderer.h"
+
 #include "JSON.h"
 
 #include "GL/glew.h"
@@ -15,6 +18,8 @@
 #include "rapidjson/document.h"
 #include "rapidjson/filewritestream.h"
 #include "rapidjson/prettywriter.h"
+#include <stack>
+
 
 ResourceMesh::ResourceMesh(unsigned uid) : Resource(uid, TYPE::MESH)
 {
@@ -95,6 +100,9 @@ void ResourceMesh::DeleteFromMemory()
 	meshTangents.clear();
 	meshTexCoords.clear();
 	meshIndices.clear();
+	bindBoneVertexAttaches.clear();
+	bindWeightVertexAttaches.clear();
+	bindBones.clear();
 }
 
 void ResourceMesh::SaveMetafile(const char* file) const
@@ -200,12 +208,10 @@ void ResourceMesh::SetMesh(const char * meshData)
 	assert(meshData != nullptr);
 	if (meshData == nullptr) return;
 
-	const char *data = meshData;
-
-	unsigned int numIndices = *(int*)meshData;
+	unsigned numIndices = *(int*)meshData;
 	meshData += sizeof(int);
 
-	unsigned int numVertices = *(int*)meshData;
+	unsigned numVertices = *(int*)meshData;
 	meshData += sizeof(int);
 
 	float* vertices = (float*)meshData;
@@ -240,14 +246,85 @@ void ResourceMesh::SetMesh(const char * meshData)
 	int* indices = (int*)meshData;
 	meshData += sizeof(int) * numIndices;
 
+	bool hasTangents = *(bool*)meshData;
+	meshData += sizeof(bool);
+
+	if (hasTangents)
+	{
+		int nTangents = sizeof(float3) * numVertices;
+		meshTangents.resize(numVertices);
+		memcpy(&meshTangents[0], meshData, nTangents);
+		meshData += nTangents;
+	}
+
+	unsigned numBones = *(unsigned*)meshData;
+	meshData += sizeof(unsigned);
+
+	char boneName[MAX_BONE_NAME_LENGTH];
+
+	bindBones.resize(numBones);
+	bindBoneVertexAttaches.resize(numVertices);
+	bindWeightVertexAttaches.resize(numVertices);
+
+	for (unsigned i = 0u; i < numBones; ++i)
+	{
+		memcpy(&boneName[0], meshData, MAX_BONE_NAME_LENGTH);
+		meshData += MAX_BONE_NAME_LENGTH;
+		bindBones[i].name = boneName;
+		memcpy(&bindBones[i].transform[0][0], meshData, sizeof(math::float4x4));
+		meshData += sizeof(math::float4x4);
+
+		unsigned numWeights;
+		memcpy(&numWeights, meshData, sizeof(unsigned));
+		meshData += sizeof(unsigned);
+
+		for (unsigned j = 0u; j < numWeights; ++j)
+		{
+			unsigned vertex;
+			memcpy(&vertex, meshData, sizeof(unsigned));
+			meshData += sizeof(unsigned);
+
+			float weight;
+			memcpy(&weight, meshData, sizeof(float));
+			meshData += sizeof(float);
+
+			assert(vertex < numVertices);
+
+			for (unsigned k = 0u; k < MAX_WEIGHTS_PER_BONE; ++k)
+			{
+				if (bindWeightVertexAttaches[vertex].weight[k] == 0.f)
+				{
+					bindBoneVertexAttaches[vertex].boneID[k] = i;
+					bindWeightVertexAttaches[vertex].weight[k] = weight;
+					break;
+				}
+			}
+		}
+	}
+
+	unsigned boneWeightCorrected = 0u;
+
+	for (unsigned c = 0u; c < bindWeightVertexAttaches.size(); ++c)
+	{
+		float totalWeight = 0.f;
+		for (unsigned k = 0u; k < MAX_WEIGHTS_PER_BONE; ++k)
+		{
+			totalWeight += bindWeightVertexAttaches[c].weight[k];
+		}
+		for (unsigned k = 0u; k < MAX_WEIGHTS_PER_BONE; ++k)
+		{
+			bindWeightVertexAttaches[c].weight[k] /= totalWeight;
+		}
+	}
+
 	meshVertices.resize(numVertices);
 	meshIndices.resize(numIndices);
-	memcpy(&meshVertices[0], vertices, numVertices * sizeof(float) * 3);
-	memcpy(&meshIndices[0], indices, numIndices * sizeof(int));
+	memcpy(&meshVertices[0], vertices, numVertices * sizeof(math::float3));
+	memcpy(&meshIndices[0], indices, numIndices * sizeof(unsigned));
 
 	ComputeBBox();
-
-	RELEASE_ARRAY(data);
+	SetMeshBuffers();
+	SetBboxBuffers();
 }
 
 void ResourceMesh::SetMeshBuffers()
@@ -258,8 +335,10 @@ void ResourceMesh::SetMeshBuffers()
 	unsigned offsetTexCoords = meshVertices.size() * sizeof(math::float3);
 	unsigned offsetNormals = offsetTexCoords + (meshTexCoords.size() * sizeof(float) * 2);
 	unsigned offsetTangents = offsetNormals + (meshNormals.size() * sizeof(math::float3));
+	unsigned offsetBones = offsetTangents + (bindBoneVertexAttaches.size() * sizeof(int) * 4);
+	unsigned offsetWeights = offsetBones + (bindBoneVertexAttaches.size() * sizeof(float) * 4);
 
-	unsigned totalSize = offsetTangents + (meshTangents.size() * sizeof(math::float3));
+	unsigned totalSize = offsetWeights + (meshTangents.size() * sizeof(float) * 4);
 
 	if (VAO == 0)
 	{
@@ -280,6 +359,11 @@ void ResourceMesh::SetMeshBuffers()
 	if (meshTangents.size() > 0)
 		glBufferSubData(GL_ARRAY_BUFFER, offsetTangents, sizeof(math::float3) * meshTangents.size(), &meshTangents[0]);
 
+	if (bindBoneVertexAttaches.size() > 0)
+	{
+		glBufferSubData(GL_ARRAY_BUFFER, offsetBones, sizeof(int) * 4 * bindBoneVertexAttaches.size(), &bindBoneVertexAttaches[0]);
+		glBufferSubData(GL_ARRAY_BUFFER, offsetWeights, sizeof(float) * 4 * bindWeightVertexAttaches.size(), &bindWeightVertexAttaches[0]);
+	}
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned) * meshIndices.size(), &meshIndices[0], GL_STATIC_DRAW);
@@ -293,6 +377,14 @@ void ResourceMesh::SetMeshBuffers()
 	glEnableVertexAttribArray(3);
 	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 0, (void*)offsetTangents);
 
+
+	if (bindBones.size() != 0)
+	{
+		glEnableVertexAttribArray(4);
+		glVertexAttribIPointer(4, 4, GL_UNSIGNED_INT, 0, (void*)offsetBones);
+		glEnableVertexAttribArray(5);
+		glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, 0, (void*)offsetWeights);
+	}
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -375,6 +467,7 @@ void ResourceMesh::DrawBbox(unsigned shader, const AABB &globalBBOX) const
 	glUniform4fv(glGetUniformLocation(shader,
 		"Vcolor"), 1, green);
 
+
 	glLineWidth(4.f);
 	glBindVertexArray(VAObox);
 	glDrawElements(GL_LINE_LOOP, 4, GL_UNSIGNED_SHORT, 0);
@@ -405,6 +498,55 @@ void ResourceMesh::ComputeBBox()
 	}
 	boundingBox.minPoint = min;
 	boundingBox.maxPoint = max;
+}
+
+void ResourceMesh::LinkBones(const ComponentRenderer* renderer)
+{
+	if (bindBones.size() == 0)
+	{
+		return;
+	}
+	unsigned linkedCount = 0u;
+
+	for (unsigned i = 0u; i < bindBones.size(); ++i)
+	{
+		GameObject* node = renderer->gameobject;
+		while (node != nullptr && !node->isBoneRoot)
+		{
+			node = node->parent;
+		}
+
+		if (node == nullptr)
+		{
+			return;
+		}
+
+		bool found = false;
+
+		std::stack<GameObject*> S;
+		S.push(node);
+
+		while (!S.empty() && !found)
+		{
+			node = S.top();
+			S.pop();
+			if (node->name == bindBones[i].name)
+			{
+				found = true;
+				bindBones[i].go = node;
+				++linkedCount;
+			}
+			else
+			{
+				for (GameObject* go : node->children)
+				{
+					S.push(go);
+				}
+			}
+		}
+	}
+
+	LOG("Linked %d bones from %s", linkedCount, renderer->gameobject->name.c_str());
 }
 
 AABB ResourceMesh::GetBoundingBox() const

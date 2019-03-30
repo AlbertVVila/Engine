@@ -2,7 +2,8 @@
 #define __COMPONENTANIMATION_H_
 
 #include "Component.h"
-#include "Animation.h"
+#include "ResourceAnimation.h"
+#include "Resource.h"
 #include "AnimationController.h"
 #include "StateMachine.h"
 #include "NodeEditor.h"
@@ -35,7 +36,7 @@ public:
 	void Save(JSON_value* value) const override;
 	void Load(JSON_value* value) override;
 
-	void Update(float dt) override;
+	void Update() override;
 	bool CleanUp();
 public:
 
@@ -44,7 +45,7 @@ public:
 
 public:
 	AnimationController* controller = nullptr;
-	Animation* anim = nullptr;
+	ResourceAnimation* anim = nullptr;
 };
 
 #endif //  __COMPONENTANIMATION_H_

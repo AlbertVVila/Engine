@@ -49,9 +49,9 @@ enum class FILETYPE
 	MODEL,
 	IMPORTED_MESH,
 	SCENE,
-	ANIMATION
+	ANIMATION,
 	MATERIAL,
-	NONE
+	NONE,
 };
 
 class ModuleFileSystem :

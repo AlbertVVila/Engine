@@ -5,7 +5,7 @@
 
 #include "ModuleResourceManager.h"
 
-#include "Animation.h"
+#include "ResourceAnimation.h"
 #include "Brofiler.h"
 
 AnimationController::AnimationController()
@@ -17,7 +17,7 @@ AnimationController::~AnimationController()
 {
 }
 
-void AnimationController::Play(Animation* anim, bool loop, unsigned fadeTime)
+void AnimationController::Play(ResourceAnimation* anim, bool loop, unsigned fadeTime)
 {
 	Instance* newInstance = new Instance;
 	newInstance->anim = anim;
@@ -38,7 +38,7 @@ void AnimationController::Update(float dt)
 
 void AnimationController::UpdateInstance(Instance* instance, float dt)
 {
-	Animation* anim = instance->anim;
+	ResourceAnimation* anim = instance->anim;
 
 	if (anim != nullptr && anim->durationInSeconds > 0)
 	{
@@ -118,7 +118,7 @@ bool AnimationController::GetTransform(unsigned channelIndex, math::float3& posi
 
 bool AnimationController::GetTransformInstance(Instance* instance, unsigned channelIndex, math::float3& position, math::Quat& rotation)
 {
-	Animation* anim = instance->anim;
+	ResourceAnimation* anim = instance->anim;
 
 	if (anim != nullptr)
 	{

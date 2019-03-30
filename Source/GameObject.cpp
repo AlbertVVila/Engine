@@ -25,8 +25,8 @@
 #include "ResourceMesh.h"
 
 #include "GUICreator.h"
-#include "Material.h"
-#include "Mesh.h"
+#include "ResourceMaterial.h"
+#include "ResourceMesh.h"
 #include "Animation.h"
 #include "myQuadTree.h"
 #include "AABBTree.h"
@@ -178,7 +178,7 @@ void GameObject::Update(float dt)
 
 	for (auto& component: components)
 	{
-		component->Update(dt);
+		component->Update();
 	}
 
 	for (const auto& child : children)

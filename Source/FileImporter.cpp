@@ -11,8 +11,8 @@
 #include "ComponentAnimation.h"
 
 #include "FileImporter.h"
-#include "Material.h"
-#include "Mesh.h"
+#include "ResourceMaterial.h"
+#include "ResourceMesh.h"
 #include "Animation.h"
 
 #include "Resource.h"
@@ -127,13 +127,12 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file)
 			char* meshData = new char[meshSize];
 
 			ImportMesh(*aMesh, meshData);
-
-			Mesh* mesh = new Mesh();
-			unsigned meshUid = App->scene->GetNewUID();
-			App->fsystem->Save((MESHES + std::to_string(meshUid) + MESHEXTENSION).c_str(), meshData, meshSize);
-			mesh->SetMesh(meshData, meshUid);
+			ResourceMesh* mesh = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH);
+			
+			App->fsystem->Save((MESHES + std::to_string(((Resource*)mesh)->GetUID()) + MESHEXTENSION).c_str(), meshData, meshSize);
+			mesh->LoadInMemory();
 			RELEASE_ARRAY(meshData);
-			App->resManager->AddMesh(mesh);
+
 			GameObject* meshGO = new GameObject();
 			ComponentRenderer* crenderer = (ComponentRenderer*)meshGO->CreateComponent(ComponentType::Renderer);
 			crenderer->mesh = mesh;
@@ -147,16 +146,9 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file)
 			stackNode.push(aNode->mChildren[i]);
 			stackParent.push(goNode);
 		}
-		ResourceMesh* mesh = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH);
-		App->fsystem->Save((MESHES + std::to_string(mesh->GetUID()) + MESHEXTENSION).c_str(), data, size);
-		//mesh->LoadInMemory();
-		//mesh->SetMesh(data); //Deallocates data
-		meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->GetUID()));
 	}
 
-	App->scene->SaveScene(*fake, App->fsystem->GetFilename(file).c_str(), SCENES); //TODO: Make AutoCreation of folders or check
-	fake->CleanUp();
-	RELEASE(fake);
+
 	for (unsigned i = 0u; i < aiscene.mNumAnimations; i++)
 	{
 		char* animationData = nullptr;
@@ -169,19 +161,17 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file)
 		ComponentAnimation* animationComponent = (ComponentAnimation*)sceneGO->GetComponent(ComponentType::Animation);
 		unsigned animUid = App->scene->GetNewUID();
 
-		Animation* animation = new Animation();
+		ResourceAnimation* animation = (ResourceAnimation*)App->resManager->CreateNewResource(TYPE::ANIMATION);
 
 		animation->Load(animationData, animUid);
 		animationComponent->anim = animation;
 
 		App->fsystem->Save((ANIMATIONS + std::to_string(animUid) + ANIMATIONEXTENSION).c_str(), animationData, animationSize);
 
-		App->resManager->AddAnim(animation);
-
 		RELEASE_ARRAY(animationData);
 		RELEASE_ARRAY(correctedAnimationData);
 	}
-	App->scene->SaveScene(*sceneGO, *App->fsystem->GetFilename(file).c_str(), *SCENES); //TODO: Make AutoCreation of folders or check
+	App->scene->SaveScene(*sceneGO, App->fsystem->GetFilename(file).c_str(), SCENES); //TODO: Make AutoCreation of folders or check
 	aiReleaseImport(&aiscene);
 
 	return true;
@@ -327,48 +317,6 @@ void FileImporter::ImportAnimation(const aiAnimation& animation, char* data)
 		for (unsigned k = 0u; k < animation.mChannels[j]->mNumRotationKeys; k++)
 		{
 			memcpy(cursor, &animation.mChannels[j]->mRotationKeys[k].mValue, sizeof(math::Quat));
-			cursor += sizeof(math::Quat);
-		}
-	}
-}
-
-void FileImporter::RewriteAnimationData(Animation* anim, char* data)
-{
-	char* cursor = data;
-
-	memcpy(cursor, &anim->duration, sizeof(double));
-	cursor += sizeof(double);
-
-	memcpy(cursor, &anim->framesPerSecond, sizeof(double));
-	cursor += sizeof(double);
-
-	memcpy(cursor, &anim->numberOfChannels, sizeof(int));
-	cursor += sizeof(int);
-
-	for (unsigned j = 0u; j < anim->numberOfChannels; j++)
-	{
-		memcpy(cursor, anim->channels[j]->channelName.c_str(), sizeof(char) * MAX_BONE_NAME_LENGTH);  //Name
-		cursor += sizeof(char) * MAX_BONE_NAME_LENGTH;
-
-		memcpy(cursor, &anim->channels[j]->numPositionKeys, sizeof(int));
-		cursor += sizeof(int);
-
-		memcpy(cursor, &anim->channels[j]->numRotationKeys, sizeof(int));
-		cursor += sizeof(int);
-
-		//importar longitud array de posiciones e iterar
-
-		for (unsigned i = 0u; i < anim->channels[j]->numPositionKeys; i++)
-		{
-			memcpy(cursor, &anim->channels[j]->positionSamples[i], sizeof(float) * 3);
-			cursor += sizeof(float) * 3;
-		}
-
-		//importar longitud array de rotaciones e iterar
-
-		for (unsigned k = 0u; k < anim->channels[j]->numRotationKeys; k++)
-		{
-			memcpy(cursor, &anim->channels[j]->rotationSamples[k], sizeof(math::Quat));
 			cursor += sizeof(math::Quat);
 		}
 	}

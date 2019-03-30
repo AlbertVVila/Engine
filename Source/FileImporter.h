@@ -10,9 +10,9 @@ struct aiMesh;
 struct aiBone;
 struct aiAnimation;
 class GameObject;
+class ResourceMesh;
 class Animation;
 class Bone;
-class Mesh;
 
 class FileImporter {
 public:

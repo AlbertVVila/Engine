@@ -34,6 +34,7 @@ public:
 	void SaveMetafile(const char* file) const override;
 	void Reset(const ResourceMaterial& material);
 	int Compare(const ResourceMaterial& material);
+	void CalculateVariation();
 
 	ResourceTexture* GetTexture(TextureType type) const;
 	std::list<ResourceTexture*> GetTextures() const;
@@ -51,6 +52,8 @@ public:
 
 	float roughness = .5f;
 	float metallic = .5f;
+
+	unsigned variation = 0u;
 };
 
 #endif __ResourceMaterial_h__

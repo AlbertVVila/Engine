@@ -5,7 +5,8 @@
 #include "ModuleTime.h"
 
 #include "GameObject.h"
-#include "Animation.h"
+#include "Resource.h"
+#include "ResourceAnimation.h"
 #include "AnimationController.h"
 #include "ComponentAnimation.h"
 #include "ComponentTransform.h"
@@ -49,7 +50,7 @@ void ComponentAnimation::DrawProperties()
 	}
 }
 
-void ComponentAnimation::Update(float dt)
+void ComponentAnimation::Update()
 {
 	PROFILE;
 	if (App->time->gameState == GameState::RUN)
@@ -102,16 +103,14 @@ Component* ComponentAnimation::Clone() const
 
 ComponentAnimation::ComponentAnimation(GameObject * gameobject) : Component(gameobject, ComponentType::Animation)
 {
-	anim = new Animation();
+	//anim = new ResourceAnimation();
 	controller = new AnimationController();
 	PlayAnimation(100u);
 }
 
 ComponentAnimation::ComponentAnimation(const ComponentAnimation& component) : Component(component)
 {
-	anim = component.anim;
-
-	App->resManager->AddAnim(anim);
+	anim = (ResourceAnimation*)App->resManager->Get(component.anim->GetUID());
 }
 
 
@@ -119,7 +118,7 @@ bool ComponentAnimation::CleanUp()
 {
 	if (anim != nullptr)
 	{
-		App->resManager->DeleteAnim(anim->UID);
+		App->resManager->DeleteResource(anim->UID);
 	}
 	return true;
 }
@@ -135,19 +134,19 @@ void ComponentAnimation::Load(JSON_value* value)
 	Component::Load(value);
 	unsigned uid = value->GetUint("animUID");
 
-	Animation* a = App->resManager->GetAnim(uid);
+	ResourceAnimation* a = (ResourceAnimation*)App->resManager->Get(uid);
 
 	if (a != nullptr)
 	{
 		anim = a;
-
 	}
 	else
 	{
-		char* data = nullptr;
-		App->fsystem->Load((ANIMATIONS + std::to_string(uid) + ANIMATIONEXTENSION).c_str(), &data);
-		anim->Load(data, uid);
-		App->resManager->AddAnim(anim);
+		ResourceAnimation* res = (ResourceAnimation*)App->resManager->CreateNewResource(TYPE::ANIMATION, uid);
+		res->SetExportedFile(std::to_string(uid).c_str());
+		a = (ResourceAnimation*)App->resManager->Get(uid);
+		if (a != nullptr)
+			a = res;
 	}
 }
 

@@ -49,7 +49,7 @@ ComponentLight::~ComponentLight()
 	App->scene->lights.remove(this);
 }
 
-void ComponentLight::Update(float dt) 
+void ComponentLight::Update() 
 {
 	if (gameobject->transform == nullptr) return;
 	position = gameobject->transform->global.TranslatePart(); 

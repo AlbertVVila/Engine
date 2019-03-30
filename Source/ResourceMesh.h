@@ -5,7 +5,13 @@
 
 #include <vector>
 #include "Math/float3.h"
+#include "Math/float4x4.h"
 #include "Geometry/AABB.h"
+
+#define MAX_WEIGHTS_PER_BONE 4
+
+class ComponentRenderer;
+class GameObject;
 
 class ResourceMesh : public Resource
 {
@@ -25,10 +31,30 @@ public:
 	void Load(const JSON_value &config) override;
 
 	// Mesh specific
+	void LinkBones(const ComponentRenderer* renderer);
 	void Draw(unsigned shaderProgram) const;
 	void DrawBbox(unsigned shaderProgram, const AABB& globalBBOX) const;
 	AABB GetBoundingBox() const;
 	bool Intersects(const LineSegment& line, float* distance);
+
+private:
+
+	struct BindBone
+	{
+		math::float4x4 transform; //Transforms from mesh space to bone space
+		std::string name;
+		GameObject* go = nullptr;
+	};
+
+	struct BoneVertex
+	{
+		int boneID[MAX_WEIGHTS_PER_BONE] = { 0, 0, 0, 0 };
+	};
+
+	struct BoneWeight
+	{
+		float weight[MAX_WEIGHTS_PER_BONE] = { 0.f, 0.f, 0.f, 0.f };
+	};
 
 private:
 	void ComputeBBox();
@@ -48,12 +74,18 @@ private:
 	unsigned VBObox = 0;
 	unsigned EBObox = 0;
 
+
+	
 public:
 	std::vector<math::float3> meshVertices;
 	std::vector<math::float3> meshNormals;
 	std::vector<math::float3> meshTangents;
 	std::vector<float> meshTexCoords;
 	std::vector<unsigned> meshIndices;
+
+	std::vector<BoneVertex> bindBoneVertexAttaches;
+	std::vector<BoneWeight> bindWeightVertexAttaches;
+	std::vector<BindBone> bindBones;
 };
 
 #endif __ResourceMesh_h__

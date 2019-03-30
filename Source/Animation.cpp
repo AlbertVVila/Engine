@@ -1,17 +1,17 @@
 #include "Application.h"
 
-#include "Animation.h"
+#include "ResourceAnimation.h"
 #include "Globals.h"
 
 #include <assert.h>
 
 
-Animation::Animation()
+ResourceAnimation::ResourceAnimation()
 {
 }
 
 
-Animation::~Animation()
+ResourceAnimation::~ResourceAnimation()
 {
 	for (const auto& channel : channels)
 	{
@@ -19,7 +19,7 @@ Animation::~Animation()
 	}
 }
 
-void Animation::Load(const char* animationData, unsigned uid)
+void ResourceAnimation::Load(const char* animationData, unsigned uid)
 {
 
 	UID = uid;
@@ -76,17 +76,17 @@ void Animation::Load(const char* animationData, unsigned uid)
 	}
 }
 
-unsigned Animation::GetNumPositions(unsigned indexChannel) const
+unsigned ResourceAnimation::GetNumPositions(unsigned indexChannel) const
 {
 	return channels[indexChannel]->numPositionKeys;
 }
 
-unsigned Animation::GetNumRotations(unsigned indexChannel) const
+unsigned ResourceAnimation::GetNumRotations(unsigned indexChannel) const
 {
 	return channels[indexChannel]->numRotationKeys;
 }
 
-const math::float3 Animation::GetPosition(unsigned indexChannel, unsigned indexPosition) const
+const math::float3 ResourceAnimation::GetPosition(unsigned indexChannel, unsigned indexPosition) const
 {
 	if(channels[indexChannel]->numPositionKeys > 1)
 		return channels[indexChannel]->positionSamples[indexPosition];
@@ -94,7 +94,7 @@ const math::float3 Animation::GetPosition(unsigned indexChannel, unsigned indexP
 		return channels[indexChannel]->positionSamples[0];
 }
 
-const math::Quat Animation::GetRotation(unsigned indexChannel, unsigned indexPosition) const
+const math::Quat ResourceAnimation::GetRotation(unsigned indexChannel, unsigned indexPosition) const
 {
 	if (channels[indexChannel]->numRotationKeys > 1)
 		return channels[indexChannel]->rotationSamples[indexPosition];
@@ -102,7 +102,7 @@ const math::Quat Animation::GetRotation(unsigned indexChannel, unsigned indexPos
 		return channels[indexChannel]->rotationSamples[0];
 }
 
-unsigned Animation::GetIndexChannel(std::string name) const
+unsigned ResourceAnimation::GetIndexChannel(std::string name) const
 {
 	for (unsigned i = 0u; i < numberOfChannels; i++) //TODO, guardar map, en el anim controller
 	{

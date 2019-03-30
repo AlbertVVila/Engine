@@ -26,7 +26,7 @@ public:
 
 	void ResetValues();
 
-	void Update(float dt) override;
+	void Update() override;
 	void DrawProperties() override;
 	void DrawDebugLight() const;
 

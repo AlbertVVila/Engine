@@ -5,7 +5,7 @@
 #include "Math/float3.h"
 #include "Math/Quat.h"
 
-class Animation;
+class ResourceAnimation;
 
 class AnimationController
 {
@@ -13,7 +13,7 @@ public:
 
 	struct Instance
 	{
-		Animation* anim = nullptr;
+		ResourceAnimation* anim = nullptr;
 		float time = 0.0f;
 		bool loop = true;
 		float speed = 1.0f;
@@ -29,7 +29,7 @@ public:
 	AnimationController();
 	~AnimationController();
 
-	void Play(Animation* anim, bool loop, unsigned fadeTime);
+	void Play(ResourceAnimation* anim, bool loop, unsigned fadeTime);
 	void Update(float dt);
 	void UpdateInstance(Instance* ins, float dt);
 	void ReleaseInstance(Instance* ins);

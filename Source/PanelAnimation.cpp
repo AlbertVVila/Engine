@@ -3,6 +3,9 @@
 #include "ModuleScene.h"
 
 #include "GameObject.h"
+
+#include "ResourceAnimation.h"
+
 #include "ComponentAnimation.h"
 #include "PanelAnimation.h"
 #include "imgui.h"
@@ -23,8 +26,7 @@ void PanelAnimation::Draw()
 	{
 		if (App->scene->selected != nullptr && App->scene->selected->isBoneRoot)
 		{
-			Animation* anim = ((ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)))->anim;
-
+			ResourceAnimation* anim = ((ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)))->anim;
 		}
 		ImGui::End();
 		return;

@@ -152,8 +152,8 @@ void ModuleFontLoader::RenderText(const ComponentText& compText, int currentWidt
 	}
 	
 	// Activate corresponding render state	
-	glUseProgram(shaderFonts->id);
-	glUniform4f(glGetUniformLocation(shaderFonts->id, "textColor"), compText.color.x, compText.color.y, compText.color.z, compText.color.w);
+	glUseProgram(shaderFonts->id[0]);
+	glUniform4f(glGetUniformLocation(shaderFonts->id[0], "textColor"), compText.color.x, compText.color.y, compText.color.z, compText.color.w);
 	glActiveTexture(GL_TEXTURE0);
 	glBindVertexArray(VAOText);
 

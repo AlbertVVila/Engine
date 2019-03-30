@@ -212,7 +212,7 @@ void ComponentCamera::LookAt(float3 target)
 }
 
 
-void ComponentCamera::Update(float dt) 
+void ComponentCamera::Update() 
 {
 	if (gameobject == nullptr) return;
 	if (gameobject->transform == nullptr) return;
