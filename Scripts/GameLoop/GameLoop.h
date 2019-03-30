@@ -43,7 +43,6 @@ class GameLoop_API GameLoop : public Script
 	void Update() override;
 
 	void ManageDead();
-
 	void ManageMenu();
 	void ManageIntro();
 	void ManagePlaying();
@@ -55,8 +54,11 @@ class GameLoop_API GameLoop : public Script
 	void ManageQuit();
 
 	void EnableMenuButtons(bool enable);
+
 	void VolumeManagement();
 	void SoundManagement();
+	void VsyncManagement();
+	void ResolutionManagement();
 
 	void ChangeGameState(GameState newState); //Set initial conditions for each state here if required
 
@@ -79,6 +81,7 @@ class GameLoop_API GameLoop : public Script
 	ComponentButton* optionButton = nullptr;
 	ComponentButton* controlsButton = nullptr;
 	ComponentButton* creditsButton = nullptr;
+	ComponentButton* vsyncButton = nullptr;
 	ComponentButton* exitButton = nullptr;
 	ComponentButton* backOptionButton = nullptr;
 	ComponentButton* backControlsButton = nullptr;
@@ -97,6 +100,7 @@ class GameLoop_API GameLoop : public Script
 	GameObject* playerGO = nullptr;
 	GameObject* enemyGO = nullptr;
 	GameObject* creditsGO = nullptr;
+	GameObject* vsyncGO = nullptr;
 
 	//BBOX
 	math::AABB* playerBbox = nullptr;
@@ -118,6 +122,7 @@ class GameLoop_API GameLoop : public Script
 	float3 enemyStartPosition = float3::zero;
 
 	bool runningCredits = false;
+	bool vsync = false;
 };
 
 #endif __GameLoop_h__

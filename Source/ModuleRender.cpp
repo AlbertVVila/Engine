@@ -209,6 +209,12 @@ void ModuleRender::OnResize()
 	}
 }
 
+void ModuleRender::SetVsync(bool active)
+{
+	vsync = active;
+	SDL_GL_SetSwapInterval((int)vsync);
+}
+
 void ModuleRender::DrawGizmos(const ComponentCamera &camera) const
 {
 	BROFILER_CATEGORY("Render_DrawGizmos()", Profiler::Color::AliceBlue);
