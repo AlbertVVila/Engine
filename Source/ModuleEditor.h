@@ -8,11 +8,13 @@
 class Panel;
 class PanelConsole;
 class PanelInspector;
+class PanelBrowser;
 class PanelConfiguration;
 class PanelAbout;
 class PanelHardware;
 class PanelHierarchy;
 class PanelTime;
+class PanelResourceManager;
 class PanelState;
 class PanelAnimation;
 class GameObject;
@@ -42,6 +44,7 @@ private:
 	void CreateDockSpace() const;
 	void DrawPanels();
 	void WindowsMenu();
+	void ToolsMenu();
 	void HelpMenu();
 
 	void GenerateGenericPopUp(const char* title, const char* text);
@@ -55,6 +58,8 @@ public:
 	PanelHardware *hardware = nullptr;
 	PanelHierarchy *hierarchy = nullptr;
 	PanelTime *time = nullptr;
+	PanelBrowser *assets = nullptr;
+	PanelResourceManager *resource = nullptr;
 	PanelState *states = nullptr;
 	PanelAnimation *animation = nullptr;
 

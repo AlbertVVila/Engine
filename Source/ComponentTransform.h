@@ -17,6 +17,8 @@ public:
 	void AddTransform(const math::float4x4 &transform);
 	void DrawProperties() override;
 
+	void MultiSelectionTransform(float4x4 &difference); //checks if multi transform is required & do it
+
 	void UpdateTransform();
 	void UpdateOldTransform();
 
@@ -34,6 +36,10 @@ public:
 
 	void Save(JSON_value* value) const override;
 	void Load(JSON_value* value) override;
+
+	//void Copy() override;
+	void Paste() override;
+	void Reset() override;
 
 private:
 	void RotationToEuler();

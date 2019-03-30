@@ -39,7 +39,7 @@ public:
 	void InsertChild(GameObject* child);
 	bool IsParented(const GameObject & gameobject) const;
 
-	void DrawHierarchy(GameObject * selected);
+	void DrawHierarchy();
 
 	void UpdateGlobalTransform();
 	void SetGlobalTransform(const float4x4 &global);
@@ -68,6 +68,7 @@ public:
 	unsigned parentUUID = 0; //only set in Save/Load scene TODO:update on parent change
 	unsigned animationIndexChannel = 999u;
 	bool isStatic = false;
+	bool isSelected = false;
 	bool isBoneRoot = false;
 	bool movedFlag = false;
 	bool copyFlag = false;
@@ -88,7 +89,7 @@ public:
 	ComponentLight* light = nullptr;
 
 	std::vector<Component*> components;
-	std::list<GameObject*> children;
+	std::list<GameObject*> children;	
 
 	std::string name = "GameObject";
 

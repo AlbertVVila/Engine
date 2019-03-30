@@ -15,8 +15,14 @@
 #include "ComponentCamera.h"
 #include "ComponentLight.h"
 #include "ComponentRenderer.h"
+#include "ComponentTransform2D.h"
+#include "ComponentText.h"
+#include "ComponentImage.h"
+#include "ComponentButton.h"
 #include "ComponentAnimation.h"
 #include "ComponentScript.h"
+
+#include "ResourceMesh.h"
 
 #include "GUICreator.h"
 #include "Material.h"
@@ -32,7 +38,9 @@
 #include "Geometry/LineSegment.h"
 #include "GL/glew.h"
 #include "imgui.h"
+
 #define MAX_NAME 64
+#define IMGUI_RIGHT_MOUSE_BUTTON 1
 
 GameObject::GameObject(const char * name, unsigned uuid) : name(name), UUID(uuid)
 {
@@ -72,10 +80,13 @@ GameObject::GameObject(const GameObject & gameobject)
 			App->scene->lights.push_back(light);
 		}
 	}
-
-	if (GetComponent(ComponentType::Renderer) != nullptr)
+	if (!App->scene->photoEnabled)
 	{
-		App->scene->AddToSpacePartition(this);
+		if (GetComponent(ComponentType::Renderer) != nullptr)
+		{
+			isVolumetric = true;
+			App->scene->AddToSpacePartition(this);
+		}
 	}
 
 	for (const auto& child : gameobject.children)
@@ -159,7 +170,12 @@ void GameObject::DrawProperties()
 
 void GameObject::Update(float dt)
 {
-	PROFILE;
+	Component* button = GetComponent(ComponentType::Button); //ESTO LO TIENE QUE HACER EL CANVAAS RECORRIENDO SUS HIJOS / ES DE PRUEBA
+	if (button != nullptr)
+	{
+		button->Update();
+	}
+
 	for (auto& component: components)
 	{
 		component->Update(dt);
@@ -185,7 +201,7 @@ void GameObject::Update(float dt)
 
 }
 
-Component * GameObject::CreateComponent(ComponentType type)
+Component* GameObject::CreateComponent(ComponentType type)
 {
 	Component* component = nullptr;
 	switch (type)
@@ -237,6 +253,18 @@ Component * GameObject::CreateComponent(ComponentType type)
 		component = new ComponentAnimation(this);
 		break;
 
+	case ComponentType::Transform2D:
+		component = new ComponentTransform2D(this);
+		break;
+	case ComponentType::Text:
+		component = new ComponentText(this);
+		break;
+	case ComponentType::Image:
+		component = new ComponentImage(this);
+		break;
+	case ComponentType::Button:
+		component = new ComponentButton(this);
+		break;
 	case ComponentType::Script:
 		component = new ComponentScript(this);
 		break;
@@ -372,7 +400,16 @@ void GameObject::SetGlobalTransform(const float4x4 & global) //Replaces global t
 			parentglobal = parent->transform->global;
 		}
 		transform->SetGlobalTransform(global, parentglobal);
+
+		for (GameObject* go : App->scene->selection)
+		{
+			if (go != App->scene->selected)
+			{
+				go->UpdateGlobalTransform();
+			}
+		}
 	}
+	
 }
 
 float4x4 GameObject::GetGlobalTransform() const
@@ -576,7 +613,7 @@ bool GameObject::CleanUp()
 
 void GameObject::Save(JSON_value *gameobjects) const
 {
-	if (parent != nullptr) // we don't add gameobjects without parent (ex: World)
+	if (parent != nullptr && App->scene->canvas != this) // we don't add gameobjects without parent (ex: World)
 	{
 		JSON_value *gameobject = gameobjects->CreateValue();
 		gameobject->AddUint("UID", UUID);
@@ -627,6 +664,11 @@ void GameObject::Load(JSON_value *value)
 		transform->UpdateTransform();
 	}
 
+	if (hasLight)
+	{
+		transform->UpdateTransform();
+	}
+
 }
 
 bool GameObject::IsParented(const GameObject & gameobject) const
@@ -645,25 +687,20 @@ bool GameObject::IsParented(const GameObject & gameobject) const
 	return false;
 }
 
-
-
-void GameObject::DrawHierarchy(GameObject * selected)
+void GameObject::DrawHierarchy()
 {
 	ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_DefaultOpen
-		| ImGuiTreeNodeFlags_OpenOnDoubleClick | (selected == this ? ImGuiTreeNodeFlags_Selected : 0);
+		| ImGuiTreeNodeFlags_OpenOnDoubleClick | (isSelected ? ImGuiTreeNodeFlags_Selected : 0);
 
 	ImGui::PushID(this);
 	if (children.empty())
 	{
 		node_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
 	}
+	ImGui::Text("|"); ImGui::SameLine();
+	App->scene->DragNDropMove(this);
 	bool obj_open = ImGui::TreeNodeEx(this, node_flags, name.c_str());
-	if (ImGui::IsItemClicked())
-	{
-		App->scene->Select(this);
-	}
-	App->scene->DragNDrop(this);
-	if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	if (isSelected && ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
 		ImGui::OpenPopup("gameobject_options_popup");
 	}
@@ -672,27 +709,39 @@ void GameObject::DrawHierarchy(GameObject * selected)
 		GUICreator::CreateElements(this);
 		if (ImGui::Selectable("Duplicate"))
 		{
-			copyFlag = true;
+			App->scene->TakePhoto();
+			for each (GameObject* go in App->scene->selection)
+			{
+				go->copyFlag = true;
+			}
 		}
 		if (ImGui::Selectable("Delete"))
 		{
-			deleteFlag = true;
-			if (selected == this)
+			App->scene->TakePhoto();
+			for each (GameObject* go in App->scene->selection)
 			{
-				App->scene->selected = nullptr;
-			}	
+				go->deleteFlag = true;
+			}
+			App->scene->selected = nullptr;
+			App->scene->selection.clear();
 		}
 		ImGui::EndPopup();
 	}
+	else if (ImGui::IsItemClicked() && (std::find(App->scene->selection.begin(), App->scene->selection.end(), this) == App->scene->selection.end() || App->input->IsKeyPressed(SDLK_LCTRL)))
+	{
+		App->scene->Select(this);				
+	}
+	else if (!App->input->IsKeyPressed(SDLK_LCTRL))
+	{
+		App->scene->DragNDrop(this);
+	}
+	
 	if (obj_open)
 	{
-	/*	if (!this->isBoneRoot)
-		{*/
-			for (auto &child : children)
-			{
-				child->DrawHierarchy(selected);
-			}
-		/*}*/
+		for (auto &child : children)
+		{
+			child->DrawHierarchy();
+		}
 		if (!(node_flags & ImGuiTreeNodeFlags_NoTreePushOnOpen))
 		{
 			ImGui::TreePop();

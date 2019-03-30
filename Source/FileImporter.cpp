@@ -15,6 +15,9 @@
 #include "Mesh.h"
 #include "Animation.h"
 
+#include "Resource.h"
+#include "ResourceMesh.h"
+
 #include <assert.h>
 #include <stack>
 #include "Math/float4x4.h"
@@ -51,11 +54,11 @@ void FileImporter::ImportAsset(const char *file, const char *folder)
 	std::string extension(App->fsystem->GetExtension(file));
 	if (extension == FBXEXTENSION || extension == FBXCAPITAL)
 	{
-		ImportFBX(file, folder);
+		App->resManager->ImportFile(file, folder, TYPE::MESH);
 	}
-	else if (extension == PNG || extension == TIF || extension == JPG)
+	else if (extension == PNG || extension == TIF || extension == JPG || extension == TGA)
 	{
-		App->textures->ImportImage(file, folder);
+		App->resManager->ImportFile(file, folder, TYPE::TEXTURE);
 	}
 	else if (extension == TEXTUREEXT)
 	{
@@ -64,6 +67,10 @@ void FileImporter::ImportAsset(const char *file, const char *folder)
 	else if (extension == MESHEXTENSION)
 	{
 		App->fsystem->Copy(folder, MESHES, file);
+	}
+	else if (extension == MATERIALEXT)
+	{
+		App->resManager->ImportFile(file, folder, TYPE::MATERIAL);
 	}
 	else if (extension == ANIMATIONEXTENSION)
 	{
@@ -140,8 +147,16 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file)
 			stackNode.push(aNode->mChildren[i]);
 			stackParent.push(goNode);
 		}
+		ResourceMesh* mesh = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH);
+		App->fsystem->Save((MESHES + std::to_string(mesh->GetUID()) + MESHEXTENSION).c_str(), data, size);
+		//mesh->LoadInMemory();
+		//mesh->SetMesh(data); //Deallocates data
+		meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->GetUID()));
 	}
 
+	App->scene->SaveScene(*fake, App->fsystem->GetFilename(file).c_str(), SCENES); //TODO: Make AutoCreation of folders or check
+	fake->CleanUp();
+	RELEASE(fake);
 	for (unsigned i = 0u; i < aiscene.mNumAnimations; i++)
 	{
 		char* animationData = nullptr;

@@ -209,7 +209,7 @@ bool ModuleProgram::CleanUp()
 	if (defaultShader != nullptr)
 	{
 		App->resManager->DeleteProgram(defaultShader->file);
-		defaultShader == nullptr;
+		defaultShader = nullptr;
 	}
 	return true;
 }
