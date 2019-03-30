@@ -208,7 +208,7 @@ bool ModuleResourceManager::ReImportFile(Resource* resource, const char* filePat
 		success = App->textures->ImportImage(file.c_str(), filePath, (ResourceTexture*)resource);
 		break;
 	case TYPE::MESH:
-		success = App->fsystem->importer.ImportFBX(file.c_str(), filePath);
+		success = App->fsystem->importer.ImportFBX(file.c_str(), filePath, (ResourceMesh*)resource);
 		break;
 		//case TYPE::AUDIO: import_ok = App->audio->Import(newFileInAssets, written_file); break;
 		//case TYPE::SCENE: import_ok = App->scene->Import(newFileInAssets, written_file); break;

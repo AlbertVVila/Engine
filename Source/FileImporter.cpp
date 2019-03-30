@@ -87,7 +87,7 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 	std::map<unsigned, unsigned> meshMap;
 	std::string path(folder);
 	path += file;
-	std::string meta(path + METAEXT);
+	std::string meta(std::string(file) + METAEXT);
 	for (unsigned i = 0; i < aiscene.mNumMeshes; i++)
 	{
 		unsigned size = GetMeshSize(*aiscene.mMeshes[i]);
@@ -96,8 +96,7 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 		ResourceMesh* mesh = nullptr;
 		if (App->fsystem->Load(meta.c_str(), &data) == 0)
 		{
-			mesh = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH);
-			
+			mesh = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH);	
 		}
 		else
 		{

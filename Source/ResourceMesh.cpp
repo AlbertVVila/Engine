@@ -45,10 +45,10 @@ ResourceMesh::~ResourceMesh()
 bool ResourceMesh::LoadInMemory()
 {
 	char *data = nullptr;
-	if (isMesh)
-	{
-		App->fsystem->Load((MESHES + std::to_string(UID) + MESHEXTENSION).c_str(), &data);	// Load mesh file
 
+	unsigned int a = App->fsystem->Load((MESHES + std::to_string(UID) + MESHEXTENSION).c_str(), &data);
+	if (a != 0)	// Load mesh file
+	{
 		SetMesh(data); //Deallocates data
 		SetMeshBuffers();
 		SetBboxBuffers();
@@ -122,11 +122,11 @@ void ResourceMesh::SaveMetafile(const char* file) const
 	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
 }
 
-void ResourceMesh::Load(const JSON_value &config)
+/*void ResourceMesh::LoadConfigFromMeta()
 {
-	Resource::Load(config);
+	Resource::LoadConfigFromMeta();
 	//TODO: Add variables to load
-}
+}*/
 
 void ResourceMesh::Draw(unsigned shaderProgram) const
 {
