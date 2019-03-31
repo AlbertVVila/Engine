@@ -17,6 +17,7 @@ class Component;
 class ComponentButton;
 class ComponentText;
 class ComponentScript;
+class ComponentCamera;
 class PlayerMovement;
 class EnemyMovementScript;
 class IntroScript;
@@ -111,18 +112,24 @@ class GameLoop_API GameLoop : public Script
 	ComponentText* volumeText = nullptr;
 	ComponentText* soundText = nullptr;
 
+	//Script
 	ComponentScript* componentIntroScript = nullptr;
 	ComponentScript* componentCreditsScript = nullptr;
 
 	//Script
 	PlayerMovement* playerScript = nullptr;
 	EnemyMovementScript* enemyMovementScript = nullptr;
+	IntroScript* introScript = nullptr;
 	CreditsScript* creditsScript = nullptr;
+
+	//Camera
+	ComponentCamera* componentIntroCamera = nullptr;
 
 	float3 playerStartPosition = float3::zero;
 	float3 enemyStartPosition = float3::zero;
 
 	bool runningCredits = false;
+	bool runningIntro = false;
 	bool vsync = false;
 };
 
