@@ -87,6 +87,7 @@ class GameLoop_API GameLoop : public Script
 	ComponentButton* backControlsButton = nullptr;
 	ComponentButton* backCreditsButton = nullptr;
 	ComponentButton* toTheAltarButton = nullptr;
+	ComponentButton* hudBackToMenuButton = nullptr;
 	std::vector<Component*> volumeButtons;
 	std::vector<Component*> soundButtons;
 
