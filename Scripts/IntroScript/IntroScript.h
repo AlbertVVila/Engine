@@ -23,6 +23,8 @@ public:
 	void DeSerialize(JSON_value* json) override;
 public:
 	bool introDone = false;
+	math::float3 initialPosition = math::float3::zero;
+
 private:
 	math::float3 distanceNormalized = math::float3::zero;
 	math::float3 finalPosition = math::float3(0, 0, 1000);

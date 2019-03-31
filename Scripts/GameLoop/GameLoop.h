@@ -103,6 +103,7 @@ class GameLoop_API GameLoop : public Script
 	GameObject* enemyGO = nullptr;
 	GameObject* creditsGO = nullptr;
 	GameObject* vsyncGO = nullptr;
+	GameObject* introCamera = nullptr;
 
 	//BBOX
 	math::AABB* playerBbox = nullptr;
