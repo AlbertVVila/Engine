@@ -92,7 +92,7 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 	std::string path(folder);
 	path += file;
 	std::string name = App->fsystem->GetFilename(file);
-	std::string meta(std::string(file) + METAEXT);
+	std::string meta(std::string(path) + METAEXT);
 	for (unsigned i = 0; i < aiscene.mNumMeshes; i++)
 	{
 		unsigned size = GetMeshSize(*aiscene.mMeshes[i]);
@@ -106,8 +106,8 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 		else
 		{
 			JSON *json = new JSON(data);
-			JSON_value* meshValue = json->GetValue((std::string("Mesh") + std::to_string(i)).c_str());
-			mesh = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH);
+			JSON_value* meshValue = json->GetValue("Mesh");
+			mesh = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH, meshValue->GetUint(("Mesh" + std::to_string(i)).c_str()));
 		}
 		App->fsystem->Save((MESHES + std::to_string(mesh->GetUID()) + MESHEXTENSION).c_str(), data, size);
 		resource->AddMesh(mesh);
