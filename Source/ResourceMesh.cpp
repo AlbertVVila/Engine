@@ -3,6 +3,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleFileSystem.h"
+#include "ModuleResourceManager.h"
 
 #include "JSON.h"
 
@@ -122,11 +123,35 @@ void ResourceMesh::SaveMetafile(const char* file) const
 	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
 }
 
-/*void ResourceMesh::LoadConfigFromMeta()
+void ResourceMesh::LoadConfigFromMeta()
 {
 	Resource::LoadConfigFromMeta();
-	//TODO: Add variables to load
-}*/
+
+	char* data = nullptr;
+	std::string metaFile(file);
+	metaFile += ".meta";
+
+	if (App->fsystem->Load(metaFile.c_str(), &data) == 0)
+	{
+		LOG("Warning: %s couldn't be loaded", metaFile.c_str());
+		RELEASE_ARRAY(data);
+		return;
+	}
+	JSON* json = new JSON(data);
+	JSON_value* value = json->GetValue("Mesh");
+	numMeshes = value->GetUint("NumMeshes");
+
+	std::string name = App->fsystem->GetFilename(file);
+	for (int i = 0; i < numMeshes; ++i)
+	{
+		unsigned meshUID = value->GetUint(("Mesh" + std::to_string(i)).c_str());
+		ResourceMesh* mesh = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH, meshUID);
+		mesh->SetFile(file.c_str());
+		mesh->SetExportedFile((name + std::to_string(i)).c_str());
+
+		meshList.push_back(meshUID);
+	}
+}
 
 void ResourceMesh::Draw(unsigned shaderProgram) const
 {

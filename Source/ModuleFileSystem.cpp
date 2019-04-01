@@ -417,7 +417,8 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 					}
 					{
 						// File already imported, add it to the resources list
-						App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::TEXTURE);
+						ResourceTexture* res = (ResourceTexture*)App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::TEXTURE);
+						res->LoadConfigFromMeta();
 					}
 				}
 				else if (type == FILETYPE::MODEL) //FBX
@@ -430,7 +431,9 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 					}
 					else
 					{
-						App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::MESH);
+						// File already imported, add it to the resources list
+						ResourceMesh* res = (ResourceMesh*)App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::MESH);
+						res->LoadConfigFromMeta();
 					}
 					/*else
 					{
