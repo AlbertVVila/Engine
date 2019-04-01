@@ -415,6 +415,7 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 						// File modified or not imported, send it to import
 						filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
 					}
+					else
 					{
 						// File already imported, add it to the resources list
 						ResourceTexture* res = (ResourceTexture*)App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::TEXTURE);
