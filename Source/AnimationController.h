@@ -21,6 +21,10 @@ public:
 		Instance* next = nullptr;
 		unsigned fadeDuration = 0u;
 		unsigned fadeTime = 0u;
+
+		// Clipping values
+		float minTime = 0.0f;
+		float maxTime = -1.0f;
 	};
 
 	Instance* current = nullptr;
@@ -35,6 +39,7 @@ public:
 	void ReleaseInstance(Instance* ins);
 
 	void PlayAnimation();
+	void ResetClipping();
 
 public:
 

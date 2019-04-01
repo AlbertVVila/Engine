@@ -16,22 +16,6 @@ struct Channel
 	std::vector<math::Quat> rotationSamples;
 };
 
-struct ClipAnimation
-{
-	std::string clipName;
-	double duration = 0; //frames
-	double framesPerSecond = 0;
-	int numberFrames = 0;
-	unsigned durationInSeconds = 0u;
-
-	ClipAnimation() { ; }
-	ClipAnimation(std::string n, double d, double fps, int nF, unsigned DiS) :
-		clipName(n), duration(d), framesPerSecond(fps), numberFrames(nF),
-		durationInSeconds(DiS) {
-		;
-	}
-};
-
 class Animation
 {
 public:
@@ -63,7 +47,6 @@ public:
 	int currentFrame = 0u;
 
 	std::vector<Channel*> channels;
-	std::vector<ClipAnimation*> clips;
 };
 
 #endif // __ANIMATION_H_

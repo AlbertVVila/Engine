@@ -25,6 +25,8 @@ void AnimationController::Play(Animation* anim, bool loop, unsigned fadeTime)
 	newInstance->fadeDuration = fadeTime;
 	newInstance->next = current;
 	current = newInstance;
+
+	current->maxTime = current->anim->durationInSeconds;
 }
 
 void AnimationController::Update(float dt)
@@ -46,21 +48,22 @@ void AnimationController::UpdateInstance(Instance* instance, float dt)
 
 		if (trueDt > 0.0f)
 		{
-			float timeRemainingA = anim->durationInSeconds - instance->time;
+			//float timeRemainingA = anim->durationInSeconds - instance->time;
+			float timeRemainingA = instance->maxTime - instance->time;
 			if (trueDt <= timeRemainingA)
 			{
 				instance->time += trueDt;
-				trueFrame += trueDt * anim->framesPerSecond;
+				trueFrame = instance->time * anim->framesPerSecond;
 				anim->currentFrame = (int)trueFrame;
 			}
 			else if (instance->loop)
 			{
-				instance->time = trueDt - timeRemainingA;
+				instance->time = instance->minTime + trueDt - timeRemainingA;
 				trueFrame = 0;
 			}
 			else
 			{
-				instance->time = anim->durationInSeconds;
+				instance->time = instance->maxTime;
 			}
 		}
 		else
@@ -69,7 +72,7 @@ void AnimationController::UpdateInstance(Instance* instance, float dt)
 			if (trueDt >= timeRemainingA)
 			{
 				instance->time += trueDt;
-				trueFrame += trueDt * anim->framesPerSecond;
+				trueFrame = instance->time * anim->framesPerSecond;
 				anim->currentFrame = (int)trueFrame;
 			}
 			else if (instance->loop)
@@ -109,6 +112,12 @@ void AnimationController::ReleaseInstance(Instance* instance)
 		delete instance;
 		instance = next;
 	} while (instance != nullptr);
+}
+
+void AnimationController::ResetClipping()
+{
+	current->minTime = 0.0f;
+	current->maxTime = current->anim->durationInSeconds;
 }
 
 bool AnimationController::GetTransform(unsigned channelIndex, math::float3& position, math::Quat& rotation)

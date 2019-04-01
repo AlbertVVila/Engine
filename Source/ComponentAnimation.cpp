@@ -88,7 +88,6 @@ void ComponentAnimation::UpdateGO(GameObject* go)
 	{
 		go->transform->SetPosition(position);
 		go->transform->SetRotation(rotation);
- 		
 	}
 
 	gameobject->movedFlag = true;
