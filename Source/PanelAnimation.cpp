@@ -4,6 +4,7 @@
 
 #include "GameObject.h"
 #include "ComponentAnimation.h"
+#include "ComponentTransform.h"
 #include "PanelAnimation.h"
 #include "imgui.h"
 #include "Globals.h"
@@ -37,10 +38,9 @@ void PanelAnimation::Draw()
 		ImGui::Text("FRAMES");
 
 		ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 5.7f);
-		if (ImGui::SliderInt("##label", (int *)&anim->currentFrame, 0, anim->duration))
+		if (ImGui::SliderInt("##label", &anim->currentFrame, 0, anim->duration))
 		{
-			int i = 0;
-			i += i;
+			UpdateGameObjectAnimation(App->scene->selected, anim);
 		}
 
 		ImGui::SameLine(ImGui::GetWindowWidth() - ImGui::GetWindowWidth() / 6);
@@ -134,4 +134,18 @@ void PanelAnimation::Draw()
 	}
 
 	ImGui::End();
+}
+
+void PanelAnimation::UpdateGameObjectAnimation(GameObject * go, Animation* anim)
+{
+	if (go->animationIndexChannel != 999u)
+	{
+		go->transform->SetPosition(anim->GetPosition(go->animationIndexChannel, anim->currentFrame));
+		go->transform->SetRotation(anim->GetRotation(go->animationIndexChannel, anim->currentFrame));
+	}
+
+	for (auto child : go->children)
+	{
+		UpdateGameObjectAnimation(child, anim);
+	}
 }

@@ -51,14 +51,15 @@ void ComponentAnimation::DrawProperties()
 void ComponentAnimation::Update(float dt)
 {
 	PROFILE;
+
+	if (!channelsSetted)
+	{
+		SetIndexChannels(gameobject);
+		channelsSetted = true;
+	}
+
 	if (App->time->gameState == GameState::RUN)
 	{
-		if (!channelsSetted)
-		{
-			SetIndexChannels(gameobject);
-			channelsSetted = true;
-		}
-
 		controller->Update(App->time->gameDeltaTime);
 
 		if (gameobject != nullptr)

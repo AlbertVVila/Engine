@@ -11,6 +11,8 @@ public:
 
 	void Draw() override;
 
+	void UpdateGameObjectAnimation(GameObject* go, Animation* anim);
+
 public:
 	int minFrame;
 	bool isCliping = false;

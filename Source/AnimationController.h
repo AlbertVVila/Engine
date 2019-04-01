@@ -24,6 +24,7 @@ public:
 	};
 
 	Instance* current = nullptr;
+	float trueFrame = 0;
 
 	AnimationController();
 	~AnimationController();
