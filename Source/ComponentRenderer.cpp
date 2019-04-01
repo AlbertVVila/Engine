@@ -64,9 +64,38 @@ void ComponentRenderer::DrawProperties()
 			return;
 		}
 
+		// Mesh selector
+		ImGui::Text("Mesh");
+		ImGui::PushID("Mesh Combo");
+		if (ImGui::BeginCombo("", mesh != nullptr ? mesh->GetExportedFile() : ""))
+		{
+			if (guiMeshes.empty())
+			{
+				guiMeshes = App->resManager->GetResourceNamesList(TYPE::MESH, true);
+			}
+			for (int n = 0; n < guiMeshes.size(); n++)
+			{
+				bool is_selected = (mesh != nullptr ? mesh->GetExportedFile() == guiMeshes[n] : false);
+				if (ImGui::Selectable(guiMeshes[n].c_str(), is_selected))
+				{
+					if(mesh == nullptr || mesh->GetExportedFile() != guiMeshes[n])
+						SetMesh(guiMeshes[n].c_str());
+				}
+				if (is_selected)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+			ImGui::EndCombo();
+		}
+		else
+		{
+			guiMeshes.clear();
+		}
+		ImGui::PopID();
+
 		if (mesh == nullptr)
 		{
-			// TODO: Add mesh selector
 			ImGui::Text("No mesh selected.");
 		}
 		else
@@ -76,7 +105,9 @@ void ComponentRenderer::DrawProperties()
 		}
 		ImGui::Spacing();
 
+		// Material selector
 		ImGui::Text("Material");
+		ImGui::PushID("Material Combo");
 		if (ImGui::BeginCombo("", material->GetExportedFile()))
 		{
 			if (guiMaterials.empty())
@@ -108,6 +139,7 @@ void ComponentRenderer::DrawProperties()
 		{
 			guiMaterials.clear();
 		}
+		ImGui::PopID();
 
 		ImGui::SameLine();
 		if (App->editor->materialEditor->open)
@@ -222,6 +254,17 @@ void ComponentRenderer::SetMaterial(const char* materialfile)
 		if(material == nullptr)
 			material = (ResourceMaterial*)App->resManager->Get(DEFAULTMAT, TYPE::MATERIAL);
 	}
+	return;
+}
+
+void ComponentRenderer::SetMesh(const char* meshfile)
+{
+	// Delete previous mesh
+	if (mesh != nullptr)
+		App->resManager->DeleteResource(mesh->GetUID());
+
+	if (meshfile != nullptr)
+		mesh = (ResourceMesh*)App->resManager->Get(meshfile, TYPE::MESH);
 	return;
 }
 
