@@ -265,13 +265,9 @@ void ComponentRenderer::SetMesh(const char* meshfile)
 
 	if (meshfile != nullptr)
 		mesh = (ResourceMesh*)App->resManager->Get(meshfile, TYPE::MESH);
-	return;
-}
 
-void ComponentRenderer::UpdateMesh(const char * data, unsigned uid)
-{
-	//mesh->SetMesh(data);
 	UpdateGameObject();
+	return;
 }
 
 void ComponentRenderer::UpdateGameObject()

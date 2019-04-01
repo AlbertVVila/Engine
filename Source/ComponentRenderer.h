@@ -24,7 +24,6 @@ public:
 
 	void SetMaterial(const char* material);
 	void SetMesh(const char* meshfile);
-	void UpdateMesh(const char * meshData, unsigned uid);
 	void UpdateGameObject();
 
 public:
