@@ -7,6 +7,8 @@
 #include "ResourceMesh.h"
 #include "JSON.h"
 
+#include "imgui.h"
+
 ResourceModel::ResourceModel(unsigned uid) : Resource(uid, TYPE::MODEL)
 {
 }
@@ -113,4 +115,9 @@ void ResourceModel::AddMesh(ResourceMesh* mesh)
 {
 	++numMeshes;
 	meshList.push_back(mesh);
+}
+
+void ResourceModel::DrawImportConfiguration()
+{
+	// TODO: [Resource manager] Add import config
 }

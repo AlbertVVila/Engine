@@ -24,6 +24,7 @@ public:
 	bool CheckImportedMeshes();
 
 	void AddMesh(ResourceMesh* mesh);
+	void DrawImportConfiguration() override;
 
 public:
 	unsigned numMeshes = 0;

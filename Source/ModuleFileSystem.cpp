@@ -425,47 +425,22 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 				}
 				else if (type == FILETYPE::MODEL) //FBX
 				{	
-					//std::set<std::string>::iterator it = importedMeshes.find(RemoveExtension(file));
-					if (/*it == importedModels.end() ||*/ statFile.st_mtime > statMeta.st_mtime)
+					if (statFile.st_mtime > statMeta.st_mtime)
 					{
 						filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
 
 					}
 					else
 					{
-						// File already imported, add it to the resources list
+						// File already imported, add model to the resources list
 						ResourceModel* res = (ResourceModel*)App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::MODEL);
 						res->LoadConfigFromMeta();
+
+						// Check if the meshes inside ResourceModel are imported
 						if(res->CheckImportedMeshes())
 							filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
 			
 					}
-					/*else
-					{
-						for (int i = 0; i < ((ResourceMesh*)App->resManager->GetWithoutLoad
-						(RemoveExtension(file).c_str()))->numMeshes; ++i)
-						{
-							std::set<std::string>::iterator it = importedMeshes.find
-							(std::to_string(((ResourceMesh*)App->resManager->GetWithoutLoad
-							(RemoveExtension(file).c_str()))->meshList[i]));
-							if (it == importedMeshes.end())
-							{
-								filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
-							}
-
-						}
-					}*/
-					/*else
-					{
-						App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::MESH);
-					}*/
-					//TODO: Get UID from metafile 
-					/*unsigned uid = GetMetaUID((current_folder + file + METAEXT).c_str());
-					std::set<std::string>::iterator it = importedModels.find(std::to_string(uid));
-					if (it == importedModels.end() || statFile.st_mtime > statMeta.st_mtime)
-					{
-						filesToImport.push_back(std::pair<std::string, std::string>(file, current_folder));
-					}*/
 				}
 				else if (type == FILETYPE::MATERIAL)
 				{
