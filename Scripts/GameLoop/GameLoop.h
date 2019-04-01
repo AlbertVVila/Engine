@@ -40,6 +40,8 @@ class GameLoop_API GameLoop : public Script
 		QUIT
 	};
 
+private:
+
 	void Start() override;
 	void Update() override;
 
@@ -61,10 +63,13 @@ class GameLoop_API GameLoop : public Script
 	void VsyncManagement();
 	void ResolutionManagement();
 
+	void ResetPositions();
+
 	void ChangeGameState(GameState newState); //Set initial conditions for each state here if required
 
 	GameState gameState = GameState::MENU;
 
+private:
 	//UI Values
 	int volume = 10;
 	int minVolume = 0;
