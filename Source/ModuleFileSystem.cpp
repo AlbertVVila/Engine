@@ -372,11 +372,11 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 {
 	// Get lists with all imported resources
 	std::set<std::string> importedTextures;
-	std::set<std::string> importedModels;
+	//std::set<std::string> importedModels;
 	std::set<std::string> importedMaterials;
 	std::set<std::string> importedMeshes;
 	ListFiles(TEXTURES, importedTextures);
-	ListFiles(SCENES, importedModels);
+	//ListFiles(SCENES, importedModels);
 	ListFiles(IMPORTED_MATERIALS, importedMaterials);
 	ListFiles(MESHES, importedMeshes);
 
@@ -424,8 +424,8 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 				}
 				else if (type == FILETYPE::MODEL) //FBX
 				{	
-					std::set<std::string>::iterator it = importedModels.find(RemoveExtension(file));
-					if (it == importedModels.end() || statFile.st_mtime > statMeta.st_mtime)
+					//std::set<std::string>::iterator it = importedMeshes.find(RemoveExtension(file));
+					if (/*it == importedModels.end() ||*/ statFile.st_mtime > statMeta.st_mtime)
 					{
 						filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
 
@@ -435,6 +435,21 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 						// File already imported, add it to the resources list
 						ResourceMesh* res = (ResourceMesh*)App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::MESH);
 						res->LoadConfigFromMeta();
+
+						bool import = false;
+						for each(auto mesh in res->meshList)
+						{
+							// FBX already in import list
+							if (import) break;
+
+							std::set<std::string>::iterator it = importedMeshes.find(std::to_string(mesh));
+							if (it == importedMeshes.end())
+							{
+								filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
+								import = true;
+							}
+						}
+
 					}
 					/*else
 					{

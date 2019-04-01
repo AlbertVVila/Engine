@@ -139,6 +139,7 @@ void ResourceMesh::LoadConfigFromMeta()
 	}
 	JSON* json = new JSON(data);
 	JSON_value* value = json->GetValue("Mesh");
+	UID = value->GetUint("GUID");
 	numMeshes = value->GetUint("NumMeshes");
 
 	std::string name = App->fsystem->GetFilename(file);
