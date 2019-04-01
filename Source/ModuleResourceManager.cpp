@@ -10,6 +10,7 @@
 
 #include "Resource.h"
 #include "ResourceTexture.h"
+#include "ResourceModel.h"
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
 #include "ResourceSkybox.h"
@@ -182,9 +183,12 @@ bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* 
 	case TYPE::TEXTURE: 
 		success = App->textures->ImportImage(newFileInAssets, filePath, (ResourceTexture*)resource);
 		break;
-	case TYPE::MESH:	
-		success = App->fsystem->importer.ImportFBX(newFileInAssets, filePath, (ResourceMesh*)resource);
+	case TYPE::MODEL:
+		success = App->fsystem->importer.ImportFBX(newFileInAssets, filePath, (ResourceModel*)resource);
 		break;
+	/*case TYPE::MESH:	
+		success = App->fsystem->importer.ImportFBX(newFileInAssets, filePath, (ResourceMesh*)resource);
+		break;*/
 	//case TYPE::AUDIO: import_ok = App->audio->Import(newFileInAssets, written_file); break;
 	//case TYPE::SCENE: import_ok = App->scene->Import(newFileInAssets, written_file); break;
 	case TYPE::MATERIAL:
@@ -218,9 +222,12 @@ bool ModuleResourceManager::ReImportFile(Resource* resource, const char* filePat
 	case TYPE::TEXTURE:
 		success = App->textures->ImportImage(file.c_str(), filePath, (ResourceTexture*)resource);
 		break;
-	case TYPE::MESH:
-		success = App->fsystem->importer.ImportFBX(file.c_str(), filePath, (ResourceMesh*)resource);
+	case TYPE::MODEL:
+		success = App->fsystem->importer.ImportFBX(file.c_str(), filePath, (ResourceModel*)resource);
 		break;
+	/*case TYPE::MESH:
+		success = App->fsystem->importer.ImportFBX(file.c_str(), filePath, (ResourceMesh*)resource);
+		break;*/
 		//case TYPE::AUDIO: import_ok = App->audio->Import(newFileInAssets, written_file); break;
 		//case TYPE::SCENE: import_ok = App->scene->Import(newFileInAssets, written_file); break;
 	case TYPE::MATERIAL:
@@ -260,6 +267,7 @@ Resource * ModuleResourceManager::CreateNewResource(TYPE type, unsigned forceUid
 	switch (type) 
 	{
 	case TYPE::TEXTURE: resource = (Resource*) new ResourceTexture(uid); break;
+	case TYPE::MODEL:	resource = (Resource*) new ResourceModel(uid); break;
 	case TYPE::MESH:	resource = (Resource*) new ResourceMesh(uid); break;
 	/*case TYPE::AUDIO:	resource = (Resource*) new ResourceAudio(uid); break;
 	case TYPE::SCENE:	resource = (Resource*) new ResourceScene(uid); break;

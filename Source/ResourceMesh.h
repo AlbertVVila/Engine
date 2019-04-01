@@ -21,8 +21,6 @@ public:
 
 	bool LoadInMemory() override;
 	void DeleteFromMemory() override;
-	void SaveMetafile(const char* file) const override;
-	void LoadConfigFromMeta() override;
 
 	// Mesh specific
 	void Draw(unsigned shaderProgram) const;
@@ -55,12 +53,6 @@ public:
 	std::vector<math::float3> meshTangents;
 	std::vector<float> meshTexCoords;
 	std::vector<unsigned> meshIndices;
-
-	unsigned int numMeshes = 0;
-	std::vector<unsigned> meshList;
-
-	bool isMesh = false;
-
 };
 
 #endif __ResourceMesh_h__

@@ -106,6 +106,7 @@ void PanelResourceManager::Draw()
 		switch (resource->GetType())
 		{
 		case TYPE::TEXTURE:		ImGui::Text("Texture");		break;
+		case TYPE::MODEL:		ImGui::Text("Model");		break;
 		case TYPE::MESH:		ImGui::Text("Mesh");		break;
 		case TYPE::AUDIO:		ImGui::Text("Audio");		break;
 		case TYPE::SCENE:		ImGui::Text("Scene");		break;
@@ -138,6 +139,7 @@ void PanelResourceManager::Draw()
 		switch (previous->GetType())
 		{
 		case TYPE::TEXTURE:		DrawResourceTexture();	break;
+		case TYPE::MODEL:		/*DrawResourceModel();*/break;
 		case TYPE::MESH:		DrawResourceMesh();		break;
 		/*case TYPE::AUDIO:								break;
 		case TYPE::SCENE:								break;
@@ -227,7 +229,7 @@ void PanelResourceManager::OpenResourceEditor()
 			}
 
 			// Type
-			const char* types[] = { "Texture", "Mesh", "Audio", "Scene", "Animation", "Material", "Skybox", "Unknown" };
+			const char* types[] = { "Texture", "Model", "Mesh", "Audio", "Scene", "Animation", "Material", "Skybox", "Unknown" };
 			int type = (int)auxResource->GetType();
 			if (ImGui::BeginCombo("Type", types[type]))
 			{

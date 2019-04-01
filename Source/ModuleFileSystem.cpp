@@ -9,6 +9,7 @@
 
 #include "Resource.h"
 #include "ResourceMesh.h"
+#include "ResourceModel.h"
 
 #include "JSON.h"
 
@@ -433,7 +434,7 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 					else
 					{
 						// File already imported, add it to the resources list
-						ResourceMesh* res = (ResourceMesh*)App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::MESH);
+						ResourceModel* res = (ResourceModel*)App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::MODEL);
 						res->LoadConfigFromMeta();
 
 						bool import = false;
@@ -442,7 +443,7 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 							// FBX already in import list
 							if (import) break;
 
-							std::set<std::string>::iterator it = importedMeshes.find(std::to_string(mesh));
+							std::set<std::string>::iterator it = importedMeshes.find(std::to_string(mesh->GetUID()));
 							if (it == importedMeshes.end())
 							{
 								filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));

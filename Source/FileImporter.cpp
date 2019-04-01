@@ -9,6 +9,10 @@
 #include "ComponentRenderer.h"
 #include "ComponentTransform.h"
 
+#include "Resource.h"
+#include "ResourceModel.h"
+#include "ResourceMesh.h"
+
 #include "FileImporter.h"
 
 #include "JSON.h"
@@ -46,7 +50,7 @@ void FileImporter::ImportAsset(const char *file, const char *folder)
 	std::string extension (App->fsystem->GetExtension(file));
 	if (extension == FBXEXTENSION || extension == FBXCAPITAL)
 	{
-		App->resManager->ImportFile(file, folder, TYPE::MESH);
+		App->resManager->ImportFile(file, folder, TYPE::MODEL);
 	}
 	else if (extension == PNG || extension == TIF || extension == JPG || extension == TGA)
 	{
@@ -66,7 +70,7 @@ void FileImporter::ImportAsset(const char *file, const char *folder)
 	}
 }
 
-bool FileImporter::ImportFBX(const char* fbxfile, const char* folder, ResourceMesh* resource)
+bool FileImporter::ImportFBX(const char* fbxfile, const char* folder, ResourceModel* resource)
 {
 	assert(fbxfile != nullptr);
 	if (fbxfile == nullptr) return false;
@@ -82,7 +86,7 @@ bool FileImporter::ImportFBX(const char* fbxfile, const char* folder, ResourceMe
 	return false;
 }
 
-bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const char* folder, ResourceMesh* resource)
+bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const char* folder, ResourceModel* resource)
 {
 	std::map<unsigned, unsigned> meshMap;
 	std::string path(folder);
@@ -105,10 +109,9 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 			mesh = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH);
 		}
 		App->fsystem->Save((MESHES + std::to_string(mesh->GetUID()) + MESHEXTENSION).c_str(), data, size);
-		resource->AddMesh(mesh->GetUID());
+		resource->AddMesh(mesh);
 		mesh->SetFile(path.c_str());
 		mesh->SetExportedFile((file + std::to_string(i)).c_str());
-		mesh->isMesh = true;
 		//mesh->LoadInMemory();
 		//mesh->SetMesh(data); //Deallocates data
 		meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->GetUID()));
