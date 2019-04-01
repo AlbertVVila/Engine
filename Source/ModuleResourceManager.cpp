@@ -165,9 +165,12 @@ bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* 
 
 	// Check if the file was already imported
 	unsigned uid = FindByFileInAssets(assetPath.c_str());
-	if (uid != 0)
+	if (uid != 0 && type != TYPE::MESH)
 	{
-		return ReImportFile(GetWithoutLoad(uid), filePath, type);
+		// Avoid reimporting meshes (only model can reimport them)
+		Resource* reImportFile = GetWithoutLoad(uid);
+		if(reImportFile->GetType() != TYPE::MESH)
+			return ReImportFile(reImportFile, filePath, type);
 	}
 
 	Resource* resource = CreateNewResource(type);
@@ -259,7 +262,7 @@ bool ModuleResourceManager::ReImportFile(Resource* resource, const char* filePat
 	return success;
 }
 
-Resource * ModuleResourceManager::CreateNewResource(TYPE type, unsigned forceUid)
+Resource* ModuleResourceManager::CreateNewResource(TYPE type, unsigned forceUid)
 {
 	Resource* resource = nullptr;
 	unsigned uid = (forceUid == 0) ? GenerateNewUID() : forceUid;

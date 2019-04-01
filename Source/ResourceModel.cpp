@@ -93,6 +93,22 @@ void ResourceModel::LoadConfigFromMeta()
 	}
 }
 
+bool ResourceModel::CheckImportedMeshes()
+{
+	std::set<std::string> importedMeshes;
+	App->fsystem->ListFiles(MESHES, importedMeshes);
+
+	for each(auto mesh in meshList)
+	{
+		std::set<std::string>::iterator it = importedMeshes.find(std::to_string(mesh->GetUID()));
+		if (it == importedMeshes.end())
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 void ResourceModel::AddMesh(ResourceMesh* mesh)
 {
 	++numMeshes;

@@ -91,6 +91,7 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 	std::map<unsigned, unsigned> meshMap;
 	std::string path(folder);
 	path += file;
+	std::string name = App->fsystem->GetFilename(file);
 	std::string meta(std::string(file) + METAEXT);
 	for (unsigned i = 0; i < aiscene.mNumMeshes; i++)
 	{
@@ -111,7 +112,7 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 		App->fsystem->Save((MESHES + std::to_string(mesh->GetUID()) + MESHEXTENSION).c_str(), data, size);
 		resource->AddMesh(mesh);
 		mesh->SetFile(path.c_str());
-		mesh->SetExportedFile((file + std::to_string(i)).c_str());
+		mesh->SetExportedFile((name + std::to_string(i)).c_str());
 		//mesh->LoadInMemory();
 		//mesh->SetMesh(data); //Deallocates data
 		meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->GetUID()));

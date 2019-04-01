@@ -21,6 +21,7 @@ public:
 	// File in asset specific
 	void SaveMetafile(const char* file) const override;
 	void LoadConfigFromMeta() override;
+	bool CheckImportedMeshes();
 
 	void AddMesh(ResourceMesh* mesh);
 
