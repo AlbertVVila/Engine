@@ -38,7 +38,7 @@ bool ModuleResourceManager::Init(JSON * config)
 bool ModuleResourceManager::Start()
 {
 	//TODO: Read metafiles from Assets/ instead and import or add to resources
-	std::vector<std::string> files;
+	/*std::vector<std::string> files;
 	std::vector<std::string> dirs;
 	App->fsystem->ListFolderContent(MESHES, files, dirs);
 	for each (std::string file in files)
@@ -49,7 +49,7 @@ bool ModuleResourceManager::Start()
 		res->SetExportedFile(name.c_str());
 	}
 	files.clear();
-	dirs.clear();
+	dirs.clear();*/
 	return true;
 }
 
@@ -161,7 +161,6 @@ bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* 
 
 	std::string assetPath(filePath);
 	assetPath += newFileInAssets;
-	AddResource(newFileInAssets, filePath, type);
 
 	// Check if the file was already imported
 	unsigned uid = FindByFileInAssets(assetPath.c_str());

@@ -113,12 +113,14 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 		//mesh->SetMesh(data); //Deallocates data
 		meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->GetUID()));
 	}
-	GameObject *fake = new GameObject("fake",0);
+
+	// TODO: Save scene on import mesh 
+	/*GameObject *fake = new GameObject("fake",0);
 	ProcessNode(meshMap, aiscene.mRootNode, &aiscene, fake);
 
 	App->scene->SaveScene(*fake, App->fsystem->GetFilename(file).c_str(), SCENES); //TODO: Make AutoCreation of folders or check
 	fake->CleanUp();
-	RELEASE(fake);
+	RELEASE(fake);*/
 
 	aiReleaseImport(&aiscene);
 	return true;
