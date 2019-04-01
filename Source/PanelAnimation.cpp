@@ -74,10 +74,12 @@ void PanelAnimation::Draw()
 			if (isCliping && anim->currentFrame - 1 > minFrame)
 			{
 				anim->currentFrame--;
+				UpdateGameObjectAnimation(App->scene->selected, anim);
 			}
 			else if (!isCliping && anim->currentFrame > 0)
 			{
 				anim->currentFrame--;
+				UpdateGameObjectAnimation(App->scene->selected, anim);
 			}
 
 		}
@@ -111,8 +113,11 @@ void PanelAnimation::Draw()
 		ImGui::SameLine();
 		if (ImGui::Button(">>", ImVec2(23, 23)))
 		{
-			if(anim->currentFrame < anim->duration)
+			if (anim->currentFrame < anim->duration)
+			{
 				anim->currentFrame++;
+				UpdateGameObjectAnimation(App->scene->selected, anim);
+			}
 		}
 
 		if (isCliping)
