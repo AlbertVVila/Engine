@@ -35,18 +35,20 @@ void ComponentAnimation::DrawProperties()
 {
 	if (ImGui::CollapsingHeader("Animation", ImGuiTreeNodeFlags_DefaultOpen))
 	{
+		if (anim != nullptr)
+		{
+			//Name of the animation
+			ImGui::Text(anim->animationName.c_str());
 
-		//Name of the animation
-		ImGui::Text(anim->animationName.c_str());
+			//Number of frames the animation has
+			ImGui::Text("%i frames", anim->numberFrames);
 
-		//Number of frames the animation has
-		ImGui::Text("%i frames", anim->numberFrames);
+			//Duration of the animation
+			ImGui::Text("%i seconds", anim->durationInSeconds);
 
-		//Duration of the animation
-		ImGui::Text("%i seconds", anim->durationInSeconds);
-
-		//Play
-		ImGui::DragFloat("Animation Speed", &controller->current->speed, 0.01f, -2.0f, 2.0f);
+			//Play
+			ImGui::DragFloat("Animation Speed", &controller->current->speed, 0.01f, -2.0f, 2.0f);
+		}
 	}
 }
 

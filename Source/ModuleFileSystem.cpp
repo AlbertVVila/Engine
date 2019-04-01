@@ -372,12 +372,13 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 				else if (type == FILETYPE::MODEL) //FBX
 				{
 					//TODO: Get UID from metafile 
-					/*unsigned uid = GetMetaUID((current_folder + file + ".meta").c_str());
-					std::set<std::string>::iterator it = importedModels.find(std::to_string(uid));
+					/*unsigned uid = GetMetaUID((current_folder + file + ".meta").c_str());*/
+					std::set<std::string>::iterator it = importedModels.find(RemoveExtension(file));
+					
 					if (it == importedModels.end() || statFile.st_mtime > statMeta.st_mtime)
 					{
-						filesToImport.push_back(std::pair<std::string, std::string>(file, current_folder));
-					}*/
+						filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
+					}
 				}
 				else if (type == FILETYPE::MATERIAL)
 				{

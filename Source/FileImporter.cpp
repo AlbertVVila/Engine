@@ -152,7 +152,7 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file)
 	for (unsigned i = 0u; i < aiscene.mNumAnimations; i++)
 	{
 		char* animationData = nullptr;
-		char* correctedAnimationData = nullptr;
+
 		unsigned animationSize = GetAnimationSize(*aiscene.mAnimations[i]);
 		animationData = new char[animationSize];
 		ImportAnimation(*aiscene.mAnimations[i], animationData);
@@ -169,7 +169,6 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file)
 		App->fsystem->Save((ANIMATIONS + std::to_string(animUid) + ANIMATIONEXTENSION).c_str(), animationData, animationSize);
 
 		RELEASE_ARRAY(animationData);
-		RELEASE_ARRAY(correctedAnimationData);
 	}
 	App->scene->SaveScene(*sceneGO, App->fsystem->GetFilename(file).c_str(), SCENES); //TODO: Make AutoCreation of folders or check
 	aiReleaseImport(&aiscene);

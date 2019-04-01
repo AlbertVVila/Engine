@@ -12,6 +12,7 @@
 #include "ResourceTexture.h"
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
+#include "ResourceAnimation.h"
 #include "ResourceSkybox.h"
 
 #include "FileImporter.h"
@@ -189,8 +190,8 @@ Resource * ModuleResourceManager::CreateNewResource(TYPE type, unsigned forceUid
 	case TYPE::TEXTURE: resource = (Resource*) new ResourceTexture(uid); break;
 	case TYPE::MESH:	resource = (Resource*) new ResourceMesh(uid); break;
 	/*case TYPE::AUDIO:	resource = (Resource*) new ResourceAudio(uid); break;
-	case TYPE::SCENE:	resource = (Resource*) new ResourceScene(uid); break;
-	case TYPE::ANIMATION: resource = (Resource*) new ResourceAnimation(uid); break;*/
+	case TYPE::SCENE:	resource = (Resource*) new ResourceScene(uid); break;*/
+	case TYPE::ANIMATION: resource = (Resource*) new ResourceAnimation(uid); break;
 	case TYPE::MATERIAL: resource = (Resource*) new ResourceMaterial(uid); break;
 	case TYPE::SKYBOX: resource = (Resource*) new ResourceSkybox(uid); break;
 	}

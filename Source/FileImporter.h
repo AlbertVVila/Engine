@@ -11,8 +11,8 @@ struct aiBone;
 struct aiAnimation;
 class GameObject;
 class ResourceMesh;
-class Animation;
-class Bone;
+class ResourceAnimation;
+
 
 class FileImporter {
 public:
@@ -26,8 +26,6 @@ public:
 	bool ImportScene(const aiScene& aiscene, const char* file);
 
 	void ImportAnimation(const aiAnimation& animation, char* data);
-
-	void RewriteAnimationData(Animation* anim, char* data);
 
 	void ImportMesh(const aiMesh& mesh, char* data);
 
