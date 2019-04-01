@@ -17,8 +17,6 @@
 #include "ModuleTextures.h"
 #include "GameObject.h"
 
-#define MAX_FILENAME 30
-
 // Icons
 #define FOLDER_ICON "folderIconBlue"
 #define FILE_ICON "fileIconBlue"
@@ -78,7 +76,6 @@ PanelBrowser::~PanelBrowser()
 	dirs.clear();
 
 	fileSelected = nullptr;
-	newName = "";
 }
 
 bool PanelBrowser::Init()
@@ -277,7 +274,7 @@ void PanelBrowser::DrawFileContextMenu()
 	{
 		if (ImGui::Selectable("Rename"))
 		{
-			newName = fileSelected->GetExportedFile();
+			strcpy(newName, fileSelected->GetExportedFile());
 			openRenamePopUp = true;
 		}
 		if(ImGui::Selectable("Delete"))
@@ -323,31 +320,34 @@ void PanelBrowser::DrawRenamePopUp()
 {
 	ImGui::OpenPopup("Rename File");
 
-	ImGui::SetNextWindowSizeConstraints(ImVec2(250.0f, 130.0f), ImVec2((float)App->window->width, (float)App->window->height));
+	ImGui::SetNextWindowSizeConstraints(ImVec2(270.0f, 150.0f), ImVec2((float)App->window->width, (float)App->window->height));
 	if (ImGui::BeginPopupModal("Rename File", &openRenamePopUp))
 	{
 		ImGui::Text("New name:");
 		ImGui::SameLine();
 
-		char *name = new char[MAX_FILENAME];
-		strcpy(name, newName.c_str());
-		ImGui::InputText("", name, MAX_FILENAME);
-		newName = name;
-		delete[] name;
+		ImGui::InputText("", newName, MAX_FILENAME);
+
+		// Check if there isn't already a file with the same name
+		invalidName = App->resManager->Exists(newName, fileSelected->GetType());
+
+		if(invalidName)
+			ImGui::Text("A file with that name already exists!");
+		else
+			ImGui::NewLine();
 
 		ImGui::NewLine();
-
-		if (ImGui::Button("Accept"))
+		if (ImGui::ButtonEx("Accept", ImVec2(0, 0), invalidName? ImGuiButtonFlags_Disabled : 0))
 		{
-			fileSelected->Rename(newName.c_str());
+			fileSelected->Rename(newName);
 			folderContentDirty = true;
-			newName = "";
+			strcpy(newName,"");
 			openRenamePopUp = false;
 		}
 		ImGui::SameLine(0, 110);
 		if (ImGui::Button("Cancel"))
 		{
-			newName = "";
+			strcpy(newName, "");
 			openRenamePopUp = false;
 		}
 		ImGui::EndPopup();

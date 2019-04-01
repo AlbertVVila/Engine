@@ -105,47 +105,21 @@ void PanelResourceManager::Draw()
 		// Type
 		switch (resource->GetType())
 		{
-		case TYPE::TEXTURE:
-			ImGui::Text("Texture");
-			break;
-		case TYPE::MESH:
-			ImGui::Text("Mesh");
-			break;
-		case TYPE::AUDIO:
-			ImGui::Text("Audio");
-			break;
-		case TYPE::SCENE:
-			ImGui::Text("Scene");
-			break;
-		case TYPE::ANIMATION:
-			ImGui::Text("Animation");
-			break;
-		case TYPE::MATERIAL:
-			ImGui::Text("Material");
-			break;
-		case TYPE::SKYBOX:
-			ImGui::Text("Skybox");
-			break;
+		case TYPE::TEXTURE:		ImGui::Text("Texture");		break;
+		case TYPE::MESH:		ImGui::Text("Mesh");		break;
+		case TYPE::AUDIO:		ImGui::Text("Audio");		break;
+		case TYPE::SCENE:		ImGui::Text("Scene");		break;
+		case TYPE::ANIMATION:	ImGui::Text("Animation");	break;
+		case TYPE::MATERIAL:	ImGui::Text("Material");	break;
+		case TYPE::SKYBOX:		ImGui::Text("Skybox");		break;
 		default:
-		case TYPE::UNKNOWN:
-			ImGui::Text("Unknown");
-			break;
+		case TYPE::UNKNOWN:		ImGui::Text("Unknown");		break;
 		}
 		ImGui::NextColumn();
 		// View button
 		if (ImGui::Button("View"))
 		{
-			switch (resource->GetType())
-			{
-			case TYPE::TEXTURE:		openTextureWindow = true; break;
-			case TYPE::MESH:		openMeshWindow = true; break;
-			/*case TYPE::AUDIO:		break;
-			case TYPE::SCENE:		break;
-			case TYPE::BONE:		break;
-			case TYPE::ANIMATION:	break;*/
-			case TYPE::MATERIAL:	openMaterialWindow = true; break;
-			case TYPE::SKYBOX:		openSkyboxWindow = true; break;
-			}
+			openResourceWindow = true;
 			previous = resource;
 		}
 		ImGui::SameLine();
@@ -159,14 +133,19 @@ void PanelResourceManager::Draw()
 		ImGui::PopID();
 	}
 	OpenResourceEditor();
-	if (openTextureWindow)
-		DrawResourceTexture();
-	if (openMeshWindow)
-		DrawResourceMesh();
-	if (openMaterialWindow)
-		DrawResourceMaterial();
-	if (openSkyboxWindow)
-		DrawResourceSkybox();
+	if (openResourceWindow)
+	{
+		switch (previous->GetType())
+		{
+		case TYPE::TEXTURE:		DrawResourceTexture();	break;
+		case TYPE::MESH:		DrawResourceMesh();		break;
+		/*case TYPE::AUDIO:								break;
+		case TYPE::SCENE:								break;
+		case TYPE::ANIMATION:							break;*/
+		case TYPE::MATERIAL:	DrawResourceMaterial(); break;
+		case TYPE::SKYBOX:		DrawResourceSkybox();	break;
+		}
+	}
 	ImGui::End();
 }
 
@@ -283,7 +262,7 @@ void PanelResourceManager::OpenResourceEditor()
 
 void PanelResourceManager::DrawResourceTexture()
 {
-	if (!ImGui::Begin("Texture Manager", &openTextureWindow))
+	if (!ImGui::Begin("Texture Manager"))
 	{
 		ImGui::End();
 		return;
@@ -324,7 +303,7 @@ void PanelResourceManager::DrawResourceTexture()
 
 void PanelResourceManager::DrawResourceMesh()
 {
-	if (!ImGui::Begin("Mesh Manager", &openMeshWindow))
+	if (!ImGui::Begin("Mesh Manager"))
 	{
 		ImGui::End();
 		return;
@@ -346,7 +325,7 @@ void PanelResourceManager::DrawResourceMesh()
 
 void PanelResourceManager::DrawResourceMaterial()
 {
-	if (!ImGui::Begin("Material Manager", &openMaterialWindow))
+	if (!ImGui::Begin("Material Manager"))
 	{
 		ImGui::End();
 		return;
@@ -397,7 +376,7 @@ void PanelResourceManager::DrawResourceMaterial()
 
 void PanelResourceManager::DrawResourceSkybox()
 {
-	if (!ImGui::Begin("Skybox Manager", &openSkyboxWindow))
+	if (!ImGui::Begin("Skybox Manager"))
 	{
 		ImGui::End();
 		return;
@@ -422,7 +401,7 @@ void PanelResourceManager::DrawResourceSkybox()
 
 void PanelResourceManager::CleanUp()
 {
-	if(!openTextureWindow && !openMeshWindow && !openMaterialWindow && !openSkyboxWindow)
+	if(!openResourceWindow)
 		previous = nullptr;
 
 	if (auxResource != nullptr)
