@@ -102,19 +102,21 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 		if (App->fsystem->Load(meta.c_str(), &data) == 0)
 		{
 			mesh = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH);	
+			resource->AddMesh(mesh);
 		}
 		else
 		{
 			JSON *json = new JSON(data);
 			JSON_value* meshValue = json->GetValue("Mesh");
 			mesh = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH, meshValue->GetUint(("Mesh" + std::to_string(i)).c_str()));
+
+			// ResourceMesh was created on .meta of model load, now replace previous resource
+			App->resManager->ReplaceResource(mesh->GetUID(), mesh);
 		}
 		App->fsystem->Save((MESHES + std::to_string(mesh->GetUID()) + MESHEXTENSION).c_str(), data, size);
-		resource->AddMesh(mesh);
 		mesh->SetFile(path.c_str());
 		mesh->SetExportedFile((name + std::to_string(i)).c_str());
-		//mesh->LoadInMemory();
-		//mesh->SetMesh(data); //Deallocates data
+
 		meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->GetUID()));
 	}
 
