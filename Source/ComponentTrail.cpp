@@ -1,6 +1,7 @@
 #include "Application.h"
 
 #include "ModuleTime.h"
+#include "ModuleParticles.h"
 
 #include "ComponentTrail.h"
 #include "ComponentTransform.h"
@@ -18,6 +19,7 @@ ComponentTrail::ComponentTrail(GameObject* gameobject) : Component(gameobject, C
 	{
 		gameobject->CreateComponent(ComponentType::Transform);
 	}
+	App->particles->AddTrailRenderer(this);
 }
 
 ComponentTrail::ComponentTrail(const ComponentTrail& component) : Component(component)
@@ -26,6 +28,7 @@ ComponentTrail::ComponentTrail(const ComponentTrail& component) : Component(comp
 	{
 		gameobject->CreateComponent(ComponentType::Transform);
 	}
+	App->particles->AddTrailRenderer(this);
 }
 
 void ComponentTrail::Update()
@@ -41,6 +44,7 @@ void ComponentTrail::Update()
 			dd::point(point.position, dd::colors::AntiqueWhite, 10);
 			dd::point(point.rightPoint, dd::colors::AntiqueWhite, 2);
 			dd::point(point.leftPoint, dd::colors::AntiqueWhite, 2);
+			dd::line(point.rightPoint, point.leftPoint, dd::colors::AntiqueWhite);
 			trail.push(point);
 		}
 
@@ -98,4 +102,5 @@ ComponentTrail * ComponentTrail::Clone() const
 
 ComponentTrail::~ComponentTrail()
 {
+	App->particles->RemoveTrailRenderer(this);
 }

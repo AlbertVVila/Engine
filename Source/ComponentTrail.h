@@ -44,13 +44,13 @@ public:
 	void Load(JSON_value* value) override;
 
 	ComponentTrail* Clone() const;
+	std::queue<TrailPoint> trail;
 
 private:
 
 	float width = 100.f;
 	float duration = .5f;
 	float minDistance = 1.f;
-	std::queue<TrailPoint> trail;
 };
 
 #endif
