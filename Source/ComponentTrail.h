@@ -1,0 +1,56 @@
+#ifndef __COMPONENT_TRAIL_H_
+#define __COMPONENT_TRAIL_H_
+
+#include "Component.h"
+#include <queue>
+#include "Math/float3.h"
+
+class ComponentTrail :
+	public Component
+{
+public:
+	
+	struct TrailPoint
+	{
+		float remainingTime = .0f;
+		math::float3 position = math::float3::zero;
+		math::float3 leftPoint = math::float3::zero;
+		math::float3 rightPoint = math::float3::zero;
+
+		TrailPoint(float remainingTime, math::float3 position) : remainingTime(remainingTime), position(position) {}
+		TrailPoint(float remainingTime, math::float3 position, math::float3 previousPoint, float width) : remainingTime(remainingTime), position(position)
+		{
+			math::float3 midPoint = .5f * position + .5f* previousPoint;
+			math::float3 cross = position.Cross(previousPoint);
+			rightPoint = midPoint + cross.Normalized() * width;
+			leftPoint = midPoint - cross.Normalized() * width;
+		}
+		
+		float Distance(math::float3 otherPoint)
+		{
+			return position.Distance(otherPoint);
+		}
+
+	};
+
+	ComponentTrail(GameObject* gameobject);
+	ComponentTrail(const ComponentTrail& component);
+
+	~ComponentTrail();
+
+	void Update() override;
+	void DrawProperties() override;
+	void Save(JSON_value* value) const override;
+	void Load(JSON_value* value) override;
+
+	ComponentTrail* Clone() const;
+
+private:
+
+	float width = 100.f;
+	float duration = .5f;
+	float minDistance = 1.f;
+	std::queue<TrailPoint> trail;
+};
+
+#endif

@@ -247,6 +247,9 @@
     <ClCompile Include="ComponentParticles.cpp">
       <Filter>Component</Filter>
     </ClCompile>
+    <ClCompile Include="ComponentTrail.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -588,6 +591,9 @@
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="ComponentParticles.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentTrail.h">
       <Filter>Component</Filter>
     </ClInclude>
   </ItemGroup>

@@ -111,6 +111,7 @@
     <ClInclude Include="ComponentRenderer.h" />
     <ClInclude Include="ComponentScript.h" />
     <ClInclude Include="ComponentText.h" />
+    <ClInclude Include="ComponentTrail.h" />
     <ClInclude Include="ComponentTransform.h" />
     <ClInclude Include="ComponentTransform2D.h" />
     <ClInclude Include="debugdraw.h" />
@@ -230,6 +231,7 @@
     <ClCompile Include="ComponentRenderer.cpp" />
     <ClCompile Include="ComponentScript.cpp" />
     <ClCompile Include="ComponentText.cpp" />
+    <ClCompile Include="ComponentTrail.cpp" />
     <ClCompile Include="ComponentTransform.cpp" />
     <ClCompile Include="ComponentTransform2D.cpp" />
     <ClCompile Include="FileExplorer.cpp" />

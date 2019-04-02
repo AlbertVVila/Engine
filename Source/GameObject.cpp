@@ -21,6 +21,7 @@
 #include "ComponentButton.h"
 #include "ComponentScript.h"
 #include "ComponentParticles.h"
+#include "ComponentTrail.h"
 
 #include "GUICreator.h"
 #include "Material.h"
@@ -302,6 +303,9 @@ Component* GameObject::CreateComponent(ComponentType type)
 		break;
 	case ComponentType::Particles:
 		component = new ComponentParticles(this);
+		break;
+	case ComponentType::Trail:
+		component = new ComponentTrail(this);
 		break;
 	default:
 		break;

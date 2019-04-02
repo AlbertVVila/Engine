@@ -11,6 +11,7 @@ enum class ComponentType
 	Camera,
 	Light,
 	Particles,
+	Trail,
 	Script,
 	Transform2D,
 	Text,
