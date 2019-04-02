@@ -56,7 +56,7 @@ void PanelAnimation::Draw()
 				anim->currentFrame++;
 				isCliping = true;
 			}
-			else
+			else if (isCliping && !compAnim->isPlaying)
 			{
 				CreateAnimationFromClip(anim, minFrame, maxFrame);
 				isCliping = false;
@@ -67,7 +67,7 @@ void PanelAnimation::Draw()
 		if (isCliping)
 		{
 			ImGui::SameLine();
-			if (ImGui::Button("Cancel"))
+			if (ImGui::Button("Cancel") && !compAnim->isPlaying)
 			{
 				isCliping = false;
 				compAnim->controller->ResetClipping();
@@ -97,15 +97,15 @@ void PanelAnimation::Draw()
 		{
 			ImGui::PushStyleColor(ImGuiCol_Button, { 0.5f, 0.3f, 0.3f, 0.7f });
 
-			if (ImGui::ArrowButton("play", ImGuiDir_Right))
+			if (ImGui::ArrowButton("play", ImGuiDir_Right)) // PAUSE
 			{
 				if (compAnim->isPlaying)
 					compAnim->isPlaying = false;
-				else
+				
+				if (isCliping)
 				{
-					compAnim->controller->current->minTime = minFrame / anim->framesPerSecond;
-					compAnim->controller->current->maxTime = maxFrame / anim->framesPerSecond;
-					compAnim->isPlaying = true;
+					anim->currentFrame = maxFrame;
+					UpdateGameObjectAnimation(App->scene->selected, anim);
 				}
 			}
 
@@ -113,16 +113,15 @@ void PanelAnimation::Draw()
 		}
 		else
 		{
-			if (ImGui::ArrowButton("play", ImGuiDir_Right))
+			if (ImGui::ArrowButton("play", ImGuiDir_Right)) // PLAY
 			{
-				if (compAnim->isPlaying)
-					compAnim->isPlaying = false;
-				else
+				if (isCliping)
 				{
 					compAnim->controller->current->minTime = minFrame / anim->framesPerSecond;
 					compAnim->controller->current->maxTime = maxFrame / anim->framesPerSecond;
-					compAnim->isPlaying = true;
 				}
+
+				compAnim->isPlaying = true;
 			}
 		}
 

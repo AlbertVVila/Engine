@@ -25,8 +25,6 @@ void AnimationController::Play(Animation* anim, bool loop, unsigned fadeTime)
 	newInstance->fadeDuration = fadeTime;
 	newInstance->next = current;
 	current = newInstance;
-
-	current->maxTime = current->anim->durationInSeconds;
 }
 
 void AnimationController::Update(float dt)
@@ -48,7 +46,6 @@ void AnimationController::UpdateInstance(Instance* instance, float dt)
 
 		if (trueDt > 0.0f)
 		{
-			//float timeRemainingA = anim->durationInSeconds - instance->time;
 			float timeRemainingA = instance->maxTime - instance->time;
 			if (trueDt <= timeRemainingA)
 			{
@@ -77,12 +74,12 @@ void AnimationController::UpdateInstance(Instance* instance, float dt)
 			}
 			else if (instance->loop)
 			{
-				instance->time = anim->durationInSeconds - timeRemainingA + trueDt;
+				instance->time = instance->maxTime - timeRemainingA + trueDt;
 				trueFrame = anim->duration;
 			}
 			else
 			{
-				instance->time = 0.0f;
+				instance->time = instance->minTime;
 			}
 		}
 	}

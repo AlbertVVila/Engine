@@ -155,6 +155,7 @@ void ComponentAnimation::Load(JSON_value* value)
 		char* data = nullptr;
 		App->fsystem->Load((ANIMATIONS + std::to_string(uid) + ANIMATIONEXTENSION).c_str(), &data);
 		anim->Load(data, uid);
+		controller->ResetClipping();
 		App->resManager->AddAnim(anim);
 	}
 }
