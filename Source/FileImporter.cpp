@@ -96,24 +96,25 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 	for (unsigned i = 0; i < aiscene.mNumMeshes; i++)
 	{
 		unsigned size = GetMeshSize(*aiscene.mMeshes[i]);
-		char* data = new char[size];
-		ImportMesh(*aiscene.mMeshes[i], data);
+		char* meshData = new char[size];
+		ImportMesh(*aiscene.mMeshes[i], meshData);
 		ResourceMesh* mesh = nullptr;
-		if (App->fsystem->Load(meta.c_str(), &data) == 0)
+		char* metaData = nullptr;
+		if (App->fsystem->Load(meta.c_str(), &metaData) == 0)
 		{
 			mesh = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH);	
 			resource->AddMesh(mesh);
 		}
 		else
 		{
-			JSON *json = new JSON(data);
+			JSON *json = new JSON(metaData);
 			JSON_value* meshValue = json->GetValue("Mesh");
 			mesh = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH, meshValue->GetUint(("Mesh" + std::to_string(i)).c_str()));
 
 			// ResourceMesh was created on .meta of model load, now replace previous resource
 			App->resManager->ReplaceResource(mesh->GetUID(), mesh);
 		}
-		App->fsystem->Save((MESHES + std::to_string(mesh->GetUID()) + MESHEXTENSION).c_str(), data, size);
+		App->fsystem->Save((MESHES + std::to_string(mesh->GetUID()) + MESHEXTENSION).c_str(), meshData, size);
 		mesh->SetFile(path.c_str());
 		mesh->SetExportedFile((name + std::to_string(i)).c_str());
 
