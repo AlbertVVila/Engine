@@ -30,20 +30,21 @@ public:
 	void DeleteProgram(std::string filename);
 
 	// New ResourceManager functions
-	unsigned FindByFileInAssets(const char* fileInAssets) const;		// Returns UID of resource by file variable 
-	unsigned FindByExportedFile(const char* exportedFileName, TYPE type) const;	// Returns UID of resource by exportedFileName 
+	unsigned FindByFileInAssets(const char* fileInAssets) const;						// Returns UID of resource by file variable 
+	unsigned FindByFileInAssetsExcludingType(const char* fileInAssets, TYPE type) const;// Returns UID of resource by file variable, excludes files of the type given
+	unsigned FindByExportedFile(const char* exportedFileName, TYPE type) const;			// Returns UID of resource by exportedFileName 
 	unsigned FindByExportedFile(const char* exportedFileName) const;
 	bool ImportFile(const char* newFileInAssets, const char* filePath, TYPE type);
-	bool ReImportFile(Resource* resource, const char* filePath, TYPE type);		// Imports again an already loaded resource
+	bool ReImportFile(Resource* resource, const char* filePath, TYPE type);				// Imports again an already loaded resource
 	unsigned GenerateNewUID();
-	Resource* Get(unsigned uid) const;									// Returns the resource using UID adding one to the references count and loads it to memory if not already
+	Resource* Get(unsigned uid) const;													// Returns the resource using UID adding one to the references count and loads it to memory if not already
 	Resource* Get(const char* file) const;
-	Resource* Get(const char* file, TYPE type) const;								// Returns the resource using exportedFileName adding one to the references count and loads it to memory if not already
-	Resource* GetWithoutLoad(unsigned uid) const;						// Returns the resource using UID and doesn't add one to the references count neither loads it to memory
+	Resource* Get(const char* file, TYPE type) const;									// Returns the resource using exportedFileName adding one to the references count and loads it to memory if not already
+	Resource* GetWithoutLoad(unsigned uid) const;										// Returns the resource using UID and doesn't add one to the references count neither loads it to memory
 	Resource* GetWithoutLoad(const char* file) const;
-	Resource* GetWithoutLoad(const char* file, TYPE type) const;					// Returns the resource using exportedFileName and doesn't add one to the references count neither loads it to memory
+	Resource* GetWithoutLoad(const char* file, TYPE type) const;						// Returns the resource using exportedFileName and doesn't add one to the references count neither loads it to memory
 	Resource* CreateNewResource(TYPE type, unsigned forceUid = 0);
-	bool DeleteResource(unsigned uid);									// If references < 1 delete it from memory
+	bool DeleteResource(unsigned uid);													// If references < 1 delete it from memory
 
 	std::vector<Resource*> GetResourcesList();
 	std::vector<ResourceTexture*> GetTexturesList();

@@ -132,6 +132,18 @@ unsigned ModuleResourceManager::FindByFileInAssets(const char* fileInAssets) con
 	return 0;
 }
 
+unsigned ModuleResourceManager::FindByFileInAssetsExcludingType(const char* fileInAssets, TYPE type) const
+{
+	for (std::map<unsigned, Resource*>::const_iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		if (strcmp(it->second->GetFile(), fileInAssets) == 0 && it->second->GetType() != type)
+		{
+			return it->first;
+		}
+	}
+	return 0;
+}
+
 unsigned ModuleResourceManager::FindByExportedFile(const char* exportedFileName) const
 {
 	for (std::map<unsigned, Resource*>::const_iterator it = resources.begin(); it != resources.end(); ++it)
@@ -163,8 +175,8 @@ bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* 
 	std::string assetPath(filePath);
 	assetPath += newFileInAssets;
 
-	// Check if the file was already imported
-	unsigned uid = FindByFileInAssets(assetPath.c_str());
+	// Check if the file was already imported (Mesh is excluded because has same file as model)
+	unsigned uid = FindByFileInAssetsExcludingType(assetPath.c_str(), TYPE::MESH);
 	if (uid != 0)
 	{
 		// Avoid reimporting meshes (only model can reimport them)
