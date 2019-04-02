@@ -2,7 +2,7 @@
 #define __STATEMACHINE_H_
 
 
-
+#include "HashString.h"
 #include <vector>
 
 class Animation;
@@ -17,44 +17,44 @@ public:
 
 public:
 	
-	void AddClip(const std::string name, Animation* anim, bool loop);
-	void AddNode(const std::string name,const std::string clipName);
-	void AddTransition(const std::string origin, const std::string destiny, const std::string trigger, unsigned blend);
+	void AddClip(const HashString name, Animation* anim, bool loop);
+	void AddNode(const HashString name,const HashString clipName);
+	void AddTransition(const HashString origin, const HashString destiny, const HashString trigger, unsigned blend);
 
-	unsigned FindClip(const std::string name);
-	unsigned FindNode(const std::string name);
-	unsigned FindTransition(const std::string origin, const std::string trigger);
+	unsigned FindClip(const HashString name);
+	unsigned FindNode(const HashString name);
+	unsigned FindTransition(const HashString origin, const HashString trigger);
 
 	//Clips setters and getters
 
-	std::string GetClipName(unsigned index);
+	HashString GetClipName(unsigned index);
 	Animation* GetClipAnimation(unsigned index);
 	bool GetClipLoop(unsigned index);
-	void SetClipName(unsigned index, std::string name);
+	void SetClipName(unsigned index, HashString name);
 	void SetClipAnimation(unsigned index, Animation* anim);
 	void SetClipLoop(unsigned index, bool loop);
 
 	//Transitions setters and getters
-	std::string GetTransitionOrigin(unsigned index);
-	std::string GetTransitionDestiny(unsigned index);
-	std::string GetTransitionTrigger(unsigned index);
+	HashString GetTransitionOrigin(unsigned index);
+	HashString GetTransitionDestiny(unsigned index);
+	HashString GetTransitionTrigger(unsigned index);
 	unsigned GetTransitionBlend(unsigned index);
-	void SetTransitionOrigin(unsigned index, std::string origin);
-	void SetTransitionDestiny(unsigned index, std::string destiny);
-	void SetTransitionTrigger(unsigned index, std::string trigger);
+	void SetTransitionOrigin(unsigned index, HashString origin);
+	void SetTransitionDestiny(unsigned index, HashString destiny);
+	void SetTransitionTrigger(unsigned index, HashString trigger);
 	void SetTransitionBlend(unsigned index, unsigned blend);
 
 	//Nodes setters and getters
-	std::string GetNodeName(unsigned index);
-	std::string GetNodeClip(unsigned index);
-	void SetNodeName(unsigned index, std::string name);
-	void SetNodeClip(unsigned index, std::string clipName);
+	HashString GetNodeName(unsigned index);
+	HashString GetNodeClip(unsigned index);
+	void SetNodeName(unsigned index, HashString name);
+	void SetNodeClip(unsigned index, HashString clipName);
 
 	unsigned GetNodesSize();
 	unsigned GetClipsSize();
 	unsigned GetTransitionsSize();
 
-	void RemoveNodeTransitions(std::string transitionName);
+	void RemoveNodeTransitions(HashString transitionName);
 
 	void RemoveClip(unsigned UID);
 	void RemoveNode(unsigned UID);
@@ -64,34 +64,34 @@ private:
 	
 	struct Clip
 	{
-		std::string name;
+		HashString name;
 		Animation* anim = nullptr;
 		bool loop = false;
 
 		Clip() { ; }
-		Clip(std::string n, Animation* a, bool l) : name(n), anim(a), loop(l) { ; }
+		Clip(HashString n, Animation* a, bool l) : name(n), anim(a), loop(l) { ; }
 	};
 
 	struct Transition
 	{
-		std::string origin;
-		std::string destiny;
-		std::string trigger;
+		HashString origin;
+		HashString destiny;
+		HashString trigger;
 
 		unsigned blend = 200u;
 
 		Transition() { ; }
-		Transition(std::string o, std::string d, std::string t, unsigned b) : 
+		Transition(HashString o, HashString d, HashString t, unsigned b) : 
 			origin(o), destiny(d), trigger(t), blend(b) { ; }
 	};
 
 	struct Node
 	{
-		std::string name;
-		std::string clipName;
+		HashString name;
+		HashString clipName;
 
 		Node() { ; }
-		Node(std::string n, std::string cn) : name(n), clipName(cn) { ; }
+		Node(HashString n, HashString cn) : name(n), clipName(cn) { ; }
 	};
 
 	std::vector<Node> nodes;

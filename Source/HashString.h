@@ -1,7 +1,7 @@
 #ifndef _HASHSTRING_H_
 #define _HASHSTRING_H_
 
-#include "utils/strpool.h"
+#include "strpool.h"
 
 class HashString
 {

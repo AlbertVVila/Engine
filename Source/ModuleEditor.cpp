@@ -30,6 +30,7 @@
 #include "imgui.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_sdl.h"
+#include "NodeEditor.h"
 #include "ImGuizmo.h"
 #include "Brofiler.h"
 #include <vector>
@@ -128,6 +129,8 @@ bool ModuleEditor::Init(JSON * config)
 	style->Colors[ImGuiCol_PlotHistogramHovered] = ImVec4(0.25f, 1.00f, 0.00f, 1.00f);
 	style->Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.25f, 1.00f, 0.00f, 0.43f);
 	style->Colors[ImGuiCol_ModalWindowDarkening] = ImVec4(1.00f, 0.98f, 0.95f, 0.73f);
+
+	ax::NodeEditor::EditorContext* = ax::NodeEditor::CreateEditor();
 
 	return true;
 }

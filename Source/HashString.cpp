@@ -2,7 +2,7 @@
 
 #define  STRPOOL_IMPLEMENTATION
 
-#include "utils/strpool.h"
+#include "strpool.h"
 
 namespace
 {

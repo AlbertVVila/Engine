@@ -11,28 +11,28 @@ StateMachine::~StateMachine()
 {
 }
 
-void StateMachine::AddClip(const std::string name, Animation* anim, const bool loop)
+void StateMachine::AddClip(const HashString name, Animation* anim, const bool loop)
 {
 	clips.push_back(Clip(name, anim, loop));
 }
 
-void StateMachine::AddNode(const std::string name, const std::string clipName)
+void StateMachine::AddNode(const HashString name, const HashString clipName)
 {
 	nodes.push_back(Node(name, clipName));
 }
 
-void StateMachine::AddTransition(const std::string origin, const std::string destiny, const std::string trigger, unsigned blend)
+void StateMachine::AddTransition(const HashString origin, const HashString destiny, const HashString trigger, unsigned blend)
 {
 	transitions.push_back(Transition(origin, destiny, trigger, blend));
 }
 
-unsigned StateMachine::FindClip(std::string name)
+unsigned StateMachine::FindClip(HashString name)
 {
 	unsigned i;
 
 	for (i = 0u; i < clips.size(); ++i)
 	{
-		if (strcmp(clips[i].name.c_str(), name.c_str()) == 0)
+		if (clips[i].name == name)
 		{
 			break;
 		}
@@ -40,13 +40,13 @@ unsigned StateMachine::FindClip(std::string name)
 	return i;
 }
 
-unsigned StateMachine::FindNode(std::string name)
+unsigned StateMachine::FindNode(HashString name)
 {
 	unsigned i;
 
 	for (i = 0u; i < nodes.size(); ++i)
 	{
-		if (strcmp(nodes[i].name.c_str(), name.c_str()) == 0)
+		if (nodes[i].name == name)
 		{
 			break;
 		}
@@ -54,13 +54,13 @@ unsigned StateMachine::FindNode(std::string name)
 	return i;
 }
 
-unsigned StateMachine::FindTransition(std::string origin, std::string trigger)
+unsigned StateMachine::FindTransition(HashString origin, HashString trigger)
 {
 	unsigned i;
 
 	for (i = 0u; i < transitions.size(); ++i)
 	{
-		if (strcmp(transitions[i].origin.c_str(), origin.c_str()) == 0 && strcmp(transitions[i].trigger.c_str(), trigger.c_str()) == 0)
+		if (transitions[i].origin == origin && transitions[i].trigger == trigger)
 		{
 			break;
 		}
@@ -68,7 +68,7 @@ unsigned StateMachine::FindTransition(std::string origin, std::string trigger)
 	return i;
 }
 
-std::string StateMachine::GetClipName(unsigned index)
+HashString StateMachine::GetClipName(unsigned index)
 {
 	return clips[index].name;
 }
@@ -83,17 +83,17 @@ bool StateMachine::GetClipLoop(unsigned index)
 	return clips[index].loop;
 }
 
-std::string StateMachine::GetTransitionOrigin(unsigned index)
+HashString StateMachine::GetTransitionOrigin(unsigned index)
 {
 	return transitions[index].origin;
 }
 
-std::string StateMachine::GetTransitionDestiny(unsigned index)
+HashString StateMachine::GetTransitionDestiny(unsigned index)
 {
 	return transitions[index].destiny;
 }
 
-std::string StateMachine::GetTransitionTrigger(unsigned index)
+HashString StateMachine::GetTransitionTrigger(unsigned index)
 {
 	return transitions[index].trigger;
 }
@@ -103,12 +103,12 @@ unsigned StateMachine::GetTransitionBlend(unsigned index)
 	return transitions[index].blend;
 }
 
-std::string StateMachine::GetNodeName(unsigned index)
+HashString StateMachine::GetNodeName(unsigned index)
 {
 	return nodes[index].name;
 }
 
-std::string StateMachine::GetNodeClip(unsigned index)
+HashString StateMachine::GetNodeClip(unsigned index)
 {
 	return nodes[index].clipName;
 }
@@ -128,7 +128,7 @@ unsigned StateMachine::GetTransitionsSize()
 	return transitions.size();
 }
 
-void StateMachine::SetClipName(unsigned index, std::string name)
+void StateMachine::SetClipName(unsigned index, HashString name)
 {
 	clips[index].name = name;
 }
@@ -143,17 +143,17 @@ void StateMachine::SetClipLoop(unsigned index, bool loop)
 	clips[index].loop = loop;
 }
 
-void StateMachine::SetTransitionOrigin(unsigned index, std::string origin)
+void StateMachine::SetTransitionOrigin(unsigned index, HashString origin)
 {
 	transitions[index].origin = origin;
 }
 
-void StateMachine::SetTransitionDestiny(unsigned index, std::string destiny)
+void StateMachine::SetTransitionDestiny(unsigned index, HashString destiny)
 {
 	transitions[index].destiny = destiny;
 }
 
-void StateMachine::SetTransitionTrigger(unsigned index, std::string trigger)
+void StateMachine::SetTransitionTrigger(unsigned index, HashString trigger)
 {
 	transitions[index].trigger = trigger;
 }
@@ -163,12 +163,12 @@ void StateMachine::SetTransitionBlend(unsigned index, unsigned blend)
 	transitions[index].blend = blend;
 }
 
-void StateMachine::SetNodeName(unsigned index, std::string name)
+void StateMachine::SetNodeName(unsigned index, HashString name)
 {
 	nodes[index].name = name;
 }
 
-void StateMachine::SetNodeClip(unsigned index, std::string clipName)
+void StateMachine::SetNodeClip(unsigned index, HashString clipName)
 {
 	nodes[index].clipName = clipName;
 }
@@ -202,7 +202,7 @@ void StateMachine::RemoveTransition(unsigned index)
 	transitions.erase(transitions.begin() + index);
 }
 
-void StateMachine::RemoveNodeTransitions(std::string nodeName)
+void StateMachine::RemoveNodeTransitions(HashString nodeName)
 {
 	std::vector<Transition>::iterator it = transitions.begin();
 
