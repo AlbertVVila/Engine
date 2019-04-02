@@ -113,6 +113,21 @@ bool ResourceModel::CheckImportedMeshes()
 
 void ResourceModel::AddMesh(ResourceMesh* mesh)
 {
+	bool replace = false;
+	for (std::vector<ResourceMesh*>::iterator itMesh = meshList.begin(); itMesh != meshList.end();)
+	{
+		if (mesh->GetUID() == (*itMesh)->GetUID())
+		{
+			--numMeshes;
+			App->resManager->DeleteResourceFromList((*itMesh)->GetUID());
+			RELEASE(*itMesh);
+			meshList.erase(itMesh++);
+			replace = true;
+			break;
+		}
+		itMesh++;
+	}
+
 	++numMeshes;
 	meshList.push_back(mesh);
 }

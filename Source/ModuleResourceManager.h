@@ -55,6 +55,7 @@ public:
 
 	void LoadEngineResources();											// Loads resources needed by the engine (Skybox, white, no camera textures...)
 	Resource* AddResource(const char* file, const char* directory, TYPE type);
+	Resource* ReplaceResource(unsigned oldResourceUID, Resource* newResource);
 	void DeleteResourceFromList(unsigned uid);
 
 private:

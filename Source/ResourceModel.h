@@ -22,6 +22,7 @@ public:
 	void SaveMetafile(const char* file) const override;
 	void LoadConfigFromMeta() override;
 	bool CheckImportedMeshes();
+	unsigned GetMeshUIDFromMeta(unsigned meshNumber);
 
 	void AddMesh(ResourceMesh* mesh);
 	void DrawImportConfiguration() override;
