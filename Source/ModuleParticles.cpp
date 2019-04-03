@@ -57,16 +57,12 @@ bool ModuleParticles::Start()
 	{
 		glGenVertexArrays(1, &billBoardVAO);
 		glGenBuffers(1, &billBoardVBO);
-		glGenBuffers(1, &billBoardEBO);
 	}
 
 	glBindVertexArray(billBoardVAO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, billBoardVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), quadVertices, GL_STATIC_DRAW);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, billBoardEBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(quadIndices), quadIndices, GL_STATIC_DRAW);
 
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
@@ -86,22 +82,10 @@ bool ModuleParticles::Start()
 		glGenBuffers(1, &trailEBO);
 	}
 
-	unsigned trailIndices[MAX_TRAIL_INDICES];
-
-	for (unsigned i = 0u; i < MAX_TRAIL_INDICES / 3; ++i)
-	{
-		trailIndices[i * 3] = i;
-		trailIndices[i * 3 + 1] = i + 1;
-		trailIndices[i * 3 + 2] = i + 2;
-	}
-
 	glBindVertexArray(trailVAO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, trailVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float3) * MAX_TRAIL_INDICES, nullptr, GL_DYNAMIC_DRAW);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, trailEBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(trailIndices), trailIndices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * MAX_TRAIL_VERTICES * 3, nullptr, GL_DYNAMIC_DRAW);
 
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
@@ -130,7 +114,7 @@ void ModuleParticles::Render(float dt, const ComponentCamera* camera)
 			break;
 		}
 	}
-
+	glDisable(GL_CULL_FACE);
 	for (ComponentTrail* trail : trails)
 	{
 		if (trail->trail.size() > 1)
@@ -138,7 +122,9 @@ void ModuleParticles::Render(float dt, const ComponentCamera* camera)
 			RenderTrail(trail, camera);
 		}
 	}
+	glEnable(GL_CULL_FACE);
 	glDisable(GL_BLEND);
+
 	glUseProgram(0);
 }
 
@@ -146,29 +132,34 @@ void ModuleParticles::RenderTrail(ComponentTrail* ct, const ComponentCamera* cam
 {
 	glUseProgram(shader->id);
 	glBindVertexArray(trailVAO);
+	unsigned trailVertices = ct->trail.size();// -1;
+
 	glBindBuffer(GL_ARRAY_BUFFER, trailVBO);
-	unsigned trailVertices = ct->trail.size();
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * trailVertices * 6, 0, GL_DYNAMIC_DRAW);
 
-	void *ptr = glMapBufferRange(GL_ARRAY_BUFFER, 0, sizeof(math::float3) * trailVertices * 2,
-		GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_BUFFER_BIT);
+	float* ptr = (float*)glMapBufferRange(GL_ARRAY_BUFFER, 0, sizeof(float) * trailVertices * 6, GL_MAP_WRITE_BIT);
 
+	math::float3 P0L;
+	math::float3 P0R;
+	//ct->trail.push(ct->trail.front());
+	//ct->trail.pop();
 	for (unsigned i = 0u; i < trailVertices; ++i)
 	{
-		trailData[i * 2] = ct->trail.front().leftPoint;
-		trailData[i * 2 + 1] = ct->trail.front().rightPoint;
+		P0L = ct->trail.front().leftPoint;
+		P0R = ct->trail.front().rightPoint;
+		memcpy(ptr, &P0L.x, sizeof(float) * 3); ptr += 3;
+		memcpy(ptr, &P0R.x, sizeof(float) * 3);	ptr += 3;
 		ct->trail.push(ct->trail.front());
 		ct->trail.pop();
 	}
-	memcpy(ptr, trailData, sizeof(math::float3) * ct->trail.size() * 2);
+	
 	glUnmapBuffer(GL_ARRAY_BUFFER);
-	glBindBuffer(GL_ARRAY_BUFFER, trailVBO);
 
 	glUniformMatrix4fv(glGetUniformLocation(shader->id, "projection"), 1, GL_FALSE, &camera->GetProjectionMatrix()[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(shader->id, "view"), 1, GL_FALSE, &camera->GetViewMatrix()[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(shader->id, "model"), 1, GL_TRUE, float4x4::identity.ptr());
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, billBoardEBO);
-	glDrawElements(GL_TRIANGLES, (ct->trail.size() * 2), GL_UNSIGNED_INT, 0);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, trailVertices * 2);
 
 	glBindVertexArray(0);
 }

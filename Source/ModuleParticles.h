@@ -10,7 +10,7 @@ class ComponentCamera;
 class Shader;
 class ComponentTrail;
 
-#define MAX_TRAIL_INDICES 999 // 333 tris
+#define MAX_TRAIL_VERTICES 999 // 333 tris
 
 class ModuleParticles :
 	public Module
@@ -54,7 +54,7 @@ private:
 
 	std::list<ComponentTrail*> trails;
 
-	math::float3 trailData[MAX_TRAIL_INDICES];
+	float trailData[MAX_TRAIL_VERTICES];
 };
 
 #endif __ModuleParticles_h__

@@ -40,11 +40,7 @@ void ComponentTrail::Update()
 		point.remainingTime -= App->time->gameDeltaTime;
 
 		if (point.remainingTime > 0)
-		{
-			dd::point(point.position, dd::colors::AntiqueWhite, 10);
-			dd::point(point.rightPoint, dd::colors::AntiqueWhite, 2);
-			dd::point(point.leftPoint, dd::colors::AntiqueWhite, 2);
-			dd::line(point.rightPoint, point.leftPoint, dd::colors::AntiqueWhite);
+		{			
 			trail.push(point);
 		}
 
