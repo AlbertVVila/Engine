@@ -45,6 +45,11 @@ void ComponentAnimation::DrawProperties()
 
 		//Play
 		ImGui::DragFloat("Animation Speed", &controller->current->speed, 0.01f, -2.0f, 2.0f);
+
+		// Loop
+		ImGui::Checkbox("Loop", &controller->current->loop);
+
+		ImGui::Separator();
 	}
 }
 

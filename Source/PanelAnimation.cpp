@@ -38,12 +38,19 @@ void PanelAnimation::Draw()
 		ImGui::Text("FRAMES");
 
 		ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 5.7f);
+
 		if (ImGui::SliderInt("##label", &anim->currentFrame, 0, anim->duration))
 		{
 			UpdateGameObjectAnimation(App->scene->selected, anim);
 			
-			if(!isCliping)
+			if (!isCliping)
+			{
 				compAnim->controller->current->time = anim->currentFrame / anim->framesPerSecond;
+			}
+			else if (isCliping && anim->currentFrame < minFrame)
+			{
+				anim->currentFrame = minFrame + 1;
+			}
 		}
 
 		ImGui::SameLine(ImGui::GetWindowWidth() - ImGui::GetWindowWidth() / 6);
@@ -98,15 +105,15 @@ void PanelAnimation::Draw()
 			ImGui::PushStyleColor(ImGuiCol_Button, { 0.5f, 0.3f, 0.3f, 0.7f });
 
 			if (ImGui::ArrowButton("play", ImGuiDir_Right)) // PAUSE
-			{
-				if (compAnim->isPlaying)
-					compAnim->isPlaying = false;
-				
-				if (isCliping)
+			{				
+				if (isCliping && compAnim->controller->current->loop)
 				{
 					anim->currentFrame = maxFrame;
 					UpdateGameObjectAnimation(App->scene->selected, anim);
 				}
+
+				if (compAnim->isPlaying)
+					compAnim->isPlaying = false;
 			}
 
 			ImGui::PopStyleColor();
@@ -138,15 +145,19 @@ void PanelAnimation::Draw()
 
 		if (isCliping)
 		{
-			if(!compAnim->isPlaying)
+			if (!compAnim->isPlaying)
+			{
 				maxFrame = anim->currentFrame;
+			}
 
 			ImGui::SameLine(ImGui::GetWindowWidth() - ImGui::GetWindowWidth() / 6);
-			ImGui::Button(std::to_string(minFrame).c_str(), ImVec2(60, 23));
+			ImGui::PushItemWidth(60);
+			ImGui::DragInt("Frame Start", &minFrame, 1.0f, 0, maxFrame - 1); ImGui::PopItemWidth();
 			ImGui::SameLine(); ImGui::Text("Frame Start");
 
 			ImGui::SetCursorPosX(ImGui::GetWindowWidth() - ImGui::GetWindowWidth() / 6);
-			ImGui::Button(std::to_string(maxFrame).c_str(), ImVec2(60, 23));
+			ImGui::PushItemWidth(60);
+			ImGui::DragInt("Frame End", &maxFrame, 1.0f, minFrame + 1, anim->duration); ImGui::PopItemWidth();
 			ImGui::SameLine(); ImGui::Text("Frame End");
 		}
 
@@ -217,6 +228,4 @@ void PanelAnimation::CreateAnimationFromClip(Animation * anim, int minFrame, int
 	newAnim->numberFrames = maxFrame - minFrame;
 	newAnim->numberOfChannels = anim->numberOfChannels;
 	newAnim->durationInSeconds = (maxFrame - minFrame) / anim->framesPerSecond;
-
-	compAnim->anim = newAnim;
 }
