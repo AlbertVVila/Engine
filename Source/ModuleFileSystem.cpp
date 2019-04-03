@@ -3,6 +3,9 @@
 
 #include "Application.h"
 #include "ModuleResourceManager.h"
+#include "ModuleEditor.h"
+
+#include "PanelBrowser.h"
 
 #include "Resource.h"
 
@@ -85,7 +88,7 @@ bool ModuleFileSystem::CleanUp()
 	monitorize = false;
 	while (threadIsWorking)
 	{
-		SDL_Delay(100);
+		SDL_Delay(1500);
 	}
 	return true;
 }
@@ -137,7 +140,7 @@ bool ModuleFileSystem::Remove(const char* file) const
 {
 	assert(file != nullptr);
 	if (file == nullptr) return false;
-	if (PHYSFS_unmount(file) != 0)
+	if (PHYSFS_unmount(file) == 0)
 	{
 		LOG("Error: %s", PHYSFS_getLastError());
 		return false;
@@ -150,7 +153,7 @@ bool ModuleFileSystem::Delete(const char* file) const
 	assert(file != nullptr);
 	if (file == nullptr) return false;
 
-	if (PHYSFS_delete(file) != 0)
+	if (PHYSFS_delete(file) == 0)
 	{
 		LOG("Error: %s", PHYSFS_getLastError());
 		return false;
@@ -308,6 +311,51 @@ bool ModuleFileSystem::Copy(const char* source, const char* destination, const c
 	return true;
 }
 
+bool ModuleFileSystem::Move(const char * source, const char* file, const char* newFile) const
+{
+	char * data = nullptr;
+	std::string filepath(source);
+	filepath += file;
+	unsigned size = Load(filepath.c_str(), &data);
+	std::string filedest(source);
+	filedest += newFile;
+	Save(filedest.c_str(), data, size);
+	RELEASE_ARRAY(data);
+
+	return true;
+}
+
+void ModuleFileSystem::Rename(const char* route, const char* file, const char* newName) const
+{
+	std::string filepath(route);
+	filepath += file;
+	assert(filepath.c_str() != nullptr);
+	if (PHYSFS_unmount(filepath.c_str()) != 0)
+	{
+		LOG("Error: %s", PHYSFS_getLastError());
+		return;
+	}
+
+	std::string extension = GetExtension(file);
+	Move(route, file, (newName + extension).c_str());
+	Delete(filepath.c_str());
+}
+
+bool ModuleFileSystem::ChangeExtension(const char* source, const char* file, const char* newExtension) const
+{
+	char * data = nullptr;
+	std::string filepath(source);
+	filepath += file;
+	unsigned size = Load(filepath.c_str(), &data);
+	std::string newFile(source);
+	newFile += GetFilename(file) + newExtension;
+	Save((newFile).c_str(), data, size);
+	Delete(filepath.c_str());
+	RELEASE_ARRAY(data);
+
+	return true;
+}
+
 void ModuleFileSystem::Monitorize(const char* folder)
 {
 	while (monitorize)
@@ -366,7 +414,8 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 					else
 					{
 						// File already imported, add it to the resources list
-						App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::TEXTURE);
+						ResourceTexture* res = (ResourceTexture*)App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::TEXTURE);
+						res->LoadConfigFromMeta();
 					}
 				}
 				else if (type == FILETYPE::MODEL) //FBX
@@ -440,7 +489,7 @@ void ModuleFileSystem::LookForNewResourceFiles(const char* folder)
 				{
 					// TODO: Enable FBX also
 					FILETYPE type = GetFileType(GetExtension(file));
-					if(type != FILETYPE::MODEL && type != FILETYPE::SCENE)
+					if(type != FILETYPE::MODEL && type != FILETYPE::SCENE && type != FILETYPE::NONE)
 						filesToImport.push_back(std::pair<std::string, std::string>(file, current_folder));
 				}
 			}
@@ -455,6 +504,9 @@ void ModuleFileSystem::ImportFiles()
 		importer.ImportAsset(file.first.c_str(), file.second.c_str());
 	}
 	filesToImport.clear();
+
+	// Refresh Assets panel browser
+	App->editor->assets->folderContentDirty = true;
 }
 
 int ModuleFileSystem::GetModTime(const char* file) const
@@ -484,18 +536,46 @@ std::string ModuleFileSystem::RemoveExtension(std::string filename) const
 
 std::string ModuleFileSystem::GetFilename(std::string filename) const
 {
-	std::size_t found = filename.find_last_of(".");
+	filename = RemoveExtension(filename);
+	filename = GetFile(filename);
+	return filename;
+}
+
+std::string ModuleFileSystem::GetFile(std::string filename) const
+{
+	std::size_t found = filename.find_last_of(PHYSFS_getDirSeparator()); // Gets dir separator symbol for current OS
 	if (std::string::npos != found)
 	{
-		filename.erase(found, filename.size());
+		filename.erase(0, found + 1);
+	}
+	else
+	{
+		found = filename.find_last_of("/");	// Try with "/" 
+		if (std::string::npos != found)
+		{
+			filename.erase(0, found + 1);
+		}
 	}
 
-	found = filename.find_last_of(PHYSFS_getDirSeparator());
+	return filename;
+}
+
+std::string ModuleFileSystem::GetFilePath(std::string file) const
+{
+	std::size_t found = file.find_last_of(PHYSFS_getDirSeparator()); // Gets dir separator symbol for current OS
 	if (std::string::npos != found)
 	{
-		filename.erase(0, found+1);
+		file.erase(found + 1, file.size());
 	}
-	return filename;
+	else
+	{
+		found = file.find_last_of("/");	// Try with "/" 
+		if (std::string::npos != found)
+		{
+			file.erase(found + 1, file.size());
+		}
+	}
+	return file;
 }
 
 FILETYPE ModuleFileSystem::GetFileType(std::string extension) const

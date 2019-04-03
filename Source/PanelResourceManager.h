@@ -35,10 +35,7 @@ private:
 	int auxReferences = 0u;
 
 	bool openEditor = false;
-	bool openTextureWindow = false;
-	bool openMeshWindow = false;
-	bool openMaterialWindow = false;
-	bool openSkyboxWindow = false;
+	bool openResourceWindow = false;
 
 	SORTING sortList = SORTING::REFERENCES;
 	bool descending = false;

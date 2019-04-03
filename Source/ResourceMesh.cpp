@@ -12,9 +12,7 @@
 #include "Math/MathConstants.h"
 #include "Math/float4x4.h"
 #include "Math/float2.h"
-#include "rapidjson/document.h"
-#include "rapidjson/filewritestream.h"
-#include "rapidjson/prettywriter.h"
+
 
 ResourceMesh::ResourceMesh(unsigned uid) : Resource(uid, TYPE::MESH)
 {
@@ -113,14 +111,7 @@ void ResourceMesh::SaveMetafile(const char* file) const
 	meta->AddUint("VBObox", VBObox);
 	meta->AddUint("EBObox", EBObox);
 	json->AddValue("Mesh", *meta);
-	filepath += ".meta";
 	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
-}
-
-void ResourceMesh::Load(const JSON_value &config)
-{
-	Resource::Load(config);
-	//TODO: Add variables to load
 }
 
 void ResourceMesh::Draw(unsigned shaderProgram) const
