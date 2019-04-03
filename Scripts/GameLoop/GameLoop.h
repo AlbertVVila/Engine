@@ -78,7 +78,7 @@ private:
 	int minSound = 0;
 	int maxSound = 10;
 
-	int loading = 0;
+	float loading = 0;
 
 	//UI
 
