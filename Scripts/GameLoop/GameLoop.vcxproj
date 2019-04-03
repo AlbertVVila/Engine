@@ -315,6 +315,11 @@
   <ItemGroup>
     <ClInclude Include="GameLoop.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CreditsScript\CreditsScript.vcxproj">
+      <Project>{cf4ade84-8b3d-45a4-80ef-5b52cc795b6c}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
