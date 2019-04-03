@@ -9,10 +9,16 @@ public:
 	NavigationGenerator();
 	~NavigationGenerator();
 
+	void GenerateNavigability();
+
 private:
 	// Explicitly disabled copy constructor and copy assignment operator.
 	NavigationGenerator(const NavigationGenerator&);
 	NavigationGenerator& operator=(const NavigationGenerator&);
+
+	//variables
+	class InputGeom* m_geom = nullptr;
+
 };
 
 #endif

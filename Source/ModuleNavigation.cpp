@@ -33,6 +33,8 @@ void ModuleNavigation::DrawGUI()
 		ImGui::DragFloat("Agent max height", &maxHeight, sliderIncreaseSpeed, minSliderValue, maxSliderValue);
 		ImGui::DragFloat("Max slope scaling", &maxSlopeScaling, sliderIncreaseSpeed, minSliderValue, maxSlopeValue);
 		ImGui::DragFloat("Max step height", &maxStepHeightScaling, sliderIncreaseSpeed, minSliderValue, maxSlopeValue);
+
+		if (ImGui::Button("Generate navigability")) generator->GenerateNavigability();
 	}
 	if (ImGui::CollapsingHeader("Object"))
 	{

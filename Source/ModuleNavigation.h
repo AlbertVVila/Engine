@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include <vector>
+#include "NavigationGenerator.h"
 //<>
 class GameObject;
 class ModuleNavigation :
@@ -39,6 +40,8 @@ private:
 	const float minSliderValue = 0.01f;
 	const float maxSliderValue = 100.0f;
 	const float maxSlopeValue = 60.0f;
+
+	NavigationGenerator* generator = new NavigationGenerator();
 
 };
 
