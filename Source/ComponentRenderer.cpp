@@ -27,8 +27,11 @@ ComponentRenderer::ComponentRenderer(GameObject* gameobject) : Component(gameobj
 
 ComponentRenderer::ComponentRenderer(const ComponentRenderer& component) : Component(component)
 {
-	mesh = (ResourceMesh*)App->resManager->Get(component.mesh->GetUID());
-	material = (ResourceMaterial*)App->resManager->Get(component.material->GetUID());
+	if(component.mesh != nullptr)
+		mesh = (ResourceMesh*)App->resManager->Get(component.mesh->GetUID());
+
+	if (component.material != nullptr)
+		material = (ResourceMaterial*)App->resManager->Get(component.material->GetUID());
 }
 
 ComponentRenderer::~ComponentRenderer()
@@ -204,8 +207,8 @@ bool ComponentRenderer::CleanUp()
 void ComponentRenderer::Save(JSON_value* value) const
 {
 	Component::Save(value);
-	value->AddUint("meshUID", mesh->GetUID());
-	value->AddString("materialFile", material->GetExportedFile());
+	value->AddUint("meshUID", (mesh != nullptr) ? mesh->GetUID() : 0u);
+	value->AddString("materialFile", (material != nullptr) ? material->GetExportedFile() : DEFAULTMAT);
 }
 
 void ComponentRenderer::Load(JSON_value* value)

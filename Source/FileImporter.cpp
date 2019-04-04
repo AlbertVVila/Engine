@@ -121,7 +121,7 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 		meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->GetUID()));
 	}
 
-	// TODO: Save scene on import mesh 
+	// TODO: [Resource Manager] Change this on scene refactor
 	GameObject *fake = new GameObject("fake",0);
 	ProcessNode(meshMap, aiscene.mRootNode, &aiscene, fake);
 
