@@ -351,9 +351,6 @@
     <ClCompile Include="ModuleNavigation.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="NavigationGenerator.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -787,9 +784,6 @@
     </ClInclude>
     <ClInclude Include="ModuleNavigation.h">
       <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="NavigationGenerator.h">
-      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

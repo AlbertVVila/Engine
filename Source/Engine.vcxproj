@@ -200,7 +200,6 @@
     <ClInclude Include="ModuleUI.h" />
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="myQuadTree.h" />
-    <ClInclude Include="NavigationGenerator.h" />
     <ClInclude Include="Panel.h" />
     <ClInclude Include="PanelAbout.h" />
     <ClInclude Include="PanelBrowser.h" />
@@ -322,7 +321,6 @@
     <ClCompile Include="ModuleUI.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="myQuadTree.cpp" />
-    <ClCompile Include="NavigationGenerator.cpp" />
     <ClCompile Include="PanelAbout.cpp" />
     <ClCompile Include="PanelBrowser.cpp" />
     <ClCompile Include="PanelConfiguration.cpp" />

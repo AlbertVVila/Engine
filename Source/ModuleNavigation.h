@@ -5,6 +5,7 @@
 #include <vector>
 //<>
 class GameObject;
+class ComponentRenderer;
 class ModuleNavigation :
 	public Module
 {
@@ -24,6 +25,8 @@ private:
 	void removeNavMesh(unsigned ID);
 	void generateNavigability();
 
+	void cleanUpNavValues();
+
 	//variables
 	float maxRadius = 5.0f;
 	float maxHeight = 5.0f;
@@ -42,7 +45,7 @@ private:
 	const float maxSlopeValue = 60.0f;
 
 	//navigation mesh properties
-	
+	const ComponentRenderer* meshComponent = nullptr;
 };
 
 #endif
