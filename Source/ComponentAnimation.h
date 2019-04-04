@@ -46,7 +46,7 @@ public:
 	AnimationController* controller = nullptr;
 	Animation* anim = nullptr;
 
-	char* anim_name = new char[64];
+	char* animName = new char[64];
 	bool isPlaying = false;
 };
 

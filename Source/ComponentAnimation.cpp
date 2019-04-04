@@ -25,7 +25,9 @@ ComponentAnimation::ComponentAnimation() : Component(nullptr, ComponentType::Ani
 
 ComponentAnimation::~ComponentAnimation()
 {
+	controller = nullptr;
 	anim = nullptr;
+	RELEASE_ARRAY(animName);
 }
 
 
@@ -34,17 +36,17 @@ void ComponentAnimation::DrawProperties()
 	if (ImGui::CollapsingHeader("Animation", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		//Name of the animation
-		if (strcmp(anim_name, anim->animationName.c_str()) != 0)
+		if (strcmp(animName, anim->animationName.c_str()) != 0)
 		{
-			strcpy(anim_name, anim->animationName.c_str());
+			strcpy(animName, anim->animationName.c_str());
 			ImGui::Text("Name");
-			ImGui::InputText("##label", anim_name, 64);
-			anim->animationName = anim_name;
+			ImGui::InputText("##label", animName, 64);
+			anim->animationName = animName;
 		}
 		else
 		{
 			ImGui::Text("Name");
-			ImGui::InputText("##label", anim_name, 64);
+			ImGui::InputText("##label", animName, 64);
 		}
 
 		//Number of frames the animation has
@@ -57,7 +59,6 @@ void ComponentAnimation::DrawProperties()
 		ImGui::PushItemWidth(50);
 		ImGui::DragFloat("Animation Speed", &controller->current->speed, 0.01f, -2.0f, 2.0f);
 		ImGui::PopItemWidth();
-
 		// Loop
 		ImGui::Checkbox("Loop", &controller->current->loop);
 
