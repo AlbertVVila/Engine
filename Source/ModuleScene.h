@@ -119,6 +119,8 @@ public:
 	float photoTimer = 0.f;
 	float3 ambientColor = float3::one;
 
+	int SceneSize = 0;
+
 	GameObject* canvas = nullptr;
 };
 

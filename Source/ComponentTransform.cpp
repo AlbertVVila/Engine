@@ -73,7 +73,7 @@ void ComponentTransform::DrawProperties()
 			ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
 		}
 
-		ImGui::DragFloat3("Position", (float*)&position, 0.1f, -100000.f, 100000.f);
+		ImGui::DragFloat3("Position", (float*)&position, 0.1f, (float) App->scene->SceneSize * -1, (float)App->scene->SceneSize);
 		ImGui::DragFloat3("Rotation", (float*)&eulerRotation, 0.5f, -180, 180.f);
 		ImGui::DragFloat3("Scale", (float*)&scale, 0.1f, 0.01f, 100.f);
 		rotation = rotation.FromEulerXYZ(math::DegToRad(eulerRotation.x),

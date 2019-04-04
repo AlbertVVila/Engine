@@ -156,6 +156,7 @@ void ModuleScene::SaveConfig(JSON * config)
 	scene->AddUint("cubeUID", primitivesUID[(unsigned)PRIMITIVES::CUBE]);
 	scene->AddFloat3("ambient", ambientColor);
 	scene->AddString("defaultscene", defaultScene.c_str());
+	scene->AddInt("sizeScene", SceneSize);
 	config->AddValue("scene", *scene);
 }
 
@@ -343,6 +344,13 @@ void ModuleScene::DragNDrop(GameObject* go)
 void ModuleScene::DrawGUI()
 {
 	ImGui::ColorEdit3("Ambient", (float*)&ambientColor);
+	if (ImGui::InputInt("Scene size", &SceneSize))
+	{
+		if (SceneSize <= 0)
+		{
+			SceneSize = 1;
+		}
+	}
 	if (ImGui::InputInt("KdTree bucket size", &App->spacePartitioning->kDTree.bucketSize))
 	{
 		if (App->spacePartitioning->kDTree.bucketSize <= 0)
