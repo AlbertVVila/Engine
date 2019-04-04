@@ -216,20 +216,7 @@ void ComponentRenderer::Load(JSON_value* value)
 	Component::Load(value);
 
 	unsigned uid = value->GetUint("meshUID");
-	ResourceMesh* m = (ResourceMesh*)App->resManager->Get(uid); //Look for loaded meshes
-
-	if (m != nullptr)
-	{
-		mesh = m;
-	}
-	else //Case mesh not loaded
-	{
-		ResourceMesh* res = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH, uid);
-		res->SetExportedFile(std::to_string(uid).c_str());
-		m = (ResourceMesh*)App->resManager->Get(uid); //Look for loaded meshes
-		if (m != nullptr)
-			m = res;
-	}
+	mesh = (ResourceMesh*)App->resManager->Get(uid); //Look for loaded meshes
 	UpdateGameObject();
 
 	const char* materialFile = value->GetString("materialFile");
