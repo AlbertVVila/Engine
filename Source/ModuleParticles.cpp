@@ -20,7 +20,6 @@ ModuleParticles::~ModuleParticles()
 	glDeleteBuffers(1, &billBoardVBO);
 
 	glDeleteBuffers(1, &trailVAO);
-	glDeleteBuffers(1, &trailEBO);
 	glDeleteBuffers(1, &trailVBO);
 }
 
@@ -74,24 +73,24 @@ bool ModuleParticles::Start()
 	glBindVertexArray(0);
 
 	shader = App->program->CreateProgram("Particles");
+	trailShader = App->program->CreateProgram("Trail");
 
 	if (trailVAO == 0)
 	{
 		glGenVertexArrays(1, &trailVAO);
 		glGenBuffers(1, &trailVBO);
-		glGenBuffers(1, &trailEBO);
 	}
 
 	glBindVertexArray(trailVAO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, trailVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * MAX_TRAIL_VERTICES * 3, nullptr, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * MAX_TRAIL_VERTICES * 3 * 2, nullptr, GL_DYNAMIC_DRAW); //vert. 3 float + 2 float uvs
 
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void*)0);
 
-	//glEnableVertexAttribArray(1);
-	//glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 12));
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void*)(sizeof(float) * 3));
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
@@ -107,9 +106,9 @@ void ModuleParticles::Render(float dt, const ComponentCamera* camera)
 	{
 		cp->gameobject->transform->LookAt(camera->frustum->pos);
 		cp->Update(dt);
-		switch (type)
+		switch (cp->type)
 		{
-		case ParticleSystemType::ANIMATION_STATIC:
+		case ComponentParticles::ParticleSystemType::ANIMATION_STATIC:
 			DrawAnimationStatic(cp, camera);
 			break;
 		}
@@ -130,36 +129,54 @@ void ModuleParticles::Render(float dt, const ComponentCamera* camera)
 
 void ModuleParticles::RenderTrail(ComponentTrail* ct, const ComponentCamera* camera)
 {
-	glUseProgram(shader->id);
+	if (ct->texture == nullptr)
+	{
+		return;
+	}
+
+	glUseProgram(trailShader->id);
 	glBindVertexArray(trailVAO);
-	unsigned trailVertices = ct->trail.size();// -1;
+	unsigned trailVertices = ct->trail.size();
 
 	glBindBuffer(GL_ARRAY_BUFFER, trailVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * trailVertices * 6, 0, GL_DYNAMIC_DRAW);
-
-	float* ptr = (float*)glMapBufferRange(GL_ARRAY_BUFFER, 0, sizeof(float) * trailVertices * 6, GL_MAP_WRITE_BIT);
+	float* ptrVertices = (float*)glMapBufferRange(GL_ARRAY_BUFFER, 0, sizeof(float) * MAX_TRAIL_VERTICES * 6, GL_MAP_WRITE_BIT);
 
 	math::float3 P0L;
 	math::float3 P0R;
-	//ct->trail.push(ct->trail.front());
-	//ct->trail.pop();
+
+	unsigned discarded = 0u;
+
+	float sPortion = 1 / (float)trailVertices;
+
 	for (unsigned i = 0u; i < trailVertices; ++i)
 	{
-		P0L = ct->trail.front().leftPoint;
-		P0R = ct->trail.front().rightPoint;
-		memcpy(ptr, &P0L.x, sizeof(float) * 3); ptr += 3;
-		memcpy(ptr, &P0R.x, sizeof(float) * 3);	ptr += 3;
+		if (ct->trail.front().renderizable)
+		{
+			P0L = ct->trail.front().leftPoint;
+			P0R = ct->trail.front().rightPoint;
+			memcpy(ptrVertices, &P0L.x, sizeof(float) * 3); ptrVertices += 3;
+			memcpy(ptrVertices, &math::float2(sPortion * i, 0.f), sizeof(float) * 2); ptrVertices += 2;
+			memcpy(ptrVertices, &P0R.x, sizeof(float) * 3);	ptrVertices += 3;
+			memcpy(ptrVertices, &math::float2(sPortion * i, 1), sizeof(float) * 2); ptrVertices += 2;
+		}
+		else
+		{
+			++discarded;
+		}
 		ct->trail.push(ct->trail.front());
 		ct->trail.pop();
 	}
 	
 	glUnmapBuffer(GL_ARRAY_BUFFER);
 
-	glUniformMatrix4fv(glGetUniformLocation(shader->id, "projection"), 1, GL_FALSE, &camera->GetProjectionMatrix()[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(shader->id, "view"), 1, GL_FALSE, &camera->GetViewMatrix()[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(shader->id, "model"), 1, GL_TRUE, float4x4::identity.ptr());
+	glUniformMatrix4fv(glGetUniformLocation(trailShader->id, "projection"), 1, GL_FALSE, &camera->GetProjectionMatrix()[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(trailShader->id, "view"), 1, GL_FALSE, &camera->GetViewMatrix()[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(trailShader->id, "model"), 1, GL_TRUE, float4x4::identity.ptr());
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, ct->texture->id);
+	glUniform1i(glGetUniformLocation(shader->id, "texture0"), 0);
 
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, trailVertices * 2);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, (trailVertices - discarded) * 2);
 
 	glBindVertexArray(0);
 }

@@ -10,17 +10,13 @@ class ComponentCamera;
 class Shader;
 class ComponentTrail;
 
-#define MAX_TRAIL_VERTICES 999 // 333 tris
+#define MAX_TRAIL_VERTICES 3333 // 1111 tris
 
 class ModuleParticles :
 	public Module
 {
 public:
 
-	enum class ParticleSystemType
-	{
-		ANIMATION_STATIC
-	};
 
 	//ModuleParticles();
 	~ModuleParticles();
@@ -50,7 +46,8 @@ private:
 	unsigned trailEBO = 0u;
 
 	Shader* shader = nullptr;
-	ParticleSystemType type = ParticleSystemType::ANIMATION_STATIC;
+	Shader* trailShader = nullptr;
+
 
 	std::list<ComponentTrail*> trails;
 

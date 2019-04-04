@@ -12,6 +12,13 @@ class ComponentParticles :
 	friend class ModuleParticles;
 
 public:
+
+	enum class ParticleSystemType
+	{
+		ANIMATION_STATIC
+	};
+
+
 	ComponentParticles(GameObject* gameobject);
 	ComponentParticles(const ComponentParticles& component);
 	~ComponentParticles();
@@ -27,6 +34,8 @@ public:
 	void Load(JSON_value* value) override;
 
 	Texture* texture = nullptr;
+
+	ParticleSystemType type = ParticleSystemType::ANIMATION_STATIC;
 
 private:
 	std::string textureName = "None Selected";

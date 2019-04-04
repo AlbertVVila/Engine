@@ -16,14 +16,15 @@ public:
 		math::float3 position = math::float3::zero;
 		math::float3 leftPoint = math::float3::zero;
 		math::float3 rightPoint = math::float3::zero;
+		bool renderizable = false;
 
 		TrailPoint(float remainingTime, math::float3 position) : remainingTime(remainingTime), position(position) {}
-		TrailPoint(float remainingTime, math::float3 position, math::float3 previousPoint, float width) : remainingTime(remainingTime), position(position)
+		TrailPoint(float remainingTime, math::float3 position, math::float3 previousPoint, float width, math::float3 up) : remainingTime(remainingTime), position(position)
 		{
-			math::float3 midPoint = .5f * position + .5f* previousPoint;
-			math::float3 cross = position.Cross(previousPoint);
-			rightPoint = midPoint + cross.Normalized() * width;
-			leftPoint = midPoint - cross.Normalized() * width;
+			math::float3 cross = (previousPoint - position).Normalized().Cross(up);
+			rightPoint = position + cross.Normalized() * width;
+			leftPoint = position - cross.Normalized() * width;
+			renderizable = true;
 		}
 		
 		float Distance(math::float3 otherPoint)
@@ -46,11 +47,16 @@ public:
 	ComponentTrail* Clone() const;
 	std::queue<TrailPoint> trail;
 
+	Texture* texture = nullptr;
+
 private:
 
 	float width = 100.f;
 	float duration = .5f;
 	float minDistance = 1.f;
+
+	std::string textureName = "None Selected";
+	std::vector<std::string> textureFiles;
 };
 
 #endif

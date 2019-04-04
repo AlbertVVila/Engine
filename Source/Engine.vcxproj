@@ -315,12 +315,14 @@
     <None Include="..\Game\Shaders\FragmentShaders\Particles.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\PBR.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\Skybox.fs" />
+    <None Include="..\Game\Shaders\FragmentShaders\Trail.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\UI.fs" />
     <None Include="..\Game\Shaders\VertexShaders\Default.vs" />
     <None Include="..\Game\Shaders\VertexShaders\Fonts.vs" />
     <None Include="..\Game\Shaders\VertexShaders\Particles.vs" />
     <None Include="..\Game\Shaders\VertexShaders\PBR.vs" />
     <None Include="..\Game\Shaders\VertexShaders\Skybox.vs" />
+    <None Include="..\Game\Shaders\VertexShaders\Trail.vs" />
     <None Include="..\Game\Shaders\VertexShaders\UI.vs" />
   </ItemGroup>
   <ItemGroup>

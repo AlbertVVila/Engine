@@ -681,6 +681,12 @@
     <None Include="..\Game\Shaders\FragmentShaders\Particles.fs">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="..\Game\Shaders\FragmentShaders\Trail.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\VertexShaders\Trail.vs">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Engine.rc">
