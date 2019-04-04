@@ -15,10 +15,11 @@ NavigationGenerator::~NavigationGenerator()
 
 void NavigationGenerator::GenerateNavigability()
 {
-	//Code to adapt: xd
+	//check if we got a mesh
 
 	
-	
+	//Code to adapt: xd
+		
 	/*if (!m_geom || !m_geom->getMesh())
 	{
 		m_ctx->log(RC_LOG_ERROR, "buildNavigation: Input mesh is not specified.");

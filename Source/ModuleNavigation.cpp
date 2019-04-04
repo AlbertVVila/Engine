@@ -34,7 +34,14 @@ void ModuleNavigation::DrawGUI()
 		ImGui::DragFloat("Max slope scaling", &maxSlopeScaling, sliderIncreaseSpeed, minSliderValue, maxSlopeValue);
 		ImGui::DragFloat("Max step height", &maxStepHeightScaling, sliderIncreaseSpeed, minSliderValue, maxSlopeValue);
 
-		if (ImGui::Button("Generate navigability")) generator->GenerateNavigability();
+		if (ImGui::Button("Generate navigability"))
+		{
+			/*if ()
+			{
+
+			}*/
+			generator->GenerateNavigability();
+		}
 	}
 	if (ImGui::CollapsingHeader("Object"))
 	{
