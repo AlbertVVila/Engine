@@ -30,10 +30,19 @@ void PanelAnimation::Draw()
 		Animation* anim = ((ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)))->anim;
 		ComponentAnimation* compAnim = ((ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)));
 
-		ImGui::Text("GAMEOBJECT");
+		ImGui::Text("GAMEOBJECT"); ImGui::SameLine();
+		ImGui::Text("CURRENT ANIM"); ImGui::SameLine();
+		ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 - ImGui::CalcTextSize("ANIMATION").x / 2);
+		ImGui::Text("ANIMATION");
 		ImGui::Separator();
-		ImGui::Text(App->scene->selected->name.c_str());
+		// GameObject
+		ImGui::Text(App->scene->selected->name.c_str()); ImGui::SameLine();
 
+		// Current Anim
+		ImGui::SetCursorPosX(ImGui::CalcTextSize("  GAMEOBJECT  ").x);
+		ImGui::Text(anim->animationName.c_str());
+
+		// Animation
 		ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 - ImGui::CalcTextSize("FRAMES").x / 2);
 		ImGui::Text("FRAMES");
 
