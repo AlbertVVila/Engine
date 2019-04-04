@@ -36,24 +36,6 @@ bool ModuleResourceManager::Init(JSON * config)
 	return true;
 }
 
-bool ModuleResourceManager::Start()
-{
-	//TODO: Read metafiles from Assets/ instead and import or add to resources
-	/*std::vector<std::string> files;
-	std::vector<std::string> dirs;
-	App->fsystem->ListFolderContent(MESHES, files, dirs);
-	for each (std::string file in files)
-	{
-		std::string name = App->fsystem->GetFilename(file.c_str());
-		unsigned uid = std::stoul(name);
-		ResourceMesh* res = (ResourceMesh*)CreateNewResource(TYPE::MESH, uid);	
-		res->SetExportedFile(name.c_str());
-	}
-	files.clear();
-	dirs.clear();*/
-	return true;
-}
-
 void ModuleResourceManager::LoadEngineResources()
 {
 	std::set<std::string> files;

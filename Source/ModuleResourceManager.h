@@ -21,7 +21,6 @@ public:
 	~ModuleResourceManager();
 
 	bool Init(JSON* config) override;
-	bool Start() override;
 
 	// Shader functions
 	Shader* GetProgram(std::string filename) const;
