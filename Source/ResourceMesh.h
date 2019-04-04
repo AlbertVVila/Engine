@@ -30,6 +30,7 @@ public:
 	void AddMesh(unsigned uid);
 
 	// File in Assets especific
+	void Rename(const char* newName) override;
 	void Delete() override;
 
 private:

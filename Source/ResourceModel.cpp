@@ -133,6 +133,19 @@ void ResourceModel::AddMesh(ResourceMesh* mesh)
 	meshList.push_back(mesh);
 }
 
+void ResourceModel::Rename(const char* newName)
+{
+	Resource::Rename(newName);
+
+	exportedFileName = newName;
+
+	for (int i = 0; i < meshList.size(); ++i)
+	{
+		std::string name(newName);
+		meshList[i]->Rename((name + "_" + std::to_string(i)).c_str());
+	}
+}
+
 void ResourceModel::Delete()
 {
 	Resource::Delete();

@@ -19,6 +19,7 @@ public:
 	void DeleteFromMemory() override;	// Will delete all ResourceMeshes stored in memory
 
 	// File in asset specific
+	void Rename(const char* newName) override;
 	void Delete() override;
 
 	void SaveMetafile(const char* file) const override;

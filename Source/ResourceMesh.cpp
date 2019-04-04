@@ -405,6 +405,15 @@ bool ResourceMesh::Intersects(const LineSegment &line, float* distance)
 	return intersects;
 }
 
+void ResourceMesh::Rename(const char* newName)
+{
+	std::string ruteToFile = App->fsystem->GetFilePath(file);
+	std::string extension = App->fsystem->GetExtension(file);
+
+	file = ruteToFile + newName + extension;	// Update file variable
+	name = newName;								// Update name variable
+}
+
 void ResourceMesh::Delete()
 {
 	// Delete Resource from ResourceManager
