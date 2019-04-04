@@ -44,10 +44,12 @@ ResourceMesh::~ResourceMesh()
 
 bool ResourceMesh::LoadInMemory()
 {
-	char *data = nullptr;
+	char* data = nullptr;
 
-	unsigned int a = App->fsystem->Load((MESHES + std::to_string(UID) + MESHEXTENSION).c_str(), &data);
-	if (a != 0)			// Load mesh file
+	unsigned ok = App->fsystem->Load((MESHES + std::to_string(UID) + MESHEXTENSION).c_str(), &data);
+
+	// Load mesh file
+	if (ok != 0)			
 	{
 		SetMesh(data); //Deallocates data
 		SetMeshBuffers();

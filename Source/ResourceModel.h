@@ -30,7 +30,7 @@ public:
 	void DrawImportConfiguration() override;
 
 public:
-	unsigned numMeshes = 0;
+	unsigned numMeshes = 0u;
 	std::vector<ResourceMesh*> meshList;
 };
 

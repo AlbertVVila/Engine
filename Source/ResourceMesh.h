@@ -27,7 +27,6 @@ public:
 	void DrawBbox(unsigned shaderProgram, const AABB& globalBBOX) const;
 	AABB GetBoundingBox() const;
 	bool Intersects(const LineSegment& line, float* distance);
-	void AddMesh(unsigned uid);
 
 	// File in Assets especific
 	void Rename(const char* newName) override;
