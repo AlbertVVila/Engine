@@ -70,18 +70,18 @@ void ComponentRenderer::DrawProperties()
 		// Mesh selector
 		ImGui::Text("Mesh");
 		ImGui::PushID("Mesh Combo");
-		if (ImGui::BeginCombo("", mesh != nullptr ? mesh->GetExportedFile() : ""))
+		if (ImGui::BeginCombo("", mesh != nullptr ? mesh->name.c_str() : ""))
 		{
 			if (guiMeshes.empty())
 			{
-				guiMeshes = App->resManager->GetResourceNamesList(TYPE::MESH, true);
+				guiMeshes = App->resManager->GetMeshesNamesList(true);
 			}
 			for (int n = 0; n < guiMeshes.size(); n++)
 			{
-				bool is_selected = (mesh != nullptr ? mesh->GetExportedFile() == guiMeshes[n] : false);
+				bool is_selected = (mesh != nullptr ? mesh->name == guiMeshes[n] : false);
 				if (ImGui::Selectable(guiMeshes[n].c_str(), is_selected))
 				{
-					if(mesh == nullptr || mesh->GetExportedFile() != guiMeshes[n])
+					if(mesh == nullptr || mesh->name != guiMeshes[n])
 						SetMesh(guiMeshes[n].c_str());
 				}
 				if (is_selected)
@@ -254,7 +254,7 @@ void ComponentRenderer::SetMesh(const char* meshfile)
 		App->resManager->DeleteResource(mesh->GetUID());
 
 	if (meshfile != nullptr)
-		mesh = (ResourceMesh*)App->resManager->Get(meshfile, TYPE::MESH);
+		mesh = (ResourceMesh*)App->resManager->GetMeshByName(meshfile);
 
 	UpdateGameObject();
 	return;

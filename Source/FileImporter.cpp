@@ -116,7 +116,8 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 		}
 		App->fsystem->Save((MESHES + std::to_string(mesh->GetUID()) + MESHEXTENSION).c_str(), meshData, size);
 		mesh->SetFile(path.c_str());
-		mesh->SetExportedFile((name + std::to_string(i)).c_str());
+		mesh->SetExportedFile(std::to_string(mesh->GetUID()).c_str());
+		mesh->name = name + "_" + std::to_string(i);
 
 		meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->GetUID()));
 	}

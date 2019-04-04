@@ -349,6 +349,7 @@ void PanelResourceManager::DrawResourceMesh()
 	std::string exportedFile(mesh.GetExportedFile());
 	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), (exportedFile + ":").c_str());
 	ImGui::Columns(2);
+	ImGui::Text("Name: %s", mesh.name.c_str());
 	ImGui::Text("VAO: %u", mesh.GetVAO());
 	ImGui::Text("VBO: %u", mesh.GetVBO());
 	ImGui::Text("EBO: %u", mesh.GetEBO());

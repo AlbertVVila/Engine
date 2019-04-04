@@ -89,7 +89,8 @@ void ResourceModel::LoadConfigFromMeta()
 		unsigned meshUID = value->GetUint(("Mesh" + std::to_string(i)).c_str());
 		ResourceMesh* mesh = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH, meshUID);
 		mesh->SetFile(file.c_str());
-		mesh->SetExportedFile((name + std::to_string(i)).c_str());
+		mesh->SetExportedFile((std::to_string(mesh->GetUID())).c_str());
+		mesh->name = name + "_" + std::to_string(i);
 
 		meshList.push_back(mesh);
 	}

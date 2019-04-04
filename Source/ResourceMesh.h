@@ -51,6 +51,8 @@ private:
 	unsigned EBObox = 0;
 
 public:
+	std::string name = "";
+
 	std::vector<math::float3> meshVertices;
 	std::vector<math::float3> meshNormals;
 	std::vector<math::float3> meshTangents;
