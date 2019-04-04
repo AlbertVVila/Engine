@@ -204,7 +204,7 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	
 	for (const auto &go : staticFilteredGOs)
 	{
-		if (!camFrustum.Intersects(go->GetBoundingBox()))
+		if (camFrustum.Intersects(go->GetBoundingBox()))
 		{
 			DrawGO(*go, camFrustum, isEditor);
 		}
