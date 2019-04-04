@@ -132,6 +132,17 @@ void ResourceModel::AddMesh(ResourceMesh* mesh)
 	meshList.push_back(mesh);
 }
 
+void ResourceModel::Delete()
+{
+	Resource::Delete();
+
+	// Delete all mesh files
+	for each(auto& mesh in meshList)
+	{
+		mesh->Delete();
+	}
+}
+
 void ResourceModel::DrawImportConfiguration()
 {
 	// TODO: [Resource manager] Add import config

@@ -19,10 +19,11 @@ public:
 	void DeleteFromMemory() override;	// Will delete all ResourceMeshes stored in memory
 
 	// File in asset specific
+	void Delete() override;
+
 	void SaveMetafile(const char* file) const override;
 	void LoadConfigFromMeta() override;
 	bool CheckImportedMeshes();
-	unsigned GetMeshUIDFromMeta(unsigned meshNumber);
 
 	void AddMesh(ResourceMesh* mesh);
 	void DrawImportConfiguration() override;

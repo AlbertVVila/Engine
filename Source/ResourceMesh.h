@@ -29,6 +29,9 @@ public:
 	bool Intersects(const LineSegment& line, float* distance);
 	void AddMesh(unsigned uid);
 
+	// File in Assets especific
+	void Delete() override;
+
 private:
 	void ComputeBBox();
 	void ProcessVertexTangent(const float vIndex1, const float vIndex2, const float vIndex3);

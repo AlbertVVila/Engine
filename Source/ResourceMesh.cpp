@@ -3,6 +3,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleFileSystem.h"
+#include "ModuleResourceManager.h"
 
 #include "GL/glew.h"
 #include "Geometry/Triangle.h"
@@ -402,4 +403,18 @@ bool ResourceMesh::Intersects(const LineSegment &line, float* distance)
 		}
 	}
 	return intersects;
+}
+
+void ResourceMesh::Delete()
+{
+	// Delete Resource from ResourceManager
+	App->resManager->DeleteResourceFromList(UID);
+
+	// Delete file in Library
+	std::string fileInLibrary(MESHES);
+	//fileInLibrary += exportedFileName;
+	fileInLibrary += std::to_string(UID);
+	fileInLibrary += MESHEXTENSION;
+	App->fsystem->Delete(fileInLibrary.c_str());
+	DeleteFromMemory();
 }
