@@ -19,6 +19,8 @@ ResourceMesh::ResourceMesh(unsigned uid) : Resource(uid, TYPE::MESH)
 
 ResourceMesh::ResourceMesh(const ResourceMesh& resource) : Resource(resource)
 {
+	name = resource.name;
+
 	VAO = resource.VAO;
 	VBO = resource.VBO;
 	EBO = resource.EBO;
@@ -45,7 +47,7 @@ bool ResourceMesh::LoadInMemory()
 	char *data = nullptr;
 
 	unsigned int a = App->fsystem->Load((MESHES + std::to_string(UID) + MESHEXTENSION).c_str(), &data);
-	if (a != 0)	// Load mesh file
+	if (a != 0)			// Load mesh file
 	{
 		SetMesh(data); //Deallocates data
 		SetMeshBuffers();
@@ -167,7 +169,7 @@ void ResourceMesh::CalculateTangents()
 }
 
 
-void ResourceMesh::SetMesh(const char * meshData)
+void ResourceMesh::SetMesh(const char* meshData)
 {
 	assert(meshData != nullptr);
 	if (meshData == nullptr) return;
@@ -421,8 +423,7 @@ void ResourceMesh::Delete()
 
 	// Delete file in Library
 	std::string fileInLibrary(MESHES);
-	//fileInLibrary += exportedFileName;
-	fileInLibrary += std::to_string(UID);
+	fileInLibrary += exportedFileName;
 	fileInLibrary += MESHEXTENSION;
 	App->fsystem->Delete(fileInLibrary.c_str());
 	DeleteFromMemory();
