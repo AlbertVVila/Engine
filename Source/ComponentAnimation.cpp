@@ -15,7 +15,6 @@
 #include "Math/Quat.h"
 #include "Math/float3.h"
 #include "Brofiler.h"
-#define MAX_NAME 64
 
 ComponentAnimation::ComponentAnimation() : Component(nullptr, ComponentType::Animation)
 {
@@ -34,12 +33,19 @@ void ComponentAnimation::DrawProperties()
 {
 	if (ImGui::CollapsingHeader("Animation", ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		char *anim_name = new char[MAX_NAME];
-		strcpy(anim_name, anim->animationName.c_str());
 		//Name of the animation
-		ImGui::Text("Name");
-		ImGui::InputText("##label", anim_name, MAX_NAME);
-		anim->animationName = anim_name;
+		if (strcmp(anim_name, anim->animationName.c_str()) != 0)
+		{
+			strcpy(anim_name, anim->animationName.c_str());
+			ImGui::Text("Name");
+			ImGui::InputText("##label", anim_name, 64);
+			anim->animationName = anim_name;
+		}
+		else
+		{
+			ImGui::Text("Name");
+			ImGui::InputText("##label", anim_name, 64);
+		}
 
 		//Number of frames the animation has
 		ImGui::Text("%i frames,", anim->numberFrames);
