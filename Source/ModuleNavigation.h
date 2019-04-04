@@ -3,7 +3,6 @@
 
 #include "Module.h"
 #include <vector>
-#include "NavigationGenerator.h"
 //<>
 class GameObject;
 class ModuleNavigation :
@@ -23,6 +22,7 @@ public:
 
 private:
 	void removeNavMesh(unsigned ID);
+	void generateNavigability();
 
 	//variables
 	float maxRadius = 5.0f;
@@ -41,8 +41,8 @@ private:
 	const float maxSliderValue = 100.0f;
 	const float maxSlopeValue = 60.0f;
 
-	NavigationGenerator* generator = new NavigationGenerator();
-
+	//navigation mesh properties
+	
 };
 
 #endif

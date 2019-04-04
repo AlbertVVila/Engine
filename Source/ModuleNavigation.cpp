@@ -36,11 +36,7 @@ void ModuleNavigation::DrawGUI()
 
 		if (ImGui::Button("Generate navigability"))
 		{
-			/*if ()
-			{
-
-			}*/
-			generator->GenerateNavigability();
+			generateNavigability();
 		}
 	}
 	if (ImGui::CollapsingHeader("Object"))
@@ -65,4 +61,9 @@ void ModuleNavigation::removeNavMesh(unsigned ID)
 			return;
 		}
 	}
+}
+
+void ModuleNavigation::generateNavigability()
+{
+
 }
