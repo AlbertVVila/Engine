@@ -92,7 +92,7 @@ bool ModuleScene::Start()
 	if (defaultScene.size() > 0)
 	{
 		path = SCENES;
-		//LoadScene(defaultScene.c_str(), path.c_str());
+		LoadScene(defaultScene.c_str(), path.c_str());
 	}
 	return true;
 }
