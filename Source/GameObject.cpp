@@ -70,11 +70,13 @@ GameObject::GameObject(const GameObject & gameobject)
 			transform = (ComponentTransform*)componentcopy;
 		}
 	}
-
-	if (GetComponent(ComponentType::Renderer) != nullptr)
+	if (!App->scene->photoEnabled)
 	{
-		isVolumetric = true;
-		App->scene->AddToSpacePartition(this);
+		if (GetComponent(ComponentType::Renderer) != nullptr)
+		{
+			isVolumetric = true;
+			App->scene->AddToSpacePartition(this);
+		}
 	}
 
 	for (const auto& child : gameobject.children)
@@ -631,7 +633,7 @@ void GameObject::DrawBBox() const
 	}
 
 	ComponentRenderer *renderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
-	if (renderer == nullptr) return;
+	if (renderer == nullptr || renderer->mesh == nullptr) return;
 
 	if(renderer->mesh->GetReferences() > 0u)
 		renderer->mesh->DrawBbox(App->program->defaultShader->id, bbox);
@@ -768,6 +770,7 @@ void GameObject::DrawHierarchy()
 		GUICreator::CreateElements(this);
 		if (ImGui::Selectable("Duplicate"))
 		{
+			App->scene->TakePhoto();
 			for each (GameObject* go in App->scene->selection)
 			{
 				go->copyFlag = true;
@@ -775,6 +778,7 @@ void GameObject::DrawHierarchy()
 		}
 		if (ImGui::Selectable("Delete"))
 		{
+			App->scene->TakePhoto();
 			for each (GameObject* go in App->scene->selection)
 			{
 				go->deleteFlag = true;

@@ -65,6 +65,7 @@ void PanelInspector::Draw()
 					}
 					else
 					{
+						App->scene->TakePhoto();
 						App->scene->selected->CreateComponent(type);
 					}
 				}

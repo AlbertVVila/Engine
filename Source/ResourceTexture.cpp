@@ -8,10 +8,7 @@
 #include "GL/glew.h"
 #include "IL/ilut.h"
 #include "JSON.h"
-
-#include "rapidjson/document.h"
-#include "rapidjson/filewritestream.h"
-#include "rapidjson/prettywriter.h"
+#include "imgui.h"
 
 ResourceTexture::ResourceTexture(unsigned uid) : Resource(uid, TYPE::TEXTURE)
 {
@@ -262,23 +259,87 @@ void ResourceTexture::SaveMetafile(const char* file) const
 	meta->AddUint("depth", depth);
 	meta->AddUint("mips", mips);
 	meta->AddUint("format", format);
-	meta->AddUint("DX compresion", ilGetInteger(IL_DXTC_FORMAT));
+	meta->AddInt("DX compresion", (int)dxtFormat);
 	meta->AddUint("mipmap", ilGetInteger(IL_ACTIVE_MIPMAP));
 	json->AddValue("Texture", *meta);
 	filepath += ".meta";
 	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
 }
 
-void ResourceTexture::Load(const JSON_value& config)
+void ResourceTexture::LoadConfigFromMeta()
 {
-	Resource::Load(config);
+	char* data = nullptr;
+	std::string metaFile(file);
+	metaFile += ".meta";
 
-	width = config.GetUint("Width");
-	height = config.GetUint("Height");
-	depth = config.GetUint("Depth");
-	mips = config.GetUint("Mips");
-	bytes = config.GetUint("Bytes");
-	gpuID = config.GetUint("GpuID");
+	if (App->fsystem->Load(metaFile.c_str(), &data) == 0)
+	{
+		LOG("Warning: %s couldn't be loaded", metaFile.c_str());
+		RELEASE_ARRAY(data);
+		return;
+	}
+	JSON* json = new JSON(data);
+	JSON_value* value = json->GetValue("Texture");
+	dxtFormat = (DXT)value->GetInt("DX compresion");
 
-	format = config.GetUint("Format");
+	switch (dxtFormat)
+	{
+	case DXT::DXT1:	compression = 0; break;
+	//case DXT::DXT2:	compression = 1; break;
+	case DXT::DXT3:	compression = 1; break;
+	//case DXT::DXT4:	compression = 3; break;
+	case DXT::DXT5:	compression = 2; break;
+	//case DXT::DXT_NO_COMP:	compression = 5; break;
+	//case DXT::KEEP_DXTC_DATA:	compression = 3; break;
+	//case DXT::DXTC_DATA_FORMAT:	compression = 4; break;
+	case DXT::THREE_DC:	compression = 3; break;
+	case DXT::RXGB:	compression = 4; break;
+	case DXT::ATI1N:	compression = 5; break;
+	case DXT::DXT1A:	compression = 6; break;
+	}
+}
+
+void ResourceTexture::Rename(const char* newName)
+{
+	Resource::Rename(newName);
+
+	// Rename file in Library
+	App->fsystem->Rename(TEXTURES, (exportedFileName + TEXTUREEXT).c_str(), newName);
+
+	exportedFileName = newName;
+}
+
+void ResourceTexture::Delete()
+{
+	Resource::Delete();
+
+	// Delete file in Library
+	std::string fileInLibrary(TEXTURES);
+	fileInLibrary += exportedFileName;
+	fileInLibrary += TEXTUREEXT;
+	App->fsystem->Delete(fileInLibrary.c_str());
+	DeleteFromMemory();
+}
+
+void ResourceTexture::DrawImportConfiguration()
+{
+	const char* compressionTypes[] = { "DXT1", /*"DXT2",*/ "DXT3", /*"DXT4",*/ "DXT5", /*"DXT_NO_COMP", "KEEP_DXTC_DATA", "DXTC_DATA_FORMAT",*/ "THREE_DC", "RXGB", "ATI1N", "DXT1A" };
+	if (ImGui::Combo("Compression type", &compression, compressionTypes, IM_ARRAYSIZE(compressionTypes)))
+	{
+		switch (compression)
+		{
+		case 0:	dxtFormat = DXT::DXT1; break;
+			//case 1:	resource->dxtFormat = DXT::DXT2; break;
+		case 1:	dxtFormat = DXT::DXT3; break;
+			//case 3:	resource->dxtFormat = DXT::DXT4; break;
+		case 2:	dxtFormat = DXT::DXT5; break;
+			//case 5: resource->dxtFormat = DXT::DXT_NO_COMP; break;
+			//case 3:	resource->dxtFormat = DXT::KEEP_DXTC_DATA; break;
+			//case 4:	resource->dxtFormat = DXT::DXTC_DATA_FORMAT; break;
+		case 3:	dxtFormat = DXT::THREE_DC; break;
+		case 4:	dxtFormat = DXT::RXGB; break;
+		case 5:	dxtFormat = DXT::ATI1N; break;
+		case 6:	dxtFormat = DXT::DXT1A; break;
+		}
+	}
 }

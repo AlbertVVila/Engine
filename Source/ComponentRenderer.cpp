@@ -63,21 +63,30 @@ void ComponentRenderer::DrawProperties()
 			ImGui::PopID();
 			return;
 		}
-		ImGui::Text("Num vertices : %d", mesh->meshVertices.size());
-		ImGui::Text("Num triangles : %d", mesh->meshIndices.size() / 3);
+
+		if (mesh == nullptr)
+		{
+			// TODO: Add mesh selector
+			ImGui::Text("No mesh selected.");
+		}
+		else
+		{
+			ImGui::Text("Num vertices : %d", mesh->meshVertices.size());
+			ImGui::Text("Num triangles : %d", mesh->meshIndices.size() / 3);
+		}
 		ImGui::Spacing();
 
 		ImGui::Text("Material");
-		if (ImGui::BeginCombo("", material->name.c_str()))
+		if (ImGui::BeginCombo("", material->GetExportedFile()))
 		{
 			if (guiMaterials.empty())
 			{
-				guiMaterials = App->fsystem->GetFolderContent(IMPORTED_MATERIALS, false);
+				guiMaterials = App->resManager->GetResourceNamesList(TYPE::MATERIAL, true);
 			}
 			for (int n = 0; n < guiMaterials.size(); n++)
 			{
-				bool is_selected = (material->name == guiMaterials[n]);
-				if (ImGui::Selectable(guiMaterials[n].c_str(), is_selected) && material->name != guiMaterials[n])
+				bool is_selected = (material->GetExportedFile() == guiMaterials[n]);
+				if (ImGui::Selectable(guiMaterials[n].c_str(), is_selected) && material->GetExportedFile() != guiMaterials[n])
 				{
 					SetMaterial(guiMaterials[n].c_str());
 
@@ -113,6 +122,11 @@ void ComponentRenderer::DrawProperties()
 				}
 				App->editor->materialEditor->CleanUp();
 			}
+
+			if (ImGui::Button("Refresh Material"))
+			{
+				App->editor->materialEditor->UpdateTexturesList();
+			}
 		}
 		else
 		{
@@ -122,6 +136,9 @@ void ComponentRenderer::DrawProperties()
 				App->editor->materialEditor->material = material;
 				App->editor->materialEditor->previous = new ResourceMaterial(*material);
 				App->editor->materialEditor->SetCurrentTextures();
+
+				// Update texture list
+				App->editor->materialEditor->UpdateTexturesList();
 			}
 		}
 
@@ -156,7 +173,7 @@ void ComponentRenderer::Save(JSON_value* value) const
 {
 	Component::Save(value);
 	value->AddUint("meshUID", mesh->GetUID());
-	value->AddString("materialFile", material->name.c_str());
+	value->AddString("materialFile", material->GetExportedFile());
 }
 
 void ComponentRenderer::Load(JSON_value* value)
@@ -184,21 +201,26 @@ void ComponentRenderer::Load(JSON_value* value)
 	SetMaterial(materialFile);
 }
 
-void ComponentRenderer::SetMaterial(const char * materialfile)
+void ComponentRenderer::SetMaterial(const char* materialfile)
 {
-	if (materialfile == nullptr)
+	// Delete previous material
+	if (material != nullptr)
 	{
-		materialfile = App->resManager->Get(DEFAULTMAT)->GetExportedFile();
+		App->resManager->DeleteResource(material->GetUID());
 	}
 
-	if (material == nullptr || material->name != materialfile)
+	if (materialfile == nullptr)
 	{
-		if (material != nullptr)
-		{
-			App->resManager->DeleteResource(material->GetUID());
-		}
-
+		material = (ResourceMaterial*)App->resManager->Get(DEFAULTMAT);
+		return;
+	}
+	else
+	{
 		material = (ResourceMaterial*)App->resManager->Get(materialfile);
+
+		// Material can't be found
+		if(material == nullptr)
+			material = (ResourceMaterial*)App->resManager->Get(DEFAULTMAT);
 	}
 	return;
 }
