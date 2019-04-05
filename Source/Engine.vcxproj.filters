@@ -257,6 +257,8 @@
     </ClCompile>
     <ClCompile Include="ResourceModel.cpp">
       <Filter>Resources</Filter>
+    <ClCompile Include="HashString.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -616,6 +618,11 @@
     </ClInclude>
     <ClInclude Include="ResourceModel.h">
       <Filter>Resources</Filter>
+    <ClInclude Include="HashString.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="strpool.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

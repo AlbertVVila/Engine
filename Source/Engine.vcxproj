@@ -118,6 +118,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="GUICreator.h" />
+    <ClInclude Include="HashString.h" />
     <ClInclude Include="ImGuizmo\ImGuizmo.h" />
     <ClInclude Include="KDTree.h" />
     <ClInclude Include="MaterialEditor.h" />
@@ -219,6 +220,7 @@
     <ClInclude Include="ResourceSkybox.h" />
     <ClInclude Include="ResourceTexture.h" />
     <ClInclude Include="Skybox.h" />
+    <ClInclude Include="strpool.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Viewport.h" />
   </ItemGroup>
@@ -238,6 +240,7 @@
     <ClCompile Include="FileExplorer.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GUICreator.cpp" />
+    <ClCompile Include="HashString.cpp" />
     <ClCompile Include="ImGuizmo\ImGuizmo.cpp" />
     <ClCompile Include="KDTree.cpp" />
     <ClCompile Include="log.cpp" />
