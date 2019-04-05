@@ -13,6 +13,8 @@
 
 #include "GL/glew.h"
 
+#include "ImGUICurveUtils.h"
+
 ModuleParticles::~ModuleParticles()
 {
 	glDeleteBuffers(1, &billBoardVAO);
@@ -98,7 +100,7 @@ bool ModuleParticles::Start()
 	return true;
 }
 
-void ModuleParticles::Render(float dt, const ComponentCamera* camera)
+void ModuleParticles::Render(float dt, const ComponentCamera* camera) const
 {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_ONE, GL_ONE);
@@ -127,7 +129,7 @@ void ModuleParticles::Render(float dt, const ComponentCamera* camera)
 	glUseProgram(0);
 }
 
-void ModuleParticles::RenderTrail(ComponentTrail* ct, const ComponentCamera* camera)
+void ModuleParticles::RenderTrail(ComponentTrail* ct, const ComponentCamera* camera) const
 {
 	if (ct->texture == nullptr)
 	{
@@ -150,10 +152,21 @@ void ModuleParticles::RenderTrail(ComponentTrail* ct, const ComponentCamera* cam
 
 	for (unsigned i = 0u; i < trailVertices; ++i)
 	{
-		if (ct->trail.front().renderizable)
+		TrailPoint point = ct->trail.front();
+		if (point.renderizable)
 		{
-			P0L = ct->trail.front().leftPoint;
-			P0R = ct->trail.front().rightPoint;
+			float width = point.width;
+			for (ParticleModule* pm : ct->modules)
+			{
+				switch (pm->type)
+				{
+				case ParticleModule::ParticleModulesType::SIZE_OVER_TIME:
+					width = ((PMSizeOverTime*)pm)->GetSize( point.remainingTime/ point.totalTime, point.width);
+					break;
+				}
+			}
+			P0L = point.position + point.rightPoint * width;
+			P0R = point.position - point.rightPoint * width;
 			memcpy(ptrVertices, &P0L.x, sizeof(float) * 3); ptrVertices += 3;
 			memcpy(ptrVertices, &math::float2(sPortion * i, 0.f), sizeof(float) * 2); ptrVertices += 2;
 			memcpy(ptrVertices, &P0R.x, sizeof(float) * 3);	ptrVertices += 3;
@@ -226,4 +239,15 @@ void ModuleParticles::DrawAnimationStatic(ComponentParticles* cp, const Componen
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, billBoardEBO);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+}
+
+inline float PMSizeOverTime::GetSize(float percent, float total)
+{
+	return ImGui::BezierValue(percent, v) * total;
+}
+
+void PMSizeOverTime::InspectorDraw()
+{
+	ImGui::Text("Size Over Time");
+	ImGui::Bezier("easeInExpo", v);
 }

@@ -3,37 +3,40 @@
 
 #include "Component.h"
 #include <queue>
+#include <list>
 #include "Math/float3.h"
+
+class ParticleModule;
+
+struct TrailPoint
+{
+	float remainingTime = .0f;
+	float totalTime = .0f;
+	math::float3 position = math::float3::zero;
+	math::float3 rightPoint = math::float3::zero;
+	float width = .0f;
+	bool renderizable = false;
+
+	TrailPoint(float totalTime, math::float3 position, float width) : remainingTime(totalTime), totalTime(totalTime), position(position), width(width) {}
+	TrailPoint(float totalTime, math::float3 position, math::float3 previousPoint, float width, math::float3 up) : remainingTime(totalTime), totalTime(totalTime), position(position), width(width)
+	{
+		math::float3 cross = (previousPoint - position).Normalized().Cross(up);
+		rightPoint = cross.Normalized();
+		renderizable = true;
+	}
+
+	inline float Distance(math::float3 otherPoint)
+	{
+		return position.Distance(otherPoint);
+	}
+
+};
 
 class ComponentTrail :
 	public Component
 {
 public:
-	
-	struct TrailPoint
-	{
-		float remainingTime = .0f;
-		math::float3 position = math::float3::zero;
-		math::float3 leftPoint = math::float3::zero;
-		math::float3 rightPoint = math::float3::zero;
-		bool renderizable = false;
-
-		TrailPoint(float remainingTime, math::float3 position) : remainingTime(remainingTime), position(position) {}
-		TrailPoint(float remainingTime, math::float3 position, math::float3 previousPoint, float width, math::float3 up) : remainingTime(remainingTime), position(position)
-		{
-			math::float3 cross = (previousPoint - position).Normalized().Cross(up);
-			rightPoint = position + cross.Normalized() * width;
-			leftPoint = position - cross.Normalized() * width;
-			renderizable = true;
-		}
 		
-		float Distance(math::float3 otherPoint)
-		{
-			return position.Distance(otherPoint);
-		}
-
-	};
-
 	ComponentTrail(GameObject* gameobject);
 	ComponentTrail(const ComponentTrail& component);
 
@@ -46,7 +49,7 @@ public:
 
 	ComponentTrail* Clone() const;
 	std::queue<TrailPoint> trail;
-
+	std::list<ParticleModule*> modules;
 	Texture* texture = nullptr;
 
 private:
@@ -58,5 +61,7 @@ private:
 	std::string textureName = "None Selected";
 	std::vector<std::string> textureFiles;
 };
+
+
 
 #endif

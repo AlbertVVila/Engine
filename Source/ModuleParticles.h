@@ -12,6 +12,9 @@ class ComponentTrail;
 
 #define MAX_TRAIL_VERTICES 3333 // 1111 tris
 
+class ParticleModule;
+class PMSizeOverTime;
+
 class ModuleParticles :
 	public Module
 {
@@ -24,7 +27,7 @@ public:
 	bool Start() override;
 	bool CleanUp() override;
 
-	void Render(float dt, const ComponentCamera* camera);
+	void Render(float dt, const ComponentCamera* camera) const;
 
 	void AddParticleSystem(ComponentParticles* cp);
 	void AddTrailRenderer(ComponentTrail* cr);
@@ -33,7 +36,7 @@ public:
 private:
 	
 	void DrawAnimationStatic(ComponentParticles* cp, const ComponentCamera* camera) const;
-	void RenderTrail(ComponentTrail* ct, const ComponentCamera* camera);
+	void RenderTrail(ComponentTrail* ct, const ComponentCamera* camera) const;
 
 	std::list<ComponentParticles*> particleSystems;
 
@@ -54,4 +57,31 @@ private:
 	float trailData[MAX_TRAIL_VERTICES];
 };
 
+
+class ParticleModule
+{
+public:
+
+	enum class ParticleModulesType
+	{
+		SIZE_OVER_TIME
+	};
+
+	virtual void Update() {};
+	virtual void InspectorDraw() = 0;
+
+	ParticleModulesType type;
+};
+
+class PMSizeOverTime : public ParticleModule
+{
+public:
+
+	PMSizeOverTime() { type = ParticleModulesType::SIZE_OVER_TIME; };
+
+	inline float GetSize(float percent, float total);
+	void InspectorDraw() override;
+
+	float v[5] = { .0f, .0f, 1.f, 1.f };
+};
 #endif __ModuleParticles_h__

@@ -120,6 +120,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="GUICreator.h" />
+    <ClInclude Include="ImGUICurveUtils.h" />
     <ClInclude Include="ImGuizmo\ImGuizmo.h" />
     <ClInclude Include="KDTree.h" />
     <ClInclude Include="Material.h" />

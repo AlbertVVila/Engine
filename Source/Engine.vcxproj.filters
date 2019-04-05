@@ -596,6 +596,9 @@
     <ClInclude Include="ComponentTrail.h">
       <Filter>Component</Filter>
     </ClInclude>
+    <ClInclude Include="ImGUICurveUtils.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GeoLib">
