@@ -14,6 +14,7 @@
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
 #include "ResourceSkybox.h"
+#include "ResourceScene.h"
 
 #include "FileImporter.h"
 
@@ -175,20 +176,13 @@ bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* 
 
 	switch (type) 
 	{
-	case TYPE::TEXTURE: 
-		success = App->textures->ImportImage(newFileInAssets, filePath, (ResourceTexture*)resource);
-		break;
-	case TYPE::MODEL:
-		success = App->fsystem->importer.ImportFBX(newFileInAssets, filePath, (ResourceModel*)resource);
-		break;
-	/*case TYPE::MESH:	
-		success = App->fsystem->importer.ImportFBX(newFileInAssets, filePath, (ResourceMesh*)resource);
-		break;*/
-	//case TYPE::AUDIO: import_ok = App->audio->Import(newFileInAssets, written_file); break;
-	//case TYPE::SCENE: import_ok = App->scene->Import(newFileInAssets, written_file); break;
-	case TYPE::MATERIAL:
-		success = App->fsystem->Copy(filePath, IMPORTED_MATERIALS, newFileInAssets);
-		break;
+	case TYPE::TEXTURE:		success = App->textures->ImportImage(newFileInAssets, filePath, (ResourceTexture*)resource);		break;
+	case TYPE::MODEL:		success = App->fsystem->importer.ImportFBX(newFileInAssets, filePath, (ResourceModel*)resource);	break;
+	/*case TYPE::MESH:		success = App->fsystem->importer.ImportFBX(newFileInAssets, filePath, (ResourceMesh*)resource);		break;
+	case TYPE::AUDIO:		success = App->audio->Import(newFileInAssets, written_file);										break;*/
+	case TYPE::SCENE:		success = App->fsystem->Copy(filePath, IMPORTED_SCENES, newFileInAssets);
+		success = App->fsystem->Rename(IMPORTED_SCENES, newFileInAssets, std::to_string(resource->GetUID()).c_str()); break;
+	case TYPE::MATERIAL:	success = App->fsystem->Copy(filePath, IMPORTED_MATERIALS, newFileInAssets);						break;
 	}
 
 	// If export was successful, create a new resource
@@ -214,20 +208,12 @@ bool ModuleResourceManager::ReImportFile(Resource* resource, const char* filePat
 
 	switch (type)
 	{
-	case TYPE::TEXTURE:
-		success = App->textures->ImportImage(file.c_str(), filePath, (ResourceTexture*)resource);
-		break;
-	case TYPE::MODEL:
-		success = App->fsystem->importer.ImportFBX(file.c_str(), filePath, (ResourceModel*)resource);
-		break;
-	/*case TYPE::MESH:
-		success = App->fsystem->importer.ImportFBX(file.c_str(), filePath, (ResourceMesh*)resource);
-		break;*/
-		//case TYPE::AUDIO: import_ok = App->audio->Import(newFileInAssets, written_file); break;
-		//case TYPE::SCENE: import_ok = App->scene->Import(newFileInAssets, written_file); break;
-	case TYPE::MATERIAL:
-		success = App->fsystem->Copy(filePath, IMPORTED_MATERIALS, file.c_str());
-		break;
+	case TYPE::TEXTURE:		success = App->textures->ImportImage(file.c_str(), filePath, (ResourceTexture*)resource);		break;
+	case TYPE::MODEL:		success = App->fsystem->importer.ImportFBX(file.c_str(), filePath, (ResourceModel*)resource);	break;
+	/*case TYPE::MESH:		success = App->fsystem->importer.ImportFBX(file.c_str(), filePath, (ResourceMesh*)resource);	break;
+	case TYPE::AUDIO:		success = App->audio->Import(newFileInAssets, written_file);									break;*/
+	case TYPE::SCENE:		success = App->fsystem->Copy(filePath, IMPORTED_SCENES, file.c_str());							break;
+	case TYPE::MATERIAL:	success = App->fsystem->Copy(filePath, IMPORTED_MATERIALS, file.c_str());						break;
 	}
 
 	// If export was successful, update resource
@@ -264,8 +250,8 @@ Resource* ModuleResourceManager::CreateNewResource(TYPE type, unsigned forceUid)
 	case TYPE::TEXTURE: resource = (Resource*) new ResourceTexture(uid); break;
 	case TYPE::MODEL:	resource = (Resource*) new ResourceModel(uid); break;
 	case TYPE::MESH:	resource = (Resource*) new ResourceMesh(uid); break;
-	/*case TYPE::AUDIO:	resource = (Resource*) new ResourceAudio(uid); break;
 	case TYPE::SCENE:	resource = (Resource*) new ResourceScene(uid); break;
+	/*case TYPE::AUDIO:	resource = (Resource*) new ResourceAudio(uid); break;
 	case TYPE::ANIMATION: resource = (Resource*) new ResourceAnimation(uid); break;*/
 	case TYPE::MATERIAL: resource = (Resource*) new ResourceMaterial(uid); break;
 	case TYPE::SKYBOX: resource = (Resource*) new ResourceSkybox(uid); break;

@@ -58,6 +58,8 @@ ModuleFileSystem::ModuleFileSystem()
 		MakeDirectory(MESHES);
 	if (!Exists(TEXTURES))
 		MakeDirectory(TEXTURES);
+	if (!Exists(IMPORTED_SCENES))
+		MakeDirectory(IMPORTED_SCENES);
 
 }
 
@@ -327,7 +329,7 @@ bool ModuleFileSystem::Move(const char * source, const char* file, const char* n
 	return true;
 }
 
-void ModuleFileSystem::Rename(const char* route, const char* file, const char* newName) const
+bool ModuleFileSystem::Rename(const char* route, const char* file, const char* newName) const
 {
 	std::string filepath(route);
 	filepath += file;
@@ -335,12 +337,12 @@ void ModuleFileSystem::Rename(const char* route, const char* file, const char* n
 	if (PHYSFS_unmount(filepath.c_str()) != 0)
 	{
 		LOG("Error: %s", PHYSFS_getLastError());
-		return;
+		return false;
 	}
 
 	std::string extension = GetExtension(file);
 	Move(route, file, (newName + extension).c_str());
-	Delete(filepath.c_str());
+	return Delete(filepath.c_str());
 }
 
 bool ModuleFileSystem::ChangeExtension(const char* source, const char* file, const char* newExtension) const
@@ -374,8 +376,10 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 	// Get lists with all imported resources and materials
 	std::set<std::string> importedTextures;
 	std::set<std::string> importedMaterials;
+	std::set<std::string> importedScenes;
 	ListFiles(TEXTURES, importedTextures);
 	ListFiles(IMPORTED_MATERIALS, importedMaterials);
+	ListFiles(IMPORTED_SCENES, importedScenes);
 
 	// Look for files in folder passed as argument
 	std::vector<std::string> files;
@@ -452,6 +456,20 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 						App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::MATERIAL);
 					}
 				}
+				else if (type == FILETYPE::SCENE)
+				{
+					std::set<std::string>::iterator it = importedScenes.find(RemoveExtension(file));
+					if (it == importedScenes.end() || statFile.st_mtime > statMeta.st_mtime)
+					{
+						// File modified or not imported, send it to import
+						filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
+					}
+					else
+					{
+						// File already imported, add it to the resources list
+						App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::SCENE);
+					}
+				}
 			}
 		}
 	}
@@ -497,10 +515,7 @@ void ModuleFileSystem::LookForNewResourceFiles(const char* folder)
 				}
 				if (statFile.st_mtime > statMeta.st_mtime)
 				{
-					// TODO: Enable Scenes also
-					FILETYPE type = GetFileType(GetExtension(file));
-					if(type != FILETYPE::SCENE && type != FILETYPE::NONE)
-						filesToImport.push_back(std::pair<std::string, std::string>(file, current_folder));
+					filesToImport.push_back(std::pair<std::string, std::string>(file, current_folder));
 				}
 			}
 		}

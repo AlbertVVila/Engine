@@ -68,6 +68,10 @@ void FileImporter::ImportAsset(const char *file, const char *folder)
 	{
 		App->resManager->ImportFile(file, folder, TYPE::MATERIAL);
 	}
+	else if (extension == SCENEEXTENSION)
+	{
+		App->resManager->ImportFile(file, folder, TYPE::SCENE);
+	}
 }
 
 bool FileImporter::ImportFBX(const char* fbxfile, const char* folder, ResourceModel* resource)
@@ -122,7 +126,7 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 		meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->GetUID()));
 	}
 
-	// TODO: [Resource Manager] Change this on scene refactor
+	// Save a scene with the model loaded as Game Object
 	GameObject *fake = new GameObject("fake",0);
 	ProcessNode(meshMap, aiscene.mRootNode, &aiscene, fake);
 
