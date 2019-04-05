@@ -20,6 +20,7 @@ ModuleParticles::~ModuleParticles()
 	glDeleteBuffers(1, &billBoardVAO);
 	glDeleteBuffers(1, &billBoardEBO);
 	glDeleteBuffers(1, &billBoardVBO);
+	glDeleteBuffers(1, &billBoardInstanceVBO);
 
 	glDeleteBuffers(1, &trailVAO);
 	glDeleteBuffers(1, &trailVBO);
@@ -29,15 +30,21 @@ bool ModuleParticles::Start()
 {
 	float quadVertices[] =
 	{
-		-0.5f, -0.5f, 0.0f, // bottom left
-		-0.5f,  0.5f, 0.0f, // top left 
-		0.5f, -0.5f, 0.0f, // bottom right
-		0.5f,  0.5f, 0.0f, // top right
+		- 0.5f, -0.5f, 0.0f, // bottom left 0
+		0.5f, -0.5f, 0.0f, // bottom right 2
+		-0.5f,  0.5f, 0.0f, // top left 1
 
-		0.0f, 0.0f,
-		0.0f, 1.0f,
-		1.0f, 0.0f,
-		1.0f, 1.0f
+		-0.5f,  0.5f, 0.0f, // top left 1
+		0.5f, -0.5f, 0.0f, // bottom right 2
+		0.5f,  0.5f, 0.0f, // top right 3
+
+		0.0f, 0.0f, // 0
+		1.0f, 0.0f, // 2
+		0.0f, 1.0f, // 1
+
+		0.0f, 1.0f, // 1
+		1.0f, 0.0f, // 2
+		1.0f, 1.0f  // 3
 	};
 
 	unsigned int quadIndices[] =
@@ -58,6 +65,8 @@ bool ModuleParticles::Start()
 	{
 		glGenVertexArrays(1, &billBoardVAO);
 		glGenBuffers(1, &billBoardVBO);
+		glGenBuffers(1, &billBoardInstanceVBO);
+		glGenBuffers(1, &billBoardEBO);
 	}
 
 	glBindVertexArray(billBoardVAO);
@@ -69,7 +78,26 @@ bool ModuleParticles::Start()
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 12));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 18));
+
+	glBindBuffer(GL_ARRAY_BUFFER, billBoardInstanceVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 16 * MAX_PARTICLES, nullptr, GL_DYNAMIC_DRAW);
+
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 16, (void*)(0));
+	glVertexAttribDivisor(2, 1);
+
+	glEnableVertexAttribArray(3);
+	glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 16, (void*)(sizeof(float) * 4));
+	glVertexAttribDivisor(3, 1);
+
+	glEnableVertexAttribArray(4);
+	glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 16, (void*)(sizeof(float) * 8));
+	glVertexAttribDivisor(4, 1);
+
+	glEnableVertexAttribArray(5);
+	glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 16, (void*)(sizeof(float) * 12));
+	glVertexAttribDivisor(5, 1);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
@@ -161,7 +189,7 @@ void ModuleParticles::RenderTrail(ComponentTrail* ct, const ComponentCamera* cam
 				switch (pm->type)
 				{
 				case ParticleModule::ParticleModulesType::SIZE_OVER_TIME:
-					width = ((PMSizeOverTime*)pm)->GetSize( point.remainingTime/ point.totalTime, point.width);
+					width = ((PMSizeOverTime*)pm)->GetSize(point.remainingTime / point.totalTime, point.width);
 					break;
 				}
 			}
@@ -179,7 +207,7 @@ void ModuleParticles::RenderTrail(ComponentTrail* ct, const ComponentCamera* cam
 		ct->trail.push(ct->trail.front());
 		ct->trail.pop();
 	}
-	
+
 	glUnmapBuffer(GL_ARRAY_BUFFER);
 
 	glUniformMatrix4fv(glGetUniformLocation(trailShader->id, "projection"), 1, GL_FALSE, &camera->GetProjectionMatrix()[0][0]);
@@ -195,7 +223,7 @@ void ModuleParticles::RenderTrail(ComponentTrail* ct, const ComponentCamera* cam
 }
 
 bool ModuleParticles::CleanUp()
-{	
+{
 	particleSystems.clear();
 	return true;
 }
@@ -223,9 +251,22 @@ void ModuleParticles::DrawAnimationStatic(ComponentParticles* cp, const Componen
 	}
 	glUseProgram(shader->id);
 	glBindVertexArray(billBoardVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, billBoardInstanceVBO);
+	float* matrices = (float*)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
+
+	//REPEAT FOR EACH PARTICLE
+	memcpy(matrices, &cp->gameobject->transform->global.Col(0), sizeof(float) * 4); matrices += 4;
+	memcpy(matrices, &cp->gameobject->transform->global.Col(1), sizeof(float) * 4); matrices += 4;
+	memcpy(matrices, &cp->gameobject->transform->global.Col(2), sizeof(float) * 4); matrices += 4;
+	memcpy(matrices, &cp->gameobject->transform->global.Col(3), sizeof(float) * 4); matrices += 4;
+
+	//
+
+	glUnmapBuffer(GL_ARRAY_BUFFER);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
 	glUniformMatrix4fv(glGetUniformLocation(shader->id, "projection"), 1, GL_FALSE, &camera->GetProjectionMatrix()[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(shader->id, "view"), 1, GL_FALSE, &camera->GetViewMatrix()[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(shader->id, "model"), 1, GL_TRUE, (const float*)&cp->gameobject->transform->global);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, cp->texture->id);
 	glUniform1i(glGetUniformLocation(shader->id, "texture0"), 0);
@@ -237,8 +278,10 @@ void ModuleParticles::DrawAnimationStatic(ComponentParticles* cp, const Componen
 	glUniform1i(glGetUniformLocation(shader->id, "f2Ypos"), cp->f2Ypos);
 	glUniform1f(glGetUniformLocation(shader->id, "mixAmount"), cp->frameMix);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, billBoardEBO);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	glDrawArraysInstanced(GL_TRIANGLES,0, 6, 1);
+
+	glBindVertexArray(0);
+
 }
 
 inline float PMSizeOverTime::GetSize(float percent, float total)

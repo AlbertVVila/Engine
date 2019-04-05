@@ -10,7 +10,8 @@ class ComponentCamera;
 class Shader;
 class ComponentTrail;
 
-#define MAX_TRAIL_VERTICES 3333 // 1111 tris
+#define MAX_TRAIL_VERTICES	3333 // 1111 tris
+#define MAX_PARTICLES		2000
 
 class ParticleModule;
 class PMSizeOverTime;
@@ -42,6 +43,7 @@ private:
 
 	unsigned billBoardVAO = 0u;
 	unsigned billBoardVBO = 0u;
+	unsigned billBoardInstanceVBO = 0u;
 	unsigned billBoardEBO = 0u;
 
 	unsigned trailVAO = 0u;
