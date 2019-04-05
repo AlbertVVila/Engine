@@ -371,15 +371,11 @@ void ModuleFileSystem::Monitorize(const char* folder)
 
 void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 {
-	// Get lists with all imported resources
+	// Get lists with all imported resources and materials
 	std::set<std::string> importedTextures;
-	//std::set<std::string> importedModels;
 	std::set<std::string> importedMaterials;
-	//std::set<std::string> importedMeshes;
 	ListFiles(TEXTURES, importedTextures);
-	//ListFiles(SCENES, importedModels);
 	ListFiles(IMPORTED_MATERIALS, importedMaterials);
-	//ListFiles(MESHES, importedMeshes);
 
 	// Look for files in folder passed as argument
 	std::vector<std::string> files;
@@ -501,9 +497,9 @@ void ModuleFileSystem::LookForNewResourceFiles(const char* folder)
 				}
 				if (statFile.st_mtime > statMeta.st_mtime)
 				{
-					// TODO: Enable FBX also
+					// TODO: Enable Scenes also
 					FILETYPE type = GetFileType(GetExtension(file));
-					if(/*type != FILETYPE::MODEL &&*/ type != FILETYPE::SCENE && type != FILETYPE::NONE)
+					if(type != FILETYPE::SCENE && type != FILETYPE::NONE)
 						filesToImport.push_back(std::pair<std::string, std::string>(file, current_folder));
 				}
 			}
