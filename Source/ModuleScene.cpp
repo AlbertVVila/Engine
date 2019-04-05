@@ -19,6 +19,7 @@
 #include "ResourceTexture.h"
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
+#include "ResourceScene.h"
 
 #include "MaterialEditor.h"
 
@@ -92,7 +93,7 @@ bool ModuleScene::Start()
 	if (defaultScene.size() > 0)
 	{
 		path = SCENES;
-		LoadScene(defaultScene.c_str(), path.c_str());
+		//LoadScene(defaultScene.c_str(), path.c_str());
 	}
 	return true;
 }
@@ -568,24 +569,6 @@ unsigned ModuleScene::SaveParShapesMesh(const par_shapes_mesh_s &mesh, char** da
 	return size;
 }
 
-void ModuleScene::SaveScene(const GameObject& rootGO, const char* scene, const char* scenePath)
-{
-	JSON *json = new JSON();
-	JSON_value *array =json->CreateValue(rapidjson::kArrayType);
-	rootGO.Save(array);
-	json->AddValue("GameObjects", *array);
-
-	std::string file(scenePath);
-	file += scene;
-	file += SCENEEXTENSION;
-
-	App->fsystem->Save(file.c_str(), json->ToString().c_str(), json->Size());
-	RELEASE(json);
-
-	// Update scene info
-	name = scene;
-	path = scenePath;
-}
 void ModuleScene::TakePhoto()
 {
 	TakePhoto(scenePhotos);
@@ -679,64 +662,6 @@ void ModuleScene::Redo()
 	}
 }
 
-void ModuleScene::LoadScene(const char* scene, const char* scenePath)
-{
-	ClearScene();
-	if (AddScene(scene, scenePath))
-	{
-		path = scenePath;
-		name = scene;
-	}
-	App->spacePartitioning->kDTree.Calculate();
-	scenePhotos.clear();
-}
-
-bool ModuleScene::AddScene(const char* scene, const char* path)
-{
-	char* data = nullptr;
-	std::string file(path);
-	file += scene;
-	file += SCENEEXTENSION;
-
-	if (App->fsystem->Load(file.c_str(), &data) == 0)
-	{
-		RELEASE_ARRAY(data);
-		return false;
-	}
-
-	JSON *json = new JSON(data);
-	JSON_value* gameobjectsJSON = json->GetValue("GameObjects");
-	std::map<unsigned, GameObject*> gameobjectsMap; //Necessary to assign parent-child efficiently
-	gameobjectsMap.insert(std::pair<unsigned, GameObject*>(canvas->UUID, canvas));
-
-	for (unsigned i = 0; i<gameobjectsJSON->Size(); i++)
-	{		
-		JSON_value* gameobjectJSON = gameobjectsJSON->GetValue(i);
-		GameObject *gameobject = new GameObject();
-		gameobject->Load(gameobjectJSON);
-		if (gameobject->UUID != 1)
-		{
-			gameobjectsMap.insert(std::pair<unsigned, GameObject*>(gameobject->UUID, gameobject));
-
-			std::map<unsigned, GameObject*>::iterator it = gameobjectsMap.find(gameobject->parentUUID);
-			if (it != gameobjectsMap.end())
-			{
-				gameobject->parent = it->second;
-				gameobject->parent->children.push_back(gameobject);
-			}
-			else if (gameobject->parentUUID == 0)
-			{
-				gameobject->parent = root;
-				gameobject->parent->children.push_back(gameobject);
-			}
-		}
-	}
-
-	RELEASE_ARRAY(data);
-	RELEASE(json);
-	return true;
-}
-
 void ModuleScene::ClearScene()
 {
 	CleanUp();
@@ -754,6 +679,83 @@ void ModuleScene::ClearScene()
 	App->spacePartitioning->kDTree.Calculate();
 	canvas = new GameObject("Canvas", 1);
 	root->InsertChild(canvas);
+}
+
+void ModuleScene::SaveScene(const GameObject& rootGO, const char* sceneName, const char* folder)
+{
+	std::string sceneInAssets(folder);
+	sceneInAssets += sceneName;
+	sceneInAssets += SCENEEXTENSION;
+	unsigned sceneUID = App->resManager->FindByFileInAssets(sceneInAssets.c_str());
+
+	if (sceneUID != 0)
+	{
+		// Updating already created scene
+		ResourceScene* scene = (ResourceScene*)App->resManager->GetWithoutLoad(sceneUID);
+		scene->Save(rootGO);
+	}	
+	else
+	{
+		// Is a new scene, create resource
+		ResourceScene* scene = (ResourceScene*)App->resManager->CreateNewResource(TYPE::SCENE);
+		scene->SetFile(sceneInAssets.c_str());
+		scene->name = sceneName;
+		scene->Save(rootGO);
+	}
+
+	// Update scene info
+	name = sceneName;
+	path = folder;
+}
+
+void ModuleScene::LoadScene(const char* sceneName, const char* folder)
+{
+	ClearScene();
+	if (AddScene(sceneName, folder))
+	{
+		name = sceneName;
+		path = folder;
+	}
+	App->spacePartitioning->kDTree.Calculate();
+	scenePhotos.clear();
+}
+
+bool ModuleScene::AddScene(const char* sceneName, const char* folder)
+{
+	std::string sceneInAssets(folder);
+	sceneInAssets += sceneName;
+	sceneInAssets += SCENEEXTENSION;
+	unsigned sceneUID = App->resManager->FindByFileInAssets(sceneInAssets.c_str());
+
+	if (sceneUID != 0)
+	{
+		ResourceScene* scene = (ResourceScene*)App->resManager->GetWithoutLoad(sceneUID);
+		if(!scene->Load())
+		{
+			LOG("Error loading scene named: %s", sceneName);
+			return false;
+		}
+
+		return true;
+	}
+	else
+	{
+		LOG("Error scene named: %s couldn't be found in resources list", sceneName);
+		return false;
+	}
+}
+
+bool ModuleScene::ImportScene(const char* file, const char* folder, ResourceScene* resource)
+{
+	bool success = false;
+	success = App->fsystem->Copy(folder, IMPORTED_SCENES, file);
+	if (success)
+	{
+		success = App->fsystem->Rename(IMPORTED_SCENES, file, std::to_string(resource->GetUID()).c_str());
+		resource->name = App->fsystem->GetFilename(file);
+	}
+		
+	return success;
 }
 
 void ModuleScene::Select(GameObject * gameobject)

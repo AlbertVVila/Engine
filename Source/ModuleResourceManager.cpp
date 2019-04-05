@@ -18,6 +18,7 @@
 
 #include "FileImporter.h"
 
+#include "HashString.h"
 #include <algorithm>
 
 bool sortByNameAscending(const std::string a, std::string b) { return a < b; };
@@ -180,8 +181,7 @@ bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* 
 	case TYPE::MODEL:		success = App->fsystem->importer.ImportFBX(newFileInAssets, filePath, (ResourceModel*)resource);	break;
 	/*case TYPE::MESH:		success = App->fsystem->importer.ImportFBX(newFileInAssets, filePath, (ResourceMesh*)resource);		break;
 	case TYPE::AUDIO:		success = App->audio->Import(newFileInAssets, written_file);										break;*/
-	case TYPE::SCENE:		success = App->fsystem->Copy(filePath, IMPORTED_SCENES, newFileInAssets);
-		success = App->fsystem->Rename(IMPORTED_SCENES, newFileInAssets, std::to_string(resource->GetUID()).c_str()); break;
+	case TYPE::SCENE:		success = App->scene->ImportScene(newFileInAssets, filePath, (ResourceScene*)resource);				break;
 	case TYPE::MATERIAL:	success = App->fsystem->Copy(filePath, IMPORTED_MATERIALS, newFileInAssets);						break;
 	}
 
@@ -189,8 +189,11 @@ bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* 
 	if (success) 
 	{ 
 		resource->SaveMetafile(assetPath.c_str());	
-		resource->SetExportedFile(App->fsystem->RemoveExtension(newFileInAssets).c_str());
-		LOG("%s imported.", resource->GetExportedFile());
+		HashString exportedFile(resource->GetExportedFile());
+		HashString emptyString("");
+		if(exportedFile == emptyString)
+			resource->SetExportedFile(App->fsystem->RemoveExtension(newFileInAssets).c_str());
+		LOG("%s imported.", resource->GetFile());
 	}
 	else
 	{
@@ -212,8 +215,11 @@ bool ModuleResourceManager::ReImportFile(Resource* resource, const char* filePat
 	case TYPE::MODEL:		success = App->fsystem->importer.ImportFBX(file.c_str(), filePath, (ResourceModel*)resource);	break;
 	/*case TYPE::MESH:		success = App->fsystem->importer.ImportFBX(file.c_str(), filePath, (ResourceMesh*)resource);	break;
 	case TYPE::AUDIO:		success = App->audio->Import(newFileInAssets, written_file);									break;*/
-	case TYPE::SCENE:		success = App->fsystem->Copy(filePath, IMPORTED_SCENES, file.c_str());							break;
 	case TYPE::MATERIAL:	success = App->fsystem->Copy(filePath, IMPORTED_MATERIALS, file.c_str());						break;
+	case TYPE::SCENE:
+		file = App->fsystem->GetFile(resource->GetFile());
+		success = App->scene->ImportScene(file.c_str(), filePath, (ResourceScene*)resource);			
+		break;
 	}
 
 	// If export was successful, update resource
@@ -231,11 +237,11 @@ bool ModuleResourceManager::ReImportFile(Resource* resource, const char* filePat
 			resource->SetReferences(references);
 		}
 
-		LOG("%s reimported.", resource->GetExportedFile());
+		LOG("%s reimported.", resource->GetFile());
 	}
 	else
 	{
-		LOG("Error: %s failed on reimport.", resource->GetExportedFile());
+		LOG("Error: %s failed on reimport.", resource->GetFile());
 	}
 	return success;
 }

@@ -2,6 +2,9 @@
 #define __ResourceScene_h__
 
 #include "Resource.h"
+
+class GameObject;
+
 class ResourceScene :
 	public Resource
 {
@@ -15,6 +18,10 @@ public:
 	// File in Assets especific
 	void Rename(const char* newName) override;
 	void Delete() override;
+
+	// Scene especific
+	void Save(const GameObject &rootGO);
+	bool Load();
 
 public:
 
