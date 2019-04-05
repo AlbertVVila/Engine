@@ -23,6 +23,13 @@ ComponentParticles::ComponentParticles(GameObject* gameobject) : Component(gameo
 		textureFiles = App->fsystem->ListFiles(TEXTURES, false);
 	}
 	App->particles->AddParticleSystem(this);
+
+	for (int i = 0; i < 100; ++i)
+	{
+		Particle p;
+		p.position = float3(rand() % 1000, 0, rand() % 1000);
+		particles.push_back(p);
+	}
 }
 
 ComponentParticles::ComponentParticles(const ComponentParticles& component) : Component(component)
@@ -96,7 +103,7 @@ bool ComponentParticles::CleanUp()
 	return false;
 }
 
-void ComponentParticles::Update(float dt)
+void ComponentParticles::Update(float dt, const math::float3& camPos)
 {
 	timer += dt;
 	float currentFrame = timer / (1 / fps);
@@ -106,6 +113,15 @@ void ComponentParticles::Update(float dt)
 	f2Xpos = (f1Xpos + 1) % xTiles;
 	f1Ypos = (((int)frame) / xTiles) % yTiles;
 	f2Ypos = f1Xpos < f2Xpos ? f1Ypos : f1Ypos + 1;	
+
+	unsigned nParticles = particles.size();
+
+	for (std::list<Particle>::iterator it = particles.begin(); it != particles.end(); ++it)
+	{
+		(*it).position += (*it).direction * (*it).speed * dt;
+		float3 direction = (camPos - (*it).position);
+		(*it).global = (*it).global.FromTRS((*it).position, math::Quat::LookAt(float3::unitZ, direction.Normalized(), float3::unitY, float3::unitY), math::float3::one * 50);
+	}
 }
 
 void ComponentParticles::Save(JSON_value* value) const

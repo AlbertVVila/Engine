@@ -3,8 +3,24 @@
 
 #include "Component.h"
 #include <string>
+#include "Math/float3.h"
+#include "Math/float4x4.h"
+#include "Math/Quat.h"
+
+#include <list>
+#include "ComponentTransform.h"
 
 struct Texture;
+
+struct Particle
+{
+	float speed = rand() % 100;
+
+	math::float3 position = math::float3::zero;
+	math::float4x4 global = math::float4x4::zero;
+	math::float3 direction = math::float3::unitY;
+};
+
 
 class ComponentParticles :
 	public Component
@@ -12,11 +28,7 @@ class ComponentParticles :
 	friend class ModuleParticles;
 
 public:
-
-	enum class ParticleSystemType
-	{
-		ANIMATION_STATIC
-	};
+	
 
 
 	ComponentParticles(GameObject* gameobject);
@@ -28,16 +40,17 @@ public:
 	void DrawProperties() override;
 	bool CleanUp() override;
 
-	void Update(float dt);
+	void Update(float dt, const math::float3& camPos);
 
 	void Save(JSON_value* value) const override;
 	void Load(JSON_value* value) override;
 
 	Texture* texture = nullptr;
 
-	ParticleSystemType type = ParticleSystemType::ANIMATION_STATIC;
+	std::list<Particle> particles;
 
 private:
+
 	std::string textureName = "None Selected";
 	std::vector<std::string> textureFiles;
 
@@ -52,5 +65,6 @@ private:
 	int f2Xpos;
 	int f2Ypos;
 };
+
 
 #endif __ComponentParticles_h__

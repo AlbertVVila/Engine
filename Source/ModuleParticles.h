@@ -36,7 +36,7 @@ public:
 
 private:
 	
-	void DrawAnimationStatic(ComponentParticles* cp, const ComponentCamera* camera) const;
+	void DrawParticleSystem(ComponentParticles* cp, const ComponentCamera* camera) const;
 	void RenderTrail(ComponentTrail* ct, const ComponentCamera* camera) const;
 
 	std::list<ComponentParticles*> particleSystems;

@@ -10,6 +10,7 @@
 #include "ComponentParticles.h"
 #include "ComponentCamera.h"
 #include "ComponentTrail.h"
+#include "ComponentTransform.h"
 
 #include "GL/glew.h"
 
@@ -134,15 +135,13 @@ void ModuleParticles::Render(float dt, const ComponentCamera* camera) const
 	glBlendFunc(GL_ONE, GL_ONE);
 	for (ComponentParticles* cp : particleSystems)
 	{
-		cp->gameobject->transform->LookAt(camera->frustum->pos);
-		cp->Update(dt);
-		switch (cp->type)
-		{
-		case ComponentParticles::ParticleSystemType::ANIMATION_STATIC:
-			DrawAnimationStatic(cp, camera);
-			break;
-		}
+		cp->Update(dt, camera->frustum->pos);
+		
+		DrawParticleSystem(cp, camera);
+		break;
+	
 	}
+
 	glDisable(GL_CULL_FACE);
 	for (ComponentTrail* trail : trails)
 	{
@@ -243,7 +242,7 @@ void ModuleParticles::RemoveTrailRenderer(ComponentTrail* cr)
 	trails.remove(cr);
 }
 
-void ModuleParticles::DrawAnimationStatic(ComponentParticles* cp, const ComponentCamera* camera) const
+void ModuleParticles::DrawParticleSystem(ComponentParticles* cp, const ComponentCamera* camera) const
 {
 	if (cp->texture == nullptr)
 	{
@@ -254,12 +253,13 @@ void ModuleParticles::DrawAnimationStatic(ComponentParticles* cp, const Componen
 	glBindBuffer(GL_ARRAY_BUFFER, billBoardInstanceVBO);
 	float* matrices = (float*)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
 
-	//REPEAT FOR EACH PARTICLE
-	memcpy(matrices, &cp->gameobject->transform->global.Col(0), sizeof(float) * 4); matrices += 4;
-	memcpy(matrices, &cp->gameobject->transform->global.Col(1), sizeof(float) * 4); matrices += 4;
-	memcpy(matrices, &cp->gameobject->transform->global.Col(2), sizeof(float) * 4); matrices += 4;
-	memcpy(matrices, &cp->gameobject->transform->global.Col(3), sizeof(float) * 4); matrices += 4;
-
+	for (std::list<Particle>::iterator it = cp->particles.begin(); it != cp->particles.end(); ++it)
+	{
+		memcpy(matrices, &(*it).global.Col(0), sizeof(float) * 4); matrices += 4;
+		memcpy(matrices, &(*it).global.Col(1), sizeof(float) * 4); matrices += 4;
+		memcpy(matrices, &(*it).global.Col(2), sizeof(float) * 4); matrices += 4;		
+		memcpy(matrices, &(*it).global.Col(3), sizeof(float) * 4); matrices += 4;
+	}
 	//
 
 	glUnmapBuffer(GL_ARRAY_BUFFER);
@@ -278,7 +278,7 @@ void ModuleParticles::DrawAnimationStatic(ComponentParticles* cp, const Componen
 	glUniform1i(glGetUniformLocation(shader->id, "f2Ypos"), cp->f2Ypos);
 	glUniform1f(glGetUniformLocation(shader->id, "mixAmount"), cp->frameMix);
 
-	glDrawArraysInstanced(GL_TRIANGLES,0, 6, 1);
+	glDrawArraysInstanced(GL_TRIANGLES,0, 6, cp->particles.size());
 
 	glBindVertexArray(0);
 
