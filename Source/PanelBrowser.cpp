@@ -240,7 +240,7 @@ void PanelBrowser::DrawFileIcon(const char* file, int itemNumber)
 	else if (extension == TEXTUREEXT)	{ ImGui::ImageButton(ddsIcon != nullptr ? (ImTextureID)ddsIcon->gpuID : 0, ImVec2(ICON_SIZE, ICON_SIZE), ImVec2(0, 1), ImVec2(1, 0), 1); }
 	else if (extension == FBXEXTENSION)	{ ImGui::ImageButton(fbxIcon != nullptr ? (ImTextureID)fbxIcon->gpuID : 0, ImVec2(ICON_SIZE, ICON_SIZE), ImVec2(0, 1), ImVec2(1, 0), 1); }
 	else if (extension == MATERIALEXT)	{ ImGui::ImageButton(m4tIcon != nullptr ? (ImTextureID)m4tIcon->gpuID : 0, ImVec2(ICON_SIZE, ICON_SIZE), ImVec2(0, 1), ImVec2(1, 0), 1); }
-	else if (extension == JSONEXT)		{ ImGui::ImageButton(jsonIcon != nullptr ? (ImTextureID)jsonIcon->gpuID : 0, ImVec2(ICON_SIZE, ICON_SIZE), ImVec2(0, 1), ImVec2(1, 0), 1); }
+	else if (extension == SCENEEXTENSION){ ImGui::ImageButton(jsonIcon != nullptr ? (ImTextureID)jsonIcon->gpuID : 0, ImVec2(ICON_SIZE, ICON_SIZE), ImVec2(0, 1), ImVec2(1, 0), 1); }
 	else								{ ImGui::ImageButton(fileIcon != nullptr ? (ImTextureID)fileIcon->gpuID : 0, ImVec2(ICON_SIZE, ICON_SIZE), ImVec2(0, 1), ImVec2(1, 0), 1); }
 
 	if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)

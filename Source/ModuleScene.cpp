@@ -577,7 +577,7 @@ void ModuleScene::SaveScene(const GameObject& rootGO, const char* scene, const c
 
 	std::string file(scenePath);
 	file += scene;
-	file += JSONEXT;
+	file += SCENEEXTENSION;
 
 	App->fsystem->Save(file.c_str(), json->ToString().c_str(), json->Size());
 	RELEASE(json);
@@ -696,7 +696,7 @@ bool ModuleScene::AddScene(const char* scene, const char* path)
 	char* data = nullptr;
 	std::string file(path);
 	file += scene;
-	file += JSONEXT;
+	file += SCENEEXTENSION;
 
 	if (App->fsystem->Load(file.c_str(), &data) == 0)
 	{

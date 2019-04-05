@@ -606,7 +606,7 @@ FILETYPE ModuleFileSystem::GetFileType(std::string extension) const
 	{
 		return FILETYPE::IMPORTED_MESH;
 	}
-	if (extension == JSONEXT)
+	if (extension == SCENEEXTENSION)
 	{
 		return FILETYPE::SCENE;
 	}

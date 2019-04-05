@@ -79,7 +79,7 @@ bool FileExplorer::Open()
 		ImGui::PopItemWidth();
 		ImGui::SameLine();
 		ImGui::PushItemWidth(ImGui::GetWindowContentRegionWidth() * 0.3f);
-		char* program_names[(int)FILETYPE::NONE+1] = { "Texture Files (*.png, *.tif, *.jpg)", "Imported Texture Files (*.dds)", "Model Files (*.fbx, *.FBX)", "Imported Mesh Files (*.m3sh)", "Scene Files (*.json)", "Material (*.m4t)", "All files" };
+		char* program_names[(int)FILETYPE::NONE+1] = { "Texture Files (*.png, *.tif, *.jpg)", "Imported Texture Files (*.dds)", "Model Files (*.fbx, *.FBX)", "Imported Mesh Files (*.m3sh)", "Scene Files (*.sc3ne)", "Material (*.m4t)", "All files" };
 		ImGui::Combo(" ", (int*)&extensionToFilter, program_names, (int)FILETYPE::NONE + 1);
 		ImGui::PopItemWidth();
 
@@ -227,7 +227,7 @@ void FileExplorer::FilterByFileType(const char* file)
 		break;
 	case FILETYPE::SCENE:
 		extension = App->fsystem->GetExtension(file);
-		if (extension == JSONEXT)
+		if (extension == SCENEEXTENSION)
 		{
 			if (ImGui::Selectable(file, false))
 				sprintf_s(filename, App->fsystem->GetFilename(file).c_str());
