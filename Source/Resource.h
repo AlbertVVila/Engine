@@ -8,6 +8,7 @@ struct JSON_value;
 enum class TYPE
 {
 	TEXTURE,
+	MODEL,
 	MESH,
 	AUDIO,
 	SCENE,

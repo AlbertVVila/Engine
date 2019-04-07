@@ -3,16 +3,15 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleFileSystem.h"
-
-#include "JSON.h"
+#include "ModuleResourceManager.h"
 
 #include "GL/glew.h"
 #include "Geometry/Triangle.h"
 #include "Geometry/LineSegment.h"
+#include "Math/Quat.h"
 #include "Math/MathConstants.h"
 #include "Math/float4x4.h"
 #include "Math/float2.h"
-
 
 ResourceMesh::ResourceMesh(unsigned uid) : Resource(uid, TYPE::MESH)
 {
@@ -20,6 +19,8 @@ ResourceMesh::ResourceMesh(unsigned uid) : Resource(uid, TYPE::MESH)
 
 ResourceMesh::ResourceMesh(const ResourceMesh& resource) : Resource(resource)
 {
+	name = resource.name;
+
 	VAO = resource.VAO;
 	VBO = resource.VBO;
 	EBO = resource.EBO;
@@ -38,20 +39,23 @@ ResourceMesh::ResourceMesh(const ResourceMesh& resource) : Resource(resource)
 
 ResourceMesh::~ResourceMesh()
 {
-	Resource::DeleteFromMemory();
 	DeleteFromMemory();
 }
 
 bool ResourceMesh::LoadInMemory()
 {
-	char *data = nullptr;
-	App->fsystem->Load((MESHES + std::to_string(UID) + MESHEXTENSION).c_str(), &data);	// Load mesh file
+	char* data = nullptr;
 
-	SetMesh(data); //Deallocates data
-	SetMeshBuffers();
-	SetBboxBuffers();
-	++loaded;
+	unsigned ok = App->fsystem->Load((MESHES + std::to_string(UID) + MESHEXTENSION).c_str(), &data);
 
+	// Load mesh file
+	if (ok != 0)			
+	{
+		SetMesh(data); //Deallocates data
+		SetMeshBuffers();
+		SetBboxBuffers();
+		++loaded;
+	}
 	return true;
 }
 
@@ -93,25 +97,6 @@ void ResourceMesh::DeleteFromMemory()
 	meshTangents.clear();
 	meshTexCoords.clear();
 	meshIndices.clear();
-}
-
-void ResourceMesh::SaveMetafile(const char* file) const
-{
-	std::string filepath;
-	filepath.append(file);
-	JSON *json = new JSON();
-	JSON_value* meta = json->CreateValue();
-	struct stat statFile;
-	stat(filepath.c_str(), &statFile);
-	meta->AddUint("GUID", UID);
-	meta->AddUint("timeCreated", statFile.st_ctime);
-	meta->AddUint("VBO", VBO);
-	meta->AddUint("EBO", EBO);
-	meta->AddUint("VAObox", VAObox);
-	meta->AddUint("VBObox", VBObox);
-	meta->AddUint("EBObox", EBObox);
-	json->AddValue("Mesh", *meta);
-	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
 }
 
 void ResourceMesh::Draw(unsigned shaderProgram) const
@@ -186,7 +171,7 @@ void ResourceMesh::CalculateTangents()
 }
 
 
-void ResourceMesh::SetMesh(const char * meshData)
+void ResourceMesh::SetMesh(const char* meshData)
 {
 	assert(meshData != nullptr);
 	if (meshData == nullptr) return;
@@ -422,4 +407,26 @@ bool ResourceMesh::Intersects(const LineSegment &line, float* distance)
 		}
 	}
 	return intersects;
+}
+
+void ResourceMesh::Rename(const char* newName)
+{
+	std::string ruteToFile = App->fsystem->GetFilePath(file);
+	std::string extension = App->fsystem->GetExtension(file);
+
+	file = ruteToFile + newName + extension;	// Update file variable
+	name = newName;								// Update name variable
+}
+
+void ResourceMesh::Delete()
+{
+	// Delete Resource from ResourceManager
+	App->resManager->DeleteResourceFromList(UID);
+
+	// Delete file in Library
+	std::string fileInLibrary(MESHES);
+	fileInLibrary += exportedFileName;
+	fileInLibrary += MESHEXTENSION;
+	App->fsystem->Delete(fileInLibrary.c_str());
+	DeleteFromMemory();
 }

@@ -21,13 +21,16 @@ public:
 
 	bool LoadInMemory() override;
 	void DeleteFromMemory() override;
-	void SaveMetafile(const char* file)const override;
 
 	// Mesh specific
 	void Draw(unsigned shaderProgram) const;
 	void DrawBbox(unsigned shaderProgram, const AABB& globalBBOX) const;
 	AABB GetBoundingBox() const;
 	bool Intersects(const LineSegment& line, float* distance);
+
+	// File in Assets especific
+	void Rename(const char* newName) override;
+	void Delete() override;
 
 private:
 	void ComputeBBox();
@@ -48,6 +51,8 @@ private:
 	unsigned EBObox = 0;
 
 public:
+	std::string name = "";
+
 	std::vector<math::float3> meshVertices;
 	std::vector<math::float3> meshNormals;
 	std::vector<math::float3> meshTangents;

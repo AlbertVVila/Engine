@@ -9,10 +9,13 @@
 #include "ComponentRenderer.h"
 #include "ComponentTransform.h"
 
+#include "Resource.h"
+#include "ResourceModel.h"
+#include "ResourceMesh.h"
+
 #include "FileImporter.h"
 
-#include "Resource.h"
-#include "ResourceMesh.h"
+#include "JSON.h"
 
 #include <assert.h>
 #include "assimp/cimport.h"
@@ -47,7 +50,7 @@ void FileImporter::ImportAsset(const char *file, const char *folder)
 	std::string extension (App->fsystem->GetExtension(file));
 	if (extension == FBXEXTENSION || extension == FBXCAPITAL)
 	{
-		App->resManager->ImportFile(file, folder, TYPE::MESH);
+		App->resManager->ImportFile(file, folder, TYPE::MODEL);
 	}
 	else if (extension == PNG || extension == TIF || extension == JPG || extension == TGA)
 	{
@@ -67,7 +70,7 @@ void FileImporter::ImportAsset(const char *file, const char *folder)
 	}
 }
 
-bool FileImporter::ImportFBX(const char* fbxfile, const char* folder)
+bool FileImporter::ImportFBX(const char* fbxfile, const char* folder, ResourceModel* resource)
 {
 	assert(fbxfile != nullptr);
 	if (fbxfile == nullptr) return false;
@@ -77,27 +80,49 @@ bool FileImporter::ImportFBX(const char* fbxfile, const char* folder)
 	if (scene != nullptr)
 	{
 		LOG("Imported FBX %s", fbxfile);
-		return ImportScene(*scene, fbxfile);
+		return ImportScene(*scene, fbxfile, folder, resource);
 	}
 	LOG("Error importing FBX %s", fbxfile);
 	return false;
 }
 
-bool FileImporter::ImportScene(const aiScene &aiscene, const char* file)
+bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const char* folder, ResourceModel* resource)
 {
 	std::map<unsigned, unsigned> meshMap;
+	std::string path(folder);
+	path += file;
+	std::string name = App->fsystem->GetFilename(file);
+	std::string meta(std::string(path) + METAEXT);
 	for (unsigned i = 0; i < aiscene.mNumMeshes; i++)
 	{
 		unsigned size = GetMeshSize(*aiscene.mMeshes[i]);
-		char* data = new char[size];
-		ImportMesh(*aiscene.mMeshes[i], data);
+		char* meshData = new char[size];
+		ImportMesh(*aiscene.mMeshes[i], meshData);
+		ResourceMesh* mesh = nullptr;
+		char* metaData = nullptr;
+		if (App->fsystem->Load(meta.c_str(), &metaData) == 0)
+		{
+			mesh = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH);	
+			resource->AddMesh(mesh);
+		}
+		else
+		{
+			JSON *json = new JSON(metaData);
+			JSON_value* meshValue = json->GetValue("Mesh");
+			mesh = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH, meshValue->GetUint(("Mesh" + std::to_string(i)).c_str()));
 
-		ResourceMesh* mesh = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH);
-		App->fsystem->Save((MESHES + std::to_string(mesh->GetUID()) + MESHEXTENSION).c_str(), data, size);
-		//mesh->LoadInMemory();
-		//mesh->SetMesh(data); //Deallocates data
+			// ResourceMesh was created on .meta of model load, now replace previous resource
+			App->resManager->ReplaceResource(mesh->GetUID(), mesh);
+		}
+		App->fsystem->Save((MESHES + std::to_string(mesh->GetUID()) + MESHEXTENSION).c_str(), meshData, size);
+		mesh->SetFile(path.c_str());
+		mesh->SetExportedFile(std::to_string(mesh->GetUID()).c_str());
+		mesh->name = name + "_" + std::to_string(i);
+
 		meshMap.insert(std::pair<unsigned, unsigned>(i, mesh->GetUID()));
 	}
+
+	// TODO: [Resource Manager] Change this on scene refactor
 	GameObject *fake = new GameObject("fake",0);
 	ProcessNode(meshMap, aiscene.mRootNode, &aiscene, fake);
 
