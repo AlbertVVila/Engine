@@ -202,6 +202,19 @@ void ComponentTransform::SetGlobalTransform(const math::float4x4& newglobal, con
 	local.Decompose(position, rotation, scale);
 	RotationToEuler();
 	UpdateOldTransform();
+	
+	if (position.Abs().x >= App->scene->SceneSize)
+	{
+		position.x = position.x / position.Abs().x * App->scene->SceneSize;
+	}
+	if (position.Abs().y >= App->scene->SceneSize)
+	{
+		position.y = position.y / position.Abs().y * App->scene->SceneSize;
+	}
+	if (position.Abs().z >= App->scene->SceneSize)
+	{
+		position.z = position.z / position.Abs().z * App->scene->SceneSize;
+	}
 
 	front = -global.Col3(2);
 	up = global.Col3(1);
