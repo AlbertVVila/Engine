@@ -133,6 +133,8 @@ void ModuleParticles::Render(float dt, const ComponentCamera* camera) const
 {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_ONE, GL_ONE);
+	glDisable(GL_DEPTH_TEST);
+	//TODO:Order particleSystems 
 	for (ComponentParticles* cp : particleSystems)
 	{
 		cp->Update(dt, camera->frustum->pos);
@@ -151,6 +153,7 @@ void ModuleParticles::Render(float dt, const ComponentCamera* camera) const
 		}
 	}
 	glEnable(GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_BLEND);
 
 	glUseProgram(0);
@@ -252,7 +255,7 @@ void ModuleParticles::DrawParticleSystem(ComponentParticles* cp, const Component
 	glBindVertexArray(billBoardVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, billBoardInstanceVBO);
 	float* matrices = (float*)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
-
+	//TODO:Order particles
 	for (std::list<Particle>::iterator it = cp->particles.begin(); it != cp->particles.end(); ++it)
 	{
 		memcpy(matrices, &(*it).global.Col(0), sizeof(float) * 4); matrices += 4;
