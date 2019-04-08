@@ -58,6 +58,7 @@ private:
 	ResourceTexture* ddsIcon;
 	ResourceTexture* m4tIcon;
 	ResourceTexture* jsonIcon;
+	ResourceTexture* sc3neIcon;
 };
 
 #endif //__PanelBrowser_h__

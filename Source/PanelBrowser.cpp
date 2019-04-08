@@ -28,6 +28,7 @@
 #define DDS_ICON "ddsIconBlue"
 #define M4T_ICON "m4tIconBlue"
 #define JSON_ICON "jsonIconBlue"
+#define SC3NE_ICON "sc3neIconBlue"
 
 // ImGui elements sizes:
 #define WINDOW_LOW_MARGIN 60
@@ -90,9 +91,11 @@ bool PanelBrowser::Init()
 	ddsIcon = (ResourceTexture*)App->resManager->Get(DDS_ICON);
 	m4tIcon = (ResourceTexture*)App->resManager->Get(M4T_ICON);
 	jsonIcon = (ResourceTexture*)App->resManager->Get(JSON_ICON);
+	sc3neIcon = (ResourceTexture*)App->resManager->Get(SC3NE_ICON);
 
 	if (folderIcon == nullptr || fileIcon == nullptr || fbxIcon == nullptr || pngIcon == nullptr || jpgIcon == nullptr
-		|| tgaIcon == nullptr || tifIcon == nullptr || ddsIcon == nullptr || m4tIcon == nullptr || jsonIcon == nullptr)
+		|| tgaIcon == nullptr || tifIcon == nullptr || ddsIcon == nullptr || m4tIcon == nullptr || jsonIcon == nullptr 
+		|| sc3neIcon == nullptr)
 	{
 		LOG("Warning: Some icons missing");
 		return false;
@@ -240,7 +243,7 @@ void PanelBrowser::DrawFileIcon(const char* file, int itemNumber)
 	else if (extension == TEXTUREEXT)	{ ImGui::ImageButton(ddsIcon != nullptr ? (ImTextureID)ddsIcon->gpuID : 0, ImVec2(ICON_SIZE, ICON_SIZE), ImVec2(0, 1), ImVec2(1, 0), 1); }
 	else if (extension == FBXEXTENSION)	{ ImGui::ImageButton(fbxIcon != nullptr ? (ImTextureID)fbxIcon->gpuID : 0, ImVec2(ICON_SIZE, ICON_SIZE), ImVec2(0, 1), ImVec2(1, 0), 1); }
 	else if (extension == MATERIALEXT)	{ ImGui::ImageButton(m4tIcon != nullptr ? (ImTextureID)m4tIcon->gpuID : 0, ImVec2(ICON_SIZE, ICON_SIZE), ImVec2(0, 1), ImVec2(1, 0), 1); }
-	else if (extension == SCENEEXTENSION){ ImGui::ImageButton(jsonIcon != nullptr ? (ImTextureID)jsonIcon->gpuID : 0, ImVec2(ICON_SIZE, ICON_SIZE), ImVec2(0, 1), ImVec2(1, 0), 1); }
+	else if (extension == SCENEEXTENSION){ ImGui::ImageButton(sc3neIcon != nullptr ? (ImTextureID)sc3neIcon->gpuID : 0, ImVec2(ICON_SIZE, ICON_SIZE), ImVec2(0, 1), ImVec2(1, 0), 1); }
 	else								{ ImGui::ImageButton(fileIcon != nullptr ? (ImTextureID)fileIcon->gpuID : 0, ImVec2(ICON_SIZE, ICON_SIZE), ImVec2(0, 1), ImVec2(1, 0), 1); }
 
 	if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
