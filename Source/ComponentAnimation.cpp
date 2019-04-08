@@ -17,7 +17,6 @@
 #include "Math/float3.h"
 #include "Brofiler.h"
 
-
 ComponentAnimation::ComponentAnimation() : Component(nullptr, ComponentType::Animation)
 {
 	controller = new AnimationController();
@@ -27,7 +26,9 @@ ComponentAnimation::ComponentAnimation() : Component(nullptr, ComponentType::Ani
 
 ComponentAnimation::~ComponentAnimation()
 {
+	controller = nullptr;
 	anim = nullptr;
+	RELEASE_ARRAY(animName);
 }
 
 
@@ -35,35 +36,59 @@ void ComponentAnimation::DrawProperties()
 {
 	if (ImGui::CollapsingHeader("Animation", ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		if (anim != nullptr)
+		//Name of the animation
+		if (strcmp(animName, anim->animationName.c_str()) != 0)
 		{
-			//Name of the animation
-			ImGui::Text(anim->animationName.c_str());
-
-			//Number of frames the animation has
-			ImGui::Text("%i frames", anim->numberFrames);
-
-			//Duration of the animation
-			ImGui::Text("%i seconds", anim->durationInSeconds);
-
-			//Play
-			ImGui::DragFloat("Animation Speed", &controller->current->speed, 0.01f, -2.0f, 2.0f);
+			strcpy(animName, anim->animationName.c_str());
+			ImGui::Text("Name");
+			ImGui::InputText("##label", animName, 64);
+			anim->animationName = animName;
 		}
+		else
+		{
+			ImGui::Text("Name");
+			ImGui::InputText("##label", animName, 64);
+		}
+
+		//Number of frames the animation has
+		ImGui::Text("%i frames,", anim->numberFrames);
+		ImGui::SameLine();
+		//Duration of the animation
+		ImGui::Text("%i seconds", anim->durationInSeconds);
+		ImGui::Spacing();
+		//Play
+		ImGui::PushItemWidth(50);
+		ImGui::DragFloat("Animation Speed", &controller->current->speed, 0.01f, -2.0f, 2.0f);
+		ImGui::PopItemWidth();
+		// Loop
+		ImGui::Checkbox("Loop", &controller->current->loop);
+
+		ImGui::Separator();
 	}
 }
 
 void ComponentAnimation::Update()
 {
 	PROFILE;
+
+	if (!channelsSetted)
+	{
+		SetIndexChannels(gameobject);
+		channelsSetted = true;
+	}
+
 	if (App->time->gameState == GameState::RUN)
 	{
-		if (!channelsSetted)
-		{
-			SetIndexChannels(gameobject);
-			channelsSetted = true;
-		}
-
 		controller->Update(App->time->gameDeltaTime);
+
+		if (gameobject != nullptr)
+		{
+			UpdateGO(gameobject);
+		}
+	}
+	else if (isPlaying)
+	{
+		controller->Update(App->time->realDeltaTime);
 
 		if (gameobject != nullptr)
 		{
@@ -82,7 +107,6 @@ void ComponentAnimation::UpdateGO(GameObject* go)
 	{
 		go->transform->SetPosition(position);
 		go->transform->SetRotation(rotation);
- 		
 	}
 
 	gameobject->movedFlag = true;

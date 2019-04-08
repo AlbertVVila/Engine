@@ -46,6 +46,9 @@ public:
 public:
 	AnimationController* controller = nullptr;
 	ResourceAnimation* anim = nullptr;
+
+	char* animName = new char[64];
+	bool isPlaying = false;
 };
 
 #endif //  __COMPONENTANIMATION_H_

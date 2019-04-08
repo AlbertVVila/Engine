@@ -36,7 +36,7 @@ void PanelInspector::Draw()
 		return;
 	}
 	ImGui::PushID(this);
-	if (App->scene->selected != nullptr)
+	if (App->scene->selected != nullptr && App->scene->root != nullptr && App->scene->selected != App->scene->root)
 	{
 		App->scene->selected->DrawProperties();
 		const char* components[] = { "Transform", "Renderer", "Camera", "Light", "Script", "Transform2D", "Text", "Image"};

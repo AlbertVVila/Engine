@@ -46,18 +46,21 @@ void AnimationController::UpdateInstance(Instance* instance, float dt)
 
 		if (trueDt > 0.0f)
 		{
-			float timeRemainingA = anim->durationInSeconds - instance->time;
+			float timeRemainingA = instance->maxTime - instance->time;
 			if (trueDt <= timeRemainingA)
 			{
 				instance->time += trueDt;
+				trueFrame = instance->time * anim->framesPerSecond;
+				anim->currentFrame = (int)trueFrame;
 			}
 			else if (instance->loop)
 			{
-				instance->time = trueDt - timeRemainingA;
+				instance->time = instance->minTime + trueDt - timeRemainingA;
+				trueFrame = 0;
 			}
 			else
 			{
-				instance->time = anim->durationInSeconds;
+				instance->time = instance->maxTime;
 			}
 		}
 		else
@@ -66,16 +69,18 @@ void AnimationController::UpdateInstance(Instance* instance, float dt)
 			if (trueDt >= timeRemainingA)
 			{
 				instance->time += trueDt;
+				trueFrame = instance->time * anim->framesPerSecond;
+				anim->currentFrame = (int)trueFrame;
 			}
 			else if (instance->loop)
 			{
-				instance->time = anim->durationInSeconds - timeRemainingA + trueDt;
+				instance->time = instance->maxTime - timeRemainingA + trueDt;
+				trueFrame = anim->duration;
 			}
 			else
 			{
-				instance->time = 0.0f;
+				instance->time = instance->minTime;
 			}
-
 		}
 	}
 
@@ -106,6 +111,12 @@ void AnimationController::ReleaseInstance(Instance* instance)
 	} while (instance != nullptr);
 }
 
+void AnimationController::ResetClipping()
+{
+	current->minTime = 0.0f;
+	current->maxTime = current->anim->durationInSeconds;
+}
+
 bool AnimationController::GetTransform(unsigned channelIndex, math::float3& position, math::Quat& rotation)
 {
 	if (current != nullptr)
@@ -133,7 +144,7 @@ bool AnimationController::GetTransformInstance(Instance* instance, unsigned chan
 
 			unsigned positionIndex = unsigned(positionKey);
 			unsigned rotationIndex = unsigned(rotationKey);
-
+			
 			float positionLambda = positionKey - float(positionIndex);
 			float rotationLambda = rotationKey - float(rotationIndex);
 

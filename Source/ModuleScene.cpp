@@ -70,7 +70,9 @@ bool ModuleScene::Init(JSON * config)
 	pcg_extras::seed_seq_from<std::random_device> seed_source;
 	pcg32 rng(seed_source);
 	uuid_rng = rng;
+
 	root = new GameObject("World", 0); //Root always has uid 0	
+
 	int size = QUADTREE_SIZE * App->renderer->current_scale;
 	AABB limit(float3(-size, 0.f, -size), float3(size, 0.f, size));
 	quadtree = new myQuadTree(limit);

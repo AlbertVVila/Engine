@@ -21,7 +21,6 @@ ResourceAnimation::~ResourceAnimation()
 
 void ResourceAnimation::Load(const char* animationData, unsigned uid)
 {
-
 	UID = uid;
 
 	memcpy(&duration, animationData, sizeof(double));

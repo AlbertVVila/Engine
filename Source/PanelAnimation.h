@@ -11,6 +11,16 @@ public:
 
 	void Draw() override;
 
+	void UpdateGameObjectAnimation(GameObject* go, Animation* anim);
+	void CreateAnimationFromClip(Animation* anim, int minFrame, int maxFrame);
+
+public:
+	int minFrame;
+	int maxFrame;
+	bool isCliping = false;
+
+	//bool isPlaying = false;
+
 };
 
 #endif // !__PanelAnimation_h__

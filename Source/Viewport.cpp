@@ -319,9 +319,8 @@ void Viewport::DrawImGuizmo(const ComponentCamera & cam)
 	ImGui::SetCursorPos({ 20,30 });
 	DrawGuizmoButtons();
 
-	if (App->scene->selected != nullptr)
+	if (App->scene->selected != nullptr && App->scene->selected != App->scene->root && !((ComponentTransform*)App->scene->selected->GetComponent(ComponentType::Transform))->isLocked)
 	{
-
 		ImGuizmo::Enable(!App->scene->selected->isStatic || App->time->gameState == GameState::RUN);
 
 		math::float4x4 model = App->scene->selected->GetGlobalTransform();
