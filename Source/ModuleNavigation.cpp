@@ -13,6 +13,8 @@
 
 #include "imgui.h"
 
+#include "Recast/Recast.h"
+
 ModuleNavigation::ModuleNavigation()
 {
 }
@@ -20,6 +22,8 @@ ModuleNavigation::ModuleNavigation()
 
 ModuleNavigation::~ModuleNavigation()
 {
+	delete[] tris;
+	delete[] verts;
 }
 
 void ModuleNavigation::DrawGUI()
@@ -88,21 +92,48 @@ void ModuleNavigation::generateNavigability()
 	
 	const float bmin[3] = {meshbox->minPoint.x, meshbox->minPoint.y, meshbox->minPoint.z };
 	const float bmax[3] = {meshbox->maxPoint.x, meshbox->maxPoint.y, meshbox->maxPoint.z};
-	LOG("Nice try");
 	
 	meshComponent = static_cast <const ComponentRenderer*>(App->scene->selected->GetComponent(ComponentType::Renderer));
 
 	//reallocate arrays, should ask
-	meshComponent->mesh->meshVertices.resize(meshComponent->mesh->meshVertices.capacity + 1);
-	meshComponent->mesh->meshVertices.resize(meshComponent->mesh->meshVertices.capacity + 1);
+	//meshComponent->mesh->meshVertices.resize(meshComponent->mesh->meshVertices.capacity + 1);
+	//meshComponent->mesh->meshVertices.resize(meshComponent->mesh->meshVertices.capacity + 1);
 
-	//check this out since each vertex has 3 coordinates.
-	/*const float* verts = &meshComponent->mesh->meshVertices[0];
-	const int nverts = meshComponent->mesh->meshVertices.size();*/
+	const int nverts = meshComponent->mesh->meshVertices.size();
+	verts = new float[nverts];
 
-	//mirar MeshLoaderObj.h i .cpp variable m_tris
-	/*const int* tris = &meshComponent->mesh->meesh[0];
-	const int ntris = meshComponent->mesh->meshTangents.size();*/
+	fillVertices(verts, nverts);
+	
+	//Indices
+	const int ntris = meshComponent->mesh->meshIndices.size();
+	tris = new int[ntris];
+	
+	fillIndices(tris, ntris);
+
+	//step 1
+	memset(&cfg, 0, sizeof(cfg));
+
+	/*cfg.cs = m_cellSize;
+	cfg.ch = m_cellHeight;
+	cfg.walkableSlopeAngle = m_agentMaxSlope;
+	cfg.walkableHeight = (int)ceilf(m_agentHeight / cfg.ch);
+	cfg.walkableClimb = (int)floorf(m_agentMaxClimb / cfg.ch);
+	cfg.walkableRadius = (int)ceilf(m_agentRadius / cfg.cs);
+	cfg.maxEdgeLen = (int)(m_edgeMaxLen / m_cellSize);
+	cfg.maxSimplificationError = m_edgeMaxError;
+	cfg.minRegionArea = (int)rcSqr(m_regionMinSize);		// Note: area = size*size
+	cfg.mergeRegionArea = (int)rcSqr(m_regionMergeSize);	// Note: area = size*size
+	cfg.maxVertsPerPoly = (int)m_vertsPerPoly;
+	cfg.detailSampleDist = m_detailSampleDist < 0.9f ? 0 : m_cellSize * m_detailSampleDist;
+	cfg.detailSampleMaxError = m_cellHeight * m_detailSampleMaxError;*/
+
+	//step 2
+	// Set the area where the navigation will be build.
+	// Here the bounds of the input mesh are used, but the
+	// area could be specified by an user defined box, etc.
+	rcVcopy(cfg.bmin, bmin);
+	rcVcopy(cfg.bmax, bmax);
+	rcCalcGridSize(cfg.bmin, cfg.bmax, cfg.cs, &cfg.width, &cfg.height);
 
 	/*
 	//code to adapt
@@ -475,4 +506,22 @@ void ModuleNavigation::generateNavigability()
 
 	return true;
 	*/
+}
+
+void ModuleNavigation::fillVertices(float* verts, const int nverts)
+{
+	for (int i = 0; i < nverts; ++i)
+	{
+		verts[i * 3] = meshComponent->mesh->meshVertices[i].x;
+		verts[i * 3 + 1] = meshComponent->mesh->meshVertices[i].y;
+		verts[i * 3 + 2] = meshComponent->mesh->meshVertices[i].z;
+	}
+}
+
+void ModuleNavigation::fillIndices(int* tris, const int ntris)
+{
+	for (int i = 0; i < ntris; ++i)
+	{
+		tris[i] = meshComponent->mesh->meshIndices[i];
+	}
 }

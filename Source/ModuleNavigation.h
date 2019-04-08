@@ -6,6 +6,28 @@
 //<>
 class GameObject;
 class ComponentRenderer;
+
+struct navConfig {
+	int width;
+	int height;
+	float bmin[3];
+	float bmax[3];
+	float cs;
+	float ch;
+	float walkableSlopeAngle;
+	int walkableHeight;
+	int walkableClimb;
+	int walkableRadius;
+	int maxEdgeLen;
+	float maxSimplificationError;
+	int minRegionArea;		// Note: area = size*size
+	int mergeRegionArea;	// Note: area = size*size
+	int maxVertsPerPoly;
+	float detailSampleDist;
+	float detailSampleMaxError;
+	
+};
+
 class ModuleNavigation :
 	public Module
 {
@@ -24,6 +46,10 @@ public:
 private:
 	void removeNavMesh(unsigned ID);
 	void generateNavigability();
+
+	void fillVertices(float* verts, const int nverts);
+
+	void fillIndices(int* tris, const int ntris);
 
 	void cleanUpNavValues();
 
@@ -44,8 +70,17 @@ private:
 	const float maxSliderValue = 100.0f;
 	const float maxSlopeValue = 60.0f;
 
+	//newer config
+	float cellWidth = 10.f;
+	float cellHeight = 10.f;
+
 	//navigation mesh properties
 	const ComponentRenderer* meshComponent = nullptr;
+
+	navConfig cfg;
+
+	int* tris = nullptr;
+	float* verts = nullptr;
 };
 
 #endif
