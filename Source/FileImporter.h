@@ -13,6 +13,8 @@ class GameObject;
 class ResourceMesh;
 class ResourceAnimation;
 
+class Resource;
+class ResourceModel;
 
 class FileImporter {
 public:
@@ -21,10 +23,11 @@ public:
 
 	void ImportAsset(const char* file, const char* folder);
 
-	bool ImportFBX(const char* file, const char* folder);
+	GameObject* ProcessNode(const std::map<unsigned,unsigned> &meshmap, const aiNode* node, const aiScene* scene, GameObject* parent);
 
-	bool ImportScene(const aiScene& aiscene, const char* file);
+	bool ImportFBX(const char * file, const char* folder, ResourceModel* resource);
 
+	bool ImportScene(const aiScene& scene, const char* file, const char* folder, ResourceModel* resource);
 	void ImportAnimation(const aiAnimation& animation, char* data);
 
 	void ImportMesh(const aiMesh& mesh, char* data);

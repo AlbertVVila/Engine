@@ -10,12 +10,16 @@
 #include "ComponentTransform.h"
 #include "ComponentAnimation.h"
 
-#include "FileImporter.h"
 #include "ResourceMaterial.h"
 #include "ResourceMesh.h"
 
 #include "Resource.h"
+#include "ResourceModel.h"
 #include "ResourceMesh.h"
+
+#include "FileImporter.h"
+
+#include "JSON.h"
 
 #include <assert.h>
 #include <stack>
@@ -53,7 +57,7 @@ void FileImporter::ImportAsset(const char *file, const char *folder)
 	std::string extension(App->fsystem->GetExtension(file));
 	if (extension == FBXEXTENSION || extension == FBXCAPITAL)
 	{
-		App->resManager->ImportFile(file, folder, TYPE::MESH);
+		App->resManager->ImportFile(file, folder, TYPE::MODEL);
 	}
 	else if (extension == PNG || extension == TIF || extension == JPG || extension == TGA)
 	{
@@ -77,7 +81,7 @@ void FileImporter::ImportAsset(const char *file, const char *folder)
 	}
 }
 
-bool FileImporter::ImportFBX(const char* fbxfile, const char* folder)
+bool FileImporter::ImportFBX(const char* fbxfile, const char* folder, ResourceModel* resource)
 {
 	assert(fbxfile != nullptr);
 	if (fbxfile == nullptr) return false;
@@ -88,13 +92,13 @@ bool FileImporter::ImportFBX(const char* fbxfile, const char* folder)
 	if (scene != nullptr)
 	{
 		LOG("Imported FBX %s", fbxfile);
-		return ImportScene(*scene, fbxfile);
+		return ImportScene(*scene, fbxfile, folder, resource);
 	}
 	LOG("Error importing FBX %s", fbxfile);
 	return false;
 }
 
-bool FileImporter::ImportScene(const aiScene& aiscene, const char* file)
+bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const char* folder, ResourceModel* resource)
 {
 	GameObject* sceneGO = App->scene->CreateGameObject("Scene", App->scene->root);
 	sceneGO->CreateComponent(ComponentType::Transform); // To move all around
@@ -145,6 +149,10 @@ bool FileImporter::ImportScene(const aiScene& aiscene, const char* file)
 			stackParent.push(goNode);
 		}
 	}
+
+	// TODO: [Resource Manager] Change this on scene refactor
+	GameObject *fake = new GameObject("fake",0);
+	ProcessNode(meshMap, aiscene.mRootNode, &aiscene, fake);
 
 
 	for (unsigned i = 0u; i < aiscene.mNumAnimations; i++)

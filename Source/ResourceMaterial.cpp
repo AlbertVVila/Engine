@@ -10,9 +10,6 @@
 #include "ResourceTexture.h"
 
 #include "JSON.h"
-#include "rapidjson/document.h"
-#include "rapidjson/filewritestream.h"
-#include "rapidjson/prettywriter.h"
 #include "GL/glew.h"
 
 ResourceMaterial::ResourceMaterial(unsigned uid) : Resource(uid, TYPE::MATERIAL)
@@ -21,7 +18,6 @@ ResourceMaterial::ResourceMaterial(unsigned uid) : Resource(uid, TYPE::MATERIAL)
 
 ResourceMaterial::ResourceMaterial(const ResourceMaterial& resource) : Resource(resource)
 {
-	name = resource.name;
 	if (resource.shader != nullptr)
 	{
 		shader = App->program->GetProgram(resource.shader->file.c_str());
@@ -75,7 +71,6 @@ bool ResourceMaterial::LoadInMemory()
 	JSON* json = new JSON(data);
 	JSON_value* materialJSON = json->GetValue("material");
 
-	name = exportedFileName;
 	diffuseColor = materialJSON->GetColor4("diffuseColor");
 	specularColor = materialJSON->GetColor3("specularColor");
 	emissiveColor = materialJSON->GetColor3("emissiveColor");
@@ -167,7 +162,7 @@ void ResourceMaterial::Save() const
 	
 	json->AddValue("material", *materialJSON);
 
-	App->fsystem->Save((MATERIALS + name + MATERIALEXT).c_str(), json->ToString().c_str(), json->Size());
+	App->fsystem->Save((MATERIALS + exportedFileName + MATERIALEXT).c_str(), json->ToString().c_str(), json->Size());
 	RELEASE(json);
 }
 
@@ -181,14 +176,41 @@ void ResourceMaterial::SaveMetafile(const char* file) const
 	stat(filepath.c_str(), &statFile);
 	meta->AddUint("GUID", UID);
 	meta->AddUint("timeCreated", statFile.st_ctime);
-	filepath += ".meta";
+	meta->AddFloat4("DifusseColor", diffuseColor);
+	meta->AddFloat3("specularColor", specularColor);
+	meta->AddFloat3("emissiveColor", emissiveColor);
+	if (textures[(unsigned)TextureType::DIFFUSE] != nullptr)
+	{
+		meta->AddString("diffuse", textures[(unsigned)TextureType::DIFFUSE]->GetExportedFile());
+	}
+	if (textures[(unsigned)TextureType::SPECULAR] != nullptr)
+	{
+		meta->AddString("specular", textures[(unsigned)TextureType::SPECULAR]->GetExportedFile());
+	}
+	if (textures[(unsigned)TextureType::OCCLUSION] != nullptr)
+	{
+		meta->AddString("occlusion", textures[(unsigned)TextureType::OCCLUSION]->GetExportedFile());
+	}
+	if (textures[(unsigned)TextureType::EMISSIVE] != nullptr)
+	{
+		meta->AddString("emissive", textures[(unsigned)TextureType::EMISSIVE]->GetExportedFile());
+	}
+	if (textures[(unsigned)TextureType::NORMAL] != nullptr)
+	{
+		meta->AddString("normal", textures[(unsigned)TextureType::NORMAL]->GetExportedFile());
+	}
+
+	if (shader != nullptr)
+	{
+		meta->AddString("shader", shader->file.c_str());
+	}
+	json->AddValue("Material", *meta);
+	filepath += METAEXT;
 	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
 }
 
 void ResourceMaterial::Reset(const ResourceMaterial& material)
 {
-	name = material.name;
-
 	if (shader != nullptr)
 	{
 		App->resManager->DeleteProgram(shader->file);
@@ -227,31 +249,27 @@ void ResourceMaterial::CalculateVariation()  //set combination of textures to ge
 
 int ResourceMaterial::Compare(const ResourceMaterial& material)
 {
-	if (name.compare(material.name) != 0)
-		return -1;
-
 	if (shader != material.shader)
-		return 0;
+		return false;
 
 	for (unsigned i = 0; i < MAXTEXTURES; ++i)
 	{
 		if (textures[i] != material.textures[i])
-			return 0;
+			return false;
 	}
 
 	if (!diffuseColor.Equals(material.diffuseColor))
-		return 0;
+		return false;
 	if (!specularColor.Equals(material.specularColor))
-		return 0;
+		return false;
 	if (!emissiveColor.Equals(material.emissiveColor))
-		return 0;
+		return false;
 
 	if (roughness != material.roughness)
-		return 0;
+		return false;
 	if (metallic != material.metallic)
-		return 0;
-
-	return 1;
+		return false;
+	return true;
 }
 
 ResourceTexture* ResourceMaterial::GetTexture(TextureType type) const
@@ -351,4 +369,26 @@ void ResourceMaterial::SetUniforms(unsigned shader) const
 		"material.roughness"), 1, (GLfloat*)&roughness);
 	glUniform1fv(glGetUniformLocation(shader,
 		"material.metallic"), 1, (GLfloat*)&metallic);
+}
+
+void ResourceMaterial::Rename(const char* newName)
+{
+	Resource::Rename(newName);
+
+	// Rename file in Library
+	App->fsystem->Rename(IMPORTED_MATERIALS, (exportedFileName + MATERIALEXT).c_str(), newName);
+
+	exportedFileName = newName;
+}
+
+void ResourceMaterial::Delete()
+{
+	Resource::Delete();
+
+	// Delete file in Library
+	std::string fileInLibrary(IMPORTED_MATERIALS);
+	fileInLibrary += exportedFileName;
+	fileInLibrary += MATERIALEXT;
+	App->fsystem->Delete(fileInLibrary.c_str());
+	DeleteFromMemory();
 }

@@ -73,10 +73,9 @@ bool ModuleTextures::ImportImage(const char* file, const char* folder, ResourceT
 	success = ilLoadImage((path+file).c_str());
 	if (success)
 	{
-		LOG("Imported image %s", file);
 		ILuint size;
 		ILubyte* data = ilGetData();
-		ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);	// To pick a specific DXT compression use
+		ilSetInteger(IL_DXTC_FORMAT, (ILint)resource->dxtFormat);	// To pick a specific DXT compression use
 		size = ilSaveL(IL_DDS, NULL, 0);		// Get the size of the data buffer
 		data = new ILubyte[size];				// allocate data buffer
 		if (ilSaveL(IL_DDS, data, size) > 0)
@@ -94,13 +93,18 @@ bool ModuleTextures::ImportImage(const char* file, const char* folder, ResourceT
 			resource->format = ilGetInteger(IL_IMAGE_FORMAT);
 			resource->bytes = ilGetInteger(GL_UNSIGNED_BYTE);
 		}
+		else
+		{
+			success = false;
+		}
 		ilDeleteImages(1, &imageID);
 		RELEASE_ARRAY(data);
 	}
-	else
+	
+	if(!success)
 	{
 		error = ilGetError();
-		LOG("Error loading file %s, error: %s\n", file, iluErrorString(error));
+		LOG("Error loading file %s, error: %s", file, iluErrorString(error));
 	}
 	return success;
 }

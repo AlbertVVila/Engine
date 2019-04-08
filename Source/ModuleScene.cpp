@@ -70,9 +70,9 @@ bool ModuleScene::Init(JSON * config)
 	pcg_extras::seed_seq_from<std::random_device> seed_source;
 	pcg32 rng(seed_source);
 	uuid_rng = rng;
-
-	root = new GameObject("World", 0); //Root always has uid 0	
-
+	root = new GameObject("World", 0); //Root always has uid 0
+	canvas = new GameObject("Canvas", 1);
+	root->InsertChild(canvas);
 	int size = QUADTREE_SIZE * App->renderer->current_scale;
 	AABB limit(float3(-size, 0.f, -size), float3(size, 0.f, size));
 	quadtree = new myQuadTree(limit);
@@ -257,6 +257,7 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 	ComponentRenderer* crenderer = (ComponentRenderer*)go.GetComponent(ComponentType::Renderer);
 	if (crenderer == nullptr || !crenderer->enabled || crenderer->material == nullptr) return;
 
+	ResourceMesh* mesh = crenderer->mesh;
 	ResourceMaterial* material = crenderer->material;
 	Shader* shader = material->shader;
 	if (shader == nullptr) return;

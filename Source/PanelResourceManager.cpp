@@ -6,6 +6,7 @@
 
 #include "Resource.h"
 #include "ResourceTexture.h"
+#include "ResourceModel.h"
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
 #include "ResourceSkybox.h"
@@ -82,7 +83,7 @@ void PanelResourceManager::Draw()
 	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "");																						ImGui::NextColumn(); ImGui::Separator();
 	ImGui::PopStyleColor(1);
 
-	for each (auto resource in resourcesList)
+	for each (auto& resource in resourcesList)
 	{
 		unsigned uid = resource->GetUID();
 		ImGui::PushID(uid);
@@ -105,50 +106,22 @@ void PanelResourceManager::Draw()
 		// Type
 		switch (resource->GetType())
 		{
-		case TYPE::TEXTURE:
-			ImGui::Text("Texture");
-			break;
-		case TYPE::MESH:
-			ImGui::Text("Mesh");
-			break;
-		case TYPE::AUDIO:
-			ImGui::Text("Audio");
-			break;
-		case TYPE::SCENE:
-			ImGui::Text("Scene");
-			break;
-		case TYPE::BONE:
-			ImGui::Text("Bone");
-			break;
-		case TYPE::ANIMATION:
-			ImGui::Text("Animation");
-			break;
-		case TYPE::MATERIAL:
-			ImGui::Text("Material");
-			break;
-		case TYPE::SKYBOX:
-			ImGui::Text("Skybox");
-			break;
+		case TYPE::TEXTURE:		ImGui::Text("Texture");		break;
+		case TYPE::MODEL:		ImGui::Text("Model");		break;
+		case TYPE::MESH:		ImGui::Text("Mesh");		break;
+		case TYPE::AUDIO:		ImGui::Text("Audio");		break;
+		case TYPE::SCENE:		ImGui::Text("Scene");		break;
+		case TYPE::ANIMATION:	ImGui::Text("Animation");	break;
+		case TYPE::MATERIAL:	ImGui::Text("Material");	break;
+		case TYPE::SKYBOX:		ImGui::Text("Skybox");		break;
 		default:
-		case TYPE::UNKNOWN:
-			ImGui::Text("Unknown");
-			break;
+		case TYPE::UNKNOWN:		ImGui::Text("Unknown");		break;
 		}
 		ImGui::NextColumn();
 		// View button
 		if (ImGui::Button("View"))
 		{
-			switch (resource->GetType())
-			{
-			case TYPE::TEXTURE:		openTextureWindow = true; break;
-			case TYPE::MESH:		openMeshWindow = true; break;
-			/*case TYPE::AUDIO:		break;
-			case TYPE::SCENE:		break;
-			case TYPE::BONE:		break;
-			case TYPE::ANIMATION:	break;*/
-			case TYPE::MATERIAL:	openMaterialWindow = true; break;
-			case TYPE::SKYBOX:		openSkyboxWindow = true; break;
-			}
+			openResourceWindow = true;
 			previous = resource;
 		}
 		ImGui::SameLine();
@@ -162,14 +135,20 @@ void PanelResourceManager::Draw()
 		ImGui::PopID();
 	}
 	OpenResourceEditor();
-	if (openTextureWindow)
-		DrawResourceTexture();
-	if (openMeshWindow)
-		DrawResourceMesh();
-	if (openMaterialWindow)
-		DrawResourceMaterial();
-	if (openSkyboxWindow)
-		DrawResourceSkybox();
+	if (openResourceWindow)
+	{
+		switch (previous->GetType())
+		{
+		case TYPE::TEXTURE:		DrawResourceTexture();	break;
+		case TYPE::MODEL:		DrawResourceModel();	break;
+		case TYPE::MESH:		DrawResourceMesh();		break;
+		/*case TYPE::AUDIO:								break;
+		case TYPE::SCENE:								break;
+		case TYPE::ANIMATION:							break;*/
+		case TYPE::MATERIAL:	DrawResourceMaterial(); break;
+		case TYPE::SKYBOX:		DrawResourceSkybox();	break;
+		}
+	}
 	ImGui::End();
 }
 
@@ -251,7 +230,7 @@ void PanelResourceManager::OpenResourceEditor()
 			}
 
 			// Type
-			const char* types[] = { "Texture", "Mesh", "Audio", "Scene", "Bone", "Animation", "Material", "Skybox", "Unknown" };
+			const char* types[] = { "Texture", "Model", "Mesh", "Audio", "Scene", "Animation", "Material", "Skybox", "Unknown" };
 			int type = (int)auxResource->GetType();
 			if (ImGui::BeginCombo("Type", types[type]))
 			{
@@ -286,7 +265,7 @@ void PanelResourceManager::OpenResourceEditor()
 
 void PanelResourceManager::DrawResourceTexture()
 {
-	if (!ImGui::Begin("Texture Manager", &openTextureWindow))
+	if (!ImGui::Begin("Texture Manager"))
 	{
 		ImGui::End();
 		return;
@@ -325,9 +304,43 @@ void PanelResourceManager::DrawResourceTexture()
 	ImGui::End();
 }
 
+void PanelResourceManager::DrawResourceModel()
+{
+	if (!ImGui::Begin("Model Manager"))
+	{
+		ImGui::End();
+		return;
+	}
+	ResourceModel& model = *(ResourceModel*)previous;
+	std::string exportedFile(model.GetExportedFile());
+	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), (exportedFile + ":").c_str());
+
+	for each(auto& mesh in model.meshList)
+	{
+		ImGui::Columns(2);
+		std::string exportedFile(mesh->GetExportedFile());
+		ImGui::Text((exportedFile + ":").c_str());
+		ImGui::Columns(2);
+		ImGui::Text("VAO: %u", mesh->GetVAO());
+		ImGui::Text("VBO: %u", mesh->GetVBO());
+		ImGui::Text("EBO: %u", mesh->GetEBO());
+		ImGui::Text("Number of Triangles: %u", mesh->meshVertices.size());
+		ImGui::Text("Number of Vertices: %u", mesh->meshIndices.size() / 2);
+
+		ImGui::NextColumn();
+		// TODO: [Resource Manager] Add preview of the mesh
+
+		ImGui::NextColumn();
+		ImGui::Separator();
+	}
+
+
+	ImGui::End();
+}
+
 void PanelResourceManager::DrawResourceMesh()
 {
-	if (!ImGui::Begin("Mesh Manager", &openMeshWindow))
+	if (!ImGui::Begin("Mesh Manager"))
 	{
 		ImGui::End();
 		return;
@@ -336,6 +349,7 @@ void PanelResourceManager::DrawResourceMesh()
 	std::string exportedFile(mesh.GetExportedFile());
 	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), (exportedFile + ":").c_str());
 	ImGui::Columns(2);
+	ImGui::Text("Name: %s", mesh.name.c_str());
 	ImGui::Text("VAO: %u", mesh.GetVAO());
 	ImGui::Text("VBO: %u", mesh.GetVBO());
 	ImGui::Text("EBO: %u", mesh.GetEBO());
@@ -349,7 +363,7 @@ void PanelResourceManager::DrawResourceMesh()
 
 void PanelResourceManager::DrawResourceMaterial()
 {
-	if (!ImGui::Begin("Material Manager", &openMaterialWindow))
+	if (!ImGui::Begin("Material Manager"))
 	{
 		ImGui::End();
 		return;
@@ -359,7 +373,7 @@ void PanelResourceManager::DrawResourceMaterial()
 	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), (exportedFile + ":").c_str());
 	ImGui::Columns(2);
 
-	ImGui::Text("Name: %s", material.name.c_str());
+	ImGui::Text("Name: %s", material.GetExportedFile());
 	if(material.shader != nullptr)
 		ImGui::Text("Shader: %s", material.shader->file.c_str());
 
@@ -377,7 +391,7 @@ void PanelResourceManager::DrawResourceMaterial()
 
 	// Textures
 	unsigned i = 0;
-	for each(auto texture in material.textures)
+	for each(auto& texture in material.textures)
 	{
 		i++;
 		ImGui::Text("Texture %u:", i); ImGui::SameLine();
@@ -400,7 +414,7 @@ void PanelResourceManager::DrawResourceMaterial()
 
 void PanelResourceManager::DrawResourceSkybox()
 {
-	if (!ImGui::Begin("Skybox Manager", &openSkyboxWindow))
+	if (!ImGui::Begin("Skybox Manager"))
 	{
 		ImGui::End();
 		return;
@@ -425,7 +439,7 @@ void PanelResourceManager::DrawResourceSkybox()
 
 void PanelResourceManager::CleanUp()
 {
-	if(!openTextureWindow && !openMeshWindow && !openMaterialWindow && !openSkyboxWindow)
+	if(!openResourceWindow)
 		previous = nullptr;
 
 	if (auxResource != nullptr)

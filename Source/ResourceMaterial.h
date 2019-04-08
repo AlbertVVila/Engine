@@ -30,18 +30,21 @@ public:
 
 	bool LoadInMemory() override;
 	void DeleteFromMemory() override;
-	void Save() const;	// Saves material file (.m4t) in Assets/Materials
+	void Save() const;										// Saves material file (.m4t) in Assets/Materials
 	void SaveMetafile(const char* file) const override;
 	void Reset(const ResourceMaterial& material);
 	int Compare(const ResourceMaterial& material);
 	void CalculateVariation();
+
+	// File in asset specific
+	void Rename(const char* newName) override;
+	void Delete() override;
 
 	ResourceTexture* GetTexture(TextureType type) const;
 	std::list<ResourceTexture*> GetTextures() const;
 	void SetUniforms(unsigned shader) const;
 
 public:
-	std::string name;
 	Shader* shader = nullptr;
 
 	ResourceTexture* textures[MAXTEXTURES]{ nullptr };

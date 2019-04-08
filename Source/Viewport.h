@@ -53,6 +53,7 @@ private:
 
 	unsigned mCurrentGizmoOperation = 0; //Translate //We avoid imguizmo .h inclusion
 	unsigned mCurrentGizmoMode = 1;//World
+	unsigned mCurrentModeAux = 1;
 };
 
 #endif __Viewport_h__

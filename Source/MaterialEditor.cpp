@@ -30,30 +30,12 @@ void MaterialEditor::Draw()
 		return;
 	}
 
-	char name[64] = "";
-	if (!material->name.empty())
-	{
-		strcpy(name, material->name.c_str());
-	}
-	else
-	{
-		strcpy(name, "Unnamed");
-	}
-
 	ImGui::Spacing();
-
-	ImGui::InputText("Name", name, 64);
-	material->name = name;
 
 	ImGui::DragFloat("Metallic", &material->metallic, .01f, .001f, 1.f);
 	ImGui::DragFloat("Roughness", &material->roughness, .01f, .001f, 1.f);
 	
 	ShaderSelector(currentShader);
-
-	if (textureFiles.size() == 0)
-	{
-		textureFiles = App->fsystem->GetFolderContent(TEXTURES, false);
-	}
 
 	if (ImGui::CollapsingHeader("Diffuse"))
 	{
@@ -221,6 +203,13 @@ void MaterialEditor::SetCurrentTextures()
 	}
 }
 
+void MaterialEditor::UpdateTexturesList()
+{
+	textureFiles.clear();
+	textureFiles = App->resManager->GetResourceNamesList(TYPE::TEXTURE, true);
+	SetCurrentTextures();
+}
+
 void MaterialEditor::NewMaterial()
 {
 	if (!ImGui::IsPopupOpen(materialPopup))
@@ -255,7 +244,6 @@ void MaterialEditor::NewMaterial()
 		if (ImGui::Button("Save", ImVec2(120, 0)) && !newMatExists)
 		{
 			ResourceMaterial* newMaterialCreated = (ResourceMaterial*)App->resManager->CreateNewResource(TYPE::MATERIAL);
-			newMaterialCreated->name = newName;
 			newMaterialCreated->SetExportedFile(newName);
 			newMaterialCreated->Save();
 			newMaterial = false;
@@ -286,20 +274,8 @@ void MaterialEditor::Save()
 {
 	if (previous != nullptr)
 	{
-		int ret = material->Compare(*previous);
-
-		if (ret == -1)
-		{
-			if (Exists(previous->name))
-			{
-				App->fsystem->Delete((MATERIALS + previous->name + JSONEXT).c_str());
-			}
+		if (!material->Compare(*previous))
 			material->Save();
-		}
-		else if (ret == 0)
-		{
-			material->Save();
-		}
 
 		RELEASE(previous);
 	}

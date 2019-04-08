@@ -10,12 +10,17 @@
 
 #include "Resource.h"
 #include "ResourceTexture.h"
+#include "ResourceModel.h"
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
 #include "ResourceAnimation.h"
 #include "ResourceSkybox.h"
 
 #include "FileImporter.h"
+
+#include <algorithm>
+
+bool sortByNameAscending(const std::string a, std::string b) { return a < b; };
 
 ModuleResourceManager::ModuleResourceManager()
 {
@@ -32,29 +37,10 @@ bool ModuleResourceManager::Init(JSON * config)
 	return true;
 }
 
-bool ModuleResourceManager::Start()
-{
-	//TODO: Read metafiles from Assets/ instead and import or add to resources
-	std::vector<std::string> files;
-	std::vector<std::string> dirs;
-	App->fsystem->ListFolderContent(MESHES, files, dirs);
-	for each (std::string file in files)
-	{
-		std::string name = App->fsystem->GetFilename(file.c_str());
-		unsigned uid = std::stoul(name);
-		ResourceMesh* res = (ResourceMesh*)CreateNewResource(TYPE::MESH, uid);	
-		res->SetExportedFile(name.c_str());
-	}
-	files.clear();
-	dirs.clear();
-	return true;
-}
-
 void ModuleResourceManager::LoadEngineResources()
 {
-	std::vector<std::string> files;
-	std::vector<std::string> dirs;
-	App->fsystem->ListFolderContent(IMPORTED_RESOURCES, files, dirs);
+	std::set<std::string> files;
+	App->fsystem->ListFiles(IMPORTED_RESOURCES, files);
 	for each (std::string file in files)
 	{
 		Resource* res = CreateNewResource(TYPE::TEXTURE);
@@ -129,6 +115,18 @@ unsigned ModuleResourceManager::FindByFileInAssets(const char* fileInAssets) con
 	return 0;
 }
 
+unsigned ModuleResourceManager::FindByFileInAssetsExcludingType(const char* fileInAssets, TYPE type) const
+{
+	for (std::map<unsigned, Resource*>::const_iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		if (strcmp(it->second->GetFile(), fileInAssets) == 0 && it->second->GetType() != type)
+		{
+			return it->first;
+		}
+	}
+	return 0;
+}
+
 unsigned ModuleResourceManager::FindByExportedFile(const char* exportedFileName) const
 {
 	for (std::map<unsigned, Resource*>::const_iterator it = resources.begin(); it != resources.end(); ++it)
@@ -141,24 +139,52 @@ unsigned ModuleResourceManager::FindByExportedFile(const char* exportedFileName)
 	return 0;
 }
 
-unsigned ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* filePath, TYPE type, bool force)
+unsigned ModuleResourceManager::FindByExportedFile(const char* exportedFileName, TYPE type) const
 {
-	unsigned ret = 0; 
-	bool success = false; 
-	std::string importedFilePath(filePath);
+	for (std::map<unsigned, Resource*>::const_iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		if (strcmp(it->second->GetExportedFile(), exportedFileName) == 0 && it->second->GetType() == type)
+		{
+			return it->first;
+		}
+	}
+	return 0;
+}
 
-	Resource* resource = CreateNewResource(type);
+bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* filePath, TYPE type)
+{
+	bool success = false; 
+
 	std::string assetPath(filePath);
 	assetPath += newFileInAssets;
+
+	// Check if the file was already imported (Mesh is excluded because has same file as model)
+	unsigned uid = FindByFileInAssetsExcludingType(assetPath.c_str(), TYPE::MESH);
+	if (uid != 0)
+	{
+		// Avoid reimporting meshes (only model can reimport them)
+		return ReImportFile(GetWithoutLoad(uid), filePath, type);
+	}
+
+	Resource* resource = CreateNewResource(type);
+
+	// Save file to import on Resource file variable
+	resource->SetFile((assetPath).c_str());
+
+	// If a .meta file is found import it with the configuration saved
+	resource->LoadConfigFromMeta();
 
 	switch (type) 
 	{
 	case TYPE::TEXTURE: 
 		success = App->textures->ImportImage(newFileInAssets, filePath, (ResourceTexture*)resource);
 		break;
-	case TYPE::MESH:	
-		success = App->fsystem->importer.ImportFBX(newFileInAssets, filePath);
+	case TYPE::MODEL:
+		success = App->fsystem->importer.ImportFBX(newFileInAssets, filePath, (ResourceModel*)resource);
 		break;
+	/*case TYPE::MESH:	
+		success = App->fsystem->importer.ImportFBX(newFileInAssets, filePath, (ResourceMesh*)resource);
+		break;*/
 	//case TYPE::AUDIO: import_ok = App->audio->Import(newFileInAssets, written_file); break;
 	//case TYPE::SCENE: import_ok = App->scene->Import(newFileInAssets, written_file); break;
 	case TYPE::MATERIAL:
@@ -169,18 +195,67 @@ unsigned ModuleResourceManager::ImportFile(const char* newFileInAssets, const ch
 	// If export was successful, create a new resource
 	if (success) 
 	{ 
-		resource->SaveMetafile(assetPath.c_str());
-		resource->SetFile((importedFilePath + newFileInAssets).c_str());
+		resource->SaveMetafile(assetPath.c_str());	
 		resource->SetExportedFile(App->fsystem->RemoveExtension(newFileInAssets).c_str());
+		LOG("%s imported.", resource->GetExportedFile());
 	}
 	else
 	{
 		RELEASE(resource);
 	}
-	return ret;
+	return success;
 }
 
-Resource * ModuleResourceManager::CreateNewResource(TYPE type, unsigned forceUid)
+bool ModuleResourceManager::ReImportFile(Resource* resource, const char* filePath, TYPE type)
+{
+	bool success = false;
+
+	std::string file = resource->GetExportedFile();
+	file += App->fsystem->GetExtension(resource->GetFile());
+
+	switch (type)
+	{
+	case TYPE::TEXTURE:
+		success = App->textures->ImportImage(file.c_str(), filePath, (ResourceTexture*)resource);
+		break;
+	case TYPE::MODEL:
+		success = App->fsystem->importer.ImportFBX(file.c_str(), filePath, (ResourceModel*)resource);
+		break;
+	/*case TYPE::MESH:
+		success = App->fsystem->importer.ImportFBX(file.c_str(), filePath, (ResourceMesh*)resource);
+		break;*/
+		//case TYPE::AUDIO: import_ok = App->audio->Import(newFileInAssets, written_file); break;
+		//case TYPE::SCENE: import_ok = App->scene->Import(newFileInAssets, written_file); break;
+	case TYPE::MATERIAL:
+		success = App->fsystem->Copy(filePath, IMPORTED_MATERIALS, file.c_str());
+		break;
+	}
+
+	// If export was successful, update resource
+	if (success)
+	{
+		std::string assetPath(filePath);
+		assetPath += file;
+		resource->SaveMetafile(assetPath.c_str());
+
+		// Reload in memory
+		if (resource->IsLoadedToMemory())
+		{
+			unsigned references = resource->GetReferences();
+			resource->DeleteFromMemory();
+			resource->SetReferences(references);
+		}
+
+		LOG("%s reimported.", resource->GetExportedFile());
+	}
+	else
+	{
+		LOG("Error: %s failed on reimport.", resource->GetExportedFile());
+	}
+	return success;
+}
+
+Resource* ModuleResourceManager::CreateNewResource(TYPE type, unsigned forceUid)
 {
 	Resource* resource = nullptr;
 	unsigned uid = (forceUid == 0) ? GenerateNewUID() : forceUid;
@@ -188,6 +263,7 @@ Resource * ModuleResourceManager::CreateNewResource(TYPE type, unsigned forceUid
 	switch (type) 
 	{
 	case TYPE::TEXTURE: resource = (Resource*) new ResourceTexture(uid); break;
+	case TYPE::MODEL:	resource = (Resource*) new ResourceModel(uid); break;
 	case TYPE::MESH:	resource = (Resource*) new ResourceMesh(uid); break;
 	/*case TYPE::AUDIO:	resource = (Resource*) new ResourceAudio(uid); break;
 	case TYPE::SCENE:	resource = (Resource*) new ResourceScene(uid); break;*/
@@ -244,6 +320,35 @@ Resource* ModuleResourceManager::Get(const char* exportedFileName) const
 	return Get(uid);
 }
 
+Resource* ModuleResourceManager::Get(const char* exportedFileName, TYPE type) const
+{
+	assert(exportedFileName != NULL);
+
+	// Look for it on the resource list
+	unsigned uid = FindByExportedFile(exportedFileName, type);
+	if (uid == 0)
+		return nullptr;
+
+	// Get resource by uid
+	return Get(uid);
+}
+
+ResourceMesh* ModuleResourceManager::GetMeshByName(const char* name)
+{
+	std::vector<std::string> resourcesList;
+	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		if (it->second->GetType() == TYPE::MESH)
+		{
+			ResourceMesh* mesh = (ResourceMesh*)it->second;
+			if (mesh->name == name)
+				return (ResourceMesh*)Get(mesh->GetUID());
+		}
+	}
+
+	return nullptr;
+}
+
 Resource* ModuleResourceManager::GetWithoutLoad(unsigned uid) const
 {
 	std::map<unsigned, Resource*>::const_iterator it = resources.find(uid);
@@ -259,6 +364,19 @@ Resource* ModuleResourceManager::GetWithoutLoad(const char* exportedFileName) co
 
 	// Look for it on the resource list
 	unsigned uid = FindByExportedFile(exportedFileName);
+	if (uid == 0)
+		return nullptr;
+
+	// Get resource by uid
+	return GetWithoutLoad(uid);
+}
+
+Resource* ModuleResourceManager::GetWithoutLoad(const char* exportedFileName, TYPE type) const
+{
+	assert(exportedFileName != NULL);
+
+	// Look for it on the resource list
+	unsigned uid = FindByExportedFile(exportedFileName,type);
 	if (uid == 0)
 		return nullptr;
 
@@ -295,6 +413,103 @@ std::vector<Resource*> ModuleResourceManager::GetResourcesList()
 	return resourcesList;
 }
 
+std::vector<ResourceTexture*> ModuleResourceManager::GetTexturesList()
+{
+	std::vector<ResourceTexture*> resourcesList;
+	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		if(it->second->GetType() == TYPE::TEXTURE)
+			resourcesList.push_back((ResourceTexture*)it->second);
+	}
+	return resourcesList;
+}
+
+std::vector<ResourceMaterial*> ModuleResourceManager::GetMaterialsList()
+{
+	std::vector<ResourceMaterial*> resourcesList;
+	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		if (it->second->GetType() == TYPE::MATERIAL)
+			resourcesList.push_back((ResourceMaterial*)it->second);
+	}
+	return resourcesList;
+}
+
+std::vector<std::string> ModuleResourceManager::GetResourceNamesList(TYPE resourceType, bool ordered)
+{
+	std::vector<std::string> resourcesList;
+	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		if (it->second->GetType() == resourceType)
+			resourcesList.push_back(it->second->GetExportedFile());
+	}
+
+	if (ordered)	// Short by ascending order
+		std::sort(resourcesList.begin(), resourcesList.end(), sortByNameAscending);
+
+	return resourcesList;
+}
+
+std::vector<std::string> ModuleResourceManager::GetMeshesNamesList(bool ordered)
+{
+	std::vector<std::string> resourcesList;
+	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		if (it->second->GetType() == TYPE::MESH)
+		{
+			ResourceMesh* mesh = (ResourceMesh*)it->second;
+			resourcesList.push_back(mesh->name);
+		}
+	}
+
+	if (ordered)	// Short by ascending order
+		std::sort(resourcesList.begin(), resourcesList.end(), sortByNameAscending);
+
+	return resourcesList;
+}
+
+bool ModuleResourceManager::Exists(const char* exportedFileName)
+{
+	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		std::string firstName(it->second->GetExportedFile());
+		std::string secondName(exportedFileName);
+		if (firstName == secondName)
+			return true;
+		else
+		{
+			for (auto & c1 : firstName) c1 = toupper(c1);
+			for (auto & c2 : secondName) c2 = toupper(c2);
+			if (firstName == secondName)
+				return true;
+		}
+	}
+	return false;
+}
+
+bool ModuleResourceManager::Exists(const char* exportedFileName, TYPE type)
+{
+	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		if (it->second->GetType() == type)
+		{
+			std::string firstName(it->second->GetExportedFile());
+			std::string secondName(exportedFileName);
+			if (firstName == secondName)
+				return true;
+			else
+			{
+				for (auto & c1 : firstName) c1 = toupper(c1);
+				for (auto & c2 : secondName) c2 = toupper(c2);
+				if (firstName == secondName)
+					return true;
+			}
+		}
+	}
+	return false;
+}
+
+
 Resource* ModuleResourceManager::AddResource(const char* file, const char* directory, TYPE type)
 {
 	std::string path(directory);
@@ -314,6 +529,14 @@ Resource* ModuleResourceManager::AddResource(const char* file, const char* direc
 		// Resource already exist
 		return GetWithoutLoad(UID);
 	}
+}
+
+Resource* ModuleResourceManager::ReplaceResource(unsigned oldResourceUID, Resource* newResource)
+{
+	DeleteResourceFromList(oldResourceUID);
+	resources[newResource->GetUID()] = newResource;
+
+	return nullptr;
 }
 
 void ModuleResourceManager::DeleteResourceFromList(unsigned uid)
