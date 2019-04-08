@@ -7,27 +7,6 @@
 class GameObject;
 class ComponentRenderer;
 
-struct navConfig {
-	int width;
-	int height;
-	float bmin[3];
-	float bmax[3];
-	float cs;
-	float ch;
-	float walkableSlopeAngle;
-	int walkableHeight;
-	int walkableClimb;
-	int walkableRadius;
-	int maxEdgeLen;
-	float maxSimplificationError;
-	int minRegionArea;		// Note: area = size*size
-	int mergeRegionArea;	// Note: area = size*size
-	int maxVertsPerPoly;
-	float detailSampleDist;
-	float detailSampleMaxError;
-	
-};
-
 class ModuleNavigation :
 	public Module
 {
@@ -44,6 +23,10 @@ public:
 	std::vector<GameObject*> obstacles;
 
 private:
+	// Explicitly-disabled copy constructor and copy assignment operator.
+	ModuleNavigation(const ModuleNavigation&);
+	ModuleNavigation& operator=(const ModuleNavigation);
+
 	void removeNavMesh(unsigned ID);
 	void generateNavigability();
 
@@ -73,11 +56,23 @@ private:
 	//newer config
 	float cellWidth = 10.f;
 	float cellHeight = 10.f;
+	float edgeMaxLength = 30.f;
+	float edgeMaxError = 5.f;
+	int minRegionSize = 10;
+	int mergedRegionSize = 20;
+	int vertexPerPoly = 10;
+	float sampleDistance = 10;
+	float sampleMaxError = 2;
 
 	//navigation mesh properties
 	const ComponentRenderer* meshComponent = nullptr;
 
-	navConfig cfg;
+	rcConfig cfg;
+	rcContext ctx;
+	rcHeightfield* heightField;
+
+	unsigned char* m_triareas;
+	bool m_keepInterResults = true;
 
 	int* tris = nullptr;
 	float* verts = nullptr;

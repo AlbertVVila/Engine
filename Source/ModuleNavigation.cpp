@@ -110,24 +110,23 @@ void ModuleNavigation::generateNavigability()
 	
 	fillIndices(tris, ntris);
 
-	//step 1
+	//step 1. Initialize build config.
 	memset(&cfg, 0, sizeof(cfg));
 
-	/*cfg.cs = m_cellSize;
-	cfg.ch = m_cellHeight;
-	cfg.walkableSlopeAngle = m_agentMaxSlope;
-	cfg.walkableHeight = (int)ceilf(m_agentHeight / cfg.ch);
-	cfg.walkableClimb = (int)floorf(m_agentMaxClimb / cfg.ch);
-	cfg.walkableRadius = (int)ceilf(m_agentRadius / cfg.cs);
-	cfg.maxEdgeLen = (int)(m_edgeMaxLen / m_cellSize);
-	cfg.maxSimplificationError = m_edgeMaxError;
-	cfg.minRegionArea = (int)rcSqr(m_regionMinSize);		// Note: area = size*size
-	cfg.mergeRegionArea = (int)rcSqr(m_regionMergeSize);	// Note: area = size*size
-	cfg.maxVertsPerPoly = (int)m_vertsPerPoly;
-	cfg.detailSampleDist = m_detailSampleDist < 0.9f ? 0 : m_cellSize * m_detailSampleDist;
-	cfg.detailSampleMaxError = m_cellHeight * m_detailSampleMaxError;*/
+	cfg.cs = cellWidth;
+	cfg.ch = cellHeight;
+	cfg.walkableSlopeAngle = maxSlopeValue;
+	cfg.walkableHeight = (int)ceilf(characterMaxHeight / cfg.ch);
+	cfg.walkableClimb = (int)floorf(characterMaxStepHeightScaling / cfg.ch);
+	cfg.walkableRadius = (int)ceilf(characterMaxRadius / cfg.cs);
+	cfg.maxEdgeLen = (int)(edgeMaxLength / cellWidth);
+	cfg.maxSimplificationError = edgeMaxError;
+	cfg.minRegionArea = (int)rcSqr(minRegionSize);		// Note: area = size*size
+	cfg.mergeRegionArea = (int)rcSqr(mergedRegionSize);	// Note: area = size*size
+	cfg.maxVertsPerPoly = (int)vertexPerPoly;
+	cfg.detailSampleDist = sampleDistance < 0.9f ? 0 : cellWidth * sampleDistance;
+	cfg.detailSampleMaxError = cellHeight * sampleMaxError;
 
-	//step 2
 	// Set the area where the navigation will be build.
 	// Here the bounds of the input mesh are used, but the
 	// area could be specified by an user defined box, etc.
@@ -135,90 +134,72 @@ void ModuleNavigation::generateNavigability()
 	rcVcopy(cfg.bmax, bmax);
 	rcCalcGridSize(cfg.bmin, cfg.bmax, cfg.cs, &cfg.width, &cfg.height);
 
-	/*
-	//code to adapt
-
-	//
-	// Step 1. Initialize build config.
-	//
-	
-	// Init build configuration from GUI
-	memset(&m_cfg, 0, sizeof(m_cfg));
-	m_cfg.cs = m_cellSize;
-	m_cfg.ch = m_cellHeight;
-	m_cfg.walkableSlopeAngle = m_agentMaxSlope;
-	m_cfg.walkableHeight = (int)ceilf(m_agentHeight / m_cfg.ch);
-	m_cfg.walkableClimb = (int)floorf(m_agentMaxClimb / m_cfg.ch);
-	m_cfg.walkableRadius = (int)ceilf(m_agentRadius / m_cfg.cs);
-	m_cfg.maxEdgeLen = (int)(m_edgeMaxLen / m_cellSize);
-	m_cfg.maxSimplificationError = m_edgeMaxError;
-	m_cfg.minRegionArea = (int)rcSqr(m_regionMinSize);		// Note: area = size*size
-	m_cfg.mergeRegionArea = (int)rcSqr(m_regionMergeSize);	// Note: area = size*size
-	m_cfg.maxVertsPerPoly = (int)m_vertsPerPoly;
-	m_cfg.detailSampleDist = m_detailSampleDist < 0.9f ? 0 : m_cellSize * m_detailSampleDist;
-	m_cfg.detailSampleMaxError = m_cellHeight * m_detailSampleMaxError;
-	
-	// Set the area where the navigation will be build.
-	// Here the bounds of the input mesh are used, but the
-	// area could be specified by an user defined box, etc.
-	rcVcopy(m_cfg.bmin, bmin);
-	rcVcopy(m_cfg.bmax, bmax);
-	rcCalcGridSize(m_cfg.bmin, m_cfg.bmax, m_cfg.cs, &m_cfg.width, &m_cfg.height);
-
 	// Reset build times gathering.
-	m_ctx->resetTimers();
+	ctx->resetTimers();
 
 	// Start the build process.	
-	m_ctx->startTimer(RC_TIMER_TOTAL);
-	
-	m_ctx->log(RC_LOG_PROGRESS, "Building navigation:");
-	m_ctx->log(RC_LOG_PROGRESS, " - %d x %d cells", m_cfg.width, m_cfg.height);
-	m_ctx->log(RC_LOG_PROGRESS, " - %.1fK verts, %.1fK tris", nverts/1000.0f, ntris/1000.0f);
-	
-	//
-	// Step 2. Rasterize input polygon soup.
-	//
-	
+	ctx->startTimer(RC_TIMER_TOTAL);
+
+	LOG("Building Navigation");
+
+	//step 2. Rasterize input polygon soup.
+
 	// Allocate voxel heightfield where we rasterize our input data to.
-	m_solid = rcAllocHeightfield();
-	if (!m_solid)
+	heightField = rcAllocHeightfield();
+	if (!heightField)
 	{
-		m_ctx->log(RC_LOG_ERROR, "buildNavigation: Out of memory 'solid'.");
-		return false;
+		LOG("buildNavigation: Out of memory 'solid'.");
+		return;
 	}
-	if (!rcCreateHeightfield(m_ctx, *m_solid, m_cfg.width, m_cfg.height, m_cfg.bmin, m_cfg.bmax, m_cfg.cs, m_cfg.ch))
+	if (!rcCreateHeightfield(ctx, *heightField, cfg.width, cfg.height, cfg.bmin, cfg.bmax, cfg.cs, cfg.ch))
 	{
-		m_ctx->log(RC_LOG_ERROR, "buildNavigation: Could not create solid heightfield.");
-		return false;
+		LOG("buildNavigation: Could not create solid heightfield.");
+		return;
 	}
-	
+
 	// Allocate array that can hold triangle area types.
 	// If you have multiple meshes you need to process, allocate
 	// and array which can hold the max number of triangles you need to process.
 	m_triareas = new unsigned char[ntris];
 	if (!m_triareas)
 	{
-		m_ctx->log(RC_LOG_ERROR, "buildNavigation: Out of memory 'm_triareas' (%d).", ntris);
-		return false;
+		LOG("buildNavigation: Out of memory 'm_triareas' (%d).");
+		return;
 	}
-	
+
 	// Find triangles which are walkable based on their slope and rasterize them.
 	// If your input data is multiple meshes, you can transform them here, calculate
 	// the are type for each of the meshes and rasterize them.
-	memset(m_triareas, 0, ntris*sizeof(unsigned char));
-	rcMarkWalkableTriangles(m_ctx, m_cfg.walkableSlopeAngle, verts, nverts, tris, ntris, m_triareas);
-	if (!rcRasterizeTriangles(m_ctx, verts, nverts, tris, m_triareas, ntris, *m_solid, m_cfg.walkableClimb))
+	memset(m_triareas, 0, ntris * sizeof(unsigned char));
+	rcMarkWalkableTriangles(ctx, cfg.walkableSlopeAngle, verts, nverts, tris, ntris, m_triareas);
+	if (!rcRasterizeTriangles(ctx, verts, nverts, tris, m_triareas, ntris, *heightField, m_cfg.walkableClimb))
 	{
-		m_ctx->log(RC_LOG_ERROR, "buildNavigation: Could not rasterize triangles.");
-		return false;
+		LOG("buildNavigation: Could not rasterize triangles.");
+		return;
 	}
 
 	if (!m_keepInterResults)
 	{
-		delete [] m_triareas;
+		delete[] m_triareas;
 		m_triareas = 0;
 	}
-	
+
+	// Step 3. Filter walkables surfaces.
+	// Once all geoemtry is rasterized, we do initial pass of filtering to
+	// remove unwanted overhangs caused by the conservative rasterization
+	// as well as filter spans where the character cannot possibly stand.
+	if (m_filterLowHangingObstacles)
+		rcFilterLowHangingWalkableObstacles(m_ctx, m_cfg.walkableClimb, *heightField);
+	if (m_filterLedgeSpans)
+		rcFilterLedgeSpans(m_ctx, m_cfg.walkableHeight, m_cfg.walkableClimb, *heightField);
+	if (m_filterWalkableLowHeightSpans)
+		rcFilterWalkableLowHeightSpans(m_ctx, m_cfg.walkableHeight, *heightField);
+
+
+
+	/*
+	//code to adapt
+
 	//
 	// Step 3. Filter walkables surfaces.
 	//
@@ -227,11 +208,11 @@ void ModuleNavigation::generateNavigability()
 	// remove unwanted overhangs caused by the conservative rasterization
 	// as well as filter spans where the character cannot possibly stand.
 	if (m_filterLowHangingObstacles)
-		rcFilterLowHangingWalkableObstacles(m_ctx, m_cfg.walkableClimb, *m_solid);
+		rcFilterLowHangingWalkableObstacles(m_ctx, m_cfg.walkableClimb, *heightField);
 	if (m_filterLedgeSpans)
-		rcFilterLedgeSpans(m_ctx, m_cfg.walkableHeight, m_cfg.walkableClimb, *m_solid);
+		rcFilterLedgeSpans(m_ctx, m_cfg.walkableHeight, m_cfg.walkableClimb, *heightField);
 	if (m_filterWalkableLowHeightSpans)
-		rcFilterWalkableLowHeightSpans(m_ctx, m_cfg.walkableHeight, *m_solid);
+		rcFilterWalkableLowHeightSpans(m_ctx, m_cfg.walkableHeight, *heightField);
 
 
 	//
@@ -247,7 +228,7 @@ void ModuleNavigation::generateNavigability()
 		m_ctx->log(RC_LOG_ERROR, "buildNavigation: Out of memory 'chf'.");
 		return false;
 	}
-	if (!rcBuildCompactHeightfield(m_ctx, m_cfg.walkableHeight, m_cfg.walkableClimb, *m_solid, *m_chf))
+	if (!rcBuildCompactHeightfield(m_ctx, m_cfg.walkableHeight, m_cfg.walkableClimb, *heightField, *m_chf))
 	{
 		m_ctx->log(RC_LOG_ERROR, "buildNavigation: Could not build compact data.");
 		return false;
@@ -255,8 +236,8 @@ void ModuleNavigation::generateNavigability()
 	
 	if (!m_keepInterResults)
 	{
-		rcFreeHeightField(m_solid);
-		m_solid = 0;
+		rcFreeHeightField(heightField);
+		heightField = 0;
 	}
 		
 	// Erode the walkable area by agent radius.
