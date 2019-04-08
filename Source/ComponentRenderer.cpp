@@ -27,8 +27,11 @@ ComponentRenderer::ComponentRenderer(GameObject* gameobject) : Component(gameobj
 
 ComponentRenderer::ComponentRenderer(const ComponentRenderer& component) : Component(component)
 {
-	mesh = (ResourceMesh*)App->resManager->Get(component.mesh->GetUID());
-	material = (ResourceMaterial*)App->resManager->Get(component.material->GetUID());
+	if(component.mesh != nullptr)
+		mesh = (ResourceMesh*)App->resManager->Get(component.mesh->GetUID());
+
+	if (component.material != nullptr)
+		material = (ResourceMaterial*)App->resManager->Get(component.material->GetUID());
 }
 
 ComponentRenderer::~ComponentRenderer()
@@ -64,9 +67,38 @@ void ComponentRenderer::DrawProperties()
 			return;
 		}
 
+		// Mesh selector
+		ImGui::Text("Mesh");
+		ImGui::PushID("Mesh Combo");
+		if (ImGui::BeginCombo("", mesh != nullptr ? mesh->name.c_str() : ""))
+		{
+			if (guiMeshes.empty())
+			{
+				guiMeshes = App->resManager->GetMeshesNamesList(true);
+			}
+			for (int n = 0; n < guiMeshes.size(); n++)
+			{
+				bool is_selected = (mesh != nullptr ? mesh->name == guiMeshes[n] : false);
+				if (ImGui::Selectable(guiMeshes[n].c_str(), is_selected))
+				{
+					if(mesh == nullptr || mesh->name != guiMeshes[n])
+						SetMesh(guiMeshes[n].c_str());
+				}
+				if (is_selected)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+			ImGui::EndCombo();
+		}
+		else
+		{
+			guiMeshes.clear();
+		}
+		ImGui::PopID();
+
 		if (mesh == nullptr)
 		{
-			// TODO: Add mesh selector
 			ImGui::Text("No mesh selected.");
 		}
 		else
@@ -76,7 +108,9 @@ void ComponentRenderer::DrawProperties()
 		}
 		ImGui::Spacing();
 
+		// Material selector
 		ImGui::Text("Material");
+		ImGui::PushID("Material Combo");
 		if (ImGui::BeginCombo("", material->GetExportedFile()))
 		{
 			if (guiMaterials.empty())
@@ -108,6 +142,7 @@ void ComponentRenderer::DrawProperties()
 		{
 			guiMaterials.clear();
 		}
+		ImGui::PopID();
 
 		ImGui::SameLine();
 		if (App->editor->materialEditor->open)
@@ -172,8 +207,8 @@ bool ComponentRenderer::CleanUp()
 void ComponentRenderer::Save(JSON_value* value) const
 {
 	Component::Save(value);
-	value->AddUint("meshUID", mesh->GetUID());
-	value->AddString("materialFile", material->GetExportedFile());
+	value->AddUint("meshUID", (mesh != nullptr) ? mesh->GetUID() : 0u);
+	value->AddString("materialFile", (material != nullptr) ? material->GetExportedFile() : DEFAULTMAT);
 }
 
 void ComponentRenderer::Load(JSON_value* value)
@@ -181,20 +216,7 @@ void ComponentRenderer::Load(JSON_value* value)
 	Component::Load(value);
 
 	unsigned uid = value->GetUint("meshUID");
-	ResourceMesh* m = (ResourceMesh*)App->resManager->Get(uid); //Look for loaded meshes
-
-	if (m != nullptr)
-	{
-		mesh = m;
-	}
-	else //Case mesh not loaded
-	{
-		ResourceMesh* res = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH, uid);
-		res->SetExportedFile(std::to_string(uid).c_str());
-		m = (ResourceMesh*)App->resManager->Get(uid); //Look for loaded meshes
-		if (m != nullptr)
-			m = res;
-	}
+	mesh = (ResourceMesh*)App->resManager->Get(uid); //Look for loaded meshes
 	UpdateGameObject();
 
 	const char* materialFile = value->GetString("materialFile");
@@ -211,24 +233,31 @@ void ComponentRenderer::SetMaterial(const char* materialfile)
 
 	if (materialfile == nullptr)
 	{
-		material = (ResourceMaterial*)App->resManager->Get(DEFAULTMAT);
+		material = (ResourceMaterial*)App->resManager->Get(DEFAULTMAT,TYPE::MATERIAL);
 		return;
 	}
 	else
 	{
-		material = (ResourceMaterial*)App->resManager->Get(materialfile);
+		material = (ResourceMaterial*)App->resManager->Get(materialfile, TYPE::MATERIAL);
 
 		// Material can't be found
 		if(material == nullptr)
-			material = (ResourceMaterial*)App->resManager->Get(DEFAULTMAT);
+			material = (ResourceMaterial*)App->resManager->Get(DEFAULTMAT, TYPE::MATERIAL);
 	}
 	return;
 }
 
-void ComponentRenderer::UpdateMesh(const char * data, unsigned uid)
+void ComponentRenderer::SetMesh(const char* meshfile)
 {
-	//mesh->SetMesh(data);
+	// Delete previous mesh
+	if (mesh != nullptr)
+		App->resManager->DeleteResource(mesh->GetUID());
+
+	if (meshfile != nullptr)
+		mesh = (ResourceMesh*)App->resManager->GetMeshByName(meshfile);
+
 	UpdateGameObject();
+	return;
 }
 
 void ComponentRenderer::UpdateGameObject()

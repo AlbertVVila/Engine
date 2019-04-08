@@ -351,6 +351,9 @@
     <ClCompile Include="ModuleNavigation.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="ResourceModel.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
     <ClCompile Include="HashString.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
@@ -787,6 +790,9 @@
     </ClInclude>
     <ClInclude Include="ModuleNavigation.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceModel.h">
+      <Filter>Resources</Filter>
     </ClInclude>
     <ClInclude Include="HashString.h">
       <Filter>Utils</Filter>

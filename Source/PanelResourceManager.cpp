@@ -6,6 +6,7 @@
 
 #include "Resource.h"
 #include "ResourceTexture.h"
+#include "ResourceModel.h"
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
 #include "ResourceSkybox.h"
@@ -82,7 +83,7 @@ void PanelResourceManager::Draw()
 	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "");																						ImGui::NextColumn(); ImGui::Separator();
 	ImGui::PopStyleColor(1);
 
-	for each (auto resource in resourcesList)
+	for each (auto& resource in resourcesList)
 	{
 		unsigned uid = resource->GetUID();
 		ImGui::PushID(uid);
@@ -106,6 +107,7 @@ void PanelResourceManager::Draw()
 		switch (resource->GetType())
 		{
 		case TYPE::TEXTURE:		ImGui::Text("Texture");		break;
+		case TYPE::MODEL:		ImGui::Text("Model");		break;
 		case TYPE::MESH:		ImGui::Text("Mesh");		break;
 		case TYPE::AUDIO:		ImGui::Text("Audio");		break;
 		case TYPE::SCENE:		ImGui::Text("Scene");		break;
@@ -138,6 +140,7 @@ void PanelResourceManager::Draw()
 		switch (previous->GetType())
 		{
 		case TYPE::TEXTURE:		DrawResourceTexture();	break;
+		case TYPE::MODEL:		DrawResourceModel();	break;
 		case TYPE::MESH:		DrawResourceMesh();		break;
 		/*case TYPE::AUDIO:								break;
 		case TYPE::SCENE:								break;
@@ -227,7 +230,7 @@ void PanelResourceManager::OpenResourceEditor()
 			}
 
 			// Type
-			const char* types[] = { "Texture", "Mesh", "Audio", "Scene", "Animation", "Material", "Skybox", "Unknown" };
+			const char* types[] = { "Texture", "Model", "Mesh", "Audio", "Scene", "Animation", "Material", "Skybox", "Unknown" };
 			int type = (int)auxResource->GetType();
 			if (ImGui::BeginCombo("Type", types[type]))
 			{
@@ -301,6 +304,40 @@ void PanelResourceManager::DrawResourceTexture()
 	ImGui::End();
 }
 
+void PanelResourceManager::DrawResourceModel()
+{
+	if (!ImGui::Begin("Model Manager"))
+	{
+		ImGui::End();
+		return;
+	}
+	ResourceModel& model = *(ResourceModel*)previous;
+	std::string exportedFile(model.GetExportedFile());
+	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), (exportedFile + ":").c_str());
+
+	for each(auto& mesh in model.meshList)
+	{
+		ImGui::Columns(2);
+		std::string exportedFile(mesh->GetExportedFile());
+		ImGui::Text((exportedFile + ":").c_str());
+		ImGui::Columns(2);
+		ImGui::Text("VAO: %u", mesh->GetVAO());
+		ImGui::Text("VBO: %u", mesh->GetVBO());
+		ImGui::Text("EBO: %u", mesh->GetEBO());
+		ImGui::Text("Number of Triangles: %u", mesh->meshVertices.size());
+		ImGui::Text("Number of Vertices: %u", mesh->meshIndices.size() / 2);
+
+		ImGui::NextColumn();
+		// TODO: [Resource Manager] Add preview of the mesh
+
+		ImGui::NextColumn();
+		ImGui::Separator();
+	}
+
+
+	ImGui::End();
+}
+
 void PanelResourceManager::DrawResourceMesh()
 {
 	if (!ImGui::Begin("Mesh Manager"))
@@ -312,6 +349,7 @@ void PanelResourceManager::DrawResourceMesh()
 	std::string exportedFile(mesh.GetExportedFile());
 	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), (exportedFile + ":").c_str());
 	ImGui::Columns(2);
+	ImGui::Text("Name: %s", mesh.name.c_str());
 	ImGui::Text("VAO: %u", mesh.GetVAO());
 	ImGui::Text("VBO: %u", mesh.GetVBO());
 	ImGui::Text("EBO: %u", mesh.GetEBO());
@@ -353,7 +391,7 @@ void PanelResourceManager::DrawResourceMaterial()
 
 	// Textures
 	unsigned i = 0;
-	for each(auto texture in material.textures)
+	for each(auto& texture in material.textures)
 	{
 		i++;
 		ImGui::Text("Texture %u:", i); ImGui::SameLine();

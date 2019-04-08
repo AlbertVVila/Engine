@@ -259,10 +259,10 @@ void ResourceTexture::SaveMetafile(const char* file) const
 	meta->AddUint("depth", depth);
 	meta->AddUint("mips", mips);
 	meta->AddUint("format", format);
-	meta->AddInt("DX compresion", (int)dxtFormat);
+	meta->AddUint("DX compresion", ilGetInteger(IL_DXTC_FORMAT));
 	meta->AddUint("mipmap", ilGetInteger(IL_ACTIVE_MIPMAP));
 	json->AddValue("Texture", *meta);
-	filepath += ".meta";
+	filepath += METAEXT;
 	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
 }
 

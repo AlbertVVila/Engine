@@ -242,6 +242,7 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ResourceMaterial.h" />
     <ClInclude Include="ResourceMesh.h" />
+    <ClInclude Include="ResourceModel.h" />
     <ClInclude Include="ResourceSkybox.h" />
     <ClInclude Include="ResourceTexture.h" />
     <ClInclude Include="Skybox.h" />
@@ -367,6 +368,7 @@
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="ResourceMaterial.cpp" />
     <ClCompile Include="ResourceMesh.cpp" />
+    <ClCompile Include="ResourceModel.cpp" />
     <ClCompile Include="ResourceSkybox.cpp" />
     <ClCompile Include="ResourceTexture.cpp" />
     <ClCompile Include="Timer.cpp" />

@@ -620,7 +620,9 @@ void GameObject::UpdateBBox()
 	ComponentRenderer* renderer = (ComponentRenderer*) GetComponent(ComponentType::Renderer);
 	if (renderer != nullptr)
 	{
-		bbox = renderer->mesh->GetBoundingBox();
+		if(renderer->mesh != nullptr)
+			bbox =  renderer->mesh->GetBoundingBox();
+
 		bbox.TransformAsAABB(GetGlobalTransform());
 	}
 }

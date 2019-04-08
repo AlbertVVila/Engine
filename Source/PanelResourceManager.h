@@ -23,6 +23,7 @@ private:
 	void UpdateResourcesList();
 	void OpenResourceEditor();
 	void DrawResourceTexture();
+	void DrawResourceModel();
 	void DrawResourceMesh();
 	void DrawResourceMaterial();
 	void DrawResourceSkybox();
