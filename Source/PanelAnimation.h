@@ -11,8 +11,8 @@ public:
 
 	void Draw() override;
 
-	void UpdateGameObjectAnimation(GameObject* go, Animation* anim);
-	void CreateAnimationFromClip(Animation* anim, int minFrame, int maxFrame);
+	void UpdateGameObjectAnimation(GameObject* go, ResourceAnimation* anim);
+	void CreateAnimationFromClip(ResourceAnimation* anim, int minFrame, int maxFrame);
 
 public:
 	int minFrame;

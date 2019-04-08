@@ -27,7 +27,7 @@
 #include "GUICreator.h"
 #include "ResourceMaterial.h"
 #include "ResourceMesh.h"
-#include "Animation.h"
+//#include "ResourceAnimation.h"
 #include "myQuadTree.h"
 #include "AABBTree.h"
 #include <stack>

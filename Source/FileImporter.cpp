@@ -13,7 +13,6 @@
 #include "FileImporter.h"
 #include "ResourceMaterial.h"
 #include "ResourceMesh.h"
-#include "Animation.h"
 
 #include "Resource.h"
 #include "ResourceMesh.h"

@@ -48,6 +48,7 @@ public:
 	unsigned UID = 0u;
 
 	int currentSample = 0u;
+	int currentFrame = 0u;
 
 	std::vector<Channel*> channels;
 };
