@@ -27,8 +27,11 @@ ComponentRenderer::ComponentRenderer(GameObject* gameobject) : Component(gameobj
 
 ComponentRenderer::ComponentRenderer(const ComponentRenderer& component) : Component(component)
 {
-	mesh = (ResourceMesh*)App->resManager->Get(component.mesh->GetUID());
-	material = (ResourceMaterial*)App->resManager->Get(component.material->GetUID());
+	if(component.mesh != nullptr)
+		mesh = (ResourceMesh*)App->resManager->Get(component.mesh->GetUID());
+
+	if (component.material != nullptr)
+		material = (ResourceMaterial*)App->resManager->Get(component.material->GetUID());
 }
 
 ComponentRenderer::~ComponentRenderer()
@@ -63,21 +66,61 @@ void ComponentRenderer::DrawProperties()
 			ImGui::PopID();
 			return;
 		}
-		ImGui::Text("Num vertices : %d", mesh->meshVertices.size());
-		ImGui::Text("Num triangles : %d", mesh->meshIndices.size() / 3);
+
+		// Mesh selector
+		ImGui::Text("Mesh");
+		ImGui::PushID("Mesh Combo");
+		if (ImGui::BeginCombo("", mesh != nullptr ? mesh->name.c_str() : ""))
+		{
+			if (guiMeshes.empty())
+			{
+				guiMeshes = App->resManager->GetMeshesNamesList(true);
+			}
+			for (int n = 0; n < guiMeshes.size(); n++)
+			{
+				bool is_selected = (mesh != nullptr ? mesh->name == guiMeshes[n] : false);
+				if (ImGui::Selectable(guiMeshes[n].c_str(), is_selected))
+				{
+					if(mesh == nullptr || mesh->name != guiMeshes[n])
+						SetMesh(guiMeshes[n].c_str());
+				}
+				if (is_selected)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+			ImGui::EndCombo();
+		}
+		else
+		{
+			guiMeshes.clear();
+		}
+		ImGui::PopID();
+
+		if (mesh == nullptr)
+		{
+			ImGui::Text("No mesh selected.");
+		}
+		else
+		{
+			ImGui::Text("Num vertices : %d", mesh->meshVertices.size());
+			ImGui::Text("Num triangles : %d", mesh->meshIndices.size() / 3);
+		}
 		ImGui::Spacing();
 
+		// Material selector
 		ImGui::Text("Material");
-		if (ImGui::BeginCombo("", material->name.c_str()))
+		ImGui::PushID("Material Combo");
+		if (ImGui::BeginCombo("", material->GetExportedFile()))
 		{
 			if (guiMaterials.empty())
 			{
-				guiMaterials = App->fsystem->GetFolderContent(IMPORTED_MATERIALS, false);
+				guiMaterials = App->resManager->GetResourceNamesList(TYPE::MATERIAL, true);
 			}
 			for (int n = 0; n < guiMaterials.size(); n++)
 			{
-				bool is_selected = (material->name == guiMaterials[n]);
-				if (ImGui::Selectable(guiMaterials[n].c_str(), is_selected) && material->name != guiMaterials[n])
+				bool is_selected = (material->GetExportedFile() == guiMaterials[n]);
+				if (ImGui::Selectable(guiMaterials[n].c_str(), is_selected) && material->GetExportedFile() != guiMaterials[n])
 				{
 					SetMaterial(guiMaterials[n].c_str());
 
@@ -99,6 +142,7 @@ void ComponentRenderer::DrawProperties()
 		{
 			guiMaterials.clear();
 		}
+		ImGui::PopID();
 
 		ImGui::SameLine();
 		if (App->editor->materialEditor->open)
@@ -113,6 +157,11 @@ void ComponentRenderer::DrawProperties()
 				}
 				App->editor->materialEditor->CleanUp();
 			}
+
+			if (ImGui::Button("Refresh Material"))
+			{
+				App->editor->materialEditor->UpdateTexturesList();
+			}
 		}
 		else
 		{
@@ -122,6 +171,9 @@ void ComponentRenderer::DrawProperties()
 				App->editor->materialEditor->material = material;
 				App->editor->materialEditor->previous = new ResourceMaterial(*material);
 				App->editor->materialEditor->SetCurrentTextures();
+
+				// Update texture list
+				App->editor->materialEditor->UpdateTexturesList();
 			}
 		}
 
@@ -155,8 +207,8 @@ bool ComponentRenderer::CleanUp()
 void ComponentRenderer::Save(JSON_value* value) const
 {
 	Component::Save(value);
-	value->AddUint("meshUID", mesh->GetUID());
-	value->AddString("materialFile", material->name.c_str());
+	value->AddUint("meshUID", (mesh != nullptr) ? mesh->GetUID() : 0u);
+	value->AddString("materialFile", (material != nullptr) ? material->GetExportedFile() : DEFAULTMAT);
 }
 
 void ComponentRenderer::Load(JSON_value* value)
@@ -164,49 +216,48 @@ void ComponentRenderer::Load(JSON_value* value)
 	Component::Load(value);
 
 	unsigned uid = value->GetUint("meshUID");
-	ResourceMesh* m = (ResourceMesh*)App->resManager->Get(uid); //Look for loaded meshes
-
-	if (m != nullptr)
-	{
-		mesh = m;
-	}
-	else //Case mesh not loaded
-	{
-		ResourceMesh* res = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH, uid);
-		res->SetExportedFile(std::to_string(uid).c_str());
-		m = (ResourceMesh*)App->resManager->Get(uid); //Look for loaded meshes
-		if (m != nullptr)
-			m = res;
-	}
+	mesh = (ResourceMesh*)App->resManager->Get(uid); //Look for loaded meshes
 	UpdateGameObject();
 
 	const char* materialFile = value->GetString("materialFile");
 	SetMaterial(materialFile);
 }
 
-void ComponentRenderer::SetMaterial(const char * materialfile)
+void ComponentRenderer::SetMaterial(const char* materialfile)
 {
-	if (materialfile == nullptr)
+	// Delete previous material
+	if (material != nullptr)
 	{
-		materialfile = App->resManager->Get(DEFAULTMAT)->GetExportedFile();
+		App->resManager->DeleteResource(material->GetUID());
 	}
 
-	if (material == nullptr || material->name != materialfile)
+	if (materialfile == nullptr)
 	{
-		if (material != nullptr)
-		{
-			App->resManager->DeleteResource(material->GetUID());
-		}
+		material = (ResourceMaterial*)App->resManager->Get(DEFAULTMAT,TYPE::MATERIAL);
+		return;
+	}
+	else
+	{
+		material = (ResourceMaterial*)App->resManager->Get(materialfile, TYPE::MATERIAL);
 
-		material = (ResourceMaterial*)App->resManager->Get(materialfile);
+		// Material can't be found
+		if(material == nullptr)
+			material = (ResourceMaterial*)App->resManager->Get(DEFAULTMAT, TYPE::MATERIAL);
 	}
 	return;
 }
 
-void ComponentRenderer::UpdateMesh(const char * data, unsigned uid)
+void ComponentRenderer::SetMesh(const char* meshfile)
 {
-	//mesh->SetMesh(data);
+	// Delete previous mesh
+	if (mesh != nullptr)
+		App->resManager->DeleteResource(mesh->GetUID());
+
+	if (meshfile != nullptr)
+		mesh = (ResourceMesh*)App->resManager->GetMeshByName(meshfile);
+
 	UpdateGameObject();
+	return;
 }
 
 void ComponentRenderer::UpdateGameObject()

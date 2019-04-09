@@ -8,10 +8,10 @@ struct JSON_value;
 enum class TYPE
 {
 	TEXTURE,
+	MODEL,
 	MESH,
 	AUDIO,
 	SCENE,
-	BONE,
 	ANIMATION,
 	MATERIAL,
 	SKYBOX,
@@ -53,9 +53,15 @@ public:
 	void				SetUsedByEngine(bool used)		{ engineUsed = used; };
 
 	virtual void SaveMetafile(const char* file) const;
-	virtual void Load(const JSON_value& config);
+	virtual void LoadConfigFromMeta() {};
 	virtual bool LoadInMemory() {return true;};
 	virtual void DeleteFromMemory() { loaded = 0; };
+
+	// File in asset specific
+	virtual void Rename(const char* newName);
+	virtual void Delete();
+
+	virtual void DrawImportConfiguration();
 
 protected:
 	unsigned UID = 0u;

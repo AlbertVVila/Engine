@@ -255,6 +255,12 @@
     <ClCompile Include="PanelBrowser.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
+    <ClCompile Include="ResourceModel.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="HashString.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -610,6 +616,15 @@
     </ClInclude>
     <ClInclude Include="PanelBrowser.h">
       <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceModel.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="HashString.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="strpool.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

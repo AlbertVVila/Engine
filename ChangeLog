@@ -1,2 +1,3 @@
 · Implemented UNDO / REDO
 · Added a Resource Manager and a tool to take a look to all resources loaded on the engine.
+· Added Assets window to browse project files and change their import configuration, name or delete them.

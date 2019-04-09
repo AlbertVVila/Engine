@@ -125,6 +125,12 @@ bool ModuleEditor::Init(JSON * config)
 	style->Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.25f, 1.00f, 0.00f, 0.43f);
 	style->Colors[ImGuiCol_ModalWindowDarkening] = ImVec4(1.00f, 0.98f, 0.95f, 0.73f);
 
+	// Init all panels
+	for (std::list<Panel*>::reverse_iterator it = panels.rbegin(); it != panels.rend(); ++it)
+	{
+		(*it)->Init();
+	}
+
 	return true;
 }
 
@@ -209,8 +215,7 @@ update_status ModuleEditor::Update(float dt)
 				{
 					std::string scenePath = SCENES;
 					scenePath = scenePath.substr(0, scenePath.size() - 1);
-					fileExplorer->OpenFileExplorer(MenuOperations::SAVE);
-					//fileExplorer->OpenFileExplorer(MenuOperations::SAVE, FILETYPE::SCENE, scenePath.c_str(), "Save Scene", App->scene->name.c_str());
+					fileExplorer->OpenFileExplorer(MenuOperations::SAVE, FILETYPE::SCENE, scenePath.c_str(), "Save Scene", App->scene->name.c_str());
           			materialEditor->Save();
 				}
 				else

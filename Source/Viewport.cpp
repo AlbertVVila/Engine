@@ -14,6 +14,7 @@
 
 #include "Viewport.h"
 #include "GL/glew.h"
+#include "SDL_mouse.h"
 
 #include "imgui.h"
 #include "imgui_internal.h"
@@ -148,17 +149,20 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 void Viewport::DrawGuizmoButtons()
 {
 
-	if (ImGui::Button("Translate"))
+	if ((ImGui::Button("Translate") || App->input->IsKeyPressed(SDL_SCANCODE_W)) && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_IDLE)
 	{
 		mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+		mCurrentGizmoMode = mCurrentModeAux;
 	}
 	ImGui::SameLine();
-	if (ImGui::Button("Rotate"))
+	if (ImGui::Button("Rotate") || App->input->IsKeyPressed(SDL_SCANCODE_E))
 	{
 		mCurrentGizmoOperation = ImGuizmo::ROTATE;
+		mCurrentGizmoMode = mCurrentModeAux;
+
 	}
 	ImGui::SameLine();
-	if (ImGui::Button("Scale"))
+	if (ImGui::Button("Scale") || App->input->IsKeyPressed(SDL_SCANCODE_R))
 	{
 		mCurrentGizmoOperation = ImGuizmo::SCALE;
 		mCurrentGizmoMode = ImGuizmo::LOCAL;
@@ -175,6 +179,8 @@ void Viewport::DrawGuizmoButtons()
 		if (ImGui::Button("Local"))
 		{
 			mCurrentGizmoMode = ImGuizmo::LOCAL;
+			mCurrentModeAux = ImGuizmo::LOCAL;
+
 		}
 	}
 	else
@@ -182,6 +188,8 @@ void Viewport::DrawGuizmoButtons()
 		if (ImGui::Button("World"))
 		{
 			mCurrentGizmoMode = ImGuizmo::WORLD;
+			mCurrentModeAux = ImGuizmo::WORLD;
+
 		}
 	}
 

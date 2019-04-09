@@ -3,8 +3,13 @@
 
 #include "Application.h"
 #include "ModuleResourceManager.h"
+#include "ModuleEditor.h"
+
+#include "PanelBrowser.h"
 
 #include "Resource.h"
+#include "ResourceMesh.h"
+#include "ResourceModel.h"
 
 #include "JSON.h"
 
@@ -85,7 +90,7 @@ bool ModuleFileSystem::CleanUp()
 	monitorize = false;
 	while (threadIsWorking)
 	{
-		SDL_Delay(100);
+		SDL_Delay(1500);
 	}
 	return true;
 }
@@ -137,7 +142,7 @@ bool ModuleFileSystem::Remove(const char* file) const
 {
 	assert(file != nullptr);
 	if (file == nullptr) return false;
-	if (PHYSFS_unmount(file) != 0)
+	if (PHYSFS_unmount(file) == 0)
 	{
 		LOG("Error: %s", PHYSFS_getLastError());
 		return false;
@@ -150,7 +155,7 @@ bool ModuleFileSystem::Delete(const char* file) const
 	assert(file != nullptr);
 	if (file == nullptr) return false;
 
-	if (PHYSFS_delete(file) != 0)
+	if (PHYSFS_delete(file) == 0)
 	{
 		LOG("Error: %s", PHYSFS_getLastError());
 		return false;
@@ -308,6 +313,51 @@ bool ModuleFileSystem::Copy(const char* source, const char* destination, const c
 	return true;
 }
 
+bool ModuleFileSystem::Move(const char * source, const char* file, const char* newFile) const
+{
+	char * data = nullptr;
+	std::string filepath(source);
+	filepath += file;
+	unsigned size = Load(filepath.c_str(), &data);
+	std::string filedest(source);
+	filedest += newFile;
+	Save(filedest.c_str(), data, size);
+	RELEASE_ARRAY(data);
+
+	return true;
+}
+
+void ModuleFileSystem::Rename(const char* route, const char* file, const char* newName) const
+{
+	std::string filepath(route);
+	filepath += file;
+	assert(filepath.c_str() != nullptr);
+	if (PHYSFS_unmount(filepath.c_str()) != 0)
+	{
+		LOG("Error: %s", PHYSFS_getLastError());
+		return;
+	}
+
+	std::string extension = GetExtension(file);
+	Move(route, file, (newName + extension).c_str());
+	Delete(filepath.c_str());
+}
+
+bool ModuleFileSystem::ChangeExtension(const char* source, const char* file, const char* newExtension) const
+{
+	char * data = nullptr;
+	std::string filepath(source);
+	filepath += file;
+	unsigned size = Load(filepath.c_str(), &data);
+	std::string newFile(source);
+	newFile += GetFilename(file) + newExtension;
+	Save((newFile).c_str(), data, size);
+	Delete(filepath.c_str());
+	RELEASE_ARRAY(data);
+
+	return true;
+}
+
 void ModuleFileSystem::Monitorize(const char* folder)
 {
 	while (monitorize)
@@ -321,12 +371,10 @@ void ModuleFileSystem::Monitorize(const char* folder)
 
 void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 {
-	// Get lists with all imported resources
+	// Get lists with all imported resources and materials
 	std::set<std::string> importedTextures;
-	std::set<std::string> importedModels;
 	std::set<std::string> importedMaterials;
 	ListFiles(TEXTURES, importedTextures);
-	ListFiles(SCENES, importedModels);
 	ListFiles(IMPORTED_MATERIALS, importedMaterials);
 
 	// Look for files in folder passed as argument
@@ -353,7 +401,8 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 			else
 			{
 				stat((currentFolder + file).c_str(), &statFile);
-				stat((currentFolder + file + ".meta").c_str(), &statMeta);
+				stat((currentFolder + file + METAEXT).c_str(), &statMeta);
+
 				FILETYPE type = GetFileType(GetExtension(file));
 				if (type == FILETYPE::TEXTURE) // PNG, TIF, LO QUE SEA	
 				{
@@ -366,18 +415,28 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 					else
 					{
 						// File already imported, add it to the resources list
-						App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::TEXTURE);
+						ResourceTexture* res = (ResourceTexture*)App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::TEXTURE);
+						res->LoadConfigFromMeta();
 					}
 				}
 				else if (type == FILETYPE::MODEL) //FBX
-				{
-					//TODO: Get UID from metafile 
-					/*unsigned uid = GetMetaUID((current_folder + file + ".meta").c_str());
-					std::set<std::string>::iterator it = importedModels.find(std::to_string(uid));
-					if (it == importedModels.end() || statFile.st_mtime > statMeta.st_mtime)
+				{	
+					if (statFile.st_mtime > statMeta.st_mtime)
 					{
-						filesToImport.push_back(std::pair<std::string, std::string>(file, current_folder));
-					}*/
+						filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
+
+					}
+					else
+					{
+						// File already imported, add model to the resources list
+						ResourceModel* res = (ResourceModel*)App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::MODEL);
+						res->LoadConfigFromMeta();
+
+						// Check if the meshes inside ResourceModel are imported
+						if(res->CheckImportedMeshes())
+							filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
+			
+					}
 				}
 				else if (type == FILETYPE::MATERIAL)
 				{
@@ -422,10 +481,10 @@ void ModuleFileSystem::LookForNewResourceFiles(const char* folder)
 			}
 			else
 			{
-				if (GetExtension(file) == ".meta")
+				if (GetExtension(file) == METAEXT)
 					continue;
 				stat((current_folder + file).c_str(), &statFile);
-				stat((current_folder + file + ".meta").c_str(), &statMeta);
+				stat((current_folder + file + METAEXT).c_str(), &statMeta);
 				std::vector<Resource*> resources = App->resManager->GetResourcesList();
 				bool found = false;
 				for (std::vector<Resource*>::const_iterator it = resources.begin(); it != resources.end(); ++it)
@@ -436,11 +495,11 @@ void ModuleFileSystem::LookForNewResourceFiles(const char* folder)
 						break;
 					}
 				}
-				if (!found || statFile.st_mtime > statMeta.st_mtime)
+				if (statFile.st_mtime > statMeta.st_mtime)
 				{
-					// TODO: Enable FBX also
+					// TODO: Enable Scenes also
 					FILETYPE type = GetFileType(GetExtension(file));
-					if(type != FILETYPE::MODEL && type != FILETYPE::SCENE)
+					if(type != FILETYPE::SCENE && type != FILETYPE::NONE)
 						filesToImport.push_back(std::pair<std::string, std::string>(file, current_folder));
 				}
 			}
@@ -450,11 +509,14 @@ void ModuleFileSystem::LookForNewResourceFiles(const char* folder)
 
 void ModuleFileSystem::ImportFiles()
 {
-	for (auto & file : filesToImport)
+	for (auto& file : filesToImport)
 	{
 		importer.ImportAsset(file.first.c_str(), file.second.c_str());
 	}
 	filesToImport.clear();
+
+	// Refresh Assets panel browser
+	App->editor->assets->folderContentDirty = true;
 }
 
 int ModuleFileSystem::GetModTime(const char* file) const
@@ -484,18 +546,46 @@ std::string ModuleFileSystem::RemoveExtension(std::string filename) const
 
 std::string ModuleFileSystem::GetFilename(std::string filename) const
 {
-	std::size_t found = filename.find_last_of(".");
+	filename = RemoveExtension(filename);
+	filename = GetFile(filename);
+	return filename;
+}
+
+std::string ModuleFileSystem::GetFile(std::string filename) const
+{
+	std::size_t found = filename.find_last_of(PHYSFS_getDirSeparator()); // Gets dir separator symbol for current OS
 	if (std::string::npos != found)
 	{
-		filename.erase(found, filename.size());
+		filename.erase(0, found + 1);
+	}
+	else
+	{
+		found = filename.find_last_of("/");	// Try with "/" 
+		if (std::string::npos != found)
+		{
+			filename.erase(0, found + 1);
+		}
 	}
 
-	found = filename.find_last_of(PHYSFS_getDirSeparator());
+	return filename;
+}
+
+std::string ModuleFileSystem::GetFilePath(std::string file) const
+{
+	std::size_t found = file.find_last_of(PHYSFS_getDirSeparator()); // Gets dir separator symbol for current OS
 	if (std::string::npos != found)
 	{
-		filename.erase(0, found+1);
+		file.erase(found + 1, file.size());
 	}
-	return filename;
+	else
+	{
+		found = file.find_last_of("/");	// Try with "/" 
+		if (std::string::npos != found)
+		{
+			file.erase(found + 1, file.size());
+		}
+	}
+	return file;
 }
 
 FILETYPE ModuleFileSystem::GetFileType(std::string extension) const

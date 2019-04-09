@@ -601,7 +601,9 @@ void GameObject::UpdateBBox()
 	ComponentRenderer* renderer = (ComponentRenderer*) GetComponent(ComponentType::Renderer);
 	if (renderer != nullptr)
 	{
-		bbox = renderer->mesh->GetBoundingBox();
+		if(renderer->mesh != nullptr)
+			bbox =  renderer->mesh->GetBoundingBox();
+
 		bbox.TransformAsAABB(GetGlobalTransform());
 	}
 }
@@ -614,7 +616,7 @@ void GameObject::DrawBBox() const
 	}
 
 	ComponentRenderer *renderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
-	if (renderer == nullptr) return;
+	if (renderer == nullptr || renderer->mesh == nullptr) return;
 
 	if(renderer->mesh->GetReferences() > 0u)
 		renderer->mesh->DrawBbox(App->program->defaultShader->id, bbox);
