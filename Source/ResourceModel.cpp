@@ -5,6 +5,7 @@
 #include "ModuleResourceManager.h"
 
 #include "ResourceMesh.h"
+#include "ResourceAnimation.h"
 #include "JSON.h"
 
 #include "imgui.h"
@@ -30,6 +31,10 @@ bool ResourceModel::LoadInMemory()
 	for each(auto mesh in meshList)
 	{
 		mesh->LoadInMemory();
+	}
+	for each(auto anim in animationList)
+	{
+		anim->LoadInMemory();
 	}
 	return true;
 }
@@ -131,6 +136,27 @@ void ResourceModel::AddMesh(ResourceMesh* mesh)
 
 	++numMeshes;
 	meshList.push_back(mesh);
+}
+
+void ResourceModel::AddAnimation(ResourceAnimation* anim)
+{
+	bool replace = false;
+	for (std::vector<ResourceAnimation*>::iterator itAnim = animationList.begin(); itAnim != animationList.end();)
+	{
+		if (anim->GetUID() == (*itAnim)->GetUID())
+		{
+			--numMeshes;
+			App->resManager->DeleteResourceFromList((*itAnim)->GetUID());
+			RELEASE(*itAnim);
+			animationList.erase(itAnim++);
+			replace = true;
+			break;
+		}
+		itAnim++;
+	}
+
+	++numAnimations;
+	animationList.push_back(anim);
 }
 
 void ResourceModel::Rename(const char* newName)

@@ -37,12 +37,12 @@ void ComponentAnimation::DrawProperties()
 	if (ImGui::CollapsingHeader("Animation", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		//Name of the animation
-		if (strcmp(animName, anim->animationName.c_str()) != 0)
+		if (strcmp(animName, anim->name.c_str()) != 0)
 		{
-			strcpy(animName, anim->animationName.c_str());
+			strcpy(animName, anim->name.c_str());
 			ImGui::Text("Name");
 			ImGui::InputText("##label", animName, 64);
-			anim->animationName = animName;
+			anim->name = animName;
 		}
 		else
 		{

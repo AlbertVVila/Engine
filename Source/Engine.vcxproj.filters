@@ -186,7 +186,6 @@
     <ClCompile Include="AABBTree.cpp">
       <Filter>Tree</Filter>
     </ClCompile>
-    <ClCompile Include="Viewport.cpp" />
     <ClCompile Include="GUICreator.cpp" />
     <ClCompile Include="FileExplorer.cpp" />
     <ClCompile Include="PanelTime.cpp">
@@ -275,6 +274,12 @@
     </ClCompile>
     <ClCompile Include="HashString.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceModel.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Viewport.cpp">
+      <Filter>Panels</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -555,7 +560,6 @@
     <ClInclude Include="AABBTree.h">
       <Filter>Tree</Filter>
     </ClInclude>
-    <ClInclude Include="Viewport.h" />
     <ClInclude Include="GUICreator.h" />
     <ClInclude Include="FileExplorer.h" />
     <ClInclude Include="PanelTime.h">
@@ -654,6 +658,13 @@
     </ClInclude>
     <ClInclude Include="HashString.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Skybox.h" />
+    <ClInclude Include="ResourceModel.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Viewport.h">
+      <Filter>Panels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

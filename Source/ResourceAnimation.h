@@ -23,10 +23,13 @@ class ResourceAnimation : public Resource
 public:
 	ResourceAnimation(unsigned uid);
 	ResourceAnimation(const ResourceAnimation& resource);
-	~ResourceAnimation();
+	virtual ~ResourceAnimation();
+
 public:
-	void Load(const char* animationData, unsigned uid);
-	void Unload();
+	bool LoadInMemory() override;		// Will load in memory all ResourceMeshes stored
+	void DeleteFromMemory() override;	// Will delete all ResourceMeshes stored in memory
+
+	void SetAnimation(const char* animData);
 
 	unsigned GetNumPositions(unsigned indexChannel) const;
 	const math::float3 GetPosition(unsigned indexChannel, unsigned indexPosition) const;
@@ -38,7 +41,7 @@ public:
 
 public:
 
-	std::string animationName;
+	std::string name = "";
 	double duration = 0; //frames
 	double framesPerSecond = 0;
 	int numberFrames = 0;

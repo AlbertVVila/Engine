@@ -584,7 +584,7 @@ void GameObject::DrawBBox() const
 	if (renderer == nullptr || renderer->mesh == nullptr) return;
 
 	if(renderer->mesh->GetReferences() > 0u)
-		renderer->mesh->DrawBbox(App->program->defaultShader->id, bbox);
+		renderer->mesh->DrawBbox(App->program->defaultShader->id[0], bbox);
 }
 
 bool GameObject::CleanUp()

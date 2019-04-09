@@ -2,6 +2,7 @@
 
 #include "Application.h"
 
+#include "ModuleFileSystem.h"
 
 #include "ResourceAnimation.h"
 #include "Globals.h"
@@ -49,11 +50,28 @@ ResourceAnimation::~ResourceAnimation()
 	DeleteFromMemory();
 }
 
-void ResourceAnimation::Load(const char* animationData, unsigned uid)
+bool ResourceAnimation::LoadInMemory()
 {
+	char* data = nullptr;
 
-	UID = uid;
+	unsigned ok = App->fsystem->Load((ANIMATIONS + std::to_string(UID) + ANIMATIONEXTENSION).c_str(), &data);
 
+	// Load mesh file
+	if (ok != 0)
+	{
+		SetAnimation(data);
+		++loaded;
+	}
+	return true;
+}
+
+void ResourceAnimation::DeleteFromMemory()
+{
+	channels.clear();
+}
+
+void ResourceAnimation::SetAnimation(const char* animationData)
+{
 	memcpy(&duration, animationData, sizeof(double));
 	animationData += sizeof(double);
 

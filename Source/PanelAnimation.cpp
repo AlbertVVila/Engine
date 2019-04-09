@@ -44,7 +44,7 @@ void PanelAnimation::Draw()
 
 		// Current Anim
 		ImGui::SetCursorPosX(ImGui::CalcTextSize("  GAMEOBJECT  ").x);
-		ImGui::Text(anim->animationName.c_str());
+		ImGui::Text(anim->name.c_str());
 
 		// Animation
 		ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 - ImGui::CalcTextSize("FRAMES").x / 2);
