@@ -261,7 +261,9 @@
     <ClCompile Include="HashString.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceScene.cpp" />
+    <ClCompile Include="ResourceScene.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -627,7 +629,9 @@
     <ClInclude Include="strpool.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceScene.h" />
+    <ClInclude Include="ResourceScene.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GeoLib">

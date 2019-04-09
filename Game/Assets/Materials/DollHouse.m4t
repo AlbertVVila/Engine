@@ -1,1 +1,12 @@
-{"material":{"diffuseColor":[1.0,1.0,1.0,1.0],"specularColor":[1.0,1.0,1.0],"metallic":0.0,"roughness":0.0,"diffuse":"DollhouseDiffuse","specular":"DollhouseSpecular","occlusion":"DollhouseOcclusion","shader":"PBR"}}
+{
+  "material": {
+    "diffuseColor": [ 1.0, 1.0, 1.0, 1.0 ],
+    "specularColor": [ 1.0, 1.0, 1.0 ],
+    "metallic": 0.0,
+    "roughness": 0.0,
+    "diffuse": "DollhouseDiffuse.dds",
+    "specular": "DollhouseSpecular.dds",
+    "occlusion": "DollhouseOcclusion.dds",
+    "shader": "PBR"
+  }
+}
