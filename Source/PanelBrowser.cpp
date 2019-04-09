@@ -18,17 +18,17 @@
 #include "GameObject.h"
 
 // Icons
-#define FOLDER_ICON "folderIconBlue"
-#define FILE_ICON "fileIconBlue"
-#define FBX_ICON "fbxIconBlue"
-#define PNG_ICON "pngIconBlue"
-#define JPG_ICON "jpgIconBlue"
-#define TGA_ICON "tgaIconBlue"
-#define TIF_ICON "tifIconBlue"
-#define DDS_ICON "ddsIconBlue"
-#define M4T_ICON "m4tIconBlue"
-#define JSON_ICON "jsonIconBlue"
-#define SC3NE_ICON "sc3neIconBlue"
+#define FOLDER_ICON "folderIconBlue.dds"
+#define FILE_ICON "fileIconBlue.dds"
+#define FBX_ICON "fbxIconBlue.dds"
+#define PNG_ICON "pngIconBlue.dds"
+#define JPG_ICON "jpgIconBlue.dds"
+#define TGA_ICON "tgaIconBlue.dds"
+#define TIF_ICON "tifIconBlue.dds"
+#define DDS_ICON "ddsIconBlue.dds"
+#define M4T_ICON "m4tIconBlue.dds"
+#define JSON_ICON "jsonIconBlue.dds"
+#define SC3NE_ICON "sc3neIconBlue.dds"
 
 // ImGui elements sizes:
 #define WINDOW_LOW_MARGIN 60
@@ -248,8 +248,7 @@ void PanelBrowser::DrawFileIcon(const char* file, int itemNumber)
 
 	if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
-		//fileSelected = path + file;
-		fileSelected = App->resManager->GetWithoutLoad(App->fsystem->GetFilename(file).c_str());
+		fileSelected = App->resManager->GetWithoutLoad(file);
 		ImGui::OpenPopup("File Context Menu");
 	}
 
@@ -261,8 +260,7 @@ void PanelBrowser::DrawFileIcon(const char* file, int itemNumber)
 
 	if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
-		//fileSelected = path + file;
-		fileSelected = App->resManager->GetWithoutLoad(App->fsystem->GetFilename(file).c_str());
+		fileSelected = App->resManager->GetWithoutLoad(file);
 		ImGui::OpenPopup("File Context Menu");
 	}
 

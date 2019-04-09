@@ -244,7 +244,9 @@ void MaterialEditor::NewMaterial()
 		if (ImGui::Button("Save", ImVec2(120, 0)) && !newMatExists)
 		{
 			ResourceMaterial* newMaterialCreated = (ResourceMaterial*)App->resManager->CreateNewResource(TYPE::MATERIAL);
-			newMaterialCreated->SetExportedFile(newName);
+			std::string newExportedFile(newName);
+			newExportedFile += MATERIALEXT;
+			newMaterialCreated->SetExportedFile(newExportedFile.c_str());
 			newMaterialCreated->Save();
 			newMaterial = false;
 

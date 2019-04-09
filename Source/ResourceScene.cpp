@@ -12,7 +12,6 @@
 
 ResourceScene::ResourceScene(unsigned uid) : Resource(uid, TYPE::SCENE)
 {
-	exportedFileName = std::to_string(UID).c_str();
 }
 
 ResourceScene::ResourceScene(const ResourceScene& resource) : Resource(resource)
@@ -42,9 +41,11 @@ void ResourceScene::Rename(const char* newName)
 	Resource::Rename(newName);
 
 	// Rename file in Library
-	App->fsystem->Rename(IMPORTED_SCENES, (exportedFileName + SCENEEXTENSION).c_str(), newName);
+	std::string newExportedFile(newName);
+	newExportedFile += SCENEEXTENSION;
+	App->fsystem->Rename(IMPORTED_SCENES, exportedFile.c_str(), newExportedFile.c_str());
 
-	exportedFileName = newName;
+	exportedFile = newExportedFile;
 }
 
 void ResourceScene::Delete()
@@ -53,8 +54,7 @@ void ResourceScene::Delete()
 
 	// Delete file in Library
 	std::string fileInLibrary(IMPORTED_SCENES);
-	fileInLibrary += exportedFileName;
-	fileInLibrary += SCENEEXTENSION;
+	fileInLibrary += exportedFile;
 	App->fsystem->Delete(fileInLibrary.c_str());
 	DeleteFromMemory();
 }
@@ -66,10 +66,6 @@ void ResourceScene::Save(const GameObject& rootGO)
 	rootGO.Save(array);
 	json->AddValue("GameObjects", *array);
 
-	std::string file(SCENES);
-	file += exportedFileName;
-	file += SCENEEXTENSION;
-
 	App->fsystem->Save(file.c_str(), json->ToString().c_str(), json->Size());
 	RELEASE(json);
 }
@@ -77,11 +73,10 @@ void ResourceScene::Save(const GameObject& rootGO)
 bool ResourceScene::Load()
 {
 	char* data = nullptr;
-	std::string file(IMPORTED_SCENES);
-	file += exportedFileName;
-	file += SCENEEXTENSION;
+	std::string sceneFile(IMPORTED_SCENES);
+	sceneFile += exportedFile;
 
-	if (App->fsystem->Load(file.c_str(), &data) == 0)
+	if (App->fsystem->Load(sceneFile.c_str(), &data) == 0)
 	{
 		RELEASE_ARRAY(data);
 		return false;

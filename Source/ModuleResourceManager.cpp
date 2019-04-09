@@ -45,7 +45,7 @@ void ModuleResourceManager::LoadEngineResources()
 	for each (std::string file in files)
 	{
 		Resource* res = CreateNewResource(TYPE::TEXTURE);
-		res->SetExportedFile(App->fsystem->GetFilename(file.c_str()).c_str());
+		res->SetExportedFile((file + TEXTUREEXT).c_str());
 		std::string filePath(IMPORTED_RESOURCES);
 		res->SetFile((filePath + file).c_str());
 		res->SetUsedByEngine(true);
@@ -128,11 +128,11 @@ unsigned ModuleResourceManager::FindByFileInAssetsExcludingType(const char* file
 	return 0;
 }
 
-unsigned ModuleResourceManager::FindByExportedFile(const char* exportedFileName) const
+unsigned ModuleResourceManager::FindByExportedFile(const char* exportedFile) const
 {
 	for (std::map<unsigned, Resource*>::const_iterator it = resources.begin(); it != resources.end(); ++it)
 	{
-		if (strcmp(it->second->GetExportedFile(), exportedFileName) == 0)
+		if (strcmp(it->second->GetExportedFile(), exportedFile) == 0)
 		{
 			return it->first;
 		}
@@ -140,11 +140,11 @@ unsigned ModuleResourceManager::FindByExportedFile(const char* exportedFileName)
 	return 0;
 }
 
-unsigned ModuleResourceManager::FindByExportedFile(const char* exportedFileName, TYPE type) const
+unsigned ModuleResourceManager::FindByExportedFile(const char* exportedFile, TYPE type) const
 {
 	for (std::map<unsigned, Resource*>::const_iterator it = resources.begin(); it != resources.end(); ++it)
 	{
-		if (strcmp(it->second->GetExportedFile(), exportedFileName) == 0 && it->second->GetType() == type)
+		if (strcmp(it->second->GetExportedFile(), exportedFile) == 0 && it->second->GetType() == type)
 		{
 			return it->first;
 		}
@@ -170,26 +170,29 @@ bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* 
 	Resource* resource = CreateNewResource(type);
 
 	// Save file to import on Resource file variable
-	resource->SetFile((assetPath).c_str());
+	resource->SetFile(assetPath.c_str());
+
+	// Get filename to save exported file
+	std::string exportedFile(App->fsystem->RemoveExtension(newFileInAssets));
 
 	// If a .meta file is found import it with the configuration saved
 	resource->LoadConfigFromMeta();
 
 	switch (type) 
 	{
-	case TYPE::TEXTURE:		success = App->textures->ImportImage(newFileInAssets, filePath, (ResourceTexture*)resource);		break;
-	case TYPE::MODEL:		success = App->fsystem->importer.ImportFBX(newFileInAssets, filePath, (ResourceModel*)resource);	break;
-	/*case TYPE::MESH:		success = App->fsystem->importer.ImportFBX(newFileInAssets, filePath, (ResourceMesh*)resource);		break;
-	case TYPE::AUDIO:		success = App->audio->Import(newFileInAssets, written_file);										break;*/
-	case TYPE::SCENE:		success = App->fsystem->Copy(filePath, IMPORTED_SCENES, newFileInAssets);							break;
-	case TYPE::MATERIAL:	success = App->fsystem->Copy(filePath, IMPORTED_MATERIALS, newFileInAssets);						break;
+	case TYPE::TEXTURE:		success = App->textures->ImportImage(newFileInAssets, filePath,	(ResourceTexture*)resource);	exportedFile += TEXTUREEXT;		break;
+	case TYPE::MODEL:		success = App->fsystem->importer.ImportFBX(newFileInAssets, filePath, (ResourceModel*)resource);								break;
+	/*case TYPE::MESH:		success = App->fsystem->importer.ImportFBX(newFileInAssets, filePath, (ResourceMesh*)resource);	exportedFile += MESHEXTENSION;	break;
+	case TYPE::AUDIO:		success = App->audio->Import(newFileInAssets, written_file);									exportedFile += AUDIOEXTENSION;	break;*/
+	case TYPE::SCENE:		success = App->fsystem->Copy(filePath, IMPORTED_SCENES, newFileInAssets);						exportedFile += SCENEEXTENSION;	break;
+	case TYPE::MATERIAL:	success = App->fsystem->Copy(filePath, IMPORTED_MATERIALS, newFileInAssets);					exportedFile += MATERIALEXT;	break;
 	}
 
 	// If export was successful, create a new resource
 	if (success) 
 	{ 
-		resource->SaveMetafile(assetPath.c_str());	
-		resource->SetExportedFile(App->fsystem->RemoveExtension(newFileInAssets).c_str());
+		resource->SaveMetafile(assetPath.c_str());
+		resource->SetExportedFile(exportedFile.c_str());
 		LOG("%s imported.", resource->GetFile());
 	}
 	else
@@ -204,7 +207,6 @@ bool ModuleResourceManager::ReImportFile(Resource* resource, const char* filePat
 	bool success = false;
 
 	std::string file = resource->GetExportedFile();
-	file += App->fsystem->GetExtension(resource->GetFile());
 
 	switch (type)
 	{
@@ -292,12 +294,12 @@ Resource* ModuleResourceManager::Get(unsigned uid) const
 	return nullptr;
 }
 
-Resource* ModuleResourceManager::Get(const char* exportedFileName) const
+Resource* ModuleResourceManager::Get(const char* exportedFile) const
 {
-	assert(exportedFileName != NULL);
+	assert(exportedFile != NULL);
 
 	// Look for it on the resource list
-	unsigned uid = FindByExportedFile(exportedFileName);
+	unsigned uid = FindByExportedFile(exportedFile);
 	if (uid == 0)
 		return nullptr;
 
@@ -305,12 +307,12 @@ Resource* ModuleResourceManager::Get(const char* exportedFileName) const
 	return Get(uid);
 }
 
-Resource* ModuleResourceManager::Get(const char* exportedFileName, TYPE type) const
+Resource* ModuleResourceManager::Get(const char* exportedFile, TYPE type) const
 {
-	assert(exportedFileName != NULL);
+	assert(exportedFile != NULL);
 
 	// Look for it on the resource list
-	unsigned uid = FindByExportedFile(exportedFileName, type);
+	unsigned uid = FindByExportedFile(exportedFile, type);
 	if (uid == 0)
 		return nullptr;
 
@@ -343,12 +345,12 @@ Resource* ModuleResourceManager::GetWithoutLoad(unsigned uid) const
 	return it->second;
 }
 
-Resource* ModuleResourceManager::GetWithoutLoad(const char* exportedFileName) const
+Resource* ModuleResourceManager::GetWithoutLoad(const char* exportedFile) const
 {
-	assert(exportedFileName != NULL);
+	assert(exportedFile != NULL);
 
 	// Look for it on the resource list
-	unsigned uid = FindByExportedFile(exportedFileName);
+	unsigned uid = FindByExportedFile(exportedFile);
 	if (uid == 0)
 		return nullptr;
 
@@ -356,12 +358,12 @@ Resource* ModuleResourceManager::GetWithoutLoad(const char* exportedFileName) co
 	return GetWithoutLoad(uid);
 }
 
-Resource* ModuleResourceManager::GetWithoutLoad(const char* exportedFileName, TYPE type) const
+Resource* ModuleResourceManager::GetWithoutLoad(const char* exportedFile, TYPE type) const
 {
-	assert(exportedFileName != NULL);
+	assert(exportedFile != NULL);
 
 	// Look for it on the resource list
-	unsigned uid = FindByExportedFile(exportedFileName,type);
+	unsigned uid = FindByExportedFile(exportedFile,type);
 	if (uid == 0)
 		return nullptr;
 
@@ -453,12 +455,12 @@ std::vector<std::string> ModuleResourceManager::GetMeshesNamesList(bool ordered)
 	return resourcesList;
 }
 
-bool ModuleResourceManager::Exists(const char* exportedFileName)
+bool ModuleResourceManager::Exists(const char* exportedFile)
 {
 	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
 	{
 		std::string firstName(it->second->GetExportedFile());
-		std::string secondName(exportedFileName);
+		std::string secondName(exportedFile);
 		if (firstName == secondName)
 			return true;
 		else
@@ -472,14 +474,14 @@ bool ModuleResourceManager::Exists(const char* exportedFileName)
 	return false;
 }
 
-bool ModuleResourceManager::Exists(const char* exportedFileName, TYPE type)
+bool ModuleResourceManager::Exists(const char* exportedFile, TYPE type)
 {
 	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
 	{
 		if (it->second->GetType() == type)
 		{
 			std::string firstName(it->second->GetExportedFile());
-			std::string secondName(exportedFileName);
+			std::string secondName(exportedFile);
 			if (firstName == secondName)
 				return true;
 			else
@@ -505,8 +507,22 @@ Resource* ModuleResourceManager::AddResource(const char* file, const char* direc
 	{
 		// Create new resource 
 		Resource* res = CreateNewResource(type);
-		res->SetExportedFile(App->fsystem->GetFilename(file).c_str());
-		res->SetFile((path).c_str());
+
+		// Set Exported File
+		std::string exportedFile(App->fsystem->GetFilename(file));
+		switch (type)
+		{
+		case TYPE::TEXTURE:		exportedFile += TEXTUREEXT;		break;
+		case TYPE::MODEL:										break;
+		/*case TYPE::MESH:		exportedFile += MESHEXTENSION;	break;
+		case TYPE::AUDIO:		exportedFile += AUDIOEXTENSION;	break;*/
+		case TYPE::SCENE:		exportedFile += SCENEEXTENSION;	break;
+		case TYPE::MATERIAL:	exportedFile += MATERIALEXT;	break;
+		default:
+			break;
+		}
+		res->SetExportedFile(exportedFile.c_str());
+		res->SetFile(path.c_str());
 		return res;
 	}
 	else

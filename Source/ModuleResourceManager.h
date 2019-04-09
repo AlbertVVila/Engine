@@ -33,8 +33,8 @@ public:
 	// ResourceManager functions
 	unsigned FindByFileInAssets(const char* fileInAssets) const;						// Returns UID of resource by file variable 
 	unsigned FindByFileInAssetsExcludingType(const char* fileInAssets, TYPE type) const;// Returns UID of resource by file variable, excludes files of the type given
-	unsigned FindByExportedFile(const char* exportedFileName, TYPE type) const;			// Returns UID of resource by exportedFileName and type
-	unsigned FindByExportedFile(const char* exportedFileName) const;					// Returns UID of resource by exportedFileName 
+	unsigned FindByExportedFile(const char* exportedFile, TYPE type) const;				// Returns UID of resource by exportedFile and type
+	unsigned FindByExportedFile(const char* exportedFile) const;						// Returns UID of resource by exportedFile
 	bool ImportFile(const char* newFileInAssets, const char* filePath, TYPE type);
 	bool ReImportFile(Resource* resource, const char* filePath, TYPE type);				// Imports again an already loaded resource
 	unsigned GenerateNewUID();
@@ -54,8 +54,8 @@ public:
 	std::vector<std::string> GetResourceNamesList(TYPE resourceType, bool ordered); // Returns a vector with the exportedFileName of every Resource of the type given.	
 	std::vector<std::string> GetMeshesNamesList(bool ordered);						// To be deprecated: Returns a vector with the name of every mesh orederer or not.		
 
-	bool Exists(const char* exportedFileName);										// Checks if a resource with the given exported filename already exist
-	bool Exists(const char* exportedFileName, TYPE type);							// Checks if a resource of the given type and exported filename already exist
+	bool Exists(const char* exportedFile);											// Checks if a resource with the given exported filename already exist
+	bool Exists(const char* exportedFile, TYPE type);								// Checks if a resource of the given type and exported filename already exist
 
 	void LoadEngineResources();														// Loads resources needed by the engine (Skybox, white, no camera textures...)
 	Resource* AddResource(const char* file, const char* directory, TYPE type);
@@ -63,7 +63,7 @@ public:
 	void DeleteResourceFromList(unsigned uid);
 
 private:
-	// Resources map (Textures, Mehses, Materials, Skyboxes...)
+	// Resources map (Textures, Models, Mehses, Materials, Skyboxes, Scenes...)
 	std::map<unsigned, Resource*> resources;	// map<UID, pointer to resource>
 
 	// Shaders map

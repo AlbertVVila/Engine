@@ -38,8 +38,8 @@
 #define METAEXT ".meta"
 #define DLL ".dll"
 
-#define CHECKERS "checkersTexture"
-#define NOCAMERA "nocamera"
+#define CHECKERS "checkersTexture.dds"
+#define NOCAMERA "nocamera.dds"
 
 enum class FILETYPE
 {

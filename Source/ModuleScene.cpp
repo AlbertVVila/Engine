@@ -699,7 +699,9 @@ void ModuleScene::SaveScene(const GameObject& rootGO, const char* sceneName, con
 		// Is a new scene, create resource
 		ResourceScene* scene = (ResourceScene*)App->resManager->CreateNewResource(TYPE::SCENE);
 		scene->SetFile(sceneInAssets.c_str());
-		scene->SetExportedFile(sceneName);
+		std::string exportedFile(sceneName);
+		exportedFile += SCENEEXTENSION;
+		scene->SetExportedFile(exportedFile.c_str());
 		scene->Save(rootGO);
 	}
 
@@ -722,7 +724,9 @@ void ModuleScene::LoadScene(const char* sceneName, const char* folder)
 
 bool ModuleScene::AddScene(const char* sceneName, const char* folder)
 {
-	ResourceScene* scene = (ResourceScene*)App->resManager->GetWithoutLoad(sceneName);
+	std::string exportedFile(sceneName);
+	exportedFile += SCENEEXTENSION;
+	ResourceScene* scene = (ResourceScene*)App->resManager->GetWithoutLoad(exportedFile.c_str());
 	if(!scene->Load())
 	{
 		LOG("Error loading scene named: %s", sceneName);

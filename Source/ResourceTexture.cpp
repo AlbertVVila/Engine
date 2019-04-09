@@ -82,16 +82,16 @@ bool ResourceTexture::LoadTexture()
 
 	char* data;
 	unsigned size;
-	std::string filename(exportedFileName);
+	std::string filename(exportedFile);
 
 	// Load image file
 	if (engineUsed)
 	{
-		size = App->fsystem->Load((IMPORTED_RESOURCES + filename + TEXTUREEXT).c_str(), &data);
+		size = App->fsystem->Load((IMPORTED_RESOURCES + filename).c_str(), &data);
 	}
 	else
 	{
-		size = App->fsystem->Load((TEXTURES + filename + TEXTUREEXT).c_str(), &data);
+		size = App->fsystem->Load((TEXTURES + filename).c_str(), &data);
 	}
 
 	if (size == 0u)
@@ -172,16 +172,16 @@ bool ResourceTexture::LoadCubemap()
 
 	char* data;
 	unsigned size;
-	std::string filename(exportedFileName);
+	std::string filename(exportedFile);
 
 	// Load image file
 	if (engineUsed)
 	{
-		size = App->fsystem->Load((IMPORTED_RESOURCES + filename + TEXTUREEXT).c_str(), &data);
+		size = App->fsystem->Load((IMPORTED_RESOURCES + filename).c_str(), &data);
 	}
 	else
 	{
-		size = App->fsystem->Load((TEXTURES + filename + TEXTUREEXT).c_str(), &data);
+		size = App->fsystem->Load((TEXTURES + filename).c_str(), &data);
 	}
 
 	if (size == 0u)
@@ -304,9 +304,11 @@ void ResourceTexture::Rename(const char* newName)
 	Resource::Rename(newName);
 
 	// Rename file in Library
-	App->fsystem->Rename(TEXTURES, (exportedFileName + TEXTUREEXT).c_str(), newName);
+	std::string newExportedFile(newName);
+	newExportedFile += TEXTUREEXT;
+	App->fsystem->Rename(TEXTURES, exportedFile.c_str(), newExportedFile.c_str());
 
-	exportedFileName = newName;
+	exportedFile = newExportedFile.c_str();
 }
 
 void ResourceTexture::Delete()
@@ -315,8 +317,7 @@ void ResourceTexture::Delete()
 
 	// Delete file in Library
 	std::string fileInLibrary(TEXTURES);
-	fileInLibrary += exportedFileName;
-	fileInLibrary += TEXTUREEXT;
+	fileInLibrary += exportedFile;
 	App->fsystem->Delete(fileInLibrary.c_str());
 	DeleteFromMemory();
 }

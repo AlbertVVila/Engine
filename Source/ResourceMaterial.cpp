@@ -65,7 +65,7 @@ bool ResourceMaterial::LoadInMemory()
 {
 	char* data = nullptr;
 	// Load JSON
-	if (App->fsystem->Load((IMPORTED_MATERIALS + exportedFileName + MATERIALEXT).c_str(), &data) == 0)
+	if (App->fsystem->Load((IMPORTED_MATERIALS + exportedFile).c_str(), &data) == 0)
 		return false;
 
 	JSON* json = new JSON(data);
@@ -162,7 +162,7 @@ void ResourceMaterial::Save() const
 	
 	json->AddValue("material", *materialJSON);
 
-	App->fsystem->Save((MATERIALS + exportedFileName + MATERIALEXT).c_str(), json->ToString().c_str(), json->Size());
+	App->fsystem->Save((MATERIALS + exportedFile).c_str(), json->ToString().c_str(), json->Size());
 	RELEASE(json);
 }
 
@@ -371,9 +371,11 @@ void ResourceMaterial::Rename(const char* newName)
 	Resource::Rename(newName);
 
 	// Rename file in Library
-	App->fsystem->Rename(IMPORTED_MATERIALS, (exportedFileName + MATERIALEXT).c_str(), newName);
+	std::string newExportedFile(newName);
+	newExportedFile += MATERIALEXT;
+	App->fsystem->Rename(IMPORTED_MATERIALS, exportedFile.c_str(), newExportedFile.c_str());
 
-	exportedFileName = newName;
+	exportedFile = newExportedFile;
 }
 
 void ResourceMaterial::Delete()
@@ -382,8 +384,7 @@ void ResourceMaterial::Delete()
 
 	// Delete file in Library
 	std::string fileInLibrary(IMPORTED_MATERIALS);
-	fileInLibrary += exportedFileName;
-	fileInLibrary += MATERIALEXT;
+	fileInLibrary += exportedFile;
 	App->fsystem->Delete(fileInLibrary.c_str());
 	DeleteFromMemory();
 }

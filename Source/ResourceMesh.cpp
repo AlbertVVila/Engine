@@ -46,7 +46,7 @@ bool ResourceMesh::LoadInMemory()
 {
 	char* data = nullptr;
 
-	unsigned ok = App->fsystem->Load((MESHES + std::to_string(UID) + MESHEXTENSION).c_str(), &data);
+	unsigned ok = App->fsystem->Load((MESHES + exportedFile).c_str(), &data);
 
 	// Load mesh file
 	if (ok != 0)			
@@ -425,8 +425,7 @@ void ResourceMesh::Delete()
 
 	// Delete file in Library
 	std::string fileInLibrary(MESHES);
-	fileInLibrary += exportedFileName;
-	fileInLibrary += MESHEXTENSION;
+	fileInLibrary += exportedFile;
 	App->fsystem->Delete(fileInLibrary.c_str());
 	DeleteFromMemory();
 }

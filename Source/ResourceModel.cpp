@@ -89,7 +89,11 @@ void ResourceModel::LoadConfigFromMeta()
 		unsigned meshUID = value->GetUint(("Mesh" + std::to_string(i)).c_str());
 		ResourceMesh* mesh = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH, meshUID);
 		mesh->SetFile(file.c_str());
-		mesh->SetExportedFile((std::to_string(mesh->GetUID())).c_str());
+
+		// Set Exported File
+		std::string exportedFile(std::to_string(mesh->GetUID()));
+		exportedFile += MESHEXTENSION;
+		mesh->SetExportedFile(exportedFile.c_str());
 		mesh->name = name + "_" + std::to_string(i);
 
 		meshList.push_back(mesh);
@@ -103,7 +107,7 @@ bool ResourceModel::CheckImportedMeshes()
 
 	for each(auto mesh in meshList)
 	{
-		std::set<std::string>::iterator it = importedMeshes.find(std::to_string(mesh->GetUID()));
+		std::set<std::string>::iterator it = importedMeshes.find(mesh->GetExportedFile());
 		if (it == importedMeshes.end())
 		{
 			return true;
@@ -137,7 +141,7 @@ void ResourceModel::Rename(const char* newName)
 {
 	Resource::Rename(newName);
 
-	exportedFileName = newName;
+	exportedFile = newName;
 
 	for (int i = 0; i < meshList.size(); ++i)
 	{
