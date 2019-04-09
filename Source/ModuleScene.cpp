@@ -699,7 +699,7 @@ void ModuleScene::SaveScene(const GameObject& rootGO, const char* sceneName, con
 		// Is a new scene, create resource
 		ResourceScene* scene = (ResourceScene*)App->resManager->CreateNewResource(TYPE::SCENE);
 		scene->SetFile(sceneInAssets.c_str());
-		scene->name = sceneName;
+		scene->SetExportedFile(sceneName);
 		scene->Save(rootGO);
 	}
 
@@ -722,40 +722,14 @@ void ModuleScene::LoadScene(const char* sceneName, const char* folder)
 
 bool ModuleScene::AddScene(const char* sceneName, const char* folder)
 {
-	std::string sceneInAssets(folder);
-	sceneInAssets += sceneName;
-	sceneInAssets += SCENEEXTENSION;
-	unsigned sceneUID = App->resManager->FindByFileInAssets(sceneInAssets.c_str());
-
-	if (sceneUID != 0)
+	ResourceScene* scene = (ResourceScene*)App->resManager->GetWithoutLoad(sceneName);
+	if(!scene->Load())
 	{
-		ResourceScene* scene = (ResourceScene*)App->resManager->GetWithoutLoad(sceneUID);
-		if(!scene->Load())
-		{
-			LOG("Error loading scene named: %s", sceneName);
-			return false;
-		}
-
-		return true;
-	}
-	else
-	{
-		LOG("Error scene named: %s couldn't be found in resources list", sceneName);
+		LOG("Error loading scene named: %s", sceneName);
 		return false;
 	}
-}
 
-bool ModuleScene::ImportScene(const char* file, const char* folder, ResourceScene* resource)
-{
-	bool success = false;
-	success = App->fsystem->Copy(folder, IMPORTED_SCENES, file);
-	if (success)
-	{
-		success = App->fsystem->Rename(IMPORTED_SCENES, file, std::to_string(resource->GetUID()).c_str());
-		resource->name = App->fsystem->GetFilename(file);
-	}
-		
-	return success;
+	return true;
 }
 
 void ModuleScene::Select(GameObject * gameobject)

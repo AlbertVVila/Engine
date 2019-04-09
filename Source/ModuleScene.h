@@ -71,7 +71,6 @@ public:
 	void SaveScene(const GameObject& rootGO, const char* sceneName, const char* folder);
 	void LoadScene(const char* sceneName, const char* folder);
 	bool AddScene(const char* sceneName, const char* folder);								// Adds a scene to current opened scene from a scene file (returns true if it was loaded correctly)
-	bool ImportScene(const char* file, const char* folder, ResourceScene* resource);
 
 	void TakePhoto();
 	void TakePhoto(std::list<GameObject*>& target);

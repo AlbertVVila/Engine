@@ -22,10 +22,6 @@ public:
 	// Scene especific
 	void Save(const GameObject &rootGO);
 	bool Load();
-
-public:
-
-	std::string name = "";
 };
 
 #endif
