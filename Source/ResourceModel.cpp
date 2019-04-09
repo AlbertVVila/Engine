@@ -141,12 +141,14 @@ void ResourceModel::Rename(const char* newName)
 {
 	Resource::Rename(newName);
 
-	exportedFile = newName;
+	std::string newExportedFile(newName);
+	exportedFile = newExportedFile + FBXEXTENSION;
 
 	for (int i = 0; i < meshList.size(); ++i)
 	{
 		std::string name(newName);
 		meshList[i]->Rename((name + "_" + std::to_string(i)).c_str());
+		meshList[i]->SetFile(file.c_str());		// Update file variable
 	}
 }
 

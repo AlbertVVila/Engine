@@ -132,9 +132,16 @@ unsigned ModuleResourceManager::FindByExportedFile(const char* exportedFile) con
 {
 	for (std::map<unsigned, Resource*>::const_iterator it = resources.begin(); it != resources.end(); ++it)
 	{
-		if (strcmp(it->second->GetExportedFile(), exportedFile) == 0)
-		{
+		std::string firstName(it->second->GetExportedFile());
+		std::string secondName(exportedFile);
+		if (firstName == secondName)
 			return it->first;
+		else
+		{
+			for (auto & c1 : firstName) c1 = toupper(c1);
+			for (auto & c2 : secondName) c2 = toupper(c2);
+			if (firstName == secondName)
+				return it->first;
 		}
 	}
 	return 0;
@@ -144,9 +151,16 @@ unsigned ModuleResourceManager::FindByExportedFile(const char* exportedFile, TYP
 {
 	for (std::map<unsigned, Resource*>::const_iterator it = resources.begin(); it != resources.end(); ++it)
 	{
-		if (strcmp(it->second->GetExportedFile(), exportedFile) == 0 && it->second->GetType() == type)
-		{
+		std::string firstName(it->second->GetExportedFile());
+		std::string secondName(exportedFile);
+		if (firstName == secondName)
 			return it->first;
+		else
+		{
+			for (auto & c1 : firstName) c1 = toupper(c1);
+			for (auto & c2 : secondName) c2 = toupper(c2);
+			if (firstName == secondName)
+				return it->first;
 		}
 	}
 	return 0;
