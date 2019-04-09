@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "Globals.h"
 #include "GameObject.h"
 
 #include "ModuleNavigation.h"
@@ -25,8 +26,8 @@ ModuleNavigation::ModuleNavigation()
 
 ModuleNavigation::~ModuleNavigation()
 {
-	delete[] tris;
-	delete[] verts;
+	RELEASE_ARRAY(verts);
+	RELEASE_ARRAY(tris);
 }
 
 void ModuleNavigation::DrawGUI()
@@ -103,8 +104,8 @@ void ModuleNavigation::generateNavigability()
 	//meshComponent->mesh->meshVertices.resize(meshComponent->mesh->meshVertices.capacity + 1);
 
 	const int nverts = meshComponent->mesh->meshVertices.size();
-	verts = new float[nverts];
-
+	verts = new float[nverts*3];
+	int test[50];
 	fillVertices(verts, nverts);
 	
 	//Indices
@@ -138,10 +139,10 @@ void ModuleNavigation::generateNavigability()
 	rcCalcGridSize(cfg.bmin, cfg.bmax, cfg.cs, &cfg.width, &cfg.height);
 
 	// Reset build times gathering.
-	ctx->resetTimers();
+	//ctx->resetTimers();
 
 	// Start the build process.	
-	ctx->startTimer(RC_TIMER_TOTAL);
+	//ctx->startTimer(RC_TIMER_TOTAL);
 
 	LOG("Building Navigation");
 
@@ -473,15 +474,15 @@ void ModuleNavigation::fillVertices(float* verts, const int nverts)
 {
 	for (int i = 0; i < nverts; ++i)
 	{
-		verts[i * 3] = meshComponent->mesh->meshVertices[i].x;
-		verts[i * 3 + 1] = meshComponent->mesh->meshVertices[i].y;
-		verts[i * 3 + 2] = meshComponent->mesh->meshVertices[i].z;
+		verts[i* sizeof(float) * 3] = meshComponent->mesh->meshVertices[i].x;
+		verts[i* sizeof(float) * 3 + 1] = meshComponent->mesh->meshVertices[i].y;
+		verts[i* sizeof(float) * 3 + 2] = meshComponent->mesh->meshVertices[i].z;
 	}
 }
 
 void ModuleNavigation::fillIndices(int* tris, const int ntris)
 {
-	for (int i = 0; i < ntris; ++i)
+	for (int i = 0; i < ntris; i+=(sizeof(float)))
 	{
 		tris[i] = meshComponent->mesh->meshIndices[i];
 	}
