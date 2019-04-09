@@ -181,7 +181,7 @@ bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* 
 	switch (type) 
 	{
 	case TYPE::TEXTURE:		success = App->textures->ImportImage(newFileInAssets, filePath,	(ResourceTexture*)resource);	exportedFile += TEXTUREEXT;		break;
-	case TYPE::MODEL:		success = App->fsystem->importer.ImportFBX(newFileInAssets, filePath, (ResourceModel*)resource);								break;
+	case TYPE::MODEL:		success = App->fsystem->importer.ImportFBX(newFileInAssets, filePath, (ResourceModel*)resource);exportedFile += FBXEXTENSION;	break;
 	/*case TYPE::MESH:		success = App->fsystem->importer.ImportFBX(newFileInAssets, filePath, (ResourceMesh*)resource);	exportedFile += MESHEXTENSION;	break;
 	case TYPE::AUDIO:		success = App->audio->Import(newFileInAssets, written_file);									exportedFile += AUDIOEXTENSION;	break;*/
 	case TYPE::SCENE:		success = App->fsystem->Copy(filePath, IMPORTED_SCENES, newFileInAssets);						exportedFile += SCENEEXTENSION;	break;
@@ -513,7 +513,7 @@ Resource* ModuleResourceManager::AddResource(const char* file, const char* direc
 		switch (type)
 		{
 		case TYPE::TEXTURE:		exportedFile += TEXTUREEXT;		break;
-		case TYPE::MODEL:										break;
+		case TYPE::MODEL:		exportedFile += FBXEXTENSION;	break;
 		/*case TYPE::MESH:		exportedFile += MESHEXTENSION;	break;
 		case TYPE::AUDIO:		exportedFile += AUDIOEXTENSION;	break;*/
 		case TYPE::SCENE:		exportedFile += SCENEEXTENSION;	break;
