@@ -4,6 +4,7 @@
 #include "ModuleProgram.h"
 #include "ModuleTextures.h"
 #include "ModuleScene.h"
+#include "ModuleTime.h"
 
 #include "GameObject.h"
 #include "ComponentTransform.h"
@@ -13,7 +14,7 @@
 #include "ComponentTransform.h"
 
 #include "GL/glew.h"
-
+#include <algorithm>
 #include "ImGUICurveUtils.h"
 
 ModuleParticles::~ModuleParticles()
@@ -129,18 +130,21 @@ bool ModuleParticles::Start()
 	return true;
 }
 
-void ModuleParticles::Render(float dt, const ComponentCamera* camera) const
+void ModuleParticles::Render(float dt, const ComponentCamera* camera) 
 {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_ONE, GL_ONE);
 	glDisable(GL_DEPTH_TEST);
-	//TODO:Order particleSystems 
+	particleSystems.sort(
+		[camera](const ComponentParticles* cp1, const ComponentParticles* cp2) -> bool
+		{
+			return cp1->gameobject->transform->GetGlobalPosition().Distance(camera->frustum->pos) > cp2->gameobject->transform->GetGlobalPosition().Distance(camera->frustum->pos);
+		});
 	for (ComponentParticles* cp : particleSystems)
 	{
 		cp->Update(dt, camera->frustum->pos);
 		
 		DrawParticleSystem(cp, camera);
-		break;
 	
 	}
 
@@ -255,13 +259,29 @@ void ModuleParticles::DrawParticleSystem(ComponentParticles* cp, const Component
 	glBindVertexArray(billBoardVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, billBoardInstanceVBO);
 	float* matrices = (float*)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
-	//TODO:Order particles
-	for (std::list<Particle>::iterator it = cp->particles.begin(); it != cp->particles.end(); ++it)
+	/*std::sort(std::begin(cp->particles), std::end(cp->particles),(
+		[camera](const Particle& p1, const Particle& p2) -> bool
+		{
+			return p1.position.Distance(camera->frustum->pos) > p2.position.Distance(camera->frustum->pos);
+		});
+		*/
+	unsigned nParticles = cp->particles.size();
+	for (; nParticles > 0; --nParticles)
 	{
-		memcpy(matrices, &(*it).global.Col(0), sizeof(float) * 4); matrices += 4;
-		memcpy(matrices, &(*it).global.Col(1), sizeof(float) * 4); matrices += 4;
-		memcpy(matrices, &(*it).global.Col(2), sizeof(float) * 4); matrices += 4;		
-		memcpy(matrices, &(*it).global.Col(3), sizeof(float) * 4); matrices += 4;
+		cp->particles.front()->lifeTimer -= App->time->gameDeltaTime;
+		if (cp->particles.front()->lifeTimer > .0f)
+		{
+			memcpy(matrices, &cp->particles.front()->global.Col(0), sizeof(float) * 4); matrices += 4;
+			memcpy(matrices, &cp->particles.front()->global.Col(1), sizeof(float) * 4); matrices += 4;
+			memcpy(matrices, &cp->particles.front()->global.Col(2), sizeof(float) * 4); matrices += 4;
+			memcpy(matrices, &cp->particles.front()->global.Col(3), sizeof(float) * 4); matrices += 4;
+			cp->particles.push(cp->particles.front());
+		}
+		else
+		{
+			cp->particlePool.push(cp->particles.front());
+		}
+		cp->particles.pop();
 	}
 	//
 

@@ -28,7 +28,7 @@ public:
 	bool Start() override;
 	bool CleanUp() override;
 
-	void Render(float dt, const ComponentCamera* camera) const;
+	void Render(float dt, const ComponentCamera* camera);
 
 	void AddParticleSystem(ComponentParticles* cp);
 	void AddTrailRenderer(ComponentTrail* cr);

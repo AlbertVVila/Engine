@@ -24,12 +24,6 @@ ComponentParticles::ComponentParticles(GameObject* gameobject) : Component(gameo
 	}
 	App->particles->AddParticleSystem(this);
 
-	for (int i = 0; i < 100; ++i)
-	{
-		Particle p;
-		p.position = float3(rand() % 1000, 0, rand() % 1000);
-		particles.push_back(p);
-	}
 }
 
 ComponentParticles::ComponentParticles(const ComponentParticles& component) : Component(component)
@@ -54,6 +48,7 @@ Component * ComponentParticles::Clone() const
 void ComponentParticles::DrawProperties()
 {
 	ImGui::PushID(this);
+	ImGui::Text("Particles active %d", particles.size());
 	//texture selector
 	if (ImGui::BeginCombo("Texture", textureName.c_str()))
 	{
@@ -95,12 +90,32 @@ void ComponentParticles::DrawProperties()
 	{
 		timer = 0.f;
 	}
+	ImGui::Separator();
+	ImGui::DragFloat("Rate", &rate);
+	ImGui::InputFloat2("Lifetime", &lifetime[0]);
+	ImGui::InputFloat2("Speed", &speed[0]);
 	ImGui::PopID();
 }
 
 bool ComponentParticles::CleanUp()
 {
-	return false;
+	unsigned nParticles = particles.size();
+
+	for (; nParticles > 0; --nParticles)
+	{
+		RELEASE(particles.front());
+		particles.pop();
+	}
+
+	nParticles = particlePool.size();
+
+	for (; nParticles > 0; --nParticles)
+	{
+		RELEASE(particlePool.front());
+		particlePool.pop();
+	}
+
+	return true;
 }
 
 void ComponentParticles::Update(float dt, const math::float3& camPos)
@@ -114,13 +129,55 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 	f1Ypos = (((int)frame) / xTiles) % yTiles;
 	f2Ypos = f1Xpos < f2Xpos ? f1Ypos : f1Ypos + 1;	
 
-	unsigned nParticles = particles.size();
-
-	for (std::list<Particle>::iterator it = particles.begin(); it != particles.end(); ++it)
+	rateTimer -= dt;
+	if (rateTimer <= 0.f)
 	{
-		(*it).position += (*it).direction * (*it).speed * dt;
-		float3 direction = (camPos - (*it).position);
-		(*it).global = (*it).global.FromTRS((*it).position, math::Quat::LookAt(float3::unitZ, direction.Normalized(), float3::unitY, float3::unitY), math::float3::one * 50);
+		int amount = MAX(dt / (1.f / rate), 1);
+		for (; amount > 0; --amount)
+		{
+			Particle* p;
+			if (particlePool.size() > 0)
+			{
+				p = particlePool.front();
+				particlePool.pop();
+			}
+			else
+			{
+				p = new Particle();
+			}
+			p->position = float3(rand() % 200, 0, rand() % 200);
+			if (lifetime.x != lifetime.y)
+			{
+				p->totalLifetime = lifetime.x + fmod(rand(), abs(lifetime.y - lifetime.x));
+			}
+			else
+			{
+				p->totalLifetime = lifetime.y;
+			}
+			if (speed.x != speed.y)
+			{
+				p->speed = speed.x + fmod(rand(), abs(speed.y - speed.x));
+			}
+			else
+			{
+				p->speed = speed.y;
+			}
+			p->lifeTimer = p->totalLifetime;
+			particles.push(p);
+		}
+		rateTimer = 1.f / rate;
+	}
+
+
+	unsigned nParticles = particles.size();
+	
+	for (; nParticles > 0; --nParticles)
+	{
+		particles.front()->position += particles.front()->direction * particles.front()->speed * dt;
+		float3 direction = (camPos - particles.front()->position);
+		particles.front()->global = particles.front()->global.FromTRS(particles.front()->position, math::Quat::LookAt(float3::unitZ, direction.Normalized(), float3::unitY, float3::unitY), math::float3::one * 50);
+		particles.push(particles.front());
+		particles.pop();
 	}
 }
 
@@ -145,3 +202,5 @@ void ComponentParticles::Load(JSON_value* value)
 		texture = App->textures->GetTexture(textureName.c_str());
 	}
 }
+
+
