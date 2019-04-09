@@ -181,7 +181,7 @@ bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* 
 	case TYPE::MODEL:		success = App->fsystem->importer.ImportFBX(newFileInAssets, filePath, (ResourceModel*)resource);	break;
 	/*case TYPE::MESH:		success = App->fsystem->importer.ImportFBX(newFileInAssets, filePath, (ResourceMesh*)resource);		break;
 	case TYPE::AUDIO:		success = App->audio->Import(newFileInAssets, written_file);										break;*/
-	case TYPE::SCENE:		success = App->scene->ImportScene(newFileInAssets, filePath, (ResourceScene*)resource);				break;
+	case TYPE::SCENE:		success = App->fsystem->Copy(filePath, IMPORTED_SCENES, newFileInAssets);							break;
 	case TYPE::MATERIAL:	success = App->fsystem->Copy(filePath, IMPORTED_MATERIALS, newFileInAssets);						break;
 	}
 
@@ -189,10 +189,7 @@ bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* 
 	if (success) 
 	{ 
 		resource->SaveMetafile(assetPath.c_str());	
-		HashString exportedFile(resource->GetExportedFile());
-		HashString emptyString("");
-		if(exportedFile == emptyString)
-			resource->SetExportedFile(App->fsystem->RemoveExtension(newFileInAssets).c_str());
+		resource->SetExportedFile(App->fsystem->RemoveExtension(newFileInAssets).c_str());
 		LOG("%s imported.", resource->GetFile());
 	}
 	else
@@ -216,10 +213,7 @@ bool ModuleResourceManager::ReImportFile(Resource* resource, const char* filePat
 	/*case TYPE::MESH:		success = App->fsystem->importer.ImportFBX(file.c_str(), filePath, (ResourceMesh*)resource);	break;
 	case TYPE::AUDIO:		success = App->audio->Import(newFileInAssets, written_file);									break;*/
 	case TYPE::MATERIAL:	success = App->fsystem->Copy(filePath, IMPORTED_MATERIALS, file.c_str());						break;
-	case TYPE::SCENE:
-		file = App->fsystem->GetFile(resource->GetFile());
-		success = App->scene->ImportScene(file.c_str(), filePath, (ResourceScene*)resource);			
-		break;
+	case TYPE::SCENE:		success = App->fsystem->Copy(filePath, IMPORTED_SCENES, file.c_str());							break;
 	}
 
 	// If export was successful, update resource
