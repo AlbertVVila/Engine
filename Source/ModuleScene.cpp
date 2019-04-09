@@ -82,7 +82,10 @@ bool ModuleScene::Init(JSON * config)
 		ambientColor = scene->GetColor3("ambient");
 		const char* dscene = scene->GetString("defaultscene");
 		defaultScene = dscene;
-		SceneSize = scene->GetInt("sizeScene");
+		if (scene->GetInt("sizeScene")) 
+		{
+			SceneSize = scene->GetInt("sizeScene");
+		}
 	}
 	return true;
 }
