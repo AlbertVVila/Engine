@@ -474,6 +474,44 @@ unsigned FileImporter::GetMeshSize(const aiMesh &mesh) const
 	return size;
 }
 
+void FileImporter::ProcessNode(const std::map<unsigned, unsigned> &meshmap, const aiNode * node, const aiScene * scene, GameObject* parent)
+{
+	assert(node != nullptr);
+	if (node == nullptr) return;
 
+	GameObject * gameobject = App->scene->CreateGameObject(node->mName.C_Str(), parent);
+
+	aiMatrix4x4 m = node->mTransformation;
+	float4x4 transform(m.a1, m.a2, m.a3, m.a4, m.b1, m.b2, m.b3, m.b4, m.c1, m.c2, m.c3, m.c4, m.d1, m.d2, m.d3, m.d4);
+	ComponentTransform* t = (ComponentTransform *)gameobject->CreateComponent(ComponentType::Transform);
+	t->AddTransform(transform);
+
+	std::vector<GameObject*> gameobjects;
+	gameobjects.push_back(gameobject);
+	//for (unsigned k = 1; k < node->mNumMeshes; k++) //Splits meshes of same node into diferent gameobjects 
+	//{
+	//	GameObject *copy = new GameObject(*gameobject);
+	//	gameobjects.push_back(copy);
+	//	copy->parent = gameobject->parent;
+	//	parent->children.push_back(copy);
+	//}
+
+	//for (unsigned i = 0; i < node->mNumMeshes; i++)
+	//{
+	//	ComponentRenderer* crenderer = (ComponentRenderer*)gameobjects[i]->CreateComponent(ComponentType::Renderer);
+	//	auto it = meshmap.find(node->mMeshes[i]);
+	//	if (it != meshmap.end())
+	//	{
+	//		RELEASE(crenderer->mesh);
+	//		crenderer->mesh = App->resManager->GetMesh(it->second);
+	//		gameobjects[i]->UpdateBBox();
+	//	}
+	//}
+	for (unsigned int i = 0; i < node->mNumChildren; i++)
+	{
+		ProcessNode(meshmap, node->mChildren[i], scene, gameobject);
+	}
+
+}
 
 

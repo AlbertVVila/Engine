@@ -435,6 +435,9 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 						// Check if the meshes inside ResourceModel are imported
 						if(res->CheckImportedMeshes())
 							filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
+
+						if (res->CheckImportedAnimations())
+							filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
 			
 					}
 				}
