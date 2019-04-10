@@ -75,8 +75,9 @@ void ResourceModel::SaveMetafile(const char* file) const
 	json->AddValue("Mesh", *meshMeta);
 
 	JSON_value* animMeta = json->CreateValue();
-	animMeta->AddUint("GUID", UID);
-	animMeta->AddUint("timeCreated", statFile.st_ctime);
+	struct stat statFileAnim;
+	stat(filepath.c_str(), &statFileAnim);
+	animMeta->AddUint("timeCreated", statFileAnim.st_ctime);
 	animMeta->AddUint("NumAnimations", numAnimations);
 	for (int i = 0; i < numAnimations; ++i)
 	{
@@ -121,7 +122,6 @@ void ResourceModel::LoadConfigFromMeta()
 	}
 
 	value = json->GetValue("Animation");
-	UID = value->GetUint("GUID");
 	numAnimations = value->GetUint("NumAnimations");
 
 	for (int i = 0; i < numAnimations; ++i)

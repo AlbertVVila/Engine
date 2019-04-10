@@ -424,7 +424,6 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 					if (statFile.st_mtime > statMeta.st_mtime)
 					{
 						filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
-
 					}
 					else
 					{
@@ -432,7 +431,7 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 						ResourceModel* res = (ResourceModel*)App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::MODEL);
 						res->LoadConfigFromMeta();
 
-						// Check if the meshes inside ResourceModel are imported
+						// Check if the meshes adn animations inside ResourceModel are imported
 						if(res->CheckImportedMeshes())
 							filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
 
