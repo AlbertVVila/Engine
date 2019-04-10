@@ -76,6 +76,7 @@ void ModuleNavigation::renderNavMesh()
 	if (m_drawMode != DRAWMODE_NAVMESH_INVIS)
 			duDebugDrawNavMeshWithClosedList(&m_dd, *m_navMesh, *m_navQuery, m_navMeshDrawFlags);
 	*/
+	duDebugDrawNavMeshWithClosedList(&dd, *navMesh, *navQuery, m_navMeshDrawFlags);
 }
 
 void ModuleNavigation::removeNavMesh(unsigned ID)

@@ -4,6 +4,7 @@
 #include "Module.h"
 #include <vector>
 #include "Recast/Recast.h"
+#include "DebugUtils/DetourDebugDraw.h"
 //<>
 //fwd declarations
 class GameObject;
@@ -130,8 +131,10 @@ private:
 	dtNavMesh* navMesh;
 	dtNavMeshQuery* navQuery;
 
+	unsigned char m_navMeshDrawFlags = DU_DRAWNAVMESH_OFFMESHCONS | DU_DRAWNAVMESH_CLOSEDLIST;
+	SampleDebugDraw dd;
 
-	unsigned char* m_triareas;
+	unsigned char* m_triareas = nullptr;
 	bool m_keepInterResults = true;
 
 	int* tris = nullptr;
