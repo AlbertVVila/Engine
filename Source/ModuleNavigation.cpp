@@ -105,12 +105,10 @@ void ModuleNavigation::generateNavigability()
 
 	const int nverts = meshComponent->mesh->meshVertices.size();
 	verts = new float[nverts*3];
-	int test[50];
 	fillVertices(verts, nverts);
-	
 	//Indices
-	const int ntris = meshComponent->mesh->meshIndices.size();
-	tris = new int[ntris];
+	const int ntris = meshComponent->mesh->meshIndices.size()/3;
+	tris = new int[ntris*3];
 	
 	fillIndices(tris, ntris);
 
@@ -176,11 +174,11 @@ void ModuleNavigation::generateNavigability()
 	// the are type for each of the meshes and rasterize them.
 	memset(m_triareas, 0, ntris * sizeof(unsigned char));
 	rcMarkWalkableTriangles(ctx, cfg.walkableSlopeAngle, verts, nverts, tris, ntris, m_triareas);
-	if (!rcRasterizeTriangles(ctx, verts, nverts, tris, m_triareas, ntris, *heightField, cfg.walkableClimb))
+	/*if (!rcRasterizeTriangles(ctx, verts, nverts, tris, m_triareas, ntris, *heightField, cfg.walkableClimb))
 	{
 		LOG("buildNavigation: Could not rasterize triangles.");
 		return;
-	}
+	}*/
 
 	if (!m_keepInterResults)
 	{
@@ -454,7 +452,7 @@ void ModuleNavigation::generateNavigability()
 		}
 	}
 	
-	ctx->stopTimer(RC_TIMER_TOTAL);
+	//ctx->stopTimer(RC_TIMER_TOTAL);
 
 	// Show performance stats.
 	//duLogBuildTimes(*m_ctx, m_ctx->getAccumulatedTime(RC_TIMER_TOTAL));
@@ -474,16 +472,18 @@ void ModuleNavigation::fillVertices(float* verts, const int nverts)
 {
 	for (int i = 0; i < nverts; ++i)
 	{
-		verts[i* sizeof(float) * 3] = meshComponent->mesh->meshVertices[i].x;
-		verts[i* sizeof(float) * 3 + 1] = meshComponent->mesh->meshVertices[i].y;
-		verts[i* sizeof(float) * 3 + 2] = meshComponent->mesh->meshVertices[i].z;
+		verts[i* 3] = meshComponent->mesh->meshVertices[i].x;
+		verts[i* 3 + 1] = meshComponent->mesh->meshVertices[i].y;
+		verts[i* 3 + 2] = meshComponent->mesh->meshVertices[i].z;
 	}
 }
 
 void ModuleNavigation::fillIndices(int* tris, const int ntris)
 {
-	for (int i = 0; i < ntris; i+=(sizeof(float)))
+	for (int i = 0; i < ntris; ++i)
 	{
-		tris[i] = meshComponent->mesh->meshIndices[i];
+		tris[i * 3] = meshComponent->mesh->meshIndices[i];
+		tris[i * 3 + 1] = meshComponent->mesh->meshIndices[i+1];
+		tris[i * 3 + 2] = meshComponent->mesh->meshIndices[i+2];
 	}
 }

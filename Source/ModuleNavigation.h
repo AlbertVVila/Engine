@@ -111,7 +111,7 @@ private:
 	bool filterWalkableLowHeightSpans;
 
 	//partition type
-	int partitionType;
+	int partitionType = 0;
 
 	//navigation mesh properties
 	const ComponentRenderer* meshComponent = nullptr;
