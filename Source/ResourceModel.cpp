@@ -156,6 +156,9 @@ void ResourceModel::Delete()
 {
 	Resource::Delete();
 
+	// Delete Resource from ResourceManager
+	App->resManager->DeleteResourceFromList(UID);
+
 	// Delete all mesh files
 	for each(auto& mesh in meshList)
 	{
