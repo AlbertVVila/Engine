@@ -831,7 +831,7 @@ bool rcBuildContours(rcContext* ctx, rcCompactHeightfield& chf,
 	const int h = chf.height;
 	const int borderSize = chf.borderSize;
 	
-	rcScopedTimer timer(ctx, RC_TIMER_BUILD_CONTOURS);
+	//rcScopedTimer timer(ctx, RC_TIMER_BUILD_CONTOURS);
 	
 	rcVcopy(cset.bmin, chf.bmin);
 	rcVcopy(cset.bmax, chf.bmax);
@@ -864,7 +864,7 @@ bool rcBuildContours(rcContext* ctx, rcCompactHeightfield& chf,
 		return false;
 	}
 	
-	ctx->startTimer(RC_TIMER_BUILD_CONTOURS_TRACE);
+	//ctx->startTimer(RC_TIMER_BUILD_CONTOURS_TRACE);
 	
 	// Mark boundaries.
 	for (int y = 0; y < h; ++y)
@@ -899,7 +899,7 @@ bool rcBuildContours(rcContext* ctx, rcCompactHeightfield& chf,
 		}
 	}
 	
-	ctx->stopTimer(RC_TIMER_BUILD_CONTOURS_TRACE);
+	//ctx->stopTimer(RC_TIMER_BUILD_CONTOURS_TRACE);
 	
 	rcIntArray verts(256);
 	rcIntArray simplified(64);
@@ -924,14 +924,14 @@ bool rcBuildContours(rcContext* ctx, rcCompactHeightfield& chf,
 				verts.resize(0);
 				simplified.resize(0);
 				
-				ctx->startTimer(RC_TIMER_BUILD_CONTOURS_TRACE);
+				//ctx->startTimer(RC_TIMER_BUILD_CONTOURS_TRACE);
 				walkContour(x, y, i, chf, flags, verts);
-				ctx->stopTimer(RC_TIMER_BUILD_CONTOURS_TRACE);
+				//ctx->stopTimer(RC_TIMER_BUILD_CONTOURS_TRACE);
 				
-				ctx->startTimer(RC_TIMER_BUILD_CONTOURS_SIMPLIFY);
+				//ctx->startTimer(RC_TIMER_BUILD_CONTOURS_SIMPLIFY);
 				simplifyContour(verts, simplified, maxError, maxEdgeLen, buildFlags);
 				removeDegenerateSegments(simplified);
-				ctx->stopTimer(RC_TIMER_BUILD_CONTOURS_SIMPLIFY);
+				//ctx->stopTimer(RC_TIMER_BUILD_CONTOURS_SIMPLIFY);
 				
 				
 				// Store region->contour remap info.

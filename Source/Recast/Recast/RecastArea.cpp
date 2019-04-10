@@ -41,7 +41,7 @@ bool rcErodeWalkableArea(rcContext* ctx, int radius, rcCompactHeightfield& chf)
 	const int w = chf.width;
 	const int h = chf.height;
 	
-	rcScopedTimer timer(ctx, RC_TIMER_ERODE_AREA);
+	//rcScopedTimer timer(ctx, RC_TIMER_ERODE_AREA);
 	
 	unsigned char* dist = (unsigned char*)rcAlloc(sizeof(unsigned char)*chf.spanCount, RC_ALLOC_TEMP);
 	if (!dist)
