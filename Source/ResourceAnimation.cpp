@@ -161,3 +161,18 @@ unsigned ResourceAnimation::GetIndexChannel(std::string name) const
 	}
 	return 999u;
 }
+
+unsigned ResourceAnimation::GetNumberChannels() const
+{
+	return channels.size();
+}
+
+unsigned ResourceAnimation::GetNumberFrames() const
+{
+	return unsigned(numberFrames);
+}
+
+unsigned ResourceAnimation::GetFPS() const
+{
+	return unsigned(framesPerSecond);
+}

@@ -21,8 +21,9 @@ public:
 
 
 	void DrawProperties();
-
 	Component* Clone() const;
+
+	void SetAnimation(const char* animationFile);
 
 	void SetIndexChannels(GameObject* GO);
 	void PlayAnimation(unsigned blend);
@@ -49,6 +50,8 @@ public:
 
 	char* animName = new char[64];
 	bool isPlaying = false;
+
+	std::vector<std::string> guiAnimations;
 };
 
 #endif //  __COMPONENTANIMATION_H_

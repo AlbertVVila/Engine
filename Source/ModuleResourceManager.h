@@ -12,9 +12,9 @@ class Resource;
 class ResourceTexture;
 class ResourceMaterial;
 class ResourceMesh;
+class ResourceAnimation;
 
 enum class TYPE;
-class Animation;
 
 class ModuleResourceManager :
 	public Module
@@ -52,8 +52,10 @@ class ModuleResourceManager :
 	std::vector<Resource*> GetResourcesList();
 	std::vector<ResourceTexture*> GetTexturesList();
 	std::vector<ResourceMaterial*> GetMaterialsList();
+	std::vector<ResourceAnimation*> GetAnimationsList();
 	std::vector<std::string> GetResourceNamesList(TYPE resourceType, bool ordered); // Returns a vector with the exportedFileName of every Resource of the type given.	
 	std::vector<std::string> GetMeshesNamesList(bool ordered);						// To be deprecated: Returns a vector with the name of every mesh orederer or not.		
+	std::vector<std::string> GetAnimationsNamesList(bool ordered);
 
 	bool Exists(const char* exportedFileName);										// Checks if a resource with the given exported filename already exist
 	bool Exists(const char* exportedFileName, TYPE type);							// Checks if a resource of the given type and exported filename already exist

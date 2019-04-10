@@ -38,6 +38,9 @@ public:
 	const math::Quat GetRotation(unsigned indexChannel, unsigned indexPosition) const;
 
 	unsigned GetIndexChannel(std::string name) const;
+	unsigned GetNumberChannels() const;
+	unsigned GetNumberFrames() const;
+	unsigned GetFPS() const;
 
 public:
 

@@ -28,6 +28,7 @@ ComponentAnimation::~ComponentAnimation()
 {
 	controller = nullptr;
 	anim = nullptr;
+	gameobject->isBoneRoot = false;
 	RELEASE_ARRAY(animName);
 }
 
@@ -36,63 +37,83 @@ void ComponentAnimation::DrawProperties()
 {
 	if (ImGui::CollapsingHeader("Animation", ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		//Name of the animation
-		if (strcmp(animName, anim->name.c_str()) != 0)
+		ImGui::Text("Animation");
+		ImGui::PushID("Animation Combo");
+		if (ImGui::BeginCombo("", anim != nullptr ? anim->name.c_str() : ""))
 		{
-			strcpy(animName, anim->name.c_str());
-			ImGui::Text("Name");
-			ImGui::InputText("##label", animName, 64);
-			anim->name = animName;
+			if (guiAnimations.empty())
+			{
+				guiAnimations = App->resManager->GetAnimationsNamesList(true);
+			}
+			for (int n = 0; n < guiAnimations.size(); n++)
+			{
+				bool is_selected = (anim != nullptr ? anim->name == guiAnimations[n] : false);
+				if (ImGui::Selectable(guiAnimations[n].c_str(), is_selected) && anim->GetExportedFile() != guiAnimations[n])
+				{
+					SetAnimation(guiAnimations[n].c_str());
+				}
+				if (is_selected)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+			ImGui::EndCombo();
 		}
 		else
 		{
-			ImGui::Text("Name");
-			ImGui::InputText("##label", animName, 64);
+			guiAnimations.clear();
 		}
-
-		//Number of frames the animation has
-		ImGui::Text("%i frames,", anim->numberFrames);
-		ImGui::SameLine();
-		//Duration of the animation
-		ImGui::Text("%i seconds", anim->durationInSeconds);
-		ImGui::Spacing();
-		//Play
-		ImGui::PushItemWidth(50);
-		ImGui::DragFloat("Animation Speed", &controller->current->speed, 0.01f, -2.0f, 2.0f);
-		ImGui::PopItemWidth();
-		// Loop
-		ImGui::Checkbox("Loop", &controller->current->loop);
-
-		ImGui::Separator();
+		ImGui::PopID();
 	}
+}
+
+void ComponentAnimation::SetAnimation(const char* animationFile)
+{
+	// Delete previous animation
+	if (anim != nullptr)
+	{
+		App->resManager->DeleteResource(anim->GetUID());
+	}
+
+	if (animationFile == nullptr)
+	{
+		anim = nullptr;
+	}
+	else
+	{
+		anim = (ResourceAnimation*)App->resManager->Get(animationFile, TYPE::ANIMATION);
+	}
+	return;
 }
 
 void ComponentAnimation::Update()
 {
 	PROFILE;
-
-	if (!channelsSetted)
+	if (anim != nullptr)
 	{
-		SetIndexChannels(gameobject);
-		channelsSetted = true;
-	}
-
-	if (App->time->gameState == GameState::RUN)
-	{
-		controller->Update(App->time->gameDeltaTime);
-
-		if (gameobject != nullptr)
+		if (!channelsSetted)
 		{
-			UpdateGO(gameobject);
+			SetIndexChannels(gameobject);
+			channelsSetted = true;
 		}
-	}
-	else if (isPlaying)
-	{
-		controller->Update(App->time->realDeltaTime);
 
-		if (gameobject != nullptr)
+		if (App->time->gameState == GameState::RUN)
 		{
-			UpdateGO(gameobject);
+			controller->Update(App->time->gameDeltaTime);
+
+			if (gameobject != nullptr)
+			{
+				UpdateGO(gameobject);
+			}
+		}
+		else if (isPlaying)
+		{
+			controller->Update(App->time->realDeltaTime);
+
+			if (gameobject != nullptr)
+			{
+				UpdateGO(gameobject);
+			}
 		}
 	}
 }
@@ -152,7 +173,7 @@ bool ComponentAnimation::CleanUp()
 void ComponentAnimation::Save(JSON_value* value) const
 {
 	Component::Save(value);
-	value->AddUint("animUID", anim->UID);
+	value->AddUint("animUID", (anim != nullptr) ? anim->GetUID() : 0u);
 }
 
 void ComponentAnimation::Load(JSON_value* value)
@@ -162,18 +183,18 @@ void ComponentAnimation::Load(JSON_value* value)
 
 	ResourceAnimation* a = (ResourceAnimation*)App->resManager->Get(uid);
 
-	if (a != nullptr)
-	{
-		anim = a;
-	}
-	else
-	{
-		ResourceAnimation* res = (ResourceAnimation*)App->resManager->CreateNewResource(TYPE::ANIMATION, uid);
-		res->SetExportedFile(std::to_string(uid).c_str());
-		a = (ResourceAnimation*)App->resManager->Get(uid);
-		if (a != nullptr)
-			a = res;
-	}
+	//if (a != nullptr)
+	//{
+	//	anim = a;
+	//}
+	//else
+	//{
+	//	ResourceAnimation* res = (ResourceAnimation*)App->resManager->CreateNewResource(TYPE::ANIMATION, uid);
+	//	res->SetExportedFile(std::to_string(uid).c_str());
+	//	a = (ResourceAnimation*)App->resManager->Get(uid);
+	//	if (a != nullptr)
+	//		a = res;
+	//}
 }
 
 void ComponentAnimation::SetIndexChannels(GameObject* GO)

@@ -435,6 +435,17 @@ std::vector<ResourceMaterial*> ModuleResourceManager::GetMaterialsList()
 	return resourcesList;
 }
 
+std::vector<ResourceAnimation*> ModuleResourceManager::GetAnimationsList()
+{
+	std::vector<ResourceAnimation*> resourcesList;
+	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		if (it->second->GetType() == TYPE::ANIMATION)
+			resourcesList.push_back((ResourceAnimation*)it->second);
+	}
+	return resourcesList;
+}
+
 std::vector<std::string> ModuleResourceManager::GetResourceNamesList(TYPE resourceType, bool ordered)
 {
 	std::vector<std::string> resourcesList;
@@ -459,6 +470,24 @@ std::vector<std::string> ModuleResourceManager::GetMeshesNamesList(bool ordered)
 		{
 			ResourceMesh* mesh = (ResourceMesh*)it->second;
 			resourcesList.push_back(mesh->name);
+		}
+	}
+
+	if (ordered)	// Short by ascending order
+		std::sort(resourcesList.begin(), resourcesList.end(), sortByNameAscending);
+
+	return resourcesList;
+}
+
+std::vector<std::string> ModuleResourceManager::GetAnimationsNamesList(bool ordered)
+{
+	std::vector<std::string> resourcesList;
+	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		if (it->second->GetType() == TYPE::ANIMATION)
+		{
+			ResourceAnimation* anim = (ResourceAnimation*)it->second;
+			resourcesList.push_back(anim->name);
 		}
 	}
 

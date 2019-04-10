@@ -251,6 +251,7 @@ Component* GameObject::CreateComponent(ComponentType type)
 		break;
 	case ComponentType::Animation:
 		component = new ComponentAnimation(this);
+		isBoneRoot = true;
 		break;
 
 	case ComponentType::Transform2D:
