@@ -57,6 +57,9 @@ public:
 
 	void DrawGUI()override;
 	void navigableObjectToggled(GameObject* obj, const bool newState);
+	
+	void renderNavMesh();
+	
 
 	//variables
 	std::vector<GameObject*> navigationMeshes;

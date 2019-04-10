@@ -69,6 +69,15 @@ void ModuleNavigation::navigableObjectToggled(GameObject* obj, const bool newSta
 	else removeNavMesh(obj->UUID);
 }
 
+void ModuleNavigation::renderNavMesh()
+{
+	/*
+	from sample_solomesh.cpp in recast its in the line 268, the lib of the function is detourdebugdraw.h, gonna need some structures.
+	if (m_drawMode != DRAWMODE_NAVMESH_INVIS)
+			duDebugDrawNavMeshWithClosedList(&m_dd, *m_navMesh, *m_navQuery, m_navMeshDrawFlags);
+	*/
+}
+
 void ModuleNavigation::removeNavMesh(unsigned ID)
 {
 	for (int i = 0; i < navigationMeshes.size(); ++i)
