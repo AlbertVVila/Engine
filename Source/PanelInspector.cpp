@@ -16,6 +16,9 @@
 
 PanelInspector::PanelInspector()
 {
+	componentList = { {"Transform", ComponentType::Transform}, {"Renderer", ComponentType::Renderer}, 
+	{"Camera", ComponentType::Camera},  {"Light", ComponentType::Light} , {"Script", ComponentType::Script},
+	{"Animation", ComponentType::Animation} };
 }
 
 
@@ -39,7 +42,6 @@ void PanelInspector::Draw()
 	if (App->scene->selected != nullptr && App->scene->root != nullptr && App->scene->selected != App->scene->root)
 	{
 		App->scene->selected->DrawProperties();
-		const char* components[] = { "Transform", "Renderer", "Camera", "Light", "Animation", "Script", "Transform2D", "Text", "Image"};
 
 		if (ImGui::Button("Add Component", ImVec2(ImGui::GetWindowWidth(), 25)))
 			ImGui::OpenPopup("component_popup");
@@ -48,10 +50,10 @@ void PanelInspector::Draw()
 		{
 			ImGui::Text("Components");
 			ImGui::Separator();
-			for (int i = 0; i < IM_ARRAYSIZE(components); i++)
-				if (ImGui::Selectable(components[i]))
+			for (int i = 0; i < componentList.size(); i++)
+				if (ImGui::Selectable(componentList[i].first))
 				{
-					ComponentType type = (ComponentType)i;
+					ComponentType type = componentList[i].second;
 					if (App->scene->selected->GetComponent(type) != nullptr && 
 						(type == ComponentType::Renderer || type == ComponentType::Transform))
 					{

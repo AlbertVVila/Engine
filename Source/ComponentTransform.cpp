@@ -123,9 +123,8 @@ void ComponentTransform::MultiSelectionTransform(float4x4 &difference)
 void ComponentTransform::UpdateTransform()
 {
 	UpdateOldTransform();
-
-
-  front = -global.Col3(2);
+	
+	front = -global.Col3(2);
 	up = global.Col3(1);
 	right = global.Col3(0);
 
@@ -262,6 +261,15 @@ math::Quat ComponentTransform::GetRotation()
 
 math::float3 ComponentTransform::GetGlobalPosition()
 {
+	if (gameobject->movedFlag)
+	{
+		float4x4 newlocal = math::float4x4::FromTRS(position, rotation, scale);
+		if (gameobject->parent != nullptr)
+		{
+			return (gameobject->parent->GetGlobalTransform() * newlocal).Col3(3);
+		}
+		return newlocal.Col3(3);
+	}
 	return global.Col3(3);
 }
 
@@ -273,7 +281,6 @@ void ComponentTransform::Save(JSON_value* value) const
 	value->AddFloat3("Euler", eulerRotation);
 	value->AddFloat3("Scale", scale);
 	value->AddFloat4x4("Global", global);
-	value->AddUint("isLocked", isLocked);
 }
 
 void ComponentTransform::Load(JSON_value* value)
@@ -284,7 +291,6 @@ void ComponentTransform::Load(JSON_value* value)
 	eulerRotation = value->GetFloat3("Euler");
 	scale = value->GetFloat3("Scale");
 	global = value->GetFloat4x4("Global");
-	isLocked = value->GetUint("isLocked");
 	local = math::float4x4::FromTRS(position, rotation, scale);
 	RotationToEuler();
 }

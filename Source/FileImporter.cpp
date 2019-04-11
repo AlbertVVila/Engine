@@ -16,10 +16,9 @@
 #include "Resource.h"
 #include "ResourceModel.h"
 #include "ResourceMesh.h"
-
 #include "FileImporter.h"
-
 #include "JSON.h"
+
 
 #include <assert.h>
 #include <stack>
@@ -178,93 +177,6 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 	RELEASE(fake);
 
 	aiReleaseImport(&aiscene);
-	return true;
-
-
-	//-----------------------------------------------------------------------------
-
-
-
-	//GameObject* sceneGO = App->scene->CreateGameObject("Scene", App->scene->root);
-	//sceneGO->CreateComponent(ComponentType::Transform); // To move all around
-	//sceneGO->isBoneRoot = true;
-	//std::stack<aiNode*> stackNode;
-	//std::stack<GameObject*> stackParent;
-
-	//for (unsigned i = 0; i < aiscene.mRootNode->mNumChildren; ++i) //skip rootnode
-	//{
-	//	stackNode.push(aiscene.mRootNode->mChildren[i]);
-	//	stackParent.push(sceneGO);
-	//}
-
-	//while (!stackNode.empty())
-	//{
-	//	aiNode* aNode = stackNode.top(); stackNode.pop();
-	//	GameObject* goNode = new GameObject(aNode->mName.C_Str(), App->scene->GetNewUID());
-	//	stackParent.top()->InsertChild(goNode); stackParent.pop();
-
-	//	ComponentTransform* nodeTransform = (ComponentTransform*)goNode->CreateComponent(ComponentType::Transform);
-	//	ComponentTransform* nodeParentTransform = (ComponentTransform*)goNode->parent->GetComponent(ComponentType::Transform);
-	//	nodeTransform->UpdateTransform();
-	//	nodeTransform->SetLocalTransform(reinterpret_cast<const math::float4x4&>(aNode->mTransformation), nodeParentTransform->global);
-
-	//	for (unsigned i = 0u; i < aNode->mNumMeshes; ++i)
-	//	{
-	//		aiMesh* aMesh = aiscene.mMeshes[aNode->mMeshes[i]];
-	//		unsigned meshSize = GetMeshSize(*aMesh);
-	//		char* meshData = new char[meshSize];
-
-	//		ImportMesh(*aMesh, meshData);
-	//		ResourceMesh* mesh = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH);
-	//		
-	//		App->fsystem->Save((MESHES + std::to_string(((Resource*)mesh)->GetUID()) + MESHEXTENSION).c_str(), meshData, meshSize);
-	//		mesh->LoadInMemory();
-	//		RELEASE_ARRAY(meshData);
-
-	//		GameObject* meshGO = new GameObject("mesh",App->scene->GetNewUID());
-	//		ComponentRenderer* crenderer = (ComponentRenderer*)meshGO->CreateComponent(ComponentType::Renderer);
-	//		crenderer->mesh = mesh;
-	//		meshGO->CreateComponent(ComponentType::Transform);
-	//		goNode->InsertChild(meshGO);
-	//	}
-
-	//	for (unsigned i = 0u; i < aNode->mNumChildren; ++i)
-	//	{
-	//		stackNode.push(aNode->mChildren[i]);
-	//		stackParent.push(goNode);
-	//	}
-	//}
-
-	//// TODO: [Resource Manager] Change this on scene refactor
-	//GameObject *fake = new GameObject("fake",0);
-	//ProcessNode(meshMap, aiscene.mRootNode, &aiscene, fake);
-
-
-	//for (unsigned i = 0u; i < aiscene.mNumAnimations; i++)
-	//{
-	//	char* animationData = nullptr;
-
-	//	unsigned animationSize = GetAnimationSize(*aiscene.mAnimations[i]);
-	//	animationData = new char[animationSize];
-	//	ImportAnimation(*aiscene.mAnimations[i], animationData);
-
-	//	sceneGO->CreateComponent(ComponentType::Animation);
-	//	ComponentAnimation* animationComponent = (ComponentAnimation*)sceneGO->GetComponent(ComponentType::Animation);
-	//	unsigned animUid = App->scene->GetNewUID();
-
-	//	ResourceAnimation* animation = (ResourceAnimation*)App->resManager->CreateNewResource(TYPE::ANIMATION);
-
-	//	animation->Load(animationData, animUid);
-	//	animationComponent->anim = animation;
-
-	//	App->fsystem->Save((ANIMATIONS + std::to_string(animUid) + ANIMATIONEXTENSION).c_str(), animationData, animationSize);
-
-	//	RELEASE_ARRAY(animationData);
-	//}
-	////App->scene->SaveScene(*sceneGO, App->fsystem->GetFilename(file).c_str(), SCENES); //TODO: Make AutoCreation of folders or check
-	//aiReleaseImport(&aiscene);
-	//sceneGO->deleteFlag = true;
-
 	return true;
 }
 

@@ -145,7 +145,6 @@ Component* ComponentAnimation::Clone() const
 
 ComponentAnimation::ComponentAnimation(GameObject * gameobject) : Component(gameobject, ComponentType::Animation)
 {
-	//anim = new ResourceAnimation();
 	controller = new AnimationController();
 	PlayAnimation(100u);
 }

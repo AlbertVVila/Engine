@@ -1,6 +1,7 @@
 #ifndef __Component_h__
 #define __Component_h__
 
+#include "Globals.h"
 class GameObject;
 class JSON_value;
 
@@ -30,16 +31,13 @@ public:
 	bool DrawComponentState();
 
 	virtual void DrawProperties() = 0;
-	virtual void Enable()
+
+	ENGINE_API virtual void Enable(bool enable)
 	{
-		enabled = true;
+		enabled = enable;
 	}
 
 	virtual void Update() {}
-	virtual void Disable()
-	{
-		enabled = false;
-	}
 	
 	virtual bool CleanUp() 
 	{

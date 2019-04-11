@@ -29,10 +29,11 @@ public:
 
 	ENGINE_API void SetPosition(const math::float3& position);
 	ENGINE_API void SetRotation(const math::Quat& newQuat);
+
 	ENGINE_API math::float3 GetPosition();
 	ENGINE_API math::Quat GetRotation();
 
-	math::float3 GetGlobalPosition();
+	ENGINE_API math::float3 GetGlobalPosition();
 
 	void Save(JSON_value* value) const override;
 	void Load(JSON_value* value) override;
@@ -57,8 +58,6 @@ public:
 	math::float3 right = math::float3::zero;
 	math::float3 front = math::float3::zero;
 
-	bool isLocked = false;
-
 private:
 	math::float3 old_position = math::float3::zero;
 	math::float3 old_euler = math::float3::zero;
@@ -66,4 +65,3 @@ private:
 };
 
 #endif __ComponentTransform_h__
-

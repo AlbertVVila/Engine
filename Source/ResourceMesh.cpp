@@ -17,11 +17,10 @@
 #include "Math/MathConstants.h"
 #include "Math/float4x4.h"
 #include "Math/float2.h"
-#include "rapidjson/document.h"
-#include "rapidjson/filewritestream.h"
-#include "rapidjson/prettywriter.h"
 #include <stack>
 
+#include "ComponentRenderer.h"
+#include "GameObject.h"
 
 ResourceMesh::ResourceMesh(unsigned uid) : Resource(uid, TYPE::MESH)
 {

@@ -242,11 +242,6 @@ void ResourceMaterial::Reset(const ResourceMaterial& material)
 	metallic = material.metallic;
 }
 
-void ResourceMaterial::CalculateVariation()  //set combination of textures to get the appropiate shader
-{
-
-}
-
 int ResourceMaterial::Compare(const ResourceMaterial& material)
 {
 	if (shader != material.shader)
