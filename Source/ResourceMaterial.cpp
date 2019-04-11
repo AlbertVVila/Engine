@@ -371,10 +371,10 @@ void ResourceMaterial::Rename(const char* newName)
 	Resource::Rename(newName);
 
 	// Rename file in Library
+	App->fsystem->Rename(IMPORTED_MATERIALS, exportedFile.c_str(), newName);
+
 	std::string newExportedFile(newName);
 	newExportedFile += MATERIALEXT;
-	App->fsystem->Rename(IMPORTED_MATERIALS, exportedFile.c_str(), newExportedFile.c_str());
-
 	exportedFile = newExportedFile;
 }
 
