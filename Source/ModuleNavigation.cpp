@@ -19,6 +19,7 @@
 #include "Detour/DetourNavMesh.h"
 #include "Detour/DetourNavMeshBuilder.h"
 #include "Detour/DetourNavMeshQuery.h"
+#include "Recast/DebugUtils/RecastDebugDraw.h"
 
 ModuleNavigation::ModuleNavigation()
 {
@@ -29,6 +30,7 @@ ModuleNavigation::~ModuleNavigation()
 {
 	RELEASE_ARRAY(verts);
 	RELEASE_ARRAY(tris);
+	RELEASE_ARRAY(normals);
 }
 
 void ModuleNavigation::DrawGUI()
@@ -87,28 +89,31 @@ void ModuleNavigation::renderNavMesh()
 	glDepthMask(GL_TRUE);
 
 	const float texScale = 1.0f / (cellWidth * 10.0f);
-	/*
+	
 	if (m_drawMode != DRAWMODE_NAVMESH_TRANS)
 	{
 		// Draw mesh
 		duDebugDrawTriMeshSlope(&dd, verts, nverts,
-			tris, m_geom->getMesh()->getNormals(), ntris,
-			m_agentMaxSlope, texScale);
-		m_geom->drawOffMeshConnections(&m_dd);
+			tris, normals, ntris,
+			characterMaxSlopeScaling, texScale);
+		//m_geom->drawOffMeshConnections(&dd);//dont know about this one
 	}
 
 	glDisable(GL_FOG);
 	glDepthMask(GL_FALSE);
 
 	// Draw bounds
-	const float* bmin = m_geom->getNavMeshBoundsMin();
-	const float* bmax = m_geom->getNavMeshBoundsMax();
-	duDebugDrawBoxWire(&m_dd, bmin[0], bmin[1], bmin[2], bmax[0], bmax[1], bmax[2], duRGBA(255, 255, 255, 128), 1.0f);
-	m_dd.begin(DU_DRAW_POINTS, 5.0f);
-	m_dd.vertex(bmin[0], bmin[1], bmin[2], duRGBA(255, 255, 255, 128));
-	m_dd.end();
+	const float bmin[3] = { meshbox->minPoint.x, meshbox->minPoint.y, meshbox->minPoint.z };
+	const float bmax[3] = { meshbox->maxPoint.x, meshbox->maxPoint.y, meshbox->maxPoint.z };
+	//const float* bmin = { meshbox->minPoint.x, meshbox->minPoint.y, meshbox->minPoint.z };
+	//const float* bmax = { meshbox->maxPoint.x, meshbox->maxPoint.y, meshbox->maxPoint.z };
 
-	if (m_navMesh && m_navQuery &&
+	duDebugDrawBoxWire(&dd, bmin[0], bmin[1], bmin[2], bmax[0], bmax[1], bmax[2], duRGBA(255, 255, 255, 128), 1.0f);
+	dd.begin(DU_DRAW_POINTS, 5.0f);
+	dd.vertex(bmin[0], bmin[1], bmin[2], duRGBA(255, 255, 255, 128));
+	dd.end();
+
+	if (navMesh && navQuery &&
 		(m_drawMode == DRAWMODE_NAVMESH ||
 			m_drawMode == DRAWMODE_NAVMESH_TRANS ||
 			m_drawMode == DRAWMODE_NAVMESH_BVTREE ||
@@ -116,81 +121,81 @@ void ModuleNavigation::renderNavMesh()
 			m_drawMode == DRAWMODE_NAVMESH_INVIS))
 	{
 		if (m_drawMode != DRAWMODE_NAVMESH_INVIS)
-			duDebugDrawNavMeshWithClosedList(&m_dd, *m_navMesh, *m_navQuery, m_navMeshDrawFlags);
+			duDebugDrawNavMeshWithClosedList(&dd, *navMesh, *navQuery, m_navMeshDrawFlags);
 		if (m_drawMode == DRAWMODE_NAVMESH_BVTREE)
-			duDebugDrawNavMeshBVTree(&m_dd, *m_navMesh);
+			duDebugDrawNavMeshBVTree(&dd, *navMesh);
 		if (m_drawMode == DRAWMODE_NAVMESH_NODES)
-			duDebugDrawNavMeshNodes(&m_dd, *m_navQuery);
-		duDebugDrawNavMeshPolysWithFlags(&m_dd, *m_navMesh, SAMPLE_POLYFLAGS_DISABLED, duRGBA(0, 0, 0, 128));
+			duDebugDrawNavMeshNodes(&dd, *navQuery);
+		duDebugDrawNavMeshPolysWithFlags(&dd, *navMesh, SAMPLE_POLYFLAGS_DISABLED, duRGBA(0, 0, 0, 128));
 	}
 
 	glDepthMask(GL_TRUE);
 
-	if (m_chf && m_drawMode == DRAWMODE_COMPACT)
-		duDebugDrawCompactHeightfieldSolid(&m_dd, *m_chf);
+	if (chf && m_drawMode == DRAWMODE_COMPACT)
+		duDebugDrawCompactHeightfieldSolid(&dd, *chf);
 
-	if (m_chf && m_drawMode == DRAWMODE_COMPACT_DISTANCE)
-		duDebugDrawCompactHeightfieldDistance(&m_dd, *m_chf);
-	if (m_chf && m_drawMode == DRAWMODE_COMPACT_REGIONS)
-		duDebugDrawCompactHeightfieldRegions(&m_dd, *m_chf);
-	if (m_solid && m_drawMode == DRAWMODE_VOXELS)
+	if (chf && m_drawMode == DRAWMODE_COMPACT_DISTANCE)
+		duDebugDrawCompactHeightfieldDistance(&dd, *chf);
+	if (chf && m_drawMode == DRAWMODE_COMPACT_REGIONS)
+		duDebugDrawCompactHeightfieldRegions(&dd, *chf);
+	if (heightField && m_drawMode == DRAWMODE_VOXELS)
 	{
 		glEnable(GL_FOG);
-		duDebugDrawHeightfieldSolid(&m_dd, *m_solid);
+		duDebugDrawHeightfieldSolid(&dd, *heightField);
 		glDisable(GL_FOG);
 	}
-	if (m_solid && m_drawMode == DRAWMODE_VOXELS_WALKABLE)
+	if (heightField && m_drawMode == DRAWMODE_VOXELS_WALKABLE)
 	{
 		glEnable(GL_FOG);
-		duDebugDrawHeightfieldWalkable(&m_dd, *m_solid);
+		duDebugDrawHeightfieldWalkable(&dd, *heightField);
 		glDisable(GL_FOG);
 	}
-	if (m_cset && m_drawMode == DRAWMODE_RAW_CONTOURS)
+	if (cset && m_drawMode == DRAWMODE_RAW_CONTOURS)
 	{
 		glDepthMask(GL_FALSE);
-		duDebugDrawRawContours(&m_dd, *m_cset);
+		duDebugDrawRawContours(&dd, *cset);
 		glDepthMask(GL_TRUE);
 	}
-	if (m_cset && m_drawMode == DRAWMODE_BOTH_CONTOURS)
+	if (cset && m_drawMode == DRAWMODE_BOTH_CONTOURS)
 	{
 		glDepthMask(GL_FALSE);
-		duDebugDrawRawContours(&m_dd, *m_cset, 0.5f);
-		duDebugDrawContours(&m_dd, *m_cset);
+		duDebugDrawRawContours(&dd, *cset, 0.5f);
+		duDebugDrawContours(&dd, *cset);
 		glDepthMask(GL_TRUE);
 	}
-	if (m_cset && m_drawMode == DRAWMODE_CONTOURS)
+	if (cset && m_drawMode == DRAWMODE_CONTOURS)
 	{
 		glDepthMask(GL_FALSE);
-		duDebugDrawContours(&m_dd, *m_cset);
+		duDebugDrawContours(&dd, *cset);
 		glDepthMask(GL_TRUE);
 	}
-	if (m_chf && m_cset && m_drawMode == DRAWMODE_REGION_CONNECTIONS)
+	if (chf && cset && m_drawMode == DRAWMODE_REGION_CONNECTIONS)
 	{
-		duDebugDrawCompactHeightfieldRegions(&m_dd, *m_chf);
+		duDebugDrawCompactHeightfieldRegions(&dd, *chf);
 
 		glDepthMask(GL_FALSE);
-		duDebugDrawRegionConnections(&m_dd, *m_cset);
+		duDebugDrawRegionConnections(&dd, *cset);
 		glDepthMask(GL_TRUE);
 	}
-	if (m_pmesh && m_drawMode == DRAWMODE_POLYMESH)
+	if (pmesh && m_drawMode == DRAWMODE_POLYMESH)
 	{
 		glDepthMask(GL_FALSE);
-		duDebugDrawPolyMesh(&m_dd, *m_pmesh);
+		duDebugDrawPolyMesh(&dd, *pmesh);
 		glDepthMask(GL_TRUE);
 	}
-	if (m_dmesh && m_drawMode == DRAWMODE_POLYMESH_DETAIL)
+	if (dmesh && m_drawMode == DRAWMODE_POLYMESH_DETAIL)
 	{
 		glDepthMask(GL_FALSE);
-		duDebugDrawPolyMeshDetail(&m_dd, *m_dmesh);
+		duDebugDrawPolyMeshDetail(&dd, *dmesh);
 		glDepthMask(GL_TRUE);
 	}
 
-	m_geom->drawConvexVolumes(&m_dd);
+	drawConvexVolumes(&dd);
 
-	if (m_tool)
-		m_tool->handleRender();
-	renderToolStates();
-	*/
+	/*if (tool)
+		tool->handleRender();
+	renderToolStates();*/
+	
 	glDepthMask(GL_TRUE);
 }
 
@@ -217,7 +222,7 @@ void ModuleNavigation::generateNavigability()
 	cleanUpNavValues();
 
 	//const shit
-	const AABB* const meshbox  = static_cast <const AABB* const>(&App->scene->selected->bbox);
+	meshbox  = static_cast <const AABB*>(&App->scene->selected->bbox);
 	
 	const float bmin[3] = {meshbox->minPoint.x, meshbox->minPoint.y, meshbox->minPoint.z };
 	const float bmax[3] = {meshbox->maxPoint.x, meshbox->maxPoint.y, meshbox->maxPoint.z};
@@ -226,12 +231,15 @@ void ModuleNavigation::generateNavigability()
 
 	nverts = meshComponent->mesh->meshVertices.size();
 	verts = new float[nverts*3];
-	fillVertices(verts, nverts);
+	fillVertices();
 	//Indices
 	ntris = meshComponent->mesh->meshIndices.size()/3;
 	tris = new int[ntris*3];
 	
-	fillIndices(tris, ntris);
+	fillIndices();
+
+	//calculate normals
+	fillNormals();
 
 	//step 1. Initialize build config.
 	memset(&cfg, 0, sizeof(cfg));
@@ -590,7 +598,7 @@ void ModuleNavigation::generateNavigability()
 	
 }
 
-void ModuleNavigation::fillVertices(float* verts, const int nverts)
+void ModuleNavigation::fillVertices()
 {
 	for (int i = 0; i < nverts; ++i)
 	{
@@ -600,13 +608,42 @@ void ModuleNavigation::fillVertices(float* verts, const int nverts)
 	}
 }
 
-void ModuleNavigation::fillIndices(int* tris, const int ntris)
+void ModuleNavigation::fillIndices()
 {
 	for (int i = 0; i < ntris; ++i)
 	{
 		tris[i * 3] = meshComponent->mesh->meshIndices[i];
-		tris[i * 3 + 1] = meshComponent->mesh->meshIndices[i+1];
-		tris[i * 3 + 2] = meshComponent->mesh->meshIndices[i+2];
+		tris[i * 3 + 1] = meshComponent->mesh->meshIndices[i + 1];
+		tris[i * 3 + 2] = meshComponent->mesh->meshIndices[i + 2];
+	}
+}
+
+void ModuleNavigation::fillNormals()
+{
+	normals = new float[ntris*3];
+	for (int i = 0; i < ntris; ++i)
+	{
+		const float* v0 = &verts[tris[i] * 3];
+		const float* v1 = &verts[tris[i + 1] * 3];
+		const float* v2 = &verts[tris[i + 2] * 3];
+		float e0[3], e1[3];
+		for (int j = 0; j < 3; ++j)
+		{
+			e0[j] = v1[j] - v0[j];
+			e1[j] = v2[j] - v0[j];
+		}
+		float* n = &normals[i];
+		n[0] = e0[1] * e1[2] - e0[2] * e1[1];
+		n[1] = e0[2] * e1[0] - e0[0] * e1[2];
+		n[2] = e0[0] * e1[1] - e0[1] * e1[0];
+		float d = sqrtf(n[0] * n[0] + n[1] * n[1] + n[2] * n[2]);
+		if (d > 0)
+		{
+			d = 1.0f / d;
+			n[0] *= d;
+			n[1] *= d;
+			n[2] *= d;
+		}
 	}
 }
 
@@ -702,4 +739,72 @@ void DebugDrawGL::end()
 	glEnd();
 	glLineWidth(1.0f);
 	glPointSize(1.0f);
+}
+
+void drawConvexVolumes(struct duDebugDraw* dd, bool hilight = false)
+{
+	dd->depthMask(false);
+
+	dd->begin(DU_DRAW_TRIS);
+
+	for (int i = 0; i < m_volumeCount; ++i)
+	{
+		const ConvexVolume* vol = &m_volumes[i];
+		unsigned int col = duTransCol(dd->areaToCol(vol->area), 32);
+		for (int j = 0, k = vol->nverts - 1; j < vol->nverts; k = j++)
+		{
+			const float* va = &vol->verts[k * 3];
+			const float* vb = &vol->verts[j * 3];
+
+			dd->vertex(vol->verts[0], vol->hmax, vol->verts[2], col);
+			dd->vertex(vb[0], vol->hmax, vb[2], col);
+			dd->vertex(va[0], vol->hmax, va[2], col);
+
+			dd->vertex(va[0], vol->hmin, va[2], duDarkenCol(col));
+			dd->vertex(va[0], vol->hmax, va[2], col);
+			dd->vertex(vb[0], vol->hmax, vb[2], col);
+
+			dd->vertex(va[0], vol->hmin, va[2], duDarkenCol(col));
+			dd->vertex(vb[0], vol->hmax, vb[2], col);
+			dd->vertex(vb[0], vol->hmin, vb[2], duDarkenCol(col));
+		}
+	}
+
+	dd->end();
+
+	dd->begin(DU_DRAW_LINES, 2.0f);
+	for (int i = 0; i < m_volumeCount; ++i)
+	{
+		const ConvexVolume* vol = &m_volumes[i];
+		unsigned int col = duTransCol(dd->areaToCol(vol->area), 220);
+		for (int j = 0, k = vol->nverts - 1; j < vol->nverts; k = j++)
+		{
+			const float* va = &vol->verts[k * 3];
+			const float* vb = &vol->verts[j * 3];
+			dd->vertex(va[0], vol->hmin, va[2], duDarkenCol(col));
+			dd->vertex(vb[0], vol->hmin, vb[2], duDarkenCol(col));
+			dd->vertex(va[0], vol->hmax, va[2], col);
+			dd->vertex(vb[0], vol->hmax, vb[2], col);
+			dd->vertex(va[0], vol->hmin, va[2], duDarkenCol(col));
+			dd->vertex(va[0], vol->hmax, va[2], col);
+		}
+	}
+	dd->end();
+
+	dd->begin(DU_DRAW_POINTS, 3.0f);
+	for (int i = 0; i < m_volumeCount; ++i)
+	{
+		const ConvexVolume* vol = &m_volumes[i];
+		unsigned int col = duDarkenCol(duTransCol(dd->areaToCol(vol->area), 220));
+		for (int j = 0; j < vol->nverts; ++j)
+		{
+			dd->vertex(vol->verts[j * 3 + 0], vol->verts[j * 3 + 1] + 0.1f, vol->verts[j * 3 + 2], col);
+			dd->vertex(vol->verts[j * 3 + 0], vol->hmin, vol->verts[j * 3 + 2], col);
+			dd->vertex(vol->verts[j * 3 + 0], vol->hmax, vol->verts[j * 3 + 2], col);
+		}
+	}
+	dd->end();
+
+
+	dd->depthMask(true);
 }

@@ -96,11 +96,13 @@ private:
 	void removeNavMesh(unsigned ID);
 	void generateNavigability();
 
-	void fillVertices(float* verts, const int nverts);
-
-	void fillIndices(int* tris, const int ntris);
+	void fillVertices();
+	void fillIndices();
+	void fillNormals();
 
 	void cleanUpNavValues();
+
+	void drawConvexVolumes(struct duDebugDraw* dd, bool hilight = false);
 
 	//variables
 	float maxRadius = 5.0f;
@@ -144,6 +146,30 @@ private:
 	//navigation mesh properties
 	bool meshGenerated = false;
 
+	enum DrawMode
+	{
+		DRAWMODE_NAVMESH,
+		DRAWMODE_NAVMESH_TRANS,
+		DRAWMODE_NAVMESH_BVTREE,
+		DRAWMODE_NAVMESH_NODES,
+		DRAWMODE_NAVMESH_INVIS,
+		DRAWMODE_MESH,
+		DRAWMODE_VOXELS,
+		DRAWMODE_VOXELS_WALKABLE,
+		DRAWMODE_COMPACT,
+		DRAWMODE_COMPACT_DISTANCE,
+		DRAWMODE_COMPACT_REGIONS,
+		DRAWMODE_REGION_CONNECTIONS,
+		DRAWMODE_RAW_CONTOURS,
+		DRAWMODE_BOTH_CONTOURS,
+		DRAWMODE_CONTOURS,
+		DRAWMODE_POLYMESH,
+		DRAWMODE_POLYMESH_DETAIL,
+		MAX_DRAWMODE
+	};
+
+	DrawMode m_drawMode;
+
 	const ComponentRenderer* meshComponent = nullptr;
 
 	rcConfig cfg;
@@ -165,8 +191,10 @@ private:
 
 	int* tris = nullptr;
 	float* verts = nullptr;
+	float* normals = nullptr;
 	int nverts;
 	int ntris;
+	const AABB* meshbox = nullptr;
 };
 
 #endif
