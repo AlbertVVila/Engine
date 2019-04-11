@@ -248,7 +248,8 @@ void PanelBrowser::DrawFileIcon(const char* file, int itemNumber)
 
 	if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
-		fileSelected = App->resManager->GetWithoutLoad(file);
+		unsigned selectedUID = App->resManager->FindByFileInAssets((path + file).c_str());	
+		fileSelected = App->resManager->GetWithoutLoad(selectedUID);
 		ImGui::OpenPopup("File Context Menu");
 	}
 
@@ -260,7 +261,8 @@ void PanelBrowser::DrawFileIcon(const char* file, int itemNumber)
 
 	if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
-		fileSelected = App->resManager->GetWithoutLoad(file);
+		unsigned selectedUID = App->resManager->FindByFileInAssets((path + file).c_str());
+		fileSelected = App->resManager->GetWithoutLoad(selectedUID);
 		ImGui::OpenPopup("File Context Menu");
 	}
 
@@ -274,7 +276,10 @@ void PanelBrowser::DrawFileContextMenu()
 	if (ImGui::BeginPopup("File Context Menu"))
 	{
 		if (fileSelected == nullptr)
+		{ 
 			ImGui::EndPopup();
+			return;
+		}
 
 		if (ImGui::Selectable("Rename"))
 		{
