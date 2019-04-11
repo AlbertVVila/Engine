@@ -326,7 +326,7 @@ Resource* ModuleResourceManager::Get(const char* exportedFileName, TYPE type) co
 
 	// Look for it on the resource list
 	unsigned uid = FindByExportedFile(exportedFileName, type);
-	if (uid == 0)
+	if (uid == 0u)
 		return nullptr;
 
 	// Get resource by uid
@@ -343,6 +343,22 @@ ResourceMesh* ModuleResourceManager::GetMeshByName(const char* name)
 			ResourceMesh* mesh = (ResourceMesh*)it->second;
 			if (mesh->name == name)
 				return (ResourceMesh*)Get(mesh->GetUID());
+		}
+	}
+
+	return nullptr;
+}
+
+ResourceAnimation* ModuleResourceManager::GetAnimationByName(const char* name)
+{
+	std::vector<std::string> resourcesList;
+	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		if (it->second->GetType() == TYPE::ANIMATION)
+		{
+			ResourceAnimation* anim = (ResourceAnimation*)it->second;
+			if (anim->name == name)
+				return (ResourceAnimation*)Get(anim->GetUID());
 		}
 	}
 

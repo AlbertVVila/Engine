@@ -48,9 +48,10 @@ void ComponentAnimation::DrawProperties()
 			for (int n = 0; n < guiAnimations.size(); n++)
 			{
 				bool is_selected = (anim != nullptr ? anim->name == guiAnimations[n] : false);
-				if (ImGui::Selectable(guiAnimations[n].c_str(), is_selected) && anim->GetExportedFile() != guiAnimations[n])
+				if (ImGui::Selectable(guiAnimations[n].c_str(), is_selected))
 				{
-					SetAnimation(guiAnimations[n].c_str());
+					if (anim == nullptr || anim->name != guiAnimations[n])
+						SetAnimation(guiAnimations[n].c_str());
 				}
 				if (is_selected)
 				{
@@ -70,19 +71,13 @@ void ComponentAnimation::DrawProperties()
 void ComponentAnimation::SetAnimation(const char* animationFile)
 {
 	// Delete previous animation
-	if (anim != nullptr)
-	{
-		App->resManager->DeleteResource(anim->GetUID());
-	}
 
-	if (animationFile == nullptr)
-	{
-		anim = nullptr;
-	}
-	else
-	{
-		anim = (ResourceAnimation*)App->resManager->Get(animationFile, TYPE::ANIMATION);
-	}
+	if (anim != nullptr)
+		App->resManager->DeleteResource(anim->GetUID());
+
+	if (animationFile != nullptr)
+		anim = (ResourceAnimation*)App->resManager->GetAnimationByName(animationFile);
+
 	return;
 }
 
@@ -183,18 +178,18 @@ void ComponentAnimation::Load(JSON_value* value)
 
 	ResourceAnimation* a = (ResourceAnimation*)App->resManager->Get(uid);
 
-	//if (a != nullptr)
-	//{
-	//	anim = a;
-	//}
-	//else
-	//{
-	//	ResourceAnimation* res = (ResourceAnimation*)App->resManager->CreateNewResource(TYPE::ANIMATION, uid);
-	//	res->SetExportedFile(std::to_string(uid).c_str());
-	//	a = (ResourceAnimation*)App->resManager->Get(uid);
-	//	if (a != nullptr)
-	//		a = res;
-	//}
+	if (a != nullptr)
+	{
+		anim = a;
+	}
+	else
+	{
+		ResourceAnimation* res = (ResourceAnimation*)App->resManager->CreateNewResource(TYPE::ANIMATION, uid);
+		res->SetExportedFile(std::to_string(uid).c_str());
+		a = (ResourceAnimation*)App->resManager->Get(uid);
+		if (a != nullptr)
+			a = res;
+	}
 }
 
 void ComponentAnimation::SetIndexChannels(GameObject* GO)

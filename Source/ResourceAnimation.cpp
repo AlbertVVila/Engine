@@ -67,6 +67,13 @@ bool ResourceAnimation::LoadInMemory()
 
 void ResourceAnimation::DeleteFromMemory()
 {
+	for(const auto& channel : channels)
+	{
+		channel->numPositionKeys = 0u;
+		channel->numRotationKeys = 0u;
+		channel->positionSamples.clear();
+		channel->rotationSamples.clear();
+	}
 	channels.clear();
 }
 
