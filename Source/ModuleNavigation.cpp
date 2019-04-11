@@ -13,6 +13,7 @@
 #include "Geometry/AABB.h"
 
 #include "imgui.h"
+#include "SDL_opengl.h"
 
 #include "Recast/Recast.h"
 #include "Detour/DetourNavMesh.h"
@@ -47,6 +48,8 @@ void ModuleNavigation::DrawGUI()
 	}
 	if (ImGui::CollapsingHeader("Bake"))
 	{
+		ImGui::DragFloat("Cell width", &cellWidth, cellIncreaseSpeed, minCellSize, maxCellSize);
+		ImGui::DragFloat("Cell height", &cellHeight, cellIncreaseSpeed, minCellSize, maxCellSize);
 		ImGui::DragFloat("Agent max radius", &maxRadius, sliderIncreaseSpeed, minSliderValue, maxSliderValue);
 		ImGui::DragFloat("Agent max height", &maxHeight, sliderIncreaseSpeed, minSliderValue, maxSliderValue);
 		ImGui::DragFloat("Max slope scaling", &maxSlopeScaling, sliderIncreaseSpeed, minSliderValue, maxSlopeValue);
@@ -76,7 +79,119 @@ void ModuleNavigation::renderNavMesh()
 	if (m_drawMode != DRAWMODE_NAVMESH_INVIS)
 			duDebugDrawNavMeshWithClosedList(&m_dd, *m_navMesh, *m_navQuery, m_navMeshDrawFlags);
 	*/
-	duDebugDrawNavMeshWithClosedList(&dd, *navMesh, *navQuery, m_navMeshDrawFlags);
+	//duDebugDrawNavMeshWithClosedList(&dd, *navMesh, *navQuery, m_navMeshDrawFlags);
+
+	if (!meshGenerated)	return;
+
+	glEnable(GL_FOG);
+	glDepthMask(GL_TRUE);
+
+	const float texScale = 1.0f / (cellWidth * 10.0f);
+	/*
+	if (m_drawMode != DRAWMODE_NAVMESH_TRANS)
+	{
+		// Draw mesh
+		duDebugDrawTriMeshSlope(&dd, verts, nverts,
+			tris, m_geom->getMesh()->getNormals(), ntris,
+			m_agentMaxSlope, texScale);
+		m_geom->drawOffMeshConnections(&m_dd);
+	}
+
+	glDisable(GL_FOG);
+	glDepthMask(GL_FALSE);
+
+	// Draw bounds
+	const float* bmin = m_geom->getNavMeshBoundsMin();
+	const float* bmax = m_geom->getNavMeshBoundsMax();
+	duDebugDrawBoxWire(&m_dd, bmin[0], bmin[1], bmin[2], bmax[0], bmax[1], bmax[2], duRGBA(255, 255, 255, 128), 1.0f);
+	m_dd.begin(DU_DRAW_POINTS, 5.0f);
+	m_dd.vertex(bmin[0], bmin[1], bmin[2], duRGBA(255, 255, 255, 128));
+	m_dd.end();
+
+	if (m_navMesh && m_navQuery &&
+		(m_drawMode == DRAWMODE_NAVMESH ||
+			m_drawMode == DRAWMODE_NAVMESH_TRANS ||
+			m_drawMode == DRAWMODE_NAVMESH_BVTREE ||
+			m_drawMode == DRAWMODE_NAVMESH_NODES ||
+			m_drawMode == DRAWMODE_NAVMESH_INVIS))
+	{
+		if (m_drawMode != DRAWMODE_NAVMESH_INVIS)
+			duDebugDrawNavMeshWithClosedList(&m_dd, *m_navMesh, *m_navQuery, m_navMeshDrawFlags);
+		if (m_drawMode == DRAWMODE_NAVMESH_BVTREE)
+			duDebugDrawNavMeshBVTree(&m_dd, *m_navMesh);
+		if (m_drawMode == DRAWMODE_NAVMESH_NODES)
+			duDebugDrawNavMeshNodes(&m_dd, *m_navQuery);
+		duDebugDrawNavMeshPolysWithFlags(&m_dd, *m_navMesh, SAMPLE_POLYFLAGS_DISABLED, duRGBA(0, 0, 0, 128));
+	}
+
+	glDepthMask(GL_TRUE);
+
+	if (m_chf && m_drawMode == DRAWMODE_COMPACT)
+		duDebugDrawCompactHeightfieldSolid(&m_dd, *m_chf);
+
+	if (m_chf && m_drawMode == DRAWMODE_COMPACT_DISTANCE)
+		duDebugDrawCompactHeightfieldDistance(&m_dd, *m_chf);
+	if (m_chf && m_drawMode == DRAWMODE_COMPACT_REGIONS)
+		duDebugDrawCompactHeightfieldRegions(&m_dd, *m_chf);
+	if (m_solid && m_drawMode == DRAWMODE_VOXELS)
+	{
+		glEnable(GL_FOG);
+		duDebugDrawHeightfieldSolid(&m_dd, *m_solid);
+		glDisable(GL_FOG);
+	}
+	if (m_solid && m_drawMode == DRAWMODE_VOXELS_WALKABLE)
+	{
+		glEnable(GL_FOG);
+		duDebugDrawHeightfieldWalkable(&m_dd, *m_solid);
+		glDisable(GL_FOG);
+	}
+	if (m_cset && m_drawMode == DRAWMODE_RAW_CONTOURS)
+	{
+		glDepthMask(GL_FALSE);
+		duDebugDrawRawContours(&m_dd, *m_cset);
+		glDepthMask(GL_TRUE);
+	}
+	if (m_cset && m_drawMode == DRAWMODE_BOTH_CONTOURS)
+	{
+		glDepthMask(GL_FALSE);
+		duDebugDrawRawContours(&m_dd, *m_cset, 0.5f);
+		duDebugDrawContours(&m_dd, *m_cset);
+		glDepthMask(GL_TRUE);
+	}
+	if (m_cset && m_drawMode == DRAWMODE_CONTOURS)
+	{
+		glDepthMask(GL_FALSE);
+		duDebugDrawContours(&m_dd, *m_cset);
+		glDepthMask(GL_TRUE);
+	}
+	if (m_chf && m_cset && m_drawMode == DRAWMODE_REGION_CONNECTIONS)
+	{
+		duDebugDrawCompactHeightfieldRegions(&m_dd, *m_chf);
+
+		glDepthMask(GL_FALSE);
+		duDebugDrawRegionConnections(&m_dd, *m_cset);
+		glDepthMask(GL_TRUE);
+	}
+	if (m_pmesh && m_drawMode == DRAWMODE_POLYMESH)
+	{
+		glDepthMask(GL_FALSE);
+		duDebugDrawPolyMesh(&m_dd, *m_pmesh);
+		glDepthMask(GL_TRUE);
+	}
+	if (m_dmesh && m_drawMode == DRAWMODE_POLYMESH_DETAIL)
+	{
+		glDepthMask(GL_FALSE);
+		duDebugDrawPolyMeshDetail(&m_dd, *m_dmesh);
+		glDepthMask(GL_TRUE);
+	}
+
+	m_geom->drawConvexVolumes(&m_dd);
+
+	if (m_tool)
+		m_tool->handleRender();
+	renderToolStates();
+	*/
+	glDepthMask(GL_TRUE);
 }
 
 void ModuleNavigation::removeNavMesh(unsigned ID)
@@ -109,15 +224,11 @@ void ModuleNavigation::generateNavigability()
 	
 	meshComponent = static_cast <const ComponentRenderer*>(App->scene->selected->GetComponent(ComponentType::Renderer));
 
-	//reallocate arrays, should ask
-	//meshComponent->mesh->meshVertices.resize(meshComponent->mesh->meshVertices.capacity + 1);
-	//meshComponent->mesh->meshVertices.resize(meshComponent->mesh->meshVertices.capacity + 1);
-
-	const int nverts = meshComponent->mesh->meshVertices.size();
+	nverts = meshComponent->mesh->meshVertices.size();
 	verts = new float[nverts*3];
 	fillVertices(verts, nverts);
 	//Indices
-	const int ntris = meshComponent->mesh->meshIndices.size()/3;
+	ntris = meshComponent->mesh->meshIndices.size()/3;
 	tris = new int[ntris*3];
 	
 	fillIndices(tris, ntris);
@@ -473,6 +584,7 @@ void ModuleNavigation::generateNavigability()
 	/*if (m_tool)
 		m_tool->init(this);
 	initToolStates(this);*/
+	meshGenerated = true;
 
 	return;
 	
@@ -496,4 +608,98 @@ void ModuleNavigation::fillIndices(int* tris, const int ntris)
 		tris[i * 3 + 1] = meshComponent->mesh->meshIndices[i+1];
 		tris[i * 3 + 2] = meshComponent->mesh->meshIndices[i+2];
 	}
+}
+
+//debug draw implementations
+unsigned int SampleDebugDraw::areaToCol(unsigned int area)
+{
+	switch (area)
+	{
+		// Ground (0) : light blue
+	case SAMPLE_POLYAREA_GROUND: return duRGBA(0, 192, 255, 255);
+		// Water : blue
+	case SAMPLE_POLYAREA_WATER: return duRGBA(0, 0, 255, 255);
+		// Road : brown
+	case SAMPLE_POLYAREA_ROAD: return duRGBA(50, 20, 12, 255);
+		// Door : cyan
+	case SAMPLE_POLYAREA_DOOR: return duRGBA(0, 255, 255, 255);
+		// Grass : green
+	case SAMPLE_POLYAREA_GRASS: return duRGBA(0, 255, 0, 255);
+		// Jump : yellow
+	case SAMPLE_POLYAREA_JUMP: return duRGBA(255, 255, 0, 255);
+		// Unexpected : red
+	default: return duRGBA(255, 0, 0, 255);
+	}
+}
+
+void DebugDrawGL::depthMask(bool state)
+{
+	glDepthMask(state ? GL_TRUE : GL_FALSE);
+}
+
+void DebugDrawGL::texture(bool state)
+{
+	if (state)
+	{
+		glEnable(GL_TEXTURE_2D);
+		//g_tex.bind();
+	}
+	else
+	{
+		glDisable(GL_TEXTURE_2D);
+	}
+}
+
+void DebugDrawGL::begin(duDebugDrawPrimitives prim, float size)
+{
+	switch (prim)
+	{
+	case DU_DRAW_POINTS:
+		glPointSize(size);
+		glBegin(GL_POINTS);
+		break;
+	case DU_DRAW_LINES:
+		glLineWidth(size);
+		glBegin(GL_LINES);
+		break;
+	case DU_DRAW_TRIS:
+		glBegin(GL_TRIANGLES);
+		break;
+	case DU_DRAW_QUADS:
+		glBegin(GL_QUADS);
+		break;
+	};
+}
+
+void DebugDrawGL::vertex(const float* pos, unsigned int color)
+{
+	glColor4ubv((GLubyte*)&color);
+	glVertex3fv(pos);
+}
+
+void DebugDrawGL::vertex(const float x, const float y, const float z, unsigned int color)
+{
+	glColor4ubv((GLubyte*)&color);
+	glVertex3f(x, y, z);
+}
+
+void DebugDrawGL::vertex(const float* pos, unsigned int color, const float* uv)
+{
+	glColor4ubv((GLubyte*)&color);
+	glTexCoord2fv(uv);
+	glVertex3fv(pos);
+}
+
+void DebugDrawGL::vertex(const float x, const float y, const float z, unsigned int color, const float u, const float v)
+{
+	glColor4ubv((GLubyte*)&color);
+	glTexCoord2f(u, v);
+	glVertex3f(x, y, z);
+}
+
+void DebugDrawGL::end()
+{
+	glEnd();
+	glLineWidth(1.0f);
+	glPointSize(1.0f);
 }

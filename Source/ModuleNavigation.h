@@ -5,6 +5,7 @@
 #include <vector>
 #include "Recast/Recast.h"
 #include "DebugUtils/DetourDebugDraw.h"
+#include "DebugUtils/DebugDraw.h"
 //<>
 //fwd declarations
 class GameObject;
@@ -47,6 +48,26 @@ enum SamplePartitionType
 	SAMPLE_PARTITION_WATERSHED,
 	SAMPLE_PARTITION_MONOTONE,
 	SAMPLE_PARTITION_LAYERS,
+};
+
+/// OpenGL debug draw implementation.
+class DebugDrawGL : public duDebugDraw
+{
+public:
+	virtual void depthMask(bool state);
+	virtual void texture(bool state);
+	virtual void begin(duDebugDrawPrimitives prim, float size = 1.0f);
+	virtual void vertex(const float* pos, unsigned int color);
+	virtual void vertex(const float x, const float y, const float z, unsigned int color);
+	virtual void vertex(const float* pos, unsigned int color, const float* uv);
+	virtual void vertex(const float x, const float y, const float z, unsigned int color, const float u, const float v);
+	virtual void end();
+};
+
+class SampleDebugDraw : public DebugDrawGL
+{
+public:
+	virtual unsigned int areaToCol(unsigned int area);
 };
 
 class ModuleNavigation :
@@ -97,9 +118,12 @@ private:
 	const float minSliderValue = 0.01f;
 	const float maxSliderValue = 100.0f;
 	const float maxSlopeValue = 60.0f;
+	const float cellIncreaseSpeed = 5.0f;
+	const float minCellSize = 10.0f;
+	const float maxCellSize = 100.0f;
 
 	//newer config
-	float cellWidth = 10.f;
+	float cellWidth = 20.f;
 	float cellHeight = 10.f;
 	float edgeMaxLength = 30.f;
 	float edgeMaxError = 5.f;
@@ -118,6 +142,8 @@ private:
 	int partitionType = 0;
 
 	//navigation mesh properties
+	bool meshGenerated = false;
+
 	const ComponentRenderer* meshComponent = nullptr;
 
 	rcConfig cfg;
@@ -139,6 +165,8 @@ private:
 
 	int* tris = nullptr;
 	float* verts = nullptr;
+	int nverts;
+	int ntris;
 };
 
 #endif
