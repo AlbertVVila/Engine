@@ -41,10 +41,11 @@ void ResourceScene::Rename(const char* newName)
 	Resource::Rename(newName);
 
 	// Rename file in Library
+	App->fsystem->Rename(IMPORTED_SCENES, exportedFile.c_str(), newName);
+
+	// Update exported file
 	std::string newExportedFile(newName);
 	newExportedFile += SCENEEXTENSION;
-	App->fsystem->Rename(IMPORTED_SCENES, exportedFile.c_str(), newExportedFile.c_str());
-
 	exportedFile = newExportedFile;
 }
 
