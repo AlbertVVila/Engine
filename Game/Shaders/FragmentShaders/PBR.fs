@@ -164,8 +164,8 @@ void main()
 	vec3 normal = CalculateNormal();	
 	vec4 albedo = get_albedo();
 	
-	vec3 F0 = vec3(.04f);
-	F0 = mix(F0, albedo.rgb, material.metallic);
+	vec3 F0 = vec3(.44f);
+	F0 = mix(F0, albedo.rgb, material.metallic); //RGB specular
 
 	vec3 color = vec3(0); 
 
