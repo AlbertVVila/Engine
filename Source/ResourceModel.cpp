@@ -5,6 +5,7 @@
 #include "ModuleResourceManager.h"
 
 #include "ResourceMesh.h"
+#include "ResourceScene.h"
 #include "JSON.h"
 
 #include "imgui.h"
@@ -139,6 +140,14 @@ void ResourceModel::AddMesh(ResourceMesh* mesh)
 
 void ResourceModel::Rename(const char* newName)
 {
+	// Change name of the scene saved for the model
+	std::string sceneFile(App->fsystem->GetFilename(file.c_str()));
+	sceneFile += SCENEEXTENSION;
+	ResourceScene* scene = (ResourceScene*)App->resManager->Get(sceneFile.c_str());
+	if(scene != nullptr)
+		scene->Rename(newName);
+
+
 	Resource::Rename(newName);
 
 	std::string newExportedFile(newName);
@@ -154,6 +163,13 @@ void ResourceModel::Rename(const char* newName)
 
 void ResourceModel::Delete()
 {
+	// Delete scene saved for the model
+	std::string sceneFile(App->fsystem->GetFilename(file.c_str()));
+	sceneFile += SCENEEXTENSION;
+	ResourceScene* scene = (ResourceScene*)App->resManager->Get(sceneFile.c_str());
+	if (scene != nullptr)
+		scene->Delete();
+
 	Resource::Delete();
 
 	// Delete Resource from ResourceManager
