@@ -6,7 +6,7 @@
 #include "Resource.h"
 #include "AnimationController.h"
 #include "StateMachine.h"
-#include "NodeEditor.h"
+
 
 #include "Math/float4x4.h"
 #include "Math/float3.h"
@@ -17,8 +17,6 @@ class StateMachine;
 class ComponentAnimation : public Component
 {
 public:
-	typedef ax::NodeEditor::EditorContext EditorContext;
-
 
 	void DrawProperties();
 	Component* Clone() const;

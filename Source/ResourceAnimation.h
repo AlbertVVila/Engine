@@ -51,8 +51,6 @@ public:
 	unsigned numberOfChannels = 0u;
 	unsigned durationInSeconds = 0u;
 
-	unsigned UID = 0u;
-
 	int currentSample = 0u;
 	int currentFrame = 0u;
 
