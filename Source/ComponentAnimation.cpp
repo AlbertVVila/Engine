@@ -159,7 +159,7 @@ bool ComponentAnimation::CleanUp()
 {
 	if (anim != nullptr)
 	{
-		App->resManager->DeleteResource(anim->UID);
+		App->resManager->DeleteResource(anim->GetUID());
 	}
 	return true;
 }
