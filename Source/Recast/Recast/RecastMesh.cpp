@@ -1098,7 +1098,7 @@ bool rcBuildPolyMesh(rcContext* ctx, rcContourSet& cset, const int nvp, rcPolyMe
 		ctx->log(RC_LOG_ERROR, "rcBuildPolyMesh: Out of memory 'polys' (%d).", maxVertsPerCont*nvp);
 		return false;
 	}
-	unsigned short* tmpPoly = &polys[maxVertsPerCont*nvp];
+	unsigned short* tmpPoly = &polys[maxVertsPerCont*nvp];//tocheck following loop
 
 	for (int i = 0; i < cset.nconts; ++i)
 	{

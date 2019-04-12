@@ -857,7 +857,7 @@ bool rcBuildContours(rcContext* ctx, rcCompactHeightfield& chf,
 		return false;
 	cset.nconts = 0;
 	
-	rcScopedDelete<unsigned char> flags((unsigned char*)rcAlloc(sizeof(unsigned char)*chf.spanCount, RC_ALLOC_TEMP));
+	rcScopedDelete<unsigned char> flags((unsigned char*)rcAlloc(sizeof(unsigned char)*chf.spanCount, RC_ALLOC_TEMP));//tocheck
 	if (!flags)
 	{
 		ctx->log(RC_LOG_ERROR, "rcBuildContours: Out of memory 'flags' (%d).", chf.spanCount);

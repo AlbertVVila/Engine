@@ -81,6 +81,8 @@ public:
 	void navigableObjectToggled(GameObject* obj, const bool newState);
 	
 	void renderNavMesh();
+
+	void cleanValues();
 	
 
 	//variables
@@ -102,7 +104,8 @@ private:
 
 	void cleanUpNavValues();
 
-	void drawConvexVolumes(struct duDebugDraw* dd, bool hilight = false);
+	void drawMeshTile(duDebugDraw* dd, const dtNavMesh& mesh, const dtNavMeshQuery* query,
+		const dtMeshTile* tile, unsigned char flags);
 
 	//variables
 	float maxRadius = 5.0f;
@@ -112,9 +115,9 @@ private:
 	
 	char newCharacter[64] = "New Character";
 	float characterMaxRadius = 5.0f;
-	float characterMaxHeight = 5.0f;
+	float characterMaxHeight = 5.0f;//might need higher val
 	float characterMaxSlopeScaling = 20.0f;
-	float characterMaxStepHeightScaling = 5.0f;
+	float characterMaxStepHeightScaling = 5.0f;//might need higher value
 	
 	const float sliderIncreaseSpeed = 0.03f;
 	const float minSliderValue = 0.01f;
@@ -129,11 +132,11 @@ private:
 	float cellHeight = 10.f;
 	float edgeMaxLength = 30.f;
 	float edgeMaxError = 5.f;
-	int minRegionSize = 10;
+	int minRegionSize = 8;
 	int mergedRegionSize = 20;
-	int vertexPerPoly = 10;
+	int vertexPerPoly = 6;
 	float sampleDistance = 10;
-	float sampleMaxError = 2;
+	float sampleMaxError = 1;
 
 	//filters
 	bool filterLowHangingObstacles;
@@ -173,18 +176,18 @@ private:
 	const ComponentRenderer* meshComponent = nullptr;
 
 	rcConfig cfg;
-	rcContext* ctx;
-	rcCompactHeightfield* chf;
-	rcHeightfield* heightField;
-	rcContourSet* cset;
-	rcPolyMesh* pmesh;
-	rcPolyMeshDetail* dmesh;
+	rcContext* ctx = nullptr;
+	rcCompactHeightfield* chf = nullptr;
+	rcHeightfield* heightField = nullptr;
+	rcContourSet* cset = nullptr;
+	rcPolyMesh* pmesh = nullptr;
+	rcPolyMeshDetail* dmesh = nullptr;
 
-	dtNavMesh* navMesh;
-	dtNavMeshQuery* navQuery;
+	dtNavMesh* navMesh = nullptr;
+	dtNavMeshQuery* navQuery = nullptr;
 
 	unsigned char m_navMeshDrawFlags = DU_DRAWNAVMESH_OFFMESHCONS | DU_DRAWNAVMESH_CLOSEDLIST;
-	SampleDebugDraw dd;
+	SampleDebugDraw dt_dd;
 
 	unsigned char* m_triareas = nullptr;
 	bool m_keepInterResults = true;

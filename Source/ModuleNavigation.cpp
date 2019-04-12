@@ -4,6 +4,7 @@
 
 #include "ModuleNavigation.h"
 #include "ModuleScene.h"
+#include "ModuleDebugDraw.h"
 
 #include "Component.h"
 #include "ComponentRenderer.h"
@@ -14,15 +15,19 @@
 
 #include "imgui.h"
 #include "SDL_opengl.h"
+#include "debugdraw.h"
 
 #include "Recast/Recast.h"
 #include "Detour/DetourNavMesh.h"
 #include "Detour/DetourNavMeshBuilder.h"
 #include "Detour/DetourNavMeshQuery.h"
+#include "Recast/DebugUtils/DetourDebugDraw.h"
 #include "Recast/DebugUtils/RecastDebugDraw.h"
 
 ModuleNavigation::ModuleNavigation()
 {
+	ctx = new rcContext();
+	navQuery = dtAllocNavMeshQuery();
 }
 
 
@@ -31,6 +36,25 @@ ModuleNavigation::~ModuleNavigation()
 	RELEASE_ARRAY(verts);
 	RELEASE_ARRAY(tris);
 	RELEASE_ARRAY(normals);
+}
+
+void ModuleNavigation::cleanValues()
+{
+	RELEASE_ARRAY(m_triareas);
+	m_triareas = 0;
+	rcFreeHeightField(heightField);
+	heightField = 0;
+	rcFreeCompactHeightfield(chf);
+	chf = 0;
+	rcFreeContourSet(cset);
+	cset = 0;
+	rcFreePolyMesh(pmesh);
+	pmesh = 0;
+	rcFreePolyMeshDetail(dmesh);
+	dmesh = 0;
+	dtFreeNavMesh(navMesh);
+	navMesh = 0;
+	//will need to free navquery, navmesh, crowd
 }
 
 void ModuleNavigation::DrawGUI()
@@ -76,6 +100,17 @@ void ModuleNavigation::navigableObjectToggled(GameObject* obj, const bool newSta
 
 void ModuleNavigation::renderNavMesh()
 {
+	if (!meshGenerated)	return;
+	//get a const instance of navmesh
+	const dtNavMesh* tmpNavMesh = navMesh;
+	for (int i = 0; i < navMesh->getMaxTiles(); ++i)
+	{
+		const dtMeshTile* tile = tmpNavMesh->getTile(i);
+		if (!tile->header) continue;
+		drawMeshTile(&dt_dd, *navMesh, 0, tile, 0);
+	}
+
+	//dd::xzSquareGrid(-500.0f * 10, 500.0f * 10, 0.0f, 1.0f * 10, math::float3(0.65f, 0.65f, 0.65f));
 	/*
 	from sample_solomesh.cpp in recast its in the line 268, the lib of the function is detourdebugdraw.h, gonna need some structures.
 	if (m_drawMode != DRAWMODE_NAVMESH_INVIS)
@@ -83,7 +118,7 @@ void ModuleNavigation::renderNavMesh()
 	*/
 	//duDebugDrawNavMeshWithClosedList(&dd, *navMesh, *navQuery, m_navMeshDrawFlags);
 
-	if (!meshGenerated)	return;
+	/*if (!meshGenerated)	return;
 
 	glEnable(GL_FOG);
 	glDepthMask(GL_TRUE);
@@ -190,13 +225,13 @@ void ModuleNavigation::renderNavMesh()
 		glDepthMask(GL_TRUE);
 	}
 
-	drawConvexVolumes(&dd);
+	drawConvexVolumes(&dd);*/
 
 	/*if (tool)
 		tool->handleRender();
 	renderToolStates();*/
 	
-	glDepthMask(GL_TRUE);
+	//glDepthMask(GL_TRUE);
 }
 
 void ModuleNavigation::removeNavMesh(unsigned ID)
@@ -219,7 +254,7 @@ void ModuleNavigation::cleanUpNavValues()
 void ModuleNavigation::generateNavigability()
 {
 	//clean old info
-	cleanUpNavValues();
+	cleanValues();
 
 	//const shit
 	meshbox  = static_cast <const AABB*>(&App->scene->selected->bbox);
@@ -276,7 +311,7 @@ void ModuleNavigation::generateNavigability()
 	//step 2. Rasterize input polygon soup.
 
 	// Allocate voxel heightfield where we rasterize our input data to.
-	heightField = rcAllocHeightfield();
+	heightField = rcAllocHeightfield();//this one does not get the spans correctly
 	if (!heightField)
 	{
 		LOG("buildNavigation: Out of memory 'solid'.");
@@ -302,12 +337,12 @@ void ModuleNavigation::generateNavigability()
 	// If your input data is multiple meshes, you can transform them here, calculate
 	// the are type for each of the meshes and rasterize them.
 	memset(m_triareas, 0, ntris * sizeof(unsigned char));
-	rcMarkWalkableTriangles(ctx, cfg.walkableSlopeAngle, verts, nverts, tris, ntris, m_triareas);
-	/*if (!rcRasterizeTriangles(ctx, verts, nverts, tris, m_triareas, ntris, *heightField, cfg.walkableClimb))
+	rcMarkWalkableTriangles(ctx, cfg.walkableSlopeAngle, verts, nverts, tris, ntris, m_triareas);//we have more verts than tris, may not be right
+	if (!rcRasterizeTriangles(ctx, verts, nverts, tris, m_triareas, ntris, *heightField, cfg.walkableClimb))
 	{
 		LOG("buildNavigation: Could not rasterize triangles.");
 		return;
-	}*/
+	}
 
 	if (!m_keepInterResults)
 	{
@@ -322,7 +357,7 @@ void ModuleNavigation::generateNavigability()
 	if (filterLowHangingObstacles)
 		rcFilterLowHangingWalkableObstacles(ctx, cfg.walkableClimb, *heightField);
 	if (filterLedgeSpans)
-		rcFilterLedgeSpans(ctx, cfg.walkableHeight, cfg.walkableClimb, *heightField);
+		rcFilterLedgeSpans(ctx, cfg.walkableHeight, cfg.walkableClimb, *heightField);//a little too complex
 	if (filterWalkableLowHeightSpans)
 		rcFilterWalkableLowHeightSpans(ctx, cfg.walkableHeight, *heightField);
 
@@ -389,14 +424,14 @@ void ModuleNavigation::generateNavigability()
 	if (partitionType == SAMPLE_PARTITION_WATERSHED)
 	{
 		// Prepare for region partitioning, by calculating distance field along the walkable surface.
-		if (!rcBuildDistanceField(ctx, *chf))
+		if (!rcBuildDistanceField(ctx, *chf))//tocheck
 		{
 			LOG("buildNavigation: Could not build distance field.");
 			return;
 		}
 		
 		// Partition the walkable surface into simple regions without holes.
-		if (!rcBuildRegions(ctx, *chf, 0, cfg.minRegionArea, cfg.mergeRegionArea))
+		if (!rcBuildRegions(ctx, *chf, 0, cfg.minRegionArea, cfg.mergeRegionArea))//tocheck
 		{
 			LOG("buildNavigation: Could not build watershed regions.");
 			return;
@@ -445,12 +480,13 @@ void ModuleNavigation::generateNavigability()
 	
 	// Build polygon navmesh from the contours.
 	pmesh = rcAllocPolyMesh();
+
 	if (!pmesh)
 	{
 		LOG("buildNavigation: Out of memory 'pmesh'.");
 		return;
 	}
-	if (!rcBuildPolyMesh(ctx, *cset, cfg.maxVertsPerPoly, *pmesh))
+	if (!rcBuildPolyMesh(ctx, *cset, cfg.maxVertsPerPoly, *pmesh))//gotta adapt this one to fill pmesh with the values
 	{
 		LOG("buildNavigation: Could not triangulate contours.");
 		return;
@@ -551,7 +587,7 @@ void ModuleNavigation::generateNavigability()
 		
 		if (!dtCreateNavMeshData(&params, &navData, &navDataSize))
 		{
-			LOG("Could not build Detour navmesh.");
+			LOG("Could not build Detour navmesh");
 			return;
 		}
 		
@@ -741,70 +777,119 @@ void DebugDrawGL::end()
 	glPointSize(1.0f);
 }
 
-void drawConvexVolumes(struct duDebugDraw* dd, bool hilight = false)
+void ModuleNavigation::drawMeshTile(duDebugDraw* dd, const dtNavMesh& mesh, const dtNavMeshQuery* query,
+	const dtMeshTile* tile, unsigned char flags)
 {
+	dtPolyRef base = mesh.getPolyRefBase(tile);
+
+	int tileNum = mesh.decodePolyIdTile(base);
+	const unsigned int tileColor = duIntToCol(tileNum, 128);
+
 	dd->depthMask(false);
 
 	dd->begin(DU_DRAW_TRIS);
-
-	for (int i = 0; i < m_volumeCount; ++i)
+	for (int i = 0; i < tile->header->polyCount; ++i)
 	{
-		const ConvexVolume* vol = &m_volumes[i];
-		unsigned int col = duTransCol(dd->areaToCol(vol->area), 32);
-		for (int j = 0, k = vol->nverts - 1; j < vol->nverts; k = j++)
+		const dtPoly* p = &tile->polys[i];
+		if (p->getType() == DT_POLYTYPE_OFFMESH_CONNECTION)	// Skip off-mesh links.
+			continue;
+
+		const dtPolyDetail* pd = &tile->detailMeshes[i];
+
+		unsigned int col;
+		if (query && query->isInClosedList(base | (dtPolyRef)i))
+			col = duRGBA(255, 196, 0, 64);
+		else
 		{
-			const float* va = &vol->verts[k * 3];
-			const float* vb = &vol->verts[j * 3];
-
-			dd->vertex(vol->verts[0], vol->hmax, vol->verts[2], col);
-			dd->vertex(vb[0], vol->hmax, vb[2], col);
-			dd->vertex(va[0], vol->hmax, va[2], col);
-
-			dd->vertex(va[0], vol->hmin, va[2], duDarkenCol(col));
-			dd->vertex(va[0], vol->hmax, va[2], col);
-			dd->vertex(vb[0], vol->hmax, vb[2], col);
-
-			dd->vertex(va[0], vol->hmin, va[2], duDarkenCol(col));
-			dd->vertex(vb[0], vol->hmax, vb[2], col);
-			dd->vertex(vb[0], vol->hmin, vb[2], duDarkenCol(col));
+			if (flags & DU_DRAWNAVMESH_COLOR_TILES)
+				col = tileColor;
+			else
+				col = duTransCol(dd->areaToCol(p->getArea()), 64);
 		}
-	}
 
-	dd->end();
-
-	dd->begin(DU_DRAW_LINES, 2.0f);
-	for (int i = 0; i < m_volumeCount; ++i)
-	{
-		const ConvexVolume* vol = &m_volumes[i];
-		unsigned int col = duTransCol(dd->areaToCol(vol->area), 220);
-		for (int j = 0, k = vol->nverts - 1; j < vol->nverts; k = j++)
+		for (int j = 0; j < pd->triCount; ++j)
 		{
-			const float* va = &vol->verts[k * 3];
-			const float* vb = &vol->verts[j * 3];
-			dd->vertex(va[0], vol->hmin, va[2], duDarkenCol(col));
-			dd->vertex(vb[0], vol->hmin, vb[2], duDarkenCol(col));
-			dd->vertex(va[0], vol->hmax, va[2], col);
-			dd->vertex(vb[0], vol->hmax, vb[2], col);
-			dd->vertex(va[0], vol->hmin, va[2], duDarkenCol(col));
-			dd->vertex(va[0], vol->hmax, va[2], col);
+			const unsigned char* t = &tile->detailTris[(pd->triBase + j) * 4];
+			for (int k = 0; k < 3; ++k)
+			{
+				if (t[k] < p->vertCount)
+					dd->vertex(&tile->verts[p->verts[t[k]] * 3], col);
+				else
+					dd->vertex(&tile->detailVerts[(pd->vertBase + t[k] - p->vertCount) * 3], col);
+			}
 		}
 	}
 	dd->end();
 
+	// Draw inter poly boundaries
+	//drawPolyBoundaries(dd, tile, duRGBA(0, 48, 64, 32), 1.5f, true);
+
+	// Draw outer poly boundaries
+	//drawPolyBoundaries(dd, tile, duRGBA(0, 48, 64, 220), 2.5f, false);
+
+	if (flags & DU_DRAWNAVMESH_OFFMESHCONS)
+	{
+		dd->begin(DU_DRAW_LINES, 2.0f);
+		for (int i = 0; i < tile->header->polyCount; ++i)
+		{
+			const dtPoly* p = &tile->polys[i];
+			if (p->getType() != DT_POLYTYPE_OFFMESH_CONNECTION)	// Skip regular polys.
+				continue;
+
+			unsigned int col, col2;
+			if (query && query->isInClosedList(base | (dtPolyRef)i))
+				col = duRGBA(255, 196, 0, 220);
+			else
+				col = duDarkenCol(duTransCol(dd->areaToCol(p->getArea()), 220));
+
+			const dtOffMeshConnection* con = &tile->offMeshCons[i - tile->header->offMeshBase];
+			const float* va = &tile->verts[p->verts[0] * 3];
+			const float* vb = &tile->verts[p->verts[1] * 3];
+
+			// Check to see if start and end end-points have links.
+			bool startSet = false;
+			bool endSet = false;
+			for (unsigned int k = p->firstLink; k != DT_NULL_LINK; k = tile->links[k].next)
+			{
+				if (tile->links[k].edge == 0)
+					startSet = true;
+				if (tile->links[k].edge == 1)
+					endSet = true;
+			}
+
+			// End points and their on-mesh locations.
+			dd->vertex(va[0], va[1], va[2], col);
+			dd->vertex(con->pos[0], con->pos[1], con->pos[2], col);
+			col2 = startSet ? col : duRGBA(220, 32, 16, 196);
+			duAppendCircle(dd, con->pos[0], con->pos[1] + 0.1f, con->pos[2], con->rad, col2);
+
+			dd->vertex(vb[0], vb[1], vb[2], col);
+			dd->vertex(con->pos[3], con->pos[4], con->pos[5], col);
+			col2 = endSet ? col : duRGBA(220, 32, 16, 196);
+			duAppendCircle(dd, con->pos[3], con->pos[4] + 0.1f, con->pos[5], con->rad, col2);
+
+			// End point vertices.
+			dd->vertex(con->pos[0], con->pos[1], con->pos[2], duRGBA(0, 48, 64, 196));
+			dd->vertex(con->pos[0], con->pos[1] + 0.2f, con->pos[2], duRGBA(0, 48, 64, 196));
+
+			dd->vertex(con->pos[3], con->pos[4], con->pos[5], duRGBA(0, 48, 64, 196));
+			dd->vertex(con->pos[3], con->pos[4] + 0.2f, con->pos[5], duRGBA(0, 48, 64, 196));
+
+			// Connection arc.
+			duAppendArc(dd, con->pos[0], con->pos[1], con->pos[2], con->pos[3], con->pos[4], con->pos[5], 0.25f,
+				(con->flags & 1) ? 0.6f : 0, 0.6f, col);
+		}
+		dd->end();
+	}
+
+	const unsigned int vcol = duRGBA(0, 0, 0, 196);
 	dd->begin(DU_DRAW_POINTS, 3.0f);
-	for (int i = 0; i < m_volumeCount; ++i)
+	for (int i = 0; i < tile->header->vertCount; ++i)
 	{
-		const ConvexVolume* vol = &m_volumes[i];
-		unsigned int col = duDarkenCol(duTransCol(dd->areaToCol(vol->area), 220));
-		for (int j = 0; j < vol->nverts; ++j)
-		{
-			dd->vertex(vol->verts[j * 3 + 0], vol->verts[j * 3 + 1] + 0.1f, vol->verts[j * 3 + 2], col);
-			dd->vertex(vol->verts[j * 3 + 0], vol->hmin, vol->verts[j * 3 + 2], col);
-			dd->vertex(vol->verts[j * 3 + 0], vol->hmax, vol->verts[j * 3 + 2], col);
-		}
+		const float* v = &tile->verts[i * 3];
+		dd->vertex(v[0], v[1], v[2], vcol);
 	}
 	dd->end();
-
 
 	dd->depthMask(true);
 }

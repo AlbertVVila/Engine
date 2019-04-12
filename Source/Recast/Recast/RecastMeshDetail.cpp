@@ -1184,7 +1184,7 @@ bool rcBuildPolyMeshDetail(rcContext* ctx, const rcPolyMesh& mesh, const rcCompa
 	const float ch = mesh.ch;
 	const float* orig = mesh.bmin;
 	const int borderSize = mesh.borderSize;
-	const int heightSearchRadius = rcMax(1, (int)ceilf(mesh.maxEdgeError));
+	const int heightSearchRadius = rcMax(1, (int)ceilf(mesh.maxEdgeError));//tocheck from now on here
 	
 	rcIntArray edges(64);
 	rcIntArray tris(512);
