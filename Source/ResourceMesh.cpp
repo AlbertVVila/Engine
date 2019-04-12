@@ -113,6 +113,18 @@ void ResourceMesh::DeleteFromMemory()
 
 void ResourceMesh::Draw(unsigned shaderProgram) const
 {
+	if (bindBones.size() > 0)
+	{
+		std::vector<math::float4x4> palette(bindBones.size(), math::float4x4::identity); //TODO: Declare on .h
+		unsigned i = 0u;
+		for (BindBone bb : bindBones)
+		{
+			palette[i++] = bb.go->GetGlobalTransform() * bb.transform;
+		}
+
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram,
+			"palette"), bindBones.size(), GL_TRUE, palette[0].ptr());
+	}
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glDrawElements(GL_TRIANGLES, meshIndices.size(), GL_UNSIGNED_INT, 0);
@@ -480,7 +492,7 @@ void ResourceMesh::ComputeBBox()
 	boundingBox.maxPoint = max;
 }
 
-void ResourceMesh::LinkBones(const ComponentRenderer* renderer)
+void ResourceMesh::LinkBones(GameObject* gameobject)
 {
 	if (bindBones.size() == 0)
 	{
@@ -490,7 +502,7 @@ void ResourceMesh::LinkBones(const ComponentRenderer* renderer)
 
 	for (unsigned i = 0u; i < bindBones.size(); ++i)
 	{
-		GameObject* node = renderer->gameobject;
+		GameObject* node = gameobject;
 		while (node != nullptr && !node->isBoneRoot)
 		{
 			node = node->parent;
@@ -526,7 +538,7 @@ void ResourceMesh::LinkBones(const ComponentRenderer* renderer)
 		}
 	}
 
-	LOG("Linked %d bones from %s", linkedCount, renderer->gameobject->name.c_str());
+	LOG("Linked %d bones from %s", linkedCount, gameobject->name.c_str());
 }
 
 AABB ResourceMesh::GetBoundingBox() const
