@@ -327,7 +327,7 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 	if (shader->id.size() > 1) //If exists variations use it
 	{
 		variation = material->variation;
-		if (crenderer->mesh->bindBones.size() > 0)
+		if (mesh != nullptr && mesh->bindBones.size() > 0)
 		{
 			variation |= (unsigned)ModuleProgram::PBR_Variations::SKINNED;
 		}
@@ -342,7 +342,11 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 	go.SetLightUniforms(shader->id[variation]);
 
 	go.UpdateModel(shader->id[variation]);
-	crenderer->mesh->Draw(shader->id[variation]);
+	if (mesh != nullptr)
+	{
+		crenderer->mesh->Draw(shader->id[variation]);
+	}
+	
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glActiveTexture(GL_TEXTURE0);
@@ -845,7 +849,10 @@ bool ModuleScene::AddScene(const char* scene, const char* path)
 
 	for (ComponentRenderer* cr : renderers)
 	{
-		cr->LinkBones();
+		if (cr->mesh != nullptr) 
+		{
+			cr->LinkBones();
+		}	
 	}
 
 	RELEASE_ARRAY(data);
