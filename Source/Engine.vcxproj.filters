@@ -156,9 +156,6 @@
     <ClCompile Include="ModuleFileSystem.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="FileImporter.cpp">
-      <Filter>Importer</Filter>
-    </ClCompile>
     <ClCompile Include="ComponentLight.cpp">
       <Filter>Component</Filter>
     </ClCompile>
@@ -210,9 +207,6 @@
       <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="Resource.cpp">
-      <Filter>Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="ResourceTexture.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
     <ClCompile Include="ResourceMesh.cpp">
@@ -273,6 +267,25 @@
       <Filter>Component</Filter>
     </ClCompile>
     <ClCompile Include="FileImporter.cpp" />
+    <ClCompile Include="HashString.cpp" />
+    <ClCompile Include="ResourceAnimation.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceModel.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="FileImporter.cpp">
+      <Filter>Importer</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceTexture.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelHierarchy.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Viewport.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />

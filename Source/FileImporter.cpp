@@ -101,12 +101,15 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 {
 	GameObject* sceneGO = App->scene->CreateGameObject("Scene", App->scene->root);
 	sceneGO->CreateComponent(ComponentType::Transform); // To move all around
-	sceneGO->isBoneRoot = true;
+
 	std::stack<aiNode*> stackNode;
 	std::stack<GameObject*> stackParent;
 
+	unsigned totalMeshes = 0u;
+
 	std::string path(folder);
 	path += file;
+	std::string name = App->fsystem->GetFilename(file);
 	std::string meta(std::string(path) + METAEXT);
 
 	for (unsigned i = 0; i < aiscene.mRootNode->mNumChildren; ++i) //skip rootnode
@@ -145,19 +148,23 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 			{
 				JSON *json = new JSON(metaData);
 				JSON_value* meshValue = json->GetValue("Mesh");
-				mesh = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH, meshValue->GetUint(("Mesh" + std::to_string(i)).c_str()));
+				mesh = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH, meshValue->GetUint(("Mesh" + std::to_string(totalMeshes)).c_str()));
 
 				// ResourceMesh was created on .meta of model load, now replace previous resource
 				App->resManager->ReplaceResource(mesh->GetUID(), mesh);
 			}
 			App->fsystem->Save((MESHES + std::to_string(mesh->GetUID()) + MESHEXTENSION).c_str(), meshData, meshSize);
+			mesh->SetFile(path.c_str());
+			mesh->SetExportedFile(std::to_string(mesh->GetUID()).c_str());
+			mesh->name = name + "_" + std::to_string(totalMeshes);
 			RELEASE_ARRAY(meshData);
 			//App->resManager->AddMesh(mesh);
 			GameObject* meshGO = new GameObject("mesh", App->scene->GetNewUID());
 			ComponentRenderer* crenderer = (ComponentRenderer*)meshGO->CreateComponent(ComponentType::Renderer);
 			crenderer->mesh = mesh;
 			meshGO->CreateComponent(ComponentType::Transform);
-			goNode->InsertChild(meshGO);
+			sceneGO->InsertChild(meshGO);
+			++totalMeshes;
 		}
 
 		for (unsigned i = 0u; i < aNode->mNumChildren; ++i)
@@ -169,18 +176,18 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 
 	for (unsigned i = 0u; i < aiscene.mNumAnimations; i++)
 	{
+		sceneGO->isBoneRoot = true;
 		char* animationData = nullptr;
-		char* correctedAnimationData = nullptr;
 		unsigned animationSize = GetAnimationSize(*aiscene.mAnimations[i]);
 		animationData = new char[animationSize];
 		ImportAnimation(*aiscene.mAnimations[i], animationData);
 
 		sceneGO->CreateComponent(ComponentType::Animation);
 		ComponentAnimation* animationComponent = (ComponentAnimation*)sceneGO->GetComponent(ComponentType::Animation);
-		unsigned animUid = App->scene->GetNewUID();
 
 		ResourceAnimation* animation = nullptr;
 		char* metaData = nullptr;
+
 		if (App->fsystem->Load(meta.c_str(), &metaData) == 0)
 		{
 			animation = (ResourceAnimation*)App->resManager->CreateNewResource(TYPE::ANIMATION);
@@ -189,20 +196,21 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 		else
 		{
 			JSON *json = new JSON(metaData);
-			JSON_value* meshValue = json->GetValue("Animation");
-			animation = (ResourceAnimation*)App->resManager->CreateNewResource(TYPE::ANIMATION, meshValue->GetUint(("Animation" + std::to_string(i)).c_str()));
+			JSON_value* animValue = json->GetValue("Animation");
+			animation = (ResourceAnimation*)App->resManager->CreateNewResource(TYPE::ANIMATION, animValue->GetUint(("Animation" + std::to_string(i)).c_str()));
 
-			// ResourceMesh was created on .meta of model load, now replace previous resource
+			// ResourceAniamtion was created on .meta of model load, now replace previous resource
 			App->resManager->ReplaceResource(animation->GetUID(), animation);
 		}
 		animationComponent->anim = animation;
 
-		App->fsystem->Save((ANIMATIONS + std::to_string(animUid) + ANIMATIONEXTENSION).c_str(), animationData, animationSize);
-
+		App->fsystem->Save((ANIMATIONS + std::to_string(animation->GetUID()) + ANIMATIONEXTENSION).c_str(), animationData, animationSize);
+		animation->SetFile(path.c_str());
+		animation->SetExportedFile(std::to_string(animation->GetUID()).c_str());
+		animation->name = name + "_" + std::to_string(i);
 		//App->resManager->AddAnim(animation);
 
 		RELEASE_ARRAY(animationData);
-		RELEASE_ARRAY(correctedAnimationData);
 	}
 	App->scene->SaveScene(*sceneGO, App->fsystem->GetFilename(file).c_str(), SCENES); //TODO: Make AutoCreation of folders or check
 	aiReleaseImport(&aiscene);

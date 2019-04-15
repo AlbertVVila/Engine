@@ -20,7 +20,6 @@
 ComponentAnimation::ComponentAnimation() : Component(nullptr, ComponentType::Animation)
 {
 	controller = new AnimationController();
-	PlayAnimation(100u);
 }
 
 
@@ -51,12 +50,16 @@ void ComponentAnimation::DrawProperties()
 				if (ImGui::Selectable(guiAnimations[n].c_str(), is_selected))
 				{
 					if (anim == nullptr || anim->name != guiAnimations[n])
+					{
 						SetAnimation(guiAnimations[n].c_str());
+						PlayAnimation(100u);
+					}
 				}
 				if (is_selected)
 				{
 					ImGui::SetItemDefaultFocus();
 				}
+				
 			}
 			ImGui::EndCombo();
 		}
@@ -66,6 +69,11 @@ void ComponentAnimation::DrawProperties()
 		}
 		ImGui::PopID();
 	}
+}
+
+void ComponentAnimation::ResetResource()
+{
+	anim->DeleteFromMemory();
 }
 
 void ComponentAnimation::SetAnimation(const char* animationFile)
@@ -175,20 +183,7 @@ void ComponentAnimation::Load(JSON_value* value)
 	Component::Load(value);
 	unsigned uid = value->GetUint("animUID");
 
-	ResourceAnimation* a = (ResourceAnimation*)App->resManager->Get(uid);
-
-	if (a != nullptr)
-	{
-		anim = a;
-	}
-	else
-	{
-		ResourceAnimation* res = (ResourceAnimation*)App->resManager->CreateNewResource(TYPE::ANIMATION, uid);
-		res->SetExportedFile(std::to_string(uid).c_str());
-		a = (ResourceAnimation*)App->resManager->Get(uid);
-		if (a != nullptr)
-			a = res;
-	}
+	anim = (ResourceAnimation*)App->resManager->Get(uid);
 }
 
 void ComponentAnimation::SetIndexChannels(GameObject* GO)

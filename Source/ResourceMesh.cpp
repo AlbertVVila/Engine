@@ -125,6 +125,7 @@ void ResourceMesh::Draw(unsigned shaderProgram) const
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram,
 			"palette"), bindBones.size(), GL_TRUE, palette[0].ptr());
 	}
+
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glDrawElements(GL_TRIANGLES, meshIndices.size(), GL_UNSIGNED_INT, 0);
