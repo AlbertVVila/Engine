@@ -15,14 +15,18 @@
 
 #include "imgui.h"
 #include "SDL_opengl.h"
-#include "debugdraw.h"
+//#include "debugdraw.h"
+
 
 #include "Recast/Recast.h"
 #include "Detour/DetourNavMesh.h"
 #include "Detour/DetourNavMeshBuilder.h"
 #include "Detour/DetourNavMeshQuery.h"
-#include "Recast/DebugUtils/DetourDebugDraw.h"
 #include "Recast/DebugUtils/RecastDebugDraw.h"
+#include "DebugUtils/DetourDebugDraw.h"
+#include "DebugUtils/DebugDraw.h"
+#include "debug_draw.hpp"
+
 
 ModuleNavigation::ModuleNavigation()
 {
@@ -102,135 +106,14 @@ void ModuleNavigation::renderNavMesh()
 {
 	if (!meshGenerated)	return;
 	//get a const instance of navmesh
-	const dtNavMesh* tmpNavMesh = navMesh;
+	/*const dtNavMesh* tmpNavMesh = navMesh;
 	for (int i = 0; i < navMesh->getMaxTiles(); ++i)
 	{
 		const dtMeshTile* tile = tmpNavMesh->getTile(i);
 		if (!tile->header) continue;
-		drawMeshTile(&dt_dd, *navMesh, 0, tile, 0);
-	}
-
-	//dd::xzSquareGrid(-500.0f * 10, 500.0f * 10, 0.0f, 1.0f * 10, math::float3(0.65f, 0.65f, 0.65f));
-	/*
-	from sample_solomesh.cpp in recast its in the line 268, the lib of the function is detourdebugdraw.h, gonna need some structures.
-	if (m_drawMode != DRAWMODE_NAVMESH_INVIS)
-			duDebugDrawNavMeshWithClosedList(&m_dd, *m_navMesh, *m_navQuery, m_navMeshDrawFlags);
-	*/
-	//duDebugDrawNavMeshWithClosedList(&dd, *navMesh, *navQuery, m_navMeshDrawFlags);
-
-	/*if (!meshGenerated)	return;
-
-	glEnable(GL_FOG);
-	glDepthMask(GL_TRUE);
-
-	const float texScale = 1.0f / (cellWidth * 10.0f);
-	
-	if (m_drawMode != DRAWMODE_NAVMESH_TRANS)
-	{
-		// Draw mesh
-		duDebugDrawTriMeshSlope(&dd, verts, nverts,
-			tris, normals, ntris,
-			characterMaxSlopeScaling, texScale);
-		//m_geom->drawOffMeshConnections(&dd);//dont know about this one
-	}
-
-	glDisable(GL_FOG);
-	glDepthMask(GL_FALSE);
-
-	// Draw bounds
-	const float bmin[3] = { meshbox->minPoint.x, meshbox->minPoint.y, meshbox->minPoint.z };
-	const float bmax[3] = { meshbox->maxPoint.x, meshbox->maxPoint.y, meshbox->maxPoint.z };
-	//const float* bmin = { meshbox->minPoint.x, meshbox->minPoint.y, meshbox->minPoint.z };
-	//const float* bmax = { meshbox->maxPoint.x, meshbox->maxPoint.y, meshbox->maxPoint.z };
-
-	duDebugDrawBoxWire(&dd, bmin[0], bmin[1], bmin[2], bmax[0], bmax[1], bmax[2], duRGBA(255, 255, 255, 128), 1.0f);
-	dd.begin(DU_DRAW_POINTS, 5.0f);
-	dd.vertex(bmin[0], bmin[1], bmin[2], duRGBA(255, 255, 255, 128));
-	dd.end();
-
-	if (navMesh && navQuery &&
-		(m_drawMode == DRAWMODE_NAVMESH ||
-			m_drawMode == DRAWMODE_NAVMESH_TRANS ||
-			m_drawMode == DRAWMODE_NAVMESH_BVTREE ||
-			m_drawMode == DRAWMODE_NAVMESH_NODES ||
-			m_drawMode == DRAWMODE_NAVMESH_INVIS))
-	{
-		if (m_drawMode != DRAWMODE_NAVMESH_INVIS)
-			duDebugDrawNavMeshWithClosedList(&dd, *navMesh, *navQuery, m_navMeshDrawFlags);
-		if (m_drawMode == DRAWMODE_NAVMESH_BVTREE)
-			duDebugDrawNavMeshBVTree(&dd, *navMesh);
-		if (m_drawMode == DRAWMODE_NAVMESH_NODES)
-			duDebugDrawNavMeshNodes(&dd, *navQuery);
-		duDebugDrawNavMeshPolysWithFlags(&dd, *navMesh, SAMPLE_POLYFLAGS_DISABLED, duRGBA(0, 0, 0, 128));
-	}
-
-	glDepthMask(GL_TRUE);
-
-	if (chf && m_drawMode == DRAWMODE_COMPACT)
-		duDebugDrawCompactHeightfieldSolid(&dd, *chf);
-
-	if (chf && m_drawMode == DRAWMODE_COMPACT_DISTANCE)
-		duDebugDrawCompactHeightfieldDistance(&dd, *chf);
-	if (chf && m_drawMode == DRAWMODE_COMPACT_REGIONS)
-		duDebugDrawCompactHeightfieldRegions(&dd, *chf);
-	if (heightField && m_drawMode == DRAWMODE_VOXELS)
-	{
-		glEnable(GL_FOG);
-		duDebugDrawHeightfieldSolid(&dd, *heightField);
-		glDisable(GL_FOG);
-	}
-	if (heightField && m_drawMode == DRAWMODE_VOXELS_WALKABLE)
-	{
-		glEnable(GL_FOG);
-		duDebugDrawHeightfieldWalkable(&dd, *heightField);
-		glDisable(GL_FOG);
-	}
-	if (cset && m_drawMode == DRAWMODE_RAW_CONTOURS)
-	{
-		glDepthMask(GL_FALSE);
-		duDebugDrawRawContours(&dd, *cset);
-		glDepthMask(GL_TRUE);
-	}
-	if (cset && m_drawMode == DRAWMODE_BOTH_CONTOURS)
-	{
-		glDepthMask(GL_FALSE);
-		duDebugDrawRawContours(&dd, *cset, 0.5f);
-		duDebugDrawContours(&dd, *cset);
-		glDepthMask(GL_TRUE);
-	}
-	if (cset && m_drawMode == DRAWMODE_CONTOURS)
-	{
-		glDepthMask(GL_FALSE);
-		duDebugDrawContours(&dd, *cset);
-		glDepthMask(GL_TRUE);
-	}
-	if (chf && cset && m_drawMode == DRAWMODE_REGION_CONNECTIONS)
-	{
-		duDebugDrawCompactHeightfieldRegions(&dd, *chf);
-
-		glDepthMask(GL_FALSE);
-		duDebugDrawRegionConnections(&dd, *cset);
-		glDepthMask(GL_TRUE);
-	}
-	if (pmesh && m_drawMode == DRAWMODE_POLYMESH)
-	{
-		glDepthMask(GL_FALSE);
-		duDebugDrawPolyMesh(&dd, *pmesh);
-		glDepthMask(GL_TRUE);
-	}
-	if (dmesh && m_drawMode == DRAWMODE_POLYMESH_DETAIL)
-	{
-		glDepthMask(GL_FALSE);
-		duDebugDrawPolyMeshDetail(&dd, *dmesh);
-		glDepthMask(GL_TRUE);
-	}
-
-	drawConvexVolumes(&dd);*/
-
-	/*if (tool)
-		tool->handleRender();
-	renderToolStates();*/
-	
+		drawMeshTile();
+	}*/
+	drawMeshTile();
 	//glDepthMask(GL_TRUE);
 }
 
@@ -256,7 +139,9 @@ void ModuleNavigation::generateNavigability()
 	//clean old info
 	cleanValues();
 
-	//const shit
+	pointsUpdated = true;
+
+	//declaring mesh box
 	meshbox  = static_cast <const AABB*>(&App->scene->selected->bbox);
 	
 	const float bmin[3] = {meshbox->minPoint.x, meshbox->minPoint.y, meshbox->minPoint.z };
@@ -682,7 +567,7 @@ void ModuleNavigation::fillNormals()
 		}
 	}
 }
-
+/*
 //debug draw implementations
 unsigned int SampleDebugDraw::areaToCol(unsigned int area)
 {
@@ -776,10 +661,44 @@ void DebugDrawGL::end()
 	glLineWidth(1.0f);
 	glPointSize(1.0f);
 }
-
-void ModuleNavigation::drawMeshTile(duDebugDraw* dd, const dtNavMesh& mesh, const dtNavMeshQuery* query,
-	const dtMeshTile* tile, unsigned char flags)
+*/
+void ModuleNavigation::fillDrawPoints()
 {
+	points = new dd::DrawVertex[nverts];
+	for (int i = 0; i < nverts; ++i)
+	{
+		points[i].point.x = verts[i*3];
+		points[i].point.y = verts[i*3 + 1];
+		points[i].point.z = verts[i*3 + 2];
+		points[i].point.r = 0;
+		points[i].point.g = 0;
+		points[i].point.b = 1;
+	}
+}
+
+class myPoint : public dd::RenderInterface
+{
+	~myPoint() 
+	{}
+};
+
+void ModuleNavigation::drawMeshTile()
+{
+	
+	/*if (pointsUpdated)
+	{
+		fillDrawPoints();
+		pointsUpdated = false;
+	}
+	myPoint* renderIface = new myPoint();
+	renderIface->drawPointList(points, nverts, false);*/
+	for (int i = 0; i < nverts; ++i)
+	{
+		dd::point(ddVec3(verts[i * 3], verts[i * 3+1], verts[i * 3+2]), ddVec3(0,0,1), 10.0f);
+	}
+	
+	
+	/*dd::xzSquareGrid(-500.0f * 10, 500.0f * 10, 0.0f, 1.0f * 10, math::float3(0.65f, 0.65f, 0.65f));
 	dtPolyRef base = mesh.getPolyRefBase(tile);
 
 	int tileNum = mesh.decodePolyIdTile(base);
@@ -891,5 +810,5 @@ void ModuleNavigation::drawMeshTile(duDebugDraw* dd, const dtNavMesh& mesh, cons
 	}
 	dd->end();
 
-	dd->depthMask(true);
+	dd->depthMask(true);*/
 }

@@ -310,7 +310,7 @@ bool rcCreateHeightfield(rcContext* ctx, rcHeightfield& hf, int width, int heigh
 	hf.spans = (rcSpan**)rcAlloc(sizeof(rcSpan*)*hf.width*hf.height, RC_ALLOC_PERM);
 	if (!hf.spans)
 		return false;
-	memset(hf.spans, 0, sizeof(rcSpan*)*hf.width*hf.height);//possible variation after this line
+	memset(hf.spans, 0, sizeof(rcSpan*)*hf.width*hf.height);//possible variation after this line, tocheck
 	return true;
 }
 

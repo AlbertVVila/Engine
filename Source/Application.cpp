@@ -92,7 +92,7 @@ bool Application::Init()
 
 update_status Application::Update()
 {
-	PROFILE;
+	//PROFILE;
 
 	SetTimer();
 	update_status ret = UPDATE_CONTINUE;

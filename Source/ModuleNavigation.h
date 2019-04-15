@@ -4,8 +4,10 @@
 #include "Module.h"
 #include <vector>
 #include "Recast/Recast.h"
-#include "DebugUtils/DetourDebugDraw.h"
-#include "DebugUtils/DebugDraw.h"
+#include "debugdraw.h"
+
+//#include "DebugUtils/DetourDebugDraw.h"
+//#include "DebugUtils/DebugDraw.h"
 //<>
 //fwd declarations
 class GameObject;
@@ -18,6 +20,7 @@ class rcHeightfield;
 class rcContourSet;
 class rcPolyMesh;
 class rcPolyMeshDetail;
+//class DrawVertex;
 //from detour
 class dtNavMesh;
 class dtNavMeshQuery;
@@ -49,7 +52,7 @@ enum SamplePartitionType
 	SAMPLE_PARTITION_MONOTONE,
 	SAMPLE_PARTITION_LAYERS,
 };
-
+/*
 /// OpenGL debug draw implementation.
 class DebugDrawGL : public duDebugDraw
 {
@@ -62,14 +65,14 @@ public:
 	virtual void vertex(const float* pos, unsigned int color, const float* uv);
 	virtual void vertex(const float x, const float y, const float z, unsigned int color, const float u, const float v);
 	virtual void end();
-};
-
+};*/
+/*
 class SampleDebugDraw : public DebugDrawGL
 {
 public:
 	virtual unsigned int areaToCol(unsigned int area);
 };
-
+*/
 class ModuleNavigation :
 	public Module
 {
@@ -101,11 +104,11 @@ private:
 	void fillVertices();
 	void fillIndices();
 	void fillNormals();
+	void fillDrawPoints();
 
 	void cleanUpNavValues();
 
-	void drawMeshTile(duDebugDraw* dd, const dtNavMesh& mesh, const dtNavMeshQuery* query,
-		const dtMeshTile* tile, unsigned char flags);
+	void drawMeshTile();
 
 	//variables
 	float maxRadius = 5.0f;
@@ -186,8 +189,7 @@ private:
 	dtNavMesh* navMesh = nullptr;
 	dtNavMeshQuery* navQuery = nullptr;
 
-	unsigned char m_navMeshDrawFlags = DU_DRAWNAVMESH_OFFMESHCONS | DU_DRAWNAVMESH_CLOSEDLIST;
-	SampleDebugDraw dt_dd;
+	//SampleDebugDraw dt_dd;
 
 	unsigned char* m_triareas = nullptr;
 	bool m_keepInterResults = true;
@@ -197,6 +199,8 @@ private:
 	float* normals = nullptr;
 	int nverts;
 	int ntris;
+	bool pointsUpdated = false;
+	dd::DrawVertex* points = nullptr;
 	const AABB* meshbox = nullptr;
 };
 
