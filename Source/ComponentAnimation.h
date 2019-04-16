@@ -5,7 +5,7 @@
 #include "ResourceAnimation.h"
 #include "Resource.h"
 #include "AnimationController.h"
-#include "StateMachine.h"
+#include "ResourceStateMachine.h"
 
 
 #include "Math/float4x4.h"

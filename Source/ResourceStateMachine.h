@@ -1,23 +1,28 @@
-#ifndef __STATEMACHINE_H_
-#define __STATEMACHINE_H_
+#ifndef __RESOURCESTATEMACHINE_H_
+#define __RESOURCESTATEMACHINE_H_
 
+#include "Resource.h"
 
 #include "HashString.h"
 #include <vector>
 
-class Animation;
+class ResourceAnimation;
 
-class StateMachine
+class ResourceStateMachine : public Resource
 {
 public:
-
-
-	StateMachine();
-	~StateMachine();
+	ResourceStateMachine(unsigned uid);
+	ResourceStateMachine(const ResourceStateMachine& resource);
+	virtual ~ResourceStateMachine();
 
 public:
-	
-	void AddClip(const HashString name, Animation* anim, bool loop);
+	bool LoadInMemory() override;
+	void DeleteFromMemory() override;
+
+	void SetStateMachine(const char* data);
+	void SaveStateMachine(char* data);
+
+	void AddClip(const HashString name, unsigned UID, bool loop);
 	void AddNode(const HashString name,const HashString clipName);
 	void AddTransition(const HashString origin, const HashString destiny, const HashString trigger, unsigned blend);
 
@@ -28,10 +33,10 @@ public:
 	//Clips setters and getters
 
 	HashString GetClipName(unsigned index);
-	Animation* GetClipAnimation(unsigned index);
+	unsigned GetClipResource(unsigned index);
 	bool GetClipLoop(unsigned index);
 	void SetClipName(unsigned index, HashString name);
-	void SetClipAnimation(unsigned index, Animation* anim);
+	void SetClipResource(unsigned index, unsigned UID);
 	void SetClipLoop(unsigned index, bool loop);
 
 	//Transitions setters and getters
@@ -62,14 +67,16 @@ public:
 
 private:
 	
+	std::string name = "";
+
 	struct Clip
 	{
 		HashString name;
-		Animation* anim = nullptr;
+		unsigned UID = 0;
 		bool loop = false;
 
 		Clip() { ; }
-		Clip(HashString n, Animation* a, bool l) : name(n), anim(a), loop(l) { ; }
+		Clip(HashString n, unsigned u, bool l) : name(n), UID(u), loop(l) { ; }
 	};
 
 	struct Transition
@@ -100,4 +107,4 @@ private:
 	unsigned defaultNode = 0u;
 };
 
-#endif // __STATEMACHINE_H_
+#endif // __RESOURCESTATEMACHINE_H_

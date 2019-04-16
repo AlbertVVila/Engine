@@ -79,6 +79,10 @@ void FileImporter::ImportAsset(const char *file, const char *folder)
 	{
 		App->fsystem->Copy(folder, ANIMATIONS, file);
 	}
+	else if (extension == STATEMACHINEEXTENSION)
+	{
+		App->fsystem->Copy(folder, STATEMACHINES, file);
+	}
 }
 
 bool FileImporter::ImportFBX(const char* fbxfile, const char* folder, ResourceModel* resource)
