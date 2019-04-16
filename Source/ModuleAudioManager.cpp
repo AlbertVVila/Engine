@@ -19,7 +19,8 @@ ModuleAudioManager::~ModuleAudioManager()
 {
 }
 
-update_status ModuleAudioManager::PostUpdate() {
+update_status ModuleAudioManager::PostUpdate() 
+{
 	gSoloud.update3dAudio();
 	return UPDATE_CONTINUE;
 }
@@ -31,9 +32,6 @@ bool ModuleAudioManager::Init(JSON* json)
 	bushandle3D = gSoloud.play(bus3D);
 
 	gSoloud.setGlobalVolume(masterVolume);
-	//efil.setParams(0.5f);
-
-	//busRaw.setFilter(0, &efil);
 
 	return true;
 }
@@ -57,59 +55,53 @@ void ModuleAudioManager::RemoveEchoFilter(int i)
 
 }
 
-void ModuleAudioManager::StopWAV(int handler) {
+void ModuleAudioManager::StopWAV(int handler) 
+{
 	return gSoloud.stop(handler);
 }
 
-void ModuleAudioManager::SetVolume(int handler, float& vol) {
+void ModuleAudioManager::SetVolume(int handler, float& vol) 
+{
 	gSoloud.setVolume(handler, vol);
 }
 
-void ModuleAudioManager::SetPan(int handler, float& pan) {
+void ModuleAudioManager::SetPan(int handler, float& pan) 
+{
 	gSoloud.setPan(handler, pan);
 }
 
-void ModuleAudioManager::SetLoop(int handler, bool loop) {
+void ModuleAudioManager::SetLoop(int handler, bool loop)
+{
 	gSoloud.setLooping(handler, loop);
 	
 }
 
-void ModuleAudioManager::SetPitch(int handler, float& pitch) {
+void ModuleAudioManager::SetPitch(int handler, float& pitch)
+{
 		gSoloud.setRelativePlaySpeed(handler, pitch);
 }
 
-void ModuleAudioManager::DrawGUI() {
-
+void ModuleAudioManager::DrawGUI() 
+{
 	if (ImGui::SliderFloat("Master Volume", &masterVolume, 0.f, 2.f, "%.2f")) 	gSoloud.setGlobalVolume(masterVolume);
 
 	ImGui::NewLine();
-	ImGui::Text("Main Listener: %s", mainListener->gameobject->name.c_str());
-
-	// It triggers a char* bug when a listener is deleted
-	/*ImGui::Text("Audio Listeners:");	
-	for (int i = 0; i < audioListeners.size(); ++i) {
-		if (ImGui::Checkbox(audioListeners[i]->gameobject->name.c_str(), &audioListeners[i]->isMainListener)) setMainListener(i);
-	}*/
-	
+	ImGui::Text("Main Listener: %s", mainListener->gameobject->name.c_str());	
 }
 
-void ModuleAudioManager::setMainListener(int ii) {
-
+void ModuleAudioManager::setMainListener(int newMainListener) 
+{
 	for (int i = 0; i < audioListeners.size(); ++i) {
 
 		audioListeners[i]->isMainListener = false;
 	}
-	audioListeners[ii]->isMainListener = true;
-	mainListener = audioListeners[ii];
+	audioListeners[newMainListener]->isMainListener = true;
+	mainListener = audioListeners[newMainListener];
 }
 
-void ModuleAudioManager::setMainListener(ComponentAudioListener* AL) {
-
-	for (int i = 0; i < audioListeners.size(); ++i) {
-
-		if (AL == audioListeners[i]) setMainListener(i);
-	}
-
+void ModuleAudioManager::setMainListener(ComponentAudioListener* AL) 
+{
+	for (int i = 0; i < audioListeners.size(); ++i) if (AL == audioListeners[i]) setMainListener(i);
 }
 
 bool ModuleAudioManager::CleanUp() 
