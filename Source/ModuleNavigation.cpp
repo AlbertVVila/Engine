@@ -544,16 +544,16 @@ void ModuleNavigation::fillNormals()
 	normals = new float[ntris*3];
 	for (int i = 0; i < ntris; ++i)
 	{
-		const float* v0 = &verts[tris[i] * 3];
-		const float* v1 = &verts[tris[i + 1] * 3];
-		const float* v2 = &verts[tris[i + 2] * 3];
+		const float* v0 = &verts[tris[i*3] * 3];
+		const float* v1 = &verts[tris[i*3 + 1] * 3];
+		const float* v2 = &verts[tris[i*3 + 2] * 3];
 		float e0[3], e1[3];
 		for (int j = 0; j < 3; ++j)
 		{
 			e0[j] = v1[j] - v0[j];
 			e1[j] = v2[j] - v0[j];
 		}
-		float* n = &normals[i];
+		float* n = &normals[i*3];
 		n[0] = e0[1] * e1[2] - e0[2] * e1[1];
 		n[1] = e0[2] * e1[0] - e0[0] * e1[2];
 		n[2] = e0[0] * e1[1] - e0[1] * e1[0];
