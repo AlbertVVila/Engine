@@ -59,7 +59,8 @@ void ComponentReverbZone::Update()
 {
 
 	//Update the gradient affectation of the reverb zone 
-	if (applied) {
+	if (applied) 
+	{
 		
 		dist = math::Length(App->audioManager->mainListener->gameobject->transform->GetGlobalPosition() -  gameobject->transform->GetGlobalPosition());
 
@@ -102,7 +103,6 @@ void ComponentReverbZone::DrawProperties()
 
 		ImGui::DragFloat("Decay", &decay, 0.006f, 0.f, 1.f, "%.1f");
 		toolTip("Multiplier for the echo");
-
 
 	}
 }

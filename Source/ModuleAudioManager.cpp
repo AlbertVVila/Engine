@@ -36,7 +36,8 @@ bool ModuleAudioManager::Init(JSON* json)
 	return true;
 }
 
-int ModuleAudioManager::PlayWAV(SoLoud::AudioSource& wav, bool sound3D) {
+int ModuleAudioManager::PlayWAV(SoLoud::AudioSource& wav, bool sound3D) 
+{
 
 	if (sound3D) return bus3D.play(wav);
 	else return busRaw.play(wav);
@@ -91,10 +92,8 @@ void ModuleAudioManager::DrawGUI()
 
 void ModuleAudioManager::setMainListener(int newMainListener) 
 {
-	for (int i = 0; i < audioListeners.size(); ++i) {
+	for (int i = 0; i < audioListeners.size(); ++i) audioListeners[i]->isMainListener = false;
 
-		audioListeners[i]->isMainListener = false;
-	}
 	audioListeners[newMainListener]->isMainListener = true;
 	mainListener = audioListeners[newMainListener];
 }
