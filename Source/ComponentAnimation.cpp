@@ -26,7 +26,13 @@ ComponentAnimation::ComponentAnimation() : Component(nullptr, ComponentType::Ani
 
 ComponentAnimation::~ComponentAnimation()
 {
+	delete controller;
 	controller = nullptr;
+	if (context)
+	{
+		ax::NodeEditor::DestroyEditor(context);
+		context = nullptr;
+	}
 	anim = nullptr;
 	gameobject->isBoneRoot = false;
 	RELEASE_ARRAY(animName);
@@ -79,6 +85,15 @@ void ComponentAnimation::SetAnimation(const char* animationFile)
 		anim = (ResourceAnimation*)App->resManager->GetAnimationByName(animationFile);
 
 	return;
+}
+
+ComponentAnimation::EditorContext* ComponentAnimation::GetEditorContext()
+{
+
+	ax::NodeEditor::Config cfg;
+	cfg.SettingsFile = "simple.json";
+	context = ax::NodeEditor::CreateEditor(&cfg);
+	return context;
 }
 
 void ComponentAnimation::Update()

@@ -3,11 +3,14 @@
 
 #include "Panel.h"
 
+#include "imgui.h"
+
 #include "NodeEditor.h"
 
 namespace ed = ax::NodeEditor;
 
-class StateMachine;
+class ResourceStateMachine;
+class ComponentAnimation;
 
 enum class PinKind
 {
@@ -21,8 +24,8 @@ public:
 	PanelState();
 	~PanelState();
 
-	ax::NodeEditor::EditorContext* context = nullptr;
-
+	void DrawSM(ResourceStateMachine* animation, ax::NodeEditor::EditorContext* context);
+	
 	void Draw() override;
 
 };

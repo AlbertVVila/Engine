@@ -281,6 +281,12 @@
     <ClCompile Include="ResourceStateMachine.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
+    <ClCompile Include="NodeEditor\Source\NodeEditor.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="NodeEditor\Source\Editor.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -666,6 +672,18 @@
     <ClInclude Include="ResourceStateMachine.h">
       <Filter>Resources</Filter>
     </ClInclude>
+    <ClInclude Include="NodeEditor\Source\Editor.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeEditor\Include\NodeEditor.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeEditor\Source\Interop.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeEditor\Include\ax\Math2D.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GeoLib">
@@ -741,6 +759,9 @@
     </None>
     <None Include="..\Game\Scripts\PlayerMovement.dll">
       <Filter>ScriptingResources</Filter>
+    </None>
+    <None Include="NodeEditor\Include\ax\Math2D.inl">
+      <Filter>Utils</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

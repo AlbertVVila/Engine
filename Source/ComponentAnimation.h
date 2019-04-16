@@ -6,6 +6,7 @@
 #include "Resource.h"
 #include "AnimationController.h"
 #include "ResourceStateMachine.h"
+#include "NodeEditor.h"
 
 
 #include "Math/float4x4.h"
@@ -17,6 +18,7 @@ class StateMachine;
 class ComponentAnimation : public Component
 {
 public:
+	typedef ax::NodeEditor::EditorContext EditorContext;
 
 	void DrawProperties();
 	Component* Clone() const;
@@ -35,6 +37,7 @@ public:
 	void Save(JSON_value* value) const override;
 	void Load(JSON_value* value) override;
 
+	EditorContext* GetEditorContext();
 	void Update() override;
 	bool CleanUp();
 public:
@@ -45,7 +48,9 @@ public:
 public:
 	AnimationController* controller = nullptr;
 	ResourceAnimation* anim = nullptr;
+	ResourceStateMachine* stateMachine = nullptr;
 
+	EditorContext* context = nullptr;
 	char* animName = new char[64];
 	bool isPlaying = false;
 

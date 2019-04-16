@@ -33,6 +33,11 @@ ResourceStateMachine::ResourceStateMachine(const ResourceStateMachine& resource)
 	}
 }
 
+ResourceStateMachine::~ResourceStateMachine()
+{
+	DeleteFromMemory();
+}
+
 bool ResourceStateMachine::LoadInMemory()
 {
 	char* data = nullptr;
@@ -46,6 +51,14 @@ bool ResourceStateMachine::LoadInMemory()
 		++loaded;
 	}
 	return true;
+}
+
+void ResourceStateMachine::DeleteFromMemory()
+{
+	defaultNode = 0u;
+	nodes.clear();
+	clips.clear();
+	transitions.clear();
 }
 
 void ResourceStateMachine::SetStateMachine(const char* data)
