@@ -1,0 +1,119 @@
+#include "Application.h"
+
+#include "ModuleAudioManager.h"
+
+#include "ComponentAudioListener.h"
+#include "ComponentReverbZone.h"
+
+#include "GameObject.h"
+
+#include "imgui.h"
+
+
+ModuleAudioManager::ModuleAudioManager()
+{
+}
+
+
+ModuleAudioManager::~ModuleAudioManager()
+{
+}
+
+update_status ModuleAudioManager::PostUpdate() {
+	gSoloud.update3dAudio();
+	return UPDATE_CONTINUE;
+}
+
+bool ModuleAudioManager::Init(JSON* json) 
+{
+	gSoloud.init();
+	bushandleRaw = gSoloud.play(busRaw);
+	bushandle3D = gSoloud.play(bus3D);
+
+	gSoloud.setGlobalVolume(masterVolume);
+	//efil.setParams(0.5f);
+
+	//busRaw.setFilter(0, &efil);
+
+	return true;
+}
+
+int ModuleAudioManager::PlayWAV(SoLoud::AudioSource& wav, bool sound3D) {
+
+	if (sound3D) return bus3D.play(wav);
+	else return busRaw.play(wav);
+}
+
+void ModuleAudioManager::AddEchoFilter(int i)
+{
+	bus3D.setFilter(i, &reverbZones[i]->echoFilter);
+	reverbZones[i]->applied = true;
+}
+
+void ModuleAudioManager::RemoveEchoFilter(int i)
+{
+	bus3D.setFilter(i, NULL);
+	reverbZones[i]->applied = false;
+
+}
+
+void ModuleAudioManager::StopWAV(int handler) {
+	return gSoloud.stop(handler);
+}
+
+void ModuleAudioManager::SetVolume(int handler, float& vol) {
+	gSoloud.setVolume(handler, vol);
+}
+
+void ModuleAudioManager::SetPan(int handler, float& pan) {
+	gSoloud.setPan(handler, pan);
+}
+
+void ModuleAudioManager::SetLoop(int handler, bool loop) {
+	gSoloud.setLooping(handler, loop);
+	
+}
+
+void ModuleAudioManager::SetPitch(int handler, float& pitch) {
+		gSoloud.setRelativePlaySpeed(handler, pitch);
+}
+
+void ModuleAudioManager::DrawGUI() {
+
+	if (ImGui::SliderFloat("Master Volume", &masterVolume, 0.f, 2.f, "%.2f")) 	gSoloud.setGlobalVolume(masterVolume);
+
+	ImGui::NewLine();
+	ImGui::Text("Main Listener: %s", mainListener->gameobject->name.c_str());
+
+	// It triggers a char* bug when a listener is deleted
+	/*ImGui::Text("Audio Listeners:");	
+	for (int i = 0; i < audioListeners.size(); ++i) {
+		if (ImGui::Checkbox(audioListeners[i]->gameobject->name.c_str(), &audioListeners[i]->isMainListener)) setMainListener(i);
+	}*/
+	
+}
+
+void ModuleAudioManager::setMainListener(int ii) {
+
+	for (int i = 0; i < audioListeners.size(); ++i) {
+
+		audioListeners[i]->isMainListener = false;
+	}
+	audioListeners[ii]->isMainListener = true;
+	mainListener = audioListeners[ii];
+}
+
+void ModuleAudioManager::setMainListener(ComponentAudioListener* AL) {
+
+	for (int i = 0; i < audioListeners.size(); ++i) {
+
+		if (AL == audioListeners[i]) setMainListener(i);
+	}
+
+}
+
+bool ModuleAudioManager::CleanUp() 
+{
+	gSoloud.deinit();
+	return true;
+}

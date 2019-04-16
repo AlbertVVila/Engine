@@ -11,7 +11,7 @@
 #include "ComponentAnimation.h"
 #include "ComponentTransform.h"
 
-#include "Imgui/include/imgui.h"
+#include "imgui.h"
 #include "JSON.h"
 #include "Math/Quat.h"
 #include "Math/float3.h"
