@@ -29,6 +29,7 @@ public:
 public:
 	Mesh * mesh = nullptr;
 	Material * material = nullptr;
+	bool castShadows = false;
 
 private:
 	std::vector<std::string> guiMaterials;

@@ -10,6 +10,7 @@
 #include "ComponentLight.h"
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
+#include "Component.h"
 
 #include "GameObject.h"
 #include "imgui.h"
@@ -98,6 +99,24 @@ void ComponentLight::DrawProperties()
 			else
 				lightDirty = lightDirty || ImGui::DragFloat("Range", &range);
 		}
+		else
+		{
+			if (ImGui::Checkbox("Produce shadows", &produceShadows))
+			{
+				if (produceShadows)
+				{
+					if (App->renderer->directionalLight)
+					{
+						App->renderer->directionalLight->produceShadows = false;
+					}
+					App->renderer->directionalLight = this;
+				}
+				else
+				{
+					App->renderer->directionalLight = nullptr;
+				}
+			}
+		}
 
 		lightDirty = lightDirty || ImGui::DragFloat("Intensity", &intensity);
 
@@ -143,6 +162,11 @@ void ComponentLight::Load(JSON_value* value)
 		outer = value->GetFloat("outer");
 	}
 	intensity = value->GetFloat("intensity");
+	produceShadows = value->GetInt("produceShadows");
+	if (produceShadows)
+	{
+		App->renderer->directionalLight = this;
+	}
 }
 
 void ComponentLight::Save(JSON_value* value) const
@@ -165,7 +189,7 @@ void ComponentLight::Save(JSON_value* value) const
 	}
 
 	value->AddFloat("intensity", intensity);
-
+	value->AddInt("produceShadows", produceShadows);
 }
 
 ComponentLight * ComponentLight::Clone() const

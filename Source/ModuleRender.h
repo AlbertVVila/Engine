@@ -8,6 +8,7 @@ class JSON;
 class Skybox;
 class Viewport;
 struct Shader;
+class ComponentLight;
 
 class ModuleRender : public Module
 {
@@ -39,6 +40,7 @@ private:
 	void SetProjectionUniform(const ComponentCamera &camera) const;
 	void InitSDL();
 	void InitOpenGL() const;
+	void ComputeShadows();
 
 public:
 	void* context = nullptr;
@@ -52,11 +54,14 @@ public:
 	bool kDTreeDebug = false;
 	bool aabbTreeDebug = false;
 	bool grid_debug = true;
+	bool shadowDebug = false;
 	bool useMainCameraFrustum = false;
 
 	unsigned current_scale = 1;
 	Viewport* viewGame = nullptr;
 	Viewport* viewScene = nullptr;
+
+	ComponentLight* directionalLight = nullptr;
 
 private:
 	unsigned UBO = 0;
@@ -66,7 +71,6 @@ private:
 	int item_current = 0;//scale index
 
 	Skybox* skybox = nullptr;
-	
 
 };
 

@@ -79,8 +79,6 @@ private:
 	std::list<std::pair<float, GameObject*>>GetDynamicIntersections(const LineSegment& line);
 	std::list<std::pair<float, GameObject*>>GetStaticIntersections(const LineSegment& line);
 	unsigned primitivesUID[NBPRIMITIVES] = {0};
-	std::unordered_set<GameObject*> dynamicFilteredGOs;
-	std::unordered_set<GameObject*> staticFilteredGOs;
 
 public:
 	GameObject* root = nullptr;
@@ -93,6 +91,8 @@ public:
 	myQuadTree * quadtree = nullptr;
 	std::set<GameObject*> dynamicGOs;
 	std::set<GameObject*> staticGOs;
+	std::unordered_set<GameObject*> dynamicFilteredGOs;
+	std::unordered_set<GameObject*> staticFilteredGOs;
 	pcg32 uuid_rng;
 	std::string name;
 	std::string path;

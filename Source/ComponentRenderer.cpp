@@ -58,7 +58,7 @@ void ComponentRenderer::DrawProperties()
 		ImGui::Text("Num vertices : %d", mesh->meshVertices.size());
 		ImGui::Text("Num triangles : %d", mesh->meshIndices.size() / 3);
 		ImGui::Spacing();
-
+		ImGui::Checkbox("Cast shadows", &castShadows);
 		ImGui::Text("Material");
 		if (ImGui::BeginCombo("", material->name.c_str()))
 		{
@@ -145,6 +145,7 @@ void ComponentRenderer::Save(JSON_value* value) const
 	Component::Save(value);
 	value->AddUint("meshUID", mesh->UID);
 	value->AddString("materialFile", material->name.c_str());
+	value->AddInt("castShadows", castShadows);
 }
 
 void ComponentRenderer::Load(JSON_value* value)
@@ -168,6 +169,8 @@ void ComponentRenderer::Load(JSON_value* value)
 
 	const char* materialFile = value->GetString("materialFile");
 	SetMaterial(materialFile);
+
+	castShadows = value->GetInt("castShadows");
 }
 
 void ComponentRenderer::SetMaterial(const char * materialfile)

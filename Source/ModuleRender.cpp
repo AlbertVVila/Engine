@@ -15,6 +15,8 @@
 
 #include "GameObject.h"
 #include "ComponentCamera.h"
+#include "ComponentRenderer.h"
+#include "ComponentTransform.h"
 #include "Skybox.h"
 #include "Viewport.h"
 #include "JSON.h"
@@ -94,7 +96,6 @@ bool ModuleRender::Start()
 update_status ModuleRender::PreUpdate()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 	return UPDATE_CONTINUE;
 }
 
@@ -108,6 +109,7 @@ update_status ModuleRender::Update(float dt)
 update_status ModuleRender::PostUpdate()
 {
 	BROFILER_CATEGORY("Render PostUpdate", Profiler::Color::Black);
+	ComputeShadows();
 
 	viewScene->Draw(App->camera->editorcamera, true);
 	viewGame->Draw(App->scene->maincamera);
@@ -257,6 +259,107 @@ void ModuleRender::InitOpenGL() const
 	glViewport(0, 0, App->window->width, App->window->height);
 }
 
+void ModuleRender::ComputeShadows()
+{
+	if (directionalLight)
+	{
+		math::Quat lookAtLight = math::Quat::LookAt(math::float3::unitZ, directionalLight->gameobject->transform->front, math::float3::unitY, directionalLight->gameobject->transform->up);
+		math::AABB lightAABB;
+		lightAABB.SetNegativeInfinity();
+		for (GameObject* go : App->scene->dynamicFilteredGOs) //TODO: get volumetric gos even if outside the frustum
+		{
+			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+			if (cr && cr->castShadows)
+			{
+				lightAABB.Enclose(go->bbox);
+			}
+		}
+
+		for (GameObject* go : App->scene->staticFilteredGOs)
+		{
+			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+			if (cr && cr->castShadows)
+			{
+				lightAABB.Enclose(go->bbox);
+			}
+		}
+
+
+		math::float3 points[8];
+
+		math::float4x4 lightMat = math::Quat::LookAt(math::float3::unitZ, directionalLight->gameobject->transform->front, math::float3::unitY, directionalLight->gameobject->transform->up).Inverted().ToFloat3x3();
+
+		lightAABB.GetCornerPoints(points);
+
+		math::float3 minP, maxP;
+		minP = points[0];
+		maxP = points[0];
+		for (unsigned i = 0u; i < 8u; ++i)
+		{
+			points[i] = lightMat.TransformPos(points[i]);
+			minP.x = MIN(points[i].x, minP.x);
+			minP.y = MIN(points[i].y, minP.y);
+			minP.z = MIN(points[i].z, minP.z);
+
+			maxP.x = MAX(points[i].x, maxP.x);
+			maxP.y = MAX(points[i].y, maxP.y);
+			maxP.z = MAX(points[i].z, maxP.z);
+		}
+
+		float widthP = maxP.x - minP.x;
+		float halfWidthP = widthP * .5f;
+		float heightP = maxP.y - minP.y;
+		float halfHeightP = heightP * .5f;
+		float lengthP = (maxP.z - minP.z) * .5f;
+
+		math::float3 lightPos = lightMat.Inverted().TransformPos(math::float3((maxP.x + minP.x) * .5f, (maxP.y + minP.y) * .5f, maxP.z));
+
+		if (shadowDebug) // draw shadows volume
+		{
+			dd::sphere(lightPos, dd::colors::YellowGreen, current_scale);
+
+			math::float3 lFront = directionalLight->gameobject->transform->front;
+			math::float3 lRight = directionalLight->gameobject->transform->right;
+			math::float3 lUp = directionalLight->gameobject->transform->up;
+
+			dd::line(lightPos, lightPos - lFront * lengthP, dd::colors::YellowGreen);
+			dd::line(lightPos, lightPos - lRight * halfWidthP, dd::colors::Red);
+			dd::line(lightPos, lightPos + lRight * halfWidthP, dd::colors::Red);
+			dd::line(lightPos, lightPos - lUp * halfHeightP, dd::colors::Green);
+			dd::line(lightPos, lightPos + lUp * halfHeightP, dd::colors::Green);
+
+			math::float3 nearCorners[4] = {
+						lightPos + lUp * halfHeightP + lRight * halfWidthP,
+						lightPos + lUp * halfHeightP - lRight * halfWidthP,
+						lightPos - lUp * halfHeightP - lRight * halfWidthP,
+						lightPos - lUp * halfHeightP + lRight * halfWidthP
+			};
+
+			math::float3 farCorners[4] = {
+						lightPos - lFront * lengthP + lUp * halfHeightP + lRight * halfWidthP,
+						lightPos - lFront * lengthP + lUp * halfHeightP - lRight * halfWidthP,
+						lightPos - lFront * lengthP - lUp * halfHeightP - lRight * halfWidthP,
+						lightPos - lFront * lengthP - lUp * halfHeightP + lRight * halfWidthP
+			};
+
+			for (unsigned i = 0u; i < 4u; ++i)
+			{
+				dd::line(nearCorners[i], farCorners[i], dd::colors::YellowGreen);
+				if (i < 3u)
+				{
+					dd::line(nearCorners[i], nearCorners[i + 1], dd::colors::YellowGreen);
+					dd::line(farCorners[i], farCorners[i + 1], dd::colors::YellowGreen);
+				}
+				else
+				{
+					dd::line(nearCorners[i], nearCorners[0], dd::colors::YellowGreen);
+					dd::line(farCorners[i], farCorners[0], dd::colors::YellowGreen);
+				}
+			}
+		}
+	}
+}
+
 void ModuleRender::DrawGUI()
 {
 	if (ImGui::Checkbox("Depth Test", &depthTest))
@@ -292,6 +395,7 @@ void ModuleRender::DrawGUI()
 	}
 	ImGui::Checkbox("Picker Debug", &picker_debug);
 	ImGui::Checkbox("Light Debug", &light_debug);
+	ImGui::Checkbox("Shadow volume Debug", &shadowDebug);
 	ImGui::Checkbox("Dynamic AABBTree Debug", &aabbTreeDebug);
 	ImGui::Checkbox("Static KDTree Debug", &kDTreeDebug);
 	ImGui::Checkbox("Grid Debug", &grid_debug);

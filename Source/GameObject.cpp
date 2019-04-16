@@ -488,21 +488,24 @@ void GameObject::SetLightUniforms(unsigned shader) const
 		switch (go->light->lightType)
 		{
 		case LightType::DIRECTIONAL:
-			memset(buffer, 0, 32);
-			sprintf(buffer, "lights.directional[%d].direction", directionals);
-			glUniform3fv(glGetUniformLocation(shader,
-				buffer), 1, (GLfloat*)&go->light->direction);
-			
-			memset(buffer, 0, 32);
-			sprintf(buffer, "lights.directional[%d].color", directionals);
-			glUniform3fv(glGetUniformLocation(shader,
-				buffer), 1, (GLfloat*)&go->light->color);
+			if (directionals == 0u)
+			{
+				memset(buffer, 0, 32);
+				sprintf(buffer, "lights.directional[%d].direction", directionals);
+				glUniform3fv(glGetUniformLocation(shader,
+					buffer), 1, (GLfloat*)&go->light->direction);
 
-			memset(buffer, 0, 32);
-			sprintf(buffer, "lights.directional[%d].intensity", points);
-			glUniform1f(glGetUniformLocation(shader,
-				buffer), go->light->intensity);
-			++directionals;
+				memset(buffer, 0, 32);
+				sprintf(buffer, "lights.directional[%d].color", directionals);
+				glUniform3fv(glGetUniformLocation(shader,
+					buffer), 1, (GLfloat*)&go->light->color);
+
+				memset(buffer, 0, 32);
+				sprintf(buffer, "lights.directional[%d].intensity", points);
+				glUniform1f(glGetUniformLocation(shader,
+					buffer), go->light->intensity);
+				++directionals;
+			}
 			break;
 		case LightType::POINT:
 			memset(buffer, 0, 32);
