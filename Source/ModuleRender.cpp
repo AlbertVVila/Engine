@@ -261,7 +261,7 @@ void ModuleRender::InitOpenGL() const
 
 void ModuleRender::ComputeShadows()
 {
-	if (directionalLight)
+	if (directionalLight && directionalLight->produceShadows)
 	{
 		math::Quat lookAtLight = math::Quat::LookAt(math::float3::unitZ, directionalLight->gameobject->transform->front, math::float3::unitY, directionalLight->gameobject->transform->up);
 		math::AABB lightAABB;

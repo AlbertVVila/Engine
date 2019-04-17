@@ -69,7 +69,9 @@ void ComponentLight::DrawProperties()
 		const char * types[] = {"Directional","Point", "Spot"};
 		if (ImGui::BeginCombo("",types[(int)lightType]))
 		{
-			for (int n = 0; n < LIGHTTYPES; n++)
+			int n;
+			App->renderer->directionalLight ? n = 1 : n = 0;
+			for (; n < LIGHTTYPES; n++)
 			{
 				bool is_selected = ((int)lightType == n);
 				if (ImGui::Selectable(types[n], is_selected) && (int)lightType != n)
@@ -79,6 +81,15 @@ void ComponentLight::DrawProperties()
 					App->spacePartitioning->aabbTreeLighting.ReleaseNode(gameobject->treeNode);
 					CalculateGuizmos();
 					App->spacePartitioning->aabbTreeLighting.InsertGO(gameobject);
+					if (lightType != LightType::DIRECTIONAL && App->renderer->directionalLight == this)
+					{
+						App->renderer->directionalLight = nullptr;
+					}
+					else if (lightType == LightType::DIRECTIONAL)
+					{
+						App->renderer->directionalLight = this;
+						produceShadows = false;
+					}
 				}
 				if (is_selected)
 					ImGui::SetItemDefaultFocus();
@@ -101,21 +112,7 @@ void ComponentLight::DrawProperties()
 		}
 		else
 		{
-			if (ImGui::Checkbox("Produce shadows", &produceShadows))
-			{
-				if (produceShadows)
-				{
-					if (App->renderer->directionalLight)
-					{
-						App->renderer->directionalLight->produceShadows = false;
-					}
-					App->renderer->directionalLight = this;
-				}
-				else
-				{
-					App->renderer->directionalLight = nullptr;
-				}
-			}
+			ImGui::Checkbox("Produce shadows", &produceShadows);
 		}
 
 		lightDirty = lightDirty || ImGui::DragFloat("Intensity", &intensity);

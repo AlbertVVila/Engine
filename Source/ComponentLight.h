@@ -48,9 +48,9 @@ public:
 	float range = 100.f;
 
 	Sphere pointSphere;
-private:
-
 	bool produceShadows = false;
+
+private:
 
 	float spotDistance = .0f;	
 	float spotEndRadius = .0f;		
