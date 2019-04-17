@@ -1,6 +1,7 @@
 #ifndef __Component_h__
 #define __Component_h__
 
+#include "Globals.h"
 class GameObject;
 class JSON_value;
 
@@ -13,6 +14,7 @@ enum class ComponentType
 	Particles,
 	Trail,
 	Script,
+	Animation,
 	Transform2D,
 	Text,
 	Image,
@@ -31,23 +33,25 @@ public:
 	bool DrawComponentState();
 
 	virtual void DrawProperties() = 0;
-	virtual void Enable()
+
+	ENGINE_API virtual void Enable(bool enable)
 	{
-		enabled = true;
+		enabled = enable;
 	}
 
 	virtual void Update() {}
-	virtual void Disable()
-	{
-		enabled = false;
-	}
 	
 	virtual bool CleanUp() 
 	{
 		return true; 
 	}
 
+	virtual void Options();
 	void Remove();
+
+	virtual void Copy();
+	virtual void Paste() {}
+	virtual void Reset() {}
 
 	virtual void Save(JSON_value* value) const;
 	virtual void Load(JSON_value* value);

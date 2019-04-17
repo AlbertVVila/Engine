@@ -50,7 +50,7 @@ public:
 	ComponentTrail* Clone() const;
 	std::queue<TrailPoint> trail;
 	std::list<ParticleModule*> modules;
-	Texture* texture = nullptr;
+	ResourceTexture* texture = nullptr;
 
 private:
 

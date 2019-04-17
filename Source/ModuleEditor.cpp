@@ -19,6 +19,10 @@
 #include "PanelHardware.h"
 #include "PanelHierarchy.h"
 #include "PanelTime.h"
+#include "PanelBrowser.h"
+#include "PanelResourceManager.h"
+#include "PanelState.h"
+#include "PanelAnimation.h"
 
 #include "MaterialEditor.h"
 #include "FileExplorer.h"
@@ -26,6 +30,7 @@
 #include "imgui.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_sdl.h"
+#include "NodeEditor.h"
 #include "ImGuizmo.h"
 #include "Brofiler.h"
 #include <vector>
@@ -38,7 +43,11 @@ ModuleEditor::ModuleEditor()
 	panels.push_back(about = new PanelAbout());
 	panels.push_back(hardware = new PanelHardware());
 	panels.push_back(hierarchy = new PanelHierarchy());
+	panels.push_back(assets = new PanelBrowser());
 	panels.push_back(time = new PanelTime());
+	panels.push_back(states = new PanelState());
+	panels.push_back(animation = new PanelAnimation());
+	panels.push_back(resource = new PanelResourceManager());
 
 	materialEditor = new MaterialEditor();
 	fileExplorer = new FileExplorer();
@@ -121,6 +130,12 @@ bool ModuleEditor::Init(JSON * config)
 	style->Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.25f, 1.00f, 0.00f, 0.43f);
 	style->Colors[ImGuiCol_ModalWindowDarkening] = ImVec4(1.00f, 0.98f, 0.95f, 0.73f);
 
+	// Init all panels
+	for (std::list<Panel*>::reverse_iterator it = panels.rbegin(); it != panels.rend(); ++it)
+	{
+		(*it)->Init();
+	}
+
 	return true;
 }
 
@@ -155,13 +170,9 @@ update_status ModuleEditor::Update(float dt)
 			{
 				if (App->time->gameState == GameState::STOP)
 				{
-					fileExplorer->currentOperation = MenuOperations::LOAD;
-					fileExplorer->extensionToFilter = FILETYPE::SCENE;
 					std::string scenePath = SCENES;
 					scenePath = scenePath.substr(0, scenePath.size() - 1);
-					fileExplorer->SetPath(*scenePath.c_str());
-					sprintf_s(fileExplorer->title, "Load Scene");
-					fileExplorer->openFileExplorer = true;
+					fileExplorer->OpenFileExplorer(MenuOperations::LOAD, FILETYPE::SCENE, scenePath.c_str(), "Load Scene", App->scene->name.c_str());
 				}
 				else
 				{
@@ -172,13 +183,10 @@ update_status ModuleEditor::Update(float dt)
 			{
 				if (App->time->gameState == GameState::STOP)
 				{
-					fileExplorer->currentOperation = MenuOperations::ADD;
-					fileExplorer->extensionToFilter = FILETYPE::SCENE;
 					std::string scenePath = SCENES;
 					scenePath = scenePath.substr(0, scenePath.size() - 1);
-					fileExplorer->SetPath(*scenePath.c_str());
-					sprintf_s(fileExplorer->title, "Add Scene");
 					fileExplorer->openFileExplorer = true;
+					fileExplorer->OpenFileExplorer(MenuOperations::ADD, FILETYPE::SCENE, scenePath.c_str(), "Add Scene", App->scene->name.c_str());
 				}
 				else
 				{
@@ -191,17 +199,13 @@ update_status ModuleEditor::Update(float dt)
 				{
 					if (!App->scene->name.empty())
 					{
-						App->scene->SaveScene(*App->scene->root, *App->scene->name.c_str(), *App->scene->path.c_str());
+						App->scene->SaveScene(*App->scene->root, App->scene->name.c_str(), App->scene->path.c_str());
 					}
 					else
 					{
-						fileExplorer->currentOperation = MenuOperations::SAVE;
-						fileExplorer->extensionToFilter = FILETYPE::SCENE;
 						std::string scenePath = SCENES;
 						scenePath = scenePath.substr(0, scenePath.size() - 1);
-						fileExplorer->SetPath(*scenePath.c_str());
-						sprintf_s(fileExplorer->title, "Save Scene");
-						fileExplorer->openFileExplorer = true;
+						fileExplorer->OpenFileExplorer(MenuOperations::SAVE, FILETYPE::SCENE, scenePath.c_str(), "Save Scene");
 					}
 					materialEditor->Save();
 				}
@@ -214,15 +218,10 @@ update_status ModuleEditor::Update(float dt)
 			{
 				if (App->time->gameState == GameState::STOP)
 				{
-					fileExplorer->currentOperation = MenuOperations::SAVE;
-					fileExplorer->extensionToFilter = FILETYPE::SCENE;
 					std::string scenePath = SCENES;
 					scenePath = scenePath.substr(0, scenePath.size() - 1);
-					fileExplorer->SetPath(*scenePath.c_str());
-					sprintf_s(fileExplorer->title, "Save Scene");
-					sprintf_s(fileExplorer->filename, App->scene->name.c_str());
-					fileExplorer->openFileExplorer = true;
-          				materialEditor->Save();
+					fileExplorer->OpenFileExplorer(MenuOperations::SAVE, FILETYPE::SCENE, scenePath.c_str(), "Save Scene", App->scene->name.c_str());
+          			materialEditor->Save();
 				}
 				else
 				{
@@ -250,6 +249,7 @@ update_status ModuleEditor::Update(float dt)
 		}
     fileExplorer->Draw();
 		WindowsMenu();
+		ToolsMenu();
 		HelpMenu();
 		ImGui::EndMainMenuBar();
 	}
@@ -340,6 +340,30 @@ void ModuleEditor::WindowsMenu()
 		if (ImGui::MenuItem("Time control", nullptr, time->IsEnabled()))
 		{
 			time->ToggleEnabled();
+		}
+		if (ImGui::MenuItem("Animation", nullptr, animation->IsEnabled()))
+		{
+			animation->ToggleEnabled();
+		}
+		if (ImGui::MenuItem("StateMachine", nullptr, states->IsEnabled()))
+		{
+			states->ToggleEnabled();
+		}
+		if (ImGui::MenuItem("Assets", nullptr, assets->IsEnabled()))
+		{
+			assets->ToggleEnabled();
+		}
+		ImGui::EndMenu();
+	}
+}
+
+void ModuleEditor::ToolsMenu()
+{
+	if (ImGui::BeginMenu("Tools"))
+	{
+		if (ImGui::MenuItem("Resource Manager", nullptr, resource->IsEnabled()))
+		{
+			resource->ToggleEnabled();
 		}
 		ImGui::EndMenu();
 	}

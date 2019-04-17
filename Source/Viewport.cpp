@@ -10,8 +10,11 @@
 #include "ComponentCamera.h"
 #include "ComponentTransform.h"
 
+#include "ResourceTexture.h"
+
 #include "Viewport.h"
 #include "GL/glew.h"
+#include "SDL_mouse.h"
 
 #include "imgui.h"
 #include "imgui_internal.h"
@@ -71,13 +74,13 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 		focus = ImGui::IsWindowFocused();
 		hover = ImGui::IsWindowHovered();
 
-		if (cam == nullptr)
+		if (cam == nullptr  || !isEditor && (!cam->enabled || !cam->gameobject->isActive()))
 		{
 			ImVec2 size = ImGui::GetWindowSize();
 			size.x = MAX(size.x, 400);
 			size.y = MAX(size.y, 400);
 
-			ImGui::Image((ImTextureID)App->scene->camera_notfound_texture->id,
+			ImGui::Image((ImTextureID)App->scene->camera_notfound_texture->gpuID,
 				size, { 0,1 }, { 1,0 });
 			ImGui::End();
 			return;
@@ -146,17 +149,20 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 void Viewport::DrawGuizmoButtons()
 {
 
-	if (ImGui::Button("Translate"))
+	if ((ImGui::Button("Translate") || App->input->IsKeyPressed(SDL_SCANCODE_W)) && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_IDLE)
 	{
 		mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
+		mCurrentGizmoMode = mCurrentModeAux;
 	}
 	ImGui::SameLine();
-	if (ImGui::Button("Rotate"))
+	if (ImGui::Button("Rotate") || App->input->IsKeyPressed(SDL_SCANCODE_E))
 	{
 		mCurrentGizmoOperation = ImGuizmo::ROTATE;
+		mCurrentGizmoMode = mCurrentModeAux;
+
 	}
 	ImGui::SameLine();
-	if (ImGui::Button("Scale"))
+	if (ImGui::Button("Scale") || App->input->IsKeyPressed(SDL_SCANCODE_R))
 	{
 		mCurrentGizmoOperation = ImGuizmo::SCALE;
 		mCurrentGizmoMode = ImGuizmo::LOCAL;
@@ -173,6 +179,8 @@ void Viewport::DrawGuizmoButtons()
 		if (ImGui::Button("Local"))
 		{
 			mCurrentGizmoMode = ImGuizmo::LOCAL;
+			mCurrentModeAux = ImGuizmo::LOCAL;
+
 		}
 	}
 	else
@@ -180,6 +188,8 @@ void Viewport::DrawGuizmoButtons()
 		if (ImGui::Button("World"))
 		{
 			mCurrentGizmoMode = ImGuizmo::WORLD;
+			mCurrentModeAux = ImGuizmo::WORLD;
+
 		}
 	}
 
@@ -307,7 +317,7 @@ void Viewport::CreateMSAABuffers(int width, int height)
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void Viewport::DrawImGuizmo(const ComponentCamera & cam)
+void Viewport::DrawImGuizmo(const ComponentCamera& cam)
 {
 	PROFILE;
 	ImVec2 pos = ImGui::GetWindowPos();
@@ -317,9 +327,8 @@ void Viewport::DrawImGuizmo(const ComponentCamera & cam)
 	ImGui::SetCursorPos({ 20,30 });
 	DrawGuizmoButtons();
 
-	if (App->scene->selected != nullptr)
+	if (App->scene->selected != nullptr && App->scene->selected != App->scene->root && ((ComponentTransform*)App->scene->selected->GetComponent(ComponentType::Transform)))
 	{
-
 		ImGuizmo::Enable(!App->scene->selected->isStatic || App->time->gameState == GameState::RUN);
 
 		math::float4x4 model = App->scene->selected->GetGlobalTransform();
@@ -339,10 +348,19 @@ void Viewport::DrawImGuizmo(const ComponentCamera & cam)
 
 		if (ImGuizmo::IsUsing())
 		{
+			if (!startImguizmoUse)
+			{
+				App->scene->TakePhoto();
+				startImguizmoUse = true;
+			}
 			model.Transpose();
 			App->scene->selected->SetGlobalTransform(model);
 			difference = model - originalModel;
 			App->scene->selected->transform->MultiSelectionTransform(difference); //checks if multi transform is required & do it
+		}
+		else
+		{
+			startImguizmoUse = false;
 		}
 	}
 }

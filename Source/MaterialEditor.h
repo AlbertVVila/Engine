@@ -2,7 +2,9 @@
 #define __MaterialEditor_h__
 #define None "None Selected"
 
-class Material;
+#include <string>
+
+class ResourceMaterial;
 
 class MaterialEditor
 {
@@ -14,6 +16,7 @@ public:
 	void ShaderSelector(std::string &current_shader);
 	void TextureSelector(unsigned i, std::string &current_texture, int id);
 	void SetCurrentTextures();	// Sets current textures strings with the corresponding texture file string
+	void UpdateTexturesList();
 	void NewMaterial();
 	bool Exists(const std::string& material) const;
 	void Save();
@@ -27,8 +30,8 @@ public:
 	bool newMaterial = false;
 	bool newMatExists = false;
 
-	Material* material = nullptr;
-	Material* previous = nullptr;
+	ResourceMaterial* material = nullptr;
+	ResourceMaterial* previous = nullptr;
 
 	std::string currentShader = None;
 	std::string currentDiffuse = None;

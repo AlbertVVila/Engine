@@ -16,6 +16,10 @@
 
 PanelInspector::PanelInspector()
 {
+	componentList = { {"Transform", ComponentType::Transform}, {"Renderer", ComponentType::Renderer}, 
+	{"Camera", ComponentType::Camera},  {"Light", ComponentType::Light} , {"Script", ComponentType::Script},
+	{"Animation", ComponentType::Animation}, {"Particle System", ComponentType::Particles}, 
+	{"Trail Renderer", ComponentType::Trail} };
 }
 
 
@@ -36,7 +40,7 @@ void PanelInspector::Draw()
 		return;
 	}
 	ImGui::PushID(this);
-	if (App->scene->selected != nullptr)
+	if (App->scene->selected != nullptr && App->scene->root != nullptr && App->scene->selected != App->scene->root)
 	{
 		App->scene->selected->DrawProperties();
 		const char* components[] = { "Transform", "Renderer", "Camera", "Light", "Particle System", "Trail Renderer", "Script", "Transform2D", "Text", "Image", "Button"};
@@ -48,10 +52,10 @@ void PanelInspector::Draw()
 		{
 			ImGui::Text("Components");
 			ImGui::Separator();
-			for (int i = 0; i < IM_ARRAYSIZE(components); i++)
-				if (ImGui::Selectable(components[i]))
+			for (int i = 0; i < componentList.size(); i++)
+				if (ImGui::Selectable(componentList[i].first))
 				{
-					ComponentType type = (ComponentType)i;
+					ComponentType type = componentList[i].second;
 					if (App->scene->selected->GetComponent(type) != nullptr && 
 						(type == ComponentType::Renderer || type == ComponentType::Transform))
 					{
@@ -65,6 +69,7 @@ void PanelInspector::Draw()
 					}
 					else
 					{
+						App->scene->TakePhoto();
 						App->scene->selected->CreateComponent(type);
 					}
 				}

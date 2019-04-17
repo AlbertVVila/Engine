@@ -11,7 +11,7 @@
 #include <queue>
 #include "ComponentTransform.h"
 
-struct Texture;
+class ResourceTexture;
 
 struct Particle
 {
@@ -47,7 +47,7 @@ public:
 	void Save(JSON_value* value) const override;
 	void Load(JSON_value* value) override;
 
-	Texture* texture = nullptr;
+	ResourceTexture* texture = nullptr;
 
 	std::queue<Particle*> particles;
 	std::queue<Particle*> particlePool;

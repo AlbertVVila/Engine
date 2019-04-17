@@ -10,6 +10,7 @@
 #include "ComponentTransform.h"
 
 #include "GameObject.h"
+#include "ResourceTexture.h"
 
 #include "imgui.h"
 #include "debugdraw.h"
@@ -34,6 +35,12 @@ ComponentTrail::ComponentTrail(const ComponentTrail& component) : Component(comp
 	{
 		gameobject->CreateComponent(ComponentType::Transform);
 	}
+	width = component.width;
+	duration = component.duration;
+	minDistance = component.minDistance;
+
+	textureName = component.textureName;
+
 	App->particles->AddTrailRenderer(this);
 }
 
@@ -75,31 +82,33 @@ void ComponentTrail::DrawProperties()
 	if (ImGui::CollapsingHeader("Trail Renderer", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		//texture selector
-		if (textureFiles.size() == 0)
-		{
-			textureFiles = App->fsystem->ListFiles(TEXTURES, false);
-		}
 		if (ImGui::BeginCombo("Texture", textureName.c_str()))
 		{
 			bool none_selected = (textureName == None);
 			if (ImGui::Selectable(None, none_selected))
 			{
-				textureName = None;
 				if (texture != nullptr)
 				{
-					App->resManager->DeleteTexture(textureName);
+					unsigned imageUID = App->resManager->FindByExportedFile(textureName.c_str());
+					App->resManager->DeleteResource(imageUID);
 					texture = nullptr;
 				}
+				textureName = None;
 			}
 			if (none_selected)
 				ImGui::SetItemDefaultFocus();
+
+			textureFiles = App->resManager->GetResourceNamesList(TYPE::TEXTURE, true);
+
 			for (int n = 0; n < textureFiles.size(); n++)
 			{
 				bool is_selected = (textureName == textureFiles[n]);
-				if (ImGui::Selectable(textureFiles[n].c_str(), is_selected))
+				if (ImGui::Selectable(textureFiles[n].c_str(), is_selected) && !is_selected)
 				{
+					App->resManager->DeleteResource(App->resManager->FindByExportedFile(textureName.c_str()));
 					textureName = textureFiles[n].c_str();
-					texture = App->textures->GetTexture(textureName.c_str());
+					unsigned imageUID = App->resManager->FindByExportedFile(textureName.c_str());
+					texture = (ResourceTexture*)App->resManager->Get(imageUID);
 				}
 				if (is_selected)
 					ImGui::SetItemDefaultFocus();
@@ -108,7 +117,7 @@ void ComponentTrail::DrawProperties()
 		}
 		if (texture != nullptr)
 		{
-			ImGui::Image((ImTextureID)texture->id, { 200,200 }, { 0,1 }, { 1,0 });
+			ImGui::Image((ImTextureID)texture->gpuID, { 200,200 }, { 0,1 }, { 1,0 });
 		}
 
 		ImGui::InputFloat("Width", &width, .01f, .1f);
@@ -141,13 +150,13 @@ void ComponentTrail::Load(JSON_value* value)
 	textureName = std::string(value->GetString("textureName"));
 	if (textureName != "None Selected")
 	{
-		texture = App->textures->GetTexture(textureName.c_str());
+		texture = (ResourceTexture*)App->resManager->Get(textureName.c_str());
 	}
 }
 
 ComponentTrail * ComponentTrail::Clone() const
 {
-	return nullptr;
+	return new ComponentTrail(*this);
 }
 
 ComponentTrail::~ComponentTrail()

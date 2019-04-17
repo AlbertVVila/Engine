@@ -24,6 +24,7 @@ class ModuleSpacePartitioning;
 class ModuleUI;
 class ModuleFontLoader;
 class ModuleScript;
+class ModuleDevelopmentBuildDebug;
 class ModuleParticles;
 
 class Application
@@ -56,6 +57,7 @@ public:
 	ModuleUI* ui = nullptr;
 	ModuleFontLoader* fontLoader = nullptr;
 	ModuleScript* scripting = nullptr;
+	ModuleDevelopmentBuildDebug* developDebug = nullptr;
 	ModuleParticles* particles = nullptr;
 
 private:

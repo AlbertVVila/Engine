@@ -12,6 +12,7 @@
 #include "ComponentCamera.h"
 #include "ComponentTrail.h"
 #include "ComponentTransform.h"
+#include "ResourceTexture.h"
 
 #include "GL/glew.h"
 #include <algorithm>
@@ -170,7 +171,7 @@ void ModuleParticles::RenderTrail(ComponentTrail* ct, const ComponentCamera* cam
 		return;
 	}
 
-	glUseProgram(trailShader->id);
+	glUseProgram(trailShader->id[0]);
 	glBindVertexArray(trailVAO);
 	unsigned trailVertices = ct->trail.size();
 
@@ -216,12 +217,12 @@ void ModuleParticles::RenderTrail(ComponentTrail* ct, const ComponentCamera* cam
 
 	glUnmapBuffer(GL_ARRAY_BUFFER);
 
-	glUniformMatrix4fv(glGetUniformLocation(trailShader->id, "projection"), 1, GL_FALSE, &camera->GetProjectionMatrix()[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(trailShader->id, "view"), 1, GL_FALSE, &camera->GetViewMatrix()[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(trailShader->id, "model"), 1, GL_TRUE, float4x4::identity.ptr());
+	glUniformMatrix4fv(glGetUniformLocation(trailShader->id[0], "projection"), 1, GL_FALSE, &camera->GetProjectionMatrix()[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(trailShader->id[0], "view"), 1, GL_FALSE, &camera->GetViewMatrix()[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(trailShader->id[0], "model"), 1, GL_TRUE, float4x4::identity.ptr());
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, ct->texture->id);
-	glUniform1i(glGetUniformLocation(shader->id, "texture0"), 0);
+	glBindTexture(GL_TEXTURE_2D, ct->texture->gpuID);
+	glUniform1i(glGetUniformLocation(trailShader->id[0], "texture0"), 0);
 
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, (trailVertices - discarded) * 2);
 
@@ -255,7 +256,7 @@ void ModuleParticles::DrawParticleSystem(ComponentParticles* cp, const Component
 	{
 		return;
 	}
-	glUseProgram(shader->id);
+	glUseProgram(shader->id[0]);
 	glBindVertexArray(billBoardVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, billBoardInstanceVBO);
 	float* matrices = (float*)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
@@ -288,18 +289,18 @@ void ModuleParticles::DrawParticleSystem(ComponentParticles* cp, const Component
 	glUnmapBuffer(GL_ARRAY_BUFFER);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	glUniformMatrix4fv(glGetUniformLocation(shader->id, "projection"), 1, GL_FALSE, &camera->GetProjectionMatrix()[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(shader->id, "view"), 1, GL_FALSE, &camera->GetViewMatrix()[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(shader->id[0], "projection"), 1, GL_FALSE, &camera->GetProjectionMatrix()[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(shader->id[0], "view"), 1, GL_FALSE, &camera->GetViewMatrix()[0][0]);
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, cp->texture->id);
-	glUniform1i(glGetUniformLocation(shader->id, "texture0"), 0);
-	glUniform1i(glGetUniformLocation(shader->id, "xTiles"), cp->xTiles);
-	glUniform1i(glGetUniformLocation(shader->id, "yTiles"), cp->yTiles);
-	glUniform1i(glGetUniformLocation(shader->id, "f1Xpos"), cp->f1Xpos);
-	glUniform1i(glGetUniformLocation(shader->id, "f1Ypos"), cp->f1Ypos);
-	glUniform1i(glGetUniformLocation(shader->id, "f2Xpos"), cp->f2Xpos);
-	glUniform1i(glGetUniformLocation(shader->id, "f2Ypos"), cp->f2Ypos);
-	glUniform1f(glGetUniformLocation(shader->id, "mixAmount"), cp->frameMix);
+	glBindTexture(GL_TEXTURE_2D, cp->texture->gpuID);
+	glUniform1i(glGetUniformLocation(shader->id[0], "texture0"), 0);
+	glUniform1i(glGetUniformLocation(shader->id[0], "xTiles"), cp->xTiles);
+	glUniform1i(glGetUniformLocation(shader->id[0], "yTiles"), cp->yTiles);
+	glUniform1i(glGetUniformLocation(shader->id[0], "f1Xpos"), cp->f1Xpos);
+	glUniform1i(glGetUniformLocation(shader->id[0], "f1Ypos"), cp->f1Ypos);
+	glUniform1i(glGetUniformLocation(shader->id[0], "f2Xpos"), cp->f2Xpos);
+	glUniform1i(glGetUniformLocation(shader->id[0], "f2Ypos"), cp->f2Ypos);
+	glUniform1f(glGetUniformLocation(shader->id[0], "mixAmount"), cp->frameMix);
 
 	glDrawArraysInstanced(GL_TRIANGLES,0, 6, cp->particles.size());
 

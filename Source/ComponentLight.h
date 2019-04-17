@@ -30,8 +30,13 @@ public:
 	void Update() override;
 	void DrawProperties() override;
 	void DrawDebugLight() const;
+
 	void Load(JSON_value* value) override;
-	void Save(JSON_value *value) const override;
+	void Save(JSON_value* value) const override;
+	
+	void Paste() override;
+	void Reset() override;
+
 	void CalculateGuizmos();
 	void DrawDebug() const;
 
@@ -46,6 +51,7 @@ public:
 	float outer = 25.f;
 	float intensity = 1.f;
 	float range = 100.f;
+	float directionalRadius = 100000000.f;
 
 	Sphere pointSphere;
 	bool produceShadows = false;

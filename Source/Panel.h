@@ -8,6 +8,8 @@ public:
 
 	virtual ~Panel() {};
 
+	virtual bool Init() { return true; };
+
 	virtual void Draw() {}
 
 	bool IsEnabled() const

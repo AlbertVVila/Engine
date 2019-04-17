@@ -41,9 +41,11 @@ public:
 	unsigned MSAACOLOR = 0;
 	bool focus = true;
 	bool hover = false;
-	math::float2 winPos;
+	math::float2 winPos = float2::zero;
 private:
 	bool enabled = true;
+	bool startImguizmoUse = false;
+
 	std::string name = "Viewport";
 
 	bool useSnap = false; //TODO: save in config
@@ -51,6 +53,7 @@ private:
 
 	unsigned mCurrentGizmoOperation = 0; //Translate //We avoid imguizmo .h inclusion
 	unsigned mCurrentGizmoMode = 1;//World
+	unsigned mCurrentModeAux = 1;
 };
 
 #endif __Viewport_h__
