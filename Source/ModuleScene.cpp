@@ -124,6 +124,21 @@ update_status ModuleScene::Update(float dt)
 	root->UpdateTransforms(math::float4x4::identity);
 	root->Update();
 	root->CheckDelete();
+	if (photoTimer > 0)
+	{
+		photoTimer -= dt;
+	}
+
+	if ((App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_Z) == KEY_REPEAT)
+		|| (App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN))
+	{
+		RestoreLastPhoto();
+	}
+	if ((App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_Y) == KEY_REPEAT)
+		|| (App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN))
+	{
+		Redo();
+	}
 	return UPDATE_CONTINUE;
 }
 
@@ -403,7 +418,7 @@ void ModuleScene::DragNDropMove(GameObject* target)
 
 void ModuleScene::DragNDrop(GameObject* go)
 {
-	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+	if (go->UUID > 1 && ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
 	{
 		GameObject * dragged_go = go;
 		ImGui::SetDragDropPayload("DragDropHierarchy", &dragged_go, sizeof(GameObject *), ImGuiCond_Once);
@@ -718,6 +733,8 @@ void ModuleScene::RestorePhoto(GameObject* photo)
 {
 	photoTimer = 0.f;
 	root = photo;
+	root->UUID = 0; // Restore root UUID
+	root->children.front()->UUID = 1; //Restore canvas UUID
 	std::stack<GameObject*> goStack;
 	goStack.push(root);
 	while (!goStack.empty())
