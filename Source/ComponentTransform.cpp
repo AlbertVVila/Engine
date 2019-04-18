@@ -127,31 +127,7 @@ void ComponentTransform::UpdateTransform()
 	front = -global.Col3(2);
 	up = global.Col3(1);
 	right = global.Col3(0);
-
-	if (!gameobject->isStatic)
-	{
-		if (gameobject->treeNode != nullptr && gameobject->hasLight)
-		{
-			gameobject->light->CalculateGuizmos();
-			if (!gameobject->treeNode->aabb.Contains(gameobject->bbox))
-			{
-				App->spacePartitioning->aabbTreeLighting.ReleaseNode(gameobject->treeNode);
-				App->spacePartitioning->aabbTreeLighting.InsertGO(gameobject);
-			}
-		}
-		if (gameobject->treeNode != nullptr && gameobject->isVolumetric)
-		{
-			if (!gameobject->treeNode->aabb.Contains(gameobject->bbox))
-			{
-				App->spacePartitioning->aabbTree.ReleaseNode(gameobject->treeNode);
-				App->spacePartitioning->aabbTree.InsertGO(gameobject);
-			}
-		}
-	}
-	else
-	{
-		App->spacePartitioning->kDTree.Calculate();
-	}
+	
 }
 
 void ComponentTransform::RotationToEuler()

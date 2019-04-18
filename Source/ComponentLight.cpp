@@ -42,7 +42,7 @@ ComponentLight::ComponentLight(const ComponentLight& component) : Component(comp
 	range = component.range;
 	intensity = component.intensity;
 	pointSphere = Sphere(component.pointSphere);
-	App->scene->lights.push_back(this);
+	App->scene->lights.push_back(this);	
 }
 
 ComponentLight::~ComponentLight()
@@ -122,7 +122,6 @@ void ComponentLight::DrawProperties()
 		else
 		{
 			ImGui::Checkbox("Produce shadows", &produceShadows);
-			lightDirty = lightDirty || ImGui::DragFloat("Radius", &directionalRadius);
 		}
 
 		lightDirty = lightDirty | ImGui::DragFloat("Intensity", &intensity);
@@ -134,7 +133,7 @@ void ComponentLight::DrawProperties()
 			lightDirty = lightDirty | ImGui::DragFloat("Outer", (float*)&outer, 0.1f, 0.f, 90.f);
 		}
 
-		if (lightDirty)
+		if (lightDirty && lightType != LightType::DIRECTIONAL)
 		{
 			if (App->scene->photoTimer <= 0.f)
 			{
@@ -166,10 +165,12 @@ void ComponentLight::Load(JSON_value* value)
 	if (lightType != LightType::DIRECTIONAL)
 	{
 		pointSphere.r = value->GetFloat("radius");			
-		range = value->GetFloat("range");		
+		range = value->GetFloat("range");			
 	}
-
-	directionalRadius = value->GetFloat("directionalRadius");
+	else
+	{
+		App->spacePartitioning->aabbTreeLighting.ReleaseNode(gameobject->treeNode);
+	}
 
 	if (lightType == LightType::SPOT)
 	{
@@ -191,7 +192,6 @@ void ComponentLight::Save(JSON_value* value) const
 
 	value->AddUint("Lighttype", (unsigned)lightType);
 	value->AddFloat3("color", color);
-	value->AddFloat("directionalRadius", directionalRadius);
 	if (lightType != LightType::DIRECTIONAL)
 	{
 		value->AddFloat("radius", pointSphere.r);
@@ -307,8 +307,6 @@ void ComponentLight::CalculateGuizmos()
 		}
 		case LightType::DIRECTIONAL:			
 			pointSphere.pos = math::float3::zero;
-			pointSphere.r = directionalRadius;
-
 			gameobject->bbox.SetNegativeInfinity();
 			gameobject->bbox.Enclose(pointSphere);
 			break;

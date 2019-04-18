@@ -42,6 +42,8 @@ private:
 	void InitSDL();
 	void InitOpenGL() const;
 	void ComputeShadows();
+	void ShadowVolumeDrawDebug();
+	void BlitShadowTexture();
 
 public:
 	void* context = nullptr;
@@ -74,6 +76,15 @@ private:
 
 	ResourceSkybox* skybox = nullptr;
 	
+	//shadows stuff
+	
+	math::float3 lightPos;
+
+	float shadowVolumeWidth;
+	float shadowVolumeWidthHalf;
+	float shadowVolumeHeight;
+	float shadowVolumeHeightHalf;
+	float shadowVolumeLength;
 
 };
 
