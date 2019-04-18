@@ -83,12 +83,6 @@ GameObject::GameObject(const GameObject & gameobject)
 			((ComponentButton*)componentcopy)->pressedImage->gameobject = this;
 			((ComponentButton*)componentcopy)->rectTransform->gameobject = this;
 		}
-		if (componentcopy->type == ComponentType::Light)
-		{
-			light = (ComponentLight*)componentcopy;
-			App->spacePartitioning->aabbTreeLighting.InsertGO(this);
-			App->scene->lights.push_back(light);
-		}
 	}
 	if (!App->scene->photoEnabled)
 	{
