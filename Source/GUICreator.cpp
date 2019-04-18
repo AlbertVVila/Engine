@@ -45,14 +45,10 @@ void GUICreator::CreateElements(GameObject* go)
 					lighttype->lightType = (LightType)i;
 					App->scene->Select(light);
 					App->spacePartitioning->aabbTreeLighting.ReleaseNode(light->treeNode); //The aabbtree should be updated with the new light type
-					
+					App->spacePartitioning->aabbTreeLighting.InsertGO(light);
 					if (lighttype->lightType == LightType::DIRECTIONAL)
 					{
 						App->renderer->directionalLight = lighttype;
-					}
-					else
-					{
-						App->spacePartitioning->aabbTreeLighting.InsertGO(light);
 					}
 				}
 			}

@@ -85,10 +85,16 @@ GameObject::GameObject(const GameObject & gameobject)
 			((ComponentButton*)componentcopy)->pressedImage->gameobject = this;
 			((ComponentButton*)componentcopy)->rectTransform->gameobject = this;
 		}
+		if (componentcopy->type == ComponentType::Light)
+		{
+			light = (ComponentLight*)componentcopy;
+			App->spacePartitioning->aabbTreeLighting.InsertGO(this);
+			App->scene->lights.push_back(light);
+		}
 	}
 	if (!App->scene->photoEnabled)
 	{
-		if (GetComponent(ComponentType::Renderer) != nullptr || GetComponent(ComponentType::Light) != nullptr)
+		if (GetComponent(ComponentType::Renderer) != nullptr)
 		{
 			App->scene->AddToSpacePartition(this);
 		}
@@ -507,11 +513,6 @@ void GameObject::SetLightUniforms(unsigned shader) const
 {
 	std::unordered_set<GameObject*> lights;
 	App->spacePartitioning->aabbTreeLighting.GetIntersections(bbox, lights);
-	if (App->renderer->directionalLight)
-	{
-		lights.insert(App->renderer->directionalLight->gameobject);
-	}
-
 	unsigned directionals = 0u;
 	unsigned points = 0u;
 	unsigned spots = 0u;
@@ -776,11 +777,6 @@ void GameObject::Load(JSON_value *value)
 	if (hasLight)
 	{
 		transform->UpdateTransform();
-		ComponentLight* light = (ComponentLight*) GetComponent(ComponentType::Light);
-		if (light->lightType == LightType::DIRECTIONAL)
-		{
-			App->renderer->directionalLight = light;
-		}
 	}
 
 }
@@ -894,30 +890,6 @@ void GameObject::UpdateTransforms(math::float4x4 parentGlobal)
 	{
 		transform->local = math::float4x4::FromTRS(transform->position, transform->rotation, transform->scale);
 		movedFlag = false;
-		if (!isStatic)
-		{
-			if (treeNode != nullptr && hasLight)
-			{
-				light->CalculateGuizmos();
-				if (!treeNode->aabb.Contains(bbox))
-				{
-					App->spacePartitioning->aabbTreeLighting.ReleaseNode(treeNode);
-					App->spacePartitioning->aabbTreeLighting.InsertGO(this);
-				}
-			}
-			if (treeNode != nullptr && isVolumetric)
-			{
-				if (!treeNode->aabb.Contains(bbox))
-				{
-					App->spacePartitioning->aabbTree.ReleaseNode(treeNode);
-					App->spacePartitioning->aabbTree.InsertGO(this);
-				}
-			}
-		}
-		else
-		{
-			App->spacePartitioning->kDTree.Calculate();
-		}
 	}
 
 	math::float4x4 global = math::float4x4::identity;

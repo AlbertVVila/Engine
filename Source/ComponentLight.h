@@ -51,6 +51,7 @@ public:
 	float outer = 25.f;
 	float intensity = 1.f;
 	float range = 100.f;
+	float directionalRadius = 100000000.f;
 
 	Sphere pointSphere;
 	bool produceShadows = false;
