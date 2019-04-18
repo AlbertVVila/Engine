@@ -159,7 +159,8 @@ ComponentAnimation::ComponentAnimation(GameObject * gameobject) : Component(game
 
 ComponentAnimation::ComponentAnimation(const ComponentAnimation& component) : Component(component)
 {
-	anim = (ResourceAnimation*)App->resManager->Get(component.anim->GetUID());
+	if (component.anim != nullptr)
+		anim = (ResourceAnimation*)App->resManager->Get(component.anim->GetUID());
 }
 
 
