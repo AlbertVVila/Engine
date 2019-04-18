@@ -50,6 +50,10 @@ void GUICreator::CreateElements(GameObject* go)
 					{
 						App->renderer->directionalLight = lighttype;
 					}
+					else
+					{
+						App->spacePartitioning->aabbTreeLighting.InsertGO(light);
+					}
 				}
 			}
 			ImGui::EndMenu();

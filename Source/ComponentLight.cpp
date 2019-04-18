@@ -50,10 +50,10 @@ ComponentLight::~ComponentLight()
 	App->scene->lights.remove(this);
 }
 
-void ComponentLight::Update() 
+void ComponentLight::Update()
 {
 	if (gameobject->transform == nullptr) return;
-	position = gameobject->transform->global.TranslatePart(); 
+	position = gameobject->transform->global.TranslatePart();
 
 	direction = -(gameobject->transform->rotation*float3::unitZ).Normalized();
 }
@@ -75,8 +75,8 @@ void ComponentLight::DrawProperties()
 
 		ImGui::Spacing();
 		ImGui::Text("Type");
-		const char * types[] = {"Directional","Point", "Spot"};
-		if (ImGui::BeginCombo("",types[(int)lightType]))
+		const char * types[] = { "Directional","Point", "Spot" };
+		if (ImGui::BeginCombo("", types[(int)lightType]))
 		{
 			int n;
 			App->renderer->directionalLight ? n = 1 : n = 0;
@@ -105,12 +105,12 @@ void ComponentLight::DrawProperties()
 			}
 			ImGui::EndCombo();
 		}
-		
+
 
 		ImGui::ColorEdit3("Color", (float*)&color);
-		
+
 		bool lightDirty = false;
-		
+
 		if (lightType != LightType::DIRECTIONAL)
 		{
 			ImGui::Text("Attenuation");
@@ -122,7 +122,6 @@ void ComponentLight::DrawProperties()
 		else
 		{
 			ImGui::Checkbox("Produce shadows", &produceShadows);
-			lightDirty = lightDirty || ImGui::DragFloat("Radius", &directionalRadius);
 		}
 
 		lightDirty = lightDirty | ImGui::DragFloat("Intensity", &intensity);
@@ -134,7 +133,7 @@ void ComponentLight::DrawProperties()
 			lightDirty = lightDirty | ImGui::DragFloat("Outer", (float*)&outer, 0.1f, 0.f, 90.f);
 		}
 
-		if (lightDirty)
+		if (lightDirty && lightType != LightType::DIRECTIONAL)
 		{
 			if (App->scene->photoTimer <= 0.f)
 			{
@@ -150,7 +149,7 @@ void ComponentLight::DrawProperties()
 
 void ComponentLight::DrawDebugLight() const
 {
-	DrawDebug();	
+	DrawDebug();
 }
 
 void ComponentLight::Load(JSON_value* value)
@@ -165,11 +164,13 @@ void ComponentLight::Load(JSON_value* value)
 
 	if (lightType != LightType::DIRECTIONAL)
 	{
-		pointSphere.r = value->GetFloat("radius");			
-		range = value->GetFloat("range");		
+		pointSphere.r = value->GetFloat("radius");
+		range = value->GetFloat("range");
 	}
-
-	directionalRadius = value->GetFloat("directionalRadius");
+	else
+	{
+		App->spacePartitioning->aabbTreeLighting.ReleaseNode(gameobject->treeNode);
+	}
 
 	if (lightType == LightType::SPOT)
 	{
@@ -191,13 +192,12 @@ void ComponentLight::Save(JSON_value* value) const
 
 	value->AddUint("Lighttype", (unsigned)lightType);
 	value->AddFloat3("color", color);
-	value->AddFloat("directionalRadius", directionalRadius);
 	if (lightType != LightType::DIRECTIONAL)
 	{
 		value->AddFloat("radius", pointSphere.r);
 		value->AddFloat("range", range);
 	}
-	
+
 	if (lightType == LightType::SPOT)
 	{
 		value->AddFloat("inner", inner);
@@ -254,8 +254,8 @@ ComponentLight* ComponentLight::Clone() const
 
 void ComponentLight::ResetValues()
 {
-	float polar = 0.f; 
-	float azimuth = 0.f; 
+	float polar = 0.f;
+	float azimuth = 0.f;
 	color = float3::one;
 	inner = 20.f;
 	outer = 25.f;
@@ -275,7 +275,7 @@ void ComponentLight::DrawDebug() const
 		break;
 	case LightType::SPOT:
 		dd::cone(gameobject->transform->GetGlobalPosition(), direction * range, dd::colors::Gold, spotEndRadius, .01f);
-		dd::aabb(gameobject->bbox.minPoint, gameobject->bbox.maxPoint, dd::colors::BurlyWood);	
+		dd::aabb(gameobject->bbox.minPoint, gameobject->bbox.maxPoint, dd::colors::BurlyWood);
 	}
 }
 
@@ -290,7 +290,7 @@ void ComponentLight::CalculateGuizmos()
 			gameobject->bbox.SetNegativeInfinity();
 			gameobject->bbox.Enclose(pointSphere);
 			break;
-		case LightType::SPOT:	
+		case LightType::SPOT:
 		{
 			spotEndRadius = range * tan(DegToRad(outer));
 			pointSphere.pos = gameobject->transform->GetGlobalPosition();
@@ -305,14 +305,12 @@ void ComponentLight::CalculateGuizmos()
 			gameobject->bbox.SetFrom(points, 6);
 			break;
 		}
-		case LightType::DIRECTIONAL:			
+		case LightType::DIRECTIONAL:
 			pointSphere.pos = math::float3::zero;
-			pointSphere.r = directionalRadius;
-
 			gameobject->bbox.SetNegativeInfinity();
 			gameobject->bbox.Enclose(pointSphere);
 			break;
-		}		
+		}
 	}
 }
 
