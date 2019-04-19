@@ -24,9 +24,11 @@ public:
 	void ManageCreate(ResourceStateMachine* RM);
 	void Draw() override;
 
+	bool focus = false;
 private:
 	unsigned contextNode = 0u;
 	unsigned contextLink = 0u;
+
 	ImVec2 newNodePosition;
 	ed::PinId newNodePin = 0;
 };

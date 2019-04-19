@@ -24,17 +24,30 @@ PanelState::~PanelState()
 
 void PanelState::DrawSM(ResourceStateMachine * animation, ax::NodeEditor::EditorContext * context)
 {
+	auto& io = ImGui::GetIO();
 
 	ed::SetCurrentEditor(context);
 	ed::Begin("State Machine Editor", ImVec2(0.0, 0.0f));
 
-	ManageCreate(animation);
-	ShowContextMenus(animation);
+	//ManageCreate(animation);
+	//ShowContextMenus(animation);
+	int uniqueId = 1;
+
+	ed::BeginNode(uniqueId++);
+	ImGui::Text("Node A");
+	ed::BeginPin(uniqueId++, ed::PinKind::Input);
+	ImGui::Text("-> In");
+	ed::EndPin();
+	ImGui::SameLine();
+	ed::BeginPin(uniqueId++, ed::PinKind::Output);
+	ImGui::Text("Out ->");
+	ed::EndPin();
+	ed::EndNode();
 
 
-	ed::Suspend();
-	ShowCreateNewNodeMenu(animation);
-	ed::Resume();
+	//ed::Suspend();
+	//ShowCreateNewNodeMenu(animation);
+	//ed::Resume();
 
 	ed::End();
 	ed::SetCurrentEditor(nullptr);
@@ -99,6 +112,21 @@ void PanelState::ShowCreateNewNodeMenu(ResourceStateMachine* animation)
 
 		if (ImGui::BeginMenu("New animation"))
 		{
+			for (unsigned i = 0, count = animation->GetClipsSize(); i < count; ++i)
+			{
+				if (ImGui::MenuItem(animation->GetClipName(i).C_str()))
+				{
+					unsigned nodIdx = animation->GetNodesSize();
+					ed::SetNodePosition(nodIdx * 3 + 1, ed::ScreenToCanvas(newNodePosition));
+
+					if (newNodePin != ed::PinId::Invalid)
+					{
+						unsigned out_node = unsigned(newNodePin.Get() - 1) / 3;
+						animation->AddTransition(animation->GetNodeName(out_node), animation->GetNodeName(nodIdx), HashString(), DEFAULT_BLEND);
+					}
+				}
+			}
+
 			ImGui::EndMenu();
 		}
 		ImGui::EndPopup();
@@ -107,8 +135,8 @@ void PanelState::ShowCreateNewNodeMenu(ResourceStateMachine* animation)
 
 void PanelState::ManageCreate(ResourceStateMachine* animation)
 {
-if (ed::BeginCreate(ImColor(255, 255, 255), 2.0f))
-{
+	if (ed::BeginCreate(ImColor(255, 255, 255), 2.0f))
+	{
 	auto showLabel = [](const char* label, ImColor color)
 	{
 		ImGui::SetCursorPosY(ImGui::GetCursorPosY() - ImGui::GetTextLineHeight());
@@ -190,7 +218,7 @@ if (ed::BeginCreate(ImColor(255, 255, 255), 2.0f))
 			}
 		}
 	}
-}
+	}
 
 ed::EndCreate();
 }

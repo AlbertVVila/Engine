@@ -6,6 +6,8 @@
 #include "HashString.h"
 #include <vector>
 
+#define MAX_CLIP_NAME 64
+
 class ResourceAnimation;
 
 class ResourceStateMachine : public Resource
@@ -31,7 +33,6 @@ public:
 	unsigned FindTransition(const HashString origin, const HashString trigger);
 
 	//Clips setters and getters
-
 	HashString GetClipName(unsigned index);
 	unsigned GetClipResource(unsigned index);
 	bool GetClipLoop(unsigned index);
@@ -64,6 +65,10 @@ public:
 	void RemoveClip(unsigned UID);
 	void RemoveNode(unsigned UID);
 	void RemoveTransition(unsigned UID);
+
+	bool isClipsEmpty() { return clips.empty(); }
+	bool isNodesEmpty() { return nodes.empty(); }
+	bool isTransitionsEmpty() { return transitions.empty(); }
 
 private:
 	

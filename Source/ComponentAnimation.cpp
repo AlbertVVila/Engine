@@ -7,10 +7,13 @@
 #include "GameObject.h"
 #include "Resource.h"
 #include "ResourceAnimation.h"
+#include "ResourceStateMachine.h"
 #include "AnimationController.h"
 #include "ComponentAnimation.h"
 #include "ComponentTransform.h"
 
+#include "Globals.h"
+#include "HashString.h"
 #include "Imgui/include/imgui.h"
 #include "JSON.h"
 #include "Math/Quat.h"
@@ -20,9 +23,17 @@
 ComponentAnimation::ComponentAnimation() : Component(nullptr, ComponentType::Animation)
 {
 	controller = new AnimationController();
+	stateMachine = (ResourceStateMachine*)App->resManager->CreateNewResource(TYPE::STATEMACHINE);
 	PlayAnimation(100u);
 }
 
+ComponentAnimation::ComponentAnimation(GameObject * gameobject) : Component(gameobject, ComponentType::Animation)
+{
+	//anim = new ResourceAnimation();
+	controller = new AnimationController();
+	stateMachine = (ResourceStateMachine*)App->resManager->CreateNewResource(TYPE::STATEMACHINE);
+	PlayAnimation(100u);
+}
 
 ComponentAnimation::~ComponentAnimation()
 {
@@ -41,9 +52,71 @@ ComponentAnimation::~ComponentAnimation()
 
 void ComponentAnimation::DrawProperties()
 {
+	ImGui::PushID(this);
 	if (ImGui::CollapsingHeader("Animation", ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		ImGui::Text("Animation");
+		bool removed = Component::DrawComponentState();
+		if (removed)
+		{
+			ImGui::PopID();
+			return;
+		}
+
+		if (ImGui::Button("New State Machine"))
+		{
+			stateMachine = (ResourceStateMachine*)App->resManager->CreateNewResource(TYPE::STATEMACHINE);
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Select State Machine"))
+		{
+
+		}
+
+		if (ImGui::Button("AddClip"))
+		{
+			stateMachine->AddClip(HashString("Clippity clip"), App->resManager->GenerateNewUID(), true);
+		}
+
+		if(!stateMachine->isClipsEmpty())
+		{
+			ImGui::Separator();
+			for (unsigned i = 0u; i < stateMachine->GetClipsSize(); ++i)
+			{
+				ImGui::PushID(i);
+				char* clipName = new char[MAX_CLIP_NAME];
+				strcpy(clipName, stateMachine->GetClipName(i).C_str());
+				ImGui::InputText("Name", clipName, MAX_CLIP_NAME);
+				stateMachine->SetClipName(i, HashString(clipName));
+
+				if (ImGui::Button("Remove Clip"))
+				{
+					clipIndexToRemove = i;
+					clipRemove = true;
+				}
+
+				bool clipLoop = stateMachine->GetClipLoop(i);
+				if (ImGui::Checkbox("Loop", &clipLoop))
+				{
+					if (!clipLoop)
+						stateMachine->SetClipLoop(i, false);
+					else
+						stateMachine->SetClipLoop(i, true);
+				}
+
+				ImGui::Separator();
+
+				ImGui::PopID();
+			}
+		}
+
+		if (clipRemove)
+		{
+			stateMachine->RemoveClip(clipIndexToRemove);
+			clipRemove = false;
+		}
+		
+
+		/*ImGui::Text("Animation");
 		ImGui::PushID("Animation Combo");
 		if (ImGui::BeginCombo("", anim != nullptr ? anim->name.c_str() : ""))
 		{
@@ -64,14 +137,15 @@ void ComponentAnimation::DrawProperties()
 					ImGui::SetItemDefaultFocus();
 				}
 			}
-			ImGui::EndCombo();
-		}
+			ImGui::EndCombo();*/
+	/*	}
 		else
 		{
 			guiAnimations.clear();
 		}
-		ImGui::PopID();
+		ImGui::PopID();*/
 	}
+	ImGui::PopID();
 }
 
 void ComponentAnimation::SetAnimation(const char* animationFile)
@@ -89,10 +163,12 @@ void ComponentAnimation::SetAnimation(const char* animationFile)
 
 ComponentAnimation::EditorContext* ComponentAnimation::GetEditorContext()
 {
-
-	ax::NodeEditor::Config cfg;
-	cfg.SettingsFile = "simple.json";
-	context = ax::NodeEditor::CreateEditor(&cfg);
+	if (context == nullptr)
+	{
+		ax::NodeEditor::Config cfg;
+		cfg.SettingsFile = "simple.json";
+		context = ax::NodeEditor::CreateEditor(&cfg);
+	}
 	return context;
 }
 
@@ -158,12 +234,6 @@ Component* ComponentAnimation::Clone() const
 	return new ComponentAnimation(*this);
 }
 
-ComponentAnimation::ComponentAnimation(GameObject * gameobject) : Component(gameobject, ComponentType::Animation)
-{
-	//anim = new ResourceAnimation();
-	controller = new AnimationController();
-	PlayAnimation(100u);
-}
 
 ComponentAnimation::ComponentAnimation(const ComponentAnimation& component) : Component(component)
 {

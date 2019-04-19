@@ -58,6 +58,10 @@ ModuleFileSystem::ModuleFileSystem()
 		MakeDirectory(MESHES);
 	if (!Exists(TEXTURES))
 		MakeDirectory(TEXTURES);
+	if (!Exists(ANIMATIONS))
+		MakeDirectory(ANIMATIONS);
+	if (!Exists(STATEMACHINES))
+		MakeDirectory(STATEMACHINES);
 
 }
 
@@ -615,6 +619,14 @@ FILETYPE ModuleFileSystem::GetFileType(std::string extension) const
 	if (extension == MATERIALEXT)
 	{
 		return FILETYPE::MATERIAL;
+	}
+	if (extension == ANIMATIONEXTENSION)
+	{
+		return FILETYPE::ANIMATION;
+	}
+	if (extension == STATEMACHINEEXTENSION)
+	{
+		return FILETYPE::STATEMACHINE;
 	}
 	return FILETYPE::NONE;
 }

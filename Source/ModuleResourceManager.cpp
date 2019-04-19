@@ -13,6 +13,7 @@
 #include "ResourceModel.h"
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
+#include "ResourceStateMachine.h"
 #include "ResourceAnimation.h"
 #include "ResourceSkybox.h"
 
@@ -270,6 +271,7 @@ Resource* ModuleResourceManager::CreateNewResource(TYPE type, unsigned forceUid)
 	case TYPE::ANIMATION: resource = (Resource*) new ResourceAnimation(uid); break;
 	case TYPE::MATERIAL: resource = (Resource*) new ResourceMaterial(uid); break;
 	case TYPE::SKYBOX: resource = (Resource*) new ResourceSkybox(uid); break;
+	case TYPE::STATEMACHINE: resource = (Resource*) new ResourceStateMachine(uid); break;
 	}
 
 	if (resource != nullptr)

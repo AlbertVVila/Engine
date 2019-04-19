@@ -42,6 +42,8 @@ public:
 	bool CleanUp();
 public:
 
+	unsigned clipIndexToRemove = 0u;
+	bool clipRemove = false;
 	bool channelsSetted = false;
 
 

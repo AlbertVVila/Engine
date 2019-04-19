@@ -281,11 +281,11 @@
     <ClCompile Include="ResourceStateMachine.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
-    <ClCompile Include="NodeEditor\Source\NodeEditor.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="NodeEditor\Source\Editor.cpp">
-      <Filter>Utils</Filter>
+      <Filter>ImguiNodeEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="NodeEditor\Source\NodeEditor.cpp">
+      <Filter>ImguiNodeEditor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -673,16 +673,16 @@
       <Filter>Resources</Filter>
     </ClInclude>
     <ClInclude Include="NodeEditor\Source\Editor.h">
-      <Filter>Utils</Filter>
+      <Filter>ImguiNodeEditor</Filter>
     </ClInclude>
     <ClInclude Include="NodeEditor\Include\NodeEditor.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="NodeEditor\Source\Interop.h">
-      <Filter>Utils</Filter>
+      <Filter>ImguiNodeEditor</Filter>
     </ClInclude>
     <ClInclude Include="NodeEditor\Include\ax\Math2D.h">
-      <Filter>Utils</Filter>
+      <Filter>ImguiNodeEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeEditor\Source\Interop.h">
+      <Filter>ImguiNodeEditor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -731,6 +731,9 @@
     <Filter Include="Animation">
       <UniqueIdentifier>{90c0a34b-39f2-41e1-a7da-bea77d58ac6b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ImguiNodeEditor">
+      <UniqueIdentifier>{e17e108f-0f87-428b-b290-20d4de3376d1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Game\Shaders\FragmentShaders\Default.fs">
@@ -761,7 +764,7 @@
       <Filter>ScriptingResources</Filter>
     </None>
     <None Include="NodeEditor\Include\ax\Math2D.inl">
-      <Filter>Utils</Filter>
+      <Filter>ImguiNodeEditor</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

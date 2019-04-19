@@ -228,7 +228,7 @@ void ResourceStateMachine::AddTransition(const HashString origin, const HashStri
 	transitions.push_back(Transition(origin, destiny, trigger, blend));
 }
 
-unsigned ResourceStateMachine::FindClip(HashString name)
+unsigned ResourceStateMachine::FindClip(const HashString name)
 {
 	unsigned i;
 
@@ -375,9 +375,24 @@ void ResourceStateMachine::SetNodeClip(unsigned index, HashString clipName)
 	nodes[index].clipName = clipName;
 }
 
-void ResourceStateMachine::RemoveClip(unsigned UID)
+void ResourceStateMachine::RemoveClip(unsigned uid)
 {
+	std::vector<Node>::iterator it = nodes.begin();
 
+	while (it != nodes.end())
+	{
+		if (it->clipName == clips[uid].name)
+		{
+			RemoveNodeTransitions(it->name);
+			it = nodes.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+	}
+
+	clips.erase(clips.begin() + uid);
 }
 
 void ResourceStateMachine::RemoveNode(unsigned index)
