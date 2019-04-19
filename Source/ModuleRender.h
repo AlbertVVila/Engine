@@ -3,12 +3,16 @@
 
 #include "Module.h"
 #include "Math/float3.h"
+#include "MathGeoLib/include/Geometry/Frustum.h"
+#include <unordered_set>
+
 class ComponentCamera;
 class JSON;
 class ResourceSkybox;
 class Viewport;
 struct Shader;
 class ComponentLight;
+class ComponentRenderer;
 
 class ModuleRender : public Module
 {
@@ -86,6 +90,16 @@ private:
 	float shadowVolumeHeightHalf;
 	float shadowVolumeLength;
 
+	math::Frustum shadowsFrustum;
+
+	unsigned shadowsFBO = 0u;
+	unsigned shadowsTex = 0u;
+
+	std::unordered_set<ComponentRenderer*> shadowCasters;
+
+	bool shadowVolumeRendered = false;
+	
+	Shader* shadowsShader = nullptr;
 };
 
 #endif /* __ModuleRender_h__ */

@@ -23,6 +23,7 @@
 
 #include "Resource.h"
 #include "ResourceSkybox.h"
+#include "ResourceMesh.h"
 
 #include "SDL.h"
 #include "GL/glew.h"
@@ -100,7 +101,11 @@ bool ModuleRender::Init(JSON * config)
 bool ModuleRender::Start()
 {
 	GenBlockUniforms();
-	return true;
+	shadowsFrustum.type = math::FrustumType::OrthographicFrustum;
+	glGenFramebuffers(1, &shadowsFBO);
+	glGenTextures(1, &shadowsTex);
+	shadowsShader = App->program->CreateProgram("Shadows");
+	return shadowsShader && shadowsFBO > 0u && shadowsTex > 0u;
 }
 
 
@@ -295,17 +300,22 @@ void ModuleRender::InitOpenGL() const
 
 void ModuleRender::ComputeShadows()
 {
+	shadowVolumeRendered = false;
 	if (directionalLight && directionalLight->produceShadows)
 	{
+		shadowVolumeRendered = true;
 		math::Quat lookAtLight = math::Quat::LookAt(math::float3::unitZ, directionalLight->gameobject->transform->front, math::float3::unitY, directionalLight->gameobject->transform->up);
 		math::AABB lightAABB;
 		lightAABB.SetNegativeInfinity();
+
+		//TODO: Improve this avoiding shuffle every frame
 		for (GameObject* go : App->scene->dynamicFilteredGOs) //TODO: get volumetric gos even if outside the frustum
 		{
 			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
 			if (cr && cr->castShadows)
 			{
 				lightAABB.Enclose(go->bbox);
+				shadowCasters.insert(cr);
 			}
 		}
 
@@ -317,7 +327,7 @@ void ModuleRender::ComputeShadows()
 				lightAABB.Enclose(go->bbox);
 			}
 		}
-
+		//TODO: End improving zone
 
 		math::float3 points[8];
 
@@ -352,6 +362,8 @@ void ModuleRender::ComputeShadows()
 		{
 			ShadowVolumeDrawDebug();
 		}
+
+		BlitShadowTexture();
 	}
 }
 
@@ -362,6 +374,9 @@ void ModuleRender::ShadowVolumeDrawDebug()
 	math::float3 lFront = directionalLight->gameobject->transform->front;
 	math::float3 lRight = directionalLight->gameobject->transform->right;
 	math::float3 lUp = directionalLight->gameobject->transform->up;
+
+	shadowsFrustum.up = lUp;
+	shadowsFrustum.front = lFront;	
 
 	dd::line(lightPos, lightPos - lFront * shadowVolumeLength, dd::colors::YellowGreen);
 	dd::line(lightPos, lightPos - lRight * shadowVolumeWidthHalf, dd::colors::Red);
@@ -401,6 +416,40 @@ void ModuleRender::ShadowVolumeDrawDebug()
 
 void ModuleRender::BlitShadowTexture()
 {
+	glBindFramebuffer(GL_FRAMEBUFFER, shadowsFBO);
+	glBindTexture(GL_TEXTURE_2D, shadowsTex);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT16, shadowVolumeWidth, shadowVolumeHeight, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, shadowsTex, 0);
+	glDrawBuffer(GL_NONE);
+	glViewport(0, 0, shadowVolumeWidth, shadowVolumeHeight);
+	glClear(GL_DEPTH_BUFFER_BIT);
+	shadowsFrustum.orthographicHeight = shadowVolumeHeight;
+	shadowsFrustum.orthographicWidth = shadowVolumeWidth;
+	shadowsFrustum.nearPlaneDistance = .0f;
+	shadowsFrustum.farPlaneDistance = shadowVolumeLength;
+	shadowsFrustum.pos = lightPos;
+
+	glUseProgram(shadowsShader->id[0]);
+	glUniformMatrix4fv(glGetUniformLocation(shadowsShader->id[0],
+		"viewProjection"), 1, GL_TRUE, &shadowsFrustum.ViewProjMatrix()[0][0]);
+	
+	for (ComponentRenderer* cr : shadowCasters)
+	{
+		glUniformMatrix4fv(glGetUniformLocation(shadowsShader->id[0],
+			"model"), 1, GL_TRUE, &cr->gameobject->GetGlobalTransform()[0][0]);
+		cr->mesh->Draw(shadowsShader->id[0]);
+	}
+
+	glUseProgram(0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
 }
 
 void ModuleRender::DrawGUI()
@@ -439,6 +488,11 @@ void ModuleRender::DrawGUI()
 	ImGui::Checkbox("Picker Debug", &picker_debug);
 	ImGui::Checkbox("Light Debug", &light_debug);
 	ImGui::Checkbox("Shadow volume Debug", &shadowDebug);
+	if (shadowDebug && App->renderer->shadowVolumeRendered)
+	{
+		ImGui::Image((ImTextureID)App->renderer->shadowsTex, { 200,200 }, { 0,1 }, { 1,0 });
+	}
+
 	ImGui::Checkbox("Dynamic AABBTree Debug", &aabbTreeDebug);
 	ImGui::Checkbox("Static KDTree Debug", &kDTreeDebug);
 	ImGui::Checkbox("Grid Debug", &grid_debug);

@@ -789,6 +789,14 @@
     <None Include="..\Game\Scripts\PlayerMovement.dll">
       <Filter>ScriptingResources</Filter>
     </None>
+    <None Include="..\Game\Shaders\FragmentShaders\Skybox.fs" />
+    <None Include="..\Game\Shaders\VertexShaders\Skybox.vs" />
+    <None Include="..\Game\Shaders\VertexShaders\Shadows.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\FragmentShaders\Shadows.fs">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Engine.rc">
