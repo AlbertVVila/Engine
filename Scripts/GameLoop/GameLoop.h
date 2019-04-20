@@ -23,6 +23,7 @@ class EnemyMovementScript;
 class IntroScript;
 class CreditsScript;
 class AABB;
+class JSON_value;
 
 class GameLoop_API GameLoop : public Script
 {
@@ -40,10 +41,25 @@ class GameLoop_API GameLoop : public Script
 		QUIT
 	};
 
+	enum class GameScene
+	{
+		MENU,
+		CEMENTERY,
+		HUD
+	};
+public :
+	void Expose(ImGuiContext* context) override;
+
+	void Serialize(JSON_value* json) const override;
+	void DeSerialize(JSON_value* json) override;
 private:
 
 	void Start() override;
 	void Update() override;
+
+	void LoadMenuScene();
+	void LoadCementeryScene();
+	void LoadHUDScene();
 
 	void ManageDead();
 	void ManageMenu();
@@ -68,6 +84,7 @@ private:
 	void ChangeGameState(GameState newState); //Set initial conditions for each state here if required
 
 	GameState gameState = GameState::MENU;
+	GameScene gameScene = GameScene::MENU;
 
 private:
 	//UI Values

@@ -12,6 +12,7 @@
 #include "ModuleTextures.h"
 #include "ModuleSpacePartitioning.h"
 #include "ModuleWindow.h"
+#include "ModuleScript.h"
 
 #include "GameObject.h"
 #include "ComponentCamera.h"
@@ -107,6 +108,13 @@ bool ModuleScene::Start()
 
 update_status ModuleScene::PreUpdate()
 {
+	if (loadScene)
+	{
+		LoadScene(sceneName.c_str(), "Assets/Scenes/");
+		App->scripting->onStart = true;
+		loadScene = false;
+	}
+
 #ifndef GAME_BUILD
 	FrustumCulling(*App->camera->editorcamera->frustum);
 #else
@@ -791,11 +799,14 @@ void ModuleScene::Redo()
 
 void ModuleScene::LoadScene(const char* scene, const char* scenePath)
 {
+	std::string sceneStr = std::string(scene);
+	std::string scenePathStr = std::string(scenePath);
+
 	ClearScene();
-	if (AddScene(scene, scenePath))
+	if (AddScene(sceneStr.c_str(), scenePathStr.c_str()))
 	{
-		path = scenePath;
-		name = scene;
+		path = scenePathStr;
+		name = sceneStr;
 	}
 	App->spacePartitioning->kDTree.Calculate();
 	scenePhotos.clear();
