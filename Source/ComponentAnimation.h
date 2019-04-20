@@ -28,6 +28,7 @@ public:
 	void SetIndexChannels(GameObject* GO);
 	void PlayAnimation(unsigned blend);
 	void UpdateGO(GameObject* gameobject);
+	void ResetResource();
 
 	ComponentAnimation();
 	ComponentAnimation(GameObject* gameobject);

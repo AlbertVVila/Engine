@@ -23,7 +23,6 @@ void AnimationController::Play(ResourceAnimation* anim, bool loop, unsigned fade
 	newInstance->anim = anim;
 	newInstance->loop = loop;
 	newInstance->fadeDuration = fadeTime;
-	newInstance->next = current;
 	current = newInstance;
 }
 

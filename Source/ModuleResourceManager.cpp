@@ -160,12 +160,19 @@ bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* 
 	assetPath += newFileInAssets;
 
 	// Check if the file was already imported (Mesh is excluded because has same file as model)
-	unsigned uid = FindByFileInAssetsExcludingType(assetPath.c_str(), TYPE::MESH);
-	if (uid != 0)
+	unsigned meshUID = FindByFileInAssetsExcludingType(assetPath.c_str(), TYPE::MESH);
+
+	if (meshUID != 0)
 	{
+		unsigned animUID = FindByFileInAssetsExcludingType(assetPath.c_str(), TYPE::ANIMATION);
 		// Avoid reimporting meshes (only model can reimport them)
-		return ReImportFile(GetWithoutLoad(uid), filePath, type);
+		if (animUID != 0)
+		{
+			return ReImportFile(GetWithoutLoad(animUID), filePath, type);
+		}
 	}
+
+
 
 	Resource* resource = CreateNewResource(type);
 

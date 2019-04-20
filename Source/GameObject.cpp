@@ -27,7 +27,7 @@
 #include "GUICreator.h"
 #include "ResourceMaterial.h"
 #include "ResourceMesh.h"
-//#include "ResourceAnimation.h"
+
 #include "myQuadTree.h"
 #include "AABBTree.h"
 #include <stack>
@@ -58,6 +58,8 @@ GameObject::GameObject(const GameObject & gameobject)
 	UUID = App->scene->GetNewUID();
 	parentUUID = gameobject.parentUUID;
 	isStatic = gameobject.isStatic;
+	activeInHierarchy = gameobject.activeInHierarchy;
+	activeSelf = gameobject.activeSelf;
 	isVolumetric = gameobject.isVolumetric;
 	hasLight = gameobject.hasLight;
 
@@ -73,6 +75,14 @@ GameObject::GameObject(const GameObject & gameobject)
 		{
 			transform = (ComponentTransform*)componentcopy;
 		}
+		if (componentcopy->type == ComponentType::Button)
+		{
+			((ComponentButton*)componentcopy)->text->gameobject = this;
+			((ComponentButton*)componentcopy)->buttonImage->gameobject = this;
+			((ComponentButton*)componentcopy)->highlightedImage->gameobject = this;
+			((ComponentButton*)componentcopy)->pressedImage->gameobject = this;
+			((ComponentButton*)componentcopy)->rectTransform->gameobject = this;
+		}
 		if (componentcopy->type == ComponentType::Light)
 		{
 			light = (ComponentLight*)componentcopy;
@@ -84,11 +94,9 @@ GameObject::GameObject(const GameObject & gameobject)
 	{
 		if (GetComponent(ComponentType::Renderer) != nullptr)
 		{
-			isVolumetric = true;
 			App->scene->AddToSpacePartition(this);
 		}
 	}
-
 	for (const auto& child : gameobject.children)
 	{
 		GameObject* childcopy = new GameObject(*child);
@@ -127,6 +135,12 @@ void GameObject::DrawProperties()
 
 	if (this != App->scene->root)
 	{
+		if (ImGui::Checkbox("Active", &activeSelf))
+		{
+			SetActive(activeSelf);
+		}
+
+		ImGui::SameLine();
 		if (ImGui::Checkbox("Static", &isStatic))
 		{
 			if (isStatic && GetComponent(ComponentType::Renderer) != nullptr)
@@ -168,22 +182,22 @@ void GameObject::DrawProperties()
 	}
 }
 
-void GameObject::Update(float dt)
+void GameObject::Update()
 {
-	Component* button = GetComponent(ComponentType::Button); //ESTO LO TIENE QUE HACER EL CANVAAS RECORRIENDO SUS HIJOS / ES DE PRUEBA
-	if (button != nullptr)
-	{
-		button->Update();
-	}
+	if (!isActive()) return;
 
 	for (auto& component: components)
 	{
-		component->Update();
+		if (component->enabled)
+		{
+			component->Update();
+		}
+
 	}
 
 	for (const auto& child : children)
 	{
-		child->Update(dt);
+		child->Update();
 	}
 
 	for (std::list<GameObject*>::iterator itChild = children.begin(); itChild != children.end();)
@@ -199,6 +213,15 @@ void GameObject::Update(float dt)
 		++itChild;
 	}
 
+}
+
+void GameObject::SetActive(bool active)
+{
+	activeSelf = active;
+	for(auto& child : children)
+	{
+		child->activeInHierarchy = active;
+	}
 }
 
 Component* GameObject::CreateComponent(ComponentType type)
@@ -253,7 +276,6 @@ Component* GameObject::CreateComponent(ComponentType type)
 		component = new ComponentAnimation(this);
 		isBoneRoot = true;
 		break;
-
 	case ComponentType::Transform2D:
 		component = new ComponentTransform2D(this);
 		break;
@@ -295,11 +317,11 @@ std::vector<Component *> GameObject::GetComponents(ComponentType type) const
 std::vector<Component*> GameObject::GetComponentsInChildren(ComponentType type) const
 {
 	std::vector<Component *> list;
-	std::stack<const GameObject *>GOs;
+	std::queue<const GameObject *>GOs;
 	GOs.push(this);
 	while (!GOs.empty())
 	{
-		const GameObject* go = GOs.top();
+		const GameObject* go = GOs.front();
 		GOs.pop();
 		for (const auto &component : go->components)
 		{
@@ -349,6 +371,29 @@ void GameObject::RemoveComponent(const Component & component)
 	}
 }
 
+Script* GameObject::GetScript() const
+{
+	ComponentScript* component = (ComponentScript*)GetComponent(ComponentType::Script);
+	if (component != nullptr)
+	{
+		return component->GetScript();
+	}
+	return nullptr;
+}
+
+Script * GameObject::FindScriptByName(const char * name) const
+{
+	std::vector<Component*> components = GetComponents(ComponentType::Script);
+	for (const auto& component : components)
+	{
+		if (((ComponentScript*)component)->GetScriptName() == name)
+		{
+			return ((ComponentScript*)component)->GetScript();
+		}
+	}
+	return nullptr;
+}
+
 void GameObject::RemoveChild(GameObject* bastard)
 {
 	children.remove(bastard);
@@ -373,13 +418,36 @@ Component * GameObject::GetComponent(ComponentType type) const
 	return nullptr;
 }
 
+ENGINE_API Component * GameObject::GetComponentInChildren(ComponentType type) const
+{
+	std::stack<const GameObject *>GOs;
+	GOs.push(this);
+	while (!GOs.empty())
+	{
+		const GameObject* go = GOs.top();
+		GOs.pop();
+		
+		Component* component = go->GetComponent(type);
+		if (component != nullptr) return component;
+
+		for (const auto &child : go->children)
+		{
+			GOs.push(child);
+		}
+	}
+	return nullptr;
+}
+
 void GameObject::UpdateGlobalTransform() //Updates global transform when moving
 {
 	float4x4 mytransform = GetLocalTransform();
 	if (parent != nullptr)
 	{
 		mytransform = parent->GetGlobalTransform() * mytransform;
-		transform->global = mytransform;
+		if(transform != nullptr)
+		{
+			transform->global = mytransform;
+		}
 		UpdateBBox();
 	}
 
@@ -444,6 +512,8 @@ void GameObject::SetLightUniforms(unsigned shader) const
 	//LOG("%s got %d lights", name.c_str(), lights.size());
 	for (GameObject* go : lights)
 	{
+		if (!go->light->enabled) continue;
+
 		assert(go->light != nullptr);
 		switch (go->light->lightType)
 		{
@@ -562,6 +632,27 @@ bool GameObject::Intersects(const LineSegment & line, float &distance) const
 	return false;
 }
 
+bool GameObject::BboxIntersects(const GameObject* target) const
+{
+	bool intersects = false;
+	bool allchecked = false;
+	std::list<GameObject*>::const_iterator iti = children.begin();
+	while (!intersects && !allchecked)
+	{
+		for (std::list<GameObject*>::const_iterator itj = target->children.begin(); itj != target->children.end(); ++itj)
+		{
+			if ((*iti)->bbox.Intersects((*itj)->bbox))
+			{
+				intersects = true;
+				break;
+			}
+		}
+		++iti;
+		if (iti == children.end()) allchecked = true;
+	}
+	return intersects;
+}
+
 void GameObject::UpdateBBox()
 {
 	ComponentRenderer* renderer = (ComponentRenderer*) GetComponent(ComponentType::Renderer);
@@ -623,7 +714,9 @@ void GameObject::Save(JSON_value *gameobjects) const
 		gameobject->AddUint("UID", UUID);
 		gameobject->AddUint("ParentUID", parent->UUID);
 		gameobject->AddString("Name", name.c_str());
-		gameobject->AddUint("isStatic", isStatic);
+		gameobject->AddUint("Static", isStatic);
+		gameobject->AddUint("ActiveInHierarchy", activeInHierarchy);
+		gameobject->AddUint("ActiveSelf", activeSelf);
 		gameobject->AddUint("isBoneRoot", isBoneRoot);
 		gameobject->AddFloat4x4("baseState", baseState);
 
@@ -650,7 +743,9 @@ void GameObject::Load(JSON_value *value)
 	UUID = value->GetUint("UID");
 	parentUUID = value->GetUint("ParentUID");
 	name = value->GetString("Name");
-	isStatic = value->GetUint("isStatic");
+	isStatic = value->GetUint("Static");
+	activeInHierarchy = value->GetUint("ActiveInHierarchy", 1);
+	activeSelf = value->GetUint("ActiveSelf", 1);
 	isBoneRoot = value->GetUint("isBoneRoot");
 	baseState = value->GetFloat4x4("baseState");
 
@@ -789,9 +884,14 @@ void GameObject::UpdateTransforms(math::float4x4 parentGlobal)
 	math::float4x4 global = math::float4x4::identity;
 	if (this != App->scene->root && transform != nullptr)
 	{
+		math::float4x4 original = transform->global;
 		transform->global = parentGlobal * transform->local;
 		global = transform->global;
 		transform->UpdateTransform();
+		if (this == App->scene->selected)
+		{
+			transform->MultiSelectionTransform(global - original);
+		}
 	}
 
 	for (const auto& child : children)

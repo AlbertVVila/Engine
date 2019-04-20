@@ -11,6 +11,7 @@
 #include "ModuleScene.h"
 #include "ModuleTextures.h"
 #include "ModuleSpacePartitioning.h"
+#include "ModuleWindow.h"
 
 #include "GameObject.h"
 #include "ComponentCamera.h"
@@ -85,6 +86,10 @@ bool ModuleScene::Init(JSON * config)
 		ambientColor = scene->GetColor3("ambient");
 		const char* dscene = scene->GetString("defaultscene");
 		defaultScene = dscene;
+		if (scene->GetInt("sizeScene")) 
+		{
+			SceneSize = scene->GetInt("sizeScene");
+		}
 	}
 	return true;
 }
@@ -101,8 +106,15 @@ bool ModuleScene::Start()
 }
 
 update_status ModuleScene::PreUpdate()
-{	
+{
+#ifndef GAME_BUILD
 	FrustumCulling(*App->camera->editorcamera->frustum);
+#else
+	if (maincamera != nullptr)
+	{
+		FrustumCulling(*maincamera->frustum);
+	}
+#endif
 	return UPDATE_CONTINUE;
 }
 
@@ -110,7 +122,7 @@ update_status ModuleScene::Update(float dt)
 {
 	BROFILER_CATEGORY("Scene Update", Profiler::Color::Green);
 	root->UpdateTransforms(math::float4x4::identity);
-	root->Update(dt);
+	root->Update();
 	root->CheckDelete();
 	return UPDATE_CONTINUE;
 }
@@ -140,7 +152,7 @@ bool ModuleScene::CleanUp()
 	return true;
 }
 
-void ModuleScene::SaveConfig(JSON * config)
+void ModuleScene::SaveConfig(JSON* config)
 {
 	JSON_value* scene = config->CreateValue();
 
@@ -148,28 +160,30 @@ void ModuleScene::SaveConfig(JSON * config)
 	scene->AddUint("cubeUID", primitivesUID[(unsigned)PRIMITIVES::CUBE]);
 	scene->AddFloat3("ambient", ambientColor);
 	scene->AddString("defaultscene", defaultScene.c_str());
+	scene->AddInt("sizeScene", SceneSize);
 	config->AddValue("scene", *scene);
 }
 
-void ModuleScene::FrustumCulling(const Frustum & frustum)
+void ModuleScene::FrustumCulling(const Frustum& frustum)
 {
 	staticFilteredGOs.clear();
 	dynamicFilteredGOs.clear();
 
 	Frustum camFrustum = frustum;
-
+#ifndef GAME_BUILD
 	if (maincamera != nullptr && App->renderer->useMainCameraFrustum)
 	{
 		camFrustum = *maincamera->frustum;
 	}
+#endif
 	App->spacePartitioning->kDTree.GetIntersections(camFrustum, staticFilteredGOs);
 	App->spacePartitioning->aabbTree.GetIntersections(camFrustum, dynamicFilteredGOs);
 }
 
 void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 {
-	BROFILER_CATEGORY("Render scene", Profiler::Color::AliceBlue);
-
+#ifndef GAME_BUILD
+	PROFILE;
 	if (isEditor)
 	{
 		if (App->scene->selected != nullptr && App->scene->selected->isBoneRoot)
@@ -240,11 +254,63 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	{
 		DrawGO(*selected, frustum, isEditor); //bcause it could be an object without mesh not in staticGOs or dynamicGOs
 	}
+#else
+	for (const auto &go : staticFilteredGOs)
+	{
+		if (maincamera->frustum->Intersects(go->GetBoundingBox()))
+		{
+			DrawGOGame(*go);
+		}
+	}
+
+	for (const auto &go : dynamicFilteredGOs)
+	{
+		if (maincamera->frustum->Intersects(go->GetBoundingBox()))
+		{
+			DrawGOGame(*go);
+		}
+	}	
+#endif
 }
 
+void ModuleScene::DrawGOGame(const GameObject& go)
+{
+	ComponentRenderer* crenderer = (ComponentRenderer*)go.GetComponent(ComponentType::Renderer);
+	if (crenderer == nullptr || !crenderer->enabled || crenderer->material == nullptr) return;
+
+	ResourceMaterial* material = crenderer->material;
+	Shader* shader = material->shader;
+	if (shader == nullptr) return;
+
+	unsigned variation = 0u;
+	if (shader->id.size() > 1) //If exists variations use it
+	{
+		variation = material->variation;
+		if (crenderer->mesh->bindBones.size() > 0)
+		{
+			variation |= (unsigned)ModuleProgram::PBR_Variations::SKINNED;
+		}
+	}
+	
+	glUseProgram(shader->id[variation]);
+
+	material->SetUniforms(shader->id[variation]);
+
+	glUniform3fv(glGetUniformLocation(shader->id[variation],
+		"lights.ambient_color"), 1, (GLfloat*)&ambientColor);
+	go.SetLightUniforms(shader->id[variation]);
+
+	go.UpdateModel(shader->id[variation]);
+	crenderer->mesh->Draw(shader->id[variation]);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glActiveTexture(GL_TEXTURE0);
+	glUseProgram(0);
+}
 void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isEditor)
 {
-	BROFILER_CATEGORY("Render scene", Profiler::Color::AliceBlue);;
+	PROFILE;
+	if (!go.isActive()) return;
 
 	if (go.drawBBox && isEditor)
 	{
@@ -266,7 +332,7 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 	if (shader->id.size() > 1) //If exists variations use it
 	{
 		variation = material->variation;
-		if (crenderer->mesh->bindBones.size() > 0)
+		if (mesh != nullptr && mesh->bindBones.size() > 0)
 		{
 			variation |= (unsigned)ModuleProgram::PBR_Variations::SKINNED;
 		}
@@ -281,7 +347,11 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 	go.SetLightUniforms(shader->id[variation]);
 
 	go.UpdateModel(shader->id[variation]);
-	crenderer->mesh->Draw(shader->id[variation]);
+	if (mesh != nullptr)
+	{
+		crenderer->mesh->Draw(shader->id[variation]);
+	}
+	
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glActiveTexture(GL_TEXTURE0);
@@ -375,6 +445,13 @@ void ModuleScene::DragNDrop(GameObject* go)
 void ModuleScene::DrawGUI()
 {
 	ImGui::ColorEdit3("Ambient", (float*)&ambientColor);
+	if (ImGui::InputInt("Scene size", &SceneSize))
+	{
+		if (SceneSize <= 0)
+		{
+			SceneSize = 1;
+		}
+	}
 	if (ImGui::InputInt("KdTree bucket size", &App->spacePartitioning->kDTree.bucketSize))
 	{
 		if (App->spacePartitioning->kDTree.bucketSize <= 0)
@@ -784,11 +861,16 @@ bool ModuleScene::AddScene(const char* scene, const char* path)
 
 	for (ComponentRenderer* cr : renderers)
 	{
-		cr->LinkBones();
+		if (cr->mesh != nullptr) 
+		{
+			cr->LinkBones();
+		}	
 	}
 
 	RELEASE_ARRAY(data);
 	RELEASE(json);
+
+	App->renderer->OnResize();
 	return true;
 }
 
@@ -809,6 +891,7 @@ void ModuleScene::ClearScene()
 	App->spacePartitioning->kDTree.Calculate();
 	canvas = new GameObject("Canvas", 1);
 	root->InsertChild(canvas);
+	selection.clear();
 }
 
 void ModuleScene::Select(GameObject * gameobject)
@@ -904,6 +987,32 @@ void ModuleScene::Pick(float normalized_x, float normalized_y)
 	}
 }
 
+GameObject * ModuleScene::FindGameObjectByName(const char* name) const
+{
+	return FindGameObjectByName(App->scene->root, name);
+}
+
+GameObject * ModuleScene::FindGameObjectByName(GameObject* parent, const char* name) const
+{
+	std::stack<GameObject*> GOs;
+	GOs.push(parent);
+	while (!GOs.empty())
+	{
+		GameObject* go = GOs.top();
+		if (go->name == std::string(name))
+		{
+			return go;
+		}
+
+		GOs.pop();
+		for (const auto& child : go->children)
+		{
+			GOs.push(child);
+		}
+	}
+	return nullptr;
+}
+
 void ModuleScene::GetStaticGlobalAABB(AABB & aabb, std::vector<GameObject*>& bucket, unsigned int & bucketOccupation)
 {
 	aabb.SetNegativeInfinity();
@@ -962,6 +1071,7 @@ std::list<std::pair<float, GameObject*>> ModuleScene::GetDynamicIntersections(co
 	App->spacePartitioning->aabbTree.GetIntersections(line, intersections);
 	for (const auto &go : intersections)
 	{
+		if (!go->isActive()) continue;
 		float dNear = -FLOAT_INF;
 		float dFar = FLOAT_INF;
 		if (line.Intersects(go->GetBoundingBox(), dNear, dFar))
@@ -980,6 +1090,7 @@ std::list<std::pair<float, GameObject*>> ModuleScene::GetStaticIntersections(con
 	App->spacePartitioning->kDTree.GetIntersections(line, intersections);
 	for (const auto &go : intersections)
 	{
+		if (!go->isActive()) continue;
 		float dNear = -FLOAT_INF;
 		float dFar = FLOAT_INF;
 		if (line.Intersects(go->GetBoundingBox(), dNear, dFar))

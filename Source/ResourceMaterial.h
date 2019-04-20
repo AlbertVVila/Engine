@@ -34,7 +34,6 @@ public:
 	void SaveMetafile(const char* file) const override;
 	void Reset(const ResourceMaterial& material);
 	int Compare(const ResourceMaterial& material);
-	void CalculateVariation();
 
 	// File in asset specific
 	void Rename(const char* newName) override;

@@ -29,7 +29,7 @@ public:
 	void DeleteFromMemory() override;
 
 	// Mesh specific
-	void LinkBones(const ComponentRenderer* renderer);
+	void LinkBones(GameObject* gameobject);
 	void Draw(unsigned shaderProgram) const;
 	void DrawBbox(unsigned shaderProgram, const AABB& globalBBOX) const;
 	AABB GetBoundingBox() const;

@@ -29,7 +29,7 @@ void PanelAnimation::Draw()
 		ImGui::End();
 		return;
 	}
-	if (App->scene->selected != nullptr && App->scene->selected->isBoneRoot && ((ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)))->anim != nullptr)
+	if (App->scene->selected != nullptr && App->scene->selected->isBoneRoot && (ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)) && ((ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)))->anim != nullptr)
 	{
 		ResourceAnimation* anim = ((ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)))->anim;
 		ComponentAnimation* compAnim = ((ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)));

@@ -26,8 +26,10 @@ public:
 	virtual ~ResourceAnimation();
 
 public:
-	bool LoadInMemory() override;		// Will load in memory all ResourceAnimations stored
-	void DeleteFromMemory() override;	// Will delete all ResourceAnimations stored in memory
+	bool LoadInMemory() override;		// Will load in memory all Resourceanims stored
+	void DeleteFromMemory() override;	// Will delete all ResourceAnims stored in memory
+	void Delete() override;
+
 
 	void SetAnimation(const char* animData);
 

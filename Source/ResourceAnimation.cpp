@@ -3,6 +3,7 @@
 #include "Application.h"
 
 #include "ModuleFileSystem.h"
+#include "ModuleResourceManager.h"
 
 #include "ResourceAnimation.h"
 #include "Globals.h"
@@ -67,6 +68,7 @@ bool ResourceAnimation::LoadInMemory()
 
 void ResourceAnimation::DeleteFromMemory()
 {
+	Resource::DeleteFromMemory();
 	for(const auto& channel : channels)
 	{
 		channel->numPositionKeys = 0u;
@@ -75,6 +77,19 @@ void ResourceAnimation::DeleteFromMemory()
 		channel->rotationSamples.clear();
 	}
 	channels.clear();
+}
+
+void ResourceAnimation::Delete()
+{
+	// Delete Resource from ResourceManager
+	App->resManager->DeleteResourceFromList(UID);
+
+	// Delete file in Library
+	std::string fileInLibrary(ANIMATIONS);
+	fileInLibrary += exportedFileName;
+	fileInLibrary += ANIMATIONEXTENSION;
+	App->fsystem->Delete(fileInLibrary.c_str());
+	DeleteFromMemory();
 }
 
 void ResourceAnimation::SetAnimation(const char* animationData)

@@ -73,7 +73,7 @@ void ComponentTransform::DrawProperties()
 			ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
 		}
 
-		ImGui::DragFloat3("Position", (float*)&position, 0.1f, -1000.f, 1000.f);
+		ImGui::DragFloat3("Position", (float*)&position, 0.1f, (float) App->scene->SceneSize * -1, (float)App->scene->SceneSize);
 		ImGui::DragFloat3("Rotation", (float*)&eulerRotation, 0.5f, -180, 180.f);
 		ImGui::DragFloat3("Scale", (float*)&scale, 0.1f, 0.01f, 100.f);
 		rotation = rotation.FromEulerXYZ(math::DegToRad(eulerRotation.x),
@@ -123,9 +123,8 @@ void ComponentTransform::MultiSelectionTransform(float4x4 &difference)
 void ComponentTransform::UpdateTransform()
 {
 	UpdateOldTransform();
-
-
-  front = -global.Col3(2);
+	
+	front = -global.Col3(2);
 	up = global.Col3(1);
 	right = global.Col3(0);
 
@@ -196,6 +195,19 @@ void ComponentTransform::SetGlobalTransform(const math::float4x4& newglobal, con
 	local.Decompose(position, rotation, scale);
 	RotationToEuler();
 	UpdateOldTransform();
+	
+	if (position.Abs().x >= App->scene->SceneSize)
+	{
+		position.x = position.x / position.Abs().x * App->scene->SceneSize;
+	}
+	if (position.Abs().y >= App->scene->SceneSize)
+	{
+		position.y = position.y / position.Abs().y * App->scene->SceneSize;
+	}
+	if (position.Abs().z >= App->scene->SceneSize)
+	{
+		position.z = position.z / position.Abs().z * App->scene->SceneSize;
+	}
 
 	front = -global.Col3(2);
 	up = global.Col3(1);
@@ -262,6 +274,15 @@ math::Quat ComponentTransform::GetRotation()
 
 math::float3 ComponentTransform::GetGlobalPosition()
 {
+	if (gameobject->movedFlag)
+	{
+		float4x4 newlocal = math::float4x4::FromTRS(position, rotation, scale);
+		if (gameobject->parent != nullptr)
+		{
+			return (gameobject->parent->GetGlobalTransform() * newlocal).Col3(3);
+		}
+		return newlocal.Col3(3);
+	}
 	return global.Col3(3);
 }
 
@@ -273,7 +294,6 @@ void ComponentTransform::Save(JSON_value* value) const
 	value->AddFloat3("Euler", eulerRotation);
 	value->AddFloat3("Scale", scale);
 	value->AddFloat4x4("Global", global);
-	value->AddUint("isLocked", isLocked);
 }
 
 void ComponentTransform::Load(JSON_value* value)
@@ -284,7 +304,6 @@ void ComponentTransform::Load(JSON_value* value)
 	eulerRotation = value->GetFloat3("Euler");
 	scale = value->GetFloat3("Scale");
 	global = value->GetFloat4x4("Global");
-	isLocked = value->GetUint("isLocked");
 	local = math::float4x4::FromTRS(position, rotation, scale);
 	RotationToEuler();
 }

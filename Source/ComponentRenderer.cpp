@@ -193,6 +193,7 @@ bool ComponentRenderer::CleanUp()
 	if (mesh != nullptr)
 	{
 		App->resManager->DeleteResource(mesh->GetUID());
+		App->scene->DeleteFromSpacePartition(gameobject);
 		mesh = nullptr;
 	}
 
@@ -256,6 +257,7 @@ void ComponentRenderer::SetMesh(const char* meshfile)
 	if (meshfile != nullptr)
 		mesh = (ResourceMesh*)App->resManager->GetMeshByName(meshfile);
 
+	LinkBones();
 	UpdateGameObject();
 	return;
 }
@@ -271,5 +273,5 @@ void ComponentRenderer::UpdateGameObject()
 
 void ComponentRenderer::LinkBones() const
 {
-	mesh->LinkBones(this);
+	mesh->LinkBones(gameobject);
 }
