@@ -110,7 +110,7 @@ update_status ModuleScene::PreUpdate()
 {
 	if (loadScene)
 	{
-		LoadScene(sceneName.c_str(), "Assets/Scenes/");
+		LoadScene(sceneName.c_str(), SCENES);
 		App->scripting->onStart = true;
 		loadScene = false;
 	}

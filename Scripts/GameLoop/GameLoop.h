@@ -38,7 +38,8 @@ class GameLoop_API GameLoop : public Script
 		OPTIONS,
 		CREDITS,
 		CONTROLS,
-		QUIT
+		QUIT,
+		LOADING
 	};
 
 	enum class GameScene
@@ -71,6 +72,7 @@ private:
 	void ManageCredits();
 	void ManageControls();
 	void ManageQuit();
+	void ManageLoading();
 
 	void EnableMenuButtons(bool enable);
 
@@ -126,6 +128,7 @@ private:
 	GameObject* creditsGO = nullptr;
 	GameObject* vsyncGO = nullptr;
 	GameObject* introCamera = nullptr;
+	GameObject* loadingGO = nullptr;
 
 	//BBOX
 	math::AABB* playerBbox = nullptr;
@@ -154,6 +157,8 @@ private:
 	bool runningCredits = false;
 	bool runningIntro = false;
 	bool vsync = false;
+
+	std::string sceneToLoad = "";
 };
 
 #endif __GameLoop_h__
