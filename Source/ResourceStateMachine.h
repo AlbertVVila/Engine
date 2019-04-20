@@ -21,8 +21,10 @@ public:
 	bool LoadInMemory() override;
 	void DeleteFromMemory() override;
 
+	unsigned GetStateMachineSize();
 	void SetStateMachine(const char* data);
-	void SaveStateMachine(char* data);
+	void SaveStateMachineData(char* data);
+	void Save();
 
 	void AddClip(const HashString name, unsigned UID, bool loop);
 	void AddNode(const HashString name,const HashString clipName);
@@ -70,9 +72,8 @@ public:
 	bool isNodesEmpty() { return nodes.empty(); }
 	bool isTransitionsEmpty() { return transitions.empty(); }
 
-private:
-	
 	std::string name = "";
+private:
 
 	struct Clip
 	{

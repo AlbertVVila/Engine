@@ -367,6 +367,21 @@ ResourceAnimation* ModuleResourceManager::GetAnimationByName(const char* name)
 	return nullptr;
 }
 
+ResourceStateMachine* ModuleResourceManager::GetSMByName(const char * name)
+{
+	std::vector<std::string> resourcesList;
+	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		if (it->second->GetType() == TYPE::STATEMACHINE)
+		{
+			ResourceStateMachine* stateMachine = (ResourceStateMachine*)it->second;
+			if (stateMachine->name == name)
+				return (ResourceStateMachine*)Get(stateMachine->GetUID());
+		}
+	}
+	return nullptr;
+}
+
 Resource* ModuleResourceManager::GetWithoutLoad(unsigned uid) const
 {
 	std::map<unsigned, Resource*>::const_iterator it = resources.find(uid);
@@ -464,6 +479,17 @@ std::vector<ResourceAnimation*> ModuleResourceManager::GetAnimationsList()
 	return resourcesList;
 }
 
+std::vector<ResourceStateMachine*> ModuleResourceManager::GetSMList()
+{
+	std::vector<ResourceStateMachine*> resourcesList;
+	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		if (it->second->GetType() == TYPE::STATEMACHINE)
+			resourcesList.push_back((ResourceStateMachine*)it->second);
+	}
+	return resourcesList;
+}
+
 std::vector<std::string> ModuleResourceManager::GetResourceNamesList(TYPE resourceType, bool ordered)
 {
 	std::vector<std::string> resourcesList;
@@ -506,6 +532,24 @@ std::vector<std::string> ModuleResourceManager::GetAnimationsNamesList(bool orde
 		{
 			ResourceAnimation* anim = (ResourceAnimation*)it->second;
 			resourcesList.push_back(anim->name);
+		}
+	}
+
+	if (ordered)	// Short by ascending order
+		std::sort(resourcesList.begin(), resourcesList.end(), sortByNameAscending);
+
+	return resourcesList;
+}
+
+std::vector<std::string> ModuleResourceManager::GetSMNamesList(bool ordered)
+{
+	std::vector<std::string> resourcesList;
+	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		if (it->second->GetType() == TYPE::STATEMACHINE)
+		{
+			ResourceStateMachine* stateMachine = (ResourceStateMachine*)it->second;
+			resourcesList.push_back(stateMachine->name);
 		}
 	}
 

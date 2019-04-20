@@ -157,7 +157,41 @@ void ResourceStateMachine::SetStateMachine(const char* data)
 
 }
 
-void ResourceStateMachine::SaveStateMachine(char* data)
+unsigned ResourceStateMachine::GetStateMachineSize()
+{
+	unsigned size = 0u;
+	size += sizeof(char) * MAX_BONE_NAME_LENGTH;
+
+	size += sizeof(int);
+
+	for (const auto& clip : clips)
+	{
+		size += sizeof(char) * MAX_BONE_NAME_LENGTH;
+		size += sizeof(int);
+		size += sizeof(bool);
+	}
+
+	size += sizeof(int);
+	for (const auto& node : nodes)
+	{
+		size += sizeof(char) * MAX_BONE_NAME_LENGTH;
+		size += sizeof(char) * MAX_BONE_NAME_LENGTH;
+	}
+
+	size += sizeof(int);
+
+	for (const auto& transition : transitions)
+	{
+		size += sizeof(char) * MAX_BONE_NAME_LENGTH;
+		size += sizeof(char) * MAX_BONE_NAME_LENGTH;
+		size += sizeof(char) * MAX_BONE_NAME_LENGTH;
+		size += sizeof(int);
+	}
+
+	return size;
+}
+
+void ResourceStateMachine::SaveStateMachineData(char* data)
 {
 	char* cursor = data;
 
@@ -211,6 +245,17 @@ void ResourceStateMachine::SaveStateMachine(char* data)
 		memcpy(cursor, &transition.blend, sizeof(int));
 		cursor += sizeof(int);
 	}
+}
+
+void ResourceStateMachine::Save()
+{
+	char* stateMachineData = nullptr;
+	unsigned stateMachineSize = GetStateMachineSize();
+	stateMachineData = new char[stateMachineSize];
+	SaveStateMachineData(stateMachineData);
+	
+	App->fsystem->Save((STATEMACHINES + std::to_string(GetUID()) + STATEMACHINEEXTENSION).c_str(), stateMachineData, stateMachineSize);
+
 }
 
 void ResourceStateMachine::AddClip(const HashString name, unsigned UID, const bool loop)
