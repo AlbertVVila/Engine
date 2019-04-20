@@ -18,10 +18,11 @@ public:
 	PanelState();
 	~PanelState();
 
-	void DrawSM(ResourceStateMachine* animation, ax::NodeEditor::EditorContext* context);
-	void ShowContextMenus(ResourceStateMachine* RM);
-	void ShowCreateNewNodeMenu(ResourceStateMachine* RM);
-	void ManageCreate(ResourceStateMachine* RM);
+	void DrawSM(ResourceStateMachine* stateMachine, ax::NodeEditor::EditorContext* context);
+	void DrawNodes(ResourceStateMachine* stateMachine);
+	void ShowContextMenus(ResourceStateMachine* stateMachine);
+	void ShowCreateNewNodeMenu(ResourceStateMachine* stateMachine);
+	void ManageCreate(ResourceStateMachine* stateMachine);
 	void Draw() override;
 
 	bool focus = false;
