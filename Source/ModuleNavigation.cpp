@@ -44,6 +44,9 @@ ModuleNavigation::~ModuleNavigation()
 
 void ModuleNavigation::cleanValues()
 {
+	RELEASE_ARRAY(verts);
+	RELEASE_ARRAY(tris);
+	RELEASE_ARRAY(normals);
 	RELEASE_ARRAY(m_triareas);
 	m_triareas = 0;
 	rcFreeHeightField(heightField);
@@ -85,15 +88,29 @@ void ModuleNavigation::DrawGUI()
 		ImGui::DragFloat("Max slope scaling", &maxSlopeScaling, sliderIncreaseSpeed, minSliderValue, maxSlopeValue);
 		ImGui::DragFloat("Max step height", &maxStepHeightScaling, sliderIncreaseSpeed, minSliderValue, maxSlopeValue);
 
-		if (ImGui::Button("Generate navigability"))
+		if (ImGui::Button("Add mesh to navigation"))
+		{
+			addNavigableMesh();
+		}
+		
+		if (meshComponents.size() > 0 && ImGui::Button("Generate navigability"))
 		{
 			generateNavigability();
 		}
+
 	}
 	if (ImGui::CollapsingHeader("Object"))
 	{
 		
 	}
+}
+
+void ModuleNavigation::addNavigableMesh()
+{
+	meshboxes.push_back(static_cast <const AABB*>(&App->scene->selected->bbox));
+	meshComponents.push_back(static_cast <const ComponentRenderer*>(App->scene->selected->GetComponent(ComponentType::Renderer)));
+	std::string s = App->scene->selected->name + " added to navigation";
+	LOG(s.c_str());
 }
 
 void ModuleNavigation::navigableObjectToggled(GameObject* obj, const bool newState)
@@ -142,20 +159,29 @@ void ModuleNavigation::generateNavigability()
 	pointsUpdated = true;
 
 	//declaring mesh box
-	meshbox  = static_cast <const AABB*>(&App->scene->selected->bbox);
-	
-	const float bmin[3] = {meshbox->minPoint.x, meshbox->minPoint.y, meshbox->minPoint.z };
-	const float bmax[3] = {meshbox->maxPoint.x, meshbox->maxPoint.y, meshbox->maxPoint.z};
-	
-	meshComponent = static_cast <const ComponentRenderer*>(App->scene->selected->GetComponent(ComponentType::Renderer));
+	//meshbox  = static_cast <const AABB*>(&App->scene->selected->bbox);
+	bmin = new float[3];
+	bmin[0] = meshboxes[0]->minPoint.x; bmin[1] = meshboxes[0]->minPoint.y; bmin[2] = meshboxes[0]->minPoint.z;
 
-	nverts = meshComponent->mesh->meshVertices.size();
-	verts = new float[nverts*3];
-	fillVertices();
-	//Indices
-	ntris = meshComponent->mesh->meshIndices.size()/3;
-	tris = new int[ntris*3];
+	bmax = new float[3];
+	bmax[0] = meshboxes[0]->maxPoint.x; bmax[1] = meshboxes[0]->maxPoint.y; bmax[2] = meshboxes[0]->maxPoint.z;
+
+	for (int i = 1; i < meshboxes.size(); ++i)
+	{
+		if (meshboxes[i]->minPoint.x < bmin[0]) bmin[0] = meshboxes[i]->minPoint.x;
+		if (meshboxes[i]->minPoint.y < bmin[1]) bmin[1] = meshboxes[i]->minPoint.y;
+		if (meshboxes[i]->minPoint.x < bmin[2]) bmin[2] = meshboxes[i]->minPoint.z;
+
+		if (meshboxes[i]->maxPoint.x > bmax[0]) bmax[0] = meshboxes[i]->maxPoint.x;
+		if (meshboxes[i]->maxPoint.y > bmax[1]) bmax[1] = meshboxes[i]->maxPoint.y;
+		if (meshboxes[i]->maxPoint.z > bmax[2]) bmax[2] = meshboxes[i]->maxPoint.z;
+	}
 	
+	//meshComponent = static_cast <const ComponentRenderer*>(App->scene->selected->GetComponent(ComponentType::Renderer));
+
+	fillVertices();
+
+	//Indices
 	fillIndices();
 
 	//calculate normals
@@ -222,7 +248,7 @@ void ModuleNavigation::generateNavigability()
 	// If your input data is multiple meshes, you can transform them here, calculate
 	// the are type for each of the meshes and rasterize them.
 	memset(m_triareas, 0, ntris * sizeof(unsigned char));
-	rcMarkWalkableTriangles(ctx, cfg.walkableSlopeAngle, verts, nverts, tris, ntris, m_triareas);//we have more verts than tris, may not be right
+	rcMarkWalkableTriangles(ctx, cfg.walkableSlopeAngle, verts, nverts, tris, ntris, m_triareas);//we have more verts than tris, may not be right, sometimes does not enter condition inside this function
 	if (!rcRasterizeTriangles(ctx, verts, nverts, tris, m_triareas, ntris, *heightField, cfg.walkableClimb))
 	{
 		LOG("buildNavigation: Could not rasterize triangles.");
@@ -242,7 +268,7 @@ void ModuleNavigation::generateNavigability()
 	if (filterLowHangingObstacles)
 		rcFilterLowHangingWalkableObstacles(ctx, cfg.walkableClimb, *heightField);
 	if (filterLedgeSpans)
-		rcFilterLedgeSpans(ctx, cfg.walkableHeight, cfg.walkableClimb, *heightField);//a little too complex
+		rcFilterLedgeSpans(ctx, cfg.walkableHeight, cfg.walkableClimb, *heightField);//a little too complex, tocheck
 	if (filterWalkableLowHeightSpans)
 		rcFilterWalkableLowHeightSpans(ctx, cfg.walkableHeight, *heightField);
 
@@ -521,39 +547,82 @@ void ModuleNavigation::generateNavigability()
 
 void ModuleNavigation::fillVertices()
 {
-	for (int i = 0; i < nverts; ++i)
+	//nverts = meshComponent->mesh->meshVertices.size();
+	
+	for (int i = 0; i < meshComponents.size(); ++i)
 	{
-		verts[i* 3] = meshComponent->mesh->meshVertices[i].x;
-		verts[i* 3 + 1] = meshComponent->mesh->meshVertices[i].y;
-		verts[i* 3 + 2] = meshComponent->mesh->meshVertices[i].z;
+		nverts += meshComponents[i]->mesh->meshVertices.size();
 	}
+	verts = new float[nverts * 3];
+	int currentGlobalVert = 0;
+	for (int j = 0; j < meshComponents.size(); ++j)
+	{
+		for (int i = 0; i < meshComponents[j]->mesh->meshVertices.size(); ++i)
+		{
+			verts[currentGlobalVert * 3] = meshComponents[j]->mesh->meshVertices[i].x;
+			verts[currentGlobalVert * 3 + 1] = meshComponents[j]->mesh->meshVertices[i].y;
+			verts[currentGlobalVert * 3 + 2] = meshComponents[j]->mesh->meshVertices[i].z;
+			++currentGlobalVert;
+		}
+	}
+	
 }
 
 void ModuleNavigation::fillIndices()
 {
-	for (int i = 0; i < ntris; ++i)
+	for (int i = 0; i < meshComponents.size(); ++i)
 	{
-		tris[i * 3] = meshComponent->mesh->meshIndices[i];
-		tris[i * 3 + 1] = meshComponent->mesh->meshIndices[i + 1];
-		tris[i * 3 + 2] = meshComponent->mesh->meshIndices[i + 2];
+		ntris += meshComponents[i]->mesh->meshIndices.size()/3;
+	}
+	tris = new int[ntris * 3];//tris maps vertex and triangles
+	int currentGlobalTri = 0;
+	for (int j = 0; j < meshComponents.size(); ++j)
+	{
+		for (int i = 0; i < meshComponents[j]->mesh->meshIndices.size(); i+= 3)
+		{
+			//changed y and z order
+			tris[currentGlobalTri] = meshComponents[j]->mesh->meshIndices[i];
+			tris[currentGlobalTri + 1] = meshComponents[j]->mesh->meshIndices[i + 1];
+			tris[currentGlobalTri + 2] = meshComponents[j]->mesh->meshIndices[i + 2];
+			currentGlobalTri+= 3;
+		}
 	}
 }
 
 void ModuleNavigation::fillNormals()
 {
-	normals = new float[ntris*3];
-	for (int i = 0; i < ntris; ++i)
+	int numNormals = 0;
+	for (int i = 0; i < meshComponents.size(); ++i)
 	{
-		const float* v0 = &verts[tris[i*3] * 3];
-		const float* v1 = &verts[tris[i*3 + 1] * 3];
-		const float* v2 = &verts[tris[i*3 + 2] * 3];
+		numNormals += meshComponents[i]->mesh->meshNormals.size();
+	}
+	normals = new float[numNormals*3];
+	int currentGlobalNorm = 0;
+	for (int j = 0; j < meshComponents.size(); ++j)
+	{
+		for (int i = 0; i < meshComponents[j]->mesh->meshNormals.size(); ++i)
+		{
+			//changed y and z order
+			normals[currentGlobalNorm*3] = meshComponents[j]->mesh->meshNormals[i].x;
+			normals[currentGlobalNorm * 3 + 1] = meshComponents[j]->mesh->meshNormals[i].y;
+			normals[currentGlobalNorm * 3 + 2] = meshComponents[j]->mesh->meshNormals[i].z;
+			++currentGlobalNorm;
+		}
+	}
+
+	/*normals = new float[ntris*3];
+	for (int i = 0; i < ntris*3; i+=3)
+	{
+		const float* v0 = &verts[tris[i] * 3];
+		const float* v1 = &verts[tris[i + 1] * 3];
+		const float* v2 = &verts[tris[i + 2] * 3];
 		float e0[3], e1[3];
 		for (int j = 0; j < 3; ++j)
 		{
 			e0[j] = v1[j] - v0[j];
 			e1[j] = v2[j] - v0[j];
 		}
-		float* n = &normals[i*3];
+		float* n = &normals[i];
 		n[0] = e0[1] * e1[2] - e0[2] * e1[1];
 		n[1] = e0[2] * e1[0] - e0[0] * e1[2];
 		n[2] = e0[0] * e1[1] - e0[1] * e1[0];
@@ -565,7 +634,7 @@ void ModuleNavigation::fillNormals()
 			n[1] *= d;
 			n[2] *= d;
 		}
-	}
+	}*/
 }
 /*
 //debug draw implementations

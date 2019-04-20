@@ -100,6 +100,7 @@ private:
 
 	void removeNavMesh(unsigned ID);
 	void generateNavigability();
+	void addNavigableMesh();
 
 	void fillVertices();
 	void fillIndices();
@@ -176,7 +177,7 @@ private:
 
 	DrawMode m_drawMode;
 
-	const ComponentRenderer* meshComponent = nullptr;
+	std::vector < const ComponentRenderer*> meshComponents;
 
 	rcConfig cfg;
 	rcContext* ctx = nullptr;
@@ -197,11 +198,13 @@ private:
 	int* tris = nullptr;
 	float* verts = nullptr;
 	float* normals = nullptr;
-	int nverts;
-	int ntris;
+	int nverts = 0;
+	int ntris = 0;
 	bool pointsUpdated = false;
 	dd::DrawVertex* points = nullptr;
-	const AABB* meshbox = nullptr;
+	std::vector<const AABB*> meshboxes;
+	float* bmin = nullptr;
+	float* bmax = nullptr;
 };
 
 #endif
