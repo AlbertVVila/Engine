@@ -73,7 +73,7 @@ void ComponentTransform::DrawProperties()
 			ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
 		}
 
-		ImGui::DragFloat3("Position", (float*)&position, 0.1f, -1000.f, 1000.f);
+		ImGui::DragFloat3("Position", (float*)&position, 0.1f, (float) App->scene->SceneSize * -1, (float)App->scene->SceneSize);
 		ImGui::DragFloat3("Rotation", (float*)&eulerRotation, 0.5f, -180, 180.f);
 		ImGui::DragFloat3("Scale", (float*)&scale, 0.1f, 0.01f, 100.f);
 		rotation = rotation.FromEulerXYZ(math::DegToRad(eulerRotation.x),
@@ -123,15 +123,8 @@ void ComponentTransform::MultiSelectionTransform(float4x4 &difference)
 void ComponentTransform::UpdateTransform()
 {
 	UpdateOldTransform();
-	math::float4x4 originalGlobal = global;
-	global = global * local.Inverted();
-	local = math::float4x4::FromTRS(position, rotation, scale);
-	global = global * local;
-
-	math::float4x4 difference = global - originalGlobal;
-	MultiSelectionTransform(difference);
-
-  front = -global.Col3(2);
+	
+	front = -global.Col3(2);
 	up = global.Col3(1);
 	right = global.Col3(0);
 
@@ -195,13 +188,26 @@ void ComponentTransform::SetWorldToLocal(const math::float4x4& newparentGlobalMa
 	RotationToEuler();
 }
 
-void ComponentTransform::SetGlobalTransform(const math::float4x4& newglobal, const math::float4x4&parentglobal)
+void ComponentTransform::SetGlobalTransform(const math::float4x4& newglobal, const math::float4x4& parentglobal)
 {
 	global = newglobal;
 	local = parentglobal.Inverted() * global;
 	local.Decompose(position, rotation, scale);
 	RotationToEuler();
 	UpdateOldTransform();
+	
+	if (position.Abs().x >= App->scene->SceneSize)
+	{
+		position.x = position.x / position.Abs().x * App->scene->SceneSize;
+	}
+	if (position.Abs().y >= App->scene->SceneSize)
+	{
+		position.y = position.y / position.Abs().y * App->scene->SceneSize;
+	}
+	if (position.Abs().z >= App->scene->SceneSize)
+	{
+		position.z = position.z / position.Abs().z * App->scene->SceneSize;
+	}
 
 	front = -global.Col3(2);
 	up = global.Col3(1);
@@ -233,11 +239,26 @@ void ComponentTransform::SetGlobalTransform(const math::float4x4& newglobal, con
 	}
 }
 
+void ComponentTransform::SetLocalTransform(const math::float4x4& newLocal, const math::float4x4& parentGlobal)
+{
+	local = newLocal;
+	
+	//global = parentGlobal.Mul(local);
+	local.Decompose(position, rotation, scale);
+	RotationToEuler();
+}
+
 void ComponentTransform::SetPosition(const math::float3 & newPosition)
 {
 	position = newPosition;
 	gameobject->movedFlag = true;
-	UpdateTransform();
+}
+
+void ComponentTransform::SetRotation(const math::Quat& newQuat)
+{
+	rotation = newQuat;
+	RotationToEuler();
+	gameobject->movedFlag = true;
 }
 
 math::float3 ComponentTransform::GetPosition()
@@ -245,8 +266,23 @@ math::float3 ComponentTransform::GetPosition()
 	return position;
 }
 
+math::Quat ComponentTransform::GetRotation()
+{
+	return rotation;
+}
+
+
 math::float3 ComponentTransform::GetGlobalPosition()
 {
+	if (gameobject->movedFlag)
+	{
+		float4x4 newlocal = math::float4x4::FromTRS(position, rotation, scale);
+		if (gameobject->parent != nullptr)
+		{
+			return (gameobject->parent->GetGlobalTransform() * newlocal).Col3(3);
+		}
+		return newlocal.Col3(3);
+	}
 	return global.Col3(3);
 }
 
