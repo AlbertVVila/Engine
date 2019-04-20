@@ -24,6 +24,7 @@ public:
 	Component* Clone() const;
 
 	void SetAnimation(const char* animationFile);
+	void SetStateMachine(const char* stateMachineFile);
 
 	void SetIndexChannels(GameObject* GO);
 	void PlayAnimation(unsigned blend);
@@ -58,6 +59,7 @@ public:
 	bool isPlaying = false;
 
 	std::vector<std::string> guiAnimations;
+	std::vector<std::string> guiStateMachines;
 };
 
 #endif //  __COMPONENTANIMATION_H_

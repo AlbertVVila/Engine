@@ -64,6 +64,8 @@ void ResourceStateMachine::DeleteFromMemory()
 void ResourceStateMachine::SetStateMachine(const char* data)
 {
 	//import name
+	DeleteFromMemory();
+
 	char smName[MAX_BONE_NAME_LENGTH];
 
 	memcpy(smName, data, sizeof(char) * MAX_BONE_NAME_LENGTH);
@@ -195,7 +197,7 @@ void ResourceStateMachine::SaveStateMachineData(char* data)
 {
 	char* cursor = data;
 
-	memcpy(cursor, name.c_str(), sizeof(char) * MAX_BONE_NAME_LENGTH);  //Name
+	memcpy(cursor, name.c_str(), sizeof(char) * MAX_BONE_NAME_LENGTH);
 	cursor += sizeof(char) * MAX_BONE_NAME_LENGTH;
 
 	unsigned clipsSize = clips.size();
@@ -204,7 +206,7 @@ void ResourceStateMachine::SaveStateMachineData(char* data)
 
 	for (const auto& clip : clips)
 	{
-		memcpy(cursor, clip.name.C_str(), sizeof(char) * MAX_BONE_NAME_LENGTH);  //Name
+		memcpy(cursor, clip.name.C_str(), sizeof(char) * MAX_BONE_NAME_LENGTH); 
 		cursor += sizeof(char) * MAX_BONE_NAME_LENGTH;
 
 		memcpy(cursor, &clip.UID, sizeof(int));
@@ -220,10 +222,10 @@ void ResourceStateMachine::SaveStateMachineData(char* data)
 
 	for (const auto& node : nodes)
 	{
-		memcpy(cursor, node.name.C_str(), sizeof(char) * MAX_BONE_NAME_LENGTH);  //Name
+		memcpy(cursor, node.name.C_str(), sizeof(char) * MAX_BONE_NAME_LENGTH); 
 		cursor += sizeof(char) * MAX_BONE_NAME_LENGTH;
 
-		memcpy(cursor, node.clipName.C_str(), sizeof(char) * MAX_BONE_NAME_LENGTH);  //Name
+		memcpy(cursor, node.clipName.C_str(), sizeof(char) * MAX_BONE_NAME_LENGTH); 
 		cursor += sizeof(char) * MAX_BONE_NAME_LENGTH;
 	}
 
@@ -233,13 +235,13 @@ void ResourceStateMachine::SaveStateMachineData(char* data)
 	
 	for (const auto& transition : transitions)
 	{
-		memcpy(cursor, transition.origin.C_str(), sizeof(char) * MAX_BONE_NAME_LENGTH);  //Name
+		memcpy(cursor, transition.origin.C_str(), sizeof(char) * MAX_BONE_NAME_LENGTH);  
 		cursor += sizeof(char) * MAX_BONE_NAME_LENGTH;
 
-		memcpy(cursor, transition.destiny.C_str(), sizeof(char) * MAX_BONE_NAME_LENGTH);  //Name
+		memcpy(cursor, transition.destiny.C_str(), sizeof(char) * MAX_BONE_NAME_LENGTH); 
 		cursor += sizeof(char) * MAX_BONE_NAME_LENGTH;
 
-		memcpy(cursor, transition.trigger.C_str(), sizeof(char) * MAX_BONE_NAME_LENGTH);  //Name
+		memcpy(cursor, transition.trigger.C_str(), sizeof(char) * MAX_BONE_NAME_LENGTH); 
 		cursor += sizeof(char) * MAX_BONE_NAME_LENGTH;
 
 		memcpy(cursor, &transition.blend, sizeof(int));
@@ -249,13 +251,15 @@ void ResourceStateMachine::SaveStateMachineData(char* data)
 
 void ResourceStateMachine::Save()
 {
+	App->fsystem->Remove((STATEMACHINES + std::to_string(GetUID()) + STATEMACHINEEXTENSION).c_str());
+
 	char* stateMachineData = nullptr;
 	unsigned stateMachineSize = GetStateMachineSize();
 	stateMachineData = new char[stateMachineSize];
 	SaveStateMachineData(stateMachineData);
-	
-	App->fsystem->Save((STATEMACHINES + std::to_string(GetUID()) + STATEMACHINEEXTENSION).c_str(), stateMachineData, stateMachineSize);
 
+	App->fsystem->Save((STATEMACHINES + std::to_string(GetUID()) + STATEMACHINEEXTENSION).c_str(), stateMachineData, stateMachineSize);
+	RELEASE_ARRAY(stateMachineData);
 }
 
 void ResourceStateMachine::AddClip(const HashString name, unsigned UID, const bool loop)

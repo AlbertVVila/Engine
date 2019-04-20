@@ -292,6 +292,9 @@
     <ClCompile Include="NodeEditor\Source\NodeEditor.cpp">
       <Filter>ImguiNodeEditor</Filter>
     </ClCompile>
+    <ClCompile Include="ComponentTransform2D.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
