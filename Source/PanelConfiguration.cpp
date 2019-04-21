@@ -7,7 +7,6 @@
 #include "ModuleTextures.h"
 #include "ModuleScene.h"
 #include "ModuleUI.h"
-#include "ModuleAudioManager.h"
 #include "imgui.h"
 #include "Math/MathConstants.h"
 
@@ -66,10 +65,6 @@ void PanelConfiguration::Draw()
 	if (ImGui::CollapsingHeader("UI"))
 	{
 		App->ui->DrawGUI();
-	}
-	if (ImGui::CollapsingHeader("Audio"))
-	{
-		App->audioManager->DrawGUI();
 	}
 	ImGui::End();
 }

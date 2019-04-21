@@ -15,7 +15,6 @@
 #include "ModuleUI.h"
 #include "ModuleFontLoader.h"
 #include "ModuleScript.h"
-#include "ModuleAudioManager.h"
 #include "ModuleDevelopmentBuildDebug.h"
 
 #include "Timer.h"
@@ -47,7 +46,6 @@ Application::Application()
 	modules.push_back(time = new ModuleTime());
 	modules.push_back(ui = new ModuleUI());
 	modules.push_back(fontLoader = new ModuleFontLoader());
-	modules.push_back(audioManager = new ModuleAudioManager());
 }
 
 Application::~Application()

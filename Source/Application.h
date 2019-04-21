@@ -25,7 +25,6 @@ class ModuleUI;
 class ModuleFontLoader;
 class ModuleScript;
 class ModuleDevelopmentBuildDebug;
-class ModuleAudioManager;
 
 class Application
 {
@@ -58,7 +57,6 @@ public:
 	ModuleFontLoader* fontLoader = nullptr;
 	ModuleScript* scripting = nullptr;
 	ModuleDevelopmentBuildDebug* developDebug = nullptr;
-	ModuleAudioManager* audioManager = nullptr;
 
 private:
 	std::list<Module*> modules;
