@@ -42,7 +42,7 @@ bool ResourceStateMachine::LoadInMemory()
 {
 	char* data = nullptr;
 
-	unsigned ok = App->fsystem->Load((STATEMACHINES + std::to_string(UID) + STATEMACHINEEXTENSION).c_str(), &data);
+	unsigned ok = App->fsystem->Load((STATEMACHINES + std::to_string(GetUID()) + STATEMACHINEEXTENSION).c_str(), &data);
 
 	// Load mesh file
 	if (ok != 0)
@@ -55,6 +55,7 @@ bool ResourceStateMachine::LoadInMemory()
 
 void ResourceStateMachine::DeleteFromMemory()
 {
+	Resource::DeleteFromMemory();
 	defaultNode = 0u;
 	nodes.clear();
 	clips.clear();
@@ -63,7 +64,6 @@ void ResourceStateMachine::DeleteFromMemory()
 
 void ResourceStateMachine::SetStateMachine(const char* data)
 {
-	//import name
 	DeleteFromMemory();
 
 	char smName[MAX_BONE_NAME_LENGTH];
@@ -251,7 +251,7 @@ void ResourceStateMachine::SaveStateMachineData(char* data)
 
 void ResourceStateMachine::Save()
 {
-	App->fsystem->Remove((STATEMACHINES + std::to_string(GetUID()) + STATEMACHINEEXTENSION).c_str());
+	/*App->fsystem->Remove((STATEMACHINES + std::to_string(GetUID()) + STATEMACHINEEXTENSION).c_str());*/
 
 	char* stateMachineData = nullptr;
 	unsigned stateMachineSize = GetStateMachineSize();
@@ -259,6 +259,8 @@ void ResourceStateMachine::Save()
 	SaveStateMachineData(stateMachineData);
 
 	App->fsystem->Save((STATEMACHINES + std::to_string(GetUID()) + STATEMACHINEEXTENSION).c_str(), stateMachineData, stateMachineSize);
+	SetFile(STATEMACHINES);
+	SetExportedFile(std::to_string(GetUID()).c_str());
 	RELEASE_ARRAY(stateMachineData);
 }
 

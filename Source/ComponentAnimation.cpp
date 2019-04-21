@@ -23,7 +23,6 @@
 ComponentAnimation::ComponentAnimation() : Component(nullptr, ComponentType::Animation)
 {
 	controller = new AnimationController();
-	stateMachine = (ResourceStateMachine*)App->resManager->CreateNewResource(TYPE::STATEMACHINE);
 	PlayAnimation(100u);
 }
 
@@ -31,7 +30,6 @@ ComponentAnimation::ComponentAnimation(GameObject * gameobject) : Component(game
 {
 	//anim = new ResourceAnimation();
 	controller = new AnimationController();
-	stateMachine = (ResourceStateMachine*)App->resManager->CreateNewResource(TYPE::STATEMACHINE);
 	PlayAnimation(100u);
 }
 
@@ -64,121 +62,127 @@ void ComponentAnimation::DrawProperties()
 
 		if (ImGui::Button("New State Machine"))
 		{
-			stateMachine->Save();
+			if (stateMachine != nullptr)
+				stateMachine->Save();
+
 			stateMachine = (ResourceStateMachine*)App->resManager->CreateNewResource(TYPE::STATEMACHINE);
 		}
-		ImGui::SameLine();
 	
-		ImGui::PushID("State Machine Combo");
-		if (ImGui::BeginCombo("", stateMachine != nullptr ? stateMachine->name.c_str() : ""))
+		if (stateMachine != nullptr)
 		{
-			if (guiStateMachines.empty())
+			ImGui::SameLine();
+
+			ImGui::PushID("State Machine Combo");
+			if (ImGui::BeginCombo("SM", stateMachine != nullptr ? stateMachine->name.c_str() : ""))
 			{
-				guiStateMachines = App->resManager->GetSMNamesList(true);
-			}
-			for (int n = 0; n < guiStateMachines.size(); n++)
-			{
-				bool is_selected = (stateMachine != nullptr ? stateMachine->name == guiStateMachines[n] : false);
-				if (ImGui::Selectable(guiStateMachines[n].c_str(), is_selected))
+				if (guiStateMachines.empty())
 				{
-					stateMachine->Save();
-					SetStateMachine(guiStateMachines[n].c_str());
+					guiStateMachines = App->resManager->GetSMNamesList(true);
 				}
-				if (is_selected)
+				for (unsigned i = 0u; i < guiStateMachines.size(); i++)
 				{
-					ImGui::SetItemDefaultFocus();
-				}
-			}
-			ImGui::EndCombo();
-		}
-		else
-		{
-			guiStateMachines.clear();
-		}
-		ImGui::PopID();
-		
-
-		//Here we should have the name of the stateMachine
-		char* smName = new char[MAX_CLIP_NAME];
-		strcpy(smName, stateMachine->name.c_str());
-		ImGui::InputText("SM name", smName, MAX_CLIP_NAME);
-		stateMachine->name = smName;
-
-		if (ImGui::Button("AddClip"))
-		{
-			stateMachine->AddClip(HashString("Clippity clip"), 0u, true);
-			stateMachine->Save();
-		}
-
-		if(!stateMachine->isClipsEmpty())
-		{
-			ImGui::Separator();
-			for (unsigned i = 0u; i < stateMachine->GetClipsSize(); ++i)
-			{
-				ImGui::PushID(i);
-				char* clipName = new char[MAX_CLIP_NAME];
-				strcpy(clipName, stateMachine->GetClipName(i).C_str());
-				ImGui::InputText("Clip name", clipName, MAX_CLIP_NAME);
-				stateMachine->SetClipName(i, HashString(clipName));
-
-				bool clipLoop = stateMachine->GetClipLoop(i);
-				if (ImGui::Checkbox("Loop", &clipLoop))
-				{
-					if (!clipLoop)
-						stateMachine->SetClipLoop(i, false);
-					else
-						stateMachine->SetClipLoop(i, true);
-
-					stateMachine->Save();
-				}
-
-				ImGui::SameLine();
-
-				unsigned clipUID = stateMachine->GetClipResource(i);
-				ResourceAnimation* animation = (ResourceAnimation*)App->resManager->Get(clipUID);
-				if (ImGui::BeginCombo("", clipUID != 0u ? animation->name.c_str() : ""))
-				{
-					if (guiAnimations.empty())
+					bool is_selected = (stateMachine != nullptr ? stateMachine->name == guiStateMachines[i] : false);
+					if (ImGui::Selectable(guiStateMachines[i].c_str(), is_selected))
 					{
-						guiAnimations = App->resManager->GetAnimationsNamesList(true);
+						stateMachine->Save();
+						SetStateMachine(guiStateMachines[i].c_str());
 					}
-					for (int n = 0; n < guiAnimations.size(); n++)
+					if (is_selected)
 					{
-						bool is_selected = (clipUID != 0u ? animation->name == guiAnimations[n] : false);
-						if (ImGui::Selectable(guiAnimations[n].c_str(), is_selected))
-						{
-							unsigned animUID = ((ResourceAnimation*)App->resManager->GetAnimationByName(guiAnimations[n].c_str()))->GetUID();
-							stateMachine->SetClipResource(i, animUID);
-							stateMachine->Save();
-						}
-						if (is_selected)
-						{
-							ImGui::SetItemDefaultFocus();
-						}
+						ImGui::SetItemDefaultFocus();
 					}
-					ImGui::EndCombo();
 				}
-				else
-				{
-					guiAnimations.clear();
-				}
+				ImGui::EndCombo();
+			}
+			else
+			{
+				guiStateMachines.clear();
+			}
+			ImGui::PopID();
 
-				if (ImGui::Button("Remove Clip"))
-				{
-					clipIndexToRemove = i;
-					clipRemove = true;
-				}
 
+			//Here we should have the name of the stateMachine
+			char* smName = new char[MAX_CLIP_NAME];
+			strcpy(smName, stateMachine->name.c_str());
+			ImGui::InputText("SM name", smName, MAX_CLIP_NAME);
+			stateMachine->name = smName;
+
+			if (ImGui::Button("AddClip"))
+			{
+				stateMachine->AddClip(HashString("Clippity clip"), 0u, true);
+				stateMachine->Save();
+			}
+
+			if (!stateMachine->isClipsEmpty())
+			{
 				ImGui::Separator();
+				for (unsigned j = 0u; j < stateMachine->GetClipsSize(); ++j)
+				{
+					ImGui::PushID(j);
+					char* clipName = new char[MAX_CLIP_NAME];
+					strcpy(clipName, stateMachine->GetClipName(j).C_str());
+					ImGui::InputText("Clip name", clipName, MAX_CLIP_NAME);
+					stateMachine->SetClipName(j, HashString(clipName));
 
-				ImGui::PopID();
+					bool clipLoop = stateMachine->GetClipLoop(j);
+					if (ImGui::Checkbox("Loop", &clipLoop))
+					{
+						if (!clipLoop)
+							stateMachine->SetClipLoop(j, false);
+						else
+							stateMachine->SetClipLoop(j, true);
+
+						stateMachine->Save();
+					}
+
+					ImGui::SameLine();
+
+					unsigned clipUID = stateMachine->GetClipResource(j);
+					ResourceAnimation* animation = (ResourceAnimation*)App->resManager->Get(clipUID);
+					if (ImGui::BeginCombo("", clipUID != 0u ? animation->name.c_str() : ""))
+					{
+						if (guiAnimations.empty())
+						{
+							guiAnimations = App->resManager->GetAnimationsNamesList(true);
+						}
+						for (int n = 0; n < guiAnimations.size(); n++)
+						{
+							bool is_selected = (clipUID != 0u ? animation->name == guiAnimations[n] : false);
+							if (ImGui::Selectable(guiAnimations[n].c_str(), is_selected))
+							{
+								unsigned animUID = ((ResourceAnimation*)App->resManager->GetAnimationByName(guiAnimations[n].c_str()))->GetUID();
+								stateMachine->SetClipResource(j, animUID);
+								stateMachine->Save();
+							}
+							if (is_selected)
+							{
+								ImGui::SetItemDefaultFocus();
+							}
+						}
+						ImGui::EndCombo();
+					}
+					else
+					{
+						guiAnimations.clear();
+					}
+
+					if (ImGui::Button("Remove Clip"))
+					{
+						clipIndexToRemove = j;
+						clipRemove = true;
+					}
+
+					ImGui::Separator();
+
+					ImGui::PopID();
+				}
 			}
-		}
 
-		if (clipRemove)
-		{
-			stateMachine->RemoveClip(clipIndexToRemove);
-			clipRemove = false;
+			if (clipRemove)
+			{
+				stateMachine->RemoveClip(clipIndexToRemove);
+				clipRemove = false;
+			}
 		}
 	}
 	ImGui::PopID();
@@ -187,6 +191,7 @@ void ComponentAnimation::DrawProperties()
 void ComponentAnimation::ResetResource()
 {
 	anim->DeleteFromMemory();
+	stateMachine->DeleteFromMemory();
 }
 
 void ComponentAnimation::SetAnimation(const char* animationFile)
