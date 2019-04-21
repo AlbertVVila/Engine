@@ -201,5 +201,3 @@ std::string ModuleScript::GetLastErrorAsString()
 
 	return message;
 }
-
->>>>>>> Fix DLL search path
