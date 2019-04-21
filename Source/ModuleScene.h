@@ -129,6 +129,7 @@ public:
 
 	bool loadScene = false;
 	std::string sceneName = "";
+	int actionAfterLoad = -1;
 };
 
 

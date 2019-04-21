@@ -159,6 +159,7 @@ private:
 	bool vsync = false;
 
 	std::string sceneToLoad = "";
+	int actionAfterLoad = -1;
 };
 
 #endif __GameLoop_h__
