@@ -391,6 +391,23 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 	struct stat statFile;
 	struct stat statMeta;
 
+	std::vector<std::string> smFiles = GetFolderContent(STATEMACHINES);
+
+	for (auto& file : smFiles)
+	{
+		std::set<std::string>::iterator it = importedStateMachines.find(RemoveExtension(file));
+		if (it == importedStateMachines.end())
+		{
+			// File modified or not imported, send it to import
+			filesToImport.push_back(std::pair<std::string, std::string>(file, STATEMACHINES));
+		}
+		else
+		{
+			// File already imported, add it to the resources list
+			App->resManager->AddResource(file.c_str(), STATEMACHINES, TYPE::STATEMACHINE);
+		}
+	}
+
 	while (!folderStack.empty())
 	{
 		currentFolder = folderStack.top();

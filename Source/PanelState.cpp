@@ -55,8 +55,10 @@ void PanelState::Draw()
 	if (App->scene->selected != nullptr && (ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)))
 	{
 		ComponentAnimation* compAnim = (ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation));
-
-		DrawSM(compAnim->stateMachine, compAnim->GetEditorContext());
+		if (compAnim->stateMachine != nullptr)
+		{
+			DrawSM(compAnim->stateMachine, compAnim->GetEditorContext());
+		}
 	}
 
 	ImGui::End();
