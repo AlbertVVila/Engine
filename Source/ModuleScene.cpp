@@ -360,6 +360,7 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 
 	glUniform3fv(glGetUniformLocation(shader->id[variation],
 		"lights.ambient_color"), 1, (GLfloat*)&ambientColor);
+	
 	go.SetLightUniforms(shader->id[variation]);
 
 	go.UpdateModel(shader->id[variation]);

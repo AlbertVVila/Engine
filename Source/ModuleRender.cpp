@@ -304,7 +304,6 @@ void ModuleRender::ComputeShadows()
 	if (directionalLight && directionalLight->produceShadows)
 	{
 		shadowVolumeRendered = true;
-		math::Quat lookAtLight = math::Quat::LookAt(math::float3::unitZ, directionalLight->gameobject->transform->front, math::float3::unitY, directionalLight->gameobject->transform->up);
 		math::AABB lightAABB;
 		lightAABB.SetNegativeInfinity();
 
@@ -333,8 +332,8 @@ void ModuleRender::ComputeShadows()
 
 		math::float4x4 lightMat = math::Quat::LookAt(math::float3::unitZ, directionalLight->gameobject->transform->front, math::float3::unitY, directionalLight->gameobject->transform->up).Inverted().ToFloat3x3();
 
+		lightAABB.SetFromCenterAndSize(lightAABB.CenterPoint(), lightAABB.Size() * 1.5f);
 		lightAABB.GetCornerPoints(points);
-
 		math::float3 minP, maxP;
 		minP = points[0];
 		maxP = points[0];
@@ -354,7 +353,7 @@ void ModuleRender::ComputeShadows()
 		shadowVolumeWidthHalf = shadowVolumeWidth * .5f;
 		shadowVolumeHeight = maxP.y - minP.y;
 		shadowVolumeHeightHalf = shadowVolumeHeight * .5f;
-		shadowVolumeLength = (maxP.z - minP.z) * .5f;
+		shadowVolumeLength = maxP.z - minP.z;
 
 		lightPos = lightMat.Inverted().TransformPos(math::float3((maxP.x + minP.x) * .5f, (maxP.y + minP.y) * .5f, maxP.z));
 
@@ -362,7 +361,8 @@ void ModuleRender::ComputeShadows()
 		{
 			ShadowVolumeDrawDebug();
 		}
-
+		shadowsFrustum.up = -directionalLight->gameobject->transform->up;
+		shadowsFrustum.front = -directionalLight->gameobject->transform->front;
 		BlitShadowTexture();
 	}
 }
@@ -375,8 +375,6 @@ void ModuleRender::ShadowVolumeDrawDebug()
 	math::float3 lRight = directionalLight->gameobject->transform->right;
 	math::float3 lUp = directionalLight->gameobject->transform->up;
 
-	shadowsFrustum.up = lUp;
-	shadowsFrustum.front = lFront;	
 
 	dd::line(lightPos, lightPos - lFront * shadowVolumeLength, dd::colors::YellowGreen);
 	dd::line(lightPos, lightPos - lRight * shadowVolumeWidthHalf, dd::colors::Red);
@@ -438,7 +436,7 @@ void ModuleRender::BlitShadowTexture()
 	glUseProgram(shadowsShader->id[0]);
 	glUniformMatrix4fv(glGetUniformLocation(shadowsShader->id[0],
 		"viewProjection"), 1, GL_TRUE, &shadowsFrustum.ViewProjMatrix()[0][0]);
-	
+		
 	for (ComponentRenderer* cr : shadowCasters)
 	{
 		glUniformMatrix4fv(glGetUniformLocation(shadowsShader->id[0],

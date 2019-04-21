@@ -70,7 +70,7 @@ in vec3 normalIn;
 in vec3 position;
 in vec2 uv0;
 in vec3 viewPos;
-
+in vec4 shadow_coord;
 
 in vec3 pointPositions[MAX_POINT_LIGHTS]; //positions in tangent space
 in vec3 spotPositions[MAX_SPOT_LIGHTS];   //positions in tangent space
@@ -82,6 +82,7 @@ out vec4 Fragcolor;
 uniform Material material;
 uniform Lights lights;
 uniform int hasNormalMap;
+uniform sampler2D shadowTex;
 
 vec4 textureGammaCorrected(sampler2D tex)
 {
@@ -164,7 +165,7 @@ void main()
 	vec3 normal = CalculateNormal();	
 	vec4 albedo = get_albedo();
 	
-	vec3 F0 = vec3(.44f);
+	vec3 F0 = vec3(.04f);
 	F0 = mix(F0, albedo.rgb, material.metallic); //RGB specular
 
 	vec3 color = vec3(0); 
@@ -173,6 +174,12 @@ void main()
 	vec3 V = normalize(viewPos - position);
 	for(int i=0; i < lights.num_directionals; ++i)
 	{
+		vec4 sCoord = shadow_coord / shadow_coord.w;
+		sCoord = sCoord * .5f + .5f;
+		bool isLit = !(sCoord.x >= .0f && sCoord.x <= 1.f 
+					&& sCoord.y >= .0f && sCoord.y <= 1.f
+					&& texture2D(shadowTex, sCoord.xy).x < clamp(sCoord.z, 0, 1) - 0.005f);
+					
 		vec3 L = directionalDirections[i];
 		vec3 H = normalize(V + L);	
 
@@ -181,11 +188,18 @@ void main()
 		vec3 F = FSchlick(max(dot(H, V), 0.0), F0);   
 
 		vec3 kS = F;
-        vec3 kD = vec3(1.0) - kS;
-        kD *= 1.0 - material.metallic; //albedo amount		
+		vec3 kD = vec3(1.0) - kS;
+		kD *= 1.0 - material.metallic; //albedo amount		
 
 		float NdotL = max(dot(N, L), 0.0);        
 		color += (kD * albedo.rgb / PI + BRDF(F, L, V, N, H)) * radiance * NdotL;  
+		if (!isLit)
+		{
+			color = color * .05f;	
+		}
+		/*color = vec3(sCoord.z);
+		Fragcolor = vec4(color, albedo.a);
+		return;*/
 	}
 	for(int i=0; i < lights.num_points; ++i)
 	{	
@@ -237,6 +251,5 @@ void main()
 	color *= get_occlusion_color();
 	color += get_emissive_color();
 	color = vec3(pow(color.r, (1.0 / 2.2)), pow(color.g, (1.0 / 2.2)), pow(color.b, (1.0 / 2.2)));
-	
 	Fragcolor = vec4(color, albedo.a);
 }

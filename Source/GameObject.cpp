@@ -620,6 +620,16 @@ void GameObject::SetLightUniforms(unsigned shader) const
 		"lights.num_points"), points);
 	glUniform1i(glGetUniformLocation(shader,
 		"lights.num_spots"), spots);
+
+	if (App->renderer->directionalLight && App->renderer->directionalLight->produceShadows)
+	{
+		glUniformMatrix4fv(glGetUniformLocation(shader,
+			"lightProjView"), 1, GL_TRUE, &App->renderer->shadowsFrustum.ViewProjMatrix()[0][0]);
+
+		glActiveTexture(GL_TEXTURE5);
+		glBindTexture(GL_TEXTURE_2D, App->renderer->shadowsTex);
+		glUniform1i(glGetUniformLocation(shader, "shadowTex"), 5);
+	}
 }
 
 AABB GameObject::GetBoundingBox() const

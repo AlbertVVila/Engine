@@ -71,6 +71,9 @@ public:
 	Viewport* viewScene = nullptr;
 
 	ComponentLight* directionalLight = nullptr;
+	math::Frustum shadowsFrustum;
+	unsigned shadowsTex = 0u;
+
 
 private:
 	unsigned UBO = 0;
@@ -90,10 +93,8 @@ private:
 	float shadowVolumeHeightHalf;
 	float shadowVolumeLength;
 
-	math::Frustum shadowsFrustum;
 
 	unsigned shadowsFBO = 0u;
-	unsigned shadowsTex = 0u;
 
 	std::unordered_set<ComponentRenderer*> shadowCasters;
 
