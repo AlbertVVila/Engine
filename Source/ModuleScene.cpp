@@ -393,21 +393,24 @@ void ModuleScene::DragNDropMove(GameObject* target)
 			{
 				for (GameObject* droppedGo : App->scene->selection)
 				{
-					droppedGo->parent->children.remove(droppedGo);
-
-					std::list<GameObject*>::iterator it = std::find(target->parent->children.begin(), target->parent->children.end(), target);
-
-					target->parent->children.insert(it, droppedGo);
-
-					if (droppedGo->transform != nullptr)
+					if (droppedGo->UUID > 1)
 					{
-						droppedGo->transform->SetLocalToWorld();
-					}
+						droppedGo->parent->children.remove(droppedGo);
 
-					droppedGo->parent = target->parent;
-					if (droppedGo->transform != nullptr)
-					{
-						droppedGo->transform->SetWorldToLocal(droppedGo->parent->GetGlobalTransform());
+						std::list<GameObject*>::iterator it = std::find(target->parent->children.begin(), target->parent->children.end(), target);
+
+						target->parent->children.insert(it, droppedGo);
+
+						if (droppedGo->transform != nullptr)
+						{
+							droppedGo->transform->SetLocalToWorld();
+						}
+
+						droppedGo->parent = target->parent;
+						if (droppedGo->transform != nullptr)
+						{
+							droppedGo->transform->SetWorldToLocal(droppedGo->parent->GetGlobalTransform());
+						}
 					}
 				}
 			}
@@ -438,17 +441,20 @@ void ModuleScene::DragNDrop(GameObject* go)
 				TakePhoto();
 				for (GameObject* droppedGo : App->scene->selection)
 				{
-					go->children.push_back(droppedGo);
+					if (droppedGo->UUID > 1)
+					{
+						go->children.push_back(droppedGo);
 
-					if (droppedGo->transform != nullptr)
-					{
-						droppedGo->transform->SetLocalToWorld();
-					}
-					droppedGo->parent->children.remove(droppedGo);
-					droppedGo->parent = go;
-					if (droppedGo->transform != nullptr)
-					{
-						droppedGo->transform->SetWorldToLocal(droppedGo->parent->GetGlobalTransform());
+						if (droppedGo->transform != nullptr)
+						{
+							droppedGo->transform->SetLocalToWorld();
+						}
+						droppedGo->parent->children.remove(droppedGo);
+						droppedGo->parent = go;
+						if (droppedGo->transform != nullptr)
+						{
+							droppedGo->transform->SetWorldToLocal(droppedGo->parent->GetGlobalTransform());
+						}
 					}
 				}
 			}
