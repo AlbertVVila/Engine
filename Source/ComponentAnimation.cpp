@@ -68,39 +68,38 @@ void ComponentAnimation::DrawProperties()
 			stateMachine = (ResourceStateMachine*)App->resManager->CreateNewResource(TYPE::STATEMACHINE);
 		}
 	
+		ImGui::SameLine();
+
+		ImGui::PushID("State Machine Combo");
+		if (ImGui::BeginCombo("SM", stateMachine != nullptr ? stateMachine->name.c_str() : ""))
+		{
+			if (guiStateMachines.empty())
+			{
+				guiStateMachines = App->resManager->GetSMNamesList(true);
+			}
+			for (unsigned i = 0u; i < guiStateMachines.size(); i++)
+			{
+				bool is_selected = (stateMachine != nullptr ? stateMachine->name == guiStateMachines[i] : false);
+				if (ImGui::Selectable(guiStateMachines[i].c_str(), is_selected))
+				{
+					stateMachine->Save();
+					SetStateMachine(guiStateMachines[i].c_str());
+				}
+				if (is_selected)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+			ImGui::EndCombo();
+		}
+		else
+		{
+			guiStateMachines.clear();
+		}
+		ImGui::PopID();
+
 		if (stateMachine != nullptr)
 		{
-			ImGui::SameLine();
-
-			ImGui::PushID("State Machine Combo");
-			if (ImGui::BeginCombo("SM", stateMachine != nullptr ? stateMachine->name.c_str() : ""))
-			{
-				if (guiStateMachines.empty())
-				{
-					guiStateMachines = App->resManager->GetSMNamesList(true);
-				}
-				for (unsigned i = 0u; i < guiStateMachines.size(); i++)
-				{
-					bool is_selected = (stateMachine != nullptr ? stateMachine->name == guiStateMachines[i] : false);
-					if (ImGui::Selectable(guiStateMachines[i].c_str(), is_selected))
-					{
-						stateMachine->Save();
-						SetStateMachine(guiStateMachines[i].c_str());
-					}
-					if (is_selected)
-					{
-						ImGui::SetItemDefaultFocus();
-					}
-				}
-				ImGui::EndCombo();
-			}
-			else
-			{
-				guiStateMachines.clear();
-			}
-			ImGui::PopID();
-
-
 			//Here we should have the name of the stateMachine
 			char* smName = new char[MAX_CLIP_NAME];
 			strcpy(smName, stateMachine->name.c_str());
@@ -184,6 +183,7 @@ void ComponentAnimation::DrawProperties()
 				clipRemove = false;
 			}
 		}
+		
 	}
 	ImGui::PopID();
 }

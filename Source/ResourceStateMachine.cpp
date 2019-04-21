@@ -64,7 +64,10 @@ void ResourceStateMachine::DeleteFromMemory()
 
 void ResourceStateMachine::SetStateMachine(const char* data)
 {
-	DeleteFromMemory();
+	defaultNode = 0u;
+	nodes.clear();
+	clips.clear();
+	transitions.clear();
 
 	char smName[MAX_BONE_NAME_LENGTH];
 
