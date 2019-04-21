@@ -29,7 +29,6 @@ ComponentAudioSource::ComponentAudioSource(GameObject* gameobject) : Component(g
 
 ComponentAudioSource::ComponentAudioSource(const ComponentAudioSource& component) : Component(component)
 {
-	fileExplorer = new FileExplorer();
 	path = component.path;
 	FXname = component.FXname;
 	playOnAwake = component.playOnAwake;
@@ -56,8 +55,7 @@ ComponentAudioSource * ComponentAudioSource::Clone() const
 
 void ComponentAudioSource::Play() 
 {
-	if (enabled) 
-	{
+	if (enabled) {
 		Stop();
 		if (!streamed) lastHandler = App->audioManager->PlayWAV(wavFX, Sound3D);
 		else lastHandler = App->audioManager->PlayWAV(wavstream, Sound3D);
@@ -108,8 +106,7 @@ void ComponentAudioSource::LoadSoundFile(const char* pathAudio)
 	if (!streamed) ret = wavFX.load(pathAudio);
 	else ret = wavstream.load(pathAudio);
 
-	for(int i = 0; i < extensions.size() && (ret != 0); ++i) 
-	{
+	for(int i = 0; i < extensions.size() && (ret != 0); ++i) {
 		std::string pathAux = pathAudio;
 		std::string folder = "Assets/";
 		std::string unionPath = (folder + pathAux + extensions[i]);
@@ -123,12 +120,10 @@ void ComponentAudioSource::LoadSoundFile(const char* pathAudio)
 	//FILE_NOT_FOUND = 2,    // File not found
 	//FILE_LOAD_FAILED = 3,  // File found, but could not be loaded
 
-	if (ret != 0) 
-	{
+	if (ret != 0) {
 		LOG("ERROR: Audio Manager code: %i", ret);		
 	}
-	else 
-	{
+	else {
 		LOG("Audio Manager: FX %s loaded", pathAudio);
 		path = pathAudio;
 
@@ -148,33 +143,27 @@ void ComponentAudioSource::Awake()
 
 void ComponentAudioSource::Update() 
 {
-	if (App->time->gameState == GameState::RUN) 
-	{
-		if (App->audioManager->audioListeners.size() > 0) 
-		{
+	if (App->time->gameState == GameState::RUN) {
+		if (App->audioManager->audioListeners.size() > 0) {
 			// Awake function
 			if (!awaken) Awake();
 
-			if (Sound3D) 
-			{
+			if (Sound3D) {
 				volume3d = Volume3D();
 				PAN = Pan3D();				
 			}
 		}
-		else if (!mesageSent) 
-		{
+		else if (!mesageSent) {
 			LOG("ERROR: No audio listener on the scene");
 			Stop();
 			mesageSent = true;
 		}
 	}
 
-	else if (App->time->gameState == GameState::STOP) 
-	{
+	else if (App->time->gameState == GameState::STOP) {
 		if (awaken) awaken = false;
 
-		if (demoOnPlay && App->scene->selected != this->gameobject)
-		{
+		if (demoOnPlay && App->scene->selected != this->gameobject) {
 			Stop();
 			demoOnPlay = false;
 		}
@@ -213,8 +202,7 @@ void ComponentAudioSource::DrawProperties()
 			fileExplorer->openFileExplorer = true;
 		}*/
 
-		if (ImGui::BeginCombo("", path.c_str())) 
-		{
+		if (ImGui::BeginCombo("", path.c_str())) {
 
 			std::set<std::string> files;
 
@@ -240,17 +228,14 @@ void ComponentAudioSource::DrawProperties()
 		}
 
 		
-		if (!demoOnPlay) 
-		{
-			if (ImGui::Button("Play Preview")) 
-			{
+		if (!demoOnPlay) {
+			if (ImGui::Button("Play Preview")) {
 				Play();
 				demoOnPlay = true;
 			}
 		}
 		else {
-			if (ImGui::Button("Stop Preview")) 
-			{
+			if (ImGui::Button("Stop Preview")) {
 				Stop();
 				demoOnPlay = false;
 			}
@@ -258,8 +243,7 @@ void ComponentAudioSource::DrawProperties()
 		toolTip("Play a raw sample of the loaded Audio");
 
 		ImGui::NewLine();
-		if (ImGui::Checkbox("Streamed", &streamed)) 
-		{
+		if (ImGui::Checkbox("Streamed", &streamed)) {
 			LoadSoundFile(this->path.c_str());
 		}
 		toolTip("Streamed audio files will load into memory gradualy\n- Uncheck if its an FX");
@@ -283,8 +267,7 @@ void ComponentAudioSource::DrawProperties()
 		ImGui::Checkbox("3D Sound", &Sound3D);
 		toolTip("Enables the 3D sound options");
 
-		if (Sound3D) 
-		{
+		if (Sound3D) {
 			ImGui::Text("3D Audio Settings:");
 			ImGui::DragFloat("FadeDistance", &fadeDist, 0.1 * App->renderer->current_scale, 0.1f, 200.f * App->renderer->current_scale, "%.1f");
 			toolTip("Distance where the sound starts fading");
@@ -298,11 +281,10 @@ void ComponentAudioSource::DrawProperties()
 	}	
 }
 
-void ComponentAudioSource::DrawDebugSound() 
-{
+void ComponentAudioSource::DrawDebugSound() {
+
 	assert(gameobject->transform != nullptr);
-	if (Sound3D) 
-	{
+	if (Sound3D) {
 		dd::sphere(gameobject->transform->GetGlobalPosition(), dd::colors::Blue, fadeDist + 100 * App->renderer->current_scale * fadeDist / (fadeDist + rolloff3D * 12 * App->renderer->current_scale));
 		dd::sphere(gameobject->transform->GetGlobalPosition(), dd::colors::BlueViolet, fadeDist);
 	}

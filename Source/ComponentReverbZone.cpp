@@ -27,7 +27,6 @@ ComponentReverbZone::ComponentReverbZone(GameObject* gameobject) : Component(gam
 
 ComponentReverbZone::ComponentReverbZone(const ComponentReverbZone& component) : Component(component)
 {
-	App->audioManager->reverbZones.push_back(this);
 	delay = component.delay;
 	decay = component.decay;
 	radius = component.radius;
@@ -35,13 +34,11 @@ ComponentReverbZone::ComponentReverbZone(const ComponentReverbZone& component) :
 
 ComponentReverbZone::~ComponentReverbZone()
 {
-	for (int i = 0; i < App->audioManager->reverbZones.size(); ++i) 
-	{
+	for (int i = 0; i < App->audioManager->reverbZones.size(); ++i) {
 		if (App->audioManager->reverbZones[i] == this) {
 			App->audioManager->reverbZones.erase(App->audioManager->reverbZones.begin() + i);
-			break;
 		}
-		// break;
+		break;
 	}
 }
 
@@ -55,8 +52,7 @@ ComponentReverbZone * ComponentReverbZone::Clone() const
 	return new ComponentReverbZone(*this);
 }
 
-void ComponentReverbZone::Update() 
-{
+void ComponentReverbZone::Update() {
 
 	//Update the gradient affectation of the reverb zone 
 	if (applied) {
@@ -136,8 +132,7 @@ void ComponentReverbZone::DrawDebugReverb()
 
 }
 
-void ComponentReverbZone::toolTip(char * tip) 
-{
+void ComponentReverbZone::toolTip(char * tip) {
 	if (ImGui::IsItemHovered())
 	{
 		ImGui::BeginTooltip();

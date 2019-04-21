@@ -20,8 +20,7 @@
 ComponentAudioListener::ComponentAudioListener(GameObject* gameobject) : Component(gameobject, ComponentType::AudioListener)
 {
 	App->audioManager->audioListeners.push_back(this);
-	if (App->audioManager->audioListeners.size() == 1) 
-	{
+	if (App->audioManager->audioListeners.size() == 1) {
 		App->audioManager->mainListener = this;
 		isMainListener = true;
 	}
@@ -29,25 +28,18 @@ ComponentAudioListener::ComponentAudioListener(GameObject* gameobject) : Compone
 
 ComponentAudioListener::ComponentAudioListener(const ComponentAudioListener& component) : Component(component)
 {
-	App->audioManager->audioListeners.push_back(this);
-	if (App->audioManager->audioListeners.size() == 1)
-	{
-		App->audioManager->mainListener = this;
-		isMainListener = true;
-	}
+	isMainListener = component.isMainListener;
 }
 
 ComponentAudioListener::~ComponentAudioListener()
 {
-	for (int i = 0; i < App->audioManager->audioListeners.size(); ++i) 
-	{
+	for (int i = 0; i < App->audioManager->audioListeners.size(); ++i) {
 		if (App->audioManager->audioListeners[i] == this) {
 			App->audioManager->audioListeners.erase(App->audioManager->audioListeners.begin() + i);
 		}
 		break;
 	}
-	if (isMainListener ) 
-	{
+	if (isMainListener ) {
 		App->audioManager->mainListener = nullptr;
 		if (App->audioManager->audioListeners.size() > 0) App->audioManager->setMainListener(App->audioManager->audioListeners[0]);
 	}
@@ -57,11 +49,9 @@ void ComponentAudioListener::Update()
 {
 	ComponentReverbZone* rz;
 
-	if (App->time->gameState == GameState::RUN) 
-	{
+	if (App->time->gameState == GameState::RUN) {
 		
-		for (int i = 0; i < App->audioManager->reverbZones.size(); ++i) 
-		{
+		for (int i = 0; i < App->audioManager->reverbZones.size(); ++i) {
 			rz = App->audioManager->reverbZones[i];
 			float dist = math::Length(rz->gameobject->transform->GetGlobalPosition() - gameobject->transform->GetGlobalPosition());
 
@@ -92,8 +82,7 @@ void ComponentAudioListener::DrawProperties()
 	}
 }
 
-void ComponentAudioListener::SetThisMainListener() 
-{
+void ComponentAudioListener::SetThisMainListener() {
 	App->audioManager->setMainListener(this);
 }
 
