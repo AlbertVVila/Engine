@@ -31,11 +31,14 @@ void PanelState::DrawSM(ResourceStateMachine * stateMachine, ax::NodeEditor::Edi
 	ed::Begin("State Machine Editor", ImVec2(0.0, 0.0f));
 
 	DrawNodes(stateMachine);
+	DrawTransitions(stateMachine);
 	ManageCreate(stateMachine);
 	ShowContextMenus(stateMachine);
 
 
 	ed::Suspend();
+	ShowNodeMenu(stateMachine);
+	ShowTransitionMenu(stateMachine);
 	ShowCreateNewNodeMenu(stateMachine);
 	ed::Resume();
 
@@ -75,7 +78,6 @@ void PanelState::DrawNodes(ResourceStateMachine* stateMachine)
 		ed::BeginNode(i*3 +1);
 		ImGui::Indent(1.0);
 		ImGui::Text(stateMachine->GetNodeName(i).C_str());
-		ImGui::Text("clip: %s", stateMachine->GetNodeClip(i).C_str());
 
 		ImGui::PushStyleVar(ImGuiStyleVar_Alpha, 0.5f * ImGui::GetStyle().Alpha);
 
@@ -93,6 +95,8 @@ void PanelState::DrawNodes(ResourceStateMachine* stateMachine)
 		ImGui::PopStyleVar();
 
 		ImGui::Dummy(ImVec2(96.0, 8.0));
+
+		ImGui::Text("clip: %s", stateMachine->GetNodeClip(i).C_str());
 
 		drawList->AddLine(
 			ImGui::GetCursorScreenPos(),
@@ -130,6 +134,25 @@ void PanelState::DrawNodes(ResourceStateMachine* stateMachine)
 	}
 }
 
+void PanelState::DrawTransitions(ResourceStateMachine * stateMachine)
+{
+	ed::PushStyleVar(ed::StyleVar_LinkStrength, 4.0f);
+	unsigned numNodes = stateMachine->GetNodesSize();
+	for (unsigned i = 0u, count = stateMachine->GetTransitionsSize(); i < count; ++i)
+	{
+		unsigned origin = stateMachine->FindNode(stateMachine->GetTransitionOrigin(i));
+		unsigned destiny = stateMachine->FindNode(stateMachine->GetTransitionDestiny(i));
+
+		if (origin < numNodes && destiny < numNodes)
+		{
+			ed::Link(numNodes * 3 + i + 1, origin * 3 + 3, destiny * 3 + 2);
+			stateMachine->Save();
+		}
+	}
+	ed::PopStyleVar(1);
+
+}
+
 void PanelState::ShowContextMenus(ResourceStateMachine* stateMachine)
 {
 	ed::Suspend();
@@ -161,6 +184,83 @@ void PanelState::ShowContextMenus(ResourceStateMachine* stateMachine)
 	ed::Resume();
 }
 
+void PanelState::ShowNodeMenu(ResourceStateMachine * stateMachine)
+{
+	if (ImGui::BeginPopup("Node Context Menu"))
+	{
+		ImGui::TextUnformatted("Node Context Menu");
+		ImGui::Separator();
+
+		//Node Name
+		char* nodeName = new char[MAX_CLIP_NAME];
+		strcpy(nodeName, stateMachine->GetNodeName(contextNode).C_str());
+		ImGui::InputText("Node name", nodeName, MAX_CLIP_NAME);
+		//WARNING, if the node name changes the transitions containing it must also change!
+		stateMachine->RenameTransitionDueNodeChanged(stateMachine->GetNodeName(contextNode), HashString(nodeName));
+		stateMachine->SetNodeName(contextNode, HashString(nodeName));
+		
+
+		if(ImGui::BeginCombo("Clip", stateMachine->GetNodeClip(contextNode).C_str()))
+		{
+			for (unsigned i = 0u; i < stateMachine->GetClipsSize(); i++)
+			{
+				bool isSelected = stateMachine->GetClipName(contextNode) == stateMachine->GetClipName(i);
+				if (ImGui::Selectable(stateMachine->GetClipName(i).C_str(), isSelected))
+				{
+					stateMachine->SetNodeClip(contextNode, stateMachine->GetClipName(i));
+					stateMachine->Save();
+				}
+				if (isSelected)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+			ImGui::EndCombo();
+		}
+
+		ImGui::Separator();
+
+		if (ImGui::MenuItem("Delete"))
+		{
+			ed::DeleteNode(ed::NodeId((contextNode + 1) * 3));
+			stateMachine->RemoveNode(contextNode);
+			stateMachine->Save();
+		}
+		ImGui::EndPopup();
+	}
+}
+
+void PanelState::ShowTransitionMenu(ResourceStateMachine * stateMachine)
+{
+	if (ImGui::BeginPopup("Link Context Menu"))
+	{
+		ImGui::TextUnformatted("Transition Context Menu");
+		ImGui::Separator();
+
+		//Origin
+		char* oName = new char[MAX_CLIP_NAME];
+		strcpy(oName, stateMachine->GetTransitionOrigin(contextLink).C_str());
+		ImGui::InputText("Origin", oName, MAX_CLIP_NAME);
+		stateMachine->SetTransitionOrigin(contextLink, HashString(oName));
+
+		//Destiny
+		char* dName = new char[MAX_CLIP_NAME];
+		strcpy(dName, stateMachine->GetTransitionDestiny(contextLink).C_str());
+		ImGui::InputText("Destiny", dName, MAX_CLIP_NAME);
+		stateMachine->SetTransitionDestiny(contextLink, HashString(dName));
+
+		//Trigger
+		char* tName = new char[MAX_CLIP_NAME];
+		strcpy(tName, stateMachine->GetTransitionTrigger(contextLink).C_str());
+		ImGui::InputText("Trigger", tName, MAX_CLIP_NAME);
+		stateMachine->SetTransitionTrigger(contextLink, HashString(tName));
+
+		//Blend
+
+		ImGui::EndPopup();
+	}
+}
+
 void PanelState::ShowCreateNewNodeMenu(ResourceStateMachine* stateMachine)
 {
 	if (ImGui::BeginPopup("Create New Node"))
@@ -174,14 +274,35 @@ void PanelState::ShowCreateNewNodeMenu(ResourceStateMachine* stateMachine)
 			{
 				if (ImGui::MenuItem(stateMachine->GetClipName(i).C_str()))
 				{
-					stateMachine->AddNode(HashString("Node A") ,stateMachine->GetClipName(i));					
+					unsigned nodeIndex = stateMachine->GetNodesSize();
+					ed::SetNodePosition(nodeIndex * 3 + 1, ed::ScreenToCanvas(newNodePosition));
+					AddNode(stateMachine, HashString("Node A") ,stateMachine->GetClipName(i));		
+					stateMachine->Save();
+					if (newNodePin != ed::PinId::Invalid)
+					{
+						unsigned outNode = unsigned(newNodePin.Get() - 1) / 3;
+						stateMachine->AddTransition(stateMachine->GetNodeName(outNode),
+							stateMachine->GetNodeName(nodeIndex), HashString(""), DEFAULT_BLEND);
+						stateMachine->Save();
+					}
 				}
 			}
-
 			ImGui::EndMenu();
 		}
 		ImGui::EndPopup();
 	}
+}
+
+void PanelState::AddNode(ResourceStateMachine* stateMachine, HashString nodeName, HashString clipName)
+{
+	for (unsigned i = 0u; i < stateMachine->GetNodesSize(); i++)
+	{
+		if (stateMachine->GetNodeName(i) == nodeName)
+		{
+			//Should forbid the creation
+		}
+	}
+	stateMachine->AddNode(nodeName, clipName);
 }
 
 void PanelState::ManageCreate(ResourceStateMachine* stateMachine)
@@ -237,13 +358,15 @@ void PanelState::ManageCreate(ResourceStateMachine* stateMachine)
 				{
 					if (startIsInput)
 					{
-						stateMachine->AddTransition(stateMachine->GetNodeName(endNode), stateMachine->GetNodeName(startNode), HashString(), DEFAULT_BLEND);
+						stateMachine->AddTransition(stateMachine->GetNodeName(endNode),
+							stateMachine->GetNodeName(startNode), HashString(""), DEFAULT_BLEND);
 					}
 					else
 					{
-						stateMachine->AddTransition(stateMachine->GetNodeName(startNode), stateMachine->GetNodeName(endNode), HashString(), DEFAULT_BLEND);
+						stateMachine->AddTransition(stateMachine->GetNodeName(startNode),
+							stateMachine->GetNodeName(endNode), HashString(""), DEFAULT_BLEND);
 					}
-
+					stateMachine->Save();
 				}
 			}
 		}

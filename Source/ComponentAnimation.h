@@ -46,7 +46,9 @@ public:
 
 	unsigned clipIndexToRemove = 0u;
 	bool clipRemove = false;
+	bool stateMachineDelete = false;
 	bool channelsSetted = false;
+	bool deletePopup = false;
 
 
 public:

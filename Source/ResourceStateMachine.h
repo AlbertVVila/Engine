@@ -52,6 +52,8 @@ public:
 	void SetTransitionTrigger(unsigned index, HashString trigger);
 	void SetTransitionBlend(unsigned index, unsigned blend);
 
+	void RenameTransitionDueNodeChanged(HashString previous, HashString newName);
+
 	//Nodes setters and getters
 	HashString GetNodeName(unsigned index);
 	HashString GetNodeClip(unsigned index);
@@ -72,13 +74,17 @@ public:
 	bool isNodesEmpty() { return nodes.empty(); }
 	bool isTransitionsEmpty() { return transitions.empty(); }
 
+	unsigned GetDefaultNode() { return defaultNode; }
+	void SetDefaultNode(unsigned node) { defaultNode = node; }
+
+
 	std::string name = "";
 private:
 
 	struct Clip
 	{
 		HashString name;
-		unsigned UID = 0;
+		unsigned UID = 0u;
 		bool loop = false;
 
 		Clip() { ; }

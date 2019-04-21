@@ -370,7 +370,6 @@ ResourceAnimation* ModuleResourceManager::GetAnimationByName(const char* name)
 				return (ResourceAnimation*)Get(anim->GetUID());
 		}
 	}
-
 	return nullptr;
 }
 

@@ -419,6 +419,18 @@ void ResourceStateMachine::SetTransitionBlend(unsigned index, unsigned blend)
 	transitions[index].blend = blend;
 }
 
+void ResourceStateMachine::RenameTransitionDueNodeChanged(HashString previous, HashString newName)
+{
+	for (auto& trans : transitions)
+	{
+		if (trans.origin == previous)
+			trans.origin = newName;
+
+		if (trans.destiny == previous)
+			trans.destiny = newName;
+	}
+}
+
 void ResourceStateMachine::SetNodeName(unsigned index, HashString name)
 {
 	nodes[index].name = name;

@@ -13,6 +13,7 @@
 #include "ComponentTransform.h"
 
 #include "Globals.h"
+#include <stack>
 #include "HashString.h"
 #include "Imgui/include/imgui.h"
 #include "JSON.h"
@@ -113,6 +114,27 @@ void ComponentAnimation::DrawProperties()
 				stateMachine->AddClip(HashString("Clippity clip"), 0u, true);
 				stateMachine->Save();
 			}
+			ImGui::SameLine();
+			if (ImGui::Button("Save SM"))
+			{
+				stateMachine->Save();
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Delete SM"))
+			{
+				deletePopup = !deletePopup;
+			}
+			if (deletePopup)
+			{
+				if (ImGui::Button("Yes"))
+				{
+					stateMachineDelete = true;
+				}
+				if (ImGui::Button("Cancel"))
+				{
+					deletePopup = false;
+				}
+			}
 
 			if (!stateMachine->isClipsEmpty())
 			{
@@ -123,6 +145,13 @@ void ComponentAnimation::DrawProperties()
 					char* clipName = new char[MAX_CLIP_NAME];
 					strcpy(clipName, stateMachine->GetClipName(j).C_str());
 					ImGui::InputText("Clip name", clipName, MAX_CLIP_NAME);
+
+					//Find all the nodes that use this clip and change them
+					for (unsigned k = 0u; k < stateMachine->GetNodesSize(); k++)
+					{
+						if (stateMachine->GetNodeClip(k) == stateMachine->GetClipName(j))
+							stateMachine->SetNodeClip(k, HashString(clipName));
+					}
 					stateMachine->SetClipName(j, HashString(clipName));
 
 					bool clipLoop = stateMachine->GetClipLoop(j);
@@ -188,6 +217,11 @@ void ComponentAnimation::DrawProperties()
 		
 	}
 	ImGui::PopID();
+	if (stateMachineDelete)
+	{
+		stateMachine->Delete();
+		stateMachineDelete = false;
+	}
 }
 
 void ComponentAnimation::ResetResource()
@@ -331,5 +365,4 @@ void ComponentAnimation::SetIndexChannels(GameObject* GO)
 	{
 		SetIndexChannels(child);
 	}
-
 }
