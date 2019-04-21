@@ -29,6 +29,7 @@ public:
 	void RemoveScript(const ComponentScript& component, const std::string& name);
 private:
 	void CheckScripts();
+	std::string GetLastErrorAsString();
 
 public:
 	std::map<std::string, int> scripts; //name, modification date
