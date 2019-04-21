@@ -43,6 +43,8 @@ ComponentLight::ComponentLight(const ComponentLight& component) : Component(comp
 	intensity = component.intensity;
 	pointSphere = Sphere(component.pointSphere);
 	App->scene->lights.push_back(this);
+
+	produceShadows = component.produceShadows;
 }
 
 ComponentLight::~ComponentLight()
@@ -249,6 +251,7 @@ ComponentLight* ComponentLight::Clone() const
 	newLight->direction = direction;
 	newLight->pointSphere = Sphere(pointSphere);
 	newLight->CalculateGuizmos();
+	newLight->produceShadows = produceShadows;
 	return newLight;
 }
 

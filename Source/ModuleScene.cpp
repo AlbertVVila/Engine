@@ -739,6 +739,7 @@ void ModuleScene::RestorePhoto(GameObject* photo)
 	root->children.front()->UUID = 1; //Restore canvas UUID
 	std::stack<GameObject*> goStack;
 	goStack.push(root);
+	App->renderer->directionalLight = nullptr;
 	while (!goStack.empty())
 	{
 		GameObject* go = goStack.top(); goStack.pop();
@@ -748,6 +749,7 @@ void ModuleScene::RestorePhoto(GameObject* photo)
 			switch (comp->type)
 			{
 			case ComponentType::Renderer:
+			{
 				if (!go->isStatic)
 				{
 					App->spacePartitioning->aabbTree.InsertGO(go);
@@ -758,13 +760,20 @@ void ModuleScene::RestorePhoto(GameObject* photo)
 					App->spacePartitioning->kDTree.Calculate();
 				}
 				go->isVolumetric = true;
+				ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+				cr->LinkBones();
 				break;
+			}
 			case ComponentType::Light:
 				go->light = (ComponentLight*)comp;
 				go->light->CalculateGuizmos();
 				App->spacePartitioning->aabbTreeLighting.InsertGO(go);
 				go->hasLight = true;
 				lights.push_back((ComponentLight*)comp);
+				if (go->light->lightType == LightType::DIRECTIONAL)
+				{
+					App->renderer->directionalLight = go->light;
+				}
 				break;
 			case ComponentType::Camera:
 				if (((ComponentCamera*)comp)->isMainClone)
@@ -913,6 +922,7 @@ void ModuleScene::ClearScene()
 	App->particles->CleanUp();
 	App->particles->Start();
 	selection.clear();
+	App->renderer->shadowCasters.clear();
 }
 
 void ModuleScene::Select(GameObject * gameobject)

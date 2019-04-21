@@ -306,13 +306,14 @@ void ModuleRender::ComputeShadows()
 		shadowVolumeRendered = true;
 		math::AABB lightAABB;
 		lightAABB.SetNegativeInfinity();
-
+		bool renderersDetected = false;
 		//TODO: Improve this avoiding shuffle every frame
 		for (GameObject* go : App->scene->dynamicFilteredGOs) //TODO: get volumetric gos even if outside the frustum
 		{
 			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
 			if (cr && cr->castShadows)
 			{
+				renderersDetected = true;
 				lightAABB.Enclose(go->bbox);
 				shadowCasters.insert(cr);
 			}
@@ -323,11 +324,16 @@ void ModuleRender::ComputeShadows()
 			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
 			if (cr && cr->castShadows)
 			{
+				renderersDetected = true;
 				lightAABB.Enclose(go->bbox);
 			}
 		}
+		if (!renderersDetected)
+		{
+			return;
+		}
 		//TODO: End improving zone
-
+		
 		math::float3 points[8];
 
 		math::float4x4 lightMat = math::Quat::LookAt(math::float3::unitZ, directionalLight->gameobject->transform->front, math::float3::unitY, directionalLight->gameobject->transform->up).Inverted().ToFloat3x3();

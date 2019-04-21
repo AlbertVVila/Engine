@@ -32,6 +32,8 @@ ComponentRenderer::ComponentRenderer(const ComponentRenderer& component) : Compo
 
 	if (component.material != nullptr)
 		material = (ResourceMaterial*)App->resManager->Get(component.material->GetUID());
+
+	castShadows = component.castShadows;
 }
 
 ComponentRenderer::~ComponentRenderer()

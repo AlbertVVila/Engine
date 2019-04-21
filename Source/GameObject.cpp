@@ -64,6 +64,7 @@ GameObject::GameObject(const GameObject & gameobject)
 	activeSelf = gameobject.activeSelf;
 	isVolumetric = gameobject.isVolumetric;
 	hasLight = gameobject.hasLight;
+	isBoneRoot = gameobject.isBoneRoot;
 
 	assert(!(isVolumetric && hasLight));
 	bbox = gameobject.bbox;
@@ -478,6 +479,11 @@ void GameObject::SetGlobalTransform(const float4x4 & global) //Replaces global t
 			{
 				go->UpdateGlobalTransform();
 			}
+		}
+
+		for (GameObject* go : children)
+		{
+			go->movedFlag = true;
 		}
 	}
 

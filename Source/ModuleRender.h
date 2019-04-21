@@ -73,6 +73,7 @@ public:
 	ComponentLight* directionalLight = nullptr;
 	math::Frustum shadowsFrustum;
 	unsigned shadowsTex = 0u;
+	std::unordered_set<ComponentRenderer*> shadowCasters;
 
 
 private:
@@ -95,8 +96,6 @@ private:
 
 
 	unsigned shadowsFBO = 0u;
-
-	std::unordered_set<ComponentRenderer*> shadowCasters;
 
 	bool shadowVolumeRendered = false;
 	
