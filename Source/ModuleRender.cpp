@@ -104,7 +104,7 @@ bool ModuleRender::Start()
 	shadowsFrustum.type = math::FrustumType::OrthographicFrustum;
 	glGenFramebuffers(1, &shadowsFBO);
 	glGenTextures(1, &shadowsTex);
-	shadowsShader = App->program->CreateProgram("Shadows");
+	shadowsShader = App->program->GetProgram("Shadows");
 	return shadowsShader && shadowsFBO > 0u && shadowsTex > 0u;
 }
 
@@ -438,16 +438,21 @@ void ModuleRender::BlitShadowTexture()
 	shadowsFrustum.nearPlaneDistance = .0f;
 	shadowsFrustum.farPlaneDistance = shadowVolumeLength;
 	shadowsFrustum.pos = lightPos;
-
-	glUseProgram(shadowsShader->id[0]);
-	glUniformMatrix4fv(glGetUniformLocation(shadowsShader->id[0],
-		"viewProjection"), 1, GL_TRUE, &shadowsFrustum.ViewProjMatrix()[0][0]);
+	
 		
 	for (ComponentRenderer* cr : shadowCasters)
 	{
-		glUniformMatrix4fv(glGetUniformLocation(shadowsShader->id[0],
+		unsigned variation = 0u;
+		if (cr->mesh->bindBones.size() > 0u)
+		{
+			variation |= (unsigned)ModuleProgram::Shadows_Variations::SKINNED;
+		}
+		glUseProgram(shadowsShader->id[variation]);
+		glUniformMatrix4fv(glGetUniformLocation(shadowsShader->id[variation],
+			"viewProjection"), 1, GL_TRUE, &shadowsFrustum.ViewProjMatrix()[0][0]);
+		glUniformMatrix4fv(glGetUniformLocation(shadowsShader->id[variation],
 			"model"), 1, GL_TRUE, &cr->gameobject->GetGlobalTransform()[0][0]);
-		cr->mesh->Draw(shadowsShader->id[0]);
+		cr->mesh->Draw(shadowsShader->id[variation]);
 	}
 
 	glUseProgram(0);

@@ -798,7 +798,10 @@ void GameObject::Load(JSON_value *value)
 			App->renderer->directionalLight = light;
 		}
 	}
-
+	if (isBoneRoot)
+	{
+		movedFlag = true;
+	}
 }
 
 bool GameObject::IsParented(const GameObject & gameobject) const
@@ -906,7 +909,7 @@ void GameObject::SetStaticAncestors()
 void GameObject::UpdateTransforms(math::float4x4 parentGlobal)
 {
 	PROFILE;
-	if (movedFlag)
+	if (movedFlag && transform)
 	{
 		transform->local = math::float4x4::FromTRS(transform->position, transform->rotation, transform->scale);
 		movedFlag = false;
@@ -951,6 +954,7 @@ void GameObject::UpdateTransforms(math::float4x4 parentGlobal)
 
 	for (const auto& child : children)
 	{
+		child->movedFlag = true;
 		child->UpdateTransforms(global);
 	}
 

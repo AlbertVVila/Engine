@@ -84,9 +84,9 @@ void main()
 	normalIn = mat3(model) * vertex_normal;
 	vec3 tan = mat3(model) * vertex_tangent;
 #endif
-
+#ifdef SHADOWS_ENABLED
 	shadow_coord = lightProjView * vec4(position, 1.0);
-
+#endif
 	gl_Position = proj*view*vec4(position, 1.0);
 	vec3 bitan = cross(vertex_tangent, vertex_normal);
 	

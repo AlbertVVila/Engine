@@ -306,6 +306,10 @@ void ModuleScene::DrawGOGame(const GameObject& go)
 		{
 			variation |= (unsigned)ModuleProgram::PBR_Variations::SKINNED;
 		}
+		if (App->renderer->directionalLight && App->renderer->directionalLight->produceShadows)
+		{
+			variation |= (unsigned)ModuleProgram::PBR_Variations::SHADOWS_ENABLED;
+		}
 	}
 	
 	glUseProgram(shader->id[variation]);
@@ -352,6 +356,11 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 		{
 			variation |= (unsigned)ModuleProgram::PBR_Variations::SKINNED;
 		}
+		if (App->renderer->directionalLight && App->renderer->directionalLight->produceShadows)
+		{
+			variation |= (unsigned)ModuleProgram::PBR_Variations::SHADOWS_ENABLED;
+		}
+
 	}
 
 	glUseProgram(shader->id[variation]);

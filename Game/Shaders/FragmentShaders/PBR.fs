@@ -174,12 +174,13 @@ void main()
 	vec3 V = normalize(viewPos - position);
 	for(int i=0; i < lights.num_directionals; ++i)
 	{
+#ifdef SHADOWS_ENABLED
 		vec4 sCoord = shadow_coord / shadow_coord.w;
 		sCoord = sCoord * .5f + .5f;
 		bool isLit = !(sCoord.x >= .0f && sCoord.x <= 1.f 
 					&& sCoord.y >= .0f && sCoord.y <= 1.f
 					&& texture2D(shadowTex, sCoord.xy).x < clamp(sCoord.z, 0, 1) - 0.005f);
-					
+#endif					
 		vec3 L = directionalDirections[i];
 		vec3 H = normalize(V + L);	
 
@@ -193,13 +194,12 @@ void main()
 
 		float NdotL = max(dot(N, L), 0.0);        
 		color += (kD * albedo.rgb / PI + BRDF(F, L, V, N, H)) * radiance * NdotL;  
+#ifdef SHADOWS_ENABLED
 		if (!isLit)
 		{
 			color = color * .05f;	
 		}
-		/*color = vec3(sCoord.z);
-		Fragcolor = vec4(color, albedo.a);
-		return;*/
+#endif		
 	}
 	for(int i=0; i < lights.num_points; ++i)
 	{	
