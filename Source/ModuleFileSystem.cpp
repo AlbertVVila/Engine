@@ -391,8 +391,8 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 	struct stat statFile;
 	struct stat statMeta;
 
+	//for the statesMachine, about to be deprecated
 	std::vector<std::string> smFiles = GetFolderContent(STATEMACHINES);
-
 	for (auto& file : smFiles)
 	{
 		std::set<std::string>::iterator it = importedStateMachines.find(RemoveExtension(file));

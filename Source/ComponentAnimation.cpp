@@ -29,7 +29,6 @@ ComponentAnimation::ComponentAnimation() : Component(nullptr, ComponentType::Ani
 
 ComponentAnimation::ComponentAnimation(GameObject * gameobject) : Component(gameobject, ComponentType::Animation)
 {
-	//anim = new ResourceAnimation();
 	controller = new AnimationController();
 	PlayAnimation(100u);
 }
@@ -168,7 +167,8 @@ void ComponentAnimation::DrawProperties()
 					ImGui::SameLine();
 
 					unsigned clipUID = stateMachine->GetClipResource(j);
-					ResourceAnimation* animation = (ResourceAnimation*)App->resManager->Get(clipUID);
+					//IS THIS CORRECT=?=???
+					ResourceAnimation* animation = (ResourceAnimation*)App->resManager->GetWithoutLoad(clipUID);
 					if (ImGui::BeginCombo("", clipUID != 0u ? animation->name.c_str() : ""))
 					{
 						if (guiAnimations.empty())
@@ -252,6 +252,12 @@ void ComponentAnimation::SetStateMachine(const char * stateMachineFile)
 
 	if (stateMachineFile != nullptr)
 		stateMachine = (ResourceStateMachine*)App->resManager->GetSMByName(stateMachineFile);
+}
+
+void ComponentAnimation::SendTriggerToStateMachine(HashString trigger)
+{
+	if (stateMachine != nullptr)
+		stateMachine->ReceiveTrigger(trigger);
 }
 
 ComponentAnimation::EditorContext* ComponentAnimation::GetEditorContext()

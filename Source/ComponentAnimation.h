@@ -8,7 +8,7 @@
 #include "ResourceStateMachine.h"
 #include "NodeEditor.h"
 
-
+#include "HashString.h"
 #include "Math/float4x4.h"
 #include "Math/float3.h"
 #include "Math/Quat.h"
@@ -25,6 +25,7 @@ public:
 
 	void SetAnimation(const char* animationFile);
 	void SetStateMachine(const char* stateMachineFile);
+	void SendTriggerToStateMachine(HashString trigger);
 
 	void SetIndexChannels(GameObject* GO);
 	void PlayAnimation(unsigned blend);

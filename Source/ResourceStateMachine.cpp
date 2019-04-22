@@ -60,15 +60,12 @@ void ResourceStateMachine::DeleteFromMemory()
 	nodes.clear();
 	clips.clear();
 	transitions.clear();
+
+	App->fsystem->Delete((STATEMACHINES + std::to_string(GetUID()) + STATEMACHINEEXTENSION).c_str());
 }
 
 void ResourceStateMachine::SetStateMachine(const char* data)
 {
-	defaultNode = 0u;
-	nodes.clear();
-	clips.clear();
-	transitions.clear();
-
 	char smName[MAX_BONE_NAME_LENGTH];
 
 	memcpy(smName, data, sizeof(char) * MAX_BONE_NAME_LENGTH);
@@ -102,8 +99,6 @@ void ResourceStateMachine::SetStateMachine(const char* data)
 		clips.push_back(Clip(clipName, uid, loop));
 	}
 
-
-
 	//import nodes vector
 	unsigned nodesSize = 0u;
 	memcpy(&nodesSize, data, sizeof(unsigned));
@@ -130,7 +125,6 @@ void ResourceStateMachine::SetStateMachine(const char* data)
 
 
 	//import transitions vector
-
 	unsigned transitionsSize = 0u;
 	memcpy(&transitionsSize, data, sizeof(unsigned));
 	data += sizeof(int);
@@ -160,6 +154,8 @@ void ResourceStateMachine::SetStateMachine(const char* data)
 		transitions.push_back(Transition(transitionOrigin, transitionDestiny, transitionTrigger, blend));
 	}
 
+	memcpy(&defaultNode, data, sizeof(int));
+	data += sizeof(int);
 }
 
 unsigned ResourceStateMachine::GetStateMachineSize()
@@ -192,6 +188,7 @@ unsigned ResourceStateMachine::GetStateMachineSize()
 		size += sizeof(char) * MAX_BONE_NAME_LENGTH;
 		size += sizeof(int);
 	}
+	size += sizeof(int);
 
 	return size;
 }
@@ -250,11 +247,13 @@ void ResourceStateMachine::SaveStateMachineData(char* data)
 		memcpy(cursor, &transition.blend, sizeof(int));
 		cursor += sizeof(int);
 	}
+
+	memcpy(cursor, &defaultNode, sizeof(int));
+	cursor += sizeof(int);
 }
 
 void ResourceStateMachine::Save()
 {
-	/*App->fsystem->Remove((STATEMACHINES + std::to_string(GetUID()) + STATEMACHINEEXTENSION).c_str());*/
 
 	char* stateMachineData = nullptr;
 	unsigned stateMachineSize = GetStateMachineSize();
@@ -483,6 +482,20 @@ void ResourceStateMachine::RemoveNode(unsigned index)
 void ResourceStateMachine::RemoveTransition(unsigned index)
 {
 	transitions.erase(transitions.begin() + index);
+}
+
+void ResourceStateMachine::ReceiveTrigger(HashString trigger)
+{
+	HashString defaultNodeName = GetNodeName(defaultNode);
+
+	for (auto& trans : transitions)
+	{
+		if (trans.origin == defaultNodeName && trans.trigger == trigger)
+		{
+			defaultNode = FindNode(trans.destiny);
+			break;
+		}
+	}
 }
 
 void ResourceStateMachine::RemoveNodeTransitions(HashString nodeName)

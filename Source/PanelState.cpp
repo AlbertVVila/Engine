@@ -78,11 +78,15 @@ void PanelState::DrawNodes(ResourceStateMachine* stateMachine)
 		ed::BeginNode(i*3 +1);
 		ImGui::Indent(1.0);
 		ImGui::Text(stateMachine->GetNodeName(i).C_str());
+		if (i == stateMachine->GetDefaultNode())
+		{
+			ImGui::SameLine(); ImGui::Text("default");
+		}
 
 		ImGui::PushStyleVar(ImGuiStyleVar_Alpha, 0.5f * ImGui::GetStyle().Alpha);
 
 		ImVec2 size = ed::GetNodeSize(i * 3 + 1);
-		ImVec2 pos = ed::GetNodePosition(i *3 + 2);
+		ImVec2 pos = ed::GetNodePosition(i * 3 + 2);
 
 		ImDrawList* drawList = ed::GetNodeBackgroundDrawList(i * 3 + 1);
 
@@ -198,7 +202,15 @@ void PanelState::ShowNodeMenu(ResourceStateMachine * stateMachine)
 		//WARNING, if the node name changes the transitions containing it must also change!
 		stateMachine->RenameTransitionDueNodeChanged(stateMachine->GetNodeName(contextNode), HashString(nodeName));
 		stateMachine->SetNodeName(contextNode, HashString(nodeName));
-		
+
+		//We need a checkbox to determine the defaultNode
+		bool isDefault = stateMachine->GetDefaultNode() == contextNode;
+		if (ImGui::Checkbox("DefaultNode", &isDefault))
+		{
+			//Set the context node to be the default
+			stateMachine->SetDefaultNode(contextNode);
+			stateMachine->Save();
+		}
 
 		if(ImGui::BeginCombo("Clip", stateMachine->GetNodeClip(contextNode).C_str()))
 		{

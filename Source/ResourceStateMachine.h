@@ -70,6 +70,8 @@ public:
 	void RemoveNode(unsigned UID);
 	void RemoveTransition(unsigned UID);
 
+	void ReceiveTrigger(HashString trigger);
+
 	bool isClipsEmpty() { return clips.empty(); }
 	bool isNodesEmpty() { return nodes.empty(); }
 	bool isTransitionsEmpty() { return transitions.empty(); }
