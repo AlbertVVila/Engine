@@ -799,14 +799,11 @@ void ModuleScene::Redo()
 
 void ModuleScene::LoadScene(const char* scene, const char* scenePath)
 {
-	std::string sceneStr = std::string(scene);
-	std::string scenePathStr = std::string(scenePath);
-
 	ClearScene();
-	if (AddScene(sceneStr.c_str(), scenePathStr.c_str()))
+	if (AddScene(scene, scenePath))
 	{
-		path = scenePathStr;
-		name = sceneStr;
+		path = scenePath;
+		name = scene;
 	}
 	App->spacePartitioning->kDTree.Calculate();
 	scenePhotos.clear();
