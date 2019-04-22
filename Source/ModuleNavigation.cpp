@@ -8,6 +8,7 @@
 
 #include "Component.h"
 #include "ComponentRenderer.h"
+#include "ComponentTransform.h"
 
 #include "ResourceMesh.h"
 
@@ -540,6 +541,7 @@ void ModuleNavigation::generateNavigability()
 		m_tool->init(this);
 	initToolStates(this);*/
 	meshGenerated = true;
+	LOG("Navigation mesh generated");
 
 	return;
 	
@@ -559,13 +561,20 @@ void ModuleNavigation::fillVertices()
 	{
 		for (int i = 0; i < meshComponents[j]->mesh->meshVertices.size(); ++i)
 		{
-			verts[currentGlobalVert * 3] = meshComponents[j]->mesh->meshVertices[i].x;
-			verts[currentGlobalVert * 3 + 1] = meshComponents[j]->mesh->meshVertices[i].y;
-			verts[currentGlobalVert * 3 + 2] = meshComponents[j]->mesh->meshVertices[i].z;
+			float4 tempVertex = float4(	meshComponents[j]->mesh->meshVertices[i].x, 
+										meshComponents[j]->mesh->meshVertices[i].y,
+										meshComponents[j]->mesh->meshVertices[i].z, 1.f );
+			tempVertex = App->scene->selected->transform->global * tempVertex;
+
+			//apply the transformation of the game object to the vertex
+
+			//store the vertex
+			verts[currentGlobalVert * 3] = tempVertex.x/tempVertex.w;
+			verts[currentGlobalVert * 3 + 1] = tempVertex.y / tempVertex.w;
+			verts[currentGlobalVert * 3 + 2] = tempVertex.z / tempVertex.w;
 			++currentGlobalVert;
 		}
 	}
-	
 }
 
 void ModuleNavigation::fillIndices()
@@ -591,7 +600,7 @@ void ModuleNavigation::fillIndices()
 
 void ModuleNavigation::fillNormals()
 {
-	int numNormals = 0;
+	/*int numNormals = 0;
 	for (int i = 0; i < meshComponents.size(); ++i)
 	{
 		numNormals += meshComponents[i]->mesh->meshNormals.size();
@@ -608,9 +617,9 @@ void ModuleNavigation::fillNormals()
 			normals[currentGlobalNorm * 3 + 2] = meshComponents[j]->mesh->meshNormals[i].z;
 			++currentGlobalNorm;
 		}
-	}
+	}*/
 
-	/*normals = new float[ntris*3];
+	normals = new float[ntris*3];
 	for (int i = 0; i < ntris*3; i+=3)
 	{
 		const float* v0 = &verts[tris[i] * 3];
@@ -634,7 +643,7 @@ void ModuleNavigation::fillNormals()
 			n[1] *= d;
 			n[2] *= d;
 		}
-	}*/
+	}
 }
 /*
 //debug draw implementations
