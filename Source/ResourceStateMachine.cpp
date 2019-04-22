@@ -503,7 +503,7 @@ void ResourceStateMachine::RemoveTransition(unsigned index)
 	transitions.erase(transitions.begin() + index);
 }
 
-void ResourceStateMachine::ReceiveTrigger(HashString trigger)
+void ResourceStateMachine::ReceiveTrigger(HashString trigger, unsigned &blend)
 {
 	HashString defaultNodeName = GetNodeName(defaultNode);
 
@@ -512,6 +512,7 @@ void ResourceStateMachine::ReceiveTrigger(HashString trigger)
 		if (trans.origin == defaultNodeName && trans.trigger == trigger)
 		{
 			defaultNode = FindNode(trans.destiny);
+			blend = trans.blend;
 			break;
 		}
 	}

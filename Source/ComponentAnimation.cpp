@@ -24,13 +24,11 @@
 ComponentAnimation::ComponentAnimation() : Component(nullptr, ComponentType::Animation)
 {
 	controller = new AnimationController();
-	PlayAnimation(100u);
 }
 
 ComponentAnimation::ComponentAnimation(GameObject * gameobject) : Component(gameobject, ComponentType::Animation)
 {
 	controller = new AnimationController();
-	PlayAnimation(100u);
 }
 
 ComponentAnimation::~ComponentAnimation()
@@ -43,6 +41,7 @@ ComponentAnimation::~ComponentAnimation()
 		context = nullptr;
 	}
 	anim = nullptr;
+	stateMachine = nullptr;
 	gameobject->isBoneRoot = false;
 	RELEASE_ARRAY(animName);
 }
@@ -258,7 +257,33 @@ void ComponentAnimation::SetStateMachine(const char * stateMachineFile)
 void ComponentAnimation::SendTriggerToStateMachine(HashString trigger)
 {
 	if (stateMachine != nullptr)
-		stateMachine->ReceiveTrigger(trigger);
+	{	
+		unsigned blend = 0u;
+		stateMachine->ReceiveTrigger(trigger, blend);
+		PlayNextNode(blend);
+	}
+}
+
+ResourceAnimation * ComponentAnimation::GetAnimFromStateMachine()
+{
+	unsigned nodeIndex = stateMachine->GetDefaultNode();
+	HashString clipName = stateMachine->GetNodeClip(nodeIndex);
+	unsigned clipIndex = stateMachine->FindClip(clipName);
+	unsigned animUID = stateMachine->GetClipResource(clipIndex);
+	ResourceAnimation*  resAnim = (ResourceAnimation*)(App->resManager->GetWithoutLoad(animUID));
+	return resAnim;
+}
+
+bool ComponentAnimation::GetLoopFromStateMachine()
+{
+	unsigned nodeIndex = stateMachine->GetDefaultNode();
+	HashString clipName = stateMachine->GetNodeClip(nodeIndex);
+	return stateMachine->GetClipLoop(clipName);
+}
+
+void ComponentAnimation::PlayNextNode(unsigned blend)
+{
+	controller->PlayNextNode(GetAnimFromStateMachine(),GetLoopFromStateMachine(), blend);
 }
 
 ComponentAnimation::EditorContext* ComponentAnimation::GetEditorContext()
@@ -306,12 +331,7 @@ void ComponentAnimation::Update()
 
 void ComponentAnimation::OnPlay()
 {
-	unsigned nodeIndex = stateMachine->GetDefaultNode();
-	HashString clipName = stateMachine->GetNodeClip(nodeIndex);
-	unsigned clipIndex = stateMachine->FindClip(clipName);
-	unsigned animUID = stateMachine->GetClipResource(clipIndex);
-	ResourceAnimation*  resAnim = (ResourceAnimation*)(App->resManager->GetWithoutLoad(animUID));
-	controller->Play(resAnim, stateMachine->GetClipLoop(stateMachine->FindClip(clipName)), 200u);
+	controller->Play(GetAnimFromStateMachine(), GetLoopFromStateMachine());
 }
 
 void ComponentAnimation::UpdateGO(GameObject* go)
@@ -334,9 +354,10 @@ void ComponentAnimation::UpdateGO(GameObject* go)
 	}
 }
 
+//old
 void ComponentAnimation::PlayAnimation(unsigned blend)
 {
-	controller->Play(anim, true, blend);
+	controller->Play(anim, true);
 }
 
 Component* ComponentAnimation::Clone() const
@@ -348,6 +369,7 @@ Component* ComponentAnimation::Clone() const
 ComponentAnimation::ComponentAnimation(const ComponentAnimation& component) : Component(component)
 {
 	anim = (ResourceAnimation*)App->resManager->Get(component.anim->GetUID());
+	stateMachine = (ResourceStateMachine*)App->resManager->Get(component.stateMachine->GetUID());
 }
 
 
@@ -357,6 +379,10 @@ bool ComponentAnimation::CleanUp()
 	{
 		App->resManager->DeleteResource(anim->GetUID());
 	}
+	if (stateMachine != nullptr)
+	{
+		App->resManager->DeleteResource(stateMachine->GetUID());
+	}
 	return true;
 }
 
@@ -364,14 +390,18 @@ void ComponentAnimation::Save(JSON_value* value) const
 {
 	Component::Save(value);
 	value->AddUint("animUID", (anim != nullptr) ? anim->GetUID() : 0u);
+	value->AddUint("stateMachineUID", (stateMachine != nullptr) ? stateMachine->GetUID() : 0u);
 }
 
 void ComponentAnimation::Load(JSON_value* value)
 {
 	Component::Load(value);
-	unsigned uid = value->GetUint("animUID");
 
-	anim = (ResourceAnimation*)App->resManager->Get(uid);
+	unsigned animUID = value->GetUint("animUID");
+	anim = (ResourceAnimation*)App->resManager->Get(animUID);
+
+	unsigned stateMachineUID = value->GetUint("stateMachineUID");
+	stateMachine = (ResourceStateMachine*)App->resManager->Get(stateMachineUID);
 }
 
 void ComponentAnimation::SetIndexChannels(GameObject* GO)

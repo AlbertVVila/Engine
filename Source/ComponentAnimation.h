@@ -26,6 +26,9 @@ public:
 	void SetAnimation(const char* animationFile);
 	void SetStateMachine(const char* stateMachineFile);
 	void SendTriggerToStateMachine(HashString trigger);
+	ResourceAnimation* GetAnimFromStateMachine();
+	bool GetLoopFromStateMachine();
+	void PlayNextNode(unsigned blend);
 
 	void SetIndexChannels(GameObject* GO);
 	void PlayAnimation(unsigned blend);

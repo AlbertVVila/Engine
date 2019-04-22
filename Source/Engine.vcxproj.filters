@@ -264,7 +264,6 @@
       <Filter>Component</Filter>
     </ClCompile>
     <ClCompile Include="FileImporter.cpp" />
-    <ClCompile Include="HashString.cpp" />
     <ClCompile Include="ResourceAnimation.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
@@ -294,6 +293,9 @@
     </ClCompile>
     <ClCompile Include="ComponentTransform2D.cpp">
       <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="HashString.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

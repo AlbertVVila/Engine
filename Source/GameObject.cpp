@@ -28,6 +28,7 @@
 #include "ResourceMaterial.h"
 #include "ResourceMesh.h"
 
+#include "HashString.h"
 #include "myQuadTree.h"
 #include "AABBTree.h"
 #include <stack>
@@ -194,6 +195,17 @@ void GameObject::Update()
 		}
 
 	}
+
+	//For testing purposes--------------------
+	if (isBoneRoot)
+	{
+		if (App->input->GetKey(SDL_SCANCODE_L))
+		{
+			ComponentAnimation* compAnim = (ComponentAnimation*)GetComponent(ComponentType::Animation);
+			compAnim->SendTriggerToStateMachine(HashString("Death"));
+		}
+	}
+	//----------------------------------------
 
 	for (const auto& child : children)
 	{

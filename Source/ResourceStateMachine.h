@@ -71,7 +71,7 @@ public:
 	void RemoveNode(unsigned UID);
 	void RemoveTransition(unsigned UID);
 
-	void ReceiveTrigger(HashString trigger);
+	void ReceiveTrigger(HashString trigger, unsigned &blend);
 
 	bool isClipsEmpty() { return clips.empty(); }
 	bool isNodesEmpty() { return nodes.empty(); }
@@ -100,7 +100,7 @@ private:
 		HashString destiny;
 		HashString trigger;
 
-		unsigned blend = 200u;
+		unsigned blend = 1u;
 
 		Transition() { ; }
 		Transition(HashString o, HashString d, HashString t, unsigned b) : 
