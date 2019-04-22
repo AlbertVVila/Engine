@@ -42,6 +42,7 @@ public:
 
 	EditorContext* GetEditorContext();
 	void Update() override;
+	void OnPlay() override;
 	bool CleanUp();
 public:
 

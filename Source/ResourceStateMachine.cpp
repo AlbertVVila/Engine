@@ -2,6 +2,7 @@
 
 #include "ModuleFileSystem.h"
 
+#include "ModuleResourceManager.h"
 #include "ResourceStateMachine.h"
 #include "ResourceAnimation.h"
 
@@ -61,11 +62,29 @@ void ResourceStateMachine::DeleteFromMemory()
 	clips.clear();
 	transitions.clear();
 
-	App->fsystem->Delete((STATEMACHINES + std::to_string(GetUID()) + STATEMACHINEEXTENSION).c_str());
+	App->fsystem->Remove((STATEMACHINES + std::to_string(GetUID()) + STATEMACHINEEXTENSION).c_str());
+}
+
+void ResourceStateMachine::Delete()
+{
+	// Delete Resource from ResourceManager
+	App->resManager->DeleteResourceFromList(UID);
+
+	// Delete file in Library
+	std::string fileInLibrary(STATEMACHINES);
+	fileInLibrary += exportedFileName;
+	fileInLibrary += STATEMACHINEEXTENSION;
+	App->fsystem->Delete(fileInLibrary.c_str());
+	DeleteFromMemory();
 }
 
 void ResourceStateMachine::SetStateMachine(const char* data)
 {
+	defaultNode = 0u;
+	nodes.clear();
+	clips.clear();
+	transitions.clear();
+
 	char smName[MAX_BONE_NAME_LENGTH];
 
 	memcpy(smName, data, sizeof(char) * MAX_BONE_NAME_LENGTH);

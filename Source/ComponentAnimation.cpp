@@ -125,10 +125,11 @@ void ComponentAnimation::DrawProperties()
 			}
 			if (deletePopup)
 			{
+				ImGui::Text("Are you sure? this can't be undone"); ImGui::SameLine();
 				if (ImGui::Button("Yes"))
 				{
 					stateMachineDelete = true;
-				}
+				} ImGui::SameLine();
 				if (ImGui::Button("Cancel"))
 				{
 					deletePopup = false;
@@ -274,7 +275,7 @@ ComponentAnimation::EditorContext* ComponentAnimation::GetEditorContext()
 void ComponentAnimation::Update()
 {
 	PROFILE;
-	if (anim != nullptr)
+	if (stateMachine != nullptr)
 	{
 		if (!channelsSetted)
 		{
@@ -301,6 +302,16 @@ void ComponentAnimation::Update()
 			}
 		}
 	}
+}
+
+void ComponentAnimation::OnPlay()
+{
+	unsigned nodeIndex = stateMachine->GetDefaultNode();
+	HashString clipName = stateMachine->GetNodeClip(nodeIndex);
+	unsigned clipIndex = stateMachine->FindClip(clipName);
+	unsigned animUID = stateMachine->GetClipResource(clipIndex);
+	ResourceAnimation*  resAnim = (ResourceAnimation*)(App->resManager->GetWithoutLoad(animUID));
+	controller->Play(resAnim, stateMachine->GetClipLoop(stateMachine->FindClip(clipName)), 200u);
 }
 
 void ComponentAnimation::UpdateGO(GameObject* go)

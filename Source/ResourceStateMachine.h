@@ -20,6 +20,7 @@ public:
 public:
 	bool LoadInMemory() override;
 	void DeleteFromMemory() override;
+	void Delete() override;
 
 	unsigned GetStateMachineSize();
 	void SetStateMachine(const char* data);

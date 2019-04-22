@@ -45,21 +45,18 @@ void AnimationController::UpdateInstance(Instance* instance, float dt)
 
 		if (trueDt > 0.0f)
 		{
-			float timeRemainingA = instance->maxTime - instance->time;
+			float timeRemainingA = anim->durationInSeconds - instance->time;
 			if (trueDt <= timeRemainingA)
 			{
 				instance->time += trueDt;
-				trueFrame = instance->time * anim->framesPerSecond;
-				anim->currentFrame = (int)trueFrame;
 			}
 			else if (instance->loop)
 			{
-				instance->time = instance->minTime + trueDt - timeRemainingA;
-				trueFrame = 0;
+				instance->time = trueDt - timeRemainingA;
 			}
 			else
 			{
-				instance->time = instance->maxTime;
+				instance->time = anim->durationInSeconds;
 			}
 		}
 		else
@@ -83,7 +80,9 @@ void AnimationController::UpdateInstance(Instance* instance, float dt)
 		}
 	}
 
-	if (instance->next != nullptr)
+	//We'll have two lists of events one that will be emptying itself checking
+
+	/*if (instance->next != nullptr)
 	{
 		unsigned timeRemainingB = instance->fadeDuration - instance->fadeTime;
 		if (dt <= timeRemainingB)
@@ -97,7 +96,7 @@ void AnimationController::UpdateInstance(Instance* instance, float dt)
 			instance->next = nullptr;
 			instance->fadeTime = instance->fadeDuration = 0;
 		}
-	}
+	}*/
 }
 
 void AnimationController::ReleaseInstance(Instance* instance)
@@ -134,9 +133,12 @@ bool AnimationController::GetTransformInstance(Instance* instance, unsigned chan
 	{
 		if (channelIndex != 999u)
 		{
-			assert(instance->time <= anim->durationInSeconds);
+			/*if (instance->time > anim->durationInSeconds)
+			{
+				return false;
+			}*/
 		
-			//which key frame are we on? This will always return an enter, how?
+			//Used to know how far are we from each frame
 
 			float positionKey = float(instance->time*(anim->GetNumPositions(channelIndex) - 1)) / float(anim->durationInSeconds);
 			float rotationKey = float(instance->time*(anim->GetNumRotations(channelIndex) - 1)) / float(anim->durationInSeconds);
@@ -161,7 +163,7 @@ bool AnimationController::GetTransformInstance(Instance* instance, unsigned chan
 			}
 			else
 			{
-				rotation = anim->GetRotation(channelIndex, positionIndex);
+				rotation = anim->GetRotation(channelIndex, rotationIndex);
 			}
 			if (instance->next != nullptr)
 			{

@@ -872,6 +872,21 @@ void GameObject::SetStaticAncestors()
 	
 }
 
+void GameObject::OnPlay()
+{
+	//Go through all components letting them know play button has been pressed
+	for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+	{
+		(*it)->OnPlay();
+	}
+
+	//Recursive, this will only be executed on play
+	for (std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
+	{
+		(*it)->OnPlay();
+	}
+}
+
 void GameObject::UpdateTransforms(math::float4x4 parentGlobal)
 {
 	PROFILE;
