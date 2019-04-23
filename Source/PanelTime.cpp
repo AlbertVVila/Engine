@@ -44,12 +44,12 @@ void PanelTime::Draw()
 		{
 			App->time->StartGameClock();
 
-			App->scene->SaveScene(*App->scene->root, TEMPORARY_SCENE, SCENES, true);
+			App->scene->SaveScene(*App->scene->root, TEMPORARY_SCENE, SCENES);
 		}
 		else 
 		{
 			App->time->StopGameClock();
-			App->scene->LoadScene(TEMPORARY_SCENE, SCENES, true);
+			App->scene->LoadScene(TEMPORARY_SCENE, SCENES);
 		}
 	}
 

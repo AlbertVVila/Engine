@@ -86,7 +86,7 @@ void ResourceAnimation::Delete()
 
 	// Delete file in Library
 	std::string fileInLibrary(ANIMATIONS);
-	fileInLibrary += exportedFileName;
+	fileInLibrary += exportedFile;
 	fileInLibrary += ANIMATIONEXTENSION;
 	App->fsystem->Delete(fileInLibrary.c_str());
 	DeleteFromMemory();
