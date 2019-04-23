@@ -12,7 +12,10 @@
 #include "ModuleResourceManager.h"
 #include "ModuleTime.h"
 #include "ModuleSpacePartitioning.h"
+#include "ModuleUI.h"
+#include "ModuleFontLoader.h"
 #include "ModuleScript.h"
+#include "ModuleDevelopmentBuildDebug.h"
 
 #include "Timer.h"
 #include "JSON.h"
@@ -24,19 +27,25 @@ Application::Application()
 {
 	// Order matters: they will Init/start/update in this order
 	modules.push_back(window = new ModuleWindow());
+	modules.push_back(resManager = new ModuleResourceManager());
 	modules.push_back(fsystem = new ModuleFileSystem());
 	modules.push_back(input = new ModuleInput());
 	modules.push_back(scripting = new ModuleScript());
 	modules.push_back(renderer = new ModuleRender());
-    modules.push_back(camera = new ModuleCamera());
 	modules.push_back(textures = new ModuleTextures());
 	modules.push_back(program = new ModuleProgram());
+#ifndef GAME_BUILD
+	modules.push_back(camera = new ModuleCamera());
 	modules.push_back(editor = new ModuleEditor());
 	modules.push_back(debug = new ModuleDebugDraw());
-	modules.push_back(scene = new ModuleScene());
-	modules.push_back(resManager = new ModuleResourceManager());
-	modules.push_back(time = new ModuleTime());
+#else
+	modules.push_back(developDebug = new ModuleDevelopmentBuildDebug());
+#endif
 	modules.push_back(spacePartitioning = new ModuleSpacePartitioning());
+	modules.push_back(scene = new ModuleScene());
+	modules.push_back(time = new ModuleTime());
+	modules.push_back(ui = new ModuleUI());
+	modules.push_back(fontLoader = new ModuleFontLoader());
 }
 
 Application::~Application()
@@ -98,8 +107,9 @@ update_status Application::Update()
 
 	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
 		ret = (*it)->PostUpdate();
-
+#ifndef GAME_BUILD
 	editor->AddFpsLog(dt);
+#endif
 	return ret;
 }
 

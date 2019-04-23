@@ -5,7 +5,7 @@
 #include "Math/float3.h"
 class ComponentCamera;
 class JSON;
-class Skybox;
+class ResourceSkybox;
 class Viewport;
 struct Shader;
 
@@ -27,6 +27,7 @@ public:
 	bool IsSceneHovered() const;
 	bool CleanUp() override;
 	void OnResize();
+	void ENGINE_API SetVsync(bool active);
 	void DrawGUI() override;
 
 	void GenBlockUniforms();
@@ -52,7 +53,9 @@ public:
 	bool kDTreeDebug = false;
 	bool aabbTreeDebug = false;
 	bool grid_debug = true;
+	bool boneDebug = false;
 	bool useMainCameraFrustum = false;
+	bool vsync = false;
 
 	unsigned current_scale = 1;
 	Viewport* viewGame = nullptr;
@@ -62,10 +65,9 @@ private:
 	unsigned UBO = 0;
 	bool depthTest = true;
 	bool wireframe = false;
-	bool vsync = false;
 	int item_current = 0;//scale index
 
-	Skybox* skybox = nullptr;
+	ResourceSkybox* skybox = nullptr;
 	
 
 };

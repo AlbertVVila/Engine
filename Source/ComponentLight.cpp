@@ -25,12 +25,12 @@
 
 #define INITIAL_RADIUS 1000.f
 
-ComponentLight::ComponentLight(GameObject * gameobject) : Component(gameobject, ComponentType::Light)
+ComponentLight::ComponentLight(GameObject* gameobject) : Component(gameobject, ComponentType::Light)
 {
 	pointSphere.r = INITIAL_RADIUS;
 }
 
-ComponentLight::ComponentLight(const ComponentLight & component) : Component(component)
+ComponentLight::ComponentLight(const ComponentLight& component) : Component(component)
 {
 	position = component.position;
 	direction = component.direction;
@@ -38,6 +38,9 @@ ComponentLight::ComponentLight(const ComponentLight & component) : Component(com
 
 	inner = component.inner;
 	outer = component.outer;
+	range = component.range;
+	intensity = component.intensity;
+	pointSphere = Sphere(component.pointSphere);
 	App->scene->lights.push_back(this);
 }
 
@@ -56,14 +59,20 @@ void ComponentLight::Update()
 
 void ComponentLight::DrawProperties()
 {
+	ImGui::PushID(this);
 	if (ImGui::CollapsingHeader("Light"))
 	{
 		bool removed = Component::DrawComponentState();
 		if (removed)
 		{
+			ImGui::PopID();
 			return;
 		}
-		ImGui::Separator();
+
+		ImGui::SameLine();
+		Options();
+
+		ImGui::Spacing();
 		ImGui::Text("Type");
 		const char * types[] = {"Directional","Point", "Spot"};
 		if (ImGui::BeginCombo("",types[(int)lightType]))
@@ -94,26 +103,36 @@ void ComponentLight::DrawProperties()
 		{
 			ImGui::Text("Attenuation");
 			if (lightType == LightType::POINT)
-				lightDirty = lightDirty || ImGui::DragFloat("Radius", &pointSphere.r);
+				lightDirty = lightDirty | ImGui::DragFloat("Radius", &pointSphere.r);
 			else
-				lightDirty = lightDirty || ImGui::DragFloat("Range", &range);
+				lightDirty = lightDirty | ImGui::DragFloat("Range", &range);
+		}
+		else
+		{
+			lightDirty = lightDirty || ImGui::DragFloat("Radius", &directionalRadius);
 		}
 
-		lightDirty = lightDirty || ImGui::DragFloat("Intensity", &intensity);
+		lightDirty = lightDirty | ImGui::DragFloat("Intensity", &intensity);
 
 		if (lightType == LightType::SPOT)
 		{
 			ImGui::Text("Angle");
-			lightDirty = lightDirty || ImGui::DragFloat("Inner", (float*)&inner, 0.1f, 0.f, 90.f);
-			lightDirty = lightDirty || ImGui::DragFloat("Outer", (float*)&outer, 0.1f, 0.f, 90.f);
+			lightDirty = lightDirty | ImGui::DragFloat("Inner", (float*)&inner, 0.1f, 0.f, 90.f);
+			lightDirty = lightDirty | ImGui::DragFloat("Outer", (float*)&outer, 0.1f, 0.f, 90.f);
 		}
 
 		if (lightDirty)
 		{
+			if (App->scene->photoTimer <= 0.f)
+			{
+				App->scene->TakePhoto();
+			}
 			App->spacePartitioning->aabbTreeLighting.ReleaseNode(gameobject->treeNode);
 			App->spacePartitioning->aabbTreeLighting.InsertGO(gameobject);
 		}
+		ImGui::Separator();
 	}
+	ImGui::PopID();
 }
 
 void ComponentLight::DrawDebugLight() const
@@ -137,11 +156,14 @@ void ComponentLight::Load(JSON_value* value)
 		range = value->GetFloat("range");		
 	}
 
+	directionalRadius = value->GetFloat("directionalRadius");
+
 	if (lightType == LightType::SPOT)
 	{
 		inner = value->GetFloat("inner");
 		outer = value->GetFloat("outer");
 	}
+
 	intensity = value->GetFloat("intensity");
 }
 
@@ -151,13 +173,13 @@ void ComponentLight::Save(JSON_value* value) const
 
 	value->AddUint("Lighttype", (unsigned)lightType);
 	value->AddFloat3("color", color);
-
+	value->AddFloat("directionalRadius", directionalRadius);
 	if (lightType != LightType::DIRECTIONAL)
 	{
 		value->AddFloat("radius", pointSphere.r);
 		value->AddFloat("range", range);
 	}
-
+	
 	if (lightType == LightType::SPOT)
 	{
 		value->AddFloat("inner", inner);
@@ -165,10 +187,37 @@ void ComponentLight::Save(JSON_value* value) const
 	}
 
 	value->AddFloat("intensity", intensity);
-
 }
 
-ComponentLight * ComponentLight::Clone() const
+void ComponentLight::Paste()
+{
+	if (App->scene->copyComp != nullptr && App->scene->copyComp->type == type)
+	{
+		ComponentLight* comp = (ComponentLight*)App->scene->copyComp;
+
+		lightType = comp->lightType;
+		color = comp->color;
+		intensity = comp->intensity;
+		range = comp->range;
+		//pointSphere.r = comp->pointSphere.r;
+		inner = comp->inner;
+		outer = comp->outer;
+		CalculateGuizmos();
+	}
+}
+
+void ComponentLight::Reset()
+{
+	color = math::float3::one;
+	intensity = 1.f;
+	range = 200.f;
+	pointSphere.r = 200.f;
+	inner = 20.f;
+	outer = 25.f;
+	CalculateGuizmos();
+}
+
+ComponentLight* ComponentLight::Clone() const
 {
 	ComponentLight* newLight = new ComponentLight(gameobject);
 	newLight->range = range;
@@ -179,6 +228,7 @@ ComponentLight * ComponentLight::Clone() const
 	newLight->lightType = lightType;
 	newLight->color = color;
 	newLight->direction = direction;
+	newLight->pointSphere = Sphere(pointSphere);
 	newLight->CalculateGuizmos();
 	return newLight;
 }
@@ -237,16 +287,9 @@ void ComponentLight::CalculateGuizmos()
 			break;
 		}
 		case LightType::DIRECTIONAL:			
-			if (App->scene->maincamera != nullptr)
-			{
-				pointSphere.pos = App->scene->maincamera->frustum->pos;
-				pointSphere.r = App->scene->maincamera->frustum->farPlaneDistance;
-			}
-			else
-			{
-				pointSphere.pos = App->camera->editorcamera->frustum->pos;
-				pointSphere.r = App->camera->editorcamera->frustum->farPlaneDistance;
-			}
+			pointSphere.pos = math::float3::zero;
+			pointSphere.r = directionalRadius;
+
 			gameobject->bbox.SetNegativeInfinity();
 			gameobject->bbox.Enclose(pointSphere);
 			break;

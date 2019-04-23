@@ -21,7 +21,10 @@ class ModuleFileSystem;
 class ModuleResourceManager;
 class ModuleTime;
 class ModuleSpacePartitioning;
+class ModuleUI;
+class ModuleFontLoader;
 class ModuleScript;
+class ModuleDevelopmentBuildDebug;
 
 class Application
 {
@@ -50,7 +53,10 @@ public:
 	ModuleResourceManager* resManager = nullptr;
 	ModuleTime* time = nullptr;
 	ModuleSpacePartitioning* spacePartitioning = nullptr;
+	ModuleUI* ui = nullptr;
+	ModuleFontLoader* fontLoader = nullptr;
 	ModuleScript* scripting = nullptr;
+	ModuleDevelopmentBuildDebug* developDebug = nullptr;
 
 private:
 	std::list<Module*> modules;

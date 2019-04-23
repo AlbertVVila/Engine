@@ -15,11 +15,19 @@
 #include "ComponentCamera.h"
 #include "ComponentLight.h"
 #include "ComponentRenderer.h"
+#include "ComponentTransform2D.h"
+#include "ComponentText.h"
+#include "ComponentImage.h"
+#include "ComponentButton.h"
+#include "ComponentAnimation.h"
 #include "ComponentScript.h"
 
+#include "ResourceMesh.h"
+
 #include "GUICreator.h"
-#include "Material.h"
-#include "Mesh.h"
+#include "ResourceMaterial.h"
+#include "ResourceMesh.h"
+
 #include "myQuadTree.h"
 #include "AABBTree.h"
 #include <stack>
@@ -50,6 +58,12 @@ GameObject::GameObject(const GameObject & gameobject)
 	UUID = App->scene->GetNewUID();
 	parentUUID = gameobject.parentUUID;
 	isStatic = gameobject.isStatic;
+	activeInHierarchy = gameobject.activeInHierarchy;
+	activeSelf = gameobject.activeSelf;
+	isVolumetric = gameobject.isVolumetric;
+	hasLight = gameobject.hasLight;
+
+	assert(!(isVolumetric && hasLight));
 	bbox = gameobject.bbox;
 
 	for (const auto& component: gameobject.components)
@@ -61,14 +75,28 @@ GameObject::GameObject(const GameObject & gameobject)
 		{
 			transform = (ComponentTransform*)componentcopy;
 		}
+		if (componentcopy->type == ComponentType::Button)
+		{
+			((ComponentButton*)componentcopy)->text->gameobject = this;
+			((ComponentButton*)componentcopy)->buttonImage->gameobject = this;
+			((ComponentButton*)componentcopy)->highlightedImage->gameobject = this;
+			((ComponentButton*)componentcopy)->pressedImage->gameobject = this;
+			((ComponentButton*)componentcopy)->rectTransform->gameobject = this;
+		}
+		if (componentcopy->type == ComponentType::Light)
+		{
+			light = (ComponentLight*)componentcopy;
+			App->spacePartitioning->aabbTreeLighting.InsertGO(this);
+			App->scene->lights.push_back(light);
+		}
 	}
-
-	if (GetComponent(ComponentType::Renderer) != nullptr)
+	if (!App->scene->photoEnabled)
 	{
-		isVolumetric = true;
-		App->scene->AddToSpacePartition(this);
+		if (GetComponent(ComponentType::Renderer) != nullptr)
+		{
+			App->scene->AddToSpacePartition(this);
+		}
 	}
-
 	for (const auto& child : gameobject.children)
 	{
 		GameObject* childcopy = new GameObject(*child);
@@ -107,6 +135,12 @@ void GameObject::DrawProperties()
 
 	if (this != App->scene->root)
 	{
+		if (ImGui::Checkbox("Active", &activeSelf))
+		{
+			SetActive(activeSelf);
+		}
+
+		ImGui::SameLine();
 		if (ImGui::Checkbox("Static", &isStatic))
 		{
 			if (isStatic && GetComponent(ComponentType::Renderer) != nullptr)
@@ -150,10 +184,22 @@ void GameObject::DrawProperties()
 
 void GameObject::Update()
 {
+	if (!isActive()) return;
+
 	for (auto& component: components)
 	{
-		component->Update();
+		if (component->enabled)
+		{
+			component->Update();
+		}
+
 	}
+
+	for (const auto& child : children)
+	{
+		child->Update();
+	}
+
 	for (std::list<GameObject*>::iterator itChild = children.begin(); itChild != children.end();)
 	{
 
@@ -162,71 +208,23 @@ void GameObject::Update()
 			(*itChild)->copyFlag = false;
 			GameObject *copy = new GameObject(**itChild);
 			copy->parent = this;
-			copy->isVolumetric = (*itChild)->isVolumetric;
-			copy->hasLight = (*itChild)->hasLight;
-			assert(!(copy->isVolumetric && copy->hasLight)); //incompatible component configuration
-			if (copy->isVolumetric)
-			{
-				if (isStatic)
-				{
-					App->scene->staticGOs.insert(copy);
-				}
-				else
-				{
-					App->spacePartitioning->aabbTree.InsertGO(copy);
-				}
-			}
-			if (copy->hasLight)
-			{
-				for (Component* component : copy->components)
-				{
-					if (component->type == ComponentType::Light)
-					{
-						copy->light = (ComponentLight*)component;
-					}
-				}
-				App->spacePartitioning->aabbTreeLighting.InsertGO(copy);
-				App->scene->lights.push_back(copy->light);
-			}
-			copy->transform->SetPosition(copy->transform->GetPosition() + copy->transform->front);
-			copy->transform->UpdateTransform();
 			this->children.push_back(copy);
 		}
-		if ((*itChild)->movedFlag) //Moved GO
-		{
-			for (auto child : (*itChild)->children)
-			{
-				child->UpdateGlobalTransform();
-			}
-			(*itChild)->UpdateBBox();
-			(*itChild)->movedFlag = false;
-		}
+		++itChild;
+	}
 
-		(*itChild)->Update(); //Update after moved_flag check
+}
 
-		if ((*itChild)->copyFlag) //Copy GO
-		{
-			(*itChild)->copyFlag = false;
-			GameObject *copy = new GameObject(**itChild);
-			copy->parent = this;
-			this->children.push_back(copy);
-		}
-		if ((*itChild)->deleteFlag) //Delete GO
-		{
-			(*itChild)->deleteFlag = false;
-			(*itChild)->CleanUp();
-			App->scene->DeleteFromSpacePartition(*itChild);
-			delete *itChild;
-			children.erase(itChild++);
-		}
-		else
-		{
-			++itChild;
-		}
+void GameObject::SetActive(bool active)
+{
+	activeSelf = active;
+	for(auto& child : children)
+	{
+		child->activeInHierarchy = active;
 	}
 }
 
-Component * GameObject::CreateComponent(ComponentType type)
+Component* GameObject::CreateComponent(ComponentType type)
 {
 	Component* component = nullptr;
 	switch (type)
@@ -274,6 +272,22 @@ Component * GameObject::CreateComponent(ComponentType type)
 			App->scene->maincamera->isMainCamera = true;
 		}
 		break;
+	case ComponentType::Animation:
+		component = new ComponentAnimation(this);
+		isBoneRoot = true;
+		break;
+	case ComponentType::Transform2D:
+		component = new ComponentTransform2D(this);
+		break;
+	case ComponentType::Text:
+		component = new ComponentText(this);
+		break;
+	case ComponentType::Image:
+		component = new ComponentImage(this);
+		break;
+	case ComponentType::Button:
+		component = new ComponentButton(this);
+		break;
 	case ComponentType::Script:
 		component = new ComponentScript(this);
 		break;
@@ -303,11 +317,11 @@ std::vector<Component *> GameObject::GetComponents(ComponentType type) const
 std::vector<Component*> GameObject::GetComponentsInChildren(ComponentType type) const
 {
 	std::vector<Component *> list;
-	std::stack<const GameObject *>GOs;
+	std::queue<const GameObject *>GOs;
 	GOs.push(this);
 	while (!GOs.empty())
 	{
-		const GameObject* go = GOs.top();
+		const GameObject* go = GOs.front();
 		GOs.pop();
 		for (const auto &component : go->components)
 		{
@@ -357,10 +371,39 @@ void GameObject::RemoveComponent(const Component & component)
 	}
 }
 
+Script* GameObject::GetScript() const
+{
+	ComponentScript* component = (ComponentScript*)GetComponent(ComponentType::Script);
+	if (component != nullptr)
+	{
+		return component->GetScript();
+	}
+	return nullptr;
+}
+
+Script * GameObject::FindScriptByName(const char * name) const
+{
+	std::vector<Component*> components = GetComponents(ComponentType::Script);
+	for (const auto& component : components)
+	{
+		if (((ComponentScript*)component)->GetScriptName() == name)
+		{
+			return ((ComponentScript*)component)->GetScript();
+		}
+	}
+	return nullptr;
+}
+
 void GameObject::RemoveChild(GameObject* bastard)
 {
 	children.remove(bastard);
 	RELEASE(bastard);
+}
+
+void GameObject::InsertChild(GameObject* child)
+{
+	children.push_back(child);
+	child->parent = this;
 }
 
 Component * GameObject::GetComponent(ComponentType type) const
@@ -375,16 +418,39 @@ Component * GameObject::GetComponent(ComponentType type) const
 	return nullptr;
 }
 
+ENGINE_API Component * GameObject::GetComponentInChildren(ComponentType type) const
+{
+	std::stack<const GameObject *>GOs;
+	GOs.push(this);
+	while (!GOs.empty())
+	{
+		const GameObject* go = GOs.top();
+		GOs.pop();
+		
+		Component* component = go->GetComponent(type);
+		if (component != nullptr) return component;
+
+		for (const auto &child : go->children)
+		{
+			GOs.push(child);
+		}
+	}
+	return nullptr;
+}
+
 void GameObject::UpdateGlobalTransform() //Updates global transform when moving
 {
 	float4x4 mytransform = GetLocalTransform();
 	if (parent != nullptr)
 	{
 		mytransform = parent->GetGlobalTransform() * mytransform;
+		if(transform != nullptr)
+		{
+			transform->global = mytransform;
+		}
+		UpdateBBox();
 	}
 
-	transform->global = mytransform;
-	UpdateBBox();
 
 	for (auto &child : children)
 	{
@@ -446,6 +512,8 @@ void GameObject::SetLightUniforms(unsigned shader) const
 	//LOG("%s got %d lights", name.c_str(), lights.size());
 	for (GameObject* go : lights)
 	{
+		if (!go->light->enabled) continue;
+
 		assert(go->light != nullptr);
 		switch (go->light->lightType)
 		{
@@ -564,12 +632,35 @@ bool GameObject::Intersects(const LineSegment & line, float &distance) const
 	return false;
 }
 
+bool GameObject::BboxIntersects(const GameObject* target) const
+{
+	bool intersects = false;
+	bool allchecked = false;
+	std::list<GameObject*>::const_iterator iti = children.begin();
+	while (!intersects && !allchecked)
+	{
+		for (std::list<GameObject*>::const_iterator itj = target->children.begin(); itj != target->children.end(); ++itj)
+		{
+			if ((*iti)->bbox.Intersects((*itj)->bbox))
+			{
+				intersects = true;
+				break;
+			}
+		}
+		++iti;
+		if (iti == children.end()) allchecked = true;
+	}
+	return intersects;
+}
+
 void GameObject::UpdateBBox()
 {
 	ComponentRenderer* renderer = (ComponentRenderer*) GetComponent(ComponentType::Renderer);
 	if (renderer != nullptr)
 	{
-		bbox = renderer->mesh->GetBoundingBox();
+		if(renderer->mesh != nullptr)
+			bbox =  renderer->mesh->GetBoundingBox();
+
 		bbox.TransformAsAABB(GetGlobalTransform());
 	}
 }
@@ -582,9 +673,10 @@ void GameObject::DrawBBox() const
 	}
 
 	ComponentRenderer *renderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
-	if (renderer == nullptr) return;
-	
-	renderer->mesh->DrawBbox(App->program->defaultShader->id, bbox);
+	if (renderer == nullptr || renderer->mesh == nullptr) return;
+
+	if(renderer->mesh->GetReferences() > 0u)
+		renderer->mesh->DrawBbox(App->program->defaultShader->id[0], bbox);
 }
 
 bool GameObject::CleanUp()
@@ -616,13 +708,17 @@ bool GameObject::CleanUp()
 
 void GameObject::Save(JSON_value *gameobjects) const
 {
-	if (parent != nullptr) // we don't add gameobjects without parent (ex: World)
+	if (parent != nullptr && App->scene->canvas != this) // we don't add gameobjects without parent (ex: World)
 	{
 		JSON_value *gameobject = gameobjects->CreateValue();
 		gameobject->AddUint("UID", UUID);
 		gameobject->AddUint("ParentUID", parent->UUID);
 		gameobject->AddString("Name", name.c_str());
 		gameobject->AddUint("Static", isStatic);
+		gameobject->AddUint("ActiveInHierarchy", activeInHierarchy);
+		gameobject->AddUint("ActiveSelf", activeSelf);
+		gameobject->AddUint("isBoneRoot", isBoneRoot);
+		gameobject->AddFloat4x4("baseState", baseState);
 
 		JSON_value *componentsJSON = gameobject->CreateValue(rapidjson::kArrayType);
 		for (auto &component : components)
@@ -648,6 +744,10 @@ void GameObject::Load(JSON_value *value)
 	parentUUID = value->GetUint("ParentUID");
 	name = value->GetString("Name");
 	isStatic = value->GetUint("Static");
+	activeInHierarchy = value->GetUint("ActiveInHierarchy", 1);
+	activeSelf = value->GetUint("ActiveSelf", 1);
+	isBoneRoot = value->GetUint("isBoneRoot");
+	baseState = value->GetFloat4x4("baseState");
 
 	JSON_value* componentsJSON = value->GetValue("Components");
 	for (unsigned i = 0; i < componentsJSON->Size(); i++)
@@ -658,17 +758,16 @@ void GameObject::Load(JSON_value *value)
 		component->Load(componentJSON);
 	}
 
-	transform->UpdateTransform();
+	if (transform != nullptr)
+	{
+		transform->UpdateTransform();
+	}
 
 	if (hasLight)
 	{
-		if (treeNode != nullptr)
-		{
-			App->spacePartitioning->aabbTreeLighting.ReleaseNode(treeNode);
-		}
-		light->CalculateGuizmos();
-		App->spacePartitioning->aabbTreeLighting.InsertGO(this);
+		transform->UpdateTransform();
 	}
+
 }
 
 bool GameObject::IsParented(const GameObject & gameobject) const
@@ -709,6 +808,7 @@ void GameObject::DrawHierarchy()
 		GUICreator::CreateElements(this);
 		if (ImGui::Selectable("Duplicate"))
 		{
+			App->scene->TakePhoto();
 			for each (GameObject* go in App->scene->selection)
 			{
 				go->copyFlag = true;
@@ -716,6 +816,7 @@ void GameObject::DrawHierarchy()
 		}
 		if (ImGui::Selectable("Delete"))
 		{
+			App->scene->TakePhoto();
 			for each (GameObject* go in App->scene->selection)
 			{
 				go->deleteFlag = true;
@@ -769,4 +870,60 @@ void GameObject::SetStaticAncestors()
 		parents.push(go->parent);
 	}
 	
+}
+
+void GameObject::UpdateTransforms(math::float4x4 parentGlobal)
+{
+	PROFILE;
+	if (movedFlag)
+	{
+		transform->local = math::float4x4::FromTRS(transform->position, transform->rotation, transform->scale);
+		movedFlag = false;
+	}
+
+	math::float4x4 global = math::float4x4::identity;
+	if (this != App->scene->root && transform != nullptr)
+	{
+		math::float4x4 original = transform->global;
+		transform->global = parentGlobal * transform->local;
+		global = transform->global;
+		transform->UpdateTransform();
+		if (this == App->scene->selected)
+		{
+			transform->MultiSelectionTransform(global - original);
+		}
+	}
+
+	for (const auto& child : children)
+	{
+		child->UpdateTransforms(global);
+	}
+
+	UpdateBBox();
+}
+
+bool GameObject::CheckDelete()
+{
+	PROFILE;
+	if (deleteFlag) //Delete GO
+	{
+		CleanUp();
+		delete this;
+		return true;
+	}
+	else
+	{
+		for (std::list<GameObject*>::iterator itChild = children.begin(); itChild != children.end();)
+		{
+			if ((*itChild)->CheckDelete())
+			{
+				children.erase(itChild++);
+			}
+			else
+			{
+				++itChild;
+			}
+		}
+	}
+	return false;
 }

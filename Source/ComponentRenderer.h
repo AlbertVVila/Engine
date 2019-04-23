@@ -3,8 +3,8 @@
 
 #include "Component.h"
 
-class Mesh;
-class Material;
+class ResourceMesh;
+class ResourceMaterial;
 
 class ComponentRenderer :
 	public Component
@@ -23,15 +23,17 @@ public:
 	void Load(JSON_value* value) override;
 
 	void SetMaterial(const char* material);
-	void UpdateMesh(const char * meshData, unsigned uid);
+	void SetMesh(const char* meshfile);
 	void UpdateGameObject();
+	void LinkBones() const;
 
 public:
-	Mesh * mesh = nullptr;
-	Material * material = nullptr;
+	ResourceMesh* mesh = nullptr;
+	ResourceMaterial* material = nullptr;
 
 private:
 	std::vector<std::string> guiMaterials;
+	std::vector<std::string> guiMeshes;
 };
 
 #endif __ComponentRenderer_h__

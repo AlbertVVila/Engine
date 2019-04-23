@@ -8,12 +8,17 @@
 #include "ModuleWindow.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleResourceManager.h"
+#include "ModuleUI.h"
+#include "ModuleFontLoader.h"
+#include "ModuleDevelopmentBuildDebug.h"
 
 #include "GameObject.h"
 #include "ComponentCamera.h"
-#include "Skybox.h"
 #include "Viewport.h"
 #include "JSON.h"
+
+#include "Resource.h"
+#include "ResourceSkybox.h"
 
 #include "SDL.h"
 #include "GL/glew.h"
@@ -46,9 +51,17 @@ bool ModuleRender::Init(JSON * config)
 	InitOpenGL();
 
 	SDL_GL_SetSwapInterval((int)vsync);
-	skybox = new Skybox();
+
 	viewScene = new Viewport("Scene");
 	viewGame = new Viewport("Game");
+
+	// Set default Skybox
+	skybox = (ResourceSkybox*)App->resManager->CreateNewResource(TYPE::SKYBOX);
+	std::string faces[NUMFACES] = { "right", "left", "top", "bottom", "front", "back" };
+	skybox->SetExportedFile("Default Skybox");
+	skybox->SetTextures(faces);
+	skybox->SetUsedByEngine(true);
+	skybox->LoadInMemory();
 
 	JSON_value* renderer = config->GetValue("renderer");
 	if (renderer == nullptr) return true;
@@ -105,10 +118,17 @@ update_status ModuleRender::PostUpdate()
 {
 	BROFILER_CATEGORY("Render PostUpdate", Profiler::Color::Black);
 
+#ifndef GAME_BUILD
 	viewScene->Draw(App->camera->editorcamera, true);
 	viewGame->Draw(App->scene->maincamera);
 	App->editor->RenderGUI();
-
+#else
+	if (App->scene->maincamera != nullptr)
+	{
+		App->renderer->Draw(*App->scene->maincamera, App->window->width, App->window->height, false);
+	}
+	App->developDebug->RenderGUI();
+#endif
 	SDL_GL_SwapWindow(App->window->window);
 
 	return UPDATE_CONTINUE;
@@ -135,7 +155,7 @@ void ModuleRender::SaveConfig(JSON * config)
 }
 
 void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool isEditor) const
-{
+{	
 	BROFILER_CATEGORY("Render_Draw()", Profiler::Color::AliceBlue);
 	glViewport(0, 0, width, height);
 	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
@@ -158,6 +178,12 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 		DrawGizmos(cam);
 	}
 	App->scene->Draw(*cam.frustum, isEditor);
+
+	if (!isEditor || isEditor && App->ui->showUIinSceneViewport)
+	{
+		App->ui->Draw(width, height);
+	}
+	
 }
 
 bool ModuleRender::IsSceneViewFocused() const
@@ -184,13 +210,25 @@ bool ModuleRender::CleanUp()
 void ModuleRender::OnResize()
 {
     glViewport(0, 0, App->window->width, App->window->height);
+#ifndef GAME_BUILD
 	App->camera->editorcamera->SetAspect((float)App->window->width / (float)App->window->height);
+#endif
+	if (App->scene->maincamera != nullptr)
+	{
+		App->scene->maincamera->SetAspect((float)App->window->width / (float)App->window->height);
+	}
+}
+
+void ModuleRender::SetVsync(bool active)
+{
+	vsync = active;
+	SDL_GL_SetSwapInterval((int)vsync);
 }
 
 void ModuleRender::DrawGizmos(const ComponentCamera &camera) const
 {
 	BROFILER_CATEGORY("Render_DrawGizmos()", Profiler::Color::AliceBlue);
-	unsigned shader = App->program->defaultShader->id;
+	unsigned shader = App->program->defaultShader->id[0];
 	glUseProgram(shader);
 
 	if (picker_debug)
@@ -208,7 +246,7 @@ void ModuleRender::DrawGizmos(const ComponentCamera &camera) const
 	{
 		dd::xzSquareGrid(-500.0f * current_scale, 500.0f * current_scale, 0.0f, 1.0f * current_scale, math::float3(0.65f, 0.65f, 0.65f));
 	}
-	
+
 	dd::axisTriad(math::float4x4::identity, 0.5f * current_scale, 5.0f * current_scale, 0, true);
 
 	if (App->scene->maincamera != nullptr && App->renderer->useMainCameraFrustum)
@@ -236,6 +274,7 @@ void ModuleRender::InitSDL()
 void ModuleRender::InitOpenGL() const
 {
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -287,6 +326,7 @@ void ModuleRender::DrawGUI()
 	ImGui::Checkbox("Dynamic AABBTree Debug", &aabbTreeDebug);
 	ImGui::Checkbox("Static KDTree Debug", &kDTreeDebug);
 	ImGui::Checkbox("Grid Debug", &grid_debug);
+	ImGui::Checkbox("Bone Debug", &boneDebug);
 
 	const char* scales[] = {"1", "10", "100"};
 	ImGui::Combo("Scale", &item_current, scales, 3);
@@ -318,8 +358,11 @@ void ModuleRender::GenBlockUniforms()
 
 void ModuleRender::AddBlockUniforms(const Shader &shader) const
 { 
-	unsigned int uniformBlockIndex = glGetUniformBlockIndex(shader.id, "Matrices");
-	glUniformBlockBinding(shader.id, uniformBlockIndex, 0);
+	for (auto id : shader.id)
+	{
+		unsigned int uniformBlockIndex = glGetUniformBlockIndex(id.second, "Matrices");
+		glUniformBlockBinding(id.second, uniformBlockIndex, 0);
+	}
 }
 
 void ModuleRender::SetViewUniform(const ComponentCamera &camera) const
