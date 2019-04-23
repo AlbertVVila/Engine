@@ -132,6 +132,7 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 		ComponentTransform* nodeParentTransform = (ComponentTransform*)goNode->parent->GetComponent(ComponentType::Transform);
 		nodeTransform->UpdateTransform();
 		nodeTransform->SetLocalTransform(reinterpret_cast<const math::float4x4&>(aNode->mTransformation), nodeParentTransform->global);
+		nodeTransform->UpdateGlobalTransform();
 
 		for (unsigned i = 0u; i < aNode->mNumMeshes; ++i)
 		{
@@ -167,6 +168,8 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 			ComponentRenderer* crenderer = (ComponentRenderer*)meshGO->CreateComponent(ComponentType::Renderer);
 			crenderer->mesh = mesh;
 			meshGO->CreateComponent(ComponentType::Transform);
+			ComponentTransform* cTransform = (ComponentTransform*)(meshGO->GetComponent(ComponentType::Transform));
+			cTransform->SetLocalTransform(nodeTransform->global, math::float4x4::identity);
 			sceneGO->InsertChild(meshGO);
 			++totalMeshes;
 		}
