@@ -2,9 +2,15 @@
 #define __MODULENAVIGATION_H__
 
 #include "Module.h"
-#include <vector>
+
 #include "Recast/Recast.h"
 #include "debugdraw.h"
+
+#include <vector>
+
+//#include <stdio.h>
+#include <cstddef>
+
 
 //#include "DebugUtils/DetourDebugDraw.h"
 //#include "DebugUtils/DebugDraw.h"
@@ -100,7 +106,6 @@ private:
 
 	void removeNavMesh(unsigned ID);
 	void generateNavigability();
-	void addNavigableMesh();
 
 	void fillVertices();
 	void fillIndices();
@@ -111,6 +116,10 @@ private:
 
 	void drawMeshTile();
 
+	// Detour stuff
+	std::vector<math::float3> returnPath(math::float3 pStart, math::float3 pEnd)
+	//void handleClick(const float* s, const float* p, bool shift);
+	
 	//variables
 	float maxRadius = 5.0f;
 	float maxHeight = 5.0f;
@@ -177,7 +186,7 @@ private:
 
 	DrawMode m_drawMode;
 
-	std::vector < const ComponentRenderer*> meshComponents;
+	const ComponentRenderer* meshComponent = nullptr;
 
 	rcConfig cfg;
 	rcContext* ctx = nullptr;
@@ -198,13 +207,21 @@ private:
 	int* tris = nullptr;
 	float* verts = nullptr;
 	float* normals = nullptr;
-	int nverts = 0;
-	int ntris = 0;
+	int nverts;
+	int ntris;
 	bool pointsUpdated = false;
 	dd::DrawVertex* points = nullptr;
-	std::vector<const AABB*> meshboxes;
-	float* bmin = nullptr;
-	float* bmax = nullptr;
+	const AABB* meshbox = nullptr;
+
+	float* pStartX = nullptr;
+	float pStartY = 0.f;
+	float pStartZ = 0.f;
+	float pEndX = 0.f;
+	float pEndY = 0.f;
+	float pEndZ = 0.f;
+
+	float pStart[3];
+	float pEnd[3];
 };
 
 #endif
