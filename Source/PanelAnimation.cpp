@@ -31,7 +31,7 @@ void PanelAnimation::Draw()
 	}
 	if (App->scene->selected != nullptr && App->scene->selected->isBoneRoot && (ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)) && ((ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)))->anim != nullptr)
 	{
-		ResourceAnimation* anim = ((ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)))->anim;
+		ResourceAnimation* anim = nullptr;
 		ComponentAnimation* compAnim = ((ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)));
 
 		ImGui::Text("GAMEOBJECT"); ImGui::SameLine();
@@ -44,7 +44,29 @@ void PanelAnimation::Draw()
 
 		// Current Anim
 		ImGui::SetCursorPosX(ImGui::CalcTextSize("  GAMEOBJECT  ").x);
-		ImGui::Text(anim->name.c_str());
+
+		if (guiAnimations.empty())
+		{
+			guiAnimations = App->resManager->GetAnimationsNamesList(true);
+		}
+
+		if (ImGui::BeginCombo("", guiAnimations.begin()->c_str()))
+		{
+			for (int n = 0; n < guiAnimations.size(); n++)
+			{
+				bool is_selected = true;
+				if (ImGui::Selectable(guiAnimations[n].c_str(), is_selected))
+				{
+					unsigned animUID = ((ResourceAnimation*)App->resManager->GetAnimationByName(guiAnimations[n].c_str()))->GetUID();
+					anim = (ResourceAnimation*)App->resManager->GetWithoutLoad(animUID);
+				}
+				if (is_selected)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+			ImGui::EndCombo();
+		}
 
 		// Animation
 		ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 - ImGui::CalcTextSize("FRAMES").x / 2);

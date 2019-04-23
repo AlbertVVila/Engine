@@ -23,16 +23,21 @@
 
 ComponentAnimation::ComponentAnimation() : Component(nullptr, ComponentType::Animation)
 {
+	editorController = new AnimationController();
 	controller = new AnimationController();
 }
 
 ComponentAnimation::ComponentAnimation(GameObject * gameobject) : Component(gameobject, ComponentType::Animation)
 {
+	editorController = new AnimationController();
 	controller = new AnimationController();
 }
 
 ComponentAnimation::~ComponentAnimation()
 {
+	delete editorController;
+	editorController = nullptr;
+
 	delete controller;
 	controller = nullptr;
 	if (context)
@@ -319,7 +324,7 @@ void ComponentAnimation::Update()
 		}
 		else if (isPlaying)
 		{
-			controller->Update(App->time->realDeltaTime);
+			editorController->Update(App->time->realDeltaTime);
 
 			if (gameobject != nullptr)
 			{

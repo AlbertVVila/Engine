@@ -57,6 +57,7 @@ public:
 
 
 public:
+	AnimationController* editorController = nullptr;
 	AnimationController* controller = nullptr;
 	ResourceAnimation* anim = nullptr;
 	ResourceStateMachine* stateMachine = nullptr;

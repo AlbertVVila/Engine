@@ -18,6 +18,7 @@ public:
 	int minFrame;
 	int maxFrame;
 	bool isCliping = false;
+	std::vector<std::string> guiAnimations;
 
 	//bool isPlaying = false;
 
