@@ -20,7 +20,10 @@
 #define ANIMATIONS LIBRARY "Animations/"
 #define TEXTURES LIBRARY "Textures/"
 #define SCENES ASSETS "Scenes/"
+
 #define AUDIOS "Audio/"
+#define TEMPORARY_SCENE "temporaryScene"
+
 #define SHADERS "Shaders/"
 #define SCRIPTS "Scripts/"
 #define VERTEXSHADERS SHADERS "VertexShaders/"
