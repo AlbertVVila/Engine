@@ -87,7 +87,8 @@ void ModuleAudioManager::DrawGUI()
 	if (ImGui::SliderFloat("Master Volume", &masterVolume, 0.f, 2.f, "%.2f")) 	gSoloud.setGlobalVolume(masterVolume);
 
 	ImGui::NewLine();
-	ImGui::Text("Main Listener: %s", mainListener->gameobject->name.c_str());	
+	if (mainListener != nullptr) ImGui::Text("Main Listener: %s", mainListener->gameobject->name.c_str());
+	else ImGui::Text("Main Listener: No Audio Listener on the secene");
 }
 
 void ModuleAudioManager::setMainListener(int newMainListener) 
