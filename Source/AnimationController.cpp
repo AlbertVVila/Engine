@@ -77,13 +77,10 @@ void AnimationController::UpdateInstance(Instance* instance, float dt)
 			if (trueDt >= timeRemainingA)
 			{
 				instance->time += trueDt;
-				trueFrame = instance->time * anim->framesPerSecond;
-				anim->currentFrame = (int)trueFrame;
 			}
 			else if (instance->loop)
 			{
 				instance->time = instance->maxTime - timeRemainingA + trueDt;
-				trueFrame = anim->duration;
 			}
 			else
 			{

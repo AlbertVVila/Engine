@@ -269,6 +269,13 @@ void PanelState::ShowTransitionMenu(ResourceStateMachine * stateMachine)
 
 		//Blend
 
+
+		//delete
+		if (ImGui::Button("Delete transition"))
+		{
+			stateMachine->RemoveTransition(contextLink);
+			contextLink = 0;
+		}
 		ImGui::EndPopup();
 	}
 }

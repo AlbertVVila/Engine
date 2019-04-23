@@ -23,6 +23,7 @@
 
 ComponentAnimation::ComponentAnimation() : Component(nullptr, ComponentType::Animation)
 {
+
 	controller = new AnimationController();
 }
 
@@ -302,14 +303,15 @@ void ComponentAnimation::Update()
 	PROFILE;
 	if (stateMachine != nullptr)
 	{
-		if (!channelsSetted)
-		{
-			SetIndexChannels(gameobject);
-			channelsSetted = true;
-		}
-
+	
 		if (App->time->gameState == GameState::RUN)
 		{
+			if (!channelsSetted)
+			{
+				SetIndexChannels(gameobject);
+				channelsSetted = true;
+			}
+
 			controller->Update(App->time->gameDeltaTime);
 
 			if (gameobject != nullptr)
@@ -368,8 +370,8 @@ Component* ComponentAnimation::Clone() const
 
 ComponentAnimation::ComponentAnimation(const ComponentAnimation& component) : Component(component)
 {
-	anim = (ResourceAnimation*)App->resManager->Get(component.anim->GetUID());
-	stateMachine = (ResourceStateMachine*)App->resManager->Get(component.stateMachine->GetUID());
+	if(component.stateMachine != nullptr)
+		stateMachine = (ResourceStateMachine*)App->resManager->Get(component.stateMachine->GetUID());
 }
 
 

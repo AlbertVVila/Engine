@@ -350,7 +350,7 @@ std::vector<Component*> GameObject::GetComponentsInChildren(ComponentType type) 
 	return list;
 }
 
-void GameObject::RemoveComponent(const Component & component)
+void GameObject::RemoveComponent(const Component& component)
 {
 	Component* trash = nullptr;
 	std::vector<Component*>::iterator trashIt;
