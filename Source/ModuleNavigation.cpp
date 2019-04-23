@@ -123,15 +123,49 @@ void ModuleNavigation::navigableObjectToggled(GameObject* obj, const bool newSta
 void ModuleNavigation::renderNavMesh()
 {
 	if (!meshGenerated)	return;
-	//get a const instance of navmesh
-	/*const dtNavMesh* tmpNavMesh = navMesh;
+	//test process
 	for (int i = 0; i < navMesh->getMaxTiles(); ++i)
 	{
-		const dtMeshTile* tile = tmpNavMesh->getTile(i);
+		const dtMeshTile* tile = navMesh->getTile(i);
 		if (!tile->header) continue;
-		drawMeshTile();
-	}*/
-	drawMeshTile();
+
+		//drawing process
+		dtPolyRef base = navMesh->getPolyRefBase(tile);
+		for (int i = 0; i < tile->header->polyCount; ++i)
+		{
+			const dtPoly* p = &tile->polys[i];
+			if (p->getType() == DT_POLYTYPE_OFFMESH_CONNECTION)	// Skip off-mesh links.
+				continue;
+
+			const dtPolyDetail* pd = &tile->detailMeshes[i];
+
+			for (int j = 0; j < pd->triCount; ++j)
+			{
+				const unsigned char* t = &tile->detailTris[(pd->triBase + j) * 4];
+				for (int k = 0; k < 3; ++k)
+				{
+					if (t[k] < p->vertCount)
+						dd::point(ddVec3(tile->verts[p->verts[t[k]] * 3],
+							tile->verts[p->verts[t[k]] * 3 + 1],
+							tile->verts[p->verts[t[k]] * 3 + 2]), ddVec3(0, 1, 0.8), 10.0f);
+					else
+						dd::point(ddVec3(tile->detailVerts[(pd->vertBase + t[k] - p->vertCount) * 3],
+							tile->detailVerts[(pd->vertBase + t[k] - p->vertCount) * 3 + 1],
+							tile->detailVerts[(pd->vertBase + t[k] - p->vertCount) * 3 + 2]), ddVec3(1, 0, 0.5), 10.0f);
+				}
+			}
+		}
+
+	}
+	//draw inter boundaries
+
+
+	//draw outer boundaries
+
+	
+
+	
+	//drawMeshTile();
 	//glDepthMask(GL_TRUE);
 }
 
@@ -770,11 +804,11 @@ void ModuleNavigation::drawMeshTile()
 	}
 	myPoint* renderIface = new myPoint();
 	renderIface->drawPointList(points, nverts, false);*/
-	for (int i = 0; i < nverts; ++i)
+	/*for (int i = 0; i < nverts; ++i)
 	{
 		dd::point(ddVec3(verts[i * 3], verts[i * 3+1], verts[i * 3+2]), ddVec3(0,0,1), 10.0f);
 	}
-	
+	*/
 	
 	/*dd::xzSquareGrid(-500.0f * 10, 500.0f * 10, 0.0f, 1.0f * 10, math::float3(0.65f, 0.65f, 0.65f));
 	dtPolyRef base = mesh.getPolyRefBase(tile);
