@@ -16,9 +16,11 @@
 #define IMPORTED_MATERIALS LIBRARY "Materials/"
 #define MATERIALS ASSETS "Materials/"
 #define MESHES LIBRARY "Meshes/"
+#define ANIMATIONS LIBRARY "Animations/"
 #define TEXTURES LIBRARY "Textures/"
 #define SCENES ASSETS "Scenes/"
 #define IMPORTED_SCENES LIBRARY "Scenes/"
+#define TEMPORARY_SCENE "temporaryScene"
 #define SHADERS "Shaders/"
 #define SCRIPTS "Scripts/"
 #define VERTEXSHADERS SHADERS "VertexShaders/"
@@ -28,6 +30,8 @@
 #define FBXCAPITAL ".FBX"
 #define MESHEXTENSION ".m3sh"
 #define SCENEEXTENSION ".sc3ne"
+#define ANIMATIONEXTENSION ".animati0n"
+
 #define PNG ".png"
 #define TIF	".tif"
 #define JPG	".jpg"
@@ -48,8 +52,9 @@ enum class FILETYPE
 	MODEL,
 	IMPORTED_MESH,
 	SCENE,
+	ANIMATION,
 	MATERIAL,
-	NONE
+	NONE,
 };
 
 class ModuleFileSystem :

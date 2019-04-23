@@ -5,10 +5,10 @@
 #include "ComponentLight.h"
 
 #include "Geometry/Frustum.h"
-#include "pcg_random.hpp"
+#include "pcg-cpp-0.98/include/pcg_random.hpp"
 #include "Math/Quat.h"
 #include "Math/float4.h"
-#include "SDL_timer.h"
+#include "SDL/include/SDL_timer.h"
 #include <set>
 #include <unordered_set>
 #include <string>
@@ -56,6 +56,7 @@ public:
 
 	void FrustumCulling(const Frustum &frustum);
 	void Draw(const Frustum &frustum, bool isEditor = false);
+	void DrawGOGame(const GameObject& go);
 	void DrawGO(const GameObject& go, const Frustum & frustum, bool isEditor = false);
 	void DrawHierarchy();
 	void DragNDropMove(GameObject* target) ;
@@ -69,8 +70,9 @@ public:
 	unsigned SaveParShapesMesh(const par_shapes_mesh_s & mesh, char** data) const;
 
 	void SaveScene(const GameObject& rootGO, const char* sceneName, const char* folder);
-	void LoadScene(const char* sceneName, const char* folder);
+	ENGINE_API void LoadScene(const char* sceneName, const char* folder);
 	bool AddScene(const char* sceneName, const char* folder);								// Adds a scene to current opened scene from a scene file (returns true if it was loaded correctly)
+
 
 	void TakePhoto();
 	void TakePhoto(std::list<GameObject*>& target);
@@ -84,7 +86,10 @@ public:
 	void UnSelect();
 	void Pick(float normalized_x, float normalized_y);
 
-	void GetStaticGlobalAABB(AABB &aabb, std::vector<GameObject*> &bucket, unsigned int &bucketOccupation);
+	ENGINE_API GameObject* FindGameObjectByName(const char* name) const;
+	ENGINE_API GameObject* FindGameObjectByName(GameObject* parent, const char* name) const;
+
+	void GetStaticGlobalAABB(math::AABB &aabb, std::vector<GameObject*> &bucket, unsigned int &bucketOccupation);
 
 	unsigned GetNewUID();
 	std::list<ComponentLight*> GetClosestLights(LightType type, math::float3 position = math::float3::zero) const;
