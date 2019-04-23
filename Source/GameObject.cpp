@@ -21,6 +21,10 @@
 #include "ComponentButton.h"
 #include "ComponentAnimation.h"
 #include "ComponentScript.h"
+#include "ComponentAudioListener.h"
+#include "ComponentAudioSource.h"
+#include "ComponentReverbZone.h"
+
 
 #include "ResourceMesh.h"
 
@@ -291,6 +295,15 @@ Component* GameObject::CreateComponent(ComponentType type)
 		break;
 	case ComponentType::Script:
 		component = new ComponentScript(this);
+		break;
+	case ComponentType::AudioSource:
+		component = new ComponentAudioSource(this);
+		break;
+	case ComponentType::AudioListener:
+		component = new ComponentAudioListener(this);
+		break;
+	case ComponentType::ReverbZone:
+		component = new ComponentReverbZone(this);
 		break;
 	default:
 		break;

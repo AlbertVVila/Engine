@@ -21,7 +21,10 @@
 #define ANIMATIONS LIBRARY "Animations/"
 #define TEXTURES LIBRARY "Textures/"
 #define SCENES ASSETS "Scenes/"
+
+#define AUDIOS "Audio/"
 #define TEMPORARY_SCENE "temporaryScene"
+
 #define SHADERS "Shaders/"
 #define SCRIPTS "Scripts/"
 #define VERTEXSHADERS SHADERS "VertexShaders/"
@@ -42,6 +45,12 @@
 #define JSONEXT ".json"
 #define METAEXT ".meta"
 #define DLL ".dll"
+#define WAVEXTENSION ".wav"
+#define WAVCAPITAL ".WAV"
+#define OGGEXTENSION ".ogg"
+#define OGGCAPITAL ".OGG"
+#define MP3EXTENSION ".mp3"
+#define MP3CAPITAL ".MP3"
 
 #define CHECKERS "checkersTexture"
 #define NOCAMERA "nocamera"
@@ -57,7 +66,9 @@ enum class FILETYPE
 	MATERIAL,
 	SKYBOX,
 	STATEMACHINE,
+	AUDIO,
 	NONE,
+
 };
 
 class ModuleFileSystem :

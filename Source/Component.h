@@ -16,7 +16,10 @@ enum class ComponentType
 	Text,
 	Image,
 	Button,
-	Script
+	Script,
+	ReverbZone,
+	AudioListener,
+	AudioSource
 };
 
 class Component
