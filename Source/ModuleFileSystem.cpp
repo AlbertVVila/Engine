@@ -519,7 +519,10 @@ void ModuleFileSystem::ImportFiles()
 	filesToImport.clear();
 
 	// Refresh Assets panel browser
+#ifndef GAME_BUILD
 	App->editor->assets->folderContentDirty = true;
+#endif
+
 }
 
 int ModuleFileSystem::GetModTime(const char* file) const
