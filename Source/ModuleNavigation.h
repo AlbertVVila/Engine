@@ -106,6 +106,7 @@ private:
 
 	void removeNavMesh(unsigned ID);
 	void generateNavigability();
+	void addNavigableMesh();
 
 	void fillVertices();
 	void fillIndices();
@@ -117,7 +118,7 @@ private:
 	void drawMeshTile();
 
 	// Detour stuff
-	std::vector<math::float3> returnPath(math::float3 pStart, math::float3 pEnd)
+	std::vector<math::float3> returnPath(math::float3 pStart, math::float3 pEnd);
 	//void handleClick(const float* s, const float* p, bool shift);
 	
 	//variables
@@ -186,7 +187,7 @@ private:
 
 	DrawMode m_drawMode;
 
-	const ComponentRenderer* meshComponent = nullptr;
+	std::vector < const ComponentRenderer*> meshComponents;
 
 	rcConfig cfg;
 	rcContext* ctx = nullptr;
@@ -207,10 +208,13 @@ private:
 	int* tris = nullptr;
 	float* verts = nullptr;
 	float* normals = nullptr;
-	int nverts;
-	int ntris;
+	int nverts = 0;
+	int ntris = 0;
 	bool pointsUpdated = false;
 	dd::DrawVertex* points = nullptr;
+	std::vector<const AABB*> meshboxes;
+	float* bmin = nullptr;
+	float* bmax = nullptr;
 	const AABB* meshbox = nullptr;
 
 	float* pStartX = nullptr;
