@@ -18,6 +18,7 @@
 //fwd declarations
 class GameObject;
 class ComponentRenderer;
+class ComponentTransform;
 //from recast
 class rcConfig;
 class rcContext;
@@ -188,6 +189,7 @@ private:
 	DrawMode m_drawMode;
 
 	std::vector < const ComponentRenderer*> meshComponents;
+	std::vector < const ComponentTransform*> transformComponents;
 
 	rcConfig cfg;
 	rcContext* ctx = nullptr;

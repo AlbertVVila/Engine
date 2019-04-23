@@ -124,6 +124,7 @@ void ModuleNavigation::addNavigableMesh()
 {
 	meshboxes.push_back(static_cast <const AABB*>(&App->scene->selected->bbox));
 	meshComponents.push_back(static_cast <const ComponentRenderer*>(App->scene->selected->GetComponent(ComponentType::Renderer)));
+	transformComponents.push_back(static_cast <const ComponentTransform*>(App->scene->selected->GetComponent(ComponentType::Transform)));
 	std::string s = App->scene->selected->name + " added to navigation";
 	LOG(s.c_str());
 }
@@ -608,7 +609,8 @@ void ModuleNavigation::fillVertices()
 			float4 tempVertex = float4(	meshComponents[j]->mesh->meshVertices[i].x, 
 										meshComponents[j]->mesh->meshVertices[i].y,
 										meshComponents[j]->mesh->meshVertices[i].z, 1.f );
-			tempVertex = App->scene->selected->transform->global * tempVertex;
+			tempVertex = transformComponents[j]->global * tempVertex;
+
 
 			//apply the transformation of the game object to the vertex
 
@@ -662,13 +664,13 @@ void ModuleNavigation::fillNormals()
 			++currentGlobalNorm;
 		}
 	}
-
+	//revisar
 	/*normals = new float[ntris*3];
 	for (int i = 0; i < ntris*3; i+=3)
 	{
-		const float* v0 = &verts[tris[i] * 3];
-		const float* v1 = &verts[tris[i + 1] * 3];
-		const float* v2 = &verts[tris[i + 2] * 3];
+		const float* v0 = &verts[tris[i]];
+		const float* v1 = &verts[tris[i + 1]];
+		const float* v2 = &verts[tris[i + 2]];
 		float e0[3], e1[3];
 		for (int j = 0; j < 3; ++j)
 		{
