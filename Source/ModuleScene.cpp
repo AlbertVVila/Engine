@@ -975,6 +975,7 @@ void ModuleScene::Pick(float normalized_x, float normalized_y)
 
 	if (closestGO != nullptr)
 	{
+		closestGO = FindClosestParent(closestGO);
 		Select(closestGO);
 	}
 	else
@@ -987,6 +988,22 @@ void ModuleScene::Pick(float normalized_x, float normalized_y)
 	{
 		debuglines.erase(debuglines.begin());
 	}
+}
+
+GameObject * ModuleScene::FindClosestParent(GameObject * go)
+{
+	if (go->parent != nullptr)
+	{
+		if (go->parent->isBoneRoot == true)
+		{
+			return go->parent;
+		}
+	}
+	else if (go->parent == nullptr)
+	{
+		return nullptr;
+	}
+	FindClosestParent(go->parent);
 }
 
 GameObject * ModuleScene::FindGameObjectByName(const char* name) const

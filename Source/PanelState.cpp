@@ -192,7 +192,7 @@ void PanelState::ShowNodeMenu(ResourceStateMachine * stateMachine)
 {
 	if (ImGui::BeginPopup("Node Context Menu"))
 	{
-		ImGui::TextUnformatted("Node Context Menu");
+		ImGui::TextUnformatted("Transition Context Menu");
 		ImGui::Separator();
 
 		//Node Name
@@ -242,11 +242,11 @@ void PanelState::ShowNodeMenu(ResourceStateMachine * stateMachine)
 	}
 }
 
-void PanelState::ShowTransitionMenu(ResourceStateMachine * stateMachine)
+void PanelState::ShowTransitionMenu(ResourceStateMachine* stateMachine)
 {
 	if (ImGui::BeginPopup("Link Context Menu"))
 	{
-		ImGui::TextUnformatted("Transition Context Menu");
+		ImGui::TextUnformatted("Link Context Menu");
 		ImGui::Separator();
 
 		//Origin
@@ -271,11 +271,13 @@ void PanelState::ShowTransitionMenu(ResourceStateMachine * stateMachine)
 
 
 		//delete
-		if (ImGui::Button("Delete transition"))
+		if (ImGui::MenuItem("Delete"))
 		{
+			ed::DeleteLink(ed::LinkId((contextLink + 1) + 2));
 			stateMachine->RemoveTransition(contextLink);
-			contextLink = 0;
+			stateMachine->Save();
 		}
+
 		ImGui::EndPopup();
 	}
 }
@@ -318,7 +320,7 @@ void PanelState::AddNode(ResourceStateMachine* stateMachine, HashString nodeName
 	{
 		if (stateMachine->GetNodeName(i) == nodeName)
 		{
-			//Should forbid the creation
+			nodeName = HashString("Carefull, always rename after creation!");
 		}
 	}
 	stateMachine->AddNode(nodeName, clipName);

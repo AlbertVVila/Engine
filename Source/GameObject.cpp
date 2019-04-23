@@ -196,17 +196,6 @@ void GameObject::Update()
 
 	}
 
-	//For testing purposes--------------------
-	if (isBoneRoot)
-	{
-		if (App->input->GetKey(SDL_SCANCODE_L))
-		{
-			ComponentAnimation* compAnim = (ComponentAnimation*)GetComponent(ComponentType::Animation);
-			compAnim->SendTriggerToStateMachine(HashString("Death"));
-		}
-	}
-	//----------------------------------------
-
 	for (const auto& child : children)
 	{
 		child->Update();
