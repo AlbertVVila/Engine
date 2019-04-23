@@ -374,6 +374,7 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 	// Get lists with all imported resources and materials
 	std::set<std::string> importedTextures;
 	std::set<std::string> importedMaterials;
+	std::set<std::string> importedMeshes;
 	ListFiles(TEXTURES, importedTextures);
 	ListFiles(IMPORTED_MATERIALS, importedMaterials);
 
