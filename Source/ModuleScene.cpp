@@ -975,8 +975,17 @@ void ModuleScene::Pick(float normalized_x, float normalized_y)
 
 	if (closestGO != nullptr)
 	{
-		closestGO = FindClosestParent(closestGO);
-		Select(closestGO);
+		GameObject* closestGoForReal = nullptr;
+		closestGoForReal = FindClosestParent(closestGO);
+		if(closestGoForReal != nullptr)
+		{
+			Select(closestGoForReal);
+		}
+		else
+		{
+			Select(closestGO);
+		}
+	
 	}
 	else
 	{
@@ -990,7 +999,7 @@ void ModuleScene::Pick(float normalized_x, float normalized_y)
 	}
 }
 
-GameObject * ModuleScene::FindClosestParent(GameObject * go)
+GameObject* ModuleScene::FindClosestParent(GameObject* go)
 {
 	if (go->parent != nullptr)
 	{
@@ -999,19 +1008,19 @@ GameObject * ModuleScene::FindClosestParent(GameObject * go)
 			return go->parent;
 		}
 	}
-	else if (go->parent == nullptr)
+	else
 	{
 		return nullptr;
 	}
-	FindClosestParent(go->parent);
+	return FindClosestParent(go->parent);
 }
 
-GameObject * ModuleScene::FindGameObjectByName(const char* name) const
+GameObject* ModuleScene::FindGameObjectByName(const char* name) const
 {
 	return FindGameObjectByName(App->scene->root, name);
 }
 
-GameObject * ModuleScene::FindGameObjectByName(GameObject* parent, const char* name) const
+GameObject* ModuleScene::FindGameObjectByName(GameObject* parent, const char* name) const
 {
 	std::stack<GameObject*> GOs;
 	GOs.push(parent);
