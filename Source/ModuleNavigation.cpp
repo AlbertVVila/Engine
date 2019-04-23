@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "Globals.h"
 #include "GameObject.h"
+#include "MathGeoLib/include/Math/float3.h"
 
 #include "ModuleNavigation.h"
 #include "ModuleScene.h"
@@ -45,9 +46,6 @@ ModuleNavigation::~ModuleNavigation()
 
 void ModuleNavigation::cleanValues()
 {
-	RELEASE_ARRAY(verts);
-	RELEASE_ARRAY(tris);
-	RELEASE_ARRAY(normals);
 	RELEASE_ARRAY(m_triareas);
 	m_triareas = 0;
 	rcFreeHeightField(heightField);
@@ -89,29 +87,30 @@ void ModuleNavigation::DrawGUI()
 		ImGui::DragFloat("Max slope scaling", &maxSlopeScaling, sliderIncreaseSpeed, minSliderValue, maxSlopeValue);
 		ImGui::DragFloat("Max step height", &maxStepHeightScaling, sliderIncreaseSpeed, minSliderValue, maxSlopeValue);
 
-		if (ImGui::Button("Add mesh to navigation"))
-		{
-			addNavigableMesh();
-		}
-		
-		if (meshComponents.size() > 0 && ImGui::Button("Generate navigability"))
+		if (ImGui::Button("Generate navigability"))
 		{
 			generateNavigability();
-		}
 
+		}
 	}
 	if (ImGui::CollapsingHeader("Object"))
 	{
 		
 	}
-}
-
-void ModuleNavigation::addNavigableMesh()
-{
-	meshboxes.push_back(static_cast <const AABB*>(&App->scene->selected->bbox));
-	meshComponents.push_back(static_cast <const ComponentRenderer*>(App->scene->selected->GetComponent(ComponentType::Renderer)));
-	std::string s = App->scene->selected->name + " added to navigation";
-	LOG(s.c_str());
+	if (ImGui::CollapsingHeader("Detour"))
+	{
+		ImGui::Text("Start Point:");
+		ImGui::InputFloat3("SP", pStart, 3);
+		
+		ImGui::Text("End Point:");
+		ImGui::InputFloat3("EP", pEnd, 3);
+		
+		if (ImGui::Button("Generate Paths"))
+			if (!pStart) return;
+			else if (!pStart) return;
+			else
+				//std::vector<math::float3> lstPoints = returnPath(pStart, pEnd);
+	}
 }
 
 void ModuleNavigation::navigableObjectToggled(GameObject* obj, const bool newState)
@@ -194,29 +193,20 @@ void ModuleNavigation::generateNavigability()
 	pointsUpdated = true;
 
 	//declaring mesh box
-	//meshbox  = static_cast <const AABB*>(&App->scene->selected->bbox);
-	bmin = new float[3];
-	bmin[0] = meshboxes[0]->minPoint.x; bmin[1] = meshboxes[0]->minPoint.y; bmin[2] = meshboxes[0]->minPoint.z;
-
-	bmax = new float[3];
-	bmax[0] = meshboxes[0]->maxPoint.x; bmax[1] = meshboxes[0]->maxPoint.y; bmax[2] = meshboxes[0]->maxPoint.z;
-
-	for (int i = 1; i < meshboxes.size(); ++i)
-	{
-		if (meshboxes[i]->minPoint.x < bmin[0]) bmin[0] = meshboxes[i]->minPoint.x;
-		if (meshboxes[i]->minPoint.y < bmin[1]) bmin[1] = meshboxes[i]->minPoint.y;
-		if (meshboxes[i]->minPoint.x < bmin[2]) bmin[2] = meshboxes[i]->minPoint.z;
-
-		if (meshboxes[i]->maxPoint.x > bmax[0]) bmax[0] = meshboxes[i]->maxPoint.x;
-		if (meshboxes[i]->maxPoint.y > bmax[1]) bmax[1] = meshboxes[i]->maxPoint.y;
-		if (meshboxes[i]->maxPoint.z > bmax[2]) bmax[2] = meshboxes[i]->maxPoint.z;
-	}
+	meshbox  = static_cast <const AABB*>(&App->scene->selected->bbox);
 	
-	//meshComponent = static_cast <const ComponentRenderer*>(App->scene->selected->GetComponent(ComponentType::Renderer));
+	const float bmin[3] = {meshbox->minPoint.x, meshbox->minPoint.y, meshbox->minPoint.z };
+	const float bmax[3] = {meshbox->maxPoint.x, meshbox->maxPoint.y, meshbox->maxPoint.z};
+	
+	meshComponent = static_cast <const ComponentRenderer*>(App->scene->selected->GetComponent(ComponentType::Renderer));
 
+	nverts = meshComponent->mesh->meshVertices.size();
+	verts = new float[nverts*3];
 	fillVertices();
-
 	//Indices
+	ntris = meshComponent->mesh->meshIndices.size()/3;
+	tris = new int[ntris*3];
+	
 	fillIndices();
 
 	//calculate normals
@@ -283,7 +273,7 @@ void ModuleNavigation::generateNavigability()
 	// If your input data is multiple meshes, you can transform them here, calculate
 	// the are type for each of the meshes and rasterize them.
 	memset(m_triareas, 0, ntris * sizeof(unsigned char));
-	rcMarkWalkableTriangles(ctx, cfg.walkableSlopeAngle, verts, nverts, tris, ntris, m_triareas);//we have more verts than tris, may not be right, sometimes does not enter condition inside this function
+	rcMarkWalkableTriangles(ctx, cfg.walkableSlopeAngle, verts, nverts, tris, ntris, m_triareas);//we have more verts than tris, may not be right
 	if (!rcRasterizeTriangles(ctx, verts, nverts, tris, m_triareas, ntris, *heightField, cfg.walkableClimb))
 	{
 		LOG("buildNavigation: Could not rasterize triangles.");
@@ -303,7 +293,7 @@ void ModuleNavigation::generateNavigability()
 	if (filterLowHangingObstacles)
 		rcFilterLowHangingWalkableObstacles(ctx, cfg.walkableClimb, *heightField);
 	if (filterLedgeSpans)
-		rcFilterLedgeSpans(ctx, cfg.walkableHeight, cfg.walkableClimb, *heightField);//a little too complex, tocheck
+		rcFilterLedgeSpans(ctx, cfg.walkableHeight, cfg.walkableClimb, *heightField);//a little too complex
 	if (filterWalkableLowHeightSpans)
 		rcFilterWalkableLowHeightSpans(ctx, cfg.walkableHeight, *heightField);
 
@@ -583,11 +573,11 @@ void ModuleNavigation::generateNavigability()
 
 void ModuleNavigation::fillVertices()
 {
-	//nverts = meshComponent->mesh->meshVertices.size();
-	
-	for (int i = 0; i < meshComponents.size(); ++i)
+	for (int i = 0; i < nverts; ++i)
 	{
-		nverts += meshComponents[i]->mesh->meshVertices.size();
+		verts[i* 3] = meshComponent->mesh->meshVertices[i].x;
+		verts[i* 3 + 1] = meshComponent->mesh->meshVertices[i].y;
+		verts[i* 3 + 2] = meshComponent->mesh->meshVertices[i].z;
 	}
 	verts = new float[nverts * 3];
 	int currentGlobalVert = 0;
@@ -613,22 +603,11 @@ void ModuleNavigation::fillVertices()
 
 void ModuleNavigation::fillIndices()
 {
-	for (int i = 0; i < meshComponents.size(); ++i)
+	for (int i = 0; i < ntris; ++i)
 	{
-		ntris += meshComponents[i]->mesh->meshIndices.size()/3;
-	}
-	tris = new int[ntris * 3];//tris maps vertex and triangles
-	int currentGlobalTri = 0;
-	for (int j = 0; j < meshComponents.size(); ++j)
-	{
-		for (int i = 0; i < meshComponents[j]->mesh->meshIndices.size(); i+= 3)
-		{
-			//changed y and z order
-			tris[currentGlobalTri] = meshComponents[j]->mesh->meshIndices[i];
-			tris[currentGlobalTri + 1] = meshComponents[j]->mesh->meshIndices[i + 1];
-			tris[currentGlobalTri + 2] = meshComponents[j]->mesh->meshIndices[i + 2];
-			currentGlobalTri+= 3;
-		}
+		tris[i * 3] = meshComponent->mesh->meshIndices[i];
+		tris[i * 3 + 1] = meshComponent->mesh->meshIndices[i + 1];
+		tris[i * 3 + 2] = meshComponent->mesh->meshIndices[i + 2];
 	}
 }
 
@@ -665,7 +644,7 @@ void ModuleNavigation::fillNormals()
 			e0[j] = v1[j] - v0[j];
 			e1[j] = v2[j] - v0[j];
 		}
-		float* n = &normals[i];
+		float* n = &normals[i*3];
 		n[0] = e0[1] * e1[2] - e0[2] * e1[1];
 		n[1] = e0[2] * e1[0] - e0[0] * e1[2];
 		n[2] = e0[0] * e1[1] - e0[1] * e1[0];
@@ -924,3 +903,112 @@ void ModuleNavigation::drawMeshTile()
 
 	dd->depthMask(true);*/
 }
+
+//Detour stuff http://irrlicht.sourceforge.net/forum/viewtopic.php?f=9&t=49482
+std::vector<math::float3>  ModuleNavigation::returnPath(math::float3 pStart, math::float3 pEnd)
+{
+	std::vector<math::float3> lstPoints;
+	
+	if (navQuery)
+	{
+		if (navMesh == 0)
+		{
+			return  lstPoints;
+		}
+
+		dtQueryFilter m_filter;
+		dtPolyRef m_startRef;
+		dtPolyRef m_endRef;
+
+		const int MAX_POLYS = 256;
+		dtPolyRef m_polys[MAX_POLYS];
+		dtPolyRef returnedPath[MAX_POLYS];
+		float m_straightPath[MAX_POLYS * 3];
+		int numStraightPaths;
+		float  m_spos[3] = { pStart.X, pStart.Y, pStart.Z };
+		float  m_epos[3] = { pEnd.X, pEnd.Y, pEnd.Z };
+		float m_polyPickExt[3];
+		m_polyPickExt[0] = 2;
+		m_polyPickExt[1] = 4;
+		m_polyPickExt[2] = 2;
+
+
+		navQuery->findNearestPoly(m_spos, m_polyPickExt, &m_filter, &m_startRef, 0);
+
+		if (m_startRef == 0)
+		{
+			return lstPoints;
+
+		}
+		navQuery->findNearestPoly(m_epos, m_polyPickExt, &m_filter, &m_endRef, 0);
+
+		if (m_endRef == 0)
+		{
+			return lstPoints;
+
+		}
+		dtStatus findStatus = DT_FAILURE;
+		int pathCount;
+
+		findStatus = navQuery->findPath(m_startRef, m_endRef, m_spos, m_epos, &m_filter, returnedPath, &pathCount, MAX_POLYS);
+
+
+
+		if (pathCount > 0)
+		{
+			findStatus = navQuery->findStraightPath(m_spos, m_epos, returnedPath,
+				pathCount, m_straightPath, 0, 0, &numStraightPaths, MAX_POLYS);
+
+			for (int i = 0; i < numStraightPaths; ++i)
+			{
+				float3 cpos(m_straightPath[i * 3], m_straightPath[i * 3 + 1] + 0.25,
+					m_straightPath[i * 3 + 2]);
+
+				lstPoints.push_back(cpos);
+				//path->AddNode(node);
+			}
+
+
+		}
+
+	}
+	return lstPoints;
+}
+/* TODO add where the mesh is calculated!!!
+
+	/*scene::IAnimatedMesh *terrain_model = smgr->addHillPlaneMesh("groundPlane", // Name of the scenenode
+		tileSize, // Tile size
+		tileCount, // Tile count
+		0, // Material
+		20.0f, // Hill height
+		core::dimension2d<f32>(0.0f, 1.0f), // countHills
+		core::dimension2d<f32>(1.0f, 1.0f)); ;// textureRepeatCount
+
+	terrain_node = smgr->addAnimatedMeshSceneNode(terrain_model);
+
+	scene::IMeshBuffer *terbuffer = terrain_node->getMesh()->getMeshBuffer(0);
+
+
+	if (terbuffer)
+	{
+		recast = new RecastUtilM();
+		if (recast->handleBuild(terbuffer))
+		{
+			scene::SMesh* smesh = new scene::SMesh();
+			if (!recast->setupIrrSMeshFromRecastDetailMesh(smesh))
+			{
+				printf("recast->setupIrrSMeshFromRecastDetailMesh(smesh): FAILED!\n");
+			}
+			else
+			{
+				scene::ISceneNode *naviNode = smgr->addOctTreeSceneNode(smesh);
+				naviNode->setName("Terrain");
+				naviNode->setDebugDataVisible(scene::EDS_MESH_WIRE_OVERLAY);
+			}
+			smesh->drop();
+		}
+	}
+	*/
+
+//On your event input positions
+//std::vector<math::float3> lstPoints = ModuleNavigation->returnPath(vector3df_Start, vector3df_End);
