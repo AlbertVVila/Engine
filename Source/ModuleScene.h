@@ -82,6 +82,7 @@ public:
 	void Select(GameObject* gameobject);
 	void UnSelect();
 	void Pick(float normalized_x, float normalized_y);
+	GameObject* FindClosestParent(GameObject* go);
 
 	ENGINE_API GameObject * FindGameObjectByName(const char* name) const;
 	ENGINE_API GameObject * FindGameObjectByName(GameObject* parent, const char* name) const;

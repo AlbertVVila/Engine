@@ -17,6 +17,7 @@
 #define MATERIALS ASSETS "Materials/"
 #define MESHES LIBRARY "Meshes/"
 #define BONES LIBRARY "Animations/Bones/"
+#define STATEMACHINES LIBRARY "StateMachines/"
 #define ANIMATIONS LIBRARY "Animations/"
 #define TEXTURES LIBRARY "Textures/"
 #define SCENES ASSETS "Scenes/"
@@ -34,6 +35,7 @@
 #define MESHEXTENSION ".m3sh"
 #define BONEEXTENSION ".b0ne"
 #define ANIMATIONEXTENSION ".animati0n"
+#define STATEMACHINEEXTENSION ".st4tem4chine"
 #define PNG ".png"
 #define TIF	".tif"
 #define JPG	".jpg"
@@ -62,6 +64,8 @@ enum class FILETYPE
 	SCENE,
 	ANIMATION,
 	MATERIAL,
+	SKYBOX,
+	STATEMACHINE,
 	AUDIO,
 	NONE,
 

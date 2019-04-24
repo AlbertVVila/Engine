@@ -1,23 +1,33 @@
-#ifndef __STATEMACHINE_H_
-#define __STATEMACHINE_H_
+#ifndef __RESOURCESTATEMACHINE_H_
+#define __RESOURCESTATEMACHINE_H_
 
+#include "Resource.h"
 
 #include "HashString.h"
 #include <vector>
 
-class Animation;
+#define MAX_CLIP_NAME 64
 
-class StateMachine
+class ResourceAnimation;
+
+class ResourceStateMachine : public Resource
 {
 public:
-
-
-	StateMachine();
-	~StateMachine();
+	ResourceStateMachine(unsigned uid);
+	ResourceStateMachine(const ResourceStateMachine& resource);
+	virtual ~ResourceStateMachine();
 
 public:
-	
-	void AddClip(const HashString name, Animation* anim, bool loop);
+	bool LoadInMemory() override;
+	void DeleteFromMemory() override;
+	void Delete() override;
+
+	unsigned GetStateMachineSize();
+	void SetStateMachine(const char* data);
+	void SaveStateMachineData(char* data);
+	void Save();
+
+	void AddClip(const HashString name, unsigned UID, bool loop);
 	void AddNode(const HashString name,const HashString clipName);
 	void AddTransition(const HashString origin, const HashString destiny, const HashString trigger, unsigned blend);
 
@@ -26,12 +36,11 @@ public:
 	unsigned FindTransition(const HashString origin, const HashString trigger);
 
 	//Clips setters and getters
-
 	HashString GetClipName(unsigned index);
-	Animation* GetClipAnimation(unsigned index);
+	unsigned GetClipResource(unsigned index);
 	bool GetClipLoop(unsigned index);
 	void SetClipName(unsigned index, HashString name);
-	void SetClipAnimation(unsigned index, Animation* anim);
+	void SetClipResource(unsigned index, unsigned UID);
 	void SetClipLoop(unsigned index, bool loop);
 
 	//Transitions setters and getters
@@ -43,6 +52,8 @@ public:
 	void SetTransitionDestiny(unsigned index, HashString destiny);
 	void SetTransitionTrigger(unsigned index, HashString trigger);
 	void SetTransitionBlend(unsigned index, unsigned blend);
+
+	void RenameTransitionDueNodeChanged(HashString previous, HashString newName);
 
 	//Nodes setters and getters
 	HashString GetNodeName(unsigned index);
@@ -60,16 +71,27 @@ public:
 	void RemoveNode(unsigned UID);
 	void RemoveTransition(unsigned UID);
 
+	void ReceiveTrigger(HashString trigger, unsigned &blend);
+
+	bool isClipsEmpty() { return clips.empty(); }
+	bool isNodesEmpty() { return nodes.empty(); }
+	bool isTransitionsEmpty() { return transitions.empty(); }
+
+	unsigned GetDefaultNode() { return defaultNode; }
+	void SetDefaultNode(unsigned node) { defaultNode = node; }
+
+
+	std::string name = "";
 private:
-	
+
 	struct Clip
 	{
 		HashString name;
-		Animation* anim = nullptr;
+		unsigned UID = 0u;
 		bool loop = false;
 
 		Clip() { ; }
-		Clip(HashString n, Animation* a, bool l) : name(n), anim(a), loop(l) { ; }
+		Clip(HashString n, unsigned u, bool l) : name(n), UID(u), loop(l) { ; }
 	};
 
 	struct Transition
@@ -78,7 +100,7 @@ private:
 		HashString destiny;
 		HashString trigger;
 
-		unsigned blend = 200u;
+		unsigned blend = 1u;
 
 		Transition() { ; }
 		Transition(HashString o, HashString d, HashString t, unsigned b) : 
@@ -100,4 +122,4 @@ private:
 	unsigned defaultNode = 0u;
 };
 
-#endif // __STATEMACHINE_H_
+#endif // __RESOURCESTATEMACHINE_H_
