@@ -68,13 +68,13 @@ public:
 	void SetPrimitiveMesh(par_shapes_mesh_s * mesh, PRIMITIVES type);
 	unsigned SaveParShapesMesh(const par_shapes_mesh_s & mesh, char** data) const;
 
-	void SaveScene(const GameObject &rootGO, const char* scene, const char* scenePath);
+	void SaveScene(const GameObject &rootGO, const char* scene, const char* scenePath, bool isTemporary = false);
 	void TakePhoto();
 	void TakePhoto(std::list<GameObject*>& target);
 	void RestorePhoto(GameObject* photo);
 	void RestoreLastPhoto();
 	void Redo();
-	ENGINE_API void LoadScene(const char* scene, const char* path);
+	ENGINE_API void LoadScene(const char* scene, const char* path, bool isTemporary = false);
 	bool AddScene(const char* scene, const char* scenePath);								// Adds a scene to current opened scene from a scene file (returns true if it was loaded correctly)
 
 	void ClearScene();
@@ -82,6 +82,7 @@ public:
 	void Select(GameObject* gameobject);
 	void UnSelect();
 	void Pick(float normalized_x, float normalized_y);
+	GameObject* FindClosestParent(GameObject* go);
 
 	ENGINE_API GameObject * FindGameObjectByName(const char* name) const;
 	ENGINE_API GameObject * FindGameObjectByName(GameObject* parent, const char* name) const;

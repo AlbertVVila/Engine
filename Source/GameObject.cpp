@@ -22,6 +22,10 @@
 #include "ComponentButton.h"
 #include "ComponentAnimation.h"
 #include "ComponentScript.h"
+#include "ComponentAudioListener.h"
+#include "ComponentAudioSource.h"
+#include "ComponentReverbZone.h"
+
 
 #include "ResourceMesh.h"
 
@@ -29,6 +33,7 @@
 #include "ResourceMaterial.h"
 #include "ResourceMesh.h"
 
+#include "HashString.h"
 #include "myQuadTree.h"
 #include "AABBTree.h"
 #include <stack>
@@ -310,6 +315,15 @@ Component* GameObject::CreateComponent(ComponentType type)
 	case ComponentType::Script:
 		component = new ComponentScript(this);
 		break;
+	case ComponentType::AudioSource:
+		component = new ComponentAudioSource(this);
+		break;
+	case ComponentType::AudioListener:
+		component = new ComponentAudioListener(this);
+		break;
+	case ComponentType::ReverbZone:
+		component = new ComponentReverbZone(this);
+		break;
 	default:
 		break;
 	}
@@ -357,7 +371,7 @@ std::vector<Component*> GameObject::GetComponentsInChildren(ComponentType type) 
 	return list;
 }
 
-void GameObject::RemoveComponent(const Component & component)
+void GameObject::RemoveComponent(const Component& component)
 {
 	Component* trash = nullptr;
 	std::vector<Component*>::iterator trashIt;
@@ -895,6 +909,21 @@ void GameObject::SetStaticAncestors()
 		parents.push(go->parent);
 	}
 	
+}
+
+void GameObject::OnPlay()
+{
+	//Go through all components letting them know play button has been pressed
+	for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+	{
+		(*it)->OnPlay();
+	}
+
+	//Recursive, this will only be executed on play
+	for (std::list<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
+	{
+		(*it)->OnPlay();
+	}
 }
 
 void GameObject::UpdateTransforms(math::float4x4 parentGlobal)

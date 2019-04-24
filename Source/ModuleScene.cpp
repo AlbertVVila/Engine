@@ -678,7 +678,7 @@ unsigned ModuleScene::SaveParShapesMesh(const par_shapes_mesh_s &mesh, char** da
 	return size;
 }
 
-void ModuleScene::SaveScene(const GameObject& rootGO, const char* scene, const char* scenePath)
+void ModuleScene::SaveScene(const GameObject& rootGO, const char* scene, const char* scenePath, bool isTemporary)
 {
 	JSON *json = new JSON();
 	JSON_value *array =json->CreateValue(rapidjson::kArrayType);
@@ -692,9 +692,12 @@ void ModuleScene::SaveScene(const GameObject& rootGO, const char* scene, const c
 	App->fsystem->Save(file.c_str(), json->ToString().c_str(), json->Size());
 	RELEASE(json);
 
-	// Update scene info
-	name = scene;
-	path = scenePath;
+	if (!isTemporary)
+	{
+		// Update scene info
+		name = scene;
+		path = scenePath;
+	}
 }
 void ModuleScene::TakePhoto()
 {
@@ -789,10 +792,10 @@ void ModuleScene::Redo()
 	}
 }
 
-void ModuleScene::LoadScene(const char* scene, const char* scenePath)
+void ModuleScene::LoadScene(const char* scene, const char* scenePath, bool isTemporary)
 {
 	ClearScene();
-	if (AddScene(scene, scenePath))
+	if (AddScene(scene, scenePath) && !isTemporary)
 	{
 		path = scenePath;
 		name = scene;
@@ -878,7 +881,6 @@ void ModuleScene::ClearScene()
 {
 	CleanUp();
 	camera_notfound_texture = (ResourceTexture*)App->resManager->Get(NOCAMERA);
-	name.clear();	
 	staticGOs.clear();
 	dynamicGOs.clear();
 	staticFilteredGOs.clear();
@@ -973,7 +975,17 @@ void ModuleScene::Pick(float normalized_x, float normalized_y)
 
 	if (closestGO != nullptr)
 	{
-		Select(closestGO);
+		GameObject* closestGoForReal = nullptr;
+		closestGoForReal = FindClosestParent(closestGO);
+		if(closestGoForReal != nullptr)
+		{
+			Select(closestGoForReal);
+		}
+		else
+		{
+			Select(closestGO);
+		}
+	
 	}
 	else
 	{
@@ -987,12 +999,28 @@ void ModuleScene::Pick(float normalized_x, float normalized_y)
 	}
 }
 
-GameObject * ModuleScene::FindGameObjectByName(const char* name) const
+GameObject* ModuleScene::FindClosestParent(GameObject* go)
+{
+	if (go->parent != nullptr)
+	{
+		if (go->parent->isBoneRoot == true)
+		{
+			return go->parent;
+		}
+	}
+	else
+	{
+		return nullptr;
+	}
+	return FindClosestParent(go->parent);
+}
+
+GameObject* ModuleScene::FindGameObjectByName(const char* name) const
 {
 	return FindGameObjectByName(App->scene->root, name);
 }
 
-GameObject * ModuleScene::FindGameObjectByName(GameObject* parent, const char* name) const
+GameObject* ModuleScene::FindGameObjectByName(GameObject* parent, const char* name) const
 {
 	std::stack<GameObject*> GOs;
 	GOs.push(parent);
