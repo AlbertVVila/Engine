@@ -12,6 +12,7 @@
 #include "ModuleTextures.h"
 #include "ModuleSpacePartitioning.h"
 #include "ModuleWindow.h"
+#include "ModuleScript.h"
 
 #include "GameObject.h"
 #include "ComponentCamera.h"
@@ -107,6 +108,13 @@ bool ModuleScene::Start()
 
 update_status ModuleScene::PreUpdate()
 {
+	if (loadScene)
+	{
+		LoadScene(sceneName.c_str(), SCENES);
+		App->scripting->onStart = true;
+		loadScene = false;
+	}
+
 #ifndef GAME_BUILD
 	FrustumCulling(*App->camera->editorcamera->frustum);
 #else
