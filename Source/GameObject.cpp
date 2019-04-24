@@ -899,7 +899,7 @@ void GameObject::SetStaticAncestors()
 
 void GameObject::UpdateTransforms(math::float4x4 parentGlobal)
 {
-	PROFILE;
+	//PROFILE;
 	if (movedFlag)
 	{
 		transform->local = math::float4x4::FromTRS(transform->position, transform->rotation, transform->scale);
@@ -929,7 +929,7 @@ void GameObject::UpdateTransforms(math::float4x4 parentGlobal)
 
 bool GameObject::CheckDelete()
 {
-	PROFILE;
+	//PROFILE;
 	if (deleteFlag) //Delete GO
 	{
 		CleanUp();
