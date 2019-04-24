@@ -271,6 +271,7 @@ void ComponentAnimation::SendTriggerToStateMachine(HashString trigger)
 		stateMachine->ReceiveTrigger(trigger, blend);
 		if (prevNode != stateMachine->GetDefaultNode())
 		{
+			SetIndexChannels(gameobject, GetAnimFromStateMachine());
 			PlayNextNode(blend);
 		}
 	}
@@ -321,14 +322,14 @@ ComponentAnimation::EditorContext* ComponentAnimation::GetEditorContext()
 void ComponentAnimation::Update()
 {
 	PROFILE;
-	if (stateMachine != nullptr)
+	if (stateMachine != nullptr && stateMachine->GetClipsSize() > 0u && stateMachine->GetNodesSize() > 0u)
 	{
 	
 		if (App->time->gameState == GameState::RUN)
 		{
 			if (!channelsSetted)
 			{
-				SetIndexChannels(gameobject);
+				SetIndexChannels(gameobject, GetAnimFromStateMachine());
 				channelsSetted = true;
 			}
 
@@ -353,7 +354,8 @@ void ComponentAnimation::Update()
 
 void ComponentAnimation::OnPlay()
 {
-	controller->Play(GetAnimFromStateMachine(), GetLoopFromStateMachine(), GetSpeedFromStateMachine());
+	if(stateMachine != nullptr && stateMachine->GetClipsSize() > 0u && stateMachine->GetNodesSize() > 0u)
+		controller->Play(GetAnimFromStateMachine(), GetLoopFromStateMachine(), GetSpeedFromStateMachine());
 }
 
 void ComponentAnimation::UpdateGO(GameObject* go)
@@ -420,12 +422,12 @@ void ComponentAnimation::Load(JSON_value* value)
 	stateMachine = (ResourceStateMachine*)App->resManager->Get(stateMachineUID);
 }
 
-void ComponentAnimation::SetIndexChannels(GameObject* GO)
+void ComponentAnimation::SetIndexChannels(GameObject* GO, ResourceAnimation* anim)
 {
 	GO->animationIndexChannel = anim->GetIndexChannel(GO->name.c_str());
 
 	for (const auto& child : GO->children)
 	{
-		SetIndexChannels(child);
+		SetIndexChannels(child, anim);
 	}
 }

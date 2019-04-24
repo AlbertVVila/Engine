@@ -31,7 +31,7 @@ public:
 	float GetSpeedFromStateMachine();
 	void PlayNextNode(unsigned blend);
 
-	void SetIndexChannels(GameObject* GO);
+	void SetIndexChannels(GameObject* GO, ResourceAnimation* Ranim);
 	void UpdateGO(GameObject* gameobject);
 	void ResetResource();
 

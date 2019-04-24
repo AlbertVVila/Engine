@@ -32,7 +32,6 @@ void AnimationController::PlayNextNode(ResourceAnimation * anim, bool loop, floa
 	current->loop = loop;
 	current->speed = speed;
 	current->time = 0.0f;
-
 }
 
 
