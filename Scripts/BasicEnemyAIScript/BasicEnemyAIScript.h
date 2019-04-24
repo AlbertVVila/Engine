@@ -9,6 +9,8 @@
 #define BasicEnemyAIScript_API __declspec(dllimport)
 #endif
 
+class GameObject;
+
 enum class EnemyState
 {
 	STANDUP,
@@ -26,15 +28,26 @@ public:
 
 	void Expose(ImGuiContext* context) override;
 
+private:
+	void StandUp();
+	void Chase();
+
+	GameObject* GetGameObjectRecursiveByName(GameObject* gameObject, const char* name);
+
 public:
 	EnemyState enemyState = EnemyState::STANDUP;
+
+private:
+	GameObject* player = nullptr;
+	std::string playerName = "Player";
 
 	// Stand-Up variables
 	float standupSpeed = 1.0f;
 	float yTranslation = 20.0f;
 
-private:
 	float auxTranslation = 0.0f;
+
+	math::AABB* myBbox = nullptr;
 };
 
 #endif __BasicEnemyAIScript_h__
