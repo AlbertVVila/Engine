@@ -357,6 +357,11 @@ bool ResourceStateMachine::GetClipLoop(unsigned index)
 	return clips[index].loop;
 }
 
+float ResourceStateMachine::GetClipSpeed(unsigned index)
+{
+	return clips[index].clipSpeed;
+}
+
 HashString ResourceStateMachine::GetTransitionOrigin(unsigned index)
 {
 	return transitions[index].origin;
@@ -415,6 +420,11 @@ void ResourceStateMachine::SetClipResource(unsigned index, unsigned UID)
 void ResourceStateMachine::SetClipLoop(unsigned index, bool loop)
 {
 	clips[index].loop = loop;
+}
+
+void ResourceStateMachine::SetClipSpeed(unsigned index, float speed)
+{
+	clips[index].clipSpeed = speed;
 }
 
 void ResourceStateMachine::SetTransitionOrigin(unsigned index, HashString origin)

@@ -28,10 +28,10 @@ public:
 	void SendTriggerToStateMachine(HashString trigger);
 	ResourceAnimation* GetAnimFromStateMachine();
 	bool GetLoopFromStateMachine();
+	float GetSpeedFromStateMachine();
 	void PlayNextNode(unsigned blend);
 
 	void SetIndexChannels(GameObject* GO);
-	void PlayAnimation(unsigned blend);
 	void UpdateGO(GameObject* gameobject);
 	void ResetResource();
 

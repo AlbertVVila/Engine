@@ -16,7 +16,7 @@ public:
 		ResourceAnimation* anim = nullptr;
 		float time = 0.0f;
 		bool loop = true;
-		float speed = 0.3f;
+		float speed = 1.f;
 
 		Instance* next = nullptr;
 		float fadeDuration = 0.0f;
@@ -33,8 +33,8 @@ public:
 	AnimationController();
 	~AnimationController();
 
-	void Play(ResourceAnimation* anim, bool loop);
-	void PlayNextNode(ResourceAnimation* anim, bool loop, unsigned blend);
+	void Play(ResourceAnimation* anim, bool loop, float speed);
+	void PlayNextNode(ResourceAnimation* anim, bool loop, float speed, unsigned blend);
 	void Update(float dt);
 	void UpdateInstance(Instance* ins, float dt);
 	void ReleaseInstance(Instance* ins);

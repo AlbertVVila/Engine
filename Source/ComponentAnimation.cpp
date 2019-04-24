@@ -135,7 +135,7 @@ void ComponentAnimation::DrawProperties()
 					deletePopup = false;
 				}
 			}
-
+	
 			if (!stateMachine->isClipsEmpty())
 			{
 				ImGui::Separator();
@@ -153,6 +153,13 @@ void ComponentAnimation::DrawProperties()
 							stateMachine->SetNodeClip(k, HashString(clipName));
 					}
 					stateMachine->SetClipName(j, HashString(clipName));
+
+					float speed = stateMachine->GetClipSpeed(j);
+					if (ImGui::DragFloat("Clip speed", &speed, 0.1f, 0.f, 10.f))
+					{
+						stateMachine->SetClipSpeed(j, speed);
+						stateMachine->Save();
+					}
 
 					bool clipLoop = stateMachine->GetClipLoop(j);
 					if (ImGui::Checkbox("Loop", &clipLoop))
@@ -259,9 +266,13 @@ void ComponentAnimation::SendTriggerToStateMachine(HashString trigger)
 {
 	if (stateMachine != nullptr)
 	{	
+		unsigned prevNode = stateMachine->GetDefaultNode();
 		unsigned blend = 0u;
 		stateMachine->ReceiveTrigger(trigger, blend);
-		PlayNextNode(blend);
+		if (prevNode != stateMachine->GetDefaultNode())
+		{
+			PlayNextNode(blend);
+		}
 	}
 }
 
@@ -279,12 +290,21 @@ bool ComponentAnimation::GetLoopFromStateMachine()
 {
 	unsigned nodeIndex = stateMachine->GetDefaultNode();
 	HashString clipName = stateMachine->GetNodeClip(nodeIndex);
-	return stateMachine->GetClipLoop(clipName);
+	return stateMachine->GetClipLoop(stateMachine->FindClip(clipName));
+}
+
+float ComponentAnimation::GetSpeedFromStateMachine()
+{
+	unsigned nodeIndex = stateMachine->GetDefaultNode();
+	HashString clipName = stateMachine->GetNodeClip(nodeIndex);
+	return stateMachine->GetClipSpeed(stateMachine->FindClip(clipName));
 }
 
 void ComponentAnimation::PlayNextNode(unsigned blend)
 {
-	controller->PlayNextNode(GetAnimFromStateMachine(),GetLoopFromStateMachine(), blend);
+	if(stateMachine != nullptr)
+		controller->PlayNextNode(GetAnimFromStateMachine(),GetLoopFromStateMachine(),
+			GetSpeedFromStateMachine(), blend);
 }
 
 ComponentAnimation::EditorContext* ComponentAnimation::GetEditorContext()
@@ -333,7 +353,7 @@ void ComponentAnimation::Update()
 
 void ComponentAnimation::OnPlay()
 {
-	controller->Play(GetAnimFromStateMachine(), GetLoopFromStateMachine());
+	controller->Play(GetAnimFromStateMachine(), GetLoopFromStateMachine(), GetSpeedFromStateMachine());
 }
 
 void ComponentAnimation::UpdateGO(GameObject* go)
@@ -354,12 +374,6 @@ void ComponentAnimation::UpdateGO(GameObject* go)
 	{
 		UpdateGO(*it);
 	}
-}
-
-//old
-void ComponentAnimation::PlayAnimation(unsigned blend)
-{
-	controller->Play(anim, true);
 }
 
 Component* ComponentAnimation::Clone() const

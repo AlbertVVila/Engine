@@ -39,9 +39,11 @@ public:
 	HashString GetClipName(unsigned index);
 	unsigned GetClipResource(unsigned index);
 	bool GetClipLoop(unsigned index);
+	float GetClipSpeed(unsigned index);
 	void SetClipName(unsigned index, HashString name);
 	void SetClipResource(unsigned index, unsigned UID);
 	void SetClipLoop(unsigned index, bool loop);
+	void SetClipSpeed(unsigned index, float speed);
 
 	//Transitions setters and getters
 	HashString GetTransitionOrigin(unsigned index);
@@ -88,6 +90,7 @@ private:
 	{
 		HashString name;
 		unsigned UID = 0u;
+		float clipSpeed = 1.0f;
 		bool loop = false;
 
 		Clip() { ; }

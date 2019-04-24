@@ -17,23 +17,22 @@ AnimationController::~AnimationController()
 {
 }
 
-void AnimationController::Play(ResourceAnimation* anim, bool loop)
+void AnimationController::Play(ResourceAnimation* anim, bool loop, float speed)
 {
 	Instance* newInstance = new Instance;
 	newInstance->anim = anim;
+	newInstance->speed = speed;
 	newInstance->loop = loop;
 	current = newInstance;
 }
 
-void AnimationController::PlayNextNode(ResourceAnimation * anim, bool loop, unsigned blend)
+void AnimationController::PlayNextNode(ResourceAnimation * anim, bool loop, float speed, unsigned blend)
 {
-	if (current->next == nullptr)
-	{
-		current->next = new Instance();
-	}
-	current->next->anim = anim;
-	current->next->loop = loop;
-	current->fadeDuration = float(blend);
+	current->anim = anim;
+	current->loop = loop;
+	current->speed = speed;
+	current->time = 0.0f;
+
 }
 
 
