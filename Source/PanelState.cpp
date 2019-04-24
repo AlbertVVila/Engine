@@ -216,7 +216,7 @@ void PanelState::ShowNodeMenu(ResourceStateMachine * stateMachine)
 		{
 			for (unsigned i = 0u; i < stateMachine->GetClipsSize(); i++)
 			{
-				bool isSelected = stateMachine->GetClipName(contextNode) == stateMachine->GetClipName(i);
+				bool isSelected = stateMachine->GetNodeClip(contextNode) == stateMachine->GetClipName(i);
 				if (ImGui::Selectable(stateMachine->GetClipName(i).C_str(), isSelected))
 				{
 					stateMachine->SetNodeClip(contextNode, stateMachine->GetClipName(i));
