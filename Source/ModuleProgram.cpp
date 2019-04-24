@@ -90,7 +90,8 @@ unsigned ModuleProgram::CreateVertexShader(const char *name)
 	file += ".vs";
 	char * vertexShaderSource = nullptr;
 	App->fsystem->Load((VERTEXSHADERS + file).c_str(), &vertexShaderSource);
-	if (vertexShaderSource == nullptr) {
+	if (vertexShaderSource == nullptr)
+	{
 		return 0;
 	}
 	unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);

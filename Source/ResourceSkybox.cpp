@@ -183,7 +183,9 @@ unsigned ResourceSkybox::LoadCubeMap(ResourceTexture* faces[]) const
 	for (unsigned int i = 0; i < NUMFACES; ++i)
 	{
 		if (faces[i] != nullptr)
-		faces[i]->SetReferences(faces[i]->GetReferences() + 1u);
+		{
+			faces[i]->SetReferences(faces[i]->GetReferences() + 1u);
+		}
 	}
 
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
