@@ -356,7 +356,6 @@
     <ClInclude Include="Soloud\fractal_includes\soloud_waveshaperfilter.h" />
     <ClInclude Include="Soloud\fractal_includes\soloud_wavstream.h" />
     <ClInclude Include="Soloud\fractal_includes\stb_vorbis.h" />
-    <ClInclude Include="StateMachine.h" />
     <ClInclude Include="strpool.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Viewport.h" />
@@ -489,7 +488,6 @@
     <ClCompile Include="Soloud\fractal_includes\soloud_wav.cpp" />
     <ClCompile Include="Soloud\fractal_includes\soloud_wavstream.cpp" />
     <ClCompile Include="Soloud\fractal_includes\stb_vorbis.c" />
-    <ClCompile Include="StateMachine.cpp" />
     <ClCompile Include="ResourceStateMachine.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Viewport.cpp" />
