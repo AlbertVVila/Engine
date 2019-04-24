@@ -1,7 +1,7 @@
 #include "Application.h"
 #include "Globals.h"
 #include "GameObject.h"
-#include "MathGeoLib/include/Math/float3.h"
+#include "DetourPoints.h"
 
 #include "ModuleNavigation.h"
 #include "ModuleScene.h"
@@ -844,7 +844,7 @@ void ModuleNavigation::drawMeshTile()
 }
 
 //Detour stuff http://irrlicht.sourceforge.net/forum/viewtopic.php?f=9&t=49482
-std::vector<math::float3>  ModuleNavigation::returnPath(math::float3 pStart, math::float3 pEnd)
+/*std::vector<math::float3>  ModuleNavigation::returnPath(math::float3 pStart, math::float3 pEnd)
 {
 	std::vector<math::float3> lstPoints;
 	
@@ -912,7 +912,7 @@ std::vector<math::float3>  ModuleNavigation::returnPath(math::float3 pStart, mat
 
 	}
 	return lstPoints;
-}
+}*/
 /* TODO add where the mesh is calculated!!!
 
 	/*scene::IAnimatedMesh *terrain_model = smgr->addHillPlaneMesh("groundPlane", // Name of the scenenode
@@ -951,3 +951,93 @@ std::vector<math::float3>  ModuleNavigation::returnPath(math::float3 pStart, mat
 
 //On your event input positions
 //std::vector<math::float3> lstPoints = ModuleNavigation->returnPath(vector3df_Start, vector3df_End);
+
+// TODO: New Detour version
+int ModuleNavigation::FindStraightPath(WOWPOS start, WOWPOS end, WOWPOS *path, int size)
+{
+	//
+	float m_spos[3];
+
+	m_spos[0] = -1.0f * start.y;
+	m_spos[1] = start.z;
+	m_spos[2] = -1.0f * start.x;
+
+	//
+	float m_epos[3];
+
+	m_epos[0] = -1.0f * end.y;
+	m_epos[1] = end.z;
+	m_epos[2] = -1.0f * end.x;
+
+	//
+	dtQueryFilter m_filter;
+
+	//m_filter.includeFlags = 0xffff;
+	//m_filter.excludeFlags = 0;
+
+	//
+	float m_polyPickExt[3];
+
+	m_polyPickExt[0] = 2;
+	m_polyPickExt[1] = 4;
+	m_polyPickExt[2] = 2;
+
+	//
+	dtPolyRef m_startRef;
+	dtPolyRef m_endRef;
+
+	//
+	m_startRef = navQuery->findNearestPoly(m_spos, m_polyPickExt, &m_filter, 0);
+	m_endRef = navQuery->findNearestPoly(m_epos, m_polyPickExt, &m_filter, 0);
+
+	//
+	if (!m_startRef || !m_endRef)
+	{
+		std::cerr << "Could not find any nearby poly's (" << m_startRef << "," << m_endRef << ")" << std::endl;
+
+		return ERROR_NEARESTPOLY;
+	}
+
+	//
+	static const int MAX_POLYS = 256;
+
+	dtPolyRef m_polys[MAX_POLYS];
+
+	int m_npolys;
+	float m_straightPath[MAX_POLYS * 3];
+	unsigned char m_straightPathFlags[MAX_POLYS];
+
+	dtPolyRef m_straightPathPolys[MAX_POLYS];
+
+	int m_nstraightPath;
+
+	//
+	int pos = 0;
+
+	//
+	m_npolys = navQuery->findPath(m_startRef, m_endRef, m_spos, m_epos, &m_filter, m_polys, MAX_POLYS);
+	m_nstraightPath = 0;
+
+	if (m_npolys)
+	{
+		m_nstraightPath = navQuery->findStraightPath(m_spos, m_epos, m_polys, m_npolys, m_straightPath, m_straightPathFlags, m_straightPathPolys, MAX_POLYS);
+
+		for (int i = 0; i < m_nstraightPath * 3; )
+		{
+			path[pos].y = -1.0f * m_straightPath[i++];
+			path[pos].z = m_straightPath[i++];
+			path[pos].x = -1.0f * m_straightPath[i++];
+
+			pos++;
+		}
+
+		// append the end point
+		path[pos].x = end.x;
+		path[pos].y = end.y;
+		path[pos].z = end.z;
+
+		pos++;
+	}
+
+	return pos;
+}
