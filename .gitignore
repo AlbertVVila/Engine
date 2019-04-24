@@ -261,7 +261,7 @@ paket-files/
 __pycache__/
 *.pyc
 /Game/Engine - Master 1.exe
-/Engine.sln
+/FractalEngine.sln
 /Game/Library/Materials/
 /Game/Library/Meshes/
 /Game/Library/Textures/
