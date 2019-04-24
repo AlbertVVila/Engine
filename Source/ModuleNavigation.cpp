@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "Globals.h"
 #include "GameObject.h"
+#include "MathGeoLib/include/Math/float3.h"
 
 #include "ModuleNavigation.h"
 #include "ModuleScene.h"
@@ -8,6 +9,7 @@
 
 #include "Component.h"
 #include "ComponentRenderer.h"
+#include "ComponentTransform.h"
 
 #include "ResourceMesh.h"
 
@@ -66,42 +68,100 @@ void ModuleNavigation::cleanValues()
 
 void ModuleNavigation::DrawGUI()
 {
-	if (ImGui::CollapsingHeader("Agents"))
-	{
-		ImGui::InputText("New Character", newCharacter, 64);
-		ImGui::DragFloat("Character Radius", &characterMaxRadius, sliderIncreaseSpeed, minSliderValue, maxSliderValue);
-		ImGui::DragFloat("Height", &characterMaxHeight, sliderIncreaseSpeed, minSliderValue, maxSliderValue);
-		ImGui::DragFloat("Max slope", &characterMaxSlopeScaling, sliderIncreaseSpeed, minSliderValue, maxSlopeValue);
-		ImGui::DragFloat("Max step height", &characterMaxStepHeightScaling, sliderIncreaseSpeed, minSliderValue, maxSlopeValue);
-		ImGui::Button("Add Character", ImVec2(ImGui::GetWindowWidth(), 25));
-	}
-	if (ImGui::CollapsingHeader("Areas"))
-	{
+	//menu inspired in recast interface
+	ImGui::Text("Rasterization");
+	ImGui::DragFloat("Cell width", &cellWidth, cellIncreaseSpeed, minCellSize, maxCellSize);
+	ImGui::DragFloat("Cell height", &cellHeight, cellIncreaseSpeed, minCellSize, maxCellSize);
 
-	}
-	if (ImGui::CollapsingHeader("Bake"))
-	{
-		ImGui::DragFloat("Cell width", &cellWidth, cellIncreaseSpeed, minCellSize, maxCellSize);
-		ImGui::DragFloat("Cell height", &cellHeight, cellIncreaseSpeed, minCellSize, maxCellSize);
-		ImGui::DragFloat("Agent max radius", &maxRadius, sliderIncreaseSpeed, minSliderValue, maxSliderValue);
-		ImGui::DragFloat("Agent max height", &maxHeight, sliderIncreaseSpeed, minSliderValue, maxSliderValue);
-		ImGui::DragFloat("Max slope scaling", &maxSlopeScaling, sliderIncreaseSpeed, minSliderValue, maxSlopeValue);
-		ImGui::DragFloat("Max step height", &maxStepHeightScaling, sliderIncreaseSpeed, minSliderValue, maxSlopeValue);
+	ImGui::Separator();
 
-		if (ImGui::Button("Add mesh to navigation"))
+	ImGui::Text("Agent, no multiple agents implemented yet");//to edit
+	ImGui::InputText("New Character", newCharacter, 64);
+	ImGui::DragFloat("Character Radius", &characterMaxRadius, sliderIncreaseSpeed, minSliderValue, maxSliderValue);
+	ImGui::DragFloat("Height", &characterMaxHeight, sliderIncreaseSpeed, minSliderValue, maxSliderValue);
+	ImGui::DragFloat("Max slope", &characterMaxSlopeScaling, sliderIncreaseSpeed, minSliderValue, maxSlopeValue);
+	ImGui::DragFloat("Max step height", &characterMaxStepHeightScaling, sliderIncreaseSpeed, minSliderValue, maxSlopeValue);
+	ImGui::Button("Add Character", ImVec2(ImGui::GetWindowWidth(), 25));
+
+	ImGui::Separator();
+
+	ImGui::Text("Region");
+	ImGui::DragInt("Min region size", &minRegionSize, 1, 8, 150);
+	ImGui::DragInt("Merged region size", &minRegionSize, 1, 0, 150);
+
+	ImGui::Separator();
+
+	if (ImGui::Button("Partitioning", ImVec2(ImGui::GetWindowWidth(), 25)))
+		ImGui::OpenPopup("partitioning_popup");
+	ImGui::SameLine();
+	if (ImGui::BeginPopup("partitioning_popup"))
+	{
+		ImGui::Text("Partitioning option");
+		ImGui::Separator();
+		if (ImGui::Selectable("Watershed"))
 		{
-			addNavigableMesh();
+			partitionType = 0;
 		}
-		
-		if (meshComponents.size() > 0 && ImGui::Button("Generate navigability"))
+		if (ImGui::Selectable("Monotone"))
 		{
-			generateNavigability();
+			partitionType = 1;
 		}
-
+		if (ImGui::Selectable("Layers"))
+		{
+			partitionType = 2;
+		}
+		ImGui::EndPopup();
 	}
-	if (ImGui::CollapsingHeader("Object"))
+
+	ImGui::Separator();
+
+	ImGui::Text("Filtering");
+	ImGui::Checkbox("Low hanging obstacles", &filterLowHangingObstacles);
+	ImGui::Checkbox("Ledge spans", &filterLedgeSpans);
+	ImGui::Checkbox("Walkable low height spans", &filterWalkableLowHeightSpans);
+
+	ImGui::Separator();
+
+	ImGui::Text("Polygonization");
+	ImGui::DragFloat("Max edge length", &edgeMaxLength, 1, 0, 50);
+	ImGui::DragFloat("Max edge error", &edgeMaxError, sliderIncreaseSpeed, 0.1f, 3.f);
+	ImGui::DragInt("Verts per poly", &vertexPerPoly, 1, 3, 12);
+
+	ImGui::Separator();
+
+	ImGui::Text("Detail Mesh");
+
+	ImGui::Separator();
+
+	ImGui::Text("Generation");
+	
+	ImGui::DragFloat("Agent max radius", &maxRadius, sliderIncreaseSpeed, minSliderValue, maxSliderValue);
+	ImGui::DragFloat("Agent max height", &maxHeight, sliderIncreaseSpeed, minSliderValue, maxSliderValue);
+	ImGui::DragFloat("Max slope scaling", &maxSlopeScaling, sliderIncreaseSpeed, minSliderValue, maxSlopeValue);
+	ImGui::DragFloat("Max step height", &maxStepHeightScaling, sliderIncreaseSpeed, minSliderValue, maxSlopeValue);
+
+	if (ImGui::Button("Add mesh to navigation"))
 	{
+		addNavigableMesh();
+	}
+
+	if (meshComponents.size() > 0 && ImGui::Button("Generate navigability"))
+	{
+		generateNavigability();
+	}
+	
+	if (ImGui::CollapsingHeader("Detour"))
+	{
+		ImGui::Text("Start Point:");
+		ImGui::InputFloat3("SP", pStart, 3);
 		
+		ImGui::Text("End Point:");
+		ImGui::InputFloat3("EP", pEnd, 3);
+		
+		if (ImGui::Button("Generate Paths"))
+			if (!pStart) return;
+			else if (!pStart) return;
+			//else std::vector<math::float3> lstPoints = returnPath(pStart, pEnd);
 	}
 }
 
@@ -109,6 +169,7 @@ void ModuleNavigation::addNavigableMesh()
 {
 	meshboxes.push_back(static_cast <const AABB*>(&App->scene->selected->bbox));
 	meshComponents.push_back(static_cast <const ComponentRenderer*>(App->scene->selected->GetComponent(ComponentType::Renderer)));
+	transformComponents.push_back(static_cast <const ComponentTransform*>(App->scene->selected->GetComponent(ComponentType::Transform)));
 	std::string s = App->scene->selected->name + " added to navigation";
 	LOG(s.c_str());
 }
@@ -122,15 +183,49 @@ void ModuleNavigation::navigableObjectToggled(GameObject* obj, const bool newSta
 void ModuleNavigation::renderNavMesh()
 {
 	if (!meshGenerated)	return;
-	//get a const instance of navmesh
-	/*const dtNavMesh* tmpNavMesh = navMesh;
+	//test process
 	for (int i = 0; i < navMesh->getMaxTiles(); ++i)
 	{
-		const dtMeshTile* tile = tmpNavMesh->getTile(i);
+		const dtMeshTile* tile = navMesh->getTile(i);
 		if (!tile->header) continue;
-		drawMeshTile();
-	}*/
-	drawMeshTile();
+
+		//drawing process
+		dtPolyRef base = navMesh->getPolyRefBase(tile);
+		for (int i = 0; i < tile->header->polyCount; ++i)
+		{
+			const dtPoly* p = &tile->polys[i];
+			if (p->getType() == DT_POLYTYPE_OFFMESH_CONNECTION)	// Skip off-mesh links.
+				continue;
+
+			const dtPolyDetail* pd = &tile->detailMeshes[i];
+
+			for (int j = 0; j < pd->triCount; ++j)
+			{
+				const unsigned char* t = &tile->detailTris[(pd->triBase + j) * 4];
+				for (int k = 0; k < 3; ++k)
+				{
+					if (t[k] < p->vertCount)
+						dd::point(ddVec3(tile->verts[p->verts[t[k]] * 3],
+							tile->verts[p->verts[t[k]] * 3 + 1],
+							tile->verts[p->verts[t[k]] * 3 + 2]), ddVec3(0, 1, 0.8), 5.0f);
+					else
+						dd::point(ddVec3(tile->detailVerts[(pd->vertBase + t[k] - p->vertCount) * 3],
+							tile->detailVerts[(pd->vertBase + t[k] - p->vertCount) * 3 + 1],
+							tile->detailVerts[(pd->vertBase + t[k] - p->vertCount) * 3 + 2]), ddVec3(1, 0, 0.5), 10.0f);
+				}
+			}
+		}
+
+	}
+	//draw inter boundaries
+
+
+	//draw outer boundaries
+
+	
+
+	
+	//drawMeshTile();
 	//glDepthMask(GL_TRUE);
 }
 
@@ -159,7 +254,6 @@ void ModuleNavigation::generateNavigability()
 	pointsUpdated = true;
 
 	//declaring mesh box
-	//meshbox  = static_cast <const AABB*>(&App->scene->selected->bbox);
 	bmin = new float[3];
 	bmin[0] = meshboxes[0]->minPoint.x; bmin[1] = meshboxes[0]->minPoint.y; bmin[2] = meshboxes[0]->minPoint.z;
 
@@ -180,7 +274,6 @@ void ModuleNavigation::generateNavigability()
 	//meshComponent = static_cast <const ComponentRenderer*>(App->scene->selected->GetComponent(ComponentType::Renderer));
 
 	fillVertices();
-
 	//Indices
 	fillIndices();
 
@@ -248,7 +341,7 @@ void ModuleNavigation::generateNavigability()
 	// If your input data is multiple meshes, you can transform them here, calculate
 	// the are type for each of the meshes and rasterize them.
 	memset(m_triareas, 0, ntris * sizeof(unsigned char));
-	rcMarkWalkableTriangles(ctx, cfg.walkableSlopeAngle, verts, nverts, tris, ntris, m_triareas);//we have more verts than tris, may not be right, sometimes does not enter condition inside this function
+	rcMarkWalkableTriangles(ctx, cfg.walkableSlopeAngle, verts, nverts, tris, ntris, m_triareas);//we have more verts than tris, may not be right
 	if (!rcRasterizeTriangles(ctx, verts, nverts, tris, m_triareas, ntris, *heightField, cfg.walkableClimb))
 	{
 		LOG("buildNavigation: Could not rasterize triangles.");
@@ -268,7 +361,7 @@ void ModuleNavigation::generateNavigability()
 	if (filterLowHangingObstacles)
 		rcFilterLowHangingWalkableObstacles(ctx, cfg.walkableClimb, *heightField);
 	if (filterLedgeSpans)
-		rcFilterLedgeSpans(ctx, cfg.walkableHeight, cfg.walkableClimb, *heightField);//a little too complex, tocheck
+		rcFilterLedgeSpans(ctx, cfg.walkableHeight, cfg.walkableClimb, *heightField);//a little too complex
 	if (filterWalkableLowHeightSpans)
 		rcFilterWalkableLowHeightSpans(ctx, cfg.walkableHeight, *heightField);
 
@@ -304,7 +397,7 @@ void ModuleNavigation::generateNavigability()
 	// (Optional) Mark areas.
 	/*const ConvexVolume* vols = m_geom->getConvexVolumes();
 	for (int i = 0; i < m_geom->getConvexVolumeCount(); ++i)
-		rcMarkConvexPolyArea(m_ctx, vols[i].verts, vols[i].nverts, vols[i].hmin, vols[i].hmax, (unsigned char)vols[i].area, *m_chf);*/
+		rcMarkConvexPolyArea(ctx, vols[i].verts, vols[i].nverts, vols[i].hmin, vols[i].hmax, (unsigned char)vols[i].area, *chf);*/
 	
 	// Partition the heightfield so that we can use simple algorithm later to triangulate the walkable areas.
 	// There are 3 martitioning methods, each with some pros and cons:
@@ -540,6 +633,7 @@ void ModuleNavigation::generateNavigability()
 		m_tool->init(this);
 	initToolStates(this);*/
 	meshGenerated = true;
+	LOG("Navigation mesh generated");
 
 	return;
 	
@@ -547,8 +641,6 @@ void ModuleNavigation::generateNavigability()
 
 void ModuleNavigation::fillVertices()
 {
-	//nverts = meshComponent->mesh->meshVertices.size();
-	
 	for (int i = 0; i < meshComponents.size(); ++i)
 	{
 		nverts += meshComponents[i]->mesh->meshVertices.size();
@@ -559,63 +651,52 @@ void ModuleNavigation::fillVertices()
 	{
 		for (int i = 0; i < meshComponents[j]->mesh->meshVertices.size(); ++i)
 		{
-			verts[currentGlobalVert * 3] = meshComponents[j]->mesh->meshVertices[i].x;
-			verts[currentGlobalVert * 3 + 1] = meshComponents[j]->mesh->meshVertices[i].y;
-			verts[currentGlobalVert * 3 + 2] = meshComponents[j]->mesh->meshVertices[i].z;
+			float4 tempVertex = float4(	meshComponents[j]->mesh->meshVertices[i].x, 
+										meshComponents[j]->mesh->meshVertices[i].y,
+										meshComponents[j]->mesh->meshVertices[i].z, 1.f );
+			tempVertex = transformComponents[j]->global * tempVertex;
+
+
+			//apply the transformation of the game object to the vertex
+
+			//store the vertex
+			verts[currentGlobalVert * 3] = tempVertex.x/tempVertex.w;
+			verts[currentGlobalVert * 3 + 1] = tempVertex.y / tempVertex.w;
+			verts[currentGlobalVert * 3 + 2] = tempVertex.z / tempVertex.w;
 			++currentGlobalVert;
 		}
 	}
-	
 }
 
 void ModuleNavigation::fillIndices()
 {
 	for (int i = 0; i < meshComponents.size(); ++i)
 	{
-		ntris += meshComponents[i]->mesh->meshIndices.size()/3;
+		ntris += meshComponents[i]->mesh->meshIndices.size() / 3;
 	}
 	tris = new int[ntris * 3];//tris maps vertex and triangles
 	int currentGlobalTri = 0;
 	for (int j = 0; j < meshComponents.size(); ++j)
 	{
-		for (int i = 0; i < meshComponents[j]->mesh->meshIndices.size(); i+= 3)
+		for (int i = 0; i < meshComponents[j]->mesh->meshIndices.size(); i += 3)
 		{
 			//changed y and z order
 			tris[currentGlobalTri] = meshComponents[j]->mesh->meshIndices[i];
 			tris[currentGlobalTri + 1] = meshComponents[j]->mesh->meshIndices[i + 1];
 			tris[currentGlobalTri + 2] = meshComponents[j]->mesh->meshIndices[i + 2];
-			currentGlobalTri+= 3;
+			currentGlobalTri += 3;
 		}
 	}
 }
 
 void ModuleNavigation::fillNormals()
 {
-	int numNormals = 0;
-	for (int i = 0; i < meshComponents.size(); ++i)
-	{
-		numNormals += meshComponents[i]->mesh->meshNormals.size();
-	}
-	normals = new float[numNormals*3];
-	int currentGlobalNorm = 0;
-	for (int j = 0; j < meshComponents.size(); ++j)
-	{
-		for (int i = 0; i < meshComponents[j]->mesh->meshNormals.size(); ++i)
-		{
-			//changed y and z order
-			normals[currentGlobalNorm*3] = meshComponents[j]->mesh->meshNormals[i].x;
-			normals[currentGlobalNorm * 3 + 1] = meshComponents[j]->mesh->meshNormals[i].y;
-			normals[currentGlobalNorm * 3 + 2] = meshComponents[j]->mesh->meshNormals[i].z;
-			++currentGlobalNorm;
-		}
-	}
-
-	/*normals = new float[ntris*3];
+	normals = new float[ntris*3];
 	for (int i = 0; i < ntris*3; i+=3)
 	{
-		const float* v0 = &verts[tris[i] * 3];
-		const float* v1 = &verts[tris[i + 1] * 3];
-		const float* v2 = &verts[tris[i + 2] * 3];
+		const float* v0 = &verts[tris[i]*3];
+		const float* v1 = &verts[tris[i + 1]*3];
+		const float* v2 = &verts[tris[i + 2]*3];
 		float e0[3], e1[3];
 		for (int j = 0; j < 3; ++j)
 		{
@@ -634,103 +715,9 @@ void ModuleNavigation::fillNormals()
 			n[1] *= d;
 			n[2] *= d;
 		}
-	}*/
-}
-/*
-//debug draw implementations
-unsigned int SampleDebugDraw::areaToCol(unsigned int area)
-{
-	switch (area)
-	{
-		// Ground (0) : light blue
-	case SAMPLE_POLYAREA_GROUND: return duRGBA(0, 192, 255, 255);
-		// Water : blue
-	case SAMPLE_POLYAREA_WATER: return duRGBA(0, 0, 255, 255);
-		// Road : brown
-	case SAMPLE_POLYAREA_ROAD: return duRGBA(50, 20, 12, 255);
-		// Door : cyan
-	case SAMPLE_POLYAREA_DOOR: return duRGBA(0, 255, 255, 255);
-		// Grass : green
-	case SAMPLE_POLYAREA_GRASS: return duRGBA(0, 255, 0, 255);
-		// Jump : yellow
-	case SAMPLE_POLYAREA_JUMP: return duRGBA(255, 255, 0, 255);
-		// Unexpected : red
-	default: return duRGBA(255, 0, 0, 255);
 	}
 }
 
-void DebugDrawGL::depthMask(bool state)
-{
-	glDepthMask(state ? GL_TRUE : GL_FALSE);
-}
-
-void DebugDrawGL::texture(bool state)
-{
-	if (state)
-	{
-		glEnable(GL_TEXTURE_2D);
-		//g_tex.bind();
-	}
-	else
-	{
-		glDisable(GL_TEXTURE_2D);
-	}
-}
-
-void DebugDrawGL::begin(duDebugDrawPrimitives prim, float size)
-{
-	switch (prim)
-	{
-	case DU_DRAW_POINTS:
-		glPointSize(size);
-		glBegin(GL_POINTS);
-		break;
-	case DU_DRAW_LINES:
-		glLineWidth(size);
-		glBegin(GL_LINES);
-		break;
-	case DU_DRAW_TRIS:
-		glBegin(GL_TRIANGLES);
-		break;
-	case DU_DRAW_QUADS:
-		glBegin(GL_QUADS);
-		break;
-	};
-}
-
-void DebugDrawGL::vertex(const float* pos, unsigned int color)
-{
-	glColor4ubv((GLubyte*)&color);
-	glVertex3fv(pos);
-}
-
-void DebugDrawGL::vertex(const float x, const float y, const float z, unsigned int color)
-{
-	glColor4ubv((GLubyte*)&color);
-	glVertex3f(x, y, z);
-}
-
-void DebugDrawGL::vertex(const float* pos, unsigned int color, const float* uv)
-{
-	glColor4ubv((GLubyte*)&color);
-	glTexCoord2fv(uv);
-	glVertex3fv(pos);
-}
-
-void DebugDrawGL::vertex(const float x, const float y, const float z, unsigned int color, const float u, const float v)
-{
-	glColor4ubv((GLubyte*)&color);
-	glTexCoord2f(u, v);
-	glVertex3f(x, y, z);
-}
-
-void DebugDrawGL::end()
-{
-	glEnd();
-	glLineWidth(1.0f);
-	glPointSize(1.0f);
-}
-*/
 void ModuleNavigation::fillDrawPoints()
 {
 	points = new dd::DrawVertex[nverts];
@@ -751,133 +738,111 @@ class myPoint : public dd::RenderInterface
 	{}
 };
 
-void ModuleNavigation::drawMeshTile()
+//Detour stuff http://irrlicht.sourceforge.net/forum/viewtopic.php?f=9&t=49482
+std::vector<math::float3>  ModuleNavigation::returnPath(math::float3 pStart, math::float3 pEnd)
 {
+	std::vector<math::float3> lstPoints;
 	
-	/*if (pointsUpdated)
+	if (navQuery)
 	{
-		fillDrawPoints();
-		pointsUpdated = false;
-	}
-	myPoint* renderIface = new myPoint();
-	renderIface->drawPointList(points, nverts, false);*/
-	for (int i = 0; i < nverts; ++i)
-	{
-		dd::point(ddVec3(verts[i * 3], verts[i * 3+1], verts[i * 3+2]), ddVec3(0,0,1), 10.0f);
-	}
-	
-	
-	/*dd::xzSquareGrid(-500.0f * 10, 500.0f * 10, 0.0f, 1.0f * 10, math::float3(0.65f, 0.65f, 0.65f));
-	dtPolyRef base = mesh.getPolyRefBase(tile);
-
-	int tileNum = mesh.decodePolyIdTile(base);
-	const unsigned int tileColor = duIntToCol(tileNum, 128);
-
-	dd->depthMask(false);
-
-	dd->begin(DU_DRAW_TRIS);
-	for (int i = 0; i < tile->header->polyCount; ++i)
-	{
-		const dtPoly* p = &tile->polys[i];
-		if (p->getType() == DT_POLYTYPE_OFFMESH_CONNECTION)	// Skip off-mesh links.
-			continue;
-
-		const dtPolyDetail* pd = &tile->detailMeshes[i];
-
-		unsigned int col;
-		if (query && query->isInClosedList(base | (dtPolyRef)i))
-			col = duRGBA(255, 196, 0, 64);
-		else
+		if (navMesh == 0)
 		{
-			if (flags & DU_DRAWNAVMESH_COLOR_TILES)
-				col = tileColor;
-			else
-				col = duTransCol(dd->areaToCol(p->getArea()), 64);
+			return  lstPoints;
 		}
 
-		for (int j = 0; j < pd->triCount; ++j)
+		dtQueryFilter m_filter;
+		dtPolyRef m_startRef;
+		dtPolyRef m_endRef;
+
+		const int MAX_POLYS = 256;
+		dtPolyRef m_polys[MAX_POLYS];
+		dtPolyRef returnedPath[MAX_POLYS];
+		float m_straightPath[MAX_POLYS * 3];
+		int numStraightPaths;
+		float  m_spos[3] = { pStart.x, pStart.y, pStart.z };
+		float  m_epos[3] = { pEnd.x, pEnd.y, pEnd.z };
+		float m_polyPickExt[3];
+		m_polyPickExt[0] = 2;
+		m_polyPickExt[1] = 4;
+		m_polyPickExt[2] = 2;
+
+
+		navQuery->findNearestPoly(m_spos, m_polyPickExt, &m_filter, &m_startRef, 0);
+
+		if (m_startRef == 0)
 		{
-			const unsigned char* t = &tile->detailTris[(pd->triBase + j) * 4];
-			for (int k = 0; k < 3; ++k)
-			{
-				if (t[k] < p->vertCount)
-					dd->vertex(&tile->verts[p->verts[t[k]] * 3], col);
-				else
-					dd->vertex(&tile->detailVerts[(pd->vertBase + t[k] - p->vertCount) * 3], col);
-			}
+			return lstPoints;
+
 		}
-	}
-	dd->end();
+		navQuery->findNearestPoly(m_epos, m_polyPickExt, &m_filter, &m_endRef, 0);
 
-	// Draw inter poly boundaries
-	//drawPolyBoundaries(dd, tile, duRGBA(0, 48, 64, 32), 1.5f, true);
-
-	// Draw outer poly boundaries
-	//drawPolyBoundaries(dd, tile, duRGBA(0, 48, 64, 220), 2.5f, false);
-
-	if (flags & DU_DRAWNAVMESH_OFFMESHCONS)
-	{
-		dd->begin(DU_DRAW_LINES, 2.0f);
-		for (int i = 0; i < tile->header->polyCount; ++i)
+		if (m_endRef == 0)
 		{
-			const dtPoly* p = &tile->polys[i];
-			if (p->getType() != DT_POLYTYPE_OFFMESH_CONNECTION)	// Skip regular polys.
-				continue;
+			return lstPoints;
 
-			unsigned int col, col2;
-			if (query && query->isInClosedList(base | (dtPolyRef)i))
-				col = duRGBA(255, 196, 0, 220);
-			else
-				col = duDarkenCol(duTransCol(dd->areaToCol(p->getArea()), 220));
+		}
+		dtStatus findStatus = DT_FAILURE;
+		int pathCount;
 
-			const dtOffMeshConnection* con = &tile->offMeshCons[i - tile->header->offMeshBase];
-			const float* va = &tile->verts[p->verts[0] * 3];
-			const float* vb = &tile->verts[p->verts[1] * 3];
+		findStatus = navQuery->findPath(m_startRef, m_endRef, m_spos, m_epos, &m_filter, returnedPath, &pathCount, MAX_POLYS);
 
-			// Check to see if start and end end-points have links.
-			bool startSet = false;
-			bool endSet = false;
-			for (unsigned int k = p->firstLink; k != DT_NULL_LINK; k = tile->links[k].next)
+
+
+		if (pathCount > 0)
+		{
+			findStatus = navQuery->findStraightPath(m_spos, m_epos, returnedPath,
+				pathCount, m_straightPath, 0, 0, &numStraightPaths, MAX_POLYS);
+
+			for (int i = 0; i < numStraightPaths; ++i)
 			{
-				if (tile->links[k].edge == 0)
-					startSet = true;
-				if (tile->links[k].edge == 1)
-					endSet = true;
+				float3 cpos(m_straightPath[i * 3], m_straightPath[i * 3 + 1] + 0.25,
+					m_straightPath[i * 3 + 2]);
+
+				lstPoints.push_back(cpos);
+				//path->AddNode(node);
 			}
 
-			// End points and their on-mesh locations.
-			dd->vertex(va[0], va[1], va[2], col);
-			dd->vertex(con->pos[0], con->pos[1], con->pos[2], col);
-			col2 = startSet ? col : duRGBA(220, 32, 16, 196);
-			duAppendCircle(dd, con->pos[0], con->pos[1] + 0.1f, con->pos[2], con->rad, col2);
 
-			dd->vertex(vb[0], vb[1], vb[2], col);
-			dd->vertex(con->pos[3], con->pos[4], con->pos[5], col);
-			col2 = endSet ? col : duRGBA(220, 32, 16, 196);
-			duAppendCircle(dd, con->pos[3], con->pos[4] + 0.1f, con->pos[5], con->rad, col2);
-
-			// End point vertices.
-			dd->vertex(con->pos[0], con->pos[1], con->pos[2], duRGBA(0, 48, 64, 196));
-			dd->vertex(con->pos[0], con->pos[1] + 0.2f, con->pos[2], duRGBA(0, 48, 64, 196));
-
-			dd->vertex(con->pos[3], con->pos[4], con->pos[5], duRGBA(0, 48, 64, 196));
-			dd->vertex(con->pos[3], con->pos[4] + 0.2f, con->pos[5], duRGBA(0, 48, 64, 196));
-
-			// Connection arc.
-			duAppendArc(dd, con->pos[0], con->pos[1], con->pos[2], con->pos[3], con->pos[4], con->pos[5], 0.25f,
-				(con->flags & 1) ? 0.6f : 0, 0.6f, col);
 		}
-		dd->end();
-	}
 
-	const unsigned int vcol = duRGBA(0, 0, 0, 196);
-	dd->begin(DU_DRAW_POINTS, 3.0f);
-	for (int i = 0; i < tile->header->vertCount; ++i)
-	{
-		const float* v = &tile->verts[i * 3];
-		dd->vertex(v[0], v[1], v[2], vcol);
 	}
-	dd->end();
-
-	dd->depthMask(true);*/
+	return lstPoints;
 }
+/* TODO add where the mesh is calculated!!!
+
+	/*scene::IAnimatedMesh *terrain_model = smgr->addHillPlaneMesh("groundPlane", // Name of the scenenode
+		tileSize, // Tile size
+		tileCount, // Tile count
+		0, // Material
+		20.0f, // Hill height
+		core::dimension2d<f32>(0.0f, 1.0f), // countHills
+		core::dimension2d<f32>(1.0f, 1.0f)); ;// textureRepeatCount
+
+	terrain_node = smgr->addAnimatedMeshSceneNode(terrain_model);
+
+	scene::IMeshBuffer *terbuffer = terrain_node->getMesh()->getMeshBuffer(0);
+
+
+	if (terbuffer)
+	{
+		recast = new RecastUtilM();
+		if (recast->handleBuild(terbuffer))
+		{
+			scene::SMesh* smesh = new scene::SMesh();
+			if (!recast->setupIrrSMeshFromRecastDetailMesh(smesh))
+			{
+				printf("recast->setupIrrSMeshFromRecastDetailMesh(smesh): FAILED!\n");
+			}
+			else
+			{
+				scene::ISceneNode *naviNode = smgr->addOctTreeSceneNode(smesh);
+				naviNode->setName("Terrain");
+				naviNode->setDebugDataVisible(scene::EDS_MESH_WIRE_OVERLAY);
+			}
+			smesh->drop();
+		}
+	}
+	*/
+
+//On your event input positions
+//std::vector<math::float3> lstPoints = ModuleNavigation->returnPath(vector3df_Start, vector3df_End);

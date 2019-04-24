@@ -514,6 +514,9 @@ public:
 	///  @param[in]	maxDataSize		The size of the state within the data buffer.
 	/// @return The status flags for the operation.
 	dtStatus restoreTileState(dtMeshTile* tile, const unsigned char* data, const int maxDataSize);
+
+	/// Returns pointer to tile in the tile array.
+	dtMeshTile* getTile(int i);
 	
 	/// @}
 
@@ -614,7 +617,7 @@ private:
 	dtNavMesh& operator=(const dtNavMesh&);
 
 	/// Returns pointer to tile in the tile array.
-	dtMeshTile* getTile(int i);
+	//dtMeshTile* getTile(int i);
 
 	/// Returns neighbour tile based on side.
 	int getTilesAt(const int x, const int y,

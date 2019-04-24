@@ -184,6 +184,7 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 	{
 		App->ui->Draw(width, height);
 	}
+	App->navigation->renderNavMesh();
 	
 }
 

@@ -2,9 +2,15 @@
 #define __MODULENAVIGATION_H__
 
 #include "Module.h"
-#include <vector>
+
 #include "Recast/Recast.h"
 #include "debugdraw.h"
+
+#include <vector>
+
+//#include <stdio.h>
+#include <cstddef>
+
 
 //#include "DebugUtils/DetourDebugDraw.h"
 //#include "DebugUtils/DebugDraw.h"
@@ -12,6 +18,7 @@
 //fwd declarations
 class GameObject;
 class ComponentRenderer;
+class ComponentTransform;
 //from recast
 class rcConfig;
 class rcContext;
@@ -52,27 +59,7 @@ enum SamplePartitionType
 	SAMPLE_PARTITION_MONOTONE,
 	SAMPLE_PARTITION_LAYERS,
 };
-/*
-/// OpenGL debug draw implementation.
-class DebugDrawGL : public duDebugDraw
-{
-public:
-	virtual void depthMask(bool state);
-	virtual void texture(bool state);
-	virtual void begin(duDebugDrawPrimitives prim, float size = 1.0f);
-	virtual void vertex(const float* pos, unsigned int color);
-	virtual void vertex(const float x, const float y, const float z, unsigned int color);
-	virtual void vertex(const float* pos, unsigned int color, const float* uv);
-	virtual void vertex(const float x, const float y, const float z, unsigned int color, const float u, const float v);
-	virtual void end();
-};*/
-/*
-class SampleDebugDraw : public DebugDrawGL
-{
-public:
-	virtual unsigned int areaToCol(unsigned int area);
-};
-*/
+
 class ModuleNavigation :
 	public Module
 {
@@ -111,6 +98,10 @@ private:
 
 	void drawMeshTile();
 
+	// Detour stuff
+	std::vector<math::float3> returnPath(math::float3 pStart, math::float3 pEnd);
+	//void handleClick(const float* s, const float* p, bool shift);
+	
 	//variables
 	float maxRadius = 5.0f;
 	float maxHeight = 5.0f;
@@ -118,34 +109,35 @@ private:
 	float maxStepHeightScaling = 5.0f;
 	
 	char newCharacter[64] = "New Character";
-	float characterMaxRadius = 5.0f;
+	float characterMaxRadius = 0.6f;
 	float characterMaxHeight = 5.0f;//might need higher val
-	float characterMaxSlopeScaling = 20.0f;
+	float characterMaxSlopeScaling = 50.0f;
 	float characterMaxStepHeightScaling = 5.0f;//might need higher value
 	
 	const float sliderIncreaseSpeed = 0.03f;
 	const float minSliderValue = 0.01f;
 	const float maxSliderValue = 100.0f;
 	const float maxSlopeValue = 60.0f;
-	const float cellIncreaseSpeed = 5.0f;
-	const float minCellSize = 10.0f;
-	const float maxCellSize = 100.0f;
-
-	//newer config
-	float cellWidth = 20.f;
-	float cellHeight = 10.f;
-	float edgeMaxLength = 30.f;
-	float edgeMaxError = 5.f;
+	const float cellIncreaseSpeed = 0.25f;
+	const float minCellSize = 0.1f;
+	const float maxCellSize = 10.0f;
 	int minRegionSize = 8;
 	int mergedRegionSize = 20;
+	float edgeMaxLength = 20.f;
+	float edgeMaxError = 1.3f;
 	int vertexPerPoly = 6;
-	float sampleDistance = 10;
+
+	//newer config
+	float cellWidth = 1.f;
+	float cellHeight = 5.f;
+	
+	float sampleDistance = 6;
 	float sampleMaxError = 1;
 
 	//filters
-	bool filterLowHangingObstacles;
-	bool filterLedgeSpans;
-	bool filterWalkableLowHeightSpans;
+	bool filterLowHangingObstacles = true;
+	bool filterLedgeSpans = true;
+	bool filterWalkableLowHeightSpans = true;
 
 	//partition type
 	int partitionType = 0;
@@ -178,6 +170,7 @@ private:
 	DrawMode m_drawMode;
 
 	std::vector < const ComponentRenderer*> meshComponents;
+	std::vector < const ComponentTransform*> transformComponents;
 
 	rcConfig cfg;
 	rcContext* ctx = nullptr;
@@ -205,6 +198,17 @@ private:
 	std::vector<const AABB*> meshboxes;
 	float* bmin = nullptr;
 	float* bmax = nullptr;
+	const AABB* meshbox = nullptr;
+
+	float* pStartX = nullptr;
+	float pStartY = 0.f;
+	float pStartZ = 0.f;
+	float pEndX = 0.f;
+	float pEndY = 0.f;
+	float pEndZ = 0.f;
+
+	float pStart[3];
+	float pEnd[3];
 };
 
 #endif
