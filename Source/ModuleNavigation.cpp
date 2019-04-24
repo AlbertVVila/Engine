@@ -22,13 +22,13 @@
 //#include "debugdraw.h"
 
 
-#include "Recast/Recast.h"
-#include "Detour/DetourNavMesh.h"
-#include "Detour/DetourNavMeshBuilder.h"
-#include "Detour/DetourNavMeshQuery.h"
+#include "Recast/Recast/Recast.h"
+#include "Recast/Detour/DetourNavMesh.h"
+#include "Recast/Detour/DetourNavMeshBuilder.h"
+#include "Recast/Detour/DetourNavMeshQuery.h"
 #include "Recast/DebugUtils/RecastDebugDraw.h"
-#include "DebugUtils/DetourDebugDraw.h"
-#include "DebugUtils/DebugDraw.h"
+#include "Recast/DebugUtils/DetourDebugDraw.h"
+#include "Recast/DebugUtils/DebugDraw.h"
 #include "debug_draw.hpp"
 
 
@@ -992,7 +992,7 @@ std::vector<math::float3>  ModuleNavigation::returnPath(math::float3 pStart, mat
 //std::vector<math::float3> lstPoints = ModuleNavigation->returnPath(vector3df_Start, vector3df_End);
 
 // TODO: New Detour version
-/*
+
 int ModuleNavigation::FindStraightPath(WOWPOS start, WOWPOS end, WOWPOS *path, int size)
 {
 	//
@@ -1033,7 +1033,7 @@ int ModuleNavigation::FindStraightPath(WOWPOS start, WOWPOS end, WOWPOS *path, i
 	//
 	if (!m_startRef || !m_endRef)
 	{
-		std::cerr << "Could not find any nearby poly's (" << m_startRef << "," << m_endRef << ")" << std::endl;
+		LOG("Could not find any nearby poly's (", m_startRef, ",", m_endRef, ")");
 
 		return ERROR_NEARESTPOLY;
 	}
@@ -1080,4 +1080,4 @@ int ModuleNavigation::FindStraightPath(WOWPOS start, WOWPOS end, WOWPOS *path, i
 	}
 
 	return pos;
-}*/
+}

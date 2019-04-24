@@ -89,6 +89,10 @@ public:
 	std::vector<GameObject*> agents;
 	std::vector<GameObject*> obstacles;
 
+	//Constants
+	static const int ERROR = -1;
+	static const int ERROR_NEARESTPOLY = -2;
+
 private:
 	// Explicitly-disabled copy constructor and copy assignment operator.
 	ModuleNavigation(const ModuleNavigation&);

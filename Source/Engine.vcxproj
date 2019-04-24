@@ -205,6 +205,7 @@
     <ClInclude Include="ComponentTransform2D.h" />
     <ClInclude Include="debugdraw.h" />
     <ClInclude Include="debug_draw.hpp" />
+    <ClInclude Include="DetourPoints.h" />
     <ClInclude Include="FileExplorer.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Globals.h" />
@@ -404,6 +405,7 @@
     <ClCompile Include="ComponentText.cpp" />
     <ClCompile Include="ComponentTransform.cpp" />
     <ClCompile Include="ComponentTransform2D.cpp" />
+    <ClCompile Include="DetourPoints.cpp" />
     <ClCompile Include="FileExplorer.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GUICreator.cpp" />
