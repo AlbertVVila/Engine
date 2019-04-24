@@ -11,6 +11,15 @@
 //#include <stdio.h>
 #include <cstddef>
 
+typedef struct _WOWPOS 
+{ 
+	float x;
+	float y;
+	float z;}
+
+WOWPOS;
+
+#define MAX_PATH 1024
 
 //#include "DebugUtils/DetourDebugDraw.h"
 //#include "DebugUtils/DebugDraw.h"
@@ -119,8 +128,9 @@ private:
 	void drawMeshTile();
 
 	// Detour stuff
-	std::vector<math::float3> returnPath(math::float3 pStart, math::float3 pEnd);
+	//std::vector<math::float3> returnPath(math::float3 pStart, math::float3 pEnd);
 	//void handleClick(const float* s, const float* p, bool shift);
+	int FindStraightPath(WOWPOS start, WOWPOS end, WOWPOS* path, int size);
 	
 	//variables
 	float maxRadius = 5.0f;
