@@ -1,8 +1,6 @@
 #ifndef  __BasicEnemyAIScript_h__
 #define  __BasicEnemyAIScript_h__
 
-#include "BaseScript.h"
-
 #ifdef BasicEnemyAIScript_EXPORTS
 #define BasicEnemyAIScript_API __declspec(dllexport)
 #else
@@ -10,6 +8,10 @@
 #endif
 
 class GameObject;
+struct ImGuiContext;
+
+#include "BaseScript.h"
+#include "Geometry/AABB.h"
 
 enum class EnemyState
 {
@@ -40,14 +42,20 @@ public:
 private:
 	GameObject* player = nullptr;
 	std::string playerName = "Player";
+	std::string playerBboxName = "PlayerMesh";
+	std::string myBboxName = "EnemyMesh";
 
 	// Stand-Up variables
 	float standupSpeed = 1.0f;
 	float yTranslation = 20.0f;
 
+	// Chase variables
+	float chaseSpeed = 2.0f;
+
 	float auxTranslation = 0.0f;
 
 	math::AABB* myBbox = nullptr;
+	math::AABB* playerBbox = nullptr;
 };
 
 #endif __BasicEnemyAIScript_h__
