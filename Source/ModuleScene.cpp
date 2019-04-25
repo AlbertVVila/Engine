@@ -883,7 +883,10 @@ bool ModuleScene::AddScene(const char* scene, const char* path)
 	}
 
 	//Recursive UID reassign
-	AssignNewUUID(parentGO, 0u);
+	if (parentGO != nullptr)
+	{
+		AssignNewUUID(parentGO, 0u);
+	}
 
 	//Link Bones after all the hierarchy is imported
 

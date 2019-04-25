@@ -206,11 +206,11 @@ void GameObject::Update()
 		ComponentAnimation* compAnim = (ComponentAnimation*)GetComponent(ComponentType::Animation);
 		if (App->input->GetKey(SDL_SCANCODE_X))
 		{
-			compAnim->SendTriggerToStateMachine(HashString("fast"));
+			compAnim->SendTriggerToStateMachine("faster");
 		}
 		if (App->input->GetKey(SDL_SCANCODE_C))
 		{
-			compAnim->SendTriggerToStateMachine(HashString("slow"));
+			compAnim->SendTriggerToStateMachine("slower");
 		}
 	}
 	//---------------------------------------------

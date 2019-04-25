@@ -282,7 +282,7 @@ void ComponentAnimation::SetStateMachine(const char * stateMachineFile)
 		stateMachine = (ResourceStateMachine*)App->resManager->GetSMByName(stateMachineFile);
 }
 
-void ComponentAnimation::SendTriggerToStateMachine(HashString trigger)
+void ComponentAnimation::SendTriggerToStateMachine(char* trigger)
 {
 	if (stateMachine != nullptr)
 	{	
@@ -291,7 +291,7 @@ void ComponentAnimation::SendTriggerToStateMachine(HashString trigger)
 			unsigned prevNode = stateMachine->GetDefaultNode();
 			unsigned blend = 0u;
 
-			stateMachine->ReceiveTrigger(trigger, blend);
+			stateMachine->ReceiveTrigger(HashString(trigger), blend);
 			if (prevNode != stateMachine->GetDefaultNode())
 			{
 				SetIndexChannels(gameobject, GetAnimFromStateMachine());

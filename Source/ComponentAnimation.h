@@ -25,7 +25,7 @@ public:
 
 	void SetAnimation(const char* animationFile);
 	void SetStateMachine(const char* stateMachineFile);
-	void SendTriggerToStateMachine(HashString trigger);
+	void SendTriggerToStateMachine(char* trigger);
 	ResourceAnimation* GetAnimFromStateMachine();
 	bool GetLoopFromStateMachine();
 	float GetSpeedFromStateMachine();
