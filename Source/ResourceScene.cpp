@@ -7,6 +7,7 @@
 #include "ModuleSpacePartitioning.h"
 
 #include "GameObject.h"
+#include "ComponentRenderer.h"
 
 #include "JSON.h"
 
@@ -88,6 +89,8 @@ bool ResourceScene::Load()
 	std::map<unsigned, GameObject*> gameobjectsMap; //Necessary to assign parent-child efficiently
 	gameobjectsMap.insert(std::pair<unsigned, GameObject*>(App->scene->canvas->UUID, App->scene->canvas));
 
+	std::list<ComponentRenderer*> renderers;
+
 	for (unsigned i = 0; i < gameobjectsJSON->Size(); i++)
 	{
 		JSON_value* gameobjectJSON = gameobjectsJSON->GetValue(i);
@@ -108,10 +111,51 @@ bool ResourceScene::Load()
 				gameobject->parent = App->scene->root;
 				gameobject->parent->children.push_back(gameobject);
 			}
+
+			ComponentRenderer* renderer = nullptr;
+			renderer = (ComponentRenderer*)gameobject->GetComponent(ComponentType::Renderer);
+			if (renderer != nullptr)
+			{
+				renderers.push_back(renderer);
+			}
+		}
+	}
+
+	//We need to generate new UIDs for every GO, otherwise hierarchy will get messed up after temporary scene
+	GameObject* parentGO = nullptr;
+	for (std::map<unsigned, GameObject*>::iterator it = gameobjectsMap.begin(); it != gameobjectsMap.end(); ++it)
+	{
+		if (it->second->parentUUID == 0u)
+		{
+			parentGO = it->second;
+			break;
+		}
+	}
+
+	//Recursive UID reassign
+	AssignNewUUID(parentGO, 0u);
+
+	//Link Bones after all the hierarchy is imported
+	for (ComponentRenderer* cr : renderers)
+	{
+		if (cr->mesh != nullptr)
+		{
+			cr->LinkBones();
 		}
 	}
 
 	RELEASE_ARRAY(data);
 	RELEASE(json);
 	return true;
+}
+
+void ResourceScene::AssignNewUUID(GameObject* go, unsigned UID)
+{
+	go->parentUUID = UID;
+	go->UUID = App->scene->GetNewUID();
+
+	for (std::list<GameObject*>::iterator it = go->children.begin(); it != go->children.end(); ++it)
+	{
+		AssignNewUUID((*it), go->UUID);
+	}
 }

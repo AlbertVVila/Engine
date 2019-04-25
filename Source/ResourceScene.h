@@ -22,6 +22,9 @@ public:
 	// Scene especific
 	void Save(const GameObject &rootGO);
 	bool Load();
+
+private:
+	void AssignNewUUID(GameObject* go, unsigned UID);
 };
 
 #endif
