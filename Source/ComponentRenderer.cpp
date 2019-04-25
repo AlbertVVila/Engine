@@ -110,6 +110,7 @@ void ComponentRenderer::DrawProperties()
 		}
 		ImGui::Spacing();
 		ImGui::Checkbox("Cast shadows", &castShadows);
+		ImGui::Checkbox("Use Alpha", &useAlpha);
 
 		// Material selector
 		ImGui::Text("Material");
@@ -214,6 +215,7 @@ void ComponentRenderer::Save(JSON_value* value) const
 	value->AddUint("meshUID", (mesh != nullptr) ? mesh->GetUID() : 0u);
 	value->AddString("materialFile", (material != nullptr) ? material->GetExportedFile() : DEFAULTMAT);
 	value->AddInt("castShadows", castShadows);
+	value->AddInt("useAlpha", useAlpha);
 }
 
 void ComponentRenderer::Load(JSON_value* value)
@@ -228,6 +230,7 @@ void ComponentRenderer::Load(JSON_value* value)
 	SetMaterial(materialFile);
 
 	castShadows = value->GetInt("castShadows");
+	useAlpha = value->GetInt("useAlpha");
 }
 
 void ComponentRenderer::SetMaterial(const char* materialfile)

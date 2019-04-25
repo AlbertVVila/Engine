@@ -198,6 +198,8 @@ void ModuleScene::FrustumCulling(const Frustum& frustum)
 
 void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 {
+	std::list<ComponentRenderer*> alphaRenderers;
+
 #ifndef GAME_BUILD
 	PROFILE;
 	if (isEditor)
@@ -249,12 +251,19 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	{
 		camFrustum = *maincamera->frustum;
 	}
-	
 	for (const auto &go : staticFilteredGOs)
 	{
 		if (camFrustum.Intersects(go->GetBoundingBox()))
 		{
-			DrawGO(*go, camFrustum, isEditor);
+			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+			if (cr && !cr->useAlpha)
+			{
+				DrawGO(*go, camFrustum, isEditor);
+			}
+			else
+			{
+				alphaRenderers.push_back(cr);
+			}
 		}
 	}
 
@@ -262,7 +271,15 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	{
 		if (camFrustum.Intersects(go->GetBoundingBox()))
 		{
-			DrawGO(*go, camFrustum, isEditor);
+			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+			if (cr && !cr->useAlpha)
+			{
+				DrawGO(*go, camFrustum, isEditor);
+			}
+			else
+			{
+				alphaRenderers.push_back(cr);
+			}
 		}
 	}
 
@@ -275,7 +292,15 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	{
 		if (maincamera->frustum->Intersects(go->GetBoundingBox()))
 		{
-			DrawGOGame(*go);
+			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+			if (cr && !cr->useAlpha)
+			{
+				DrawGOGame(*go);
+			}
+			else
+			{
+				alphaRenderers.push_back(cr);
+			}
 		}
 	}
 
@@ -283,10 +308,34 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	{
 		if (maincamera->frustum->Intersects(go->GetBoundingBox()))
 		{
-			DrawGOGame(*go);
+			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+			if (cr && !cr->useAlpha)
+			{
+				DrawGOGame(*go);
+			}
+			else
+			{
+				alphaRenderers.push_back(cr);
+			}
 		}
 	}	
 #endif
+	alphaRenderers.sort(
+		[frustum](const ComponentRenderer* cr1, const ComponentRenderer* cr2) -> bool
+	{
+		return cr1->gameobject->transform->GetGlobalPosition().Distance(frustum.pos) > cr2->gameobject->transform->GetGlobalPosition().Distance(frustum.pos);
+	});
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	for (ComponentRenderer* cr : alphaRenderers)
+	{
+#ifndef GAME_BUILD
+		DrawGO(*cr->gameobject, camFrustum, isEditor);
+#else
+		DrawGOGame(*cr->gameobject);
+#endif
+	}
+	glDisable(GL_BLEND);
 }
 
 void ModuleScene::DrawGOGame(const GameObject& go)
