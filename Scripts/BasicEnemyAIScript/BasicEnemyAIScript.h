@@ -8,7 +8,7 @@
 #endif
 
 class GameObject;
-struct ImGuiContext;
+class JSON_value;
 
 #include "BaseScript.h"
 #include "Geometry/AABB.h"
@@ -29,6 +29,9 @@ public:
 	void Update() override;
 
 	void Expose(ImGuiContext* context) override;
+
+	void Serialize(JSON_value* json) const override;
+	void DeSerialize(JSON_value* json) override;
 
 private:
 	void StandUp();
