@@ -13,6 +13,7 @@
 #include "ModuleSpacePartitioning.h"
 #include "ModuleParticles.h"
 #include "ModuleWindow.h"
+#include "ModuleScript.h"
 
 #include "GameObject.h"
 #include "ComponentCamera.h"
@@ -108,6 +109,13 @@ bool ModuleScene::Start()
 
 update_status ModuleScene::PreUpdate()
 {
+	if (loadScene)
+	{
+		LoadScene(sceneName.c_str(), SCENES);
+		App->scripting->onStart = true;
+		loadScene = false;
+	}
+
 #ifndef GAME_BUILD
 	FrustumCulling(*App->camera->editorcamera->frustum);
 #else
@@ -453,21 +461,24 @@ void ModuleScene::DragNDropMove(GameObject* target)
 			{
 				for (GameObject* droppedGo : App->scene->selection)
 				{
-					droppedGo->parent->children.remove(droppedGo);
-
-					std::list<GameObject*>::iterator it = std::find(target->parent->children.begin(), target->parent->children.end(), target);
-
-					target->parent->children.insert(it, droppedGo);
-
-					if (droppedGo->transform != nullptr)
+					if (droppedGo->UUID > 1)
 					{
-						droppedGo->transform->SetLocalToWorld();
-					}
+						droppedGo->parent->children.remove(droppedGo);
 
-					droppedGo->parent = target->parent;
-					if (droppedGo->transform != nullptr)
-					{
-						droppedGo->transform->SetWorldToLocal(droppedGo->parent->GetGlobalTransform());
+						std::list<GameObject*>::iterator it = std::find(target->parent->children.begin(), target->parent->children.end(), target);
+
+						target->parent->children.insert(it, droppedGo);
+
+						if (droppedGo->transform != nullptr)
+						{
+							droppedGo->transform->SetLocalToWorld();
+						}
+
+						droppedGo->parent = target->parent;
+						if (droppedGo->transform != nullptr)
+						{
+							droppedGo->transform->SetWorldToLocal(droppedGo->parent->GetGlobalTransform());
+						}
 					}
 				}
 			}
@@ -498,17 +509,20 @@ void ModuleScene::DragNDrop(GameObject* go)
 				TakePhoto();
 				for (GameObject* droppedGo : App->scene->selection)
 				{
-					go->children.push_back(droppedGo);
+					if (droppedGo->UUID > 1)
+					{
+						go->children.push_back(droppedGo);
 
-					if (droppedGo->transform != nullptr)
-					{
-						droppedGo->transform->SetLocalToWorld();
-					}
-					droppedGo->parent->children.remove(droppedGo);
-					droppedGo->parent = go;
-					if (droppedGo->transform != nullptr)
-					{
-						droppedGo->transform->SetWorldToLocal(droppedGo->parent->GetGlobalTransform());
+						if (droppedGo->transform != nullptr)
+						{
+							droppedGo->transform->SetLocalToWorld();
+						}
+						droppedGo->parent->children.remove(droppedGo);
+						droppedGo->parent = go;
+						if (droppedGo->transform != nullptr)
+						{
+							droppedGo->transform->SetWorldToLocal(droppedGo->parent->GetGlobalTransform());
+						}
 					}
 				}
 			}
@@ -753,7 +767,7 @@ unsigned ModuleScene::SaveParShapesMesh(const par_shapes_mesh_s &mesh, char** da
 	return size;
 }
 
-void ModuleScene::SaveScene(const GameObject& rootGO, const char* scene, const char* scenePath)
+void ModuleScene::SaveScene(const GameObject& rootGO, const char* scene, const char* scenePath, bool isTemporary)
 {
 	JSON *json = new JSON();
 	JSON_value *array =json->CreateValue(rapidjson::kArrayType);
@@ -767,9 +781,12 @@ void ModuleScene::SaveScene(const GameObject& rootGO, const char* scene, const c
 	App->fsystem->Save(file.c_str(), json->ToString().c_str(), json->Size());
 	RELEASE(json);
 
-	// Update scene info
-	name = scene;
-	path = scenePath;
+	if (!isTemporary)
+	{
+		// Update scene info
+		name = scene;
+		path = scenePath;
+	}
 }
 void ModuleScene::TakePhoto()
 {
@@ -877,10 +894,10 @@ void ModuleScene::Redo()
 	}
 }
 
-void ModuleScene::LoadScene(const char* scene, const char* scenePath)
+void ModuleScene::LoadScene(const char* scene, const char* scenePath, bool isTemporary)
 {
 	ClearScene();
-	if (AddScene(scene, scenePath))
+	if (AddScene(scene, scenePath) && !isTemporary)
 	{
 		path = scenePath;
 		name = scene;
@@ -966,7 +983,6 @@ void ModuleScene::ClearScene()
 {
 	CleanUp();
 	camera_notfound_texture = (ResourceTexture*)App->resManager->Get(NOCAMERA);
-	name.clear();	
 	staticGOs.clear();
 	dynamicGOs.clear();
 	staticFilteredGOs.clear();
@@ -1064,7 +1080,17 @@ void ModuleScene::Pick(float normalized_x, float normalized_y)
 
 	if (closestGO != nullptr)
 	{
-		Select(closestGO);
+		GameObject* closestGoForReal = nullptr;
+		closestGoForReal = FindClosestParent(closestGO);
+		if(closestGoForReal != nullptr)
+		{
+			Select(closestGoForReal);
+		}
+		else
+		{
+			Select(closestGO);
+		}
+	
 	}
 	else
 	{
@@ -1078,12 +1104,28 @@ void ModuleScene::Pick(float normalized_x, float normalized_y)
 	}
 }
 
-GameObject * ModuleScene::FindGameObjectByName(const char* name) const
+GameObject* ModuleScene::FindClosestParent(GameObject* go)
+{
+	if (go->parent != nullptr)
+	{
+		if (go->parent->isBoneRoot == true)
+		{
+			return go->parent;
+		}
+	}
+	else
+	{
+		return nullptr;
+	}
+	return FindClosestParent(go->parent);
+}
+
+GameObject* ModuleScene::FindGameObjectByName(const char* name) const
 {
 	return FindGameObjectByName(App->scene->root, name);
 }
 
-GameObject * ModuleScene::FindGameObjectByName(GameObject* parent, const char* name) const
+GameObject* ModuleScene::FindGameObjectByName(GameObject* parent, const char* name) const
 {
 	std::stack<GameObject*> GOs;
 	GOs.push(parent);

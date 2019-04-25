@@ -11,8 +11,6 @@ public:
 
 	void Draw() override;
 
-public:
-	const char* temprarySceneFileName = "temporaryScene";
 };
 
 #endif //__PanelTime_h__

@@ -18,7 +18,11 @@ enum class ComponentType
 	Transform2D,
 	Text,
 	Image,
-	Button
+	Button,
+	Script,
+	ReverbZone,
+	AudioListener,
+	AudioSource
 };
 
 class Component
@@ -40,7 +44,8 @@ public:
 	}
 
 	virtual void Update() {}
-	
+	virtual void OnPlay() {}
+
 	virtual bool CleanUp() 
 	{
 		return true; 
