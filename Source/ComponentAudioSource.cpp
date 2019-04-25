@@ -308,7 +308,7 @@ void ComponentAudioSource::Load(JSON_value* value)
 	path = value->GetString("Path");
 	if (path == "") path = "No Audio Selected";
 	limit3DPan = value->GetFloat("LimitPan");
-	fadeDist = value->GetFloat("FadeDIst");
+	fadeDist = value->GetFloat("FadeDist");
 	loop = value->GetInt("Loop");
 	rolloff3D = value->GetFloat("Rolloff");
 	streamed = value->GetInt("Streamed");
