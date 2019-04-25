@@ -293,6 +293,7 @@ void ComponentAudioSource::Save(JSON_value* value) const
 	value->AddInt("PlayOnAwake", playOnAwake);
 	value->AddString("Path", path.c_str());
 	value->AddFloat("LimitPan", limit3DPan);
+	value->AddFloat("FadeDist", fadeDist);
 	value->AddInt("Loop", loop);
 	value->AddFloat("Rolloff", rolloff3D);
 	value->AddInt("Streamed", streamed);
@@ -307,6 +308,7 @@ void ComponentAudioSource::Load(JSON_value* value)
 	path = value->GetString("Path");
 	if (path == "") path = "No Audio Selected";
 	limit3DPan = value->GetFloat("LimitPan");
+	fadeDist = value->GetFloat("FadeDIst");
 	loop = value->GetInt("Loop");
 	rolloff3D = value->GetFloat("Rolloff");
 	streamed = value->GetInt("Streamed");
