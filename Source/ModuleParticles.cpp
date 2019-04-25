@@ -263,12 +263,13 @@ void ModuleParticles::DrawParticleSystem(ComponentParticles* cp, const Component
 	glBindVertexArray(billBoardVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, billBoardInstanceVBO);
 	float* matrices = (float*)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
-	/*std::sort(std::begin(cp->particles), std::end(cp->particles),(
-		[camera](const Particle& p1, const Particle& p2) -> bool
-		{
-			return p1.position.Distance(camera->frustum->pos) > p2.position.Distance(camera->frustum->pos);
-		});
-		*/
+
+	cp->particles.sort(
+		[camera](const Particle* cp1, const Particle* cp2) -> bool
+	{
+		return cp1->position.Distance(camera->frustum->pos) > cp2->position.Distance(camera->frustum->pos);
+	});
+
 	unsigned nParticles = cp->particles.size();
 	for (; nParticles > 0; --nParticles)
 	{
@@ -279,13 +280,13 @@ void ModuleParticles::DrawParticleSystem(ComponentParticles* cp, const Component
 			memcpy(matrices, &cp->particles.front()->global.Col(1), sizeof(float) * 4); matrices += 4;
 			memcpy(matrices, &cp->particles.front()->global.Col(2), sizeof(float) * 4); matrices += 4;
 			memcpy(matrices, &cp->particles.front()->global.Col(3), sizeof(float) * 4); matrices += 4;
-			cp->particles.push(cp->particles.front());
+			cp->particles.push_back(cp->particles.front());
 		}
 		else
 		{
 			cp->particlePool.push(cp->particles.front());
 		}
-		cp->particles.pop();
+		cp->particles.pop_front();
 	}
 	//
 
@@ -304,6 +305,7 @@ void ModuleParticles::DrawParticleSystem(ComponentParticles* cp, const Component
 	glUniform1i(glGetUniformLocation(shader->id[0], "f2Xpos"), cp->f2Xpos);
 	glUniform1i(glGetUniformLocation(shader->id[0], "f2Ypos"), cp->f2Ypos);
 	glUniform1f(glGetUniformLocation(shader->id[0], "mixAmount"), cp->frameMix);
+	glUniform3fv(glGetUniformLocation(shader->id[0],"particleColor"), 1, (GLfloat*)&cp->particleColor);	
 
 	glDrawArraysInstanced(GL_TRIANGLES,0, 6, cp->particles.size());
 

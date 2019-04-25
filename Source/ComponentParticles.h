@@ -20,6 +20,7 @@ struct Particle
 	math::float3 position = math::float3::zero;
 	math::float4x4 global = math::float4x4::zero;
 	math::float3 direction = math::float3::unitY;
+	float size = 1.f;
 
 	float totalLifetime = .0f;
 	float lifeTimer = totalLifetime;
@@ -50,7 +51,7 @@ public:
 
 	ResourceTexture* texture = nullptr;
 
-	std::queue<Particle*> particles;
+	std::list<Particle*> particles;
 	std::queue<Particle*> particlePool;
 
 private:
@@ -73,6 +74,9 @@ private:
 	math::float2 speed = math::float2::one;
 	float rate = 10.f;
 	float rateTimer = 1.f / rate;
+	int maxParticles = 50;
+	math::float2 size = math::float2::one;
+	math::float3 particleColor = math::float3::one;
 };
 
 

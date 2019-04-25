@@ -112,9 +112,12 @@ void ComponentParticles::DrawProperties()
 		timer = 0.f;
 	}
 	ImGui::Separator();
+	ImGui::InputInt("Max Particles", &maxParticles);
 	ImGui::DragFloat("Rate", &rate);
 	ImGui::InputFloat2("Lifetime", &lifetime[0]);
 	ImGui::InputFloat2("Speed", &speed[0]);
+	ImGui::InputFloat2("Size", &size[0]);
+	ImGui::ColorEdit3("Color", (float*)&particleColor);
 	ImGui::PopID();
 }
 
@@ -125,7 +128,7 @@ bool ComponentParticles::CleanUp()
 	for (; nParticles > 0; --nParticles)
 	{
 		RELEASE(particles.front());
-		particles.pop();
+		particles.pop_front();
 	}
 
 	nParticles = particlePool.size();
@@ -152,7 +155,7 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 	f2Ypos = f1Xpos < f2Xpos ? f1Ypos : f1Ypos + 1;	
 
 	rateTimer -= dt;
-	if (rateTimer <= 0.f)
+	if (rateTimer <= 0.f && particles.size() < maxParticles)
 	{
 		int amount = MAX(dt / (1.f / rate), 1);
 		for (; amount > 0; --amount)
@@ -185,7 +188,8 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 				p->speed = speed.y;
 			}
 			p->lifeTimer = p->totalLifetime;
-			particles.push(p);
+			p->size = fmod(rand(), abs(size.y - size.x));
+			particles.push_back(p);
 		}
 		rateTimer = 1.f / rate;
 	}
@@ -197,9 +201,9 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 	{
 		particles.front()->position += particles.front()->direction * particles.front()->speed * dt;
 		float3 direction = (camPos - particles.front()->position);
-		particles.front()->global = particles.front()->global.FromTRS(particles.front()->position, math::Quat::LookAt(float3::unitZ, direction.Normalized(), float3::unitY, float3::unitY), math::float3::one * 50);
-		particles.push(particles.front());
-		particles.pop();
+		particles.front()->global = particles.front()->global.FromTRS(particles.front()->position, math::Quat::LookAt(float3::unitZ, direction.Normalized(), float3::unitY, float3::unitY), math::float3::one * particles.front()->size);
+		particles.push_back(particles.front());
+		particles.pop_front();
 	}
 }
 
@@ -213,6 +217,9 @@ void ComponentParticles::Save(JSON_value* value) const
 	value->AddFloat2("lifetime", lifetime);
 	value->AddFloat2("speed", speed);
 	value->AddFloat("rate", rate);
+	value->AddInt("maxParticles", maxParticles);
+	value->AddFloat2("size", size);
+	value->AddFloat3("particleColor", particleColor);
 }
 
 void ComponentParticles::Load(JSON_value* value)
@@ -230,6 +237,9 @@ void ComponentParticles::Load(JSON_value* value)
 	speed = value->GetFloat2("speed");
 	rate = value->GetFloat("rate");
 	rateTimer = 1.f / rate;
+	maxParticles = value->GetInt("maxParticles");
+	size = value->GetFloat2("size");
+	particleColor = value->GetFloat3("particleColor");
 }
 
 
