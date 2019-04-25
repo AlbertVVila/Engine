@@ -69,6 +69,7 @@ public:
 	unsigned SaveParShapesMesh(const par_shapes_mesh_s & mesh, char** data) const;
 
 	void SaveScene(const GameObject &rootGO, const char* scene, const char* scenePath, bool isTemporary = false);
+	void AssignNewUUID(GameObject* go, unsigned UID);
 	void TakePhoto();
 	void TakePhoto(std::list<GameObject*>& target);
 	void RestorePhoto(GameObject* photo);

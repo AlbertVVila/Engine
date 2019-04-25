@@ -395,17 +395,19 @@ void ComponentAnimation::OnPlay()
 void ComponentAnimation::UpdateGO(GameObject* go)
 {
 	PROFILE;
-	float3 position;
-	Quat rotation;
-
-	if (controller->GetTransform(go->animationIndexChannel, position, rotation))
+	
+	if (go->animationIndexChannel != 999u)
 	{
-		go->transform->SetPosition(position);
-		go->transform->SetRotation(rotation);
+		float3 position;
+		Quat rotation;
+
+		if (controller->GetTransform(go->animationIndexChannel, position, rotation))
+		{
+			go->transform->SetPosition(position);
+			go->transform->SetRotation(rotation);
+		}
+		gameobject->movedFlag = true;
 	}
-
-	gameobject->movedFlag = true;
-
 	for (std::list<GameObject*>::iterator it = go->children.begin(); it != go->children.end(); ++it)
 	{
 		UpdateGO(*it);

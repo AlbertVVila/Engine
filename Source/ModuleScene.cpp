@@ -699,6 +699,18 @@ void ModuleScene::SaveScene(const GameObject& rootGO, const char* scene, const c
 		path = scenePath;
 	}
 }
+
+void ModuleScene::AssignNewUUID(GameObject* go, unsigned UID)
+{
+	go->parentUUID = UID;
+	go->UUID = GetNewUID();
+
+	for (std::list<GameObject*>::iterator it = go->children.begin(); it != go->children.end(); ++it)
+	{
+		AssignNewUUID((*it), go->UUID);
+	}
+}
+
 void ModuleScene::TakePhoto()
 {
 	TakePhoto(scenePhotos);
@@ -832,7 +844,6 @@ bool ModuleScene::AddScene(const char* scene, const char* path)
 		if (gameobject->UUID != 1)
 		{
 			gameobjectsMap.insert(std::pair<unsigned, GameObject*>(gameobject->UUID, gameobject));
-
 			std::map<unsigned, GameObject*>::iterator it = gameobjectsMap.find(gameobject->parentUUID);
 			if (it != gameobjectsMap.end())
 			{
@@ -859,6 +870,20 @@ bool ModuleScene::AddScene(const char* scene, const char* path)
 		}
 	}
 
+	//We need to generate new UIDs for every GO, otherwise hierarchy will get messed up after temporary scene
+	
+	GameObject* parentGO = nullptr;
+	for (std::map<unsigned, GameObject*>::iterator it = gameobjectsMap.begin(); it != gameobjectsMap.end(); ++it)
+	{
+		if (it->second->parentUUID == 0u)
+		{
+			parentGO = it->second;
+			break;
+		}
+	}
+
+	//Recursive UID reassign
+	AssignNewUUID(parentGO, 0u);
 
 	//Link Bones after all the hierarchy is imported
 

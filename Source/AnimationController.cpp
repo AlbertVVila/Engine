@@ -163,53 +163,51 @@ bool AnimationController::GetTransformInstance(Instance* instance, unsigned chan
 
 	if (anim != nullptr)
 	{
-		if (channelIndex != 999u)
+
+		//Used to know how far are we from each frame
+
+		float positionKey = float(instance->time*(anim->GetNumPositions(channelIndex) - 1)) / float(anim->durationInSeconds);
+		float rotationKey = float(instance->time*(anim->GetNumRotations(channelIndex) - 1)) / float(anim->durationInSeconds);
+
+		unsigned positionIndex = unsigned(positionKey);
+		unsigned rotationIndex = unsigned(rotationKey);
+			
+		float positionLambda = positionKey - float(positionIndex);
+		float rotationLambda = rotationKey - float(rotationIndex);
+
+		if (positionLambda > 0.0f)
 		{
-			
-			//Used to know how far are we from each frame
-
-			float positionKey = float(instance->time*(anim->GetNumPositions(channelIndex) - 1)) / float(anim->durationInSeconds);
-			float rotationKey = float(instance->time*(anim->GetNumRotations(channelIndex) - 1)) / float(anim->durationInSeconds);
-
-			unsigned positionIndex = unsigned(positionKey);
-			unsigned rotationIndex = unsigned(rotationKey);
-			
-			float positionLambda = positionKey - float(positionIndex);
-			float rotationLambda = rotationKey - float(rotationIndex);
-
-			if (positionLambda > 0.0f)
-			{
-				position = InterpolateFloat3(anim->GetPosition(channelIndex, positionIndex), anim->GetPosition(channelIndex, positionIndex + 1), positionLambda);
-			}
-			else
-			{
-				position = anim->GetPosition(channelIndex, positionIndex);
-			}
-			if (rotationLambda > 0.0f)
-			{
-				rotation = InterpolateQuat(anim->GetRotation(channelIndex, rotationIndex), anim->GetRotation(channelIndex, rotationIndex + 1), rotationLambda);
-			}
-			else
-			{
-				rotation = anim->GetRotation(channelIndex, rotationIndex);
-			}
-			if (instance->next != nullptr)
-			{
-				assert(instance->fadeDuration > 0.0f);
-
-				math::float3 nextPosition = math::float3::zero;
-				math::Quat nextRotation = math::Quat::identity;
-
-				if (GetTransformInstance(instance->next, channelIndex, nextPosition, nextRotation))
-				{
-					float blendLambda = float(instance->fadeTime) / float(instance->fadeDuration);
-
-					position = InterpolateFloat3(nextPosition, position, blendLambda);
-					rotation = InterpolateQuat(nextRotation, rotation, blendLambda);
-				}
-			}
-			return true;
+			position = InterpolateFloat3(anim->GetPosition(channelIndex, positionIndex), anim->GetPosition(channelIndex, positionIndex + 1), positionLambda);
 		}
+		else
+		{
+			position = anim->GetPosition(channelIndex, positionIndex);
+		}
+		if (rotationLambda > 0.0f)
+		{
+			rotation = InterpolateQuat(anim->GetRotation(channelIndex, rotationIndex), anim->GetRotation(channelIndex, rotationIndex + 1), rotationLambda);
+		}
+		else
+		{
+			rotation = anim->GetRotation(channelIndex, rotationIndex);
+		}
+		if (instance->next != nullptr)
+		{
+			assert(instance->fadeDuration > 0.0f);
+
+			math::float3 nextPosition = math::float3::zero;
+			math::Quat nextRotation = math::Quat::identity;
+
+			if (GetTransformInstance(instance->next, channelIndex, nextPosition, nextRotation))
+			{
+				float blendLambda = float(instance->fadeTime) / float(instance->fadeDuration);
+
+				position = InterpolateFloat3(nextPosition, position, blendLambda);
+				rotation = InterpolateQuat(nextRotation, rotation, blendLambda);
+			}
+		}
+		return true;
+
 	}
 	return false;
 }
