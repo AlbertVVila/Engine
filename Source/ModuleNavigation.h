@@ -227,6 +227,8 @@ private:
 	float pEnd[3];
 
 	bool pathGenerated = false;
+	WOWPOS *path = new WOWPOS[MAX_PATH];
+	int pathSize;
 };
 
 #endif

@@ -155,7 +155,13 @@ void ModuleNavigation::DrawGUI()
 	if (ImGui::CollapsingHeader("Detour"))
 	{	
 		if (ImGui::Button("Generate Paths")) {
-			returnPath(math::float3(verts[0], verts[1], verts[2]), math::float3(verts[nverts - 3], verts[nverts - 2], verts[nverts - 1]));
+			//returnPath(math::float3(verts[0], verts[1], verts[2]), math::float3(verts[nverts - 3], verts[nverts - 2], verts[nverts - 1]));
+			WOWPOS start, end;
+			start.x = verts[0]; start.y = verts[1]; start.z = verts[2]; end.x = verts[nverts - 3]; end.y = verts[nverts - 2]; end.z = verts[nverts - 1];
+			WOWPOS* path = new WOWPOS[MAX_PATH];
+
+			pathSize = FindStraightPath(start, end, path, 5);
+
 			pathGenerated = true;
 			//generateNavigability();
 			//DetourPoints();
@@ -217,10 +223,15 @@ void ModuleNavigation::renderNavMesh()
 		}
 
 	}
-	//draw inter boundaries
-
-
-	//draw outer boundaries
+	if (pathGenerated)
+	{
+		for (int i = 0; i<pathSize; ++i)
+		{
+			dd::point(ddVec3(path[i].x,
+				path[i].y,
+				path[i].z), ddVec3(0, 1, 0.8), 5.0f);
+		}
+	}
 
 	
 
@@ -1019,8 +1030,12 @@ int ModuleNavigation::FindStraightPath(WOWPOS start, WOWPOS end, WOWPOS *path, i
 	//
 	if (!m_startRef || !m_endRef)
 	{
-		LOG("Could not find any nearby poly's (", m_startRef, ",", m_endRef, ")");
-
+		LOG("Could not find any nearby poly to the start");
+		return ERROR_NEARESTPOLY;
+	}
+	if (!m_endRef)
+	{
+		LOG("Could not find any nearby poly to the end");
 		return ERROR_NEARESTPOLY;
 	}
 
