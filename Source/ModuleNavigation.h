@@ -90,7 +90,7 @@ public:
 	std::vector<GameObject*> obstacles;
 
 	//Constants
-	static const int ERROR = -1;
+	//static const int ERROR = -1;
 	static const int ERROR_NEARESTPOLY = -2;
 
 private:
@@ -225,6 +225,8 @@ private:
 
 	float pStart[3];
 	float pEnd[3];
+
+	bool pathGenerated = false;
 };
 
 #endif

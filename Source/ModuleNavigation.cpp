@@ -154,9 +154,13 @@ void ModuleNavigation::DrawGUI()
 	
 	if (ImGui::CollapsingHeader("Detour"))
 	{	
-		if (ImGui::Button("Generate Paths"))
-			if (!generateNavigability) return;
-			else DetourPoints();
+		if (ImGui::Button("Generate Paths")) {
+			returnPath(math::float3(verts[0], verts[1], verts[2]), math::float3(verts[nverts - 3], verts[nverts - 2], verts[nverts - 1]));
+			pathGenerated = true;
+			//generateNavigability();
+			//DetourPoints();
+
+		}
 	}
 }
 
@@ -759,7 +763,7 @@ std::vector<math::float3>  ModuleNavigation::returnPath(math::float3 pStart, mat
 	}
 	*/
 	
-	dd::xzSquareGrid(-500.0f * 10, 500.0f * 10, 0.0f, 1.0f * 10, math::float3(0.65f, 0.65f, 0.65f));
+	//dd::xzSquareGrid(-500.0f * 10, 500.0f * 10, 0.0f, 1.0f * 10, math::float3(0.65f, 0.65f, 0.65f));
 	//dtPolyRef base = navMesh->getPolyRefBase(tile);
 
 		dtQueryFilter m_filter;
@@ -1007,8 +1011,10 @@ int ModuleNavigation::FindStraightPath(WOWPOS start, WOWPOS end, WOWPOS *path, i
 	dtPolyRef m_endRef;
 
 	//
-	m_startRef = navQuery->findNearestPoly(m_spos, m_polyPickExt, &m_filter, 0);
-	m_endRef = navQuery->findNearestPoly(m_epos, m_polyPickExt, &m_filter, 0);
+	/*m_startRef = navQuery->findNearestPoly(m_spos, m_polyPickExt, &m_filter, 0);
+	m_endRef = navQuery->findNearestPoly(m_epos, m_polyPickExt, &m_filter, 0);*/
+	navQuery->findNearestPoly(m_spos, m_polyPickExt, &m_filter, &m_startRef, 0);
+	navQuery->findNearestPoly(m_spos, m_polyPickExt, &m_filter, &m_startRef, 0);
 
 	//
 	if (!m_startRef || !m_endRef)
@@ -1035,12 +1041,15 @@ int ModuleNavigation::FindStraightPath(WOWPOS start, WOWPOS end, WOWPOS *path, i
 	int pos = 0;
 
 	//
-	m_npolys = navQuery->findPath(m_startRef, m_endRef, m_spos, m_epos, &m_filter, m_polys, MAX_POLYS);
+	//m_npolys = navQuery->findPath(m_startRef, m_endRef, m_spos, m_epos, &m_filter, m_polys, MAX_POLYS);
+	navQuery->findPath(m_startRef, m_endRef, m_spos, m_epos, &m_filter, m_polys, &m_npolys, MAX_POLYS);
 	m_nstraightPath = 0;
 
 	if (m_npolys)
 	{
-		m_nstraightPath = navQuery->findStraightPath(m_spos, m_epos, m_polys, m_npolys, m_straightPath, m_straightPathFlags, m_straightPathPolys, MAX_POLYS);
+		//m_nstraightPath = navQuery->findStraightPath(m_spos, m_epos, m_polys, m_npolys, m_straightPath, m_straightPathFlags, m_straightPathPolys, MAX_POLYS);
+		navQuery->findStraightPath(m_spos, m_epos, m_polys, m_npolys, m_straightPath, m_straightPathFlags,
+			m_straightPathPolys, &m_nstraightPath, MAX_POLYS, 0);//0 are the options
 
 		for (int i = 0; i < m_nstraightPath * 3; )
 		{
