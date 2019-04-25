@@ -19,7 +19,7 @@ struct Material
     vec3      emissive_color;
 
     float roughness;
-	float metallic;
+	vec3 specular;
 };
 
 struct DirLight
@@ -165,8 +165,7 @@ void main()
 	vec3 normal = CalculateNormal();	
 	vec4 albedo = get_albedo();
 	
-	vec3 F0 = vec3(.04f);
-	F0 = mix(F0, albedo.rgb, material.metallic); //RGB specular
+	vec3 F0 = material.specular;
 
 	vec3 color = vec3(0); 
 	
@@ -190,8 +189,7 @@ void main()
 
 		vec3 kS = F;
 		vec3 kD = vec3(1.0) - kS;
-		kD *= 1.0 - material.metallic; //albedo amount		
-
+		
 		float NdotL = max(dot(N, L), 0.0);        
 		color += (kD * albedo.rgb / PI + BRDF(F, L, V, N, H)) * radiance * NdotL;  
 #ifdef SHADOWS_ENABLED
@@ -216,8 +214,7 @@ void main()
 
 		vec3 kS = F;
         vec3 kD = vec3(1.0) - kS;
-        kD *= 1.0 - material.metallic; //albedo amount		
-
+      
 		float NdotL = max(dot(N, L), 0.0);        
 		color += (kD * albedo.rgb / PI + BRDF(F, L, V, N, H)) * radiance * NdotL;  
 	}
@@ -240,8 +237,7 @@ void main()
 
 		vec3 kS = F;
         vec3 kD = vec3(1.0) - kS;
-        kD *= 1.0 - material.metallic; //albedo amount		
-
+      
 		float NdotL = max(dot(N, L), 0.0);        
 		color += (kD * albedo.rgb / PI + BRDF(F, L, V, N, H)) * radiance * NdotL;
 	}
