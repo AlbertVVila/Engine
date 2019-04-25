@@ -12,6 +12,7 @@
 #include "ComponentTransform.h"
 
 class ResourceTexture;
+class ParticleModule;
 
 struct Particle
 {
@@ -59,6 +60,8 @@ private:
 	std::string textureName = "None Selected";
 	std::vector<std::string> textureFiles;
 
+	std::list<ParticleModule*> modules;
+
 	int xTiles = 1;
 	int yTiles = 1;
 	float fps = 24.f;
@@ -77,6 +80,11 @@ private:
 	int maxParticles = 50;
 	math::float2 size = math::float2::one;
 	math::float3 particleColor = math::float3::one;
+
+	bool directionNoise = false;
+	int directionNoiseProbability = 5;
+	int directionNoiseTotalProbability = 500;
+
 };
 
 

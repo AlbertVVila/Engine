@@ -21,7 +21,7 @@ ComponentParticles::ComponentParticles(GameObject* gameobject) : Component(gameo
 {
 	textureFiles = App->resManager->GetResourceNamesList(TYPE::TEXTURE, true);
 	App->particles->AddParticleSystem(this);
-
+	modules.push_back(new PMSizeOverTime());
 }
 
 ComponentParticles::ComponentParticles(const ComponentParticles& component) : Component(component)
@@ -47,7 +47,14 @@ ComponentParticles::ComponentParticles(const ComponentParticles& component) : Co
 	speed = component.speed;
 	rate = component.rate;
 	rateTimer = 1.f / rate;
+	maxParticles = component.maxParticles;
+	size = component.size;
+	particleColor = component.particleColor;
+	directionNoise = component.directionNoise;
+	directionNoiseProbability = component.directionNoiseProbability;
+	directionNoiseTotalProbability = component.directionNoiseTotalProbability;
 	App->particles->AddParticleSystem(this);
+	modules.push_back(new PMSizeOverTime());
 
 }
 
@@ -112,12 +119,23 @@ void ComponentParticles::DrawProperties()
 		timer = 0.f;
 	}
 	ImGui::Separator();
+	ImGui::Checkbox("Direction noise", &directionNoise);
+	if (directionNoise)
+	{
+		ImGui::InputInt("Probability", &directionNoiseProbability);
+		ImGui::InputInt("Total Probability", &directionNoiseTotalProbability);
+		ImGui::Separator();
+	}
 	ImGui::InputInt("Max Particles", &maxParticles);
 	ImGui::DragFloat("Rate", &rate);
 	ImGui::InputFloat2("Lifetime", &lifetime[0]);
 	ImGui::InputFloat2("Speed", &speed[0]);
 	ImGui::InputFloat2("Size", &size[0]);
 	ImGui::ColorEdit3("Color", (float*)&particleColor);
+	for (ParticleModule* pm : modules)
+	{
+		pm->InspectorDraw();
+	}
 	ImGui::PopID();
 }
 
@@ -168,9 +186,9 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 			}
 			else
 			{
-				p = new Particle();
+				p = new Particle();				
 			}
-			p->position = pos + float3(rand() % 200, 0, rand() % 200);
+			p->position = pos + float3(rand() % 2000, 0, rand() % 2000);
 			if (lifetime.x != lifetime.y)
 			{
 				p->totalLifetime = lifetime.x + fmod(rand(), abs(lifetime.y - lifetime.x));
@@ -189,6 +207,18 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 			}
 			p->lifeTimer = p->totalLifetime;
 			p->size = fmod(rand(), abs(size.y - size.x));
+			if (directionNoise)
+			{
+				float xD = ((rand() % 100) - 50) / 100.f;
+				float yD = ((rand() % 100) - 50) / 100.f;
+				float zD = ((rand() % 100) - 50) / 100.f;
+				p->direction = math::float3(xD, yD, zD);
+				p->direction.Normalize();
+			}
+			else
+			{
+				p->direction = math::float3::unitY;
+			}
 			particles.push_back(p);
 		}
 		rateTimer = 1.f / rate;
@@ -199,9 +229,27 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 	
 	for (; nParticles > 0; --nParticles)
 	{
+		if (directionNoise && (rand() % directionNoiseTotalProbability) < directionNoiseProbability)
+		{			
+			float xD = ((rand() % 100) - 50) / 100.f;
+			float yD = ((rand() % 100) - 50) / 100.f;
+			float zD = ((rand() % 100) - 50) / 100.f;
+			particles.front()->direction += math::float3(xD, yD, zD);
+			particles.front()->direction.Normalize();
+		}
+		float sizeOT = particles.front()->size;
+		for (ParticleModule* pm : modules)
+		{
+			switch (pm->type)
+			{
+			case ParticleModule::ParticleModulesType::SIZE_OVER_TIME:
+				sizeOT = ((PMSizeOverTime*)pm)->GetSize(particles.front()->lifeTimer / particles.front()->totalLifetime, particles.front()->size);
+				break;
+			}
+		}
 		particles.front()->position += particles.front()->direction * particles.front()->speed * dt;
 		float3 direction = (camPos - particles.front()->position);
-		particles.front()->global = particles.front()->global.FromTRS(particles.front()->position, math::Quat::LookAt(float3::unitZ, direction.Normalized(), float3::unitY, float3::unitY), math::float3::one * particles.front()->size);
+		particles.front()->global = particles.front()->global.FromTRS(particles.front()->position, math::Quat::LookAt(float3::unitZ, direction.Normalized(), float3::unitY, float3::unitY), math::float3::one * sizeOT);
 		particles.push_back(particles.front());
 		particles.pop_front();
 	}
@@ -220,6 +268,9 @@ void ComponentParticles::Save(JSON_value* value) const
 	value->AddInt("maxParticles", maxParticles);
 	value->AddFloat2("size", size);
 	value->AddFloat3("particleColor", particleColor);
+	value->AddInt("directionNoise", directionNoise);
+	value->AddInt("directionNoiseProbability", directionNoiseProbability);
+	value->AddInt("directionNoiseTotalProbability", directionNoiseTotalProbability);
 }
 
 void ComponentParticles::Load(JSON_value* value)
@@ -240,6 +291,9 @@ void ComponentParticles::Load(JSON_value* value)
 	maxParticles = value->GetInt("maxParticles");
 	size = value->GetFloat2("size");
 	particleColor = value->GetFloat3("particleColor");
+	directionNoise = value->GetInt("directionNoise");
+	directionNoiseProbability = value->GetInt("directionNoiseProbability");
+	directionNoiseTotalProbability = MAX(value->GetInt("directionNoiseTotalProbability"), 1);
 }
 
 
