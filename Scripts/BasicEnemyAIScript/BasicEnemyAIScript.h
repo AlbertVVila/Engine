@@ -36,6 +36,8 @@ public:
 private:
 	void StandUp();
 	void Chase();
+	void Attack();
+	void Wait();
 
 	GameObject* GetGameObjectRecursiveByName(GameObject* gameObject, const char* name);
 
