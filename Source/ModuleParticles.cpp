@@ -134,8 +134,7 @@ bool ModuleParticles::Start()
 void ModuleParticles::Render(float dt, const ComponentCamera* camera) 
 {
 	glEnable(GL_BLEND);
-	glBlendFunc(GL_ONE, GL_ONE);
-	glDisable(GL_DEPTH_TEST);
+	glBlendFunc(GL_ONE, GL_ONE);	
 	particleSystems.sort(
 		[camera](const ComponentParticles* cp1, const ComponentParticles* cp2) -> bool
 		{
@@ -157,8 +156,7 @@ void ModuleParticles::Render(float dt, const ComponentCamera* camera)
 			RenderTrail(trail, camera);
 		}
 	}
-	glEnable(GL_CULL_FACE);
-	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);	
 	glDisable(GL_BLEND);
 
 	glUseProgram(0);
@@ -248,6 +246,11 @@ void ModuleParticles::AddTrailRenderer(ComponentTrail* cr)
 void ModuleParticles::RemoveTrailRenderer(ComponentTrail* cr)
 {
 	trails.remove(cr);
+}
+
+void ModuleParticles::Reset()
+{
+	particleSystems.clear();
 }
 
 void ModuleParticles::DrawParticleSystem(ComponentParticles* cp, const ComponentCamera* camera) const

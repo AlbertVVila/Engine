@@ -34,6 +34,8 @@ public:
 	void AddTrailRenderer(ComponentTrail* cr);
 	void RemoveTrailRenderer(ComponentTrail* cr);
 
+	void Reset();
+
 private:
 	
 	void DrawParticleSystem(ComponentParticles* cp, const ComponentCamera* camera) const;

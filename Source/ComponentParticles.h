@@ -23,6 +23,7 @@ struct Particle
 
 	float totalLifetime = .0f;
 	float lifeTimer = totalLifetime;
+	
 };
 
 

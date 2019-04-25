@@ -27,6 +27,26 @@ ComponentParticles::ComponentParticles(GameObject* gameobject) : Component(gameo
 ComponentParticles::ComponentParticles(const ComponentParticles& component) : Component(component)
 {
 	textureFiles = App->resManager->GetResourceNamesList(TYPE::TEXTURE, true);
+	textureName = component.textureName;
+	if (textureName != "None Selected")
+	{
+		unsigned imageUID = App->resManager->FindByExportedFile(textureName.c_str());
+		texture = (ResourceTexture*)App->resManager->Get(imageUID);
+	}
+	xTiles = component.xTiles;
+	yTiles = component.yTiles;
+	fps = component.fps;
+	timer = component.timer;
+	frameMix = component.frameMix;
+	f1Xpos = component.f1Xpos;
+	f1Ypos = component.f1Ypos;
+	f2Xpos = component.f2Xpos;
+	f2Ypos = component.f2Ypos;
+
+	lifetime = component.lifetime;
+	speed = component.speed;
+	rate = component.rate;
+	rateTimer = 1.f / rate;
 	App->particles->AddParticleSystem(this);
 
 }
@@ -35,9 +55,9 @@ ComponentParticles::~ComponentParticles()
 {
 }
 
-Component * ComponentParticles::Clone() const
+Component* ComponentParticles::Clone() const
 {
-	return nullptr;
+	return new ComponentParticles(*this);
 }
 
 void ComponentParticles::DrawProperties()
@@ -125,6 +145,7 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 	float currentFrame = timer / (1 / fps);
 	float frame;
 	frameMix = modf(currentFrame, &frame);
+	math::float3 pos = gameobject->transform->GetGlobalPosition();
 	f1Xpos = ((int)frame) % xTiles;
 	f2Xpos = (f1Xpos + 1) % xTiles;
 	f1Ypos = (((int)frame) / xTiles) % yTiles;
@@ -146,7 +167,7 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 			{
 				p = new Particle();
 			}
-			p->position = float3(rand() % 200, 0, rand() % 200);
+			p->position = pos + float3(rand() % 200, 0, rand() % 200);
 			if (lifetime.x != lifetime.y)
 			{
 				p->totalLifetime = lifetime.x + fmod(rand(), abs(lifetime.y - lifetime.x));
@@ -189,6 +210,9 @@ void ComponentParticles::Save(JSON_value* value) const
 	value->AddInt("yTiles", yTiles);
 	value->AddFloat("fps", fps);
 	value->AddString("textureName", textureName.c_str());
+	value->AddFloat2("lifetime", lifetime);
+	value->AddFloat2("speed", speed);
+	value->AddFloat("rate", rate);
 }
 
 void ComponentParticles::Load(JSON_value* value)
@@ -202,6 +226,10 @@ void ComponentParticles::Load(JSON_value* value)
 	{
 		texture = (ResourceTexture*)App->resManager->Get(textureName.c_str());
 	}
+	lifetime = value->GetFloat2("lifetime");
+	speed = value->GetFloat2("speed");
+	rate = value->GetFloat("rate");
+	rateTimer = 1.f / rate;
 }
 
 

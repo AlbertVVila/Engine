@@ -724,6 +724,7 @@ void ModuleScene::SaveScene(const GameObject& rootGO, const char* scene, const c
 }
 void ModuleScene::TakePhoto()
 {
+	App->particles->Reset();
 	TakePhoto(scenePhotos);
 	scenePhotosUndoed.clear();
 }
@@ -749,6 +750,7 @@ void ModuleScene::RestorePhoto(GameObject* photo)
 	std::stack<GameObject*> goStack;
 	goStack.push(root);
 	App->renderer->directionalLight = nullptr;
+	App->particles->Reset();
 	while (!goStack.empty())
 	{
 		GameObject* go = goStack.top(); goStack.pop();
