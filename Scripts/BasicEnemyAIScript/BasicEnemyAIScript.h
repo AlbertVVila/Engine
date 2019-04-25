@@ -15,6 +15,7 @@ class JSON_value;
 
 enum class EnemyState
 {
+	WAIT,
 	STANDUP,
 	CHASE,
 	ATTACK,
@@ -34,21 +35,24 @@ public:
 	void DeSerialize(JSON_value* json) override;
 
 private:
+	void Wait();
 	void StandUp();
 	void Chase();
 	void Attack();
-	void Wait();
 
 	GameObject* GetGameObjectRecursiveByName(GameObject* gameObject, const char* name);
 
 public:
-	EnemyState enemyState = EnemyState::STANDUP;
+	EnemyState enemyState = EnemyState::WAIT;
 
 private:
 	GameObject* player = nullptr;
 	std::string playerName = "Player";
 	std::string playerBboxName = "PlayerMesh";
 	std::string myBboxName = "EnemyMesh";
+
+	// Wait variables
+	float activationDistance = 100.0f;
 
 	// Stand-Up variables
 	float standupSpeed = 1.0f;
