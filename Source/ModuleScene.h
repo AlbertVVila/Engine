@@ -128,6 +128,10 @@ public:
 	int SceneSize = 10000;
 
 	GameObject* canvas = nullptr;
+
+	bool loadScene = false;
+	std::string sceneName = "";
+	int actionAfterLoad = -1;
 };
 
 

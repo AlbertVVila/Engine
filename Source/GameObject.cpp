@@ -9,6 +9,7 @@
 #include "ModuleTextures.h"
 #include "ModuleRender.h"
 #include "ModuleSpacePartitioning.h"
+#include "ModuleAudioManager.h"
 
 #include "Component.h"
 #include "ComponentTransform.h"
@@ -87,12 +88,6 @@ GameObject::GameObject(const GameObject & gameobject)
 			((ComponentButton*)componentcopy)->highlightedImage->gameobject = this;
 			((ComponentButton*)componentcopy)->pressedImage->gameobject = this;
 			((ComponentButton*)componentcopy)->rectTransform->gameobject = this;
-		}
-		if (componentcopy->type == ComponentType::Light)
-		{
-			light = (ComponentLight*)componentcopy;
-			App->spacePartitioning->aabbTreeLighting.InsertGO(this);
-			App->scene->lights.push_back(light);
 		}
 	}
 	if (!App->scene->photoEnabled)
@@ -315,9 +310,17 @@ Component* GameObject::CreateComponent(ComponentType type)
 		break;
 	case ComponentType::AudioListener:
 		component = new ComponentAudioListener(this);
+		App->audioManager->audioListeners.push_back((ComponentAudioListener*)component);
+		if (App->audioManager->audioListeners.size() == 1)
+		{
+			App->audioManager->mainListener = (ComponentAudioListener*)component;
+			App->audioManager->mainListener->isMainListener = true; 
+		}
 		break;
 	case ComponentType::ReverbZone:
 		component = new ComponentReverbZone(this);
+		App->audioManager->reverbZones.push_back((ComponentReverbZone*)component);
+
 		break;
 	default:
 		break;
