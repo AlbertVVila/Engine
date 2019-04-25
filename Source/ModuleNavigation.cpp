@@ -153,30 +153,10 @@ void ModuleNavigation::DrawGUI()
 	}
 	
 	if (ImGui::CollapsingHeader("Detour"))
-	{
-		ImGui::Text("Start Point:");
-		ImGui::InputFloat3("SP", pStart, 3);
-		
-		ImGui::Text("End Point:");
-		ImGui::InputFloat3("EP", pEnd, 3);
-		
+	{	
 		if (ImGui::Button("Generate Paths"))
-			if (!pStart) return;
-			else if (!pStart) return;
-			//else std::vector<math::float3> lstPoints = returnPath(pStart, pEnd);
-	}
-	if (ImGui::CollapsingHeader("Detour"))
-	{
-		ImGui::Text("Start Point:");
-		ImGui::InputFloat3("SP", pStart, 3);
-		
-		ImGui::Text("End Point:");
-		ImGui::InputFloat3("EP", pEnd, 3);
-		
-		if (ImGui::Button("Generate Paths"))
-			if (!pStart) return;
-			else if (!pStart) return;
-			//else std::vector<math::float3> lstPoints = returnPath(pStart, pEnd);
+			if (!generateNavigability) return;
+			else DetourPoints();
 	}
 }
 
