@@ -293,6 +293,10 @@
     <ClInclude Include="ModuleUI.h" />
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="myQuadTree.h" />
+    <ClInclude Include="NodeEditor\Include\ax\Math2D.h" />
+    <ClInclude Include="NodeEditor\Include\NodeEditor.h" />
+    <ClInclude Include="NodeEditor\Source\Editor.h" />
+    <ClInclude Include="NodeEditor\Source\Interop.h" />
     <ClInclude Include="Panel.h" />
     <ClInclude Include="PanelAbout.h" />
     <ClInclude Include="PanelBrowser.h" />
@@ -315,6 +319,7 @@
     <ClInclude Include="ResourceModel.h" />
     <ClInclude Include="ResourceSkybox.h" />
     <ClInclude Include="ResourceTexture.h" />
+    <ClInclude Include="ResourceStateMachine.h" />
     <ClInclude Include="Soloud\fractal_includes\dr_flac.h" />
     <ClInclude Include="Soloud\fractal_includes\dr_mp3.h" />
     <ClInclude Include="Soloud\fractal_includes\dr_wav.h" />
@@ -351,7 +356,6 @@
     <ClInclude Include="Soloud\fractal_includes\soloud_waveshaperfilter.h" />
     <ClInclude Include="Soloud\fractal_includes\soloud_wavstream.h" />
     <ClInclude Include="Soloud\fractal_includes\stb_vorbis.h" />
-    <ClInclude Include="StateMachine.h" />
     <ClInclude Include="strpool.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Viewport.h" />
@@ -437,6 +441,8 @@
     <ClCompile Include="ModuleUI.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="myQuadTree.cpp" />
+    <ClCompile Include="NodeEditor\Source\Editor.cpp" />
+    <ClCompile Include="NodeEditor\Source\NodeEditor.cpp" />
     <ClCompile Include="PanelAbout.cpp" />
     <ClCompile Include="PanelAnimation.cpp" />
     <ClCompile Include="PanelBrowser.cpp" />
@@ -482,7 +488,7 @@
     <ClCompile Include="Soloud\fractal_includes\soloud_wav.cpp" />
     <ClCompile Include="Soloud\fractal_includes\soloud_wavstream.cpp" />
     <ClCompile Include="Soloud\fractal_includes\stb_vorbis.c" />
-    <ClCompile Include="StateMachine.cpp" />
+    <ClCompile Include="ResourceStateMachine.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Viewport.cpp" />
   </ItemGroup>
@@ -496,6 +502,7 @@
     <None Include="..\Game\Shaders\VertexShaders\Fonts.vs" />
     <None Include="..\Game\Shaders\VertexShaders\PBR.vs" />
     <None Include="..\Game\Shaders\VertexShaders\UI.vs" />
+    <None Include="NodeEditor\Include\ax\Math2D.inl" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Engine.rc" />

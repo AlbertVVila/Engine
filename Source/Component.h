@@ -41,7 +41,8 @@ public:
 	}
 
 	virtual void Update() {}
-	
+	virtual void OnPlay() {}
+
 	virtual bool CleanUp() 
 	{
 		return true; 
