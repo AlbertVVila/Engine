@@ -39,11 +39,13 @@ public:
 	HashString GetClipName(unsigned index);
 	unsigned GetClipResource(unsigned index);
 	bool GetClipLoop(unsigned index);
+	bool GetClipMustFinish(unsigned index);
 	float GetClipSpeed(unsigned index);
 	void SetClipName(unsigned index, HashString name);
 	void SetClipResource(unsigned index, unsigned UID);
 	void SetClipLoop(unsigned index, bool loop);
 	void SetClipSpeed(unsigned index, float speed);
+	void SetClipMustFinish(unsigned index, bool mustFinish);
 
 	//Transitions setters and getters
 	HashString GetTransitionOrigin(unsigned index);
@@ -92,6 +94,7 @@ private:
 		unsigned UID = 0u;
 		float clipSpeed = 1.0f;
 		bool loop = false;
+		bool mustFinish = false;
 
 		Clip() { ; }
 		Clip(HashString n, unsigned u, bool l) : name(n), UID(u), loop(l) { ; }

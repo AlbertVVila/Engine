@@ -17,6 +17,7 @@ public:
 		float time = 0.0f;
 		bool loop = true;
 		float speed = 1.f;
+		bool mustFinish = false;
 
 		Instance* next = nullptr;
 		float fadeDuration = 0.0f;
@@ -33,11 +34,12 @@ public:
 	AnimationController();
 	~AnimationController();
 
-	void Play(ResourceAnimation* anim, bool loop, float speed);
-	void PlayNextNode(ResourceAnimation* anim, bool loop, float speed, unsigned blend);
+	void Play(ResourceAnimation* anim, bool loop, bool mustFinish, float speed);
+	void PlayNextNode(ResourceAnimation* anim, bool loop, bool mustFinish, float speed, unsigned blend);
 	void Update(float dt);
 	void UpdateInstance(Instance* ins, float dt);
 	void ReleaseInstance(Instance* ins);
+	bool CanSwitch();
 
 	void ResetClipping();
 

@@ -201,7 +201,18 @@ void GameObject::Update()
 	}
 	//TESTING
 	//---------------------------------------------
-
+	if (isBoneRoot)
+	{
+		ComponentAnimation* compAnim = (ComponentAnimation*)GetComponent(ComponentType::Animation);
+		if (App->input->GetKey(SDL_SCANCODE_X))
+		{
+			compAnim->SendTriggerToStateMachine(HashString("fast"));
+		}
+		if (App->input->GetKey(SDL_SCANCODE_C))
+		{
+			compAnim->SendTriggerToStateMachine(HashString("slow"));
+		}
+	}
 	//---------------------------------------------
 
 	for (const auto& child : children)

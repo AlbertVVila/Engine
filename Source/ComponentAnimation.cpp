@@ -154,6 +154,23 @@ void ComponentAnimation::DrawProperties()
 					}
 					stateMachine->SetClipName(j, HashString(clipName));
 
+					//if the animation must finish we must set loop to false and viceversa!
+					bool finish = stateMachine->GetClipMustFinish(j);
+					if (ImGui::Checkbox("Must end", &finish))
+					{
+						if (!finish)
+							stateMachine->SetClipMustFinish(j, false);
+						else
+						{
+							stateMachine->SetClipMustFinish(j, true);
+							stateMachine->SetClipLoop(j, false);
+						}
+
+						stateMachine->Save();
+					}
+
+					ImGui::SameLine();
+
 					float speed = stateMachine->GetClipSpeed(j);
 					if (ImGui::DragFloat("Clip speed", &speed, 0.1f, 0.f, 10.f))
 					{
@@ -167,7 +184,10 @@ void ComponentAnimation::DrawProperties()
 						if (!clipLoop)
 							stateMachine->SetClipLoop(j, false);
 						else
+						{
 							stateMachine->SetClipLoop(j, true);
+							stateMachine->SetClipMustFinish(j, false);
+						}
 
 						stateMachine->Save();
 					}
@@ -266,18 +286,22 @@ void ComponentAnimation::SendTriggerToStateMachine(HashString trigger)
 {
 	if (stateMachine != nullptr)
 	{	
-		unsigned prevNode = stateMachine->GetDefaultNode();
-		unsigned blend = 0u;
-		stateMachine->ReceiveTrigger(trigger, blend);
-		if (prevNode != stateMachine->GetDefaultNode())
+		if (controller->CanSwitch())
 		{
-			SetIndexChannels(gameobject, GetAnimFromStateMachine());
-			PlayNextNode(blend);
+			unsigned prevNode = stateMachine->GetDefaultNode();
+			unsigned blend = 0u;
+
+			stateMachine->ReceiveTrigger(trigger, blend);
+			if (prevNode != stateMachine->GetDefaultNode())
+			{
+				SetIndexChannels(gameobject, GetAnimFromStateMachine());
+				PlayNextNode(blend);
+			}
 		}
 	}
 }
 
-ResourceAnimation * ComponentAnimation::GetAnimFromStateMachine()
+ResourceAnimation* ComponentAnimation::GetAnimFromStateMachine()
 {
 	unsigned nodeIndex = stateMachine->GetDefaultNode();
 	HashString clipName = stateMachine->GetNodeClip(nodeIndex);
@@ -301,10 +325,17 @@ float ComponentAnimation::GetSpeedFromStateMachine()
 	return stateMachine->GetClipSpeed(stateMachine->FindClip(clipName));
 }
 
+bool ComponentAnimation::GetMustFinishFromStateMachine()
+{
+	unsigned nodeIndex = stateMachine->GetDefaultNode();
+	HashString clipName = stateMachine->GetNodeClip(nodeIndex);
+	return stateMachine->GetClipMustFinish(stateMachine->FindClip(clipName));
+}
+
 void ComponentAnimation::PlayNextNode(unsigned blend)
 {
 	if(stateMachine != nullptr)
-		controller->PlayNextNode(GetAnimFromStateMachine(),GetLoopFromStateMachine(),
+		controller->PlayNextNode(GetAnimFromStateMachine(),GetLoopFromStateMachine(), GetMustFinishFromStateMachine(),
 			GetSpeedFromStateMachine(), blend);
 }
 
@@ -354,8 +385,11 @@ void ComponentAnimation::Update()
 
 void ComponentAnimation::OnPlay()
 {
-	if(stateMachine != nullptr && stateMachine->GetClipsSize() > 0u && stateMachine->GetNodesSize() > 0u)
-		controller->Play(GetAnimFromStateMachine(), GetLoopFromStateMachine(), GetSpeedFromStateMachine());
+	if (stateMachine != nullptr && stateMachine->GetClipsSize() > 0u && stateMachine->GetNodesSize() > 0u)
+	{
+		controller->Play(GetAnimFromStateMachine(), GetLoopFromStateMachine(),
+			GetMustFinishFromStateMachine(), GetSpeedFromStateMachine());
+	}
 }
 
 void ComponentAnimation::UpdateGO(GameObject* go)

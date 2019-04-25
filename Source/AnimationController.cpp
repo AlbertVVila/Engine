@@ -17,19 +17,21 @@ AnimationController::~AnimationController()
 {
 }
 
-void AnimationController::Play(ResourceAnimation* anim, bool loop, float speed)
+void AnimationController::Play(ResourceAnimation* anim, bool loop,bool mustFinish, float speed)
 {
 	Instance* newInstance = new Instance;
 	newInstance->anim = anim;
+	newInstance->mustFinish = mustFinish;
 	newInstance->speed = speed;
 	newInstance->loop = loop;
 	current = newInstance;
 }
 
-void AnimationController::PlayNextNode(ResourceAnimation * anim, bool loop, float speed, unsigned blend)
+void AnimationController::PlayNextNode(ResourceAnimation * anim, bool loop, bool mustFinish, float speed, unsigned blend)
 {
 	current->anim = anim;
 	current->loop = loop;
+	current->mustFinish = mustFinish;
 	current->speed = speed;
 	current->time = 0.0f;
 }
@@ -114,6 +116,29 @@ void AnimationController::ReleaseInstance(Instance* instance)
 		delete instance;
 		instance = next;
 	} while (instance != nullptr);
+}
+
+bool AnimationController::CanSwitch()
+{
+	bool ret;
+
+	if (current->mustFinish)
+	{
+		if (current->time == current->anim->durationInSeconds)
+		{
+			ret = true;
+		}
+		else
+		{
+			ret = false;
+		}
+	}
+	else
+	{
+		ret = true;
+	}
+
+	return ret;
 }
 
 void AnimationController::ResetClipping()
