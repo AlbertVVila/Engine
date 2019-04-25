@@ -197,7 +197,6 @@ void GameObject::Update()
 		{
 			component->Update();
 		}
-
 	}
 	//TESTING
 	//---------------------------------------------

@@ -29,11 +29,14 @@ public:
 	ResourceAnimation* GetAnimFromStateMachine();
 	bool GetLoopFromStateMachine();
 	float GetSpeedFromStateMachine();
+	int GetStartFrameFromStateMachine();
+	int GetEndFrameFromStateMachine();
 	bool GetMustFinishFromStateMachine();
 	void PlayNextNode(unsigned blend);
 
 	void SetIndexChannels(GameObject* GO, ResourceAnimation* Ranim);
 	void UpdateGO(GameObject* gameobject);
+	void EditorUpdateGO(GameObject* gameobject);
 	void ResetResource();
 
 	ComponentAnimation();
@@ -58,6 +61,7 @@ public:
 
 
 public:
+	AnimationController* editorController = nullptr;
 	AnimationController* controller = nullptr;
 	ResourceAnimation* anim = nullptr;
 	ResourceStateMachine* stateMachine = nullptr;

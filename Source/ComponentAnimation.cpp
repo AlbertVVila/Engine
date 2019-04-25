@@ -23,17 +23,21 @@
 
 ComponentAnimation::ComponentAnimation() : Component(nullptr, ComponentType::Animation)
 {
-
+	editorController = new AnimationController();
 	controller = new AnimationController();
 }
 
 ComponentAnimation::ComponentAnimation(GameObject * gameobject) : Component(gameobject, ComponentType::Animation)
 {
+	editorController = new AnimationController();
 	controller = new AnimationController();
 }
 
 ComponentAnimation::~ComponentAnimation()
 {
+	delete editorController;
+	editorController = nullptr;
+
 	delete controller;
 	controller = nullptr;
 	if (context)
@@ -154,6 +158,19 @@ void ComponentAnimation::DrawProperties()
 					}
 					stateMachine->SetClipName(j, HashString(clipName));
 
+					int startTime = stateMachine->GetClipStartFrame(j);
+					if (ImGui::InputInt("Start Time", &startTime))
+					{
+						stateMachine->SetClipStartFrame(j, startTime);
+					}
+					//ImGui::SameLine();
+					int endTime = stateMachine->GetClipEndFrame(j);
+					if (ImGui::InputInt("End Time", &endTime))
+					{
+						stateMachine->SetClipEndFrame(j, endTime);
+					}
+					//ImGui::PopItemWidth();
+
 					//if the animation must finish we must set loop to false and viceversa!
 					bool finish = stateMachine->GetClipMustFinish(j);
 					if (ImGui::Checkbox("Must end", &finish))
@@ -170,13 +187,14 @@ void ComponentAnimation::DrawProperties()
 					}
 
 					ImGui::SameLine();
-
+					ImGui::PushItemWidth(60);
 					float speed = stateMachine->GetClipSpeed(j);
 					if (ImGui::DragFloat("Clip speed", &speed, 0.1f, 0.f, 10.f))
 					{
 						stateMachine->SetClipSpeed(j, speed);
 						stateMachine->Save();
 					}
+					ImGui::PopItemWidth();
 
 					bool clipLoop = stateMachine->GetClipLoop(j);
 					if (ImGui::Checkbox("Loop", &clipLoop))
@@ -325,6 +343,20 @@ float ComponentAnimation::GetSpeedFromStateMachine()
 	return stateMachine->GetClipSpeed(stateMachine->FindClip(clipName));
 }
 
+int ComponentAnimation::GetStartFrameFromStateMachine()
+{
+	unsigned nodeIndex = stateMachine->GetDefaultNode();
+	HashString clipName = stateMachine->GetNodeClip(nodeIndex);
+	return stateMachine->GetClipStartFrame(stateMachine->FindClip(clipName));
+}
+
+int ComponentAnimation::GetEndFrameFromStateMachine()
+{
+	unsigned nodeIndex = stateMachine->GetDefaultNode();
+	HashString clipName = stateMachine->GetNodeClip(nodeIndex);
+	return stateMachine->GetClipEndFrame(stateMachine->FindClip(clipName));
+}
+
 bool ComponentAnimation::GetMustFinishFromStateMachine()
 {
 	unsigned nodeIndex = stateMachine->GetDefaultNode();
@@ -336,7 +368,7 @@ void ComponentAnimation::PlayNextNode(unsigned blend)
 {
 	if(stateMachine != nullptr)
 		controller->PlayNextNode(GetAnimFromStateMachine(),GetLoopFromStateMachine(), GetMustFinishFromStateMachine(),
-			GetSpeedFromStateMachine(), blend);
+			GetSpeedFromStateMachine(), GetStartFrameFromStateMachine(), GetEndFrameFromStateMachine(), blend);
 }
 
 ComponentAnimation::EditorContext* ComponentAnimation::GetEditorContext()
@@ -371,14 +403,20 @@ void ComponentAnimation::Update()
 				UpdateGO(gameobject);
 			}
 		}
-		else if (isPlaying)
+	}
+	else if (isPlaying)
+	{
+		if (!channelsSetted)
 		{
-			controller->Update(App->time->realDeltaTime);
+			SetIndexChannels(gameobject, editorController->current->anim);
+			channelsSetted = true;
+		}
 
-			if (gameobject != nullptr)
-			{
-				UpdateGO(gameobject);
-			}
+		editorController->Update(App->time->realDeltaTime);
+
+		if (gameobject != nullptr)
+		{
+			EditorUpdateGO(gameobject);
 		}
 	}
 }
@@ -390,6 +428,8 @@ void ComponentAnimation::OnPlay()
 		controller->Play(GetAnimFromStateMachine(), GetLoopFromStateMachine(),
 			GetMustFinishFromStateMachine(), GetSpeedFromStateMachine());
 	}
+		controller->current->minTime = stateMachine->GetClipStartFrame(stateMachine->GetDefaultNode()) / anim->framesPerSecond;
+		controller->current->maxTime = stateMachine->GetClipEndFrame(stateMachine->GetDefaultNode()) / anim->framesPerSecond;
 }
 
 void ComponentAnimation::UpdateGO(GameObject* go)
@@ -411,6 +451,26 @@ void ComponentAnimation::UpdateGO(GameObject* go)
 	for (std::list<GameObject*>::iterator it = go->children.begin(); it != go->children.end(); ++it)
 	{
 		UpdateGO(*it);
+	}
+}
+
+void ComponentAnimation::EditorUpdateGO(GameObject* go)
+{
+	PROFILE;
+	float3 position;
+	Quat rotation;
+
+	if (editorController->GetTransform(go->animationIndexChannel, position, rotation))
+	{
+		go->transform->SetPosition(position);
+		go->transform->SetRotation(rotation);
+	}
+
+	gameobject->movedFlag = true;
+
+	for (std::list<GameObject*>::iterator it = go->children.begin(); it != go->children.end(); ++it)
+	{
+		EditorUpdateGO(*it);
 	}
 }
 

@@ -26,6 +26,8 @@ public:
 		// Clipping values
 		float minTime = 0.0f;
 		float maxTime = -1.0f;
+
+		bool isEditor = false;
 	};
 
 	Instance* current = nullptr;
@@ -35,9 +37,10 @@ public:
 	~AnimationController();
 
 	void Play(ResourceAnimation* anim, bool loop, bool mustFinish, float speed);
-	void PlayNextNode(ResourceAnimation* anim, bool loop, bool mustFinish, float speed, unsigned blend);
+	void PlayNextNode(ResourceAnimation* anim, bool loop, bool mustFinish, float speed, int startFrame, int endFrame, unsigned blend);
 	void Update(float dt);
 	void UpdateInstance(Instance* ins, float dt);
+	void UpdateEditorInstance(Instance* ins, float dt);
 	void ReleaseInstance(Instance* ins);
 	bool CanSwitch();
 
