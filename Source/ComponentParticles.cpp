@@ -49,6 +49,7 @@ ComponentParticles::ComponentParticles(const ComponentParticles& component) : Co
 	rateTimer = 1.f / rate;
 	maxParticles = component.maxParticles;
 	size = component.size;
+	quadEmitterSize = component.quadEmitterSize;
 	particleColor = component.particleColor;
 	directionNoise = component.directionNoise;
 	directionNoiseProbability = component.directionNoiseProbability;
@@ -131,6 +132,7 @@ void ComponentParticles::DrawProperties()
 	ImGui::InputFloat2("Lifetime", &lifetime[0]);
 	ImGui::InputFloat2("Speed", &speed[0]);
 	ImGui::InputFloat2("Size", &size[0]);
+	ImGui::InputFloat2("Emitter Size", &quadEmitterSize[0]);
 	ImGui::ColorEdit3("Color", (float*)&particleColor);
 	for (ParticleModule* pm : modules)
 	{
@@ -188,7 +190,9 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 			{
 				p = new Particle();				
 			}
-			p->position = pos + float3(rand() % 2000, 0, rand() % 2000);
+			quadEmitterSize.x = MAX(1, quadEmitterSize.x);
+			quadEmitterSize.y = MAX(1, quadEmitterSize.y);
+			p->position = pos + float3(rand() % (int)quadEmitterSize.x, 0, rand() % (int)quadEmitterSize.y);
 			if (lifetime.x != lifetime.y)
 			{
 				p->totalLifetime = lifetime.x + fmod(rand(), abs(lifetime.y - lifetime.x));
@@ -267,6 +271,7 @@ void ComponentParticles::Save(JSON_value* value) const
 	value->AddFloat("rate", rate);
 	value->AddInt("maxParticles", maxParticles);
 	value->AddFloat2("size", size);
+	value->AddFloat2("quadEmitterSize", quadEmitterSize);
 	value->AddFloat3("particleColor", particleColor);
 	value->AddInt("directionNoise", directionNoise);
 	value->AddInt("directionNoiseProbability", directionNoiseProbability);
@@ -290,6 +295,7 @@ void ComponentParticles::Load(JSON_value* value)
 	rateTimer = 1.f / rate;
 	maxParticles = value->GetInt("maxParticles");
 	size = value->GetFloat2("size");
+	quadEmitterSize = value->GetFloat2("quadEmitterSize");
 	particleColor = value->GetFloat3("particleColor");
 	directionNoise = value->GetInt("directionNoise");
 	directionNoiseProbability = value->GetInt("directionNoiseProbability");

@@ -79,6 +79,7 @@ private:
 	float rateTimer = 1.f / rate;
 	int maxParticles = 50;
 	math::float2 size = math::float2::one;
+	math::float2 quadEmitterSize = math::float2::one;
 	math::float3 particleColor = math::float3::one;
 
 	bool directionNoise = false;
