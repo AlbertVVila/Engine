@@ -6,6 +6,7 @@
 #include "GameObject.h"
 
 #include "ResourceAnimation.h"
+#include "ModuleFileSystem.h"
 
 #include "ComponentAnimation.h"
 #include "ComponentTransform.h"
@@ -31,7 +32,6 @@ void PanelAnimation::Draw()
 	}
 	if (App->scene->selected != nullptr && App->scene->selected->isBoneRoot && (ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)) && ((ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)))->anim != nullptr)
 	{
-		ResourceAnimation* anim = nullptr;
 		ComponentAnimation* compAnim = ((ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)));
 
 		ImGui::Text("GAMEOBJECT"); ImGui::SameLine();
@@ -50,7 +50,9 @@ void PanelAnimation::Draw()
 			guiAnimations = App->resManager->GetAnimationsNamesList(true);
 		}
 
-		if (ImGui::BeginCombo("", guiAnimations.begin()->c_str()))
+		ImGui::PushItemWidth(100);
+
+		if (ImGui::BeginCombo("##label", anim != nullptr ? anim->name.c_str() : ""))
 		{
 			for (int n = 0; n < guiAnimations.size(); n++)
 			{
@@ -59,6 +61,7 @@ void PanelAnimation::Draw()
 				{
 					unsigned animUID = ((ResourceAnimation*)App->resManager->GetAnimationByName(guiAnimations[n].c_str()))->GetUID();
 					anim = (ResourceAnimation*)App->resManager->GetWithoutLoad(animUID);
+					compAnim->editorController->Play(anim, true);
 				}
 				if (is_selected)
 				{
@@ -66,6 +69,13 @@ void PanelAnimation::Draw()
 				}
 			}
 			ImGui::EndCombo();
+		}
+		ImGui::PopItemWidth();
+
+		if (anim == nullptr)
+		{
+			ImGui::End();
+			return;
 		}
 
 		// Animation
@@ -80,7 +90,7 @@ void PanelAnimation::Draw()
 			
 			if (!isCliping)
 			{
-				compAnim->controller->current->time = anim->currentFrame / anim->framesPerSecond;
+				compAnim->editorController->current->time = anim->currentFrame / anim->framesPerSecond;
 			}
 			else if (isCliping && anim->currentFrame < minFrame)
 			{
@@ -100,19 +110,8 @@ void PanelAnimation::Draw()
 			}
 			else if (isCliping && !compAnim->isPlaying)
 			{
-				CreateAnimationFromClip(anim, minFrame, maxFrame);
 				isCliping = false;
-				compAnim->controller->ResetClipping();
-			}
-		}
-
-		if (isCliping)
-		{
-			ImGui::SameLine();
-			if (ImGui::Button("Cancel") && !compAnim->isPlaying)
-			{
-				isCliping = false;
-				compAnim->controller->ResetClipping();
+				compAnim->editorController->ResetClipping();
 			}
 		}
 
@@ -123,13 +122,13 @@ void PanelAnimation::Draw()
 			{
 				anim->currentFrame--;
 				UpdateGameObjectAnimation(App->scene->selected, anim);
-				compAnim->controller->current->time = anim->currentFrame / anim->framesPerSecond;
+				compAnim->editorController->current->time = anim->currentFrame / anim->framesPerSecond;
 			}
 			else if (!isCliping && anim->currentFrame > 0)
 			{
 				anim->currentFrame--;
 				UpdateGameObjectAnimation(App->scene->selected, anim);
-				compAnim->controller->current->time = anim->currentFrame / anim->framesPerSecond;
+				compAnim->editorController->current->time = anim->currentFrame / anim->framesPerSecond;
 			}
 
 		}
@@ -141,7 +140,7 @@ void PanelAnimation::Draw()
 
 			if (ImGui::ArrowButton("play", ImGuiDir_Right)) // PAUSE
 			{				
-				if (isCliping && compAnim->controller->current->loop)
+				if (isCliping && compAnim->editorController->current->loop)
 				{
 					anim->currentFrame = maxFrame;
 					UpdateGameObjectAnimation(App->scene->selected, anim);
@@ -159,10 +158,10 @@ void PanelAnimation::Draw()
 			{
 				if (isCliping)
 				{
-					compAnim->controller->current->minTime = minFrame / anim->framesPerSecond;
-					compAnim->controller->current->maxTime = maxFrame / anim->framesPerSecond;
+					compAnim->editorController->current->minTime = minFrame / anim->framesPerSecond;
+					compAnim->editorController->current->maxTime = maxFrame / anim->framesPerSecond;
 				}
-
+				compAnim->editorController->current->isEditor = true;
 				compAnim->isPlaying = true;
 			}
 		}
@@ -174,7 +173,7 @@ void PanelAnimation::Draw()
 			{
 				anim->currentFrame++;
 				UpdateGameObjectAnimation(App->scene->selected, anim);
-				compAnim->controller->current->time = anim->currentFrame / anim->framesPerSecond;
+				compAnim->editorController->current->time = anim->currentFrame / anim->framesPerSecond;
 			}
 		}
 

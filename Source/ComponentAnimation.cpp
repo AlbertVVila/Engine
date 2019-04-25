@@ -158,6 +158,20 @@ void ComponentAnimation::DrawProperties()
 					}
 					stateMachine->SetClipName(j, HashString(clipName));
 
+					//ImGui::PushItemWidth(60);
+					int startTime = stateMachine->GetClipStartFrame(j);
+					if (ImGui::InputInt("Start Time", &startTime))
+					{
+						stateMachine->SetClipStartFrame(j, startTime);
+					}
+					//ImGui::SameLine();
+					int endTime = stateMachine->GetClipEndFrame(j);
+					if (ImGui::InputInt("End Time", &endTime))
+					{
+						stateMachine->SetClipEndFrame(j, endTime);
+					}
+					//ImGui::PopItemWidth();
+
 					bool clipLoop = stateMachine->GetClipLoop(j);
 					if (ImGui::Checkbox("Loop", &clipLoop))
 					{
@@ -283,7 +297,7 @@ bool ComponentAnimation::GetLoopFromStateMachine()
 {
 	unsigned nodeIndex = stateMachine->GetDefaultNode();
 	HashString clipName = stateMachine->GetNodeClip(nodeIndex);
-	return stateMachine->GetClipLoop(clipName);
+	return stateMachine->GetClipLoop(stateMachine->FindClip(clipName));
 }
 
 void ComponentAnimation::PlayNextNode(unsigned blend)
@@ -305,7 +319,7 @@ ComponentAnimation::EditorContext* ComponentAnimation::GetEditorContext()
 void ComponentAnimation::Update()
 {
 	PROFILE;
-	if (stateMachine != nullptr)
+	if (stateMachine != nullptr && App->time->gameState == GameState::RUN)
 	{
 		if (!channelsSetted)
 		{
@@ -313,30 +327,38 @@ void ComponentAnimation::Update()
 			channelsSetted = true;
 		}
 
-		if (App->time->gameState == GameState::RUN)
-		{
-			controller->Update(App->time->gameDeltaTime);
+		controller->Update(App->time->gameDeltaTime);
 
-			if (gameobject != nullptr)
-			{
-				UpdateGO(gameobject);
-			}
+		if (gameobject != nullptr)
+		{
+			UpdateGO(gameobject);
 		}
-		else if (isPlaying)
+	}
+	else if (isPlaying)
+	{
+		if (!channelsSetted)
 		{
-			editorController->Update(App->time->realDeltaTime);
+			SetIndexChannels(gameobject);
+			channelsSetted = true;
+		}
 
-			if (gameobject != nullptr)
-			{
-				UpdateGO(gameobject);
-			}
+		editorController->Update(App->time->realDeltaTime);
+
+		if (gameobject != nullptr)
+		{
+			EditorUpdateGO(gameobject);
 		}
 	}
 }
 
 void ComponentAnimation::OnPlay()
 {
-	controller->Play(GetAnimFromStateMachine(), GetLoopFromStateMachine());
+	if (controller != nullptr && stateMachine != nullptr)
+	{
+		controller->Play(GetAnimFromStateMachine(), GetLoopFromStateMachine());
+		controller->current->minTime = stateMachine->GetClipStartFrame(stateMachine->GetDefaultNode()) / anim->framesPerSecond;
+		controller->current->maxTime = stateMachine->GetClipEndFrame(stateMachine->GetDefaultNode()) / anim->framesPerSecond;
+	}
 }
 
 void ComponentAnimation::UpdateGO(GameObject* go)
@@ -356,6 +378,26 @@ void ComponentAnimation::UpdateGO(GameObject* go)
 	for (std::list<GameObject*>::iterator it = go->children.begin(); it != go->children.end(); ++it)
 	{
 		UpdateGO(*it);
+	}
+}
+
+void ComponentAnimation::EditorUpdateGO(GameObject* go)
+{
+	PROFILE;
+	float3 position;
+	Quat rotation;
+
+	if (editorController->GetTransform(go->animationIndexChannel, position, rotation))
+	{
+		go->transform->SetPosition(position);
+		go->transform->SetRotation(rotation);
+	}
+
+	gameobject->movedFlag = true;
+
+	for (std::list<GameObject*>::iterator it = go->children.begin(); it != go->children.end(); ++it)
+	{
+		EditorUpdateGO(*it);
 	}
 }
 
@@ -396,6 +438,16 @@ void ComponentAnimation::Save(JSON_value* value) const
 	Component::Save(value);
 	value->AddUint("animUID", (anim != nullptr) ? anim->GetUID() : 0u);
 	value->AddUint("stateMachineUID", (stateMachine != nullptr) ? stateMachine->GetUID() : 0u);
+	if (stateMachine != nullptr)
+	{
+		value->AddInt("clipNumber", stateMachine->GetClipsSize());
+		unsigned clipNumber = stateMachine->GetClipsSize();
+		for (unsigned i = 0u; i < clipNumber; ++i)
+		{
+			value->AddInt((std::string("S") + std::to_string(i)).c_str(), stateMachine->GetClipStartFrame(i));
+			value->AddInt((std::string("E") + std::to_string(i)).c_str(), stateMachine->GetClipEndFrame(i));
+		}
+	}
 }
 
 void ComponentAnimation::Load(JSON_value* value)
@@ -407,6 +459,14 @@ void ComponentAnimation::Load(JSON_value* value)
 
 	unsigned stateMachineUID = value->GetUint("stateMachineUID");
 	stateMachine = (ResourceStateMachine*)App->resManager->Get(stateMachineUID);
+
+	unsigned clipNumber = value->GetInt("clipNumber");
+
+	for (unsigned i = 0u; i < clipNumber; ++i)
+	{
+		stateMachine->SetClipStartFrame(i, value->GetInt((std::string("S") + std::to_string(i)).c_str()));
+		stateMachine->SetClipEndFrame(i, value->GetInt((std::string("E") + std::to_string(i)).c_str()));
+	}
 }
 
 void ComponentAnimation::SetIndexChannels(GameObject* GO)

@@ -16,7 +16,7 @@ public:
 		ResourceAnimation* anim = nullptr;
 		float time = 0.0f;
 		bool loop = true;
-		float speed = 0.3f;
+		float speed = 1.0f;
 
 		Instance* next = nullptr;
 		float fadeDuration = 0.0f;
@@ -25,6 +25,8 @@ public:
 		// Clipping values
 		float minTime = 0.0f;
 		float maxTime = -1.0f;
+
+		bool isEditor = false;
 	};
 
 	Instance* current = nullptr;
@@ -37,6 +39,7 @@ public:
 	void PlayNextNode(ResourceAnimation* anim, bool loop, unsigned blend);
 	void Update(float dt);
 	void UpdateInstance(Instance* ins, float dt);
+	void UpdateEditorInstance(Instance* ins, float dt);
 	void ReleaseInstance(Instance* ins);
 
 	void ResetClipping();

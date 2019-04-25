@@ -33,6 +33,7 @@ public:
 	void SetIndexChannels(GameObject* GO);
 	void PlayAnimation(unsigned blend);
 	void UpdateGO(GameObject* gameobject);
+	void EditorUpdateGO(GameObject* gameobject);
 	void ResetResource();
 
 	ComponentAnimation();

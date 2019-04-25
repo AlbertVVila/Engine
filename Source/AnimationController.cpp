@@ -41,9 +41,13 @@ void AnimationController::PlayNextNode(ResourceAnimation * anim, bool loop, unsi
 void AnimationController::Update(float dt)
 {
 	PROFILE;
-	if (current != nullptr)
+	if (current != nullptr && !current->isEditor)
 	{
 		UpdateInstance(current, dt);
+	}
+	else if (current != nullptr && current->isEditor)
+	{
+		UpdateEditorInstance(current, dt);
 	}
 }
 
@@ -57,23 +61,93 @@ void AnimationController::UpdateInstance(Instance* instance, float dt)
 
 		if (trueDt > 0.0f)
 		{
-			float timeRemainingA = anim->durationInSeconds - instance->time;
+			float timeRemainingA = current->maxTime - current->minTime - instance->time;
 			if (trueDt <= timeRemainingA)
 			{
 				instance->time += trueDt;
+				trueFrame = instance->time * anim->framesPerSecond;
+				anim->currentFrame = (int)trueFrame;
 			}
 			else if (instance->loop)
 			{
-				instance->time = trueDt - timeRemainingA;
+				instance->time = current->minTime + trueDt - timeRemainingA;
+				trueFrame = current->maxTime;
 			}
 			else
 			{
-				instance->time = anim->durationInSeconds;
+				instance->time = current->maxTime;
 			}
 		}
 		else
 		{
-			float timeRemainingA = - (instance->time);
+			float timeRemainingA = current->maxTime - current->minTime - instance->time;
+			if (trueDt >= timeRemainingA)
+			{
+				instance->time += trueDt;
+				trueFrame = instance->time * anim->framesPerSecond;
+				anim->currentFrame = (int)trueFrame;
+			}
+			else if (instance->loop)
+			{
+				instance->time = instance->maxTime - timeRemainingA + trueDt;
+				trueFrame = anim->duration;
+			}
+			else
+			{
+				instance->time = instance->minTime;
+			}
+		}
+	}
+
+	//We'll have two lists of events one that will be emptying itself checking for scripts audio etc
+
+	if (instance->next != nullptr)
+	{
+		float timeRemainingB = instance->fadeDuration - instance->fadeTime;
+		if (dt <= timeRemainingB)
+		{
+			instance->fadeTime += dt;
+			UpdateInstance(instance->next, dt);
+		}
+		else
+		{
+			ReleaseInstance(instance->next);
+			instance->next = nullptr;
+			instance->fadeTime = instance->fadeDuration = 0;
+		}
+	}
+}
+
+void AnimationController::UpdateEditorInstance(Instance* instance, float dt)
+{
+	ResourceAnimation* anim = instance->anim;
+
+	if (anim != nullptr && anim->durationInSeconds > 0)
+	{
+		float trueDt = dt * instance->speed;
+
+		if (trueDt > 0.0f)
+		{
+			float timeRemainingA = current->maxTime - current->minTime - instance->time;
+			if (trueDt <= timeRemainingA)
+			{
+				instance->time += trueDt;
+				trueFrame = instance->time * anim->framesPerSecond;
+				anim->currentFrame = (int)trueFrame;
+			}
+			else if (instance->loop)
+			{
+				instance->time = current->minTime + trueDt - timeRemainingA;
+				trueFrame = current->maxTime;
+			}
+			else
+			{
+				instance->time = current->maxTime;
+			}
+		}
+		else
+		{
+			float timeRemainingA = current->maxTime - current->minTime - instance->time;
 			if (trueDt >= timeRemainingA)
 			{
 				instance->time += trueDt;

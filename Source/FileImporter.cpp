@@ -183,7 +183,7 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 		sceneGO->isBoneRoot = true;
 		char* animationData = nullptr;
 		unsigned animationSize = GetAnimationSize(*aiscene.mAnimations[i]);
-		animationData = new char[animationSize];
+		animationData = new char[animationSize + 1];
 		ImportAnimation(*aiscene.mAnimations[i], animationData);
 
 		sceneGO->CreateComponent(ComponentType::Animation);
@@ -207,7 +207,7 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 			App->resManager->ReplaceResource(animation->GetUID(), animation);
 		}
 		animationComponent->anim = animation;
-
+		animationData[animationSize] = 0;
 		App->fsystem->Save((ANIMATIONS + std::to_string(animation->GetUID()) + ANIMATIONEXTENSION).c_str(), animationData, animationSize);
 		animation->SetFile(path.c_str());
 		animation->SetExportedFile(std::to_string(animation->GetUID()).c_str());
