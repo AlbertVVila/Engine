@@ -96,7 +96,7 @@ private:
 		int startFrame = 0, endFrame = 0;
 
 		Clip() { ; }
-		Clip(HashString n, unsigned u, bool l) : name(n), UID(u), loop(l) { ; }
+		Clip(HashString n, unsigned u, bool l, int s, int e) : name(n), UID(u), loop(l), startFrame(s), endFrame(e) { ; }
 	};
 
 	struct Transition

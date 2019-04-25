@@ -438,14 +438,15 @@ void ComponentAnimation::Save(JSON_value* value) const
 	Component::Save(value);
 	value->AddUint("animUID", (anim != nullptr) ? anim->GetUID() : 0u);
 	value->AddUint("stateMachineUID", (stateMachine != nullptr) ? stateMachine->GetUID() : 0u);
+	
 	if (stateMachine != nullptr)
 	{
 		value->AddInt("clipNumber", stateMachine->GetClipsSize());
 		unsigned clipNumber = stateMachine->GetClipsSize();
 		for (unsigned i = 0u; i < clipNumber; ++i)
 		{
-			value->AddInt((std::string("S") + std::to_string(i)).c_str(), stateMachine->GetClipStartFrame(i));
-			value->AddInt((std::string("E") + std::to_string(i)).c_str(), stateMachine->GetClipEndFrame(i));
+			value->AddInt((std::string("StartFrame") + std::to_string(i)).c_str(), stateMachine->GetClipStartFrame(i));
+			value->AddInt((std::string("EndFrame") + std::to_string(i)).c_str(), stateMachine->GetClipEndFrame(i));
 		}
 	}
 }
@@ -464,8 +465,8 @@ void ComponentAnimation::Load(JSON_value* value)
 
 	for (unsigned i = 0u; i < clipNumber; ++i)
 	{
-		stateMachine->SetClipStartFrame(i, value->GetInt((std::string("S") + std::to_string(i)).c_str()));
-		stateMachine->SetClipEndFrame(i, value->GetInt((std::string("E") + std::to_string(i)).c_str()));
+		stateMachine->SetClipStartFrame(i, value->GetInt((std::string("StartFrame") + std::to_string(i)).c_str()));
+		stateMachine->SetClipEndFrame(i, value->GetInt((std::string("EndFrame") + std::to_string(i)).c_str()));
 	}
 }
 

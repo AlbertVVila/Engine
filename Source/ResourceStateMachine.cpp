@@ -20,7 +20,7 @@ ResourceStateMachine::ResourceStateMachine(const ResourceStateMachine& resource)
 
 	for(const auto& clip : resource.clips)
 	{
-		clips.push_back(Clip(clip.name, clip.UID, clip.loop));
+		clips.push_back(Clip(clip.name, clip.UID, clip.loop, clip.startFrame , clip.endFrame));
 	}
 
 	for (const auto& node : resource.nodes)
@@ -114,8 +114,16 @@ void ResourceStateMachine::SetStateMachine(const char* data)
 		bool loop = false;
 		memcpy(&loop, data, sizeof(bool));
 		data += sizeof(bool);
+
+		int startFrame;
+		memcpy(&startFrame, data, sizeof(int));
+		data += sizeof(int);
 		
-		clips.push_back(Clip(clipName, uid, loop));
+		int endFrame;
+		memcpy(&endFrame, data, sizeof(int));
+		data += sizeof(int);
+
+		clips.push_back(Clip(clipName, uid, loop, startFrame, endFrame));
 	}
 
 	//import nodes vector
@@ -189,6 +197,7 @@ unsigned ResourceStateMachine::GetStateMachineSize()
 		size += sizeof(char) * MAX_BONE_NAME_LENGTH;
 		size += sizeof(int);
 		size += sizeof(bool);
+		size += sizeof(int) * 2;
 	}
 
 	size += sizeof(int);
@@ -233,6 +242,12 @@ void ResourceStateMachine::SaveStateMachineData(char* data)
 
 		memcpy(cursor, &clip.loop, sizeof(bool));
 		cursor += sizeof(bool);
+
+		memcpy(cursor, &clip.startFrame, sizeof(int));
+		cursor += sizeof(int);
+
+		memcpy(cursor, &clip.endFrame, sizeof(int));
+		cursor += sizeof(int);
 	}
 
 	unsigned nodeSize = nodes.size();
@@ -287,7 +302,7 @@ void ResourceStateMachine::Save()
 
 void ResourceStateMachine::AddClip(const HashString name, unsigned UID, const bool loop)
 {
-	clips.push_back(Clip(name, UID, loop));
+	clips.push_back(Clip(name, UID, loop ,0 ,0));
 }
 
 void ResourceStateMachine::AddNode(const HashString name, const HashString clipName)
