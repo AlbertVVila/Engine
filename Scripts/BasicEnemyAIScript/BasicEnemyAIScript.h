@@ -9,12 +9,14 @@
 
 #include "BaseScript.h"
 #include "Geometry/AABB.h"
+#include "Math/float3.h"
 
 enum class EnemyState
 {
 	WAIT,
 	STANDUP,
 	CHASE,
+	RETURN,
 	ATTACK,
 	COOLDOWN,
 	DEAD
@@ -38,10 +40,12 @@ private:
 	void Wait();
 	void StandUp();
 	void Chase();
+	void ReturnToStartPosition();
 	void Attack();
 	void Cooldown();
 
 	void LookAtPlayer();
+	void MoveTowards(float speed) const;
 
 public:
 	EnemyState enemyState = EnemyState::WAIT;
@@ -61,6 +65,11 @@ private:
 
 	// Chase variables
 	float chaseSpeed = 2.0f;			// Tranlation speed when chasing player
+
+	// Return variables
+	math::float3 startPosition;
+	float returnDistance = 150.f;		// Distance to player to stop chasing player and return to start position
+	float returnSpeed = 1.0f;			// Tranlation speed towards start position
 
 	// Cooldown variables
 	float cooldownTime = 1.0f;			// Seconds to wait between attacks
