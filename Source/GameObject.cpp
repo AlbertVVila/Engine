@@ -650,15 +650,20 @@ AABB GameObject::GetBoundingBox() const
 	return bbox;
 }
 
-bool GameObject::Intersects(const LineSegment & line, float &distance) const
+bool GameObject::Intersects(const LineSegment & line, float &distance, math::float3* intersectionPoint) const
 {
 	LineSegment localLine(line);
 	localLine.Transform(GetGlobalTransform().Inverted());
 	ComponentRenderer* mesh_renderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
 	if (mesh_renderer != nullptr)
 	{
-		if (mesh_renderer->mesh->Intersects(localLine, &distance))
+		if (mesh_renderer->mesh->Intersects(localLine, &distance, intersectionPoint))
 		{
+			if (intersectionPoint != nullptr)
+			{
+				math::float3 worldPoint = GetGlobalTransform().MulPos(*intersectionPoint);
+				*intersectionPoint = worldPoint;
+			}
 			return true;
 		}
 	}

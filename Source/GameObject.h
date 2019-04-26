@@ -67,7 +67,7 @@ public:
 	void UpdateBBox();
 	void DrawBBox() const;
 	math::AABB GetBoundingBox() const;
-	bool Intersects(const LineSegment & line, float & distance) const;
+	bool Intersects(const LineSegment & line, float & distance, math::float3* intersectionPoint = nullptr) const;
 	ENGINE_API bool BboxIntersects(const GameObject* target) const;
 	void UpdateModel(unsigned int shader) const;
 	void SetLightUniforms(unsigned shader) const;

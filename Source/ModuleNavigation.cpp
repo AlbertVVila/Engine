@@ -153,7 +153,8 @@ void ModuleNavigation::DrawGUI()
 	}
 	
 	if (ImGui::CollapsingHeader("Detour"))
-	{	
+	{
+		ImGui::Checkbox("Select Start", &startPoint);
 		if (ImGui::Button("Generate Paths")) {
 			//returnPath(math::float3(verts[0], verts[1], verts[2]), math::float3(verts[nverts - 3], verts[nverts - 2], verts[nverts - 1]));
 			
@@ -228,6 +229,15 @@ void ModuleNavigation::renderNavMesh()
 			}
 		}
 
+	}
+
+	if (start != math::float3::inf)
+	{
+		dd::point(start, dd::colors::Red, 5.0f);
+	}
+	if (end != math::float3::inf)
+	{
+		dd::point(end, dd::colors::Red, 5.0f);
 	}
 	if (pathGenerated)
 	{
@@ -997,6 +1007,7 @@ std::vector<math::float3>  ModuleNavigation::returnPath(math::float3 pStart, mat
 
 bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vector<math::float3>& path) const
 {
+	path.clear();
 	dtPolyRef startPoly, endPoly;
 	dtQueryFilter filter;
 	filter.setIncludeFlags(SAMPLE_POLYFLAGS_ALL ^ SAMPLE_POLYFLAGS_DISABLED);
@@ -1045,6 +1056,22 @@ bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vecto
 		}
 	}
 	return false;
+}
+
+void ModuleNavigation::RecalcPath(math::float3 point)
+{
+	if (startPoint)
+	{
+		start = point;
+	}
+	else
+	{
+		end = point;
+	}
+	if (start != end && start != math::float3::inf && end != math::float3::inf)
+	{
+		pathGenerated = FindPath(start, end, path);
+	}
 }
 
 //int ModuleNavigation::FindStraightPath(WOWPOS start, WOWPOS end, WOWPOS *path, int size)

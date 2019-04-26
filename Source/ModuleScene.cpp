@@ -999,6 +999,45 @@ void ModuleScene::Pick(float normalized_x, float normalized_y)
 	}
 }
 
+bool ModuleScene::Intersects(math::float3& closestPoint, const char* name)
+{
+	ImVec2 pos = ImGui::GetWindowPos();
+	ImVec2 size = ImGui::GetWindowSize();
+
+	float2 mouse((float*)&App->input->GetMousePosition());
+	float normalized_x = ((mouse.x - pos.x) / size.x) * 2 - 1; //0 to 1 -> -1 to 1
+	float normalized_y = (1 - (mouse.y - pos.y) / size.y) * 2 - 1; //0 to 1 -> -1 to 1
+
+	
+	LineSegment line = App->camera->editorcamera->DrawRay(normalized_x, normalized_y);
+	debuglines.push_back(line);
+	std::list<std::pair<float, GameObject*>> GOs = GetStaticIntersections(line);
+	std::list<std::pair<float, GameObject*>> dGOs = GetDynamicIntersections(line);
+	GOs.merge(dGOs);
+
+	math::float3 intersectionPoint = math::float3::zero;
+	float closestTriangle = FLOAT_INF;
+	bool intersects = false;
+
+	for (const auto& go : GOs)
+	{
+		if (go.second->name != name) continue;
+
+		intersects = true;
+		float distance = FLOAT_INF;
+		if (go.second->Intersects(line, distance, &intersectionPoint)) //returns distance to line if triangle hit
+		{
+			if (distance < closestTriangle)
+			{
+				closestPoint = intersectionPoint;
+				closestTriangle = distance;
+			}
+		}
+	}
+
+	return intersects;
+}
+
 GameObject* ModuleScene::FindClosestParent(GameObject* go)
 {
 	if (go->parent != nullptr)
@@ -1092,7 +1131,7 @@ ComponentLight* ModuleScene::GetDirectionalLight() const
 	return nullptr;
 }
 
-std::list<std::pair<float, GameObject*>> ModuleScene::GetDynamicIntersections(const LineSegment & line)
+std::list<std::pair<float, GameObject*>> ModuleScene::GetDynamicIntersections(const LineSegment & line) const
 {
 	std::list<std::pair<float, GameObject*>> gos; 
 	std::unordered_set<GameObject*> intersections;
@@ -1111,7 +1150,7 @@ std::list<std::pair<float, GameObject*>> ModuleScene::GetDynamicIntersections(co
 	return gos;
 }
 
-std::list<std::pair<float, GameObject*>> ModuleScene::GetStaticIntersections(const LineSegment & line)
+std::list<std::pair<float, GameObject*>> ModuleScene::GetStaticIntersections(const LineSegment & line) const
 {
 	std::list<std::pair<float, GameObject*>> gos;
 	std::unordered_set<GameObject*> intersections;

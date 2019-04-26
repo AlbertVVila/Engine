@@ -83,6 +83,7 @@ public:
 	void cleanValues();
 
 	bool FindPath(math::float3 start, math::float3 end, std::vector<math::float3> &path) const;
+	void RecalcPath(math::float3 point);
 
 	//variables
 	std::vector<GameObject*> navigationMeshes;
@@ -215,18 +216,15 @@ private:
 	float* bmax = nullptr;
 	const AABB* meshbox = nullptr;
 
-	float* pStartX = nullptr;
-	float pStartY = 0.f;
-	float pStartZ = 0.f;
-	float pEndX = 0.f;
-	float pEndY = 0.f;
-	float pEndZ = 0.f;
-
-	float pStart[3];
-	float pEnd[3];
+	//Detour pathfinding
 
 	bool pathGenerated = false;
 	std::vector<math::float3> path;
+	math::float3 start = math::float3::inf;
+	math::float3 end = math::float3::inf;
+
+	bool startPoint = true; //defines if we are going to select start or end point in debug mode
+
 };
 
 #endif
