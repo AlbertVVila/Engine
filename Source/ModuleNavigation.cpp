@@ -156,11 +156,16 @@ void ModuleNavigation::DrawGUI()
 	{	
 		if (ImGui::Button("Generate Paths")) {
 			//returnPath(math::float3(verts[0], verts[1], verts[2]), math::float3(verts[nverts - 3], verts[nverts - 2], verts[nverts - 1]));
-			WOWPOS start, end;
-			start.x = verts[0]; start.y = verts[1]; start.z = verts[2]; end.x = verts[nverts - 3]; end.y = verts[nverts - 2]; end.z = verts[nverts - 1];
+
+			//WOWPOS start, end;
+			WOWPOS start = { -8949.95f, -132.493f, 83.5312f };
+			WOWPOS end = { -9046.507f, -45.71962f, 88.33186f };
+			//start.x = verts[0]; start.y = verts[1]; start.z = verts[2]; end.x = verts[nverts - 3]; end.y = verts[nverts - 2]; end.z = verts[nverts - 1];
 			WOWPOS* path = new WOWPOS[MAX_PATH];
 
-			pathSize = FindStraightPath(start, end, path, 5);
+			dtStatus pathSize = FindStraightPath(start, end, path, 5);
+
+			bool failed = dtStatusFailed(pathSize);
 
 			pathGenerated = true;
 			//generateNavigability();
@@ -988,100 +993,102 @@ std::vector<math::float3>  ModuleNavigation::returnPath(math::float3 pStart, mat
 
 // TODO: New Detour version
 
-int ModuleNavigation::FindStraightPath(WOWPOS start, WOWPOS end, WOWPOS *path, int size)
-{
-	//
-	float m_spos[3];
 
-	m_spos[0] = -1.0f * start.y;
-	m_spos[1] = start.z;
-	m_spos[2] = -1.0f * start.x;
+//int ModuleNavigation::FindStraightPath(WOWPOS start, WOWPOS end, WOWPOS *path, int size)
+//{
 
 	//
-	float m_epos[3];
-
-	m_epos[0] = -1.0f * end.y;
-	m_epos[1] = end.z;
-	m_epos[2] = -1.0f * end.x;
-
-	//
-	dtQueryFilter m_filter;
-
-	//m_filter.includeFlags = 0xffff;
-	//m_filter.excludeFlags = 0;
-
-	//
-	float m_polyPickExt[3];
-
-	m_polyPickExt[0] = 2;
-	m_polyPickExt[1] = 4;
-	m_polyPickExt[2] = 2;
-
-	//
-	dtPolyRef m_startRef;
-	dtPolyRef m_endRef;
-
-	//
-	/*m_startRef = navQuery->findNearestPoly(m_spos, m_polyPickExt, &m_filter, 0);
-	m_endRef = navQuery->findNearestPoly(m_epos, m_polyPickExt, &m_filter, 0);*/
-	navQuery->findNearestPoly(m_spos, m_polyPickExt, &m_filter, &m_startRef, 0);
-	navQuery->findNearestPoly(m_spos, m_polyPickExt, &m_filter, &m_startRef, 0);
-
-	//
-	if (!m_startRef || !m_endRef)
-	{
-		LOG("Could not find any nearby poly to the start");
-		return ERROR_NEARESTPOLY;
-	}
-	if (!m_endRef)
-	{
-		LOG("Could not find any nearby poly to the end");
-		return ERROR_NEARESTPOLY;
-	}
-
-	//
-	static const int MAX_POLYS = 256;
-
-	dtPolyRef m_polys[MAX_POLYS];
-
-	int m_npolys;
-	float m_straightPath[MAX_POLYS * 3];
-	unsigned char m_straightPathFlags[MAX_POLYS];
-
-	dtPolyRef m_straightPathPolys[MAX_POLYS];
-
-	int m_nstraightPath;
-
-	//
-	int pos = 0;
-
-	//
-	//m_npolys = navQuery->findPath(m_startRef, m_endRef, m_spos, m_epos, &m_filter, m_polys, MAX_POLYS);
-	navQuery->findPath(m_startRef, m_endRef, m_spos, m_epos, &m_filter, m_polys, &m_npolys, MAX_POLYS);
-	m_nstraightPath = 0;
-
-	if (m_npolys)
-	{
-		//m_nstraightPath = navQuery->findStraightPath(m_spos, m_epos, m_polys, m_npolys, m_straightPath, m_straightPathFlags, m_straightPathPolys, MAX_POLYS);
-		navQuery->findStraightPath(m_spos, m_epos, m_polys, m_npolys, m_straightPath, m_straightPathFlags,
-			m_straightPathPolys, &m_nstraightPath, MAX_POLYS, 0);//0 are the options
-
-		for (int i = 0; i < m_nstraightPath * 3; )
-		{
-			path[pos].y = -1.0f * m_straightPath[i++];
-			path[pos].z = m_straightPath[i++];
-			path[pos].x = -1.0f * m_straightPath[i++];
-
-			pos++;
-		}
-
-		// append the end point
-		path[pos].x = end.x;
-		path[pos].y = end.y;
-		path[pos].z = end.z;
-
-		pos++;
-	}
-
-	return pos;
-}
+//	float m_spos[3];
+//
+//	m_spos[0] = -1.0f * start.y;
+//	m_spos[1] = start.z;
+//	m_spos[2] = -1.0f * start.x;
+//
+//	//
+//	float m_epos[3];
+//
+//	m_epos[0] = -1.0f * end.y;
+//	m_epos[1] = end.z;
+//	m_epos[2] = -1.0f * end.x;
+//
+//	//
+//	dtQueryFilter m_filter;
+//
+//	//m_filter.includeFlags = 0xffff;
+//	//m_filter.excludeFlags = 0;
+//
+//	//
+//	float m_polyPickExt[3];
+//
+//	m_polyPickExt[0] = 2;
+//	m_polyPickExt[1] = 4;
+//	m_polyPickExt[2] = 2;
+//
+//	//
+//	dtPolyRef m_startRef;
+//	dtPolyRef m_endRef;
+//
+//	//
+//	/*m_startRef = navQuery->findNearestPoly(m_spos, m_polyPickExt, &m_filter, 0);
+//	m_endRef = navQuery->findNearestPoly(m_epos, m_polyPickExt, &m_filter, 0);*/
+//	navQuery->findNearestPoly(m_spos, m_polyPickExt, &m_filter, &m_startRef, 0);
+//	navQuery->findNearestPoly(m_spos, m_polyPickExt, &m_filter, &m_startRef, 0);
+//
+//	//
+//	if (!m_startRef || !m_endRef)
+//	{
+//		LOG("Could not find any nearby poly to the start");
+//		return ERROR_NEARESTPOLY;
+//	}
+//	if (!m_endRef)
+//	{
+//		LOG("Could not find any nearby poly to the end");
+//		return ERROR_NEARESTPOLY;
+//	}
+//
+//	//
+//	static const int MAX_POLYS = 256;
+//
+//	dtPolyRef m_polys[MAX_POLYS];
+//
+//	int m_npolys;
+//	float m_straightPath[MAX_POLYS * 3];
+//	unsigned char m_straightPathFlags[MAX_POLYS];
+//
+//	dtPolyRef m_straightPathPolys[MAX_POLYS];
+//
+//	int m_nstraightPath;
+//
+//	//
+//	int pos = 0;
+//
+//	//
+//	//m_npolys = navQuery->findPath(m_startRef, m_endRef, m_spos, m_epos, &m_filter, m_polys, MAX_POLYS);
+//	navQuery->findPath(m_startRef, m_endRef, m_spos, m_epos, &m_filter, m_polys, &m_npolys, MAX_POLYS);
+//	m_nstraightPath = 0;
+//
+//	if (m_npolys)
+//	{
+//		//m_nstraightPath = navQuery->findStraightPath(m_spos, m_epos, m_polys, m_npolys, m_straightPath, m_straightPathFlags, m_straightPathPolys, MAX_POLYS);
+//		navQuery->findStraightPath(m_spos, m_epos, m_polys, m_npolys, m_straightPath, m_straightPathFlags,
+//			m_straightPathPolys, &m_nstraightPath, MAX_POLYS, 0);//0 are the options
+//
+//		for (int i = 0; i < m_nstraightPath * 3; )
+//		{
+//			path[pos].y = -1.0f * m_straightPath[i++];
+//			path[pos].z = m_straightPath[i++];
+//			path[pos].x = -1.0f * m_straightPath[i++];
+//
+//			pos++;
+//		}
+//
+//		// append the end point
+//		path[pos].x = end.x;
+//		path[pos].y = end.y;
+//		path[pos].z = end.z;
+//
+//		pos++;
+//	}
+//
+//	return pos;
+//}
