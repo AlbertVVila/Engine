@@ -11,6 +11,7 @@
 #include "ModuleScene.h"
 #include "ModuleTextures.h"
 #include "ModuleSpacePartitioning.h"
+#include "ModuleParticles.h"
 #include "ModuleWindow.h"
 #include "ModuleScript.h"
 
@@ -205,6 +206,8 @@ void ModuleScene::FrustumCulling(const Frustum& frustum)
 
 void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 {
+	std::list<ComponentRenderer*> alphaRenderers;
+
 #ifndef GAME_BUILD
 	PROFILE;
 	if (isEditor)
@@ -256,12 +259,19 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	{
 		camFrustum = *maincamera->frustum;
 	}
-	
 	for (const auto &go : staticFilteredGOs)
 	{
 		if (camFrustum.Intersects(go->GetBoundingBox()))
 		{
-			DrawGO(*go, camFrustum, isEditor);
+			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+			if (cr && !cr->useAlpha)
+			{
+				DrawGO(*go, camFrustum, isEditor);
+			}
+			else
+			{
+				alphaRenderers.push_back(cr);
+			}
 		}
 	}
 
@@ -269,7 +279,15 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	{
 		if (camFrustum.Intersects(go->GetBoundingBox()))
 		{
-			DrawGO(*go, camFrustum, isEditor);
+			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+			if (cr && !cr->useAlpha)
+			{
+				DrawGO(*go, camFrustum, isEditor);
+			}
+			else
+			{
+				alphaRenderers.push_back(cr);
+			}
 		}
 	}
 
@@ -282,7 +300,15 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	{
 		if (maincamera->frustum->Intersects(go->GetBoundingBox()))
 		{
-			DrawGOGame(*go);
+			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+			if (cr && !cr->useAlpha)
+			{
+				DrawGOGame(*go);
+			}
+			else
+			{
+				alphaRenderers.push_back(cr);
+			}
 		}
 	}
 
@@ -290,10 +316,34 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	{
 		if (maincamera->frustum->Intersects(go->GetBoundingBox()))
 		{
-			DrawGOGame(*go);
+			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+			if (cr && !cr->useAlpha)
+			{
+				DrawGOGame(*go);
+			}
+			else
+			{
+				alphaRenderers.push_back(cr);
+			}
 		}
 	}	
 #endif
+	alphaRenderers.sort(
+		[frustum](const ComponentRenderer* cr1, const ComponentRenderer* cr2) -> bool
+	{
+		return cr1->gameobject->transform->GetGlobalPosition().Distance(frustum.pos) > cr2->gameobject->transform->GetGlobalPosition().Distance(frustum.pos);
+	});
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	for (ComponentRenderer* cr : alphaRenderers)
+	{
+#ifndef GAME_BUILD
+		DrawGO(*cr->gameobject, camFrustum, isEditor);
+#else
+		DrawGOGame(*cr->gameobject);
+#endif
+	}
+	glDisable(GL_BLEND);
 }
 
 void ModuleScene::DrawGOGame(const GameObject& go)
@@ -312,6 +362,10 @@ void ModuleScene::DrawGOGame(const GameObject& go)
 		if (crenderer->mesh->bindBones.size() > 0)
 		{
 			variation |= (unsigned)ModuleProgram::PBR_Variations::SKINNED;
+		}
+		if (App->renderer->directionalLight && App->renderer->directionalLight->produceShadows)
+		{
+			variation |= (unsigned)ModuleProgram::PBR_Variations::SHADOWS_ENABLED;
 		}
 	}
 	
@@ -359,6 +413,11 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 		{
 			variation |= (unsigned)ModuleProgram::PBR_Variations::SKINNED;
 		}
+		if (App->renderer->directionalLight && App->renderer->directionalLight->produceShadows)
+		{
+			variation |= (unsigned)ModuleProgram::PBR_Variations::SHADOWS_ENABLED;
+		}
+
 	}
 
 	glUseProgram(shader->id[variation]);
@@ -367,6 +426,7 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 
 	glUniform3fv(glGetUniformLocation(shader->id[variation],
 		"lights.ambient_color"), 1, (GLfloat*)&ambientColor);
+	
 	go.SetLightUniforms(shader->id[variation]);
 
 	go.UpdateModel(shader->id[variation]);
@@ -730,6 +790,7 @@ void ModuleScene::SaveScene(const GameObject& rootGO, const char* scene, const c
 }
 void ModuleScene::TakePhoto()
 {
+	App->particles->Reset();
 	TakePhoto(scenePhotos);
 	scenePhotosUndoed.clear();
 }
@@ -754,6 +815,8 @@ void ModuleScene::RestorePhoto(GameObject* photo)
 	root->children.front()->UUID = 1; //Restore canvas UUID
 	std::stack<GameObject*> goStack;
 	goStack.push(root);
+	App->renderer->directionalLight = nullptr;
+	App->particles->Reset();
 	while (!goStack.empty())
 	{
 		GameObject* go = goStack.top(); goStack.pop();
@@ -763,6 +826,7 @@ void ModuleScene::RestorePhoto(GameObject* photo)
 			switch (comp->type)
 			{
 			case ComponentType::Renderer:
+			{
 				if (!go->isStatic)
 				{
 					App->spacePartitioning->aabbTree.InsertGO(go);
@@ -773,13 +837,20 @@ void ModuleScene::RestorePhoto(GameObject* photo)
 					App->spacePartitioning->kDTree.Calculate();
 				}
 				go->isVolumetric = true;
+				ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+				cr->LinkBones();
 				break;
+			}
 			case ComponentType::Light:
 				go->light = (ComponentLight*)comp;
 				go->light->CalculateGuizmos();
 				App->spacePartitioning->aabbTreeLighting.InsertGO(go);
 				go->hasLight = true;
 				lights.push_back((ComponentLight*)comp);
+				if (go->light->lightType == LightType::DIRECTIONAL)
+				{
+					App->renderer->directionalLight = go->light;
+				}
 				break;
 			case ComponentType::Camera:
 				if (((ComponentCamera*)comp)->isMainClone)
@@ -924,7 +995,10 @@ void ModuleScene::ClearScene()
 	App->spacePartitioning->kDTree.Calculate();
 	canvas = new GameObject("Canvas", 1);
 	root->InsertChild(canvas);
+	App->particles->CleanUp();
+	App->particles->Start();
 	selection.clear();
+	App->renderer->shadowCasters.clear();
 }
 
 void ModuleScene::Select(GameObject * gameobject)
