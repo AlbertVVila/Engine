@@ -129,7 +129,7 @@ void ComponentAudioSource::LoadSoundFile(const char* pathAudio)
 	}
 	else 
 	{
-		LOG("Audio Manager: FX %s loaded", pathAudio);
+		LOG("Audio Manager: FX %s loaded \n", pathAudio);
 		path = pathAudio;
 
 		ModuleFileSystem* fileSys = new ModuleFileSystem();
