@@ -17,6 +17,7 @@ enum class EnemyState
 	STANDUP,
 	CHASE,
 	RETURN,
+	LAYDOWN,
 	ATTACK,
 	COOLDOWN,
 	DEAD
@@ -41,6 +42,7 @@ private:
 	void StandUp();
 	void Chase();
 	void ReturnToStartPosition();
+	void Laydown();
 	void Attack();
 	void Cooldown();
 
