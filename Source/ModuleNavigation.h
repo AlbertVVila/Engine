@@ -76,15 +76,19 @@ public:
 	ModuleNavigation();
 	~ModuleNavigation();
 
-	bool Init(JSON * config) override;
-	void SaveConfig(JSON * config) override;
+	bool Init(JSON* config);
+	void SaveConfig(JSON* config) override;
+	void sceneLoaded(JSON* config);
+	void sceneSaved(JSON* config);
 
 	void DrawGUI()override;
 	void navigableObjectToggled(GameObject* obj, const bool newState);
 	
 	void renderNavMesh();
 
-	void cleanValues();
+	void cleanValuesPRE();
+
+	void cleanValuesPOST();
 	
 
 	//variables
@@ -102,7 +106,7 @@ private:
 	ModuleNavigation& operator=(const ModuleNavigation);
 
 	void removeNavMesh(unsigned ID);
-	void generateNavigability();
+	void generateNavigability(bool render);
 	void addNavigableMesh();
 	void addNavigableMesh(const GameObject* obj);
 
@@ -164,8 +168,8 @@ private:
 
 	//navigation mesh properties
 	bool meshGenerated = false;
-	bool renderMesh = true;
-	std::string objectName = "";
+	bool renderMesh = false;
+	const char* objectName = "";
 
 	enum DrawMode
 	{

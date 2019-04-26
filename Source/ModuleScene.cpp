@@ -12,6 +12,7 @@
 #include "ModuleTextures.h"
 #include "ModuleSpacePartitioning.h"
 #include "ModuleWindow.h"
+#include "ModuleNavigation.h"
 
 #include "GameObject.h"
 #include "ComponentCamera.h"
@@ -685,6 +686,8 @@ void ModuleScene::SaveScene(const GameObject& rootGO, const char* scene, const c
 	rootGO.Save(array);
 	json->AddValue("GameObjects", *array);
 
+	App->navigation->sceneSaved(json);
+
 	std::string file(scenePath);
 	file += scene;
 	file += JSONEXT;
@@ -858,6 +861,7 @@ bool ModuleScene::AddScene(const char* scene, const char* path)
 			renderers.push_back(renderer);
 		}
 	}
+	App->navigation->sceneLoaded(json);
 
 
 	//Link Bones after all the hierarchy is imported
