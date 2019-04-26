@@ -119,9 +119,9 @@ private:
 	int FindStraightPath(WOWPOS start, WOWPOS end, WOWPOS* path, int size);
 	
 	//variables
-	float maxRadius = 5.0f;
+	float maxRadius = 0.6f;
 	float maxHeight = 5.0f;
-	float maxSlopeScaling = 20.0f;
+	float maxSlopeScaling = 45.0f;
 	float maxStepHeightScaling = 5.0f;
 	
 	char newCharacter[64] = "New Character";
@@ -136,7 +136,7 @@ private:
 	const float maxSlopeValue = 60.0f;
 	const float cellIncreaseSpeed = 0.25f;
 	const float minCellSize = 0.1f;
-	const float maxCellSize = 10.0f;
+	const float maxCellSize = 50.0f;
 	int minRegionSize = 8;
 	int mergedRegionSize = 20;
 	float edgeMaxLength = 20.f;
@@ -144,7 +144,7 @@ private:
 	int vertexPerPoly = 6;
 
 	//newer config
-	float cellWidth = 1.f;
+	float cellWidth = 20.250f;
 	float cellHeight = 5.f;
 	
 	float sampleDistance = 6;
