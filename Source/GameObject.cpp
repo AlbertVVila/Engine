@@ -134,7 +134,7 @@ void GameObject::DrawProperties()
 	strcpy(go_name, name.c_str());
 	ImGui::InputText("Name", go_name, MAX_NAME);
 	name = go_name;
-	delete[] go_name;
+	//delete[] go_name;
 
 	if (this != App->scene->root)
 	{
@@ -195,8 +195,22 @@ void GameObject::Update()
 		{
 			component->Update();
 		}
-
 	}
+	//TESTING
+	//---------------------------------------------
+	/*if (isBoneRoot)
+	{
+		ComponentAnimation* compAnim = (ComponentAnimation*)GetComponent(ComponentType::Animation);
+		if (App->input->GetKey(SDL_SCANCODE_X))
+		{
+			compAnim->SendTriggerToStateMachine("faster");
+		}
+		if (App->input->GetKey(SDL_SCANCODE_C))
+		{
+			compAnim->SendTriggerToStateMachine("slower");
+		}
+	}*/
+	//---------------------------------------------
 
 	for (const auto& child : children)
 	{
