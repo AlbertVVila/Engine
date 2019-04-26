@@ -17,6 +17,8 @@ enum class ComponentType
 	Image,
 	Button,
 	Script,
+	Particles,
+	Trail,
 	ReverbZone,
 	AudioListener,
 	AudioSource

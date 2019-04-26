@@ -59,13 +59,12 @@ public:
 	bool streamed = false;
 
 	bool Sound3D = true;
-	//float maxDist = 10.f * App->renderer->current_scale;
+	bool OnlyVolume3D = false;
 	float fadeDist = 5.f * App->renderer->current_scale;
 	float limit3DPan = 0.5f;
 	float rolloff3D = 0.3f;
 	float pitch = 1.f;
 
-	FileExplorer *fileExplorer = nullptr;
 
 private:
 
@@ -78,7 +77,6 @@ private:
 	float3 dirListener;
 
 	bool playing = false;	
-	bool demoOnPlay = false;
 	bool awaken = false;
 
 	bool mesageSent = false;

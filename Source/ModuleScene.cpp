@@ -11,7 +11,9 @@
 #include "ModuleScene.h"
 #include "ModuleTextures.h"
 #include "ModuleSpacePartitioning.h"
+#include "ModuleParticles.h"
 #include "ModuleWindow.h"
+#include "ModuleScript.h"
 
 #include "GameObject.h"
 #include "ComponentCamera.h"
@@ -107,6 +109,13 @@ bool ModuleScene::Start()
 
 update_status ModuleScene::PreUpdate()
 {
+	if (loadScene)
+	{
+		LoadScene(sceneName.c_str(), SCENES);
+		App->scripting->onStart = true;
+		loadScene = false;
+	}
+
 #ifndef GAME_BUILD
 	FrustumCulling(*App->camera->editorcamera->frustum);
 #else
@@ -124,6 +133,21 @@ update_status ModuleScene::Update(float dt)
 	root->UpdateTransforms(math::float4x4::identity);
 	root->Update();
 	root->CheckDelete();
+	if (photoTimer > 0)
+	{
+		photoTimer -= dt;
+	}
+
+	if ((App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_Z) == KEY_REPEAT)
+		|| (App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN))
+	{
+		RestoreLastPhoto();
+	}
+	if ((App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_Y) == KEY_REPEAT)
+		|| (App->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_Y) == KEY_DOWN))
+	{
+		Redo();
+	}
 	return UPDATE_CONTINUE;
 }
 
@@ -144,8 +168,11 @@ bool ModuleScene::CleanUp()
 	selected = nullptr;
 	maincamera = nullptr;
 
-	App->resManager->DeleteResource(camera_notfound_texture->GetUID());
-	camera_notfound_texture = nullptr;
+	if (camera_notfound_texture != nullptr)
+	{
+		App->resManager->DeleteResource(camera_notfound_texture->GetUID());
+		camera_notfound_texture = nullptr;
+	}
 
 	lights.clear();
 
@@ -182,6 +209,8 @@ void ModuleScene::FrustumCulling(const Frustum& frustum)
 
 void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 {
+	std::list<ComponentRenderer*> alphaRenderers;
+
 #ifndef GAME_BUILD
 	PROFILE;
 	if (isEditor)
@@ -233,12 +262,19 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	{
 		camFrustum = *maincamera->frustum;
 	}
-	
 	for (const auto &go : staticFilteredGOs)
 	{
 		if (camFrustum.Intersects(go->GetBoundingBox()))
 		{
-			DrawGO(*go, camFrustum, isEditor);
+			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+			if (cr && !cr->useAlpha)
+			{
+				DrawGO(*go, camFrustum, isEditor);
+			}
+			else
+			{
+				alphaRenderers.push_back(cr);
+			}
 		}
 	}
 
@@ -246,7 +282,15 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	{
 		if (camFrustum.Intersects(go->GetBoundingBox()))
 		{
-			DrawGO(*go, camFrustum, isEditor);
+			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+			if (cr && !cr->useAlpha)
+			{
+				DrawGO(*go, camFrustum, isEditor);
+			}
+			else
+			{
+				alphaRenderers.push_back(cr);
+			}
 		}
 	}
 
@@ -259,7 +303,15 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	{
 		if (maincamera->frustum->Intersects(go->GetBoundingBox()))
 		{
-			DrawGOGame(*go);
+			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+			if (cr && !cr->useAlpha)
+			{
+				DrawGOGame(*go);
+			}
+			else
+			{
+				alphaRenderers.push_back(cr);
+			}
 		}
 	}
 
@@ -267,10 +319,34 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	{
 		if (maincamera->frustum->Intersects(go->GetBoundingBox()))
 		{
-			DrawGOGame(*go);
+			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+			if (cr && !cr->useAlpha)
+			{
+				DrawGOGame(*go);
+			}
+			else
+			{
+				alphaRenderers.push_back(cr);
+			}
 		}
 	}	
 #endif
+	alphaRenderers.sort(
+		[frustum](const ComponentRenderer* cr1, const ComponentRenderer* cr2) -> bool
+	{
+		return cr1->gameobject->transform->GetGlobalPosition().Distance(frustum.pos) > cr2->gameobject->transform->GetGlobalPosition().Distance(frustum.pos);
+	});
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	for (ComponentRenderer* cr : alphaRenderers)
+	{
+#ifndef GAME_BUILD
+		DrawGO(*cr->gameobject, camFrustum, isEditor);
+#else
+		DrawGOGame(*cr->gameobject);
+#endif
+	}
+	glDisable(GL_BLEND);
 }
 
 void ModuleScene::DrawGOGame(const GameObject& go)
@@ -289,6 +365,10 @@ void ModuleScene::DrawGOGame(const GameObject& go)
 		if (crenderer->mesh->bindBones.size() > 0)
 		{
 			variation |= (unsigned)ModuleProgram::PBR_Variations::SKINNED;
+		}
+		if (App->renderer->directionalLight && App->renderer->directionalLight->produceShadows)
+		{
+			variation |= (unsigned)ModuleProgram::PBR_Variations::SHADOWS_ENABLED;
 		}
 	}
 	
@@ -336,6 +416,11 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 		{
 			variation |= (unsigned)ModuleProgram::PBR_Variations::SKINNED;
 		}
+		if (App->renderer->directionalLight && App->renderer->directionalLight->produceShadows)
+		{
+			variation |= (unsigned)ModuleProgram::PBR_Variations::SHADOWS_ENABLED;
+		}
+
 	}
 
 	glUseProgram(shader->id[variation]);
@@ -344,6 +429,7 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 
 	glUniform3fv(glGetUniformLocation(shader->id[variation],
 		"lights.ambient_color"), 1, (GLfloat*)&ambientColor);
+	
 	go.SetLightUniforms(shader->id[variation]);
 
 	go.UpdateModel(shader->id[variation]);
@@ -378,21 +464,24 @@ void ModuleScene::DragNDropMove(GameObject* target)
 			{
 				for (GameObject* droppedGo : App->scene->selection)
 				{
-					droppedGo->parent->children.remove(droppedGo);
-
-					std::list<GameObject*>::iterator it = std::find(target->parent->children.begin(), target->parent->children.end(), target);
-
-					target->parent->children.insert(it, droppedGo);
-
-					if (droppedGo->transform != nullptr)
+					if (droppedGo->UUID > 1)
 					{
-						droppedGo->transform->SetLocalToWorld();
-					}
+						droppedGo->parent->children.remove(droppedGo);
 
-					droppedGo->parent = target->parent;
-					if (droppedGo->transform != nullptr)
-					{
-						droppedGo->transform->SetWorldToLocal(droppedGo->parent->GetGlobalTransform());
+						std::list<GameObject*>::iterator it = std::find(target->parent->children.begin(), target->parent->children.end(), target);
+
+						target->parent->children.insert(it, droppedGo);
+
+						if (droppedGo->transform != nullptr)
+						{
+							droppedGo->transform->SetLocalToWorld();
+						}
+
+						droppedGo->parent = target->parent;
+						if (droppedGo->transform != nullptr)
+						{
+							droppedGo->transform->SetWorldToLocal(droppedGo->parent->GetGlobalTransform());
+						}
 					}
 				}
 			}
@@ -403,7 +492,7 @@ void ModuleScene::DragNDropMove(GameObject* target)
 
 void ModuleScene::DragNDrop(GameObject* go)
 {
-	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+	if (go->UUID > 1 && ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
 	{
 		GameObject * dragged_go = go;
 		ImGui::SetDragDropPayload("DragDropHierarchy", &dragged_go, sizeof(GameObject *), ImGuiCond_Once);
@@ -423,17 +512,20 @@ void ModuleScene::DragNDrop(GameObject* go)
 				TakePhoto();
 				for (GameObject* droppedGo : App->scene->selection)
 				{
-					go->children.push_back(droppedGo);
+					if (droppedGo->UUID > 1)
+					{
+						go->children.push_back(droppedGo);
 
-					if (droppedGo->transform != nullptr)
-					{
-						droppedGo->transform->SetLocalToWorld();
-					}
-					droppedGo->parent->children.remove(droppedGo);
-					droppedGo->parent = go;
-					if (droppedGo->transform != nullptr)
-					{
-						droppedGo->transform->SetWorldToLocal(droppedGo->parent->GetGlobalTransform());
+						if (droppedGo->transform != nullptr)
+						{
+							droppedGo->transform->SetLocalToWorld();
+						}
+						droppedGo->parent->children.remove(droppedGo);
+						droppedGo->parent = go;
+						if (droppedGo->transform != nullptr)
+						{
+							droppedGo->transform->SetWorldToLocal(droppedGo->parent->GetGlobalTransform());
+						}
 					}
 				}
 			}
@@ -699,8 +791,21 @@ void ModuleScene::SaveScene(const GameObject& rootGO, const char* scene, const c
 		path = scenePath;
 	}
 }
+
+void ModuleScene::AssignNewUUID(GameObject* go, unsigned UID)
+{
+	go->parentUUID = UID;
+	go->UUID = GetNewUID();
+
+	for (std::list<GameObject*>::iterator it = go->children.begin(); it != go->children.end(); ++it)
+	{
+		AssignNewUUID((*it), go->UUID);
+	}
+}
+
 void ModuleScene::TakePhoto()
 {
+	App->particles->Reset();
 	TakePhoto(scenePhotos);
 	scenePhotosUndoed.clear();
 }
@@ -721,8 +826,12 @@ void ModuleScene::RestorePhoto(GameObject* photo)
 {
 	photoTimer = 0.f;
 	root = photo;
+	root->UUID = 0; // Restore root UUID
+	root->children.front()->UUID = 1; //Restore canvas UUID
 	std::stack<GameObject*> goStack;
 	goStack.push(root);
+	App->renderer->directionalLight = nullptr;
+	App->particles->Reset();
 	while (!goStack.empty())
 	{
 		GameObject* go = goStack.top(); goStack.pop();
@@ -732,6 +841,7 @@ void ModuleScene::RestorePhoto(GameObject* photo)
 			switch (comp->type)
 			{
 			case ComponentType::Renderer:
+			{
 				if (!go->isStatic)
 				{
 					App->spacePartitioning->aabbTree.InsertGO(go);
@@ -742,13 +852,20 @@ void ModuleScene::RestorePhoto(GameObject* photo)
 					App->spacePartitioning->kDTree.Calculate();
 				}
 				go->isVolumetric = true;
+				ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+				cr->LinkBones();
 				break;
+			}
 			case ComponentType::Light:
 				go->light = (ComponentLight*)comp;
 				go->light->CalculateGuizmos();
 				App->spacePartitioning->aabbTreeLighting.InsertGO(go);
 				go->hasLight = true;
 				lights.push_back((ComponentLight*)comp);
+				if (go->light->lightType == LightType::DIRECTIONAL)
+				{
+					App->renderer->directionalLight = go->light;
+				}
 				break;
 			case ComponentType::Camera:
 				if (((ComponentCamera*)comp)->isMainClone)
@@ -832,7 +949,6 @@ bool ModuleScene::AddScene(const char* scene, const char* path)
 		if (gameobject->UUID != 1)
 		{
 			gameobjectsMap.insert(std::pair<unsigned, GameObject*>(gameobject->UUID, gameobject));
-
 			std::map<unsigned, GameObject*>::iterator it = gameobjectsMap.find(gameobject->parentUUID);
 			if (it != gameobjectsMap.end())
 			{
@@ -859,6 +975,23 @@ bool ModuleScene::AddScene(const char* scene, const char* path)
 		}
 	}
 
+	//We need to generate new UIDs for every GO, otherwise hierarchy will get messed up after temporary scene
+	
+	GameObject* parentGO = nullptr;
+	for (std::map<unsigned, GameObject*>::iterator it = gameobjectsMap.begin(); it != gameobjectsMap.end(); ++it)
+	{
+		if (it->second->parentUUID == 0u)
+		{
+			parentGO = it->second;
+			break;
+		}
+	}
+
+	//Recursive UID reassign
+	if (parentGO != nullptr)
+	{
+		AssignNewUUID(parentGO, 0u);
+	}
 
 	//Link Bones after all the hierarchy is imported
 
@@ -893,7 +1026,10 @@ void ModuleScene::ClearScene()
 	App->spacePartitioning->kDTree.Calculate();
 	canvas = new GameObject("Canvas", 1);
 	root->InsertChild(canvas);
+	App->particles->CleanUp();
+	App->particles->Start();
 	selection.clear();
+	App->renderer->shadowCasters.clear();
 }
 
 void ModuleScene::Select(GameObject * gameobject)
