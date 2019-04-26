@@ -40,6 +40,8 @@ private:
 	void Chase();
 	void Attack();
 
+	void LookAtPlayer();
+
 	GameObject* GetGameObjectRecursiveByName(GameObject* gameObject, const char* name);
 
 public:
