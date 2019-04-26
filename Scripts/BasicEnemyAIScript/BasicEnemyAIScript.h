@@ -24,6 +24,7 @@ enum class EnemyState
 };
 
 class GameObject;
+class ComponentAnimation;
 class JSON_value;
 
 class BasicEnemyAIScript_API BasicEnemyAIScript : public Script
@@ -84,6 +85,8 @@ private:
 
 	float auxTranslation = 0.0f;
 	float auxTimer = 0.0f;
+
+	ComponentAnimation* anim = nullptr;
 };
 
 #endif __BasicEnemyAIScript_h__
