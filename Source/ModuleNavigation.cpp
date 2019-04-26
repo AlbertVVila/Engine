@@ -19,6 +19,7 @@
 
 #include "imgui.h"
 #include "SDL_opengl.h"
+#include "JSON.h"
 //#include "debugdraw.h"
 
 
@@ -44,6 +45,48 @@ ModuleNavigation::~ModuleNavigation()
 	RELEASE_ARRAY(verts);
 	RELEASE_ARRAY(tris);
 	RELEASE_ARRAY(normals);
+}
+
+bool ModuleNavigation::Init(JSON * config)
+{
+	JSON_value* nav = config->GetValue("navigation");
+	if (nav == nullptr) return true;
+
+	cellWidth = nav->GetFloat("Cellwidth");
+	meshGenerated = nav->GetUint("Generated");
+	renderMesh = nav->GetUint("RendernavMesh");
+	const char* opt = nav->GetString("idobject");
+
+	if (cellWidth == 0)
+	{
+		cellWidth = 20.250f;
+		meshGenerated = false;
+		renderMesh = false;
+	}
+
+	if (meshGenerated && opt != nullptr)
+	{
+		objectName = opt;
+		GameObject* obj = App->scene->FindGameObjectByName(objectName.c_str());
+		if(obj != nullptr)
+		{
+			addNavigableMesh(obj);
+			generateNavigability();
+		}
+		//generate navigation mesh
+	}
+	return true;
+}
+void ModuleNavigation::SaveConfig(JSON * config)
+{
+	JSON_value* nav = config->CreateValue();
+
+	nav->AddFloat("Cellwidth", cellWidth);
+	nav->AddUint("Generated", meshGenerated);
+	nav->AddUint("RendernavMesh", renderMesh);
+	nav->AddString("idobject", objectName.c_str());
+
+	config->AddValue("navigation", *nav);
 }
 
 void ModuleNavigation::cleanValues()
@@ -151,6 +194,8 @@ void ModuleNavigation::DrawGUI()
 	{
 		generateNavigability();
 	}
+
+	if (meshGenerated && ImGui::Button("Toggle nav mesh rendering")) renderMesh = !renderMesh;
 	
 	if (ImGui::CollapsingHeader("Detour"))
 	{	
@@ -179,6 +224,15 @@ void ModuleNavigation::addNavigableMesh()
 	LOG(s.c_str());
 }
 
+void ModuleNavigation::addNavigableMesh(const GameObject* obj)
+{
+	meshboxes.push_back(static_cast <const AABB*>(&obj->bbox));
+	meshComponents.push_back(static_cast <const ComponentRenderer*>(obj->GetComponent(ComponentType::Renderer)));
+	transformComponents.push_back(static_cast <const ComponentTransform*>(obj->GetComponent(ComponentType::Transform)));
+	std::string s = obj->name + " added to navigation";
+	LOG(s.c_str());
+}
+
 void ModuleNavigation::navigableObjectToggled(GameObject* obj, const bool newState)
 {
 	if (newState) navigationMeshes.push_back(obj);
@@ -187,7 +241,7 @@ void ModuleNavigation::navigableObjectToggled(GameObject* obj, const bool newSta
 
 void ModuleNavigation::renderNavMesh()
 {
-	if (!meshGenerated)	return;
+	if (!meshGenerated || !renderMesh)	return;
 	//test process
 	for (int i = 0; i < navMesh->getMaxTiles(); ++i)
 	{
