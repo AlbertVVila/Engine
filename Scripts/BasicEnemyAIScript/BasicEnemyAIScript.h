@@ -7,9 +7,6 @@
 #define BasicEnemyAIScript_API __declspec(dllimport)
 #endif
 
-class GameObject;
-class JSON_value;
-
 #include "BaseScript.h"
 #include "Geometry/AABB.h"
 
@@ -22,6 +19,9 @@ enum class EnemyState
 	COOLDOWN,
 	DEAD
 };
+
+class GameObject;
+class JSON_value;
 
 class BasicEnemyAIScript_API BasicEnemyAIScript : public Script
 {
@@ -39,6 +39,7 @@ private:
 	void StandUp();
 	void Chase();
 	void Attack();
+	void Cooldown();
 
 	void LookAtPlayer();
 
@@ -63,10 +64,15 @@ private:
 	// Chase variables
 	float chaseSpeed = 2.0f;
 
+	// Cooldown variables
+	float cooldownTime = 1.0f;	// Seconds to wait between attacks
+
 	float auxTranslation = 0.0f;
 
 	math::AABB* myBbox = nullptr;
 	math::AABB* playerBbox = nullptr;
+
+	float auxTimer = 0.0f;
 };
 
 #endif __BasicEnemyAIScript_h__
