@@ -49,6 +49,8 @@ private:
 	void LookAtPlayer();
 	void MoveTowards(float speed) const;
 
+	void CheckStateChange(EnemyState previous, EnemyState newState);
+
 public:
 	EnemyState enemyState = EnemyState::WAIT;
 
