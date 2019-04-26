@@ -156,18 +156,19 @@ void ModuleNavigation::DrawGUI()
 	{	
 		if (ImGui::Button("Generate Paths")) {
 			//returnPath(math::float3(verts[0], verts[1], verts[2]), math::float3(verts[nverts - 3], verts[nverts - 2], verts[nverts - 1]));
+			
+			math::float3 start(-1333.133f, 344.937f, 0.f);
+			math::float3 end(-3578.346f, 344.937f, -1218.517f);
 
+			pathGenerated = FindPath(start, end, path);
 			//WOWPOS start, end;
-			WOWPOS start = { -8949.95f, -132.493f, 83.5312f };
-			WOWPOS end = { -9046.507f, -45.71962f, 88.33186f };
+			//WOWPOS start = { -8949.95f, -132.493f, 83.5312f };
+			//WOWPOS end = { -9046.507f, -45.71962f, 88.33186f };
 			//start.x = verts[0]; start.y = verts[1]; start.z = verts[2]; end.x = verts[nverts - 3]; end.y = verts[nverts - 2]; end.z = verts[nverts - 1];
-			WOWPOS* path = new WOWPOS[MAX_PATH];
+			//WOWPOS* path = new WOWPOS[MAX_PATH];
 
-			dtStatus pathSize = FindStraightPath(start, end, path, 5);
+			//dtStatus pathSize = FindStraightPath(start, end, path, 5);
 
-			bool failed = dtStatusFailed(pathSize);
-
-			pathGenerated = true;
 			//generateNavigability();
 			//DetourPoints();
 
@@ -230,11 +231,12 @@ void ModuleNavigation::renderNavMesh()
 	}
 	if (pathGenerated)
 	{
-		for (int i = 0; i<pathSize; ++i)
+		for (int i = 0; i< path.size(); ++i)
 		{
-			dd::point(ddVec3(path[i].x,
-				path[i].y,
-				path[i].z), ddVec3(0, 1, 0.8), 5.0f);
+			if (i + 1 < path.size())
+			{
+				dd::line(path[i], path[i + 1], dd::colors::Red);
+			}
 		}
 	}
 
@@ -993,6 +995,57 @@ std::vector<math::float3>  ModuleNavigation::returnPath(math::float3 pStart, mat
 
 // TODO: New Detour version
 
+bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vector<math::float3>& path) const
+{
+	dtPolyRef startPoly, endPoly;
+	dtQueryFilter filter;
+	filter.setIncludeFlags(SAMPLE_POLYFLAGS_ALL ^ SAMPLE_POLYFLAGS_DISABLED);
+	filter.setExcludeFlags(0);
+
+	float polyPickExt[3] = { 0,0,0 };
+
+	static const int MAX_POLYS = 256;
+	dtPolyRef polyPath[MAX_POLYS];
+	int pathCount = 0;
+
+	navQuery->findNearestPoly((float*)&start, polyPickExt, &filter, &startPoly, 0); // find start Poly
+	navQuery->findNearestPoly((float*)&end, polyPickExt, &filter, &endPoly, 0); // find end Poly
+
+	if (!startPoly)
+	{
+		LOG("Could not find any nearby poly to the start");
+		return false;
+	}
+	if (!endPoly)
+	{
+		LOG("Could not find any nearby poly to the end");
+		return false;
+	}
+
+	navQuery->findPath(startPoly, endPoly, (float*)&start, (float*)&end, &filter, polyPath, &pathCount, MAX_POLYS);
+	if (pathCount)
+	{
+		float straightPath[MAX_POLYS * 3]; //deprecated for path variable
+		//unsigned char straightPathFlags[MAX_POLYS];
+		//dtPolyRef m_straightPathPolys[MAX_POLYS];
+		int nbPoints = 0;
+		int straightPathOptions = 0;
+		//TODO: partial path + end poly clamping
+		navQuery->findStraightPath((float*)&start, (float*)&end, polyPath, pathCount,
+			straightPath, NULL, NULL, &nbPoints, MAX_POLYS, straightPathOptions);
+
+		if (nbPoints != 0)
+		{
+			path.reserve(nbPoints);
+			for (size_t i = 0; i < nbPoints; i++)
+			{
+				path.push_back(float3(straightPath[i*3], straightPath[i * 3 + 1], straightPath[i * 3 + 2]));
+			}
+			return true;
+		}
+	}
+	return false;
+}
 
 //int ModuleNavigation::FindStraightPath(WOWPOS start, WOWPOS end, WOWPOS *path, int size)
 //{

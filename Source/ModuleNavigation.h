@@ -80,9 +80,9 @@ public:
 	void navigableObjectToggled(GameObject* obj, const bool newState);
 	
 	void renderNavMesh();
-
 	void cleanValues();
-	
+
+	bool FindPath(math::float3 start, math::float3 end, std::vector<math::float3> &path) const;
 
 	//variables
 	std::vector<GameObject*> navigationMeshes;
@@ -109,15 +109,14 @@ private:
 
 	void cleanUpNavValues();
 
-	void drawMeshTile();
-
 	// Detour stuff
 	std::vector<math::float3> returnPath(math::float3 pStart, math::float3 pEnd);
 	//void handleClick(const float* s, const float* p, bool shift);
 	//std::vector<math::float3> returnPath(math::float3 pStart, math::float3 pEnd);
 	//void handleClick(const float* s, const float* p, bool shift);
-	int FindStraightPath(WOWPOS start, WOWPOS end, WOWPOS* path, int size);
+	//int FindStraightPath(WOWPOS start, WOWPOS end, WOWPOS* path, int size);
 	
+private:
 	//variables
 	float maxRadius = 5.0f;
 	float maxHeight = 5.0f;
@@ -227,8 +226,7 @@ private:
 	float pEnd[3];
 
 	bool pathGenerated = false;
-	WOWPOS *path = new WOWPOS[MAX_PATH];
-	int pathSize;
+	std::vector<math::float3> path;
 };
 
 #endif
