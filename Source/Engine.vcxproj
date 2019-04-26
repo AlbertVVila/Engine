@@ -97,7 +97,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <AdditionalIncludeDirectories>./Soloud/fractal_includes;$(SolutionDir)\Source\NodeEditor\Include;$(SolutionDir)\Source\Imgui\include;..\Scripts\BaseScript;./Brofiler-1.1.2;./ImGuizmo;./pcg-cpp-0.98/include;./rapidjson-1.1.0/include;./physfs-3.0.1/include;./mmgr;./Assimp/include;./DevIL/include;./glew-2.1.0/include;./SDL/include;MathGeoLib/include;./Imgui;./physfs-3.0.1;./freeType/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./Soloud/fractal_includes;$(SolutionDir)\Source\NodeEditor\Include;$(SolutionDir)\Source\Imgui\include;..\Scripts\BaseScript;./Brofiler-1.1.2;./ImGuizmo;./pcg-cpp-0.98/include;./rapidjson-1.1.0/include;./physfs-3.0.1/include;./mmgr;./Assimp/include;./DevIL/include;./glew-2.1.0/include;./SDL/include;MathGeoLib/include;./Imgui;./physfs-3.0.1;./freeType/include;$(SolutionDir)/Source/Recast</AdditionalIncludeDirectories>
       <EnablePREfast>false</EnablePREfast>
       <PreprocessorDefinitions>_MBCS;ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
@@ -119,7 +119,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <AdditionalIncludeDirectories>./Soloud/fractal_includes;$(SolutionDir)\Source\NodeEditor\Include;$(SolutionDir)\Source\Imgui\include;..\Scripts\BaseScript;./Brofiler-1.1.2;./ImGuizmo;./pcg-cpp-0.98/include;./rapidjson-1.1.0/include;./physfs-3.0.1/include;./mmgr;./Assimp/include;./DevIL/include;./glew-2.1.0/include;./SDL/include;MathGeoLib/include;./Imgui;./physfs-3.0.1;./freeType/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./Soloud/fractal_includes;$(SolutionDir)\Source\NodeEditor\Include;$(SolutionDir)\Source\Imgui\include;..\Scripts\BaseScript;./Brofiler-1.1.2;./ImGuizmo;./pcg-cpp-0.98/include;./rapidjson-1.1.0/include;./physfs-3.0.1/include;./mmgr;./Assimp/include;./DevIL/include;./glew-2.1.0/include;./SDL/include;MathGeoLib/include;./Imgui;./physfs-3.0.1;./freeType/include;$(SolutionDir)/Source/Recast</AdditionalIncludeDirectories>
       <EnablePREfast>false</EnablePREfast>
       <PreprocessorDefinitions>GAME_BUILD;_MBCS;ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
@@ -143,7 +143,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <AdditionalIncludeDirectories>./Soloud/fractal_includes;$(SolutionDir)\Source\NodeEditor\Include;$(SolutionDir)\Source\Imgui\include;..\Scripts\BaseScript;./Brofiler-1.1.2;./ImGuizmo;./pcg-cpp-0.98/include;./rapidjson-1.1.0/include;./physfs-3.0.1/include;./mmgr;./Assimp/include;./DevIL/include;./glew-2.1.0/include;./SDL/include;MathGeoLib/include;./Imgui;./physfs-3.0.1;./freeType/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./Soloud/fractal_includes;$(SolutionDir)\Source\NodeEditor\Include;$(SolutionDir)\Source\Imgui\include;..\Scripts\BaseScript;./Brofiler-1.1.2;./ImGuizmo;./pcg-cpp-0.98/include;./rapidjson-1.1.0/include;./physfs-3.0.1/include;./mmgr;./Assimp/include;./DevIL/include;./glew-2.1.0/include;./SDL/include;MathGeoLib/include;./Imgui;./physfs-3.0.1;./freeType/include;$(SolutionDir)/Source/Recast</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_MBCS;ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -168,7 +168,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
       <ExceptionHandling>Sync</ExceptionHandling>
-      <AdditionalIncludeDirectories>./Soloud/fractal_includes;$(SolutionDir)\Source\NodeEditor\Include;$(SolutionDir)\Source\Imgui\include;..\Scripts\BaseScript;./Brofiler-1.1.2;./ImGuizmo;./pcg-cpp-0.98/include;./rapidjson-1.1.0/include;./physfs-3.0.1/include;./mmgr;./Assimp/include;./DevIL/include;./glew-2.1.0/include;./SDL/include;MathGeoLib/include;./Imgui;./physfs-3.0.1;./freeType/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./Soloud/fractal_includes;$(SolutionDir)\Source\NodeEditor\Include;$(SolutionDir)\Source\Imgui\include;..\Scripts\BaseScript;./Brofiler-1.1.2;./ImGuizmo;./pcg-cpp-0.98/include;./rapidjson-1.1.0/include;./physfs-3.0.1/include;./mmgr;./Assimp/include;./DevIL/include;./glew-2.1.0/include;./SDL/include;MathGeoLib/include;./Imgui;./physfs-3.0.1;./freeType/include;$(SolutionDir)/Source/Recast</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>GAME_BUILD;_MBCS;ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
