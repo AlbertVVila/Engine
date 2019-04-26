@@ -67,34 +67,36 @@ void ComponentAudioSource::Stop()
 	App->audioManager->StopWAV(lastHandler);	
 }
 
-void ComponentAudioSource::SetVolume() 
+void ComponentAudioSource::SetVolume(float newVol) 
 {
-	if (Sound3D) App->audioManager->SetVolume(lastHandler, volume3d);
-	else App->audioManager->SetVolume(lastHandler, volume);
+	volume = newVol;
 }
 
-void ComponentAudioSource::SetPan() 
+void ComponentAudioSource::SetPan(float newPan) 
 {
-	App->audioManager->SetPan(lastHandler, PAN);
+	PAN = newPan;
 }
 
-void ComponentAudioSource::SetLoop() 
+void ComponentAudioSource::SetLoop(bool newLoop) 
 {
-	App->audioManager->SetLoop(lastHandler, loop);
+	loop = newLoop;
 }
 
-void ComponentAudioSource::SetPitch()
+void ComponentAudioSource::SetPitch(float newPitch)
 {
-	App->audioManager->SetPitch(lastHandler, pitch);
+	pitch = newPitch;
 }
 
 
 void ComponentAudioSource::UpdateState() 
 {
-	SetVolume();
-	SetPan();
-	SetLoop();
-	SetPitch();
+	if (Sound3D) App->audioManager->SetVolume(lastHandler, volume3d);
+	else App->audioManager->SetVolume(lastHandler, volume);
+
+	App->audioManager->SetPan(lastHandler, PAN);
+	
+	App->audioManager->SetLoop(lastHandler, loop);
+	App->audioManager->SetPitch(lastHandler, pitch);
 }
 
 
