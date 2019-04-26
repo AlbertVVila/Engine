@@ -17,13 +17,24 @@ AnimationController::~AnimationController()
 {
 }
 
-void AnimationController::Play(ResourceAnimation* anim, bool loop, bool mustFinish, float speed)
+void AnimationController::Play(ResourceAnimation* anim, bool loop, bool mustFinish, float speed, int startFrame, int endFrame)
 {
 	Instance* newInstance = new Instance;
 	newInstance->anim = anim;
 	newInstance->mustFinish = mustFinish;
 	newInstance->speed = speed;
+	newInstance->time = startFrame / (current->anim->framesPerSecond);
+	newInstance->minTime = startFrame / (current->anim->framesPerSecond);
+	newInstance->maxTime = endFrame / (current->anim->framesPerSecond);
 	newInstance->loop = loop;
+	current = newInstance;
+}
+
+void AnimationController::PlayEditor(ResourceAnimation * anim)
+{
+	Instance* newInstance = new Instance;
+	newInstance->anim = anim;
+	newInstance->loop = true;
 	current = newInstance;
 }
 

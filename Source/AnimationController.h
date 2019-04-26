@@ -36,7 +36,8 @@ public:
 	AnimationController();
 	~AnimationController();
 
-	void Play(ResourceAnimation* anim, bool loop, bool mustFinish, float speed);
+	void Play(ResourceAnimation* anim, bool loop, bool mustFinish, float speed, int startFrame, int endFrame);
+	void PlayEditor(ResourceAnimation* anim);
 	void PlayNextNode(ResourceAnimation* anim, bool loop, bool mustFinish, float speed, int startFrame, int endFrame, unsigned blend);
 	void Update(float dt);
 	void UpdateInstance(Instance* ins, float dt);

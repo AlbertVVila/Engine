@@ -61,7 +61,7 @@ void PanelAnimation::Draw()
 				{
 					unsigned animUID = ((ResourceAnimation*)App->resManager->GetAnimationByName(guiAnimations[n].c_str()))->GetUID();
 					anim = (ResourceAnimation*)App->resManager->GetWithoutLoad(animUID);
-					compAnim->editorController->Play(anim, true, false ,1.0f);
+					compAnim->editorController->PlayEditor(anim);
 				}
 				if (is_selected)
 				{

@@ -195,7 +195,7 @@ void GameObject::Update()
 	}
 	//TESTING
 	//---------------------------------------------
-	if (isBoneRoot)
+	/*if (isBoneRoot)
 	{
 		ComponentAnimation* compAnim = (ComponentAnimation*)GetComponent(ComponentType::Animation);
 		if (App->input->GetKey(SDL_SCANCODE_X))
@@ -206,7 +206,7 @@ void GameObject::Update()
 		{
 			compAnim->SendTriggerToStateMachine("slower");
 		}
-	}
+	}*/
 	//---------------------------------------------
 
 	for (const auto& child : children)

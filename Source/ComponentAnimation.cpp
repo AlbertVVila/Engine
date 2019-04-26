@@ -426,10 +426,8 @@ void ComponentAnimation::OnPlay()
 	if (stateMachine != nullptr && stateMachine->GetClipsSize() > 0u && stateMachine->GetNodesSize() > 0u)
 	{
 		controller->Play(GetAnimFromStateMachine(), GetLoopFromStateMachine(),
-			GetMustFinishFromStateMachine(), GetSpeedFromStateMachine());
+			GetMustFinishFromStateMachine(), GetSpeedFromStateMachine(), GetStartFrameFromStateMachine(), GetEndFrameFromStateMachine());
 	}
-		controller->current->minTime = stateMachine->GetClipStartFrame(stateMachine->GetDefaultNode()) / anim->framesPerSecond;
-		controller->current->maxTime = stateMachine->GetClipEndFrame(stateMachine->GetDefaultNode()) / anim->framesPerSecond;
 }
 
 void ComponentAnimation::UpdateGO(GameObject* go)
