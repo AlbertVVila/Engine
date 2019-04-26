@@ -43,8 +43,6 @@ private:
 
 	void LookAtPlayer();
 
-	GameObject* GetGameObjectRecursiveByName(GameObject* gameObject, const char* name);
-
 public:
 	EnemyState enemyState = EnemyState::WAIT;
 
@@ -55,23 +53,23 @@ private:
 	std::string myBboxName = "EnemyMesh";
 
 	// Wait variables
-	float activationDistance = 100.0f;
+	float activationDistance = 100.0f;	// Distance to player needed to start chasing the player (only X,Z axis is taken into account)
 
 	// Stand-Up variables
-	float standupSpeed = 1.0f;
-	float yTranslation = 20.0f;
+	float standupSpeed = 1.0f;			// Tranlation speed on stand-up
+	float yTranslation = 20.0f;			// Y axis translation on stand-up 
 
 	// Chase variables
-	float chaseSpeed = 2.0f;
+	float chaseSpeed = 2.0f;			// Tranlation speed when chasing player
 
 	// Cooldown variables
-	float cooldownTime = 1.0f;	// Seconds to wait between attacks
+	float cooldownTime = 1.0f;			// Seconds to wait between attacks
 
-	float auxTranslation = 0.0f;
-
-	math::AABB* myBbox = nullptr;
+	// BBoxes
+	math::AABB* myBbox = nullptr;		
 	math::AABB* playerBbox = nullptr;
 
+	float auxTranslation = 0.0f;
 	float auxTimer = 0.0f;
 };
 
