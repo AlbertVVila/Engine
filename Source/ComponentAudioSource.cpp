@@ -253,7 +253,7 @@ void ComponentAudioSource::DrawProperties()
 		ImGui::Checkbox("Play On Awake", &playOnAwake);
 		toolTip("The audio will play when the game starts");
 
-		if (ImGui::Checkbox("Loop", &loop)) SetLoop();
+		if (ImGui::Checkbox("Loop", &loop)) UpdateState();
 		toolTip("Set whether the audio clip replays after it finishes");
 
 		ImGui::Checkbox("3D Sound", &Sound3D);
