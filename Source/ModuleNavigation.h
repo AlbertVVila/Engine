@@ -4,6 +4,7 @@
 #include "Module.h"
 
 #include "Recast/Recast.h"
+#include "Recast/Detour/DetourNavMesh.h"
 #include "debugdraw.h"
 
 #include <vector>
@@ -11,15 +12,11 @@
 //#include <stdio.h>
 #include <cstddef>
 
-typedef struct _WOWPOS 
-{ 
-	float x;
-	float y;
-	float z;}
 
-WOWPOS;
 
 #define MAX_PATH 1024
+#define MAX_POLYS 256
+#define MAX_SMOOTH 2048
 
 //#include "DebugUtils/DetourDebugDraw.h"
 //#include "DebugUtils/DebugDraw.h"
@@ -69,6 +66,12 @@ enum SamplePartitionType
 	SAMPLE_PARTITION_LAYERS,
 };
 
+enum class PathFindType
+{
+	FOLLOW,
+	STRAIGHT
+};
+
 class ModuleNavigation :
 	public Module
 {
@@ -89,7 +92,8 @@ public:
 	void cleanValuesPRE();
 	void cleanValuesPOST();
 
-	bool FindPath(math::float3 start, math::float3 end, std::vector<math::float3> &path) const;
+
+	bool FindPath(math::float3 start, math::float3 end, std::vector<math::float3> &path, PathFindType type = PathFindType::FOLLOW) const;
 	void RecalcPath(math::float3 point);
 
 	//variables
@@ -117,6 +121,15 @@ private:
 	void fillDrawPoints();
 
 	void cleanUpNavValues();
+
+	bool getSteerTarget(dtNavMeshQuery * navQuery, const float * startPos,
+		const float * endPos, const float minTargetDist, 
+		const dtPolyRef * path, const int pathSize, 
+		float * steerPos, unsigned char & steerPosFlag, dtPolyRef & steerPosRef, 
+		float * outPoints, int * outPointCount) const;
+
+	bool inRange(const float * v1, const float * v2, const float r, const float h) const;
+
 
 	// Detour stuff
 	std::vector<math::float3> returnPath(math::float3 pStart, math::float3 pEnd);

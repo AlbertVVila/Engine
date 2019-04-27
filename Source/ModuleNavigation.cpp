@@ -27,6 +27,7 @@
 #include "Recast/Detour/DetourNavMesh.h"
 #include "Recast/Detour/DetourNavMeshBuilder.h"
 #include "Recast/Detour/DetourNavMeshQuery.h"
+#include "Recast/Detour/DetourCommon.h"
 #include "Recast/DebugUtils/RecastDebugDraw.h"
 #include "Recast/DebugUtils/DetourDebugDraw.h"
 #include "Recast/DebugUtils/DebugDraw.h"
@@ -875,7 +876,6 @@ std::vector<math::float3>  ModuleNavigation::returnPath(math::float3 pStart, mat
 		dtPolyRef m_startRef;
 		dtPolyRef m_endRef;
 
-		const int MAX_POLYS = 256;
 		dtPolyRef m_polys[MAX_POLYS];
 		dtPolyRef returnedPath[MAX_POLYS];
 		float m_straightPath[MAX_POLYS * 3];
@@ -1082,7 +1082,167 @@ std::vector<math::float3>  ModuleNavigation::returnPath(math::float3 pStart, mat
 
 // TODO: New Detour version
 
-bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vector<math::float3>& path) const
+inline bool ModuleNavigation::inRange(const float* v1, const float* v2, const float r, const float h) const
+{
+	const float dx = v2[0] - v1[0];
+	const float dy = v2[1] - v1[1];
+	const float dz = v2[2] - v1[2];
+	return (dx*dx + dz * dz) < r*r && fabsf(dy) < h;
+}
+
+bool ModuleNavigation::getSteerTarget(dtNavMeshQuery* navQuery, const float* startPos, const float* endPos,
+	const float minTargetDist,
+	const dtPolyRef* path, const int pathSize,
+	float* steerPos, unsigned char& steerPosFlag, dtPolyRef& steerPosRef,
+	float* outPoints = 0, int* outPointCount = 0) const
+{
+	// Find steer target.
+	static const int MAX_STEER_POINTS = 3;
+	float steerPath[MAX_STEER_POINTS * 3];
+	unsigned char steerPathFlags[MAX_STEER_POINTS];
+	dtPolyRef steerPathPolys[MAX_STEER_POINTS];
+	int nsteerPath = 0;
+	navQuery->findStraightPath(startPos, endPos, path, pathSize,
+		steerPath, steerPathFlags, steerPathPolys, &nsteerPath, MAX_STEER_POINTS);
+	if (!nsteerPath)
+		return false;
+
+	if (outPoints && outPointCount)
+	{
+		*outPointCount = nsteerPath;
+		for (int i = 0; i < nsteerPath; ++i)
+			dtVcopy(&outPoints[i * 3], &steerPath[i * 3]);
+	}
+
+
+	// Find vertex far enough to steer to.
+	int ns = 0;
+	while (ns < nsteerPath)
+	{
+		// Stop at Off-Mesh link or when point is further than slop away.
+		if ((steerPathFlags[ns] & DT_STRAIGHTPATH_OFFMESH_CONNECTION) ||
+			!inRange(&steerPath[ns * 3], startPos, minTargetDist, 1000.0f))
+			break;
+		ns++;
+	}
+	// Failed to find good point to steer to.
+	if (ns >= nsteerPath)
+		return false;
+
+	dtVcopy(steerPos, &steerPath[ns * 3]);
+	steerPos[1] = startPos[1];
+	steerPosFlag = steerPathFlags[ns];
+	steerPosRef = steerPathPolys[ns];
+
+	return true;
+}
+
+static int fixupCorridor(dtPolyRef* path, const int npath, const int maxPath,
+	const dtPolyRef* visited, const int nvisited)
+{
+	int furthestPath = -1;
+	int furthestVisited = -1;
+
+	// Find furthest common polygon.
+	for (int i = npath - 1; i >= 0; --i)
+	{
+		bool found = false;
+		for (int j = nvisited - 1; j >= 0; --j)
+		{
+			if (path[i] == visited[j])
+			{
+				furthestPath = i;
+				furthestVisited = j;
+				found = true;
+			}
+		}
+		if (found)
+			break;
+	}
+
+	// If no intersection found just return current path. 
+	if (furthestPath == -1 || furthestVisited == -1)
+		return npath;
+
+	// Concatenate paths.	
+
+	// Adjust beginning of the buffer to include the visited.
+	const int req = nvisited - furthestVisited;
+	const int orig = rcMin(furthestPath + 1, npath);
+	int size = rcMax(0, npath - orig);
+	if (req + size > maxPath)
+		size = maxPath - req;
+	if (size)
+		memmove(path + req, path + orig, size * sizeof(dtPolyRef));
+
+	// Store visited
+	for (int i = 0; i < req; ++i)
+		path[i] = visited[(nvisited - 1) - i];
+
+	return req + size;
+}
+
+// This function checks if the path has a small U-turn, that is,
+// a polygon further in the path is adjacent to the first polygon
+// in the path. If that happens, a shortcut is taken.
+// This can happen if the target (T) location is at tile boundary,
+// and we're (S) approaching it parallel to the tile edge.
+// The choice at the vertex can be arbitrary, 
+//  +---+---+
+//  |:::|:::|
+//  +-S-+-T-+
+//  |:::|   | <-- the step can end up in here, resulting U-turn path.
+//  +---+---+
+static int fixupShortcuts(dtPolyRef* path, int npath, dtNavMeshQuery* navQuery)
+{
+	if (npath < 3)
+		return npath;
+
+	// Get connected polygons
+	static const int maxNeis = 16;
+	dtPolyRef neis[maxNeis];
+	int nneis = 0;
+
+	const dtMeshTile* tile = 0;
+	const dtPoly* poly = 0;
+	if (dtStatusFailed(navQuery->getAttachedNavMesh()->getTileAndPolyByRef(path[0], &tile, &poly)))
+		return npath;
+
+	for (unsigned int k = poly->firstLink; k != DT_NULL_LINK; k = tile->links[k].next)
+	{
+		const dtLink* link = &tile->links[k];
+		if (link->ref != 0)
+		{
+			if (nneis < maxNeis)
+				neis[nneis++] = link->ref;
+		}
+	}
+
+	// If any of the neighbour polygons is within the next few polygons
+	// in the path, short cut to that polygon directly.
+	static const int maxLookAhead = 6;
+	int cut = 0;
+	for (int i = dtMin(maxLookAhead, npath) - 1; i > 1 && cut == 0; i--) {
+		for (int j = 0; j < nneis; j++)
+		{
+			if (path[i] == neis[j]) {
+				cut = i;
+				break;
+			}
+		}
+	}
+	if (cut > 1)
+	{
+		int offset = cut - 1;
+		npath -= offset;
+		for (int i = 1; i < npath; i++)
+			path[i] = path[i + offset];
+	}
+
+	return npath;
+}
+
+bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vector<math::float3>& path, PathFindType type) const
 {
 	path.clear();
 	dtPolyRef startPoly, endPoly;
@@ -1092,9 +1252,8 @@ bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vecto
 
 	float polyPickExt[3] = { 0,0,0 };
 
-	static const int MAX_POLYS = 256;
 	dtPolyRef polyPath[MAX_POLYS];
-	int pathCount = 0;
+	int polyCount = 0;
 
 	navQuery->findNearestPoly((float*)&start, polyPickExt, &filter, &startPoly, 0); // find start Poly
 	navQuery->findNearestPoly((float*)&end, polyPickExt, &filter, &endPoly, 0); // find end Poly
@@ -1110,28 +1269,128 @@ bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vecto
 		return false;
 	}
 
-	navQuery->findPath(startPoly, endPoly, (float*)&start, (float*)&end, &filter, polyPath, &pathCount, MAX_POLYS);
-	if (pathCount)
+	if (type == PathFindType::FOLLOW) //TODO: OFF mesh link connections
 	{
-		float straightPath[MAX_POLYS * 3]; //deprecated for path variable
-		//unsigned char straightPathFlags[MAX_POLYS];
-		//dtPolyRef m_straightPathPolys[MAX_POLYS];
-		int nbPoints = 0;
-		int straightPathOptions = 0;
-		//TODO: partial path + end poly clamping
-		navQuery->findStraightPath((float*)&start, (float*)&end, polyPath, pathCount,
-			straightPath, NULL, NULL, &nbPoints, MAX_POLYS, straightPathOptions);
+		int pathIterationNb = 0;
+		navQuery->findPath(startPoly, endPoly, (float*)&start, (float*)&end, &filter, polyPath, &polyCount, MAX_POLYS);
 
-		if (nbPoints != 0)
-		{
-			path.reserve(nbPoints);
-			for (size_t i = 0; i < nbPoints; i++)
+			int smoothNb = 0;
+
+			if (polyCount)
 			{
-				path.push_back(float3(straightPath[i*3], straightPath[i * 3 + 1], straightPath[i * 3 + 2]));
+				// Iterate over the path to find smooth path on the detail mesh surface.
+				dtPolyRef polys[MAX_POLYS];
+				memcpy(polys, polyPath, sizeof(dtPolyRef)*polyCount);
+				int npolys = polyCount;
+
+				float iterPos[3], targetPos[3];
+				navQuery->closestPointOnPoly(startPoly, (float*)&start, iterPos, 0);
+				navQuery->closestPointOnPoly(polys[npolys - 1], (float*)&end, targetPos, 0);
+
+				static const float STEP_SIZE = 5.f;
+				static const float SLOP = 0.01f;
+
+				float smoothPath[MAX_SMOOTH * 3];
+
+				dtVcopy(&smoothPath[smoothNb * 3], iterPos);
+				smoothNb++;
+
+				// Move towards target a small advancement at a time until target reached or
+				// when ran out of memory to store the path.
+				while (npolys && smoothNb < MAX_SMOOTH)
+				{
+					// Find location to steer towards.
+					float steerPos[3];
+					unsigned char steerPosFlag;
+					dtPolyRef steerPosRef;
+
+					if (!getSteerTarget(navQuery, iterPos, targetPos, SLOP,
+						polys, npolys, steerPos, steerPosFlag, steerPosRef))
+						break;
+
+					bool endOfPath = (steerPosFlag & DT_STRAIGHTPATH_END) ? true : false;
+
+					// Find movement delta.
+					float delta[3], len;
+					dtVsub(delta, steerPos, iterPos);
+					len = dtMathSqrtf(dtVdot(delta, delta));
+					// If the steer target is end of path do not move past the location.
+					if (endOfPath && len < STEP_SIZE)
+						len = 1;
+					else
+						len = STEP_SIZE / len;
+					float moveTgt[3];
+					dtVmad(moveTgt, iterPos, delta, len);
+
+					// Move
+					float result[3];
+					dtPolyRef visited[16];
+					int nvisited = 0;
+					navQuery->moveAlongSurface(polys[0], iterPos, moveTgt, &filter,
+						result, visited, &nvisited, 16);
+
+					pathIterationNb = fixupCorridor(polys, npolys, MAX_POLYS, visited, nvisited);
+					pathIterationNb = fixupShortcuts(polys, npolys, navQuery);
+					float h = 0;
+					navQuery->getPolyHeight(polys[0], result, &h);
+					result[1] = h;
+					dtVcopy(iterPos, result);
+
+					// Handle end of path when close enough.
+					if (endOfPath && inRange(iterPos, steerPos, SLOP, 1.0f))
+					{
+						// Reached end of path.
+						dtVcopy(iterPos, targetPos);
+						if (smoothNb < MAX_SMOOTH)
+						{
+							dtVcopy(&smoothPath[smoothNb * 3], iterPos);
+							smoothNb++;
+						}
+						break;
+					}
+
+					// Store results.
+					if (smoothNb < MAX_SMOOTH)
+					{
+						dtVcopy(&smoothPath[smoothNb * 3], iterPos);
+						smoothNb++;
+					}
+				}
+
+				path.reserve(smoothNb);
+				for (size_t i = 0; i < smoothNb; i++)
+				{
+					path.push_back(float3(smoothPath[i * 3], smoothPath[i * 3 + 1], smoothPath[i * 3 + 2]));
+				}
+				return true;
 			}
-			return true;
+	}
+	else if (type == PathFindType::STRAIGHT)
+	{
+		navQuery->findPath(startPoly, endPoly, (float*)&start, (float*)&end, &filter, polyPath, &polyCount, MAX_POLYS);
+		if (polyCount)
+		{
+			float straightPath[MAX_POLYS * 3]; //deprecated for path variable
+			//unsigned char straightPathFlags[MAX_POLYS];
+			//dtPolyRef m_straightPathPolys[MAX_POLYS];
+			int nbPoints = 0;
+			int straightPathOptions = 0;
+			//TODO: partial path + end poly clamping
+			navQuery->findStraightPath((float*)&start, (float*)&end, polyPath, polyCount,
+				straightPath, NULL, NULL, &nbPoints, MAX_POLYS, straightPathOptions);
+
+			if (nbPoints != 0)
+			{
+				path.reserve(nbPoints);
+				for (size_t i = 0; i < nbPoints; i++)
+				{
+					path.push_back(float3(straightPath[i * 3], straightPath[i * 3 + 1], straightPath[i * 3 + 2]));
+				}
+				return true;
+			}
 		}
 	}
+
 	return false;
 }
 
