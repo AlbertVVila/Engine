@@ -76,11 +76,18 @@ public:
 	ModuleNavigation();
 	~ModuleNavigation();
 
+	bool Init(JSON* config);
+	void SaveConfig(JSON* config) override;
+	void sceneLoaded(JSON* config);
+	void sceneSaved(JSON* config);
+
 	void DrawGUI()override;
 	void navigableObjectToggled(GameObject* obj, const bool newState);
 	
 	void renderNavMesh();
-	void cleanValues();
+
+	void cleanValuesPRE();
+	void cleanValuesPOST();
 
 	bool FindPath(math::float3 start, math::float3 end, std::vector<math::float3> &path) const;
 	void RecalcPath(math::float3 point);
@@ -100,8 +107,9 @@ private:
 	ModuleNavigation& operator=(const ModuleNavigation);
 
 	void removeNavMesh(unsigned ID);
-	void generateNavigability();
+	void generateNavigability(bool render);
 	void addNavigableMesh();
+	void addNavigableMesh(const GameObject* obj);
 
 	void fillVertices();
 	void fillIndices();
@@ -119,9 +127,9 @@ private:
 	
 private:
 	//variables
-	float maxRadius = 5.0f;
+	float maxRadius = 0.6f;
 	float maxHeight = 5.0f;
-	float maxSlopeScaling = 20.0f;
+	float maxSlopeScaling = 45.0f;
 	float maxStepHeightScaling = 5.0f;
 	
 	char newCharacter[64] = "New Character";
@@ -136,7 +144,7 @@ private:
 	const float maxSlopeValue = 60.0f;
 	const float cellIncreaseSpeed = 0.25f;
 	const float minCellSize = 0.1f;
-	const float maxCellSize = 10.0f;
+	const float maxCellSize = 50.0f;
 	int minRegionSize = 8;
 	int mergedRegionSize = 20;
 	float edgeMaxLength = 20.f;
@@ -144,7 +152,7 @@ private:
 	int vertexPerPoly = 6;
 
 	//newer config
-	float cellWidth = 1.f;
+	float cellWidth = 20.250f;
 	float cellHeight = 5.f;
 	
 	float sampleDistance = 6;
@@ -160,6 +168,8 @@ private:
 
 	//navigation mesh properties
 	bool meshGenerated = false;
+	bool renderMesh = false;
+	const char* objectName = "";
 
 	enum DrawMode
 	{

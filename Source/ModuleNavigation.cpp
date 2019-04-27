@@ -19,6 +19,7 @@
 
 #include "imgui.h"
 #include "SDL_opengl.h"
+#include "JSON.h"
 //#include "debugdraw.h"
 
 
@@ -46,8 +47,55 @@ ModuleNavigation::~ModuleNavigation()
 	RELEASE_ARRAY(normals);
 }
 
-void ModuleNavigation::cleanValues()
+bool ModuleNavigation::Init(JSON * config)
 {
+	JSON_value* nav = config->GetValue("navigation");
+	if (nav == nullptr) return true;
+
+	cellWidth = nav->GetFloat("Cellwidth");
+	meshGenerated = nav->GetUint("Generated", false);
+
+	return true;
+}
+void ModuleNavigation::SaveConfig(JSON * config)
+{
+	JSON_value* nav = config->CreateValue();
+
+	nav->AddFloat("Cellwidth", cellWidth);
+	nav->AddUint("Generated", meshGenerated);
+
+	config->AddValue("navigation", *nav);
+}
+
+void ModuleNavigation::sceneLoaded(JSON * config)
+{
+	JSON_value* nav = config->GetValue("navigationScene");
+	if (nav == nullptr) return;
+
+	renderMesh = nav->GetUint("RenderNavMesh", false);
+	const char* objectName = nav->GetString("NavigableObjectName");
+	if (objectName != nullptr)
+	{
+		GameObject* objToRender = App->scene->FindGameObjectByName(objectName);
+		if (objToRender != nullptr)
+		{
+			addNavigableMesh(objToRender);
+			generateNavigability(renderMesh);
+		}
+	}
+}
+void ModuleNavigation::sceneSaved(JSON * config)
+{
+	JSON_value* navigation = config->CreateValue();
+	navigation->AddString("NavigableObjectName", objectName);
+	navigation->AddUint("RenderNavMesh", renderMesh);
+
+	config->AddValue("navigationScene", *navigation);
+}
+
+void ModuleNavigation::cleanValuesPRE()
+{
+	nverts = 0; ntris = 0;
 	RELEASE_ARRAY(verts);
 	RELEASE_ARRAY(tris);
 	RELEASE_ARRAY(normals);
@@ -66,6 +114,13 @@ void ModuleNavigation::cleanValues()
 	dtFreeNavMesh(navMesh);
 	navMesh = 0;
 	//will need to free navquery, navmesh, crowd
+}
+
+void ModuleNavigation::cleanValuesPOST()
+{
+	meshboxes.clear();
+	meshComponents.clear();
+	transformComponents.clear();
 }
 
 void ModuleNavigation::DrawGUI()
@@ -149,7 +204,12 @@ void ModuleNavigation::DrawGUI()
 
 	if (meshComponents.size() > 0 && ImGui::Button("Generate navigability"))
 	{
-		generateNavigability();
+		generateNavigability(true);
+	}
+
+	if (meshGenerated && ImGui::Button("Toggle nav mesh rendering"))
+	{
+		renderMesh = !renderMesh;
 	}
 	
 	if (ImGui::CollapsingHeader("Detour"))
@@ -182,7 +242,18 @@ void ModuleNavigation::addNavigableMesh()
 	meshboxes.push_back(static_cast <const AABB*>(&App->scene->selected->bbox));
 	meshComponents.push_back(static_cast <const ComponentRenderer*>(App->scene->selected->GetComponent(ComponentType::Renderer)));
 	transformComponents.push_back(static_cast <const ComponentTransform*>(App->scene->selected->GetComponent(ComponentType::Transform)));
+
 	std::string s = App->scene->selected->name + " added to navigation";
+	LOG(s.c_str());
+	objectName = App->scene->selected->name.c_str();
+}
+
+void ModuleNavigation::addNavigableMesh(const GameObject* obj)
+{
+	meshboxes.push_back(static_cast <const AABB*>(&obj->bbox));
+	meshComponents.push_back(static_cast <const ComponentRenderer*>(obj->GetComponent(ComponentType::Renderer)));
+	transformComponents.push_back(static_cast <const ComponentTransform*>(obj->GetComponent(ComponentType::Transform)));
+	std::string s = obj->name + " added to navigation";
 	LOG(s.c_str());
 }
 
@@ -194,7 +265,7 @@ void ModuleNavigation::navigableObjectToggled(GameObject* obj, const bool newSta
 
 void ModuleNavigation::renderNavMesh()
 {
-	if (!meshGenerated)	return;
+	if (!meshGenerated || !renderMesh)	return;
 	//test process
 	for (int i = 0; i < navMesh->getMaxTiles(); ++i)
 	{
@@ -274,10 +345,10 @@ void ModuleNavigation::cleanUpNavValues()
 
 }
 
-void ModuleNavigation::generateNavigability()
+void ModuleNavigation::generateNavigability(bool render)
 {
 	//clean old info
-	cleanValues();
+	cleanValuesPRE();
 
 	pointsUpdated = true;
 
@@ -661,7 +732,9 @@ void ModuleNavigation::generateNavigability()
 		m_tool->init(this);
 	initToolStates(this);*/
 	meshGenerated = true;
+	renderMesh = render;
 	LOG("Navigation mesh generated");
+	cleanValuesPOST();
 
 	return;
 	
