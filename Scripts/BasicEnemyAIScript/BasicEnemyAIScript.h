@@ -25,6 +25,7 @@ enum class EnemyState
 
 class GameObject;
 class ComponentAnimation;
+class ComponentRenderer;
 class JSON_value;
 
 class BasicEnemyAIScript_API BasicEnemyAIScript : public Script
@@ -58,6 +59,7 @@ private:
 	GameObject* player = nullptr;
 	std::string playerName = "Player";
 	std::string playerBboxName = "PlayerMesh";
+	ComponentRenderer* myRender;
 	std::string myBboxName = "EnemyMesh";
 
 	// Wait variables
