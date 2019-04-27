@@ -265,7 +265,11 @@ void ModuleNavigation::navigableObjectToggled(GameObject* obj, const bool newSta
 
 void ModuleNavigation::renderNavMesh()
 {
-	if (!meshGenerated || !renderMesh)	return;
+	if (!meshGenerated || !renderMesh)
+	{
+		return;
+	}
+	assert(navMesh != nullptr);
 	//test process
 	for (int i = 0; i < navMesh->getMaxTiles(); ++i)
 	{

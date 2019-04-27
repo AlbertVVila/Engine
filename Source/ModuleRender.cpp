@@ -177,6 +177,7 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 	if (isEditor)
 	{
 		DrawGizmos(cam);
+		App->navigation->renderNavMesh();
 	}
 	App->scene->Draw(*cam.frustum, isEditor);
 
@@ -184,7 +185,6 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 	{
 		App->ui->Draw(width, height);
 	}
-	App->navigation->renderNavMesh();
 	
 }
 
