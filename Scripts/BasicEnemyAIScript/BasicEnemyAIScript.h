@@ -47,7 +47,6 @@ private:
 	void Attack();
 	void Cooldown();
 
-	void LookAtPlayer();
 	void MoveTowards(float speed) const;
 
 	void CheckStateChange(EnemyState previous, EnemyState newState);
