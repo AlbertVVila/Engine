@@ -8,25 +8,14 @@
 #endif
 
 #include "BaseScript.h"
-#include "Geometry/AABB.h"
 #include "Math/float3.h"
-
-enum class EnemyState
-{
-	WAIT,
-	STANDUP,
-	CHASE,
-	RETURN,
-	LAYDOWN,
-	ATTACK,
-	COOLDOWN,
-	DEAD
-};
 
 class GameObject;
 class ComponentAnimation;
 class ComponentRenderer;
+class EnemyControllerScript;
 class JSON_value;
+enum class EnemyState;
 
 class BasicEnemyAIScript_API BasicEnemyAIScript : public Script
 {
@@ -39,7 +28,6 @@ public:
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
 
-private:
 	void Wait();
 	void StandUp();
 	void Chase();
@@ -48,20 +36,14 @@ private:
 	void Attack();
 	void Cooldown();
 
+private:
 	void MoveTowards(float speed) const;
-
 	void CheckStateChange(EnemyState previous, EnemyState newState);
 
 public:
-	EnemyState enemyState = EnemyState::WAIT;
+
 
 private:
-	GameObject* player = nullptr;
-	std::string playerName = "Player";
-	std::string playerBboxName = "PlayerMesh";
-	ComponentRenderer* myRender;
-	std::string myBboxName = "EnemyMesh";
-
 	// Wait variables
 	float activationDistance = 100.0f;	// Distance to player needed to start chasing the player (only X,Z axis is taken into account)
 
@@ -80,14 +62,12 @@ private:
 	// Cooldown variables
 	float cooldownTime = 1.0f;			// Seconds to wait between attacks
 
-	// BBoxes
-	math::AABB* myBbox = nullptr;		
-	math::AABB* playerBbox = nullptr;
-
 	float auxTranslation = 0.0f;
 	float auxTimer = 0.0f;
 
 	ComponentAnimation* anim = nullptr;
+
+	EnemyControllerScript* enemyController;
 };
 
 #endif __BasicEnemyAIScript_h__
