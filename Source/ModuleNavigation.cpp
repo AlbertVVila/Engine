@@ -54,6 +54,7 @@ bool ModuleNavigation::Init(JSON * config)
 	if (nav == nullptr) return true;
 
 	cellWidth = nav->GetFloat("Cellwidth");
+	characterMaxStepHeightScaling = nav->GetFloat("StepHeight");
 	meshGenerated = nav->GetUint("Generated", false);
 
 	return true;
@@ -63,6 +64,8 @@ void ModuleNavigation::SaveConfig(JSON * config)
 	JSON_value* nav = config->CreateValue();
 
 	nav->AddFloat("Cellwidth", cellWidth);
+	nav->AddFloat("StepHeight", characterMaxStepHeightScaling);
+	
 	nav->AddUint("Generated", meshGenerated);
 
 	config->AddValue("navigation", *nav);
@@ -240,6 +243,7 @@ void ModuleNavigation::DrawGUI()
 
 void ModuleNavigation::addNavigableMesh()
 {
+	cleanValuesPOST();
 	meshboxes.push_back(static_cast <const AABB*>(&App->scene->selected->bbox));
 	meshComponents.push_back(static_cast <const ComponentRenderer*>(App->scene->selected->GetComponent(ComponentType::Renderer)));
 	transformComponents.push_back(static_cast <const ComponentTransform*>(App->scene->selected->GetComponent(ComponentType::Transform)));
@@ -251,6 +255,7 @@ void ModuleNavigation::addNavigableMesh()
 
 void ModuleNavigation::addNavigableMesh(const GameObject* obj)
 {
+	cleanValuesPOST();
 	meshboxes.push_back(static_cast <const AABB*>(&obj->bbox));
 	meshComponents.push_back(static_cast <const ComponentRenderer*>(obj->GetComponent(ComponentType::Renderer)));
 	transformComponents.push_back(static_cast <const ComponentTransform*>(obj->GetComponent(ComponentType::Transform)));
