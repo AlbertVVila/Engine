@@ -256,6 +256,7 @@ void ModuleNavigation::addNavigableMesh(const GameObject* obj)
 	transformComponents.push_back(static_cast <const ComponentTransform*>(obj->GetComponent(ComponentType::Transform)));
 	std::string s = obj->name + " added to navigation";
 	LOG(s.c_str());
+	objectName = obj->name.c_str();
 }
 
 void ModuleNavigation::navigableObjectToggled(GameObject* obj, const bool newState)
@@ -422,11 +423,15 @@ void ModuleNavigation::generateNavigability(bool render)
 	if (!heightField)
 	{
 		LOG("buildNavigation: Out of memory 'solid'.");
+		meshGenerated = false;
+		renderMesh = false;
 		return;
 	}
 	if (!rcCreateHeightfield(ctx, *heightField, cfg->width, cfg->height, cfg->bmin, cfg->bmax, cfg->cs, cfg->ch))
 	{
 		LOG("buildNavigation: Could not create solid heightfield.");
+		meshGenerated = false;
+		renderMesh = false;
 		return;
 	}
 
@@ -437,6 +442,8 @@ void ModuleNavigation::generateNavigability(bool render)
 	if (!m_triareas)
 	{
 		LOG("buildNavigation: Out of memory 'm_triareas' (%d).");
+		meshGenerated = false;
+		renderMesh = false;
 		return;
 	}
 
@@ -448,6 +455,8 @@ void ModuleNavigation::generateNavigability(bool render)
 	if (!rcRasterizeTriangles(ctx, verts, nverts, tris, m_triareas, ntris, *heightField, cfg->walkableClimb))
 	{
 		LOG("buildNavigation: Could not rasterize triangles.");
+		meshGenerated = false;
+		renderMesh = false;
 		return;
 	}
 
@@ -476,11 +485,15 @@ void ModuleNavigation::generateNavigability(bool render)
 	if (!chf)
 	{
 		LOG("buildNavigation: Out of memory 'chf'.");
+		meshGenerated = false;
+		renderMesh = false;
 		return;
 	}
 	if (!rcBuildCompactHeightfield(ctx, cfg->walkableHeight, cfg->walkableClimb, *heightField, *chf))
 	{
 		LOG("buildNavigation: Could not build compact data.");
+		meshGenerated = false;
+		renderMesh = false;
 		return;
 	}
 
@@ -494,6 +507,8 @@ void ModuleNavigation::generateNavigability(bool render)
 	if (!rcErodeWalkableArea(ctx, cfg->walkableRadius, *chf))
 	{
 		LOG("buildNavigation: Could not erode.");
+		meshGenerated = false;
+		renderMesh = false;
 		return;
 	}
 
@@ -534,6 +549,8 @@ void ModuleNavigation::generateNavigability(bool render)
 		if (!rcBuildDistanceField(ctx, *chf))//tocheck
 		{
 			LOG("buildNavigation: Could not build distance field.");
+			meshGenerated = false;
+			renderMesh = false;
 			return;
 		}
 		
@@ -541,6 +558,8 @@ void ModuleNavigation::generateNavigability(bool render)
 		if (!rcBuildRegions(ctx, *chf, 0, cfg->minRegionArea, cfg->mergeRegionArea))//tocheck
 		{
 			LOG("buildNavigation: Could not build watershed regions.");
+			meshGenerated = false;
+			renderMesh = false;
 			return;
 		}
 	}
@@ -551,6 +570,8 @@ void ModuleNavigation::generateNavigability(bool render)
 		if (!rcBuildRegionsMonotone(ctx, *chf, 0, cfg->minRegionArea, cfg->mergeRegionArea))
 		{
 			LOG("buildNavigation: Could not build monotone regions.");
+			meshGenerated = false;
+			renderMesh = false;
 			return;
 		}
 	}
@@ -560,6 +581,8 @@ void ModuleNavigation::generateNavigability(bool render)
 		if (!rcBuildLayerRegions(ctx, *chf, 0, cfg->minRegionArea))
 		{
 			LOG("buildNavigation: Could not build layer regions.");
+			meshGenerated = false;
+			renderMesh = false;
 			return;
 		}
 	}
@@ -573,11 +596,15 @@ void ModuleNavigation::generateNavigability(bool render)
 	if (!cset)
 	{
 		LOG("buildNavigation: Out of memory 'cset'.");
+		meshGenerated = false;
+		renderMesh = false;
 		return;
 	}
 	if (!rcBuildContours(ctx, *chf, cfg->maxSimplificationError, cfg->maxEdgeLen, *cset))
 	{
 		LOG("buildNavigation: Could not create contours.");
+		meshGenerated = false;
+		renderMesh = false;
 		return;
 	}
 	
@@ -591,11 +618,15 @@ void ModuleNavigation::generateNavigability(bool render)
 	if (!pmesh)
 	{
 		LOG("buildNavigation: Out of memory 'pmesh'.");
+		meshGenerated = false;
+		renderMesh = false;
 		return;
 	}
 	if (!rcBuildPolyMesh(ctx, *cset, cfg->maxVertsPerPoly, *pmesh))//gotta adapt this one to fill pmesh with the values
 	{
 		LOG("buildNavigation: Could not triangulate contours.");
+		meshGenerated = false;
+		renderMesh = false;
 		return;
 	}
 	
@@ -607,12 +638,16 @@ void ModuleNavigation::generateNavigability(bool render)
 	if (!dmesh)
 	{
 		LOG("buildNavigation: Out of memory 'pmdtl'.");
+		meshGenerated = false;
+		renderMesh = false;
 		return;
 	}
 
 	if (!rcBuildPolyMeshDetail(ctx, *pmesh, *chf, cfg->detailSampleDist, cfg->detailSampleMaxError, *dmesh))
 	{
 		LOG("buildNavigation: Could not build detail mesh.");
+		meshGenerated = false;
+		renderMesh = false;
 		return;
 	}
 
@@ -695,6 +730,8 @@ void ModuleNavigation::generateNavigability(bool render)
 		if (!dtCreateNavMeshData(&params, &navData, &navDataSize))
 		{
 			LOG("Could not build Detour navmesh");
+			meshGenerated = false;
+			renderMesh = false;
 			return;
 		}
 		
@@ -703,6 +740,8 @@ void ModuleNavigation::generateNavigability(bool render)
 		{
 			dtFree(navData);
 			LOG("Could not create Detour navmesh");
+			meshGenerated = false;
+			renderMesh = false;
 			return;
 		}
 		
@@ -713,6 +752,8 @@ void ModuleNavigation::generateNavigability(bool render)
 		{
 			dtFree(navData);
 			LOG("Could not init Detour navmesh");
+			meshGenerated = false;
+			renderMesh = false;
 			return;
 		}
 
@@ -720,6 +761,8 @@ void ModuleNavigation::generateNavigability(bool render)
 		if (dtStatusFailed(status))
 		{
 			LOG("Could not init Detour navmesh query");
+			meshGenerated = false;
+			renderMesh = false;
 			return;
 		}
 	}
