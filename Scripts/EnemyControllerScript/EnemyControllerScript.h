@@ -28,12 +28,14 @@ enum class EnemyState
 class EnemyControllerScript_API EnemyControllerScript : public Script
 {
 	void Start() override;
-	void Update() override;
 
 	void Expose(ImGuiContext* context) override;
 
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
+
+public:
+	void TakeDamage(unsigned damage);
 
 public:
 	GameObject* player = nullptr;
@@ -47,6 +49,9 @@ public:
 	math::AABB* playerBbox = nullptr;
 
 	EnemyState enemyState = EnemyState::WAIT;
+
+private:
+	int health = 100;
 };
 
 #endif __EnemyControllerScript_h__

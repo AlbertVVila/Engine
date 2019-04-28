@@ -28,6 +28,7 @@ public:
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
 
+private:
 	void Wait();
 	void StandUp();
 	void Chase();
@@ -35,13 +36,10 @@ public:
 	void Laydown();
 	void Attack();
 	void Cooldown();
+	void Die();
 
-private:
 	void MoveTowards(float speed) const;
 	void CheckStateChange(EnemyState previous, EnemyState newState);
-
-public:
-
 
 private:
 	// Wait variables
