@@ -24,6 +24,7 @@
 #include "ResourceMaterial.h"
 
 #include "MaterialEditor.h"
+#include "Viewport.h"
 
 #include "JSON.h"
 #include "myQuadTree.h"
@@ -1003,17 +1004,32 @@ void ModuleScene::Pick(float normalized_x, float normalized_y)
 	}
 }
 
-bool ModuleScene::Intersects(math::float3& closestPoint, const char* name)
+bool ModuleScene::Intersects(math::float3& closestPoint, const char* name, bool editor)
 {
-	ImVec2 pos = ImGui::GetWindowPos();
-	ImVec2 size = ImGui::GetWindowSize();
 
 	float2 mouse((float*)&App->input->GetMousePosition());
-	float normalized_x = ((mouse.x - pos.x) / size.x) * 2 - 1; //0 to 1 -> -1 to 1
-	float normalized_y = (1 - (mouse.y - pos.y) / size.y) * 2 - 1; //0 to 1 -> -1 to 1
+	LineSegment line;
 
-	
-	LineSegment line = App->camera->editorcamera->DrawRay(normalized_x, normalized_y);
+	float normalized_x, normalized_y;
+
+	if (editor)
+	{
+		math::float2 pos = App->renderer->viewScene->winPos;
+		math::float2 size(App->renderer->viewScene->current_width, App->renderer->viewScene->current_height);
+		normalized_x = ((mouse.x - pos.x) / size.x) * 2 - 1; //0 to 1 -> -1 to 1
+		normalized_y = (1 - (mouse.y - pos.y) / size.y) * 2 - 1; //0 to 1 -> -1 to 1
+
+		line = App->camera->editorcamera->DrawRay(normalized_x, normalized_y);
+	}
+	else
+	{
+		math::float2 pos = App->renderer->viewGame->winPos;
+		math::float2 size(App->renderer->viewGame->current_width, App->renderer->viewGame->current_height);
+		normalized_x = ((mouse.x - pos.x) / size.x) * 2 - 1; //0 to 1 -> -1 to 1
+		normalized_y = (1 - (mouse.y - pos.y) / size.y) * 2 - 1; //0 to 1 -> -1 to 1
+
+		line = App->scene->maincamera->DrawRay(normalized_x, normalized_y);
+	}
 	debuglines.push_back(line);
 	std::list<std::pair<float, GameObject*>> GOs = GetStaticIntersections(line);
 	std::list<std::pair<float, GameObject*>> dGOs = GetDynamicIntersections(line);

@@ -3,16 +3,8 @@
 
 #include "Module.h"
 
-#include "Recast/Recast.h"
-#include "Recast/Detour/DetourNavMesh.h"
-#include "debugdraw.h"
-
 #include <vector>
-
-//#include <stdio.h>
-#include <cstddef>
-
-
+#include "Math/float3.h"
 
 #define MAX_PATH 1024
 #define MAX_POLYS 256
@@ -37,6 +29,11 @@ class rcPolyMeshDetail;
 //from detour
 class dtNavMesh;
 class dtNavMeshQuery;
+
+namespace dd
+{
+	union DrawVertex;
+}
 
 /// These are just sample areas to use consistent values across the samples.
 /// The use should specify these base on his needs.
@@ -72,6 +69,7 @@ enum class PathFindType
 	STRAIGHT
 };
 
+
 class ModuleNavigation :
 	public Module
 {
@@ -93,7 +91,7 @@ public:
 	void cleanValuesPOST();
 
 
-	bool FindPath(math::float3 start, math::float3 end, std::vector<math::float3> &path, PathFindType type = PathFindType::FOLLOW) const;
+	ENGINE_API bool FindPath(math::float3 start, math::float3 end, std::vector<math::float3> &path, PathFindType type = PathFindType::FOLLOW) const;
 	void RecalcPath(math::float3 point);
 
 	//variables
@@ -120,12 +118,10 @@ private:
 	void fillNormals();
 	void fillDrawPoints();
 
-	void cleanUpNavValues();
-
 	bool getSteerTarget(dtNavMeshQuery * navQuery, const float * startPos,
 		const float * endPos, const float minTargetDist, 
-		const dtPolyRef * path, const int pathSize, 
-		float * steerPos, unsigned char & steerPosFlag, dtPolyRef & steerPosRef, 
+		const unsigned * path, const int pathSize, 
+		float * steerPos, unsigned char & steerPosFlag, unsigned & steerPosRef,
 		float * outPoints, int * outPointCount) const;
 
 	bool inRange(const float * v1, const float * v2, const float r, const float h) const;
@@ -211,7 +207,7 @@ private:
 	std::vector < const ComponentRenderer*> meshComponents;
 	std::vector < const ComponentTransform*> transformComponents;
 
-	rcConfig cfg;
+	rcConfig* cfg = nullptr;
 	rcContext* ctx = nullptr;
 	rcCompactHeightfield* chf = nullptr;
 	rcHeightfield* heightField = nullptr;
@@ -250,4 +246,4 @@ private:
 
 };
 
-#endif
+#endif __MODULENAVIGATION_H__

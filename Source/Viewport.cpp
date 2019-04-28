@@ -386,7 +386,7 @@ void Viewport::DebugNavigate() const
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_DOWN && ImGui::IsWindowFocused && ImGui::IsMouseHoveringWindow())
 	{
 		math::float3 intersectionPoint = math::float3::inf;
-		if (App->scene->Intersects(intersectionPoint, "floor"))
+		if (App->scene->Intersects(intersectionPoint, "floor", true))
 		{
 			App->navigation->RecalcPath(intersectionPoint);
 		}

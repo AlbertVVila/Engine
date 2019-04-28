@@ -478,6 +478,7 @@
     <ClCompile Include="PanelNavigation.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
+    <ClCompile Include="DetourDebugInterface.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -1069,6 +1070,7 @@
     <ClInclude Include="PanelNavigation.h">
       <Filter>Panels</Filter>
     </ClInclude>
+    <ClInclude Include="DetourDebugInterface.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GeoLib">

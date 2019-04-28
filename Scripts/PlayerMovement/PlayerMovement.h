@@ -6,6 +6,7 @@ class JSON_value;
 struct ImGuiContext;
 #include "BaseScript.h"
 #include "Math/float3.h"
+#include <vector>
 
 #ifdef PlayerMovement_EXPORTS
 #define PlayerMovement_API __declspec(dllexport)
@@ -28,5 +29,7 @@ public:
 	float3 currentPosition = float3(0, 0, 0); //TODO ZERO
 private:
 	float speed = 2.0f;
+	std::vector<float3>path;
+
 };
 #endif __PlayerMovement_h__

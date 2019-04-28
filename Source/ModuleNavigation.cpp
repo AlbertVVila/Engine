@@ -20,18 +20,18 @@
 #include "imgui.h"
 #include "SDL_opengl.h"
 #include "JSON.h"
-//#include "debugdraw.h"
+#include "debugdraw.h"
 
 
-#include "Recast/Recast/Recast.h"
-#include "Recast/Detour/DetourNavMesh.h"
-#include "Recast/Detour/DetourNavMeshBuilder.h"
-#include "Recast/Detour/DetourNavMeshQuery.h"
-#include "Recast/Detour/DetourCommon.h"
-#include "Recast/DebugUtils/RecastDebugDraw.h"
-#include "Recast/DebugUtils/DetourDebugDraw.h"
-#include "Recast/DebugUtils/DebugDraw.h"
-#include "debug_draw.hpp"
+#include "Recast/Recast.h"
+#include "Detour/DetourNavMesh.h"
+#include "Detour/DetourNavMeshBuilder.h"
+#include "Detour/DetourNavMeshQuery.h"
+#include "Detour/DetourCommon.h"
+#include "DebugUtils/RecastDebugDraw.h"
+#include "DebugUtils/DetourDebugDraw.h"
+#include "DebugUtils/DebugDraw.h"
+#include "DetourDebugInterface.h"
 
 
 ModuleNavigation::ModuleNavigation()
@@ -114,7 +114,7 @@ void ModuleNavigation::cleanValuesPRE()
 	dmesh = 0;
 	dtFreeNavMesh(navMesh);
 	navMesh = 0;
-	//will need to free navquery, navmesh, crowd
+	//TODO: free navquery, navmesh, crowd, rcconfig, rccontext
 }
 
 void ModuleNavigation::cleanValuesPOST()
@@ -271,41 +271,44 @@ void ModuleNavigation::renderNavMesh()
 		return;
 	}
 	assert(navMesh != nullptr);
+
 	//test process
-	for (int i = 0; i < navMesh->getMaxTiles(); ++i)
-	{
-		const dtMeshTile* tile = navMesh->getTile(i);
-		if (!tile->header) continue;
+	//for (int i = 0; i < navMesh->getMaxTiles(); ++i)
+	//{
+	//	const dtMeshTile* tile = navMesh->getTile(i);
+	//	if (!tile->header) continue;
 
-		//drawing process
-		dtPolyRef base = navMesh->getPolyRefBase(tile);
-		for (int i = 0; i < tile->header->polyCount; ++i)
-		{
-			const dtPoly* p = &tile->polys[i];
-			if (p->getType() == DT_POLYTYPE_OFFMESH_CONNECTION)	// Skip off-mesh links.
-				continue;
+	//	//drawing process
+	//	dtPolyRef base = navMesh->getPolyRefBase(tile);
+	//	for (int i = 0; i < tile->header->polyCount; ++i)
+	//	{
+	//		const dtPoly* p = &tile->polys[i];
+	//		if (p->getType() == DT_POLYTYPE_OFFMESH_CONNECTION)	// Skip off-mesh links.
+	//			continue;
 
-			const dtPolyDetail* pd = &tile->detailMeshes[i];
+	//		const dtPolyDetail* pd = &tile->detailMeshes[i];
 
-			for (int j = 0; j < pd->triCount; ++j)
-			{
-				const unsigned char* t = &tile->detailTris[(pd->triBase + j) * 4];
-				for (int k = 0; k < 3; ++k)
-				{
-					if (t[k] < p->vertCount)
-						dd::point(ddVec3(tile->verts[p->verts[t[k]] * 3],
-							tile->verts[p->verts[t[k]] * 3 + 1],
-							tile->verts[p->verts[t[k]] * 3 + 2]), ddVec3(0, 1, 0.8), 5.0f);
+	//		for (int j = 0; j < pd->triCount; ++j)
+	//		{
+	//			const unsigned char* t = &tile->detailTris[(pd->triBase + j) * 4];
+	//			for (int k = 0; k < 3; ++k)
+	//			{
+	//				if (t[k] < p->vertCount)
+	//					dd::point(ddVec3(tile->verts[p->verts[t[k]] * 3],
+	//						tile->verts[p->verts[t[k]] * 3 + 1],
+	//						tile->verts[p->verts[t[k]] * 3 + 2]), ddVec3(0, 1, 0.8), 5.0f);
 
-					else
-						dd::point(ddVec3(tile->detailVerts[(pd->vertBase + t[k] - p->vertCount) * 3],
-							tile->detailVerts[(pd->vertBase + t[k] - p->vertCount) * 3 + 1],
-							tile->detailVerts[(pd->vertBase + t[k] - p->vertCount) * 3 + 2]), ddVec3(1, 0, 0.5), 10.0f);
-				}
-			}
-		}
+	//				else
+	//					dd::point(ddVec3(tile->detailVerts[(pd->vertBase + t[k] - p->vertCount) * 3],
+	//						tile->detailVerts[(pd->vertBase + t[k] - p->vertCount) * 3 + 1],
+	//						tile->detailVerts[(pd->vertBase + t[k] - p->vertCount) * 3 + 2]), ddVec3(1, 0, 0.5), 10.0f);
+	//			}
+	//		}
+	//	}
 
-	}
+	//}
+	DetourDebugInterface m_dd;
+	duDebugDrawNavMeshWithClosedList(&m_dd, *navMesh, *navQuery, '\x3');
 
 	if (start != math::float3::inf)
 	{
@@ -345,11 +348,6 @@ void ModuleNavigation::removeNavMesh(unsigned ID)
 	}
 }
 
-void ModuleNavigation::cleanUpNavValues()
-{
-
-}
-
 void ModuleNavigation::generateNavigability(bool render)
 {
 	//clean old info
@@ -385,28 +383,29 @@ void ModuleNavigation::generateNavigability(bool render)
 	fillNormals();
 
 	//step 1. Initialize build config.
-	memset(&cfg, 0, sizeof(cfg));
+	cfg = new rcConfig();
+	memset(cfg, 0, sizeof(*cfg));
 
-	cfg.cs = cellWidth;
-	cfg.ch = cellHeight;
-	cfg.walkableSlopeAngle = maxSlopeValue;
-	cfg.walkableHeight = (int)ceilf(characterMaxHeight / cfg.ch);
-	cfg.walkableClimb = (int)floorf(characterMaxStepHeightScaling / cfg.ch);
-	cfg.walkableRadius = (int)ceilf(characterMaxRadius / cfg.cs);
-	cfg.maxEdgeLen = (int)(edgeMaxLength / cellWidth);
-	cfg.maxSimplificationError = edgeMaxError;
-	cfg.minRegionArea = (int)rcSqr(minRegionSize);		// Note: area = size*size
-	cfg.mergeRegionArea = (int)rcSqr(mergedRegionSize);	// Note: area = size*size
-	cfg.maxVertsPerPoly = (int)vertexPerPoly;
-	cfg.detailSampleDist = sampleDistance < 0.9f ? 0 : cellWidth * sampleDistance;
-	cfg.detailSampleMaxError = cellHeight * sampleMaxError;
+	cfg->cs = cellWidth;
+	cfg->ch = cellHeight;
+	cfg->walkableSlopeAngle = maxSlopeValue;
+	cfg->walkableHeight = (int)ceilf(characterMaxHeight / cfg->ch);
+	cfg->walkableClimb = (int)floorf(characterMaxStepHeightScaling / cfg->ch);
+	cfg->walkableRadius = (int)ceilf(characterMaxRadius / cfg->cs);
+	cfg->maxEdgeLen = (int)(edgeMaxLength / cellWidth);
+	cfg->maxSimplificationError = edgeMaxError;
+	cfg->minRegionArea = (int)rcSqr(minRegionSize);		// Note: area = size*size
+	cfg->mergeRegionArea = (int)rcSqr(mergedRegionSize);	// Note: area = size*size
+	cfg->maxVertsPerPoly = (int)vertexPerPoly;
+	cfg->detailSampleDist = sampleDistance < 0.9f ? 0 : cellWidth * sampleDistance;
+	cfg->detailSampleMaxError = cellHeight * sampleMaxError;
 
 	// Set the area where the navigation will be build.
 	// Here the bounds of the input mesh are used, but the
 	// area could be specified by an user defined box, etc.
-	rcVcopy(cfg.bmin, bmin);
-	rcVcopy(cfg.bmax, bmax);
-	rcCalcGridSize(cfg.bmin, cfg.bmax, cfg.cs, &cfg.width, &cfg.height);
+	rcVcopy(cfg->bmin, bmin);
+	rcVcopy(cfg->bmax, bmax);
+	rcCalcGridSize(cfg->bmin, cfg->bmax, cfg->cs, &cfg->width, &cfg->height);
 
 	// Reset build times gathering.
 	//ctx->resetTimers();
@@ -425,7 +424,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Out of memory 'solid'.");
 		return;
 	}
-	if (!rcCreateHeightfield(ctx, *heightField, cfg.width, cfg.height, cfg.bmin, cfg.bmax, cfg.cs, cfg.ch))
+	if (!rcCreateHeightfield(ctx, *heightField, cfg->width, cfg->height, cfg->bmin, cfg->bmax, cfg->cs, cfg->ch))
 	{
 		LOG("buildNavigation: Could not create solid heightfield.");
 		return;
@@ -445,8 +444,8 @@ void ModuleNavigation::generateNavigability(bool render)
 	// If your input data is multiple meshes, you can transform them here, calculate
 	// the are type for each of the meshes and rasterize them.
 	memset(m_triareas, 0, ntris * sizeof(unsigned char));
-	rcMarkWalkableTriangles(ctx, cfg.walkableSlopeAngle, verts, nverts, tris, ntris, m_triareas);//we have more verts than tris, may not be right
-	if (!rcRasterizeTriangles(ctx, verts, nverts, tris, m_triareas, ntris, *heightField, cfg.walkableClimb))
+	rcMarkWalkableTriangles(ctx, cfg->walkableSlopeAngle, verts, nverts, tris, ntris, m_triareas);//we have more verts than tris, may not be right
+	if (!rcRasterizeTriangles(ctx, verts, nverts, tris, m_triareas, ntris, *heightField, cfg->walkableClimb))
 	{
 		LOG("buildNavigation: Could not rasterize triangles.");
 		return;
@@ -463,11 +462,11 @@ void ModuleNavigation::generateNavigability(bool render)
 	// remove unwanted overhangs caused by the conservative rasterization
 	// as well as filter spans where the character cannot possibly stand.
 	if (filterLowHangingObstacles)
-		rcFilterLowHangingWalkableObstacles(ctx, cfg.walkableClimb, *heightField);
+		rcFilterLowHangingWalkableObstacles(ctx, cfg->walkableClimb, *heightField);
 	if (filterLedgeSpans)
-		rcFilterLedgeSpans(ctx, cfg.walkableHeight, cfg.walkableClimb, *heightField);//a little too complex
+		rcFilterLedgeSpans(ctx, cfg->walkableHeight, cfg->walkableClimb, *heightField);//a little too complex
 	if (filterWalkableLowHeightSpans)
-		rcFilterWalkableLowHeightSpans(ctx, cfg.walkableHeight, *heightField);
+		rcFilterWalkableLowHeightSpans(ctx, cfg->walkableHeight, *heightField);
 
 	// Step 4. Partition walkable surface to simple regions.
 	// Compact the heightfield so that it is faster to handle from now on.
@@ -479,7 +478,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Out of memory 'chf'.");
 		return;
 	}
-	if (!rcBuildCompactHeightfield(ctx, cfg.walkableHeight, cfg.walkableClimb, *heightField, *chf))
+	if (!rcBuildCompactHeightfield(ctx, cfg->walkableHeight, cfg->walkableClimb, *heightField, *chf))
 	{
 		LOG("buildNavigation: Could not build compact data.");
 		return;
@@ -492,7 +491,7 @@ void ModuleNavigation::generateNavigability(bool render)
 	}
 
 	// Erode the walkable area by agent radius.
-	if (!rcErodeWalkableArea(ctx, cfg.walkableRadius, *chf))
+	if (!rcErodeWalkableArea(ctx, cfg->walkableRadius, *chf))
 	{
 		LOG("buildNavigation: Could not erode.");
 		return;
@@ -539,7 +538,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		}
 		
 		// Partition the walkable surface into simple regions without holes.
-		if (!rcBuildRegions(ctx, *chf, 0, cfg.minRegionArea, cfg.mergeRegionArea))//tocheck
+		if (!rcBuildRegions(ctx, *chf, 0, cfg->minRegionArea, cfg->mergeRegionArea))//tocheck
 		{
 			LOG("buildNavigation: Could not build watershed regions.");
 			return;
@@ -549,7 +548,7 @@ void ModuleNavigation::generateNavigability(bool render)
 	{
 		// Partition the walkable surface into simple regions without holes.
 		// Monotone partitioning does not need distancefield.
-		if (!rcBuildRegionsMonotone(ctx, *chf, 0, cfg.minRegionArea, cfg.mergeRegionArea))
+		if (!rcBuildRegionsMonotone(ctx, *chf, 0, cfg->minRegionArea, cfg->mergeRegionArea))
 		{
 			LOG("buildNavigation: Could not build monotone regions.");
 			return;
@@ -558,7 +557,7 @@ void ModuleNavigation::generateNavigability(bool render)
 	else // SAMPLE_PARTITION_LAYERS
 	{
 		// Partition the walkable surface into simple regions without holes.
-		if (!rcBuildLayerRegions(ctx, *chf, 0, cfg.minRegionArea))
+		if (!rcBuildLayerRegions(ctx, *chf, 0, cfg->minRegionArea))
 		{
 			LOG("buildNavigation: Could not build layer regions.");
 			return;
@@ -576,7 +575,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Out of memory 'cset'.");
 		return;
 	}
-	if (!rcBuildContours(ctx, *chf, cfg.maxSimplificationError, cfg.maxEdgeLen, *cset))
+	if (!rcBuildContours(ctx, *chf, cfg->maxSimplificationError, cfg->maxEdgeLen, *cset))
 	{
 		LOG("buildNavigation: Could not create contours.");
 		return;
@@ -594,7 +593,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Out of memory 'pmesh'.");
 		return;
 	}
-	if (!rcBuildPolyMesh(ctx, *cset, cfg.maxVertsPerPoly, *pmesh))//gotta adapt this one to fill pmesh with the values
+	if (!rcBuildPolyMesh(ctx, *cset, cfg->maxVertsPerPoly, *pmesh))//gotta adapt this one to fill pmesh with the values
 	{
 		LOG("buildNavigation: Could not triangulate contours.");
 		return;
@@ -611,7 +610,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		return;
 	}
 
-	if (!rcBuildPolyMeshDetail(ctx, *pmesh, *chf, cfg.detailSampleDist, cfg.detailSampleMaxError, *dmesh))
+	if (!rcBuildPolyMeshDetail(ctx, *pmesh, *chf, cfg->detailSampleDist, cfg->detailSampleMaxError, *dmesh))
 	{
 		LOG("buildNavigation: Could not build detail mesh.");
 		return;
@@ -634,7 +633,7 @@ void ModuleNavigation::generateNavigability(bool render)
 	
 	// The GUI may allow more max points per polygon than Detour can handle.
 	// Only build the detour navmesh if we do not exceed the limit.
-	if (cfg.maxVertsPerPoly <= DT_VERTS_PER_POLYGON)
+	if (cfg->maxVertsPerPoly <= DT_VERTS_PER_POLYGON)
 	{
 		unsigned char* navData = 0;
 		int navDataSize = 0;
@@ -689,8 +688,8 @@ void ModuleNavigation::generateNavigability(bool render)
 		params.walkableClimb = characterMaxStepHeightScaling;
 		rcVcopy(params.bmin, pmesh->bmin);
 		rcVcopy(params.bmax, pmesh->bmax);
-		params.cs = cfg.cs;
-		params.ch = cfg.ch;
+		params.cs = cfg->cs;
+		params.ch = cfg->ch;
 		params.buildBvTree = true;
 		
 		if (!dtCreateNavMeshData(&params, &navData, &navDataSize))

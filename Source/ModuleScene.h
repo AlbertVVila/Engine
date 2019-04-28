@@ -82,7 +82,7 @@ public:
 	void Select(GameObject* gameobject);
 	void UnSelect();
 	void Pick(float normalized_x, float normalized_y);
-	bool Intersects(math::float3& closestPoint, const char* name);
+	ENGINE_API bool Intersects(math::float3& closestPoint, const char* name, bool editor = false);
 
 	GameObject* FindClosestParent(GameObject* go);
 
