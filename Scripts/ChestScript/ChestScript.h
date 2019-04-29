@@ -11,6 +11,9 @@
 #define ChestScript_API __declspec(dllimport)
 #endif
 
+class GameObject;
+class ComponentRenderer;
+
 class ChestScript_API ChestScript : public Script
 {
 	void Start() override;
@@ -25,11 +28,19 @@ private:
 	GameObject* player = nullptr;
 	std::string playerName = "Player";
 	std::string playerBboxName = "PlayerMesh";
-	std::string myBboxName = "NPCMesh";
+	std::string myBboxName = "ChestMesh";
+
+	ComponentRenderer* myRender;
 
 	// BBoxes
 	math::AABB* myBbox = nullptr;
 	math::AABB* playerBbox = nullptr;
+
+	// GO to spawn
+	std::string spawnGOName = "SpawnableGO";
+	GameObject* spawnGO = nullptr;
+
+	bool opened = false; // Is the chest already opened?
 };
 
 #endif __ChestScript_h__
