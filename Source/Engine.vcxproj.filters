@@ -291,10 +291,19 @@
     <ClCompile Include="ComponentAudioSource.cpp">
       <Filter>Component</Filter>
     </ClCompile>
+    <ClCompile Include="ComponentParticles.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
     <ClCompile Include="ComponentReverbZone.cpp">
       <Filter>Component</Filter>
     </ClCompile>
+    <ClCompile Include="ComponentTrail.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
     <ClCompile Include="ModuleAudioManager.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleParticles.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="Soloud\fractal_includes\soloud.cpp">
@@ -868,6 +877,7 @@
     <ClInclude Include="Viewport.h">
       <Filter>Panels</Filter>
     </ClInclude>
+    <ClInclude Include="ImGUICurveUtils.h" />
     <ClInclude Include="NodeEditor\Include\ax\Math2D.h" />
     <ClInclude Include="NodeEditor\Source\Editor.h" />
     <ClInclude Include="NodeEditor\Source\Interop.h" />
@@ -880,10 +890,19 @@
     <ClInclude Include="ComponentAudioSource.h">
       <Filter>Component</Filter>
     </ClInclude>
+    <ClInclude Include="ComponentParticles.h">
+      <Filter>Component</Filter>
+    </ClInclude>
     <ClInclude Include="ComponentReverbZone.h">
       <Filter>Component</Filter>
     </ClInclude>
+    <ClInclude Include="ComponentTrail.h">
+      <Filter>Component</Filter>
+    </ClInclude>
     <ClInclude Include="ModuleAudioManager.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleParticles.h">
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="Soloud\fractal_includes\soloud.h">
@@ -1157,6 +1176,30 @@
       <Filter>ScriptingResources</Filter>
     </None>
     <None Include="NodeEditor\Include\ax\Math2D.inl" />
+    <None Include="..\Game\Shaders\FragmentShaders\Particles.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\VertexShaders\Particles.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\FragmentShaders\Shadows.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\VertexShaders\Shadows.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\FragmentShaders\Skybox.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\VertexShaders\Skybox.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\FragmentShaders\Trail.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\VertexShaders\Trail.vs">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Engine.rc">

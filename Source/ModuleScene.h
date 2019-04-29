@@ -69,6 +69,7 @@ public:
 	unsigned SaveParShapesMesh(const par_shapes_mesh_s & mesh, char** data) const;
 
 	void SaveScene(const GameObject &rootGO, const char* scene, const char* scenePath, bool isTemporary = false);
+	void AssignNewUUID(GameObject* go, unsigned UID);
 	void TakePhoto();
 	void TakePhoto(std::list<GameObject*>& target);
 	void RestorePhoto(GameObject* photo);
@@ -100,8 +101,6 @@ private:
 	std::list<std::pair<float, GameObject*>>GetDynamicIntersections(const LineSegment& line) const;
 	std::list<std::pair<float, GameObject*>>GetStaticIntersections(const LineSegment& line) const;
 	unsigned primitivesUID[NBPRIMITIVES] = {0};
-	std::unordered_set<GameObject*> dynamicFilteredGOs;
-	std::unordered_set<GameObject*> staticFilteredGOs;
 
 	std::list<GameObject*> scenePhotos;
 	std::list<GameObject*> scenePhotosUndoed;
@@ -118,6 +117,8 @@ public:
 	myQuadTree * quadtree = nullptr;
 	std::set<GameObject*> dynamicGOs;
 	std::set<GameObject*> staticGOs;
+	std::unordered_set<GameObject*> dynamicFilteredGOs;
+	std::unordered_set<GameObject*> staticFilteredGOs;
 	pcg32 uuid_rng;
 	std::string name;
 	std::string path;
@@ -129,6 +130,10 @@ public:
 	int SceneSize = 10000;
 
 	GameObject* canvas = nullptr;
+
+	bool loadScene = false;
+	std::string sceneName = "";
+	int actionAfterLoad = -1;
 };
 
 

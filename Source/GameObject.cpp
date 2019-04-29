@@ -9,6 +9,7 @@
 #include "ModuleTextures.h"
 #include "ModuleRender.h"
 #include "ModuleSpacePartitioning.h"
+#include "ModuleAudioManager.h"
 #include "ModuleNavigation.h"
 
 #include "Component.h"
@@ -22,6 +23,8 @@
 #include "ComponentButton.h"
 #include "ComponentAnimation.h"
 #include "ComponentScript.h"
+#include "ComponentParticles.h"
+#include "ComponentTrail.h"
 #include "ComponentAudioListener.h"
 #include "ComponentAudioSource.h"
 #include "ComponentReverbZone.h"
@@ -54,7 +57,7 @@ GameObject::GameObject(const char * name, unsigned uuid) : name(name), UUID(uuid
 
 GameObject::GameObject(const float4x4 & transform, const char * name, unsigned uuid) : name(name), UUID(uuid)
 {
-	this->transform =  (ComponentTransform*) CreateComponent(ComponentType::Transform);
+	this->transform = (ComponentTransform*)CreateComponent(ComponentType::Transform);
 	this->transform->AddTransform(transform);
 }
 
@@ -68,6 +71,7 @@ GameObject::GameObject(const GameObject & gameobject)
 	activeSelf = gameobject.activeSelf;
 	isVolumetric = gameobject.isVolumetric;
 	hasLight = gameobject.hasLight;
+	isBoneRoot = gameobject.isBoneRoot;
 
 	assert(!(isVolumetric && hasLight));
 	bbox = gameobject.bbox;
@@ -75,7 +79,7 @@ GameObject::GameObject(const GameObject & gameobject)
 	walkable = gameobject.walkable;
 	noWalkable = gameobject.noWalkable;
 
-	for (const auto& component: gameobject.components)
+	for (const auto& component : gameobject.components)
 	{
 		Component *componentcopy = component->Clone();
 		componentcopy->gameobject = this;
@@ -92,16 +96,10 @@ GameObject::GameObject(const GameObject & gameobject)
 			((ComponentButton*)componentcopy)->pressedImage->gameobject = this;
 			((ComponentButton*)componentcopy)->rectTransform->gameobject = this;
 		}
-		if (componentcopy->type == ComponentType::Light)
-		{
-			light = (ComponentLight*)componentcopy;
-			App->spacePartitioning->aabbTreeLighting.InsertGO(this);
-			App->scene->lights.push_back(light);
-		}
 	}
 	if (!App->scene->photoEnabled)
 	{
-		if (GetComponent(ComponentType::Renderer) != nullptr)
+		if (GetComponent(ComponentType::Renderer) != nullptr || GetComponent(ComponentType::Light) != nullptr)
 		{
 			App->scene->AddToSpacePartition(this);
 		}
@@ -140,7 +138,7 @@ void GameObject::DrawProperties()
 	strcpy(go_name, name.c_str());
 	ImGui::InputText("Name", go_name, MAX_NAME);
 	name = go_name;
-	delete[] go_name;
+	//delete[] go_name;
 
 	if (this != App->scene->root)
 	{
@@ -210,14 +208,28 @@ void GameObject::Update()
 {
 	if (!isActive()) return;
 
-	for (auto& component: components)
+	for (auto& component : components)
 	{
 		if (component->enabled)
 		{
 			component->Update();
 		}
-
 	}
+	//TESTING
+	//---------------------------------------------
+	/*if (isBoneRoot)
+	{
+		ComponentAnimation* compAnim = (ComponentAnimation*)GetComponent(ComponentType::Animation);
+		if (App->input->GetKey(SDL_SCANCODE_X))
+		{
+			compAnim->SendTriggerToStateMachine("faster");
+		}
+		if (App->input->GetKey(SDL_SCANCODE_C))
+		{
+			compAnim->SendTriggerToStateMachine("slower");
+		}
+	}*/
+	//---------------------------------------------
 
 	for (const auto& child : children)
 	{
@@ -242,7 +254,7 @@ void GameObject::Update()
 void GameObject::SetActive(bool active)
 {
 	activeSelf = active;
-	for(auto& child : children)
+	for (auto& child : children)
 	{
 		child->activeInHierarchy = active;
 	}
@@ -264,7 +276,7 @@ Component* GameObject::CreateComponent(ComponentType type)
 		}
 		else
 		{
-			LOG("Light + Renderer combination not allowed");			
+			LOG("Light + Renderer combination not allowed");
 		}
 		break;
 	case ComponentType::Light:
@@ -315,14 +327,28 @@ Component* GameObject::CreateComponent(ComponentType type)
 	case ComponentType::Script:
 		component = new ComponentScript(this);
 		break;
+	case ComponentType::Particles:
+		component = new ComponentParticles(this);
+		break;
+	case ComponentType::Trail:
+		component = new ComponentTrail(this);
+		break;
 	case ComponentType::AudioSource:
 		component = new ComponentAudioSource(this);
 		break;
 	case ComponentType::AudioListener:
 		component = new ComponentAudioListener(this);
+		App->audioManager->audioListeners.push_back((ComponentAudioListener*)component);
+		if (App->audioManager->audioListeners.size() == 1)
+		{
+			App->audioManager->mainListener = (ComponentAudioListener*)component;
+			App->audioManager->mainListener->isMainListener = true; 
+		}
 		break;
 	case ComponentType::ReverbZone:
 		component = new ComponentReverbZone(this);
+		App->audioManager->reverbZones.push_back((ComponentReverbZone*)component);
+
 		break;
 	default:
 		break;
@@ -459,7 +485,7 @@ ENGINE_API Component * GameObject::GetComponentInChildren(ComponentType type) co
 	{
 		const GameObject* go = GOs.top();
 		GOs.pop();
-		
+
 		Component* component = go->GetComponent(type);
 		if (component != nullptr) return component;
 
@@ -477,7 +503,7 @@ void GameObject::UpdateGlobalTransform() //Updates global transform when moving
 	if (parent != nullptr)
 	{
 		mytransform = parent->GetGlobalTransform() * mytransform;
-		if(transform != nullptr)
+		if (transform != nullptr)
 		{
 			transform->global = mytransform;
 		}
@@ -510,8 +536,13 @@ void GameObject::SetGlobalTransform(const float4x4 & global) //Replaces global t
 				go->UpdateGlobalTransform();
 			}
 		}
+
+		for (GameObject* go : children)
+		{
+			go->movedFlag = true;
+		}
 	}
-	
+
 }
 
 float4x4 GameObject::GetGlobalTransform() const
@@ -523,7 +554,7 @@ float4x4 GameObject::GetGlobalTransform() const
 
 float4x4 GameObject::GetLocalTransform() const
 {
-	if (transform != nullptr) 
+	if (transform != nullptr)
 		return transform->local;
 	return float4x4::identity;
 }
@@ -538,6 +569,11 @@ void GameObject::SetLightUniforms(unsigned shader) const
 {
 	std::unordered_set<GameObject*> lights;
 	App->spacePartitioning->aabbTreeLighting.GetIntersections(bbox, lights);
+	if (App->renderer->directionalLight)
+	{
+		lights.insert(App->renderer->directionalLight->gameobject);
+	}
+
 	unsigned directionals = 0u;
 	unsigned points = 0u;
 	unsigned spots = 0u;
@@ -551,21 +587,24 @@ void GameObject::SetLightUniforms(unsigned shader) const
 		switch (go->light->lightType)
 		{
 		case LightType::DIRECTIONAL:
-			memset(buffer, 0, 32);
-			sprintf(buffer, "lights.directional[%d].direction", directionals);
-			glUniform3fv(glGetUniformLocation(shader,
-				buffer), 1, (GLfloat*)&go->light->direction);
-			
-			memset(buffer, 0, 32);
-			sprintf(buffer, "lights.directional[%d].color", directionals);
-			glUniform3fv(glGetUniformLocation(shader,
-				buffer), 1, (GLfloat*)&go->light->color);
+			if (directionals == 0u)
+			{
+				memset(buffer, 0, 32);
+				sprintf(buffer, "lights.directional[%d].direction", directionals);
+				glUniform3fv(glGetUniformLocation(shader,
+					buffer), 1, (GLfloat*)&go->light->direction);
 
-			memset(buffer, 0, 32);
-			sprintf(buffer, "lights.directional[%d].intensity", points);
-			glUniform1f(glGetUniformLocation(shader,
-				buffer), go->light->intensity);
-			++directionals;
+				memset(buffer, 0, 32);
+				sprintf(buffer, "lights.directional[%d].color", directionals);
+				glUniform3fv(glGetUniformLocation(shader,
+					buffer), 1, (GLfloat*)&go->light->color);
+
+				memset(buffer, 0, 32);
+				sprintf(buffer, "lights.directional[%d].intensity", points);
+				glUniform1f(glGetUniformLocation(shader,
+					buffer), go->light->intensity);
+				++directionals;
+			}
 			break;
 		case LightType::POINT:
 			memset(buffer, 0, 32);
@@ -642,7 +681,17 @@ void GameObject::SetLightUniforms(unsigned shader) const
 	glUniform1i(glGetUniformLocation(shader,
 		"lights.num_points"), points);
 	glUniform1i(glGetUniformLocation(shader,
-		"lights.num_spots"), spots);	
+		"lights.num_spots"), spots);
+
+	if (App->renderer->directionalLight && App->renderer->directionalLight->produceShadows)
+	{
+		glUniformMatrix4fv(glGetUniformLocation(shader,
+			"lightProjView"), 1, GL_TRUE, &App->renderer->shadowsFrustum.ViewProjMatrix()[0][0]);
+
+		glActiveTexture(GL_TEXTURE5);
+		glBindTexture(GL_TEXTURE_2D, App->renderer->shadowsTex);
+		glUniform1i(glGetUniformLocation(shader, "shadowTex"), 5);
+	}
 }
 
 AABB GameObject::GetBoundingBox() const
@@ -693,11 +742,11 @@ bool GameObject::BboxIntersects(const GameObject* target) const
 
 void GameObject::UpdateBBox()
 {
-	ComponentRenderer* renderer = (ComponentRenderer*) GetComponent(ComponentType::Renderer);
+	ComponentRenderer* renderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
 	if (renderer != nullptr)
 	{
-		if(renderer->mesh != nullptr)
-			bbox =  renderer->mesh->GetBoundingBox();
+		if (renderer->mesh != nullptr)
+			bbox = renderer->mesh->GetBoundingBox();
 
 		bbox.TransformAsAABB(GetGlobalTransform());
 	}
@@ -713,7 +762,7 @@ void GameObject::DrawBBox() const
 	ComponentRenderer *renderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
 	if (renderer == nullptr || renderer->mesh == nullptr) return;
 
-	if(renderer->mesh->GetReferences() > 0u)
+	if (renderer->mesh->GetReferences() > 0u)
 		renderer->mesh->DrawBbox(App->program->defaultShader->id[0], bbox);
 }
 
@@ -797,7 +846,7 @@ void GameObject::Load(JSON_value *value)
 	for (unsigned i = 0; i < componentsJSON->Size(); i++)
 	{
 		JSON_value* componentJSON = componentsJSON->GetValue(i);
-		ComponentType type = (ComponentType) componentJSON->GetUint("Type");
+		ComponentType type = (ComponentType)componentJSON->GetUint("Type");
 		Component* component = CreateComponent(type);
 		component->Load(componentJSON);
 	}
@@ -810,13 +859,21 @@ void GameObject::Load(JSON_value *value)
 	if (hasLight)
 	{
 		transform->UpdateTransform();
+		ComponentLight* light = (ComponentLight*)GetComponent(ComponentType::Light);
+		if (light->lightType == LightType::DIRECTIONAL)
+		{
+			App->renderer->directionalLight = light;
+		}
 	}
-
+	if (isBoneRoot)
+	{
+		movedFlag = true;
+	}
 }
 
 bool GameObject::IsParented(const GameObject & gameobject) const
 {
-	if (this == &gameobject) 
+	if (this == &gameobject)
 	{
 		return true;
 	}
@@ -872,13 +929,13 @@ void GameObject::DrawHierarchy()
 	}
 	else if (ImGui::IsItemClicked() && (std::find(App->scene->selection.begin(), App->scene->selection.end(), this) == App->scene->selection.end() || App->input->IsKeyPressed(SDLK_LCTRL)))
 	{
-		App->scene->Select(this);				
+		App->scene->Select(this);
 	}
 	else if (!App->input->IsKeyPressed(SDLK_LCTRL))
 	{
 		App->scene->DragNDrop(this);
 	}
-	
+
 	if (obj_open)
 	{
 		for (auto &child : children)
@@ -908,12 +965,12 @@ void GameObject::SetStaticAncestors()
 				App->spacePartitioning->aabbTree.ReleaseNode(go->treeNode);
 			if (go->treeNode != nullptr && hasLight)
 				App->spacePartitioning->aabbTreeLighting.ReleaseNode(go->treeNode);
-			
+
 		}
 		parents.pop();
 		parents.push(go->parent);
 	}
-	
+
 }
 
 void GameObject::OnPlay()
@@ -933,11 +990,35 @@ void GameObject::OnPlay()
 
 void GameObject::UpdateTransforms(math::float4x4 parentGlobal)
 {
-	//PROFILE;
-	if (movedFlag)
+	PROFILE;
+	if (movedFlag && transform)
 	{
 		transform->local = math::float4x4::FromTRS(transform->position, transform->rotation, transform->scale);
 		movedFlag = false;
+		if (!isStatic)
+		{
+			if (treeNode != nullptr && hasLight)
+			{
+				light->CalculateGuizmos();
+				if (!treeNode->aabb.Contains(bbox))
+				{
+					App->spacePartitioning->aabbTreeLighting.ReleaseNode(treeNode);
+					App->spacePartitioning->aabbTreeLighting.InsertGO(this);
+				}
+			}
+			if (treeNode != nullptr && isVolumetric)
+			{
+				if (!treeNode->aabb.Contains(bbox))
+				{
+					App->spacePartitioning->aabbTree.ReleaseNode(treeNode);
+					App->spacePartitioning->aabbTree.InsertGO(this);
+				}
+			}
+		}
+		else
+		{
+			App->spacePartitioning->kDTree.Calculate();
+		}
 	}
 
 	math::float4x4 global = math::float4x4::identity;
@@ -955,6 +1036,7 @@ void GameObject::UpdateTransforms(math::float4x4 parentGlobal)
 
 	for (const auto& child : children)
 	{
+		child->movedFlag = true;
 		child->UpdateTransforms(global);
 	}
 
