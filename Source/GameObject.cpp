@@ -138,7 +138,7 @@ void GameObject::DrawProperties()
 	strcpy(go_name, name.c_str());
 	ImGui::InputText("Name", go_name, MAX_NAME);
 	name = go_name;
-	//delete[] go_name;
+	delete[] go_name;
 
 	if (this != App->scene->root)
 	{

@@ -104,11 +104,8 @@ bool ModuleScene::Start()
 	if (defaultScene.size() > 0)
 	{
 		path = SCENES;
-		//LoadScene(*defaultScene.c_str(), *path.c_str());
-		LoadScene("VerticalSlice2.json", SCENES);
-		
+		LoadScene(defaultScene.c_str(), path.c_str());
 	}
-	LoadScene("VerticalSlice2", SCENES);
 	return true;
 }
 
@@ -812,9 +809,9 @@ void ModuleScene::AssignNewUUID(GameObject* go, unsigned UID)
 
 void ModuleScene::TakePhoto()
 {
-	App->particles->Reset();
-	TakePhoto(scenePhotos);
-	scenePhotosUndoed.clear();
+	//App->particles->Reset();
+	//TakePhoto(scenePhotos);
+	//scenePhotosUndoed.clear();
 }
 
 void ModuleScene::TakePhoto(std::list<GameObject*>& target)
@@ -831,89 +828,89 @@ void ModuleScene::TakePhoto(std::list<GameObject*>& target)
 }
 void ModuleScene::RestorePhoto(GameObject* photo)
 {
-	photoTimer = 0.f;
-	root = photo;
-	root->UUID = 0; // Restore root UUID
-	root->children.front()->UUID = 1; //Restore canvas UUID
-	std::stack<GameObject*> goStack;
-	goStack.push(root);
-	App->renderer->directionalLight = nullptr;
-	App->particles->Reset();
-	while (!goStack.empty())
-	{
-		GameObject* go = goStack.top(); goStack.pop();
+	//photoTimer = 0.f;
+	//root = photo;
+	//root->UUID = 0; // Restore root UUID
+	//root->children.front()->UUID = 1; //Restore canvas UUID
+	//std::stack<GameObject*> goStack;
+	//goStack.push(root);
+	//App->renderer->directionalLight = nullptr;
+	//App->particles->Reset();
+	//while (!goStack.empty())
+	//{
+	//	GameObject* go = goStack.top(); goStack.pop();
 
-		for (Component* comp : go->components)
-		{
-			switch (comp->type)
-			{
-			case ComponentType::Renderer:
-			{
-				if (!go->isStatic)
-				{
-					App->spacePartitioning->aabbTree.InsertGO(go);
-				}
-				else
-				{
-					staticGOs.insert(go);
-					App->spacePartitioning->kDTree.Calculate();
-				}
-				go->isVolumetric = true;
-				ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
-				cr->LinkBones();
-				break;
-			}
-			case ComponentType::Light:
-				go->light = (ComponentLight*)comp;
-				go->light->CalculateGuizmos();
-				App->spacePartitioning->aabbTreeLighting.InsertGO(go);
-				go->hasLight = true;
-				lights.push_back((ComponentLight*)comp);
-				if (go->light->lightType == LightType::DIRECTIONAL)
-				{
-					App->renderer->directionalLight = go->light;
-				}
-				break;
-			case ComponentType::Camera:
-				if (((ComponentCamera*)comp)->isMainClone)
-				{
-					maincamera = (ComponentCamera*)comp;
-				}
-				break;
-			}
-		}
+	//	for (Component* comp : go->components)
+	//	{
+	//		switch (comp->type)
+	//		{
+	//		case ComponentType::Renderer:
+	//		{
+	//			if (!go->isStatic)
+	//			{
+	//				App->spacePartitioning->aabbTree.InsertGO(go);
+	//			}
+	//			else
+	//			{
+	//				staticGOs.insert(go);
+	//				App->spacePartitioning->kDTree.Calculate();
+	//			}
+	//			go->isVolumetric = true;
+	//			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+	//			cr->LinkBones();
+	//			break;
+	//		}
+	//		case ComponentType::Light:
+	//			go->light = (ComponentLight*)comp;
+	//			go->light->CalculateGuizmos();
+	//			App->spacePartitioning->aabbTreeLighting.InsertGO(go);
+	//			go->hasLight = true;
+	//			lights.push_back((ComponentLight*)comp);
+	//			if (go->light->lightType == LightType::DIRECTIONAL)
+	//			{
+	//				App->renderer->directionalLight = go->light;
+	//			}
+	//			break;
+	//		case ComponentType::Camera:
+	//			if (((ComponentCamera*)comp)->isMainClone)
+	//			{
+	//				maincamera = (ComponentCamera*)comp;
+	//			}
+	//			break;
+	//		}
+	//	}
 
-		for (GameObject* child : go->children)
-		{
-			goStack.push(child);
-		}
-		if (go->transform != nullptr)
-		{
-			go->transform->UpdateTransform();
-		}
-	}
+	//	for (GameObject* child : go->children)
+	//	{
+	//		goStack.push(child);
+	//	}
+	//	if (go->transform != nullptr)
+	//	{
+	//		go->transform->UpdateTransform();
+	//	}
+	//}
 }
 
 void ModuleScene::RestoreLastPhoto()
 {
-	if (App->scene->scenePhotos.size() > 0)
-	{
-		TakePhoto(scenePhotosUndoed);
-		ClearScene();
-		RestorePhoto(scenePhotos.back());	
-		scenePhotos.pop_back();
-	}
+	//if (App->scene->scenePhotos.size() > 0)
+	//{
+	//	TakePhoto(scenePhotosUndoed);
+	//	ClearScene();
+	//	RestorePhoto(scenePhotos.back());	
+	//	scenePhotos.pop_back();
+	//}
 }
 
 void ModuleScene::Redo()
 {
-	if (scenePhotosUndoed.size() > 0)
-	{
-		TakePhoto(scenePhotos);
-		ClearScene();
-		RestorePhoto(scenePhotosUndoed.back());
-		scenePhotosUndoed.pop_back();
-	}
+	//if (scenePhotosUndoed.size() > 0)
+	//{
+	//	TakePhoto(scenePhotos);
+	//	ClearScene();
+	//	RestorePhoto(scenePhotosUndoed.back());
+	//	scenePhotosUndoed.pop_back();
+	//}
 }
 
 void ModuleScene::LoadScene(const char* scene, const char* scenePath, bool isTemporary)
