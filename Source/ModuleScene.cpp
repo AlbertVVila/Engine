@@ -978,7 +978,6 @@ bool ModuleScene::AddScene(const char* scene, const char* path)
 			renderers.push_back(renderer);
 		}
 	}
-	App->navigation->sceneLoaded(json);
 
 	//We need to generate new UIDs for every GO, otherwise hierarchy will get messed up after temporary scene
 	
@@ -1007,6 +1006,8 @@ bool ModuleScene::AddScene(const char* scene, const char* path)
 			cr->LinkBones();
 		}	
 	}
+
+	App->navigation->sceneLoaded(json);
 
 	RELEASE_ARRAY(data);
 	RELEASE(json);
