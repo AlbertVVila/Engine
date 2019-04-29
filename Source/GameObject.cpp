@@ -4,6 +4,7 @@
 #include "ModuleProgram.h"
 #include "ModuleEditor.h"
 #include "ModuleCamera.h"
+#include "ModuleTime.h"
 #include "ModuleInput.h"
 #include "ModuleScene.h"
 #include "ModuleTextures.h"
@@ -198,18 +199,18 @@ void GameObject::Update()
 	}
 	//TESTING
 	//---------------------------------------------
-	/*if (isBoneRoot)
+	if (isBoneRoot && App->time->gameState == GameState::RUN)
 	{
 		ComponentAnimation* compAnim = (ComponentAnimation*)GetComponent(ComponentType::Animation);
 		if (App->input->GetKey(SDL_SCANCODE_X))
 		{
-			compAnim->SendTriggerToStateMachine("faster");
+			compAnim->SendTriggerToStateMachine("trigger1");
 		}
 		if (App->input->GetKey(SDL_SCANCODE_C))
 		{
-			compAnim->SendTriggerToStateMachine("slower");
+			compAnim->SendTriggerToStateMachine("trigger2");
 		}
-	}*/
+	}
 	//---------------------------------------------
 
 	for (const auto& child : children)
