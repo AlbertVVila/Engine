@@ -79,6 +79,7 @@ public:
 
 	bool Init(JSON* config);
 	void SaveConfig(JSON* config) override;
+	update_status Update(float dt)override;
 	void sceneLoaded(JSON* config);
 	void sceneSaved(JSON* config);
 
@@ -89,6 +90,7 @@ public:
 
 	void cleanValuesPRE();
 	void cleanValuesPOST();
+	inline void checkSceneLoaded();
 
 
 	ENGINE_API bool FindPath(math::float3 start, math::float3 end, std::vector<math::float3> &path, PathFindType type = PathFindType::FOLLOW) const;
@@ -179,6 +181,8 @@ private:
 	bool meshGenerated = false;
 	bool renderMesh = false;
 	const char* objectName = "";
+	bool autoNavGeneration = false;
+	GameObject* objToRender = nullptr;
 
 	enum DrawMode
 	{

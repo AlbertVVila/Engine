@@ -80,11 +80,10 @@ void ModuleNavigation::sceneLoaded(JSON * config)
 	const char* objectName = nav->GetString("NavigableObjectName");
 	if (objectName != nullptr)
 	{
-		GameObject* objToRender = App->scene->FindGameObjectByName(objectName);
+		objToRender = App->scene->FindGameObjectByName(objectName);
 		if (objToRender != nullptr)
 		{
-			addNavigableMesh(objToRender);
-			generateNavigability(renderMesh);
+			autoNavGeneration = true;
 		}
 	}
 }
@@ -125,6 +124,16 @@ void ModuleNavigation::cleanValuesPOST()
 	meshboxes.clear();
 	meshComponents.clear();
 	transformComponents.clear();
+}
+update_status ModuleNavigation::Update(float dt)
+{
+	if (autoNavGeneration)
+	{
+		addNavigableMesh(objToRender);
+		generateNavigability(renderMesh);
+		autoNavGeneration = false;
+	}
+	return UPDATE_CONTINUE;
 }
 
 void ModuleNavigation::DrawGUI()
@@ -272,7 +281,7 @@ void ModuleNavigation::navigableObjectToggled(GameObject* obj, const bool newSta
 
 void ModuleNavigation::renderNavMesh()
 {
-	if (!meshGenerated || !renderMesh)
+	if (!meshGenerated || !renderMesh || autoNavGeneration)
 	{
 		return;
 	}
