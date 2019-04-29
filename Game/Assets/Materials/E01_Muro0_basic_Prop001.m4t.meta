@@ -1,1 +1,1 @@
-{"Material":{"GUID":573857896,"timeCreated":1556376989,"DifusseColor":[1.0,0.9999899864196777,0.9999899864196777,1.0],"specularColor":[0.28278690576553347,0.279310017824173,0.279310017824173],"emissiveColor":[1.0,1.0,1.0],"diffuse":"E01_muro0_basic_df","normal":"E01_muro0_basic_nm","shader":"PBR"}}
+{"Material":{"GUID":2037856507,"timeCreated":1556556802,"DifusseColor":[1.0,1.0,1.0,1.0],"specularColor":[0.10000000149011612,0.10000000149011612,0.10000000149011612],"emissiveColor":[1.0,1.0,1.0]}}
