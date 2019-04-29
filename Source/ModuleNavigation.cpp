@@ -1319,98 +1319,104 @@ bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vecto
 	if (type == PathFindType::FOLLOW) //TODO: OFF mesh link connections
 	{
 		int pathIterationNb = 0;
-		navQuery->findPath(startPoly, endPoly, (float*)&start, (float*)&end, &filter, polyPath, &polyCount, MAX_POLYS);
+		dtStatus status = navQuery->findPath(startPoly, endPoly, (float*)&start, (float*)&end, &filter, polyPath, &polyCount, MAX_POLYS);
+		if (dtStatusFailed(status))
+		{
+			LOG("Couldn't find a start to end path");
+		}
+		int smoothNb = 0;
 
-			int smoothNb = 0;
+		if (polyCount)
+		{
+			// Iterate over the path to find smooth path on the detail mesh surface.
+			dtPolyRef polys[MAX_POLYS];
+			memcpy(polys, polyPath, sizeof(dtPolyRef)*polyCount);
+			int npolys = polyCount;
 
-			if (polyCount)
+			float iterPos[3], targetPos[3];
+			navQuery->closestPointOnPoly(startPoly, (float*)&start, iterPos, 0);
+			navQuery->closestPointOnPoly(polys[npolys - 1], (float*)&end, targetPos, 0);
+
+			static const float STEP_SIZE = 5.f;
+			static const float SLOP = 0.01f;
+
+			float smoothPath[MAX_SMOOTH * 3];
+
+			dtVcopy(&smoothPath[smoothNb * 3], iterPos);
+			smoothNb++;
+
+			// Move towards target a small advancement at a time until target reached or
+			// when ran out of memory to store the path.
+			while (npolys && smoothNb < MAX_SMOOTH)
 			{
-				// Iterate over the path to find smooth path on the detail mesh surface.
-				dtPolyRef polys[MAX_POLYS];
-				memcpy(polys, polyPath, sizeof(dtPolyRef)*polyCount);
-				int npolys = polyCount;
+				// Find location to steer towards.
+				float steerPos[3];
+				unsigned char steerPosFlag;
+				dtPolyRef steerPosRef;
 
-				float iterPos[3], targetPos[3];
-				navQuery->closestPointOnPoly(startPoly, (float*)&start, iterPos, 0);
-				navQuery->closestPointOnPoly(polys[npolys - 1], (float*)&end, targetPos, 0);
+				if (!getSteerTarget(navQuery, iterPos, targetPos, SLOP,
+					polys, npolys, steerPos, steerPosFlag, steerPosRef))
+					break;
 
-				static const float STEP_SIZE = 5.f;
-				static const float SLOP = 0.01f;
+				bool endOfPath = (steerPosFlag & DT_STRAIGHTPATH_END) ? true : false;
 
-				float smoothPath[MAX_SMOOTH * 3];
+				// Find movement delta.
+				float delta[3], len;
+				dtVsub(delta, steerPos, iterPos);
+				len = dtMathSqrtf(dtVdot(delta, delta));
+				// If the steer target is end of path do not move past the location.
+				if (endOfPath && len < STEP_SIZE)
+					len = 1;
+				else
+					len = STEP_SIZE / len;
+				float moveTgt[3];
+				dtVmad(moveTgt, iterPos, delta, len);
 
-				dtVcopy(&smoothPath[smoothNb * 3], iterPos);
-				smoothNb++;
+				// Move
+				float result[3];
+				dtPolyRef visited[16];
+				int nvisited = 0;
+				navQuery->moveAlongSurface(polys[0], iterPos, moveTgt, &filter,
+					result, visited, &nvisited, 16);
 
-				// Move towards target a small advancement at a time until target reached or
-				// when ran out of memory to store the path.
-				while (npolys && smoothNb < MAX_SMOOTH)
+				pathIterationNb = fixupCorridor(polys, npolys, MAX_POLYS, visited, nvisited);
+				pathIterationNb = fixupShortcuts(polys, npolys, navQuery);
+				float h = 0;
+				navQuery->getPolyHeight(polys[0], result, &h);
+				if (h != 0)
 				{
-					// Find location to steer towards.
-					float steerPos[3];
-					unsigned char steerPosFlag;
-					dtPolyRef steerPosRef;
-
-					if (!getSteerTarget(navQuery, iterPos, targetPos, SLOP,
-						polys, npolys, steerPos, steerPosFlag, steerPosRef))
-						break;
-
-					bool endOfPath = (steerPosFlag & DT_STRAIGHTPATH_END) ? true : false;
-
-					// Find movement delta.
-					float delta[3], len;
-					dtVsub(delta, steerPos, iterPos);
-					len = dtMathSqrtf(dtVdot(delta, delta));
-					// If the steer target is end of path do not move past the location.
-					if (endOfPath && len < STEP_SIZE)
-						len = 1;
-					else
-						len = STEP_SIZE / len;
-					float moveTgt[3];
-					dtVmad(moveTgt, iterPos, delta, len);
-
-					// Move
-					float result[3];
-					dtPolyRef visited[16];
-					int nvisited = 0;
-					navQuery->moveAlongSurface(polys[0], iterPos, moveTgt, &filter,
-						result, visited, &nvisited, 16);
-
-					pathIterationNb = fixupCorridor(polys, npolys, MAX_POLYS, visited, nvisited);
-					pathIterationNb = fixupShortcuts(polys, npolys, navQuery);
-					float h = 0;
-					navQuery->getPolyHeight(polys[0], result, &h);
 					result[1] = h;
-					dtVcopy(iterPos, result);
+				}
+				dtVcopy(iterPos, result);
 
-					// Handle end of path when close enough.
-					if (endOfPath && inRange(iterPos, steerPos, SLOP, 1.0f))
-					{
-						// Reached end of path.
-						dtVcopy(iterPos, targetPos);
-						if (smoothNb < MAX_SMOOTH)
-						{
-							dtVcopy(&smoothPath[smoothNb * 3], iterPos);
-							smoothNb++;
-						}
-						break;
-					}
-
-					// Store results.
+				// Handle end of path when close enough.
+				if (endOfPath && inRange(iterPos, steerPos, SLOP, 1.0f))
+				{
+					// Reached end of path.
+					dtVcopy(iterPos, targetPos);
 					if (smoothNb < MAX_SMOOTH)
 					{
 						dtVcopy(&smoothPath[smoothNb * 3], iterPos);
 						smoothNb++;
 					}
+					break;
 				}
 
-				path.reserve(smoothNb);
-				for (size_t i = 0; i < smoothNb; i++)
+				// Store results.
+				if (smoothNb < MAX_SMOOTH)
 				{
-					path.push_back(float3(smoothPath[i * 3], smoothPath[i * 3 + 1], smoothPath[i * 3 + 2]));
+					dtVcopy(&smoothPath[smoothNb * 3], iterPos);
+					smoothNb++;
 				}
-				return true;
 			}
+
+			path.reserve(smoothNb);
+			for (size_t i = 0; i < smoothNb; i++)
+			{
+				path.push_back(float3(smoothPath[i * 3], smoothPath[i * 3 + 1], smoothPath[i * 3 + 2]));
+			}
+			return true;
+		}
 	}
 	else if (type == PathFindType::STRAIGHT)
 	{
