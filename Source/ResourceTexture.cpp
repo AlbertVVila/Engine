@@ -10,8 +10,6 @@
 #include "JSON.h"
 #include "imgui.h"
 
-static int nbTextures = 0;
-
 ResourceTexture::ResourceTexture(unsigned uid) : Resource(uid, TYPE::TEXTURE)
 {
 }
@@ -64,7 +62,6 @@ bool ResourceTexture::LoadInMemory()
 	{
 	default:
 	case IMAGE_TYPE::TEXTURE:
-		++nbTextures;
 		success = LoadTexture();
 		break;
 	case IMAGE_TYPE::CUBEMAP:
@@ -244,7 +241,6 @@ void ResourceTexture::SetImageType(IMAGE_TYPE type)
 
 void ResourceTexture::DeleteFromMemory()
 {
-	--nbTextures;
 	Resource::DeleteFromMemory();
 	if (gpuID != 0)
 		glDeleteTextures(1, &gpuID);
