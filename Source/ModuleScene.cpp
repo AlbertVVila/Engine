@@ -103,9 +103,9 @@ bool ModuleScene::Start()
 	{
 		path = SCENES;
 		//LoadScene(*defaultScene.c_str(), *path.c_str());
-		LoadScene("NPCTest.json", SCENES);
+		LoadScene("ScriptsTest.json", SCENES);
 	}
-	LoadScene("NPCTest", SCENES);
+	LoadScene("ScriptsTest", SCENES);
 	return true;
 }
 
