@@ -1018,6 +1018,8 @@ void ModuleScene::ClearScene()
 	dynamicGOs.clear();
 	staticFilteredGOs.clear();
 	dynamicFilteredGOs.clear();
+	lights.clear();
+	debuglines.clear();
 	selection.clear();
 	LOG("Reset volumetric AABBTree");
 	App->spacePartitioning->aabbTree.Reset();
@@ -1028,7 +1030,6 @@ void ModuleScene::ClearScene()
 	root->InsertChild(canvas);
 	App->particles->CleanUp();
 	App->particles->Start();
-	selection.clear();
 	App->renderer->shadowCasters.clear();
 }
 
