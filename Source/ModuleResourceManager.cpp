@@ -303,7 +303,7 @@ Resource* ModuleResourceManager::Get(unsigned uid) const
 	if (!resource->IsLoadedToMemory())
 	{
 		// Load in memory
-		if (resource->LoadInMemory())
+ 		if (resource->LoadInMemory())
 			return resource;
 		else
 			return nullptr;

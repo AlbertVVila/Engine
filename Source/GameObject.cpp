@@ -10,6 +10,7 @@
 #include "ModuleRender.h"
 #include "ModuleSpacePartitioning.h"
 #include "ModuleAudioManager.h"
+#include "ModuleNavigation.h"
 
 #include "Component.h"
 #include "ComponentTransform.h"
@@ -74,6 +75,9 @@ GameObject::GameObject(const GameObject & gameobject)
 
 	assert(!(isVolumetric && hasLight));
 	bbox = gameobject.bbox;
+	navigable = gameobject.navigable;
+	walkable = gameobject.walkable;
+	noWalkable = gameobject.noWalkable;
 
 	for (const auto& component : gameobject.components)
 	{
@@ -134,7 +138,7 @@ void GameObject::DrawProperties()
 	strcpy(go_name, name.c_str());
 	ImGui::InputText("Name", go_name, MAX_NAME);
 	name = go_name;
-	//delete[] go_name;
+	delete[] go_name;
 
 	if (this != App->scene->root)
 	{
@@ -144,6 +148,21 @@ void GameObject::DrawProperties()
 		}
 
 		ImGui::SameLine();
+		//navigability
+		if (isVolumetric && isStatic) 
+		{
+			if (ImGui::Checkbox("Navigable", &navigable))
+			{
+				App->navigation->navigableObjectToggled(this, navigable);
+			}
+			if (navigable)
+			{
+				//defines walls and this stuff
+				ImGui::Checkbox("Walkable", &walkable);
+				ImGui::Checkbox("No Walkable", &noWalkable);
+			}
+		}
+
 		if (ImGui::Checkbox("Static", &isStatic))
 		{
 			if (isStatic && GetComponent(ComponentType::Renderer) != nullptr)
@@ -680,15 +699,20 @@ AABB GameObject::GetBoundingBox() const
 	return bbox;
 }
 
-bool GameObject::Intersects(const LineSegment & line, float &distance) const
+bool GameObject::Intersects(const LineSegment & line, float &distance, math::float3* intersectionPoint) const
 {
 	LineSegment localLine(line);
 	localLine.Transform(GetGlobalTransform().Inverted());
 	ComponentRenderer* mesh_renderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
 	if (mesh_renderer != nullptr)
 	{
-		if (mesh_renderer->mesh->Intersects(localLine, &distance))
+		if (mesh_renderer->mesh->Intersects(localLine, &distance, intersectionPoint))
 		{
+			if (intersectionPoint != nullptr)
+			{
+				math::float3 worldPoint = GetGlobalTransform().MulPos(*intersectionPoint);
+				*intersectionPoint = worldPoint;
+			}
 			return true;
 		}
 	}
@@ -782,6 +806,9 @@ void GameObject::Save(JSON_value *gameobjects) const
 		gameobject->AddUint("ActiveSelf", activeSelf);
 		gameobject->AddUint("isBoneRoot", isBoneRoot);
 		gameobject->AddFloat4x4("baseState", baseState);
+		gameobject->AddUint("Navigable", navigable);
+		gameobject->AddUint("Walkable", walkable);
+		gameobject->AddUint("No Walkable", noWalkable);
 
 		JSON_value *componentsJSON = gameobject->CreateValue(rapidjson::kArrayType);
 		for (auto &component : components)
@@ -811,6 +838,9 @@ void GameObject::Load(JSON_value *value)
 	activeSelf = value->GetUint("ActiveSelf", 1);
 	isBoneRoot = value->GetUint("isBoneRoot");
 	baseState = value->GetFloat4x4("baseState");
+	navigable = value->GetUint("Navigable");
+	walkable = value->GetUint("Walkable");
+	noWalkable = value->GetUint("No Walkable");
 
 	JSON_value* componentsJSON = value->GetValue("Components");
 	for (unsigned i = 0; i < componentsJSON->Size(); i++)
@@ -1015,7 +1045,7 @@ void GameObject::UpdateTransforms(math::float4x4 parentGlobal)
 
 bool GameObject::CheckDelete()
 {
-	PROFILE;
+	//PROFILE;
 	if (deleteFlag) //Delete GO
 	{
 		CleanUp();
