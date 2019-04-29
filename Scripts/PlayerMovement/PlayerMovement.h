@@ -28,6 +28,7 @@ public:
 	bool isPlayerDead = false;
 	float3 currentPosition = float3(0, 0, 0); //TODO ZERO
 private:
+	int pathIndex = 0;
 	float speed = 2.0f;
 	std::vector<float3>path;
 
