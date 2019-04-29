@@ -103,10 +103,10 @@ bool ModuleScene::Start()
 	{
 		path = SCENES;
 		//LoadScene(*defaultScene.c_str(), *path.c_str());
-		LoadScene("VerticalSlice2.json", SCENES);
+		LoadScene("NPCTest.json", SCENES);
 		
 	}
-	LoadScene("VerticalSlice2", SCENES);
+	LoadScene("NPCTest", SCENES);
 	return true;
 }
 
