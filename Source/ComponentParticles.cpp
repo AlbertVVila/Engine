@@ -159,6 +159,7 @@ bool ComponentParticles::CleanUp()
 		particlePool.pop();
 	}
 
+	App->particles->RemoveParticleSystem(this);
 	return true;
 }
 

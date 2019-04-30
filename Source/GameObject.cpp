@@ -581,9 +581,9 @@ void GameObject::SetLightUniforms(unsigned shader) const
 	//LOG("%s got %d lights", name.c_str(), lights.size());
 	for (GameObject* go : lights)
 	{
-		if (!go->light->enabled) continue;
-
 		assert(go->light != nullptr);
+
+		if (!go->light->enabled) continue;
 		switch (go->light->lightType)
 		{
 		case LightType::DIRECTIONAL:

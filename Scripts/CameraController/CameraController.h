@@ -2,6 +2,7 @@
 #define  __CameraController_h__
 
 #include "BaseScript.h"
+#include "Math/float3.h"
 
 class GameObject;
 
@@ -13,13 +14,12 @@ class GameObject;
 
 class CameraController_API CameraController : public Script
 {
-	void Expose(ImGuiContext* context) override;
 	void Start() override;
 	void Update() override;
 
 private:
 	GameObject* player;
-	float height = 0.f;
+	math::float3 offset;
 };
 
 #endif __CameraController_h__
