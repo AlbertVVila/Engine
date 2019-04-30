@@ -52,8 +52,12 @@ bool ModuleRender::Init(JSON * config)
 	LOG("Creating Renderer context");
 
 	InitSDL();
-
 	glewInit();
+
+	const GLubyte* vendor = glGetString(GL_VENDOR); // Returns the vendor
+	const GLubyte* model = glGetString(GL_RENDERER); // Returns a hint to the model
+	const GLubyte* version = glGetString(GL_VERSION); // Returns a hint to the model
+
 	InitOpenGL();
 
 	SDL_GL_SetSwapInterval((int)vsync);
@@ -278,7 +282,7 @@ void ModuleRender::DrawGizmos(const ComponentCamera &camera) const
 void ModuleRender::InitSDL()
 {
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);

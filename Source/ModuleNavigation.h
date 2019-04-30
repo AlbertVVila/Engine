@@ -8,7 +8,7 @@
 
 #define MAX_PATH 1024
 #define MAX_POLYS 256
-#define MAX_SMOOTH 2048
+#define MAX_SMOOTH 512
 
 //#include "DebugUtils/DetourDebugDraw.h"
 //#include "DebugUtils/DebugDraw.h"
