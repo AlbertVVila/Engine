@@ -135,7 +135,7 @@ update_status ModuleScene::Update(float dt)
 	root->UpdateTransforms(math::float4x4::identity);
 	root->Update();
 	root->CheckDelete();
-	if (photoTimer > 0)
+	/*if (photoTimer > 0)
 	{
 		photoTimer -= dt;
 	}
@@ -150,6 +150,7 @@ update_status ModuleScene::Update(float dt)
 	{
 		Redo();
 	}
+	*/
 	return UPDATE_CONTINUE;
 }
 
