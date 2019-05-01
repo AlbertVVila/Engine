@@ -300,7 +300,7 @@ void ComponentAnimation::SetStateMachine(const char * stateMachineFile)
 		stateMachine = (ResourceStateMachine*)App->resManager->GetSMByName(stateMachineFile);
 }
 
-void ComponentAnimation::SendTriggerToStateMachine(char* trigger)
+void ComponentAnimation::SendTriggerToStateMachine(const char* trigger)
 {
 	if (stateMachine != nullptr)
 	{	
