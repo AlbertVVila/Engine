@@ -288,6 +288,7 @@ Component* GameObject::CreateComponent(ComponentType type)
 			hasLight = true;
 			light = (ComponentLight*)component;
 			App->spacePartitioning->aabbTreeLighting.InsertGO(this);
+			movedFlag = true;
 		}
 		else
 		{
