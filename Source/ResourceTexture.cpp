@@ -166,6 +166,7 @@ bool ResourceTexture::LoadTexture()
 		LOG("Error loading data: %s\n", iluErrorString(error));
 		return false;
 	}
+	return true;
 }
 
 bool ResourceTexture::LoadCubemap()
@@ -229,6 +230,7 @@ bool ResourceTexture::LoadCubemap()
 		LOG("Error loading data: %s\n", iluErrorString(error));
 		return false;
 	}
+	return true;
 }
 
 void ResourceTexture::SetImageType(IMAGE_TYPE type)
