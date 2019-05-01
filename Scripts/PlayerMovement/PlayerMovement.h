@@ -22,7 +22,8 @@ struct ImGuiContext;
 enum class PlayerState
 {
 	IDLE,
-	WALK
+	WALK,
+	ATTACK
 };
 
 class PlayerMovement_API PlayerMovement : public Script
@@ -36,6 +37,7 @@ public:
 	void DeSerialize(JSON_value* json) override;
 
 	void CheckState(PlayerState previous, PlayerState current);
+	void Damage(float amount);
 public:
 	bool isPlayerDead = false;
 	float3 currentPosition = float3(0, 0, 0); //TODO ZERO
@@ -45,6 +47,9 @@ private:
 	std::vector<float3>path;
 	
 	float speed = 2.0f;
+	float health = 100.0f;
+	float attackDuration = 1.0f;
+	float attackTimer = 0.0f;
 	ComponentAnimation* anim = nullptr;
 };
 #endif __PlayerMovement_h__

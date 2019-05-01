@@ -115,6 +115,7 @@ update_status ModuleScene::PreUpdate()
 	{
 		LoadScene(sceneName.c_str(), SCENES);
 		App->scripting->onStart = true;
+		root->OnPlay();
 		loadScene = false;
 	}
 

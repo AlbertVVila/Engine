@@ -75,7 +75,7 @@ void AnimationController::UpdateInstance(Instance* instance, float dt)
 		if (trueDt > 0.0f)
 		{
 			float timeRemainingA = current->maxTime - instance->time;
-			LOG( std::to_string(timeRemainingA).c_str());
+			//LOG( std::to_string(timeRemainingA).c_str());
 			if (trueDt <= timeRemainingA)
 			{
 				instance->time += trueDt;

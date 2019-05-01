@@ -13,6 +13,7 @@
 class GameObject;
 class ComponentAnimation;
 class ComponentRenderer;
+class PlayerMovement;
 class EnemyControllerScript;
 class JSON_value;
 enum class EnemyState;
@@ -63,9 +64,13 @@ private:
 	float auxTranslation = 0.0f;
 	float auxTimer = 0.0f;
 
+	//Damage variables
+	float damage = 20.0f;
+
 	ComponentAnimation* anim = nullptr;
 
 	EnemyControllerScript* enemyController;
+	PlayerMovement* playerScript;
 };
 
 #endif __BasicEnemyAIScript_h__
