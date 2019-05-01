@@ -1,1 +1,1 @@
-{"Material":{"GUID":282242135,"timeCreated":1556365738,"DifusseColor":[1.0,1.0,1.0,1.0],"specularColor":[1.0,1.0,1.0],"emissiveColor":[1.0,1.0,1.0],"diffuse":"White","occlusion":"White","emissive":"White","normal":"White","shader":"PBR"}}
+{"Material":{"GUID":3033042328,"timeCreated":1556547163,"DifusseColor":[1.0,1.0,1.0,1.0],"specularColor":[0.10000000149011612,0.10000000149011612,0.10000000149011612],"emissiveColor":[1.0,1.0,1.0],"emissive":"White","shader":"PBR"}}
