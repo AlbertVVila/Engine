@@ -168,8 +168,11 @@ bool ModuleScene::CleanUp()
 	selected = nullptr;
 	maincamera = nullptr;
 
-	App->resManager->DeleteResource(camera_notfound_texture->GetUID());
-	camera_notfound_texture = nullptr;
+	if (camera_notfound_texture != nullptr)
+	{
+		App->resManager->DeleteResource(camera_notfound_texture->GetUID());
+		camera_notfound_texture = nullptr;
+	}
 
 	lights.clear();
 
@@ -792,7 +795,7 @@ void ModuleScene::SaveScene(const GameObject& rootGO, const char* scene, const c
 void ModuleScene::AssignNewUUID(GameObject* go, unsigned UID)
 {
 	go->parentUUID = UID;
-	go->UUID = GetNewUID();
+	go->UUID = go->UUID == 1 ? 1 : GetNewUID();
 
 	for (std::list<GameObject*>::iterator it = go->children.begin(); it != go->children.end(); ++it)
 	{
