@@ -11,8 +11,10 @@
 #include "ModuleScene.h"
 #include "ModuleTextures.h"
 #include "ModuleSpacePartitioning.h"
+#include "ModuleParticles.h"
 #include "ModuleWindow.h"
 #include "ModuleScript.h"
+#include "ModuleNavigation.h"
 
 #include "GameObject.h"
 #include "ComponentCamera.h"
@@ -24,6 +26,7 @@
 #include "ResourceMaterial.h"
 
 #include "MaterialEditor.h"
+#include "Viewport.h"
 
 #include "JSON.h"
 #include "myQuadTree.h"
@@ -101,7 +104,7 @@ bool ModuleScene::Start()
 	if (defaultScene.size() > 0)
 	{
 		path = SCENES;
-		//LoadScene(*defaultScene.c_str(), *path.c_str());
+		LoadScene(defaultScene.c_str(), path.c_str());
 	}
 	return true;
 }
@@ -112,6 +115,7 @@ update_status ModuleScene::PreUpdate()
 	{
 		LoadScene(sceneName.c_str(), SCENES);
 		App->scripting->onStart = true;
+		root->OnPlay();
 		loadScene = false;
 	}
 
@@ -132,7 +136,7 @@ update_status ModuleScene::Update(float dt)
 	root->UpdateTransforms(math::float4x4::identity);
 	root->Update();
 	root->CheckDelete();
-	if (photoTimer > 0)
+	/*if (photoTimer > 0)
 	{
 		photoTimer -= dt;
 	}
@@ -147,6 +151,7 @@ update_status ModuleScene::Update(float dt)
 	{
 		Redo();
 	}
+	*/
 	return UPDATE_CONTINUE;
 }
 
@@ -167,8 +172,11 @@ bool ModuleScene::CleanUp()
 	selected = nullptr;
 	maincamera = nullptr;
 
-	App->resManager->DeleteResource(camera_notfound_texture->GetUID());
-	camera_notfound_texture = nullptr;
+	if (camera_notfound_texture != nullptr)
+	{
+		App->resManager->DeleteResource(camera_notfound_texture->GetUID());
+		camera_notfound_texture = nullptr;
+	}
 
 	lights.clear();
 
@@ -205,6 +213,8 @@ void ModuleScene::FrustumCulling(const Frustum& frustum)
 
 void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 {
+	std::list<ComponentRenderer*> alphaRenderers;
+
 #ifndef GAME_BUILD
 	PROFILE;
 	if (isEditor)
@@ -256,12 +266,19 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	{
 		camFrustum = *maincamera->frustum;
 	}
-	
 	for (const auto &go : staticFilteredGOs)
 	{
 		if (camFrustum.Intersects(go->GetBoundingBox()))
 		{
-			DrawGO(*go, camFrustum, isEditor);
+			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+			if (cr && !cr->useAlpha)
+			{
+				DrawGO(*go, camFrustum, isEditor);
+			}
+			else
+			{
+				alphaRenderers.push_back(cr);
+			}
 		}
 	}
 
@@ -269,7 +286,15 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	{
 		if (camFrustum.Intersects(go->GetBoundingBox()))
 		{
-			DrawGO(*go, camFrustum, isEditor);
+			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+			if (cr && !cr->useAlpha)
+			{
+				DrawGO(*go, camFrustum, isEditor);
+			}
+			else
+			{
+				alphaRenderers.push_back(cr);
+			}
 		}
 	}
 
@@ -282,7 +307,15 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	{
 		if (maincamera->frustum->Intersects(go->GetBoundingBox()))
 		{
-			DrawGOGame(*go);
+			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+			if (cr && !cr->useAlpha)
+			{
+				DrawGOGame(*go);
+			}
+			else
+			{
+				alphaRenderers.push_back(cr);
+			}
 		}
 	}
 
@@ -290,10 +323,34 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	{
 		if (maincamera->frustum->Intersects(go->GetBoundingBox()))
 		{
-			DrawGOGame(*go);
+			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+			if (cr && !cr->useAlpha)
+			{
+				DrawGOGame(*go);
+			}
+			else
+			{
+				alphaRenderers.push_back(cr);
+			}
 		}
 	}	
 #endif
+	alphaRenderers.sort(
+		[frustum](const ComponentRenderer* cr1, const ComponentRenderer* cr2) -> bool
+	{
+		return cr1->gameobject->transform->GetGlobalPosition().Distance(frustum.pos) > cr2->gameobject->transform->GetGlobalPosition().Distance(frustum.pos);
+	});
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	for (ComponentRenderer* cr : alphaRenderers)
+	{
+#ifndef GAME_BUILD
+		DrawGO(*cr->gameobject, camFrustum, isEditor);
+#else
+		DrawGOGame(*cr->gameobject);
+#endif
+	}
+	glDisable(GL_BLEND);
 }
 
 void ModuleScene::DrawGOGame(const GameObject& go)
@@ -312,6 +369,10 @@ void ModuleScene::DrawGOGame(const GameObject& go)
 		if (crenderer->mesh->bindBones.size() > 0)
 		{
 			variation |= (unsigned)ModuleProgram::PBR_Variations::SKINNED;
+		}
+		if (App->renderer->directionalLight && App->renderer->directionalLight->produceShadows)
+		{
+			variation |= (unsigned)ModuleProgram::PBR_Variations::SHADOWS_ENABLED;
 		}
 	}
 	
@@ -359,6 +420,11 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 		{
 			variation |= (unsigned)ModuleProgram::PBR_Variations::SKINNED;
 		}
+		if (App->renderer->directionalLight && App->renderer->directionalLight->produceShadows)
+		{
+			variation |= (unsigned)ModuleProgram::PBR_Variations::SHADOWS_ENABLED;
+		}
+
 	}
 
 	glUseProgram(shader->id[variation]);
@@ -367,6 +433,7 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 
 	glUniform3fv(glGetUniformLocation(shader->id[variation],
 		"lights.ambient_color"), 1, (GLfloat*)&ambientColor);
+	
 	go.SetLightUniforms(shader->id[variation]);
 
 	go.UpdateModel(shader->id[variation]);
@@ -714,6 +781,8 @@ void ModuleScene::SaveScene(const GameObject& rootGO, const char* scene, const c
 	rootGO.Save(array);
 	json->AddValue("GameObjects", *array);
 
+	App->navigation->sceneSaved(json);
+
 	std::string file(scenePath);
 	file += scene;
 	file += JSONEXT;
@@ -728,10 +797,23 @@ void ModuleScene::SaveScene(const GameObject& rootGO, const char* scene, const c
 		path = scenePath;
 	}
 }
+
+void ModuleScene::AssignNewUUID(GameObject* go, unsigned UID)
+{
+	go->parentUUID = UID;
+	go->UUID = go->UUID == 1 ? 1 : GetNewUID();
+
+	for (std::list<GameObject*>::iterator it = go->children.begin(); it != go->children.end(); ++it)
+	{
+		AssignNewUUID((*it), go->UUID);
+	}
+}
+
 void ModuleScene::TakePhoto()
 {
-	TakePhoto(scenePhotos);
-	scenePhotosUndoed.clear();
+	//App->particles->Reset();
+	//TakePhoto(scenePhotos);
+	//scenePhotosUndoed.clear();
 }
 
 void ModuleScene::TakePhoto(std::list<GameObject*>& target)
@@ -748,79 +830,89 @@ void ModuleScene::TakePhoto(std::list<GameObject*>& target)
 }
 void ModuleScene::RestorePhoto(GameObject* photo)
 {
-	photoTimer = 0.f;
-	root = photo;
-	root->UUID = 0; // Restore root UUID
-	root->children.front()->UUID = 1; //Restore canvas UUID
-	std::stack<GameObject*> goStack;
-	goStack.push(root);
-	while (!goStack.empty())
-	{
-		GameObject* go = goStack.top(); goStack.pop();
+	//photoTimer = 0.f;
+	//root = photo;
+	//root->UUID = 0; // Restore root UUID
+	//root->children.front()->UUID = 1; //Restore canvas UUID
+	//std::stack<GameObject*> goStack;
+	//goStack.push(root);
+	//App->renderer->directionalLight = nullptr;
+	//App->particles->Reset();
+	//while (!goStack.empty())
+	//{
+	//	GameObject* go = goStack.top(); goStack.pop();
 
-		for (Component* comp : go->components)
-		{
-			switch (comp->type)
-			{
-			case ComponentType::Renderer:
-				if (!go->isStatic)
-				{
-					App->spacePartitioning->aabbTree.InsertGO(go);
-				}
-				else
-				{
-					staticGOs.insert(go);
-					App->spacePartitioning->kDTree.Calculate();
-				}
-				go->isVolumetric = true;
-				break;
-			case ComponentType::Light:
-				go->light = (ComponentLight*)comp;
-				go->light->CalculateGuizmos();
-				App->spacePartitioning->aabbTreeLighting.InsertGO(go);
-				go->hasLight = true;
-				lights.push_back((ComponentLight*)comp);
-				break;
-			case ComponentType::Camera:
-				if (((ComponentCamera*)comp)->isMainClone)
-				{
-					maincamera = (ComponentCamera*)comp;
-				}
-				break;
-			}
-		}
+	//	for (Component* comp : go->components)
+	//	{
+	//		switch (comp->type)
+	//		{
+	//		case ComponentType::Renderer:
+	//		{
+	//			if (!go->isStatic)
+	//			{
+	//				App->spacePartitioning->aabbTree.InsertGO(go);
+	//			}
+	//			else
+	//			{
+	//				staticGOs.insert(go);
+	//				App->spacePartitioning->kDTree.Calculate();
+	//			}
+	//			go->isVolumetric = true;
+	//			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+	//			cr->LinkBones();
+	//			break;
+	//		}
+	//		case ComponentType::Light:
+	//			go->light = (ComponentLight*)comp;
+	//			go->light->CalculateGuizmos();
+	//			App->spacePartitioning->aabbTreeLighting.InsertGO(go);
+	//			go->hasLight = true;
+	//			lights.push_back((ComponentLight*)comp);
+	//			if (go->light->lightType == LightType::DIRECTIONAL)
+	//			{
+	//				App->renderer->directionalLight = go->light;
+	//			}
+	//			break;
+	//		case ComponentType::Camera:
+	//			if (((ComponentCamera*)comp)->isMainClone)
+	//			{
+	//				maincamera = (ComponentCamera*)comp;
+	//			}
+	//			break;
+	//		}
+	//	}
 
-		for (GameObject* child : go->children)
-		{
-			goStack.push(child);
-		}
-		if (go->transform != nullptr)
-		{
-			go->transform->UpdateTransform();
-		}
-	}
+	//	for (GameObject* child : go->children)
+	//	{
+	//		goStack.push(child);
+	//	}
+	//	if (go->transform != nullptr)
+	//	{
+	//		go->transform->UpdateTransform();
+	//	}
+	//}
 }
 
 void ModuleScene::RestoreLastPhoto()
 {
-	if (App->scene->scenePhotos.size() > 0)
-	{
-		TakePhoto(scenePhotosUndoed);
-		ClearScene();
-		RestorePhoto(scenePhotos.back());	
-		scenePhotos.pop_back();
-	}
+	//if (App->scene->scenePhotos.size() > 0)
+	//{
+	//	TakePhoto(scenePhotosUndoed);
+	//	ClearScene();
+	//	RestorePhoto(scenePhotos.back());	
+	//	scenePhotos.pop_back();
+	//}
 }
 
 void ModuleScene::Redo()
 {
-	if (scenePhotosUndoed.size() > 0)
-	{
-		TakePhoto(scenePhotos);
-		ClearScene();
-		RestorePhoto(scenePhotosUndoed.back());
-		scenePhotosUndoed.pop_back();
-	}
+	//if (scenePhotosUndoed.size() > 0)
+	//{
+	//	TakePhoto(scenePhotos);
+	//	ClearScene();
+	//	RestorePhoto(scenePhotosUndoed.back());
+	//	scenePhotosUndoed.pop_back();
+	//}
 }
 
 void ModuleScene::LoadScene(const char* scene, const char* scenePath, bool isTemporary)
@@ -863,7 +955,6 @@ bool ModuleScene::AddScene(const char* scene, const char* path)
 		if (gameobject->UUID != 1)
 		{
 			gameobjectsMap.insert(std::pair<unsigned, GameObject*>(gameobject->UUID, gameobject));
-
 			std::map<unsigned, GameObject*>::iterator it = gameobjectsMap.find(gameobject->parentUUID);
 			if (it != gameobjectsMap.end())
 			{
@@ -890,6 +981,23 @@ bool ModuleScene::AddScene(const char* scene, const char* path)
 		}
 	}
 
+	//We need to generate new UIDs for every GO, otherwise hierarchy will get messed up after temporary scene
+	
+	GameObject* parentGO = nullptr;
+	for (std::map<unsigned, GameObject*>::iterator it = gameobjectsMap.begin(); it != gameobjectsMap.end(); ++it)
+	{
+		if (it->second->parentUUID == 0u)
+		{
+			parentGO = it->second;
+			break;
+		}
+	}
+
+	//Recursive UID reassign
+	if (parentGO != nullptr)
+	{
+		AssignNewUUID(parentGO, 0u);
+	}
 
 	//Link Bones after all the hierarchy is imported
 
@@ -900,6 +1008,8 @@ bool ModuleScene::AddScene(const char* scene, const char* path)
 			cr->LinkBones();
 		}	
 	}
+
+	App->navigation->sceneLoaded(json);
 
 	RELEASE_ARRAY(data);
 	RELEASE(json);
@@ -924,7 +1034,10 @@ void ModuleScene::ClearScene()
 	App->spacePartitioning->kDTree.Calculate();
 	canvas = new GameObject("Canvas", 1);
 	root->InsertChild(canvas);
+	App->particles->CleanUp();
+	App->particles->Start();
 	selection.clear();
+	App->renderer->shadowCasters.clear();
 }
 
 void ModuleScene::Select(GameObject * gameobject)
@@ -1030,6 +1143,65 @@ void ModuleScene::Pick(float normalized_x, float normalized_y)
 	}
 }
 
+bool ModuleScene::Intersects(math::float3& closestPoint, const char* name, bool editor)
+{
+
+	float2 mouse((float*)&App->input->GetMousePosition());
+	LineSegment line;
+
+	float normalized_x, normalized_y;
+
+	if (editor)
+	{
+		math::float2 pos = App->renderer->viewScene->winPos;
+		math::float2 size(App->renderer->viewScene->current_width, App->renderer->viewScene->current_height);
+		normalized_x = ((mouse.x - pos.x) / size.x) * 2 - 1; //0 to 1 -> -1 to 1
+		normalized_y = (1 - (mouse.y - pos.y) / size.y) * 2 - 1; //0 to 1 -> -1 to 1
+
+		line = App->camera->editorcamera->DrawRay(normalized_x, normalized_y);
+	}
+	else
+	{
+#ifndef GAME_BUILD
+		math::float2 pos = App->renderer->viewGame->winPos;
+		math::float2 size(App->renderer->viewGame->current_width, App->renderer->viewGame->current_height);
+#else
+		math::float2 pos = math::float2::zero;
+		math::float2 size(App->window->width, App->window->height);
+#endif
+		normalized_x = ((mouse.x - pos.x) / size.x) * 2 - 1; //0 to 1 -> -1 to 1
+		normalized_y = (1 - (mouse.y - pos.y) / size.y) * 2 - 1; //0 to 1 -> -1 to 1
+
+		line = App->scene->maincamera->DrawRay(normalized_x, normalized_y);
+	}
+	debuglines.push_back(line);
+	std::list<std::pair<float, GameObject*>> GOs = GetStaticIntersections(line);
+	std::list<std::pair<float, GameObject*>> dGOs = GetDynamicIntersections(line);
+	GOs.merge(dGOs);
+
+	math::float3 intersectionPoint = math::float3::zero;
+	float closestTriangle = FLOAT_INF;
+	bool intersects = false;
+
+	for (const auto& go : GOs)
+	{
+		if (go.second->name != name) continue;
+
+		intersects = true;
+		float distance = FLOAT_INF;
+		if (go.second->Intersects(line, distance, &intersectionPoint)) //returns distance to line if triangle hit
+		{
+			if (distance < closestTriangle)
+			{
+				closestPoint = intersectionPoint;
+				closestTriangle = distance;
+			}
+		}
+	}
+
+	return intersects;
+}
+
 GameObject* ModuleScene::FindClosestParent(GameObject* go)
 {
 	if (go->parent != nullptr)
@@ -1123,7 +1295,7 @@ ComponentLight* ModuleScene::GetDirectionalLight() const
 	return nullptr;
 }
 
-std::list<std::pair<float, GameObject*>> ModuleScene::GetDynamicIntersections(const LineSegment & line)
+std::list<std::pair<float, GameObject*>> ModuleScene::GetDynamicIntersections(const LineSegment & line) const
 {
 	std::list<std::pair<float, GameObject*>> gos; 
 	std::unordered_set<GameObject*> intersections;
@@ -1142,7 +1314,7 @@ std::list<std::pair<float, GameObject*>> ModuleScene::GetDynamicIntersections(co
 	return gos;
 }
 
-std::list<std::pair<float, GameObject*>> ModuleScene::GetStaticIntersections(const LineSegment & line)
+std::list<std::pair<float, GameObject*>> ModuleScene::GetStaticIntersections(const LineSegment & line) const
 {
 	std::list<std::pair<float, GameObject*>> gos;
 	std::unordered_set<GameObject*> intersections;
