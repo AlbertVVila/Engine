@@ -65,6 +65,7 @@ public:
 
 	MaterialEditor *materialEditor = nullptr;
 	FileExplorer *fileExplorer = nullptr;
+	mutable bool wantKeyboard = false;
 
 private:
 	std::list<Panel*> panels;

@@ -277,6 +277,9 @@ void ModuleEditor::RenderGUI() const
 	PROFILE;
 	ImGui::End();
 	ImGui::Render();
+
+	wantKeyboard = ImGui::IsAnyItemActive();
+
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
