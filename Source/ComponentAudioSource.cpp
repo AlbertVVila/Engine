@@ -67,34 +67,36 @@ void ComponentAudioSource::Stop()
 	App->audioManager->StopWAV(lastHandler);	
 }
 
-void ComponentAudioSource::SetVolume() 
+void ComponentAudioSource::SetVolume(float newVol) 
 {
-	if (Sound3D) App->audioManager->SetVolume(lastHandler, volume3d);
-	else App->audioManager->SetVolume(lastHandler, volume);
+	volume = newVol;
 }
 
-void ComponentAudioSource::SetPan() 
+void ComponentAudioSource::SetPan(float newPan) 
 {
-	App->audioManager->SetPan(lastHandler, PAN);
+	PAN = newPan;
 }
 
-void ComponentAudioSource::SetLoop() 
+void ComponentAudioSource::SetLoop(bool newLoop) 
 {
-	App->audioManager->SetLoop(lastHandler, loop);
+	loop = newLoop;
 }
 
-void ComponentAudioSource::SetPitch()
+void ComponentAudioSource::SetPitch(float newPitch)
 {
-	App->audioManager->SetPitch(lastHandler, pitch);
+	pitch = newPitch;
 }
 
 
 void ComponentAudioSource::UpdateState() 
 {
-	SetVolume();
-	SetPan();
-	SetLoop();
-	SetPitch();
+	if (Sound3D) App->audioManager->SetVolume(lastHandler, volume3d);
+	else App->audioManager->SetVolume(lastHandler, volume);
+
+	App->audioManager->SetPan(lastHandler, PAN);
+	
+	App->audioManager->SetLoop(lastHandler, loop);
+	App->audioManager->SetPitch(lastHandler, pitch);
 }
 
 
@@ -127,7 +129,7 @@ void ComponentAudioSource::LoadSoundFile(const char* pathAudio)
 	}
 	else 
 	{
-		LOG("Audio Manager: FX %s loaded", pathAudio);
+		LOG("Audio Manager: FX %s loaded \n", pathAudio);
 		path = pathAudio;
 
 		ModuleFileSystem* fileSys = new ModuleFileSystem();
@@ -251,7 +253,7 @@ void ComponentAudioSource::DrawProperties()
 		ImGui::Checkbox("Play On Awake", &playOnAwake);
 		toolTip("The audio will play when the game starts");
 
-		if (ImGui::Checkbox("Loop", &loop)) SetLoop();
+		if (ImGui::Checkbox("Loop", &loop)) UpdateState();
 		toolTip("Set whether the audio clip replays after it finishes");
 
 		ImGui::Checkbox("3D Sound", &Sound3D);
@@ -292,6 +294,7 @@ void ComponentAudioSource::Save(JSON_value* value) const
 	value->AddFloat("Volume", volume);
 	value->AddInt("PlayOnAwake", playOnAwake);
 	value->AddString("Path", path.c_str());
+	value->AddInt("Sound3D", Sound3D);
 	value->AddFloat("LimitPan", limit3DPan);
 	value->AddFloat("FadeDist", fadeDist);
 	value->AddInt("Loop", loop);
@@ -305,6 +308,7 @@ void ComponentAudioSource::Load(JSON_value* value)
 	Component::Load(value);
 	volume = value->GetFloat("Volume");
 	playOnAwake = value->GetInt("PlayOnAwake");
+	Sound3D = value->GetInt("Sound3D");
 	path = value->GetString("Path");
 	if (path == "") path = "No Audio Selected";
 	limit3DPan = value->GetFloat("LimitPan");
