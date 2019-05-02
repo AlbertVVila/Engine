@@ -294,6 +294,7 @@ void ComponentAudioSource::Save(JSON_value* value) const
 	value->AddFloat("Volume", volume);
 	value->AddInt("PlayOnAwake", playOnAwake);
 	value->AddString("Path", path.c_str());
+	value->AddInt("Sound3D", Sound3D);
 	value->AddFloat("LimitPan", limit3DPan);
 	value->AddFloat("FadeDist", fadeDist);
 	value->AddInt("Loop", loop);
@@ -307,6 +308,7 @@ void ComponentAudioSource::Load(JSON_value* value)
 	Component::Load(value);
 	volume = value->GetFloat("Volume");
 	playOnAwake = value->GetInt("PlayOnAwake");
+	Sound3D = value->GetInt("Sound3D");
 	path = value->GetString("Path");
 	if (path == "") path = "No Audio Selected";
 	limit3DPan = value->GetFloat("LimitPan");
