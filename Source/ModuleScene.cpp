@@ -1019,6 +1019,7 @@ void ModuleScene::ClearScene()
 	staticFilteredGOs.clear();
 	dynamicFilteredGOs.clear();
 	lights.clear();
+	App->renderer->directionalLight = nullptr;
 	debuglines.clear();
 	selection.clear();
 	LOG("Reset volumetric AABBTree");
