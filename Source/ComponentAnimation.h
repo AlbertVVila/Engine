@@ -29,8 +29,6 @@ public:
 	ResourceAnimation* GetAnimFromStateMachine();
 	bool GetLoopFromStateMachine();
 	float GetSpeedFromStateMachine();
-	int GetStartFrameFromStateMachine();
-	int GetEndFrameFromStateMachine();
 	bool GetMustFinishFromStateMachine();
 	void PlayNextNode(unsigned blend);
 

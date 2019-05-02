@@ -32,6 +32,9 @@ public:
 
 
 	void SetAnimation(const char* animData);
+	unsigned GetAnimationSize();
+	void SaveAnimationData(char* data);
+	void SaveNewAnimation();
 
 	unsigned GetNumPositions(unsigned indexChannel) const;
 	const math::float3 GetPosition(unsigned indexChannel, unsigned indexPosition) const;

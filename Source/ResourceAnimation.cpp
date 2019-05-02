@@ -148,6 +148,88 @@ void ResourceAnimation::SetAnimation(const char* animationData)
 
 }
 
+unsigned ResourceAnimation::GetAnimationSize()
+{
+	unsigned size = 0u;
+
+	size += sizeof(double) * 2;
+	size += sizeof(int);
+
+	for (unsigned i = 0u; i < numberOfChannels; ++i)
+	{
+		size += sizeof(char)* MAX_BONE_NAME_LENGTH;
+		size += sizeof(int) * 2;
+
+		for (unsigned j = 0u; j < channels[i]->numPositionKeys; ++j)
+		{
+			size += sizeof(float) * 3;
+		}
+		for (unsigned j = 0u; j < channels[i]->numRotationKeys; ++j)
+		{
+			size += sizeof(Quat);
+		}
+	}
+	return size;
+}
+
+void ResourceAnimation::SaveAnimationData(char * data)
+{
+	char* cursor = data;
+
+	memcpy(cursor, &duration, sizeof(double));
+	cursor += sizeof(double);
+
+	memcpy(cursor, &framesPerSecond, sizeof(double));
+	cursor += sizeof(double);
+
+	memcpy(cursor, &numberOfChannels, sizeof(int));
+	cursor += sizeof(int);
+
+	for (unsigned j = 0u; j < numberOfChannels; j++)
+	{
+		memcpy(cursor, channels[j]->channelName.c_str(), sizeof(char) * MAX_BONE_NAME_LENGTH);  //Name
+		cursor += sizeof(char) * MAX_BONE_NAME_LENGTH;
+
+		memcpy(cursor, &channels[j]->numPositionKeys, sizeof(int));
+		cursor += sizeof(int);
+
+		memcpy(cursor, &channels[j]->numRotationKeys, sizeof(int));
+		cursor += sizeof(int);
+
+		//importar longitud array de posiciones e iterar
+
+		for (unsigned i = 0u; i < channels[j]->numPositionKeys; i++)
+		{
+			memcpy(cursor, &channels[j]->positionSamples[i], sizeof(float) * 3);
+			cursor += sizeof(float) * 3;
+		}
+
+		//importar longitud array de rotaciones e iterar
+
+		for (unsigned k = 0u; k < channels[j]->numRotationKeys; k++)
+		{
+			math::Quat newQuat = math::Quat(channels[j]->rotationSamples[k].x, channels[j]->rotationSamples[k].y,
+				channels[j]->rotationSamples[k].z, channels[j]->rotationSamples[k].w);
+
+			memcpy(cursor, &newQuat, sizeof(math::Quat));
+			cursor += sizeof(math::Quat);
+		}
+	}
+}
+
+void ResourceAnimation::SaveNewAnimation()
+{
+	char* animationData = nullptr;
+	unsigned animationSize = GetAnimationSize();
+	animationData = new char[animationSize];
+	SaveAnimationData(animationData);
+
+	App->fsystem->Save((ANIMATIONS + std::to_string(GetUID()) + ANIMATIONEXTENSION).c_str(), animationData, animationSize);
+	SetFile(ANIMATIONS);
+	SetExportedFile(std::to_string(GetUID()).c_str());
+	RELEASE_ARRAY(animationData);
+}
+
 unsigned ResourceAnimation::GetNumPositions(unsigned indexChannel) const
 {
 	return channels[indexChannel]->numPositionKeys;

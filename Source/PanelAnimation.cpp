@@ -30,7 +30,7 @@ void PanelAnimation::Draw()
 		ImGui::End();
 		return;
 	}
-	if (App->scene->selected != nullptr && App->scene->selected->isBoneRoot && (ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)) && ((ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)))->anim != nullptr)
+	if (App->scene->selected != nullptr && App->scene->selected->isBoneRoot && (ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)))
 	{
 		ComponentAnimation* compAnim = ((ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)));
 
@@ -86,6 +86,8 @@ void PanelAnimation::Draw()
 
 		if (ImGui::SliderInt("##label", &anim->currentFrame, 0, anim->duration))
 		{
+			compAnim->SetIndexChannels(App->scene->selected,anim);
+
 			UpdateGameObjectAnimation(App->scene->selected, anim);
 
 			if (!isCliping)
@@ -118,9 +120,12 @@ void PanelAnimation::Draw()
 		ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 - 43);
 		if (ImGui::Button("<<", ImVec2(23, 23)))
 		{
+			compAnim->SetIndexChannels(App->scene->selected, anim);
+
 			if (isCliping && anim->currentFrame - 1 > minFrame)
 			{
 				anim->currentFrame--;
+				
 				UpdateGameObjectAnimation(App->scene->selected, anim);
 				compAnim->editorController->current->time = anim->currentFrame / anim->framesPerSecond;
 			}
@@ -161,7 +166,7 @@ void PanelAnimation::Draw()
 					compAnim->editorController->current->minTime = minFrame / anim->framesPerSecond;
 					compAnim->editorController->current->maxTime = maxFrame / anim->framesPerSecond;
 				}
-				compAnim->editorController->current->isEditor = true;
+			
 				compAnim->isPlaying = true;
 			}
 		}
@@ -169,6 +174,8 @@ void PanelAnimation::Draw()
 		ImGui::SameLine();
 		if (ImGui::Button(">>", ImVec2(23, 23)))
 		{
+			compAnim->SetIndexChannels(App->scene->selected, anim);
+
 			if (anim->currentFrame < anim->duration)
 			{
 				anim->currentFrame++;
@@ -194,7 +201,11 @@ void PanelAnimation::Draw()
 			ImGui::DragInt("Frame End", &maxFrame, 1.0f, minFrame + 1, anim->duration); ImGui::PopItemWidth();
 			ImGui::SameLine(); ImGui::Text("Frame End");
 		}
-
+		
+		if(ImGui::Button("Create new Animation"))
+		{
+			CreateAnimationFromClip(anim, minFrame, maxFrame);
+		}
 	}
 
 	ImGui::End();
@@ -203,6 +214,7 @@ void PanelAnimation::Draw()
 
 void PanelAnimation::UpdateGameObjectAnimation(GameObject * go, ResourceAnimation* anim)
 {
+
 	if (go->animationIndexChannel != 999u)
 	{
 		go->transform->SetPosition(anim->GetPosition(go->animationIndexChannel, anim->currentFrame));
@@ -218,7 +230,6 @@ void PanelAnimation::UpdateGameObjectAnimation(GameObject * go, ResourceAnimatio
 void PanelAnimation::CreateAnimationFromClip(ResourceAnimation* anim, int minFrame, int maxFrame)
 {
 	ResourceAnimation* newAnim = (ResourceAnimation*)App->resManager->CreateNewResource(TYPE::ANIMATION);
-	ComponentAnimation* compAnim = ((ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)));
 
 	for (int i = 0; i < anim->numberOfChannels; ++i)
 	{
@@ -263,4 +274,7 @@ void PanelAnimation::CreateAnimationFromClip(ResourceAnimation* anim, int minFra
 	newAnim->numberFrames = maxFrame - minFrame;
 	newAnim->numberOfChannels = anim->numberOfChannels;
 	newAnim->durationInSeconds = (maxFrame - minFrame) / anim->framesPerSecond;
+
+	newAnim->SaveNewAnimation();
+	newAnim->name = (anim->name + "1").c_str();
 }

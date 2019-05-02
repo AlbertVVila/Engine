@@ -20,7 +20,7 @@ ResourceStateMachine::ResourceStateMachine(const ResourceStateMachine& resource)
 
 	for(const auto& clip : resource.clips)
 	{
-		clips.push_back(Clip(clip.name, clip.UID, clip.loop, clip.mustFinish, clip.clipSpeed, clip.startFrame , clip.endFrame));
+		clips.push_back(Clip(clip.name, clip.UID, clip.loop, clip.mustFinish, clip.clipSpeed));
 	}
 
 	for (const auto& node : resource.nodes)
@@ -123,15 +123,7 @@ void ResourceStateMachine::SetStateMachine(const char* data)
 		memcpy(&speed, data, sizeof(float));
 		data += sizeof(float);
 
-		int startFrame;
-		memcpy(&startFrame, data, sizeof(int));
-		data += sizeof(int);
-		
-		int endFrame;
-		memcpy(&endFrame, data, sizeof(int));
-		data += sizeof(int);
-
-		clips.push_back(Clip(clipName, uid, loop, finish, speed, startFrame, endFrame));
+		clips.push_back(Clip(clipName, uid, loop, finish, speed));
 	}
 
 	//import nodes vector
@@ -207,7 +199,6 @@ unsigned ResourceStateMachine::GetStateMachineSize()
 		size += sizeof(bool);
 		size += sizeof(bool);
 		size += sizeof(float);
-		size += sizeof(int) * 2;
 	}
 
 	size += sizeof(int);
@@ -258,12 +249,6 @@ void ResourceStateMachine::SaveStateMachineData(char* data)
 
 		memcpy(cursor, &clip.clipSpeed, sizeof(float));
 		cursor += sizeof(float);
-
-		memcpy(cursor, &clip.startFrame, sizeof(int));
-		cursor += sizeof(int);
-
-		memcpy(cursor, &clip.endFrame, sizeof(int));
-		cursor += sizeof(int);
 	}
 
 	unsigned nodeSize = nodes.size();
@@ -318,7 +303,7 @@ void ResourceStateMachine::Save()
 
 void ResourceStateMachine::AddClip(const HashString name, unsigned UID, const bool loop)
 {
-	clips.push_back(Clip(name, UID, loop, false, 1.0f ,0 ,0));
+	clips.push_back(Clip(name, UID, loop, false, 1.0f));
 }
 
 void ResourceStateMachine::AddNode(const HashString name, const HashString clipName)
@@ -386,16 +371,6 @@ unsigned ResourceStateMachine::GetClipResource(unsigned index)
 bool ResourceStateMachine::GetClipLoop(unsigned index)
 {
 	return clips[index].loop;
-}
-
-int ResourceStateMachine::GetClipStartFrame(unsigned index)
-{
-	return clips[index].startFrame;
-}
-
-int ResourceStateMachine::GetClipEndFrame(unsigned index)
-{
-	return clips[index].endFrame;
 }
 
 bool ResourceStateMachine::GetClipMustFinish(unsigned index)
@@ -466,16 +441,6 @@ void ResourceStateMachine::SetClipResource(unsigned index, unsigned UID)
 void ResourceStateMachine::SetClipLoop(unsigned index, bool loop)
 {
 	clips[index].loop = loop;
-}
-
-void ResourceStateMachine::SetClipStartFrame(unsigned index, int startTime)
-{
-	clips[index].startFrame = startTime;
-}
-
-void ResourceStateMachine::SetClipEndFrame(unsigned index, int endTime)
-{
-	clips[index].endFrame = endTime;
 }
 
 void ResourceStateMachine::SetClipSpeed(unsigned index, float speed)
