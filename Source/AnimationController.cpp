@@ -23,9 +23,9 @@ void AnimationController::Play(ResourceAnimation* anim, bool loop, bool mustFini
 	newInstance->anim = anim;
 	newInstance->mustFinish = mustFinish;
 	newInstance->speed = speed;
-	newInstance->time = startFrame / (current->anim->framesPerSecond);
-	newInstance->minTime = startFrame / (current->anim->framesPerSecond);
-	newInstance->maxTime = endFrame / (current->anim->framesPerSecond);
+	newInstance->time = startFrame / (anim->framesPerSecond);
+	newInstance->minTime = startFrame / (anim->framesPerSecond);
+	newInstance->maxTime = endFrame / (anim->framesPerSecond);
 	newInstance->loop = loop;
 	current = newInstance;
 }
@@ -44,9 +44,9 @@ void AnimationController::PlayNextNode(ResourceAnimation * anim, bool loop, bool
 	current->loop = loop;
 	current->mustFinish = mustFinish;
 	current->speed = speed;
-	current->time = startFrame / (current->anim->framesPerSecond);
-	current->minTime = startFrame / (current->anim->framesPerSecond);
-	current->maxTime = endFrame / (current->anim->framesPerSecond);
+	current->time = startFrame / (anim->framesPerSecond);
+	current->minTime = startFrame / (anim->framesPerSecond);
+	current->maxTime = endFrame / (anim->framesPerSecond);
 }
 
 
@@ -68,14 +68,14 @@ void AnimationController::UpdateInstance(Instance* instance, float dt)
 {
 	ResourceAnimation* anim = instance->anim;
 
-	if (anim != nullptr && anim->durationInSeconds > 0)
+	if (anim != nullptr && (current->maxTime - current->minTime) > 0)
 	{
 		float trueDt = dt * instance->speed;
 
 		if (trueDt > 0.0f)
 		{
 			float timeRemainingA = current->maxTime - instance->time;
-			LOG( std::to_string(timeRemainingA).c_str());
+			//LOG( std::to_string(timeRemainingA).c_str());
 			if (trueDt <= timeRemainingA)
 			{
 				instance->time += trueDt;

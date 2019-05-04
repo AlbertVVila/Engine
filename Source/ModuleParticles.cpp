@@ -238,6 +238,11 @@ void ModuleParticles::AddParticleSystem(ComponentParticles* cp)
 	particleSystems.push_back(cp);
 }
 
+void ModuleParticles::RemoveParticleSystem(ComponentParticles* cp)
+{
+	particleSystems.remove(cp);
+}
+
 void ModuleParticles::AddTrailRenderer(ComponentTrail* cr)
 {
 	trails.push_back(cr);

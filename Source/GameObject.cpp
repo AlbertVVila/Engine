@@ -4,12 +4,14 @@
 #include "ModuleProgram.h"
 #include "ModuleEditor.h"
 #include "ModuleCamera.h"
+#include "ModuleTime.h"
 #include "ModuleInput.h"
 #include "ModuleScene.h"
 #include "ModuleTextures.h"
 #include "ModuleRender.h"
 #include "ModuleSpacePartitioning.h"
 #include "ModuleAudioManager.h"
+#include "ModuleNavigation.h"
 
 #include "Component.h"
 #include "ComponentTransform.h"
@@ -47,7 +49,7 @@
 #include "GL/glew.h"
 #include "imgui.h"
 
-#define MAX_NAME 64
+#define MAX_NAME 128
 #define IMGUI_RIGHT_MOUSE_BUTTON 1
 
 GameObject::GameObject(const char * name, unsigned uuid) : name(name), UUID(uuid)
@@ -74,6 +76,9 @@ GameObject::GameObject(const GameObject & gameobject)
 
 	assert(!(isVolumetric && hasLight));
 	bbox = gameobject.bbox;
+	navigable = gameobject.navigable;
+	walkable = gameobject.walkable;
+	noWalkable = gameobject.noWalkable;
 
 	for (const auto& component : gameobject.components)
 	{
@@ -134,7 +139,7 @@ void GameObject::DrawProperties()
 	strcpy(go_name, name.c_str());
 	ImGui::InputText("Name", go_name, MAX_NAME);
 	name = go_name;
-	//delete[] go_name;
+	delete[] go_name;
 
 	if (this != App->scene->root)
 	{
@@ -144,6 +149,21 @@ void GameObject::DrawProperties()
 		}
 
 		ImGui::SameLine();
+		//navigability
+		if (isVolumetric && isStatic) 
+		{
+			if (ImGui::Checkbox("Navigable", &navigable))
+			{
+				App->navigation->navigableObjectToggled(this, navigable);
+			}
+			if (navigable)
+			{
+				//defines walls and this stuff
+				ImGui::Checkbox("Walkable", &walkable);
+				ImGui::Checkbox("No Walkable", &noWalkable);
+			}
+		}
+
 		if (ImGui::Checkbox("Static", &isStatic))
 		{
 			if (isStatic && GetComponent(ComponentType::Renderer) != nullptr)
@@ -198,18 +218,18 @@ void GameObject::Update()
 	}
 	//TESTING
 	//---------------------------------------------
-	/*if (isBoneRoot)
+	if (isBoneRoot && App->time->gameState == GameState::RUN)
 	{
 		ComponentAnimation* compAnim = (ComponentAnimation*)GetComponent(ComponentType::Animation);
 		if (App->input->GetKey(SDL_SCANCODE_X))
 		{
-			compAnim->SendTriggerToStateMachine("faster");
+			compAnim->SendTriggerToStateMachine("trigger1");
 		}
 		if (App->input->GetKey(SDL_SCANCODE_C))
 		{
-			compAnim->SendTriggerToStateMachine("slower");
+			compAnim->SendTriggerToStateMachine("trigger2");
 		}
-	}*/
+	}
 	//---------------------------------------------
 
 	for (const auto& child : children)
@@ -268,6 +288,7 @@ Component* GameObject::CreateComponent(ComponentType type)
 			hasLight = true;
 			light = (ComponentLight*)component;
 			App->spacePartitioning->aabbTreeLighting.InsertGO(this);
+			movedFlag = true;
 		}
 		else
 		{
@@ -562,9 +583,9 @@ void GameObject::SetLightUniforms(unsigned shader) const
 	//LOG("%s got %d lights", name.c_str(), lights.size());
 	for (GameObject* go : lights)
 	{
-		if (!go->light->enabled) continue;
-
 		assert(go->light != nullptr);
+
+		if (!go->light->enabled) continue;
 		switch (go->light->lightType)
 		{
 		case LightType::DIRECTIONAL:
@@ -680,15 +701,20 @@ AABB GameObject::GetBoundingBox() const
 	return bbox;
 }
 
-bool GameObject::Intersects(const LineSegment & line, float &distance) const
+bool GameObject::Intersects(const LineSegment & line, float &distance, math::float3* intersectionPoint) const
 {
 	LineSegment localLine(line);
 	localLine.Transform(GetGlobalTransform().Inverted());
 	ComponentRenderer* mesh_renderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
 	if (mesh_renderer != nullptr)
 	{
-		if (mesh_renderer->mesh->Intersects(localLine, &distance))
+		if (mesh_renderer->mesh->Intersects(localLine, &distance, intersectionPoint))
 		{
+			if (intersectionPoint != nullptr)
+			{
+				math::float3 worldPoint = GetGlobalTransform().MulPos(*intersectionPoint);
+				*intersectionPoint = worldPoint;
+			}
 			return true;
 		}
 	}
@@ -782,6 +808,9 @@ void GameObject::Save(JSON_value *gameobjects) const
 		gameobject->AddUint("ActiveSelf", activeSelf);
 		gameobject->AddUint("isBoneRoot", isBoneRoot);
 		gameobject->AddFloat4x4("baseState", baseState);
+		gameobject->AddUint("Navigable", navigable);
+		gameobject->AddUint("Walkable", walkable);
+		gameobject->AddUint("No Walkable", noWalkable);
 
 		JSON_value *componentsJSON = gameobject->CreateValue(rapidjson::kArrayType);
 		for (auto &component : components)
@@ -811,6 +840,9 @@ void GameObject::Load(JSON_value *value)
 	activeSelf = value->GetUint("ActiveSelf", 1);
 	isBoneRoot = value->GetUint("isBoneRoot");
 	baseState = value->GetFloat4x4("baseState");
+	navigable = value->GetUint("Navigable");
+	walkable = value->GetUint("Walkable");
+	noWalkable = value->GetUint("No Walkable");
 
 	JSON_value* componentsJSON = value->GetValue("Components");
 	for (unsigned i = 0; i < componentsJSON->Size(); i++)
@@ -1015,7 +1047,7 @@ void GameObject::UpdateTransforms(math::float4x4 parentGlobal)
 
 bool GameObject::CheckDelete()
 {
-	PROFILE;
+	//PROFILE;
 	if (deleteFlag) //Delete GO
 	{
 		CleanUp();

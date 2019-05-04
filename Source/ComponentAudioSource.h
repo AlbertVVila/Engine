@@ -22,12 +22,12 @@ public:
 	ComponentAudioSource(const ComponentAudioSource& component);
 	~ComponentAudioSource();
 
-	void Play();
-	void Stop();
-	void SetVolume();
-	void SetPan();
-	void SetLoop();
-	void SetPitch();
+	ENGINE_API void Play();
+	ENGINE_API void Stop();
+	ENGINE_API void SetVolume(float newVol);
+	ENGINE_API void SetPan(float newPan);
+	ENGINE_API void SetLoop(bool newLoop);
+	ENGINE_API void SetPitch(float newPitch);
 
 	ComponentAudioSource* Clone() const;
 	void LoadSoundFile(const char* pathFile);
@@ -41,8 +41,10 @@ public:
 
 	void DrawDebugSound();
 
+	ENGINE_API void UpdateState();
+
 private:
-	void UpdateState();
+	
 	float Volume3D();
 	float Pan3D();
 

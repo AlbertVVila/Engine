@@ -31,6 +31,7 @@ public:
 	void Render(float dt, const ComponentCamera* camera);
 
 	void AddParticleSystem(ComponentParticles* cp);
+	void RemoveParticleSystem(ComponentParticles * cp);
 	void AddTrailRenderer(ComponentTrail* cr);
 	void RemoveTrailRenderer(ComponentTrail* cr);
 

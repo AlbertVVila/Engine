@@ -172,6 +172,7 @@ void ComponentLight::Load(JSON_value* value)
 	else
 	{
 		App->spacePartitioning->aabbTreeLighting.ReleaseNode(gameobject->treeNode);
+		gameobject->treeNode = nullptr;
 	}
 
 	if (lightType == LightType::SPOT)

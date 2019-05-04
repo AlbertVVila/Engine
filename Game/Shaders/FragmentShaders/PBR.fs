@@ -244,7 +244,7 @@ void main()
 	
 	
 	color *= lights.ambient_color;
-	color *= get_occlusion_color();
+	//color *= get_occlusion_color();
 	color += get_emissive_color();
 	color = vec3(pow(color.r, (1.0 / 2.2)), pow(color.g, (1.0 / 2.2)), pow(color.b, (1.0 / 2.2)));
 	Fragcolor = vec4(color, albedo.a);

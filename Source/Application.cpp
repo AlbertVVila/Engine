@@ -16,6 +16,7 @@
 #include "ModuleFontLoader.h"
 #include "ModuleScript.h"
 #include "ModuleAudioManager.h"
+#include "ModuleNavigation.h"
 #include "ModuleDevelopmentBuildDebug.h"
 #include "ModuleParticles.h"
 
@@ -48,6 +49,8 @@ Application::Application()
 	modules.push_back(spacePartitioning = new ModuleSpacePartitioning());
 	modules.push_back(scene = new ModuleScene());
 	modules.push_back(time = new ModuleTime());
+	modules.push_back(navigation = new ModuleNavigation());
+	modules.push_back(spacePartitioning = new ModuleSpacePartitioning());
 	modules.push_back(ui = new ModuleUI());
 	modules.push_back(fontLoader = new ModuleFontLoader());
 	modules.push_back(audioManager = new ModuleAudioManager());
@@ -99,7 +102,7 @@ bool Application::Init()
 
 update_status Application::Update()
 {
-	PROFILE;
+	//PROFILE;
 
 	SetTimer();
 	update_status ret = UPDATE_CONTINUE;
