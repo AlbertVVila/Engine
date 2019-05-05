@@ -95,10 +95,10 @@ void ModuleScript::LoadFromMemory(int resource) //TODO: Load from memory in ship
 	}
 }
 
-Script* ModuleScript::GetScript(const std::string& script)
+Script* ModuleScript::GetScript(const std::string& name)
 {
 	HINSTANCE dll;
-	std::map<std::string, std::pair<HINSTANCE, int>>::iterator itDll = loadedDLLs.find(script);
+	std::map<std::string, std::pair<HINSTANCE, int>>::iterator itDll = loadedDLLs.find(name);
 	if (itDll != loadedDLLs.end())
 	{
 		dll = itDll->second.first;
@@ -106,11 +106,11 @@ Script* ModuleScript::GetScript(const std::string& script)
 	}
 	else
 	{
-		dll = LoadLibrary((script + DLL).c_str());
+		dll = LoadLibrary((name + DLL).c_str());
 		if (dll != nullptr)
 		{
 			loadedDLLs.insert(std::pair<std::string,
-				std::pair<HINSTANCE, int>>(script, std::pair<HINSTANCE, int>(dll, 1)));
+				std::pair<HINSTANCE, int>>(name, std::pair<HINSTANCE, int>(dll, 1)));
 		}
 		else
 		{
@@ -124,6 +124,8 @@ Script* ModuleScript::GetScript(const std::string& script)
 	if (Create != nullptr)
 	{
 		Script* script = Create();
+		script->SetApp(App);
+		script->name = name;
 		componentsScript.push_back(script);
 		return script;
 	}

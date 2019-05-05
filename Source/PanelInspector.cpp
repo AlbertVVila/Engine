@@ -3,9 +3,11 @@
 #include "ModuleScene.h"
 #include "ModuleEditor.h"
 #include "ModuleFileSystem.h"
+#include "ModuleScript.h"
 
 #include "GameObject.h"
 #include "Component.h"
+#include "BaseScript.h"
 
 #include "PanelInspector.h"
 #include "PanelHierarchy.h"
@@ -18,7 +20,7 @@
 PanelInspector::PanelInspector()
 {
 	componentList = { {"Transform", ComponentType::Transform}, {"Renderer", ComponentType::Renderer},
-	{"Camera", ComponentType::Camera},  {"Light", ComponentType::Light} , {"Script", ComponentType::Script},
+	{"Camera", ComponentType::Camera},  {"Light", ComponentType::Light},
 	{"Animation", ComponentType::Animation}, {"Particle System", ComponentType::Particles},
 	{"Trail Renderer", ComponentType::Trail},
 	{"Animation", ComponentType::Animation}, {"Reverb Zone", ComponentType::ReverbZone}, {"Audio Listener", ComponentType::AudioListener},
@@ -88,7 +90,9 @@ void PanelInspector::Draw()
 			for (int i = 0; i < scriptList.size(); i++)
 				if (ImGui::Selectable(scriptList[i].c_str()))
 				{
-					LOG("SELECTED"); //TODO: Add to gameobject components
+					Script* script = App->scripting->GetScript(scriptList[i]);
+					script->SetGameObject(App->scene->selected);
+					App->scene->selected->components.push_back((Component*)script);
 				}
 			ImGui::EndPopup();
 		}

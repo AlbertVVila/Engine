@@ -17,7 +17,6 @@ struct Frame;
 struct Texture;
 class JSON_value;
 class Animation;
-class Script;
 
 class GameObject
 {
@@ -39,15 +38,12 @@ public:
 
 	ENGINE_API void SetActive(bool active);
 
-	Component* CreateComponent(ComponentType type);
+	Component* CreateComponent(ComponentType type, JSON_value* value = nullptr);
 
 	template <class T>
 	T* GetComponent() const;
 	ENGINE_API Component* GetComponentOld(ComponentType type) const;
 	ENGINE_API Component* GetComponentInChildren(ComponentType type) const;
-
-	ENGINE_API Script* GetScript() const; //Returns first script found in GameObject
-	ENGINE_API Script* FindScriptByName(const char* name) const;
 
 	ENGINE_API std::vector<Component *> GetComponents(ComponentType type) const;
 	ENGINE_API std::vector<Component *> GetComponentsInChildren(ComponentType type) const;
@@ -130,5 +126,4 @@ T* GameObject::GetComponent() const
 			return c;
 	}
 }
-
 #endif __GameObject_h__

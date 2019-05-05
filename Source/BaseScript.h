@@ -9,12 +9,11 @@ class GameObject;
 class JSON_value;
 struct ImGuiContext;
 
-class Script : public Component
+class ENGINE_API Script : public Component
 {
 public:
 	Script(const Script& script);
-	Script(GameObject* gameobject);
-	ENGINE_API Script();
+	Script();
 	~Script();
 
 	virtual Script* Clone() const;
@@ -24,8 +23,8 @@ public:
 	
 	void DrawProperties();
 
-	ENGINE_API void Load(JSON_value* json);
-	ENGINE_API void Save(JSON_value* json) const;
+	void Load(JSON_value* json);
+	void Save(JSON_value* json) const;
 	
 	virtual void Expose(ImGuiContext* context); //TODO: Awake, OnEnable, OnDisable
 	virtual void Serialize(JSON_value* json) const {} //TODO: load save
@@ -42,6 +41,6 @@ protected:
 
 };
 
-ENGINE_API Script* CreateScript();
+extern "C" ENGINE_API Script* CreateScript();
 
 #endif __BaseScript_h__

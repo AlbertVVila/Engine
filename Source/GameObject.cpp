@@ -7,6 +7,7 @@
 #include "ModuleTime.h"
 #include "ModuleInput.h"
 #include "ModuleScene.h"
+#include "ModuleScript.h"
 #include "ModuleTextures.h"
 #include "ModuleRender.h"
 #include "ModuleSpacePartitioning.h"
@@ -29,6 +30,7 @@
 #include "ComponentAudioListener.h"
 #include "ComponentAudioSource.h"
 #include "ComponentReverbZone.h"
+#include "BaseScript.h"
 
 
 #include "ResourceMesh.h"
@@ -211,7 +213,7 @@ void GameObject::Update()
 
 	for (auto& component : components)
 	{
-		if (component->enabled)
+		if (component->enabled && component->type != ComponentType::Script)
 		{
 			component->Update();
 		}
@@ -261,7 +263,7 @@ void GameObject::SetActive(bool active)
 	}
 }
 
-Component* GameObject::CreateComponent(ComponentType type)
+Component* GameObject::CreateComponent(ComponentType type, JSON_value* value)
 {
 	Component* component = nullptr;
 	switch (type)
@@ -327,7 +329,13 @@ Component* GameObject::CreateComponent(ComponentType type)
 		component = new Button(this);
 		break;
 	case ComponentType::Script:
-		//component = new ComponentScript(this);
+		{
+			assert(value != nullptr); //Only used for loading from json
+			std::string name = value->GetString("script");
+			Script* script = App->scripting->GetScript(name);
+			script->SetGameObject(this);
+			component = (Component*)script;
+		}
 		break;
 	case ComponentType::Particles:
 		component = new ComponentParticles(this);
@@ -849,7 +857,7 @@ void GameObject::Load(JSON_value *value)
 	{
 		JSON_value* componentJSON = componentsJSON->GetValue(i);
 		ComponentType type = (ComponentType)componentJSON->GetUint("Type");
-		Component* component = CreateComponent(type);
+		Component* component = CreateComponent(type, componentJSON);
 		component->Load(componentJSON);
 	}
 
