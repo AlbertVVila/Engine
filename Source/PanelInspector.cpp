@@ -57,7 +57,7 @@ void PanelInspector::Draw()
 				if (ImGui::Selectable(componentList[i].first))
 				{
 					ComponentType type = componentList[i].second;
-					if (App->scene->selected->GetComponent(type) != nullptr && 
+					if (App->scene->selected->GetComponentOld(type) != nullptr && 
 						(type == ComponentType::Renderer || type == ComponentType::Transform))
 					{
 						openPopup = true;

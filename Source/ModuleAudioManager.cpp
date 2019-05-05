@@ -103,7 +103,7 @@ void ModuleAudioManager::DrawGUI()
 
 void ModuleAudioManager::setMainListener(int newMainListener) 
 {
-	for (int i = 0; i < audioListeners.size(); ++i) audioListeners[i]->isMainListener = false;
+	for (size_t i = 0; i < audioListeners.size(); ++i) audioListeners[i]->isMainListener = false;
 
 	audioListeners[newMainListener]->isMainListener = true;
 	mainListener = audioListeners[newMainListener];
@@ -111,7 +111,7 @@ void ModuleAudioManager::setMainListener(int newMainListener)
 
 void ModuleAudioManager::setMainListener(ComponentAudioListener* AL) 
 {
-	for (int i = 0; i < audioListeners.size(); ++i) if (AL == audioListeners[i]) setMainListener(i);
+	for (size_t i = 0; i < audioListeners.size(); ++i) if (AL == audioListeners[i]) setMainListener(i);
 }
 
 bool ModuleAudioManager::CleanUp() 

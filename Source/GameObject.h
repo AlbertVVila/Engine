@@ -40,7 +40,10 @@ public:
 	ENGINE_API void SetActive(bool active);
 
 	Component* CreateComponent(ComponentType type);
-	ENGINE_API Component* GetComponent(ComponentType type) const;
+
+	template <class T>
+	T* GetComponent() const;
+	ENGINE_API Component* GetComponentOld(ComponentType type) const;
 	ENGINE_API Component* GetComponentInChildren(ComponentType type) const;
 
 	ENGINE_API Script* GetScript() const; //Returns first script found in GameObject
@@ -118,5 +121,14 @@ public:
 
 };
 
-#endif __GameObject_h__
+template<class T>
+T* GameObject::GetComponent() const
+{
+	for (auto &component : components)
+	{
+		if (T* c = dynamic_cast<T*>(component))
+			return c;
+	}
+}
 
+#endif __GameObject_h__

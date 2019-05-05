@@ -129,7 +129,7 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 		stackParent.top()->InsertChild(goNode); stackParent.pop();
 
 		ComponentTransform* nodeTransform = (ComponentTransform*)goNode->CreateComponent(ComponentType::Transform);
-		ComponentTransform* nodeParentTransform = (ComponentTransform*)goNode->parent->GetComponent(ComponentType::Transform);
+		ComponentTransform* nodeParentTransform = (ComponentTransform*)goNode->parent->GetComponentOld(ComponentType::Transform);
 		nodeTransform->UpdateTransform();
 		nodeTransform->SetLocalTransform(reinterpret_cast<const math::float4x4&>(aNode->mTransformation), nodeParentTransform->global);
 		nodeTransform->UpdateGlobalTransform();
@@ -168,7 +168,7 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 			ComponentRenderer* crenderer = (ComponentRenderer*)meshGO->CreateComponent(ComponentType::Renderer);
 			crenderer->mesh = mesh;
 			meshGO->CreateComponent(ComponentType::Transform);
-			ComponentTransform* cTransform = (ComponentTransform*)(meshGO->GetComponent(ComponentType::Transform));
+			ComponentTransform* cTransform = (ComponentTransform*)(meshGO->GetComponentOld(ComponentType::Transform));
 			cTransform->SetLocalTransform(nodeTransform->global, math::float4x4::identity);
 			sceneGO->InsertChild(meshGO);
 			++totalMeshes;
@@ -190,7 +190,7 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 		ImportAnimation(*aiscene.mAnimations[i], animationData);
 
 		sceneGO->CreateComponent(ComponentType::Animation);
-		ComponentAnimation* animationComponent = (ComponentAnimation*)sceneGO->GetComponent(ComponentType::Animation);
+		ComponentAnimation* animationComponent = (ComponentAnimation*)sceneGO->GetComponentOld(ComponentType::Animation);
 
 		ResourceAnimation* animation = nullptr;
 		char* metaData = nullptr;

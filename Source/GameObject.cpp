@@ -91,16 +91,16 @@ GameObject::GameObject(const GameObject & gameobject)
 		}
 		if (componentcopy->type == ComponentType::Button)
 		{
-			((ComponentButton*)componentcopy)->text->gameobject = this;
-			((ComponentButton*)componentcopy)->buttonImage->gameobject = this;
-			((ComponentButton*)componentcopy)->highlightedImage->gameobject = this;
-			((ComponentButton*)componentcopy)->pressedImage->gameobject = this;
-			((ComponentButton*)componentcopy)->rectTransform->gameobject = this;
+			((Button*)componentcopy)->text->gameobject = this;
+			((Button*)componentcopy)->buttonImage->gameobject = this;
+			((Button*)componentcopy)->highlightedImage->gameobject = this;
+			((Button*)componentcopy)->pressedImage->gameobject = this;
+			((Button*)componentcopy)->rectTransform->gameobject = this;
 		}
 	}
 	if (!App->scene->photoEnabled)
 	{
-		if (GetComponent(ComponentType::Renderer) != nullptr || GetComponent(ComponentType::Light) != nullptr)
+		if (GetComponentOld(ComponentType::Renderer) != nullptr || GetComponentOld(ComponentType::Light) != nullptr)
 		{
 			App->scene->AddToSpacePartition(this);
 		}
@@ -166,7 +166,7 @@ void GameObject::DrawProperties()
 
 		if (ImGui::Checkbox("Static", &isStatic))
 		{
-			if (isStatic && GetComponent(ComponentType::Renderer) != nullptr)
+			if (isStatic && GetComponentOld(ComponentType::Renderer) != nullptr)
 			{
 				SetStaticAncestors();
 				App->scene->dynamicGOs.erase(this);
@@ -220,7 +220,7 @@ void GameObject::Update()
 	//---------------------------------------------
 	if (isBoneRoot && App->time->gameState == GameState::RUN)
 	{
-		ComponentAnimation* compAnim = (ComponentAnimation*)GetComponent(ComponentType::Animation);
+		ComponentAnimation* compAnim = (ComponentAnimation*)GetComponentOld(ComponentType::Animation);
 		if (App->input->GetKey(SDL_SCANCODE_X))
 		{
 			compAnim->SendTriggerToStateMachine("trigger1");
@@ -315,16 +315,16 @@ Component* GameObject::CreateComponent(ComponentType type)
 		isBoneRoot = true;
 		break;
 	case ComponentType::Transform2D:
-		component = new ComponentTransform2D(this);
+		component = new Transform2D(this);
 		break;
 	case ComponentType::Text:
-		component = new ComponentText(this);
+		component = new Text(this);
 		break;
 	case ComponentType::Image:
 		component = new ComponentImage(this);
 		break;
 	case ComponentType::Button:
-		component = new ComponentButton(this);
+		component = new Button(this);
 		break;
 	case ComponentType::Script:
 		component = new ComponentScript(this);
@@ -434,7 +434,7 @@ void GameObject::RemoveComponent(const Component& component)
 
 Script* GameObject::GetScript() const
 {
-	ComponentScript* component = (ComponentScript*)GetComponent(ComponentType::Script);
+	ComponentScript* component = (ComponentScript*)GetComponentOld(ComponentType::Script);
 	if (component != nullptr)
 	{
 		return component->GetScript();
@@ -467,7 +467,7 @@ void GameObject::InsertChild(GameObject* child)
 	child->parent = this;
 }
 
-Component * GameObject::GetComponent(ComponentType type) const
+ENGINE_API Component * GameObject::GetComponentOld(ComponentType type) const //Deprecated
 {
 	for (auto &component : components)
 	{
@@ -488,7 +488,7 @@ ENGINE_API Component * GameObject::GetComponentInChildren(ComponentType type) co
 		const GameObject* go = GOs.top();
 		GOs.pop();
 
-		Component* component = go->GetComponent(type);
+		Component* component = go->GetComponentOld(type);
 		if (component != nullptr) return component;
 
 		for (const auto &child : go->children)
@@ -705,7 +705,7 @@ bool GameObject::Intersects(const LineSegment & line, float &distance, math::flo
 {
 	LineSegment localLine(line);
 	localLine.Transform(GetGlobalTransform().Inverted());
-	ComponentRenderer* mesh_renderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
+	ComponentRenderer* mesh_renderer = (ComponentRenderer*)GetComponentOld(ComponentType::Renderer);
 	if (mesh_renderer != nullptr)
 	{
 		if (mesh_renderer->mesh->Intersects(localLine, &distance, intersectionPoint))
@@ -744,7 +744,7 @@ bool GameObject::BboxIntersects(const GameObject* target) const
 
 void GameObject::UpdateBBox()
 {
-	ComponentRenderer* renderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
+	ComponentRenderer* renderer = (ComponentRenderer*)GetComponentOld(ComponentType::Renderer);
 	if (renderer != nullptr)
 	{
 		if (renderer->mesh != nullptr)
@@ -761,7 +761,7 @@ void GameObject::DrawBBox() const
 		child->DrawBBox();
 	}
 
-	ComponentRenderer *renderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
+	ComponentRenderer *renderer = (ComponentRenderer*)GetComponentOld(ComponentType::Renderer);
 	if (renderer == nullptr || renderer->mesh == nullptr) return;
 
 	if (renderer->mesh->GetReferences() > 0u)
@@ -861,7 +861,7 @@ void GameObject::Load(JSON_value *value)
 	if (hasLight)
 	{
 		transform->UpdateTransform();
-		ComponentLight* light = (ComponentLight*)GetComponent(ComponentType::Light);
+		ComponentLight* light = (ComponentLight*)GetComponentOld(ComponentType::Light);
 		if (light->lightType == LightType::DIRECTIONAL)
 		{
 			App->renderer->directionalLight = light;
@@ -961,7 +961,7 @@ void GameObject::SetStaticAncestors()
 		GameObject* go = parents.top();
 		go->isStatic = true;
 
-		if (go->GetComponent(ComponentType::Renderer) != nullptr)
+		if (go->GetComponentOld(ComponentType::Renderer) != nullptr)
 		{
 			if (go->treeNode != nullptr && isVolumetric)
 				App->spacePartitioning->aabbTree.ReleaseNode(go->treeNode);

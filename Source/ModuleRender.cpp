@@ -317,7 +317,7 @@ void ModuleRender::ComputeShadows()
 		//TODO: Improve this avoiding shuffle every frame
 		for (GameObject* go : App->scene->dynamicFilteredGOs) //TODO: get volumetric gos even if outside the frustum
 		{
-			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponentOld(ComponentType::Renderer);
 			if (cr && cr->castShadows)
 			{
 				renderersDetected = true;
@@ -328,7 +328,7 @@ void ModuleRender::ComputeShadows()
 
 		for (GameObject* go : App->scene->staticFilteredGOs)
 		{
-			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponentOld(ComponentType::Renderer);
 			if (cr && cr->castShadows)
 			{
 				renderersDetected = true;

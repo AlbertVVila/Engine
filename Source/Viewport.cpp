@@ -339,7 +339,7 @@ void Viewport::DrawImGuizmo(const ComponentCamera& cam)
 	ImGui::SetCursorPos({ 20,30 });
 	DrawGuizmoButtons();
 
-	if (App->scene->selected != nullptr && App->scene->selected != App->scene->root && ((ComponentTransform*)App->scene->selected->GetComponent(ComponentType::Transform)))
+	if (App->scene->selected != nullptr && App->scene->selected != App->scene->root && ((ComponentTransform*)App->scene->selected->GetComponentOld(ComponentType::Transform)))
 	{
 		ImGuizmo::Enable(!App->scene->selected->isStatic || App->time->gameState == GameState::RUN);
 

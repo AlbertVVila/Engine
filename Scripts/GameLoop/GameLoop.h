@@ -14,8 +14,8 @@
 #include <vector>
 
 class Component;
-class ComponentButton;
-class ComponentText;
+class Button;
+class Text;
 class ComponentScript;
 class ComponentCamera;
 class PlayerMovement;
@@ -103,20 +103,20 @@ private:
 
 	//Buttons
 	std::vector<Component*> menuButtons;
-	ComponentButton* optionButton = nullptr;
-	ComponentButton* controlsButton = nullptr;
-	ComponentButton* creditsButton = nullptr;
-	ComponentButton* vsyncButton = nullptr;
-	ComponentButton* exitButton = nullptr;
-	ComponentButton* backOptionButton = nullptr;
-	ComponentButton* backControlsButton = nullptr;
-	ComponentButton* backCreditsButton = nullptr;
-	ComponentButton* toTheAltarButton = nullptr;
-	ComponentButton* hudBackToMenuButton = nullptr;
-	ComponentButton* inventoryButton = nullptr;
-	ComponentButton* missionsButton = nullptr;
-	ComponentButton* skillsButton = nullptr;
-	ComponentButton* closePlayerMenuButton = nullptr;
+	Button* optionButton = nullptr;
+	Button* controlsButton = nullptr;
+	Button* creditsButton = nullptr;
+	Button* vsyncButton = nullptr;
+	Button* exitButton = nullptr;
+	Button* backOptionButton = nullptr;
+	Button* backControlsButton = nullptr;
+	Button* backCreditsButton = nullptr;
+	Button* toTheAltarButton = nullptr;
+	Button* hudBackToMenuButton = nullptr;
+	Button* inventoryButton = nullptr;
+	Button* missionsButton = nullptr;
+	Button* skillsButton = nullptr;
+	Button* closePlayerMenuButton = nullptr;
 	std::vector<Component*> volumeButtons;
 	std::vector<Component*> soundButtons;
 
@@ -143,8 +143,8 @@ private:
 	math::AABB* winBbox = nullptr;
 
 	//TEXT
-	ComponentText* volumeText = nullptr;
-	ComponentText* soundText = nullptr;
+	Text* volumeText = nullptr;
+	Text* soundText = nullptr;
 
 	//Script
 	ComponentScript* componentIntroScript = nullptr;

@@ -6,14 +6,14 @@
 #include "Math/float4.h"
 #include "Math/float2.h"
 
-class ComponentText :
+class Text :
 	public Component
 {
 public:
-	ComponentText();
-	ComponentText(GameObject* gameobject);
-	ComponentText(const ComponentText &copy);
-	~ComponentText();
+	Text();
+	Text(GameObject* gameobject);
+	Text(const Text &copy);
+	~Text();
 	Component* Clone() const override;
 
 	void DrawProperties() override;
