@@ -986,7 +986,7 @@ bool ModuleScene::AddScene(const char* scene, const char* path)
 	GameObject* parentGO = nullptr;
 	for (std::map<unsigned, GameObject*>::iterator it = gameobjectsMap.begin(); it != gameobjectsMap.end(); ++it)
 	{
-		if (it->second->parentUUID == 0u)
+		if (it->second->parentUUID == 0u && it->second->UUID != 1u)
 		{
 			parentGO = it->second;
 			break;
