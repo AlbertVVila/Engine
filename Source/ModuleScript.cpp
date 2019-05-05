@@ -51,14 +51,14 @@ update_status ModuleScript::Update(float dt)
 	{
 		if (onStart)
 		{
-			for (const auto& component : componentsScript)
+			for (const auto& script : componentsScript) //enable - disable events
 			{
-				component->ScriptStart();
+				script->Start();
 			}
 		}
-		for (const auto& component : componentsScript)
+		for (const auto& script : componentsScript)
 		{
-			component->ScriptUpdate();
+			script->Update();
 		}
 	}
 	else
@@ -95,7 +95,7 @@ void ModuleScript::LoadFromMemory(int resource) //TODO: Load from memory in ship
 	}
 }
 
-Script* ModuleScript::GetScript(const ComponentScript& component, const std::string& script)
+Script* ModuleScript::GetScript(const std::string& script)
 {
 	HINSTANCE dll;
 	std::map<std::string, std::pair<HINSTANCE, int>>::iterator itDll = loadedDLLs.find(script);
@@ -124,13 +124,13 @@ Script* ModuleScript::GetScript(const ComponentScript& component, const std::str
 	if (Create != nullptr)
 	{
 		Script* script = Create();
-		componentsScript.push_back(&component);
+		componentsScript.push_back(script);
 		return script;
 	}
 	return nullptr;
 }
 
-void ModuleScript::RemoveScript(const ComponentScript& component, const std::string& name)
+void ModuleScript::RemoveScript(Script* script, const std::string& name)
 {
 	//TODO: check if script is used in any other component and if not then freelibrary
 	std::map<std::string, std::pair<HINSTANCE,int>>::iterator itDll = loadedDLLs.find(name);
@@ -148,7 +148,7 @@ void ModuleScript::RemoveScript(const ComponentScript& component, const std::str
 		{
 			itDll->second.second--;
 		}
-		componentsScript.remove(&component);
+		componentsScript.remove(script);
 	}
 	else
 	{

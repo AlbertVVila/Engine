@@ -327,7 +327,7 @@ Component* GameObject::CreateComponent(ComponentType type)
 		component = new Button(this);
 		break;
 	case ComponentType::Script:
-		component = new ComponentScript(this);
+		//component = new ComponentScript(this);
 		break;
 	case ComponentType::Particles:
 		component = new ComponentParticles(this);
@@ -432,28 +432,28 @@ void GameObject::RemoveComponent(const Component& component)
 	}
 }
 
-Script* GameObject::GetScript() const
-{
-	ComponentScript* component = (ComponentScript*)GetComponentOld(ComponentType::Script);
-	if (component != nullptr)
-	{
-		return component->GetScript();
-	}
-	return nullptr;
-}
+//Script* GameObject::GetScript() const
+//{
+//	ComponentScript* component = (ComponentScript*)GetComponentOld(ComponentType::Script);
+//	if (component != nullptr)
+//	{
+//		return component->GetScript();
+//	}
+//	return nullptr;
+//}
 
-Script * GameObject::FindScriptByName(const char * name) const
-{
-	std::vector<Component*> components = GetComponents(ComponentType::Script);
-	for (const auto& component : components)
-	{
-		if (((ComponentScript*)component)->GetScriptName() == name)
-		{
-			return ((ComponentScript*)component)->GetScript();
-		}
-	}
-	return nullptr;
-}
+//Script * GameObject::FindScriptByName(const char * name) const
+//{
+//	std::vector<Component*> components = GetComponents(ComponentType::Script);
+//	for (const auto& component : components)
+//	{
+//		if (((ComponentScript*)component)->GetScriptName() == name)
+//		{
+//			return ((ComponentScript*)component)->GetScript();
+//		}
+//	}
+//	return nullptr;
+//}
 
 void GameObject::RemoveChild(GameObject* bastard)
 {

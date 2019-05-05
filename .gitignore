@@ -16,7 +16,7 @@
 [Rr]elease/
 [Rr]eleases/
 [Gg]ameBuild/
-[Gg]ameBuild Debug/
+[Gg]ameBuild [Dd]ebug/
 x64/
 x86/
 bld/

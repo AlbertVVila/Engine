@@ -24,7 +24,7 @@ enum class ComponentType
 	AudioSource
 };
 
-class Component
+class ENGINE_API Component
 {
 public:
 	Component(GameObject* gameobject, ComponentType type);
@@ -37,7 +37,7 @@ public:
 
 	virtual void DrawProperties() = 0;
 
-	ENGINE_API virtual void Enable(bool enable)
+	virtual void Enable(bool enable)
 	{
 		enabled = enable;
 	}

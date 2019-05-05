@@ -147,10 +147,6 @@ private:
 	Text* soundText = nullptr;
 
 	//Script
-	ComponentScript* componentIntroScript = nullptr;
-	ComponentScript* componentCreditsScript = nullptr;
-
-	//Script
 	PlayerMovement* playerScript = nullptr;
 	EnemyMovementScript* enemyMovementScript = nullptr;
 	IntroScript* introScript = nullptr;
