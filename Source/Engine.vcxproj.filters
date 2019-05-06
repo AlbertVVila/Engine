@@ -194,9 +194,6 @@
     <ClCompile Include="ModuleSpacePartitioning.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="ComponentScript.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleScript.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -783,9 +780,6 @@
     </ClInclude>
     <ClInclude Include="ModuleSpacePartitioning.h">
       <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ComponentScript.h">
-      <Filter>Component</Filter>
     </ClInclude>
     <ClInclude Include="ModuleScript.h">
       <Filter>Modules</Filter>

@@ -6,7 +6,6 @@
 
 #include "GameObject.h"
 #include "Component.h"
-#include "ComponentScript.h"
 
 #include "BaseScript.h"
 #include "engineResource.h"

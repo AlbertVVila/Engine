@@ -201,7 +201,6 @@
     <ClInclude Include="ComponentParticles.h" />
     <ClInclude Include="ComponentRenderer.h" />
     <ClInclude Include="ComponentReverbZone.h" />
-    <ClInclude Include="ComponentScript.h" />
     <ClInclude Include="ComponentText.h" />
     <ClInclude Include="ComponentTrail.h" />
     <ClInclude Include="ComponentTransform.h" />
@@ -409,7 +408,6 @@
     <ClCompile Include="ComponentParticles.cpp" />
     <ClCompile Include="ComponentRenderer.cpp" />
     <ClCompile Include="ComponentReverbZone.cpp" />
-    <ClCompile Include="ComponentScript.cpp" />
     <ClCompile Include="ComponentText.cpp" />
     <ClCompile Include="ComponentTrail.cpp" />
     <ClCompile Include="ComponentTransform.cpp" />

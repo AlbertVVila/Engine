@@ -24,7 +24,6 @@
 #include "ComponentImage.h"
 #include "ComponentButton.h"
 #include "ComponentAnimation.h"
-#include "ComponentScript.h"
 #include "ComponentParticles.h"
 #include "ComponentTrail.h"
 #include "ComponentAudioListener.h"
