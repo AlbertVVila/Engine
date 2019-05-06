@@ -380,7 +380,7 @@ void Viewport::DrawImGuizmo(const ComponentCamera& cam)
 void Viewport::Pick()
 {
 	PROFILE;
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && ImGui::IsWindowFocused && ImGui::IsMouseHoveringWindow())
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && ImGui::IsWindowFocused() && ImGui::IsMouseHoveringWindow())
 	{
 		ImVec2 pos = ImGui::GetWindowPos();		
 		float2 mouse((float*)&App->input->GetMousePosition());
@@ -392,7 +392,7 @@ void Viewport::Pick()
 
 void Viewport::DebugNavigate() const
 {
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_DOWN && ImGui::IsWindowFocused && ImGui::IsMouseHoveringWindow())
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_DOWN && ImGui::IsWindowFocused() && ImGui::IsMouseHoveringWindow())
 	{
 		math::float3 intersectionPoint = math::float3::inf;
 		if (App->scene->Intersects(intersectionPoint, "floor", true))

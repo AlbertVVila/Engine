@@ -124,6 +124,16 @@ void ModuleScript::LoadFromMemory(int resource) //TODO: Load from memory in ship
 	}
 }
 
+void ModuleScript::AddScriptReference(Script* script, const std::string&name)
+{
+	std::map<std::string, std::pair<HINSTANCE, int>>::iterator itDll = loadedDLLs.find(name);
+	if (itDll != loadedDLLs.end())
+	{
+		componentsScript.push_back(script);
+		itDll->second.second++;
+	}
+}
+
 Script* ModuleScript::GetScript(const std::string& name)
 {
 	HINSTANCE dll;

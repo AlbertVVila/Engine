@@ -127,5 +127,6 @@ T* GameObject::GetComponent() const
 		if (T* c = dynamic_cast<T*>(component))
 			return c;
 	}
+	return nullptr;
 }
 #endif __GameObject_h__

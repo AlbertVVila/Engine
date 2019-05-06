@@ -32,9 +32,9 @@ public:
 	virtual void Expose(ImGuiContext* context);
 	virtual void Serialize(JSON_value* json) const {}
 	virtual void DeSerialize(JSON_value* json) {}
-	virtual void Awake() {} 
-	virtual void Start() {} //TODO: talk bout state pattern + observer + load scene flags
-	virtual void Update() {} //TODO: vinculación(warnings)
+	virtual void Awake() {}
+	virtual void Start() {}
+	virtual void Update() {}
 
 	virtual void OnAnimationEvent(int keyframe) {}
 	//virtual void OnCollisionEnter(GameObject* go) {} //TODO: collision module

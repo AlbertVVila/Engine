@@ -24,6 +24,8 @@ public:
 
 	void LoadFromMemory(int resource);
 
+	void AddScriptReference(Script* script, const std::string & name);
+
 	Script* GetScript(const std::string& name);
 	bool RemoveScript(Script* script, const std::string& name);
 private:
