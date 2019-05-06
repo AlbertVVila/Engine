@@ -21,6 +21,21 @@ Component::Component(const Component & component)
 Component::~Component()
 {
 	gameobject = nullptr;
+	OnDisable();
+	OnDestroy();
+}
+
+void Component::Enable(bool enable)
+{
+	enabled = enable;
+	if (enable && gameobject->isActive())
+	{
+		OnEnable();
+	}
+	else if(!enable)
+	{
+		OnDisable();
+	}
 }
 
 bool Component::DrawComponentState()

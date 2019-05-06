@@ -14,7 +14,7 @@ class ENGINE_API Script : public Component
 public:
 	Script(const Script& script);
 	Script();
-	~Script();
+	virtual ~Script();
 
 	virtual Script* Clone() const;
 
@@ -29,11 +29,15 @@ public:
 	void Save(JSON_value* json) const;
 	
 	virtual void Expose(ImGuiContext* context); //TODO: Awake, OnEnable, OnDisable
-	virtual void Serialize(JSON_value* json) const {} //TODO: load save
-	virtual void DeSerialize(JSON_value* json) {} //TODO: Add component
-	virtual void Start() {} //TODO: scene json compatibility
+	virtual void Serialize(JSON_value* json) const {}
+	virtual void DeSerialize(JSON_value* json) {}
+	virtual void Awake() {}
+	virtual void Start() {}
 	virtual void Update() {} //TODO: Template script
 
+	virtual void OnAnimationEvent(int keyframe) {}
+	//virtual void OnCollisionEnter(GameObject* go) {} //TODO: collision module
+	//virtual void OnCollisionExit(GameObject* go) {} //TODO: collision module
 
 public:
 	std::string name = "Script";

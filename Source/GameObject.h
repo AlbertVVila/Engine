@@ -77,15 +77,16 @@ public:
 
 private:
 	void SetStaticAncestors();
+	void SetActiveInHierarchy(bool active);
 
+	bool activeInHierarchy = true;
+	bool activeSelf = true;
 public:
 	unsigned UUID = 0;
 	unsigned parentUUID = 0; //only set in Save/Load scene TODO:update on parent change
 	unsigned animationIndexChannel = 999u;
 	bool isStatic = false;
 	bool isBoneRoot = false;
-	bool activeInHierarchy = true;
-	bool activeSelf = true;
 
 	bool navigable = false;
 	bool walkable = false;

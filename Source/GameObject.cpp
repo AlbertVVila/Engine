@@ -145,9 +145,10 @@ void GameObject::DrawProperties()
 
 	if (this != App->scene->root)
 	{
-		if (ImGui::Checkbox("Active", &activeSelf))
+		bool active = activeSelf;
+		if (ImGui::Checkbox("Active", &active))
 		{
-			SetActive(activeSelf);
+			SetActive(active);
 		}
 
 		ImGui::SameLine();
@@ -256,10 +257,49 @@ void GameObject::Update()
 
 void GameObject::SetActive(bool active)
 {
+	bool wasActive = isActive();
 	activeSelf = active;
 	for (auto& child : children)
 	{
-		child->activeInHierarchy = active;
+		child->SetActiveInHierarchy(active);
+	}
+	if (wasActive != isActive())
+	{
+		for (auto& component : components)
+		{
+			if (!wasActive && component->enabled)
+			{
+				component->OnEnable();
+			}
+			else if(component->enabled)
+			{
+				component->OnDisable();
+			}
+		}
+	}
+}
+
+void GameObject::SetActiveInHierarchy(bool active)
+{
+	bool wasActive = isActive();
+	activeInHierarchy = active; 
+	if (wasActive != isActive())
+	{
+		for (auto& child : children)
+		{
+			child->SetActiveInHierarchy(active);
+		}
+		for (auto& component : components)
+		{
+			if (!wasActive && component->enabled)
+			{
+				component->OnEnable();
+			}
+			else if (component->enabled)
+			{
+				component->OnDisable();
+			}
+		}
 	}
 }
 
@@ -903,6 +943,10 @@ void GameObject::DrawHierarchy()
 		| ImGuiTreeNodeFlags_OpenOnDoubleClick | (isSelected ? ImGuiTreeNodeFlags_Selected : 0);
 
 	ImGui::PushID(this);
+	if (!isActive())
+	{
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.6f, 0.6f, 0.6f, 1.00f));
+	}
 	if (children.empty())
 	{
 		node_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
@@ -956,6 +1000,10 @@ void GameObject::DrawHierarchy()
 		{
 			ImGui::TreePop();
 		}
+	}
+	if (!isActive())
+	{
+		ImGui::PopStyleColor();
 	}
 	ImGui::PopID();
 }
