@@ -6,6 +6,7 @@
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
 #include "ModuleTime.h"
+#include "ModuleEditor.h"
 
 #include "GameObject.h"
 #include "ComponentCamera.h"
@@ -162,20 +163,20 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 void Viewport::DrawGuizmoButtons()
 {
 
-	if ((ImGui::Button("Translate") || App->input->IsKeyPressed(SDL_SCANCODE_W)) && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_IDLE)
+	if ((ImGui::Button("Translate") || (App->input->IsKeyPressed(SDL_SCANCODE_W) && !App->editor->wantKeyboard)) && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_IDLE)
 	{
 		mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
 		mCurrentGizmoMode = mCurrentModeAux;
 	}
 	ImGui::SameLine();
-	if (ImGui::Button("Rotate") || App->input->IsKeyPressed(SDL_SCANCODE_E))
+	if (ImGui::Button("Rotate") || (App->input->IsKeyPressed(SDL_SCANCODE_E) && !App->editor->wantKeyboard))
 	{
 		mCurrentGizmoOperation = ImGuizmo::ROTATE;
 		mCurrentGizmoMode = mCurrentModeAux;
 
 	}
 	ImGui::SameLine();
-	if (ImGui::Button("Scale") || App->input->IsKeyPressed(SDL_SCANCODE_R))
+	if (ImGui::Button("Scale") || (App->input->IsKeyPressed(SDL_SCANCODE_R) && !App->editor->wantKeyboard))
 	{
 		mCurrentGizmoOperation = ImGuizmo::SCALE;
 		mCurrentGizmoMode = ImGuizmo::LOCAL;
