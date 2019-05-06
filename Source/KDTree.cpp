@@ -98,13 +98,7 @@ void KDTree::CleanUp()
 {
 	if (treeRoot != nullptr)
 	{
-		for (GameObject* node : treeRoot->bucket) 
-		{
-			RELEASE(node);
-		}
-		RELEASE(treeRoot->upperNode);
-		RELEASE(treeRoot->leftBranch);
-		RELEASE(treeRoot->rightBranch);
+		RELEASE(treeRoot);
 		treeRoot = nullptr;
 	}
 }
