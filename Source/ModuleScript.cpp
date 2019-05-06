@@ -77,11 +77,26 @@ update_status ModuleScript::Update(float dt)
 	}
 	else
 	{
+#ifndef GAME_BUILD
 		//TODO: We should use a thread component to listen to script folder asynchronously
 		CheckScripts();
+#endif // !GAME_BUILD
+	}
+	if (!onStart && App->time->gameState == GameState::STOP)
+	{
+		ResetScriptFlags();
 	}
 	onStart = App->time->gameState == GameState::STOP;
 	return status;
+}
+
+void ModuleScript::ResetScriptFlags()
+{
+	for (const auto& script : componentsScript)
+	{
+		script->hasBeenAwoken = false;
+		script->hasBeenStarted = false;
+	}
 }
 
 void ModuleScript::LoadFromMemory(int resource) //TODO: Load from memory in shipping build

@@ -307,7 +307,7 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	{
 		if (maincamera->frustum->Intersects(go->GetBoundingBox()))
 		{
-			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponentOld(ComponentType::Renderer);
 			if (cr && !cr->useAlpha)
 			{
 				DrawGOGame(*go);
@@ -323,7 +323,7 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	{
 		if (maincamera->frustum->Intersects(go->GetBoundingBox()))
 		{
-			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponentOld(ComponentType::Renderer);
 			if (cr && !cr->useAlpha)
 			{
 				DrawGOGame(*go);

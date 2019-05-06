@@ -28,6 +28,8 @@ public:
 	bool RemoveScript(Script* script, const std::string& name);
 private:
 	void CheckScripts();
+	void ResetScriptFlags();
+
 	std::string GetLastErrorAsString();
 
 public:
