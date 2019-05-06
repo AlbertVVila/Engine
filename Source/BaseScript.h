@@ -18,6 +18,8 @@ public:
 
 	virtual Script* Clone() const;
 
+	virtual bool CleanUp() override;
+
 	void SetApp(Application* app);
 	void SetGameObject(GameObject* go);
 	
@@ -30,7 +32,7 @@ public:
 	virtual void Serialize(JSON_value* json) const {} //TODO: load save
 	virtual void DeSerialize(JSON_value* json) {} //TODO: Add component
 	virtual void Start() {} //TODO: scene json compatibility
-	virtual void Update() {}
+	virtual void Update() {} //TODO: Template script
 
 
 public:

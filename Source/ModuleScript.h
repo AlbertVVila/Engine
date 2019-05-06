@@ -25,7 +25,7 @@ public:
 	void LoadFromMemory(int resource);
 
 	Script* GetScript(const std::string& name);
-	void RemoveScript(Script* script, const std::string& name);
+	bool RemoveScript(Script* script, const std::string& name);
 private:
 	void CheckScripts();
 	std::string GetLastErrorAsString();

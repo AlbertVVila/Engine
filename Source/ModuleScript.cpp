@@ -132,17 +132,19 @@ Script* ModuleScript::GetScript(const std::string& name)
 	return nullptr;
 }
 
-void ModuleScript::RemoveScript(Script* script, const std::string& name)
+bool ModuleScript::RemoveScript(Script* script, const std::string& name)
 {
-	//TODO: check if script is used in any other component and if not then freelibrary
 	std::map<std::string, std::pair<HINSTANCE,int>>::iterator itDll = loadedDLLs.find(name);
 	if (itDll != loadedDLLs.end())
 	{
+		componentsScript.remove(script);
+		RELEASE(script);
 		if (itDll->second.second <= 1)
 		{
 			if (!FreeLibrary(itDll->second.first))
 			{
 				LOG("CAN'T RELEASE %s", name);
+				return false;
 			}
 			loadedDLLs.erase(itDll);
 		}
@@ -150,13 +152,13 @@ void ModuleScript::RemoveScript(Script* script, const std::string& name)
 		{
 			itDll->second.second--;
 		}
-		componentsScript.remove(script);
 	}
 	else
 	{
 		LOG("Script %s Not Found!", name);
-		assert(false);
+		return false;
 	}
+	return true;
 }
 
 void ModuleScript::CheckScripts()
