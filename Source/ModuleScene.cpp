@@ -986,7 +986,7 @@ bool ModuleScene::AddScene(const char* scene, const char* path)
 	GameObject* parentGO = nullptr;
 	for (std::map<unsigned, GameObject*>::iterator it = gameobjectsMap.begin(); it != gameobjectsMap.end(); ++it)
 	{
-		if (it->second->parentUUID == 0u)
+		if (it->second->parentUUID == 0u && it->second->UUID != 1u)
 		{
 			parentGO = it->second;
 			break;
@@ -1026,6 +1026,9 @@ void ModuleScene::ClearScene()
 	dynamicGOs.clear();
 	staticFilteredGOs.clear();
 	dynamicFilteredGOs.clear();
+	lights.clear();
+	App->renderer->directionalLight = nullptr;
+	debuglines.clear();
 	selection.clear();
 	LOG("Reset volumetric AABBTree");
 	App->spacePartitioning->aabbTree.Reset();
@@ -1036,7 +1039,6 @@ void ModuleScene::ClearScene()
 	root->InsertChild(canvas);
 	App->particles->CleanUp();
 	App->particles->Start();
-	selection.clear();
 	App->renderer->shadowCasters.clear();
 }
 
