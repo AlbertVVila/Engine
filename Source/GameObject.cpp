@@ -259,19 +259,34 @@ void GameObject::SetActive(bool active)
 {
 	bool wasActive = isActive();
 	activeSelf = active;
-	for (auto& child : children)
-	{
-		child->SetActiveInHierarchy(active);
-	}
+	OnChangeActiveState(wasActive);
+}
+
+void GameObject::OnChangeActiveState(bool wasActive)
+{
 	if (wasActive != isActive())
 	{
+		for (auto& child : children)
+		{
+			child->SetActiveInHierarchy(!wasActive);
+		}
 		for (auto& component : components)
 		{
-			if (!wasActive && component->enabled)
+			if (!wasActive)
 			{
-				component->OnEnable();
+				if (App->time->gameState == GameState::RUN && component->type == ComponentType::Script 
+					&& ((Script*)component)->hasBeenAwoken)
+				{
+					Script* script = (Script*)component;
+					script->Awake();
+					script->hasBeenAwoken = true;
+				}
+				if (component->enabled)
+				{
+					component->OnEnable();
+				}
 			}
-			else if(component->enabled)
+			else if (component->enabled)
 			{
 				component->OnDisable();
 			}
@@ -283,24 +298,7 @@ void GameObject::SetActiveInHierarchy(bool active)
 {
 	bool wasActive = isActive();
 	activeInHierarchy = active; 
-	if (wasActive != isActive())
-	{
-		for (auto& child : children)
-		{
-			child->SetActiveInHierarchy(active);
-		}
-		for (auto& component : components)
-		{
-			if (!wasActive && component->enabled)
-			{
-				component->OnEnable();
-			}
-			else if (component->enabled)
-			{
-				component->OnDisable();
-			}
-		}
-	}
+	OnChangeActiveState(wasActive);
 }
 
 Component* GameObject::CreateComponent(ComponentType type, JSON_value* value)

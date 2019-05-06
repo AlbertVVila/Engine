@@ -30,7 +30,7 @@ public:
 	void DrawProperties();
 
 	void Update();
-	inline bool isActive() const
+	ENGINE_API inline bool isActive() const
 	{
 		if (!activeInHierarchy) return false;
 		return activeSelf;
@@ -78,6 +78,7 @@ public:
 private:
 	void SetStaticAncestors();
 	void SetActiveInHierarchy(bool active);
+	void OnChangeActiveState(bool wasActive);
 
 	bool activeInHierarchy = true;
 	bool activeSelf = true;
@@ -106,7 +107,7 @@ public:
 	
 	//ABBTree Stuff
 	AABBTreeNode *treeNode = nullptr; //Direct reference to the aabtree node holding the gameobject
-	bool isVolumetric = false; //Indicates if the gameObject has a mesh
+	bool isVolumetric = false; //Indicates if the gameobject has a mesh
 	//
 	bool hasLight = false;
 	ComponentLight* light = nullptr;

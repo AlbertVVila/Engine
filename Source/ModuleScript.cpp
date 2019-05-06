@@ -4,6 +4,7 @@
 #include "ModuleFileSystem.h"
 #include "ModuleTime.h"
 
+#include "GameObject.h"
 #include "Component.h"
 #include "ComponentScript.h"
 
@@ -51,9 +52,22 @@ update_status ModuleScript::Update(float dt)
 	{
 		if (onStart)
 		{
-			for (const auto& script : componentsScript) //enable - disable events
+			for (const auto& script : componentsScript)
 			{
-				script->Start();
+				if (script->gameobject->isActive())
+				{
+					script->Awake();
+					script->hasBeenAwoken = true;
+				}
+			}
+
+			for (const auto& script : componentsScript)
+			{
+				if (script->enabled)
+				{
+					script->Start();
+					script->hasBeenStarted = true;
+				}
 			}
 		}
 		for (const auto& script : componentsScript)

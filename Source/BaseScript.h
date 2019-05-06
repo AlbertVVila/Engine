@@ -19,6 +19,7 @@ public:
 	virtual Script* Clone() const;
 
 	virtual bool CleanUp() override;
+	virtual void Enable(bool enable) override;
 
 	void SetApp(Application* app);
 	void SetGameObject(GameObject* go);
@@ -28,12 +29,12 @@ public:
 	void Load(JSON_value* json);
 	void Save(JSON_value* json) const;
 	
-	virtual void Expose(ImGuiContext* context); //TODO: Awake, OnEnable, OnDisable
+	virtual void Expose(ImGuiContext* context);
 	virtual void Serialize(JSON_value* json) const {}
 	virtual void DeSerialize(JSON_value* json) {}
-	virtual void Awake() {}
-	virtual void Start() {}
-	virtual void Update() {} //TODO: Template script
+	virtual void Awake() {} //TODO: Awake + Start flag reset on STOP
+	virtual void Start() {} //TODO: talk bout state pattern + observer + load scene flags
+	virtual void Update() {} //TODO: Template script + vinculación(warnings)
 
 	virtual void OnAnimationEvent(int keyframe) {}
 	//virtual void OnCollisionEnter(GameObject* go) {} //TODO: collision module
@@ -41,8 +42,10 @@ public:
 
 public:
 	std::string name = "Script";
+	bool hasBeenAwoken = false;
+	bool hasBeenStarted = false;
+
 protected:
-	GameObject* gameObject = nullptr;
 	Application* App = nullptr;
 
 };
