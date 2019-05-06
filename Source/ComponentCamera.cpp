@@ -7,6 +7,7 @@
 #include "GameObject.h"
 #include "ComponentCamera.h"
 #include "ComponentTransform.h"
+#include "ComponentRenderer.h"
 
 #include "JSON.h"
 #include "GL/glew.h"
@@ -113,7 +114,8 @@ void ComponentCamera::Center() //TODO: Shouldn't be specfic to editor camera
 {
 	if (App->scene->selected == nullptr || App->scene->selected->GetComponent(ComponentType::Transform) == nullptr) return;
 
-	if (App->scene->selected->GetComponent(ComponentType::Renderer) != nullptr)
+	ComponentRenderer* objectRenderer = (ComponentRenderer*)App->scene->selected->GetComponent(ComponentType::Renderer);
+	if (objectRenderer != nullptr && objectRenderer->mesh != nullptr)
 	{
 		math::AABB bbox = App->scene->selected->GetBoundingBox();
 		CenterBbox(bbox);
