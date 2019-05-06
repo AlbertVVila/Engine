@@ -126,7 +126,11 @@ void ComponentCamera::Center() //TODO: Shouldn't be specfic to editor camera
 		childBboxes.SetNegativeInfinity();
 		for (const auto &child : App->scene->selected->children)
 		{
-			childBboxes.Enclose(child->GetBoundingBox());
+			ComponentRenderer* childRenderer = (ComponentRenderer*)child->GetComponent(ComponentType::Renderer);
+			if (childRenderer != nullptr && childRenderer->mesh != nullptr)
+			{
+				childBboxes.Enclose(child->GetBoundingBox());
+			}
 		}
 		if (childBboxes.Volume() > 0)
 		{
