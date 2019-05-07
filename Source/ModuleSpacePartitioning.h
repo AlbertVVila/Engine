@@ -10,7 +10,7 @@ class ModuleSpacePartitioning :
 	public Module
 {
 public:
-
+	
 	bool Init(JSON * config) override;
 	update_status Update(float dt) override;
 	bool CleanUp() override;	
