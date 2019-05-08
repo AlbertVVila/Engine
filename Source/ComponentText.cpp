@@ -9,17 +9,17 @@
 #define MAX_TEXT_LENGTH 64
 #define MAX_FONT_SIZE 64
 
-ComponentText::ComponentText() : Component(nullptr, ComponentType::Text)
+Text::Text() : Component(nullptr, ComponentType::Text)
 {
 	font = App->fontLoader->defaultFont;
 }
 
-ComponentText::ComponentText(GameObject* gameobject) : Component(gameobject, ComponentType::Text)
+Text::Text(GameObject* gameobject) : Component(gameobject, ComponentType::Text)
 {
 	font = App->fontLoader->defaultFont;
 }
 
-ComponentText::ComponentText(const ComponentText &copy) : Component(copy)
+Text::Text(const Text &copy) : Component(copy)
 {
 	font = copy.font;
 	fontSize = copy.fontSize;
@@ -30,16 +30,16 @@ ComponentText::ComponentText(const ComponentText &copy) : Component(copy)
 	scaleOffset = copy.scaleOffset;
 }
 
-ComponentText::~ComponentText()
+Text::~Text()
 {
 }
 
-Component * ComponentText::Clone() const
+Component * Text::Clone() const
 {
-	return new ComponentText(*this);
+	return new Text(*this);
 }
 
-void ComponentText::DrawProperties()
+void Text::DrawProperties()
 {
 	if (ImGui::CollapsingHeader("Text", ImGuiTreeNodeFlags_DefaultOpen))
 	{
@@ -87,7 +87,7 @@ void ComponentText::DrawProperties()
 	}
 }
 
-void ComponentText::Save(JSON_value *value)const
+void Text::Save(JSON_value *value)const
 {
 	Component::Save(value);
 	value->AddFloat("FontSize", fontSize);
@@ -99,7 +99,7 @@ void ComponentText::Save(JSON_value *value)const
 	value->AddFloat2("scaleOffset", scaleOffset);
 }
 
-void ComponentText::Load(JSON_value* value)
+void Text::Load(JSON_value* value)
 {
 	Component::Load(value);
 	fontSize = value->GetFloat("FontSize");

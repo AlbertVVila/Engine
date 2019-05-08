@@ -8,7 +8,7 @@
 #include <map>
 #include <list>
 
-class ComponentText;
+class Text;
 struct Shader;
 class ModuleFontLoader :
 	public Module
@@ -28,7 +28,7 @@ public:
 	bool Init(JSON* json) override;
 	bool CleanUp() override;
 	void LoadFonts(const char* newFont);
-	void RenderText(const ComponentText& compText, int currentWidth, int currentHeight);
+	void RenderText(const Text& compText, int currentWidth, int currentHeight);
 public:
 	std::map<std::string, std::vector<Character>> fonts;
 	const char* defaultFont = "Fonts/DroidSans.ttf";
