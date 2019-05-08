@@ -563,6 +563,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Game\Scripts\PlayerMovement.dll" />
+    <None Include="..\Game\Shaders\FragmentShaders\DebugNav.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\Default.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\Fonts.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\Particles.fs" />
@@ -571,6 +572,7 @@
     <None Include="..\Game\Shaders\FragmentShaders\Skybox.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\Trail.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\UI.fs" />
+    <None Include="..\Game\Shaders\VertexShaders\DebugNav.vs" />
     <None Include="..\Game\Shaders\VertexShaders\Default.vs" />
     <None Include="..\Game\Shaders\VertexShaders\Fonts.vs" />
     <None Include="..\Game\Shaders\VertexShaders\Particles.vs" />

@@ -310,9 +310,9 @@ void ModuleNavigation::renderNavMesh()
 	//	}
 
 	//}
-	DetourDebugInterface m_dd;
-	duDebugDrawNavMeshWithClosedList(&m_dd, *navMesh, *navQuery, '\x3');
 
+
+	ddi->debugDrawNavMesh();
 	if (start != math::float3::inf)
 	{
 		dd::point(start, dd::colors::Red, 5.0f);
@@ -782,6 +782,10 @@ void ModuleNavigation::generateNavigability(bool render)
 	LOG("Navigation mesh generated");
 	cleanValuesPOST();
 
+	//SetUp for Debug Draw nav mesh
+	ddi = new DetourDebugInterface;
+	duDebugDrawNavMeshWithClosedList(ddi, *navMesh, *navQuery, '\x3');
+
 	return;
 	
 }
@@ -1013,75 +1017,7 @@ std::vector<math::float3>  ModuleNavigation::returnPath(math::float3 pStart, mat
 }
 
 //Detour stuff http://irrlicht.sourceforge.net/forum/viewtopic.php?f=9&t=49482
-/*std::vector<math::float3>  ModuleNavigation::returnPath(math::float3 pStart, math::float3 pEnd)
-{
-	std::vector<math::float3> lstPoints;
-	
-	if (navQuery)
-	{
-		if (navMesh == 0)
-		{
-			return  lstPoints;
-		}
 
-		dtQueryFilter m_filter;
-		dtPolyRef m_startRef;
-		dtPolyRef m_endRef;
-
-		const int MAX_POLYS = 256;
-		dtPolyRef m_polys[MAX_POLYS];
-		dtPolyRef returnedPath[MAX_POLYS];
-		float m_straightPath[MAX_POLYS * 3];
-		int numStraightPaths;
-		float  m_spos[3] = { pStart.x, pStart.y, pStart.z };
-		float  m_epos[3] = { pEnd.x, pEnd.y, pEnd.z };
-		float m_polyPickExt[3];
-		m_polyPickExt[0] = 2;
-		m_polyPickExt[1] = 4;
-		m_polyPickExt[2] = 2;
-
-
-		navQuery->findNearestPoly(m_spos, m_polyPickExt, &m_filter, &m_startRef, 0);
-
-		if (m_startRef == 0)
-		{
-			return lstPoints;
-
-		}
-		navQuery->findNearestPoly(m_epos, m_polyPickExt, &m_filter, &m_endRef, 0);
-
-		if (m_endRef == 0)
-		{
-			return lstPoints;
-
-		}
-		dtStatus findStatus = DT_FAILURE;
-		int pathCount;
-
-		findStatus = navQuery->findPath(m_startRef, m_endRef, m_spos, m_epos, &m_filter, returnedPath, &pathCount, MAX_POLYS);
-
-
-
-		if (pathCount > 0)
-		{
-			findStatus = navQuery->findStraightPath(m_spos, m_epos, returnedPath,
-				pathCount, m_straightPath, 0, 0, &numStraightPaths, MAX_POLYS);
-
-			for (int i = 0; i < numStraightPaths; ++i)
-			{
-				float3 cpos(m_straightPath[i * 3], m_straightPath[i * 3 + 1] + 0.25,
-					m_straightPath[i * 3 + 2]);
-
-				lstPoints.push_back(cpos);
-				//path->AddNode(node);
-			}
-
-
-		}
-
-	}
-	return lstPoints;
-}*/
 /* TODO add where the mesh is calculated!!!
 
 	/*scene::IAnimatedMesh *terrain_model = smgr->addHillPlaneMesh("groundPlane", // Name of the scenenode
@@ -1117,11 +1053,6 @@ std::vector<math::float3>  ModuleNavigation::returnPath(math::float3 pStart, mat
 		}
 	}
 	*/
-
-//On your event input positions
-//std::vector<math::float3> lstPoints = ModuleNavigation->returnPath(vector3df_Start, vector3df_End);
-
-// TODO: New Detour version
 
 inline bool ModuleNavigation::inRange(const float* v1, const float* v2, const float r, const float h) const
 {

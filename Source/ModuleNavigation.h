@@ -29,6 +29,7 @@ class rcPolyMeshDetail;
 //from detour
 class dtNavMesh;
 class dtNavMeshQuery;
+class DetourDebugInterface;
 
 namespace dd
 {
@@ -222,7 +223,7 @@ private:
 	dtNavMesh* navMesh = nullptr;
 	dtNavMeshQuery* navQuery = nullptr;
 
-	//SampleDebugDraw dt_dd;
+	DetourDebugInterface* ddi = nullptr;
 
 	unsigned char* m_triareas = nullptr;
 	bool m_keepInterResults = true;
