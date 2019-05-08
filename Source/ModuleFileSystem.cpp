@@ -54,6 +54,10 @@ ModuleFileSystem::ModuleFileSystem()
 
 	if (!Exists(IMPORTED_MATERIALS))
 		MakeDirectory(IMPORTED_MATERIALS);
+	if (!Exists(IMPORTED_ANIMATIONS))
+		MakeDirectory(IMPORTED_ANIMATIONS);
+	if (!Exists(IMPORTED_STATEMACHINES))
+		MakeDirectory(IMPORTED_STATEMACHINES);
 	if (!Exists(MESHES))
 		MakeDirectory(MESHES);
 	if (!Exists(TEXTURES))
@@ -380,10 +384,12 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 	std::set<std::string> importedMaterials;
 	std::set<std::string> importedMeshes;
 	std::set<std::string> importedStateMachines;
+	std::set<std::string> importedAnimations;
 
 	ListFiles(TEXTURES, importedTextures);
 	ListFiles(IMPORTED_MATERIALS, importedMaterials);
-	ListFiles(STATEMACHINES, importedStateMachines);
+	ListFiles(IMPORTED_STATEMACHINES, importedStateMachines);
+	ListFiles(IMPORTED_ANIMATIONS, importedAnimations);
 
 	// Look for files in folder passed as argument
 	std::vector<std::string> files;
@@ -394,21 +400,21 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 	struct stat statMeta;
 
 	//for the statesMachine, about to be deprecated
-	std::vector<std::string> smFiles = GetFolderContent(STATEMACHINES);
-	for (auto& file : smFiles)
-	{
-		std::set<std::string>::iterator it = importedStateMachines.find(RemoveExtension(file));
-		if (it == importedStateMachines.end())
-		{
-			// File modified or not imported, send it to import
-			filesToImport.push_back(std::pair<std::string, std::string>(file, STATEMACHINES));
-		}
-		else
-		{
-			// File already imported, add it to the resources list
-			App->resManager->AddResource(file.c_str(), STATEMACHINES, TYPE::STATEMACHINE);
-		}
-	}
+	//std::vector<std::string> smFiles = GetFolderContent(STATEMACHINES);
+	//for (auto& file : smFiles)
+	//{
+	//	std::set<std::string>::iterator it = importedStateMachines.find(RemoveExtension(file));
+	//	if (it == importedStateMachines.end())
+	//	{
+	//		// File modified or not imported, send it to import
+	//		filesToImport.push_back(std::pair<std::string, std::string>(file, STATEMACHINES));
+	//	}
+	//	else
+	//	{
+	//		// File already imported, add it to the resources list
+	//		App->resManager->AddResource(file.c_str(), STATEMACHINES, TYPE::STATEMACHINE);
+	//	}
+	//}
 
 	while (!folderStack.empty())
 	{
@@ -468,7 +474,7 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 				else if (type == FILETYPE::STATEMACHINE)
 				{
 					std::set<std::string>::iterator it = importedStateMachines.find(RemoveExtension(file));
-					if (it == importedStateMachines.end())
+					if (it == importedStateMachines.end() || statFile.st_mtime > statMeta.st_mtime)
 					{
 						// File modified or not imported, send it to import
 						filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
@@ -477,6 +483,20 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 					{
 						// File already imported, add it to the resources list
 						App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::STATEMACHINE);
+					}
+				}
+				else if (type == FILETYPE::ANIMATION)
+				{
+					std::set<std::string>::iterator it = importedAnimations.find(RemoveExtension(file));
+					if (it == importedAnimations.end() || statFile.st_mtime > statMeta.st_mtime)
+					{
+						// File modified or not imported, send it to import
+						filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
+					}
+					else
+					{
+						// File already imported, add it to the resources list
+						App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::ANIMATION);
 					}
 				}
 				else if (type == FILETYPE::MATERIAL)

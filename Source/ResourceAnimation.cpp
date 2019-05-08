@@ -55,7 +55,7 @@ bool ResourceAnimation::LoadInMemory()
 {
 	char* data = nullptr;
 
-	unsigned ok = App->fsystem->Load((ANIMATIONS + std::to_string(UID) + ANIMATIONEXTENSION).c_str(), &data);
+	unsigned ok = App->fsystem->Load((IMPORTED_ANIMATIONS + std::to_string(UID) + ANIMATIONEXTENSION).c_str(), &data);
 
 	// Load mesh file
 	if (ok != 0)
@@ -85,7 +85,7 @@ void ResourceAnimation::Delete()
 	App->resManager->DeleteResourceFromList(UID);
 
 	// Delete file in Library
-	std::string fileInLibrary(ANIMATIONS);
+	std::string fileInLibrary(IMPORTED_ANIMATIONS);
 	fileInLibrary += exportedFileName;
 	fileInLibrary += ANIMATIONEXTENSION;
 	App->fsystem->Delete(fileInLibrary.c_str());
@@ -94,6 +94,15 @@ void ResourceAnimation::Delete()
 
 void ResourceAnimation::SetAnimation(const char* animationData)
 {
+	for (const auto& channel : channels)
+	{
+		channel->numPositionKeys = 0u;
+		channel->numRotationKeys = 0u;
+		channel->positionSamples.clear();
+		channel->rotationSamples.clear();
+	}
+	channels.clear();
+
 	memcpy(&duration, animationData, sizeof(double));
 	animationData += sizeof(double);
 
@@ -144,8 +153,6 @@ void ResourceAnimation::SetAnimation(const char* animationData)
 
 		channels.push_back(newChannel);
 	}
-
-
 }
 
 unsigned ResourceAnimation::GetAnimationSize()
@@ -208,8 +215,8 @@ void ResourceAnimation::SaveAnimationData(char * data)
 
 		for (unsigned k = 0u; k < channels[j]->numRotationKeys; k++)
 		{
-			math::Quat newQuat = math::Quat(channels[j]->rotationSamples[k].x, channels[j]->rotationSamples[k].y,
-				channels[j]->rotationSamples[k].z, channels[j]->rotationSamples[k].w);
+			math::Quat newQuat = math::Quat(channels[j]->rotationSamples[k].w, channels[j]->rotationSamples[k].x,
+				channels[j]->rotationSamples[k].y, channels[j]->rotationSamples[k].z);
 
 			memcpy(cursor, &newQuat, sizeof(math::Quat));
 			cursor += sizeof(math::Quat);

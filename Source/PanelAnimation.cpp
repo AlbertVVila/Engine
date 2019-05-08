@@ -45,15 +45,16 @@ void PanelAnimation::Draw()
 		// Current Anim
 		ImGui::SetCursorPosX(ImGui::CalcTextSize("  GAMEOBJECT  ").x);
 
-		if (guiAnimations.empty())
-		{
-			guiAnimations = App->resManager->GetAnimationsNamesList(true);
-		}
+		
 
 		ImGui::PushItemWidth(100);
 
 		if (ImGui::BeginCombo("##label", anim != nullptr ? anim->name.c_str() : ""))
 		{
+			if (guiAnimations.empty())
+			{
+				guiAnimations = App->resManager->GetAnimationsNamesList(true);
+			}
 			for (int n = 0; n < guiAnimations.size(); n++)
 			{
 				bool is_selected = true;
@@ -70,6 +71,9 @@ void PanelAnimation::Draw()
 			}
 			ImGui::EndCombo();
 		}
+		
+		
+
 		ImGui::PopItemWidth();
 
 		if (anim == nullptr)
@@ -205,6 +209,8 @@ void PanelAnimation::Draw()
 		if(ImGui::Button("Create new Animation"))
 		{
 			CreateAnimationFromClip(anim, minFrame, maxFrame);
+			guiAnimations.clear();
+			isCliping = false;
 		}
 	}
 
@@ -231,6 +237,8 @@ void PanelAnimation::CreateAnimationFromClip(ResourceAnimation* anim, int minFra
 {
 	ResourceAnimation* newAnim = (ResourceAnimation*)App->resManager->CreateNewResource(TYPE::ANIMATION);
 
+	
+
 	for (int i = 0; i < anim->numberOfChannels; ++i)
 	{
 		Channel* newChannel = new Channel();
@@ -242,7 +250,7 @@ void PanelAnimation::CreateAnimationFromClip(ResourceAnimation* anim, int minFra
 		}
 		else
 		{
-			newChannel->numPositionKeys = maxFrame - minFrame;
+			newChannel->numPositionKeys = maxFrame - minFrame + 1;
 		}
 
 		if (anim->channels[i]->numRotationKeys == 1)
@@ -251,7 +259,7 @@ void PanelAnimation::CreateAnimationFromClip(ResourceAnimation* anim, int minFra
 		}
 		else
 		{
-			newChannel->numRotationKeys = maxFrame - minFrame;
+			newChannel->numRotationKeys = maxFrame - minFrame + 1;
 		}
 
 		for (int j = 0; j < newChannel->numPositionKeys; ++j)

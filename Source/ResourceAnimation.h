@@ -54,7 +54,7 @@ public:
 	double framesPerSecond = 0;
 	int numberFrames = 0;
 	unsigned numberOfChannels = 0u;
-	unsigned durationInSeconds = 0u;
+	float durationInSeconds = 0u;
 
 	int currentSample = 0u;
 	int currentFrame = 0u;

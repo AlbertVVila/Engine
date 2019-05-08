@@ -76,11 +76,11 @@ void FileImporter::ImportAsset(const char *file, const char *folder)
 	}
 	else if (extension == ANIMATIONEXTENSION)
 	{
-		App->fsystem->Copy(folder, ANIMATIONS, file);
+		App->fsystem->Copy(folder, IMPORTED_ANIMATIONS, file);
 	}
 	else if (extension == STATEMACHINEEXTENSION)
 	{
-		App->fsystem->Copy(folder, STATEMACHINES, file);
+		App->fsystem->Copy(folder, IMPORTED_STATEMACHINES, file);
 	}
 }
 

@@ -198,6 +198,12 @@ bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* 
 	case TYPE::MATERIAL:
 		success = App->fsystem->Copy(filePath, IMPORTED_MATERIALS, newFileInAssets);
 		break;
+	case TYPE::ANIMATION:
+		success = App->fsystem->Copy(filePath, IMPORTED_ANIMATIONS, newFileInAssets);
+		break;
+	case TYPE::STATEMACHINE:
+		success = App->fsystem->Copy(filePath, IMPORTED_STATEMACHINES, newFileInAssets);
+		break;
 	}
 
 	// If export was successful, create a new resource
@@ -236,6 +242,12 @@ bool ModuleResourceManager::ReImportFile(Resource* resource, const char* filePat
 		//case TYPE::SCENE: import_ok = App->scene->Import(newFileInAssets, written_file); break;
 	case TYPE::MATERIAL:
 		success = App->fsystem->Copy(filePath, IMPORTED_MATERIALS, file.c_str());
+		break;
+	case TYPE::ANIMATION:
+		success = App->fsystem->Copy(filePath, IMPORTED_ANIMATIONS, file.c_str());
+		break;
+	case TYPE::STATEMACHINE:
+		success = App->fsystem->Copy(filePath, IMPORTED_STATEMACHINES, file.c_str());
 		break;
 	}
 
