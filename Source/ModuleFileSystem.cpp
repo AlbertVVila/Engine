@@ -473,7 +473,7 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 				}
 				else if (type == FILETYPE::STATEMACHINE)
 				{
-					std::set<std::string>::iterator it = importedStateMachines.find(RemoveExtension(file));
+ 					std::set<std::string>::iterator it = importedStateMachines.find(RemoveExtension(file));
 					if (it == importedStateMachines.end() || statFile.st_mtime > statMeta.st_mtime)
 					{
 						// File modified or not imported, send it to import

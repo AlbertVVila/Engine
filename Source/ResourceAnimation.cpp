@@ -6,8 +6,9 @@
 #include "ModuleResourceManager.h"
 
 #include "ResourceAnimation.h"
-#include "Globals.h"
 
+#include "Globals.h"
+#include "JSON.h"
 #include <assert.h>
 
 
@@ -92,6 +93,40 @@ void ResourceAnimation::Delete()
 	DeleteFromMemory();
 }
 
+void ResourceAnimation::SaveMetafile(const char* file) const
+{
+	std::string filepath;
+	filepath.append(file);
+	JSON* json = new JSON();
+	JSON_value* meta = json->CreateValue();
+	struct stat statFile;
+	stat(filepath.c_str(), &statFile);
+	meta->AddUint("GUID", UID);
+	meta->AddUint("timeCreated", statFile.st_ctime);
+	json->AddValue("Animation", *meta);
+	filepath += METAEXT;
+	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
+}
+
+void ResourceAnimation::LoadConfigFromMeta()
+{
+	Resource::LoadConfigFromMeta();
+	char* data = nullptr;
+	std::string metaFile(file);
+	metaFile += ".meta";
+
+	if (App->fsystem->Load(metaFile.c_str(), &data) == 0)
+	{
+		LOG("Warning: %s couldn't be loaded", metaFile.c_str());
+		RELEASE_ARRAY(data);
+		return;
+	}
+	JSON* json = new JSON(data);
+	JSON_value* value = json->GetValue("Animation");
+	UID = value->GetUint("GUID");
+	std::string name = App->fsystem->GetFilename(file);
+}
+
 void ResourceAnimation::SetAnimation(const char* animationData)
 {
 	for (const auto& channel : channels)
@@ -111,7 +146,7 @@ void ResourceAnimation::SetAnimation(const char* animationData)
 
 	numberFrames = duration;
 
-	durationInSeconds = duration * (1 / framesPerSecond);
+	durationInSeconds = float(duration * (1 / framesPerSecond));
 
 	memcpy(&numberOfChannels, animationData, sizeof(int));
 	animationData += sizeof(int);
@@ -235,6 +270,7 @@ void ResourceAnimation::SaveNewAnimation()
 	SetFile(ANIMATIONS);
 	SetExportedFile(std::to_string(GetUID()).c_str());
 	RELEASE_ARRAY(animationData);
+
 }
 
 unsigned ResourceAnimation::GetNumPositions(unsigned indexChannel) const

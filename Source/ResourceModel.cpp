@@ -156,7 +156,7 @@ bool ResourceModel::CheckImportedMeshes()
 bool ResourceModel::CheckImportedAnimations()
 {
 	std::set<std::string> importedAnimations;
-	App->fsystem->ListFiles(MESHES, importedAnimations);
+	App->fsystem->ListFiles(IMPORTED_ANIMATIONS, importedAnimations);
 
 	for each(auto anim in animationList)
 	{

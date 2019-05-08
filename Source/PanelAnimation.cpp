@@ -30,7 +30,7 @@ void PanelAnimation::Draw()
 		ImGui::End();
 		return;
 	}
-	if (App->scene->selected != nullptr && App->scene->selected->isBoneRoot && (ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)))
+	if (App->scene->selected != nullptr && App->scene->selected->isBoneRoot && (ComponentAnimation*)(App->scene->selected->GetComponentOld(ComponentType::Animation)))
 	{
 		ComponentAnimation* compAnim = ((ComponentAnimation*)(App->scene->selected->GetComponentOld(ComponentType::Animation)));
 

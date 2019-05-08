@@ -29,7 +29,8 @@ public:
 	bool LoadInMemory() override;		// Will load in memory all Resourceanims stored
 	void DeleteFromMemory() override;	// Will delete all ResourceAnims stored in memory
 	void Delete() override;
-
+	void SaveMetafile(const char* file) const override;
+	void LoadConfigFromMeta() override;
 
 	void SetAnimation(const char* animData);
 	unsigned GetAnimationSize();

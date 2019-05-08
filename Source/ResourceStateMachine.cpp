@@ -71,7 +71,7 @@ void ResourceStateMachine::Delete()
 	App->resManager->DeleteResourceFromList(UID);
 
 	// Delete file in Library
-	std::string fileInLibrary(STATEMACHINES);
+	std::string fileInLibrary(IMPORTED_STATEMACHINES);
 	fileInLibrary += exportedFileName;
 	fileInLibrary += STATEMACHINEEXTENSION;
 	App->fsystem->Delete(fileInLibrary.c_str());
