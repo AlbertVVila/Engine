@@ -464,7 +464,7 @@ void ModuleScene::DragNDropMove(GameObject* target)
 			IM_ASSERT(payload->DataSize == sizeof(GameObject*));
 			TakePhoto();
 			GameObject* droppedGo = (GameObject *)*(const int*)payload->Data;
-			if (droppedGo != App->scene->root && target != droppedGo)
+			if (droppedGo != App->scene->root && target != App->scene->root && target != droppedGo )
 			{
 				for (GameObject* droppedGo : App->scene->selection)
 				{
