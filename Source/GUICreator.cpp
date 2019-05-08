@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "ModuleScene.h"
 #include "ModuleSpacePartitioning.h"
+#include "ModuleRender.h"
 
 #include "MaterialEditor.h"
 #include "GameObject.h"
@@ -27,12 +28,15 @@ void GUICreator::CreateElements(GameObject* go)
 		if (ImGui::Selectable("Empty GameObject"))
 		{
 			GameObject *newgo = App->scene->CreateGameObject("Empty", go);
+			newgo->CreateComponent(ComponentType::Transform);
 			App->scene->Select(newgo);
 		}
 		if (ImGui::BeginMenu("Light"))
 		{
 			const char* lights[LIGHTTYPES] = { "Directional", "Point", "Spot" };
-			for (unsigned i = 0; i < LIGHTTYPES; ++i)
+			unsigned i;
+			App->renderer->directionalLight ? i = 1 : i = 0;
+			for (; i < LIGHTTYPES; ++i)
 			{
 				if (ImGui::MenuItem(lights[i]))
 				{
@@ -43,6 +47,14 @@ void GUICreator::CreateElements(GameObject* go)
 					App->scene->Select(light);
 					App->spacePartitioning->aabbTreeLighting.ReleaseNode(light->treeNode); //The aabbtree should be updated with the new light type
 					App->spacePartitioning->aabbTreeLighting.InsertGO(light);
+					if (lighttype->lightType == LightType::DIRECTIONAL)
+					{
+						App->renderer->directionalLight = lighttype;
+					}
+					else
+					{
+						App->spacePartitioning->aabbTreeLighting.InsertGO(light);
+					}
 				}
 			}
 			ImGui::EndMenu();
@@ -93,7 +105,7 @@ void GUICreator::CreateElements(GameObject* go)
 		if (ImGui::Selectable("Cube"))
 		{
 			App->scene->CreateCube("cube", go);
-		}
+		}		
 		ImGui::EndMenu();
 	}
 }

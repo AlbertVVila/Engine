@@ -44,6 +44,7 @@ public:
 
 	void Init();
 	void Calculate();
+	void CleanUp();
 	void DebugDraw() const;
 	template<typename T>
 	void GetIntersections(T &intersector, std::unordered_set<GameObject*> &intersections) const;

@@ -46,10 +46,14 @@ void ModuleFontLoader::LoadFonts(const char* newFont)
 
 	FT_Face face;
 	if (FT_New_Face(ft, newFont, 0, &face))
+	{
 		LOG("ERROR::FREETYPE: Failed to load font");
+		return;
+	}
 
 	//set size
 	//Setting the width to 0 lets the face dynamically calculate the width based on the given height.
+
 	FT_Set_Pixel_Sizes(face, 0, 48);
 
 	//we load the characters and put them into our map
@@ -137,7 +141,7 @@ bool ModuleFontLoader::CleanUp()
 	return true;
 }
 
-void ModuleFontLoader::RenderText(const ComponentText& compText, int currentWidth, int currentHeight)
+void ModuleFontLoader::RenderText(const Text& compText, int currentWidth, int currentHeight)
 {
 	if (shaderFonts == nullptr)return;
 	const char* font = compText.font.c_str();
@@ -145,7 +149,7 @@ void ModuleFontLoader::RenderText(const ComponentText& compText, int currentWidt
 	std::string text = compText.text;
 
 	//now we get the component transform 2D and the transf matrices
-	ComponentTransform2D* transform2D = (ComponentTransform2D*)compText.gameobject->GetComponent(ComponentType::Transform2D);
+	Transform2D* transform2D = (Transform2D*)compText.gameobject->GetComponentOld(ComponentType::Transform2D);
 	float x = 0;
 	float y = 0;
 	math::float2 pos = transform2D->getPosition();

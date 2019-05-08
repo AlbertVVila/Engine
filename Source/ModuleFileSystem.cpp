@@ -60,7 +60,10 @@ ModuleFileSystem::ModuleFileSystem()
 		MakeDirectory(TEXTURES);
 	if (!Exists(IMPORTED_SCENES))
 		MakeDirectory(IMPORTED_SCENES);
-
+	if (!Exists(ANIMATIONS))
+		MakeDirectory(ANIMATIONS);
+	if (!Exists(STATEMACHINES))
+		MakeDirectory(STATEMACHINES);
 }
 
 
@@ -69,7 +72,7 @@ ModuleFileSystem::~ModuleFileSystem()
 	PHYSFS_deinit();
 }
 
-bool ModuleFileSystem::Start()
+bool ModuleFileSystem::Start() //TODO: Don't checkFiles in GameBuild
 {
 	// Check files in Assets and add them to ResManager
 	CheckResourcesInFolder(ASSETS);
@@ -377,9 +380,13 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 	std::set<std::string> importedTextures;
 	std::set<std::string> importedMaterials;
 	std::set<std::string> importedScenes;
+	std::set<std::string> importedStateMachines;
 	ListFiles(TEXTURES, importedTextures);
 	ListFiles(IMPORTED_MATERIALS, importedMaterials);
 	ListFiles(IMPORTED_SCENES, importedScenes);
+	ListFiles(TEXTURES, importedTextures);
+	ListFiles(IMPORTED_MATERIALS, importedMaterials);
+	ListFiles(STATEMACHINES, importedStateMachines);
 
 	// Look for files in folder passed as argument
 	std::vector<std::string> files;
@@ -388,6 +395,23 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 	std::string currentFolder;
 	struct stat statFile;
 	struct stat statMeta;
+
+	//for the statesMachine, about to be deprecated
+	std::vector<std::string> smFiles = GetFolderContent(STATEMACHINES);
+	for (auto& file : smFiles)
+	{
+		std::set<std::string>::iterator it = importedStateMachines.find(RemoveExtension(file));
+		if (it == importedStateMachines.end())
+		{
+			// File modified or not imported, send it to import
+			filesToImport.push_back(std::pair<std::string, std::string>(file, STATEMACHINES));
+		}
+		else
+		{
+			// File already imported, add it to the resources list
+			App->resManager->AddResource(file.c_str(), STATEMACHINES, TYPE::STATEMACHINE);
+		}
+	}
 
 	while (!folderStack.empty())
 	{
@@ -442,6 +466,20 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 						if (res->CheckImportedAnimations())
 							filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
 			
+					}
+				}
+				else if (type == FILETYPE::STATEMACHINE)
+				{
+					std::set<std::string>::iterator it = importedStateMachines.find(RemoveExtension(file));
+					if (it == importedStateMachines.end())
+					{
+						// File modified or not imported, send it to import
+						filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
+					}
+					else
+					{
+						// File already imported, add it to the resources list
+						App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::STATEMACHINE);
 					}
 				}
 				else if (type == FILETYPE::MATERIAL)
@@ -533,7 +571,10 @@ void ModuleFileSystem::ImportFiles()
 	filesToImport.clear();
 
 	// Refresh Assets panel browser
+#ifndef GAME_BUILD
 	App->editor->assets->folderContentDirty = true;
+#endif
+
 }
 
 int ModuleFileSystem::GetModTime(const char* file) const
@@ -630,6 +671,14 @@ FILETYPE ModuleFileSystem::GetFileType(std::string extension) const
 	if (extension == MATERIALEXT)
 	{
 		return FILETYPE::MATERIAL;
+	}
+	if (extension == ANIMATIONEXTENSION)
+	{
+		return FILETYPE::ANIMATION;
+	}
+	if (extension == STATEMACHINEEXTENSION)
+	{
+		return FILETYPE::STATEMACHINE;
 	}
 	return FILETYPE::NONE;
 }

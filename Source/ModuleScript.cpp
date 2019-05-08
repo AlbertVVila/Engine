@@ -4,8 +4,8 @@
 #include "ModuleFileSystem.h"
 #include "ModuleTime.h"
 
+#include "GameObject.h"
 #include "Component.h"
-#include "ComponentScript.h"
 
 #include "BaseScript.h"
 #include "engineResource.h"
@@ -39,6 +39,7 @@ ModuleScript::~ModuleScript()
 
 bool ModuleScript::Start()
 {
+	SetDllDirectory(SCRIPTS);
 	CheckScripts();
 	//LoadFromMemory(IDR_DLL1);
 	return true;
@@ -50,23 +51,51 @@ update_status ModuleScript::Update(float dt)
 	{
 		if (onStart)
 		{
-			for (const auto& component : componentsScript)
+			for (const auto& script : componentsScript)
 			{
-				component->ScriptStart();
+				if (script->gameobject->isActive())
+				{
+					script->Awake();
+					script->hasBeenAwoken = true;
+				}
+			}
+
+			for (const auto& script : componentsScript)
+			{
+				if (script->enabled)
+				{
+					script->Start();
+					script->hasBeenStarted = true;
+				}
 			}
 		}
-		for (const auto& component : componentsScript)
+		for (const auto& script : componentsScript)
 		{
-			component->ScriptUpdate();
+			script->Update();
 		}
 	}
 	else
 	{
+#ifndef GAME_BUILD
 		//TODO: We should use a thread component to listen to script folder asynchronously
 		CheckScripts();
+#endif // !GAME_BUILD
+	}
+	if (!onStart && App->time->gameState == GameState::STOP)
+	{
+		ResetScriptFlags();
 	}
 	onStart = App->time->gameState == GameState::STOP;
 	return status;
+}
+
+void ModuleScript::ResetScriptFlags()
+{
+	for (const auto& script : componentsScript)
+	{
+		script->hasBeenAwoken = false;
+		script->hasBeenStarted = false;
+	}
 }
 
 void ModuleScript::LoadFromMemory(int resource) //TODO: Load from memory in shipping build
@@ -94,10 +123,20 @@ void ModuleScript::LoadFromMemory(int resource) //TODO: Load from memory in ship
 	}
 }
 
-Script* ModuleScript::GetScript(const ComponentScript& component, const std::string& script)
+void ModuleScript::AddScriptReference(Script* script, const std::string&name)
+{
+	std::map<std::string, std::pair<HINSTANCE, int>>::iterator itDll = loadedDLLs.find(name);
+	if (itDll != loadedDLLs.end())
+	{
+		componentsScript.push_back(script);
+		itDll->second.second++;
+	}
+}
+
+Script* ModuleScript::GetScript(const std::string& name)
 {
 	HINSTANCE dll;
-	std::map<std::string, std::pair<HINSTANCE, int>>::iterator itDll = loadedDLLs.find(script);
+	std::map<std::string, std::pair<HINSTANCE, int>>::iterator itDll = loadedDLLs.find(name);
 	if (itDll != loadedDLLs.end())
 	{
 		dll = itDll->second.first;
@@ -105,14 +144,15 @@ Script* ModuleScript::GetScript(const ComponentScript& component, const std::str
 	}
 	else
 	{
-		dll = LoadLibrary((SCRIPTS + script + DLL).c_str());
+		dll = LoadLibrary((name + DLL).c_str());
 		if (dll != nullptr)
 		{
 			loadedDLLs.insert(std::pair<std::string,
-				std::pair<HINSTANCE, int>>(script, std::pair<HINSTANCE, int>(dll, 1)));
+				std::pair<HINSTANCE, int>>(name, std::pair<HINSTANCE, int>(dll, 1)));
 		}
 		else
 		{
+			LOG(GetLastErrorAsString().c_str());
 			return nullptr;
 		}
 	}
@@ -122,23 +162,27 @@ Script* ModuleScript::GetScript(const ComponentScript& component, const std::str
 	if (Create != nullptr)
 	{
 		Script* script = Create();
-		componentsScript.push_back(&component);
+		script->SetApp(App);
+		script->name = name;
+		componentsScript.push_back(script);
 		return script;
 	}
 	return nullptr;
 }
 
-void ModuleScript::RemoveScript(const ComponentScript& component, const std::string& name)
+bool ModuleScript::RemoveScript(Script* script, const std::string& name)
 {
-	//TODO: check if script is used in any other component and if not then freelibrary
 	std::map<std::string, std::pair<HINSTANCE,int>>::iterator itDll = loadedDLLs.find(name);
 	if (itDll != loadedDLLs.end())
 	{
+		componentsScript.remove(script);
+		RELEASE(script);
 		if (itDll->second.second <= 1)
 		{
 			if (!FreeLibrary(itDll->second.first))
 			{
 				LOG("CAN'T RELEASE %s", name);
+				return false;
 			}
 			loadedDLLs.erase(itDll);
 		}
@@ -146,13 +190,13 @@ void ModuleScript::RemoveScript(const ComponentScript& component, const std::str
 		{
 			itDll->second.second--;
 		}
-		componentsScript.remove(&component);
 	}
 	else
 	{
 		LOG("Script %s Not Found!", name);
-		assert(false);
+		return false;
 	}
+	return true;
 }
 
 void ModuleScript::CheckScripts()
@@ -180,3 +224,22 @@ void ModuleScript::CheckScripts()
 	}
 }
 
+
+std::string ModuleScript::GetLastErrorAsString()
+{
+	//Get the error message, if any.
+	DWORD errorMessageID = ::GetLastError();
+	if (errorMessageID == 0)
+		return std::string(); //No error message has been recorded
+
+	LPSTR messageBuffer = nullptr;
+	size_t size = FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+		NULL, errorMessageID, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPSTR)&messageBuffer, 0, NULL);
+
+	std::string message(messageBuffer, size);
+
+	//Free the buffer.
+	LocalFree(messageBuffer);
+
+	return message;
+}

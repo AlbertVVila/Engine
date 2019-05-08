@@ -21,6 +21,7 @@ private:
 	bool openPopup = false;
 	std::string popUpSentence;
 	std::vector<std::pair<const char*, ComponentType>> componentList;
+	std::vector<std::string> scriptList;
 };
 
 #endif //__PanelInspector_h__

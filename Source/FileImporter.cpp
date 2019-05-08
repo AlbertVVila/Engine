@@ -82,6 +82,10 @@ void FileImporter::ImportAsset(const char *file, const char *folder)
 	{
 		App->fsystem->Copy(folder, ANIMATIONS, file);
 	}
+	else if (extension == STATEMACHINEEXTENSION)
+	{
+		App->fsystem->Copy(folder, STATEMACHINES, file);
+	}
 }
 
 bool FileImporter::ImportFBX(const char* fbxfile, const char* folder, ResourceModel* resource)
@@ -129,9 +133,10 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 		stackParent.top()->InsertChild(goNode); stackParent.pop();
 
 		ComponentTransform* nodeTransform = (ComponentTransform*)goNode->CreateComponent(ComponentType::Transform);
-		ComponentTransform* nodeParentTransform = (ComponentTransform*)goNode->parent->GetComponent(ComponentType::Transform);
+		ComponentTransform* nodeParentTransform = (ComponentTransform*)goNode->parent->GetComponentOld(ComponentType::Transform);
 		nodeTransform->UpdateTransform();
 		nodeTransform->SetLocalTransform(reinterpret_cast<const math::float4x4&>(aNode->mTransformation), nodeParentTransform->global);
+		nodeTransform->UpdateGlobalTransform();
 
 		for (unsigned i = 0u; i < aNode->mNumMeshes; ++i)
 		{
@@ -167,6 +172,8 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 			ComponentRenderer* crenderer = (ComponentRenderer*)meshGO->CreateComponent(ComponentType::Renderer);
 			crenderer->mesh = mesh;
 			meshGO->CreateComponent(ComponentType::Transform);
+			ComponentTransform* cTransform = (ComponentTransform*)(meshGO->GetComponentOld(ComponentType::Transform));
+			cTransform->SetLocalTransform(nodeTransform->global, math::float4x4::identity);
 			sceneGO->InsertChild(meshGO);
 			++totalMeshes;
 		}
@@ -183,11 +190,11 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 		sceneGO->isBoneRoot = true;
 		char* animationData = nullptr;
 		unsigned animationSize = GetAnimationSize(*aiscene.mAnimations[i]);
-		animationData = new char[animationSize];
+		animationData = new char[animationSize + 1];
 		ImportAnimation(*aiscene.mAnimations[i], animationData);
 
 		sceneGO->CreateComponent(ComponentType::Animation);
-		ComponentAnimation* animationComponent = (ComponentAnimation*)sceneGO->GetComponent(ComponentType::Animation);
+		ComponentAnimation* animationComponent = (ComponentAnimation*)sceneGO->GetComponentOld(ComponentType::Animation);
 
 		ResourceAnimation* animation = nullptr;
 		char* metaData = nullptr;
@@ -207,7 +214,7 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 			App->resManager->ReplaceResource(animation->GetUID(), animation);
 		}
 		animationComponent->anim = animation;
-
+		animationData[animationSize] = 0;
 		App->fsystem->Save((ANIMATIONS + std::to_string(animation->GetUID()) + ANIMATIONEXTENSION).c_str(), animationData, animationSize);
 		animation->SetFile(path.c_str());
 		animation->SetExportedFile(std::to_string(animation->GetUID()).c_str());

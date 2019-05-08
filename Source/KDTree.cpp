@@ -94,6 +94,15 @@ void KDTree::Init()
 	}
 }
 
+void KDTree::CleanUp()
+{
+	if (treeRoot != nullptr)
+	{
+		RELEASE(treeRoot);
+		treeRoot = nullptr;
+	}
+}
+
 void KDTree::Calculate()
 {
 	treeRoot->bucketOccupation = 0u;

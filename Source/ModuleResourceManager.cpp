@@ -13,6 +13,7 @@
 #include "ResourceModel.h"
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
+#include "ResourceStateMachine.h"
 #include "ResourceAnimation.h"
 #include "ResourceSkybox.h"
 #include "ResourceScene.h"
@@ -274,14 +275,15 @@ Resource* ModuleResourceManager::CreateNewResource(TYPE type, unsigned forceUid)
 
 	switch (type) 
 	{
-	case TYPE::TEXTURE:		resource = (Resource*) new ResourceTexture(uid);	break;
-	case TYPE::MODEL:		resource = (Resource*) new ResourceModel(uid);		break;
-	case TYPE::MESH:		resource = (Resource*) new ResourceMesh(uid);		break;
-	case TYPE::SCENE:		resource = (Resource*) new ResourceScene(uid);		break;
-	case TYPE::ANIMATION:	resource = (Resource*) new ResourceAnimation(uid);	break;
-	case TYPE::MATERIAL:	resource = (Resource*) new ResourceMaterial(uid);	break;
-	case TYPE::SKYBOX:		resource = (Resource*) new ResourceSkybox(uid);		break;
-	/*case TYPE::AUDIO:		resource = (Resource*) new ResourceAudio(uid);		break;*/
+	case TYPE::TEXTURE:			resource = (Resource*) new ResourceTexture(uid);		break;
+	case TYPE::MODEL:			resource = (Resource*) new ResourceModel(uid);			break;
+	case TYPE::MESH:			resource = (Resource*) new ResourceMesh(uid);			break;
+	case TYPE::SCENE:			resource = (Resource*) new ResourceScene(uid);			break;
+	case TYPE::ANIMATION:		resource = (Resource*) new ResourceAnimation(uid);		break;
+	case TYPE::MATERIAL:		resource = (Resource*) new ResourceMaterial(uid);		break;
+	case TYPE::SKYBOX:			resource = (Resource*) new ResourceSkybox(uid);			break;
+	case TYPE::STATEMACHINE:	resource = (Resource*) new ResourceStateMachine(uid);	break;
+	/*case TYPE::AUDIO:			resource = (Resource*) new ResourceAudio(uid);			break;*/
 	}
 
 	if (resource != nullptr)
@@ -306,7 +308,7 @@ Resource* ModuleResourceManager::Get(unsigned uid) const
 	if (!resource->IsLoadedToMemory())
 	{
 		// Load in memory
-		if (resource->LoadInMemory())
+ 		if (resource->LoadInMemory())
 			return resource;
 		else
 			return nullptr;
@@ -373,7 +375,21 @@ ResourceAnimation* ModuleResourceManager::GetAnimationByName(const char* name)
 				return (ResourceAnimation*)Get(anim->GetUID());
 		}
 	}
+	return nullptr;
+}
 
+ResourceStateMachine* ModuleResourceManager::GetSMByName(const char * name)
+{
+	std::vector<std::string> resourcesList;
+	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		if (it->second->GetType() == TYPE::STATEMACHINE)
+		{
+			ResourceStateMachine* stateMachine = (ResourceStateMachine*)it->second;
+			if (stateMachine->name == name)
+				return (ResourceStateMachine*)Get(stateMachine->GetUID());
+		}
+	}
 	return nullptr;
 }
 
@@ -474,6 +490,17 @@ std::vector<ResourceAnimation*> ModuleResourceManager::GetAnimationsList()
 	return resourcesList;
 }
 
+std::vector<ResourceStateMachine*> ModuleResourceManager::GetSMList()
+{
+	std::vector<ResourceStateMachine*> resourcesList;
+	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		if (it->second->GetType() == TYPE::STATEMACHINE)
+			resourcesList.push_back((ResourceStateMachine*)it->second);
+	}
+	return resourcesList;
+}
+
 std::vector<std::string> ModuleResourceManager::GetResourceNamesList(TYPE resourceType, bool ordered)
 {
 	std::vector<std::string> resourcesList;
@@ -518,6 +545,24 @@ std::vector<std::string> ModuleResourceManager::GetAnimationsNamesList(bool orde
 		{
 			ResourceAnimation* anim = (ResourceAnimation*)it->second;
 			resourcesList.push_back(anim->name);
+		}
+	}
+
+	if (ordered)	// Short by ascending order
+		std::sort(resourcesList.begin(), resourcesList.end(), sortByNameAscending);
+
+	return resourcesList;
+}
+
+std::vector<std::string> ModuleResourceManager::GetSMNamesList(bool ordered)
+{
+	std::vector<std::string> resourcesList;
+	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		if (it->second->GetType() == TYPE::STATEMACHINE)
+		{
+			ResourceStateMachine* stateMachine = (ResourceStateMachine*)it->second;
+			resourcesList.push_back(stateMachine->name);
 		}
 	}
 
@@ -573,6 +618,18 @@ Resource* ModuleResourceManager::AddResource(const char* file, const char* direc
 {
 	std::string path(directory);
 	path += file;
+
+	if (type == TYPE::STATEMACHINE)
+	{
+		// Create new resource 
+		//unsigned smUID = App->fsystem->RemoveExtension(file)
+		Resource* res = CreateNewResource(type , std::stoul(App->fsystem->RemoveExtension(file), nullptr, 0));
+		res->LoadInMemory();
+		res->SetExportedFile(App->fsystem->GetFilename(file).c_str());
+		res->SetFile((path).c_str());
+		return res;
+	}
+
 	// Check if resource was already added
 	unsigned UID = FindByFileInAssets(path.c_str());
 	if ( UID == 0)

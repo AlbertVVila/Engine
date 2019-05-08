@@ -3,7 +3,7 @@
 
 #include <string>
 
-struct JSON_value;
+class JSON_value;
 
 enum class TYPE
 {
@@ -15,6 +15,7 @@ enum class TYPE
 	ANIMATION,
 	MATERIAL,
 	SKYBOX,
+	STATEMACHINE,
 	UNKNOWN
 };
 

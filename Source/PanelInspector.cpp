@@ -2,9 +2,12 @@
 
 #include "ModuleScene.h"
 #include "ModuleEditor.h"
+#include "ModuleFileSystem.h"
+#include "ModuleScript.h"
 
 #include "GameObject.h"
 #include "Component.h"
+#include "BaseScript.h"
 
 #include "PanelInspector.h"
 #include "PanelHierarchy.h"
@@ -16,11 +19,13 @@
 
 PanelInspector::PanelInspector()
 {
-	componentList = { {"Transform", ComponentType::Transform}, {"Renderer", ComponentType::Renderer}, 
-	{"Camera", ComponentType::Camera},  {"Light", ComponentType::Light} , {"Script", ComponentType::Script},
-	{"Animation", ComponentType::Animation} };
+	componentList = { {"Transform", ComponentType::Transform}, {"Renderer", ComponentType::Renderer},
+	{"Camera", ComponentType::Camera},  {"Light", ComponentType::Light},
+	{"Animation", ComponentType::Animation}, {"Particle System", ComponentType::Particles},
+	{"Trail Renderer", ComponentType::Trail},
+	{"Animation", ComponentType::Animation}, {"Reverb Zone", ComponentType::ReverbZone}, {"Audio Listener", ComponentType::AudioListener},
+	{"Audio Source", ComponentType::AudioSource} };
 }
-
 
 PanelInspector::~PanelInspector()
 {
@@ -45,6 +50,11 @@ void PanelInspector::Draw()
 
 		if (ImGui::Button("Add Component", ImVec2(ImGui::GetWindowWidth(), 25)))
 			ImGui::OpenPopup("component_popup");
+		if (ImGui::Button("Add Script", ImVec2(ImGui::GetWindowWidth(), 25)))
+		{
+			ImGui::OpenPopup("script_popup");
+			scriptList = App->fsystem->GetFolderContent(SCRIPTS, false);
+		}
 		ImGui::SameLine();
 		if (ImGui::BeginPopup("component_popup"))
 		{
@@ -54,7 +64,7 @@ void PanelInspector::Draw()
 				if (ImGui::Selectable(componentList[i].first))
 				{
 					ComponentType type = componentList[i].second;
-					if (App->scene->selected->GetComponent(type) != nullptr && 
+					if (App->scene->selected->GetComponentOld(type) != nullptr && 
 						(type == ComponentType::Renderer || type == ComponentType::Transform))
 					{
 						openPopup = true;
@@ -70,6 +80,19 @@ void PanelInspector::Draw()
 						App->scene->TakePhoto();
 						App->scene->selected->CreateComponent(type);
 					}
+				}
+			ImGui::EndPopup();
+		}
+		if (ImGui::BeginPopup("script_popup"))
+		{
+			ImGui::Text("Scripts");
+			ImGui::Separator();
+			for (int i = 0; i < scriptList.size(); i++)
+				if (ImGui::Selectable(scriptList[i].c_str()))
+				{
+					Script* script = App->scripting->GetScript(scriptList[i]);
+					script->SetGameObject(App->scene->selected);
+					App->scene->selected->components.push_back((Component*)script);
 				}
 			ImGui::EndPopup();
 		}

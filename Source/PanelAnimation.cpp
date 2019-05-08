@@ -6,6 +6,7 @@
 #include "GameObject.h"
 
 #include "ResourceAnimation.h"
+#include "ModuleFileSystem.h"
 
 #include "ComponentAnimation.h"
 #include "ComponentTransform.h"
@@ -29,10 +30,9 @@ void PanelAnimation::Draw()
 		ImGui::End();
 		return;
 	}
-	if (App->scene->selected != nullptr && App->scene->selected->isBoneRoot && (ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)) && ((ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)))->anim != nullptr)
+	if (App->scene->selected != nullptr && App->scene->selected->isBoneRoot && (ComponentAnimation*)(App->scene->selected->GetComponentOld(ComponentType::Animation)) && ((ComponentAnimation*)(App->scene->selected->GetComponentOld(ComponentType::Animation)))->anim != nullptr)
 	{
-		ResourceAnimation* anim = ((ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)))->anim;
-		ComponentAnimation* compAnim = ((ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)));
+		ComponentAnimation* compAnim = ((ComponentAnimation*)(App->scene->selected->GetComponentOld(ComponentType::Animation)));
 
 		ImGui::Text("GAMEOBJECT"); ImGui::SameLine();
 		ImGui::Text("CURRENT ANIM"); ImGui::SameLine();
@@ -44,7 +44,39 @@ void PanelAnimation::Draw()
 
 		// Current Anim
 		ImGui::SetCursorPosX(ImGui::CalcTextSize("  GAMEOBJECT  ").x);
-		ImGui::Text(anim->name.c_str());
+
+		if (guiAnimations.empty())
+		{
+			guiAnimations = App->resManager->GetAnimationsNamesList(true);
+		}
+
+		ImGui::PushItemWidth(100);
+
+		if (ImGui::BeginCombo("##label", anim != nullptr ? anim->name.c_str() : ""))
+		{
+			for (int n = 0; n < guiAnimations.size(); n++)
+			{
+				bool is_selected = true;
+				if (ImGui::Selectable(guiAnimations[n].c_str(), is_selected))
+				{
+					unsigned animUID = ((ResourceAnimation*)App->resManager->GetAnimationByName(guiAnimations[n].c_str()))->GetUID();
+					anim = (ResourceAnimation*)App->resManager->GetWithoutLoad(animUID);
+					compAnim->editorController->PlayEditor(anim);
+				}
+				if (is_selected)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+			ImGui::EndCombo();
+		}
+		ImGui::PopItemWidth();
+
+		if (anim == nullptr)
+		{
+			ImGui::End();
+			return;
+		}
 
 		// Animation
 		ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 - ImGui::CalcTextSize("FRAMES").x / 2);
@@ -55,10 +87,10 @@ void PanelAnimation::Draw()
 		if (ImGui::SliderInt("##label", &anim->currentFrame, 0, anim->duration))
 		{
 			UpdateGameObjectAnimation(App->scene->selected, anim);
-			
+
 			if (!isCliping)
 			{
-				compAnim->controller->current->time = anim->currentFrame / anim->framesPerSecond;
+				compAnim->editorController->current->time = anim->currentFrame / anim->framesPerSecond;
 			}
 			else if (isCliping && anim->currentFrame < minFrame)
 			{
@@ -78,19 +110,8 @@ void PanelAnimation::Draw()
 			}
 			else if (isCliping && !compAnim->isPlaying)
 			{
-				CreateAnimationFromClip(anim, minFrame, maxFrame);
 				isCliping = false;
-				compAnim->controller->ResetClipping();
-			}
-		}
-
-		if (isCliping)
-		{
-			ImGui::SameLine();
-			if (ImGui::Button("Cancel") && !compAnim->isPlaying)
-			{
-				isCliping = false;
-				compAnim->controller->ResetClipping();
+				compAnim->editorController->ResetClipping();
 			}
 		}
 
@@ -101,13 +122,13 @@ void PanelAnimation::Draw()
 			{
 				anim->currentFrame--;
 				UpdateGameObjectAnimation(App->scene->selected, anim);
-				compAnim->controller->current->time = anim->currentFrame / anim->framesPerSecond;
+				compAnim->editorController->current->time = anim->currentFrame / anim->framesPerSecond;
 			}
 			else if (!isCliping && anim->currentFrame > 0)
 			{
 				anim->currentFrame--;
 				UpdateGameObjectAnimation(App->scene->selected, anim);
-				compAnim->controller->current->time = anim->currentFrame / anim->framesPerSecond;
+				compAnim->editorController->current->time = anim->currentFrame / anim->framesPerSecond;
 			}
 
 		}
@@ -118,8 +139,8 @@ void PanelAnimation::Draw()
 			ImGui::PushStyleColor(ImGuiCol_Button, { 0.5f, 0.3f, 0.3f, 0.7f });
 
 			if (ImGui::ArrowButton("play", ImGuiDir_Right)) // PAUSE
-			{				
-				if (isCliping && compAnim->controller->current->loop)
+			{
+				if (isCliping && compAnim->editorController->current->loop)
 				{
 					anim->currentFrame = maxFrame;
 					UpdateGameObjectAnimation(App->scene->selected, anim);
@@ -137,10 +158,10 @@ void PanelAnimation::Draw()
 			{
 				if (isCliping)
 				{
-					compAnim->controller->current->minTime = minFrame / anim->framesPerSecond;
-					compAnim->controller->current->maxTime = maxFrame / anim->framesPerSecond;
+					compAnim->editorController->current->minTime = minFrame / anim->framesPerSecond;
+					compAnim->editorController->current->maxTime = maxFrame / anim->framesPerSecond;
 				}
-
+				compAnim->editorController->current->isEditor = true;
 				compAnim->isPlaying = true;
 			}
 		}
@@ -152,7 +173,7 @@ void PanelAnimation::Draw()
 			{
 				anim->currentFrame++;
 				UpdateGameObjectAnimation(App->scene->selected, anim);
-				compAnim->controller->current->time = anim->currentFrame / anim->framesPerSecond;
+				compAnim->editorController->current->time = anim->currentFrame / anim->framesPerSecond;
 			}
 		}
 
@@ -179,6 +200,7 @@ void PanelAnimation::Draw()
 	ImGui::End();
 }
 
+
 void PanelAnimation::UpdateGameObjectAnimation(GameObject * go, ResourceAnimation* anim)
 {
 	if (go->animationIndexChannel != 999u)
@@ -196,7 +218,7 @@ void PanelAnimation::UpdateGameObjectAnimation(GameObject * go, ResourceAnimatio
 void PanelAnimation::CreateAnimationFromClip(ResourceAnimation* anim, int minFrame, int maxFrame)
 {
 	ResourceAnimation* newAnim = (ResourceAnimation*)App->resManager->CreateNewResource(TYPE::ANIMATION);
-	ComponentAnimation* compAnim = ((ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)));
+	ComponentAnimation* compAnim = ((ComponentAnimation*)(App->scene->selected->GetComponentOld(ComponentType::Animation)));
 
 	for (int i = 0; i < anim->numberOfChannels; ++i)
 	{

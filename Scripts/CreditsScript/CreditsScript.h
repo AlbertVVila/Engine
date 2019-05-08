@@ -11,7 +11,7 @@
 #define CreditsScript_API __declspec(dllimport)
 #endif
 
-class ComponentTransform2D;
+class Transform2D;
 
 class CreditsScript_API CreditsScript : public Script
 {
@@ -27,7 +27,7 @@ public:
 	void DeSerialize(JSON_value* json) override;
 public:
 	bool creditsDone = false;
-	ComponentTransform2D* transform2D = nullptr;
+	Transform2D* transform2D = nullptr;
 	math::float2 initialPosition = math::float2::zero;
 
 private:
