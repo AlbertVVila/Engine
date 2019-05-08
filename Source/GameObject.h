@@ -17,7 +17,6 @@ struct Frame;
 struct Texture;
 class JSON_value;
 class Animation;
-class Script;
 
 class GameObject
 {
@@ -31,7 +30,7 @@ public:
 	void DrawProperties();
 
 	void Update();
-	inline bool isActive() const
+	ENGINE_API inline bool isActive() const
 	{
 		if (!activeInHierarchy) return false;
 		return activeSelf;
@@ -39,12 +38,12 @@ public:
 
 	ENGINE_API void SetActive(bool active);
 
-	Component* CreateComponent(ComponentType type);
-	ENGINE_API Component* GetComponent(ComponentType type) const;
-	ENGINE_API Component* GetComponentInChildren(ComponentType type) const;
+	Component* CreateComponent(ComponentType type, JSON_value* value = nullptr);
 
-	ENGINE_API Script* GetScript() const; //Returns first script found in GameObject
-	ENGINE_API Script* FindScriptByName(const char* name) const;
+	template <class T>
+	T* GetComponent() const;
+	ENGINE_API Component* GetComponentOld(ComponentType type) const;
+	ENGINE_API Component* GetComponentInChildren(ComponentType type) const;
 
 	ENGINE_API std::vector<Component *> GetComponents(ComponentType type) const;
 	ENGINE_API std::vector<Component *> GetComponentsInChildren(ComponentType type) const;
@@ -67,7 +66,7 @@ public:
 	void UpdateBBox();
 	void DrawBBox() const;
 	math::AABB GetBoundingBox() const;
-	bool Intersects(const LineSegment & line, float & distance) const;
+	bool Intersects(const LineSegment & line, float & distance, math::float3* intersectionPoint = nullptr) const;
 	ENGINE_API bool BboxIntersects(const GameObject* target) const;
 	void UpdateModel(unsigned int shader) const;
 	void SetLightUniforms(unsigned shader) const;
@@ -78,16 +77,22 @@ public:
 
 private:
 	void SetStaticAncestors();
+	void SetActiveInHierarchy(bool active);
+	void OnChangeActiveState(bool wasActive);
 
+	bool activeInHierarchy = true;
+	bool activeSelf = true;
+	bool openInHierarchy = true;
 public:
 	unsigned UUID = 0;
 	unsigned parentUUID = 0; //only set in Save/Load scene TODO:update on parent change
 	unsigned animationIndexChannel = 999u;
 	bool isStatic = false;
 	bool isBoneRoot = false;
-	bool activeInHierarchy = true;
-	bool activeSelf = true;
 
+	bool navigable = false;
+	bool walkable = false;
+	bool noWalkable = false;
 	bool isSelected = false;
 	bool movedFlag = false;
 	bool copyFlag = false;
@@ -103,7 +108,7 @@ public:
 	
 	//ABBTree Stuff
 	AABBTreeNode *treeNode = nullptr; //Direct reference to the aabtree node holding the gameobject
-	bool isVolumetric = false; //Indicates if the gameObject has a mesh
+	bool isVolumetric = false; //Indicates if the gameobject has a mesh
 	//
 	bool hasLight = false;
 	ComponentLight* light = nullptr;
@@ -115,5 +120,14 @@ public:
 
 };
 
+template<class T>
+T* GameObject::GetComponent() const
+{
+	for (auto &component : components)
+	{
+		if (T* c = dynamic_cast<T*>(component))
+			return c;
+	}
+	return nullptr;
+}
 #endif __GameObject_h__
-

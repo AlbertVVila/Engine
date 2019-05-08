@@ -22,7 +22,7 @@ public:
 	void Save(JSON_value* value) const override;
 	void Load(JSON_value* value) override;
 
-	void SetMaterial(const char* material);
+	ENGINE_API void SetMaterial(const char* material);
 	void SetMesh(const char* meshfile);
 	void UpdateGameObject();
 	void LinkBones() const;

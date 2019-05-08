@@ -16,6 +16,7 @@
 [Rr]elease/
 [Rr]eleases/
 [Gg]ameBuild/
+[Gg]ameBuild [Dd]ebug/
 x64/
 x86/
 bld/
@@ -260,9 +261,9 @@ paket-files/
 __pycache__/
 *.pyc
 /Game/Engine - Master 1.exe
-/FractalEngine.sln
+
 /Game/Library/Materials/
-/Game/Library/Meshes/
+#/Game/Library/Meshes/
 /Game/Library/Textures/
 
 GameBuild/

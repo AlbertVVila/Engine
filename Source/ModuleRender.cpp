@@ -13,6 +13,7 @@
 #include "ModuleDevelopmentBuildDebug.h"
 #include "ModuleParticles.h"
 #include "ModuleTime.h"
+#include "ModuleNavigation.h"
 
 #include "GameObject.h"
 #include "ComponentCamera.h"
@@ -51,7 +52,7 @@ bool ModuleRender::Init(JSON * config)
 	LOG("Creating Renderer context");
 
 	InitSDL();
-
+	
 	glewInit();
 	InitOpenGL();
 
@@ -185,6 +186,12 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 	if (isEditor)
 	{
 		DrawGizmos(cam);
+		unsigned shader = App->program->defaultShader->id[0];
+		glUseProgram(shader);
+		math::float4x4 model = math::float4x4::identity;
+		glUniformMatrix4fv(glGetUniformLocation(shader, "model"), 1, GL_TRUE, &model[0][0]);
+		App->navigation->renderNavMesh();
+		glUseProgram(0);
 	}
 	App->scene->Draw(*cam.frustum, isEditor);
 
@@ -271,7 +278,7 @@ void ModuleRender::DrawGizmos(const ComponentCamera &camera) const
 void ModuleRender::InitSDL()
 {
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
@@ -310,7 +317,7 @@ void ModuleRender::ComputeShadows()
 		//TODO: Improve this avoiding shuffle every frame
 		for (GameObject* go : App->scene->dynamicFilteredGOs) //TODO: get volumetric gos even if outside the frustum
 		{
-			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponentOld(ComponentType::Renderer);
 			if (cr && cr->castShadows)
 			{
 				renderersDetected = true;
@@ -321,7 +328,7 @@ void ModuleRender::ComputeShadows()
 
 		for (GameObject* go : App->scene->staticFilteredGOs)
 		{
-			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponentOld(ComponentType::Renderer);
 			if (cr && cr->castShadows)
 			{
 				renderersDetected = true;

@@ -74,7 +74,7 @@ void AnimationController::UpdateInstance(Instance* instance, float dt)
 {
 	ResourceAnimation* anim = instance->anim;
 
-	if (anim != nullptr && anim->durationInSeconds > 0)
+	if (anim != nullptr && (current->maxTime - current->minTime) > 0)
 	{
 		float trueDt = dt * instance->speed;
 

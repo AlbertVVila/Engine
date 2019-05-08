@@ -1,7 +1,6 @@
 #include "ModuleSpacePartitioning.h"
 #include "Application.h"
 
-
 bool ModuleSpacePartitioning::Init(JSON * config)
 {
 	kDTree.Init();
@@ -18,6 +17,8 @@ update_status ModuleSpacePartitioning::Update(float dt)
 bool ModuleSpacePartitioning::CleanUp()
 {
 	aabbTree.CleanUp();
+	aabbTreeLighting.CleanUp();
+	kDTree.CleanUp();
 	return true;
 }
 

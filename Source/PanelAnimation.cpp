@@ -32,7 +32,7 @@ void PanelAnimation::Draw()
 	}
 	if (App->scene->selected != nullptr && App->scene->selected->isBoneRoot && (ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)))
 	{
-		ComponentAnimation* compAnim = ((ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)));
+		ComponentAnimation* compAnim = ((ComponentAnimation*)(App->scene->selected->GetComponentOld(ComponentType::Animation)));
 
 		ImGui::Text("GAMEOBJECT"); ImGui::SameLine();
 		ImGui::Text("CURRENT ANIM"); ImGui::SameLine();

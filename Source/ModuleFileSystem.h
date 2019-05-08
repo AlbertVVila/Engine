@@ -2,7 +2,6 @@
 #define __ModuleFileSystem_h__
 
 #include "Module.h"
-#include "Timer.h"
 #include <vector>
 #include <list>
 #include <set>
@@ -124,7 +123,6 @@ public:
 private:
 	bool monitorize = true;
 	bool threadIsWorking = false;
-	Timer importTimer;
 	std::list<std::pair<std::string, std::string>> filesToImport; //File and folder
 	std::thread monitor_thread;
 };

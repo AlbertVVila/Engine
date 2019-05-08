@@ -124,14 +124,10 @@ void ResourceMaterial::Save() const
 	if (textures[(unsigned)TextureType::DIFFUSE] != nullptr)
 		materialJSON->AddFloat4("diffuseColor", diffuseColor);
 
-	if (textures[(unsigned)TextureType::SPECULAR] != nullptr)
-		materialJSON->AddFloat3("specularColor", specularColor);
-
-	if (textures[(unsigned)TextureType::EMISSIVE] != nullptr)
-		materialJSON->AddFloat3("emissiveColor", emissiveColor);
-
 	materialJSON->AddFloat("metallic", metallic);
 	materialJSON->AddFloat("roughness", roughness);
+	materialJSON->AddFloat3("specularColor", specularColor);
+	materialJSON->AddFloat3("emissiveColor", emissiveColor);
 
 
 	if (textures[(unsigned)TextureType::DIFFUSE] != nullptr)

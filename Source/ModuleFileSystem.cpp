@@ -75,7 +75,7 @@ ModuleFileSystem::~ModuleFileSystem()
 	PHYSFS_deinit();
 }
 
-bool ModuleFileSystem::Start()
+bool ModuleFileSystem::Start() //TODO: Don't checkFiles in GameBuild
 {
 	// Check files in Assets and add them to ResManager
 	CheckResourcesInFolder(ASSETS);

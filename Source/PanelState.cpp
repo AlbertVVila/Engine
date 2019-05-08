@@ -55,9 +55,9 @@ void PanelState::Draw()
 		return;
 	}
 
-	if (App->scene->selected != nullptr && (ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)))
+	if (App->scene->selected != nullptr && (ComponentAnimation*)(App->scene->selected->GetComponentOld(ComponentType::Animation)))
 	{
-		ComponentAnimation* compAnim = (ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation));
+		ComponentAnimation* compAnim = (ComponentAnimation*)(App->scene->selected->GetComponentOld(ComponentType::Animation));
 		if (compAnim->stateMachine != nullptr)
 		{
 			DrawSM(compAnim->stateMachine, compAnim->GetEditorContext());

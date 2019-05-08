@@ -83,6 +83,8 @@ public:
 	void Select(GameObject* gameobject);
 	void UnSelect();
 	void Pick(float normalized_x, float normalized_y);
+	ENGINE_API bool Intersects(math::float3& closestPoint, const char* name, bool editor = false);
+
 	GameObject* FindClosestParent(GameObject* go);
 
 	ENGINE_API GameObject * FindGameObjectByName(const char* name) const;
@@ -96,8 +98,8 @@ public:
 	ComponentLight * GetDirectionalLight() const;
 
 private:
-	std::list<std::pair<float, GameObject*>>GetDynamicIntersections(const LineSegment& line);
-	std::list<std::pair<float, GameObject*>>GetStaticIntersections(const LineSegment& line);
+	std::list<std::pair<float, GameObject*>>GetDynamicIntersections(const LineSegment& line) const;
+	std::list<std::pair<float, GameObject*>>GetStaticIntersections(const LineSegment& line) const;
 	unsigned primitivesUID[NBPRIMITIVES] = {0};
 
 	std::list<GameObject*> scenePhotos;

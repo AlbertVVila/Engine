@@ -4,12 +4,15 @@
 #include "ModuleProgram.h"
 #include "ModuleEditor.h"
 #include "ModuleCamera.h"
+#include "ModuleTime.h"
 #include "ModuleInput.h"
 #include "ModuleScene.h"
+#include "ModuleScript.h"
 #include "ModuleTextures.h"
 #include "ModuleRender.h"
 #include "ModuleSpacePartitioning.h"
 #include "ModuleAudioManager.h"
+#include "ModuleNavigation.h"
 
 #include "Component.h"
 #include "ComponentTransform.h"
@@ -21,12 +24,12 @@
 #include "ComponentImage.h"
 #include "ComponentButton.h"
 #include "ComponentAnimation.h"
-#include "ComponentScript.h"
 #include "ComponentParticles.h"
 #include "ComponentTrail.h"
 #include "ComponentAudioListener.h"
 #include "ComponentAudioSource.h"
 #include "ComponentReverbZone.h"
+#include "BaseScript.h"
 
 
 #include "ResourceMesh.h"
@@ -47,7 +50,7 @@
 #include "GL/glew.h"
 #include "imgui.h"
 
-#define MAX_NAME 64
+#define MAX_NAME 128
 #define IMGUI_RIGHT_MOUSE_BUTTON 1
 
 GameObject::GameObject(const char * name, unsigned uuid) : name(name), UUID(uuid)
@@ -71,9 +74,13 @@ GameObject::GameObject(const GameObject & gameobject)
 	isVolumetric = gameobject.isVolumetric;
 	hasLight = gameobject.hasLight;
 	isBoneRoot = gameobject.isBoneRoot;
+	openInHierarchy = gameobject.openInHierarchy;
 
 	assert(!(isVolumetric && hasLight));
 	bbox = gameobject.bbox;
+	navigable = gameobject.navigable;
+	walkable = gameobject.walkable;
+	noWalkable = gameobject.noWalkable;
 
 	for (const auto& component : gameobject.components)
 	{
@@ -86,16 +93,16 @@ GameObject::GameObject(const GameObject & gameobject)
 		}
 		if (componentcopy->type == ComponentType::Button)
 		{
-			((ComponentButton*)componentcopy)->text->gameobject = this;
-			((ComponentButton*)componentcopy)->buttonImage->gameobject = this;
-			((ComponentButton*)componentcopy)->highlightedImage->gameobject = this;
-			((ComponentButton*)componentcopy)->pressedImage->gameobject = this;
-			((ComponentButton*)componentcopy)->rectTransform->gameobject = this;
+			((Button*)componentcopy)->text->gameobject = this;
+			((Button*)componentcopy)->buttonImage->gameobject = this;
+			((Button*)componentcopy)->highlightedImage->gameobject = this;
+			((Button*)componentcopy)->pressedImage->gameobject = this;
+			((Button*)componentcopy)->rectTransform->gameobject = this;
 		}
 	}
 	if (!App->scene->photoEnabled)
 	{
-		if (GetComponent(ComponentType::Renderer) != nullptr || GetComponent(ComponentType::Light) != nullptr)
+		if (GetComponentOld(ComponentType::Renderer) != nullptr || GetComponentOld(ComponentType::Light) != nullptr)
 		{
 			App->scene->AddToSpacePartition(this);
 		}
@@ -134,19 +141,35 @@ void GameObject::DrawProperties()
 	strcpy(go_name, name.c_str());
 	ImGui::InputText("Name", go_name, MAX_NAME);
 	name = go_name;
-	//delete[] go_name;
+	delete[] go_name;
 
 	if (this != App->scene->root)
 	{
-		if (ImGui::Checkbox("Active", &activeSelf))
+		bool active = activeSelf;
+		if (ImGui::Checkbox("Active", &active))
 		{
-			SetActive(activeSelf);
+			SetActive(active);
 		}
 
 		ImGui::SameLine();
+		//navigability
+		if (isVolumetric && isStatic) 
+		{
+			if (ImGui::Checkbox("Navigable", &navigable))
+			{
+				App->navigation->navigableObjectToggled(this, navigable);
+			}
+			if (navigable)
+			{
+				//defines walls and this stuff
+				ImGui::Checkbox("Walkable", &walkable);
+				ImGui::Checkbox("No Walkable", &noWalkable);
+			}
+		}
+
 		if (ImGui::Checkbox("Static", &isStatic))
 		{
-			if (isStatic && GetComponent(ComponentType::Renderer) != nullptr)
+			if (isStatic && GetComponentOld(ComponentType::Renderer) != nullptr)
 			{
 				SetStaticAncestors();
 				App->scene->dynamicGOs.erase(this);
@@ -191,25 +214,25 @@ void GameObject::Update()
 
 	for (auto& component : components)
 	{
-		if (component->enabled)
+		if (component->enabled && component->type != ComponentType::Script)
 		{
 			component->Update();
 		}
 	}
 	//TESTING
 	//---------------------------------------------
-	/*if (isBoneRoot)
+	if (isBoneRoot && App->time->gameState == GameState::RUN)
 	{
-		ComponentAnimation* compAnim = (ComponentAnimation*)GetComponent(ComponentType::Animation);
+		ComponentAnimation* compAnim = (ComponentAnimation*)GetComponentOld(ComponentType::Animation);
 		if (App->input->GetKey(SDL_SCANCODE_X))
 		{
-			compAnim->SendTriggerToStateMachine("faster");
+			compAnim->SendTriggerToStateMachine("trigger1");
 		}
 		if (App->input->GetKey(SDL_SCANCODE_C))
 		{
-			compAnim->SendTriggerToStateMachine("slower");
+			compAnim->SendTriggerToStateMachine("trigger2");
 		}
-	}*/
+	}
 	//---------------------------------------------
 
 	for (const auto& child : children)
@@ -234,14 +257,51 @@ void GameObject::Update()
 
 void GameObject::SetActive(bool active)
 {
+	bool wasActive = isActive();
 	activeSelf = active;
-	for (auto& child : children)
+	OnChangeActiveState(wasActive);
+}
+
+void GameObject::OnChangeActiveState(bool wasActive)
+{
+	if (wasActive != isActive())
 	{
-		child->activeInHierarchy = active;
+		for (auto& child : children)
+		{
+			child->SetActiveInHierarchy(!wasActive);
+		}
+		for (auto& component : components)
+		{
+			if (!wasActive)
+			{
+				if (App->time->gameState == GameState::RUN && component->type == ComponentType::Script 
+					&& ((Script*)component)->hasBeenAwoken)
+				{
+					Script* script = (Script*)component;
+					script->Awake();
+					script->hasBeenAwoken = true;
+				}
+				if (component->enabled)
+				{
+					component->OnEnable();
+				}
+			}
+			else if (component->enabled)
+			{
+				component->OnDisable();
+			}
+		}
 	}
 }
 
-Component* GameObject::CreateComponent(ComponentType type)
+void GameObject::SetActiveInHierarchy(bool active)
+{
+	bool wasActive = isActive();
+	activeInHierarchy = active; 
+	OnChangeActiveState(wasActive);
+}
+
+Component* GameObject::CreateComponent(ComponentType type, JSON_value* value)
 {
 	Component* component = nullptr;
 	switch (type)
@@ -268,6 +328,7 @@ Component* GameObject::CreateComponent(ComponentType type)
 			hasLight = true;
 			light = (ComponentLight*)component;
 			App->spacePartitioning->aabbTreeLighting.InsertGO(this);
+			movedFlag = true;
 		}
 		else
 		{
@@ -294,19 +355,25 @@ Component* GameObject::CreateComponent(ComponentType type)
 		isBoneRoot = true;
 		break;
 	case ComponentType::Transform2D:
-		component = new ComponentTransform2D(this);
+		component = new Transform2D(this);
 		break;
 	case ComponentType::Text:
-		component = new ComponentText(this);
+		component = new Text(this);
 		break;
 	case ComponentType::Image:
 		component = new ComponentImage(this);
 		break;
 	case ComponentType::Button:
-		component = new ComponentButton(this);
+		component = new Button(this);
 		break;
 	case ComponentType::Script:
-		component = new ComponentScript(this);
+		{
+			assert(value != nullptr); //Only used for loading from json
+			std::string name = value->GetString("script");
+			Script* script = App->scripting->GetScript(name);
+			script->SetGameObject(this);
+			component = (Component*)script;
+		}
 		break;
 	case ComponentType::Particles:
 		component = new ComponentParticles(this);
@@ -411,28 +478,28 @@ void GameObject::RemoveComponent(const Component& component)
 	}
 }
 
-Script* GameObject::GetScript() const
-{
-	ComponentScript* component = (ComponentScript*)GetComponent(ComponentType::Script);
-	if (component != nullptr)
-	{
-		return component->GetScript();
-	}
-	return nullptr;
-}
+//Script* GameObject::GetScript() const
+//{
+//	ComponentScript* component = (ComponentScript*)GetComponentOld(ComponentType::Script);
+//	if (component != nullptr)
+//	{
+//		return component->GetScript();
+//	}
+//	return nullptr;
+//}
 
-Script * GameObject::FindScriptByName(const char * name) const
-{
-	std::vector<Component*> components = GetComponents(ComponentType::Script);
-	for (const auto& component : components)
-	{
-		if (((ComponentScript*)component)->GetScriptName() == name)
-		{
-			return ((ComponentScript*)component)->GetScript();
-		}
-	}
-	return nullptr;
-}
+//Script * GameObject::FindScriptByName(const char * name) const
+//{
+//	std::vector<Component*> components = GetComponents(ComponentType::Script);
+//	for (const auto& component : components)
+//	{
+//		if (((ComponentScript*)component)->GetScriptName() == name)
+//		{
+//			return ((ComponentScript*)component)->GetScript();
+//		}
+//	}
+//	return nullptr;
+//}
 
 void GameObject::RemoveChild(GameObject* bastard)
 {
@@ -446,7 +513,7 @@ void GameObject::InsertChild(GameObject* child)
 	child->parent = this;
 }
 
-Component * GameObject::GetComponent(ComponentType type) const
+ENGINE_API Component * GameObject::GetComponentOld(ComponentType type) const //Deprecated
 {
 	for (auto &component : components)
 	{
@@ -467,7 +534,7 @@ ENGINE_API Component * GameObject::GetComponentInChildren(ComponentType type) co
 		const GameObject* go = GOs.top();
 		GOs.pop();
 
-		Component* component = go->GetComponent(type);
+		Component* component = go->GetComponentOld(type);
 		if (component != nullptr) return component;
 
 		for (const auto &child : go->children)
@@ -562,9 +629,9 @@ void GameObject::SetLightUniforms(unsigned shader) const
 	//LOG("%s got %d lights", name.c_str(), lights.size());
 	for (GameObject* go : lights)
 	{
-		if (!go->light->enabled) continue;
-
 		assert(go->light != nullptr);
+
+		if (!go->light->enabled) continue;
 		switch (go->light->lightType)
 		{
 		case LightType::DIRECTIONAL:
@@ -680,15 +747,20 @@ AABB GameObject::GetBoundingBox() const
 	return bbox;
 }
 
-bool GameObject::Intersects(const LineSegment & line, float &distance) const
+bool GameObject::Intersects(const LineSegment & line, float &distance, math::float3* intersectionPoint) const
 {
 	LineSegment localLine(line);
 	localLine.Transform(GetGlobalTransform().Inverted());
-	ComponentRenderer* mesh_renderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
+	ComponentRenderer* mesh_renderer = (ComponentRenderer*)GetComponentOld(ComponentType::Renderer);
 	if (mesh_renderer != nullptr)
 	{
-		if (mesh_renderer->mesh->Intersects(localLine, &distance))
+		if (mesh_renderer->mesh->Intersects(localLine, &distance, intersectionPoint))
 		{
+			if (intersectionPoint != nullptr)
+			{
+				math::float3 worldPoint = GetGlobalTransform().MulPos(*intersectionPoint);
+				*intersectionPoint = worldPoint;
+			}
 			return true;
 		}
 	}
@@ -718,7 +790,7 @@ bool GameObject::BboxIntersects(const GameObject* target) const
 
 void GameObject::UpdateBBox()
 {
-	ComponentRenderer* renderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
+	ComponentRenderer* renderer = (ComponentRenderer*)GetComponentOld(ComponentType::Renderer);
 	if (renderer != nullptr)
 	{
 		if (renderer->mesh != nullptr)
@@ -735,7 +807,7 @@ void GameObject::DrawBBox() const
 		child->DrawBBox();
 	}
 
-	ComponentRenderer *renderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
+	ComponentRenderer *renderer = (ComponentRenderer*)GetComponentOld(ComponentType::Renderer);
 	if (renderer == nullptr || renderer->mesh == nullptr) return;
 
 	if (renderer->mesh->GetReferences() > 0u)
@@ -782,6 +854,10 @@ void GameObject::Save(JSON_value *gameobjects) const
 		gameobject->AddUint("ActiveSelf", activeSelf);
 		gameobject->AddUint("isBoneRoot", isBoneRoot);
 		gameobject->AddFloat4x4("baseState", baseState);
+		gameobject->AddUint("Navigable", navigable);
+		gameobject->AddUint("Walkable", walkable);
+		gameobject->AddUint("No Walkable", noWalkable);
+		gameobject->AddUint("openInHierarchy", openInHierarchy);
 
 		JSON_value *componentsJSON = gameobject->CreateValue(rapidjson::kArrayType);
 		for (auto &component : components)
@@ -811,13 +887,17 @@ void GameObject::Load(JSON_value *value)
 	activeSelf = value->GetUint("ActiveSelf", 1);
 	isBoneRoot = value->GetUint("isBoneRoot");
 	baseState = value->GetFloat4x4("baseState");
+	navigable = value->GetUint("Navigable");
+	walkable = value->GetUint("Walkable"); //TODO: why 2 variables for walkable?
+	noWalkable = value->GetUint("No Walkable");
+	openInHierarchy = value->GetUint("openInHierarchy");
 
 	JSON_value* componentsJSON = value->GetValue("Components");
 	for (unsigned i = 0; i < componentsJSON->Size(); i++)
 	{
 		JSON_value* componentJSON = componentsJSON->GetValue(i);
 		ComponentType type = (ComponentType)componentJSON->GetUint("Type");
-		Component* component = CreateComponent(type);
+		Component* component = CreateComponent(type, componentJSON);
 		component->Load(componentJSON);
 	}
 
@@ -829,7 +909,7 @@ void GameObject::Load(JSON_value *value)
 	if (hasLight)
 	{
 		transform->UpdateTransform();
-		ComponentLight* light = (ComponentLight*)GetComponent(ComponentType::Light);
+		ComponentLight* light = (ComponentLight*)GetComponentOld(ComponentType::Light);
 		if (light->lightType == LightType::DIRECTIONAL)
 		{
 			App->renderer->directionalLight = light;
@@ -859,17 +939,23 @@ bool GameObject::IsParented(const GameObject & gameobject) const
 
 void GameObject::DrawHierarchy()
 {
-	ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_DefaultOpen
+	ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow | 
+		(openInHierarchy ? ImGuiTreeNodeFlags_DefaultOpen: 0)
 		| ImGuiTreeNodeFlags_OpenOnDoubleClick | (isSelected ? ImGuiTreeNodeFlags_Selected : 0);
 
 	ImGui::PushID(this);
+	if (!isActive())
+	{
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.6f, 0.6f, 0.6f, 1.00f));
+	}
 	if (children.empty())
 	{
 		node_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
 	}
 	ImGui::Text("|"); ImGui::SameLine();
 	App->scene->DragNDropMove(this);
-	bool obj_open = ImGui::TreeNodeEx(this, node_flags, name.c_str());
+	openInHierarchy = ImGui::TreeNodeEx(this, node_flags, name.c_str());
+
 	if (isSelected && ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
 		ImGui::OpenPopup("gameobject_options_popup");
@@ -906,7 +992,7 @@ void GameObject::DrawHierarchy()
 		App->scene->DragNDrop(this);
 	}
 
-	if (obj_open)
+	if (openInHierarchy)
 	{
 		for (auto &child : children)
 		{
@@ -916,6 +1002,10 @@ void GameObject::DrawHierarchy()
 		{
 			ImGui::TreePop();
 		}
+	}
+	if (!isActive())
+	{
+		ImGui::PopStyleColor();
 	}
 	ImGui::PopID();
 }
@@ -929,7 +1019,7 @@ void GameObject::SetStaticAncestors()
 		GameObject* go = parents.top();
 		go->isStatic = true;
 
-		if (go->GetComponent(ComponentType::Renderer) != nullptr)
+		if (go->GetComponentOld(ComponentType::Renderer) != nullptr)
 		{
 			if (go->treeNode != nullptr && isVolumetric)
 				App->spacePartitioning->aabbTree.ReleaseNode(go->treeNode);
@@ -1015,7 +1105,7 @@ void GameObject::UpdateTransforms(math::float4x4 parentGlobal)
 
 bool GameObject::CheckDelete()
 {
-	PROFILE;
+	//PROFILE;
 	if (deleteFlag) //Delete GO
 	{
 		CleanUp();

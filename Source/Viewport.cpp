@@ -1,10 +1,12 @@
 #include "Application.h"
 
+#include "ModuleNavigation.h"
 #include "ModuleRender.h"
 #include "ModuleScene.h"
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
 #include "ModuleTime.h"
+#include "ModuleEditor.h"
 
 #include "GameObject.h"
 #include "ComponentCamera.h"
@@ -151,6 +153,7 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 			if (!ImGuizmo::IsUsing() && !ImGui::IsAnyItemHovered())
 			{
 				Pick();
+				DebugNavigate();
 			}
 		}
 		ImGui::End();
@@ -160,20 +163,20 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 void Viewport::DrawGuizmoButtons()
 {
 
-	if ((ImGui::Button("Translate") || App->input->IsKeyPressed(SDL_SCANCODE_W)) && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_IDLE)
+	if ((ImGui::Button("Translate") || (App->input->IsKeyPressed(SDL_SCANCODE_W) && !App->editor->wantKeyboard)) && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_IDLE)
 	{
 		mCurrentGizmoOperation = ImGuizmo::TRANSLATE;
 		mCurrentGizmoMode = mCurrentModeAux;
 	}
 	ImGui::SameLine();
-	if (ImGui::Button("Rotate") || App->input->IsKeyPressed(SDL_SCANCODE_E))
+	if (ImGui::Button("Rotate") || (App->input->IsKeyPressed(SDL_SCANCODE_E) && !App->editor->wantKeyboard))
 	{
 		mCurrentGizmoOperation = ImGuizmo::ROTATE;
 		mCurrentGizmoMode = mCurrentModeAux;
 
 	}
 	ImGui::SameLine();
-	if (ImGui::Button("Scale") || App->input->IsKeyPressed(SDL_SCANCODE_R))
+	if (ImGui::Button("Scale") || (App->input->IsKeyPressed(SDL_SCANCODE_R) && !App->editor->wantKeyboard))
 	{
 		mCurrentGizmoOperation = ImGuizmo::SCALE;
 		mCurrentGizmoMode = ImGuizmo::LOCAL;
@@ -337,7 +340,7 @@ void Viewport::DrawImGuizmo(const ComponentCamera& cam)
 	ImGui::SetCursorPos({ 20,30 });
 	DrawGuizmoButtons();
 
-	if (App->scene->selected != nullptr && App->scene->selected != App->scene->root && ((ComponentTransform*)App->scene->selected->GetComponent(ComponentType::Transform)))
+	if (App->scene->selected != nullptr && App->scene->selected != App->scene->root && ((ComponentTransform*)App->scene->selected->GetComponentOld(ComponentType::Transform)))
 	{
 		ImGuizmo::Enable(!App->scene->selected->isStatic || App->time->gameState == GameState::RUN);
 
@@ -378,13 +381,25 @@ void Viewport::DrawImGuizmo(const ComponentCamera& cam)
 void Viewport::Pick()
 {
 	PROFILE;
-	if (App->input->GetMouseButtonDown(1) == KEY_DOWN && ImGui::IsWindowFocused && ImGui::IsMouseHoveringWindow())
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN && ImGui::IsWindowFocused() && ImGui::IsMouseHoveringWindow())
 	{
 		ImVec2 pos = ImGui::GetWindowPos();		
 		float2 mouse((float*)&App->input->GetMousePosition());
 		float normalized_x = ((mouse.x - pos.x) / current_width) * 2 - 1; //0 to 1 -> -1 to 1
 		float normalized_y = (1 - (mouse.y - pos.y) / current_height) * 2 - 1; //0 to 1 -> -1 to 1
 		App->scene->Pick(normalized_x, normalized_y);
+	}
+}
+
+void Viewport::DebugNavigate() const
+{
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_MIDDLE) == KEY_DOWN && ImGui::IsWindowFocused() && ImGui::IsMouseHoveringWindow())
+	{
+		math::float3 intersectionPoint = math::float3::inf;
+		if (App->scene->Intersects(intersectionPoint, "floor", true))
+		{
+			App->navigation->RecalcPath(intersectionPoint);
+		}
 	}
 }
 
