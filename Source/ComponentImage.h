@@ -16,6 +16,7 @@ public:
 	~ComponentImage();
 	Component* Clone() const override;
 
+	void Update() override;
 	void UpdateTexturesList();
 
 	void DrawProperties() override;
@@ -27,6 +28,9 @@ public:
 	ResourceTexture* texture = nullptr;
 	bool flipVertical = false;
 	bool flipHorizontal = false;
+	bool movable = false;
+	bool isHovered = false;
+	bool isPressed = false;
 
 	std::vector<std::string> textureFiles;
 	bool enabled = true;

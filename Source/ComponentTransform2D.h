@@ -20,6 +20,7 @@ public:
 	void Load(JSON_value* value) override;
 	ENGINE_API math::float2 getPosition() const;
 	ENGINE_API void setPosition(const math::float2& position);
+	void SetPositionUsingAligment(math::float2& position);
 
 	math::float2 getSize() const;
 private:
