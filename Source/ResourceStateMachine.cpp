@@ -72,8 +72,7 @@ void ResourceStateMachine::Delete()
 
 	// Delete file in Library
 	std::string fileInLibrary(STATEMACHINES);
-	fileInLibrary += exportedFileName;
-	fileInLibrary += STATEMACHINEEXTENSION;
+	fileInLibrary += exportedFile;
 	App->fsystem->Delete(fileInLibrary.c_str());
 	DeleteFromMemory();
 }

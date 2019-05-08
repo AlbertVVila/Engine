@@ -113,7 +113,7 @@ bool ResourceScene::Load()
 			}
 
 			ComponentRenderer* renderer = nullptr;
-			renderer = (ComponentRenderer*)gameobject->GetComponent(ComponentType::Renderer);
+			renderer = (ComponentRenderer*)gameobject->GetComponentOld(ComponentType::Renderer);
 			if (renderer != nullptr)
 			{
 				renderers.push_back(renderer);
