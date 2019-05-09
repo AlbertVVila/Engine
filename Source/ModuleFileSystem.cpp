@@ -280,6 +280,35 @@ void ModuleFileSystem::ListFiles(const char* dir, std::set<std::string>& files)
 	}
 }
 
+void ModuleFileSystem::ListFilesWithExtension(const char* dir, std::set<std::string>& files)
+{
+	files.clear();
+	std::vector<std::string> foundFiles;
+	std::stack<std::string> folderStack;
+	folderStack.push(dir);
+	std::string currentFolder;
+	while (!folderStack.empty())
+	{
+		currentFolder = folderStack.top();
+		folderStack.pop();
+
+		foundFiles = GetFolderContent(currentFolder.c_str());
+		for (auto& file : foundFiles)
+		{
+			std::string filefolder(currentFolder);
+			filefolder += file;
+			if (IsDirectory((currentFolder + file).c_str()))
+			{
+				folderStack.push(dir + file + "/");
+			}
+			else
+			{
+				files.insert(file);
+			}
+		}
+	}
+}
+
 bool ModuleFileSystem::CopyFromOutsideFS(const char* source, const char* destination) const
 {
 	char *data;

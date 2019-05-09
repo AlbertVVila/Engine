@@ -144,7 +144,7 @@ void ResourceModel::LoadConfigFromMeta()
 bool ResourceModel::CheckImportedMeshes()
 {
 	std::set<std::string> importedMeshes;
-	App->fsystem->ListFiles(MESHES, importedMeshes);
+	App->fsystem->ListFilesWithExtension(MESHES, importedMeshes);
 
 	for each(auto mesh in meshList)
 	{
@@ -160,7 +160,7 @@ bool ResourceModel::CheckImportedMeshes()
 bool ResourceModel::CheckImportedAnimations()
 {
 	std::set<std::string> importedAnimations;
-	App->fsystem->ListFiles(MESHES, importedAnimations);
+	App->fsystem->ListFiles(ANIMATIONS, importedAnimations);
 
 	for each(auto anim in animationList)
 	{
