@@ -1200,6 +1200,12 @@
     <None Include="..\Game\Shaders\VertexShaders\Trail.vs">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="..\Game\Shaders\FragmentShaders\PostProcess.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\VertexShaders\PostProcess.vs">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Engine.rc">

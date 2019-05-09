@@ -104,7 +104,7 @@ bool ModuleScene::Start()
 	if (defaultScene.size() > 0)
 	{
 		path = SCENES;
-		LoadScene(defaultScene.c_str(), path.c_str());
+		//LoadScene(defaultScene.c_str(), path.c_str());
 	}
 	return true;
 }
@@ -437,6 +437,12 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 	go.SetLightUniforms(shader->id[variation]);
 
 	go.UpdateModel(shader->id[variation]);
+	
+	glUniform3fv(glGetUniformLocation(shader->id[variation],
+		"highlightColorUniform"), 1, (GLfloat*)&crenderer->highlightColor);
+	glUniform1f(glGetUniformLocation(shader->id[variation],
+		"useHighlight"), (GLfloat*)&crenderer->highlighted ? 1.0f : 0.0f);
+
 	if (mesh != nullptr)
 	{
 		crenderer->mesh->Draw(shader->id[variation]);

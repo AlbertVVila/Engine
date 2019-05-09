@@ -4,6 +4,9 @@
 
 const float PI = 3.14159265359f; 
 
+layout (location = 0) out vec4 Fragcolor;
+layout (location = 1) out vec4 highlightColor;
+
 struct Material
 {
     sampler2D diffuse_texture;
@@ -77,12 +80,12 @@ in vec3 spotPositions[MAX_SPOT_LIGHTS];   //positions in tangent space
 in vec3 spotDirections[MAX_SPOT_LIGHTS];  //directions in tangent space
 in vec3 directionalDirections[MAX_DIRECTIONAL_LIGHTS]; //directions in tangent space
 
-out vec4 Fragcolor;
-
 uniform Material material;
 uniform Lights lights;
 uniform int hasNormalMap;
 uniform sampler2D shadowTex;
+uniform vec3 highlightColorUniform;
+uniform float useHighlight;
 
 vec4 textureGammaCorrected(sampler2D tex)
 {
@@ -248,4 +251,5 @@ void main()
 	color += get_emissive_color();
 	color = vec3(pow(color.r, (1.0 / 2.2)), pow(color.g, (1.0 / 2.2)), pow(color.b, (1.0 / 2.2)));
 	Fragcolor = vec4(color, albedo.a);
+	highlightColor = vec4(highlightColorUniform, useHighlight);
 }

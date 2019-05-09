@@ -105,6 +105,7 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 		if (cam->aspectDirty)
 		{
 			CreateFrameBuffer(size.x, size.y);
+			App->renderer->OnResize();
 		}
 		current_width = size.x;
 		current_height = size.y;
@@ -144,17 +145,21 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 		ImGui::SetCursorPos({ 0,0 });
 		ImVec2 pos = ImGui::GetWindowPos();
 		winPos = reinterpret_cast<math::float2&>(pos);
-
-		ImGui::Image((ImTextureID)texture, size, ImVec2(0, 1), ImVec2(1, 0));
+		
 
 		if (isEditor)
 		{
+			ImGui::Image((ImTextureID)App->renderer->renderedSceneEditor, size, ImVec2(0, 1), ImVec2(1, 0));
 			DrawImGuizmo(*cam);
 			if (!ImGuizmo::IsUsing() && !ImGui::IsAnyItemHovered())
 			{
 				Pick();
 				DebugNavigate();
 			}
+		}
+		else
+		{
+			ImGui::Image((ImTextureID)App->renderer->renderedSceneGame, size, ImVec2(0, 1), ImVec2(1, 0));
 		}
 		ImGui::End();
 	}

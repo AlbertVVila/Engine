@@ -111,7 +111,8 @@ void ComponentRenderer::DrawProperties()
 		ImGui::Spacing();
 		ImGui::Checkbox("Cast shadows", &castShadows);
 		ImGui::Checkbox("Use Alpha", &useAlpha);
-
+		ImGui::Checkbox("Highlighted", &highlighted);
+		ImGui::ColorEdit3("Highlight color", &highlightColor[0]);
 		// Material selector
 		ImGui::Text("Material");
 		ImGui::PushID("Material Combo");

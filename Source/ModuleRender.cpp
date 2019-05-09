@@ -96,6 +96,10 @@ bool ModuleRender::Init(JSON * config)
 		break;
 	}
 
+	glGenTextures(2, &highlightBufferEditor);
+	glGenTextures(2, &highlightBufferGame);
+	glGenTextures(2, &renderedSceneEditor);
+
 	return true;
 }
 
@@ -201,6 +205,8 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 	}
 	App->particles->Render(App->time->gameDeltaTime, &cam);
 
+	unsigned int attachments[2] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };// , GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4
+	glDrawBuffers(2, attachments);
 }
 
 bool ModuleRender::IsSceneViewFocused() const
@@ -228,12 +234,56 @@ void ModuleRender::OnResize()
 {
 	glViewport(0, 0, App->window->width, App->window->height);
 #ifndef GAME_BUILD
-	App->camera->editorcamera->SetAspect((float)App->window->width / (float)App->window->height);
-#endif
+	App->camera->editorcamera->SetAspect((float)viewScene->current_width / (float)viewScene->current_height);
+	if (App->scene->maincamera != nullptr)
+	{
+		App->scene->maincamera->SetAspect((float)viewGame->current_width / (float)viewGame->current_height);
+	}
+#else
 	if (App->scene->maincamera != nullptr)
 	{
 		App->scene->maincamera->SetAspect((float)App->window->width / (float)App->window->height);
 	}
+#endif
+#ifndef GAME_BUILD
+	glBindFramebuffer(GL_FRAMEBUFFER, viewScene->FBO);
+	glBindTexture(GL_TEXTURE_2D, renderedSceneEditor);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, viewScene->current_width, viewScene->current_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderedSceneEditor, 0);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	glBindTexture(GL_TEXTURE_2D, highlightBufferEditor);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, viewScene->current_width, viewScene->current_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, highlightBufferEditor, 0);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	if (App->scene->maincamera != nullptr)
+	{
+		if (msaa)
+		{
+			glBindFramebuffer(GL_FRAMEBUFFER, viewGame->MSAAFBO);
+		}
+		else
+		{
+			glBindFramebuffer(GL_FRAMEBUFFER, viewGame->FBO);
+		}
+		glBindTexture(GL_TEXTURE_2D, renderedSceneGame);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, viewScene->current_width, viewScene->current_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderedSceneGame, 0);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+		glBindTexture(GL_TEXTURE_2D, highlightBufferGame);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, viewGame->current_width, viewGame->current_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, highlightBufferGame, 0);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	}
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+#endif
 }
 
 void ModuleRender::SetVsync(bool active)
@@ -529,6 +579,9 @@ void ModuleRender::DrawGUI()
 		App->camera->editorcamera->frustum->nearPlaneDistance = ZNEARDIST * current_scale;
 		App->camera->editorcamera->frustum->farPlaneDistance = ZFARDIST * current_scale;
 	}
+
+	ImGui::Image((ImTextureID)highlightBufferEditor, { 200,200 }, { 0,1 }, { 1,0 });
+	ImGui::Image((ImTextureID)highlightBufferGame, { 200,200 }, { 0,1 }, { 1,0 });
 }
 
 void ModuleRender::GenBlockUniforms()

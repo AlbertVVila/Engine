@@ -75,6 +75,10 @@ public:
 	unsigned shadowsTex = 0u;
 	std::unordered_set<ComponentRenderer*> shadowCasters;
 
+	unsigned highlightBufferEditor = 0u;
+	unsigned renderedSceneEditor = 0u;
+	unsigned highlightBufferGame = 0u;
+	unsigned renderedSceneGame = 0u;
 
 private:
 	unsigned UBO = 0;
@@ -96,6 +100,8 @@ private:
 
 
 	unsigned shadowsFBO = 0u;
+
+
 
 	bool shadowVolumeRendered = false;
 	
