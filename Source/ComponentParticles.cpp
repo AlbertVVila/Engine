@@ -201,42 +201,38 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 				p = new Particle();				
 			}
 
-			switch (actualEmisor) 
+			//P direction
+			if (directionNoise)
 			{
-			case EmisorType::QUAD:
-				quadEmitterSize = MAX(1, quadEmitterSize);
-
-				//P starting position
-				p->position = pos + float3(rand() % (int)quadEmitterSize, 0, rand() % (int)quadEmitterSize);
-
-				//P direction
-				if (directionNoise)
-				{
-					float xD = ((rand() % 100) - 50) / 100.f;
-					float yD = ((rand() % 100) - 50) / 100.f;
-					float zD = ((rand() % 100) - 50) / 100.f;
-					p->direction = math::float3(xD, yD, zD);
-					p->direction.Normalize();
-				}
-				else
-				{
-					p->direction = gameobject->transform->GetRotation() * float3(0.f, 1.f, 0.f); //math::float3::unitY;
-				}
-
-				break;
-
-			case EmisorType::SPHERE:
-				p->position = pos;
-
-				//TODO get random point on the sphere for calculating the direction
-
-				break;
+				float xD = ((rand() % 100) - 50) / 100.f;
+				float yD = ((rand() % 100) - 50) / 100.f;
+				float zD = ((rand() % 100) - 50) / 100.f;
+				p->direction = math::float3(xD, yD, zD);
+				p->direction.Normalize();
 			}
+			else
+			{
+				switch (actualEmisor)
+				{
+				case EmisorType::QUAD:
+					quadEmitterSize = MAX(1, quadEmitterSize);
 
-			
+					//P starting position
+					p->position = pos + float3(rand() % (int)quadEmitterSize, 0, rand() % (int)quadEmitterSize);
 
-			
+					//P direction
+					p->direction = gameobject->transform->GetRotation() * float3(0.f, 1.f, 0.f); //math::float3::unitY;
+					break;
 
+				case EmisorType::SPHERE:
+					//P starting position
+					p->position = pos;
+					//P direction
+					p->direction = randomSpherePoint(pos) - pos;
+					break;
+				}
+			}
+		
 			//P lifetime
 			if (lifetime.x != lifetime.y)
 			{
@@ -246,6 +242,8 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 			{
 				p->totalLifetime = lifetime.y;
 			}
+
+			//P speed
 			if (speed.x != speed.y)
 			{
 				p->speed = speed.x + fmod(rand(), abs(speed.y - speed.x));
@@ -255,6 +253,8 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 				p->speed = speed.y;
 			}
 			p->lifeTimer = p->totalLifetime;
+
+			//P size
 			p->size = fmod(rand(), abs(size.y - size.x));
 			
 			particles.push_back(p);
@@ -342,6 +342,7 @@ void ComponentParticles::alternateEmisor(int newEmisor)
 {
 	for (int i = 0; i < emisorsCheck.size(); i++) *emisorsCheck[i] = false;
 	*emisorsCheck[newEmisor] = true;
+	actualEmisor = static_cast<EmisorType>(1);
 }
 
 void ComponentParticles::DrawDebugEmisor()
@@ -356,9 +357,7 @@ void ComponentParticles::DrawDebugEmisor()
 	switch (actualEmisor) 
 	{
 	case EmisorType::QUAD:
-		
-		
-
+	
 		dd::line(v1, v2, dd::colors::Green);
 		dd::line(v2, v3, dd::colors::Green);
 		dd::line(v3, v4, dd::colors::Green);
@@ -370,6 +369,30 @@ void ComponentParticles::DrawDebugEmisor()
 		break;
 	}
 
+}
+
+float3 ComponentParticles::randomSpherePoint(float3 center)
+{
+	float u = rand();
+	float v = rand();
+	float theta = 2.f * math::pi * u;
+	float phi = math::Acos(2 * v - 1);
+	float x = center.x + (math::Sin(phi) * math::Cos(theta));
+	float y = center.y + (math::Sin(phi) * math::Sin(theta));
+	float z = center.z + (math::Cos(phi));
+
+	return float3(x, y, z);
+	
+	
+	/*var u = Math.random();
+	var v = Math.random();
+	var theta = 2 * Math.PI * u;
+	var phi = Math.acos(2 * v - 1);
+	var x = x0 + (radius * Math.sin(phi) * Math.cos(theta));
+	var y = y0 + (radius * Math.sin(phi) * Math.sin(theta));
+	var z = z0 + (radius * Math.cos(phi));
+	return[x, y, z];*/
+	
 }
 
 

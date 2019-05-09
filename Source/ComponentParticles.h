@@ -41,7 +41,7 @@ public:
 
 	enum class EmisorType
 	{
-		QUAD,
+		QUAD = 0,
 		SPHERE
 	};
 
@@ -68,6 +68,7 @@ private:
 
 	void alternateEmisor(int i);
 	void DrawDebugEmisor();
+	float3 randomSpherePoint(float3 center);
 
 private:
 
