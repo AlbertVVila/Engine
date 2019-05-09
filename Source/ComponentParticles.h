@@ -9,6 +9,7 @@
 #include "Math/Quat.h"
 
 #include <queue>
+#include <vector>
 #include "ComponentTransform.h"
 
 class ResourceTexture;
@@ -36,6 +37,12 @@ class ComponentParticles :
 
 public:
 
+	enum class EmisorType
+	{
+		QUAD,
+		SPHERE
+	};
+
 	ComponentParticles(GameObject* gameobject);
 	ComponentParticles(const ComponentParticles& component);
 	~ComponentParticles();
@@ -54,6 +61,10 @@ public:
 
 	std::list<Particle*> particles;
 	std::queue<Particle*> particlePool;
+
+private:
+
+	void alternateEmisor(int i);
 
 private:
 
@@ -81,10 +92,14 @@ private:
 	math::float2 size = math::float2::one;
 	math::float2 quadEmitterSize = math::float2::one;
 	math::float3 particleColor = math::float3::one;
+	math::float3 pDir = math::float3(-1.f, 0.f, 0.f);
 
 	bool directionNoise = false;
 	int directionNoiseProbability = 5;
 	int directionNoiseTotalProbability = 500;
+
+	EmisorType actualEmisor = EmisorType::QUAD;
+	std::vector<bool*> emisorsCheck = std::vector<bool*>(2, false);
 
 };
 

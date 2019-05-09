@@ -22,6 +22,7 @@ ComponentParticles::ComponentParticles(GameObject* gameobject) : Component(gameo
 	textureFiles = App->resManager->GetResourceNamesList(TYPE::TEXTURE, true);
 	App->particles->AddParticleSystem(this);
 	modules.push_back(new PMSizeOverTime());
+	*emisorsCheck[0] = true;
 }
 
 ComponentParticles::ComponentParticles(const ComponentParticles& component) : Component(component)
@@ -132,7 +133,12 @@ void ComponentParticles::DrawProperties()
 	ImGui::InputFloat2("Lifetime", &lifetime[0]);
 	ImGui::InputFloat2("Speed", &speed[0]);
 	ImGui::InputFloat2("Size", &size[0]);
-	ImGui::InputFloat2("Emitter Size", &quadEmitterSize[0]);
+	//ImGui::InputFloat2("Emitter Size", &quadEmitterSize[0]);
+
+	ImGui::Text("Emisor type");
+	if (ImGui::Checkbox("Quad", emisorsCheck[0]))    alternateEmisor(0);
+	if (ImGui::Checkbox("Spehere", emisorsCheck[1])) alternateEmisor(1);
+
 	ImGui::ColorEdit3("Color", (float*)&particleColor);
 	for (ParticleModule* pm : modules)
 	{
@@ -222,7 +228,7 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 			}
 			else
 			{
-				p->direction = math::float3::unitY;
+				p->direction = gameobject->transform->GetRotation() * float3(0.f, 1.f, 0.f); //math::float3::unitY;
 			}
 			particles.push_back(p);
 		}
@@ -301,6 +307,12 @@ void ComponentParticles::Load(JSON_value* value)
 	directionNoise = value->GetInt("directionNoise");
 	directionNoiseProbability = value->GetInt("directionNoiseProbability");
 	directionNoiseTotalProbability = MAX(value->GetInt("directionNoiseTotalProbability"), 1);
+}
+
+void ComponentParticles::alternateEmisor(int newEmisor)
+{
+	for (int i = 0; i < emisorsCheck.size(); i++) *emisorsCheck[i] = false;
+	*emisorsCheck[newEmisor] = true;
 }
 
 
