@@ -118,7 +118,8 @@ void ResourceModel::LoadConfigFromMeta()
 
 		// Set Exported File
 		mesh->SetExportedFile((MESHES + std::to_string(mesh->GetUID()) + MESHEXTENSION).c_str());
-		mesh->name = name + "_" + std::to_string(i);
+		//mesh->name = name + "_" + std::to_string(i);
+		mesh->SetName((name + "_" + std::to_string(i)).c_str());
 
 		meshList.push_back(mesh);
 	}
@@ -132,7 +133,8 @@ void ResourceModel::LoadConfigFromMeta()
 		ResourceAnimation* anim = (ResourceAnimation*)App->resManager->CreateNewResource(TYPE::ANIMATION, animUID);
 		anim->SetFile(file.c_str());
 		anim->SetExportedFile((ANIMATIONS + std::to_string(anim->GetUID()) + ANIMATIONEXTENSION).c_str());
-		anim->name = name + "_" + std::to_string(i);
+		//anim->name = name + "_" + std::to_string(i);
+		anim->SetName((name + "_" + std::to_string(i)).c_str());
 
 		animationList.push_back(anim);
 	}

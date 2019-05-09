@@ -47,6 +47,7 @@ void ModuleResourceManager::LoadEngineResources()
 	for each (std::string file in files)
 	{
 		Resource* res = CreateNewResource(TYPE::TEXTURE);
+		res->SetName(App->fsystem->GetFilename(file).c_str());
 		res->SetExportedFile((IMPORTED_RESOURCES + file + TEXTUREEXT).c_str());
 		std::string filePath(IMPORTED_RESOURCES);
 		res->SetFile((filePath + file).c_str());
@@ -201,32 +202,33 @@ bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* 
 
 	// Import resource and set exported file
 	std::string exportedFile;
+	std::string name = App->fsystem->RemoveExtension(newFileInAssets);
 
 	switch (type) 
 	{
 	case TYPE::TEXTURE:		
 		success = App->textures->ImportImage(newFileInAssets, filePath,	(ResourceTexture*)resource);
-		exportedFile = TEXTURES + App->fsystem->RemoveExtension(newFileInAssets) + TEXTUREEXT;
+		exportedFile = TEXTURES + name + TEXTUREEXT;
 		break;
 	case TYPE::MODEL:		
 		success = App->fsystem->importer.ImportFBX(newFileInAssets, filePath, (ResourceModel*)resource);
-		exportedFile = App->fsystem->RemoveExtension(newFileInAssets) + FBXEXTENSION;
+		exportedFile = name + FBXEXTENSION;
 		break;
 	/*case TYPE::MESH:		
 		success = App->fsystem->importer.ImportFBX(newFileInAssets, filePath, (ResourceMesh*)resource);	
-		exportedFile = MESHES + App->fsystem->RemoveExtension(newFileInAssets) + MESHEXTENSION;	
+		exportedFile = MESHES + name + MESHEXTENSION;	
 		break;
 	case TYPE::AUDIO:		
 		success = App->audio->Import(newFileInAssets, written_file);									
-		exportedFile = IMPORTED_AUDIO + App->fsystem->RemoveExtension(newFileInAssets) + AUDIOEXTENSION;	
+		exportedFile = IMPORTED_AUDIO + name + AUDIOEXTENSION;	
 		break;*/
 	case TYPE::SCENE:		
 		success = App->fsystem->Copy(filePath, IMPORTED_SCENES, newFileInAssets);						
-		exportedFile = IMPORTED_SCENES + App->fsystem->RemoveExtension(newFileInAssets) + SCENEEXTENSION;
+		exportedFile = IMPORTED_SCENES + name + SCENEEXTENSION;
 		break;
 	case TYPE::MATERIAL:	
 		success = App->fsystem->Copy(filePath, IMPORTED_MATERIALS, newFileInAssets);					
-		exportedFile = IMPORTED_MATERIALS + App->fsystem->RemoveExtension(newFileInAssets) + MATERIALEXT;
+		exportedFile = IMPORTED_MATERIALS + name + MATERIALEXT;
 		break;
 	}
 
@@ -234,6 +236,7 @@ bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* 
 	if (success) 
 	{ 
 		resource->SaveMetafile(assetPath.c_str());
+		resource->SetName(name.c_str());
 		resource->SetExportedFile(exportedFile.c_str());
 		LOG("%s imported.", resource->GetFile());
 	}
@@ -635,6 +638,7 @@ Resource* ModuleResourceManager::AddResource(const char* file, const char* direc
 	std::string path(directory);
 	path += file;
 	std::string exportedFile;
+	std::string name(App->fsystem->GetFilename(file));
 
 	if (type == TYPE::STATEMACHINE)
 	{
@@ -642,6 +646,7 @@ Resource* ModuleResourceManager::AddResource(const char* file, const char* direc
 		//unsigned smUID = App->fsystem->RemoveExtension(file)
 		Resource* res = CreateNewResource(type , std::stoul(App->fsystem->RemoveExtension(file), nullptr, 0));
 		//res->LoadInMemory();
+		res->SetName(name.c_str());
 		exportedFile = STATEMACHINES;
 		exportedFile += file;
 		res->SetExportedFile(exportedFile.c_str());
@@ -668,6 +673,7 @@ Resource* ModuleResourceManager::AddResource(const char* file, const char* direc
 		default:
 			break;
 		}
+		res->SetName(name.c_str());
 		res->SetExportedFile(exportedFile.c_str());
 		res->SetFile(path.c_str());
 		return res;

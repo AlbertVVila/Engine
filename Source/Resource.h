@@ -43,6 +43,8 @@ public:
 	inline TYPE			GetType() const					{ return type; };
 	inline void			SetType(TYPE newType)			{ type = newType; }
 	inline unsigned		GetUID() const					{ return UID; };
+	inline const char*	GetName() const					{ return name.c_str(); }
+	inline void			SetName(const char* newName)	{ name = newName; }
 	inline const char*	GetFile() const					{ return file.c_str(); };
 	inline void			SetFile(const char* newFile)	{ file = newFile; };
 	inline const char*	GetExportedFile() const			{ return exportedFile.c_str(); };
@@ -66,6 +68,7 @@ public:
 
 protected:
 	unsigned UID = 0u;
+	std::string name;				// Name for the asset (Asset filename by default)
 	std::string file;				// The file located in /Assets/ (Path + filename + extension)
 	std::string exportedFile;		// The file located in /Library/ (filename + extension)
 	unsigned loaded = 0;			// Number of times this resource is being used

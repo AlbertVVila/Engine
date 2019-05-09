@@ -311,6 +311,7 @@ void ResourceStateMachine::Save()
 
 	std::string exportedFile (STATEMACHINES + std::to_string(GetUID()) + STATEMACHINEEXTENSION);
 	App->fsystem->Save(exportedFile.c_str(), stateMachineData, stateMachineSize);
+	SetName(name.c_str());
 	SetFile(STATEMACHINES);
 	SetExportedFile(exportedFile.c_str());
 	RELEASE_ARRAY(stateMachineData);

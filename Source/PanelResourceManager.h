@@ -8,7 +8,7 @@ class Resource;
 class ResourceTexture;
 struct ImVec2;
 
-enum class SORTING { NONE, UID, FILE, EXPORTED, TYPE, REFERENCES};
+enum class SORTING { NONE, UID, NAME, FILE, EXPORTED, TYPE, REFERENCES};
 
 class PanelResourceManager : 
 	public Panel

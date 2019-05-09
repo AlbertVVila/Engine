@@ -247,6 +247,7 @@ void MaterialEditor::NewMaterial()
 			newExportedFile += newName;
 			newExportedFile += MATERIALEXT;
 			newMaterialCreated->SetExportedFile(newExportedFile.c_str());
+			newMaterialCreated->SetName(newName);
 			newMaterialCreated->Save();
 			newMaterial = false;
 

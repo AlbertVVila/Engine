@@ -166,7 +166,8 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 			App->fsystem->Save(exportedFile.c_str(), meshData, meshSize);
 			mesh->SetFile(path.c_str());
 			mesh->SetExportedFile(exportedFile.c_str());
-			mesh->name = name + "_" + std::to_string(totalMeshes);
+			//mesh->name = name + "_" + std::to_string(totalMeshes);
+			mesh->SetName((name + "_" + std::to_string(totalMeshes)).c_str());
 			RELEASE_ARRAY(meshData);
 			//App->resManager->AddMesh(mesh);
 			GameObject* meshGO = new GameObject("mesh", App->scene->GetNewUID());
@@ -221,7 +222,9 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 		App->fsystem->Save(exportedFile.c_str(), animationData, animationSize);
 		animation->SetFile(path.c_str());
 		animation->SetExportedFile(exportedFile.c_str());
-		animation->name = name + "_" + std::to_string(i);
+		//animation->name = name + "_" + std::to_string(i);
+		animation->SetName((name + "_" + std::to_string(i)).c_str());
+
 		//App->resManager->AddAnim(animation);
 
 		RELEASE_ARRAY(animationData);

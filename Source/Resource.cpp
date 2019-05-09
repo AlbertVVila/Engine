@@ -14,6 +14,7 @@ Resource::Resource(unsigned uid, TYPE type): UID(uid), type(type)
 Resource::Resource(const Resource& resource)
 {
 	UID = App->resManager->GenerateNewUID();
+	name = resource.name;
 	file = resource.file;
 	exportedFile = resource.exportedFile;
 	loaded = resource.loaded;
@@ -29,6 +30,7 @@ Resource::~Resource()
 void Resource::Copy(const Resource& resource)
 {
 	file = resource.file;
+	name = resource.name;
 	exportedFile = resource.exportedFile;
 	SetReferences(resource.loaded);
 	engineUsed = resource.engineUsed;

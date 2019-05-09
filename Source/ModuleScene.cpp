@@ -1066,6 +1066,7 @@ void ModuleScene::SaveScene(const GameObject& rootGO, const char* sceneName, con
 		exportedFile += sceneName;
 		exportedFile += SCENEEXTENSION;
 		scene->SetExportedFile(exportedFile.c_str());
+		scene->SetName(sceneName);
 		scene->Save(rootGO);
 	}
 

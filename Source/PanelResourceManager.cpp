@@ -74,10 +74,11 @@ void PanelResourceManager::Draw()
 	if(auxResource == nullptr)
 		UpdateResourcesList();
 
-	ImGui::Columns(6);
+	ImGui::Columns(7);
 	// Table references: UID | File | Exported File | References | Type |
 	ImGui::PushStyleColor(ImGuiCol_Text, (ImVec4)ImColor::HSV(0.0f, 1.0f, 1.0f));
 	if (ImGui::Selectable("UID"))			{ if (sortList == SORTING::UID) descending = !descending; sortList = SORTING::UID; }				ImGui::SameLine(); ImGui::NextColumn();
+	if (ImGui::Selectable("Name"))			{ if (sortList == SORTING::NAME) descending = !descending; sortList = SORTING::NAME; }				ImGui::SameLine(); ImGui::NextColumn();
 	if (ImGui::Selectable("File"))			{ if (sortList == SORTING::FILE) descending = !descending; sortList = SORTING::FILE;}				ImGui::SameLine(); ImGui::NextColumn();
 	if (ImGui::Selectable("Exported File"))	{ if (sortList == SORTING::EXPORTED) descending = !descending; sortList = SORTING::EXPORTED;}		ImGui::SameLine(); ImGui::NextColumn();
 	if (ImGui::Selectable("References"))	{ if (sortList == SORTING::REFERENCES) descending = !descending; sortList = SORTING::REFERENCES;}	ImGui::SameLine(); ImGui::NextColumn();
@@ -91,6 +92,10 @@ void PanelResourceManager::Draw()
 		ImGui::PushID(uid);
 		// UID
 		ImGui::Text("%u", uid);
+		ImGui::NextColumn();
+
+		// Name
+		ImGui::Text(resource->GetName());
 		ImGui::NextColumn();
 
 		// File
@@ -206,6 +211,12 @@ void PanelResourceManager::OpenResourceEditor()
 			// UID
 			unsigned uid = auxResource->GetUID();
 			ImGui::Text("UID: %u", uid);
+
+			// Name
+			char name[64] = "";
+			strcpy(name, auxResource->GetName());
+			ImGui::InputText("Name", name, MAX_FILE);
+			auxResource->SetName(name);
 
 			// File
 			char file[64] = "";
