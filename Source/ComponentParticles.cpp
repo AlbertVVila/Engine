@@ -200,9 +200,44 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 			{
 				p = new Particle();				
 			}
-			quadEmitterSize.x = MAX(1, quadEmitterSize.x);
-			quadEmitterSize.y = MAX(1, quadEmitterSize.y);
-			p->position = pos + float3(rand() % (int)quadEmitterSize.x, 0, rand() % (int)quadEmitterSize.y);
+
+			switch (actualEmisor) 
+			{
+			case EmisorType::QUAD:
+				quadEmitterSize = MAX(1, quadEmitterSize);
+
+				//P starting position
+				p->position = pos + float3(rand() % (int)quadEmitterSize, 0, rand() % (int)quadEmitterSize);
+
+				//P direction
+				if (directionNoise)
+				{
+					float xD = ((rand() % 100) - 50) / 100.f;
+					float yD = ((rand() % 100) - 50) / 100.f;
+					float zD = ((rand() % 100) - 50) / 100.f;
+					p->direction = math::float3(xD, yD, zD);
+					p->direction.Normalize();
+				}
+				else
+				{
+					p->direction = gameobject->transform->GetRotation() * float3(0.f, 1.f, 0.f); //math::float3::unitY;
+				}
+
+				break;
+
+			case EmisorType::SPHERE:
+				p->position = pos;
+
+				//TODO get random point on the sphere for calculating the direction
+
+				break;
+			}
+
+			
+
+			
+
+			//P lifetime
 			if (lifetime.x != lifetime.y)
 			{
 				p->totalLifetime = lifetime.x + fmod(rand(), abs(lifetime.y - lifetime.x));
@@ -221,18 +256,7 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 			}
 			p->lifeTimer = p->totalLifetime;
 			p->size = fmod(rand(), abs(size.y - size.x));
-			if (directionNoise)
-			{
-				float xD = ((rand() % 100) - 50) / 100.f;
-				float yD = ((rand() % 100) - 50) / 100.f;
-				float zD = ((rand() % 100) - 50) / 100.f;
-				p->direction = math::float3(xD, yD, zD);
-				p->direction.Normalize();
-			}
-			else
-			{
-				p->direction = gameobject->transform->GetRotation() * float3(0.f, 1.f, 0.f); //math::float3::unitY;
-			}
+			
 			particles.push_back(p);
 		}
 		rateTimer = 1.f / rate;
@@ -281,7 +305,8 @@ void ComponentParticles::Save(JSON_value* value) const
 	value->AddFloat("rate", rate);
 	value->AddInt("maxParticles", maxParticles);
 	value->AddFloat2("size", size);
-	value->AddFloat2("quadEmitterSize", quadEmitterSize);
+	value->AddFloat("quadEmitterSize", quadEmitterSize);
+	value->AddFloat("sphereEmitterRadius", sphereEmitterRadius);
 	value->AddFloat3("particleColor", particleColor);
 	value->AddInt("directionNoise", directionNoise);
 	value->AddInt("directionNoiseProbability", directionNoiseProbability);
@@ -305,7 +330,8 @@ void ComponentParticles::Load(JSON_value* value)
 	rateTimer = 1.f / rate;
 	maxParticles = value->GetInt("maxParticles");
 	size = value->GetFloat2("size");
-	quadEmitterSize = value->GetFloat2("quadEmitterSize");
+	quadEmitterSize = value->GetFloat("quadEmitterSize");
+	sphereEmitterRadius = value->GetFloat("sphereEmitterRadius");
 	particleColor = value->GetFloat3("particleColor");
 	directionNoise = value->GetInt("directionNoise");
 	directionNoiseProbability = value->GetInt("directionNoiseProbability");
@@ -320,9 +346,25 @@ void ComponentParticles::alternateEmisor(int newEmisor)
 
 void ComponentParticles::DrawDebugEmisor()
 {
-	switch (actualEmisor) {
+	float3 base = gameobject->transform->GetGlobalPosition();
+
+	switch (actualEmisor) 
+	{
 	case EmisorType::QUAD:
-	
+		
+		float3 v1 = float3(base.x + quadEmitterSize / 2.f, base.y, base.x - quadEmitterSize / 2.f);
+		float3 v2 = float3(base.x + quadEmitterSize / 2.f, base.y, base.x + quadEmitterSize / 2.f);
+		float3 v3 = float3(base.x - quadEmitterSize / 2.f, base.y, base.x + quadEmitterSize / 2.f);
+		float3 v4 = float3(base.x - quadEmitterSize / 2.f, base.y, base.x - quadEmitterSize / 2.f);
+
+		dd::line(v1, v2, dd::colors::Green);
+		dd::line(v2, v3, dd::colors::Green);
+		dd::line(v3, v4, dd::colors::Green);
+		dd::line(v4, v1, dd::colors::Green);
+		break;
+
+	case EmisorType::SPHERE:
+		dd::sphere(base, dd::colors::Green, sphereEmitterRadius);
 		break;
 	}
 

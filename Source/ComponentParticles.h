@@ -11,6 +11,8 @@
 #include <queue>
 #include <vector>
 #include "ComponentTransform.h"
+#include "ModuleRender.h"
+
 
 class ResourceTexture;
 class ParticleModule;
@@ -91,7 +93,9 @@ private:
 	float rateTimer = 1.f / rate;
 	int maxParticles = 50;
 	math::float2 size = math::float2::one;
-	math::float2 quadEmitterSize = math::float2::one;
+	//math::float2 quadEmitterSize = math::float2::one;
+	float quadEmitterSize = 1.f * App->renderer->current_scale;
+	float sphereEmitterRadius = 1.f * App->renderer->current_scale;
 	math::float3 particleColor = math::float3::one;
 	math::float3 pDir = math::float3(-1.f, 0.f, 0.f);
 
