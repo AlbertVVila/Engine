@@ -325,6 +325,11 @@ inline float PMSizeOverTime::GetSize(float percent, float total)
 
 void PMSizeOverTime::InspectorDraw()
 {
-	ImGui::Text("Size Over Time");
-	ImGui::Bezier("easeInExpo", v);
+	ImGui::Checkbox("Size Over Time", &enabled);
+	if (enabled)
+	{
+		ImGui::Text("Size Over Time");
+		ImGui::Bezier("easeInExpo", v);
+	}
+	
 }

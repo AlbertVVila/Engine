@@ -72,6 +72,7 @@ public:
 		SIZE_OVER_TIME
 	};
 
+	bool enabled = false;
 	virtual void Update() {};
 	virtual void InspectorDraw() = 0;
 
@@ -81,6 +82,7 @@ public:
 class PMSizeOverTime : public ParticleModule
 {
 public:
+
 
 	PMSizeOverTime() { type = ParticleModulesType::SIZE_OVER_TIME; };
 

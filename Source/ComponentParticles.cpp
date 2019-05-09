@@ -24,7 +24,6 @@ ComponentParticles::ComponentParticles(GameObject* gameobject) : Component(gameo
 	textureFiles = App->resManager->GetResourceNamesList(TYPE::TEXTURE, true);
 	App->particles->AddParticleSystem(this);
 	modules.push_back(new PMSizeOverTime());
-	*emisorsCheck[0] = true;
 }
 
 ComponentParticles::ComponentParticles(const ComponentParticles& component) : Component(component)
@@ -51,7 +50,7 @@ ComponentParticles::ComponentParticles(const ComponentParticles& component) : Co
 	rate = component.rate;
 	rateTimer = 1.f / rate;
 	maxParticles = component.maxParticles;
-	size = component.size;
+	particleSize = component.particleSize;
 	quadEmitterSize = component.quadEmitterSize;
 	particleColor = component.particleColor;
 	directionNoise = component.directionNoise;
@@ -73,81 +72,91 @@ Component* ComponentParticles::Clone() const
 
 void ComponentParticles::DrawProperties()
 {
-	ImGui::PushID(this);
-	ImGui::Text("Particles active %d", particles.size());
-	//texture selector
-	if (ImGui::BeginCombo("Texture", textureName.c_str()))
+	if (ImGui::CollapsingHeader("Particle System")) 
 	{
-		bool none_selected = (textureName == None);
-		if (ImGui::Selectable(None, none_selected))
+		ImGui::PushID(this);
+		ImGui::Text("Particles active %d", particles.size());
+		//texture selector
+		if (ImGui::BeginCombo("Texture", textureName.c_str()))
 		{
-			if (texture != nullptr)
+			bool none_selected = (textureName == None);
+			if (ImGui::Selectable(None, none_selected))
 			{
-				unsigned imageUID = App->resManager->FindByExportedFile(textureName.c_str());
-				App->resManager->DeleteResource(imageUID);
-				texture = nullptr;
+				if (texture != nullptr)
+				{
+					unsigned imageUID = App->resManager->FindByExportedFile(textureName.c_str());
+					App->resManager->DeleteResource(imageUID);
+					texture = nullptr;
+				}
+				textureName = None;
 			}
-			textureName = None;
-		}
-		if (none_selected)
-			ImGui::SetItemDefaultFocus();
-
-		textureFiles = App->resManager->GetResourceNamesList(TYPE::TEXTURE, true);
-
-		for (int n = 0; n < textureFiles.size(); n++)
-		{
-			bool is_selected = (textureName == textureFiles[n]);
-			if (ImGui::Selectable(textureFiles[n].c_str(), is_selected) && !is_selected)
-			{
-				App->resManager->DeleteResource(App->resManager->FindByExportedFile(textureName.c_str()));
-				textureName = textureFiles[n].c_str();
-				unsigned imageUID = App->resManager->FindByExportedFile(textureName.c_str());
-				texture = (ResourceTexture*)App->resManager->Get(imageUID);
-			}
-			if (is_selected)
+			if (none_selected)
 				ImGui::SetItemDefaultFocus();
+
+			textureFiles = App->resManager->GetResourceNamesList(TYPE::TEXTURE, true);
+
+			for (int n = 0; n < textureFiles.size(); n++)
+			{
+				bool is_selected = (textureName == textureFiles[n]);
+				if (ImGui::Selectable(textureFiles[n].c_str(), is_selected) && !is_selected)
+				{
+					App->resManager->DeleteResource(App->resManager->FindByExportedFile(textureName.c_str()));
+					textureName = textureFiles[n].c_str();
+					unsigned imageUID = App->resManager->FindByExportedFile(textureName.c_str());
+					texture = (ResourceTexture*)App->resManager->Get(imageUID);
+				}
+				if (is_selected)
+					ImGui::SetItemDefaultFocus();
+			}
+			ImGui::EndCombo();
 		}
-		ImGui::EndCombo();
-	}
-	if (texture != nullptr)
-	{
-		ImGui::Image((ImTextureID)texture->gpuID, { 200,200 }, { 0,1 }, { 1,0 });
-	}
-	
-	ImGui::InputInt("X Tiles", &xTiles);
-	ImGui::InputInt("Y Tiles", &yTiles);
-	xTiles = MAX(xTiles, 1);
-	yTiles = MAX(yTiles, 1);
-	if (ImGui::InputFloat("FPS", &fps, 1.f))
-	{
-		timer = 0.f;
-	}
-	ImGui::Separator();
-	ImGui::Checkbox("Direction noise", &directionNoise);
-	if (directionNoise)
-	{
-		ImGui::InputInt("Probability", &directionNoiseProbability);
-		ImGui::InputInt("Total Probability", &directionNoiseTotalProbability);
+		if (texture != nullptr)
+		{
+			ImGui::Image((ImTextureID)texture->gpuID, { 200,200 }, { 0,1 }, { 1,0 });
+		}
+
+		ImGui::InputInt("X Tiles", &xTiles);
+		ImGui::InputInt("Y Tiles", &yTiles);
+		xTiles = MAX(xTiles, 1);
+		yTiles = MAX(yTiles, 1);
+		if (ImGui::InputFloat("FPS", &fps, 1.f))
+		{
+			timer = 0.f;
+		}
 		ImGui::Separator();
-	}
-	ImGui::InputInt("Max Particles", &maxParticles);
-	ImGui::DragFloat("Rate", &rate);
-	ImGui::InputFloat2("Lifetime", &lifetime[0]);
-	ImGui::InputFloat2("Speed", &speed[0]);
+		ImGui::Checkbox("Direction noise", &directionNoise);
+		if (directionNoise)
+		{
+			ImGui::InputInt("Probability", &directionNoiseProbability);
+			ImGui::InputInt("Total Probability", &directionNoiseTotalProbability);
+			ImGui::Separator();
+		}
+		ImGui::InputInt("Max Particles", &maxParticles);
+		ImGui::DragFloat("Rate", &rate);
+		ImGui::InputFloat2("Lifetime", &lifetime[0]);
+		ImGui::InputFloat2("Speed", &speed[0]);
+		ImGui::InputFloat2("Particle size", &particleSize[0]);
+		//ImGui::InputFloat2("Emitter Size", &quadEmitterSize[0]);
+
+		ImGui::Text("Emisor type: %i", actualEmisor);
+		if (ImGui::Checkbox("Quad", &quadCheck))    alternateEmisor(0);
+		if (ImGui::Checkbox("Spehere", &sphereCheck)) alternateEmisor(1);
+		switch (actualEmisor)
+		{
+		case EmisorType::QUAD:
+			ImGui::DragFloat("Quad size", &quadEmitterSize, 0.1 * App->renderer->current_scale);
+			break;
+		}
+
+		ImGui::ColorEdit3("Color", (float*)&particleColor);
+		for (ParticleModule* pm : modules)
+		{
+			pm->InspectorDraw();
+		}
+		ImGui::PopID();
 	
-	//ImGui::InputFloat2("Emitter Size", &quadEmitterSize[0]);
-
-	ImGui::Text("Emisor type");
-	if (ImGui::Checkbox("Quad", emisorsCheck[0]))    alternateEmisor(0);
-	if (ImGui::Checkbox("Spehere", emisorsCheck[1])) alternateEmisor(1);
-	ImGui::InputFloat2("Size", &size[0]);
-
-	ImGui::ColorEdit3("Color", (float*)&particleColor);
-	for (ParticleModule* pm : modules)
-	{
-		pm->InspectorDraw();
 	}
-	ImGui::PopID();
+	
 }
 
 bool ComponentParticles::CleanUp()
@@ -218,7 +227,7 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 					quadEmitterSize = MAX(1, quadEmitterSize);
 
 					//P starting position
-					p->position = pos + float3(rand() % (int)quadEmitterSize, 0, rand() % (int)quadEmitterSize);
+					p->position = pos + float3(rand() % (int)quadEmitterSize - quadEmitterSize / 2, 0, rand() % (int)quadEmitterSize - quadEmitterSize / 2);
 
 					//P direction
 					p->direction = gameobject->transform->GetRotation() * float3(0.f, 1.f, 0.f); //math::float3::unitY;
@@ -228,7 +237,7 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 					//P starting position
 					p->position = pos;
 					//P direction
-					p->direction = randomSpherePoint(pos) - pos;
+					p->direction = (randomSpherePoint(pos) - pos).Normalized();
 					break;
 				}
 			}
@@ -255,11 +264,13 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 			p->lifeTimer = p->totalLifetime;
 
 			//P size
-			p->size = fmod(rand(), abs(size.y - size.x));
+			p->size = fmod(rand(), abs(particleSize.y - particleSize.x));
 			
 			particles.push_back(p);
 		}
 		rateTimer = 1.f / rate;
+
+		if (gameobject->isSelected) DrawDebugEmisor();
 	}
 
 
@@ -278,12 +289,16 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 		float sizeOT = particles.front()->size;
 		for (ParticleModule* pm : modules)
 		{
-			switch (pm->type)
-			{
-			case ParticleModule::ParticleModulesType::SIZE_OVER_TIME:
-				sizeOT = ((PMSizeOverTime*)pm)->GetSize(particles.front()->lifeTimer / particles.front()->totalLifetime, particles.front()->size);
-				break;
+			if (pm->enabled) {
+				switch (pm->type)
+				{
+				case ParticleModule::ParticleModulesType::SIZE_OVER_TIME:
+					sizeOT = ((PMSizeOverTime*)pm)->GetSize(particles.front()->lifeTimer / particles.front()->totalLifetime, particles.front()->size);
+					break;
+				}
+
 			}
+			
 		}
 		particles.front()->position += particles.front()->direction * particles.front()->speed * dt;
 		float3 direction = (camPos - particles.front()->position);
@@ -304,7 +319,7 @@ void ComponentParticles::Save(JSON_value* value) const
 	value->AddFloat2("speed", speed);
 	value->AddFloat("rate", rate);
 	value->AddInt("maxParticles", maxParticles);
-	value->AddFloat2("size", size);
+	value->AddFloat2("size", particleSize);
 	value->AddFloat("quadEmitterSize", quadEmitterSize);
 	value->AddFloat("sphereEmitterRadius", sphereEmitterRadius);
 	value->AddFloat3("particleColor", particleColor);
@@ -329,7 +344,7 @@ void ComponentParticles::Load(JSON_value* value)
 	rate = value->GetFloat("rate");
 	rateTimer = 1.f / rate;
 	maxParticles = value->GetInt("maxParticles");
-	size = value->GetFloat2("size");
+	particleSize = value->GetFloat2("size");
 	quadEmitterSize = value->GetFloat("quadEmitterSize");
 	sphereEmitterRadius = value->GetFloat("sphereEmitterRadius");
 	particleColor = value->GetFloat3("particleColor");
@@ -342,7 +357,7 @@ void ComponentParticles::alternateEmisor(int newEmisor)
 {
 	for (int i = 0; i < emisorsCheck.size(); i++) *emisorsCheck[i] = false;
 	*emisorsCheck[newEmisor] = true;
-	actualEmisor = static_cast<EmisorType>(1);
+	actualEmisor = static_cast<EmisorType>(newEmisor);
 }
 
 void ComponentParticles::DrawDebugEmisor()
@@ -373,8 +388,8 @@ void ComponentParticles::DrawDebugEmisor()
 
 float3 ComponentParticles::randomSpherePoint(float3 center)
 {
-	float u = rand();
-	float v = rand();
+	float u = (rand() % 100) / 100.f;
+	float v = (rand() % 100) / 100.f;
 	float theta = 2.f * math::pi * u;
 	float phi = math::Acos(2 * v - 1);
 	float x = center.x + (math::Sin(phi) * math::Cos(theta));

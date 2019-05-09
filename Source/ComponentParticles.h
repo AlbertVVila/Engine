@@ -89,11 +89,11 @@ private:
 	int f2Ypos;
 
 	math::float2 lifetime = math::float2::one;
-	math::float2 speed = math::float2::one;
+	math::float2 speed = math::float2::one * App->renderer->current_scale;
 	float rate = 10.f;
 	float rateTimer = 1.f / rate;
 	int maxParticles = 50;
-	math::float2 size = math::float2::one;
+	math::float2 particleSize = math::float2(0.1f * App->renderer->current_scale, 1.f * App->renderer->current_scale) ;
 	//math::float2 quadEmitterSize = math::float2::one;
 	float quadEmitterSize = 1.f * App->renderer->current_scale;
 	float sphereEmitterRadius = 1.f * App->renderer->current_scale;
@@ -105,7 +105,9 @@ private:
 	int directionNoiseTotalProbability = 500;
 
 	EmisorType actualEmisor = EmisorType::QUAD;
-	std::vector<bool*> emisorsCheck = std::vector<bool*>(2, false);
+	bool quadCheck = true;
+	bool sphereCheck = false;
+	std::vector<bool*> emisorsCheck = { &quadCheck,&sphereCheck};
 
 };
 
