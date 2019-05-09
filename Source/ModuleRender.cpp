@@ -125,13 +125,7 @@ bool ModuleRender::Init(JSON * config)
 		1,2,3
 	};
 
-	float quadUVS[] =
-	{
-		0.0f, 0.0f,
-		1.0f, 1.0f,
-		1.0f, 0.0f,
-		0.0f, 1.0f
-	};
+
 
 	if (postprocessVAO == 0)
 	{
@@ -142,14 +136,16 @@ bool ModuleRender::Init(JSON * config)
 		glBindVertexArray(postprocessVAO);
 
 		glBindBuffer(GL_ARRAY_BUFFER, postprocessVBO);
-		glBufferData(GL_ARRAY_BUFFER, 16 * sizeof(quadVertices[0]), &quadVertices[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, 30 * sizeof(float), &quadVertices[0], GL_STATIC_DRAW);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, postprocessEBO);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(quadIndices), quadIndices, GL_STATIC_DRAW);
 
-		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
-
+		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*)0);
 		glEnableVertexAttribArray(0);
+
+		glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*)(sizeof(float) * 3 * 6));
+		glEnableVertexAttribArray(1);
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
