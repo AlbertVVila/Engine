@@ -21,6 +21,8 @@ public:
 	bool LoadInMemory() override;
 	void DeleteFromMemory() override;
 	void Delete() override;
+	void SaveMetafile(const char* file) const override;
+	void LoadConfigFromMeta() override;
 
 	unsigned GetStateMachineSize();
 	void SetStateMachine(const char* data);

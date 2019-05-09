@@ -624,17 +624,6 @@ Resource* ModuleResourceManager::AddResource(const char* file, const char* direc
 	std::string path(directory);
 	path += file;
 
-	if (type == TYPE::STATEMACHINE)
-	{
-		// Create new resource 
-		//unsigned smUID = App->fsystem->RemoveExtension(file)
-		Resource* res = CreateNewResource(type , std::stoul(App->fsystem->RemoveExtension(file), nullptr, 0));
-		res->LoadInMemory();
-		res->SetExportedFile(App->fsystem->GetFilename(file).c_str());
-		res->SetFile((path).c_str());
-		return res;
-	}
-
 	// Check if resource was already added
 	unsigned UID = FindByFileInAssets(path.c_str());
 	if ( UID == 0)

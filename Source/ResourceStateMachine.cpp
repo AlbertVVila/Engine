@@ -6,6 +6,7 @@
 #include "ResourceStateMachine.h"
 #include "ResourceAnimation.h"
 
+#include "JSON.h"
 #include "Globals.h"
 
 
@@ -76,6 +77,42 @@ void ResourceStateMachine::Delete()
 	fileInLibrary += STATEMACHINEEXTENSION;
 	App->fsystem->Delete(fileInLibrary.c_str());
 	DeleteFromMemory();
+}
+
+void ResourceStateMachine::SaveMetafile(const char * file) const
+{
+	std::string filepath;
+	filepath.append(file);
+	JSON* json = new JSON();
+	JSON_value* meta = json->CreateValue();
+	struct stat statFile;
+	stat(filepath.c_str(), &statFile);
+	meta->AddUint("GUID", UID);
+	meta->AddUint("timeCreated", statFile.st_ctime);
+	meta->AddString("name", name.c_str());
+	json->AddValue("StateMachine", *meta);
+	filepath += METAEXT;
+	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
+}
+
+void ResourceStateMachine::LoadConfigFromMeta()
+{
+	Resource::LoadConfigFromMeta();
+	char* data = nullptr;
+	std::string metaFile(file);
+	metaFile += ".meta";
+
+	if (App->fsystem->Load(metaFile.c_str(), &data) == 0)
+	{
+		LOG("Warning: %s couldn't be loaded", metaFile.c_str());
+		RELEASE_ARRAY(data);
+		return;
+	}
+	JSON* json = new JSON(data);
+	JSON_value* value = json->GetValue("StateMachine");
+	UID = value->GetUint("GUID");
+	name = value->GetString("name");
+	std::string name = App->fsystem->GetFilename(file);
 }
 
 void ResourceStateMachine::SetStateMachine(const char* data)
@@ -296,8 +333,8 @@ void ResourceStateMachine::Save()
 	SaveStateMachineData(stateMachineData);
 
 	App->fsystem->Save((STATEMACHINES + name + STATEMACHINEEXTENSION).c_str(), stateMachineData, stateMachineSize);
-	SetFile(STATEMACHINES);
-	SetExportedFile(std::to_string(GetUID()).c_str());
+	SetFile((STATEMACHINES + name + STATEMACHINEEXTENSION).c_str());
+	//SetExportedFile(std::to_string(GetUID()).c_str());
 	RELEASE_ARRAY(stateMachineData);
 }
 
