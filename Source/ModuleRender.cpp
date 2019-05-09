@@ -138,7 +138,23 @@ bool ModuleRender::Init(JSON * config)
 		glGenVertexArrays(1, &postprocessVAO);
 		glGenBuffers(1, &postprocessVBO);
 		glGenBuffers(1, &postprocessEBO);
+
+		glBindVertexArray(postprocessVAO);
+
+		glBindBuffer(GL_ARRAY_BUFFER, postprocessVBO);
+		glBufferData(GL_ARRAY_BUFFER, 16 * sizeof(quadVertices[0]), &quadVertices[0], GL_STATIC_DRAW);
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, postprocessEBO);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(quadIndices), quadIndices, GL_STATIC_DRAW);
+
+		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), 0);
+
+		glEnableVertexAttribArray(0);
+
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindVertexArray(0);
 	}
+
 
 	return true;
 }
