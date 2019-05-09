@@ -240,15 +240,14 @@ private:
 	float* bmax = nullptr;
 	const AABB* meshbox = nullptr;
 
-	//Detour pathfinding
-
+	//Debugging
 	bool pathGenerated = false;
 	std::vector<math::float3> path;
 	math::float3 start = math::float3::inf;
 	math::float3 end = math::float3::inf;
 
 	bool startPoint = true; //defines if we are going to select start or end point in debug mode
-
+	bool drawNavMesh = true;
 };
 
 #endif __MODULENAVIGATION_H__

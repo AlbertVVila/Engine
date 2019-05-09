@@ -71,12 +71,12 @@ static void drawPolyBoundaries(duDebugDraw* dd, const dtMeshTile* tile,
 						}
 					}
 					if (con)
-						c = duRGBA(255,255,255,48);
+						c = duRGBA(255, 255, 255, 48);
 					else
-						c = duRGBA(0,0,0,48);
+						c = duRGBA(0, 0, 0, 48);
 				}
 				else
-					c = duRGBA(0,48,64,32);
+					c = duRGBA(120, 120, 120, 80);//duRGBA(0,48,64,32);
 			}
 			else
 			{
@@ -162,10 +162,10 @@ static void drawMeshTile(duDebugDraw* dd, const dtNavMesh& mesh, const dtNavMesh
 	dd->end();
 	
 	// Draw inter poly boundaries
-	drawPolyBoundaries(dd, tile, duRGBA(0,48,64,32), 1.5f, true);
+	drawPolyBoundaries(dd, tile, duRGBA(120, 120, 120, 80)/*duRGBA(0,48,64,32)*/, 1.5f, true);
 	
 	// Draw outer poly boundaries
-	drawPolyBoundaries(dd, tile, duRGBA(0,48,64,220), 2.5f, false);
+	drawPolyBoundaries(dd, tile, duRGBA(200, 200, 200, 132)/*duRGBA(0,48,64,220)*/, 2.5f, false);
 
 	//if (flags & DU_DRAWNAVMESH_OFFMESHCONS)
 	//{

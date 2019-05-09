@@ -56,6 +56,7 @@ bool ModuleNavigation::Init(JSON * config)
 	cellWidth = nav->GetFloat("Cellwidth");
 	characterMaxStepHeightScaling = nav->GetFloat("StepHeight");
 	meshGenerated = nav->GetUint("Generated", false);
+	drawNavMesh = nav->GetUint("DrawNavMesh", true);
 
 	return true;
 }
@@ -67,6 +68,7 @@ void ModuleNavigation::SaveConfig(JSON * config)
 	nav->AddFloat("StepHeight", characterMaxStepHeightScaling);
 	
 	nav->AddUint("Generated", meshGenerated);
+	nav->AddUint("DrawNavMesh", drawNavMesh);
 
 	config->AddValue("navigation", *nav);
 }
@@ -225,6 +227,7 @@ void ModuleNavigation::DrawGUI()
 		renderMesh = !renderMesh;
 	}
 	
+	ImGui::Checkbox("Debug NavMesh", &drawNavMesh);
 	if (ImGui::CollapsingHeader("Detour"))
 	{
 		ImGui::Checkbox("Select Start", &startPoint);
@@ -269,7 +272,7 @@ void ModuleNavigation::navigableObjectToggled(GameObject* obj, const bool newSta
 
 void ModuleNavigation::renderNavMesh()
 {
-	if (!meshGenerated || !renderMesh || autoNavGeneration)
+	if (!meshGenerated || !renderMesh || autoNavGeneration || !drawNavMesh)
 	{
 		return;
 	}
@@ -311,29 +314,25 @@ void ModuleNavigation::renderNavMesh()
 
 	//}
 
-
 	ddi->debugDrawNavMesh();
 	if (start != math::float3::inf)
 	{
-		dd::point(start, dd::colors::Red, 5.0f);
+		dd::point(start, dd::colors::Red, 5.0f, 0, false);
 	}
 	if (end != math::float3::inf)
 	{
-		dd::point(end, dd::colors::Red, 5.0f);
+		dd::point(end, dd::colors::Red, 5.0f, 0, false);
 	}
 	if (pathGenerated)
 	{
-		for (int i = 0; i< path.size(); ++i)
+		for (int i = 0; i < path.size(); ++i)
 		{
 			if (i + 1 < path.size())
 			{
-				dd::line(path[i], path[i + 1], dd::colors::Red);
+				dd::line(path[i], path[i + 1], dd::colors::Red, 0, false);
 			}
 		}
 	}
-
-	//drawMeshTile();
-	//glDepthMask(GL_TRUE);
 }
 
 void ModuleNavigation::removeNavMesh(unsigned ID)

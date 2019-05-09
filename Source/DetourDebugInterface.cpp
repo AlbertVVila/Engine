@@ -102,7 +102,7 @@ unsigned int DetourDebugInterface::areaToCol(unsigned int area)
 
 void DetourDebugInterface::depthMask(bool state)
 {
-	glDepthMask(state ? GL_TRUE : GL_FALSE);
+	depth = state;
 }
 
 void DetourDebugInterface::texture(bool state)
@@ -152,13 +152,13 @@ math::float4 DetourDebugInterface::getColor(unsigned col)
 
 void DetourDebugInterface::vertex(const float* pos, unsigned int color)
 {
-	v3_c4 vertex = { math::float3(pos)/*, getColor(color) */};
+	v3_c4 vertex = { math::float3(pos), getColor(color) };
 	vertices.push_back(vertex);
 }
 
 void DetourDebugInterface::vertex(const float x, const float y, const float z, unsigned int color)
 {
-	v3_c4 vertex = { math::float3(x,y,z)/*, getColor(color) */};
+	v3_c4 vertex = { math::float3(x,y,z), getColor(color) };
 	vertices.push_back(vertex);
 }
 
@@ -179,6 +179,9 @@ void DetourDebugInterface::vertex(const float x, const float y, const float z, u
 
 void DetourDebugInterface::debugDrawNavMesh()
 {
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glDisable(GL_DEPTH_TEST);
 	glUseProgram(shader->id[0]);
 	math::float4x4 model = math::float4x4::identity;
 	glUniformMatrix4fv(glGetUniformLocation(shader->id[0], "model"), 1, GL_TRUE, &model[0][0]);
@@ -193,6 +196,8 @@ void DetourDebugInterface::debugDrawNavMesh()
 
 		glDrawArrays(shape->drawMode, shape->start, shape->end - shape->start);
 	}
+
+	glLineWidth(1.0f);
 	glBindVertexArray(0);
 	glUseProgram(0);
 	GLenum err;
@@ -200,6 +205,8 @@ void DetourDebugInterface::debugDrawNavMesh()
 	{
 		LOG("GLEW Error: %s",glewGetErrorString(err));
 	}
+	glDisable(GL_BLEND);
+	glEnable(GL_DEPTH_TEST);
 }
 
 void DetourDebugInterface::end()
@@ -215,8 +222,18 @@ void DetourDebugInterface::end()
 		3,                  // number of elements per vertex, here (x,y,z)
 		GL_FLOAT,           // the type of each element
 		GL_FALSE,           // take our values as-is
-		0,                  // no extra data between each position
+		sizeof(v3_c4),                  // no extra data between each position
 		(void*)0                  // offset of first element
+	);
+
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(
+		1,  // attribute
+		4,                  // number of elements per vertex, here (x,y,z)
+		GL_FLOAT,           // the type of each element
+		GL_FALSE,           // take our values as-is
+		sizeof(v3_c4),                  // no extra data between each position
+		(void*)sizeof(math::float3)     // offset of first element
 	);
 
 	glBindVertexArray(0);
@@ -226,5 +243,4 @@ void DetourDebugInterface::end()
 	currentShape->end = vertices.size();
 	shapes.push_back(currentShape);
 	currentShape = nullptr;
-
 }

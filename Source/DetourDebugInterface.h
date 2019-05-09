@@ -10,7 +10,7 @@ struct Shader;
 struct v3_c4
 {
 	math::float3 position;
-	//math::float4 color;
+	math::float4 color;
 };
 struct Shape
 {
@@ -44,5 +44,6 @@ private:
 	unsigned VAO = 0;
 	unsigned VBO = 0;
 	Shader* shader = nullptr;
+	bool depth = 1;
 };
 

@@ -183,13 +183,14 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 	SetProjectionUniform(cam);
 	SetViewUniform(cam);
 	skybox->Draw(*cam.frustum);
+
+	App->scene->Draw(*cam.frustum, isEditor);
+
 	if (isEditor)
 	{
 		DrawGizmos(cam);
 		App->navigation->renderNavMesh();
 	}
-	App->scene->Draw(*cam.frustum, isEditor);
-
 	if (!isEditor || isEditor && App->ui->showUIinSceneViewport)
 	{
 		App->ui->Draw(width, height);
