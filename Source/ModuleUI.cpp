@@ -147,7 +147,7 @@ void ModuleUI::Draw(int currentWidth, int currentHeight)
 				{
 				case ComponentType::Button:
 				{
-					ComponentButton* button = (ComponentButton*)comp;
+					Button* button = (Button*)comp;
 					RenderImage(*button->buttonImage, currentWidth, currentHeight);
 					RenderImage(*button->highlightedImage, currentWidth, currentHeight);
 					RenderImage(*button->pressedImage, currentWidth, currentHeight);
@@ -158,7 +158,7 @@ void ModuleUI::Draw(int currentWidth, int currentHeight)
 					RenderImage(*(ComponentImage*)comp, currentWidth, currentHeight);
 					break;
 				case ComponentType::Text:
-					App->fontLoader->RenderText(*(ComponentText*)comp, currentWidth, currentHeight);
+					App->fontLoader->RenderText(*(Text*)comp, currentWidth, currentHeight);
 					break;
 				}
 			}
@@ -199,7 +199,7 @@ void ModuleUI::RenderImage(const ComponentImage& componentImage, int currentWidt
 	math::float4x4 projection = math::float4x4::D3DOrthoProjRH(-1.0f, 1.0f, currentWidth, currentHeight);
 	math::float4x4 model = math::float4x4::identity;
 
-	ComponentTransform2D* transform2D = (ComponentTransform2D*)componentImage.gameobject->GetComponent(ComponentType::Transform2D);
+	Transform2D* transform2D = (Transform2D*)componentImage.gameobject->GetComponentOld(ComponentType::Transform2D);
 
 	if (transform2D != nullptr)
 	{
