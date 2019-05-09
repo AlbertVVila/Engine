@@ -98,14 +98,15 @@ private:
 	float shadowVolumeHeightHalf;
 	float shadowVolumeLength;
 
-
 	unsigned shadowsFBO = 0u;
-
-
-
+	   
 	bool shadowVolumeRendered = false;
 	
 	Shader* shadowsShader = nullptr;
+
+	unsigned postprocessVAO = 0u;
+	unsigned postprocessVBO = 0u;
+	unsigned postprocessEBO = 0u;
 };
 
 #endif /* __ModuleRender_h__ */

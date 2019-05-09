@@ -100,6 +100,46 @@ bool ModuleRender::Init(JSON * config)
 	glGenTextures(2, &highlightBufferGame);
 	glGenTextures(2, &renderedSceneEditor);
 
+	float quadVertices[] =
+	{
+		-0.5f, -0.5f, 0.0f, // bottom left 0
+		0.5f, -0.5f, 0.0f, // bottom right 2
+		-0.5f,  0.5f, 0.0f, // top left 1
+
+		-0.5f,  0.5f, 0.0f, // top left 1
+		0.5f, -0.5f, 0.0f, // bottom right 2
+		0.5f,  0.5f, 0.0f, // top right 3
+
+		0.0f, 0.0f, // 0
+		1.0f, 0.0f, // 2
+		0.0f, 1.0f, // 1
+
+		0.0f, 1.0f, // 1
+		1.0f, 0.0f, // 2
+		1.0f, 1.0f  // 3
+	};
+
+	unsigned int quadIndices[] =
+	{
+		0,2,1,
+		1,2,3
+	};
+
+	float quadUVS[] =
+	{
+		0.0f, 0.0f,
+		1.0f, 1.0f,
+		1.0f, 0.0f,
+		0.0f, 1.0f
+	};
+
+	if (postprocessVAO == 0)
+	{
+		glGenVertexArrays(1, &postprocessVAO);
+		glGenBuffers(1, &postprocessVBO);
+		glGenBuffers(1, &postprocessEBO);
+	}
+
 	return true;
 }
 
