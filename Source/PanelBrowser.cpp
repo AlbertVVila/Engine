@@ -18,17 +18,17 @@
 #include "GameObject.h"
 
 // Icons
-#define FOLDER_ICON "folderIconBlue.dds"
-#define FILE_ICON "fileIconBlue.dds"
-#define FBX_ICON "fbxIconBlue.dds"
-#define PNG_ICON "pngIconBlue.dds"
-#define JPG_ICON "jpgIconBlue.dds"
-#define TGA_ICON "tgaIconBlue.dds"
-#define TIF_ICON "tifIconBlue.dds"
-#define DDS_ICON "ddsIconBlue.dds"
-#define M4T_ICON "m4tIconBlue.dds"
-#define JSON_ICON "jsonIconBlue.dds"
-#define SC3NE_ICON "sc3neIconBlue.dds"
+#define FOLDER_ICON IMPORTED_RESOURCES "folderIconBlue.dds"
+#define FILE_ICON	IMPORTED_RESOURCES "fileIconBlue.dds"
+#define FBX_ICON	IMPORTED_RESOURCES "fbxIconBlue.dds"
+#define PNG_ICON	IMPORTED_RESOURCES "pngIconBlue.dds"
+#define JPG_ICON	IMPORTED_RESOURCES "jpgIconBlue.dds"
+#define TGA_ICON	IMPORTED_RESOURCES "tgaIconBlue.dds"
+#define TIF_ICON	IMPORTED_RESOURCES "tifIconBlue.dds"
+#define DDS_ICON	IMPORTED_RESOURCES "ddsIconBlue.dds"
+#define M4T_ICON	IMPORTED_RESOURCES "m4tIconBlue.dds"
+#define JSON_ICON	IMPORTED_RESOURCES "jsonIconBlue.dds"
+#define SC3NE_ICON	IMPORTED_RESOURCES "sc3neIconBlue.dds"
 
 // ImGui elements sizes:
 #define WINDOW_LOW_MARGIN 60

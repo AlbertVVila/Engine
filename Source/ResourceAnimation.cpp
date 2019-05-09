@@ -55,7 +55,7 @@ bool ResourceAnimation::LoadInMemory()
 {
 	char* data = nullptr;
 
-	unsigned ok = App->fsystem->Load((ANIMATIONS + std::to_string(UID) + ANIMATIONEXTENSION).c_str(), &data);
+	unsigned ok = App->fsystem->Load(exportedFile.c_str(), &data);
 
 	// Load mesh file
 	if (ok != 0)

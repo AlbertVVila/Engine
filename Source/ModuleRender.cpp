@@ -63,7 +63,7 @@ bool ModuleRender::Init(JSON * config)
 
 	// Set default Skybox
 	skybox = (ResourceSkybox*)App->resManager->CreateNewResource(TYPE::SKYBOX);
-	std::string faces[NUMFACES] = { "right.dds", "left.dds", "top.dds", "bottom.dds", "front.dds", "back.dds" };
+	std::string faces[NUMFACES] = { "Resources/Imported/right.dds", "Resources/Imported/left.dds", "Resources/Imported/top.dds", "Resources/Imported/bottom.dds", "Resources/Imported/front.dds", "Resources/Imported/back.dds" };
 	skybox->SetExportedFile("Default Skybox");
 	skybox->SetTextures(faces);
 	skybox->SetUsedByEngine(true);

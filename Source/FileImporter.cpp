@@ -162,10 +162,10 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 				// ResourceMesh was created on .meta of model load, now replace previous resource
 				App->resManager->ReplaceResource(mesh->GetUID(), mesh);
 			}
-			App->fsystem->Save((MESHES + std::to_string(mesh->GetUID()) + MESHEXTENSION).c_str(), meshData, meshSize);
+			std::string exportedFile(MESHES + std::to_string(mesh->GetUID()) + MESHEXTENSION);
+			App->fsystem->Save(exportedFile.c_str(), meshData, meshSize);
 			mesh->SetFile(path.c_str());
-			// TODO RM: Add path to exported file
-			mesh->SetExportedFile((std::to_string(mesh->GetUID()) + MESHEXTENSION).c_str());
+			mesh->SetExportedFile(exportedFile.c_str());
 			mesh->name = name + "_" + std::to_string(totalMeshes);
 			RELEASE_ARRAY(meshData);
 			//App->resManager->AddMesh(mesh);
@@ -216,9 +216,11 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 		}
 		animationComponent->anim = animation;
 		animationData[animationSize] = 0;
-		App->fsystem->Save((ANIMATIONS + std::to_string(animation->GetUID()) + ANIMATIONEXTENSION).c_str(), animationData, animationSize);
+
+		std::string exportedFile(ANIMATIONS + std::to_string(animation->GetUID()) + ANIMATIONEXTENSION);
+		App->fsystem->Save(exportedFile.c_str(), animationData, animationSize);
 		animation->SetFile(path.c_str());
-		animation->SetExportedFile(std::to_string(animation->GetUID()).c_str());
+		animation->SetExportedFile(exportedFile.c_str());
 		animation->name = name + "_" + std::to_string(i);
 		//App->resManager->AddAnim(animation);
 

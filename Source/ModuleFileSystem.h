@@ -92,7 +92,7 @@ public:
 	bool IsDirectory(const char* file) const;
 	std::vector<std::string> GetFolderContent(const char* dir, bool extension=true) const;								// Returns a vector with all the files and directories found on dir
 	void ListFolderContent(const char * dir, std::vector<std::string>& files, std::vector<std::string>& dirs) const;	// Saves all file names found on dir on files vector and all directories on dirs vector
-	void ListFiles(const char* dir, std::set<std::string>& files);														// Saves all file names found on dir and subdirs on a set
+	void ListFileNames(const char* dir, std::set<std::string>& files);														// Saves all file names found on dir and subdirs on a set
 	void ListFilesWithExtension(const char* dir, std::set<std::string>& files);											// Saves all files found on dir and subdirs on a set
 	bool CopyFromOutsideFS(const char* source, const char* destination) const;
 	bool Copy(const char* source, const char* destination, const char* file) const;

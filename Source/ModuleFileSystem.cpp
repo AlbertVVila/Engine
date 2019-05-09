@@ -251,7 +251,7 @@ void ModuleFileSystem::ListFolderContent(const char* dir, std::vector<std::strin
 	PHYSFS_freeList(filesList);
 }
 
-void ModuleFileSystem::ListFiles(const char* dir, std::set<std::string>& files)
+void ModuleFileSystem::ListFileNames(const char* dir, std::set<std::string>& files)
 {
 	files.clear();
 	std::vector<std::string> foundFiles;
@@ -303,7 +303,7 @@ void ModuleFileSystem::ListFilesWithExtension(const char* dir, std::set<std::str
 			}
 			else
 			{
-				files.insert(file);
+				files.insert(dir + file);
 			}
 		}
 	}
@@ -410,12 +410,12 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 	std::set<std::string> importedMaterials;
 	std::set<std::string> importedScenes;
 	std::set<std::string> importedStateMachines;
-	ListFiles(TEXTURES, importedTextures);
-	ListFiles(IMPORTED_MATERIALS, importedMaterials);
-	ListFiles(IMPORTED_SCENES, importedScenes);
-	ListFiles(TEXTURES, importedTextures);
-	ListFiles(IMPORTED_MATERIALS, importedMaterials);
-	ListFiles(STATEMACHINES, importedStateMachines);
+	ListFileNames(TEXTURES, importedTextures);
+	ListFileNames(IMPORTED_MATERIALS, importedMaterials);
+	ListFileNames(IMPORTED_SCENES, importedScenes);
+	ListFileNames(TEXTURES, importedTextures);
+	ListFileNames(IMPORTED_MATERIALS, importedMaterials);
+	ListFileNames(STATEMACHINES, importedStateMachines);
 
 	// Look for files in folder passed as argument
 	std::vector<std::string> files;

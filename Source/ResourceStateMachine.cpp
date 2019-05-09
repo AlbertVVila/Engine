@@ -43,7 +43,7 @@ bool ResourceStateMachine::LoadInMemory()
 {
 	char* data = nullptr;
 
-	unsigned ok = App->fsystem->Load((STATEMACHINES + exportedFile).c_str(), &data);
+	unsigned ok = App->fsystem->Load(exportedFile.c_str(), &data);
 
 	// Load mesh file
 	if (ok != 0)
@@ -309,9 +309,10 @@ void ResourceStateMachine::Save()
 	stateMachineData = new char[stateMachineSize];
 	SaveStateMachineData(stateMachineData);
 
-	App->fsystem->Save((STATEMACHINES + std::to_string(GetUID()) + STATEMACHINEEXTENSION).c_str(), stateMachineData, stateMachineSize);
+	std::string exportedFile (STATEMACHINES + std::to_string(GetUID()) + STATEMACHINEEXTENSION);
+	App->fsystem->Save(exportedFile.c_str(), stateMachineData, stateMachineSize);
 	SetFile(STATEMACHINES);
-	SetExportedFile(std::to_string(GetUID()).c_str());
+	SetExportedFile(exportedFile.c_str());
 	RELEASE_ARRAY(stateMachineData);
 }
 

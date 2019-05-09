@@ -65,7 +65,7 @@ bool ResourceMaterial::LoadInMemory()
 {
 	char* data = nullptr;
 	// Load JSON
-	if (App->fsystem->Load((IMPORTED_MATERIALS + exportedFile).c_str(), &data) == 0)
+	if (App->fsystem->Load(exportedFile.c_str(), &data) == 0)
 		return false;
 
 	JSON* json = new JSON(data);
@@ -369,7 +369,8 @@ void ResourceMaterial::Rename(const char* newName)
 	// Rename file in Library
 	App->fsystem->Rename(IMPORTED_MATERIALS, exportedFile.c_str(), newName);
 
-	std::string newExportedFile(newName);
+	std::string newExportedFile(IMPORTED_MATERIALS);
+	newExportedFile += newName;
 	newExportedFile += MATERIALEXT;
 	exportedFile = newExportedFile;
 }

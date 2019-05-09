@@ -45,7 +45,8 @@ void ResourceScene::Rename(const char* newName)
 	App->fsystem->Rename(IMPORTED_SCENES, exportedFile.c_str(), newName);
 
 	// Update exported file
-	std::string newExportedFile(newName);
+	std::string newExportedFile(IMPORTED_SCENES);
+	newExportedFile += newName;
 	newExportedFile += SCENEEXTENSION;
 	exportedFile = newExportedFile;
 }
@@ -75,10 +76,8 @@ void ResourceScene::Save(const GameObject& rootGO)
 bool ResourceScene::Load()
 {
 	char* data = nullptr;
-	std::string sceneFile(IMPORTED_SCENES);
-	sceneFile += exportedFile;
 
-	if (App->fsystem->Load(sceneFile.c_str(), &data) == 0)
+	if (App->fsystem->Load(exportedFile.c_str(), &data) == 0)
 	{
 		RELEASE_ARRAY(data);
 		return false;

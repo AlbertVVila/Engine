@@ -6,7 +6,7 @@
 #include <list>
 
 #define MAXTEXTURES 5
-#define DEFAULTMAT "Default.m4t"
+#define DEFAULTMAT IMPORTED_MATERIALS "Default.m4t"
 
 enum class TextureType
 {

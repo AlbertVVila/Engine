@@ -1062,7 +1062,8 @@ void ModuleScene::SaveScene(const GameObject& rootGO, const char* sceneName, con
 		// Is a new scene, create resource
 		ResourceScene* scene = (ResourceScene*)App->resManager->CreateNewResource(TYPE::SCENE);
 		scene->SetFile(sceneInAssets.c_str());
-		std::string exportedFile(sceneName);
+		std::string exportedFile(IMPORTED_SCENES);
+		exportedFile += sceneName;
 		exportedFile += SCENEEXTENSION;
 		scene->SetExportedFile(exportedFile.c_str());
 		scene->Save(rootGO);
