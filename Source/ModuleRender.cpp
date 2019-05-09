@@ -102,13 +102,13 @@ bool ModuleRender::Init(JSON * config)
 
 	float quadVertices[] =
 	{
-		-0.5f, -0.5f, 0.0f, // bottom left 0
-		0.5f, -0.5f, 0.0f, // bottom right 2
-		-0.5f,  0.5f, 0.0f, // top left 1
+		-1.0f, -1.0f, 0.0f, // bottom left 0
+		1.0f, -1.0f, 0.0f, // bottom right 2
+		-1.0f,  1.0f, 0.0f, // top left 1
 
-		-0.5f,  0.5f, 0.0f, // top left 1
-		0.5f, -0.5f, 0.0f, // bottom right 2
-		0.5f,  0.5f, 0.0f, // top right 3
+		-1.0f,  1.0f, 0.0f, // top left 1
+		1.0f, -1.0f, 0.0f, // bottom right 2
+		1.0f,  1.0f, 0.0f, // top right 3
 
 		0.0f, 0.0f, // 0
 		1.0f, 0.0f, // 2
@@ -136,16 +136,17 @@ bool ModuleRender::Init(JSON * config)
 		glBindVertexArray(postprocessVAO);
 
 		glBindBuffer(GL_ARRAY_BUFFER, postprocessVBO);
-		glBufferData(GL_ARRAY_BUFFER, 30 * sizeof(float), &quadVertices[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), quadVertices, GL_STATIC_DRAW);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, postprocessEBO);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(quadIndices), quadIndices, GL_STATIC_DRAW);
 
-		glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*)0);
 		glEnableVertexAttribArray(0);
-
-		glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*)(sizeof(float) * 3 * 6));
 		glEnableVertexAttribArray(1);
+
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * 6));
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
@@ -162,6 +163,7 @@ bool ModuleRender::Start()
 	glGenFramebuffers(1, &shadowsFBO);
 	glGenTextures(1, &shadowsTex);
 	shadowsShader = App->program->GetProgram("Shadows");
+	postProcessShader = App->program->GetProgram("PostProcess");
 	return shadowsShader && shadowsFBO > 0u && shadowsTex > 0u;
 }
 
@@ -256,6 +258,10 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 		App->ui->Draw(width, height);
 	}
 	App->particles->Render(App->time->gameDeltaTime, &cam);
+
+	glUseProgram(postProcessShader->id[0]);
+	glBindBuffer(GL_ARRAY_BUFFER, postprocessVBO);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
 
 	unsigned int attachments[2] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };// , GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4
 	glDrawBuffers(2, attachments);

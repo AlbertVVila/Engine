@@ -103,6 +103,7 @@ private:
 	bool shadowVolumeRendered = false;
 	
 	Shader* shadowsShader = nullptr;
+	Shader* postProcessShader = nullptr;
 
 	unsigned postprocessVAO = 0u;
 	unsigned postprocessVBO = 0u;
