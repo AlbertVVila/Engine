@@ -55,7 +55,7 @@ bool ResourceMesh::LoadInMemory()
 {
 	char* data = nullptr;
 
-	unsigned ok = App->fsystem->Load((MESHES + exportedFile + MESHEXTENSION).c_str(), &data);
+	unsigned ok = App->fsystem->Load((MESHES + exportedFile).c_str(), &data);
 
 	// Load mesh file
 	if (ok != 0)			
