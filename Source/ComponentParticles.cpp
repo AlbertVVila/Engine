@@ -348,14 +348,16 @@ void ComponentParticles::DrawDebugEmisor()
 {
 	float3 base = gameobject->transform->GetGlobalPosition();
 
+	float3 v1 = float3(base.x + quadEmitterSize / 2.f, base.y, base.x - quadEmitterSize / 2.f);
+	float3 v2 = float3(base.x + quadEmitterSize / 2.f, base.y, base.x + quadEmitterSize / 2.f);
+	float3 v3 = float3(base.x - quadEmitterSize / 2.f, base.y, base.x + quadEmitterSize / 2.f);
+	float3 v4 = float3(base.x - quadEmitterSize / 2.f, base.y, base.x - quadEmitterSize / 2.f);
+
 	switch (actualEmisor) 
 	{
 	case EmisorType::QUAD:
 		
-		float3 v1 = float3(base.x + quadEmitterSize / 2.f, base.y, base.x - quadEmitterSize / 2.f);
-		float3 v2 = float3(base.x + quadEmitterSize / 2.f, base.y, base.x + quadEmitterSize / 2.f);
-		float3 v3 = float3(base.x - quadEmitterSize / 2.f, base.y, base.x + quadEmitterSize / 2.f);
-		float3 v4 = float3(base.x - quadEmitterSize / 2.f, base.y, base.x - quadEmitterSize / 2.f);
+		
 
 		dd::line(v1, v2, dd::colors::Green);
 		dd::line(v2, v3, dd::colors::Green);
