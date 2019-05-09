@@ -14,6 +14,8 @@
 
 #include "imgui.h"
 #include "JSON.h"
+#include "debugdraw.h"
+
 
 #define None "None Selected"
 
@@ -132,12 +134,13 @@ void ComponentParticles::DrawProperties()
 	ImGui::DragFloat("Rate", &rate);
 	ImGui::InputFloat2("Lifetime", &lifetime[0]);
 	ImGui::InputFloat2("Speed", &speed[0]);
-	ImGui::InputFloat2("Size", &size[0]);
+	
 	//ImGui::InputFloat2("Emitter Size", &quadEmitterSize[0]);
 
 	ImGui::Text("Emisor type");
 	if (ImGui::Checkbox("Quad", emisorsCheck[0]))    alternateEmisor(0);
 	if (ImGui::Checkbox("Spehere", emisorsCheck[1])) alternateEmisor(1);
+	ImGui::InputFloat2("Size", &size[0]);
 
 	ImGui::ColorEdit3("Color", (float*)&particleColor);
 	for (ParticleModule* pm : modules)
@@ -313,6 +316,16 @@ void ComponentParticles::alternateEmisor(int newEmisor)
 {
 	for (int i = 0; i < emisorsCheck.size(); i++) *emisorsCheck[i] = false;
 	*emisorsCheck[newEmisor] = true;
+}
+
+void ComponentParticles::DrawDebugEmisor()
+{
+	switch (actualEmisor) {
+	case EmisorType::QUAD:
+	
+		break;
+	}
+
 }
 
 

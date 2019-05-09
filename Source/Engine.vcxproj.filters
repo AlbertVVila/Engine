@@ -281,7 +281,6 @@
       <Filter>Panels</Filter>
     </ClCompile>
     <ClCompile Include="NodeEditor\Source\Editor.cpp" />
-    <ClCompile Include="Soloud\fractal_includes\dr_impl.cpp" />
     <ClCompile Include="ComponentAudioListener.cpp">
       <Filter>Component</Filter>
     </ClCompile>
@@ -487,6 +486,9 @@
     <ClCompile Include="DetourDebugInterface.cpp" />
     <ClCompile Include="BaseScript.cpp">
       <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Soloud\fractal_includes\dr_impl.cpp">
+      <Filter>SoLoud</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -878,9 +880,6 @@
     <ClInclude Include="NodeEditor\Include\ax\Math2D.h" />
     <ClInclude Include="NodeEditor\Source\Editor.h" />
     <ClInclude Include="NodeEditor\Source\Interop.h" />
-    <ClInclude Include="Soloud\fractal_includes\dr_flac.h" />
-    <ClInclude Include="Soloud\fractal_includes\dr_mp3.h" />
-    <ClInclude Include="Soloud\fractal_includes\dr_wav.h" />
     <ClInclude Include="ComponentAudioListener.h">
       <Filter>Component</Filter>
     </ClInclude>
@@ -1089,6 +1088,15 @@
     <ClInclude Include="DetourDebugInterface.h" />
     <ClInclude Include="BaseScript.h">
       <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Soloud\fractal_includes\dr_wav.h">
+      <Filter>SoLoud</Filter>
+    </ClInclude>
+    <ClInclude Include="Soloud\fractal_includes\dr_flac.h">
+      <Filter>SoLoud</Filter>
+    </ClInclude>
+    <ClInclude Include="Soloud\fractal_includes\dr_mp3.h">
+      <Filter>SoLoud</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

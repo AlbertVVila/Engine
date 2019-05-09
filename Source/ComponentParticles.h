@@ -65,6 +65,7 @@ public:
 private:
 
 	void alternateEmisor(int i);
+	void DrawDebugEmisor();
 
 private:
 
