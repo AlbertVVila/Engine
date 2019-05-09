@@ -624,8 +624,8 @@ Resource* ModuleResourceManager::AddResource(const char* file, const char* direc
 		// Create new resource 
 		//unsigned smUID = App->fsystem->RemoveExtension(file)
 		Resource* res = CreateNewResource(type , std::stoul(App->fsystem->RemoveExtension(file), nullptr, 0));
-		res->LoadInMemory();
-		res->SetExportedFile(App->fsystem->GetFilename(file).c_str());
+		//res->LoadInMemory();
+		res->SetExportedFile(file);
 		res->SetFile((path).c_str());
 		return res;
 	}

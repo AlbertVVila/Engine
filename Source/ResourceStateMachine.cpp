@@ -43,7 +43,7 @@ bool ResourceStateMachine::LoadInMemory()
 {
 	char* data = nullptr;
 
-	unsigned ok = App->fsystem->Load((STATEMACHINES + std::to_string(GetUID()) + STATEMACHINEEXTENSION).c_str(), &data);
+	unsigned ok = App->fsystem->Load((STATEMACHINES + exportedFile).c_str(), &data);
 
 	// Load mesh file
 	if (ok != 0)
