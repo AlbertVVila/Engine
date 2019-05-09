@@ -366,49 +366,19 @@ Resource* ModuleResourceManager::Get(const char* exportedFile, TYPE type) const
 	return Get(uid);
 }
 
-ResourceMesh* ModuleResourceManager::GetMeshByName(const char* name)
+Resource* ModuleResourceManager::GetByName(const char* name, TYPE type)
 {
 	std::vector<std::string> resourcesList;
 	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
 	{
-		if (it->second->GetType() == TYPE::MESH)
+		if (it->second->GetType() == type)
 		{
-			ResourceMesh* mesh = (ResourceMesh*)it->second;
-			if (mesh->name == name)
-				return (ResourceMesh*)Get(mesh->GetUID());
+			Resource* res = it->second;
+			if (HashString(res->GetName()) == HashString(name))
+				return Get(res->GetUID());
 		}
 	}
 
-	return nullptr;
-}
-
-ResourceAnimation* ModuleResourceManager::GetAnimationByName(const char* name)
-{
-	std::vector<std::string> resourcesList;
-	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
-	{
-		if (it->second->GetType() == TYPE::ANIMATION)
-		{
-			ResourceAnimation* anim = (ResourceAnimation*)it->second;
-			if (anim->name == name)
-				return (ResourceAnimation*)Get(anim->GetUID());
-		}
-	}
-	return nullptr;
-}
-
-ResourceStateMachine* ModuleResourceManager::GetSMByName(const char * name)
-{
-	std::vector<std::string> resourcesList;
-	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
-	{
-		if (it->second->GetType() == TYPE::STATEMACHINE)
-		{
-			ResourceStateMachine* stateMachine = (ResourceStateMachine*)it->second;
-			if (stateMachine->name == name)
-				return (ResourceStateMachine*)Get(stateMachine->GetUID());
-		}
-	}
 	return nullptr;
 }
 
@@ -526,7 +496,7 @@ std::vector<std::string> ModuleResourceManager::GetResourceNamesList(TYPE resour
 	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
 	{
 		if (it->second->GetType() == resourceType)
-			resourcesList.push_back(it->second->GetExportedFile());
+			resourcesList.push_back(it->second->GetName());
 	}
 
 	if (ordered)	// Short by ascending order
@@ -535,16 +505,12 @@ std::vector<std::string> ModuleResourceManager::GetResourceNamesList(TYPE resour
 	return resourcesList;
 }
 
-std::vector<std::string> ModuleResourceManager::GetMeshesNamesList(bool ordered)
+/*std::vector<std::string> ModuleResourceManager::GetMeshesNamesList(bool ordered)
 {
 	std::vector<std::string> resourcesList;
 	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
 	{
-		if (it->second->GetType() == TYPE::MESH)
-		{
-			ResourceMesh* mesh = (ResourceMesh*)it->second;
-			resourcesList.push_back(mesh->name);
-		}
+			resourcesList.push_back(it->second->GetName());
 	}
 
 	if (ordered)	// Short by ascending order
@@ -589,7 +555,7 @@ std::vector<std::string> ModuleResourceManager::GetSMNamesList(bool ordered)
 		std::sort(resourcesList.begin(), resourcesList.end(), sortByNameAscending);
 
 	return resourcesList;
-}
+}*/
 
 bool ModuleResourceManager::Exists(const char* exportedFile)
 {

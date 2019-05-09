@@ -69,8 +69,8 @@ public:
 protected:
 	unsigned UID = 0u;
 	std::string name;				// Name for the asset (Asset filename by default)
-	std::string file;				// The file located in /Assets/ (Path + filename + extension)
-	std::string exportedFile;		// The file located in /Library/ (filename + extension)
+	std::string file;				// The file located in /Assets/ (Path in Assets + filename + extension)
+	std::string exportedFile;		// The file located in /Library/ (Path in Library + filename + extension)
 	unsigned loaded = 0;			// Number of times this resource is being used
 	bool engineUsed = false;		// True if the resource is used by default by the engine, false if it was added by the user
 

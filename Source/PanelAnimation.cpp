@@ -47,19 +47,19 @@ void PanelAnimation::Draw()
 
 		if (guiAnimations.empty())
 		{
-			guiAnimations = App->resManager->GetAnimationsNamesList(true);
+			guiAnimations = App->resManager->GetResourceNamesList(TYPE::ANIMATION, true);
 		}
 
 		ImGui::PushItemWidth(100);
 
-		if (ImGui::BeginCombo("##label", anim != nullptr ? anim->name.c_str() : ""))
+		if (ImGui::BeginCombo("##label", anim != nullptr ? anim->GetName() : ""))
 		{
 			for (int n = 0; n < guiAnimations.size(); n++)
 			{
 				bool is_selected = true;
 				if (ImGui::Selectable(guiAnimations[n].c_str(), is_selected))
 				{
-					unsigned animUID = ((ResourceAnimation*)App->resManager->GetAnimationByName(guiAnimations[n].c_str()))->GetUID();
+					unsigned animUID = ((ResourceAnimation*)App->resManager->GetByName(guiAnimations[n].c_str(), TYPE::ANIMATION))->GetUID();
 					anim = (ResourceAnimation*)App->resManager->GetWithoutLoad(animUID);
 					compAnim->editorController->PlayEditor(anim);
 				}

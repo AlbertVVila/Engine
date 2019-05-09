@@ -79,7 +79,6 @@ private:
 
 	
 public:
-	std::string name = "";
 
 	std::vector<math::float3> meshVertices;
 	std::vector<math::float3> meshNormals;

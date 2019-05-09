@@ -364,7 +364,7 @@ void PanelResourceManager::DrawResourceMesh()
 	std::string exportedFile(mesh.GetExportedFile());
 	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), (exportedFile + ":").c_str());
 	ImGui::Columns(2);
-	ImGui::Text("Name: %s", mesh.name.c_str());
+	ImGui::Text("Name: %s", mesh.GetName());
 	ImGui::Text("VAO: %u", mesh.GetVAO());
 	ImGui::Text("VBO: %u", mesh.GetVBO());
 	ImGui::Text("EBO: %u", mesh.GetEBO());
@@ -387,7 +387,7 @@ void PanelResourceManager::DrawResourceAnimation()
 	std::string exportedFile(animation.GetExportedFile());
 	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), (exportedFile + ":").c_str());
 	ImGui::Columns(2);
-	ImGui::Text("Name: %s", animation.name.c_str());
+	ImGui::Text("Name: %s", animation.GetName());
 	ImGui::Text("Channels: %u", animation.GetNumberChannels());
 	ImGui::Text("FPS: %u", animation.GetFPS());
 	ImGui::Text("Total frames: %u", animation.GetNumberFrames());

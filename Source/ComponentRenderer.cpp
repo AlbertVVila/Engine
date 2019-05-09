@@ -15,6 +15,7 @@
 #include "myQuadTree.h"
 #include "MaterialEditor.h"
 #include "JSON.h"
+#include "HashString.h"
 
 #include "imgui.h"
 #include "Math/float4x4.h"
@@ -72,18 +73,18 @@ void ComponentRenderer::DrawProperties()
 		// Mesh selector
 		ImGui::Text("Mesh");
 		ImGui::PushID("Mesh Combo");
-		if (ImGui::BeginCombo("", mesh != nullptr ? mesh->name.c_str() : ""))
+		if (ImGui::BeginCombo("", mesh != nullptr ? mesh->GetName() : ""))
 		{
 			if (guiMeshes.empty())
 			{
-				guiMeshes = App->resManager->GetMeshesNamesList(true);
+				guiMeshes = App->resManager->GetResourceNamesList(TYPE::MESH, true);
 			}
 			for (int n = 0; n < guiMeshes.size(); n++)
 			{
-				bool is_selected = (mesh != nullptr ? mesh->name == guiMeshes[n] : false);
+				bool is_selected = (mesh != nullptr ? HashString(mesh->GetName()) == HashString(guiMeshes[n].c_str()) : false);
 				if (ImGui::Selectable(guiMeshes[n].c_str(), is_selected))
 				{
-					if(mesh == nullptr || mesh->name != guiMeshes[n])
+					if(mesh == nullptr || mesh->GetName() != guiMeshes[n])
 						SetMesh(guiMeshes[n].c_str());
 				}
 				if (is_selected)
@@ -115,7 +116,7 @@ void ComponentRenderer::DrawProperties()
 		// Material selector
 		ImGui::Text("Material");
 		ImGui::PushID("Material Combo");
-		if (ImGui::BeginCombo("", material->GetExportedFile()))
+		if (ImGui::BeginCombo("", material->GetName()))
 		{
 			if (guiMaterials.empty())
 			{
@@ -123,8 +124,8 @@ void ComponentRenderer::DrawProperties()
 			}
 			for (int n = 0; n < guiMaterials.size(); n++)
 			{
-				bool is_selected = (material->GetExportedFile() == guiMaterials[n]);
-				if (ImGui::Selectable(guiMaterials[n].c_str(), is_selected) && material->GetExportedFile() != guiMaterials[n])
+				bool is_selected = (HashString(material->GetName()) == HashString(guiMaterials[n].c_str()));
+				if (ImGui::Selectable(guiMaterials[n].c_str(), is_selected) && material->GetName() != guiMaterials[n])
 				{
 					SetMaterial(guiMaterials[n].c_str());
 
@@ -233,7 +234,7 @@ void ComponentRenderer::Load(JSON_value* value)
 	useAlpha = value->GetInt("useAlpha");
 }
 
-void ComponentRenderer::SetMaterial(const char* materialfile)
+void ComponentRenderer::SetMaterial(const char* materialName)
 {
 	// Delete previous material
 	if (material != nullptr)
@@ -241,14 +242,14 @@ void ComponentRenderer::SetMaterial(const char* materialfile)
 		App->resManager->DeleteResource(material->GetUID());
 	}
 
-	if (materialfile == nullptr)
+	if (materialName == nullptr)
 	{
 		material = (ResourceMaterial*)App->resManager->Get(DEFAULTMAT,TYPE::MATERIAL);
 		return;
 	}
 	else
 	{
-		material = (ResourceMaterial*)App->resManager->Get(materialfile, TYPE::MATERIAL);
+		material = (ResourceMaterial*)App->resManager->GetByName(materialName, TYPE::MATERIAL);
 
 		// Material can't be found
 		if(material == nullptr)
@@ -264,10 +265,14 @@ void ComponentRenderer::SetMesh(const char* meshfile)
 		App->resManager->DeleteResource(mesh->GetUID());
 
 	if (meshfile != nullptr)
-		mesh = (ResourceMesh*)App->resManager->GetMeshByName(meshfile);
+		mesh = (ResourceMesh*)App->resManager->GetByName(meshfile, TYPE::MESH);
 
-	LinkBones();
-	UpdateGameObject();
+	if (mesh != nullptr)
+	{
+		LinkBones();
+		UpdateGameObject();
+	}
+
 	return;
 }
 

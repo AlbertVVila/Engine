@@ -28,7 +28,6 @@ ResourceMesh::ResourceMesh(unsigned uid) : Resource(uid, TYPE::MESH)
 
 ResourceMesh::ResourceMesh(const ResourceMesh& resource) : Resource(resource)
 {
-	name = resource.name;
 
 	VAO = resource.VAO;
 	VBO = resource.VBO;

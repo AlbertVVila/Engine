@@ -79,7 +79,7 @@ void ComponentAnimation::DrawProperties()
 		{
 			if (guiStateMachines.empty())
 			{
-				guiStateMachines = App->resManager->GetSMNamesList(true);
+				guiStateMachines = App->resManager->GetResourceNamesList(TYPE::STATEMACHINE, true);
 			}
 			for (unsigned i = 0u; i < guiStateMachines.size(); i++)
 			{
@@ -215,18 +215,18 @@ void ComponentAnimation::DrawProperties()
 					unsigned clipUID = stateMachine->GetClipResource(j);
 					//IS THIS CORRECT=?=???
 					ResourceAnimation* animation = (ResourceAnimation*)App->resManager->GetWithoutLoad(clipUID);
-					if (ImGui::BeginCombo("", clipUID != 0u ? animation->name.c_str() : ""))
+					if (ImGui::BeginCombo("", clipUID != 0u ? animation->GetName() : ""))
 					{
 						if (guiAnimations.empty())
 						{
-							guiAnimations = App->resManager->GetAnimationsNamesList(true);
+							guiAnimations = App->resManager->GetResourceNamesList(TYPE::ANIMATION, true);
 						}
 						for (int n = 0; n < guiAnimations.size(); n++)
 						{
-							bool is_selected = (clipUID != 0u ? animation->name == guiAnimations[n] : false);
+							bool is_selected = (clipUID != 0u ? HashString(animation->GetName()) == HashString(guiAnimations[n].c_str()) : false);
 							if (ImGui::Selectable(guiAnimations[n].c_str(), is_selected))
 							{
-								unsigned animUID = ((ResourceAnimation*)App->resManager->GetAnimationByName(guiAnimations[n].c_str()))->GetUID();
+								unsigned animUID = ((ResourceAnimation*)App->resManager->GetByName(guiAnimations[n].c_str(), TYPE::ANIMATION))->GetUID();
 								stateMachine->SetClipResource(j, animUID);
 								stateMachine->Save();
 							}
@@ -284,7 +284,7 @@ void ComponentAnimation::SetAnimation(const char* animationFile)
 		App->resManager->DeleteResource(anim->GetUID());
 
 	if (animationFile != nullptr)
-		anim = (ResourceAnimation*)App->resManager->GetAnimationByName(animationFile);
+		anim = (ResourceAnimation*)App->resManager->GetByName(animationFile, TYPE::ANIMATION);
 
 	return;
 }
@@ -297,7 +297,7 @@ void ComponentAnimation::SetStateMachine(const char * stateMachineFile)
 		App->resManager->DeleteResource(stateMachine->GetUID());
 
 	if (stateMachineFile != nullptr)
-		stateMachine = (ResourceStateMachine*)App->resManager->GetSMByName(stateMachineFile);
+		stateMachine = (ResourceStateMachine*)App->resManager->GetByName(stateMachineFile, TYPE::STATEMACHINE);
 }
 
 void ComponentAnimation::SendTriggerToStateMachine(const char* trigger)
