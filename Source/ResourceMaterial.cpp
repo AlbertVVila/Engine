@@ -158,7 +158,7 @@ void ResourceMaterial::Save() const
 	
 	json->AddValue("material", *materialJSON);
 
-	App->fsystem->Save((MATERIALS + exportedFile).c_str(), json->ToString().c_str(), json->Size());
+	App->fsystem->Save(file.c_str(), json->ToString().c_str(), json->Size());
 	RELEASE(json);
 }
 

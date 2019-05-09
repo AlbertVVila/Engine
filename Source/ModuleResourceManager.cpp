@@ -251,7 +251,7 @@ bool ModuleResourceManager::ReImportFile(Resource* resource, const char* filePat
 {
 	bool success = false;
 
-	std::string file = resource->GetExportedFile();
+	std::string file = App->fsystem->GetFile(resource->GetExportedFile());
 
 	switch (type)
 	{
@@ -504,58 +504,6 @@ std::vector<std::string> ModuleResourceManager::GetResourceNamesList(TYPE resour
 
 	return resourcesList;
 }
-
-/*std::vector<std::string> ModuleResourceManager::GetMeshesNamesList(bool ordered)
-{
-	std::vector<std::string> resourcesList;
-	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
-	{
-			resourcesList.push_back(it->second->GetName());
-	}
-
-	if (ordered)	// Short by ascending order
-		std::sort(resourcesList.begin(), resourcesList.end(), sortByNameAscending);
-
-	return resourcesList;
-}
-
-
-
-std::vector<std::string> ModuleResourceManager::GetAnimationsNamesList(bool ordered)
-{
-	std::vector<std::string> resourcesList;
-	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
-	{
-		if (it->second->GetType() == TYPE::ANIMATION)
-		{
-			ResourceAnimation* anim = (ResourceAnimation*)it->second;
-			resourcesList.push_back(anim->name);
-		}
-	}
-
-	if (ordered)	// Short by ascending order
-		std::sort(resourcesList.begin(), resourcesList.end(), sortByNameAscending);
-
-	return resourcesList;
-}
-
-std::vector<std::string> ModuleResourceManager::GetSMNamesList(bool ordered)
-{
-	std::vector<std::string> resourcesList;
-	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
-	{
-		if (it->second->GetType() == TYPE::STATEMACHINE)
-		{
-			ResourceStateMachine* stateMachine = (ResourceStateMachine*)it->second;
-			resourcesList.push_back(stateMachine->name);
-		}
-	}
-
-	if (ordered)	// Short by ascending order
-		std::sort(resourcesList.begin(), resourcesList.end(), sortByNameAscending);
-
-	return resourcesList;
-}*/
 
 bool ModuleResourceManager::Exists(const char* exportedFile)
 {
