@@ -172,8 +172,6 @@ bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* 
 		}
 	}
 
-
-
 	Resource* resource = CreateNewResource(type);
 
 	// Save file to import on Resource file variable
@@ -219,6 +217,8 @@ bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* 
 	}
 	return success;
 }
+
+
 
 bool ModuleResourceManager::ReImportFile(Resource* resource, const char* filePath, TYPE type)
 {

@@ -295,7 +295,7 @@ void ResourceStateMachine::Save()
 	stateMachineData = new char[stateMachineSize];
 	SaveStateMachineData(stateMachineData);
 
-	App->fsystem->Save((STATEMACHINES + std::to_string(GetUID()) + STATEMACHINEEXTENSION).c_str(), stateMachineData, stateMachineSize);
+	App->fsystem->Save((STATEMACHINES + name + STATEMACHINEEXTENSION).c_str(), stateMachineData, stateMachineSize);
 	SetFile(STATEMACHINES);
 	SetExportedFile(std::to_string(GetUID()).c_str());
 	RELEASE_ARRAY(stateMachineData);

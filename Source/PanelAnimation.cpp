@@ -71,6 +71,10 @@ void PanelAnimation::Draw()
 			}
 			ImGui::EndCombo();
 		}
+		else
+		{
+			guiAnimations.clear();
+		}
 		
 		
 
@@ -205,12 +209,14 @@ void PanelAnimation::Draw()
 			ImGui::DragInt("Frame End", &maxFrame, 1.0f, minFrame + 1, anim->duration); ImGui::PopItemWidth();
 			ImGui::SameLine(); ImGui::Text("Frame End");
 		}
-		
-		if(ImGui::Button("Create new Animation"))
+		if (isCliping)
 		{
-			CreateAnimationFromClip(anim, minFrame, maxFrame);
-			guiAnimations.clear();
-			isCliping = false;
+			if (ImGui::Button("Create new Animation"))
+			{
+				CreateAnimationFromClip(anim, minFrame, maxFrame);
+				guiAnimations.clear();
+				isCliping = false;
+			}
 		}
 	}
 
@@ -235,9 +241,7 @@ void PanelAnimation::UpdateGameObjectAnimation(GameObject * go, ResourceAnimatio
 
 void PanelAnimation::CreateAnimationFromClip(ResourceAnimation* anim, int minFrame, int maxFrame)
 {
-	ResourceAnimation* newAnim = (ResourceAnimation*)App->resManager->CreateNewResource(TYPE::ANIMATION);
-
-	
+	ResourceAnimation* newAnim = new ResourceAnimation(App->resManager->GenerateNewUID());
 
 	for (int i = 0; i < anim->numberOfChannels; ++i)
 	{
@@ -282,7 +286,8 @@ void PanelAnimation::CreateAnimationFromClip(ResourceAnimation* anim, int minFra
 	newAnim->numberFrames = maxFrame - minFrame;
 	newAnim->numberOfChannels = anim->numberOfChannels;
 	newAnim->durationInSeconds = (maxFrame - minFrame) / anim->framesPerSecond;
-
-	newAnim->SaveNewAnimation();
 	newAnim->name = (anim->name + "1").c_str();
+	newAnim->SaveNewAnimation();
+
+	RELEASE(newAnim);
 }
