@@ -405,17 +405,12 @@ void ModuleFileSystem::Monitorize(const char* folder)
 
 void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 {
-	// Get lists with all imported resources and materials
-	std::set<std::string> importedTextures;
-	std::set<std::string> importedMaterials;
-	std::set<std::string> importedScenes;
 	std::set<std::string> importedStateMachines;
-	ListFileNames(TEXTURES, importedTextures);
-	ListFileNames(IMPORTED_MATERIALS, importedMaterials);
-	ListFileNames(IMPORTED_SCENES, importedScenes);
-	ListFileNames(TEXTURES, importedTextures);
-	ListFileNames(IMPORTED_MATERIALS, importedMaterials);
 	ListFileNames(STATEMACHINES, importedStateMachines);
+
+	// Get lists with all imported resources and materials
+	std::set<std::string> importedResources;
+	ListFileNames(LIBRARY, importedResources);
 
 	// Look for files in folder passed as argument
 	std::vector<std::string> files;
@@ -460,24 +455,10 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 				stat((currentFolder + file).c_str(), &statFile);
 				stat((currentFolder + file + METAEXT).c_str(), &statMeta);
 
+				// Model has to check also Meshes and Animations
 				FILETYPE type = GetFileType(GetExtension(file));
-				if (type == FILETYPE::TEXTURE) // PNG, TIF, LO QUE SEA	
+				if (type == FILETYPE::MODEL) //FBX
 				{
-					std::set<std::string>::iterator it = importedTextures.find(RemoveExtension(file));
-					if (it == importedTextures.end() || statFile.st_mtime > statMeta.st_mtime)
-					{
-						// File modified or not imported, send it to import
-						filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
-					}
-					else
-					{
-						// File already imported, add it to the resources list
-						ResourceTexture* res = (ResourceTexture*)App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::TEXTURE);
-						res->LoadConfigFromMeta();
-					}
-				}
-				else if (type == FILETYPE::MODEL) //FBX
-				{	
 					if (statFile.st_mtime > statMeta.st_mtime)
 					{
 						filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
@@ -489,18 +470,18 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 						res->LoadConfigFromMeta();
 
 						// Check if the meshes adn animations inside ResourceModel are imported
-						if(res->CheckImportedMeshes())
+						if (res->CheckImportedMeshes())
 							filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
 
 						if (res->CheckImportedAnimations())
 							filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
-			
+
 					}
 				}
-				else if (type == FILETYPE::STATEMACHINE)
+				else if (type != FILETYPE::NONE && type != FILETYPE::AUDIO) // TODO:: Include State machines and Animations	
 				{
-					std::set<std::string>::iterator it = importedStateMachines.find(RemoveExtension(file));
-					if (it == importedStateMachines.end())
+					std::set<std::string>::iterator it = importedResources.find(RemoveExtension(file));
+					if (it == importedResources.end() || statFile.st_mtime > statMeta.st_mtime)
 					{
 						// File modified or not imported, send it to import
 						filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
@@ -508,35 +489,8 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 					else
 					{
 						// File already imported, add it to the resources list
-						App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::STATEMACHINE);
-					}
-				}
-				else if (type == FILETYPE::MATERIAL)
-				{
-					std::set<std::string>::iterator it = importedMaterials.find(RemoveExtension(file));
-					if (it == importedMaterials.end() || statFile.st_mtime > statMeta.st_mtime)
-					{
-						// File modified or not imported, send it to import
-						filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
-					}
-					else
-					{
-						// File already imported, add it to the resources list
-						App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::MATERIAL);
-					}
-				}
-				else if (type == FILETYPE::SCENE)
-				{
-					std::set<std::string>::iterator it = importedScenes.find(RemoveExtension(file));
-					if (it == importedScenes.end() || statFile.st_mtime > statMeta.st_mtime)
-					{
-						// File modified or not imported, send it to import
-						filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
-					}
-					else
-					{
-						// File already imported, add it to the resources list
-						App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::SCENE);
+						Resource* res = App->resManager->AddResource(file.c_str(), currentFolder.c_str(), App->resManager->GetResourceType(type));
+						res->LoadConfigFromMeta();
 					}
 				}
 			}

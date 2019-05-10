@@ -16,6 +16,7 @@ class ResourceAnimation;
 class ResourceStateMachine;
 
 enum class TYPE;
+enum class FILETYPE;
 
 class ModuleResourceManager :
 	public Module
@@ -34,6 +35,7 @@ class ModuleResourceManager :
 
 	// ResourceManager functions
 	unsigned FindByFileInAssets(const char* fileInAssets) const;						// Returns UID of resource by file variable 
+	unsigned FindByFileInAssetsOfType(const char* fileInAssets, TYPE type) const;		// Returns UID of resource by file variable of the type given
 	unsigned FindByFileInAssetsExcludingType(const char* fileInAssets, TYPE type) const;// Returns UID of resource by file variable, excludes files of the type given
 	unsigned FindByExportedFile(const char* exportedFile, TYPE type) const;				// Returns UID of resource by exportedFile and type
 	unsigned FindByExportedFile(const char* exportedFile) const;						// Returns UID of resource by exportedFile
@@ -58,6 +60,8 @@ class ModuleResourceManager :
 	std::vector<ResourceStateMachine*> GetSMList();
 
 	std::vector<std::string> GetResourceNamesList(TYPE resourceType, bool ordered); // Returns a vector with the exportedFileName of every Resource of the type given.	
+
+	TYPE GetResourceType(FILETYPE fileType) const;
 
 	bool Exists(const char* exportedFile);											// Checks if a resource with the given exported filename already exist
 	bool Exists(const char* exportedFile, TYPE type);								// Checks if a resource of the given type and exported filename already exist

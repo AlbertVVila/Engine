@@ -119,6 +119,18 @@ unsigned ModuleResourceManager::FindByFileInAssets(const char* fileInAssets) con
 	return 0;
 }
 
+unsigned ModuleResourceManager::FindByFileInAssetsOfType(const char * fileInAssets, TYPE type) const
+{
+	for (std::map<unsigned, Resource*>::const_iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		if (strcmp(it->second->GetFile(), fileInAssets) == 0 && it->second->GetType() == type)
+		{
+			return it->first;
+		}
+	}
+	return 0;
+}
+
 unsigned ModuleResourceManager::FindByFileInAssetsExcludingType(const char* fileInAssets, TYPE type) const
 {
 	for (std::map<unsigned, Resource*>::const_iterator it = resources.begin(); it != resources.end(); ++it)
@@ -179,17 +191,11 @@ bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* 
 	std::string assetPath(filePath);
 	assetPath += newFileInAssets;
 
-	// Check if the file was already imported (Mesh is excluded because has same file as model)
-	unsigned meshUID = FindByFileInAssetsExcludingType(assetPath.c_str(), TYPE::MESH);
-
-	if (meshUID != 0)
+	// Check if the file was already imported
+	unsigned resUID = FindByFileInAssetsOfType(assetPath.c_str(), type);
+	if (resUID != 0)
 	{
-		unsigned animUID = FindByFileInAssetsExcludingType(assetPath.c_str(), TYPE::ANIMATION);
-		// Avoid reimporting meshes (only model can reimport them)
-		if (animUID != 0)
-		{
-			return ReImportFile(GetWithoutLoad(animUID), filePath, type);
-		}
+		return ReImportFile(GetWithoutLoad(resUID), filePath, type);
 	}
 
 	Resource* resource = CreateNewResource(type);
@@ -210,7 +216,7 @@ bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* 
 		success = App->textures->ImportImage(newFileInAssets, filePath,	(ResourceTexture*)resource);
 		exportedFile = TEXTURES + name + TEXTUREEXT;
 		break;
-	case TYPE::MODEL:		
+	case TYPE::MODEL:
 		success = App->fsystem->importer.ImportFBX(newFileInAssets, filePath, (ResourceModel*)resource);
 		exportedFile = name + FBXEXTENSION;
 		break;
@@ -503,6 +509,26 @@ std::vector<std::string> ModuleResourceManager::GetResourceNamesList(TYPE resour
 		std::sort(resourcesList.begin(), resourcesList.end(), sortByNameAscending);
 
 	return resourcesList;
+}
+
+TYPE ModuleResourceManager::GetResourceType(FILETYPE fileType) const
+{
+	switch (fileType)
+	{
+	case FILETYPE::TEXTURE:				return TYPE::TEXTURE;		break;
+	case FILETYPE::IMPORTED_TEXTURE:	return TYPE::TEXTURE;		break;
+	case FILETYPE::MODEL:				return TYPE::MODEL;			break;
+	case FILETYPE::IMPORTED_MESH: 		return TYPE::MESH;			break;
+	case FILETYPE::SCENE:				return TYPE::SCENE;			break;
+	case FILETYPE::ANIMATION:			return TYPE::ANIMATION;		break;
+	case FILETYPE::MATERIAL:			return TYPE::MATERIAL;		break;
+	case FILETYPE::SKYBOX:				return TYPE::SKYBOX;		break;
+	case FILETYPE::STATEMACHINE:		return TYPE::STATEMACHINE;	break;
+	case FILETYPE::AUDIO:				return TYPE::AUDIO;			break;
+	default:
+	case FILETYPE::NONE:				return TYPE::UNKNOWN;		break;
+	}
+	return TYPE::UNKNOWN;
 }
 
 bool ModuleResourceManager::Exists(const char* exportedFile)
