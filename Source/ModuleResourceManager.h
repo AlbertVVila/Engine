@@ -39,6 +39,7 @@ class ModuleResourceManager :
 	unsigned FindByFileInAssetsExcludingType(const char* fileInAssets, TYPE type) const;// Returns UID of resource by file variable, excludes files of the type given
 	unsigned FindByExportedFile(const char* exportedFile, TYPE type) const;				// Returns UID of resource by exportedFile and type
 	unsigned FindByExportedFile(const char* exportedFile) const;						// Returns UID of resource by exportedFile
+	unsigned FindByName(const char* name, TYPE type) const;							// Returns UID of resource by name and type
 	bool ImportFile(const char* newFileInAssets, const char* filePath, TYPE type);
 	bool ReImportFile(Resource* resource, const char* filePath, TYPE type);				// Imports again an already loaded resource
 	unsigned GenerateNewUID();

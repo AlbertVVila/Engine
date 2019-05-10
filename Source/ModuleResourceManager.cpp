@@ -184,6 +184,18 @@ unsigned ModuleResourceManager::FindByExportedFile(const char* exportedFile, TYP
 	return 0;
 }
 
+unsigned ModuleResourceManager::FindByName(const char* name, TYPE type) const
+{
+	for (std::map<unsigned, Resource*>::const_iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		if (HashString(it->second->GetName()) == HashString(name) && it->second->GetType() == type)
+		{
+			return it->first;
+		}
+	}
+	return 0;
+}
+
 bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* filePath, TYPE type)
 {
 	bool success = false; 
