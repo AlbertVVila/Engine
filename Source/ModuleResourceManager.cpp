@@ -584,6 +584,40 @@ bool ModuleResourceManager::Exists(const char* exportedFile, TYPE type)
 	return false;
 }
 
+bool ModuleResourceManager::NameExists(const char* name, TYPE type)
+{
+	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		if (it->second->GetType() == type)
+		{
+			std::string firstName(it->second->GetName());
+			std::string secondName(name);
+			if (firstName == secondName)
+				return true;
+			else
+			{
+				for (auto & c1 : firstName) c1 = toupper(c1);
+				for (auto & c2 : secondName) c2 = toupper(c2);
+				if (firstName == secondName)
+					return true;
+			}
+		}
+	}
+	return false;
+}
+
+std::string ModuleResourceManager::GetAvailableName(const char* name, TYPE type)
+{
+	std::string newName(name);
+	unsigned i = 1u;
+	while (NameExists(newName.c_str(), type))
+	{
+		newName = name + std::to_string(i);
+		i++;
+	}
+	return newName;
+}
+
 
 Resource* ModuleResourceManager::AddResource(const char* file, const char* directory, TYPE type)
 {

@@ -39,7 +39,7 @@ class ModuleResourceManager :
 	unsigned FindByFileInAssetsExcludingType(const char* fileInAssets, TYPE type) const;// Returns UID of resource by file variable, excludes files of the type given
 	unsigned FindByExportedFile(const char* exportedFile, TYPE type) const;				// Returns UID of resource by exportedFile and type
 	unsigned FindByExportedFile(const char* exportedFile) const;						// Returns UID of resource by exportedFile
-	unsigned FindByName(const char* name, TYPE type) const;							// Returns UID of resource by name and type
+	unsigned FindByName(const char* name, TYPE type) const;								// Returns UID of resource by name and type
 	bool ImportFile(const char* newFileInAssets, const char* filePath, TYPE type);
 	bool ReImportFile(Resource* resource, const char* filePath, TYPE type);				// Imports again an already loaded resource
 	unsigned GenerateNewUID();
@@ -60,14 +60,16 @@ class ModuleResourceManager :
 	std::vector<ResourceAnimation*> GetAnimationsList();
 	std::vector<ResourceStateMachine*> GetSMList();
 
-	std::vector<std::string> GetResourceNamesList(TYPE resourceType, bool ordered); // Returns a vector with the exportedFileName of every Resource of the type given.	
+	std::vector<std::string> GetResourceNamesList(TYPE resourceType, bool ordered);		// Returns a vector with the exportedFileName of every Resource of the type given.	
 
 	TYPE GetResourceType(FILETYPE fileType) const;
 
-	bool Exists(const char* exportedFile);											// Checks if a resource with the given exported filename already exist
-	bool Exists(const char* exportedFile, TYPE type);								// Checks if a resource of the given type and exported filename already exist
+	bool Exists(const char* exportedFile);												// Checks if a resource with the given exported filename already exist
+	bool Exists(const char* exportedFile, TYPE type);									// Checks if a resource of the given type and exported filename already exist
+	bool NameExists(const char* name, TYPE type);										// Checks if a resource of the given type and name already exist
+	std::string GetAvailableName(const char* name, TYPE type);							// Based on the name given looks for a name that isn't already taken
 
-	void LoadEngineResources();														// Loads resources needed by the engine (Skybox, white, no camera textures...)
+	void LoadEngineResources();															// Loads resources needed by the engine (Skybox, white, no camera textures...)
 	Resource* AddResource(const char* file, const char* directory, TYPE type);
 	Resource* ReplaceResource(unsigned oldResourceUID, Resource* newResource);	
 	void DeleteResourceFromList(unsigned uid);
