@@ -136,14 +136,26 @@ void ComponentParticles::DrawProperties()
 		}
 		ImGui::InputInt("Max Particles", &maxParticles);
 		ImGui::DragFloat("Rate", &rate);
-		ImGui::InputFloat2("Lifetime", &lifetime[0]);
-		ImGui::InputFloat2("Speed", &speed[0]);
-		ImGui::InputFloat2("Particle size", &particleSize[0]);
-		//ImGui::InputFloat2("Emitter Size", &quadEmitterSize[0]);
 
-		ImGui::Text("Emisor type: %i", actualEmisor);
+		ImGui::Text("Particle properties:");
+		ImGui::DragFloat2("Lifetime", &lifetime[0], 0.1f);
+		ImGui::DragFloat2("Speed", &speed[0], 1.2f);
+		ImGui::DragFloat2("Size", &particleSize[0], 0.01 * App->renderer->current_scale);
+
+		//Clamp values
+		lifetime[0] = Max(0.01f, lifetime[0]);
+		lifetime[1] = Max(lifetime[0], lifetime[1]);
+
+		speed[0] = Max(0.0f, speed[0]);
+		speed[1] = Max(speed[0], speed[1]);
+
+		particleSize[0] = Max(0.01f, particleSize[0]);
+		particleSize[1] = Max(particleSize[0], particleSize[1]);
+		//
+		ImGui::Text("Emisor type:");
 		if (ImGui::Checkbox("Quad", &quadCheck))    alternateEmisor(0);
 		if (ImGui::Checkbox("Spehere", &sphereCheck)) alternateEmisor(1);
+
 		switch (actualEmisor)
 		{
 		case EmisorType::QUAD:
@@ -155,6 +167,7 @@ void ComponentParticles::DrawProperties()
 
 		for (ParticleModule* pm : modules)
 		{
+			ImGui::Separator();
 			pm->InspectorDraw();
 		}
 		ImGui::PopID();
@@ -270,7 +283,9 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 			p->lifeTimer = p->totalLifetime;
 
 			//P size
-			p->size = fmod(rand(), abs(particleSize.y - particleSize.x) + Min(particleSize.x, particleSize.y));
+			float random = (float)rand() / (float) RAND_MAX;
+			float diff = abs(particleSize.y - particleSize.x);
+			p->size = random * diff + Min(particleSize.x, particleSize.y);
 
 			
 			
