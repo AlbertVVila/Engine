@@ -176,6 +176,8 @@ void ComponentParticles::DrawProperties()
 	
 	}
 	
+	if (gameobject->isSelected) DrawDebugEmisor();
+
 }
 
 bool ComponentParticles::CleanUp()
@@ -295,7 +297,6 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 		}
 		rateTimer = 1.f / rate;
 
-		if (gameobject->isSelected) DrawDebugEmisor();
 	}
 
 
@@ -326,7 +327,7 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 					break;
 				case ParticleModule::ParticleModulesType::COLOR_OVER_TIME:
 
-					((PMColorOverTime*)pm)->Imgradient->getColorAt(currentTimeOverTotal, newColor);
+					((PMColorOverTime*)pm)->Imgradient->getColorAt(1.f - currentTimeOverTotal, newColor);
 					break;
 				}
 			}
@@ -419,7 +420,7 @@ void ComponentParticles::DrawDebugEmisor()
 		break;
 
 	case EmisorType::SPHERE:
-		//dd::sphere(base, dd::colors::Green, sphereEmitterRadius);
+		dd::sphere(base, dd::colors::Green, sphereEmitterRadius);
 		break;
 	}
 
