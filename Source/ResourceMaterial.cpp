@@ -361,27 +361,3 @@ void ResourceMaterial::SetUniforms(unsigned shader) const
 	glUniform3fv(glGetUniformLocation(shader,
 		"material.specular"), 1, (GLfloat*)&specularColor);
 }
-
-void ResourceMaterial::Rename(const char* newName)
-{
-	Resource::Rename(newName);
-
-	// Rename file in Library
-	App->fsystem->Rename(IMPORTED_MATERIALS, exportedFile.c_str(), newName);
-
-	std::string newExportedFile(IMPORTED_MATERIALS);
-	newExportedFile += newName;
-	newExportedFile += MATERIALEXT;
-	exportedFile = newExportedFile;
-}
-
-void ResourceMaterial::Delete()
-{
-	Resource::Delete();
-
-	// Delete file in Library
-	std::string fileInLibrary(IMPORTED_MATERIALS);
-	fileInLibrary += exportedFile;
-	App->fsystem->Delete(fileInLibrary.c_str());
-	DeleteFromMemory();
-}

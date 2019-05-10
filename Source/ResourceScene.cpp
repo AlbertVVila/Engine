@@ -37,31 +37,6 @@ void ResourceScene::SaveMetafile(const char* file) const
 	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
 }
 
-void ResourceScene::Rename(const char* newName)
-{
-	Resource::Rename(newName);
-
-	// Rename file in Library
-	App->fsystem->Rename(IMPORTED_SCENES, exportedFile.c_str(), newName);
-
-	// Update exported file
-	std::string newExportedFile(IMPORTED_SCENES);
-	newExportedFile += newName;
-	newExportedFile += SCENEEXTENSION;
-	exportedFile = newExportedFile;
-}
-
-void ResourceScene::Delete()
-{
-	Resource::Delete();
-
-	// Delete file in Library
-	std::string fileInLibrary(IMPORTED_SCENES);
-	fileInLibrary += exportedFile;
-	App->fsystem->Delete(fileInLibrary.c_str());
-	DeleteFromMemory();
-}
-
 void ResourceScene::Save(const GameObject& rootGO)
 {
 	JSON *json = new JSON();

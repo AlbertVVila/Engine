@@ -304,30 +304,6 @@ void ResourceTexture::LoadConfigFromMeta()
 	}
 }
 
-void ResourceTexture::Rename(const char* newName)
-{
-	Resource::Rename(newName);
-
-	// Rename file in Library
-	App->fsystem->Rename(TEXTURES, App->fsystem->GetFile(exportedFile).c_str(), newName);
-
-	std::string newExportedFile(TEXTURES);
-	newExportedFile += newName;
-	newExportedFile += TEXTUREEXT;
-	exportedFile = newExportedFile.c_str();
-}
-
-void ResourceTexture::Delete()
-{
-	Resource::Delete();
-
-	// Delete file in Library
-	std::string fileInLibrary(TEXTURES);
-	fileInLibrary += exportedFile;
-	App->fsystem->Delete(fileInLibrary.c_str());
-	DeleteFromMemory();
-}
-
 void ResourceTexture::DrawImportConfiguration()
 {
 	const char* compressionTypes[] = { "DXT1", /*"DXT2",*/ "DXT3", /*"DXT4",*/ "DXT5", /*"DXT_NO_COMP", "KEEP_DXTC_DATA", "DXTC_DATA_FORMAT",*/ "THREE_DC", "RXGB", "ATI1N", "DXT1A" };
