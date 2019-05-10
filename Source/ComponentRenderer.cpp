@@ -173,13 +173,16 @@ void ComponentRenderer::DrawProperties()
 		{
 			if (ImGui::Button("Show"))
 			{
-				App->editor->materialEditor->open = true;
-				App->editor->materialEditor->material = material;
-				App->editor->materialEditor->previous = new ResourceMaterial(*material);
-				App->editor->materialEditor->SetCurrentTextures();
+				if (material != nullptr) 
+				{
+					App->editor->materialEditor->open = true;
+					App->editor->materialEditor->material = material;
+					App->editor->materialEditor->previous = new ResourceMaterial(*material);
+					App->editor->materialEditor->SetCurrentTextures();
 
-				// Update texture list
-				App->editor->materialEditor->UpdateTexturesList();
+					// Update texture list
+					App->editor->materialEditor->UpdateTexturesList();
+				}
 			}
 		}
 
