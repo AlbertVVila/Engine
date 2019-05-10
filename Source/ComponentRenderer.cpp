@@ -124,10 +124,11 @@ void ComponentRenderer::DrawProperties()
 			}
 			for (int n = 0; n < guiMaterials.size(); n++)
 			{
-				bool is_selected = (HashString(material->GetName()) == HashString(guiMaterials[n].c_str()));
-				if (ImGui::Selectable(guiMaterials[n].c_str(), is_selected) && material->GetName() != guiMaterials[n])
+				bool is_selected = (material != nullptr ? (HashString(material->GetName()) == HashString(guiMaterials[n].c_str())) : false);
+				if (ImGui::Selectable(guiMaterials[n].c_str(), is_selected) )
 				{
-					SetMaterial(guiMaterials[n].c_str());
+					if (material == nullptr || material->GetName() != guiMaterials[n])
+						SetMaterial(guiMaterials[n].c_str());
 
 					if (App->editor->materialEditor->open)
 					{
