@@ -21,6 +21,19 @@
 #pragma region sorting functions
 bool sortByUIDAscending(const Resource* a, const Resource* b) { return a->GetUID() < b->GetUID(); };
 bool sortByUIDDescending(const Resource* a, const Resource* b) { return a->GetUID() > b->GetUID(); };
+bool sortByNameAscending(const Resource* a, const Resource* b)
+{
+	std::string stringA(a->GetName());
+	std::string stringB(b->GetName());
+	return stringA < stringB;
+};
+
+bool sortByNameDescending(const Resource* a, const Resource* b)
+{
+	std::string stringA(a->GetName());
+	std::string stringB(b->GetName());
+	return stringA > stringB;
+};
 bool sortByFileAscending(const Resource* a, const Resource* b)
 {
 	std::string stringA(a->GetFile());
@@ -173,6 +186,10 @@ void PanelResourceManager::UpdateResourcesList()
 	case SORTING::UID:
 		if(!descending) std::sort(resourcesList.begin(), resourcesList.end(), sortByUIDAscending);
 		else 			std::sort(resourcesList.begin(), resourcesList.end(), sortByUIDDescending);
+		break;
+	case SORTING::NAME:
+		if (!descending) std::sort(resourcesList.begin(), resourcesList.end(), sortByNameAscending);
+		else			 std::sort(resourcesList.begin(), resourcesList.end(), sortByNameDescending);
 		break;
 	case SORTING::FILE:
 		if (!descending) std::sort(resourcesList.begin(), resourcesList.end(), sortByFileAscending);
