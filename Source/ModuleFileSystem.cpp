@@ -625,6 +625,10 @@ std::string ModuleFileSystem::GetFilePath(std::string file) const
 		{
 			file.erase(found + 1, file.size());
 		}
+		else
+		{
+			return "";
+		}
 	}
 	return file;
 }

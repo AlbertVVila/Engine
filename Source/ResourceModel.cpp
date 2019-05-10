@@ -220,16 +220,11 @@ void ResourceModel::Rename(const char* newName)
 {
 	// Change name of the scene saved for the model
 	std::string sceneFile(App->fsystem->GetFilename(file.c_str()));
-	sceneFile += SCENEEXTENSION;
-	ResourceScene* scene = (ResourceScene*)App->resManager->Get(sceneFile.c_str());
+	ResourceScene* scene = (ResourceScene*)App->resManager->GetByName(sceneFile.c_str(), TYPE::SCENE);
 	if(scene != nullptr)
 		scene->Rename(newName);
 
-
 	Resource::Rename(newName);
-
-	std::string newExportedFile(newName);
-	exportedFile = newExportedFile + FBXEXTENSION;
 
 	for (int i = 0; i < meshList.size(); ++i)
 	{
@@ -243,15 +238,11 @@ void ResourceModel::Delete()
 {
 	// Delete scene saved for the model
 	std::string sceneFile(App->fsystem->GetFilename(file.c_str()));
-	sceneFile += SCENEEXTENSION;
-	ResourceScene* scene = (ResourceScene*)App->resManager->Get(sceneFile.c_str());
+	ResourceScene* scene = (ResourceScene*)App->resManager->GetByName(sceneFile.c_str(), TYPE::SCENE);
 	if (scene != nullptr)
 		scene->Delete();
 
 	Resource::Delete();
-
-	// Delete Resource from ResourceManager
-	App->resManager->DeleteResourceFromList(UID);
 
 	// Delete all mesh files
 	for each(auto& mesh in meshList)
