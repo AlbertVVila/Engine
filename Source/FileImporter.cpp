@@ -229,7 +229,11 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 
 		RELEASE_ARRAY(animationData);
 	}
-	App->scene->SaveScene(*sceneGO, App->fsystem->GetFilename(file).c_str(), SCENES); //TODO: Make AutoCreation of folders or check
+	// Check that scenes folder exists if not create
+	if (!App->fsystem->Exists(SCENES))
+		App->fsystem->MakeDirectory(SCENES);
+
+	App->scene->SaveScene(*sceneGO, App->fsystem->GetFilename(file).c_str(), SCENES); 
 	aiReleaseImport(&aiscene);
 
 	sceneGO->deleteFlag = true;
