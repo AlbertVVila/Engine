@@ -71,7 +71,15 @@ void Resource::Rename(const char* newName)
 	// Update file variable
 	file = ruteToFile + newName + extension;
 
-	// Rename of file in Library and update of exportedFileName is called on child class
+	std::string ruteToExportedFile = App->fsystem->GetFilePath(exportedFile);
+	std::string fileInLibrary = App->fsystem->GetFile(exportedFile);
+	std::string exportedExtension = App->fsystem->GetExtension(exportedFile);
+
+	// Rename of file in Library
+	App->fsystem->Rename(ruteToExportedFile.c_str(), fileInLibrary.c_str(), newName);
+
+	// Update exportedFile variable
+	exportedFile = (ruteToExportedFile + newName + exportedExtension).c_str();
 }
 
 void Resource::Delete()
@@ -85,7 +93,9 @@ void Resource::Delete()
 	// Delete meta file in Assets
 	App->fsystem->Delete((file + ".meta").c_str());
 
-	// Deletion of file in Library is called on child class
+	// Delete file in Library
+	App->fsystem->Delete(exportedFile.c_str());
+	DeleteFromMemory();
 }
 
 void Resource::DrawImportConfiguration()
