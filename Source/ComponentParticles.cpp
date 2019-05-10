@@ -15,6 +15,7 @@
 #include "imgui.h"
 #include "JSON.h"
 #include "debugdraw.h"
+#include "imgui_color_gradient.h"
 
 
 #define None "None Selected"
@@ -24,6 +25,7 @@ ComponentParticles::ComponentParticles(GameObject* gameobject) : Component(gameo
 	textureFiles = App->resManager->GetResourceNamesList(TYPE::TEXTURE, true);
 	App->particles->AddParticleSystem(this);
 	modules.push_back(new PMSizeOverTime());
+	modules.push_back(new PMColorOverTime());
 }
 
 ComponentParticles::ComponentParticles(const ComponentParticles& component) : Component(component)
@@ -58,6 +60,7 @@ ComponentParticles::ComponentParticles(const ComponentParticles& component) : Co
 	directionNoiseTotalProbability = component.directionNoiseTotalProbability;
 	App->particles->AddParticleSystem(this);
 	modules.push_back(new PMSizeOverTime());
+	modules.push_back(new PMColorOverTime());
 
 }
 
@@ -149,6 +152,7 @@ void ComponentParticles::DrawProperties()
 		}
 
 		ImGui::ColorEdit3("Color", (float*)&particleColor);
+
 		for (ParticleModule* pm : modules)
 		{
 			pm->InspectorDraw();
@@ -194,6 +198,8 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 	f2Ypos = f1Xpos < f2Xpos ? f1Ypos : f1Ypos + 1;	
 
 	rateTimer -= dt;
+
+	//Create new Particle P
 	if (rateTimer <= 0.f && particles.size() < maxParticles)
 	{
 		int amount = MAX(dt / (1.f / rate), 1);
@@ -264,7 +270,9 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 			p->lifeTimer = p->totalLifetime;
 
 			//P size
-			p->size = fmod(rand(), abs(particleSize.y - particleSize.x));
+			p->size = fmod(rand(), abs(particleSize.y - particleSize.x) + Min(particleSize.x, particleSize.y));
+
+			
 			
 			particles.push_back(p);
 		}
@@ -287,22 +295,33 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 			particles.front()->direction.Normalize();
 		}
 		float sizeOT = particles.front()->size;
+		float* newColor = new float[4];
 		for (ParticleModule* pm : modules)
 		{
 			if (pm->enabled) {
+
+				float currentTimeOverTotal = particles.front()->lifeTimer / particles.front()->totalLifetime;
+
 				switch (pm->type)
 				{
 				case ParticleModule::ParticleModulesType::SIZE_OVER_TIME:
-					sizeOT = ((PMSizeOverTime*)pm)->GetSize(particles.front()->lifeTimer / particles.front()->totalLifetime, particles.front()->size);
+					sizeOT = ((PMSizeOverTime*)pm)->GetSize(currentTimeOverTotal, particles.front()->size);
+					break;
+				case ParticleModule::ParticleModulesType::COLOR_OVER_TIME:
+
+					((PMColorOverTime*)pm)->Imgradient->getColorAt(currentTimeOverTotal, newColor);
 					break;
 				}
-
 			}
 			
 		}
 		particles.front()->position += particles.front()->direction * particles.front()->speed * dt;
 		float3 direction = (camPos - particles.front()->position);
 		particles.front()->global = particles.front()->global.FromTRS(particles.front()->position, math::Quat::LookAt(float3::unitZ, direction.Normalized(), float3::unitY, float3::unitY), math::float3::one * sizeOT);
+
+		float4 newCOlAux = float4(newColor);
+		particles.front()->color = newColor;
+
 		particles.push_back(particles.front());
 		particles.pop_front();
 	}

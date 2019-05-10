@@ -19,6 +19,7 @@ class ParticleModule;
 
 struct Particle
 {
+	~Particle() { delete[] color; };
 	float speed = 1.f;
 
 	math::float3 position = math::float3::zero;
@@ -28,6 +29,7 @@ struct Particle
 
 	float totalLifetime = .0f;
 	float lifeTimer = totalLifetime;
+	float* color = new float[4];
 	
 };
 
@@ -93,10 +95,10 @@ private:
 	float rate = 10.f;
 	float rateTimer = 1.f / rate;
 	int maxParticles = 50;
-	math::float2 particleSize = math::float2(0.1f * App->renderer->current_scale, 1.f * App->renderer->current_scale) ;
+	math::float2 particleSize = math::float2(1.f * App->renderer->current_scale, 1.f * App->renderer->current_scale) ;
 	//math::float2 quadEmitterSize = math::float2::one;
-	float quadEmitterSize = 1.f * App->renderer->current_scale;
-	float sphereEmitterRadius = 1.f * App->renderer->current_scale;
+	float quadEmitterSize = 10.f * App->renderer->current_scale;
+	float sphereEmitterRadius = 10.f * App->renderer->current_scale;
 	math::float3 particleColor = math::float3::one;
 	math::float3 pDir = math::float3(-1.f, 0.f, 0.f);
 

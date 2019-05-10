@@ -14,9 +14,11 @@
 #include "ComponentTransform.h"
 #include "ResourceTexture.h"
 
+#include <list>
 #include "GL/glew.h"
 #include <algorithm>
 #include "ImGUICurveUtils.h"
+#include "imgui_color_gradient.h"
 
 ModuleParticles::~ModuleParticles()
 {
@@ -328,8 +330,30 @@ void PMSizeOverTime::InspectorDraw()
 	ImGui::Checkbox("Size Over Time", &enabled);
 	if (enabled)
 	{
-		ImGui::Text("Size Over Time");
 		ImGui::Bezier("easeInExpo", v);
 	}
 	
+}
+
+PMColorOverTime::PMColorOverTime()
+{
+	type = ParticleModulesType::COLOR_OVER_TIME;
+	Imgradient = new ImGradient();
+
+	std::list<ImGradientMark*> marks = Imgradient->getMarks();
+
+	gradient1 = marks.front();
+	marks.pop_front();
+	gradient2 = marks.front();
+}
+
+void PMColorOverTime::InspectorDraw()
+{
+	ImGui::Checkbox("Color Over Time", &enabled);
+	if (enabled)
+	{
+		ImGui::GradientEditor(Imgradient ,gradient1, gradient2);
+		if (ImGui::Button("Add Mark")) Imgradient->addMark(0.5f, 0.f);
+	}
+
 }

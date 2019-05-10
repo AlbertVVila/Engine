@@ -490,6 +490,7 @@
     <ClCompile Include="Soloud\fractal_includes\dr_impl.cpp">
       <Filter>SoLoud</Filter>
     </ClCompile>
+    <ClCompile Include="imgui_color_gradient.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -1098,6 +1099,7 @@
     <ClInclude Include="Soloud\fractal_includes\dr_mp3.h">
       <Filter>SoLoud</Filter>
     </ClInclude>
+    <ClInclude Include="imgui_color_gradient.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GeoLib">
