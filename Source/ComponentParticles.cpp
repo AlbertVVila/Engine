@@ -250,7 +250,7 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 					quadEmitterSize = MAX(1, quadEmitterSize);
 
 					//P starting position
-					p->position = pos + float3(rand() % (int)quadEmitterSize - quadEmitterSize / 2, 0, rand() % (int)quadEmitterSize - quadEmitterSize / 2);
+					p->position = pos + gameobject->transform->GetRotation() * float3(rand() % (int)quadEmitterSize - quadEmitterSize / 2, 0, rand() % (int)quadEmitterSize - quadEmitterSize / 2) ;
 
 					//P direction
 					p->direction = gameobject->transform->GetRotation() * float3(0.f, 1.f, 0.f); //math::float3::unitY;
@@ -314,30 +314,35 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 		}
 		float sizeOT = particles.front()->size;
 		float* newColor = new float[4];
+		float* defaultColor = new float[4];
+		defaultColor[0] = particleColor[0];
+		defaultColor[1] = particleColor[1];
+		defaultColor[2] = particleColor[2];
+		defaultColor[3] = particleColor[3];
+
 		for (ParticleModule* pm : modules)
 		{
-			if (pm->enabled) {
+			
+			float currentTimeOverTotal = particles.front()->lifeTimer / particles.front()->totalLifetime;
 
-				float currentTimeOverTotal = particles.front()->lifeTimer / particles.front()->totalLifetime;
+			switch (pm->type)
+			{
+			case ParticleModule::ParticleModulesType::SIZE_OVER_TIME:
+				if (pm->enabled) sizeOT = ((PMSizeOverTime*)pm)->GetSize(currentTimeOverTotal, particles.front()->size);
+				break;
+			case ParticleModule::ParticleModulesType::COLOR_OVER_TIME:
 
-				switch (pm->type)
-				{
-				case ParticleModule::ParticleModulesType::SIZE_OVER_TIME:
-					sizeOT = ((PMSizeOverTime*)pm)->GetSize(currentTimeOverTotal, particles.front()->size);
-					break;
-				case ParticleModule::ParticleModulesType::COLOR_OVER_TIME:
-
-					((PMColorOverTime*)pm)->Imgradient->getColorAt(1.f - currentTimeOverTotal, newColor);
-					break;
-				}
+				if (pm->enabled) ((PMColorOverTime*)pm)->Imgradient->getColorAt(1.f - currentTimeOverTotal, newColor);
+				else newColor = defaultColor;
+				break;
 			}
+			
 			
 		}
 		particles.front()->position += particles.front()->direction * particles.front()->speed * dt;
 		float3 direction = (camPos - particles.front()->position);
 		particles.front()->global = particles.front()->global.FromTRS(particles.front()->position, math::Quat::LookAt(float3::unitZ, direction.Normalized(), float3::unitY, float3::unitY), math::float3::one * sizeOT);
 
-		float4 newCOlAux = float4(newColor);
 		particles.front()->color = newColor;
 
 		particles.push_back(particles.front());
@@ -404,10 +409,10 @@ void ComponentParticles::DrawDebugEmisor()
 {
 	float3 base = gameobject->transform->GetGlobalPosition();
 
-	float3 v1 = float3(base.x + quadEmitterSize / 2.f, base.y, base.x - quadEmitterSize / 2.f);
-	float3 v2 = float3(base.x + quadEmitterSize / 2.f, base.y, base.x + quadEmitterSize / 2.f);
-	float3 v3 = float3(base.x - quadEmitterSize / 2.f, base.y, base.x + quadEmitterSize / 2.f);
-	float3 v4 = float3(base.x - quadEmitterSize / 2.f, base.y, base.x - quadEmitterSize / 2.f);
+	float3 v1 = gameobject->transform->GetRotation() * float3(base.x + quadEmitterSize / 2.f, base.y, base.x - quadEmitterSize / 2.f);
+	float3 v2 = gameobject->transform->GetRotation() * float3(base.x + quadEmitterSize / 2.f, base.y, base.x + quadEmitterSize / 2.f);
+	float3 v3 = gameobject->transform->GetRotation() * float3(base.x - quadEmitterSize / 2.f, base.y, base.x + quadEmitterSize / 2.f);
+	float3 v4 = gameobject->transform->GetRotation() * float3(base.x - quadEmitterSize / 2.f, base.y, base.x - quadEmitterSize / 2.f);
 
 	switch (actualEmisor) 
 	{
