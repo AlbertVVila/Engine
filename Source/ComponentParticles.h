@@ -41,7 +41,7 @@ class ComponentParticles :
 
 public:
 
-	enum class EmisorType
+	enum EmisorType
 	{
 		QUAD = 0,
 		SPHERE

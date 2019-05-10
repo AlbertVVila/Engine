@@ -61,6 +61,8 @@ ComponentParticles::ComponentParticles(const ComponentParticles& component) : Co
 	App->particles->AddParticleSystem(this);
 	modules.push_back(new PMSizeOverTime());
 	modules.push_back(new PMColorOverTime());
+	actualEmisor = component.actualEmisor;
+	alternateEmisor(actualEmisor);
 
 }
 
@@ -360,6 +362,7 @@ void ComponentParticles::Save(JSON_value* value) const
 	value->AddInt("directionNoise", directionNoise);
 	value->AddInt("directionNoiseProbability", directionNoiseProbability);
 	value->AddInt("directionNoiseTotalProbability", directionNoiseTotalProbability);
+	value->AddInt("actualEmisor", actualEmisor);
 }
 
 void ComponentParticles::Load(JSON_value* value)
@@ -385,6 +388,8 @@ void ComponentParticles::Load(JSON_value* value)
 	directionNoise = value->GetInt("directionNoise");
 	directionNoiseProbability = value->GetInt("directionNoiseProbability");
 	directionNoiseTotalProbability = MAX(value->GetInt("directionNoiseTotalProbability"), 1);
+	actualEmisor = static_cast<EmisorType>(value->GetInt("actualEmisor"));
+	alternateEmisor(actualEmisor);
 }
 
 void ComponentParticles::alternateEmisor(int newEmisor)
@@ -414,7 +419,7 @@ void ComponentParticles::DrawDebugEmisor()
 		break;
 
 	case EmisorType::SPHERE:
-		dd::sphere(base, dd::colors::Green, sphereEmitterRadius);
+		//dd::sphere(base, dd::colors::Green, sphereEmitterRadius);
 		break;
 	}
 
@@ -430,18 +435,7 @@ float3 ComponentParticles::randomSpherePoint(float3 center)
 	float y = center.y + (math::Sin(phi) * math::Sin(theta));
 	float z = center.z + (math::Cos(phi));
 
-	return float3(x, y, z);
-	
-	
-	/*var u = Math.random();
-	var v = Math.random();
-	var theta = 2 * Math.PI * u;
-	var phi = Math.acos(2 * v - 1);
-	var x = x0 + (radius * Math.sin(phi) * Math.cos(theta));
-	var y = y0 + (radius * Math.sin(phi) * Math.sin(theta));
-	var z = z0 + (radius * Math.cos(phi));
-	return[x, y, z];*/
-	
+	return float3(x, y, z);	
 }
 
 
