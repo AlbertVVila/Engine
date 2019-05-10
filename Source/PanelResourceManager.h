@@ -25,6 +25,7 @@ private:
 	void DrawResourceTexture();
 	void DrawResourceModel();
 	void DrawResourceMesh();
+	void DrawResourceScene();
 	void DrawResourceMaterial();
 	void DrawResourceAnimation();
 	void DrawResourceSkybox();

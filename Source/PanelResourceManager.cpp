@@ -12,6 +12,7 @@
 #include "ResourceMaterial.h"
 #include "ResourceSkybox.h"
 #include "ResourceAnimation.h."
+#include "ResourceScene.h"
 
 #include "imgui.h"
 #include <algorithm>
@@ -163,8 +164,8 @@ void PanelResourceManager::Draw()
 		case TYPE::TEXTURE:		DrawResourceTexture();	break;
 		case TYPE::MODEL:		DrawResourceModel();	break;
 		case TYPE::MESH:		DrawResourceMesh();		break;
-		/*case TYPE::AUDIO:								break;
-		case TYPE::SCENE:								break;*/
+		/*case TYPE::AUDIO:								break;*/
+		case TYPE::SCENE:		DrawResourceScene();	break;
 		case TYPE::ANIMATION:	DrawResourceAnimation();break;
 		case TYPE::MATERIAL:	DrawResourceMaterial(); break;
 		case TYPE::SKYBOX:		DrawResourceSkybox();	break;
@@ -390,6 +391,24 @@ void PanelResourceManager::DrawResourceMesh()
 	ImGui::NextColumn();
 	// TODO: [Resource Manager] Add preview of the mesh
 
+	ImGui::End();
+}
+
+void PanelResourceManager::DrawResourceScene()
+{
+	if (!ImGui::Begin("Scene Manager"))
+	{
+		ImGui::End();
+		return;
+	}
+	ResourceScene& scene = *(ResourceScene*)previous;
+	std::string exportedFile(scene.GetExportedFile());
+	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), (exportedFile + ":").c_str());
+	ImGui::Columns(2);
+	ImGui::Text("Name: %s", scene.GetName());
+
+	ImGui::NextColumn();
+	// TODO: [Resource Manager] Add preview of the scene
 	ImGui::End();
 }
 
