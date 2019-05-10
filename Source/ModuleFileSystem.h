@@ -52,8 +52,8 @@
 #define MP3EXTENSION ".mp3"
 #define MP3CAPITAL ".MP3"
 
-#define CHECKERS "checkersTexture.dds"
-#define NOCAMERA "nocamera.dds"
+#define CHECKERS IMPORTED_RESOURCES "checkersTexture.dds"
+#define NOCAMERA IMPORTED_RESOURCES "nocamera.dds"
 
 enum class FILETYPE
 {
