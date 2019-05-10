@@ -309,7 +309,7 @@ void ResourceTexture::Rename(const char* newName)
 	Resource::Rename(newName);
 
 	// Rename file in Library
-	App->fsystem->Rename(TEXTURES, exportedFile.c_str(), newName);
+	App->fsystem->Rename(TEXTURES, App->fsystem->GetFile(exportedFile).c_str(), newName);
 
 	std::string newExportedFile(TEXTURES);
 	newExportedFile += newName;

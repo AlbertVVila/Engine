@@ -57,6 +57,9 @@ void Resource::Rename(const char* newName)
 	std::string fileInAssets = App->fsystem->GetFile(file);
 	std::string extension = App->fsystem->GetExtension(file);
 
+	//TODO RM: Add CheckNameAvailability
+	name = newName;
+
 	// Rename file in Assets
 	App->fsystem->Rename(ruteToFile.c_str(), fileInAssets.c_str(), newName);
 
