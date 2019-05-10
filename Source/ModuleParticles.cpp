@@ -86,23 +86,27 @@ bool ModuleParticles::Start()
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 18));
 
 	glBindBuffer(GL_ARRAY_BUFFER, billBoardInstanceVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 16 * MAX_PARTICLES, nullptr, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 20 * MAX_PARTICLES, nullptr, GL_DYNAMIC_DRAW);
 
 	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 16, (void*)(0));
+	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 20, (void*)(0));
 	glVertexAttribDivisor(2, 1);
 
 	glEnableVertexAttribArray(3);
-	glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 16, (void*)(sizeof(float) * 4));
+	glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 20, (void*)(sizeof(float) * 4));
 	glVertexAttribDivisor(3, 1);
 
 	glEnableVertexAttribArray(4);
-	glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 16, (void*)(sizeof(float) * 8));
+	glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 20, (void*)(sizeof(float) * 8));
 	glVertexAttribDivisor(4, 1);
 
 	glEnableVertexAttribArray(5);
-	glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 16, (void*)(sizeof(float) * 12));
+	glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 20, (void*)(sizeof(float) * 12));
 	glVertexAttribDivisor(5, 1);
+	
+	glEnableVertexAttribArray(6);
+	glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 20, (void*)(sizeof(float) * 16));
+	glVertexAttribDivisor(6, 1);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
@@ -287,6 +291,9 @@ void ModuleParticles::DrawParticleSystem(ComponentParticles* cp, const Component
 			memcpy(matrices, &cp->particles.front()->global.Col(1), sizeof(float) * 4); matrices += 4;
 			memcpy(matrices, &cp->particles.front()->global.Col(2), sizeof(float) * 4); matrices += 4;
 			memcpy(matrices, &cp->particles.front()->global.Col(3), sizeof(float) * 4); matrices += 4;
+
+			memcpy(matrices, &cp->particles.front()->color, sizeof(float) * 4); matrices += 4;
+
 			cp->particles.push_back(cp->particles.front());
 		}
 		else
@@ -312,7 +319,7 @@ void ModuleParticles::DrawParticleSystem(ComponentParticles* cp, const Component
 	glUniform1i(glGetUniformLocation(shader->id[0], "f2Xpos"), cp->f2Xpos);
 	glUniform1i(glGetUniformLocation(shader->id[0], "f2Ypos"), cp->f2Ypos);
 	glUniform1f(glGetUniformLocation(shader->id[0], "mixAmount"), cp->frameMix);
-	glUniform3fv(glGetUniformLocation(shader->id[0],"particleColor"), 1, (GLfloat*)&cp->particleColor);	
+	//glUniform3fv(glGetUniformLocation(shader->id[0],"particleColor"), 1, (GLfloat*)&cp->particleColor);	
 
 	glDrawArraysInstanced(GL_TRIANGLES,0, 6, cp->particles.size());
 
