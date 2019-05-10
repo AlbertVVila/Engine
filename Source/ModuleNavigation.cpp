@@ -46,6 +46,7 @@ ModuleNavigation::~ModuleNavigation()
 	RELEASE_ARRAY(verts);
 	RELEASE_ARRAY(tris);
 	RELEASE_ARRAY(normals);
+	dtFreeNavMesh(navMesh);
 }
 
 bool ModuleNavigation::Init(JSON * config)
@@ -243,7 +244,6 @@ void ModuleNavigation::DrawGUI()
 
 void ModuleNavigation::addNavigableMesh()
 {
-	cleanValuesPOST();
 	meshboxes.push_back(static_cast <const AABB*>(&App->scene->selected->bbox));
 	meshComponents.push_back(static_cast <const ComponentRenderer*>(App->scene->selected->GetComponent(ComponentType::Renderer)));
 	transformComponents.push_back(static_cast <const ComponentTransform*>(App->scene->selected->GetComponent(ComponentType::Transform)));
@@ -345,175 +345,6 @@ void ModuleNavigation::removeNavMesh(unsigned ID)
 			return;
 		}
 	}
-}
-
-void ModuleNavigation::generateObstacleNavigability()
-{
-	dtStatus status;
-
-	if (!m_geom || !m_geom->getMesh())
-	{
-		LOG("buildTiledNavigation: No vertices and triangles.");
-		return;
-	}
-
-	m_tmproc->init(m_geom);
-
-	// Init cache
-	const float* bmin = m_geom->getNavMeshBoundsMin();
-	const float* bmax = m_geom->getNavMeshBoundsMax();
-	int gw = 0, gh = 0;
-	rcCalcGridSize(bmin, bmax, cellWidth, &gw, &gh);
-	const int ts = (int)m_tileSize;
-	const int tw = (gw + ts - 1) / ts;
-	const int th = (gh + ts - 1) / ts;
-
-	// Generation params.
-	cfg = new rcConfig();
-	memset(cfg, 0, sizeof(*cfg));
-
-	cfg->cs = cellWidth;
-	cfg->ch = cellHeight;
-	cfg->walkableSlopeAngle = maxSlopeValue;
-	cfg->walkableHeight = (int)ceilf(characterMaxHeight / cfg->ch);
-	cfg->walkableClimb = (int)floorf(characterMaxStepHeightScaling / cfg->ch);
-	cfg->walkableRadius = (int)ceilf(characterMaxRadius / cfg->cs);
-	cfg->maxEdgeLen = (int)(edgeMaxLength / cellWidth);
-	cfg->maxSimplificationError = edgeMaxError;
-	cfg->minRegionArea = (int)rcSqr(minRegionSize);		// Note: area = size*size
-	cfg->mergeRegionArea = (int)rcSqr(mergedRegionSize);	// Note: area = size*size
-	cfg->maxVertsPerPoly = (int)vertexPerPoly;
-	cfg->tileSize = (int)m_tileSize;
-	cfg->borderSize = cfg->walkableRadius + 3; // Reserve enough padding.
-	cfg->width = cfg->tileSize + cfg->borderSize * 2;
-	cfg->height = cfg->tileSize + cfg->borderSize * 2;
-	cfg->detailSampleDist = sampleDistance < 0.9f ? 0 : cellWidth * sampleDistance;
-	cfg->detailSampleMaxError = cellHeight * sampleMaxError;
-	rcVcopy(cfg.bmin, bmin);
-	rcVcopy(cfg.bmax, bmax);
-
-	// Tile cache params.
-	dtTileCacheParams tcparams;
-	memset(&tcparams, 0, sizeof(tcparams));
-	rcVcopy(tcparams.orig, bmin);
-	tcparams.cs = m_cellSize;
-	tcparams.ch = m_cellHeight;
-	tcparams.width = (int)m_tileSize;
-	tcparams.height = (int)m_tileSize;
-	tcparams.walkableHeight = m_agentHeight;
-	tcparams.walkableRadius = m_agentRadius;
-	tcparams.walkableClimb = m_agentMaxClimb;
-	tcparams.maxSimplificationError = m_edgeMaxError;
-	tcparams.maxTiles = tw * th * EXPECTED_LAYERS_PER_TILE;
-	tcparams.maxObstacles = 128;
-
-	dtFreeTileCache(m_tileCache);
-
-	m_tileCache = dtAllocTileCache();
-	if (!m_tileCache)
-	{
-		m_ctx->log(RC_LOG_ERROR, "buildTiledNavigation: Could not allocate tile cache.");
-		return false;
-	}
-	status = m_tileCache->init(&tcparams, m_talloc, m_tcomp, m_tmproc);
-	if (dtStatusFailed(status))
-	{
-		m_ctx->log(RC_LOG_ERROR, "buildTiledNavigation: Could not init tile cache.");
-		return false;
-	}
-
-	dtFreeNavMesh(m_navMesh);
-
-	m_navMesh = dtAllocNavMesh();
-	if (!m_navMesh)
-	{
-		LOG("buildTiledNavigation: Could not allocate navmesh.");
-		return;
-	}
-
-	dtNavMeshParams params;
-	memset(&params, 0, sizeof(params));
-	rcVcopy(params.orig, bmin);
-	params.tileWidth = m_tileSize * m_cellSize;
-	params.tileHeight = m_tileSize * m_cellSize;
-	params.maxTiles = m_maxTiles;
-	params.maxPolys = m_maxPolysPerTile;
-
-	status = m_navMesh->init(&params);
-	if (dtStatusFailed(status))
-	{
-		LOG("buildTiledNavigation: Could not init navmesh.");
-		return;
-	}
-
-	status = m_navQuery->init(m_navMesh, 2048);
-	if (dtStatusFailed(status))
-	{
-		LOG("buildTiledNavigation: Could not init Detour navmesh query");
-		return;
-	}
-
-
-	// Preprocess tiles.
-
-	m_ctx->resetTimers();
-
-	m_cacheLayerCount = 0;
-	m_cacheCompressedSize = 0;
-	m_cacheRawSize = 0;
-
-	for (int y = 0; y < th; ++y)
-	{
-		for (int x = 0; x < tw; ++x)
-		{
-			TileCacheData tiles[MAX_LAYERS];
-			memset(tiles, 0, sizeof(tiles));
-			int ntiles = rasterizeTileLayers(x, y, cfg, tiles, MAX_LAYERS);
-
-			for (int i = 0; i < ntiles; ++i)
-			{
-				TileCacheData* tile = &tiles[i];
-				status = m_tileCache->addTile(tile->data, tile->dataSize, DT_COMPRESSEDTILE_FREE_DATA, 0);
-				if (dtStatusFailed(status))
-				{
-					dtFree(tile->data);
-					tile->data = 0;
-					continue;
-				}
-
-				m_cacheLayerCount++;
-				m_cacheCompressedSize += tile->dataSize;
-				m_cacheRawSize += calcLayerBufferSize(tcparams.width, tcparams.height);
-			}
-		}
-	}
-
-	// Build initial meshes
-	m_ctx->startTimer(RC_TIMER_TOTAL);
-	for (int y = 0; y < th; ++y)
-		for (int x = 0; x < tw; ++x)
-			m_tileCache->buildNavMeshTilesAt(x, y, m_navMesh);
-	m_ctx->stopTimer(RC_TIMER_TOTAL);
-
-	m_cacheBuildTimeMs = m_ctx->getAccumulatedTime(RC_TIMER_TOTAL) / 1000.0f;
-	m_cacheBuildMemUsage = static_cast<unsigned int>(m_talloc->high);
-
-
-	const dtNavMesh * nav = m_navMesh;
-	int navmeshMemUsage = 0;
-	for (int i = 0; i < nav->getMaxTiles(); ++i)
-	{
-		const dtMeshTile* tile = nav->getTile(i);
-		if (tile->header)
-			navmeshMemUsage += tile->dataSize;
-	}
-	printf("navmeshMemUsage = %.1f kB", navmeshMemUsage / 1024.0f);
-
-
-	if (m_tool)
-		m_tool->init(this);
-	initToolStates(this);
-
 }
 
 void ModuleNavigation::generateNavigability(bool render)
@@ -989,20 +820,24 @@ void ModuleNavigation::fillVertices()
 
 void ModuleNavigation::fillIndices()
 {
+	std::vector<int>maxVertMesh(meshComponents.size()+1, 0);
 	for (int i = 0; i < meshComponents.size(); ++i)
 	{
 		ntris += meshComponents[i]->mesh->meshIndices.size() / 3;
+		maxVertMesh[i+1] = meshComponents[i]->mesh->meshVertices.size();
 	}
 	tris = new int[ntris * 3];//tris maps vertex and triangles
 	int currentGlobalTri = 0;
+	int vertOverload = 0;
 	for (int j = 0; j < meshComponents.size(); ++j)
 	{
+		vertOverload = maxVertMesh[j];
 		for (int i = 0; i < meshComponents[j]->mesh->meshIndices.size(); i += 3)
 		{
 			//changed y and z order
-			tris[currentGlobalTri] = meshComponents[j]->mesh->meshIndices[i];
-			tris[currentGlobalTri + 1] = meshComponents[j]->mesh->meshIndices[i + 1];
-			tris[currentGlobalTri + 2] = meshComponents[j]->mesh->meshIndices[i + 2];
+			tris[currentGlobalTri] = meshComponents[j]->mesh->meshIndices[i] + vertOverload;
+			tris[currentGlobalTri + 1] = meshComponents[j]->mesh->meshIndices[i + 1] + vertOverload;
+			tris[currentGlobalTri + 2] = meshComponents[j]->mesh->meshIndices[i + 2] + vertOverload;
 			currentGlobalTri += 3;
 		}
 	}
