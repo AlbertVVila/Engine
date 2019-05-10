@@ -77,7 +77,7 @@ private:
 	std::string textureName = "None Selected";
 	std::vector<std::string> textureFiles;
 
-	std::list<ParticleModule*> modules;
+	std::vector<ParticleModule*> modules;
 
 	int xTiles = 1;
 	int yTiles = 1;
@@ -109,6 +109,9 @@ private:
 	bool quadCheck = true;
 	bool sphereCheck = false;
 	std::vector<bool*> emisorsCheck = { &quadCheck,&sphereCheck};
+
+	bool sizeOTCheck = false;
+	bool colorOTCheck = false;
 
 };
 

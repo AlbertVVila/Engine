@@ -79,6 +79,12 @@ void ComponentParticles::DrawProperties()
 {
 	if (ImGui::CollapsingHeader("Particle System")) 
 	{
+		bool removed = Component::DrawComponentState();
+		if (removed)
+		{
+			return;
+		}
+
 		ImGui::PushID(this);
 		ImGui::Text("Particles active %d", particles.size());
 		//texture selector
@@ -215,6 +221,10 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 	f2Ypos = f1Xpos < f2Xpos ? f1Ypos : f1Ypos + 1;	
 
 	rateTimer -= dt;
+
+	//Update the active modules with local checks
+	sizeOTCheck = modules[0]->enabled;
+	colorOTCheck = modules[1]->enabled;
 
 	//Create new Particle P
 	if (rateTimer <= 0.f && particles.size() < maxParticles)
@@ -369,6 +379,9 @@ void ComponentParticles::Save(JSON_value* value) const
 	value->AddInt("directionNoiseProbability", directionNoiseProbability);
 	value->AddInt("directionNoiseTotalProbability", directionNoiseTotalProbability);
 	value->AddInt("actualEmisor", actualEmisor);
+	value->AddInt("sizeOT", sizeOTCheck);
+	value->AddInt("colorOT", colorOTCheck);
+	
 }
 
 void ComponentParticles::Load(JSON_value* value)
@@ -396,6 +409,9 @@ void ComponentParticles::Load(JSON_value* value)
 	directionNoiseTotalProbability = MAX(value->GetInt("directionNoiseTotalProbability"), 1);
 	actualEmisor = static_cast<EmisorType>(value->GetInt("actualEmisor"));
 	alternateEmisor(actualEmisor);
+	modules[0]->enabled = value->GetInt("sizeOT");
+	modules[1]->enabled = value->GetInt("colorOT");
+
 }
 
 void ComponentParticles::alternateEmisor(int newEmisor)
