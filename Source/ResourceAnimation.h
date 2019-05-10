@@ -28,7 +28,7 @@ public:
 public:
 	bool LoadInMemory() override;		// Will load in memory all Resourceanims stored
 	void DeleteFromMemory() override;	// Will delete all ResourceAnims stored in memory
-	void Delete() override;
+	void Delete() override;				// Delete file in Library
 
 
 	void SetAnimation(const char* animData);

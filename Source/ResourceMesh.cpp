@@ -575,19 +575,11 @@ bool ResourceMesh::Intersects(const LineSegment &line, float* distance, math::fl
 	return intersects;
 }
 
-void ResourceMesh::Rename(const char* newName)
-{
-	name = newName;								// Update name variable
-}
-
 void ResourceMesh::Delete()
 {
 	// Delete Resource from ResourceManager
 	App->resManager->DeleteResourceFromList(UID);
 
-	// Delete file in Library
-	std::string fileInLibrary(MESHES);
-	fileInLibrary += exportedFile;
-	App->fsystem->Delete(fileInLibrary.c_str());
+	App->fsystem->Delete(exportedFile.c_str());
 	DeleteFromMemory();
 }

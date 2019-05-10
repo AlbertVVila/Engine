@@ -36,7 +36,6 @@ public:
 	bool Intersects(const LineSegment& line, float* distance, math::float3* intersectionPoint = nullptr);
 
 	// File in Assets especific
-	void Rename(const char* newName) override;
 	void Delete() override;
 
 private:
