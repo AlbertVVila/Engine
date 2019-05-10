@@ -214,7 +214,7 @@ void ComponentRenderer::Save(JSON_value* value) const
 {
 	Component::Save(value);
 	value->AddUint("meshUID", (mesh != nullptr) ? mesh->GetUID() : 0u);
-	value->AddString("materialFile", (material != nullptr) ? material->GetExportedFile() : DEFAULTMAT);
+	value->AddString("materialFile", (material != nullptr) ? material->GetName() : DEFAULTMAT);
 	value->AddInt("castShadows", castShadows);
 	value->AddInt("useAlpha", useAlpha);
 }
@@ -244,7 +244,7 @@ void ComponentRenderer::SetMaterial(const char* materialName)
 
 	if (materialName == nullptr)
 	{
-		material = (ResourceMaterial*)App->resManager->Get(DEFAULTMAT,TYPE::MATERIAL);
+		material = (ResourceMaterial*)App->resManager->GetByName(DEFAULTMAT,TYPE::MATERIAL);
 		return;
 	}
 	else
@@ -253,7 +253,7 @@ void ComponentRenderer::SetMaterial(const char* materialName)
 
 		// Material can't be found
 		if(material == nullptr)
-			material = (ResourceMaterial*)App->resManager->Get(DEFAULTMAT, TYPE::MATERIAL);
+			material = (ResourceMaterial*)App->resManager->GetByName(DEFAULTMAT, TYPE::MATERIAL);
 	}
 	return;
 }
