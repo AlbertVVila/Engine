@@ -1089,10 +1089,8 @@ void ModuleScene::LoadScene(const char* sceneName, const char* folder)
 
 bool ModuleScene::AddScene(const char* sceneName, const char* folder)
 {
-	std::string exportedFile(sceneName);
-	exportedFile += SCENEEXTENSION;
-	ResourceScene* scene = (ResourceScene*)App->resManager->GetWithoutLoad(exportedFile.c_str());
-	if(!scene->Load())
+	ResourceScene* scene = (ResourceScene*)App->resManager->GetByName(sceneName, TYPE::SCENE);
+	if(scene != nullptr && !scene->Load())
 	{
 		LOG("Error loading scene named: %s", sceneName);
 		return false;
