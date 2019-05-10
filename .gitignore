@@ -262,11 +262,11 @@ __pycache__/
 *.pyc
 /Game/Engine - Master 1.exe
 
+*.meta
+
 /Game/Library/Materials/
 /Game/Library/Meshes/
 /Game/Library/Textures/
 /Game/Library/Scenes/
-
-*.meta
 
 GameBuild/
