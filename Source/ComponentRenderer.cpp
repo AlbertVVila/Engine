@@ -73,7 +73,7 @@ void ComponentRenderer::DrawProperties()
 		// Mesh selector
 		ImGui::Text("Mesh");
 		ImGui::PushID("Mesh Combo");
-		if (ImGui::BeginCombo("", mesh != nullptr ? mesh->GetName() : ""))
+		if (ImGui::BeginCombo("", mesh != nullptr ? mesh->GetName() : "None selected"))
 		{
 			if (guiMeshes.empty())
 			{
@@ -116,7 +116,7 @@ void ComponentRenderer::DrawProperties()
 		// Material selector
 		ImGui::Text("Material");
 		ImGui::PushID("Material Combo");
-		if (ImGui::BeginCombo("", material->GetName()))
+		if (ImGui::BeginCombo("", material != nullptr ? material->GetName() : "None selected"))
 		{
 			if (guiMaterials.empty())
 			{
