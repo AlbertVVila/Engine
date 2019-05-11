@@ -1289,7 +1289,7 @@ ComponentLight* ModuleScene::GetDirectionalLight() const
 {
 	for (const auto& light : lights)
 	{
-		if (light->lightType == LightType::DIRECTIONAL && light->enabled)
+		if (light->lightType == LightType::DIRECTIONAL)
 		{
 			return light;
 		}
