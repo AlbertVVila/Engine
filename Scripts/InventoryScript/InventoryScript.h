@@ -28,7 +28,7 @@ public:
 private:
 	std::vector<Component*> slotsTransform;
 
-	GameObject* items = nullptr;
+	std::vector<GameObject*> items;
 	GameObject* inventory = nullptr;
 
 	math::float2 initialitemPos = math::float2::zero;
