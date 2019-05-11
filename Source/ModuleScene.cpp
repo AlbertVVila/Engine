@@ -124,7 +124,7 @@ update_status ModuleScene::PreUpdate()
 #else
 	if (maincamera != nullptr)
 	{
-		FrustumCulling(*maincamera->frustum);
+		FrustumCulling(*App->camera->editorcamera->frustum);
 	}
 #endif
 	return UPDATE_CONTINUE;
