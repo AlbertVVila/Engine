@@ -124,7 +124,14 @@ update_status ModuleScene::PreUpdate()
 #else
 	if (maincamera != nullptr)
 	{
-		FrustumCulling(*App->camera->editorcamera->frustum);
+		if (*App->renderer->viewScene->focus == true)
+		{
+			FrustumCulling(*maincamera->frustum);
+		}
+		else if(*App->renderer->gameScene->focus == true)
+		{ 
+			FrustumCulling(*App->camera->editorcamera->frustum);
+		}
 	}
 #endif
 	return UPDATE_CONTINUE;
