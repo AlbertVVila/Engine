@@ -104,8 +104,8 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 		cam->SetAspect(size.x / size.y);
 		if (cam->aspectDirty)
 		{
-			CreateFrameBuffer(size.x, size.y);
 			App->renderer->OnResize();
+			CreateFrameBuffer(size.x, size.y);
 		}
 		current_width = size.x;
 		current_height = size.y;
@@ -149,7 +149,7 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 
 		if (isEditor)
 		{
-			ImGui::Image((ImTextureID)App->renderer->renderedSceneEditor, size, ImVec2(0, 1), ImVec2(1, 0));
+			ImGui::Image((ImTextureID)texture, size, ImVec2(0, 1), ImVec2(1, 0));
 			DrawImGuizmo(*cam);
 			if (!ImGuizmo::IsUsing() && !ImGui::IsAnyItemHovered())
 			{
@@ -283,11 +283,11 @@ void Viewport::CreateFrameBuffer(int width, int height)
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, RBO);
 
 		glBindRenderbuffer(GL_RENDERBUFFER, 0);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 			LOG("Framebuffer ERROR");
 
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 		CreateMSAABuffers(width, height);
 

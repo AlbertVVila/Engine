@@ -96,34 +96,28 @@ bool ModuleRender::Init(JSON * config)
 		break;
 	}
 
-	glGenTextures(2, &highlightBufferEditor);
-	glGenTextures(2, &highlightBufferGame);
-	glGenTextures(2, &renderedSceneEditor);
+	glGenTextures(1, &highlightBufferGame);
+	glGenTextures(1, &renderedSceneGame);
 
 	float quadVertices[] =
 	{
-		-1.0f, -1.0f, 0.0f, // bottom left 0
-		1.0f, -1.0f, 0.0f, // bottom right 2
-		-1.0f,  1.0f, 0.0f, // top left 1
+		-1.f, 1.f, 0.f,
+		-1.f, -1.f, 0.f,
+		1.f, -1.f, 0.f,
+		1.f, 1.f, 0.f,
 
-		-1.0f,  1.0f, 0.0f, // top left 1
-		1.0f, -1.0f, 0.0f, // bottom right 2
-		1.0f,  1.0f, 0.0f, // top right 3
-
-		0.0f, 0.0f, // 0
-		1.0f, 0.0f, // 2
-		0.0f, 1.0f, // 1
-
-		0.0f, 1.0f, // 1
-		1.0f, 0.0f, // 2
-		1.0f, 1.0f  // 3
+		0.f, 1.f,
+		0.f, 0.f,
+		1.f, 0.f,
+		1.f, 1.f
 	};
 
 	unsigned int quadIndices[] =
 	{
-		0,2,1,
-		1,2,3
+		0, 1, 2,
+		0, 2, 3
 	};
+
 
 
 
@@ -146,7 +140,7 @@ bool ModuleRender::Init(JSON * config)
 
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * 6));
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * 4));
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
@@ -229,6 +223,7 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+
 	if (wireframe)
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -241,6 +236,10 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 	SetProjectionUniform(cam);
 	SetViewUniform(cam);
 	skybox->Draw(*cam.frustum);
+
+	const float transparent[] = { 0, 0, 0, 1 };
+	glClearBufferfv(GL_COLOR, 1, transparent);
+
 	if (isEditor)
 	{
 		DrawGizmos(cam);
@@ -251,6 +250,7 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 		App->navigation->renderNavMesh();
 		glUseProgram(0);
 	}
+	
 	App->scene->Draw(*cam.frustum, isEditor);
 
 	if (!isEditor || isEditor && App->ui->showUIinSceneViewport)
@@ -258,13 +258,46 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 		App->ui->Draw(width, height);
 	}
 	App->particles->Render(App->time->gameDeltaTime, &cam);
+	
 
-	glUseProgram(postProcessShader->id[0]);
-	glBindBuffer(GL_ARRAY_BUFFER, postprocessVBO);
-	glDrawArrays(GL_TRIANGLES, 0, 6);
+	
+	if (!isEditor)
+	{
 
-	unsigned int attachments[2] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };// , GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4
-	glDrawBuffers(2, attachments);
+		unsigned int attachments[2] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };// , GL_COLOR_ATTACHMENT2	};// , , GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4
+		glDrawBuffers(2, attachments);
+
+		GLint drawFboId = 0;
+		glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &drawFboId);
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0); //Flush textures
+
+		glBindFramebuffer(GL_FRAMEBUFFER, drawFboId);
+
+		glUseProgram(postProcessShader->id[0]);
+		glBindVertexArray(postprocessVAO);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, postprocessEBO);
+
+		int colorTex = renderedSceneGame;
+		int hlTex = highlightBufferGame;
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, colorTex);
+
+		glUniform1i(glGetUniformLocation(postProcessShader->id[0], "gColor"), 0);
+
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, hlTex);
+
+		glUniform1i(glGetUniformLocation(postProcessShader->id[0], "gHighlight"), 1);
+
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
+		
+		glDrawBuffers(2, attachments);
+	
+	}
+
 }
 
 bool ModuleRender::IsSceneViewFocused() const
@@ -304,31 +337,22 @@ void ModuleRender::OnResize()
 	}
 #endif
 #ifndef GAME_BUILD
-	glBindFramebuffer(GL_FRAMEBUFFER, viewScene->FBO);
-	glBindTexture(GL_TEXTURE_2D, renderedSceneEditor);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, viewScene->current_width, viewScene->current_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderedSceneEditor, 0);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-	glBindTexture(GL_TEXTURE_2D, highlightBufferEditor);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, viewScene->current_width, viewScene->current_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, highlightBufferEditor, 0);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	GLint drawFboId = 0;
+	glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &drawFboId);
 
 	if (App->scene->maincamera != nullptr)
 	{
-		if (msaa)
+		/*if (msaa)
 		{
 			glBindFramebuffer(GL_FRAMEBUFFER, viewGame->MSAAFBO);
 		}
 		else
 		{
 			glBindFramebuffer(GL_FRAMEBUFFER, viewGame->FBO);
-		}
+		}*/
+		glBindFramebuffer(GL_FRAMEBUFFER, viewGame->FBO);
 		glBindTexture(GL_TEXTURE_2D, renderedSceneGame);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, viewScene->current_width, viewScene->current_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, viewGame->current_width, viewGame->current_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderedSceneGame, 0);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -340,7 +364,7 @@ void ModuleRender::OnResize()
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	}
 	glBindTexture(GL_TEXTURE_2D, 0);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, drawFboId);
 #endif
 }
 
@@ -637,8 +661,9 @@ void ModuleRender::DrawGUI()
 		App->camera->editorcamera->frustum->nearPlaneDistance = ZNEARDIST * current_scale;
 		App->camera->editorcamera->frustum->farPlaneDistance = ZFARDIST * current_scale;
 	}
-
-	ImGui::Image((ImTextureID)highlightBufferEditor, { 200,200 }, { 0,1 }, { 1,0 });
+	ImGui::Text("Scene");
+	ImGui::Image((ImTextureID)renderedSceneGame, { 200,200 }, { 0,1 }, { 1,0 });
+	ImGui::Text("Highlight");
 	ImGui::Image((ImTextureID)highlightBufferGame, { 200,200 }, { 0,1 }, { 1,0 });
 }
 

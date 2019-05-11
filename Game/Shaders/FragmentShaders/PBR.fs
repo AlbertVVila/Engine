@@ -251,5 +251,5 @@ void main()
 	color += get_emissive_color();
 	color = vec3(pow(color.r, (1.0 / 2.2)), pow(color.g, (1.0 / 2.2)), pow(color.b, (1.0 / 2.2)));
 	Fragcolor = vec4(color, albedo.a);
-	highlightColor = vec4(highlightColorUniform, useHighlight);
+	highlightColor = vec4(highlightColorUniform, 1);
 }
