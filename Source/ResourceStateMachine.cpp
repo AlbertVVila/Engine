@@ -44,7 +44,7 @@ bool ResourceStateMachine::LoadInMemory()
 {
 	char* data = nullptr;
 
-	unsigned ok = App->fsystem->Load((IMPORTED_STATEMACHINES + std::to_string(GetUID()) + STATEMACHINEEXTENSION).c_str(), &data);
+	unsigned ok = App->fsystem->Load(exportedFile.c_str(), &data);
 
 	// Load mesh file
 	if (ok != 0)
@@ -73,7 +73,7 @@ void ResourceStateMachine::Delete()
 
 	// Delete file in Library
 	std::string fileInLibrary(IMPORTED_STATEMACHINES);
-	fileInLibrary += exportedFileName;
+	fileInLibrary += exportedFile;
 	fileInLibrary += STATEMACHINEEXTENSION;
 	App->fsystem->Delete(fileInLibrary.c_str());
 	DeleteFromMemory();
@@ -121,13 +121,6 @@ void ResourceStateMachine::SetStateMachine(const char* data)
 	nodes.clear();
 	clips.clear();
 	transitions.clear();
-
-	char smName[MAX_BONE_NAME_LENGTH];
-
-	memcpy(smName, data, sizeof(char) * MAX_BONE_NAME_LENGTH);
-	data += sizeof(char)* MAX_BONE_NAME_LENGTH;
-
-	name = std::string(smName);
 
 	//import clips vector
 	unsigned clipsSize = 0u;
@@ -225,7 +218,6 @@ void ResourceStateMachine::SetStateMachine(const char* data)
 unsigned ResourceStateMachine::GetStateMachineSize()
 {
 	unsigned size = 0u;
-	size += sizeof(char) * MAX_BONE_NAME_LENGTH;
 
 	size += sizeof(int);
 
@@ -262,9 +254,6 @@ unsigned ResourceStateMachine::GetStateMachineSize()
 void ResourceStateMachine::SaveStateMachineData(char* data)
 {
 	char* cursor = data;
-
-	memcpy(cursor, name.c_str(), sizeof(char) * MAX_BONE_NAME_LENGTH);
-	cursor += sizeof(char) * MAX_BONE_NAME_LENGTH;
 
 	unsigned clipsSize = clips.size();
 	memcpy(cursor, &clipsSize, sizeof(int));
@@ -326,7 +315,6 @@ void ResourceStateMachine::SaveStateMachineData(char* data)
 
 void ResourceStateMachine::Save()
 {
-
 	char* stateMachineData = nullptr;
 	unsigned stateMachineSize = GetStateMachineSize();
 	stateMachineData = new char[stateMachineSize];
@@ -334,7 +322,6 @@ void ResourceStateMachine::Save()
 
 	App->fsystem->Save((STATEMACHINES + name + STATEMACHINEEXTENSION).c_str(), stateMachineData, stateMachineSize);
 	SetFile((STATEMACHINES + name + STATEMACHINEEXTENSION).c_str());
-	//SetExportedFile(std::to_string(GetUID()).c_str());
 	RELEASE_ARRAY(stateMachineData);
 }
 

@@ -217,9 +217,8 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 		}
 		animationComponent->anim = animation;
 		animationData[animationSize] = 0;
-		App->fsystem->Save((IMPORTED_ANIMATIONS + std::to_string(animation->GetUID()) + ANIMATIONEXTENSION).c_str(), animationData, animationSize);
 
-		std::string exportedFile(ANIMATIONS + std::to_string(animation->GetUID()) + ANIMATIONEXTENSION);
+		std::string exportedFile(IMPORTED_ANIMATIONS + std::to_string(animation->GetUID()) + ANIMATIONEXTENSION);
 		App->fsystem->Save(exportedFile.c_str(), animationData, animationSize);
 		animation->SetFile(path.c_str());
 		animation->SetExportedFile(exportedFile.c_str());

@@ -132,7 +132,7 @@ void ResourceModel::LoadConfigFromMeta()
 		unsigned animUID = value->GetUint(("Animation" + std::to_string(i)).c_str());
 		ResourceAnimation* anim = (ResourceAnimation*)App->resManager->CreateNewResource(TYPE::ANIMATION, animUID);
 		anim->SetFile(file.c_str());
-		anim->SetExportedFile((ANIMATIONS + std::to_string(anim->GetUID()) + ANIMATIONEXTENSION).c_str());
+		anim->SetExportedFile((IMPORTED_ANIMATIONS + std::to_string(anim->GetUID()) + ANIMATIONEXTENSION).c_str());
 		//anim->name = name + "_" + std::to_string(i);
 		anim->SetName((name + "_" + std::to_string(i)).c_str());
 
@@ -160,7 +160,7 @@ bool ResourceModel::CheckImportedMeshes()
 bool ResourceModel::CheckImportedAnimations()
 {
 	std::set<std::string> importedAnimations;
-	App->fsystem->ListFileNames(ANIMATIONS, importedAnimations);
+	App->fsystem->ListFileNames(IMPORTED_ANIMATIONS, importedAnimations);
 
 	for each(auto anim in animationList)
 	{

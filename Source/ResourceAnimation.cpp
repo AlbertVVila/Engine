@@ -8,6 +8,7 @@
 #include "ResourceAnimation.h"
 
 #include "Globals.h"
+#include "imgui.h"
 #include "JSON.h"
 #include <assert.h>
 
@@ -56,7 +57,7 @@ bool ResourceAnimation::LoadInMemory()
 {
 	char* data = nullptr;
 
-	unsigned ok = App->fsystem->Load((IMPORTED_ANIMATIONS + std::to_string(UID) + ANIMATIONEXTENSION).c_str(), &data);
+	unsigned ok = App->fsystem->Load(exportedFile.c_str(), &data);
 
 	// Load mesh file
 	if (ok != 0)
@@ -87,7 +88,7 @@ void ResourceAnimation::Delete()
 
 	// Delete file in Library
 	std::string fileInLibrary(IMPORTED_ANIMATIONS);
-	fileInLibrary += exportedFileName;
+	fileInLibrary += exportedFile;
 	fileInLibrary += ANIMATIONEXTENSION;
 	App->fsystem->Delete(fileInLibrary.c_str());
 	DeleteFromMemory();
@@ -126,7 +127,6 @@ void ResourceAnimation::LoadConfigFromMeta()
 	JSON_value* value = json->GetValue("Animation");
 	UID = value->GetUint("GUID");
 	name = value->GetString("name");
-	std::string name = App->fsystem->GetFilename(file);
 }
 
 void ResourceAnimation::SetAnimation(const char* animationData)
@@ -268,12 +268,9 @@ void ResourceAnimation::SaveNewAnimation()
 	animationData = new char[animationSize];
 	SaveAnimationData(animationData);
 
-	unsigned animUID = App->resManager->GenerateNewUID();
 	App->fsystem->Save((ANIMATIONS + name + ANIMATIONEXTENSION).c_str(), animationData, animationSize);
 	SetFile((ANIMATIONS + name + ANIMATIONEXTENSION).c_str());
-	//SetExportedFile(std::to_string(animUID).c_str());
 	RELEASE_ARRAY(animationData);
-
 }
 
 unsigned ResourceAnimation::GetNumPositions(unsigned indexChannel) const

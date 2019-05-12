@@ -339,17 +339,19 @@ bool ModuleFileSystem::CopyFromOutsideFS(const char* source, const char* destina
 
 bool ModuleFileSystem::Copy(const char* source, const char* destination, const char* file) const
 {
-	char * data = nullptr;
+	char* data = nullptr;
 	std::string filepath(source);
 	filepath += file;
 	unsigned size = Load(filepath.c_str(), &data);
+	if (size < 0u) return false;
 	std::string filedest(destination);
 	filedest += file;
-	Save(filedest.c_str(), data, size);
+	bool ret = Save(filedest.c_str(), data, size);
 	RELEASE_ARRAY(data);
-
-	return true;
+	
+	return ret;
 }
+
 
 bool ModuleFileSystem::Move(const char * source, const char* file, const char* newFile) const
 {
@@ -409,14 +411,7 @@ void ModuleFileSystem::Monitorize(const char* folder)
 
 void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 {
-	std::set<std::string> importedStateMachines;
-	std::set<std::string> importedAnimations;
-	ListFileNames(STATEMACHINES, importedStateMachines);
 
-	ListFiles(TEXTURES, importedTextures);
-	ListFiles(IMPORTED_MATERIALS, importedMaterials);
-	ListFiles(IMPORTED_STATEMACHINES, importedStateMachines);
-	ListFiles(IMPORTED_ANIMATIONS, importedAnimations);
 	// Get lists with all imported resources and materials
 	std::set<std::string> importedResources;
 	ListFileNames(LIBRARY, importedResources);
@@ -428,23 +423,6 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 	std::string currentFolder;
 	struct stat statFile;
 	struct stat statMeta;
-
-	//for the statesMachine, about to be deprecated
-	//std::vector<std::string> smFiles = GetFolderContent(STATEMACHINES);
-	//for (auto& file : smFiles)
-	//{
-	//	std::set<std::string>::iterator it = importedStateMachines.find(RemoveExtension(file));
-	//	if (it == importedStateMachines.end())
-	//	{
-	//		// File modified or not imported, send it to import
-	//		filesToImport.push_back(std::pair<std::string, std::string>(file, STATEMACHINES));
-	//	}
-	//	else
-	//	{
-	//		// File already imported, add it to the resources list
-	//		App->resManager->AddResource(file.c_str(), STATEMACHINES, TYPE::STATEMACHINE);
-	//	}
-	//}
 
 	while (!folderStack.empty())
 	{
@@ -489,8 +467,6 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 				}
 				else if (type != FILETYPE::NONE && type != FILETYPE::AUDIO) // TODO:: Include State machines and Animations	
 				{
- 					std::set<std::string>::iterator it = importedStateMachines.find(RemoveExtension(file));
-					if (it == importedStateMachines.end() || statFile.st_mtime > statMeta.st_mtime)
 					std::set<std::string>::iterator it = importedResources.find(RemoveExtension(file));
 					if (it == importedResources.end() || statFile.st_mtime > statMeta.st_mtime)
 					{
@@ -502,34 +478,6 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 						// File already imported, add it to the resources list
 						Resource* res = App->resManager->AddResource(file.c_str(), currentFolder.c_str(), App->resManager->GetResourceType(type));
 						res->LoadConfigFromMeta();
-					}
-				}
-				else if (type == FILETYPE::ANIMATION)
-				{
-					std::set<std::string>::iterator it = importedAnimations.find(RemoveExtension(file));
-					if (it == importedAnimations.end() || statFile.st_mtime > statMeta.st_mtime)
-					{
-						// File modified or not imported, send it to import
-						filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
-					}
-					else
-					{
-						// File already imported, add it to the resources list
-						App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::ANIMATION);
-					}
-				}
-				else if (type == FILETYPE::MATERIAL)
-				{
-					std::set<std::string>::iterator it = importedMaterials.find(RemoveExtension(file));
-					if (it == importedMaterials.end() || statFile.st_mtime > statMeta.st_mtime)
-					{
-						// File modified or not imported, send it to import
-						filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
-					}
-					else
-					{
-						// File already imported, add it to the resources list
-						App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::MATERIAL);
 					}
 				}
 			}

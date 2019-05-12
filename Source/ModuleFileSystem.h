@@ -19,11 +19,9 @@
 #define STATEMACHINES ASSETS "StateMachines/"
 #define ANIMATIONS ASSETS "Animations/"
 #define MESHES LIBRARY "Meshes/"
-#define ANIMATIONS LIBRARY "Animations/"
 #define TEXTURES LIBRARY "Textures/"
 #define SCENES ASSETS "Scenes/"
 #define IMPORTED_SCENES LIBRARY "Scenes/"
-#define STATEMACHINES LIBRARY "StateMachines/"
 #define AUDIOS "Audio/"
 
 #define TEMPORARY_SCENE "temporaryScene"

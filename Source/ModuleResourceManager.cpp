@@ -250,9 +250,19 @@ bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* 
 		break;
 	case TYPE::ANIMATION:
 		success = App->fsystem->Copy(filePath, IMPORTED_ANIMATIONS, newFileInAssets);
+		if (success)
+		{
+			success = App->fsystem->Rename(IMPORTED_ANIMATIONS, (name + ANIMATIONEXTENSION).c_str(), std::to_string(resource->GetUID()).c_str());
+		}
+		exportedFile = IMPORTED_ANIMATIONS + std::to_string(resource->GetUID()) + ANIMATIONEXTENSION;
 		break;
 	case TYPE::STATEMACHINE:
 		success = App->fsystem->Copy(filePath, IMPORTED_STATEMACHINES, newFileInAssets);
+		if (success)
+		{
+			success = App->fsystem->Rename(IMPORTED_STATEMACHINES, (name + STATEMACHINEEXTENSION).c_str(), std::to_string(resource->GetUID()).c_str());
+		}
+		exportedFile = IMPORTED_STATEMACHINES + std::to_string(resource->GetUID()) + STATEMACHINEEXTENSION;
 		break;
 	}
 
@@ -281,12 +291,40 @@ bool ModuleResourceManager::ReImportFile(Resource* resource, const char* filePat
 
 	switch (type)
 	{
-	case TYPE::TEXTURE:		success = App->textures->ImportImage(file.c_str(), filePath, (ResourceTexture*)resource);		break;
-	case TYPE::MODEL:		success = App->fsystem->importer.ImportFBX(file.c_str(), filePath, (ResourceModel*)resource);	break;
-	/*case TYPE::MESH:		success = App->fsystem->importer.ImportFBX(file.c_str(), filePath, (ResourceMesh*)resource);	break;
-	case TYPE::AUDIO:		success = App->audio->Import(newFileInAssets, written_file);									break;*/
-	case TYPE::MATERIAL:	success = App->fsystem->Copy(filePath, IMPORTED_MATERIALS, file.c_str());						break;
-	case TYPE::SCENE:		success = App->fsystem->Copy(filePath, IMPORTED_SCENES, file.c_str());							break;
+	case TYPE::TEXTURE:
+		success = App->textures->ImportImage(file.c_str(), filePath, (ResourceTexture*)resource);	
+		break;
+	case TYPE::MODEL:	
+		success = App->fsystem->importer.ImportFBX(file.c_str(), filePath, (ResourceModel*)resource);	
+		break;
+	/*case TYPE::MESH:	
+	success = App->fsystem->importer.ImportFBX(file.c_str(), filePath, (ResourceMesh*)resource);	
+	break;
+	case TYPE::AUDIO:	
+	success = App->audio->Import(newFileInAssets, written_file);	
+	break;*/
+	case TYPE::MATERIAL:	
+		success = App->fsystem->Copy(filePath, IMPORTED_MATERIALS, file.c_str());				
+		break;
+	case TYPE::SCENE:	
+		success = App->fsystem->Copy(filePath, IMPORTED_SCENES, file.c_str());						
+		break;
+	case TYPE::ANIMATION:	
+		success = App->fsystem->Copy(filePath, IMPORTED_ANIMATIONS, file.c_str());		
+		if (success)
+		{
+			success = App->fsystem->Rename(IMPORTED_ANIMATIONS, App->fsystem->GetFile(resource->GetExportedFile()).c_str(),
+				std::to_string(resource->GetUID()).c_str());
+		}
+		break;
+	case TYPE::STATEMACHINE:
+		success = App->fsystem->Copy(filePath, IMPORTED_STATEMACHINES, file.c_str());	
+		if (success)
+		{
+			success = App->fsystem->Rename(IMPORTED_STATEMACHINES, App->fsystem->GetFile(resource->GetExportedFile()).c_str(),
+				std::to_string(resource->GetUID()).c_str());
+		}
+		break;
 	}
 
 	// If export was successful, update resource
@@ -644,12 +682,14 @@ Resource* ModuleResourceManager::AddResource(const char* file, const char* direc
 		// Set Exported File
 		switch (type)
 		{
-		case TYPE::TEXTURE:		exportedFile = TEXTURES				+	App->fsystem->GetFilename(file) + TEXTUREEXT;		break;
-		case TYPE::MODEL:		exportedFile =							App->fsystem->GetFilename(file) + FBXEXTENSION;		break;
-		/*case TYPE::MESH:		exportedFile = MESHES;				+	App->fsystem->GetFilename(file) + MESHEXTENSION;	break;
-		case TYPE::AUDIO:		exportedFile = IMPORTED_AUDIOS		+	App->fsystem->GetFilename(file) + AUDIOEXTENSION;	break;*/
-		case TYPE::SCENE:		exportedFile = IMPORTED_SCENES		+	App->fsystem->GetFilename(file) + SCENEEXTENSION;	break;
-		case TYPE::MATERIAL:	exportedFile = IMPORTED_MATERIALS	+	App->fsystem->GetFilename(file) + MATERIALEXT;		break;
+		case TYPE::TEXTURE:		exportedFile = TEXTURES					+	App->fsystem->GetFilename(file) + TEXTUREEXT;			break;
+		case TYPE::MODEL:		exportedFile =								App->fsystem->GetFilename(file) + FBXEXTENSION;			break;
+		/*case TYPE::MESH:		exportedFile = MESHES;					+	App->fsystem->GetFilename(file) + MESHEXTENSION;		break;
+		case TYPE::AUDIO:		exportedFile = IMPORTED_AUDIOS			+	App->fsystem->GetFilename(file) + AUDIOEXTENSION;		break;*/
+		case TYPE::SCENE:		exportedFile = IMPORTED_SCENES			+	App->fsystem->GetFilename(file) + SCENEEXTENSION;		break;
+		case TYPE::MATERIAL:	exportedFile = IMPORTED_MATERIALS		+	App->fsystem->GetFilename(file) + MATERIALEXT;			break;
+		case TYPE::ANIMATION:	exportedFile = IMPORTED_ANIMATIONS		+   App->fsystem->GetFilename(file) + ANIMATIONEXTENSION;	break;
+		case TYPE::STATEMACHINE:exportedFile = IMPORTED_STATEMACHINES	+	App->fsystem->GetFilename(file) + STATEMACHINEEXTENSION;break;
 		default:
 			break;
 		}
