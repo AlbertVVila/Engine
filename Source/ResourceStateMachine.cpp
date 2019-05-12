@@ -6,6 +6,7 @@
 #include "ResourceStateMachine.h"
 #include "ResourceAnimation.h"
 
+#include "JSON.h"
 #include "Globals.h"
 
 
@@ -20,7 +21,7 @@ ResourceStateMachine::ResourceStateMachine(const ResourceStateMachine& resource)
 
 	for(const auto& clip : resource.clips)
 	{
-		clips.push_back(Clip(clip.name, clip.UID, clip.loop, clip.mustFinish, clip.clipSpeed, clip.startFrame , clip.endFrame));
+		clips.push_back(Clip(clip.name, clip.UID, clip.loop, clip.mustFinish, clip.clipSpeed));
 	}
 
 	for (const auto& node : resource.nodes)
@@ -43,7 +44,7 @@ bool ResourceStateMachine::LoadInMemory()
 {
 	char* data = nullptr;
 
-	unsigned ok = App->fsystem->Load(exportedFile.c_str(), &data);
+	unsigned ok = App->fsystem->Load((IMPORTED_STATEMACHINES + std::to_string(GetUID()) + STATEMACHINEEXTENSION).c_str(), &data);
 
 	// Load mesh file
 	if (ok != 0)
@@ -62,7 +63,7 @@ void ResourceStateMachine::DeleteFromMemory()
 	clips.clear();
 	transitions.clear();
 
-	App->fsystem->Remove((STATEMACHINES + std::to_string(GetUID()) + STATEMACHINEEXTENSION).c_str());
+	App->fsystem->Remove((IMPORTED_STATEMACHINES + std::to_string(GetUID()) + STATEMACHINEEXTENSION).c_str());
 }
 
 void ResourceStateMachine::Delete()
@@ -71,10 +72,47 @@ void ResourceStateMachine::Delete()
 	App->resManager->DeleteResourceFromList(UID);
 
 	// Delete file in Library
-	std::string fileInLibrary(STATEMACHINES);
-	fileInLibrary += exportedFile;
+	std::string fileInLibrary(IMPORTED_STATEMACHINES);
+	fileInLibrary += exportedFileName;
+	fileInLibrary += STATEMACHINEEXTENSION;
 	App->fsystem->Delete(fileInLibrary.c_str());
 	DeleteFromMemory();
+}
+
+void ResourceStateMachine::SaveMetafile(const char * file) const
+{
+	std::string filepath;
+	filepath.append(file);
+	JSON* json = new JSON();
+	JSON_value* meta = json->CreateValue();
+	struct stat statFile;
+	stat(filepath.c_str(), &statFile);
+	meta->AddUint("GUID", UID);
+	meta->AddUint("timeCreated", statFile.st_ctime);
+	meta->AddString("name", name.c_str());
+	json->AddValue("StateMachine", *meta);
+	filepath += METAEXT;
+	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
+}
+
+void ResourceStateMachine::LoadConfigFromMeta()
+{
+	Resource::LoadConfigFromMeta();
+	char* data = nullptr;
+	std::string metaFile(file);
+	metaFile += ".meta";
+
+	if (App->fsystem->Load(metaFile.c_str(), &data) == 0)
+	{
+		LOG("Warning: %s couldn't be loaded", metaFile.c_str());
+		RELEASE_ARRAY(data);
+		return;
+	}
+	JSON* json = new JSON(data);
+	JSON_value* value = json->GetValue("StateMachine");
+	UID = value->GetUint("GUID");
+	name = value->GetString("name");
+	std::string name = App->fsystem->GetFilename(file);
 }
 
 void ResourceStateMachine::SetStateMachine(const char* data)
@@ -122,15 +160,7 @@ void ResourceStateMachine::SetStateMachine(const char* data)
 		memcpy(&speed, data, sizeof(float));
 		data += sizeof(float);
 
-		int startFrame;
-		memcpy(&startFrame, data, sizeof(int));
-		data += sizeof(int);
-		
-		int endFrame;
-		memcpy(&endFrame, data, sizeof(int));
-		data += sizeof(int);
-
-		clips.push_back(Clip(clipName, uid, loop, finish, speed, startFrame, endFrame));
+		clips.push_back(Clip(clipName, uid, loop, finish, speed));
 	}
 
 	//import nodes vector
@@ -206,7 +236,6 @@ unsigned ResourceStateMachine::GetStateMachineSize()
 		size += sizeof(bool);
 		size += sizeof(bool);
 		size += sizeof(float);
-		size += sizeof(int) * 2;
 	}
 
 	size += sizeof(int);
@@ -257,12 +286,6 @@ void ResourceStateMachine::SaveStateMachineData(char* data)
 
 		memcpy(cursor, &clip.clipSpeed, sizeof(float));
 		cursor += sizeof(float);
-
-		memcpy(cursor, &clip.startFrame, sizeof(int));
-		cursor += sizeof(int);
-
-		memcpy(cursor, &clip.endFrame, sizeof(int));
-		cursor += sizeof(int);
 	}
 
 	unsigned nodeSize = nodes.size();
@@ -309,17 +332,15 @@ void ResourceStateMachine::Save()
 	stateMachineData = new char[stateMachineSize];
 	SaveStateMachineData(stateMachineData);
 
-	std::string exportedFile (STATEMACHINES + std::to_string(GetUID()) + STATEMACHINEEXTENSION);
-	App->fsystem->Save(exportedFile.c_str(), stateMachineData, stateMachineSize);
-	SetName(name.c_str());
-	SetFile(STATEMACHINES);
-	SetExportedFile(exportedFile.c_str());
+	App->fsystem->Save((STATEMACHINES + name + STATEMACHINEEXTENSION).c_str(), stateMachineData, stateMachineSize);
+	SetFile((STATEMACHINES + name + STATEMACHINEEXTENSION).c_str());
+	//SetExportedFile(std::to_string(GetUID()).c_str());
 	RELEASE_ARRAY(stateMachineData);
 }
 
 void ResourceStateMachine::AddClip(const HashString name, unsigned UID, const bool loop)
 {
-	clips.push_back(Clip(name, UID, loop, false, 1.0f ,0 ,0));
+	clips.push_back(Clip(name, UID, loop, false, 1.0f));
 }
 
 void ResourceStateMachine::AddNode(const HashString name, const HashString clipName)
@@ -389,16 +410,6 @@ bool ResourceStateMachine::GetClipLoop(unsigned index)
 	return clips[index].loop;
 }
 
-int ResourceStateMachine::GetClipStartFrame(unsigned index)
-{
-	return clips[index].startFrame;
-}
-
-int ResourceStateMachine::GetClipEndFrame(unsigned index)
-{
-	return clips[index].endFrame;
-}
-
 bool ResourceStateMachine::GetClipMustFinish(unsigned index)
 {
 	return clips[index].mustFinish;
@@ -424,7 +435,7 @@ HashString ResourceStateMachine::GetTransitionTrigger(unsigned index)
 	return transitions[index].trigger;
 }
 
-unsigned ResourceStateMachine::GetTransitionBlend(unsigned index)
+float ResourceStateMachine::GetTransitionBlend(unsigned index)
 {
 	return transitions[index].blend;
 }
@@ -469,16 +480,6 @@ void ResourceStateMachine::SetClipLoop(unsigned index, bool loop)
 	clips[index].loop = loop;
 }
 
-void ResourceStateMachine::SetClipStartFrame(unsigned index, int startTime)
-{
-	clips[index].startFrame = startTime;
-}
-
-void ResourceStateMachine::SetClipEndFrame(unsigned index, int endTime)
-{
-	clips[index].endFrame = endTime;
-}
-
 void ResourceStateMachine::SetClipSpeed(unsigned index, float speed)
 {
 	clips[index].clipSpeed = speed;
@@ -504,7 +505,7 @@ void ResourceStateMachine::SetTransitionTrigger(unsigned index, HashString trigg
 	transitions[index].trigger = trigger;
 }
 
-void ResourceStateMachine::SetTransitionBlend(unsigned index, unsigned blend)
+void ResourceStateMachine::SetTransitionBlend(unsigned index, float blend)
 {
 	transitions[index].blend = blend;
 }
@@ -575,7 +576,7 @@ void ResourceStateMachine::RemoveTransition(unsigned index)
 	transitions.erase(transitions.begin() + index);
 }
 
-void ResourceStateMachine::ReceiveTrigger(HashString trigger, unsigned &blend)
+void ResourceStateMachine::ReceiveTrigger(HashString trigger, float &blend)
 {
 	HashString defaultNodeName = GetNodeName(defaultNode);
 

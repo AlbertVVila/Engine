@@ -158,19 +158,6 @@ void ComponentAnimation::DrawProperties()
 					}
 					stateMachine->SetClipName(j, HashString(clipName));
 
-					int startTime = stateMachine->GetClipStartFrame(j);
-					if (ImGui::InputInt("Start Time", &startTime))
-					{
-						stateMachine->SetClipStartFrame(j, startTime);
-					}
-					//ImGui::SameLine();
-					int endTime = stateMachine->GetClipEndFrame(j);
-					if (ImGui::InputInt("End Time", &endTime))
-					{
-						stateMachine->SetClipEndFrame(j, endTime);
-					}
-					//ImGui::PopItemWidth();
-
 					//if the animation must finish we must set loop to false and viceversa!
 					bool finish = stateMachine->GetClipMustFinish(j);
 					if (ImGui::Checkbox("Must end", &finish))
@@ -307,7 +294,7 @@ void ComponentAnimation::SendTriggerToStateMachine(const char* trigger)
 		if (controller->CanSwitch())
 		{
 			unsigned prevNode = stateMachine->GetDefaultNode();
-			unsigned blend = 0u;
+			float blend = 0.f;
 
 			stateMachine->ReceiveTrigger(HashString(trigger), blend);
 			if (prevNode != stateMachine->GetDefaultNode())
@@ -343,20 +330,6 @@ float ComponentAnimation::GetSpeedFromStateMachine()
 	return stateMachine->GetClipSpeed(stateMachine->FindClip(clipName));
 }
 
-int ComponentAnimation::GetStartFrameFromStateMachine()
-{
-	unsigned nodeIndex = stateMachine->GetDefaultNode();
-	HashString clipName = stateMachine->GetNodeClip(nodeIndex);
-	return stateMachine->GetClipStartFrame(stateMachine->FindClip(clipName));
-}
-
-int ComponentAnimation::GetEndFrameFromStateMachine()
-{
-	unsigned nodeIndex = stateMachine->GetDefaultNode();
-	HashString clipName = stateMachine->GetNodeClip(nodeIndex);
-	return stateMachine->GetClipEndFrame(stateMachine->FindClip(clipName));
-}
-
 bool ComponentAnimation::GetMustFinishFromStateMachine()
 {
 	unsigned nodeIndex = stateMachine->GetDefaultNode();
@@ -364,11 +337,11 @@ bool ComponentAnimation::GetMustFinishFromStateMachine()
 	return stateMachine->GetClipMustFinish(stateMachine->FindClip(clipName));
 }
 
-void ComponentAnimation::PlayNextNode(unsigned blend)
+void ComponentAnimation::PlayNextNode(float blend)
 {
 	if(stateMachine != nullptr)
 		controller->PlayNextNode(GetAnimFromStateMachine(),GetLoopFromStateMachine(), GetMustFinishFromStateMachine(),
-			GetSpeedFromStateMachine(), GetStartFrameFromStateMachine(), GetEndFrameFromStateMachine(), blend);
+			GetSpeedFromStateMachine(), blend);
 }
 
 ComponentAnimation::EditorContext* ComponentAnimation::GetEditorContext()
@@ -385,17 +358,15 @@ ComponentAnimation::EditorContext* ComponentAnimation::GetEditorContext()
 void ComponentAnimation::Update()
 {
 	PROFILE;
-	if (stateMachine != nullptr && stateMachine->GetClipsSize() > 0u && stateMachine->GetNodesSize() > 0u)
+	if (App->time->gameState == GameState::RUN) //Game run time exclusive
 	{
-	
-		if (App->time->gameState == GameState::RUN)
+		if (stateMachine != nullptr && stateMachine->GetClipsSize() > 0u && stateMachine->GetNodesSize() > 0u)
 		{
 			if (!channelsSetted)
 			{
 				SetIndexChannels(gameobject, GetAnimFromStateMachine());
 				channelsSetted = true;
 			}
-
 			controller->Update(App->time->gameDeltaTime);
 
 			if (gameobject != nullptr)
@@ -404,19 +375,22 @@ void ComponentAnimation::Update()
 			}
 		}
 	}
-	else if (isPlaying)
+	else if(App->time->gameState == GameState::STOP)// Editor exclusive
 	{
-		if (!channelsSetted)
+		if (isPlaying)
 		{
-			SetIndexChannels(gameobject, editorController->current->anim);
-			channelsSetted = true;
-		}
+			if (!channelsSetted)
+			{
+				SetIndexChannels(gameobject, editorController->current->anim);
+				channelsSetted = true;
+			}
 
-		editorController->Update(App->time->realDeltaTime);
+			editorController->Update(App->time->realDeltaTime);
 
-		if (gameobject != nullptr)
-		{
-			EditorUpdateGO(gameobject);
+			if (gameobject != nullptr)
+			{
+				EditorUpdateGO(gameobject);
+			}
 		}
 	}
 }
@@ -426,7 +400,7 @@ void ComponentAnimation::OnPlay()
 	if (stateMachine != nullptr && stateMachine->GetClipsSize() > 0u && stateMachine->GetNodesSize() > 0u)
 	{
 		controller->Play(GetAnimFromStateMachine(), GetLoopFromStateMachine(),
-			GetMustFinishFromStateMachine(), GetSpeedFromStateMachine(), GetStartFrameFromStateMachine(), GetEndFrameFromStateMachine());
+			GetMustFinishFromStateMachine(), GetSpeedFromStateMachine());
 	}
 }
 
@@ -444,8 +418,10 @@ void ComponentAnimation::UpdateGO(GameObject* go)
 			go->transform->SetPosition(position);
 			go->transform->SetRotation(rotation);
 		}
+
 		gameobject->movedFlag = true;
 	}
+
 	for (std::list<GameObject*>::iterator it = go->children.begin(); it != go->children.end(); ++it)
 	{
 		UpdateGO(*it);
@@ -458,13 +434,16 @@ void ComponentAnimation::EditorUpdateGO(GameObject* go)
 	float3 position;
 	Quat rotation;
 
-	if (editorController->GetTransform(go->animationIndexChannel, position, rotation))
+	if (go->animationIndexChannel != 999u)
 	{
-		go->transform->SetPosition(position);
-		go->transform->SetRotation(rotation);
-	}
+		if (editorController->GetTransform(go->animationIndexChannel, position, rotation))
+		{
+			go->transform->SetPosition(position);
+			go->transform->SetRotation(rotation);
+		}
 
-	gameobject->movedFlag = true;
+		gameobject->movedFlag = true;
+	}
 
 	for (std::list<GameObject*>::iterator it = go->children.begin(); it != go->children.end(); ++it)
 	{
@@ -518,6 +497,7 @@ void ComponentAnimation::Load(JSON_value* value)
 
 void ComponentAnimation::SetIndexChannels(GameObject* GO, ResourceAnimation* anim)
 {
+	GO->animationIndexChannel = 999u;
 	GO->animationIndexChannel = anim->GetIndexChannel(GO->name.c_str());
 
 	for (const auto& child : GO->children)

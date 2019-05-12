@@ -21,6 +21,8 @@ public:
 	bool LoadInMemory() override;
 	void DeleteFromMemory() override;
 	void Delete() override;
+	void SaveMetafile(const char* file) const override;
+	void LoadConfigFromMeta() override;
 
 	unsigned GetStateMachineSize();
 	void SetStateMachine(const char* data);
@@ -39,8 +41,6 @@ public:
 	HashString GetClipName(unsigned index);
 	unsigned GetClipResource(unsigned index);
 	bool GetClipLoop(unsigned index);
-	int GetClipStartFrame(unsigned index);
-	int GetClipEndFrame(unsigned index);
 	bool GetClipMustFinish(unsigned index);
 	float GetClipSpeed(unsigned index);
 	void SetClipName(unsigned index, HashString name);
@@ -48,18 +48,16 @@ public:
 	void SetClipLoop(unsigned index, bool loop);
 	void SetClipSpeed(unsigned index, float speed);
 	void SetClipMustFinish(unsigned index, bool mustFinish);
-	void SetClipStartFrame(unsigned index, int startTime);
-	void SetClipEndFrame(unsigned index, int endTime);
 
 	//Transitions setters and getters
 	HashString GetTransitionOrigin(unsigned index);
 	HashString GetTransitionDestiny(unsigned index);
 	HashString GetTransitionTrigger(unsigned index);
-	unsigned GetTransitionBlend(unsigned index);
+	float GetTransitionBlend(unsigned index);
 	void SetTransitionOrigin(unsigned index, HashString origin);
 	void SetTransitionDestiny(unsigned index, HashString destiny);
 	void SetTransitionTrigger(unsigned index, HashString trigger);
-	void SetTransitionBlend(unsigned index, unsigned blend);
+	void SetTransitionBlend(unsigned index, float blend);
 
 	void RenameTransitionDueNodeChanged(HashString previous, HashString newName);
 
@@ -79,7 +77,7 @@ public:
 	void RemoveNode(unsigned UID);
 	void RemoveTransition(unsigned UID);
 
-	void ReceiveTrigger(HashString trigger, unsigned &blend);
+	void ReceiveTrigger(HashString trigger, float &blend);
 
 	bool isClipsEmpty() { return clips.empty(); }
 	bool isNodesEmpty() { return nodes.empty(); }
@@ -98,12 +96,11 @@ private:
 		unsigned UID = 0u;
 		float clipSpeed = 1.0f;
 		bool loop = false;
-		int startFrame = 0, endFrame = 0;
 		bool mustFinish = false;
 
 		Clip() { ; }
-		Clip(HashString n, unsigned u, bool l, bool f, float sp, int s, int e) : 
-			name(n), UID(u), loop(l), mustFinish(f), clipSpeed(sp), startFrame(s), endFrame(e) { ; }
+		Clip(HashString n, unsigned u, bool l, bool f, float sp) : 
+			name(n), UID(u), loop(l), mustFinish(f), clipSpeed(sp) { ; }
 	};
 
 	struct Transition
@@ -112,10 +109,10 @@ private:
 		HashString destiny;
 		HashString trigger;
 
-		unsigned blend = 1u;
+		float blend = 200.f;
 
 		Transition() { ; }
-		Transition(HashString o, HashString d, HashString t, unsigned b) : 
+		Transition(HashString o, HashString d, HashString t, float b) : 
 			origin(o), destiny(d), trigger(t), blend(b) { ; }
 	};
 

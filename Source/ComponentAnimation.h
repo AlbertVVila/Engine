@@ -29,10 +29,8 @@ public:
 	ResourceAnimation* GetAnimFromStateMachine();
 	bool GetLoopFromStateMachine();
 	float GetSpeedFromStateMachine();
-	int GetStartFrameFromStateMachine();
-	int GetEndFrameFromStateMachine();
 	bool GetMustFinishFromStateMachine();
-	void PlayNextNode(unsigned blend);
+	void PlayNextNode(float blend);
 
 	void SetIndexChannels(GameObject* GO, ResourceAnimation* Ranim);
 	void UpdateGO(GameObject* gameobject);

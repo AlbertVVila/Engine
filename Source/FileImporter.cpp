@@ -80,11 +80,11 @@ void FileImporter::ImportAsset(const char *file, const char *folder)
 	}
 	else if (extension == ANIMATIONEXTENSION)
 	{
-		App->fsystem->Copy(folder, ANIMATIONS, file);
+		App->resManager->ImportFile(file, folder, TYPE::ANIMATION);
 	}
 	else if (extension == STATEMACHINEEXTENSION)
 	{
-		App->fsystem->Copy(folder, STATEMACHINES, file);
+		App->resManager->ImportFile(file, folder, TYPE::STATEMACHINE);
 	}
 }
 
@@ -217,6 +217,7 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 		}
 		animationComponent->anim = animation;
 		animationData[animationSize] = 0;
+		App->fsystem->Save((IMPORTED_ANIMATIONS + std::to_string(animation->GetUID()) + ANIMATIONEXTENSION).c_str(), animationData, animationSize);
 
 		std::string exportedFile(ANIMATIONS + std::to_string(animation->GetUID()) + ANIMATIONEXTENSION);
 		App->fsystem->Save(exportedFile.c_str(), animationData, animationSize);

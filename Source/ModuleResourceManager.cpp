@@ -248,6 +248,12 @@ bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* 
 		success = App->fsystem->Copy(filePath, IMPORTED_MATERIALS, newFileInAssets);					
 		exportedFile = IMPORTED_MATERIALS + name + MATERIALEXT;
 		break;
+	case TYPE::ANIMATION:
+		success = App->fsystem->Copy(filePath, IMPORTED_ANIMATIONS, newFileInAssets);
+		break;
+	case TYPE::STATEMACHINE:
+		success = App->fsystem->Copy(filePath, IMPORTED_STATEMACHINES, newFileInAssets);
+		break;
 	}
 
 	// If export was successful, create a new resource
@@ -264,6 +270,8 @@ bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* 
 	}
 	return success;
 }
+
+
 
 bool ModuleResourceManager::ReImportFile(Resource* resource, const char* filePath, TYPE type)
 {
@@ -625,20 +633,6 @@ Resource* ModuleResourceManager::AddResource(const char* file, const char* direc
 	path += file;
 	std::string exportedFile;
 	std::string name(App->fsystem->GetFilename(file));
-
-	if (type == TYPE::STATEMACHINE)
-	{
-		// Create new resource 
-		//unsigned smUID = App->fsystem->RemoveExtension(file)
-		Resource* res = CreateNewResource(type , std::stoul(App->fsystem->RemoveExtension(file), nullptr, 0));
-		//res->LoadInMemory();
-		res->SetName(name.c_str());
-		exportedFile = STATEMACHINES;
-		exportedFile += file;
-		res->SetExportedFile(exportedFile.c_str());
-		res->SetFile((path).c_str());
-		return res;
-	}
 
 	// Check if resource was already added
 	unsigned UID = FindByFileInAssets(path.c_str());
