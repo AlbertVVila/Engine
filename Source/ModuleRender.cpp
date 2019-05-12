@@ -181,8 +181,8 @@ update_status ModuleRender::PostUpdate()
 	ComputeShadows();
 
 #ifndef GAME_BUILD
-	viewScene->Draw(App->camera->editorcamera, true);
 	viewGame->Draw(App->scene->maincamera);
+	viewScene->Draw(App->camera->editorcamera, true);
 	App->editor->RenderGUI();
 #else
 	if (App->scene->maincamera != nullptr)
@@ -252,7 +252,7 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 		const float transparent[] = { 0, 0, 0, 1 };
 		glClearBufferfv(GL_COLOR, 1, transparent);
 	}
-	
+
 	App->scene->Draw(*cam.frustum, isEditor);
 
 	if (!isEditor || isEditor && App->ui->showUIinSceneViewport)
@@ -267,6 +267,13 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 
 		unsigned int attachments[2] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };// , GL_COLOR_ATTACHMENT2	};// , , GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4
 		glDrawBuffers(2, attachments);
+		
+		GLint drawFboId = 0;
+		glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &drawFboId);
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0); //Flush textures
+
+		glBindFramebuffer(GL_FRAMEBUFFER, drawFboId);
 
 		glUseProgram(postProcessShader->id[0]);
 		glBindVertexArray(postprocessVAO);
@@ -290,7 +297,6 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 		glBindTexture(GL_TEXTURE_2D, 0);
 		
 	}
-
 }
 
 bool ModuleRender::IsSceneViewFocused() const
@@ -335,14 +341,6 @@ void ModuleRender::OnResize()
 
 	if (App->scene->maincamera != nullptr)
 	{
-		/*if (msaa)
-		{
-			glBindFramebuffer(GL_FRAMEBUFFER, viewGame->MSAAFBO);
-		}
-		else
-		{
-			glBindFramebuffer(GL_FRAMEBUFFER, viewGame->FBO);
-		}*/
 		glBindFramebuffer(GL_FRAMEBUFFER, viewGame->FBO);
 		glBindTexture(GL_TEXTURE_2D, renderedSceneGame);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, viewGame->current_width, viewGame->current_height, 0, GL_RGBA, GL_FLOAT, NULL);

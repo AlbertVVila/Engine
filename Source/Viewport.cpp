@@ -70,7 +70,7 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 			ImGui::End();
 			return;
 		}
-
+		
 		if (ImGui::IsWindowHovered() || ImGui::IsWindowAppearing())
 		{
 			ImGui::SetWindowFocus();
@@ -110,15 +110,8 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 		current_width = size.x;
 		current_height = size.y;
 
+		glBindFramebuffer(GL_FRAMEBUFFER, FBO);
 
-		if (App->renderer->msaa && !isEditor)
-		{
-			glBindFramebuffer(GL_FRAMEBUFFER, MSAAFBO);
-		}
-		else
-		{
-			glBindFramebuffer(GL_FRAMEBUFFER, FBO);
-		}
 		App->renderer->Draw(*cam, current_width, current_height, isEditor);
 
     if (isEditor)
@@ -132,14 +125,6 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 				}
 			}
 		}
-		if (App->renderer->msaa && !isEditor)
-		{
-			glBindFramebuffer(GL_READ_FRAMEBUFFER, MSAAFBO);
-			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, FBO);
-			glBlitFramebuffer(0, 0, current_width, current_height,
-				0, 0, current_width, current_height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
-		}
-
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		ImGui::SetCursorPos({ 0,0 });
@@ -288,17 +273,6 @@ void Viewport::CreateFrameBuffer(int width, int height)
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 			LOG("Framebuffer ERROR");
 
-
-		CreateMSAABuffers(width, height);
-
-	}
-	else
-	{
-		if (App->renderer->msaa_lvl_changed)
-		{
-			CreateMSAABuffers(width, height);
-			App->renderer->msaa_lvl_changed = false;
-		}
 	}
 }
 
