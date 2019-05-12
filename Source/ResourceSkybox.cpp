@@ -163,7 +163,6 @@ void ResourceSkybox::Draw(const Frustum& frustum) const
 
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
-	glDisableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glUseProgram(0);
 

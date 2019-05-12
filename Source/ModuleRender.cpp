@@ -235,11 +235,7 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 
 	SetProjectionUniform(cam);
 	SetViewUniform(cam);
-	skybox->Draw(*cam.frustum);
-
-	const float transparent[] = { 0, 0, 0, 1 };
-	glClearBufferfv(GL_COLOR, 1, transparent);
-
+	
 	if (isEditor)
 	{
 		DrawGizmos(cam);
@@ -250,6 +246,12 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 		App->navigation->renderNavMesh();
 		glUseProgram(0);
 	}
+	else //Due the postprocess only one skybox could be drawn at once
+	{
+		skybox->Draw(*cam.frustum);
+		const float transparent[] = { 0, 0, 0, 1 };
+		glClearBufferfv(GL_COLOR, 1, transparent);
+	}
 	
 	App->scene->Draw(*cam.frustum, isEditor);
 
@@ -259,7 +261,6 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 	}
 	App->particles->Render(App->time->gameDeltaTime, &cam);
 	
-
 	
 	if (!isEditor)
 	{
@@ -267,35 +268,27 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 		unsigned int attachments[2] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };// , GL_COLOR_ATTACHMENT2	};// , , GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4
 		glDrawBuffers(2, attachments);
 
-		GLint drawFboId = 0;
-		glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &drawFboId);
-
-		glBindFramebuffer(GL_FRAMEBUFFER, 0); //Flush textures
-
-		glBindFramebuffer(GL_FRAMEBUFFER, drawFboId);
-
 		glUseProgram(postProcessShader->id[0]);
 		glBindVertexArray(postprocessVAO);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, postprocessEBO);
-
+		
 		int colorTex = renderedSceneGame;
 		int hlTex = highlightBufferGame;
+		
+		glUniform1i(glGetUniformLocation(postProcessShader->id[0], "gColor"), 0);
+		glUniform1i(glGetUniformLocation(postProcessShader->id[0], "gHighlight"), 1);
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, colorTex);
 
-		glUniform1i(glGetUniformLocation(postProcessShader->id[0], "gColor"), 0);
-
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, hlTex);
-
-		glUniform1i(glGetUniformLocation(postProcessShader->id[0], "gHighlight"), 1);
-
+		
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 		
-		glDrawBuffers(2, attachments);
-	
+		glBindTexture(GL_TEXTURE_2D, 0);
+		
 	}
 
 }
@@ -352,16 +345,20 @@ void ModuleRender::OnResize()
 		}*/
 		glBindFramebuffer(GL_FRAMEBUFFER, viewGame->FBO);
 		glBindTexture(GL_TEXTURE_2D, renderedSceneGame);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, viewGame->current_width, viewGame->current_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, viewGame->current_width, viewGame->current_height, 0, GL_RGBA, GL_FLOAT, NULL);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderedSceneGame, 0);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
 		glBindTexture(GL_TEXTURE_2D, highlightBufferGame);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, viewGame->current_width, viewGame->current_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, viewGame->current_width, viewGame->current_height, 0, GL_RGBA, GL_FLOAT, NULL);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, highlightBufferGame, 0);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 	}
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindFramebuffer(GL_FRAMEBUFFER, drawFboId);
@@ -665,6 +662,8 @@ void ModuleRender::DrawGUI()
 	ImGui::Image((ImTextureID)renderedSceneGame, { 200,200 }, { 0,1 }, { 1,0 });
 	ImGui::Text("Highlight");
 	ImGui::Image((ImTextureID)highlightBufferGame, { 200,200 }, { 0,1 }, { 1,0 });
+	ImGui::Text("Game");
+	ImGui::Image((ImTextureID)viewGame->texture, { 200,200 }, { 0,1 }, { 1,0 });
 }
 
 void ModuleRender::GenBlockUniforms()

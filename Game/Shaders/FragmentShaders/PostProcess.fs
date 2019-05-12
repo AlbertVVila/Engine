@@ -44,7 +44,7 @@ void main()
 	
 	float lC = length(color.rgb);
 	color = (1 - lC) * texture2D(gColor, UV0) + lC * color;
-
+	
 	/* tex_offset = 1.0 / textureSize(gColor, 0); // gets size of single texel
     vec3 result = texture(gColor, UV0).rgb * weight[0]; // current fragment's contribution
     if(horizontal)
