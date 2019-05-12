@@ -4,6 +4,7 @@
 #include "Application.h"
 #include "ModuleFileSystem.h"
 #include "ModuleTextures.h"
+#include "ModuleResourceManager.h"
 
 #include "GL/glew.h"
 #include "IL/ilut.h"
@@ -276,6 +277,7 @@ void ResourceTexture::LoadConfigFromMeta()
 	char* data = nullptr;
 	std::string metaFile(file);
 	metaFile += ".meta";
+	unsigned oldUID = GetUID();
 
 	if (App->fsystem->Load(metaFile.c_str(), &data) == 0)
 	{
@@ -285,6 +287,11 @@ void ResourceTexture::LoadConfigFromMeta()
 	}
 	JSON* json = new JSON(data);
 	JSON_value* value = json->GetValue("Texture");
+	UID = value->GetUint("GUID");
+
+	// Update resource UID on resource list
+	App->resManager->ReplaceResource(oldUID, this);
+
 	dxtFormat = (DXT)value->GetInt("DX compresion");
 
 	switch (dxtFormat)
