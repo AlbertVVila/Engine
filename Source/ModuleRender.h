@@ -48,6 +48,7 @@ private:
 	void ComputeShadows();
 	void ShadowVolumeDrawDebug();
 	void BlitShadowTexture();
+	void CreatePostProcessFramebuffer();
 
 public:
 	void* context = nullptr;
@@ -103,6 +104,8 @@ private:
 	Shader* shadowsShader = nullptr;
 	Shader* postProcessShader = nullptr;
 
+	unsigned postprocessFBO = 0u;
+	unsigned postprocessRBO = 0u;
 	unsigned postprocessVAO = 0u;
 	unsigned postprocessVBO = 0u;
 	unsigned postprocessEBO = 0u;

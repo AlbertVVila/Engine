@@ -219,6 +219,10 @@ void ModuleRender::SaveConfig(JSON * config)
 void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool isEditor) const
 {
 	BROFILER_CATEGORY("Render_Draw()", Profiler::Color::AliceBlue);
+#ifdef GAME_BUILD
+	glBindFramebuffer(GL_FRAMEBUFFER, postprocessFBO);
+#endif //  GAME_BUILD
+
 	glViewport(0, 0, width, height);
 	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -302,6 +306,14 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 	{
 		App->ui->Draw(width, height);
 	}
+
+#ifdef GAME_BUILD
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_READ_FRAMEBUFFER, postprocessFBO);
+	glDrawBuffer(GL_BACK);
+	glBlitFramebuffer(0, 0, width, height, 0, 0, App->window->width, App->window->height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+#endif // GAME_BUILD
 }
 
 bool ModuleRender::IsSceneViewFocused() const
@@ -339,16 +351,25 @@ void ModuleRender::OnResize()
 	{
 		App->scene->maincamera->SetAspect((float)App->window->width / (float)App->window->height);
 	}
+	CreatePostProcessFramebuffer();
 #endif
-#ifndef GAME_BUILD
 	GLint drawFboId = 0;
 	glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &drawFboId);
 
 	if (App->scene->maincamera != nullptr)
 	{
+#ifndef GAME_BUILD
 		glBindFramebuffer(GL_FRAMEBUFFER, viewGame->FBO);
+#else
+		glBindFramebuffer(GL_FRAMEBUFFER, postprocessFBO);
+#endif
+
 		glBindTexture(GL_TEXTURE_2D, renderedSceneGame);
+#ifndef GAME_BUILD
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, viewGame->current_width, viewGame->current_height, 0, GL_RGBA, GL_FLOAT, NULL);
+#else
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, App->window->width, App->window->height, 0, GL_RGBA, GL_FLOAT, NULL);
+#endif
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderedSceneGame, 0);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -356,7 +377,11 @@ void ModuleRender::OnResize()
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
 		glBindTexture(GL_TEXTURE_2D, highlightBufferGame);
+#ifndef GAME_BUILD
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, viewGame->current_width, viewGame->current_height, 0, GL_RGBA, GL_FLOAT, NULL);
+#else
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, App->window->width, App->window->height, 0, GL_RGBA, GL_FLOAT, NULL);
+#endif
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, highlightBufferGame, 0);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -365,7 +390,6 @@ void ModuleRender::OnResize()
 	}
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindFramebuffer(GL_FRAMEBUFFER, drawFboId);
-#endif
 }
 
 void ModuleRender::SetVsync(bool active)
@@ -447,7 +471,7 @@ void ModuleRender::ComputeShadows()
 		lightAABB.SetNegativeInfinity();
 		bool renderersDetected = false;
 		//TODO: Improve this avoiding shuffle every frame
-		for (GameObject* go : App->scene->dynamicFilteredGOs) //TODO: get volumetric gos even if outside the frustum
+		for (GameObject* go : App->scene->dynamicFilteredGOs) 
 		{
 			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponentOld(ComponentType::Renderer);
 			if (cr && cr->castShadows)
@@ -598,6 +622,31 @@ void ModuleRender::BlitShadowTexture()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
+}
+
+void ModuleRender::CreatePostProcessFramebuffer()
+{
+	if (postprocessFBO == 0)
+	{
+		glGenFramebuffers(1, &postprocessFBO);
+	}
+	glBindFramebuffer(GL_FRAMEBUFFER, postprocessFBO);
+
+
+	if (postprocessRBO == 0)
+	{
+		glGenRenderbuffers(1, &postprocessRBO);
+	}
+
+	glBindRenderbuffer(GL_RENDERBUFFER, postprocessRBO);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, App->window->width, App->window->height);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, postprocessRBO);
+
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		LOG("Framebuffer ERROR");
 }
 
 void ModuleRender::DrawGUI()

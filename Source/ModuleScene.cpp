@@ -385,6 +385,19 @@ void ModuleScene::DrawGOGame(const GameObject& go)
 
 	glUniform3fv(glGetUniformLocation(shader->id[variation],
 		"lights.ambient_color"), 1, (GLfloat*)&ambientColor);
+
+	if (crenderer->highlighted)
+	{
+		glUniform3fv(glGetUniformLocation(shader->id[variation],
+			"highlightColorUniform"), 1, (GLfloat*)&crenderer->highlightColor);
+	}
+	else
+	{
+		float zero[] = { .0f, .0f, .0f };
+		glUniform3fv(glGetUniformLocation(shader->id[variation],
+			"highlightColorUniform"), 1, (GLfloat*)zero);
+	}
+
 	go.SetLightUniforms(shader->id[variation]);
 
 	go.UpdateModel(shader->id[variation]);
