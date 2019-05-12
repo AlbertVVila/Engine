@@ -211,6 +211,8 @@ private:
 
 	std::vector < const ComponentRenderer*> meshComponents;
 	std::vector < const ComponentTransform*> transformComponents;
+	std::vector <bool> unwalkableVerts;
+	std::vector <bool> isObstacle;
 
 	rcConfig* cfg = nullptr;
 	rcContext* ctx = nullptr;

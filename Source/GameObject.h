@@ -90,7 +90,6 @@ public:
 	bool activeSelf = true;
 
 	bool navigable = false;
-	bool walkable = false;
 	bool noWalkable = false;
 	bool isSelected = false;
 	bool movedFlag = false;

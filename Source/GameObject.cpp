@@ -78,7 +78,6 @@ GameObject::GameObject(const GameObject & gameobject)
 	assert(!(isVolumetric && hasLight));
 	bbox = gameobject.bbox;
 	navigable = gameobject.navigable;
-	walkable = gameobject.walkable;
 	noWalkable = gameobject.noWalkable;
 
 	for (const auto& component : gameobject.components)
@@ -160,8 +159,7 @@ void GameObject::DrawProperties()
 			if (navigable)
 			{
 				//defines walls and this stuff
-				ImGui::Checkbox("Walkable", &walkable);
-				ImGui::Checkbox("No Walkable", &noWalkable);
+				ImGui::Checkbox("Is obstacle", &noWalkable);
 			}
 		}
 
@@ -810,7 +808,6 @@ void GameObject::Save(JSON_value *gameobjects) const
 		gameobject->AddUint("isBoneRoot", isBoneRoot);
 		gameobject->AddFloat4x4("baseState", baseState);
 		gameobject->AddUint("Navigable", navigable);
-		gameobject->AddUint("Walkable", walkable);
 		gameobject->AddUint("No Walkable", noWalkable);
 		gameobject->AddUint("openInHierarchy", openInHierarchy);
 
@@ -843,7 +840,6 @@ void GameObject::Load(JSON_value *value)
 	isBoneRoot = value->GetUint("isBoneRoot");
 	baseState = value->GetFloat4x4("baseState");
 	navigable = value->GetUint("Navigable");
-	walkable = value->GetUint("Walkable"); //TODO: why 2 variables for walkable?
 	noWalkable = value->GetUint("No Walkable");
 	openInHierarchy = value->GetUint("openInHierarchy");
 

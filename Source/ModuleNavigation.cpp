@@ -43,10 +43,8 @@ ModuleNavigation::ModuleNavigation()
 
 ModuleNavigation::~ModuleNavigation()
 {
-	RELEASE_ARRAY(verts);
-	RELEASE_ARRAY(tris);
-	RELEASE_ARRAY(normals);
-	dtFreeNavMesh(navMesh);
+	cleanValuesPRE();
+	cleanValuesPOST();
 }
 
 bool ModuleNavigation::Init(JSON * config)
@@ -119,6 +117,7 @@ void ModuleNavigation::cleanValuesPRE()
 	dmesh = 0;
 	dtFreeNavMesh(navMesh);
 	navMesh = 0;
+	unwalkableVerts.clear();
 	//TODO: free navquery, navmesh, crowd, rcconfig, rccontext
 }
 
@@ -127,6 +126,7 @@ void ModuleNavigation::cleanValuesPOST()
 	meshboxes.clear();
 	meshComponents.clear();
 	transformComponents.clear();
+	isObstacle.clear();
 }
 update_status ModuleNavigation::Update(float dt)
 {
@@ -247,7 +247,7 @@ void ModuleNavigation::addNavigableMesh()
 	meshboxes.push_back(static_cast <const AABB*>(&App->scene->selected->bbox));
 	meshComponents.push_back(static_cast <const ComponentRenderer*>(App->scene->selected->GetComponent(ComponentType::Renderer)));
 	transformComponents.push_back(static_cast <const ComponentTransform*>(App->scene->selected->GetComponent(ComponentType::Transform)));
-
+	isObstacle.push_back(App->scene->selected->noWalkable);
 	std::string s = App->scene->selected->name + " added to navigation";
 	LOG(s.c_str());
 	objectName = App->scene->selected->name.c_str();
@@ -259,6 +259,7 @@ void ModuleNavigation::addNavigableMesh(const GameObject* obj)
 	meshboxes.push_back(static_cast <const AABB*>(&obj->bbox));
 	meshComponents.push_back(static_cast <const ComponentRenderer*>(obj->GetComponent(ComponentType::Renderer)));
 	transformComponents.push_back(static_cast <const ComponentTransform*>(obj->GetComponent(ComponentType::Transform)));
+	isObstacle.push_back(obj->noWalkable);
 	std::string s = obj->name + " added to navigation";
 	LOG(s.c_str());
 	objectName = obj->name.c_str();
@@ -423,6 +424,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Out of memory 'solid'.");
 		meshGenerated = false;
 		renderMesh = false;
+		cleanValuesPOST();
 		return;
 	}
 	if (!rcCreateHeightfield(ctx, *heightField, cfg->width, cfg->height, cfg->bmin, cfg->bmax, cfg->cs, cfg->ch))
@@ -430,6 +432,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Could not create solid heightfield.");
 		meshGenerated = false;
 		renderMesh = false;
+		cleanValuesPOST();
 		return;
 	}
 
@@ -442,6 +445,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Out of memory 'm_triareas' (%d).");
 		meshGenerated = false;
 		renderMesh = false;
+		cleanValuesPOST();
 		return;
 	}
 
@@ -449,12 +453,14 @@ void ModuleNavigation::generateNavigability(bool render)
 	// If your input data is multiple meshes, you can transform them here, calculate
 	// the are type for each of the meshes and rasterize them.
 	memset(m_triareas, 0, ntris * sizeof(unsigned char));
-	rcMarkWalkableTriangles(ctx, cfg->walkableSlopeAngle, verts, nverts, tris, ntris, m_triareas);//we have more verts than tris, may not be right
+	rcMarkWalkableTriangles(ctx, cfg->walkableSlopeAngle, verts, nverts, tris, ntris, m_triareas, unwalkableVerts);
+
 	if (!rcRasterizeTriangles(ctx, verts, nverts, tris, m_triareas, ntris, *heightField, cfg->walkableClimb))
 	{
 		LOG("buildNavigation: Could not rasterize triangles.");
 		meshGenerated = false;
 		renderMesh = false;
+		cleanValuesPOST();
 		return;
 	}
 
@@ -485,6 +491,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Out of memory 'chf'.");
 		meshGenerated = false;
 		renderMesh = false;
+		cleanValuesPOST();
 		return;
 	}
 	if (!rcBuildCompactHeightfield(ctx, cfg->walkableHeight, cfg->walkableClimb, *heightField, *chf))
@@ -492,6 +499,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Could not build compact data.");
 		meshGenerated = false;
 		renderMesh = false;
+		cleanValuesPOST();
 		return;
 	}
 
@@ -507,13 +515,13 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Could not erode.");
 		meshGenerated = false;
 		renderMesh = false;
+		cleanValuesPOST();
 		return;
 	}
 
-	// (Optional) Mark areas.
-	/*const ConvexVolume* vols = m_geom->getConvexVolumes();
-	for (int i = 0; i < m_geom->getConvexVolumeCount(); ++i)
-		rcMarkConvexPolyArea(ctx, vols[i].verts, vols[i].nverts, vols[i].hmin, vols[i].hmax, (unsigned char)vols[i].area, *chf);*/
+	/*for (int i = 0; i < obstacleInfo.size(); ++i)
+		rcMarkConvexPolyArea(ctx, obstacleInfo[i]->verts, obstacleInfo[i]->nverts, obstacleInfo[i]->hmin, obstacleInfo[i]->hmax, (unsigned char)obstacleInfo[i]->area, *chf);*/
+	//rcMarkConvexPolyArea(ctx, verts, nverts, bmin[1], bmax[1], (unsigned char)5, *chf);
 	
 	// Partition the heightfield so that we can use simple algorithm later to triangulate the walkable areas.
 	// There are 3 martitioning methods, each with some pros and cons:
@@ -549,6 +557,7 @@ void ModuleNavigation::generateNavigability(bool render)
 			LOG("buildNavigation: Could not build distance field.");
 			meshGenerated = false;
 			renderMesh = false;
+			cleanValuesPOST();
 			return;
 		}
 		
@@ -558,6 +567,7 @@ void ModuleNavigation::generateNavigability(bool render)
 			LOG("buildNavigation: Could not build watershed regions.");
 			meshGenerated = false;
 			renderMesh = false;
+			cleanValuesPOST();
 			return;
 		}
 	}
@@ -570,6 +580,7 @@ void ModuleNavigation::generateNavigability(bool render)
 			LOG("buildNavigation: Could not build monotone regions.");
 			meshGenerated = false;
 			renderMesh = false;
+			cleanValuesPOST();
 			return;
 		}
 	}
@@ -581,6 +592,7 @@ void ModuleNavigation::generateNavigability(bool render)
 			LOG("buildNavigation: Could not build layer regions.");
 			meshGenerated = false;
 			renderMesh = false;
+			cleanValuesPOST();
 			return;
 		}
 	}
@@ -596,6 +608,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Out of memory 'cset'.");
 		meshGenerated = false;
 		renderMesh = false;
+		cleanValuesPOST();
 		return;
 	}
 	if (!rcBuildContours(ctx, *chf, cfg->maxSimplificationError, cfg->maxEdgeLen, *cset))
@@ -603,6 +616,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Could not create contours.");
 		meshGenerated = false;
 		renderMesh = false;
+		cleanValuesPOST();
 		return;
 	}
 	
@@ -618,6 +632,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Out of memory 'pmesh'.");
 		meshGenerated = false;
 		renderMesh = false;
+		cleanValuesPOST();
 		return;
 	}
 	if (!rcBuildPolyMesh(ctx, *cset, cfg->maxVertsPerPoly, *pmesh))//gotta adapt this one to fill pmesh with the values
@@ -625,6 +640,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Could not triangulate contours.");
 		meshGenerated = false;
 		renderMesh = false;
+		cleanValuesPOST();
 		return;
 	}
 	
@@ -638,6 +654,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Out of memory 'pmdtl'.");
 		meshGenerated = false;
 		renderMesh = false;
+		cleanValuesPOST();
 		return;
 	}
 
@@ -646,6 +663,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Could not build detail mesh.");
 		meshGenerated = false;
 		renderMesh = false;
+		cleanValuesPOST();
 		return;
 	}
 
@@ -730,6 +748,7 @@ void ModuleNavigation::generateNavigability(bool render)
 			LOG("Could not build Detour navmesh");
 			meshGenerated = false;
 			renderMesh = false;
+			cleanValuesPOST();
 			return;
 		}
 		
@@ -740,6 +759,7 @@ void ModuleNavigation::generateNavigability(bool render)
 			LOG("Could not create Detour navmesh");
 			meshGenerated = false;
 			renderMesh = false;
+			cleanValuesPOST();
 			return;
 		}
 		
@@ -752,6 +772,7 @@ void ModuleNavigation::generateNavigability(bool render)
 			LOG("Could not init Detour navmesh");
 			meshGenerated = false;
 			renderMesh = false;
+			cleanValuesPOST();
 			return;
 		}
 
@@ -761,6 +782,7 @@ void ModuleNavigation::generateNavigability(bool render)
 			LOG("Could not init Detour navmesh query");
 			meshGenerated = false;
 			renderMesh = false;
+			cleanValuesPOST();
 			return;
 		}
 	}
@@ -791,11 +813,14 @@ void ModuleNavigation::generateNavigability(bool render)
 
 void ModuleNavigation::fillVertices()
 {
+	// TODO: fill array of non walkable areas.
 	for (int i = 0; i < meshComponents.size(); ++i)
 	{
 		nverts += meshComponents[i]->mesh->meshVertices.size();
 	}
 	verts = new float[nverts * 3];
+	unwalkableVerts = std::vector <bool>(nverts * 3, false);
+	unwalkableVerts.reserve(nverts*3);
 	int currentGlobalVert = 0;
 	for (int j = 0; j < meshComponents.size(); ++j)
 	{
@@ -813,6 +838,12 @@ void ModuleNavigation::fillVertices()
 			verts[currentGlobalVert * 3] = tempVertex.x/tempVertex.w;
 			verts[currentGlobalVert * 3 + 1] = tempVertex.y / tempVertex.w;
 			verts[currentGlobalVert * 3 + 2] = tempVertex.z / tempVertex.w;
+			if (isObstacle[j])
+			{
+				unwalkableVerts[currentGlobalVert * 3] = true;
+				unwalkableVerts[currentGlobalVert * 3 + 1] = true;
+				unwalkableVerts[currentGlobalVert * 3 + 2] = true;
+			}
 			++currentGlobalVert;
 		}
 	}
@@ -834,7 +865,6 @@ void ModuleNavigation::fillIndices()
 		vertOverload = maxVertMesh[j];
 		for (int i = 0; i < meshComponents[j]->mesh->meshIndices.size(); i += 3)
 		{
-			//changed y and z order
 			tris[currentGlobalTri] = meshComponents[j]->mesh->meshIndices[i] + vertOverload;
 			tris[currentGlobalTri + 1] = meshComponents[j]->mesh->meshIndices[i + 1] + vertOverload;
 			tris[currentGlobalTri + 2] = meshComponents[j]->mesh->meshIndices[i + 2] + vertOverload;
@@ -845,7 +875,6 @@ void ModuleNavigation::fillIndices()
 
 void ModuleNavigation::fillNormals()
 {
-	//revisar
 	normals = new float[ntris*3];
 	for (int i = 0; i < ntris*3; i+=3)
 	{
