@@ -30,6 +30,7 @@ private:
 
 	std::vector<GameObject*> items;
 	GameObject* inventory = nullptr;
+	Transform2D* menuPlayer = nullptr;
 
 	math::float2 initialitemPos = math::float2::zero;
 };
