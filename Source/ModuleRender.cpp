@@ -245,6 +245,8 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 		glUniformMatrix4fv(glGetUniformLocation(shader, "model"), 1, GL_TRUE, &model[0][0]);
 		App->navigation->renderNavMesh();
 		glUseProgram(0);
+		skybox->Draw(*cam.frustum);
+
 	}
 	else //Due the postprocess only one skybox could be drawn at once
 	{
@@ -252,15 +254,10 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 		const float transparent[] = { 0, 0, 0, 1 };
 		glClearBufferfv(GL_COLOR, 1, transparent);
 	}
-
+	
 	App->scene->Draw(*cam.frustum, isEditor);
 
-	if (!isEditor || isEditor && App->ui->showUIinSceneViewport)
-	{
-		App->ui->Draw(width, height);
-	}
 	App->particles->Render(App->time->gameDeltaTime, &cam);
-	
 	
 	if (!isEditor)
 	{
@@ -274,7 +271,7 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); //Flush textures
 
 		glBindFramebuffer(GL_FRAMEBUFFER, drawFboId);
-
+		
 		glUseProgram(postProcessShader->id[0]);
 		glBindVertexArray(postprocessVAO);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, postprocessEBO);
@@ -292,10 +289,18 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 		glBindTexture(GL_TEXTURE_2D, hlTex);
 		
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
 		
 		glBindTexture(GL_TEXTURE_2D, 0);
-		
+		glUseProgram(0);
+
+		glActiveTexture(GL_TEXTURE0); //LOL without this the skybox doesn't render
+	}
+
+	if (!isEditor || isEditor && App->ui->showUIinSceneViewport)
+	{
+		App->ui->Draw(width, height);
 	}
 }
 

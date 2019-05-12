@@ -340,17 +340,20 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	{
 		return cr1->gameobject->transform->GetGlobalPosition().Distance(frustum.pos) > cr2->gameobject->transform->GetGlobalPosition().Distance(frustum.pos);
 	});
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	for (ComponentRenderer* cr : alphaRenderers)
+	if (alphaRenderers.size() > 1)
 	{
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		for (ComponentRenderer* cr : alphaRenderers)
+		{
 #ifndef GAME_BUILD
-		DrawGO(*cr->gameobject, camFrustum, isEditor);
+			DrawGO(*cr->gameobject, camFrustum, isEditor);
 #else
-		DrawGOGame(*cr->gameobject);
+			DrawGOGame(*cr->gameobject);
 #endif
+		}
+		glDisable(GL_BLEND);
 	}
-	glDisable(GL_BLEND);
 }
 
 void ModuleScene::DrawGOGame(const GameObject& go)
