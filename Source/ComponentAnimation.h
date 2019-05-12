@@ -30,7 +30,7 @@ public:
 	bool GetLoopFromStateMachine();
 	float GetSpeedFromStateMachine();
 	bool GetMustFinishFromStateMachine();
-	void PlayNextNode(unsigned blend);
+	void PlayNextNode(float blend);
 
 	void SetIndexChannels(GameObject* GO, ResourceAnimation* Ranim);
 	void UpdateGO(GameObject* gameobject);

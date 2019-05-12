@@ -435,7 +435,7 @@ HashString ResourceStateMachine::GetTransitionTrigger(unsigned index)
 	return transitions[index].trigger;
 }
 
-unsigned ResourceStateMachine::GetTransitionBlend(unsigned index)
+float ResourceStateMachine::GetTransitionBlend(unsigned index)
 {
 	return transitions[index].blend;
 }
@@ -505,7 +505,7 @@ void ResourceStateMachine::SetTransitionTrigger(unsigned index, HashString trigg
 	transitions[index].trigger = trigger;
 }
 
-void ResourceStateMachine::SetTransitionBlend(unsigned index, unsigned blend)
+void ResourceStateMachine::SetTransitionBlend(unsigned index, float blend)
 {
 	transitions[index].blend = blend;
 }
@@ -576,7 +576,7 @@ void ResourceStateMachine::RemoveTransition(unsigned index)
 	transitions.erase(transitions.begin() + index);
 }
 
-void ResourceStateMachine::ReceiveTrigger(HashString trigger, unsigned &blend)
+void ResourceStateMachine::ReceiveTrigger(HashString trigger, float &blend)
 {
 	HashString defaultNodeName = GetNodeName(defaultNode);
 

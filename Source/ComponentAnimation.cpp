@@ -294,7 +294,7 @@ void ComponentAnimation::SendTriggerToStateMachine(const char* trigger)
 		if (controller->CanSwitch())
 		{
 			unsigned prevNode = stateMachine->GetDefaultNode();
-			unsigned blend = 0u;
+			float blend = 0.f;
 
 			stateMachine->ReceiveTrigger(HashString(trigger), blend);
 			if (prevNode != stateMachine->GetDefaultNode())
@@ -337,7 +337,7 @@ bool ComponentAnimation::GetMustFinishFromStateMachine()
 	return stateMachine->GetClipMustFinish(stateMachine->FindClip(clipName));
 }
 
-void ComponentAnimation::PlayNextNode(unsigned blend)
+void ComponentAnimation::PlayNextNode(float blend)
 {
 	if(stateMachine != nullptr)
 		controller->PlayNextNode(GetAnimFromStateMachine(),GetLoopFromStateMachine(), GetMustFinishFromStateMachine(),

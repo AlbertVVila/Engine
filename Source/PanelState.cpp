@@ -268,7 +268,11 @@ void PanelState::ShowTransitionMenu(ResourceStateMachine* stateMachine)
 		stateMachine->SetTransitionTrigger(contextLink, HashString(tName));
 
 		//Blend
-
+		float tBlend = stateMachine->GetTransitionBlend(contextLink);
+		if (ImGui::InputFloat("Blend", &tBlend))
+		{
+			stateMachine->SetTransitionBlend(contextLink, tBlend);
+		}
 
 		//delete
 		if (ImGui::MenuItem("Delete"))

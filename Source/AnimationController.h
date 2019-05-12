@@ -38,7 +38,7 @@ public:
 
 	void Play(ResourceAnimation* anim, bool loop, bool mustFinish, float speed);
 	void PlayEditor(ResourceAnimation* anim);
-	void PlayNextNode(ResourceAnimation* anim, bool loop, bool mustFinish, float speed, unsigned blend);
+	void PlayNextNode(ResourceAnimation* anim, bool loop, bool mustFinish, float speed, float blend);
 	void Update(float dt);
 	void UpdateInstance(Instance* ins, float dt);
 	void UpdateEditorInstance(Instance* ins, float dt);

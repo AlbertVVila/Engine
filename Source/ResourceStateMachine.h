@@ -53,11 +53,11 @@ public:
 	HashString GetTransitionOrigin(unsigned index);
 	HashString GetTransitionDestiny(unsigned index);
 	HashString GetTransitionTrigger(unsigned index);
-	unsigned GetTransitionBlend(unsigned index);
+	float GetTransitionBlend(unsigned index);
 	void SetTransitionOrigin(unsigned index, HashString origin);
 	void SetTransitionDestiny(unsigned index, HashString destiny);
 	void SetTransitionTrigger(unsigned index, HashString trigger);
-	void SetTransitionBlend(unsigned index, unsigned blend);
+	void SetTransitionBlend(unsigned index, float blend);
 
 	void RenameTransitionDueNodeChanged(HashString previous, HashString newName);
 
@@ -77,7 +77,7 @@ public:
 	void RemoveNode(unsigned UID);
 	void RemoveTransition(unsigned UID);
 
-	void ReceiveTrigger(HashString trigger, unsigned &blend);
+	void ReceiveTrigger(HashString trigger, float &blend);
 
 	bool isClipsEmpty() { return clips.empty(); }
 	bool isNodesEmpty() { return nodes.empty(); }
@@ -109,10 +109,10 @@ private:
 		HashString destiny;
 		HashString trigger;
 
-		unsigned blend = 1u;
+		float blend = 200.f;
 
 		Transition() { ; }
-		Transition(HashString o, HashString d, HashString t, unsigned b) : 
+		Transition(HashString o, HashString d, HashString t, float b) : 
 			origin(o), destiny(d), trigger(t), blend(b) { ; }
 	};
 
