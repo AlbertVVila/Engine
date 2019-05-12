@@ -37,6 +37,7 @@
 #define ICON_Y_MARGIN 32
 #define LEFT_INDENTATION 15
 #define ICON_NAME_SIZE ICON_SIZE + 12
+#define TEXT_SIZE 15
 
 // |<--X Indentation--><--Icon Size--><--Icon X Margin--><--Next Icon---> _
 // |				   _______________					 _______________  |
@@ -257,7 +258,16 @@ void PanelBrowser::DrawFileIcon(const char* file, int itemNumber)
 	ImGui::SetCursorPosY((ICON_SIZE + ICON_Y_MARGIN) + (ICON_SIZE + ICON_Y_MARGIN) * (itemNumber / maxNumberElements));
 
 	ImGui::PushTextWrapPos(ImGui::GetCursorPos().x + 52);
-	ImGui::Text(file);
+	
+	// Make sure the text fits the designated size.
+	std::string fileText(file, TEXT_SIZE);
+	if (strlen(fileText.c_str()) >= TEXT_SIZE)
+	{
+		// If not delete last 3 characters and put "..."
+		fileText.replace(TEXT_SIZE - 4, TEXT_SIZE - 1, "...");
+	}
+
+	ImGui::Text(fileText.c_str());
 
 	if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
