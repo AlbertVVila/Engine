@@ -48,6 +48,8 @@
 #include <iterator>
 #include <utility>
 
+#undef max
+
 #ifdef __GNUC__
     #include <cxxabi.h>
 #endif

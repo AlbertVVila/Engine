@@ -16,35 +16,35 @@
 #include "JSON.h"
 
 
-ComponentButton::ComponentButton() : Component(nullptr, ComponentType::Button)
+Button::Button() : Component(nullptr, ComponentType::Button)
 {
-	text = new ComponentText();
+	text = new Text();
 	buttonImage = new ComponentImage();
 	highlightedImage = new ComponentImage();
 	pressedImage = new ComponentImage();
 	AssemblyButton();
 }
 
-ComponentButton::ComponentButton(GameObject* gameobject) : Component(gameobject, ComponentType::Button)
+Button::Button(GameObject* gameobject) : Component(gameobject, ComponentType::Button)
 {
-	text = new ComponentText();
+	text = new Text();
 	buttonImage = new ComponentImage();
 	highlightedImage = new ComponentImage();
 	pressedImage = new ComponentImage();
 	AssemblyButton();
 }
 
-ComponentButton::ComponentButton(const ComponentButton& copy) : Component(copy)
+Button::Button(const Button& copy) : Component(copy)
 {
-	text = (ComponentText*) copy.text->Clone();
+	text = (Text*) copy.text->Clone();
 	buttonImage = (ComponentImage*)copy.buttonImage->Clone();
 	highlightedImage = (ComponentImage*)copy.highlightedImage->Clone();
 	pressedImage = (ComponentImage*)copy.pressedImage->Clone();
-	rectTransform = (ComponentTransform2D*)copy.rectTransform->Clone();
+	rectTransform = (Transform2D*)copy.rectTransform->Clone();
 }
 
 
-ComponentButton::~ComponentButton()
+Button::~Button()
 {
 	RELEASE(text);
 	RELEASE(buttonImage);
@@ -52,12 +52,12 @@ ComponentButton::~ComponentButton()
 	RELEASE(pressedImage);
 }
 
-Component* ComponentButton::Clone() const
+Component* Button::Clone() const
 {
-	return new ComponentButton(*this);;
+	return new Button(*this);;
 }
 
-void ComponentButton::DrawProperties()
+void Button::DrawProperties()
 {
 	ImGui::PushID(0);
 	text->DrawProperties();
@@ -76,7 +76,7 @@ void ComponentButton::DrawProperties()
 	ImGui::PopID();
 }
 
-void ComponentButton::Save(JSON_value* value) const
+void Button::Save(JSON_value* value) const
 {
 	Component::Save(value);
 	JSON_value* textValue = value->CreateValue(rapidjson::kObjectType);	
@@ -93,14 +93,14 @@ void ComponentButton::Save(JSON_value* value) const
 	value->AddValue("pressedImage", *pValue);
 }
 
-void ComponentButton::Load(JSON_value* value)
+void Button::Load(JSON_value* value)
 {
 	RELEASE(text);
 	RELEASE(buttonImage);
 	RELEASE(highlightedImage);
 	RELEASE(pressedImage);	
 	Component::Load(value);
-	text = new ComponentText();
+	text = new Text();
 	text->Load(value->GetValue("text"));
 	buttonImage = new ComponentImage();
 	buttonImage->Load(value->GetValue("buttonImage"));
@@ -111,7 +111,7 @@ void ComponentButton::Load(JSON_value* value)
 	AssemblyButton();
 }
 
-void ComponentButton::Update()
+void Button::Update()
 {
 	math::float2 mouse = reinterpret_cast<const float2&>(App->input->GetMousePosition());	
 	float screenX = mouse.x - App->renderer->viewGame->winPos.x - (App->ui->currentWidth * .5f);
@@ -154,7 +154,7 @@ void ComponentButton::Update()
 	}
 }
 
-void ComponentButton::Enable(bool enable)
+void Button::Enable(bool enable)
 {
 	Component::Enable(enable);
 	isPressed = false;
@@ -165,13 +165,13 @@ void ComponentButton::Enable(bool enable)
 	buttonImage->enabled = true;
 }
 
-void ComponentButton::AssemblyButton() 
+void Button::AssemblyButton() 
 {
 	text->gameobject = gameobject;
 	buttonImage->gameobject = gameobject;
 	highlightedImage->gameobject = gameobject;
 	pressedImage->gameobject = gameobject;
-	rectTransform = (ComponentTransform2D*)gameobject->GetComponent(ComponentType::Transform2D);
+	rectTransform = (Transform2D*)gameobject->GetComponentOld(ComponentType::Transform2D);
 	buttonImage->enabled = true;
 	highlightedImage->enabled = false;
 	pressedImage->enabled = false;

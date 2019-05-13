@@ -194,9 +194,6 @@
     <ClCompile Include="ModuleSpacePartitioning.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="ComponentScript.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleScript.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -491,6 +488,9 @@
     <ClCompile Include="Prefab.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
+    <ClCompile Include="BaseScript.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -783,9 +783,6 @@
     </ClInclude>
     <ClInclude Include="ModuleSpacePartitioning.h">
       <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="ComponentScript.h">
-      <Filter>Component</Filter>
     </ClInclude>
     <ClInclude Include="ModuleScript.h">
       <Filter>Modules</Filter>
@@ -1093,8 +1090,12 @@
       <Filter>Panels</Filter>
     </ClInclude>
     <ClInclude Include="DetourDebugInterface.h" />
+<<<<<<< HEAD
     <ClInclude Include="Prefab.h">
       <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseScript.h">
+      <Filter>Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

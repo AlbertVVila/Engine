@@ -245,8 +245,8 @@ void ModuleNavigation::addNavigableMesh()
 {
 	cleanValuesPOST();
 	meshboxes.push_back(static_cast <const AABB*>(&App->scene->selected->bbox));
-	meshComponents.push_back(static_cast <const ComponentRenderer*>(App->scene->selected->GetComponent(ComponentType::Renderer)));
-	transformComponents.push_back(static_cast <const ComponentTransform*>(App->scene->selected->GetComponent(ComponentType::Transform)));
+	meshComponents.push_back(static_cast <const ComponentRenderer*>(App->scene->selected->GetComponentOld(ComponentType::Renderer)));
+	transformComponents.push_back(static_cast <const ComponentTransform*>(App->scene->selected->GetComponentOld(ComponentType::Transform)));
 
 	std::string s = App->scene->selected->name + " added to navigation";
 	LOG(s.c_str());
@@ -257,8 +257,8 @@ void ModuleNavigation::addNavigableMesh(const GameObject* obj)
 {
 	cleanValuesPOST();
 	meshboxes.push_back(static_cast <const AABB*>(&obj->bbox));
-	meshComponents.push_back(static_cast <const ComponentRenderer*>(obj->GetComponent(ComponentType::Renderer)));
-	transformComponents.push_back(static_cast <const ComponentTransform*>(obj->GetComponent(ComponentType::Transform)));
+	meshComponents.push_back(static_cast <const ComponentRenderer*>(obj->GetComponentOld(ComponentType::Renderer)));
+	transformComponents.push_back(static_cast <const ComponentTransform*>(obj->GetComponentOld(ComponentType::Transform)));
 	std::string s = obj->name + " added to navigation";
 	LOG(s.c_str());
 	objectName = obj->name.c_str();

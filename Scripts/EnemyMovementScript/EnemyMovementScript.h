@@ -32,7 +32,7 @@ public:
 public:
 	bool stop = false;
 private:
-	GameObject* GetGameObjectRecursiveByName(GameObject* gameObject, const char* name);
+	GameObject* GetGameObjectRecursiveByName(GameObject* gameobject, const char* name);
 private:
 	float speed = 100.0f;
 	float maxPlayerDistance = 200000.0f;

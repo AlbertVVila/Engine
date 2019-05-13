@@ -9,8 +9,8 @@ DetourPoints::DetourPoints()
 	//WOWPOS start = { -8949.95f, -132.493f, 83.5312f };
 	//WOWPOS end = { -9046.507f, -45.71962f, 88.33186f };
 
-	//WOWPOS *path = new WOWPOS[MAX_PATH];
-	//int size = MAX_PATH;
+	//WOWPOS *path = new WOWPOS[MAX_DETOUR_PATH];
+	//int size = MAX_DETOUR_PATH;
 	//int pathSize = nav->FindStraightPath(start, end, path, size);
 
 	//std::cout << "FindStraightPath: returned " << pathSize << " points." << std::endl;

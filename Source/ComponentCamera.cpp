@@ -111,9 +111,9 @@ void ComponentCamera::Zoom(float mouseWheel, bool shiftPressed)
 
 void ComponentCamera::Center() //TODO: Shouldn't be specfic to editor camera
 {
-	if (App->scene->selected == nullptr || App->scene->selected->GetComponent(ComponentType::Transform) == nullptr) return;
+	if (App->scene->selected == nullptr || App->scene->selected->GetComponentOld(ComponentType::Transform) == nullptr) return;
 
-	if (App->scene->selected->GetComponent(ComponentType::Renderer) != nullptr)
+	if (App->scene->selected->GetComponentOld(ComponentType::Renderer) != nullptr)
 	{
 		math::AABB bbox = App->scene->selected->GetBoundingBox();
 		CenterBbox(bbox);
@@ -134,7 +134,7 @@ void ComponentCamera::Center() //TODO: Shouldn't be specfic to editor camera
 		{
 			float camDist = App->renderer->current_scale;
 			math::float3 center = ((ComponentTransform*)
-				(App->scene->selected->GetComponent(ComponentType::Transform)))->GetPosition();
+				(App->scene->selected->GetComponentOld(ComponentType::Transform)))->GetPosition();
 			frustum->pos = center + math::float3(0.0f, 0.0f, camDist);
 		}
 	}

@@ -24,7 +24,7 @@ enum class ComponentType
 	AudioSource
 };
 
-class Component
+class ENGINE_API Component
 {
 public:
 	Component(GameObject* gameobject, ComponentType type);
@@ -37,10 +37,7 @@ public:
 
 	virtual void DrawProperties() = 0;
 
-	ENGINE_API virtual void Enable(bool enable)
-	{
-		enabled = enable;
-	}
+	virtual void Enable(bool enable);
 
 	virtual void Update() {}
 	virtual void OnPlay() {}
@@ -49,6 +46,10 @@ public:
 	{
 		return true; 
 	}
+
+	virtual void OnEnable() {}
+	virtual void OnDisable() {}
+	virtual void OnDestroy() {}
 
 	virtual void Options();
 	void Remove();

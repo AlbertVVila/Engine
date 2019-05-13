@@ -9,7 +9,7 @@ struct Texture;
 
 class ComponentCamera;
 class ComponentImage;
-class ComponentText;
+class Text;
 
 class ModuleUI :
 	public Module

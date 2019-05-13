@@ -229,8 +229,8 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 				GameObject* node = S.top();S.pop();
 				if (node->parent->transform != nullptr)
 				{
-					ComponentTransform*  nT = (ComponentTransform*)node->GetComponent(ComponentType::Transform);
-					ComponentTransform*  pT = (ComponentTransform*)node->parent->GetComponent(ComponentType::Transform);
+					ComponentTransform*  nT = (ComponentTransform*)node->GetComponentOld(ComponentType::Transform);
+					ComponentTransform*  pT = (ComponentTransform*)node->parent->GetComponentOld(ComponentType::Transform);
 					dd::line(nT->GetGlobalPosition(), pT->GetGlobalPosition(), dd::colors::Red);
 				}
 				
@@ -271,7 +271,7 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	{
 		if (camFrustum.Intersects(go->GetBoundingBox()))
 		{
-			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponentOld(ComponentType::Renderer);
 			if (cr && !cr->useAlpha)
 			{
 				DrawGO(*go, camFrustum, isEditor);
@@ -287,7 +287,7 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	{
 		if (camFrustum.Intersects(go->GetBoundingBox()))
 		{
-			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponentOld(ComponentType::Renderer);
 			if (cr && !cr->useAlpha)
 			{
 				DrawGO(*go, camFrustum, isEditor);
@@ -299,7 +299,7 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 		}
 	}
 
-	if (selected != nullptr && selected->GetComponent(ComponentType::Renderer) == nullptr)
+	if (selected != nullptr && selected->GetComponentOld(ComponentType::Renderer) == nullptr)
 	{
 		DrawGO(*selected, frustum, isEditor); //bcause it could be an object without mesh not in staticGOs or dynamicGOs
 	}
@@ -308,7 +308,7 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	{
 		if (maincamera->frustum->Intersects(go->GetBoundingBox()))
 		{
-			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponentOld(ComponentType::Renderer);
 			if (cr && !cr->useAlpha)
 			{
 				DrawGOGame(*go);
@@ -324,7 +324,7 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	{
 		if (maincamera->frustum->Intersects(go->GetBoundingBox()))
 		{
-			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponentOld(ComponentType::Renderer);
 			if (cr && !cr->useAlpha)
 			{
 				DrawGOGame(*go);
@@ -356,7 +356,7 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 
 void ModuleScene::DrawGOGame(const GameObject& go)
 {
-	ComponentRenderer* crenderer = (ComponentRenderer*)go.GetComponent(ComponentType::Renderer);
+	ComponentRenderer* crenderer = (ComponentRenderer*)go.GetComponentOld(ComponentType::Renderer);
 	if (crenderer == nullptr || !crenderer->enabled || crenderer->material == nullptr) return;
 
 	ResourceMaterial* material = crenderer->material;
@@ -405,7 +405,7 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 			go.light->DrawDebug();
 		}
 	}
-	ComponentRenderer* crenderer = (ComponentRenderer*)go.GetComponent(ComponentType::Renderer);
+	ComponentRenderer* crenderer = (ComponentRenderer*)go.GetComponentOld(ComponentType::Renderer);
 	if (crenderer == nullptr || !crenderer->enabled || crenderer->material == nullptr) return;
 
 	ResourceMesh* mesh = crenderer->mesh;
@@ -982,7 +982,7 @@ bool ModuleScene::AddScene(const char* scene, const char* path)
 		}
 	
 		ComponentRenderer* renderer = nullptr;
-		renderer = (ComponentRenderer*)gameobject->GetComponent(ComponentType::Renderer);
+		renderer = (ComponentRenderer*)gameobject->GetComponentOld(ComponentType::Renderer);
 		if (renderer != nullptr)
 		{
 			renderers.push_back(renderer);
@@ -1297,7 +1297,7 @@ ComponentLight* ModuleScene::GetDirectionalLight() const
 {
 	for (const auto& light : lights)
 	{
-		if (light->lightType == LightType::DIRECTIONAL && light->enabled)
+		if (light->lightType == LightType::DIRECTIONAL)
 		{
 			return light;
 		}
