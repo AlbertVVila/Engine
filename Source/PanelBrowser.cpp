@@ -178,9 +178,13 @@ void PanelBrowser::Draw()
 	if (openImportConfigPopUp)
 		DrawImportConfigurationPopUp();
 
-	// Rename Pop-up
-	if (openRenamePopUp)
-		DrawRenamePopUp();
+	// Rename File Pop-up
+	if (openRenameFilePopUp)
+		DrawRenameFilePopUp();
+
+	// Rename Folder Pop-up
+	if (openRenameFolderPopUp)
+		DrawRenameFolderPopUp();
 
 	ImGui::End();	
 }
@@ -322,8 +326,8 @@ void PanelBrowser::DrawFileContextMenu()
 
 		if (ImGui::Selectable("Rename"))
 		{
-			strcpy(newName, App->fsystem->GetFilename(fileSelected->GetExportedFile()).c_str());
-			openRenamePopUp = true;
+			strcpy(newFileName, App->fsystem->GetFilename(fileSelected->GetExportedFile()).c_str());
+			openRenameFilePopUp = true;
 		}
 		if(ImGui::Selectable("Delete"))
 		{
@@ -354,7 +358,8 @@ void PanelBrowser::DrawFolderContextMenu()
 
 		if (ImGui::Selectable("Rename"))
 		{
-			
+			strcpy(newFolderName, folderSelected.c_str());
+			openRenameFolderPopUp = true;
 		}
 		if (ImGui::Selectable("Delete"))
 		{
@@ -390,21 +395,21 @@ void PanelBrowser::DrawImportConfigurationPopUp()
 	}
 }
 
-void PanelBrowser::DrawRenamePopUp()
+void PanelBrowser::DrawRenameFilePopUp()
 {
 	ImGui::OpenPopup("Rename File");
 
 	ImGui::SetNextWindowSizeConstraints(ImVec2(270.0f, 150.0f), ImVec2((float)App->window->width, (float)App->window->height));
-	if (ImGui::BeginPopupModal("Rename File", &openRenamePopUp))
+	if (ImGui::BeginPopupModal("Rename File", &openRenameFilePopUp))
 	{
 		ImGui::Text("New name:");
 		ImGui::SameLine();
 
-		ImGui::InputText("", newName, MAX_FILENAME);
+		ImGui::InputText("", newFileName, MAX_FILENAME);
 
 		// Check if there isn't already a file with the same name
 		std::string extension = App->fsystem->GetExtension(fileSelected->GetExportedFile());
-		invalidName = App->resManager->Exists((newName + extension).c_str(), fileSelected->GetType());
+		invalidName = App->resManager->Exists((newFileName + extension).c_str(), fileSelected->GetType());
 
 		if(invalidName)
 			ImGui::Text("A file with that name already exists!");
@@ -414,16 +419,54 @@ void PanelBrowser::DrawRenamePopUp()
 		ImGui::NewLine();
 		if (ImGui::ButtonEx("Accept", ImVec2(0, 0), invalidName? ImGuiButtonFlags_Disabled : 0))
 		{
-			fileSelected->Rename(newName);
+			fileSelected->Rename(newFileName);
 			folderContentDirty = true;
-			strcpy(newName,"");
-			openRenamePopUp = false;
+			strcpy(newFileName,"");
+			openRenameFilePopUp = false;
 		}
 		ImGui::SameLine(0, 110);
 		if (ImGui::Button("Cancel"))
 		{
-			strcpy(newName, "");
-			openRenamePopUp = false;
+			strcpy(newFileName, "");
+			openRenameFilePopUp = false;
+		}
+		ImGui::EndPopup();
+	}
+}
+
+void PanelBrowser::DrawRenameFolderPopUp()
+{
+	ImGui::OpenPopup("Rename Folder");
+
+	ImGui::SetNextWindowSizeConstraints(ImVec2(270.0f, 150.0f), ImVec2((float)App->window->width, (float)App->window->height));
+	if (ImGui::BeginPopupModal("Rename Folder", &openRenameFolderPopUp))
+	{
+		ImGui::Text("New name:");
+		ImGui::SameLine();
+
+		ImGui::InputText("", newFolderName, MAX_FILENAME);
+
+		// Check if there isn't already a file with the same name
+		invalidName = App->fsystem->Exists((path + newFolderName).c_str());
+
+		if (invalidName)
+			ImGui::Text("A folder with that name already exists!");
+		else
+			ImGui::NewLine();
+
+		ImGui::NewLine();
+		if (ImGui::ButtonEx("Accept", ImVec2(0, 0), invalidName ? ImGuiButtonFlags_Disabled : 0))
+		{
+			App->fsystem->Rename(path.c_str(), folderSelected.c_str(), newFolderName);
+			folderContentDirty = true;
+			strcpy(newFolderName, "");
+			openRenameFolderPopUp = false;
+		}
+		ImGui::SameLine(0, 110);
+		if (ImGui::Button("Cancel"))
+		{
+			strcpy(newFolderName, "");
+			openRenameFolderPopUp = false;
 		}
 		ImGui::EndPopup();
 	}
