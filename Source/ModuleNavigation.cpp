@@ -862,7 +862,7 @@ void ModuleNavigation::fillIndices()
 	int vertOverload = 0;
 	for (int j = 0; j < meshComponents.size(); ++j)
 	{
-		vertOverload = maxVertMesh[j];
+		vertOverload += maxVertMesh[j];
 		for (int i = 0; i < meshComponents[j]->mesh->meshIndices.size(); i += 3)
 		{
 			tris[currentGlobalTri] = meshComponents[j]->mesh->meshIndices[i] + vertOverload;
