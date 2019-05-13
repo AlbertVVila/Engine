@@ -78,6 +78,7 @@ public:
 
 	unsigned highlightBufferGame = 0u;
 	unsigned renderedSceneGame = 0u;
+	unsigned renderedSceneEditor = 0u;
 
 private:
 	unsigned UBO = 0;

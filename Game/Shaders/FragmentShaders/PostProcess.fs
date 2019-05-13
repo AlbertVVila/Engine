@@ -1,5 +1,3 @@
-#version 330 core
-
 layout (location = 0) out vec4 color;
 layout (location = 1) out vec4 hlight;
 
@@ -11,9 +9,9 @@ uniform float weight[5] = float[] (0.227027, 0.1945946, 0.1216216, 0.054054, 0.0
 
 in vec2 UV0;
 
-void main()
+vec4 ProcessHighlights(vec4 hColorIn)
 {
-
+	vec4 hColor = hColorIn;
 	vec2 offset = 1.0 / textureSize(gHighlight, 0);
 	vec4 N = texture2D(gHighlight, vec2(UV0.x , UV0.y + offset.y));
 	vec4 NE = texture2D(gHighlight, vec2(UV0.x + offset.x, UV0.y + offset.y));
@@ -27,25 +25,45 @@ void main()
 	
 	hlight = C;
 
-	color = E - C;
-	color = color + O - C;
-	color = color + N - C;
-	color = color + NE - C;
-	color = color + NO - C;
-	color = color + S - C;
-	color = color + SE - C;
-	color = color + SO - C;
-	color.a = 1;
+	hColor = E - C;
+	hColor = hColor + O - C;
+	hColor = hColor + N - C;
+	hColor = hColor + NE - C;
+	hColor = hColor + NO - C;
+	hColor = hColor + S - C;
+	hColor = hColor + SE - C;
+	hColor = hColor + SO - C;
+	hColor.a = 1;
 	
-	color.r = max(color.r, 0.0f);
-	color.g = max(color.g, 0.0f);
-	color.b = max(color.b, 0.0f);
-	color.a = max(color.a, 0.0f);
+	hColor.r = max(hColor.r, 0.0f);
+	hColor.g = max(hColor.g, 0.0f);
+	hColor.b = max(hColor.b, 0.0f);
+	hColor.a = max(hColor.a, 0.0f);
 	
-	float lC = length(color.rgb);
-	color = (1 - lC) * texture2D(gColor, UV0) + lC * color;
-	
-	/* tex_offset = 1.0 / textureSize(gColor, 0); // gets size of single texel
+	float lC = length(hColor.rgb);	
+	return (1 - lC) * hColorIn + lC * hColor;
+}
+
+vec3 GetTexel(in vec2 uv) //MSAA
+{
+	ivec2 vp = textureSize(gColor, 0);
+	vp = ivec2(vec2(vp)*uv);
+	vec4 sample1 = texelFetch(gColor, vp, 0);
+	vec4 sample2 = texelFetch(gColor, vp, 1);
+	vec4 sample3 = texelFetch(gColor, vp, 2);
+	vec4 sample4 = texelFetch(gColor, vp, 3);
+	return (sample1.rgb + sample2.rgb + sample3.rgb + sample4.rgb) / 4.0f;
+}
+
+void main()
+{
+	//color = vec4(GetTexel(UV0), 1.0f);
+	//vec3 mapped = color.rgb / (color.rgb + vec3(1.0));
+	//color = vec4(pow(mapped, vec3(1.0 / 2.2)), 1.0); // gamma correction
+	//color = ProcessHighlights(color);
+
+	/*
+	vec2 tex_offset = 1.0 / textureSize(gColor, 0); // gets size of single texel
     vec3 result = texture(gColor, UV0).rgb * weight[0]; // current fragment's contribution
     if(horizontal)
     {

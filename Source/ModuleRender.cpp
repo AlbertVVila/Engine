@@ -249,7 +249,7 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 		glUniformMatrix4fv(glGetUniformLocation(shader, "model"), 1, GL_TRUE, &model[0][0]);
 		App->navigation->renderNavMesh();
 		glUseProgram(0);
-		skybox->Draw(*cam.frustum);
+		skybox->Draw(*cam.frustum, true);
 
 	}
 	else //Due the postprocess only one skybox could be drawn at once

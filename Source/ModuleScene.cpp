@@ -440,7 +440,10 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 		{
 			variation |= (unsigned)ModuleProgram::PBR_Variations::SHADOWS_ENABLED;
 		}
-
+		if (isEditor)
+		{
+			variation |= (unsigned)ModuleProgram::PBR_Variations::EDITOR_RENDER;
+		}
 	}
 
 	glUseProgram(shader->id[variation]);
