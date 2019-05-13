@@ -347,11 +347,7 @@ PMColorOverTime::PMColorOverTime()
 	type = ParticleModulesType::COLOR_OVER_TIME;
 	Imgradient = new ImGradient();
 
-	std::list<ImGradientMark*> marks = Imgradient->getMarks();
-
-	gradient1 = marks.front();
-	marks.pop_front();
-	gradient2 = marks.front();
+	UpdateGradientPointers();
 }
 
 void PMColorOverTime::InspectorDraw()
@@ -360,7 +356,22 @@ void PMColorOverTime::InspectorDraw()
 	if (enabled)
 	{
 		ImGui::GradientEditor(Imgradient ,gradient1, gradient2);
-		if (ImGui::Button("Add Mark")) Imgradient->addMark(0.5f, 0.f);
+		if (ImGui::Button("Add Mark")) 
+		{
+			// 2 Marks max for now 
+			if (Imgradient->getMarks().size() < 2) Imgradient->addMark(0.5f, 0.f);
+		}
 	}
+
+}
+
+void PMColorOverTime::UpdateGradientPointers()
+{
+	std::list<ImGradientMark*> marks = Imgradient->getMarks();
+
+	gradient1 = marks.front();
+	marks.pop_front();
+	gradient2 = marks.front();
+	marks.pop_front();
 
 }

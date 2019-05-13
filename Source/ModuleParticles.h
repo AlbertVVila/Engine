@@ -101,16 +101,16 @@ public:
 	PMColorOverTime();
 	ImGradient* Imgradient;
 
-
-private:
-	float3 color1 = math::float3::one;
-	float3 color2 = math::float3::one;
-
+	//float3 color1 = math::float3::one;
+	//float3 color2 = math::float3::one;
 
 	ImGradientMark* gradient1;
 	ImGradientMark* gradient2;
 
+
+public:
 	void InspectorDraw() override;
+	void UpdateGradientPointers();
 
 
 };

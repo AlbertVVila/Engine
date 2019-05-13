@@ -149,6 +149,7 @@ void ComponentParticles::DrawProperties()
 		ImGui::DragFloat2("Lifetime", &lifetime[0], 0.1f);
 		ImGui::DragFloat2("Speed", &speed[0], 1.2f);
 		ImGui::DragFloat2("Size", &particleSize[0], 0.01 * App->renderer->current_scale);
+		ImGui::ColorEdit3("Color", (float*)&particleColor);
 
 		//Clamp values
 		lifetime[0] = Max(0.01f, lifetime[0]);
@@ -170,8 +171,6 @@ void ComponentParticles::DrawProperties()
 			ImGui::DragFloat("Quad size", &quadEmitterSize, 0.1 * App->renderer->current_scale);
 			break;
 		}
-
-		ImGui::ColorEdit3("Color", (float*)&particleColor);
 
 		for (ParticleModule* pm : modules)
 		{
@@ -328,7 +327,7 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 		defaultColor[0] = particleColor[0];
 		defaultColor[1] = particleColor[1];
 		defaultColor[2] = particleColor[2];
-		defaultColor[3] = particleColor[3];
+		defaultColor[3] = 1.f;
 
 		for (ParticleModule* pm : modules)
 		{
@@ -381,6 +380,27 @@ void ComponentParticles::Save(JSON_value* value) const
 	value->AddInt("actualEmisor", actualEmisor);
 	value->AddInt("sizeOT", sizeOTCheck);
 	value->AddInt("colorOT", colorOTCheck);
+
+	value->AddFloat3("defaultColor", particleColor);
+
+	PMColorOverTime* COTAux = (PMColorOverTime*)modules[1];
+	std::list<ImGradientMark*> marks = COTAux->Imgradient->getMarks();
+
+	
+	float3 colorAux;
+	colorAux.x = marks.front()->color[0];
+	colorAux.y = marks.front()->color[1];
+	colorAux.z = marks.front()->color[2];
+	value->AddFloat3("color1",colorAux);
+
+	marks.pop_front();
+
+	colorAux.x = marks.front()->color[0];
+	colorAux.y = marks.front()->color[1];
+	colorAux.z = marks.front()->color[2];
+	value->AddFloat3("color2", colorAux);
+
+
 	
 }
 
@@ -411,6 +431,13 @@ void ComponentParticles::Load(JSON_value* value)
 	alternateEmisor(actualEmisor);
 	modules[0]->enabled = value->GetInt("sizeOT");
 	modules[1]->enabled = value->GetInt("colorOT");
+
+	particleColor = value->GetFloat3("defaultColor");
+
+	PMColorOverTime* COTAux = (PMColorOverTime*)modules[1];
+	COTAux->Imgradient->clearMarks();
+	COTAux->Imgradient->addMark(0.0f, ImColor(value->GetFloat3("color1").x, value->GetFloat3("color1").y, value->GetFloat3("color1").z, 1.f));
+	COTAux->Imgradient->addMark(1.0f, ImColor(value->GetFloat3("color2").x, value->GetFloat3("color2").y, value->GetFloat3("color2").z, 1.f));
 
 }
 
