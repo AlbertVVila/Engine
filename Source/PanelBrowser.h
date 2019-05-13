@@ -26,6 +26,7 @@ private:
 	void DrawFileIcon(const char* file, int itemNumber);
 
 	void DrawFileContextMenu();
+	void DrawFolderContextMenu();
 	void DrawImportConfigurationPopUp();
 	void DrawRenamePopUp();
 
@@ -42,6 +43,7 @@ private:
 	bool openRenamePopUp = false;
 
 	Resource* fileSelected = nullptr;
+	std::string folderSelected = "";
 
 	// Rename variables
 	char newName[MAX_FILENAME] = "";				// Aux string for rename

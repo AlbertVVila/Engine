@@ -206,6 +206,12 @@ void PanelBrowser::DrawFolderIcon(const char* dir, int itemNumber)
 		folderContentDirty = true;
 	}
 
+	if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	{
+		folderSelected = dir;
+		ImGui::OpenPopup("Folder Context Menu");
+	}
+
 	// Folder name text
 	ImGui::SetCursorPosX(LEFT_INDENTATION + (ICON_SIZE + ICON_X_MARGIN) * (itemNumber % maxNumberElements));
 	ImGui::SetCursorPosY((ICON_SIZE + ICON_Y_MARGIN) + (ICON_SIZE + ICON_Y_MARGIN) * (itemNumber / maxNumberElements));
@@ -221,13 +227,24 @@ void PanelBrowser::DrawFolderIcon(const char* dir, int itemNumber)
 	}
 
 	ImGui::Text(dirText.c_str());
-	if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	if (ImGui::IsItemHovered())
 	{
-		pathStack.push(path);
-		path += dir;
-		path += "/";
-		folderContentDirty = true;
-	}
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+		{
+			pathStack.push(path);
+			path += dir;
+			path += "/";
+			folderContentDirty = true;
+		}
+		else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+		{
+			folderSelected = dir;
+			ImGui::OpenPopup("Folder Context Menu");
+		}
+	}	
+
+	// Right click menu
+	DrawFolderContextMenu();
 }
 
 void PanelBrowser::DrawFileIcon(const char* file, int itemNumber)
@@ -300,6 +317,9 @@ void PanelBrowser::DrawFileContextMenu()
 			return;
 		}
 
+		ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), App->fsystem->GetFile(fileSelected->GetFile()).c_str());
+		ImGui::Separator();
+
 		if (ImGui::Selectable("Rename"))
 		{
 			strcpy(newName, App->fsystem->GetFilename(fileSelected->GetExportedFile()).c_str());
@@ -315,6 +335,32 @@ void PanelBrowser::DrawFileContextMenu()
 			//Code to change import settings
 			openImportConfigPopUp = true;
 		}	
+		ImGui::EndPopup();
+	}
+}
+
+void PanelBrowser::DrawFolderContextMenu()
+{
+	if (ImGui::BeginPopup("Folder Context Menu"))
+	{
+		if (folderSelected.empty())
+		{
+			ImGui::EndPopup();
+			return;
+		}
+
+		ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), folderSelected.c_str());
+		ImGui::Separator();
+
+		if (ImGui::Selectable("Rename"))
+		{
+			
+		}
+		if (ImGui::Selectable("Delete"))
+		{
+			App->fsystem->Delete((path + folderSelected).c_str());
+			folderContentDirty = true;
+		}
 		ImGui::EndPopup();
 	}
 }
