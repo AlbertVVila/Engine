@@ -140,7 +140,8 @@ bool ModuleParticles::Start()
 void ModuleParticles::Render(float dt, const ComponentCamera* camera) 
 {
 	glEnable(GL_BLEND);
-	glBlendFunc(GL_ONE, GL_ONE);	
+	//glBlendFunc(GL_ONE, GL_ONE);	
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	particleSystems.sort(
 		[camera](const ComponentParticles* cp1, const ComponentParticles* cp2) -> bool
 		{
