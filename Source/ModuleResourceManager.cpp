@@ -393,10 +393,25 @@ Resource* ModuleResourceManager::GetByName(const char* name, TYPE type)
 		{
 			Resource* res = it->second;
 			if (HashString(res->GetName()) == HashString(name))
-				return Get(res->GetUID());
+			{
+				Resource* resource = it->second;
+				// Check if is already loaded in memory
+				if (!resource->IsLoadedToMemory())
+				{
+					// Load in memory
+					if (resource->LoadInMemory())
+						return resource;
+					else
+						return nullptr;
+				}
+				else
+				{
+					resource->SetReferences(resource->GetReferences() + 1);
+					return resource;
+				}
+			}
 		}
 	}
-
 	return nullptr;
 }
 
