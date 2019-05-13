@@ -110,6 +110,8 @@ private:
 	unsigned postprocessVAO = 0u;
 	unsigned postprocessVBO = 0u;
 	unsigned postprocessEBO = 0u;
+
+	float gammaCorrector = 2.2f;
 };
 
 #endif /* __ModuleRender_h__ */

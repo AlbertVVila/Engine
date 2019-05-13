@@ -83,6 +83,8 @@ bool ModuleRender::Init(JSON * config)
 	useMainCameraFrustum = renderer->GetInt("frustumMainCamera");
 	skybox->enabled = renderer->GetInt("skybox");
 	current_scale = renderer->GetInt("current_scale");
+	gammaCorrector = renderer->GetFloat("gammaCorrector");
+
 	switch (current_scale)
 	{
 	case 1:
@@ -212,6 +214,7 @@ void ModuleRender::SaveConfig(JSON * config)
 	renderer->AddInt("vsync", vsync);
 	renderer->AddInt("frustumMainCamera", useMainCameraFrustum);
 	renderer->AddInt("skybox", skybox->enabled);
+	renderer->AddFloat("gammaCorrector", gammaCorrector);
 
 	config->AddValue("renderer", *renderer);
 }
@@ -285,6 +288,7 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 		
 		glUniform1i(glGetUniformLocation(postProcessShader->id[0], "gColor"), 0);
 		glUniform1i(glGetUniformLocation(postProcessShader->id[0], "gHighlight"), 1);
+		glUniform1f(glGetUniformLocation(postProcessShader->id[0], "gammaCorrector"), gammaCorrector);
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, colorTex);
@@ -710,12 +714,7 @@ void ModuleRender::DrawGUI()
 		App->camera->editorcamera->frustum->nearPlaneDistance = ZNEARDIST * current_scale;
 		App->camera->editorcamera->frustum->farPlaneDistance = ZFARDIST * current_scale;
 	}
-	ImGui::Text("Scene");
-	ImGui::Image((ImTextureID)renderedSceneGame, { 200,200 }, { 0,1 }, { 1,0 });
-	ImGui::Text("Highlight");
-	ImGui::Image((ImTextureID)highlightBufferGame, { 200,200 }, { 0,1 }, { 1,0 });
-	ImGui::Text("Game");
-	ImGui::Image((ImTextureID)viewGame->texture, { 200,200 }, { 0,1 }, { 1,0 });
+	ImGui::DragFloat("Gamma correction", &gammaCorrector, .05f, 1.2f, 3.2f);
 }
 
 void ModuleRender::GenBlockUniforms()
