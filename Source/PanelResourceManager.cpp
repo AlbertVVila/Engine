@@ -104,40 +104,44 @@ void PanelResourceManager::Draw()
 	{
 		unsigned uid = resource->GetUID();
 		ImGui::PushID(uid);
+
+		// If the resource is used by the engine show the text disabled
+		bool engineResource = resource->IsUsedByEngine();
+
 		// UID
-		ImGui::Text("%u", uid);
+		!engineResource? ImGui::Text("%u", uid) : ImGui::TextDisabled("%u", uid);
 		ImGui::NextColumn();
 
 		// Name
-		ImGui::Text(resource->GetName());
+		!engineResource ? ImGui::Text(resource->GetName()) : ImGui::TextDisabled(resource->GetName());
 		ImGui::NextColumn();
 
 		// File
-		ImGui::Text(resource->GetFile());
+		!engineResource ? ImGui::Text(resource->GetFile()) : ImGui::TextDisabled(resource->GetFile());
 		ImGui::NextColumn();
 
 		// Exported File
-		ImGui::Text(resource->GetExportedFile());
+		!engineResource ? ImGui::Text(resource->GetExportedFile()) : ImGui::TextDisabled(resource->GetExportedFile());
 		ImGui::NextColumn();
 
 		// Loaded
-		ImGui::Text("%u", resource->GetReferences());
+		!engineResource ? ImGui::Text("%u", resource->GetReferences()) : ImGui::TextDisabled("%u", resource->GetReferences());
 		ImGui::NextColumn();
 
 		// Type
 		switch (resource->GetType())
 		{
-		case TYPE::TEXTURE:		ImGui::Text("Texture");		break;
-		case TYPE::MODEL:		ImGui::Text("Model");		break;
-		case TYPE::MESH:		ImGui::Text("Mesh");		break;
-		case TYPE::AUDIO:		ImGui::Text("Audio");		break;
-		case TYPE::SCENE:		ImGui::Text("Scene");		break;
-		case TYPE::ANIMATION:	ImGui::Text("Animation");	break;
-		case TYPE::MATERIAL:	ImGui::Text("Material");	break;
-		case TYPE::SKYBOX:		ImGui::Text("Skybox");		break;
-		case TYPE::STATEMACHINE:ImGui::Text("StateMachine"); break;
+		case TYPE::TEXTURE:		!engineResource ? ImGui::Text("Texture")		: ImGui::TextDisabled("Texture");		break;
+		case TYPE::MODEL:		!engineResource ? ImGui::Text("Model")			: ImGui::TextDisabled("Model");			break;
+		case TYPE::MESH:		!engineResource ? ImGui::Text("Mesh")			: ImGui::TextDisabled("Mesh");			break;
+		case TYPE::AUDIO:		!engineResource ? ImGui::Text("Audio")			: ImGui::TextDisabled("Audio");			break;
+		case TYPE::SCENE:		!engineResource ? ImGui::Text("Scene")			: ImGui::TextDisabled("Scene");			break;
+		case TYPE::ANIMATION:	!engineResource ? ImGui::Text("Animation")		: ImGui::TextDisabled("Animation");		break;
+		case TYPE::MATERIAL:	!engineResource ? ImGui::Text("Material")		: ImGui::TextDisabled("Material");		break;
+		case TYPE::SKYBOX:		!engineResource ? ImGui::Text("Skybox")			: ImGui::TextDisabled("Skybox");		break;
+		case TYPE::STATEMACHINE:!engineResource ? ImGui::Text("StateMachine")	: ImGui::TextDisabled("StateMachine");	break;
 		default:
-		case TYPE::UNKNOWN:		ImGui::Text("Unknown");		break;
+		case TYPE::UNKNOWN:		!engineResource ? ImGui::Text("Unknown")		: ImGui::TextDisabled("Unknown");		break;
 		}
 		ImGui::NextColumn();
 		// View button
