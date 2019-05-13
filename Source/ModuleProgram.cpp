@@ -81,6 +81,10 @@ Shader* ModuleProgram::GetProgram(const char* name)
 	{
 		return CreateVariations(name, ShadowDefines, SHADOW_VARIATIONS);
 	}
+	if (std::string(name) == "PostProcess")
+	{
+		return CreateVariations(name, PostProcessDefines, POSTPRO_VARIATIONS);
+	}
 	else
 	{
 		return CreateProgram(name);
