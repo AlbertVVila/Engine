@@ -112,6 +112,15 @@ void PanelAnimation::Draw()
 
 		if (ImGui::Button("Clip", ImVec2(60, 23)))
 		{
+			if (isCliping)
+			{
+				if (ImGui::Button("Create new Animation"))
+				{
+					CreateAnimationFromClip(anim, minFrame, maxFrame);
+					guiAnimations.clear();
+					isCliping = false;
+				}
+			}
 			if (!isCliping && anim->currentFrame + 1 <= anim->duration)
 			{
 				minFrame = anim->currentFrame;
@@ -120,7 +129,18 @@ void PanelAnimation::Draw()
 			}
 			else if (isCliping && !compAnim->isPlaying)
 			{
+				CreateAnimationFromClip(anim, minFrame, maxFrame);
+				guiAnimations.clear();
 				isCliping = false;
+			}
+		}
+		if (isCliping)
+		{
+			ImGui::SameLine();
+			if (ImGui::Button("Cancel", ImVec2(60, 23)) && !compAnim->isPlaying)
+			{
+				isCliping = false;
+				anim->currentFrame = minFrame;
 				compAnim->editorController->ResetClipping();
 			}
 		}
@@ -208,15 +228,6 @@ void PanelAnimation::Draw()
 			ImGui::PushItemWidth(60);
 			ImGui::DragInt("Frame End", &maxFrame, 1.0f, minFrame + 1, anim->duration); ImGui::PopItemWidth();
 			ImGui::SameLine(); ImGui::Text("Frame End");
-		}
-		if (isCliping)
-		{
-			if (ImGui::Button("Create new Animation"))
-			{
-				CreateAnimationFromClip(anim, minFrame, maxFrame);
-				guiAnimations.clear();
-				isCliping = false;
-			}
 		}
 	}
 
