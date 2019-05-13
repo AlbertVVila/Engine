@@ -3,8 +3,10 @@ layout (location = 1) out vec4 hlight;
 
 uniform sampler2D gColor;
 uniform sampler2D gHighlight;
+uniform sampler2D gBrightness;
 
 uniform float gammaCorrector;
+uniform float exposure;
 
 uniform bool horizontal = true;
 uniform float weight[5] = float[] (0.227027, 0.1945946, 0.1216216, 0.054054, 0.016216);
@@ -59,31 +61,38 @@ vec3 GetTexel(in vec2 uv) //MSAA
 
 void main()
 {
-	color = vec4(GetTexel(UV0), 1.0f);
-	
-	vec3 mapped = color.rgb / (color.rgb + vec3(1.0));
-	color = vec4(pow(mapped, vec3(1.0 / gammaCorrector)), 1.0); // gamma correction
-	color = ProcessHighlights(color);
+	color = vec4(GetTexel(UV0), 1.0f);	
 
-	/*
-	vec2 tex_offset = 1.0 / textureSize(gColor, 0); // gets size of single texel
-    vec3 result = texture(gColor, UV0).rgb * weight[0]; // current fragment's contribution
+	vec2 tex_offset = 1.0 / textureSize(gBrightness, 0); // gets size of single texel
+    
+	vec3 bloomColor = texture(gBrightness, UV0).rgb * weight[0]; // current fragment's contribution
     if(horizontal)
     {
         for(int i = 1; i < 5; ++i)
         {
-            result += texture(gColor, UV0 + vec2(tex_offset.x * i, 0.0)).rgb * weight[i];
-            result += texture(gColor, UV0 - vec2(tex_offset.x * i, 0.0)).rgb * weight[i];
+            bloomColor += texture(gBrightness, UV0 + vec2(tex_offset.x * i, 0.0)).rgb * weight[i];
+            bloomColor += texture(gBrightness, UV0 - vec2(tex_offset.x * i, 0.0)).rgb * weight[i];
         }
     }
     else
     {
         for(int i = 1; i < 5; ++i)
         {
-            result += texture(gColor, UV0 + vec2(0.0, tex_offset.y * i)).rgb * weight[i];
-            result += texture(gColor, UV0 - vec2(0.0, tex_offset.y * i)).rgb * weight[i];
+            bloomColor += texture(gBrightness, UV0 + vec2(0.0, tex_offset.y * i)).rgb * weight[i];
+            bloomColor += texture(gBrightness, UV0 - vec2(0.0, tex_offset.y * i)).rgb * weight[i];
         }
     }
-    color = vec4(result, 1.0);
-	*/
+	
+	color += vec4(bloomColor, 1);
+
+	vec4 mapped = vec4(1.0) - exp(-color * exposure);
+	
+	color = pow(mapped, vec4(1.0 / gammaCorrector)); // gamma correction
+	
+	color = ProcessHighlights(color);
+
+	//color = vec4(bloomColor,1);
+
+	//color = texture2D(gBrightness, UV0);
+	
 }

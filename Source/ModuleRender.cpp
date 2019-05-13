@@ -84,6 +84,7 @@ bool ModuleRender::Init(JSON * config)
 	skybox->enabled = renderer->GetInt("skybox");
 	current_scale = renderer->GetInt("current_scale");
 	gammaCorrector = renderer->GetFloat("gammaCorrector");
+	exposure = renderer->GetFloat("exposure");
 
 	switch (current_scale)
 	{
@@ -100,6 +101,7 @@ bool ModuleRender::Init(JSON * config)
 
 	glGenTextures(1, &highlightBufferGame);
 	glGenTextures(1, &renderedSceneGame);
+	glGenTextures(1, &brightnessBufferGame);
 
 	float quadVertices[] =
 	{
@@ -215,6 +217,7 @@ void ModuleRender::SaveConfig(JSON * config)
 	renderer->AddInt("frustumMainCamera", useMainCameraFrustum);
 	renderer->AddInt("skybox", skybox->enabled);
 	renderer->AddFloat("gammaCorrector", gammaCorrector);
+	renderer->AddFloat("exposure", exposure);
 
 	config->AddValue("renderer", *renderer);
 }
@@ -260,6 +263,7 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 		skybox->Draw(*cam.frustum);
 		const float transparent[] = { 0, 0, 0, 1 };
 		glClearBufferfv(GL_COLOR, 1, transparent);
+		glClearBufferfv(GL_COLOR, 2, transparent);
 	}
 	
 	App->scene->Draw(*cam.frustum, isEditor);
@@ -269,8 +273,8 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 	if (!isEditor)
 	{
 
-		unsigned int attachments[2] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };// , GL_COLOR_ATTACHMENT2	};// , , GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4
-		glDrawBuffers(2, attachments);
+		unsigned int attachments[3] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };// , GL_COLOR_ATTACHMENT2	};// , , GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4
+		glDrawBuffers(3, attachments);
 		
 		GLint drawFboId = 0;
 		glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &drawFboId);
@@ -282,19 +286,21 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 		glUseProgram(postProcessShader->id[0]);
 		glBindVertexArray(postprocessVAO);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, postprocessEBO);
-		
-		int colorTex = renderedSceneGame;
-		int hlTex = highlightBufferGame;
-		
+	
 		glUniform1i(glGetUniformLocation(postProcessShader->id[0], "gColor"), 0);
 		glUniform1i(glGetUniformLocation(postProcessShader->id[0], "gHighlight"), 1);
+		glUniform1i(glGetUniformLocation(postProcessShader->id[0], "gBrightness"), 2);
 		glUniform1f(glGetUniformLocation(postProcessShader->id[0], "gammaCorrector"), gammaCorrector);
+		glUniform1f(glGetUniformLocation(postProcessShader->id[0], "exposure"), exposure);
 
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, colorTex);
+		glBindTexture(GL_TEXTURE_2D, renderedSceneGame);
 
 		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, hlTex);
+		glBindTexture(GL_TEXTURE_2D, highlightBufferGame);
+
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, brightnessBufferGame);
 		
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -370,9 +376,9 @@ void ModuleRender::OnResize()
 
 		glBindTexture(GL_TEXTURE_2D, renderedSceneGame);
 #ifndef GAME_BUILD
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, viewGame->current_width, viewGame->current_height, 0, GL_RGBA, GL_FLOAT, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, viewGame->current_width, viewGame->current_height, 0, GL_RGBA, GL_FLOAT, NULL);
 #else
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, App->window->width, App->window->height, 0, GL_RGBA, GL_FLOAT, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, App->window->width, App->window->height, 0, GL_RGBA, GL_FLOAT, NULL);
 #endif
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderedSceneGame, 0);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -387,6 +393,18 @@ void ModuleRender::OnResize()
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, App->window->width, App->window->height, 0, GL_RGBA, GL_FLOAT, NULL);
 #endif
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, highlightBufferGame, 0);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+
+		glBindTexture(GL_TEXTURE_2D, brightnessBufferGame);
+#ifndef GAME_BUILD
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, viewGame->current_width, viewGame->current_height, 0, GL_RGBA, GL_FLOAT, NULL);
+#else
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, App->window->width, App->window->height, 0, GL_RGBA, GL_FLOAT, NULL);
+#endif
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, brightnessBufferGame, 0);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
@@ -715,6 +733,7 @@ void ModuleRender::DrawGUI()
 		App->camera->editorcamera->frustum->farPlaneDistance = ZFARDIST * current_scale;
 	}
 	ImGui::DragFloat("Gamma correction", &gammaCorrector, .05f, 1.2f, 3.2f);
+	ImGui::DragFloat("Exposure", &exposure, .05f, .1f, 10.0f);
 }
 
 void ModuleRender::GenBlockUniforms()

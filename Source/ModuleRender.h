@@ -77,8 +77,8 @@ public:
 	std::unordered_set<ComponentRenderer*> shadowCasters;
 
 	unsigned highlightBufferGame = 0u;
+	unsigned brightnessBufferGame = 0u;
 	unsigned renderedSceneGame = 0u;
-	unsigned renderedSceneEditor = 0u;
 
 private:
 	unsigned UBO = 0;
@@ -112,6 +112,7 @@ private:
 	unsigned postprocessEBO = 0u;
 
 	float gammaCorrector = 2.2f;
+	float exposure = 1.0f;
 };
 
 #endif /* __ModuleRender_h__ */
