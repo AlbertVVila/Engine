@@ -211,7 +211,16 @@ void PanelBrowser::DrawFolderIcon(const char* dir, int itemNumber)
 	ImGui::SetCursorPosY((ICON_SIZE + ICON_Y_MARGIN) + (ICON_SIZE + ICON_Y_MARGIN) * (itemNumber / maxNumberElements));
 	ImGui::PushTextWrapPos(ImGui::GetCursorPos().x + ICON_NAME_SIZE);
 
-	ImGui::Text(dir);
+	// Make sure the text fits the designated size.
+	std::string dirText(dir, TEXT_SIZE);
+	if (strlen(dirText.c_str()) >= TEXT_SIZE)
+	{
+		unsigned size2 = strlen(dirText.c_str());
+		// If not delete last 3 characters and put "..."
+		dirText.replace(TEXT_SIZE - 4, TEXT_SIZE - 1, "...");
+	}
+
+	ImGui::Text(dirText.c_str());
 	if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
 		pathStack.push(path);
