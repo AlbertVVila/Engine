@@ -12,6 +12,7 @@ class ComponentTransform;
 class ComponentLight;
 class ComponentAnimation;
 class AABBTreeNode;
+class Prefab;
 enum class ComponentType;
 struct Frame;
 struct Texture;
@@ -72,12 +73,15 @@ public:
 	void UpdateModel(unsigned int shader) const;
 	void SetLightUniforms(unsigned shader) const;
 
+	void UpdateToPrefab(GameObject* prefab);
+
 	bool CleanUp();
 	void Save(JSON_value *gameobjects) const;
 	void Load(JSON_value * gameobject);
 
 private:
 	void SetStaticAncestors();
+	void MarkAsPrefab();
 	bool openInHierarchy = true;
 
 public:
@@ -88,6 +92,11 @@ public:
 	bool isBoneRoot = false;
 	bool activeInHierarchy = true;
 	bool activeSelf = true;
+
+	bool isPrefab = false;
+	bool isPrefabSync = false;
+	unsigned prefabUID = 0;
+	Prefab* prefab = nullptr;
 
 	bool navigable = false;
 	bool walkable = false;

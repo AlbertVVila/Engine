@@ -62,7 +62,8 @@ ModuleFileSystem::ModuleFileSystem()
 		MakeDirectory(ANIMATIONS);
 	if (!Exists(STATEMACHINES))
 		MakeDirectory(STATEMACHINES);
-
+	if (!Exists(PREFABS))
+		MakeDirectory(PREFABS);
 }
 
 

@@ -24,6 +24,7 @@
 #include "ResourceTexture.h"
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
+#include "Prefab.h"
 
 #include "MaterialEditor.h"
 #include "Viewport.h"
@@ -624,6 +625,7 @@ void ModuleScene::DeleteFromSpacePartition(GameObject* gameobject)
 			App->spacePartitioning->aabbTreeLighting.ReleaseNode(gameobject->treeNode);
 		}
 	}
+	dynamicGOs.erase(gameobject);
 	dynamicFilteredGOs.erase(gameobject);
 	staticFilteredGOs.erase(gameobject);
 }
@@ -645,6 +647,12 @@ void ModuleScene::ResetQuadTree() //deprecated
 			quadtree->Insert(go);
 		}
 	}
+}
+
+Prefab* ModuleScene::CreatePrefab(GameObject * go)
+{
+	return new Prefab(GetNewUID(), go); //We should save and load on modify?
+	//TODO: Add 1 instance to prefab
 }
 
 void ModuleScene::CreateCube(const char * name, GameObject* parent)

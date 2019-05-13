@@ -8,6 +8,7 @@
 #include "ModuleInput.h"
 #include "ModuleScene.h"
 #include "ModuleTextures.h"
+#include "ModuleResourceManager.h"
 #include "ModuleRender.h"
 #include "ModuleSpacePartitioning.h"
 #include "ModuleAudioManager.h"
@@ -36,6 +37,7 @@
 #include "GUICreator.h"
 #include "ResourceMaterial.h"
 #include "ResourceMesh.h"
+#include "Prefab.h"
 
 #include "HashString.h"
 #include "myQuadTree.h"
@@ -74,6 +76,15 @@ GameObject::GameObject(const GameObject & gameobject)
 	hasLight = gameobject.hasLight;
 	isBoneRoot = gameobject.isBoneRoot;
 	openInHierarchy = gameobject.openInHierarchy;
+	
+	isPrefab = gameobject.isPrefab;
+	isPrefabSync = gameobject.isPrefabSync;
+	prefabUID = gameobject.prefabUID;
+	prefab = gameobject.prefab;
+	if (prefab != nullptr)
+	{
+		prefab->AddInstance(this);
+	}
 
 	assert(!(isVolumetric && hasLight));
 	bbox = gameobject.bbox;
@@ -81,6 +92,7 @@ GameObject::GameObject(const GameObject & gameobject)
 	walkable = gameobject.walkable;
 	noWalkable = gameobject.noWalkable;
 
+	//TODO: diferentiate if it's prefab sync
 	for (const auto& component : gameobject.components)
 	{
 		Component *componentcopy = component->Clone();
@@ -92,20 +104,22 @@ GameObject::GameObject(const GameObject & gameobject)
 		}
 		if (componentcopy->type == ComponentType::Button)
 		{
-			((ComponentButton*)componentcopy)->text->gameobject = this;
-			((ComponentButton*)componentcopy)->buttonImage->gameobject = this;
-			((ComponentButton*)componentcopy)->highlightedImage->gameobject = this;
-			((ComponentButton*)componentcopy)->pressedImage->gameobject = this;
-			((ComponentButton*)componentcopy)->rectTransform->gameobject = this;
+			ComponentButton* button = (ComponentButton*)componentcopy;
+			button->text->gameobject = this;
+			button->buttonImage->gameobject = this;
+			button->highlightedImage->gameobject = this;
+			button->pressedImage->gameobject = this;
+			button->rectTransform->gameobject = this;
 		}
 	}
-	if (!App->scene->photoEnabled)
-	{
-		if (GetComponent(ComponentType::Renderer) != nullptr || GetComponent(ComponentType::Light) != nullptr)
+	/*if (!App->scene->photoEnabled) //FIXME: Ctrl+Z
+	{*/
+		if ((GetComponent(ComponentType::Renderer) != nullptr 
+			|| GetComponent(ComponentType::Light) != nullptr))
 		{
 			App->scene->AddToSpacePartition(this);
 		}
-	}
+	//}
 	for (const auto& child : gameobject.children)
 	{
 		GameObject* childcopy = new GameObject(*child);
@@ -151,6 +165,28 @@ void GameObject::DrawProperties()
 
 		ImGui::SameLine();
 		//navigability
+
+		if (ImGui::Checkbox("isPrefab", &isPrefab))
+		{
+			if (prefabUID == 0)
+			{
+				MarkAsPrefab();
+			}
+			else
+			{
+				//TODO: Update old prefab
+			}
+		}
+
+		if (isPrefab)
+		{
+			ImGui::Checkbox("Update with Prefab", &isPrefabSync);
+			if (ImGui::Button("Update Prefab"))
+			{
+				prefab->Update(this);
+			}
+		}
+
 		if (isVolumetric && isStatic) 
 		{
 			if (ImGui::Checkbox("Navigable", &navigable))
@@ -241,7 +277,7 @@ void GameObject::Update()
 	for (std::list<GameObject*>::iterator itChild = children.begin(); itChild != children.end();)
 	{
 
-		if ((*itChild)->copyFlag) //Moved GO
+		if ((*itChild)->copyFlag) //Copied GO
 		{
 			(*itChild)->copyFlag = false;
 			GameObject *copy = new GameObject(**itChild);
@@ -697,6 +733,52 @@ void GameObject::SetLightUniforms(unsigned shader) const
 	}
 }
 
+void GameObject::MarkAsPrefab()
+{
+	//Create Prefab and reference it
+	prefab = App->scene->CreatePrefab(this);
+	prefab->Save(this);
+	prefabUID = prefab->GetUID();
+	prefab->AddInstance(this);
+	isPrefabSync = true;
+}
+
+void GameObject::UpdateToPrefab(GameObject* prefabGo)
+{
+	Component* myTransform = transform->Clone();
+	CleanUp();
+	for (auto& component: components)
+	{
+		RELEASE(component);
+	}
+	for (auto& child : children)
+	{
+		RELEASE(child);
+	}
+	components.clear();
+	children.clear();
+	components.push_back(myTransform);
+	transform = (ComponentTransform*) myTransform;
+
+	for (const auto &component : prefabGo->components)
+	{
+		if (component->type == ComponentType::Transform) continue;
+		Component* newComponent = component->Clone();
+		newComponent->gameobject = this;
+		components.push_back(newComponent);
+	}
+	for (auto& child : prefabGo->children)
+	{
+		GameObject* newChild = new GameObject(*child);
+		children.push_back(newChild);
+		newChild->parent = this;
+	}
+	if (GetComponent(ComponentType::Renderer) != nullptr || GetComponent(ComponentType::Light) != nullptr)
+	{
+		App->scene->AddToSpacePartition(this);
+	}
+}
+
 AABB GameObject::GetBoundingBox() const
 {
 	return bbox;
@@ -771,14 +853,7 @@ void GameObject::DrawBBox() const
 
 bool GameObject::CleanUp()
 {
-	if (isStatic)
-	{
-		App->scene->quadtree->Remove(*this);
-	}
-	else
-	{
-		App->scene->dynamicGOs.erase(this);
-	}
+	App->scene->DeleteFromSpacePartition(this);
 
 	for (auto &component : components)
 	{
@@ -814,6 +889,10 @@ void GameObject::Save(JSON_value *gameobjects) const
 		gameobject->AddUint("No Walkable", noWalkable);
 		gameobject->AddUint("openInHierarchy", openInHierarchy);
 
+		gameobject->AddUint("isPrefab", isPrefab);
+		gameobject->AddUint("isPrefabSync", isPrefabSync);
+		gameobject->AddUint("prefabUID", prefabUID);
+
 		JSON_value *componentsJSON = gameobject->CreateValue(rapidjson::kArrayType);
 		for (auto &component : components)
 		{
@@ -846,6 +925,24 @@ void GameObject::Load(JSON_value *value)
 	walkable = value->GetUint("Walkable"); //TODO: why 2 variables for walkable?
 	noWalkable = value->GetUint("No Walkable");
 	openInHierarchy = value->GetUint("openInHierarchy");
+
+	isPrefab = value->GetUint("isPrefab");
+	isPrefabSync = value->GetUint("isPrefabSync");
+	prefabUID = value->GetUint("prefabUID");
+
+	if (isPrefab)
+	{
+		//TODO: Get Prefab from UID
+		//Prefab* prefab = (Prefab*) App->resManager->Get(prefabUID);
+		Prefab* prefab = new Prefab(prefabUID);
+		prefab->LoadInMemory();
+		if (isPrefabSync && prefab != nullptr)
+		{
+			//TODO: it's own transform
+			//LoadAsPrefab();
+			return;
+		}
+	}
 
 	JSON_value* componentsJSON = value->GetValue("Components");
 	for (unsigned i = 0; i < componentsJSON->Size(); i++)

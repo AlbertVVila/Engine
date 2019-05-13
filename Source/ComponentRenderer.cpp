@@ -261,7 +261,10 @@ void ComponentRenderer::SetMesh(const char* meshfile)
 {
 	// Delete previous mesh
 	if (mesh != nullptr)
+	{
 		App->resManager->DeleteResource(mesh->GetUID());
+		App->scene->DeleteFromSpacePartition(gameobject);
+	}
 
 	if (meshfile != nullptr)
 		mesh = (ResourceMesh*)App->resManager->GetMeshByName(meshfile);
@@ -273,7 +276,7 @@ void ComponentRenderer::SetMesh(const char* meshfile)
 
 void ComponentRenderer::UpdateGameObject()
 {
-	if (gameobject != nullptr)
+	if (gameobject != nullptr && mesh != nullptr)
 	{
 		gameobject->UpdateBBox();
 		App->scene->AddToSpacePartition(gameobject);
@@ -282,5 +285,6 @@ void ComponentRenderer::UpdateGameObject()
 
 void ComponentRenderer::LinkBones() const
 {
+	assert(mesh != nullptr);
 	mesh->LinkBones(gameobject);
 }
