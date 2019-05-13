@@ -70,12 +70,20 @@ void ComponentAnimation::DrawProperties()
 				stateMachine->Save();
 
 			stateMachine = (ResourceStateMachine*)App->resManager->CreateNewResource(TYPE::STATEMACHINE);
+			stateMachine->SetName("NewStateMachine");
+			//Do not fear the while, accept it
+			if(App->resManager->NameExists(stateMachine->GetName(), TYPE::STATEMACHINE))
+			{
+				std::string newName = App->resManager->GetAvailableName(stateMachine->GetName(), TYPE::STATEMACHINE);
+				stateMachine->Rename(newName.c_str());
+			}
+			stateMachine->Save();
 		}
 	
 		ImGui::SameLine();
 
 		ImGui::PushID("State Machine Combo");
-		if (ImGui::BeginCombo("SM", stateMachine != nullptr ? stateMachine->name.c_str() : ""))
+		if (ImGui::BeginCombo("SM", stateMachine != nullptr ? stateMachine->GetName() : ""))
 		{
 			if (guiStateMachines.empty())
 			{
@@ -83,7 +91,7 @@ void ComponentAnimation::DrawProperties()
 			}
 			for (unsigned i = 0u; i < guiStateMachines.size(); i++)
 			{
-				bool is_selected = (stateMachine != nullptr ? stateMachine->name == guiStateMachines[i] : false);
+				bool is_selected = (stateMachine != nullptr ? stateMachine->GetName() == guiStateMachines[i].c_str() : false);
 				if (ImGui::Selectable(guiStateMachines[i].c_str(), is_selected))
 				{
 					if(stateMachine != nullptr)
@@ -108,9 +116,11 @@ void ComponentAnimation::DrawProperties()
 		{
 			//Here we should have the name of the stateMachine
 			char* smName = new char[MAX_CLIP_NAME];
-			strcpy(smName, stateMachine->name.c_str());
+			strcpy(smName, stateMachine->GetName());
 			ImGui::InputText("SM name", smName, MAX_CLIP_NAME);
-			stateMachine->name = smName;
+			ImGui::SameLine();
+			if(ImGui::Button("Rename"))
+				stateMachine->Rename(smName);
 
 			if (ImGui::Button("AddClip"))
 			{

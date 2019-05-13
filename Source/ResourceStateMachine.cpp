@@ -101,6 +101,7 @@ void ResourceStateMachine::LoadConfigFromMeta()
 	char* data = nullptr;
 	std::string metaFile(file);
 	metaFile += ".meta";
+	unsigned oldUID = GetUID();
 
 	if (App->fsystem->Load(metaFile.c_str(), &data) == 0)
 	{
@@ -113,6 +114,9 @@ void ResourceStateMachine::LoadConfigFromMeta()
 	UID = value->GetUint("GUID");
 	name = value->GetString("name");
 	std::string name = App->fsystem->GetFilename(file);
+
+	//Updates resource UID on resourcelist
+	App->resManager->ReplaceResource(oldUID, this);
 }
 
 void ResourceStateMachine::SetStateMachine(const char* data)
