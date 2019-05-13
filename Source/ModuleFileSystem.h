@@ -68,6 +68,7 @@ enum class FILETYPE
 	SKYBOX,
 	STATEMACHINE,
 	AUDIO,
+	PREFAB,
 	NONE,
 
 };

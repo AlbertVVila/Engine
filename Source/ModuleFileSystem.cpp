@@ -381,10 +381,12 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 	std::set<std::string> importedMaterials;
 	std::set<std::string> importedMeshes;
 	std::set<std::string> importedStateMachines;
+	std::set<std::string> importedPrefabs;
 
 	ListFiles(TEXTURES, importedTextures);
 	ListFiles(IMPORTED_MATERIALS, importedMaterials);
 	ListFiles(STATEMACHINES, importedStateMachines);
+	ListFiles(PREFABS, importedPrefabs);
 
 	// Look for files in folder passed as argument
 	std::vector<std::string> files;
@@ -429,7 +431,7 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 				stat((currentFolder + file).c_str(), &statFile);
 				stat((currentFolder + file + METAEXT).c_str(), &statMeta);
 
-				FILETYPE type = GetFileType(GetExtension(file));
+				FILETYPE type = GetFileType(GetExtension(file)); //TODO: Choose type with SWITCH statement (constant time)
 				if (type == FILETYPE::TEXTURE) // PNG, TIF, LO QUE SEA	
 				{
 					std::set<std::string>::iterator it = importedTextures.find(RemoveExtension(file));
@@ -492,6 +494,20 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 					{
 						// File already imported, add it to the resources list
 						App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::MATERIAL);
+					}
+				}
+				else if (type == FILETYPE::PREFAB)
+				{
+					std::set<std::string>::iterator it = importedPrefabs.find(RemoveExtension(file));
+					if (it == importedPrefabs.end())
+					{
+						// File modified or not imported, send it to import
+						filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
+					}
+					else
+					{
+						// File already imported, add it to the resources list
+						App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::PREFAB);
 					}
 				}
 			}

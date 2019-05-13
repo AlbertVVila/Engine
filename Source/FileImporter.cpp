@@ -82,6 +82,10 @@ void FileImporter::ImportAsset(const char *file, const char *folder)
 	{
 		App->fsystem->Copy(folder, STATEMACHINES, file);
 	}
+	else if (extension == PREFABEXTENSION)
+	{
+		App->fsystem->Copy(folder, PREFABS, file);
+	}
 }
 
 bool FileImporter::ImportFBX(const char* fbxfile, const char* folder, ResourceModel* resource)

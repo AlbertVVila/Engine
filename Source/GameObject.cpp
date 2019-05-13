@@ -105,7 +105,7 @@ GameObject::GameObject(const GameObject & gameobject)
 		}
 		if (componentcopy->type == ComponentType::Button)
 		{
-			ComponentButton* button = (ComponentButton*)componentcopy;
+			Button* button = (Button*)componentcopy;
 			button->text->gameobject = this;
 			button->buttonImage->gameobject = this;
 			button->highlightedImage->gameobject = this;
@@ -817,7 +817,7 @@ void GameObject::UpdateToPrefab(GameObject* prefabGo)
 		children.push_back(newChild);
 		newChild->parent = this;
 	}
-	if (GetComponent(ComponentType::Renderer) != nullptr || GetComponent(ComponentType::Light) != nullptr)
+	if (GetComponentOld(ComponentType::Renderer) != nullptr || GetComponentOld(ComponentType::Light) != nullptr)
 	{
 		App->scene->AddToSpacePartition(this);
 	}
@@ -978,14 +978,6 @@ void GameObject::Load(JSON_value *value)
 	{
 		//TODO: Get Prefab from UID
 		//Prefab* prefab = (Prefab*) App->resManager->Get(prefabUID);
-		Prefab* prefab = new Prefab(prefabUID);
-		prefab->LoadInMemory();
-		if (isPrefabSync && prefab != nullptr)
-		{
-			//TODO: it's own transform
-			//LoadAsPrefab();
-			return;
-		}
 	}
 
 	JSON_value* componentsJSON = value->GetValue("Components");

@@ -76,7 +76,7 @@ void Prefab::Load(char** data)
 		}
 
 		ComponentRenderer* renderer = nullptr;
-		renderer = (ComponentRenderer*)gameobject->GetComponent(ComponentType::Renderer);
+		renderer = (ComponentRenderer*)gameobject->GetComponentOld(ComponentType::Renderer);
 		if (renderer != nullptr)
 		{
 			renderers.push_back(renderer);
@@ -107,7 +107,7 @@ void Prefab::Save(GameObject* go) const //TODO: should also save name?
 	//App->navigation->sceneSaved(json);
 
 	std::string file(PREFABS);
-	file += name;
+	file += std::to_string(UID);
 	file += PREFABEXTENSION;
 
 	App->fsystem->Save(file.c_str(), json->ToString().c_str(), json->Size());
