@@ -22,13 +22,18 @@ class Transform2D;
 class InventoryScript_API InventoryScript : public Script
 {
 public:
+	void Awake() override;
 	void Start() override;
 	void Update() override;
 
-private:
-	std::vector<Component*> slotsTransform;
+	//static InventoryScript* getInstance();
+	static InventoryScript* instance;
 
-	std::vector<GameObject*> items;
+private:
+
+	std::vector<Component*> slotsTransform;
+	std::vector<GameObject*> itemsSlots;
+	//std::vector<Item> items;
 	GameObject* inventory = nullptr;
 	Transform2D* menuPlayer = nullptr;
 
