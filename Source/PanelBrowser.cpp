@@ -172,6 +172,15 @@ void PanelBrowser::Draw()
 		}
 	}
 
+	// RightClick on window without selecting an item
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && ImGui::IsWindowFocused(ImGuiFocusedFlags_None))
+	{
+		ImGui::OpenPopup("Browser Context Menu");
+	}
+
+	// Right click menu
+	DrawBrowserContextMenu();
+
 	ImGui::EndChild();
 
 	// Import Configuration Pop-up
@@ -185,6 +194,10 @@ void PanelBrowser::Draw()
 	// Rename Folder Pop-up
 	if (openRenameFolderPopUp)
 		DrawRenameFolderPopUp();
+
+	// New Folder Pop-up
+	if (openNewFolderPopUp)
+		DrawNewFolderPopUp();
 
 	ImGui::End();	
 }
@@ -245,7 +258,7 @@ void PanelBrowser::DrawFolderIcon(const char* dir, int itemNumber)
 			folderSelected = dir;
 			ImGui::OpenPopup("Folder Context Menu");
 		}
-	}	
+	}
 
 	// Right click menu
 	DrawFolderContextMenu();
@@ -309,6 +322,18 @@ void PanelBrowser::DrawFileIcon(const char* file, int itemNumber)
 	// Right click menu
 	DrawFileContextMenu();
 	ImGui::PopID();
+}
+
+void PanelBrowser::DrawBrowserContextMenu()
+{
+	if (ImGui::BeginPopup("Browser Context Menu"))
+	{
+		if (ImGui::Selectable("New Folder"))
+		{
+			openNewFolderPopUp = true;
+		}
+		ImGui::EndPopup();
+	}
 }
 
 void PanelBrowser::DrawFileContextMenu()
@@ -467,6 +492,44 @@ void PanelBrowser::DrawRenameFolderPopUp()
 		{
 			strcpy(newFolderName, "");
 			openRenameFolderPopUp = false;
+		}
+		ImGui::EndPopup();
+	}
+}
+
+void PanelBrowser::DrawNewFolderPopUp()
+{
+	ImGui::OpenPopup("New Folder");
+
+	ImGui::SetNextWindowSizeConstraints(ImVec2(270.0f, 150.0f), ImVec2((float)App->window->width, (float)App->window->height));
+	if (ImGui::BeginPopupModal("New Folder", &openNewFolderPopUp))
+	{
+		ImGui::Text("New folder name:");
+		ImGui::SameLine();
+
+		ImGui::InputText("", newFolderName, MAX_FILENAME);
+
+		// Check if there isn't already a file with the same name
+		invalidName = App->fsystem->Exists((path + newFolderName).c_str());
+
+		if (invalidName)
+			ImGui::Text("A folder with that name already exists!");
+		else
+			ImGui::NewLine();
+
+		ImGui::NewLine();
+		if (ImGui::ButtonEx("Accept", ImVec2(0, 0), invalidName ? ImGuiButtonFlags_Disabled : 0))
+		{
+			App->fsystem->MakeDirectory((path + newFolderName).c_str());
+			folderContentDirty = true;
+			strcpy(newFolderName, "");
+			openNewFolderPopUp = false;
+		}
+		ImGui::SameLine(0, 110);
+		if (ImGui::Button("Cancel"))
+		{
+			strcpy(newFolderName, "");
+			openNewFolderPopUp = false;
 		}
 		ImGui::EndPopup();
 	}

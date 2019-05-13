@@ -25,11 +25,13 @@ private:
 	void DrawFolderIcon(const char* dir, int itemNumber);
 	void DrawFileIcon(const char* file, int itemNumber);
 
+	void DrawBrowserContextMenu();
 	void DrawFileContextMenu();
 	void DrawFolderContextMenu();
 	void DrawImportConfigurationPopUp();
 	void DrawRenameFilePopUp();
 	void DrawRenameFolderPopUp();
+	void DrawNewFolderPopUp();
 
 public:
 	bool folderContentDirty = true;
@@ -43,6 +45,7 @@ private:
 	bool openImportConfigPopUp = false;
 	bool openRenameFilePopUp = false;
 	bool openRenameFolderPopUp = false;
+	bool openNewFolderPopUp = false;
 
 	Resource* fileSelected = nullptr;
 	std::string folderSelected = "";
