@@ -61,13 +61,15 @@ void Resource::Rename(const char* newName)
 	name = newName;
 
 	// Rename file in Assets
-	App->fsystem->Rename(ruteToFile.c_str(), fileInAssets.c_str(), newName);
+	if (type != TYPE::MESH)
+	{ 
+		App->fsystem->Rename(ruteToFile.c_str(), fileInAssets.c_str(), newName);
 
-	// Rename meta file in Assets
-	std::string newMeta(newName);
-	newMeta += extension;
-	App->fsystem->Rename(ruteToFile.c_str(), (fileInAssets + ".meta").c_str(), newMeta.c_str());
-
+		// Rename meta file in Assets
+		std::string newMeta(newName);
+		newMeta += extension;
+		App->fsystem->Rename(ruteToFile.c_str(), (fileInAssets + ".meta").c_str(), newMeta.c_str());
+	}
 	// Update file variable
 	file = ruteToFile + newName + extension;
 
