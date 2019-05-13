@@ -906,15 +906,6 @@ void GameObject::Load(JSON_value *value)
 		transform->UpdateTransform();
 	}
 
-	if (hasLight)
-	{
-		transform->UpdateTransform();
-		ComponentLight* light = (ComponentLight*)GetComponentOld(ComponentType::Light);
-		if (light->lightType == LightType::DIRECTIONAL)
-		{
-			App->renderer->directionalLight = light;
-		}
-	}
 	if (isBoneRoot)
 	{
 		movedFlag = true;
