@@ -36,6 +36,7 @@ public:
 	void UpdateGO(GameObject* gameobject);
 	void EditorUpdateGO(GameObject* gameobject);
 	void ResetResource();
+	void CreateNewStateMachine();
 
 	ComponentAnimation();
 	ComponentAnimation(GameObject* gameobject);

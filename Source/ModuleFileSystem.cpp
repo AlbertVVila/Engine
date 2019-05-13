@@ -343,7 +343,7 @@ bool ModuleFileSystem::Copy(const char* source, const char* destination, const c
 	std::string filepath(source);
 	filepath += file;
 	unsigned size = Load(filepath.c_str(), &data);
-	if (size < 0u) return false;
+	if (size <= 0u) return false;
 	std::string filedest(destination);
 	filedest += file;
 	bool ret = Save(filedest.c_str(), data, size);

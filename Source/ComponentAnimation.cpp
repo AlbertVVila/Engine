@@ -69,15 +69,7 @@ void ComponentAnimation::DrawProperties()
 			if (stateMachine != nullptr)
 				stateMachine->Save();
 
-			stateMachine = (ResourceStateMachine*)App->resManager->CreateNewResource(TYPE::STATEMACHINE);
-			stateMachine->SetName("NewStateMachine");
-			//Do not fear the while, accept it
-			if(App->resManager->NameExists(stateMachine->GetName(), TYPE::STATEMACHINE))
-			{
-				std::string newName = App->resManager->GetAvailableName(stateMachine->GetName(), TYPE::STATEMACHINE);
-				stateMachine->Rename(newName.c_str());
-			}
-			stateMachine->Save();
+			CreateNewStateMachine();
 		}
 	
 		ImGui::SameLine();
@@ -271,6 +263,21 @@ void ComponentAnimation::ResetResource()
 {
 	anim->DeleteFromMemory();
 	stateMachine->DeleteFromMemory();
+}
+
+void ComponentAnimation::CreateNewStateMachine()
+{
+	ResourceStateMachine* newStateMachine = new ResourceStateMachine(App->resManager->GenerateNewUID());
+
+	newStateMachine->SetName("NewStateMachine");
+	//Do not fear the while, accept it
+	if (App->resManager->NameExists(newStateMachine->GetName(), TYPE::STATEMACHINE))
+	{
+		std::string newName = App->resManager->GetAvailableName(newStateMachine->GetName(), TYPE::STATEMACHINE);
+		newStateMachine->Rename(newName.c_str());
+		newStateMachine->Save();
+	}
+	RELEASE(newStateMachine);
 }
 
 void ComponentAnimation::SetAnimation(const char* animationFile)
