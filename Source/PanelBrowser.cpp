@@ -259,6 +259,13 @@ void PanelBrowser::DrawFolderIcon(const char* dir, int itemNumber)
 			ImGui::OpenPopup("Folder Context Menu");
 		}
 	}
+	if (ImGui::IsItemHovered(ImGuiHoveredFlags_RectOnly) && !ImGui::IsPopupOpen("Folder Context Menu"))
+	{
+		ImGui::BeginTooltip();
+		ImGui::Text(dir);
+		ImGui::EndTooltip();
+	}
+
 
 	// Right click menu
 	DrawFolderContextMenu();
@@ -317,6 +324,12 @@ void PanelBrowser::DrawFileIcon(const char* file, int itemNumber)
 		unsigned selectedUID = App->resManager->FindByFileInAssetsExcludingType((path + file).c_str(), TYPE::MESH);
 		fileSelected = App->resManager->GetWithoutLoad(selectedUID);
 		ImGui::OpenPopup("File Context Menu");
+	}
+	if (ImGui::IsItemHovered(ImGuiHoveredFlags_RectOnly) && !ImGui::IsPopupOpen("File Context Menu"))
+	{
+		ImGui::BeginTooltip();
+		ImGui::Text(file);
+		ImGui::EndTooltip();
 	}
 
 	// Right click menu
