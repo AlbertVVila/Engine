@@ -126,6 +126,17 @@ unsigned ModuleFileSystem::Load(const char* file, char** buffer) const
 
 bool ModuleFileSystem::Save(const char* file, const char* buffer, unsigned size) const
 {
+	if (GetExtension(file) == METAEXT)
+	{
+		DWORD attributes = GetFileAttributes(file);
+		if (attributes & FILE_ATTRIBUTE_HIDDEN)
+		{
+			if (!SetFileAttributesA(file, FILE_ATTRIBUTE_NORMAL))
+			{
+				LOG("Error: %s %s", file, "Not unhide");
+			}
+		}
+	}
 	PHYSFS_file* myfile = PHYSFS_openWrite(file);
 	if (myfile == nullptr)
 	{
