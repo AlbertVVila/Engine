@@ -22,6 +22,7 @@
 
 #include <assert.h>
 #include <stack>
+#include <windows.h>
 
 #define MONITORIZE_TIME 1000
 #define stat _stat
@@ -136,6 +137,13 @@ bool ModuleFileSystem::Save(const char* file, const char* buffer, unsigned size)
 	{
 		LOG("Error: %s %s", file, PHYSFS_getLastError());
 		return false;
+	}
+	if (GetExtension(file) == METAEXT)
+	{
+		if(!SetFileAttributesA(file, FILE_ATTRIBUTE_HIDDEN))
+		{
+			LOG("Error: %s %s", file, "not hidden");
+		}
 	}
 
 	PHYSFS_close(myfile);
