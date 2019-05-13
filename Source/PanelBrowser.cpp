@@ -37,6 +37,7 @@
 #define ICON_Y_MARGIN 32
 #define LEFT_INDENTATION 15
 #define ICON_NAME_SIZE ICON_SIZE + 12
+#define TEXT_SIZE 15
 
 // |<--X Indentation--><--Icon Size--><--Icon X Margin--><--Next Icon---> _
 // |				   _______________					 _______________  |
@@ -171,15 +172,32 @@ void PanelBrowser::Draw()
 		}
 	}
 
+	// RightClick on window without selecting an item
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN && ImGui::IsWindowFocused(ImGuiFocusedFlags_None))
+	{
+		ImGui::OpenPopup("Browser Context Menu");
+	}
+
+	// Right click menu
+	DrawBrowserContextMenu();
+
 	ImGui::EndChild();
 
 	// Import Configuration Pop-up
 	if (openImportConfigPopUp)
 		DrawImportConfigurationPopUp();
 
-	// Rename Pop-up
-	if (openRenamePopUp)
-		DrawRenamePopUp();
+	// Rename File Pop-up
+	if (openRenameFilePopUp)
+		DrawRenameFilePopUp();
+
+	// Rename Folder Pop-up
+	if (openRenameFolderPopUp)
+		DrawRenameFolderPopUp();
+
+	// New Folder Pop-up
+	if (openNewFolderPopUp)
+		DrawNewFolderPopUp();
 
 	ImGui::End();	
 }
@@ -205,19 +223,45 @@ void PanelBrowser::DrawFolderIcon(const char* dir, int itemNumber)
 		folderContentDirty = true;
 	}
 
+	if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	{
+		folderSelected = dir;
+		ImGui::OpenPopup("Folder Context Menu");
+	}
+
 	// Folder name text
 	ImGui::SetCursorPosX(LEFT_INDENTATION + (ICON_SIZE + ICON_X_MARGIN) * (itemNumber % maxNumberElements));
 	ImGui::SetCursorPosY((ICON_SIZE + ICON_Y_MARGIN) + (ICON_SIZE + ICON_Y_MARGIN) * (itemNumber / maxNumberElements));
 	ImGui::PushTextWrapPos(ImGui::GetCursorPos().x + ICON_NAME_SIZE);
 
-	ImGui::Text(dir);
-	if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	// Make sure the text fits the designated size.
+	std::string dirText(dir, TEXT_SIZE);
+	if (strlen(dirText.c_str()) >= TEXT_SIZE)
 	{
-		pathStack.push(path);
-		path += dir;
-		path += "/";
-		folderContentDirty = true;
+		unsigned size2 = strlen(dirText.c_str());
+		// If not delete last 3 characters and put "..."
+		dirText.replace(TEXT_SIZE - 4, TEXT_SIZE - 1, "...");
 	}
+
+	ImGui::Text(dirText.c_str());
+	if (ImGui::IsItemHovered())
+	{
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+		{
+			pathStack.push(path);
+			path += dir;
+			path += "/";
+			folderContentDirty = true;
+		}
+		else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+		{
+			folderSelected = dir;
+			ImGui::OpenPopup("Folder Context Menu");
+		}
+	}
+
+	// Right click menu
+	DrawFolderContextMenu();
 }
 
 void PanelBrowser::DrawFileIcon(const char* file, int itemNumber)
@@ -257,7 +301,16 @@ void PanelBrowser::DrawFileIcon(const char* file, int itemNumber)
 	ImGui::SetCursorPosY((ICON_SIZE + ICON_Y_MARGIN) + (ICON_SIZE + ICON_Y_MARGIN) * (itemNumber / maxNumberElements));
 
 	ImGui::PushTextWrapPos(ImGui::GetCursorPos().x + 52);
-	ImGui::Text(file);
+	
+	// Make sure the text fits the designated size.
+	std::string fileText(file, TEXT_SIZE);
+	if (strlen(fileText.c_str()) >= TEXT_SIZE)
+	{
+		// If not delete last 3 characters and put "..."
+		fileText.replace(TEXT_SIZE - 4, TEXT_SIZE - 1, "...");
+	}
+
+	ImGui::Text(fileText.c_str());
 
 	if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
@@ -271,6 +324,18 @@ void PanelBrowser::DrawFileIcon(const char* file, int itemNumber)
 	ImGui::PopID();
 }
 
+void PanelBrowser::DrawBrowserContextMenu()
+{
+	if (ImGui::BeginPopup("Browser Context Menu"))
+	{
+		if (ImGui::Selectable("New Folder"))
+		{
+			openNewFolderPopUp = true;
+		}
+		ImGui::EndPopup();
+	}
+}
+
 void PanelBrowser::DrawFileContextMenu()
 {
 	if (ImGui::BeginPopup("File Context Menu"))
@@ -281,10 +346,13 @@ void PanelBrowser::DrawFileContextMenu()
 			return;
 		}
 
+		ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), App->fsystem->GetFile(fileSelected->GetFile()).c_str());
+		ImGui::Separator();
+
 		if (ImGui::Selectable("Rename"))
 		{
-			strcpy(newName, App->fsystem->GetFilename(fileSelected->GetFile()).c_str());
-			openRenamePopUp = true;
+			strcpy(newFileName, App->fsystem->GetFilename(fileSelected->GetFile()).c_str());
+			openRenameFilePopUp = true;
 		}
 		if(ImGui::Selectable("Delete"))
 		{
@@ -296,6 +364,33 @@ void PanelBrowser::DrawFileContextMenu()
 			//Code to change import settings
 			openImportConfigPopUp = true;
 		}	
+		ImGui::EndPopup();
+	}
+}
+
+void PanelBrowser::DrawFolderContextMenu()
+{
+	if (ImGui::BeginPopup("Folder Context Menu"))
+	{
+		if (folderSelected.empty())
+		{
+			ImGui::EndPopup();
+			return;
+		}
+
+		ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), folderSelected.c_str());
+		ImGui::Separator();
+
+		if (ImGui::Selectable("Rename"))
+		{
+			strcpy(newFolderName, folderSelected.c_str());
+			openRenameFolderPopUp = true;
+		}
+		if (ImGui::Selectable("Delete"))
+		{
+			App->fsystem->Delete((path + folderSelected).c_str());
+			folderContentDirty = true;
+		}
 		ImGui::EndPopup();
 	}
 }
@@ -325,21 +420,21 @@ void PanelBrowser::DrawImportConfigurationPopUp()
 	}
 }
 
-void PanelBrowser::DrawRenamePopUp()
+void PanelBrowser::DrawRenameFilePopUp()
 {
 	ImGui::OpenPopup("Rename File");
 
 	ImGui::SetNextWindowSizeConstraints(ImVec2(270.0f, 150.0f), ImVec2((float)App->window->width, (float)App->window->height));
-	if (ImGui::BeginPopupModal("Rename File", &openRenamePopUp))
+	if (ImGui::BeginPopupModal("Rename File", &openRenameFilePopUp))
 	{
 		ImGui::Text("New name:");
 		ImGui::SameLine();
 
-		ImGui::InputText("", newName, MAX_FILENAME);
+		ImGui::InputText("", newFileName, MAX_FILENAME);
 
 		// Check if there isn't already a file with the same name
 		std::string extension = App->fsystem->GetExtension(fileSelected->GetExportedFile());
-		invalidName = App->resManager->Exists((newName + extension).c_str(), fileSelected->GetType());
+		invalidName = App->resManager->Exists((newFileName + extension).c_str(), fileSelected->GetType());
 
 		if(invalidName)
 			ImGui::Text("A file with that name already exists!");
@@ -349,16 +444,92 @@ void PanelBrowser::DrawRenamePopUp()
 		ImGui::NewLine();
 		if (ImGui::ButtonEx("Accept", ImVec2(0, 0), invalidName? ImGuiButtonFlags_Disabled : 0))
 		{
-			fileSelected->Rename(newName);
+			fileSelected->Rename(newFileName);
 			folderContentDirty = true;
-			strcpy(newName,"");
-			openRenamePopUp = false;
+			strcpy(newFileName,"");
+			openRenameFilePopUp = false;
 		}
 		ImGui::SameLine(0, 110);
 		if (ImGui::Button("Cancel"))
 		{
-			strcpy(newName, "");
-			openRenamePopUp = false;
+			strcpy(newFileName, "");
+			openRenameFilePopUp = false;
+		}
+		ImGui::EndPopup();
+	}
+}
+
+void PanelBrowser::DrawRenameFolderPopUp()
+{
+	ImGui::OpenPopup("Rename Folder");
+
+	ImGui::SetNextWindowSizeConstraints(ImVec2(270.0f, 150.0f), ImVec2((float)App->window->width, (float)App->window->height));
+	if (ImGui::BeginPopupModal("Rename Folder", &openRenameFolderPopUp))
+	{
+		ImGui::Text("New name:");
+		ImGui::SameLine();
+
+		ImGui::InputText("", newFolderName, MAX_FILENAME);
+
+		// Check if there isn't already a file with the same name
+		invalidName = App->fsystem->Exists((path + newFolderName).c_str());
+
+		if (invalidName)
+			ImGui::Text("A folder with that name already exists!");
+		else
+			ImGui::NewLine();
+
+		ImGui::NewLine();
+		if (ImGui::ButtonEx("Accept", ImVec2(0, 0), invalidName ? ImGuiButtonFlags_Disabled : 0))
+		{
+			App->fsystem->Rename(path.c_str(), folderSelected.c_str(), newFolderName);
+			folderContentDirty = true;
+			strcpy(newFolderName, "");
+			openRenameFolderPopUp = false;
+		}
+		ImGui::SameLine(0, 110);
+		if (ImGui::Button("Cancel"))
+		{
+			strcpy(newFolderName, "");
+			openRenameFolderPopUp = false;
+		}
+		ImGui::EndPopup();
+	}
+}
+
+void PanelBrowser::DrawNewFolderPopUp()
+{
+	ImGui::OpenPopup("New Folder");
+
+	ImGui::SetNextWindowSizeConstraints(ImVec2(270.0f, 150.0f), ImVec2((float)App->window->width, (float)App->window->height));
+	if (ImGui::BeginPopupModal("New Folder", &openNewFolderPopUp))
+	{
+		ImGui::Text("New folder name:");
+		ImGui::SameLine();
+
+		ImGui::InputText("", newFolderName, MAX_FILENAME);
+
+		// Check if there isn't already a file with the same name
+		invalidName = App->fsystem->Exists((path + newFolderName).c_str());
+
+		if (invalidName)
+			ImGui::Text("A folder with that name already exists!");
+		else
+			ImGui::NewLine();
+
+		ImGui::NewLine();
+		if (ImGui::ButtonEx("Accept", ImVec2(0, 0), invalidName ? ImGuiButtonFlags_Disabled : 0))
+		{
+			App->fsystem->MakeDirectory((path + newFolderName).c_str());
+			folderContentDirty = true;
+			strcpy(newFolderName, "");
+			openNewFolderPopUp = false;
+		}
+		ImGui::SameLine(0, 110);
+		if (ImGui::Button("Cancel"))
+		{
+			strcpy(newFolderName, "");
+			openNewFolderPopUp = false;
 		}
 		ImGui::EndPopup();
 	}

@@ -194,7 +194,7 @@ bool ModuleFileSystem::MakeDirectory(const char* directory) const
 	assert(directory != nullptr);
 	if (directory == nullptr) return false;
 	int result = PHYSFS_mkdir(directory);
-	if (result != 0)
+	if (result == 0)
 	{
 		LOG("Error: %s",PHYSFS_getLastError());
 		return false;
@@ -369,6 +369,7 @@ bool ModuleFileSystem::Move(const char * source, const char* file, const char* n
 
 bool ModuleFileSystem::Rename(const char* route, const char* file, const char* newName) const
 {
+	bool success = false;
 	std::string filepath(route);
 	filepath += file;
 	assert(filepath.c_str() != nullptr);
@@ -378,9 +379,21 @@ bool ModuleFileSystem::Rename(const char* route, const char* file, const char* n
 		return false;
 	}
 
-	std::string extension = GetExtension(file);
-	Move(route, file, (newName + extension).c_str());
-	return Delete(filepath.c_str());
+	if (IsDirectory(filepath.c_str()))
+	{
+		std::string newDir(route);
+		newDir += newName;
+		success = Delete(filepath.c_str());
+		if(success)
+			success = MakeDirectory(newDir.c_str());
+	}
+	else
+	{
+		std::string extension = GetExtension(file);
+		Move(route, file, (newName + extension).c_str());
+		success = Delete(filepath.c_str());
+	}
+	return success;
 }
 
 bool ModuleFileSystem::ChangeExtension(const char* source, const char* file, const char* newExtension) const
