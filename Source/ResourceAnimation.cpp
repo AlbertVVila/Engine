@@ -112,10 +112,11 @@ void ResourceAnimation::SaveMetafile(const char* file) const
 
 void ResourceAnimation::LoadConfigFromMeta()
 {
-	Resource::LoadConfigFromMeta();
 	char* data = nullptr;
 	std::string metaFile(file);
 	metaFile += ".meta";
+	unsigned oldUID = GetUID();
+
 
 	if (App->fsystem->Load(metaFile.c_str(), &data) == 0)
 	{
@@ -127,6 +128,9 @@ void ResourceAnimation::LoadConfigFromMeta()
 	JSON_value* value = json->GetValue("Animation");
 	UID = value->GetUint("GUID");
 	name = value->GetString("name");
+
+	//Updates resource UID on resourcelist
+	App->resManager->ReplaceResource(oldUID, this);
 }
 
 void ResourceAnimation::SetAnimation(const char* animationData)

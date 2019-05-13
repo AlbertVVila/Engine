@@ -283,7 +283,7 @@ void PanelBrowser::DrawFileContextMenu()
 
 		if (ImGui::Selectable("Rename"))
 		{
-			strcpy(newName, App->fsystem->GetFilename(fileSelected->GetExportedFile()).c_str());
+			strcpy(newName, App->fsystem->GetFilename(fileSelected->GetFile()).c_str());
 			openRenamePopUp = true;
 		}
 		if(ImGui::Selectable("Delete"))
