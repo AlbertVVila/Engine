@@ -12,6 +12,7 @@
 #include "ResourceModel.h"
 
 #include "JSON.h"
+#include "HashString.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -541,7 +542,9 @@ void ModuleFileSystem::LookForNewResourceFiles(const char* folder)
 			}
 			else
 			{
-				if (GetExtension(file) == METAEXT)
+				std::string extension(GetExtension(file));
+				// TODO [ResManager] : When ResourceAudio is implemented delete audio extensions from this if
+				if (extension == METAEXT || extension == OGGEXTENSION || extension == MP3EXTENSION || extension == WAVEXTENSION)
 					continue;
 				stat((current_folder + file).c_str(), &statFile);
 				stat((current_folder + file + METAEXT).c_str(), &statMeta);
