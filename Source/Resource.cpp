@@ -61,13 +61,15 @@ void Resource::Rename(const char* newName)
 	name = newName;
 
 	// Rename file in Assets
-	App->fsystem->Rename(ruteToFile.c_str(), fileInAssets.c_str(), newName);
+	if (type != TYPE::MESH && type != TYPE::ANIMATION)
+	{ 
+		App->fsystem->Rename(ruteToFile.c_str(), fileInAssets.c_str(), newName);
 
-	// Rename meta file in Assets
-	std::string newMeta(newName);
-	newMeta += extension;
-	App->fsystem->Rename(ruteToFile.c_str(), (fileInAssets + ".meta").c_str(), newMeta.c_str());
-
+		// Rename meta file in Assets
+		std::string newMeta(newName);
+		newMeta += extension;
+		App->fsystem->Rename(ruteToFile.c_str(), (fileInAssets + ".meta").c_str(), newMeta.c_str());
+	}
 	// Update file variable
 	file = ruteToFile + newName + extension;
 
@@ -75,13 +77,15 @@ void Resource::Rename(const char* newName)
 	std::string fileInLibrary = App->fsystem->GetFile(exportedFile);
 	std::string exportedExtension = App->fsystem->GetExtension(exportedFile);
 
-	if (type != TYPE::ANIMATION)
+	if (type != TYPE::MESH && type != TYPE::ANIMATION)
 	{
-		if (type != TYPE::MODEL)
+		if (type != TYPE::MODEL) 
+
 		{
 			// Rename of file in Library
 			App->fsystem->Rename(ruteToExportedFile.c_str(), fileInLibrary.c_str(), newName);
 		}
+
 		// Update exportedFile variable
 		exportedFile = (ruteToExportedFile + newName + exportedExtension).c_str();
 	}

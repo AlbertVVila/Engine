@@ -259,6 +259,13 @@ void PanelBrowser::DrawFolderIcon(const char* dir, int itemNumber)
 			ImGui::OpenPopup("Folder Context Menu");
 		}
 	}
+	if (ImGui::IsItemHovered(ImGuiHoveredFlags_RectOnly) && !ImGui::IsPopupOpen("Folder Context Menu"))
+	{
+		ImGui::BeginTooltip();
+		ImGui::Text(dir);
+		ImGui::EndTooltip();
+	}
+
 
 	// Right click menu
 	DrawFolderContextMenu();
@@ -317,6 +324,12 @@ void PanelBrowser::DrawFileIcon(const char* file, int itemNumber)
 		unsigned selectedUID = App->resManager->FindByFileInAssetsExcludingType((path + file).c_str(), TYPE::MESH);
 		fileSelected = App->resManager->GetWithoutLoad(selectedUID);
 		ImGui::OpenPopup("File Context Menu");
+	}
+	if (ImGui::IsItemHovered(ImGuiHoveredFlags_RectOnly) && !ImGui::IsPopupOpen("File Context Menu"))
+	{
+		ImGui::BeginTooltip();
+		ImGui::Text(file);
+		ImGui::EndTooltip();
 	}
 
 	// Right click menu
@@ -430,11 +443,16 @@ void PanelBrowser::DrawRenameFilePopUp()
 		ImGui::Text("New name:");
 		ImGui::SameLine();
 
-		ImGui::InputText("", newFileName, MAX_FILENAME);
+		if (ImGui::InputText("", newFileName, MAX_FILENAME, ImGuiInputTextFlags_EnterReturnsTrue) && !invalidName)
+		{
+			fileSelected->Rename(newFileName);
+			folderContentDirty = true;
+			strcpy(newFileName, "");
+			openRenameFilePopUp = false;
+		}
 
 		// Check if there isn't already a file with the same name
-		std::string extension = App->fsystem->GetExtension(fileSelected->GetExportedFile());
-		invalidName = App->resManager->Exists((newFileName + extension).c_str(), fileSelected->GetType());
+		invalidName = App->resManager->NameExists(newFileName, fileSelected->GetType());
 
 		if(invalidName)
 			ImGui::Text("A file with that name already exists!");
@@ -469,7 +487,13 @@ void PanelBrowser::DrawRenameFolderPopUp()
 		ImGui::Text("New name:");
 		ImGui::SameLine();
 
-		ImGui::InputText("", newFolderName, MAX_FILENAME);
+		if (ImGui::InputText("", newFolderName, MAX_FILENAME, ImGuiInputTextFlags_EnterReturnsTrue) && !invalidName)
+		{
+			App->fsystem->Rename(path.c_str(), folderSelected.c_str(), newFolderName);
+			folderContentDirty = true;
+			strcpy(newFolderName, "");
+			openRenameFolderPopUp = false;
+		}
 
 		// Check if there isn't already a file with the same name
 		invalidName = App->fsystem->Exists((path + newFolderName).c_str());
@@ -507,7 +531,13 @@ void PanelBrowser::DrawNewFolderPopUp()
 		ImGui::Text("New folder name:");
 		ImGui::SameLine();
 
-		ImGui::InputText("", newFolderName, MAX_FILENAME);
+		if (ImGui::InputText("", newFolderName, MAX_FILENAME, ImGuiInputTextFlags_EnterReturnsTrue) && !invalidName)
+		{
+			App->fsystem->MakeDirectory((path + newFolderName).c_str());
+			folderContentDirty = true;
+			strcpy(newFolderName, "");
+			openNewFolderPopUp = false;
+		}
 
 		// Check if there isn't already a file with the same name
 		invalidName = App->fsystem->Exists((path + newFolderName).c_str());
