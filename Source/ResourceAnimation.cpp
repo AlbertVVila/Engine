@@ -83,15 +83,24 @@ void ResourceAnimation::DeleteFromMemory()
 
 void ResourceAnimation::Delete()
 {
-	// Delete Resource from ResourceManager
-	App->resManager->DeleteResourceFromList(UID);
+	// Check if the animation was imported from Model or created from the editor
+	// TODO RM: Delete this if and use base Delete once all animations from models are saved on assets
+	if (App->fsystem->Exists(file.c_str()))
+	{
+		Resource::Delete();
+	}
+	else
+	{
+		// Delete Resource from ResourceManager
+		App->resManager->DeleteResourceFromList(UID);
 
-	// Delete file in Library
-	std::string fileInLibrary(IMPORTED_ANIMATIONS);
-	fileInLibrary += exportedFile;
-	fileInLibrary += ANIMATIONEXTENSION;
-	App->fsystem->Delete(fileInLibrary.c_str());
-	DeleteFromMemory();
+		// Delete file in Library
+		std::string fileInLibrary(IMPORTED_ANIMATIONS);
+		fileInLibrary += exportedFile;
+		fileInLibrary += ANIMATIONEXTENSION;
+		App->fsystem->Delete(fileInLibrary.c_str());
+		DeleteFromMemory();
+	}
 }
 
 void ResourceAnimation::SaveMetafile(const char* file) const
