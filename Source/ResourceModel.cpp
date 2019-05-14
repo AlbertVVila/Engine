@@ -92,9 +92,14 @@ void ResourceModel::SaveMetafile(const char* file) const
 
 void ResourceModel::LoadConfigFromMeta()
 {
-	char* data = nullptr;
 	std::string metaFile(file);
 	metaFile += ".meta";
+
+	// Check if meta file exists
+	if (!App->fsystem->Exists(metaFile.c_str()))
+		return;
+
+	char* data = nullptr;
 	unsigned oldUID = GetUID();
 
 	if (App->fsystem->Load(metaFile.c_str(), &data) == 0)
