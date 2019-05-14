@@ -675,6 +675,13 @@ std::string ModuleResourceManager::GetAvailableName(const char* name, TYPE type)
 	{
 		newName = name + std::to_string(i);
 		i++;
+
+		// Emergency control
+		if (i > 999u)
+		{
+			newName = App->resManager->GenerateNewUID();
+			break;
+		}
 	}
 	return newName;
 }
