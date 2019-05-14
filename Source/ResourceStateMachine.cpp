@@ -214,9 +214,9 @@ void ResourceStateMachine::SetStateMachine(const char* data)
 		data += sizeof(char)* MAX_BONE_NAME_LENGTH;
 		HashString transitionTrigger(tTrigger);
 
-		unsigned blend = 0u;
-		memcpy(&blend, data, sizeof(int));
-		data += sizeof(int);
+		float blend = 0u;
+		memcpy(&blend, data, sizeof(float));
+		data += sizeof(float);
 
 		transitions.push_back(Transition(transitionOrigin, transitionDestiny, transitionTrigger, blend));
 	}
@@ -254,7 +254,7 @@ unsigned ResourceStateMachine::GetStateMachineSize()
 		size += sizeof(char) * MAX_BONE_NAME_LENGTH;
 		size += sizeof(char) * MAX_BONE_NAME_LENGTH;
 		size += sizeof(char) * MAX_BONE_NAME_LENGTH;
-		size += sizeof(int);
+		size += sizeof(float);
 	}
 	size += sizeof(int);
 
@@ -315,8 +315,8 @@ void ResourceStateMachine::SaveStateMachineData(char* data)
 		memcpy(cursor, transition.trigger.C_str(), sizeof(char) * MAX_BONE_NAME_LENGTH); 
 		cursor += sizeof(char) * MAX_BONE_NAME_LENGTH;
 
-		memcpy(cursor, &transition.blend, sizeof(int));
-		cursor += sizeof(int);
+		memcpy(cursor, &transition.blend, sizeof(float));
+		cursor += sizeof(float);
 	}
 
 	memcpy(cursor, &defaultNode, sizeof(int));
