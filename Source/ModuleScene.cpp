@@ -132,7 +132,10 @@ update_status ModuleScene::PreUpdate()
 		}
 	}
 #else
-	FrustumCulling(*maincamera->frustum);
+	if (maincamera != nullptr)
+	{
+		FrustumCulling(*maincamera->frustum);
+	}
 #endif
 	return UPDATE_CONTINUE;
 }
