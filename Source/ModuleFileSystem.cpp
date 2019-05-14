@@ -126,14 +126,14 @@ unsigned ModuleFileSystem::Load(const char* file, char** buffer) const
 
 bool ModuleFileSystem::Save(const char* file, const char* buffer, unsigned size) const
 {
-	if (GetExtension(file) == METAEXT)
+	if (GetExtension(file) == METAEXT && Exists(file))
 	{
 		DWORD attributes = GetFileAttributes(file);
 		if (attributes & FILE_ATTRIBUTE_HIDDEN)
 		{
 			if (!SetFileAttributesA(file, FILE_ATTRIBUTE_NORMAL))
 			{
-				LOG("Error: %s %s", file, "Not unhide");
+				LOG("Error: %s %s", file, "can't unhide file.");
 			}
 		}
 	}
@@ -153,7 +153,7 @@ bool ModuleFileSystem::Save(const char* file, const char* buffer, unsigned size)
 	{
 		if(!SetFileAttributesA(file, FILE_ATTRIBUTE_HIDDEN))
 		{
-			LOG("Error: %s %s", file, "not hidden");
+			LOG("Error: %s %s", file, "couldn't be hidden.");
 		}
 	}
 
