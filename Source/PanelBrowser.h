@@ -67,6 +67,8 @@ private:
 	ResourceTexture* m4tIcon;
 	ResourceTexture* jsonIcon;
 	ResourceTexture* sc3neIcon;
+	ResourceTexture* animati0nIcon;
+	ResourceTexture* st4tem4chineIcon;
 };
 
 #endif //__PanelBrowser_h__

@@ -18,17 +18,19 @@
 #include "GameObject.h"
 
 // Icons
-#define FOLDER_ICON IMPORTED_RESOURCES "folderIconBlue.dds"
-#define FILE_ICON	IMPORTED_RESOURCES "fileIconBlue.dds"
-#define FBX_ICON	IMPORTED_RESOURCES "fbxIconBlue.dds"
-#define PNG_ICON	IMPORTED_RESOURCES "pngIconBlue.dds"
-#define JPG_ICON	IMPORTED_RESOURCES "jpgIconBlue.dds"
-#define TGA_ICON	IMPORTED_RESOURCES "tgaIconBlue.dds"
-#define TIF_ICON	IMPORTED_RESOURCES "tifIconBlue.dds"
-#define DDS_ICON	IMPORTED_RESOURCES "ddsIconBlue.dds"
-#define M4T_ICON	IMPORTED_RESOURCES "m4tIconBlue.dds"
-#define JSON_ICON	IMPORTED_RESOURCES "jsonIconBlue.dds"
-#define SC3NE_ICON	IMPORTED_RESOURCES "sc3neIconBlue.dds"
+#define FOLDER_ICON			IMPORTED_RESOURCES "folderIconBlue.dds"
+#define FILE_ICON			IMPORTED_RESOURCES "fileIconBlue.dds"
+#define FBX_ICON			IMPORTED_RESOURCES "fbxIconBlue.dds"
+#define PNG_ICON			IMPORTED_RESOURCES "pngIconBlue.dds"
+#define JPG_ICON			IMPORTED_RESOURCES "jpgIconBlue.dds"
+#define TGA_ICON			IMPORTED_RESOURCES "tgaIconBlue.dds"
+#define TIF_ICON			IMPORTED_RESOURCES "tifIconBlue.dds"
+#define DDS_ICON			IMPORTED_RESOURCES "ddsIconBlue.dds"
+#define M4T_ICON			IMPORTED_RESOURCES "m4tIconBlue.dds"
+#define JSON_ICON			IMPORTED_RESOURCES "jsonIconBlue.dds"
+#define SC3NE_ICON			IMPORTED_RESOURCES "sc3neIconBlue.dds"
+#define ANIMATI0N_ICON		IMPORTED_RESOURCES "animati0nIconBlue.dds"
+#define ST4TEM4CHINE_ICON	IMPORTED_RESOURCES "st4tem4chineIconBlue.dds"
 
 // ImGui elements sizes:
 #define WINDOW_LOW_MARGIN 60
@@ -93,6 +95,8 @@ bool PanelBrowser::Init()
 	m4tIcon = (ResourceTexture*)App->resManager->Get(M4T_ICON);
 	jsonIcon = (ResourceTexture*)App->resManager->Get(JSON_ICON);
 	sc3neIcon = (ResourceTexture*)App->resManager->Get(SC3NE_ICON);
+	animati0nIcon = (ResourceTexture*)App->resManager->Get(ANIMATI0N_ICON);
+	st4tem4chineIcon = (ResourceTexture*)App->resManager->Get(ST4TEM4CHINE_ICON);
 
 	if (folderIcon == nullptr || fileIcon == nullptr || fbxIcon == nullptr || pngIcon == nullptr || jpgIcon == nullptr
 		|| tgaIcon == nullptr || tifIcon == nullptr || ddsIcon == nullptr || m4tIcon == nullptr || jsonIcon == nullptr 
@@ -287,14 +291,16 @@ void PanelBrowser::DrawFileIcon(const char* file, int itemNumber)
 
 	// Select icon by extension
 	std::string extension = App->fsystem->GetExtension(file);
-	if		(extension == PNG)			{ ImGui::ImageButton(pngIcon != nullptr ? (ImTextureID)pngIcon->gpuID : 0, ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0), 1); }
-	else if (extension == TIF)			{ ImGui::ImageButton(tifIcon != nullptr ? (ImTextureID)tifIcon->gpuID : 0, ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0), 1); }
-	else if (extension == JPG)			{ ImGui::ImageButton(jpgIcon != nullptr ? (ImTextureID)jpgIcon->gpuID : 0, ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0), 1); }
-	else if (extension == TGA)			{ ImGui::ImageButton(tgaIcon != nullptr ? (ImTextureID)tgaIcon->gpuID : 0, ImVec2(ICON_SIZE, ICON_SIZE), ImVec2(0, 1), ImVec2(1, 0), 1); }
-	else if (extension == TEXTUREEXT)	{ ImGui::ImageButton(ddsIcon != nullptr ? (ImTextureID)ddsIcon->gpuID : 0, ImVec2(ICON_SIZE, ICON_SIZE), ImVec2(0, 1), ImVec2(1, 0), 1); }
-	else if (extension == FBXEXTENSION)	{ ImGui::ImageButton(fbxIcon != nullptr ? (ImTextureID)fbxIcon->gpuID : 0, ImVec2(ICON_SIZE, ICON_SIZE), ImVec2(0, 1), ImVec2(1, 0), 1); }
-	else if (extension == MATERIALEXT)	{ ImGui::ImageButton(m4tIcon != nullptr ? (ImTextureID)m4tIcon->gpuID : 0, ImVec2(ICON_SIZE, ICON_SIZE), ImVec2(0, 1), ImVec2(1, 0), 1); }
-	else if (extension == SCENEEXTENSION){ ImGui::ImageButton(sc3neIcon != nullptr ? (ImTextureID)sc3neIcon->gpuID : 0, ImVec2(ICON_SIZE, ICON_SIZE), ImVec2(0, 1), ImVec2(1, 0), 1); }
+	if		(extension == PNG)					{ ImGui::ImageButton(pngIcon != nullptr ? (ImTextureID)pngIcon->gpuID : 0, ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0), 1); }
+	else if (extension == TIF)					{ ImGui::ImageButton(tifIcon != nullptr ? (ImTextureID)tifIcon->gpuID : 0, ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0), 1); }
+	else if (extension == JPG)					{ ImGui::ImageButton(jpgIcon != nullptr ? (ImTextureID)jpgIcon->gpuID : 0, ImVec2(40, 40), ImVec2(0, 1), ImVec2(1, 0), 1); }
+	else if (extension == TGA)					{ ImGui::ImageButton(tgaIcon != nullptr ? (ImTextureID)tgaIcon->gpuID : 0, ImVec2(ICON_SIZE, ICON_SIZE), ImVec2(0, 1), ImVec2(1, 0), 1); }
+	else if (extension == TEXTUREEXT)			{ ImGui::ImageButton(ddsIcon != nullptr ? (ImTextureID)ddsIcon->gpuID : 0, ImVec2(ICON_SIZE, ICON_SIZE), ImVec2(0, 1), ImVec2(1, 0), 1); }
+	else if (extension == FBXEXTENSION)			{ ImGui::ImageButton(fbxIcon != nullptr ? (ImTextureID)fbxIcon->gpuID : 0, ImVec2(ICON_SIZE, ICON_SIZE), ImVec2(0, 1), ImVec2(1, 0), 1); }
+	else if (extension == MATERIALEXT)			{ ImGui::ImageButton(m4tIcon != nullptr ? (ImTextureID)m4tIcon->gpuID : 0, ImVec2(ICON_SIZE, ICON_SIZE), ImVec2(0, 1), ImVec2(1, 0), 1); }
+	else if (extension == SCENEEXTENSION)		{ ImGui::ImageButton(sc3neIcon != nullptr ? (ImTextureID)sc3neIcon->gpuID : 0, ImVec2(ICON_SIZE, ICON_SIZE), ImVec2(0, 1), ImVec2(1, 0), 1); }
+	else if (extension == ANIMATIONEXTENSION)	{ ImGui::ImageButton(animati0nIcon != nullptr ? (ImTextureID)animati0nIcon->gpuID : 0, ImVec2(ICON_SIZE, ICON_SIZE), ImVec2(0, 1), ImVec2(1, 0), 1); }
+	else if (extension == STATEMACHINEEXTENSION){ ImGui::ImageButton(st4tem4chineIcon != nullptr ? (ImTextureID)st4tem4chineIcon->gpuID : 0, ImVec2(ICON_SIZE, ICON_SIZE), ImVec2(0, 1), ImVec2(1, 0), 1); }
 	else								{ ImGui::ImageButton(fileIcon != nullptr ? (ImTextureID)fileIcon->gpuID : 0, ImVec2(ICON_SIZE, ICON_SIZE), ImVec2(0, 1), ImVec2(1, 0), 1); }
 
 	if (ImGui::IsItemHovered() && App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
