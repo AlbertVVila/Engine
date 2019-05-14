@@ -390,6 +390,9 @@ bool ModuleFileSystem::Move(const char * source, const char* file, const char* n
 bool ModuleFileSystem::Rename(const char* route, const char* file, const char* newName) const
 {
 	bool success = false;
+	if (route == nullptr || file == nullptr || newName == nullptr)
+		return success;
+
 	std::string filepath(route);
 	filepath += file;
 	assert(filepath.c_str() != nullptr);
@@ -399,7 +402,7 @@ bool ModuleFileSystem::Rename(const char* route, const char* file, const char* n
 		return false;
 	}
 
-	if (IsDirectory(filepath.c_str()))
+	if (IsDirectory(filepath.c_str()) && !filepath.empty())
 	{
 		std::string newDir(route);
 		newDir += newName;

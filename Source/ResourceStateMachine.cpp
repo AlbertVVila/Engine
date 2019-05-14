@@ -79,7 +79,7 @@ void ResourceStateMachine::Delete()
 	DeleteFromMemory();
 }
 
-void ResourceStateMachine::SaveMetafile(const char * file) const
+void ResourceStateMachine::SaveMetafile(const char* file) const
 {
 	std::string filepath;
 	filepath.append(file);
@@ -98,10 +98,16 @@ void ResourceStateMachine::SaveMetafile(const char * file) const
 void ResourceStateMachine::LoadConfigFromMeta()
 {
 	Resource::LoadConfigFromMeta();
-	char* data = nullptr;
+
 	std::string metaFile(file);
 	metaFile += ".meta";
+
+	// Check if meta file exists
+	if (!App->fsystem->Exists(metaFile.c_str()))
+		return;
+
 	unsigned oldUID = GetUID();
+	char* data = nullptr;
 
 	if (App->fsystem->Load(metaFile.c_str(), &data) == 0)
 	{

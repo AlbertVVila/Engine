@@ -86,7 +86,7 @@ void ComponentAnimation::DrawProperties()
 				bool is_selected = (stateMachine != nullptr ? stateMachine->GetName() == guiStateMachines[i].c_str() : false);
 				if (ImGui::Selectable(guiStateMachines[i].c_str(), is_selected))
 				{
-					if(stateMachine != nullptr)
+					if (stateMachine != nullptr)
 						stateMachine->Save();
 
 					SetStateMachine(guiStateMachines[i].c_str());

@@ -287,7 +287,7 @@ bool ModuleResourceManager::ReImportFile(Resource* resource, const char* filePat
 {
 	bool success = false;
 
-	std::string file = App->fsystem->GetFile(resource->GetExportedFile());
+	std::string file = App->fsystem->GetFile(resource->GetFile());
 
 	switch (type)
 	{
@@ -313,7 +313,7 @@ bool ModuleResourceManager::ReImportFile(Resource* resource, const char* filePat
 		success = App->fsystem->Copy(filePath, IMPORTED_ANIMATIONS, file.c_str());		
 		if (success)
 		{
-			success = App->fsystem->Rename(IMPORTED_ANIMATIONS, App->fsystem->GetFile(resource->GetExportedFile()).c_str(),
+			success = App->fsystem->Rename(IMPORTED_ANIMATIONS, App->fsystem->GetFile(file).c_str(),
 				std::to_string(resource->GetUID()).c_str());
 		}
 		break;
@@ -321,7 +321,7 @@ bool ModuleResourceManager::ReImportFile(Resource* resource, const char* filePat
 		success = App->fsystem->Copy(filePath, IMPORTED_STATEMACHINES, file.c_str());	
 		if (success)
 		{
-			success = App->fsystem->Rename(IMPORTED_STATEMACHINES, App->fsystem->GetFile(resource->GetExportedFile()).c_str(),
+			success = App->fsystem->Rename(IMPORTED_STATEMACHINES, App->fsystem->GetFile(file).c_str(),
 				std::to_string(resource->GetUID()).c_str());
 		}
 		break;
