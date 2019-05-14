@@ -267,3 +267,7 @@ __pycache__/
 /Game/Library/Textures/
 
 GameBuild/
+
+# TASK 112
+/GAME/imgui.ini
+/GAME/config.json
