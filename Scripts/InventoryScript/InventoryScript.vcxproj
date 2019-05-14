@@ -17,7 +17,7 @@
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-	<ProjectConfiguration Include="GameBuild Debug|Win32">
+    <ProjectConfiguration Include="GameBuild Debug|Win32">
       <Configuration>GameBuild Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
@@ -249,6 +249,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="InventoryScript.h" />
+    <ClInclude Include="Item.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

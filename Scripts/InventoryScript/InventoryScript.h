@@ -11,6 +11,7 @@
 
 #include <vector>
 #include "Math/float2.h"
+#include "Item.h"
 
 class Component;
 class GameObject;
@@ -26,14 +27,14 @@ public:
 	void Start() override;
 	void Update() override;
 
-	//static InventoryScript* getInstance();
-	static InventoryScript* instance;
+	bool AddItem(Item item);
 
 private:
 
 	std::vector<Component*> slotsTransform;
 	std::vector<GameObject*> itemsSlots;
-	//std::vector<Item> items;
+	std::vector<Item> items;
+
 	GameObject* inventory = nullptr;
 	Transform2D* menuPlayer = nullptr;
 

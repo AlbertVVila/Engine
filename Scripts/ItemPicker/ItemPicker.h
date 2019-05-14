@@ -2,14 +2,17 @@
 #define  __ItemPicker_h__
 
 #include "BaseScript.h"
-
 #include "Item.h"
+#include "Geometry/AABB.h"
 
 #ifdef ItemPicker_EXPORTS
 #define ItemPicker_API __declspec(dllexport)
 #else
 #define ItemPicker_API __declspec(dllimport)
 #endif
+
+class InventoryScript;
+class AABB;
 
 class ItemPicker_API ItemPicker : public Script
 {
@@ -26,7 +29,8 @@ private:
 
 	Item item;
 
-
+	InventoryScript* inventoryScript = nullptr;
+	math::AABB* playerBbox = nullptr;
 };
 
 #endif __ItemPicker_h__
