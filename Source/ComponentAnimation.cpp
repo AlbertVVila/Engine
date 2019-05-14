@@ -107,12 +107,12 @@ void ComponentAnimation::DrawProperties()
 		if (stateMachine != nullptr)
 		{
 			//Here we should have the name of the stateMachine
-			char* smName = new char[MAX_CLIP_NAME];
-			strcpy(smName, stateMachine->GetName());
-			ImGui::InputText("SM name", smName, MAX_CLIP_NAME);
+			ImGui::InputText("SM name", newStMachineName, MAX_STATEMACHINE_NAME);
 			ImGui::SameLine();
-			if(ImGui::Button("Rename"))
-				stateMachine->Rename(smName);
+			if (ImGui::Button("Rename"))
+			{
+				stateMachine->Rename(newStMachineName);
+			}
 
 			if (ImGui::Button("AddClip"))
 			{
@@ -275,8 +275,8 @@ void ComponentAnimation::CreateNewStateMachine()
 	{
 		std::string newName = App->resManager->GetAvailableName(newStateMachine->GetName(), TYPE::STATEMACHINE);
 		newStateMachine->Rename(newName.c_str());
-		newStateMachine->Save();
 	}
+	newStateMachine->Save();
 	RELEASE(newStateMachine);
 }
 
@@ -293,7 +293,7 @@ void ComponentAnimation::SetAnimation(const char* animationFile)
 	return;
 }
 
-void ComponentAnimation::SetStateMachine(const char * stateMachineFile)
+void ComponentAnimation::SetStateMachine(const char* stateMachineFile)
 {
 	// Delete previous stateMachine
 
@@ -301,7 +301,10 @@ void ComponentAnimation::SetStateMachine(const char * stateMachineFile)
 		App->resManager->DeleteResource(stateMachine->GetUID());
 
 	if (stateMachineFile != nullptr)
+	{
 		stateMachine = (ResourceStateMachine*)App->resManager->GetByName(stateMachineFile, TYPE::STATEMACHINE);
+		strcpy(newStMachineName, stateMachine->GetName());
+	}
 }
 
 void ComponentAnimation::SendTriggerToStateMachine(const char* trigger)

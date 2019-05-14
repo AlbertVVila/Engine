@@ -63,7 +63,7 @@ void ResourceStateMachine::DeleteFromMemory()
 	clips.clear();
 	transitions.clear();
 
-	App->fsystem->Remove((IMPORTED_STATEMACHINES + std::to_string(GetUID()) + STATEMACHINEEXTENSION).c_str());
+	// App->fsystem->Remove((IMPORTED_STATEMACHINES + std::to_string(GetUID()) + STATEMACHINEEXTENSION).c_str());
 }
 
 void ResourceStateMachine::Delete()
