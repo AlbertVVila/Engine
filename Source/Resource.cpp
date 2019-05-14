@@ -61,7 +61,7 @@ void Resource::Rename(const char* newName)
 	name = newName;
 
 	// Rename file in Assets
-	if (type != TYPE::MESH)
+	if (type != TYPE::MESH && type != TYPE::ANIMATION)
 	{ 
 		App->fsystem->Rename(ruteToFile.c_str(), fileInAssets.c_str(), newName);
 
@@ -77,14 +77,17 @@ void Resource::Rename(const char* newName)
 	std::string fileInLibrary = App->fsystem->GetFile(exportedFile);
 	std::string exportedExtension = App->fsystem->GetExtension(exportedFile);
 
-	if (type != TYPE::MODEL && type != TYPE::MESH)
+	if (type != TYPE::MESH && type != TYPE::ANIMATION)
 	{
-		// Rename of file in Library
-		App->fsystem->Rename(ruteToExportedFile.c_str(), fileInLibrary.c_str(), newName);
-	}
-	// Update exportedFile variable
-	exportedFile = (ruteToExportedFile + newName + exportedExtension).c_str();
+		if (type != TYPE::MODEL) 
+		{
+			// Rename of file in Library
+			App->fsystem->Rename(ruteToExportedFile.c_str(), fileInLibrary.c_str(), newName);
+		}
 
+		// Update exportedFile variable
+		exportedFile = (ruteToExportedFile + newName + exportedExtension).c_str();
+	}
 }
 
 void Resource::Delete()
