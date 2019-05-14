@@ -61,7 +61,7 @@ void Resource::Rename(const char* newName)
 	name = newName;
 
 	// Rename file in Assets
-	if (type != TYPE::MESH && type != TYPE::ANIMATION)
+	if (type != TYPE::MESH && type != TYPE::ANIMATION && !fileInAssets.empty())
 	{ 
 		App->fsystem->Rename(ruteToFile.c_str(), fileInAssets.c_str(), newName);
 
