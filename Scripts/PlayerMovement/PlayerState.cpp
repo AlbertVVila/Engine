@@ -10,8 +10,3 @@ PlayerState::PlayerState()
 PlayerState::~PlayerState()
 {
 }
-
-void PlayerState::Update()
-{
-
-}

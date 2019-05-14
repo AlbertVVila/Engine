@@ -40,7 +40,7 @@
       <Filter>States</Filter>
     </ClInclude>
     <ClInclude Include="PlayerStateUppercut.h">
-      <Filter>Archivos de encabezado</Filter>
+      <Filter>States</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -66,7 +66,7 @@
       <Filter>States</Filter>
     </ClCompile>
     <ClCompile Include="PlayerStateUppercut.cpp">
-      <Filter>Archivos de origen</Filter>
+      <Filter>States</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
