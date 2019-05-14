@@ -44,7 +44,7 @@ bool ResourceStateMachine::LoadInMemory()
 {
 	char* data = nullptr;
 
-	unsigned ok = App->fsystem->Load((IMPORTED_STATEMACHINES + std::to_string(GetUID()) + STATEMACHINEEXTENSION).c_str(), &data);
+	unsigned ok = App->fsystem->Load(exportedFile.c_str(), &data);
 
 	// Load mesh file
 	if (ok != 0)
@@ -63,7 +63,7 @@ void ResourceStateMachine::DeleteFromMemory()
 	clips.clear();
 	transitions.clear();
 
-	App->fsystem->Remove((IMPORTED_STATEMACHINES + std::to_string(GetUID()) + STATEMACHINEEXTENSION).c_str());
+	// App->fsystem->Remove((IMPORTED_STATEMACHINES + std::to_string(GetUID()) + STATEMACHINEEXTENSION).c_str());
 }
 
 void ResourceStateMachine::Delete()
@@ -73,13 +73,13 @@ void ResourceStateMachine::Delete()
 
 	// Delete file in Library
 	std::string fileInLibrary(IMPORTED_STATEMACHINES);
-	fileInLibrary += exportedFileName;
+	fileInLibrary += exportedFile;
 	fileInLibrary += STATEMACHINEEXTENSION;
 	App->fsystem->Delete(fileInLibrary.c_str());
 	DeleteFromMemory();
 }
 
-void ResourceStateMachine::SaveMetafile(const char * file) const
+void ResourceStateMachine::SaveMetafile(const char* file) const
 {
 	std::string filepath;
 	filepath.append(file);
@@ -98,9 +98,16 @@ void ResourceStateMachine::SaveMetafile(const char * file) const
 void ResourceStateMachine::LoadConfigFromMeta()
 {
 	Resource::LoadConfigFromMeta();
-	char* data = nullptr;
+
 	std::string metaFile(file);
 	metaFile += ".meta";
+
+	// Check if meta file exists
+	if (!App->fsystem->Exists(metaFile.c_str()))
+		return;
+
+	unsigned oldUID = GetUID();
+	char* data = nullptr;
 
 	if (App->fsystem->Load(metaFile.c_str(), &data) == 0)
 	{
@@ -113,6 +120,9 @@ void ResourceStateMachine::LoadConfigFromMeta()
 	UID = value->GetUint("GUID");
 	name = value->GetString("name");
 	std::string name = App->fsystem->GetFilename(file);
+
+	//Updates resource UID on resourcelist
+	App->resManager->ReplaceResource(oldUID, this);
 }
 
 void ResourceStateMachine::SetStateMachine(const char* data)
@@ -121,13 +131,6 @@ void ResourceStateMachine::SetStateMachine(const char* data)
 	nodes.clear();
 	clips.clear();
 	transitions.clear();
-
-	char smName[MAX_BONE_NAME_LENGTH];
-
-	memcpy(smName, data, sizeof(char) * MAX_BONE_NAME_LENGTH);
-	data += sizeof(char)* MAX_BONE_NAME_LENGTH;
-
-	name = std::string(smName);
 
 	//import clips vector
 	unsigned clipsSize = 0u;
@@ -211,9 +214,9 @@ void ResourceStateMachine::SetStateMachine(const char* data)
 		data += sizeof(char)* MAX_BONE_NAME_LENGTH;
 		HashString transitionTrigger(tTrigger);
 
-		unsigned blend = 0u;
-		memcpy(&blend, data, sizeof(int));
-		data += sizeof(int);
+		float blend = 0u;
+		memcpy(&blend, data, sizeof(float));
+		data += sizeof(float);
 
 		transitions.push_back(Transition(transitionOrigin, transitionDestiny, transitionTrigger, blend));
 	}
@@ -225,7 +228,6 @@ void ResourceStateMachine::SetStateMachine(const char* data)
 unsigned ResourceStateMachine::GetStateMachineSize()
 {
 	unsigned size = 0u;
-	size += sizeof(char) * MAX_BONE_NAME_LENGTH;
 
 	size += sizeof(int);
 
@@ -252,7 +254,7 @@ unsigned ResourceStateMachine::GetStateMachineSize()
 		size += sizeof(char) * MAX_BONE_NAME_LENGTH;
 		size += sizeof(char) * MAX_BONE_NAME_LENGTH;
 		size += sizeof(char) * MAX_BONE_NAME_LENGTH;
-		size += sizeof(int);
+		size += sizeof(float);
 	}
 	size += sizeof(int);
 
@@ -262,9 +264,6 @@ unsigned ResourceStateMachine::GetStateMachineSize()
 void ResourceStateMachine::SaveStateMachineData(char* data)
 {
 	char* cursor = data;
-
-	memcpy(cursor, name.c_str(), sizeof(char) * MAX_BONE_NAME_LENGTH);
-	cursor += sizeof(char) * MAX_BONE_NAME_LENGTH;
 
 	unsigned clipsSize = clips.size();
 	memcpy(cursor, &clipsSize, sizeof(int));
@@ -316,8 +315,8 @@ void ResourceStateMachine::SaveStateMachineData(char* data)
 		memcpy(cursor, transition.trigger.C_str(), sizeof(char) * MAX_BONE_NAME_LENGTH); 
 		cursor += sizeof(char) * MAX_BONE_NAME_LENGTH;
 
-		memcpy(cursor, &transition.blend, sizeof(int));
-		cursor += sizeof(int);
+		memcpy(cursor, &transition.blend, sizeof(float));
+		cursor += sizeof(float);
 	}
 
 	memcpy(cursor, &defaultNode, sizeof(int));
@@ -326,7 +325,6 @@ void ResourceStateMachine::SaveStateMachineData(char* data)
 
 void ResourceStateMachine::Save()
 {
-
 	char* stateMachineData = nullptr;
 	unsigned stateMachineSize = GetStateMachineSize();
 	stateMachineData = new char[stateMachineSize];
@@ -334,7 +332,6 @@ void ResourceStateMachine::Save()
 
 	App->fsystem->Save((STATEMACHINES + name + STATEMACHINEEXTENSION).c_str(), stateMachineData, stateMachineSize);
 	SetFile((STATEMACHINES + name + STATEMACHINEEXTENSION).c_str());
-	//SetExportedFile(std::to_string(GetUID()).c_str());
 	RELEASE_ARRAY(stateMachineData);
 }
 

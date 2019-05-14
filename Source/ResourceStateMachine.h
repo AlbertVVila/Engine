@@ -86,8 +86,6 @@ public:
 	unsigned GetDefaultNode() { return defaultNode; }
 	void SetDefaultNode(unsigned node) { defaultNode = node; }
 
-
-	std::string name = "";
 private:
 
 	struct Clip

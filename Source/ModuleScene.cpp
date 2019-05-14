@@ -24,6 +24,7 @@
 #include "ResourceTexture.h"
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
+#include "ResourceScene.h"
 
 #include "MaterialEditor.h"
 #include "Viewport.h"
@@ -104,7 +105,7 @@ bool ModuleScene::Start()
 	if (defaultScene.size() > 0)
 	{
 		path = SCENES;
-		LoadScene(defaultScene.c_str(), path.c_str());
+		//LoadScene(defaultScene.c_str(), path.c_str());
 	}
 	return true;
 }
@@ -774,7 +775,7 @@ unsigned ModuleScene::SaveParShapesMesh(const par_shapes_mesh_s &mesh, char** da
 	return size;
 }
 
-void ModuleScene::SaveScene(const GameObject& rootGO, const char* scene, const char* scenePath, bool isTemporary)
+/*void ModuleScene::SaveScene(const GameObject& rootGO, const char* scene, const char* scenePath, bool isTemporary)
 {
 	JSON *json = new JSON();
 	JSON_value *array =json->CreateValue(rapidjson::kArrayType);
@@ -796,7 +797,7 @@ void ModuleScene::SaveScene(const GameObject& rootGO, const char* scene, const c
 		name = scene;
 		path = scenePath;
 	}
-}
+}*/
 
 void ModuleScene::AssignNewUUID(GameObject* go, unsigned UID)
 {
@@ -915,6 +916,7 @@ void ModuleScene::Redo()
 	//}
 }
 
+/*
 void ModuleScene::LoadScene(const char* scene, const char* scenePath, bool isTemporary)
 {
 	ClearScene();
@@ -1016,7 +1018,7 @@ bool ModuleScene::AddScene(const char* scene, const char* path)
 
 	App->renderer->OnResize();
 	return true;
-}
+}*/
 
 void ModuleScene::ClearScene()
 {
@@ -1040,6 +1042,61 @@ void ModuleScene::ClearScene()
 	App->particles->CleanUp();
 	App->particles->Start();
 	App->renderer->shadowCasters.clear();
+}
+
+void ModuleScene::SaveScene(const GameObject& rootGO, const char* sceneName, const char* folder)
+{
+	std::string sceneInAssets(folder);
+	sceneInAssets += sceneName;
+	sceneInAssets += SCENEEXTENSION;
+	unsigned sceneUID = App->resManager->FindByFileInAssets(sceneInAssets.c_str());
+
+	if (sceneUID != 0)
+	{
+		// Updating already created scene
+		ResourceScene* scene = (ResourceScene*)App->resManager->GetWithoutLoad(sceneUID);
+		scene->Save(rootGO);
+	}	
+	else
+	{
+		// Is a new scene, create resource
+		ResourceScene* scene = (ResourceScene*)App->resManager->CreateNewResource(TYPE::SCENE);
+		scene->SetFile(sceneInAssets.c_str());
+		std::string exportedFile(IMPORTED_SCENES);
+		exportedFile += sceneName;
+		exportedFile += SCENEEXTENSION;
+		scene->SetExportedFile(exportedFile.c_str());
+		scene->SetName(sceneName);
+		scene->Save(rootGO);
+	}
+
+	// Update scene info
+	name = sceneName;
+	path = folder;
+}
+
+void ModuleScene::LoadScene(const char* sceneName, const char* folder)
+{
+	ClearScene();
+	if (AddScene(sceneName, folder))
+	{
+		name = sceneName;
+		path = folder;
+	}
+	App->spacePartitioning->kDTree.Calculate();
+	scenePhotos.clear();
+}
+
+bool ModuleScene::AddScene(const char* sceneName, const char* folder)
+{
+	ResourceScene* scene = (ResourceScene*)App->resManager->GetByName(sceneName, TYPE::SCENE);
+	if(scene != nullptr && !scene->Load())
+	{
+		LOG("Error loading scene named: %s", sceneName);
+		return false;
+	}
+
+	return true;
 }
 
 void ModuleScene::Select(GameObject * gameobject)
@@ -1289,7 +1346,7 @@ ComponentLight* ModuleScene::GetDirectionalLight() const
 {
 	for (const auto& light : lights)
 	{
-		if (light->lightType == LightType::DIRECTIONAL && light->enabled)
+		if (light->lightType == LightType::DIRECTIONAL)
 		{
 			return light;
 		}

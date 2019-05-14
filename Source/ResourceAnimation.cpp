@@ -8,6 +8,7 @@
 #include "ResourceAnimation.h"
 
 #include "Globals.h"
+#include "imgui.h"
 #include "JSON.h"
 #include <assert.h>
 
@@ -56,7 +57,7 @@ bool ResourceAnimation::LoadInMemory()
 {
 	char* data = nullptr;
 
-	unsigned ok = App->fsystem->Load((IMPORTED_ANIMATIONS + std::to_string(UID) + ANIMATIONEXTENSION).c_str(), &data);
+	unsigned ok = App->fsystem->Load(exportedFile.c_str(), &data);
 
 	// Load mesh file
 	if (ok != 0)
@@ -82,15 +83,24 @@ void ResourceAnimation::DeleteFromMemory()
 
 void ResourceAnimation::Delete()
 {
-	// Delete Resource from ResourceManager
-	App->resManager->DeleteResourceFromList(UID);
+	// Check if the animation was imported from Model or created from the editor
+	// TODO RM: Delete this if and use base Delete once all animations from models are saved on assets
+	if (App->fsystem->Exists(file.c_str()))
+	{
+		Resource::Delete();
+	}
+	else
+	{
+		// Delete Resource from ResourceManager
+		App->resManager->DeleteResourceFromList(UID);
 
-	// Delete file in Library
-	std::string fileInLibrary(IMPORTED_ANIMATIONS);
-	fileInLibrary += exportedFileName;
-	fileInLibrary += ANIMATIONEXTENSION;
-	App->fsystem->Delete(fileInLibrary.c_str());
-	DeleteFromMemory();
+		// Delete file in Library
+		std::string fileInLibrary(IMPORTED_ANIMATIONS);
+		fileInLibrary += exportedFile;
+		fileInLibrary += ANIMATIONEXTENSION;
+		App->fsystem->Delete(fileInLibrary.c_str());
+		DeleteFromMemory();
+	}
 }
 
 void ResourceAnimation::SaveMetafile(const char* file) const
@@ -111,10 +121,15 @@ void ResourceAnimation::SaveMetafile(const char* file) const
 
 void ResourceAnimation::LoadConfigFromMeta()
 {
-	Resource::LoadConfigFromMeta();
-	char* data = nullptr;
 	std::string metaFile(file);
 	metaFile += ".meta";
+
+	// Check if meta file exists
+	if (!App->fsystem->Exists(metaFile.c_str()))
+		return;
+
+	char* data = nullptr;
+	unsigned oldUID = GetUID();
 
 	if (App->fsystem->Load(metaFile.c_str(), &data) == 0)
 	{
@@ -126,7 +141,9 @@ void ResourceAnimation::LoadConfigFromMeta()
 	JSON_value* value = json->GetValue("Animation");
 	UID = value->GetUint("GUID");
 	name = value->GetString("name");
-	std::string name = App->fsystem->GetFilename(file);
+
+	//Updates resource UID on resourcelist
+	App->resManager->ReplaceResource(oldUID, this);
 }
 
 void ResourceAnimation::SetAnimation(const char* animationData)
@@ -268,12 +285,9 @@ void ResourceAnimation::SaveNewAnimation()
 	animationData = new char[animationSize];
 	SaveAnimationData(animationData);
 
-	unsigned animUID = App->resManager->GenerateNewUID();
 	App->fsystem->Save((ANIMATIONS + name + ANIMATIONEXTENSION).c_str(), animationData, animationSize);
 	SetFile((ANIMATIONS + name + ANIMATIONEXTENSION).c_str());
-	//SetExportedFile(std::to_string(animUID).c_str());
 	RELEASE_ARRAY(animationData);
-
 }
 
 unsigned ResourceAnimation::GetNumPositions(unsigned indexChannel) const

@@ -50,7 +50,6 @@ public:
 
 public:
 
-	std::string name = "";
 	double duration = 0; //frames
 	double framesPerSecond = 0;
 	int numberFrames = 0;
