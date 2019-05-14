@@ -649,12 +649,6 @@ void ModuleScene::ResetQuadTree() //deprecated
 	}
 }
 
-Prefab* ModuleScene::CreatePrefab(GameObject * go)
-{
-	return new Prefab(GetNewUID(), go); //We should save and load on modify?
-	//TODO: Add 1 instance to prefab
-}
-
 void ModuleScene::CreateCube(const char * name, GameObject* parent)
 {
 	if (!primitivesUID[(unsigned)PRIMITIVES::CUBE])

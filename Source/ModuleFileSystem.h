@@ -97,7 +97,7 @@ public:
 	void ListFiles(const char* dir, std::set<std::string>& files);														// Saves all files found on dir and subdirs on a set
 	bool CopyFromOutsideFS(const char* source, const char* destination) const;
 	bool Copy(const char* source, const char* destination, const char* file) const;
-	bool Move(const char * source, const char* file, const char* newFile) const;
+	bool Copy(const char * source, const char* file, const char* dest, const char* newFile) const;
 	void Rename(const char* route, const char* file, const char* newName) const;
 	bool ChangeExtension(const char* source, const char* file, const char* newExtension) const;
 

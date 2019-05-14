@@ -11,8 +11,8 @@
 
 Prefab::Prefab(unsigned uid, GameObject* root) : Resource(uid, TYPE::PREFAB) //TODO: parents not prefabs?
 {
-	name = root->name;
-	Save(root);
+	//name = root->name; //TODO: RELEASE JSON AND DATA ALL AROUND RESOURCES
+	//Save(root);
 }
 
 Prefab::Prefab(const Prefab& resource) : Resource(resource)
@@ -35,6 +35,7 @@ bool Prefab::LoadInMemory()
 	{
 		Load(&data);
 	}
+	//TODO: RELEASE DATA iN LOAD IN MEMORY!!
 	++loaded;
 	return true;
 }
@@ -44,6 +45,41 @@ void Prefab::DeleteFromMemory()
 	root->CleanUp();
 	RELEASE(root);
 	Resource::DeleteFromMemory();
+}
+
+void Prefab::SaveMetafile(const char * file) const
+{
+	JSON* json = new JSON();
+	JSON_value* meta = json->CreateValue();
+	struct stat statFile;
+	stat(file, &statFile);
+	meta->AddUint("GUID", UID);
+	meta->AddUint("timeCreated", statFile.st_ctime);
+	std::string filepath(file);
+	filepath += METAEXT;
+
+	json->AddValue("prefab", *meta);
+
+	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
+	RELEASE(json);
+}
+
+void Prefab::LoadConfigFromMeta()
+{
+	char* data = nullptr;
+	std::string metaFile(file);
+	metaFile += ".meta";
+
+	if (App->fsystem->Load(metaFile.c_str(), &data) == 0)
+	{
+		LOG("Warning: %s couldn't be loaded", metaFile.c_str());
+		RELEASE_ARRAY(data);
+		return;
+	}
+	JSON* json = new JSON(data);
+	JSON_value* value = json->GetValue("Mesh");
+	UID = value->GetUint("GUID");
+	RELEASE(data);
 }
 
 
@@ -106,11 +142,7 @@ void Prefab::Save(GameObject* go) const //TODO: should also save name?
 
 	//App->navigation->sceneSaved(json);
 
-	std::string file(PREFABS);
-	file += std::to_string(UID);
-	file += PREFABEXTENSION;
-
-	App->fsystem->Save(file.c_str(), json->ToString().c_str(), json->Size());
+	App->fsystem->Save(GetFile(), json->ToString().c_str(), json->Size());
 	RELEASE(json);
 }
 

@@ -169,14 +169,7 @@ void GameObject::DrawProperties()
 
 		if (ImGui::Checkbox("isPrefab", &isPrefab))
 		{
-			if (prefabUID == 0)
-			{
-				MarkAsPrefab();
-			}
-			else
-			{
-				//TODO: Update old prefab
-			}
+			MarkAsPrefab();
 		}
 
 		if (isPrefab)
@@ -780,10 +773,17 @@ void GameObject::SetLightUniforms(unsigned shader) const
 void GameObject::MarkAsPrefab()
 {
 	//Create Prefab and reference it
-	prefab = App->scene->CreatePrefab(this);
-	prefab->Save(this);
-	prefabUID = prefab->GetUID();
-	prefab->AddInstance(this);
+	if (prefabUID != 0u)
+	{
+		prefab = (Prefab*) App->resManager->Get(prefabUID);
+	}
+	else
+	{
+		//Insta import? or get it from resource name? or what
+	}
+	//prefab = App->scene->CreatePrefab(this);
+	//prefabUID = prefab->GetUID();
+	//prefab->AddInstance(this);
 	isPrefabSync = true;
 }
 
@@ -976,8 +976,7 @@ void GameObject::Load(JSON_value *value)
 
 	if (isPrefab)
 	{
-		//TODO: Get Prefab from UID
-		//Prefab* prefab = (Prefab*) App->resManager->Get(prefabUID);
+		Prefab* prefab = (Prefab*) App->resManager->Get(prefabUID);
 	}
 
 	JSON_value* componentsJSON = value->GetValue("Components");

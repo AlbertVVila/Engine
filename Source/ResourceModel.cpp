@@ -134,7 +134,6 @@ void ResourceModel::LoadConfigFromMeta()
 
 		animationList.push_back(anim);
 	}
-
 }
 
 bool ResourceModel::CheckImportedMeshes()

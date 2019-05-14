@@ -318,13 +318,13 @@ bool ModuleFileSystem::Copy(const char* source, const char* destination, const c
 	return true;
 }
 
-bool ModuleFileSystem::Move(const char * source, const char* file, const char* newFile) const
+bool ModuleFileSystem::Copy(const char * source, const char* file, const char* dest, const char* newFile) const
 {
 	char * data = nullptr;
 	std::string filepath(source);
 	filepath += file;
 	unsigned size = Load(filepath.c_str(), &data);
-	std::string filedest(source);
+	std::string filedest(dest);
 	filedest += newFile;
 	Save(filedest.c_str(), data, size);
 	RELEASE_ARRAY(data);
@@ -344,7 +344,7 @@ void ModuleFileSystem::Rename(const char* route, const char* file, const char* n
 	}
 
 	std::string extension = GetExtension(file);
-	Move(route, file, (newName + extension).c_str());
+	Copy(route, file, route, (newName + extension).c_str());
 	Delete(filepath.c_str());
 }
 
@@ -498,8 +498,11 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 				}
 				else if (type == FILETYPE::PREFAB)
 				{
+					stat((currentFolder + file).c_str(), &statFile);
+					stat((currentFolder + file + METAEXT).c_str(), &statMeta);
+
 					std::set<std::string>::iterator it = importedPrefabs.find(RemoveExtension(file));
-					if (it == importedPrefabs.end())
+					if (it == importedPrefabs.end() || statFile.st_mtime > statMeta.st_mtime)
 					{
 						// File modified or not imported, send it to import
 						filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
@@ -682,6 +685,10 @@ FILETYPE ModuleFileSystem::GetFileType(std::string extension) const
 	if (extension == STATEMACHINEEXTENSION)
 	{
 		return FILETYPE::STATEMACHINE;
+	}
+	if (extension == PREFABEXTENSION)
+	{
+		return FILETYPE::PREFAB;
 	}
 	return FILETYPE::NONE;
 }

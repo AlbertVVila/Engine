@@ -16,6 +16,8 @@
 #include "Resource.h"
 #include "ResourceModel.h"
 #include "ResourceMesh.h"
+#include "Prefab.h"
+
 #include "FileImporter.h"
 #include "JSON.h"
 
@@ -84,7 +86,7 @@ void FileImporter::ImportAsset(const char *file, const char *folder)
 	}
 	else if (extension == PREFABEXTENSION)
 	{
-		App->fsystem->Copy(folder, PREFABS, file);
+		App->resManager->ImportFile(file, folder, TYPE::PREFAB);
 	}
 }
 
@@ -103,6 +105,30 @@ bool FileImporter::ImportFBX(const char* fbxfile, const char* folder, ResourceMo
 	}
 	LOG("Error importing FBX %s", fbxfile);
 	return false;
+}
+
+bool FileImporter::ImportPrefab(const char * file, const char * folder, Prefab * resource)
+{
+	//std::string path(folder);
+	//path += file;
+	//std::string name = App->fsystem->GetFilename(file);
+	//std::string meta(std::string(path) + METAEXT);
+
+	//char* metaData = nullptr;
+	//if (App->fsystem->Load(meta.c_str(), &metaData) == 0)
+	//{
+	//	//NO META
+	//}
+	//else
+	//{
+	//	JSON *json = new JSON(metaData);
+	//	//Get UID
+	//	JSON_value* value = json->GetValue("prefab");
+	//	unsigned UID = value->GetUint("UID");
+	//	App->fsystem->Save((MESHES + std::to_string(mesh->GetUID()) + MESHEXTENSION).c_str(), meshData, meshSize);
+	//}
+	App->fsystem->Copy(folder, file, PREFABS, (std::to_string(resource->GetUID()) + PREFABEXTENSION).c_str());
+	return true;
 }
 
 bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const char* folder, ResourceModel* resource)

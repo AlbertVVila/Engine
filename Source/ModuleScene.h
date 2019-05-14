@@ -63,7 +63,6 @@ public:
 	void DragNDrop(GameObject * go);
 	void DrawGUI() override;
 
-	Prefab* CreatePrefab(GameObject* go);
 	void CreateCube(const char * name, GameObject* parent);
 	void CreateSphere(const char * name, GameObject* parent);
 	void CreatePrimitive(const char * name, GameObject* parent, PRIMITIVES type);

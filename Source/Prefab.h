@@ -17,6 +17,9 @@ public:
 	bool LoadInMemory() override;
 	void DeleteFromMemory() override;
 
+	void SaveMetafile(const char* file) const override;
+	void LoadConfigFromMeta() override;
+
 	void AddInstance(GameObject * go);
 	void RemoveInstance(GameObject * go);
 

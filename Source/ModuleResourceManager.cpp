@@ -16,6 +16,7 @@
 #include "ResourceStateMachine.h"
 #include "ResourceAnimation.h"
 #include "ResourceSkybox.h"
+#include "Prefab.h"
 
 #include "FileImporter.h"
 
@@ -172,8 +173,6 @@ bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* 
 		}
 	}
 
-
-
 	Resource* resource = CreateNewResource(type);
 
 	// Save file to import on Resource file variable
@@ -197,6 +196,9 @@ bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* 
 	//case TYPE::SCENE: import_ok = App->scene->Import(newFileInAssets, written_file); break;
 	case TYPE::MATERIAL:
 		success = App->fsystem->Copy(filePath, IMPORTED_MATERIALS, newFileInAssets);
+		break;
+	case TYPE::PREFAB:
+		success = App->fsystem->importer.ImportPrefab(newFileInAssets, filePath, (Prefab*)resource);
 		break;
 	}
 
@@ -237,6 +239,8 @@ bool ModuleResourceManager::ReImportFile(Resource* resource, const char* filePat
 	case TYPE::MATERIAL:
 		success = App->fsystem->Copy(filePath, IMPORTED_MATERIALS, file.c_str());
 		break;
+	case TYPE::PREFAB:
+		success = App->fsystem->importer.ImportPrefab(filePath, filePath, (Prefab*)resource);
 	}
 
 	// If export was successful, update resource
@@ -279,6 +283,7 @@ Resource* ModuleResourceManager::CreateNewResource(TYPE type, unsigned forceUid)
 	case TYPE::MATERIAL: resource = (Resource*) new ResourceMaterial(uid); break;
 	case TYPE::SKYBOX: resource = (Resource*) new ResourceSkybox(uid); break;
 	case TYPE::STATEMACHINE: resource = (Resource*) new ResourceStateMachine(uid); break;
+	case TYPE::PREFAB: resource = (Resource*) new Prefab(uid); break;
 	}
 
 	if (resource != nullptr)
