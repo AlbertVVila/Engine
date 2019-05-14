@@ -18,13 +18,19 @@ struct ImGuiContext;
 class ComponentAnimation;
 class JSON_value;
 struct ImGuiContext;
+class PlayerState;
 
-enum class PlayerState
-{
-	IDLE,
-	WALK,
-	ATTACK
-};
+//enum class PlayerState
+//{
+//	IDLE,
+//	WALK,
+//	FIRSTATTACK,
+//	SECONDATTACK,
+//	THIRDATTACK,
+//	DASH,
+//	UPPERCUT,
+//	DEATH,
+//};
 
 class PlayerMovement_API PlayerMovement : public Script
 {
@@ -36,12 +42,13 @@ public:
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
 
-	void CheckState(PlayerState previous, PlayerState current);
+
 	void Damage(float amount);
 public:
 	bool isPlayerDead = false;
 	float3 currentPosition = float3(0, 0, 0); //TODO ZERO
-	PlayerState playerState = PlayerState::IDLE;
+	PlayerState* playerState = nullptr;
+
 private:
 	unsigned pathIndex = 0;
 	std::vector<float3>path;
