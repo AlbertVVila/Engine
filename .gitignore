@@ -264,9 +264,6 @@ __pycache__/
 
 /Game/Engine - Master 1.exe
 
-/Game/Library/Materials/
-/Game/Library/Meshes/
-/Game/Library/Textures/
-/Game/Library/Scenes/
+/Game/Library/
 
 GameBuild/
