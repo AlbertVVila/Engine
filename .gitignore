@@ -269,5 +269,5 @@ __pycache__/
 GameBuild/
 
 # TASK 112
-/GAME/imgui.ini
-/GAME/config.json
+/Game/imgui.ini
+/Game/config.json
