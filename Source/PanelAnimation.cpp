@@ -301,7 +301,11 @@ void PanelAnimation::CreateAnimationFromClip(ResourceAnimation* anim, int minFra
 	newAnim->numberFrames = maxFrame - minFrame;
 	newAnim->numberOfChannels = anim->numberOfChannels;
 	newAnim->durationInSeconds = (maxFrame - minFrame) / anim->framesPerSecond;
-	newAnim->Rename(anim->GetName());
+
+	//Do not fear the while, accept it
+	std::string newName = App->resManager->GetAvailableName(anim->GetName(), TYPE::ANIMATION);
+	newAnim->Rename(newName.c_str());
+
 	newAnim->SaveNewAnimation();
 
 	RELEASE(newAnim);
