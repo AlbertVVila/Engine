@@ -59,7 +59,7 @@ class ModuleResourceManager :
 	std::vector<ResourceAnimation*> GetAnimationsList();
 	std::vector<ResourceStateMachine*> GetSMList();
 
-	std::vector<std::string> GetResourceNamesList(TYPE resourceType, bool ordered); // Returns a vector with the exportedFileName of every Resource of the type given.	
+	ENGINE_API std::vector<std::string> GetResourceNamesList(TYPE resourceType, bool ordered); // Returns a vector with the exportedFileName of every Resource of the type given.	
 	std::vector<std::string> GetMeshesNamesList(bool ordered);						// To be deprecated: Returns a vector with the name of every mesh orederer or not.		
 	std::vector<std::string> GetAnimationsNamesList(bool ordered);
 	std::vector<std::string> GetSMNamesList(bool ordered);

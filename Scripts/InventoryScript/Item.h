@@ -27,6 +27,7 @@ public:
 	std::string sprite;
 	ItemType type = ItemType::NONE;
 	//3D Material/Prefab/Mesh 
+
 };
 
 #endif

@@ -163,6 +163,19 @@ void ComponentImage::Update()
 	}*/
 }
 
+void ComponentImage::UpdateTexture(std::string textureName)
+{
+	if (texture != nullptr && textureName != None)
+	{
+		unsigned imageUID = App->resManager->FindByExportedFile(textureName.c_str());
+		App->resManager->DeleteResource(imageUID);
+		texture = nullptr;
+	}
+	textureName = textureName;
+	unsigned imageUID = App->resManager->FindByExportedFile(textureName.c_str());
+	texture = (ResourceTexture*)App->resManager->Get(imageUID);
+}
+
 void ComponentImage::Save(JSON_value *value)const
 {
 	Component::Save(value);

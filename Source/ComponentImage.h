@@ -18,6 +18,7 @@ public:
 
 	void Update() override;
 	void UpdateTexturesList();
+	ENGINE_API void UpdateTexture(std::string textureName);
 
 	void DrawProperties() override;
 	void Save(JSON_value* value) const override;

@@ -33,7 +33,7 @@ private:
 
 	std::vector<Component*> slotsTransform;
 	std::vector<GameObject*> itemsSlots;
-	std::vector<Item> items;
+	std::vector<std::pair<Item, int>> items;
 
 	GameObject* inventory = nullptr;
 	Transform2D* menuPlayer = nullptr;
