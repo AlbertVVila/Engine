@@ -50,6 +50,7 @@ void AnimationController::PlayEditor(ResourceAnimation * anim)
 void AnimationController::PlayNextNode(ResourceAnimation * anim, bool loop, bool mustFinish, float speed, float blend)
 {
 	current->anim = anim;
+	current->time = 0.f;
 	current->loop = loop;
 	current->mustFinish = mustFinish;
 	current->speed = speed;

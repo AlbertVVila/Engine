@@ -13,6 +13,8 @@ public:
 	void Update() override;
 
 	void CheckInput() override;
+
+	float duration = 1.5f;
 };
 
 #endif // __PLAYERSTATEIDLE_H_

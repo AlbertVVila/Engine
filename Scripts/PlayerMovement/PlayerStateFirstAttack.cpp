@@ -20,24 +20,28 @@ PlayerStateFirstAttack::~PlayerStateFirstAttack()
 
 void PlayerStateFirstAttack::Update()
 {
-	player->pathIndex = 0;
-	player->path.clear();
-	math::float3 attackPosition;
-	if (player->Appl->scene->Intersects(attackPosition, "floor"))
-	{
-		player->gameobject->transform->LookAt(attackPosition);
-	}
+	//player->pathIndex = 0;
+	//player->path.clear();
+	//math::float3 attackPosition;
+	//if (player->Appl->scene->Intersects(attackPosition, "floor"))
+	//{
+	//	player->gameobject->transform->LookAt(attackPosition);
+	//}
 }
 
 void PlayerStateFirstAttack::CheckInput()
 {
-	if (timer > duration) //CAN SWITCH?
+	if (timer > duration * 0.8)
 	{
 		if (player->IsAtacking())
 		{
 			player->currentState = (PlayerState*)player->secondAttack;
 		}
-		else if (player->IsUsingFirstSkill())
+	}
+	if (timer > duration * 1.5) //CAN SWITCH?
+	{
+		
+		if (player->IsUsingFirstSkill())
 		{
 			player->currentState = (PlayerState*)player->dash;
 		}
