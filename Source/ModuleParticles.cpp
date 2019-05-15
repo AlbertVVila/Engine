@@ -360,8 +360,10 @@ void PMColorOverTime::InspectorDraw()
 		if (ImGui::Button("Add Mark")) 
 		{
 			// 2 Marks max for now 
-			if (Imgradient->getMarks().size() < 2) Imgradient->addMark(0.5f, 0.f);
+			if (Imgradient->getMarks().size() < 4) Imgradient->addMark(0.5f, 0.f);	
 		}
+		ImGui::SameLine();
+		ImGui::Text("4 Max");
 	}
 
 }

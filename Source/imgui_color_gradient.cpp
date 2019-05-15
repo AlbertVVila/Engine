@@ -18,6 +18,8 @@ ImGradient::ImGradient()
     //addMark(0.0f, 1.0f);
     addMark(1.0f, ImColor(1.0f,1.0f,1.0f));
    // addMark(1.0f, 1.0f);
+	addAlphaMark(0.0f, 1.f);
+	addAlphaMark(1.0f, 1.f);
 }
 
 ImGradient::~ImGradient()
