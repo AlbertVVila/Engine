@@ -50,6 +50,10 @@ ComponentLight::ComponentLight(const ComponentLight& component) : Component(comp
 ComponentLight::~ComponentLight()
 {
 	App->scene->lights.remove(this);
+	if (lightType == LightType::DIRECTIONAL)
+	{
+		App->scene->DeleteDirectionalLight(this);
+	}
 }
 
 void ComponentLight::Update()

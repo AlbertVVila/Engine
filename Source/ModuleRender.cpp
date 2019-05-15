@@ -84,7 +84,10 @@ bool ModuleRender::Init(JSON * config)
 	skybox->enabled = renderer->GetInt("skybox");
 	current_scale = renderer->GetInt("current_scale");
 	gammaCorrector = renderer->GetFloat("gammaCorrector");
+	bloomSpread = renderer->GetFloat("bloomSpread");
 	exposure = renderer->GetFloat("exposure");
+	kernelRadius = renderer->GetInt("kernelRadius");
+
 
 	switch (current_scale)
 	{
@@ -150,7 +153,8 @@ bool ModuleRender::Init(JSON * config)
 		glBindVertexArray(0);
 	}
 
-
+	kernel = new float[MAX_KERNEL_RADIUS];
+	ComputeBloomKernel();
 	return true;
 }
 
@@ -218,6 +222,8 @@ void ModuleRender::SaveConfig(JSON * config)
 	renderer->AddInt("skybox", skybox->enabled);
 	renderer->AddFloat("gammaCorrector", gammaCorrector);
 	renderer->AddFloat("exposure", exposure);
+	renderer->AddFloat("bloomSpread", bloomSpread);
+	renderer->AddInt("kernelRadius", kernelRadius);
 
 	config->AddValue("renderer", *renderer);
 }
@@ -292,6 +298,9 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 		glUniform1i(glGetUniformLocation(postProcessShader->id[0], "gBrightness"), 2);
 		glUniform1f(glGetUniformLocation(postProcessShader->id[0], "gammaCorrector"), gammaCorrector);
 		glUniform1f(glGetUniformLocation(postProcessShader->id[0], "exposure"), exposure);
+		glUniform1fv(glGetUniformLocation(postProcessShader->id[0], "weight"), MAX_KERNEL_RADIUS, kernel);
+		glUniform1i(glGetUniformLocation(postProcessShader->id[0], "kernelRadius"), kernelRadius);
+
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, renderedSceneGame);
@@ -338,14 +347,17 @@ bool ModuleRender::IsSceneHovered() const
 // Called before quitting
 bool ModuleRender::CleanUp()
 {
-
+	RELEASE_ARRAY(kernel);
 	LOG("Destroying renderer");
 	if (UBO != 0)
 	{
 		glDeleteBuffers(1, &UBO);
 	}
-	return true;
-}
+	glDeleteTextures(1, &highlightBufferGame);
+	glDeleteTextures(1, &brightnessBufferGame);
+	glDeleteTextures(1, &renderedSceneGame);
+	return true;	  
+}	
 
 void ModuleRender::OnResize()
 {
@@ -558,7 +570,7 @@ void ModuleRender::ComputeShadows()
 	}
 }
 
-void ModuleRender::ShadowVolumeDrawDebug()
+void ModuleRender::ShadowVolumeDrawDebug() const
 {
 	dd::sphere(lightPos, dd::colors::YellowGreen, current_scale);
 
@@ -671,6 +683,32 @@ void ModuleRender::CreatePostProcessFramebuffer()
 		LOG("Framebuffer ERROR");
 }
 
+inline float ModuleRender::Gaussian(float x, float mu, float sigma)
+{
+	float expVal = -1 * (pow(x, 2) / pow(2 * sigma, 2));
+	float divider = sqrt(2 * M_PI * pow(sigma, 2));
+	return (1 / divider) * exp(expVal);
+}
+
+void ModuleRender::ComputeBloomKernel()
+{
+	
+	float sigma = (kernelRadius / 2);
+	int i = 0;
+	float sum = 0.f;
+	for (int x = kernelRadius; x < 2 * kernelRadius + 1; ++x)
+	{
+		float k = Gaussian(x, kernelRadius, sigma);
+		kernel[i++] = k;
+		sum += k;
+	}
+	for (i = 0; i < kernelRadius; ++i)
+	{
+		kernel[i] /= sum;
+		kernel[i] /= bloomSpread;
+	}
+}
+
 void ModuleRender::DrawGUI()
 {
 	if (ImGui::Checkbox("Depth Test", &depthTest))
@@ -734,6 +772,14 @@ void ModuleRender::DrawGUI()
 	}
 	ImGui::DragFloat("Gamma correction", &gammaCorrector, .05f, 1.2f, 3.2f);
 	ImGui::DragFloat("Exposure", &exposure, .05f, .1f, 10.0f);
+	if (ImGui::DragFloat("Bloom spread", &bloomSpread, .1f, 1.f, 100.f))
+	{
+		ComputeBloomKernel();
+	}
+	if (ImGui::DragInt("Bloom kernel radius", &kernelRadius, 1, 2, MAX_KERNEL_RADIUS))
+	{
+		ComputeBloomKernel();
+	}
 }
 
 void ModuleRender::GenBlockUniforms()

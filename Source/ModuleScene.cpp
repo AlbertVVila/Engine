@@ -1328,6 +1328,15 @@ ComponentLight* ModuleScene::GetDirectionalLight() const
 	return nullptr;
 }
 
+void ModuleScene::DeleteDirectionalLight(ComponentLight* light)
+{
+	lights.remove(light);
+	if (App->renderer->directionalLight == light)
+	{
+		App->renderer->directionalLight = nullptr;
+	}
+}
+
 std::list<std::pair<float, GameObject*>> ModuleScene::GetDynamicIntersections(const LineSegment & line) const
 {
 	std::list<std::pair<float, GameObject*>> gos; 

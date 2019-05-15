@@ -95,7 +95,8 @@ public:
 	unsigned GetNewUID();
 	std::list<ComponentLight*> GetClosestLights(LightType type, math::float3 position = math::float3::zero) const;
 
-	ComponentLight * GetDirectionalLight() const;
+	ComponentLight* GetDirectionalLight() const;
+	void DeleteDirectionalLight(ComponentLight* light);
 
 private:
 	std::list<std::pair<float, GameObject*>>GetDynamicIntersections(const LineSegment& line) const;

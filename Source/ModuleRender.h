@@ -1,6 +1,8 @@
 #ifndef __ModuleRender_h__
 #define __ModuleRender_h__
 
+#define MAX_KERNEL_RADIUS 100
+
 #include "Module.h"
 #include "Math/float3.h"
 #include "MathGeoLib/include/Geometry/Frustum.h"
@@ -46,9 +48,11 @@ private:
 	void InitSDL();
 	void InitOpenGL() const;
 	void ComputeShadows();
-	void ShadowVolumeDrawDebug();
+	void ShadowVolumeDrawDebug() const;
 	void BlitShadowTexture();
 	void CreatePostProcessFramebuffer();
+	inline float Gaussian(float x, float mu, float sigma);
+	void ComputeBloomKernel();
 
 public:
 	void* context = nullptr;
@@ -113,6 +117,9 @@ private:
 
 	float gammaCorrector = 2.2f;
 	float exposure = 1.0f;
+	float bloomSpread = 80.f;
+	int kernelRadius = 10;
+	float* kernel = nullptr;
 };
 
 #endif /* __ModuleRender_h__ */
