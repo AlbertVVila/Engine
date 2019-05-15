@@ -121,7 +121,14 @@ update_status ModuleScene::PreUpdate()
 	}
 
 #ifndef GAME_BUILD
-	FrustumCulling(*App->camera->editorcamera->frustum);
+	if (maincamera == nullptr)
+	{
+		FrustumCulling(*App->camera->editorcamera->frustum);
+	}
+	else 
+	{
+		FrustumCulling(*maincamera->frustum);
+	}
 #else
 	if (maincamera != nullptr)
 	{
