@@ -63,8 +63,9 @@ bool ModuleRender::Init(JSON * config)
 
 	// Set default Skybox
 	skybox = (ResourceSkybox*)App->resManager->CreateNewResource(TYPE::SKYBOX);
-	std::string faces[NUMFACES] = { "right", "left", "top", "bottom", "front", "back" };
+	std::string faces[NUMFACES] = { "Resources/Imported/right.dds", "Resources/Imported/left.dds", "Resources/Imported/top.dds", "Resources/Imported/bottom.dds", "Resources/Imported/front.dds", "Resources/Imported/back.dds" };
 	skybox->SetExportedFile("Default Skybox");
+	skybox->SetName("Default Skybox");
 	skybox->SetTextures(faces);
 	skybox->SetUsedByEngine(true);
 	skybox->LoadInMemory();
@@ -313,7 +314,7 @@ void ModuleRender::ComputeShadows()
 		//TODO: Improve this avoiding shuffle every frame
 		for (GameObject* go : App->scene->dynamicFilteredGOs) //TODO: get volumetric gos even if outside the frustum
 		{
-			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponentOld(ComponentType::Renderer);
 			if (cr && cr->castShadows)
 			{
 				renderersDetected = true;
@@ -324,7 +325,7 @@ void ModuleRender::ComputeShadows()
 
 		for (GameObject* go : App->scene->staticFilteredGOs)
 		{
-			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponentOld(ComponentType::Renderer);
 			if (cr && cr->castShadows)
 			{
 				renderersDetected = true;

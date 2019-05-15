@@ -43,15 +43,14 @@ ComponentImage::ComponentImage(const ComponentImage &copy) : Component(copy)
 	flipVertical = copy.flipVertical;
 	if (textureName != "None Selected")
 	{
-		unsigned textureUID = App->resManager->FindByExportedFile(textureName.c_str());
-		texture = (ResourceTexture*)App->resManager->Get(textureUID);
+		texture = (ResourceTexture*)App->resManager->GetByName(textureName.c_str(), TYPE::TEXTURE);
 	}
 }
 
 ComponentImage::~ComponentImage()
 {
 	/*App->ui->images.remove(this);*/
-	unsigned imageUID = App->resManager->FindByExportedFile(textureName.c_str());
+	unsigned imageUID = App->resManager->FindByName(textureName.c_str(), TYPE::TEXTURE);
 	App->resManager->DeleteResource(imageUID);
 	texture = nullptr;
 }
@@ -78,7 +77,7 @@ void ComponentImage::DrawProperties()
 			{
 				if (texture != nullptr)
 				{
-					unsigned imageUID = App->resManager->FindByExportedFile(textureName.c_str());
+					unsigned imageUID = App->resManager->FindByName(textureName.c_str(), TYPE::TEXTURE);
 					App->resManager->DeleteResource(imageUID);
 					texture = nullptr;
 				}
@@ -91,12 +90,9 @@ void ComponentImage::DrawProperties()
 				bool is_selected = (textureName == textureFiles[n]);
 				if (ImGui::Selectable(textureFiles[n].c_str(), is_selected) && !is_selected)
 				{
-					App->resManager->DeleteResource(App->resManager->FindByExportedFile(textureName.c_str()));
+					App->resManager->DeleteResource(App->resManager->FindByName(textureName.c_str(), TYPE::TEXTURE));
 					textureName = textureFiles[n].c_str();
-					// ResManager refactored:
-					//texture = App->textures->GetTexture(textureName.c_str());
-					unsigned imageUID = App->resManager->FindByExportedFile(textureName.c_str());
-					texture = (ResourceTexture*)App->resManager->Get(imageUID);
+					texture = (ResourceTexture*)App->resManager->GetByName(textureName.c_str(), TYPE::TEXTURE);
 				}
 				if (is_selected)
 					ImGui::SetItemDefaultFocus();
@@ -146,8 +142,6 @@ void ComponentImage::Load(JSON_value* value)
 	flipHorizontal = value->GetInt("FlipHorizontal");
 	if (textureName != "None Selected")
 	{
-		// ResManager refactored:
-		//texture = App->textures->GetTexture(textureName.c_str());
-		texture = (ResourceTexture*)App->resManager->Get(textureName.c_str());
+		texture = (ResourceTexture*)App->resManager->GetByName(textureName.c_str(), TYPE::TEXTURE);
 	}
 }

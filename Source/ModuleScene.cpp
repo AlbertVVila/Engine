@@ -24,6 +24,7 @@
 #include "ResourceTexture.h"
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
+#include "ResourceScene.h"
 
 #include "MaterialEditor.h"
 #include "Viewport.h"
@@ -104,7 +105,7 @@ bool ModuleScene::Start()
 	if (defaultScene.size() > 0)
 	{
 		path = SCENES;
-		LoadScene(defaultScene.c_str(), path.c_str());
+		//LoadScene(defaultScene.c_str(), path.c_str());
 	}
 	return true;
 }
@@ -113,7 +114,7 @@ update_status ModuleScene::PreUpdate()
 {
 	if (loadScene)
 	{
-		LoadScene(sceneName.c_str(), SCENES);
+		LoadScene(name.c_str(), SCENES);
 		App->scripting->onStart = true;
 		root->OnPlay();
 		loadScene = false;
@@ -228,8 +229,8 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 				GameObject* node = S.top();S.pop();
 				if (node->parent->transform != nullptr)
 				{
-					ComponentTransform*  nT = (ComponentTransform*)node->GetComponent(ComponentType::Transform);
-					ComponentTransform*  pT = (ComponentTransform*)node->parent->GetComponent(ComponentType::Transform);
+					ComponentTransform*  nT = (ComponentTransform*)node->GetComponentOld(ComponentType::Transform);
+					ComponentTransform*  pT = (ComponentTransform*)node->parent->GetComponentOld(ComponentType::Transform);
 					dd::line(nT->GetGlobalPosition(), pT->GetGlobalPosition(), dd::colors::Red);
 				}
 				
@@ -270,7 +271,7 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	{
 		if (camFrustum.Intersects(go->GetBoundingBox()))
 		{
-			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponentOld(ComponentType::Renderer);
 			if (cr && !cr->useAlpha)
 			{
 				DrawGO(*go, camFrustum, isEditor);
@@ -286,7 +287,7 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	{
 		if (camFrustum.Intersects(go->GetBoundingBox()))
 		{
-			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponentOld(ComponentType::Renderer);
 			if (cr && !cr->useAlpha)
 			{
 				DrawGO(*go, camFrustum, isEditor);
@@ -298,7 +299,7 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 		}
 	}
 
-	if (selected != nullptr && selected->GetComponent(ComponentType::Renderer) == nullptr)
+	if (selected != nullptr && selected->GetComponentOld(ComponentType::Renderer) == nullptr)
 	{
 		DrawGO(*selected, frustum, isEditor); //bcause it could be an object without mesh not in staticGOs or dynamicGOs
 	}
@@ -307,7 +308,7 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	{
 		if (maincamera->frustum->Intersects(go->GetBoundingBox()))
 		{
-			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponentOld(ComponentType::Renderer);
 			if (cr && !cr->useAlpha)
 			{
 				DrawGOGame(*go);
@@ -323,7 +324,7 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	{
 		if (maincamera->frustum->Intersects(go->GetBoundingBox()))
 		{
-			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponent(ComponentType::Renderer);
+			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponentOld(ComponentType::Renderer);
 			if (cr && !cr->useAlpha)
 			{
 				DrawGOGame(*go);
@@ -355,7 +356,7 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 
 void ModuleScene::DrawGOGame(const GameObject& go)
 {
-	ComponentRenderer* crenderer = (ComponentRenderer*)go.GetComponent(ComponentType::Renderer);
+	ComponentRenderer* crenderer = (ComponentRenderer*)go.GetComponentOld(ComponentType::Renderer);
 	if (crenderer == nullptr || !crenderer->enabled || crenderer->material == nullptr) return;
 
 	ResourceMaterial* material = crenderer->material;
@@ -404,7 +405,7 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 			go.light->DrawDebug();
 		}
 	}
-	ComponentRenderer* crenderer = (ComponentRenderer*)go.GetComponent(ComponentType::Renderer);
+	ComponentRenderer* crenderer = (ComponentRenderer*)go.GetComponentOld(ComponentType::Renderer);
 	if (crenderer == nullptr || !crenderer->enabled || crenderer->material == nullptr) return;
 
 	ResourceMesh* mesh = crenderer->mesh;
@@ -774,7 +775,7 @@ unsigned ModuleScene::SaveParShapesMesh(const par_shapes_mesh_s &mesh, char** da
 	return size;
 }
 
-void ModuleScene::SaveScene(const GameObject& rootGO, const char* scene, const char* scenePath, bool isTemporary)
+/*void ModuleScene::SaveScene(const GameObject& rootGO, const char* scene, const char* scenePath, bool isTemporary)
 {
 	JSON *json = new JSON();
 	JSON_value *array =json->CreateValue(rapidjson::kArrayType);
@@ -796,7 +797,7 @@ void ModuleScene::SaveScene(const GameObject& rootGO, const char* scene, const c
 		name = scene;
 		path = scenePath;
 	}
-}
+}*/
 
 void ModuleScene::AssignNewUUID(GameObject* go, unsigned UID)
 {
@@ -915,6 +916,7 @@ void ModuleScene::Redo()
 	//}
 }
 
+/*
 void ModuleScene::LoadScene(const char* scene, const char* scenePath, bool isTemporary)
 {
 	ClearScene();
@@ -974,7 +976,7 @@ bool ModuleScene::AddScene(const char* scene, const char* path)
 		}
 	
 		ComponentRenderer* renderer = nullptr;
-		renderer = (ComponentRenderer*)gameobject->GetComponent(ComponentType::Renderer);
+		renderer = (ComponentRenderer*)gameobject->GetComponentOld(ComponentType::Renderer);
 		if (renderer != nullptr)
 		{
 			renderers.push_back(renderer);
@@ -1016,7 +1018,7 @@ bool ModuleScene::AddScene(const char* scene, const char* path)
 
 	App->renderer->OnResize();
 	return true;
-}
+}*/
 
 void ModuleScene::ClearScene()
 {
@@ -1040,6 +1042,72 @@ void ModuleScene::ClearScene()
 	App->particles->CleanUp();
 	App->particles->Start();
 	App->renderer->shadowCasters.clear();
+	isCleared = true;
+}
+
+void ModuleScene::SaveScene(const GameObject& rootGO, const char* sceneName, const char* folder)
+{
+	std::string sceneInAssets(folder);
+	sceneInAssets += sceneName;
+	sceneInAssets += SCENEEXTENSION;
+	unsigned sceneUID = App->resManager->FindByFileInAssets(sceneInAssets.c_str());
+
+	if (sceneUID != 0)
+	{
+		// Updating already created scene
+		ResourceScene* scene = (ResourceScene*)App->resManager->GetWithoutLoad(sceneUID);
+		scene->Save(rootGO);
+	}	
+	else
+	{
+		// Is a new scene, create resource
+		ResourceScene* scene = (ResourceScene*)App->resManager->CreateNewResource(TYPE::SCENE);
+		scene->SetFile(sceneInAssets.c_str());
+		std::string exportedFile(IMPORTED_SCENES);
+		exportedFile += sceneName;
+		exportedFile += SCENEEXTENSION;
+		scene->SetExportedFile(exportedFile.c_str());
+		scene->SetName(sceneName);
+		scene->Save(rootGO);
+	}
+
+	// Update scene info
+	if(sceneName != TEMPORARY_SCENE)
+	{
+		name = sceneName;
+		path = folder;
+	}
+}
+
+void ModuleScene::LoadScene(const char* sceneName, const char* folder)
+{
+	if (!isCleared)
+	{
+		ClearScene();
+	}
+	if (AddScene(sceneName, folder))
+	{
+		if (sceneName != TEMPORARY_SCENE)
+		{
+			name = sceneName;
+			path = folder;
+		}
+	}
+	App->spacePartitioning->kDTree.Calculate();
+	scenePhotos.clear();
+}
+
+bool ModuleScene::AddScene(const char* sceneName, const char* folder)
+{
+	ResourceScene* scene = (ResourceScene*)App->resManager->GetByName(sceneName, TYPE::SCENE);
+	if(scene != nullptr && !scene->Load())
+	{
+		LOG("Error loading scene named: %s", sceneName);
+		return false;
+	}
+	App->renderer->OnResize();
+	isCleared = false;
+	return true;
 }
 
 void ModuleScene::Select(GameObject * gameobject)
@@ -1289,7 +1357,7 @@ ComponentLight* ModuleScene::GetDirectionalLight() const
 {
 	for (const auto& light : lights)
 	{
-		if (light->lightType == LightType::DIRECTIONAL && light->enabled)
+		if (light->lightType == LightType::DIRECTIONAL)
 		{
 			return light;
 		}

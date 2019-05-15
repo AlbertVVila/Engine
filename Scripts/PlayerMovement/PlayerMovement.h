@@ -43,7 +43,7 @@ public:
 	float3 currentPosition = float3(0, 0, 0); //TODO ZERO
 	PlayerState playerState = PlayerState::IDLE;
 private:
-	int pathIndex = 0;
+	unsigned pathIndex = 0;
 	std::vector<float3>path;
 	
 	float speed = 2.0f;

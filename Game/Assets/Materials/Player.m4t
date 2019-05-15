@@ -1,1 +1,13 @@
-{"material":{"diffuseColor":[1.0,1.0,1.0,1.0],"specularColor":[1.0,1.0,1.0],"metallic":0.07100000232458115,"roughness":0.5299999713897705,"diffuse":"PlayerDiffuse","specular":"PlanksSpecular","occlusion":"PlayerOcclusion","normal":"PlayerNormals","shader":"PBR"}}
+{
+  "material": {
+    "diffuseColor": [ 1.0, 1.0, 1.0, 1.0 ],
+    "specularColor": [ 1.0, 1.0, 1.0 ],
+    "metallic": 0.07100000232458115,
+    "roughness": 0.5299999713897705,
+    "diffuse": "PlayerDiffuse.dds",
+    "specular": "PlanksSpecular.dds",
+    "occlusion": "PlayerOcclusion.dds",
+    "normal": "PlayerNormals.dds",
+    "shader": "PBR"
+  }
+}

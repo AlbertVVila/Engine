@@ -7,6 +7,7 @@
 #include "ModuleTime.h"
 #include "ModuleInput.h"
 #include "ModuleScene.h"
+#include "ModuleScript.h"
 #include "ModuleTextures.h"
 #include "ModuleRender.h"
 #include "ModuleSpacePartitioning.h"
@@ -23,12 +24,12 @@
 #include "ComponentImage.h"
 #include "ComponentButton.h"
 #include "ComponentAnimation.h"
-#include "ComponentScript.h"
 #include "ComponentParticles.h"
 #include "ComponentTrail.h"
 #include "ComponentAudioListener.h"
 #include "ComponentAudioSource.h"
 #include "ComponentReverbZone.h"
+#include "BaseScript.h"
 
 
 #include "ResourceMesh.h"
@@ -91,16 +92,16 @@ GameObject::GameObject(const GameObject & gameobject)
 		}
 		if (componentcopy->type == ComponentType::Button)
 		{
-			((ComponentButton*)componentcopy)->text->gameobject = this;
-			((ComponentButton*)componentcopy)->buttonImage->gameobject = this;
-			((ComponentButton*)componentcopy)->highlightedImage->gameobject = this;
-			((ComponentButton*)componentcopy)->pressedImage->gameobject = this;
-			((ComponentButton*)componentcopy)->rectTransform->gameobject = this;
+			((Button*)componentcopy)->text->gameobject = this;
+			((Button*)componentcopy)->buttonImage->gameobject = this;
+			((Button*)componentcopy)->highlightedImage->gameobject = this;
+			((Button*)componentcopy)->pressedImage->gameobject = this;
+			((Button*)componentcopy)->rectTransform->gameobject = this;
 		}
 	}
 	if (!App->scene->photoEnabled)
 	{
-		if (GetComponent(ComponentType::Renderer) != nullptr || GetComponent(ComponentType::Light) != nullptr)
+		if (GetComponentOld(ComponentType::Renderer) != nullptr || GetComponentOld(ComponentType::Light) != nullptr)
 		{
 			App->scene->AddToSpacePartition(this);
 		}
@@ -143,9 +144,10 @@ void GameObject::DrawProperties()
 
 	if (this != App->scene->root)
 	{
-		if (ImGui::Checkbox("Active", &activeSelf))
+		bool active = activeSelf;
+		if (ImGui::Checkbox("Active", &active))
 		{
-			SetActive(activeSelf);
+			SetActive(active);
 		}
 
 		ImGui::SameLine();
@@ -165,7 +167,7 @@ void GameObject::DrawProperties()
 
 		if (ImGui::Checkbox("Static", &isStatic))
 		{
-			if (isStatic && GetComponent(ComponentType::Renderer) != nullptr)
+			if (isStatic && GetComponentOld(ComponentType::Renderer) != nullptr)
 			{
 				SetStaticAncestors();
 				App->scene->dynamicGOs.erase(this);
@@ -210,7 +212,7 @@ void GameObject::Update()
 
 	for (auto& component : components)
 	{
-		if (component->enabled)
+		if (component->enabled && component->type != ComponentType::Script)
 		{
 			component->Update();
 		}
@@ -219,7 +221,7 @@ void GameObject::Update()
 	//---------------------------------------------
 	if (isBoneRoot && App->time->gameState == GameState::RUN)
 	{
-		ComponentAnimation* compAnim = (ComponentAnimation*)GetComponent(ComponentType::Animation);
+		ComponentAnimation* compAnim = (ComponentAnimation*)GetComponentOld(ComponentType::Animation);
 		if (App->input->GetKey(SDL_SCANCODE_X))
 		{
 			compAnim->SendTriggerToStateMachine("trigger1");
@@ -253,14 +255,51 @@ void GameObject::Update()
 
 void GameObject::SetActive(bool active)
 {
+	bool wasActive = isActive();
 	activeSelf = active;
-	for (auto& child : children)
+	OnChangeActiveState(wasActive);
+}
+
+void GameObject::OnChangeActiveState(bool wasActive)
+{
+	if (wasActive != isActive())
 	{
-		child->activeInHierarchy = active;
+		for (auto& child : children)
+		{
+			child->SetActiveInHierarchy(!wasActive);
+		}
+		for (auto& component : components)
+		{
+			if (!wasActive)
+			{
+				if (App->time->gameState == GameState::RUN && component->type == ComponentType::Script 
+					&& ((Script*)component)->hasBeenAwoken)
+				{
+					Script* script = (Script*)component;
+					script->Awake();
+					script->hasBeenAwoken = true;
+				}
+				if (component->enabled)
+				{
+					component->OnEnable();
+				}
+			}
+			else if (component->enabled)
+			{
+				component->OnDisable();
+			}
+		}
 	}
 }
 
-Component* GameObject::CreateComponent(ComponentType type)
+void GameObject::SetActiveInHierarchy(bool active)
+{
+	bool wasActive = isActive();
+	activeInHierarchy = active; 
+	OnChangeActiveState(wasActive);
+}
+
+Component* GameObject::CreateComponent(ComponentType type, JSON_value* value)
 {
 	Component* component = nullptr;
 	switch (type)
@@ -314,19 +353,25 @@ Component* GameObject::CreateComponent(ComponentType type)
 		isBoneRoot = true;
 		break;
 	case ComponentType::Transform2D:
-		component = new ComponentTransform2D(this);
+		component = new Transform2D(this);
 		break;
 	case ComponentType::Text:
-		component = new ComponentText(this);
+		component = new Text(this);
 		break;
 	case ComponentType::Image:
 		component = new ComponentImage(this);
 		break;
 	case ComponentType::Button:
-		component = new ComponentButton(this);
+		component = new Button(this);
 		break;
 	case ComponentType::Script:
-		component = new ComponentScript(this);
+		{
+			assert(value != nullptr); //Only used for loading from json
+			std::string name = value->GetString("script");
+			Script* script = App->scripting->GetScript(name);
+			script->SetGameObject(this);
+			component = (Component*)script;
+		}
 		break;
 	case ComponentType::Particles:
 		component = new ComponentParticles(this);
@@ -431,28 +476,28 @@ void GameObject::RemoveComponent(const Component& component)
 	}
 }
 
-Script* GameObject::GetScript() const
-{
-	ComponentScript* component = (ComponentScript*)GetComponent(ComponentType::Script);
-	if (component != nullptr)
-	{
-		return component->GetScript();
-	}
-	return nullptr;
-}
+//Script* GameObject::GetScript() const
+//{
+//	ComponentScript* component = (ComponentScript*)GetComponentOld(ComponentType::Script);
+//	if (component != nullptr)
+//	{
+//		return component->GetScript();
+//	}
+//	return nullptr;
+//}
 
-Script * GameObject::FindScriptByName(const char * name) const
-{
-	std::vector<Component*> components = GetComponents(ComponentType::Script);
-	for (const auto& component : components)
-	{
-		if (((ComponentScript*)component)->GetScriptName() == name)
-		{
-			return ((ComponentScript*)component)->GetScript();
-		}
-	}
-	return nullptr;
-}
+//Script * GameObject::FindScriptByName(const char * name) const
+//{
+//	std::vector<Component*> components = GetComponents(ComponentType::Script);
+//	for (const auto& component : components)
+//	{
+//		if (((ComponentScript*)component)->GetScriptName() == name)
+//		{
+//			return ((ComponentScript*)component)->GetScript();
+//		}
+//	}
+//	return nullptr;
+//}
 
 void GameObject::RemoveChild(GameObject* bastard)
 {
@@ -466,7 +511,7 @@ void GameObject::InsertChild(GameObject* child)
 	child->parent = this;
 }
 
-Component * GameObject::GetComponent(ComponentType type) const
+ENGINE_API Component * GameObject::GetComponentOld(ComponentType type) const //Deprecated
 {
 	for (auto &component : components)
 	{
@@ -487,7 +532,7 @@ ENGINE_API Component * GameObject::GetComponentInChildren(ComponentType type) co
 		const GameObject* go = GOs.top();
 		GOs.pop();
 
-		Component* component = go->GetComponent(type);
+		Component* component = go->GetComponentOld(type);
 		if (component != nullptr) return component;
 
 		for (const auto &child : go->children)
@@ -704,7 +749,7 @@ bool GameObject::Intersects(const LineSegment & line, float &distance, math::flo
 {
 	LineSegment localLine(line);
 	localLine.Transform(GetGlobalTransform().Inverted());
-	ComponentRenderer* mesh_renderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
+	ComponentRenderer* mesh_renderer = (ComponentRenderer*)GetComponentOld(ComponentType::Renderer);
 	if (mesh_renderer != nullptr)
 	{
 		if (mesh_renderer->mesh->Intersects(localLine, &distance, intersectionPoint))
@@ -743,7 +788,7 @@ bool GameObject::BboxIntersects(const GameObject* target) const
 
 void GameObject::UpdateBBox()
 {
-	ComponentRenderer* renderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
+	ComponentRenderer* renderer = (ComponentRenderer*)GetComponentOld(ComponentType::Renderer);
 	if (renderer != nullptr)
 	{
 		if (renderer->mesh != nullptr)
@@ -760,7 +805,7 @@ void GameObject::DrawBBox() const
 		child->DrawBBox();
 	}
 
-	ComponentRenderer *renderer = (ComponentRenderer*)GetComponent(ComponentType::Renderer);
+	ComponentRenderer *renderer = (ComponentRenderer*)GetComponentOld(ComponentType::Renderer);
 	if (renderer == nullptr || renderer->mesh == nullptr) return;
 
 	if (renderer->mesh->GetReferences() > 0u)
@@ -848,7 +893,7 @@ void GameObject::Load(JSON_value *value)
 	{
 		JSON_value* componentJSON = componentsJSON->GetValue(i);
 		ComponentType type = (ComponentType)componentJSON->GetUint("Type");
-		Component* component = CreateComponent(type);
+		Component* component = CreateComponent(type, componentJSON);
 		component->Load(componentJSON);
 	}
 
@@ -857,15 +902,6 @@ void GameObject::Load(JSON_value *value)
 		transform->UpdateTransform();
 	}
 
-	if (hasLight)
-	{
-		transform->UpdateTransform();
-		ComponentLight* light = (ComponentLight*)GetComponent(ComponentType::Light);
-		if (light->lightType == LightType::DIRECTIONAL)
-		{
-			App->renderer->directionalLight = light;
-		}
-	}
 	if (isBoneRoot)
 	{
 		movedFlag = true;
@@ -890,11 +926,17 @@ bool GameObject::IsParented(const GameObject & gameobject) const
 
 void GameObject::DrawHierarchy()
 {
+	if (parent != nullptr && parent->parent !=nullptr && parent->parent->isBoneRoot) return;
+
 	ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow | 
 		(openInHierarchy ? ImGuiTreeNodeFlags_DefaultOpen: 0)
 		| ImGuiTreeNodeFlags_OpenOnDoubleClick | (isSelected ? ImGuiTreeNodeFlags_Selected : 0);
 
 	ImGui::PushID(this);
+	if (!isActive())
+	{
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.6f, 0.6f, 0.6f, 1.00f));
+	}
 	if (children.empty())
 	{
 		node_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
@@ -950,6 +992,10 @@ void GameObject::DrawHierarchy()
 			ImGui::TreePop();
 		}
 	}
+	if (!isActive())
+	{
+		ImGui::PopStyleColor();
+	}
 	ImGui::PopID();
 }
 
@@ -962,7 +1008,7 @@ void GameObject::SetStaticAncestors()
 		GameObject* go = parents.top();
 		go->isStatic = true;
 
-		if (go->GetComponent(ComponentType::Renderer) != nullptr)
+		if (go->GetComponentOld(ComponentType::Renderer) != nullptr)
 		{
 			if (go->treeNode != nullptr && isVolumetric)
 				App->spacePartitioning->aabbTree.ReleaseNode(go->treeNode);

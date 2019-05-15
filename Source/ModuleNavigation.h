@@ -6,7 +6,7 @@
 #include <vector>
 #include "Math/float3.h"
 
-#define MAX_PATH 1024
+#define MAX_DETOUR_PATH 1024
 #define MAX_POLYS 256
 #define MAX_SMOOTH 512
 
