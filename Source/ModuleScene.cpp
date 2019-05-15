@@ -120,16 +120,13 @@ update_status ModuleScene::PreUpdate()
 	}
 
 #ifndef GAME_BUILD
-	if (maincamera != nullptr)
+	if (App->renderer->viewScene->focus == true)
 	{
-		if (App->renderer->viewScene->focus == true)
-		{
-			FrustumCulling(*maincamera->frustum);
-		}
-		else if (App->renderer->viewGame->focus == true)
-		{
-			FrustumCulling(*App->camera->editorcamera->frustum);
-		}
+		FrustumCulling(*maincamera->frustum);
+	}
+	else if (App->renderer->viewGame->focus == true)
+	{
+		FrustumCulling(*App->camera->editorcamera->frustum);
 	}
 #else
 	if (maincamera != nullptr)
