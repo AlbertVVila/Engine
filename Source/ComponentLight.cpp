@@ -50,10 +50,14 @@ ComponentLight::ComponentLight(const ComponentLight& component) : Component(comp
 ComponentLight::~ComponentLight()
 {
 	App->scene->lights.remove(this);
-	if (lightType == LightType::DIRECTIONAL)
+	if (lightType == LightType::DIRECTIONAL && this == App->renderer->directionalLight)
 	{
-		App->scene->DeleteDirectionalLight(this);
+		App->renderer->directionalLight = App->scene->GetDirectionalLight(); //if no directional then returns nullptr
 	}
+	//TODO: we should refactor DeleteFromSpacePartition to diferentiate 
+	// when deleting a component light or a component mesh because on removing component mesh
+	// we are also removing from light AABBTree!!
+	App->spacePartitioning->aabbTreeLighting.ReleaseNode(gameobject->treeNode);
 }
 
 void ComponentLight::Update()
@@ -175,6 +179,7 @@ void ComponentLight::Load(JSON_value* value)
 	}
 	else
 	{
+		App->renderer->directionalLight = this;
 		App->spacePartitioning->aabbTreeLighting.ReleaseNode(gameobject->treeNode);
 		gameobject->treeNode = nullptr;
 	}
