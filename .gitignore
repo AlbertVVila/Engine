@@ -267,3 +267,6 @@ __pycache__/
 /Game/Library/
 
 GameBuild/
+
+/Game/imgui.ini
+/Game/config.json
