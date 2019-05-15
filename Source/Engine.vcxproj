@@ -570,6 +570,7 @@
     <None Include="..\Game\Shaders\FragmentShaders\Fonts.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\Particles.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\PBR.fs" />
+    <None Include="..\Game\Shaders\FragmentShaders\PostProcess.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\Shadows.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\Skybox.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\Trail.fs" />
@@ -579,6 +580,7 @@
     <None Include="..\Game\Shaders\VertexShaders\Fonts.vs" />
     <None Include="..\Game\Shaders\VertexShaders\Particles.vs" />
     <None Include="..\Game\Shaders\VertexShaders\PBR.vs" />
+    <None Include="..\Game\Shaders\VertexShaders\PostProcess.vs" />
     <None Include="..\Game\Shaders\VertexShaders\Shadows.vs" />
     <None Include="..\Game\Shaders\VertexShaders\Skybox.vs" />
     <None Include="..\Game\Shaders\VertexShaders\Trail.vs" />

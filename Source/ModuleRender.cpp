@@ -84,6 +84,12 @@ bool ModuleRender::Init(JSON * config)
 	useMainCameraFrustum = renderer->GetInt("frustumMainCamera");
 	skybox->enabled = renderer->GetInt("skybox");
 	current_scale = renderer->GetInt("current_scale");
+	gammaCorrector = renderer->GetFloat("gammaCorrector");
+	bloomSpread = renderer->GetFloat("bloomSpread");
+	exposure = renderer->GetFloat("exposure");
+	kernelRadius = renderer->GetInt("kernelRadius");
+
+
 	switch (current_scale)
 	{
 	case 1:
@@ -97,6 +103,59 @@ bool ModuleRender::Init(JSON * config)
 		break;
 	}
 
+	glGenTextures(1, &highlightBufferGame);
+	glGenTextures(1, &renderedSceneGame);
+	glGenTextures(1, &brightnessBufferGame);
+
+	float quadVertices[] =
+	{
+		-1.f, 1.f, 0.f,
+		-1.f, -1.f, 0.f,
+		1.f, -1.f, 0.f,
+		1.f, 1.f, 0.f,
+
+		0.f, 1.f,
+		0.f, 0.f,
+		1.f, 0.f,
+		1.f, 1.f
+	};
+
+	unsigned int quadIndices[] =
+	{
+		0, 1, 2,
+		0, 2, 3
+	};
+
+
+
+
+	if (postprocessVAO == 0)
+	{
+		glGenVertexArrays(1, &postprocessVAO);
+		glGenBuffers(1, &postprocessVBO);
+		glGenBuffers(1, &postprocessEBO);
+
+		glBindVertexArray(postprocessVAO);
+
+		glBindBuffer(GL_ARRAY_BUFFER, postprocessVBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), quadVertices, GL_STATIC_DRAW);
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, postprocessEBO);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(quadIndices), quadIndices, GL_STATIC_DRAW);
+
+		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(1);
+
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * 4));
+
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindVertexArray(0);
+	}
+
+	kernel = new float[MAX_KERNEL_RADIUS];
+	ComputeBloomKernel();
 	return true;
 }
 
@@ -107,6 +166,7 @@ bool ModuleRender::Start()
 	glGenFramebuffers(1, &shadowsFBO);
 	glGenTextures(1, &shadowsTex);
 	shadowsShader = App->program->GetProgram("Shadows");
+	postProcessShader = App->program->GetProgram("PostProcess");
 	return shadowsShader && shadowsFBO > 0u && shadowsTex > 0u;
 }
 
@@ -130,8 +190,8 @@ update_status ModuleRender::PostUpdate()
 	ComputeShadows();
 
 #ifndef GAME_BUILD
-	viewScene->Draw(App->camera->editorcamera, true);
 	viewGame->Draw(App->scene->maincamera);
+	viewScene->Draw(App->camera->editorcamera, true);
 	App->editor->RenderGUI();
 #else
 	if (App->scene->maincamera != nullptr)
@@ -161,6 +221,10 @@ void ModuleRender::SaveConfig(JSON * config)
 	renderer->AddInt("vsync", vsync);
 	renderer->AddInt("frustumMainCamera", useMainCameraFrustum);
 	renderer->AddInt("skybox", skybox->enabled);
+	renderer->AddFloat("gammaCorrector", gammaCorrector);
+	renderer->AddFloat("exposure", exposure);
+	renderer->AddFloat("bloomSpread", bloomSpread);
+	renderer->AddInt("kernelRadius", kernelRadius);
 
 	config->AddValue("renderer", *renderer);
 }
@@ -168,9 +232,14 @@ void ModuleRender::SaveConfig(JSON * config)
 void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool isEditor) const
 {
 	BROFILER_CATEGORY("Render_Draw()", Profiler::Color::AliceBlue);
+#ifdef GAME_BUILD
+	glBindFramebuffer(GL_FRAMEBUFFER, postprocessFBO);
+#endif //  GAME_BUILD
+
 	glViewport(0, 0, width, height);
 	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 
 	if (wireframe)
 	{
@@ -183,21 +252,84 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 
 	SetProjectionUniform(cam);
 	SetViewUniform(cam);
-	skybox->Draw(*cam.frustum);
-
-	App->scene->Draw(*cam.frustum, isEditor);
 
 	if (isEditor)
 	{
 		DrawGizmos(cam);
 		App->navigation->renderNavMesh();
+		glUseProgram(0);
+		skybox->Draw(*cam.frustum, true);
+
 	}
+	else 
+	{
+		skybox->Draw(*cam.frustum);
+		const float transparent[] = { 0, 0, 0, 1 };
+		glClearBufferfv(GL_COLOR, 1, transparent);
+		glClearBufferfv(GL_COLOR, 2, transparent);
+	}
+	
+	App->scene->Draw(*cam.frustum, isEditor);
+
+	App->particles->Render(App->time->gameDeltaTime, &cam);
+	
+	if (!isEditor)
+	{
+
+		unsigned int attachments[3] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };// , GL_COLOR_ATTACHMENT2	};// , , GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4
+		glDrawBuffers(3, attachments);
+		
+		GLint drawFboId = 0;
+		glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &drawFboId);
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0); //Flush textures
+
+		glBindFramebuffer(GL_FRAMEBUFFER, drawFboId);
+		
+		glUseProgram(postProcessShader->id[0]);
+		glBindVertexArray(postprocessVAO);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, postprocessEBO);
+	
+		glUniform1i(glGetUniformLocation(postProcessShader->id[0], "gColor"), 0);
+		glUniform1i(glGetUniformLocation(postProcessShader->id[0], "gHighlight"), 1);
+		glUniform1i(glGetUniformLocation(postProcessShader->id[0], "gBrightness"), 2);
+		glUniform1f(glGetUniformLocation(postProcessShader->id[0], "gammaCorrector"), gammaCorrector);
+		glUniform1f(glGetUniformLocation(postProcessShader->id[0], "exposure"), exposure);
+		glUniform1fv(glGetUniformLocation(postProcessShader->id[0], "weight"), MAX_KERNEL_RADIUS, kernel);
+		glUniform1i(glGetUniformLocation(postProcessShader->id[0], "kernelRadius"), kernelRadius);
+
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, renderedSceneGame);
+
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, highlightBufferGame);
+
+		glActiveTexture(GL_TEXTURE2);
+		glBindTexture(GL_TEXTURE_2D, brightnessBufferGame);
+		
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		glBindVertexArray(0);
+		
+		glBindTexture(GL_TEXTURE_2D, 0);
+		glUseProgram(0);
+
+		glActiveTexture(GL_TEXTURE0); //LOL without this the skybox doesn't render
+	}
+
 	if (!isEditor || isEditor && App->ui->showUIinSceneViewport)
 	{
 		App->ui->Draw(width, height);
 	}
-	App->particles->Render(App->time->gameDeltaTime, &cam);
 
+#ifdef GAME_BUILD
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_READ_FRAMEBUFFER, postprocessFBO);
+	glDrawBuffer(GL_BACK);
+	glBlitFramebuffer(0, 0, width, height, 0, 0, App->window->width, App->window->height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+#endif // GAME_BUILD
 }
 
 bool ModuleRender::IsSceneViewFocused() const
@@ -212,25 +344,83 @@ bool ModuleRender::IsSceneHovered() const
 // Called before quitting
 bool ModuleRender::CleanUp()
 {
-
+	RELEASE_ARRAY(kernel);
 	LOG("Destroying renderer");
 	if (UBO != 0)
 	{
 		glDeleteBuffers(1, &UBO);
 	}
-	return true;
-}
+	glDeleteTextures(1, &highlightBufferGame);
+	glDeleteTextures(1, &brightnessBufferGame);
+	glDeleteTextures(1, &renderedSceneGame);
+	return true;	  
+}	
 
 void ModuleRender::OnResize()
 {
 	glViewport(0, 0, App->window->width, App->window->height);
 #ifndef GAME_BUILD
-	App->camera->editorcamera->SetAspect((float)App->window->width / (float)App->window->height);
-#endif
+	App->camera->editorcamera->SetAspect((float)viewScene->current_width / (float)viewScene->current_height);
+	if (App->scene->maincamera != nullptr)
+	{
+		App->scene->maincamera->SetAspect((float)viewGame->current_width / (float)viewGame->current_height);
+	}
+#else
 	if (App->scene->maincamera != nullptr)
 	{
 		App->scene->maincamera->SetAspect((float)App->window->width / (float)App->window->height);
 	}
+	CreatePostProcessFramebuffer();
+#endif
+	GLint drawFboId = 0;
+	glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &drawFboId);
+
+	if (App->scene->maincamera != nullptr)
+	{
+#ifndef GAME_BUILD
+		glBindFramebuffer(GL_FRAMEBUFFER, viewGame->FBO);
+#else
+		glBindFramebuffer(GL_FRAMEBUFFER, postprocessFBO);
+#endif
+
+		glBindTexture(GL_TEXTURE_2D, renderedSceneGame);
+#ifndef GAME_BUILD
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, viewGame->current_width, viewGame->current_height, 0, GL_RGBA, GL_FLOAT, NULL);
+#else
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, App->window->width, App->window->height, 0, GL_RGBA, GL_FLOAT, NULL);
+#endif
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderedSceneGame, 0);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+
+		glBindTexture(GL_TEXTURE_2D, highlightBufferGame);
+#ifndef GAME_BUILD
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, viewGame->current_width, viewGame->current_height, 0, GL_RGBA, GL_FLOAT, NULL);
+#else
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, App->window->width, App->window->height, 0, GL_RGBA, GL_FLOAT, NULL);
+#endif
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, highlightBufferGame, 0);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+
+		glBindTexture(GL_TEXTURE_2D, brightnessBufferGame);
+#ifndef GAME_BUILD
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, viewGame->current_width, viewGame->current_height, 0, GL_RGBA, GL_FLOAT, NULL);
+#else
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, App->window->width, App->window->height, 0, GL_RGBA, GL_FLOAT, NULL);
+#endif
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, brightnessBufferGame, 0);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	}
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, drawFboId);
 }
 
 void ModuleRender::SetVsync(bool active)
@@ -312,7 +502,7 @@ void ModuleRender::ComputeShadows()
 		lightAABB.SetNegativeInfinity();
 		bool renderersDetected = false;
 		//TODO: Improve this avoiding shuffle every frame
-		for (GameObject* go : App->scene->dynamicFilteredGOs) //TODO: get volumetric gos even if outside the frustum
+		for (GameObject* go : App->scene->dynamicFilteredGOs) 
 		{
 			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponentOld(ComponentType::Renderer);
 			if (cr && cr->castShadows)
@@ -377,7 +567,7 @@ void ModuleRender::ComputeShadows()
 	}
 }
 
-void ModuleRender::ShadowVolumeDrawDebug()
+void ModuleRender::ShadowVolumeDrawDebug() const
 {
 	dd::sphere(lightPos, dd::colors::YellowGreen, current_scale);
 
@@ -465,6 +655,57 @@ void ModuleRender::BlitShadowTexture()
 
 }
 
+void ModuleRender::CreatePostProcessFramebuffer()
+{
+	if (postprocessFBO == 0)
+	{
+		glGenFramebuffers(1, &postprocessFBO);
+	}
+	glBindFramebuffer(GL_FRAMEBUFFER, postprocessFBO);
+
+
+	if (postprocessRBO == 0)
+	{
+		glGenRenderbuffers(1, &postprocessRBO);
+	}
+
+	glBindRenderbuffer(GL_RENDERBUFFER, postprocessRBO);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, App->window->width, App->window->height);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, postprocessRBO);
+
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		LOG("Framebuffer ERROR");
+}
+
+inline float ModuleRender::Gaussian(float x, float mu, float sigma)
+{
+	float expVal = -1 * (pow(x, 2) / pow(2 * sigma, 2));
+	float divider = sqrt(2 * M_PI * pow(sigma, 2));
+	return (1 / divider) * exp(expVal);
+}
+
+void ModuleRender::ComputeBloomKernel()
+{
+	
+	float sigma = (kernelRadius / 2);
+	int i = 0;
+	float sum = 0.f;
+	for (int x = kernelRadius; x < 2 * kernelRadius + 1; ++x)
+	{
+		float k = Gaussian(x, kernelRadius, sigma);
+		kernel[i++] = k;
+		sum += k;
+	}
+	for (i = 0; i < kernelRadius; ++i)
+	{
+		kernel[i] /= sum;
+		kernel[i] /= bloomSpread;
+	}
+}
+
 void ModuleRender::DrawGUI()
 {
 	if (ImGui::Checkbox("Depth Test", &depthTest))
@@ -525,6 +766,16 @@ void ModuleRender::DrawGUI()
 		}
 		App->camera->editorcamera->frustum->nearPlaneDistance = ZNEARDIST * current_scale;
 		App->camera->editorcamera->frustum->farPlaneDistance = ZFARDIST * current_scale;
+	}
+	ImGui::DragFloat("Gamma correction", &gammaCorrector, .05f, 1.2f, 3.2f);
+	ImGui::DragFloat("Exposure", &exposure, .05f, .1f, 10.0f);
+	if (ImGui::DragFloat("Bloom spread", &bloomSpread, .1f, 1.f, 100.f))
+	{
+		ComputeBloomKernel();
+	}
+	if (ImGui::DragInt("Bloom kernel radius", &kernelRadius, 1, 2, MAX_KERNEL_RADIUS - 1))
+	{
+		ComputeBloomKernel();
 	}
 }
 

@@ -2,6 +2,7 @@
 #define __ComponentRenderer_h__
 
 #include "Component.h"
+#include "Math/float3.h"
 
 class ResourceMesh;
 class ResourceMaterial;
@@ -32,6 +33,8 @@ public:
 	ResourceMaterial* material = nullptr;
 	bool castShadows = false;
 	bool useAlpha = false;
+	bool highlighted = false;
+	math::float3 highlightColor = math::float3::one;
 
 private:
 	std::vector<std::string> guiMaterials;
