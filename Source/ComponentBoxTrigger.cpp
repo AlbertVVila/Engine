@@ -9,6 +9,7 @@
 #include "BaseScript.h"
 #include "JSON.h"
 #include "imgui.h"
+#include "debugdraw.h"
 
 ComponentBoxTrigger::ComponentBoxTrigger() : Component(nullptr, ComponentType::BoxTrigger)
 {
@@ -70,6 +71,15 @@ void ComponentBoxTrigger::DrawProperties()
 	ImGui::PushID(this);
 	if (ImGui::CollapsingHeader("Box Trigger", ImGuiTreeNodeFlags_DefaultOpen))
 	{
+		bool removed = Component::DrawComponentState();
+		if (removed)
+		{
+			ImGui::PopID();
+			return;
+		}
+
+		ImGui::Checkbox("Draw Debug Box", &debug_draw);
+
 		bool prop_is_player = is_player;
 		if (ImGui::Checkbox("Is Player?", &prop_is_player)) SetIsPlayer(prop_is_player);
 
@@ -102,6 +112,8 @@ void ComponentBoxTrigger::DrawProperties()
 
 void ComponentBoxTrigger::Update()
 {
+	if (!enabled) return;
+
 	box_trigger->axis[0] = gameobject->transform->right;
 	box_trigger->axis[1] = gameobject->transform->up;
 	box_trigger->axis[2] = gameobject->transform->front;
@@ -137,6 +149,25 @@ void ComponentBoxTrigger::Update()
 	}
 
 	for (auto item : to_remove) overlap_list.erase(item);
+
+	if (debug_draw) DrawDebug();
+}
+
+void ComponentBoxTrigger::DrawDebug()
+{
+	ddVec3* corners = new ddVec3[8];
+	corners[0] = box_trigger->CornerPoint(0);
+	corners[1] = box_trigger->CornerPoint(1);
+	corners[2] = box_trigger->CornerPoint(3);
+	corners[3] = box_trigger->CornerPoint(2);
+	corners[4] = box_trigger->CornerPoint(4);
+	corners[5] = box_trigger->CornerPoint(5);
+	corners[6] = box_trigger->CornerPoint(7);
+	corners[7] = box_trigger->CornerPoint(6);
+
+	if (overlap_list.size() == 0) dd::box(corners, dd::colors::Cyan);
+	else dd::box(corners, dd::colors::Salmon);
+	delete[] corners;
 }
 
 void ComponentBoxTrigger::SetIsPlayer(bool is_player)

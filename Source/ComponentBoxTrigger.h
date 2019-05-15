@@ -26,6 +26,7 @@ public:
 	virtual void DrawProperties() override;
 
 	virtual void Update() override;
+	void DrawDebug();
 
 	void SetIsPlayer(bool is_player);
 	inline bool GetIsPlayer() const { return is_player; }
@@ -57,6 +58,7 @@ private:
 	math::float3 size     = math::float3::one;
 
 	bool is_player = false;
+	bool debug_draw = false;
 };
 
 #endif // !__Component_BoxTrigger_H__
