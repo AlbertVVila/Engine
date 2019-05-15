@@ -126,7 +126,7 @@ void MaterialEditor::TextureSelector(unsigned i, std::string &current_texture, i
 					App->resManager->DeleteResource(material->textures[i]->GetUID());
 
 				current_texture = textureFiles[n];
-				material->textures[i] = (ResourceTexture*)App->resManager->Get(current_texture.c_str());
+				material->textures[i] = (ResourceTexture*)App->resManager->GetByName(current_texture.c_str(), TYPE::TEXTURE);
 			}
 			if (is_selected)
 				ImGui::SetItemDefaultFocus();
@@ -162,7 +162,7 @@ void MaterialEditor::SetCurrentTextures()
 	// Set current textures strings
 	if (diffuse_texture != nullptr)		
 	{ 
-		currentDiffuse = diffuse_texture->GetExportedFile(); 
+		currentDiffuse = diffuse_texture->GetName(); 
 	}
 	else 
 	{ 
@@ -170,7 +170,7 @@ void MaterialEditor::SetCurrentTextures()
 	}
 	if (specular_texture != nullptr)	
 	{ 
-		currentSpecular = specular_texture->GetExportedFile();
+		currentSpecular = specular_texture->GetName();
 	}
 	else 
 	{ 
@@ -178,7 +178,7 @@ void MaterialEditor::SetCurrentTextures()
 	}
 	if (occlusion_texture != nullptr)	
 	{ 
-		currentOcclusion = occlusion_texture->GetExportedFile();
+		currentOcclusion = occlusion_texture->GetName();
 	}
 	else 
 	{ 
@@ -186,7 +186,7 @@ void MaterialEditor::SetCurrentTextures()
 	}
 	if (emissive_texture != nullptr)	
 	{ 
-		currentEmissive = emissive_texture->GetExportedFile();
+		currentEmissive = emissive_texture->GetName();
 	}
 	else 
 	{ 
@@ -194,7 +194,7 @@ void MaterialEditor::SetCurrentTextures()
 	}
 	if (normal_texture != nullptr)		
 	{ 
-		currentNormal = normal_texture->GetExportedFile();
+		currentNormal = normal_texture->GetName();
 	}
 	else 
 	{ 
@@ -243,7 +243,11 @@ void MaterialEditor::NewMaterial()
 		if (ImGui::Button("Save", ImVec2(120, 0)) && !newMatExists)
 		{
 			ResourceMaterial* newMaterialCreated = (ResourceMaterial*)App->resManager->CreateNewResource(TYPE::MATERIAL);
-			newMaterialCreated->SetExportedFile(newName);
+			std::string newFile(MATERIALS);
+			newFile += newName;
+			newFile += MATERIALEXT;
+			newMaterialCreated->SetFile(newFile.c_str());
+			newMaterialCreated->SetName(newName);
 			newMaterialCreated->Save();
 			newMaterial = false;
 
@@ -266,7 +270,7 @@ void MaterialEditor::NewMaterial()
 
 bool MaterialEditor::Exists(const std::string& material) const
 {
-	return App->fsystem->Exists((MATERIALS + material + JSONEXT).c_str());
+	return App->fsystem->Exists((MATERIALS + material + MATERIALEXT).c_str());
 }
 
 void MaterialEditor::Save()

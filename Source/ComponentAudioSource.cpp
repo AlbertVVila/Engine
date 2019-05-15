@@ -211,7 +211,7 @@ void ComponentAudioSource::DrawProperties()
 
 			std::set<std::string> files;
 
-			App->fsystem->ListFiles(AUDIOS, files);
+			App->fsystem->ListFileNames(AUDIOS, files);
 
 
 			for each (std::string file in files)
