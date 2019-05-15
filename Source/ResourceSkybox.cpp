@@ -181,10 +181,6 @@ unsigned ResourceSkybox::LoadCubeMap(ResourceTexture* faces[]) const
 	unsigned textureID;
 	glGenTextures(1, &textureID);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
-	unsigned width = 0;
-	unsigned height = 0;
-	unsigned pixelDepth = 0;
-	int format = 0;
 
 	for (unsigned int i = 0; i < NUMFACES; ++i)
 	{

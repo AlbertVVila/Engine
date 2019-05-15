@@ -69,24 +69,24 @@ void ComponentAnimation::DrawProperties()
 			if (stateMachine != nullptr)
 				stateMachine->Save();
 
-			stateMachine = (ResourceStateMachine*)App->resManager->CreateNewResource(TYPE::STATEMACHINE);
+			CreateNewStateMachine();
 		}
 	
 		ImGui::SameLine();
 
 		ImGui::PushID("State Machine Combo");
-		if (ImGui::BeginCombo("SM", stateMachine != nullptr ? stateMachine->name.c_str() : ""))
+		if (ImGui::BeginCombo("SM", stateMachine != nullptr ? stateMachine->GetName() : ""))
 		{
 			if (guiStateMachines.empty())
 			{
-				guiStateMachines = App->resManager->GetSMNamesList(true);
+				guiStateMachines = App->resManager->GetResourceNamesList(TYPE::STATEMACHINE, true);
 			}
 			for (unsigned i = 0u; i < guiStateMachines.size(); i++)
 			{
-				bool is_selected = (stateMachine != nullptr ? stateMachine->name == guiStateMachines[i] : false);
+				bool is_selected = (stateMachine != nullptr ? stateMachine->GetName() == guiStateMachines[i].c_str() : false);
 				if (ImGui::Selectable(guiStateMachines[i].c_str(), is_selected))
 				{
-					if(stateMachine != nullptr)
+					if (stateMachine != nullptr)
 						stateMachine->Save();
 
 					SetStateMachine(guiStateMachines[i].c_str());
@@ -107,10 +107,12 @@ void ComponentAnimation::DrawProperties()
 		if (stateMachine != nullptr)
 		{
 			//Here we should have the name of the stateMachine
-			char* smName = new char[MAX_CLIP_NAME];
-			strcpy(smName, stateMachine->name.c_str());
-			ImGui::InputText("SM name", smName, MAX_CLIP_NAME);
-			stateMachine->name = smName;
+			ImGui::InputText("SM name", newStMachineName, MAX_STATEMACHINE_NAME);
+			ImGui::SameLine();
+			if (ImGui::Button("Rename"))
+			{
+				stateMachine->Rename(newStMachineName);
+			}
 
 			if (ImGui::Button("AddClip"))
 			{
@@ -158,19 +160,6 @@ void ComponentAnimation::DrawProperties()
 					}
 					stateMachine->SetClipName(j, HashString(clipName));
 
-					int startTime = stateMachine->GetClipStartFrame(j);
-					if (ImGui::InputInt("Start Time", &startTime))
-					{
-						stateMachine->SetClipStartFrame(j, startTime);
-					}
-					//ImGui::SameLine();
-					int endTime = stateMachine->GetClipEndFrame(j);
-					if (ImGui::InputInt("End Time", &endTime))
-					{
-						stateMachine->SetClipEndFrame(j, endTime);
-					}
-					//ImGui::PopItemWidth();
-
 					//if the animation must finish we must set loop to false and viceversa!
 					bool finish = stateMachine->GetClipMustFinish(j);
 					if (ImGui::Checkbox("Must end", &finish))
@@ -215,18 +204,18 @@ void ComponentAnimation::DrawProperties()
 					unsigned clipUID = stateMachine->GetClipResource(j);
 					//IS THIS CORRECT=?=???
 					ResourceAnimation* animation = (ResourceAnimation*)App->resManager->GetWithoutLoad(clipUID);
-					if (ImGui::BeginCombo("", clipUID != 0u ? animation->name.c_str() : ""))
+					if (ImGui::BeginCombo("", clipUID != 0u ? animation->GetName() : ""))
 					{
 						if (guiAnimations.empty())
 						{
-							guiAnimations = App->resManager->GetAnimationsNamesList(true);
+							guiAnimations = App->resManager->GetResourceNamesList(TYPE::ANIMATION, true);
 						}
 						for (int n = 0; n < guiAnimations.size(); n++)
 						{
-							bool is_selected = (clipUID != 0u ? animation->name == guiAnimations[n] : false);
+							bool is_selected = (clipUID != 0u ? HashString(animation->GetName()) == HashString(guiAnimations[n].c_str()) : false);
 							if (ImGui::Selectable(guiAnimations[n].c_str(), is_selected))
 							{
-								unsigned animUID = ((ResourceAnimation*)App->resManager->GetAnimationByName(guiAnimations[n].c_str()))->GetUID();
+								unsigned animUID = ((ResourceAnimation*)App->resManager->GetByName(guiAnimations[n].c_str(), TYPE::ANIMATION))->GetUID();
 								stateMachine->SetClipResource(j, animUID);
 								stateMachine->Save();
 							}
@@ -276,6 +265,21 @@ void ComponentAnimation::ResetResource()
 	stateMachine->DeleteFromMemory();
 }
 
+void ComponentAnimation::CreateNewStateMachine()
+{
+	ResourceStateMachine* newStateMachine = new ResourceStateMachine(App->resManager->GenerateNewUID());
+
+	newStateMachine->SetName("NewStateMachine");
+	//Do not fear the while, accept it
+	if (App->resManager->NameExists(newStateMachine->GetName(), TYPE::STATEMACHINE))
+	{
+		std::string newName = App->resManager->GetAvailableName(newStateMachine->GetName(), TYPE::STATEMACHINE);
+		newStateMachine->Rename(newName.c_str());
+	}
+	newStateMachine->Save();
+	RELEASE(newStateMachine);
+}
+
 void ComponentAnimation::SetAnimation(const char* animationFile)
 {
 	// Delete previous animation
@@ -284,12 +288,12 @@ void ComponentAnimation::SetAnimation(const char* animationFile)
 		App->resManager->DeleteResource(anim->GetUID());
 
 	if (animationFile != nullptr)
-		anim = (ResourceAnimation*)App->resManager->GetAnimationByName(animationFile);
+		anim = (ResourceAnimation*)App->resManager->GetByName(animationFile, TYPE::ANIMATION);
 
 	return;
 }
 
-void ComponentAnimation::SetStateMachine(const char * stateMachineFile)
+void ComponentAnimation::SetStateMachine(const char* stateMachineFile)
 {
 	// Delete previous stateMachine
 
@@ -297,7 +301,10 @@ void ComponentAnimation::SetStateMachine(const char * stateMachineFile)
 		App->resManager->DeleteResource(stateMachine->GetUID());
 
 	if (stateMachineFile != nullptr)
-		stateMachine = (ResourceStateMachine*)App->resManager->GetSMByName(stateMachineFile);
+	{
+		stateMachine = (ResourceStateMachine*)App->resManager->GetByName(stateMachineFile, TYPE::STATEMACHINE);
+		strcpy(newStMachineName, stateMachine->GetName());
+	}
 }
 
 void ComponentAnimation::SendTriggerToStateMachine(const char* trigger)
@@ -307,7 +314,7 @@ void ComponentAnimation::SendTriggerToStateMachine(const char* trigger)
 		if (controller->CanSwitch())
 		{
 			unsigned prevNode = stateMachine->GetDefaultNode();
-			unsigned blend = 0u;
+			float blend = 0.f;
 
 			stateMachine->ReceiveTrigger(HashString(trigger), blend);
 			if (prevNode != stateMachine->GetDefaultNode())
@@ -343,20 +350,6 @@ float ComponentAnimation::GetSpeedFromStateMachine()
 	return stateMachine->GetClipSpeed(stateMachine->FindClip(clipName));
 }
 
-int ComponentAnimation::GetStartFrameFromStateMachine()
-{
-	unsigned nodeIndex = stateMachine->GetDefaultNode();
-	HashString clipName = stateMachine->GetNodeClip(nodeIndex);
-	return stateMachine->GetClipStartFrame(stateMachine->FindClip(clipName));
-}
-
-int ComponentAnimation::GetEndFrameFromStateMachine()
-{
-	unsigned nodeIndex = stateMachine->GetDefaultNode();
-	HashString clipName = stateMachine->GetNodeClip(nodeIndex);
-	return stateMachine->GetClipEndFrame(stateMachine->FindClip(clipName));
-}
-
 bool ComponentAnimation::GetMustFinishFromStateMachine()
 {
 	unsigned nodeIndex = stateMachine->GetDefaultNode();
@@ -364,11 +357,11 @@ bool ComponentAnimation::GetMustFinishFromStateMachine()
 	return stateMachine->GetClipMustFinish(stateMachine->FindClip(clipName));
 }
 
-void ComponentAnimation::PlayNextNode(unsigned blend)
+void ComponentAnimation::PlayNextNode(float blend)
 {
 	if(stateMachine != nullptr)
 		controller->PlayNextNode(GetAnimFromStateMachine(),GetLoopFromStateMachine(), GetMustFinishFromStateMachine(),
-			GetSpeedFromStateMachine(), GetStartFrameFromStateMachine(), GetEndFrameFromStateMachine(), blend);
+			GetSpeedFromStateMachine(), blend);
 }
 
 ComponentAnimation::EditorContext* ComponentAnimation::GetEditorContext()
@@ -385,17 +378,15 @@ ComponentAnimation::EditorContext* ComponentAnimation::GetEditorContext()
 void ComponentAnimation::Update()
 {
 	PROFILE;
-	if (stateMachine != nullptr && stateMachine->GetClipsSize() > 0u && stateMachine->GetNodesSize() > 0u)
+	if (App->time->gameState == GameState::RUN) //Game run time exclusive
 	{
-	
-		if (App->time->gameState == GameState::RUN)
+		if (stateMachine != nullptr && stateMachine->GetClipsSize() > 0u && stateMachine->GetNodesSize() > 0u)
 		{
 			if (!channelsSetted)
 			{
 				SetIndexChannels(gameobject, GetAnimFromStateMachine());
 				channelsSetted = true;
 			}
-
 			controller->Update(App->time->gameDeltaTime);
 
 			if (gameobject != nullptr)
@@ -404,19 +395,22 @@ void ComponentAnimation::Update()
 			}
 		}
 	}
-	else if (isPlaying)
+	else if(App->time->gameState == GameState::STOP)// Editor exclusive
 	{
-		if (!channelsSetted)
+		if (isPlaying)
 		{
-			SetIndexChannels(gameobject, editorController->current->anim);
-			channelsSetted = true;
-		}
+			if (!channelsSetted)
+			{
+				SetIndexChannels(gameobject, editorController->current->anim);
+				channelsSetted = true;
+			}
 
-		editorController->Update(App->time->realDeltaTime);
+			editorController->Update(App->time->realDeltaTime);
 
-		if (gameobject != nullptr)
-		{
-			EditorUpdateGO(gameobject);
+			if (gameobject != nullptr)
+			{
+				EditorUpdateGO(gameobject);
+			}
 		}
 	}
 }
@@ -426,7 +420,7 @@ void ComponentAnimation::OnPlay()
 	if (stateMachine != nullptr && stateMachine->GetClipsSize() > 0u && stateMachine->GetNodesSize() > 0u)
 	{
 		controller->Play(GetAnimFromStateMachine(), GetLoopFromStateMachine(),
-			GetMustFinishFromStateMachine(), GetSpeedFromStateMachine(), GetStartFrameFromStateMachine(), GetEndFrameFromStateMachine());
+			GetMustFinishFromStateMachine(), GetSpeedFromStateMachine());
 	}
 }
 
@@ -444,8 +438,10 @@ void ComponentAnimation::UpdateGO(GameObject* go)
 			go->transform->SetPosition(position);
 			go->transform->SetRotation(rotation);
 		}
+
 		gameobject->movedFlag = true;
 	}
+
 	for (std::list<GameObject*>::iterator it = go->children.begin(); it != go->children.end(); ++it)
 	{
 		UpdateGO(*it);
@@ -458,13 +454,16 @@ void ComponentAnimation::EditorUpdateGO(GameObject* go)
 	float3 position;
 	Quat rotation;
 
-	if (editorController->GetTransform(go->animationIndexChannel, position, rotation))
+	if (go->animationIndexChannel != 999u)
 	{
-		go->transform->SetPosition(position);
-		go->transform->SetRotation(rotation);
-	}
+		if (editorController->GetTransform(go->animationIndexChannel, position, rotation))
+		{
+			go->transform->SetPosition(position);
+			go->transform->SetRotation(rotation);
+		}
 
-	gameobject->movedFlag = true;
+		gameobject->movedFlag = true;
+	}
 
 	for (std::list<GameObject*>::iterator it = go->children.begin(); it != go->children.end(); ++it)
 	{
@@ -518,6 +517,7 @@ void ComponentAnimation::Load(JSON_value* value)
 
 void ComponentAnimation::SetIndexChannels(GameObject* GO, ResourceAnimation* anim)
 {
+	GO->animationIndexChannel = 999u;
 	GO->animationIndexChannel = anim->GetIndexChannel(GO->name.c_str());
 
 	for (const auto& child : GO->children)

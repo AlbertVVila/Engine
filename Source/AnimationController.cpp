@@ -17,36 +17,45 @@ AnimationController::~AnimationController()
 {
 }
 
-void AnimationController::Play(ResourceAnimation* anim, bool loop, bool mustFinish, float speed, int startFrame, int endFrame)
+void AnimationController::Play(ResourceAnimation* anim, bool loop, bool mustFinish, float speed)
 {
 	Instance* newInstance = new Instance;
 	newInstance->anim = anim;
 	newInstance->mustFinish = mustFinish;
 	newInstance->speed = speed;
-	newInstance->time = startFrame / (anim->framesPerSecond);
-	newInstance->minTime = startFrame / (anim->framesPerSecond);
-	newInstance->maxTime = endFrame / (anim->framesPerSecond);
 	newInstance->loop = loop;
+	newInstance->fadeDuration = 200.f;
 	current = newInstance;
 }
 
 void AnimationController::PlayEditor(ResourceAnimation * anim)
 {
-	Instance* newInstance = new Instance;
-	newInstance->anim = anim;
-	newInstance->loop = true;
-	current = newInstance;
+	if (current == nullptr)
+	{
+		Instance* newInstance = new Instance;
+		newInstance->anim = anim;
+		newInstance->loop = true;
+		newInstance->isEditor = true;
+		newInstance->maxTime = anim->durationInSeconds;
+		current = newInstance;
+	}
+	else
+	{
+		current->anim = anim;
+		current->loop = true;
+		current->time = 0.f;
+		current->maxTime = anim->durationInSeconds;
+	}
 }
 
-void AnimationController::PlayNextNode(ResourceAnimation * anim, bool loop, bool mustFinish, float speed, int startFrame, int endFrame, unsigned blend)
+void AnimationController::PlayNextNode(ResourceAnimation * anim, bool loop, bool mustFinish, float speed, float blend)
 {
+	current->next = new Instance();
 	current->anim = anim;
 	current->loop = loop;
 	current->mustFinish = mustFinish;
 	current->speed = speed;
-	current->time = startFrame / (anim->framesPerSecond);
-	current->minTime = startFrame / (anim->framesPerSecond);
-	current->maxTime = endFrame / (anim->framesPerSecond);
+	current->fadeDuration = blend;
 }
 
 
@@ -68,47 +77,41 @@ void AnimationController::UpdateInstance(Instance* instance, float dt)
 {
 	ResourceAnimation* anim = instance->anim;
 
-	if (anim != nullptr && (current->maxTime - current->minTime) > 0)
+	if (anim != nullptr && anim->durationInSeconds > 0)
 	{
 		float trueDt = dt * instance->speed;
 
 		if (trueDt > 0.0f)
 		{
-			float timeRemainingA = current->maxTime - instance->time;
-			//LOG( std::to_string(timeRemainingA).c_str());
+			float timeRemainingA = anim->durationInSeconds - instance->time; //Time remaining until the animation finishes
+
 			if (trueDt <= timeRemainingA)
 			{
 				instance->time += trueDt;
-				trueFrame = instance->time * anim->framesPerSecond;
-				anim->currentFrame = (int)trueFrame;
 			}
 			else if (instance->loop)
 			{
-				instance->time = current->minTime + trueDt - timeRemainingA;
-				trueFrame = current->maxTime;
+				instance->time = trueDt - timeRemainingA;
 			}
 			else
 			{
-				instance->time = current->maxTime;
+				instance->time = anim->durationInSeconds;
 			}
 		}
 		else
 		{
-			float timeRemainingA = current->maxTime - current->minTime - instance->time;
+			float timeRemainingA = -(instance->time);	//Time remaining until the animation finishes taking into account negative speed
 			if (trueDt >= timeRemainingA)
 			{
 				instance->time += trueDt;
-				trueFrame = instance->time * anim->framesPerSecond;
-				anim->currentFrame = (int)trueFrame;
 			}
 			else if (instance->loop)
 			{
-				instance->time = instance->maxTime - timeRemainingA + trueDt;
-				trueFrame = anim->duration;
+				instance->time = anim->durationInSeconds - timeRemainingA + trueDt;
 			}
 			else
 			{
-				instance->time = instance->minTime;
+				instance->time = 0.f;
 			}
 		}
 	}
@@ -117,7 +120,7 @@ void AnimationController::UpdateInstance(Instance* instance, float dt)
 
 	if (instance->next != nullptr)
 	{
-		float timeRemainingB = instance->fadeDuration - instance->fadeTime;
+		float timeRemainingB = instance->fadeDuration - instance->fadeTime; //Time between animations for animationfade
 		if (dt <= timeRemainingB)
 		{
 			instance->fadeTime += dt;

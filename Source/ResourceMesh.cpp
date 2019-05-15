@@ -28,7 +28,6 @@ ResourceMesh::ResourceMesh(unsigned uid) : Resource(uid, TYPE::MESH)
 
 ResourceMesh::ResourceMesh(const ResourceMesh& resource) : Resource(resource)
 {
-	name = resource.name;
 
 	VAO = resource.VAO;
 	VBO = resource.VBO;
@@ -55,7 +54,7 @@ bool ResourceMesh::LoadInMemory()
 {
 	char* data = nullptr;
 
-	unsigned ok = App->fsystem->Load((MESHES + std::to_string(UID) + MESHEXTENSION).c_str(), &data);
+	unsigned ok = App->fsystem->Load(exportedFile.c_str(), &data);
 
 	// Load mesh file
 	if (ok != 0)			
@@ -576,24 +575,11 @@ bool ResourceMesh::Intersects(const LineSegment &line, float* distance, math::fl
 	return intersects;
 }
 
-void ResourceMesh::Rename(const char* newName)
-{
-	std::string ruteToFile = App->fsystem->GetFilePath(file);
-	std::string extension = App->fsystem->GetExtension(file);
-
-	file = ruteToFile + newName + extension;	// Update file variable
-	name = newName;								// Update name variable
-}
-
 void ResourceMesh::Delete()
 {
 	// Delete Resource from ResourceManager
 	App->resManager->DeleteResourceFromList(UID);
 
-	// Delete file in Library
-	std::string fileInLibrary(MESHES);
-	fileInLibrary += exportedFileName;
-	fileInLibrary += MESHEXTENSION;
-	App->fsystem->Delete(fileInLibrary.c_str());
+	App->fsystem->Delete(exportedFile.c_str());
 	DeleteFromMemory();
 }

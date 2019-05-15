@@ -29,6 +29,7 @@ class rcPolyMeshDetail;
 //from detour
 class dtNavMesh;
 class dtNavMeshQuery;
+class DetourDebugInterface;
 
 namespace dd
 {
@@ -222,7 +223,7 @@ private:
 	dtNavMesh* navMesh = nullptr;
 	dtNavMeshQuery* navQuery = nullptr;
 
-	//SampleDebugDraw dt_dd;
+	DetourDebugInterface* ddi = nullptr;
 
 	unsigned char* m_triareas = nullptr;
 	bool m_keepInterResults = true;
@@ -239,15 +240,14 @@ private:
 	float* bmax = nullptr;
 	const AABB* meshbox = nullptr;
 
-	//Detour pathfinding
-
+	//Debugging
 	bool pathGenerated = false;
 	std::vector<math::float3> path;
 	math::float3 start = math::float3::inf;
 	math::float3 end = math::float3::inf;
 
 	bool startPoint = true; //defines if we are going to select start or end point in debug mode
-
+	bool drawNavMesh = true;
 };
 
 #endif __MODULENAVIGATION_H__

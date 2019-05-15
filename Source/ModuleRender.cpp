@@ -63,8 +63,9 @@ bool ModuleRender::Init(JSON * config)
 
 	// Set default Skybox
 	skybox = (ResourceSkybox*)App->resManager->CreateNewResource(TYPE::SKYBOX);
-	std::string faces[NUMFACES] = { "right", "left", "top", "bottom", "front", "back" };
+	std::string faces[NUMFACES] = { "Resources/Imported/right.dds", "Resources/Imported/left.dds", "Resources/Imported/top.dds", "Resources/Imported/bottom.dds", "Resources/Imported/front.dds", "Resources/Imported/back.dds" };
 	skybox->SetExportedFile("Default Skybox");
+	skybox->SetName("Default Skybox");
 	skybox->SetTextures(faces);
 	skybox->SetUsedByEngine(true);
 	skybox->LoadInMemory();
@@ -251,14 +252,10 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 
 	SetProjectionUniform(cam);
 	SetViewUniform(cam);
-	
+
 	if (isEditor)
 	{
 		DrawGizmos(cam);
-		unsigned shader = App->program->defaultShader->id[0];
-		glUseProgram(shader);
-		math::float4x4 model = math::float4x4::identity;
-		glUniformMatrix4fv(glGetUniformLocation(shader, "model"), 1, GL_TRUE, &model[0][0]);
 		App->navigation->renderNavMesh();
 		glUseProgram(0);
 		skybox->Draw(*cam.frustum, true);

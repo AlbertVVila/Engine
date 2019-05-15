@@ -43,6 +43,7 @@ public:
 private:
 
 	void DrawGizmos(const ComponentCamera &cam) const;
+	void DrawDebugMesh() const;
 	void SetViewUniform(const ComponentCamera &camera) const;
 	void SetProjectionUniform(const ComponentCamera &camera) const;
 	void InitSDL();
