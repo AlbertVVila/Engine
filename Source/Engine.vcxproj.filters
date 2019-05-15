@@ -280,6 +280,9 @@
     <ClCompile Include="Viewport.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
+    <ClCompile Include="ResourceScene.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
     <ClCompile Include="NodeEditor\Source\Editor.cpp" />
     <ClCompile Include="Soloud\fractal_includes\dr_impl.cpp" />
     <ClCompile Include="ComponentAudioListener.cpp">
@@ -384,9 +387,6 @@
     <ClCompile Include="NodeEditor\Source\NodeEditor.cpp">
       <Filter>Animation</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceStateMachine.cpp">
-      <Filter>Animation</Filter>
-    </ClCompile>
     <ClCompile Include="Recast\DebugUtils\DebugDraw.cpp" />
     <ClCompile Include="Recast\Recast\Recast.cpp">
       <Filter>Recast</Filter>
@@ -484,9 +484,13 @@
     <ClCompile Include="PanelNavigation.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
-    <ClCompile Include="DetourDebugInterface.cpp" />
+    <ClCompile Include="DetourDebugInterface.cpp">
+    </ClCompile>
     <ClCompile Include="BaseScript.cpp">
       <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceStateMachine.cpp">
+      <Filter>Resources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -868,6 +872,9 @@
     <ClInclude Include="HashString.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="ResourceScene.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
     <ClInclude Include="ResourceModel.h">
       <Filter>Resources</Filter>
     </ClInclude>
@@ -1004,9 +1011,6 @@
     <ClInclude Include="NodeEditor\Include\NodeEditor.h">
       <Filter>Animation</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceStateMachine.h">
-      <Filter>Animation</Filter>
-    </ClInclude>
     <ClInclude Include="Recast\DebugUtils\DebugDraw.h" />
     <ClInclude Include="Recast\Recast\Recast.h">
       <Filter>Recast</Filter>
@@ -1089,6 +1093,9 @@
     <ClInclude Include="DetourDebugInterface.h" />
     <ClInclude Include="BaseScript.h">
       <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceStateMachine.h">
+      <Filter>Resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1198,6 +1205,12 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\Game\Shaders\VertexShaders\Trail.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\FragmentShaders\DebugNav.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\VertexShaders\DebugNav.vs">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

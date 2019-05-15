@@ -12,6 +12,7 @@
 #include "ResourceMaterial.h"
 #include "ResourceSkybox.h"
 #include "ResourceAnimation.h."
+#include "ResourceScene.h"
 
 #include "imgui.h"
 #include <algorithm>
@@ -21,6 +22,19 @@
 #pragma region sorting functions
 bool sortByUIDAscending(const Resource* a, const Resource* b) { return a->GetUID() < b->GetUID(); };
 bool sortByUIDDescending(const Resource* a, const Resource* b) { return a->GetUID() > b->GetUID(); };
+bool sortByNameAscending(const Resource* a, const Resource* b)
+{
+	std::string stringA(a->GetName());
+	std::string stringB(b->GetName());
+	return stringA < stringB;
+};
+
+bool sortByNameDescending(const Resource* a, const Resource* b)
+{
+	std::string stringA(a->GetName());
+	std::string stringB(b->GetName());
+	return stringA > stringB;
+};
 bool sortByFileAscending(const Resource* a, const Resource* b)
 {
 	std::string stringA(a->GetFile());
@@ -74,10 +88,11 @@ void PanelResourceManager::Draw()
 	if(auxResource == nullptr)
 		UpdateResourcesList();
 
-	ImGui::Columns(6);
+	ImGui::Columns(7);
 	// Table references: UID | File | Exported File | References | Type |
 	ImGui::PushStyleColor(ImGuiCol_Text, (ImVec4)ImColor::HSV(0.0f, 1.0f, 1.0f));
 	if (ImGui::Selectable("UID"))			{ if (sortList == SORTING::UID) descending = !descending; sortList = SORTING::UID; }				ImGui::SameLine(); ImGui::NextColumn();
+	if (ImGui::Selectable("Name"))			{ if (sortList == SORTING::NAME) descending = !descending; sortList = SORTING::NAME; }				ImGui::SameLine(); ImGui::NextColumn();
 	if (ImGui::Selectable("File"))			{ if (sortList == SORTING::FILE) descending = !descending; sortList = SORTING::FILE;}				ImGui::SameLine(); ImGui::NextColumn();
 	if (ImGui::Selectable("Exported File"))	{ if (sortList == SORTING::EXPORTED) descending = !descending; sortList = SORTING::EXPORTED;}		ImGui::SameLine(); ImGui::NextColumn();
 	if (ImGui::Selectable("References"))	{ if (sortList == SORTING::REFERENCES) descending = !descending; sortList = SORTING::REFERENCES;}	ImGui::SameLine(); ImGui::NextColumn();
@@ -89,36 +104,44 @@ void PanelResourceManager::Draw()
 	{
 		unsigned uid = resource->GetUID();
 		ImGui::PushID(uid);
+
+		// If the resource is used by the engine show the text disabled
+		bool engineResource = resource->IsUsedByEngine();
+
 		// UID
-		ImGui::Text("%u", uid);
+		!engineResource? ImGui::Text("%u", uid) : ImGui::TextDisabled("%u", uid);
+		ImGui::NextColumn();
+
+		// Name
+		!engineResource ? ImGui::Text(resource->GetName()) : ImGui::TextDisabled(resource->GetName());
 		ImGui::NextColumn();
 
 		// File
-		ImGui::Text(resource->GetFile());
+		!engineResource ? ImGui::Text(resource->GetFile()) : ImGui::TextDisabled(resource->GetFile());
 		ImGui::NextColumn();
 
 		// Exported File
-		ImGui::Text(resource->GetExportedFile());
+		!engineResource ? ImGui::Text(resource->GetExportedFile()) : ImGui::TextDisabled(resource->GetExportedFile());
 		ImGui::NextColumn();
 
 		// Loaded
-		ImGui::Text("%u", resource->GetReferences());
+		!engineResource ? ImGui::Text("%u", resource->GetReferences()) : ImGui::TextDisabled("%u", resource->GetReferences());
 		ImGui::NextColumn();
 
 		// Type
 		switch (resource->GetType())
 		{
-		case TYPE::TEXTURE:		ImGui::Text("Texture");		break;
-		case TYPE::MODEL:		ImGui::Text("Model");		break;
-		case TYPE::MESH:		ImGui::Text("Mesh");		break;
-		case TYPE::AUDIO:		ImGui::Text("Audio");		break;
-		case TYPE::SCENE:		ImGui::Text("Scene");		break;
-		case TYPE::ANIMATION:	ImGui::Text("Animation");	break;
-		case TYPE::MATERIAL:	ImGui::Text("Material");	break;
-		case TYPE::SKYBOX:		ImGui::Text("Skybox");		break;
-		case TYPE::STATEMACHINE:ImGui::Text("StateMachine"); break;
+		case TYPE::TEXTURE:		!engineResource ? ImGui::Text("Texture")		: ImGui::TextDisabled("Texture");		break;
+		case TYPE::MODEL:		!engineResource ? ImGui::Text("Model")			: ImGui::TextDisabled("Model");			break;
+		case TYPE::MESH:		!engineResource ? ImGui::Text("Mesh")			: ImGui::TextDisabled("Mesh");			break;
+		case TYPE::AUDIO:		!engineResource ? ImGui::Text("Audio")			: ImGui::TextDisabled("Audio");			break;
+		case TYPE::SCENE:		!engineResource ? ImGui::Text("Scene")			: ImGui::TextDisabled("Scene");			break;
+		case TYPE::ANIMATION:	!engineResource ? ImGui::Text("Animation")		: ImGui::TextDisabled("Animation");		break;
+		case TYPE::MATERIAL:	!engineResource ? ImGui::Text("Material")		: ImGui::TextDisabled("Material");		break;
+		case TYPE::SKYBOX:		!engineResource ? ImGui::Text("Skybox")			: ImGui::TextDisabled("Skybox");		break;
+		case TYPE::STATEMACHINE:!engineResource ? ImGui::Text("StateMachine")	: ImGui::TextDisabled("StateMachine");	break;
 		default:
-		case TYPE::UNKNOWN:		ImGui::Text("Unknown");		break;
+		case TYPE::UNKNOWN:		!engineResource ? ImGui::Text("Unknown")		: ImGui::TextDisabled("Unknown");		break;
 		}
 		ImGui::NextColumn();
 		// View button
@@ -145,8 +168,8 @@ void PanelResourceManager::Draw()
 		case TYPE::TEXTURE:		DrawResourceTexture();	break;
 		case TYPE::MODEL:		DrawResourceModel();	break;
 		case TYPE::MESH:		DrawResourceMesh();		break;
-		/*case TYPE::AUDIO:								break;
-		case TYPE::SCENE:								break;*/
+		/*case TYPE::AUDIO:								break;*/
+		case TYPE::SCENE:		DrawResourceScene();	break;
 		case TYPE::ANIMATION:	DrawResourceAnimation();break;
 		case TYPE::MATERIAL:	DrawResourceMaterial(); break;
 		case TYPE::SKYBOX:		DrawResourceSkybox();	break;
@@ -168,6 +191,10 @@ void PanelResourceManager::UpdateResourcesList()
 	case SORTING::UID:
 		if(!descending) std::sort(resourcesList.begin(), resourcesList.end(), sortByUIDAscending);
 		else 			std::sort(resourcesList.begin(), resourcesList.end(), sortByUIDDescending);
+		break;
+	case SORTING::NAME:
+		if (!descending) std::sort(resourcesList.begin(), resourcesList.end(), sortByNameAscending);
+		else			 std::sort(resourcesList.begin(), resourcesList.end(), sortByNameDescending);
 		break;
 	case SORTING::FILE:
 		if (!descending) std::sort(resourcesList.begin(), resourcesList.end(), sortByFileAscending);
@@ -206,6 +233,12 @@ void PanelResourceManager::OpenResourceEditor()
 			// UID
 			unsigned uid = auxResource->GetUID();
 			ImGui::Text("UID: %u", uid);
+
+			// Name
+			char name[64] = "";
+			strcpy(name, auxResource->GetName());
+			ImGui::InputText("Name", name, MAX_FILE);
+			auxResource->SetName(name);
 
 			// File
 			char file[64] = "";
@@ -353,7 +386,7 @@ void PanelResourceManager::DrawResourceMesh()
 	std::string exportedFile(mesh.GetExportedFile());
 	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), (exportedFile + ":").c_str());
 	ImGui::Columns(2);
-	ImGui::Text("Name: %s", mesh.name.c_str());
+	ImGui::Text("Name: %s", mesh.GetName());
 	ImGui::Text("VAO: %u", mesh.GetVAO());
 	ImGui::Text("VBO: %u", mesh.GetVBO());
 	ImGui::Text("EBO: %u", mesh.GetEBO());
@@ -362,6 +395,24 @@ void PanelResourceManager::DrawResourceMesh()
 	ImGui::NextColumn();
 	// TODO: [Resource Manager] Add preview of the mesh
 
+	ImGui::End();
+}
+
+void PanelResourceManager::DrawResourceScene()
+{
+	if (!ImGui::Begin("Scene Manager"))
+	{
+		ImGui::End();
+		return;
+	}
+	ResourceScene& scene = *(ResourceScene*)previous;
+	std::string exportedFile(scene.GetExportedFile());
+	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), (exportedFile + ":").c_str());
+	ImGui::Columns(2);
+	ImGui::Text("Name: %s", scene.GetName());
+
+	ImGui::NextColumn();
+	// TODO: [Resource Manager] Add preview of the scene
 	ImGui::End();
 }
 
@@ -376,7 +427,7 @@ void PanelResourceManager::DrawResourceAnimation()
 	std::string exportedFile(animation.GetExportedFile());
 	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), (exportedFile + ":").c_str());
 	ImGui::Columns(2);
-	ImGui::Text("Name: %s", animation.name.c_str());
+	ImGui::Text("Name: %s", animation.GetName());
 	ImGui::Text("Channels: %u", animation.GetNumberChannels());
 	ImGui::Text("FPS: %u", animation.GetFPS());
 	ImGui::Text("Total frames: %u", animation.GetNumberFrames());

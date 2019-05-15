@@ -6,6 +6,7 @@
 #include "ResourceStateMachine.h"
 #include "ResourceAnimation.h"
 
+#include "JSON.h"
 #include "Globals.h"
 
 
@@ -20,7 +21,7 @@ ResourceStateMachine::ResourceStateMachine(const ResourceStateMachine& resource)
 
 	for(const auto& clip : resource.clips)
 	{
-		clips.push_back(Clip(clip.name, clip.UID, clip.loop, clip.mustFinish, clip.clipSpeed, clip.startFrame , clip.endFrame));
+		clips.push_back(Clip(clip.name, clip.UID, clip.loop, clip.mustFinish, clip.clipSpeed));
 	}
 
 	for (const auto& node : resource.nodes)
@@ -43,7 +44,7 @@ bool ResourceStateMachine::LoadInMemory()
 {
 	char* data = nullptr;
 
-	unsigned ok = App->fsystem->Load((STATEMACHINES + std::to_string(GetUID()) + STATEMACHINEEXTENSION).c_str(), &data);
+	unsigned ok = App->fsystem->Load(exportedFile.c_str(), &data);
 
 	// Load mesh file
 	if (ok != 0)
@@ -62,7 +63,7 @@ void ResourceStateMachine::DeleteFromMemory()
 	clips.clear();
 	transitions.clear();
 
-	App->fsystem->Remove((STATEMACHINES + std::to_string(GetUID()) + STATEMACHINEEXTENSION).c_str());
+	// App->fsystem->Remove((IMPORTED_STATEMACHINES + std::to_string(GetUID()) + STATEMACHINEEXTENSION).c_str());
 }
 
 void ResourceStateMachine::Delete()
@@ -71,11 +72,57 @@ void ResourceStateMachine::Delete()
 	App->resManager->DeleteResourceFromList(UID);
 
 	// Delete file in Library
-	std::string fileInLibrary(STATEMACHINES);
-	fileInLibrary += exportedFileName;
+	std::string fileInLibrary(IMPORTED_STATEMACHINES);
+	fileInLibrary += exportedFile;
 	fileInLibrary += STATEMACHINEEXTENSION;
 	App->fsystem->Delete(fileInLibrary.c_str());
 	DeleteFromMemory();
+}
+
+void ResourceStateMachine::SaveMetafile(const char* file) const
+{
+	std::string filepath;
+	filepath.append(file);
+	JSON* json = new JSON();
+	JSON_value* meta = json->CreateValue();
+	struct stat statFile;
+	stat(filepath.c_str(), &statFile);
+	meta->AddUint("GUID", UID);
+	meta->AddUint("timeCreated", statFile.st_ctime);
+	meta->AddString("name", name.c_str());
+	json->AddValue("StateMachine", *meta);
+	filepath += METAEXT;
+	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
+}
+
+void ResourceStateMachine::LoadConfigFromMeta()
+{
+	Resource::LoadConfigFromMeta();
+
+	std::string metaFile(file);
+	metaFile += ".meta";
+
+	// Check if meta file exists
+	if (!App->fsystem->Exists(metaFile.c_str()))
+		return;
+
+	unsigned oldUID = GetUID();
+	char* data = nullptr;
+
+	if (App->fsystem->Load(metaFile.c_str(), &data) == 0)
+	{
+		LOG("Warning: %s couldn't be loaded", metaFile.c_str());
+		RELEASE_ARRAY(data);
+		return;
+	}
+	JSON* json = new JSON(data);
+	JSON_value* value = json->GetValue("StateMachine");
+	UID = value->GetUint("GUID");
+	name = value->GetString("name");
+	std::string name = App->fsystem->GetFilename(file);
+
+	//Updates resource UID on resourcelist
+	App->resManager->ReplaceResource(oldUID, this);
 }
 
 void ResourceStateMachine::SetStateMachine(const char* data)
@@ -84,13 +131,6 @@ void ResourceStateMachine::SetStateMachine(const char* data)
 	nodes.clear();
 	clips.clear();
 	transitions.clear();
-
-	char smName[MAX_BONE_NAME_LENGTH];
-
-	memcpy(smName, data, sizeof(char) * MAX_BONE_NAME_LENGTH);
-	data += sizeof(char)* MAX_BONE_NAME_LENGTH;
-
-	name = std::string(smName);
 
 	//import clips vector
 	unsigned clipsSize = 0u;
@@ -123,15 +163,7 @@ void ResourceStateMachine::SetStateMachine(const char* data)
 		memcpy(&speed, data, sizeof(float));
 		data += sizeof(float);
 
-		int startFrame;
-		memcpy(&startFrame, data, sizeof(int));
-		data += sizeof(int);
-		
-		int endFrame;
-		memcpy(&endFrame, data, sizeof(int));
-		data += sizeof(int);
-
-		clips.push_back(Clip(clipName, uid, loop, finish, speed, startFrame, endFrame));
+		clips.push_back(Clip(clipName, uid, loop, finish, speed));
 	}
 
 	//import nodes vector
@@ -182,9 +214,9 @@ void ResourceStateMachine::SetStateMachine(const char* data)
 		data += sizeof(char)* MAX_BONE_NAME_LENGTH;
 		HashString transitionTrigger(tTrigger);
 
-		unsigned blend = 0u;
-		memcpy(&blend, data, sizeof(int));
-		data += sizeof(int);
+		float blend = 0u;
+		memcpy(&blend, data, sizeof(float));
+		data += sizeof(float);
 
 		transitions.push_back(Transition(transitionOrigin, transitionDestiny, transitionTrigger, blend));
 	}
@@ -196,7 +228,6 @@ void ResourceStateMachine::SetStateMachine(const char* data)
 unsigned ResourceStateMachine::GetStateMachineSize()
 {
 	unsigned size = 0u;
-	size += sizeof(char) * MAX_BONE_NAME_LENGTH;
 
 	size += sizeof(int);
 
@@ -207,7 +238,6 @@ unsigned ResourceStateMachine::GetStateMachineSize()
 		size += sizeof(bool);
 		size += sizeof(bool);
 		size += sizeof(float);
-		size += sizeof(int) * 2;
 	}
 
 	size += sizeof(int);
@@ -224,7 +254,7 @@ unsigned ResourceStateMachine::GetStateMachineSize()
 		size += sizeof(char) * MAX_BONE_NAME_LENGTH;
 		size += sizeof(char) * MAX_BONE_NAME_LENGTH;
 		size += sizeof(char) * MAX_BONE_NAME_LENGTH;
-		size += sizeof(int);
+		size += sizeof(float);
 	}
 	size += sizeof(int);
 
@@ -234,9 +264,6 @@ unsigned ResourceStateMachine::GetStateMachineSize()
 void ResourceStateMachine::SaveStateMachineData(char* data)
 {
 	char* cursor = data;
-
-	memcpy(cursor, name.c_str(), sizeof(char) * MAX_BONE_NAME_LENGTH);
-	cursor += sizeof(char) * MAX_BONE_NAME_LENGTH;
 
 	unsigned clipsSize = clips.size();
 	memcpy(cursor, &clipsSize, sizeof(int));
@@ -258,12 +285,6 @@ void ResourceStateMachine::SaveStateMachineData(char* data)
 
 		memcpy(cursor, &clip.clipSpeed, sizeof(float));
 		cursor += sizeof(float);
-
-		memcpy(cursor, &clip.startFrame, sizeof(int));
-		cursor += sizeof(int);
-
-		memcpy(cursor, &clip.endFrame, sizeof(int));
-		cursor += sizeof(int);
 	}
 
 	unsigned nodeSize = nodes.size();
@@ -294,8 +315,8 @@ void ResourceStateMachine::SaveStateMachineData(char* data)
 		memcpy(cursor, transition.trigger.C_str(), sizeof(char) * MAX_BONE_NAME_LENGTH); 
 		cursor += sizeof(char) * MAX_BONE_NAME_LENGTH;
 
-		memcpy(cursor, &transition.blend, sizeof(int));
-		cursor += sizeof(int);
+		memcpy(cursor, &transition.blend, sizeof(float));
+		cursor += sizeof(float);
 	}
 
 	memcpy(cursor, &defaultNode, sizeof(int));
@@ -304,21 +325,19 @@ void ResourceStateMachine::SaveStateMachineData(char* data)
 
 void ResourceStateMachine::Save()
 {
-
 	char* stateMachineData = nullptr;
 	unsigned stateMachineSize = GetStateMachineSize();
 	stateMachineData = new char[stateMachineSize];
 	SaveStateMachineData(stateMachineData);
 
-	App->fsystem->Save((STATEMACHINES + std::to_string(GetUID()) + STATEMACHINEEXTENSION).c_str(), stateMachineData, stateMachineSize);
-	SetFile(STATEMACHINES);
-	SetExportedFile(std::to_string(GetUID()).c_str());
+	App->fsystem->Save((STATEMACHINES + name + STATEMACHINEEXTENSION).c_str(), stateMachineData, stateMachineSize);
+	SetFile((STATEMACHINES + name + STATEMACHINEEXTENSION).c_str());
 	RELEASE_ARRAY(stateMachineData);
 }
 
 void ResourceStateMachine::AddClip(const HashString name, unsigned UID, const bool loop)
 {
-	clips.push_back(Clip(name, UID, loop, false, 1.0f ,0 ,0));
+	clips.push_back(Clip(name, UID, loop, false, 1.0f));
 }
 
 void ResourceStateMachine::AddNode(const HashString name, const HashString clipName)
@@ -388,16 +407,6 @@ bool ResourceStateMachine::GetClipLoop(unsigned index)
 	return clips[index].loop;
 }
 
-int ResourceStateMachine::GetClipStartFrame(unsigned index)
-{
-	return clips[index].startFrame;
-}
-
-int ResourceStateMachine::GetClipEndFrame(unsigned index)
-{
-	return clips[index].endFrame;
-}
-
 bool ResourceStateMachine::GetClipMustFinish(unsigned index)
 {
 	return clips[index].mustFinish;
@@ -423,7 +432,7 @@ HashString ResourceStateMachine::GetTransitionTrigger(unsigned index)
 	return transitions[index].trigger;
 }
 
-unsigned ResourceStateMachine::GetTransitionBlend(unsigned index)
+float ResourceStateMachine::GetTransitionBlend(unsigned index)
 {
 	return transitions[index].blend;
 }
@@ -468,16 +477,6 @@ void ResourceStateMachine::SetClipLoop(unsigned index, bool loop)
 	clips[index].loop = loop;
 }
 
-void ResourceStateMachine::SetClipStartFrame(unsigned index, int startTime)
-{
-	clips[index].startFrame = startTime;
-}
-
-void ResourceStateMachine::SetClipEndFrame(unsigned index, int endTime)
-{
-	clips[index].endFrame = endTime;
-}
-
 void ResourceStateMachine::SetClipSpeed(unsigned index, float speed)
 {
 	clips[index].clipSpeed = speed;
@@ -503,7 +502,7 @@ void ResourceStateMachine::SetTransitionTrigger(unsigned index, HashString trigg
 	transitions[index].trigger = trigger;
 }
 
-void ResourceStateMachine::SetTransitionBlend(unsigned index, unsigned blend)
+void ResourceStateMachine::SetTransitionBlend(unsigned index, float blend)
 {
 	transitions[index].blend = blend;
 }
@@ -574,7 +573,7 @@ void ResourceStateMachine::RemoveTransition(unsigned index)
 	transitions.erase(transitions.begin() + index);
 }
 
-void ResourceStateMachine::ReceiveTrigger(HashString trigger, unsigned &blend)
+void ResourceStateMachine::ReceiveTrigger(HashString trigger, float &blend)
 {
 	HashString defaultNodeName = GetNodeName(defaultNode);
 

@@ -8,7 +8,7 @@ class Resource;
 class ResourceTexture;
 struct ImVec2;
 
-enum class SORTING { NONE, UID, FILE, EXPORTED, TYPE, REFERENCES};
+enum class SORTING { NONE, UID, NAME, FILE, EXPORTED, TYPE, REFERENCES};
 
 class PanelResourceManager : 
 	public Panel
@@ -25,6 +25,7 @@ private:
 	void DrawResourceTexture();
 	void DrawResourceModel();
 	void DrawResourceMesh();
+	void DrawResourceScene();
 	void DrawResourceMaterial();
 	void DrawResourceAnimation();
 	void DrawResourceSkybox();
