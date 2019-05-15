@@ -184,18 +184,14 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 	SetProjectionUniform(cam);
 	SetViewUniform(cam);
 	skybox->Draw(*cam.frustum);
+
+	App->scene->Draw(*cam.frustum, isEditor);
+
 	if (isEditor)
 	{
 		DrawGizmos(cam);
-		unsigned shader = App->program->defaultShader->id[0];
-		glUseProgram(shader);
-		math::float4x4 model = math::float4x4::identity;
-		glUniformMatrix4fv(glGetUniformLocation(shader, "model"), 1, GL_TRUE, &model[0][0]);
 		App->navigation->renderNavMesh();
-		glUseProgram(0);
 	}
-	App->scene->Draw(*cam.frustum, isEditor);
-
 	if (!isEditor || isEditor && App->ui->showUIinSceneViewport)
 	{
 		App->ui->Draw(width, height);
