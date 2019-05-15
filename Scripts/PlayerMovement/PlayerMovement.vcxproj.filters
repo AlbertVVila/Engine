@@ -27,19 +27,25 @@
     <ClInclude Include="PlayerStateIdle.h">
       <Filter>States</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerStateWalk.h">
-      <Filter>States</Filter>
-    </ClInclude>
     <ClInclude Include="PlayerStateDash.h">
-      <Filter>States</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerStateAttack.h">
       <Filter>States</Filter>
     </ClInclude>
     <ClInclude Include="PlayerStateDeath.h">
       <Filter>States</Filter>
     </ClInclude>
     <ClInclude Include="PlayerStateUppercut.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerStateWalk.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerStateFirstAttack.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerStateSecondAttack.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerStateThirdAttack.h">
       <Filter>States</Filter>
     </ClInclude>
   </ItemGroup>
@@ -53,19 +59,25 @@
     <ClCompile Include="PlayerStateIdle.cpp">
       <Filter>States</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerStateWalk.cpp">
-      <Filter>States</Filter>
-    </ClCompile>
     <ClCompile Include="PlayerStateDash.cpp">
-      <Filter>States</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerStateAttack.cpp">
       <Filter>States</Filter>
     </ClCompile>
     <ClCompile Include="PlayerStateDeath.cpp">
       <Filter>States</Filter>
     </ClCompile>
     <ClCompile Include="PlayerStateUppercut.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerStateWalk.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerStateFirstAttack.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerStateSecondAttack.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerStateThirdAttack.cpp">
       <Filter>States</Filter>
     </ClCompile>
   </ItemGroup>

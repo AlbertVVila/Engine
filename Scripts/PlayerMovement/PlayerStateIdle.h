@@ -3,21 +3,16 @@
 
 #include "PlayerState.h"
 
-#ifdef PlayerMovement_EXPORTS
-#define PlayerMovement_API __declspec(dllexport)
-
-#else
-#define PlayerMovement_API __declspec(dllimport)
-#endif
-
-class PlayerMovement_API PlayerStateIdle :
+class PlayerStateIdle :
 	public PlayerState
 {
 public:
-	PlayerStateIdle();
+	PlayerStateIdle(PlayerMovement* PM);
 	~PlayerStateIdle();
 
 	void Update() override;
+
+	void CheckInput() override;
 };
 
 #endif // __PLAYERSTATEIDLE_H_

@@ -1,23 +1,17 @@
 #ifndef __PLAYERSTATEWALK_H_
 #define __PLAYERSTATEWALK_H_
 
+#include "BaseScript.h"
 #include "PlayerState.h"
 
-#ifdef PlayerMovement_EXPORTS
-#define PlayerMovement_API __declspec(dllexport)
-
-#else
-#define PlayerMovement_API __declspec(dllimport)
-#endif
-
-class PlayerMovement_API PlayerStateWalk :
-	public PlayerState
+class PlayerStateWalk :	public PlayerState
 {
 public:
-	PlayerStateWalk();
+	PlayerStateWalk(PlayerMovement* PM);
 	~PlayerStateWalk();
 
 	void Update() override;
+	void CheckInput() override;
 };
 
 #endif // __PLAYERSTATEWALK_H_

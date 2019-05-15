@@ -4,22 +4,16 @@
 #include "PlayerMovement.h"
 #include "PlayerState.h"
 
-
-#ifdef PlayerMovement_EXPORTS
-#define PlayerMovement_API __declspec(dllexport)
-
-#else
-#define PlayerMovement_API __declspec(dllimport)
-#endif
-
-class PlayerMovement_API PlayerStateDeath :
+class PlayerStateDeath :
 	public PlayerState
 {
 public:
-	PlayerStateDeath();
+	PlayerStateDeath(PlayerMovement* PM);
 	~PlayerStateDeath();
 
 	void Update() override;
+
+	void CheckInput() override;
 };
 
 #endif // __PLAYERSTATEDEATH_H_

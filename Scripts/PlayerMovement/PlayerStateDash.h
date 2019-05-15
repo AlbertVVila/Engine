@@ -3,21 +3,19 @@
 
 #include "PlayerState.h"
 
-#ifdef PlayerMovement_EXPORTS
-#define PlayerMovement_API __declspec(dllexport)
-
-#else
-#define PlayerMovement_API __declspec(dllimport)
-#endif
-
-class PlayerMovement_API PlayerStateDash :
+class PlayerStateDash :
 	public PlayerState
 {
 public:
-	PlayerStateDash();
+	PlayerStateDash(PlayerMovement* PM);
 	~PlayerStateDash();
 
 	void Update() override;
+
+	void CheckInput() override;
+
+private:
+	float duration = 0.8f;
 };
 
 #endif // __PLAYERSTATEDASH_H_
