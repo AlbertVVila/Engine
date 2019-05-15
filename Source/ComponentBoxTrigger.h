@@ -23,7 +23,7 @@ public:
 	virtual ~ComponentBoxTrigger();
 
 	virtual Component* Clone() const override;
-	virtual void DrawProperties() override {/*TODO*/};
+	virtual void DrawProperties() override;
 
 	virtual void Update() override;
 
@@ -43,9 +43,18 @@ public:
 	void AddOverlap(const ComponentBoxTrigger* other);
 	void RemoveOverlap(const ComponentBoxTrigger* other);
 
+	void Save(JSON_value* value) const;
+	void Load(JSON_value* value);
+
+private:
+	void PropagateState(GameObject* other, Overlap_State state);
+
 private:
 	std::unordered_map<const ComponentBoxTrigger*,Overlap_State> overlap_list;
 	math::OBB* box_trigger = nullptr;
+
+	math::float3 position = math::float3::zero;
+	math::float3 size     = math::float3::one;
 
 	bool is_player = false;
 };

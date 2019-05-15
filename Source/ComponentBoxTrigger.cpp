@@ -6,29 +6,47 @@
 #include "GameObject.h"
 #include "ComponentTransform.h"
 #include "ModuleCollisions.h"
+#include "BaseScript.h"
+#include "JSON.h"
+#include "imgui.h"
 
 ComponentBoxTrigger::ComponentBoxTrigger() : Component(nullptr, ComponentType::BoxTrigger)
 {
 	box_trigger = new math::OBB();
 
-	box_trigger->r = float3::one;
-	box_trigger->pos = float3::zero;
+	box_trigger->r = size;
+	box_trigger->pos = position;
+	box_trigger->axis[0] = math::float3::unitX;
+	box_trigger->axis[1] = math::float3::unitY;
+	box_trigger->axis[2] = math::float3::unitZ;
+
+	App->collisions->AddBox(this, is_player);
 }
 
 ComponentBoxTrigger::ComponentBoxTrigger(GameObject * gameobject) : Component(gameobject, ComponentType::BoxTrigger)
 {
 	box_trigger = new math::OBB();
 
-	box_trigger->r   = float3::one;
-	box_trigger->pos = float3::zero;
+	box_trigger->r = size;
+	box_trigger->pos = position;
+	box_trigger->axis[0] = math::float3::unitX;
+	box_trigger->axis[1] = math::float3::unitY;
+	box_trigger->axis[2] = math::float3::unitZ;
+
+	App->collisions->AddBox(this, is_player);
 }
 
 ComponentBoxTrigger::ComponentBoxTrigger(const ComponentBoxTrigger & component) : Component(component)
 {
 	box_trigger = new math::OBB();
 
-	box_trigger->r = float3::one;
-	box_trigger->pos = float3::zero;
+	box_trigger->r = size;
+	box_trigger->pos = position;
+	box_trigger->axis[0] = math::float3::unitX;
+	box_trigger->axis[1] = math::float3::unitY;
+	box_trigger->axis[2] = math::float3::unitZ;
+
+	App->collisions->AddBox(this, is_player);
 }
 
 ComponentBoxTrigger::~ComponentBoxTrigger()
@@ -47,9 +65,47 @@ Component * ComponentBoxTrigger::Clone() const
 	return new ComponentBoxTrigger(*this);
 }
 
+void ComponentBoxTrigger::DrawProperties()
+{
+	ImGui::PushID(this);
+	if (ImGui::CollapsingHeader("Box Trigger", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		bool prop_is_player = is_player;
+		if (ImGui::Checkbox("Is Player?", &prop_is_player)) SetIsPlayer(prop_is_player);
+
+		ImGui::DragFloat3("Position", position.ptr(), 1.0F, 0.0F, 10.0F);
+		if (ImGui::DragFloat3("Size", size.ptr(), 1.0F, 0.0F, 10.0F)) box_trigger->r = size;
+
+		ImGui::Spacing();
+
+		if (ImGui::CollapsingHeader("Box Corners"))
+		{
+			ImGui::InputFloat3("0", this->box_trigger->CornerPoint(0).ptr(), 2, ImGuiInputTextFlags_ReadOnly);
+			ImGui::InputFloat3("1", this->box_trigger->CornerPoint(1).ptr(), 2, ImGuiInputTextFlags_ReadOnly);
+			ImGui::InputFloat3("2", this->box_trigger->CornerPoint(2).ptr(), 2, ImGuiInputTextFlags_ReadOnly);
+			ImGui::InputFloat3("3", this->box_trigger->CornerPoint(3).ptr(), 2, ImGuiInputTextFlags_ReadOnly);
+			ImGui::InputFloat3("4", this->box_trigger->CornerPoint(4).ptr(), 2, ImGuiInputTextFlags_ReadOnly);
+			ImGui::InputFloat3("5", this->box_trigger->CornerPoint(5).ptr(), 2, ImGuiInputTextFlags_ReadOnly);
+			ImGui::InputFloat3("6", this->box_trigger->CornerPoint(6).ptr(), 2, ImGuiInputTextFlags_ReadOnly);
+			ImGui::InputFloat3("7", this->box_trigger->CornerPoint(7).ptr(), 2, ImGuiInputTextFlags_ReadOnly);
+		}
+
+		if (ImGui::CollapsingHeader("Contacts"))
+		{
+			for (auto contact : overlap_list) ImGui::Text(contact.first->gameobject->name.c_str());
+		}
+	}
+	ImGui::Separator();
+	ImGui::PopID();
+
+}
+
 void ComponentBoxTrigger::Update()
 {
-	box_trigger->Transform(gameobject->transform->global);
+	box_trigger->axis[0] = gameobject->transform->right;
+	box_trigger->axis[1] = gameobject->transform->up;
+	box_trigger->axis[2] = gameobject->transform->front;
+	box_trigger->pos = gameobject->transform->position + position;
 
 	std::vector<const ComponentBoxTrigger*> to_remove;
 	for (auto it = overlap_list.begin(); it != overlap_list.end(); ++it)
@@ -58,17 +114,17 @@ void ComponentBoxTrigger::Update()
 		{
 		case Overlap_State::Enter:
 			it->second = Overlap_State::PostIdle;
-			// Todo Propagate Enter
+			PropagateState(it->first->gameobject, Overlap_State::Enter);
 			break;
 
 		case Overlap_State::Idle:
 			it->second = Overlap_State::PostIdle;
-			// Todo: Propagate Idle
+			PropagateState(it->first->gameobject, Overlap_State::Idle);
 			break;
 
 		case Overlap_State::PostIdle:
 			it->second = Overlap_State::Exit;
-			// Todo Propagate Exit
+			PropagateState(it->first->gameobject, Overlap_State::Exit);
 			break;
 
 		case Overlap_State::Exit:
@@ -119,6 +175,49 @@ void ComponentBoxTrigger::RemoveOverlap(const ComponentBoxTrigger * other)
 	if (overlap_list.find(other) != overlap_list.end())
 	{
 		overlap_list.erase(other);
+	}
+}
+
+void ComponentBoxTrigger::Save(JSON_value * value) const
+{
+	Component::Save(value);
+	value->AddFloat3("pos", box_trigger->pos);
+	value->AddFloat3("r", box_trigger->r);
+}
+
+void ComponentBoxTrigger::Load(JSON_value * value)
+{
+	box_trigger->pos = value->GetFloat3("pos");
+	box_trigger->r = value->GetFloat3("r");
+}
+
+void ComponentBoxTrigger::PropagateState(GameObject * other, Overlap_State state)
+{
+	GameObject* go = this->gameobject;
+
+	while (go != nullptr)
+	{
+		for (auto component : go->components)
+		{
+			if (component->type != ComponentType::Script) continue;
+
+			switch (state)
+			{
+			case Overlap_State::Enter:
+				((Script*)component)->OnTriggerEnter(other);
+				break;
+			case Overlap_State::Idle:
+				((Script*)component)->OnTrigger(other);
+				break;
+			case Overlap_State::Exit:
+				((Script*)component)->OnTriggerExit(other);
+				break;
+			default:
+				break;
+			}
+		}
+
+		go = go->parent;
 	}
 }
 

@@ -27,12 +27,12 @@ void ModuleCollisions::AddBox(ComponentBoxTrigger* box, bool is_player)
 	RemoveBox(box);
 	
 	if (is_player) player_boxes.push_back(box);
-	else player_boxes.push_back(box);
+	else other_boxes.push_back(box);
 }
 
 bool ModuleCollisions::RemoveBox(ComponentBoxTrigger* box)
 {
-	for (size_t i = player_boxes.size() - 1; i >= 0; --i)
+	for (int i = player_boxes.size() - 1; i >= 0; --i)
 	{
 		if (player_boxes[i] == box)
 		{
@@ -40,7 +40,7 @@ bool ModuleCollisions::RemoveBox(ComponentBoxTrigger* box)
 			return true;
 		}
 	}
-	for (size_t i = other_boxes.size() - 1; i >= 0; --i)
+	for (int i = other_boxes.size() - 1; i >= 0; --i)
 	{
 		if (other_boxes[i] == box)
 		{
