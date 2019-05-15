@@ -135,7 +135,7 @@ public:
 	GameObject* canvas = nullptr;
 
 	bool loadScene = false;
-	std::string sceneName = "";
+	bool isCleared = true;
 	int actionAfterLoad = -1;
 };
 

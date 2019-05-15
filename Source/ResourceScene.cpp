@@ -5,6 +5,7 @@
 #include "ModuleFileSystem.h"
 #include "ModuleScene.h"
 #include "ModuleSpacePartitioning.h"
+#include "ModuleNavigation.h"
 
 #include "GameObject.h"
 #include "ComponentRenderer.h"
@@ -95,19 +96,11 @@ bool ResourceScene::Load()
 		}
 	}
 
-	//We need to generate new UIDs for every GO, otherwise hierarchy will get messed up after temporary scene
-	GameObject* parentGO = nullptr;
-	for (std::map<unsigned, GameObject*>::iterator it = gameobjectsMap.begin(); it != gameobjectsMap.end(); ++it)
+	if (!App->scene->isCleared)
 	{
-		if (it->second->parentUUID == 0u)
-		{
-			parentGO = it->second;
-			break;
-		}
+		//Recursive UID reassign
+		AssignNewUUID(App->scene->root, 0u);
 	}
-
-	//Recursive UID reassign
-	AssignNewUUID(parentGO, 0u);
 
 	//Link Bones after all the hierarchy is imported
 	for (ComponentRenderer* cr : renderers)
@@ -118,18 +111,25 @@ bool ResourceScene::Load()
 		}
 	}
 
+	App->navigation->sceneLoaded(json);
+
 	RELEASE_ARRAY(data);
 	RELEASE(json);
+
 	return true;
 }
 
-void ResourceScene::AssignNewUUID(GameObject* go, unsigned UID)
+void ResourceScene::AssignNewUUID(GameObject* go, unsigned parentUID)
 {
-	go->parentUUID = UID;
-	go->UUID = App->scene->GetNewUID();
 
-	for (std::list<GameObject*>::iterator it = go->children.begin(); it != go->children.end(); ++it)
+	if (go != App->scene->root && go != App->scene->canvas)
 	{
-		AssignNewUUID((*it), go->UUID);
+		go->parentUUID = parentUID;
+		go->UUID = App->scene->GetNewUID();
+	}
+
+	for (auto& child : go->children)
+	{
+		AssignNewUUID(child, go->UUID);
 	}
 }

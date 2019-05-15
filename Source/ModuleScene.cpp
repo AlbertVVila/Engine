@@ -114,7 +114,7 @@ update_status ModuleScene::PreUpdate()
 {
 	if (loadScene)
 	{
-		LoadScene(sceneName.c_str(), SCENES);
+		LoadScene(name.c_str(), SCENES);
 		App->scripting->onStart = true;
 		root->OnPlay();
 		loadScene = false;
@@ -1042,6 +1042,7 @@ void ModuleScene::ClearScene()
 	App->particles->CleanUp();
 	App->particles->Start();
 	App->renderer->shadowCasters.clear();
+	isCleared = true;
 }
 
 void ModuleScene::SaveScene(const GameObject& rootGO, const char* sceneName, const char* folder)
@@ -1071,17 +1072,26 @@ void ModuleScene::SaveScene(const GameObject& rootGO, const char* sceneName, con
 	}
 
 	// Update scene info
-	name = sceneName;
-	path = folder;
+	if(sceneName != TEMPORARY_SCENE)
+	{
+		name = sceneName;
+		path = folder;
+	}
 }
 
 void ModuleScene::LoadScene(const char* sceneName, const char* folder)
 {
-	ClearScene();
+	if (!isCleared)
+	{
+		ClearScene();
+	}
 	if (AddScene(sceneName, folder))
 	{
-		name = sceneName;
-		path = folder;
+		if (sceneName != TEMPORARY_SCENE)
+		{
+			name = sceneName;
+			path = folder;
+		}
 	}
 	App->spacePartitioning->kDTree.Calculate();
 	scenePhotos.clear();
@@ -1095,7 +1105,8 @@ bool ModuleScene::AddScene(const char* sceneName, const char* folder)
 		LOG("Error loading scene named: %s", sceneName);
 		return false;
 	}
-
+	App->renderer->OnResize();
+	isCleared = false;
 	return true;
 }
 
