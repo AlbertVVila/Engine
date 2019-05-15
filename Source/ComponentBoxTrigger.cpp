@@ -83,8 +83,8 @@ void ComponentBoxTrigger::DrawProperties()
 		bool prop_is_player = is_player;
 		if (ImGui::Checkbox("Is Player?", &prop_is_player)) SetIsPlayer(prop_is_player);
 
-		ImGui::DragFloat3("Position", position.ptr(), 1.0F, 0.0F, 10.0F);
-		if (ImGui::DragFloat3("Size", size.ptr(), 1.0F, 0.0F, 10.0F)) box_trigger->r = size;
+		ImGui::DragFloat3("Position", position.ptr(), 0.1F, 0.0F, 20.0F);
+		if (ImGui::DragFloat3("Size", size.ptr(), 0.1F, 0.0F, 20.0F)) box_trigger->r = size;
 
 		ImGui::Spacing();
 

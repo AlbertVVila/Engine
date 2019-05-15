@@ -488,6 +488,12 @@
     <ClCompile Include="BaseScript.cpp">
       <Filter>Component</Filter>
     </ClCompile>
+    <ClCompile Include="ComponentBoxTrigger.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleCollisions.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -1089,6 +1095,12 @@
     <ClInclude Include="DetourDebugInterface.h" />
     <ClInclude Include="BaseScript.h">
       <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentBoxTrigger.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleCollisions.h">
+      <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
