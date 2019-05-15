@@ -261,7 +261,7 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 		skybox->Draw(*cam.frustum, true);
 
 	}
-	else //Due the postprocess only one skybox could be drawn at once
+	else 
 	{
 		skybox->Draw(*cam.frustum);
 		const float transparent[] = { 0, 0, 0, 1 };
