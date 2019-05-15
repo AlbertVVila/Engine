@@ -74,7 +74,7 @@ void main()
     {
         bloomColor += texture(gBrightness, UV0 + vec2(tex_offset.x * i, 0.0)).rgb * weight[i];
         bloomColor += texture(gBrightness, UV0 - vec2(tex_offset.x * i, 0.0)).rgb * weight[i];
-		bloomColor += texture(gBrightness, UV0 + vec2(tex_offset.x * i, tex_offset.y * i)).rgb * weight[i];
+	bloomColor += texture(gBrightness, UV0 + vec2(tex_offset.x * i, tex_offset.y * i)).rgb * weight[i];
         bloomColor += texture(gBrightness, UV0 - vec2(tex_offset.x * i, tex_offset.y * i)).rgb * weight[i];
         bloomColor += texture(gBrightness, UV0 + vec2(0.0, tex_offset.y * i)).rgb * weight[i];
         bloomColor += texture(gBrightness, UV0 - vec2(0.0, tex_offset.y * i)).rgb * weight[i];
