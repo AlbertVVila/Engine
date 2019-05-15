@@ -773,7 +773,7 @@ void ModuleRender::DrawGUI()
 	{
 		ComputeBloomKernel();
 	}
-	if (ImGui::DragInt("Bloom kernel radius", &kernelRadius, 1, 2, MAX_KERNEL_RADIUS))
+	if (ImGui::DragInt("Bloom kernel radius", &kernelRadius, 1, 2, MAX_KERNEL_RADIUS - 1))
 	{
 		ComputeBloomKernel();
 	}
