@@ -30,8 +30,7 @@ ComponentParticles::ComponentParticles(const ComponentParticles& component) : Co
 	textureName = component.textureName;
 	if (textureName != "None Selected")
 	{
-		unsigned imageUID = App->resManager->FindByExportedFile(textureName.c_str());
-		texture = (ResourceTexture*)App->resManager->Get(imageUID);
+		texture = (ResourceTexture*)App->resManager->GetByName(textureName.c_str(), TYPE::TEXTURE);
 	}
 	xTiles = component.xTiles;
 	yTiles = component.yTiles;
