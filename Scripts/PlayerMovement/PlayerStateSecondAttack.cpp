@@ -33,14 +33,14 @@ void PlayerStateSecondAttack::Update()
 void PlayerStateSecondAttack::CheckInput()
 {
 
-	if (timer > duration * 0.5)
+	if (timer > player->secondAttackDuration * 0.5)
 	{
 		if (player->IsAtacking())
 		{
 			player->currentState = (PlayerState*)player->thirdAttack;
 		}
 	}
-	if (timer > duration * 1.5) // can switch??¿?¿?
+	if (timer > player->secondAttackDuration * 1.5) // can switch??¿?¿?
 	{
 		
 		if (player->IsUsingFirstSkill())

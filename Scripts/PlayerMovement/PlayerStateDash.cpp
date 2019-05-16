@@ -58,7 +58,7 @@ void PlayerStateDash::Update()
 
 void PlayerStateDash::CheckInput()
 {
-	if (timer > duration) // can switch?¿¿?
+	if (timer > player->dashDuration) // can switch?¿¿?
 	{
 		if (player->IsAtacking())
 		{

@@ -32,7 +32,7 @@ void PlayerStateUppercut::Update()
 
 void PlayerStateUppercut::CheckInput()
 {
-	if (timer > duration) // can switch??¿?¿?
+	if (timer > player->uppercutDuration) // can switch??¿?¿?
 	{
 		if (player->IsAtacking())
 		{
