@@ -84,7 +84,7 @@ bool ModuleRender::Init(JSON * config)
 	useMainCameraFrustum = renderer->GetInt("frustumMainCamera");
 	skybox->enabled = renderer->GetInt("skybox");
 	current_scale = renderer->GetInt("current_scale");
-	gammaCorrector = renderer->GetFloat("gammaCorrector");
+	gammaCorrector = renderer->GetFloat("gammaCorrector", gammaCorrector);
 	bloomSpread = renderer->GetFloat("bloomSpread");
 	exposure = renderer->GetFloat("exposure");
 	kernelRadius = renderer->GetInt("kernelRadius");
@@ -361,7 +361,7 @@ void ModuleRender::OnResize()
 	glViewport(0, 0, App->window->width, App->window->height);
 #ifndef GAME_BUILD
 	App->camera->editorcamera->SetAspect((float)viewScene->current_width / (float)viewScene->current_height);
-	if (App->scene->maincamera != nullptr)
+	if (App->scene->maincamera != nullptr && viewGame->current_width != 0 && viewGame->current_height!=0)
 	{
 		App->scene->maincamera->SetAspect((float)viewGame->current_width / (float)viewGame->current_height);
 	}
@@ -457,7 +457,14 @@ void ModuleRender::DrawGizmos(const ComponentCamera &camera) const
 	{
 		dd::frustum((App->scene->maincamera->frustum->ProjectionMatrix() * App->scene->maincamera->frustum->ViewMatrix()).Inverted(), dd::colors::Red);
 	}
-
+	if (App->scene->selected != nullptr)
+	{
+		ComponentCamera* selectedCam = App->scene->selected->GetComponent<ComponentCamera>();
+		if (selectedCam != nullptr)
+		{
+			dd::frustum((selectedCam->frustum->ProjectionMatrix() * selectedCam->frustum->ViewMatrix()).Inverted(), dd::colors::HotPink);
+		}
+	}
 	App->debug->Draw(camera, viewScene->current_width, viewScene->current_height);
 	glUseProgram(0);
 }

@@ -30,7 +30,7 @@ public:
 
 	ENGINE_API int GetInt(const char* name) const;
 	ENGINE_API unsigned GetUint(const char * name, unsigned defaultValue = 0) const;
-	ENGINE_API float GetFloat(const char * namee) const;
+	ENGINE_API float GetFloat(const char * namee, float defaultValue = 0.f) const;
 	ENGINE_API float2 GetFloat2(const char * name) const;
 	ENGINE_API float3 GetFloat3(const char * name) const;
 	ENGINE_API float3 GetColor3(const char * name) const;
