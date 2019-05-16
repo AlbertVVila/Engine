@@ -85,9 +85,9 @@ bool ModuleRender::Init(JSON * config)
 	skybox->enabled = renderer->GetInt("skybox");
 	current_scale = renderer->GetInt("current_scale");
 	gammaCorrector = renderer->GetFloat("gammaCorrector", gammaCorrector);
-	bloomSpread = renderer->GetFloat("bloomSpread");
-	exposure = renderer->GetFloat("exposure");
-	kernelRadius = renderer->GetInt("kernelRadius");
+	bloomSpread = renderer->GetFloat("bloomSpread", bloomSpread);
+	exposure = renderer->GetFloat("exposure", exposure);
+	kernelRadius = renderer->GetInt("kernelRadius", kernelRadius);
 
 
 	switch (current_scale)

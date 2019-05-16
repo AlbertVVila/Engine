@@ -148,7 +148,7 @@ void JSON_value::AddValue(const char* name, const JSON_value &value)
 	}
 }
 
-int JSON_value::GetInt(const char * name) const
+int JSON_value::GetInt(const char * name, int defaultValue) const
 {
 	rapidjson::Value::ConstMemberIterator itr = rapidjsonValue->FindMember(name);
 	if (itr != rapidjsonValue->MemberEnd())
@@ -158,7 +158,7 @@ int JSON_value::GetInt(const char * name) const
 	else
 	{
 		LOG("Member %s not found!", name);
-		return 0;
+		return defaultValue;
 	}
 }
 
