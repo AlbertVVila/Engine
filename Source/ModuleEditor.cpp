@@ -168,6 +168,7 @@ update_status ModuleEditor::Update(float dt)
 		{
 			if (ImGui::MenuItem("New"))
 			{
+				App->scene->name.clear();
 				App->scene->ClearScene();
 			}
 			if (ImGui::MenuItem("Load Scene"))

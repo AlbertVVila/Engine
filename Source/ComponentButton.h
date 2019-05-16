@@ -4,16 +4,16 @@
 #include "Component.h"
 
 class ComponentImage;
-class ComponentText;
-class ComponentTransform2D;
+class Text;
+class Transform2D;
 
-class ComponentButton :	public Component
+class Button :	public Component
 {
 public:
-	ComponentButton();
-	ComponentButton(GameObject* gameobject);
-	ComponentButton(const ComponentButton &copy);
-	~ComponentButton();
+	Button();
+	Button(GameObject* gameobject);
+	Button(const Button &copy);
+	~Button();
 
 	void DrawProperties() override;
 	void Save(JSON_value* value) const override;
@@ -30,8 +30,8 @@ public:
 	ComponentImage* buttonImage = nullptr;
 	ComponentImage* highlightedImage = nullptr;
 	ComponentImage* pressedImage = nullptr;
-	ComponentText* text = nullptr;
-	ComponentTransform2D* rectTransform = nullptr;
+	Text* text = nullptr;
+	Transform2D* rectTransform = nullptr;
 
 	Component* Clone() const override;
 

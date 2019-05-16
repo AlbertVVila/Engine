@@ -2,6 +2,7 @@
 #define __ComponentRenderer_h__
 
 #include "Component.h"
+#include "Math/float3.h"
 
 class ResourceMesh;
 class ResourceMaterial;
@@ -22,7 +23,7 @@ public:
 	void Save(JSON_value* value) const override;
 	void Load(JSON_value* value) override;
 
-	ENGINE_API void SetMaterial(const char* material);
+	ENGINE_API void SetMaterial(const char* materialName);
 	void SetMesh(const char* meshfile);
 	void UpdateGameObject();
 	void LinkBones() const;
@@ -32,6 +33,8 @@ public:
 	ResourceMaterial* material = nullptr;
 	bool castShadows = false;
 	bool useAlpha = false;
+	bool highlighted = false;
+	math::float3 highlightColor = math::float3::one;
 
 private:
 	std::vector<std::string> guiMaterials;

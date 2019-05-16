@@ -55,9 +55,9 @@ void PanelState::Draw()
 		return;
 	}
 
-	if (App->scene->selected != nullptr && (ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation)))
+	if (App->scene->selected != nullptr && (ComponentAnimation*)(App->scene->selected->GetComponentOld(ComponentType::Animation)))
 	{
-		ComponentAnimation* compAnim = (ComponentAnimation*)(App->scene->selected->GetComponent(ComponentType::Animation));
+		ComponentAnimation* compAnim = (ComponentAnimation*)(App->scene->selected->GetComponentOld(ComponentType::Animation));
 		if (compAnim->stateMachine != nullptr)
 		{
 			DrawSM(compAnim->stateMachine, compAnim->GetEditorContext());
@@ -268,7 +268,11 @@ void PanelState::ShowTransitionMenu(ResourceStateMachine* stateMachine)
 		stateMachine->SetTransitionTrigger(contextLink, HashString(tName));
 
 		//Blend
-
+		float tBlend = stateMachine->GetTransitionBlend(contextLink);
+		if (ImGui::InputFloat("Blend", &tBlend))
+		{
+			stateMachine->SetTransitionBlend(contextLink, tBlend);
+		}
 
 		//delete
 		if (ImGui::MenuItem("Delete"))

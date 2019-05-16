@@ -13,15 +13,17 @@
 #define RESOURCES "Resources/"
 #define IMPORTED_RESOURCES RESOURCES "Imported/"
 #define IMPORTED_MATERIALS LIBRARY "Materials/"
+#define IMPORTED_ANIMATIONS LIBRARY "Animations/"
+#define IMPORTED_STATEMACHINES LIBRARY "StateMachines/"
 #define MATERIALS ASSETS "Materials/"
+#define STATEMACHINES ASSETS "StateMachines/"
+#define ANIMATIONS ASSETS "Animations/"
 #define MESHES LIBRARY "Meshes/"
-#define BONES LIBRARY "Animations/Bones/"
-#define STATEMACHINES LIBRARY "StateMachines/"
-#define ANIMATIONS LIBRARY "Animations/"
 #define TEXTURES LIBRARY "Textures/"
 #define SCENES ASSETS "Scenes/"
-
+#define IMPORTED_SCENES LIBRARY "Scenes/"
 #define AUDIOS "Audio/"
+
 #define TEMPORARY_SCENE "temporaryScene"
 
 #define SHADERS "Shaders/"
@@ -32,9 +34,10 @@
 #define FBXEXTENSION ".fbx"
 #define FBXCAPITAL ".FBX"
 #define MESHEXTENSION ".m3sh"
-#define BONEEXTENSION ".b0ne"
+#define SCENEEXTENSION ".sc3ne"
 #define ANIMATIONEXTENSION ".animati0n"
 #define STATEMACHINEEXTENSION ".st4tem4chine"
+
 #define PNG ".png"
 #define TIF	".tif"
 #define JPG	".jpg"
@@ -51,8 +54,8 @@
 #define MP3EXTENSION ".mp3"
 #define MP3CAPITAL ".MP3"
 
-#define CHECKERS "checkersTexture"
-#define NOCAMERA "nocamera"
+#define CHECKERS IMPORTED_RESOURCES "checkersTexture.dds"
+#define NOCAMERA IMPORTED_RESOURCES "nocamera.dds"
 
 enum class FILETYPE
 {
@@ -90,12 +93,13 @@ public:
 	bool MakeDirectory(const char* directory) const;
 	bool IsDirectory(const char* file) const;
 	std::vector<std::string> GetFolderContent(const char* dir, bool extension=true) const;								// Returns a vector with all the files and directories found on dir
-	void ListFolderContent(const char * dir, std::vector<std::string>& files, std::vector<std::string>& dirs) const;	// Saves all files found on dir on files vector and all directories on dirs vector
-	void ListFiles(const char* dir, std::set<std::string>& files);														// Saves all files found on dir and subdirs on a set
+	void ListFolderContent(const char * dir, std::vector<std::string>& files, std::vector<std::string>& dirs) const;	// Saves all file names found on dir on files vector and all directories on dirs vector
+	void ListFileNames(const char* dir, std::set<std::string>& files);														// Saves all file names found on dir and subdirs on a set
+	void ListFilesWithExtension(const char* dir, std::set<std::string>& files);											// Saves all files found on dir and subdirs on a set
 	bool CopyFromOutsideFS(const char* source, const char* destination) const;
 	bool Copy(const char* source, const char* destination, const char* file) const;
 	bool Move(const char * source, const char* file, const char* newFile) const;
-	void Rename(const char* route, const char* file, const char* newName) const;
+	bool Rename(const char* route, const char* file, const char* newName) const;
 	bool ChangeExtension(const char* source, const char* file, const char* newExtension) const;
 
 	int GetModTime(const char* file) const;

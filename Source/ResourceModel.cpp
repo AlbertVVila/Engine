@@ -5,10 +5,10 @@
 #include "ModuleResourceManager.h"
 
 #include "ResourceMesh.h"
+#include "ResourceScene.h"
 #include "ResourceAnimation.h"
 
 #include "JSON.h"
-
 #include "imgui.h"
 
 ResourceModel::ResourceModel(unsigned uid) : Resource(uid, TYPE::MODEL)
@@ -92,11 +92,15 @@ void ResourceModel::SaveMetafile(const char* file) const
 
 void ResourceModel::LoadConfigFromMeta()
 {
-	Resource::LoadConfigFromMeta();
-
-	char* data = nullptr;
 	std::string metaFile(file);
 	metaFile += ".meta";
+
+	// Check if meta file exists
+	if (!App->fsystem->Exists(metaFile.c_str()))
+		return;
+
+	char* data = nullptr;
+	unsigned oldUID = GetUID();
 
 	if (App->fsystem->Load(metaFile.c_str(), &data) == 0)
 	{
@@ -110,13 +114,18 @@ void ResourceModel::LoadConfigFromMeta()
 	numMeshes = value->GetUint("NumMeshes");
 	std::string name = App->fsystem->GetFilename(file);
 
+	// Update resource UID on resource list
+	App->resManager->ReplaceResource(oldUID, this);
+
 	for (int i = 0; i < numMeshes; ++i)
 	{
 		unsigned meshUID = value->GetUint(("Mesh" + std::to_string(i)).c_str());
 		ResourceMesh* mesh = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH, meshUID);
 		mesh->SetFile(file.c_str());
-		mesh->SetExportedFile((std::to_string(mesh->GetUID())).c_str());
-		mesh->name = name + "_" + std::to_string(i);
+
+		// Set Exported File
+		mesh->SetExportedFile((MESHES + std::to_string(mesh->GetUID()) + MESHEXTENSION).c_str());
+		mesh->SetName((name + "_" + std::to_string(i)).c_str());
 
 		meshList.push_back(mesh);
 	}
@@ -129,8 +138,8 @@ void ResourceModel::LoadConfigFromMeta()
 		unsigned animUID = value->GetUint(("Animation" + std::to_string(i)).c_str());
 		ResourceAnimation* anim = (ResourceAnimation*)App->resManager->CreateNewResource(TYPE::ANIMATION, animUID);
 		anim->SetFile(file.c_str());
-		anim->SetExportedFile((std::to_string(anim->GetUID())).c_str());
-		anim->name = name + "_" + std::to_string(i);
+		anim->SetExportedFile((IMPORTED_ANIMATIONS + std::to_string(anim->GetUID()) + ANIMATIONEXTENSION).c_str());
+		anim->SetName((name + "_" + std::to_string(i)).c_str());
 
 		animationList.push_back(anim);
 	}
@@ -140,11 +149,11 @@ void ResourceModel::LoadConfigFromMeta()
 bool ResourceModel::CheckImportedMeshes()
 {
 	std::set<std::string> importedMeshes;
-	App->fsystem->ListFiles(MESHES, importedMeshes);
+	App->fsystem->ListFilesWithExtension(MESHES, importedMeshes);
 
 	for each(auto mesh in meshList)
 	{
-		std::set<std::string>::iterator it = importedMeshes.find(std::to_string(mesh->GetUID()));
+		std::set<std::string>::iterator it = importedMeshes.find(mesh->GetExportedFile());
 		if (it == importedMeshes.end())
 		{
 			return true;
@@ -156,7 +165,7 @@ bool ResourceModel::CheckImportedMeshes()
 bool ResourceModel::CheckImportedAnimations()
 {
 	std::set<std::string> importedAnimations;
-	App->fsystem->ListFiles(MESHES, importedAnimations);
+	App->fsystem->ListFileNames(IMPORTED_ANIMATIONS, importedAnimations);
 
 	for each(auto anim in animationList)
 	{
@@ -214,19 +223,30 @@ void ResourceModel::AddAnimation(ResourceAnimation* anim)
 
 void ResourceModel::Rename(const char* newName)
 {
-	Resource::Rename(newName);
+	// Change name of the scene saved for the model
+	std::string sceneFile(App->fsystem->GetFilename(file.c_str()));
+	ResourceScene* scene = (ResourceScene*)App->resManager->GetByName(sceneFile.c_str(), TYPE::SCENE);
+	if(scene != nullptr)
+		scene->Rename(newName);
 
-	exportedFileName = newName;
+	Resource::Rename(newName);
 
 	for (int i = 0; i < meshList.size(); ++i)
 	{
 		std::string name(newName);
 		meshList[i]->Rename((name + "_" + std::to_string(i)).c_str());
+		meshList[i]->SetFile(file.c_str());		// Update file variable
 	}
 }
 
 void ResourceModel::Delete()
 {
+	// Delete scene saved for the model
+	std::string sceneFile(App->fsystem->GetFilename(file.c_str()));
+	ResourceScene* scene = (ResourceScene*)App->resManager->GetByName(sceneFile.c_str(), TYPE::SCENE);
+	if (scene != nullptr)
+		scene->Delete();
+
 	Resource::Delete();
 
 	// Delete all mesh files

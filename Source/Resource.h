@@ -3,7 +3,7 @@
 
 #include <string>
 
-struct JSON_value;
+class JSON_value;
 
 enum class TYPE
 {
@@ -43,10 +43,12 @@ public:
 	inline TYPE			GetType() const					{ return type; };
 	inline void			SetType(TYPE newType)			{ type = newType; }
 	inline unsigned		GetUID() const					{ return UID; };
+	inline const char*	GetName() const					{ return name.c_str(); }
+	inline void			SetName(const char* newName)	{ name = newName; }
 	inline const char*	GetFile() const					{ return file.c_str(); };
 	inline void			SetFile(const char* newFile)	{ file = newFile; };
-	inline const char*	GetExportedFile() const			{ return exportedFileName.c_str(); };
-	inline void			SetExportedFile(const char* newExportedFile) { exportedFileName = newExportedFile; };
+	inline const char*	GetExportedFile() const			{ return exportedFile.c_str(); };
+	inline void			SetExportedFile(const char* newExportedFile) { exportedFile = newExportedFile; };
 	inline bool			IsLoadedToMemory() const		{ return loaded > 0; };
 	inline unsigned		GetReferences() const			{ return loaded; };
 	void				SetReferences(unsigned references);
@@ -66,8 +68,9 @@ public:
 
 protected:
 	unsigned UID = 0u;
-	std::string file;				// The file located in /Assets/ (Path + filename + extension)
-	std::string exportedFileName;	// The name of the file located in /Library/
+	std::string name;				// Name for the asset (Asset filename by default)
+	std::string file;				// The file located in /Assets/ (Path in Assets + filename + extension)
+	std::string exportedFile;		// The file located in /Library/ (Path in Library + filename + extension)
 	unsigned loaded = 0;			// Number of times this resource is being used
 	bool engineUsed = false;		// True if the resource is used by default by the engine, false if it was added by the user
 

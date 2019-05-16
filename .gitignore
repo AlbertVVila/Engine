@@ -16,6 +16,7 @@
 [Rr]elease/
 [Rr]eleases/
 [Gg]ameBuild/
+[Gg]ameBuild [Dd]ebug/
 x64/
 x86/
 bld/
@@ -50,6 +51,7 @@ artifacts/
 *_p.c
 *_i.h
 *.ilk
+*.meta
 *.obj
 *.pch
 *.pdb
@@ -259,10 +261,12 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+
 /Game/Engine - Master 1.exe
 
-/Game/Library/Materials/
-#/Game/Library/Meshes/
-/Game/Library/Textures/
+/Game/Library/
 
 GameBuild/
+
+/Game/imgui.ini
+/Game/config.json
