@@ -7,6 +7,7 @@
 #include "ModuleTextures.h"
 #include "ModuleTime.h"
 #include "ModuleEditor.h"
+#include "ModuleWindow.h"
 
 #include "GameObject.h"
 #include "ComponentCamera.h"
@@ -72,7 +73,7 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 			return;
 		}
 		
-		if (ImGui::IsWindowHovered() || ImGui::IsWindowAppearing())
+		if (ImGui::IsMouseClicked(App->input->GetMouseButtonDown(KeyState::KEY_DOWN)) || ImGui::IsWindowAppearing())
 		{
 			ImGui::SetWindowFocus();
 		}
