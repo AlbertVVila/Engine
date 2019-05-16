@@ -63,8 +63,7 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 		ImGui::Begin(name.c_str(), &enabled, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoBringToFrontOnFocus);
 
 		//if the viewport is hidden, it is not rendered
-		hidden = ImGui::GetCurrentWindow()->Hidden;
-		if (hidden)
+		if (ImGui::GetCurrentWindow()->Hidden)
 		{
 			focus = false;
 			hover = false;
@@ -103,13 +102,11 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 		ImVec2 size = ImGui::GetWindowSize();
 
 		cam->SetAspect(size.x / size.y);
-
 		if (cam->aspectDirty)
 		{
 			App->renderer->OnResize();
 			CreateFrameBuffer(size.x, size.y);
 		}
-
 		current_width = size.x;
 		current_height = size.y;
 
@@ -117,8 +114,7 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 
 		App->renderer->Draw(*cam, current_width, current_height, isEditor);
 
-
-		if (isEditor)
+    if (isEditor)
 		{
 			for (GameObject* go : App->scene->selection)
 			{
@@ -134,6 +130,7 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 		ImGui::SetCursorPos({ 0,0 });
 		ImVec2 pos = ImGui::GetWindowPos();
 		winPos = reinterpret_cast<math::float2&>(pos);
+		
 
 		if (isEditor)
 		{

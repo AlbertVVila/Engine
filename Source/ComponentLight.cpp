@@ -57,10 +57,7 @@ ComponentLight::~ComponentLight()
 	//TODO: we should refactor DeleteFromSpacePartition to diferentiate 
 	// when deleting a component light or a component mesh because on removing component mesh
 	// we are also removing from light AABBTree!!
-	if (gameobject->treeNode != nullptr)
-	{
-		App->spacePartitioning->aabbTreeLighting.ReleaseNode(gameobject->treeNode);
-	}
+	App->spacePartitioning->aabbTreeLighting.ReleaseNode(gameobject->treeNode);
 }
 
 void ComponentLight::Update()

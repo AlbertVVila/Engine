@@ -53,6 +53,7 @@ public:
 	float zoomSpeed = 0.4f;
 
 	bool isMainCamera = false;
+	bool isMainClone = false;
 	float oldAspect = 0.f;
 	bool aspectDirty = false;
 

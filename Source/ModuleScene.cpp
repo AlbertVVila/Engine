@@ -121,11 +121,11 @@ update_status ModuleScene::PreUpdate()
 	}
 
 #ifndef GAME_BUILD
-	if (!App->renderer->viewScene->hidden)
+	if (maincamera == nullptr)
 	{
 		FrustumCulling(*App->camera->editorcamera->frustum);
 	}
-	else if(!App->renderer->viewGame->hidden && maincamera != nullptr)
+	else 
 	{
 		FrustumCulling(*maincamera->frustum);
 	}
