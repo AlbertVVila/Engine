@@ -280,6 +280,9 @@
     <ClCompile Include="Viewport.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
+    <ClCompile Include="ResourceScene.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
     <ClCompile Include="NodeEditor\Source\Editor.cpp" />
     <ClCompile Include="ComponentAudioListener.cpp">
       <Filter>Component</Filter>
@@ -383,9 +386,6 @@
     <ClCompile Include="NodeEditor\Source\NodeEditor.cpp">
       <Filter>Animation</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceStateMachine.cpp">
-      <Filter>Animation</Filter>
-    </ClCompile>
     <ClCompile Include="Recast\DebugUtils\DebugDraw.cpp" />
     <ClCompile Include="Recast\Recast\Recast.cpp">
       <Filter>Recast</Filter>
@@ -483,7 +483,8 @@
     <ClCompile Include="PanelNavigation.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
-    <ClCompile Include="DetourDebugInterface.cpp" />
+    <ClCompile Include="DetourDebugInterface.cpp">
+    </ClCompile>
     <ClCompile Include="BaseScript.cpp">
       <Filter>Component</Filter>
     </ClCompile>
@@ -491,6 +492,9 @@
       <Filter>SoLoud</Filter>
     </ClCompile>
     <ClCompile Include="imgui_color_gradient.cpp" />
+    <ClCompile Include="ResourceStateMachine.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -871,6 +875,9 @@
     <ClInclude Include="HashString.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="ResourceScene.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
     <ClInclude Include="ResourceModel.h">
       <Filter>Resources</Filter>
     </ClInclude>
@@ -1004,9 +1011,6 @@
     <ClInclude Include="NodeEditor\Include\NodeEditor.h">
       <Filter>Animation</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceStateMachine.h">
-      <Filter>Animation</Filter>
-    </ClInclude>
     <ClInclude Include="Recast\DebugUtils\DebugDraw.h" />
     <ClInclude Include="Recast\Recast\Recast.h">
       <Filter>Recast</Filter>
@@ -1100,6 +1104,9 @@
       <Filter>SoLoud</Filter>
     </ClInclude>
     <ClInclude Include="imgui_color_gradient.h" />
+    <ClInclude Include="ResourceStateMachine.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GeoLib">
@@ -1208,6 +1215,18 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\Game\Shaders\VertexShaders\Trail.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\FragmentShaders\PostProcess.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\VertexShaders\PostProcess.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\FragmentShaders\DebugNav.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\VertexShaders\DebugNav.vs">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

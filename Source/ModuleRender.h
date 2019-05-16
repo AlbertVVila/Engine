@@ -1,6 +1,8 @@
 #ifndef __ModuleRender_h__
 #define __ModuleRender_h__
 
+#define MAX_KERNEL_RADIUS 100
+
 #include "Module.h"
 #include "Math/float3.h"
 #include "MathGeoLib/include/Geometry/Frustum.h"
@@ -41,13 +43,17 @@ public:
 private:
 
 	void DrawGizmos(const ComponentCamera &cam) const;
+	void DrawDebugMesh() const;
 	void SetViewUniform(const ComponentCamera &camera) const;
 	void SetProjectionUniform(const ComponentCamera &camera) const;
 	void InitSDL();
 	void InitOpenGL() const;
 	void ComputeShadows();
-	void ShadowVolumeDrawDebug();
+	void ShadowVolumeDrawDebug() const;
 	void BlitShadowTexture();
+	void CreatePostProcessFramebuffer();
+	inline float Gaussian(float x, float mu, float sigma);
+	void ComputeBloomKernel();
 
 public:
 	void* context = nullptr;
@@ -75,6 +81,9 @@ public:
 	unsigned shadowsTex = 0u;
 	std::unordered_set<ComponentRenderer*> shadowCasters;
 
+	unsigned highlightBufferGame = 0u;
+	unsigned brightnessBufferGame = 0u;
+	unsigned renderedSceneGame = 0u;
 
 private:
 	unsigned UBO = 0;
@@ -94,12 +103,24 @@ private:
 	float shadowVolumeHeightHalf;
 	float shadowVolumeLength;
 
-
 	unsigned shadowsFBO = 0u;
-
+	   
 	bool shadowVolumeRendered = false;
 	
 	Shader* shadowsShader = nullptr;
+	Shader* postProcessShader = nullptr;
+
+	unsigned postprocessFBO = 0u;
+	unsigned postprocessRBO = 0u;
+	unsigned postprocessVAO = 0u;
+	unsigned postprocessVBO = 0u;
+	unsigned postprocessEBO = 0u;
+
+	float gammaCorrector = 2.2f;
+	float exposure = 1.0f;
+	float bloomSpread = 80.f;
+	int kernelRadius = 10;
+	float* kernel = nullptr;
 };
 
 #endif /* __ModuleRender_h__ */

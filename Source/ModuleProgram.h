@@ -5,8 +5,10 @@
 #include <string>
 #include <map>
 #define DEFAULTPROGRAM "Default"
-#define PBR_VARIATIONS 3
+#define PBR_VARIATIONS 4
 #define SHADOW_VARIATIONS 2
+#define POSTPRO_VARIATIONS 4
+#define SKYBOX_VARIATIONS 2
 
 struct Shader
 {
@@ -25,7 +27,8 @@ public:
 	enum class PBR_Variations
 	{
 		SKINNED					= 1 << 0,
-		SHADOWS_ENABLED			= 1 << 1
+		SHADOWS_ENABLED			= 1 << 1,
+		EDITOR_RENDER			= 1 << 2
 	};
 
 	enum class Shadows_Variations
@@ -33,13 +36,36 @@ public:
 		SKINNED = 1 << 0
 	};
 
-	const char* PBRDefines[PBR_VARIATIONS] = {
-		"#define SKINNED\n",		//Skinned
-		"#define SHADOWS_ENABLED\n"
+	enum class Postprocess_Variations
+	{
+		BLOOM_X5				= 1 << 0,
+		BLOOM_X10				= 1 << 1,
+		BLOOM_X15				= 1 << 2
 	};
 
-	const char* ShadowDefines[PBR_VARIATIONS] = {
+	enum class Skybox_Variations
+	{
+		EDITOR_RENDER			= 1 << 0
+	};
+
+	const char* PBRDefines[PBR_VARIATIONS] = {
 		"#define SKINNED\n",		//Skinned
+		"#define SHADOWS_ENABLED\n",
+		"#define IS_EDITOR\n"
+	};
+
+	const char* ShadowDefines[SHADOW_VARIATIONS] = {
+		"#define SKINNED\n",		//Skinned
+	};
+
+	const char* PostProcessDefines[POSTPRO_VARIATIONS] = {
+		"#define BLOOM_X5\n",
+		"#define BLOOM_X10\n",
+		"#define BLOOM_X15\n"
+	};
+
+	const char* SkyboxDefines[SKYBOX_VARIATIONS] = {
+		"#define IS_EDITOR\n"
 	};
 
 	ModuleProgram();

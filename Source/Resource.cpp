@@ -14,8 +14,9 @@ Resource::Resource(unsigned uid, TYPE type): UID(uid), type(type)
 Resource::Resource(const Resource& resource)
 {
 	UID = App->resManager->GenerateNewUID();
+	name = resource.name;
 	file = resource.file;
-	exportedFileName = resource.exportedFileName;
+	exportedFile = resource.exportedFile;
 	loaded = resource.loaded;
 	engineUsed = resource.engineUsed;
 	type = resource.type;
@@ -29,7 +30,8 @@ Resource::~Resource()
 void Resource::Copy(const Resource& resource)
 {
 	file = resource.file;
-	exportedFileName = resource.exportedFileName;
+	name = resource.name;
+	exportedFile = resource.exportedFile;
 	SetReferences(resource.loaded);
 	engineUsed = resource.engineUsed;
 	type = resource.type;
@@ -55,18 +57,37 @@ void Resource::Rename(const char* newName)
 	std::string fileInAssets = App->fsystem->GetFile(file);
 	std::string extension = App->fsystem->GetExtension(file);
 
+	//TODO RM: Add CheckNameAvailability
+	name = newName;
+
 	// Rename file in Assets
-	App->fsystem->Rename(ruteToFile.c_str(), fileInAssets.c_str(), newName);
+	if (type != TYPE::MESH && !fileInAssets.empty())
+	{ 
+		App->fsystem->Rename(ruteToFile.c_str(), fileInAssets.c_str(), newName);
 
-	// Rename meta file in Assets
-	std::string newMeta(newName);
-	newMeta += extension;
-	App->fsystem->Rename(ruteToFile.c_str(), (fileInAssets + ".meta").c_str(), newMeta.c_str());
-
+		// Rename meta file in Assets
+		std::string newMeta(newName);
+		newMeta += extension;
+		App->fsystem->Rename(ruteToFile.c_str(), (fileInAssets + ".meta").c_str(), newMeta.c_str());
+	}
 	// Update file variable
 	file = ruteToFile + newName + extension;
 
-	// Rename of file in Library and update of exportedFileName is called on child class
+	std::string ruteToExportedFile = App->fsystem->GetFilePath(exportedFile);
+	std::string fileInLibrary = App->fsystem->GetFile(exportedFile);
+	std::string exportedExtension = App->fsystem->GetExtension(exportedFile);
+
+	if (type != TYPE::MESH && type != TYPE::ANIMATION && type != TYPE::STATEMACHINE)
+	{
+		if (type != TYPE::MODEL) 
+		{
+			// Rename of file in Library
+			App->fsystem->Rename(ruteToExportedFile.c_str(), fileInLibrary.c_str(), newName);
+		}
+
+		// Update exportedFile variable
+		exportedFile = (ruteToExportedFile + newName + exportedExtension).c_str();
+	}
 }
 
 void Resource::Delete()
@@ -80,7 +101,9 @@ void Resource::Delete()
 	// Delete meta file in Assets
 	App->fsystem->Delete((file + ".meta").c_str());
 
-	// Deletion of file in Library is called on child class
+	// Delete file in Library
+	App->fsystem->Delete(exportedFile.c_str());
+	DeleteFromMemory();
 }
 
 void Resource::DrawImportConfiguration()

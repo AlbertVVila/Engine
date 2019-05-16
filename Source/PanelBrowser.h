@@ -25,9 +25,13 @@ private:
 	void DrawFolderIcon(const char* dir, int itemNumber);
 	void DrawFileIcon(const char* file, int itemNumber);
 
+	void DrawBrowserContextMenu();
 	void DrawFileContextMenu();
+	void DrawFolderContextMenu();
 	void DrawImportConfigurationPopUp();
-	void DrawRenamePopUp();
+	void DrawRenameFilePopUp();
+	void DrawRenameFolderPopUp();
+	void DrawNewFolderPopUp();
 
 public:
 	bool folderContentDirty = true;
@@ -35,16 +39,20 @@ public:
 private:
 	std::string path;
 	std::stack<std::string> pathStack;
-	std::vector<std::string> files;		// List of the files in current path
-	std::vector<std::string> dirs;		// List of the folders in current path
+	std::vector<std::string> files;			// List of the files in current path
+	std::vector<std::string> dirs;			// List of the folders in current path
 
 	bool openImportConfigPopUp = false;
-	bool openRenamePopUp = false;
+	bool openRenameFilePopUp = false;
+	bool openRenameFolderPopUp = false;
+	bool openNewFolderPopUp = false;
 
 	Resource* fileSelected = nullptr;
+	std::string folderSelected = "";
 
 	// Rename variables
-	char newName[MAX_FILENAME] = "";				// Aux string for rename
+	char newFileName[MAX_FILENAME] = "";	// Aux string for rename file
+	char newFolderName[MAX_FILENAME] = "";	// Aux string for rename folder
 	bool invalidName = false;
 
 	// Icons
@@ -58,6 +66,9 @@ private:
 	ResourceTexture* ddsIcon;
 	ResourceTexture* m4tIcon;
 	ResourceTexture* jsonIcon;
+	ResourceTexture* sc3neIcon;
+	ResourceTexture* animati0nIcon;
+	ResourceTexture* st4tem4chineIcon;
 };
 
 #endif //__PanelBrowser_h__
