@@ -113,10 +113,9 @@ void ComponentBoxTrigger::DrawProperties()
 void ComponentBoxTrigger::Update()
 {
 	if (!enabled) return;
-
-	box_trigger->axis[0] = gameobject->transform->global.MulDir(gameobject->transform->right);
-	box_trigger->axis[1] = gameobject->transform->global.MulDir(gameobject->transform->up);
-	box_trigger->axis[2] = gameobject->transform->global.MulDir(gameobject->transform->front);
+	box_trigger->axis[0] = gameobject->transform->right;
+	box_trigger->axis[1] = gameobject->transform->up;
+	box_trigger->axis[2] = gameobject->transform->front;
 	box_trigger->pos = gameobject->transform->global.MulPos(position);
 
 	std::vector<const ComponentBoxTrigger*> to_remove;
