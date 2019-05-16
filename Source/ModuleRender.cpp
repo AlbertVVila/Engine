@@ -361,7 +361,7 @@ void ModuleRender::OnResize()
 	glViewport(0, 0, App->window->width, App->window->height);
 #ifndef GAME_BUILD
 	App->camera->editorcamera->SetAspect((float)viewScene->current_width / (float)viewScene->current_height);
-	if (App->scene->maincamera != nullptr && viewGame->current_width != 0 && viewGame->current_height!=0)
+	if (App->scene->maincamera != nullptr/* && viewGame->current_width != 0 && viewGame->current_height!=0*/)
 	{
 		App->scene->maincamera->SetAspect((float)viewGame->current_width / (float)viewGame->current_height);
 	}
