@@ -79,6 +79,13 @@ public:
 	float attackTimer = 0.0f;
 	ComponentAnimation* anim = nullptr;
 	PlayerState* currentState = nullptr;
+public:
+
+	float dashDuration = 1.f;
+	float firstAttackDuration = 1.f;
+	float secondAttackDuration = 1.f;
+	float thirdAttackDuration = 1.f;
+	float uppercutDuration = 1.f;
 
 	Application* Appl = nullptr;
 private:
