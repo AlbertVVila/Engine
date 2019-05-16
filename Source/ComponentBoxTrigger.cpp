@@ -211,14 +211,18 @@ void ComponentBoxTrigger::RemoveOverlap(const ComponentBoxTrigger * other)
 void ComponentBoxTrigger::Save(JSON_value * value) const
 {
 	Component::Save(value);
-	value->AddFloat3("pos", box_trigger->pos);
-	value->AddFloat3("r", box_trigger->r);
+	value->AddFloat3("pos", position);
+	value->AddFloat3("r", size);
+	value->AddInt("is_player", is_player ? 1 : 0);
 }
 
 void ComponentBoxTrigger::Load(JSON_value * value)
 {
-	box_trigger->pos = value->GetFloat3("pos");
-	box_trigger->r = value->GetFloat3("r");
+	Component::Load(value);
+	position = value->GetFloat3("pos");
+	size = value->GetFloat3("r");
+	box_trigger->r = size;
+	is_player = (value->GetInt("is_player") > 0);
 }
 
 void ComponentBoxTrigger::PropagateState(GameObject * other, Overlap_State state)
