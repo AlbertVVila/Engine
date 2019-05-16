@@ -383,6 +383,10 @@ void ComponentParticles::Save(JSON_value* value) const
 
 	value->AddFloat3("defaultColor", particleColor);
 
+	PMSizeOverTime* SOTAux = (PMSizeOverTime*)modules[0];
+	value->AddFloat4("bezier14", float4(SOTAux->v[0], SOTAux->v[1], SOTAux->v[2], SOTAux->v[3]));
+	value->AddFloat("bezier5", float(SOTAux->v[4]));
+
 	PMColorOverTime* COTAux = (PMColorOverTime*)modules[1];
 	std::list<ImGradientMark*> marks = COTAux->Imgradient->getMarks();
 
@@ -485,6 +489,13 @@ void ComponentParticles::Load(JSON_value* value)
 
 	particleColor = value->GetFloat3("defaultColor");
 
+	PMSizeOverTime* SOTAux = (PMSizeOverTime*)modules[0];
+	SOTAux->v[0] = value->GetFloat4("bezier14").x;
+	SOTAux->v[1] = value->GetFloat4("bezier14").y;
+	SOTAux->v[2] = value->GetFloat4("bezier14").z;
+	SOTAux->v[3] = value->GetFloat4("bezier14").w;
+	SOTAux->v[4] = value->GetFloat("bezier5");
+
 	PMColorOverTime* COTAux = (PMColorOverTime*)modules[1];
 	COTAux->Imgradient->clearMarks();
 	COTAux->Imgradient->addMark(value->GetFloat("color1Position"), ImColor(value->GetFloat3("color1").x, value->GetFloat3("color1").y, value->GetFloat3("color1").z, 1.f));
@@ -492,6 +503,8 @@ void ComponentParticles::Load(JSON_value* value)
 
 	COTAux->Imgradient->addAlphaMark(value->GetFloat("alpha1Position"), value->GetFloat("alpha1"));
 	COTAux->Imgradient->addAlphaMark(value->GetFloat("alpha2Position"), value->GetFloat("alpha2"));
+
+
 
 }
 
