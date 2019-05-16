@@ -18,6 +18,18 @@ class EnemyControllerScript;
 class JSON_value;
 enum class EnemyState;
 
+enum class EnemyState
+{
+	WAIT,
+	SHOW_UP,
+	CHASE,
+	RETURN,
+	HIDE,
+	ATTACK,
+	COOLDOWN,
+	DEAD
+};
+
 class BasicEnemyAIScript_API BasicEnemyAIScript : public Script
 {
 public:
@@ -43,6 +55,9 @@ private:
 	void CheckStateChange(EnemyState previous, EnemyState newState);
 
 private:
+
+	EnemyState enemyState = EnemyState::WAIT;
+
 	// Wait variables
 	float activationDistance = 100.0f;	// Distance to player needed to start chasing the player (only X,Z axis is taken into account)
 

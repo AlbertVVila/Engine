@@ -13,18 +13,6 @@
 
 class ComponentRenderer;
 
-enum class EnemyState
-{
-	WAIT,
-	STANDUP,
-	CHASE,
-	RETURN,
-	LAYDOWN,
-	ATTACK,
-	COOLDOWN,
-	DEAD
-};
-
 class EnemyControllerScript_API EnemyControllerScript : public Script
 {
 	void Start() override;
@@ -36,6 +24,7 @@ class EnemyControllerScript_API EnemyControllerScript : public Script
 
 public:
 	void TakeDamage(unsigned damage);
+	int GetHealth() const { return health; }
 
 public:
 	GameObject* player = nullptr;
@@ -47,8 +36,6 @@ public:
 	// BBoxes
 	math::AABB* myBbox = nullptr;
 	math::AABB* playerBbox = nullptr;
-
-	EnemyState enemyState = EnemyState::WAIT;
 
 private:
 	int health = 100;
