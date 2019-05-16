@@ -87,7 +87,11 @@ void ComponentParticles::DrawProperties()
 				App->resManager->DeleteResource(imageUID);
 				texture = nullptr;
 			}
+<<<<<<< HEAD
 			return;
+=======
+			textureName = None;
+>>>>>>> parent of eb685de5... Revert "Merge remote-tracking branch 'origin/develop' into FEATURE/ParticleEmisorsMarc"
 		}
 
 		ImGui::PushID(this);
@@ -100,9 +104,14 @@ void ComponentParticles::DrawProperties()
 			{
 				if (texture != nullptr)
 				{
+<<<<<<< HEAD
 					unsigned imageUID = App->resManager->FindByName(textureName.c_str(), TYPE::TEXTURE);
 					App->resManager->DeleteResource(imageUID);
 					texture = nullptr;
+=======
+					App->resManager->DeleteResource(App->resManager->FindByName(textureName.c_str(), TYPE::TEXTURE));
+					texture = (ResourceTexture*)App->resManager->GetByName(textureName.c_str(), TYPE::TEXTURE);
+>>>>>>> parent of eb685de5... Revert "Merge remote-tracking branch 'origin/develop' into FEATURE/ParticleEmisorsMarc"
 				}
 				textureName = None;
 			}
