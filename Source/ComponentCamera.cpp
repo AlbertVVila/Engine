@@ -37,7 +37,6 @@ ComponentCamera::ComponentCamera(const ComponentCamera & component) : Component(
 	movementSpeed = component.movementSpeed;
 	rotationSpeed = component.rotationSpeed;
 	zoomSpeed = component.zoomSpeed;
-	isMainClone = component.isMainCamera;
 }
 
 
@@ -265,7 +264,7 @@ void ComponentCamera::DrawProperties()
 
 void ComponentCamera::SetAsMain()
 {
-	if (App->scene->maincamera != nullptr)
+	if (App->scene->maincamera != nullptr && App->scene->maincamera != this)
 	{
 		App->scene->maincamera->isMainCamera = false;
 	}
