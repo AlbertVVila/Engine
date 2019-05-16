@@ -102,7 +102,6 @@ void ComponentParticles::DrawProperties()
 				{
 					App->resManager->DeleteResource(App->resManager->FindByName(textureName.c_str(), TYPE::TEXTURE));
 					texture = (ResourceTexture*)App->resManager->GetByName(textureName.c_str(), TYPE::TEXTURE);
-					texture = nullptr;
 				}
 				textureName = None;
 			}
