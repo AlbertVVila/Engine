@@ -34,8 +34,7 @@ ComponentParticles::ComponentParticles(const ComponentParticles& component) : Co
 	textureName = component.textureName;
 	if (textureName != "None Selected")
 	{
-		unsigned imageUID = App->resManager->FindByExportedFile(textureName.c_str());
-		texture = (ResourceTexture*)App->resManager->Get(imageUID);
+		texture = (ResourceTexture*)App->resManager->GetByName(textureName.c_str(), TYPE::TEXTURE);
 	}
 	xTiles = component.xTiles;
 	yTiles = component.yTiles;
@@ -82,7 +81,13 @@ void ComponentParticles::DrawProperties()
 		bool removed = Component::DrawComponentState();
 		if (removed)
 		{
-			return;
+			if (texture != nullptr)
+			{
+				unsigned imageUID = App->resManager->FindByName(textureName.c_str(), TYPE::TEXTURE);
+				App->resManager->DeleteResource(imageUID);
+				texture = nullptr;
+			}
+			textureName = None;
 		}
 
 		ImGui::PushID(this);
@@ -95,9 +100,8 @@ void ComponentParticles::DrawProperties()
 			{
 				if (texture != nullptr)
 				{
-					unsigned imageUID = App->resManager->FindByExportedFile(textureName.c_str());
-					App->resManager->DeleteResource(imageUID);
-					texture = nullptr;
+					App->resManager->DeleteResource(App->resManager->FindByName(textureName.c_str(), TYPE::TEXTURE));
+					texture = (ResourceTexture*)App->resManager->GetByName(textureName.c_str(), TYPE::TEXTURE);
 				}
 				textureName = None;
 			}
@@ -466,7 +470,7 @@ void ComponentParticles::Load(JSON_value* value)
 	textureName = std::string(value->GetString("textureName"));
 	if (textureName != "None Selected")
 	{
-		texture = (ResourceTexture*)App->resManager->Get(textureName.c_str());
+		texture = (ResourceTexture*)App->resManager->GetByName(textureName.c_str(), TYPE::TEXTURE);
 	}
 	lifetime = value->GetFloat2("lifetime");
 	speed = value->GetFloat2("speed");
