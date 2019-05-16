@@ -7,6 +7,7 @@
 #include "Math/float2.h"
 #include "Math/float4x4.h"
 #include "Math/Quat.h"
+#include "Math/float4.h"
 
 #include <queue>
 #include <vector>
@@ -19,7 +20,6 @@ class ParticleModule;
 
 struct Particle
 {
-	~Particle() { delete[] color; };
 	float speed = 1.f;
 
 	math::float3 position = math::float3::zero;
@@ -29,7 +29,7 @@ struct Particle
 
 	float totalLifetime = .0f;
 	float lifeTimer = totalLifetime;
-	float* color = new float[4];
+	math::float4 color;
 	
 };
 
@@ -98,7 +98,7 @@ private:
 	math::float2 particleSize = math::float2(1.f * App->renderer->current_scale, 1.f * App->renderer->current_scale) ;
 	float quadEmitterSize = 10.f * App->renderer->current_scale;
 	float sphereEmitterRadius = 5.f * App->renderer->current_scale;
-	math::float3 particleColor = math::float3::one;
+	math::float4 particleColor = math::float4::one;
 	math::float3 pDir = math::float3(-1.f, 0.f, 0.f);
 
 	bool directionNoise = false;

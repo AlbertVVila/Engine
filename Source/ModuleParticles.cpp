@@ -293,7 +293,7 @@ void ModuleParticles::DrawParticleSystem(ComponentParticles* cp, const Component
 			memcpy(matrices, &cp->particles.front()->global.Col(2), sizeof(float) * 4); matrices += 4;
 			memcpy(matrices, &cp->particles.front()->global.Col(3), sizeof(float) * 4); matrices += 4;
 
-			memcpy(matrices, cp->particles.front()->color, sizeof(float) * 4); matrices += 4;
+			memcpy(matrices, &cp->particles.front()->color, sizeof(float) * 4); matrices += 4;
 
 			cp->particles.push_back(cp->particles.front());
 		}

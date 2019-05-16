@@ -48,6 +48,7 @@
 #pragma once
 
 #include "imgui.h"
+#include "Math/float4.h"
 
 #include <list>
 
@@ -65,6 +66,7 @@ public:
     ~ImGradient();
     
     void getColorAt(float position, float* color) const;
+	void getColorAt(float position, float4 &color) const;
     ImGradientMark* addMark(float position, ImColor const color);
     ImGradientMark* addAlphaMark(float position, float alpha);
     void removeMark(ImGradientMark* mark);

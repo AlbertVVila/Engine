@@ -84,7 +84,16 @@ void ImGradient::getColorAt(float position, float* color) const
     color[2] = m_cachedValues[cachePos+2];
     color[3] = m_cachedValues[cachePos+3];
 }
-
+void ImGradient::getColorAt(float position, float4 &color) const
+{
+	position = ImClamp(position, 0.0f, 1.0f);
+	int cachePos = int(position * 255);
+	cachePos *= 4;
+	color[0] = m_cachedValues[cachePos + 0];
+	color[1] = m_cachedValues[cachePos + 1];
+	color[2] = m_cachedValues[cachePos + 2];
+	color[3] = m_cachedValues[cachePos + 3];
+}
 void ImGradient::computeColorAt(float position, float* color) const
 {
     position = ImClamp(position, 0.0f, 1.0f);

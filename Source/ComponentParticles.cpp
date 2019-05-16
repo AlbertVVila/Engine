@@ -295,6 +295,9 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 			}
 			p->lifeTimer = p->totalLifetime;
 
+			// P color
+			p->color = particleColor;
+
 			//P size
 			float random = (float)rand() / (float) RAND_MAX;
 			float diff = abs(particleSize.y - particleSize.x);
@@ -322,12 +325,7 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 			particles.front()->direction.Normalize();
 		}
 		float sizeOT = particles.front()->size;
-		float* newColor = new float[4];
-		float* defaultColor = new float[4];
-		defaultColor[0] = particleColor[0];
-		defaultColor[1] = particleColor[1];
-		defaultColor[2] = particleColor[2];
-		defaultColor[3] = 1.f;
+		float4 newColor;
 
 		for (ParticleModule* pm : modules)
 		{
@@ -342,7 +340,7 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 			case ParticleModule::ParticleModulesType::COLOR_OVER_TIME:
 
 				if (pm->enabled) ((PMColorOverTime*)pm)->Imgradient->getColorAt(1.f - currentTimeOverTotal, newColor);
-				else newColor = defaultColor;
+				else newColor = particleColor;
 				break;
 			}
 			
@@ -373,7 +371,7 @@ void ComponentParticles::Save(JSON_value* value) const
 	value->AddFloat2("size", particleSize);
 	value->AddFloat("quadEmitterSize", quadEmitterSize);
 	value->AddFloat("sphereEmitterRadius", sphereEmitterRadius);
-	value->AddFloat3("particleColor", particleColor);
+	value->AddFloat4("particleColor", particleColor);
 	value->AddInt("directionNoise", directionNoise);
 	value->AddInt("directionNoiseProbability", directionNoiseProbability);
 	value->AddInt("directionNoiseTotalProbability", directionNoiseTotalProbability);
@@ -381,7 +379,7 @@ void ComponentParticles::Save(JSON_value* value) const
 	value->AddInt("sizeOT", sizeOTCheck);
 	value->AddInt("colorOT", colorOTCheck);
 
-	value->AddFloat3("defaultColor", particleColor);
+	value->AddFloat4("defaultColor", particleColor);
 
 	PMSizeOverTime* SOTAux = (PMSizeOverTime*)modules[0];
 	value->AddFloat4("bezier14", float4(SOTAux->v[0], SOTAux->v[1], SOTAux->v[2], SOTAux->v[3]));
@@ -478,7 +476,7 @@ void ComponentParticles::Load(JSON_value* value)
 	particleSize = value->GetFloat2("size");
 	quadEmitterSize = value->GetFloat("quadEmitterSize");
 	sphereEmitterRadius = value->GetFloat("sphereEmitterRadius");
-	particleColor = value->GetFloat3("particleColor");
+	particleColor = value->GetFloat4("particleColor");
 	directionNoise = value->GetInt("directionNoise");
 	directionNoiseProbability = value->GetInt("directionNoiseProbability");
 	directionNoiseTotalProbability = MAX(value->GetInt("directionNoiseTotalProbability"), 1);
@@ -487,7 +485,7 @@ void ComponentParticles::Load(JSON_value* value)
 	modules[0]->enabled = value->GetInt("sizeOT");
 	modules[1]->enabled = value->GetInt("colorOT");
 
-	particleColor = value->GetFloat3("defaultColor");
+	particleColor = value->GetFloat4("defaultColor");
 
 	PMSizeOverTime* SOTAux = (PMSizeOverTime*)modules[0];
 	SOTAux->v[0] = value->GetFloat4("bezier14").x;
