@@ -80,7 +80,7 @@ void ComponentParticles::DrawProperties()
 		{
 			if (texture != nullptr)
 			{
-				unsigned imageUID = App->resManager->FindByExportedFile(textureName.c_str());
+				unsigned imageUID = App->resManager->FindByName(textureName.c_str(), TYPE::TEXTURE);
 				App->resManager->DeleteResource(imageUID);
 				texture = nullptr;
 			}
@@ -96,10 +96,9 @@ void ComponentParticles::DrawProperties()
 			bool is_selected = (textureName == textureFiles[n]);
 			if (ImGui::Selectable(textureFiles[n].c_str(), is_selected) && !is_selected)
 			{
-				App->resManager->DeleteResource(App->resManager->FindByExportedFile(textureName.c_str()));
+				App->resManager->DeleteResource(App->resManager->FindByName(textureName.c_str(), TYPE::TEXTURE));
 				textureName = textureFiles[n].c_str();
-				unsigned imageUID = App->resManager->FindByExportedFile(textureName.c_str());
-				texture = (ResourceTexture*)App->resManager->Get(imageUID);
+				texture = (ResourceTexture*)App->resManager->GetByName(textureName.c_str(), TYPE::TEXTURE);
 			}
 			if (is_selected)
 				ImGui::SetItemDefaultFocus();
@@ -288,7 +287,7 @@ void ComponentParticles::Load(JSON_value* value)
 	textureName = std::string(value->GetString("textureName"));
 	if (textureName != "None Selected")
 	{
-		texture = (ResourceTexture*)App->resManager->Get(textureName.c_str());
+		texture = (ResourceTexture*)App->resManager->GetByName(textureName.c_str(), TYPE::TEXTURE);
 	}
 	lifetime = value->GetFloat2("lifetime");
 	speed = value->GetFloat2("speed");
