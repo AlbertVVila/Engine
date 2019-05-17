@@ -279,8 +279,17 @@ void ComponentCamera::Save(JSON_value* value) const
 	value->AddFloat("ZoomSpeed", zoomSpeed);
 	value->AddFloat("Znear", frustum->nearPlaneDistance);
 	value->AddFloat("Zfar", frustum->farPlaneDistance);
-	value->AddFloat("vFOV", frustum->verticalFov);
-	value->AddFloat("hFOV", frustum->horizontalFov);
+
+	if (!IsNan(frustum->verticalFov))
+		value->AddFloat("vFOV", frustum->verticalFov);
+	else
+		value->AddFloat("vFOV", 0.0f);
+
+	if(!IsNan(frustum->horizontalFov))
+		value->AddFloat("hFOV", frustum->horizontalFov);
+	else
+		value->AddFloat("hFOV", 0.0f);
+
 	value->AddFloat3("Position", frustum->pos);
 	value->AddFloat3("Front", frustum->front);
 	value->AddFloat3("Up", frustum->up);
