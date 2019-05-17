@@ -77,7 +77,7 @@ void Resource::Rename(const char* newName)
 	std::string fileInLibrary = App->fsystem->GetFile(exportedFile);
 	std::string exportedExtension = App->fsystem->GetExtension(exportedFile);
 
-	if (type != TYPE::MESH && type != TYPE::ANIMATION && type != TYPE::STATEMACHINE)
+	if (type != TYPE::MESH && type != TYPE::ANIMATION && type != TYPE::STATEMACHINE && type != TYPE::TEXTURE && type != TYPE::SKYBOX)
 	{
 		if (type != TYPE::MODEL) 
 		{

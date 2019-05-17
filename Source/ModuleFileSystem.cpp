@@ -476,7 +476,8 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 			else
 			{
 				stat((currentFolder + file).c_str(), &statFile);
-				stat((currentFolder + file + METAEXT).c_str(), &statMeta);
+				std::string metaFile(currentFolder + file + METAEXT);
+				stat(metaFile.c_str(), &statMeta);
 
 				// Model has to check also Meshes and Animations
 				FILETYPE type = GetFileType(GetExtension(file));
@@ -492,7 +493,7 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 						ResourceModel* res = (ResourceModel*)App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::MODEL);
 						res->LoadConfigFromMeta();
 
-						// Check if the meshes adn animations inside ResourceModel are imported
+						// Check if the meshes and animations inside ResourceModel are imported
 						if (res->CheckImportedMeshes())
 							filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
 
@@ -503,8 +504,32 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 				}
 				else if (type != FILETYPE::NONE && type != FILETYPE::AUDIO) // TODO:: Include State machines and Animations	
 				{
-					std::set<std::string>::iterator it = importedResources.find(RemoveExtension(file));
-					if (it == importedResources.end() || statFile.st_mtime > statMeta.st_mtime)
+					bool import = false;
+					unsigned uid = 0u;
+					//std::set<std::string>::iterator it = importedResources.find(RemoveExtension(file));
+					if (statFile.st_mtime > statMeta.st_mtime)
+					{
+						import = true;
+					}
+					else
+					{
+						// Read UID from meta fle
+						uid = App->resManager->GetUIDFromMeta(metaFile.c_str(), type);
+						if (uid != 0)
+						{
+							std::set<std::string>::iterator it = importedResources.find(std::to_string(uid));
+							if (it == importedResources.end())
+							{
+								std::set<std::string>::iterator it = importedResources.find(RemoveExtension(file));
+								if (it == importedResources.end())
+								{
+									import = true;
+								}
+							}
+						}
+					}
+
+					if (import)
 					{
 						// File modified or not imported, send it to import
 						filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));

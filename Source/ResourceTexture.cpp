@@ -296,6 +296,7 @@ void ResourceTexture::LoadConfigFromMeta()
 
 	// Update resource UID on resource list
 	App->resManager->ReplaceResource(oldUID, this);
+	exportedFile = TEXTURES + std::to_string(UID) + TEXTUREEXT;
 
 	dxtFormat = (DXT)value->GetInt("DX compresion");
 
