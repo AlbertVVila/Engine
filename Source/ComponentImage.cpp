@@ -125,7 +125,7 @@ void ComponentImage::UpdateTexturesList()
 void ComponentImage::Save(JSON_value *value)const
 {
 	Component::Save(value);
-	value->AddUint("textureUID", texture->GetUID());
+	value->AddUint("textureUID", (texture != nullptr) ? texture->GetUID() : 0u);
 	value->AddFloat4("color", color);
 	value->AddInt("FlipVertical", flipVertical);
 	value->AddInt("FlipHorizontal", flipHorizontal);

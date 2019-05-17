@@ -363,7 +363,7 @@ void ComponentParticles::Save(JSON_value* value) const
 	value->AddInt("xTiles", xTiles);
 	value->AddInt("yTiles", yTiles);
 	value->AddFloat("fps", fps);
-	value->AddUint("textureUID", texture->GetUID());
+	value->AddUint("textureUID", (texture != nullptr) ? texture->GetUID() : 0u);
 	value->AddFloat2("lifetime", lifetime);
 	value->AddFloat2("speed", speed);
 	value->AddFloat("rate", rate);
