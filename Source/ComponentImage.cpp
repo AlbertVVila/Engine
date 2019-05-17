@@ -70,15 +70,14 @@ void ComponentImage::DrawProperties()
 			return;
 		}
 		//texture selector
-		if (ImGui::BeginCombo("Texture", textureName.c_str()))
+		if (ImGui::BeginCombo("Texture", texture != nullptr ? texture->GetName() : None))
 		{
 			bool none_selected = (textureName == None);
 			if (ImGui::Selectable(None, none_selected))
 			{
 				if (texture != nullptr)
 				{
-					unsigned imageUID = App->resManager->FindByName(textureName.c_str(), TYPE::TEXTURE);
-					App->resManager->DeleteResource(imageUID);
+					App->resManager->DeleteResource(texture->GetUID());
 					texture = nullptr;
 				}
 				textureName = None;
@@ -90,7 +89,10 @@ void ComponentImage::DrawProperties()
 				bool is_selected = (textureName == textureFiles[n]);
 				if (ImGui::Selectable(textureFiles[n].c_str(), is_selected) && !is_selected)
 				{
-					App->resManager->DeleteResource(App->resManager->FindByName(textureName.c_str(), TYPE::TEXTURE));
+					// Delete previous texture
+					if (texture != nullptr)
+						App->resManager->DeleteResource(texture->GetUID());
+
 					textureName = textureFiles[n].c_str();
 					texture = (ResourceTexture*)App->resManager->GetByName(textureName.c_str(), TYPE::TEXTURE);
 				}
