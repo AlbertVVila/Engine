@@ -717,23 +717,7 @@ Resource* ModuleResourceManager::AddResource(const char* file, const char* direc
 	{
 		// Create new resource 
 		Resource* res = CreateNewResource(type);
-
-		// Set Exported File
-		/*switch (type)
-		{
-		case TYPE::TEXTURE:		exportedFile = TEXTURES					+	App->fsystem->GetFilename(file) + TEXTUREEXT;			break;
-		case TYPE::MODEL:		exportedFile =								App->fsystem->GetFilename(file) + FBXEXTENSION;			break;
-		/*case TYPE::MESH:		exportedFile = MESHES;					+	App->fsystem->GetFilename(file) + MESHEXTENSION;		break;
-		case TYPE::AUDIO:		exportedFile = IMPORTED_AUDIOS			+	App->fsystem->GetFilename(file) + AUDIOEXTENSION;		break;*/
-	/*	case TYPE::SCENE:		exportedFile = IMPORTED_SCENES			+	App->fsystem->GetFilename(file) + SCENEEXTENSION;		break;
-		case TYPE::MATERIAL:	exportedFile = IMPORTED_MATERIALS		+	App->fsystem->GetFilename(file) + MATERIALEXT;			break;
-		case TYPE::ANIMATION:	exportedFile = IMPORTED_ANIMATIONS		+   App->fsystem->GetFilename(file) + ANIMATIONEXTENSION;	break;
-		case TYPE::STATEMACHINE:exportedFile = IMPORTED_STATEMACHINES	+	App->fsystem->GetFilename(file) + STATEMACHINEEXTENSION;break;
-		default:
-			break;
-		}*/
 		res->SetName(name.c_str());
-		//res->SetExportedFile(exportedFile.c_str());
 		res->SetFile(path.c_str());
 		return res;
 	}
