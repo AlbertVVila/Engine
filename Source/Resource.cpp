@@ -69,13 +69,10 @@ void Resource::Rename(const char* newName)
 		std::string newMeta(newName);
 		newMeta += extension;
 		App->fsystem->Rename(ruteToFile.c_str(), (fileInAssets + ".meta").c_str(), newMeta.c_str());
-	}
-	// Update file variable
-	file = ruteToFile + newName + extension;
 
-	std::string ruteToExportedFile = App->fsystem->GetFilePath(exportedFile);
-	std::string fileInLibrary = App->fsystem->GetFile(exportedFile);
-	std::string exportedExtension = App->fsystem->GetExtension(exportedFile);
+		// Update file variable
+		file = ruteToFile + newName + extension;
+	}
 }
 
 void Resource::Delete()
