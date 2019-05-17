@@ -481,52 +481,29 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 
 				// Model has to check also Meshes and Animations
 				FILETYPE type = GetFileType(GetExtension(file));
-				if (type == FILETYPE::MODEL) //FBX
-				{
-					if (statFile.st_mtime > statMeta.st_mtime)
-					{
-						filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
-					}
-					else
-					{
-						// File already imported, add model to the resources list
-						ResourceModel* res = (ResourceModel*)App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::MODEL);
-						res->LoadConfigFromMeta();
-
-						// Check if the meshes and animations inside ResourceModel are imported
-						if (res->CheckImportedMeshes())
-							filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
-
-						if (res->CheckImportedAnimations())
-							filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
-
-					}
-				}
-				else if (type != FILETYPE::NONE && type != FILETYPE::AUDIO) // TODO:: Include State machines and Animations	
+	
+				if (type != FILETYPE::NONE && type != FILETYPE::AUDIO) 
 				{
 					bool import = false;
 					unsigned uid = 0u;
-					//std::set<std::string>::iterator it = importedResources.find(RemoveExtension(file));
+
 					if (statFile.st_mtime > statMeta.st_mtime)
-					{
 						import = true;
-					}
 					else
 					{
-						// Read UID from meta fle
+						// Read UID from meta file and see if there is a exported file with that UID
 						uid = App->resManager->GetUIDFromMeta(metaFile.c_str(), type);
-						if (uid != 0)
+						if (type != FILETYPE::MODEL)
 						{
-							std::set<std::string>::iterator it = importedResources.find(std::to_string(uid));
-							if (it == importedResources.end())
+							if (uid != 0)
 							{
-								std::set<std::string>::iterator it = importedResources.find(RemoveExtension(file));
+								std::set<std::string>::iterator it = importedResources.find(std::to_string(uid));
 								if (it == importedResources.end())
-								{
 									import = true;
-								}
 							}
-						}
+							else
+								import = true;
+						}		
 					}
 
 					if (import)
@@ -536,6 +513,19 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 					}
 					else
 					{
+						if (type == FILETYPE::MODEL) //FBX
+						{
+							// File already imported, add model to the resources list
+							ResourceModel* res = (ResourceModel*)App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::MODEL, uid);
+							res->LoadConfigFromMeta();
+
+							// Check if the meshes and animations inside ResourceModel are imported
+							if (res->CheckImportedMeshes())
+								filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
+
+							if (res->CheckImportedAnimations())
+								filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
+						}
 						// File already imported, add it to the resources list
 						Resource* res = App->resManager->AddResource(file.c_str(), currentFolder.c_str(), App->resManager->GetResourceType(type), uid);
 						if (res != nullptr)
