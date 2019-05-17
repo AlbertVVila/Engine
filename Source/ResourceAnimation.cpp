@@ -139,11 +139,17 @@ void ResourceAnimation::LoadConfigFromMeta()
 	}
 	JSON* json = new JSON(data);
 	JSON_value* value = json->GetValue("Animation");
-	UID = value->GetUint("GUID");
 	name = value->GetString("name");
 
-	//Updates resource UID on resourcelist
-	App->resManager->ReplaceResource(oldUID, this);
+	// Make sure the UID from meta is the same
+	unsigned checkUID = value->GetUint("GUID");
+	if (oldUID != checkUID)
+	{
+		UID = checkUID;
+		// Update resource UID on resource list
+		App->resManager->ReplaceResource(oldUID, this);
+		exportedFile = IMPORTED_ANIMATIONS + std::to_string(UID) + ANIMATIONEXTENSION;
+	}
 }
 
 void ResourceAnimation::SetAnimation(const char* animationData)
