@@ -113,7 +113,6 @@ void ResourceAnimation::SaveMetafile(const char* file) const
 	stat(filepath.c_str(), &statFile);
 	meta->AddUint("GUID", UID);
 	meta->AddUint("timeCreated", statFile.st_ctime);
-	meta->AddString("name", name.c_str());
 	json->AddValue("Animation", *meta);
 	filepath += METAEXT;
 	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
@@ -139,7 +138,6 @@ void ResourceAnimation::LoadConfigFromMeta()
 	}
 	JSON* json = new JSON(data);
 	JSON_value* value = json->GetValue("Animation");
-	name = value->GetString("name");
 
 	// Make sure the UID from meta is the same
 	unsigned checkUID = value->GetUint("GUID");
