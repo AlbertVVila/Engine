@@ -12,6 +12,7 @@
 #include "ComponentParticles.h"
 #include "ResourceTexture.h"
 
+#include "HashString.h"
 #include "imgui.h"
 #include "JSON.h"
 #include "debugdraw.h"
@@ -31,11 +32,7 @@ ComponentParticles::ComponentParticles(GameObject* gameobject) : Component(gameo
 ComponentParticles::ComponentParticles(const ComponentParticles& component) : Component(component)
 {
 	textureFiles = App->resManager->GetResourceNamesList(TYPE::TEXTURE, true);
-	textureName = component.textureName;
-	if (textureName != "None Selected")
-	{
-		texture = (ResourceTexture*)App->resManager->GetByName(textureName.c_str(), TYPE::TEXTURE);
-	}
+	texture = (ResourceTexture*)App->resManager->Get(component.texture->GetUID());
 	xTiles = component.xTiles;
 	yTiles = component.yTiles;
 	fps = component.fps;
@@ -87,7 +84,6 @@ void ComponentParticles::DrawProperties()
 				texture = nullptr;
 			}
 			return;
-			textureName = None;
 		}
 
 		ImGui::PushID(this);
@@ -95,15 +91,14 @@ void ComponentParticles::DrawProperties()
 		//texture selector
 		if (ImGui::BeginCombo("Texture", texture != nullptr ? texture->GetName() : None))
 		{
-			bool none_selected = (textureName == None);
+			bool none_selected = (texture == nullptr);
 			if (ImGui::Selectable(None, none_selected))
 			{
 				if (texture != nullptr)
 				{
 					App->resManager->DeleteResource(texture->GetUID());
-					texture = (ResourceTexture*)App->resManager->GetByName(textureName.c_str(), TYPE::TEXTURE);
+					texture = nullptr;
 				}
-				textureName = None;
 			}
 			if (none_selected)
 				ImGui::SetItemDefaultFocus();
@@ -112,15 +107,14 @@ void ComponentParticles::DrawProperties()
 
 			for (int n = 0; n < textureFiles.size(); n++)
 			{
-				bool is_selected = (textureName == textureFiles[n]);
+				bool is_selected = (texture != nullptr && (HashString(texture->GetName()) == HashString(textureFiles[n].c_str())));
 				if (ImGui::Selectable(textureFiles[n].c_str(), is_selected) && !is_selected)
 				{
 					// Delete previous texture
 					if (texture != nullptr)
 						App->resManager->DeleteResource(texture->GetUID());
 
-					textureName = textureFiles[n].c_str();
-					texture = (ResourceTexture*)App->resManager->GetByName(textureName.c_str(), TYPE::TEXTURE);
+					texture = (ResourceTexture*)App->resManager->GetByName(textureFiles[n].c_str(), TYPE::TEXTURE);
 				}
 				if (is_selected)
 					ImGui::SetItemDefaultFocus();
@@ -369,7 +363,7 @@ void ComponentParticles::Save(JSON_value* value) const
 	value->AddInt("xTiles", xTiles);
 	value->AddInt("yTiles", yTiles);
 	value->AddFloat("fps", fps);
-	value->AddString("textureName", textureName.c_str());
+	value->AddUint("textureUID", texture->GetUID());
 	value->AddFloat2("lifetime", lifetime);
 	value->AddFloat2("speed", speed);
 	value->AddFloat("rate", rate);
@@ -469,11 +463,8 @@ void ComponentParticles::Load(JSON_value* value)
 	xTiles = value->GetInt("xTiles");
 	yTiles = value->GetInt("yTiles");
 	fps = value->GetFloat("fps");
-	textureName = std::string(value->GetString("textureName"));
-	if (textureName != "None Selected")
-	{
-		texture = (ResourceTexture*)App->resManager->GetByName(textureName.c_str(), TYPE::TEXTURE);
-	}
+	unsigned uid = value->GetUint("textureUID");
+	texture = (ResourceTexture*)App->resManager->Get(uid);
 	lifetime = value->GetFloat2("lifetime");
 	speed = value->GetFloat2("speed");
 	rate = value->GetFloat("rate");

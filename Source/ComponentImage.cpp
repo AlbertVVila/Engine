@@ -9,6 +9,7 @@
 
 #include "ResourceTexture.h"
 
+#include "HashString.h"
 #include "JSON.h"
 #include "imgui.h"
 
@@ -38,21 +39,18 @@ ComponentImage::ComponentImage(const ComponentImage &copy) : Component(copy)
 		UpdateTexturesList();
 	}
 	color = copy.color;
-	textureName = copy.textureName;
 	flipHorizontal = copy.flipHorizontal;
 	flipVertical = copy.flipVertical;
-	if (textureName != "None Selected")
-	{
-		texture = (ResourceTexture*)App->resManager->GetByName(textureName.c_str(), TYPE::TEXTURE);
-	}
+	texture = (ResourceTexture*)App->resManager->Get(copy.texture->GetUID());
 }
 
 ComponentImage::~ComponentImage()
 {
-	/*App->ui->images.remove(this);*/
-	unsigned imageUID = App->resManager->FindByName(textureName.c_str(), TYPE::TEXTURE);
-	App->resManager->DeleteResource(imageUID);
-	texture = nullptr;
+	if (texture != nullptr) 
+	{
+		App->resManager->DeleteResource(texture->GetUID());
+		texture = nullptr;
+	}
 }
 
 Component* ComponentImage::Clone() const
@@ -72,7 +70,7 @@ void ComponentImage::DrawProperties()
 		//texture selector
 		if (ImGui::BeginCombo("Texture", texture != nullptr ? texture->GetName() : None))
 		{
-			bool none_selected = (textureName == None);
+			bool none_selected = (texture == nullptr);
 			if (ImGui::Selectable(None, none_selected))
 			{
 				if (texture != nullptr)
@@ -80,21 +78,19 @@ void ComponentImage::DrawProperties()
 					App->resManager->DeleteResource(texture->GetUID());
 					texture = nullptr;
 				}
-				textureName = None;
 			}
 			if (none_selected)
 				ImGui::SetItemDefaultFocus();
 			for (int n = 0; n < textureFiles.size(); n++)
 			{
-				bool is_selected = (textureName == textureFiles[n]);
+				bool is_selected = (texture != nullptr && (HashString(texture->GetName()) == HashString(textureFiles[n].c_str())));
 				if (ImGui::Selectable(textureFiles[n].c_str(), is_selected) && !is_selected)
 				{
 					// Delete previous texture
 					if (texture != nullptr)
 						App->resManager->DeleteResource(texture->GetUID());
 
-					textureName = textureFiles[n].c_str();
-					texture = (ResourceTexture*)App->resManager->GetByName(textureName.c_str(), TYPE::TEXTURE);
+					texture = (ResourceTexture*)App->resManager->GetByName(textureFiles[n].c_str(), TYPE::TEXTURE);
 				}
 				if (is_selected)
 					ImGui::SetItemDefaultFocus();
@@ -129,7 +125,7 @@ void ComponentImage::UpdateTexturesList()
 void ComponentImage::Save(JSON_value *value)const
 {
 	Component::Save(value);
-	value->AddString("textureName", textureName.c_str());
+	value->AddUint("textureUID", texture->GetUID());
 	value->AddFloat4("color", color);
 	value->AddInt("FlipVertical", flipVertical);
 	value->AddInt("FlipHorizontal", flipHorizontal);
@@ -138,12 +134,9 @@ void ComponentImage::Save(JSON_value *value)const
 void ComponentImage::Load(JSON_value* value)
 {
 	Component::Load(value);
-	textureName = value->GetString("textureName");
+	unsigned uid = value->GetUint("textureUID");
+	texture = (ResourceTexture*)App->resManager->Get(uid);
 	color = value->GetFloat4("color");	
 	flipVertical = value->GetInt("FlipVertical");
 	flipHorizontal = value->GetInt("FlipHorizontal");
-	if (textureName != "None Selected")
-	{
-		texture = (ResourceTexture*)App->resManager->GetByName(textureName.c_str(), TYPE::TEXTURE);
-	}
 }
