@@ -242,8 +242,12 @@ bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* 
 		exportedFile = IMPORTED_AUDIO + name + AUDIOEXTENSION;	
 		break;*/
 	case TYPE::SCENE:		
-		success = App->fsystem->Copy(filePath, IMPORTED_SCENES, newFileInAssets);						
-		exportedFile = IMPORTED_SCENES + name + SCENEEXTENSION;
+		success = App->fsystem->Copy(filePath, IMPORTED_SCENES, newFileInAssets);	
+		if (success)
+		{
+			success = App->fsystem->Rename(IMPORTED_SCENES, (name + SCENEEXTENSION).c_str(), std::to_string(resource->GetUID()).c_str());
+		}
+		exportedFile = IMPORTED_SCENES + std::to_string(resource->GetUID()) + SCENEEXTENSION;
 		break;
 	case TYPE::MATERIAL:	
 		success = App->fsystem->Copy(filePath, IMPORTED_MATERIALS, newFileInAssets);	
@@ -316,7 +320,11 @@ bool ModuleResourceManager::ReImportFile(Resource* resource, const char* filePat
 		}
 		break;
 	case TYPE::SCENE:	
-		success = App->fsystem->Copy(filePath, IMPORTED_SCENES, file.c_str());						
+		success = App->fsystem->Copy(filePath, IMPORTED_SCENES, file.c_str());			
+		if (success)
+		{
+			success = App->fsystem->Rename(IMPORTED_SCENES, App->fsystem->GetFile(file).c_str(), std::to_string(resource->GetUID()).c_str());
+		}
 		break;
 	case TYPE::ANIMATION:	
 		success = App->fsystem->Copy(filePath, IMPORTED_ANIMATIONS, file.c_str());		

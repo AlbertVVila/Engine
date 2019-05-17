@@ -1102,7 +1102,7 @@ void ModuleScene::SaveScene(const GameObject& rootGO, const char* sceneName, con
 		ResourceScene* scene = (ResourceScene*)App->resManager->CreateNewResource(TYPE::SCENE);
 		scene->SetFile(sceneInAssets.c_str());
 		std::string exportedFile(IMPORTED_SCENES);
-		exportedFile += sceneName;
+		exportedFile += std::to_string(scene->GetUID());
 		exportedFile += SCENEEXTENSION;
 		scene->SetExportedFile(exportedFile.c_str());
 		scene->SetName(sceneName);

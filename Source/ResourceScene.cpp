@@ -31,6 +31,7 @@ void ResourceScene::SaveMetafile(const char* file) const
 	struct stat statFile;
 	stat(file, &statFile);
 
+	meta->AddUint("GUID", UID);
 	json->AddValue("Scene", *meta);
 
 	std::string filepath(file);

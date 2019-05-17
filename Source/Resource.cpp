@@ -76,12 +76,6 @@ void Resource::Rename(const char* newName)
 	std::string ruteToExportedFile = App->fsystem->GetFilePath(exportedFile);
 	std::string fileInLibrary = App->fsystem->GetFile(exportedFile);
 	std::string exportedExtension = App->fsystem->GetExtension(exportedFile);
-
-	if (type != TYPE::MODEL) 
-	{
-		// Rename of file in Library
-		App->fsystem->Rename(ruteToExportedFile.c_str(), fileInLibrary.c_str(), newName);
-	}
 }
 
 void Resource::Delete()
