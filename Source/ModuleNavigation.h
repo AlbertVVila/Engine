@@ -91,6 +91,7 @@ public:
 
 	void cleanValuesPRE();
 	void cleanValuesPOST();
+	void cleanStoredObjects();
 	inline void checkSceneLoaded();
 
 
@@ -114,7 +115,7 @@ private:
 	void removeNavMesh(unsigned ID);
 	void generateNavigability(bool render);
 	void addNavigableMesh();
-	void addNavigableMesh(const GameObject* obj);
+	void addNavigableMeshFromSceneLoaded();
 
 	void fillVertices();
 	void fillIndices();
@@ -181,9 +182,13 @@ private:
 	//navigation mesh properties
 	bool meshGenerated = false;
 	bool renderMesh = false;
-	const char* objectName = "";
+	int numObjects = 0;
+	struct storedObject {
+		std::string name;
+		bool obstacle = false;
+	};
+	std::vector<storedObject*> objectNames;
 	bool autoNavGeneration = false;
-	GameObject* objToRender = nullptr;
 
 	enum DrawMode
 	{

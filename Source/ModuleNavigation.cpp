@@ -22,7 +22,6 @@
 #include "JSON.h"
 #include "debugdraw.h"
 
-
 #include "Recast/Recast.h"
 #include "Detour/DetourNavMesh.h"
 #include "Detour/DetourNavMeshBuilder.h"
@@ -32,6 +31,8 @@
 #include "DebugUtils/DetourDebugDraw.h"
 #include "DebugUtils/DebugDraw.h"
 #include "DetourDebugInterface.h"
+
+#include <sstream>
 
 
 ModuleNavigation::ModuleNavigation()
@@ -47,6 +48,7 @@ ModuleNavigation::~ModuleNavigation()
 	cleanValuesPOST();
 }
 
+//config
 bool ModuleNavigation::Init(JSON * config)
 {
 	JSON_value* nav = config->GetValue("navigation");
@@ -54,8 +56,6 @@ bool ModuleNavigation::Init(JSON * config)
 
 	cellWidth = nav->GetFloat("Cellwidth");
 	characterMaxStepHeightScaling = nav->GetFloat("StepHeight");
-	meshGenerated = nav->GetUint("Generated", false);
-	drawNavMesh = nav->GetUint("DrawNavMesh", true);
 
 	return true;
 }
@@ -65,34 +65,68 @@ void ModuleNavigation::SaveConfig(JSON * config)
 
 	nav->AddFloat("Cellwidth", cellWidth);
 	nav->AddFloat("StepHeight", characterMaxStepHeightScaling);
-	
-	nav->AddUint("Generated", meshGenerated);
-	nav->AddUint("DrawNavMesh", drawNavMesh);
 
 	config->AddValue("navigation", *nav);
 }
 
+//scene
 void ModuleNavigation::sceneLoaded(JSON * config)
 {
 	JSON_value* nav = config->GetValue("navigationScene");
 	if (nav == nullptr) return;
 
+	cleanValuesPOST();
+
+	meshGenerated = nav->GetUint("Generated", false);
+	drawNavMesh = nav->GetUint("DrawNavMesh", true);
+	if(meshGenerated)
 	renderMesh = nav->GetUint("RenderNavMesh", false);
-	const char* objectName = nav->GetString("NavigableObjectName");
-	if (objectName != nullptr)
+	numObjects = nav->GetInt("numObjects");
+
+	if (numObjects < 1)
 	{
-		objToRender = App->scene->FindGameObjectByName(objectName);
-		if (objToRender != nullptr)
-		{
-			autoNavGeneration = true;
-		}
+		autoNavGeneration = false;
+		return;
 	}
+	
+	for (int i = 0; i < numObjects; ++i)
+	{
+		//std::string obstacleId;
+		std::stringstream obstacleId;
+		obstacleId << "obstacle" << i;
+		std::stringstream meshName;
+		meshName << "name" << i;
+		storedObject* newObj = new storedObject(); 
+		newObj->name = nav->GetString(meshName.str().c_str());
+		newObj->obstacle = nav->GetUint(obstacleId.str().c_str(), false);
+		if (newObj->name.c_str() == nullptr)
+		{
+			LOG("Not all meshes loaded found");
+			return;
+		}
+		objectNames.emplace_back(newObj);
+	}
+	autoNavGeneration = true;
 }
+
 void ModuleNavigation::sceneSaved(JSON * config)
 {
 	JSON_value* navigation = config->CreateValue();
-	navigation->AddString("NavigableObjectName", objectName);
+	//add info from all the meshes
+	for (int i = 0; i < numObjects; ++i)
+	{
+		//std::string obstacleId;
+		std::stringstream obstacleId;
+		obstacleId << "obstacle" << i;
+		std::stringstream meshName;
+		meshName << "name" << i;
+		navigation->AddUint(obstacleId.str().c_str(), objectNames[i]->obstacle);
+		navigation->AddString(meshName.str().c_str(), objectNames[i]->name.c_str());
+	}
+	navigation->AddInt("numObjects", numObjects);
 	navigation->AddUint("RenderNavMesh", renderMesh);
+	navigation->AddUint("Generated", meshGenerated);
+	navigation->AddUint("DrawNavMesh", drawNavMesh);
 
 	config->AddValue("navigationScene", *navigation);
 }
@@ -128,12 +162,21 @@ void ModuleNavigation::cleanValuesPOST()
 	transformComponents.clear();
 	isObstacle.clear();
 }
+
+//only called when generating a brand new nav mesh
+void ModuleNavigation::cleanStoredObjects()
+{
+	objectNames.clear();
+	numObjects = 0;
+}
+
 update_status ModuleNavigation::Update(float dt)
 {
 	if (autoNavGeneration)
 	{
-		addNavigableMesh(objToRender);
-		generateNavigability(renderMesh);
+		addNavigableMeshFromSceneLoaded();
+		if (autoNavGeneration)
+			generateNavigability(renderMesh);
 		autoNavGeneration = false;
 	}
 	return UPDATE_CONTINUE;
@@ -217,6 +260,7 @@ void ModuleNavigation::DrawGUI()
 	{
 		addNavigableMesh();
 	}
+	//TODO: manage navigation mesh list
 
 	if (meshComponents.size() > 0 && ImGui::Button("Generate navigability"))
 	{
@@ -244,25 +288,37 @@ void ModuleNavigation::DrawGUI()
 
 void ModuleNavigation::addNavigableMesh()
 {
+	if (meshComponents.size() == 0) cleanStoredObjects();
 	meshboxes.push_back(static_cast <const AABB*>(&App->scene->selected->bbox));
 	meshComponents.push_back(static_cast <const ComponentRenderer*>(App->scene->selected->GetComponentOld(ComponentType::Renderer)));
 	transformComponents.push_back(static_cast <const ComponentTransform*>(App->scene->selected->GetComponentOld(ComponentType::Transform)));
 	isObstacle.push_back(App->scene->selected->noWalkable);
 	std::string s = App->scene->selected->name + " added to navigation";
 	LOG(s.c_str());
-	objectName = App->scene->selected->name.c_str();
+	storedObject* newObj = new storedObject(); newObj->name = App->scene->selected->name.c_str(); newObj->obstacle = App->scene->selected->noWalkable;
+	objectNames.emplace_back(newObj);
+	++numObjects;
 }
 
-void ModuleNavigation::addNavigableMesh(const GameObject* obj)
+void ModuleNavigation::addNavigableMeshFromSceneLoaded()
 {
-	cleanValuesPOST();
-	meshboxes.push_back(static_cast <const AABB*>(&obj->bbox));
-	meshComponents.push_back(static_cast <const ComponentRenderer*>(obj->GetComponentOld(ComponentType::Renderer)));
-	transformComponents.push_back(static_cast <const ComponentTransform*>(obj->GetComponentOld(ComponentType::Transform)));
-	isObstacle.push_back(obj->noWalkable);
-	std::string s = obj->name + " added to navigation";
-	LOG(s.c_str());
-	objectName = obj->name.c_str();
+	//values are cleaned at scene loading
+	for (int i = 0; i < numObjects; ++i)
+	{
+		const GameObject* obj = App->scene->FindGameObjectByName(objectNames[i]->name.c_str());
+		if (obj == nullptr)
+		{
+			autoNavGeneration = false;
+			return;
+		}
+		meshboxes.push_back(static_cast <const AABB*>(&obj->bbox));
+		meshComponents.push_back(static_cast <const ComponentRenderer*>(obj->GetComponentOld(ComponentType::Renderer)));
+		transformComponents.push_back(static_cast <const ComponentTransform*>(obj->GetComponentOld(ComponentType::Transform)));
+		isObstacle.push_back(obj->noWalkable);
+		std::string s = obj->name + " added to navigation";
+		LOG(s.c_str());
+	}
+	
 }
 
 void ModuleNavigation::navigableObjectToggled(GameObject* obj, const bool newState)
@@ -273,7 +329,7 @@ void ModuleNavigation::navigableObjectToggled(GameObject* obj, const bool newSta
 
 void ModuleNavigation::renderNavMesh()
 {
-	if (!meshGenerated || !renderMesh || autoNavGeneration || !drawNavMesh)
+	if (!meshGenerated || !renderMesh || autoNavGeneration || !drawNavMesh || navMesh == nullptr)
 	{
 		return;
 	}
