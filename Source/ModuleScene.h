@@ -73,7 +73,6 @@ public:
 	ENGINE_API void LoadScene(const char* sceneName, const char* folder);
 	bool AddScene(const char* sceneName, const char* folder);								// Adds a scene to current opened scene from a scene file (returns true if it was loaded correctly)
 
-	//void SaveScene(const GameObject &rootGO, const char* scene, const char* scenePath, bool isTemporary = false);
 	void AssignNewUUID(GameObject* go, unsigned UID);
 	void TakePhoto();
 	void TakePhoto(std::list<GameObject*>& target);
