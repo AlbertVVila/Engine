@@ -6,6 +6,7 @@
 #include "ModuleScene.h"
 #include "ModuleSpacePartitioning.h"
 #include "ModuleNavigation.h"
+#include "ModuleResourceManager.h"
 
 #include "GameObject.h"
 #include "ComponentRenderer.h"
@@ -37,6 +38,38 @@ void ResourceScene::SaveMetafile(const char* file) const
 	std::string filepath(file);
 	filepath += METAEXT;
 	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
+}
+
+void ResourceScene::LoadConfigFromMeta()
+{
+	std::string metaFile(file);
+	metaFile += ".meta";
+
+	// Check if meta file exists
+	if (!App->fsystem->Exists(metaFile.c_str()))
+		return;
+
+	char* data = nullptr;
+	unsigned oldUID = GetUID();
+
+	if (App->fsystem->Load(metaFile.c_str(), &data) == 0)
+	{
+		LOG("Warning: %s couldn't be loaded", metaFile.c_str());
+		RELEASE_ARRAY(data);
+		return;
+	}
+	JSON* json = new JSON(data);
+	JSON_value* value = json->GetValue("Scene");
+
+	// Make sure the UID from meta is the same
+	unsigned checkUID = value->GetUint("GUID");
+	if (oldUID != checkUID)
+	{
+		UID = checkUID;
+		// Update resource UID on resource list
+		App->resManager->ReplaceResource(oldUID, this);
+		exportedFile = IMPORTED_SCENES + std::to_string(UID) + SCENEEXTENSION;
+	}
 }
 
 void ResourceScene::Save(const GameObject& rootGO)

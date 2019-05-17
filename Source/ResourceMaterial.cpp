@@ -205,6 +205,38 @@ void ResourceMaterial::SaveMetafile(const char* file) const
 	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
 }
 
+void ResourceMaterial::LoadConfigFromMeta()
+{
+	std::string metaFile(file);
+	metaFile += ".meta";
+
+	// Check if meta file exists
+	if (!App->fsystem->Exists(metaFile.c_str()))
+		return;
+
+	char* data = nullptr;
+	unsigned oldUID = GetUID();
+
+	if (App->fsystem->Load(metaFile.c_str(), &data) == 0)
+	{
+		LOG("Warning: %s couldn't be loaded", metaFile.c_str());
+		RELEASE_ARRAY(data);
+		return;
+	}
+	JSON* json = new JSON(data);
+	JSON_value* value = json->GetValue("Material");
+
+	// Make sure the UID from meta is the same
+	unsigned checkUID = value->GetUint("GUID");
+	if (oldUID != checkUID)
+	{
+		UID = checkUID;
+		// Update resource UID on resource list
+		App->resManager->ReplaceResource(oldUID, this);
+		exportedFile = IMPORTED_MATERIALS + std::to_string(UID) + MATERIALEXT;
+	}
+}
+
 void ResourceMaterial::Reset(const ResourceMaterial& material)
 {
 	if (shader != nullptr)
