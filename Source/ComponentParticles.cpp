@@ -14,6 +14,9 @@
 
 #include "imgui.h"
 #include "JSON.h"
+#include "debugdraw.h"
+#include "imgui_color_gradient.h"
+
 
 #define None "None Selected"
 
@@ -22,6 +25,7 @@ ComponentParticles::ComponentParticles(GameObject* gameobject) : Component(gameo
 	textureFiles = App->resManager->GetResourceNamesList(TYPE::TEXTURE, true);
 	App->particles->AddParticleSystem(this);
 	modules.push_back(new PMSizeOverTime());
+	modules.push_back(new PMColorOverTime());
 }
 
 ComponentParticles::ComponentParticles(const ComponentParticles& component) : Component(component)
@@ -30,8 +34,7 @@ ComponentParticles::ComponentParticles(const ComponentParticles& component) : Co
 	textureName = component.textureName;
 	if (textureName != "None Selected")
 	{
-		unsigned imageUID = App->resManager->FindByExportedFile(textureName.c_str());
-		texture = (ResourceTexture*)App->resManager->Get(imageUID);
+		texture = (ResourceTexture*)App->resManager->GetByName(textureName.c_str(), TYPE::TEXTURE);
 	}
 	xTiles = component.xTiles;
 	yTiles = component.yTiles;
@@ -48,7 +51,7 @@ ComponentParticles::ComponentParticles(const ComponentParticles& component) : Co
 	rate = component.rate;
 	rateTimer = 1.f / rate;
 	maxParticles = component.maxParticles;
-	size = component.size;
+	particleSize = component.particleSize;
 	quadEmitterSize = component.quadEmitterSize;
 	particleColor = component.particleColor;
 	directionNoise = component.directionNoise;
@@ -56,6 +59,9 @@ ComponentParticles::ComponentParticles(const ComponentParticles& component) : Co
 	directionNoiseTotalProbability = component.directionNoiseTotalProbability;
 	App->particles->AddParticleSystem(this);
 	modules.push_back(new PMSizeOverTime());
+	modules.push_back(new PMColorOverTime());
+	actualEmisor = component.actualEmisor;
+	alternateEmisor(actualEmisor);
 
 }
 
@@ -70,75 +76,117 @@ Component* ComponentParticles::Clone() const
 
 void ComponentParticles::DrawProperties()
 {
-	ImGui::PushID(this);
-	ImGui::Text("Particles active %d", particles.size());
-	//texture selector
-	if (ImGui::BeginCombo("Texture", textureName.c_str()))
+	if (ImGui::CollapsingHeader("Particle System")) 
 	{
-		bool none_selected = (textureName == None);
-		if (ImGui::Selectable(None, none_selected))
+		bool removed = Component::DrawComponentState();
+		if (removed)
 		{
 			if (texture != nullptr)
 			{
-				unsigned imageUID = App->resManager->FindByExportedFile(textureName.c_str());
+				unsigned imageUID = App->resManager->FindByName(textureName.c_str(), TYPE::TEXTURE);
 				App->resManager->DeleteResource(imageUID);
 				texture = nullptr;
 			}
+			return;
 			textureName = None;
 		}
-		if (none_selected)
-			ImGui::SetItemDefaultFocus();
 
-		textureFiles = App->resManager->GetResourceNamesList(TYPE::TEXTURE, true);
-
-		for (int n = 0; n < textureFiles.size(); n++)
+		ImGui::PushID(this);
+		ImGui::Text("Particles active %d", particles.size());
+		//texture selector
+		if (ImGui::BeginCombo("Texture", textureName.c_str()))
 		{
-			bool is_selected = (textureName == textureFiles[n]);
-			if (ImGui::Selectable(textureFiles[n].c_str(), is_selected) && !is_selected)
+			bool none_selected = (textureName == None);
+			if (ImGui::Selectable(None, none_selected))
 			{
-				App->resManager->DeleteResource(App->resManager->FindByExportedFile(textureName.c_str()));
-				textureName = textureFiles[n].c_str();
-				unsigned imageUID = App->resManager->FindByExportedFile(textureName.c_str());
-				texture = (ResourceTexture*)App->resManager->Get(imageUID);
+				if (texture != nullptr)
+				{
+					App->resManager->DeleteResource(App->resManager->FindByName(textureName.c_str(), TYPE::TEXTURE));
+					texture = (ResourceTexture*)App->resManager->GetByName(textureName.c_str(), TYPE::TEXTURE);
+				}
+				textureName = None;
 			}
-			if (is_selected)
+			if (none_selected)
 				ImGui::SetItemDefaultFocus();
+
+			textureFiles = App->resManager->GetResourceNamesList(TYPE::TEXTURE, true);
+
+			for (int n = 0; n < textureFiles.size(); n++)
+			{
+				bool is_selected = (textureName == textureFiles[n]);
+				if (ImGui::Selectable(textureFiles[n].c_str(), is_selected) && !is_selected)
+				{
+					App->resManager->DeleteResource(App->resManager->FindByName(textureName.c_str(), TYPE::TEXTURE));
+					textureName = textureFiles[n].c_str();
+					texture = (ResourceTexture*)App->resManager->GetByName(textureName.c_str(), TYPE::TEXTURE);
+				}
+				if (is_selected)
+					ImGui::SetItemDefaultFocus();
+			}
+			ImGui::EndCombo();
 		}
-		ImGui::EndCombo();
-	}
-	if (texture != nullptr)
-	{
-		ImGui::Image((ImTextureID)texture->gpuID, { 200,200 }, { 0,1 }, { 1,0 });
+		if (texture != nullptr)
+		{
+			ImGui::Image((ImTextureID)texture->gpuID, { 200,200 }, { 0,1 }, { 1,0 });
+		}
+
+		ImGui::InputInt("X Tiles", &xTiles);
+		ImGui::InputInt("Y Tiles", &yTiles);
+		xTiles = MAX(xTiles, 1);
+		yTiles = MAX(yTiles, 1);
+		if (ImGui::InputFloat("FPS", &fps, 1.f))
+		{
+			timer = 0.f;
+		}
+		ImGui::Separator();
+		ImGui::Checkbox("Direction noise", &directionNoise);
+		if (directionNoise)
+		{
+			ImGui::InputInt("Probability", &directionNoiseProbability);
+			ImGui::InputInt("Total Probability", &directionNoiseTotalProbability);
+			ImGui::Separator();
+		}
+		ImGui::InputInt("Max Particles", &maxParticles);
+		ImGui::DragFloat("Rate", &rate);
+
+		ImGui::Text("Particle properties:");
+		ImGui::DragFloat2("Lifetime", &lifetime[0], 0.1f);
+		ImGui::DragFloat2("Speed", &speed[0], 1.2f);
+		ImGui::DragFloat2("Size", &particleSize[0], 0.01 * App->renderer->current_scale);
+		ImGui::ColorEdit3("Color", (float*)&particleColor);
+
+		//Clamp values
+		lifetime[0] = Max(0.01f, lifetime[0]);
+		lifetime[1] = Max(lifetime[0], lifetime[1]);
+
+		speed[0] = Max(0.0f, speed[0]);
+		speed[1] = Max(speed[0], speed[1]);
+
+		particleSize[0] = Max(0.01f, particleSize[0]);
+		particleSize[1] = Max(particleSize[0], particleSize[1]);
+		//
+		ImGui::Text("Emisor type:");
+		if (ImGui::Checkbox("Quad", &quadCheck))    alternateEmisor(0);
+		if (ImGui::Checkbox("Spehere", &sphereCheck)) alternateEmisor(1);
+
+		switch (actualEmisor)
+		{
+		case EmisorType::QUAD:
+			ImGui::DragFloat("Quad size", &quadEmitterSize, 0.1 * App->renderer->current_scale);
+			break;
+		}
+
+		for (ParticleModule* pm : modules)
+		{
+			ImGui::Separator();
+			pm->InspectorDraw();
+		}
+		ImGui::PopID();
+	
 	}
 	
-	ImGui::InputInt("X Tiles", &xTiles);
-	ImGui::InputInt("Y Tiles", &yTiles);
-	xTiles = MAX(xTiles, 1);
-	yTiles = MAX(yTiles, 1);
-	if (ImGui::InputFloat("FPS", &fps, 1.f))
-	{
-		timer = 0.f;
-	}
-	ImGui::Separator();
-	ImGui::Checkbox("Direction noise", &directionNoise);
-	if (directionNoise)
-	{
-		ImGui::InputInt("Probability", &directionNoiseProbability);
-		ImGui::InputInt("Total Probability", &directionNoiseTotalProbability);
-		ImGui::Separator();
-	}
-	ImGui::InputInt("Max Particles", &maxParticles);
-	ImGui::DragFloat("Rate", &rate);
-	ImGui::InputFloat2("Lifetime", &lifetime[0]);
-	ImGui::InputFloat2("Speed", &speed[0]);
-	ImGui::InputFloat2("Size", &size[0]);
-	ImGui::InputFloat2("Emitter Size", &quadEmitterSize[0]);
-	ImGui::ColorEdit3("Color", (float*)&particleColor);
-	for (ParticleModule* pm : modules)
-	{
-		pm->InspectorDraw();
-	}
-	ImGui::PopID();
+	if (gameobject->isSelected) DrawDebugEmisor();
+
 }
 
 bool ComponentParticles::CleanUp()
@@ -176,6 +224,12 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 	f2Ypos = f1Xpos < f2Xpos ? f1Ypos : f1Ypos + 1;	
 
 	rateTimer -= dt;
+
+	//Update the active modules with local checks
+	sizeOTCheck = modules[0]->enabled;
+	colorOTCheck = modules[1]->enabled;
+
+	//Create new Particle P
 	if (rateTimer <= 0.f && particles.size() < maxParticles)
 	{
 		int amount = MAX(dt / (1.f / rate), 1);
@@ -191,27 +245,8 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 			{
 				p = new Particle();				
 			}
-			quadEmitterSize.x = MAX(1, quadEmitterSize.x);
-			quadEmitterSize.y = MAX(1, quadEmitterSize.y);
-			p->position = pos + float3(rand() % (int)quadEmitterSize.x, 0, rand() % (int)quadEmitterSize.y);
-			if (lifetime.x != lifetime.y)
-			{
-				p->totalLifetime = lifetime.x + fmod(rand(), abs(lifetime.y - lifetime.x));
-			}
-			else
-			{
-				p->totalLifetime = lifetime.y;
-			}
-			if (speed.x != speed.y)
-			{
-				p->speed = speed.x + fmod(rand(), abs(speed.y - speed.x));
-			}
-			else
-			{
-				p->speed = speed.y;
-			}
-			p->lifeTimer = p->totalLifetime;
-			p->size = fmod(rand(), abs(size.y - size.x));
+
+			//P direction
 			if (directionNoise)
 			{
 				float xD = ((rand() % 100) - 50) / 100.f;
@@ -222,11 +257,62 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 			}
 			else
 			{
-				p->direction = math::float3::unitY;
+				switch (actualEmisor)
+				{
+				case EmisorType::QUAD:
+					quadEmitterSize = MAX(1, quadEmitterSize);
+
+					//P starting position
+					p->position = pos + gameobject->transform->GetRotation() * float3(rand() % (int)quadEmitterSize - quadEmitterSize / 2, 0, rand() % (int)quadEmitterSize - quadEmitterSize / 2) ;
+
+					//P direction
+					p->direction = gameobject->transform->GetRotation() * float3(0.f, 1.f, 0.f); //math::float3::unitY;
+					break;
+
+				case EmisorType::SPHERE:
+					//P starting position
+					p->position = pos;
+					//P direction
+					p->direction = (randomSpherePoint(pos) - pos).Normalized();
+					break;
+				}
 			}
+		
+			//P lifetime
+			if (lifetime.x != lifetime.y)
+			{
+				p->totalLifetime = lifetime.x + fmod(rand(), abs(lifetime.y - lifetime.x));
+			}
+			else
+			{
+				p->totalLifetime = lifetime.y;
+			}
+
+			//P speed
+			if (speed.x != speed.y)
+			{
+				p->speed = speed.x + fmod(rand(), abs(speed.y - speed.x));
+			}
+			else
+			{
+				p->speed = speed.y;
+			}
+			p->lifeTimer = p->totalLifetime;
+
+			// P color
+			p->color = particleColor;
+
+			//P size
+			float random = (float)rand() / (float) RAND_MAX;
+			float diff = abs(particleSize.y - particleSize.x);
+			p->size = random * diff + Min(particleSize.x, particleSize.y);
+
+			
+			
 			particles.push_back(p);
 		}
 		rateTimer = 1.f / rate;
+
 	}
 
 
@@ -243,18 +329,33 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 			particles.front()->direction.Normalize();
 		}
 		float sizeOT = particles.front()->size;
+		float4 newColor;
+
 		for (ParticleModule* pm : modules)
 		{
+			
+			float currentTimeOverTotal = particles.front()->lifeTimer / particles.front()->totalLifetime;
+
 			switch (pm->type)
 			{
 			case ParticleModule::ParticleModulesType::SIZE_OVER_TIME:
-				sizeOT = ((PMSizeOverTime*)pm)->GetSize(particles.front()->lifeTimer / particles.front()->totalLifetime, particles.front()->size);
+				if (pm->enabled) sizeOT = ((PMSizeOverTime*)pm)->GetSize(currentTimeOverTotal, particles.front()->size);
+				break;
+			case ParticleModule::ParticleModulesType::COLOR_OVER_TIME:
+
+				if (pm->enabled) ((PMColorOverTime*)pm)->Imgradient->getColorAt(1.f - currentTimeOverTotal, newColor);
+				else newColor = particleColor;
 				break;
 			}
+			
+			
 		}
 		particles.front()->position += particles.front()->direction * particles.front()->speed * dt;
 		float3 direction = (camPos - particles.front()->position);
 		particles.front()->global = particles.front()->global.FromTRS(particles.front()->position, math::Quat::LookAt(float3::unitZ, direction.Normalized(), float3::unitY, float3::unitY), math::float3::one * sizeOT);
+
+		particles.front()->color = newColor;
+
 		particles.push_back(particles.front());
 		particles.pop_front();
 	}
@@ -271,12 +372,93 @@ void ComponentParticles::Save(JSON_value* value) const
 	value->AddFloat2("speed", speed);
 	value->AddFloat("rate", rate);
 	value->AddInt("maxParticles", maxParticles);
-	value->AddFloat2("size", size);
-	value->AddFloat2("quadEmitterSize", quadEmitterSize);
-	value->AddFloat3("particleColor", particleColor);
+	value->AddFloat2("size", particleSize);
+	value->AddFloat("quadEmitterSize", quadEmitterSize);
+	value->AddFloat("sphereEmitterRadius", sphereEmitterRadius);
+	value->AddFloat4("particleColor", particleColor);
 	value->AddInt("directionNoise", directionNoise);
 	value->AddInt("directionNoiseProbability", directionNoiseProbability);
 	value->AddInt("directionNoiseTotalProbability", directionNoiseTotalProbability);
+	value->AddInt("actualEmisor", actualEmisor);
+	value->AddInt("sizeOT", sizeOTCheck);
+	value->AddInt("colorOT", colorOTCheck);
+
+	value->AddFloat4("defaultColor", particleColor);
+
+	PMSizeOverTime* SOTAux = (PMSizeOverTime*)modules[0];
+	value->AddFloat4("bezier14", float4(SOTAux->v[0], SOTAux->v[1], SOTAux->v[2], SOTAux->v[3]));
+	value->AddFloat("bezier5", float(SOTAux->v[4]));
+
+	PMColorOverTime* COTAux = (PMColorOverTime*)modules[1];
+	std::list<ImGradientMark*> marks = COTAux->Imgradient->getMarks();
+
+	int colorI = 1;
+	int alphaI = 1;
+	float3 colorAux;
+
+	for (int i = 0; i < 4; i++)
+	{
+		// If its color
+		if (!marks.front()->alpha)
+		{
+			if (colorI == 1)
+			{
+				
+				colorAux.x = marks.front()->color[0];
+				colorAux.y = marks.front()->color[1];
+				colorAux.z = marks.front()->color[2];
+				value->AddFloat3("color1", colorAux);
+				value->AddFloat("color1Position", marks.front()->position);
+				colorI++;
+			}
+			else
+			{
+				colorAux.x = marks.front()->color[0];
+				colorAux.y = marks.front()->color[1];
+				colorAux.z = marks.front()->color[2];
+				value->AddFloat3("color2", colorAux);
+				value->AddFloat("color2Position", marks.front()->position);
+
+			}
+		}
+		else
+		{
+			if (alphaI == 1)
+			{
+				value->AddFloat("alpha1", marks.front()->color[0]);
+				value->AddFloat("alpha1Position", marks.front()->position);
+				alphaI++;
+			}
+			else
+			{
+				value->AddFloat("alpha2", marks.front()->color[0]);
+				value->AddFloat("alpha2Position", marks.front()->position);
+			}
+
+		}
+
+		marks.pop_front();
+	}
+	
+	//colorAux.x = marks.front()->color[0];
+	//colorAux.y = marks.front()->color[1];
+	//colorAux.z = marks.front()->color[2];
+	//value->AddFloat3("color1", colorAux);
+
+	//marks.pop_front();
+
+	//colorAux.x = marks.front()->color[0];
+	//colorAux.y = marks.front()->color[1];
+	//colorAux.z = marks.front()->color[2];
+	//value->AddFloat3("color2", colorAux);
+	//marks.pop_front();
+
+	//value->AddFloat("alpha1", marks.front()->alpha);
+	//marks.pop_front();
+
+	//value->AddFloat("alpha2", marks.front()->alpha);
+
+	
 }
 
 void ComponentParticles::Load(JSON_value* value)
@@ -288,19 +470,90 @@ void ComponentParticles::Load(JSON_value* value)
 	textureName = std::string(value->GetString("textureName"));
 	if (textureName != "None Selected")
 	{
-		texture = (ResourceTexture*)App->resManager->Get(textureName.c_str());
+		texture = (ResourceTexture*)App->resManager->GetByName(textureName.c_str(), TYPE::TEXTURE);
 	}
 	lifetime = value->GetFloat2("lifetime");
 	speed = value->GetFloat2("speed");
 	rate = value->GetFloat("rate");
 	rateTimer = 1.f / rate;
 	maxParticles = value->GetInt("maxParticles");
-	size = value->GetFloat2("size");
-	quadEmitterSize = value->GetFloat2("quadEmitterSize");
-	particleColor = value->GetFloat3("particleColor");
+	particleSize = value->GetFloat2("size");
+	quadEmitterSize = value->GetFloat("quadEmitterSize");
+	sphereEmitterRadius = value->GetFloat("sphereEmitterRadius");
+	particleColor = value->GetFloat4("particleColor");
 	directionNoise = value->GetInt("directionNoise");
 	directionNoiseProbability = value->GetInt("directionNoiseProbability");
 	directionNoiseTotalProbability = MAX(value->GetInt("directionNoiseTotalProbability"), 1);
+	actualEmisor = static_cast<EmisorType>(value->GetInt("actualEmisor"));
+	alternateEmisor(actualEmisor);
+	modules[0]->enabled = value->GetInt("sizeOT");
+	modules[1]->enabled = value->GetInt("colorOT");
+
+	particleColor = value->GetFloat4("defaultColor");
+
+	PMSizeOverTime* SOTAux = (PMSizeOverTime*)modules[0];
+	SOTAux->v[0] = value->GetFloat4("bezier14").x;
+	SOTAux->v[1] = value->GetFloat4("bezier14").y;
+	SOTAux->v[2] = value->GetFloat4("bezier14").z;
+	SOTAux->v[3] = value->GetFloat4("bezier14").w;
+	SOTAux->v[4] = value->GetFloat("bezier5");
+
+	PMColorOverTime* COTAux = (PMColorOverTime*)modules[1];
+	COTAux->Imgradient->clearMarks();
+	COTAux->Imgradient->addMark(value->GetFloat("color1Position"), ImColor(value->GetFloat3("color1").x, value->GetFloat3("color1").y, value->GetFloat3("color1").z, 1.f));
+	COTAux->Imgradient->addMark(value->GetFloat("color2Position"), ImColor(value->GetFloat3("color2").x, value->GetFloat3("color2").y, value->GetFloat3("color2").z, 1.f));
+
+	COTAux->Imgradient->addAlphaMark(value->GetFloat("alpha1Position"), value->GetFloat("alpha1"));
+	COTAux->Imgradient->addAlphaMark(value->GetFloat("alpha2Position"), value->GetFloat("alpha2"));
+
+
+
+}
+
+void ComponentParticles::alternateEmisor(int newEmisor)
+{
+	for (int i = 0; i < emisorsCheck.size(); i++) *emisorsCheck[i] = false;
+	*emisorsCheck[newEmisor] = true;
+	actualEmisor = static_cast<EmisorType>(newEmisor);
+}
+
+void ComponentParticles::DrawDebugEmisor()
+{
+	float3 base = gameobject->transform->GetGlobalPosition();
+
+	float3 v1 = gameobject->transform->GetRotation() * float3(base.x + quadEmitterSize / 2.f, base.y, base.x - quadEmitterSize / 2.f);
+	float3 v2 = gameobject->transform->GetRotation() * float3(base.x + quadEmitterSize / 2.f, base.y, base.x + quadEmitterSize / 2.f);
+	float3 v3 = gameobject->transform->GetRotation() * float3(base.x - quadEmitterSize / 2.f, base.y, base.x + quadEmitterSize / 2.f);
+	float3 v4 = gameobject->transform->GetRotation() * float3(base.x - quadEmitterSize / 2.f, base.y, base.x - quadEmitterSize / 2.f);
+
+	switch (actualEmisor) 
+	{
+	case EmisorType::QUAD:
+	
+		dd::line(v1, v2, dd::colors::Green);
+		dd::line(v2, v3, dd::colors::Green);
+		dd::line(v3, v4, dd::colors::Green);
+		dd::line(v4, v1, dd::colors::Green);
+		break;
+
+	case EmisorType::SPHERE:
+		dd::sphere(base, dd::colors::Green, sphereEmitterRadius);
+		break;
+	}
+
+}
+
+float3 ComponentParticles::randomSpherePoint(float3 center)
+{
+	float u = (rand() % 100) / 100.f;
+	float v = (rand() % 100) / 100.f;
+	float theta = 2.f * math::pi * u;
+	float phi = math::Acos(2 * v - 1);
+	float x = center.x + (math::Sin(phi) * math::Cos(theta));
+	float y = center.y + (math::Sin(phi) * math::Sin(theta));
+	float z = center.z + (math::Cos(phi));
+
+	return float3(x, y, z);	
 }
 
 

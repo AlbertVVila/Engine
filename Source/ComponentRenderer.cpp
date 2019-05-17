@@ -112,7 +112,8 @@ void ComponentRenderer::DrawProperties()
 		ImGui::Spacing();
 		ImGui::Checkbox("Cast shadows", &castShadows);
 		ImGui::Checkbox("Use Alpha", &useAlpha);
-
+		ImGui::Checkbox("Highlighted", &highlighted);
+		ImGui::ColorEdit3("Highlight color", &highlightColor[0]);
 		// Material selector
 		ImGui::Text("Material");
 		ImGui::PushID("Material Combo");
@@ -221,6 +222,8 @@ void ComponentRenderer::Save(JSON_value* value) const
 	value->AddString("materialFile", (material != nullptr) ? material->GetName() : DEFAULTMAT);
 	value->AddInt("castShadows", castShadows);
 	value->AddInt("useAlpha", useAlpha);
+	value->AddInt("highlighted", highlighted);
+	value->AddFloat3("highlightColor", highlightColor);
 }
 
 void ComponentRenderer::Load(JSON_value* value)
@@ -236,6 +239,8 @@ void ComponentRenderer::Load(JSON_value* value)
 
 	castShadows = value->GetInt("castShadows");
 	useAlpha = value->GetInt("useAlpha");
+	highlighted = value->GetInt("highlighted");
+	highlightColor = value->GetFloat3("highlightColor");
 }
 
 void ComponentRenderer::SetMaterial(const char* materialName)

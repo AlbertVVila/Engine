@@ -121,7 +121,14 @@ update_status ModuleScene::PreUpdate()
 	}
 
 #ifndef GAME_BUILD
-	FrustumCulling(*App->camera->editorcamera->frustum);
+	if (!App->renderer->viewScene->hidden)
+	{
+		FrustumCulling(*App->camera->editorcamera->frustum);
+	}
+	else if(!App->renderer->viewGame->hidden && maincamera != nullptr)
+	{
+		FrustumCulling(*maincamera->frustum);
+	}
 #else
 	if (maincamera != nullptr)
 	{
@@ -341,17 +348,20 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	{
 		return cr1->gameobject->transform->GetGlobalPosition().Distance(frustum.pos) > cr2->gameobject->transform->GetGlobalPosition().Distance(frustum.pos);
 	});
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	for (ComponentRenderer* cr : alphaRenderers)
+	if (alphaRenderers.size() > 1)
 	{
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		for (ComponentRenderer* cr : alphaRenderers)
+		{
 #ifndef GAME_BUILD
-		DrawGO(*cr->gameobject, camFrustum, isEditor);
+			DrawGO(*cr->gameobject, camFrustum, isEditor);
 #else
-		DrawGOGame(*cr->gameobject);
+			DrawGOGame(*cr->gameobject);
 #endif
+		}
+		glDisable(GL_BLEND);
 	}
-	glDisable(GL_BLEND);
 }
 
 void ModuleScene::DrawGOGame(const GameObject& go)
@@ -383,6 +393,19 @@ void ModuleScene::DrawGOGame(const GameObject& go)
 
 	glUniform3fv(glGetUniformLocation(shader->id[variation],
 		"lights.ambient_color"), 1, (GLfloat*)&ambientColor);
+
+	if (crenderer->highlighted)
+	{
+		glUniform3fv(glGetUniformLocation(shader->id[variation],
+			"highlightColorUniform"), 1, (GLfloat*)&crenderer->highlightColor);
+	}
+	else
+	{
+		float zero[] = { .0f, .0f, .0f };
+		glUniform3fv(glGetUniformLocation(shader->id[variation],
+			"highlightColorUniform"), 1, (GLfloat*)zero);
+	}
+
 	go.SetLightUniforms(shader->id[variation]);
 
 	go.UpdateModel(shader->id[variation]);
@@ -425,7 +448,10 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 		{
 			variation |= (unsigned)ModuleProgram::PBR_Variations::SHADOWS_ENABLED;
 		}
-
+		if (isEditor)
+		{
+			variation |= (unsigned)ModuleProgram::PBR_Variations::EDITOR_RENDER;
+		}
 	}
 
 	glUseProgram(shader->id[variation]);
@@ -438,6 +464,18 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 	go.SetLightUniforms(shader->id[variation]);
 
 	go.UpdateModel(shader->id[variation]);
+	
+	if (crenderer->highlighted)
+	{
+		glUniform3fv(glGetUniformLocation(shader->id[variation],
+			"highlightColorUniform"), 1, (GLfloat*)&crenderer->highlightColor);
+	}
+	else
+	{
+		float zero[] = { .0f, .0f, .0f };
+		glUniform3fv(glGetUniformLocation(shader->id[variation],
+			"highlightColorUniform"), 1, (GLfloat*) zero);
+	}
 	if (mesh != nullptr)
 	{
 		crenderer->mesh->Draw(shader->id[variation]);
@@ -1363,6 +1401,15 @@ ComponentLight* ModuleScene::GetDirectionalLight() const
 		}
 	}
 	return nullptr;
+}
+
+void ModuleScene::DeleteDirectionalLight(ComponentLight* light)
+{
+	lights.remove(light);
+	if (App->renderer->directionalLight == light)
+	{
+		App->renderer->directionalLight = nullptr;
+	}
 }
 
 std::list<std::pair<float, GameObject*>> ModuleScene::GetDynamicIntersections(const LineSegment & line) const
