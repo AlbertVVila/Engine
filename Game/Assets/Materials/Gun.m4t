@@ -1,1 +1,1 @@
-{"material":{"diffuseColor":[1.0,1.0,1.0,1.0],"metallic":0.0,"roughness":0.0,"specularColor":[1.0,1.0,1.0],"emissiveColor":[1.0,1.0,1.0],"diffuse":"Library/Textures/750934988.dds","occlusion":"Library/Textures/882964310.dds","normal":"Library/Textures/3319650780.dds","shader":"PBR"}}
+{"material":{"diffuseColor":[1.0,1.0,1.0,1.0],"metallic":0.0,"roughness":0.0,"specularColor":[1.0,1.0,1.0],"emissiveColor":[1.0,1.0,1.0],"diffuseUID":750934988,"occlusionUID":882964310,"normalUID":1524038869,"shader":"PBR"}}
