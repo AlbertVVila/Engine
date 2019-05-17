@@ -246,8 +246,12 @@ bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* 
 		exportedFile = IMPORTED_SCENES + name + SCENEEXTENSION;
 		break;
 	case TYPE::MATERIAL:	
-		success = App->fsystem->Copy(filePath, IMPORTED_MATERIALS, newFileInAssets);					
-		exportedFile = IMPORTED_MATERIALS + name + MATERIALEXT;
+		success = App->fsystem->Copy(filePath, IMPORTED_MATERIALS, newFileInAssets);	
+		if (success)
+		{
+			success = App->fsystem->Rename(IMPORTED_MATERIALS, (name + MATERIALEXT).c_str(), std::to_string(resource->GetUID()).c_str());
+		}
+		exportedFile = IMPORTED_MATERIALS + std::to_string(resource->GetUID()) + MATERIALEXT;
 		break;
 	case TYPE::ANIMATION:
 		success = App->fsystem->Copy(filePath, IMPORTED_ANIMATIONS, newFileInAssets);
@@ -305,7 +309,11 @@ bool ModuleResourceManager::ReImportFile(Resource* resource, const char* filePat
 	success = App->audio->Import(newFileInAssets, written_file);	
 	break;*/
 	case TYPE::MATERIAL:	
-		success = App->fsystem->Copy(filePath, IMPORTED_MATERIALS, file.c_str());				
+		success = App->fsystem->Copy(filePath, IMPORTED_MATERIALS, file.c_str());
+		if (success)
+		{
+			success = App->fsystem->Rename(IMPORTED_MATERIALS, App->fsystem->GetFile(file).c_str(), std::to_string(resource->GetUID()).c_str());
+		}
 		break;
 	case TYPE::SCENE:	
 		success = App->fsystem->Copy(filePath, IMPORTED_SCENES, file.c_str());						
@@ -734,9 +742,9 @@ Resource* ModuleResourceManager::AddResource(const char* file, const char* direc
 	path += file;
 	std::string exportedFile;
 	std::string name(App->fsystem->GetFilename(file));
-
+ 
 	// Check if resource was already added
-	if (uid == FindByFileInAssets(path.c_str()))
+	if (uid != FindByFileInAssets(path.c_str()))
 	{
 		// Create new resource 
 		Resource* res = CreateNewResource(type, uid);

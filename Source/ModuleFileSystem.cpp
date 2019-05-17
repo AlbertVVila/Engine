@@ -537,8 +537,9 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 					else
 					{
 						// File already imported, add it to the resources list
-						Resource* res = App->resManager->AddResource(file.c_str(), currentFolder.c_str(), App->resManager->GetResourceType(type));
-						res->LoadConfigFromMeta();
+						Resource* res = App->resManager->AddResource(file.c_str(), currentFolder.c_str(), App->resManager->GetResourceType(type), uid);
+						if (res != nullptr)
+							res->LoadConfigFromMeta();
 					}
 				}
 			}
