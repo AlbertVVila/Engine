@@ -51,7 +51,9 @@ public:
 	ComponentParticles(const ComponentParticles& component);
 	~ComponentParticles();
 
-
+	ENGINE_API void Play(float newPlayTime);
+	ENGINE_API void Stop();
+	
 	Component* Clone() const override;
 	void DrawProperties() override;
 	bool CleanUp() override;
@@ -67,10 +69,14 @@ public:
 	std::queue<Particle*> particlePool;
 
 private:
-
+	void Reset();
 	void alternateEmisor(int i);
 	void DrawDebugEmisor();
 	float3 randomSpherePoint(float3 center);
+
+public:
+	float PlayTime = 1.f;
+	float lastActive = 0.f;
 
 private:
 
@@ -113,7 +119,8 @@ private:
 	bool sizeOTCheck = false;
 	bool colorOTCheck = false;
 
-
+	bool ConstantPlaying = true;
+	bool Playing = false;
 
 };
 

@@ -267,7 +267,7 @@ void ModuleParticles::Reset()
 
 void ModuleParticles::DrawParticleSystem(ComponentParticles* cp, const ComponentCamera* camera) const
 {
-	if (cp->texture == nullptr)
+	if (cp->texture == nullptr || (!cp->Playing && !cp->ConstantPlaying))
 	{
 		return;
 	}
