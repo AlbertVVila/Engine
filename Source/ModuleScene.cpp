@@ -813,30 +813,6 @@ unsigned ModuleScene::SaveParShapesMesh(const par_shapes_mesh_s &mesh, char** da
 	return size;
 }
 
-/*void ModuleScene::SaveScene(const GameObject& rootGO, const char* scene, const char* scenePath, bool isTemporary)
-{
-	JSON *json = new JSON();
-	JSON_value *array =json->CreateValue(rapidjson::kArrayType);
-	rootGO.Save(array);
-	json->AddValue("GameObjects", *array);
-
-	App->navigation->sceneSaved(json);
-
-	std::string file(scenePath);
-	file += scene;
-	file += JSONEXT;
-
-	App->fsystem->Save(file.c_str(), json->ToString().c_str(), json->Size());
-	RELEASE(json);
-
-	if (!isTemporary)
-	{
-		// Update scene info
-		name = scene;
-		path = scenePath;
-	}
-}*/
-
 void ModuleScene::AssignNewUUID(GameObject* go, unsigned UID)
 {
 	go->parentUUID = UID;
@@ -954,110 +930,6 @@ void ModuleScene::Redo()
 	//}
 }
 
-/*
-void ModuleScene::LoadScene(const char* scene, const char* scenePath, bool isTemporary)
-{
-	ClearScene();
-	if (AddScene(scene, scenePath) && !isTemporary)
-	{
-		path = scenePath;
-		name = scene;
-	}
-	App->spacePartitioning->kDTree.Calculate();
-	scenePhotos.clear();
-}
-
-bool ModuleScene::AddScene(const char* scene, const char* path)
-{
-	char* data = nullptr;
-	std::string file(path);
-	file += scene;
-	file += JSONEXT;
-
-	if (App->fsystem->Load(file.c_str(), &data) == 0)
-	{
-		RELEASE_ARRAY(data);
-		return false;
-	}
-
-	JSON *json = new JSON(data);
-	JSON_value* gameobjectsJSON = json->GetValue("GameObjects");
-	std::map<unsigned, GameObject*> gameobjectsMap; //Necessary to assign parent-child efficiently
-	gameobjectsMap.insert(std::pair<unsigned, GameObject*>(canvas->UUID, canvas));
-
-	std::list<ComponentRenderer*> renderers;
-
-	for (unsigned i = 0; i<gameobjectsJSON->Size(); i++)
-	{		
-		JSON_value* gameobjectJSON = gameobjectsJSON->GetValue(i);
-		GameObject *gameobject = new GameObject();
-		gameobject->Load(gameobjectJSON);
-		if (gameobject->UUID != 1)
-		{
-			gameobjectsMap.insert(std::pair<unsigned, GameObject*>(gameobject->UUID, gameobject));
-			std::map<unsigned, GameObject*>::iterator it = gameobjectsMap.find(gameobject->parentUUID);
-			if (it != gameobjectsMap.end())
-			{
-				gameobject->parent = it->second;
-				gameobject->parent->children.push_back(gameobject);
-			}
-			else if (gameobject->parentUUID == 0)
-			{
-				gameobject->parent = root;
-				gameobject->parent->children.push_back(gameobject);
-			}
-		}
-		else if (gameobject->parentUUID == 0)
-		{
-			gameobject->parent = root;
-			gameobject->parent->children.push_back(gameobject);
-		}
-	
-		ComponentRenderer* renderer = nullptr;
-		renderer = (ComponentRenderer*)gameobject->GetComponentOld(ComponentType::Renderer);
-		if (renderer != nullptr)
-		{
-			renderers.push_back(renderer);
-		}
-	}
-
-	//We need to generate new UIDs for every GO, otherwise hierarchy will get messed up after temporary scene
-	
-	GameObject* parentGO = nullptr;
-	for (std::map<unsigned, GameObject*>::iterator it = gameobjectsMap.begin(); it != gameobjectsMap.end(); ++it)
-	{
-		if (it->second->parentUUID == 0u && it->second->UUID != 1u)
-		{
-			parentGO = it->second;
-			break;
-		}
-	}
-
-	//Recursive UID reassign
-	if (parentGO != nullptr)
-	{
-		AssignNewUUID(parentGO, 0u);
-	}
-
-	//Link Bones after all the hierarchy is imported
-
-	for (ComponentRenderer* cr : renderers)
-	{
-		if (cr->mesh != nullptr) 
-		{
-			cr->LinkBones();
-		}	
-	}
-
-	App->navigation->sceneLoaded(json);
-
-	RELEASE_ARRAY(data);
-	RELEASE(json);
-
-	App->renderer->OnResize();
-	return true;
-}*/
-
 void ModuleScene::ClearScene()
 {
 	CleanUp();
@@ -1102,7 +974,7 @@ void ModuleScene::SaveScene(const GameObject& rootGO, const char* sceneName, con
 		ResourceScene* scene = (ResourceScene*)App->resManager->CreateNewResource(TYPE::SCENE);
 		scene->SetFile(sceneInAssets.c_str());
 		std::string exportedFile(IMPORTED_SCENES);
-		exportedFile += sceneName;
+		exportedFile += std::to_string(scene->GetUID());
 		exportedFile += SCENEEXTENSION;
 		scene->SetExportedFile(exportedFile.c_str());
 		scene->SetName(sceneName);
