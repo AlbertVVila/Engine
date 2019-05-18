@@ -7,6 +7,7 @@
 #include "GameObject.h"
 #include "ComponentCamera.h"
 #include "ComponentTransform.h"
+#include "ComponentRenderer.h"
 
 #include "JSON.h"
 #include "GL/glew.h"
@@ -112,7 +113,8 @@ void ComponentCamera::Center() //TODO: Shouldn't be specfic to editor camera
 {
 	if (App->scene->selected == nullptr || App->scene->selected->GetComponentOld(ComponentType::Transform) == nullptr) return;
 
-	if (App->scene->selected->GetComponentOld(ComponentType::Renderer) != nullptr)
+	ComponentRenderer* objectRenderer = (ComponentRenderer*)App->scene->selected->GetComponent(ComponentType::Renderer);
+	if (objectRenderer != nullptr && objectRenderer->mesh != nullptr)
 	{
 		math::AABB bbox = App->scene->selected->GetBoundingBox();
 		CenterBbox(bbox);
@@ -123,7 +125,11 @@ void ComponentCamera::Center() //TODO: Shouldn't be specfic to editor camera
 		childBboxes.SetNegativeInfinity();
 		for (const auto &child : App->scene->selected->children)
 		{
-			childBboxes.Enclose(child->GetBoundingBox());
+			ComponentRenderer* childRenderer = (ComponentRenderer*)child->GetComponent(ComponentType::Renderer);
+			if (childRenderer != nullptr && childRenderer->mesh != nullptr)
+			{
+				childBboxes.Enclose(child->GetBoundingBox());
+			}
 		}
 		if (childBboxes.Volume() > 0)
 		{
