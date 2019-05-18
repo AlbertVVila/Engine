@@ -175,6 +175,29 @@ void ModuleUI::Draw(int currentWidth, int currentHeight)
 
 void ModuleUI::RenderImage(const ComponentImage& componentImage, int currentWidth, int currentHeight)
 {
+	if (!isLife)
+	{
+		return;
+	}
+	/*
+	GLint life_loc = glGetUniformLocation(shader->id[0], "life");
+	
+	if (isLife)
+	{
+		GLint life[100];
+
+		for (unsigned int i = 0; i <= 100; i++)
+		{
+			life[1] = 1;
+		}
+		
+		glUniform1i(life_loc, component.life);
+	}*/
+	glUseProgram(shader->id[0]);
+
+	glUniform1i(glGetUniformLocation(shader->id[0], "mask"), componentImage.life);
+
+
 	if (componentImage.texture == nullptr || componentImage.texture == 0 || !componentImage.enabled)
 	{
 		return;

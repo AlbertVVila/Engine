@@ -27,6 +27,7 @@ public:
 	ResourceTexture* texture = nullptr;
 	bool flipVertical = false;
 	bool flipHorizontal = false;
+	int life;
 
 	std::vector<std::string> textureFiles;
 	bool enabled = true;

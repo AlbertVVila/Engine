@@ -32,6 +32,8 @@ public:
 	int currentHeight;
 	bool showUIinSceneViewport = false;
 
+	bool isLife = true;
+
 private:
 	void GenerateVAO(unsigned& vao, float quadVertices[16]);
 	void RenderImage(const ComponentImage& componentImage, int currentWidth, int currentHeight);
