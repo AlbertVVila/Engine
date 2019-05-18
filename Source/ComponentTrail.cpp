@@ -30,7 +30,7 @@ ComponentTrail::ComponentTrail(GameObject* gameobject) : Component(gameobject, C
 }
 
 ComponentTrail::ComponentTrail(const ComponentTrail& component) : Component(component)
-{	
+{
 	if (!gameobject->transform)
 	{
 		gameobject->CreateComponent(ComponentType::Transform);
@@ -40,6 +40,10 @@ ComponentTrail::ComponentTrail(const ComponentTrail& component) : Component(comp
 	minDistance = component.minDistance;
 
 	textureName = component.textureName;
+	if (textureName != "None Selected")
+	{
+		texture = (ResourceTexture*)App->resManager->GetByName(textureName.c_str(), TYPE::TEXTURE);
+	}
 
 	App->particles->AddTrailRenderer(this);
 }
@@ -53,7 +57,7 @@ void ComponentTrail::Update()
 		point.remainingTime -= App->time->gameDeltaTime;
 
 		if (point.remainingTime > 0)
-		{			
+		{
 			trail.push(point);
 		}
 
@@ -69,7 +73,7 @@ void ComponentTrail::Update()
 			trail.push(newPoint);
 		}
 		else
-		{			
+		{
 			TrailPoint newPoint(duration, gameobject->transform->GetGlobalPosition(), trail.back().position, width, gameobject->transform->right);
 			trail.push(newPoint);
 		}
@@ -105,10 +109,9 @@ void ComponentTrail::DrawProperties()
 				bool is_selected = (textureName == textureFiles[n]);
 				if (ImGui::Selectable(textureFiles[n].c_str(), is_selected) && !is_selected)
 				{
-					App->resManager->DeleteResource(App->resManager->FindByExportedFile(textureName.c_str()));
+					App->resManager->DeleteResource(App->resManager->FindByName(textureName.c_str(), TYPE::TEXTURE));
 					textureName = textureFiles[n].c_str();
-					unsigned imageUID = App->resManager->FindByExportedFile(textureName.c_str());
-					texture = (ResourceTexture*)App->resManager->Get(imageUID);
+					texture = (ResourceTexture*)App->resManager->GetByName(textureName.c_str(), TYPE::TEXTURE);
 				}
 				if (is_selected)
 					ImGui::SetItemDefaultFocus();
@@ -150,7 +153,7 @@ void ComponentTrail::Load(JSON_value* value)
 	textureName = std::string(value->GetString("textureName"));
 	if (textureName != "None Selected")
 	{
-		texture = (ResourceTexture*)App->resManager->Get(textureName.c_str());
+		texture = (ResourceTexture*)App->resManager->GetByName(textureName.c_str(), TYPE::TEXTURE);
 	}
 }
 
