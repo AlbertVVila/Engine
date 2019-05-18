@@ -171,7 +171,7 @@ void main()
 	
 	vec3 F0 = material.specular;
 
-	vec3 color = lights.ambient_color; 
+	vec3 color = albedo.rgb * lights.ambient_color; 
 	
 	vec3 N = normal;
 	vec3 V = normalize(viewPos - position);
