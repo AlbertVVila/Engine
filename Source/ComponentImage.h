@@ -32,6 +32,10 @@ public:
 	std::vector<std::string> textureFiles;
 	bool enabled = true;
 
+
+	bool isMasked = true;
+	int maskAmount = 50;
+
 	bool updateImageList = false;
 };
 

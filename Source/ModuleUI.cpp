@@ -175,34 +175,38 @@ void ModuleUI::Draw(int currentWidth, int currentHeight)
 
 void ModuleUI::RenderImage(const ComponentImage& componentImage, int currentWidth, int currentHeight)
 {
-	if (!isLife)
+	if (componentImage.isMasked)
 	{
-		return;
-	}
-	/*
-	GLint life_loc = glGetUniformLocation(shader->id[0], "life");
-	
-	if (isLife)
-	{
-		GLint life[100];
-
-		for (unsigned int i = 0; i <= 100; i++)
+		int maskThreshold = ((float)componentImage.maskAmount / 100.f) * MASK_DIVISIONS;
+		for (unsigned i = 0u; i < MASK_DIVISIONS; ++i)
 		{
-			life[1] = 1;
+			if (i <= maskThreshold)
+			{
+				mask[i] = 0.0f;
+			}
+			else
+			{
+				mask[i] = 1.0f;
+			}
 		}
-		
-		glUniform1i(life_loc, component.life);
-	}*/
-	glUseProgram(shader->id[0]);
-
-	glUniform1i(glGetUniformLocation(shader->id[0], "mask"), componentImage.life);
-
+	}
+	else
+	{
+		for (unsigned i = 0u; i < MASK_DIVISIONS; ++i)
+		{
+			mask[i] = 1.0f;
+		}
+	}
 
 	if (componentImage.texture == nullptr || componentImage.texture == 0 || !componentImage.enabled)
 	{
 		return;
 	}
 	glUseProgram(shader->id[0]);
+
+
+	glUniform1fv(glGetUniformLocation(shader->id[0], "mask"), MASK_DIVISIONS, mask);
+	int k = glGetUniformLocation(shader->id[0], "mask");
 
 	glUniform4f(glGetUniformLocation(shader->id[0], "textColor"), componentImage.color.x, componentImage.color.y, componentImage.color.z, componentImage.color.w);
 

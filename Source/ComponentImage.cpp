@@ -113,6 +113,7 @@ void ComponentImage::DrawProperties()
 
 		ImGui::Checkbox("Flip Vertical", &flipVertical);
 		ImGui::Checkbox("Flip Horizontal", &flipHorizontal);
+		ImGui::DragInt("Mask amount %", &maskAmount, 1, 0, 100);
 
 		ImGui::Separator();
 	}
