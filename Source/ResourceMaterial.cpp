@@ -65,7 +65,7 @@ bool ResourceMaterial::LoadInMemory()
 {
 	char* data = nullptr;
 	// Load JSON
-	if (App->fsystem->Load((IMPORTED_MATERIALS + exportedFileName + MATERIALEXT).c_str(), &data) == 0)
+	if (App->fsystem->Load(exportedFile.c_str(), &data) == 0)
 		return false;
 
 	JSON* json = new JSON(data);
@@ -158,7 +158,7 @@ void ResourceMaterial::Save() const
 	
 	json->AddValue("material", *materialJSON);
 
-	App->fsystem->Save((MATERIALS + exportedFileName + MATERIALEXT).c_str(), json->ToString().c_str(), json->Size());
+	App->fsystem->Save(file.c_str(), json->ToString().c_str(), json->Size());
 	RELEASE(json);
 }
 
@@ -360,26 +360,4 @@ void ResourceMaterial::SetUniforms(unsigned shader) const
 		"material.roughness"), 1, (GLfloat*)&roughness);
 	glUniform3fv(glGetUniformLocation(shader,
 		"material.specular"), 1, (GLfloat*)&specularColor);
-}
-
-void ResourceMaterial::Rename(const char* newName)
-{
-	Resource::Rename(newName);
-
-	// Rename file in Library
-	App->fsystem->Rename(IMPORTED_MATERIALS, (exportedFileName + MATERIALEXT).c_str(), newName);
-
-	exportedFileName = newName;
-}
-
-void ResourceMaterial::Delete()
-{
-	Resource::Delete();
-
-	// Delete file in Library
-	std::string fileInLibrary(IMPORTED_MATERIALS);
-	fileInLibrary += exportedFileName;
-	fileInLibrary += MATERIALEXT;
-	App->fsystem->Delete(fileInLibrary.c_str());
-	DeleteFromMemory();
 }

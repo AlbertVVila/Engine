@@ -194,9 +194,6 @@
     <ClCompile Include="ModuleSpacePartitioning.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="ComponentScript.cpp">
-      <Filter>Component</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleScript.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -283,8 +280,10 @@
     <ClCompile Include="Viewport.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
+    <ClCompile Include="ResourceScene.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
     <ClCompile Include="NodeEditor\Source\Editor.cpp" />
-    <ClCompile Include="Soloud\fractal_includes\dr_impl.cpp" />
     <ClCompile Include="ComponentAudioListener.cpp">
       <Filter>Component</Filter>
     </ClCompile>
@@ -387,9 +386,6 @@
     <ClCompile Include="NodeEditor\Source\NodeEditor.cpp">
       <Filter>Animation</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceStateMachine.cpp">
-      <Filter>Animation</Filter>
-    </ClCompile>
     <ClCompile Include="Recast\DebugUtils\DebugDraw.cpp" />
     <ClCompile Include="Recast\Recast\Recast.cpp">
       <Filter>Recast</Filter>
@@ -487,7 +483,18 @@
     <ClCompile Include="PanelNavigation.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
-    <ClCompile Include="DetourDebugInterface.cpp" />
+    <ClCompile Include="DetourDebugInterface.cpp">
+    </ClCompile>
+    <ClCompile Include="BaseScript.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Soloud\fractal_includes\dr_impl.cpp">
+      <Filter>SoLoud</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_color_gradient.cpp" />
+    <ClCompile Include="ResourceStateMachine.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -781,9 +788,6 @@
     <ClInclude Include="ModuleSpacePartitioning.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="ComponentScript.h">
-      <Filter>Component</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleScript.h">
       <Filter>Modules</Filter>
     </ClInclude>
@@ -871,6 +875,9 @@
     <ClInclude Include="HashString.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="ResourceScene.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
     <ClInclude Include="ResourceModel.h">
       <Filter>Resources</Filter>
     </ClInclude>
@@ -881,9 +888,6 @@
     <ClInclude Include="NodeEditor\Include\ax\Math2D.h" />
     <ClInclude Include="NodeEditor\Source\Editor.h" />
     <ClInclude Include="NodeEditor\Source\Interop.h" />
-    <ClInclude Include="Soloud\fractal_includes\dr_flac.h" />
-    <ClInclude Include="Soloud\fractal_includes\dr_mp3.h" />
-    <ClInclude Include="Soloud\fractal_includes\dr_wav.h" />
     <ClInclude Include="ComponentAudioListener.h">
       <Filter>Component</Filter>
     </ClInclude>
@@ -1007,9 +1011,6 @@
     <ClInclude Include="NodeEditor\Include\NodeEditor.h">
       <Filter>Animation</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceStateMachine.h">
-      <Filter>Animation</Filter>
-    </ClInclude>
     <ClInclude Include="Recast\DebugUtils\DebugDraw.h" />
     <ClInclude Include="Recast\Recast\Recast.h">
       <Filter>Recast</Filter>
@@ -1090,6 +1091,22 @@
       <Filter>Panels</Filter>
     </ClInclude>
     <ClInclude Include="DetourDebugInterface.h" />
+    <ClInclude Include="BaseScript.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Soloud\fractal_includes\dr_wav.h">
+      <Filter>SoLoud</Filter>
+    </ClInclude>
+    <ClInclude Include="Soloud\fractal_includes\dr_flac.h">
+      <Filter>SoLoud</Filter>
+    </ClInclude>
+    <ClInclude Include="Soloud\fractal_includes\dr_mp3.h">
+      <Filter>SoLoud</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_color_gradient.h" />
+    <ClInclude Include="ResourceStateMachine.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GeoLib">
@@ -1198,6 +1215,18 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\Game\Shaders\VertexShaders\Trail.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\FragmentShaders\PostProcess.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\VertexShaders\PostProcess.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\FragmentShaders\DebugNav.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\VertexShaders\DebugNav.vs">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

@@ -115,7 +115,7 @@ update_status ModuleDevelopmentBuildDebug::Update(float dt)
 	{
 		GameObject* playerCam = App->scene->FindGameObjectByName("PlayerCamera");
 		App->scene->maincamera->isMainCamera = false;
-		ComponentCamera* cam = (ComponentCamera*) playerCam->GetComponent(ComponentType::Camera);
+		ComponentCamera* cam = (ComponentCamera*) playerCam->GetComponentOld(ComponentType::Camera);
 		cam->isMainCamera = true;
 		App->scene->maincamera = cam;
 	}
@@ -123,7 +123,7 @@ update_status ModuleDevelopmentBuildDebug::Update(float dt)
 	{
 		GameObject* godModeCam = App->scene->FindGameObjectByName("GodModeCamera");		
 		App->scene->maincamera->isMainCamera = false;
-		godModeCamera = (ComponentCamera*)godModeCam->GetComponent(ComponentType::Camera);
+		godModeCamera = (ComponentCamera*)godModeCam->GetComponentOld(ComponentType::Camera);
 		godModeCamera->SetAspect((float)App->window->width / (float)App->window->height);
 		godModeCamera->isMainCamera = true;
 		App->scene->maincamera = godModeCamera;
@@ -133,7 +133,7 @@ update_status ModuleDevelopmentBuildDebug::Update(float dt)
 	{
 		GameObject* staticModeCam = App->scene->FindGameObjectByName("StaticCamera1");
 		App->scene->maincamera->isMainCamera = false;
-		ComponentCamera* cam = (ComponentCamera*)staticModeCam->GetComponent(ComponentType::Camera);
+		ComponentCamera* cam = (ComponentCamera*)staticModeCam->GetComponentOld(ComponentType::Camera);
 		cam->SetAspect((float)App->window->width / (float)App->window->height);
 		cam->isMainCamera = true;
 		App->scene->maincamera = cam;
@@ -142,7 +142,7 @@ update_status ModuleDevelopmentBuildDebug::Update(float dt)
 	{
 		GameObject* staticModeCam = App->scene->FindGameObjectByName("StaticCamera2");
 		App->scene->maincamera->isMainCamera = false;
-		ComponentCamera* cam = (ComponentCamera*)staticModeCam->GetComponent(ComponentType::Camera);
+		ComponentCamera* cam = (ComponentCamera*)staticModeCam->GetComponentOld(ComponentType::Camera);
 		cam->SetAspect((float)App->window->width / (float)App->window->height);
 		cam->isMainCamera = true;
 		App->scene->maincamera = cam;

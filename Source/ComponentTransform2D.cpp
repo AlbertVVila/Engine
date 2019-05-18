@@ -10,7 +10,7 @@
 #include "imgui_internal.h"
 #include "JSON.h"
 
-ComponentTransform2D::ComponentTransform2D(GameObject* gameobject) : Component(gameobject, ComponentType::Transform2D)
+Transform2D::Transform2D(GameObject* gameobject) : Component(gameobject, ComponentType::Transform2D)
 {
 	alignments[TOPLEFT] = math::float2(-1.0f, 1.0f);
 	alignments[TOPCENTER] = math::float2(0.0f, 1.0f);
@@ -23,7 +23,7 @@ ComponentTransform2D::ComponentTransform2D(GameObject* gameobject) : Component(g
 	alignments[BOTTOMRIGHT] = math::float2(1.0f, -1.0f);
 }
 
-ComponentTransform2D::ComponentTransform2D(const ComponentTransform2D & component) : Component(component)
+Transform2D::Transform2D(const Transform2D & component) : Component(component)
 {
 	position = component.position;
 	size = component.size;
@@ -39,16 +39,16 @@ ComponentTransform2D::ComponentTransform2D(const ComponentTransform2D & componen
 	currentAnchor = component.currentAnchor;
 }
 
-ComponentTransform2D::~ComponentTransform2D()
+Transform2D::~Transform2D()
 {
 }
 
-Component * ComponentTransform2D::Clone() const
+Component * Transform2D::Clone() const
 {
-	return new ComponentTransform2D(*this);
+	return new Transform2D(*this);
 }
 
-void ComponentTransform2D::DrawProperties()
+void Transform2D::DrawProperties()
 {
 
 	if (ImGui::CollapsingHeader("Rect Transformation", ImGuiTreeNodeFlags_DefaultOpen))
@@ -102,14 +102,14 @@ void ComponentTransform2D::DrawProperties()
 	}
 }
 
-bool ComponentTransform2D::CleanUp()
+bool Transform2D::CleanUp()
 {
 	alignments.clear();//clears array
 	alignments.shrink_to_fit();//reduces the capacity to fit its size, which is 0
 	return true;
 }
 
-void ComponentTransform2D::Save(JSON_value * value) const
+void Transform2D::Save(JSON_value * value) const
 {
 	Component::Save(value);
 	value->AddFloat2("Position", position);
@@ -117,7 +117,7 @@ void ComponentTransform2D::Save(JSON_value * value) const
 	value->AddInt("Anchor", currentAnchor);
 }
 
-void ComponentTransform2D::Load(JSON_value* value)
+void Transform2D::Load(JSON_value* value)
 {
 	Component::Load(value);
 	position = value->GetFloat2("Position");
@@ -125,7 +125,7 @@ void ComponentTransform2D::Load(JSON_value* value)
 	currentAnchor = value->GetInt("Anchor");
 }
 
-math::float2 ComponentTransform2D::getPosition() const
+math::float2 Transform2D::getPosition() const
 {
 #ifndef  GAME_BUILD
 	float width = (float)App->renderer->viewGame->current_width;
@@ -140,12 +140,12 @@ math::float2 ComponentTransform2D::getPosition() const
 	return math::float2(horizontalCalculation + position.x, verticalCalculation + position.y);
 }
 
-void ComponentTransform2D::setPosition(const math::float2& position)
+void Transform2D::setPosition(const math::float2& position)
 {
 	this->position = position;
 }
 
-math::float2 ComponentTransform2D::getSize() const
+math::float2 Transform2D::getSize() const
 {
 	return size;
 }

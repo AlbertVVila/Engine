@@ -28,6 +28,7 @@ void GUICreator::CreateElements(GameObject* go)
 		if (ImGui::Selectable("Empty GameObject"))
 		{
 			GameObject *newgo = App->scene->CreateGameObject("Empty", go);
+			newgo->CreateComponent(ComponentType::Transform);
 			App->scene->Select(newgo);
 		}
 		if (ImGui::BeginMenu("Light"))

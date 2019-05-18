@@ -29,9 +29,13 @@ public:
 	bool LoadInMemory() override;		// Will load in memory all Resourceanims stored
 	void DeleteFromMemory() override;	// Will delete all ResourceAnims stored in memory
 	void Delete() override;
-
+	void SaveMetafile(const char* file) const override;
+	void LoadConfigFromMeta() override;
 
 	void SetAnimation(const char* animData);
+	unsigned GetAnimationSize();
+	void SaveAnimationData(char* data);
+	void SaveNewAnimation();
 
 	unsigned GetNumPositions(unsigned indexChannel) const;
 	const math::float3 GetPosition(unsigned indexChannel, unsigned indexPosition) const;
@@ -46,12 +50,11 @@ public:
 
 public:
 
-	std::string name = "";
 	double duration = 0; //frames
 	double framesPerSecond = 0;
 	int numberFrames = 0;
 	unsigned numberOfChannels = 0u;
-	unsigned durationInSeconds = 0u;
+	float durationInSeconds = 0u;
 
 	int currentSample = 0u;
 	int currentFrame = 0u;

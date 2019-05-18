@@ -35,10 +35,6 @@ public:
 	void SaveMetafile(const char* file) const override;
 	void LoadConfigFromMeta() override;
 
-	// File in asset specific
-	void Rename(const char* newName) override;
-	void Delete() override;
-
 	void DrawImportConfiguration() override;
 
 	inline IMAGE_TYPE GetImageType() { return imageType; };

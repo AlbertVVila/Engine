@@ -38,7 +38,6 @@ ComponentCamera::ComponentCamera(const ComponentCamera & component) : Component(
 	movementSpeed = component.movementSpeed;
 	rotationSpeed = component.rotationSpeed;
 	zoomSpeed = component.zoomSpeed;
-	isMainClone = component.isMainCamera;
 }
 
 
@@ -112,7 +111,7 @@ void ComponentCamera::Zoom(float mouseWheel, bool shiftPressed)
 
 void ComponentCamera::Center() //TODO: Shouldn't be specfic to editor camera
 {
-	if (App->scene->selected == nullptr || App->scene->selected->GetComponent(ComponentType::Transform) == nullptr) return;
+	if (App->scene->selected == nullptr || App->scene->selected->GetComponentOld(ComponentType::Transform) == nullptr) return;
 
 	ComponentRenderer* objectRenderer = (ComponentRenderer*)App->scene->selected->GetComponent(ComponentType::Renderer);
 	if (objectRenderer != nullptr && objectRenderer->mesh != nullptr)
@@ -140,7 +139,7 @@ void ComponentCamera::Center() //TODO: Shouldn't be specfic to editor camera
 		{
 			float camDist = App->renderer->current_scale;
 			math::float3 center = ((ComponentTransform*)
-				(App->scene->selected->GetComponent(ComponentType::Transform)))->GetPosition();
+				(App->scene->selected->GetComponentOld(ComponentType::Transform)))->GetPosition();
 			frustum->pos = center + math::float3(0.0f, 0.0f, camDist);
 		}
 	}
@@ -271,7 +270,7 @@ void ComponentCamera::DrawProperties()
 
 void ComponentCamera::SetAsMain()
 {
-	if (App->scene->maincamera != nullptr)
+	if (App->scene->maincamera != nullptr && App->scene->maincamera != this)
 	{
 		App->scene->maincamera->isMainCamera = false;
 	}

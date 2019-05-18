@@ -5,12 +5,12 @@
 #include "Math/float2.h"
 #include <vector>
 
-class ComponentTransform2D : public Component
+class Transform2D : public Component
 {
 public:
-	ComponentTransform2D(GameObject* gameobject);
-	ComponentTransform2D(const ComponentTransform2D& component);
-	~ComponentTransform2D();
+	Transform2D(GameObject* gameobject);
+	Transform2D(const Transform2D& component);
+	~Transform2D();
 
 	Component* Clone() const override;
 	void DrawProperties() override;
