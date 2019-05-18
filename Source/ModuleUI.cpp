@@ -178,7 +178,8 @@ void ModuleUI::RenderImage(const ComponentImage& componentImage, int currentWidt
 	if (componentImage.isMasked)
 	{
 		int maskThreshold = ((float)componentImage.maskAmount / 100.f) * MASK_DIVISIONS;
-		for (unsigned i = 0u; i < MASK_DIVISIONS; ++i)
+		//for (unsigned i = 0u; i < MASK_DIVISIONS; ++i) // Filling from up to down
+		for (unsigned i =  MASK_DIVISIONS; i = 0; --i) // Filling form down to up
 		{
 			if (i <= maskThreshold)
 			{
