@@ -19,8 +19,10 @@ public:
 	bool LoadInMemory() override;
 	void DeleteFromMemory() override;
 
+	void LoadConfigFromMeta() override {};
+
 	void SetTextures(std::string faces[NUMFACES]);
-	void Draw(const Frustum& frustum) const;
+	void Draw(const Frustum& frustum, bool isEditor = false) const;
 
 	unsigned GetCubemap() { return skybox_cubemap; };
 	unsigned GetVAO() { return skyboxVAO; };

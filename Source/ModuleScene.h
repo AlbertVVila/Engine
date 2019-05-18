@@ -73,7 +73,6 @@ public:
 	ENGINE_API void LoadScene(const char* sceneName, const char* folder);
 	bool AddScene(const char* sceneName, const char* folder);								// Adds a scene to current opened scene from a scene file (returns true if it was loaded correctly)
 
-	//void SaveScene(const GameObject &rootGO, const char* scene, const char* scenePath, bool isTemporary = false);
 	void AssignNewUUID(GameObject* go, unsigned UID);
 	void TakePhoto();
 	void TakePhoto(std::list<GameObject*>& target);
@@ -98,7 +97,8 @@ public:
 	unsigned GetNewUID();
 	std::list<ComponentLight*> GetClosestLights(LightType type, math::float3 position = math::float3::zero) const;
 
-	ComponentLight * GetDirectionalLight() const;
+	ComponentLight* GetDirectionalLight() const;
+	void DeleteDirectionalLight(ComponentLight* light);
 
 private:
 	std::list<std::pair<float, GameObject*>>GetDynamicIntersections(const LineSegment& line) const;
@@ -135,7 +135,7 @@ public:
 	GameObject* canvas = nullptr;
 
 	bool loadScene = false;
-	std::string sceneName = "";
+	bool isCleared = true;
 	int actionAfterLoad = -1;
 };
 

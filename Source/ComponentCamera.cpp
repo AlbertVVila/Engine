@@ -7,6 +7,7 @@
 #include "GameObject.h"
 #include "ComponentCamera.h"
 #include "ComponentTransform.h"
+#include "ComponentRenderer.h"
 
 #include "JSON.h"
 #include "GL/glew.h"
@@ -37,7 +38,6 @@ ComponentCamera::ComponentCamera(const ComponentCamera & component) : Component(
 	movementSpeed = component.movementSpeed;
 	rotationSpeed = component.rotationSpeed;
 	zoomSpeed = component.zoomSpeed;
-	isMainClone = component.isMainCamera;
 }
 
 
@@ -113,7 +113,8 @@ void ComponentCamera::Center() //TODO: Shouldn't be specfic to editor camera
 {
 	if (App->scene->selected == nullptr || App->scene->selected->GetComponentOld(ComponentType::Transform) == nullptr) return;
 
-	if (App->scene->selected->GetComponentOld(ComponentType::Renderer) != nullptr)
+	ComponentRenderer* objectRenderer = (ComponentRenderer*)App->scene->selected->GetComponent(ComponentType::Renderer);
+	if (objectRenderer != nullptr && objectRenderer->mesh != nullptr)
 	{
 		math::AABB bbox = App->scene->selected->GetBoundingBox();
 		CenterBbox(bbox);
@@ -124,7 +125,11 @@ void ComponentCamera::Center() //TODO: Shouldn't be specfic to editor camera
 		childBboxes.SetNegativeInfinity();
 		for (const auto &child : App->scene->selected->children)
 		{
-			childBboxes.Enclose(child->GetBoundingBox());
+			ComponentRenderer* childRenderer = (ComponentRenderer*)child->GetComponent(ComponentType::Renderer);
+			if (childRenderer != nullptr && childRenderer->mesh != nullptr)
+			{
+				childBboxes.Enclose(child->GetBoundingBox());
+			}
 		}
 		if (childBboxes.Volume() > 0)
 		{
@@ -265,7 +270,7 @@ void ComponentCamera::DrawProperties()
 
 void ComponentCamera::SetAsMain()
 {
-	if (App->scene->maincamera != nullptr)
+	if (App->scene->maincamera != nullptr && App->scene->maincamera != this)
 	{
 		App->scene->maincamera->isMainCamera = false;
 	}
@@ -280,8 +285,17 @@ void ComponentCamera::Save(JSON_value* value) const
 	value->AddFloat("ZoomSpeed", zoomSpeed);
 	value->AddFloat("Znear", frustum->nearPlaneDistance);
 	value->AddFloat("Zfar", frustum->farPlaneDistance);
-	value->AddFloat("vFOV", frustum->verticalFov);
-	value->AddFloat("hFOV", frustum->horizontalFov);
+
+	if (!IsNan(frustum->verticalFov))
+		value->AddFloat("vFOV", frustum->verticalFov);
+	else
+		value->AddFloat("vFOV", 0.0f);
+
+	if(!IsNan(frustum->horizontalFov))
+		value->AddFloat("hFOV", frustum->horizontalFov);
+	else
+		value->AddFloat("hFOV", 0.0f);
+
 	value->AddFloat3("Position", frustum->pos);
 	value->AddFloat3("Front", frustum->front);
 	value->AddFloat3("Up", frustum->up);

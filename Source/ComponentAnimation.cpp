@@ -202,9 +202,8 @@ void ComponentAnimation::DrawProperties()
 					ImGui::SameLine();
 
 					unsigned clipUID = stateMachine->GetClipResource(j);
-					//IS THIS CORRECT=?=???
 					ResourceAnimation* animation = (ResourceAnimation*)App->resManager->GetWithoutLoad(clipUID);
-				
+		
 					if (animation != nullptr && ImGui::BeginCombo("", clipUID != 0u ? animation->GetName() : ""))
 					{
 						if (guiAnimations.empty())
@@ -213,9 +212,13 @@ void ComponentAnimation::DrawProperties()
 						}
 						for (int n = 0; n < guiAnimations.size(); n++)
 						{
-							bool is_selected = (clipUID != 0u ? HashString(animation->GetName()) == HashString(guiAnimations[n].c_str()) : false);
-							if (ImGui::Selectable(guiAnimations[n].c_str(), is_selected))
+							bool is_selected = ((clipUID != 0u && animation != nullptr) ? HashString(animation->GetName()) == HashString(guiAnimations[n].c_str()) : false);
+							if (ImGui::Selectable(guiAnimations[n].c_str(), is_selected) && !is_selected)
 							{
+								// Delete previous animation
+								if (animation != nullptr)
+									App->resManager->DeleteResource(animation->GetUID());
+
 								unsigned animUID = ((ResourceAnimation*)App->resManager->GetByName(guiAnimations[n].c_str(), TYPE::ANIMATION))->GetUID();
 								stateMachine->SetClipResource(j, animUID);
 								stateMachine->Save();

@@ -112,7 +112,8 @@ void ComponentRenderer::DrawProperties()
 		ImGui::Spacing();
 		ImGui::Checkbox("Cast shadows", &castShadows);
 		ImGui::Checkbox("Use Alpha", &useAlpha);
-
+		ImGui::Checkbox("Highlighted", &highlighted);
+		ImGui::ColorEdit3("Highlight color", &highlightColor[0]);
 		// Material selector
 		ImGui::Text("Material");
 		ImGui::PushID("Material Combo");
@@ -218,24 +219,29 @@ void ComponentRenderer::Save(JSON_value* value) const
 {
 	Component::Save(value);
 	value->AddUint("meshUID", (mesh != nullptr) ? mesh->GetUID() : 0u);
-	value->AddString("materialFile", (material != nullptr) ? material->GetName() : DEFAULTMAT);
+	value->AddUint("materialUID", (material != nullptr) ? material->GetUID() : 0u);
 	value->AddInt("castShadows", castShadows);
 	value->AddInt("useAlpha", useAlpha);
+	value->AddInt("highlighted", highlighted);
+	value->AddFloat3("highlightColor", highlightColor);
 }
 
 void ComponentRenderer::Load(JSON_value* value)
 {
 	Component::Load(value);
 
-	unsigned uid = value->GetUint("meshUID");
-	mesh = (ResourceMesh*)App->resManager->Get(uid); //Look for loaded meshes
+	unsigned meshUID = value->GetUint("meshUID");
+	mesh = (ResourceMesh*)App->resManager->Get(meshUID); //Look for loaded meshes
 	UpdateGameObject();
 
-	const char* materialFile = value->GetString("materialFile");
-	SetMaterial(materialFile);
+	unsigned materialUID = value->GetUint("materialUID");
+	material = (ResourceMaterial*)App->resManager->Get(materialUID);
+	if (material == nullptr) SetMaterial(DEFAULTMAT);
 
 	castShadows = value->GetInt("castShadows");
 	useAlpha = value->GetInt("useAlpha");
+	highlighted = value->GetInt("highlighted");
+	highlightColor = value->GetFloat3("highlightColor");
 }
 
 void ComponentRenderer::SetMaterial(const char* materialName)

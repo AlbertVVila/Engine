@@ -117,12 +117,17 @@ void ResourceStateMachine::LoadConfigFromMeta()
 	}
 	JSON* json = new JSON(data);
 	JSON_value* value = json->GetValue("StateMachine");
-	UID = value->GetUint("GUID");
 	name = value->GetString("name");
-	std::string name = App->fsystem->GetFilename(file);
 
-	//Updates resource UID on resourcelist
-	App->resManager->ReplaceResource(oldUID, this);
+	// Make sure the UID from meta is the same
+	unsigned checkUID = value->GetUint("GUID");
+	if (oldUID != checkUID)
+	{
+		UID = checkUID;
+		// Update resource UID on resource list
+		App->resManager->ReplaceResource(oldUID, this);
+		exportedFile = IMPORTED_STATEMACHINES + std::to_string(UID) + STATEMACHINEEXTENSION;
+	}
 }
 
 void ResourceStateMachine::SetStateMachine(const char* data)
