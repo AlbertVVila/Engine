@@ -21,18 +21,17 @@ PlayerStateUppercut::~PlayerStateUppercut()
 
 void PlayerStateUppercut::Update()
 {
-	/*player->pathIndex = 0;
-	player->path.clear();
-	math::float3 attackPosition;
-	if (player->Appl->scene->Intersects(attackPosition, "floor"))
-	{
-		player->gameobject->transform->LookAt(attackPosition);
-	}*/
+
+}
+
+void PlayerStateUppercut::Enter()
+{
+
 }
 
 void PlayerStateUppercut::CheckInput()
 {
-	if (timer > player->uppercutDuration) // can switch??¿?¿?
+	if (timer > player->uppercutDuration * 0.95) // can switch??¿?¿?
 	{
 		if (player->IsAtacking())
 		{

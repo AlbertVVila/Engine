@@ -11,7 +11,7 @@ public:
 	~PlayerStateUppercut();
 
 	void Update() override;
-
+	void Enter() override;
 	void CheckInput() override;
 
 private:
