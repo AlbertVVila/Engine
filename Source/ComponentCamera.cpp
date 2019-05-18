@@ -113,7 +113,7 @@ void ComponentCamera::Center() //TODO: Shouldn't be specfic to editor camera
 {
 	if (App->scene->selected == nullptr || App->scene->selected->GetComponentOld(ComponentType::Transform) == nullptr) return;
 
-	ComponentRenderer* objectRenderer = (ComponentRenderer*)App->scene->selected->GetComponent(ComponentType::Renderer);
+	ComponentRenderer* objectRenderer = App->scene->selected->GetComponent<ComponentRenderer>();
 	if (objectRenderer != nullptr && objectRenderer->mesh != nullptr)
 	{
 		math::AABB bbox = App->scene->selected->GetBoundingBox();
@@ -125,7 +125,7 @@ void ComponentCamera::Center() //TODO: Shouldn't be specfic to editor camera
 		childBboxes.SetNegativeInfinity();
 		for (const auto &child : App->scene->selected->children)
 		{
-			ComponentRenderer* childRenderer = (ComponentRenderer*)child->GetComponent(ComponentType::Renderer);
+			ComponentRenderer* childRenderer = child->GetComponent<ComponentRenderer>();
 			if (childRenderer != nullptr && childRenderer->mesh != nullptr)
 			{
 				childBboxes.Enclose(child->GetBoundingBox());

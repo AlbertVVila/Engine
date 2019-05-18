@@ -203,7 +203,8 @@ void ComponentAnimation::DrawProperties()
 
 					unsigned clipUID = stateMachine->GetClipResource(j);
 					ResourceAnimation* animation = (ResourceAnimation*)App->resManager->GetWithoutLoad(clipUID);
-					if (ImGui::BeginCombo("", (clipUID != 0u && animation != nullptr) ? animation->GetName() : ""))
+		
+					if (animation != nullptr && ImGui::BeginCombo("", clipUID != 0u ? animation->GetName() : ""))
 					{
 						if (guiAnimations.empty())
 						{
@@ -335,7 +336,7 @@ ResourceAnimation* ComponentAnimation::GetAnimFromStateMachine()
 	HashString clipName = stateMachine->GetNodeClip(nodeIndex);
 	unsigned clipIndex = stateMachine->FindClip(clipName);
 	unsigned animUID = stateMachine->GetClipResource(clipIndex);
-	ResourceAnimation*  resAnim = (ResourceAnimation*)(App->resManager->GetWithoutLoad(animUID));
+	ResourceAnimation*  resAnim = (ResourceAnimation*)(App->resManager->Get(animUID));
 	return resAnim;
 }
 
