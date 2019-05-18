@@ -132,6 +132,7 @@ void ComponentImage::Save(JSON_value *value)const
 	value->AddFloat4("color", color);
 	value->AddInt("FlipVertical", flipVertical);
 	value->AddInt("FlipHorizontal", flipHorizontal);
+	value->AddInt("life", isMasked);
 }
 
 void ComponentImage::Load(JSON_value* value)
