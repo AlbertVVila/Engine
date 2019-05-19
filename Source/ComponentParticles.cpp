@@ -488,7 +488,7 @@ void ComponentParticles::Load(JSON_value* value)
 	unsigned uid = value->GetUint("textureUID");
 	texture = (ResourceTexture*)App->resManager->Get(uid);
   
-  ConstantPlaying = value->GetInt("ConstantPlaying");
+	ConstantPlaying = value->GetInt("ConstantPlaying");
 	lifetime = value->GetFloat2("lifetime");
 	speed = value->GetFloat2("speed");
 	rate = value->GetFloat("rate");
