@@ -28,6 +28,7 @@ class ModuleDevelopmentBuildDebug;
 class ModuleParticles;
 class ModuleAudioManager;
 class ModuleNavigation;
+class ModuleCollisions;
 
 class Application
 {
@@ -63,6 +64,7 @@ public:
 	ModuleParticles* particles = nullptr;
 	ModuleAudioManager* audioManager = nullptr;
 	ModuleNavigation* navigation = nullptr;
+	ModuleCollisions* collisions = nullptr;
 
 private:
 	std::list<Module*> modules;

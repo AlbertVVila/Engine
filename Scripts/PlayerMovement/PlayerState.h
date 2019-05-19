@@ -10,7 +10,9 @@ public:
 	PlayerState();
 	~PlayerState();
 
+	virtual void Enter() {};
 	virtual void Update() {};
+	virtual void Exit() {};
 	virtual void CheckInput() {};
 	void UpdateTimer();
 	void ResetTimer() { timer = 0.f; };
