@@ -130,7 +130,6 @@ void ComponentBoxTrigger::Update()
 		switch (it->second)
 		{
 		case Overlap_State::Enter:
-			LOG("ENTER");
 			it->second = Overlap_State::PostIdle;
 			PropagateState(it->first->gameobject, Overlap_State::Enter);
 			break;
