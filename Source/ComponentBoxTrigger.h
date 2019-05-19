@@ -26,6 +26,7 @@ public:
 	virtual void DrawProperties() override;
 
 	virtual void Update() override;
+	virtual void OnPlay() override;
 	void DrawDebug();
 
 	void SetIsPlayer(bool is_player);

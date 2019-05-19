@@ -6,6 +6,7 @@
 #include "GameObject.h"
 #include "ComponentTransform.h"
 #include "ModuleCollisions.h"
+#include "ModuleTime.h"
 #include "BaseScript.h"
 #include "JSON.h"
 #include "imgui.h"
@@ -41,11 +42,16 @@ ComponentBoxTrigger::ComponentBoxTrigger(const ComponentBoxTrigger & component) 
 {
 	box_trigger = new math::OBB();
 
+	size = component.size;
+	position = component.position;
+	is_player = component.is_player;
+	debug_draw = component.debug_draw;
+
 	box_trigger->r = size;
 	box_trigger->pos = position;
-	box_trigger->axis[0] = math::float3::unitX;
-	box_trigger->axis[1] = math::float3::unitY;
-	box_trigger->axis[2] = math::float3::unitZ;
+	box_trigger->axis[0] = component.box_trigger->axis[0];
+	box_trigger->axis[1] = component.box_trigger->axis[1];
+	box_trigger->axis[2] = component.box_trigger->axis[2];
 
 	App->collisions->AddBox(this, is_player);
 }
@@ -124,6 +130,7 @@ void ComponentBoxTrigger::Update()
 		switch (it->second)
 		{
 		case Overlap_State::Enter:
+			LOG("ENTER");
 			it->second = Overlap_State::PostIdle;
 			PropagateState(it->first->gameobject, Overlap_State::Enter);
 			break;
@@ -150,6 +157,11 @@ void ComponentBoxTrigger::Update()
 	for (auto item : to_remove) overlap_list.erase(item);
 
 	if (debug_draw) DrawDebug();
+}
+
+void ComponentBoxTrigger::OnPlay()
+{
+	overlap_list.clear();
 }
 
 void ComponentBoxTrigger::DrawDebug()
@@ -214,6 +226,7 @@ void ComponentBoxTrigger::Save(JSON_value * value) const
 	value->AddFloat3("pos", position);
 	value->AddFloat3("r", size);
 	value->AddInt("is_player", is_player ? 1 : 0);
+	value->AddInt("debug_draw", debug_draw ? 1 : 0);
 }
 
 void ComponentBoxTrigger::Load(JSON_value * value)
@@ -221,12 +234,16 @@ void ComponentBoxTrigger::Load(JSON_value * value)
 	Component::Load(value);
 	position = value->GetFloat3("pos");
 	size = value->GetFloat3("r");
-	box_trigger->r = size;
 	is_player = (value->GetInt("is_player") > 0);
+	is_player = (value->GetInt("debug_draw") > 0);
+
+	box_trigger->r = size;
 }
 
 void ComponentBoxTrigger::PropagateState(GameObject * other, Overlap_State state)
 {
+	if (App->time->gameState != GameState::RUN) return;
+
 	GameObject* go = this->gameobject;
 
 	while (go != nullptr)
