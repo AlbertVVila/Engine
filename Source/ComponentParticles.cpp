@@ -172,7 +172,7 @@ void ComponentParticles::DrawProperties()
 			ImGui::Separator();
 		}
 		ImGui::InputInt("Max Particles", &maxParticles);
-		ImGui::DragFloat("Rate", &rate, 0.1f, 0.1f, 1000000.f);
+		ImGui::DragFloat("Rate", &rate, 0.1f, 0.1f, MAX_RATE);
 
 		ImGui::Text("Particle properties:");
 		ImGui::Checkbox("Billboarded", &billboarded);
