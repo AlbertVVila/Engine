@@ -22,6 +22,7 @@
 #define TEXTURES LIBRARY "Textures/"
 #define SCENES ASSETS "Scenes/"
 #define IMPORTED_SCENES LIBRARY "Scenes/"
+#define PREFABS LIBRARY "Prefabs/"
 #define AUDIOS "Audio/"
 
 #define TEMPORARY_SCENE "temporaryScene"

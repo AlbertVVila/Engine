@@ -274,8 +274,9 @@ bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* 
 		}
 		exportedFile = IMPORTED_STATEMACHINES + std::to_string(resource->GetUID()) + STATEMACHINEEXTENSION;
 		break;
-	case TYPE::PREFAB:
+	case TYPE::PREFAB: //TODO: update reimport PREFAB
 		success = App->fsystem->importer.ImportPrefab(newFileInAssets, filePath, (Prefab*)resource);
+		exportedFile = PREFABS + std::to_string(resource->GetUID()) + PREFABEXTENSION;
 		break;
 	}
 
@@ -347,7 +348,7 @@ bool ModuleResourceManager::ReImportFile(Resource* resource, const char* filePat
 		}
 		break;
 	case TYPE::PREFAB:
-		success = App->fsystem->importer.ImportPrefab(filePath, filePath, (Prefab*)resource);
+		success = App->fsystem->importer.ImportPrefab(file.c_str(), filePath, (Prefab*)resource);
 	}
 
 	// If export was successful, update resource

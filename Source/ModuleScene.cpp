@@ -688,6 +688,27 @@ void ModuleScene::ResetQuadTree() //deprecated
 	}
 }
 
+unsigned ModuleScene::CreatePrefab(GameObject * go)
+{
+	Prefab* prefab = (Prefab*)App->resManager->CreateNewResource(TYPE::PREFAB);
+	prefab->SetFile((ASSETS + go->name + PREFABEXTENSION).c_str());
+	std::string exportedFile(PREFABS);
+
+	unsigned uid = prefab->GetUID();
+	exportedFile += std::to_string(uid); //name
+	exportedFile += PREFABEXTENSION;
+	prefab->SetName(go->name.c_str());
+	prefab->SetExportedFile(exportedFile.c_str());
+	prefab->Save(go); //We leave the resource loaded for getting it later
+	if (!App->resManager->ImportFile((go->name + PREFABEXTENSION).c_str(), ASSETS, TYPE::PREFAB))
+	{
+		LOG("Could not import Prefab %s!!", go->name);
+		return 0;
+	}
+
+	return uid;
+}
+
 void ModuleScene::CreateCube(const char * name, GameObject* parent)
 {
 	if (!primitivesUID[(unsigned)PRIMITIVES::CUBE])

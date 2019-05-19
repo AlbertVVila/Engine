@@ -232,7 +232,7 @@ void ComponentRenderer::Load(JSON_value* value)
 
 	unsigned meshUID = value->GetUint("meshUID");
 	mesh = (ResourceMesh*)App->resManager->Get(meshUID); //Look for loaded meshes
-	UpdateGameObject();
+	if(!gameobject->isPrefab) UpdateGameObject();
 
 	unsigned materialUID = value->GetUint("materialUID");
 	material = (ResourceMaterial*)App->resManager->Get(materialUID);

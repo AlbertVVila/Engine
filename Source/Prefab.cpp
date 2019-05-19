@@ -4,15 +4,15 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleFileSystem.h"
+#include "ModuleResourceManager.h"
 #include "ModuleScene.h"
 #include "GameObject.h"
 #include "ComponentRenderer.h"
 #include "JSON.h"
 
-Prefab::Prefab(unsigned uid, GameObject* root) : Resource(uid, TYPE::PREFAB) //TODO: parents not prefabs?
+Prefab::Prefab(unsigned uid) : Resource(uid, TYPE::PREFAB) //TODO: parents not prefabs?
 {
 	//name = root->name; //TODO: RELEASE JSON AND DATA ALL AROUND RESOURCES
-	//Save(root);
 }
 
 Prefab::Prefab(const Prefab& resource) : Resource(resource)
@@ -42,8 +42,11 @@ bool Prefab::LoadInMemory()
 
 void Prefab::DeleteFromMemory()
 {
-	root->CleanUp();
-	RELEASE(root);
+	if (root != nullptr)
+	{
+		root->CleanUp();
+		RELEASE(root);
+	}
 	Resource::DeleteFromMemory();
 }
 
@@ -77,7 +80,7 @@ void Prefab::LoadConfigFromMeta()
 		return;
 	}
 	JSON* json = new JSON(data);
-	JSON_value* value = json->GetValue("Mesh");
+	JSON_value* value = json->GetValue("prefab");
 	UID = value->GetUint("GUID");
 	RELEASE(data);
 }

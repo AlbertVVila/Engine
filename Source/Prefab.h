@@ -10,7 +10,7 @@ class GameObject;
 class Prefab : public Resource
 {
 public:
-	Prefab(unsigned uid, GameObject* go = nullptr);
+	Prefab(unsigned uid);
 	Prefab(const Prefab& resource);
 	virtual ~Prefab();
 
@@ -32,10 +32,9 @@ private:
 
 private:
 	std::vector<GameObject*> instances;
-	std::string name;
 
 public:
-	GameObject* root; //version of prefab on starting engine
+	GameObject* root = nullptr; //version of prefab on starting engine
 
 };
 

@@ -84,6 +84,7 @@ GameObject::GameObject(const GameObject & gameobject)
 	prefab = gameobject.prefab;
 	if (prefab != nullptr)
 	{
+		App->resManager->Get(prefabUID);
 		prefab->AddInstance(this);
 	}
 
@@ -93,7 +94,6 @@ GameObject::GameObject(const GameObject & gameobject)
 	walkable = gameobject.walkable;
 	noWalkable = gameobject.noWalkable;
 
-	//TODO: diferentiate if it's prefab sync
 	for (const auto& component : gameobject.components)
 	{
 		Component *componentcopy = component->Clone();
@@ -506,29 +506,6 @@ void GameObject::RemoveComponent(const Component& component)
 	}
 }
 
-//Script* GameObject::GetScript() const
-//{
-//	ComponentScript* component = (ComponentScript*)GetComponentOld(ComponentType::Script);
-//	if (component != nullptr)
-//	{
-//		return component->GetScript();
-//	}
-//	return nullptr;
-//}
-
-//Script * GameObject::FindScriptByName(const char * name) const
-//{
-//	std::vector<Component*> components = GetComponents(ComponentType::Script);
-//	for (const auto& component : components)
-//	{
-//		if (((ComponentScript*)component)->GetScriptName() == name)
-//		{
-//			return ((ComponentScript*)component)->GetScript();
-//		}
-//	}
-//	return nullptr;
-//}
-
 void GameObject::RemoveChild(GameObject* bastard)
 {
 	children.remove(bastard);
@@ -770,20 +747,16 @@ void GameObject::SetLightUniforms(unsigned shader) const
 	}
 }
 
-void GameObject::MarkAsPrefab()
+void GameObject::MarkAsPrefab() //1 Fills prefabs - 2 Spawn prefabs - 3 arrossega prefabs
 {
 	//Create Prefab and reference it
-	if (prefabUID != 0u)
+	if (prefabUID == 0)
 	{
-		prefab = (Prefab*) App->resManager->Get(prefabUID);
-	}
-	else
-	{
+		prefabUID = App->scene->CreatePrefab(this);
 		//Insta import? or get it from resource name? or what
 	}
-	//prefab = App->scene->CreatePrefab(this);
-	//prefabUID = prefab->GetUID();
-	//prefab->AddInstance(this);
+	prefab = (Prefab*)App->resManager->Get(prefabUID);
+	prefab->AddInstance(this);
 	isPrefabSync = true;
 }
 
@@ -899,6 +872,12 @@ bool GameObject::CleanUp()
 {
 	App->scene->DeleteFromSpacePartition(this);
 
+	if (prefab != nullptr)
+	{
+		prefab->RemoveInstance(this);
+		App->resManager->DeleteResource(prefabUID);
+	}
+
 	for (auto &component : components)
 	{
 		component->CleanUp();
@@ -976,7 +955,7 @@ void GameObject::Load(JSON_value *value)
 
 	if (isPrefab)
 	{
-		Prefab* prefab = (Prefab*) App->resManager->Get(prefabUID);
+		prefab = (Prefab*) App->resManager->Get(prefabUID);
 	}
 
 	JSON_value* componentsJSON = value->GetValue("Components");

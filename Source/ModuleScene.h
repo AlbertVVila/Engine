@@ -26,6 +26,7 @@ class ResourceTexture;
 class ResourceScene;
 class myQuadTree;
 class Prefab;
+
 struct par_shapes_mesh_s;
 
 enum class PRIMITIVES
@@ -64,6 +65,7 @@ public:
 	void DragNDrop(GameObject * go);
 	void DrawGUI() override;
 
+	unsigned CreatePrefab(GameObject* go);
 	void CreateCube(const char * name, GameObject* parent);
 	void CreateSphere(const char * name, GameObject* parent);
 	void CreatePrimitive(const char * name, GameObject* parent, PRIMITIVES type);
