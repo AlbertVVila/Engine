@@ -172,9 +172,14 @@ void ComponentParticles::DrawProperties()
 			ImGui::Separator();
 		}
 		ImGui::InputInt("Max Particles", &maxParticles);
-		ImGui::DragFloat("Rate", &rate);
+		ImGui::DragFloat("Rate", &rate, 0.1f, 0.1f, 1000000.f);
 
 		ImGui::Text("Particle properties:");
+		ImGui::Checkbox("Billboarded", &billboarded);
+		if (!billboarded)
+		{
+			ImGui::InputFloat3("LookAt vector(local X,Y,Z)", &lookAtTarget[0]);
+		}
 		ImGui::DragFloat2("Lifetime", &lifetime[0], 0.1f);
 		ImGui::DragFloat2("Speed", &speed[0], 1.2f);
 		ImGui::DragFloat2("Size", &particleSize[0], 0.01 * App->renderer->current_scale);
@@ -197,7 +202,7 @@ void ComponentParticles::DrawProperties()
 		switch (actualEmisor)
 		{
 		case EmisorType::QUAD:
-			ImGui::DragFloat("Quad size", &quadEmitterSize, 0.1 * App->renderer->current_scale);
+			ImGui::DragFloat2("Quad size", &quadEmitterSize[0], 0.1 * App->renderer->current_scale);
 			break;
 		}
 
@@ -293,10 +298,11 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 				switch (actualEmisor)
 				{
 				case EmisorType::QUAD:
-					quadEmitterSize = MAX(1, quadEmitterSize);
+					quadEmitterSize.x = MAX(1, quadEmitterSize.x);
+					quadEmitterSize.y = MAX(1, quadEmitterSize.y);
 
 					//P starting position
-					p->position = pos + gameobject->transform->GetRotation() * float3(rand() % (int)quadEmitterSize - quadEmitterSize / 2, 0, rand() % (int)quadEmitterSize - quadEmitterSize / 2) ;
+					p->position = pos + gameobject->transform->GetRotation() * float3(rand() % (int)quadEmitterSize.x - quadEmitterSize.x / 2, 0, rand() % (int)quadEmitterSize.y - quadEmitterSize.y / 2) ;
 
 					//P direction
 					p->direction = gameobject->transform->GetRotation() * float3(0.f, 1.f, 0.f); //math::float3::unitY;
@@ -339,9 +345,6 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 			float random = (float)rand() / (float) RAND_MAX;
 			float diff = abs(particleSize.y - particleSize.x);
 			p->size = random * diff + Min(particleSize.x, particleSize.y);
-
-			
-			
 			particles.push_back(p);
 		}
 		rateTimer = 1.f / rate;
@@ -385,8 +388,14 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 		}
 		particles.front()->position += particles.front()->direction * particles.front()->speed * dt;
 		float3 direction = (camPos - particles.front()->position);
-		particles.front()->global = particles.front()->global.FromTRS(particles.front()->position, math::Quat::LookAt(float3::unitZ, direction.Normalized(), float3::unitY, float3::unitY), math::float3::one * sizeOT);
-
+		if (billboarded)
+		{
+			particles.front()->global = particles.front()->global.FromTRS(particles.front()->position, math::Quat::LookAt(float3::unitZ, direction.Normalized(), float3::unitY, float3::unitY), math::float3::one * sizeOT);
+		}
+		else
+		{
+			particles.front()->global = particles.front()->global.FromTRS(particles.front()->position, math::Quat::LookAt(float3::unitZ, lookAtTarget.Normalized(), float3::unitY, float3::unitY), math::float3::one * sizeOT);
+		}
 		particles.front()->color = newColor;
 
 		particles.push_back(particles.front());
@@ -407,7 +416,7 @@ void ComponentParticles::Save(JSON_value* value) const
 	value->AddFloat("rate", rate);
 	value->AddInt("maxParticles", maxParticles);
 	value->AddFloat2("size", particleSize);
-	value->AddFloat("quadEmitterSize", quadEmitterSize);
+	value->AddFloat2("quadEmitterSize", quadEmitterSize);
 	value->AddFloat("sphereEmitterRadius", sphereEmitterRadius);
 	value->AddFloat4("particleColor", particleColor);
 	value->AddInt("directionNoise", directionNoise);
@@ -418,6 +427,9 @@ void ComponentParticles::Save(JSON_value* value) const
 	value->AddInt("colorOT", colorOTCheck);
 
 	value->AddFloat4("defaultColor", particleColor);
+
+	value->AddInt("billboarded", billboarded);
+	value->AddFloat3("lookAtTarget", lookAtTarget);
 
 	PMSizeOverTime* SOTAux = (PMSizeOverTime*)modules[0];
 	value->AddFloat4("bezier14", float4(SOTAux->v[0], SOTAux->v[1], SOTAux->v[2], SOTAux->v[3]));
@@ -493,7 +505,7 @@ void ComponentParticles::Load(JSON_value* value)
 	rateTimer = 1.f / rate;
 	maxParticles = value->GetInt("maxParticles");
 	particleSize = value->GetFloat2("size");
-	quadEmitterSize = value->GetFloat("quadEmitterSize");
+	quadEmitterSize = value->GetFloat2("quadEmitterSize");
 	sphereEmitterRadius = value->GetFloat("sphereEmitterRadius");
 	particleColor = value->GetFloat4("particleColor");
 	directionNoise = value->GetInt("directionNoise");
@@ -505,6 +517,9 @@ void ComponentParticles::Load(JSON_value* value)
 	modules[1]->enabled = value->GetInt("colorOT");
 
 	particleColor = value->GetFloat4("defaultColor");
+
+	billboarded = value->GetInt("billboarded");
+	lookAtTarget = value->GetFloat3("lookAtTarget");
 
 	PMSizeOverTime* SOTAux = (PMSizeOverTime*)modules[0];
 	SOTAux->v[0] = value->GetFloat4("bezier14").x;
@@ -536,10 +551,10 @@ void ComponentParticles::DrawDebugEmisor()
 {
 	float3 base = gameobject->transform->GetGlobalPosition();
 
-	float3 v1 = gameobject->transform->GetRotation() * float3(base.x + quadEmitterSize / 2.f, base.y, base.x - quadEmitterSize / 2.f);
-	float3 v2 = gameobject->transform->GetRotation() * float3(base.x + quadEmitterSize / 2.f, base.y, base.x + quadEmitterSize / 2.f);
-	float3 v3 = gameobject->transform->GetRotation() * float3(base.x - quadEmitterSize / 2.f, base.y, base.x + quadEmitterSize / 2.f);
-	float3 v4 = gameobject->transform->GetRotation() * float3(base.x - quadEmitterSize / 2.f, base.y, base.x - quadEmitterSize / 2.f);
+	float3 v1 = gameobject->transform->GetRotation() * float3(base.x + quadEmitterSize.x / 2.f, base.y, base.x - quadEmitterSize.y / 2.f);
+	float3 v2 = gameobject->transform->GetRotation() * float3(base.x + quadEmitterSize.x / 2.f, base.y, base.x + quadEmitterSize.y / 2.f);
+	float3 v3 = gameobject->transform->GetRotation() * float3(base.x - quadEmitterSize.x / 2.f, base.y, base.x + quadEmitterSize.y / 2.f);
+	float3 v4 = gameobject->transform->GetRotation() * float3(base.x - quadEmitterSize.x / 2.f, base.y, base.x - quadEmitterSize.y / 2.f);
 
 	switch (actualEmisor) 
 	{

@@ -275,12 +275,23 @@ void ModuleParticles::DrawParticleSystem(ComponentParticles* cp, const Component
 	glBindVertexArray(billBoardVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, billBoardInstanceVBO);
 	float* matrices = (float*)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
-
-	cp->particles.sort(
-		[camera](const Particle* cp1, const Particle* cp2) -> bool
+	if (cp->billboarded)
 	{
-		return cp1->position.Distance(camera->frustum->pos) > cp2->position.Distance(camera->frustum->pos);
-	});
+		cp->particles.sort(
+			[camera](const Particle* cp1, const Particle* cp2) -> bool
+		{
+			return cp1->position.Distance(camera->frustum->pos) > cp2->position.Distance(camera->frustum->pos);
+		});
+	}
+	else
+	{
+		math::float3 orderPoint = cp->gameobject->transform->position + cp->lookAtTarget * MAX_DISTANCE;
+		cp->particles.sort(
+			[orderPoint](const Particle* cp1, const Particle* cp2) -> bool
+		{
+			return cp1->position.Distance(orderPoint) > cp2->position.Distance(orderPoint);
+		});
+	}
 
 	unsigned nParticles = cp->particles.size();
 	for (; nParticles > 0; --nParticles)
