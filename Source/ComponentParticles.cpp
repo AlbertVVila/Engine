@@ -12,6 +12,7 @@
 #include "ComponentParticles.h"
 #include "ResourceTexture.h"
 
+#include "HashString.h"
 #include "imgui.h"
 #include "JSON.h"
 #include "debugdraw.h"
@@ -31,11 +32,7 @@ ComponentParticles::ComponentParticles(GameObject* gameobject) : Component(gameo
 ComponentParticles::ComponentParticles(const ComponentParticles& component) : Component(component)
 {
 	textureFiles = App->resManager->GetResourceNamesList(TYPE::TEXTURE, true);
-	textureName = component.textureName;
-	if (textureName != "None Selected")
-	{
-		texture = (ResourceTexture*)App->resManager->GetByName(textureName.c_str(), TYPE::TEXTURE);
-	}
+	texture = (ResourceTexture*)App->resManager->Get(component.texture->GetUID());
 	xTiles = component.xTiles;
 	yTiles = component.yTiles;
 	fps = component.fps;
@@ -107,12 +104,10 @@ void ComponentParticles::DrawProperties()
 		{
 			if (texture != nullptr)
 			{
-				unsigned imageUID = App->resManager->FindByName(textureName.c_str(), TYPE::TEXTURE);
-				App->resManager->DeleteResource(imageUID);
+				App->resManager->DeleteResource(texture->GetUID());
 				texture = nullptr;
 			}
 			return;
-			textureName = None;
 		}
 			
 		ImGui::Checkbox("Constant play", &ConstantPlaying);
@@ -125,17 +120,16 @@ void ComponentParticles::DrawProperties()
 		ImGui::PushID(this);
 		ImGui::Text("Particles active %d", particles.size());
 		//texture selector
-		if (ImGui::BeginCombo("Texture", textureName.c_str()))
+		if (ImGui::BeginCombo("Texture", texture != nullptr ? texture->GetName() : None))
 		{
-			bool none_selected = (textureName == None);
+			bool none_selected = (texture == nullptr);
 			if (ImGui::Selectable(None, none_selected))
 			{
 				if (texture != nullptr)
 				{
-					App->resManager->DeleteResource(App->resManager->FindByName(textureName.c_str(), TYPE::TEXTURE));
-					texture = (ResourceTexture*)App->resManager->GetByName(textureName.c_str(), TYPE::TEXTURE);
+					App->resManager->DeleteResource(texture->GetUID());
+					texture = nullptr;
 				}
-				textureName = None;
 			}
 			if (none_selected)
 				ImGui::SetItemDefaultFocus();
@@ -144,12 +138,14 @@ void ComponentParticles::DrawProperties()
 
 			for (int n = 0; n < textureFiles.size(); n++)
 			{
-				bool is_selected = (textureName == textureFiles[n]);
+				bool is_selected = (texture != nullptr && (HashString(texture->GetName()) == HashString(textureFiles[n].c_str())));
 				if (ImGui::Selectable(textureFiles[n].c_str(), is_selected) && !is_selected)
 				{
-					App->resManager->DeleteResource(App->resManager->FindByName(textureName.c_str(), TYPE::TEXTURE));
-					textureName = textureFiles[n].c_str();
-					texture = (ResourceTexture*)App->resManager->GetByName(textureName.c_str(), TYPE::TEXTURE);
+					// Delete previous texture
+					if (texture != nullptr)
+						App->resManager->DeleteResource(texture->GetUID());
+
+					texture = (ResourceTexture*)App->resManager->GetByName(textureFiles[n].c_str(), TYPE::TEXTURE);
 				}
 				if (is_selected)
 					ImGui::SetItemDefaultFocus();
@@ -406,7 +402,7 @@ void ComponentParticles::Save(JSON_value* value) const
 	value->AddInt("xTiles", xTiles);
 	value->AddInt("yTiles", yTiles);
 	value->AddFloat("fps", fps);
-	value->AddString("textureName", textureName.c_str());
+	value->AddUint("textureUID", (texture != nullptr) ? texture->GetUID() : 0u);
 	value->AddFloat2("lifetime", lifetime);
 	value->AddInt("ConstantPlaying", ConstantPlaying);
 	value->AddFloat2("speed", speed);
@@ -488,12 +484,11 @@ void ComponentParticles::Load(JSON_value* value)
 	xTiles = value->GetInt("xTiles");
 	yTiles = value->GetInt("yTiles");
 	fps = value->GetFloat("fps");
-	textureName = std::string(value->GetString("textureName"));
-	if (textureName != "None Selected")
-	{
-		texture = (ResourceTexture*)App->resManager->GetByName(textureName.c_str(), TYPE::TEXTURE);
-	}
-	ConstantPlaying = value->GetInt("ConstantPlaying");
+
+	unsigned uid = value->GetUint("textureUID");
+	texture = (ResourceTexture*)App->resManager->Get(uid);
+  
+  ConstantPlaying = value->GetInt("ConstantPlaying");
 	lifetime = value->GetFloat2("lifetime");
 	speed = value->GetFloat2("speed");
 	rate = value->GetFloat("rate");

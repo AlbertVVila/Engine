@@ -156,6 +156,7 @@ void PanelResourceManager::Draw()
 		{
 			openEditor = true;
 			previous = resource;
+			auxUID = resource->GetUID();
 		}
 		ImGui::NextColumn();
 		ImGui::PopID();
@@ -231,8 +232,7 @@ void PanelResourceManager::OpenResourceEditor()
 		if (ImGui::BeginPopupModal(resourcePopup, NULL, ImGuiWindowFlags_AlwaysAutoResize))
 		{
 			// UID
-			unsigned uid = auxResource->GetUID();
-			ImGui::Text("UID: %u", uid);
+			ImGui::Text("UID: %u", auxUID);
 
 			// Name
 			char name[64] = "";

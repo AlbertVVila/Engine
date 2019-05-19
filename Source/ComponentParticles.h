@@ -80,7 +80,6 @@ public:
 
 private:
 
-	std::string textureName = "None Selected";
 	std::vector<std::string> textureFiles;
 
 	std::vector<ParticleModule*> modules;
