@@ -143,14 +143,21 @@ void ResourceSkybox::SetTextures(std::string faces[NUMFACES])
 	}
 }
 
-void ResourceSkybox::Draw(const Frustum& frustum) const
+void ResourceSkybox::Draw(const Frustum& frustum, bool isEditor) const
 {
 	PROFILE;
 	if (!enabled) return;
 
 	glDepthMask(GL_FALSE);
+	if (isEditor)
+	{
+		glUseProgram(shader->id[1]);
+	}
+	else
+	{
+		glUseProgram(shader->id[0]);
+	}
 
-	glUseProgram(shader->id[0]);
 	glBindVertexArray(skyboxVAO);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, skybox_cubemap);
 	float4x4 model(float4x4::FromTRS(frustum.pos,
@@ -163,7 +170,6 @@ void ResourceSkybox::Draw(const Frustum& frustum) const
 
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
-	glDisableVertexAttribArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glUseProgram(0);
 
@@ -175,10 +181,6 @@ unsigned ResourceSkybox::LoadCubeMap(ResourceTexture* faces[]) const
 	unsigned textureID;
 	glGenTextures(1, &textureID);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
-	unsigned width = 0;
-	unsigned height = 0;
-	unsigned pixelDepth = 0;
-	int format = 0;
 
 	for (unsigned int i = 0; i < NUMFACES; ++i)
 	{

@@ -216,6 +216,7 @@
     <ClInclude Include="ImGUICurveUtils.h" />
     <ClInclude Include="HashString.h" />
     <ClInclude Include="ImGuizmo\ImGuizmo.h" />
+    <ClInclude Include="imgui_color_gradient.h" />
     <ClInclude Include="KDTree.h" />
     <ClInclude Include="MaterialEditor.h" />
     <ClInclude Include="MathGeoLib\include\Algorithm\Random\LCG.h" />
@@ -350,6 +351,7 @@
     <ClInclude Include="ResourceMesh.h" />
     <ClInclude Include="ResourceModel.h" />
     <ClInclude Include="Prefab.h" />
+    <ClInclude Include="ResourceScene.h" />
     <ClInclude Include="ResourceSkybox.h" />
     <ClInclude Include="ResourceTexture.h" />
     <ClInclude Include="ResourceStateMachine.h" />
@@ -420,6 +422,7 @@
     <ClCompile Include="GUICreator.cpp" />
     <ClCompile Include="HashString.cpp" />
     <ClCompile Include="ImGuizmo\ImGuizmo.cpp" />
+    <ClCompile Include="imgui_color_gradient.cpp" />
     <ClCompile Include="KDTree.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -530,6 +533,7 @@
     <ClCompile Include="ResourceMesh.cpp" />
     <ClCompile Include="ResourceModel.cpp" />
     <ClCompile Include="Prefab.cpp" />
+    <ClCompile Include="ResourceScene.cpp" />
     <ClCompile Include="ResourceSkybox.cpp" />
     <ClCompile Include="ResourceTexture.cpp" />
     <ClCompile Include="Soloud\fractal_includes\dr_impl.cpp" />
@@ -570,6 +574,7 @@
     <None Include="..\Game\Shaders\FragmentShaders\Fonts.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\Particles.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\PBR.fs" />
+    <None Include="..\Game\Shaders\FragmentShaders\PostProcess.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\Shadows.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\Skybox.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\Trail.fs" />
@@ -579,6 +584,7 @@
     <None Include="..\Game\Shaders\VertexShaders\Fonts.vs" />
     <None Include="..\Game\Shaders\VertexShaders\Particles.vs" />
     <None Include="..\Game\Shaders\VertexShaders\PBR.vs" />
+    <None Include="..\Game\Shaders\VertexShaders\PostProcess.vs" />
     <None Include="..\Game\Shaders\VertexShaders\Shadows.vs" />
     <None Include="..\Game\Shaders\VertexShaders\Skybox.vs" />
     <None Include="..\Game\Shaders\VertexShaders\Trail.vs" />

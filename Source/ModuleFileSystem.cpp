@@ -12,6 +12,7 @@
 #include "ResourceModel.h"
 
 #include "JSON.h"
+#include "HashString.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -54,10 +55,16 @@ ModuleFileSystem::ModuleFileSystem()
 
 	if (!Exists(IMPORTED_MATERIALS))
 		MakeDirectory(IMPORTED_MATERIALS);
+	if (!Exists(IMPORTED_ANIMATIONS))
+		MakeDirectory(IMPORTED_ANIMATIONS);
+	if (!Exists(IMPORTED_STATEMACHINES))
+		MakeDirectory(IMPORTED_STATEMACHINES);
 	if (!Exists(MESHES))
 		MakeDirectory(MESHES);
 	if (!Exists(TEXTURES))
 		MakeDirectory(TEXTURES);
+	if (!Exists(IMPORTED_SCENES))
+		MakeDirectory(IMPORTED_SCENES);
 	if (!Exists(ANIMATIONS))
 		MakeDirectory(ANIMATIONS);
 	if (!Exists(STATEMACHINES))
@@ -125,6 +132,7 @@ unsigned ModuleFileSystem::Load(const char* file, char** buffer) const
 
 bool ModuleFileSystem::Save(const char* file, const char* buffer, unsigned size) const
 {
+
 	PHYSFS_file* myfile = PHYSFS_openWrite(file);
 	if (myfile == nullptr)
 	{
@@ -190,7 +198,7 @@ bool ModuleFileSystem::MakeDirectory(const char* directory) const
 	assert(directory != nullptr);
 	if (directory == nullptr) return false;
 	int result = PHYSFS_mkdir(directory);
-	if (result != 0)
+	if (result == 0)
 	{
 		LOG("Error: %s",PHYSFS_getLastError());
 		return false;
@@ -251,7 +259,7 @@ void ModuleFileSystem::ListFolderContent(const char* dir, std::vector<std::strin
 	PHYSFS_freeList(filesList);
 }
 
-void ModuleFileSystem::ListFiles(const char* dir, std::set<std::string>& files)
+void ModuleFileSystem::ListFileNames(const char* dir, std::set<std::string>& files)
 {
 	files.clear();
 	std::vector<std::string> foundFiles;
@@ -275,6 +283,35 @@ void ModuleFileSystem::ListFiles(const char* dir, std::set<std::string>& files)
 			else
 			{
 				files.insert(RemoveExtension(file));
+			}
+		}
+	}
+}
+
+void ModuleFileSystem::ListFilesWithExtension(const char* dir, std::set<std::string>& files)
+{
+	files.clear();
+	std::vector<std::string> foundFiles;
+	std::stack<std::string> folderStack;
+	folderStack.push(dir);
+	std::string currentFolder;
+	while (!folderStack.empty())
+	{
+		currentFolder = folderStack.top();
+		folderStack.pop();
+
+		foundFiles = GetFolderContent(currentFolder.c_str());
+		for (auto& file : foundFiles)
+		{
+			std::string filefolder(currentFolder);
+			filefolder += file;
+			if (IsDirectory((currentFolder + file).c_str()))
+			{
+				folderStack.push(dir + file + "/");
+			}
+			else
+			{
+				files.insert(dir + file);
 			}
 		}
 	}
@@ -306,16 +343,17 @@ bool ModuleFileSystem::CopyFromOutsideFS(const char* source, const char* destina
 
 bool ModuleFileSystem::Copy(const char* source, const char* destination, const char* file) const
 {
-	char * data = nullptr;
+	char* data = nullptr;
 	std::string filepath(source);
 	filepath += file;
 	unsigned size = Load(filepath.c_str(), &data);
+	if (size <= 0u) return false;
 	std::string filedest(destination);
 	filedest += file;
-	Save(filedest.c_str(), data, size);
+	bool ret = Save(filedest.c_str(), data, size);
 	RELEASE_ARRAY(data);
-
-	return true;
+	
+	return ret;
 }
 
 bool ModuleFileSystem::Copy(const char * source, const char* file, const char* dest, const char* newFile) const
@@ -332,20 +370,36 @@ bool ModuleFileSystem::Copy(const char * source, const char* file, const char* d
 	return true;
 }
 
-void ModuleFileSystem::Rename(const char* route, const char* file, const char* newName) const
+bool ModuleFileSystem::Rename(const char* route, const char* file, const char* newName) const
 {
+	bool success = false;
+	if (route == nullptr || file == nullptr || newName == nullptr)
+		return success;
+
 	std::string filepath(route);
 	filepath += file;
 	assert(filepath.c_str() != nullptr);
 	if (PHYSFS_unmount(filepath.c_str()) != 0)
 	{
 		LOG("Error: %s", PHYSFS_getLastError());
-		return;
+		return false;
 	}
 
-	std::string extension = GetExtension(file);
-	Copy(route, file, route, (newName + extension).c_str());
-	Delete(filepath.c_str());
+	if (IsDirectory(filepath.c_str()) && !filepath.empty())
+	{
+		std::string newDir(route);
+		newDir += newName;
+		success = Delete(filepath.c_str());
+		if(success)
+			success = MakeDirectory(newDir.c_str());
+	}
+	else
+	{
+		std::string extension = GetExtension(file);
+		Copy(route, file, route, (newName + extension).c_str());
+		success = Delete(filepath.c_str());
+	}
+	return success;
 }
 
 bool ModuleFileSystem::ChangeExtension(const char* source, const char* file, const char* newExtension) const
@@ -376,17 +430,10 @@ void ModuleFileSystem::Monitorize(const char* folder)
 
 void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 {
-	// Get lists with all imported resources and materials
-	std::set<std::string> importedTextures;
-	std::set<std::string> importedMaterials;
-	std::set<std::string> importedMeshes;
-	std::set<std::string> importedStateMachines;
-	std::set<std::string> importedPrefabs;
 
-	ListFiles(TEXTURES, importedTextures);
-	ListFiles(IMPORTED_MATERIALS, importedMaterials);
-	ListFiles(STATEMACHINES, importedStateMachines);
-	ListFiles(PREFABS, importedPrefabs);
+	// Get lists with all imported resources and materials
+	std::set<std::string> importedResources;
+	ListFileNames(LIBRARY, importedResources);
 
 	// Look for files in folder passed as argument
 	std::vector<std::string> files;
@@ -395,23 +442,6 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 	std::string currentFolder;
 	struct stat statFile;
 	struct stat statMeta;
-
-	//for the statesMachine, about to be deprecated
-	std::vector<std::string> smFiles = GetFolderContent(STATEMACHINES);
-	for (auto& file : smFiles)
-	{
-		std::set<std::string>::iterator it = importedStateMachines.find(RemoveExtension(file));
-		if (it == importedStateMachines.end())
-		{
-			// File modified or not imported, send it to import
-			filesToImport.push_back(std::pair<std::string, std::string>(file, STATEMACHINES));
-		}
-		else
-		{
-			// File already imported, add it to the resources list
-			App->resManager->AddResource(file.c_str(), STATEMACHINES, TYPE::STATEMACHINE);
-		}
-	}
 
 	while (!folderStack.empty())
 	{
@@ -429,88 +459,60 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 			else
 			{
 				stat((currentFolder + file).c_str(), &statFile);
-				stat((currentFolder + file + METAEXT).c_str(), &statMeta);
+				std::string metaFile(currentFolder + file + METAEXT);
+				stat(metaFile.c_str(), &statMeta);
 
-				FILETYPE type = GetFileType(GetExtension(file)); //TODO: Choose type with SWITCH statement (constant time)
-				if (type == FILETYPE::TEXTURE) // PNG, TIF, LO QUE SEA	
+				// Model has to check also Meshes and Animations
+				FILETYPE type = GetFileType(GetExtension(file));
+	
+				if (type != FILETYPE::NONE && type != FILETYPE::AUDIO) 
 				{
-					std::set<std::string>::iterator it = importedTextures.find(RemoveExtension(file));
-					if (it == importedTextures.end() || statFile.st_mtime > statMeta.st_mtime)
-					{
-						// File modified or not imported, send it to import
-						filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
-					}
-					else
-					{
-						// File already imported, add it to the resources list
-						ResourceTexture* res = (ResourceTexture*)App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::TEXTURE);
-						res->LoadConfigFromMeta();
-					}
-				}
-				else if (type == FILETYPE::MODEL) //FBX
-				{	
+					bool import = false;
+					unsigned uid = 0u;
+
 					if (statFile.st_mtime > statMeta.st_mtime)
-					{
-						filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
-					}
+						import = true;
 					else
 					{
-						// File already imported, add model to the resources list
-						ResourceModel* res = (ResourceModel*)App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::MODEL);
-						res->LoadConfigFromMeta();
-
-						// Check if the meshes adn animations inside ResourceModel are imported
-						if(res->CheckImportedMeshes())
-							filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
-
-						if (res->CheckImportedAnimations())
-							filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
-			
+						// Read UID from meta file and see if there is a exported file with that UID
+						uid = App->resManager->GetUIDFromMeta(metaFile.c_str(), type);
+						if (type != FILETYPE::MODEL)
+						{
+							if (uid != 0)
+							{
+								std::set<std::string>::iterator it = importedResources.find(std::to_string(uid));
+								if (it == importedResources.end())
+									import = true;
+							}
+							else
+								import = true;
+						}		
 					}
-				}
-				else if (type == FILETYPE::STATEMACHINE)
-				{
-					std::set<std::string>::iterator it = importedStateMachines.find(RemoveExtension(file));
-					if (it == importedStateMachines.end())
+
+					if (import)
 					{
 						// File modified or not imported, send it to import
 						filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
 					}
 					else
 					{
-						// File already imported, add it to the resources list
-						App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::STATEMACHINE);
-					}
-				}
-				else if (type == FILETYPE::MATERIAL)
-				{
-					std::set<std::string>::iterator it = importedMaterials.find(RemoveExtension(file));
-					if (it == importedMaterials.end() || statFile.st_mtime > statMeta.st_mtime)
-					{
-						// File modified or not imported, send it to import
-						filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
-					}
-					else
-					{
-						// File already imported, add it to the resources list
-						App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::MATERIAL);
-					}
-				}
-				else if (type == FILETYPE::PREFAB)
-				{
-					stat((currentFolder + file).c_str(), &statFile);
-					stat((currentFolder + file + METAEXT).c_str(), &statMeta);
+						if (type == FILETYPE::MODEL) //FBX
+						{
+							// File already imported, add model to the resources list
+							ResourceModel* res = (ResourceModel*)App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::MODEL, uid);
+							res->LoadConfigFromMeta();
 
-					std::set<std::string>::iterator it = importedPrefabs.find(RemoveExtension(file));
-					if (it == importedPrefabs.end() || statFile.st_mtime > statMeta.st_mtime)
-					{
-						// File modified or not imported, send it to import
-						filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
-					}
-					else
-					{
+							// Check if the meshes and animations inside ResourceModel are imported
+							if (res->CheckImportedMeshes())
+								filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
+
+							if (res->CheckImportedAnimations())
+								filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
+						}
 						// File already imported, add it to the resources list
-						App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::PREFAB);
+						Resource* res = App->resManager->AddResource(file.c_str(), currentFolder.c_str(), App->resManager->GetResourceType(type), uid);
+						if (res != nullptr)
+							res->LoadConfigFromMeta();
 					}
 				}
 			}
@@ -542,7 +544,9 @@ void ModuleFileSystem::LookForNewResourceFiles(const char* folder)
 			}
 			else
 			{
-				if (GetExtension(file) == METAEXT)
+				std::string extension(GetExtension(file));
+				// TODO [ResManager] : When ResourceAudio is implemented delete audio extensions from this if
+				if (extension == METAEXT || extension == OGGEXTENSION || extension == MP3EXTENSION || extension == WAVEXTENSION)
 					continue;
 				stat((current_folder + file).c_str(), &statFile);
 				stat((current_folder + file + METAEXT).c_str(), &statMeta);
@@ -558,10 +562,7 @@ void ModuleFileSystem::LookForNewResourceFiles(const char* folder)
 				}
 				if (statFile.st_mtime > statMeta.st_mtime)
 				{
-					// TODO: Enable Scenes also
-					FILETYPE type = GetFileType(GetExtension(file));
-					if(type != FILETYPE::SCENE && type != FILETYPE::NONE)
-						filesToImport.push_back(std::pair<std::string, std::string>(file, current_folder));
+					filesToImport.push_back(std::pair<std::string, std::string>(file, current_folder));
 				}
 			}
 		}
@@ -648,6 +649,10 @@ std::string ModuleFileSystem::GetFilePath(std::string file) const
 		{
 			file.erase(found + 1, file.size());
 		}
+		else
+		{
+			return "";
+		}
 	}
 	return file;
 }
@@ -670,7 +675,7 @@ FILETYPE ModuleFileSystem::GetFileType(std::string extension) const
 	{
 		return FILETYPE::IMPORTED_MESH;
 	}
-	if (extension == JSONEXT)
+	if (extension == SCENEEXTENSION)
 	{
 		return FILETYPE::SCENE;
 	}

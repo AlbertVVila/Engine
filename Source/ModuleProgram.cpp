@@ -51,7 +51,7 @@ Shader* ModuleProgram::CreateProgram(const char* name)
 	if (!success) {
 		glGetProgramInfoLog(program, 512, NULL, infoLog);
 		LOG("ERROR::PROGRAM::CREATION_FAILED\n");
-		LOG("ERROR: %s\n", infoLog);
+		LOG("ERROR: %s -  %s\n", infoLog, name);
 	}
 
 	glDeleteShader(vertexShader);
@@ -81,6 +81,15 @@ Shader* ModuleProgram::GetProgram(const char* name)
 	{
 		return CreateVariations(name, ShadowDefines, SHADOW_VARIATIONS);
 	}
+	if (std::string(name) == "PostProcess")
+	{
+		return CreateVariations(name, PostProcessDefines, POSTPRO_VARIATIONS);
+	}
+	if (std::string(name) == "Skybox")
+	{
+		return CreateVariations(name, SkyboxDefines, SKYBOX_VARIATIONS);
+	}
+
 	else
 	{
 		return CreateProgram(name);
@@ -188,7 +197,7 @@ Shader* ModuleProgram::CreateVariations(const char* name, const char** defines, 
 		{
 			glGetProgramInfoLog(program, 512, NULL, infoLog);
 			LOG("ERROR::PROGRAM::CREATION_FAILED\n");
-			LOG("ERROR: %s\n", infoLog);
+			LOG("ERROR: %s -  %s\n", infoLog, name);
 		}
 
 		glDeleteShader(vertexShader);

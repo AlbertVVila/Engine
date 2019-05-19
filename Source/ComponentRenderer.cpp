@@ -15,6 +15,7 @@
 #include "myQuadTree.h"
 #include "MaterialEditor.h"
 #include "JSON.h"
+#include "HashString.h"
 
 #include "imgui.h"
 #include "Math/float4x4.h"
@@ -72,18 +73,18 @@ void ComponentRenderer::DrawProperties()
 		// Mesh selector
 		ImGui::Text("Mesh");
 		ImGui::PushID("Mesh Combo");
-		if (ImGui::BeginCombo("", mesh != nullptr ? mesh->name.c_str() : ""))
+		if (ImGui::BeginCombo("", mesh != nullptr ? mesh->GetName() : "None selected"))
 		{
 			if (guiMeshes.empty())
 			{
-				guiMeshes = App->resManager->GetMeshesNamesList(true);
+				guiMeshes = App->resManager->GetResourceNamesList(TYPE::MESH, true);
 			}
 			for (int n = 0; n < guiMeshes.size(); n++)
 			{
-				bool is_selected = (mesh != nullptr ? mesh->name == guiMeshes[n] : false);
+				bool is_selected = (mesh != nullptr ? HashString(mesh->GetName()) == HashString(guiMeshes[n].c_str()) : false);
 				if (ImGui::Selectable(guiMeshes[n].c_str(), is_selected))
 				{
-					if(mesh == nullptr || mesh->name != guiMeshes[n])
+					if(mesh == nullptr || mesh->GetName() != guiMeshes[n])
 						SetMesh(guiMeshes[n].c_str());
 				}
 				if (is_selected)
@@ -111,11 +112,12 @@ void ComponentRenderer::DrawProperties()
 		ImGui::Spacing();
 		ImGui::Checkbox("Cast shadows", &castShadows);
 		ImGui::Checkbox("Use Alpha", &useAlpha);
-
+		ImGui::Checkbox("Highlighted", &highlighted);
+		ImGui::ColorEdit3("Highlight color", &highlightColor[0]);
 		// Material selector
 		ImGui::Text("Material");
 		ImGui::PushID("Material Combo");
-		if (ImGui::BeginCombo("", material->GetExportedFile()))
+		if (ImGui::BeginCombo("", material != nullptr ? material->GetName() : "None selected"))
 		{
 			if (guiMaterials.empty())
 			{
@@ -123,10 +125,11 @@ void ComponentRenderer::DrawProperties()
 			}
 			for (int n = 0; n < guiMaterials.size(); n++)
 			{
-				bool is_selected = (material->GetExportedFile() == guiMaterials[n]);
-				if (ImGui::Selectable(guiMaterials[n].c_str(), is_selected) && material->GetExportedFile() != guiMaterials[n])
+				bool is_selected = (material != nullptr ? (HashString(material->GetName()) == HashString(guiMaterials[n].c_str())) : false);
+				if (ImGui::Selectable(guiMaterials[n].c_str(), is_selected) )
 				{
-					SetMaterial(guiMaterials[n].c_str());
+					if (material == nullptr || material->GetName() != guiMaterials[n])
+						SetMaterial(guiMaterials[n].c_str());
 
 					if (App->editor->materialEditor->open)
 					{
@@ -171,13 +174,16 @@ void ComponentRenderer::DrawProperties()
 		{
 			if (ImGui::Button("Show"))
 			{
-				App->editor->materialEditor->open = true;
-				App->editor->materialEditor->material = material;
-				App->editor->materialEditor->previous = new ResourceMaterial(*material);
-				App->editor->materialEditor->SetCurrentTextures();
+				if (material != nullptr) 
+				{
+					App->editor->materialEditor->open = true;
+					App->editor->materialEditor->material = material;
+					App->editor->materialEditor->previous = new ResourceMaterial(*material);
+					App->editor->materialEditor->SetCurrentTextures();
 
-				// Update texture list
-				App->editor->materialEditor->UpdateTexturesList();
+					// Update texture list
+					App->editor->materialEditor->UpdateTexturesList();
+				}
 			}
 		}
 
@@ -213,27 +219,32 @@ void ComponentRenderer::Save(JSON_value* value) const
 {
 	Component::Save(value);
 	value->AddUint("meshUID", (mesh != nullptr) ? mesh->GetUID() : 0u);
-	value->AddString("materialFile", (material != nullptr) ? material->GetExportedFile() : DEFAULTMAT);
+	value->AddUint("materialUID", (material != nullptr) ? material->GetUID() : 0u);
 	value->AddInt("castShadows", castShadows);
 	value->AddInt("useAlpha", useAlpha);
+	value->AddInt("highlighted", highlighted);
+	value->AddFloat3("highlightColor", highlightColor);
 }
 
 void ComponentRenderer::Load(JSON_value* value)
 {
 	Component::Load(value);
 
-	unsigned uid = value->GetUint("meshUID");
-	mesh = (ResourceMesh*)App->resManager->Get(uid); //Look for loaded meshes
+	unsigned meshUID = value->GetUint("meshUID");
+	mesh = (ResourceMesh*)App->resManager->Get(meshUID); //Look for loaded meshes
 	UpdateGameObject();
 
-	const char* materialFile = value->GetString("materialFile");
-	SetMaterial(materialFile);
+	unsigned materialUID = value->GetUint("materialUID");
+	material = (ResourceMaterial*)App->resManager->Get(materialUID);
+	if (material == nullptr) SetMaterial(DEFAULTMAT);
 
 	castShadows = value->GetInt("castShadows");
 	useAlpha = value->GetInt("useAlpha");
+	highlighted = value->GetInt("highlighted");
+	highlightColor = value->GetFloat3("highlightColor");
 }
 
-void ComponentRenderer::SetMaterial(const char* materialfile)
+void ComponentRenderer::SetMaterial(const char* materialName)
 {
 	// Delete previous material
 	if (material != nullptr)
@@ -241,18 +252,18 @@ void ComponentRenderer::SetMaterial(const char* materialfile)
 		App->resManager->DeleteResource(material->GetUID());
 	}
 
-	if (materialfile == nullptr)
+	if (materialName == nullptr)
 	{
-		material = (ResourceMaterial*)App->resManager->Get(DEFAULTMAT,TYPE::MATERIAL);
+		material = (ResourceMaterial*)App->resManager->GetByName(DEFAULTMAT,TYPE::MATERIAL);
 		return;
 	}
 	else
 	{
-		material = (ResourceMaterial*)App->resManager->Get(materialfile, TYPE::MATERIAL);
+		material = (ResourceMaterial*)App->resManager->GetByName(materialName, TYPE::MATERIAL);
 
 		// Material can't be found
 		if(material == nullptr)
-			material = (ResourceMaterial*)App->resManager->Get(DEFAULTMAT, TYPE::MATERIAL);
+			material = (ResourceMaterial*)App->resManager->GetByName(DEFAULTMAT, TYPE::MATERIAL);
 	}
 	return;
 }
@@ -267,10 +278,14 @@ void ComponentRenderer::SetMesh(const char* meshfile)
 	}
 
 	if (meshfile != nullptr)
-		mesh = (ResourceMesh*)App->resManager->GetMeshByName(meshfile);
+		mesh = (ResourceMesh*)App->resManager->GetByName(meshfile, TYPE::MESH);
 
-	LinkBones();
-	UpdateGameObject();
+	if (mesh != nullptr)
+	{
+		LinkBones();
+		UpdateGameObject();
+	}
+
 	return;
 }
 
