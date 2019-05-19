@@ -810,3 +810,26 @@ unsigned ModuleResourceManager::GetUIDFromMeta(const char* metaFile, FILETYPE fi
 	}	 
 	return value->GetUint("GUID");
 }
+
+void ModuleResourceManager::CleanUnusedMetaFiles() const
+{
+	// Get lists with all assets
+	std::set<std::string> assetFiles;
+	App->fsystem->ListFilesWithExtension(ASSETS, assetFiles);
+
+	for (auto& file : assetFiles)
+	{
+		if (HashString(App->fsystem->GetExtension(file).c_str()) == HashString(METAEXT))
+		{
+			std::string fileAssignedToMeta = App->fsystem->RemoveExtension(file);
+			if (!App->fsystem->Exists(fileAssignedToMeta.c_str()))
+			{
+				App->fsystem->Delete(file.c_str());
+			}
+		}
+	}
+}
+
+void ModuleResourceManager::CleanUnusedExportedFiles() const
+{
+}
