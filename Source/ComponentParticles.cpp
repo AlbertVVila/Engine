@@ -71,6 +71,30 @@ ComponentParticles::~ComponentParticles()
 	}
 }
 
+void ComponentParticles::Play(float newPlayTime)
+{
+	PlayTime = newPlayTime;
+	Playing = true;
+	Reset();
+	lastActive = timer;
+}
+
+void ComponentParticles::Stop()
+{
+	Playing = false;
+}
+
+void ComponentParticles::Reset()
+{
+	unsigned nParticles = particles.size();
+
+	for (; nParticles > 0; --nParticles)
+	{
+		RELEASE(particles.front());
+		particles.pop_front();
+	}
+}
+
 Component* ComponentParticles::Clone() const
 {
 	return new ComponentParticles(*this);
@@ -83,6 +107,13 @@ void ComponentParticles::DrawProperties()
 		bool removed = Component::DrawComponentState();
 		if (removed)	
 			return;
+					
+		ImGui::Checkbox("Constant play", &ConstantPlaying);
+		if (!ConstantPlaying)
+		{
+			if (ImGui::Button("Play Demo")) Play(PlayTime);
+			ImGui::InputFloat("PlayTime", &PlayTime);
+		}
 
 		ImGui::PushID(this);
 		ImGui::Text("Particles active %d", particles.size());
@@ -207,7 +238,15 @@ bool ComponentParticles::CleanUp()
 
 void ComponentParticles::Update(float dt, const math::float3& camPos)
 {
+	if (!Playing && !ConstantPlaying) return;
 	timer += dt;
+
+	if (timer - lastActive > PlayTime && !ConstantPlaying)
+	{
+		Playing = false;
+		return;
+	}
+
 	float currentFrame = timer / (1 / fps);
 	float frame;
 	frameMix = modf(currentFrame, &frame);
@@ -363,6 +402,7 @@ void ComponentParticles::Save(JSON_value* value) const
 	value->AddFloat("fps", fps);
 	value->AddUint("textureUID", (texture != nullptr) ? texture->GetUID() : 0u);
 	value->AddFloat2("lifetime", lifetime);
+	value->AddInt("ConstantPlaying", ConstantPlaying);
 	value->AddFloat2("speed", speed);
 	value->AddFloat("rate", rate);
 	value->AddInt("maxParticles", maxParticles);
@@ -433,26 +473,7 @@ void ComponentParticles::Save(JSON_value* value) const
 
 		marks.pop_front();
 	}
-	
-	//colorAux.x = marks.front()->color[0];
-	//colorAux.y = marks.front()->color[1];
-	//colorAux.z = marks.front()->color[2];
-	//value->AddFloat3("color1", colorAux);
 
-	//marks.pop_front();
-
-	//colorAux.x = marks.front()->color[0];
-	//colorAux.y = marks.front()->color[1];
-	//colorAux.z = marks.front()->color[2];
-	//value->AddFloat3("color2", colorAux);
-	//marks.pop_front();
-
-	//value->AddFloat("alpha1", marks.front()->alpha);
-	//marks.pop_front();
-
-	//value->AddFloat("alpha2", marks.front()->alpha);
-
-	
 }
 
 void ComponentParticles::Load(JSON_value* value)
@@ -461,8 +482,11 @@ void ComponentParticles::Load(JSON_value* value)
 	xTiles = value->GetInt("xTiles");
 	yTiles = value->GetInt("yTiles");
 	fps = value->GetFloat("fps");
+
 	unsigned uid = value->GetUint("textureUID");
 	texture = (ResourceTexture*)App->resManager->Get(uid);
+  
+	ConstantPlaying = value->GetInt("ConstantPlaying");
 	lifetime = value->GetFloat2("lifetime");
 	speed = value->GetFloat2("speed");
 	rate = value->GetFloat("rate");

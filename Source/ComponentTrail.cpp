@@ -31,7 +31,7 @@ ComponentTrail::ComponentTrail(GameObject* gameobject) : Component(gameobject, C
 }
 
 ComponentTrail::ComponentTrail(const ComponentTrail& component) : Component(component)
-{	
+{
 	if (!gameobject->transform)
 	{
 		gameobject->CreateComponent(ComponentType::Transform);
@@ -41,6 +41,10 @@ ComponentTrail::ComponentTrail(const ComponentTrail& component) : Component(comp
 	minDistance = component.minDistance;
 
 	textureName = component.textureName;
+	if (textureName != "None Selected")
+	{
+		texture = (ResourceTexture*)App->resManager->GetByName(textureName.c_str(), TYPE::TEXTURE);
+	}
 
 	App->particles->AddTrailRenderer(this);
 }
@@ -54,7 +58,7 @@ void ComponentTrail::Update()
 		point.remainingTime -= App->time->gameDeltaTime;
 
 		if (point.remainingTime > 0)
-		{			
+		{
 			trail.push(point);
 		}
 
@@ -70,7 +74,7 @@ void ComponentTrail::Update()
 			trail.push(newPoint);
 		}
 		else
-		{			
+		{
 			TrailPoint newPoint(duration, gameobject->transform->GetGlobalPosition(), trail.back().position, width, gameobject->transform->right);
 			trail.push(newPoint);
 		}
@@ -150,7 +154,7 @@ void ComponentTrail::Load(JSON_value* value)
 	textureName = std::string(value->GetString("textureName"));
 	if (textureName != "None Selected")
 	{
-		texture = (ResourceTexture*)App->resManager->Get(textureName.c_str());
+		texture = (ResourceTexture*)App->resManager->GetByName(textureName.c_str(), TYPE::TEXTURE);
 	}
 }
 
