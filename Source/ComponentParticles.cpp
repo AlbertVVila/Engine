@@ -64,6 +64,11 @@ ComponentParticles::ComponentParticles(const ComponentParticles& component) : Co
 
 ComponentParticles::~ComponentParticles()
 {
+	if (texture != nullptr)
+	{
+		App->resManager->DeleteResource(texture->GetUID());
+		texture = nullptr;
+	}
 }
 
 void ComponentParticles::Play(float newPlayTime)
@@ -100,13 +105,7 @@ void ComponentParticles::DrawProperties()
 	if (ImGui::CollapsingHeader("Particle System")) 
 	{
 		bool removed = Component::DrawComponentState();
-		if (removed)
-		{
-			if (texture != nullptr)
-			{
-				App->resManager->DeleteResource(texture->GetUID());
-				texture = nullptr;
-			}
+		if (removed)	
 			return;
 		}
 			
