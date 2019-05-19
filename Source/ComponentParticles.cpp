@@ -107,8 +107,7 @@ void ComponentParticles::DrawProperties()
 		bool removed = Component::DrawComponentState();
 		if (removed)	
 			return;
-		}
-			
+					
 		ImGui::Checkbox("Constant play", &ConstantPlaying);
 		if (!ConstantPlaying)
 		{
