@@ -18,6 +18,7 @@ struct ImGuiContext;
 #endif
 
 class ComponentAnimation;
+class ComponentBoxTrigger;
 class JSON_value;
 struct ImGuiContext;
 class PlayerState;
@@ -78,6 +79,7 @@ public:
 	float attackDuration = 1.0f;
 	float attackTimer = 0.0f;
 	ComponentAnimation* anim = nullptr;
+	ComponentBoxTrigger* boxTrigger = nullptr;
 	PlayerState* currentState = nullptr;
 public:
 

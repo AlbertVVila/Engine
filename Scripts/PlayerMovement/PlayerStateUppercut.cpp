@@ -7,6 +7,7 @@
 #include "GameObject.h"
 
 #include "ComponentTransform.h"
+#include "ComponentBoxTrigger.h"
 
 PlayerStateUppercut::PlayerStateUppercut(PlayerMovement* PM)
 {
@@ -21,10 +22,25 @@ PlayerStateUppercut::~PlayerStateUppercut()
 
 void PlayerStateUppercut::Update()
 {
-
+	if (!hitboxCreated && timer > player->uppercutDuration * 0.4)
+	{
+		//Create the hitbox
+		player->boxTrigger->SetBoxSize(100, 100, 100);
+		hitboxCreated = true;
+	}
+	if (hitboxCreated && timer < player->uppercutDuration* 0.8)
+	{
+		player->boxTrigger->SetBoxSize(1, 1, 1);
+		hitboxCreated = false;
+	}
 }
 
 void PlayerStateUppercut::Enter()
+{
+
+}
+
+void PlayerStateUppercut::Exit()
 {
 
 }
