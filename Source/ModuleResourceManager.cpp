@@ -832,4 +832,15 @@ void ModuleResourceManager::CleanUnusedMetaFiles() const
 
 void ModuleResourceManager::CleanUnusedExportedFiles() const
 {
+	// Get lists with all imported files
+	std::set<std::string> importedFiles;
+	App->fsystem->ListFilesWithExtension(LIBRARY, importedFiles);
+
+	for (auto& file : importedFiles)
+	{
+		if (!App->resManager->Exists(file.c_str()))
+		{
+			App->fsystem->Delete(file.c_str());
+		}
+	}
 }

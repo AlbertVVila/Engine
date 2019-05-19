@@ -102,9 +102,9 @@ void PanelResourceManager::Draw()
 			{
 				App->resManager->CleanUnusedMetaFiles();
 			}
-			if (ImGui::MenuItem("Delete Unused Library Files"))
+			if (ImGui::MenuItem("Delete Unused Exported Files"))
 			{
-
+				App->resManager->CleanUnusedExportedFiles();
 			}
 			ImGui::EndMenu();
 		}

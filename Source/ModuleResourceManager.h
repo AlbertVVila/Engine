@@ -79,7 +79,7 @@ class ModuleResourceManager :
 
 	// Clean functions
 	void CleanUnusedMetaFiles() const;			// Deletes all meta files that doesn't have a file assigned
-	void CleanUnusedExportedFiles() const;
+	void CleanUnusedExportedFiles() const;		// Deletes all imported files that aren't registered on the Resource Manager
 
 private:
 	// Resources map (Textures, Models, Mehses, Materials, Skyboxes, Scenes...)
