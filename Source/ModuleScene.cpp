@@ -29,6 +29,7 @@
 #include "MaterialEditor.h"
 #include "Viewport.h"
 
+#include "HashString.h"
 #include "JSON.h"
 #include "myQuadTree.h"
 #include "AABBTree.h"
@@ -89,8 +90,8 @@ bool ModuleScene::Init(JSON * config)
 		primitivesUID[(unsigned)PRIMITIVES::SPHERE] = scene->GetUint("sphereUID");
 		primitivesUID[(unsigned)PRIMITIVES::CUBE] = scene->GetUint("cubeUID");
 		ambientColor = scene->GetColor3("ambient");
-		const char* dscene = scene->GetString("defaultscene");
-		defaultScene = dscene;
+		defaultSceneUID = scene->GetUint("defaultsceneUID");
+
 		if (scene->GetInt("sizeScene")) 
 		{
 			SceneSize = scene->GetInt("sizeScene");
@@ -102,10 +103,11 @@ bool ModuleScene::Init(JSON * config)
 bool ModuleScene::Start()
 {
 	camera_notfound_texture = (ResourceTexture*)App->resManager->Get(NOCAMERA);
-	if (defaultScene.size() > 0)
+	if (defaultSceneUID > 0u)
 	{
-		path = SCENES;
-		//LoadScene(defaultScene.c_str(), path.c_str());
+		defaultScene = (ResourceScene*)App->resManager->Get(defaultSceneUID);
+		if(defaultScene != nullptr)
+			defaultScene->Load();
 	}
 	return true;
 }
@@ -198,7 +200,7 @@ void ModuleScene::SaveConfig(JSON* config)
 	scene->AddUint("sphereUID", primitivesUID[(unsigned)PRIMITIVES::SPHERE]);
 	scene->AddUint("cubeUID", primitivesUID[(unsigned)PRIMITIVES::CUBE]);
 	scene->AddFloat3("ambient", ambientColor);
-	scene->AddString("defaultscene", defaultScene.c_str());
+	scene->AddUint("defaultsceneUID", defaultScene != nullptr ? defaultScene->GetUID() : 0u);
 	scene->AddInt("sizeScene", SceneSize);
 	config->AddValue("scene", *scene);
 }
@@ -607,9 +609,48 @@ void ModuleScene::DrawGUI()
 	{
 		App->spacePartitioning->kDTree.Calculate();
 	}
+
+	// Default Scene selection
+	if (sceneFiles.empty())
+		UpdateScenesList();
+
+	if (ImGui::BeginCombo("Default scene", defaultScene != nullptr ? defaultScene->GetName() : None))
+	{
+		bool none_selected = (defaultScene == nullptr);
+		if (ImGui::Selectable(None, none_selected))
+		{
+			if (defaultScene != nullptr)
+			{
+				App->resManager->DeleteResource(defaultScene->GetUID());
+				defaultScene = nullptr;
+			}
+		}
+		if (none_selected)
+			ImGui::SetItemDefaultFocus();
+		for (int n = 0; n < sceneFiles.size(); n++)
+		{
+			bool is_selected = (defaultScene != nullptr && (HashString(defaultScene->GetName()) == HashString(sceneFiles[n].c_str())));
+			if (ImGui::Selectable(sceneFiles[n].c_str(), is_selected) && !is_selected)
+			{
+				// Delete previous texture
+				if (defaultScene != nullptr)
+					App->resManager->DeleteResource(defaultScene->GetUID());
+
+				defaultScene = (ResourceScene*)App->resManager->GetByName(sceneFiles[n].c_str(), TYPE::SCENE);
+			}
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
+		}
+		ImGui::EndCombo();
+	}
+	if (ImGui::Button("Refresh Scenes List"))
+	{
+		UpdateScenesList();
+	}
+
 }
 
-GameObject * ModuleScene::CreateGameObject(const char * name, GameObject* parent)
+GameObject* ModuleScene::CreateGameObject(const char* name, GameObject* parent)
 {
 	GameObject * gameobject = new GameObject(name, GetNewUID());
 	if (parent != nullptr)
@@ -620,7 +661,7 @@ GameObject * ModuleScene::CreateGameObject(const char * name, GameObject* parent
 	return gameobject;
 }
 
-void ModuleScene::AddToSpacePartition(GameObject *gameobject)
+void ModuleScene::AddToSpacePartition(GameObject* gameobject)
 {
 	assert(gameobject != nullptr);
 	if (gameobject == nullptr)	return;
@@ -953,6 +994,12 @@ void ModuleScene::ClearScene()
 	App->particles->Start();
 	App->renderer->shadowCasters.clear();
 	isCleared = true;
+}
+
+void ModuleScene::UpdateScenesList()
+{
+	sceneFiles.clear();
+	sceneFiles = App->resManager->GetResourceNamesList(TYPE::SCENE, true);
 }
 
 void ModuleScene::SaveScene(const GameObject& rootGO, const char* sceneName, const char* folder)
