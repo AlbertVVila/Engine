@@ -12,6 +12,7 @@
 #include "GameObject.h"
 #include "ResourceTexture.h"
 
+#include "HashString.h"
 #include "imgui.h"
 #include "debugdraw.h"
 #include "JSON.h"
@@ -82,18 +83,16 @@ void ComponentTrail::DrawProperties()
 	if (ImGui::CollapsingHeader("Trail Renderer", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		//texture selector
-		if (ImGui::BeginCombo("Texture", textureName.c_str()))
+		if (ImGui::BeginCombo("Texture", texture != nullptr ? texture->GetName() : None))
 		{
-			bool none_selected = (textureName == None);
+			bool none_selected = (texture == nullptr);
 			if (ImGui::Selectable(None, none_selected))
 			{
 				if (texture != nullptr)
 				{
-					unsigned imageUID = App->resManager->FindByExportedFile(textureName.c_str());
-					App->resManager->DeleteResource(imageUID);
+					App->resManager->DeleteResource(texture->GetUID());
 					texture = nullptr;
 				}
-				textureName = None;
 			}
 			if (none_selected)
 				ImGui::SetItemDefaultFocus();
@@ -102,13 +101,14 @@ void ComponentTrail::DrawProperties()
 
 			for (int n = 0; n < textureFiles.size(); n++)
 			{
-				bool is_selected = (textureName == textureFiles[n]);
+				bool is_selected = (texture != nullptr && (HashString(texture->GetName()) == HashString(textureFiles[n].c_str())));
 				if (ImGui::Selectable(textureFiles[n].c_str(), is_selected) && !is_selected)
 				{
-					App->resManager->DeleteResource(App->resManager->FindByExportedFile(textureName.c_str()));
-					textureName = textureFiles[n].c_str();
-					unsigned imageUID = App->resManager->FindByExportedFile(textureName.c_str());
-					texture = (ResourceTexture*)App->resManager->Get(imageUID);
+					// Delete previous texture
+					if (texture != nullptr)
+						App->resManager->DeleteResource(texture->GetUID());
+
+					texture = (ResourceTexture*)App->resManager->GetByName(textureFiles[n].c_str(), TYPE::TEXTURE);
 				}
 				if (is_selected)
 					ImGui::SetItemDefaultFocus();
@@ -162,4 +162,9 @@ ComponentTrail * ComponentTrail::Clone() const
 ComponentTrail::~ComponentTrail()
 {
 	App->particles->RemoveTrailRenderer(this);
+	if (texture != nullptr)
+	{
+		App->resManager->DeleteResource(texture->GetUID());
+		texture = nullptr;
+	}
 }
