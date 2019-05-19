@@ -96,7 +96,7 @@ void PanelResourceManager::Draw()
 			ImGui::EndMenu();
 		}
 
-		if (ImGui::BeginMenu("Clean Options"))
+		if (ImGui::BeginMenu("Options"))
 		{
 			if (ImGui::MenuItem("Delete Unused Metas"))
 			{
