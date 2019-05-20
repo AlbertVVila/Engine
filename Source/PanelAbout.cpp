@@ -8,11 +8,15 @@
 #include "imgui.h"
 #include "rapidjson/rapidjson.h"
 #include "physfs.h"
+#include "freeType/freetype.h"
+#include "mmgr/mmgr.h"
+#include "imguizmo/ImGuizmo.h"
 
 #define ENGINE_DESCRIPTION "Engine created during the Master of Videogames in UPC School."
 #define AUTHOR "Albert Val Vila"
 #define REPOSITORY "https://github.com/AlbertVVila/Engine"
 #define LICENSE "https://github.com/AlbertVVila/Engine/blob/master/LICENSE"
+#define FREETYPE "https://www.freetype.org/"
 
 PanelAbout::PanelAbout()
 {
@@ -57,14 +61,20 @@ void PanelAbout::Draw()
 		ImGui::BulletText("Assimp (v%d.%d.%d)", aiGetVersionMajor(), aiGetVersionMinor(), aiGetVersionRevision());
 		ImGui::BulletText("Brofiler (v1.1.2)");
 		ImGui::BulletText("DevIL (v%d)", IL_VERSION);
+		if (ImGui::SmallButton(freeTypeVersion)) 
+		{
+			ShellExecuteA(NULL, "open", FREETYPE, NULL, NULL, SW_SHOWNORMAL);
+		}
 		ImGui::BulletText("glew (v%s)", glewGetString(GLEW_VERSION));
 		ImGui::BulletText("Imgui (v%s)", ImGui::GetVersion());
 		ImGui::BulletText("Imguizmo");
 		ImGui::BulletText("MathGeoLib (v1.5)");
-		ImGui::BulletText("ParShapes");
+		ImGui::BulletText("mmgr");
+		ImGui::BulletText("NodeEditor");
 		ImGui::BulletText("Pcg (v0.98)");
 		ImGui::BulletText("Physfs (v%d.%d.%d)", PHYSFS_VER_MAJOR, PHYSFS_VER_MINOR, PHYSFS_VER_PATCH);
 		ImGui::BulletText("RapidJson (v%d)", RAPIDJSON_VERSION_STRING);
+		ImGui::BulletText("Recast");
 		ImGui::BulletText("SDL (v%d.%d.%d)", sdlVersion.major, sdlVersion.minor, sdlVersion.patch);
 
 		ImGui::TreePop();
