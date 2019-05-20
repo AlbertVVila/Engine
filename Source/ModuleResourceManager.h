@@ -77,6 +77,10 @@ class ModuleResourceManager :
 
 	unsigned GetUIDFromMeta(const char* metaFile, FILETYPE fileType) const;
 
+	// Clean functions
+	void CleanUnusedMetaFiles() const;			// Deletes all meta files that doesn't have a file assigned
+	void CleanUnusedExportedFiles() const;		// Deletes all imported files that aren't registered on the Resource Manager
+
 private:
 	// Resources map (Textures, Models, Mehses, Materials, Skyboxes, Scenes...)
 	std::map<unsigned, Resource*> resources;	// map<UID, pointer to resource>
