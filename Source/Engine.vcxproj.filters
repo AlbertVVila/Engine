@@ -495,6 +495,12 @@
     <ClCompile Include="ResourceStateMachine.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleCollisions.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentBoxTrigger.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -1106,6 +1112,12 @@
     <ClInclude Include="imgui_color_gradient.h" />
     <ClInclude Include="ResourceStateMachine.h">
       <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleCollisions.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentBoxTrigger.h">
+      <Filter>Component</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
