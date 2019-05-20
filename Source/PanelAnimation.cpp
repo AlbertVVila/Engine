@@ -74,9 +74,6 @@ void PanelAnimation::Draw()
 		{
 			guiAnimations.clear();
 		}
-		
-		
-
 		ImGui::PopItemWidth();
 
 		if (anim == nullptr)
@@ -88,6 +85,10 @@ void PanelAnimation::Draw()
 		// Animation
 		ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 - ImGui::CalcTextSize("FRAMES").x / 2);
 		ImGui::Text("FRAMES");
+
+		ImGui::PushItemWidth(100);
+		ImGui::DragFloat("Speed", &compAnim->editorController->current->speed, 0.05f); ImGui::SameLine();
+		ImGui::PopItemWidth();
 
 		ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 5.7f);
 

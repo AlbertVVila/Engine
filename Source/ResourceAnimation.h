@@ -8,6 +8,19 @@
 #include "Math/float4x4.h"
 #include "Math/Quat.h"
 
+struct Event
+{
+	int key;
+	float time;
+	std::string name;
+
+	Event(int k, float t, const std::string& n) : key(k), time(t), name(n) {}
+
+	bool operator < (const Event& evt) const
+	{
+		return (key < evt.key);
+	}
+};
 
 struct Channel
 {
@@ -58,8 +71,10 @@ public:
 
 	int currentSample = 0u;
 	int currentFrame = 0u;
+	int totalEvents = 0;
 
 	std::vector<Channel*> channels;
+	std::vector<Event*> events;
 };
 
 #endif // __RESOURCEANIMATION_H_
