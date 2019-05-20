@@ -27,7 +27,6 @@ ComponentTrail::ComponentTrail(GameObject* gameobject) : Component(gameobject, C
 		gameobject->CreateComponent(ComponentType::Transform);
 	}
 	modules.push_back(new PMSizeOverTime());
-	modules.push_back(new PMColorOverTime());
 	App->particles->AddTrailRenderer(this);
 }
 
