@@ -12,6 +12,7 @@
 #include "GameObject.h"
 #include "ResourceTexture.h"
 
+#include "HashString.h"
 #include "imgui.h"
 #include "debugdraw.h"
 #include "JSON.h"
@@ -30,7 +31,7 @@ ComponentTrail::ComponentTrail(GameObject* gameobject) : Component(gameobject, C
 }
 
 ComponentTrail::ComponentTrail(const ComponentTrail& component) : Component(component)
-{	
+{
 	if (!gameobject->transform)
 	{
 		gameobject->CreateComponent(ComponentType::Transform);
@@ -40,6 +41,10 @@ ComponentTrail::ComponentTrail(const ComponentTrail& component) : Component(comp
 	minDistance = component.minDistance;
 
 	textureName = component.textureName;
+	if (textureName != "None Selected")
+	{
+		texture = (ResourceTexture*)App->resManager->GetByName(textureName.c_str(), TYPE::TEXTURE);
+	}
 
 	App->particles->AddTrailRenderer(this);
 }
@@ -53,7 +58,7 @@ void ComponentTrail::Update()
 		point.remainingTime -= App->time->gameDeltaTime;
 
 		if (point.remainingTime > 0)
-		{			
+		{
 			trail.push(point);
 		}
 
@@ -69,7 +74,7 @@ void ComponentTrail::Update()
 			trail.push(newPoint);
 		}
 		else
-		{			
+		{
 			TrailPoint newPoint(duration, gameobject->transform->GetGlobalPosition(), trail.back().position, width, gameobject->transform->right);
 			trail.push(newPoint);
 		}
@@ -82,18 +87,16 @@ void ComponentTrail::DrawProperties()
 	if (ImGui::CollapsingHeader("Trail Renderer", ImGuiTreeNodeFlags_DefaultOpen))
 	{
 		//texture selector
-		if (ImGui::BeginCombo("Texture", textureName.c_str()))
+		if (ImGui::BeginCombo("Texture", texture != nullptr ? texture->GetName() : None))
 		{
-			bool none_selected = (textureName == None);
+			bool none_selected = (texture == nullptr);
 			if (ImGui::Selectable(None, none_selected))
 			{
 				if (texture != nullptr)
 				{
-					unsigned imageUID = App->resManager->FindByExportedFile(textureName.c_str());
-					App->resManager->DeleteResource(imageUID);
+					App->resManager->DeleteResource(texture->GetUID());
 					texture = nullptr;
 				}
-				textureName = None;
 			}
 			if (none_selected)
 				ImGui::SetItemDefaultFocus();
@@ -102,13 +105,14 @@ void ComponentTrail::DrawProperties()
 
 			for (int n = 0; n < textureFiles.size(); n++)
 			{
-				bool is_selected = (textureName == textureFiles[n]);
+				bool is_selected = (texture != nullptr && (HashString(texture->GetName()) == HashString(textureFiles[n].c_str())));
 				if (ImGui::Selectable(textureFiles[n].c_str(), is_selected) && !is_selected)
 				{
-					App->resManager->DeleteResource(App->resManager->FindByExportedFile(textureName.c_str()));
-					textureName = textureFiles[n].c_str();
-					unsigned imageUID = App->resManager->FindByExportedFile(textureName.c_str());
-					texture = (ResourceTexture*)App->resManager->Get(imageUID);
+					// Delete previous texture
+					if (texture != nullptr)
+						App->resManager->DeleteResource(texture->GetUID());
+
+					texture = (ResourceTexture*)App->resManager->GetByName(textureFiles[n].c_str(), TYPE::TEXTURE);
 				}
 				if (is_selected)
 					ImGui::SetItemDefaultFocus();
@@ -123,7 +127,7 @@ void ComponentTrail::DrawProperties()
 		ImGui::InputFloat("Width", &width, .01f, .1f);
 		ImGui::InputFloat("Duration", &duration, .01f, .1f);
 		ImGui::InputFloat("Min. point distance", &minDistance, .01f, .1f);
-
+		ImGui::ColorEdit4("Color", trailColor.ptr());
 		for (ParticleModule* pm : modules)
 		{
 			pm->InspectorDraw();
@@ -150,7 +154,7 @@ void ComponentTrail::Load(JSON_value* value)
 	textureName = std::string(value->GetString("textureName"));
 	if (textureName != "None Selected")
 	{
-		texture = (ResourceTexture*)App->resManager->Get(textureName.c_str());
+		texture = (ResourceTexture*)App->resManager->GetByName(textureName.c_str(), TYPE::TEXTURE);
 	}
 }
 
@@ -162,4 +166,9 @@ ComponentTrail * ComponentTrail::Clone() const
 ComponentTrail::~ComponentTrail()
 {
 	App->particles->RemoveTrailRenderer(this);
+	if (texture != nullptr)
+	{
+		App->resManager->DeleteResource(texture->GetUID());
+		texture = nullptr;
+	}
 }

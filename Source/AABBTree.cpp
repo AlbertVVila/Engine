@@ -164,6 +164,8 @@ void AABBTree::ReleaseNode(AABBTreeNode* node)
 	assert(lastFreeNode < MAX_AABB_TREE_NODES); 
 	assert(node != nullptr);
 	
+	node->go->treeNode = nullptr;
+
 	if (node->parent == treeRoot) 
 	{
 		node->go->treeNode = nullptr;

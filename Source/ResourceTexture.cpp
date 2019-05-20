@@ -4,6 +4,7 @@
 #include "Application.h"
 #include "ModuleFileSystem.h"
 #include "ModuleTextures.h"
+#include "ModuleResourceManager.h"
 
 #include "GL/glew.h"
 #include "IL/ilut.h"
@@ -82,16 +83,15 @@ bool ResourceTexture::LoadTexture()
 
 	char* data;
 	unsigned size;
-	std::string filename(exportedFileName);
 
 	// Load image file
 	if (engineUsed)
 	{
-		size = App->fsystem->Load((IMPORTED_RESOURCES + filename + TEXTUREEXT).c_str(), &data);
+		size = App->fsystem->Load(exportedFile.c_str(), &data);
 	}
 	else
 	{
-		size = App->fsystem->Load((TEXTURES + filename + TEXTUREEXT).c_str(), &data);
+		size = App->fsystem->Load(exportedFile.c_str(), &data);
 	}
 
 	if (size == 0u)
@@ -176,16 +176,15 @@ bool ResourceTexture::LoadCubemap()
 
 	char* data;
 	unsigned size;
-	std::string filename(exportedFileName);
 
 	// Load image file
 	if (engineUsed)
 	{
-		size = App->fsystem->Load((IMPORTED_RESOURCES + filename + TEXTUREEXT).c_str(), &data);
+		size = App->fsystem->Load(exportedFile.c_str(), &data);
 	}
 	else
 	{
-		size = App->fsystem->Load((TEXTURES + filename + TEXTUREEXT).c_str(), &data);
+		size = App->fsystem->Load(exportedFile.c_str(), &data);
 	}
 
 	if (size == 0u)
@@ -275,9 +274,15 @@ void ResourceTexture::SaveMetafile(const char* file) const
 
 void ResourceTexture::LoadConfigFromMeta()
 {
-	char* data = nullptr;
 	std::string metaFile(file);
 	metaFile += ".meta";
+
+	// Check if meta file exists
+	if (!App->fsystem->Exists(metaFile.c_str()))
+		return;
+
+	char* data = nullptr;
+	unsigned oldUID = GetUID();
 
 	if (App->fsystem->Load(metaFile.c_str(), &data) == 0)
 	{
@@ -287,6 +292,17 @@ void ResourceTexture::LoadConfigFromMeta()
 	}
 	JSON* json = new JSON(data);
 	JSON_value* value = json->GetValue("Texture");
+
+	// Make sure the UID from meta is the same
+	unsigned checkUID = value->GetUint("GUID");
+	if (oldUID != checkUID)
+	{
+		UID = checkUID;
+		// Update resource UID on resource list
+		App->resManager->ReplaceResource(oldUID, this);
+		exportedFile = TEXTURES + std::to_string(UID) + TEXTUREEXT;
+	}
+
 	dxtFormat = (DXT)value->GetInt("DX compresion");
 
 	switch (dxtFormat)
@@ -304,28 +320,6 @@ void ResourceTexture::LoadConfigFromMeta()
 	case DXT::ATI1N:	compression = 5; break;
 	case DXT::DXT1A:	compression = 6; break;
 	}
-}
-
-void ResourceTexture::Rename(const char* newName)
-{
-	Resource::Rename(newName);
-
-	// Rename file in Library
-	App->fsystem->Rename(TEXTURES, (exportedFileName + TEXTUREEXT).c_str(), newName);
-
-	exportedFileName = newName;
-}
-
-void ResourceTexture::Delete()
-{
-	Resource::Delete();
-
-	// Delete file in Library
-	std::string fileInLibrary(TEXTURES);
-	fileInLibrary += exportedFileName;
-	fileInLibrary += TEXTUREEXT;
-	App->fsystem->Delete(fileInLibrary.c_str());
-	DeleteFromMemory();
 }
 
 void ResourceTexture::DrawImportConfiguration()

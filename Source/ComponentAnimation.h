@@ -13,6 +13,8 @@
 #include "Math/float3.h"
 #include "Math/Quat.h"
 
+#define MAX_STATEMACHINE_NAME 30
+
 class StateMachine;
 
 class ComponentAnimation : public Component
@@ -29,15 +31,14 @@ public:
 	ResourceAnimation* GetAnimFromStateMachine();
 	bool GetLoopFromStateMachine();
 	float GetSpeedFromStateMachine();
-	int GetStartFrameFromStateMachine();
-	int GetEndFrameFromStateMachine();
 	bool GetMustFinishFromStateMachine();
-	void PlayNextNode(unsigned blend);
+	void PlayNextNode(float blend);
 
 	void SetIndexChannels(GameObject* GO, ResourceAnimation* Ranim);
 	void UpdateGO(GameObject* gameobject);
 	void EditorUpdateGO(GameObject* gameobject);
 	void ResetResource();
+	void CreateNewStateMachine();
 
 	ComponentAnimation();
 	ComponentAnimation(GameObject* gameobject);
@@ -72,6 +73,8 @@ public:
 
 	std::vector<std::string> guiAnimations;
 	std::vector<std::string> guiStateMachines;
+
+	char newStMachineName[MAX_STATEMACHINE_NAME] = "";	// Aux variable for state machine rename
 };
 
 #endif //  __COMPONENTANIMATION_H_
