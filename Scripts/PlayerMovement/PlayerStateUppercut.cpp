@@ -13,6 +13,7 @@ PlayerStateUppercut::PlayerStateUppercut(PlayerMovement* PM)
 {
 	player = PM;
 	trigger = "Uppercut";
+	boxSize = math::float3(100.f, 200.f, 100.f);
 }
 
 
@@ -22,13 +23,15 @@ PlayerStateUppercut::~PlayerStateUppercut()
 
 void PlayerStateUppercut::Update()
 {
-	if (!hitboxCreated && timer > player->uppercutDuration * 0.4)
+	if (!hitboxCreated && timer > player->uppercutDuration * minTime && timer < player->uppercutDuration * maxTime)
 	{
 		//Create the hitbox
-		player->boxTrigger->SetBoxSize(100, 100, 100);
+		player->boxTrigger->SetBoxSize(boxSize);
+		boxPosition = player->transform->front *100.f + player->transform->up *100.f; //this front stuff isnt working well when rotating the chicken
+		player->boxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z);
 		hitboxCreated = true;
 	}
-	if (hitboxCreated && timer < player->uppercutDuration* 0.8)
+	if (hitboxCreated && timer > player->uppercutDuration* maxTime)
 	{
 		player->boxTrigger->SetBoxSize(1, 1, 1);
 		hitboxCreated = false;
@@ -47,7 +50,7 @@ void PlayerStateUppercut::Exit()
 
 void PlayerStateUppercut::CheckInput()
 {
-	if (timer > player->uppercutDuration * 0.95) // can switch??¿?¿?
+	if (timer > player->uppercutDuration) // can switch??¿?¿?
 	{
 		if (player->IsAtacking())
 		{

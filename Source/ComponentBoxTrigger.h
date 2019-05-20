@@ -35,11 +35,11 @@ public:
 
 	inline math::float3 GetBoxCenter() const { return box_trigger->pos; }
 	inline void SetBoxCenter(math::float3 center) { box_trigger->pos = center; }
-	inline void SetBoxPosition(float x, float y, float z) { box_trigger->pos = math::float3(x, y, z); }
+	inline void SetBoxPosition(float x, float y, float z) { box_trigger->pos = math::float3(x, y, z); position = math::float3(x, y, z);}
 
 	inline math::float3 GetBoxSize() const { return box_trigger->r; }
 	inline void SetBoxSize(math::float3 sizes) { box_trigger->r = sizes; }
-	inline void SetBoxSize(float width, float height, float depth) { box_trigger->r = math::float3(width, height, depth); }
+	inline void SetBoxSize(float width, float height, float depth) { box_trigger->r = math::float3(width, height, depth); position = math::float3(width, height, depth);}
 
 	void AddOverlap(const ComponentBoxTrigger* other);
 	void RemoveOverlap(const ComponentBoxTrigger* other);

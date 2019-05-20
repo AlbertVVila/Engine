@@ -22,6 +22,12 @@ public:
 	PlayerMovement* player = nullptr;
 	std::string trigger;
 	float timer = 0.f;
+
+protected:
+	math::float3 boxSize = math::float3(500.f,500.f,500.f);
+	math::float3 boxPosition = math::float3::zero;
+	float minTime = 0.4f;
+	float maxTime = 0.8f;
 };
 
 #endif // _PLAYERSTATE_H_
