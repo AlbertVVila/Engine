@@ -33,10 +33,10 @@ bool Prefab::LoadInMemory()
 	// Load prefab
 	if (ok != 0)			
 	{
+		++loaded;
 		Load(&data);
 	}
 	//TODO: RELEASE DATA iN LOAD IN MEMORY!!
-	++loaded;
 	return true;
 }
 
@@ -120,6 +120,8 @@ void Prefab::Load(char** data)
 		{
 			renderers.push_back(renderer);
 		}
+
+		App->scene->DeleteFromSpacePartition(gameobject);
 	}
 
 	for (ComponentRenderer* cr : renderers)
@@ -156,7 +158,7 @@ void Prefab::AddInstance(GameObject* go)
 
 void Prefab::RemoveInstance(GameObject* go)
 {
-	for (std::vector<GameObject*>::iterator itChild = instances.begin(); itChild != instances.end();)
+	for (std::vector<GameObject*>::iterator itChild = instances.begin(); itChild != instances.end(); ++itChild)
 	{
 		if (go == *itChild)
 		{

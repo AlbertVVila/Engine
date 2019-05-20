@@ -42,7 +42,7 @@ ComponentLight::ComponentLight(const ComponentLight& component) : Component(comp
 	range = component.range;
 	intensity = component.intensity;
 	pointSphere = Sphere(component.pointSphere);
-	if (!gameobject->isPrefab) App->scene->lights.push_back(this);
+	App->scene->lights.push_back(this);
 
 	produceShadows = component.produceShadows;
 }
