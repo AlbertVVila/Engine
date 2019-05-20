@@ -34,13 +34,13 @@ public:
 
 	inline const math::OBB* GetOBB() const { return box_trigger; }
 
-	inline math::float3 GetBoxCenter() const { return box_trigger->pos; }
-	inline void SetBoxCenter(math::float3 center) { box_trigger->pos = center; }
-	inline void SetBoxPosition(float x, float y, float z) { box_trigger->pos = math::float3(x, y, z); }
+	inline math::float3 GetBoxCenter() const { return position; }
+	inline void SetBoxCenter(math::float3 center) { position = center; box_trigger->pos = center; }
+	inline void SetBoxPosition(float x, float y, float z) { position = math::float3(x, y, z); box_trigger->pos = position; }
 
-	inline math::float3 GetBoxSize() const { return box_trigger->r; }
-	inline void SetBoxSize(math::float3 sizes) { box_trigger->r = sizes; }
-	inline void SetBoxSize(float width, float height, float depth) { box_trigger->r = math::float3(width, height, depth); }
+	inline math::float3 GetBoxSize() const { return size; }
+	inline void SetBoxSize(math::float3 sizes) { size = sizes;  box_trigger->r = sizes; }
+	inline void SetBoxSize(float width, float height, float depth) { size = math::float3(width, height, depth); box_trigger->r = size; }
 
 	void AddOverlap(const ComponentBoxTrigger* other);
 	void RemoveOverlap(const ComponentBoxTrigger* other);
