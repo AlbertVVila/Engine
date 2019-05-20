@@ -2,6 +2,8 @@
 #define __ComponentParticles_h__
 
 #define MAX_DISTANCE 10000000.f
+#define MAX_RATE 10000000.f
+
 #include "Component.h"
 #include <string>
 #include "Math/float3.h"

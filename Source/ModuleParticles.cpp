@@ -198,11 +198,15 @@ void ModuleParticles::RenderTrail(ComponentTrail* ct, const ComponentCamera* cam
 			float width = point.width;
 			for (ParticleModule* pm : ct->modules)
 			{
-				switch (pm->type)
+				if (pm->enabled)
 				{
-				case ParticleModule::ParticleModulesType::SIZE_OVER_TIME:
-					width = ((PMSizeOverTime*)pm)->GetSize(point.remainingTime / point.totalTime, point.width);
-					break;
+					switch (pm->type)
+					{
+					case ParticleModule::ParticleModulesType::SIZE_OVER_TIME:
+						width = ((PMSizeOverTime*)pm)->GetSize(point.remainingTime / point.totalTime, point.width);
+						break;
+					
+					}
 				}
 			}
 			P0L = point.position + point.rightPoint * width;
@@ -225,6 +229,7 @@ void ModuleParticles::RenderTrail(ComponentTrail* ct, const ComponentCamera* cam
 	glUniformMatrix4fv(glGetUniformLocation(trailShader->id[0], "projection"), 1, GL_FALSE, &camera->GetProjectionMatrix()[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(trailShader->id[0], "view"), 1, GL_FALSE, &camera->GetViewMatrix()[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(trailShader->id[0], "model"), 1, GL_TRUE, float4x4::identity.ptr());
+	glUniform4f(glGetUniformLocation(trailShader->id[0], "colorU"), ct->trailColor.x, ct->trailColor.y, ct->trailColor.z, ct->trailColor.w);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, ct->texture->gpuID);
 	glUniform1i(glGetUniformLocation(trailShader->id[0], "texture0"), 0);

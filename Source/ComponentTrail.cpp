@@ -27,6 +27,7 @@ ComponentTrail::ComponentTrail(GameObject* gameobject) : Component(gameobject, C
 		gameobject->CreateComponent(ComponentType::Transform);
 	}
 	modules.push_back(new PMSizeOverTime());
+	modules.push_back(new PMColorOverTime());
 	App->particles->AddTrailRenderer(this);
 }
 
@@ -127,7 +128,7 @@ void ComponentTrail::DrawProperties()
 		ImGui::InputFloat("Width", &width, .01f, .1f);
 		ImGui::InputFloat("Duration", &duration, .01f, .1f);
 		ImGui::InputFloat("Min. point distance", &minDistance, .01f, .1f);
-
+		ImGui::ColorEdit4("Color", trailColor.ptr());
 		for (ParticleModule* pm : modules)
 		{
 			pm->InspectorDraw();

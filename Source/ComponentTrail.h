@@ -5,8 +5,10 @@
 #include <queue>
 #include <list>
 #include "Math/float3.h"
+#include "Math/float4.h"
 
 class ParticleModule;
+
 
 struct TrailPoint
 {
@@ -35,6 +37,8 @@ struct TrailPoint
 class ComponentTrail :
 	public Component
 {
+	friend class ModuleParticles;
+
 public:
 		
 	ComponentTrail(GameObject* gameobject);
@@ -57,6 +61,8 @@ private:
 	float width = 100.f;
 	float duration = .5f;
 	float minDistance = 1.f;
+	
+	math::float4 trailColor = math::float4::one;
 
 	std::string textureName = "None Selected";
 	std::vector<std::string> textureFiles;
