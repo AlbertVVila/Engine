@@ -35,6 +35,9 @@ ComponentRenderer::ComponentRenderer(const ComponentRenderer& component) : Compo
 		material = (ResourceMaterial*)App->resManager->Get(component.material->GetUID());
 
 	castShadows = component.castShadows;
+	useAlpha = component.useAlpha;
+	highlighted = component.highlighted;
+	highlightColor = component.highlightColor;
 }
 
 ComponentRenderer::~ComponentRenderer()

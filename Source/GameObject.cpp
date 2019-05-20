@@ -131,6 +131,13 @@ GameObject::GameObject(const GameObject & gameobject)
 
 GameObject::~GameObject()
 {
+	if (prefab != nullptr && prefab->root != this)
+	{
+		prefab->RemoveInstance(this);
+		App->resManager->DeleteResource(prefabUID);
+		prefab = nullptr;
+	}
+
 	for (auto &component : components)
 	{
 		RELEASE(component);
@@ -169,12 +176,27 @@ void GameObject::DrawProperties()
 
 		if (ImGui::Checkbox("isPrefab", &isPrefab))
 		{
-			MarkAsPrefab();
+			if (isPrefab)
+			{
+				MarkAsPrefab();
+			}
+			else if(prefab != nullptr)
+			{
+				prefab->RemoveInstance(this);
+				App->resManager->DeleteResource(prefabUID);
+				prefab = nullptr;
+			}
 		}
 
 		if (isPrefab)
 		{
-			ImGui::Checkbox("Update with Prefab", &isPrefabSync);
+			if (ImGui::Checkbox("Update with Prefab", &isPrefabSync))
+			{
+				if (isPrefabSync && prefab != nullptr)
+				{
+					UpdateToPrefab(prefab->root);
+				}
+			}
 			if (ImGui::Button("Update Prefab"))
 			{
 				prefab->Update(this);
@@ -871,12 +893,6 @@ void GameObject::DrawBBox() const
 bool GameObject::CleanUp()
 {
 	App->scene->DeleteFromSpacePartition(this);
-
-	if (prefab != nullptr)
-	{
-		prefab->RemoveInstance(this);
-		App->resManager->DeleteResource(prefabUID);
-	}
 
 	for (auto &component : components)
 	{

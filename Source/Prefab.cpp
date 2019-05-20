@@ -108,6 +108,10 @@ void Prefab::Load(char** data)
 				gameobject->parent = it->second;
 				gameobject->parent->children.push_back(gameobject);
 			}
+			else if (gameobject->parentUUID == 0 || gameobject->parentUUID == 1) //Case canvas or world
+			{
+				root = gameobject;
+			}
 		}
 		else
 		{
