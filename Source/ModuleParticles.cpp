@@ -198,11 +198,15 @@ void ModuleParticles::RenderTrail(ComponentTrail* ct, const ComponentCamera* cam
 			float width = point.width;
 			for (ParticleModule* pm : ct->modules)
 			{
-				switch (pm->type)
+				if (pm->enabled)
 				{
-				case ParticleModule::ParticleModulesType::SIZE_OVER_TIME:
-					width = ((PMSizeOverTime*)pm)->GetSize(point.remainingTime / point.totalTime, point.width);
-					break;
+					switch (pm->type)
+					{
+					case ParticleModule::ParticleModulesType::SIZE_OVER_TIME:
+						width = ((PMSizeOverTime*)pm)->GetSize(point.remainingTime / point.totalTime, point.width);
+						break;
+					
+					}
 				}
 			}
 			P0L = point.position + point.rightPoint * width;
@@ -225,6 +229,7 @@ void ModuleParticles::RenderTrail(ComponentTrail* ct, const ComponentCamera* cam
 	glUniformMatrix4fv(glGetUniformLocation(trailShader->id[0], "projection"), 1, GL_FALSE, &camera->GetProjectionMatrix()[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(trailShader->id[0], "view"), 1, GL_FALSE, &camera->GetViewMatrix()[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(trailShader->id[0], "model"), 1, GL_TRUE, float4x4::identity.ptr());
+	glUniform4f(glGetUniformLocation(trailShader->id[0], "colorU"), ct->trailColor.x, ct->trailColor.y, ct->trailColor.z, ct->trailColor.w);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, ct->texture->gpuID);
 	glUniform1i(glGetUniformLocation(trailShader->id[0], "texture0"), 0);
@@ -275,12 +280,23 @@ void ModuleParticles::DrawParticleSystem(ComponentParticles* cp, const Component
 	glBindVertexArray(billBoardVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, billBoardInstanceVBO);
 	float* matrices = (float*)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
-
-	cp->particles.sort(
-		[camera](const Particle* cp1, const Particle* cp2) -> bool
+	if (cp->billboarded)
 	{
-		return cp1->position.Distance(camera->frustum->pos) > cp2->position.Distance(camera->frustum->pos);
-	});
+		cp->particles.sort(
+			[camera](const Particle* cp1, const Particle* cp2) -> bool
+		{
+			return cp1->position.Distance(camera->frustum->pos) > cp2->position.Distance(camera->frustum->pos);
+		});
+	}
+	else
+	{
+		math::float3 orderPoint = cp->gameobject->transform->position + cp->lookAtTarget * MAX_DISTANCE;
+		cp->particles.sort(
+			[orderPoint](const Particle* cp1, const Particle* cp2) -> bool
+		{
+			return cp1->position.Distance(orderPoint) > cp2->position.Distance(orderPoint);
+		});
+	}
 
 	unsigned nParticles = cp->particles.size();
 	for (; nParticles > 0; --nParticles)

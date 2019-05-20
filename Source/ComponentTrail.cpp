@@ -127,7 +127,7 @@ void ComponentTrail::DrawProperties()
 		ImGui::InputFloat("Width", &width, .01f, .1f);
 		ImGui::InputFloat("Duration", &duration, .01f, .1f);
 		ImGui::InputFloat("Min. point distance", &minDistance, .01f, .1f);
-
+		ImGui::ColorEdit4("Color", trailColor.ptr());
 		for (ParticleModule* pm : modules)
 		{
 			pm->InspectorDraw();
