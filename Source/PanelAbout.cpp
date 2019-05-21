@@ -72,14 +72,13 @@ void PanelAbout::Draw()
 		}
 		ImGui::BulletText("glew (v%s)", glewGetString(GLEW_VERSION));
 		ImGui::BulletText("Imgui (v%s)", ImGui::GetVersion());
-		ImGui::BulletText("Imguizmo");
+		ImGui::BulletText("Imguizmo (v1.61)");
 		ImGui::BulletText("MathGeoLib (v1.5)");
-		ImGui::BulletText("mmgr");
 		ImGui::BulletText("NodeEditor");
 		ImGui::BulletText("Pcg (v0.98)");
 		ImGui::BulletText("Physfs (v%d.%d.%d)", PHYSFS_VER_MAJOR, PHYSFS_VER_MINOR, PHYSFS_VER_PATCH);
 		ImGui::BulletText("RapidJson (v%d)", RAPIDJSON_VERSION_STRING);
-		ImGui::BulletText("Recast");
+		ImGui::BulletText("Recastnavigation");
 		ImGui::BulletText("SDL (v%d.%d.%d)", sdlVersion.major, sdlVersion.minor, sdlVersion.patch);
 
 		ImGui::TreePop();
