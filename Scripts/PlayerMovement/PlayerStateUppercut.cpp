@@ -27,8 +27,8 @@ void PlayerStateUppercut::Update()
 	{
 		//Create the hitbox
 		player->boxTrigger->SetBoxSize(boxSize);
-		boxPosition = player->transform->front *100.f + player->transform->up *100.f; //this front stuff isnt working well when rotating the chicken
-		player->boxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z);
+		boxPosition = player->transform->up *100.f; //this front stuff isnt working well when rotating the chicken
+		player->boxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z + 100.f);
 		hitboxCreated = true;
 	}
 	if (hitboxCreated && timer > player->uppercutDuration* maxTime)

@@ -28,6 +28,7 @@ protected:
 	math::float3 boxPosition = math::float3::zero;
 	float minTime = 0.4f;
 	float maxTime = 0.8f;
+	bool hitboxCreated = false;
 };
 
 #endif // _PLAYERSTATE_H_

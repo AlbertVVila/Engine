@@ -1,4 +1,5 @@
 #include "PlayerStateDash.h"
+#include "PlayerMovement.h"
 
 #include "Application.h"
 
@@ -8,6 +9,8 @@
 
 #include "GameObject.h"
 #include "ComponentTransform.h"
+#include "ComponentBoxTrigger.h"
+
 
 #include "PlayerStateWalk.h"
 #include "PlayerStateIdle.h"
@@ -25,6 +28,7 @@ PlayerStateDash::PlayerStateDash(PlayerMovement* PM)
 {
 	player = PM;
 	trigger = "Dash";
+	boxSize = math::float3(80.f, 100.f, 200.f);
 }
 
 
@@ -34,6 +38,21 @@ PlayerStateDash::~PlayerStateDash()
 
 void PlayerStateDash::Update()
 {
+
+	if (!hitboxCreated && timer > player->dashDuration * minTime && timer < player->dashDuration * maxTime)
+	{
+		//Create the hitbox
+		player->boxTrigger->SetBoxSize(boxSize);
+		boxPosition = player->transform->up *100.f; //this front stuff isnt working well when rotating the chicken
+		player->boxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z + 100.f);
+		hitboxCreated = true;
+	}
+	if (hitboxCreated && timer > player->dashDuration * maxTime)
+	{
+		player->boxTrigger->SetBoxSize(1, 1, 1);
+		hitboxCreated = false;
+	}
+
 	//math::float3 intersectionPoint = math::float3::inf;
 	//if (player->Appl->scene->Intersects(intersectionPoint, "floor"))
 	//{
