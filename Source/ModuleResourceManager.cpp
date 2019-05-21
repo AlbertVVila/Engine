@@ -623,6 +623,7 @@ TYPE ModuleResourceManager::GetResourceType(FILETYPE fileType) const
 	case FILETYPE::SKYBOX:				return TYPE::SKYBOX;		break;
 	case FILETYPE::STATEMACHINE:		return TYPE::STATEMACHINE;	break;
 	case FILETYPE::AUDIO:				return TYPE::AUDIO;			break;
+	case FILETYPE::PREFAB:				return TYPE::PREFAB;		break;
 	default:
 	case FILETYPE::NONE:				return TYPE::UNKNOWN;		break;
 	}
@@ -801,7 +802,7 @@ unsigned ModuleResourceManager::GetUIDFromMeta(const char* metaFile, FILETYPE fi
 	}
 
 	JSON* json = new JSON(data);
-	JSON_value* value;
+	JSON_value* value = nullptr;
 	TYPE type = GetResourceType(fileType);
 	switch (type)
 	{
@@ -812,9 +813,17 @@ unsigned ModuleResourceManager::GetUIDFromMeta(const char* metaFile, FILETYPE fi
 	case TYPE::SCENE:		value = json->GetValue("Scene");		break;
 	case TYPE::ANIMATION:	value = json->GetValue("Animation");	break;
 	case TYPE::STATEMACHINE:value = json->GetValue("StateMachine");	break;
+	case TYPE::PREFAB:      value = json->GetValue("Prefab");		break;
 	default:
 		return 0;
 		break;
-	}	 
-	return value->GetUint("GUID");
+	}
+	if (value != nullptr)
+	{
+		return value->GetUint("GUID");
+	}
+	else
+	{
+		return 0;
+	}
 }

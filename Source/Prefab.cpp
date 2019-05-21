@@ -42,10 +42,14 @@ bool Prefab::LoadInMemory()
 
 void Prefab::DeleteFromMemory()
 {
-	if (root != nullptr)
+	//if (root != nullptr)
+	//{
+	//	root->CleanUp();
+	//	RELEASE(root);
+	//}
+	if (prefabJson != nullptr)
 	{
-		root->CleanUp();
-		RELEASE(root);
+		RELEASE(prefabJson);
 	}
 	Resource::DeleteFromMemory();
 }
@@ -61,7 +65,7 @@ void Prefab::SaveMetafile(const char * file) const
 	std::string filepath(file);
 	filepath += METAEXT;
 
-	json->AddValue("prefab", *meta);
+	json->AddValue("Prefab", *meta);
 
 	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
 	RELEASE(json);
@@ -80,7 +84,7 @@ void Prefab::LoadConfigFromMeta()
 		return;
 	}
 	JSON* json = new JSON(data);
-	JSON_value* value = json->GetValue("prefab");
+	JSON_value* value = json->GetValue("Prefab");
 	UID = value->GetUint("GUID");
 	RELEASE(data);
 }
@@ -88,62 +92,66 @@ void Prefab::LoadConfigFromMeta()
 
 void Prefab::Load(char** data)
 {
-	JSON *json = new JSON(*data);
-	JSON_value* gameobjectsJSON = json->GetValue("GameObjects");
-	std::map<unsigned, GameObject*> gameobjectsMap; //Necessary to assign parent-child efficiently
+	prefabJson = new JSON(*data);
+	prefab = prefabJson->GetValue("GameObjects");
+	RELEASE_ARRAY(*data);
+	//JSON *json = new JSON(*data);
+	//JSON_value* gameobjectsJSON = json->GetValue("GameObjects");
+	//std::map<unsigned, GameObject*> gameobjectsMap; //Necessary to assign parent-child efficiently
 
-	std::list<ComponentRenderer*> renderers;
+	//std::list<ComponentRenderer*> renderers;
 
-	for (unsigned i = 0; i < gameobjectsJSON->Size(); i++)
-	{
-		JSON_value* gameobjectJSON = gameobjectsJSON->GetValue(i);
-		GameObject *gameobject = new GameObject();
-		gameobject->Load(gameobjectJSON);
-		if (gameobject->UUID != 1 && gameobject->UUID != 0) //TODO: Canvas and World shouldn't be a prefab
-		{
-			gameobjectsMap.insert(std::pair<unsigned, GameObject*>(gameobject->UUID, gameobject));
-			std::map<unsigned, GameObject*>::iterator it = gameobjectsMap.find(gameobject->parentUUID);
-			if (it != gameobjectsMap.end())
-			{
-				gameobject->parent = it->second;
-				gameobject->parent->children.push_back(gameobject);
-			}
-			else if (gameobject->parentUUID == 0 || gameobject->parentUUID == 1) //Case canvas or world
-			{
-				root = gameobject;
-			}
-		}
-		else
-		{
-			root = gameobject;
-		}
+	//for (unsigned i = 0; i < gameobjectsJSON->Size(); i++)
+	//{
+	//	JSON_value* gameobjectJSON = gameobjectsJSON->GetValue(i);
+	//	GameObject *gameobject = new GameObject();
+	//	gameobject->Load(gameobjectJSON);
+	//	if (gameobject->UUID != 1 && gameobject->UUID != 0) //TODO: Canvas and World shouldn't be a prefab
+	//	{
+	//		gameobjectsMap.insert(std::pair<unsigned, GameObject*>(gameobject->UUID, gameobject));
+	//		std::map<unsigned, GameObject*>::iterator it = gameobjectsMap.find(gameobject->parentUUID);
+	//		if (it != gameobjectsMap.end())
+	//		{
+	//			gameobject->parent = it->second;
+	//			gameobject->parent->children.push_back(gameobject);
+	//		}
+	//		else if (gameobject->parentUUID == 0 || gameobject->parentUUID == 1) //Case canvas or world
+	//		{
+	//			root = gameobject;
+	//			root->parentUUID = -1;
+	//		}
+	//	}
+	//	else
+	//	{
+	//		root = gameobject;
+	//	}
 
-		ComponentRenderer* renderer = nullptr;
-		renderer = (ComponentRenderer*)gameobject->GetComponentOld(ComponentType::Renderer);
-		if (renderer != nullptr)
-		{
-			renderers.push_back(renderer);
-		}
+	//	ComponentRenderer* renderer = nullptr;
+	//	renderer = (ComponentRenderer*)gameobject->GetComponentOld(ComponentType::Renderer);
+	//	if (renderer != nullptr)
+	//	{
+	//		renderers.push_back(renderer);
+	//	}
 
-		App->scene->DeleteFromSpacePartition(gameobject);
-	}
+	//	App->scene->DeleteFromSpacePartition(gameobject);
+	//}
 
-	for (ComponentRenderer* cr : renderers)
-	{
-		if (cr->mesh != nullptr)
-		{
-			cr->LinkBones();
-		}
-	}
+	//for (ComponentRenderer* cr : renderers)
+	//{
+	//	if (cr->mesh != nullptr)
+	//	{
+	//		cr->LinkBones();
+	//	}
+	//}
 
 	//App->navigation->sceneLoaded(json);
 
-	RELEASE_ARRAY(*data);
-	RELEASE(json);
+	//RELEASE(json);
 }
 
 void Prefab::Save(GameObject* go) const //TODO: should also save name?
 {
+	//TODO: SaveScene?
 	JSON *json = new JSON();
 	JSON_value *array = json->CreateValue(rapidjson::kArrayType);
 	go->Save(array);
@@ -190,4 +198,8 @@ void Prefab::CheckoutPrefab()
 		instance->UpdateToPrefab(root);
 	}
 }
-//TODO: update on start engine
+
+JSON_value* Prefab::GetPrefab() const //TODO: method loadFromPrefab
+{
+	return prefab;
+}

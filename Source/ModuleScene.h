@@ -76,6 +76,8 @@ public:
 	ENGINE_API void LoadScene(const char* sceneName, const char* folder);
 	bool AddScene(const char* sceneName, const char* folder);								// Adds a scene to current opened scene from a scene file (returns true if it was loaded correctly)
 
+	bool IsSceneClear();
+
 	void AssignNewUUID(GameObject* go, unsigned UID);
 	void TakePhoto();
 	void TakePhoto(std::list<GameObject*>& target);
@@ -138,7 +140,6 @@ public:
 	GameObject* canvas = nullptr;
 
 	bool loadScene = false;
-	bool isCleared = true;
 	int actionAfterLoad = -1;
 };
 

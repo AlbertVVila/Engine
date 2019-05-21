@@ -6,6 +6,8 @@
 #include <vector>
 
 class GameObject;
+class JSON;
+class JSON_value;
 
 class Prefab : public Resource
 {
@@ -25,6 +27,7 @@ public:
 
 	void Update(GameObject* go);
 	void CheckoutPrefab();
+	JSON_value * GetPrefab() const;
 	void Save(GameObject* go) const;
 
 private:
@@ -32,6 +35,8 @@ private:
 
 private:
 	std::vector<GameObject*> instances;
+	JSON_value* prefab = nullptr;
+	JSON* prefabJson = nullptr;
 
 public:
 	GameObject* root = nullptr; //version of prefab on starting engine

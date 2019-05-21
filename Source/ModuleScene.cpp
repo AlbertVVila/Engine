@@ -975,7 +975,6 @@ void ModuleScene::ClearScene()
 	App->particles->CleanUp();
 	App->particles->Start();
 	App->renderer->shadowCasters.clear();
-	isCleared = true;
 }
 
 void ModuleScene::SaveScene(const GameObject& rootGO, const char* sceneName, const char* folder)
@@ -1014,7 +1013,7 @@ void ModuleScene::SaveScene(const GameObject& rootGO, const char* sceneName, con
 
 void ModuleScene::LoadScene(const char* sceneName, const char* folder)
 {
-	if (!isCleared)
+	if (!IsSceneClear())
 	{
 		ClearScene();
 	}
@@ -1039,8 +1038,13 @@ bool ModuleScene::AddScene(const char* sceneName, const char* folder)
 		return false;
 	}
 	App->renderer->OnResize();
-	isCleared = false;
 	return true;
+}
+
+bool ModuleScene::IsSceneClear()
+{
+	return App->scene->root->children.size() <= 1 &&
+		App->scene->canvas->children.empty();
 }
 
 void ModuleScene::Select(GameObject * gameobject)

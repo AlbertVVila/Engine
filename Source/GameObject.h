@@ -95,6 +95,7 @@ public:
 	bool isBoneRoot = false;
 
 	bool isPrefab = false;
+	bool isChildPrefab = false;
 	bool isPrefabSync = false;
 	unsigned prefabUID = 0;
 	Prefab* prefab = nullptr;

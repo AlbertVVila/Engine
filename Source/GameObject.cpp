@@ -131,7 +131,7 @@ GameObject::GameObject(const GameObject & gameobject)
 
 GameObject::~GameObject()
 {
-	if (prefab != nullptr && prefab->root != this)
+	if (prefab != nullptr)
 	{
 		prefab->RemoveInstance(this);
 		App->resManager->DeleteResource(prefabUID);
@@ -769,13 +769,11 @@ void GameObject::SetLightUniforms(unsigned shader) const
 	}
 }
 
-void GameObject::MarkAsPrefab() //1 Fills prefabs - 2 Spawn prefabs - 3 arrossega prefabs
+void GameObject::MarkAsPrefab()
 {
-	//Create Prefab and reference it
 	if (prefabUID == 0)
 	{
 		prefabUID = App->scene->CreatePrefab(this);
-		//Insta import? or get it from resource name? or what
 	}
 	prefab = (Prefab*)App->resManager->Get(prefabUID);
 	prefab->AddInstance(this);
@@ -796,6 +794,7 @@ void GameObject::UpdateToPrefab(GameObject* prefabGo)
 	}
 	components.clear();
 	children.clear();
+	parent = prefabGo->parent;
 	components.push_back(myTransform);
 	transform = (ComponentTransform*) myTransform;
 
@@ -972,6 +971,7 @@ void GameObject::Load(JSON_value *value)
 	if (isPrefab)
 	{
 		prefab = (Prefab*) App->resManager->Get(prefabUID);
+		prefab->AddInstance(this);
 	}
 
 	JSON_value* componentsJSON = value->GetValue("Components");
