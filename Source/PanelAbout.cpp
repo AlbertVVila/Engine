@@ -8,9 +8,11 @@
 #include "imgui.h"
 #include "rapidjson/rapidjson.h"
 #include "physfs.h"
-#include "freeType/freetype.h"
-#include "mmgr/mmgr.h"
 #include "imguizmo/ImGuizmo.h"
+
+#include <string>
+#include "freetype/freetype.h"
+#include <ft2build.h>
 
 #define ENGINE_DESCRIPTION "Engine created during the Master of Videogames in UPC School."
 #define AUTHOR "Albert Val Vila"
@@ -21,6 +23,8 @@
 PanelAbout::PanelAbout()
 {
 	enabled = false;
+	std::string toChar = "FreeType (" + std::to_string(FREETYPE_MAJOR) + "." + std::to_string(FREETYPE_MINOR) + "." + std::to_string(FREETYPE_PATCH) + ")";
+	freeTypeVersion = toChar.c_str();
 }
 
 
@@ -44,9 +48,10 @@ void PanelAbout::Draw()
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), ENGINE_DESCRIPTION);
 	ImGui::Separator();
 	
-	if (ImGui::SmallButton("Github Repository")) {
+	if (ImGui::SmallButton("Github Repository")) 
+	{
 		ShellExecuteA(NULL, "open", REPOSITORY, NULL, NULL, SW_SHOWNORMAL);
-	};
+	}
 	ImGui::Separator();
 	
 	ImGui::Text("Author:"); ImGui::SameLine();

@@ -13,7 +13,6 @@
 //fonts lib
 #include <ft2build.h>
 #include "MathGeoLib/include/Math/float4x4.h"
-#include "ft2build.h"
 #include FT_FREETYPE_H
 
 ModuleFontLoader::ModuleFontLoader()
