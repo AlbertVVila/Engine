@@ -19,6 +19,7 @@
 #include "ModuleNavigation.h"
 #include "ModuleDevelopmentBuildDebug.h"
 #include "ModuleParticles.h"
+#include "ModuleCollisions.h"
 
 #include "Timer.h"
 #include "JSON.h"
@@ -47,6 +48,7 @@ Application::Application()
 	modules.push_back(developDebug = new ModuleDevelopmentBuildDebug());
 #endif
 	modules.push_back(spacePartitioning = new ModuleSpacePartitioning());
+	modules.push_back(collisions = new ModuleCollisions());
 	modules.push_back(time = new ModuleTime());
 	modules.push_back(navigation = new ModuleNavigation());
 	modules.push_back(spacePartitioning = new ModuleSpacePartitioning());

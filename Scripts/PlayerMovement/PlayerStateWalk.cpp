@@ -2,6 +2,7 @@
 
 #include "Application.h"
 
+#include "ModuleInput.h"
 #include "ModuleScene.h"
 #include "ModuleNavigation.h"
 #include "ModuleTime.h"
@@ -35,26 +36,44 @@ PlayerStateWalk::~PlayerStateWalk()
 
 void PlayerStateWalk::Update()
 {
-	/*math::float3 intersectionPoint = math::float3::inf;
-	if (player->Appl->scene->Intersects(intersectionPoint, "floor"))
+	if (player->Appl->input->GetMouseButtonDown(3) == KEY_DOWN) //RIGHT BUTTON
 	{
-		player->Appl->navigation->FindPath(player->gameobject->transform->position, intersectionPoint, player->path);
-		player->pathIndex = 0;
+		math::float3 intersectionPoint = math::float3::inf;
+		if (player->Appl->scene->Intersects(intersectionPoint, "floor"))
+		{
+			player->Appl->navigation->FindPath(player->gameobject->transform->position, intersectionPoint, path);
+			pathIndex = 0;
+		}
+		else
+		{
+			//clicked outside of the map, stop moving
+			playerWalking = false;
+			return;
+		}
 	}
-	if (player->path.size() > 0)
+	if (path.size() > 0)
 	{
 		math::float3 currentPosition = player->gameobject->transform->GetPosition();
-		while (player->pathIndex < player->path.size() && currentPosition.DistanceSq(player->path[player->pathIndex]) < CLOSE_ENOUGH)
+		while (pathIndex < path.size() && currentPosition.DistanceSq(path[pathIndex]) < CLOSE_ENOUGH)
 		{
-			player->pathIndex++;
+			pathIndex++;
 		}
-		if (player->pathIndex < player->path.size())
+		if (pathIndex < path.size())
 		{
-			player->gameobject->transform->LookAt(player->path[player->pathIndex]);
-			math::float3 direction = (player->path[player->pathIndex] - currentPosition).Normalized();
-			player->gameobject->transform->SetPosition(currentPosition + player->speed*direction*player->Appl->time->gameDeltaTime);
+			player->gameobject->transform->LookAt(path[pathIndex]);
+			math::float3 direction = (path[pathIndex] - currentPosition).Normalized();
+			player->gameobject->transform->SetPosition(currentPosition + player->walkingSpeed * direction * player->Appl->time->gameDeltaTime);
+			playerWalking = true;
 		}
-	}	*/
+		else
+		{
+			playerWalking = false;
+		}
+	}	
+}
+
+void PlayerStateWalk::Enter()
+{
 }
 
 void PlayerStateWalk::CheckInput()

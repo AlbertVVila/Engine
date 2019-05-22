@@ -11,11 +11,13 @@ public:
 	~PlayerStateUppercut();
 
 	void Update() override;
-
+	void Enter() override;
+	void Exit() override;
 	void CheckInput() override;
 
 private:
 	float duration = 1.5f;
+	
 };
 
 #endif // __PLAYERSTATEUPPERCUT_H_

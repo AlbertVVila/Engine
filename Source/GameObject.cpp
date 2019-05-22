@@ -29,6 +29,7 @@
 #include "ComponentAudioListener.h"
 #include "ComponentAudioSource.h"
 #include "ComponentReverbZone.h"
+#include "ComponentBoxTrigger.h"
 #include "BaseScript.h"
 
 
@@ -394,7 +395,9 @@ Component* GameObject::CreateComponent(ComponentType type, JSON_value* value)
 	case ComponentType::ReverbZone:
 		component = new ComponentReverbZone(this);
 		App->audioManager->reverbZones.push_back((ComponentReverbZone*)component);
-
+		break;
+	case ComponentType::BoxTrigger:
+		component = new ComponentBoxTrigger(this);
 		break;
 	default:
 		break;

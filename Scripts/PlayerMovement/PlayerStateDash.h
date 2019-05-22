@@ -11,11 +11,17 @@ public:
 	~PlayerStateDash();
 
 	void Update() override;
-
+	void Enter() override;
 	void CheckInput() override;
 
-private:
+public:
+	math::float3 intersectionPoint;
+	std::vector<float3>path;
+	unsigned pathIndex = 0;
 	float duration = 0.8f;
+	float dashSpeed = 800;
+	float dashPreparationTime = 0.1f;
+	
 };
 
 #endif // __PLAYERSTATEDASH_H_
