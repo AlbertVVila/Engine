@@ -926,7 +926,7 @@ bool GameObject::IsParented(const GameObject & gameobject) const
 
 void GameObject::DrawHierarchy()
 {
-	if (parent != nullptr && parent->parent !=nullptr && parent->parent->isBoneRoot) return;
+	//if (parent != nullptr && parent->parent !=nullptr && parent->parent->isBoneRoot) return;
 
 	ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow | 
 		(openInHierarchy ? ImGuiTreeNodeFlags_DefaultOpen: 0)

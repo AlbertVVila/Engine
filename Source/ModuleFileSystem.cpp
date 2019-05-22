@@ -23,7 +23,6 @@
 
 #include <assert.h>
 #include <stack>
-#include <windows.h>
 
 #define MONITORIZE_TIME 1000
 #define stat _stat
@@ -131,17 +130,7 @@ unsigned ModuleFileSystem::Load(const char* file, char** buffer) const
 
 bool ModuleFileSystem::Save(const char* file, const char* buffer, unsigned size) const
 {
-	if (GetExtension(file) == METAEXT && Exists(file))
-	{
-		DWORD attributes = GetFileAttributes(file);
-		if (attributes & FILE_ATTRIBUTE_HIDDEN)
-		{
-			if (!SetFileAttributesA(file, FILE_ATTRIBUTE_NORMAL))
-			{
-				LOG("Error: %s %s", file, "can't unhide file.");
-			}
-		}
-	}
+
 	PHYSFS_file* myfile = PHYSFS_openWrite(file);
 	if (myfile == nullptr)
 	{
@@ -153,13 +142,6 @@ bool ModuleFileSystem::Save(const char* file, const char* buffer, unsigned size)
 	{
 		LOG("Error: %s %s", file, PHYSFS_getLastError());
 		return false;
-	}
-	if (GetExtension(file) == METAEXT)
-	{
-		if(!SetFileAttributesA(file, FILE_ATTRIBUTE_HIDDEN))
-		{
-			LOG("Error: %s %s", file, "couldn't be hidden.");
-		}
 	}
 
 	PHYSFS_close(myfile);
@@ -327,7 +309,7 @@ void ModuleFileSystem::ListFilesWithExtension(const char* dir, std::set<std::str
 			}
 			else
 			{
-				files.insert(dir + file);
+				files.insert(currentFolder + file);
 			}
 		}
 	}
@@ -476,44 +458,60 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 			else
 			{
 				stat((currentFolder + file).c_str(), &statFile);
-				stat((currentFolder + file + METAEXT).c_str(), &statMeta);
+				std::string metaFile(currentFolder + file + METAEXT);
+				stat(metaFile.c_str(), &statMeta);
 
 				// Model has to check also Meshes and Animations
 				FILETYPE type = GetFileType(GetExtension(file));
-				if (type == FILETYPE::MODEL) //FBX
+	
+				if (type != FILETYPE::NONE && type != FILETYPE::AUDIO) 
 				{
+					bool import = false;
+					unsigned uid = 0u;
+
 					if (statFile.st_mtime > statMeta.st_mtime)
-					{
-						filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
-					}
+						import = true;
 					else
 					{
-						// File already imported, add model to the resources list
-						ResourceModel* res = (ResourceModel*)App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::MODEL);
-						res->LoadConfigFromMeta();
-
-						// Check if the meshes adn animations inside ResourceModel are imported
-						if (res->CheckImportedMeshes())
-							filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
-
-						if (res->CheckImportedAnimations())
-							filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
-
+						// Read UID from meta file and see if there is a exported file with that UID
+						uid = App->resManager->GetUIDFromMeta(metaFile.c_str(), type);
+						if (type != FILETYPE::MODEL)
+						{
+							if (uid != 0)
+							{
+								std::set<std::string>::iterator it = importedResources.find(std::to_string(uid));
+								if (it == importedResources.end())
+									import = true;
+							}
+							else
+								import = true;
+						}		
 					}
-				}
-				else if (type != FILETYPE::NONE && type != FILETYPE::AUDIO) // TODO:: Include State machines and Animations	
-				{
-					std::set<std::string>::iterator it = importedResources.find(RemoveExtension(file));
-					if (it == importedResources.end() || statFile.st_mtime > statMeta.st_mtime)
+
+					if (import)
 					{
 						// File modified or not imported, send it to import
 						filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
 					}
 					else
 					{
+						if (type == FILETYPE::MODEL) //FBX
+						{
+							// File already imported, add model to the resources list
+							ResourceModel* res = (ResourceModel*)App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::MODEL, uid);
+							res->LoadConfigFromMeta();
+
+							// Check if the meshes and animations inside ResourceModel are imported
+							if (res->CheckImportedMeshes())
+								filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
+
+							if (res->CheckImportedAnimations())
+								filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
+						}
 						// File already imported, add it to the resources list
-						Resource* res = App->resManager->AddResource(file.c_str(), currentFolder.c_str(), App->resManager->GetResourceType(type));
-						res->LoadConfigFromMeta();
+						Resource* res = App->resManager->AddResource(file.c_str(), currentFolder.c_str(), App->resManager->GetResourceType(type), uid);
+						if (res != nullptr)
+							res->LoadConfigFromMeta();
 					}
 				}
 			}
