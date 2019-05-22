@@ -54,7 +54,7 @@ void PlayerStateDash::Update()
 		}
 	}
 
-	if (!hitboxCreated && timer > player->dashDuration * minTime && timer < player->dashDuration * maxTime)
+	if (player->boxTrigger != nullptr && !hitboxCreated && timer > player->dashDuration * minTime && timer < player->dashDuration * maxTime)
 	{
 		//Create the hitbox
 		player->boxTrigger->SetBoxSize(boxSize);
@@ -62,7 +62,7 @@ void PlayerStateDash::Update()
 		player->boxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z + 100.f);
 		hitboxCreated = true;
 	}
-	if (hitboxCreated && timer > player->dashDuration * maxTime)
+	if (player->boxTrigger != nullptr &&hitboxCreated && timer > player->dashDuration * maxTime)
 	{
 		player->boxTrigger->SetBoxSize(1, 1, 1);
 		hitboxCreated = false;

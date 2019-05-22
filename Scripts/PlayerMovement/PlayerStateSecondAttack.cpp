@@ -25,7 +25,7 @@ PlayerStateSecondAttack::~PlayerStateSecondAttack()
 
 void PlayerStateSecondAttack::Update()
 {
-	if (!hitboxCreated && timer > player->secondAttackDuration * minTime && timer < player->secondAttackDuration * maxTime)
+	if (player->boxTrigger != nullptr && !hitboxCreated && timer > player->secondAttackDuration * minTime && timer < player->secondAttackDuration * maxTime)
 	{
 		//Create the hitbox
 		player->boxTrigger->SetBoxSize(boxSize);
@@ -33,7 +33,7 @@ void PlayerStateSecondAttack::Update()
 		player->boxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z + 100.f);
 		hitboxCreated = true;
 	}
-	if (hitboxCreated && timer > player->secondAttackDuration* maxTime)
+	if (player->boxTrigger != nullptr && hitboxCreated && timer > player->secondAttackDuration* maxTime)
 	{
 		player->boxTrigger->SetBoxSize(1, 1, 1);
 		hitboxCreated = false;

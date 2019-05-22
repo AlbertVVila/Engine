@@ -25,7 +25,7 @@ PlayerStateThirdAttack::~PlayerStateThirdAttack()
 
 void PlayerStateThirdAttack::Update()
 {
-	if (!hitboxCreated && timer > player->thirdAttackDuration * minTime && timer < player->thirdAttackDuration * maxTime)
+	if (player->boxTrigger != nullptr && !hitboxCreated && timer > player->thirdAttackDuration * minTime && timer < player->thirdAttackDuration * maxTime)
 	{
 		//Create the hitbox
 		player->boxTrigger->SetBoxSize(boxSize);
@@ -33,7 +33,7 @@ void PlayerStateThirdAttack::Update()
 		player->boxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z + 100.f);
 		hitboxCreated = true;
 	}
-	if (hitboxCreated && timer > player->thirdAttackDuration* maxTime)
+	if (player->boxTrigger != nullptr && hitboxCreated && timer > player->thirdAttackDuration* maxTime)
 	{
 		player->boxTrigger->SetBoxSize(1, 1, 1);
 		hitboxCreated = false;

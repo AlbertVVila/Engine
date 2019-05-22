@@ -23,7 +23,7 @@ PlayerStateUppercut::~PlayerStateUppercut()
 
 void PlayerStateUppercut::Update()
 {
-	if (!hitboxCreated && timer > player->uppercutDuration * minTime && timer < player->uppercutDuration * maxTime)
+	if (player->boxTrigger != nullptr && !hitboxCreated && timer > player->uppercutDuration * minTime && timer < player->uppercutDuration * maxTime)
 	{
 		//Create the hitbox
 		player->boxTrigger->SetBoxSize(boxSize);
@@ -31,7 +31,7 @@ void PlayerStateUppercut::Update()
 		player->boxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z + 100.f);
 		hitboxCreated = true;
 	}
-	if (hitboxCreated && timer > player->uppercutDuration* maxTime)
+	if (player->boxTrigger != nullptr && hitboxCreated && timer > player->uppercutDuration* maxTime)
 	{
 		player->boxTrigger->SetBoxSize(1, 1, 1);
 		hitboxCreated = false;
