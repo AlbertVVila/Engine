@@ -26,6 +26,7 @@ class ModuleResourceManager :
 		~ModuleResourceManager();
 
 	bool Init(JSON* config) override;
+	bool CleanUp() override;
 
 	// Shader functions
 	Shader* GetProgram(std::string filename) const;

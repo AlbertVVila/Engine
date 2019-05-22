@@ -41,6 +41,24 @@ bool ModuleResourceManager::Init(JSON * config)
 	return true;
 }
 
+bool ModuleResourceManager::CleanUp()
+{
+	// Delete every resource from memory
+	for each (auto& resource in resources)
+	{
+		if (resource.second->IsLoadedToMemory())
+			resource.second->DeleteFromMemory();
+	}
+
+	// Delete pointers
+	for (auto it = resources.begin(); it != resources.end(); it++)
+	{
+		RELEASE(it->second);
+	}
+	resources.clear();
+	return true;
+}
+
 void ModuleResourceManager::LoadEngineResources()
 {
 	std::set<std::string> files;
