@@ -190,6 +190,8 @@ bool ModuleScene::CleanUp()
 
 	lights.clear();
 
+	RELEASE(defaultScene);
+
 	return true;
 }
 
