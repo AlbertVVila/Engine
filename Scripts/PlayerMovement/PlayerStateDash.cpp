@@ -39,6 +39,21 @@ PlayerStateDash::~PlayerStateDash()
 void PlayerStateDash::Update()
 {
 
+	if (path.size() > 0 && timer > dashPreparationTime)
+	{
+		math::float3 currentPosition = gameobject->transform->GetPosition();
+		while (pathIndex < path.size() && currentPosition.DistanceSq(path[pathIndex]) < CLOSE_ENOUGH)
+		{
+			pathIndex++;
+		}
+		if (pathIndex < path.size())
+		{
+			gameobject->transform->LookAt(path[pathIndex]);
+			math::float3 direction = (path[pathIndex] - currentPosition).Normalized();
+			gameobject->transform->SetPosition(currentPosition + dashSpeed * direction * player->Appl->time->gameDeltaTime);
+		}
+	}
+
 	if (!hitboxCreated && timer > player->dashDuration * minTime && timer < player->dashDuration * maxTime)
 	{
 		//Create the hitbox
@@ -52,27 +67,16 @@ void PlayerStateDash::Update()
 		player->boxTrigger->SetBoxSize(1, 1, 1);
 		hitboxCreated = false;
 	}
+}
 
-	//math::float3 intersectionPoint = math::float3::inf;
-	//if (player->Appl->scene->Intersects(intersectionPoint, "floor"))
-	//{
-	//	player->Appl->navigation->FindPath(player->gameobject->transform->position, intersectionPoint, player->path);
-	//	player->pathIndex = 0;
-	//}
-	//if (player->path.size() > 0)
-	//{
-	//	math::float3 currentPosition = player->gameobject->transform->GetPosition();
-	//	while (player->pathIndex < player->path.size() && currentPosition.DistanceSq(player->path[player->pathIndex]) < CLOSE_ENOUGH)
-	//	{
-	//		player->pathIndex++;
-	//	}
-	//	if (player->pathIndex < player->path.size())
-	//	{
-	//		player->gameobject->transform->LookAt(player->path[player->pathIndex]);
-	//		math::float3 direction = (player->path[player->pathIndex] - currentPosition).Normalized();
-	//		player->gameobject->transform->SetPosition(currentPosition + player->dashSpeed*direction*player->Appl->time->gameDeltaTime);
-	//	}
-	//}
+void PlayerStateDash::Enter(GameObject* go)
+{
+	gameobject = go;
+	if (player->Appl->scene->Intersects(intersectionPoint, "floor"))
+	{
+		player->Appl->navigation->FindPath(gameobject->transform->position, intersectionPoint, path);
+		pathIndex = 0;
+	}
 }
 
 void PlayerStateDash::CheckInput()
