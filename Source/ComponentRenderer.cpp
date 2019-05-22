@@ -236,7 +236,7 @@ void ComponentRenderer::Load(JSON_value* value)
 
 	unsigned materialUID = value->GetUint("materialUID");
 	material = (ResourceMaterial*)App->resManager->Get(materialUID);
-	if (material == nullptr) SetMaterial(DEFAULTMAT);
+	if (materialUID == 0 || material == nullptr) SetMaterial(DEFAULTMAT); //FIXME!: Default UID should'nt be 0
 
 	castShadows = value->GetInt("castShadows");
 	useAlpha = value->GetInt("useAlpha");
