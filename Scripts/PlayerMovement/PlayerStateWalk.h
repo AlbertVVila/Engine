@@ -12,7 +12,7 @@ public:
 
 	void Update() override;
 	void CheckInput() override;
-	void Enter(GameObject* go) override;
+	void Enter() override;
 
 public:
 	float duration = 1.5f;

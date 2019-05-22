@@ -10,7 +10,7 @@ public:
 	PlayerState();
 	~PlayerState();
 
-	virtual void Enter(GameObject* go) {};
+	virtual void Enter() {};
 	virtual void Update() {};
 	virtual void Exit() {};
 	virtual void CheckInput() {};
@@ -30,7 +30,6 @@ protected:
 	float minTime = 0.4f;
 	float maxTime = 0.8f;
 	bool hitboxCreated = false;
-	GameObject* gameobject = nullptr;
 };
 
 #endif // _PLAYERSTATE_H_

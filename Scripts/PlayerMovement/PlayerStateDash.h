@@ -11,7 +11,7 @@ public:
 	~PlayerStateDash();
 
 	void Update() override;
-	void Enter(GameObject* go) override;
+	void Enter() override;
 	void CheckInput() override;
 
 public:

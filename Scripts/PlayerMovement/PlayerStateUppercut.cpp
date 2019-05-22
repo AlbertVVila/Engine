@@ -38,7 +38,7 @@ void PlayerStateUppercut::Update()
 	}
 }
 
-void PlayerStateUppercut::Enter(GameObject* go)
+void PlayerStateUppercut::Enter()
 {
 
 }

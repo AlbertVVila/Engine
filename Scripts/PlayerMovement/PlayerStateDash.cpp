@@ -41,16 +41,16 @@ void PlayerStateDash::Update()
 
 	if (path.size() > 0 && timer > dashPreparationTime)
 	{
-		math::float3 currentPosition = gameobject->transform->GetPosition();
+		math::float3 currentPosition = player->gameobject->transform->GetPosition();
 		while (pathIndex < path.size() && currentPosition.DistanceSq(path[pathIndex]) < CLOSE_ENOUGH)
 		{
 			pathIndex++;
 		}
 		if (pathIndex < path.size())
 		{
-			gameobject->transform->LookAt(path[pathIndex]);
+			player->gameobject->transform->LookAt(path[pathIndex]);
 			math::float3 direction = (path[pathIndex] - currentPosition).Normalized();
-			gameobject->transform->SetPosition(currentPosition + dashSpeed * direction * player->Appl->time->gameDeltaTime);
+			player->gameobject->transform->SetPosition(currentPosition + dashSpeed * direction * player->Appl->time->gameDeltaTime);
 		}
 	}
 
@@ -69,12 +69,11 @@ void PlayerStateDash::Update()
 	}
 }
 
-void PlayerStateDash::Enter(GameObject* go)
+void PlayerStateDash::Enter()
 {
-	gameobject = go;
 	if (player->Appl->scene->Intersects(intersectionPoint, "floor"))
 	{
-		player->Appl->navigation->FindPath(gameobject->transform->position, intersectionPoint, path);
+		player->Appl->navigation->FindPath(player->gameobject->transform->position, intersectionPoint, path);
 		pathIndex = 0;
 	}
 }

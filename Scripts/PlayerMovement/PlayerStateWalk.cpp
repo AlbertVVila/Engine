@@ -41,7 +41,7 @@ void PlayerStateWalk::Update()
 		math::float3 intersectionPoint = math::float3::inf;
 		if (player->Appl->scene->Intersects(intersectionPoint, "floor"))
 		{
-			player->Appl->navigation->FindPath(gameobject->transform->position, intersectionPoint, path);
+			player->Appl->navigation->FindPath(player->gameobject->transform->position, intersectionPoint, path);
 			pathIndex = 0;
 		}
 		else
@@ -53,16 +53,16 @@ void PlayerStateWalk::Update()
 	}
 	if (path.size() > 0)
 	{
-		math::float3 currentPosition = gameobject->transform->GetPosition();
+		math::float3 currentPosition = player->gameobject->transform->GetPosition();
 		while (pathIndex < path.size() && currentPosition.DistanceSq(path[pathIndex]) < CLOSE_ENOUGH)
 		{
 			pathIndex++;
 		}
 		if (pathIndex < path.size())
 		{
-			gameobject->transform->LookAt(path[pathIndex]);
+			player->gameobject->transform->LookAt(path[pathIndex]);
 			math::float3 direction = (path[pathIndex] - currentPosition).Normalized();
-			gameobject->transform->SetPosition(currentPosition + player->walkingSpeed * direction * player->Appl->time->gameDeltaTime);
+			player->gameobject->transform->SetPosition(currentPosition + player->walkingSpeed * direction * player->Appl->time->gameDeltaTime);
 			playerWalking = true;
 		}
 		else
@@ -72,9 +72,8 @@ void PlayerStateWalk::Update()
 	}	
 }
 
-void PlayerStateWalk::Enter(GameObject* go)
+void PlayerStateWalk::Enter()
 {
-	gameobject = go;
 }
 
 void PlayerStateWalk::CheckInput()
