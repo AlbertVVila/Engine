@@ -12,6 +12,8 @@
 #include "JSON.h"
 #include <assert.h>
 
+#include <algorithm>
+
 
 ResourceAnimation::ResourceAnimation(unsigned uid) : Resource(uid, TYPE::ANIMATION)
 {
@@ -288,6 +290,37 @@ void ResourceAnimation::SaveNewAnimation()
 	App->fsystem->Save((ANIMATIONS + name + ANIMATIONEXTENSION).c_str(), animationData, animationSize);
 	SetFile((ANIMATIONS + name + ANIMATIONEXTENSION).c_str());
 	RELEASE_ARRAY(animationData);
+}
+
+void ResourceAnimation::AddEvent(std::string name)
+{
+	events.push_back(new Event(totalEvents, currentFrame / framesPerSecond, name));
+	++totalEvents;
+
+	if (totalEvents > 1)
+	{
+		std::sort(events.begin(), events.end(), [](const Event* lhs, const Event* rhs) 
+			{ return lhs->time < rhs->time; });
+	}
+
+	int contador = 0;
+	for (std::vector<Event*>::iterator it = events.begin(); it != events.end(); ++it)
+	{
+		(*it)->key = contador;
+		++contador;
+	}
+}
+
+void ResourceAnimation::DeleteEvent(int key)
+{
+	for (std::vector<Event*>::iterator it = events.begin(); it != events.end(); ++it)
+	{
+		if ((*it)->key == key)
+		{
+			events.erase(it);
+			break;
+		}
+	}
 }
 
 unsigned ResourceAnimation::GetNumPositions(unsigned indexChannel) const

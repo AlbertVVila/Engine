@@ -14,6 +14,8 @@
 #include "imgui.h"
 #include "Globals.h"
 
+#define eventPopup "Event"
+
 PanelAnimation::PanelAnimation()
 {
 }
@@ -229,8 +231,59 @@ void PanelAnimation::Draw()
 			ImGui::DragInt("Frame End", &maxFrame, 1.0f, minFrame + 1, anim->duration); ImGui::PopItemWidth();
 			ImGui::SameLine(); ImGui::Text("Frame End");
 		}
-	}
 
+		ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 20);
+		ImGui::Text("EVENTS"); ImGui::SameLine();
+		if (ImGui::Button("+", ImVec2(20, 20)))
+		{
+			newEvent = true;
+		}
+
+		if (newEvent)
+		{
+			NewEventPopUp(compAnim);
+		}
+
+		ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 20);
+		ImGui::Text("ID"); ImGui::SameLine();
+		ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 14);
+		ImGui::Text("FRAME"); ImGui::SameLine();
+		ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 9);
+		ImGui::Text("NAME OF EVENT");
+
+		for (std::vector<Event*>::iterator it = compAnim->anim->events.begin(); it != compAnim->anim->events.end(); ++it)
+		{
+			ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 20);
+			ImGui::Text(std::to_string((*it)->key).c_str()); ImGui::SameLine();
+			ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 14);
+			ImGui::Text(std::to_string((int)((*it)->time * compAnim->anim->framesPerSecond)).c_str()); ImGui::SameLine();
+			ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 9);
+			ImGui::Text((*it)->name.c_str());
+			ImGui::PushID((*it)->key); ImGui::SameLine();
+			ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 5);
+			if (ImGui::Button("Go"))
+			{
+				compAnim->anim->currentFrame = (*it)->time * compAnim->anim->framesPerSecond;
+				UpdateGameObjectAnimation(App->scene->selected, anim);
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("X"))
+			{
+				keyToDelete = (*it)->key;
+				isDeletingEvent = true;
+			}
+			ImGui::PopID();
+		}
+
+		if (isDeletingEvent && keyToDelete != -1)
+		{
+			compAnim->anim->DeleteEvent(keyToDelete);
+
+			keyToDelete = -1;
+			isDeletingEvent = false;
+		}
+
+	}
 	ImGui::End();
 }
 
@@ -321,4 +374,34 @@ void PanelAnimation::CreateAnimationFromClip(ResourceAnimation* anim, int minFra
 	newAnim->SaveNewAnimation();
 
 	RELEASE(newAnim);
+}
+
+void PanelAnimation::NewEventPopUp(ComponentAnimation* compAnim)
+{
+	if (!ImGui::IsPopupOpen(eventPopup))
+	{
+		ImGui::OpenPopup(eventPopup);
+	}
+	if (ImGui::BeginPopupModal(eventPopup, NULL, ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		ImGui::Text("Create new event:");
+		ImGui::Separator();
+		ImGui::InputText("NewName", newName, 64);
+
+		if (ImGui::Button("Save", ImVec2(120, 0)))
+		{
+			compAnim->anim->AddEvent(std::string(newName));
+			newEvent = false;
+
+			strcpy(newName, "New Event");
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel", ImVec2(120, 0)))
+		{
+			newEvent = false;
+			strcpy(newName, "New Event");
+		}
+
+		ImGui::EndPopup();
+	}
 }

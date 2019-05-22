@@ -15,11 +15,6 @@ struct Event
 	std::string name;
 
 	Event(int k, float t, const std::string& n) : key(k), time(t), name(n) {}
-
-	bool operator < (const Event& evt) const
-	{
-		return (key < evt.key);
-	}
 };
 
 struct Channel
@@ -50,6 +45,9 @@ public:
 	void SaveAnimationData(char* data);
 	void SaveNewAnimation();
 
+	void AddEvent(std::string name);
+	void DeleteEvent(int key);
+
 	unsigned GetNumPositions(unsigned indexChannel) const;
 	const math::float3 GetPosition(unsigned indexChannel, unsigned indexPosition) const;
 
@@ -61,6 +59,7 @@ public:
 	unsigned GetNumberFrames() const;
 	unsigned GetFPS() const;
 
+
 public:
 
 	double duration = 0; //frames
@@ -71,7 +70,9 @@ public:
 
 	int currentSample = 0u;
 	int currentFrame = 0u;
+
 	int totalEvents = 0;
+	int nextEvent = 0;
 
 	std::vector<Channel*> channels;
 	std::vector<Event*> events;
