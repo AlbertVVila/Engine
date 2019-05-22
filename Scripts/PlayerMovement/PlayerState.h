@@ -10,7 +10,7 @@ public:
 	PlayerState();
 	~PlayerState();
 
-	virtual void Enter() {};
+	virtual void Enter(GameObject* go) {};
 	virtual void Update() {};
 	virtual void Exit() {};
 	virtual void CheckInput() {};
@@ -22,6 +22,7 @@ public:
 	PlayerMovement* player = nullptr;
 	std::string trigger;
 	float timer = 0.f;
+	bool playerWalking = false;
 
 protected:
 	math::float3 boxSize = math::float3(500.f,500.f,500.f);
@@ -29,6 +30,7 @@ protected:
 	float minTime = 0.4f;
 	float maxTime = 0.8f;
 	bool hitboxCreated = false;
+	GameObject* gameobject = nullptr;
 };
 
 #endif // _PLAYERSTATE_H_

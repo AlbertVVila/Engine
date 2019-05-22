@@ -12,7 +12,12 @@ public:
 
 	void Update() override;
 	void CheckInput() override;
+	void Enter(GameObject* go) override;
+
+public:
 	float duration = 1.5f;
+	std::vector<float3>path;
+	unsigned pathIndex = 0;
 };
 
 #endif // __PLAYERSTATEWALK_H_

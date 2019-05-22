@@ -70,11 +70,11 @@ public:
 	PlayerStateUppercut* uppercut = nullptr;
 	PlayerStateWalk* walk = nullptr;
 
-	std::vector<float3>path;
-	unsigned pathIndex = 0;
+	
+	
 public:
 
-	float speed = 2.0f;
+	float walkingSpeed = 100.0f;
 	float dashSpeed = 10.0f;
 	float health = 100.0f;
 	float attackDuration = 1.0f;

@@ -11,7 +11,7 @@ public:
 	~PlayerStateUppercut();
 
 	void Update() override;
-	void Enter() override;
+	void Enter(GameObject* go) override;
 	void Exit() override;
 	void CheckInput() override;
 

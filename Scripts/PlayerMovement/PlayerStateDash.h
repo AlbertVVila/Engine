@@ -14,8 +14,9 @@ public:
 
 	void CheckInput() override;
 
-private:
+public:
 	float duration = 0.8f;
+	
 };
 
 #endif // __PLAYERSTATEDASH_H_
