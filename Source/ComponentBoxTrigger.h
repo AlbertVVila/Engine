@@ -29,8 +29,8 @@ public:
 	virtual void OnPlay() override;
 	void DrawDebug();
 
-	void SetIsPlayer(bool is_player);
-	inline bool GetIsPlayer() const { return is_player; }
+	void SetIsPlayer(bool isPlayer);
+	inline bool GetIsPlayer() const { return isPlayer; }
 
 	inline const math::OBB* GetOBB() const { return box_trigger; }
 
@@ -58,8 +58,8 @@ private:
 	math::float3 position = math::float3::zero;
 	math::float3 size     = math::float3::one;
 
-	bool is_player = false;
-	bool debug_draw = false;
+	bool isPlayer = false;
+	bool debugDraw = false;
 };
 
 #endif // !__Component_BoxTrigger_H__

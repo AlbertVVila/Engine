@@ -19,12 +19,12 @@ class ModuleCollisions : public Module
 public:
 	virtual update_status Update(float dt) override;
 
-	void AddBox(ComponentBoxTrigger* box, bool is_player);
+	void AddBox(ComponentBoxTrigger* box, bool isPlayer);
 	bool RemoveBox(ComponentBoxTrigger* box);
 
 private:
-	std::vector<ComponentBoxTrigger*> player_boxes;
-	std::vector<ComponentBoxTrigger*> other_boxes;
+	std::vector<ComponentBoxTrigger*> playerBoxes;
+	std::vector<ComponentBoxTrigger*> otherBoxes;
 };
 
 #endif // !__Module_Collisions_h__

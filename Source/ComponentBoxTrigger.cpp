@@ -22,7 +22,7 @@ ComponentBoxTrigger::ComponentBoxTrigger() : Component(nullptr, ComponentType::B
 	box_trigger->axis[1] = math::float3::unitY;
 	box_trigger->axis[2] = math::float3::unitZ;
 
-	App->collisions->AddBox(this, is_player);
+	App->collisions->AddBox(this, isPlayer);
 }
 
 ComponentBoxTrigger::ComponentBoxTrigger(GameObject * gameobject) : Component(gameobject, ComponentType::BoxTrigger)
@@ -35,7 +35,7 @@ ComponentBoxTrigger::ComponentBoxTrigger(GameObject * gameobject) : Component(ga
 	box_trigger->axis[1] = math::float3::unitY;
 	box_trigger->axis[2] = math::float3::unitZ;
 
-	App->collisions->AddBox(this, is_player);
+	App->collisions->AddBox(this, isPlayer);
 }
 
 ComponentBoxTrigger::ComponentBoxTrigger(const ComponentBoxTrigger & component) : Component(component)
@@ -44,8 +44,8 @@ ComponentBoxTrigger::ComponentBoxTrigger(const ComponentBoxTrigger & component) 
 
 	size = component.size;
 	position = component.position;
-	is_player = component.is_player;
-	debug_draw = component.debug_draw;
+	isPlayer = component.isPlayer;
+	debugDraw = component.debugDraw;
 
 	box_trigger->r = size;
 	box_trigger->pos = position;
@@ -53,7 +53,7 @@ ComponentBoxTrigger::ComponentBoxTrigger(const ComponentBoxTrigger & component) 
 	box_trigger->axis[1] = component.box_trigger->axis[1];
 	box_trigger->axis[2] = component.box_trigger->axis[2];
 
-	App->collisions->AddBox(this, is_player);
+	App->collisions->AddBox(this, isPlayer);
 }
 
 ComponentBoxTrigger::~ComponentBoxTrigger()
@@ -84,9 +84,9 @@ void ComponentBoxTrigger::DrawProperties()
 			return;
 		}
 
-		ImGui::Checkbox("Draw Debug Box", &debug_draw);
+		ImGui::Checkbox("Draw Debug Box", &debugDraw);
 
-		bool prop_is_player = is_player;
+		bool prop_is_player = isPlayer;
 		if (ImGui::Checkbox("Is Player?", &prop_is_player)) SetIsPlayer(prop_is_player);
 
 		ImGui::DragFloat3("Position", position.ptr(), 0.1F, 0.0F, 20.0F);
@@ -155,7 +155,7 @@ void ComponentBoxTrigger::Update()
 
 	for (auto item : to_remove) overlap_list.erase(item);
 
-	if (debug_draw) DrawDebug();
+	if (debugDraw) DrawDebug();
 }
 
 void ComponentBoxTrigger::OnPlay()
@@ -180,10 +180,10 @@ void ComponentBoxTrigger::DrawDebug()
 	delete[] corners;
 }
 
-void ComponentBoxTrigger::SetIsPlayer(bool is_player)
+void ComponentBoxTrigger::SetIsPlayer(bool isPlayer)
 {
-	this->is_player = is_player;
-	App->collisions->AddBox(this, is_player);
+	this->isPlayer = isPlayer;
+	App->collisions->AddBox(this, isPlayer);
 }
 
 void ComponentBoxTrigger::AddOverlap(const ComponentBoxTrigger * other)
@@ -224,8 +224,8 @@ void ComponentBoxTrigger::Save(JSON_value * value) const
 	Component::Save(value);
 	value->AddFloat3("pos", position);
 	value->AddFloat3("r", size);
-	value->AddInt("is_player", is_player ? 1 : 0);
-	value->AddInt("debug_draw", debug_draw ? 1 : 0);
+	value->AddInt("is_player", isPlayer ? 1 : 0);
+	value->AddInt("debug_draw", debugDraw ? 1 : 0);
 }
 
 void ComponentBoxTrigger::Load(JSON_value * value)
@@ -233,8 +233,8 @@ void ComponentBoxTrigger::Load(JSON_value * value)
 	Component::Load(value);
 	position = value->GetFloat3("pos");
 	size = value->GetFloat3("r");
-	is_player = (value->GetInt("is_player") > 0);
-	is_player = (value->GetInt("debug_draw") > 0);
+	isPlayer = (value->GetInt("is_player") > 0);
+	isPlayer = (value->GetInt("debug_draw") > 0);
 
 	box_trigger->r = size;
 }
