@@ -81,7 +81,6 @@ private:
 	void OnChangeActiveState(bool wasActive);
 
 	bool activeInHierarchy = true;
-	bool activeSelf = true;
 	bool openInHierarchy = true;
 public:
 	unsigned UUID = 0;
@@ -89,6 +88,7 @@ public:
 	unsigned animationIndexChannel = 999u;
 	bool isStatic = false;
 	bool isBoneRoot = false;
+	bool activeSelf = true;
 
 	bool navigable = false;
 	bool noWalkable = false;

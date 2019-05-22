@@ -61,7 +61,7 @@ class ModuleResourceManager :
 	std::vector<ResourceAnimation*> GetAnimationsList();
 	std::vector<ResourceStateMachine*> GetSMList();
 
-	std::vector<std::string> GetResourceNamesList(TYPE resourceType, bool ordered);		// Returns a vector with the exportedFileName of every Resource of the type given.	
+	ENGINE_API std::vector<std::string> GetResourceNamesList(TYPE resourceType, bool ordered);		// Returns a vector with the exportedFileName of every Resource of the type given.	
 
 	TYPE GetResourceType(FILETYPE fileType) const;
 
