@@ -90,6 +90,7 @@ public:
 	float secondAttackDuration = 1.f;
 	float thirdAttackDuration = 1.f;
 	float uppercutDuration = 1.f;
+	
 
 	Application* Appl = nullptr;
 private:
