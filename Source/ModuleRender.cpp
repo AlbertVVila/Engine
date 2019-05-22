@@ -41,7 +41,7 @@ ModuleRender::ModuleRender()
 // Destructor
 ModuleRender::~ModuleRender()
 {
-	RELEASE(skybox);
+	//RELEASE(skybox);
 	RELEASE(viewScene);
 	RELEASE(viewGame);
 }

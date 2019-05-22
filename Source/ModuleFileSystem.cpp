@@ -309,7 +309,7 @@ void ModuleFileSystem::ListFilesWithExtension(const char* dir, std::set<std::str
 			}
 			else
 			{
-				files.insert(dir + file);
+				files.insert(currentFolder + file);
 			}
 		}
 	}

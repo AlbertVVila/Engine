@@ -41,6 +41,24 @@ bool ModuleResourceManager::Init(JSON * config)
 	return true;
 }
 
+bool ModuleResourceManager::CleanUp()
+{
+	// Delete every resource from memory
+	for each (auto& resource in resources)
+	{
+		if (resource.second->IsLoadedToMemory())
+			resource.second->DeleteFromMemory();
+	}
+
+	// Delete pointers
+	for (auto it = resources.begin(); it != resources.end(); it++)
+	{
+		RELEASE(it->second);
+	}
+	resources.clear();
+	return true;
+}
+
 void ModuleResourceManager::LoadEngineResources()
 {
 	std::set<std::string> files;
@@ -809,4 +827,38 @@ unsigned ModuleResourceManager::GetUIDFromMeta(const char* metaFile, FILETYPE fi
 		break;
 	}	 
 	return value->GetUint("GUID");
+}
+
+void ModuleResourceManager::CleanUnusedMetaFiles() const
+{
+	// Get lists with all assets
+	std::set<std::string> assetFiles;
+	App->fsystem->ListFilesWithExtension(ASSETS, assetFiles);
+
+	for (auto& file : assetFiles)
+	{
+		if (HashString(App->fsystem->GetExtension(file).c_str()) == HashString(METAEXT))
+		{
+			std::string fileAssignedToMeta = App->fsystem->RemoveExtension(file);
+			if (!App->fsystem->Exists(fileAssignedToMeta.c_str()))
+			{
+				App->fsystem->Delete(file.c_str());
+			}
+		}
+	}
+}
+
+void ModuleResourceManager::CleanUnusedExportedFiles() const
+{
+	// Get lists with all imported files
+	std::set<std::string> importedFiles;
+	App->fsystem->ListFilesWithExtension(LIBRARY, importedFiles);
+
+	for (auto& file : importedFiles)
+	{
+		if (!App->resManager->Exists(file.c_str()))
+		{
+			App->fsystem->Delete(file.c_str());
+		}
+	}
 }

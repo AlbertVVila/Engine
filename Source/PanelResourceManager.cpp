@@ -80,11 +80,37 @@ PanelResourceManager::~PanelResourceManager()
 
 void PanelResourceManager::Draw()
 {
-	if (!ImGui::Begin("Resource Manager", &enabled))
+	if (!ImGui::Begin("Resource Manager", &enabled, ImGuiWindowFlags_MenuBar))
 	{
 		ImGui::End();
 		return;
 	}
+	if (ImGui::BeginMenuBar())
+	{
+		if (ImGui::BeginMenu("Resources"))
+		{
+			if (ImGui::MenuItem("Update Resources List"))
+			{
+				UpdateResourcesList();
+			}
+			ImGui::EndMenu();
+		}
+
+		if (ImGui::BeginMenu("Options"))
+		{
+			if (ImGui::MenuItem("Delete Unused Metas"))
+			{
+				App->resManager->CleanUnusedMetaFiles();
+			}
+			if (ImGui::MenuItem("Delete Unused Exported Files"))
+			{
+				App->resManager->CleanUnusedExportedFiles();
+			}
+			ImGui::EndMenu();
+		}
+		ImGui::EndMenuBar();
+	}
+
 	if(auxResource == nullptr)
 		UpdateResourcesList();
 
