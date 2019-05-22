@@ -516,7 +516,8 @@ void ComponentAnimation::Load(JSON_value* value)
 	anim = (ResourceAnimation*)App->resManager->Get(animUID);
 
 	unsigned stateMachineUID = value->GetUint("stateMachineUID");
-	stateMachine = (ResourceStateMachine*)App->resManager->Get(stateMachineUID);
+	if(stateMachineUID != 0)
+		stateMachine = (ResourceStateMachine*)App->resManager->Get(stateMachineUID);
 }
 
 void ComponentAnimation::SetIndexChannels(GameObject* GO, ResourceAnimation* anim)
