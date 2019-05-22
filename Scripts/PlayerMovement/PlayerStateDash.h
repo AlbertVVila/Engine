@@ -20,7 +20,7 @@ public:
 	unsigned pathIndex = 0;
 	float duration = 0.8f;
 	float dashSpeed = 800;
-	float dashPreparationTime = 0.55f;
+	float dashPreparationTime = 0.1f;
 	
 };
 

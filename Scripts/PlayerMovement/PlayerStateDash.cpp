@@ -75,6 +75,7 @@ void PlayerStateDash::Enter()
 	{
 		player->Appl->navigation->FindPath(player->gameobject->transform->position, intersectionPoint, path);
 		pathIndex = 0;
+		player->gameobject->transform->LookAt(intersectionPoint);
 	}
 }
 
