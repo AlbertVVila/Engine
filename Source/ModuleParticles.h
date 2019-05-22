@@ -15,12 +15,19 @@ class ComponentTrail;
 
 class ParticleModule;
 class PMSizeOverTime;
+class ImGradient;
+class ImGradientMark;
 
 class ModuleParticles :
 	public Module
 {
 public:
 
+	enum class BlendModes
+	{
+		ADDITIVE,
+		ALPHA
+	};
 
 	//ModuleParticles();
 	~ModuleParticles();
@@ -69,9 +76,11 @@ public:
 
 	enum class ParticleModulesType
 	{
-		SIZE_OVER_TIME
+		SIZE_OVER_TIME,
+		COLOR_OVER_TIME
 	};
 
+	bool enabled = false;
 	virtual void Update() {};
 	virtual void InspectorDraw() = 0;
 
@@ -82,11 +91,32 @@ class PMSizeOverTime : public ParticleModule
 {
 public:
 
+
 	PMSizeOverTime() { type = ParticleModulesType::SIZE_OVER_TIME; };
 
 	inline float GetSize(float percent, float total);
 	void InspectorDraw() override;
 
 	float v[5] = { .0f, .0f, 1.f, 1.f };
+};
+
+class PMColorOverTime : public ParticleModule
+{
+public:
+	PMColorOverTime();
+	ImGradient* Imgradient;
+
+	//float3 color1 = math::float3::one;
+	//float3 color2 = math::float3::one;
+
+	ImGradientMark* gradient1;
+	ImGradientMark* gradient2;
+
+
+public:
+	void InspectorDraw() override;
+	void UpdateGradientPointers();
+
+
 };
 #endif __ModuleParticles_h__

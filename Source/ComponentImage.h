@@ -24,7 +24,6 @@ public:
 	void Save(JSON_value* value) const override;
 	void Load(JSON_value* value) override;
 
-	std::string textureName = "None Selected";
 	float4 color = float4(1.0f, 1.0f, 1.0f, 1.0f);
 	ResourceTexture* texture = nullptr;
 	bool flipVertical = false;

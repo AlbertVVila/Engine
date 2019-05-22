@@ -63,15 +63,16 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 		ImGui::Begin(name.c_str(), &enabled, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoBringToFrontOnFocus);
 
 		//if the viewport is hidden, it is not rendered
-		if (ImGui::GetCurrentWindow()->Hidden)
+		hidden = ImGui::GetCurrentWindow()->Hidden;
+		if (hidden)
 		{
 			focus = false;
 			hover = false;
 			ImGui::End();
 			return;
 		}
-
-		if (ImGui::IsWindowHovered() || ImGui::IsWindowAppearing())
+		
+		if (ImGui::IsAnyMouseDown() && ImGui::IsWindowHovered() || ImGui::IsWindowAppearing())
 		{
 			ImGui::SetWindowFocus();
 		}
@@ -102,25 +103,22 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 		ImVec2 size = ImGui::GetWindowSize();
 
 		cam->SetAspect(size.x / size.y);
+
 		if (cam->aspectDirty)
 		{
+			App->renderer->OnResize();
 			CreateFrameBuffer(size.x, size.y);
 		}
+
 		current_width = size.x;
 		current_height = size.y;
 
+		glBindFramebuffer(GL_FRAMEBUFFER, FBO);
 
-		if (App->renderer->msaa && !isEditor)
-		{
-			glBindFramebuffer(GL_FRAMEBUFFER, MSAAFBO);
-		}
-		else
-		{
-			glBindFramebuffer(GL_FRAMEBUFFER, FBO);
-		}
 		App->renderer->Draw(*cam, current_width, current_height, isEditor);
 
-    if (isEditor)
+
+		if (isEditor)
 		{
 			for (GameObject* go : App->scene->selection)
 			{
@@ -131,30 +129,25 @@ void Viewport::Draw(ComponentCamera * cam, bool isEditor)
 				}
 			}
 		}
-		if (App->renderer->msaa && !isEditor)
-		{
-			glBindFramebuffer(GL_READ_FRAMEBUFFER, MSAAFBO);
-			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, FBO);
-			glBlitFramebuffer(0, 0, current_width, current_height,
-				0, 0, current_width, current_height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
-		}
-
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		ImGui::SetCursorPos({ 0,0 });
 		ImVec2 pos = ImGui::GetWindowPos();
 		winPos = reinterpret_cast<math::float2&>(pos);
 
-		ImGui::Image((ImTextureID)texture, size, ImVec2(0, 1), ImVec2(1, 0));
-
 		if (isEditor)
 		{
+			ImGui::Image((ImTextureID)texture, size, ImVec2(0, 1), ImVec2(1, 0));
 			DrawImGuizmo(*cam);
 			if (!ImGuizmo::IsUsing() && !ImGui::IsAnyItemHovered())
 			{
 				Pick();
 				DebugNavigate();
 			}
+		}
+		else
+		{
+			ImGui::Image((ImTextureID)App->renderer->renderedSceneGame, size, ImVec2(0, 1), ImVec2(1, 0));
 		}
 		ImGui::End();
 	}
@@ -256,7 +249,7 @@ void Viewport::CreateFrameBuffer(int width, int height)
 		glBindTexture(GL_TEXTURE_2D, texture);
 
 		glTexImage2D(
-			GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL
+			GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL
 		);
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -278,22 +271,11 @@ void Viewport::CreateFrameBuffer(int width, int height)
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, RBO);
 
 		glBindRenderbuffer(GL_RENDERBUFFER, 0);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 			LOG("Framebuffer ERROR");
 
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-		CreateMSAABuffers(width, height);
-
-	}
-	else
-	{
-		if (App->renderer->msaa_lvl_changed)
-		{
-			CreateMSAABuffers(width, height);
-			App->renderer->msaa_lvl_changed = false;
-		}
 	}
 }
 
