@@ -171,7 +171,7 @@ void main()
 	
 	vec3 F0 = material.specular;
 
-	vec3 color = vec3(0); 
+	vec3 color = albedo.rgb * lights.ambient_color; 
 	
 	vec3 N = normal;
 	vec3 V = normalize(viewPos - position);
@@ -246,8 +246,6 @@ void main()
 		color += (kD * albedo.rgb / PI + BRDF(F, L, V, N, H)) * radiance * NdotL;
 	}
 	
-	
-	color *= lights.ambient_color;
 	//color *= get_occlusion_color();
 	color += get_emissive_color() * 10;
 #ifdef IS_EDITOR

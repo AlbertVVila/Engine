@@ -216,6 +216,7 @@
     <ClInclude Include="ImGUICurveUtils.h" />
     <ClInclude Include="HashString.h" />
     <ClInclude Include="ImGuizmo\ImGuizmo.h" />
+    <ClInclude Include="imgui_color_gradient.h" />
     <ClInclude Include="KDTree.h" />
     <ClInclude Include="MaterialEditor.h" />
     <ClInclude Include="MathGeoLib\include\Algorithm\Random\LCG.h" />
@@ -420,6 +421,7 @@
     <ClCompile Include="GUICreator.cpp" />
     <ClCompile Include="HashString.cpp" />
     <ClCompile Include="ImGuizmo\ImGuizmo.cpp" />
+    <ClCompile Include="imgui_color_gradient.cpp" />
     <ClCompile Include="KDTree.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="Main.cpp" />
