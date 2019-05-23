@@ -11,10 +11,10 @@
 struct Event
 {
 	int key;
-	float time;
+	int frame;
 	std::string name;
 
-	Event(int k, float t, const std::string& n) : key(k), time(t), name(n) {}
+	Event(int k, int f, const std::string& n) : key(k), frame(f), name(n) {}
 };
 
 struct Channel
@@ -47,6 +47,7 @@ public:
 
 	void AddEvent(std::string name);
 	void DeleteEvent(int key);
+	void SetEventKeys();
 
 	unsigned GetNumPositions(unsigned indexChannel) const;
 	const math::float3 GetPosition(unsigned indexChannel, unsigned indexPosition) const;

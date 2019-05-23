@@ -256,14 +256,14 @@ void PanelAnimation::Draw()
 			ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 20);
 			ImGui::Text(std::to_string((*it)->key).c_str()); ImGui::SameLine();
 			ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 14);
-			ImGui::Text(std::to_string((int)((*it)->time * compAnim->anim->framesPerSecond)).c_str()); ImGui::SameLine();
+			ImGui::Text(std::to_string((int)((*it)->frame)).c_str()); ImGui::SameLine();
 			ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 9);
 			ImGui::Text((*it)->name.c_str());
 			ImGui::PushID((*it)->key); ImGui::SameLine();
 			ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 5);
 			if (ImGui::Button("Go"))
 			{
-				compAnim->anim->currentFrame = (*it)->time * compAnim->anim->framesPerSecond;
+				compAnim->anim->currentFrame = (*it)->frame;
 				UpdateGameObjectAnimation(App->scene->selected, anim);
 			}
 			ImGui::SameLine();

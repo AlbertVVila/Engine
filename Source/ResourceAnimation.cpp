@@ -294,21 +294,16 @@ void ResourceAnimation::SaveNewAnimation()
 
 void ResourceAnimation::AddEvent(std::string name)
 {
-	events.push_back(new Event(totalEvents, currentFrame / framesPerSecond, name));
+	events.push_back(new Event(totalEvents, currentFrame, name));
 	++totalEvents;
 
 	if (totalEvents > 1)
 	{
 		std::sort(events.begin(), events.end(), [](const Event* lhs, const Event* rhs) 
-			{ return lhs->time < rhs->time; });
+			{ return lhs->frame < rhs->frame; });
 	}
 
-	int contador = 0;
-	for (std::vector<Event*>::iterator it = events.begin(); it != events.end(); ++it)
-	{
-		(*it)->key = contador;
-		++contador;
-	}
+	SetEventKeys();
 }
 
 void ResourceAnimation::DeleteEvent(int key)
@@ -320,6 +315,18 @@ void ResourceAnimation::DeleteEvent(int key)
 			events.erase(it);
 			break;
 		}
+	}
+
+	SetEventKeys();
+}
+
+void ResourceAnimation::SetEventKeys()
+{
+	int contador = 0;
+	for (std::vector<Event*>::iterator it = events.begin(); it != events.end(); ++it)
+	{
+		(*it)->key = contador;
+		++contador;
 	}
 }
 
