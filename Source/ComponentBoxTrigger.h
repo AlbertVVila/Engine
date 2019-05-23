@@ -3,10 +3,10 @@
 
 #include "Component.h"
 #include <unordered_map>
-#include "Geometry/OBB.h"
 #include "Math/float3.h"
+#include "Geometry/OBB.h"
 
-enum class Overlap_State
+enum class OverlapState
 {
 	Enter = 0,
 	Idle,
@@ -26,20 +26,21 @@ public:
 	virtual void DrawProperties() override;
 
 	virtual void Update() override;
+	virtual void OnPlay() override;
 	void DrawDebug();
 
-	void SetIsPlayer(bool is_player);
-	inline bool GetIsPlayer() const { return is_player; }
+	void SetIsPlayer(bool isPlayer);
+	inline bool GetIsPlayer() const { return isPlayer; }
 
-	inline const math::OBB* GetOBB() const { return box_trigger; }
+	inline const math::OBB* GetOBB() const { return boxTrigger; }
 
-	inline math::float3 GetBoxCenter() const { return box_trigger->pos; }
-	inline void SetBoxCenter(math::float3 center) { box_trigger->pos = center; }
-	inline void SetBoxPosition(float x, float y, float z) { box_trigger->pos = math::float3(x, y, z); position = math::float3(x, y, z);}
+	inline math::float3 GetBoxCenter() const { return position; }
+	inline void SetBoxCenter(math::float3 center) { position = center; boxTrigger->pos = center; }
+	inline void SetBoxPosition(float x, float y, float z) { position = math::float3(x, y, z); boxTrigger->pos = position; }
 
-	inline math::float3 GetBoxSize() const { return box_trigger->r; }
-	inline void SetBoxSize(math::float3 sizes) { box_trigger->r = sizes; }
-	inline void SetBoxSize(float width, float height, float depth) { box_trigger->r = math::float3(width, height, depth); position = math::float3(width, height, depth);}
+	inline math::float3 GetBoxSize() const { return size; }
+	inline void SetBoxSize(math::float3 sizes) { size = sizes;  boxTrigger->r = sizes; }
+	inline void SetBoxSize(float width, float height, float depth) { size = math::float3(width, height, depth); boxTrigger->r = size; }
 
 	void AddOverlap(const ComponentBoxTrigger* other);
 	void RemoveOverlap(const ComponentBoxTrigger* other);
@@ -48,17 +49,17 @@ public:
 	void Load(JSON_value* value);
 
 private:
-	void PropagateState(GameObject* other, Overlap_State state);
+	void PropagateState(GameObject* other, OverlapState state);
 
 private:
-	std::unordered_map<const ComponentBoxTrigger*,Overlap_State> overlap_list;
-	math::OBB* box_trigger = nullptr;
+	std::unordered_map<const ComponentBoxTrigger*,OverlapState> overlapList;
+	math::OBB* boxTrigger = nullptr;
 
 	math::float3 position = math::float3::zero;
 	math::float3 size     = math::float3::one;
 
-	bool is_player = false;
-	bool debug_draw = false;
+	bool isPlayer = false;
+	bool debugDraw = false;
 };
 
 #endif // !__Component_BoxTrigger_H__
