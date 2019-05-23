@@ -11,7 +11,8 @@ public:
 	~PlayerStateFirstAttack();
 
 	void Update() override;
-
+	void Enter() override;
+	void Exit() override;
 	void CheckInput() override;
 
 private:

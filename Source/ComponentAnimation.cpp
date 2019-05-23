@@ -178,7 +178,7 @@ void ComponentAnimation::DrawProperties()
 					ImGui::SameLine();
 					ImGui::PushItemWidth(60);
 					float speed = stateMachine->GetClipSpeed(j);
-					if (ImGui::DragFloat("Clip speed", &speed, 0.1f, 0.f, 10.f))
+					if (ImGui::DragFloat("Clip speed", &speed, 0.1f, 0.f, 30.f))
 					{
 						stateMachine->SetClipSpeed(j, speed);
 						stateMachine->Save();
@@ -203,8 +203,8 @@ void ComponentAnimation::DrawProperties()
 
 					unsigned clipUID = stateMachine->GetClipResource(j);
 					ResourceAnimation* animation = (ResourceAnimation*)App->resManager->GetWithoutLoad(clipUID);
-		
-					if (animation != nullptr && ImGui::BeginCombo("", clipUID != 0u ? animation->GetName() : ""))
+					
+					if (ImGui::BeginCombo("", clipUID != 0u ? animation->GetName() : ""))
 					{
 						if (guiAnimations.empty())
 						{

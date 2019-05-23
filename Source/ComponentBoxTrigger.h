@@ -6,8 +6,6 @@
 #include "Math/float3.h"
 #include "Geometry/OBB.h"
 
-class OBB;
-
 enum class OverlapState
 {
 	Enter = 0,
