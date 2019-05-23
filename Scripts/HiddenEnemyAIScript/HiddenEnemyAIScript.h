@@ -1,10 +1,10 @@
-#ifndef  __BasicEnemyAIScript_h__
-#define  __BasicEnemyAIScript_h__
+#ifndef  __HiddenEnemyAIScript_h__
+#define  __HiddenEnemyAIScript_h__
 
-#ifdef BasicEnemyAIScript_EXPORTS
-#define BasicEnemyAIScript_API __declspec(dllexport)
+#ifdef HiddenEnemyAIScript_EXPORTS
+#define HiddenEnemyAIScript_API __declspec(dllexport)
 #else
-#define BasicEnemyAIScript_API __declspec(dllimport)
+#define HiddenEnemyAIScript_API __declspec(dllimport)
 #endif
 
 #include "BaseScript.h"
@@ -20,15 +20,17 @@ enum class EnemyState;
 
 enum class EnemyState
 {
-	PATROL,
+	WAIT,
+	SHOW_UP,
 	CHASE,
 	RETURN,
+	HIDE,
 	ATTACK,
 	COOLDOWN,
 	DEAD
 };
 
-class BasicEnemyAIScript_API BasicEnemyAIScript : public Script
+class HiddenEnemyAIScript_API HiddenEnemyAIScript : public Script
 {
 public:
 	void Start() override;
@@ -40,9 +42,11 @@ public:
 	void DeSerialize(JSON_value* json) override;
 
 private:
-	void Patrol();
+	void Wait();
+	void StandUp();
 	void Chase();
 	void ReturnToStartPosition();
+	void Laydown();
 	void Attack();
 	void Cooldown();
 	void Die();
@@ -52,10 +56,14 @@ private:
 
 private:
 
-	EnemyState enemyState = EnemyState::PATROL;
+	EnemyState enemyState = EnemyState::WAIT;
 
-	// Patrol variables
+	// Wait variables
 	float activationDistance = 100.0f;	// Distance to player needed to start chasing the player (only X,Z axis is taken into account)
+
+	// Stand-Up variables
+	float standupSpeed = 1.0f;			// Tranlation speed on stand-up
+	float yTranslation = 20.0f;			// Y axis translation on stand-up 
 
 	// Chase variables
 	float chaseSpeed = 2.0f;			// Tranlation speed when chasing player
@@ -68,6 +76,7 @@ private:
 	// Cooldown variables
 	float cooldownTime = 1.0f;			// Seconds to wait between attacks
 
+	float auxTranslation = 0.0f;
 	float auxTimer = 0.0f;
 
 	//Damage variables
@@ -79,4 +88,6 @@ private:
 	PlayerMovement* playerScript;
 };
 
-#endif __BasicEnemyAIScript_h__
+#endif __HiddenEnemyAIScript_h__
+
+
