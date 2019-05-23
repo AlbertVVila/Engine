@@ -313,6 +313,7 @@ void ResourceAnimation::DeleteEvent(int key)
 		if ((*it)->key == key)
 		{
 			events.erase(it);
+			--totalEvents;
 			break;
 		}
 	}

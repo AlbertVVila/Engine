@@ -66,10 +66,12 @@ void AnimationController::Update(float dt)
 	if (current != nullptr && !current->isEditor)
 	{
 		UpdateInstance(current, dt);
+		CheckEvents();
 	}
 	else if (current != nullptr && current->isEditor)
 	{
 		UpdateEditorInstance(current, dt);
+		CheckEvents();
 	}
 }
 
@@ -236,6 +238,29 @@ void AnimationController::ResetClipping()
 {
 	current->minTime = 0.0f;
 	current->maxTime = current->anim->durationInSeconds;
+}
+
+void AnimationController::CheckEvents()
+{
+	ResourceAnimation* anim = current->anim;
+
+	for (std::vector<Event*>::iterator it = anim->events.begin(); it != anim->events.end(); ++it)
+	{
+		if ((*it)->key == anim->nextEvent)
+		{
+			float eventTime = (float)(*it)->frame / (float)anim->framesPerSecond;
+
+			if (current->time >= eventTime)
+			{
+				//ToDo: Call OnEventAnimation()
+
+				if (anim->nextEvent < anim->totalEvents)
+					++anim->nextEvent;
+				else
+					anim->nextEvent = 0;
+			}
+		}
+	}
 }
 
 bool AnimationController::GetTransform(unsigned channelIndex, math::float3& position, math::Quat& rotation)
