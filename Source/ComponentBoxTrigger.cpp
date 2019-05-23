@@ -233,7 +233,7 @@ void ComponentBoxTrigger::Load(JSON_value * value)
 	size = value->GetFloat3("r");
 	isPlayer = (value->GetInt("is_player") > 0);
 	debugDraw = (value->GetInt("debug_draw") > 0);
-
+	SetIsPlayer(isPlayer);
 	boxTrigger->r = size;
 }
 

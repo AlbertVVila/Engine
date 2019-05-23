@@ -42,6 +42,8 @@ public:
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
 
+	void OnTriggerEnter(GameObject* go) override;
+
 	//Abstract input
 	bool IsAtacking();
 	bool IsMoving();
