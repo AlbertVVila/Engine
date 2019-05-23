@@ -79,10 +79,10 @@ void ModuleNavigation::sceneLoaded(JSON * config)
 
 	meshGenerated = nav->GetUint("Generated", false);
 	drawNavMesh = nav->GetUint("DrawNavMesh", true);
-	if(meshGenerated)
+	if (!meshGenerated) return;
 	renderMesh = nav->GetUint("RenderNavMesh", false);
 	numObjects = nav->GetInt("numObjects");
-
+	cyclesToWaitWhenLoaded = 5;
 	if (numObjects < 1)
 	{
 		autoNavGeneration = false;
@@ -174,6 +174,11 @@ update_status ModuleNavigation::Update(float dt)
 {
 	if (autoNavGeneration)
 	{
+		if (cyclesToWaitWhenLoaded > 0)
+		{
+			--cyclesToWaitWhenLoaded;
+			return UPDATE_CONTINUE;
+		}
 		addNavigableMeshFromSceneLoaded();
 		if (autoNavGeneration)
 			generateNavigability(renderMesh);
