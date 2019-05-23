@@ -218,21 +218,6 @@ void GameObject::Update()
 			component->Update();
 		}
 	}
-	//TESTING
-	//---------------------------------------------
-	if (isBoneRoot && App->time->gameState == GameState::RUN)
-	{
-		ComponentAnimation* compAnim = (ComponentAnimation*)GetComponentOld(ComponentType::Animation);
-		if (App->input->GetKey(SDL_SCANCODE_X))
-		{
-			compAnim->SendTriggerToStateMachine("trigger1");
-		}
-		if (App->input->GetKey(SDL_SCANCODE_C))
-		{
-			compAnim->SendTriggerToStateMachine("trigger2");
-		}
-	}
-	//---------------------------------------------
 
 	for (const auto& child : children)
 	{
