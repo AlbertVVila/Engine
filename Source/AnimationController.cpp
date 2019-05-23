@@ -253,11 +253,14 @@ void AnimationController::CheckEvents()
 			if (current->time >= eventTime)
 			{
 				//ToDo: Call OnEventAnimation()
+				LOG("EVENT LAUNCHED");
 
 				if (anim->nextEvent < anim->totalEvents)
 					++anim->nextEvent;
 				else
 					anim->nextEvent = 0;
+
+				return;
 			}
 		}
 	}
