@@ -46,7 +46,8 @@ public:
 	bool CanSwitch();
 
 	void ResetClipping();
-	void CheckEvents();
+	void SetNextEvent();
+	bool CheckEvents();
 
 public:
 

@@ -66,12 +66,12 @@ void AnimationController::Update(float dt)
 	if (current != nullptr && !current->isEditor)
 	{
 		UpdateInstance(current, dt);
-		CheckEvents();
+		//CheckEvents();
 	}
 	else if (current != nullptr && current->isEditor)
 	{
 		UpdateEditorInstance(current, dt);
-		CheckEvents();
+		//CheckEvents();
 	}
 }
 
@@ -158,10 +158,12 @@ void AnimationController::UpdateEditorInstance(Instance* instance, float dt)
 			{
 				instance->time = current->minTime + trueDt - timeRemainingA;
 				trueFrame = current->maxTime;
+				anim->nextEvent = 0;
 			}
 			else
 			{
 				instance->time = current->maxTime;
+				anim->nextEvent = 0;
 			}
 		}
 		else
@@ -240,7 +242,24 @@ void AnimationController::ResetClipping()
 	current->maxTime = current->anim->durationInSeconds;
 }
 
-void AnimationController::CheckEvents()
+void AnimationController::SetNextEvent()
+{
+	ResourceAnimation* anim = current->anim;
+	
+	int currentFrame = current->time * anim->framesPerSecond;
+	anim->nextEvent = 0;
+
+	for (std::vector<Event*>::iterator it = anim->events.begin(); it != anim->events.end(); ++it)
+	{
+		if (currentFrame < (*it)->frame)
+		{
+			return;
+		}
+		++anim->nextEvent;
+	}
+}
+
+bool AnimationController::CheckEvents()
 {
 	ResourceAnimation* anim = current->anim;
 
@@ -248,22 +267,23 @@ void AnimationController::CheckEvents()
 	{
 		if ((*it)->key == anim->nextEvent)
 		{
-			float eventTime = (float)(*it)->frame / (float)anim->framesPerSecond;
+			int currentFrame = current->time * anim->framesPerSecond;
 
-			if (current->time >= eventTime)
+			if (currentFrame == (*it)->frame)
 			{
-				//ToDo: Call OnEventAnimation()
-				LOG("EVENT LAUNCHED");
-
-				if (anim->nextEvent < anim->totalEvents)
+				if (anim->nextEvent + 1 < anim->totalEvents)
+					++anim->nextEvent;
+				else if (anim->nextEvent + 1 == anim->totalEvents && anim->totalEvents == 1)
 					++anim->nextEvent;
 				else
 					anim->nextEvent = 0;
 
-				return;
+				return true;
 			}
+			return false;
 		}
 	}
+	return false;
 }
 
 bool AnimationController::GetTransform(unsigned channelIndex, math::float3& position, math::Quat& rotation)

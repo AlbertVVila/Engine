@@ -198,6 +198,7 @@ void PanelAnimation::Draw()
 				}
 			
 				compAnim->isPlaying = true;
+				compAnim->editorController->SetNextEvent();
 			}
 		}
 

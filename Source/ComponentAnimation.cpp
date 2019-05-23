@@ -388,6 +388,11 @@ void ComponentAnimation::Update()
 				channelsSetted = true;
 			}
 			controller->Update(App->time->gameDeltaTime);
+			if (controller->CheckEvents())
+			{
+				//ToDo: Call OnEventAnimation
+				LOG("EVENT RETURNED TRUE!");
+			}
 
 			if (gameobject != nullptr)
 			{
@@ -406,6 +411,11 @@ void ComponentAnimation::Update()
 			}
 
 			editorController->Update(App->time->realDeltaTime);
+			if (editorController->CheckEvents())
+			{
+				//ToDo: Call OnEventAnimation
+				LOG("EVENT RETURNED TRUE!");
+			}
 
 			if (gameobject != nullptr)
 			{
