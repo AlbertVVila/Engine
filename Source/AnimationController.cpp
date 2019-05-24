@@ -49,15 +49,11 @@ void AnimationController::PlayEditor(ResourceAnimation * anim)
 
 void AnimationController::PlayNextNode(ResourceAnimation * anim, bool loop, bool mustFinish, float speed, float blend)
 {
-	/*current->anim = anim;
-	current->time = 0.f;
-	current->loop = loop;
-	current->mustFinish = mustFinish;
-	current->speed = speed;*/
 	if (current->next != nullptr)
 	{
 		ReleaseInstance(current);
 	}
+
 	current->next = new Instance;
 	current->fadeDuration = blend;
 	current->next->anim = anim;
@@ -86,7 +82,7 @@ void AnimationController::UpdateInstance(Instance* instance, float dt)
 
 	float trueDt = dt * instance->speed;
 
-	if (anim != nullptr && anim->durationInSeconds > 0)
+	if (anim != nullptr && anim->durationInSeconds > 0.0f)
 	{
 		if (trueDt > 0.0f)
 		{
@@ -118,7 +114,7 @@ void AnimationController::UpdateInstance(Instance* instance, float dt)
 			}
 			else
 			{
-				instance->time = 0.f;
+				instance->time = 0.0f;
 			}
 		}
 	}
@@ -137,7 +133,7 @@ void AnimationController::UpdateInstance(Instance* instance, float dt)
 		{
 			ReleaseInstance(instance);
 			instance->next = nullptr;
-			instance->fadeTime = 0;
+			instance->fadeTime = 0.0f;
 		}
 	}
 }
@@ -146,7 +142,7 @@ void AnimationController::UpdateEditorInstance(Instance* instance, float dt)
 {
 	ResourceAnimation* anim = instance->anim;
 
-	if (anim != nullptr && anim->durationInSeconds > 0)
+	if (anim != nullptr && anim->durationInSeconds > 0.0f)
 	{
 		float trueDt = dt * instance->speed;
 
@@ -201,7 +197,7 @@ void AnimationController::UpdateEditorInstance(Instance* instance, float dt)
 		{
 			ReleaseInstance(instance->next);
 			instance->next = nullptr;
-			instance->fadeTime = instance->fadeDuration = 0;
+			instance->fadeTime = instance->fadeDuration = 0.0f;
 		}
 	}
 }
