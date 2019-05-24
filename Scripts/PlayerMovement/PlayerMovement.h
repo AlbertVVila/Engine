@@ -97,5 +97,6 @@ public:
 	Application* Appl = nullptr;
 private:
 	std::vector<PlayerState*> playerStates;	
+	GameObject* dustParticles = nullptr;
 };
 #endif __PlayerMovement_h__

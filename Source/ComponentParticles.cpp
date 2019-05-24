@@ -268,7 +268,7 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 	colorOTCheck = modules[1]->enabled;
 
 	//Create new Particle P
-	if (rateTimer <= 0.f && particles.size() < maxParticles)
+	if (gameobject->isActive() && rateTimer <= 0.f && particles.size() < maxParticles)
 	{
 		int amount = MAX(dt / (1.f / rate), 1);
 		for (; amount > 0; --amount)

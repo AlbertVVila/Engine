@@ -150,9 +150,8 @@ void ModuleParticles::Render(float dt, const ComponentCamera* camera)
 	for (ComponentParticles* cp : particleSystems)
 	{
 		cp->Update(dt, camera->frustum->pos);
-		
+
 		DrawParticleSystem(cp, camera);
-	
 	}
 
 	glDisable(GL_CULL_FACE);
