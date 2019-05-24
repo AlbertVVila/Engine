@@ -140,7 +140,6 @@ bool ModuleParticles::Start()
 void ModuleParticles::Render(float dt, const ComponentCamera* camera) 
 {
 	glEnable(GL_BLEND);
-	//glBlendFunc(GL_ONE, GL_ONE);	
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	particleSystems.sort(
 		[camera](const ComponentParticles* cp1, const ComponentParticles* cp2) -> bool
@@ -155,6 +154,8 @@ void ModuleParticles::Render(float dt, const ComponentCamera* camera)
 	}
 
 	glDisable(GL_CULL_FACE);
+	glBlendFunc(GL_ONE, GL_ONE);	
+
 	for (ComponentTrail* trail : trails)
 	{
 		if (trail->trail.size() > 1)

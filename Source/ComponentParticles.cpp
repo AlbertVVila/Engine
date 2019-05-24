@@ -293,28 +293,25 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 				p->direction = math::float3(xD, yD, zD);
 				p->direction.Normalize();
 			}
-			else
+			switch (actualEmisor)
 			{
-				switch (actualEmisor)
-				{
-				case EmisorType::QUAD:
-					quadEmitterSize.x = MAX(1, quadEmitterSize.x);
-					quadEmitterSize.y = MAX(1, quadEmitterSize.y);
+			case EmisorType::QUAD:
+				quadEmitterSize.x = MAX(1, quadEmitterSize.x);
+				quadEmitterSize.y = MAX(1, quadEmitterSize.y);
 
-					//P starting position
-					p->position = pos + gameobject->transform->GetRotation() * float3(rand() % (int)quadEmitterSize.x - quadEmitterSize.x / 2, 0, rand() % (int)quadEmitterSize.y - quadEmitterSize.y / 2) ;
+				//P starting position
+				p->position = pos + gameobject->transform->GetRotation() * float3(rand() % (int)quadEmitterSize.x - quadEmitterSize.x / 2, 0, rand() % (int)quadEmitterSize.y - quadEmitterSize.y / 2) ;
 
-					//P direction
-					p->direction = gameobject->transform->GetRotation() * float3(0.f, 1.f, 0.f); //math::float3::unitY;
-					break;
+				//P direction
+				p->direction = gameobject->transform->GetRotation() * float3(0.f, 1.f, 0.f); //math::float3::unitY;
+				break;
 
-				case EmisorType::SPHERE:
-					//P starting position
-					p->position = pos;
-					//P direction
-					p->direction = (randomSpherePoint(pos) - pos).Normalized();
-					break;
-				}
+			case EmisorType::SPHERE:
+				//P starting position
+				p->position = pos;
+				//P direction
+				p->direction = (randomSpherePoint(pos) - pos).Normalized();
+				break;
 			}
 		
 			//P lifetime
@@ -386,6 +383,7 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 			
 			
 		}
+		particles.front()->direction.Normalize();
 		particles.front()->position += particles.front()->direction * particles.front()->speed * dt;
 		float3 direction = (camPos - particles.front()->position);
 		if (billboarded)
