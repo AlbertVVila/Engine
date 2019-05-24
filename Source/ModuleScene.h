@@ -81,6 +81,7 @@ public:
 	void Redo();
 
 	void ClearScene();
+	void UpdateScenesList();
 
 	void Select(GameObject* gameobject);
 	void UnSelect();
@@ -108,6 +109,9 @@ private:
 	std::list<GameObject*> scenePhotos;
 	std::list<GameObject*> scenePhotosUndoed;
 
+	unsigned defaultSceneUID = 0u;
+	std::vector<std::string> sceneFiles;
+
 public:
 	GameObject* root = nullptr;
 	GameObject* selected = nullptr; //Selected in hierarchy
@@ -125,7 +129,7 @@ public:
 	pcg32 uuid_rng;
 	std::string name;
 	std::string path;
-	std::string defaultScene;
+	ResourceScene* defaultScene = nullptr;
 	bool photoEnabled = false;
 	float photoTimer = 0.f;
 	float3 ambientColor = float3::one;

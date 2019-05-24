@@ -76,6 +76,7 @@ void ResourceScene::Save(const GameObject& rootGO)
 {
 	JSON *json = new JSON();
 	JSON_value *array = json->CreateValue(rapidjson::kArrayType);
+	App->navigation->sceneSaved(json);
 	rootGO.Save(array);
 	json->AddValue("GameObjects", *array);
 

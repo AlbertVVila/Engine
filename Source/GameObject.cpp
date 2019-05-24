@@ -29,6 +29,7 @@
 #include "ComponentAudioListener.h"
 #include "ComponentAudioSource.h"
 #include "ComponentReverbZone.h"
+#include "ComponentBoxTrigger.h"
 #include "BaseScript.h"
 
 
@@ -79,7 +80,6 @@ GameObject::GameObject(const GameObject & gameobject)
 	assert(!(isVolumetric && hasLight));
 	bbox = gameobject.bbox;
 	navigable = gameobject.navigable;
-	walkable = gameobject.walkable;
 	noWalkable = gameobject.noWalkable;
 
 	for (const auto& component : gameobject.components)
@@ -162,8 +162,7 @@ void GameObject::DrawProperties()
 			if (navigable)
 			{
 				//defines walls and this stuff
-				ImGui::Checkbox("Walkable", &walkable);
-				ImGui::Checkbox("No Walkable", &noWalkable);
+				ImGui::Checkbox("Is obstacle", &noWalkable);
 			}
 		}
 
@@ -396,7 +395,9 @@ Component* GameObject::CreateComponent(ComponentType type, JSON_value* value)
 	case ComponentType::ReverbZone:
 		component = new ComponentReverbZone(this);
 		App->audioManager->reverbZones.push_back((ComponentReverbZone*)component);
-
+		break;
+	case ComponentType::BoxTrigger:
+		component = new ComponentBoxTrigger(this);
 		break;
 	default:
 		break;
@@ -855,7 +856,6 @@ void GameObject::Save(JSON_value *gameobjects) const
 		gameobject->AddUint("isBoneRoot", isBoneRoot);
 		gameobject->AddFloat4x4("baseState", baseState);
 		gameobject->AddUint("Navigable", navigable);
-		gameobject->AddUint("Walkable", walkable);
 		gameobject->AddUint("No Walkable", noWalkable);
 		gameobject->AddUint("openInHierarchy", openInHierarchy);
 
@@ -888,7 +888,6 @@ void GameObject::Load(JSON_value *value)
 	isBoneRoot = value->GetUint("isBoneRoot");
 	baseState = value->GetFloat4x4("baseState");
 	navigable = value->GetUint("Navigable");
-	walkable = value->GetUint("Walkable"); //TODO: why 2 variables for walkable?
 	noWalkable = value->GetUint("No Walkable");
 	openInHierarchy = value->GetUint("openInHierarchy");
 
@@ -930,7 +929,7 @@ bool GameObject::IsParented(const GameObject & gameobject) const
 
 void GameObject::DrawHierarchy()
 {
-	//if (parent != nullptr && parent->parent !=nullptr && parent->parent->isBoneRoot) return;
+	if (parent != nullptr && parent->parent !=nullptr && parent->parent->isBoneRoot) return;
 
 	ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow | 
 		(openInHierarchy ? ImGuiTreeNodeFlags_DefaultOpen: 0)

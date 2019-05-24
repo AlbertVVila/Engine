@@ -26,7 +26,7 @@ ResourceModel::ResourceModel(const ResourceModel& resource) : Resource(resource)
 
 ResourceModel::~ResourceModel()
 {
-	DeleteFromMemory();
+	//DeleteFromMemory();
 }
 
 bool ResourceModel::LoadInMemory()
