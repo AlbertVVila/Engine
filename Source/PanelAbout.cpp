@@ -15,9 +15,9 @@
 #include <ft2build.h>
 
 #define ENGINE_DESCRIPTION "Engine created during the Master of Videogames in UPC School."
-#define AUTHOR "Albert Val Vila"
-#define REPOSITORY "https://github.com/AlbertVVila/Engine"
-#define LICENSE "https://github.com/AlbertVVila/Engine/blob/master/LICENSE"
+#define AUTHOR "FRACTAL PUPPY"
+#define REPOSITORY "https://github.com/fractal-puppy/Engine"
+#define LICENSE "https://github.com/fractal-puppy/Engine/blob/master/LICENSE"
 #define FREETYPE "https://www.freetype.org/"
 
 PanelAbout::PanelAbout()
