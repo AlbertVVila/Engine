@@ -75,12 +75,23 @@ void ComponentBoxTrigger::DrawProperties()
 	ImGui::PushID(this);
 	if (ImGui::CollapsingHeader("Box Trigger", ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		bool removed = Component::DrawComponentState();
+		bool active = enabled;
+
+		ImGui::Checkbox("Active", &active); ImGui::SameLine();
+		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.f / 7.0f, 0.7f, 0.7f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.f / 7.0f, 0.8f, 0.8f));
+
+		bool removed = ImGui::Button("Remove");
+		if (removed) Remove();
+		ImGui::PopStyleColor(3);
+
 		if (removed)
 		{
 			ImGui::PopID();
 			return;
 		}
+		if (active != enabled) Enable(active);
 
 		ImGui::Checkbox("Draw Debug Box", &debugDraw);
 
@@ -158,6 +169,28 @@ void ComponentBoxTrigger::Update()
 
 void ComponentBoxTrigger::OnPlay()
 {
+	overlapList.clear();
+}
+
+void ComponentBoxTrigger::OnDisable()
+{
+	for (auto it = overlapList.begin(); it != overlapList.end(); ++it)
+	{
+		switch (it->second)
+		{
+		case OverlapState::Enter:
+		case OverlapState::Exit:
+			break;
+
+		case OverlapState::Idle:
+		case OverlapState::PostIdle:
+			PropagateState(it->first->gameobject, OverlapState::Exit);
+			break;
+
+		default:
+			break;
+		}
+	}
 	overlapList.clear();
 }
 
