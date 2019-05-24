@@ -128,10 +128,14 @@ void ComponentBoxTrigger::DrawProperties()
 void ComponentBoxTrigger::Update()
 {
 	if (!enabled) return;
-	boxTrigger->axis[0] = gameobject->transform->right;
-	boxTrigger->axis[1] = gameobject->transform->up;
-	boxTrigger->axis[2] = gameobject->transform->front;
+	boxTrigger->axis[0] = gameobject->transform->right.Normalized();
+	boxTrigger->axis[1] = gameobject->transform->up.Normalized();
+	boxTrigger->axis[2] = gameobject->transform->front.Normalized();
+	
 	boxTrigger->pos = gameobject->transform->global.MulPos(position);
+	boxTrigger->r.x = size.x * gameobject->transform->right.Length();
+	boxTrigger->r.y = size.y * gameobject->transform->up.Length();
+	boxTrigger->r.z = size.z * gameobject->transform->front.Length();
 
 	std::vector<const ComponentBoxTrigger*> toRemove;
 	for (auto it = overlapList.begin(); it != overlapList.end(); ++it)
