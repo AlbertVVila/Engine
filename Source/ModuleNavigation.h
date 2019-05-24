@@ -140,17 +140,14 @@ private:
 	
 private:
 	//variables
-	float maxRadius = 0.6f;
-	float maxHeight = 5.0f;
-	float maxSlopeScaling = 45.0f;
-	float maxStepHeightScaling = 5.0f;
 	
-	char newCharacter[64] = "New Character";
+	//char newCharacter[64] = "New Character";//implementation postponed, possibly aborted
 	float characterMaxRadius = 0.6f;
-	float characterMaxHeight = 5.0f;//might need higher val
+	float characterMaxHeight = 5.0f;
 	float characterMaxSlopeScaling = 50.0f;
-	float characterMaxStepHeightScaling = 5.0f;//might need higher value
+	float characterMaxStepHeightScaling = 5.0f;
 	
+	//UI modificiators
 	const float sliderIncreaseSpeed = 0.03f;
 	const float minSliderValue = 0.01f;
 	const float maxSliderValue = 100.0f;

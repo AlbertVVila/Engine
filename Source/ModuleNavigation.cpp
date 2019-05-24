@@ -55,6 +55,10 @@ bool ModuleNavigation::Init(JSON * config)
 	if (nav == nullptr) return true;
 
 	cellWidth = nav->GetFloat("Cellwidth");
+	cellHeight = nav->GetFloat("CellHeight");
+	characterMaxRadius = nav->GetFloat("MaxRadius");
+	characterMaxHeight = nav->GetFloat("MaxHeight");
+	characterMaxSlopeScaling = nav->GetFloat("SlopeScaling");
 	characterMaxStepHeightScaling = nav->GetFloat("StepHeight");
 
 	return true;
@@ -64,6 +68,10 @@ void ModuleNavigation::SaveConfig(JSON * config)
 	JSON_value* nav = config->CreateValue();
 
 	nav->AddFloat("Cellwidth", cellWidth);
+	nav->AddFloat("CellHeight", cellHeight);
+	nav->AddFloat("MaxRadius", characterMaxRadius);
+	nav->AddFloat("MaxHeight", characterMaxHeight);
+	nav->AddFloat("SlopeScaling", characterMaxSlopeScaling);
 	nav->AddFloat("StepHeight", characterMaxStepHeightScaling);
 
 	config->AddValue("navigation", *nav);
@@ -191,13 +199,11 @@ void ModuleNavigation::DrawGUI()
 
 	ImGui::Separator();
 
-	ImGui::Text("Agent, no multiple agents implemented yet");//to edit
-	ImGui::InputText("New Character", newCharacter, 64);
-	ImGui::DragFloat("Character Radius", &characterMaxRadius, sliderIncreaseSpeed, minSliderValue, maxSliderValue);
+	ImGui::Text("Character values:");
+	ImGui::DragFloat("Radius", &characterMaxRadius, sliderIncreaseSpeed, minSliderValue, maxSliderValue);
 	ImGui::DragFloat("Height", &characterMaxHeight, sliderIncreaseSpeed, minSliderValue, maxSliderValue);
 	ImGui::DragFloat("Max slope", &characterMaxSlopeScaling, sliderIncreaseSpeed, minSliderValue, maxSlopeValue);
 	ImGui::DragFloat("Max step height", &characterMaxStepHeightScaling, sliderIncreaseSpeed, minSliderValue, maxSlopeValue);
-	ImGui::Button("Add Character", ImVec2(ImGui::GetWindowWidth(), 25));
 
 	ImGui::Separator();
 
@@ -251,11 +257,6 @@ void ModuleNavigation::DrawGUI()
 
 	ImGui::Text("Generation");
 	
-	ImGui::DragFloat("Agent max radius", &maxRadius, sliderIncreaseSpeed, minSliderValue, maxSliderValue);
-	ImGui::DragFloat("Agent max height", &maxHeight, sliderIncreaseSpeed, minSliderValue, maxSliderValue);
-	ImGui::DragFloat("Max slope scaling", &maxSlopeScaling, sliderIncreaseSpeed, minSliderValue, maxSlopeValue);
-	ImGui::DragFloat("Max step height", &maxStepHeightScaling, sliderIncreaseSpeed, minSliderValue, maxSlopeValue);
-
 	if (ImGui::Button("Add mesh to navigation"))
 	{
 		addNavigableMesh();
@@ -444,7 +445,7 @@ void ModuleNavigation::generateNavigability(bool render)
 
 	cfg->cs = cellWidth;
 	cfg->ch = cellHeight;
-	cfg->walkableSlopeAngle = maxSlopeValue;
+	cfg->walkableSlopeAngle = characterMaxSlopeScaling;
 	cfg->walkableHeight = (int)ceilf(characterMaxHeight / cfg->ch);
 	cfg->walkableClimb = (int)floorf(characterMaxStepHeightScaling / cfg->ch);
 	cfg->walkableRadius = (int)ceilf(characterMaxRadius / cfg->cs);
