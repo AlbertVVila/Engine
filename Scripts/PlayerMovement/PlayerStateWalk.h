@@ -18,6 +18,7 @@ public:
 	float duration = 1.5f;
 	std::vector<float3>path;
 	unsigned pathIndex = 0;
+	GameObject* dustParticles = nullptr;
 };
 
 #endif // __PLAYERSTATEWALK_H_
