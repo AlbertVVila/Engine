@@ -247,7 +247,7 @@ void main()
 	}
 	
 	//color *= get_occlusion_color();
-	color += get_emissive_color() * 10;
+	color += get_emissive_color();
 #ifdef IS_EDITOR
 	color = vec3(pow(color.r, (1.0 / 2.2)), pow(color.g, (1.0 / 2.2)), pow(color.b, (1.0 / 2.2)));
 #endif
