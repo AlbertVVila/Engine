@@ -442,6 +442,7 @@ void GameObject::RemoveComponent(const Component& component)
 			(*it)->CleanUp();
 			trash = *it; // Delete elements of an iterated container causes crashes inside the loop
 			trashIt = it;
+			break;
 		}
 	}
 	if (trash != nullptr) // Safely remove component

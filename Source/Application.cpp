@@ -37,7 +37,6 @@ Application::Application()
 	modules.push_back(scripting = new ModuleScript());
 	modules.push_back(renderer = new ModuleRender());
 	modules.push_back(particles = new ModuleParticles());
-    modules.push_back(camera = new ModuleCamera());
 	modules.push_back(textures = new ModuleTextures());
 	modules.push_back(program = new ModuleProgram());
 #ifndef GAME_BUILD
@@ -51,7 +50,6 @@ Application::Application()
 	modules.push_back(collisions = new ModuleCollisions());
 	modules.push_back(time = new ModuleTime());
 	modules.push_back(navigation = new ModuleNavigation());
-	modules.push_back(spacePartitioning = new ModuleSpacePartitioning());
 	modules.push_back(scene = new ModuleScene());
 	modules.push_back(ui = new ModuleUI());
 	modules.push_back(fontLoader = new ModuleFontLoader());
