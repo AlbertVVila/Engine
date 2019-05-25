@@ -82,7 +82,6 @@ void ModuleNavigation::sceneLoaded(JSON * config)
 	if (!meshGenerated) return;
 	renderMesh = nav->GetUint("RenderNavMesh", false);
 	numObjects = nav->GetInt("numObjects");
-	cyclesToWaitWhenLoaded = 5;
 	if (numObjects < 1)
 	{
 		autoNavGeneration = false;
@@ -106,6 +105,12 @@ void ModuleNavigation::sceneLoaded(JSON * config)
 		}
 		objectNames.emplace_back(newObj);
 	}
+	//update transforms of each object for the nav mesh generation
+	App->scene->root->UpdateTransforms(math::float4x4::identity);
+	App->scene->root->Update();
+	App->scene->root->CheckDelete();
+	addNavigableMeshFromSceneLoaded();
+	generateNavigability(renderMesh);
 	autoNavGeneration = true;
 }
 
@@ -168,23 +173,6 @@ void ModuleNavigation::cleanStoredObjects()
 {
 	objectNames.clear();
 	numObjects = 0;
-}
-
-update_status ModuleNavigation::Update(float dt)
-{
-	if (autoNavGeneration)
-	{
-		if (cyclesToWaitWhenLoaded > 0)
-		{
-			--cyclesToWaitWhenLoaded;
-			return UPDATE_CONTINUE;
-		}
-		addNavigableMeshFromSceneLoaded();
-		if (autoNavGeneration)
-			generateNavigability(renderMesh);
-		autoNavGeneration = false;
-	}
-	return UPDATE_CONTINUE;
 }
 
 void ModuleNavigation::DrawGUI()
@@ -874,7 +862,7 @@ void ModuleNavigation::generateNavigability(bool render)
 
 void ModuleNavigation::fillVertices()
 {
-	// TODO: fill array of non walkable areas.
+	if (meshComponents[0] == nullptr) return;
 	for (int i = 0; i < meshComponents.size(); ++i)
 	{
 		nverts += meshComponents[i]->mesh->meshVertices.size();
@@ -912,6 +900,7 @@ void ModuleNavigation::fillVertices()
 
 void ModuleNavigation::fillIndices()
 {
+	if (meshComponents[0] == nullptr) return;
 	std::vector<int>maxVertMesh(meshComponents.size()+1, 0);
 	for (int i = 0; i < meshComponents.size(); ++i)
 	{

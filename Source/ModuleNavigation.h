@@ -80,7 +80,6 @@ public:
 
 	bool Init(JSON* config);
 	void SaveConfig(JSON* config) override;
-	update_status Update(float dt)override;
 	void sceneLoaded(JSON* config);
 	void sceneSaved(JSON* config);
 
@@ -252,7 +251,6 @@ private:
 	std::vector<math::float3> path;
 	math::float3 start = math::float3::inf;
 	math::float3 end = math::float3::inf;
-	int cyclesToWaitWhenLoaded = 0;
 
 	bool startPoint = true; //defines if we are going to select start or end point in debug mode
 	bool drawNavMesh = true;
