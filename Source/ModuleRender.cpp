@@ -665,6 +665,7 @@ void ModuleRender::BlitShadowTexture()
 
 void ModuleRender::CreatePostProcessFramebuffer()
 {
+	LOG("DD");
 	if (postprocessFBO == 0)
 	{
 		glGenFramebuffers(1, &postprocessFBO);

@@ -125,6 +125,7 @@ private:
 	bool Playing = false;
 
 	bool billboarded = true;
+	bool localEmitter = false;
 	math::float3 lookAtTarget = math::float3::unitY;
 
 };
