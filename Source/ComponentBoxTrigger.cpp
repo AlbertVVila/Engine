@@ -198,6 +198,18 @@ void ComponentBoxTrigger::OnDisable()
 	overlapList.clear();
 }
 
+void ComponentBoxTrigger::OnEnable()
+{
+	boxTrigger->axis[0] = gameobject->transform->right.Normalized();
+	boxTrigger->axis[1] = gameobject->transform->up.Normalized();
+	boxTrigger->axis[2] = gameobject->transform->front.Normalized();
+
+	boxTrigger->pos = gameobject->transform->global.MulPos(position);
+	boxTrigger->r.x = size.x * gameobject->transform->right.Length();
+	boxTrigger->r.y = size.y * gameobject->transform->up.Length();
+	boxTrigger->r.z = size.z * gameobject->transform->front.Length();
+}
+
 void ComponentBoxTrigger::DrawDebug()
 {
 	ddVec3* corners = new ddVec3[8];

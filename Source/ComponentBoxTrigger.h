@@ -28,6 +28,8 @@ public:
 	virtual void Update() override;
 	virtual void OnPlay() override;
 	virtual void OnDisable() override;
+	virtual void OnEnable() override;
+
 	void DrawDebug();
 
 	void SetIsPlayer(bool isPlayer);
