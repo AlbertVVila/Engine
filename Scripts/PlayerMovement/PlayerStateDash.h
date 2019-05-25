@@ -23,6 +23,7 @@ public:
 	float dashPreparationTime = 0.1f;
 
 	GameObject* dashFX = nullptr;
+	GameObject* dashMesh = nullptr;
 	
 };
 

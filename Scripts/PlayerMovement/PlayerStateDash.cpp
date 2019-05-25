@@ -80,6 +80,10 @@ void PlayerStateDash::Enter()
 		{
 			dashFX->SetActive(true);
 		}
+		if (dashMesh)
+		{
+			dashMesh->SetActive(true);
+		}
 	}
 }
 
@@ -90,6 +94,10 @@ void PlayerStateDash::CheckInput()
 		if (dashFX)
 		{
 			dashFX->SetActive(false);
+		}
+		if (dashMesh)
+		{
+			dashMesh->SetActive(false);
 		}
 
 		if (player->IsAtacking())
