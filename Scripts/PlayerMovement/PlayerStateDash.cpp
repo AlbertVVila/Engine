@@ -76,6 +76,10 @@ void PlayerStateDash::Enter()
 		player->Appl->navigation->FindPath(player->gameobject->transform->position, intersectionPoint, path);
 		pathIndex = 0;
 		player->gameobject->transform->LookAt(intersectionPoint);
+		if (dashFX)
+		{
+			dashFX->SetActive(true);
+		}
 	}
 }
 
@@ -83,6 +87,11 @@ void PlayerStateDash::CheckInput()
 {
 	if (timer > player->dashDuration) // can switch?¿¿?
 	{
+		if (dashFX)
+		{
+			dashFX->SetActive(false);
+		}
+
 		if (player->IsAtacking())
 		{
 			player->currentState = (PlayerState*)player->firstAttack;

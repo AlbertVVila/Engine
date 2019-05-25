@@ -51,7 +51,7 @@ ComponentTrail::ComponentTrail(const ComponentTrail& component) : Component(comp
 	App->particles->AddTrailRenderer(this);
 }
 
-void ComponentTrail::Update()
+void ComponentTrail::UpdateTrail()
 {
 	unsigned trailPoints = trail.size();
 	for (unsigned i = 0u; i < trailPoints; ++i)
@@ -68,7 +68,7 @@ void ComponentTrail::Update()
 	}
 
 	math::float3 pos = gameobject->transform->GetGlobalPosition();
-	if (trail.size() == 0 || trail.back().Distance(pos) > minDistance)
+	if (gameobject->isActive() && (trail.size() == 0 || trail.back().Distance(pos) > minDistance))
 	{
 		if (trail.size() == 0)
 		{

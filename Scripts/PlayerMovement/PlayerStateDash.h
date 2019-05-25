@@ -21,6 +21,8 @@ public:
 	float duration = 0.8f;
 	float dashSpeed = 800;
 	float dashPreparationTime = 0.1f;
+
+	GameObject* dashFX = nullptr;
 	
 };
 

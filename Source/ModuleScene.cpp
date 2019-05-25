@@ -312,8 +312,13 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 
 	if (selected != nullptr && selected->GetComponentOld(ComponentType::Renderer) == nullptr)
 	{
-		DrawGO(*selected, frustum, isEditor); //bcause it could be an object without mesh not in staticGOs or dynamicGOs
+		DrawGO(*selected, camFrustum, isEditor); //bcause it could be an object without mesh not in staticGOs or dynamicGOs
 	}
+	alphaRenderers.sort(
+		[camFrustum](const ComponentRenderer* cr1, const ComponentRenderer* cr2) -> bool
+	{
+		return cr1->gameobject->transform->GetGlobalPosition().Distance(camFrustum.pos) > cr2->gameobject->transform->GetGlobalPosition().Distance(camFrustum.pos);
+	});
 #else
 	for (const auto &go : staticFilteredGOs)
 	{
@@ -346,12 +351,14 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 			}
 		}
 	}	
-#endif
+
 	alphaRenderers.sort(
 		[frustum](const ComponentRenderer* cr1, const ComponentRenderer* cr2) -> bool
 	{
 		return cr1->gameobject->transform->GetGlobalPosition().Distance(frustum.pos) > cr2->gameobject->transform->GetGlobalPosition().Distance(frustum.pos);
 	});
+#endif
+	
 	if (alphaRenderers.size() > 0)
 	{
 		glEnable(GL_BLEND);

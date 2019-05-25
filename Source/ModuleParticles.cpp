@@ -158,6 +158,7 @@ void ModuleParticles::Render(float dt, const ComponentCamera* camera)
 
 	for (ComponentTrail* trail : trails)
 	{
+		trail->UpdateTrail();
 		if (trail->trail.size() > 1)
 		{
 			RenderTrail(trail, camera);
