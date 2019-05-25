@@ -117,7 +117,6 @@ update_status ModuleScene::PreUpdate()
 	if (loadScene)
 	{
 		LoadScene(name.c_str(), SCENES);
-		App->scripting->onStart = true;
 		root->OnPlay();
 		loadScene = false;
 	}
@@ -190,7 +189,7 @@ bool ModuleScene::CleanUp()
 
 	lights.clear();
 
-	RELEASE(defaultScene);
+	//RELEASE(defaultScene);
 
 	return true;
 }
@@ -1002,7 +1001,6 @@ void ModuleScene::ClearScene()
 	App->particles->CleanUp();
 	App->particles->Start();
 	App->renderer->shadowCasters.clear();
-	isCleared = true;
 }
 
 void ModuleScene::UpdateScenesList()
@@ -1045,9 +1043,15 @@ void ModuleScene::SaveScene(const GameObject& rootGO, const char* sceneName, con
 	}
 }
 
+bool ModuleScene::isCleared()
+{
+	return App->scene->root->children.size() <= 1 &&
+		App->scene->canvas->children.empty();
+}
+
 void ModuleScene::LoadScene(const char* sceneName, const char* folder)
 {
-	if (!isCleared)
+	if (!isCleared())
 	{
 		ClearScene();
 	}
@@ -1060,6 +1064,7 @@ void ModuleScene::LoadScene(const char* sceneName, const char* folder)
 		}
 	}
 	App->spacePartitioning->kDTree.Calculate();
+	App->scripting->onStart = true;
 	scenePhotos.clear();
 }
 
@@ -1072,7 +1077,6 @@ bool ModuleScene::AddScene(const char* sceneName, const char* folder)
 		return false;
 	}
 	App->renderer->OnResize();
-	isCleared = false;
 	return true;
 }
 

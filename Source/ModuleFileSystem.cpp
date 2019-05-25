@@ -553,7 +553,7 @@ void ModuleFileSystem::LookForNewResourceFiles(const char* folder)
 				bool found = false;
 				for (std::vector<Resource*>::const_iterator it = resources.begin(); it != resources.end(); ++it)
 				{
-					if (strcmp((*it)->GetFile(), (current_folder + file).c_str()) == 0)
+					if ((*it)->GetFile() != nullptr && strcmp((*it)->GetFile(), (current_folder + file).c_str()) == 0)
 					{
 						found = true;
 						break;
