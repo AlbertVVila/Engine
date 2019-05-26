@@ -54,12 +54,12 @@ bool ModuleNavigation::Init(JSON * config)
 	JSON_value* nav = config->GetValue("navigation");
 	if (nav == nullptr) return true;
 
-	cellWidth = nav->GetFloat("Cellwidth");
-	cellHeight = nav->GetFloat("CellHeight");
-	characterMaxRadius = nav->GetFloat("MaxRadius");
-	characterMaxHeight = nav->GetFloat("MaxHeight");
-	characterMaxSlopeScaling = nav->GetFloat("SlopeScaling");
-	characterMaxStepHeightScaling = nav->GetFloat("StepHeight");
+	cellWidth = nav->GetFloat("Cellwidth", 21.0f);
+	cellHeight = nav->GetFloat("CellHeight", 11.5f);
+	characterMaxRadius = nav->GetFloat("MaxRadius", 40.0f);
+	characterMaxHeight = nav->GetFloat("MaxHeight", 5.0f);
+	characterMaxSlopeScaling = nav->GetFloat("SlopeScaling", 50.0f);
+	characterMaxStepHeightScaling = nav->GetFloat("StepHeight", 50.0f);
 
 	return true;
 }
