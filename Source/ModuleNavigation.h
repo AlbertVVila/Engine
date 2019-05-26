@@ -91,7 +91,6 @@ public:
 	void cleanValuesPRE();
 	void cleanValuesPOST();
 	void cleanStoredObjects();
-	inline void checkSceneLoaded();
 
 
 	ENGINE_API bool FindPath(math::float3 start, math::float3 end, std::vector<math::float3> &path, PathFindType type = PathFindType::FOLLOW) const;
@@ -114,7 +113,6 @@ private:
 	void removeNavMesh(unsigned ID);
 	void generateNavigability(bool render);
 	void addNavigableMesh();
-	void addNavigableMeshFromSceneLoaded();
 
 	void fillVertices();
 	void fillIndices();
