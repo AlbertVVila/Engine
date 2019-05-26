@@ -7,7 +7,7 @@
 EnemyStateWait::EnemyStateWait(HiddenEnemyAIScript* AIScript)
 {
 	enemy = AIScript;
-	trigger = "Patrol";
+	trigger = "Wait";
 }
 
 EnemyStateWait::~EnemyStateWait()
