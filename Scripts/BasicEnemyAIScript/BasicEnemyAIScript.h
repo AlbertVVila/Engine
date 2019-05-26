@@ -12,6 +12,7 @@
 #include <vector>
 
 class ComponentAnimation;
+class ComponentBoxTrigger;
 class PlayerMovement;
 class EnemyControllerScript;
 class JSON_value;
@@ -70,11 +71,14 @@ public:
 	float returnDistance = 150.f;		// Distance to player to stop chasing player and return to start position
 	float returnSpeed = 1.0f;			// Tranlation speed towards start position
 
+	// Attack variables
+	float attackDuration = 1.0f;
+	float attackDamage = 20.0f;
+
 	// Cooldown variables
 	float cooldownTime = 1.0f;			// Seconds to wait between attacks
 
-	//Damage variables
-	float damage = 20.0f;
+	ComponentBoxTrigger* boxTrigger = nullptr;
 
 private:
 

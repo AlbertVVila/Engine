@@ -1,11 +1,19 @@
 #include "EnemyStateAttack.h"
 
+#include "GameObject.h"
+
+#include "ComponentTransform.h"
+#include "ComponentBoxTrigger.h"
+
 #include "BasicEnemyAIScript.h"
 
 EnemyStateAttack::EnemyStateAttack(BasicEnemyAIScript* AIScript)
 {
 	enemy = AIScript;
 	trigger = "Attack";
+	boxSize = math::float3(100.f, 50.f, 50.f);
+	minTime = 0.7f;
+	maxTime = 0.9f;
 }
 
 EnemyStateAttack::~EnemyStateAttack()
@@ -24,17 +32,29 @@ void EnemyStateAttack::Update()
 	}
 	else
 	{
-		// Attack creating hitbox
-		// TODO: Add function to make damage to the player
+		assert(enemy->boxTrigger != nullptr);
+		if (!hitboxCreated)
+		{
+			// Attack
+			//Create the hitbox
+			enemy->boxTrigger->SetBoxSize(boxSize);
+			boxPosition = enemy->gameobject->transform->up * 100.f;
+			enemy->boxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z + 100.f);
+			hitboxCreated = true;
 
-		//playerScript->Damage(damage);
-		auxTimer = timer;
-		enemy->currentState = (EnemyState*)enemy->cooldown;
+			//playerScript->Damage(attackDamage);
+			auxTimer = timer;
+		}
+		else if (timer > auxTimer + enemy->attackDuration)
+		{
+			// End attack
+			// Disable hitbox
+			enemy->boxTrigger->SetBoxSize(1, 1, 1);
+			hitboxCreated = false;
 
-		//Create the hitbox
-		/*player->boxTrigger->SetBoxSize(boxSize);
-		boxPosition = player->transform->up * 100.f; //this front stuff isnt working well when rotating the chicken
-		player->boxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z + 100.f);
-		hitboxCreated = true;^*/
+			// Enter cooldown state
+			auxTimer = timer;
+			enemy->currentState = (EnemyState*)enemy->cooldown;
+		}
 	}
 }
