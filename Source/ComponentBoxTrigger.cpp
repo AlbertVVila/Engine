@@ -75,12 +75,23 @@ void ComponentBoxTrigger::DrawProperties()
 	ImGui::PushID(this);
 	if (ImGui::CollapsingHeader("Box Trigger", ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		bool removed = Component::DrawComponentState();
+		bool active = enabled;
+
+		ImGui::Checkbox("Active", &active); ImGui::SameLine();
+		ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.f / 7.0f, 0.7f, 0.7f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.f / 7.0f, 0.8f, 0.8f));
+
+		bool removed = ImGui::Button("Remove");
+		if (removed) Remove();
+		ImGui::PopStyleColor(3);
+
 		if (removed)
 		{
 			ImGui::PopID();
 			return;
 		}
+		if (active != enabled) Enable(active);
 
 		ImGui::Checkbox("Draw Debug Box", &debugDraw);
 
@@ -117,10 +128,14 @@ void ComponentBoxTrigger::DrawProperties()
 void ComponentBoxTrigger::Update()
 {
 	if (!enabled) return;
-	boxTrigger->axis[0] = gameobject->transform->right;
-	boxTrigger->axis[1] = gameobject->transform->up;
-	boxTrigger->axis[2] = gameobject->transform->front;
+	boxTrigger->axis[0] = gameobject->transform->right.Normalized();
+	boxTrigger->axis[1] = gameobject->transform->up.Normalized();
+	boxTrigger->axis[2] = gameobject->transform->front.Normalized();
+	
 	boxTrigger->pos = gameobject->transform->global.MulPos(position);
+	boxTrigger->r.x = size.x * gameobject->transform->right.Length();
+	boxTrigger->r.y = size.y * gameobject->transform->up.Length();
+	boxTrigger->r.z = size.z * gameobject->transform->front.Length();
 
 	std::vector<const ComponentBoxTrigger*> toRemove;
 	for (auto it = overlapList.begin(); it != overlapList.end(); ++it)
@@ -159,6 +174,40 @@ void ComponentBoxTrigger::Update()
 void ComponentBoxTrigger::OnPlay()
 {
 	overlapList.clear();
+}
+
+void ComponentBoxTrigger::OnDisable()
+{
+	for (auto it = overlapList.begin(); it != overlapList.end(); ++it)
+	{
+		switch (it->second)
+		{
+		case OverlapState::Enter:
+		case OverlapState::Exit:
+			break;
+
+		case OverlapState::Idle:
+		case OverlapState::PostIdle:
+			PropagateState(it->first->gameobject, OverlapState::Exit);
+			break;
+
+		default:
+			break;
+		}
+	}
+	overlapList.clear();
+}
+
+void ComponentBoxTrigger::OnEnable()
+{
+	boxTrigger->axis[0] = gameobject->transform->right.Normalized();
+	boxTrigger->axis[1] = gameobject->transform->up.Normalized();
+	boxTrigger->axis[2] = gameobject->transform->front.Normalized();
+
+	boxTrigger->pos = gameobject->transform->global.MulPos(position);
+	boxTrigger->r.x = size.x * gameobject->transform->right.Length();
+	boxTrigger->r.y = size.y * gameobject->transform->up.Length();
+	boxTrigger->r.z = size.z * gameobject->transform->front.Length();
 }
 
 void ComponentBoxTrigger::DrawDebug()

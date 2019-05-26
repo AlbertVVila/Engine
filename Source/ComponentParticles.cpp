@@ -313,7 +313,7 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 				p->position = pos + gameobject->transform->GetRotation() * float3(rand() % (int)quadEmitterSize.x - quadEmitterSize.x / 2, 0, rand() % (int)quadEmitterSize.y - quadEmitterSize.y / 2) ;
 
 				//P direction
-				p->direction = gameobject->transform->GetRotation() * float3(0.f, 1.f, 0.f); //math::float3::unitY;
+				p->direction = gameobject->transform->up;// *float3(0.f, 1.f, 0.f); //math::float3::unitY;
 				break;
 
 			case EmisorType::SPHERE:
