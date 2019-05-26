@@ -253,16 +253,10 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 	SetProjectionUniform(cam);
 	SetViewUniform(cam);
 
-	App->scene->Draw(*cam.frustum, isEditor);
-	App->particles->Render(App->time->gameDeltaTime, &cam);
-
 	if (isEditor)
 	{
 		DrawGizmos(cam);
 		skybox->Draw(*cam.frustum, true);
-		App->navigation->renderNavMesh();
-		glUseProgram(0);
-
 	}
 	else 
 	{
@@ -272,6 +266,8 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 		glClearBufferfv(GL_COLOR, 2, transparent);
 	}
 	
+	App->scene->Draw(*cam.frustum, isEditor);
+	App->particles->Render(App->time->gameDeltaTime, &cam);
 
 	
 	if (!isEditor)
@@ -317,6 +313,10 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 		glUseProgram(0);
 
 		glActiveTexture(GL_TEXTURE0); //LOL without this the skybox doesn't render
+	}
+	else
+	{
+		App->navigation->renderNavMesh();
 	}
 
 	if (!isEditor || isEditor && App->ui->showUIinSceneViewport)
