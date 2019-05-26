@@ -42,6 +42,8 @@ public:
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
 
+	void OnTriggerEnter(GameObject* go) override;
+
 	//Abstract input
 	bool IsAtacking();
 	bool IsMoving();
@@ -95,5 +97,8 @@ public:
 	Application* Appl = nullptr;
 private:
 	std::vector<PlayerState*> playerStates;	
+	GameObject* dustParticles = nullptr;
+	GameObject* dashFX = nullptr;
+	GameObject* dashMesh = nullptr;
 };
 #endif __PlayerMovement_h__

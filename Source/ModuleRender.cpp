@@ -320,7 +320,8 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 
 	if (!isEditor || isEditor && App->ui->showUIinSceneViewport)
 	{
-		App->ui->Draw(width, height);
+		glClear(GL_DEPTH_BUFFER_BIT);
+		App->ui->Draw(width, height);		
 	}
 
 #ifdef GAME_BUILD
@@ -664,6 +665,7 @@ void ModuleRender::BlitShadowTexture()
 
 void ModuleRender::CreatePostProcessFramebuffer()
 {
+	LOG("DD");
 	if (postprocessFBO == 0)
 	{
 		glGenFramebuffers(1, &postprocessFBO);

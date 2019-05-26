@@ -5,10 +5,10 @@
 
 update_status ModuleCollisions::Update(float dt)
 {
-	for (auto player : player_boxes)
+	for (auto player : playerBoxes)
 	{
 		const math::OBB* player_obb = player->GetOBB();
-		for (auto other : other_boxes)
+		for (auto other : otherBoxes)
 		{
 			const math::OBB* other_obb = other->GetOBB();
 			if (player_obb->Intersects(*other_obb))
@@ -22,29 +22,29 @@ update_status ModuleCollisions::Update(float dt)
 	return update_status::UPDATE_CONTINUE;
 }
 
-void ModuleCollisions::AddBox(ComponentBoxTrigger* box, bool is_player)
+void ModuleCollisions::AddBox(ComponentBoxTrigger* box, bool isPlayer)
 {
 	RemoveBox(box);
 	
-	if (is_player) player_boxes.push_back(box);
-	else other_boxes.push_back(box);
+	if (isPlayer) playerBoxes.push_back(box);
+	else otherBoxes.push_back(box);
 }
 
 bool ModuleCollisions::RemoveBox(ComponentBoxTrigger* box)
 {
-	for (int i = player_boxes.size() - 1; i >= 0; --i)
+	for (int i = playerBoxes.size() - 1; i >= 0; --i)
 	{
-		if (player_boxes[i] == box)
+		if (playerBoxes[i] == box)
 		{
-			player_boxes.erase(player_boxes.begin() + i);
+			playerBoxes.erase(playerBoxes.begin() + i);
 			return true;
 		}
 	}
-	for (int i = other_boxes.size() - 1; i >= 0; --i)
+	for (int i = otherBoxes.size() - 1; i >= 0; --i)
 	{
-		if (other_boxes[i] == box)
+		if (otherBoxes[i] == box)
 		{
-			other_boxes.erase(other_boxes.begin() + i);
+			otherBoxes.erase(otherBoxes.begin() + i);
 			return true;
 		}
 	}

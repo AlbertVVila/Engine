@@ -131,7 +131,7 @@ bool ResourceScene::Load()
 		}
 	}
 
-	if (!App->scene->isCleared)
+	if (!App->scene->isCleared())
 	{
 		//Recursive UID reassign
 		AssignNewUUID(App->scene->root, 0u);
