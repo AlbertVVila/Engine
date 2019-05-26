@@ -327,7 +327,7 @@ void ModuleNavigation::navigableObjectToggled(GameObject* obj, const bool newSta
 
 void ModuleNavigation::renderNavMesh()
 {
-	if (!meshGenerated || !renderMesh || autoNavGeneration || !drawNavMesh || navMesh == nullptr)
+	if (!meshGenerated || !renderMesh || !autoNavGeneration || !drawNavMesh || navMesh == nullptr)
 	{
 		return;
 	}
