@@ -9,24 +9,20 @@
 
 #include "BaseScript.h"
 #include "Math/float3.h"
+#include <vector>
 
-class GameObject;
 class ComponentAnimation;
-class ComponentRenderer;
 class PlayerMovement;
 class EnemyControllerScript;
 class JSON_value;
-enum class EnemyState;
+class EnemyState;
+class EnemyStatePatrol;
+class EnemyStateChase;
+class EnemyStateReturnToStart;
+class EnemyStateAttack;
+class EnemyStateCooldown;
+class EnemyStateDeath;
 
-enum class EnemyState
-{
-	PATROL,
-	CHASE,
-	RETURN,
-	ATTACK,
-	COOLDOWN,
-	DEAD
-};
 
 class BasicEnemyAIScript_API BasicEnemyAIScript : public Script
 {
@@ -39,20 +35,29 @@ public:
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
 
-private:
-	void Patrol();
-	void Chase();
-	void ReturnToStartPosition();
-	void Attack();
-	void Cooldown();
-	void Die();
+	inline math::float3 GetPosition() const;					// Get position of the enemy (GO with this script attached)
+	inline math::float3 GetPlayerPosition() const;
+	inline float GetDistanceTo(math::float3& position) const;	// Get distance of the enemy to position given as argument
+	inline float GetDistanceTo2D(math::float3& position) const;	// Get distance of the enemy to position given as argument only taking XZ plane as reference
+
+	inline bool IsCollidingWithPlayer() const;
 
 	void MoveTowards(float speed) const;
-	void CheckStateChange(EnemyState previous, EnemyState newState);
+	void LookAt2D(math::float3& position);
 
 private:
+	void CheckStates(EnemyState* previous, EnemyState* current);
 
-	EnemyState enemyState = EnemyState::PATROL;
+public:
+	Application* Appl = nullptr;
+	EnemyState* currentState = nullptr;
+
+	EnemyStatePatrol* patrol = nullptr;
+	EnemyStateChase* chase = nullptr;
+	EnemyStateReturnToStart* returnToStart = nullptr;
+	EnemyStateAttack* attack = nullptr;
+	EnemyStateCooldown* cooldown = nullptr;
+	EnemyStateDeath* death = nullptr;
 
 	// Patrol variables
 	float activationDistance = 100.0f;	// Distance to player needed to start chasing the player (only X,Z axis is taken into account)
@@ -68,15 +73,17 @@ private:
 	// Cooldown variables
 	float cooldownTime = 1.0f;			// Seconds to wait between attacks
 
-	float auxTimer = 0.0f;
-
 	//Damage variables
 	float damage = 20.0f;
+
+private:
 
 	ComponentAnimation* anim = nullptr;
 
 	EnemyControllerScript* enemyController;
 	PlayerMovement* playerScript;
+
+	std::vector<EnemyState*> enemyStates;
 };
 
 #endif __BasicEnemyAIScript_h__
