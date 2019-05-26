@@ -28,6 +28,12 @@ void EnemyStateAttack::Update()
 
 	if (!enemy->IsCollidingWithPlayer())
 	{
+		if (hitboxCreated)
+		{
+			// Disable hitbox
+			enemy->boxTrigger->SetBoxSize(1, 1, 1);
+			hitboxCreated = false;
+		}
 		enemy->currentState = (EnemyState*)enemy->chase;
 	}
 	else
