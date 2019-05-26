@@ -12,6 +12,7 @@
 #include "Damage.h"
 
 class GameObject;
+class ComponentTransform;
 
 class DamageController_API DamageController : public Script
 {
@@ -19,7 +20,7 @@ public:
 	void Start() override;
 	void Update() override;
 
-	bool AddDamage(math::float2 position, int damage, int type);
+	bool AddDamage(ComponentTransform* position, int damage, int type);
 
 private:
 	GameObject* uiDamage[10];

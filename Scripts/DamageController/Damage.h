@@ -13,15 +13,17 @@ enum class DamageType
 	RECIEVED
 };
 
+class ComponentTransform;
+
 class Damage
 {
 
 public:
 	int damage;
-	math::float2 initialPosition = math::float2::zero;
-	math::float2 finalPosition = math::float2::zero;
+	ComponentTransform*  transform = nullptr;
 	math::float2 actualPosition = math::float2::zero;
 	math::float2 distanceNormalized = math::float2::zero;
+	float distanceDone = 0;
 	DamageType type = DamageType::NONE;
 	bool show = false;
 };
