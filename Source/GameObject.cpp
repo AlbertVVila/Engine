@@ -218,21 +218,6 @@ void GameObject::Update()
 			component->Update();
 		}
 	}
-	//TESTING
-	//---------------------------------------------
-	if (isBoneRoot && App->time->gameState == GameState::RUN)
-	{
-		ComponentAnimation* compAnim = (ComponentAnimation*)GetComponentOld(ComponentType::Animation);
-		if (App->input->GetKey(SDL_SCANCODE_X))
-		{
-			compAnim->SendTriggerToStateMachine("trigger1");
-		}
-		if (App->input->GetKey(SDL_SCANCODE_C))
-		{
-			compAnim->SendTriggerToStateMachine("trigger2");
-		}
-	}
-	//---------------------------------------------
 
 	for (const auto& child : children)
 	{
@@ -457,6 +442,7 @@ void GameObject::RemoveComponent(const Component& component)
 			(*it)->CleanUp();
 			trash = *it; // Delete elements of an iterated container causes crashes inside the loop
 			trashIt = it;
+			break;
 		}
 	}
 	if (trash != nullptr) // Safely remove component
@@ -929,7 +915,7 @@ bool GameObject::IsParented(const GameObject & gameobject) const
 
 void GameObject::DrawHierarchy()
 {
-	if (parent != nullptr && parent->parent !=nullptr && parent->parent->isBoneRoot) return;
+	//if (parent != nullptr && parent->parent !=nullptr && parent->parent->isBoneRoot) return; //Direct bone access needed to put fx
 
 	ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow | 
 		(openInHierarchy ? ImGuiTreeNodeFlags_DefaultOpen: 0)

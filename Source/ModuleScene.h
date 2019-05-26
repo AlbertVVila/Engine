@@ -70,6 +70,7 @@ public:
 	unsigned SaveParShapesMesh(const par_shapes_mesh_s & mesh, char** data) const;
 
 	void SaveScene(const GameObject& rootGO, const char* sceneName, const char* folder);
+	bool isCleared();
 	ENGINE_API void LoadScene(const char* sceneName, const char* folder);
 	bool AddScene(const char* sceneName, const char* folder);								// Adds a scene to current opened scene from a scene file (returns true if it was loaded correctly)
 
@@ -139,7 +140,6 @@ public:
 	GameObject* canvas = nullptr;
 
 	bool loadScene = false;
-	bool isCleared = true;
 	int actionAfterLoad = -1;
 };
 

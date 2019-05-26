@@ -48,6 +48,10 @@ void PlayerStateWalk::Update()
 		{
 			//clicked outside of the map, stop moving
 			playerWalking = false;
+			if (dustParticles)
+			{
+				dustParticles->SetActive(false);
+			}
 			return;
 		}
 	}
@@ -64,16 +68,28 @@ void PlayerStateWalk::Update()
 			math::float3 direction = (path[pathIndex] - currentPosition).Normalized();
 			player->gameobject->transform->SetPosition(currentPosition + player->walkingSpeed * direction * player->Appl->time->gameDeltaTime);
 			playerWalking = true;
+			if (dustParticles)
+			{
+				dustParticles->SetActive(true);
+			}
 		}
 		else
 		{
 			playerWalking = false;
+			if (dustParticles)
+			{
+				dustParticles->SetActive(false);
+			}
 		}
 	}	
 }
 
 void PlayerStateWalk::Enter()
 {
+	if (dustParticles)
+	{
+		dustParticles->SetActive(true);
+	}
 }
 
 void PlayerStateWalk::CheckInput()
@@ -82,14 +98,26 @@ void PlayerStateWalk::CheckInput()
 	if (player->IsAtacking())
 	{
 		player->currentState = (PlayerState*)player->firstAttack;
+		if (dustParticles)
+		{
+			dustParticles->SetActive(false);
+		}
 	}
 	else if (player->IsUsingFirstSkill())
 	{
 		player->currentState = (PlayerState*)player->dash;
+		if (dustParticles)
+		{
+			dustParticles->SetActive(false);
+		}
 	}
 	else if (player->IsUsingSecondSkill())
 	{
 		player->currentState = (PlayerState*)player->uppercut;
+		if (dustParticles)
+		{
+			dustParticles->SetActive(false);
+		}
 	}
 	else if (player->IsMoving())
 	{
@@ -98,5 +126,9 @@ void PlayerStateWalk::CheckInput()
 	else
 	{
 		player->currentState = (PlayerState*)player->idle;
+		if (dustParticles)
+		{
+			dustParticles->SetActive(false);
+		}
 	}
 }

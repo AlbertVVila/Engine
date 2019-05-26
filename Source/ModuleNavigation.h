@@ -80,7 +80,6 @@ public:
 
 	bool Init(JSON* config);
 	void SaveConfig(JSON* config) override;
-	update_status Update(float dt)override;
 	void sceneLoaded(JSON* config);
 	void sceneSaved(JSON* config);
 

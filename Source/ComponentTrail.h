@@ -46,14 +46,14 @@ public:
 
 	~ComponentTrail();
 
-	void Update() override;
+	void UpdateTrail();
 	void DrawProperties() override;
 	void Save(JSON_value* value) const override;
 	void Load(JSON_value* value) override;
 
 	ComponentTrail* Clone() const;
 	std::queue<TrailPoint> trail;
-	std::list<ParticleModule*> modules;
+	std::vector<ParticleModule*> modules;
 	ResourceTexture* texture = nullptr;
 
 private:

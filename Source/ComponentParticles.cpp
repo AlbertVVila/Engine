@@ -102,6 +102,8 @@ Component* ComponentParticles::Clone() const
 
 void ComponentParticles::DrawProperties()
 {
+	ImGui::PushID(this);
+
 	if (ImGui::CollapsingHeader("Particle System")) 
 	{
 		bool removed = Component::DrawComponentState();
@@ -115,7 +117,6 @@ void ComponentParticles::DrawProperties()
 			ImGui::InputFloat("PlayTime", &PlayTime);
 		}
 
-		ImGui::PushID(this);
 		ImGui::Text("Particles active %d", particles.size());
 		//texture selector
 		if (ImGui::BeginCombo("Texture", texture != nullptr ? texture->GetName() : None))
@@ -176,6 +177,7 @@ void ComponentParticles::DrawProperties()
 
 		ImGui::Text("Particle properties:");
 		ImGui::Checkbox("Billboarded", &billboarded);
+		ImGui::Checkbox("Local Emitter", &localEmitter);
 		if (!billboarded)
 		{
 			ImGui::InputFloat3("LookAt vector(local X,Y,Z)", &lookAtTarget[0]);
@@ -211,10 +213,10 @@ void ComponentParticles::DrawProperties()
 			ImGui::Separator();
 			pm->InspectorDraw();
 		}
-		ImGui::PopID();
 	
 	}
-	
+	ImGui::PopID();
+
 	if (gameobject->isSelected) DrawDebugEmisor();
 
 }
@@ -255,7 +257,15 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 	float currentFrame = timer / (1 / fps);
 	float frame;
 	frameMix = modf(currentFrame, &frame);
-	math::float3 pos = gameobject->transform->GetGlobalPosition();
+	math::float3 pos;
+	if (!localEmitter)
+	{
+		pos = gameobject->transform->GetGlobalPosition();
+	}
+	else
+	{
+		pos = math::float3::zero;
+	}
 	f1Xpos = ((int)frame) % xTiles;
 	f2Xpos = (f1Xpos + 1) % xTiles;
 	f1Ypos = (((int)frame) / xTiles) % yTiles;
@@ -268,7 +278,7 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 	colorOTCheck = modules[1]->enabled;
 
 	//Create new Particle P
-	if (rateTimer <= 0.f && particles.size() < maxParticles)
+	if (gameobject->isActive() && rateTimer <= 0.f && particles.size() < maxParticles)
 	{
 		int amount = MAX(dt / (1.f / rate), 1);
 		for (; amount > 0; --amount)
@@ -293,28 +303,25 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 				p->direction = math::float3(xD, yD, zD);
 				p->direction.Normalize();
 			}
-			else
+			switch (actualEmisor)
 			{
-				switch (actualEmisor)
-				{
-				case EmisorType::QUAD:
-					quadEmitterSize.x = MAX(1, quadEmitterSize.x);
-					quadEmitterSize.y = MAX(1, quadEmitterSize.y);
+			case EmisorType::QUAD:
+				quadEmitterSize.x = MAX(1, quadEmitterSize.x);
+				quadEmitterSize.y = MAX(1, quadEmitterSize.y);
 
-					//P starting position
-					p->position = pos + gameobject->transform->GetRotation() * float3(rand() % (int)quadEmitterSize.x - quadEmitterSize.x / 2, 0, rand() % (int)quadEmitterSize.y - quadEmitterSize.y / 2) ;
+				//P starting position
+				p->position = pos + gameobject->transform->GetRotation() * float3(rand() % (int)quadEmitterSize.x - quadEmitterSize.x / 2, 0, rand() % (int)quadEmitterSize.y - quadEmitterSize.y / 2) ;
 
-					//P direction
-					p->direction = gameobject->transform->GetRotation() * float3(0.f, 1.f, 0.f); //math::float3::unitY;
-					break;
+				//P direction
+				p->direction = gameobject->transform->GetRotation() * float3(0.f, 1.f, 0.f); //math::float3::unitY;
+				break;
 
-				case EmisorType::SPHERE:
-					//P starting position
-					p->position = pos;
-					//P direction
-					p->direction = (randomSpherePoint(pos) - pos).Normalized();
-					break;
-				}
+			case EmisorType::SPHERE:
+				//P starting position
+				p->position = pos;
+				//P direction
+				p->direction = (randomSpherePoint(pos) - pos).Normalized();
+				break;
 			}
 		
 			//P lifetime
@@ -386,15 +393,34 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 			
 			
 		}
+		particles.front()->direction.Normalize();
 		particles.front()->position += particles.front()->direction * particles.front()->speed * dt;
-		float3 direction = (camPos - particles.front()->position);
+		
+
 		if (billboarded)
 		{
-			particles.front()->global = particles.front()->global.FromTRS(particles.front()->position, math::Quat::LookAt(float3::unitZ, direction.Normalized(), float3::unitY, float3::unitY), math::float3::one * sizeOT);
+			if (localEmitter)
+			{
+				pos = particles.front()->position + gameobject->transform->GetGlobalPosition();
+				float3 direction = (camPos - pos);
+				particles.front()->global = particles.front()->global.FromTRS(pos, math::Quat::LookAt(float3::unitZ, direction.Normalized(), float3::unitY, float3::unitY), math::float3::one * sizeOT);
+			}
+			else
+			{
+				float3 direction = (camPos - particles.front()->position);
+				particles.front()->global = particles.front()->global.FromTRS(particles.front()->position, math::Quat::LookAt(float3::unitZ, direction.Normalized(), float3::unitY, float3::unitY), math::float3::one * sizeOT);
+			}
 		}
 		else
 		{
-			particles.front()->global = particles.front()->global.FromTRS(particles.front()->position, math::Quat::LookAt(float3::unitZ, lookAtTarget.Normalized(), float3::unitY, float3::unitY), math::float3::one * sizeOT);
+			if (localEmitter)
+			{
+				particles.front()->global = particles.front()->global.FromTRS(particles.front()->position + gameobject->transform->GetGlobalPosition(), math::Quat::LookAt(float3::unitZ, lookAtTarget.Normalized(), float3::unitY, float3::unitY), math::float3::one * sizeOT);
+			}
+			else
+			{
+				particles.front()->global = particles.front()->global.FromTRS(particles.front()->position, math::Quat::LookAt(float3::unitZ, lookAtTarget.Normalized(), float3::unitY, float3::unitY), math::float3::one * sizeOT);
+			}
 		}
 		particles.front()->color = newColor;
 
@@ -429,6 +455,7 @@ void ComponentParticles::Save(JSON_value* value) const
 	value->AddFloat4("defaultColor", particleColor);
 
 	value->AddInt("billboarded", billboarded);
+	value->AddInt("localEmitter", localEmitter);
 	value->AddFloat3("lookAtTarget", lookAtTarget);
 
 	PMSizeOverTime* SOTAux = (PMSizeOverTime*)modules[0];
@@ -519,6 +546,7 @@ void ComponentParticles::Load(JSON_value* value)
 	particleColor = value->GetFloat4("defaultColor");
 
 	billboarded = value->GetInt("billboarded");
+	localEmitter = value->GetInt("localEmitter");
 	lookAtTarget = value->GetFloat3("lookAtTarget");
 
 	PMSizeOverTime* SOTAux = (PMSizeOverTime*)modules[0];

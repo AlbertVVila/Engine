@@ -115,7 +115,6 @@ void ComponentImage::DrawProperties()
 
 		ImGui::Checkbox("Flip Vertical", &flipVertical);
 		ImGui::Checkbox("Flip Horizontal", &flipHorizontal);
-		ImGui::Checkbox("Movable", &movable);
 
 		ImGui::Separator();
 	}
@@ -176,7 +175,6 @@ void ComponentImage::Save(JSON_value *value)const
 	value->AddFloat4("color", color);
 	value->AddInt("FlipVertical", flipVertical);
 	value->AddInt("FlipHorizontal", flipHorizontal);
-	value->AddInt("Movable", movable);
 }
 
 void ComponentImage::Load(JSON_value* value)
@@ -187,5 +185,4 @@ void ComponentImage::Load(JSON_value* value)
 	color = value->GetFloat4("color");	
 	flipVertical = value->GetInt("FlipVertical");
 	flipHorizontal = value->GetInt("FlipHorizontal");
-	movable = value->GetInt("Movable");
 }

@@ -38,7 +38,7 @@ public:
 	math::AABB* playerBbox = nullptr;
 
 private:
-	int health = 100;
+	int health = 20;
 };
 
 #endif __EnemyControllerScript_h__
