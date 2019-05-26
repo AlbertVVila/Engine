@@ -12,6 +12,7 @@
 #endif
 
 class ComponentRenderer;
+class DamageController;
 
 class EnemyControllerScript_API EnemyControllerScript : public Script
 {
@@ -33,6 +34,8 @@ public:
 	ComponentRenderer* myRender;
 	std::string myBboxName = "EnemyMesh";
 
+	DamageController* damageController = nullptr;
+	
 	// BBoxes
 	math::AABB* myBbox = nullptr;
 	math::AABB* playerBbox = nullptr;
