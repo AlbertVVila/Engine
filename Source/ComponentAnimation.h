@@ -60,6 +60,7 @@ public:
 	bool channelsSetted = false;
 	bool deletePopup = false;
 
+	unsigned currentNode = 0u;
 
 public:
 	AnimationController* editorController = nullptr;
