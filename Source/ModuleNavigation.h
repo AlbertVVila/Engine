@@ -175,6 +175,9 @@ private:
 	//partition type
 	int partitionType = 0;
 
+	//load info
+	int navDataSize = 0;
+
 	//navigation mesh properties
 	bool meshGenerated = false;
 	bool renderMesh = false;

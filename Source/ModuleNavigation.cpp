@@ -8,6 +8,7 @@
 #include "ModuleNavigation.h"
 #include "ModuleScene.h"
 #include "ModuleDebugDraw.h"
+#include "ModuleFileSystem.h"
 
 #include "Component.h"
 #include "ComponentRenderer.h"
@@ -82,64 +83,67 @@ void ModuleNavigation::sceneLoaded(JSON * config)
 {
 	JSON_value* nav = config->GetValue("navigationScene");
 	if (nav == nullptr) return;
+	navDataSize = nav->GetInt("navDataSize", 0);
+	if (navDataSize == 0) return;
 
-	cleanValuesPOST();
-
-	meshGenerated = nav->GetUint("Generated", false);
-	drawNavMesh = nav->GetUint("DrawNavMesh", true);
-	if (!meshGenerated) return;
-	renderMesh = nav->GetUint("RenderNavMesh", false);
-	numObjects = nav->GetInt("numObjects");
-	if (numObjects < 1)
+	char* navData2 = 0;
+	App->fsystem->Load("Assets/navigationMesh.bin", &navData2);
+	if (navData2 == nullptr)
 	{
-		autoNavGeneration = false;
+		LOG("could not find a stored navigation mesh");
 		return;
 	}
-	
-	for (int i = 0; i < numObjects; ++i)
+
+	navMesh = dtAllocNavMesh();
+	if (!navMesh)
 	{
-		//std::string obstacleId;
-		std::stringstream obstacleId;
-		obstacleId << "obstacle" << i;
-		std::stringstream meshName;
-		meshName << "name" << i;
-		storedObject* newObj = new storedObject(); 
-		newObj->name = nav->GetString(meshName.str().c_str());
-		newObj->obstacle = nav->GetUint(obstacleId.str().c_str(), false);
-		if (newObj->name.c_str() == nullptr)
-		{
-			LOG("Not all meshes loaded found");
-			return;
-		}
-		objectNames.emplace_back(newObj);
+		dtFree(navData2);
+		LOG("Could not create Detour navmesh");
+		meshGenerated = false;
+		renderMesh = false;
+		cleanValuesPOST();
+		return;
 	}
-	//update transforms of each object for the nav mesh generation
-	App->scene->root->UpdateTransforms(math::float4x4::identity);
-	App->scene->root->Update();
-	App->scene->root->CheckDelete();
-	addNavigableMeshFromSceneLoaded();
-	generateNavigability(renderMesh);
-	autoNavGeneration = true;
+
+	dtStatus status;
+
+	status = navMesh->init((unsigned char*)navData2, navDataSize, DT_TILE_FREE_DATA);
+	if (dtStatusFailed(status))
+	{
+		dtFree(navData2);
+		LOG("Could not init Detour navmesh");
+		meshGenerated = false;
+		renderMesh = false;
+		cleanValuesPOST();
+		return;
+	}
+
+	status = navQuery->init(navMesh, 2048);
+	if (dtStatusFailed(status))
+	{
+		LOG("Could not init Detour navmesh query");
+		meshGenerated = false;
+		renderMesh = false;
+		cleanValuesPOST();
+		return;
+	}
+
+	meshGenerated = true;
+	renderMesh = false;
+	LOG("Navigation mesh loaded");
+	cleanValuesPOST();
+
+	//SetUp for Debug Draw nav mesh
+	ddi = new DetourDebugInterface;
+	duDebugDrawNavMeshWithClosedList(ddi, *navMesh, *navQuery, '\x3');
+
+	return;
 }
 
 void ModuleNavigation::sceneSaved(JSON * config)
 {
 	JSON_value* navigation = config->CreateValue();
-	//add info from all the meshes
-	for (int i = 0; i < numObjects; ++i)
-	{
-		//std::string obstacleId;
-		std::stringstream obstacleId;
-		obstacleId << "obstacle" << i;
-		std::stringstream meshName;
-		meshName << "name" << i;
-		navigation->AddUint(obstacleId.str().c_str(), objectNames[i]->obstacle);
-		navigation->AddString(meshName.str().c_str(), objectNames[i]->name.c_str());
-	}
-	navigation->AddInt("numObjects", numObjects);
-	navigation->AddUint("RenderNavMesh", renderMesh);
-	navigation->AddUint("Generated", meshGenerated);
-	navigation->AddUint("DrawNavMesh", drawNavMesh);
+	navigation->AddInt("navDataSize", navDataSize);
 
 	config->AddValue("navigationScene", *navigation);
 }
@@ -737,7 +741,7 @@ void ModuleNavigation::generateNavigability(bool render)
 	if (cfg->maxVertsPerPoly <= DT_VERTS_PER_POLYGON)
 	{
 		unsigned char* navData = 0;
-		int navDataSize = 0;
+		navDataSize = 0;
 
 		// Update poly flags from areas.
 		for (int i = 0; i < pmesh->npolys; ++i)
@@ -801,11 +805,16 @@ void ModuleNavigation::generateNavigability(bool render)
 			cleanValuesPOST();
 			return;
 		}
+
+		App->fsystem->Save("Assets/navigationMesh.bin", (const char*)navData, navDataSize);
+		dtFree(navData);
+		char* navData2 = 0;
+		App->fsystem->Load("Assets/navigationMesh.bin", &navData2);
 		
 		navMesh = dtAllocNavMesh();
 		if (!navMesh)
 		{
-			dtFree(navData);
+			dtFree(navData2);
 			LOG("Could not create Detour navmesh");
 			meshGenerated = false;
 			renderMesh = false;
@@ -815,10 +824,10 @@ void ModuleNavigation::generateNavigability(bool render)
 		
 		dtStatus status;
 		
-		status = navMesh->init(navData, navDataSize, DT_TILE_FREE_DATA);
+		status = navMesh->init((unsigned char*)navData2, navDataSize, DT_TILE_FREE_DATA);
 		if (dtStatusFailed(status))
 		{
-			dtFree(navData);
+			dtFree(navData2);
 			LOG("Could not init Detour navmesh");
 			meshGenerated = false;
 			renderMesh = false;
