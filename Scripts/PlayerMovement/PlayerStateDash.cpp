@@ -51,6 +51,12 @@ void PlayerStateDash::Update()
 			player->gameobject->transform->LookAt(path[pathIndex]);
 			math::float3 direction = (path[pathIndex] - currentPosition).Normalized();
 			player->gameobject->transform->SetPosition(currentPosition + dashSpeed * direction * player->Appl->time->gameDeltaTime);
+			if (dashMesh)
+			{			
+				dashMesh->transform->Scale(scalator);
+				scalator -= scalatorDecay;
+				scalator = MAX(1.0f, scalator);
+			}
 		}
 	}
 
@@ -83,6 +89,9 @@ void PlayerStateDash::Enter()
 		if (dashMesh)
 		{
 			dashMesh->SetActive(true);
+			dashMesh->transform->scale = meshOriginalScale;			
+			dashMesh->transform->Scale(1.0f);
+			scalator = originalScalator;
 		}
 	}
 }
