@@ -12,6 +12,7 @@
 #endif
 
 class ComponentRenderer;
+class DamageController;
 
 class EnemyControllerScript_API EnemyControllerScript : public Script
 {
@@ -24,7 +25,7 @@ class EnemyControllerScript_API EnemyControllerScript : public Script
 
 public:
 	void TakeDamage(unsigned damage);
-	int GetHealth() const { return health; }
+	int GetHealth() const { return actualHealth; }
 
 public:
 	GameObject* player = nullptr;
@@ -33,12 +34,15 @@ public:
 	ComponentRenderer* myRender;
 	std::string myBboxName = "EnemyMesh";
 
+	DamageController* damageController = nullptr;
+	
 	// BBoxes
 	math::AABB* myBbox = nullptr;
 	math::AABB* playerBbox = nullptr;
 
 private:
-	int health = 20;
+	int actualHealth = 20;
+	int maxHealth = 20;
 };
 
 #endif __EnemyControllerScript_h__
