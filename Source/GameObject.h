@@ -59,7 +59,7 @@ public:
 	float4x4 GetGlobalTransform() const;
 	float4x4 GetLocalTransform() const;
 
-	void OnPlay();
+	ENGINE_API void OnPlay();
 	void UpdateTransforms(math::float4x4 parentGlobal);
 	bool CheckDelete();
 
