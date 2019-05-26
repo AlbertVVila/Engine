@@ -25,7 +25,7 @@ class EnemyControllerScript_API EnemyControllerScript : public Script
 
 public:
 	void TakeDamage(unsigned damage);
-	int GetHealth() const { return health; }
+	int GetHealth() const { return actualHealth; }
 
 public:
 	GameObject* player = nullptr;
@@ -41,7 +41,8 @@ public:
 	math::AABB* playerBbox = nullptr;
 
 private:
-	int health = 20;
+	int actualHealth = 20;
+	int maxHealth = 20;
 };
 
 #endif __EnemyControllerScript_h__
