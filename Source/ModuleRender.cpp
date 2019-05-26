@@ -253,12 +253,15 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 	SetProjectionUniform(cam);
 	SetViewUniform(cam);
 
+	App->scene->Draw(*cam.frustum, isEditor);
+	App->particles->Render(App->time->gameDeltaTime, &cam);
+
 	if (isEditor)
 	{
 		DrawGizmos(cam);
+		skybox->Draw(*cam.frustum, true);
 		App->navigation->renderNavMesh();
 		glUseProgram(0);
-		skybox->Draw(*cam.frustum, true);
 
 	}
 	else 
@@ -269,9 +272,7 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 		glClearBufferfv(GL_COLOR, 2, transparent);
 	}
 	
-	App->scene->Draw(*cam.frustum, isEditor);
 
-	App->particles->Render(App->time->gameDeltaTime, &cam);
 	
 	if (!isEditor)
 	{
