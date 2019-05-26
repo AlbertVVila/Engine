@@ -308,6 +308,7 @@ void ComponentAnimation::SetStateMachine(const char* stateMachineFile)
 	{
 		stateMachine = (ResourceStateMachine*)App->resManager->GetByName(stateMachineFile, TYPE::STATEMACHINE);
 		strcpy(newStMachineName, stateMachine->GetName());
+		currentNode = stateMachine->GetDefaultNode();
 	}
 }
 
@@ -317,11 +318,12 @@ void ComponentAnimation::SendTriggerToStateMachine(const char* trigger)
 	{	
 		if (controller->CanSwitch())
 		{
-			unsigned prevNode = stateMachine->GetDefaultNode();
+			unsigned prevNode = currentNode;
 			float blend = 0.f;
 
-			stateMachine->ReceiveTrigger(HashString(trigger), blend);
-			if (prevNode != stateMachine->GetDefaultNode())
+			stateMachine->ReceiveTrigger(HashString(trigger), blend, currentNode);
+
+			if (prevNode != currentNode)
 			{
 				SetIndexChannels(gameobject, GetAnimFromStateMachine());
 				PlayNextNode(blend);
@@ -332,8 +334,7 @@ void ComponentAnimation::SendTriggerToStateMachine(const char* trigger)
 
 ResourceAnimation* ComponentAnimation::GetAnimFromStateMachine()
 {
-	unsigned nodeIndex = stateMachine->GetDefaultNode();
-	HashString clipName = stateMachine->GetNodeClip(nodeIndex);
+	HashString clipName = stateMachine->GetNodeClip(currentNode);
 	unsigned clipIndex = stateMachine->FindClip(clipName);
 	unsigned animUID = stateMachine->GetClipResource(clipIndex);
 	ResourceAnimation*  resAnim = (ResourceAnimation*)(App->resManager->Get(animUID));
@@ -342,22 +343,19 @@ ResourceAnimation* ComponentAnimation::GetAnimFromStateMachine()
 
 bool ComponentAnimation::GetLoopFromStateMachine()
 {
-	unsigned nodeIndex = stateMachine->GetDefaultNode();
-	HashString clipName = stateMachine->GetNodeClip(nodeIndex);
+	HashString clipName = stateMachine->GetNodeClip(currentNode);
 	return stateMachine->GetClipLoop(stateMachine->FindClip(clipName));
 }
 
 float ComponentAnimation::GetSpeedFromStateMachine()
 {
-	unsigned nodeIndex = stateMachine->GetDefaultNode();
-	HashString clipName = stateMachine->GetNodeClip(nodeIndex);
+	HashString clipName = stateMachine->GetNodeClip(currentNode);
 	return stateMachine->GetClipSpeed(stateMachine->FindClip(clipName));
 }
 
 bool ComponentAnimation::GetMustFinishFromStateMachine()
 {
-	unsigned nodeIndex = stateMachine->GetDefaultNode();
-	HashString clipName = stateMachine->GetNodeClip(nodeIndex);
+	HashString clipName = stateMachine->GetNodeClip(currentNode);
 	return stateMachine->GetClipMustFinish(stateMachine->FindClip(clipName));
 }
 
