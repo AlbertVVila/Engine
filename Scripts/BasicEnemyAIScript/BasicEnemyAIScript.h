@@ -84,6 +84,7 @@ private:
 
 	ComponentAnimation* anim = nullptr;
 
+	// Scripts
 	EnemyControllerScript* enemyController;
 	PlayerMovement* playerScript;
 

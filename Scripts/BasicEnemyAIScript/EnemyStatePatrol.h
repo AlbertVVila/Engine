@@ -7,7 +7,7 @@ class EnemyStatePatrol :
 	public EnemyState
 {
 public:
-	EnemyStatePatrol(BasicEnemyAIScript* PM);
+	EnemyStatePatrol(BasicEnemyAIScript* AIScript);
 	~EnemyStatePatrol();
 
 	void Update() override;
