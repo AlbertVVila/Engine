@@ -7,9 +7,13 @@ update_status ModuleCollisions::Update(float dt)
 {
 	for (auto player : playerBoxes)
 	{
+		if (!player->enabled) continue;
+
 		const math::OBB* player_obb = player->GetOBB();
 		for (auto other : otherBoxes)
 		{
+			if (!other->enabled) continue;
+
 			const math::OBB* other_obb = other->GetOBB();
 			if (player_obb->Intersects(*other_obb))
 			{

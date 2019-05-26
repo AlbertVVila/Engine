@@ -125,8 +125,6 @@ void ComponentTransform::MultiSelectionTransform(float4x4 &difference)
 void ComponentTransform::UpdateTransform()
 {
 	UpdateOldTransform();
-
-
 	
 	front = -global.Col3(2);
 	up = global.Col3(1);
@@ -238,6 +236,7 @@ void ComponentTransform::SetPosition(const math::float3 & newPosition)
 {
 	position = newPosition;
 	gameobject->movedFlag = true;
+	
 }
 
 math::float3 ComponentTransform::GetPosition()
@@ -264,6 +263,12 @@ void ComponentTransform::SetRotation(const math::Quat & newRotation)
 	RotationToEuler();
 	gameobject->movedFlag = true;
 	UpdateTransform();
+}
+
+ENGINE_API void ComponentTransform::Scale(float scalar)
+{
+	scale *= scalar;
+	gameobject->movedFlag = true;
 }
 
 math::Quat ComponentTransform::GetRotation()

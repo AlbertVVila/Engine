@@ -30,6 +30,8 @@ public:
 
 	ENGINE_API void SetPosition(const math::float3& position);
 	ENGINE_API void SetRotation(const math::Quat & newRotation);
+	ENGINE_API void Scale(float scalar);
+	
 	ENGINE_API math::Quat GetRotation();
 	ENGINE_API math::float3 GetPosition();
 	ENGINE_API math::float2 GetScreenPosition();
@@ -68,4 +70,4 @@ private:
 	math::float3 old_scale = math::float3::zero;
 };
 
-#endif __ComponentTransform_h__
+#endif // __ComponentTransform_h__
