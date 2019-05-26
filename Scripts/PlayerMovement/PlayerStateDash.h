@@ -24,7 +24,11 @@ public:
 
 	GameObject* dashFX = nullptr;
 	GameObject* dashMesh = nullptr;
-	
+	math::float3 meshOriginalScale = math::float3::one;
+
+	float originalScalator = 1.05f;
+	float scalator = originalScalator;
+	float scalatorDecay = 0.006f;
 };
 
 #endif // __PLAYERSTATEDASH_H_
