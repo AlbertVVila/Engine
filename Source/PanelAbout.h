@@ -11,7 +11,7 @@ public:
 	void Draw();
 
 public:
-	const char * freeTypeVersion;
+	const char* freeTypeVersion;
 };
 
 #endif //__PanelAbout_h__

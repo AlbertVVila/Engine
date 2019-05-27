@@ -11,8 +11,9 @@
 #include "imguizmo/ImGuizmo.h"
 
 #include <string>
-#include "freetype/freetype.h"
+#include <iostream>
 #include <ft2build.h>
+#include "freetype/freetype.h"
 
 #define ENGINE_DESCRIPTION "Engine created during the Master of Videogames in UPC School."
 #define AUTHOR "FRACTAL PUPPY"
@@ -23,8 +24,6 @@
 PanelAbout::PanelAbout()
 {
 	enabled = false;
-	std::string toChar = "FreeType (" + std::to_string(FREETYPE_MAJOR) + "." + std::to_string(FREETYPE_MINOR) + "." + std::to_string(FREETYPE_PATCH) + ")";
-	freeTypeVersion = toChar.c_str();
 }
 
 
@@ -39,6 +38,10 @@ void PanelAbout::Draw()
 		ImGui::End();
 		return;
 	}
+
+	std::string toChar = "FreeType (";
+	toChar = toChar + std::to_string(FREETYPE_MAJOR) + "." + std::to_string(FREETYPE_MINOR) + "." + std::to_string(FREETYPE_PATCH) + ")";
+	freeTypeVersion = toChar.c_str();
 
 	ImGui::Text("Name:"); ImGui::SameLine();
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), TITLE);
@@ -66,7 +69,8 @@ void PanelAbout::Draw()
 		ImGui::BulletText("Assimp (v%d.%d.%d)", aiGetVersionMajor(), aiGetVersionMinor(), aiGetVersionRevision());
 		ImGui::BulletText("Brofiler (v1.1.2)");
 		ImGui::BulletText("DevIL (v%d)", IL_VERSION);
-		if (ImGui::SmallButton(freeTypeVersion)) 
+		ImGui::BulletText(freeTypeVersion);
+		if (ImGui::SmallButton("Click un here to navigate in FreeType's home page")) 
 		{
 			ShellExecuteA(NULL, "open", FREETYPE, NULL, NULL, SW_SHOWNORMAL);
 		}
