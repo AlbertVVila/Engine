@@ -13,6 +13,7 @@
 
 class ComponentRenderer;
 class DamageController;
+class EnemyLifeBarController;
 
 class EnemyControllerScript_API EnemyControllerScript : public Script
 {
@@ -30,13 +31,13 @@ public:
 
 public:
 	GameObject* player = nullptr;
-	GameObject* enemyLife = nullptr;
 	std::string playerName = "Player";
 	std::string playerBboxName = "PlayerMesh";
 	ComponentRenderer* myRender;
 	std::string myBboxName = "EnemyMesh";
 
 	DamageController* damageController = nullptr;
+	EnemyLifeBarController* enemyLifeBar = nullptr;
 	
 	// BBoxes
 	math::AABB* myBbox = nullptr;
