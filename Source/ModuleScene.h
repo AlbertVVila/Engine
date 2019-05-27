@@ -94,8 +94,8 @@ public:
 
 	GameObject* FindClosestParent(GameObject* go);
 
-	ENGINE_API GameObject* FindGameObjectByName(const char* name) const;
-	ENGINE_API GameObject* FindGameObjectByName(GameObject* parent, const char* name) const;
+	ENGINE_API GameObject* FindGameObjectByUID(unsigned UID, GameObject* parent = nullptr) const;
+	ENGINE_API GameObject* FindGameObjectByName(const char* name, GameObject* parent = nullptr) const;
 
 	void GetStaticGlobalAABB(math::AABB &aabb, std::vector<GameObject*> &bucket, unsigned int &bucketOccupation);
 

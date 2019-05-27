@@ -133,8 +133,10 @@ GameObject::~GameObject()
 {
 	if (prefab != nullptr)
 	{
-		prefab->RemoveInstance(this);
-		App->resManager->DeleteResource(prefabUID);
+		if (prefab->RemoveInstance(this))
+		{
+			App->resManager->DeleteResource(prefabUID);
+		}
 		prefab = nullptr;
 	}
 
@@ -190,11 +192,11 @@ void GameObject::DrawProperties()
 
 		if (isPrefab)
 		{
-			if (ImGui::Checkbox("Update with Prefab", &isPrefabSync))
+			if (ImGui::Checkbox("Sync to Prefab", &isPrefabSync))
 			{
 				if (isPrefabSync && prefab != nullptr)
 				{
-					UpdateToPrefab(prefab->root);
+					UpdateToPrefab(prefab->RetrievePrefab());
 				}
 			}
 			if (ImGui::Button("Update Prefab"))
@@ -782,7 +784,8 @@ void GameObject::MarkAsPrefab()
 
 void GameObject::UpdateToPrefab(GameObject* prefabGo)
 {
-	Component* myTransform = transform->Clone();
+	Component* myTransform = transform->Clone(); //Save old transform and parent
+	GameObject* myParent = parent;
 	CleanUp();
 	for (auto& component: components)
 	{
@@ -794,7 +797,7 @@ void GameObject::UpdateToPrefab(GameObject* prefabGo)
 	}
 	components.clear();
 	children.clear();
-	parent = prefabGo->parent;
+	parent = myParent;
 	components.push_back(myTransform);
 	transform = (ComponentTransform*) myTransform;
 

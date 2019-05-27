@@ -23,11 +23,10 @@ public:
 	void LoadConfigFromMeta() override;
 
 	void AddInstance(GameObject * go);
-	void RemoveInstance(GameObject * go);
+	bool RemoveInstance(GameObject * go);
 
 	void Update(GameObject* go);
-	void CheckoutPrefab();
-	JSON_value * GetPrefab() const;
+	GameObject * RetrievePrefab();
 	void Save(GameObject* go) const;
 
 private:
@@ -35,7 +34,7 @@ private:
 
 private:
 	std::vector<GameObject*> instances;
-	JSON_value* prefab = nullptr;
+	JSON_value* prefabValue = nullptr;
 	JSON* prefabJson = nullptr;
 
 public:

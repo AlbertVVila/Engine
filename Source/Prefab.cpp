@@ -42,14 +42,15 @@ bool Prefab::LoadInMemory()
 
 void Prefab::DeleteFromMemory()
 {
-	//if (root != nullptr)
-	//{
-	//	root->CleanUp();
-	//	RELEASE(root);
-	//}
+	if (root != nullptr)
+	{
+		root->CleanUp();
+		RELEASE(root);
+	}
 	if (prefabJson != nullptr)
 	{
 		RELEASE(prefabJson);
+		prefabValue = nullptr;
 	}
 	Resource::DeleteFromMemory();
 }
@@ -93,60 +94,9 @@ void Prefab::LoadConfigFromMeta()
 void Prefab::Load(char** data)
 {
 	prefabJson = new JSON(*data);
-	prefab = prefabJson->GetValue("GameObjects");
+	prefabValue = prefabJson->GetValue("GameObjects");
+	LOG("Size %d",prefabValue->Size());
 	RELEASE_ARRAY(*data);
-	//JSON *json = new JSON(*data);
-	//JSON_value* gameobjectsJSON = json->GetValue("GameObjects");
-	//std::map<unsigned, GameObject*> gameobjectsMap; //Necessary to assign parent-child efficiently
-
-	//std::list<ComponentRenderer*> renderers;
-
-	//for (unsigned i = 0; i < gameobjectsJSON->Size(); i++)
-	//{
-	//	JSON_value* gameobjectJSON = gameobjectsJSON->GetValue(i);
-	//	GameObject *gameobject = new GameObject();
-	//	gameobject->Load(gameobjectJSON);
-	//	if (gameobject->UUID != 1 && gameobject->UUID != 0) //TODO: Canvas and World shouldn't be a prefab
-	//	{
-	//		gameobjectsMap.insert(std::pair<unsigned, GameObject*>(gameobject->UUID, gameobject));
-	//		std::map<unsigned, GameObject*>::iterator it = gameobjectsMap.find(gameobject->parentUUID);
-	//		if (it != gameobjectsMap.end())
-	//		{
-	//			gameobject->parent = it->second;
-	//			gameobject->parent->children.push_back(gameobject);
-	//		}
-	//		else if (gameobject->parentUUID == 0 || gameobject->parentUUID == 1) //Case canvas or world
-	//		{
-	//			root = gameobject;
-	//			root->parentUUID = -1;
-	//		}
-	//	}
-	//	else
-	//	{
-	//		root = gameobject;
-	//	}
-
-	//	ComponentRenderer* renderer = nullptr;
-	//	renderer = (ComponentRenderer*)gameobject->GetComponentOld(ComponentType::Renderer);
-	//	if (renderer != nullptr)
-	//	{
-	//		renderers.push_back(renderer);
-	//	}
-
-	//	App->scene->DeleteFromSpacePartition(gameobject);
-	//}
-
-	//for (ComponentRenderer* cr : renderers)
-	//{
-	//	if (cr->mesh != nullptr)
-	//	{
-	//		cr->LinkBones();
-	//	}
-	//}
-
-	//App->navigation->sceneLoaded(json);
-
-	//RELEASE(json);
 }
 
 void Prefab::Save(GameObject* go) const //TODO: should also save name?
@@ -168,16 +118,17 @@ void Prefab::AddInstance(GameObject* go)
 	instances.push_back(go);
 }
 
-void Prefab::RemoveInstance(GameObject* go)
+bool Prefab::RemoveInstance(GameObject* go)
 {
 	for (std::vector<GameObject*>::iterator itChild = instances.begin(); itChild != instances.end(); ++itChild)
 	{
 		if (go == *itChild)
 		{
 			instances.erase(itChild);
-			return;
+			return true;
 		}
 	}
+	return false;
 }
 
 void Prefab::Update(GameObject* go)
@@ -190,16 +141,61 @@ void Prefab::Update(GameObject* go)
 	Save(go);
 }
 
-void Prefab::CheckoutPrefab()
-{
-	for (auto& instance : instances)
+GameObject* Prefab::RetrievePrefab() //TODO: should update prefab INSTA!
+ {
+	if (root != nullptr)
 	{
-		if (!instance->isPrefabSync) continue;
-		instance->UpdateToPrefab(root);
+		root->CleanUp();
+		RELEASE(root);
 	}
-}
 
-JSON_value* Prefab::GetPrefab() const //TODO: method loadFromPrefab
-{
-	return prefab;
+	std::map<unsigned, GameObject*> gameobjectsMap; //Necessary to assign parent-child efficiently
+
+	std::list<ComponentRenderer*> renderers;
+
+	for (unsigned i = 0; i < prefabValue->Size(); i++)
+	{
+		JSON_value* gameobjectJSON = prefabValue->GetValue(i);
+		GameObject *gameobject = new GameObject();
+		gameobject->Load(gameobjectJSON);
+		if (gameobject->UUID != 1 && gameobject->UUID != 0) //TODO: Canvas and World shouldn't be a prefab
+		{
+			gameobjectsMap.insert(std::pair<unsigned, GameObject*>(gameobject->UUID, gameobject));
+			std::map<unsigned, GameObject*>::iterator it = gameobjectsMap.find(gameobject->parentUUID);
+			if (it != gameobjectsMap.end())
+			{
+				gameobject->parent = it->second;
+				gameobject->parent->children.push_back(gameobject);
+			}
+			else //Case root gameobject
+			{
+				root = gameobject;
+			}
+		}
+		else
+		{
+			root = gameobject;
+		}
+		App->resManager->DeleteResource(root->prefabUID); //Remove root to list of instances
+		RemoveInstance(root);
+
+		ComponentRenderer* renderer = nullptr;
+		renderer = (ComponentRenderer*)gameobject->GetComponentOld(ComponentType::Renderer);
+		if (renderer != nullptr)
+		{
+			renderers.push_back(renderer);
+		}
+
+		App->scene->DeleteFromSpacePartition(gameobject);
+	}
+
+	for (ComponentRenderer* cr : renderers)
+	{
+		if (cr->mesh != nullptr)
+		{
+			cr->LinkBones();
+		}
+	}
+
+	return root;
 }
