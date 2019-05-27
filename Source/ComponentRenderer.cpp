@@ -219,7 +219,7 @@ void ComponentRenderer::Save(JSON_value* value) const
 {
 	Component::Save(value);
 	value->AddUint("meshUID", (mesh != nullptr) ? mesh->GetUID() : 0u);
-	value->AddString("materialFile", (material != nullptr) ? material->GetName() : DEFAULTMAT);
+	value->AddUint("materialUID", (material != nullptr) ? material->GetUID() : 0u);
 	value->AddInt("castShadows", castShadows);
 	value->AddInt("useAlpha", useAlpha);
 	value->AddInt("highlighted", highlighted);
@@ -230,12 +230,13 @@ void ComponentRenderer::Load(JSON_value* value)
 {
 	Component::Load(value);
 
-	unsigned uid = value->GetUint("meshUID");
-	mesh = (ResourceMesh*)App->resManager->Get(uid); //Look for loaded meshes
+	unsigned meshUID = value->GetUint("meshUID");
+	mesh = (ResourceMesh*)App->resManager->Get(meshUID); //Look for loaded meshes
 	UpdateGameObject();
 
-	const char* materialFile = value->GetString("materialFile");
-	SetMaterial(materialFile);
+	unsigned materialUID = value->GetUint("materialUID");
+	material = (ResourceMaterial*)App->resManager->Get(materialUID);
+	if (materialUID == 0 || material == nullptr) SetMaterial(DEFAULTMAT); //FIXME!: Default UID should'nt be 0
 
 	castShadows = value->GetInt("castShadows");
 	useAlpha = value->GetInt("useAlpha");

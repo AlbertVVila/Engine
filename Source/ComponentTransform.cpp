@@ -6,9 +6,11 @@
 
 #include "GameObject.h"
 #include "ComponentLight.h"
+#include "ComponentCamera.h"
 #include "GameObject.h"
 #include "ModuleTime.h"
 #include "ModuleScene.h"
+#include "ModuleUI.h"
 
 
 #include "imgui.h"
@@ -123,8 +125,6 @@ void ComponentTransform::MultiSelectionTransform(float4x4 &difference)
 void ComponentTransform::UpdateTransform()
 {
 	UpdateOldTransform();
-
-
 	
 	front = -global.Col3(2);
 	up = global.Col3(1);
@@ -236,11 +236,25 @@ void ComponentTransform::SetPosition(const math::float3 & newPosition)
 {
 	position = newPosition;
 	gameobject->movedFlag = true;
+	
 }
 
 math::float3 ComponentTransform::GetPosition()
 {
 	return position;
+}
+
+math::float2 ComponentTransform::GetScreenPosition()
+{
+	math::float3 projection = App->scene->maincamera->frustum->Project(GetGlobalPosition());
+	if (projection.z > 0)
+	{
+		math::float2 screenPosition;
+		screenPosition.x = (int)(projection.x * (App->ui->currentWidth / 2.0));
+		screenPosition.y = (int)(projection.y * (App->ui->currentHeight / 2.0));
+		return screenPosition;
+	}
+	return math::float2::zero;
 }
 
 void ComponentTransform::SetRotation(const math::Quat & newRotation)
@@ -249,6 +263,12 @@ void ComponentTransform::SetRotation(const math::Quat & newRotation)
 	RotationToEuler();
 	gameobject->movedFlag = true;
 	UpdateTransform();
+}
+
+ENGINE_API void ComponentTransform::Scale(float scalar)
+{
+	scale *= scalar;
+	gameobject->movedFlag = true;
 }
 
 math::Quat ComponentTransform::GetRotation()

@@ -40,6 +40,10 @@ public:
 	//virtual void OnCollisionEnter(GameObject* go) {} //TODO: collision module
 	//virtual void OnCollisionExit(GameObject* go) {} //TODO: collision module
 
+	virtual void OnTriggerEnter(GameObject* go) {}
+	virtual void OnTrigger(GameObject* go) {}
+	virtual void OnTriggerExit(GameObject* go) {}
+
 public:
 	std::string name = "Script";
 	bool hasBeenAwoken = false;

@@ -28,6 +28,8 @@ public:
 	bool LoadInMemory() override;
 	void DeleteFromMemory() override;
 
+	void LoadConfigFromMeta() override {};
+
 	// Mesh specific
 	void LinkBones(GameObject* gameobject);
 	void Draw(unsigned shaderProgram) const;

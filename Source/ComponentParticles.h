@@ -1,15 +1,22 @@
 #ifndef __ComponentParticles_h__
 #define __ComponentParticles_h__
 
+#define MAX_DISTANCE 10000000.f
+#define MAX_RATE 10000000.f
+
 #include "Component.h"
 #include <string>
 #include "Math/float3.h"
 #include "Math/float2.h"
 #include "Math/float4x4.h"
 #include "Math/Quat.h"
+#include "Math/float4.h"
 
 #include <queue>
+#include <vector>
 #include "ComponentTransform.h"
+#include "ModuleRender.h"
+
 
 class ResourceTexture;
 class ParticleModule;
@@ -25,6 +32,7 @@ struct Particle
 
 	float totalLifetime = .0f;
 	float lifeTimer = totalLifetime;
+	math::float4 color;
 	
 };
 
@@ -36,11 +44,19 @@ class ComponentParticles :
 
 public:
 
+	enum EmisorType
+	{
+		QUAD = 0,
+		SPHERE
+	};
+
 	ComponentParticles(GameObject* gameobject);
 	ComponentParticles(const ComponentParticles& component);
 	~ComponentParticles();
 
-
+	ENGINE_API void Play(float newPlayTime);
+	ENGINE_API void Stop();
+	
 	Component* Clone() const override;
 	void DrawProperties() override;
 	bool CleanUp() override;
@@ -56,11 +72,20 @@ public:
 	std::queue<Particle*> particlePool;
 
 private:
+	void Reset();
+	void alternateEmisor(int i);
+	void DrawDebugEmisor();
+	float3 randomSpherePoint(float3 center);
 
-	std::string textureName = "None Selected";
+public:
+	float PlayTime = 1.f;
+	float lastActive = 0.f;
+
+private:
+
 	std::vector<std::string> textureFiles;
 
-	std::list<ParticleModule*> modules;
+	std::vector<ParticleModule*> modules;
 
 	int xTiles = 1;
 	int yTiles = 1;
@@ -74,17 +99,34 @@ private:
 	int f2Ypos;
 
 	math::float2 lifetime = math::float2::one;
-	math::float2 speed = math::float2::one;
+	math::float2 speed = math::float2::one * App->renderer->current_scale;
 	float rate = 10.f;
 	float rateTimer = 1.f / rate;
 	int maxParticles = 50;
-	math::float2 size = math::float2::one;
-	math::float2 quadEmitterSize = math::float2::one;
-	math::float3 particleColor = math::float3::one;
+	math::float2 particleSize = math::float2(1.f * App->renderer->current_scale, 1.f * App->renderer->current_scale) ;
+	math::float2 quadEmitterSize = math::float2(10.f * App->renderer->current_scale);
+	float sphereEmitterRadius = 5.f * App->renderer->current_scale;
+	math::float4 particleColor = math::float4::one;
+	math::float3 pDir = math::float3(-1.f, 0.f, 0.f);
 
 	bool directionNoise = false;
 	int directionNoiseProbability = 5;
 	int directionNoiseTotalProbability = 500;
+
+	EmisorType actualEmisor = EmisorType::QUAD;
+	bool quadCheck = true;
+	bool sphereCheck = false;
+	std::vector<bool*> emisorsCheck = { &quadCheck,&sphereCheck};
+
+	bool sizeOTCheck = false;
+	bool colorOTCheck = false;
+
+	bool ConstantPlaying = true;
+	bool Playing = false;
+
+	bool billboarded = true;
+	bool localEmitter = false;
+	math::float3 lookAtTarget = math::float3::unitY;
 
 };
 
