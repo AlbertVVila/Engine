@@ -421,6 +421,7 @@ void ComponentAnimation::OnPlay()
 {
 	if (stateMachine != nullptr && stateMachine->GetClipsSize() > 0u && stateMachine->GetNodesSize() > 0u)
 	{
+		currentNode = stateMachine->GetDefaultNode();
 		controller->Play(GetAnimFromStateMachine(), GetLoopFromStateMachine(),
 			GetMustFinishFromStateMachine(), GetSpeedFromStateMachine());
 	}
