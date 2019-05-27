@@ -90,7 +90,6 @@ public:
 
 	void cleanValuesPRE();
 	void cleanValuesPOST();
-	void cleanStoredObjects();
 
 
 	ENGINE_API bool FindPath(math::float3 start, math::float3 end, std::vector<math::float3> &path, PathFindType type = PathFindType::FOLLOW) const;
@@ -179,13 +178,6 @@ private:
 	//navigation mesh properties
 	bool meshGenerated = false;
 	bool renderMesh = false;
-	int numObjects = 0;
-	struct storedObject {
-		std::string name;
-		bool obstacle = false;
-	};
-	std::vector<storedObject*> objectNames;
-	bool autoNavGeneration = false;
 
 	enum DrawMode
 	{

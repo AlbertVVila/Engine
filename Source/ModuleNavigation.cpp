@@ -180,13 +180,6 @@ void ModuleNavigation::cleanValuesPOST()
 	isObstacle.clear();
 }
 
-//only called when generating a brand new nav mesh
-void ModuleNavigation::cleanStoredObjects()
-{
-	objectNames.clear();
-	numObjects = 0;
-}
-
 void ModuleNavigation::DrawGUI()
 {
 	//menu inspired in recast interface
@@ -286,16 +279,28 @@ void ModuleNavigation::DrawGUI()
 
 void ModuleNavigation::addNavigableMesh()
 {
-	if (meshComponents.size() == 0) cleanStoredObjects();
-	meshboxes.push_back(static_cast <const AABB*>(&App->scene->selected->bbox));
-	meshComponents.push_back(static_cast <const ComponentRenderer*>(App->scene->selected->GetComponentOld(ComponentType::Renderer)));
-	transformComponents.push_back(static_cast <const ComponentTransform*>(App->scene->selected->GetComponentOld(ComponentType::Transform)));
-	isObstacle.push_back(App->scene->selected->noWalkable);
-	std::string s = App->scene->selected->name + " added to navigation";
-	LOG(s.c_str());
-	storedObject* newObj = new storedObject(); newObj->name = App->scene->selected->name.c_str(); newObj->obstacle = App->scene->selected->noWalkable;
-	objectNames.emplace_back(newObj);
-	++numObjects;
+	if (App->scene->selection.size() > 1)
+	{
+		//iterate over selection objects and add them
+		for (auto const it : App->scene->selection)
+		{
+			meshboxes.push_back(static_cast <const AABB*>(&it->bbox));
+			meshComponents.push_back(static_cast <const ComponentRenderer*>(it->GetComponentOld(ComponentType::Renderer)));
+			transformComponents.push_back(static_cast <const ComponentTransform*>(it->GetComponentOld(ComponentType::Transform)));
+			isObstacle.push_back(it->noWalkable);
+			std::string s = it->name + " added to navigation";
+			LOG(s.c_str());
+		}
+	}
+	else
+	{
+		meshboxes.push_back(static_cast <const AABB*>(&App->scene->selected->bbox));
+		meshComponents.push_back(static_cast <const ComponentRenderer*>(App->scene->selected->GetComponentOld(ComponentType::Renderer)));
+		transformComponents.push_back(static_cast <const ComponentTransform*>(App->scene->selected->GetComponentOld(ComponentType::Transform)));
+		isObstacle.push_back(App->scene->selected->noWalkable);
+		std::string s = App->scene->selected->name + " added to navigation";
+		LOG(s.c_str());
+	}
 }
 
 void ModuleNavigation::navigableObjectToggled(GameObject* obj, const bool newState)
