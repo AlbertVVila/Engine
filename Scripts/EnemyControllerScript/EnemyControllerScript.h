@@ -30,6 +30,7 @@ public:
 	inline math::float3 GetPlayerPosition() const;
 	inline float GetDistanceTo(math::float3& position) const;	// Get distance of the enemy to position given as argument
 	inline float GetDistanceTo2D(math::float3& position) const;	// Get distance of the enemy to position given as argument only taking XZ plane as reference
+	inline float GetDistanceToPlayer2D() const;
 
 	inline bool IsCollidingWithPlayer() const;
 
