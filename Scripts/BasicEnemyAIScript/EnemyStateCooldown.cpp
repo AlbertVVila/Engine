@@ -1,6 +1,7 @@
 #include "EnemyStateCooldown.h"
 
 #include "BasicEnemyAIScript.h"
+#include "EnemyControllerScript.h"
 
 EnemyStateCooldown::EnemyStateCooldown(BasicEnemyAIScript* AIScript)
 {
@@ -17,7 +18,7 @@ void EnemyStateCooldown::Update()
 {
 	float waitedTime = (timer - auxTimer);
 
-	if (!enemy->IsCollidingWithPlayer())
+	if (!enemy->enemyController->IsCollidingWithPlayer())
 	{
 		enemy->currentState = (EnemyState*)enemy->chase;
 	}

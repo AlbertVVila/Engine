@@ -4,6 +4,7 @@
 #include "ComponentTransform.h"
 
 #include "HiddenEnemyAIScript.h"
+#include "EnemyControllerScript.h"
 
 EnemyStateShowUp::EnemyStateShowUp(HiddenEnemyAIScript* AIScript)
 {
@@ -18,11 +19,10 @@ EnemyStateShowUp::~EnemyStateShowUp()
 void EnemyStateShowUp::Update()
 {
 	// Translate on the Y axis
-	enemy->Move(enemy->showUpSpeed, enemy->gameobject->transform->up);
-	//auxTranslation += movement.y;
+	enemy->enemyController->Move(enemy->showUpSpeed, enemy->gameobject->transform->up);
 
 	// Check if the needed Y has been reached
-	if (enemy->startPosition.y + enemy->yTranslation <= enemy->GetPosition().y)
+	if (enemy->startPosition.y + enemy->yTranslation <= enemy->enemyController->GetPosition().y)
 	{
 		math::float3 position = enemy->startPosition;
 		position.y += enemy->yTranslation;

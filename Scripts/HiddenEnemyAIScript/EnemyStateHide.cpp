@@ -4,6 +4,7 @@
 #include "ComponentTransform.h"
 
 #include "HiddenEnemyAIScript.h"
+#include "EnemyControllerScript.h"
 
 EnemyStateHide::EnemyStateHide(HiddenEnemyAIScript* AIScript)
 {
@@ -21,11 +22,11 @@ void EnemyStateHide::Update()
 	// Translate on the Y axis
 	math::float3 direction = enemy->gameobject->transform->up;
 	direction.y *= -1.0f;
-	enemy->Move(enemy->showUpSpeed, direction);
+	enemy->enemyController->Move(enemy->showUpSpeed, direction);
 	//auxTranslation += movement.y;
 
 	// Check if the needed Y has been reached
-	if (enemy->startPosition.y >= enemy->GetPosition().y)
+	if (enemy->startPosition.y >= enemy->enemyController->GetPosition().y)
 	{
 		enemy->gameobject->transform->SetPosition(enemy->startPosition);
 		enemy->currentState = (EnemyState*)enemy->wait;

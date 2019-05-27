@@ -6,6 +6,7 @@
 #include "ComponentBoxTrigger.h"
 
 #include "BasicEnemyAIScript.h"
+#include "EnemyControllerScript.h"
 
 EnemyStateAttack::EnemyStateAttack(BasicEnemyAIScript* AIScript)
 {
@@ -23,10 +24,10 @@ EnemyStateAttack::~EnemyStateAttack()
 void EnemyStateAttack::Update()
 {
 	// Keep looking at player
-	math::float3 playerPosition = enemy->GetPlayerPosition();
-	enemy->LookAt2D(playerPosition);
+	math::float3 playerPosition = enemy->enemyController->GetPlayerPosition();
+	enemy->enemyController->LookAt2D(playerPosition);
 
-	if (!enemy->IsCollidingWithPlayer())
+	if (!enemy->enemyController->IsCollidingWithPlayer())
 	{
 		if (hitboxCreated)
 		{

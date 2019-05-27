@@ -11,9 +11,7 @@
 #include "Math/float3.h"
 #include <vector>
 
-class ComponentAnimation;
 class ComponentBoxTrigger;
-class PlayerMovement;
 class EnemyControllerScript;
 class JSON_value;
 class EnemyState;
@@ -35,16 +33,6 @@ public:
 
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
-
-	inline math::float3 GetPosition() const;					// Get position of the enemy (GO with this script attached)
-	inline math::float3 GetPlayerPosition() const;
-	inline float GetDistanceTo(math::float3& position) const;	// Get distance of the enemy to position given as argument
-	inline float GetDistanceTo2D(math::float3& position) const;	// Get distance of the enemy to position given as argument only taking XZ plane as reference
-
-	inline bool IsCollidingWithPlayer() const;
-
-	void MoveTowards(float speed) const;
-	void LookAt2D(math::float3& position);
 
 private:
 	void CheckStates(EnemyState* previous, EnemyState* current);
@@ -79,15 +67,9 @@ public:
 	float cooldownTime = 1.0f;			// Seconds to wait between attacks
 
 	ComponentBoxTrigger* boxTrigger = nullptr;
+	EnemyControllerScript* enemyController = nullptr;
 
 private:
-
-	ComponentAnimation* anim = nullptr;
-
-	// Scripts
-	EnemyControllerScript* enemyController;
-	PlayerMovement* playerScript;
-
 	std::vector<EnemyState*> enemyStates;
 };
 
