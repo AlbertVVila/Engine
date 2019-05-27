@@ -17,6 +17,7 @@ class DamageController;
 class EnemyControllerScript_API EnemyControllerScript : public Script
 {
 	void Start() override;
+	void Update() override;
 
 	void Expose(ImGuiContext* context) override;
 
@@ -29,6 +30,7 @@ public:
 
 public:
 	GameObject* player = nullptr;
+	GameObject* enemyLife = nullptr;
 	std::string playerName = "Player";
 	std::string playerBboxName = "PlayerMesh";
 	ComponentRenderer* myRender;
