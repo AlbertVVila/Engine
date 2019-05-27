@@ -284,6 +284,12 @@ void ModuleNavigation::addNavigableMesh()
 		//iterate over selection objects and add them
 		for (auto const it : App->scene->selection)
 		{
+			if (!it->navigable)
+			{
+				LOG("Some of the objects selected are not navigable");
+				cleanValuesPOST();
+				return;
+			}
 			meshboxes.push_back(static_cast <const AABB*>(&it->bbox));
 			meshComponents.push_back(static_cast <const ComponentRenderer*>(it->GetComponentOld(ComponentType::Renderer)));
 			transformComponents.push_back(static_cast <const ComponentTransform*>(it->GetComponentOld(ComponentType::Transform)));
