@@ -419,7 +419,7 @@ void ModuleScene::DrawGOGame(const GameObject& go)
 	go.SetLightUniforms(shader->id[variation]);
 
 	go.UpdateModel(shader->id[variation]);
-	crenderer->mesh->Draw(shader->id[variation]);
+	crenderer->DrawMesh(shader->id[variation]);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glActiveTexture(GL_TEXTURE0);
@@ -488,7 +488,7 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 	}
 	if (mesh != nullptr)
 	{
-		crenderer->mesh->Draw(shader->id[variation]);
+		crenderer->DrawMesh(shader->id[variation]);
 	}
 	
 

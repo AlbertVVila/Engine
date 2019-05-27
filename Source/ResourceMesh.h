@@ -13,6 +13,24 @@
 class ComponentRenderer;
 class GameObject;
 
+
+struct BindBone
+{
+	math::float4x4 transform; //Transforms from mesh space to bone space
+	std::string name;
+	GameObject* go = nullptr;
+};
+
+struct BoneVertex
+{
+	int boneID[MAX_WEIGHTS_PER_BONE] = { 0, 0, 0, 0 };
+};
+
+struct BoneWeight
+{
+	float weight[MAX_WEIGHTS_PER_BONE] = { 0.f, 0.f, 0.f, 0.f };
+};
+
 class ResourceMesh : public Resource
 {
 public:
@@ -41,25 +59,6 @@ public:
 	void Delete() override;
 
 private:
-
-	struct BindBone
-	{
-		math::float4x4 transform; //Transforms from mesh space to bone space
-		std::string name;
-		GameObject* go = nullptr;
-	};
-
-	struct BoneVertex
-	{
-		int boneID[MAX_WEIGHTS_PER_BONE] = { 0, 0, 0, 0 };
-	};
-
-	struct BoneWeight
-	{
-		float weight[MAX_WEIGHTS_PER_BONE] = { 0.f, 0.f, 0.f, 0.f };
-	};
-
-private:
 	void ComputeBBox();
 	void ProcessVertexTangent(const float vIndex1, const float vIndex2, const float vIndex3);
 	void CalculateTangents();
@@ -67,7 +66,7 @@ private:
 	void SetMeshBuffers();
 	void SetBboxBuffers();
 
-private:
+public:
 	unsigned VAO = 0;
 	unsigned VBO = 0;
 	unsigned EBO = 0;
