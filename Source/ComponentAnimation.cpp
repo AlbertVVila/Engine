@@ -210,6 +210,16 @@ void ComponentAnimation::DrawProperties()
 						{
 							guiAnimations = App->resManager->GetResourceNamesList(TYPE::ANIMATION, true);
 						}
+						if (ImGui::Selectable("No animation"))
+						{
+							// Delete previous animation
+							if (animation != nullptr)
+								App->resManager->DeleteResource(animation->GetUID());
+
+							unsigned animUID = 0;
+							stateMachine->SetClipResource(j, animUID);
+							stateMachine->Save();
+						}
 						for (int n = 0; n < guiAnimations.size(); n++)
 						{
 							bool is_selected = ((clipUID != 0u && animation != nullptr) ? HashString(animation->GetName()) == HashString(guiAnimations[n].c_str()) : false);
@@ -364,6 +374,12 @@ void ComponentAnimation::PlayNextNode(float blend)
 	if(stateMachine != nullptr)
 		controller->PlayNextNode(GetAnimFromStateMachine(),GetLoopFromStateMachine(), GetMustFinishFromStateMachine(),
 			GetSpeedFromStateMachine(), blend);
+
+	if (!channelsSetted)
+	{
+		SetIndexChannels(gameobject, GetAnimFromStateMachine());
+		channelsSetted = true;
+	}
 }
 
 ComponentAnimation::EditorContext* ComponentAnimation::GetEditorContext()
@@ -382,9 +398,10 @@ void ComponentAnimation::Update()
 	PROFILE;
 	if (App->time->gameState == GameState::RUN) //Game run time exclusive
 	{
-		if (stateMachine != nullptr && stateMachine->GetClipsSize() > 0u && stateMachine->GetNodesSize() > 0u)
+		if (stateMachine != nullptr&& 
+			stateMachine->GetClipsSize() > 0u && stateMachine->GetNodesSize() > 0u)
 		{
-			if (!channelsSetted)
+			if (!channelsSetted  && controller->current->anim != nullptr)
 			{
 				SetIndexChannels(gameobject, GetAnimFromStateMachine());
 				channelsSetted = true;
