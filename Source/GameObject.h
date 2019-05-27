@@ -81,6 +81,8 @@ public:
 private:
 	void SetStaticAncestors();
 	void MarkAsPrefab();
+	bool ChildPrefab();
+	bool ParentPrefab();
 	void SetActiveInHierarchy(bool active);
 	void OnChangeActiveState(bool wasActive);
 
@@ -94,12 +96,7 @@ public:
 	bool isStatic = false;
 	bool isBoneRoot = false;
 
-	bool isPrefab = false;
-	bool isChildPrefab = false;
 	bool isPrefabSync = false;
-	unsigned prefabUID = 0;
-	Prefab* prefab = nullptr;
-
 	bool navigable = false;
 	bool walkable = false;
 	bool noWalkable = false;
@@ -128,6 +125,10 @@ public:
 
 	std::string name = "GameObject";
 
+private:
+	bool isPrefab = false;
+	unsigned prefabUID = 0;
+	Prefab* prefab = nullptr;
 };
 
 template<class T>

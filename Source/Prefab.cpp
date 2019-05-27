@@ -95,7 +95,6 @@ void Prefab::Load(char** data)
 {
 	prefabJson = new JSON(*data);
 	prefabValue = prefabJson->GetValue("GameObjects");
-	LOG("Size %d",prefabValue->Size());
 	RELEASE_ARRAY(*data);
 }
 
@@ -176,7 +175,7 @@ GameObject* Prefab::RetrievePrefab() //TODO: should update prefab INSTA!
 		{
 			root = gameobject;
 		}
-		App->resManager->DeleteResource(root->prefabUID); //Remove root to list of instances
+		App->resManager->DeleteResource(UID); //Remove root to list of instances
 		RemoveInstance(root);
 
 		ComponentRenderer* renderer = nullptr;

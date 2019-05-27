@@ -165,7 +165,7 @@ void GameObject::DrawProperties()
 	name = go_name;
 	delete[] go_name;
 
-	if (this != App->scene->root)
+	if (this != App->scene->root || this != App->scene->canvas)
 	{
 		bool active = activeSelf;
 		if (ImGui::Checkbox("Active", &active))
@@ -174,19 +174,32 @@ void GameObject::DrawProperties()
 		}
 
 		ImGui::SameLine();
-		//navigability
 
 		if (ImGui::Checkbox("isPrefab", &isPrefab))
 		{
 			if (isPrefab)
 			{
-				MarkAsPrefab();
+				if (ParentPrefab())
+				{
+					isPrefab = false;
+				}
+				else if (ChildPrefab())
+				{
+					isPrefab = false;
+				}
+				else
+				{
+					MarkAsPrefab();
+				}
 			}
-			else if(prefab != nullptr)
+			else
 			{
-				prefab->RemoveInstance(this);
-				App->resManager->DeleteResource(prefabUID);
-				prefab = nullptr;
+				if (prefab != nullptr)
+				{
+					prefab->RemoveInstance(this);
+					App->resManager->DeleteResource(prefabUID);
+					prefab = nullptr;
+				}
 			}
 		}
 
@@ -782,6 +795,31 @@ void GameObject::MarkAsPrefab()
 	isPrefabSync = true;
 }
 
+bool GameObject::ChildPrefab()
+{
+	for (const auto& child : children)
+	{
+		if (child->isPrefab)
+		{
+			return true;
+		}
+		else if(child->ChildPrefab())
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+bool GameObject::ParentPrefab()
+{
+	if (parent->isPrefab)
+	{
+		return true;
+	}
+	return parent->ParentPrefab();
+}
+
 void GameObject::UpdateToPrefab(GameObject* prefabGo)
 {
 	Component* myTransform = transform->Clone(); //Save old transform and parent
@@ -970,7 +1008,6 @@ void GameObject::Load(JSON_value *value)
 	isPrefab = value->GetUint("isPrefab");
 	isPrefabSync = value->GetUint("isPrefabSync");
 	prefabUID = value->GetUint("prefabUID");
-
 	if (isPrefab)
 	{
 		prefab = (Prefab*) App->resManager->Get(prefabUID);
@@ -1024,8 +1061,20 @@ void GameObject::DrawHierarchy()
 	ImGui::PushID(this);
 	if (!isActive())
 	{
-		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.6f, 0.6f, 0.6f, 1.00f));
+		if (isPrefab)
+		{
+			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.1f, 0.4f, 0.4f, 1.00f));
+		}
+		else
+		{
+			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.6f, 0.6f, 0.6f, 1.00f));
+		}
 	}
+	else if(isPrefab)
+	{
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.8f, 0.8f, 1.00f));
+	}
+
 	if (children.empty())
 	{
 		node_flags |= ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen;
@@ -1081,7 +1130,7 @@ void GameObject::DrawHierarchy()
 			ImGui::TreePop();
 		}
 	}
-	if (!isActive())
+	if (!isActive() || isPrefab)
 	{
 		ImGui::PopStyleColor();
 	}
