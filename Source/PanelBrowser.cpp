@@ -323,8 +323,9 @@ void PanelBrowser::DrawFileIcon(const char* file, int itemNumber)
 			unsigned selectedUID = App->resManager->FindByFileInAssetsOfType((path + file).c_str(), TYPE::PREFAB);
 			Prefab* prefab = (Prefab*)App->resManager->Get(selectedUID);
 			dragAsset = new GameObject(*prefab->RetrievePrefab());
+			dragAsset->prefab = prefab;
+			prefab->AddInstance(dragAsset);
 			App->scene->DeleteFromSpacePartition(dragAsset);
-			App->resManager->DeleteResource(selectedUID);
 		}
 		//else TODO: Scenes or FBX drop
 	}

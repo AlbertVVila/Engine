@@ -76,7 +76,7 @@ public:
 
 	bool CleanUp();
 	void Save(JSON_value *gameobjects) const;
-	void Load(JSON_value * gameobject);
+	void Load(JSON_value * gameobject, bool prefabObject= false);
 
 private:
 	void SetStaticAncestors();
@@ -97,6 +97,8 @@ public:
 	bool isBoneRoot = false;
 
 	bool isPrefabSync = false;
+	Prefab* prefab = nullptr;
+
 	bool navigable = false;
 	bool walkable = false;
 	bool noWalkable = false;
@@ -128,7 +130,6 @@ public:
 private:
 	bool isPrefab = false;
 	unsigned prefabUID = 0;
-	Prefab* prefab = nullptr;
 };
 
 template<class T>

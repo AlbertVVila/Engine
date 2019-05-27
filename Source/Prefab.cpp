@@ -152,11 +152,12 @@ GameObject* Prefab::RetrievePrefab() //TODO: should update prefab INSTA!
 
 	std::list<ComponentRenderer*> renderers;
 
-	for (unsigned i = 0; i < prefabValue->Size(); i++)
+	unsigned size = prefabValue->Size();
+	for (unsigned i = 0; i < size; i++)
 	{
 		JSON_value* gameobjectJSON = prefabValue->GetValue(i);
 		GameObject *gameobject = new GameObject();
-		gameobject->Load(gameobjectJSON);
+		gameobject->Load(gameobjectJSON, true);
 		if (gameobject->UUID != 1 && gameobject->UUID != 0) //TODO: Canvas and World shouldn't be a prefab
 		{
 			gameobjectsMap.insert(std::pair<unsigned, GameObject*>(gameobject->UUID, gameobject));
@@ -175,8 +176,6 @@ GameObject* Prefab::RetrievePrefab() //TODO: should update prefab INSTA!
 		{
 			root = gameobject;
 		}
-		App->resManager->DeleteResource(UID); //Remove root to list of instances
-		RemoveInstance(root);
 
 		ComponentRenderer* renderer = nullptr;
 		renderer = (ComponentRenderer*)gameobject->GetComponentOld(ComponentType::Renderer);

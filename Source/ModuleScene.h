@@ -56,6 +56,7 @@ public:
 	void DeleteFromSpacePartition(GameObject* gameobject);
 	void ResetQuadTree(); //deprecated
 
+
 	void FrustumCulling(const Frustum &frustum);
 	void Draw(const Frustum &frustum, bool isEditor = false);
 	void DrawGOGame(const GameObject& go);
@@ -65,6 +66,7 @@ public:
 	void DragNDrop(GameObject * go);
 	void DrawGUI() override;
 
+	bool PrefabWasUpdated(unsigned UID) const;
 	unsigned CreatePrefab(GameObject* go);
 	void CreateCube(const char * name, GameObject* parent);
 	void CreateSphere(const char * name, GameObject* parent);

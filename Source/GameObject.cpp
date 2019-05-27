@@ -182,10 +182,12 @@ void GameObject::DrawProperties()
 				if (ParentPrefab())
 				{
 					isPrefab = false;
+					App->editor->GenerateGenericPopUp("Error", "This GameObject is child of a prefab!");
 				}
 				else if (ChildPrefab())
 				{
 					isPrefab = false;
+					App->editor->GenerateGenericPopUp("Error", "This GameObject is parent of a prefab!");
 				}
 				else
 				{
@@ -786,13 +788,25 @@ void GameObject::SetLightUniforms(unsigned shader) const
 
 void GameObject::MarkAsPrefab()
 {
+	bool wasPrefab = false;
+
 	if (prefabUID == 0)
 	{
 		prefabUID = App->scene->CreatePrefab(this);
 	}
+	else
+	{
+		wasPrefab = true;
+	}
+
 	prefab = (Prefab*)App->resManager->Get(prefabUID);
 	prefab->AddInstance(this);
 	isPrefabSync = true;
+
+	if (wasPrefab)
+	{
+		UpdateToPrefab(prefab->RetrievePrefab());
+	}
 }
 
 bool GameObject::ChildPrefab()
@@ -813,6 +827,7 @@ bool GameObject::ChildPrefab()
 
 bool GameObject::ParentPrefab()
 {
+	if (parent == App->scene->root) return false;
 	if (parent->isPrefab)
 	{
 		return true;
@@ -990,7 +1005,7 @@ void GameObject::Save(JSON_value *gameobjects) const
 	}
 }
 
-void GameObject::Load(JSON_value *value)
+void GameObject::Load(JSON_value *value, bool prefabObject)
 {
 	UUID = value->GetUint("UID");
 	parentUUID = value->GetUint("ParentUID");
@@ -1008,7 +1023,7 @@ void GameObject::Load(JSON_value *value)
 	isPrefab = value->GetUint("isPrefab");
 	isPrefabSync = value->GetUint("isPrefabSync");
 	prefabUID = value->GetUint("prefabUID");
-	if (isPrefab)
+	if (isPrefab && !prefabObject)
 	{
 		prefab = (Prefab*) App->resManager->Get(prefabUID);
 		prefab->AddInstance(this);
@@ -1031,6 +1046,15 @@ void GameObject::Load(JSON_value *value)
 	if (isBoneRoot)
 	{
 		movedFlag = true;
+	}
+
+	if (isPrefab && isPrefabSync)
+	{
+		if(App->scene->PrefabWasUpdated())
+		{
+			//check prefab updated -> replace
+			UpdateToPrefab(prefab->RetrievePrefab());
+		}
 	}
 }
 

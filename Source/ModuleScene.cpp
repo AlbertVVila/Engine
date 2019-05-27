@@ -710,6 +710,13 @@ void ModuleScene::ResetQuadTree() //deprecated
 	}
 }
 
+bool ModuleScene::PrefabWasUpdated(unsigned UID) const
+{
+	int prefabTime = App->fsystem->GetModTime(std::string(PREFABS + std::to_string(UID) + PREFABEXTENSION).c_str());
+	//int sceneTime = App->fsystem->GetModTime(std::string(SCENES + scene-> + SCENEEXTENSION).c_str());
+	return true;
+}
+
 unsigned ModuleScene::CreatePrefab(GameObject * go)
 {
 	Prefab* prefab = (Prefab*)App->resManager->CreateNewResource(TYPE::PREFAB);
