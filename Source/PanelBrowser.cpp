@@ -321,11 +321,12 @@ void PanelBrowser::DrawFileIcon(const char* file, int itemNumber)
 		if (App->fsystem->GetExtension(file) == PREFABEXTENSION)
 		{
 			unsigned selectedUID = App->resManager->FindByFileInAssetsOfType((path + file).c_str(), TYPE::PREFAB);
-			Prefab* prefab = (Prefab*)App->resManager->Get(selectedUID);
-			dragAsset = new GameObject(*prefab->RetrievePrefab());
-			dragAsset->prefab = prefab;
-			prefab->AddInstance(dragAsset);
-			App->scene->DeleteFromSpacePartition(dragAsset);
+
+			dragAsset = new GameObject();
+			dragAsset->UUID = 2; //dummy value for passing uuid > 1 check
+			dragAsset->isPrefab = true;
+			dragAsset->prefabUID = selectedUID;
+			dragAsset->isDropablePlaceHolder = true;
 		}
 		//else TODO: Scenes or FBX drop
 	}

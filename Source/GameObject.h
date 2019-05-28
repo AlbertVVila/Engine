@@ -73,6 +73,8 @@ public:
 	void SetLightUniforms(unsigned shader) const;
 
 	void UpdateToPrefab(GameObject* prefab);
+	bool ChildPrefab() const;
+	bool ParentPrefab() const;
 
 	bool CleanUp();
 	void Save(JSON_value *gameobjects) const;
@@ -81,8 +83,6 @@ public:
 private:
 	void SetStaticAncestors();
 	void MarkAsPrefab();
-	bool ChildPrefab();
-	bool ParentPrefab();
 	void SetActiveInHierarchy(bool active);
 	void OnChangeActiveState(bool wasActive);
 
@@ -98,6 +98,9 @@ public:
 
 	bool isPrefabSync = false;
 	Prefab* prefab = nullptr;
+	bool isPrefab = false;
+	unsigned prefabUID = 0;
+	bool isDropablePlaceHolder = false;
 
 	bool navigable = false;
 	bool noWalkable = false;
@@ -126,9 +129,6 @@ public:
 
 	std::string name = "GameObject";
 
-private:
-	bool isPrefab = false;
-	unsigned prefabUID = 0;
 };
 
 template<class T>

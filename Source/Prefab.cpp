@@ -28,7 +28,7 @@ bool Prefab::LoadInMemory()
 {
 	char* data = nullptr;
 
-	unsigned ok = App->fsystem->Load((PREFABS + std::to_string(UID) + PREFABEXTENSION).c_str(), &data);
+	unsigned ok = App->fsystem->Load((IMPORTED_PREFABS + std::to_string(UID) + PREFABEXTENSION).c_str(), &data);
 
 	// Load prefab
 	if (ok != 0)			
@@ -176,6 +176,9 @@ GameObject* Prefab::RetrievePrefab() //TODO: should update prefab INSTA!
 		{
 			root = gameobject;
 		}
+		root->isPrefabSync = true;
+		root->isPrefab = true;
+		root->prefabUID = UID;
 
 		ComponentRenderer* renderer = nullptr;
 		renderer = (ComponentRenderer*)gameobject->GetComponentOld(ComponentType::Renderer);

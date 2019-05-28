@@ -294,7 +294,7 @@ bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* 
 		break;
 	case TYPE::PREFAB: //TODO: update reimport PREFAB
 		success = App->fsystem->importer.ImportPrefab(newFileInAssets, filePath, (Prefab*)resource);
-		exportedFile = PREFABS + std::to_string(resource->GetUID()) + PREFABEXTENSION;
+		exportedFile = IMPORTED_PREFABS + std::to_string(resource->GetUID()) + PREFABEXTENSION;
 		break;
 	}
 

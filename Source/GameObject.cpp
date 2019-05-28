@@ -82,10 +82,10 @@ GameObject::GameObject(const GameObject & gameobject)
 	isPrefab = gameobject.isPrefab;
 	isPrefabSync = gameobject.isPrefabSync;
 	prefabUID = gameobject.prefabUID;
-	prefab = gameobject.prefab;
-	if (prefab != nullptr)
+
+	if (isPrefab)
 	{
-		App->resManager->Get(prefabUID);
+		prefab = (Prefab*)App->resManager->Get(prefabUID);
 		prefab->AddInstance(this);
 	}
 
@@ -796,8 +796,9 @@ void GameObject::MarkAsPrefab()
 	}
 }
 
-bool GameObject::ChildPrefab()
+bool GameObject::ChildPrefab() const
 {
+	if (this == App->scene->root) return false;
 	for (const auto& child : children)
 	{
 		if (child->isPrefab)
@@ -812,9 +813,9 @@ bool GameObject::ChildPrefab()
 	return false;
 }
 
-bool GameObject::ParentPrefab()
+bool GameObject::ParentPrefab() const
 {
-	if (parent == App->scene->root) return false;
+	if (parent == App->scene->root || parent == nullptr) return false;
 	if (parent->isPrefab)
 	{
 		return true;
@@ -991,7 +992,7 @@ void GameObject::Save(JSON_value *gameobjects) const
 	}
 }
 
-void GameObject::Load(JSON_value *value, bool prefabObject)
+void GameObject::Load(JSON_value *value, bool prefabTemplate)
 {
 	UUID = value->GetUint("UID");
 	parentUUID = value->GetUint("ParentUID");
@@ -1008,7 +1009,7 @@ void GameObject::Load(JSON_value *value, bool prefabObject)
 	isPrefab = value->GetUint("isPrefab");
 	isPrefabSync = value->GetUint("isPrefabSync");
 	prefabUID = value->GetUint("prefabUID");
-	if (isPrefab && !prefabObject)
+	if (isPrefab && !prefabTemplate)
 	{
 		prefab = (Prefab*) App->resManager->Get(prefabUID);
 		prefab->AddInstance(this);
@@ -1035,9 +1036,8 @@ void GameObject::Load(JSON_value *value, bool prefabObject)
 
 	if (isPrefab && isPrefabSync)
 	{
-		if(App->scene->PrefabWasUpdated())
+		if(!prefabTemplate && App->scene->PrefabWasUpdated(prefabUID))
 		{
-			//check prefab updated -> replace
 			UpdateToPrefab(prefab->RetrievePrefab());
 		}
 	}

@@ -131,7 +131,7 @@ bool FileImporter::ImportPrefab(const char * file, const char * folder, Prefab *
 	//	unsigned UID = value->GetUint("UID");
 	//	App->fsystem->Save((MESHES + std::to_string(mesh->GetUID()) + MESHEXTENSION).c_str(), meshData, meshSize);
 	//}
-	App->fsystem->Copy(folder, file, PREFABS, (std::to_string(resource->GetUID()) + PREFABEXTENSION).c_str());
+	App->fsystem->Copy(folder, file, IMPORTED_PREFABS, (std::to_string(resource->GetUID()) + PREFABEXTENSION).c_str());
 	return true;
 }
 
