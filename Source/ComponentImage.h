@@ -39,8 +39,8 @@ public:
 	bool enabled = true;
 
 
-	bool isMasked = true;
-	int maskAmount = 50;
+	bool isMasked = false;
+	int maskAmount = 100;
 
 	bool updateImageList = false;
 };
