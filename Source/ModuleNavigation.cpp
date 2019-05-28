@@ -309,12 +309,6 @@ void ModuleNavigation::addNavigableMesh()
 	}
 }
 
-void ModuleNavigation::navigableObjectToggled(GameObject* obj, const bool newState)
-{
-	if (newState) navigationMeshes.push_back(obj);
-	else removeNavMesh(obj->UUID);
-}
-
 void ModuleNavigation::renderNavMesh()
 {
 	if (!meshGenerated || !renderMesh || !drawNavMesh || navMesh == nullptr)
@@ -376,18 +370,6 @@ void ModuleNavigation::renderNavMesh()
 			{
 				dd::line(path[i], path[i + 1], dd::colors::Red, 0, false);
 			}
-		}
-	}
-}
-
-void ModuleNavigation::removeNavMesh(unsigned ID)
-{
-	for (int i = 0; i < navigationMeshes.size(); ++i)
-	{
-		if (navigationMeshes[i]->UUID == ID)
-		{
-			navigationMeshes.erase(navigationMeshes.begin() + i);
-			return;
 		}
 	}
 }

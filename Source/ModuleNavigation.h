@@ -84,7 +84,6 @@ public:
 	void sceneSaved(JSON* config);
 
 	void DrawGUI()override;
-	void navigableObjectToggled(GameObject* obj, const bool newState);
 	
 	void renderNavMesh();
 
@@ -95,11 +94,6 @@ public:
 	ENGINE_API bool FindPath(math::float3 start, math::float3 end, std::vector<math::float3> &path, PathFindType type = PathFindType::FOLLOW) const;
 	void RecalcPath(math::float3 point);
 
-	//variables
-	std::vector<GameObject*> navigationMeshes;
-	std::vector<GameObject*> agents;
-	std::vector<GameObject*> obstacles;
-
 	//Constants
 	//static const int ERROR = -1;
 	static const int ERROR_NEARESTPOLY = -2;
@@ -109,7 +103,6 @@ private:
 	ModuleNavigation(const ModuleNavigation&);
 	ModuleNavigation& operator=(const ModuleNavigation);
 
-	void removeNavMesh(unsigned ID);
 	void generateNavigability(bool render);
 	void addNavigableMesh();
 

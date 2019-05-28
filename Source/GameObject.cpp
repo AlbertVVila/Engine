@@ -155,10 +155,7 @@ void GameObject::DrawProperties()
 		//navigability
 		if (isVolumetric && isStatic) 
 		{
-			if (ImGui::Checkbox("Navigable", &navigable))
-			{
-				App->navigation->navigableObjectToggled(this, navigable);
-			}
+			ImGui::Checkbox("Navigable", &navigable);
 			if (navigable)
 			{
 				//defines walls and this stuff
