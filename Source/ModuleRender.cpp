@@ -656,7 +656,7 @@ void ModuleRender::BlitShadowTexture()
 			"viewProjection"), 1, GL_TRUE, &shadowsFrustum.ViewProjMatrix()[0][0]);
 		glUniformMatrix4fv(glGetUniformLocation(shadowsShader->id[variation],
 			"model"), 1, GL_TRUE, &cr->gameobject->GetGlobalTransform()[0][0]);
-		cr->mesh->Draw(shadowsShader->id[variation]);
+		cr->DrawMesh(shadowsShader->id[variation]);
 	}
 
 	glUseProgram(0);

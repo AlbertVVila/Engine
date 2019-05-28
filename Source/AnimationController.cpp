@@ -66,6 +66,7 @@ void AnimationController::PlayNextNode(ResourceAnimation * anim, bool loop, bool
 void AnimationController::Update(float dt)
 {
 	PROFILE;
+
 	if (current != nullptr && !current->isEditor)
 	{
 		UpdateInstance(current, dt);
@@ -187,17 +188,26 @@ void AnimationController::UpdateEditorInstance(Instance* instance, float dt)
 
 	if (instance->next != nullptr)
 	{
-		float timeRemainingB = instance->fadeDuration - instance->fadeTime;
-		if (dt <= timeRemainingB)
-		{
-			instance->fadeTime += dt;
-			UpdateInstance(instance->next, dt);
-		}
-		else
+		if (anim == nullptr)
 		{
 			ReleaseInstance(instance->next);
 			instance->next = nullptr;
 			instance->fadeTime = instance->fadeDuration = 0.0f;
+		}
+		else
+		{
+			float timeRemainingB = instance->fadeDuration - instance->fadeTime;
+			if (dt <= timeRemainingB)
+			{
+				instance->fadeTime += dt;
+				UpdateInstance(instance->next, dt);
+			}
+			else
+			{
+				ReleaseInstance(instance->next);
+				instance->next = nullptr;
+				instance->fadeTime = instance->fadeDuration = 0.0f;
+			}
 		}
 	}
 }
