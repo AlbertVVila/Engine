@@ -67,14 +67,14 @@ private:
 	void SetBboxBuffers();
 
 public:
-	unsigned VAO = 0;
-	unsigned VBO = 0;
-	unsigned EBO = 0;
+	unsigned VAO = 0u;
+	unsigned VBO = 0u;
+	unsigned EBO = 0u;
 
 	AABB boundingBox;
-	unsigned VAObox = 0;
-	unsigned VBObox = 0;
-	unsigned EBObox = 0;
+	unsigned VAObox = 0u;
+	unsigned VBObox = 0u;
+	unsigned EBObox = 0u;
 
 
 	
