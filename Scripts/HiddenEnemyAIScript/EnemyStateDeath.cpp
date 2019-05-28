@@ -14,7 +14,17 @@ EnemyStateDeath::~EnemyStateDeath()
 {
 }
 
+void EnemyStateDeath::Enter()
+{
+	auxTimer = 0.0f;
+}
+
 void EnemyStateDeath::Update()
 {
-	enemy->gameobject->SetActive(false);
+	float waitedTime = (timer - auxTimer);
+
+	if (waitedTime > 10.0f)
+	{
+		enemy->gameobject->SetActive(false);
+	}
 }

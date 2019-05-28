@@ -7,6 +7,7 @@ public:
 	EnemyStateDeath(RangeEnemyAIScript* AIScript);
 	~EnemyStateDeath();
 
+	void Enter() override;
 	void Update() override;
 };
 
