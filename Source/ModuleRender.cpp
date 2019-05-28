@@ -267,7 +267,7 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 	}
 	
 	App->scene->Draw(*cam.frustum, isEditor);
-	App->particles->Render(App->time->gameDeltaTime, &cam);
+	App->particles->Render(App->time->fullGameDeltaTime, &cam);
 
 	
 	if (!isEditor)

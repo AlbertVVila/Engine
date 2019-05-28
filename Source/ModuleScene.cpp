@@ -9,6 +9,7 @@
 #include "ModuleResourceManager.h"
 #include "ModuleRender.h"
 #include "ModuleScene.h"
+#include "ModuleTime.h"
 #include "ModuleTextures.h"
 #include "ModuleSpacePartitioning.h"
 #include "ModuleParticles.h"
@@ -1066,6 +1067,7 @@ void ModuleScene::LoadScene(const char* sceneName, const char* folder)
 	App->spacePartitioning->kDTree.Calculate();
 	App->scripting->onStart = true;
 	scenePhotos.clear();
+	App->time->ResetGameDetaTime();
 }
 
 bool ModuleScene::AddScene(const char* sceneName, const char* folder)

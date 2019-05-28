@@ -26,7 +26,7 @@
 #include "Brofiler.h"
 
 using namespace std;
-#define MAX_FRAME_MS 0.01F
+#define MAX_REFRESH 6
 
 Application::Application()
 {
@@ -96,7 +96,6 @@ bool Application::Init()
 		ret = (*it)->Start();
 
 	LOG("Init + Start time: %d ms", t.Stop());
-	ms_timer.Start();
 
 	return ret;
 }
@@ -105,54 +104,30 @@ update_status Application::Update()
 {
 	//PROFILE;
 
-	SetTimer();
+	//SetTimer();
 	update_status ret = UPDATE_CONTINUE;
 
 	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
 		ret = (*it)->PreUpdate();
 
-	LOG("%8f", dt);
-
-	float sdt = 0.0f;
-	if (dt > 0.5f) dt = 0.0f;//TEMPORAL PATH
-	if (dt > MAX_FRAME_MS)
-	{
-		sdt = MIN(sdt + MAX_FRAME_MS, dt);
-	}
-	else
-	{
-		sdt = dt;
-	}
+	time->UpdateTime();
 
 	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
+		ret = (*it)->Update(time->realDeltaTime);
+
+	int i = 0;
+	while (i < MAX_REFRESH && time->isTimePartitioned
+		&& time->gameState == GameState::RUN && time->IteratePartition())
 	{
-		if (dt < MAX_FRAME_MS && (*it) != App->scene && (*it) != App->collisions || (*it) != App->scripting)
-		{
-			ret = (*it)->Update(dt);
-		}
-		else if (dt >= MAX_FRAME_MS)
-		{
-			ret = (*it)->Update(sdt);
-		}
-
-	}
-
-	int i = 1; //TEMPORAL
-	while (sdt + MAX_FRAME_MS < dt)
-	{
-		sdt = MIN(sdt + MAX_FRAME_MS, dt);
-		LOG("Reaplying logic: %d", i);
-		App->scene->root->UpdateTransforms(math::float4x4::identity);
-
-		//App->collisions->Update(sdt);
-		App->scripting->Update(sdt);
 		++i;
+		scene->root->UpdateTransforms(math::float4x4::identity);
+		App->scripting->Update(time->realDeltaTime);
 	}
 
 	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
 		ret = (*it)->PostUpdate();
 #ifndef GAME_BUILD
-	editor->AddFpsLog(dt);
+	editor->AddFpsLog(time->realDeltaTime);
 #endif
 	return ret;
 }
@@ -173,10 +148,4 @@ bool Application::CleanUp()
 		ret = (*it)->CleanUp();
 	}
 	return ret;
-}
-
-void Application::SetTimer()
-{
-	dt = (float)ms_timer.Read() / 1000.f;
-	ms_timer.Start();
 }
