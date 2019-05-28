@@ -26,6 +26,7 @@
 #include "Brofiler.h"
 
 using namespace std;
+#define MAX_FRAME_MS 0.01F
 
 Application::Application()
 {
@@ -58,10 +59,10 @@ Application::Application()
 
 Application::~Application()
 {
-	for(list<Module*>::iterator it = modules.begin(); it != modules.end(); ++it)
-    {
-        RELEASE(*it);
-    }
+	for (list<Module*>::iterator it = modules.begin(); it != modules.end(); ++it)
+	{
+		RELEASE(*it);
+	}
 }
 
 bool Application::Init()
@@ -94,7 +95,7 @@ bool Application::Init()
 	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret; ++it)
 		ret = (*it)->Start();
 
-	LOG("Init + Start time: %d ms",t.Stop());
+	LOG("Init + Start time: %d ms", t.Stop());
 	ms_timer.Start();
 
 	return ret;
@@ -107,11 +108,46 @@ update_status Application::Update()
 	SetTimer();
 	update_status ret = UPDATE_CONTINUE;
 
-	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
+	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
 		ret = (*it)->PreUpdate();
 
-	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
-		ret = (*it)->Update(dt);
+	LOG("%8f", dt);
+
+	float sdt = 0.0f;
+	if (dt > 0.5f) dt = 0.0f;//TEMPORAL PATH
+	if (dt > MAX_FRAME_MS)
+	{
+		sdt = MIN(sdt + MAX_FRAME_MS, dt);
+	}
+	else
+	{
+		sdt = dt;
+	}
+
+	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
+	{
+		if (dt < MAX_FRAME_MS && (*it) != App->scene && (*it) != App->collisions || (*it) != App->scripting)
+		{
+			ret = (*it)->Update(dt);
+		}
+		else if (dt >= MAX_FRAME_MS)
+		{
+			ret = (*it)->Update(sdt);
+		}
+
+	}
+
+	int i = 1; //TEMPORAL
+	while (sdt + MAX_FRAME_MS < dt)
+	{
+		sdt = MIN(sdt + MAX_FRAME_MS, dt);
+		LOG("Reaplying logic: %d", i);
+		App->scene->root->UpdateTransforms(math::float4x4::identity);
+
+		//App->collisions->Update(sdt);
+		App->scripting->Update(sdt);
+		++i;
+	}
 
 	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
 		ret = (*it)->PostUpdate();
