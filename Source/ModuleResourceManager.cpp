@@ -417,7 +417,7 @@ unsigned ModuleResourceManager::GenerateNewUID()
 
 Resource* ModuleResourceManager::Get(unsigned uid) const
 {
-	if (uid == 0) return nullptr;
+	if (uid == 0u) return nullptr;
 
 	std::map<unsigned, Resource*>::const_iterator it = resources.find(uid);
 	if (it == resources.end())

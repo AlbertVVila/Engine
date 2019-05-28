@@ -216,7 +216,7 @@ void ComponentAnimation::DrawProperties()
 							if (animation != nullptr)
 								App->resManager->DeleteResource(animation->GetUID());
 
-							unsigned animUID = 0;
+							unsigned animUID = 0u;
 							stateMachine->SetClipResource(j, animUID);
 							stateMachine->Save();
 						}
@@ -398,8 +398,8 @@ void ComponentAnimation::Update()
 	PROFILE;
 	if (App->time->gameState == GameState::RUN) //Game run time exclusive
 	{
-		if (stateMachine != nullptr&& 
-			stateMachine->GetClipsSize() > 0u && stateMachine->GetNodesSize() > 0u)
+		if (stateMachine != nullptr && stateMachine->GetClipsSize() > 0u &&
+			stateMachine->GetNodesSize() > 0u)
 		{
 			if (!channelsSetted  && controller->current->anim != nullptr)
 			{
