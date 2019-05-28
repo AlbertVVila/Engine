@@ -9,7 +9,10 @@
 #define EnemyLifeBarController_API __declspec(dllimport)
 #endif
 
+#include "Math/float2.h"
+
 class GameObject;
+class Transform2D;
 
 enum class EnemyLifeBarType
 {
@@ -35,7 +38,10 @@ private:
 	GameObject* boneLeft = nullptr;
 	GameObject* skull = nullptr;
 
-	float lifeBarMaxWidht = 0;
+	Transform2D* life = nullptr;
+
+	math::float2 lifeBarMaxWidht = math::float2::zero;
+	math::float2 lifeBarPositionX = math::float2::zero;
 };
 
 #endif __EnemyLifeBarController_h__

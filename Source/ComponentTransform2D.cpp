@@ -188,3 +188,9 @@ math::float2 Transform2D::getSize() const
 {
 	return size;
 }
+
+void Transform2D::SetSize(math::float2 newSize)
+{
+	size = newSize;
+}
+
