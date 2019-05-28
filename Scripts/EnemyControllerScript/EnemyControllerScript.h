@@ -12,11 +12,14 @@
 #endif
 
 class ComponentAnimation;
+class ComponentRenderer;
 class DamageController;
+class EnemyLifeBarController;
 
 class EnemyControllerScript_API EnemyControllerScript : public Script
 {
 	void Start() override;
+	void Update() override;
 
 	void Expose(ImGuiContext* context) override;
 
@@ -45,9 +48,11 @@ public:
 	std::string playerBboxName = "PlayerMesh";
 	std::string myBboxName = "EnemyMesh";
 	ComponentAnimation* anim = nullptr;
+	ComponentRenderer* myRender;
 
 	DamageController* damageController = nullptr;
-	
+	EnemyLifeBarController* enemyLifeBar = nullptr;
+
 	// BBoxes
 	math::AABB* myBbox = nullptr;
 	math::AABB* playerBbox = nullptr;
@@ -55,6 +60,8 @@ public:
 private:
 	int actualHealth = 20;
 	int maxHealth = 20;
+
+	bool isDead = false;
 };
 
 #endif __EnemyControllerScript_h__
