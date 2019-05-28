@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "GL/glew.h"
 
 #include "ModuleResourceManager.h"
 #include "ModuleFileSystem.h"
@@ -17,6 +18,7 @@
 #include "JSON.h"
 #include "HashString.h"
 
+#include <stack>
 #include "imgui.h"
 #include "Math/float4x4.h"
 
@@ -295,7 +297,78 @@ void ComponentRenderer::UpdateGameObject()
 	}
 }
 
-void ComponentRenderer::LinkBones() const
+void ComponentRenderer::LinkBones()
 {
-	mesh->LinkBones(gameobject);
+	bindBones.clear();
+	bindBones = mesh->bindBones;
+
+	if (bindBones.size() == 0)
+	{
+		return;
+	}
+	unsigned linkedCount = 0u;
+
+	for (unsigned i = 0u; i < bindBones.size(); ++i)
+	{
+		GameObject* node = gameobject;
+		while (node != nullptr && !node->isBoneRoot)
+		{
+			node = node->parent;
+		}
+
+		if (node == nullptr)
+		{
+			return;
+		}
+
+		bool found = false;
+
+		std::stack<GameObject*> S;
+		S.push(node);
+
+		while (!S.empty() && !found)
+		{
+			node = S.top();
+			S.pop();
+			if (node->name == bindBones[i].name)
+			{
+				found = true;
+				bindBones[i].go = node;
+				++linkedCount;
+			}
+			else
+			{
+				for (GameObject* go : node->children)
+				{
+					S.push(go);
+				}
+			}
+		}
+	}
+
+	LOG("Linked %d bones from %s", linkedCount, gameobject->name.c_str());
+
+}
+
+void ComponentRenderer::DrawMesh(unsigned shaderProgram)
+{
+	if (bindBones.size() > 0)
+	{
+		std::vector<math::float4x4> palette(bindBones.size(), math::float4x4::identity); //TODO: Declare on .h
+		unsigned i = 0u;
+		for (BindBone bb : bindBones)
+		{
+			palette[i++] = bb.go->GetGlobalTransform() * bb.transform;
+		}
+
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram,
+			"palette"), bindBones.size(), GL_TRUE, palette[0].ptr());
+	}
+
+	glBindVertexArray(mesh->VAO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->EBO);
+	glDrawElements(GL_TRIANGLES, mesh->meshIndices.size(), GL_UNSIGNED_INT, 0);
+
+	// We disable VAO
+	glBindVertexArray(0);
 }
