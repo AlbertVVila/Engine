@@ -193,3 +193,18 @@ void ComponentImage::Load(JSON_value* value)
 	isMasked = value->GetInt("isMasked");
 	maskAmount = value->GetInt("maskAmount");
 }
+
+ENGINE_API void ComponentImage::SetMaskAmount(int maskAmount)
+{
+	this->maskAmount = maskAmount;
+}
+
+int ComponentImage::GetMaskAmount() const
+{
+	return maskAmount;
+}
+
+bool ComponentImage::IsMasked() const
+{
+	return isMasked;
+}

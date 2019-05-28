@@ -20,6 +20,7 @@ struct ImGuiContext;
 class ComponentAnimation;
 class ComponentTransform;
 class ComponentBoxTrigger;
+class ComponentImage;
 class JSON_value;
 struct ImGuiContext;
 class PlayerState;
@@ -78,7 +79,8 @@ public:
 
 	float walkingSpeed = 100.0f;
 	float dashSpeed = 10.0f;
-	float health = 100.0f;
+	float fullHealth = 100.0f;
+	float health = fullHealth;
 	float attackDuration = 1.0f;
 	float attackTimer = 0.0f;
 	ComponentAnimation* anim = nullptr;
@@ -100,5 +102,7 @@ private:
 	GameObject* dustParticles = nullptr;
 	GameObject* dashFX = nullptr;
 	GameObject* dashMesh = nullptr;
+
+	ComponentImage* lifeUIComponent = nullptr;
 };
 #endif __PlayerMovement_h__
