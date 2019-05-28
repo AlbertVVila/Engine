@@ -137,7 +137,7 @@ bool FileImporter::ImportPrefab(const char * file, const char * folder, Prefab *
 
 bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const char* folder, ResourceModel* resource)
 {
-	GameObject* sceneGO = App->scene->CreateGameObject("Scene", App->scene->root);
+		GameObject* sceneGO = App->scene->CreateGameObject("Scene", App->scene->root);
 	sceneGO->CreateComponent(ComponentType::Transform); // To move all around
 
 	std::stack<aiNode*> stackNode;
@@ -263,7 +263,11 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 	if (!App->fsystem->Exists(SCENES))
 		App->fsystem->MakeDirectory(SCENES);
 
-	App->scene->SaveScene(*sceneGO, App->fsystem->GetFilename(file).c_str(), SCENES); 
+	if (!App->fsystem->Exists((SCENES + App->fsystem->GetFilename(file) + SCENEEXTENSION).c_str()))
+	{
+		App->scene->SaveScene(*sceneGO, App->fsystem->GetFilename(file).c_str(), SCENES);
+	}
+
 	aiReleaseImport(&aiscene);
 
 	sceneGO->deleteFlag = true;

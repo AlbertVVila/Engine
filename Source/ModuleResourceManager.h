@@ -26,6 +26,7 @@ class ModuleResourceManager :
 		~ModuleResourceManager();
 
 	bool Init(JSON* config) override;
+	bool CleanUp() override;
 
 	// Shader functions
 	Shader* GetProgram(std::string filename) const;
@@ -60,7 +61,7 @@ class ModuleResourceManager :
 	std::vector<ResourceAnimation*> GetAnimationsList();
 	std::vector<ResourceStateMachine*> GetSMList();
 
-	std::vector<std::string> GetResourceNamesList(TYPE resourceType, bool ordered);		// Returns a vector with the exportedFileName of every Resource of the type given.	
+	ENGINE_API std::vector<std::string> GetResourceNamesList(TYPE resourceType, bool ordered);		// Returns a vector with the exportedFileName of every Resource of the type given.	
 
 	TYPE GetResourceType(FILETYPE fileType) const;
 
@@ -76,6 +77,10 @@ class ModuleResourceManager :
 	void DeleteResourceFromList(unsigned uid);
 
 	unsigned GetUIDFromMeta(const char* metaFile, FILETYPE fileType) const;
+
+	// Clean functions
+	void CleanUnusedMetaFiles() const;			// Deletes all meta files that doesn't have a file assigned
+	void CleanUnusedExportedFiles() const;		// Deletes all imported files that aren't registered on the Resource Manager
 
 private:
 	// Resources map (Textures, Models, Mehses, Materials, Skyboxes, Scenes...)

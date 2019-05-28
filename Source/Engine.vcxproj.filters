@@ -490,6 +490,12 @@
     <ClCompile Include="BaseScript.cpp">
       <Filter>Component</Filter>
     </ClCompile>
+    <ClCompile Include="ComponentBoxTrigger.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleCollisions.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
     <ClCompile Include="Soloud\fractal_includes\dr_impl.cpp">
       <Filter>SoLoud</Filter>
     </ClCompile>
@@ -1099,6 +1105,12 @@
     </ClInclude>
     <ClInclude Include="BaseScript.h">
       <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentBoxTrigger.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleCollisions.h">
+      <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="Soloud\fractal_includes\dr_wav.h">
       <Filter>SoLoud</Filter>

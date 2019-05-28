@@ -31,6 +31,7 @@
 #include "PanelBrowser.h"
 #include "Viewport.h"
 
+#include "HashString.h"
 #include "JSON.h"
 #include "myQuadTree.h"
 #include "AABBTree.h"
@@ -91,8 +92,8 @@ bool ModuleScene::Init(JSON * config)
 		primitivesUID[(unsigned)PRIMITIVES::SPHERE] = scene->GetUint("sphereUID");
 		primitivesUID[(unsigned)PRIMITIVES::CUBE] = scene->GetUint("cubeUID");
 		ambientColor = scene->GetColor3("ambient");
-		const char* dscene = scene->GetString("defaultscene");
-		defaultScene = dscene;
+		defaultSceneUID = scene->GetUint("defaultsceneUID");
+
 		if (scene->GetInt("sizeScene")) 
 		{
 			SceneSize = scene->GetInt("sizeScene");
@@ -104,10 +105,11 @@ bool ModuleScene::Init(JSON * config)
 bool ModuleScene::Start()
 {
 	camera_notfound_texture = (ResourceTexture*)App->resManager->Get(NOCAMERA);
-	if (defaultScene.size() > 0)
+	if (defaultSceneUID > 0u)
 	{
-		path = SCENES;
-		//LoadScene(defaultScene.c_str(), path.c_str());
+		defaultScene = (ResourceScene*)App->resManager->Get(defaultSceneUID);
+		if(defaultScene != nullptr)
+			defaultScene->Load();
 	}
 	return true;
 }
@@ -117,7 +119,6 @@ update_status ModuleScene::PreUpdate()
 	if (loadScene)
 	{
 		LoadScene(name.c_str(), SCENES);
-		App->scripting->onStart = true;
 		root->OnPlay();
 		loadScene = false;
 	}
@@ -190,6 +191,8 @@ bool ModuleScene::CleanUp()
 
 	lights.clear();
 
+	//RELEASE(defaultScene);
+
 	return true;
 }
 
@@ -200,7 +203,7 @@ void ModuleScene::SaveConfig(JSON* config)
 	scene->AddUint("sphereUID", primitivesUID[(unsigned)PRIMITIVES::SPHERE]);
 	scene->AddUint("cubeUID", primitivesUID[(unsigned)PRIMITIVES::CUBE]);
 	scene->AddFloat3("ambient", ambientColor);
-	scene->AddString("defaultscene", defaultScene.c_str());
+	scene->AddUint("defaultsceneUID", defaultScene != nullptr ? defaultScene->GetUID() : 0u);
 	scene->AddInt("sizeScene", SceneSize);
 	config->AddValue("scene", *scene);
 }
@@ -310,8 +313,13 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 
 	if (selected != nullptr && selected->GetComponentOld(ComponentType::Renderer) == nullptr)
 	{
-		DrawGO(*selected, frustum, isEditor); //bcause it could be an object without mesh not in staticGOs or dynamicGOs
+		DrawGO(*selected, camFrustum, isEditor); //bcause it could be an object without mesh not in staticGOs or dynamicGOs
 	}
+	alphaRenderers.sort(
+		[camFrustum](const ComponentRenderer* cr1, const ComponentRenderer* cr2) -> bool
+	{
+		return cr1->gameobject->transform->GetGlobalPosition().Distance(camFrustum.pos) > cr2->gameobject->transform->GetGlobalPosition().Distance(camFrustum.pos);
+	});
 #else
 	for (const auto &go : staticFilteredGOs)
 	{
@@ -344,13 +352,15 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 			}
 		}
 	}	
-#endif
+
 	alphaRenderers.sort(
 		[frustum](const ComponentRenderer* cr1, const ComponentRenderer* cr2) -> bool
 	{
 		return cr1->gameobject->transform->GetGlobalPosition().Distance(frustum.pos) > cr2->gameobject->transform->GetGlobalPosition().Distance(frustum.pos);
 	});
-	if (alphaRenderers.size() > 1)
+#endif
+	
+	if (alphaRenderers.size() > 0)
 	{
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -630,9 +640,48 @@ void ModuleScene::DrawGUI()
 	{
 		App->spacePartitioning->kDTree.Calculate();
 	}
+
+	// Default Scene selection
+	if (sceneFiles.empty())
+		UpdateScenesList();
+
+	if (ImGui::BeginCombo("Default scene", defaultScene != nullptr ? defaultScene->GetName() : None))
+	{
+		bool none_selected = (defaultScene == nullptr);
+		if (ImGui::Selectable(None, none_selected))
+		{
+			if (defaultScene != nullptr)
+			{
+				App->resManager->DeleteResource(defaultScene->GetUID());
+				defaultScene = nullptr;
+			}
+		}
+		if (none_selected)
+			ImGui::SetItemDefaultFocus();
+		for (int n = 0; n < sceneFiles.size(); n++)
+		{
+			bool is_selected = (defaultScene != nullptr && (HashString(defaultScene->GetName()) == HashString(sceneFiles[n].c_str())));
+			if (ImGui::Selectable(sceneFiles[n].c_str(), is_selected) && !is_selected)
+			{
+				// Delete previous texture
+				if (defaultScene != nullptr)
+					App->resManager->DeleteResource(defaultScene->GetUID());
+
+				defaultScene = (ResourceScene*)App->resManager->GetByName(sceneFiles[n].c_str(), TYPE::SCENE);
+			}
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
+		}
+		ImGui::EndCombo();
+	}
+	if (ImGui::Button("Refresh Scenes List"))
+	{
+		UpdateScenesList();
+	}
+
 }
 
-GameObject * ModuleScene::CreateGameObject(const char * name, GameObject* parent)
+GameObject* ModuleScene::CreateGameObject(const char* name, GameObject* parent)
 {
 	GameObject * gameobject = new GameObject(name, GetNewUID());
 	if (parent != nullptr)
@@ -643,7 +692,7 @@ GameObject * ModuleScene::CreateGameObject(const char * name, GameObject* parent
 	return gameobject;
 }
 
-void ModuleScene::AddToSpacePartition(GameObject *gameobject)
+void ModuleScene::AddToSpacePartition(GameObject* gameobject)
 {
 	assert(gameobject != nullptr);
 	if (gameobject == nullptr)	return;
@@ -1006,6 +1055,12 @@ void ModuleScene::ClearScene()
 	App->renderer->shadowCasters.clear();
 }
 
+void ModuleScene::UpdateScenesList()
+{
+	sceneFiles.clear();
+	sceneFiles = App->resManager->GetResourceNamesList(TYPE::SCENE, true);
+}
+
 void ModuleScene::SaveScene(const GameObject& rootGO, const char* sceneName, const char* folder)
 {
 	std::string sceneInAssets(folder);
@@ -1040,9 +1095,15 @@ void ModuleScene::SaveScene(const GameObject& rootGO, const char* sceneName, con
 	}
 }
 
+bool ModuleScene::isCleared()
+{
+	return App->scene->root->children.size() <= 1 &&
+		App->scene->canvas->children.empty();
+}
+
 void ModuleScene::LoadScene(const char* sceneName, const char* folder)
 {
-	if (!IsSceneClear())
+	if (!isCleared())
 	{
 		ClearScene();
 	}
@@ -1055,6 +1116,7 @@ void ModuleScene::LoadScene(const char* sceneName, const char* folder)
 		}
 	}
 	App->spacePartitioning->kDTree.Calculate();
+	App->scripting->onStart = true;
 	scenePhotos.clear();
 }
 
@@ -1068,12 +1130,6 @@ bool ModuleScene::AddScene(const char* sceneName, const char* folder)
 	}
 	App->renderer->OnResize();
 	return true;
-}
-
-bool ModuleScene::IsSceneClear()
-{
-	return App->scene->root->children.size() <= 1 &&
-		App->scene->canvas->children.empty();
 }
 
 void ModuleScene::Select(GameObject * gameobject)

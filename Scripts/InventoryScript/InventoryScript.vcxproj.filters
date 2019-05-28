@@ -15,12 +15,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="EnemyMovementScript.cpp">
+    <ClCompile Include="InventoryScript.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EnemyMovementScript.h">
+    <ClInclude Include="InventoryScript.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>

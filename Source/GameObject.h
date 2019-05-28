@@ -60,7 +60,7 @@ public:
 	float4x4 GetGlobalTransform() const;
 	float4x4 GetLocalTransform() const;
 
-	void OnPlay();
+	ENGINE_API void OnPlay();
 	void UpdateTransforms(math::float4x4 parentGlobal);
 	bool CheckDelete();
 
@@ -87,7 +87,6 @@ private:
 	void OnChangeActiveState(bool wasActive);
 
 	bool activeInHierarchy = true;
-	bool activeSelf = true;
 	bool openInHierarchy = true;
 public:
 	unsigned UUID = 0;
@@ -95,12 +94,12 @@ public:
 	unsigned animationIndexChannel = 999u;
 	bool isStatic = false;
 	bool isBoneRoot = false;
+	bool activeSelf = true;
 
 	bool isPrefabSync = false;
 	Prefab* prefab = nullptr;
 
 	bool navigable = false;
-	bool walkable = false;
 	bool noWalkable = false;
 	bool isSelected = false;
 	bool movedFlag = false;

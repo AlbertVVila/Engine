@@ -18,6 +18,16 @@ class EnemyControllerScript;
 class JSON_value;
 enum class EnemyState;
 
+enum class EnemyState
+{
+	PATROL,
+	CHASE,
+	RETURN,
+	ATTACK,
+	COOLDOWN,
+	DEAD
+};
+
 class BasicEnemyAIScript_API BasicEnemyAIScript : public Script
 {
 public:
@@ -30,11 +40,9 @@ public:
 	void DeSerialize(JSON_value* json) override;
 
 private:
-	void Wait();
-	void StandUp();
+	void Patrol();
 	void Chase();
 	void ReturnToStartPosition();
-	void Laydown();
 	void Attack();
 	void Cooldown();
 	void Die();
@@ -43,12 +51,11 @@ private:
 	void CheckStateChange(EnemyState previous, EnemyState newState);
 
 private:
-	// Wait variables
-	float activationDistance = 100.0f;	// Distance to player needed to start chasing the player (only X,Z axis is taken into account)
 
-	// Stand-Up variables
-	float standupSpeed = 1.0f;			// Tranlation speed on stand-up
-	float yTranslation = 20.0f;			// Y axis translation on stand-up 
+	EnemyState enemyState = EnemyState::PATROL;
+
+	// Patrol variables
+	float activationDistance = 100.0f;	// Distance to player needed to start chasing the player (only X,Z axis is taken into account)
 
 	// Chase variables
 	float chaseSpeed = 2.0f;			// Tranlation speed when chasing player
@@ -61,7 +68,6 @@ private:
 	// Cooldown variables
 	float cooldownTime = 1.0f;			// Seconds to wait between attacks
 
-	float auxTranslation = 0.0f;
 	float auxTimer = 0.0f;
 
 	//Damage variables

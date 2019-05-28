@@ -41,7 +41,7 @@ ModuleRender::ModuleRender()
 // Destructor
 ModuleRender::~ModuleRender()
 {
-	RELEASE(skybox);
+	//RELEASE(skybox);
 	RELEASE(viewScene);
 	RELEASE(viewGame);
 }
@@ -257,10 +257,7 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 	if (isEditor)
 	{
 		DrawGizmos(cam);
-		App->navigation->renderNavMesh();
-		glUseProgram(0);
 		skybox->Draw(*cam.frustum, true);
-
 	}
 	else 
 	{
@@ -271,8 +268,8 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 	}
 	
 	App->scene->Draw(*cam.frustum, isEditor);
-
 	App->particles->Render(App->time->gameDeltaTime, &cam);
+
 	
 	if (!isEditor)
 	{
@@ -318,10 +315,15 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 
 		glActiveTexture(GL_TEXTURE0); //LOL without this the skybox doesn't render
 	}
+	else
+	{
+		App->navigation->renderNavMesh();
+	}
 
 	if (!isEditor || isEditor && App->ui->showUIinSceneViewport)
 	{
-		App->ui->Draw(width, height);
+		glClear(GL_DEPTH_BUFFER_BIT);
+		App->ui->Draw(width, height);		
 	}
 
 #ifdef GAME_BUILD
@@ -665,6 +667,7 @@ void ModuleRender::BlitShadowTexture()
 
 void ModuleRender::CreatePostProcessFramebuffer()
 {
+	LOG("DD");
 	if (postprocessFBO == 0)
 	{
 		glGenFramebuffers(1, &postprocessFBO);

@@ -75,10 +75,9 @@ public:
 	unsigned SaveParShapesMesh(const par_shapes_mesh_s & mesh, char** data) const;
 
 	void SaveScene(const GameObject& rootGO, const char* sceneName, const char* folder);
+	bool isCleared();
 	ENGINE_API void LoadScene(const char* sceneName, const char* folder);
 	bool AddScene(const char* sceneName, const char* folder);								// Adds a scene to current opened scene from a scene file (returns true if it was loaded correctly)
-
-	bool IsSceneClear();
 
 	void AssignNewUUID(GameObject* go, unsigned UID);
 	void TakePhoto();
@@ -88,6 +87,7 @@ public:
 	void Redo();
 
 	void ClearScene();
+	void UpdateScenesList();
 
 	void Select(GameObject* gameobject);
 	void UnSelect();
@@ -115,6 +115,9 @@ private:
 	std::list<GameObject*> scenePhotos;
 	std::list<GameObject*> scenePhotosUndoed;
 
+	unsigned defaultSceneUID = 0u;
+	std::vector<std::string> sceneFiles;
+
 public:
 	GameObject* root = nullptr;
 	GameObject* selected = nullptr; //Selected in hierarchy
@@ -132,7 +135,7 @@ public:
 	pcg32 uuid_rng;
 	std::string name;
 	std::string path;
-	std::string defaultScene;
+	ResourceScene* defaultScene = nullptr;
 	bool photoEnabled = false;
 	float photoTimer = 0.f;
 	float3 ambientColor = float3::one;

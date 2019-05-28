@@ -18,6 +18,8 @@ struct ImGuiContext;
 #endif
 
 class ComponentAnimation;
+class ComponentTransform;
+class ComponentBoxTrigger;
 class JSON_value;
 struct ImGuiContext;
 class PlayerState;
@@ -39,6 +41,8 @@ public:
 	void Update() override;
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
+
+	void OnTriggerEnter(GameObject* go) override;
 
 	//Abstract input
 	bool IsAtacking();
@@ -68,16 +72,18 @@ public:
 	PlayerStateUppercut* uppercut = nullptr;
 	PlayerStateWalk* walk = nullptr;
 
-	std::vector<float3>path;
-	unsigned pathIndex = 0;
+	
+	
 public:
 
-	float speed = 2.0f;
+	float walkingSpeed = 100.0f;
 	float dashSpeed = 10.0f;
 	float health = 100.0f;
 	float attackDuration = 1.0f;
 	float attackTimer = 0.0f;
 	ComponentAnimation* anim = nullptr;
+	ComponentBoxTrigger* boxTrigger = nullptr;
+	ComponentTransform* transform = nullptr;
 	PlayerState* currentState = nullptr;
 public:
 
@@ -86,9 +92,13 @@ public:
 	float secondAttackDuration = 1.f;
 	float thirdAttackDuration = 1.f;
 	float uppercutDuration = 1.f;
+	
 
 	Application* Appl = nullptr;
 private:
 	std::vector<PlayerState*> playerStates;	
+	GameObject* dustParticles = nullptr;
+	GameObject* dashFX = nullptr;
+	GameObject* dashMesh = nullptr;
 };
 #endif __PlayerMovement_h__

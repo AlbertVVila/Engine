@@ -64,6 +64,35 @@ ComponentParticles::ComponentParticles(const ComponentParticles& component) : Co
 
 ComponentParticles::~ComponentParticles()
 {
+	if (texture != nullptr)
+	{
+		App->resManager->DeleteResource(texture->GetUID());
+		texture = nullptr;
+	}
+}
+
+void ComponentParticles::Play(float newPlayTime)
+{
+	PlayTime = newPlayTime;
+	Playing = true;
+	Reset();
+	lastActive = timer;
+}
+
+void ComponentParticles::Stop()
+{
+	Playing = false;
+}
+
+void ComponentParticles::Reset()
+{
+	unsigned nParticles = particles.size();
+
+	for (; nParticles > 0; --nParticles)
+	{
+		RELEASE(particles.front());
+		particles.pop_front();
+	}
 }
 
 Component* ComponentParticles::Clone() const
@@ -73,20 +102,21 @@ Component* ComponentParticles::Clone() const
 
 void ComponentParticles::DrawProperties()
 {
+	ImGui::PushID(this);
+
 	if (ImGui::CollapsingHeader("Particle System")) 
 	{
 		bool removed = Component::DrawComponentState();
-		if (removed)
-		{
-			if (texture != nullptr)
-			{
-				App->resManager->DeleteResource(texture->GetUID());
-				texture = nullptr;
-			}
+		if (removed)	
 			return;
+					
+		ImGui::Checkbox("Constant play", &ConstantPlaying);
+		if (!ConstantPlaying)
+		{
+			if (ImGui::Button("Play Demo")) Play(PlayTime);
+			ImGui::InputFloat("PlayTime", &PlayTime);
 		}
 
-		ImGui::PushID(this);
 		ImGui::Text("Particles active %d", particles.size());
 		//texture selector
 		if (ImGui::BeginCombo("Texture", texture != nullptr ? texture->GetName() : None))
@@ -143,9 +173,15 @@ void ComponentParticles::DrawProperties()
 			ImGui::Separator();
 		}
 		ImGui::InputInt("Max Particles", &maxParticles);
-		ImGui::DragFloat("Rate", &rate);
+		ImGui::DragFloat("Rate", &rate, 0.1f, 0.1f, MAX_RATE);
 
 		ImGui::Text("Particle properties:");
+		ImGui::Checkbox("Billboarded", &billboarded);
+		ImGui::Checkbox("Local Emitter", &localEmitter);
+		if (!billboarded)
+		{
+			ImGui::InputFloat3("LookAt vector(local X,Y,Z)", &lookAtTarget[0]);
+		}
 		ImGui::DragFloat2("Lifetime", &lifetime[0], 0.1f);
 		ImGui::DragFloat2("Speed", &speed[0], 1.2f);
 		ImGui::DragFloat2("Size", &particleSize[0], 0.01 * App->renderer->current_scale);
@@ -168,7 +204,7 @@ void ComponentParticles::DrawProperties()
 		switch (actualEmisor)
 		{
 		case EmisorType::QUAD:
-			ImGui::DragFloat("Quad size", &quadEmitterSize, 0.1 * App->renderer->current_scale);
+			ImGui::DragFloat2("Quad size", &quadEmitterSize[0], 0.1 * App->renderer->current_scale);
 			break;
 		}
 
@@ -177,10 +213,10 @@ void ComponentParticles::DrawProperties()
 			ImGui::Separator();
 			pm->InspectorDraw();
 		}
-		ImGui::PopID();
 	
 	}
-	
+	ImGui::PopID();
+
 	if (gameobject->isSelected) DrawDebugEmisor();
 
 }
@@ -209,11 +245,27 @@ bool ComponentParticles::CleanUp()
 
 void ComponentParticles::Update(float dt, const math::float3& camPos)
 {
+	if (!Playing && !ConstantPlaying) return;
 	timer += dt;
+
+	if (timer - lastActive > PlayTime && !ConstantPlaying)
+	{
+		Playing = false;
+		return;
+	}
+
 	float currentFrame = timer / (1 / fps);
 	float frame;
 	frameMix = modf(currentFrame, &frame);
-	math::float3 pos = gameobject->transform->GetGlobalPosition();
+	math::float3 pos;
+	if (!localEmitter)
+	{
+		pos = gameobject->transform->GetGlobalPosition();
+	}
+	else
+	{
+		pos = math::float3::zero;
+	}
 	f1Xpos = ((int)frame) % xTiles;
 	f2Xpos = (f1Xpos + 1) % xTiles;
 	f1Ypos = (((int)frame) / xTiles) % yTiles;
@@ -226,7 +278,7 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 	colorOTCheck = modules[1]->enabled;
 
 	//Create new Particle P
-	if (rateTimer <= 0.f && particles.size() < maxParticles)
+	if (gameobject->isActive() && rateTimer <= 0.f && particles.size() < maxParticles)
 	{
 		int amount = MAX(dt / (1.f / rate), 1);
 		for (; amount > 0; --amount)
@@ -251,27 +303,25 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 				p->direction = math::float3(xD, yD, zD);
 				p->direction.Normalize();
 			}
-			else
+			switch (actualEmisor)
 			{
-				switch (actualEmisor)
-				{
-				case EmisorType::QUAD:
-					quadEmitterSize = MAX(1, quadEmitterSize);
+			case EmisorType::QUAD:
+				quadEmitterSize.x = MAX(1, quadEmitterSize.x);
+				quadEmitterSize.y = MAX(1, quadEmitterSize.y);
 
-					//P starting position
-					p->position = pos + gameobject->transform->GetRotation() * float3(rand() % (int)quadEmitterSize - quadEmitterSize / 2, 0, rand() % (int)quadEmitterSize - quadEmitterSize / 2) ;
+				//P starting position
+				p->position = pos + gameobject->transform->GetRotation() * float3(rand() % (int)quadEmitterSize.x - quadEmitterSize.x / 2, 0, rand() % (int)quadEmitterSize.y - quadEmitterSize.y / 2) ;
 
-					//P direction
-					p->direction = gameobject->transform->GetRotation() * float3(0.f, 1.f, 0.f); //math::float3::unitY;
-					break;
+				//P direction
+				p->direction = gameobject->transform->up;// *float3(0.f, 1.f, 0.f); //math::float3::unitY;
+				break;
 
-				case EmisorType::SPHERE:
-					//P starting position
-					p->position = pos;
-					//P direction
-					p->direction = (randomSpherePoint(pos) - pos).Normalized();
-					break;
-				}
+			case EmisorType::SPHERE:
+				//P starting position
+				p->position = pos;
+				//P direction
+				p->direction = (randomSpherePoint(pos) - pos).Normalized();
+				break;
 			}
 		
 			//P lifetime
@@ -302,9 +352,6 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 			float random = (float)rand() / (float) RAND_MAX;
 			float diff = abs(particleSize.y - particleSize.x);
 			p->size = random * diff + Min(particleSize.x, particleSize.y);
-
-			
-			
 			particles.push_back(p);
 		}
 		rateTimer = 1.f / rate;
@@ -346,10 +393,35 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 			
 			
 		}
+		particles.front()->direction.Normalize();
 		particles.front()->position += particles.front()->direction * particles.front()->speed * dt;
-		float3 direction = (camPos - particles.front()->position);
-		particles.front()->global = particles.front()->global.FromTRS(particles.front()->position, math::Quat::LookAt(float3::unitZ, direction.Normalized(), float3::unitY, float3::unitY), math::float3::one * sizeOT);
+		
 
+		if (billboarded)
+		{
+			if (localEmitter)
+			{
+				pos = particles.front()->position + gameobject->transform->GetGlobalPosition();
+				float3 direction = (camPos - pos);
+				particles.front()->global = particles.front()->global.FromTRS(pos, math::Quat::LookAt(float3::unitZ, direction.Normalized(), float3::unitY, float3::unitY), math::float3::one * sizeOT);
+			}
+			else
+			{
+				float3 direction = (camPos - particles.front()->position);
+				particles.front()->global = particles.front()->global.FromTRS(particles.front()->position, math::Quat::LookAt(float3::unitZ, direction.Normalized(), float3::unitY, float3::unitY), math::float3::one * sizeOT);
+			}
+		}
+		else
+		{
+			if (localEmitter)
+			{
+				particles.front()->global = particles.front()->global.FromTRS(particles.front()->position + gameobject->transform->GetGlobalPosition(), math::Quat::LookAt(float3::unitZ, lookAtTarget.Normalized(), float3::unitY, float3::unitY), math::float3::one * sizeOT);
+			}
+			else
+			{
+				particles.front()->global = particles.front()->global.FromTRS(particles.front()->position, math::Quat::LookAt(float3::unitZ, lookAtTarget.Normalized(), float3::unitY, float3::unitY), math::float3::one * sizeOT);
+			}
+		}
 		particles.front()->color = newColor;
 
 		particles.push_back(particles.front());
@@ -365,11 +437,12 @@ void ComponentParticles::Save(JSON_value* value) const
 	value->AddFloat("fps", fps);
 	value->AddUint("textureUID", (texture != nullptr) ? texture->GetUID() : 0u);
 	value->AddFloat2("lifetime", lifetime);
+	value->AddInt("ConstantPlaying", ConstantPlaying);
 	value->AddFloat2("speed", speed);
 	value->AddFloat("rate", rate);
 	value->AddInt("maxParticles", maxParticles);
 	value->AddFloat2("size", particleSize);
-	value->AddFloat("quadEmitterSize", quadEmitterSize);
+	value->AddFloat2("quadEmitterSize", quadEmitterSize);
 	value->AddFloat("sphereEmitterRadius", sphereEmitterRadius);
 	value->AddFloat4("particleColor", particleColor);
 	value->AddInt("directionNoise", directionNoise);
@@ -380,6 +453,10 @@ void ComponentParticles::Save(JSON_value* value) const
 	value->AddInt("colorOT", colorOTCheck);
 
 	value->AddFloat4("defaultColor", particleColor);
+
+	value->AddInt("billboarded", billboarded);
+	value->AddInt("localEmitter", localEmitter);
+	value->AddFloat3("lookAtTarget", lookAtTarget);
 
 	PMSizeOverTime* SOTAux = (PMSizeOverTime*)modules[0];
 	value->AddFloat4("bezier14", float4(SOTAux->v[0], SOTAux->v[1], SOTAux->v[2], SOTAux->v[3]));
@@ -435,26 +512,7 @@ void ComponentParticles::Save(JSON_value* value) const
 
 		marks.pop_front();
 	}
-	
-	//colorAux.x = marks.front()->color[0];
-	//colorAux.y = marks.front()->color[1];
-	//colorAux.z = marks.front()->color[2];
-	//value->AddFloat3("color1", colorAux);
 
-	//marks.pop_front();
-
-	//colorAux.x = marks.front()->color[0];
-	//colorAux.y = marks.front()->color[1];
-	//colorAux.z = marks.front()->color[2];
-	//value->AddFloat3("color2", colorAux);
-	//marks.pop_front();
-
-	//value->AddFloat("alpha1", marks.front()->alpha);
-	//marks.pop_front();
-
-	//value->AddFloat("alpha2", marks.front()->alpha);
-
-	
 }
 
 void ComponentParticles::Load(JSON_value* value)
@@ -463,15 +521,18 @@ void ComponentParticles::Load(JSON_value* value)
 	xTiles = value->GetInt("xTiles");
 	yTiles = value->GetInt("yTiles");
 	fps = value->GetFloat("fps");
+
 	unsigned uid = value->GetUint("textureUID");
 	texture = (ResourceTexture*)App->resManager->Get(uid);
+  
+	ConstantPlaying = value->GetInt("ConstantPlaying");
 	lifetime = value->GetFloat2("lifetime");
 	speed = value->GetFloat2("speed");
 	rate = value->GetFloat("rate");
 	rateTimer = 1.f / rate;
 	maxParticles = value->GetInt("maxParticles");
 	particleSize = value->GetFloat2("size");
-	quadEmitterSize = value->GetFloat("quadEmitterSize");
+	quadEmitterSize = value->GetFloat2("quadEmitterSize");
 	sphereEmitterRadius = value->GetFloat("sphereEmitterRadius");
 	particleColor = value->GetFloat4("particleColor");
 	directionNoise = value->GetInt("directionNoise");
@@ -483,6 +544,10 @@ void ComponentParticles::Load(JSON_value* value)
 	modules[1]->enabled = value->GetInt("colorOT");
 
 	particleColor = value->GetFloat4("defaultColor");
+
+	billboarded = value->GetInt("billboarded");
+	localEmitter = value->GetInt("localEmitter");
+	lookAtTarget = value->GetFloat3("lookAtTarget");
 
 	PMSizeOverTime* SOTAux = (PMSizeOverTime*)modules[0];
 	SOTAux->v[0] = value->GetFloat4("bezier14").x;
@@ -514,10 +579,10 @@ void ComponentParticles::DrawDebugEmisor()
 {
 	float3 base = gameobject->transform->GetGlobalPosition();
 
-	float3 v1 = gameobject->transform->GetRotation() * float3(base.x + quadEmitterSize / 2.f, base.y, base.x - quadEmitterSize / 2.f);
-	float3 v2 = gameobject->transform->GetRotation() * float3(base.x + quadEmitterSize / 2.f, base.y, base.x + quadEmitterSize / 2.f);
-	float3 v3 = gameobject->transform->GetRotation() * float3(base.x - quadEmitterSize / 2.f, base.y, base.x + quadEmitterSize / 2.f);
-	float3 v4 = gameobject->transform->GetRotation() * float3(base.x - quadEmitterSize / 2.f, base.y, base.x - quadEmitterSize / 2.f);
+	float3 v1 = gameobject->transform->GetRotation() * float3(base.x + quadEmitterSize.x / 2.f, base.y, base.x - quadEmitterSize.y / 2.f);
+	float3 v2 = gameobject->transform->GetRotation() * float3(base.x + quadEmitterSize.x / 2.f, base.y, base.x + quadEmitterSize.y / 2.f);
+	float3 v3 = gameobject->transform->GetRotation() * float3(base.x - quadEmitterSize.x / 2.f, base.y, base.x + quadEmitterSize.y / 2.f);
+	float3 v4 = gameobject->transform->GetRotation() * float3(base.x - quadEmitterSize.x / 2.f, base.y, base.x - quadEmitterSize.y / 2.f);
 
 	switch (actualEmisor) 
 	{
