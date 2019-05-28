@@ -10,9 +10,9 @@
 #include "ComponentRenderer.h"
 #include "JSON.h"
 
-Prefab::Prefab(unsigned uid) : Resource(uid, TYPE::PREFAB) //TODO: parents not prefabs?
+Prefab::Prefab(unsigned uid) : Resource(uid, TYPE::PREFAB)
 {
-	//name = root->name; //TODO: RELEASE JSON AND DATA ALL AROUND RESOURCES
+	//TODO: RELEASE JSON AND DATA ALL AROUND RESOURCES
 }
 
 Prefab::Prefab(const Prefab& resource) : Resource(resource)
@@ -98,15 +98,12 @@ void Prefab::Load(char** data)
 	RELEASE_ARRAY(*data);
 }
 
-void Prefab::Save(GameObject* go) const //TODO: should also save name?
+void Prefab::Save(GameObject* go) const
 {
-	//TODO: SaveScene?
 	JSON *json = new JSON();
 	JSON_value *array = json->CreateValue(rapidjson::kArrayType);
 	go->Save(array);
 	json->AddValue("GameObjects", *array);
-
-	//App->navigation->sceneSaved(json);
 
 	App->fsystem->Save(GetFile(), json->ToString().c_str(), json->Size());
 	RELEASE(json);
@@ -148,7 +145,7 @@ GameObject* Prefab::RetrievePrefab() //TODO: should update prefab INSTA!
 		RELEASE(root);
 	}
 
-	std::map<unsigned, GameObject*> gameobjectsMap; //Necessary to assign parent-child efficiently
+	std::map<unsigned, GameObject*> gameobjectsMap;
 
 	std::list<ComponentRenderer*> renderers;
 

@@ -1099,7 +1099,6 @@
       <Filter>Panels</Filter>
     </ClInclude>
     <ClInclude Include="DetourDebugInterface.h" />
-<<<<<<< HEAD
     <ClInclude Include="Prefab.h">
       <Filter>Resources</Filter>
     </ClInclude>
