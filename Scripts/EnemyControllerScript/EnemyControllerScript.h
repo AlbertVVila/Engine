@@ -12,6 +12,7 @@
 #endif
 
 class ComponentAnimation;
+class ComponentRenderer;
 class DamageController;
 class EnemyLifeBarController;
 
@@ -47,10 +48,11 @@ public:
 	std::string playerBboxName = "PlayerMesh";
 	std::string myBboxName = "EnemyMesh";
 	ComponentAnimation* anim = nullptr;
+	ComponentRenderer* myRender;
 
 	DamageController* damageController = nullptr;
 	EnemyLifeBarController* enemyLifeBar = nullptr;
-	
+
 	// BBoxes
 	math::AABB* myBbox = nullptr;
 	math::AABB* playerBbox = nullptr;
