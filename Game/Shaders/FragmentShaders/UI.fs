@@ -1,6 +1,6 @@
 #version 330 core
 
-#define MASK_DIVISIONS 100 //20
+#define MASK_DIVISIONS 20
 
 in vec2 TexCoords;
 out vec4 color;

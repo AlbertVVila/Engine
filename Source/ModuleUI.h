@@ -1,7 +1,7 @@
 #ifndef __ModuleUI_H__
 #define __ModuleUI_H__
 
-#define MASK_DIVISIONS 100
+#define MASK_DIVISIONS 20
 
 #include "Module.h"
 #include <list>
