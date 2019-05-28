@@ -311,9 +311,23 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BasicEnemyAIScript.cpp" />
+    <ClCompile Include="EnemyStateAttack.cpp" />
+    <ClCompile Include="EnemyStateChase.cpp" />
+    <ClCompile Include="EnemyStateCooldown.cpp" />
+    <ClCompile Include="EnemyStateDeath.cpp" />
+    <ClCompile Include="EnemyStatePatrol.cpp" />
+    <ClCompile Include="EnemyStateReturnToStart.cpp" />
+    <ClCompile Include="EnemyState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicEnemyAIScript.h" />
+    <ClInclude Include="EnemyStateAttack.h" />
+    <ClInclude Include="EnemyStateChase.h" />
+    <ClInclude Include="EnemyStateCooldown.h" />
+    <ClInclude Include="EnemyStateDeath.h" />
+    <ClInclude Include="EnemyStatePatrol.h" />
+    <ClInclude Include="EnemyStateReturnToStart.h" />
+    <ClInclude Include="EnemyState.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EnemyControllerScript\EnemyControllerScript.vcxproj">
