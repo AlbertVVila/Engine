@@ -37,10 +37,6 @@ private:
 	bool itemClicked = false;
 
 	GameLoop* gameLoopScript = nullptr;
-	//std::vector<Component*> volumeButtons;
-
-
-
 
 };
 
