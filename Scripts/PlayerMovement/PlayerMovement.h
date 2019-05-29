@@ -31,6 +31,7 @@ class PlayerStateDash;
 class PlayerStateDeath;
 class PlayerStateUppercut;
 class PlayerStateWalk;
+class DamageController;
 
 class PlayerMovement_API PlayerMovement : public Script
 {
@@ -100,5 +101,7 @@ private:
 	GameObject* dustParticles = nullptr;
 	GameObject* dashFX = nullptr;
 	GameObject* dashMesh = nullptr;
+
+	DamageController* damageController = nullptr;
 };
 #endif __PlayerMovement_h__
