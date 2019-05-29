@@ -72,8 +72,8 @@ bool ModuleWindow::Init(JSON * config)
 			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 		}
 
-
-		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+		char* TitleVersion = strcat(TITLE, VERSION_BUILD);
+		window = SDL_CreateWindow(TitleVersion, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 
 		if(window == NULL)
 		{
