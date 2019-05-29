@@ -40,7 +40,6 @@ private:
 	void CheckStates(EnemyState* previous, EnemyState* current);
 
 public:
-	Application* Appl = nullptr;
 	EnemyState* currentState = nullptr;
 
 	EnemyStateWait* wait = nullptr;

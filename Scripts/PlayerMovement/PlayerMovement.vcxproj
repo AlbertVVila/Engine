@@ -307,6 +307,7 @@
   <ItemGroup>
     <ClCompile Include="PlayerMovement.cpp" />
     <ClCompile Include="PlayerState.cpp" />
+    <ClCompile Include="PlayerStateAttack.cpp" />
     <ClCompile Include="PlayerStateFirstAttack.cpp" />
     <ClCompile Include="PlayerStateDash.cpp" />
     <ClCompile Include="PlayerStateDeath.cpp" />
@@ -319,6 +320,7 @@
   <ItemGroup>
     <ClInclude Include="PlayerMovement.h" />
     <ClInclude Include="PlayerState.h" />
+    <ClInclude Include="PlayerStateAttack.h" />
     <ClInclude Include="PlayerStateFirstAttack.h" />
     <ClInclude Include="PlayerStateDash.h" />
     <ClInclude Include="PlayerStateDeath.h" />

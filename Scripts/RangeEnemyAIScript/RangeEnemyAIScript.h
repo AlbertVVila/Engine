@@ -11,6 +11,7 @@
 #include "Math/float3.h"
 #include <vector>
 
+class GameObject;
 class ComponentBoxTrigger;
 class EnemyControllerScript;
 class JSON_value;
@@ -37,7 +38,6 @@ private:
 	void CheckStates(EnemyState* previous, EnemyState* current);
 
 public:
-	Application* Appl = nullptr;
 	EnemyState* currentState = nullptr;
 
 	EnemyStatePatrol* patrol = nullptr;
@@ -58,11 +58,14 @@ public:
 	// Return variables
 	math::float3 startPosition;
 	float disengageDistance = 150.f;		// Distance to player to stop chasing player and return to start position
-	float returnSpeed = 1.0f;			// Tranlation speed towards start position
+	float returnSpeed = 1.0f;				// Tranlation speed towards start position
 
 	// Attack variables
 	float attackDuration = 1.0f;
 	float attackDamage = 20.0f;
+	std::string projectileName = "EnemyProjectile";
+	GameObject* projectile = nullptr;
+	float projectileDelay = 0.0f;			// Time it will wait before shooting the projectile once attack state has started
 
 	// Cooldown variables
 	float cooldownTime = 1.0f;			// Seconds to wait between attacks

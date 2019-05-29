@@ -10,8 +10,10 @@
 #define MenuSoundsScript_API __declspec(dllimport)
 #endif
 
+class Component;
 class Button;
 class ComponentAudioSource;
+class GameLoop;
 
 class MenuSoundsScript_API MenuSoundsScript : public Script
 {
@@ -28,12 +30,13 @@ public:
 
 	ComponentAudioSource* audioClick = nullptr;
 	ComponentAudioSource* audioHovered = nullptr;
+	ComponentAudioSource* mainMenuMusic = nullptr;
 private:
 
 	bool itemHovered = false;
 	bool itemClicked = false;
 
-
+	GameLoop* gameLoopScript = nullptr;
 
 };
 

@@ -22,15 +22,10 @@
 #include "Globals.h"
 #include "debugdraw.h"
 
-#define CLOSE_ENOUGH 400.0f
-
-PlayerStateDash::PlayerStateDash(PlayerMovement* PM)
+PlayerStateDash::PlayerStateDash(PlayerMovement * PM, const char * trigger, math::float3 boxSize) :
+	PlayerState(PM, trigger, boxSize)
 {
-	player = PM;
-	trigger = "Dash";
-	boxSize = math::float3(80.f, 100.f, 200.f);
 }
-
 
 PlayerStateDash::~PlayerStateDash()
 {
@@ -42,7 +37,7 @@ void PlayerStateDash::Update()
 	if (path.size() > 0 && timer > dashPreparationTime)
 	{
 		math::float3 currentPosition = player->gameobject->transform->GetPosition();
-		while (pathIndex < path.size() && currentPosition.DistanceSq(path[pathIndex]) < CLOSE_ENOUGH)
+		while (pathIndex < path.size() && currentPosition.DistanceSq(path[pathIndex]) < MINIMUM_PATH_DISTANCE)
 		{
 			pathIndex++;
 		}
@@ -50,7 +45,7 @@ void PlayerStateDash::Update()
 		{
 			player->gameobject->transform->LookAt(path[pathIndex]);
 			math::float3 direction = (path[pathIndex] - currentPosition).Normalized();
-			player->gameobject->transform->SetPosition(currentPosition + dashSpeed * direction * player->Appl->time->gameDeltaTime);
+			player->gameobject->transform->SetPosition(currentPosition + dashSpeed * direction * player->App->time->gameDeltaTime);
 			if (dashMesh)
 			{			
 				dashMesh->transform->Scale(scalator);
@@ -77,9 +72,9 @@ void PlayerStateDash::Update()
 
 void PlayerStateDash::Enter()
 {
-	if (player->Appl->scene->Intersects(intersectionPoint, "floor"))
+	if (player->App->scene->Intersects(intersectionPoint, "floor"))
 	{
-		player->Appl->navigation->FindPath(player->gameobject->transform->position, intersectionPoint, path);
+		player->App->navigation->FindPath(player->gameobject->transform->position, intersectionPoint, path);
 		pathIndex = 0;
 		player->gameobject->transform->LookAt(intersectionPoint);
 		if (dashFX)

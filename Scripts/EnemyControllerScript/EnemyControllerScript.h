@@ -31,6 +31,7 @@ public:
 	int GetHealth() const { return actualHealth; }
 
 	inline math::float3 GetPosition() const;					// Get position of the enemy (GO with this script attached)
+	inline math::Quat GetRotation() const;						// Get rotation of the enemy (GO with this script attached)
 	inline math::float3 GetPlayerPosition() const;
 	inline float GetDistanceTo(math::float3& position) const;	// Get distance of the enemy to position given as argument
 	inline float GetDistanceTo2D(math::float3& position) const;	// Get distance of the enemy to position given as argument only taking XZ plane as reference

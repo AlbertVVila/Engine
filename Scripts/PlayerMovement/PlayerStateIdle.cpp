@@ -1,13 +1,10 @@
 #include "PlayerStateIdle.h"
+#include "PlayerMovement.h"
 
-
-
-PlayerStateIdle::PlayerStateIdle(PlayerMovement* PM)
+PlayerStateIdle::PlayerStateIdle(PlayerMovement * PM, const char * trigger):
+	PlayerState(PM, trigger)
 {
-	player = PM;
-	trigger = "Idle";
 }
-
 
 PlayerStateIdle::~PlayerStateIdle()
 {

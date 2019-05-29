@@ -57,7 +57,7 @@ void ComponentTrail::UpdateTrail()
 	for (unsigned i = 0u; i < trailPoints; ++i)
 	{
 		TrailPoint point = trail.front();
-		point.remainingTime -= App->time->gameDeltaTime;
+		point.remainingTime -= App->time->fullGameDeltaTime;
 
 		if (point.remainingTime > 0)
 		{

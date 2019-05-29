@@ -48,8 +48,6 @@ public:
 	std::string name = "Script";
 	bool hasBeenAwoken = false;
 	bool hasBeenStarted = false;
-
-protected:
 	Application* App = nullptr;
 
 };
