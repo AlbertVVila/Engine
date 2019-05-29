@@ -82,6 +82,10 @@ void PlayerStateWalk::Update()
 			}
 		}
 	}	
+	else
+	{
+		player->currentState = player->idle;
+	}
 }
 
 void PlayerStateWalk::Enter()
