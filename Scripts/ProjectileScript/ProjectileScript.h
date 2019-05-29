@@ -11,6 +11,7 @@
 
 class JSON_value;
 class ComponentTransform;
+class ComponentBoxTrigger;
 
 class ProjectileScript_API ProjectileScript : public Script
 {
@@ -24,11 +25,12 @@ class ProjectileScript_API ProjectileScript : public Script
 	void DeSerialize(JSON_value* json) override;
 
 public:
-	float speed = 10.0f;
+	float speed = 1000.0f;
 	float lifeTime = 10.0f;
 
 private:
-	ComponentTransform* transform;
+	ComponentTransform* transform = nullptr;
+	ComponentBoxTrigger* boxTrigger = nullptr;
 };
 
 #endif __ProjectileScript_h__
