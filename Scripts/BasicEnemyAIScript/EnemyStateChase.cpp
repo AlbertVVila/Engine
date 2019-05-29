@@ -19,8 +19,9 @@ EnemyStateChase::~EnemyStateChase()
 void EnemyStateChase::Update()
 {
 	// Look at player and move towards
-	enemy->gameobject->transform->LookAt(enemy->enemyController->GetPlayerPosition());
-	enemy->enemyController->MoveTowards(enemy->chaseSpeed);
+	//enemy->gameobject->transform->LookAt(enemy->enemyController->GetPlayerPosition());
+	//enemy->enemyController->MoveTowards(enemy->chaseSpeed);
+	enemy->enemyController->Move(enemy->chaseSpeed, refreshTime, enemy->enemyController->GetPlayerPosition(), enemyPath);
 
 	// Check collision
 	if (enemy->enemyController->IsCollidingWithPlayer())

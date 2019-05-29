@@ -15,17 +15,18 @@ PlayerStateAttack::~PlayerStateAttack()
 
 void PlayerStateAttack::Update()
 {
-	if (player->boxTrigger != nullptr && !hitboxCreated && timer > player->firstAttackDuration * minTime && timer < player->firstAttackDuration * maxTime)
+	if (player->attackBoxTrigger != nullptr && !hitboxCreated && timer > player->firstAttackDuration * minTime && timer < player->firstAttackDuration * maxTime)
 	{
 		//Create the hitbox
-		player->boxTrigger->SetBoxSize(boxSize);
+		player->attackBoxTrigger->Enable(true);
+		player->attackBoxTrigger->SetBoxSize(boxSize);
 		boxPosition = player->transform->up * 100.f; //this front stuff isnt working well when rotating the chicken
-		player->boxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z + 100.f);
+		player->attackBoxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z + 100.f);
 		hitboxCreated = true;
 	}
-	if (player->boxTrigger != nullptr && hitboxCreated && timer > player->firstAttackDuration* maxTime)
+	if (player->attackBoxTrigger != nullptr && hitboxCreated && timer > player->firstAttackDuration* maxTime)
 	{
-		player->boxTrigger->SetBoxSize(1, 1, 1);
+		player->attackBoxTrigger->Enable(false);
 		hitboxCreated = false;
 	}
 }

@@ -175,9 +175,9 @@ void ModuleUI::Draw(int currentWidth, int currentHeight)
 
 void ModuleUI::RenderImage(const ComponentImage& componentImage, int currentWidth, int currentHeight)
 {
-	if (componentImage.isMasked)
+	if (componentImage.IsMasked())
 	{
-		int maskThreshold = ((float)componentImage.maskAmount / 100.f) * MASK_DIVISIONS;
+		int maskThreshold = ((float)componentImage.GetMaskAmount() / 100.f) * MASK_DIVISIONS;
 		for (unsigned i = 0u; i < MASK_DIVISIONS; ++i) // Filling from up to down
 		{
 			if (i <= maskThreshold)
@@ -202,8 +202,8 @@ void ModuleUI::RenderImage(const ComponentImage& componentImage, int currentWidt
 	{
 		return;
 	}
-	glUseProgram(shader->id[0]);
 
+	glUseProgram(shader->id[0]);
 
 	glUniform1fv(glGetUniformLocation(shader->id[0], "mask"), MASK_DIVISIONS, mask);
 	int k = glGetUniformLocation(shader->id[0], "mask");

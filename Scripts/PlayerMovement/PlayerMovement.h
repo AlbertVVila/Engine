@@ -22,6 +22,7 @@ struct ImGuiContext;
 class ComponentAnimation;
 class ComponentTransform;
 class ComponentBoxTrigger;
+class ComponentImage;
 class JSON_value;
 struct ImGuiContext;
 class PlayerState;
@@ -46,7 +47,7 @@ public:
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
 
-	void OnTriggerEnter(GameObject* go) override;
+	void OnTriggerExit(GameObject* go) override;
 	void Damage(float amount);
 
 	//Abstract input
@@ -80,11 +81,13 @@ public:
 
 	float walkingSpeed = 100.0f;
 	float dashSpeed = 10.0f;
-	float health = 100.0f;
+	const float fullHealth = 100.0f;
+	float health = fullHealth;
 	float attackDuration = 1.0f;
 	float attackTimer = 0.0f;
 	ComponentAnimation* anim = nullptr;
-	ComponentBoxTrigger* boxTrigger = nullptr;
+	ComponentBoxTrigger* attackBoxTrigger = nullptr;
+	ComponentBoxTrigger* hpHitBoxTrigger = nullptr;
 	ComponentTransform* transform = nullptr;
 	PlayerState* currentState = nullptr;
 
@@ -93,6 +96,7 @@ public:
 	float secondAttackDuration = 1.f;
 	float thirdAttackDuration = 1.f;
 	float uppercutDuration = 1.f;
+	math::float3 hpHitBoxSize = math::float3::zero;
 
 private:
 	std::vector<PlayerState*> playerStates;	
@@ -101,5 +105,6 @@ private:
 	GameObject* dashMesh = nullptr;
 
 	DamageController* damageController = nullptr;
+	ComponentImage* lifeUIComponent = nullptr;
 };
 #endif __PlayerMovement_h__

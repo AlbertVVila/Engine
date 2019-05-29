@@ -33,7 +33,6 @@ public:
 
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
-
 private:
 	void CheckStates(EnemyState* previous, EnemyState* current);
 
@@ -65,7 +64,8 @@ public:
 	// Cooldown variables
 	float cooldownTime = 1.0f;			// Seconds to wait between attacks
 
-	ComponentBoxTrigger* boxTrigger = nullptr;
+	ComponentBoxTrigger* hpBoxTrigger = nullptr;
+	ComponentBoxTrigger* attackBoxTrigger = nullptr;
 	EnemyControllerScript* enemyController = nullptr;
 
 private:

@@ -19,12 +19,15 @@ EnemyStateGetInPosition::~EnemyStateGetInPosition()
 void EnemyStateGetInPosition::Update()
 {
 	// Look at player and move towards
-	enemy->gameobject->transform->LookAt(enemy->enemyController->GetPlayerPosition());
+	//enemy->gameobject->transform->LookAt(enemy->enemyController->GetPlayerPosition());
 
 	float distanceToPlayer = enemy->enemyController->GetDistanceToPlayer2D();
 
-	if(distanceToPlayer > enemy->maxAttackDistance)
-		enemy->enemyController->MoveTowards(enemy->runSpeed);
+	if (distanceToPlayer > enemy->maxAttackDistance)
+	{
+		//enemy->enemyController->MoveTowards(enemy->runSpeed);
+		enemy->enemyController->Move(enemy->runSpeed, refreshTime, enemy->enemyController->GetPlayerPosition(), enemyPath);
+	}
 	else
 	{
 		math::float3 direction = enemy->gameobject->transform->front;

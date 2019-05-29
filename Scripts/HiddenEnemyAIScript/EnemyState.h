@@ -3,6 +3,7 @@
 
 #include "BaseScript.h"
 #include "Math/float3.h"
+#include <vector>
 
 class HiddenEnemyAIScript;
 
@@ -33,6 +34,10 @@ protected:
 
 	float auxTranslation = 0.0f;
 	float auxTimer = 0.0f;
+
+	// Nav mesh
+	std::vector<math::float3> enemyPath;
+	float refreshTime = 0.0f;
 };
 
 #endif // __ENEMYSTATE_H_
