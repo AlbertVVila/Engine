@@ -23,6 +23,7 @@ public:
 	ENGINE_API void SetPositionUsingAligment(math::float2& position);
 
 	ENGINE_API math::float2 getSize() const;
+	ENGINE_API void SetSize(math::float2 newSize);
 private:
 	enum aligns {
 		TOPLEFT = 0,
