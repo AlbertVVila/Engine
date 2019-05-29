@@ -9,6 +9,7 @@
 #include "ModuleResourceManager.h"
 #include "ModuleRender.h"
 #include "ModuleScene.h"
+#include "ModuleTime.h"
 #include "ModuleTextures.h"
 #include "ModuleSpacePartitioning.h"
 #include "ModuleParticles.h"
@@ -117,7 +118,6 @@ update_status ModuleScene::PreUpdate()
 	if (loadScene)
 	{
 		LoadScene(name.c_str(), SCENES);
-		root->OnPlay();
 		loadScene = false;
 	}
 
@@ -1071,6 +1071,7 @@ void ModuleScene::LoadScene(const char* sceneName, const char* folder)
 	App->spacePartitioning->kDTree.Calculate();
 	App->scripting->onStart = true;
 	scenePhotos.clear();
+	App->time->ResetGameDetaTime();
 	firstUpdateAfterLoadingScene = true;
 }
 

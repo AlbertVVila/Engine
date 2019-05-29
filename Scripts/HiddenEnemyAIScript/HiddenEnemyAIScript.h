@@ -9,26 +9,21 @@
 
 #include "BaseScript.h"
 #include "Math/float3.h"
+#include <vector>
 
 class GameObject;
-class ComponentAnimation;
-class ComponentRenderer;
-class PlayerMovement;
+class ComponentBoxTrigger;
 class EnemyControllerScript;
 class JSON_value;
-enum class EnemyState;
-
-enum class EnemyState
-{
-	WAIT,
-	SHOW_UP,
-	CHASE,
-	RETURN,
-	HIDE,
-	ATTACK,
-	COOLDOWN,
-	DEAD
-};
+class EnemyState;
+class EnemyStateWait;
+class EnemyStateShowUp;
+class EnemyStateChase;
+class EnemyStateReturnToStart;
+class EnemyStateHide;
+class EnemyStateAttack;
+class EnemyStateCooldown;
+class EnemyStateDeath;
 
 class HiddenEnemyAIScript_API HiddenEnemyAIScript : public Script
 {
@@ -42,27 +37,25 @@ public:
 	void DeSerialize(JSON_value* json) override;
 
 private:
-	void Wait();
-	void StandUp();
-	void Chase();
-	void ReturnToStartPosition();
-	void Laydown();
-	void Attack();
-	void Cooldown();
-	void Die();
+	void CheckStates(EnemyState* previous, EnemyState* current);
 
-	void MoveTowards(float speed) const;
-	void CheckStateChange(EnemyState previous, EnemyState newState);
+public:
+	EnemyState* currentState = nullptr;
 
-private:
-
-	EnemyState enemyState = EnemyState::WAIT;
+	EnemyStateWait* wait = nullptr;
+	EnemyStateShowUp* showUp = nullptr;
+	EnemyStateChase* chase = nullptr;
+	EnemyStateReturnToStart* returnToStart = nullptr;
+	EnemyStateHide* hide = nullptr;
+	EnemyStateAttack* attack = nullptr;
+	EnemyStateCooldown* cooldown = nullptr;
+	EnemyStateDeath* death = nullptr;
 
 	// Wait variables
 	float activationDistance = 100.0f;	// Distance to player needed to start chasing the player (only X,Z axis is taken into account)
 
-	// Stand-Up variables
-	float standupSpeed = 1.0f;			// Tranlation speed on stand-up
+	// Show-Up variables
+	float showUpSpeed = 1.0f;			// Tranlation speed on stand-up
 	float yTranslation = 20.0f;			// Y axis translation on stand-up 
 
 	// Chase variables
@@ -73,19 +66,17 @@ private:
 	float returnDistance = 150.f;		// Distance to player to stop chasing player and return to start position
 	float returnSpeed = 1.0f;			// Tranlation speed towards start position
 
-	// Cooldown variables
+	// Attack variables
+	float attackDuration = 1.0f;
+	float attackDamage = 20.0f;		
+										// Cooldown variables
 	float cooldownTime = 1.0f;			// Seconds to wait between attacks
 
-	float auxTranslation = 0.0f;
-	float auxTimer = 0.0f;
+	ComponentBoxTrigger* boxTrigger = nullptr;			// Hitbox
+	EnemyControllerScript* enemyController = nullptr;
 
-	//Damage variables
-	float damage = 20.0f;
-
-	ComponentAnimation* anim = nullptr;
-
-	EnemyControllerScript* enemyController;
-	PlayerMovement* playerScript;
+private:
+	std::vector<EnemyState*> enemyStates;
 };
 
 #endif __HiddenEnemyAIScript_h__
