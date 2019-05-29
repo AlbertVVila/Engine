@@ -24,7 +24,7 @@ public:
 	std::vector<float3>path;
 	unsigned pathIndex = 0;
 	float duration = 0.8f;
-	float dashSpeed = 800;
+	float dashSpeed = 900.0f;
 	float dashPreparationTime = 0.1f;
 
 	GameObject* dashFX = nullptr;
