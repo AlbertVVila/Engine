@@ -11,6 +11,7 @@
 #include "Math/float3.h"
 #include <vector>
 
+class GameObject;
 class ComponentBoxTrigger;
 class EnemyControllerScript;
 class JSON_value;
@@ -69,6 +70,9 @@ public:
 
 	ComponentBoxTrigger* boxTrigger = nullptr;
 	EnemyControllerScript* enemyController = nullptr;
+
+	std::string projectileName = "EnemyProjectile";
+	GameObject* projectile = nullptr;
 
 private:
 	std::vector<EnemyState*> enemyStates;

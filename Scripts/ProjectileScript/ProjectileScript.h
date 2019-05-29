@@ -31,6 +31,11 @@ public:
 private:
 	ComponentTransform* transform = nullptr;
 	ComponentBoxTrigger* boxTrigger = nullptr;
+
+	bool shooted = false;
+
+	float auxTimer = 0.0f;
+	float activeTime = 0.0f;
 };
 
 #endif __ProjectileScript_h__
