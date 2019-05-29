@@ -47,6 +47,7 @@ public:
 	void DeSerialize(JSON_value* json) override;
 
 	void OnTriggerEnter(GameObject* go) override;
+	void Damage(float amount);
 
 	//Abstract input
 	bool IsAtacking() const;
@@ -62,7 +63,6 @@ public:
 
 private:
 	void CheckStates(PlayerState* previous, PlayerState* current);
-	void Damage(float amount);
 	void CreatePlayerStates();
 
 public:
