@@ -12,9 +12,6 @@ EnemyStateAttack::EnemyStateAttack(RangeEnemyAIScript* AIScript)
 {
 	enemy = AIScript;
 	trigger = "Attack";
-	boxSize = math::float3(100.f, 50.f, 50.f);
-	minTime = 0.7f;
-	maxTime = 0.9f;
 }
 
 EnemyStateAttack::~EnemyStateAttack()
@@ -23,16 +20,30 @@ EnemyStateAttack::~EnemyStateAttack()
 
 void EnemyStateAttack::Enter()
 {
-	auxTimer = timer;
+	projectileShooted = false;
 }
 
 void EnemyStateAttack::Update()
 {
+	if (!projectileShooted && !enemy->projectile->isActive())
+	{
+		// Delay attack
+		if (timer > enemy->projectileDelay)
+		{
+			// Reset projectile position
+			enemy->projectile->transform->SetPosition(enemy->enemyController->GetPosition());
+			enemy->projectile->transform->SetRotation(enemy->enemyController->GetRotation());
+
+			enemy->projectile->SetActive(true);
+			projectileShooted = true;
+		}
+	}
+
 	// Keep looking at player
 	math::float3 playerPosition = enemy->enemyController->GetPlayerPosition();
 	enemy->enemyController->LookAt2D(playerPosition);
 
-	if (timer > auxTimer + enemy->attackDuration)
+	if (timer > enemy->attackDuration && projectileShooted)
 	{
 		// End attack: Enter cooldown state
 		auxTimer = timer;

@@ -9,7 +9,7 @@
 EnemyStateGetInPosition::EnemyStateGetInPosition(RangeEnemyAIScript* AIScript)
 {
 	enemy = AIScript;
-	trigger = "Chase";
+	trigger = "GetInPosition";
 }
 
 EnemyStateGetInPosition::~EnemyStateGetInPosition()

@@ -1,5 +1,7 @@
 #include "EnemyStateCooldown.h"
 
+#include "GameObject.h"
+
 #include "EnemyControllerScript.h"
 #include "RangeEnemyAIScript.h"
 
@@ -16,8 +18,7 @@ EnemyStateCooldown::~EnemyStateCooldown()
 
 void EnemyStateCooldown::Update()
 {
-	float waitedTime = (timer - auxTimer);
-	if (waitedTime > enemy->cooldownTime)
+	if (timer > enemy->cooldownTime)
 	{
 		// Check distance to player
 		float distanceToPlayer = enemy->enemyController->GetDistanceToPlayer2D();
@@ -31,7 +32,7 @@ void EnemyStateCooldown::Update()
 			// Return to start position
 			enemy->currentState = (EnemyState*)enemy->returnToStart;
 		}
-		else
+		else if(!enemy->projectile->isActive())
 		{
 			enemy->currentState = (EnemyState*)enemy->attack;
 			auxTimer = 0.0f;
