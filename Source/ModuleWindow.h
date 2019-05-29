@@ -4,7 +4,6 @@
 #include "Module.h"
 #include "Math/float2.h"
 
-class Application;
 class JSON;
 struct SDL_Window; 
 

@@ -16,5 +16,5 @@ EnemyState::~EnemyState()
 
 void EnemyState::UpdateTimer()
 {
-	timer += enemy->Appl->time->gameDeltaTime;
+	timer += enemy->App->time->gameDeltaTime;
 }

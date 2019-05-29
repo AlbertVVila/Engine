@@ -10,6 +10,8 @@ struct ImGuiContext;
 #include "Math/float3.h"
 #include <vector>
 
+#define MINIMUM_PATH_DISTANCE 400.0f
+
 #ifdef PlayerMovement_EXPORTS
 #define PlayerMovement_API __declspec(dllexport)
 
@@ -47,16 +49,16 @@ public:
 	void OnTriggerEnter(GameObject* go) override;
 
 	//Abstract input
-	bool IsAtacking();
-	bool IsMoving();
-	bool IsUsingFirstSkill();
-	bool IsUsingSecondSkill();
-	bool IsUsingThirdSkill();
-	bool IsUsingFourthSkill();
-	bool IsUsingFirstItem();
-	bool IsUsingSecondItem();
-	bool IsUsingThirdItem();
-	bool IsUsingFourthItem();
+	bool IsAtacking() const;
+	bool IsMoving() const;
+	bool IsUsingFirstSkill() const;
+	bool IsUsingSecondSkill() const;
+	bool IsUsingThirdSkill() const;
+	bool IsUsingFourthSkill() const;
+	bool IsUsingFirstItem() const;
+	bool IsUsingSecondItem() const;
+	bool IsUsingThirdItem() const;
+	bool IsUsingFourthItem() const;
 
 private:
 	void CheckStates(PlayerState* previous, PlayerState* current);
@@ -91,8 +93,6 @@ public:
 	float secondAttackDuration = 1.f;
 	float thirdAttackDuration = 1.f;
 	float uppercutDuration = 1.f;
-
-	Application* Appl = nullptr;
 
 private:
 	std::vector<PlayerState*> playerStates;	

@@ -1,7 +1,6 @@
 #ifndef __PLAYERSTATEWALK_H_
 #define __PLAYERSTATEWALK_H_
 
-#include "BaseScript.h"
 #include "PlayerState.h"
 
 class PlayerStateWalk :	public PlayerState
@@ -19,6 +18,9 @@ public:
 	std::vector<float3>path;
 	unsigned pathIndex = 0;
 	GameObject* dustParticles = nullptr;
+
+private:
+	math::float2 previousMousePosition = math::float2::zero;
 };
 
 #endif // __PLAYERSTATEWALK_H_
