@@ -4,6 +4,7 @@
 #include "BaseScript.h"
 
 #include "Geometry/AABB.h"
+#include <vector>
 
 #ifdef EnemyControllerScript_EXPORTS
 #define EnemyControllerScript_API __declspec(dllexport)
@@ -41,6 +42,7 @@ public:
 	inline bool IsCollidingWithPlayer() const;
 
 	void Move(float speed, math::float3& direction) const;
+	void Move(float speed, float& refreshTime, math::float3 position, std::vector<float3>& path) const; // Move using nav mesh
 	void MoveTowards(float speed) const;
 	void LookAt2D(math::float3& position);
 
