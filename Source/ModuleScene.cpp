@@ -118,7 +118,6 @@ update_status ModuleScene::PreUpdate()
 	if (loadScene)
 	{
 		LoadScene(name.c_str(), SCENES);
-		root->OnPlay();
 		loadScene = false;
 	}
 

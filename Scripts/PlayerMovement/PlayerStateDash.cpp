@@ -24,13 +24,10 @@
 
 #define CLOSE_ENOUGH 400.0f
 
-PlayerStateDash::PlayerStateDash(PlayerMovement* PM)
+PlayerStateDash::PlayerStateDash(PlayerMovement * PM, const char * trigger, math::float3 boxSize) :
+	PlayerState(PM, trigger, boxSize)
 {
-	player = PM;
-	trigger = "Dash";
-	boxSize = math::float3(80.f, 100.f, 200.f);
 }
-
 
 PlayerStateDash::~PlayerStateDash()
 {

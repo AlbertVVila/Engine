@@ -38,6 +38,7 @@ class PlayerMovement_API PlayerMovement : public Script
 public:
 	void Expose(ImGuiContext* context) override;
 
+
 	void Start() override;
 	void Update() override;
 	void Serialize(JSON_value* json) const override;
@@ -57,9 +58,11 @@ public:
 	bool IsUsingThirdItem();
 	bool IsUsingFourthItem();
 
+private:
 	void CheckStates(PlayerState* previous, PlayerState* current);
-
 	void Damage(float amount);
+	void CreatePlayerStates();
+
 public:
 	bool isPlayerDead = false;
 	float3 currentPosition = float3(0, 0, 0); //TODO ZERO
@@ -73,10 +76,6 @@ public:
 	PlayerStateUppercut* uppercut = nullptr;
 	PlayerStateWalk* walk = nullptr;
 
-	
-	
-public:
-
 	float walkingSpeed = 100.0f;
 	float dashSpeed = 10.0f;
 	float health = 100.0f;
@@ -86,16 +85,15 @@ public:
 	ComponentBoxTrigger* boxTrigger = nullptr;
 	ComponentTransform* transform = nullptr;
 	PlayerState* currentState = nullptr;
-public:
 
 	float dashDuration = 1.f;
 	float firstAttackDuration = 1.f;
 	float secondAttackDuration = 1.f;
 	float thirdAttackDuration = 1.f;
 	float uppercutDuration = 1.f;
-	
 
 	Application* Appl = nullptr;
+
 private:
 	std::vector<PlayerState*> playerStates;	
 	GameObject* dustParticles = nullptr;

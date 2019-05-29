@@ -501,6 +501,15 @@ void ModuleRender::InitOpenGL() const
 	glViewport(0, 0, App->window->width, App->window->height);
 }
 
+Viewport* ModuleRender::GetActiveViewport() const
+{
+	if (!viewGame->hidden)
+	{
+		return viewGame;
+	}
+	return viewScene;
+}
+
 void ModuleRender::ComputeShadows()
 {
 	shadowVolumeRendered = false;

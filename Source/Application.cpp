@@ -121,7 +121,8 @@ update_status Application::Update()
 	{
 		++i;
 		scene->root->UpdateTransforms(math::float4x4::identity);
-		App->scripting->Update(time->realDeltaTime);
+		collisions->Update(time->realDeltaTime);
+		scripting->Update(time->realDeltaTime);
 	}
 
 	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)

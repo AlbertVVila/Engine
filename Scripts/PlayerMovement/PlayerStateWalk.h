@@ -7,7 +7,7 @@
 class PlayerStateWalk :	public PlayerState
 {
 public:
-	PlayerStateWalk(PlayerMovement* PM);
+	PlayerStateWalk(PlayerMovement * PM, const char * trigger);
 	~PlayerStateWalk();
 
 	void Update() override;

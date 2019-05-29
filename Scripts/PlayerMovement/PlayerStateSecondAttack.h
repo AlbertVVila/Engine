@@ -1,20 +1,17 @@
 #ifndef __PLAYERSTATESECONDATTACK_H_
 #define __PLAYERSTATESECONDATTACK_H_
 
-#include "PlayerState.h"
+#include "PlayerStateAttack.h"
+
 class PlayerStateSecondAttack :
-	public PlayerState
+	public PlayerStateAttack
 {
 public:
-	PlayerStateSecondAttack(PlayerMovement* PM);
+	PlayerStateSecondAttack(PlayerMovement * PM, const char * trigger, math::float3 boxSize, float minTime, float maxTime);
 	~PlayerStateSecondAttack();
-
-	void Update() override;
 
 	void CheckInput() override;
 
-private:
-	float duration = 1.5f;
 };
 
 #endif // __PLAYERSTATESECONDATTACK_H_

@@ -23,12 +23,10 @@
 
 #define CLOSE_ENOUGH 400.0f
 
-PlayerStateWalk::PlayerStateWalk(PlayerMovement* PM)
+PlayerStateWalk::PlayerStateWalk(PlayerMovement* PM, const char* trigger):
+	PlayerState(PM, trigger)
 {
-	player = PM;
-	trigger = "Walk";
 }
-
 
 PlayerStateWalk::~PlayerStateWalk()
 {

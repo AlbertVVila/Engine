@@ -1,20 +1,18 @@
 #ifndef __PLAYERSTATETHIRDATTACK_H_
 #define __PLAYERSTATETHIRDATTACK_H_
 
-#include "PlayerState.h"
+#include "PlayerStateAttack.h"
+
 class PlayerStateThirdAttack :
-	public PlayerState
+	public PlayerStateAttack
 {
 public:
-	PlayerStateThirdAttack(PlayerMovement* PM);
+	PlayerStateThirdAttack(PlayerMovement* PM, const char* trigger, math::float3 boxSize,
+		float minTime, float maxTime);
 	~PlayerStateThirdAttack();
-
-	void Update() override;
 
 	void CheckInput() override;
 
-private:
-	float duration = 1.5f;
 };
 
 #endif // __PLAYERSTATETHIRDATTACK_H_

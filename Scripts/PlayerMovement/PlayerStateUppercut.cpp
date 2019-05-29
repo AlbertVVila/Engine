@@ -9,13 +9,10 @@
 #include "ComponentTransform.h"
 #include "ComponentBoxTrigger.h"
 
-PlayerStateUppercut::PlayerStateUppercut(PlayerMovement* PM)
+PlayerStateUppercut::PlayerStateUppercut(PlayerMovement * PM, const char * trigger,
+	math::float3 boxSize) : PlayerState(PM, trigger, boxSize)
 {
-	player = PM;
-	trigger = "Uppercut";
-	boxSize = math::float3(100.f, 200.f, 100.f);
 }
-
 
 PlayerStateUppercut::~PlayerStateUppercut()
 {

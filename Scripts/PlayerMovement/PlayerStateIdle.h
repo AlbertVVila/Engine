@@ -7,7 +7,7 @@ class PlayerStateIdle :
 	public PlayerState
 {
 public:
-	PlayerStateIdle(PlayerMovement* PM);
+	PlayerStateIdle(PlayerMovement* PM, const char* trigger);
 	~PlayerStateIdle();
 
 	void Update() override;
