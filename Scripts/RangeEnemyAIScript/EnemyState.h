@@ -26,11 +26,7 @@ public:
 	RangeEnemyAIScript* enemy = nullptr;
 
 protected:
-	math::float3 boxSize = math::float3(500.f, 500.f, 500.f);
-	math::float3 boxPosition = math::float3::zero;
-	float minTime = 0.4f;
-	float maxTime = 0.8f;
-	bool hitboxCreated = false;
+	bool projectileShooted = false;
 };
 
 #endif // __ENEMYSTATE_H_
