@@ -27,14 +27,17 @@ void EnemyStateAttack::Update()
 {
 	if (!projectileShooted && !enemy->projectile->isActive())
 	{
-		// Reset projectile position
-		enemy->projectile->transform->SetPosition(enemy->enemyController->GetPosition());
-		enemy->projectile->transform->SetRotation(enemy->enemyController->GetRotation());
+		// Delay attack
+		if (timer > enemy->projectileDelay)
+		{
+			// Reset projectile position
+			enemy->projectile->transform->SetPosition(enemy->enemyController->GetPosition());
+			enemy->projectile->transform->SetRotation(enemy->enemyController->GetRotation());
 
-		enemy->projectile->SetActive(true);
-		projectileShooted = true;
+			enemy->projectile->SetActive(true);
+			projectileShooted = true;
+		}
 	}
-
 
 	// Keep looking at player
 	math::float3 playerPosition = enemy->enemyController->GetPlayerPosition();
