@@ -32,7 +32,7 @@ void EnemyStateAttack::Update()
 		if (hitboxCreated)
 		{
 			// Disable hitbox
-			enemy->boxTrigger->SetBoxSize(1, 1, 1);
+			enemy->boxTrigger->Enable(false);
 			hitboxCreated = false;
 		}
 		enemy->currentState = (EnemyState*)enemy->chase;
@@ -44,6 +44,7 @@ void EnemyStateAttack::Update()
 		{
 			// Attack
 			//Create the hitbox
+			enemy->boxTrigger->Enable(true);
 			enemy->boxTrigger->SetBoxSize(boxSize);
 			boxPosition = enemy->gameobject->transform->up * 100.f;
 			enemy->boxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z + 100.f);
@@ -56,7 +57,7 @@ void EnemyStateAttack::Update()
 		{
 			// End attack
 			// Disable hitbox
-			enemy->boxTrigger->SetBoxSize(1, 1, 1);
+			enemy->boxTrigger->Enable(false);
 			hitboxCreated = false;
 
 			// Enter cooldown state
