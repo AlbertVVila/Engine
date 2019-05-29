@@ -1,57 +1,22 @@
 #include "PlayerStateFirstAttack.h"
-
 #include "PlayerMovement.h"
-#include "Application.h"
-#include "ModuleScene.h"
 
 #include "GameObject.h"
-
 #include "ComponentTransform.h"
-#include "ComponentBoxTrigger.h"
 
-PlayerStateFirstAttack::PlayerStateFirstAttack(PlayerMovement* PM)
+PlayerStateFirstAttack::PlayerStateFirstAttack(PlayerMovement * PM, const char * trigger,
+	math::float3 boxSize, float minTime, float maxTime) :
+	PlayerStateAttack(PM, trigger, boxSize, minTime, maxTime)
 {
-	player = PM;
-	trigger = "FirstAttack";
-	boxSize = math::float3(150.f, 100.f, 100.f);
-	minTime = 0.7f;
-	maxTime = 0.9f;
 }
 
 PlayerStateFirstAttack::~PlayerStateFirstAttack()
 {
 }
 
-void PlayerStateFirstAttack::Update()
-{
-	if (player->boxTrigger != nullptr && !hitboxCreated && timer > player->firstAttackDuration * minTime && timer < player->firstAttackDuration * maxTime)
-	{
-		//Create the hitbox
-		player->boxTrigger->SetBoxSize(boxSize);
-		boxPosition = player->transform->up * 100.f; //this front stuff isnt working well when rotating the chicken
-		player->boxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z + 100.f);
-		hitboxCreated = true;
-	}
-	if (player->boxTrigger != nullptr && hitboxCreated && timer > player->firstAttackDuration* maxTime)
-	{
-		player->boxTrigger->SetBoxSize(1, 1, 1);
-		hitboxCreated = false;
-	}
-	//player->pathIndex = 0;
-	//player->path.clear();
-	//math::float3 attackPosition;
-	//if (player->Appl->scene->Intersects(attackPosition, "floor"))
-	//{
-	//	player->gameobject->transform->LookAt(attackPosition);
-	//}
-}
-
 void PlayerStateFirstAttack::Enter()
 {
-}
-
-void PlayerStateFirstAttack::Exit()
-{
+	player->gameobject->transform->LookAtMouse();
 }
 
 void PlayerStateFirstAttack::CheckInput()

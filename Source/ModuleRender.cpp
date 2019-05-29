@@ -267,7 +267,7 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 	}
 	
 	App->scene->Draw(*cam.frustum, isEditor);
-	App->particles->Render(App->time->gameDeltaTime, &cam);
+	App->particles->Render(App->time->fullGameDeltaTime, &cam);
 
 	
 	if (!isEditor)
@@ -499,6 +499,15 @@ void ModuleRender::InitOpenGL() const
 	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
 
 	glViewport(0, 0, App->window->width, App->window->height);
+}
+
+Viewport* ModuleRender::GetActiveViewport() const
+{
+	if (!viewGame->hidden)
+	{
+		return viewGame;
+	}
+	return viewScene;
 }
 
 void ModuleRender::ComputeShadows()

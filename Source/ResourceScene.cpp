@@ -151,6 +151,7 @@ bool ResourceScene::Load()
 	RELEASE_ARRAY(data);
 	RELEASE(json);
 
+	App->scene->root->OnPlay();
 	return true;
 }
 

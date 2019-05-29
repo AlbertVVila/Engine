@@ -302,7 +302,7 @@ void ModuleParticles::DrawParticleSystem(ComponentParticles* cp, const Component
 	unsigned nParticles = cp->particles.size();
 	for (; nParticles > 0; --nParticles)
 	{
-		cp->particles.front()->lifeTimer -= App->time->gameDeltaTime;
+		cp->particles.front()->lifeTimer -= App->time->fullGameDeltaTime;
 		if (cp->particles.front()->lifeTimer > .0f)
 		{
 			memcpy(matrices, &cp->particles.front()->global.Col(0), sizeof(float) * 4); matrices += 4;

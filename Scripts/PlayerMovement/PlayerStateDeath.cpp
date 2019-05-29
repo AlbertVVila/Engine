@@ -1,22 +1,11 @@
 #include "PlayerStateDeath.h"
+#include "PlayerMovement.h"
 
-
-
-PlayerStateDeath::PlayerStateDeath(PlayerMovement* PM)
+PlayerStateDeath::PlayerStateDeath(PlayerMovement * PM, const char * trigger) :
+	PlayerState(PM, trigger)
 {
-	player = PM;
-	trigger = "Death";
 }
-
 
 PlayerStateDeath::~PlayerStateDeath()
-{
-}
-
-void PlayerStateDeath::Update()
-{
-}
-
-void PlayerStateDeath::CheckInput()
 {
 }

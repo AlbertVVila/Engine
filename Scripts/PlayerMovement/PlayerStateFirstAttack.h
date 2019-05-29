@@ -1,22 +1,19 @@
 #ifndef __PLAYERSTATEFIRSTATTACK_H_
 #define __PLAYERSTATEFIRSTATTACK_H_
 
-#include "PlayerState.h"
+#include "PlayerStateAttack.h"
 
 class PlayerStateFirstAttack :
-	public PlayerState
+	public PlayerStateAttack
 {
 public:
-	PlayerStateFirstAttack(PlayerMovement* PM);
+	PlayerStateFirstAttack(PlayerMovement * PM, const char* trigger,
+		math::float3 boxSize, float minTime, float maxTime);
 	~PlayerStateFirstAttack();
 
-	void Update() override;
 	void Enter() override;
-	void Exit() override;
 	void CheckInput() override;
 
-private:
-	float duration = 1.5f;
 };
 
 #endif // __PLAYERSTATEFIRSTATTACK_H_

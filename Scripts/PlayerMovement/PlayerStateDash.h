@@ -2,12 +2,17 @@
 #define __PLAYERSTATEDASH_H_
 
 #include "PlayerState.h"
+#include "Math/float3.h"
+#include <vector>
+
+class PlayerMovement;
 
 class PlayerStateDash :
 	public PlayerState
 {
 public:
-	PlayerStateDash(PlayerMovement* PM);
+	PlayerStateDash(PlayerMovement * PM, const char* trigger,
+		math::float3 boxSize = math::float3(500.f, 500.f, 500.f));
 	~PlayerStateDash();
 
 	void Update() override;

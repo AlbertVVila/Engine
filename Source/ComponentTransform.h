@@ -39,6 +39,7 @@ public:
 	ENGINE_API math::float3 GetGlobalPosition();
 
 	ENGINE_API void LookAt(const math::float3& target);
+	ENGINE_API void LookAtMouse();
 	ENGINE_API void Align(const math::float3& target);
 
 	void Save(JSON_value* value) const override;
