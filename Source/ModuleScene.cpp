@@ -145,6 +145,11 @@ update_status ModuleScene::Update(float dt)
 	root->UpdateTransforms(math::float4x4::identity);
 	root->Update();
 	root->CheckDelete();
+	if (firstUpdateAfterLoadingScene)
+	{
+		root->SetAllMoveFlags();
+		firstUpdateAfterLoadingScene = false;
+	}
 	/*if (photoTimer > 0)
 	{
 		photoTimer -= dt;
@@ -1066,6 +1071,7 @@ void ModuleScene::LoadScene(const char* sceneName, const char* folder)
 	App->spacePartitioning->kDTree.Calculate();
 	App->scripting->onStart = true;
 	scenePhotos.clear();
+	firstUpdateAfterLoadingScene = true;
 }
 
 bool ModuleScene::AddScene(const char* sceneName, const char* folder)
