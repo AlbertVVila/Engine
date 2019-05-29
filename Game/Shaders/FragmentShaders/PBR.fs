@@ -182,7 +182,7 @@ void main()
 		sCoord = sCoord * .5f + .5f;
 		bool isLit = !(sCoord.x >= .0f && sCoord.x <= 1.f 
 					&& sCoord.y >= .0f && sCoord.y <= 1.f
-					&& texture2D(shadowTex, sCoord.xy).x < clamp(sCoord.z, 0, 1) - 0.0005f);
+					&& texture2D(shadowTex, sCoord.xy).x < clamp(sCoord.z, 0, 1) - 0.005f);
 #endif					
 		vec3 L = directionalDirections[i];
 		vec3 H = normalize(V + L);	
