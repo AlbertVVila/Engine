@@ -15,6 +15,7 @@ class ComponentAnimation;
 class ComponentRenderer;
 class DamageController;
 class EnemyLifeBarController;
+class PlayerMovement;
 
 class EnemyControllerScript_API EnemyControllerScript : public Script
 {
@@ -43,8 +44,10 @@ public:
 	void MoveTowards(float speed) const;
 	void LookAt2D(math::float3& position);
 
+	void OnTriggerExit(GameObject* go) override;
 public:
 	GameObject* player = nullptr;
+	PlayerMovement* playerMovement = nullptr;
 	std::string playerName = "Player";
 	std::string playerBboxName = "PlayerMesh";
 	std::string myBboxName = "EnemyMesh";
@@ -53,7 +56,7 @@ public:
 
 	DamageController* damageController = nullptr;
 	EnemyLifeBarController* enemyLifeBar = nullptr;
-
+	
 	// BBoxes
 	math::AABB* myBbox = nullptr;
 	math::AABB* playerBbox = nullptr;
