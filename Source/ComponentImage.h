@@ -28,11 +28,19 @@ public:
 	ResourceTexture* texture = nullptr;
 	bool flipVertical = false;
 	bool flipHorizontal = false;
+
+
+
 	bool isHovered = false;
 	bool isPressed = false;
 
+
 	std::vector<std::string> textureFiles;
 	bool enabled = true;
+
+
+	bool isMasked = false;
+	int maskAmount = 100;
 
 	bool updateImageList = false;
 };
