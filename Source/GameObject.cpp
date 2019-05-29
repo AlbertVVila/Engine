@@ -155,10 +155,7 @@ void GameObject::DrawProperties()
 		//navigability
 		if (isVolumetric && isStatic) 
 		{
-			if (ImGui::Checkbox("Navigable", &navigable))
-			{
-				App->navigation->navigableObjectToggled(this, navigable);
-			}
+			ImGui::Checkbox("Navigable", &navigable);
 			if (navigable)
 			{
 				//defines walls and this stuff
@@ -1026,36 +1023,52 @@ void GameObject::OnPlay()
 	}
 }
 
+void GameObject::SetAllMoveFlags()
+{
+	for (const auto& child : children)
+	{
+		child->movedFlag = true;
+		child->SetAllMoveFlags();
+	}
+}
+
 void GameObject::UpdateTransforms(math::float4x4 parentGlobal)
 {
 	PROFILE;
-	if (movedFlag && transform)
+	if (movedFlag)
 	{
-		transform->local = math::float4x4::FromTRS(transform->position, transform->rotation, transform->scale);
-		movedFlag = false;
-		if (!isStatic)
+		for (const auto& child : children)
 		{
-			if (treeNode != nullptr && hasLight)
-			{
-				light->CalculateGuizmos();
-				if (!treeNode->aabb.Contains(bbox))
-				{
-					App->spacePartitioning->aabbTreeLighting.ReleaseNode(treeNode);
-					App->spacePartitioning->aabbTreeLighting.InsertGO(this);
-				}
-			}
-			if (treeNode != nullptr && isVolumetric)
-			{
-				if (!treeNode->aabb.Contains(bbox))
-				{
-					App->spacePartitioning->aabbTree.ReleaseNode(treeNode);
-					App->spacePartitioning->aabbTree.InsertGO(this);
-				}
-			}
+				child->movedFlag = true;
 		}
-		else
+		if (transform)
 		{
-			App->spacePartitioning->kDTree.Calculate();
+			transform->local = math::float4x4::FromTRS(transform->position, transform->rotation, transform->scale);
+			movedFlag = false;
+			if (!isStatic)
+			{
+				if (treeNode != nullptr && hasLight)
+				{
+					light->CalculateGuizmos();
+					if (!treeNode->aabb.Contains(bbox))
+					{
+						App->spacePartitioning->aabbTreeLighting.ReleaseNode(treeNode);
+						App->spacePartitioning->aabbTreeLighting.InsertGO(this);
+					}
+				}
+				if (treeNode != nullptr && isVolumetric)
+				{
+					if (!treeNode->aabb.Contains(bbox))
+					{
+						App->spacePartitioning->aabbTree.ReleaseNode(treeNode);
+						App->spacePartitioning->aabbTree.InsertGO(this);
+					}
+				}
+			}
+			else
+			{
+				App->spacePartitioning->kDTree.Calculate();
+			}
 		}
 	}
 
@@ -1074,7 +1087,6 @@ void GameObject::UpdateTransforms(math::float4x4 parentGlobal)
 
 	for (const auto& child : children)
 	{
-		child->movedFlag = true;
 		child->UpdateTransforms(global);
 	}
 
