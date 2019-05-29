@@ -4,6 +4,8 @@
 #include "BaseScript.h"
 #include "Math/float3.h"
 
+#include <vector>
+
 class BasicEnemyAIScript;
 
 class EnemyState
@@ -31,6 +33,10 @@ protected:
 	float minTime = 0.4f;
 	float maxTime = 0.8f;
 	bool hitboxCreated = false;
+
+	// Nav mesh
+	std::vector<math::float3> enemyPath;
+	float refreshTime = 0.0f;
 };
 
 #endif // __ENEMYSTATE_H_

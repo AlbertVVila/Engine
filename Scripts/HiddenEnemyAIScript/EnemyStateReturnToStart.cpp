@@ -16,8 +16,9 @@ EnemyStateReturnToStart::~EnemyStateReturnToStart()
 void EnemyStateReturnToStart::Update()
 {
 	// Look at start position and move towards
-	enemy->enemyController->LookAt2D(enemy->startPosition);
-	enemy->enemyController->MoveTowards(enemy->returnSpeed);
+	//enemy->enemyController->LookAt2D(enemy->startPosition);
+	//enemy->enemyController->MoveTowards(enemy->returnSpeed);
+	enemy->enemyController->Move(enemy->chaseSpeed, refreshTime, enemy->startPosition, enemyPath);
 
 	// Check distance to player
 	math::float3 enemyCurrentPosition = enemy->enemyController->GetPosition();

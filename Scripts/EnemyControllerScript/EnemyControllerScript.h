@@ -4,6 +4,7 @@
 #include "BaseScript.h"
 
 #include "Geometry/AABB.h"
+#include <vector>
 
 #ifdef EnemyControllerScript_EXPORTS
 #define EnemyControllerScript_API __declspec(dllexport)
@@ -15,6 +16,7 @@ class ComponentAnimation;
 class ComponentRenderer;
 class DamageController;
 class EnemyLifeBarController;
+class PlayerMovement;
 
 class EnemyControllerScript_API EnemyControllerScript : public Script
 {
@@ -40,11 +42,14 @@ public:
 	inline bool IsCollidingWithPlayer() const;
 
 	void Move(float speed, math::float3& direction) const;
+	void Move(float speed, float& refreshTime, math::float3 position, std::vector<float3>& path) const; // Move using nav mesh
 	void MoveTowards(float speed) const;
 	void LookAt2D(math::float3& position);
 
+	void OnTriggerExit(GameObject* go) override;
 public:
 	GameObject* player = nullptr;
+	PlayerMovement* playerMovement = nullptr;
 	std::string playerName = "Player";
 	std::string playerBboxName = "PlayerMesh";
 	std::string myBboxName = "EnemyMesh";
@@ -53,7 +58,7 @@ public:
 
 	DamageController* damageController = nullptr;
 	EnemyLifeBarController* enemyLifeBar = nullptr;
-
+	
 	// BBoxes
 	math::AABB* myBbox = nullptr;
 	math::AABB* playerBbox = nullptr;
@@ -61,6 +66,8 @@ public:
 private:
 	int actualHealth = 20;
 	int maxHealth = 20;
+
+	bool isDead = false;
 };
 
 #endif __EnemyControllerScript_h__
