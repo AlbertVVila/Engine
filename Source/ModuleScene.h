@@ -112,7 +112,7 @@ private:
 
 	unsigned defaultSceneUID = 0u;
 	std::vector<std::string> sceneFiles;
-	bool firstUpdateAfterLoadingScene = false;
+	
 public:
 	GameObject* root = nullptr;
 	GameObject* selected = nullptr; //Selected in hierarchy

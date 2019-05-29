@@ -145,11 +145,7 @@ update_status ModuleScene::Update(float dt)
 	root->UpdateTransforms(math::float4x4::identity);
 	root->Update();
 	root->CheckDelete();
-	if (firstUpdateAfterLoadingScene)
-	{
-		root->SetAllMoveFlags();
-		firstUpdateAfterLoadingScene = false;
-	}
+
 	/*if (photoTimer > 0)
 	{
 		photoTimer -= dt;
@@ -1072,7 +1068,10 @@ void ModuleScene::LoadScene(const char* sceneName, const char* folder)
 	App->scripting->onStart = true;
 	scenePhotos.clear();
 	App->time->ResetGameDetaTime();
-	firstUpdateAfterLoadingScene = true;
+	//set all the game objects
+	root->UpdateTransforms(math::float4x4::identity);
+	root->SetAllMoveFlags();
+	
 }
 
 bool ModuleScene::AddScene(const char* sceneName, const char* folder)
