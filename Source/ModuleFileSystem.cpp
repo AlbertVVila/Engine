@@ -83,15 +83,19 @@ bool ModuleFileSystem::Start() //TODO: Don't checkFiles in GameBuild
 	CheckResourcesInFolder(ASSETS);
 	if (filesToImport.size() > 0) ImportFiles();
 
+#ifndef GAME_BUILD
 	// Set thread to monitorize Assets folder
 	monitor_thread = std::thread(&ModuleFileSystem::Monitorize, this, ASSETS);
 	monitor_thread.detach();
+#endif // !GAME_BUILD
 	return true;
 }
 
 update_status ModuleFileSystem::Update(float dt)
 {
+#ifndef GAME_BUILD
 	if (filesToImport.size() > 0) ImportFiles();
+#endif // !GAME_BUILD
 	return UPDATE_CONTINUE;
 }
 
