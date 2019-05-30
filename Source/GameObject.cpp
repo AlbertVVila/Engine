@@ -1044,10 +1044,10 @@ void GameObject::UpdateTransforms(math::float4x4 parentGlobal)
 				child->movedFlag = true;
 			}
 		}
+		movedFlag = false;
 		if (transform)
 		{
 			transform->local = math::float4x4::FromTRS(transform->position, transform->rotation, transform->scale);
-			movedFlag = false;
 			if (!isStatic)
 			{
 				if (treeNode != nullptr && hasLight)
