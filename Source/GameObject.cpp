@@ -1039,7 +1039,10 @@ void GameObject::UpdateTransforms(math::float4x4 parentGlobal)
 	{
 		for (const auto& child : children)
 		{
+			if (!child->isStatic)
+			{
 				child->movedFlag = true;
+			}
 		}
 		if (transform)
 		{
