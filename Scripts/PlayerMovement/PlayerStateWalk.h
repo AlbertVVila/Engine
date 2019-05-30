@@ -20,7 +20,7 @@ public:
 	GameObject* dustParticles = nullptr;
 
 private:
-	math::float2 previousMousePosition = math::float2::zero;
+	float moveTimer = 0.0f;
 };
 
 #endif // __PLAYERSTATEWALK_H_

@@ -22,6 +22,8 @@
 #include "Globals.h"
 #include "debugdraw.h"
 
+#define RECALC_PATH_TIME 0.3f
+
 PlayerStateWalk::PlayerStateWalk(PlayerMovement* PM, const char* trigger):
 	PlayerState(PM, trigger)
 {
@@ -35,9 +37,9 @@ void PlayerStateWalk::Update()
 {
 	math:float2 mouse((float*)&player->App->input->GetMousePosition());
 	if (player->App->input->GetMouseButtonDown(3) == KEY_DOWN 
-		|| (player->App->input->GetMouseButtonDown(3) == KEY_REPEAT && mouse != previousMousePosition))
+		|| (player->App->input->GetMouseButtonDown(3) == KEY_REPEAT && moveTimer > RECALC_PATH_TIME))
 	{
-		previousMousePosition = mouse;
+		moveTimer = 0.0f;
 		math::float3 intersectionPoint = math::float3::inf;
 		if (player->App->scene->Intersects(intersectionPoint, "floor"))
 		{
@@ -54,6 +56,10 @@ void PlayerStateWalk::Update()
 			}
 			return;
 		}
+	}
+	else if (player->App->input->GetMouseButtonDown(3) == KEY_REPEAT)
+	{
+		moveTimer += player->App->time->gameDeltaTime;
 	}
 	if (path.size() > 0)
 	{
