@@ -11,7 +11,6 @@
 #include "Math/float3.h"
 #include <vector>
 
-class ComponentBoxTrigger;
 class EnemyControllerScript;
 class JSON_value;
 class EnemyState;
@@ -64,8 +63,6 @@ public:
 	// Cooldown variables
 	float cooldownTime = 1.0f;			// Seconds to wait between attacks
 
-	ComponentBoxTrigger* hpBoxTrigger = nullptr;
-	ComponentBoxTrigger* attackBoxTrigger = nullptr;
 	EnemyControllerScript* enemyController = nullptr;
 
 private:

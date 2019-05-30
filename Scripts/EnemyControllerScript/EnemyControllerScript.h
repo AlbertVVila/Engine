@@ -14,6 +14,7 @@
 
 class ComponentAnimation;
 class ComponentRenderer;
+class ComponentBoxTrigger;
 class DamageController;
 class EnemyLifeBarController;
 class PlayerMovement;
@@ -46,7 +47,7 @@ public:
 	void MoveTowards(float speed) const;
 	void LookAt2D(math::float3& position);
 
-	void OnTriggerExit(GameObject* go) override;
+	void OnTriggerEnter(GameObject* go) override;
 public:
 	GameObject* player = nullptr;
 	PlayerMovement* playerMovement = nullptr;
@@ -61,7 +62,11 @@ public:
 	
 	// BBoxes
 	math::AABB* myBbox = nullptr;
-	math::AABB* playerBbox = nullptr;
+
+	// Hitboxes
+	ComponentBoxTrigger* hpBoxTrigger = nullptr;
+	ComponentBoxTrigger* attackBoxTrigger = nullptr;
+	ComponentBoxTrigger* playerHitBox = nullptr;
 
 private:
 	int actualHealth = 20;

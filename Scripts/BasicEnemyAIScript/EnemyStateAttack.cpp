@@ -32,22 +32,22 @@ void EnemyStateAttack::Update()
 		if (hitboxCreated)
 		{
 			// Disable hitbox
-			enemy->attackBoxTrigger->Enable(false);
+			enemy->enemyController->attackBoxTrigger->Enable(false);
 			hitboxCreated = false;
 		}
 		enemy->currentState = (EnemyState*)enemy->chase;
 	}
 	else
 	{
-		assert(enemy->attackBoxTrigger != nullptr);
+		assert(enemy->enemyController->attackBoxTrigger != nullptr);
 		if (!hitboxCreated)
 		{
 			// Attack
 			//Create the hitbox
-			enemy->attackBoxTrigger->Enable(true);
-			enemy->attackBoxTrigger->SetBoxSize(boxSize);
+			enemy->enemyController->attackBoxTrigger->Enable(true);
+			enemy->enemyController->attackBoxTrigger->SetBoxSize(boxSize);
 			boxPosition = enemy->gameobject->transform->up * 100.f;
-			enemy->attackBoxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z + 100.f);
+			enemy->enemyController->attackBoxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z + 100.f);
 			hitboxCreated = true;
 
 			//playerScript->Damage(attackDamage);
@@ -57,7 +57,7 @@ void EnemyStateAttack::Update()
 		{
 			// End attack
 			// Disable hitbox
-			enemy->attackBoxTrigger->Enable(false);
+			enemy->enemyController->attackBoxTrigger->Enable(false);
 			hitboxCreated = false;
 
 			// Enter cooldown state
