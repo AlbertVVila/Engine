@@ -431,7 +431,7 @@ extern const ddVec3 Plum;
 extern const ddVec3 PowderBlue;
 extern const ddVec3 Purple;
 extern const ddVec3 RebeccaPurple;
-extern const ddVec3 Red;
+extern ENGINE_API const ddVec3 Red;
 extern const ddVec3 RosyBrown;
 extern const ddVec3 RoyalBlue;
 extern const ddVec3 SaddleBrown;
@@ -555,7 +555,7 @@ void cross(DD_EXPLICIT_CONTEXT_ONLY(ContextHandle ctx,)
            bool depthEnabled = true);
 
 // Add a wireframe circle to the debug draw queue.
-void circle(DD_EXPLICIT_CONTEXT_ONLY(ContextHandle ctx,)
+ENGINE_API void circle(DD_EXPLICIT_CONTEXT_ONLY(ContextHandle ctx,)
             ddVec3_In center,
             ddVec3_In planeNormal,
             ddVec3_In color,
