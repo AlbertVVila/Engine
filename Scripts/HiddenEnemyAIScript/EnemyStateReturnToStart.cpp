@@ -32,8 +32,9 @@ void EnemyStateReturnToStart::Update()
 	else 
 	{
 		//Check distance to start position
+		// TODO: Change to check that there is not a nearest point on the nav mesh to this
 		float distanceToStartPosition = enemy->enemyController->GetDistanceTo2D(enemy->startPosition);
-		if (distanceToStartPosition < 1.5f)
+		if (distanceToStartPosition < 20.5f)
 			enemy->currentState = (EnemyState*)enemy->hide;
 	}
 }
