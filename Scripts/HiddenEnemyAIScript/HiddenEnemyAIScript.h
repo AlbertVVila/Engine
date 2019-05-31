@@ -12,7 +12,6 @@
 #include <vector>
 
 class GameObject;
-class ComponentBoxTrigger;
 class EnemyControllerScript;
 class JSON_value;
 class EnemyState;
@@ -72,7 +71,6 @@ public:
 										// Cooldown variables
 	float cooldownTime = 1.0f;			// Seconds to wait between attacks
 
-	ComponentBoxTrigger* boxTrigger = nullptr;			// Hitbox
 	EnemyControllerScript* enemyController = nullptr;
 
 private:

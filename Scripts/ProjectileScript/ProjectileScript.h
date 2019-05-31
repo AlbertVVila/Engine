@@ -20,7 +20,7 @@ class ProjectileScript_API ProjectileScript : public Script
 	void Start() override;
 	void Update() override;
 
-	void OnTriggerExit(GameObject* go) override;
+	void OnTriggerEnter(GameObject* go) override;
 
 	void Expose(ImGuiContext* context) override;
 

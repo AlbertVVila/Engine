@@ -121,7 +121,7 @@ update_status Application::Update()
 	{
 		++i;
 		scene->root->UpdateTransforms(math::float4x4::identity);
-		collisions->Update(time->realDeltaTime);
+		//collisions->Update(time->realDeltaTime);
 		scripting->Update(time->realDeltaTime);
 	}
 

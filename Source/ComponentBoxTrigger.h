@@ -54,8 +54,10 @@ public:
 private:
 	void PropagateState(GameObject* other, OverlapState state);
 
+public:
+	std::unordered_map<const ComponentBoxTrigger*, OverlapState> overlapList;
+
 private:
-	std::unordered_map<const ComponentBoxTrigger*,OverlapState> overlapList;
 	math::OBB* boxTrigger = nullptr;
 
 	math::float3 position = math::float3::zero;
