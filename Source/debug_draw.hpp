@@ -588,7 +588,7 @@ void sphere(DD_EXPLICIT_CONTEXT_ONLY(ContextHandle ctx,)
 // The cone 'apex' is the point where all lines meet.
 // The length of the 'dir' vector determines the thickness.
 // 'baseRadius' & 'apexRadius' are in degrees.
-void cone(DD_EXPLICIT_CONTEXT_ONLY(ContextHandle ctx,)
+ENGINE_API void cone(DD_EXPLICIT_CONTEXT_ONLY(ContextHandle ctx,)
           ddVec3_In apex,
           ddVec3_In dir,
           ddVec3_In color,
