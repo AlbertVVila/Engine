@@ -162,7 +162,26 @@ void GameObject::DrawProperties()
 				ImGui::Checkbox("Is obstacle", &noWalkable);
 			}
 		}
-
+		if (children.size() > 1)
+		{
+			ImGui::NewLine();
+			if (ImGui::Button("Make childs with mesh static"))
+			{
+				SetStaticAllChildsWithMesh();
+			}
+			if (ImGui::Button("Make childs with mesh navigable"))
+			{
+				SetNavigableAllChildsWithMesh();
+			}
+			if (ImGui::Button("Make childs with mesh obstacles"))
+			{
+				SetObstacleAllChildsWithMesh();
+			}
+			if (ImGui::Button("Add all navigable childs to the navMesh"))
+			{
+				AddAllNavigableChildsToNavMesh();
+			}
+		}
 		if (ImGui::Checkbox("Static", &isStatic))
 		{
 			if (isStatic && GetComponentOld(ComponentType::Renderer) != nullptr)
@@ -1120,4 +1139,54 @@ bool GameObject::CheckDelete()
 		}
 	}
 	return false;
+}
+
+
+void GameObject::SetStaticAllChildsWithMesh()
+{
+	for (const auto& child : children)
+	{
+		if (child->isVolumetric)
+		{
+			child->isStatic = true;
+		}
+		child->SetStaticAllChildsWithMesh();
+	}
+}
+void GameObject::SetNavigableAllChildsWithMesh()
+{
+	for (const auto& child : children)
+	{
+		if (child->isVolumetric)
+		{
+			child->isStatic = true;
+			child->navigable = true;
+		}
+		child->SetNavigableAllChildsWithMesh();
+	}
+}
+void GameObject::SetObstacleAllChildsWithMesh()
+{
+	for (const auto& child : children)
+	{
+		if (child->isVolumetric)
+		{
+			child->isStatic = true;
+			child->navigable = true;
+			child->noWalkable = true;
+		}
+		child->SetObstacleAllChildsWithMesh();
+	}
+}
+
+void GameObject::AddAllNavigableChildsToNavMesh()
+{
+	for (const auto& child : children)
+	{
+		if (child->isVolumetric && child->isStatic &&child->navigable)
+		{
+			App->navigation->addNavigableMeshFromObject(child);
+		}
+		child->AddAllNavigableChildsToNavMesh();
+	}
 }

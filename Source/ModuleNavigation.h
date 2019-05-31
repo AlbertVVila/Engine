@@ -87,8 +87,7 @@ public:
 	
 	void renderNavMesh();
 
-	void cleanValuesPRE();
-	void cleanValuesPOST();
+	void addNavigableMeshFromObject(GameObject* obj);
 
 
 	ENGINE_API bool FindPath(math::float3 start, math::float3 end, std::vector<math::float3> &path, PathFindType type = PathFindType::FOLLOW) const;
@@ -105,6 +104,8 @@ private:
 
 	void generateNavigability(bool render);
 	void addNavigableMesh();
+	void cleanValuesPRE();
+	void cleanValuesPOST();
 
 	void fillVertices();
 	void fillIndices();

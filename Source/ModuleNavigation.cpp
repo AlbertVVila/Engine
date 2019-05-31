@@ -309,6 +309,16 @@ void ModuleNavigation::addNavigableMesh()
 	}
 }
 
+void ModuleNavigation::addNavigableMeshFromObject(GameObject* obj)
+{
+	meshboxes.push_back(static_cast <const AABB*>(&obj->bbox));
+	meshComponents.push_back(static_cast <const ComponentRenderer*>(obj->GetComponentOld(ComponentType::Renderer)));
+	transformComponents.push_back(static_cast <const ComponentTransform*>(obj->GetComponentOld(ComponentType::Transform)));
+	isObstacle.push_back(obj->noWalkable);
+	std::string s = obj->name + " added to navigation";
+	LOG(s.c_str());
+}
+
 void ModuleNavigation::renderNavMesh()
 {
 	if (!meshGenerated || !renderMesh || !drawNavMesh || navMesh == nullptr)
