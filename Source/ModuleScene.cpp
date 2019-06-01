@@ -107,8 +107,13 @@ bool ModuleScene::Start()
 	if (defaultSceneUID > 0u)
 	{
 		defaultScene = (ResourceScene*)App->resManager->Get(defaultSceneUID);
-		if(defaultScene != nullptr)
+		if (defaultScene != nullptr)
+		{
 			defaultScene->Load();
+			//set all the game objects
+			root->UpdateTransforms(math::float4x4::identity);
+			root->SetAllMoveFlags();
+		}
 	}
 	return true;
 }
