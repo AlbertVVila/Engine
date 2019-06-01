@@ -3,8 +3,11 @@
 #include "ComponentBoxTrigger.h"
 #include "Geometry/OBB.h"
 
+#include "Brofiler.h"
+
 update_status ModuleCollisions::Update(float dt)
 {
+	BROFILER_CATEGORY("Collisions update", Profiler::Color::Azure);
 	for (auto player : playerBoxes)
 	{
 		if (!player->enabled) continue;

@@ -51,6 +51,8 @@
 #include "GL/glew.h"
 #include "imgui.h"
 
+#include "Brofiler.h"
+
 #define MAX_NAME 128
 #define IMGUI_RIGHT_MOUSE_BUTTON 1
 
@@ -225,6 +227,7 @@ void GameObject::DrawProperties()
 
 void GameObject::Update()
 {
+	PROFILE;
 	if (!isActive()) return;
 
 	for (auto& component : components)
@@ -1117,7 +1120,7 @@ void GameObject::UpdateTransforms(math::float4x4 parentGlobal)
 
 bool GameObject::CheckDelete()
 {
-	//PROFILE;
+	PROFILE;
 	if (deleteFlag) //Delete GO
 	{
 		CleanUp();
