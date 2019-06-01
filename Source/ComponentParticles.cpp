@@ -186,6 +186,7 @@ void ComponentParticles::DrawProperties()
 		ImGui::DragFloat2("Speed", &speed[0], 1.2f);
 		ImGui::DragFloat2("Size(W,H)", &particleSize[0], 0.01 * App->renderer->current_scale);
 		ImGui::ColorEdit3("Color", (float*)&particleColor);
+		ImGui::DragFloat("Intensity", &intensity, 0.05f, 0.01f, 10.0f);
 
 		//Clamp values
 		lifetime[0] = Max(0.01f, lifetime[0]);

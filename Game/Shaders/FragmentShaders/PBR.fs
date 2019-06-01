@@ -169,7 +169,9 @@ void main()
 	vec3 normal = CalculateNormal();	
 	vec4 albedo = get_albedo();
 	
-	vec3 F0 = material.specular;
+	float metallic = length(material.specular);
+
+	vec3 F0 = mix(albedo.rgb, material.specular, metallic);
 
 	vec3 color = albedo.rgb * lights.ambient_color; 
 	
@@ -193,6 +195,7 @@ void main()
 
 		vec3 kS = F;
 		vec3 kD = vec3(1.0) - kS;
+		kD *= 1.0f - metallic;
 		
 		float NdotL = max(dot(N, L), 0.0);        
 		color += (kD * albedo.rgb / PI + BRDF(F, L, V, N, H)) * radiance * NdotL;  
@@ -218,7 +221,8 @@ void main()
 
 		vec3 kS = F;
         vec3 kD = vec3(1.0) - kS;
-      
+		kD *= 1.0f - metallic;
+
 		float NdotL = max(dot(N, L), 0.0);        
 		color += (kD * albedo.rgb / PI + BRDF(F, L, V, N, H)) * radiance * NdotL;  
 	}
@@ -241,6 +245,7 @@ void main()
 
 		vec3 kS = F;
         vec3 kD = vec3(1.0) - kS;
+		kD *= 1.0f - metallic;
       
 		float NdotL = max(dot(N, L), 0.0);        
 		color += (kD * albedo.rgb / PI + BRDF(F, L, V, N, H)) * radiance * NdotL;
@@ -255,7 +260,7 @@ void main()
 	highlightColor = vec4(highlightColorUniform, 1);
 	
 	float brightness = dot(Fragcolor.rgb, vec3(0.2126, 0.7152, 0.0722));
-    if(brightness > 1.0)
+    if(brightness > 1)
         brightColor = vec4(Fragcolor.rgb, albedo.a);
     else
         brightColor = vec4(0.0, 0.0, 0.0, 1.0);

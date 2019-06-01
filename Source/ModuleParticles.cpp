@@ -337,6 +337,7 @@ void ModuleParticles::DrawParticleSystem(ComponentParticles* cp, const Component
 	glUniform1i(glGetUniformLocation(shader->id[0], "f2Xpos"), cp->f2Xpos);
 	glUniform1i(glGetUniformLocation(shader->id[0], "f2Ypos"), cp->f2Ypos);
 	glUniform1f(glGetUniformLocation(shader->id[0], "mixAmount"), cp->frameMix);
+	glUniform1f(glGetUniformLocation(shader->id[0], "intensity"), cp->intensity);
 	//glUniform3fv(glGetUniformLocation(shader->id[0],"particleColor"), 1, (GLfloat*)&cp->particleColor);	
 
 	glDrawArraysInstanced(GL_TRIANGLES,0, 6, cp->particles.size());
