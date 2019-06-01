@@ -830,12 +830,6 @@ void ModuleRender::DrawGUI()
 	{
 		ComputeBloomKernel();
 	}
-
-	ImGui::Image((ImTextureID)brightnessBufferGame, ImVec2(100, 100), { 0,1 }, { 1,0 });
-	ImGui::Image((ImTextureID)pingpongColorbuffers[0], ImVec2(500, 500), { 0,1 }, { 1,0 });
-	ImGui::Image((ImTextureID)pingpongColorbuffers[1], ImVec2(500, 500), { 0,1 }, { 1,0 });
-
-
 }
 
 void ModuleRender::GenBlockUniforms()
