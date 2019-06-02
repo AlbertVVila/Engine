@@ -1,5 +1,5 @@
 #version 330
-#define MAX_KERNEL_RADIUS 100
+#define MAX_KERNEL_RADIUS 10
 
 out vec4 color;
 
@@ -18,7 +18,7 @@ void main()
     vec3 result = texture(gBrightness, UV0).rgb * weight[0]; // current fragment's contribution
     if(horizontal)
     {
-        for(int i = 1; i < kernelRadius; ++i)
+        for(int i = 1; i < 10; ++i)
         {
             result += texture(gBrightness, UV0 + vec2(tex_offset.x * i, 0.0)).rgb * weight[i];
             result += texture(gBrightness, UV0 - vec2(tex_offset.x * i, 0.0)).rgb * weight[i];
@@ -26,7 +26,7 @@ void main()
     }
     else
     {
-        for(int i = 1; i < kernelRadius; ++i)
+        for(int i = 1; i < 10; ++i)
         {
             result += texture(gBrightness, UV0 + vec2(0.0, tex_offset.y * i)).rgb * weight[i];
             result += texture(gBrightness, UV0 - vec2(0.0, tex_offset.y * i)).rgb * weight[i];

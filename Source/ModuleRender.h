@@ -1,7 +1,7 @@
 #ifndef __ModuleRender_h__
 #define __ModuleRender_h__
 
-#define MAX_KERNEL_RADIUS 100
+#define MAX_KERNEL_RADIUS 10
 
 #include "Module.h"
 #include "Math/float3.h"

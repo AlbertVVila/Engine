@@ -23,6 +23,7 @@ struct Material
     vec3      emissive_color;
 
     float roughness;
+	float bloomIntensity;
 	vec3 specular;
 };
 
@@ -252,7 +253,7 @@ void main()
 	}
 	
 	//color *= get_occlusion_color();
-	color += get_emissive_color();
+	color += get_emissive_color() * material.bloomIntensity;
 #ifdef IS_EDITOR
 	color = vec3(pow(color.r, (1.0 / 2.2)), pow(color.g, (1.0 / 2.2)), pow(color.b, (1.0 / 2.2)));
 #endif

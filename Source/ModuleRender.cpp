@@ -266,8 +266,9 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 		glClearBufferfv(GL_COLOR, 1, transparent);
 		glClearBufferfv(GL_COLOR, 2, transparent);
 	}
-	App->particles->Render(App->time->fullGameDeltaTime, &cam);
+
 	App->scene->Draw(*cam.frustum, isEditor);
+	App->particles->Render(App->time->fullGameDeltaTime, &cam);
 
 	
 	if (!isEditor)
@@ -822,7 +823,7 @@ void ModuleRender::DrawGUI()
 	}
 	ImGui::DragFloat("Gamma correction", &gammaCorrector, .05f, 1.2f, 3.2f);
 	ImGui::DragFloat("Exposure", &exposure, .05f, .1f, 10.0f);
-	if (ImGui::DragFloat("Bloom spread", &bloomSpread, .1f, 1.f, 100.f))
+	if (ImGui::DragFloat("Bloom spread", &bloomSpread, .1f, 1.f, 4.f))
 	{
 		ComputeBloomKernel();
 	}

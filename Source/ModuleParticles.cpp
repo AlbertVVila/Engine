@@ -18,6 +18,7 @@
 #include "GL/glew.h"
 #include <algorithm>
 #include "ImGUICurveUtils.h"
+#include "Brofiler.h"
 #include "imgui_color_gradient.h"
 
 ModuleParticles::~ModuleParticles()
@@ -139,6 +140,7 @@ bool ModuleParticles::Start()
 
 void ModuleParticles::Render(float dt, const ComponentCamera* camera) 
 {
+	BROFILER_CATEGORY("Particles Render", Profiler::Color::AliceBlue);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	particleSystems.sort(

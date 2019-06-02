@@ -17,7 +17,7 @@
 #include "JSON.h"
 #include "debugdraw.h"
 #include "imgui_color_gradient.h"
-
+#include "Brofiler.h"
 
 #define None "None Selected"
 
@@ -246,6 +246,7 @@ bool ComponentParticles::CleanUp()
 
 void ComponentParticles::Update(float dt, const math::float3& camPos)
 {
+	BROFILER_CATEGORY("Update ParticleSystem", Profiler::Color::AliceBlue);
 	if (!Playing && !ConstantPlaying) return;
 	timer += dt;
 
@@ -281,7 +282,7 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 	//Create new Particle P
 	if (gameobject->isActive() && rateTimer <= 0.f && particles.size() < maxParticles)
 	{
-		int amount = MAX(dt / (1.f / rate), 1);
+		int amount = MIN(MAX(dt / (1.f / rate), 1), maxParticles);
 		for (; amount > 0; --amount)
 		{
 			Particle* p;
@@ -455,6 +456,7 @@ void ComponentParticles::Save(JSON_value* value) const
 	value->AddInt("localEmitter", localEmitter);
 	value->AddFloat3("lookAtTarget", lookAtTarget);
 
+	value->AddFloat("intensity", intensity);
 	PMSizeOverTime* SOTAux = (PMSizeOverTime*)modules[0];
 	value->AddFloat4("bezier14", float4(SOTAux->v[0], SOTAux->v[1], SOTAux->v[2], SOTAux->v[3]));
 	value->AddFloat("bezier5", float(SOTAux->v[4]));
@@ -545,6 +547,7 @@ void ComponentParticles::Load(JSON_value* value)
 	billboarded = value->GetInt("billboarded");
 	localEmitter = value->GetInt("localEmitter");
 	lookAtTarget = value->GetFloat3("lookAtTarget");
+	intensity = value->GetFloat("intensity");
 
 	PMSizeOverTime* SOTAux = (PMSizeOverTime*)modules[0];
 	SOTAux->v[0] = value->GetFloat4("bezier14").x;

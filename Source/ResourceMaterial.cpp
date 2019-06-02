@@ -35,7 +35,7 @@ ResourceMaterial::ResourceMaterial(const ResourceMaterial& resource) : Resource(
 	emissiveColor = resource.emissiveColor;
 
 	roughness = resource.roughness;
-	metallic = resource.metallic;
+	bloomIntenstiy = resource.bloomIntenstiy;
 }
 
 ResourceMaterial::~ResourceMaterial()
@@ -75,7 +75,7 @@ bool ResourceMaterial::LoadInMemory()
 	specularColor = materialJSON->GetColor3("specularColor");
 	emissiveColor = materialJSON->GetColor3("emissiveColor");
 
-	metallic = materialJSON->GetFloat("metallic");
+	bloomIntenstiy = materialJSON->GetFloat("bloomIntenstiy");
 	roughness = materialJSON->GetFloat("roughness");
 
 	unsigned diffuseUID = materialJSON->GetUint("diffuseUID");
@@ -124,7 +124,7 @@ void ResourceMaterial::Save() const
 	if (textures[(unsigned)TextureType::DIFFUSE] != nullptr)
 		materialJSON->AddFloat4("diffuseColor", diffuseColor);
 
-	materialJSON->AddFloat("metallic", metallic);
+	materialJSON->AddFloat("bloomIntenstiy", bloomIntenstiy);
 	materialJSON->AddFloat("roughness", roughness);
 	materialJSON->AddFloat3("specularColor", specularColor);
 	materialJSON->AddFloat3("emissiveColor", emissiveColor);
@@ -267,7 +267,7 @@ void ResourceMaterial::Reset(const ResourceMaterial& material)
 	emissiveColor = material.emissiveColor;
 
 	roughness = material.roughness;
-	metallic = material.metallic;
+	bloomIntenstiy = material.bloomIntenstiy;
 }
 
 int ResourceMaterial::Compare(const ResourceMaterial& material)
@@ -290,7 +290,7 @@ int ResourceMaterial::Compare(const ResourceMaterial& material)
 
 	if (roughness != material.roughness)
 		return false;
-	if (metallic != material.metallic)
+	if (bloomIntenstiy != material.bloomIntenstiy)
 		return false;
 	return true;
 }
@@ -390,6 +390,9 @@ void ResourceMaterial::SetUniforms(unsigned shader) const
 
 	glUniform1fv(glGetUniformLocation(shader,
 		"material.roughness"), 1, (GLfloat*)&roughness);
+
+	glUniform1fv(glGetUniformLocation(shader,
+		"material.bloomIntensity"), 1, (GLfloat*)&bloomIntenstiy);
 	glUniform3fv(glGetUniformLocation(shader,
 		"material.specular"), 1, (GLfloat*)&specularColor);
 }

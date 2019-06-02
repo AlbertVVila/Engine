@@ -50,7 +50,7 @@ public:
 	math::float3 specularColor = math::float3(.1f, .1f, .1f);
 
 	float roughness = .5f;
-	float metallic = .5f;
+	float bloomIntenstiy = 1.0f;
 
 	unsigned variation = 0u;
 };

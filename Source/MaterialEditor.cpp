@@ -56,6 +56,7 @@ void MaterialEditor::Draw()
 	{
 		ImGui::ColorEdit3("Color", (float*)&material->emissiveColor);
 		TextureSelector((unsigned)TextureType::EMISSIVE, currentEmissive, 3);
+		ImGui::DragFloat("Bloom intensity", &material->bloomIntenstiy, 0.01f, 1.0f, 10.0f);
 		ImGui::Separator();
 	}
 	if (ImGui::CollapsingHeader("Normal"))
