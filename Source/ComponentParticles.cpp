@@ -184,7 +184,7 @@ void ComponentParticles::DrawProperties()
 		}
 		ImGui::DragFloat2("Lifetime", &lifetime[0], 0.1f);
 		ImGui::DragFloat2("Speed", &speed[0], 1.2f);
-		ImGui::DragFloat2("Size", &particleSize[0], 0.01 * App->renderer->current_scale);
+		ImGui::DragFloat2("Size(W,H)", &particleSize[0], 0.01 * App->renderer->current_scale);
 		ImGui::ColorEdit3("Color", (float*)&particleColor);
 
 		//Clamp values
@@ -348,10 +348,6 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 			// P color
 			p->color = particleColor;
 
-			//P size
-			float random = (float)rand() / (float) RAND_MAX;
-			float diff = abs(particleSize.y - particleSize.x);
-			p->size = random * diff + Min(particleSize.x, particleSize.y);
 			particles.push_back(p);
 		}
 		rateTimer = 1.f / rate;
@@ -403,23 +399,23 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 			{
 				pos = particles.front()->position + gameobject->transform->GetGlobalPosition();
 				float3 direction = (camPos - pos);
-				particles.front()->global = particles.front()->global.FromTRS(pos, math::Quat::LookAt(float3::unitZ, direction.Normalized(), float3::unitY, float3::unitY), math::float3::one * sizeOT);
+				particles.front()->global = particles.front()->global.FromTRS(pos, math::Quat::LookAt(float3::unitZ, direction.Normalized(), float3::unitY, float3::unitY), math::float3(particleSize.x, particleSize.y, 1.0f) * sizeOT);
 			}
 			else
 			{
 				float3 direction = (camPos - particles.front()->position);
-				particles.front()->global = particles.front()->global.FromTRS(particles.front()->position, math::Quat::LookAt(float3::unitZ, direction.Normalized(), float3::unitY, float3::unitY), math::float3::one * sizeOT);
+				particles.front()->global = particles.front()->global.FromTRS(particles.front()->position, math::Quat::LookAt(float3::unitZ, direction.Normalized(), float3::unitY, float3::unitY), math::float3(particleSize.x, particleSize.y, 1.0f) * sizeOT);
 			}
 		}
 		else
 		{
 			if (localEmitter)
 			{
-				particles.front()->global = particles.front()->global.FromTRS(particles.front()->position + gameobject->transform->GetGlobalPosition(), math::Quat::LookAt(float3::unitZ, lookAtTarget.Normalized(), float3::unitY, float3::unitY), math::float3::one * sizeOT);
+				particles.front()->global = particles.front()->global.FromTRS(particles.front()->position + gameobject->transform->GetGlobalPosition(), math::Quat::LookAt(float3::unitZ, lookAtTarget.Normalized(), float3::unitY, float3::unitY), math::float3(particleSize.x, particleSize.y, 1.0f) * sizeOT);
 			}
 			else
 			{
-				particles.front()->global = particles.front()->global.FromTRS(particles.front()->position, math::Quat::LookAt(float3::unitZ, lookAtTarget.Normalized(), float3::unitY, float3::unitY), math::float3::one * sizeOT);
+				particles.front()->global = particles.front()->global.FromTRS(particles.front()->position, math::Quat::LookAt(float3::unitZ, lookAtTarget.Normalized(), float3::unitY, float3::unitY), math::float3(particleSize.x, particleSize.y, 1.0f) * sizeOT);
 			}
 		}
 		particles.front()->color = newColor;

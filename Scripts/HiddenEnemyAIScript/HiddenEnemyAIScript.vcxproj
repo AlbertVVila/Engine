@@ -310,9 +310,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="EnemyState.cpp" />
+    <ClCompile Include="EnemyStateAttack.cpp" />
+    <ClCompile Include="EnemyStateChase.cpp" />
+    <ClCompile Include="EnemyStateCooldown.cpp" />
+    <ClCompile Include="EnemyStateDeath.cpp" />
+    <ClCompile Include="EnemyStateHide.cpp" />
+    <ClCompile Include="EnemyStateShowUp.cpp" />
+    <ClCompile Include="EnemyStateWait.cpp" />
+    <ClCompile Include="EnemyStateReturnToStart.cpp" />
     <ClCompile Include="HiddenEnemyAIScript.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="EnemyState.h" />
+    <ClInclude Include="EnemyStateAttack.h" />
+    <ClInclude Include="EnemyStateChase.h" />
+    <ClInclude Include="EnemyStateCooldown.h" />
+    <ClInclude Include="EnemyStateDeath.h" />
+    <ClInclude Include="EnemyStateHide.h" />
+    <ClInclude Include="EnemyStateShowUp.h" />
+    <ClInclude Include="EnemyStateWait.h" />
+    <ClInclude Include="EnemyStateReturnToStart.h" />
     <ClInclude Include="HiddenEnemyAIScript.h" />
   </ItemGroup>
   <ItemGroup>

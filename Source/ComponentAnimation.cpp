@@ -406,7 +406,7 @@ void ComponentAnimation::Update()
 				SetIndexChannels(gameobject, GetAnimFromStateMachine());
 				channelsSetted = true;
 			}
-			controller->Update(App->time->gameDeltaTime);
+			controller->Update(App->time->fullGameDeltaTime);
 
 			if (gameobject != nullptr)
 			{

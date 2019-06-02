@@ -61,6 +61,7 @@ public:
 	float4x4 GetLocalTransform() const;
 
 	ENGINE_API void OnPlay();
+	void SetAllMoveFlags();
 	void UpdateTransforms(math::float4x4 parentGlobal);
 	bool CheckDelete();
 

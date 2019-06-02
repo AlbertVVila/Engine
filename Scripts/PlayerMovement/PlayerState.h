@@ -2,13 +2,17 @@
 #define __PLAYERSTATE_H_
 
 #include "BaseScript.h"
-#include "PlayerMovement.h"
+#include "Math/float3.h"
+class PlayerMovement;
 
 class PlayerState
 {
 public:
-	PlayerState();
-	~PlayerState();
+	PlayerState(PlayerMovement * PM, const char* trigger,
+		math::float3 boxSize = math::float3(500.f, 500.f, 500.f), 
+		float minTime = 0.4f, float maxTime = 0.8f);
+
+	virtual ~PlayerState();
 
 	virtual void Enter() {};
 	virtual void Update() {};
@@ -25,10 +29,10 @@ public:
 	bool playerWalking = false;
 
 protected:
-	math::float3 boxSize = math::float3(500.f,500.f,500.f);
+	math::float3 boxSize = math::float3::zero;
 	math::float3 boxPosition = math::float3::zero;
-	float minTime = 0.4f;
-	float maxTime = 0.8f;
+	float minTime = 0.f;
+	float maxTime = 0.f;
 	bool hitboxCreated = false;
 };
 

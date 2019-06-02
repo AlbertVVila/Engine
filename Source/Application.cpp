@@ -26,6 +26,7 @@
 #include "Brofiler.h"
 
 using namespace std;
+#define MAX_REFRESH 6
 
 Application::Application()
 {
@@ -58,10 +59,10 @@ Application::Application()
 
 Application::~Application()
 {
-	for(list<Module*>::iterator it = modules.begin(); it != modules.end(); ++it)
-    {
-        RELEASE(*it);
-    }
+	for (list<Module*>::iterator it = modules.begin(); it != modules.end(); ++it)
+	{
+		RELEASE(*it);
+	}
 }
 
 bool Application::Init()
@@ -94,8 +95,7 @@ bool Application::Init()
 	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret; ++it)
 		ret = (*it)->Start();
 
-	LOG("Init + Start time: %d ms",t.Stop());
-	ms_timer.Start();
+	LOG("Init + Start time: %d ms", t.Stop());
 
 	return ret;
 }
@@ -104,19 +104,31 @@ update_status Application::Update()
 {
 	//PROFILE;
 
-	SetTimer();
+	//SetTimer();
 	update_status ret = UPDATE_CONTINUE;
 
-	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
+	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
 		ret = (*it)->PreUpdate();
 
-	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
-		ret = (*it)->Update(dt);
+	time->UpdateTime();
+
+	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
+		ret = (*it)->Update(time->realDeltaTime);
+
+	int i = 0;
+	while (i < MAX_REFRESH && time->isTimePartitioned
+		&& time->gameState == GameState::RUN && time->IteratePartition())
+	{
+		++i;
+		scene->root->UpdateTransforms(math::float4x4::identity);
+		//collisions->Update(time->realDeltaTime);
+		scripting->Update(time->realDeltaTime);
+	}
 
 	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
 		ret = (*it)->PostUpdate();
 #ifndef GAME_BUILD
-	editor->AddFpsLog(dt);
+	editor->AddFpsLog(time->realDeltaTime);
 #endif
 	return ret;
 }
@@ -137,10 +149,4 @@ bool Application::CleanUp()
 		ret = (*it)->CleanUp();
 	}
 	return ret;
-}
-
-void Application::SetTimer()
-{
-	dt = (float)ms_timer.Read() / 1000.f;
-	ms_timer.Start();
 }

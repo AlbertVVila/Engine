@@ -6,6 +6,7 @@
 #include "ModuleScene.h"
 #include "ModuleNavigation.h"
 #include "ModuleTime.h"
+#include "ModuleWindow.h"
 
 #include "GameObject.h"
 #include "ComponentTransform.h"
@@ -21,14 +22,12 @@
 #include "Globals.h"
 #include "debugdraw.h"
 
-#define CLOSE_ENOUGH 400.0f
+#define RECALC_PATH_TIME 0.3f
 
-PlayerStateWalk::PlayerStateWalk(PlayerMovement* PM)
+PlayerStateWalk::PlayerStateWalk(PlayerMovement* PM, const char* trigger):
+	PlayerState(PM, trigger)
 {
-	player = PM;
-	trigger = "Walk";
 }
-
 
 PlayerStateWalk::~PlayerStateWalk()
 {
@@ -36,12 +35,15 @@ PlayerStateWalk::~PlayerStateWalk()
 
 void PlayerStateWalk::Update()
 {
-	if (player->Appl->input->GetMouseButtonDown(3) == KEY_DOWN) //RIGHT BUTTON
+	math:float2 mouse((float*)&player->App->input->GetMousePosition());
+	if (player->App->input->GetMouseButtonDown(3) == KEY_DOWN 
+		|| (player->App->input->GetMouseButtonDown(3) == KEY_REPEAT && moveTimer > RECALC_PATH_TIME))
 	{
+		moveTimer = 0.0f;
 		math::float3 intersectionPoint = math::float3::inf;
-		if (player->Appl->scene->Intersects(intersectionPoint, "floor"))
+		if (player->App->scene->Intersects(intersectionPoint, "floor"))
 		{
-			player->Appl->navigation->FindPath(player->gameobject->transform->position, intersectionPoint, path);
+			player->App->navigation->FindPath(player->gameobject->transform->position, intersectionPoint, path);
 			pathIndex = 0;
 		}
 		else
@@ -55,10 +57,14 @@ void PlayerStateWalk::Update()
 			return;
 		}
 	}
+	else if (player->App->input->GetMouseButtonDown(3) == KEY_REPEAT)
+	{
+		moveTimer += player->App->time->gameDeltaTime;
+	}
 	if (path.size() > 0)
 	{
 		math::float3 currentPosition = player->gameobject->transform->GetPosition();
-		while (pathIndex < path.size() && currentPosition.DistanceSq(path[pathIndex]) < CLOSE_ENOUGH)
+		while (pathIndex < path.size() && currentPosition.DistanceSq(path[pathIndex]) < MINIMUM_PATH_DISTANCE)
 		{
 			pathIndex++;
 		}
@@ -66,7 +72,7 @@ void PlayerStateWalk::Update()
 		{
 			player->gameobject->transform->LookAt(path[pathIndex]);
 			math::float3 direction = (path[pathIndex] - currentPosition).Normalized();
-			player->gameobject->transform->SetPosition(currentPosition + player->walkingSpeed * direction * player->Appl->time->gameDeltaTime);
+			player->gameobject->transform->SetPosition(currentPosition + player->walkingSpeed * direction * player->App->time->gameDeltaTime);
 			playerWalking = true;
 			if (dustParticles)
 			{
@@ -82,6 +88,10 @@ void PlayerStateWalk::Update()
 			}
 		}
 	}	
+	else
+	{
+		player->currentState = player->idle;
+	}
 }
 
 void PlayerStateWalk::Enter()

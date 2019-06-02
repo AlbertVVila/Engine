@@ -9,6 +9,7 @@
 #include "ModuleResourceManager.h"
 #include "ModuleRender.h"
 #include "ModuleScene.h"
+#include "ModuleTime.h"
 #include "ModuleTextures.h"
 #include "ModuleSpacePartitioning.h"
 #include "ModuleParticles.h"
@@ -119,7 +120,6 @@ update_status ModuleScene::PreUpdate()
 	if (loadScene)
 	{
 		LoadScene(name.c_str(), SCENES);
-		root->OnPlay();
 		loadScene = false;
 	}
 
@@ -147,6 +147,7 @@ update_status ModuleScene::Update(float dt)
 	root->UpdateTransforms(math::float4x4::identity);
 	root->Update();
 	root->CheckDelete();
+
 	/*if (photoTimer > 0)
 	{
 		photoTimer -= dt;
@@ -1162,6 +1163,11 @@ void ModuleScene::LoadScene(const char* sceneName, const char* folder)
 	App->spacePartitioning->kDTree.Calculate();
 	App->scripting->onStart = true;
 	scenePhotos.clear();
+	App->time->ResetGameDetaTime();
+	//set all the game objects
+	root->UpdateTransforms(math::float4x4::identity);
+	root->SetAllMoveFlags();
+	
 }
 
 bool ModuleScene::AddScene(const char* sceneName, const char* folder)

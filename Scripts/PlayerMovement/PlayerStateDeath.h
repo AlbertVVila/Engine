@@ -1,19 +1,16 @@
 #ifndef __PLAYERSTATEDEATH_H_
 #define __PLAYERSTATEDEATH_H_
 
-#include "PlayerMovement.h"
 #include "PlayerState.h"
+
+class PlayerMovement;
 
 class PlayerStateDeath :
 	public PlayerState
 {
 public:
-	PlayerStateDeath(PlayerMovement* PM);
+	PlayerStateDeath(PlayerMovement* PM, const char* trigger);
 	~PlayerStateDeath();
-
-	void Update() override;
-
-	void CheckInput() override;
 
 	float duration = 1.5f;
 };

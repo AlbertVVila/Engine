@@ -160,7 +160,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;PlayerMovement_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Scripts\EnemyControllerScript;$(SolutionDir)\Source\NodeEditor\Include;$(SolutionDir)\Source\rapidjson-1.1.0\include;..\BaseScript;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source;$(SolutionDir)\Source\Imgui\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Scripts\EnemyControllerScript;$(SolutionDir)\Source\NodeEditor\Include;$(SolutionDir)\Source\rapidjson-1.1.0\include;..\BaseScript;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Scripts\DamageController</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -180,7 +180,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;PlayerMovement_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Scripts\EnemyControllerScript;$(SolutionDir)\Source\NodeEditor\Include;$(SolutionDir)\Source\rapidjson-1.1.0\include;..\BaseScript;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source;$(SolutionDir)\Source\Imgui\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Scripts\EnemyControllerScript;$(SolutionDir)\Source\NodeEditor\Include;$(SolutionDir)\Source\rapidjson-1.1.0\include;..\BaseScript;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Scripts\DamageController</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -230,7 +230,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;PlayerMovement_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Scripts\EnemyControllerScript;$(SolutionDir)\Source\NodeEditor\Include;$(SolutionDir)\Source\rapidjson-1.1.0\include;..\BaseScript;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source;$(SolutionDir)\Source\Imgui\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Scripts\EnemyControllerScript;$(SolutionDir)\Source\NodeEditor\Include;$(SolutionDir)\Source\rapidjson-1.1.0\include;..\BaseScript;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Scripts\DamageController</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -254,7 +254,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GAME_BUILD;WIN32;NDEBUG;PlayerMovement_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Scripts\EnemyControllerScript;$(SolutionDir)\Source\NodeEditor\Include;$(SolutionDir)\Source\rapidjson-1.1.0\include;..\BaseScript;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source;$(SolutionDir)\Source\Imgui\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Scripts\EnemyControllerScript;$(SolutionDir)\Source\NodeEditor\Include;$(SolutionDir)\Source\rapidjson-1.1.0\include;..\BaseScript;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Scripts\DamageController</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -307,6 +307,7 @@
   <ItemGroup>
     <ClCompile Include="PlayerMovement.cpp" />
     <ClCompile Include="PlayerState.cpp" />
+    <ClCompile Include="PlayerStateAttack.cpp" />
     <ClCompile Include="PlayerStateFirstAttack.cpp" />
     <ClCompile Include="PlayerStateDash.cpp" />
     <ClCompile Include="PlayerStateDeath.cpp" />
@@ -319,6 +320,7 @@
   <ItemGroup>
     <ClInclude Include="PlayerMovement.h" />
     <ClInclude Include="PlayerState.h" />
+    <ClInclude Include="PlayerStateAttack.h" />
     <ClInclude Include="PlayerStateFirstAttack.h" />
     <ClInclude Include="PlayerStateDash.h" />
     <ClInclude Include="PlayerStateDeath.h" />
@@ -329,8 +331,8 @@
     <ClInclude Include="PlayerStateWalk.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EnemyControllerScript\EnemyControllerScript.vcxproj">
-      <Project>{acc36cc8-ada1-4cfa-ae5a-c51cf877b885}</Project>
+    <ProjectReference Include="..\DamageController\DamageController.vcxproj">
+      <Project>{d8141fa2-e862-4706-a9f3-e8441c2b68fd}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

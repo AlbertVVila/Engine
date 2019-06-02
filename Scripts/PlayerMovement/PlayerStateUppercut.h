@@ -7,7 +7,7 @@ class PlayerStateUppercut :
 	public PlayerState
 {
 public:
-	PlayerStateUppercut(PlayerMovement* PM);
+	PlayerStateUppercut(PlayerMovement * PM, const char * trigger, math::float3 boxSize);
 	~PlayerStateUppercut();
 
 	void Update() override;
