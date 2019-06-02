@@ -810,7 +810,14 @@ bool ModuleScene::PrefabWasUpdated(unsigned UID) const
 unsigned ModuleScene::CreatePrefab(GameObject * go)
 {
 	Prefab* prefab = (Prefab*)App->resManager->CreateNewResource(TYPE::PREFAB);
-	prefab->SetFile((ASSETS + go->name + PREFABEXTENSION).c_str());
+	if (App->fsystem->Exists(PREFABS))
+	{
+		prefab->SetFile((PREFABS + go->name + PREFABEXTENSION).c_str());
+	}
+	else
+	{
+		prefab->SetFile((ASSETS + go->name + PREFABEXTENSION).c_str());
+	}
 	std::string exportedFile(IMPORTED_PREFABS);
 
 	unsigned uid = prefab->GetUID();
@@ -1414,6 +1421,30 @@ GameObject* ModuleScene::FindGameObjectByName(const char* name, GameObject* pare
 		}
 	}
 	return nullptr;
+}
+
+GameObject * ModuleScene::Spawn(const char * name, GameObject * parent)
+{
+	Prefab* prefab = (Prefab*) App->resManager->GetByName(name, TYPE::PREFAB);
+	assert(prefab != nullptr, "Prefab Not Found");
+	//Instantiate prefab
+	GameObject* instance = prefab->RetrievePrefab();
+	if (parent == nullptr)
+	{
+		parent = root;
+	}
+	parent->children.push_back(instance);
+	instance->parent = parent;
+	instance->transform->Reset();
+	return instance;
+}
+
+GameObject * ModuleScene::Spawn(const char * name, math::float3 position, math::Quat rotation, GameObject * parent)
+{
+	GameObject* instance = Spawn(name, parent);
+	instance->transform->SetPosition(position);
+	instance->transform->SetRotation(rotation);
+	return instance;
 }
 
 void ModuleScene::GetStaticGlobalAABB(AABB & aabb, std::vector<GameObject*>& bucket, unsigned int & bucketOccupation)

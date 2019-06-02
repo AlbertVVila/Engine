@@ -850,9 +850,6 @@
     <ClInclude Include="MemoryModule.h">
       <Filter>ScriptingResources</Filter>
     </ClInclude>
-    <ClInclude Include="engineResource.h">
-      <Filter>ScriptingResources</Filter>
-    </ClInclude>
     <ClInclude Include="Resource.h">
       <Filter>Resources</Filter>
     </ClInclude>
@@ -1206,9 +1203,6 @@
     <None Include="..\Game\Shaders\VertexShaders\Fonts.vs">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="..\Game\Scripts\PlayerMovement.dll">
-      <Filter>ScriptingResources</Filter>
-    </None>
     <None Include="NodeEditor\Include\ax\Math2D.inl" />
     <None Include="..\Game\Shaders\FragmentShaders\Particles.fs">
       <Filter>Shaders</Filter>
@@ -1246,10 +1240,5 @@
     <None Include="..\Game\Shaders\VertexShaders\DebugNav.vs">
       <Filter>Shaders</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Engine.rc">
-      <Filter>ScriptingResources</Filter>
-    </ResourceCompile>
   </ItemGroup>
 </Project>

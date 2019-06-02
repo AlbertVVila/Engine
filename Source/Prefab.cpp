@@ -8,6 +8,8 @@
 #include "ModuleScene.h"
 #include "GameObject.h"
 #include "ComponentRenderer.h"
+#include "ComponentTransform.h"
+
 #include "JSON.h"
 
 Prefab::Prefab(unsigned uid) : Resource(uid, TYPE::PREFAB)
@@ -176,6 +178,7 @@ GameObject* Prefab::RetrievePrefab() //TODO: should update prefab INSTA!
 		root->isPrefabSync = true;
 		root->isPrefab = true;
 		root->prefabUID = UID;
+		root->transform->Reset();
 
 		ComponentRenderer* renderer = nullptr;
 		renderer = (ComponentRenderer*)gameobject->GetComponentOld(ComponentType::Renderer);
