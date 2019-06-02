@@ -8,6 +8,8 @@
 #include "SDL.h"
 #include "JSON.h"
 
+#include <sstream>
+
 ModuleWindow::ModuleWindow()
 {
 }
@@ -74,8 +76,9 @@ bool ModuleWindow::Init(JSON * config)
 			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 		}
 
-
-		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+		std::stringstream titleVersion;
+		titleVersion << TITLE << " " << VERSION_BUILD;
+		window = SDL_CreateWindow(titleVersion.str().c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 
 		if(window == NULL)
 		{
