@@ -1428,7 +1428,9 @@ GameObject * ModuleScene::Spawn(const char * name, GameObject * parent)
 	Prefab* prefab = (Prefab*) App->resManager->GetByName(name, TYPE::PREFAB);
 	assert(prefab != nullptr, "Prefab Not Found");
 	//Instantiate prefab
-	GameObject* instance = prefab->RetrievePrefab();
+	GameObject* instance = new GameObject(*prefab->RetrievePrefab());
+	App->resManager->DeleteResource(prefab->GetUID());
+
 	if (parent == nullptr)
 	{
 		parent = root;
@@ -1436,6 +1438,7 @@ GameObject * ModuleScene::Spawn(const char * name, GameObject * parent)
 	parent->children.push_back(instance);
 	instance->parent = parent;
 	instance->transform->Reset();
+	AddToSpacePartition(instance);
 	return instance;
 }
 

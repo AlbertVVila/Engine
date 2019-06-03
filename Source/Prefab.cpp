@@ -44,8 +44,10 @@ bool Prefab::LoadInMemory()
 
 void Prefab::DeleteFromMemory()
 {
+	Resource::DeleteFromMemory();
 	if (root != nullptr)
 	{
+		root->treeNode = nullptr;
 		root->CleanUp();
 		RELEASE(root);
 	}
@@ -54,7 +56,6 @@ void Prefab::DeleteFromMemory()
 		RELEASE(prefabJson);
 		prefabValue = nullptr;
 	}
-	Resource::DeleteFromMemory();
 }
 
 void Prefab::SaveMetafile(const char * file) const

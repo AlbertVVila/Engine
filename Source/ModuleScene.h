@@ -99,9 +99,9 @@ public:
 	ENGINE_API GameObject* FindGameObjectByUID(unsigned UID, GameObject* parent = nullptr) const;
 	ENGINE_API GameObject* FindGameObjectByName(const char* name, GameObject* parent = nullptr) const;
 
-	ENGINE_API GameObject* Spawn(const char* prefab, GameObject* parent= nullptr);
-	ENGINE_API GameObject * ModuleScene::Spawn(const char * name, math::float3 position = math::float3::zero,
-		math::Quat rotation = math::Quat::identity , GameObject * parent = nullptr);
+	ENGINE_API GameObject* Spawn(const char* name, GameObject* parent= nullptr);
+	ENGINE_API GameObject* Spawn(const char * name, math::float3 position,
+		math::Quat rotation, GameObject * parent = nullptr);
 
 
 	void GetStaticGlobalAABB(math::AABB &aabb, std::vector<GameObject*> &bucket, unsigned int &bucketOccupation);
