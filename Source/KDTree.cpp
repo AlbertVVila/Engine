@@ -120,6 +120,8 @@ void KDTree::Calculate()
 			{
 				if (go2 == nullptr)
 					return false;
+				if (go1 == nullptr)
+					return true;
 				return go1->transform->GetGlobalPosition()[dimension] > go2->transform->GetGlobalPosition()[dimension];
 			});
 			if (current->bucketOccupation % 2 == 0)

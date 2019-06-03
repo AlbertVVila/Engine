@@ -80,6 +80,7 @@ private:
 	void SetStaticAncestors();
 	void SetActiveInHierarchy(bool active);
 	void OnChangeActiveState(bool wasActive);
+	void makeObjectWithMeshStatic();
 
 	void SetStaticAllChildsWithMesh();
 	void SetNavigableAllChildsWithMesh();

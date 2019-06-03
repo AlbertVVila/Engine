@@ -170,14 +170,17 @@ void GameObject::DrawProperties()
 			if (ImGui::Button("Make childs with mesh static"))
 			{
 				SetStaticAllChildsWithMesh();
+				App->spacePartitioning->kDTree.Calculate();
 			}
 			if (ImGui::Button("Make childs with mesh navigable"))
 			{
 				SetNavigableAllChildsWithMesh();
+				App->spacePartitioning->kDTree.Calculate();
 			}
 			if (ImGui::Button("Make childs with mesh obstacles"))
 			{
 				SetObstacleAllChildsWithMesh();
+				App->spacePartitioning->kDTree.Calculate();
 			}
 			if (ImGui::Button("Add all navigable childs to the navMesh"))
 			{
@@ -188,18 +191,7 @@ void GameObject::DrawProperties()
 		{
 			if (isStatic && GetComponentOld(ComponentType::Renderer) != nullptr)
 			{
-				SetStaticAncestors();
-				App->scene->dynamicGOs.erase(this);
-				App->scene->staticGOs.insert(this);
-				assert(!(hasLight && isVolumetric)); //Impossible combination
-				if (hasLight && treeNode != nullptr)
-				{
-					App->spacePartitioning->aabbTreeLighting.ReleaseNode(treeNode);
-				}
-				if (isVolumetric && treeNode != nullptr)
-				{
-					App->spacePartitioning->aabbTree.ReleaseNode(treeNode);
-				}
+				makeObjectWithMeshStatic();
 			}
 			else if (!isStatic)
 			{
@@ -1151,7 +1143,12 @@ void GameObject::SetStaticAllChildsWithMesh()
 	{
 		if (child->isVolumetric)
 		{
-			child->isStatic = true;
+			if (!child->isStatic)
+			{
+				child->makeObjectWithMeshStatic();
+				child->isStatic = true;
+				App->spacePartitioning->kDTree.Calculate();
+			}
 		}
 		child->SetStaticAllChildsWithMesh();
 	}
@@ -1162,8 +1159,14 @@ void GameObject::SetNavigableAllChildsWithMesh()
 	{
 		if (child->isVolumetric)
 		{
-			child->isStatic = true;
+			if (!child->isStatic)
+			{
+				child->makeObjectWithMeshStatic();
+				child->isStatic = true;
+				App->spacePartitioning->kDTree.Calculate();
+			}
 			child->navigable = true;
+			
 		}
 		child->SetNavigableAllChildsWithMesh();
 	}
@@ -1174,9 +1177,15 @@ void GameObject::SetObstacleAllChildsWithMesh()
 	{
 		if (child->isVolumetric)
 		{
-			child->isStatic = true;
+			if (!child->isStatic)
+			{
+				child->makeObjectWithMeshStatic();
+				child->isStatic = true;
+				
+			}
 			child->navigable = true;
 			child->noWalkable = true;
+			
 		}
 		child->SetObstacleAllChildsWithMesh();
 	}
@@ -1192,4 +1201,23 @@ void GameObject::AddAllNavigableChildsToNavMesh()
 		}
 		child->AddAllNavigableChildsToNavMesh();
 	}
+}
+
+void GameObject::makeObjectWithMeshStatic()
+{
+	SetStaticAncestors();
+	App->scene->dynamicGOs.erase(this);
+	App->scene->staticGOs.insert(this);
+	assert(!(hasLight && isVolumetric)); //Impossible combination
+	if (hasLight && treeNode != nullptr)
+	{
+		App->spacePartitioning->aabbTreeLighting.ReleaseNode(treeNode);
+	}
+	if (isVolumetric && treeNode != nullptr)
+	{
+		App->spacePartitioning->aabbTree.ReleaseNode(treeNode);
+	}
+	LOG(name.c_str());
+	std::string s = std::to_string(App->scene->staticGOs.size());
+	LOG(s.c_str());
 }
