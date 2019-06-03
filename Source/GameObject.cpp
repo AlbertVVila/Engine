@@ -1009,7 +1009,15 @@ void GameObject::Load(JSON_value *value, bool prefabTemplate)
 	if (isPrefab && !prefabTemplate)
 	{
 		prefab = (Prefab*) App->resManager->Get(prefabUID);
-		prefab->AddInstance(this);
+		if (prefab != nullptr)
+		{
+			prefab->AddInstance(this);
+		}
+		else
+		{
+			LOG("Cannot find prefab with UID:%u", prefabUID);
+			isPrefab = false;
+		}
 	}
 
 	JSON_value* componentsJSON = value->GetValue("Components");
