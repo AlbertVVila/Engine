@@ -581,8 +581,15 @@ void ModuleScene::DragNDrop(GameObject* go)
 	if (go->UUID > 1 && ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
 	{
 		ImGui::SetDragDropPayload("DragDropHierarchy", &go, sizeof(GameObject *), ImGuiCond_Once);
-		for (GameObject* selectionGO : selection)
-			ImGui::Text("%s", selectionGO->name.c_str());
+		if (std::find(selection.begin(), selection.end(), go) == selection.end())
+		{
+			ImGui::Text("%s", go->name.c_str());
+		}
+		else
+		{
+			for (GameObject* selectionGO : selection)
+				ImGui::Text("%s", selectionGO->name.c_str());
+		}
 		ImGui::EndDragDropSource();
 	}
 	if (ImGui::BeginDragDropTarget())

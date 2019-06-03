@@ -327,6 +327,7 @@ void PanelBrowser::DrawFileIcon(const char* file, int itemNumber)
 			dragAsset->isPrefab = true;
 			dragAsset->prefabUID = selectedUID;
 			dragAsset->isDropablePlaceHolder = true;
+			dragAsset->name = "Prefab";
 		}
 		//else TODO: Scenes or FBX drop
 	}
