@@ -566,7 +566,6 @@ void ModuleScene::DragNDropMove(GameObject* target)
 							droppedGo->transform->SetWorldToLocal(droppedGo->parent->GetGlobalTransform());
 						}
 
-						App->scene->AddToSpacePartition(droppedGo);
 					}
 					App->editor->assets->ResetDragNDrop();
 				}
@@ -646,7 +645,6 @@ void ModuleScene::DragNDrop(GameObject* go)
 						{
 							droppedGo->transform->SetWorldToLocal(droppedGo->parent->GetGlobalTransform());
 						}
-						App->scene->AddToSpacePartition(droppedGo);
 					}
 					App->editor->assets->ResetDragNDrop();
 				}
