@@ -14,7 +14,6 @@
 
 Prefab::Prefab(unsigned uid) : Resource(uid, TYPE::PREFAB)
 {
-	//TODO: RELEASE JSON AND DATA ALL AROUND RESOURCES
 }
 
 Prefab::Prefab(const Prefab& resource) : Resource(resource)
@@ -38,7 +37,6 @@ bool Prefab::LoadInMemory()
 		++loaded;
 		Load(&data);
 	}
-	//TODO: RELEASE DATA iN LOAD IN MEMORY!!
 	return true;
 }
 
@@ -140,7 +138,7 @@ void Prefab::Update(GameObject* go)
 	Save(go);
 }
 
-GameObject* Prefab::RetrievePrefab() //TODO: should update prefab INSTA!
+GameObject* Prefab::RetrievePrefab()
  {
 	if (root != nullptr)
 	{
@@ -158,7 +156,7 @@ GameObject* Prefab::RetrievePrefab() //TODO: should update prefab INSTA!
 		JSON_value* gameobjectJSON = prefabValue->GetValue(i);
 		GameObject *gameobject = new GameObject();
 		gameobject->Load(gameobjectJSON, true);
-		if (gameobject->UUID != 1 && gameobject->UUID != 0) //TODO: Canvas and World shouldn't be a prefab
+		if (gameobject->UUID != 1 && gameobject->UUID != 0)
 		{
 			gameobjectsMap.insert(std::pair<unsigned, GameObject*>(gameobject->UUID, gameobject));
 			std::map<unsigned, GameObject*>::iterator it = gameobjectsMap.find(gameobject->parentUUID);
