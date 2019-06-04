@@ -67,6 +67,7 @@ GameObject::GameObject(const float4x4 & transform, const char * name, unsigned u
 GameObject::GameObject(const GameObject & gameobject)
 {
 	name = gameobject.name;
+	tag = gameobject.tag;
 	UUID = App->scene->GetNewUID();
 	parentUUID = gameobject.parentUUID;
 	isStatic = gameobject.isStatic;
@@ -138,10 +139,17 @@ GameObject::~GameObject()
 void GameObject::DrawProperties()
 {
 	char *go_name = new char[MAX_NAME];
+	char *go_tag = new char[MAX_NAME];
+
 	strcpy(go_name, name.c_str());
+	strcpy(go_tag, tag.c_str());
 	ImGui::InputText("Name", go_name, MAX_NAME);
+	ImGui::InputText("TAG", go_tag, MAX_NAME);
 	name = go_name;
+	tag = go_tag;
+
 	delete[] go_name;
+	delete[] go_tag;
 
 	if (this != App->scene->root)
 	{
@@ -833,6 +841,7 @@ void GameObject::Save(JSON_value *gameobjects) const
 		gameobject->AddUint("UID", UUID);
 		gameobject->AddUint("ParentUID", parent->UUID);
 		gameobject->AddString("Name", name.c_str());
+		gameobject->AddString("Tag", tag.c_str());
 		gameobject->AddUint("Static", isStatic);
 		gameobject->AddUint("ActiveInHierarchy", activeInHierarchy);
 		gameobject->AddUint("ActiveSelf", activeSelf);
@@ -865,6 +874,7 @@ void GameObject::Load(JSON_value *value)
 	UUID = value->GetUint("UID");
 	parentUUID = value->GetUint("ParentUID");
 	name = value->GetString("Name");
+	tag = value->GetString("Tag", tag.c_str());
 	isStatic = value->GetUint("Static");
 	activeInHierarchy = value->GetUint("ActiveInHierarchy", 1);
 	activeSelf = value->GetUint("ActiveSelf", 1);
