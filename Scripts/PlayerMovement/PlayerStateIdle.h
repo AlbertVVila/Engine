@@ -2,12 +2,19 @@
 #define __PLAYERSTATEIDLE_H_
 
 #include "PlayerState.h"
+
 class PlayerStateIdle :
 	public PlayerState
 {
 public:
-	PlayerStateIdle();
+	PlayerStateIdle(PlayerMovement* PM, const char* trigger);
 	~PlayerStateIdle();
+
+	void Update() override;
+
+	void CheckInput() override;
+
+	float duration = 1.5f;
 };
 
 #endif // __PLAYERSTATEIDLE_H_

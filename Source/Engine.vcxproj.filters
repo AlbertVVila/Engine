@@ -284,7 +284,6 @@
       <Filter>Resources</Filter>
     </ClCompile>
     <ClCompile Include="NodeEditor\Source\Editor.cpp" />
-    <ClCompile Include="Soloud\fractal_includes\dr_impl.cpp" />
     <ClCompile Include="ComponentAudioListener.cpp">
       <Filter>Component</Filter>
     </ClCompile>
@@ -489,6 +488,16 @@
     <ClCompile Include="BaseScript.cpp">
       <Filter>Component</Filter>
     </ClCompile>
+    <ClCompile Include="ComponentBoxTrigger.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleCollisions.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Soloud\fractal_includes\dr_impl.cpp">
+      <Filter>SoLoud</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_color_gradient.cpp" />
     <ClCompile Include="ResourceStateMachine.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
@@ -885,9 +894,6 @@
     <ClInclude Include="NodeEditor\Include\ax\Math2D.h" />
     <ClInclude Include="NodeEditor\Source\Editor.h" />
     <ClInclude Include="NodeEditor\Source\Interop.h" />
-    <ClInclude Include="Soloud\fractal_includes\dr_flac.h" />
-    <ClInclude Include="Soloud\fractal_includes\dr_mp3.h" />
-    <ClInclude Include="Soloud\fractal_includes\dr_wav.h" />
     <ClInclude Include="ComponentAudioListener.h">
       <Filter>Component</Filter>
     </ClInclude>
@@ -1094,6 +1100,22 @@
     <ClInclude Include="BaseScript.h">
       <Filter>Component</Filter>
     </ClInclude>
+    <ClInclude Include="ComponentBoxTrigger.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleCollisions.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Soloud\fractal_includes\dr_wav.h">
+      <Filter>SoLoud</Filter>
+    </ClInclude>
+    <ClInclude Include="Soloud\fractal_includes\dr_flac.h">
+      <Filter>SoLoud</Filter>
+    </ClInclude>
+    <ClInclude Include="Soloud\fractal_includes\dr_mp3.h">
+      <Filter>SoLoud</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_color_gradient.h" />
     <ClInclude Include="ResourceStateMachine.h">
       <Filter>Resources</Filter>
     </ClInclude>
@@ -1205,6 +1227,18 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\Game\Shaders\VertexShaders\Trail.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\FragmentShaders\PostProcess.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\VertexShaders\PostProcess.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\FragmentShaders\DebugNav.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\VertexShaders\DebugNav.vs">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

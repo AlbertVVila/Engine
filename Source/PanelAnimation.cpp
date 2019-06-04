@@ -62,6 +62,10 @@ void PanelAnimation::Draw()
 				bool is_selected = true;
 				if (ImGui::Selectable(guiAnimations[n].c_str(), is_selected))
 				{
+					// Delete previous animation
+					if (anim != nullptr)
+						App->resManager->DeleteResource(anim->GetUID());
+
 					anim = ((ResourceAnimation*)App->resManager->GetByName(guiAnimations[n].c_str(), TYPE::ANIMATION));
 					compAnim->editorController->PlayEditor(anim);
 				}

@@ -70,10 +70,10 @@ public:
 	unsigned SaveParShapesMesh(const par_shapes_mesh_s & mesh, char** data) const;
 
 	void SaveScene(const GameObject& rootGO, const char* sceneName, const char* folder);
+	bool isCleared();
 	ENGINE_API void LoadScene(const char* sceneName, const char* folder);
 	bool AddScene(const char* sceneName, const char* folder);								// Adds a scene to current opened scene from a scene file (returns true if it was loaded correctly)
 
-	//void SaveScene(const GameObject &rootGO, const char* scene, const char* scenePath, bool isTemporary = false);
 	void AssignNewUUID(GameObject* go, unsigned UID);
 	void TakePhoto();
 	void TakePhoto(std::list<GameObject*>& target);
@@ -82,6 +82,7 @@ public:
 	void Redo();
 
 	void ClearScene();
+	void UpdateScenesList();
 
 	void Select(GameObject* gameobject);
 	void UnSelect();
@@ -98,7 +99,8 @@ public:
 	unsigned GetNewUID();
 	std::list<ComponentLight*> GetClosestLights(LightType type, math::float3 position = math::float3::zero) const;
 
-	ComponentLight * GetDirectionalLight() const;
+	ComponentLight* GetDirectionalLight() const;
+	void DeleteDirectionalLight(ComponentLight* light);
 
 private:
 	std::list<std::pair<float, GameObject*>>GetDynamicIntersections(const LineSegment& line) const;
@@ -108,6 +110,9 @@ private:
 	std::list<GameObject*> scenePhotos;
 	std::list<GameObject*> scenePhotosUndoed;
 
+	unsigned defaultSceneUID = 0u;
+	std::vector<std::string> sceneFiles;
+	
 public:
 	GameObject* root = nullptr;
 	GameObject* selected = nullptr; //Selected in hierarchy
@@ -125,7 +130,7 @@ public:
 	pcg32 uuid_rng;
 	std::string name;
 	std::string path;
-	std::string defaultScene;
+	ResourceScene* defaultScene = nullptr;
 	bool photoEnabled = false;
 	float photoTimer = 0.f;
 	float3 ambientColor = float3::one;
@@ -135,7 +140,6 @@ public:
 	GameObject* canvas = nullptr;
 
 	bool loadScene = false;
-	std::string sceneName = "";
 	int actionAfterLoad = -1;
 };
 

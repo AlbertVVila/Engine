@@ -1,8 +1,9 @@
 #include "DetourDebugInterface.h"
 #include "GL/glew.h"
+#include "DebugDraw.h" 
 #include "Application.h"
-#include "ModuleRender.h"
-#include "Viewport.h"
+#include "ModuleResourceManager.h"
+#include "ModuleProgram.h"
 
 class GLCheckerTexture
 {
@@ -63,6 +64,21 @@ enum SamplePolyAreas
 	SAMPLE_POLYAREA_JUMP,
 };
 
+DetourDebugInterface::DetourDebugInterface()
+{
+	glGenBuffers(1, &VBO);
+	glGenVertexArrays(1, &VAO);
+	shader = App->program->GetProgram("DebugNav");
+}
+
+DetourDebugInterface::~DetourDebugInterface()
+{
+	glDeleteBuffers(1, &VBO);
+	glDeleteVertexArrays(1, &VAO);
+	vertices.clear();
+	App->resManager->DeleteProgram("DebugNav");
+}
+
 unsigned int DetourDebugInterface::areaToCol(unsigned int area)
 {
 	switch (area)
@@ -86,7 +102,7 @@ unsigned int DetourDebugInterface::areaToCol(unsigned int area)
 
 void DetourDebugInterface::depthMask(bool state)
 {
-	glDepthMask(state ? GL_TRUE : GL_FALSE);
+	depth = state;
 }
 
 void DetourDebugInterface::texture(bool state)
@@ -104,38 +120,49 @@ void DetourDebugInterface::texture(bool state)
 
 void DetourDebugInterface::begin(duDebugDrawPrimitives prim, float size)
 {
+	currentShape = new Shape;
 	switch (prim)
 	{
 	case DU_DRAW_POINTS:
-		glPointSize(size);
-		glBegin(GL_POINTS);
+		currentShape->drawMode = GL_POINTS;
 		break;
 	case DU_DRAW_LINES:
-		glLineWidth(size);
-		glBegin(GL_LINES);
+		currentShape->drawMode = GL_LINES;
 		break;
 	case DU_DRAW_TRIS:
-		glBegin(GL_TRIANGLES);
+		currentShape->drawMode = GL_TRIANGLES;
 		break;
 	case DU_DRAW_QUADS:
-		glBegin(GL_QUADS);
+		currentShape->drawMode = GL_QUADS;
 		break;
 	};
+	currentShape->start = vertices.size();
+	currentShape->size = size;
+}
+
+math::float4 DetourDebugInterface::getColor(unsigned col)
+{
+	unsigned r = col & 0xff;
+	unsigned g = (col >> 8) & 0xff;
+	unsigned b = (col >> 16) & 0xff;
+	unsigned a = (col >> 24) & 0xff;
+	float f = 1.0f / 255.0f;
+	return math::float4(r, g, b, a) * f;
 }
 
 void DetourDebugInterface::vertex(const float* pos, unsigned int color)
 {
-	glColor4ubv((GLubyte*)&color);
-	glVertex3fv(pos);
+	v3_c4 vertex = { math::float3(pos), getColor(color) };
+	vertices.push_back(vertex);
 }
 
 void DetourDebugInterface::vertex(const float x, const float y, const float z, unsigned int color)
 {
-	glColor4ubv((GLubyte*)&color);
-	glVertex3f(x, y, z);
+	v3_c4 vertex = { math::float3(x,y,z), getColor(color) };
+	vertices.push_back(vertex);
 }
 
-void DetourDebugInterface::vertex(const float* pos, unsigned int color, const float* uv)
+void DetourDebugInterface::vertex(const float* pos, unsigned int color, const float* uv) //TODO: Update to GL3.3
 {
 	glColor4ubv((GLubyte*)&color);
 	glTexCoord2fv(uv);
@@ -147,11 +174,73 @@ void DetourDebugInterface::vertex(const float x, const float y, const float z, u
 	glColor4ubv((GLubyte*)&color);
 	glTexCoord2f(u, v);
 	glVertex3f(x, y, z);
+	//TODO: Update to GL3.3
+}
+
+void DetourDebugInterface::debugDrawNavMesh()
+{
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glDisable(GL_DEPTH_TEST);
+	glUseProgram(shader->id[0]);
+	math::float4x4 model = math::float4x4::identity;
+	glUniformMatrix4fv(glGetUniformLocation(shader->id[0], "model"), 1, GL_TRUE, &model[0][0]);
+
+	glBindVertexArray(VAO);
+
+	for (const auto& shape : shapes)
+	{
+		if (shape->drawMode == GL_LINES) {
+			glLineWidth(shape->size);
+		}
+
+		glDrawArrays(shape->drawMode, shape->start, shape->end - shape->start);
+	}
+
+	glLineWidth(1.0f);
+	glBindVertexArray(0);
+	glUseProgram(0);
+	GLenum err;
+	/*while ((err = glGetError()) != GL_NO_ERROR)
+	{
+		LOG("GLEW Error: %s",glewGetErrorString(err));
+	}*/
+	glDisable(GL_BLEND);
+	glEnable(GL_DEPTH_TEST);
 }
 
 void DetourDebugInterface::end()
 {
-	glEnd();
-	glLineWidth(1.0f);
-	glPointSize(1.0f);
+	if (vertices.size() == 0) return;
+	glBindVertexArray(VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(v3_c4)* vertices.size(), &vertices[0], GL_STATIC_DRAW);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(
+		0,  // attribute
+		3,                  // number of elements per vertex, here (x,y,z)
+		GL_FLOAT,           // the type of each element
+		GL_FALSE,           // take our values as-is
+		sizeof(v3_c4),                  // no extra data between each position
+		(void*)0                  // offset of first element
+	);
+
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(
+		1,  // attribute
+		4,                  // number of elements per vertex, here (x,y,z)
+		GL_FLOAT,           // the type of each element
+		GL_FALSE,           // take our values as-is
+		sizeof(v3_c4),                  // no extra data between each position
+		(void*)sizeof(math::float3)     // offset of first element
+	);
+
+	glBindVertexArray(0);
+	glDisableVertexAttribArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	currentShape->end = vertices.size();
+	shapes.push_back(currentShape);
+	currentShape = nullptr;
 }
