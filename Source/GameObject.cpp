@@ -99,18 +99,26 @@ GameObject::GameObject(const GameObject & gameobject)
 		Component *componentcopy = component->Clone();
 		componentcopy->gameobject = this;
 		components.push_back(componentcopy);
-		if (componentcopy->type == ComponentType::Transform)
+		switch (component->type)
 		{
-			transform = (ComponentTransform*)componentcopy;
-		}
-		if (componentcopy->type == ComponentType::Button)
-		{
-			Button* button = (Button*)componentcopy;
-			button->text->gameobject = this;
-			button->buttonImage->gameobject = this;
-			button->highlightedImage->gameobject = this;
-			button->pressedImage->gameobject = this;
-			button->rectTransform->gameobject = this;
+			case ComponentType::Transform:
+				transform = (ComponentTransform*)componentcopy;
+				break;
+
+			case ComponentType::Button:
+				{
+					Button* button = (Button*)componentcopy;
+					button->text->gameobject = this;
+					button->buttonImage->gameobject = this;
+					button->highlightedImage->gameobject = this;
+					button->pressedImage->gameobject = this;
+					button->rectTransform->gameobject = this;
+				}
+				break;
+
+			case ComponentType::Light:
+				light = (ComponentLight*)componentcopy;
+				break;
 		}
 	}
 	/*if (!App->scene->photoEnabled) //FIXME: Ctrl+Z
