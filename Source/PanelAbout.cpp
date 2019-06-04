@@ -19,7 +19,6 @@
 #define AUTHOR "FRACTAL PUPPY"
 #define REPOSITORY "https://github.com/fractal-puppy/Engine"
 #define LICENSE "https://github.com/fractal-puppy/Engine/blob/master/LICENSE"
-#define FREETYPE "https://www.freetype.org/"
 
 PanelAbout::PanelAbout()
 {
@@ -70,10 +69,6 @@ void PanelAbout::Draw()
 		ImGui::BulletText("Brofiler (v1.1.2)");
 		ImGui::BulletText("DevIL (v%d)", IL_VERSION);
 		ImGui::BulletText(freeTypeVersion);
-		if (ImGui::SmallButton("Click un here to navigate in FreeType's home page")) 
-		{
-			ShellExecuteA(NULL, "open", FREETYPE, NULL, NULL, SW_SHOWNORMAL);
-		}
 		ImGui::BulletText("glew (v%s)", glewGetString(GLEW_VERSION));
 		ImGui::BulletText("Imgui (v%s)", ImGui::GetVersion());
 		ImGui::BulletText("Imguizmo (v1.61)");
@@ -81,7 +76,7 @@ void PanelAbout::Draw()
 		ImGui::BulletText("NodeEditor");
 		ImGui::BulletText("Pcg (v0.98)");
 		ImGui::BulletText("Physfs (v%d.%d.%d)", PHYSFS_VER_MAJOR, PHYSFS_VER_MINOR, PHYSFS_VER_PATCH);
-		ImGui::BulletText("RapidJson (v%d)", RAPIDJSON_VERSION_STRING);
+		ImGui::BulletText("RapidJson (v%d.%d.%d)", RAPIDJSON_MAJOR_VERSION, RAPIDJSON_MINOR_VERSION, RAPIDJSON_PATCH_VERSION);
 		ImGui::BulletText("Recastnavigation");
 		ImGui::BulletText("SDL (v%d.%d.%d)", sdlVersion.major, sdlVersion.minor, sdlVersion.patch);
 
