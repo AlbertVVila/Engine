@@ -419,14 +419,13 @@ void ComponentAnimation::Update()
 					if (child->isVolumetric)
 					{
 						meshGO = child;
-						break;
+						std::unordered_set<GameObject*>::const_iterator GO = App->scene->dynamicFilteredGOs.find(meshGO);
+						if (GO != App->scene->dynamicFilteredGOs.end())
+						{
+							UpdateGO(gameobject);
+						}
 					}
-				}
-
-				std::unordered_set<GameObject*>::const_iterator GO = App->scene->dynamicFilteredGOs.find(meshGO);
-				if (GO != App->scene->dynamicFilteredGOs.end())
-				{
-					UpdateGO(gameobject);
+						break;
 				}
 			}
 		}
