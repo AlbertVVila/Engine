@@ -361,7 +361,7 @@ float ComponentAnimation::GetDurationFromClip()
 {
 	float speed = stateMachine->GetClipSpeed(currentNode);
 	float duration = GetAnimFromStateMachine()->durationInSeconds;
-	return (speed * duration);
+	return (duration/speed);
 }
 
 float ComponentAnimation::GetSpeedFromStateMachine()
