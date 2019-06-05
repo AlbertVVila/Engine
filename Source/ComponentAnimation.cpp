@@ -5,6 +5,7 @@
 #include "ModuleTime.h"
 
 #include "GameObject.h"
+#include "BaseScript.h"
 #include "Resource.h"
 #include "ResourceAnimation.h"
 #include "ResourceStateMachine.h"
@@ -395,6 +396,7 @@ ComponentAnimation::EditorContext* ComponentAnimation::GetEditorContext()
 
 void ComponentAnimation::Update()
 {
+	PROFILE;
 	if (App->time->gameState == GameState::RUN) //Game run time exclusive
 	{
 		if (stateMachine != nullptr && stateMachine->GetClipsSize() > 0u &&
@@ -407,10 +409,24 @@ void ComponentAnimation::Update()
 			}
 
 			controller->Update(App->time->gameDeltaTime);
+
 			if (controller->CheckEvents())
 			{
-				//ToDo: Call OnEventAnimation
-				LOG("EVENT RETURNED TRUE!");
+				std::vector<Component*> scripts = gameobject->GetComponents(ComponentType::Script);
+
+				for (auto script : scripts)
+				{
+					Script scr = *(Script*)script;
+					scr.OnAnimationEvent(anim->nextEvent);
+					LOG("EVENT RETURNED TRUE!");
+				}
+
+				if (anim->nextEvent + 1 < anim->totalEvents)
+					++anim->nextEvent;
+				else if (anim->nextEvent + 1 == anim->totalEvents && anim->totalEvents == 1)
+					++anim->nextEvent;
+				else
+					anim->nextEvent = 0;
 			}
 
 			if (gameobject != nullptr)
@@ -430,11 +446,6 @@ void ComponentAnimation::Update()
 			}
 
 			editorController->Update(App->time->realDeltaTime);
-			if (editorController->CheckEvents())
-			{
-				//ToDo: Call OnEventAnimation
-				LOG("EVENT RETURNED TRUE!");
-			}
 
 			if (gameobject != nullptr)
 			{

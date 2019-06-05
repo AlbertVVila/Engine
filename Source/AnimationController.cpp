@@ -275,6 +275,9 @@ bool AnimationController::CheckEvents()
 {
 	ResourceAnimation* anim = current->anim;
 
+	if (NULL == anim || anim->totalEvents == 0)
+		return false;
+
 	for (std::vector<Event*>::iterator it = anim->events.begin(); it != anim->events.end(); ++it)
 	{
 		if ((*it)->key == anim->nextEvent)
@@ -283,13 +286,6 @@ bool AnimationController::CheckEvents()
 
 			if (currentFrame == (*it)->frame)
 			{
-				if (anim->nextEvent + 1 < anim->totalEvents)
-					++anim->nextEvent;
-				else if (anim->nextEvent + 1 == anim->totalEvents && anim->totalEvents == 1)
-					++anim->nextEvent;
-				else
-					anim->nextEvent = 0;
-
 				return true;
 			}
 			return false;
