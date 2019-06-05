@@ -357,6 +357,13 @@ bool ComponentAnimation::GetLoopFromStateMachine()
 	return stateMachine->GetClipLoop(stateMachine->FindClip(clipName));
 }
 
+float ComponentAnimation::GetDurationFromClip()
+{
+	float speed = stateMachine->GetClipSpeed(currentNode);
+	float duration = GetAnimFromStateMachine()->durationInSeconds;
+	return (speed * duration);
+}
+
 float ComponentAnimation::GetSpeedFromStateMachine()
 {
 	HashString clipName = stateMachine->GetNodeClip(currentNode);
