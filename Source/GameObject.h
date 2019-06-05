@@ -129,6 +129,7 @@ public:
 	std::list<GameObject*> children;	
 
 	std::string name = "GameObject";
+	std::string tag = "Default";
 
 };
 

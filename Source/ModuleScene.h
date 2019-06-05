@@ -93,17 +93,19 @@ public:
 	void UnSelect();
 	void Pick(float normalized_x, float normalized_y);
 	ENGINE_API bool Intersects(math::float3& closestPoint, const char* name, bool editor = false);
+	ENGINE_API bool Intersects(const char* tag, bool sorted, math::float3& intersection, GameObject** out = nullptr) const;
 
 	GameObject* FindClosestParent(GameObject* go);
 
+	ENGINE_API GameObject* FindGameObjectByTag(const char* tag, GameObject* parent = nullptr) const;
+	ENGINE_API std::vector<GameObject*> FindGameObjectsByTag(const char * tag, GameObject* parent = nullptr) const;
 	ENGINE_API GameObject* FindGameObjectByUID(unsigned UID, GameObject* parent = nullptr) const;
 	ENGINE_API GameObject* FindGameObjectByName(const char* name, GameObject* parent = nullptr) const;
 
 	ENGINE_API GameObject* Spawn(const char* name, GameObject* parent= nullptr);
-	ENGINE_API GameObject* Spawn(const char * name, math::float3 position,
-		math::Quat rotation, GameObject * parent = nullptr);
-
-
+	ENGINE_API GameObject* Spawn(const char* name, math::float3 position,
+		math::Quat rotation, GameObject* parent = nullptr);
+		
 	void GetStaticGlobalAABB(math::AABB &aabb, std::vector<GameObject*> &bucket, unsigned int &bucketOccupation);
 
 	unsigned GetNewUID();

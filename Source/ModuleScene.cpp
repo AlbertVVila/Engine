@@ -1299,7 +1299,6 @@ void ModuleScene::Pick(float normalized_x, float normalized_y)
 
 bool ModuleScene::Intersects(math::float3& closestPoint, const char* name, bool editor)
 {
-
 	float2 mouse((float*)&App->input->GetMousePosition());
 	LineSegment line;
 
@@ -1341,10 +1340,10 @@ bool ModuleScene::Intersects(math::float3& closestPoint, const char* name, bool 
 	{
 		if (go.second->name != name) continue;
 
-		intersects = true;
 		float distance = FLOAT_INF;
 		if (go.second->Intersects(line, distance, &intersectionPoint)) //returns distance to line if triangle hit
 		{
+			intersects = true;
 			if (distance < closestTriangle)
 			{
 				closestPoint = intersectionPoint;
@@ -1354,6 +1353,66 @@ bool ModuleScene::Intersects(math::float3& closestPoint, const char* name, bool 
 	}
 
 	return intersects;
+}
+
+bool ModuleScene::Intersects(const char* tag, bool sorted, math::float3& point, 
+	GameObject** out) const
+{
+	float2 mouse((float*)&App->input->GetMousePosition());
+	LineSegment line;
+
+	float normalized_x, normalized_y;
+
+	if (App->renderer->viewGame->hidden)
+	{
+		math::float2 pos = App->renderer->viewScene->winPos;
+		math::float2 size(App->renderer->viewScene->current_width, App->renderer->viewScene->current_height);
+		normalized_x = ((mouse.x - pos.x) / size.x) * 2 - 1; //0 to 1 -> -1 to 1
+		normalized_y = (1 - (mouse.y - pos.y) / size.y) * 2 - 1; //0 to 1 -> -1 to 1
+
+		line = App->camera->editorcamera->DrawRay(normalized_x, normalized_y);
+	}
+	else
+	{
+#ifndef GAME_BUILD
+		math::float2 pos = App->renderer->viewGame->winPos;
+		math::float2 size(App->renderer->viewGame->current_width, App->renderer->viewGame->current_height);
+#else
+		math::float2 pos = math::float2::zero;
+		math::float2 size(App->window->width, App->window->height);
+#endif
+		normalized_x = ((mouse.x - pos.x) / size.x) * 2 - 1; //0 to 1 -> -1 to 1
+		normalized_y = (1 - (mouse.y - pos.y) / size.y) * 2 - 1; //0 to 1 -> -1 to 1
+
+		line = App->scene->maincamera->DrawRay(normalized_x, normalized_y);
+
+	}
+		std::list<std::pair<float, GameObject*>> GOs = GetStaticIntersections(line);
+		std::list<std::pair<float, GameObject*>> dGOs = GetDynamicIntersections(line);
+		GOs.merge(dGOs);
+
+		math::float3 intersectionPoint = math::float3::zero;
+		float closestTriangle = FLOAT_INF;
+		bool intersects = false;
+
+		for (const auto& go : GOs)
+		{
+			if (go.second->tag != tag) continue;
+
+			float distance = FLOAT_INF;
+			if (go.second->Intersects(line, distance, &intersectionPoint)) //returns distance to line if triangle hit
+			{
+				intersects = true;
+				if (distance < closestTriangle)
+				{
+					point = intersectionPoint;
+					closestTriangle = distance;
+					*out = go.second;
+					if (!sorted) break;
+				}
+			}
+		}
+		return intersects;
 }
 
 GameObject* ModuleScene::FindClosestParent(GameObject* go)
@@ -1370,6 +1429,58 @@ GameObject* ModuleScene::FindClosestParent(GameObject* go)
 		return nullptr;
 	}
 	return FindClosestParent(go->parent);
+}
+
+GameObject* ModuleScene::FindGameObjectByTag(const char* tag, GameObject* parent) const
+{
+	std::stack<GameObject*> GOs;
+	if (parent == nullptr)
+	{
+		parent = root;
+	}
+	GOs.push(parent);
+	while (!GOs.empty())
+	{
+		GameObject* go = GOs.top();
+		if (go->tag == tag)
+		{
+			return go;
+		}
+
+		GOs.pop();
+		for (const auto& child : go->children)
+		{
+			GOs.push(child);
+		}
+	}
+	return nullptr;
+}
+
+std::vector<GameObject*> ModuleScene::FindGameObjectsByTag(const char* tag, GameObject* parent) const
+{
+	std::vector<GameObject*> gameobjects;
+
+	std::stack<GameObject*> GOs;
+	if (parent == nullptr)
+	{
+		parent = root;
+	}
+	GOs.push(parent);
+	while (!GOs.empty())
+	{
+		GameObject* go = GOs.top();
+		if (go->tag == tag)
+		{
+			gameobjects.push_back(go);
+		}
+
+		GOs.pop();
+		for (const auto& child : go->children)
+		{
+			GOs.push(child);
+		}
+	}
+	return gameobjects;
 }
 
 GameObject* ModuleScene::FindGameObjectByUID(unsigned UID, GameObject* parent) const
