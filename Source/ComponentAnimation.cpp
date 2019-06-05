@@ -408,7 +408,7 @@ void ComponentAnimation::Update()
 				channelsSetted = true;
 			}
 
-			controller->Update(App->time->gameDeltaTime);
+			controller->Update(App->time->fullGameDeltaTime);
 
 			if (controller->CheckEvents())
 			{
