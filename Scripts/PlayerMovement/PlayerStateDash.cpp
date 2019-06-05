@@ -73,9 +73,9 @@ void PlayerStateDash::Update()
 
 void PlayerStateDash::Enter()
 {
-	if (player->App->scene->Intersects(intersectionPoint, "floor"))
+	if (player->App->navigation->NavigateTowardsCursor(player->gameobject->transform->position, path,
+		math::float3(player->OutOfMeshCorrectionXZ, player->OutOfMeshCorrectionY, player->OutOfMeshCorrectionXZ), intersectionPoint))
 	{
-		player->App->navigation->FindPath(player->gameobject->transform->position, intersectionPoint, path);
 		pathIndex = 0;
 		player->gameobject->transform->LookAt(intersectionPoint);
 		if (dashFX)
