@@ -48,7 +48,7 @@ public:
 	bool CleanUp() override;
 	void SaveConfig(JSON* config) override;
 
-	GameObject * CreateGameObject(const char * name, GameObject* parent);
+	GameObject* CreateGameObject(const char * name, GameObject* parent);
 
 	void AddToSpacePartition(GameObject * gameobject);
 	void DeleteFromSpacePartition(GameObject* gameobject);
@@ -70,8 +70,10 @@ public:
 	unsigned SaveParShapesMesh(const par_shapes_mesh_s & mesh, char** data) const;
 
 	void SaveScene(const GameObject& rootGO, const char* sceneName, const char* folder);
+	void SaveTemporaryScene();
 	bool isCleared();
 	ENGINE_API void LoadScene(const char* sceneName, const char* folder);
+	void LoadTemporaryScene();
 	bool AddScene(const char* sceneName, const char* folder);								// Adds a scene to current opened scene from a scene file (returns true if it was loaded correctly)
 
 	void AssignNewUUID(GameObject* go, unsigned UID);
