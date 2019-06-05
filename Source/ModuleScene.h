@@ -25,7 +25,7 @@ class ComponentLight;
 class ResourceTexture;
 class ResourceScene;
 class myQuadTree;
-class Prefab;
+class ResourcePrefab;
 
 struct par_shapes_mesh_s;
 

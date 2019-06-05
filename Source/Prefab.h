@@ -9,12 +9,12 @@ class GameObject;
 class JSON;
 class JSON_value;
 
-class Prefab : public Resource
+class ResourcePrefab : public Resource
 {
 public:
-	Prefab(unsigned uid);
-	Prefab(const Prefab& resource);
-	virtual ~Prefab();
+	ResourcePrefab(unsigned uid);
+	ResourcePrefab(const ResourcePrefab& resource);
+	virtual ~ResourcePrefab();
 
 	bool LoadInMemory() override;
 	void DeleteFromMemory() override;

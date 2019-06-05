@@ -85,7 +85,7 @@ GameObject::GameObject(const GameObject & gameobject)
 
 	if (isPrefab)
 	{
-		prefab = (Prefab*)App->resManager->Get(prefabUID);
+		prefab = (ResourcePrefab*)App->resManager->Get(prefabUID);
 		prefab->AddInstance(this);
 	}
 
@@ -791,7 +791,7 @@ void GameObject::MarkAsPrefab()
 		wasPrefab = true;
 	}
 
-	prefab = (Prefab*)App->resManager->Get(prefabUID);
+	prefab = (ResourcePrefab*)App->resManager->Get(prefabUID);
 	prefab->AddInstance(this);
 	isPrefabSync = true;
 
@@ -1016,7 +1016,7 @@ void GameObject::Load(JSON_value *value, bool prefabTemplate)
 	prefabUID = value->GetUint("prefabUID");
 	if (isPrefab && !prefabTemplate)
 	{
-		prefab = (Prefab*) App->resManager->Get(prefabUID);
+		prefab = (ResourcePrefab*) App->resManager->Get(prefabUID);
 		if (prefab != nullptr)
 		{
 			prefab->AddInstance(this);

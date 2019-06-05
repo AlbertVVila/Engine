@@ -111,7 +111,7 @@ bool FileImporter::ImportFBX(const char* fbxfile, const char* folder, ResourceMo
 	return false;
 }
 
-bool FileImporter::ImportPrefab(const char * file, const char * folder, Prefab * resource)
+bool FileImporter::ImportPrefab(const char * file, const char * folder, ResourcePrefab * resource)
 {
 	//std::string path(folder);
 	//path += file;

@@ -12,7 +12,7 @@ class ComponentTransform;
 class ComponentLight;
 class ComponentAnimation;
 class AABBTreeNode;
-class Prefab;
+class ResourcePrefab;
 enum class ComponentType;
 struct Frame;
 struct Texture;
@@ -98,7 +98,7 @@ public:
 	bool activeSelf = true;
 
 	bool isPrefabSync = false;
-	Prefab* prefab = nullptr;
+	ResourcePrefab* prefab = nullptr;
 	bool isPrefab = false;
 	unsigned prefabUID = 0;
 	bool isDropablePlaceHolder = false;

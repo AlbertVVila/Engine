@@ -293,7 +293,7 @@ bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* 
 		exportedFile = IMPORTED_STATEMACHINES + std::to_string(resource->GetUID()) + STATEMACHINEEXTENSION;
 		break;
 	case TYPE::PREFAB: //TODO: update reimport PREFAB
-		success = App->fsystem->importer.ImportPrefab(newFileInAssets, filePath, (Prefab*)resource);
+		success = App->fsystem->importer.ImportPrefab(newFileInAssets, filePath, (ResourcePrefab*)resource);
 		exportedFile = IMPORTED_PREFABS + std::to_string(resource->GetUID()) + PREFABEXTENSION;
 		break;
 	}
@@ -366,7 +366,7 @@ bool ModuleResourceManager::ReImportFile(Resource* resource, const char* filePat
 		}
 		break;
 	case TYPE::PREFAB:
-		success = App->fsystem->importer.ImportPrefab(file.c_str(), filePath, (Prefab*)resource);
+		success = App->fsystem->importer.ImportPrefab(file.c_str(), filePath, (ResourcePrefab*)resource);
 	}
 
 	// If export was successful, update resource
@@ -408,7 +408,7 @@ Resource* ModuleResourceManager::CreateNewResource(TYPE type, unsigned forceUid)
 	case TYPE::MATERIAL:		resource = (Resource*) new ResourceMaterial(uid);		break;
 	case TYPE::SKYBOX:			resource = (Resource*) new ResourceSkybox(uid);			break;
 	case TYPE::STATEMACHINE:	resource = (Resource*) new ResourceStateMachine(uid);	break;
-	case TYPE::PREFAB:          resource = (Resource*) new Prefab(uid); break;
+	case TYPE::PREFAB:          resource = (Resource*) new ResourcePrefab(uid); break;
 	/*case TYPE::AUDIO:			resource = (Resource*) new ResourceAudio(uid);			break;*/
 	}
 

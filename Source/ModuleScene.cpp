@@ -545,7 +545,7 @@ void ModuleScene::DragNDropMove(GameObject* target)
 				}
 				else
 				{
-					Prefab* prefab = (Prefab*)App->resManager->Get(droppedGo->prefabUID); //We generate the gameobject itself
+					ResourcePrefab* prefab = (ResourcePrefab*)App->resManager->Get(droppedGo->prefabUID); //We generate the gameobject itself
 					droppedGo->CleanUp();
 					RELEASE(droppedGo);
 					droppedGo = new GameObject(*prefab->RetrievePrefab());
@@ -626,7 +626,7 @@ void ModuleScene::DragNDrop(GameObject* go)
 				}
 				else //case dragNdrop prefabs from assets
 				{
-					Prefab* prefab = (Prefab*)App->resManager->Get(droppedGo->prefabUID); //We generate the gameobject itself
+					ResourcePrefab* prefab = (ResourcePrefab*)App->resManager->Get(droppedGo->prefabUID); //We generate the gameobject itself
 					droppedGo->CleanUp();
 					RELEASE(droppedGo);
 					droppedGo = new GameObject(*prefab->RetrievePrefab());
@@ -812,9 +812,9 @@ bool ModuleScene::PrefabWasUpdated(unsigned UID) const
 	return prefabTime > sceneTime;
 }
 
-unsigned ModuleScene::CreatePrefab(GameObject * go)
+unsigned ModuleScene::CreatePrefab(GameObject* go)
 {
-	Prefab* prefab = (Prefab*)App->resManager->CreateNewResource(TYPE::PREFAB);
+	ResourcePrefab* prefab = (ResourcePrefab*)App->resManager->CreateNewResource(TYPE::PREFAB);
 	if (App->fsystem->Exists(PREFABS))
 	{
 		prefab->SetFile((PREFABS + go->name + PREFABEXTENSION).c_str());
@@ -1430,7 +1430,7 @@ GameObject* ModuleScene::FindGameObjectByName(const char* name, GameObject* pare
 
 GameObject * ModuleScene::Spawn(const char * name, GameObject * parent)
 {
-	Prefab* prefab = (Prefab*) App->resManager->GetByName(name, TYPE::PREFAB);
+	ResourcePrefab* prefab = (ResourcePrefab*) App->resManager->GetByName(name, TYPE::PREFAB);
 	assert(prefab != nullptr, "Prefab Not Found");
 	//Instantiate prefab
 	GameObject* instance = new GameObject(*prefab->RetrievePrefab());

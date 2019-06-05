@@ -12,20 +12,20 @@
 
 #include "JSON.h"
 
-Prefab::Prefab(unsigned uid) : Resource(uid, TYPE::PREFAB)
+ResourcePrefab::ResourcePrefab(unsigned uid) : Resource(uid, TYPE::PREFAB)
 {
 }
 
-Prefab::Prefab(const Prefab& resource) : Resource(resource)
+ResourcePrefab::ResourcePrefab(const ResourcePrefab& resource) : Resource(resource)
 {
 }
 
-Prefab::~Prefab()
+ResourcePrefab::~ResourcePrefab()
 {
 	DeleteFromMemory();
 }
 
-bool Prefab::LoadInMemory()
+bool ResourcePrefab::LoadInMemory()
 {
 	char* data = nullptr;
 
@@ -40,7 +40,7 @@ bool Prefab::LoadInMemory()
 	return true;
 }
 
-void Prefab::DeleteFromMemory()
+void ResourcePrefab::DeleteFromMemory()
 {
 	Resource::DeleteFromMemory();
 	if (root != nullptr)
@@ -56,7 +56,7 @@ void Prefab::DeleteFromMemory()
 	}
 }
 
-void Prefab::SaveMetafile(const char * file) const
+void ResourcePrefab::SaveMetafile(const char * file) const
 {
 	JSON* json = new JSON();
 	JSON_value* meta = json->CreateValue();
@@ -73,7 +73,7 @@ void Prefab::SaveMetafile(const char * file) const
 	RELEASE(json);
 }
 
-void Prefab::LoadConfigFromMeta()
+void ResourcePrefab::LoadConfigFromMeta()
 {
 	char* data = nullptr;
 	std::string metaFile(file);
@@ -92,14 +92,14 @@ void Prefab::LoadConfigFromMeta()
 }
 
 
-void Prefab::Load(char** data)
+void ResourcePrefab::Load(char** data)
 {
 	prefabJson = new JSON(*data);
 	prefabValue = prefabJson->GetValue("GameObjects");
 	RELEASE_ARRAY(*data);
 }
 
-void Prefab::Save(GameObject* go) const
+void ResourcePrefab::Save(GameObject* go) const
 {
 	JSON *json = new JSON();
 	JSON_value *array = json->CreateValue(rapidjson::kArrayType);
@@ -110,12 +110,12 @@ void Prefab::Save(GameObject* go) const
 	RELEASE(json);
 }
 
-void Prefab::AddInstance(GameObject* go)
+void ResourcePrefab::AddInstance(GameObject* go)
 {
 	instances.push_back(go);
 }
 
-bool Prefab::RemoveInstance(GameObject* go)
+bool ResourcePrefab::RemoveInstance(GameObject* go)
 {
 	for (std::vector<GameObject*>::iterator itChild = instances.begin(); itChild != instances.end(); ++itChild)
 	{
@@ -128,7 +128,7 @@ bool Prefab::RemoveInstance(GameObject* go)
 	return false;
 }
 
-void Prefab::Update(GameObject* go)
+void ResourcePrefab::Update(GameObject* go)
 {
 	for (auto& instance : instances)
 	{
@@ -138,7 +138,7 @@ void Prefab::Update(GameObject* go)
 	Save(go);
 }
 
-GameObject* Prefab::RetrievePrefab()
+GameObject* ResourcePrefab::RetrievePrefab()
  {
 	if (root != nullptr)
 	{

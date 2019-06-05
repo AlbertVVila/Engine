@@ -15,7 +15,7 @@ class ResourceAnimation;
 
 class Resource;
 class ResourceModel;
-class Prefab;
+class ResourcePrefab;
 
 class FileImporter {
 public:
@@ -28,7 +28,7 @@ public:
 
 	bool ImportFBX(const char * file, const char* folder, ResourceModel* resource);
 
-	bool ImportPrefab(const char * file, const char* folder, Prefab* resource);
+	bool ImportPrefab(const char * file, const char* folder, ResourcePrefab* resource);
 
 	bool ImportScene(const aiScene& scene, const char* file, const char* folder, ResourceModel* resource);
 	void ImportAnimation(const aiAnimation& animation, char* data);
