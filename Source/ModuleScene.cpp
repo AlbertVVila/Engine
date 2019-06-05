@@ -190,6 +190,18 @@ bool ModuleScene::CleanUp()
 
 	lights.clear();
 
+	// Delete temporary scene if it exists [If you close the app in play mode temporaryScene may remain]
+	std::string temporaryScene(RESOURCE_SCENES);
+	temporaryScene += TEMPORARY_SCENE;
+	temporaryScene += SCENEEXTENSION;
+	ResourceScene* scene = (ResourceScene*)App->resManager->Get(temporaryScene.c_str(), TYPE::SCENE);
+	if (scene != nullptr)
+	{
+		// Delete temporary scene
+		scene->Delete();
+		App->resManager->DeleteResourceFromList(scene->GetUID());
+	}
+
 	//RELEASE(defaultScene);
 
 	return true;
