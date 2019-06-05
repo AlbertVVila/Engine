@@ -110,9 +110,6 @@ bool ModuleScene::Start()
 		if (defaultScene != nullptr)
 		{
 			defaultScene->Load();
-			//set all the game objects
-			root->UpdateTransforms(math::float4x4::identity);
-			root->SetAllMoveFlags();
 		}
 	}
 	return true;
@@ -1073,10 +1070,6 @@ void ModuleScene::LoadScene(const char* sceneName, const char* folder)
 	App->scripting->onStart = true;
 	scenePhotos.clear();
 	App->time->ResetGameDetaTime();
-	//set all the game objects
-	root->UpdateTransforms(math::float4x4::identity);
-	root->SetAllMoveFlags();
-	
 }
 
 bool ModuleScene::AddScene(const char* sceneName, const char* folder)
