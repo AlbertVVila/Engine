@@ -88,9 +88,12 @@ public:
 	void UnSelect();
 	void Pick(float normalized_x, float normalized_y);
 	ENGINE_API bool Intersects(math::float3& closestPoint, const char* name, bool editor = false);
+	ENGINE_API bool Intersects(const char * tag, bool sorted, math::float3& intersection, GameObject** out = nullptr) const;
 
 	GameObject* FindClosestParent(GameObject* go);
 
+	ENGINE_API GameObject* FindGameObjectByTag(const char * tag, GameObject * parent = nullptr) const;
+	ENGINE_API std::vector<GameObject*> FindGameObjectsByTag(const char * tag, GameObject * parent = nullptr) const;
 	ENGINE_API GameObject* FindGameObjectByName(const char* name) const;
 	ENGINE_API GameObject* FindGameObjectByName(GameObject* parent, const char* name) const;
 
