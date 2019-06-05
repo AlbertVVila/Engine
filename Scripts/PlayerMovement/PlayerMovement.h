@@ -85,6 +85,8 @@ public:
 	float health = fullHealth;
 	float attackDuration = 1.0f;
 	float attackTimer = 0.0f;
+	float OutOfMeshCorrectionXZ = 500.f;
+	float OutOfMeshCorrectionY = 300.0f;
 	ComponentAnimation* anim = nullptr;
 	ComponentBoxTrigger* attackBoxTrigger = nullptr;
 	ComponentBoxTrigger* hpHitBoxTrigger = nullptr;

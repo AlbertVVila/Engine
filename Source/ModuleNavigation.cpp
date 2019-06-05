@@ -9,10 +9,14 @@
 #include "ModuleScene.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleFileSystem.h"
+#include "ModuleInput.h"
+#include "ModuleRender.h"
+#include "Viewport.h"
 
 #include "Component.h"
 #include "ComponentRenderer.h"
 #include "ComponentTransform.h"
+#include "ComponentCamera.h"
 
 #include "ResourceMesh.h"
 
@@ -1278,7 +1282,7 @@ static int fixupShortcuts(dtPolyRef* path, int npath, dtNavMeshQuery* navQuery)
 	return npath;
 }
 
-bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vector<math::float3>& path, PathFindType type) const
+bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vector<math::float3>& path, PathFindType type, math::float3 diff) const
 {
 	path.clear();
 	dtPolyRef startPoly, endPoly;
@@ -1286,7 +1290,7 @@ bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vecto
 	filter.setIncludeFlags(SAMPLE_POLYFLAGS_ALL ^ SAMPLE_POLYFLAGS_DISABLED);
 	filter.setExcludeFlags(0);
 
-	float polyPickExt[3] = { 0,0,0 };
+	float polyPickExt[3] = {diff.x, diff.y, diff.z};
 
 	dtPolyRef polyPath[MAX_POLYS];
 	int polyCount = 0;
@@ -1434,6 +1438,32 @@ bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vecto
 	}
 
 	return false;
+}
+
+bool ModuleNavigation::NavigateTowardsCursor(math::float3 start, std::vector<math::float3>& path, math::float3 positionCorrection, math::float3& intersectionPos)
+{
+	float2 mouse((float*)& App->input->GetMousePosition());
+	LineSegment line;
+
+	float normalized_x, normalized_y;
+
+#ifndef GAME_BUILD
+	math::float2 pos = App->renderer->viewGame->winPos;
+	math::float2 size(App->renderer->viewGame->current_width, App->renderer->viewGame->current_height);
+#else
+	math::float2 pos = math::float2::zero;
+	math::float2 size(App->window->width, App->window->height);
+#endif
+	normalized_x = ((mouse.x - pos.x) / size.x) * 2 - 1; //0 to 1 -> -1 to 1
+	normalized_y = (1 - (mouse.y - pos.y) / size.y) * 2 - 1; //0 to 1 -> -1 to 1
+
+	line = App->scene->maincamera->DrawRay(normalized_x, normalized_y);
+	Plane plane(math::float3(0.f, 1.f, 0.f), start.y);
+	float dist = 0.f;
+	line.Intersects(plane, &dist);
+	intersectionPos = line.GetPoint(dist);
+
+	return FindPath(start, intersectionPos, path, PathFindType::FOLLOW, positionCorrection);
 }
 
 void ModuleNavigation::RecalcPath(math::float3 point)
