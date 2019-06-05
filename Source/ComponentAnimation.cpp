@@ -3,6 +3,7 @@
 #include "ModuleResourceManager.h"
 #include "ModuleFileSystem.h"
 #include "ModuleTime.h"
+#include "ModuleScene.h"
 
 #include "GameObject.h"
 #include "Resource.h"
@@ -11,6 +12,7 @@
 #include "AnimationController.h"
 #include "ComponentAnimation.h"
 #include "ComponentTransform.h"
+#include "ComponentRenderer.h"
 
 #include "Globals.h"
 #include <stack>
@@ -410,7 +412,22 @@ void ComponentAnimation::Update()
 
 			if (gameobject != nullptr)
 			{
-				UpdateGO(gameobject);
+				GameObject* meshGO = nullptr;
+
+				for (const auto& child : gameobject->children)
+				{
+					if (child->isVolumetric)
+					{
+						meshGO = child;
+						break;
+					}
+				}
+
+				std::unordered_set<GameObject*>::const_iterator GO = App->scene->dynamicFilteredGOs.find(meshGO);
+				if (GO != App->scene->dynamicFilteredGOs.end())
+				{
+					UpdateGO(gameobject);
+				}
 			}
 		}
 	}
