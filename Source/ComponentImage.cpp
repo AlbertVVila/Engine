@@ -115,7 +115,8 @@ void ComponentImage::DrawProperties()
 
 		ImGui::Checkbox("Flip Vertical", &flipVertical);
 		ImGui::Checkbox("Flip Horizontal", &flipHorizontal);
-		ImGui::Checkbox("Is mask", &isMasked);
+		ImGui::Checkbox("Has mask", &isMasked);
+		ImGui::Checkbox("Is horizontal mask?", &isMaskHorizontal);
 		ImGui::DragInt("Mask amount %", &maskAmount, 1, 0, 100);
 
 		ImGui::Separator();
@@ -179,6 +180,7 @@ void ComponentImage::Save(JSON_value *value)const
 	value->AddInt("FlipHorizontal", flipHorizontal);
 	value->AddInt("isMasked", isMasked);
 	value->AddInt("maskAmount", maskAmount);
+	value->AddInt("isMaskHorizontal", isMaskHorizontal);
 	
 }
 
@@ -192,6 +194,7 @@ void ComponentImage::Load(JSON_value* value)
 	flipHorizontal = value->GetInt("FlipHorizontal");
 	isMasked = value->GetInt("isMasked");
 	maskAmount = value->GetInt("maskAmount");
+	isMaskHorizontal = value->GetInt("isMaskHorizontal");
 }
 
 ENGINE_API void ComponentImage::SetMaskAmount(int maskAmount)
