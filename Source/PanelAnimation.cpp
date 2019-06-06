@@ -92,10 +92,9 @@ void PanelAnimation::Draw()
 		ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 - ImGui::CalcTextSize("FRAMES").x / 2);
 		ImGui::Text("FRAMES");
 
-		if (NULL == compAnim->editorController->current)
+		if (NULL == compAnim->editorController->current && NULL != anim)
 		{
-			ImGui::End();
-			return;
+			compAnim->editorController->PlayEditor(anim);
 		}
 
 		ImGui::PushItemWidth(100);

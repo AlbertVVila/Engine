@@ -70,12 +70,10 @@ void AnimationController::Update(float dt)
 	if (current != nullptr && !current->isEditor)
 	{
 		UpdateInstance(current, dt);
-		//CheckEvents();
 	}
 	else if (current != nullptr && current->isEditor)
 	{
 		UpdateEditorInstance(current, dt);
-		//CheckEvents();
 	}
 }
 
@@ -273,11 +271,9 @@ void AnimationController::SetNextEvent()
 
 bool AnimationController::CheckEvents(ResourceAnimation* anim)
 {
-	//ResourceAnimation* anim = current->anim;
-
 	if (NULL == anim || anim->totalEvents == 0)
 		return false;
-
+	
 	for (std::vector<Event*>::iterator it = anim->events.begin(); it != anim->events.end(); ++it)
 	{
 		if ((*it)->key == anim->nextEvent)
