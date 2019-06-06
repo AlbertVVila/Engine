@@ -193,15 +193,18 @@ bool ModuleScene::CleanUp()
 	lights.clear();
 
 	// Delete temporary scene if it exists [If you close the app in play mode temporaryScene may remain]
-	std::string temporaryScene(RESOURCE_SCENES);
-	temporaryScene += TEMPORARY_SCENE;
-	temporaryScene += SCENEEXTENSION;
-	ResourceScene* scene = (ResourceScene*)App->resManager->Get(temporaryScene.c_str(), TYPE::SCENE);
-	if (scene != nullptr)
+	if (App->time->gameState == GameState::RUN)
 	{
-		// Delete temporary scene
-		scene->Delete();
-		App->resManager->DeleteResourceFromList(scene->GetUID());
+		std::string temporaryScene(RESOURCE_SCENES);
+		temporaryScene += TEMPORARY_SCENE;
+		temporaryScene += SCENEEXTENSION;
+		ResourceScene* scene = (ResourceScene*)App->resManager->Get(temporaryScene.c_str(), TYPE::SCENE);
+		if (scene != nullptr)
+		{
+			// Delete temporary scene
+			scene->Delete();
+			App->resManager->DeleteResourceFromList(scene->GetUID());
+		}
 	}
 
 	//RELEASE(defaultScene);
@@ -1121,7 +1124,7 @@ void ModuleScene::LoadTemporaryScene()
 	temporaryScene += TEMPORARY_SCENE;
 	temporaryScene += SCENEEXTENSION;
 	ResourceScene* scene = (ResourceScene*)App->resManager->Get(temporaryScene.c_str(), TYPE::SCENE);
-	if (scene != nullptr && !scene->Load())
+	if (scene == nullptr || !scene->Load())
 	{
 		LOG("Error loading temporary scene.");
 	}
@@ -1137,9 +1140,6 @@ void ModuleScene::LoadTemporaryScene()
 	App->scripting->onStart = true;
 	scenePhotos.clear();
 	App->time->ResetGameDetaTime();
-	// Set all the game objects
-	root->UpdateTransforms(math::float4x4::identity);
-	root->SetAllMoveFlags();
 }
 
 bool ModuleScene::AddScene(const char* sceneName, const char* folder)
