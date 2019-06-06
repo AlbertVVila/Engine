@@ -38,10 +38,6 @@ void PanelAbout::Draw()
 		return;
 	}
 
-	std::string toChar = "FreeType (";
-	toChar = toChar + std::to_string(FREETYPE_MAJOR) + "." + std::to_string(FREETYPE_MINOR) + "." + std::to_string(FREETYPE_PATCH) + ")";
-	freeTypeVersion = toChar.c_str();
-
 	ImGui::Text("Name:"); ImGui::SameLine();
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), TITLE);
 	ImGui::Separator();
@@ -68,7 +64,7 @@ void PanelAbout::Draw()
 		ImGui::BulletText("Assimp (v%d.%d.%d)", aiGetVersionMajor(), aiGetVersionMinor(), aiGetVersionRevision());
 		ImGui::BulletText("Brofiler (v1.1.2)");
 		ImGui::BulletText("DevIL (v%d)", IL_VERSION);
-		ImGui::BulletText(freeTypeVersion);
+		ImGui::BulletText("FreeType (v%d.%d.%d)", FREETYPE_MAJOR, FREETYPE_MINOR, FREETYPE_PATCH);
 		ImGui::BulletText("glew (v%s)", glewGetString(GLEW_VERSION));
 		ImGui::BulletText("Imgui (v%s)", ImGui::GetVersion());
 		ImGui::BulletText("Imguizmo (v1.61)");

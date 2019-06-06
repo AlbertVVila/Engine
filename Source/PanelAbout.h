@@ -10,8 +10,6 @@ public:
 
 	void Draw();
 
-public:
-	const char* freeTypeVersion;
 };
 
 #endif //__PanelAbout_h__
