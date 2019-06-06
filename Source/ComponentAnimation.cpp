@@ -410,15 +410,14 @@ void ComponentAnimation::Update()
 
 			controller->Update(App->time->fullGameDeltaTime);
 
-			if (controller->CheckEvents())
+			if (controller->CheckEvents(anim))
 			{
 				std::vector<Component*> scripts = gameobject->GetComponents(ComponentType::Script);
 
 				for (auto script : scripts)
 				{
-					Script scr = *(Script*)script;
-					scr.OnAnimationEvent(anim->nextEvent);
-					LOG("EVENT RETURNED TRUE!");
+					Script* scr = (Script*)script;
+					scr->OnAnimationEvent(anim->events.at(anim->nextEvent)->name);
 				}
 
 				if (anim->nextEvent + 1 < anim->totalEvents)

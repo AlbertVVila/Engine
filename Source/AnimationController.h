@@ -47,7 +47,7 @@ public:
 
 	void ResetClipping();
 	void SetNextEvent();
-	bool CheckEvents();
+	bool CheckEvents(ResourceAnimation* anim);
 
 public:
 

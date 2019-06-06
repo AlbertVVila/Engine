@@ -271,9 +271,9 @@ void AnimationController::SetNextEvent()
 	}
 }
 
-bool AnimationController::CheckEvents()
+bool AnimationController::CheckEvents(ResourceAnimation* anim)
 {
-	ResourceAnimation* anim = current->anim;
+	//ResourceAnimation* anim = current->anim;
 
 	if (NULL == anim || anim->totalEvents == 0)
 		return false;
@@ -283,7 +283,6 @@ bool AnimationController::CheckEvents()
 		if ((*it)->key == anim->nextEvent)
 		{
 			int currentFrame = current->time * anim->framesPerSecond;
-
 			if (currentFrame == (*it)->frame)
 			{
 				return true;
