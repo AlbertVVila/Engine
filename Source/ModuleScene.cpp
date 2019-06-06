@@ -107,8 +107,10 @@ bool ModuleScene::Start()
 	if (defaultSceneUID > 0u)
 	{
 		defaultScene = (ResourceScene*)App->resManager->Get(defaultSceneUID);
-		if(defaultScene != nullptr)
+		if (defaultScene != nullptr)
+		{
 			defaultScene->Load();
+		}
 	}
 	return true;
 }
@@ -1106,10 +1108,6 @@ void ModuleScene::LoadScene(const char* sceneName, const char* folder)
 	App->scripting->onStart = true;
 	scenePhotos.clear();
 	App->time->ResetGameDetaTime();
-	//set all the game objects
-	root->UpdateTransforms(math::float4x4::identity);
-	root->SetAllMoveFlags();
-	
 }
 
 void ModuleScene::LoadTemporaryScene()
