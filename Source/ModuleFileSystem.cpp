@@ -69,6 +69,8 @@ ModuleFileSystem::ModuleFileSystem()
 		MakeDirectory(ANIMATIONS);
 	if (!Exists(STATEMACHINES))
 		MakeDirectory(STATEMACHINES);
+	if (!Exists(RESOURCE_SCENES))
+		MakeDirectory(RESOURCE_SCENES);
 }
 
 

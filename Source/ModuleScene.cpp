@@ -192,6 +192,21 @@ bool ModuleScene::CleanUp()
 
 	lights.clear();
 
+	// Delete temporary scene if it exists [If you close the app in play mode temporaryScene may remain]
+	if (App->time->gameState == GameState::RUN)
+	{
+		std::string temporaryScene(RESOURCE_SCENES);
+		temporaryScene += TEMPORARY_SCENE;
+		temporaryScene += SCENEEXTENSION;
+		ResourceScene* scene = (ResourceScene*)App->resManager->Get(temporaryScene.c_str(), TYPE::SCENE);
+		if (scene != nullptr)
+		{
+			// Delete temporary scene
+			scene->Delete();
+			App->resManager->DeleteResourceFromList(scene->GetUID());
+		}
+	}
+
 	//RELEASE(defaultScene);
 
 	return true;
@@ -1046,6 +1061,32 @@ void ModuleScene::SaveScene(const GameObject& rootGO, const char* sceneName, con
 	}
 }
 
+void ModuleScene::SaveTemporaryScene()
+{
+	std::string temporaryScene(RESOURCE_SCENES);
+	temporaryScene += TEMPORARY_SCENE;
+	temporaryScene += SCENEEXTENSION;
+	unsigned sceneUID = App->resManager->FindByExportedFile(temporaryScene.c_str(), TYPE::SCENE);
+
+	// See if there is already a temporaryScene on resource list
+	if (sceneUID != 0)
+	{
+		// Updating already saved scene [Shouldn't happen because temporaryScene is deleted after load]
+		ResourceScene* scene = (ResourceScene*)App->resManager->GetWithoutLoad(sceneUID);
+		scene->Save(*root);
+	}
+	else
+	{
+		// Is a new scene, create resource
+		ResourceScene* scene = (ResourceScene*)App->resManager->CreateNewResource(TYPE::SCENE);
+		scene->SetUsedByEngine(true);
+		scene->SetExportedFile(temporaryScene.c_str());
+		scene->SetFile(temporaryScene.c_str());
+		scene->SetName(TEMPORARY_SCENE);
+		scene->Save(*root);
+	}
+}
+
 bool ModuleScene::isCleared()
 {
 	return App->scene->root->children.size() <= 1 &&
@@ -1066,6 +1107,35 @@ void ModuleScene::LoadScene(const char* sceneName, const char* folder)
 			path = folder;
 		}
 	}
+	App->spacePartitioning->kDTree.Calculate();
+	App->scripting->onStart = true;
+	scenePhotos.clear();
+	App->time->ResetGameDetaTime();
+}
+
+void ModuleScene::LoadTemporaryScene()
+{
+	if (!isCleared())
+	{
+		ClearScene();
+	}
+
+	std::string temporaryScene(RESOURCE_SCENES);
+	temporaryScene += TEMPORARY_SCENE;
+	temporaryScene += SCENEEXTENSION;
+	ResourceScene* scene = (ResourceScene*)App->resManager->Get(temporaryScene.c_str(), TYPE::SCENE);
+	if (scene == nullptr || !scene->Load())
+	{
+		LOG("Error loading temporary scene.");
+	}
+	else
+	{
+		// Delete temporary scene
+		scene->Delete();
+		App->resManager->DeleteResourceFromList(scene->GetUID());
+	}
+	App->renderer->OnResize();
+
 	App->spacePartitioning->kDTree.Calculate();
 	App->scripting->onStart = true;
 	scenePhotos.clear();
