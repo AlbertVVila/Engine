@@ -122,10 +122,10 @@ inline float RadToDeg(float radians) { return radians * (180.f / pi); }
 
 /// Computes the function sin(x).
 /** @see Cos(), Tan(), SinCos(), Asin(), Acos(), Atan(), Atan2(), Sinh(), Cosh(), Tanh(). */
-float Sin(float angleRadians);
+MATH_API float Sin(float angleRadians);
 /// Computes the function cos(x).
 /** @see Sin(), Tan(), SinCos(), Asin(), Acos(), Atan(), Atan2(), Sinh(), Cosh(), Tanh(). */
-float Cos(float angleRadians);
+MATH_API float Cos(float angleRadians);
 /// Computes the function tan(x).
 /** @see Sin(), Cos(), SinCos(), Asin(), Acos(), Atan(), Atan2(), Sinh(), Cosh(), Tanh(). */
 float Tan(float angleRadians);
@@ -138,7 +138,7 @@ float2 SinCos(float angleRadians);
 float Asin(float x);
 /// Computes the function arccos(x), in radians.
 /** @see Sin(), Cos(), Tan(), SinCos(), Asin(), Atan(), Atan2(), Sinh(), Cosh(), Tanh(). */
-float Acos(float x);
+MATH_API float Acos(float x);
 /// Computes the function arctan(x), in radians.
 /** @see Sin(), Cos(), Tan(), SinCos(), Asin(), Acos(), Atan2(), Sinh(), Cosh(), Tanh(). */
 float Atan(float x);

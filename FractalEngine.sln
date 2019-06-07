@@ -48,6 +48,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ProjectileScript", "Scripts
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EnemyLifeBarController", "Scripts\EnemyLifeBarController\EnemyLifeBarController.vcxproj", "{25A279F6-6460-43E6-83C1-59AB067F3F05}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MathGeoLib", "Source\MathGeoLib\MathGeoLib.vcxproj", "{F7ECD748-47D4-4E44-959C-BC5623A1A2BB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -378,6 +380,22 @@ Global
 		{25A279F6-6460-43E6-83C1-59AB067F3F05}.Release|Win32.Build.0 = Release|Win32
 		{25A279F6-6460-43E6-83C1-59AB067F3F05}.Release|x64.ActiveCfg = Release|x64
 		{25A279F6-6460-43E6-83C1-59AB067F3F05}.Release|x64.Build.0 = Release|x64
+		{F7ECD748-47D4-4E44-959C-BC5623A1A2BB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F7ECD748-47D4-4E44-959C-BC5623A1A2BB}.Debug|Win32.Build.0 = Debug|Win32
+		{F7ECD748-47D4-4E44-959C-BC5623A1A2BB}.Debug|x64.ActiveCfg = Debug|x64
+		{F7ECD748-47D4-4E44-959C-BC5623A1A2BB}.Debug|x64.Build.0 = Debug|x64
+		{F7ECD748-47D4-4E44-959C-BC5623A1A2BB}.GameBuild Debug|Win32.ActiveCfg = Debug|Win32
+		{F7ECD748-47D4-4E44-959C-BC5623A1A2BB}.GameBuild Debug|Win32.Build.0 = Debug|Win32
+		{F7ECD748-47D4-4E44-959C-BC5623A1A2BB}.GameBuild Debug|x64.ActiveCfg = Debug|x64
+		{F7ECD748-47D4-4E44-959C-BC5623A1A2BB}.GameBuild Debug|x64.Build.0 = Debug|x64
+		{F7ECD748-47D4-4E44-959C-BC5623A1A2BB}.GameBuild|Win32.ActiveCfg = Release|Win32
+		{F7ECD748-47D4-4E44-959C-BC5623A1A2BB}.GameBuild|Win32.Build.0 = Release|Win32
+		{F7ECD748-47D4-4E44-959C-BC5623A1A2BB}.GameBuild|x64.ActiveCfg = Release|x64
+		{F7ECD748-47D4-4E44-959C-BC5623A1A2BB}.GameBuild|x64.Build.0 = Release|x64
+		{F7ECD748-47D4-4E44-959C-BC5623A1A2BB}.Release|Win32.ActiveCfg = Release|Win32
+		{F7ECD748-47D4-4E44-959C-BC5623A1A2BB}.Release|Win32.Build.0 = Release|Win32
+		{F7ECD748-47D4-4E44-959C-BC5623A1A2BB}.Release|x64.ActiveCfg = Release|x64
+		{F7ECD748-47D4-4E44-959C-BC5623A1A2BB}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
