@@ -11,17 +11,26 @@
 #define ASSETS "Assets/"
 #define LIBRARY "Library/"
 #define RESOURCES "Resources/"
+
+// Reesources
 #define IMPORTED_RESOURCES RESOURCES "Imported/"
+#define RESOURCE_SCENES RESOURCES "Scenes/"
+
+// Library
+#define MESHES LIBRARY "Meshes/"
+#define TEXTURES LIBRARY "Textures/"
 #define IMPORTED_MATERIALS LIBRARY "Materials/"
 #define IMPORTED_ANIMATIONS LIBRARY "Animations/"
 #define IMPORTED_STATEMACHINES LIBRARY "StateMachines/"
+#define IMPORTED_SCENES LIBRARY "Scenes/"
+
+// Assets
 #define MATERIALS ASSETS "Materials/"
 #define STATEMACHINES ASSETS "StateMachines/"
 #define ANIMATIONS ASSETS "Animations/"
-#define MESHES LIBRARY "Meshes/"
-#define TEXTURES LIBRARY "Textures/"
 #define SCENES ASSETS "Scenes/"
-#define IMPORTED_SCENES LIBRARY "Scenes/"
+
+// Other
 #define AUDIOS "Audio/"
 
 #define TEMPORARY_SCENE "temporaryScene"
