@@ -86,6 +86,10 @@ void FileImporter::ImportAsset(const char *file, const char *folder)
 	{
 		App->resManager->ImportFile(file, folder, TYPE::STATEMACHINE);
 	}
+	else if (extension == OGGEXTENSION || extension == MP3EXTENSION || extension == WAVEXTENSION)
+	{
+		App->resManager->ImportFile(file, folder, TYPE::AUDIO);
+	}
 }
 
 bool FileImporter::ImportFBX(const char* fbxfile, const char* folder, ResourceModel* resource)

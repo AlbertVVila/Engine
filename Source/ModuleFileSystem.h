@@ -12,7 +12,7 @@
 #define LIBRARY "Library/"
 #define RESOURCES "Resources/"
 
-// Reesources
+// Resources
 #define IMPORTED_RESOURCES RESOURCES "Imported/"
 #define RESOURCE_SCENES RESOURCES "Scenes/"
 
@@ -23,15 +23,13 @@
 #define IMPORTED_ANIMATIONS LIBRARY "Animations/"
 #define IMPORTED_STATEMACHINES LIBRARY "StateMachines/"
 #define IMPORTED_SCENES LIBRARY "Scenes/"
+#define IMPORTED_AUDIOS LIBRARY "Audios/"
 
 // Assets
 #define MATERIALS ASSETS "Materials/"
 #define STATEMACHINES ASSETS "StateMachines/"
 #define ANIMATIONS ASSETS "Animations/"
 #define SCENES ASSETS "Scenes/"
-
-// Other
-#define AUDIOS "Audio/"
 
 #define TEMPORARY_SCENE "temporaryScene"
 
