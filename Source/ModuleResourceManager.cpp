@@ -833,6 +833,7 @@ unsigned ModuleResourceManager::GetUIDFromMeta(const char* metaFile, FILETYPE fi
 	case TYPE::TEXTURE:		value = json->GetValue("Texture");		break;
 	case TYPE::MATERIAL:	value = json->GetValue("Material");		break;
 	case TYPE::MESH:		value = json->GetValue("Mesh");			break;
+	case TYPE::AUDIO:		value = json->GetValue("Audio");		break;
 	case TYPE::MODEL:		value = json->GetValue("Mesh");			break;
 	case TYPE::SCENE:		value = json->GetValue("Scene");		break;
 	case TYPE::ANIMATION:	value = json->GetValue("Animation");	break;
