@@ -411,6 +411,9 @@
     <ClCompile Include="ResourceStateMachine.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
+    <ClCompile Include="ResourceAudio.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -955,6 +958,9 @@
     </ClInclude>
     <ClInclude Include="imgui_color_gradient.h" />
     <ClInclude Include="ResourceStateMachine.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceAudio.h">
       <Filter>Resources</Filter>
     </ClInclude>
   </ItemGroup>

@@ -325,6 +325,7 @@
     <ClInclude Include="Recast\DebugUtils\DebugDraw.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ResourceAnimation.h" />
+    <ClInclude Include="ResourceAudio.h" />
     <ClInclude Include="ResourceMaterial.h" />
     <ClInclude Include="ResourceMesh.h" />
     <ClInclude Include="ResourceModel.h" />
@@ -478,6 +479,7 @@
     <ClCompile Include="Recast\DebugUtils\DebugDraw.cpp" />
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="ResourceAnimation.cpp" />
+    <ClCompile Include="ResourceAudio.cpp" />
     <ClCompile Include="ResourceMaterial.cpp" />
     <ClCompile Include="ResourceMesh.cpp" />
     <ClCompile Include="ResourceModel.cpp" />
