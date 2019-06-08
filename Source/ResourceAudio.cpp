@@ -92,7 +92,7 @@ void ResourceAudio::LoadConfigFromMeta()
 		return;
 	}
 	JSON* json = new JSON(data);
-	JSON_value* value = json->GetValue("Texture");
+	JSON_value* value = json->GetValue("Audio");
 
 	// Make sure the UID from meta is the same
 	unsigned checkUID = value->GetUint("GUID");

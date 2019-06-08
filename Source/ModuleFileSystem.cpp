@@ -698,5 +698,9 @@ FILETYPE ModuleFileSystem::GetFileType(std::string extension) const
 	{
 		return FILETYPE::STATEMACHINE;
 	}
+	if (extension == OGGEXTENSION || extension == MP3EXTENSION || extension == WAVEXTENSION)
+	{
+		return FILETYPE::AUDIO;
+	}
 	return FILETYPE::NONE;
 }

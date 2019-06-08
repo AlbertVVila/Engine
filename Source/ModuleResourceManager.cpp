@@ -779,8 +779,8 @@ Resource* ModuleResourceManager::AddResource(const char* file, const char* direc
 		{
 		case TYPE::TEXTURE:		exportedFile = TEXTURES					+ std::to_string(uid) + TEXTUREEXT;				break;
 		case TYPE::MODEL:		exportedFile = App->fsystem->GetFilename(file)				  + FBXEXTENSION;			break;
-		/*case TYPE::MESH:		exportedFile = MESHES;					+ std::to_string(uid) + MESHEXTENSION;			break;
-		case TYPE::AUDIO:		exportedFile = IMPORTED_AUDIOS			+ std::to_string(uid) + AUDIOEXTENSION;			break;*/
+		/*case TYPE::MESH:		exportedFile = MESHES;					+ std::to_string(uid) + MESHEXTENSION;			break;*/
+		case TYPE::AUDIO:		exportedFile = IMPORTED_AUDIOS			+ std::to_string(uid) + App->fsystem->GetExtension(file);			break;
 		case TYPE::SCENE:		exportedFile = IMPORTED_SCENES			+ std::to_string(uid) + SCENEEXTENSION;			break;
 		case TYPE::MATERIAL:	exportedFile = IMPORTED_MATERIALS		+ std::to_string(uid) + MATERIALEXT;			break;
 		case TYPE::ANIMATION:	exportedFile = IMPORTED_ANIMATIONS		+ std::to_string(uid) + ANIMATIONEXTENSION;		break;
