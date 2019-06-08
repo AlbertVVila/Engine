@@ -26,6 +26,27 @@ bool ResourceAudio::LoadInMemory()
 
 	bool success = false;
 
+	int ret;
+
+	if (!streamed) ret = wavFX.load(exportedFile.c_str());
+	else ret = wavstream.load(exportedFile.c_str());
+
+	//SO_NO_ERROR = 0, // No error
+	//INVALID_PARAMETER = 1, // Some parameter is invalid
+	//FILE_NOT_FOUND = 2,    // File not found
+	//FILE_LOAD_FAILED = 3,  // File found, but could not be loaded
+
+	if (ret != 0) 
+	{
+		LOG("ERROR: Audio Manager code: %i", ret);		
+	}
+	else 
+	{
+		LOG("Audio Manager: FX %s loaded \n", name.c_str());
+
+		success = true;
+	}
+
 	// Increase references
 	if (success) ++loaded;
 	return success;
@@ -46,6 +67,7 @@ void ResourceAudio::SaveMetafile(const char * file) const
 	stat(filepath.c_str(), &statFile);
 	meta->AddUint("GUID", UID);
 	meta->AddUint("timeCreated", statFile.st_ctime);
+	meta->AddUint("streamed", streamed);
 	json->AddValue("Audio", *meta);
 	filepath += METAEXT;
 	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
