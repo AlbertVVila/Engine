@@ -69,6 +69,9 @@ private:
 	ResourceTexture* sc3neIcon;
 	ResourceTexture* animati0nIcon;
 	ResourceTexture* st4tem4chineIcon;
+	ResourceTexture* wavIcon;
+	ResourceTexture* oggIcon;
+	ResourceTexture* mp3Icon;
 };
 
 #endif //__PanelBrowser_h__
