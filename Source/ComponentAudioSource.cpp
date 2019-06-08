@@ -28,6 +28,10 @@
 
 ComponentAudioSource::ComponentAudioSource(GameObject* gameobject) : Component(gameobject, ComponentType::AudioSource)
 {
+	if (audioFiles.size() == 0)
+	{
+		UpdateAudiosList();
+	}
 }
 
 ComponentAudioSource::ComponentAudioSource(const ComponentAudioSource& component) : Component(component)
@@ -45,6 +49,11 @@ ComponentAudioSource::ComponentAudioSource(const ComponentAudioSource& component
 	rolloff3D = component.rolloff3D;
 	pitch = component.pitch;
 
+	if (audioFiles.size() == 0)
+	{
+		UpdateAudiosList();
+	}
+
 }
 
 ComponentAudioSource::~ComponentAudioSource()
@@ -56,7 +65,7 @@ ComponentAudioSource::~ComponentAudioSource()
 	}
 }
 
-ComponentAudioSource * ComponentAudioSource::Clone() const
+ComponentAudioSource* ComponentAudioSource::Clone() const
 {
 	return new ComponentAudioSource(*this);
 }
@@ -177,6 +186,7 @@ void ComponentAudioSource::DrawProperties()
 			fileExplorer->openFileExplorer = true;
 		}*/
 
+		// Audio selector
 		if (ImGui::BeginCombo("Audio", audio != nullptr ? audio->GetName() : None))
 		{
 			bool none_selected = (audio == nullptr);
@@ -195,11 +205,11 @@ void ComponentAudioSource::DrawProperties()
 				bool is_selected = (audio != nullptr && (HashString(audio->GetName()) == HashString(audioFiles[n].c_str())));
 				if (ImGui::Selectable(audioFiles[n].c_str(), is_selected) && !is_selected)
 				{
-					// Delete previous texture
+					// Delete previous audio
 					if (audio != nullptr)
 						App->resManager->DeleteResource(audio->GetUID());
 
-					audio = (ResourceAudio*)App->resManager->GetByName(audioFiles[n].c_str(), TYPE::TEXTURE);
+					audio = (ResourceAudio*)App->resManager->GetByName(audioFiles[n].c_str(), TYPE::AUDIO);
 				}
 				if (is_selected)
 					ImGui::SetItemDefaultFocus();
@@ -227,7 +237,10 @@ void ComponentAudioSource::DrawProperties()
 		
 			ImGui::EndCombo();*/
 		}
-
+		if (ImGui::Button("Refresh List"))
+		{
+			UpdateAudiosList();
+		}
 
 		ImGui::NewLine();
 		/*if (ImGui::Checkbox("Streamed", &streamed)) 
