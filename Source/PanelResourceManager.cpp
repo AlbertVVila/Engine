@@ -576,7 +576,6 @@ void PanelResourceManager::DrawResourcePrefab()
 	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), (exportedFile + ":").c_str());
 	ImGui::Columns(2);
 	ImGui::Text("Name: %s", prefab.GetName());
-	ImGui::Text("Scene instances: %d", prefab.GetNbInstances());
 	ImGui::NextColumn();
 	// TODO: [Resource Manager] Add preview of the prefab
 	ImGui::End();

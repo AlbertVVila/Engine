@@ -600,7 +600,7 @@ void ModuleScene::DragNDrop(GameObject* go)
 			if (droppedGo != root && droppedGo->parent != go && !droppedGo->IsParented(*go) 
 				&& (std::find(selection.begin(), selection.end(), droppedGo) == selection.end() ||
 					std::find(selection.begin(), selection.end(), go) == selection.end())
-				&& (!droppedGo->isPrefab || (!go->isPrefab && !go->ParentPrefab() && !go->ChildPrefab())))
+				&& (!droppedGo->isPrefab || (!go->isPrefab && !go->ParentPrefab())))
 			{
 				TakePhoto();
 				if (std::find(selection.begin(), selection.end(), droppedGo) != selection.end()) //Case dragNdrop in hierarchy
