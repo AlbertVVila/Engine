@@ -33,6 +33,7 @@ private:
 	int skillPoints = 0;
 
 	GameObject* skills = nullptr;
+	GameObject* skillInfo = nullptr;
 	Text* skillPointsLabel = nullptr;
 	Transform2D* hoverTransform = nullptr;
 
