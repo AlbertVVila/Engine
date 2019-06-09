@@ -20,7 +20,6 @@ class Transform2D;
 class SkillTreeController_API SkillTreeController : public Script
 {
 
-	void Awake() override;
 	void Start() override;
 	void Update() override;
 
