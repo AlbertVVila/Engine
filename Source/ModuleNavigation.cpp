@@ -82,15 +82,29 @@ void ModuleNavigation::SaveConfig(JSON * config)
 void ModuleNavigation::sceneLoaded(JSON * config)
 {
 	JSON_value* nav = config->GetValue("navigationScene");
-	if (nav == nullptr) return;
+	if (nav == nullptr)
+	{
+		cleanValuesPOST();
+		cleanValuesPRE();
+		return;
+	}
 	navDataSize = nav->GetInt("navDataSize", 0);
-	if (navDataSize == 0) return;
+	if (navDataSize == 0)
+	{
+		cleanValuesPOST();
+		cleanValuesPRE();
+		return;
+	}
 
+	std::stringstream path;
+	path << "Resources/NavigationMeshes/navMesh" << sceneName << ".bin";
 	char* navData2 = 0;
-	App->fsystem->Load("Assets/navigationMesh.bin", &navData2);
+	App->fsystem->Load(path.str().c_str(), &navData2);
 	if (navData2 == nullptr)
 	{
 		LOG("could not find a stored navigation mesh");
+		cleanValuesPOST();
+		cleanValuesPRE();
 		return;
 	}
 
@@ -778,10 +792,13 @@ void ModuleNavigation::generateNavigability(bool render)
 			return;
 		}
 
-		App->fsystem->Save("Assets/navigationMesh.bin", (const char*)navData, navDataSize);
+		std::stringstream path;
+		path << "Resources/NavigationMeshes/navMesh" << App->scene->name << ".bin";
+
+		App->fsystem->Save(path.str().c_str(), (const char*)navData, navDataSize);
 		dtFree(navData);
 		char* navData2 = 0;
-		App->fsystem->Load("Assets/navigationMesh.bin", &navData2);
+		App->fsystem->Load(path.str().c_str(), &navData2);
 		
 		navMesh = dtAllocNavMesh();
 		if (!navMesh)
