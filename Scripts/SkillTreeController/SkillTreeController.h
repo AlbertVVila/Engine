@@ -2,6 +2,8 @@
 #define  __SkillTreeController_h__
 
 #include "BaseScript.h"
+#include <vector>
+#include "Skill.h"
 
 #ifdef SkillTreeController_EXPORTS
 #define SkillTreeController_API __declspec(dllexport)
@@ -11,21 +13,35 @@
 
 class GameObject;
 class Text;
+class ComponentImage;
+class JSON_value;
 
 class SkillTreeController_API SkillTreeController : public Script
 {
 
+	void Awake() override;
 	void Start() override;
 	void Update() override;
 
 	void AddSkillPoint();
 
+	void Expose(ImGuiContext* context) override;
+	void Serialize(JSON_value* json) const override;
+	void DeSerialize(JSON_value* json) override;
+
 private:
 	int skillPoints = 0;
+	int skillactualPoints = 0;
 
 	GameObject* skills = nullptr;
 	GameObject* tree = nullptr;
 	Text* skillPointsLabel = nullptr;
+	ComponentImage* skill = nullptr;
+	ComponentImage* counterBackground = nullptr;
+	Text* skillCounter = nullptr;
+
+	std::vector<std::string> textureFiles;
+	Skill skillList[13];
 };
 
 #endif __SkillTreeController_h__

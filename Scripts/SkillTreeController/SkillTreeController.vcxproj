@@ -17,7 +17,7 @@
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-	<ProjectConfiguration Include="GameBuild Debug|Win32">
+    <ProjectConfiguration Include="GameBuild Debug|Win32">
       <Configuration>GameBuild Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
@@ -248,6 +248,7 @@
     <ClCompile Include="SkillTreeController.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Skill.h" />
     <ClInclude Include="SkillTreeController.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

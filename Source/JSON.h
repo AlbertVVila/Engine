@@ -15,7 +15,7 @@ public:
 	JSON_value(rapidjson::Document::AllocatorType* allocator, rapidjson::Type type = rapidjson::kObjectType);
 	~JSON_value();
 
-	JSON_value * CreateValue(rapidjson::Type type = rapidjson::kObjectType);
+	ENGINE_API JSON_value * CreateValue(rapidjson::Type type = rapidjson::kObjectType);
 
 	ENGINE_API void AddInt(const char* name, int value);
 	ENGINE_API void AddUint(const char * name, unsigned value);
