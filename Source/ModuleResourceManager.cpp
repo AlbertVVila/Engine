@@ -264,7 +264,7 @@ bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* 
 		{
 			success = App->fsystem->Rename(IMPORTED_AUDIOS, (name + App->fsystem->GetExtension(newFileInAssets)).c_str(), std::to_string(resource->GetUID()).c_str());
 		}
-		exportedFile = IMPORTED_AUDIOS + name + App->fsystem->GetExtension(newFileInAssets);
+		exportedFile = IMPORTED_AUDIOS + std::to_string(resource->GetUID()) + App->fsystem->GetExtension(newFileInAssets);
 		break;
 	case TYPE::SCENE:		
 		success = App->fsystem->Copy(filePath, IMPORTED_SCENES, newFileInAssets);	
