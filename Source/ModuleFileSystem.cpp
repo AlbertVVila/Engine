@@ -71,6 +71,8 @@ ModuleFileSystem::ModuleFileSystem()
 		MakeDirectory(ANIMATIONS);
 	if (!Exists(STATEMACHINES))
 		MakeDirectory(STATEMACHINES);
+	if (!Exists(IMPORTED_PREFABS))
+		MakeDirectory(IMPORTED_PREFABS);
 	if (!Exists(RESOURCE_SCENES))
 		MakeDirectory(RESOURCE_SCENES);
 }
@@ -362,14 +364,13 @@ bool ModuleFileSystem::Copy(const char* source, const char* destination, const c
 	return ret;
 }
 
-
-bool ModuleFileSystem::Move(const char * source, const char* file, const char* newFile) const
+bool ModuleFileSystem::Copy(const char * source, const char* file, const char* dest, const char* newFile) const
 {
 	char * data = nullptr;
 	std::string filepath(source);
 	filepath += file;
 	unsigned size = Load(filepath.c_str(), &data);
-	std::string filedest(source);
+	std::string filedest(dest);
 	filedest += newFile;
 	Save(filedest.c_str(), data, size);
 	RELEASE_ARRAY(data);
@@ -403,7 +404,7 @@ bool ModuleFileSystem::Rename(const char* route, const char* file, const char* n
 	else
 	{
 		std::string extension = GetExtension(file);
-		Move(route, file, (newName + extension).c_str());
+		Copy(route, file, route, (newName + extension).c_str());
 		success = Delete(filepath.c_str());
 	}
 	return success;
@@ -701,6 +702,10 @@ FILETYPE ModuleFileSystem::GetFileType(std::string extension) const
 	if (extension == OGGEXTENSION || extension == MP3EXTENSION || extension == WAVEXTENSION)
 	{
 		return FILETYPE::AUDIO;
+	}
+	if (extension == PREFABEXTENSION)
+	{
+		return FILETYPE::PREFAB;
 	}
 	return FILETYPE::NONE;
 }

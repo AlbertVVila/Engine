@@ -393,8 +393,7 @@
     <ClCompile Include="PanelNavigation.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
-    <ClCompile Include="DetourDebugInterface.cpp">
-    </ClCompile>
+    <ClCompile Include="DetourDebugInterface.cpp" />
     <ClCompile Include="BaseScript.cpp">
       <Filter>Component</Filter>
     </ClCompile>
@@ -412,6 +411,9 @@
       <Filter>Resources</Filter>
     </ClCompile>
     <ClCompile Include="ResourceAudio.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourcePrefab.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -761,9 +763,6 @@
     <ClInclude Include="MemoryModule.h">
       <Filter>ScriptingResources</Filter>
     </ClInclude>
-    <ClInclude Include="engineResource.h">
-      <Filter>ScriptingResources</Filter>
-    </ClInclude>
     <ClInclude Include="Resource.h">
       <Filter>Resources</Filter>
     </ClInclude>
@@ -963,6 +962,9 @@
     <ClInclude Include="ResourceAudio.h">
       <Filter>Resources</Filter>
     </ClInclude>
+    <ClInclude Include="ResourcePrefab.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GeoLib">
@@ -1039,9 +1041,6 @@
     <None Include="..\Game\Shaders\VertexShaders\Fonts.vs">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="..\Game\Scripts\PlayerMovement.dll">
-      <Filter>ScriptingResources</Filter>
-    </None>
     <None Include="NodeEditor\Include\ax\Math2D.inl" />
     <None Include="..\Game\Shaders\FragmentShaders\Particles.fs">
       <Filter>Shaders</Filter>
@@ -1079,10 +1078,5 @@
     <None Include="..\Game\Shaders\VertexShaders\DebugNav.vs">
       <Filter>Shaders</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Engine.rc">
-      <Filter>ScriptingResources</Filter>
-    </ResourceCompile>
   </ItemGroup>
 </Project>

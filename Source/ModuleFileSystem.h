@@ -24,12 +24,14 @@
 #define IMPORTED_STATEMACHINES LIBRARY "StateMachines/"
 #define IMPORTED_SCENES LIBRARY "Scenes/"
 #define IMPORTED_AUDIOS LIBRARY "Audios/"
+#define IMPORTED_PREFABS LIBRARY "Prefabs/"
 
 // Assets
 #define MATERIALS ASSETS "Materials/"
 #define STATEMACHINES ASSETS "StateMachines/"
 #define ANIMATIONS ASSETS "Animations/"
 #define SCENES ASSETS "Scenes/"
+#define PREFABS ASSETS "Prefabs/"
 
 #define TEMPORARY_SCENE "temporaryScene"
 
@@ -44,6 +46,7 @@
 #define SCENEEXTENSION ".sc3ne"
 #define ANIMATIONEXTENSION ".animati0n"
 #define STATEMACHINEEXTENSION ".st4tem4chine"
+#define PREFABEXTENSION ".pr3fab"
 
 #define PNG ".png"
 #define TIF	".tif"
@@ -76,6 +79,7 @@ enum class FILETYPE
 	SKYBOX,
 	STATEMACHINE,
 	AUDIO,
+	PREFAB,
 	NONE,
 
 };
@@ -105,8 +109,9 @@ public:
 	void ListFilesWithExtension(const char* dir, std::set<std::string>& files);											// Saves all files found on dir and subdirs on a set
 	bool CopyFromOutsideFS(const char* source, const char* destination) const;
 	bool Copy(const char* source, const char* destination, const char* file) const;
-	bool Move(const char * source, const char* file, const char* newFile) const;
+	bool Copy(const char * source, const char* file, const char* dest, const char* newFile) const;
 	bool Rename(const char* route, const char* file, const char* newName) const;
+
 	bool ChangeExtension(const char* source, const char* file, const char* newExtension) const;
 
 	int GetModTime(const char* file) const;
