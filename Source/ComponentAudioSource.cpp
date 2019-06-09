@@ -75,8 +75,16 @@ void ComponentAudioSource::Play()
 	if (enabled) 
 	{
 		Stop();
-		if (!audio->streamed) lastHandler = App->audioManager->PlayWAV(audio->wavFX, Sound3D && !OnlyVolume3D);
-		else lastHandler = App->audioManager->PlayWAV(audio->wavstream, Sound3D && !OnlyVolume3D);
+		if (audio != nullptr)
+		{
+			if (!audio->streamed) lastHandler = App->audioManager->PlayWAV(audio->wavFX, Sound3D && !OnlyVolume3D);
+			else lastHandler = App->audioManager->PlayWAV(audio->wavstream, Sound3D && !OnlyVolume3D);
+		}
+		else
+		{
+			LOG("Error: missing audio file in ComponentAudioSource of the GO named: %s", gameobject->name.c_str());
+		}
+
 	}
 }
 
