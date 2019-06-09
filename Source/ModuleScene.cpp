@@ -109,6 +109,7 @@ bool ModuleScene::Start()
 		defaultScene = (ResourceScene*)App->resManager->Get(defaultSceneUID);
 		if (defaultScene != nullptr)
 		{
+			App->navigation->sceneName = defaultScene->GetName();
 			defaultScene->Load();
 		}
 	}
