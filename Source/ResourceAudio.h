@@ -20,6 +20,8 @@ public:
 	void SaveMetafile(const char* file) const override;
 	void LoadConfigFromMeta() override;
 
+	void DrawImportConfiguration() override;
+
 public:
 	bool streamed = false;
 

@@ -4,6 +4,7 @@
 #include "ModuleFileSystem.h"
 
 #include "JSON.h"
+#include "imgui.h"
 
 ResourceAudio::ResourceAudio(unsigned uid) : Resource(uid, TYPE::AUDIO)
 {
@@ -94,6 +95,19 @@ void ResourceAudio::LoadConfigFromMeta()
 	JSON* json = new JSON(data);
 	JSON_value* value = json->GetValue("Audio");
 
+	streamed = value->GetUint("streamed");
+
 	// Make sure the UID from meta is the same
 	unsigned checkUID = value->GetUint("GUID");
+}
+
+void ResourceAudio::DrawImportConfiguration()
+{
+	ImGui::Checkbox("Streamed", &streamed);
+	if (ImGui::IsItemHovered())
+	{
+		ImGui::BeginTooltip();
+		ImGui::Text("Streamed audio files will load into memory gradualy\n- Uncheck if its an FX");
+		ImGui::EndTooltip();
+	}
 }
