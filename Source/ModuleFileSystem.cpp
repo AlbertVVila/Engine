@@ -71,6 +71,8 @@ ModuleFileSystem::ModuleFileSystem()
 		MakeDirectory(STATEMACHINES);
 	if (!Exists(IMPORTED_PREFABS))
 		MakeDirectory(IMPORTED_PREFABS);
+	if (!Exists(RESOURCE_SCENES))
+		MakeDirectory(RESOURCE_SCENES);
 }
 
 
