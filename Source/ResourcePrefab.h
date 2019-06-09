@@ -24,6 +24,7 @@ public:
 
 	void AddInstance(GameObject * go);
 	bool RemoveInstance(GameObject * go);
+	unsigned GetNbInstances() const;
 
 	void Update(GameObject* go);
 	GameObject * RetrievePrefab();

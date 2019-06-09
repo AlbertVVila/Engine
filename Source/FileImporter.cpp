@@ -16,7 +16,7 @@
 #include "Resource.h"
 #include "ResourceModel.h"
 #include "ResourceMesh.h"
-#include "Prefab.h"
+#include "ResourcePrefab.h"
 
 #include "FileImporter.h"
 #include "JSON.h"

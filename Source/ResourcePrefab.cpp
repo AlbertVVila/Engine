@@ -1,4 +1,4 @@
-#include "Prefab.h"
+#include "ResourcePrefab.h"
 #include "GL/glew.h"
 
 #include "Globals.h"
@@ -126,6 +126,11 @@ bool ResourcePrefab::RemoveInstance(GameObject* go)
 		}
 	}
 	return false;
+}
+
+unsigned ResourcePrefab::GetNbInstances() const
+{
+	return instances.size();
 }
 
 void ResourcePrefab::Update(GameObject* go)

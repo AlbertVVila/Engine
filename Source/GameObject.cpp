@@ -39,7 +39,7 @@
 #include "GUICreator.h"
 #include "ResourceMaterial.h"
 #include "ResourceMesh.h"
-#include "Prefab.h"
+#include "ResourcePrefab.h"
 
 #include "HashString.h"
 #include "myQuadTree.h"

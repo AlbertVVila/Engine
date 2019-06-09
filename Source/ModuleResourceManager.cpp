@@ -16,7 +16,7 @@
 #include "ResourceStateMachine.h"
 #include "ResourceAnimation.h"
 #include "ResourceSkybox.h"
-#include "Prefab.h"
+#include "ResourcePrefab.h"
 #include "ResourceScene.h"
 
 #include "FileImporter.h"

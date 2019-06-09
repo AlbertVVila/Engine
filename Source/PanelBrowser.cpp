@@ -18,7 +18,7 @@
 #include "GameObject.h"
 
 #include "ResourceTexture.h"
-#include "Prefab.h"
+#include "ResourcePrefab.h"
 
 // Icons
 #define FOLDER_ICON			IMPORTED_RESOURCES "folderIconBlue.dds"

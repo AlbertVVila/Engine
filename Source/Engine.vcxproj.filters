@@ -484,9 +484,6 @@
       <Filter>Panels</Filter>
     </ClCompile>
     <ClCompile Include="DetourDebugInterface.cpp" />
-    <ClCompile Include="Prefab.cpp">
-      <Filter>Resources</Filter>
-    </ClCompile>
     <ClCompile Include="BaseScript.cpp">
       <Filter>Component</Filter>
     </ClCompile>
@@ -501,6 +498,9 @@
     </ClCompile>
     <ClCompile Include="imgui_color_gradient.cpp" />
     <ClCompile Include="ResourceStateMachine.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourcePrefab.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1096,9 +1096,6 @@
       <Filter>Panels</Filter>
     </ClInclude>
     <ClInclude Include="DetourDebugInterface.h" />
-    <ClInclude Include="Prefab.h">
-      <Filter>Resources</Filter>
-    </ClInclude>
     <ClInclude Include="BaseScript.h">
       <Filter>Component</Filter>
     </ClInclude>
@@ -1119,6 +1116,9 @@
     </ClInclude>
     <ClInclude Include="imgui_color_gradient.h" />
     <ClInclude Include="ResourceStateMachine.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourcePrefab.h">
       <Filter>Resources</Filter>
     </ClInclude>
   </ItemGroup>

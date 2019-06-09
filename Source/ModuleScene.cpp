@@ -25,7 +25,7 @@
 #include "ResourceTexture.h"
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
-#include "Prefab.h"
+#include "ResourcePrefab.h"
 #include "ResourceScene.h"
 
 #include "MaterialEditor.h"
@@ -815,12 +815,15 @@ bool ModuleScene::PrefabWasUpdated(unsigned UID) const
 unsigned ModuleScene::CreatePrefab(GameObject* go)
 {
 	ResourcePrefab* prefab = (ResourcePrefab*)App->resManager->CreateNewResource(TYPE::PREFAB);
+	std::string filepath;
 	if (App->fsystem->Exists(PREFABS))
 	{
+		filepath = PREFABS;
 		prefab->SetFile((PREFABS + go->name + PREFABEXTENSION).c_str());
 	}
 	else
 	{
+		filepath = ASSETS;
 		prefab->SetFile((ASSETS + go->name + PREFABEXTENSION).c_str());
 	}
 	std::string exportedFile(IMPORTED_PREFABS);
@@ -831,7 +834,7 @@ unsigned ModuleScene::CreatePrefab(GameObject* go)
 	prefab->SetName(go->name.c_str());
 	prefab->SetExportedFile(exportedFile.c_str());
 	prefab->Save(go); //We leave the resource loaded for getting it later
-	if (!App->resManager->ImportFile((go->name + PREFABEXTENSION).c_str(), ASSETS, TYPE::PREFAB))
+	if (!App->resManager->ImportFile((go->name + PREFABEXTENSION).c_str(), filepath.c_str(), TYPE::PREFAB))
 	{
 		LOG("Could not import Prefab %s!!", go->name);
 		return 0;
