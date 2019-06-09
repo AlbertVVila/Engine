@@ -37,6 +37,7 @@ private:
 	Transform2D* hoverTransform = nullptr;
 
 	std::vector<GameObject*> skillUI;
+	std::vector<Component*> connUI;
 
 	std::vector<std::string> textureFiles;
 	Skill skillList[13];

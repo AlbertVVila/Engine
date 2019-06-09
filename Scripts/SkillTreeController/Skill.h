@@ -19,7 +19,7 @@ public:
 	int maxLevels = 5;
 	int currentLevel = 0;
 	int nextSkill = -1;
-	int previousSkill = -1;
+	int connection = -1;
 };
 
 #endif
