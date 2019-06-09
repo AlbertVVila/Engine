@@ -15,6 +15,7 @@ class GameObject;
 class Text;
 class ComponentImage;
 class JSON_value;
+class Transform2D;
 
 class SkillTreeController_API SkillTreeController : public Script
 {
@@ -31,14 +32,12 @@ class SkillTreeController_API SkillTreeController : public Script
 
 private:
 	int skillPoints = 0;
-	int skillactualPoints = 0;
 
 	GameObject* skills = nullptr;
-	GameObject* tree = nullptr;
 	Text* skillPointsLabel = nullptr;
-	ComponentImage* skill = nullptr;
-	ComponentImage* counterBackground = nullptr;
-	Text* skillCounter = nullptr;
+	Transform2D* hoverTransform = nullptr;
+
+	std::vector<GameObject*> skillUI;
 
 	std::vector<std::string> textureFiles;
 	Skill skillList[13];
