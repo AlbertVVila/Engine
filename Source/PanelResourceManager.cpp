@@ -8,6 +8,7 @@
 #include "ResourceTexture.h"
 #include "ResourceModel.h"
 #include "ResourceMesh.h"
+#include "ResourceAudio.h"
 #include "ResourceStateMachine.h"
 #include "ResourceMaterial.h"
 #include "ResourceSkybox.h"
@@ -197,7 +198,7 @@ void PanelResourceManager::Draw()
 		case TYPE::TEXTURE:		DrawResourceTexture();	break;
 		case TYPE::MODEL:		DrawResourceModel();	break;
 		case TYPE::MESH:		DrawResourceMesh();		break;
-		/*case TYPE::AUDIO:								break;*/
+		case TYPE::AUDIO:		DrawResourceAudio();	break;
 		case TYPE::SCENE:		DrawResourceScene();	break;
 		case TYPE::ANIMATION:	DrawResourceAnimation();break;
 		case TYPE::MATERIAL:	DrawResourceMaterial(); break;
@@ -424,6 +425,36 @@ void PanelResourceManager::DrawResourceMesh()
 	ImGui::NextColumn();
 	// TODO: [Resource Manager] Add preview of the mesh
 
+	ImGui::End();
+}
+
+void PanelResourceManager::DrawResourceAudio()
+{
+	if (!ImGui::Begin("Audio Manager"))
+	{
+		ImGui::End();
+		return;
+	}
+	ResourceAudio& audio = *(ResourceAudio*)previous;
+	std::string exportedFile(audio.GetExportedFile());
+	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), (exportedFile + ":").c_str());
+	ImGui::Text("Name: %s", audio.GetName());
+	ImGui::Text("Streamed: ");
+	if (audio.streamed)
+	{
+		ImGui::SameLine();
+		ImGui::Text("Yes");
+		ImGui::Text("Audio length: %f", audio.wavstream.getLength());
+		ImGui::Text("Audio loop point: %f", audio.wavstream.getLoopPoint());
+
+	}
+	else
+	{
+		ImGui::SameLine();
+		ImGui::Text("No");
+		ImGui::Text("Audio length: %f", audio.wavFX.getLength());
+		ImGui::Text("Audio loop point: %f", audio.wavFX.getLoopPoint());
+	}
 	ImGui::End();
 }
 
