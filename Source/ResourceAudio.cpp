@@ -58,7 +58,7 @@ void ResourceAudio::DeleteFromMemory()
 	Resource::DeleteFromMemory();
 }
 
-void ResourceAudio::SaveMetafile(const char * file) const
+void ResourceAudio::SaveMetafile(const char* file) const
 {
 	std::string filepath;
 	filepath.append(file);
@@ -101,7 +101,7 @@ void ResourceAudio::LoadConfigFromMeta()
 	unsigned checkUID = value->GetUint("GUID");
 }
 
-void ResourceAudio::DrawImportConfiguration()
+void ResourceAudio::DrawLoadSettings()
 {
 	ImGui::Checkbox("Streamed", &streamed);
 	if (ImGui::IsItemHovered())

@@ -479,7 +479,7 @@ void PanelBrowser::DrawImportConfigurationPopUp()
 
 		if (ImGui::Button("Accept"))
 		{
-			// Add accept logic
+			// File is reimported
 			openImportConfigPopUp = false;
 			App->resManager->ReImportFile(fileSelected, path.c_str(), fileSelected->GetType());
 		}
@@ -504,9 +504,10 @@ void PanelBrowser::DrawLoadSettingsPopUp()
 
 		if (ImGui::Button("Accept"))
 		{
-			// Add accept logic
+			// File is reloaded in memory and the settings saved on the meta file
 			openLoadSettingsPopUp = false;
 			fileSelected->ReloadInMemory();
+			fileSelected->SaveMetafile(fileSelected->GetFile());
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Cancel"))
