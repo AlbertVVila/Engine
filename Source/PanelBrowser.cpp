@@ -215,6 +215,14 @@ void PanelBrowser::Draw()
 	if (openRenameFolderPopUp)
 		DrawRenameFolderPopUp();
 
+	// Delete File Pop-up
+	if (openDeleteFilePopUp)
+		DrawDeleteFilePopUp();
+
+	// Delete Folder Pop-up
+	if (openDeleteFolderPopUp)
+		DrawDeleteFolderPopUp();
+
 	// New Folder Pop-up
 	if (openNewFolderPopUp)
 		DrawNewFolderPopUp();
@@ -422,18 +430,15 @@ void PanelBrowser::DrawFileContextMenu()
 		}
 		if(ImGui::Selectable("Delete"))
 		{
-			fileSelected->Delete();
-			folderContentDirty = true;
+			openDeleteFilePopUp = true;
 		}
 		ImGui::Separator();
 		if (ImGui::Selectable("Import Configuration"))
 		{
-			//Code to change import configuration
 			openImportConfigPopUp = true;
 		}	
 		if (ImGui::Selectable("Load Settings"))
 		{
-			//Code to change load settings
 			openLoadSettingsPopUp = true;
 		}
 		ImGui::EndPopup();
@@ -460,8 +465,7 @@ void PanelBrowser::DrawFolderContextMenu()
 		}
 		if (ImGui::Selectable("Delete"))
 		{
-			App->fsystem->Delete((path + folderSelected).c_str());
-			folderContentDirty = true;
+			openDeleteFolderPopUp = true;
 		}
 		ImGui::EndPopup();
 	}
@@ -494,6 +498,8 @@ void PanelBrowser::DrawImportConfigurationPopUp()
 
 void PanelBrowser::DrawLoadSettingsPopUp()
 {
+	if (fileSelected == nullptr) return;
+
 	ImGui::OpenPopup("Load settings");
 
 	ImGui::SetNextWindowSizeConstraints(ImVec2(250.0f, 130.0f), ImVec2((float)App->window->width, (float)App->window->height));
@@ -520,6 +526,8 @@ void PanelBrowser::DrawLoadSettingsPopUp()
 
 void PanelBrowser::DrawRenameFilePopUp()
 {
+	if (fileSelected == nullptr) return;
+
 	ImGui::OpenPopup("Rename File");
 
 	ImGui::SetNextWindowSizeConstraints(ImVec2(270.0f, 150.0f), ImVec2((float)App->window->width, (float)App->window->height));
@@ -601,6 +609,60 @@ void PanelBrowser::DrawRenameFolderPopUp()
 		{
 			strcpy(newFolderName, "");
 			openRenameFolderPopUp = false;
+		}
+		ImGui::EndPopup();
+	}
+}
+
+void PanelBrowser::DrawDeleteFilePopUp()
+{
+
+	ImGui::OpenPopup("Delete");
+
+	ImGui::SetNextWindowSizeConstraints(ImVec2(250.0f, 130.0f), ImVec2((float)App->window->width, (float)App->window->height));
+	if (ImGui::BeginPopupModal("Delete", &openDeleteFilePopUp))
+	{
+		ImGui::Text("Delete %s?", fileSelected->GetFile());
+
+		ImGui::NewLine();
+
+		if (ImGui::ButtonEx("Yes", ImVec2(0, 0), invalidName ? ImGuiButtonFlags_Disabled : 0))
+		{
+			fileSelected->Delete();
+			folderContentDirty = true;
+			openDeleteFilePopUp = false;
+		}
+		ImGui::SameLine(0, 110);
+		if (ImGui::Button("No"))
+		{
+			openDeleteFilePopUp = false;
+		}
+		ImGui::EndPopup();
+	}
+}
+
+void PanelBrowser::DrawDeleteFolderPopUp()
+{
+
+	ImGui::OpenPopup("Delete");
+
+	ImGui::SetNextWindowSizeConstraints(ImVec2(250.0f, 130.0f), ImVec2((float)App->window->width, (float)App->window->height));
+	if (ImGui::BeginPopupModal("Delete", &openDeleteFolderPopUp))
+	{
+		ImGui::Text("Delete %s?", (path + folderSelected).c_str());
+
+		ImGui::NewLine();
+
+		if (ImGui::ButtonEx("Yes", ImVec2(0, 0), invalidName ? ImGuiButtonFlags_Disabled : 0))
+		{
+			App->fsystem->Delete((path + folderSelected).c_str());
+			folderContentDirty = true;
+			openDeleteFolderPopUp = false;
+		}
+		ImGui::SameLine(0, 110);
+		if (ImGui::Button("No"))
+		{
+			openDeleteFolderPopUp = false;
 		}
 		ImGui::EndPopup();
 	}

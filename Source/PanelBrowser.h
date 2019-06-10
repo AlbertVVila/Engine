@@ -39,6 +39,8 @@ private:
 	void DrawLoadSettingsPopUp();
 	void DrawRenameFilePopUp();
 	void DrawRenameFolderPopUp();
+	void DrawDeleteFilePopUp();
+	void DrawDeleteFolderPopUp();
 	void DrawNewFolderPopUp();
 
 public:
@@ -54,6 +56,8 @@ private:
 	bool openLoadSettingsPopUp = false;
 	bool openRenameFilePopUp = false;
 	bool openRenameFolderPopUp = false;
+	bool openDeleteFilePopUp = false;
+	bool openDeleteFolderPopUp = false;
 	bool openNewFolderPopUp = false;
 
 	Resource* fileSelected = nullptr;
