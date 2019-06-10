@@ -88,15 +88,20 @@ void ModuleNavigation::sceneLoaded(JSON * config)
 		cleanValuesPRE();
 		return;
 	}
-	navDataSize = nav->GetInt("navDataSize", 0);
+	//load the nav data size from the scene_datasize file
+	std::stringstream path;
+	path << "Resources/NavigationMeshes/navMesh" << sceneName << "_DataSize" << ".bin";
+	char* navSizeTmp;
+	App->fsystem->Load(path.str().c_str(), &navSizeTmp);
+	navDataSize = (int)navSizeTmp;
 	if (navDataSize == 0)
 	{
 		cleanValuesPOST();
 		cleanValuesPRE();
 		return;
 	}
-
-	std::stringstream path;
+	path.str(std::string());//more efficient way to clear stringstream values
+	//now we load mesh and generate its last part
 	path << "Resources/NavigationMeshes/navMesh" << sceneName << ".bin";
 	char* navData2 = 0;
 	App->fsystem->Load(path.str().c_str(), &navData2);
@@ -796,6 +801,8 @@ void ModuleNavigation::generateNavigability(bool render)
 		path << "Resources/NavigationMeshes/navMesh" << App->scene->name << ".bin";
 
 		App->fsystem->Save(path.str().c_str(), (const char*)navData, navDataSize);
+		path << "Resources/NavigationMeshes/navMesh" << App->scene->name << "_DataSize" << ".bin";
+		App->fsystem->Save(path.str().c_str(), std::to_string(navDataSize).c_str(), sizeof(int));
 		dtFree(navData);
 		char* navData2 = 0;
 		App->fsystem->Load(path.str().c_str(), &navData2);
