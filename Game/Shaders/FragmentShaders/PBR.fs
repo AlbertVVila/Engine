@@ -22,6 +22,9 @@ struct Material
     sampler2D emissive_texture;
     vec3      emissive_color;
 
+	sampler2D dissolve_texture;
+	vec3 dissolve_color;
+
     float roughness;
 	float bloomIntensity;
 	vec3 specular;
@@ -88,6 +91,8 @@ uniform int hasNormalMap;
 uniform sampler2D shadowTex;
 uniform vec3 highlightColorUniform;
 uniform float useHighlight;
+uniform float borderAmount;
+uniform float sliceAmount;
 
 vec4 textureGammaCorrected(sampler2D tex)
 {
@@ -265,5 +270,15 @@ void main()
         brightColor = vec4(Fragcolor.rgb, albedo.a);
     else
         brightColor = vec4(0.0, 0.0, 0.0, 1.0);
-
+#ifdef DISSOLVE
+	float phi = texture2D(material.dissolve_texture, uv0).r - sliceAmount;
+	if (phi < 0 && phi > -borderAmount) 
+	{
+		Fragcolor = vec4(material.dissolve_color, Fragcolor.a);
+	}
+	else if (phi < 0)
+	{
+		discard;
+	}
+#endif
 }

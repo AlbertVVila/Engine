@@ -5,7 +5,7 @@
 #include <string>
 #include <map>
 #define DEFAULTPROGRAM "Default"
-#define PBR_VARIATIONS 4
+#define PBR_VARIATIONS 5
 #define SHADOW_VARIATIONS 2
 #define POSTPRO_VARIATIONS 4
 #define SKYBOX_VARIATIONS 2
@@ -28,7 +28,8 @@ public:
 	{
 		SKINNED					= 1 << 0,
 		SHADOWS_ENABLED			= 1 << 1,
-		EDITOR_RENDER			= 1 << 2
+		EDITOR_RENDER			= 1 << 2,
+		DISSOLVE				= 1 << 3
 	};
 
 	enum class Shadows_Variations
@@ -51,7 +52,8 @@ public:
 	const char* PBRDefines[PBR_VARIATIONS] = {
 		"#define SKINNED\n",		//Skinned
 		"#define SHADOWS_ENABLED\n",
-		"#define IS_EDITOR\n"
+		"#define IS_EDITOR\n",
+		"#define DISSOLVE\n"
 	};
 
 	const char* ShadowDefines[SHADOW_VARIATIONS] = {
