@@ -796,15 +796,19 @@ void ModuleNavigation::generateNavigability(bool render)
 			cleanValuesPOST();
 			return;
 		}
-
+		//save data
 		std::stringstream path;
 		path << "Resources/NavigationMeshes/navMesh" << App->scene->name << ".bin";
-
 		App->fsystem->Save(path.str().c_str(), (const char*)navData, navDataSize);
+		//save size of the data
+		path.str(std::string());//more efficient way to clear stringstream values
 		path << "Resources/NavigationMeshes/navMesh" << App->scene->name << "_DataSize" << ".bin";
 		App->fsystem->Save(path.str().c_str(), std::to_string(navDataSize).c_str(), sizeof(int));
 		dtFree(navData);
+		//load data
 		char* navData2 = 0;
+		path.str(std::string());//clean again to load
+		path << "Resources/NavigationMeshes/navMesh" << App->scene->name << ".bin";
 		App->fsystem->Load(path.str().c_str(), &navData2);
 		
 		navMesh = dtAllocNavMesh();
