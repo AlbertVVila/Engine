@@ -36,6 +36,7 @@ private:
 	void DrawFileContextMenu();
 	void DrawFolderContextMenu();
 	void DrawImportConfigurationPopUp();
+	void DrawLoadSettingsPopUp();
 	void DrawRenameFilePopUp();
 	void DrawRenameFolderPopUp();
 	void DrawNewFolderPopUp();
@@ -50,6 +51,7 @@ private:
 	std::vector<std::string> dirs;			// List of the folders in current path
 
 	bool openImportConfigPopUp = false;
+	bool openLoadSettingsPopUp = false;
 	bool openRenameFilePopUp = false;
 	bool openRenameFolderPopUp = false;
 	bool openNewFolderPopUp = false;

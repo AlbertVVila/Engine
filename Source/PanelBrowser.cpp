@@ -203,6 +203,10 @@ void PanelBrowser::Draw()
 	if (openImportConfigPopUp)
 		DrawImportConfigurationPopUp();
 
+	// Load Settings Pop-up
+	if (openLoadSettingsPopUp)
+		DrawLoadSettingsPopUp();
+
 	// Rename File Pop-up
 	if (openRenameFilePopUp)
 		DrawRenameFilePopUp();
@@ -421,11 +425,17 @@ void PanelBrowser::DrawFileContextMenu()
 			fileSelected->Delete();
 			folderContentDirty = true;
 		}
+		ImGui::Separator();
 		if (ImGui::Selectable("Import Configuration"))
 		{
-			//Code to change import settings
+			//Code to change import configuration
 			openImportConfigPopUp = true;
 		}	
+		if (ImGui::Selectable("Load Settings"))
+		{
+			//Code to change load settings
+			openLoadSettingsPopUp = true;
+		}
 		ImGui::EndPopup();
 	}
 }
@@ -477,6 +487,31 @@ void PanelBrowser::DrawImportConfigurationPopUp()
 		if (ImGui::Button("Cancel"))
 		{
 			openImportConfigPopUp = false;
+		}
+		ImGui::EndPopup();
+	}
+}
+
+void PanelBrowser::DrawLoadSettingsPopUp()
+{
+	ImGui::OpenPopup("Load settings");
+
+	ImGui::SetNextWindowSizeConstraints(ImVec2(250.0f, 130.0f), ImVec2((float)App->window->width, (float)App->window->height));
+	if (ImGui::BeginPopupModal("Load settings", &openLoadSettingsPopUp))
+	{
+		ImGui::Text("%s", fileSelected->GetFile());
+		fileSelected->DrawLoadSettings();
+
+		if (ImGui::Button("Accept"))
+		{
+			// Add accept logic
+			openLoadSettingsPopUp = false;
+			fileSelected->ReloadInMemory();
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel"))
+		{
+			openLoadSettingsPopUp = false;
 		}
 		ImGui::EndPopup();
 	}
