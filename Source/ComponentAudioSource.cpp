@@ -28,7 +28,7 @@
 
 ComponentAudioSource::ComponentAudioSource(GameObject* gameobject) : Component(gameobject, ComponentType::AudioSource)
 {
-	if (audioFiles.size() == 0)
+	if (audioFiles.empty())
 	{
 		UpdateAudiosList();
 	}
@@ -37,7 +37,9 @@ ComponentAudioSource::ComponentAudioSource(GameObject* gameobject) : Component(g
 ComponentAudioSource::ComponentAudioSource(const ComponentAudioSource& component) : Component(component)
 {
 	if (component.audio != nullptr)
+	{
 		audio = (ResourceAudio*)App->resManager->Get(component.audio->GetUID());
+	}
 
 	playOnAwake = component.playOnAwake;
 	volume = component.volume;
@@ -49,7 +51,7 @@ ComponentAudioSource::ComponentAudioSource(const ComponentAudioSource& component
 	rolloff3D = component.rolloff3D;
 	pitch = component.pitch;
 
-	if (audioFiles.size() == 0)
+	if (audioFiles.empty())
 	{
 		UpdateAudiosList();
 	}
@@ -77,8 +79,10 @@ void ComponentAudioSource::Play()
 		Stop();
 		if (audio != nullptr)
 		{
-			if (!audio->streamed) lastHandler = App->audioManager->PlayWAV(audio->wavFX, Sound3D && !OnlyVolume3D);
-			else lastHandler = App->audioManager->PlayWAV(audio->wavstream, Sound3D && !OnlyVolume3D);
+			if (!audio->streamed) 
+				lastHandler = App->audioManager->PlayWAV(audio->wavFX, Sound3D && !OnlyVolume3D);
+			else 
+				lastHandler = App->audioManager->PlayWAV(audio->wavstream, Sound3D && !OnlyVolume3D);
 		}
 		else
 		{
@@ -138,7 +142,7 @@ void ComponentAudioSource::Update()
 {
 	if (App->time->gameState == GameState::RUN) 
 	{
-		if (App->audioManager->audioListeners.size() > 0) 
+		if (!App->audioManager->audioListeners.empty()) 
 		{
 			// Awake function
 			if (!awaken) Awake();
