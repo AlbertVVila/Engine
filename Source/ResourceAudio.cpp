@@ -72,6 +72,7 @@ void ResourceAudio::SaveMetafile(const char * file) const
 	json->AddValue("Audio", *meta);
 	filepath += METAEXT;
 	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
+	RELEASE(json);
 }
 
 void ResourceAudio::LoadConfigFromMeta()
@@ -99,6 +100,8 @@ void ResourceAudio::LoadConfigFromMeta()
 
 	// Make sure the UID from meta is the same
 	unsigned checkUID = value->GetUint("GUID");
+
+	RELEASE(json);
 }
 
 void ResourceAudio::DrawImportConfiguration()
