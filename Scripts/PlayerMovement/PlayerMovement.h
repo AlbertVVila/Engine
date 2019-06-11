@@ -98,6 +98,8 @@ public:
 	float uppercutDuration = 1.f;
 	math::float3 hpHitBoxSize = math::float3::zero;
 
+	bool canInteract = true;
+
 private:
 	std::vector<PlayerState*> playerStates;	
 	GameObject* dustParticles = nullptr;

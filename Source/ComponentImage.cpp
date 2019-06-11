@@ -132,7 +132,7 @@ void ComponentImage::UpdateTexturesList()
 void ComponentImage::Update()
 {
 	/*if (movable)
-	{
+	{*/
 		math::float2 mouse = reinterpret_cast<const float2&>(App->input->GetMousePosition());
 		float screenX = mouse.x - App->renderer->viewGame->winPos.x - (App->ui->currentWidth * .5f);
 		float screenY = mouse.y - App->renderer->viewGame->winPos.y - (App->ui->currentHeight * .5f);
@@ -150,6 +150,7 @@ void ComponentImage::Update()
 		else
 			isHovered = false;
 
+		/*
 		if (isHovered && App->input->GetMouseButtonDown(1) == KEY_DOWN)
 			isPressed = true;
 
