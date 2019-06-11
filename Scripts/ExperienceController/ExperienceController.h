@@ -12,6 +12,7 @@
 class Text;
 class ComponentImage;
 class SkillTreeController;
+class GameObject;
 
 class ExperienceController_API ExperienceController : public Script
 {
@@ -23,9 +24,11 @@ class ExperienceController_API ExperienceController : public Script
 private:
 	Text* xpText = nullptr;
 	Text* levelText = nullptr;
+	Text* levelReached = nullptr;
 	ComponentImage* xpProgressHUD = nullptr;
 	ComponentImage* xpProgressInventory = nullptr;
 	SkillTreeController* skillTreeScript = nullptr;
+	GameObject* levelUPGO = nullptr;
 
 	int currentXP = 0;
 	int previousXP = 0;
@@ -36,6 +39,10 @@ private:
 	int totalXPAcumulated = 0;
 	bool updateXP = false;
 	bool levelUP = false;
+
+	//Timers
+	float timeShowing = 3.0f;
+	float currentTime = 0.0f;
 };
 
 #endif __ExperienceController_h__
