@@ -19,6 +19,7 @@ class ExperienceController_API ExperienceController : public Script
 	void Start() override;
 	void Update() override;
 
+public:
 	void AddXP(int xp);
 
 private:
