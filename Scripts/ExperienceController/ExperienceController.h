@@ -13,11 +13,16 @@ class Text;
 class ComponentImage;
 class SkillTreeController;
 class GameObject;
+class JSON_value;
 
 class ExperienceController_API ExperienceController : public Script
 {
 	void Start() override;
 	void Update() override;
+
+	void Expose(ImGuiContext* context) override;
+	void Serialize(JSON_value* json) const override;
+	void DeSerialize(JSON_value* json) override;
 
 public:
 	void AddXP(int xp);
@@ -36,7 +41,7 @@ private:
 	int currentLevel = 1;
 	int maxXPLevel = 100;
 	int maxLevel = 10;
-	int levelsExp[10] = {100, 200, 300, 400, 500, 600, 700, 800, 900, 1000};
+	int levelsExp[23] = {100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000, 2100, 2200, 2300 };
 	int totalXPAcumulated = 0;
 	bool updateXP = false;
 	bool levelUP = false;
