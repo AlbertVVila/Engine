@@ -3,6 +3,9 @@
 #include "ModuleFileSystem.h"
 
 #define PREFSFILE PERSISTENCE "player.prefs"
+std::map<const char*, int> PlayerPrefs::integers;
+std::map<const char*, float> PlayerPrefs::floats;
+std::map<const char*, const char*> PlayerPrefs::strings;
 
 PlayerPrefs::PlayerPrefs()
 {
@@ -10,6 +13,10 @@ PlayerPrefs::PlayerPrefs()
 
 
 PlayerPrefs::~PlayerPrefs()
+{
+}
+
+void PlayerPrefs::Clear()
 {
 	CleanMap(integers);
 	CleanMap(floats);
@@ -34,41 +41,46 @@ void PlayerPrefs::Load()
 {
 	char* data = nullptr;
 	unsigned size = App->fsystem->Load(PREFSFILE, &data);
-	char* cursor = data;
+	if (size > 0)
+	{
+		char* cursor = data;
+		RetrieveMap(integers, &cursor);
+		RetrieveMap(floats, &cursor);
+		RetrieveMap(strings, &cursor);
+	}
 
-	RetrieveMap(integers, &cursor);
-	RetrieveMap(floats, &cursor);
-	RetrieveMap(strings, &cursor);
+	integers.insert(std::make_pair("test", 12));
+
 	RELEASE_ARRAY(data);
 }
 
 
-int PlayerPrefs::GetInt(const char * key, int defaultValue)
+int PlayerPrefs::GetInt(const char* key, int defaultValue)
 {
 	return Get(integers, key, defaultValue);
 }
 
-float PlayerPrefs::GetFloat(const char * key, float defaultValue)
+float PlayerPrefs::GetFloat(const char* key, float defaultValue)
 {
 	return Get(floats, key, defaultValue);
 }
 
-const char * PlayerPrefs::GetString(const char * key, const char * defaultValue)
+const char * PlayerPrefs::GetString(const char* key, const char* defaultValue)
 {
 	return Get(strings, key, defaultValue);
 }
 
-void PlayerPrefs::SetInt(const char * key, int value)
+void PlayerPrefs::SetInt(const char* key, int value)
 {
 	Set(integers, key, value);
 }
 
-void PlayerPrefs::SetFloat(const char * key, float value)
+void PlayerPrefs::SetFloat(const char* key, float value)
 {
 	Set(floats, key, value);
 }
 
-void PlayerPrefs::SetString(const char * key, const char * value)
+void PlayerPrefs::SetString(const char* key, const char* value)
 {
 	assert(value != nullptr);
 	char* cpy = new char[strlen(value) + 1];
@@ -84,7 +96,7 @@ bool PlayerPrefs::HasKey(const char* key)
 
 void PlayerPrefs::DeleteKey(const char* key)
 {
-
+	
 }
 
 void PlayerPrefs::DeleteAll()

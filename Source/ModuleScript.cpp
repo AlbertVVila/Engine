@@ -24,6 +24,8 @@ ModuleScript::ModuleScript()
 ModuleScript::~ModuleScript()
 {
 	PlayerPrefs::Save();
+	PlayerPrefs::Clear();
+
 	for (const auto& dll : loadedDLLs)
 	{
 		if (!FreeLibrary(dll.second.first))

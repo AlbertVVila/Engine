@@ -2,12 +2,15 @@
 #define __PLAYERPREFS_H__
 
 #include <map>
+#include <assert.h>
 
 class PlayerPrefs
 {
 public:
 	PlayerPrefs();
 	~PlayerPrefs();
+
+	static void Clear();
 
 	static void Save();
 	static void Load();
@@ -43,6 +46,7 @@ private:
 	
 	template <class T>
 	static bool Find(const std::map<const char*, T>& myMap, const char* key);
+
 private:
 	static std::map<const char*, int> integers;
 	static std::map<const char*, float> floats;
@@ -84,6 +88,7 @@ inline T PlayerPrefs::Get(const std::map<const char*, T>& myMap, const char * ke
 template<class T>
 inline void PlayerPrefs::Set(std::map<const char*, T>& myMap, const char * key, T value)
 {
+	DeleteKey(key);
 	assert(key != nullptr);
 	char* cpyKey = new char[strlen(key) + 1];
 	strcpy(cpyKey, key);
