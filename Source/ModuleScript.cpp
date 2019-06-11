@@ -10,7 +10,7 @@
 #include "BaseScript.h"
 //#include "engineResource.h"
 #include "MemoryModule.h"
-
+#include "PlayerPrefs.h"
 #include <assert.h>
 #include <windows.h>
 #include <iostream>
@@ -23,11 +23,7 @@ ModuleScript::ModuleScript()
 
 ModuleScript::~ModuleScript()
 {
-	//for (auto& script : componentsScript)
-	//{
-	//	RELEASE(script);
-	//}
-
+	PlayerPrefs::Save();
 	for (const auto& dll : loadedDLLs)
 	{
 		if (!FreeLibrary(dll.second.first))
@@ -39,6 +35,7 @@ ModuleScript::~ModuleScript()
 
 bool ModuleScript::Init(JSON* config)
 {
+	PlayerPrefs::Load();
 	SetDllDirectory(SCRIPTS);
 	CheckScripts();
 	//LoadFromMemory(IDR_DLL1);

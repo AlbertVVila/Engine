@@ -264,6 +264,7 @@
     <ClInclude Include="PanelState.h" />
     <ClInclude Include="PanelTime.h" />
     <ClInclude Include="par_shapes.h" />
+    <ClInclude Include="PlayerPrefs.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Recast\DebugUtils\DebugDraw.h" />
     <ClInclude Include="Resource.h" />
@@ -387,6 +388,7 @@
     <ClCompile Include="PanelNavigation.cpp" />
     <ClCompile Include="PanelResourceManager.cpp" />
     <ClCompile Include="PanelTime.cpp" />
+    <ClCompile Include="PlayerPrefs.cpp" />
     <ClCompile Include="Recast\DebugUtils\DebugDraw.cpp" />
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="ResourceAnimation.cpp" />

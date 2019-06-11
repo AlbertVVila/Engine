@@ -53,6 +53,12 @@ ModuleFileSystem::ModuleFileSystem()
 	}
 	PHYSFS_mount(LIBRARY, nullptr, 1);
 
+	if (!Exists(PERSISTENCE))
+	{
+		MakeDirectory(PERSISTENCE);
+	}
+	PHYSFS_mount(PERSISTENCE, nullptr, 1);
+
 	if (!Exists(IMPORTED_MATERIALS))
 		MakeDirectory(IMPORTED_MATERIALS);
 	if (!Exists(IMPORTED_ANIMATIONS))
