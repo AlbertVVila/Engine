@@ -37,6 +37,7 @@ public:
 
 private:
 	void CheckStates(EnemyState* previous, EnemyState* current);
+	void DrawDebug() const;
 
 public:
 	EnemyState* currentState = nullptr;
@@ -49,6 +50,8 @@ public:
 	EnemyStateAttack* attack = nullptr;
 	EnemyStateCooldown* cooldown = nullptr;
 	EnemyStateDeath* death = nullptr;
+
+	bool drawDebug = true;				// If true will draw all debug for enemy behaviour
 
 	// Wait variables
 	float activationDistance = 100.0f;	// Distance to player needed to start chasing the player (only X,Z axis is taken into account)
