@@ -26,13 +26,15 @@ class ItemPicker_API ItemPicker : public Script
 
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
-private:
+	void SetItem(ItemType type, std::string name, std::string sprite);
+
 	std::string name;
 	std::string description;
 	std::string sprite;
 	ItemType type = ItemType::NONE;
-
 	Item item;
+
+private:
 
 	InventoryScript* inventoryScript = nullptr;
 	math::AABB* playerBbox = nullptr;
