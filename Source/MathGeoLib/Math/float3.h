@@ -44,7 +44,7 @@
 MATH_BEGIN_NAMESPACE
 
 /// A vector of form (x,y,z).
-class ENGINE_API float3
+class MATH_API float3
 {
 public:
 	enum
@@ -703,7 +703,7 @@ public:
 std::ostream &operator <<(std::ostream &out, const float3 &rhs);
 #endif
 
-ENGINE_API float3 operator *(float scalar, const float3 &rhs);
+MATH_API float3 operator *(float scalar, const float3 &rhs);
 
 #ifdef MATH_ENABLE_UNCOMMON_OPERATIONS
 inline float3 operator /(float scalar, const float3 &rhs) { return float3::FromScalar(scalar) / rhs; }
