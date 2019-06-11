@@ -53,13 +53,10 @@ class ModuleResourceManager :
 	Resource* GetWithoutLoad(const char* file) const;									// Returns the resource using exportedFileName and doesn't add one to the references count neither loads it to memory
 	Resource* GetWithoutLoad(const char* file, TYPE type) const;						// Returns the resource using exportedFileName and type, also doesn't add one to the references count neither loads it to memory
 	Resource* CreateNewResource(TYPE type, unsigned forceUid = 0);
-	ENGINE_API bool DeleteResource(unsigned uid);													// If references < 1 delete it from memory
+	ENGINE_API bool DeleteResource(unsigned uid);										// If references < 1 delete it from memory
 
-	std::vector<Resource*> GetResourcesList();
-	std::vector<ResourceTexture*> GetTexturesList();
-	std::vector<ResourceMaterial*> GetMaterialsList();
-	std::vector<ResourceAnimation*> GetAnimationsList();
-	std::vector<ResourceStateMachine*> GetSMList();
+	std::vector<Resource*> GetResourcesList();											// Get list with pointers to all resources
+	std::vector<Resource*> GetResourcesList(TYPE type);									// Get list with pointers to all resources of type given
 
 	ENGINE_API std::vector<std::string> GetResourceNamesList(TYPE resourceType, bool ordered);		// Returns a vector with the exportedFileName of every Resource of the type given.	
 

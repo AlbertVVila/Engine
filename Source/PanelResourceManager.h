@@ -9,6 +9,7 @@ class ResourceTexture;
 struct ImVec2;
 
 enum class SORTING { NONE, UID, NAME, FILE, EXPORTED, TYPE, REFERENCES};
+enum class RESOURCE_FILTER { TEXTURE, MODEL, MESH, AUDIO, SCENE, ANIMATION, MATERIAL, SKYBOX, STATEMACHINE, PREFAB, UNKNOWN, NONE};
 
 class PanelResourceManager : 
 	public Panel
@@ -21,7 +22,10 @@ public:
 
 private:
 	void UpdateResourcesList();
+	void UpdateResourcesList(RESOURCE_FILTER filter);
+
 	void OpenResourceEditor();
+
 	void DrawResourceTexture();
 	void DrawResourceModel();
 	void DrawResourceMesh();
@@ -32,6 +36,9 @@ private:
 	void DrawResourceSkybox();
 	void DrawResourceSM();
 	void DrawResourcePrefab();
+
+	void DrawFilterByResourceMenu();
+
 	void CleanUp();
 
 private:
@@ -45,8 +52,11 @@ private:
 	bool openResourceWindow = false;
 
 	SORTING sortList = SORTING::REFERENCES;
+	RESOURCE_FILTER filterByResource = RESOURCE_FILTER::NONE;
 	bool descending = false;
 	std::vector<Resource*> resourcesList;
+
+	bool autoRefresh = false;
 };
 
 #endif __PanelResourceManager_h__

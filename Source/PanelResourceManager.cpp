@@ -91,9 +91,21 @@ void PanelResourceManager::Draw()
 	{
 		if (ImGui::BeginMenu("Resources"))
 		{
+			if(ImGui::MenuItem("Auto-refresh List", nullptr, autoRefresh))
+			{
+				autoRefresh = !autoRefresh;
+			}
 			if (ImGui::MenuItem("Update Resources List"))
 			{
-				UpdateResourcesList();
+				UpdateResourcesList(filterByResource);
+			}
+			if (ImGui::BeginMenu("Filter by"))
+			{
+				if (ImGui::BeginMenu("Resource Type"))
+				{
+					DrawFilterByResourceMenu();
+				}
+				ImGui::EndMenu();
 			}
 			ImGui::EndMenu();
 		}
@@ -113,8 +125,8 @@ void PanelResourceManager::Draw()
 		ImGui::EndMenuBar();
 	}
 
-	if(auxResource == nullptr)
-		UpdateResourcesList();
+	if(autoRefresh || resourcesList.empty())
+		UpdateResourcesList(filterByResource);
 
 	ImGui::Columns(7);
 	// Table references: UID | File | Exported File | References | Type |
@@ -221,6 +233,49 @@ void PanelResourceManager::UpdateResourcesList()
 		break;
 	case SORTING::UID:
 		if(!descending) std::sort(resourcesList.begin(), resourcesList.end(), sortByUIDAscending);
+		else 			std::sort(resourcesList.begin(), resourcesList.end(), sortByUIDDescending);
+		break;
+	case SORTING::NAME:
+		if (!descending) std::sort(resourcesList.begin(), resourcesList.end(), sortByNameAscending);
+		else			 std::sort(resourcesList.begin(), resourcesList.end(), sortByNameDescending);
+		break;
+	case SORTING::FILE:
+		if (!descending) std::sort(resourcesList.begin(), resourcesList.end(), sortByFileAscending);
+		else			 std::sort(resourcesList.begin(), resourcesList.end(), sortByFileDescending);
+		break;
+	case SORTING::EXPORTED:
+		if (!descending) std::sort(resourcesList.begin(), resourcesList.end(), sortByExportedFileAscending);
+		else			 std::sort(resourcesList.begin(), resourcesList.end(), sortByExportedFileDescending);
+		break;
+	case SORTING::REFERENCES:
+		if (!descending) std::sort(resourcesList.begin(), resourcesList.end(), sortByReferenceAscending);
+		else			 std::sort(resourcesList.begin(), resourcesList.end(), sortByReferenceDescending);
+		break;
+	case SORTING::TYPE:
+		if (!descending) std::sort(resourcesList.begin(), resourcesList.end(), sortByTypeAscending);
+		else			 std::sort(resourcesList.begin(), resourcesList.end(), sortByTypeDescending);
+		break;
+	}
+}
+
+void PanelResourceManager::UpdateResourcesList(RESOURCE_FILTER filter)
+{
+	if (filterByResource != RESOURCE_FILTER::NONE)
+	{
+		resourcesList = App->resManager->GetResourcesList((TYPE)filterByResource);
+	}
+	else
+	{
+		resourcesList = App->resManager->GetResourcesList();
+	}
+
+	switch (sortList)
+	{
+	default:
+	case SORTING::NONE:
+		break;
+	case SORTING::UID:
+		if (!descending) std::sort(resourcesList.begin(), resourcesList.end(), sortByUIDAscending);
 		else 			std::sort(resourcesList.begin(), resourcesList.end(), sortByUIDDescending);
 		break;
 	case SORTING::NAME:
@@ -610,6 +665,66 @@ void PanelResourceManager::DrawResourcePrefab()
 	ImGui::NextColumn();
 	// TODO: [Resource Manager] Add preview of the prefab
 	ImGui::End();
+}
+
+void PanelResourceManager::DrawFilterByResourceMenu()
+{
+	if (ImGui::MenuItem("Texture", nullptr, filterByResource == RESOURCE_FILTER::TEXTURE))
+	{
+		filterByResource = (filterByResource != RESOURCE_FILTER::TEXTURE) ? RESOURCE_FILTER::TEXTURE : RESOURCE_FILTER::NONE;
+		UpdateResourcesList(filterByResource);
+	}
+	if (ImGui::MenuItem("Model", nullptr, filterByResource == RESOURCE_FILTER::MODEL))
+	{
+		filterByResource = (filterByResource != RESOURCE_FILTER::MODEL) ? RESOURCE_FILTER::MODEL : RESOURCE_FILTER::NONE;
+		UpdateResourcesList(filterByResource);
+	}
+	if (ImGui::MenuItem("Mesh", nullptr, filterByResource == RESOURCE_FILTER::MESH))
+	{
+		filterByResource = (filterByResource != RESOURCE_FILTER::MESH) ? RESOURCE_FILTER::MESH : RESOURCE_FILTER::NONE;
+		UpdateResourcesList(filterByResource);
+	}
+	if (ImGui::MenuItem("Audio", nullptr, filterByResource == RESOURCE_FILTER::AUDIO))
+	{
+		filterByResource = (filterByResource != RESOURCE_FILTER::AUDIO) ? RESOURCE_FILTER::AUDIO : RESOURCE_FILTER::NONE;
+		UpdateResourcesList(filterByResource);
+	}
+	if (ImGui::MenuItem("Scene", nullptr, filterByResource == RESOURCE_FILTER::SCENE))
+	{
+		filterByResource = (filterByResource != RESOURCE_FILTER::SCENE) ? RESOURCE_FILTER::SCENE : RESOURCE_FILTER::NONE;
+		UpdateResourcesList(filterByResource);
+	}
+	if (ImGui::MenuItem("Animation", nullptr, filterByResource == RESOURCE_FILTER::ANIMATION))
+	{
+		filterByResource = (filterByResource != RESOURCE_FILTER::ANIMATION) ? RESOURCE_FILTER::ANIMATION : RESOURCE_FILTER::NONE;
+		UpdateResourcesList(filterByResource);
+	}
+	if (ImGui::MenuItem("Material", nullptr, filterByResource == RESOURCE_FILTER::MATERIAL))
+	{
+		filterByResource = (filterByResource != RESOURCE_FILTER::MATERIAL) ? RESOURCE_FILTER::MATERIAL : RESOURCE_FILTER::NONE;
+		UpdateResourcesList(filterByResource);
+	}
+	if (ImGui::MenuItem("Skybox", nullptr, filterByResource == RESOURCE_FILTER::SKYBOX))
+	{
+		filterByResource = (filterByResource != RESOURCE_FILTER::SKYBOX) ? RESOURCE_FILTER::SKYBOX : RESOURCE_FILTER::NONE;
+		UpdateResourcesList(filterByResource);
+	}
+	if (ImGui::MenuItem("State Machine", nullptr, filterByResource == RESOURCE_FILTER::STATEMACHINE))
+	{
+		filterByResource = (filterByResource != RESOURCE_FILTER::STATEMACHINE) ? RESOURCE_FILTER::STATEMACHINE : RESOURCE_FILTER::NONE;
+		UpdateResourcesList(filterByResource);
+	}
+	if (ImGui::MenuItem("Prefab", nullptr, filterByResource == RESOURCE_FILTER::PREFAB))
+	{
+		filterByResource = (filterByResource != RESOURCE_FILTER::PREFAB) ? RESOURCE_FILTER::PREFAB : RESOURCE_FILTER::NONE;
+		UpdateResourcesList(filterByResource);
+	}
+	if (ImGui::MenuItem("Unknown", nullptr, filterByResource == RESOURCE_FILTER::UNKNOWN))
+	{
+		filterByResource = (filterByResource != RESOURCE_FILTER::UNKNOWN) ? RESOURCE_FILTER::UNKNOWN : RESOURCE_FILTER::NONE;
+		UpdateResourcesList(filterByResource);
+	}
+	ImGui::EndMenu();
 }
 
 void PanelResourceManager::CleanUp()
