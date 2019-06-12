@@ -89,6 +89,7 @@ void PlayerStateDash::Enter()
 			dashMesh->transform->Scale(1.0f);
 			scalator = originalScalator;
 		}
+		player->ResetCooldown(HUB_BUTTON_Q);
 	}
 }
 

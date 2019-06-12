@@ -19,6 +19,15 @@ struct ImGuiContext;
 #define PlayerMovement_API __declspec(dllimport)
 #endif
 
+#define HUB_BUTTON_Q 0
+#define HUB_BUTTON_W 1
+#define HUB_BUTTON_E 2
+#define HUB_BUTTON_R 3
+#define HUB_BUTTON_1 4
+#define HUB_BUTTON_2 5
+#define HUB_BUTTON_3 6
+#define HUB_BUTTON_4 7
+
 class ComponentAnimation;
 class ComponentTransform;
 class ComponentBoxTrigger;
@@ -61,6 +70,8 @@ public:
 	bool IsUsingSecondItem() const;
 	bool IsUsingThirdItem() const;
 	bool IsUsingFourthItem() const;
+
+	void ResetCooldown(unsigned int hubButtonID) { hubCooldownTimer[hubButtonID] = hubCooldown[hubButtonID]; }
 
 private:
 	void CheckStates(PlayerState* previous, PlayerState* current);
@@ -106,5 +117,9 @@ private:
 	DamageController* damageController = nullptr;
 	ComponentImage* lifeUIComponent = nullptr;
 	ComponentImage* manaUIComponent = nullptr;
+
+	float hubCooldown[8]	  = { 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F };
+	float hubCooldownTimer[8] = { 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F };
+	ComponentImage* hubCooldownMask[8] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
 };
 #endif __PlayerMovement_h__
