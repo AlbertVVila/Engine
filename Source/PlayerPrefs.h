@@ -4,13 +4,17 @@
 #include <map>
 #include <assert.h>
 
+struct ltstr
+{
+	bool operator()(const char* s1, const char* s2) const
+	{
+		return strcmp(s1, s2) < 0;
+	}
+};
+
 class PlayerPrefs
 {
 public:
-	PlayerPrefs();
-	~PlayerPrefs();
-
-	static void Clear();
 
 	static void Save();
 	static void Load();
@@ -23,61 +27,147 @@ public:
 
 	static bool			HasKey(const char* key);
 
-	static void			DeleteKey(const char * key);
+	static void			DeleteKey(const char* key);
 	static void			DeleteAll();
 
 private:
+
 	template <class T>
-	static void PersistMap(const std::map<const char*, T>& myMap, char** cursor);
+	static unsigned GetMapSize(const std::map<const char*, T, ltstr>& myMap);
+
+	template <class T>
+	static void SerializeMap(const std::map<const char*, T, ltstr>& myMap, char** cursor);
 	
 	template <class T>
-	static void RetrieveMap(std::map<const char*, T>& myMap, char** cursor);
+	static void DeSerializeMap(std::map<const char*, T, ltstr>& myMap, char** cursor);
+
+	template <class T>
+	static void DeSerializeValue(T& value, char** cursor);
 	
 	template <class T>
-	static T Get(const std::map<const char*, T>& myMap, const char* key, T defaultValue);
+	static T Get(const std::map<const char*, T, ltstr>& myMap, const char* key, T defaultValue);
 	
 	template <class T>
-	static void Set(std::map<const char*, T>& myMap, const char* key, T value);
+	static void Set(std::map<const char*, T, ltstr>& myMap, const char* key, T value);
 	
 	template <class T>
-	static void CleanMap(std::map<const char*, T>& myMap);
-	template <>
-	static void CleanMap(std::map<const char*, const char*>& myMap);
+	static void CleanMap(std::map<const char*, T, ltstr>& myMap);
 	
 	template <class T>
-	static bool Find(const std::map<const char*, T>& myMap, const char* key);
+	static void ClearPosition(const char* key, T& value);
+	
+	template <class T>
+	static bool Find(const std::map<const char*, T, ltstr>& myMap, const char* key);
+
+	template <class T>
+	static typename std::map<const char*, T, ltstr>::const_iterator FindIter(const std::map<const char*, T, ltstr>& myMap, const char* key);
+
+	template <class T>
+	static bool Delete(std::map<const char*, T, ltstr>& myMap, const char* key);
+
+	template <class T>
+	static void SaveValue(char** cursor, T value);
 
 private:
-	static std::map<const char*, int> integers;
-	static std::map<const char*, float> floats;
-	static std::map<const char*, const char*> strings;
+	static std::map<const char*, int, ltstr> integers;
+	static std::map<const char*, float, ltstr> floats;
+	static std::map<const char*, const char*, ltstr> strings;
 };
 
-template <class T>
-inline void PlayerPrefs::PersistMap(const std::map<const char*, T>& myMap, char** cursor)
+template<class T>
+unsigned PlayerPrefs::GetMapSize(const std::map<const char*, T, ltstr>& myMap)
 {
-	unsigned mapSize = sizeof(myMap);
-	memcpy(*cursor, &mapSize, sizeof(unsigned));
-	*cursor += sizeof(unsigned);
-	memcpy(*cursor, &myMap, mapSize);
-	*cursor += mapSize;
+	unsigned size = sizeof(unsigned);
+	std::map<const char*, T, ltstr>::const_iterator it;
+	for (it = myMap.begin(); it != myMap.end(); it++)
+	{
+		size += strlen(it->first) + 1 + sizeof(T);
+	}
+	return size;
+}
+
+template<>
+inline unsigned PlayerPrefs::GetMapSize(const std::map<const char*, const char*, ltstr>& myMap)
+{
+	unsigned size = sizeof(unsigned);
+	std::map<const char*, const char*, ltstr>::const_iterator it;
+	for (it = myMap.begin(); it != myMap.end(); it++)
+	{
+		size += strlen(it->first) + 1 + strlen(it->second) + 1;
+	}
+	return size;
 }
 
 template <class T>
-inline void PlayerPrefs::RetrieveMap(std::map<const char*, T>& myMap, char** cursor)
+void PlayerPrefs::SerializeMap(const std::map<const char*, T, ltstr>& myMap, char** cursor)
+{
+	unsigned size = myMap.size();
+	memcpy(*cursor, &size, sizeof(unsigned));
+	*cursor += sizeof(unsigned);
+
+	std::map<const char*, T, ltstr>::const_iterator it;
+	for (it = myMap.begin(); it != myMap.end(); it++)
+	{
+		memcpy(*cursor, it->first, strlen(it->first) + 1);
+		*cursor += strlen(it->first) + 1;
+		SaveValue(cursor, it->second);
+	}
+}
+
+template<class T>
+inline void PlayerPrefs::SaveValue(char** cursor, T value)
+{
+	memcpy(*cursor, &value, sizeof(T));
+	*cursor += sizeof(T);
+}
+
+template<>
+inline void PlayerPrefs::SaveValue(char** cursor, const char* value)
+{
+	memcpy(*cursor, value, strlen(value)+1);
+	*cursor += strlen(value)+1;
+}
+
+template <class T>
+void PlayerPrefs::DeSerializeMap(std::map<const char*, T, ltstr>& myMap, char** cursor)
 {
 	unsigned size = 0u;
 	memcpy(&size, *cursor, sizeof(unsigned));
 	*cursor += sizeof(unsigned);
-	memcpy(&myMap, *cursor, size);
-	*cursor += size;
+
+	for (size_t i = 0; i < size; i++)
+	{
+		unsigned keySize = strlen(*cursor) + 1;
+		char* key = new char[keySize];
+		memcpy(key, *cursor, keySize);
+		*cursor += keySize;
+		T value;
+		DeSerializeValue(value, cursor);
+
+		myMap.emplace(key, value);
+	}
 }
 
 template<class T>
-inline T PlayerPrefs::Get(const std::map<const char*, T>& myMap, const char * key, T defaultValue)
+inline void PlayerPrefs::DeSerializeValue(T& value, char** cursor)
+{
+	memcpy(&value, *cursor, sizeof(T));
+	*cursor += sizeof(T);
+}
+
+
+template<>
+inline void PlayerPrefs::DeSerializeValue(const char*& value, char** cursor)
+{
+	value = new char[strlen(*cursor) +1];
+	memcpy((char*)value, *cursor, strlen(*cursor) + 1);
+	*cursor += strlen(*cursor) + 1;
+}
+template<class T>
+T PlayerPrefs::Get(const std::map<const char*, T, ltstr>& myMap, const char* key, T defaultValue)
 {
 	assert(key != nullptr);
-	std::map<const char*, T>::const_iterator it = myMap.find(key);
+	std::map<const char*, T, ltstr>::const_iterator it = myMap.find(key);
 	if (it != myMap.end())
 	{
 		return it->second;
@@ -86,41 +176,62 @@ inline T PlayerPrefs::Get(const std::map<const char*, T>& myMap, const char * ke
 }
 
 template<class T>
-inline void PlayerPrefs::Set(std::map<const char*, T>& myMap, const char * key, T value)
+inline void PlayerPrefs::Set(std::map<const char*, T, ltstr>& myMap, const char* key, T value)
 {
 	DeleteKey(key);
 	assert(key != nullptr);
 	char* cpyKey = new char[strlen(key) + 1];
-	strcpy(cpyKey, key);
-	myMap.insert(std::make_pair(cpyKey, value));
+	memcpy(cpyKey, key, strlen(key) + 1);
+	myMap.emplace(cpyKey, value);
 }
 
 template<class T>
-inline void PlayerPrefs::CleanMap(std::map<const char*, T>& myMap)
+void PlayerPrefs::CleanMap(std::map<const char*, T, ltstr>& myMap)
 {
-	std::map<const char*, T>::iterator it;
+	std::map<const char*, T, ltstr>::iterator it;
 	for (it = myMap.begin(); it != myMap.end(); it++)
 	{
-		delete[] it->first;
+		ClearPosition(it->first, it->second);
 	}
+	myMap.clear();
+}
+
+template<class T>
+inline void PlayerPrefs::ClearPosition(const char* key, T & value)
+{
+	delete[] key;
 }
 
 template<>
-inline void PlayerPrefs::CleanMap(std::map<const char*, const char*>& myMap)
+inline void PlayerPrefs::ClearPosition(const char* key, const char*& value)
 {
-	std::map<const char*, const char*>::iterator it;
-	for (it = myMap.begin(); it != myMap.end(); it++)
-	{
-		delete[] it->first;
-		delete[] it->second;
-	}
+	delete[] key;
+	delete[] value;
 }
 
 template<class T>
-inline bool PlayerPrefs::Find(const std::map<const char*, T>& myMap, const char* key)
+bool PlayerPrefs::Find(const std::map<const char*, T, ltstr>& myMap, const char* key)
 {
-	std::map<const char*, T>::const_iterator it = myMap.find(key);
+	std::map<const char*, T, ltstr>::const_iterator it = myMap.find(key);
 	return it != myMap.end();
+}
+
+template<class T>
+typename std::map<const char*, T, ltstr>::const_iterator PlayerPrefs::FindIter(const std::map<const char*, T, ltstr>& myMap, const char* key)
+{
+	return myMap.find(key);
+}
+
+template<class T>
+bool PlayerPrefs::Delete(std::map<const char*, T, ltstr>& myMap, const char* key)
+{
+	std::map<const char*, T, ltstr>::const_iterator it = FindIter(myMap, key);
+	if (it != myMap.end())
+	{
+		myMap.erase(it);
+		return true;
+	}
+	return false;
 }
 
 #endif __PLAYERPREFS_H__

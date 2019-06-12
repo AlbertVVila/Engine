@@ -3,36 +3,20 @@
 #include "ModuleFileSystem.h"
 
 #define PREFSFILE PERSISTENCE "player.prefs"
-std::map<const char*, int> PlayerPrefs::integers;
-std::map<const char*, float> PlayerPrefs::floats;
-std::map<const char*, const char*> PlayerPrefs::strings;
-
-PlayerPrefs::PlayerPrefs()
-{
-}
-
-
-PlayerPrefs::~PlayerPrefs()
-{
-}
-
-void PlayerPrefs::Clear()
-{
-	CleanMap(integers);
-	CleanMap(floats);
-	CleanMap(strings);
-}
+std::map<const char*, int, ltstr> PlayerPrefs::integers;
+std::map<const char*, float, ltstr> PlayerPrefs::floats;
+std::map<const char*, const char*, ltstr> PlayerPrefs::strings;
 
 void PlayerPrefs::Save()
 {
-	unsigned totalSize = sizeof(integers) + sizeof(floats) + sizeof(strings) + sizeof(unsigned) * 3;
+	unsigned totalSize = GetMapSize(integers) + GetMapSize(floats) + GetMapSize(strings);
 	char *buffer = new char[totalSize];
 	char* cursor = buffer;
 
 	//copying....
-	PersistMap(integers, &cursor);
-	PersistMap(floats, &cursor);
-	PersistMap(strings, &cursor);
+	SerializeMap(integers, &cursor);
+	SerializeMap(floats, &cursor);
+	SerializeMap(strings, &cursor);
 	App->fsystem->Save(PREFSFILE, buffer, totalSize);
 	RELEASE_ARRAY(buffer);
 }
@@ -44,12 +28,10 @@ void PlayerPrefs::Load()
 	if (size > 0)
 	{
 		char* cursor = data;
-		RetrieveMap(integers, &cursor);
-		RetrieveMap(floats, &cursor);
-		RetrieveMap(strings, &cursor);
+		DeSerializeMap(integers, &cursor);
+		DeSerializeMap(floats, &cursor);
+		DeSerializeMap(strings, &cursor);
 	}
-
-	integers.insert(std::make_pair("test", 12));
 
 	RELEASE_ARRAY(data);
 }
@@ -96,10 +78,14 @@ bool PlayerPrefs::HasKey(const char* key)
 
 void PlayerPrefs::DeleteKey(const char* key)
 {
-	
+	if (Delete(integers, key)) return;
+	if (Delete(floats, key)) return;
+	if (Delete(strings, key)) return;
 }
 
 void PlayerPrefs::DeleteAll()
 {
-
+	CleanMap(integers);
+	CleanMap(floats);
+	CleanMap(strings);
 }
