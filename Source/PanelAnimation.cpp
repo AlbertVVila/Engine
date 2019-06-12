@@ -47,7 +47,7 @@ void PanelAnimation::Draw()
 		// Current Anim
 		ImGui::SetCursorPosX(ImGui::CalcTextSize("  GAMEOBJECT  ").x);
 
-		
+
 
 		ImGui::PushItemWidth(100);
 
@@ -88,6 +88,12 @@ void PanelAnimation::Draw()
 			return;
 		}
 
+		ImGui::SameLine();
+		if (ImGui::Button("Save Animation"))
+		{
+			anim->SaveNewAnimation();
+		}
+
 		// Animation
 		ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 2 - ImGui::CalcTextSize("FRAMES").x / 2);
 		ImGui::Text("FRAMES");
@@ -105,7 +111,7 @@ void PanelAnimation::Draw()
 
 		if (ImGui::SliderInt("##label", &anim->currentFrame, 0, anim->duration))
 		{
-			compAnim->SetIndexChannels(App->scene->selected,anim);
+			compAnim->SetIndexChannels(App->scene->selected, anim);
 
 			UpdateGameObjectAnimation(App->scene->selected, anim);
 
@@ -164,7 +170,7 @@ void PanelAnimation::Draw()
 			if (isCliping && anim->currentFrame - 1 > minFrame)
 			{
 				anim->currentFrame--;
-				
+
 				UpdateGameObjectAnimation(App->scene->selected, anim);
 				compAnim->editorController->current->time = anim->currentFrame / anim->framesPerSecond;
 			}
@@ -205,7 +211,7 @@ void PanelAnimation::Draw()
 					compAnim->editorController->current->minTime = minFrame / anim->framesPerSecond;
 					compAnim->editorController->current->maxTime = maxFrame / anim->framesPerSecond;
 				}
-			
+
 				compAnim->isPlaying = true;
 				compAnim->editorController->SetNextEvent();
 			}
@@ -261,7 +267,15 @@ void PanelAnimation::Draw()
 		ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 9);
 		ImGui::Text("NAME OF EVENT");
 
-		for (std::vector<Event*>::iterator it = compAnim->anim->events.begin(); it != compAnim->anim->events.end(); ++it)
+		if (compAnim->controller->current == NULL)
+		{
+			ImGui::End();
+			return;
+		}
+
+		ResourceAnimation* currentAnim = compAnim->controller->current->anim;
+
+		for (std::vector<Event*>::iterator it = currentAnim->events.begin(); it != currentAnim->events.end(); ++it)
 		{
 			ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 20);
 			ImGui::Text(std::to_string((*it)->key).c_str()); ImGui::SameLine();
@@ -273,7 +287,7 @@ void PanelAnimation::Draw()
 			ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 5);
 			if (ImGui::Button("Go"))
 			{
-				compAnim->anim->currentFrame = (*it)->frame;
+				currentAnim->currentFrame = (*it)->frame;
 				UpdateGameObjectAnimation(App->scene->selected, anim);
 			}
 			ImGui::SameLine();
@@ -287,7 +301,7 @@ void PanelAnimation::Draw()
 
 		if (isDeletingEvent && keyToDelete != -1)
 		{
-			compAnim->anim->DeleteEvent(keyToDelete);
+			currentAnim->DeleteEvent(keyToDelete);
 
 			keyToDelete = -1;
 			isDeletingEvent = false;
@@ -400,7 +414,7 @@ void PanelAnimation::NewEventPopUp(ComponentAnimation* compAnim)
 
 		if (ImGui::Button("Save", ImVec2(120, 0)))
 		{
-			compAnim->anim->AddEvent(std::string(newName));
+			compAnim->controller->current->anim->AddEvent(std::string(newName));
 			newEvent = false;
 
 			strcpy(newName, "New Event");

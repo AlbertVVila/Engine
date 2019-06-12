@@ -213,6 +213,33 @@ void ResourceAnimation::SetAnimation(const char* animationData)
 
 		channels.push_back(newChannel);
 	}
+
+	//load events
+	events.clear();
+
+	if (strcmp(animationData, "\0") == 0)
+		return;
+
+	memcpy(&totalEvents, animationData, sizeof(int));
+	animationData += sizeof(int);
+
+	for (unsigned i = 0u; i < totalEvents; i++)
+	{
+		int newKey;
+		memcpy(&newKey, animationData, sizeof(int));
+		animationData += sizeof(int);
+
+		int newFrame;
+		memcpy(&newFrame, animationData, sizeof(int));
+		animationData += sizeof(int);
+
+		char newName[MAX_BONE_NAME_LENGTH];
+		memcpy(newName, animationData, sizeof(char) * MAX_BONE_NAME_LENGTH);
+		animationData += sizeof(char)* MAX_BONE_NAME_LENGTH;
+
+		Event* newEvent = new Event(newKey, newFrame, std::string(newName));
+		events.push_back(newEvent);
+	}
 }
 
 unsigned ResourceAnimation::GetAnimationSize()
@@ -236,6 +263,16 @@ unsigned ResourceAnimation::GetAnimationSize()
 			size += sizeof(Quat);
 		}
 	}
+
+	//get events
+	size += sizeof(int);
+
+	for (unsigned i = 0u; i < totalEvents; i++)
+	{
+		size += sizeof(int) * 2;
+		size += sizeof(char)* MAX_BONE_NAME_LENGTH;
+	}
+
 	return size;
 }
 
@@ -282,6 +319,23 @@ void ResourceAnimation::SaveAnimationData(char * data)
 			cursor += sizeof(math::Quat);
 		}
 	}
+
+	//save events
+	memcpy(cursor, &totalEvents, sizeof(int));
+	cursor += sizeof(int);
+
+	for (unsigned i = 0u; i < totalEvents; i++)
+	{
+		memcpy(cursor, &events[i]->key, sizeof(int));
+		cursor += sizeof(int);
+
+		memcpy(cursor, &events[i]->frame, sizeof(int));
+		cursor += sizeof(int);
+
+		memcpy(cursor, events[i]->name.c_str(), sizeof(char) * MAX_BONE_NAME_LENGTH);
+		cursor += sizeof(char) * MAX_BONE_NAME_LENGTH;
+	}
+
 }
 
 void ResourceAnimation::SaveNewAnimation()

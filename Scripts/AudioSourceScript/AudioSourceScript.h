@@ -17,6 +17,8 @@ class AudioSourceScript_API AudioSourceScript : public Script
 	void Start() override;
 	void Update() override;
 
+	void OnAnimationEvent(std::string name) override;
+
 private:
 	ComponentAudioSource* audioSource = nullptr;
 };

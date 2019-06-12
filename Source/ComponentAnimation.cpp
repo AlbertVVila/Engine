@@ -409,23 +409,24 @@ void ComponentAnimation::Update()
 			}
 
 			controller->Update(App->time->fullGameDeltaTime);
+			ResourceAnimation* Anim = controller->current->anim;
 
-			if (controller->CheckEvents(anim))
+			if (controller->CheckEvents(Anim))
 			{
 				std::vector<Component*> scripts = gameobject->GetComponents(ComponentType::Script);
 
 				for (auto script : scripts)
 				{
 					Script* scr = (Script*)script;
-					scr->OnAnimationEvent(anim->events.at(anim->nextEvent)->name);
+					scr->OnAnimationEvent(Anim->events.at(Anim->nextEvent)->name);
 				}
 
-				if (anim->nextEvent + 1 < anim->totalEvents)
-					++anim->nextEvent;
-				else if (anim->nextEvent + 1 == anim->totalEvents && anim->totalEvents == 1)
-					++anim->nextEvent;
+				if (Anim->nextEvent + 1 < Anim->totalEvents)
+					++Anim->nextEvent;
+				else if (Anim->nextEvent + 1 == Anim->totalEvents && Anim->totalEvents == 1)
+					++Anim->nextEvent;
 				else
-					anim->nextEvent = 0;
+					Anim->nextEvent = 0;
 			}
 
 			if (gameobject != nullptr)
