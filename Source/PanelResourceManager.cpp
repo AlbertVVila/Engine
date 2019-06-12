@@ -121,6 +121,12 @@ void PanelResourceManager::Draw()
 				}
 				ImGui::EndMenu();
 			}
+			if (ImGui::MenuItem("Clean Filters"))
+			{
+				filterByResource = RESOURCE_FILTER::NONE;
+				filterByReferenceCount = REFERENCE_FILTER::NONE;
+				UpdateResourcesList();
+			}
 			ImGui::EndMenu();
 		}
 
