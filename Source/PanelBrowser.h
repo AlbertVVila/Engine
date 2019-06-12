@@ -76,6 +76,9 @@ private:
 	ResourceTexture* sc3neIcon = nullptr;
 	ResourceTexture* animati0nIcon = nullptr;
 	ResourceTexture* st4tem4chineIcon = nullptr;
+	ResourceTexture* wavIcon = nullptr;
+	ResourceTexture* oggIcon = nullptr;
+	ResourceTexture* mp3Icon = nullptr;
 	ResourceTexture* pr3fabIcon = nullptr;
 
 	//Drag N Drop
