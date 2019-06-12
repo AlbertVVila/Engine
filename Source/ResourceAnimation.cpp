@@ -217,9 +217,9 @@ void ResourceAnimation::SetAnimation(const char* animationData)
 	//load events
 	events.clear();
 
-	if (strcmp(animationData, "\0") == 0)
+	/*if (strcmp(animationData, "\0") == 0)
 		return;
-
+*/
 	memcpy(&totalEvents, animationData, sizeof(int));
 	animationData += sizeof(int);
 

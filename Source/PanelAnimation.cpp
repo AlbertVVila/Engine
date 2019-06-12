@@ -6,6 +6,7 @@
 #include "GameObject.h"
 
 #include "ResourceAnimation.h"
+#include "ModuleTime.h"
 #include "ModuleFileSystem.h"
 
 #include "ComponentAnimation.h"
@@ -267,15 +268,7 @@ void PanelAnimation::Draw()
 		ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 9);
 		ImGui::Text("NAME OF EVENT");
 
-		if (compAnim->controller->current == NULL)
-		{
-			ImGui::End();
-			return;
-		}
-
-		ResourceAnimation* currentAnim = compAnim->controller->current->anim;
-
-		for (std::vector<Event*>::iterator it = currentAnim->events.begin(); it != currentAnim->events.end(); ++it)
+		for (std::vector<Event*>::iterator it = anim->events.begin(); it != anim->events.end(); ++it)
 		{
 			ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 20);
 			ImGui::Text(std::to_string((*it)->key).c_str()); ImGui::SameLine();
@@ -287,7 +280,7 @@ void PanelAnimation::Draw()
 			ImGui::SetCursorPosX(ImGui::GetWindowWidth() / 5);
 			if (ImGui::Button("Go"))
 			{
-				currentAnim->currentFrame = (*it)->frame;
+				anim->currentFrame = (*it)->frame;
 				UpdateGameObjectAnimation(App->scene->selected, anim);
 			}
 			ImGui::SameLine();
@@ -301,7 +294,7 @@ void PanelAnimation::Draw()
 
 		if (isDeletingEvent && keyToDelete != -1)
 		{
-			currentAnim->DeleteEvent(keyToDelete);
+			anim->DeleteEvent(keyToDelete);
 
 			keyToDelete = -1;
 			isDeletingEvent = false;
@@ -414,10 +407,12 @@ void PanelAnimation::NewEventPopUp(ComponentAnimation* compAnim)
 
 		if (ImGui::Button("Save", ImVec2(120, 0)))
 		{
-			compAnim->controller->current->anim->AddEvent(std::string(newName));
+		
+			anim->AddEvent(std::string(newName));
 			newEvent = false;
 
 			strcpy(newName, "New Event");
+
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Cancel", ImVec2(120, 0)))

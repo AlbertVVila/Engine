@@ -388,6 +388,10 @@ void FileImporter::ImportAnimation(const aiAnimation& animation, char* data)
 			cursor += sizeof(math::Quat);
 		}
 	}
+
+	int events = 0;
+	memcpy(cursor, &events, sizeof(int));
+	cursor += sizeof(int);
 }
 
 //TODO: Obtain animations size in order to store their content
@@ -415,6 +419,8 @@ unsigned FileImporter::GetAnimationSize(const aiAnimation& animation) const
 			size += sizeof(math::Quat);
 		}
 	}
+
+	size += sizeof(int);
 
 	return size;
 }
