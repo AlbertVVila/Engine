@@ -4,6 +4,8 @@
 #include <map>
 #include <assert.h>
 
+class JSON;
+
 struct ltstr
 {
 	bool operator()(const char* s1, const char* s2) const
@@ -16,8 +18,8 @@ class PlayerPrefs
 {
 public:
 
-	static void Save();
-	static void Load();
+	static void			Save();
+	static void			Load();
 	static int			GetInt(const char* key, int defaultValue = 0);
 	static float		GetFloat(const char* key, float defaultValue = 0.0f);
 	static const char*	GetString(const char* key, const char* defaultValue = nullptr);
@@ -29,6 +31,9 @@ public:
 
 	static void			DeleteKey(const char* key);
 	static void			DeleteAll();
+
+	static JSON*		LoadJson(const char* file);
+	static bool			SaveJson(JSON* json, const char* filename);
 
 private:
 

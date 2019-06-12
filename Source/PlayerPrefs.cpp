@@ -1,8 +1,11 @@
 #include "PlayerPrefs.h"
 #include "Application.h"
 #include "ModuleFileSystem.h"
+#include "JSON.h"
 
-#define PREFSFILE PERSISTENCE "player.prefs"
+#define PREFS ".prefs"
+#define PREFSFILE PERSISTENCE "player"
+
 std::map<const char*, int, ltstr> PlayerPrefs::integers;
 std::map<const char*, float, ltstr> PlayerPrefs::floats;
 std::map<const char*, const char*, ltstr> PlayerPrefs::strings;
@@ -17,14 +20,14 @@ void PlayerPrefs::Save()
 	SerializeMap(integers, &cursor);
 	SerializeMap(floats, &cursor);
 	SerializeMap(strings, &cursor);
-	App->fsystem->Save(PREFSFILE, buffer, totalSize);
+	App->fsystem->Save(PREFSFILE PREFS, buffer, totalSize);
 	RELEASE_ARRAY(buffer);
 }
 
 void PlayerPrefs::Load()
 {
 	char* data = nullptr;
-	unsigned size = App->fsystem->Load(PREFSFILE, &data);
+	unsigned size = App->fsystem->Load(PREFSFILE PREFS, &data);
 	if (size > 0)
 	{
 		char* cursor = data;
@@ -88,4 +91,29 @@ void PlayerPrefs::DeleteAll()
 	CleanMap(integers);
 	CleanMap(floats);
 	CleanMap(strings);
+}
+
+JSON* PlayerPrefs::LoadJson(const char * file)
+{
+	char* data = nullptr;
+	std::string filepath(PERSISTENCE);
+	filepath += file;
+	filepath += PREFS;
+
+	App->fsystem->Load(filepath.c_str(), &data);
+	JSON* json = nullptr;
+	if (data != nullptr)
+	{
+		return new JSON(data);
+	}
+	return nullptr;
+}
+
+bool PlayerPrefs::SaveJson(JSON * json, const char* filename)
+{
+	assert(strcmp(filename, "player") != 0); //Cannot have this filename
+	std::string filepath(PERSISTENCE);
+	filepath += filename;
+	filepath += PREFS;
+	return App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
 }

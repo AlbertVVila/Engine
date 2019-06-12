@@ -23,8 +23,6 @@ ModuleScript::ModuleScript()
 
 ModuleScript::~ModuleScript()
 {
-	PlayerPrefs::Save();
-	PlayerPrefs::Clear();
 
 	for (const auto& dll : loadedDLLs)
 	{
@@ -41,6 +39,13 @@ bool ModuleScript::Init(JSON* config)
 	SetDllDirectory(SCRIPTS);
 	CheckScripts();
 	//LoadFromMemory(IDR_DLL1);
+	return true;
+}
+
+bool ModuleScript::CleanUp()
+{
+	PlayerPrefs::Save(); //Saves to Disk
+	PlayerPrefs::DeleteAll(); //Deletes All memory allocated
 	return true;
 }
 
