@@ -10,6 +10,7 @@ struct ImVec2;
 
 enum class SORTING { NONE, UID, NAME, FILE, EXPORTED, TYPE, REFERENCES};
 enum class RESOURCE_FILTER { TEXTURE, MODEL, MESH, AUDIO, SCENE, ANIMATION, MATERIAL, SKYBOX, STATEMACHINE, PREFAB, UNKNOWN, NONE};
+enum class REFERENCE_FILTER { LOADED, NOT_LOADED, NONE};
 
 class PanelResourceManager : 
 	public Panel
@@ -22,7 +23,6 @@ public:
 
 private:
 	void UpdateResourcesList();
-	void UpdateResourcesList(RESOURCE_FILTER filter);
 
 	void OpenResourceEditor();
 
@@ -51,9 +51,14 @@ private:
 	bool openEditor = false;
 	bool openResourceWindow = false;
 
+	// Sorting
 	SORTING sortList = SORTING::REFERENCES;
-	RESOURCE_FILTER filterByResource = RESOURCE_FILTER::NONE;
 	bool descending = false;
+
+	// Filtering
+	RESOURCE_FILTER filterByResource = RESOURCE_FILTER::NONE;
+	REFERENCE_FILTER filterByReferenceCount = REFERENCE_FILTER::NONE;
+
 	std::vector<Resource*> resourcesList;
 
 	bool autoRefresh = false;

@@ -57,6 +57,8 @@ class ModuleResourceManager :
 
 	std::vector<Resource*> GetResourcesList();											// Get list with pointers to all resources
 	std::vector<Resource*> GetResourcesList(TYPE type);									// Get list with pointers to all resources of type given
+	std::vector<Resource*> GetResourcesList(bool loaded);								// Get list with pointers to all resources if they are loaded to memory
+	std::vector<Resource*> GetResourcesList(TYPE type, bool loaded);					// Get list with pointers to all resources of type given and if they are loaded to memory
 
 	ENGINE_API std::vector<std::string> GetResourceNamesList(TYPE resourceType, bool ordered);		// Returns a vector with the exportedFileName of every Resource of the type given.	
 
