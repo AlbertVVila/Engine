@@ -26,9 +26,11 @@ void EnemyStateHide::Update()
 	//auxTranslation += movement.y;
 
 	// Check if the needed Y has been reached
-	if (enemy->startPosition.y >= enemy->enemyController->GetPosition().y)
+	if (enemy->startPosition.y - enemy->yTranslation >= enemy->enemyController->GetPosition().y)
 	{
-		enemy->gameobject->transform->SetPosition(enemy->startPosition);
+		math::float3 position = enemy->startPosition;
+		position.y -= enemy->yTranslation;
+		enemy->gameobject->transform->SetPosition(position);
 		enemy->currentState = (EnemyState*)enemy->wait;
 		auxTranslation = 0.0f;
 	}

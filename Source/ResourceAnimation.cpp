@@ -154,6 +154,7 @@ void ResourceAnimation::LoadConfigFromMeta()
 
 void ResourceAnimation::SetAnimation(const char* animationData)
 {
+	const char* data = animationData; //used as a base pointer for release
 	for (const auto& channel : channels)
 	{
 		channel->numPositionKeys = 0u;
@@ -237,6 +238,8 @@ void ResourceAnimation::SetAnimation(const char* animationData)
 		Event* newEvent = new Event(newKey, newFrame, std::string(newName));
 		events.push_back(newEvent);
 	}
+
+	RELEASE_ARRAY(data);
 }
 
 unsigned ResourceAnimation::GetAnimationSize()
