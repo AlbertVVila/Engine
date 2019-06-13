@@ -18,6 +18,7 @@ class ComponentBoxTrigger;
 class DamageController;
 class EnemyLifeBarController;
 class PlayerMovement;
+class EnemyLoot;
 
 class EnemyControllerScript_API EnemyControllerScript : public Script
 {
@@ -59,6 +60,7 @@ public:
 
 	DamageController* damageController = nullptr;
 	EnemyLifeBarController* enemyLifeBar = nullptr;
+	EnemyLoot* enemyLoot = nullptr;
 	
 	// BBoxes
 	math::AABB* myBbox = nullptr;

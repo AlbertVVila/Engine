@@ -24,15 +24,13 @@ public:
 	void Start() override;
 	void Update() override;
 	void GenerateLoot();
-	void AddItem(ItemType type, std::string name, std::string sprite, int drop);
+	void AddItem(std::string name, int drop);
 
 private:
 
-	std::vector<std::pair<Item, int>> items;
-	std::vector<std::string> textureFiles;
-	std::string sprite;
-	ItemType type = ItemType::NONE;
+	std::vector<std::pair<GameObject*, int>> items;
 	int drop = 0;
+	std::string goName = "GO Name";
 
 	GameObject* go = nullptr;
 
