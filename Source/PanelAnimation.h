@@ -30,7 +30,6 @@ public:
 	std::vector<std::string> guiAnimations;
 
 	ResourceAnimation* anim = nullptr;
-	//bool isPlaying = false;
 
 };
 
