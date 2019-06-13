@@ -50,7 +50,6 @@ class PlayerMovement_API PlayerMovement : public Script
 public:
 	void Expose(ImGuiContext* context) override;
 
-
 	void Start() override;
 	void Update() override;
 	void Serialize(JSON_value* json) const override;
@@ -71,12 +70,14 @@ public:
 	bool IsUsingThirdItem() const;
 	bool IsUsingFourthItem() const;
 
-	void ResetCooldown(unsigned int hubButtonID) { hubCooldownTimer[hubButtonID] = hubCooldown[hubButtonID]; }
+	void ResetCooldown(unsigned int hubButtonID);
 
 private:
 	void CheckStates(PlayerState* previous, PlayerState* current);
 	void CreatePlayerStates();
 	void ManaManagement();
+
+	void ActivateHudCooldownMask(bool activate, unsigned first = HUB_BUTTON_Q, unsigned last = HUB_BUTTON_4);
 
 public:
 	bool isPlayerDead = false;
@@ -119,7 +120,11 @@ private:
 	ComponentImage* manaUIComponent = nullptr;
 
 	float hubCooldown[8]	  = { 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F };
+	float hubCooldownMax[8] = { 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F };
 	float hubCooldownTimer[8] = { 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F };
 	ComponentImage* hubCooldownMask[8] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
+	float hubGeneralAbilityCooldown = 0.5F;
+	bool showAbilityCooldowns = true;
+	bool showItemCooldowns = true;
 };
 #endif __PlayerMovement_h__
