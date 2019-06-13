@@ -423,9 +423,9 @@ void ComponentAnimation::Update()
 						if (GO != App->scene->dynamicFilteredGOs.end())
 						{
 							UpdateGO(gameobject);
+							break;
 						}
 					}
-						break;
 				}
 			}
 		}
