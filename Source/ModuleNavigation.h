@@ -124,6 +124,8 @@ private:
 
 	bool inRange(const float * v1, const float * v2, const float r, const float h) const;
 
+	float getXZDistance(float3 a, float3 b) const;
+
 	// Detour stuff
 	//void handleClick(const float* s, const float* p, bool shift);
 	//void handleClick(const float* s, const float* p, bool shift);
