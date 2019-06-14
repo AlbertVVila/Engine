@@ -92,10 +92,12 @@ public:
 
 
 	ENGINE_API bool FindPath(	math::float3 start, math::float3 end, std::vector<math::float3> &path, 
-								PathFindType type = PathFindType::FOLLOW, math::float3 diff = math::float3(0.f, 0.f, 0.f), float maxDist = 1000) const;
+								PathFindType type = PathFindType::FOLLOW, math::float3 diff = math::float3(0.f, 0.f, 0.f),
+								float maxDist = 10000.0f) const;
 	//there is a default really big limitating path distance for the calls that are not supposed to be limitated
 	ENGINE_API bool NavigateTowardsCursor(math::float3 start, std::vector<math::float3>& path, 
-											math::float3 positionCorrection, math::float3& intersectionPos, float maxPathDistance = 1000000) const;
+										  math::float3 positionCorrection, math::float3& intersectionPos, 
+										  float maxPathDistance = 10000.0f) const;
 
 	void RecalcPath(math::float3 point);
 
