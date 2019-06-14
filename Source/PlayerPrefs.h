@@ -3,6 +3,7 @@
 
 #include <map>
 #include <assert.h>
+#include "Globals.h"
 
 class JSON;
 
@@ -14,7 +15,7 @@ struct ltstr
 	}
 };
 
-class PlayerPrefs
+class ENGINE_API PlayerPrefs
 {
 public:
 
@@ -83,7 +84,7 @@ template<class T>
 unsigned PlayerPrefs::GetMapSize(const std::map<const char*, T, ltstr>& myMap)
 {
 	unsigned size = sizeof(unsigned);
-	std::map<const char*, T, ltstr>::const_iterator it;
+	typename std::map<const char*, T, ltstr>::const_iterator it;
 	for (it = myMap.begin(); it != myMap.end(); it++)
 	{
 		size += strlen(it->first) + 1 + sizeof(T);
@@ -110,7 +111,7 @@ void PlayerPrefs::SerializeMap(const std::map<const char*, T, ltstr>& myMap, cha
 	memcpy(*cursor, &size, sizeof(unsigned));
 	*cursor += sizeof(unsigned);
 
-	std::map<const char*, T, ltstr>::const_iterator it;
+	typename std::map<const char*, T, ltstr>::const_iterator it;
 	for (it = myMap.begin(); it != myMap.end(); it++)
 	{
 		memcpy(*cursor, it->first, strlen(it->first) + 1);
@@ -172,7 +173,7 @@ template<class T>
 T PlayerPrefs::Get(const std::map<const char*, T, ltstr>& myMap, const char* key, T defaultValue)
 {
 	assert(key != nullptr);
-	std::map<const char*, T, ltstr>::const_iterator it = myMap.find(key);
+	typename std::map<const char*, T, ltstr>::const_iterator it = myMap.find(key);
 	if (it != myMap.end())
 	{
 		return it->second;
@@ -193,7 +194,7 @@ inline void PlayerPrefs::Set(std::map<const char*, T, ltstr>& myMap, const char*
 template<class T>
 void PlayerPrefs::CleanMap(std::map<const char*, T, ltstr>& myMap)
 {
-	std::map<const char*, T, ltstr>::iterator it;
+	typename std::map<const char*, T, ltstr>::iterator it;
 	for (it = myMap.begin(); it != myMap.end(); it++)
 	{
 		ClearPosition(it->first, it->second);
@@ -217,7 +218,7 @@ inline void PlayerPrefs::ClearPosition(const char* key, const char*& value)
 template<class T>
 bool PlayerPrefs::Find(const std::map<const char*, T, ltstr>& myMap, const char* key)
 {
-	std::map<const char*, T, ltstr>::const_iterator it = myMap.find(key);
+	typename std::map<const char*, T, ltstr>::const_iterator it = myMap.find(key);
 	return it != myMap.end();
 }
 
@@ -230,7 +231,7 @@ typename std::map<const char*, T, ltstr>::const_iterator PlayerPrefs::FindIter(c
 template<class T>
 bool PlayerPrefs::Delete(std::map<const char*, T, ltstr>& myMap, const char* key)
 {
-	std::map<const char*, T, ltstr>::const_iterator it = FindIter(myMap, key);
+	typename std::map<const char*, T, ltstr>::const_iterator it = FindIter(myMap, key);
 	if (it != myMap.end())
 	{
 		myMap.erase(it);
