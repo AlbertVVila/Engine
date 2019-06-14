@@ -54,6 +54,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Recast", "Source\Recast\Rec
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SkillTreeController", "Scripts\SkillTreeController\SkillTreeController.vcxproj", "{55860826-2F36-4FBB-959E-E4AB93827C1F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ExperienceController", "Scripts\ExperienceController\ExperienceController.vcxproj", "{7306983D-F81F-488D-9548-D68509FEF4C8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -404,12 +406,12 @@ Global
 		{413818BF-768B-4B9F-B7A6-D5864D4759E4}.Debug|Win32.Build.0 = Debug|Win32
 		{413818BF-768B-4B9F-B7A6-D5864D4759E4}.Debug|x64.ActiveCfg = Debug|x64
 		{413818BF-768B-4B9F-B7A6-D5864D4759E4}.Debug|x64.Build.0 = Debug|x64
-		{413818BF-768B-4B9F-B7A6-D5864D4759E4}.GameBuild Debug|Win32.ActiveCfg = Debug|Win32
-		{413818BF-768B-4B9F-B7A6-D5864D4759E4}.GameBuild Debug|Win32.Build.0 = Debug|Win32
+		{413818BF-768B-4B9F-B7A6-D5864D4759E4}.GameBuild Debug|Win32.ActiveCfg = GameBuild Debug|Win32
+		{413818BF-768B-4B9F-B7A6-D5864D4759E4}.GameBuild Debug|Win32.Build.0 = GameBuild Debug|Win32
 		{413818BF-768B-4B9F-B7A6-D5864D4759E4}.GameBuild Debug|x64.ActiveCfg = Debug|x64
 		{413818BF-768B-4B9F-B7A6-D5864D4759E4}.GameBuild Debug|x64.Build.0 = Debug|x64
-		{413818BF-768B-4B9F-B7A6-D5864D4759E4}.GameBuild|Win32.ActiveCfg = Release|Win32
-		{413818BF-768B-4B9F-B7A6-D5864D4759E4}.GameBuild|Win32.Build.0 = Release|Win32
+		{413818BF-768B-4B9F-B7A6-D5864D4759E4}.GameBuild|Win32.ActiveCfg = GameBuild|Win32
+		{413818BF-768B-4B9F-B7A6-D5864D4759E4}.GameBuild|Win32.Build.0 = GameBuild|Win32
 		{413818BF-768B-4B9F-B7A6-D5864D4759E4}.GameBuild|x64.ActiveCfg = Release|x64
 		{413818BF-768B-4B9F-B7A6-D5864D4759E4}.GameBuild|x64.Build.0 = Release|x64
 		{413818BF-768B-4B9F-B7A6-D5864D4759E4}.Release|Win32.ActiveCfg = Release|Win32
@@ -430,6 +432,20 @@ Global
 		{55860826-2F36-4FBB-959E-E4AB93827C1F}.Release|Win32.Build.0 = Release|Win32
 		{55860826-2F36-4FBB-959E-E4AB93827C1F}.Release|x64.ActiveCfg = Release|x64
 		{55860826-2F36-4FBB-959E-E4AB93827C1F}.Release|x64.Build.0 = Release|x64
+		{7306983D-F81F-488D-9548-D68509FEF4C8}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7306983D-F81F-488D-9548-D68509FEF4C8}.Debug|Win32.Build.0 = Debug|Win32
+		{7306983D-F81F-488D-9548-D68509FEF4C8}.Debug|x64.ActiveCfg = Debug|x64
+		{7306983D-F81F-488D-9548-D68509FEF4C8}.Debug|x64.Build.0 = Debug|x64
+		{7306983D-F81F-488D-9548-D68509FEF4C8}.GameBuild Debug|Win32.ActiveCfg = GameBuild Debug|Win32
+		{7306983D-F81F-488D-9548-D68509FEF4C8}.GameBuild Debug|Win32.Build.0 = GameBuild Debug|Win32
+		{7306983D-F81F-488D-9548-D68509FEF4C8}.GameBuild Debug|x64.ActiveCfg = GameBuild Debug|Win32
+		{7306983D-F81F-488D-9548-D68509FEF4C8}.GameBuild|Win32.ActiveCfg = GameBuild|Win32
+		{7306983D-F81F-488D-9548-D68509FEF4C8}.GameBuild|Win32.Build.0 = GameBuild|Win32
+		{7306983D-F81F-488D-9548-D68509FEF4C8}.GameBuild|x64.ActiveCfg = GameBuild|Win32
+		{7306983D-F81F-488D-9548-D68509FEF4C8}.Release|Win32.ActiveCfg = Release|Win32
+		{7306983D-F81F-488D-9548-D68509FEF4C8}.Release|Win32.Build.0 = Release|Win32
+		{7306983D-F81F-488D-9548-D68509FEF4C8}.Release|x64.ActiveCfg = Release|x64
+		{7306983D-F81F-488D-9548-D68509FEF4C8}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -456,6 +472,7 @@ Global
 		{C8F06C07-DC7E-4EA9-BAA0-D19AAD547470} = {B0BA8D83-BE07-4405-ADE1-C771D081A8CD}
 		{25A279F6-6460-43E6-83C1-59AB067F3F05} = {B0BA8D83-BE07-4405-ADE1-C771D081A8CD}
 		{55860826-2F36-4FBB-959E-E4AB93827C1F} = {B0BA8D83-BE07-4405-ADE1-C771D081A8CD}
+		{7306983D-F81F-488D-9548-D68509FEF4C8} = {B0BA8D83-BE07-4405-ADE1-C771D081A8CD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7938FFD4-0765-4A85-95CB-3908D56E6F3D}
