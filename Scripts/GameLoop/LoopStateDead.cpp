@@ -1,4 +1,4 @@
-#include "GameStateDead.h"
+#include "LoopStateDead.h"
 
 #include "GameLoop.h"
 
@@ -7,24 +7,24 @@
 
 #define GRAVEYARD_SCENE "Level0-TheGraveyard"
 
-GameStateDead::GameStateDead(GameLoop* GL) : GameState(GL)
+LoopStateDead::LoopStateDead(GameLoop* GL) : LoopState(GL)
 {
 }
 
 
-GameStateDead::~GameStateDead()
+LoopStateDead::~LoopStateDead()
 {
 }
 
-void GameStateDead::Update()
+void LoopStateDead::Update()
 {
 	if (gLoop->toTheAltarButton->IsPressed())
 	{
 		gLoop->loseWindow->SetActive(false);
 		gLoop->loadingGO->SetActive(true);
 		gLoop->playerMenuGO->SetActive(false);
-		gLoop->gameState = (GameState*)gLoop->loadingState;
+		gLoop->currentLoopState = (LoopState*)gLoop->loadingState;
 		gLoop->sceneToLoad = GRAVEYARD_SCENE;
-		actionAfterLoad = (int)GameState::INTRO; //What
+		//actionAfterLoad = (int)GameState::INTRO; //What
 	}
 }

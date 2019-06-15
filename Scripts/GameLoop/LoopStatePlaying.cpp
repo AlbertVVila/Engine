@@ -1,4 +1,4 @@
-#include "GameStatePlaying.h"
+#include "LoopStatePlaying.h"
 
 #include "GameLoop.h"
 
@@ -11,20 +11,20 @@
 
 #define MENU_SCENE "MenuScene"
 
-GameStatePlaying::GameStatePlaying(GameLoop* GL) : GameState(GL)
+LoopStatePlaying::LoopStatePlaying(GameLoop* GL) : LoopState(GL)
 {
 }
 
 
-GameStatePlaying::~GameStatePlaying()
+LoopStatePlaying::~LoopStatePlaying()
 {
 }
 
-void GameStatePlaying::Update()
+void LoopStatePlaying::Update()
 {
 	if (gLoop->hudBackToMenuButton->IsPressed())
 	{
-		gLoop->gameState = (GameState*)gLoop->loadingState;
+		gLoop->currentLoopState = (LoopState*)gLoop->loadingState;
 		gLoop->playerMenuGO->SetActive(false);
 		gLoop->hudGO->SetActive(false);
 		gLoop->loadingGO->SetActive(true);
@@ -65,11 +65,11 @@ void GameStatePlaying::Update()
 	if (gLoop->playerScript->isPlayerDead)
 	{
 		gLoop->loseWindow->SetActive(true);
-		gLoop->gameState = (GameState*)gLoop->deadState;
+		gLoop->currentLoopState = (LoopState*)gLoop->deadState;
 	}
 	else if (gLoop->winBbox->Intersects(*(gLoop->playerBbox)))
 	{
 		gLoop->winWindow->SetActive(true);
-		gLoop->gameState = (GameState*)gLoop->winState;
+		gLoop->currentLoopState = (LoopState*)gLoop->winState;
 	}
 }

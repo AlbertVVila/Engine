@@ -1,20 +1,20 @@
-#include "GameStateOptions.h"
+#include "LoopStateOptions.h"
 
 #include "GameLoop.h"
 
 #include "GameObject.h"
 #include "ComponentButton.h"
 
-GameStateOptions::GameStateOptions(GameLoop* GL) : GameState(GL)
+LoopStateOptions::LoopStateOptions(GameLoop* GL) : LoopState(GL)
 {
 }
 
 
-GameStateOptions::~GameStateOptions()
+LoopStateOptions::~LoopStateOptions()
 {
 }
 
-void GameStateOptions::Update()
+void LoopStateOptions::Update()
 {
 	gLoop->VolumeManagement();
 	gLoop->SoundManagement();
@@ -26,6 +26,6 @@ void GameStateOptions::Update()
 		gLoop->backOptionButton->isKeyDown = false;
 		gLoop->options->SetActive(false);
 		gLoop->EnableMenuButtons(true);
-		gLoop->gameState = (GameState*)gLoop->menuState;
+		gLoop->currentLoopState = (LoopState*)gLoop->menuState;
 	}
 }

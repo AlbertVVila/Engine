@@ -2,7 +2,7 @@
 #define  __GameLoop_h__
 
 #include "BaseScript.h"
-
+#include "Application.h"
 #include "Math/float3.h"
 
 #ifdef GameLoop_EXPORTS
@@ -25,18 +25,18 @@ class CreditsScript;
 class AABB;
 class JSON_value;
 
-class GameState;
-class GameStateControls;
-class GameStateCredits;
-class GameStateDead;
-class GameStateIntro;
-class GameStateLoading;
-class GameStateMenu;
-class GameStateOptions;
-class GameStatePaused;
-class GameStatePlaying;
-class GameStateQuit;
-class GameStateWin;
+class LoopState;
+class LoopStateControls;
+class LoopStateCredits;
+class LoopStateDead;
+class LoopStateIntro;
+class LoopStateLoading;
+class LoopStateMenu;
+class LoopStateOptions;
+class LoopStatePaused;
+class LoopStatePlaying;
+class LoopStateQuit;
+class LoopStateWin;
 
 class GameLoop_API GameLoop : public Script
 {
@@ -74,7 +74,7 @@ public:
 	void ManageQuit();
 	void ManageLoading();
 	void CreateGameStates();
-	void CheckStates(GameState* previous);
+	void CheckStates(LoopState* previous);
 
 	void EnableMenuButtons(bool enable);
 
@@ -87,18 +87,19 @@ public:
 
 	bool HasImageHoveredInChildren(const GameObject* go) const;
 
-	GameState* gameState = nullptr;
-	GameStateControls* controlsState = nullptr;
-	GameStateCredits* creditsState = nullptr;
-	GameStateDead* deadState = nullptr;
-	GameStateIntro* introState = nullptr;
-	GameStateLoading* loadingState = nullptr;
-	GameStateMenu* menuState = nullptr;
-	GameStateOptions* optionsState = nullptr;
-	GameStatePaused* pausedState = nullptr;
-	GameStatePlaying* playingState = nullptr;
-	GameStateQuit* quitState = nullptr;
-	GameStateWin* winState = nullptr;
+	LoopState* currentLoopState = nullptr;
+
+	LoopStateControls* controlsState = nullptr;
+	LoopStateCredits* creditsState = nullptr;
+	LoopStateDead* deadState = nullptr;
+	LoopStateIntro* introState = nullptr;
+	LoopStateLoading* loadingState = nullptr;
+	LoopStateMenu* menuState = nullptr;
+	LoopStateOptions* optionsState = nullptr;
+	LoopStatePaused* pausedState = nullptr;
+	LoopStatePlaying* playingState = nullptr;
+	LoopStateQuit* quitState = nullptr;
+	LoopStateWin* winState = nullptr;
 
 	GameScene gameScene = GameScene::MENU;
 

@@ -1,4 +1,4 @@
-#include "GameStateCredits.h"
+#include "LoopStateCredits.h"
 
 #include "GameLoop.h"
 
@@ -7,21 +7,21 @@
 
 #include "CreditsScript.h"
 
-GameStateCredits::GameStateCredits(GameLoop* GL) : GameState(GL)
+LoopStateCredits::LoopStateCredits(GameLoop* GL) : LoopState(GL)
 {
 }
 
 
-GameStateCredits::~GameStateCredits()
+LoopStateCredits::~LoopStateCredits()
 {
 }
 
-void GameStateCredits::Enter()
+void LoopStateCredits::Enter()
 {
 	gLoop->menu->SetActive(false);
 }
 
-void GameStateCredits::Update()
+void LoopStateCredits::Update()
 {
 	if (!(gLoop->runningCredits))
 	{
@@ -36,7 +36,7 @@ void GameStateCredits::Update()
 		gLoop->menu->SetActive(true);
 		gLoop->runningCredits = false;
 		gLoop->creditsScript->ResetScript();
-		gLoop->gameState = (GameState*)gLoop->menuState;
+		gLoop->currentLoopState = (LoopState*)gLoop->menuState;
 	}
 
 	if (gLoop->backCreditsButton->IsPressed())

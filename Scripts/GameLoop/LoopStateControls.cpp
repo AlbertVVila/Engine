@@ -1,20 +1,20 @@
-#include "GameStateControls.h"
+#include "LoopStateControls.h"
 
 #include "GameLoop.h"
 
 #include "GameObject.h"
 #include "ComponentButton.h"
 
-GameStateControls::GameStateControls(GameLoop* GL) : GameState(GL)
+LoopStateControls::LoopStateControls(GameLoop* GL) : LoopState(GL)
 {
 }
 
 
-GameStateControls::~GameStateControls()
+LoopStateControls::~LoopStateControls()
 {
 }
 
-void GameStateControls::Update()
+void LoopStateControls::Update()
 {
 	if (gLoop->backControlsButton->IsPressed())
 	{
@@ -22,6 +22,6 @@ void GameStateControls::Update()
 		gLoop->backControlsButton->isKeyDown = false;
 		gLoop->controls->SetActive(false);
 		gLoop->EnableMenuButtons(true);
-		gLoop->gameState = (GameState*)gLoop->menuState;
+		gLoop->currentLoopState = (LoopState*)gLoop->menuState;
 	}
 }

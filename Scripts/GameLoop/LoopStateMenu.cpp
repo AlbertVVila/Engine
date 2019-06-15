@@ -1,4 +1,4 @@
-#include "GameStateMenu.h"
+#include "LoopStateMenu.h"
 
 #include "GameLoop.h"
 
@@ -8,20 +8,20 @@
 
 #define GRAVEYARD_SCENE "Level0-TheGraveyard"
 
-GameStateMenu::GameStateMenu(GameLoop* GL) : GameState(GL)
+LoopStateMenu::LoopStateMenu(GameLoop* GL) : LoopState(GL)
 {
 }
 
 
-GameStateMenu::~GameStateMenu()
+LoopStateMenu::~LoopStateMenu()
 {
 }
 
-void GameStateMenu::Update()
+void LoopStateMenu::Update()
 {
 	if (((Button*)(gLoop->menuButtons[0]))->IsPressed()) //PlayButton
 	{
-		gLoop->gameState = (GameState*)gLoop->loadingState;
+		gLoop->currentLoopState = (LoopState*)gLoop->loadingState;
 		gLoop->menu->SetActive(false);
 		gLoop->loadingGO->SetActive(true);
 		gLoop->sceneToLoad = GRAVEYARD_SCENE;
@@ -30,20 +30,20 @@ void GameStateMenu::Update()
 	{
 		gLoop->options->SetActive(true);
 		gLoop->EnableMenuButtons(false);
-		gLoop->gameState = (GameState*)gLoop->optionsState;
+		gLoop->currentLoopState = (LoopState*)gLoop->optionsState;
 	}
 	else if (gLoop->controlsButton->IsPressed())
 	{
 		gLoop->controls->SetActive(true);
 		gLoop->EnableMenuButtons(false);
-		gLoop->gameState = (GameState*)gLoop->controlsState;
+		gLoop->currentLoopState = (LoopState*)gLoop->controlsState;
 	}
 	else if (gLoop->creditsButton->IsPressed())
 	{
-		gLoop->gameState = (GameState*)gLoop->creditsState;
+		gLoop->currentLoopState = (LoopState*)gLoop->creditsState;
 	}
 	else if (gLoop->exitButton->IsPressed())
 	{
-		gLoop->gameState = (GameState*)gLoop->quitState;
+		gLoop->currentLoopState = (LoopState*)gLoop->quitState;
 	}
 }

@@ -1,4 +1,4 @@
-#include "GameStateIntro.h"
+#include "LoopStateIntro.h"
 
 #include "Application.h"
 #include "GameLoop.h"
@@ -9,16 +9,16 @@
 
 #include "ModuleScene.h"
 
-GameStateIntro::GameStateIntro(GameLoop* GL) : GameState(GL)
+LoopStateIntro::LoopStateIntro(GameLoop* GL) : LoopState(GL)
 {
 }
 
 
-GameStateIntro::~GameStateIntro()
+LoopStateIntro::~LoopStateIntro()
 {
 }
 
-void GameStateIntro::Update()
+void LoopStateIntro::Update()
 {
 	//if (!runningIntro)
 	//{
@@ -30,7 +30,7 @@ void GameStateIntro::Update()
 	/*if (introScript->introDone)
 	{*/
 	gLoop->hudGO->SetActive(true);
-	GameObject* playerCameraGO = App->scene->FindGameObjectByName("PlayerCamera");
+	GameObject* playerCameraGO = gLoop->App->scene->FindGameObjectByName("PlayerCamera");
 	ComponentCamera* camera = (ComponentCamera*)playerCameraGO->GetComponent<ComponentCamera>();
 	camera->SetAsMain();
 	/*camera->isMainCamera = true;
@@ -43,6 +43,6 @@ void GameStateIntro::Update()
 	runningIntro = false;
 	introScript->introDone = false;
 	componentIntroCamera->gameobject->transform->SetPosition(introScript->initialPosition);*/
-	gLoop->gameState = (GameState*)gLoop->playingState;
+	gLoop->currentLoopState = (LoopState*)gLoop->playingState;
 	//}
 }
