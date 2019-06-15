@@ -91,12 +91,15 @@ public:
 	void cleanValuesPOST();
 
 
-	ENGINE_API bool FindPath(math::float3 start, math::float3 end, std::vector<math::float3> &path, PathFindType type = PathFindType::FOLLOW) const;
+	ENGINE_API bool FindPath(	math::float3 start, math::float3 end, std::vector<math::float3> &path, 
+								PathFindType type = PathFindType::FOLLOW, math::float3 diff = math::float3(0.f, 0.f, 0.f)) const;
+	ENGINE_API bool NavigateTowardsCursor(math::float3 start, std::vector<math::float3>& path, math::float3 positionCorrection, math::float3& intersectionPos);
 	void RecalcPath(math::float3 point);
 
 	//Constants
 	//static const int ERROR = -1;
 	static const int ERROR_NEARESTPOLY = -2;
+	std::string sceneName = "";
 
 private:
 	// Explicitly-disabled copy constructor and copy assignment operator.
