@@ -25,35 +25,35 @@ class CreditsScript;
 class AABB;
 class JSON_value;
 
+class GameState;
+class GameStateControls;
+class GameStateCredits;
+class GameStateDead;
+class GameStateIntro;
+class GameStateLoading;
+class GameStateMenu;
+class GameStateOptions;
+class GameStatePaused;
+class GameStatePlaying;
+class GameStateQuit;
+class GameStateWin;
+
 class GameLoop_API GameLoop : public Script
 {
-	enum class GameState
-	{		
-		MENU,
-		INTRO,
-		PLAYING,
-		DEAD,
-		WIN,
-		PAUSED,
-		OPTIONS,
-		CREDITS,
-		CONTROLS,
-		QUIT,
-		LOADING
-	};
-
 	enum class GameScene
 	{
 		MENU,
 		CEMENTERY,
 		HUD
 	};
+
 public :
 	void Expose(ImGuiContext* context) override;
 
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
-private:
+
+public:
 
 	void Start() override;
 	void Update() override;
@@ -73,6 +73,8 @@ private:
 	void ManageControls();
 	void ManageQuit();
 	void ManageLoading();
+	void CreateGameStates();
+	void CheckStates(GameState* previous);
 
 	void EnableMenuButtons(bool enable);
 
@@ -83,16 +85,27 @@ private:
 
 	void ResetPositions();
 
-	void ChangeGameState(GameState newState); //Set initial conditions for each state here if required
-
 	bool HasImageHoveredInChildren(const GameObject* go) const;
 
-	GameState gameState = GameState::MENU;
+	GameState* gameState = nullptr;
+	GameStateControls* controlsState = nullptr;
+	GameStateCredits* creditsState = nullptr;
+	GameStateDead* deadState = nullptr;
+	GameStateIntro* introState = nullptr;
+	GameStateLoading* loadingState = nullptr;
+	GameStateMenu* menuState = nullptr;
+	GameStateOptions* optionsState = nullptr;
+	GameStatePaused* pausedState = nullptr;
+	GameStatePlaying* playingState = nullptr;
+	GameStateQuit* quitState = nullptr;
+	GameStateWin* winState = nullptr;
+
 	GameScene gameScene = GameScene::MENU;
+
 public:
 	int volume = 10;
 
-private:
+public:
 	//UI Values
 	int minVolume = 0;
 	int maxVolume = 10;

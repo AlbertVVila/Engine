@@ -323,9 +323,33 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GameLoop.cpp" />
+    <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="GameStateControls.cpp" />
+    <ClCompile Include="GameStateCredits.cpp" />
+    <ClCompile Include="GameStateDead.cpp" />
+    <ClCompile Include="GameStateIntro.cpp" />
+    <ClCompile Include="GameStateLoading.cpp" />
+    <ClCompile Include="GameStateMenu.cpp" />
+    <ClCompile Include="GameStateOptions.cpp" />
+    <ClCompile Include="GameStatePaused.cpp" />
+    <ClCompile Include="GameStatePlaying.cpp" />
+    <ClCompile Include="GameStateQuit.cpp" />
+    <ClCompile Include="GameStateWin.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameLoop.h" />
+    <ClInclude Include="GameState.h" />
+    <ClInclude Include="GameStateControls.h" />
+    <ClInclude Include="GameStateCredits.h" />
+    <ClInclude Include="GameStateDead.h" />
+    <ClInclude Include="GameStateIntro.h" />
+    <ClInclude Include="GameStateLoading.h" />
+    <ClInclude Include="GameStateMenu.h" />
+    <ClInclude Include="GameStateOptions.h" />
+    <ClInclude Include="GameStatePaused.h" />
+    <ClInclude Include="GameStatePlaying.h" />
+    <ClInclude Include="GameStateQuit.h" />
+    <ClInclude Include="GameStateWin.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CreditsScript\CreditsScript.vcxproj">
