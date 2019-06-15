@@ -35,6 +35,7 @@ class PlayerStateDeath;
 class PlayerStateUppercut;
 class PlayerStateWalk;
 class DamageController;
+class DamageFeedbackUI;
 
 class PlayerMovement_API PlayerMovement : public Script
 {
@@ -106,6 +107,7 @@ private:
 	GameObject* dashMesh = nullptr;
 
 	DamageController* damageController = nullptr;
+	DamageFeedbackUI* damageUIFeedback = nullptr;
 	ComponentImage* lifeUIComponent = nullptr;
 	ComponentImage* manaUIComponent = nullptr;
 };

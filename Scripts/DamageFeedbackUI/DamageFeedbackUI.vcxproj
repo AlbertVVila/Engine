@@ -36,37 +36,42 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{da319d4a-70a8-42c8-a54f-db7ead02ca0d}</ProjectGuid>
+    <ProjectGuid>{a0ec96d9-fd95-4c0c-b500-6cf8fd9af1f4}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>PlayerMovement</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <RootNamespace>DamageFeedbackUI</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(WindowsTargetPlatformVersion)'==''">
+    <!-- Latest Target Version property -->
+    <LatestTargetPlatformVersion>$([Microsoft.Build.Utilities.ToolLocationHelper]::GetLatestSDKTargetPlatformVersion('Windows', '10.0'))</LatestTargetPlatformVersion>
+    <WindowsTargetPlatformVersion Condition="'$(WindowsTargetPlatformVersion)' == ''">$(LatestTargetPlatformVersion)</WindowsTargetPlatformVersion>
+    <TargetPlatformVersion>$(WindowsTargetPlatformVersion)</TargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
-    <CharacterSet>NotSet</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='GameBuild Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
-    <CharacterSet>NotSet</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>NotSet</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='GameBuild|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>NotSet</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
@@ -158,22 +163,19 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;PlayerMovement_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;DamageFeedbackUI_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Scripts\DamageFeedbackUI;$(SolutionDir)\Scripts\EnemyControllerScript;$(SolutionDir)\Source\NodeEditor\Include;$(SolutionDir)\Source\rapidjson-1.1.0\include;..\BaseScript;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Scripts\DamageController;$(SolutionDir)Source\MathGeoLib</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\Scripts\DamageFeedbackUI\$(Configuration);$(SolutionDir)Source\MathGeoLib\lib;$(SolutionDir)\Source\Imgui\lib; $(SolutionDir)$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>$(SolutionName).lib;MathGeoLib.lib;ImGui.lib; DamageFeedbackUI.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\Source\MathGeoLib\lib;$(SolutionDir)\Source\Imgui\lib;$(SolutionDir)$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(SolutionName).lib;MathGeoLib.lib;ImGui.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts"</Command>
     </PostBuildEvent>
-    <PreBuildEvent>
-      <Command>if not exist "..\..\Game\Scripts"  mkdir "..\..\Game\Scripts"</Command>
-    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='GameBuild Debug|Win32'">
     <ClCompile>
@@ -181,22 +183,19 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;PlayerMovement_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;DamageFeedbackUI_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Scripts\DamageFeedbackUI;$(SolutionDir)\Scripts\EnemyControllerScript;$(SolutionDir)\Source\NodeEditor\Include;$(SolutionDir)\Source\rapidjson-1.1.0\include;..\BaseScript;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Scripts\DamageController;$(SolutionDir)Source\MathGeoLib</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\Scripts\DamageFeedbackUI\$(Configuration);$(SolutionDir)Source\MathGeoLib\lib;..\BaseScript\$(IntDir); $(SolutionDir)\Source\Imgui\lib; $(SolutionDir)$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>$(SolutionName).lib;MathGeoLib.lib;ImGui.lib; DamageFeedbackUI.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\Source\MathGeoLib\lib;$(SolutionDir)\Source\Imgui\lib;$(SolutionDir)$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(SolutionName).lib;MathGeoLib.lib;ImGui.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts"</Command>
     </PostBuildEvent>
-    <PreBuildEvent>
-      <Command>if not exist "..\..\Game\Scripts"  mkdir "..\..\Game\Scripts"</Command>
-    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -204,7 +203,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;PlayerMovement_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;DamageFeedbackUI_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -218,7 +217,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;PlayerMovement_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;DamageFeedbackUI_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -234,24 +233,21 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;PlayerMovement_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;DamageFeedbackUI_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Scripts\DamageFeedbackUI;$(SolutionDir)\Scripts\EnemyControllerScript;$(SolutionDir)\Source\NodeEditor\Include;$(SolutionDir)\Source\rapidjson-1.1.0\include;..\BaseScript;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Scripts\DamageController;$(SolutionDir)Source\MathGeoLib</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\Scripts\DamageFeedbackUI\$(Configuration);$(SolutionDir)Source\MathGeoLib\lib;..\BaseScript\$(IntDir); $(SolutionDir)\Source\Imgui\lib; $(SolutionDir)$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>$(SolutionName).lib;MathGeoLib.lib;ImGui.lib; DamageFeedbackUI.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\Source\MathGeoLib\lib;$(SolutionDir)\Source\Imgui\lib;$(SolutionDir)$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(SolutionName).lib;MathGeoLib.lib;ImGui.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts"</Command>
     </PostBuildEvent>
-    <PreBuildEvent>
-      <Command>if not exist "..\..\Game\Scripts"  mkdir "..\..\Game\Scripts"</Command>
-    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='GameBuild|Win32'">
     <ClCompile>
@@ -261,24 +257,21 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>GAME_BUILD;WIN32;NDEBUG;PlayerMovement_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;DamageFeedbackUI_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Scripts\DamageFeedbackUI;$(SolutionDir)\Scripts\EnemyControllerScript;$(SolutionDir)\Source\NodeEditor\Include;$(SolutionDir)\Source\rapidjson-1.1.0\include;..\BaseScript;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Scripts\DamageController;$(SolutionDir)Source\MathGeoLib</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\Scripts\DamageFeedbackUI\$(Configuration);$(SolutionDir)Source\MathGeoLib\lib;$(SolutionDir)\Source\Imgui\lib; $(SolutionDir)$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>$(SolutionName).lib;MathGeoLib.lib;ImGui.lib; DamageFeedbackUI.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\Source\MathGeoLib\lib;$(SolutionDir)\Source\Imgui\lib;$(SolutionDir)$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(SolutionName).lib;MathGeoLib.lib;ImGui.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts"</Command>
     </PostBuildEvent>
-    <PreBuildEvent>
-      <Command>if not exist "..\..\Game\Scripts"  mkdir "..\..\Game\Scripts"</Command>
-    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -288,7 +281,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;PlayerMovement_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;DamageFeedbackUI_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -306,7 +299,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;PlayerMovement_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;DamageFeedbackUI_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -317,35 +310,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="PlayerMovement.cpp" />
-    <ClCompile Include="PlayerState.cpp" />
-    <ClCompile Include="PlayerStateAttack.cpp" />
-    <ClCompile Include="PlayerStateFirstAttack.cpp" />
-    <ClCompile Include="PlayerStateDash.cpp" />
-    <ClCompile Include="PlayerStateDeath.cpp" />
-    <ClCompile Include="PlayerStateIdle.cpp" />
-    <ClCompile Include="PlayerStateSecondAttack.cpp" />
-    <ClCompile Include="PlayerStateThirdAttack.cpp" />
-    <ClCompile Include="PlayerStateUppercut.cpp" />
-    <ClCompile Include="PlayerStateWalk.cpp" />
+    <ClCompile Include="DamageFeedbackUI.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="PlayerMovement.h" />
-    <ClInclude Include="PlayerState.h" />
-    <ClInclude Include="PlayerStateAttack.h" />
-    <ClInclude Include="PlayerStateFirstAttack.h" />
-    <ClInclude Include="PlayerStateDash.h" />
-    <ClInclude Include="PlayerStateDeath.h" />
-    <ClInclude Include="PlayerStateIdle.h" />
-    <ClInclude Include="PlayerStateSecondAttack.h" />
-    <ClInclude Include="PlayerStateThirdAttack.h" />
-    <ClInclude Include="PlayerStateUppercut.h" />
-    <ClInclude Include="PlayerStateWalk.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DamageController\DamageController.vcxproj">
-      <Project>{d8141fa2-e862-4706-a9f3-e8441c2b68fd}</Project>
-    </ProjectReference>
+    <ClInclude Include="DamageFeedbackUI.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
