@@ -25,6 +25,7 @@ void LoopStateDead::Update()
 		gLoop->playerMenuGO->SetActive(false);
 		gLoop->currentLoopState = (LoopState*)gLoop->loadingState;
 		gLoop->sceneToLoad = GRAVEYARD_SCENE;
+		gLoop->stateAfterLoad = (LoopState*)gLoop->introState;
 		//actionAfterLoad = (int)GameState::INTRO; //What
 	}
 }

@@ -20,6 +20,7 @@ void LoopStateOptions::Update()
 	gLoop->SoundManagement();
 	gLoop->VsyncManagement();
 	gLoop->ResolutionManagement();
+
 	if (gLoop->backOptionButton->IsPressed())
 	{
 		gLoop->backOptionButton->isHovered = false;

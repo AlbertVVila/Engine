@@ -29,6 +29,6 @@ void LoopStateWin::Update()
 		gLoop->currentLoopState = (LoopState*)gLoop->loadingState;
 		gLoop->playerMenuGO->SetActive(false);
 		gLoop->sceneToLoad = MENU_SCENE;
-		//gLoop->actionAfterLoad = (int)GameState::CREDITS;
+		gLoop->stateAfterLoad = (LoopState*)gLoop->creditsState;
 	}
 }

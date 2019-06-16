@@ -180,6 +180,7 @@ public:
 	bool vsync = false;
 
 	std::string sceneToLoad = "";
+	LoopState* stateAfterLoad = nullptr;
 	int actionAfterLoad = -1;
 };
 
