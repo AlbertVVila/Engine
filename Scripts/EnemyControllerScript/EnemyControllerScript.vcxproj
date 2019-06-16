@@ -324,6 +324,7 @@
     </ProjectReference>
     <ProjectReference Include="..\EnemyLoot\EnemyLoot.vcxproj">
       <Project>{b1fc287c-6ee1-44c8-874b-9860a2d4d35a}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\ExperienceController\ExperienceController.vcxproj">
       <Project>{7306983d-f81f-488d-9548-d68509fef4c8}</Project>
     </ProjectReference>

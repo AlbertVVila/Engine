@@ -15,12 +15,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="$safeprojectname$.cpp">
+    <ClCompile Include="ItemNameController.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="$safeprojectname$.cpp">
+    <ClInclude Include="ItemNameController.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>

@@ -10,7 +10,6 @@
 #endif
 
 #include <vector>
-#include "Math/float2.h"
 #include "Item.h"
 #include "imgui.h"
 
@@ -36,8 +35,6 @@ private:
 	GameObject* go = nullptr;
 
 	Script* script = nullptr;
-
-	ItemPicker* itemPicker;
 
 	void Expose(ImGuiContext * context);
 };

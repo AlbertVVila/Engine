@@ -10,7 +10,8 @@
 #endif
 class GameObject;
 class ComponentRenderer;
-class ComponentText;
+class Text;
+class ItemPicker;
 
 class ItemNameController_API ItemNameController : public Script
 {
@@ -18,13 +19,14 @@ public:
 	void Start() override;
 	void Update() override;
 
-	void SetNameBar(std::string name);
+	void SetNameBar(std::string name, int rarity);
 private:
+	GameObject* itemName = nullptr;
 	GameObject* itemBackground = nullptr;
 	GameObject* itemTypeName = nullptr;
 
 	ComponentRenderer* myRender = nullptr;
-	ComponentText* myText = nullptr;
+	Text* myText = nullptr;
 };
 
 #endif __ItemNameController_h__

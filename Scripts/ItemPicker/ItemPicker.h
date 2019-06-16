@@ -18,7 +18,7 @@ class JSON_value;
 class ComponentRenderer;
 class ItemNameController;
 
-enum class ItemRarity
+enum class ItemPicker_API ItemRarity
 {
 	BASIC = 0,
 	RARE,
@@ -55,6 +55,7 @@ private:
 
 	ComponentRenderer* myRender;
 	ItemRarity rarity = ItemRarity::BASIC;
+	int rare = 0;
 
 	ItemNameController* itemName = nullptr;
 };
