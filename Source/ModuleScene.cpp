@@ -21,6 +21,7 @@
 #include "ComponentCamera.h"
 #include "ComponentRenderer.h"
 #include "ComponentTransform.h"
+#include "ComponentText.h"
 
 #include "ResourceTexture.h"
 #include "ResourceMesh.h"

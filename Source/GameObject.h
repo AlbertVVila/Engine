@@ -11,6 +11,7 @@ class Component;
 class ComponentTransform;
 class ComponentLight;
 class ComponentAnimation;
+class ComponentText;
 class AABBTreeNode;
 class ResourcePrefab;
 enum class ComponentType;
