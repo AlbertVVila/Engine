@@ -10,7 +10,7 @@ class LoopStateCredits :
 {
 public:
 	LoopStateCredits(GameLoop* GL);
-	~LoopStateCredits();
+	virtual ~LoopStateCredits();
 
 	void Enter() override;
 	void Update() override;

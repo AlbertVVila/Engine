@@ -10,7 +10,7 @@ class LoopStateMenu :
 {
 public:
 	LoopStateMenu(GameLoop* GL);
-	~LoopStateMenu();
+	virtual ~LoopStateMenu();
 
 	void Update() override;
 };

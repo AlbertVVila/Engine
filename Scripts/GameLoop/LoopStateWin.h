@@ -7,7 +7,7 @@ class LoopStateWin : public LoopState
 {
 public:
 	LoopStateWin(GameLoop* GL);
-	~LoopStateWin();
+	virtual ~LoopStateWin();
 
 	void Update() override;
 };

@@ -11,7 +11,7 @@ class LoopStateControls :
 {
 public:
 	LoopStateControls(GameLoop* GL);
-	~LoopStateControls();
+	virtual ~LoopStateControls();
 
 	void Update() override;
 };

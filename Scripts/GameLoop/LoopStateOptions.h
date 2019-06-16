@@ -8,7 +8,7 @@ class LoopStateOptions :
 {
 public:
 	LoopStateOptions(GameLoop* GL);
-	~LoopStateOptions();
+	virtual ~LoopStateOptions();
 
 	void Update() override;
 };

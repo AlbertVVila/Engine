@@ -10,7 +10,7 @@ class LoopStatePlaying :
 {
 public:
 	LoopStatePlaying(GameLoop* GL);
-	~LoopStatePlaying();
+	virtual ~LoopStatePlaying();
 
 	void Update() override;
 };

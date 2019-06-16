@@ -9,7 +9,7 @@ class LoopState
 {
 public:
 	LoopState(GameLoop* GL);
-	~LoopState();
+	virtual ~LoopState();
 
 	virtual void Update() {};
 	virtual void Enter() {};

@@ -7,7 +7,7 @@ class LoopStateIntro : public LoopState
 {
 public:
 	LoopStateIntro(GameLoop* GL);
-	~LoopStateIntro();
+	virtual ~LoopStateIntro();
 
 	void Update() override;
 };

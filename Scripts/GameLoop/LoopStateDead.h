@@ -8,7 +8,7 @@ class LoopStateDead :
 {
 public:
 	LoopStateDead(GameLoop* GL);
-	~LoopStateDead();
+	virtual ~LoopStateDead();
 
 	void Update() override;
 };

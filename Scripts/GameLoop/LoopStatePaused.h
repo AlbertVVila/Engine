@@ -8,7 +8,7 @@ class LoopStatePaused :
 {
 public:
 	LoopStatePaused(GameLoop* GL);
-	~LoopStatePaused();
+	virtual ~LoopStatePaused();
 
 	void Update() override;
 };

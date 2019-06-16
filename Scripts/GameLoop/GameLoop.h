@@ -62,17 +62,6 @@ public:
 	void LoadCementeryScene();
 	void LoadHUDScene();
 
-	void ManageDead();
-	void ManageMenu();
-	void ManageIntro();
-	void ManagePlaying();
-	void ManageWin();
-	void ManagePaused();
-	void ManageOptions();
-	void ManageCredits();
-	void ManageControls();
-	void ManageQuit();
-	void ManageLoading();
 	void CreateGameStates();
 	void CheckStates(LoopState* previous);
 
@@ -102,6 +91,7 @@ public:
 	LoopStateWin* winState = nullptr;
 
 	GameScene gameScene = GameScene::MENU;
+	std::vector<LoopState*> loopStates;
 
 public:
 	int volume = 10;

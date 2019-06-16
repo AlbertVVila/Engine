@@ -8,7 +8,7 @@ class LoopStateQuit :
 {
 public:
 	LoopStateQuit(GameLoop* GL);
-	~LoopStateQuit();
+	virtual ~LoopStateQuit();
 
 	void Update() override;
 };

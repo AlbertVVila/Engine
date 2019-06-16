@@ -8,7 +8,7 @@ class LoopStateLoading :
 {
 public:
 	LoopStateLoading(GameLoop* GL);
-	~LoopStateLoading();
+	virtual ~LoopStateLoading();
 
 	void Update() override;
 };
