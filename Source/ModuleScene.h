@@ -104,6 +104,8 @@ public:
 	ENGINE_API GameObject* FindGameObjectByUID(unsigned UID, GameObject* parent = nullptr) const;
 	ENGINE_API GameObject* FindGameObjectByName(const char* name, GameObject* parent = nullptr) const;
 
+	ENGINE_API std::vector<std::string> GetItems();
+
 	ENGINE_API GameObject* Spawn(const char* name, GameObject* parent= nullptr);
 	ENGINE_API GameObject* Spawn(const char* name, math::float3 position,
 		math::Quat rotation, GameObject* parent = nullptr);
