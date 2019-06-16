@@ -10,7 +10,6 @@
 
 #include "imgui.h"
 
-#include "Brofiler.h"
 
 ModuleAudioManager::ModuleAudioManager()
 {
@@ -23,7 +22,7 @@ ModuleAudioManager::~ModuleAudioManager()
 
 update_status ModuleAudioManager::PostUpdate() 
 {
-	BROFILER_CATEGORY("Audio PreUpdate", Profiler::Color::Beige);
+
 	if (App->time->gameState == GameState::RUN) busesStoped = false;
 
 	else if (App->time->gameState == GameState::STOP && !busesStoped)
