@@ -76,8 +76,8 @@ public:
 public:
 	float health = 0;
 	float mana = 0;
-	unsigned strength  = 0;
-	unsigned dexterity = 0;
+	int strength  = 0;
+	int dexterity = 0;
 
 	float hpRegen = 0;
 	float manaRegen = 0;
