@@ -36,11 +36,48 @@ class PlayerStateUppercut;
 class PlayerStateWalk;
 class DamageController;
 
+struct PlayerMovement_API PlayerStats
+{
+public:
+	void Serialize(JSON_value* json) const;
+	void DeSerialize(JSON_value* json);
+	void Expose(const char* sectionTitle);
+
+	PlayerStats& operator+=(const PlayerStats& other) {
+		this->health += other.health;
+		this->mana += other.mana;
+		this->strength += other.strength;
+		this->dexterity += other.dexterity;
+		this->manaRegen += other.manaRegen;
+		this->hpRegen += other.hpRegen;
+		return *this;
+	}
+
+	PlayerStats& operator-=(const PlayerStats& other)
+	{
+		this->health -= other.health;
+		this->mana -= other.mana;
+		this->strength -= other.strength;
+		this->dexterity -= other.dexterity;
+		this->manaRegen -= other.manaRegen;
+		this->hpRegen -= other.hpRegen;
+		return *this;
+	}
+
+public:
+	float health = 0;
+	float mana = 0;
+	unsigned strength  = 0;
+	unsigned dexterity = 0;
+
+	float hpRegen = 0;
+	float manaRegen = 0;
+};
+
 class PlayerMovement_API PlayerMovement : public Script
 {
 public:
 	void Expose(ImGuiContext* context) override;
-
 
 	void Start() override;
 	void Update() override;
@@ -49,6 +86,9 @@ public:
 
 	void OnTriggerExit(GameObject* go) override;
 	void Damage(float amount);
+
+	void Equip(const PlayerStats& equipStats);
+	void UnEquip(const PlayerStats& equipStats);
 
 	//Abstract input
 	bool IsAtacking() const;
@@ -82,13 +122,19 @@ public:
 
 	float walkingSpeed = 100.0f;
 	float dashSpeed = 10.0f;
-	const float fullHealth = 100.0f;
-	float health = fullHealth;
-	const float fullMana = 100.0f;
-	float mana = fullMana;
+	//const float fullHealth = 100.0f;
+	float health = 100.0f;
+	//const float fullMana = 100.0f;
+	float mana = 100.0f;
 	bool IsManaUsed = false;
 	float attackDuration = 1.0f;
 	float attackTimer = 0.0f;
+	
+	float outCombatTimer = 0.0f;
+	float outCombatMaxTime = 3.0f;
+
+	PlayerStats stats = { 100.0f, 100.0f, 10U, 10U, 5.0f, 5.0f };
+
 	float OutOfMeshCorrectionXZ = 500.f;
 	float OutOfMeshCorrectionY = 300.0f;
 	ComponentAnimation* anim = nullptr;
