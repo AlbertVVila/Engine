@@ -152,6 +152,10 @@ bool ResourceScene::Load()
 	RELEASE(json);
 
 	App->scene->root->OnPlay();
+	//set all the game objects
+	App->scene->root->UpdateTransforms(math::float4x4::identity);
+	App->scene->root->SetAllMoveFlags();
+
 	return true;
 }
 
