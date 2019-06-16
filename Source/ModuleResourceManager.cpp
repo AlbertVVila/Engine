@@ -584,46 +584,35 @@ std::vector<Resource*> ModuleResourceManager::GetResourcesList()
 	return resourcesList;
 }
 
-std::vector<ResourceTexture*> ModuleResourceManager::GetTexturesList()
+std::vector<Resource*> ModuleResourceManager::GetResourcesList(TYPE type)
 {
-	std::vector<ResourceTexture*> resourcesList;
+	std::vector<Resource*> resourcesList;
 	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
 	{
-		if(it->second->GetType() == TYPE::TEXTURE)
-			resourcesList.push_back((ResourceTexture*)it->second);
+		if (it->second->GetType() == type)
+			resourcesList.push_back(it->second);
 	}
 	return resourcesList;
 }
 
-std::vector<ResourceMaterial*> ModuleResourceManager::GetMaterialsList()
+std::vector<Resource*> ModuleResourceManager::GetResourcesList(bool loaded)
 {
-	std::vector<ResourceMaterial*> resourcesList;
+	std::vector<Resource*> resourcesList;
 	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
 	{
-		if (it->second->GetType() == TYPE::MATERIAL)
-			resourcesList.push_back((ResourceMaterial*)it->second);
+		if (it->second->IsLoadedToMemory() == loaded)
+			resourcesList.push_back(it->second);
 	}
 	return resourcesList;
 }
 
-std::vector<ResourceAnimation*> ModuleResourceManager::GetAnimationsList()
+std::vector<Resource*> ModuleResourceManager::GetResourcesList(TYPE type, bool loaded)
 {
-	std::vector<ResourceAnimation*> resourcesList;
+	std::vector<Resource*> resourcesList;
 	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
 	{
-		if (it->second->GetType() == TYPE::ANIMATION)
-			resourcesList.push_back((ResourceAnimation*)it->second);
-	}
-	return resourcesList;
-}
-
-std::vector<ResourceStateMachine*> ModuleResourceManager::GetSMList()
-{
-	std::vector<ResourceStateMachine*> resourcesList;
-	for (std::map<unsigned, Resource*>::iterator it = resources.begin(); it != resources.end(); ++it)
-	{
-		if (it->second->GetType() == TYPE::STATEMACHINE)
-			resourcesList.push_back((ResourceStateMachine*)it->second);
+		if (it->second->GetType() == type && it->second->IsLoadedToMemory() == loaded)
+			resourcesList.push_back(it->second);
 	}
 	return resourcesList;
 }
