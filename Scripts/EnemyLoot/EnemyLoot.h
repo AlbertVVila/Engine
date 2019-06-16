@@ -31,6 +31,7 @@ private:
 	std::vector<std::pair<GameObject*, int>> items;
 	int drop = 0;
 	std::string goName = "GO Name";
+	std::string itemName = "";
 
 	GameObject* go = nullptr;
 

@@ -56,7 +56,7 @@ public:
 	std::string playerBboxName = "PlayerMesh";
 	std::string myBboxName = "EnemyMesh";
 	ComponentAnimation* anim = nullptr;
-	ComponentRenderer* myRender;
+	ComponentRenderer* myRender = nullptr;
 
 	DamageController* damageController = nullptr;
 	EnemyLifeBarController* enemyLifeBar = nullptr;

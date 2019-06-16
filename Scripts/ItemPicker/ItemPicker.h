@@ -12,10 +12,19 @@
 #define ItemPicker_API __declspec(dllimport)
 #endif
 
-
 class InventoryScript;
 class AABB;
 class JSON_value;
+class ComponentRenderer;
+class ItemNameController;
+
+enum class ItemRarity
+{
+	BASIC = 0,
+	RARE,
+	EPIC,
+	LEGENDARY
+};
 
 class ItemPicker_API ItemPicker : public Script
 {
@@ -41,6 +50,13 @@ private:
 
 	std::vector<std::string> textureFiles;
 	const char * selectedTexture = "basicPostion";
+
+	std::string myBboxName;
+
+	ComponentRenderer* myRender;
+	ItemRarity rarity = ItemRarity::BASIC;
+
+	ItemNameController* itemName = nullptr;
 };
 
 #endif __ItemPicker_h__
