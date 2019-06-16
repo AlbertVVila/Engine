@@ -68,59 +68,93 @@ void Transform2D::DrawProperties()
 			ImGui::PopItemFlag();
 			ImGui::PopStyleVar();
 		}
+		DrawAnchor();
+		DrawStretch();
+	}
+}
 
+void Transform2D::DrawAnchor()
+{
+	if (ImGui::CollapsingHeader("Anchor", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		int newAnchor = -1;
 
-		if (ImGui::CollapsingHeader("Anchor", ImGuiTreeNodeFlags_DefaultOpen))
+		//top
+		if (currentAnchor == TOPLEFT) ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
+		if (ImGui::Button("Top Left")) newAnchor = TOPLEFT;
+		if (currentAnchor == TOPLEFT) ImGui::PopStyleColor();
+
+		ImGui::SameLine();
+		if (currentAnchor == TOPCENTER) ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
+		if (ImGui::Button("Top Center")) newAnchor = TOPCENTER;
+		if (currentAnchor == TOPCENTER) ImGui::PopStyleColor();
+
+		ImGui::SameLine();
+		if (currentAnchor == TOPRIGHT) ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
+		if (ImGui::Button("Top Right")) newAnchor = TOPRIGHT;
+		if (currentAnchor == TOPRIGHT) ImGui::PopStyleColor();
+
+		//middle
+		if (currentAnchor == MIDDLELEFT) ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
+		if (ImGui::Button("Middle Left")) newAnchor = MIDDLELEFT;
+		if (currentAnchor == MIDDLELEFT) ImGui::PopStyleColor();
+
+		ImGui::SameLine();
+		if (currentAnchor == MIDDLECENTER) ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
+		if (ImGui::Button("Middle Center"))	newAnchor = MIDDLECENTER;
+		if (currentAnchor == MIDDLECENTER) ImGui::PopStyleColor();
+
+		ImGui::SameLine();
+		if (currentAnchor == MIDDLERIGHT) ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
+		if (ImGui::Button("Middle Right")) newAnchor = MIDDLERIGHT;
+		if (currentAnchor == MIDDLERIGHT) ImGui::PopStyleColor();
+
+		//bottom
+		if (currentAnchor == BOTTOMLEFT) ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
+		if (ImGui::Button("Bottom Left")) newAnchor = BOTTOMLEFT;
+		if (currentAnchor == BOTTOMLEFT) ImGui::PopStyleColor();
+
+		ImGui::SameLine();
+		if (currentAnchor == BOTTOMCENTER) ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
+		if (ImGui::Button("Bottom Center"))	newAnchor = BOTTOMCENTER;
+		if (currentAnchor == BOTTOMCENTER) ImGui::PopStyleColor();
+
+		ImGui::SameLine();
+		if (currentAnchor == BOTTOMRIGHT) ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
+		if (ImGui::Button("Bottom Right")) newAnchor = BOTTOMRIGHT;
+		if (currentAnchor == BOTTOMRIGHT) ImGui::PopStyleColor();
+
+		if (newAnchor > -1)
+			currentAnchor = newAnchor;
+	}
+}
+
+void Transform2D::DrawStretch()
+{
+	if (ImGui::CollapsingHeader("Stretch", ImGuiTreeNodeFlags_DefaultOpen))
+	{
+		int newStretch = -1;
+		if (currentStretch == VERTICAL) ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
+		if (ImGui::Button("Vertical")) newStretch = VERTICAL;
+		if (currentStretch == VERTICAL) ImGui::PopStyleColor();
+
+		ImGui::SameLine();
+		if (currentStretch == HORIZONTAL) ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
+		if (ImGui::Button("Horizontal")) newStretch = HORIZONTAL;
+		if (currentStretch == HORIZONTAL) ImGui::PopStyleColor();
+
+		if (currentStretch == BOTH) ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
+		if (ImGui::Button("All")) newStretch = BOTH;
+		if (currentStretch == BOTH) ImGui::PopStyleColor();
+
+		ImGui::SameLine();
+		if (currentStretch == NONE) ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
+		if (ImGui::Button("No Stretch")) newStretch = NONE;
+		if (currentStretch == NONE) ImGui::PopStyleColor();
+
+		if (newStretch > -1)
 		{
-			int newAnchor = -1;
-
-			//top
-			if (currentAnchor == TOPLEFT) ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
-			if (ImGui::Button("Top Left")) newAnchor = TOPLEFT;
-			if (currentAnchor == TOPLEFT) ImGui::PopStyleColor();
-
-			ImGui::SameLine();
-			if (currentAnchor == TOPCENTER) ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
-			if (ImGui::Button("Top Center")) newAnchor = TOPCENTER;
-			if (currentAnchor == TOPCENTER) ImGui::PopStyleColor();
-
-			ImGui::SameLine();
-			if (currentAnchor == TOPRIGHT) ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
-			if (ImGui::Button("Top Right")) newAnchor = TOPRIGHT;
-			if (currentAnchor == TOPRIGHT) ImGui::PopStyleColor();
-
-			//middle
-			if (currentAnchor == MIDDLELEFT) ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
-			if (ImGui::Button("Middle Left")) newAnchor = MIDDLELEFT;
-			if (currentAnchor == MIDDLELEFT) ImGui::PopStyleColor();
-
-			ImGui::SameLine();
-			if (currentAnchor == MIDDLECENTER) ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
-			if (ImGui::Button("Middle Center"))	newAnchor = MIDDLECENTER;
-			if (currentAnchor == MIDDLECENTER) ImGui::PopStyleColor();
-
-			ImGui::SameLine();
-			if (currentAnchor == MIDDLERIGHT) ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
-			if (ImGui::Button("Middle Right")) newAnchor = MIDDLERIGHT;
-			if (currentAnchor == MIDDLERIGHT) ImGui::PopStyleColor();
-
-			//bottom
-			if (currentAnchor == BOTTOMLEFT) ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
-			if (ImGui::Button("Bottom Left")) newAnchor = BOTTOMLEFT;
-			if (currentAnchor == BOTTOMLEFT) ImGui::PopStyleColor();
-
-			ImGui::SameLine();
-			if (currentAnchor == BOTTOMCENTER) ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
-			if (ImGui::Button("Bottom Center"))	newAnchor = BOTTOMCENTER;
-			if (currentAnchor == BOTTOMCENTER) ImGui::PopStyleColor();
-
-			ImGui::SameLine();
-			if (currentAnchor == BOTTOMRIGHT) ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
-			if (ImGui::Button("Bottom Right")) newAnchor = BOTTOMRIGHT;
-			if (currentAnchor == BOTTOMRIGHT) ImGui::PopStyleColor();
-
-			if (newAnchor > -1)
-				currentAnchor = newAnchor;
+			currentStretch = newStretch;
 		}
 	}
 }
@@ -138,6 +172,7 @@ void Transform2D::Save(JSON_value * value) const
 	value->AddFloat2("Position", position);
 	value->AddFloat2("Size", size);
 	value->AddInt("Anchor", currentAnchor);
+	value->AddInt("Stretch", currentStretch);
 }
 
 void Transform2D::Load(JSON_value* value)
@@ -146,13 +181,23 @@ void Transform2D::Load(JSON_value* value)
 	position = value->GetFloat2("Position");
 	size = value->GetFloat2("Size");
 	currentAnchor = value->GetInt("Anchor");
+	currentStretch = value->GetInt("Stretch", NONE);
 }
 
 math::float2 Transform2D::getPosition() const
 {
 #ifndef  GAME_BUILD
-	float width = (float)App->renderer->viewGame->current_width;
-	float height = (float)App->renderer->viewGame->current_height;
+	float width, height;
+	if (!App->renderer->viewGame->hidden)
+	{
+		width = (float)App->renderer->viewGame->current_width;
+		height = (float)App->renderer->viewGame->current_height;
+	}
+	else
+	{
+		width = (float)App->renderer->viewScene->current_width;
+		height = (float)App->renderer->viewScene->current_height;
+	}
 #else
 	float width = (float)App->window->width;
 	float height = (float)App->window->height;
@@ -168,7 +213,7 @@ void Transform2D::setPosition(const math::float2& position)
 	this->position = position;
 }
 
-void Transform2D::SetPositionUsingAligment(math::float2& newPosition)
+void Transform2D::SetPositionUsingAligment(math::float2& newPosition) //TODO: Anchorage and Strecthing should be local to parent
 {
 
 #ifndef  GAME_BUILD
@@ -178,15 +223,41 @@ void Transform2D::SetPositionUsingAligment(math::float2& newPosition)
 	float width = (float)App->window->width;
 	float height = (float)App->window->height;
 #endif
-	float horizontalCalculation = alignments[currentAnchor].x * width * 0.5;
-	float verticalCalculation = alignments[currentAnchor].y * height * 0.5;
+	float horizontalCalculation = alignments[currentAnchor].x * width * 0.5f;
+	float verticalCalculation = alignments[currentAnchor].y * height * 0.5f;
 
 	this->position = math::float2(newPosition.x - horizontalCalculation, newPosition.y - verticalCalculation);
 }
 
 math::float2 Transform2D::getSize() const
 {
-	return size;
+	if (currentStretch == NONE) return size;
+	#ifndef  GAME_BUILD
+	float width, height;
+	if (!App->renderer->viewGame->hidden)
+	{
+		width = (float)App->renderer->viewGame->current_width;
+		height = (float)App->renderer->viewGame->current_height;
+	}
+	else
+	{
+		width = (float)App->renderer->viewScene->current_width;
+		height = (float)App->renderer->viewScene->current_height;
+	}
+#else
+	float width = (float)App->window->width;
+	float height = (float)App->window->height;
+#endif
+	float2 newSize = size;
+	if (currentStretch == VERTICAL || currentStretch == BOTH)
+		{
+			newSize.y = height;
+		}
+		if (currentStretch == HORIZONTAL || currentStretch == BOTH)
+		{
+			newSize.x = width;
+		}
+	return newSize;
 }
 
 void Transform2D::SetSize(math::float2 newSize)
