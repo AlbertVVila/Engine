@@ -112,6 +112,7 @@ bool ModuleScene::Start()
 		defaultScene = (ResourceScene*)App->resManager->Get(defaultSceneUID);
 		if (defaultScene != nullptr)
 		{
+			App->navigation->sceneName = defaultScene->GetName();
 			defaultScene->Load();
 		}
 	}
@@ -1257,6 +1258,7 @@ void ModuleScene::LoadTemporaryScene()
 bool ModuleScene::AddScene(const char* sceneName, const char* folder)
 {
 	ResourceScene* scene = (ResourceScene*)App->resManager->GetByName(sceneName, TYPE::SCENE);
+	App->navigation->sceneName = sceneName;
 	if(scene != nullptr && !scene->Load())
 	{
 		LOG("Error loading scene named: %s", sceneName);
