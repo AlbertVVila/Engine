@@ -1,7 +1,7 @@
 #include "Application.h"
 #include "Globals.h"
 #include "GameObject.h"
-#include "MathGeoLib/include/Math/float3.h"
+#include "Math/float3.h"
 
 #include "DetourPoints.h"
 
@@ -9,10 +9,14 @@
 #include "ModuleScene.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleFileSystem.h"
+#include "ModuleInput.h"
+#include "ModuleRender.h"
+#include "Viewport.h"
 
 #include "Component.h"
 #include "ComponentRenderer.h"
 #include "ComponentTransform.h"
+#include "ComponentCamera.h"
 
 #include "ResourceMesh.h"
 
@@ -82,15 +86,34 @@ void ModuleNavigation::SaveConfig(JSON * config)
 void ModuleNavigation::sceneLoaded(JSON * config)
 {
 	JSON_value* nav = config->GetValue("navigationScene");
-	if (nav == nullptr) return;
-	navDataSize = nav->GetInt("navDataSize", 0);
-	if (navDataSize == 0) return;
-
+	if (nav == nullptr)
+	{
+		cleanValuesPOST();
+		cleanValuesPRE();
+		return;
+	}
+	//load the nav data size from the scene_datasize file
+	std::stringstream path;
+	path << "Resources/NavigationMeshes/navMesh" << sceneName << "_DataSize" << ".bin";
+	char* navSizeTmp;
+	App->fsystem->Load(path.str().c_str(), &navSizeTmp);
+	navDataSize = (int)navSizeTmp;
+	if (navDataSize == 0)
+	{
+		cleanValuesPOST();
+		cleanValuesPRE();
+		return;
+	}
+	path.str(std::string());//more efficient way to clear stringstream values
+	//now we load mesh and generate its last part
+	path << "Resources/NavigationMeshes/navMesh" << sceneName << ".bin";
 	char* navData2 = 0;
-	App->fsystem->Load("Assets/navigationMesh.bin", &navData2);
+	App->fsystem->Load(path.str().c_str(), &navData2);
 	if (navData2 == nullptr)
 	{
 		LOG("could not find a stored navigation mesh");
+		cleanValuesPOST();
+		cleanValuesPRE();
 		return;
 	}
 
@@ -777,11 +800,20 @@ void ModuleNavigation::generateNavigability(bool render)
 			cleanValuesPOST();
 			return;
 		}
-
-		App->fsystem->Save("Assets/navigationMesh.bin", (const char*)navData, navDataSize);
+		//save data
+		std::stringstream path;
+		path << "Resources/NavigationMeshes/navMesh" << App->scene->name << ".bin";
+		App->fsystem->Save(path.str().c_str(), (const char*)navData, navDataSize);
+		//save size of the data
+		path.str(std::string());//more efficient way to clear stringstream values
+		path << "Resources/NavigationMeshes/navMesh" << App->scene->name << "_DataSize" << ".bin";
+		App->fsystem->Save(path.str().c_str(), std::to_string(navDataSize).c_str(), sizeof(int));
 		dtFree(navData);
+		//load data
 		char* navData2 = 0;
-		App->fsystem->Load("Assets/navigationMesh.bin", &navData2);
+		path.str(std::string());//clean again to load
+		path << "Resources/NavigationMeshes/navMesh" << App->scene->name << ".bin";
+		App->fsystem->Load(path.str().c_str(), &navData2);
 		
 		navMesh = dtAllocNavMesh();
 		if (!navMesh)
@@ -1278,7 +1310,7 @@ static int fixupShortcuts(dtPolyRef* path, int npath, dtNavMeshQuery* navQuery)
 	return npath;
 }
 
-bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vector<math::float3>& path, PathFindType type) const
+bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vector<math::float3>& path, PathFindType type, math::float3 diff) const
 {
 	path.clear();
 	dtPolyRef startPoly, endPoly;
@@ -1286,7 +1318,7 @@ bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vecto
 	filter.setIncludeFlags(SAMPLE_POLYFLAGS_ALL ^ SAMPLE_POLYFLAGS_DISABLED);
 	filter.setExcludeFlags(0);
 
-	float polyPickExt[3] = { 0,0,0 };
+	float polyPickExt[3] = {diff.x, diff.y, diff.z};
 
 	dtPolyRef polyPath[MAX_POLYS];
 	int polyCount = 0;
@@ -1434,6 +1466,32 @@ bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vecto
 	}
 
 	return false;
+}
+
+bool ModuleNavigation::NavigateTowardsCursor(math::float3 start, std::vector<math::float3>& path, math::float3 positionCorrection, math::float3& intersectionPos)
+{
+	float2 mouse((float*)& App->input->GetMousePosition());
+	LineSegment line;
+
+	float normalized_x, normalized_y;
+
+#ifndef GAME_BUILD
+	math::float2 pos = App->renderer->viewGame->winPos;
+	math::float2 size(App->renderer->viewGame->current_width, App->renderer->viewGame->current_height);
+#else
+	math::float2 pos = math::float2::zero;
+	math::float2 size(App->window->width, App->window->height);
+#endif
+	normalized_x = ((mouse.x - pos.x) / size.x) * 2 - 1; //0 to 1 -> -1 to 1
+	normalized_y = (1 - (mouse.y - pos.y) / size.y) * 2 - 1; //0 to 1 -> -1 to 1
+
+	line = App->scene->maincamera->DrawRay(normalized_x, normalized_y);
+	Plane plane(math::float3(0.f, 1.f, 0.f), start.y);
+	float dist = 0.f;
+	line.Intersects(plane, &dist);
+	intersectionPos = line.GetPoint(dist);
+
+	return FindPath(start, intersectionPos, path, PathFindType::FOLLOW, positionCorrection);
 }
 
 void ModuleNavigation::RecalcPath(math::float3 point)
