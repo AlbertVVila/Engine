@@ -547,7 +547,7 @@ void ComponentParticles::Load(JSON_value* value)
 	billboarded = value->GetInt("billboarded");
 	localEmitter = value->GetInt("localEmitter");
 	lookAtTarget = value->GetFloat3("lookAtTarget");
-	intensity = value->GetFloat("intensity");
+	intensity = value->GetFloat("intensity", intensity);
 
 	PMSizeOverTime* SOTAux = (PMSizeOverTime*)modules[0];
 	SOTAux->v[0] = value->GetFloat4("bezier14").x;
