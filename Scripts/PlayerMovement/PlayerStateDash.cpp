@@ -73,9 +73,9 @@ void PlayerStateDash::Update()
 
 void PlayerStateDash::Enter()
 {
-	if (player->App->scene->Intersects(intersectionPoint, "floor"))
+	if (player->App->navigation->NavigateTowardsCursor(player->gameobject->transform->position, path,
+		math::float3(player->OutOfMeshCorrectionXZ, player->OutOfMeshCorrectionY, player->OutOfMeshCorrectionXZ), intersectionPoint))
 	{
-		player->App->navigation->FindPath(player->gameobject->transform->position, intersectionPoint, path);
 		pathIndex = 0;
 		player->gameobject->transform->LookAt(intersectionPoint);
 		if (dashFX)
@@ -89,6 +89,7 @@ void PlayerStateDash::Enter()
 			dashMesh->transform->Scale(1.0f);
 			scalator = originalScalator;
 		}
+		player->ResetCooldown(HUB_BUTTON_Q);
 	}
 }
 
@@ -108,22 +109,23 @@ void PlayerStateDash::CheckInput()
 		if (player->IsAtacking())
 		{
 			player->currentState = (PlayerState*)player->firstAttack;
+			return;
 		}
-		else if (player->IsUsingFirstSkill()) //cooldown?
+		if (player->IsUsingFirstSkill()) //cooldown?
 		{
 			player->currentState = (PlayerState*)player->dash;
+			return;
 		}
-		else if (player->IsUsingSecondSkill())
+		if (player->IsUsingSecondSkill())
 		{
 			player->currentState = (PlayerState*)player->uppercut;
+			return;
 		}
-		else if (player->IsMoving())
+		if (player->IsMoving())
 		{
 			player->currentState = (PlayerState*)player->walk;
+			return;
 		}
-		else
-		{
-			player->currentState = (PlayerState*)player->idle;
-		}
+		player->currentState = (PlayerState*)player->idle;
 	}
 }
