@@ -60,6 +60,7 @@ ComponentAudioSource::ComponentAudioSource(const ComponentAudioSource& component
 
 ComponentAudioSource::~ComponentAudioSource()
 {
+	Stop();
 	if (audio != nullptr)
 	{
 		App->resManager->DeleteResource(audio->GetUID());
