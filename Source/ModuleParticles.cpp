@@ -278,6 +278,7 @@ void ModuleParticles::Reset()
 
 void ModuleParticles::DrawParticleSystem(ComponentParticles* cp, const ComponentCamera* camera) const
 {
+	PROFILE
 	if (cp->texture == nullptr || (!cp->Playing && !cp->ConstantPlaying))
 	{
 		return;
@@ -285,7 +286,7 @@ void ModuleParticles::DrawParticleSystem(ComponentParticles* cp, const Component
 	glUseProgram(shader->id[0]);
 	glBindVertexArray(billBoardVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, billBoardInstanceVBO);
-	float* matrices = (float*)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
+	float* matrices = (float*)glMapBufferRange(GL_ARRAY_BUFFER, 0, cp->particles.size() * sizeof(float) * 20, GL_MAP_WRITE_BIT);
 	if (cp->billboarded)
 	{
 		cp->particles.sort(
