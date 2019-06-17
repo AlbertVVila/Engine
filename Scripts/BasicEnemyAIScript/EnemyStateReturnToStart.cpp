@@ -3,6 +3,8 @@
 #include "BasicEnemyAIScript.h"
 #include "EnemyControllerScript.h"
 
+#define START_POS_OFFSET  1.5f
+
 EnemyStateReturnToStart::EnemyStateReturnToStart(BasicEnemyAIScript* AIScript)
 {
 	enemy = AIScript;
@@ -33,7 +35,7 @@ void EnemyStateReturnToStart::Update()
 	{
 		//Check distance to start position
 		float distanceToStartPosition = enemy->enemyController->GetDistanceTo2D(enemy->startPosition);
-		if (distanceToStartPosition < 1.5f)
+		if (distanceToStartPosition < START_POS_OFFSET)
 			enemy->currentState = (EnemyState*)enemy->patrol;
 	}
 }

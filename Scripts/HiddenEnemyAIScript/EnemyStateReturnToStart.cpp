@@ -3,6 +3,8 @@
 #include "HiddenEnemyAIScript.h"
 #include "EnemyControllerScript.h"
 
+#define START_POS_OFFSET  20.5f
+
 EnemyStateReturnToStart::EnemyStateReturnToStart(HiddenEnemyAIScript* AIScript)
 {
 	enemy = AIScript;
@@ -32,8 +34,9 @@ void EnemyStateReturnToStart::Update()
 	else 
 	{
 		//Check distance to start position
+		// TODO: Change to check that there is not a nearest point on the nav mesh to this
 		float distanceToStartPosition = enemy->enemyController->GetDistanceTo2D(enemy->startPosition);
-		if (distanceToStartPosition < 1.5f)
+		if (distanceToStartPosition < START_POS_OFFSET)
 			enemy->currentState = (EnemyState*)enemy->hide;
 	}
 }

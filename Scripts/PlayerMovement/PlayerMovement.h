@@ -19,6 +19,15 @@ struct ImGuiContext;
 #define PlayerMovement_API __declspec(dllimport)
 #endif
 
+#define HUB_BUTTON_Q 0
+#define HUB_BUTTON_W 1
+#define HUB_BUTTON_E 2
+#define HUB_BUTTON_R 3
+#define HUB_BUTTON_1 4
+#define HUB_BUTTON_2 5
+#define HUB_BUTTON_3 6
+#define HUB_BUTTON_4 7
+
 class ComponentAnimation;
 class ComponentTransform;
 class ComponentBoxTrigger;
@@ -41,7 +50,6 @@ class PlayerMovement_API PlayerMovement : public Script
 public:
 	void Expose(ImGuiContext* context) override;
 
-
 	void Start() override;
 	void Update() override;
 	void Serialize(JSON_value* json) const override;
@@ -62,9 +70,14 @@ public:
 	bool IsUsingThirdItem() const;
 	bool IsUsingFourthItem() const;
 
+	void ResetCooldown(unsigned int hubButtonID);
+
 private:
 	void CheckStates(PlayerState* previous, PlayerState* current);
 	void CreatePlayerStates();
+	void ManaManagement();
+
+	void ActivateHudCooldownMask(bool activate, unsigned first = HUB_BUTTON_Q, unsigned last = HUB_BUTTON_4);
 
 public:
 	bool isPlayerDead = false;
@@ -83,20 +96,22 @@ public:
 	float dashSpeed = 10.0f;
 	const float fullHealth = 100.0f;
 	float health = fullHealth;
+	const float fullMana = 100.0f;
+	float mana = fullMana;
+	bool IsManaUsed = false;
 	float attackDuration = 1.0f;
 	float attackTimer = 0.0f;
+	float OutOfMeshCorrectionXZ = 500.f;
+	float OutOfMeshCorrectionY = 300.0f;
 	ComponentAnimation* anim = nullptr;
 	ComponentBoxTrigger* attackBoxTrigger = nullptr;
 	ComponentBoxTrigger* hpHitBoxTrigger = nullptr;
 	ComponentTransform* transform = nullptr;
 	PlayerState* currentState = nullptr;
 
-	float dashDuration = 1.f;
-	float firstAttackDuration = 1.f;
-	float secondAttackDuration = 1.f;
-	float thirdAttackDuration = 1.f;
-	float uppercutDuration = 1.f;
 	math::float3 hpHitBoxSize = math::float3::zero;
+
+	bool canInteract = true;
 
 private:
 	std::vector<PlayerState*> playerStates;	
@@ -106,5 +121,14 @@ private:
 
 	DamageController* damageController = nullptr;
 	ComponentImage* lifeUIComponent = nullptr;
+	ComponentImage* manaUIComponent = nullptr;
+
+	float hubCooldown[8]	  = { 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F };
+	float hubCooldownMax[8] = { 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F };
+	float hubCooldownTimer[8] = { 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F };
+	ComponentImage* hubCooldownMask[8] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
+	float hubGeneralAbilityCooldown = 0.5F;
+	bool showAbilityCooldowns = true;
+	bool showItemCooldowns = true;
 };
 #endif __PlayerMovement_h__

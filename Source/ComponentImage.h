@@ -33,6 +33,7 @@ public:
 	ResourceTexture* texture = nullptr;
 	bool flipVertical = false;
 	bool flipHorizontal = false;
+	bool isMaskHorizontal = false;
 
 	bool isHovered = false;
 	bool isPressed = false;

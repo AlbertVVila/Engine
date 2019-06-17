@@ -51,6 +51,25 @@ void Resource::SaveMetafile(const char * file) const
 {
 }
 
+bool Resource::ReloadInMemory()
+{
+	if (!IsLoadedToMemory())
+	{
+		return true;
+	}
+	else
+	{
+		unsigned references = loaded;
+		DeleteFromMemory();
+		if (LoadInMemory())
+		{
+			SetReferences(references);
+			return true;
+		}
+	}
+	return false;
+}
+
 void Resource::Rename(const char* newName)
 {
 	std::string ruteToFile = App->fsystem->GetFilePath(file);
@@ -94,4 +113,9 @@ void Resource::Delete()
 void Resource::DrawImportConfiguration()
 {
 	ImGui::Text("No import options.");
+}
+
+void Resource::DrawLoadSettings()
+{
+	ImGui::Text("No load settings.");
 }
