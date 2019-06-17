@@ -425,7 +425,7 @@ void ModuleNavigation::generateNavigability(bool render)
 	{
 		if (meshboxes[i]->minPoint.x < bmin[0]) bmin[0] = meshboxes[i]->minPoint.x;
 		if (meshboxes[i]->minPoint.y < bmin[1]) bmin[1] = meshboxes[i]->minPoint.y;
-		if (meshboxes[i]->minPoint.x < bmin[2]) bmin[2] = meshboxes[i]->minPoint.z;
+		if (meshboxes[i]->minPoint.z < bmin[2]) bmin[2] = meshboxes[i]->minPoint.z;
 
 		if (meshboxes[i]->maxPoint.x > bmax[0]) bmax[0] = meshboxes[i]->maxPoint.x;
 		if (meshboxes[i]->maxPoint.y > bmax[1]) bmax[1] = meshboxes[i]->maxPoint.y;
