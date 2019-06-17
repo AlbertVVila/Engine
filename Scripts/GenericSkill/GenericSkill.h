@@ -1,7 +1,7 @@
 #ifndef  __GenericSkill_h__
 #define  __GenericSkill_h__
 
-//#include "BaseScript.h"
+#include "BaseScript.h"
 
 class GenericSkill
 {
