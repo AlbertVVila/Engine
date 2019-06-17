@@ -38,7 +38,7 @@ void PlayerStateUppercut::Update()
 
 void PlayerStateUppercut::Enter()
 {
-
+	player->ResetCooldown(HUB_BUTTON_W);
 }
 
 void PlayerStateUppercut::Exit()
