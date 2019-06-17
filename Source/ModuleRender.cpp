@@ -280,7 +280,7 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 		
 		glUseProgram(blur->id[0]);
 		glUniform1fv(glGetUniformLocation(blur->id[0], "weight"), MAX_KERNEL_RADIUS, kernel);
-		glUniform1i(glGetUniformLocation(blur->id[0], "kernelRadius"), kernelRadius);
+		glUniform1i(glGetUniformLocation(blur->id[0], "kernelRadius"), kernelRadius - 1);
 
 		for (unsigned int i = 0; i < kernelRadius; i++)
 		{
