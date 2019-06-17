@@ -76,7 +76,7 @@ bool ResourceMaterial::LoadInMemory()
 	emissiveColor = materialJSON->GetColor3("emissiveColor");
 	dissolveColor = materialJSON->GetColor3("dissolveColor");
 
-	bloomIntenstiy = materialJSON->GetFloat("bloomIntenstiy");
+	bloomIntenstiy = materialJSON->GetFloat("bloomIntenstiy", bloomIntenstiy);
 	roughness = materialJSON->GetFloat("roughness");
 
 	unsigned diffuseUID = materialJSON->GetUint("diffuseUID");
