@@ -10,6 +10,7 @@
 #endif
 class GameObject;
 class ComponentRenderer;
+class ComponentTransform;
 class Text;
 class ItemPicker;
 
@@ -19,7 +20,7 @@ public:
 	void Start() override;
 	void Update() override;
 
-	void SetNameBar(std::string name, int rarity);
+	void SetNameBar(std::string name, int rarity, ComponentTransform* transform);
 private:
 	GameObject* itemName = nullptr;
 	GameObject* itemBackground = nullptr;
