@@ -987,89 +987,6 @@ class myPoint : public dd::RenderInterface
 };
 
 //Detour stuff http://irrlicht.sourceforge.net/forum/viewtopic.php?f=9&t=49482
-std::vector<math::float3>  ModuleNavigation::returnPath(math::float3 pStart, math::float3 pEnd)
-{
-	std::vector<math::float3> lstPoints;
-	
-	if (navQuery)
-	{
-		if (navMesh == 0)
-		{
-			return  lstPoints;
-		}
-	/*if (pointsUpdated)
-	{
-		fillDrawPoints();
-		pointsUpdated = false;
-	}
-	myPoint* renderIface = new myPoint();
-	renderIface->drawPointList(points, nverts, false);*/
-	/*for (int i = 0; i < nverts; ++i)
-	{
-		dd::point(ddVec3(verts[i * 3], verts[i * 3+1], verts[i * 3+2]), ddVec3(0,0,1), 10.0f);
-	}
-	*/
-	
-	//dd::xzSquareGrid(-500.0f * 10, 500.0f * 10, 0.0f, 1.0f * 10, math::float3(0.65f, 0.65f, 0.65f));
-	//dtPolyRef base = navMesh->getPolyRefBase(tile);
-
-		dtQueryFilter m_filter;
-		dtPolyRef m_startRef;
-		dtPolyRef m_endRef;
-
-		dtPolyRef m_polys[MAX_POLYS];
-		dtPolyRef returnedPath[MAX_POLYS];
-		float m_straightPath[MAX_POLYS * 3];
-		int numStraightPaths;
-		float  m_spos[3] = { pStart.x, pStart.y, pStart.z };
-		float  m_epos[3] = { pEnd.x, pEnd.y, pEnd.z };
-		float m_polyPickExt[3];
-		m_polyPickExt[0] = 2;
-		m_polyPickExt[1] = 4;
-		m_polyPickExt[2] = 2;
-
-
-		navQuery->findNearestPoly(m_spos, m_polyPickExt, &m_filter, &m_startRef, 0);
-
-		if (m_startRef == 0)
-		{
-			return lstPoints;
-
-		}
-		navQuery->findNearestPoly(m_epos, m_polyPickExt, &m_filter, &m_endRef, 0);
-
-		if (m_endRef == 0)
-		{
-			return lstPoints;
-
-		}
-		dtStatus findStatus = DT_FAILURE;
-		int pathCount;
-
-		findStatus = navQuery->findPath(m_startRef, m_endRef, m_spos, m_epos, &m_filter, returnedPath, &pathCount, MAX_POLYS);
-
-
-
-		if (pathCount > 0)
-		{
-			findStatus = navQuery->findStraightPath(m_spos, m_epos, returnedPath,
-				pathCount, m_straightPath, 0, 0, &numStraightPaths, MAX_POLYS);
-
-			for (int i = 0; i < numStraightPaths; ++i)
-			{
-				float3 cpos(m_straightPath[i * 3], m_straightPath[i * 3 + 1] + 0.25,
-					m_straightPath[i * 3 + 2]);
-
-				lstPoints.push_back(cpos);
-				//path->AddNode(node);
-			}
-
-
-		}
-
-	}
-	return lstPoints;
-}
 /* TODO add where the mesh is calculated!!!
 
 	/*scene::IAnimatedMesh *terrain_model = smgr->addHillPlaneMesh("groundPlane", // Name of the scenenode
@@ -1310,7 +1227,14 @@ static int fixupShortcuts(dtPolyRef* path, int npath, dtNavMeshQuery* navQuery)
 	return npath;
 }
 
-bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vector<math::float3>& path, PathFindType type, math::float3 diff) const
+float ModuleNavigation::GetXZDistance(float3 a, float3 b) const
+{
+	math::float2 p1(a.x, a.z);
+	math::float2 p2(b.x, b.z);
+	return p1.DistanceSq(p2);
+}
+
+bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vector<math::float3>& path, PathFindType type, math::float3 diff, float maxDist) const
 {
 	path.clear();
 	dtPolyRef startPoly, endPoly;
@@ -1430,11 +1354,15 @@ bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vecto
 					smoothNb++;
 				}
 			}
-
+			float currentPathDistance = 0;
 			path.reserve(smoothNb);
 			for (size_t i = 0; i < smoothNb; i++)
 			{
 				path.push_back(float3(smoothPath[i * 3], smoothPath[i * 3 + 1], smoothPath[i * 3 + 2]));
+				//check distance
+				//if (i != 0) currentPathDistance += path[i - 1].DistanceSq(path[i]); //3d distance
+				if (i != 0) currentPathDistance += GetXZDistance(path[i - 1], path[i]);//2d distance
+				if (currentPathDistance > maxDist)	return true;
 			}
 			return true;
 		}
@@ -1468,7 +1396,8 @@ bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vecto
 	return false;
 }
 
-bool ModuleNavigation::NavigateTowardsCursor(math::float3 start, std::vector<math::float3>& path, math::float3 positionCorrection, math::float3& intersectionPos)
+bool ModuleNavigation::NavigateTowardsCursor(math::float3 start, std::vector<math::float3>& path, 
+											 math::float3 positionCorrection, math::float3& intersectionPos, float maxPathDistance) const
 {
 	float2 mouse((float*)& App->input->GetMousePosition());
 	LineSegment line;
@@ -1491,7 +1420,7 @@ bool ModuleNavigation::NavigateTowardsCursor(math::float3 start, std::vector<mat
 	line.Intersects(plane, &dist);
 	intersectionPos = line.GetPoint(dist);
 
-	return FindPath(start, intersectionPos, path, PathFindType::FOLLOW, positionCorrection);
+	return FindPath(start, intersectionPos, path, PathFindType::FOLLOW, positionCorrection, maxPathDistance);
 }
 
 void ModuleNavigation::RecalcPath(math::float3 point)

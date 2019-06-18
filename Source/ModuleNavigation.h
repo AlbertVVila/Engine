@@ -92,8 +92,13 @@ public:
 
 
 	ENGINE_API bool FindPath(	math::float3 start, math::float3 end, std::vector<math::float3> &path, 
-								PathFindType type = PathFindType::FOLLOW, math::float3 diff = math::float3(0.f, 0.f, 0.f)) const;
-	ENGINE_API bool NavigateTowardsCursor(math::float3 start, std::vector<math::float3>& path, math::float3 positionCorrection, math::float3& intersectionPos);
+								PathFindType type = PathFindType::FOLLOW, math::float3 diff = math::float3(0.f, 0.f, 0.f),
+								float maxDist = 10000.0f) const;
+	//there is a default really big limitating path distance for the calls that are not supposed to be limitated
+	ENGINE_API bool NavigateTowardsCursor(math::float3 start, std::vector<math::float3>& path, 
+										  math::float3 positionCorrection, math::float3& intersectionPos, 
+										  float maxPathDistance = 10000.0f) const;
+
 	void RecalcPath(math::float3 point);
 
 	//Constants
@@ -122,11 +127,10 @@ private:
 
 	bool inRange(const float * v1, const float * v2, const float r, const float h) const;
 
+	float GetXZDistance(float3 a, float3 b) const;
 
 	// Detour stuff
-	std::vector<math::float3> returnPath(math::float3 pStart, math::float3 pEnd);
 	//void handleClick(const float* s, const float* p, bool shift);
-	//std::vector<math::float3> returnPath(math::float3 pStart, math::float3 pEnd);
 	//void handleClick(const float* s, const float* p, bool shift);
 	//int FindStraightPath(WOWPOS start, WOWPOS end, WOWPOS* path, int size);
 	
