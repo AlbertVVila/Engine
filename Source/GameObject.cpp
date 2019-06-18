@@ -248,22 +248,22 @@ void GameObject::DrawProperties()
 		if (children.size() > 1)
 		{
 			ImGui::NewLine();
-			if (ImGui::Button("Make childs with mesh static"))
+			if (ImGui::Button("Make childs static"))
 			{
 				SetStaticAllChildsWithMesh();
 				App->spacePartitioning->kDTree.Calculate();
 			}
-			if (ImGui::Button("Make childs with mesh navigable"))
+			if (ImGui::Button("Make childs navigable"))
 			{
 				SetNavigableAllChildsWithMesh();
 				App->spacePartitioning->kDTree.Calculate();
 			}
-			if (ImGui::Button("Make childs with mesh obstacles"))
+			if (ImGui::Button("Make childs obstacles"))
 			{
 				SetObstacleAllChildsWithMesh();
 				App->spacePartitioning->kDTree.Calculate();
 			}
-			if (ImGui::Button("Add all navigable childs to the navMesh"))
+			if (ImGui::Button("Add childs to navMesh"))
 			{
 				AddAllNavigableChildsToNavMesh();
 			}
