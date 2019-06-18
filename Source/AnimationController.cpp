@@ -279,7 +279,7 @@ bool AnimationController::CheckEvents(ResourceAnimation* anim)
 		if ((*it)->key == anim->nextEvent)
 		{
 			int currentFrame = current->time * anim->framesPerSecond;
-			if (currentFrame == (*it)->frame)
+			if (currentFrame >= (*it)->frame)
 			{
 				return true;
 			}
