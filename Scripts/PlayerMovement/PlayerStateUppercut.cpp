@@ -38,7 +38,7 @@ void PlayerStateUppercut::Update()
 
 void PlayerStateUppercut::Enter()
 {
-	player->ResetCooldown(HUB_BUTTON_W);
+	player->UseSkill(SkillType::UPPERCUT);
 }
 
 void PlayerStateUppercut::Exit()
@@ -56,7 +56,7 @@ void PlayerStateUppercut::CheckInput()
 		}
 		else if (player->IsUsingFirstSkill())
 		{
-			player->currentState = (PlayerState*)player->dash;
+			player->currentState = player->allSkills[player->activeSkills[0]]->state;
 		}
 		else if (player->IsMoving())
 		{
