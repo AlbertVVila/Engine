@@ -15,8 +15,6 @@
 #include <windows.h>
 #include <iostream>
 
-#include "Brofiler.h"
-
 typedef Script*(__cdecl *CreatePointer)();
 
 ModuleScript::ModuleScript()
@@ -49,7 +47,6 @@ bool ModuleScript::Init(JSON* config)
 
 update_status ModuleScript::Update(float dt)
 {
-	BROFILER_CATEGORY("Scripts Update", Profiler::Color::AliceBlue);
 	if (dllRemoveList.size() > 0)
 	{
 		for (std::string name : dllRemoveList)

@@ -53,8 +53,6 @@
 #include "GL/glew.h"
 #include "imgui.h"
 
-#include "Brofiler.h"
-
 #define MAX_NAME 128
 #define IMGUI_RIGHT_MOUSE_BUTTON 1
 
@@ -302,7 +300,6 @@ void GameObject::DrawProperties()
 
 void GameObject::Update()
 {
-	PROFILE;
 	if (!isActive()) return;
 
 	for (auto& component : components)
@@ -1296,7 +1293,7 @@ void GameObject::UpdateTransforms(math::float4x4 parentGlobal)
 
 bool GameObject::CheckDelete()
 {
-	PROFILE;
+	//PROFILE;
 	if (deleteFlag) //Delete GO
 	{
 		CleanUp();
@@ -1331,7 +1328,6 @@ void GameObject::SetStaticAllChildsWithMesh()
 			{
 				child->makeObjectWithMeshStatic();
 				child->isStatic = true;
-				App->spacePartitioning->kDTree.Calculate();
 			}
 		}
 		child->SetStaticAllChildsWithMesh();
@@ -1347,7 +1343,6 @@ void GameObject::SetNavigableAllChildsWithMesh()
 			{
 				child->makeObjectWithMeshStatic();
 				child->isStatic = true;
-				App->spacePartitioning->kDTree.Calculate();
 			}
 			child->navigable = true;
 			
@@ -1390,8 +1385,8 @@ void GameObject::AddAllNavigableChildsToNavMesh()
 void GameObject::makeObjectWithMeshStatic()
 {
 	SetStaticAncestors();
-	App->scene->dynamicGOs.erase(this);
-	App->scene->staticGOs.insert(this);
+	App->scene->DeleteFromSpacePartition(this);
+	App->scene->AddToSpacePartition(this);
 	assert(!(hasLight && isVolumetric)); //Impossible combination
 	if (hasLight && treeNode != nullptr)
 	{

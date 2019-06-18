@@ -20,8 +20,6 @@
 #include "ImGUICurveUtils.h"
 #include "imgui_color_gradient.h"
 
-#include "Brofiler.h"
-
 ModuleParticles::~ModuleParticles()
 {
 	glDeleteBuffers(1, &billBoardVAO);
@@ -141,7 +139,6 @@ bool ModuleParticles::Start()
 
 void ModuleParticles::Render(float dt, const ComponentCamera* camera) 
 {
-	PROFILE;
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	particleSystems.sort(
