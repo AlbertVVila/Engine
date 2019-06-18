@@ -272,7 +272,7 @@ void GameObject::DrawProperties()
 		{
 			if (isStatic && GetComponentOld(ComponentType::Renderer) != nullptr)
 			{
-				makeObjectWithMeshStatic();
+				MakeObjectWithMeshStatic();
 			}
 			else if (!isStatic)
 			{
@@ -1326,7 +1326,7 @@ void GameObject::SetStaticAllChildsWithMesh()
 		{
 			if (!child->isStatic)
 			{
-				child->makeObjectWithMeshStatic();
+				child->MakeObjectWithMeshStatic();
 				child->isStatic = true;
 			}
 		}
@@ -1341,7 +1341,7 @@ void GameObject::SetNavigableAllChildsWithMesh()
 		{
 			if (!child->isStatic)
 			{
-				child->makeObjectWithMeshStatic();
+				child->MakeObjectWithMeshStatic();
 				child->isStatic = true;
 			}
 			child->navigable = true;
@@ -1358,7 +1358,7 @@ void GameObject::SetObstacleAllChildsWithMesh()
 		{
 			if (!child->isStatic)
 			{
-				child->makeObjectWithMeshStatic();
+				child->MakeObjectWithMeshStatic();
 				child->isStatic = true;
 				
 			}
@@ -1376,13 +1376,13 @@ void GameObject::AddAllNavigableChildsToNavMesh()
 	{
 		if (child->isVolumetric && child->isStatic &&child->navigable)
 		{
-			App->navigation->addNavigableMeshFromObject(child);
+			App->navigation->AddNavigableMeshFromObject(child);
 		}
 		child->AddAllNavigableChildsToNavMesh();
 	}
 }
 
-void GameObject::makeObjectWithMeshStatic()
+void GameObject::MakeObjectWithMeshStatic()
 {
 	SetStaticAncestors();
 	App->scene->DeleteFromSpacePartition(this);

@@ -86,7 +86,7 @@ private:
 	void MarkAsPrefab();
 	void SetActiveInHierarchy(bool active);
 	void OnChangeActiveState(bool wasActive);
-	void makeObjectWithMeshStatic();
+	void MakeObjectWithMeshStatic();
 
 	void SetStaticAllChildsWithMesh();
 	void SetNavigableAllChildsWithMesh();

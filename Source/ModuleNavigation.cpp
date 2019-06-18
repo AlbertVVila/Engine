@@ -49,8 +49,8 @@ ModuleNavigation::ModuleNavigation()
 
 ModuleNavigation::~ModuleNavigation()
 {
-	cleanValuesPRE();
-	cleanValuesPOST();
+	CleanValuesPRE();
+	CleanValuesPOST();
 }
 
 //config
@@ -88,8 +88,8 @@ void ModuleNavigation::sceneLoaded(JSON * config)
 	JSON_value* nav = config->GetValue("navigationScene");
 	if (nav == nullptr)
 	{
-		cleanValuesPOST();
-		cleanValuesPRE();
+		CleanValuesPOST();
+		CleanValuesPRE();
 		return;
 	}
 	//load the nav data size from the scene_datasize file
@@ -100,8 +100,8 @@ void ModuleNavigation::sceneLoaded(JSON * config)
 	navDataSize = (int)navSizeTmp;
 	if (navDataSize == 0)
 	{
-		cleanValuesPOST();
-		cleanValuesPRE();
+		CleanValuesPOST();
+		CleanValuesPRE();
 		return;
 	}
 	path.str(std::string());//more efficient way to clear stringstream values
@@ -112,8 +112,8 @@ void ModuleNavigation::sceneLoaded(JSON * config)
 	if (navData2 == nullptr)
 	{
 		LOG("could not find a stored navigation mesh");
-		cleanValuesPOST();
-		cleanValuesPRE();
+		CleanValuesPOST();
+		CleanValuesPRE();
 		return;
 	}
 
@@ -124,7 +124,7 @@ void ModuleNavigation::sceneLoaded(JSON * config)
 		LOG("Could not create Detour navmesh");
 		meshGenerated = false;
 		renderMesh = false;
-		cleanValuesPOST();
+		CleanValuesPOST();
 		return;
 	}
 
@@ -137,7 +137,7 @@ void ModuleNavigation::sceneLoaded(JSON * config)
 		LOG("Could not init Detour navmesh");
 		meshGenerated = false;
 		renderMesh = false;
-		cleanValuesPOST();
+		CleanValuesPOST();
 		return;
 	}
 
@@ -147,14 +147,14 @@ void ModuleNavigation::sceneLoaded(JSON * config)
 		LOG("Could not init Detour navmesh query");
 		meshGenerated = false;
 		renderMesh = false;
-		cleanValuesPOST();
+		CleanValuesPOST();
 		return;
 	}
 
 	meshGenerated = true;
 	renderMesh = true;
 	LOG("Navigation mesh loaded");
-	cleanValuesPOST();
+	CleanValuesPOST();
 
 	//SetUp for Debug Draw nav mesh
 	ddi = new DetourDebugInterface;
@@ -171,7 +171,7 @@ void ModuleNavigation::sceneSaved(JSON * config)
 	config->AddValue("navigationScene", *navigation);
 }
 
-void ModuleNavigation::cleanValuesPRE()
+void ModuleNavigation::CleanValuesPRE()
 {
 	nverts = 0; ntris = 0;
 	RELEASE_ARRAY(verts);
@@ -195,7 +195,7 @@ void ModuleNavigation::cleanValuesPRE()
 	//TODO: free navquery, navmesh, crowd, rcconfig, rccontext
 }
 
-void ModuleNavigation::cleanValuesPOST()
+void ModuleNavigation::CleanValuesPOST()
 {
 	meshboxes.clear();
 	meshComponents.clear();
@@ -310,7 +310,7 @@ void ModuleNavigation::addNavigableMesh()
 			if (!it->navigable)
 			{
 				LOG("Some of the objects selected are not navigable");
-				cleanValuesPOST();
+				CleanValuesPOST();
 				return;
 			}
 			meshboxes.push_back(static_cast <const AABB*>(&it->bbox));
@@ -332,7 +332,7 @@ void ModuleNavigation::addNavigableMesh()
 	}
 }
 
-void ModuleNavigation::addNavigableMeshFromObject(GameObject* obj)
+void ModuleNavigation::AddNavigableMeshFromObject(GameObject* obj)
 {
 	meshboxes.push_back(static_cast <const AABB*>(&obj->bbox));
 	meshComponents.push_back(static_cast <const ComponentRenderer*>(obj->GetComponentOld(ComponentType::Renderer)));
@@ -410,7 +410,7 @@ void ModuleNavigation::renderNavMesh()
 void ModuleNavigation::generateNavigability(bool render)
 {
 	//clean old info
-	cleanValuesPRE();
+	CleanValuesPRE();
 
 	pointsUpdated = true;
 
@@ -483,7 +483,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Out of memory 'solid'.");
 		meshGenerated = false;
 		renderMesh = false;
-		cleanValuesPOST();
+		CleanValuesPOST();
 		return;
 	}
 	if (!rcCreateHeightfield(ctx, *heightField, cfg->width, cfg->height, cfg->bmin, cfg->bmax, cfg->cs, cfg->ch))
@@ -491,7 +491,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Could not create solid heightfield.");
 		meshGenerated = false;
 		renderMesh = false;
-		cleanValuesPOST();
+		CleanValuesPOST();
 		return;
 	}
 
@@ -504,7 +504,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Out of memory 'm_triareas' (%d).");
 		meshGenerated = false;
 		renderMesh = false;
-		cleanValuesPOST();
+		CleanValuesPOST();
 		return;
 	}
 
@@ -519,7 +519,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Could not rasterize triangles.");
 		meshGenerated = false;
 		renderMesh = false;
-		cleanValuesPOST();
+		CleanValuesPOST();
 		return;
 	}
 
@@ -550,7 +550,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Out of memory 'chf'.");
 		meshGenerated = false;
 		renderMesh = false;
-		cleanValuesPOST();
+		CleanValuesPOST();
 		return;
 	}
 	if (!rcBuildCompactHeightfield(ctx, cfg->walkableHeight, cfg->walkableClimb, *heightField, *chf))
@@ -558,7 +558,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Could not build compact data.");
 		meshGenerated = false;
 		renderMesh = false;
-		cleanValuesPOST();
+		CleanValuesPOST();
 		return;
 	}
 
@@ -574,7 +574,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Could not erode.");
 		meshGenerated = false;
 		renderMesh = false;
-		cleanValuesPOST();
+		CleanValuesPOST();
 		return;
 	}
 
@@ -616,7 +616,7 @@ void ModuleNavigation::generateNavigability(bool render)
 			LOG("buildNavigation: Could not build distance field.");
 			meshGenerated = false;
 			renderMesh = false;
-			cleanValuesPOST();
+			CleanValuesPOST();
 			return;
 		}
 		
@@ -626,7 +626,7 @@ void ModuleNavigation::generateNavigability(bool render)
 			LOG("buildNavigation: Could not build watershed regions.");
 			meshGenerated = false;
 			renderMesh = false;
-			cleanValuesPOST();
+			CleanValuesPOST();
 			return;
 		}
 	}
@@ -639,7 +639,7 @@ void ModuleNavigation::generateNavigability(bool render)
 			LOG("buildNavigation: Could not build monotone regions.");
 			meshGenerated = false;
 			renderMesh = false;
-			cleanValuesPOST();
+			CleanValuesPOST();
 			return;
 		}
 	}
@@ -651,7 +651,7 @@ void ModuleNavigation::generateNavigability(bool render)
 			LOG("buildNavigation: Could not build layer regions.");
 			meshGenerated = false;
 			renderMesh = false;
-			cleanValuesPOST();
+			CleanValuesPOST();
 			return;
 		}
 	}
@@ -667,7 +667,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Out of memory 'cset'.");
 		meshGenerated = false;
 		renderMesh = false;
-		cleanValuesPOST();
+		CleanValuesPOST();
 		return;
 	}
 	if (!rcBuildContours(ctx, *chf, cfg->maxSimplificationError, cfg->maxEdgeLen, *cset))
@@ -675,7 +675,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Could not create contours.");
 		meshGenerated = false;
 		renderMesh = false;
-		cleanValuesPOST();
+		CleanValuesPOST();
 		return;
 	}
 	
@@ -691,7 +691,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Out of memory 'pmesh'.");
 		meshGenerated = false;
 		renderMesh = false;
-		cleanValuesPOST();
+		CleanValuesPOST();
 		return;
 	}
 	if (!rcBuildPolyMesh(ctx, *cset, cfg->maxVertsPerPoly, *pmesh))//gotta adapt this one to fill pmesh with the values
@@ -699,7 +699,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Could not triangulate contours.");
 		meshGenerated = false;
 		renderMesh = false;
-		cleanValuesPOST();
+		CleanValuesPOST();
 		return;
 	}
 	
@@ -713,7 +713,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Out of memory 'pmdtl'.");
 		meshGenerated = false;
 		renderMesh = false;
-		cleanValuesPOST();
+		CleanValuesPOST();
 		return;
 	}
 
@@ -722,7 +722,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Could not build detail mesh.");
 		meshGenerated = false;
 		renderMesh = false;
-		cleanValuesPOST();
+		CleanValuesPOST();
 		return;
 	}
 
@@ -807,7 +807,7 @@ void ModuleNavigation::generateNavigability(bool render)
 			LOG("Could not build Detour navmesh");
 			meshGenerated = false;
 			renderMesh = false;
-			cleanValuesPOST();
+			CleanValuesPOST();
 			return;
 		}
 		//save data
@@ -832,7 +832,7 @@ void ModuleNavigation::generateNavigability(bool render)
 			LOG("Could not create Detour navmesh");
 			meshGenerated = false;
 			renderMesh = false;
-			cleanValuesPOST();
+			CleanValuesPOST();
 			return;
 		}
 		
@@ -845,7 +845,7 @@ void ModuleNavigation::generateNavigability(bool render)
 			LOG("Could not init Detour navmesh");
 			meshGenerated = false;
 			renderMesh = false;
-			cleanValuesPOST();
+			CleanValuesPOST();
 			return;
 		}
 
@@ -855,7 +855,7 @@ void ModuleNavigation::generateNavigability(bool render)
 			LOG("Could not init Detour navmesh query");
 			meshGenerated = false;
 			renderMesh = false;
-			cleanValuesPOST();
+			CleanValuesPOST();
 			return;
 		}
 	}
@@ -874,7 +874,7 @@ void ModuleNavigation::generateNavigability(bool render)
 	meshGenerated = true;
 	renderMesh = render;
 	LOG("Navigation mesh generated");
-	cleanValuesPOST();
+	CleanValuesPOST();
 
 	//SetUp for Debug Draw nav mesh
 	ddi = new DetourDebugInterface;
