@@ -16,7 +16,7 @@ class DamageFeedbackUI_API DamageFeedbackUI : public Script
 public:
 	void Awake() override;
 	void Update() override;
-	void Expose(ImGuiContext * context) override;
+	void Expose(ImGuiContext* context) override;
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
 
