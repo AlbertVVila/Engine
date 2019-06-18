@@ -317,6 +317,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BaseSkill.cpp" />
+    <ClCompile Include="MeleeSkill.cpp" />
     <ClCompile Include="PlayerMovement.cpp" />
     <ClCompile Include="PlayerState.cpp" />
     <ClCompile Include="PlayerStateAttack.cpp" />
@@ -330,6 +332,8 @@
     <ClCompile Include="PlayerStateWalk.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BaseSkill.h" />
+    <ClInclude Include="MeleeSkill.h" />
     <ClInclude Include="PlayerMovement.h" />
     <ClInclude Include="PlayerState.h" />
     <ClInclude Include="PlayerStateAttack.h" />
