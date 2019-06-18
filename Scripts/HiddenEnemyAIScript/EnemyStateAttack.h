@@ -11,6 +11,9 @@ public:
 	~EnemyStateAttack();
 
 	void Update() override;
+
+private:
+	void Attack();
 };
 
 #endif __ENEMYSTATEATTACK_H_
