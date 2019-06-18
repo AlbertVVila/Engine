@@ -9,20 +9,21 @@ class GenericSkill : public Script
 {
 public:
 	GenericSkill(PlayerMovement* PM);
-	~GenericSkill();
+	virtual ~GenericSkill();
 
-	void Update() override;
+	virtual void Start() override;
+	virtual void Update() override;
 
-	void Expose(ImGuiContext* context) override;
-	void Serialize(JSON_value* json) const override;
-	void DeSerialize(JSON_value* json) override;
+	virtual void Expose(ImGuiContext* context) override;
+	virtual void Serialize(JSON_value* json) const override;
+	virtual void DeSerialize(JSON_value* json) override;
 
 protected:
-	void UseSkill() {}
-	void Reset();
+	virtual void UseSkill() {}
+	virtual void Reset();
 
 public:
-	float speed = 1.0f;
+	//float speed = 1.0f;
 	float duration = 1.0f;
 
 protected:

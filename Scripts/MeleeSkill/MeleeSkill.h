@@ -12,11 +12,12 @@
 #endif
 
 class PlayerMovement;
+class ComponentBoxTrigger;
 
 class MeleeSkill_API MeleeSkill : public GenericSkill
 {
 public:
-	MeleeSkill(PlayerMovement* PM);
+	MeleeSkill(PlayerMovement* PM, ComponentBoxTrigger* attackBox);
 	virtual ~MeleeSkill();
 
 	void Expose(ImGuiContext* context) override;
@@ -24,6 +25,11 @@ public:
 	void DeSerialize(JSON_value* json) override;
 
 protected:
+	virtual void Reset();
+
+protected:
+	ComponentBoxTrigger* attackBoxTrigger = nullptr;
+
 	math::float3 boxSize = math::float3::zero;
 	math::float3 boxPosition = math::float3::zero;
 

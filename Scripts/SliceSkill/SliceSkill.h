@@ -11,11 +11,12 @@
 
 class JSON_value;
 class PlayerMovement;
+class ComponentBoxTrigger;
 
 class SliceSkill_API SliceSkill : public MeleeSkill
 {
 public:
-	SliceSkill(PlayerMovement* PM);
+	SliceSkill(PlayerMovement* PM, ComponentBoxTrigger* attackBox);
 	virtual ~SliceSkill();
 
 	void Start() override;
@@ -25,8 +26,9 @@ public:
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
 
-	void UseSkill();
-
+protected:
+	void UseSkill() override;
+	void Reset() override;
 
 };
 
