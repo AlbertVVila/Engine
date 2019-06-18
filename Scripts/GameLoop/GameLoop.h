@@ -67,6 +67,7 @@ public:
 
 	void EnableMenuButtons(bool enable);
 
+	void GetStateAfterLoad();
 	void VolumeManagement();
 	void SoundManagement();
 	void VsyncManagement();
@@ -171,7 +172,7 @@ public:
 
 	std::string sceneToLoad = "";
 	LoopState* stateAfterLoad = nullptr;
-	int actionAfterLoad = -1;
+	bool actionAfterLoad = false;
 };
 
 #endif __GameLoop_h__

@@ -23,6 +23,7 @@ void LoopStateCredits::Enter()
 
 void LoopStateCredits::Update()
 {
+	gLoop->menu->SetActive(false);
 	if (!(gLoop->runningCredits))
 	{
 		gLoop->creditsGO->SetActive(true);

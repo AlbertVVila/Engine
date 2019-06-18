@@ -19,5 +19,4 @@ void LoopStateLoading::Update()
 {
 	gLoop->App->scene->loadScene = true;
 	gLoop->App->scene->name = gLoop->sceneToLoad;
-	gLoop->App->scene->actionAfterLoad = gLoop->actionAfterLoad;
 }

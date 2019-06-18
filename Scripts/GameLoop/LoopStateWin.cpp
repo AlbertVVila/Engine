@@ -2,6 +2,7 @@
 #include "Application.h"
 
 #include "ModuleTime.h"
+#include "ModuleScene.h"
 
 #include "GameLoop.h"
 
@@ -29,6 +30,8 @@ void LoopStateWin::Update()
 		gLoop->currentLoopState = (LoopState*)gLoop->loadingState;
 		gLoop->playerMenuGO->SetActive(false);
 		gLoop->sceneToLoad = MENU_SCENE;
+		gLoop->App->scene->actionAfterLoad = true;
+		gLoop->App->scene->stateAfterLoad = "Credits";
 		gLoop->stateAfterLoad = (LoopState*)gLoop->creditsState;
 	}
 }

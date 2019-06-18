@@ -2,6 +2,8 @@
 
 #include "GameLoop.h"
 
+#include "ModuleScene.h"
+
 #include "GameObject.h"
 #include "ComponentButton.h"
 
@@ -25,7 +27,8 @@ void LoopStateDead::Update()
 		gLoop->playerMenuGO->SetActive(false);
 		gLoop->currentLoopState = (LoopState*)gLoop->loadingState;
 		gLoop->sceneToLoad = GRAVEYARD_SCENE;
+		gLoop->App->scene->stateAfterLoad = "Intro";
 		gLoop->stateAfterLoad = (LoopState*)gLoop->introState;
-		//actionAfterLoad = (int)GameState::INTRO; //What
+		gLoop->actionAfterLoad = true;
 	}
 }
