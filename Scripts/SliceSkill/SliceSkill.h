@@ -1,7 +1,7 @@
 #ifndef  __SliceSkill_h__
 #define  __SliceSkill_h__
 
-#include "BaseScript.h"
+#include "MeleeSkill.h"
 
 #ifdef SliceSkill_EXPORTS
 #define SliceSkill_API __declspec(dllexport)
@@ -11,7 +11,7 @@
 
 class JSON_value;
 
-class SliceSkill_API SliceSkill : public Script
+class SliceSkill_API SliceSkill : public MeleeSkill
 {
 public:
 	void Start() override;
@@ -23,12 +23,7 @@ public:
 
 	void UseSkill();
 
-public:
-	float speed = 1.0f;
-	float duration = 1.0f;
 
-private:
-	float timer = 0.0f;
 };
 
 #endif __SliceSkill_h__
