@@ -123,6 +123,7 @@ void ComponentRenderer::DrawProperties()
 		ImGui::ColorEdit3("Highlight color", &highlightColor[0]);
 		// Material selector
 		ImGui::Text("Material");
+		ImGui::PushID(this);
 		if (ImGui::BeginCombo("", material != nullptr ? material->GetName() : "None selected"))
 		{
 			if (guiMaterials.empty())
@@ -155,6 +156,7 @@ void ComponentRenderer::DrawProperties()
 		{
 			guiMaterials.clear();
 		}
+		ImGui::PopID();
 		ImGui::PopID();
 
 		ImGui::SameLine();
