@@ -247,6 +247,16 @@ bool ComponentParticles::CleanUp()
 void ComponentParticles::Update(float dt, const math::float3& camPos)
 {
 	BROFILER_CATEGORY("Update ParticleSystem", Profiler::Color::AliceBlue);
+	if (gameobject->particlesDirty)
+	{
+		while (!particles.empty())
+		{
+			particlePool.push(particles.front());
+			particles.pop_back();
+			rateTimer = 0.f;
+		}
+		gameobject->particlesDirty = false;
+	}
 	if (!Playing && !ConstantPlaying) return;
 	timer += dt;
 
@@ -579,10 +589,10 @@ void ComponentParticles::DrawDebugEmisor()
 {
 	float3 base = gameobject->transform->GetGlobalPosition();
 
-	float3 v1 = gameobject->transform->GetRotation() * float3(base.x + quadEmitterSize.x / 2.f, base.y, base.x - quadEmitterSize.y / 2.f);
-	float3 v2 = gameobject->transform->GetRotation() * float3(base.x + quadEmitterSize.x / 2.f, base.y, base.x + quadEmitterSize.y / 2.f);
-	float3 v3 = gameobject->transform->GetRotation() * float3(base.x - quadEmitterSize.x / 2.f, base.y, base.x + quadEmitterSize.y / 2.f);
-	float3 v4 = gameobject->transform->GetRotation() * float3(base.x - quadEmitterSize.x / 2.f, base.y, base.x - quadEmitterSize.y / 2.f);
+	float3 v1 = base + gameobject->transform->GetRotation() * float3(quadEmitterSize.x / 2.f, 0, -quadEmitterSize.y / 2.f);
+	float3 v2 = base + gameobject->transform->GetRotation() * float3(quadEmitterSize.x / 2.f, 0, quadEmitterSize.y / 2.f);
+	float3 v3 = base + gameobject->transform->GetRotation() * float3(-quadEmitterSize.x / 2.f, 0, quadEmitterSize.y / 2.f);
+	float3 v4 = base + gameobject->transform->GetRotation() * float3(-quadEmitterSize.x / 2.f, 0, -quadEmitterSize.y / 2.f);
 
 	switch (actualEmisor) 
 	{
