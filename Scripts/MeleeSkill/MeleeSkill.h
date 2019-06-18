@@ -15,6 +15,7 @@ class PlayerMovement;
 
 class MeleeSkill_API MeleeSkill : public GenericSkill
 {
+public:
 	MeleeSkill(PlayerMovement* PM);
 	virtual ~MeleeSkill();
 

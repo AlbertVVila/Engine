@@ -10,10 +10,14 @@
 #endif
 
 class JSON_value;
+class PlayerMovement;
 
 class SliceSkill_API SliceSkill : public MeleeSkill
 {
 public:
+	SliceSkill(PlayerMovement* PM);
+	virtual ~SliceSkill();
+
 	void Start() override;
 	void Update() override;
 
