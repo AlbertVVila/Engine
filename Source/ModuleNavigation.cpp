@@ -1227,7 +1227,7 @@ static int fixupShortcuts(dtPolyRef* path, int npath, dtNavMeshQuery* navQuery)
 	return npath;
 }
 
-float ModuleNavigation::getXZDistance(float3 a, float3 b) const
+float ModuleNavigation::GetXZDistance(float3 a, float3 b) const
 {
 	math::float2 p1(a.x, a.z);
 	math::float2 p2(b.x, b.z);
@@ -1361,7 +1361,7 @@ bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vecto
 				path.push_back(float3(smoothPath[i * 3], smoothPath[i * 3 + 1], smoothPath[i * 3 + 2]));
 				//check distance
 				//if (i != 0) currentPathDistance += path[i - 1].DistanceSq(path[i]); //3d distance
-				if (i != 0) currentPathDistance += getXZDistance(path[i - 1], path[i]);//2d distance
+				if (i != 0) currentPathDistance += GetXZDistance(path[i - 1], path[i]);//2d distance
 				if (currentPathDistance > maxDist)	return true;
 			}
 			return true;
