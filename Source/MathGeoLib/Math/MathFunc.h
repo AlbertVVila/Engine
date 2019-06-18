@@ -114,11 +114,11 @@ MATH_BEGIN_NAMESPACE
 /// Converts the given amount of degrees into radians.
 /// 180 degrees equals pi, 360 degrees is a full circle, and equals 2pi.
 inline float3 DegToRad(const float3 &degrees) { return degrees * (pi / 180.f); }
-inline float DegToRad(float degrees) { return degrees * (pi / 180.f); }
+inline MATH_API float DegToRad(float degrees) { return degrees * (pi / 180.f); }
 
 /// Converts the given amount of radians into degrees.
 inline float3 RadToDeg(const float3 &radians) { return radians * (180.f / pi); }
-inline float RadToDeg(float radians) { return radians * (180.f / pi); }
+inline MATH_API float RadToDeg(float radians) { return radians * (180.f / pi); }
 
 /// Computes the function sin(x).
 /** @see Cos(), Tan(), SinCos(), Asin(), Acos(), Atan(), Atan2(), Sinh(), Cosh(), Tanh(). */
