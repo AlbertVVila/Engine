@@ -31,8 +31,12 @@ public:
 	void StopGameClock();
 	void Step();
 
-	ENGINE_API void UnFreezeGame();
+	/** @param fadeInTime value between [0,1].
+	@@ param fadeOutTime value between [0,1].
+	Represents percentage of freeze time that fadeIn ends and fadeOut starts
+	fadeIn value of 0.0f is not fadeIn, same with FadeOut and value 1.0f**/
 	ENGINE_API void FreezeGame(float duration, float fadeInTime = 0.0f, float fadeOutTime = 1.0f, bool linealFade = false);
+	ENGINE_API void UnFreezeGame();
 
 private:
 	void HandleFreeze();
