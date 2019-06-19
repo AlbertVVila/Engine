@@ -29,6 +29,7 @@ void ModuleTime::UpdateTime()
 
 	++totalFrames;
 	gameDeltaTime = frameTimer.ReadSeconds();
+	ellapsedTime += gameDeltaTime;
 	fullGameDeltaTime = gameDeltaTime;
 
 	gameTime += gameDeltaTime * gameTimeScale;

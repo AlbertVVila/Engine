@@ -59,7 +59,7 @@ uniform mat4 model;
 uniform mat4 palette[64];
 
 uniform mat4 lightProjView;
-
+uniform float time;
 
 out vec3 normalIn;
 out vec3 position;
@@ -73,51 +73,56 @@ out vec4 shadow_coord;
 
 void main()
 {
-#ifdef SKINNED
-	mat4 skin_t = palette[bone_indices[0]]*bone_weights[0]+palette[bone_indices[1]]*bone_weights[1]+
-	palette[bone_indices[2]]*bone_weights[2]+palette[bone_indices[3]]*bone_weights[3];
-	position = (skin_t*vec4(vertex_position, 1.0)).xyz;	
-	normalIn = (skin_t*vec4(vertex_normal, 0.0)).xyz; // 0.0 avoid translation
-	vec3 tan = (skin_t*vec4(vertex_tangent, 0.0)).xyz; // 0.0 avoid translation
-#else
-	position = (model * vec4(vertex_position, 1.0)).xyz;
-	//normalIn = mat3(model) * vertex_normal;
-	normalIn = mat3(transpose(inverse(model))) * vertex_normal; //Temporary
-	vec3 tan = mat3(model) * vertex_tangent;
-#endif
-#ifdef SHADOWS_ENABLED
-	shadow_coord = lightProjView * vec4(position, 1.0);
-#endif
+#ifndef WATER	
+	#ifdef SKINNED
+		mat4 skin_t = palette[bone_indices[0]]*bone_weights[0]+palette[bone_indices[1]]*bone_weights[1]+
+		palette[bone_indices[2]]*bone_weights[2]+palette[bone_indices[3]]*bone_weights[3];
+		position = (skin_t*vec4(vertex_position, 1.0)).xyz;	
+		normalIn = (skin_t*vec4(vertex_normal, 0.0)).xyz; // 0.0 avoid translation
+		vec3 tan = (skin_t*vec4(vertex_tangent, 0.0)).xyz; // 0.0 avoid translation
+	#else
+		position = (model * vec4(vertex_position, 1.0)).xyz;
+		//normalIn = mat3(model) * vertex_normal;
+		normalIn = mat3(transpose(inverse(model))) * vertex_normal; //Temporary
+		vec3 tan = mat3(model) * vertex_tangent;
+	#endif
+	#ifdef SHADOWS_ENABLED
+		shadow_coord = lightProjView * vec4(position, 1.0);
+	#endif
+		gl_Position = proj*view*vec4(position, 1.0);
+		vec3 bitan = cross(vertex_tangent, vertex_normal);
+		vec3 N = normalize(normalIn);
+		tan = normalize(tan - N * dot(N, tan));
+		vec3 T = normalize(tan);
+		vec3 B = cross(T, normalIn);	
+		mat3 TBNMat = transpose(mat3(T, B, N));
+		position = TBNMat * position;
+		viewPos = TBNMat * (transpose(mat3(view))*(-view[3].xyz));	
+		uv0 = vertex_uv0;
+
+		normalIn = TBNMat * normalIn;
+
+		//transform lights to tangent space
+
+		for(int i=0; i < lights.num_directionals; ++i)
+		{
+			directionalDirections[i] = TBNMat * lights.directional[i].direction;
+		}
+
+		for(int i=0; i < lights.num_points; ++i)
+		{
+			pointPositions[i] = TBNMat * lights.points[i].position;
+		}
+
+		for(int i=0; i < lights.num_spots; ++i)
+		{
+			spotPositions[i] = TBNMat * lights.spots[i].position;
+			spotDirections[i] = TBNMat * lights.spots[i].direction;
+		}
+#else	
+	position = (model*vec4(vertex_position, 1.0)).xyz;
 	gl_Position = proj*view*vec4(position, 1.0);
-	vec3 bitan = cross(vertex_tangent, vertex_normal);
-	
-	vec3 N = normalize(normalIn);
-	tan = normalize(tan - N * dot(N, tan));
-	vec3 T = normalize(tan);
-	vec3 B = cross(T, normalIn);	
-	mat3 TBNMat = transpose(mat3(T, B, N));
-	position = TBNMat * position;
-	viewPos = TBNMat * (transpose(mat3(view))*(-view[3].xyz));	
-	uv0 = vertex_uv0;
-
-	normalIn = TBNMat * normalIn;
-
-	//transform lights to tangent space
-
-	for(int i=0; i < lights.num_directionals; ++i)
-	{
-		directionalDirections[i] = TBNMat * lights.directional[i].direction;
-	}
-
-	for(int i=0; i < lights.num_points; ++i)
-	{
-		pointPositions[i] = TBNMat * lights.points[i].position;
-	}
-
-	for(int i=0; i < lights.num_spots; ++i)
-	{
-		spotPositions[i] = TBNMat * lights.spots[i].position;
-		spotDirections[i] = TBNMat * lights.spots[i].direction;
-	}
-	
+	gl_Position.y += sin(length(position)+time) * 10;
+	normalIn = mat3(transpose(inverse(model))) * vertex_normal;
+#endif	
 }

@@ -39,6 +39,7 @@ public:
 	bool castShadows = false;
 	bool useAlpha = false;
 	bool highlighted = false;
+	bool water = true;
 	math::float3 highlightColor = math::float3::one;
 
 private:

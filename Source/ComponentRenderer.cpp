@@ -123,6 +123,7 @@ void ComponentRenderer::DrawProperties()
 			ImGui::Checkbox("Use Alpha", &useAlpha);
 			ImGui::Checkbox("Highlighted", &highlighted);
 			ImGui::ColorEdit3("Highlight color", &highlightColor[0]);
+			ImGui::Checkbox("Water", &water);
 		}
 		else
 		{

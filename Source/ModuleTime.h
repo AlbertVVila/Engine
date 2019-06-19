@@ -57,6 +57,7 @@ public:
 	float gameTime = 0.0f;
 	float gameDeltaTime = 0.0f;
 	float fullGameDeltaTime = 0.0f;
+	float ellapsedTime = 0.0f;
 
 	// RealTime Clock
 	float realTime = 0.0f;

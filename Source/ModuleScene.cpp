@@ -408,13 +408,20 @@ void ModuleScene::DrawGOGame(const GameObject& go)
 	if (shader->id.size() > 1) //If exists variations use it
 	{
 		variation = material->variation;
-		if (crenderer->mesh->bindBones.size() > 0)
+		if (crenderer->water)
 		{
-			variation |= (unsigned)ModuleProgram::PBR_Variations::SKINNED;
+			variation |= (unsigned)ModuleProgram::PBR_Variations::WATER;
 		}
-		if (App->renderer->directionalLight && App->renderer->directionalLight->produceShadows)
+		else
 		{
-			variation |= (unsigned)ModuleProgram::PBR_Variations::SHADOWS_ENABLED;
+			if (crenderer->mesh->bindBones.size() > 0)
+			{
+				variation |= (unsigned)ModuleProgram::PBR_Variations::SKINNED;
+			}
+			if (App->renderer->directionalLight && App->renderer->directionalLight->produceShadows)
+			{
+				variation |= (unsigned)ModuleProgram::PBR_Variations::SHADOWS_ENABLED;
+			}
 		}
 	}
 	
@@ -436,6 +443,9 @@ void ModuleScene::DrawGOGame(const GameObject& go)
 		glUniform3fv(glGetUniformLocation(shader->id[variation],
 			"highlightColorUniform"), 1, (GLfloat*)zero);
 	}
+
+	glUniform1f(glGetUniformLocation(shader->id[variation],
+		"time"), App->time->ellapsedTime * 100);
 
 	go.SetLightUniforms(shader->id[variation]);
 
@@ -471,17 +481,24 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 	if (shader->id.size() > 1) //If exists variations use it
 	{
 		variation = material->variation;
-		if (mesh != nullptr && mesh->bindBones.size() > 0)
+		if (crenderer->water)
 		{
-			variation |= (unsigned)ModuleProgram::PBR_Variations::SKINNED;
+			variation |= (unsigned)ModuleProgram::PBR_Variations::WATER;
 		}
-		if (App->renderer->directionalLight && App->renderer->directionalLight->produceShadows)
+		else
 		{
-			variation |= (unsigned)ModuleProgram::PBR_Variations::SHADOWS_ENABLED;
-		}
-		if (isEditor)
-		{
-			variation |= (unsigned)ModuleProgram::PBR_Variations::EDITOR_RENDER;
+			if (mesh != nullptr && mesh->bindBones.size() > 0)
+			{
+				variation |= (unsigned)ModuleProgram::PBR_Variations::SKINNED;
+			}
+			if (App->renderer->directionalLight && App->renderer->directionalLight->produceShadows)
+			{
+				variation |= (unsigned)ModuleProgram::PBR_Variations::SHADOWS_ENABLED;
+			}
+			if (isEditor)
+			{
+				variation |= (unsigned)ModuleProgram::PBR_Variations::EDITOR_RENDER;
+			}
 		}
 	}
 
@@ -492,6 +509,9 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 	glUniform3fv(glGetUniformLocation(shader->id[variation],
 		"lights.ambient_color"), 1, (GLfloat*)&ambientColor);
 	
+	glUniform1f(glGetUniformLocation(shader->id[variation],
+		"time"), App->time->ellapsedTime);
+
 	go.SetLightUniforms(shader->id[variation]);
 
 	go.UpdateModel(shader->id[variation]);
