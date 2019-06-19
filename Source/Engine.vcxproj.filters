@@ -320,6 +320,7 @@
     <ClCompile Include="ResourcePrefab.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerPrefs.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -701,6 +702,7 @@
     <ClInclude Include="ResourcePrefab.h">
       <Filter>Resources</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerPrefs.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Modules">
@@ -809,6 +811,12 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\Game\Shaders\VertexShaders\DebugNav.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\VertexShaders\Bloom.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\FragmentShaders\Bloom.fs">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

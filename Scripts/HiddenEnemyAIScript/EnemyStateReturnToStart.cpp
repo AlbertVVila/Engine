@@ -17,16 +17,11 @@ EnemyStateReturnToStart::~EnemyStateReturnToStart()
 
 void EnemyStateReturnToStart::Update()
 {
-	// Look at start position and move towards
-	//enemy->enemyController->LookAt2D(enemy->startPosition);
-	//enemy->enemyController->MoveTowards(enemy->returnSpeed);
+	// Move back to start position
 	enemy->enemyController->Move(enemy->chaseSpeed, refreshTime, enemy->startPosition, enemyPath);
 
 	// Check distance to player
-	math::float3 enemyCurrentPosition = enemy->enemyController->GetPosition();
-	math::float3 playerCurrentPosition = enemy->enemyController->GetPlayerPosition();
-	float distanceToPlayer = enemy->enemyController->GetDistanceTo2D(playerCurrentPosition);
-
+	float distanceToPlayer = enemy->enemyController->GetDistanceToPlayer2D();
 	if (distanceToPlayer < enemy->activationDistance)
 	{
 		enemy->currentState = (EnemyState*)enemy->chase;

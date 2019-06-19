@@ -264,6 +264,7 @@
     <ClInclude Include="PanelState.h" />
     <ClInclude Include="PanelTime.h" />
     <ClInclude Include="par_shapes.h" />
+    <ClInclude Include="PlayerPrefs.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Recast\DebugUtils\DebugDraw.h" />
     <ClInclude Include="Resource.h" />
@@ -388,6 +389,7 @@
     <ClCompile Include="PanelNavigation.cpp" />
     <ClCompile Include="PanelResourceManager.cpp" />
     <ClCompile Include="PanelTime.cpp" />
+    <ClCompile Include="PlayerPrefs.cpp" />
     <ClCompile Include="Recast\DebugUtils\DebugDraw.cpp" />
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="ResourceAnimation.cpp" />
@@ -431,6 +433,8 @@
     <ClCompile Include="Viewport.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Game\Scripts\PlayerMovement.dll" />
+    <None Include="..\Game\Shaders\FragmentShaders\Bloom.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\DebugNav.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\Default.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\Fonts.fs" />
@@ -441,6 +445,7 @@
     <None Include="..\Game\Shaders\FragmentShaders\Skybox.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\Trail.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\UI.fs" />
+    <None Include="..\Game\Shaders\VertexShaders\Bloom.vs" />
     <None Include="..\Game\Shaders\VertexShaders\DebugNav.vs" />
     <None Include="..\Game\Shaders\VertexShaders\Default.vs" />
     <None Include="..\Game\Shaders\VertexShaders\Fonts.vs" />

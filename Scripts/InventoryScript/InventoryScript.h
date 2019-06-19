@@ -16,6 +16,7 @@
 class Component;
 class GameObject;
 class Transform2D;
+class ComponentAudioSource;
 
 #define TOTAL_SLOTS 25
 #define INVENTARY_SLOTS 18
@@ -39,6 +40,11 @@ private:
 	Transform2D* menuPlayer = nullptr;
 
 	math::float2 initialitemPos = math::float2::zero;
+
+	ComponentAudioSource* selectItemAudio;
+	ComponentAudioSource* dropItemAudio;
+
+	bool itemGrabbed = false; 
 };
 
 #endif __InventoryScript_h__
