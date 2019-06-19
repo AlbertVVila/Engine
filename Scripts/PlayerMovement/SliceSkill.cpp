@@ -49,6 +49,8 @@ void SliceSkill::UseSkill()
 
 void SliceSkill::Reset()
 {
+	MeleeSkill::Reset();
+
 	if (attackBoxTrigger != nullptr)
 	{
 		attackBoxTrigger->Enable(false);

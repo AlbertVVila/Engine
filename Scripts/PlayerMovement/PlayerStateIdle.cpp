@@ -22,7 +22,9 @@ void PlayerStateIdle::CheckInput()
 	}
 	else if (player->IsUsingFirstSkill())
 	{
-		player->currentState = (PlayerState*)player->dash;
+		//player->currentState = (PlayerState*)player->dash;
+		player->currentState = (PlayerState*)player->firstAttack;
+		player->currentSkill = (BasicSkill*)player->playerSkills[0];
 	}
 	else if (player->IsUsingSecondSkill())
 	{
