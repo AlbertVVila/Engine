@@ -350,7 +350,7 @@ void GameObject::OnChangeActiveState(bool wasActive)
 			if (!wasActive)
 			{
 				if (App->time->gameState == GameState::RUN && component->type == ComponentType::Script 
-					&& ((Script*)component)->hasBeenAwoken)
+					&& !((Script*)component)->hasBeenAwoken)
 				{
 					Script* script = (Script*)component;
 					script->Awake();
