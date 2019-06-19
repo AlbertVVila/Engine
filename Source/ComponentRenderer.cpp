@@ -248,6 +248,9 @@ void ComponentRenderer::Save(JSON_value* value) const
 	value->AddInt("useAlpha", useAlpha);
 	value->AddInt("highlighted", highlighted);
 	value->AddFloat3("highlightColor", highlightColor);
+	value->AddInt("xTiles", xTiles);
+	value->AddInt("yTiles", yTiles);
+	value->AddFloat("fps", fps);
 }
 
 void ComponentRenderer::Load(JSON_value* value)
@@ -266,6 +269,9 @@ void ComponentRenderer::Load(JSON_value* value)
 	useAlpha = value->GetInt("useAlpha");
 	highlighted = value->GetInt("highlighted");
 	highlightColor = value->GetFloat3("highlightColor");
+	xTiles = value->GetInt("xTiles", xTiles);
+	yTiles = value->GetInt("yTiles", yTiles);
+	fps = value->GetFloat("fps", fps);
 }
 
 void ComponentRenderer::SetMaterial(const char* materialName)

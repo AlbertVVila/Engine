@@ -813,5 +813,11 @@
     <None Include="..\Game\Shaders\VertexShaders\DebugNav.vs">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="..\Game\Shaders\FragmentShaders\FX.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\VertexShaders\FX.vs">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
