@@ -25,16 +25,17 @@ class EquipPopupController_API EquipPopupController : public Script
 	void Start() override;
 	void Update() override;
 
-	void Assign(int i);
 
 
 
 private:
 
+	void Assign(int i);
 	void ChangePopUpSlots();
 	void FillLists();
 	void FillSkillSlots();
 	void FillItemSlots();
+	void CleanButton();
 
 	InventoryScript* inventory = nullptr;
 	SkillTreeController* skillTree = nullptr;
@@ -48,7 +49,7 @@ private:
 	std::vector<GameObject*> slots;
 
 	std::vector<Button*> hudButtons;
-	Button* activeButton = nullptr;
+	int activeButton = -1;
 
 	std::vector<Item> itemsList;
 	std::vector<Skill> skillsList;
