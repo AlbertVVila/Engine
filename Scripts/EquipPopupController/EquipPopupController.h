@@ -18,6 +18,7 @@ class Item;
 class Skill;
 class SkillTreeController;
 class InventoryScript;
+class Transform2D;
 
 class EquipPopupController_API EquipPopupController : public Script
 {
@@ -47,6 +48,7 @@ private:
 	Button* skills = nullptr;
 	Button* unequip = nullptr;
 	std::vector<GameObject*> slots;
+	Transform2D* hoverTransform = nullptr;
 
 	std::vector<Button*> hudButtons;
 	int activeButton = -1;
