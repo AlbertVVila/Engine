@@ -47,6 +47,8 @@ class PlayerStateWalk;
 class DamageController;
 class DamageFeedbackUI;
 
+#define MAX(a,b) ((a) < (b) ? (b) : (a))
+
 enum class PlayerMovement_API SkillType
 {
 	NONE = 0,
@@ -63,7 +65,7 @@ public:
 	void Serialize(JSON_value* json) const;
 	void DeSerialize(JSON_value* json, PlayerState* playerState);
 	bool IsUsable(float playerMana) const { return available && type != SkillType::NONE && (playerMana >= manaCost && cooldownTimer <= 0); }
-	float Use() { cooldownTimer = cooldown; maxCooldown = cooldown; return manaCost; }
+	float Use(float minCooldown = 0.f) { cooldownTimer = MAX(cooldown,minCooldown); maxCooldown = MAX(cooldown,minCooldown); return manaCost; }
 	void Update(float deltaTime) { if (cooldownTimer > 0) cooldownTimer -= deltaTime; }
 	void SetCooldown(float value) { if (type != SkillType::NONE && value > cooldownTimer) { cooldownTimer = value; maxCooldown = value; } }
 	float CooldownRatio() const { return cooldownTimer > 0 ? cooldownTimer / maxCooldown : 0; }
