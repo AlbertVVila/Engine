@@ -14,6 +14,8 @@ public:
 	void Enter() override;
 	void CheckInput() override;
 
+	void UseSkill();
+
 };
 
 #endif // __PLAYERSTATEFIRSTATTACK_H_

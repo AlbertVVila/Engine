@@ -44,6 +44,8 @@ class PlayerStateDeath;
 class PlayerStateUppercut;
 class PlayerStateWalk;
 class DamageController;
+class BasicSkill;
+class SliceSkill;
 
 class PlayerMovement_API PlayerMovement : public Script
 {
@@ -79,6 +81,9 @@ private:
 
 	void ActivateHudCooldownMask(bool activate, unsigned first = HUB_BUTTON_Q, unsigned last = HUB_BUTTON_4);
 
+	// Skills
+	void CreatePlayerSkills();
+
 public:
 	bool isPlayerDead = false;
 	float3 currentPosition = float3(0, 0, 0); //TODO ZERO
@@ -112,6 +117,11 @@ public:
 	math::float3 hpHitBoxSize = math::float3::zero;
 
 	bool canInteract = true;
+
+	// Skills
+	std::vector<BasicSkill*> playerSkills;
+	BasicSkill* currentSkill = nullptr;
+	SliceSkill* slice = nullptr;
 
 private:
 	std::vector<PlayerState*> playerStates;	
