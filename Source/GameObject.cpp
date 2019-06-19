@@ -1232,6 +1232,7 @@ void GameObject::UpdateTransforms(math::float4x4 parentGlobal)
 	PROFILE;
 	if (movedFlag)
 	{
+		particlesDirty = true;
 		for (const auto& child : children)
 		{
 			if (!child->isStatic)

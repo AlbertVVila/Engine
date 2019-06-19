@@ -570,7 +570,6 @@ void PanelResourceManager::DrawResourceMaterial()
 	ImGui::ColorEdit3("Emissive Color", &(float&)emissiveColor, ImGuiColorEditFlags_NoInputs);
 
 	ImGui::Text("Roughness: %f", material.roughness);
-	ImGui::Text("Metallic: %f", material.metallic);
 	ImGui::NextColumn();
 
 	// Textures

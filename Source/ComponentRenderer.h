@@ -37,6 +37,9 @@ public:
 	bool castShadows = false;
 	bool useAlpha = false;
 	bool highlighted = false;
+	bool dissolve = false;
+	float dissolveAmount = 0.f;
+	float borderAmount = 0.5f;
 	math::float3 highlightColor = math::float3::one;
 
 private:
