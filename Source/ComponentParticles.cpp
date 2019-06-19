@@ -251,7 +251,7 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 	{
 		while (!particles.empty())
 		{
-			particlePool.push(particles.front());
+			RELEASE(particles.front());
 			particles.pop_back();
 			rateTimer = 0.f;
 		}
