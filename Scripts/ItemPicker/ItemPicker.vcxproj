@@ -260,6 +260,7 @@
     <ClCompile Include="ItemPicker.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Item.h" />
     <ClInclude Include="ItemPicker.h" />
   </ItemGroup>
   <ItemGroup>

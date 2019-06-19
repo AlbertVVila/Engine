@@ -5,6 +5,7 @@
 #include "Item.h"
 #include "Geometry/AABB.h"
 #include <vector>
+#include <list>
 
 #ifdef ItemPicker_EXPORTS
 #define ItemPicker_API __declspec(dllexport)
@@ -58,6 +59,7 @@ private:
 	int rare = 0;
 
 	ItemNameController* itemName = nullptr;
+	std::list<unsigned> nameShowed;
 };
 
 #endif __ItemPicker_h__
