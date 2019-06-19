@@ -31,12 +31,24 @@ public:
 	void StopGameClock();
 	void Step();
 
+	ENGINE_API void UnFreezeGame();
+	ENGINE_API void FreezeGame(float duration, float fadeInTime = 0.0f, float fadeOutTime = 1.0f, bool linealFade = false);
+
 private:
+	void HandleFreeze();
 	void PartitionTime();
 
 private:
 	unsigned frameCount = 0u;
 	float aggregateGameDeltaTime = 0.0f;
+
+	//Freeze
+	bool temporaryFreeze = false;
+	float freezeTimer = 0.0f;
+	float freezeDuration = 0.0f;
+	float freezeFadeIn = 0.0f;
+	float freezeFadeOut = 0.0f;
+	bool linealFade = false;
 
 public:
 	int FPS = 0;
