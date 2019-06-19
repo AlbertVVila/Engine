@@ -14,6 +14,7 @@ public:
 
 	virtual void Start();
 	virtual void Update();
+	virtual void Exit();
 
 	virtual void Expose(ImGuiContext* context);
 	virtual void Serialize(JSON_value* json) const;

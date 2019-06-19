@@ -68,5 +68,21 @@ void PlayerStateFirstAttack::CheckInput()
 
 void PlayerStateFirstAttack::UseSkill()
 {
+	BasicSkill* previous = player->currentSkill;
+
 	player->currentSkill->Update();
+
+	CheckSkills(previous, player->currentSkill);
+}
+
+void PlayerStateFirstAttack::CheckSkills(BasicSkill* previous, BasicSkill* current)
+{
+	if (previous != current)
+	{
+		if (previous != nullptr)
+			previous->Exit();
+
+		if(current != nullptr)
+			current->Start();
+	}
 }

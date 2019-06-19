@@ -17,6 +17,11 @@ SliceSkill::~SliceSkill()
 {
 }
 
+void SliceSkill::Start()
+{
+	boxSize = math::float3(50.0f, 20.0f, 50.0f);
+}
+
 void SliceSkill::Expose(ImGuiContext* context)
 {
 	MeleeSkill::Expose(context);

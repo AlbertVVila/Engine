@@ -39,6 +39,11 @@ void BasicSkill::Update()
 	}
 }
 
+void BasicSkill::Exit()
+{
+	player->currentState = (PlayerState*)player->idle;
+}
+
 void BasicSkill::Expose(ImGuiContext* context)
 {
 	ImGui::SetCurrentContext(context);
@@ -65,6 +70,5 @@ void BasicSkill::Reset()
 	timer = 0.0f;
 	//Enable(false);
 
-	player->currentState = (PlayerState*)player->idle;
 	player->currentSkill = nullptr;
 }

@@ -10,7 +10,7 @@ public:
 	SliceSkill(PlayerMovement* PM, ComponentBoxTrigger* attackBox);
 	~SliceSkill();
 
-	//void Start() override;
+	void Start() override;
 	//void Update() override;
 
 	void Expose(ImGuiContext* context) override;
