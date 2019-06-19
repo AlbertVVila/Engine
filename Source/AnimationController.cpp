@@ -96,10 +96,12 @@ void AnimationController::UpdateInstance(Instance* instance, float dt)
 			else if (instance->loop)
 			{
 				instance->time = trueDt - timeRemainingA;
+				anim->nextEvent = 0;
 			}
 			else
 			{
 				instance->time = anim->durationInSeconds;
+				anim->nextEvent = 0;
 			}
 		}
 		else
@@ -160,10 +162,12 @@ void AnimationController::UpdateEditorInstance(Instance* instance, float dt)
 			{
 				instance->time = current->minTime + trueDt - timeRemainingA;
 				trueFrame = current->maxTime;
+				anim->nextEvent = 0;
 			}
 			else
 			{
 				instance->time = current->maxTime;
+				anim->nextEvent = 0;
 			}
 		}
 		else
@@ -246,6 +250,43 @@ void AnimationController::ResetClipping()
 {
 	current->minTime = 0.0f;
 	current->maxTime = current->anim->durationInSeconds;
+}
+
+void AnimationController::SetNextEvent()
+{
+	ResourceAnimation* anim = current->anim;
+	
+	int currentFrame = current->time * anim->framesPerSecond;
+	anim->nextEvent = 0;
+
+	for (std::vector<Event*>::iterator it = anim->events.begin(); it != anim->events.end(); ++it)
+	{
+		if (currentFrame < (*it)->frame)
+		{
+			return;
+		}
+		++anim->nextEvent;
+	}
+}
+
+bool AnimationController::CheckEvents(ResourceAnimation* anim)
+{
+	if (NULL == anim || anim->totalEvents == 0)
+		return false;
+	
+	for (std::vector<Event*>::iterator it = anim->events.begin(); it != anim->events.end(); ++it)
+	{
+		if ((*it)->key == anim->nextEvent)
+		{
+			int currentFrame = current->time * anim->framesPerSecond;
+			if (currentFrame >= (*it)->frame)
+			{
+				return true;
+			}
+			return false;
+		}
+	}
+	return false;
 }
 
 bool AnimationController::GetTransform(unsigned channelIndex, math::float3& position, math::Quat& rotation)
