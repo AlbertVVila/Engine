@@ -1,4 +1,3 @@
-#define MAX_KERNEL_RADIUS 100
 
 layout (location = 0) out vec4 color;
 layout (location = 1) out vec4 hlight;
@@ -9,10 +8,6 @@ uniform sampler2D gBrightness;
 
 uniform float gammaCorrector;
 uniform float exposure;
-
-uniform bool horizontal = true;
-uniform float weight[MAX_KERNEL_RADIUS];
-uniform int kernelRadius;
 
 in vec2 UV0;
 
@@ -66,20 +61,7 @@ void main()
 {
 	color = GetTexel(UV0);	
 
-	vec2 tex_offset = 1.0 / textureSize(gBrightness, 0); // gets size of single texel
-    
-	vec3 bloomColor = texture(gBrightness, UV0).rgb * weight[0]; // current fragment's contribution
-    
-	for(int i = 1; i < kernelRadius; ++i)
-    {
-        bloomColor += texture(gBrightness, UV0 + vec2(tex_offset.x * i, 0.0)).rgb * weight[i];
-        bloomColor += texture(gBrightness, UV0 - vec2(tex_offset.x * i, 0.0)).rgb * weight[i];
-	bloomColor += texture(gBrightness, UV0 + vec2(tex_offset.x * i, tex_offset.y * i)).rgb * weight[i];
-        bloomColor += texture(gBrightness, UV0 - vec2(tex_offset.x * i, tex_offset.y * i)).rgb * weight[i];
-        bloomColor += texture(gBrightness, UV0 + vec2(0.0, tex_offset.y * i)).rgb * weight[i];
-        bloomColor += texture(gBrightness, UV0 - vec2(0.0, tex_offset.y * i)).rgb * weight[i];
-    }
-    
+	vec3 bloomColor = texture(gBrightness, UV0).rgb;
 	
 	color += vec4(bloomColor, 1);
 
@@ -89,8 +71,5 @@ void main()
 	
 	color = ProcessHighlights(color);  //Draw highlights
 
-	//color = vec4(bloomColor,1);
-
-	//color = texture2D(gBrightness, UV0);
 	
 }

@@ -2,6 +2,7 @@
 
 #include "Application.h"
 #include "ModuleFileSystem.h"
+#include "ModuleResourceManager.h"
 
 #include "JSON.h"
 #include "imgui.h"
@@ -58,7 +59,7 @@ void ResourceAudio::DeleteFromMemory()
 	Resource::DeleteFromMemory();
 }
 
-void ResourceAudio::SaveMetafile(const char * file) const
+void ResourceAudio::SaveMetafile(const char* file) const
 {
 	std::string filepath;
 	filepath.append(file);
@@ -100,11 +101,18 @@ void ResourceAudio::LoadConfigFromMeta()
 
 	// Make sure the UID from meta is the same
 	unsigned checkUID = value->GetUint("GUID");
-
+	if (oldUID != checkUID)
+	{
+		UID = checkUID;
+		// Update resource UID on resource list
+		App->resManager->ReplaceResource(oldUID, this);
+		exportedFile = IMPORTED_MATERIALS + std::to_string(UID) + MATERIALEXT;
+	}
+	RELEASE_ARRAY(data);
 	RELEASE(json);
 }
 
-void ResourceAudio::DrawImportConfiguration()
+void ResourceAudio::DrawLoadSettings()
 {
 	ImGui::Checkbox("Streamed", &streamed);
 	if (ImGui::IsItemHovered())

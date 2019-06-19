@@ -11,6 +11,10 @@ public:
 	~EnemyStateGetInPosition();
 
 	void Update() override;
+
+private:
+	void AproachPlayer();
+	void MoveAwayFromPlayer();
 };
 
 #endif __ENEMYSTATECHASE_H_
