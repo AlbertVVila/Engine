@@ -36,7 +36,7 @@ public:
 	virtual void Start() {}
 	virtual void Update() {}
 
-	virtual void OnAnimationEvent(int keyframe) {}
+	virtual void OnAnimationEvent(std::string name) {}
 	//virtual void OnCollisionEnter(GameObject* go) {} //TODO: collision module
 	//virtual void OnCollisionExit(GameObject* go) {} //TODO: collision module
 

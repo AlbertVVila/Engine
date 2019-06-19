@@ -523,8 +523,8 @@ void ModuleRender::ComputeShadows()
 		//TODO: Improve this avoiding shuffle every frame
 		for (GameObject* go : App->scene->dynamicFilteredGOs) 
 		{
-			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponentOld(ComponentType::Renderer);
-			if (cr && cr->castShadows)
+			ComponentRenderer* cr = go->GetComponent<ComponentRenderer>();
+			if (cr != nullptr && cr->castShadows)
 			{
 				renderersDetected = true;
 				lightAABB.Enclose(go->bbox);

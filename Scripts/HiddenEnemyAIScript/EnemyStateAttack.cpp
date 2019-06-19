@@ -42,16 +42,7 @@ void EnemyStateAttack::Update()
 		assert(enemy->enemyController->attackBoxTrigger != nullptr);
 		if (!hitboxCreated)
 		{
-			// Attack
-			//Create the hitbox
-			enemy->enemyController->attackBoxTrigger->Enable(true);
-			enemy->enemyController->attackBoxTrigger->SetBoxSize(boxSize);
-			boxPosition = enemy->gameobject->transform->up * 100.f;
-			enemy->enemyController->attackBoxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z + 100.f);
-			hitboxCreated = true;
-
-			//playerScript->Damage(attackDamage);
-			auxTimer = timer;
+			Attack();
 		}
 		else if (timer > auxTimer + enemy->attackDuration)
 		{
@@ -65,4 +56,16 @@ void EnemyStateAttack::Update()
 			enemy->currentState = (EnemyState*)enemy->cooldown;
 		}
 	}
+}
+
+void EnemyStateAttack::Attack()
+{
+	//Create the hitbox
+	enemy->enemyController->attackBoxTrigger->Enable(true);
+	enemy->enemyController->attackBoxTrigger->SetBoxSize(boxSize);
+	boxPosition = enemy->gameobject->transform->up * 100.f;
+	enemy->enemyController->attackBoxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z + 100.f);
+	hitboxCreated = true;
+
+	auxTimer = timer;
 }
