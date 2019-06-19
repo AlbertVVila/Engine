@@ -6,7 +6,6 @@
 #include "PlayerMovement.h"
 
 #include <assert.h>
-#include "imgui.h"
 #include "JSON.h"
 
 BaseSkill::BaseSkill(PlayerMovement* PM) :
@@ -28,7 +27,7 @@ void BaseSkill::Start()
 
 void BaseSkill::Update()
 {
-	timer += App->time->gameDeltaTime;
+	timer += player->App->time->gameDeltaTime;
 
 	if (timer > duration)
 	{

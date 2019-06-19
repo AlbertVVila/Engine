@@ -1,9 +1,9 @@
 #ifndef  __BasicSkill_h__
 #define  __BasicSkill_h__
 
-class PlayerMovement;
+#include "imgui.h"
 
-class ImGuiContext;
+class PlayerMovement;
 class JSON_value;
 
 class BaseSkill
