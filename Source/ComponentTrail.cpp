@@ -5,9 +5,11 @@
 #include "ModuleFileSystem.h"
 #include "ModuleTextures.h"
 #include "ModuleResourceManager.h"
+#include "ModuleScene.h"
 
 #include "ComponentTrail.h"
 #include "ComponentTransform.h"
+#include "ComponentCamera.h"
 
 #include "GameObject.h"
 #include "ResourceTexture.h"
@@ -49,13 +51,13 @@ ComponentTrail::ComponentTrail(const ComponentTrail& component) : Component(comp
 	App->particles->AddTrailRenderer(this);
 }
 
-void ComponentTrail::Update()
+void ComponentTrail::UpdateTrail()
 {
 	unsigned trailPoints = trail.size();
 	for (unsigned i = 0u; i < trailPoints; ++i)
 	{
 		TrailPoint point = trail.front();
-		point.remainingTime -= App->time->gameDeltaTime;
+		point.remainingTime -= App->time->fullGameDeltaTime;
 
 		if (point.remainingTime > 0)
 		{
@@ -66,17 +68,25 @@ void ComponentTrail::Update()
 	}
 
 	math::float3 pos = gameobject->transform->GetGlobalPosition();
-	if (trail.size() == 0 || trail.back().Distance(pos) > minDistance)
+	if (gameobject->isActive() && (trail.size() == 0 || trail.back().Distance(pos) > minDistance))
 	{
 		if (trail.size() == 0)
 		{
 			TrailPoint newPoint(duration, pos, width);
 			trail.push(newPoint);
 		}
-		else
-		{
-			TrailPoint newPoint(duration, gameobject->transform->GetGlobalPosition(), trail.back().position, width, gameobject->transform->right);
-			trail.push(newPoint);
+		else			
+		{			
+			if (App->scene->maincamera)
+			{
+				TrailPoint newPoint(duration, gameobject->transform->GetGlobalPosition(), trail.back().position, width, (App->scene->maincamera->frustum->pos - gameobject->transform->GetGlobalPosition()).Normalized());
+				trail.push(newPoint);
+			}
+			else
+			{
+				TrailPoint newPoint(duration, gameobject->transform->GetGlobalPosition(), trail.back().position, width, gameobject->transform->right);
+				trail.push(newPoint);
+			}
 		}
 	}
 }
@@ -127,7 +137,7 @@ void ComponentTrail::DrawProperties()
 		ImGui::InputFloat("Width", &width, .01f, .1f);
 		ImGui::InputFloat("Duration", &duration, .01f, .1f);
 		ImGui::InputFloat("Min. point distance", &minDistance, .01f, .1f);
-
+		ImGui::ColorEdit4("Color", trailColor.ptr());
 		for (ParticleModule* pm : modules)
 		{
 			pm->InspectorDraw();
@@ -142,7 +152,11 @@ void ComponentTrail::Save(JSON_value* value) const
 	value->AddFloat("width", width);
 	value->AddFloat("duration", duration);
 	value->AddFloat("minDistance", minDistance);
-	value->AddString("textureName", textureName.c_str());
+	value->AddFloat4("trailColor", trailColor);
+	value->AddUint("textureUID", (texture != nullptr) ? texture->GetUID() : 0u);
+	
+	value->AddInt("sizeOT", modules[0]->enabled);
+	
 }
 
 void ComponentTrail::Load(JSON_value* value)
@@ -151,11 +165,12 @@ void ComponentTrail::Load(JSON_value* value)
 	width = value->GetFloat("width");
 	duration = value->GetFloat("duration");
 	minDistance = value->GetFloat("minDistance");
-	textureName = std::string(value->GetString("textureName"));
-	if (textureName != "None Selected")
-	{
-		texture = (ResourceTexture*)App->resManager->GetByName(textureName.c_str(), TYPE::TEXTURE);
-	}
+	trailColor = value->GetFloat4("trailColor");
+	unsigned uid = value->GetUint("textureUID");
+	texture = (ResourceTexture*)App->resManager->Get(uid);
+
+	modules[0]->enabled = value->GetInt("sizeOT");
+
 }
 
 ComponentTrail * ComponentTrail::Clone() const

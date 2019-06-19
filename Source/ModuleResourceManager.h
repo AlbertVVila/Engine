@@ -26,6 +26,7 @@ class ModuleResourceManager :
 		~ModuleResourceManager();
 
 	bool Init(JSON* config) override;
+	bool CleanUp() override;
 
 	// Shader functions
 	Shader* GetProgram(std::string filename) const;
@@ -43,24 +44,23 @@ class ModuleResourceManager :
 	bool ImportFile(const char* newFileInAssets, const char* filePath, TYPE type);
 	bool ReImportFile(Resource* resource, const char* filePath, TYPE type);				// Imports again an already loaded resource
 	unsigned GenerateNewUID();
-	Resource* Get(unsigned uid) const;													// Returns the resource using UID adding one to the references count and loads it to memory if not already
+	ENGINE_API Resource* Get(unsigned uid) const;													// Returns the resource using UID adding one to the references count and loads it to memory if not already
 	Resource* Get(const char* file) const;												// Returns the resource using exportedFileName adding one to the references count and loads it to memory if not already
 	Resource* Get(const char* file, TYPE type) const;									// Returns the resource using exportedFileName and type, adding one to the references count and loads it to memory if not already
-	Resource* GetByName(const char* name, TYPE type);									// Returns the resource using name variable.
+	ENGINE_API Resource* GetByName(const char* name, TYPE type);									// Returns the resource using name variable.
 
 	Resource* GetWithoutLoad(unsigned uid) const;										// Returns the resource using UID and doesn't add one to the references count neither loads it to memory
 	Resource* GetWithoutLoad(const char* file) const;									// Returns the resource using exportedFileName and doesn't add one to the references count neither loads it to memory
 	Resource* GetWithoutLoad(const char* file, TYPE type) const;						// Returns the resource using exportedFileName and type, also doesn't add one to the references count neither loads it to memory
 	Resource* CreateNewResource(TYPE type, unsigned forceUid = 0);
-	bool DeleteResource(unsigned uid);													// If references < 1 delete it from memory
+	ENGINE_API bool DeleteResource(unsigned uid);										// If references < 1 delete it from memory
 
-	std::vector<Resource*> GetResourcesList();
-	std::vector<ResourceTexture*> GetTexturesList();
-	std::vector<ResourceMaterial*> GetMaterialsList();
-	std::vector<ResourceAnimation*> GetAnimationsList();
-	std::vector<ResourceStateMachine*> GetSMList();
+	std::vector<Resource*> GetResourcesList();											// Get list with pointers to all resources
+	std::vector<Resource*> GetResourcesList(TYPE type);									// Get list with pointers to all resources of type given
+	std::vector<Resource*> GetResourcesList(bool loaded);								// Get list with pointers to all resources if they are loaded to memory
+	std::vector<Resource*> GetResourcesList(TYPE type, bool loaded);					// Get list with pointers to all resources of type given and if they are loaded to memory
 
-	std::vector<std::string> GetResourceNamesList(TYPE resourceType, bool ordered);		// Returns a vector with the exportedFileName of every Resource of the type given.	
+	ENGINE_API std::vector<std::string> GetResourceNamesList(TYPE resourceType, bool ordered);		// Returns a vector with the exportedFileName of every Resource of the type given.	
 
 	TYPE GetResourceType(FILETYPE fileType) const;
 
@@ -76,6 +76,10 @@ class ModuleResourceManager :
 	void DeleteResourceFromList(unsigned uid);
 
 	unsigned GetUIDFromMeta(const char* metaFile, FILETYPE fileType) const;
+
+	// Clean functions
+	void CleanUnusedMetaFiles() const;			// Deletes all meta files that doesn't have a file assigned
+	void CleanUnusedExportedFiles() const;		// Deletes all imported files that aren't registered on the Resource Manager
 
 private:
 	// Resources map (Textures, Models, Mehses, Materials, Skyboxes, Scenes...)

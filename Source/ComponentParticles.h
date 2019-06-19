@@ -1,6 +1,9 @@
 #ifndef __ComponentParticles_h__
 #define __ComponentParticles_h__
 
+#define MAX_DISTANCE 10000000.f
+#define MAX_RATE 10000000.f
+
 #include "Component.h"
 #include <string>
 #include "Math/float3.h"
@@ -101,7 +104,7 @@ private:
 	float rateTimer = 1.f / rate;
 	int maxParticles = 50;
 	math::float2 particleSize = math::float2(1.f * App->renderer->current_scale, 1.f * App->renderer->current_scale) ;
-	float quadEmitterSize = 10.f * App->renderer->current_scale;
+	math::float2 quadEmitterSize = math::float2(10.f * App->renderer->current_scale);
 	float sphereEmitterRadius = 5.f * App->renderer->current_scale;
 	math::float4 particleColor = math::float4::one;
 	math::float3 pDir = math::float3(-1.f, 0.f, 0.f);
@@ -120,6 +123,10 @@ private:
 
 	bool ConstantPlaying = true;
 	bool Playing = false;
+
+	bool billboarded = true;
+	bool localEmitter = false;
+	math::float3 lookAtTarget = math::float3::unitY;
 
 };
 

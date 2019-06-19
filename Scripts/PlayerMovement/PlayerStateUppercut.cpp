@@ -7,13 +7,12 @@
 #include "GameObject.h"
 
 #include "ComponentTransform.h"
+#include "ComponentBoxTrigger.h"
 
-PlayerStateUppercut::PlayerStateUppercut(PlayerMovement* PM)
+PlayerStateUppercut::PlayerStateUppercut(PlayerMovement * PM, const char * trigger,
+	math::float3 boxSize) : PlayerState(PM, trigger, boxSize)
 {
-	player = PM;
-	trigger = "Uppercut";
 }
-
 
 PlayerStateUppercut::~PlayerStateUppercut()
 {
@@ -21,18 +20,35 @@ PlayerStateUppercut::~PlayerStateUppercut()
 
 void PlayerStateUppercut::Update()
 {
-	/*player->pathIndex = 0;
-	player->path.clear();
-	math::float3 attackPosition;
-	if (player->Appl->scene->Intersects(attackPosition, "floor"))
+	if (player->attackBoxTrigger != nullptr && !hitboxCreated && timer > duration * minTime && timer < duration * maxTime)
 	{
-		player->gameobject->transform->LookAt(attackPosition);
-	}*/
+		//Create the hitbox
+		player->attackBoxTrigger->Enable(true);
+		player->attackBoxTrigger->SetBoxSize(boxSize);
+		boxPosition = player->transform->up *100.f; //this front stuff isnt working well when rotating the chicken
+		player->attackBoxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z + 100.f);
+		hitboxCreated = true;
+	}
+	if (player->attackBoxTrigger != nullptr && hitboxCreated && timer > duration * maxTime)
+	{
+		player->attackBoxTrigger->Enable(false);
+		hitboxCreated = false;
+	}
+}
+
+void PlayerStateUppercut::Enter()
+{
+	player->ResetCooldown(HUB_BUTTON_W);
+}
+
+void PlayerStateUppercut::Exit()
+{
+
 }
 
 void PlayerStateUppercut::CheckInput()
 {
-	if (timer > player->uppercutDuration) // can switch??¿?¿?
+	if (timer > duration) // can switch??¿?¿?
 	{
 		if (player->IsAtacking())
 		{

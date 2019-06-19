@@ -80,41 +80,40 @@ public:
 
 	bool Init(JSON* config);
 	void SaveConfig(JSON* config) override;
-	update_status Update(float dt)override;
 	void sceneLoaded(JSON* config);
 	void sceneSaved(JSON* config);
 
 	void DrawGUI()override;
-	void navigableObjectToggled(GameObject* obj, const bool newState);
 	
 	void renderNavMesh();
 
-	void cleanValuesPRE();
-	void cleanValuesPOST();
-	inline void checkSceneLoaded();
+	void AddNavigableMeshFromObject(GameObject* obj);
 
 
-	ENGINE_API bool FindPath(math::float3 start, math::float3 end, std::vector<math::float3> &path, PathFindType type = PathFindType::FOLLOW) const;
+	ENGINE_API bool FindPath(	math::float3 start, math::float3 end, std::vector<math::float3> &path, 
+								PathFindType type = PathFindType::FOLLOW, math::float3 diff = math::float3(0.f, 0.f, 0.f),
+								float maxDist = 10000.0f) const;
+	//there is a default really big limitating path distance for the calls that are not supposed to be limitated
+	ENGINE_API bool NavigateTowardsCursor(math::float3 start, std::vector<math::float3>& path, 
+										  math::float3 positionCorrection, math::float3& intersectionPos, 
+										  float maxPathDistance = 10000.0f) const;
+
 	void RecalcPath(math::float3 point);
-
-	//variables
-	std::vector<GameObject*> navigationMeshes;
-	std::vector<GameObject*> agents;
-	std::vector<GameObject*> obstacles;
 
 	//Constants
 	//static const int ERROR = -1;
 	static const int ERROR_NEARESTPOLY = -2;
+	std::string sceneName = "";
 
 private:
 	// Explicitly-disabled copy constructor and copy assignment operator.
 	ModuleNavigation(const ModuleNavigation&);
 	ModuleNavigation& operator=(const ModuleNavigation);
 
-	void removeNavMesh(unsigned ID);
 	void generateNavigability(bool render);
 	void addNavigableMesh();
-	void addNavigableMesh(const GameObject* obj);
+	void CleanValuesPRE();
+	void CleanValuesPOST();
 
 	void fillVertices();
 	void fillIndices();
@@ -129,27 +128,23 @@ private:
 
 	bool inRange(const float * v1, const float * v2, const float r, const float h) const;
 
+	float GetXZDistance(float3 a, float3 b) const;
 
 	// Detour stuff
-	std::vector<math::float3> returnPath(math::float3 pStart, math::float3 pEnd);
 	//void handleClick(const float* s, const float* p, bool shift);
-	//std::vector<math::float3> returnPath(math::float3 pStart, math::float3 pEnd);
 	//void handleClick(const float* s, const float* p, bool shift);
 	//int FindStraightPath(WOWPOS start, WOWPOS end, WOWPOS* path, int size);
 	
 private:
 	//variables
-	float maxRadius = 0.6f;
-	float maxHeight = 5.0f;
-	float maxSlopeScaling = 45.0f;
-	float maxStepHeightScaling = 5.0f;
 	
-	char newCharacter[64] = "New Character";
+	//char newCharacter[64] = "New Character";//implementation postponed, possibly aborted
 	float characterMaxRadius = 0.6f;
-	float characterMaxHeight = 5.0f;//might need higher val
+	float characterMaxHeight = 5.0f;
 	float characterMaxSlopeScaling = 50.0f;
-	float characterMaxStepHeightScaling = 5.0f;//might need higher value
+	float characterMaxStepHeightScaling = 5.0f;
 	
+	//UI modificiators
 	const float sliderIncreaseSpeed = 0.03f;
 	const float minSliderValue = 0.01f;
 	const float maxSliderValue = 100.0f;
@@ -178,12 +173,12 @@ private:
 	//partition type
 	int partitionType = 0;
 
+	//load info
+	int navDataSize = 0;
+
 	//navigation mesh properties
 	bool meshGenerated = false;
 	bool renderMesh = false;
-	const char* objectName = "";
-	bool autoNavGeneration = false;
-	GameObject* objToRender = nullptr;
 
 	enum DrawMode
 	{
@@ -211,6 +206,8 @@ private:
 
 	std::vector < const ComponentRenderer*> meshComponents;
 	std::vector < const ComponentTransform*> transformComponents;
+	std::vector <bool> unwalkableVerts;
+	std::vector <bool> isObstacle;
 
 	rcConfig* cfg = nullptr;
 	rcContext* ctx = nullptr;

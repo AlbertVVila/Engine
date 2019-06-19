@@ -12,6 +12,7 @@ class ComponentTransform;
 class ComponentLight;
 class ComponentAnimation;
 class AABBTreeNode;
+class ResourcePrefab;
 enum class ComponentType;
 struct Frame;
 struct Texture;
@@ -59,7 +60,8 @@ public:
 	float4x4 GetGlobalTransform() const;
 	float4x4 GetLocalTransform() const;
 
-	void OnPlay();
+	ENGINE_API void OnPlay();
+	void SetAllMoveFlags();
 	void UpdateTransforms(math::float4x4 parentGlobal);
 	bool CheckDelete();
 
@@ -71,17 +73,27 @@ public:
 	void UpdateModel(unsigned int shader) const;
 	void SetLightUniforms(unsigned shader) const;
 
+	void UpdateToPrefab(GameObject* prefab);
+	bool ChildPrefab() const;
+	bool ParentPrefab() const;
+
 	bool CleanUp();
 	void Save(JSON_value *gameobjects) const;
-	void Load(JSON_value * gameobject);
+	void Load(JSON_value * gameobject, bool prefabObject= false);
 
 private:
 	void SetStaticAncestors();
+	void MarkAsPrefab();
 	void SetActiveInHierarchy(bool active);
 	void OnChangeActiveState(bool wasActive);
+	void MakeObjectWithMeshStatic();
+
+	void SetStaticAllChildsWithMesh();
+	void SetNavigableAllChildsWithMesh();
+	void SetObstacleAllChildsWithMesh();
+	void AddAllNavigableChildsToNavMesh();
 
 	bool activeInHierarchy = true;
-	bool activeSelf = true;
 	bool openInHierarchy = true;
 public:
 	unsigned UUID = 0;
@@ -89,9 +101,15 @@ public:
 	unsigned animationIndexChannel = 999u;
 	bool isStatic = false;
 	bool isBoneRoot = false;
+	bool activeSelf = true;
+
+	bool isPrefabSync = false;
+	ResourcePrefab* prefab = nullptr;
+	bool isPrefab = false;
+	unsigned prefabUID = 0;
+	bool isDropablePlaceHolder = false;
 
 	bool navigable = false;
-	bool walkable = false;
 	bool noWalkable = false;
 	bool isSelected = false;
 	bool movedFlag = false;
@@ -117,6 +135,7 @@ public:
 	std::list<GameObject*> children;	
 
 	std::string name = "GameObject";
+	std::string tag = "Default";
 
 };
 

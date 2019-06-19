@@ -1,44 +1,39 @@
 #include "PlayerStateFirstAttack.h"
-
 #include "PlayerMovement.h"
-#include "Application.h"
-#include "ModuleScene.h"
 
 #include "GameObject.h"
-
 #include "ComponentTransform.h"
 
-PlayerStateFirstAttack::PlayerStateFirstAttack(PlayerMovement* PM)
+PlayerStateFirstAttack::PlayerStateFirstAttack(PlayerMovement * PM, const char * trigger,
+	math::float3 boxSize, float minTime, float maxTime) :
+	PlayerStateAttack(PM, trigger, boxSize, minTime, maxTime)
 {
-	player = PM;
-	trigger = "FirstAttack";
+	this->minTime = 0.40f;
+	this->maxTime = 0.65f;
 }
 
 PlayerStateFirstAttack::~PlayerStateFirstAttack()
 {
 }
 
-void PlayerStateFirstAttack::Update()
+void PlayerStateFirstAttack::Enter()
 {
-	//player->pathIndex = 0;
-	//player->path.clear();
-	//math::float3 attackPosition;
-	//if (player->Appl->scene->Intersects(attackPosition, "floor"))
-	//{
-	//	player->gameobject->transform->LookAt(attackPosition);
-	//}
+	player->gameobject->transform->LookAtMouse();
+
 }
 
 void PlayerStateFirstAttack::CheckInput()
 {
-	if (timer > player->firstAttackDuration * 0.8)
+	if (timer > duration * minTime)
 	{
 		if (player->IsAtacking())
 		{
 			player->currentState = (PlayerState*)player->secondAttack;
+			return;
 		}
 	}
-	if (timer > player->firstAttackDuration  * 1.5) //CAN SWITCH?
+	
+	if (timer > duration * maxTime) //CAN SWITCH?
 	{
 		
 		if (player->IsUsingFirstSkill())

@@ -182,7 +182,7 @@ void main()
 		sCoord = sCoord * .5f + .5f;
 		bool isLit = !(sCoord.x >= .0f && sCoord.x <= 1.f 
 					&& sCoord.y >= .0f && sCoord.y <= 1.f
-					&& texture2D(shadowTex, sCoord.xy).x < clamp(sCoord.z, 0, 1) - 0.0005f);
+					&& texture2D(shadowTex, sCoord.xy).x < clamp(sCoord.z, 0, 1) - 0.005f);
 #endif					
 		vec3 L = directionalDirections[i];
 		vec3 H = normalize(V + L);	
@@ -247,7 +247,7 @@ void main()
 	}
 	
 	//color *= get_occlusion_color();
-	color += get_emissive_color() * 10;
+	color += get_emissive_color();
 #ifdef IS_EDITOR
 	color = vec3(pow(color.r, (1.0 / 2.2)), pow(color.g, (1.0 / 2.2)), pow(color.b, (1.0 / 2.2)));
 #endif
@@ -256,7 +256,7 @@ void main()
 	
 	float brightness = dot(Fragcolor.rgb, vec3(0.2126, 0.7152, 0.0722));
     if(brightness > 1.0)
-        brightColor = vec4(Fragcolor.rgb, 1.0);
+        brightColor = vec4(Fragcolor.rgb, albedo.a);
     else
         brightColor = vec4(0.0, 0.0, 0.0, 1.0);
 

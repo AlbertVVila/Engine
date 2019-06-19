@@ -1,4 +1,5 @@
 #include "PlayerStateDash.h"
+#include "PlayerMovement.h"
 
 #include "Application.h"
 
@@ -8,6 +9,8 @@
 
 #include "GameObject.h"
 #include "ComponentTransform.h"
+#include "ComponentBoxTrigger.h"
+
 
 #include "PlayerStateWalk.h"
 #include "PlayerStateIdle.h"
@@ -19,14 +22,10 @@
 #include "Globals.h"
 #include "debugdraw.h"
 
-#define CLOSE_ENOUGH 400.0f
-
-PlayerStateDash::PlayerStateDash(PlayerMovement* PM)
+PlayerStateDash::PlayerStateDash(PlayerMovement * PM, const char * trigger, math::float3 boxSize) :
+	PlayerState(PM, trigger, boxSize)
 {
-	player = PM;
-	trigger = "Dash";
 }
-
 
 PlayerStateDash::~PlayerStateDash()
 {
@@ -34,51 +33,99 @@ PlayerStateDash::~PlayerStateDash()
 
 void PlayerStateDash::Update()
 {
-	//math::float3 intersectionPoint = math::float3::inf;
-	//if (player->Appl->scene->Intersects(intersectionPoint, "floor"))
-	//{
-	//	player->Appl->navigation->FindPath(player->gameobject->transform->position, intersectionPoint, player->path);
-	//	player->pathIndex = 0;
-	//}
-	//if (player->path.size() > 0)
-	//{
-	//	math::float3 currentPosition = player->gameobject->transform->GetPosition();
-	//	while (player->pathIndex < player->path.size() && currentPosition.DistanceSq(player->path[player->pathIndex]) < CLOSE_ENOUGH)
-	//	{
-	//		player->pathIndex++;
-	//	}
-	//	if (player->pathIndex < player->path.size())
-	//	{
-	//		player->gameobject->transform->LookAt(player->path[player->pathIndex]);
-	//		math::float3 direction = (player->path[player->pathIndex] - currentPosition).Normalized();
-	//		player->gameobject->transform->SetPosition(currentPosition + player->dashSpeed*direction*player->Appl->time->gameDeltaTime);
-	//	}
-	//}
+
+	if (path.size() > 0 && timer > dashPreparationTime)
+	{
+		math::float3 currentPosition = player->gameobject->transform->GetPosition();
+		while (pathIndex < path.size() && currentPosition.DistanceSq(path[pathIndex]) < MINIMUM_PATH_DISTANCE)
+		{
+			pathIndex++;
+		}
+		if (pathIndex < path.size())
+		{
+			player->gameobject->transform->LookAt(path[pathIndex]);
+			math::float3 direction = (path[pathIndex] - currentPosition).Normalized();
+			player->gameobject->transform->SetPosition(currentPosition + dashSpeed * direction * player->App->time->gameDeltaTime);
+			if (dashMesh)
+			{			
+				dashMesh->transform->Scale(scalator);
+				scalator -= scalatorDecay;
+				scalator = MAX(1.0f, scalator);
+			}
+		}
+	}
+
+	if (player->attackBoxTrigger != nullptr && !hitboxCreated && timer > duration * minTime && timer < duration * maxTime)
+	{
+		//Create the hitbox
+		player->attackBoxTrigger->Enable(true);
+		player->attackBoxTrigger->SetBoxSize(boxSize);
+		boxPosition = player->transform->up *100.f; //this front stuff isnt working well when rotating the chicken
+		player->attackBoxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z + 100.f);
+		hitboxCreated = true;
+	}
+	if (player->attackBoxTrigger != nullptr &&hitboxCreated && timer > duration * maxTime)
+	{
+		player->attackBoxTrigger->Enable(false);
+		hitboxCreated = false;
+	}
+}
+
+void PlayerStateDash::Enter()
+{
+	if (player->App->navigation->NavigateTowardsCursor(player->gameobject->transform->position, path,
+		math::float3(player->OutOfMeshCorrectionXZ, player->OutOfMeshCorrectionY, player->OutOfMeshCorrectionXZ), intersectionPoint))
+	{
+		pathIndex = 0;
+		player->gameobject->transform->LookAt(intersectionPoint);
+		if (dashFX)
+		{
+			dashFX->SetActive(true);
+		}
+		if (dashMesh)
+		{
+			dashMesh->SetActive(true);
+			dashMesh->transform->scale = meshOriginalScale;			
+			dashMesh->transform->Scale(1.0f);
+			scalator = originalScalator;
+		}
+		player->ResetCooldown(HUB_BUTTON_Q);
+	}
 }
 
 void PlayerStateDash::CheckInput()
 {
-	if (timer > player->dashDuration) // can switch?¿¿?
+	if (timer > duration) // can switch?¿¿?
 	{
+		if (dashFX)
+		{
+			dashFX->SetActive(false);
+		}
+		if (dashMesh)
+		{
+			dashMesh->SetActive(false);
+		}
+
 		if (player->IsAtacking())
 		{
 			player->currentState = (PlayerState*)player->firstAttack;
+			return;
 		}
-		else if (player->IsUsingFirstSkill()) //cooldown?
+		if (player->IsUsingFirstSkill()) //cooldown?
 		{
 			player->currentState = (PlayerState*)player->dash;
+			return;
 		}
-		else if (player->IsUsingSecondSkill())
+		if (player->IsUsingSecondSkill())
 		{
 			player->currentState = (PlayerState*)player->uppercut;
+			return;
 		}
-		else if (player->IsMoving())
+		if (player->IsMoving())
 		{
 			player->currentState = (PlayerState*)player->walk;
+			return;
 		}
-		else
-		{
-			player->currentState = (PlayerState*)player->idle;
-		}
+		player->currentState = (PlayerState*)player->idle;
 	}
 }

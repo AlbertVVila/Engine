@@ -311,7 +311,15 @@ void ComponentCamera::Load(JSON_value* value)
 	frustum->nearPlaneDistance = value->GetFloat("Znear");
 	frustum->farPlaneDistance = value->GetFloat("Zfar");
 	frustum->verticalFov = value->GetFloat("vFOV");
+	if (frustum->verticalFov == 0)
+	{
+		frustum->verticalFov = DegToRad(60);
+	}
 	frustum->horizontalFov = value->GetFloat("hFOV");
+	if (frustum->horizontalFov == 0)
+	{
+		frustum->horizontalFov = 2.f * atanf(tanf(frustum->verticalFov * 0.5f) * ((float)App->window->width / (float)App->window->height));
+	}
 	frustum->pos = value->GetFloat3("Position");
 	frustum->front = value->GetFloat3("Front");
 	frustum->up = value->GetFloat3("Up");

@@ -4,43 +4,28 @@
 #include "Application.h"
 #include "ModuleScene.h"
 
-#include "GameObject.h"
-
-#include "ComponentTransform.h"
-
-PlayerStateSecondAttack::PlayerStateSecondAttack(PlayerMovement* PM)
+PlayerStateSecondAttack::PlayerStateSecondAttack(PlayerMovement* PM, const char* trigger, math::float3 boxSize,
+	float minTime, float maxTime): PlayerStateAttack(PM, trigger, boxSize, minTime, maxTime)
 {
-	player = PM;
-	trigger = "SecondAttack";
+	minTime = 0.85f;
+	maxTime = 0.9f;
 }
-
 
 PlayerStateSecondAttack::~PlayerStateSecondAttack()
 {
 }
 
-void PlayerStateSecondAttack::Update()
-{
-	/*player->pathIndex = 0;
-	player->path.clear();
-	math::float3 attackPosition;
-	if (player->Appl->scene->Intersects(attackPosition, "floor"))
-	{
-		player->gameobject->transform->LookAt(attackPosition);
-	}*/
-}
-
 void PlayerStateSecondAttack::CheckInput()
 {
 
-	if (timer > player->secondAttackDuration * 0.5)
+	if (timer > duration * minTime)
 	{
 		if (player->IsAtacking())
 		{
 			player->currentState = (PlayerState*)player->thirdAttack;
 		}
 	}
-	if (timer > player->secondAttackDuration * 1.5) // can switch??¿?¿?
+	if (timer > duration * maxTime) // can switch??¿?¿?
 	{
 		
 		if (player->IsUsingFirstSkill())

@@ -25,6 +25,8 @@ class ComponentLight;
 class ResourceTexture;
 class ResourceScene;
 class myQuadTree;
+class ResourcePrefab;
+
 struct par_shapes_mesh_s;
 
 enum class PRIMITIVES
@@ -48,11 +50,12 @@ public:
 	bool CleanUp() override;
 	void SaveConfig(JSON* config) override;
 
-	GameObject * CreateGameObject(const char * name, GameObject* parent);
+	GameObject* CreateGameObject(const char * name, GameObject* parent);
 
 	void AddToSpacePartition(GameObject * gameobject);
 	void DeleteFromSpacePartition(GameObject* gameobject);
 	void ResetQuadTree(); //deprecated
+
 
 	void FrustumCulling(const Frustum &frustum);
 	void Draw(const Frustum &frustum, bool isEditor = false);
@@ -63,6 +66,8 @@ public:
 	void DragNDrop(GameObject * go);
 	void DrawGUI() override;
 
+	bool PrefabWasUpdated(unsigned UID) const;
+	unsigned CreatePrefab(GameObject* go);
 	void CreateCube(const char * name, GameObject* parent);
 	void CreateSphere(const char * name, GameObject* parent);
 	void CreatePrimitive(const char * name, GameObject* parent, PRIMITIVES type);
@@ -70,7 +75,10 @@ public:
 	unsigned SaveParShapesMesh(const par_shapes_mesh_s & mesh, char** data) const;
 
 	void SaveScene(const GameObject& rootGO, const char* sceneName, const char* folder);
+	void SaveTemporaryScene();
+	bool isCleared();
 	ENGINE_API void LoadScene(const char* sceneName, const char* folder);
+	void LoadTemporaryScene();
 	bool AddScene(const char* sceneName, const char* folder);								// Adds a scene to current opened scene from a scene file (returns true if it was loaded correctly)
 
 	void AssignNewUUID(GameObject* go, unsigned UID);
@@ -81,17 +89,25 @@ public:
 	void Redo();
 
 	void ClearScene();
+	void UpdateScenesList();
 
 	void Select(GameObject* gameobject);
 	void UnSelect();
 	void Pick(float normalized_x, float normalized_y);
 	ENGINE_API bool Intersects(math::float3& closestPoint, const char* name, bool editor = false);
+	ENGINE_API bool Intersects(const char* tag, bool sorted, math::float3& intersection, GameObject** out = nullptr) const;
 
 	GameObject* FindClosestParent(GameObject* go);
 
-	ENGINE_API GameObject* FindGameObjectByName(const char* name) const;
-	ENGINE_API GameObject* FindGameObjectByName(GameObject* parent, const char* name) const;
+	ENGINE_API GameObject* FindGameObjectByTag(const char* tag, GameObject* parent = nullptr) const;
+	ENGINE_API std::vector<GameObject*> FindGameObjectsByTag(const char * tag, GameObject* parent = nullptr) const;
+	ENGINE_API GameObject* FindGameObjectByUID(unsigned UID, GameObject* parent = nullptr) const;
+	ENGINE_API GameObject* FindGameObjectByName(const char* name, GameObject* parent = nullptr) const;
 
+	ENGINE_API GameObject* Spawn(const char* name, GameObject* parent= nullptr);
+	ENGINE_API GameObject* Spawn(const char* name, math::float3 position,
+		math::Quat rotation, GameObject* parent = nullptr);
+		
 	void GetStaticGlobalAABB(math::AABB &aabb, std::vector<GameObject*> &bucket, unsigned int &bucketOccupation);
 
 	unsigned GetNewUID();
@@ -108,6 +124,9 @@ private:
 	std::list<GameObject*> scenePhotos;
 	std::list<GameObject*> scenePhotosUndoed;
 
+	unsigned defaultSceneUID = 0u;
+	std::vector<std::string> sceneFiles;
+	
 public:
 	GameObject* root = nullptr;
 	GameObject* selected = nullptr; //Selected in hierarchy
@@ -125,7 +144,7 @@ public:
 	pcg32 uuid_rng;
 	std::string name;
 	std::string path;
-	std::string defaultScene;
+	ResourceScene* defaultScene = nullptr;
 	bool photoEnabled = false;
 	float photoTimer = 0.f;
 	float3 ambientColor = float3::one;
@@ -135,7 +154,6 @@ public:
 	GameObject* canvas = nullptr;
 
 	bool loadScene = false;
-	bool isCleared = true;
 	int actionAfterLoad = -1;
 };
 

@@ -5,7 +5,7 @@
 
 #include "Module.h"
 #include "Math/float3.h"
-#include "MathGeoLib/include/Geometry/Frustum.h"
+#include "Geometry/Frustum.h"
 #include <unordered_set>
 
 class ComponentCamera;
@@ -32,6 +32,7 @@ public:
 	void Draw(const ComponentCamera& cam, int width, int height, bool isEditor = false) const;
 	bool IsSceneViewFocused() const;
 	bool IsSceneHovered() const;
+	Viewport * GetActiveViewport() const;
 	bool CleanUp() override;
 	void OnResize();
 	void ENGINE_API SetVsync(bool active);

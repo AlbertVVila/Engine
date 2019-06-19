@@ -85,12 +85,15 @@ private:
 
 	void ChangeGameState(GameState newState); //Set initial conditions for each state here if required
 
+	bool HasImageHoveredInChildren(const GameObject* go) const;
+
 	GameState gameState = GameState::MENU;
 	GameScene gameScene = GameScene::MENU;
+public:
+	int volume = 10;
 
 private:
 	//UI Values
-	int volume = 10;
 	int minVolume = 0;
 	int maxVolume = 10;
 	int sound = 6;

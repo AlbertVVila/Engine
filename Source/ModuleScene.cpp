@@ -9,6 +9,7 @@
 #include "ModuleResourceManager.h"
 #include "ModuleRender.h"
 #include "ModuleScene.h"
+#include "ModuleTime.h"
 #include "ModuleTextures.h"
 #include "ModuleSpacePartitioning.h"
 #include "ModuleParticles.h"
@@ -24,11 +25,14 @@
 #include "ResourceTexture.h"
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
+#include "ResourcePrefab.h"
 #include "ResourceScene.h"
 
 #include "MaterialEditor.h"
+#include "PanelBrowser.h"
 #include "Viewport.h"
 
+#include "HashString.h"
 #include "JSON.h"
 #include "myQuadTree.h"
 #include "AABBTree.h"
@@ -89,8 +93,8 @@ bool ModuleScene::Init(JSON * config)
 		primitivesUID[(unsigned)PRIMITIVES::SPHERE] = scene->GetUint("sphereUID");
 		primitivesUID[(unsigned)PRIMITIVES::CUBE] = scene->GetUint("cubeUID");
 		ambientColor = scene->GetColor3("ambient");
-		const char* dscene = scene->GetString("defaultscene");
-		defaultScene = dscene;
+		defaultSceneUID = scene->GetUint("defaultsceneUID");
+
 		if (scene->GetInt("sizeScene")) 
 		{
 			SceneSize = scene->GetInt("sizeScene");
@@ -102,10 +106,14 @@ bool ModuleScene::Init(JSON * config)
 bool ModuleScene::Start()
 {
 	camera_notfound_texture = (ResourceTexture*)App->resManager->Get(NOCAMERA);
-	if (defaultScene.size() > 0)
+	if (defaultSceneUID > 0u)
 	{
-		path = SCENES;
-		//LoadScene(defaultScene.c_str(), path.c_str());
+		defaultScene = (ResourceScene*)App->resManager->Get(defaultSceneUID);
+		if (defaultScene != nullptr)
+		{
+			App->navigation->sceneName = defaultScene->GetName();
+			defaultScene->Load();
+		}
 	}
 	return true;
 }
@@ -115,8 +123,6 @@ update_status ModuleScene::PreUpdate()
 	if (loadScene)
 	{
 		LoadScene(name.c_str(), SCENES);
-		App->scripting->onStart = true;
-		root->OnPlay();
 		loadScene = false;
 	}
 
@@ -144,6 +150,7 @@ update_status ModuleScene::Update(float dt)
 	root->UpdateTransforms(math::float4x4::identity);
 	root->Update();
 	root->CheckDelete();
+
 	/*if (photoTimer > 0)
 	{
 		photoTimer -= dt;
@@ -188,6 +195,23 @@ bool ModuleScene::CleanUp()
 
 	lights.clear();
 
+	// Delete temporary scene if it exists [If you close the app in play mode temporaryScene may remain]
+	if (App->time->gameState == GameState::RUN)
+	{
+		std::string temporaryScene(RESOURCE_SCENES);
+		temporaryScene += TEMPORARY_SCENE;
+		temporaryScene += SCENEEXTENSION;
+		ResourceScene* scene = (ResourceScene*)App->resManager->Get(temporaryScene.c_str(), TYPE::SCENE);
+		if (scene != nullptr)
+		{
+			// Delete temporary scene
+			scene->Delete();
+			App->resManager->DeleteResourceFromList(scene->GetUID());
+		}
+	}
+
+	//RELEASE(defaultScene);
+
 	return true;
 }
 
@@ -198,7 +222,7 @@ void ModuleScene::SaveConfig(JSON* config)
 	scene->AddUint("sphereUID", primitivesUID[(unsigned)PRIMITIVES::SPHERE]);
 	scene->AddUint("cubeUID", primitivesUID[(unsigned)PRIMITIVES::CUBE]);
 	scene->AddFloat3("ambient", ambientColor);
-	scene->AddString("defaultscene", defaultScene.c_str());
+	scene->AddUint("defaultsceneUID", defaultScene != nullptr ? defaultScene->GetUID() : 0u);
 	scene->AddInt("sizeScene", SceneSize);
 	config->AddValue("scene", *scene);
 }
@@ -308,8 +332,13 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 
 	if (selected != nullptr && selected->GetComponentOld(ComponentType::Renderer) == nullptr)
 	{
-		DrawGO(*selected, frustum, isEditor); //bcause it could be an object without mesh not in staticGOs or dynamicGOs
+		DrawGO(*selected, camFrustum, isEditor); //bcause it could be an object without mesh not in staticGOs or dynamicGOs
 	}
+	alphaRenderers.sort(
+		[camFrustum](const ComponentRenderer* cr1, const ComponentRenderer* cr2) -> bool
+	{
+		return cr1->gameobject->transform->GetGlobalPosition().Distance(camFrustum.pos) > cr2->gameobject->transform->GetGlobalPosition().Distance(camFrustum.pos);
+	});
 #else
 	for (const auto &go : staticFilteredGOs)
 	{
@@ -342,13 +371,15 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 			}
 		}
 	}	
-#endif
+
 	alphaRenderers.sort(
 		[frustum](const ComponentRenderer* cr1, const ComponentRenderer* cr2) -> bool
 	{
 		return cr1->gameobject->transform->GetGlobalPosition().Distance(frustum.pos) > cr2->gameobject->transform->GetGlobalPosition().Distance(frustum.pos);
 	});
-	if (alphaRenderers.size() > 1)
+#endif
+	
+	if (alphaRenderers.size() > 0)
 	{
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -409,7 +440,7 @@ void ModuleScene::DrawGOGame(const GameObject& go)
 	go.SetLightUniforms(shader->id[variation]);
 
 	go.UpdateModel(shader->id[variation]);
-	crenderer->mesh->Draw(shader->id[variation]);
+	crenderer->DrawMesh(shader->id[variation]);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glActiveTexture(GL_TEXTURE0);
@@ -478,7 +509,7 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 	}
 	if (mesh != nullptr)
 	{
-		crenderer->mesh->Draw(shader->id[variation]);
+		crenderer->DrawMesh(shader->id[variation]);
 	}
 	
 
@@ -503,18 +534,45 @@ void ModuleScene::DragNDropMove(GameObject* target)
 			IM_ASSERT(payload->DataSize == sizeof(GameObject*));
 			TakePhoto();
 			GameObject* droppedGo = (GameObject *)*(const int*)payload->Data;
-			if (droppedGo != App->scene->root && target != App->scene->root && target != droppedGo )
+			if (droppedGo != App->scene->root && target != App->scene->root && target != droppedGo && !droppedGo->IsParented(*target->parent))
 			{
-				for (GameObject* droppedGo : App->scene->selection)
+				if (std::find(selection.begin(), selection.end(), droppedGo) != selection.end())
 				{
+					for (GameObject* droppedGo : App->scene->selection)
+					{
+						if (droppedGo->UUID > 1)
+						{
+							droppedGo->parent->children.remove(droppedGo);
+
+							std::list<GameObject*>::iterator it = std::find(target->parent->children.begin(), target->parent->children.end(), target);
+
+							target->parent->children.insert(it, droppedGo);
+
+							if (droppedGo->transform != nullptr)
+							{
+								droppedGo->transform->SetLocalToWorld();
+							}
+
+							droppedGo->parent = target->parent;
+							if (droppedGo->transform != nullptr)
+							{
+								droppedGo->transform->SetWorldToLocal(droppedGo->parent->GetGlobalTransform());
+							}
+						}
+					}
+				}
+				else
+				{
+					ResourcePrefab* prefab = (ResourcePrefab*)App->resManager->Get(droppedGo->prefabUID); //We generate the gameobject itself
+					droppedGo->CleanUp();
+					RELEASE(droppedGo);
+					droppedGo = new GameObject(*prefab->RetrievePrefab());
+					App->resManager->DeleteResource(prefab->GetUID());
+
 					if (droppedGo->UUID > 1)
 					{
-						droppedGo->parent->children.remove(droppedGo);
-
 						std::list<GameObject*>::iterator it = std::find(target->parent->children.begin(), target->parent->children.end(), target);
-
 						target->parent->children.insert(it, droppedGo);
-
 						if (droppedGo->transform != nullptr)
 						{
 							droppedGo->transform->SetLocalToWorld();
@@ -525,7 +583,9 @@ void ModuleScene::DragNDropMove(GameObject* target)
 						{
 							droppedGo->transform->SetWorldToLocal(droppedGo->parent->GetGlobalTransform());
 						}
+
 					}
+					App->editor->assets->ResetDragNDrop();
 				}
 			}
 		}
@@ -537,10 +597,16 @@ void ModuleScene::DragNDrop(GameObject* go)
 {
 	if (go->UUID > 1 && ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
 	{
-		GameObject * dragged_go = go;
-		ImGui::SetDragDropPayload("DragDropHierarchy", &dragged_go, sizeof(GameObject *), ImGuiCond_Once);
-		for (GameObject* selectionGO : selection)
-			ImGui::Text("%s", selectionGO->name.c_str());
+		ImGui::SetDragDropPayload("DragDropHierarchy", &go, sizeof(GameObject *), ImGuiCond_Once);
+		if (std::find(selection.begin(), selection.end(), go) == selection.end())
+		{
+			ImGui::Text("%s", go->name.c_str());
+		}
+		else
+		{
+			for (GameObject* selectionGO : selection)
+				ImGui::Text("%s", selectionGO->name.c_str());
+		}
 		ImGui::EndDragDropSource();
 	}
 	if (ImGui::BeginDragDropTarget())
@@ -549,13 +615,42 @@ void ModuleScene::DragNDrop(GameObject* go)
 		{
 			IM_ASSERT(payload->DataSize == sizeof(GameObject*));
 			GameObject* droppedGo = (GameObject *)*(const int*)payload->Data;
-			if (droppedGo != App->scene->root && droppedGo->parent != go && !droppedGo->IsParented(*go) 
-				&& std::find(App->scene->selection.begin(), App->scene->selection.end(), go) == App->scene->selection.end())
+			if (droppedGo != root && droppedGo->parent != go && !droppedGo->IsParented(*go) 
+				&& (std::find(selection.begin(), selection.end(), droppedGo) == selection.end() ||
+					std::find(selection.begin(), selection.end(), go) == selection.end())
+				&& (!droppedGo->isPrefab || (!go->isPrefab && !go->ParentPrefab())))
 			{
 				TakePhoto();
-				for (GameObject* droppedGo : App->scene->selection)
+				if (std::find(selection.begin(), selection.end(), droppedGo) != selection.end()) //Case dragNdrop in hierarchy
 				{
-					if (droppedGo->UUID > 1)
+					for (GameObject* selectedGo : selection)
+					{
+						if (selectedGo->UUID > 1)
+						{
+							go->children.push_back(selectedGo);
+
+							if (selectedGo->transform != nullptr)
+							{
+								selectedGo->transform->SetLocalToWorld();
+							}
+							selectedGo->parent->children.remove(selectedGo);
+							selectedGo->parent = go;
+							if (selectedGo->transform != nullptr)
+							{
+								selectedGo->transform->SetWorldToLocal(selectedGo->parent->GetGlobalTransform());
+							}
+						}
+					}
+				}
+				else //case dragNdrop prefabs from assets
+				{
+					ResourcePrefab* prefab = (ResourcePrefab*)App->resManager->Get(droppedGo->prefabUID); //We generate the gameobject itself
+					droppedGo->CleanUp();
+					RELEASE(droppedGo);
+					droppedGo = new GameObject(*prefab->RetrievePrefab());
+					App->resManager->DeleteResource(prefab->GetUID());
+
+					if (droppedGo->UUID > 1) 
 					{
 						go->children.push_back(droppedGo);
 
@@ -563,13 +658,13 @@ void ModuleScene::DragNDrop(GameObject* go)
 						{
 							droppedGo->transform->SetLocalToWorld();
 						}
-						droppedGo->parent->children.remove(droppedGo);
 						droppedGo->parent = go;
 						if (droppedGo->transform != nullptr)
 						{
 							droppedGo->transform->SetWorldToLocal(droppedGo->parent->GetGlobalTransform());
 						}
 					}
+					App->editor->assets->ResetDragNDrop();
 				}
 			}
 		}
@@ -607,9 +702,48 @@ void ModuleScene::DrawGUI()
 	{
 		App->spacePartitioning->kDTree.Calculate();
 	}
+
+	// Default Scene selection
+	if (sceneFiles.empty())
+		UpdateScenesList();
+
+	if (ImGui::BeginCombo("Default scene", defaultScene != nullptr ? defaultScene->GetName() : None))
+	{
+		bool none_selected = (defaultScene == nullptr);
+		if (ImGui::Selectable(None, none_selected))
+		{
+			if (defaultScene != nullptr)
+			{
+				App->resManager->DeleteResource(defaultScene->GetUID());
+				defaultScene = nullptr;
+			}
+		}
+		if (none_selected)
+			ImGui::SetItemDefaultFocus();
+		for (int n = 0; n < sceneFiles.size(); n++)
+		{
+			bool is_selected = (defaultScene != nullptr && (HashString(defaultScene->GetName()) == HashString(sceneFiles[n].c_str())));
+			if (ImGui::Selectable(sceneFiles[n].c_str(), is_selected) && !is_selected)
+			{
+				// Delete previous texture
+				if (defaultScene != nullptr)
+					App->resManager->DeleteResource(defaultScene->GetUID());
+
+				defaultScene = (ResourceScene*)App->resManager->GetByName(sceneFiles[n].c_str(), TYPE::SCENE);
+			}
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
+		}
+		ImGui::EndCombo();
+	}
+	if (ImGui::Button("Refresh Scenes List"))
+	{
+		UpdateScenesList();
+	}
+
 }
 
-GameObject * ModuleScene::CreateGameObject(const char * name, GameObject* parent)
+GameObject* ModuleScene::CreateGameObject(const char* name, GameObject* parent)
 {
 	GameObject * gameobject = new GameObject(name, GetNewUID());
 	if (parent != nullptr)
@@ -620,7 +754,7 @@ GameObject * ModuleScene::CreateGameObject(const char * name, GameObject* parent
 	return gameobject;
 }
 
-void ModuleScene::AddToSpacePartition(GameObject *gameobject)
+void ModuleScene::AddToSpacePartition(GameObject* gameobject)
 {
 	assert(gameobject != nullptr);
 	if (gameobject == nullptr)	return;
@@ -663,6 +797,7 @@ void ModuleScene::DeleteFromSpacePartition(GameObject* gameobject)
 			App->spacePartitioning->aabbTreeLighting.ReleaseNode(gameobject->treeNode);
 		}
 	}
+	dynamicGOs.erase(gameobject);
 	dynamicFilteredGOs.erase(gameobject);
 	staticFilteredGOs.erase(gameobject);
 }
@@ -684,6 +819,46 @@ void ModuleScene::ResetQuadTree() //deprecated
 			quadtree->Insert(go);
 		}
 	}
+}
+
+bool ModuleScene::PrefabWasUpdated(unsigned UID) const
+{
+	Resource* scene = App->resManager->GetByName(name.c_str(), TYPE::SCENE);
+	int prefabTime = App->fsystem->GetModTime(std::string(IMPORTED_PREFABS + std::to_string(UID) + PREFABEXTENSION).c_str());
+	int sceneTime = App->fsystem->GetModTime(std::string(IMPORTED_SCENES + std::to_string(scene->GetUID()) + SCENEEXTENSION).c_str());
+	App->resManager->DeleteResource(scene->GetUID());
+	return prefabTime > sceneTime;
+}
+
+unsigned ModuleScene::CreatePrefab(GameObject* go)
+{
+	ResourcePrefab* prefab = (ResourcePrefab*)App->resManager->CreateNewResource(TYPE::PREFAB);
+	std::string filepath;
+	if (App->fsystem->Exists(PREFABS))
+	{
+		filepath = PREFABS;
+		prefab->SetFile((PREFABS + go->name + PREFABEXTENSION).c_str());
+	}
+	else
+	{
+		filepath = ASSETS;
+		prefab->SetFile((ASSETS + go->name + PREFABEXTENSION).c_str());
+	}
+	std::string exportedFile(IMPORTED_PREFABS);
+
+	unsigned uid = prefab->GetUID();
+	exportedFile += std::to_string(uid); //name
+	exportedFile += PREFABEXTENSION;
+	prefab->SetName(go->name.c_str());
+	prefab->SetExportedFile(exportedFile.c_str());
+	prefab->Save(go); //We leave the resource loaded for getting it later
+	if (!App->resManager->ImportFile((go->name + PREFABEXTENSION).c_str(), filepath.c_str(), TYPE::PREFAB))
+	{
+		LOG("Could not import Prefab %s!!", go->name);
+		return 0;
+	}
+
+	return uid;
 }
 
 void ModuleScene::CreateCube(const char * name, GameObject* parent)
@@ -952,7 +1127,12 @@ void ModuleScene::ClearScene()
 	App->particles->CleanUp();
 	App->particles->Start();
 	App->renderer->shadowCasters.clear();
-	isCleared = true;
+}
+
+void ModuleScene::UpdateScenesList()
+{
+	sceneFiles.clear();
+	sceneFiles = App->resManager->GetResourceNamesList(TYPE::SCENE, true);
 }
 
 void ModuleScene::SaveScene(const GameObject& rootGO, const char* sceneName, const char* folder)
@@ -989,34 +1169,101 @@ void ModuleScene::SaveScene(const GameObject& rootGO, const char* sceneName, con
 	}
 }
 
+void ModuleScene::SaveTemporaryScene()
+{
+	std::string temporaryScene(RESOURCE_SCENES);
+	temporaryScene += TEMPORARY_SCENE;
+	temporaryScene += SCENEEXTENSION;
+	unsigned sceneUID = App->resManager->FindByExportedFile(temporaryScene.c_str(), TYPE::SCENE);
+
+	// See if there is already a temporaryScene on resource list
+	if (sceneUID != 0)
+	{
+		// Updating already saved scene [Shouldn't happen because temporaryScene is deleted after load]
+		ResourceScene* scene = (ResourceScene*)App->resManager->GetWithoutLoad(sceneUID);
+		scene->Save(*root);
+	}
+	else
+	{
+		// Is a new scene, create resource
+		ResourceScene* scene = (ResourceScene*)App->resManager->CreateNewResource(TYPE::SCENE);
+		scene->SetUsedByEngine(true);
+		scene->SetExportedFile(temporaryScene.c_str());
+		scene->SetFile(temporaryScene.c_str());
+		scene->SetName(TEMPORARY_SCENE);
+		scene->Save(*root);
+	}
+}
+
+bool ModuleScene::isCleared()
+{
+	return App->scene->root->children.size() <= 1 &&
+		App->scene->canvas->children.empty();
+}
+
 void ModuleScene::LoadScene(const char* sceneName, const char* folder)
 {
-	if (!isCleared)
+	if (!isCleared())
 	{
 		ClearScene();
 	}
-	if (AddScene(sceneName, folder))
+	std::string oldpath(path);
+	std::string oldname(name);
+	if (sceneName != TEMPORARY_SCENE)
 	{
-		if (sceneName != TEMPORARY_SCENE)
-		{
-			name = sceneName;
-			path = folder;
-		}
+		name = sceneName;
+		path = folder;
+	}
+	if (!AddScene(sceneName, folder))
+	{
+		name = oldpath;
+		path = oldname;
 	}
 	App->spacePartitioning->kDTree.Calculate();
+	App->scripting->onStart = true;
 	scenePhotos.clear();
+	App->time->ResetGameDetaTime();
+}
+
+void ModuleScene::LoadTemporaryScene()
+{
+	if (!isCleared())
+	{
+		ClearScene();
+	}
+
+	std::string temporaryScene(RESOURCE_SCENES);
+	temporaryScene += TEMPORARY_SCENE;
+	temporaryScene += SCENEEXTENSION;
+	ResourceScene* scene = (ResourceScene*)App->resManager->Get(temporaryScene.c_str(), TYPE::SCENE);
+	if (scene == nullptr || !scene->Load())
+	{
+		LOG("Error loading temporary scene.");
+	}
+	else
+	{
+		// Delete temporary scene
+		scene->Delete();
+		App->resManager->DeleteResourceFromList(scene->GetUID());
+	}
+	App->renderer->OnResize();
+
+	App->spacePartitioning->kDTree.Calculate();
+	App->scripting->onStart = true;
+	scenePhotos.clear();
+	App->time->ResetGameDetaTime();
 }
 
 bool ModuleScene::AddScene(const char* sceneName, const char* folder)
 {
 	ResourceScene* scene = (ResourceScene*)App->resManager->GetByName(sceneName, TYPE::SCENE);
+	App->navigation->sceneName = sceneName;
 	if(scene != nullptr && !scene->Load())
 	{
 		LOG("Error loading scene named: %s", sceneName);
 		return false;
 	}
 	App->renderer->OnResize();
-	isCleared = false;
 	return true;
 }
 
@@ -1125,7 +1372,6 @@ void ModuleScene::Pick(float normalized_x, float normalized_y)
 
 bool ModuleScene::Intersects(math::float3& closestPoint, const char* name, bool editor)
 {
-
 	float2 mouse((float*)&App->input->GetMousePosition());
 	LineSegment line;
 
@@ -1167,10 +1413,10 @@ bool ModuleScene::Intersects(math::float3& closestPoint, const char* name, bool 
 	{
 		if (go.second->name != name) continue;
 
-		intersects = true;
 		float distance = FLOAT_INF;
 		if (go.second->Intersects(line, distance, &intersectionPoint)) //returns distance to line if triangle hit
 		{
+			intersects = true;
 			if (distance < closestTriangle)
 			{
 				closestPoint = intersectionPoint;
@@ -1180,6 +1426,66 @@ bool ModuleScene::Intersects(math::float3& closestPoint, const char* name, bool 
 	}
 
 	return intersects;
+}
+
+bool ModuleScene::Intersects(const char* tag, bool sorted, math::float3& point, 
+	GameObject** out) const
+{
+	float2 mouse((float*)&App->input->GetMousePosition());
+	LineSegment line;
+
+	float normalized_x, normalized_y;
+
+	if (App->renderer->viewGame->hidden)
+	{
+		math::float2 pos = App->renderer->viewScene->winPos;
+		math::float2 size(App->renderer->viewScene->current_width, App->renderer->viewScene->current_height);
+		normalized_x = ((mouse.x - pos.x) / size.x) * 2 - 1; //0 to 1 -> -1 to 1
+		normalized_y = (1 - (mouse.y - pos.y) / size.y) * 2 - 1; //0 to 1 -> -1 to 1
+
+		line = App->camera->editorcamera->DrawRay(normalized_x, normalized_y);
+	}
+	else
+	{
+#ifndef GAME_BUILD
+		math::float2 pos = App->renderer->viewGame->winPos;
+		math::float2 size(App->renderer->viewGame->current_width, App->renderer->viewGame->current_height);
+#else
+		math::float2 pos = math::float2::zero;
+		math::float2 size(App->window->width, App->window->height);
+#endif
+		normalized_x = ((mouse.x - pos.x) / size.x) * 2 - 1; //0 to 1 -> -1 to 1
+		normalized_y = (1 - (mouse.y - pos.y) / size.y) * 2 - 1; //0 to 1 -> -1 to 1
+
+		line = App->scene->maincamera->DrawRay(normalized_x, normalized_y);
+
+	}
+		std::list<std::pair<float, GameObject*>> GOs = GetStaticIntersections(line);
+		std::list<std::pair<float, GameObject*>> dGOs = GetDynamicIntersections(line);
+		GOs.merge(dGOs);
+
+		math::float3 intersectionPoint = math::float3::zero;
+		float closestTriangle = FLOAT_INF;
+		bool intersects = false;
+
+		for (const auto& go : GOs)
+		{
+			if (go.second->tag != tag) continue;
+
+			float distance = FLOAT_INF;
+			if (go.second->Intersects(line, distance, &intersectionPoint)) //returns distance to line if triangle hit
+			{
+				intersects = true;
+				if (distance < closestTriangle)
+				{
+					point = intersectionPoint;
+					closestTriangle = distance;
+					*out = go.second;
+					if (!sorted) break;
+				}
+			}
+		}
+		return intersects;
 }
 
 GameObject* ModuleScene::FindClosestParent(GameObject* go)
@@ -1198,15 +1504,97 @@ GameObject* ModuleScene::FindClosestParent(GameObject* go)
 	return FindClosestParent(go->parent);
 }
 
-GameObject* ModuleScene::FindGameObjectByName(const char* name) const
-{
-	return FindGameObjectByName(App->scene->root, name);
-}
-
-GameObject* ModuleScene::FindGameObjectByName(GameObject* parent, const char* name) const
+GameObject* ModuleScene::FindGameObjectByTag(const char* tag, GameObject* parent) const
 {
 	std::stack<GameObject*> GOs;
+	if (parent == nullptr)
+	{
+		parent = root;
+	}
 	GOs.push(parent);
+	while (!GOs.empty())
+	{
+		GameObject* go = GOs.top();
+		if (go->tag == tag)
+		{
+			return go;
+		}
+
+		GOs.pop();
+		for (const auto& child : go->children)
+		{
+			GOs.push(child);
+		}
+	}
+	return nullptr;
+}
+
+std::vector<GameObject*> ModuleScene::FindGameObjectsByTag(const char* tag, GameObject* parent) const
+{
+	std::vector<GameObject*> gameobjects;
+
+	std::stack<GameObject*> GOs;
+	if (parent == nullptr)
+	{
+		parent = root;
+	}
+	GOs.push(parent);
+	while (!GOs.empty())
+	{
+		GameObject* go = GOs.top();
+		if (go->tag == tag)
+		{
+			gameobjects.push_back(go);
+		}
+
+		GOs.pop();
+		for (const auto& child : go->children)
+		{
+			GOs.push(child);
+		}
+	}
+	return gameobjects;
+}
+
+GameObject* ModuleScene::FindGameObjectByUID(unsigned UID, GameObject* parent) const
+{
+	std::stack<GameObject*> GOs;
+	if (parent == nullptr)
+	{
+		GOs.push(root);
+	}
+	else
+	{
+		GOs.push(parent);
+	}
+	while (!GOs.empty())
+	{
+		GameObject* go = GOs.top();
+		if (go->UUID == UID)
+		{
+			return go;
+		}
+
+		GOs.pop();
+		for (const auto& child : go->children)
+		{
+			GOs.push(child);
+		}
+	}
+	return nullptr;
+}
+
+GameObject* ModuleScene::FindGameObjectByName(const char* name, GameObject* parent) const
+{
+	std::stack<GameObject*> GOs;
+	if (parent == nullptr)
+	{
+		GOs.push(root);
+	}
+	else
+	{
+		GOs.push(parent);
+	}
 	while (!GOs.empty())
 	{
 		GameObject* go = GOs.top();
@@ -1222,6 +1610,33 @@ GameObject* ModuleScene::FindGameObjectByName(GameObject* parent, const char* na
 		}
 	}
 	return nullptr;
+}
+
+GameObject * ModuleScene::Spawn(const char * name, GameObject * parent)
+{
+	ResourcePrefab* prefab = (ResourcePrefab*) App->resManager->GetByName(name, TYPE::PREFAB);
+	assert(prefab != nullptr, "Prefab Not Found");
+	//Instantiate prefab
+	GameObject* instance = new GameObject(*prefab->RetrievePrefab());
+	App->resManager->DeleteResource(prefab->GetUID());
+
+	if (parent == nullptr)
+	{
+		parent = root;
+	}
+	parent->children.push_back(instance);
+	instance->parent = parent;
+	instance->transform->Reset();
+	AddToSpacePartition(instance);
+	return instance;
+}
+
+GameObject * ModuleScene::Spawn(const char * name, math::float3 position, math::Quat rotation, GameObject * parent)
+{
+	GameObject* instance = Spawn(name, parent);
+	instance->transform->SetPosition(position);
+	instance->transform->SetRotation(rotation);
+	return instance;
 }
 
 void ModuleScene::GetStaticGlobalAABB(AABB & aabb, std::vector<GameObject*>& bucket, unsigned int & bucketOccupation)

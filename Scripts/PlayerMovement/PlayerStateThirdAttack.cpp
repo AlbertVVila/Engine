@@ -6,33 +6,18 @@
 
 #include "GameObject.h"
 
-#include "ComponentTransform.h"
-
-PlayerStateThirdAttack::PlayerStateThirdAttack(PlayerMovement* PM)
+PlayerStateThirdAttack::PlayerStateThirdAttack(PlayerMovement * PM, const char * trigger, math::float3 boxSize, 
+	float minTime, float maxTime) : PlayerStateAttack(PM, trigger, boxSize, minTime, maxTime)
 {
-	player = PM;
-	trigger = "ThirdAttack";
 }
-
 
 PlayerStateThirdAttack::~PlayerStateThirdAttack()
 {
 }
 
-void PlayerStateThirdAttack::Update()
-{
-	//player->pathIndex = 0;
-	//player->path.clear();
-	//math::float3 attackPosition;
-	//if (player->Appl->scene->Intersects(attackPosition, "floor"))
-	//{
-	//	player->gameobject->transform->LookAt(attackPosition);
-	//}
-}
-
 void PlayerStateThirdAttack::CheckInput()
 {
-	if (timer > player->thirdAttackDuration)
+	if (timer > duration)
 	{
 		if (player->IsAtacking())
 		{

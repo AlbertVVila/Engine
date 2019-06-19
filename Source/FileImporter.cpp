@@ -16,6 +16,8 @@
 #include "Resource.h"
 #include "ResourceModel.h"
 #include "ResourceMesh.h"
+#include "ResourcePrefab.h"
+
 #include "FileImporter.h"
 #include "JSON.h"
 
@@ -86,6 +88,14 @@ void FileImporter::ImportAsset(const char *file, const char *folder)
 	{
 		App->resManager->ImportFile(file, folder, TYPE::STATEMACHINE);
 	}
+	else if (extension == OGGEXTENSION || extension == MP3EXTENSION || extension == WAVEXTENSION)
+	{
+		App->resManager->ImportFile(file, folder, TYPE::AUDIO);
+	}
+	else if (extension == PREFABEXTENSION)
+	{
+		App->resManager->ImportFile(file, folder, TYPE::PREFAB);
+	}
 }
 
 bool FileImporter::ImportFBX(const char* fbxfile, const char* folder, ResourceModel* resource)
@@ -105,9 +115,33 @@ bool FileImporter::ImportFBX(const char* fbxfile, const char* folder, ResourceMo
 	return false;
 }
 
+bool FileImporter::ImportPrefab(const char * file, const char * folder, ResourcePrefab * resource)
+{
+	//std::string path(folder);
+	//path += file;
+	//std::string name = App->fsystem->GetFilename(file);
+	//std::string meta(std::string(path) + METAEXT);
+
+	//char* metaData = nullptr;
+	//if (App->fsystem->Load(meta.c_str(), &metaData) == 0)
+	//{
+	//	//NO META
+	//}
+	//else
+	//{
+	//	JSON *json = new JSON(metaData);
+	//	//Get UID
+	//	JSON_value* value = json->GetValue("prefab");
+	//	unsigned UID = value->GetUint("UID");
+	//	App->fsystem->Save((MESHES + std::to_string(mesh->GetUID()) + MESHEXTENSION).c_str(), meshData, meshSize);
+	//}
+	App->fsystem->Copy(folder, file, IMPORTED_PREFABS, (std::to_string(resource->GetUID()) + PREFABEXTENSION).c_str());
+	return true;
+}
+
 bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const char* folder, ResourceModel* resource)
 {
-	GameObject* sceneGO = App->scene->CreateGameObject("Scene", App->scene->root);
+		GameObject* sceneGO = App->scene->CreateGameObject("Scene", App->scene->root);
 	sceneGO->CreateComponent(ComponentType::Transform); // To move all around
 
 	std::stack<aiNode*> stackNode;
@@ -233,7 +267,11 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 	if (!App->fsystem->Exists(SCENES))
 		App->fsystem->MakeDirectory(SCENES);
 
-	App->scene->SaveScene(*sceneGO, App->fsystem->GetFilename(file).c_str(), SCENES); 
+	if (!App->fsystem->Exists((SCENES + App->fsystem->GetFilename(file) + SCENEEXTENSION).c_str()))
+	{
+		App->scene->SaveScene(*sceneGO, App->fsystem->GetFilename(file).c_str(), SCENES);
+	}
+
 	aiReleaseImport(&aiscene);
 
 	sceneGO->deleteFlag = true;
@@ -384,6 +422,10 @@ void FileImporter::ImportAnimation(const aiAnimation& animation, char* data)
 			cursor += sizeof(math::Quat);
 		}
 	}
+
+	int events = 0;
+	memcpy(cursor, &events, sizeof(int));
+	cursor += sizeof(int);
 }
 
 //TODO: Obtain animations size in order to store their content
@@ -411,6 +453,8 @@ unsigned FileImporter::GetAnimationSize(const aiAnimation& animation) const
 			size += sizeof(math::Quat);
 		}
 	}
+
+	size += sizeof(int);
 
 	return size;
 }

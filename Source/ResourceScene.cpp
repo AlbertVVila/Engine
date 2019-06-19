@@ -76,6 +76,7 @@ void ResourceScene::Save(const GameObject& rootGO)
 {
 	JSON *json = new JSON();
 	JSON_value *array = json->CreateValue(rapidjson::kArrayType);
+	App->navigation->sceneSaved(json);
 	rootGO.Save(array);
 	json->AddValue("GameObjects", *array);
 
@@ -130,7 +131,7 @@ bool ResourceScene::Load()
 		}
 	}
 
-	if (!App->scene->isCleared)
+	if (!App->scene->isCleared())
 	{
 		//Recursive UID reassign
 		AssignNewUUID(App->scene->root, 0u);
@@ -149,6 +150,11 @@ bool ResourceScene::Load()
 
 	RELEASE_ARRAY(data);
 	RELEASE(json);
+
+	App->scene->root->OnPlay();
+	//set all the game objects
+	App->scene->root->UpdateTransforms(math::float4x4::identity);
+	App->scene->root->SetAllMoveFlags();
 
 	return true;
 }
