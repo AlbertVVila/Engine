@@ -86,6 +86,12 @@ private:
 	void MarkAsPrefab();
 	void SetActiveInHierarchy(bool active);
 	void OnChangeActiveState(bool wasActive);
+	void MakeObjectWithMeshStatic();
+
+	void SetStaticAllChildsWithMesh();
+	void SetNavigableAllChildsWithMesh();
+	void SetObstacleAllChildsWithMesh();
+	void AddAllNavigableChildsToNavMesh();
 
 	bool activeInHierarchy = true;
 	bool openInHierarchy = true;
@@ -110,6 +116,7 @@ public:
 	bool copyFlag = false;
 	bool deleteFlag = false;
 	bool drawBBox = false;
+	bool particlesDirty = false;
 
 	math::AABB bbox;
 

@@ -56,6 +56,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SkillTreeController", "Scri
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ExperienceController", "Scripts\ExperienceController\ExperienceController.vcxproj", "{7306983D-F81F-488D-9548-D68509FEF4C8}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DamageFeedbackUI", "Scripts\DamageFeedbackUI\DamageFeedbackUI.vcxproj", "{A0EC96D9-FD95-4C0C-B500-6CF8FD9AF1F4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -446,6 +448,22 @@ Global
 		{7306983D-F81F-488D-9548-D68509FEF4C8}.Release|Win32.Build.0 = Release|Win32
 		{7306983D-F81F-488D-9548-D68509FEF4C8}.Release|x64.ActiveCfg = Release|x64
 		{7306983D-F81F-488D-9548-D68509FEF4C8}.Release|x64.Build.0 = Release|x64
+		{A0EC96D9-FD95-4C0C-B500-6CF8FD9AF1F4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A0EC96D9-FD95-4C0C-B500-6CF8FD9AF1F4}.Debug|Win32.Build.0 = Debug|Win32
+		{A0EC96D9-FD95-4C0C-B500-6CF8FD9AF1F4}.Debug|x64.ActiveCfg = Debug|x64
+		{A0EC96D9-FD95-4C0C-B500-6CF8FD9AF1F4}.Debug|x64.Build.0 = Debug|x64
+		{A0EC96D9-FD95-4C0C-B500-6CF8FD9AF1F4}.GameBuild Debug|Win32.ActiveCfg = GameBuild Debug|Win32
+		{A0EC96D9-FD95-4C0C-B500-6CF8FD9AF1F4}.GameBuild Debug|Win32.Build.0 = GameBuild Debug|Win32
+		{A0EC96D9-FD95-4C0C-B500-6CF8FD9AF1F4}.GameBuild Debug|x64.ActiveCfg = Debug|x64
+		{A0EC96D9-FD95-4C0C-B500-6CF8FD9AF1F4}.GameBuild Debug|x64.Build.0 = Debug|x64
+		{A0EC96D9-FD95-4C0C-B500-6CF8FD9AF1F4}.GameBuild|Win32.ActiveCfg = GameBuild|Win32
+		{A0EC96D9-FD95-4C0C-B500-6CF8FD9AF1F4}.GameBuild|Win32.Build.0 = GameBuild|Win32
+		{A0EC96D9-FD95-4C0C-B500-6CF8FD9AF1F4}.GameBuild|x64.ActiveCfg = Release|x64
+		{A0EC96D9-FD95-4C0C-B500-6CF8FD9AF1F4}.GameBuild|x64.Build.0 = Release|x64
+		{A0EC96D9-FD95-4C0C-B500-6CF8FD9AF1F4}.Release|Win32.ActiveCfg = Release|Win32
+		{A0EC96D9-FD95-4C0C-B500-6CF8FD9AF1F4}.Release|Win32.Build.0 = Release|Win32
+		{A0EC96D9-FD95-4C0C-B500-6CF8FD9AF1F4}.Release|x64.ActiveCfg = Release|x64
+		{A0EC96D9-FD95-4C0C-B500-6CF8FD9AF1F4}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -473,6 +491,7 @@ Global
 		{25A279F6-6460-43E6-83C1-59AB067F3F05} = {B0BA8D83-BE07-4405-ADE1-C771D081A8CD}
 		{55860826-2F36-4FBB-959E-E4AB93827C1F} = {B0BA8D83-BE07-4405-ADE1-C771D081A8CD}
 		{7306983D-F81F-488D-9548-D68509FEF4C8} = {B0BA8D83-BE07-4405-ADE1-C771D081A8CD}
+		{A0EC96D9-FD95-4C0C-B500-6CF8FD9AF1F4} = {B0BA8D83-BE07-4405-ADE1-C771D081A8CD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7938FFD4-0765-4A85-95CB-3908D56E6F3D}

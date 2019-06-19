@@ -8,6 +8,14 @@
 #include "Math/float4x4.h"
 #include "Math/Quat.h"
 
+struct Event
+{
+	int key;
+	int frame;
+	std::string name;
+
+	Event(int k, int f, const std::string& n) : key(k), frame(f), name(n) {}
+};
 
 struct Channel
 {
@@ -37,6 +45,10 @@ public:
 	void SaveAnimationData(char* data);
 	void SaveNewAnimation();
 
+	void AddEvent(std::string name);
+	void DeleteEvent(int key);
+	void SetEventKeys();
+
 	unsigned GetNumPositions(unsigned indexChannel) const;
 	const math::float3 GetPosition(unsigned indexChannel, unsigned indexPosition) const;
 
@@ -47,6 +59,7 @@ public:
 	unsigned GetNumberChannels() const;
 	unsigned GetNumberFrames() const;
 	unsigned GetFPS() const;
+
 
 public:
 
@@ -59,7 +72,11 @@ public:
 	int currentSample = 0u;
 	int currentFrame = 0u;
 
+	int totalEvents = 0;
+	int nextEvent = 0;
+
 	std::vector<Channel*> channels;
+	std::vector<Event*> events;
 };
 
 #endif // __RESOURCEANIMATION_H_
