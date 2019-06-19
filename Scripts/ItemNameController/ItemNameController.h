@@ -31,7 +31,7 @@ public:
 	bool Intersection(GameObject* go);
 private:
 	GameObject* itemName = nullptr;
-	GameObject* uiName[2];
+	GameObject* uiName[10];
 	GameObject* itemBackground = nullptr;
 	GameObject* itemTypeName = nullptr;
 
@@ -39,15 +39,15 @@ private:
 	math::float4 white = math::float4(255.0f, 255.0f, 255.0f, 255.0f);
 	math::float4 darkGreen = math::float4(0.0f, 100.0f, 0.0f, 255.0f);
 	math::float4 green = math::float4(0.0f, 255.0f, 0.0f, 255.0f);
-	math::float4 darkOrange = math::float4(255.0f, 165.0f, 0.0f, 255.0f);
-	math::float4 orange = math::float4(255.0f, 140.0f, 0.0f, 255.0f);
-	math::float4 darkPurple = math::float4(255.0f, 0.0f, 255.0f, 255.0f);
-	math::float4 purple = math::float4(139.0f, 0.0f, 139.0f, 255.0f);
+	math::float4 orange = math::float4(255.0f, 165.0f, 0.0f, 255.0f);
+	math::float4 darkOrange = math::float4(255.0f, 140.0f, 0.0f, 255.0f);
+	math::float4 purple = math::float4(255.0f, 0.0f, 255.0f, 255.0f);
+	math::float4 darkPurple = math::float4(139.0f, 0.0f, 139.0f, 255.0f);
 
 	ComponentRenderer* myRender = nullptr;
 	Text* myText = nullptr;
 
-	ItemName itemList[2];
+	ItemName itemList[10];
 
 };
 
