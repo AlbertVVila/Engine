@@ -20,7 +20,10 @@ public:
 	void Start() override;
 	void Update() override;
 
-	void Shake(float duration, float intensity = 5.0f, bool smooth = true, float fadeInTime = 0.2f, float fadeOutTime = 0.8f);
+	/** @param fadeInTime value between [0,1].
+	@@ param fadeOutTime value between [0,1].
+	Represents percentage of shake time that fadeIn ends and fadeOut starts**/
+	void Shake(float duration, float intensity = 5.0f, float fadeInTime = 0.2f, float fadeOutTime = 0.8f);
 
 private:
 	void ShakeCamera(math::float3& position);
@@ -33,10 +36,9 @@ private:
 	float shakeDuration = 0.0f;
 	float shakeIntensity = 0.0f;
 	float shakeTimer = 0.0f;
-	bool shakeSmooth = true;
 	float shakeFadeInTime = 0.0f;
 	float shakeFadeOutTime = 0.0f;
-	math::float3 nextPosition;
+	float roll = 0.0f;
 
 	Quat originalRotation = Quat::identity;
 
