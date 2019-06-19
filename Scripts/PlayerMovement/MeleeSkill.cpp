@@ -5,7 +5,7 @@
 #include "PlayerMovement.h"
 
 MeleeSkill::MeleeSkill(PlayerMovement* PM, ComponentBoxTrigger* attackBox) :
-	BaseSkill(PM), attackBoxTrigger(attackBox)
+	BasicSkill(PM), attackBoxTrigger(attackBox)
 {
 }
 
@@ -15,20 +15,20 @@ MeleeSkill::~MeleeSkill()
 
 void MeleeSkill::Expose(ImGuiContext* context)
 {
-	BaseSkill::Expose(context);
+	BasicSkill::Expose(context);
 }
 
 void MeleeSkill::Serialize(JSON_value* json) const
 {
-	BaseSkill::Serialize(json);
+	BasicSkill::Serialize(json);
 }
 
 void MeleeSkill::DeSerialize(JSON_value* json)
 {
-	BaseSkill::DeSerialize(json);
+	BasicSkill::DeSerialize(json);
 }
 
 void MeleeSkill::Reset()
 {
-	BaseSkill::Reset();
+	BasicSkill::Reset();
 }

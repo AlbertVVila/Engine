@@ -1,4 +1,4 @@
-#include "BaseSkill.h"
+#include "BasicSkill.h"
 
 #include "Application.h"
 #include "ModuleTime.h"
@@ -8,16 +8,16 @@
 #include <assert.h>
 #include "JSON.h"
 
-BaseSkill::BaseSkill(PlayerMovement* PM) :
+BasicSkill::BasicSkill(PlayerMovement* PM) :
 	player(PM)
 {
 }
 
-BaseSkill::~BaseSkill()
+BasicSkill::~BasicSkill()
 {
 }
 
-void BaseSkill::Start()
+void BasicSkill::Start()
 {
 	if (player == nullptr)
 	{
@@ -25,7 +25,7 @@ void BaseSkill::Start()
 	}
 }
 
-void BaseSkill::Update()
+void BasicSkill::Update()
 {
 	timer += player->App->time->gameDeltaTime;
 
@@ -39,28 +39,28 @@ void BaseSkill::Update()
 	}
 }
 
-void BaseSkill::Expose(ImGuiContext* context)
+void BasicSkill::Expose(ImGuiContext* context)
 {
 	ImGui::SetCurrentContext(context);
 	//ImGui::InputFloat("Speed", &speed);
 	ImGui::InputFloat("Duration", &duration);
 }
 
-void BaseSkill::Serialize(JSON_value* json) const
+void BasicSkill::Serialize(JSON_value* json) const
 {
 	assert(json != nullptr);
 	//json->AddFloat("Speed", speed);
 	json->AddFloat("Duration", duration);
 }
 
-void BaseSkill::DeSerialize(JSON_value* json)
+void BasicSkill::DeSerialize(JSON_value* json)
 {
 	assert(json != nullptr);
 	//speed = json->GetFloat("Speed");
 	duration = json->GetFloat("Duration");
 }
 
-void BaseSkill::Reset()
+void BasicSkill::Reset()
 {
 	timer = 0.0f;
 	//Enable(false);

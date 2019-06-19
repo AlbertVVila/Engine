@@ -1,7 +1,7 @@
 #ifndef  __MeleeSkill_h__
 #define  __MeleeSkill_h__
 
-#include "BaseSkill.h"
+#include "BasicSkill.h"
 
 #include "Math/float3.h"
 
@@ -11,7 +11,7 @@ class ImGuiContext;
 class JSON_value;
 
 class MeleeSkill :
-	public BaseSkill
+	public BasicSkill
 {
 public:
 	MeleeSkill(PlayerMovement* PM, ComponentBoxTrigger* attackBox);

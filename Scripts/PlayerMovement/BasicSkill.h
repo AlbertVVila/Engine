@@ -6,11 +6,11 @@
 class PlayerMovement;
 class JSON_value;
 
-class BaseSkill
+class BasicSkill
 {
 public:
-	BaseSkill(PlayerMovement* PM);
-	virtual ~BaseSkill();
+	BasicSkill(PlayerMovement* PM);
+	virtual ~BasicSkill();
 
 	virtual void Start();
 	virtual void Update();

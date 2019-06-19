@@ -317,7 +317,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BaseSkill.cpp" />
+    <ClCompile Include="BasicSkill.cpp" />
     <ClCompile Include="MeleeSkill.cpp" />
     <ClCompile Include="PlayerMovement.cpp" />
     <ClCompile Include="PlayerState.cpp" />
@@ -333,7 +333,7 @@
     <ClCompile Include="SliceSkill.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BaseSkill.h" />
+    <ClInclude Include="BasicSkill.h" />
     <ClInclude Include="MeleeSkill.h" />
     <ClInclude Include="PlayerMovement.h" />
     <ClInclude Include="PlayerState.h" />

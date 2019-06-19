@@ -54,13 +54,13 @@
     <ClInclude Include="PlayerStateAttack.h">
       <Filter>States</Filter>
     </ClInclude>
-    <ClInclude Include="BaseSkill.h">
-      <Filter>Skills</Filter>
-    </ClInclude>
     <ClInclude Include="MeleeSkill.h">
       <Filter>Skills</Filter>
     </ClInclude>
     <ClInclude Include="SliceSkill.h">
+      <Filter>Skills</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicSkill.h">
       <Filter>Skills</Filter>
     </ClInclude>
   </ItemGroup>
@@ -98,13 +98,13 @@
     <ClCompile Include="PlayerStateAttack.cpp">
       <Filter>States</Filter>
     </ClCompile>
-    <ClCompile Include="BaseSkill.cpp">
-      <Filter>Skills</Filter>
-    </ClCompile>
     <ClCompile Include="MeleeSkill.cpp">
       <Filter>Skills</Filter>
     </ClCompile>
     <ClCompile Include="SliceSkill.cpp">
+      <Filter>Skills</Filter>
+    </ClCompile>
+    <ClCompile Include="BasicSkill.cpp">
       <Filter>Skills</Filter>
     </ClCompile>
   </ItemGroup>
