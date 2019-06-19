@@ -103,6 +103,7 @@ private:
 	float rate = 10.f;
 	float rateTimer = 1.f / rate;
 	int maxParticles = 50;
+	float intensity = 1.0f;
 	math::float2 particleSize = math::float2(1.f * App->renderer->current_scale, 1.f * App->renderer->current_scale) ;
 	math::float2 quadEmitterSize = math::float2(10.f * App->renderer->current_scale);
 	float sphereEmitterRadius = 5.f * App->renderer->current_scale;

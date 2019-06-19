@@ -12,6 +12,8 @@
 #include "JSON.h"
 #include <assert.h>
 
+#include <algorithm>
+
 
 ResourceAnimation::ResourceAnimation(unsigned uid) : Resource(uid, TYPE::ANIMATION)
 {
@@ -212,6 +214,31 @@ void ResourceAnimation::SetAnimation(const char* animationData)
 
 		channels.push_back(newChannel);
 	}
+
+	//load events
+	events.clear();
+
+	memcpy(&totalEvents, animationData, sizeof(int));
+	animationData += sizeof(int);
+
+	for (unsigned i = 0u; i < totalEvents; i++)
+	{
+		int newKey;
+		memcpy(&newKey, animationData, sizeof(int));
+		animationData += sizeof(int);
+
+		int newFrame;
+		memcpy(&newFrame, animationData, sizeof(int));
+		animationData += sizeof(int);
+
+		char newName[MAX_BONE_NAME_LENGTH];
+		memcpy(newName, animationData, sizeof(char) * MAX_BONE_NAME_LENGTH);
+		animationData += sizeof(char)* MAX_BONE_NAME_LENGTH;
+
+		Event* newEvent = new Event(newKey, newFrame, std::string(newName));
+		events.push_back(newEvent);
+	}
+
 	RELEASE_ARRAY(data);
 }
 
@@ -236,6 +263,16 @@ unsigned ResourceAnimation::GetAnimationSize()
 			size += sizeof(Quat);
 		}
 	}
+
+	//get events
+	size += sizeof(int);
+
+	for (unsigned i = 0u; i < totalEvents; i++)
+	{
+		size += sizeof(int) * 2;
+		size += sizeof(char)* MAX_BONE_NAME_LENGTH;
+	}
+
 	return size;
 }
 
@@ -282,6 +319,23 @@ void ResourceAnimation::SaveAnimationData(char * data)
 			cursor += sizeof(math::Quat);
 		}
 	}
+
+	//save events
+	memcpy(cursor, &totalEvents, sizeof(int));
+	cursor += sizeof(int);
+
+	for (unsigned i = 0u; i < totalEvents; i++)
+	{
+		memcpy(cursor, &events[i]->key, sizeof(int));
+		cursor += sizeof(int);
+
+		memcpy(cursor, &events[i]->frame, sizeof(int));
+		cursor += sizeof(int);
+
+		memcpy(cursor, events[i]->name.c_str(), sizeof(char) * MAX_BONE_NAME_LENGTH);
+		cursor += sizeof(char) * MAX_BONE_NAME_LENGTH;
+	}
+
 }
 
 void ResourceAnimation::SaveNewAnimation()
@@ -294,6 +348,45 @@ void ResourceAnimation::SaveNewAnimation()
 	App->fsystem->Save((ANIMATIONS + name + ANIMATIONEXTENSION).c_str(), animationData, animationSize);
 	SetFile((ANIMATIONS + name + ANIMATIONEXTENSION).c_str());
 	RELEASE_ARRAY(animationData);
+}
+
+void ResourceAnimation::AddEvent(std::string name)
+{
+	events.push_back(new Event(totalEvents, currentFrame, name));
+	++totalEvents;
+
+	if (totalEvents > 1)
+	{
+		std::sort(events.begin(), events.end(), [](const Event* lhs, const Event* rhs) 
+			{ return lhs->frame < rhs->frame; });
+	}
+
+	SetEventKeys();
+}
+
+void ResourceAnimation::DeleteEvent(int key)
+{
+	for (std::vector<Event*>::iterator it = events.begin(); it != events.end(); ++it)
+	{
+		if ((*it)->key == key)
+		{
+			events.erase(it);
+			--totalEvents;
+			break;
+		}
+	}
+
+	SetEventKeys();
+}
+
+void ResourceAnimation::SetEventKeys()
+{
+	int contador = 0;
+	for (std::vector<Event*>::iterator it = events.begin(); it != events.end(); ++it)
+	{
+		(*it)->key = contador;
+		++contador;
+	}
 }
 
 unsigned ResourceAnimation::GetNumPositions(unsigned indexChannel) const
