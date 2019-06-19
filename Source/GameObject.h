@@ -86,6 +86,12 @@ private:
 	void MarkAsPrefab();
 	void SetActiveInHierarchy(bool active);
 	void OnChangeActiveState(bool wasActive);
+	void MakeObjectWithMeshStatic();
+
+	void SetStaticAllChildsWithMesh();
+	void SetNavigableAllChildsWithMesh();
+	void SetObstacleAllChildsWithMesh();
+	void AddAllNavigableChildsToNavMesh();
 
 	bool activeInHierarchy = true;
 	bool openInHierarchy = true;

@@ -17,10 +17,7 @@ EnemyStatePatrol::~EnemyStatePatrol()
 
 void EnemyStatePatrol::Update()
 {
-	math::float3 enemyCurrentPosition = enemy->enemyController->GetPosition();
-	math::float3 playerCurrentPosition = enemy->enemyController->GetPlayerPosition();
-	float distance = enemy->enemyController->GetDistanceTo2D(playerCurrentPosition);
-
+	float distance = enemy->enemyController->GetDistanceToPlayer2D();
 	if (distance < enemy->activationDistance)
 		enemy->currentState = (EnemyState*)enemy->getInPosition;
 }
