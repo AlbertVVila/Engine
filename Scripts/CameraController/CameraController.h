@@ -23,7 +23,7 @@ public:
 	/** @param fadeInTime value between [0,1].
 	@@ param fadeOutTime value between [0,1].
 	Represents percentage of shake time that fadeIn ends and fadeOut starts**/
-	void Shake(float duration, float intensity = 5.0f, float fadeInTime = 0.2f, float fadeOutTime = 0.8f);
+	void Shake(float duration, float intensity = 5.0f, float fadeInTime = 0.2f, float fadeOutTime = 0.8f, bool linearFade = false);
 
 private:
 	void ShakeCamera(math::float3& position);
@@ -39,6 +39,7 @@ private:
 	float shakeFadeInTime = 0.0f;
 	float shakeFadeOutTime = 0.0f;
 	float roll = 0.0f;
+	bool shakelinearFade = false;
 
 	Quat originalRotation = Quat::identity;
 

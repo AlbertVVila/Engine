@@ -225,7 +225,7 @@ float SignOrZero(float f, float epsilon = 1e-8f);
 	@return This function computes a + t*(b-a). That is, if t==0, this function returns a. If t==1, this function returns b.
 		Otherwise, the returned value linearly moves from a to b as t ranges from 0 to 1.
 	@see LerpMod(), InvLerp(), Step(), SmoothStep(), PingPongMod(), Mod(), ModPos(), Frac(). */
-float Lerp(float a, float b, float t);
+MATH_API float Lerp(float a, float b, float t);
 /// Linearly interpolates from a to b, under the modulus mod.
 /** This function takes evaluates a and b in the range [0, mod] and takes the shorter path to reach from a to b.
 	@see Lerp(), InvLerp(), Step(), SmoothStep(), PingPongMod(), Mod(), ModPos(), Frac(). */
@@ -238,7 +238,7 @@ float InvLerp(float a, float b, float x);
 float Step(float y, float x);
 /// See http://msdn.microsoft.com/en-us/library/bb509658(v=vs.85).aspx
 /** @see Lerp(), LerpMod(), InvLerp(), Step(), PingPongMod(), Mod(), ModPos(), Frac(). */
-float SmoothStep(float min, float max, float x);
+MATH_API float SmoothStep(float min, float max, float x);
 /// Limits x to the range [0, mod], but instead of wrapping around from mod to 0, the result will move back
 /// from mod to 0 as x goes from mod to 2*mod.
 /** @see Lerp(), LerpMod(), InvLerp(), Step(), SmoothStep(), Mod(), ModPos(), Frac(). */
