@@ -1,7 +1,7 @@
 #ifndef __ModuleRender_h__
 #define __ModuleRender_h__
 
-#define MAX_KERNEL_RADIUS 100
+#define MAX_KERNEL_RADIUS 10
 
 #include "Module.h"
 #include "Math/float3.h"
@@ -110,12 +110,16 @@ private:
 	
 	Shader* shadowsShader = nullptr;
 	Shader* postProcessShader = nullptr;
+	Shader* blur = nullptr;
 
 	unsigned postprocessFBO = 0u;
 	unsigned postprocessRBO = 0u;
 	unsigned postprocessVAO = 0u;
 	unsigned postprocessVBO = 0u;
 	unsigned postprocessEBO = 0u;
+
+	unsigned int pingpongFBO[2];
+	unsigned int pingpongColorbuffers[2];
 
 	float gammaCorrector = 2.2f;
 	float exposure = 1.0f;

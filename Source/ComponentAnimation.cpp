@@ -6,6 +6,7 @@
 #include "ModuleScene.h"
 
 #include "GameObject.h"
+#include "BaseScript.h"
 #include "Resource.h"
 #include "ResourceAnimation.h"
 #include "ResourceStateMachine.h"
@@ -415,7 +416,27 @@ void ComponentAnimation::Update()
 				SetIndexChannels(gameobject, GetAnimFromStateMachine());
 				channelsSetted = true;
 			}
+
 			controller->Update(App->time->fullGameDeltaTime);
+			ResourceAnimation* Anim = controller->current->anim;
+
+			if (controller->CheckEvents(Anim))
+			{
+				std::vector<Component*> scripts = gameobject->GetComponents(ComponentType::Script);
+
+				for (auto script : scripts)
+				{
+					Script* scr = (Script*)script;
+					scr->OnAnimationEvent(Anim->events.at(Anim->nextEvent)->name);
+				}
+
+				if (Anim->nextEvent + 1 < Anim->totalEvents)
+					++Anim->nextEvent;
+				else if (Anim->nextEvent + 1 == Anim->totalEvents && Anim->totalEvents == 1)
+					++Anim->nextEvent;
+				else
+					Anim->nextEvent = 0;
+			}
 
 			if (gameobject != nullptr)
 			{

@@ -21,6 +21,8 @@ public:
 	~ModuleScript();
 
 	bool Init(JSON* config) override;
+	bool CleanUp() override;
+
 	update_status Update(float dt) override;
 
 	void LoadFromMemory(int resource);

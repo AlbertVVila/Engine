@@ -45,6 +45,7 @@ class PlayerStateDeath;
 class PlayerStateUppercut;
 class PlayerStateWalk;
 class DamageController;
+class DamageFeedbackUI;
 
 enum class PlayerMovement_API SkillType
 {
@@ -107,13 +108,13 @@ public:
 	}
 
 public:
-	float health = 0;
-	float mana = 0;
+	float health = 0.f;
+	float mana = 0.f;
 	int strength  = 0;
 	int dexterity = 0;
 
-	float hpRegen = 0;
-	float manaRegen = 0;
+	float hpRegen = 0.f;
+	float manaRegen = 0.f;
 };
 
 class PlayerMovement_API PlayerMovement : public Script
@@ -170,7 +171,7 @@ public:
 	PlayerStateUppercut* uppercut = nullptr;
 	PlayerStateWalk* walk = nullptr;
 
-	float walkingSpeed = 100.0f;
+	float walkingSpeed = 300.0f;
 	float dashSpeed = 10.0f;
 
 	float health = 100.0f;
@@ -190,6 +191,7 @@ public:
 
 	float OutOfMeshCorrectionXZ = 500.f;
 	float OutOfMeshCorrectionY = 300.0f;
+	float maxWalkingDistance = 10000.0f;
 	ComponentAnimation* anim = nullptr;
 	ComponentBoxTrigger* attackBoxTrigger = nullptr;
 	ComponentBoxTrigger* hpHitBoxTrigger = nullptr;
@@ -207,6 +209,7 @@ private:
 	GameObject* dashMesh = nullptr;
 
 	DamageController* damageController = nullptr;
+	DamageFeedbackUI* damageUIFeedback = nullptr;
 	ComponentImage* lifeUIComponent = nullptr;
 	ComponentImage* manaUIComponent = nullptr;
 
