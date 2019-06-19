@@ -74,13 +74,13 @@ public:
 	}
 
 public:
-	float health = 0;
-	float mana = 0;
+	float health = 0.f;
+	float mana = 0.f;
 	int strength  = 0;
 	int dexterity = 0;
 
-	float hpRegen = 0;
-	float manaRegen = 0;
+	float hpRegen = 0.f;
+	float manaRegen = 0.f;
 };
 
 class PlayerMovement_API PlayerMovement : public Script
