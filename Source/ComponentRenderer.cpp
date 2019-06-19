@@ -4,6 +4,8 @@
 #include "ModuleFileSystem.h"
 #include "ModuleEditor.h"
 #include "ModuleScene.h"
+#include "ModuleProgram.h"
+#include "ModuleTime.h"
 
 #include "GameObject.h"
 #include "ComponentRenderer.h"
@@ -110,10 +112,27 @@ void ComponentRenderer::DrawProperties()
 			ImGui::Text("Num triangles : %d", mesh->meshIndices.size() / 3);
 		}
 		ImGui::Spacing();
-		ImGui::Checkbox("Cast shadows", &castShadows);
-		ImGui::Checkbox("Use Alpha", &useAlpha);
-		ImGui::Checkbox("Highlighted", &highlighted);
-		ImGui::ColorEdit3("Highlight color", &highlightColor[0]);
+		if (material && !material->shader->isFX)
+		{
+			ImGui::Checkbox("Cast shadows", &castShadows);
+			ImGui::Checkbox("Use Alpha", &useAlpha);
+			ImGui::Checkbox("Highlighted", &highlighted);
+			ImGui::ColorEdit3("Highlight color", &highlightColor[0]);
+		}
+		else
+		{
+			if (ImGui::CollapsingHeader("FX settings"))
+			{
+				ImGui::InputInt("X Tiles", &xTiles);
+				ImGui::InputInt("Y Tiles", &yTiles);
+				xTiles = MAX(xTiles, 1);
+				yTiles = MAX(yTiles, 1);
+				if (ImGui::InputFloat("FPS", &fps, 1.f))
+				{
+					timer = 0.f;
+				}
+			}
+		}
 		// Material selector
 		ImGui::Text("Material");
 		ImGui::PushID("Material Combo");
@@ -126,7 +145,7 @@ void ComponentRenderer::DrawProperties()
 			for (int n = 0; n < guiMaterials.size(); n++)
 			{
 				bool is_selected = (material != nullptr ? (HashString(material->GetName()) == HashString(guiMaterials[n].c_str())) : false);
-				if (ImGui::Selectable(guiMaterials[n].c_str(), is_selected) )
+				if (ImGui::Selectable(guiMaterials[n].c_str(), is_selected))
 				{
 					if (material == nullptr || material->GetName() != guiMaterials[n])
 						SetMaterial(guiMaterials[n].c_str());
@@ -174,7 +193,7 @@ void ComponentRenderer::DrawProperties()
 		{
 			if (ImGui::Button("Show"))
 			{
-				if (material != nullptr) 
+				if (material != nullptr)
 				{
 					App->editor->materialEditor->open = true;
 					App->editor->materialEditor->material = material;
@@ -191,7 +210,7 @@ void ComponentRenderer::DrawProperties()
 		{
 			App->editor->materialEditor->Draw();
 		}
-
+		
 		ImGui::Separator();
 	}
 
@@ -298,4 +317,16 @@ void ComponentRenderer::UpdateGameObject()
 void ComponentRenderer::LinkBones() const
 {
 	mesh->LinkBones(gameobject);
+}
+
+void ComponentRenderer::Update()
+{
+	timer += App->time->gameDeltaTime; 
+	float currentFrame = timer / (1 / fps);
+	float frame;
+	frameMix = modf(currentFrame, &frame);
+	f1Xpos = ((int)frame) % xTiles;
+	f2Xpos = (f1Xpos + 1) % xTiles;
+	f1Ypos = (((int)frame) / xTiles) % yTiles;
+	f2Ypos = f1Xpos < f2Xpos ? f1Ypos : f1Ypos + 1;
 }

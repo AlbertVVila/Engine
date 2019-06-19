@@ -14,10 +14,10 @@ struct Shader
 {
 	std::map<unsigned, unsigned> id;
 	unsigned variation = 0u;
-
+	bool isFX = false;
 	std::string file;
 	Shader(unsigned program, std::string file) : file(file) { id[0] = program; }
-	~Shader();
+	~Shader(); 
 };
 
 class ModuleProgram : public Module

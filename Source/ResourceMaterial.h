@@ -18,6 +18,7 @@ enum class TextureType
 };
 
 class ResourceTexture;
+class ComponentRenderer; 
 struct Shader;
 
 class ResourceMaterial :
@@ -38,7 +39,7 @@ public:
 
 	ResourceTexture* GetTexture(TextureType type) const;
 	std::list<ResourceTexture*> GetTextures() const;
-	void SetUniforms(unsigned shader) const;
+	void SetUniforms(unsigned shader, bool isFx, ComponentRenderer* cRenderer) const;
 
 public:
 	Shader* shader = nullptr;

@@ -10,6 +10,8 @@ class ResourceMaterial;
 class ComponentRenderer :
 	public Component
 {
+	friend class ResourceMaterial;
+
 public:
 	ComponentRenderer(GameObject* gameobject);
 	ComponentRenderer(const ComponentRenderer& component);
@@ -26,7 +28,7 @@ public:
 	ENGINE_API void SetMaterial(const char* materialName);
 	void SetMesh(const char* meshfile);
 	void UpdateGameObject();
-	void LinkBones() const;
+	void LinkBones() const;	
 
 public:
 	ResourceMesh* mesh = nullptr;
@@ -37,8 +39,20 @@ public:
 	math::float3 highlightColor = math::float3::one;
 
 private:
+
+	void Update();
+
 	std::vector<std::string> guiMaterials;
 	std::vector<std::string> guiMeshes;
+	int xTiles = 1u;
+	int yTiles = 1u;
+	int f1Xpos;
+	int f1Ypos;
+	int f2Xpos;
+	int f2Ypos;
+	float fps = 24.f;
+	float timer = 0.f;
+	float frameMix = 0.f; 
 };
 
 #endif __ComponentRenderer_h__

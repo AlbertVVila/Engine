@@ -239,7 +239,7 @@ bool ComponentParticles::CleanUp()
 void ComponentParticles::Update(float dt, const math::float3& camPos)
 {
 	if (!Playing && !ConstantPlaying) return;
-	timer += dt;
+	timer += dt; 
 
 	if (timer - lastActive > PlayTime && !ConstantPlaying)
 	{
