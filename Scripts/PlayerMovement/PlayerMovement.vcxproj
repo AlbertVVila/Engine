@@ -330,6 +330,7 @@
     <ClCompile Include="PlayerStateThirdAttack.cpp" />
     <ClCompile Include="PlayerStateUppercut.cpp" />
     <ClCompile Include="PlayerStateWalk.cpp" />
+    <ClCompile Include="SliceSkill.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseSkill.h" />
@@ -345,6 +346,7 @@
     <ClInclude Include="PlayerStateThirdAttack.h" />
     <ClInclude Include="PlayerStateUppercut.h" />
     <ClInclude Include="PlayerStateWalk.h" />
+    <ClInclude Include="SliceSkill.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DamageController\DamageController.vcxproj">

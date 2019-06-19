@@ -60,6 +60,9 @@
     <ClInclude Include="MeleeSkill.h">
       <Filter>Skills</Filter>
     </ClInclude>
+    <ClInclude Include="SliceSkill.h">
+      <Filter>Skills</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PlayerMovement.cpp">
@@ -99,6 +102,9 @@
       <Filter>Skills</Filter>
     </ClCompile>
     <ClCompile Include="MeleeSkill.cpp">
+      <Filter>Skills</Filter>
+    </ClCompile>
+    <ClCompile Include="SliceSkill.cpp">
       <Filter>Skills</Filter>
     </ClCompile>
   </ItemGroup>
