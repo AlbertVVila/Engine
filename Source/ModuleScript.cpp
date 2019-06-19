@@ -10,12 +10,10 @@
 #include "BaseScript.h"
 //#include "engineResource.h"
 #include "MemoryModule.h"
-
+#include "PlayerPrefs.h"
 #include <assert.h>
 #include <windows.h>
 #include <iostream>
-
-#include "Brofiler.h"
 
 typedef Script*(__cdecl *CreatePointer)();
 
@@ -25,10 +23,6 @@ ModuleScript::ModuleScript()
 
 ModuleScript::~ModuleScript()
 {
-	//for (auto& script : componentsScript)
-	//{
-	//	RELEASE(script);
-	//}
 
 	for (const auto& dll : loadedDLLs)
 	{
@@ -41,15 +35,22 @@ ModuleScript::~ModuleScript()
 
 bool ModuleScript::Init(JSON* config)
 {
+	PlayerPrefs::Load();
 	SetDllDirectory(SCRIPTS);
 	CheckScripts();
 	//LoadFromMemory(IDR_DLL1);
 	return true;
 }
 
+bool ModuleScript::CleanUp()
+{
+	PlayerPrefs::Save(); //Saves to Disk
+	PlayerPrefs::DeleteAll(); //Deletes All memory allocated
+	return true;
+}
+
 update_status ModuleScript::Update(float dt)
 {
-	BROFILER_CATEGORY("Scripts Update", Profiler::Color::AliceBlue);
 	if (dllRemoveList.size() > 0)
 	{
 		for (std::string name : dllRemoveList)

@@ -11,6 +11,7 @@
 #define ASSETS "Assets/"
 #define LIBRARY "Library/"
 #define RESOURCES "Resources/"
+#define PERSISTENCE "Persistence/"
 
 // Resources
 #define IMPORTED_RESOURCES RESOURCES "Imported/"

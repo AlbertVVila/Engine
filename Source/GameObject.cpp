@@ -53,8 +53,6 @@
 #include "GL/glew.h"
 #include "imgui.h"
 
-#include "Brofiler.h"
-
 #define MAX_NAME 128
 #define IMGUI_RIGHT_MOUSE_BUTTON 1
 
@@ -250,22 +248,22 @@ void GameObject::DrawProperties()
 		if (children.size() > 1)
 		{
 			ImGui::NewLine();
-			if (ImGui::Button("Make childs with mesh static"))
+			if (ImGui::Button("Make childs static"))
 			{
 				SetStaticAllChildsWithMesh();
 				App->spacePartitioning->kDTree.Calculate();
 			}
-			if (ImGui::Button("Make childs with mesh navigable"))
+			if (ImGui::Button("Make childs navigable"))
 			{
 				SetNavigableAllChildsWithMesh();
 				App->spacePartitioning->kDTree.Calculate();
 			}
-			if (ImGui::Button("Make childs with mesh obstacles"))
+			if (ImGui::Button("Make childs obstacles"))
 			{
 				SetObstacleAllChildsWithMesh();
 				App->spacePartitioning->kDTree.Calculate();
 			}
-			if (ImGui::Button("Add all navigable childs to the navMesh"))
+			if (ImGui::Button("Add childs to navMesh"))
 			{
 				AddAllNavigableChildsToNavMesh();
 			}
@@ -274,7 +272,7 @@ void GameObject::DrawProperties()
 		{
 			if (isStatic && GetComponentOld(ComponentType::Renderer) != nullptr)
 			{
-				makeObjectWithMeshStatic();
+				MakeObjectWithMeshStatic();
 			}
 			else if (!isStatic)
 			{
@@ -302,7 +300,6 @@ void GameObject::DrawProperties()
 
 void GameObject::Update()
 {
-	PROFILE;
 	if (!isActive()) return;
 
 	for (auto& component : components)
@@ -353,7 +350,7 @@ void GameObject::OnChangeActiveState(bool wasActive)
 			if (!wasActive)
 			{
 				if (App->time->gameState == GameState::RUN && component->type == ComponentType::Script 
-					&& ((Script*)component)->hasBeenAwoken)
+					&& !((Script*)component)->hasBeenAwoken)
 				{
 					Script* script = (Script*)component;
 					script->Awake();
@@ -1235,6 +1232,7 @@ void GameObject::UpdateTransforms(math::float4x4 parentGlobal)
 	PROFILE;
 	if (movedFlag)
 	{
+		particlesDirty = true;
 		for (const auto& child : children)
 		{
 			if (!child->isStatic)
@@ -1296,7 +1294,7 @@ void GameObject::UpdateTransforms(math::float4x4 parentGlobal)
 
 bool GameObject::CheckDelete()
 {
-	PROFILE;
+	//PROFILE;
 	if (deleteFlag) //Delete GO
 	{
 		CleanUp();
@@ -1329,9 +1327,8 @@ void GameObject::SetStaticAllChildsWithMesh()
 		{
 			if (!child->isStatic)
 			{
-				child->makeObjectWithMeshStatic();
+				child->MakeObjectWithMeshStatic();
 				child->isStatic = true;
-				App->spacePartitioning->kDTree.Calculate();
 			}
 		}
 		child->SetStaticAllChildsWithMesh();
@@ -1345,9 +1342,8 @@ void GameObject::SetNavigableAllChildsWithMesh()
 		{
 			if (!child->isStatic)
 			{
-				child->makeObjectWithMeshStatic();
+				child->MakeObjectWithMeshStatic();
 				child->isStatic = true;
-				App->spacePartitioning->kDTree.Calculate();
 			}
 			child->navigable = true;
 			
@@ -1363,7 +1359,7 @@ void GameObject::SetObstacleAllChildsWithMesh()
 		{
 			if (!child->isStatic)
 			{
-				child->makeObjectWithMeshStatic();
+				child->MakeObjectWithMeshStatic();
 				child->isStatic = true;
 				
 			}
@@ -1381,17 +1377,17 @@ void GameObject::AddAllNavigableChildsToNavMesh()
 	{
 		if (child->isVolumetric && child->isStatic &&child->navigable)
 		{
-			App->navigation->addNavigableMeshFromObject(child);
+			App->navigation->AddNavigableMeshFromObject(child);
 		}
 		child->AddAllNavigableChildsToNavMesh();
 	}
 }
 
-void GameObject::makeObjectWithMeshStatic()
+void GameObject::MakeObjectWithMeshStatic()
 {
 	SetStaticAncestors();
-	App->scene->dynamicGOs.erase(this);
-	App->scene->staticGOs.insert(this);
+	App->scene->DeleteFromSpacePartition(this);
+	App->scene->AddToSpacePartition(this);
 	assert(!(hasLight && isVolumetric)); //Impossible combination
 	if (hasLight && treeNode != nullptr)
 	{

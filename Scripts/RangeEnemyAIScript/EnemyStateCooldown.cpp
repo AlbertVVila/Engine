@@ -24,7 +24,7 @@ void EnemyStateCooldown::Update()
 		float distanceToPlayer = enemy->enemyController->GetDistanceToPlayer2D();
 		if (distanceToPlayer > enemy->maxAttackDistance || distanceToPlayer < enemy->minAttackDistance)
 		{
-			// Player in range, change to attack
+			// Get in position to attack
 			enemy->currentState = (EnemyState*)enemy->getInPosition;
 		}
 		else if (distanceToPlayer > enemy->disengageDistance)
@@ -34,6 +34,7 @@ void EnemyStateCooldown::Update()
 		}
 		else if(!enemy->projectile->isActive())
 		{
+			// Player in range and projectile is available, change to attack
 			enemy->currentState = (EnemyState*)enemy->attack;
 			auxTimer = 0.0f;
 		}

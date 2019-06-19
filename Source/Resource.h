@@ -59,6 +59,7 @@ public:
 	virtual void SaveMetafile(const char* file) const;
 	virtual void LoadConfigFromMeta() {};
 	virtual bool LoadInMemory() {return true;};
+	virtual bool ReloadInMemory();
 	virtual void DeleteFromMemory() { loaded = 0; };
 
 	// File in asset specific
@@ -66,6 +67,7 @@ public:
 	virtual void Delete();
 
 	virtual void DrawImportConfiguration();
+	virtual void DrawLoadSettings();
 
 protected:
 	unsigned UID = 0u;

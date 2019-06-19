@@ -18,9 +18,8 @@
 #include "GL/glew.h"
 #include <algorithm>
 #include "ImGUICurveUtils.h"
-#include "imgui_color_gradient.h"
-
 #include "Brofiler.h"
+#include "imgui_color_gradient.h"
 
 ModuleParticles::~ModuleParticles()
 {
@@ -141,7 +140,7 @@ bool ModuleParticles::Start()
 
 void ModuleParticles::Render(float dt, const ComponentCamera* camera) 
 {
-	PROFILE;
+	BROFILER_CATEGORY("Particles Render", Profiler::Color::AliceBlue);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	particleSystems.sort(
@@ -151,9 +150,12 @@ void ModuleParticles::Render(float dt, const ComponentCamera* camera)
 		});
 	for (ComponentParticles* cp : particleSystems)
 	{
-		cp->Update(dt, camera->frustum->pos);
+		if (camera->frustum->Contains(cp->gameobject->transform->GetGlobalPosition()))
+		{
+			cp->Update(dt, camera->frustum->pos);
 
-		DrawParticleSystem(cp, camera);
+			DrawParticleSystem(cp, camera);
+		}
 	}
 
 	glDisable(GL_CULL_FACE);
@@ -276,6 +278,7 @@ void ModuleParticles::Reset()
 
 void ModuleParticles::DrawParticleSystem(ComponentParticles* cp, const ComponentCamera* camera) const
 {
+	PROFILE
 	if (cp->texture == nullptr || (!cp->Playing && !cp->ConstantPlaying))
 	{
 		return;
@@ -283,7 +286,7 @@ void ModuleParticles::DrawParticleSystem(ComponentParticles* cp, const Component
 	glUseProgram(shader->id[0]);
 	glBindVertexArray(billBoardVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, billBoardInstanceVBO);
-	float* matrices = (float*)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
+	float* matrices = (float*)glMapBufferRange(GL_ARRAY_BUFFER, 0, cp->particles.size() * sizeof(float) * 20, GL_MAP_WRITE_BIT);
 	if (cp->billboarded)
 	{
 		cp->particles.sort(
@@ -340,6 +343,7 @@ void ModuleParticles::DrawParticleSystem(ComponentParticles* cp, const Component
 	glUniform1i(glGetUniformLocation(shader->id[0], "f2Xpos"), cp->f2Xpos);
 	glUniform1i(glGetUniformLocation(shader->id[0], "f2Ypos"), cp->f2Ypos);
 	glUniform1f(glGetUniformLocation(shader->id[0], "mixAmount"), cp->frameMix);
+	glUniform1f(glGetUniformLocation(shader->id[0], "intensity"), cp->intensity);
 	//glUniform3fv(glGetUniformLocation(shader->id[0],"particleColor"), 1, (GLfloat*)&cp->particleColor);	
 
 	glDrawArraysInstanced(GL_TRIANGLES,0, 6, cp->particles.size());
