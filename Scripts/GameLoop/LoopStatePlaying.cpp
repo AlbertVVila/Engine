@@ -6,6 +6,7 @@
 #include "ComponentButton.h"
 #include "ComponentTransform2D.h"
 
+#include "ModuleInput.h"
 #include "Math/float2.h"
 #include "PlayerMovement.h"
 
@@ -20,8 +21,34 @@ LoopStatePlaying::~LoopStatePlaying()
 {
 }
 
+void LoopStatePlaying::HandleHotkeys()
+{
+	if (gLoop->App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	{
+		gLoop->closePlayerMenuButton->isKeyUp = true;
+	}
+	else if (gLoop->App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
+	{
+		gLoop->inventoryButton->isKeyDown = true;
+	}
+	else if (gLoop->App->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN)
+	{
+		gLoop->missionsButton->isKeyDown = true;
+	}
+	else if (gLoop->App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN)
+	{
+		gLoop->skillsButton->isKeyDown = true;
+	}
+	else if (gLoop->App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
+	{
+		//This will open the map
+	}
+}
+
 void LoopStatePlaying::Update()
 {
+	HandleHotkeys();
+
 	if (gLoop->hudBackToMenuButton->IsPressed())
 	{
 		gLoop->currentLoopState = (LoopState*)gLoop->loadingState;

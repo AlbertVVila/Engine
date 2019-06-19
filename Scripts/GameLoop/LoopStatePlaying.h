@@ -12,6 +12,8 @@ public:
 	LoopStatePlaying(GameLoop* GL);
 	virtual ~LoopStatePlaying();
 
+	void HandleHotkeys();
+
 	void Update() override;
 };
 
