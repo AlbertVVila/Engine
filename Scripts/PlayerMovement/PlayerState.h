@@ -29,6 +29,7 @@ public:
 	std::string trigger;
 	float timer = 0.f;
 	bool playerWalking = false;
+	float manaCost = 0.f;
 
 protected:
 	math::float3 boxSize = math::float3::zero;
