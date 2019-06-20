@@ -17,7 +17,6 @@ public:
 
 protected:
 	void UseSkill() override;
-	void Reset() override;
 
 private:
 	void CheckInput() override;

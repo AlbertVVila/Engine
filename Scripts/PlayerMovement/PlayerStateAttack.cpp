@@ -29,7 +29,7 @@ void PlayerStateAttack::Enter()
 
 void PlayerStateAttack::Update()
 {
-	// Is using skill or basic attack?
+	// Call current skill
 	if (player->currentSkill != nullptr)
 	{
 		player->currentSkill->Update();

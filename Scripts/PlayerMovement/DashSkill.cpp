@@ -88,11 +88,6 @@ void DashSkill::Reset()
 {
 	MeleeSkill::Reset();
 
-	if (attackBoxTrigger != nullptr)
-	{
-		attackBoxTrigger->Enable(false);
-	}
-
 	if (dashFX != nullptr)
 	{
 		dashFX->SetActive(false);
@@ -101,6 +96,4 @@ void DashSkill::Reset()
 	{
 		dashMesh->SetActive(false);
 	}
-
-	// Play animation
 }

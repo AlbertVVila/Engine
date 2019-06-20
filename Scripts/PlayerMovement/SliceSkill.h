@@ -13,13 +13,8 @@ public:
 	void Start() override;
 	//void Update() override;
 
-	void Expose(ImGuiContext* context) override;
-	void Serialize(JSON_value* json) const override;
-	void DeSerialize(JSON_value* json) override;
-
 protected:
 	void UseSkill() override;
-	void Reset() override;
 };
 
 #endif

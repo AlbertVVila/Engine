@@ -31,4 +31,9 @@ void MeleeSkill::DeSerialize(JSON_value* json)
 void MeleeSkill::Reset()
 {
 	BasicSkill::Reset();
+
+	if (attackBoxTrigger != nullptr)
+	{
+		attackBoxTrigger->Enable(false);
+	}
 }

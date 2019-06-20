@@ -43,18 +43,6 @@ void ChainAttackSkill::UseSkill()
 	CheckInput();
 }
 
-void ChainAttackSkill::Reset()
-{
-	MeleeSkill::Reset();
-
-	if (attackBoxTrigger != nullptr)
-	{
-		attackBoxTrigger->Enable(false);
-	}
-
-	// Play animation
-}
-
 void ChainAttackSkill::CheckInput()
 {
 	if (timer > player->currentState->duration * minTime)
