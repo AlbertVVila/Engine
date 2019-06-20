@@ -4,6 +4,7 @@
 #include "PlayerState.h"
 
 class PlayerMovement;
+class BasicSkill;
 
 class PlayerStateAttack :
 	public PlayerState
@@ -14,6 +15,9 @@ public:
 	virtual ~PlayerStateAttack();
 
 	void Update() override;
+
+	void UseSkill();
+	void CheckSkills(BasicSkill* previous, BasicSkill* current);
 };
 
 #endif __PLAYERSTATEATTACK_H_

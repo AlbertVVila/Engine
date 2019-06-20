@@ -35,9 +35,10 @@ class ComponentImage;
 class JSON_value;
 struct ImGuiContext;
 class PlayerState;
-class PlayerStateFirstAttack;
+class PlayerStateAttack;
+/*class PlayerStateFirstAttack;
 class PlayerStateSecondAttack;
-class PlayerStateThirdAttack;
+class PlayerStateThirdAttack;*/
 class PlayerStateIdle;
 class PlayerStateDash;
 class PlayerStateDeath;
@@ -130,9 +131,10 @@ public:
 	bool isPlayerDead = false;
 	float3 currentPosition = float3(0, 0, 0); //TODO ZERO
 
-	PlayerStateFirstAttack* firstAttack = nullptr;
+	PlayerStateAttack* attack = nullptr;
+	/*PlayerStateFirstAttack* firstAttack = nullptr;
 	PlayerStateSecondAttack* secondAttack = nullptr;
-	PlayerStateThirdAttack* thirdAttack = nullptr;
+	PlayerStateThirdAttack* thirdAttack = nullptr;*/
 	PlayerStateIdle* idle = nullptr;
 	PlayerStateDash* dash = nullptr;
 	PlayerStateDeath* death = nullptr;

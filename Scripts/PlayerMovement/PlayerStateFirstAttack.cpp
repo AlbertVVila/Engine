@@ -26,63 +26,35 @@ void PlayerStateFirstAttack::Enter()
 
 void PlayerStateFirstAttack::CheckInput()
 {
-	if (player->currentSkill != nullptr)
+	if (timer > duration * minTime)
 	{
-		UseSkill();
-	}
-	else
-	{
-		if (timer > duration * minTime)
+		if (player->IsAtacking())
 		{
-			if (player->IsAtacking())
-			{
-				player->currentState = (PlayerState*)player->secondAttack;
-				return;
-			}
-		}
-
-		if (timer > duration * maxTime) //CAN SWITCH?
-		{
-
-			if (player->IsUsingFirstSkill())
-			{
-				//player->currentState = (PlayerState*)player->dash;
-				player->currentState = (PlayerState*)player->firstAttack;
-				player->currentSkill = (BasicSkill*)player->playerSkills[0];
-			}
-			else if (player->IsUsingSecondSkill())
-			{
-				player->currentState = (PlayerState*)player->uppercut;
-			}
-			else if (player->IsMoving())
-			{
-				player->currentState = (PlayerState*)player->walk;
-			}
-			else
-			{
-				player->currentState = (PlayerState*)player->idle;
-			}
+			player->currentState = (PlayerState*)player->secondAttack;
+			return;
 		}
 	}
-}
 
-void PlayerStateFirstAttack::UseSkill()
-{
-	BasicSkill* previous = player->currentSkill;
-
-	player->currentSkill->Update();
-
-	CheckSkills(previous, player->currentSkill);
-}
-
-void PlayerStateFirstAttack::CheckSkills(BasicSkill* previous, BasicSkill* current)
-{
-	if (previous != current)
+	if (timer > duration * maxTime) //CAN SWITCH?
 	{
-		if (previous != nullptr)
-			previous->Exit();
 
-		if(current != nullptr)
-			current->Start();
+		if (player->IsUsingFirstSkill())
+		{
+			//player->currentState = (PlayerState*)player->dash;
+			player->currentState = (PlayerState*)player->firstAttack;
+			player->currentSkill = (BasicSkill*)player->playerSkills[0];
+		}
+		else if (player->IsUsingSecondSkill())
+		{
+			player->currentState = (PlayerState*)player->uppercut;
+		}
+		else if (player->IsMoving())
+		{
+			player->currentState = (PlayerState*)player->walk;
+		}
+		else
+		{
+			player->currentState = (PlayerState*)player->idle;
+		}
 	}
 }

@@ -3,8 +3,6 @@
 
 #include "PlayerStateAttack.h"
 
-class BasicSkill;
-
 class PlayerStateFirstAttack :
 	public PlayerStateAttack
 {
@@ -15,9 +13,6 @@ public:
 
 	void Enter() override;
 	void CheckInput() override;
-
-	void UseSkill();
-	void CheckSkills(BasicSkill* previous, BasicSkill* current);
 
 };
 
