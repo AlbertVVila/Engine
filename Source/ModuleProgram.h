@@ -5,7 +5,7 @@
 #include <string>
 #include <map>
 #define DEFAULTPROGRAM "Default"
-#define PBR_VARIATIONS 5
+#define PBR_VARIATIONS 6
 #define SHADOW_VARIATIONS 2
 #define POSTPRO_VARIATIONS 4
 #define SKYBOX_VARIATIONS 2

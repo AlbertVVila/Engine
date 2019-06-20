@@ -124,7 +124,7 @@ void main()
 #else	
 	position = vertex_position;
 	float dist = sqrt(pow(position.x,2) + pow(position.y,2));
-	float offset = sin((dist / decay) - time * 5) * waterAmplitude;
+	float offset = sin((dist / decay) - time) * (waterAmplitude / (pow(dist,2)));
 	position.z += offset;
 	position = (model*vec4(position, 1.0)).xyz;
 	gl_Position = proj*view*vec4(position, 1.0);	

@@ -422,10 +422,10 @@ void ModuleScene::DrawGOGame(const GameObject& go)
 			{
 				variation |= (unsigned)ModuleProgram::PBR_Variations::SHADOWS_ENABLED;
 			}
-		}
-		if (crenderer->dissolve)
-		{
-			variation |= (unsigned)ModuleProgram::PBR_Variations::DISSOLVE;
+			if (crenderer->dissolve)
+			{
+				variation |= (unsigned)ModuleProgram::PBR_Variations::DISSOLVE;
+			}
 		}
 	}
 	
@@ -503,10 +503,10 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 			{
 				variation |= (unsigned)ModuleProgram::PBR_Variations::EDITOR_RENDER;
 			}
-		}
-		if (crenderer->dissolve)
-		{
-			variation |= (unsigned)ModuleProgram::PBR_Variations::DISSOLVE;
+			if (crenderer->dissolve)
+			{
+				variation |= (unsigned)ModuleProgram::PBR_Variations::DISSOLVE;
+			}
 		}
 	}
 
