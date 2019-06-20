@@ -4,12 +4,13 @@
 #include "ComponentBoxTrigger.h"
 
 #include "PlayerMovement.h"
+#include "PlayerStateAttack.h"
 
 #include "imgui.h"
 #include "JSON.h"
 
-SliceSkill::SliceSkill(PlayerMovement* PM, ComponentBoxTrigger* attackBox) :
-	MeleeSkill(PM, attackBox)
+SliceSkill::SliceSkill(PlayerMovement* PM, const char* trigger, ComponentBoxTrigger* attackBox) :
+	MeleeSkill(PM, trigger, attackBox)
 {
 }
 
@@ -19,6 +20,8 @@ SliceSkill::~SliceSkill()
 
 void SliceSkill::Start()
 {
+	BasicSkill::Start();
+	player->attack->trigger = "Slice";
 	boxSize = math::float3(150.f, 100.f, 100.f);
 	attackBoxTrigger->Enable(true);
 	attackBoxTrigger->SetBoxSize(boxSize);

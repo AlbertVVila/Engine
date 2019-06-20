@@ -4,8 +4,8 @@
 
 #include "PlayerMovement.h"
 
-MeleeSkill::MeleeSkill(PlayerMovement* PM, ComponentBoxTrigger* attackBox) :
-	BasicSkill(PM), attackBoxTrigger(attackBox)
+MeleeSkill::MeleeSkill(PlayerMovement* PM, const char* trigger, ComponentBoxTrigger* attackBox) :
+	BasicSkill(PM, trigger), attackBoxTrigger(attackBox)
 {
 }
 

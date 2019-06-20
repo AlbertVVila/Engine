@@ -14,7 +14,7 @@ class MeleeSkill :
 	public BasicSkill
 {
 public:
-	MeleeSkill(PlayerMovement* PM, ComponentBoxTrigger* attackBox);
+	MeleeSkill(PlayerMovement* PM, const char* trigger, ComponentBoxTrigger* attackBox);
 	virtual ~MeleeSkill();
 
 	void Expose(ImGuiContext* context) override;

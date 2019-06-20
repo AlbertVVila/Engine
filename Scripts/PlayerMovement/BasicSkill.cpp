@@ -3,13 +3,17 @@
 #include "Application.h"
 #include "ModuleTime.h"
 
+#include "ComponentAnimation.h"
+#include "ResourceStateMachine.h"
+
+#include "PlayerState.h"
 #include "PlayerMovement.h"
 
 #include <assert.h>
 #include "JSON.h"
 
-BasicSkill::BasicSkill(PlayerMovement* PM) :
-	player(PM)
+BasicSkill::BasicSkill(PlayerMovement* PM, const char* trigger) :
+	player(PM), animTrigger(trigger)
 {
 }
 
@@ -23,6 +27,12 @@ void BasicSkill::Start()
 	{
 		LOG("Warning: Player GO pointer missing");
 	}
+	/*player->currentState->duration = player->anim->GetDurationFromClip();
+
+	if (player->anim != nullptr)
+	{
+		player->anim->SendTriggerToStateMachine(animTrigger.c_str());
+	}*/
 }
 
 void BasicSkill::Update()

@@ -3,11 +3,16 @@
 #include "GameObject.h"
 #include "ComponentTransform.h"
 #include "ComponentBoxTrigger.h"
+#include "ComponentAnimation.h"
+
+#include "PlayerStateAttack.h"
+
+#include "ResourceStateMachine.h"
 
 #include "PlayerMovement.h"
 
-ChainAttackSkill::ChainAttackSkill(PlayerMovement* PM, ComponentBoxTrigger* attackBox) :
-	MeleeSkill(PM, attackBox)
+ChainAttackSkill::ChainAttackSkill(PlayerMovement* PM, const char* trigger, ComponentBoxTrigger* attackBox) :
+	MeleeSkill(PM, trigger, attackBox)
 {
 	minTime = 0.40f;
 	maxTime = 0.65f;
@@ -19,6 +24,8 @@ ChainAttackSkill::~ChainAttackSkill()
 
 void ChainAttackSkill::Start()
 {
+	BasicSkill::Start();
+	player->attack->trigger = "Chain1";
 	player->gameobject->transform->LookAtMouse();
 	boxSize = math::float3(150.f, 100.f, 100.f);
 	attackBoxTrigger->Enable(true);
@@ -64,6 +71,15 @@ void ChainAttackSkill::CheckInput()
 				Reset();
 				player->currentSkill = player->chain;
 				Start();
+				// Play next attack animation
+				player->attack->trigger = "Chain";
+				player->attack->trigger += std::to_string((unsigned)attack);
+				player->currentSkill->duration = player->anim->GetDurationFromClip();
+
+				if (player->anim != nullptr)
+				{
+					player->anim->SendTriggerToStateMachine(player->currentState->trigger.c_str());
+				}
 			}
 			else
 				attack = attackNumber::FIRST;

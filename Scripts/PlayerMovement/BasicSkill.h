@@ -2,6 +2,7 @@
 #define  __BasicSkill_h__
 
 #include "imgui.h"
+#include <string>
 
 class PlayerMovement;
 class JSON_value;
@@ -9,7 +10,7 @@ class JSON_value;
 class BasicSkill
 {
 public:
-	BasicSkill(PlayerMovement* PM);
+	BasicSkill(PlayerMovement* PM, const char* trigger);
 	virtual ~BasicSkill();
 
 	virtual void Start();
@@ -33,6 +34,7 @@ protected:
 
 protected:
 	PlayerMovement* player = nullptr;
+	std::string animTrigger;
 };
 
 #endif __BasicSkill_h__

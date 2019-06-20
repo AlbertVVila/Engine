@@ -7,7 +7,7 @@ class SliceSkill :
 	public MeleeSkill
 {
 public:
-	SliceSkill(PlayerMovement* PM, ComponentBoxTrigger* attackBox);
+	SliceSkill(PlayerMovement* PM, const char* trigger, ComponentBoxTrigger* attackBox);
 	~SliceSkill();
 
 	void Start() override;

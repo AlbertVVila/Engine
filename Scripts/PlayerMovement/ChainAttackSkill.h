@@ -9,7 +9,7 @@ class ChainAttackSkill :
 	public MeleeSkill
 {
 public:
-	ChainAttackSkill(PlayerMovement* PM, ComponentBoxTrigger* attackBox);
+	ChainAttackSkill(PlayerMovement* PM, const char* trigger, ComponentBoxTrigger* attackBox);
 	~ChainAttackSkill();
 
 	void Start() override;
