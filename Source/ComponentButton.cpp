@@ -126,6 +126,8 @@ void Button::Update()
 	if (screenX > buttonMin.x && screenX < buttonMax.x && screenY > buttonMin.y && screenY < buttonMax.y)
 	{
 		isHovered = true;
+		App->ui->uiHovered = true;
+
 		buttonImage->enabled = false;
 		highlightedImage->enabled = true;
 		pressedImage->enabled = false;

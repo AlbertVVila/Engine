@@ -144,7 +144,10 @@ void ComponentImage::Update()
 	math::float2 buttonMax = float2(buttonX + size.x *.5f, -buttonY + size.y *.5f);
 
 	if (screenX > buttonMin.x && screenX < buttonMax.x && screenY > buttonMin.y && screenY < buttonMax.y)
+	{
 		isHovered = true;
+		App->ui->uiHovered = true;
+	}
 	else
 		isHovered = false;
 

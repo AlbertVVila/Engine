@@ -21,6 +21,7 @@ public:
 	virtual ~ModuleUI();
 
 	bool Init(JSON* json) override;
+	update_status PreUpdate() override { uiHovered = false; return update_status::UPDATE_CONTINUE; }
 	update_status Update(float dt) override;
 	update_status PostUpdate() override;
 	bool CleanUp() override;
@@ -49,6 +50,9 @@ private:
 	unsigned EBO = 0;
 
 	float mask[MASK_DIVISIONS];
+
+public:
+	bool uiHovered = false;
 };
 
 #endif // __ModuleUI_H__
