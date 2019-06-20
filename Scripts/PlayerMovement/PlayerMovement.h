@@ -45,6 +45,7 @@ class PlayerStateUppercut;
 class PlayerStateWalk;
 class DamageController;
 class DamageFeedbackUI;
+class ComponentAudioSource;
 class PlayerStateBombDrop;
 
 struct PlayerMovement_API PlayerStats
@@ -163,6 +164,9 @@ public:
 	math::float3 hpHitBoxSize = math::float3::zero;
 
 	bool canInteract = true;
+
+	//Audio
+	ComponentAudioSource* gotHitAudio = nullptr;
 
 private:
 	std::vector<PlayerState*> playerStates;	
