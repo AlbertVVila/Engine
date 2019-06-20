@@ -25,7 +25,6 @@ ChainAttackSkill::~ChainAttackSkill()
 void ChainAttackSkill::Start()
 {
 	BasicSkill::Start();
-	player->attack->trigger = "Chain1";
 	player->gameobject->transform->LookAtMouse();
 	boxSize = math::float3(150.f, 100.f, 100.f);
 	attackBoxTrigger->Enable(true);

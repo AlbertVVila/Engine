@@ -21,7 +21,6 @@ SliceSkill::~SliceSkill()
 void SliceSkill::Start()
 {
 	BasicSkill::Start();
-	player->attack->trigger = "Slice";
 	boxSize = math::float3(150.f, 100.f, 100.f);
 	attackBoxTrigger->Enable(true);
 	attackBoxTrigger->SetBoxSize(boxSize);

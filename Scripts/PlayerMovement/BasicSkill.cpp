@@ -8,6 +8,7 @@
 
 #include "PlayerState.h"
 #include "PlayerMovement.h"
+#include "PlayerStateAttack.h"
 
 #include <assert.h>
 #include "JSON.h"
@@ -27,12 +28,7 @@ void BasicSkill::Start()
 	{
 		LOG("Warning: Player GO pointer missing");
 	}
-	/*player->currentState->duration = player->anim->GetDurationFromClip();
-
-	if (player->anim != nullptr)
-	{
-		player->anim->SendTriggerToStateMachine(animTrigger.c_str());
-	}*/
+	player->attack->trigger = animTrigger;
 }
 
 void BasicSkill::Update()

@@ -23,7 +23,6 @@ DashSkill::~DashSkill()
 void DashSkill::Start()
 {
 	BasicSkill::Start();
-	player->attack->trigger = "Dash";
 
 	if (player->App->navigation->NavigateTowardsCursor(player->gameobject->transform->position, path,
 		math::float3(player->OutOfMeshCorrectionXZ, player->OutOfMeshCorrectionY, player->OutOfMeshCorrectionXZ), intersectionPoint))
