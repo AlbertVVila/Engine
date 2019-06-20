@@ -20,6 +20,8 @@ SliceSkill::~SliceSkill()
 void SliceSkill::Start()
 {
 	boxSize = math::float3(150.f, 100.f, 100.f);
+	attackBoxTrigger->Enable(true);
+	attackBoxTrigger->SetBoxSize(boxSize);
 }
 
 void SliceSkill::Expose(ImGuiContext* context)
@@ -44,8 +46,6 @@ void SliceSkill::UseSkill()
 	if (attackBoxTrigger != nullptr)
 	{
 		//Create the hitbox
-		attackBoxTrigger->Enable(true);
-		attackBoxTrigger->SetBoxSize(boxSize);
 		boxPosition = player->transform->up *100.f; //this front stuff isnt working well when rotating the chicken
 		attackBoxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z + 100.f);
 		hitboxCreated = true;

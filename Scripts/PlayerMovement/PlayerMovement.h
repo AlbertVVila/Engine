@@ -47,6 +47,7 @@ class PlayerStateWalk;
 class DamageController;
 class BasicSkill;
 class SliceSkill;
+class ChainAttackSkill;
 class DamageFeedbackUI;
 
 enum class SkillKey{RC, ONE, TWO, THREE, FOUR, Q, W, E, R, NONE};
@@ -173,9 +174,10 @@ public:
 	bool canInteract = true;
 
 	// Skills
-	std::vector<BasicSkill*> playerSkills;
+	std::vector<BasicSkill*> playerSkills;	// Vector with all skill slots (Right-Click, Q, W, E, R)
 	BasicSkill* currentSkill = nullptr;
 	SliceSkill* slice = nullptr;
+	ChainAttackSkill* chain = nullptr;
 
 private:
 	std::vector<PlayerState*> playerStates;	
