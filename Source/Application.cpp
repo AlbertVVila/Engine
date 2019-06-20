@@ -26,7 +26,7 @@
 #include "Brofiler.h"
 
 using namespace std;
-#define MAX_REFRESH 3
+#define MAX_REFRESH 6
 
 Application::Application()
 {

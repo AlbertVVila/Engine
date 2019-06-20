@@ -21,7 +21,6 @@
 #include "../../Math/MathNamespace.h"
 
 #include "../../Math/MathTypes.h"
-#include "MathGeoLibFwd.h"
 
 /** @brief A linear congruential random number generator.
 
@@ -61,7 +60,7 @@
 
 MATH_BEGIN_NAMESPACE
 
-class MATH_API LCG
+class LCG
 {
 public:
 	/// Initializes the generator from the current system clock.

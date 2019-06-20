@@ -1,9 +1,6 @@
 #include "ModuleTime.h"
-#include "Math/MathFunc.h"
 
 #define MAX_FRAME_MS 0.04F
-#define NORMAL_SPEED 1.0f
-#define FREEZE 0.0f
 
 ModuleTime::ModuleTime()
 {
@@ -31,23 +28,8 @@ void ModuleTime::UpdateTime()
 	realTime += realDeltaTime;
 
 	++totalFrames;
-	gameDeltaTime = realDeltaTime;
-
-	if (temporaryFreeze)
-	{
-		freezeTimer += realDeltaTime;
-		if (freezeTimer >= freezeDuration)
-		{
-			UnFreezeGame();
-		}
-		else
-		{
-			HandleFreeze();
-		}
-	}
-
-	//Gamedeltatime is partitioned if it is too high
-	fullGameDeltaTime = gameDeltaTime * gameTimeScale;
+	gameDeltaTime = frameTimer.ReadSeconds();
+	fullGameDeltaTime = gameDeltaTime;
 
 	gameTime += gameDeltaTime * gameTimeScale;
 	
@@ -61,7 +43,6 @@ void ModuleTime::UpdateTime()
 		fpsTimer.Reset();
 	}
 
-	gameDeltaTime *= gameTimeScale;
 	if (gameDeltaTime > MAX_FRAME_MS)
 	{
 		PartitionTime();
@@ -70,6 +51,7 @@ void ModuleTime::UpdateTime()
 	{
 		isTimePartitioned = false;
 	}
+	gameDeltaTime *= gameTimeScale;
 }
 
 void ModuleTime::ResetGameDetaTime()
@@ -142,43 +124,4 @@ void ModuleTime::StopGameClock()
 void ModuleTime::Step() 
 {
 	nextFrame = true;
-}
-
-void ModuleTime::FreezeGame(float duration, float fadeInTime, float fadeOutTime, bool linealFade)
-{
-	temporaryFreeze = true;
-	freezeDuration = duration;
-	freezeFadeIn = fadeInTime;
-	freezeFadeOut = fadeOutTime;
-	this->linealFade = linealFade;
-	freezeTimer = 0.0f;
-	gameTimeScale = FREEZE;
-}
-
-void ModuleTime::UnFreezeGame()
-{
-	temporaryFreeze = false;
-	gameTimeScale = NORMAL_SPEED;
-}
-
-void ModuleTime::HandleFreeze()
-{
-	if (freezeTimer < freezeFadeIn * freezeDuration)
-	{
-		gameTimeScale = Lerp(NORMAL_SPEED, FREEZE, freezeTimer / (freezeFadeIn * freezeDuration));
-		if (!linealFade)
-		{
-			gameTimeScale = SmoothStep(FREEZE, NORMAL_SPEED, gameTimeScale);
-		}
-	}
-	else if (freezeTimer >= freezeFadeOut * freezeDuration)
-	{
-		float fadeOutTime = (1 - freezeFadeOut) * freezeDuration;
-		gameTimeScale = Lerp(FREEZE, NORMAL_SPEED, 
-			(freezeTimer - freezeFadeOut * freezeDuration) / fadeOutTime);
-		if (!linealFade)
-		{
-			gameTimeScale = SmoothStep(FREEZE, NORMAL_SPEED, gameTimeScale);
-		}
-	}
 }

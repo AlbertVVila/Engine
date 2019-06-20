@@ -6,7 +6,6 @@
 class ComponentImage;
 class Text;
 class Transform2D;
-class ResourceTexture;
 
 class Button :	public Component
 {
@@ -30,9 +29,6 @@ public:
 
 	ENGINE_API inline bool KeyUp()	 { return isKeyUp; }
 	ENGINE_API inline bool KeyDown() { return isKeyDown; }
-
-	ENGINE_API void UpdateImageByName(std::string name);
-	ENGINE_API void UpdateImageByResource(ResourceTexture* name);
 
 	ComponentImage* buttonImage = nullptr;
 	ComponentImage* highlightedImage = nullptr;
