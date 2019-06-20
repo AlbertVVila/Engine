@@ -36,11 +36,8 @@ class JSON_value;
 struct ImGuiContext;
 class PlayerState;
 class PlayerStateAttack;
-/*class PlayerStateFirstAttack;
-class PlayerStateSecondAttack;
-class PlayerStateThirdAttack;*/
 class PlayerStateIdle;
-class PlayerStateDash;
+//class PlayerStateDash;
 class PlayerStateDeath;
 class PlayerStateUppercut;
 class PlayerStateWalk;
@@ -48,6 +45,7 @@ class DamageController;
 class BasicSkill;
 class SliceSkill;
 class ChainAttackSkill;
+class DashSkill;
 class DamageFeedbackUI;
 
 enum class SkillKey{RC, ONE, TWO, THREE, FOUR, Q, W, E, R, NONE};
@@ -140,7 +138,7 @@ public:
 	PlayerStateSecondAttack* secondAttack = nullptr;
 	PlayerStateThirdAttack* thirdAttack = nullptr;*/
 	PlayerStateIdle* idle = nullptr;
-	PlayerStateDash* dash = nullptr;
+	//PlayerStateDash* dash = nullptr;
 	PlayerStateDeath* death = nullptr;
 	PlayerStateUppercut* uppercut = nullptr;
 	PlayerStateWalk* walk = nullptr;
@@ -176,8 +174,9 @@ public:
 	// Skills
 	std::vector<BasicSkill*> playerSkills;	// Vector with all skill slots (Right-Click, Q, W, E, R)
 	BasicSkill* currentSkill = nullptr;
-	SliceSkill* slice = nullptr;
 	ChainAttackSkill* chain = nullptr;
+	DashSkill* dash = nullptr;
+	SliceSkill* slice = nullptr;
 
 private:
 	std::vector<PlayerState*> playerStates;	

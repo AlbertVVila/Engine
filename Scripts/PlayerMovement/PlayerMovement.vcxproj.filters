@@ -42,15 +42,6 @@
     <ClInclude Include="PlayerStateWalk.h">
       <Filter>States</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerStateFirstAttack.h">
-      <Filter>States</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerStateSecondAttack.h">
-      <Filter>States</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerStateThirdAttack.h">
-      <Filter>States</Filter>
-    </ClInclude>
     <ClInclude Include="PlayerStateAttack.h">
       <Filter>States</Filter>
     </ClInclude>
@@ -64,6 +55,9 @@
       <Filter>Skills</Filter>
     </ClInclude>
     <ClInclude Include="ChainAttackSkill.h">
+      <Filter>Skills</Filter>
+    </ClInclude>
+    <ClInclude Include="DashSkill.h">
       <Filter>Skills</Filter>
     </ClInclude>
   </ItemGroup>
@@ -89,15 +83,6 @@
     <ClCompile Include="PlayerStateWalk.cpp">
       <Filter>States</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerStateFirstAttack.cpp">
-      <Filter>States</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerStateSecondAttack.cpp">
-      <Filter>States</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerStateThirdAttack.cpp">
-      <Filter>States</Filter>
-    </ClCompile>
     <ClCompile Include="PlayerStateAttack.cpp">
       <Filter>States</Filter>
     </ClCompile>
@@ -111,6 +96,9 @@
       <Filter>Skills</Filter>
     </ClCompile>
     <ClCompile Include="ChainAttackSkill.cpp">
+      <Filter>Skills</Filter>
+    </ClCompile>
+    <ClCompile Include="DashSkill.cpp">
       <Filter>Skills</Filter>
     </ClCompile>
   </ItemGroup>
