@@ -45,6 +45,7 @@ class PlayerStateUppercut;
 class PlayerStateWalk;
 class DamageController;
 class DamageFeedbackUI;
+class PlayerStateBombDrop;
 
 struct PlayerMovement_API PlayerStats
 {
@@ -133,6 +134,7 @@ public:
 	PlayerStateDeath* death = nullptr;
 	PlayerStateUppercut* uppercut = nullptr;
 	PlayerStateWalk* walk = nullptr;
+	PlayerStateBombDrop* bombDrop = nullptr;
 
 	float walkingSpeed = 300.0f;
 	float dashSpeed = 10.0f;
