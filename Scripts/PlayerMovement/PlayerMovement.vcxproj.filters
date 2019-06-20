@@ -33,9 +33,6 @@
     <ClInclude Include="PlayerStateDeath.h">
       <Filter>States</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerStateUppercut.h">
-      <Filter>States</Filter>
-    </ClInclude>
     <ClInclude Include="PlayerStateWalk.h">
       <Filter>States</Filter>
     </ClInclude>
@@ -69,9 +66,6 @@
       <Filter>States</Filter>
     </ClCompile>
     <ClCompile Include="PlayerStateDeath.cpp">
-      <Filter>States</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerStateUppercut.cpp">
       <Filter>States</Filter>
     </ClCompile>
     <ClCompile Include="PlayerStateWalk.cpp">

@@ -38,7 +38,6 @@ class PlayerState;
 class PlayerStateAttack;
 class PlayerStateIdle;
 class PlayerStateDeath;
-class PlayerStateUppercut;
 class PlayerStateWalk;
 class DamageController;
 class BasicSkill;
@@ -135,7 +134,6 @@ public:
 	PlayerStateAttack* attack = nullptr;
 	PlayerStateIdle* idle = nullptr;
 	PlayerStateDeath* death = nullptr;
-	PlayerStateUppercut* uppercut = nullptr;
 	PlayerStateWalk* walk = nullptr;
 
 	float walkingSpeed = 300.0f;
