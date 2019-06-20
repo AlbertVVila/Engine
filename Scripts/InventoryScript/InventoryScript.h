@@ -29,6 +29,7 @@ public:
 	void Update() override;
 
 	bool AddItem(Item item);
+	std::vector<Item> GetQuickItems();
 
 private:
 
