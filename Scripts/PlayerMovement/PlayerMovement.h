@@ -37,7 +37,6 @@ struct ImGuiContext;
 class PlayerState;
 class PlayerStateAttack;
 class PlayerStateIdle;
-//class PlayerStateDash;
 class PlayerStateDeath;
 class PlayerStateUppercut;
 class PlayerStateWalk;
@@ -134,11 +133,7 @@ public:
 	float3 currentPosition = float3(0, 0, 0); //TODO ZERO
 
 	PlayerStateAttack* attack = nullptr;
-	/*PlayerStateFirstAttack* firstAttack = nullptr;
-	PlayerStateSecondAttack* secondAttack = nullptr;
-	PlayerStateThirdAttack* thirdAttack = nullptr;*/
 	PlayerStateIdle* idle = nullptr;
-	//PlayerStateDash* dash = nullptr;
 	PlayerStateDeath* death = nullptr;
 	PlayerStateUppercut* uppercut = nullptr;
 	PlayerStateWalk* walk = nullptr;

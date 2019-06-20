@@ -324,7 +324,6 @@
     <ClCompile Include="PlayerMovement.cpp" />
     <ClCompile Include="PlayerState.cpp" />
     <ClCompile Include="PlayerStateAttack.cpp" />
-    <ClCompile Include="PlayerStateDash.cpp" />
     <ClCompile Include="PlayerStateDeath.cpp" />
     <ClCompile Include="PlayerStateIdle.cpp" />
     <ClCompile Include="PlayerStateUppercut.cpp" />
@@ -339,7 +338,6 @@
     <ClInclude Include="PlayerMovement.h" />
     <ClInclude Include="PlayerState.h" />
     <ClInclude Include="PlayerStateAttack.h" />
-    <ClInclude Include="PlayerStateDash.h" />
     <ClInclude Include="PlayerStateDeath.h" />
     <ClInclude Include="PlayerStateIdle.h" />
     <ClInclude Include="PlayerStateUppercut.h" />
