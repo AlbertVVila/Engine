@@ -20,7 +20,7 @@ protected:
 	void Reset() override;
 
 private:
-	void CheckInput();
+	void CheckInput() override;
 
 private:
 	attackNumber attack = attackNumber::FIRST;

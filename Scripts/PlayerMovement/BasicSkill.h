@@ -21,6 +21,8 @@ public:
 	virtual void Serialize(JSON_value* json) const;
 	virtual void DeSerialize(JSON_value* json);
 
+	virtual void CheckInput() {};
+
 protected:
 	virtual void UseSkill() {}
 	virtual void Reset();

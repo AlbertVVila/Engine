@@ -32,24 +32,6 @@ void PlayerStateAttack::Update()
 	// Is using skill or basic attack?
 	if (player->currentSkill != nullptr)
 	{
-		UseSkill();
-	}
-}
-
-void PlayerStateAttack::UseSkill()
-{
-	BasicSkill* previous = player->currentSkill;
-
-	player->currentSkill->Update();
-
-	CheckSkills(previous, player->currentSkill);
-}
-
-void PlayerStateAttack::CheckSkills(BasicSkill* previous, BasicSkill* current)
-{
-	if (previous != current)
-	{
-		if (previous != nullptr)
-			previous->Exit();
+		player->currentSkill->Update();
 	}
 }

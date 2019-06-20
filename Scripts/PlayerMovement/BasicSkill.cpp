@@ -76,5 +76,6 @@ void BasicSkill::Reset()
 	timer = 0.0f;
 	//Enable(false);
 
+	player->currentSkill->Exit();
 	player->currentSkill = nullptr;
 }

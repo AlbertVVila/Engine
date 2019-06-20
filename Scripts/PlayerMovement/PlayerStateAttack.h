@@ -18,8 +18,6 @@ public:
 	void Enter() override;
 	void Update() override;
 
-	void UseSkill();
-	void CheckSkills(BasicSkill* previous, BasicSkill* current);
 
 public:
 	SkillKey skill;
