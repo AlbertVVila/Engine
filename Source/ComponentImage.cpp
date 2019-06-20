@@ -118,6 +118,7 @@ void ComponentImage::DrawProperties()
 		ImGui::Checkbox("Has mask", &isMasked);
 		ImGui::Checkbox("Is horizontal mask?", &isMaskHorizontal);
 		ImGui::DragInt("Mask amount %", &maskAmount, 1, 0, 100);
+		ImGui::Checkbox("Hover Detection", &hoverDetection);
 
 		ImGui::Separator();
 	}
@@ -146,7 +147,10 @@ void ComponentImage::Update()
 	if (screenX > buttonMin.x && screenX < buttonMax.x && screenY > buttonMin.y && screenY < buttonMax.y)
 	{
 		isHovered = true;
-		App->ui->uiHovered = true;
+		if (hoverDetection)
+		{
+			App->ui->uiHovered = true;
+		}
 	}
 	else
 		isHovered = false;
@@ -173,6 +177,7 @@ void ComponentImage::Save(JSON_value *value)const
 	value->AddInt("isMasked", isMasked);
 	value->AddInt("maskAmount", maskAmount);
 	value->AddInt("isMaskHorizontal", isMaskHorizontal);
+	value->AddInt("hoverDetection", hoverDetection);
 
 }
 
@@ -187,6 +192,7 @@ void ComponentImage::Load(JSON_value* value)
 	isMasked = value->GetInt("isMasked");
 	maskAmount = value->GetInt("maskAmount");
 	isMaskHorizontal = value->GetInt("isMaskHorizontal");
+	hoverDetection = value->GetInt("hoverDetection", 1);
 }
 
 ENGINE_API void ComponentImage::SetMaskAmount(int maskAmount)

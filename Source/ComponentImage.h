@@ -37,6 +37,7 @@ public:
 
 	bool isHovered = false;
 	bool isPressed = false;
+	bool hoverDetection = true;
 
 	std::vector<std::string> textureFiles;
 	bool enabled = true;
