@@ -39,6 +39,9 @@ public:
 	bool castShadows = false;
 	bool useAlpha = false;
 	bool highlighted = false;
+	bool dissolve = false;
+	float dissolveAmount = 0.f;
+	float borderAmount = 0.5f;
 	bool water = true;
 	float waterAmplitude = 10.f;
 	float decay = 1.f;

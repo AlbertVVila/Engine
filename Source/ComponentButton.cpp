@@ -187,3 +187,17 @@ void Button::AssemblyButton()
 	highlightedImage->enabled = false;
 	pressedImage->enabled = false;
 }
+
+void Button::UpdateImageByName(std::string name)
+{
+	buttonImage->UpdateTexture(name);
+	highlightedImage->UpdateTexture(name);
+	pressedImage->UpdateTexture(name);
+}
+
+void Button::UpdateImageByResource(ResourceTexture* texture)
+{
+	buttonImage->texture = texture;
+	highlightedImage->texture = texture;
+	pressedImage->texture = texture;
+}

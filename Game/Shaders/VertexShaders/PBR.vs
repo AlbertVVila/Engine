@@ -102,19 +102,19 @@ void main()
 		viewPos = TBNMat * (transpose(mat3(view))*(-view[3].xyz));	
 		uv0 = vertex_uv0;
 
-		normalIn = TBNMat * normalIn;
+	normalIn = TBNMat * normalIn;
 
-		//transform lights to tangent space
+	//transform lights to tangent space
 
-		for(int i=0; i < lights.num_directionals; ++i)
-		{
-			directionalDirections[i] = TBNMat * lights.directional[i].direction;
-		}
+	for(int i=0; i < lights.num_directionals; ++i)
+	{
+		directionalDirections[i] = TBNMat * lights.directional[i].direction;
+	}
 
-		for(int i=0; i < lights.num_points; ++i)
-		{
-			pointPositions[i] = TBNMat * lights.points[i].position;
-		}
+	for(int i=0; i < lights.num_points; ++i)
+	{
+		pointPositions[i] = TBNMat * lights.points[i].position;
+	}
 
 		for(int i=0; i < lights.num_spots; ++i)
 		{

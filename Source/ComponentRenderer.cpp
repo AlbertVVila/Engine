@@ -105,7 +105,6 @@ void ComponentRenderer::DrawProperties()
 		{
 			guiMeshes.clear();
 		}
-		ImGui::PopID();
 
 		if (mesh == nullptr)
 		{
@@ -121,6 +120,9 @@ void ComponentRenderer::DrawProperties()
 		{
 			ImGui::Checkbox("Cast shadows", &castShadows);
 			ImGui::Checkbox("Use Alpha", &useAlpha);
+			ImGui::Checkbox("Dissolve", &dissolve);
+			ImGui::DragFloat("Dissolve amount", &dissolveAmount, .01f, .0f, 10.f);
+			ImGui::DragFloat("Dissolve border amount", &borderAmount, .01f, .0f, 1.f);
 			ImGui::Checkbox("Highlighted", &highlighted);
 			ImGui::ColorEdit3("Highlight color", &highlightColor[0]);
 			ImGui::Checkbox("Water", &water);
@@ -146,7 +148,7 @@ void ComponentRenderer::DrawProperties()
 		}
 		// Material selector
 		ImGui::Text("Material");
-		ImGui::PushID("Material Combo");
+		ImGui::PushID(this);
 		if (ImGui::BeginCombo("", material != nullptr ? material->GetName() : "None selected"))
 		{
 			if (guiMaterials.empty())
@@ -179,6 +181,7 @@ void ComponentRenderer::DrawProperties()
 		{
 			guiMaterials.clear();
 		}
+		ImGui::PopID();
 		ImGui::PopID();
 
 		ImGui::SameLine();

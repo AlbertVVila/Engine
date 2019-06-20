@@ -22,7 +22,11 @@ struct Material
     sampler2D emissive_texture;
     vec3      emissive_color;
 
+	sampler2D dissolve_texture;
+	vec3 dissolve_color;
+
     float roughness;
+	float bloomIntensity;
 	vec3 specular;
 };
 
@@ -87,6 +91,8 @@ uniform int hasNormalMap;
 uniform sampler2D shadowTex;
 uniform vec3 highlightColorUniform;
 uniform float useHighlight;
+uniform float borderAmount;
+uniform float sliceAmount;
 
 vec4 textureGammaCorrected(sampler2D tex)
 {
@@ -173,7 +179,9 @@ void main()
 #endif
 	vec4 albedo = get_albedo();
 	
-	vec3 F0 = material.specular;
+	float metallic = length(material.specular);
+
+	vec3 F0 = mix(albedo.rgb, material.specular, metallic);
 
 	vec3 color = albedo.rgb * lights.ambient_color; 
 	
@@ -201,6 +209,7 @@ void main()
 
 		vec3 kS = F;
 		vec3 kD = vec3(1.0) - kS;
+		kD *= 1.0f - metallic;
 		
 		float NdotL = max(dot(N, L), 0.0);        
 		color += (kD * albedo.rgb / PI + BRDF(F, L, V, N, H)) * radiance * NdotL;  
@@ -230,7 +239,8 @@ void main()
 
 		vec3 kS = F;
         vec3 kD = vec3(1.0) - kS;
-      
+		kD *= 1.0f - metallic;
+
 		float NdotL = max(dot(N, L), 0.0);        
 		color += (kD * albedo.rgb / PI + BRDF(F, L, V, N, H)) * radiance * NdotL;  
 	}
@@ -253,13 +263,14 @@ void main()
 
 		vec3 kS = F;
         vec3 kD = vec3(1.0) - kS;
+		kD *= 1.0f - metallic;
       
 		float NdotL = max(dot(N, L), 0.0);        
 		color += (kD * albedo.rgb / PI + BRDF(F, L, V, N, H)) * radiance * NdotL;
 	}
 	
 	//color *= get_occlusion_color();
-	color += get_emissive_color();
+	color += get_emissive_color() * material.bloomIntensity;
 #ifdef IS_EDITOR
 	color = vec3(pow(color.r, (1.0 / 2.2)), pow(color.g, (1.0 / 2.2)), pow(color.b, (1.0 / 2.2)));
 #endif
@@ -267,8 +278,19 @@ void main()
 	highlightColor = vec4(highlightColorUniform, 1);
 	
 	float brightness = dot(Fragcolor.rgb, vec3(0.2126, 0.7152, 0.0722));
-    if(brightness > 1.0)
+    if(brightness > 1)
         brightColor = vec4(Fragcolor.rgb, albedo.a);
     else
         brightColor = vec4(0.0, 0.0, 0.0, 1.0);
+#ifdef DISSOLVE
+	float phi = texture2D(material.dissolve_texture, uv0).r - sliceAmount;
+	if (phi < 0 && phi > -borderAmount) 
+	{
+		Fragcolor = vec4(material.dissolve_color, Fragcolor.a);
+	}
+	else if (phi < 0)
+	{
+		discard;
+	}
+#endif
 }

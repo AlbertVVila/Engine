@@ -27,9 +27,10 @@ public:
 	enum class PBR_Variations
 	{
 		SKINNED					= 1 << 0,
-		SHADOWS_ENABLED			= 1 << 1,
-		EDITOR_RENDER			= 1 << 2,
-		WATER					= 1 << 3
+		SHADOWS_ENABLED				= 1 << 1,
+		EDITOR_RENDER				= 1 << 2,
+		DISSOLVE				= 1 << 3,
+		WATER					= 1 << 4
 	};
 
 	enum class Shadows_Variations
@@ -53,6 +54,7 @@ public:
 		"#define SKINNED\n",		//Skinned
 		"#define SHADOWS_ENABLED\n",
 		"#define IS_EDITOR\n",
+		"#define DISSOLVE\n",
 		"#define WATER\n"
 	};
 

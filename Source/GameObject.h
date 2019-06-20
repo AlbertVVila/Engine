@@ -116,6 +116,7 @@ public:
 	bool copyFlag = false;
 	bool deleteFlag = false;
 	bool drawBBox = false;
+	bool particlesDirty = false;
 
 	math::AABB bbox;
 

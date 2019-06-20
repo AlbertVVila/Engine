@@ -9,6 +9,7 @@
 #include "ModuleScene.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleFileSystem.h"
+#include "ModuleWindow.h"
 #include "ModuleInput.h"
 #include "ModuleRender.h"
 #include "Viewport.h"

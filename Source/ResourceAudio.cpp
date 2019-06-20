@@ -2,6 +2,7 @@
 
 #include "Application.h"
 #include "ModuleFileSystem.h"
+#include "ModuleResourceManager.h"
 
 #include "JSON.h"
 #include "imgui.h"
@@ -100,7 +101,14 @@ void ResourceAudio::LoadConfigFromMeta()
 
 	// Make sure the UID from meta is the same
 	unsigned checkUID = value->GetUint("GUID");
-
+	if (oldUID != checkUID)
+	{
+		UID = checkUID;
+		// Update resource UID on resource list
+		App->resManager->ReplaceResource(oldUID, this);
+		exportedFile = IMPORTED_MATERIALS + std::to_string(UID) + MATERIALEXT;
+	}
+	RELEASE_ARRAY(data);
 	RELEASE(json);
 }
 

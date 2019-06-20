@@ -151,13 +151,13 @@ void PanelResourceManager::Draw()
 	ImGui::Columns(7);
 	// Table references: UID | File | Exported File | References | Type |
 	ImGui::PushStyleColor(ImGuiCol_Text, (ImVec4)ImColor::HSV(0.0f, 1.0f, 1.0f));
-	if (ImGui::Selectable("UID"))			{ if (sortList == SORTING::UID) descending = !descending; sortList = SORTING::UID; }				ImGui::SameLine(); ImGui::NextColumn();
-	if (ImGui::Selectable("Name"))			{ if (sortList == SORTING::NAME) descending = !descending; sortList = SORTING::NAME; }				ImGui::SameLine(); ImGui::NextColumn();
-	if (ImGui::Selectable("File"))			{ if (sortList == SORTING::FILE) descending = !descending; sortList = SORTING::FILE;}				ImGui::SameLine(); ImGui::NextColumn();
-	if (ImGui::Selectable("Exported File"))	{ if (sortList == SORTING::EXPORTED) descending = !descending; sortList = SORTING::EXPORTED;}		ImGui::SameLine(); ImGui::NextColumn();
-	if (ImGui::Selectable("References"))	{ if (sortList == SORTING::REFERENCES) descending = !descending; sortList = SORTING::REFERENCES;}	ImGui::SameLine(); ImGui::NextColumn();
-	if (ImGui::Selectable("Type"))			{ if (sortList == SORTING::TYPE) descending = !descending; sortList = SORTING::TYPE;}				ImGui::SameLine(); ImGui::NextColumn();
-	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "");																						ImGui::NextColumn(); ImGui::Separator();
+	if (ImGui::Selectable("UID"))			{ if (sortList == SORTING::UID) descending = !descending; sortList = SORTING::UID; 				UpdateResourcesList();}	ImGui::SameLine(); ImGui::NextColumn();
+	if (ImGui::Selectable("Name")) { if (sortList == SORTING::NAME) descending = !descending; sortList = SORTING::NAME; 					UpdateResourcesList();}	ImGui::SameLine(); ImGui::NextColumn();
+	if (ImGui::Selectable("File"))			{ if (sortList == SORTING::FILE) descending = !descending; sortList = SORTING::FILE;			UpdateResourcesList();} ImGui::SameLine(); ImGui::NextColumn();
+	if (ImGui::Selectable("Exported File"))	{ if (sortList == SORTING::EXPORTED) descending = !descending; sortList = SORTING::EXPORTED;	UpdateResourcesList();}	ImGui::SameLine(); ImGui::NextColumn();
+	if (ImGui::Selectable("References"))	{ if (sortList == SORTING::REFERENCES) descending = !descending; sortList = SORTING::REFERENCES;UpdateResourcesList();}	ImGui::SameLine(); ImGui::NextColumn();
+	if (ImGui::Selectable("Type"))			{ if (sortList == SORTING::TYPE) descending = !descending; sortList = SORTING::TYPE;			UpdateResourcesList();}	ImGui::SameLine(); ImGui::NextColumn();
+	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "");																											ImGui::NextColumn(); ImGui::Separator();
 	ImGui::PopStyleColor(1);
 
 	for each (auto& resource in resourcesList)
@@ -570,7 +570,6 @@ void PanelResourceManager::DrawResourceMaterial()
 	ImGui::ColorEdit3("Emissive Color", &(float&)emissiveColor, ImGuiColorEditFlags_NoInputs);
 
 	ImGui::Text("Roughness: %f", material.roughness);
-	ImGui::Text("Metallic: %f", material.metallic);
 	ImGui::NextColumn();
 
 	// Textures

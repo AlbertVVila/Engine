@@ -44,6 +44,7 @@ class PlayerStateDeath;
 class PlayerStateUppercut;
 class PlayerStateWalk;
 class DamageController;
+class DamageFeedbackUI;
 
 struct PlayerMovement_API PlayerStats
 {
@@ -168,6 +169,7 @@ private:
 	GameObject* dashMesh = nullptr;
 
 	DamageController* damageController = nullptr;
+	DamageFeedbackUI* damageUIFeedback = nullptr;
 	ComponentImage* lifeUIComponent = nullptr;
 	ComponentImage* manaUIComponent = nullptr;
 

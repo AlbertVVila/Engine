@@ -350,7 +350,7 @@ void GameObject::OnChangeActiveState(bool wasActive)
 			if (!wasActive)
 			{
 				if (App->time->gameState == GameState::RUN && component->type == ComponentType::Script 
-					&& ((Script*)component)->hasBeenAwoken)
+					&& !((Script*)component)->hasBeenAwoken)
 				{
 					Script* script = (Script*)component;
 					script->Awake();
@@ -1232,6 +1232,10 @@ void GameObject::UpdateTransforms(math::float4x4 parentGlobal)
 	PROFILE;
 	if (movedFlag)
 	{
+		if (App->time->gameState == GameState::STOP)
+		{
+			particlesDirty = true;
+		}
 		for (const auto& child : children)
 		{
 			if (!child->isStatic)
