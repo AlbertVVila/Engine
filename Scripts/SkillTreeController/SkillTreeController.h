@@ -23,6 +23,7 @@ public:
 	void Update() override;
 
 	void AddSkillPoint();
+	std::vector<Skill> GetActiveSkills();
 
 	void Expose(ImGuiContext* context) override;
 	void Serialize(JSON_value* json) const override;
