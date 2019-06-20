@@ -101,7 +101,7 @@ void AnimationController::UpdateInstance(Instance* instance, float dt)
 			else
 			{
 				instance->time = anim->durationInSeconds;
-				anim->nextEvent = 0;
+				//anim->nextEvent = 0;
 			}
 		}
 		else
