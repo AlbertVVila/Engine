@@ -38,7 +38,6 @@ void ChainAttackSkill::UseSkill()
 		//Create the hitbox
 		boxPosition = player->transform->up *100.f; //this front stuff isnt working well when rotating the chicken
 		attackBoxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z + 100.f);
-		hitboxCreated = true;
 	}
 
 	CheckInput();
@@ -51,7 +50,6 @@ void ChainAttackSkill::Reset()
 	if (attackBoxTrigger != nullptr)
 	{
 		attackBoxTrigger->Enable(false);
-		hitboxCreated = false;
 	}
 
 	// Play animation
