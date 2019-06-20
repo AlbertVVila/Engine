@@ -25,6 +25,7 @@ void AnimationController::Play(ResourceAnimation* anim, bool loop, bool mustFini
 	newInstance->speed = speed;
 	newInstance->loop = loop;
 	current = newInstance;
+	current->anim->nextEvent = 0;
 }
 
 void AnimationController::PlayEditor(ResourceAnimation * anim)
@@ -59,6 +60,7 @@ void AnimationController::PlayNextNode(ResourceAnimation * anim, bool loop, bool
 	current->next->anim = anim;
 	current->next->loop = loop;
 	current->next->speed = speed;
+	current->anim->nextEvent = 0;
 }
 
 
