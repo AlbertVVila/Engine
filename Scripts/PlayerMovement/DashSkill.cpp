@@ -43,6 +43,11 @@ void DashSkill::Start()
 		}
 		player->ResetCooldown(HUB_BUTTON_Q);
 	}
+	//Create the hitbox
+	boxSize = math::float3(80.f, 100.f, 200.f);
+	player->attackBoxTrigger->Enable(true);
+	player->attackBoxTrigger->SetBoxSize(boxSize);
+	hitboxCreated = true;
 }
 
 void DashSkill::UseSkill()
@@ -71,12 +76,9 @@ void DashSkill::UseSkill()
 
 	if (player->attackBoxTrigger != nullptr && !hitboxCreated && timer > duration)
 	{
-		//Create the hitbox
-		player->attackBoxTrigger->Enable(true);
-		player->attackBoxTrigger->SetBoxSize(boxSize);
+		//Update the hitbox
 		boxPosition = player->transform->up *100.f; //this front stuff isnt working well when rotating the chicken
 		player->attackBoxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z + 100.f);
-		hitboxCreated = true;
 	}
 	if (player->attackBoxTrigger != nullptr &&hitboxCreated && timer > duration)
 	{
