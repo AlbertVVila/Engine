@@ -15,7 +15,7 @@ ChainAttackSkill::ChainAttackSkill(PlayerMovement* PM, const char* trigger, Comp
 	MeleeSkill(PM, trigger, attackBox)
 {
 	minTime = 0.40f;
-	maxTime = 0.65f;
+	maxTime = 0.9f;
 }
 
 ChainAttackSkill::~ChainAttackSkill()
@@ -60,7 +60,7 @@ void ChainAttackSkill::Reset()
 
 void ChainAttackSkill::CheckInput()
 {
-	if (timer > duration * minTime)
+	if (timer > player->currentState->duration * minTime)
 	{
 		if (player->IsAtacking())
 		{
@@ -74,7 +74,7 @@ void ChainAttackSkill::CheckInput()
 				// Play next attack animation
 				player->attack->trigger = "Chain";
 				player->attack->trigger += std::to_string((unsigned)attack);
-				player->currentSkill->duration = player->anim->GetDurationFromClip();
+				player->currentState->duration = player->anim->GetDurationFromClip();
 
 				if (player->anim != nullptr)
 				{
@@ -87,7 +87,7 @@ void ChainAttackSkill::CheckInput()
 		}
 	}
 
-	if (timer > duration * maxTime) //CAN SWITCH?
+	if (timer > player->currentState->duration * maxTime) //CAN SWITCH?
 	{
 
 		if (player->IsUsingSkill())

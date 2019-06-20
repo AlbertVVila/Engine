@@ -25,10 +25,6 @@ protected:
 	virtual void UseSkill() {}
 	virtual void Reset();
 
-public:
-	//float speed = 1.0f;
-	float duration = 1.0f;
-
 protected:
 	float timer = 0.0f;
 
