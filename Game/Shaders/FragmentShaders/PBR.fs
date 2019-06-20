@@ -271,5 +271,4 @@ void main()
         brightColor = vec4(Fragcolor.rgb, albedo.a);
     else
         brightColor = vec4(0.0, 0.0, 0.0, 1.0);
-	Fragcolor = vec4(normalIn,1);
 }

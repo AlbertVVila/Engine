@@ -124,6 +124,11 @@ void ComponentRenderer::DrawProperties()
 			ImGui::Checkbox("Highlighted", &highlighted);
 			ImGui::ColorEdit3("Highlight color", &highlightColor[0]);
 			ImGui::Checkbox("Water", &water);
+			if (water)
+			{
+				ImGui::DragFloat("Water amplitude", &waterAmplitude, 0.1f, 0.1f, 2000.0f);
+				ImGui::DragFloat("Water decay", &decay, 0.1f, 0.1f, 2000.0f);
+			}
 		}
 		else
 		{

@@ -60,6 +60,8 @@ uniform mat4 palette[64];
 
 uniform mat4 lightProjView;
 uniform float time;
+uniform float waterAmplitude;
+uniform float decay;
 
 out vec3 normalIn;
 out vec3 position;
@@ -120,9 +122,12 @@ void main()
 			spotDirections[i] = TBNMat * lights.spots[i].direction;
 		}
 #else	
-	position = (model*vec4(vertex_position, 1.0)).xyz;
-	gl_Position = proj*view*vec4(position, 1.0);
-	gl_Position.y += sin(length(position)+time) * 10;
+	position = vertex_position;
+	float dist = sqrt(pow(position.x,2) + pow(position.y,2));
+	float offset = sin((dist / decay) - time * 5) * waterAmplitude;
+	position.z += offset;
+	position = (model*vec4(position, 1.0)).xyz;
+	gl_Position = proj*view*vec4(position, 1.0);	
 	normalIn = mat3(transpose(inverse(model))) * vertex_normal;
 #endif	
 }

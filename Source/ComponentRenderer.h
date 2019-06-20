@@ -40,6 +40,9 @@ public:
 	bool useAlpha = false;
 	bool highlighted = false;
 	bool water = true;
+	float waterAmplitude = 10.f;
+	float decay = 1.f;
+
 	math::float3 highlightColor = math::float3::one;
 
 private:

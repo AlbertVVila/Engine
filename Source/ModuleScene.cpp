@@ -512,6 +512,12 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 	glUniform1f(glGetUniformLocation(shader->id[variation],
 		"time"), App->time->ellapsedTime);
 
+	glUniform1f(glGetUniformLocation(shader->id[variation],
+		"waterAmplitude"), crenderer->waterAmplitude);
+
+	glUniform1f(glGetUniformLocation(shader->id[variation],
+		"decay"), crenderer->decay);
+
 	go.SetLightUniforms(shader->id[variation]);
 
 	go.UpdateModel(shader->id[variation]);
