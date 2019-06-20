@@ -21,7 +21,7 @@ void PlayerStateThirdAttack::CheckInput()
 	{
 		if (player->IsAtacking())
 		{
-			player->currentState = (PlayerState*)player->firstAttack;
+			//player->currentState = (PlayerState*)player->firstAttack;
 		}
 		else if (player->IsUsingFirstSkill())
 		{

@@ -16,19 +16,21 @@ void PlayerStateIdle::Update()
 
 void PlayerStateIdle::CheckInput()
 {
-	if (player->IsAtacking())
+	/*if (player->IsAtacking())
 	{
-		player->currentState = (PlayerState*)player->firstAttack;
+		//player->currentState = (PlayerState*)player->firstAttack;
 	}
 	else if (player->IsUsingFirstSkill())
 	{
 		//player->currentState = (PlayerState*)player->dash;
-		player->currentState = (PlayerState*)player->firstAttack;
-		player->currentSkill = (BasicSkill*)player->playerSkills[0];
 	}
 	else if (player->IsUsingSecondSkill())
 	{
 		player->currentState = (PlayerState*)player->uppercut;
+	}*/
+	if (player->IsUsingSkill())
+	{
+		player->currentState = (PlayerState*)player->attack;
 	}
 	else if (player->IsMoving())
 	{

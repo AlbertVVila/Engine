@@ -19,7 +19,7 @@ SliceSkill::~SliceSkill()
 
 void SliceSkill::Start()
 {
-	boxSize = math::float3(50.0f, 20.0f, 50.0f);
+	boxSize = math::float3(150.f, 100.f, 100.f);
 }
 
 void SliceSkill::Expose(ImGuiContext* context)

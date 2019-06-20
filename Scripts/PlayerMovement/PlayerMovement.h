@@ -49,6 +49,8 @@ class BasicSkill;
 class SliceSkill;
 class DamageFeedbackUI;
 
+enum class SkillKey{RC, ONE, TWO, THREE, FOUR, Q, W, E, R, NONE};
+
 struct PlayerMovement_API PlayerStats
 {
 public:
@@ -114,6 +116,7 @@ public:
 	bool IsUsingSecondItem() const;
 	bool IsUsingThirdItem() const;
 	bool IsUsingFourthItem() const;
+	bool IsUsingSkill() const;
 
 	void ResetCooldown(unsigned int hubButtonID);
 

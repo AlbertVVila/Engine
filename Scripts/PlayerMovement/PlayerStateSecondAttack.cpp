@@ -22,7 +22,7 @@ void PlayerStateSecondAttack::CheckInput()
 	{
 		if (player->IsAtacking())
 		{
-			player->currentState = (PlayerState*)player->thirdAttack;
+			//player->currentState = (PlayerState*)player->thirdAttack;
 		}
 	}
 	if (timer > duration * maxTime) // can switch??¿?¿?

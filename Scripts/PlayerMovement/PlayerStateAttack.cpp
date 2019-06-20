@@ -15,6 +15,17 @@ PlayerStateAttack::~PlayerStateAttack()
 {
 }
 
+void PlayerStateAttack::Enter()
+{
+	if(player->IsUsingFirstSkill()) player->currentSkill = (BasicSkill*)player->playerSkills[0];
+	if (player->IsUsingSecondSkill()) player->currentSkill = (BasicSkill*)player->playerSkills[1];
+	if (player->IsUsingThirdSkill()) player->currentSkill = (BasicSkill*)player->playerSkills[2];
+	if (player->IsUsingFourthSkill()) player->currentSkill = (BasicSkill*)player->playerSkills[3];
+
+	if (player->currentSkill != nullptr)
+		player->currentSkill->Start();
+}
+
 void PlayerStateAttack::Update()
 {
 	// Is using skill or basic attack?
@@ -24,7 +35,7 @@ void PlayerStateAttack::Update()
 	}
 	else
 	{
-		if (player->attackBoxTrigger != nullptr && !hitboxCreated && timer > duration * minTime && timer < duration * maxTime)
+		/*if (player->attackBoxTrigger != nullptr && !hitboxCreated && timer > duration * minTime && timer < duration * maxTime)
 		{
 			//Create the hitbox
 			player->attackBoxTrigger->Enable(true);
@@ -37,7 +48,7 @@ void PlayerStateAttack::Update()
 		{
 			player->attackBoxTrigger->Enable(false);
 			hitboxCreated = false;
-		}
+		}*/
 	}
 }
 
@@ -56,8 +67,5 @@ void PlayerStateAttack::CheckSkills(BasicSkill* previous, BasicSkill* current)
 	{
 		if (previous != nullptr)
 			previous->Exit();
-
-		if (current != nullptr)
-			current->Start();
 	}
 }

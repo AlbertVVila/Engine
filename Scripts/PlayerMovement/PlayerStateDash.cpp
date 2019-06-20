@@ -108,7 +108,7 @@ void PlayerStateDash::CheckInput()
 
 		if (player->IsAtacking())
 		{
-			player->currentState = (PlayerState*)player->firstAttack;
+			//player->currentState = (PlayerState*)player->firstAttack;
 			return;
 		}
 		if (player->IsUsingFirstSkill()) //cooldown?

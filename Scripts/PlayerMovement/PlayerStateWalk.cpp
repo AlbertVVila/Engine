@@ -109,9 +109,9 @@ void PlayerStateWalk::Enter()
 void PlayerStateWalk::CheckInput()
 {
 
-	if (player->IsAtacking())
+	/*if (player->IsAtacking())
 	{
-		player->currentState = (PlayerState*)player->firstAttack;
+		//player->currentState = (PlayerState*)player->firstAttack;
 		if (dustParticles)
 		{
 			dustParticles->SetActive(false);
@@ -119,13 +119,11 @@ void PlayerStateWalk::CheckInput()
 	}
 	else if (player->IsUsingFirstSkill())
 	{
-		/*player->currentState = (PlayerState*)player->dash;
+		player->currentState = (PlayerState*)player->dash;
 		if (dustParticles)
 		{
 			dustParticles->SetActive(false);
-		}*/
-		player->currentState = (PlayerState*)player->firstAttack;
-		player->currentSkill = (BasicSkill*)player->playerSkills[0];
+		}
 		if (dustParticles)
 		{
 			dustParticles->SetActive(false);
@@ -138,6 +136,10 @@ void PlayerStateWalk::CheckInput()
 		{
 			dustParticles->SetActive(false);
 		}
+	}*/
+	if (player->IsUsingSkill())
+	{
+		player->currentState = (PlayerState*)player->attack;
 	}
 	else if (player->IsMoving())
 	{

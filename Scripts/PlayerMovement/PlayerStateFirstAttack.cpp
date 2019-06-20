@@ -30,7 +30,7 @@ void PlayerStateFirstAttack::CheckInput()
 	{
 		if (player->IsAtacking())
 		{
-			player->currentState = (PlayerState*)player->secondAttack;
+			//player->currentState = (PlayerState*)player->secondAttack;
 			return;
 		}
 	}
@@ -41,7 +41,7 @@ void PlayerStateFirstAttack::CheckInput()
 		if (player->IsUsingFirstSkill())
 		{
 			//player->currentState = (PlayerState*)player->dash;
-			player->currentState = (PlayerState*)player->firstAttack;
+			//player->currentState = (PlayerState*)player->firstAttack;
 			player->currentSkill = (BasicSkill*)player->playerSkills[0];
 		}
 		else if (player->IsUsingSecondSkill())
