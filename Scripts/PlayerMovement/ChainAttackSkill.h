@@ -3,7 +3,7 @@
 
 #include "MeleeSkill.h"
 
-enum class attackNumber{FIRST, SECOND, THIRD};
+enum class attackNumber{FIRST, SECOND};
 
 class ChainAttackSkill :
 	public MeleeSkill
@@ -20,6 +20,7 @@ protected:
 
 private:
 	void CheckInput() override;
+	void NextChainAttack();
 
 private:
 	attackNumber attack = attackNumber::FIRST;

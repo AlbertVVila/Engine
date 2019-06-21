@@ -26,6 +26,8 @@ void ChainAttackSkill::Start()
 {
 	BasicSkill::Start();
 	player->gameobject->transform->LookAtMouse();
+
+	// Create the hitbox
 	boxSize = math::float3(150.f, 100.f, 100.f);
 	attackBoxTrigger->Enable(true);
 	attackBoxTrigger->SetBoxSize(boxSize);
@@ -49,25 +51,7 @@ void ChainAttackSkill::CheckInput()
 	{
 		if (player->IsAtacking())
 		{
-			if ((unsigned)attack < 2u)
-			{
-				attack = (attackNumber)((unsigned)attack + 1u);
-				// Go to next attack
-				Reset();
-				player->currentSkill = player->chain;
-				Start();
-				// Play next attack animation
-				player->attack->trigger = "Chain";
-				player->attack->trigger += std::to_string((unsigned)attack);
-				player->currentState->duration = player->anim->GetDurationFromClip();
-
-				if (player->anim != nullptr)
-				{
-					player->anim->SendTriggerToStateMachine(player->currentState->trigger.c_str());
-				}
-			}
-			else
-				attack = attackNumber::FIRST;
+			NextChainAttack();
 			return;
 		}
 	}
@@ -77,7 +61,7 @@ void ChainAttackSkill::CheckInput()
 
 		if (player->IsUsingSkill())
 		{
-			//player->currentState = (PlayerState*)player->attack;
+			player->currentState = (PlayerState*)player->attack;
 		}
 		else if (player->IsMoving())
 		{
@@ -87,5 +71,38 @@ void ChainAttackSkill::CheckInput()
 		{
 			Reset();
 		}
+	}
+}
+
+void ChainAttackSkill::NextChainAttack()
+{
+	if (attack == attackNumber::FIRST)
+	{
+		attack = attackNumber::SECOND;
+		// Go to next attack
+		Reset();
+		player->currentSkill = player->chain;
+		player->currentState = (PlayerState*)player->attack;
+		Start();
+		// Play next attack animation
+		player->attack->trigger = "Chain2";
+	}
+	else
+	{
+		attack = attackNumber::FIRST;
+		// Reset attack chain
+		Reset();
+		player->currentSkill = player->chain;
+		player->currentState = (PlayerState*)player->attack;
+		Start();
+		// Play first attack animation
+		player->attack->trigger = "Chain1";
+	}
+
+	// Send trigger
+	player->currentState->duration = player->anim->GetDurationFromClip();
+	if (player->anim != nullptr)
+	{
+		player->anim->SendTriggerToStateMachine(player->currentState->trigger.c_str());
 	}
 }
