@@ -70,15 +70,11 @@ void DashSkill::UseSkill()
 		}
 	}
 
-	if (player->attackBoxTrigger != nullptr && !player->attackBoxTrigger->enabled && timer > player->currentState->duration)
+	if (player->attackBoxTrigger != nullptr && !player->attackBoxTrigger->enabled)
 	{
 		//Update the hitbox
 		boxPosition = player->transform->up *100.f; //this front stuff isnt working well when rotating the chicken
 		player->attackBoxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z + 100.f);
-	}
-	if (player->attackBoxTrigger != nullptr &&player->attackBoxTrigger->enabled && timer > player->currentState->duration)
-	{
-		player->attackBoxTrigger->Enable(false);
 	}
 }
 
