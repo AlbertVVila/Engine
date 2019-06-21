@@ -54,6 +54,9 @@
     <ClInclude Include="DashSkill.h">
       <Filter>Skills</Filter>
     </ClInclude>
+    <ClInclude Include="BombDropSkill.h">
+      <Filter>Skills</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PlayerMovement.cpp">
@@ -87,6 +90,9 @@
       <Filter>Skills</Filter>
     </ClCompile>
     <ClCompile Include="DashSkill.cpp">
+      <Filter>Skills</Filter>
+    </ClCompile>
+    <ClCompile Include="BombDropSkill.cpp">
       <Filter>Skills</Filter>
     </ClCompile>
   </ItemGroup>

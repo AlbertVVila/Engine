@@ -44,9 +44,8 @@ class BasicSkill;
 class SliceSkill;
 class ChainAttackSkill;
 class DashSkill;
+class BombDropSkill;
 class DamageFeedbackUI;
-class ComponentAudioSource;
-class PlayerStateBombDrop;
 class ComponentAudioSource;
 
 struct PlayerMovement_API PlayerStats
@@ -136,7 +135,6 @@ public:
 	PlayerStateIdle* idle = nullptr;
 	PlayerStateDeath* death = nullptr;
 	PlayerStateWalk* walk = nullptr;
-	PlayerStateBombDrop* bombDrop = nullptr;
 
 	float walkingSpeed = 300.0f;
 	float dashSpeed = 10.0f;
@@ -172,6 +170,7 @@ public:
 	ChainAttackSkill* chain = nullptr;
 	DashSkill* dash = nullptr;
 	SliceSkill* slice = nullptr;
+	BombDropSkill* bombDrop = nullptr;
 
 	//Audio
 	ComponentAudioSource* gotHitAudio = nullptr;

@@ -318,6 +318,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BasicSkill.cpp" />
+    <ClCompile Include="BombDropSkill.cpp" />
     <ClCompile Include="ChainAttackSkill.cpp" />
     <ClCompile Include="DashSkill.cpp" />
     <ClCompile Include="MeleeSkill.cpp" />
@@ -331,6 +332,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicSkill.h" />
+    <ClInclude Include="BombDropSkill.h" />
     <ClInclude Include="ChainAttackSkill.h" />
     <ClInclude Include="DashSkill.h" />
     <ClInclude Include="MeleeSkill.h" />
