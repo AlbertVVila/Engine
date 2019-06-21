@@ -25,7 +25,9 @@ void AnimationController::Play(ResourceAnimation* anim, bool loop, bool mustFini
 	newInstance->speed = speed;
 	newInstance->loop = loop;
 	current = newInstance;
-	current->anim->nextEvent = 0;
+	
+	if (current->anim != NULL)
+		current->anim->nextEvent = 0;
 }
 
 void AnimationController::PlayEditor(ResourceAnimation * anim)
