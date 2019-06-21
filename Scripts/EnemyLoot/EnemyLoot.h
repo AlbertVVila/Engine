@@ -13,6 +13,8 @@
 #include "Item.h"
 #include "imgui.h"
 
+#include "Math\float3.h"
+
 class GameObject;
 class Script;
 class ItemPicker;
@@ -31,6 +33,7 @@ private:
 	int drop = 0;
 	std::string goName = "GO Name";
 	std::string itemName = "";
+	math::float3 scale;
 
 	GameObject* go = nullptr;
 

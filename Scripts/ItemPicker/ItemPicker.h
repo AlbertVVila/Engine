@@ -60,6 +60,8 @@ private:
 
 	ItemNameController* itemName = nullptr;
 	std::list<unsigned> nameShowed;
+
+	float time = -1.0f;
 };
 
 #endif __ItemPicker_h__

@@ -11,7 +11,7 @@ class ItemName
 {
 public:
 	ComponentTransform* transform = nullptr;
-	GameObject* gameobject = nullptr;
+	unsigned UID;
 	math::float2 actualPosition = math::float2::zero;
 	math::float2 distanceNormalized = math::float2::zero;
 	float distanceDone = 0;

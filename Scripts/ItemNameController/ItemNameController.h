@@ -25,10 +25,10 @@ public:
 	void Start() override;
 	void Update() override;
 
-	void SetNameBar(GameObject* go, ItemRarity rarity);
-	void Hovered(GameObject* go, bool hover);
-	void DisableName(GameObject* go);
-	bool Intersection(GameObject* go);
+	void SetNameBar(unsigned uid, ItemRarity rarity);
+	void Hovered(unsigned uid, bool hover);
+	void DisableName(unsigned uid);
+	bool Intersection(unsigned uid);
 private:
 	GameObject* itemName = nullptr;
 	GameObject* uiName[10];
