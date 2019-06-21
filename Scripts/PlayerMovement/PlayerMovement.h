@@ -71,7 +71,7 @@ public:
 	PlayerSkill(SkillType type) : type(type) {}
 	void Expose(const char* title);
 	void Serialize(JSON_value* json) const;
-	void DeSerialize(JSON_value* json, PlayerState* playerState);
+	void DeSerialize(JSON_value* json, BasicSkill* playerSkill);
 	bool IsUsable(float playerMana) const { return available && type != SkillType::NONE && (playerMana >= manaCost && cooldownTimer <= 0); }
 	float Use(float minCooldown = 0.f) { cooldownTimer = MAX(cooldown, minCooldown); maxCooldown = MAX(cooldown, minCooldown); return manaCost; }
 	void Update(float deltaTime) { if (cooldownTimer > 0) cooldownTimer -= deltaTime; }
@@ -240,7 +240,7 @@ private:
 	float hubCooldown[8]	  = { 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F };
 	float hubCooldownMax[8] = { 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F };
 	float hubCooldownTimer[8] = { 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F };
-	ComponentImage* hubCooldownMask[8] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
+	ComponentImage* hubCooldownMask[9] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
 	float hubGeneralAbilityCooldown = 0.5F;
 	bool showAbilityCooldowns = true;
 	bool showItemCooldowns = true;
