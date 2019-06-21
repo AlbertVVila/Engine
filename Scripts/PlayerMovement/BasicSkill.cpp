@@ -38,6 +38,7 @@ void BasicSkill::Update()
 	if (timer < player->currentState->duration)
 	{
 		UseSkill();
+		CheckInput();
 	}
 	else
 	{

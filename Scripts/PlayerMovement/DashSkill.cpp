@@ -91,3 +91,23 @@ void DashSkill::Reset()
 		dashMesh->SetActive(false);
 	}
 }
+
+void DashSkill::CheckInput()
+{
+	if (timer > player->currentState->duration) //CAN SWITCH?
+	{
+
+		if (player->IsUsingSkill())
+		{
+			player->currentState = (PlayerState*)player->attack;
+		}
+		else if (player->IsMoving())
+		{
+			player->currentState = (PlayerState*)player->walk;
+		}
+		else
+		{
+			Reset();
+		}
+	}
+}

@@ -21,6 +21,8 @@ protected:
 	void UseSkill() override;
 	void Reset() override;
 
+	void CheckInput() override;
+
 public:
 	math::float3 intersectionPoint;
 	std::vector<float3>path;

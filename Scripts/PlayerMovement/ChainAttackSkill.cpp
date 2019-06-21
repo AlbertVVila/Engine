@@ -42,8 +42,6 @@ void ChainAttackSkill::UseSkill()
 		boxPosition = player->transform->up *100.f; //this front stuff isnt working well when rotating the chicken
 		attackBoxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z + 100.f);
 	}
-
-	CheckInput();
 }
 
 void ChainAttackSkill::CheckInput()

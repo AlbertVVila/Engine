@@ -45,8 +45,6 @@ void CircularAttackSkill::Update()
 		attackBoxTrigger->SetBoxSize(boxSize);
 		atatckStarted = true;
 	}
-
-	CheckInput();
 }
 
 void CircularAttackSkill::UseSkill()
