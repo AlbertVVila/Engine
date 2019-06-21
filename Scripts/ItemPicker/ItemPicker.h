@@ -16,6 +16,7 @@
 class InventoryScript;
 class AABB;
 class JSON_value;
+class ComponentAudioSource;
 
 class ItemPicker_API ItemPicker : public Script
 {
@@ -39,6 +40,8 @@ private:
 
 	std::vector<std::string> textureFiles;
 	const char * selectedTexture = "basicPostion";
+
+	ComponentAudioSource* itemPickedAudio = nullptr;
 };
 
 #endif __ItemPicker_h__

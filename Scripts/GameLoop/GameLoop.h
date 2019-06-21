@@ -24,6 +24,7 @@ class IntroScript;
 class CreditsScript;
 class AABB;
 class JSON_value;
+class ComponentAudioSource;
 
 class GameLoop_API GameLoop : public Script
 {
@@ -157,6 +158,9 @@ private:
 
 	//Camera
 	ComponentCamera* componentIntroCamera = nullptr;
+
+	//Audio
+	ComponentAudioSource* menuButtonsSound = nullptr;
 
 	float3 playerStartPosition = float3::zero;
 	float3 enemyStartPosition = float3::zero;
