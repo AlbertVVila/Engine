@@ -79,7 +79,7 @@ GameObject::GameObject(const GameObject & gameobject)
 	hasLight = gameobject.hasLight;
 	isBoneRoot = gameobject.isBoneRoot;
 	openInHierarchy = gameobject.openInHierarchy;
-	
+	animationIndexChannel = gameobject.animationIndexChannel;
 	isPrefab = gameobject.isPrefab;
 	isPrefabSync = gameobject.isPrefabSync;
 	prefabUID = gameobject.prefabUID;
@@ -122,19 +122,24 @@ GameObject::GameObject(const GameObject & gameobject)
 				break;
 		}
 	}
-	/*if (!App->scene->photoEnabled) //FIXME: Ctrl+Z
-	{*/
-		if (GetComponentOld(ComponentType::Renderer) != nullptr || GetComponentOld(ComponentType::Light) != nullptr)
-		{
-			App->scene->AddToSpacePartition(this);
-		}
-	//}
+
+
 	for (const auto& child : gameobject.children)
 	{
 		GameObject* childcopy = new GameObject(*child);
 		childcopy->parent = this;
 		children.push_back(childcopy);
 	}
+
+	/*if (!App->scene->photoEnabled) //FIXME: Ctrl+Z
+	{*/
+		if (GetComponentOld(ComponentType::Renderer) != nullptr || GetComponentOld(ComponentType::Light) != nullptr)
+		{
+			App->scene->AddToSpacePartition(this);
+			//ComponentRenderer* rend = GetComponent<ComponentRenderer>();
+			//rend->LinkBones();
+		}
+	//}
 }
 
 
@@ -324,6 +329,16 @@ void GameObject::Update()
 			GameObject *copy = new GameObject(**itChild);
 			copy->parent = this;
 			this->children.push_back(copy);
+
+			std::vector<ComponentRenderer*> renderers;
+
+			copy->LinkRendererToBones(renderers);
+
+			for (const auto& renderer : renderers)
+			{
+				renderer->LinkBones();
+			}
+
 		}
 		++itChild;
 	}
@@ -794,6 +809,21 @@ void GameObject::SetLightUniforms(unsigned shader) const
 		glActiveTexture(GL_TEXTURE5);
 		glBindTexture(GL_TEXTURE_2D, App->renderer->shadowsTex);
 		glUniform1i(glGetUniformLocation(shader, "shadowTex"), 5);
+	}
+}
+
+void GameObject::LinkRendererToBones(std::vector<ComponentRenderer*>& renderers)
+{
+	ComponentRenderer* rend = GetComponent<ComponentRenderer>();
+
+	if (rend != nullptr)
+	{
+		renderers.push_back(rend);
+	}
+
+	for (const auto& child : children)
+	{
+		child->LinkRendererToBones(renderers);
 	}
 }
 
