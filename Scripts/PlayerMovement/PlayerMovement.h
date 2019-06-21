@@ -40,13 +40,15 @@ class PlayerStateIdle;
 class PlayerStateDeath;
 class PlayerStateWalk;
 class DamageController;
+class DamageFeedbackUI;
+class ComponentAudioSource;
+
 class BasicSkill;
 class SliceSkill;
 class ChainAttackSkill;
 class DashSkill;
 class BombDropSkill;
-class DamageFeedbackUI;
-class ComponentAudioSource;
+class CircularAttackSkill;
 
 struct PlayerMovement_API PlayerStats
 {
@@ -171,6 +173,7 @@ public:
 	DashSkill* dash = nullptr;
 	SliceSkill* slice = nullptr;
 	BombDropSkill* bombDrop = nullptr;
+	CircularAttackSkill* circular = nullptr;
 
 	//Audio
 	ComponentAudioSource* gotHitAudio = nullptr;

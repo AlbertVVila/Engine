@@ -320,6 +320,7 @@
     <ClCompile Include="BasicSkill.cpp" />
     <ClCompile Include="BombDropSkill.cpp" />
     <ClCompile Include="ChainAttackSkill.cpp" />
+    <ClCompile Include="CircularAttackSkill.cpp" />
     <ClCompile Include="DashSkill.cpp" />
     <ClCompile Include="MeleeSkill.cpp" />
     <ClCompile Include="PlayerMovement.cpp" />
@@ -334,6 +335,7 @@
     <ClInclude Include="BasicSkill.h" />
     <ClInclude Include="BombDropSkill.h" />
     <ClInclude Include="ChainAttackSkill.h" />
+    <ClInclude Include="CircularAttackSkill.h" />
     <ClInclude Include="DashSkill.h" />
     <ClInclude Include="MeleeSkill.h" />
     <ClInclude Include="PlayerMovement.h" />

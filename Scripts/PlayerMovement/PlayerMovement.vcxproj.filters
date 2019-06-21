@@ -57,6 +57,9 @@
     <ClInclude Include="BombDropSkill.h">
       <Filter>Skills</Filter>
     </ClInclude>
+    <ClInclude Include="CircularAttackSkill.h">
+      <Filter>Skills</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PlayerMovement.cpp">
@@ -93,6 +96,9 @@
       <Filter>Skills</Filter>
     </ClCompile>
     <ClCompile Include="BombDropSkill.cpp">
+      <Filter>Skills</Filter>
+    </ClCompile>
+    <ClCompile Include="CircularAttackSkill.cpp">
       <Filter>Skills</Filter>
     </ClCompile>
   </ItemGroup>
