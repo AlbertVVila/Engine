@@ -29,8 +29,9 @@ void ChainAttackSkill::Start()
 
 	// Create the hitbox
 	boxSize = math::float3(150.f, 100.f, 100.f);
-	attackBoxTrigger->Enable(true);
-	attackBoxTrigger->SetBoxSize(boxSize);
+
+	// Set delay for hit
+	hitDelay = 0.6f;
 }
 
 void ChainAttackSkill::UseSkill()

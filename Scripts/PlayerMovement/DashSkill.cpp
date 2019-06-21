@@ -44,8 +44,6 @@ void DashSkill::Start()
 	}
 	//Create the hitbox
 	boxSize = math::float3(80.f, 100.f, 200.f);
-	player->attackBoxTrigger->Enable(true);
-	player->attackBoxTrigger->SetBoxSize(boxSize);
 }
 
 void DashSkill::UseSkill()

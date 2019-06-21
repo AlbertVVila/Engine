@@ -13,6 +13,18 @@ MeleeSkill::~MeleeSkill()
 {
 }
 
+void MeleeSkill::Update()
+{
+	BasicSkill::Update();
+
+	// Check when is time to enable the hitbox
+	if (!attackBoxTrigger->enabled && timer > hitDelay)
+	{
+		attackBoxTrigger->Enable(true);
+		attackBoxTrigger->SetBoxSize(boxSize);
+	}
+}
+
 void MeleeSkill::Expose(ImGuiContext* context)
 {
 	BasicSkill::Expose(context);

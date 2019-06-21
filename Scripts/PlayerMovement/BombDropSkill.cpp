@@ -39,8 +39,9 @@ void BombDropSkill::Start()
 
 	//Create the hitbox
 	boxSize = math::float3(500.f, 500.f, 500.f);
-	player->attackBoxTrigger->Enable(true);
-	player->attackBoxTrigger->SetBoxSize(boxSize);
+
+	// Set delay for hit
+	hitDelay = 0.8f;
 }
 
 void BombDropSkill::UseSkill()
