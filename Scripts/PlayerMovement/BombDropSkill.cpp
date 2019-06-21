@@ -38,6 +38,7 @@ void BombDropSkill::Start()
 	}
 
 	//Create the hitbox
+	boxSize = math::float3(500.f, 500.f, 500.f);
 	player->attackBoxTrigger->Enable(true);
 	player->attackBoxTrigger->SetBoxSize(boxSize);
 }
@@ -68,5 +69,25 @@ void BombDropSkill::UseSkill()
 	if (player->attackBoxTrigger != nullptr && player->attackBoxTrigger->enabled && timer > player->currentState->duration)
 	{
 		player->attackBoxTrigger->Enable(false);
+	}
+}
+
+void BombDropSkill::CheckInput()
+{
+	if (timer > player->currentState->duration) //CAN SWITCH?
+	{
+
+		if (player->IsUsingSkill())
+		{
+			player->currentState = (PlayerState*)player->attack;
+		}
+		else if (player->IsMoving())
+		{
+			player->currentState = (PlayerState*)player->walk;
+		}
+		else
+		{
+			Reset();
+		}
 	}
 }
