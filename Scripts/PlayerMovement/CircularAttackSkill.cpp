@@ -2,6 +2,9 @@
 
 #include "PlayerMovement.h"
 
+
+#include "ModuleTime.h"
+
 #include "GameObject.h"
 #include "ComponentTransform.h"
 #include "ComponentBoxTrigger.h"
@@ -26,13 +29,53 @@ void CircularAttackSkill::Start()
 	hitDelay = 0.3f;
 }
 
+void CircularAttackSkill::Update()
+{
+	BasicSkill::Update();
+
+	// Check when is time to enable the hitbox
+	if (!atatckStarted && !attackBoxTrigger->enabled && timer > hitDelay)
+	{
+		spinTimer = 0.0f;
+		attackBoxTrigger->Enable(true);
+		attackBoxTrigger->SetBoxSize(boxSize);
+		atatckStarted = true;
+	}
+}
+
 void CircularAttackSkill::UseSkill()
 {
 	if (player->attackBoxTrigger != nullptr && !player->attackBoxTrigger->enabled && timer < player->currentState->duration)
 	{
 		// Update hitbox
-		boxPosition = player->transform->up * 100.f;
 		player->attackBoxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z);
 	}
+
+	// Check spin state
+	if (player->attackBoxTrigger != nullptr && player->attackBoxTrigger->enabled)
+	{
+		// Full spin performed?
+		if (spinTimer > fullSpinTime)
+		{
+			attackBoxTrigger->Enable(false);
+		}
+		else
+		{
+			spinTimer += player->App->time->gameDeltaTime;
+		}
+	}
+	else if(atatckStarted)
+	{
+		// Go for next spin
+		spinTimer = 0.0f;
+		attackBoxTrigger->Enable(true);
+	}
+}
+
+void CircularAttackSkill::Reset()
+{
+	spinTimer = 0.0f;
+	atatckStarted = false;
+	MeleeSkill::Reset();
 }
 
