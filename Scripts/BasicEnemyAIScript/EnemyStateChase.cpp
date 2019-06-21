@@ -6,6 +6,8 @@
 #include "BasicEnemyAIScript.h"
 #include "EnemyControllerScript.h"
 
+#include "debugdraw.h"
+
 EnemyStateChase::EnemyStateChase(BasicEnemyAIScript* AIScript)
 {
 	enemy = AIScript;
@@ -18,9 +20,7 @@ EnemyStateChase::~EnemyStateChase()
 
 void EnemyStateChase::Update()
 {
-	// Look at player and move towards
-	//enemy->gameobject->transform->LookAt(enemy->enemyController->GetPlayerPosition());
-	//enemy->enemyController->MoveTowards(enemy->chaseSpeed);
+	// Move towards the player
 	enemy->enemyController->Move(enemy->chaseSpeed, refreshTime, enemy->enemyController->GetPlayerPosition(), enemyPath);
 
 	// Check collision
@@ -32,14 +32,18 @@ void EnemyStateChase::Update()
 	else
 	{
 		// Check if player is too far
-		math::float3 enemyCurrentPosition = enemy->enemyController->GetPosition();
-		math::float3 playerCurrentPosition = enemy->enemyController->GetPlayerPosition();
-		float distance = enemy->enemyController->GetDistanceTo2D(playerCurrentPosition);
-
-		if (distance > enemy->returnDistance)
+		float distanceToPlayer = enemy->enemyController->GetDistanceToPlayer2D();
+		if (distanceToPlayer > enemy->returnDistance)
 		{
 			// Return to start position
 			enemy->currentState = (EnemyState*)enemy->returnToStart;
 		}
+	}
+
+	if (enemy->drawDebug)
+	{
+		math::float3 playerPos = enemy->enemyController->GetPlayerPosition();
+		dd::point(playerPos, dd::colors::Purple, 10.0f);
+		dd::line(enemy->enemyController->GetPosition(), playerPos, dd::colors::Purple);
 	}
 }

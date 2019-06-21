@@ -245,23 +245,34 @@ void GameObject::DrawProperties()
 				ImGui::Checkbox("Is obstacle", &noWalkable);
 			}
 		}
-
+		if (children.size() > 1)
+		{
+			ImGui::NewLine();
+			if (ImGui::Button("Make childs static"))
+			{
+				SetStaticAllChildsWithMesh();
+				App->spacePartitioning->kDTree.Calculate();
+			}
+			if (ImGui::Button("Make childs navigable"))
+			{
+				SetNavigableAllChildsWithMesh();
+				App->spacePartitioning->kDTree.Calculate();
+			}
+			if (ImGui::Button("Make childs obstacles"))
+			{
+				SetObstacleAllChildsWithMesh();
+				App->spacePartitioning->kDTree.Calculate();
+			}
+			if (ImGui::Button("Add childs to navMesh"))
+			{
+				AddAllNavigableChildsToNavMesh();
+			}
+		}
 		if (ImGui::Checkbox("Static", &isStatic))
 		{
 			if (isStatic && GetComponentOld(ComponentType::Renderer) != nullptr)
 			{
-				SetStaticAncestors();
-				App->scene->dynamicGOs.erase(this);
-				App->scene->staticGOs.insert(this);
-				assert(!(hasLight && isVolumetric)); //Impossible combination
-				if (hasLight && treeNode != nullptr)
-				{
-					App->spacePartitioning->aabbTreeLighting.ReleaseNode(treeNode);
-				}
-				if (isVolumetric && treeNode != nullptr)
-				{
-					App->spacePartitioning->aabbTree.ReleaseNode(treeNode);
-				}
+				MakeObjectWithMeshStatic();
 			}
 			else if (!isStatic)
 			{
@@ -339,7 +350,7 @@ void GameObject::OnChangeActiveState(bool wasActive)
 			if (!wasActive)
 			{
 				if (App->time->gameState == GameState::RUN && component->type == ComponentType::Script 
-					&& ((Script*)component)->hasBeenAwoken)
+					&& !((Script*)component)->hasBeenAwoken)
 				{
 					Script* script = (Script*)component;
 					script->Awake();
@@ -1221,6 +1232,10 @@ void GameObject::UpdateTransforms(math::float4x4 parentGlobal)
 	PROFILE;
 	if (movedFlag)
 	{
+		if (App->time->gameState == GameState::STOP)
+		{
+			particlesDirty = true;
+		}
 		for (const auto& child : children)
 		{
 			if (!child->isStatic)
@@ -1228,10 +1243,10 @@ void GameObject::UpdateTransforms(math::float4x4 parentGlobal)
 				child->movedFlag = true;
 			}
 		}
+		movedFlag = false;
 		if (transform)
 		{
 			transform->local = math::float4x4::FromTRS(transform->position, transform->rotation, transform->scale);
-			movedFlag = false;
 			if (!isStatic)
 			{
 				if (treeNode != nullptr && hasLight)
@@ -1304,4 +1319,88 @@ bool GameObject::CheckDelete()
 		}
 	}
 	return false;
+}
+
+
+void GameObject::SetStaticAllChildsWithMesh()
+{
+	for (const auto& child : children)
+	{
+		if (child->isVolumetric)
+		{
+			if (!child->isStatic)
+			{
+				child->MakeObjectWithMeshStatic();
+				child->isStatic = true;
+			}
+		}
+		child->SetStaticAllChildsWithMesh();
+	}
+}
+void GameObject::SetNavigableAllChildsWithMesh()
+{
+	for (const auto& child : children)
+	{
+		if (child->isVolumetric)
+		{
+			if (!child->isStatic)
+			{
+				child->MakeObjectWithMeshStatic();
+				child->isStatic = true;
+			}
+			child->navigable = true;
+			
+		}
+		child->SetNavigableAllChildsWithMesh();
+	}
+}
+void GameObject::SetObstacleAllChildsWithMesh()
+{
+	for (const auto& child : children)
+	{
+		if (child->isVolumetric)
+		{
+			if (!child->isStatic)
+			{
+				child->MakeObjectWithMeshStatic();
+				child->isStatic = true;
+				
+			}
+			child->navigable = true;
+			child->noWalkable = true;
+			
+		}
+		child->SetObstacleAllChildsWithMesh();
+	}
+}
+
+void GameObject::AddAllNavigableChildsToNavMesh()
+{
+	for (const auto& child : children)
+	{
+		if (child->isVolumetric && child->isStatic &&child->navigable)
+		{
+			App->navigation->AddNavigableMeshFromObject(child);
+		}
+		child->AddAllNavigableChildsToNavMesh();
+	}
+}
+
+void GameObject::MakeObjectWithMeshStatic()
+{
+	SetStaticAncestors();
+	App->scene->DeleteFromSpacePartition(this);
+	App->scene->AddToSpacePartition(this);
+	assert(!(hasLight && isVolumetric)); //Impossible combination
+	if (hasLight && treeNode != nullptr)
+	{
+		App->spacePartitioning->aabbTreeLighting.ReleaseNode(treeNode);
+	}
+	if (isVolumetric && treeNode != nullptr)
+	{
+		App->spacePartitioning->aabbTree.ReleaseNode(treeNode);
+	}
+	LOG(name.c_str());
+	std::string s = std::to_string(App->scene->staticGOs.size());
+	LOG(s.c_str());
 }

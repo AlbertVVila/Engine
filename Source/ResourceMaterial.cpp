@@ -35,7 +35,7 @@ ResourceMaterial::ResourceMaterial(const ResourceMaterial& resource) : Resource(
 	emissiveColor = resource.emissiveColor;
 
 	roughness = resource.roughness;
-	metallic = resource.metallic;
+	bloomIntenstiy = resource.bloomIntenstiy;
 }
 
 ResourceMaterial::~ResourceMaterial()
@@ -74,8 +74,9 @@ bool ResourceMaterial::LoadInMemory()
 	diffuseColor = materialJSON->GetColor4("diffuseColor");
 	specularColor = materialJSON->GetColor3("specularColor");
 	emissiveColor = materialJSON->GetColor3("emissiveColor");
+	dissolveColor = materialJSON->GetColor3("dissolveColor");
 
-	metallic = materialJSON->GetFloat("metallic");
+	bloomIntenstiy = materialJSON->GetFloat("bloomIntenstiy", bloomIntenstiy);
 	roughness = materialJSON->GetFloat("roughness");
 
 	unsigned diffuseUID = materialJSON->GetUint("diffuseUID");
@@ -103,6 +104,11 @@ bool ResourceMaterial::LoadInMemory()
 	{
 		textures[(unsigned)TextureType::NORMAL] = (ResourceTexture*)App->resManager->Get(normalUID);
 	}
+	unsigned dissolveUID = materialJSON->GetUint("dissolveUID");
+	if (dissolveUID != 0u)
+	{
+		textures[(unsigned)TextureType::DISSOLVE] = (ResourceTexture*)App->resManager->Get(dissolveUID);
+	}
 
 	const char* shaderName = materialJSON->GetString("shader");
 	if (shaderName != nullptr)
@@ -124,10 +130,11 @@ void ResourceMaterial::Save() const
 	if (textures[(unsigned)TextureType::DIFFUSE] != nullptr)
 		materialJSON->AddFloat4("diffuseColor", diffuseColor);
 
-	materialJSON->AddFloat("metallic", metallic);
+	materialJSON->AddFloat("bloomIntenstiy", bloomIntenstiy);
 	materialJSON->AddFloat("roughness", roughness);
 	materialJSON->AddFloat3("specularColor", specularColor);
 	materialJSON->AddFloat3("emissiveColor", emissiveColor);
+	materialJSON->AddFloat3("dissolveColor", dissolveColor);
 
 
 	if (textures[(unsigned)TextureType::DIFFUSE] != nullptr)
@@ -149,6 +156,10 @@ void ResourceMaterial::Save() const
 	if (textures[(unsigned)TextureType::NORMAL] != nullptr)
 	{
 		materialJSON->AddUint("normalUID", textures[(unsigned)TextureType::NORMAL]->GetUID());
+	}
+	if (textures[(unsigned)TextureType::DISSOLVE] != nullptr)
+	{
+		materialJSON->AddUint("dissolveUID", textures[(unsigned)TextureType::DISSOLVE]->GetUID());
 	}
 
 	if (shader != nullptr)
@@ -194,6 +205,10 @@ void ResourceMaterial::SaveMetafile(const char* file) const
 	if (textures[(unsigned)TextureType::NORMAL] != nullptr)
 	{
 		meta->AddUint("normalUID", textures[(unsigned)TextureType::NORMAL]->GetUID());
+	}
+	if (textures[(unsigned)TextureType::DISSOLVE] != nullptr)
+	{
+		meta->AddUint("dissolveUID", textures[(unsigned)TextureType::DISSOLVE]->GetUID());
 	}
 
 	if (shader != nullptr)
@@ -270,7 +285,7 @@ void ResourceMaterial::Reset(const ResourceMaterial& material)
 	emissiveColor = material.emissiveColor;
 
 	roughness = material.roughness;
-	metallic = material.metallic;
+	bloomIntenstiy = material.bloomIntenstiy;
 }
 
 int ResourceMaterial::Compare(const ResourceMaterial& material)
@@ -293,7 +308,7 @@ int ResourceMaterial::Compare(const ResourceMaterial& material)
 
 	if (roughness != material.roughness)
 		return false;
-	if (metallic != material.metallic)
+	if (bloomIntenstiy != material.bloomIntenstiy)
 		return false;
 	return true;
 }
@@ -347,6 +362,9 @@ void ResourceMaterial::SetUniforms(unsigned shader) const
 		case TextureType::NORMAL:
 			textureType = "normal";
 			break;
+		case TextureType::DISSOLVE:
+			textureType = "dissolve";
+			color = (float*)&dissolveColor;
 		}
 
 		char texture[32];
@@ -393,6 +411,9 @@ void ResourceMaterial::SetUniforms(unsigned shader) const
 
 	glUniform1fv(glGetUniformLocation(shader,
 		"material.roughness"), 1, (GLfloat*)&roughness);
+
+	glUniform1fv(glGetUniformLocation(shader,
+		"material.bloomIntensity"), 1, (GLfloat*)&bloomIntenstiy);
 	glUniform3fv(glGetUniformLocation(shader,
 		"material.specular"), 1, (GLfloat*)&specularColor);
 }

@@ -8,6 +8,8 @@
 #include <vector>
 #define MAX_TEXT_LENGTH 64
 #define MAX_FONT_SIZE 64
+#define MAX_WRAP_WIDTH 10000
+#define MAX_INTERLINE_DISTANCE 10000
 
 Text::Text() : Component(nullptr, ComponentType::Text)
 {
@@ -28,6 +30,9 @@ Text::Text(const Text &copy) : Component(copy)
 	colorHovered = copy.colorHovered;
 	offset = copy.offset;
 	scaleOffset = copy.scaleOffset;
+	isTextWrapped = copy.isTextWrapped;
+	wrapWidth = copy.wrapWidth;
+	interlineDistance = copy.interlineDistance;
 }
 
 Text::~Text()
@@ -83,6 +88,12 @@ void Text::DrawProperties()
 		ImGui::ColorEdit4("Font color highlited", (float*)&colorHovered);
 		ImGui::DragFloat2("Text position offset", &offset[0]);
 		ImGui::DragFloat2("Text scale offset", &scaleOffset[0]);
+		ImGui::Checkbox("Wrap text", &isTextWrapped);
+		if (isTextWrapped)
+		{
+			ImGui::DragFloat("Wrap width", &wrapWidth, 1.0f, 1.0f, MAX_WRAP_WIDTH);
+			ImGui::DragFloat("Interline Distance", &interlineDistance, 1.0f, 1.0f, MAX_INTERLINE_DISTANCE);
+		}
 		ImGui::Separator();
 	}
 }
@@ -97,6 +108,9 @@ void Text::Save(JSON_value *value)const
 	value->AddFloat4("colorHovered", colorHovered);
 	value->AddFloat2("offset", offset);
 	value->AddFloat2("scaleOffset", scaleOffset);
+	value->AddInt("IsTextWrapped", isTextWrapped);
+	value->AddFloat("WrapWidth", wrapWidth);
+	value->AddFloat("InterlineDistance", interlineDistance);
 }
 
 void Text::Load(JSON_value* value)
@@ -109,4 +123,7 @@ void Text::Load(JSON_value* value)
 	colorHovered = value->GetFloat4("colorHovered");
 	offset = value->GetFloat2("offset");
 	scaleOffset = value->GetFloat2("scaleOffset");
+	isTextWrapped = value->GetInt("IsTextWrapped");
+	wrapWidth = value->GetFloat("WrapWidth");
+	interlineDistance = value->GetFloat("InterlineDistance");
 }
