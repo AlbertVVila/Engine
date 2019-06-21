@@ -709,6 +709,8 @@ void ModuleScene::DrawGUI()
 	}
 	if(ImGui::Button("Reset kdTree"))
 	{
+		App->spacePartitioning->kDTree.CleanUp();
+		App->spacePartitioning->kDTree.Init();
 		App->spacePartitioning->kDTree.Calculate();
 	}
 
