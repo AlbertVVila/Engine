@@ -1622,28 +1622,7 @@ GameObject* ModuleScene::FindGameObjectByName(const char* name, GameObject* pare
 	return nullptr;
 }
 
-std::vector<std::string> ModuleScene::GetItems()
-{
-	std::vector<std::string> items;
-	std::stack<GameObject*> GOs;
-	GOs.push(root);
 
-	while (!GOs.empty())
-	{
-		GameObject* go = GOs.top();
-		if (go->GetComponentOld(ComponentType::Script) != nullptr)
-		{
-			items.push_back(go->name);
-		}
-		GOs.pop();
-		for (const auto& child : go->children)
-		{
-			GOs.push(child);
-		}
-	}
-
-	return items;
-}
 
 GameObject * ModuleScene::Spawn(const char * name, GameObject * parent)
 {

@@ -50,16 +50,17 @@ public:
 	ENGINE_API std::vector<Component *> GetComponents(ComponentType type) const;
 	ENGINE_API std::vector<Component *> GetComponentsInChildren(ComponentType type) const;
 	void RemoveComponent(const Component & component);
-	void RemoveChild(GameObject* child);
-	void InsertChild(GameObject* child);
+	ENGINE_API void RemoveChild(GameObject* child);
+	ENGINE_API void InsertChild(GameObject* child);
+	ENGINE_API void ChangeParent(GameObject * oldParent, GameObject * newParent);
 	bool IsParented(const GameObject & gameobject) const;
 
 	void DrawHierarchy();
 
 	void UpdateGlobalTransform();
-	void SetGlobalTransform(const float4x4 &global);
-	float4x4 GetGlobalTransform() const;
-	float4x4 GetLocalTransform() const;
+	ENGINE_API void SetGlobalTransform(const float4x4 &global);
+	ENGINE_API float4x4 GetGlobalTransform() const;
+	ENGINE_API float4x4 GetLocalTransform() const;
 
 	ENGINE_API void OnPlay();
 	void SetAllMoveFlags();

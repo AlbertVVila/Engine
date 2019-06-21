@@ -13,6 +13,7 @@
 #include "Item.h"
 #include "imgui.h"
 
+
 #include "Math\float3.h"
 
 class GameObject;
@@ -25,7 +26,6 @@ public:
 	void Start() override;
 	void Update() override;
 	void GenerateLoot();
-	void AddItem(std::string name, int drop);
 
 private:
 
@@ -33,13 +33,15 @@ private:
 	int drop = 0;
 	std::string goName = "GO Name";
 	std::string itemName = "";
+	unsigned uid = 0;
 	math::float3 scale;
+	std::vector<std::string> itemList;
 
-	GameObject* go = nullptr;
-
+	GameObject* go;
 	Script* script = nullptr;
 
 	void Expose(ImGuiContext * context);
+	void GetItems();
 };
 
 #endif __EnemyLoot_h__
