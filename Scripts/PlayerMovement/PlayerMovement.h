@@ -9,6 +9,7 @@ struct ImGuiContext;
 #include "Application.h"
 #include "Math/float3.h"
 #include <vector>
+#include <unordered_map>
 
 #define MINIMUM_PATH_DISTANCE 400.0f
 
@@ -45,6 +46,40 @@ class PlayerStateUppercut;
 class PlayerStateWalk;
 class DamageController;
 class DamageFeedbackUI;
+
+#define MAX(a,b) ((a) < (b) ? (b) : (a))
+
+enum class PlayerMovement_API SkillType
+{
+	NONE = 0,
+	DASH,
+	UPPERCUT
+};
+
+struct PlayerMovement_API PlayerSkill
+{
+public:
+	PlayerSkill() {}
+	PlayerSkill(SkillType type) : type(type) {}
+	void Expose(const char* title);
+	void Serialize(JSON_value* json) const;
+	void DeSerialize(JSON_value* json, PlayerState* playerState);
+	bool IsUsable(float playerMana) const { return available && type != SkillType::NONE && (playerMana >= manaCost && cooldownTimer <= 0); }
+	float Use(float minCooldown = 0.f) { cooldownTimer = MAX(cooldown,minCooldown); maxCooldown = MAX(cooldown,minCooldown); return manaCost; }
+	void Update(float deltaTime) { if (cooldownTimer > 0) cooldownTimer -= deltaTime; }
+	void SetCooldown(float value) { if (type != SkillType::NONE && value > cooldownTimer) { cooldownTimer = value; maxCooldown = value; } }
+	float CooldownRatio() const { return cooldownTimer > 0 ? cooldownTimer / maxCooldown : 0; }
+
+public:
+	bool available = true;
+	SkillType type = SkillType::NONE;
+	float manaCost = 10.f;
+	float cooldown = 0.f;
+	PlayerState* state = nullptr;
+
+	float cooldownTimer = 0.f;
+	float maxCooldown = 0.f;
+};
 
 struct PlayerMovement_API PlayerStats
 {
@@ -87,6 +122,9 @@ public:
 class PlayerMovement_API PlayerMovement : public Script
 {
 public:
+	PlayerMovement();
+	virtual ~PlayerMovement();
+
 	void Expose(ImGuiContext* context) override;
 
 	void Start() override;
@@ -112,7 +150,8 @@ public:
 	bool IsUsingThirdItem() const;
 	bool IsUsingFourthItem() const;
 
-	void ResetCooldown(unsigned int hubButtonID);
+	//void ResetCooldown(unsigned int hubButtonID);
+	void UseSkill(SkillType skill);
 
 private:
 	void CheckStates(PlayerState* previous, PlayerState* current);
@@ -136,18 +175,21 @@ public:
 
 	float walkingSpeed = 300.0f;
 	float dashSpeed = 10.0f;
-	//const float fullHealth = 100.0f;
+
 	float health = 100.0f;
-	//const float fullMana = 100.0f;
 	float mana = 100.0f;
-	bool IsManaUsed = false;
+	//bool IsManaUsed = false;
 	float attackDuration = 1.0f;
 	float attackTimer = 0.0f;
 	
 	float outCombatTimer = 0.0f;
 	float outCombatMaxTime = 3.0f;
+	float manaRegenTimer = 0.0f;
+	float manaRegenMaxTime = 5.0f;
 
 	PlayerStats stats = { 100.0f, 100.0f, 10U, 10U, 5.0f, 5.0f };
+	std::unordered_map<SkillType, PlayerSkill*> allSkills;
+	SkillType activeSkills[4] = { SkillType::NONE, SkillType::NONE, SkillType::NONE, SkillType::NONE };
 
 	float OutOfMeshCorrectionXZ = 500.f;
 	float OutOfMeshCorrectionY = 300.0f;

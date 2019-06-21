@@ -156,7 +156,8 @@ public:
 	GameObject* canvas = nullptr;
 
 	bool loadScene = false;
-	int actionAfterLoad = -1;
+	bool actionAfterLoad = false;
+	std::string stateAfterLoad = "None";
 };
 
 

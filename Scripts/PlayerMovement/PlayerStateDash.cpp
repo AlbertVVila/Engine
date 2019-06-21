@@ -89,7 +89,7 @@ void PlayerStateDash::Enter()
 			dashMesh->transform->Scale(1.0f);
 			scalator = originalScalator;
 		}
-		player->ResetCooldown(HUB_BUTTON_Q);
+		player->UseSkill(SkillType::DASH);
 	}
 }
 
@@ -113,12 +113,12 @@ void PlayerStateDash::CheckInput()
 		}
 		if (player->IsUsingFirstSkill()) //cooldown?
 		{
-			player->currentState = (PlayerState*)player->dash;
+			player->currentState = player->allSkills[player->activeSkills[0]]->state;
 			return;
 		}
 		if (player->IsUsingSecondSkill())
 		{
-			player->currentState = (PlayerState*)player->uppercut;
+			player->currentState = player->allSkills[player->activeSkills[1]]->state;
 			return;
 		}
 		if (player->IsMoving())
