@@ -118,7 +118,11 @@ void ComponentImage::DrawProperties()
 		ImGui::Checkbox("Has mask", &isMasked);
 		ImGui::Checkbox("Is horizontal mask?", &isMaskHorizontal);
 		ImGui::DragInt("Mask amount %", &maskAmount, 1, 0, 100);
-		ImGui::Checkbox("Hover Detection", &hoverDetection);
+		if (showHoverDetectInEditor)
+		{
+			ImGui::Checkbox("Hover Detection Mouse1", &hoverDetectionMouse1);
+			ImGui::Checkbox("Hover Detection Mouse3", &hoverDetectionMouse3);
+		}
 
 		ImGui::Separator();
 	}
@@ -147,10 +151,8 @@ void ComponentImage::Update()
 	if (screenX > buttonMin.x && screenX < buttonMax.x && screenY > buttonMin.y && screenY < buttonMax.y)
 	{
 		isHovered = true;
-		if (hoverDetection)
-		{
-			App->ui->uiHovered = true;
-		}
+		if (hoverDetectionMouse1) App->ui->uiHoveredMouse1 = true;
+		if (hoverDetectionMouse3) App->ui->uiHoveredMouse3 = true;
 	}
 	else
 		isHovered = false;
@@ -177,7 +179,8 @@ void ComponentImage::Save(JSON_value *value)const
 	value->AddInt("isMasked", isMasked);
 	value->AddInt("maskAmount", maskAmount);
 	value->AddInt("isMaskHorizontal", isMaskHorizontal);
-	value->AddInt("hoverDetection", hoverDetection);
+	value->AddInt("hoverDetectionMouse1", hoverDetectionMouse1);
+	value->AddInt("hoverDetectionMouse3", hoverDetectionMouse3);
 
 }
 
@@ -192,7 +195,8 @@ void ComponentImage::Load(JSON_value* value)
 	isMasked = value->GetInt("isMasked");
 	maskAmount = value->GetInt("maskAmount");
 	isMaskHorizontal = value->GetInt("isMaskHorizontal");
-	hoverDetection = value->GetInt("hoverDetection", 1);
+	hoverDetectionMouse1 = value->GetInt("hoverDetectionMouse1", 1);
+	hoverDetectionMouse3 = value->GetInt("hoverDetectionMouse3", 1);
 }
 
 ENGINE_API void ComponentImage::SetMaskAmount(int maskAmount)

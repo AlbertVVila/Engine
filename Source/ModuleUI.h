@@ -21,7 +21,7 @@ public:
 	virtual ~ModuleUI();
 
 	bool Init(JSON* json) override;
-	update_status PreUpdate() override { uiHovered = false; return update_status::UPDATE_CONTINUE; }
+	update_status PreUpdate() override { uiHoveredMouse1 = false; uiHoveredMouse3 = false; return update_status::UPDATE_CONTINUE; }
 	update_status Update(float dt) override;
 	update_status PostUpdate() override;
 	bool CleanUp() override;
@@ -29,16 +29,17 @@ public:
 	void DrawGUI() override;
 
 	void Draw(int currentWidth, int currentHeight);
-public:
+	inline bool UIHovered(bool checkMouse1 = true, bool checkMouse3 = true) { return (uiHoveredMouse1 && checkMouse1) || (uiHoveredMouse3 && checkMouse3); }
 
+public:
 	int currentWidth;
 	int currentHeight;
 	bool showUIinSceneViewport = false;
 
-
 private:
 	void GenerateVAO(unsigned& vao, float quadVertices[16]);
 	void RenderImage(const ComponentImage& componentImage, int currentWidth, int currentHeight);
+
 private:
 	const char* shaderFile = "UI";
 	Shader* shader = nullptr;
@@ -52,7 +53,8 @@ private:
 	float mask[MASK_DIVISIONS];
 
 public:
-	bool uiHovered = false;
+	bool uiHoveredMouse1 = false;
+	bool uiHoveredMouse3 = false;
 };
 
 #endif // __ModuleUI_H__
