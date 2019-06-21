@@ -9,6 +9,7 @@ struct ImGuiContext;
 #include "Application.h"
 #include "Math/float3.h"
 #include <vector>
+#include <unordered_map>
 
 #define MINIMUM_PATH_DISTANCE 400.0f
 
@@ -19,14 +20,15 @@ struct ImGuiContext;
 #define PlayerMovement_API __declspec(dllimport)
 #endif
 
-#define HUB_BUTTON_Q 0
-#define HUB_BUTTON_W 1
-#define HUB_BUTTON_E 2
-#define HUB_BUTTON_R 3
-#define HUB_BUTTON_1 4
-#define HUB_BUTTON_2 5
-#define HUB_BUTTON_3 6
-#define HUB_BUTTON_4 7
+#define HUB_BUTTON_RC 0
+#define HUB_BUTTON_Q 1
+#define HUB_BUTTON_W 2
+#define HUB_BUTTON_E 3
+#define HUB_BUTTON_R 4
+#define HUB_BUTTON_1 5
+#define HUB_BUTTON_2 6
+#define HUB_BUTTON_3 7
+#define HUB_BUTTON_4 8
 
 class ComponentAnimation;
 class ComponentTransform;
@@ -49,6 +51,43 @@ class ChainAttackSkill;
 class DashSkill;
 class BombDropSkill;
 class CircularAttackSkill;
+
+#define MAX(a,b) ((a) < (b) ? (b) : (a))
+
+enum class PlayerMovement_API SkillType
+{
+	NONE = 0,
+	CHAIN,
+	DASH,
+	SLICE,
+	BOMB_DROP,
+	CIRCULAR
+};
+
+struct PlayerMovement_API PlayerSkill
+{
+public:
+	PlayerSkill() {}
+	PlayerSkill(SkillType type) : type(type) {}
+	void Expose(const char* title);
+	void Serialize(JSON_value* json) const;
+	void DeSerialize(JSON_value* json, PlayerState* playerState);
+	bool IsUsable(float playerMana) const { return available && type != SkillType::NONE && (playerMana >= manaCost && cooldownTimer <= 0); }
+	float Use(float minCooldown = 0.f) { cooldownTimer = MAX(cooldown, minCooldown); maxCooldown = MAX(cooldown, minCooldown); return manaCost; }
+	void Update(float deltaTime) { if (cooldownTimer > 0) cooldownTimer -= deltaTime; }
+	void SetCooldown(float value) { if (type != SkillType::NONE && value > cooldownTimer) { cooldownTimer = value; maxCooldown = value; } }
+	float CooldownRatio() const { return cooldownTimer > 0 ? cooldownTimer / maxCooldown : 0; }
+
+public:
+	bool available = true;
+	SkillType type = SkillType::NONE;
+	float manaCost = 10.f;
+	float cooldown = 0.f;
+	BasicSkill* skill = nullptr;
+
+	float cooldownTimer = 0.f;
+	float maxCooldown = 0.f;
+};
 
 struct PlayerMovement_API PlayerStats
 {
@@ -91,6 +130,9 @@ public:
 class PlayerMovement_API PlayerMovement : public Script
 {
 public:
+	PlayerMovement();
+	virtual ~PlayerMovement();
+
 	void Expose(ImGuiContext* context) override;
 
 	void Start() override;
@@ -118,6 +160,7 @@ public:
 	bool IsUsingSkill() const;
 
 	void ResetCooldown(unsigned int hubButtonID);
+	void UseSkill(SkillType skill);
 
 private:
 	void CheckStates(PlayerState* previous, PlayerState* current);
@@ -144,12 +187,14 @@ public:
 	float health = 100.0f;
 	//const float fullMana = 100.0f;
 	float mana = 100.0f;
-	bool IsManaUsed = false;
+	//bool IsManaUsed = false;
 	float attackDuration = 1.0f;
 	float attackTimer = 0.0f;
 	
 	float outCombatTimer = 0.0f;
 	float outCombatMaxTime = 3.0f;
+	float manaRegenTimer = 0.0f;
+	float manaRegenMaxTime = 5.0f;
 
 	PlayerStats stats = { 100.0f, 100.0f, 10U, 10U, 5.0f, 5.0f };
 
@@ -167,13 +212,16 @@ public:
 	bool canInteract = true;
 
 	// Skills
-	std::vector<BasicSkill*> playerSkills;	// Vector with all skill slots (Right-Click, Q, W, E, R)
+	//std::vector<BasicSkill*> playerSkills;	// Vector with all skill slots (Right-Click, Q, W, E, R)
 	BasicSkill* currentSkill = nullptr;
 	ChainAttackSkill* chain = nullptr;
 	DashSkill* dash = nullptr;
 	SliceSkill* slice = nullptr;
 	BombDropSkill* bombDrop = nullptr;
 	CircularAttackSkill* circular = nullptr;
+
+	std::unordered_map<SkillType, PlayerSkill*> allSkills;
+	SkillType assignedSkills[5] = { SkillType::NONE, SkillType::NONE, SkillType::NONE, SkillType::NONE, SkillType::NONE };
 
 	//Audio
 	ComponentAudioSource* gotHitAudio = nullptr;
