@@ -6,6 +6,7 @@
 #include "ComponentButton.h"
 #include "ComponentTransform2D.h"
 
+#include "ModuleTime.h"
 #include "ModuleInput.h"
 #include "Math/float2.h"
 #include "PlayerMovement.h"
@@ -49,13 +50,11 @@ void LoopStatePlaying::Update()
 {
 	HandleHotkeys();
 
-	if (gLoop->hudBackToMenuButton->IsPressed())
+	if (gLoop->hudBackToMenuButton->IsPressed() ||
+		gLoop->App->input->GetKey(SDL_SCANCODE_P) == KEY_UP ||
+		(gLoop->App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_UP && !gLoop->playerMenuGO->isActive()) )
 	{
-		gLoop->currentLoopState = (LoopState*)gLoop->loadingState;
-		gLoop->playerMenuGO->SetActive(false);
-		gLoop->hudGO->SetActive(false);
-		gLoop->loadingGO->SetActive(true);
-		gLoop->sceneToLoad = MENU_SCENE;
+		gLoop->currentLoopState = (LoopState*)gLoop->pausedState;
 	}
 
 	if (gLoop->closePlayerMenuButton->KeyUp())
