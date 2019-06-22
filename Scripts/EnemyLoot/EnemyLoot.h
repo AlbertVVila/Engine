@@ -36,12 +36,15 @@ private:
 	unsigned uid = 0;
 	math::float3 scale;
 	std::vector<std::string> itemList;
+	std::vector<std::pair<std::string, int>> actLoot;
 
 	GameObject* go;
 	Script* script = nullptr;
 
 	void Expose(ImGuiContext * context);
 	void GetItems();
+	void Serialize(JSON_value * json) const;
+	void DeSerialize(JSON_value * json);
 };
 
 #endif __EnemyLoot_h__
