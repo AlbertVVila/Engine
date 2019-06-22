@@ -221,7 +221,6 @@ public:
 	BombDropSkill* bombDrop = nullptr;
 	CircularAttackSkill* circular = nullptr;
 
-	std::unordered_map<SkillType, PlayerSkill*> allSkills;
 	SkillType assignedSkills[5] = { SkillType::NONE, SkillType::NONE, SkillType::NONE, SkillType::NONE, SkillType::NONE };
 
 	//Audio

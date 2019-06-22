@@ -1,6 +1,10 @@
 #include "ModuleTime.h"
+#include "Math/MathFunc.h"
+
 
 #define MAX_FRAME_MS 0.04F
+#define NORMAL_SPEED 1.0f
+#define FREEZE 0.0f
 
 ModuleTime::ModuleTime()
 {

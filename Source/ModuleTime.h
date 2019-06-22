@@ -5,8 +5,8 @@
 
 #include "Timer.h"
 
-enum class GameState 
-{ 
+enum class GameState
+{
 	RUN,
 	PAUSE,
 	STOP
@@ -31,12 +31,28 @@ public:
 	void StopGameClock();
 	void Step();
 
+	/** @param fadeInTime value between [0,1].
+	@@ param fadeOutTime value between [0,1].
+	Represents percentage of freeze time that fadeIn ends and fadeOut starts
+	fadeIn value of 0.0f is not fadeIn, same with FadeOut and value 1.0f**/
+	ENGINE_API void FreezeGame(float duration, float fadeInTime = 0.0f, float fadeOutTime = 1.0f, bool linealFade = false);
+	ENGINE_API void UnFreezeGame();
+
 private:
+	void HandleFreeze();
 	void PartitionTime();
 
 private:
 	unsigned frameCount = 0u;
 	float aggregateGameDeltaTime = 0.0f;
+
+	//Freeze
+	bool temporaryFreeze = false;
+	float freezeTimer = 0.0f;
+	float freezeDuration = 0.0f;
+	float freezeFadeIn = 0.0f;
+	float freezeFadeOut = 0.0f;
+	bool linealFade = false;
 
 public:
 	int FPS = 0;
