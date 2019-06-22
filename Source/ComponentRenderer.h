@@ -3,6 +3,7 @@
 
 #include "Component.h"
 #include "Math/float3.h"
+#include "Math/float2.h"
 
 class ResourceMesh;
 class ResourceMaterial;
@@ -71,6 +72,7 @@ private:
 	float fps = 24.f;
 	float timer = 0.f;
 	float frameMix = 0.f; 
+	math::float2 texSpeed = math::float2::zero;
 
 	std::vector<BindBone> bindBones;
 };

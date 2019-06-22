@@ -6,6 +6,7 @@
 #include "ModuleTextures.h"
 #include "ModuleResourceManager.h"
 #include "ModuleFileSystem.h"
+#include "ModuleTime.h"
 #include "ComponentRenderer.h"
 
 #include "ResourceTexture.h"
@@ -418,7 +419,9 @@ void ResourceMaterial::SetUniforms(unsigned shader, bool isFx, ComponentRenderer
 		glUniform1i(glGetUniformLocation(shader, "f1Ypos"), cRenderer->f1Ypos);
 		glUniform1i(glGetUniformLocation(shader, "f2Xpos"), cRenderer->f2Xpos);
 		glUniform1i(glGetUniformLocation(shader, "f2Ypos"), cRenderer->f2Ypos);
-		glUniform1f(glGetUniformLocation(shader, "mixAmount"), cRenderer->frameMix);
+		glUniform1f(glGetUniformLocation(shader, "mixAmount"), cRenderer->frameMix);		
+		glUniform1f(glGetUniformLocation(shader, "time"), App->time->ellapsedTime);
+		glUniform2fv(glGetUniformLocation(shader, "uvSpeed"), 1, &cRenderer->texSpeed[0]);
 	}
 	else
 	{
