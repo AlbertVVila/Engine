@@ -1,0 +1,217 @@
+{
+    "navigationScene": {
+        "navDataSize": 0
+    },
+    "GameObjects": [
+        {
+            "UID": 2844450206,
+            "ParentUID": 0,
+            "Name": "Empty",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 0,
+                    "Enabled": 1,
+                    "Position": [
+                        166.15536499023438,
+                        0.0,
+                        170.4473876953125
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Euler": [
+                        -0.0,
+                        0.0,
+                        -0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        0.9999672174453735,
+                        0.9999672174453735
+                    ],
+                    "Global": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        166.15536499023438,
+                        0.0,
+                        0.9999672174453735,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.9999672174453735,
+                        170.4473876953125,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "Type": 1,
+                    "Enabled": 1,
+                    "meshUID": 3299670830,
+                    "materialUID": 735767494,
+                    "castShadows": 0,
+                    "useAlpha": 0,
+                    "highlighted": 0,
+                    "highlightColor": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "xTiles": 1,
+                    "yTiles": 1,
+                    "fps": 24.0,
+                    "waterAmplitude1": 13.699999809265137,
+                    "waterDecay1": 1.3300000429153443,
+                    "waterFrequency1": 2.0,
+                    "waterSource1": [
+                        -32.34000015258789,
+                        -50.0,
+                        0.0
+                    ],
+                    "waterAmplitude2": 2.4000000953674318,
+                    "waterDecay2": 0.550000011920929,
+                    "waterFrequency2": 3.5999999046325685,
+                    "waterSource2": [
+                        50.0,
+                        50.0,
+                        0.0
+                    ],
+                    "texSpeed": [
+                        0.0,
+                        0.0
+                    ],
+                    "waterSpeed": 1.399999976158142
+                }
+            ]
+        },
+        {
+            "UID": 3782652451,
+            "ParentUID": 0,
+            "Name": "Point",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 0,
+                    "Enabled": 1,
+                    "Position": [
+                        195.95947265625,
+                        -38.95486831665039,
+                        264.08111572265627
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Euler": [
+                        -0.0,
+                        0.0,
+                        -0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Global": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        195.95947265625,
+                        0.0,
+                        1.0,
+                        0.0,
+                        -38.95486831665039,
+                        0.0,
+                        0.0,
+                        1.0,
+                        264.08111572265627,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "Type": 3,
+                    "Enabled": 1,
+                    "Lighttype": 1,
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "radius": 156.0,
+                    "range": 100.0,
+                    "intensity": 73.4000015258789,
+                    "produceShadows": 0
+                }
+            ]
+        }
+    ]
+}
