@@ -192,9 +192,11 @@ void ComponentAnimation::DrawProperties()
 					ImGui::SameLine();
 
 					unsigned clipUID = stateMachine->GetClipResource(j);
-					ResourceAnimation* animation = (ResourceAnimation*)App->resManager->GetWithoutLoad(clipUID);
-					
-					if (ImGui::BeginCombo("", clipUID != 0u ? animation->GetName() : ""))
+					ResourceAnimation* animation = nullptr;
+					if(clipUID != 0)
+						animation = (ResourceAnimation*)App->resManager->GetWithoutLoad(clipUID);
+
+					if (ImGui::BeginCombo("", animation != nullptr ? animation->GetName() : ""))
 					{
 						if (guiAnimations.empty())
 						{

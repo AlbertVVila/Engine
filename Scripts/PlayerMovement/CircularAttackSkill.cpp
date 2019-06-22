@@ -98,10 +98,6 @@ void CircularAttackSkill::CheckInput()
 		{
 			player->currentState = (PlayerState*)player->walk;
 		}
-		else
-		{
-			Reset();
-		}
 	}
 	else
 	{

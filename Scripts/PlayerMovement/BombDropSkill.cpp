@@ -85,9 +85,5 @@ void BombDropSkill::CheckInput()
 		{
 			player->currentState = (PlayerState*)player->walk;
 		}
-		else
-		{
-			Reset();
-		}
 	}
 }
