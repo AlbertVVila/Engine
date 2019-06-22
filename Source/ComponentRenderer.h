@@ -42,9 +42,17 @@ public:
 	bool dissolve = false;
 	float dissolveAmount = 0.f;
 	float borderAmount = 0.5f;
+
 	bool water = true;
-	float waterAmplitude = 10.f;
-	float decay = 1.f;
+	float waterAmplitude1 = 10.f;
+	float waterFrequency1 = 10.f;
+	float waterDecay1 = 1.f;
+	math::float3 waterSource1 = math::float3::zero;
+
+	float waterAmplitude2 = 10.f;
+	float waterFrequency2 = 10.f;
+	float waterDecay2 = 1.f;
+	math::float3 waterSource2 = math::float3::zero;
 
 	math::float3 highlightColor = math::float3::one;
 

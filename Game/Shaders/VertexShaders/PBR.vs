@@ -60,8 +60,20 @@ uniform mat4 palette[64];
 
 uniform mat4 lightProjView;
 uniform float time;
-uniform float waterAmplitude;
-uniform float decay;
+
+//Water stuff
+uniform float waterAmplitude1;
+uniform float frequency1;
+uniform float decay1;
+uniform vec3 source1;
+
+uniform float waterAmplitude2;
+uniform float frequency2;
+uniform float decay2;
+uniform vec3 source2;
+
+uniform float waterMaxDistortion;
+//
 
 out vec3 normalIn;
 out vec3 position;
@@ -123,11 +135,28 @@ void main()
 		}
 #else	
 	position = vertex_position;
-	float dist = sqrt(pow(position.x,2) + pow(position.y,2));
-	float offset = sin((dist / decay) - time) * (waterAmplitude / (pow(dist,2)));
-	position.z += offset;
+	float dist1 = sqrt(pow(position.x - source1.x,2) + pow(position.y - source1.y,2));
+	float dist2 = sqrt(pow(position.x - source2.x,2) + pow(position.y - source2.y,2));
+	dist1 = max(dist1, 20);
+	dist2 = max(dist2, 20);
+	float ang1 = (dist1 / frequency1) - time;
+	float ang2 = (dist2 / frequency2) - time;
+	float att1 = (waterAmplitude1 / (dist1 * decay1));
+	float att2 = (waterAmplitude2 / (dist2 * decay2));
+	float s1 = sin(ang1);
+	float s2 = sin(ang2);
+	float offset = s1 * att1 + s2 * att2;
+	float c1= cos(-time + (dist1 / frequency1)) / (dist1) * frequency1;
+	float c2= cos(-time + (dist2 / frequency2)) / (dist2) * frequency2;
+	
+	position.z = offset;
+
+	float dx = -att1 * (source1.x - position.x) * c1 -att2 * (source2.x - position.x) * c2;
+	float dy = -att1 * (source1.y - position.y) * c1 -att2 * (source2.y - position.y) * c2;
+	
+	normalIn = normalize(cross(vec3(1,0,dx), vec3(0,1,dy)));
+
 	position = (model*vec4(position, 1.0)).xyz;
 	gl_Position = proj*view*vec4(position, 1.0);	
-	normalIn = mat3(transpose(inverse(model))) * vertex_normal;
 #endif	
 }

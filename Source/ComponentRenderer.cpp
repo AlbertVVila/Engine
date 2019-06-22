@@ -128,8 +128,25 @@ void ComponentRenderer::DrawProperties()
 			ImGui::Checkbox("Water", &water);
 			if (water)
 			{
-				ImGui::DragFloat("Water amplitude", &waterAmplitude, 0.1f, 0.1f, 2000.0f);
-				ImGui::DragFloat("Water decay", &decay, 0.1f, 0.1f, 2000.0f);
+				if (ImGui::CollapsingHeader("Source 1"))
+				{
+					ImGui::PushID(0);
+					ImGui::DragFloat("Water amplitude", &waterAmplitude1, 0.1f, 0.1f, 2000.0f);
+					ImGui::DragFloat("Water frequency", &waterFrequency1, 0.1f, 0.1f, 2000.0f);
+					ImGui::DragFloat("Water decay", &waterDecay1, 0.01f, 0.01f, 2000.0f);
+					ImGui::DragFloat2("Source pos", &waterSource1[0], 0.01f, -20000.f, 20000.f);
+					ImGui::PopID();
+				}
+				if (ImGui::CollapsingHeader("Source 2"))
+				{
+					ImGui::PushID(1);
+					ImGui::DragFloat("Water amplitude", &waterAmplitude2, 0.1f, 0.1f, 2000.0f);
+					ImGui::DragFloat("Water frequency", &waterFrequency2, 0.1f, 0.1f, 2000.0f);
+					ImGui::DragFloat("Water decay", &waterDecay2, 0.01f, 0.01f, 2000.0f);
+					ImGui::DragFloat2("Source pos", &waterSource2[0], 0.01f, -20000.f, 20000.f);
+					ImGui::PopID();
+				}
+
 			}
 		}
 		else
@@ -260,6 +277,14 @@ void ComponentRenderer::Save(JSON_value* value) const
 	value->AddInt("xTiles", xTiles);
 	value->AddInt("yTiles", yTiles);
 	value->AddFloat("fps", fps);
+	value->AddFloat("waterAmplitude1", waterAmplitude1);
+	value->AddFloat("waterDecay1", waterDecay1);
+	value->AddFloat("waterFrequency1", waterFrequency1);
+	value->AddFloat3("waterSource1", waterSource1);
+	value->AddFloat("waterAmplitude2", waterAmplitude2);
+	value->AddFloat("waterDecay2", waterDecay2);
+	value->AddFloat("waterFrequency2", waterFrequency2);
+	value->AddFloat3("waterSource2", waterSource2);
 }
 
 void ComponentRenderer::Load(JSON_value* value)
@@ -281,6 +306,14 @@ void ComponentRenderer::Load(JSON_value* value)
 	xTiles = value->GetInt("xTiles", xTiles);
 	yTiles = value->GetInt("yTiles", yTiles);
 	fps = value->GetFloat("fps", fps);
+	waterFrequency1 = value->GetFloat("waterFrequency1", waterFrequency1);
+	waterDecay1 = value->GetFloat("waterDecay1", waterDecay1);
+	waterAmplitude1 = value->GetFloat("waterAmplitude1", waterAmplitude1);
+	waterSource1 = value->GetFloat3("waterSource1");
+	waterFrequency2 = value->GetFloat("waterFrequency2", waterFrequency2);
+	waterDecay2 = value->GetFloat("waterDecay2", waterDecay2);
+	waterAmplitude2 = value->GetFloat("waterAmplitude2", waterAmplitude2);
+	waterSource2 = value->GetFloat3("waterSource2");
 }
 
 void ComponentRenderer::SetMaterial(const char* materialName)

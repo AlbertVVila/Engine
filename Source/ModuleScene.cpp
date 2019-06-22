@@ -521,10 +521,28 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 		"time"), App->time->ellapsedTime);
 
 	glUniform1f(glGetUniformLocation(shader->id[variation],
-		"waterAmplitude"), crenderer->waterAmplitude);
+		"waterAmplitude1"), crenderer->waterAmplitude1);
 
 	glUniform1f(glGetUniformLocation(shader->id[variation],
-		"decay"), crenderer->decay);
+		"decay1"), crenderer->waterDecay1);
+
+	glUniform1f(glGetUniformLocation(shader->id[variation],
+		"frequency1"), crenderer->waterFrequency1);
+
+	glUniform3fv(glGetUniformLocation(shader->id[variation],
+		"source1"), 1, (GLfloat*)&crenderer->waterSource1);
+
+	glUniform1f(glGetUniformLocation(shader->id[variation],
+		"waterAmplitude2"), crenderer->waterAmplitude2);
+
+	glUniform1f(glGetUniformLocation(shader->id[variation],
+		"decay2"), crenderer->waterDecay2);
+
+	glUniform1f(glGetUniformLocation(shader->id[variation],
+		"frequency2"), crenderer->waterFrequency2);
+
+	glUniform3fv(glGetUniformLocation(shader->id[variation],
+		"source2"), 1, (GLfloat*)&crenderer->waterSource2);
 
 	go.SetLightUniforms(shader->id[variation]);
 

@@ -229,6 +229,7 @@ void main()
 #endif
 		vec3 L = normalize(lightPos - position);
 		vec3 H = normalize(V + L);
+
 		float distance = length(lightPos - position);
 
 		float att = max(get_attenuation(distance, lights.points[i].radius, lights.points[i].intensity), 0);
@@ -291,6 +292,7 @@ void main()
 	else if (phi < 0)
 	{
 		discard;
-	}
-#endif
+	}		
+#endif	
+	//Fragcolor = vec4(normalIn,1);
 }
