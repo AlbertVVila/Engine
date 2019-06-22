@@ -4,7 +4,7 @@
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,9 +12,9 @@
    See the License for the specific language governing permissions and
    limitations under the License. */
 
-/** @file MathFunc.h
-	@author Jukka Jylänki
-	@brief Common mathematical functions. */
+   /** @file MathFunc.h
+	   @author Jukka Jylänki
+	   @brief Common mathematical functions. */
 #pragma once
 
 #include "myassert.h"
@@ -114,11 +114,11 @@ MATH_BEGIN_NAMESPACE
 /// Converts the given amount of degrees into radians.
 /// 180 degrees equals pi, 360 degrees is a full circle, and equals 2pi.
 inline float3 DegToRad(const float3 &degrees) { return degrees * (pi / 180.f); }
-inline float DegToRad(float degrees) { return degrees * (pi / 180.f); }
+inline MATH_API float DegToRad(float degrees) { return degrees * (pi / 180.f); }
 
 /// Converts the given amount of radians into degrees.
 inline float3 RadToDeg(const float3 &radians) { return radians * (180.f / pi); }
-inline float RadToDeg(float radians) { return radians * (180.f / pi); }
+inline MATH_API float RadToDeg(float radians) { return radians * (180.f / pi); }
 
 /// Computes the function sin(x).
 /** @see Cos(), Tan(), SinCos(), Asin(), Acos(), Atan(), Atan2(), Sinh(), Cosh(), Tanh(). */
@@ -225,7 +225,7 @@ float SignOrZero(float f, float epsilon = 1e-8f);
 	@return This function computes a + t*(b-a). That is, if t==0, this function returns a. If t==1, this function returns b.
 		Otherwise, the returned value linearly moves from a to b as t ranges from 0 to 1.
 	@see LerpMod(), InvLerp(), Step(), SmoothStep(), PingPongMod(), Mod(), ModPos(), Frac(). */
-float Lerp(float a, float b, float t);
+MATH_API float Lerp(float a, float b, float t);
 /// Linearly interpolates from a to b, under the modulus mod.
 /** This function takes evaluates a and b in the range [0, mod] and takes the shorter path to reach from a to b.
 	@see Lerp(), InvLerp(), Step(), SmoothStep(), PingPongMod(), Mod(), ModPos(), Frac(). */
@@ -238,7 +238,7 @@ float InvLerp(float a, float b, float x);
 float Step(float y, float x);
 /// See http://msdn.microsoft.com/en-us/library/bb509658(v=vs.85).aspx
 /** @see Lerp(), LerpMod(), InvLerp(), Step(), PingPongMod(), Mod(), ModPos(), Frac(). */
-float SmoothStep(float min, float max, float x);
+MATH_API float SmoothStep(float min, float max, float x);
 /// Limits x to the range [0, mod], but instead of wrapping around from mod to 0, the result will move back
 /// from mod to 0 as x goes from mod to 2*mod.
 /** @see Lerp(), LerpMod(), InvLerp(), Step(), SmoothStep(), Mod(), ModPos(), Frac(). */
@@ -288,9 +288,9 @@ FORCE_INLINE float RSqrt(float x)
 
 	// Do one iteration of Newton-Rhapson:
 	// e_n = e + 0.5 * (e - x * e^3)
-	__m128 e3 = _mm_mul_ss(_mm_mul_ss(e,e), e);
+	__m128 e3 = _mm_mul_ss(_mm_mul_ss(e, e), e);
 	__m128 half = _mm_set_ss(0.5f);
-	
+
 	return M128_TO_FLOAT(_mm_add_ss(e, _mm_mul_ss(half, _mm_sub_ss(e, _mm_mul_ss(X, e3)))));
 #else
 	return 1.f / sqrtf(x);
@@ -315,7 +315,7 @@ FORCE_INLINE float Recip(float x)
 	__m128 e = _mm_rcp_ss(X);
 	// Do one iteration of Newton-Rhapson:
 	// e_n = 2*e - x*e^2
-	__m128 e2 = _mm_mul_ss(e,e);
+	__m128 e2 = _mm_mul_ss(e, e);
 	return M128_TO_FLOAT(_mm_sub_ss(_mm_add_ss(e, e), _mm_mul_ss(X, e2)));
 #else
 	return 1.f / x;
@@ -463,10 +463,10 @@ bool Equal(const T &a, const T &b)
 }
 
 /** Compares the two values for equality up to a small epsilon. */
-template<> bool FORCE_INLINE Equal(const float &a, const float &b) { return Abs(a-b) <= eps; }
-template<> bool FORCE_INLINE Equal(const double &a, const double &b) { return Abs(a-b) <= eps; }
+template<> bool FORCE_INLINE Equal(const float &a, const float &b) { return Abs(a - b) <= eps; }
+template<> bool FORCE_INLINE Equal(const double &a, const double &b) { return Abs(a - b) <= eps; }
 #ifndef EMSCRIPTEN // long double is not supported.
-template<> bool FORCE_INLINE Equal(const long double &a, const long double &b) { return Abs(a-b) <= eps; }
+template<> bool FORCE_INLINE Equal(const long double &a, const long double &b) { return Abs(a - b) <= eps; }
 #endif
 
 /** Compares the two values for equality, allowing the given amount of absolute error. */
