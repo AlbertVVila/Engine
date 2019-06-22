@@ -290,6 +290,7 @@ void ComponentRenderer::Save(JSON_value* value) const
 	value->AddFloat3("waterSource2", waterSource2);
 	value->AddFloat2("texSpeed", texSpeed);
 	value->AddFloat("waterSpeed", waterSpeed);
+	value->AddInt("water", water);
 }
 
 void ComponentRenderer::Load(JSON_value* value)
@@ -320,6 +321,7 @@ void ComponentRenderer::Load(JSON_value* value)
 	waterAmplitude2 = value->GetFloat("waterAmplitude2", waterAmplitude2);
 	waterSpeed = value->GetFloat("waterSpeed", waterSpeed);
 	waterSource2 = value->GetFloat3("waterSource2");
+	water = value->GetInt("water");
 	texSpeed = value->GetFloat2("texSpeed");
 }
 

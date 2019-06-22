@@ -446,8 +446,15 @@ Component* GameObject::CreateComponent(ComponentType type, JSON_value* value)
 			assert(value != nullptr); //Only used for loading from json
 			std::string name = value->GetString("script");
 			Script* script = App->scripting->GetScript(name);
-			script->SetGameObject(this);
-			component = (Component*)script;
+			if (script)
+			{
+				script->SetGameObject(this);
+				component = (Component*)script;
+			}
+			else
+			{
+				LOG("%s script not loaded", name.c_str());
+			}
 		}
 		break;
 	case ComponentType::Particles:
@@ -1055,7 +1062,10 @@ void GameObject::Load(JSON_value *value, bool prefabTemplate)
 		JSON_value* componentJSON = componentsJSON->GetValue(i);
 		ComponentType type = (ComponentType)componentJSON->GetUint("Type");
 		Component* component = CreateComponent(type, componentJSON);
-		component->Load(componentJSON);
+		if (component)
+		{
+			component->Load(componentJSON);
+		}
 	}
 
 	if (transform != nullptr)
