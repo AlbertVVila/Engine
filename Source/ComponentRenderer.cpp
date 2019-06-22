@@ -5,6 +5,8 @@
 #include "ModuleFileSystem.h"
 #include "ModuleEditor.h"
 #include "ModuleScene.h"
+#include "ModuleProgram.h"
+#include "ModuleTime.h"
 
 #include "GameObject.h"
 #include "ComponentRenderer.h"
@@ -114,13 +116,56 @@ void ComponentRenderer::DrawProperties()
 			ImGui::Text("Num triangles : %d", mesh->meshIndices.size() / 3);
 		}
 		ImGui::Spacing();
-		ImGui::Checkbox("Cast shadows", &castShadows);
-		ImGui::Checkbox("Use Alpha", &useAlpha);
-		ImGui::Checkbox("Dissolve", &dissolve);
-		ImGui::DragFloat("Dissolve amount", &dissolveAmount, .01f, .0f, 10.f);
-		ImGui::DragFloat("Dissolve border amount", &borderAmount, .01f, .0f, 1.f);
-		ImGui::Checkbox("Highlighted", &highlighted);
-		ImGui::ColorEdit3("Highlight color", &highlightColor[0]);
+		if (material && !material->shader->isFX)
+		{
+			ImGui::Checkbox("Cast shadows", &castShadows);
+			ImGui::Checkbox("Use Alpha", &useAlpha);
+			ImGui::Checkbox("Dissolve", &dissolve);
+			ImGui::DragFloat("Dissolve amount", &dissolveAmount, .01f, .0f, 10.f);
+			ImGui::DragFloat("Dissolve border amount", &borderAmount, .01f, .0f, 1.f);
+			ImGui::Checkbox("Highlighted", &highlighted);
+			ImGui::ColorEdit3("Highlight color", &highlightColor[0]);
+			ImGui::Checkbox("Water", &water);
+			if (water)
+			{
+				ImGui::DragFloat("Water speed", &waterSpeed, 0.1f, 0.1f, 2000.0f);
+				if (ImGui::CollapsingHeader("Source 1"))
+				{
+					ImGui::PushID(0);
+					ImGui::DragFloat("Water amplitude", &waterAmplitude1, 0.1f, 0.1f, 2000.0f);
+					ImGui::DragFloat("Water frequency", &waterFrequency1, 0.1f, 0.1f, 2000.0f);
+					ImGui::DragFloat("Water decay", &waterDecay1, 0.01f, 0.01f, 2000.0f);
+					ImGui::DragFloat2("Source pos", &waterSource1[0], 0.01f, -20000.f, 20000.f);
+					ImGui::PopID();
+				}
+				if (ImGui::CollapsingHeader("Source 2"))
+				{
+					ImGui::PushID(1);
+					ImGui::DragFloat("Water amplitude", &waterAmplitude2, 0.1f, 0.1f, 2000.0f);
+					ImGui::DragFloat("Water frequency", &waterFrequency2, 0.1f, 0.1f, 2000.0f);
+					ImGui::DragFloat("Water decay", &waterDecay2, 0.01f, 0.01f, 2000.0f);
+					ImGui::DragFloat2("Source pos", &waterSource2[0], 0.01f, -20000.f, 20000.f);
+					ImGui::PopID();
+				}
+
+			}
+		}
+		else
+		{
+			if (ImGui::CollapsingHeader("FX settings"))
+			{
+				ImGui::Checkbox("Use Alpha", &useAlpha);
+				ImGui::DragFloat2("texture speed", &texSpeed[0], 0.01f, -1000.f, 1000.f);
+				ImGui::InputInt("X Tiles", &xTiles);
+				ImGui::InputInt("Y Tiles", &yTiles);
+				xTiles = MAX(xTiles, 1);
+				yTiles = MAX(yTiles, 1);
+				if (ImGui::InputFloat("FPS", &fps, 1.f))
+				{
+					timer = 0.f;
+				}
+			}
+		}
 		// Material selector
 		ImGui::Text("Material");
 		ImGui::PushID(this);
@@ -133,7 +178,7 @@ void ComponentRenderer::DrawProperties()
 			for (int n = 0; n < guiMaterials.size(); n++)
 			{
 				bool is_selected = (material != nullptr ? (HashString(material->GetName()) == HashString(guiMaterials[n].c_str())) : false);
-				if (ImGui::Selectable(guiMaterials[n].c_str(), is_selected) )
+				if (ImGui::Selectable(guiMaterials[n].c_str(), is_selected))
 				{
 					if (material == nullptr || material->GetName() != guiMaterials[n])
 						SetMaterial(guiMaterials[n].c_str());
@@ -182,7 +227,7 @@ void ComponentRenderer::DrawProperties()
 		{
 			if (ImGui::Button("Show"))
 			{
-				if (material != nullptr) 
+				if (material != nullptr)
 				{
 					App->editor->materialEditor->open = true;
 					App->editor->materialEditor->material = material;
@@ -199,7 +244,7 @@ void ComponentRenderer::DrawProperties()
 		{
 			App->editor->materialEditor->Draw();
 		}
-
+		
 		ImGui::Separator();
 	}
 
@@ -232,6 +277,19 @@ void ComponentRenderer::Save(JSON_value* value) const
 	value->AddInt("useAlpha", useAlpha);
 	value->AddInt("highlighted", highlighted);
 	value->AddFloat3("highlightColor", highlightColor);
+	value->AddInt("xTiles", xTiles);
+	value->AddInt("yTiles", yTiles);
+	value->AddFloat("fps", fps);
+	value->AddFloat("waterAmplitude1", waterAmplitude1);
+	value->AddFloat("waterDecay1", waterDecay1);
+	value->AddFloat("waterFrequency1", waterFrequency1);
+	value->AddFloat3("waterSource1", waterSource1);
+	value->AddFloat("waterAmplitude2", waterAmplitude2);
+	value->AddFloat("waterDecay2", waterDecay2);
+	value->AddFloat("waterFrequency2", waterFrequency2);
+	value->AddFloat3("waterSource2", waterSource2);
+	value->AddFloat2("texSpeed", texSpeed);
+	value->AddFloat("waterSpeed", waterSpeed);
 }
 
 void ComponentRenderer::Load(JSON_value* value)
@@ -250,6 +308,19 @@ void ComponentRenderer::Load(JSON_value* value)
 	useAlpha = value->GetInt("useAlpha");
 	highlighted = value->GetInt("highlighted");
 	highlightColor = value->GetFloat3("highlightColor");
+	xTiles = value->GetInt("xTiles", xTiles);
+	yTiles = value->GetInt("yTiles", yTiles);
+	fps = value->GetFloat("fps", fps);
+	waterFrequency1 = value->GetFloat("waterFrequency1", waterFrequency1);
+	waterDecay1 = value->GetFloat("waterDecay1", waterDecay1);
+	waterAmplitude1 = value->GetFloat("waterAmplitude1", waterAmplitude1);
+	waterSource1 = value->GetFloat3("waterSource1");
+	waterFrequency2 = value->GetFloat("waterFrequency2", waterFrequency2);
+	waterDecay2 = value->GetFloat("waterDecay2", waterDecay2);
+	waterAmplitude2 = value->GetFloat("waterAmplitude2", waterAmplitude2);
+	waterSpeed = value->GetFloat("waterSpeed", waterSpeed);
+	waterSource2 = value->GetFloat3("waterSource2");
+	texSpeed = value->GetFloat2("texSpeed");
 }
 
 void ComponentRenderer::SetMaterial(const char* materialName)
@@ -380,4 +451,16 @@ void ComponentRenderer::DrawMesh(unsigned shaderProgram)
 
 	// We disable VAO
 	glBindVertexArray(0);
+}
+
+void ComponentRenderer::Update()
+{
+	timer += App->time->gameDeltaTime; 
+	float currentFrame = timer / (1 / fps);
+	float frame;
+	frameMix = modf(currentFrame, &frame);
+	f1Xpos = ((int)frame) % xTiles;
+	f2Xpos = (f1Xpos + 1) % xTiles;
+	f1Ypos = (((int)frame) / xTiles) % yTiles;
+	f2Ypos = f1Xpos < f2Xpos ? f1Ypos : f1Ypos + 1;
 }

@@ -258,7 +258,7 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 		gameobject->particlesDirty = false;
 	}
 	if (!Playing && !ConstantPlaying) return;
-	timer += dt;
+	timer += dt; 
 
 	if (timer - lastActive > PlayTime && !ConstantPlaying)
 	{

@@ -321,6 +321,7 @@
       <Filter>Resources</Filter>
     </ClCompile>
     <ClCompile Include="PlayerPrefs.cpp" />
+    <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -819,5 +820,12 @@
     <None Include="..\Game\Shaders\FragmentShaders\Bloom.fs">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="..\Game\Shaders\FragmentShaders\FX.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\VertexShaders\FX.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Scripts\PlayerMovement.dll" />
   </ItemGroup>
 </Project>

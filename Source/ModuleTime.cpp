@@ -31,6 +31,21 @@ void ModuleTime::UpdateTime()
 	gameDeltaTime = frameTimer.ReadSeconds();
 	fullGameDeltaTime = gameDeltaTime;
 
+	if (temporaryFreeze)
+	{
+		freezeTimer += realDeltaTime;
+		if (freezeTimer >= freezeDuration)
+		{
+			UnFreezeGame();
+		}
+		else
+		{
+			HandleFreeze();
+		}
+	}
+
+	//Gamedeltatime is partitioned if it is too high
+	fullGameDeltaTime = gameDeltaTime * gameTimeScale;
 	gameTime += gameDeltaTime * gameTimeScale;
 	
 	frameTimer.Reset();
@@ -124,4 +139,43 @@ void ModuleTime::StopGameClock()
 void ModuleTime::Step() 
 {
 	nextFrame = true;
+}
+
+void ModuleTime::FreezeGame(float duration, float fadeInTime, float fadeOutTime, bool linealFade)
+{
+	temporaryFreeze = true;
+	freezeDuration = duration;
+	freezeFadeIn = fadeInTime;
+	freezeFadeOut = fadeOutTime;
+	this->linealFade = linealFade;
+	freezeTimer = 0.0f;
+	gameTimeScale = FREEZE;
+}
+
+void ModuleTime::UnFreezeGame()
+{
+	temporaryFreeze = false;
+	gameTimeScale = NORMAL_SPEED;
+}
+
+void ModuleTime::HandleFreeze()
+{
+	if (freezeTimer < freezeFadeIn * freezeDuration)
+	{
+		gameTimeScale = Lerp(NORMAL_SPEED, FREEZE, freezeTimer / (freezeFadeIn * freezeDuration));
+		if (!linealFade)
+		{
+			gameTimeScale = SmoothStep(FREEZE, NORMAL_SPEED, gameTimeScale);
+		}
+	}
+	else if (freezeTimer >= freezeFadeOut * freezeDuration)
+	{
+		float fadeOutTime = (1 - freezeFadeOut) * freezeDuration;
+		gameTimeScale = Lerp(FREEZE, NORMAL_SPEED, 
+			(freezeTimer - freezeFadeOut * freezeDuration) / fadeOutTime);
+		if (!linealFade)
+		{
+			gameTimeScale = SmoothStep(FREEZE, NORMAL_SPEED, gameTimeScale);
+		}
+	}
 }

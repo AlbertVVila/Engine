@@ -59,7 +59,21 @@ uniform mat4 model;
 uniform mat4 palette[64];
 
 uniform mat4 lightProjView;
+uniform float time;
 
+//Water stuff
+uniform float waterAmplitude1;
+uniform float frequency1;
+uniform float decay1;
+uniform vec3 source1;
+
+uniform float waterAmplitude2;
+uniform float frequency2;
+uniform float decay2;
+uniform vec3 source2;
+
+uniform float waterMaxDistortion;
+//
 
 out vec3 normalIn;
 out vec3 position;
@@ -73,32 +87,32 @@ out vec4 shadow_coord;
 
 void main()
 {
-#ifdef SKINNED
-	mat4 skin_t = palette[bone_indices[0]]*bone_weights[0]+palette[bone_indices[1]]*bone_weights[1]+
-	palette[bone_indices[2]]*bone_weights[2]+palette[bone_indices[3]]*bone_weights[3];
-	position = (skin_t*vec4(vertex_position, 1.0)).xyz;	
-	normalIn = (skin_t*vec4(vertex_normal, 0.0)).xyz; // 0.0 avoid translation
-	vec3 tan = (skin_t*vec4(vertex_tangent, 0.0)).xyz; // 0.0 avoid translation
-#else
-	position = (model * vec4(vertex_position, 1.0)).xyz;
-	normalIn = mat3(model) * vertex_normal;
-	//normalIn = mat3(transpose(inverse(model))) * vertex_normal; //Incorrect normals shitty fix
-	vec3 tan = mat3(model) * vertex_tangent;
-#endif
-#ifdef SHADOWS_ENABLED
-	shadow_coord = lightProjView * vec4(position, 1.0);
-#endif
-	gl_Position = proj*view*vec4(position, 1.0);
-	vec3 bitan = cross(vertex_tangent, vertex_normal);
-	
-	vec3 N = normalize(normalIn);
-	tan = normalize(tan - N * dot(N, tan));
-	vec3 T = normalize(tan);
-	vec3 B = cross(T, normalIn);	
-	mat3 TBNMat = transpose(mat3(T, B, N));
-	position = TBNMat * position;
-	viewPos = TBNMat * (transpose(mat3(view))*(-view[3].xyz));	
-	uv0 = vertex_uv0;
+#ifndef WATER	
+	#ifdef SKINNED
+		mat4 skin_t = palette[bone_indices[0]]*bone_weights[0]+palette[bone_indices[1]]*bone_weights[1]+
+		palette[bone_indices[2]]*bone_weights[2]+palette[bone_indices[3]]*bone_weights[3];
+		position = (skin_t*vec4(vertex_position, 1.0)).xyz;	
+		normalIn = (skin_t*vec4(vertex_normal, 0.0)).xyz; // 0.0 avoid translation
+		vec3 tan = (skin_t*vec4(vertex_tangent, 0.0)).xyz; // 0.0 avoid translation
+	#else
+		position = (model * vec4(vertex_position, 1.0)).xyz;
+		//normalIn = mat3(model) * vertex_normal;
+		normalIn = mat3(transpose(inverse(model))) * vertex_normal; //Temporary
+		vec3 tan = mat3(model) * vertex_tangent;
+	#endif
+	#ifdef SHADOWS_ENABLED
+		shadow_coord = lightProjView * vec4(position, 1.0);
+	#endif
+		gl_Position = proj*view*vec4(position, 1.0);
+		vec3 bitan = cross(vertex_tangent, vertex_normal);
+		vec3 N = normalize(normalIn);
+		tan = normalize(tan - N * dot(N, tan));
+		vec3 T = normalize(tan);
+		vec3 B = cross(T, normalIn);	
+		mat3 TBNMat = transpose(mat3(T, B, N));
+		position = TBNMat * position;
+		viewPos = TBNMat * (transpose(mat3(view))*(-view[3].xyz));	
+		uv0 = vertex_uv0;
 
 	normalIn = TBNMat * normalIn;
 
@@ -114,10 +128,35 @@ void main()
 		pointPositions[i] = TBNMat * lights.points[i].position;
 	}
 
-	for(int i=0; i < lights.num_spots; ++i)
-	{
-		spotPositions[i] = TBNMat * lights.spots[i].position;
-		spotDirections[i] = TBNMat * lights.spots[i].direction;
-	}
+		for(int i=0; i < lights.num_spots; ++i)
+		{
+			spotPositions[i] = TBNMat * lights.spots[i].position;
+			spotDirections[i] = TBNMat * lights.spots[i].direction;
+		}
+#else	
+	position = vertex_position;
+	float dist1 = sqrt(pow(position.x - source1.x,2) + pow(position.y - source1.y,2));
+	float dist2 = sqrt(pow(position.x - source2.x,2) + pow(position.y - source2.y,2));
+	dist1 = max(dist1, 20);
+	dist2 = max(dist2, 20);
+	float ang1 = (dist1 / frequency1) - time;
+	float ang2 = (dist2 / frequency2) - time;
+	float att1 = (waterAmplitude1 / (dist1 * decay1));
+	float att2 = (waterAmplitude2 / (dist2 * decay2));
+	float s1 = sin(ang1);
+	float s2 = sin(ang2);
+	float offset = s1 * att1 + s2 * att2;
+	float c1= cos(-time + (dist1 / frequency1)) / (dist1) * frequency1;
+	float c2= cos(-time + (dist2 / frequency2)) / (dist2) * frequency2;
 	
+	position.z = offset;
+
+	float dx = -att1 * (source1.x - position.x) * c1 -att2 * (source2.x - position.x) * c2;
+	float dy = -att1 * (source1.y - position.y) * c1 -att2 * (source2.y - position.y) * c2;
+	
+	normalIn = normalize(cross(vec3(1,0,dx), vec3(0,1,dy)));
+
+	position = (model*vec4(position, 1.0)).xyz;
+	gl_Position = proj*view*vec4(position, 1.0);	
+#endif	
 }

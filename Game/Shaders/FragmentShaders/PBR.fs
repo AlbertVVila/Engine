@@ -172,7 +172,11 @@ vec3 CalculateNormal()
 
 void main()
 {
+#ifndef WATER
 	vec3 normal = CalculateNormal();	
+#else
+	vec3 normal = normalIn;
+#endif
 	vec4 albedo = get_albedo();
 	
 	float metallic = length(material.specular);
@@ -192,7 +196,11 @@ void main()
 					&& sCoord.y >= .0f && sCoord.y <= 1.f
 					&& texture2D(shadowTex, sCoord.xy).x < clamp(sCoord.z, 0, 1) - 0.005f);
 #endif					
+#ifndef WATER
 		vec3 L = directionalDirections[i];
+#else
+		vec3 L = lights.directional[i].direction;
+#endif
 		vec3 H = normalize(V + L);	
 
 		vec3 radiance = lights.directional[i].color * lights.directional[i].intensity;				
@@ -214,9 +222,14 @@ void main()
 	}
 	for(int i=0; i < lights.num_points; ++i)
 	{	
+#ifndef WATER
 		vec3 lightPos = pointPositions[i];
+#else
+		vec3 lightPos = lights.points[i].position;
+#endif
 		vec3 L = normalize(lightPos - position);
 		vec3 H = normalize(V + L);
+
 		float distance = length(lightPos - position);
 
 		float att = max(get_attenuation(distance, lights.points[i].radius, lights.points[i].intensity), 0);
@@ -279,6 +292,7 @@ void main()
 	else if (phi < 0)
 	{
 		discard;
-	}
-#endif
+	}		
+#endif	
+	//Fragcolor = vec4(normalIn,1);
 }
