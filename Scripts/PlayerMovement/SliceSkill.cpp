@@ -20,7 +20,7 @@ SliceSkill::~SliceSkill()
 
 void SliceSkill::Start()
 {
-	BasicSkill::Start();
+	MeleeSkill::Start();
 
 	// Create the hitbox
 	boxSize = math::float3(150.f, 100.f, 100.f);

@@ -22,7 +22,7 @@ DashSkill::~DashSkill()
 
 void DashSkill::Start()
 {
-	BasicSkill::Start();
+	MeleeSkill::Start();
 
 	if (player->App->navigation->NavigateTowardsCursor(player->gameobject->transform->position, path,
 		math::float3(player->OutOfMeshCorrectionXZ, player->OutOfMeshCorrectionY, player->OutOfMeshCorrectionXZ), intersectionPoint))

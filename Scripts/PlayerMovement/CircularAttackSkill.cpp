@@ -26,6 +26,8 @@ CircularAttackSkill::~CircularAttackSkill()
 
 void CircularAttackSkill::Start()
 {
+	MeleeSkill::Start();
+
 	// Create the hitbox
 	boxSize = math::float3(250.f, 250.f, 250.f);
 

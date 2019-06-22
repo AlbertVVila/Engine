@@ -24,7 +24,7 @@ ChainAttackSkill::~ChainAttackSkill()
 
 void ChainAttackSkill::Start()
 {
-	BasicSkill::Start();
+	MeleeSkill::Start();
 	player->gameobject->transform->LookAtMouse();
 
 	// Create the hitbox
