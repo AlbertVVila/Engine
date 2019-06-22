@@ -35,15 +35,17 @@ void BasicSkill::Update()
 {
 	timer += player->App->time->gameDeltaTime;
 
+	CheckInput();
+
 	if (timer < player->currentState->duration)
 	{
 		UseSkill();
-		CheckInput();
 	}
 	else
 	{
 		Reset();
 	}
+
 }
 
 void BasicSkill::Exit()

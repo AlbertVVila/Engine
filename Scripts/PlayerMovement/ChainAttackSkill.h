@@ -3,7 +3,8 @@
 
 #include "MeleeSkill.h"
 
-enum class attackNumber{FIRST, SECOND};
+enum class AttackNumber{FIRST, SECOND};
+enum class NextInput{ATTACK, SKILL, MOVE, NONE};
 
 class ChainAttackSkill :
 	public MeleeSkill
@@ -17,16 +18,16 @@ public:
 
 protected:
 	void UseSkill() override;
+	void Reset() override;
 
 private:
 	void CheckInput() override;
 	void NextChainAttack();
 
 private:
-	attackNumber attack = attackNumber::FIRST;
+	AttackNumber attack = AttackNumber::FIRST;
 
-	float minTime = 0.0f;
-	float maxTime = 0.0f;
+	NextInput nextInput = NextInput::NONE;
 
 };
 
