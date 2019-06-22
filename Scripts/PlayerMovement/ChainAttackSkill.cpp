@@ -14,8 +14,6 @@
 ChainAttackSkill::ChainAttackSkill(PlayerMovement* PM, const char* trigger, ComponentBoxTrigger* attackBox) :
 	MeleeSkill(PM, trigger, attackBox)
 {
-	minTime = 0.40f;
-	maxTime = 0.9f;
 }
 
 ChainAttackSkill::~ChainAttackSkill()
@@ -31,7 +29,7 @@ void ChainAttackSkill::Start()
 	boxSize = math::float3(150.f, 100.f, 100.f);
 
 	// Set delay for hit
-	hitDelay = 0.6f;
+	hitDelay = 0.4f;
 }
 
 void ChainAttackSkill::UseSkill()
@@ -44,40 +42,52 @@ void ChainAttackSkill::UseSkill()
 	}
 }
 
+void ChainAttackSkill::Reset()
+{
+	MeleeSkill::Reset();
+	nextInput = NextInput::NONE;
+}
+
 void ChainAttackSkill::CheckInput()
 {
-	if (timer > player->currentState->duration * minTime)
+	if (timer < player->currentState->duration)
 	{
-		if (player->IsAtacking())
+		if (player->IsUsingSkill())
 		{
-			NextChainAttack();
-			return;
+			nextInput = NextInput::SKILL;
+		}
+		else if (player->IsAtacking() && nextInput != NextInput::SKILL)
+		{
+			nextInput = NextInput::ATTACK;
+			//NextChainAttack();
+			//return;
 		}
 	}
 
-	if (timer > player->currentState->duration * maxTime) //CAN SWITCH?
+	if (timer > player->currentState->duration) //CAN SWITCH?
 	{
-
-		if (player->IsUsingSkill())
+		if (nextInput == NextInput::SKILL)
 		{
+			//Reset();
 			player->currentState = (PlayerState*)player->attack;
 		}
 		else if (player->IsMoving())
 		{
+			//Reset();
 			player->currentState = (PlayerState*)player->walk;
 		}
-		else
+		else if (nextInput == NextInput::ATTACK)
 		{
-			Reset();
+			NextChainAttack();
 		}
 	}
 }
 
 void ChainAttackSkill::NextChainAttack()
 {
-	if (attack == attackNumber::FIRST)
+	if (attack == AttackNumber::FIRST)
 	{
-		attack = attackNumber::SECOND;
+		attack = AttackNumber::SECOND;
 		// Go to next attack
 		Reset();
 		player->currentSkill = player->chain;
@@ -88,7 +98,7 @@ void ChainAttackSkill::NextChainAttack()
 	}
 	else
 	{
-		attack = attackNumber::FIRST;
+		attack = AttackNumber::FIRST;
 		// Reset attack chain
 		Reset();
 		player->currentSkill = player->chain;
