@@ -330,6 +330,7 @@
     <ClCompile Include="PlayerStateIdle.cpp" />
     <ClCompile Include="PlayerStateWalk.cpp" />
     <ClCompile Include="SliceSkill.cpp" />
+    <ClCompile Include="StompSkill.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicSkill.h" />
@@ -345,6 +346,7 @@
     <ClInclude Include="PlayerStateIdle.h" />
     <ClInclude Include="PlayerStateWalk.h" />
     <ClInclude Include="SliceSkill.h" />
+    <ClInclude Include="StompSkill.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DamageController\DamageController.vcxproj">

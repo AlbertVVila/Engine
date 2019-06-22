@@ -51,6 +51,7 @@ class ChainAttackSkill;
 class DashSkill;
 class BombDropSkill;
 class CircularAttackSkill;
+class StompSkill;
 
 #define MAX(a,b) ((a) < (b) ? (b) : (a))
 
@@ -61,7 +62,8 @@ enum class PlayerMovement_API SkillType
 	DASH,
 	SLICE,
 	BOMB_DROP,
-	CIRCULAR
+	CIRCULAR,
+	STOMP
 };
 
 struct PlayerMovement_API PlayerSkill
@@ -220,8 +222,9 @@ public:
 	SliceSkill* slice = nullptr;
 	BombDropSkill* bombDrop = nullptr;
 	CircularAttackSkill* circular = nullptr;
+	StompSkill* stomp = nullptr;
 
-	SkillType assignedSkills[5] = { SkillType::NONE, SkillType::NONE, SkillType::NONE, SkillType::NONE, SkillType::NONE };
+	SkillType assignedSkills[6] = { SkillType::NONE, SkillType::NONE, SkillType::NONE, SkillType::NONE, SkillType::NONE, SkillType::NONE };
 
 	//Audio
 	ComponentAudioSource* gotHitAudio = nullptr;

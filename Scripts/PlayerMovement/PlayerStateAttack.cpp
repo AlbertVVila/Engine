@@ -49,6 +49,11 @@ void PlayerStateAttack::Enter()
 		player->currentSkill = player->allSkills[player->assignedSkills[4]]->skill;
 		skillType = player->allSkills[player->assignedSkills[4]]->type;
 	}
+	else if (player->IsUsingFirstItem())
+	{
+		player->currentSkill = player->allSkills[player->assignedSkills[5]]->skill;
+		skillType = player->allSkills[player->assignedSkills[5]]->type;
+	}
 	
 	if (player->currentSkill != nullptr)
 	{
