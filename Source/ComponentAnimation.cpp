@@ -144,10 +144,12 @@ void ComponentAnimation::DrawProperties()
 					deletePopup = false;
 				}
 			}
+			ImGui::Separator();
+			HashString currentNodeName = stateMachine->GetNodeName(currentNode);
+			ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f),("Current state: %s", currentNodeName.C_str()));
 	
 			if (!stateMachine->isClipsEmpty())
 			{
-				ImGui::Separator();
 				for (unsigned j = 0u; j < stateMachine->GetClipsSize(); ++j)
 				{
 					ImGui::PushID(j);

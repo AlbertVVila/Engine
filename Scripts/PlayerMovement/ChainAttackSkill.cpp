@@ -109,9 +109,10 @@ void ChainAttackSkill::NextChainAttack()
 	}
 
 	// Send trigger
-	player->currentState->duration = player->anim->GetDurationFromClip();
 	if (player->anim != nullptr)
 	{
 		player->anim->SendTriggerToStateMachine(player->currentState->trigger.c_str());
 	}
+
+	player->currentState->duration = player->anim->GetDurationFromClip();
 }
