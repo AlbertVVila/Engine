@@ -16,5 +16,5 @@ PlayerState::~PlayerState()
 
 void PlayerState::UpdateTimer()
 {
-	timer += player->App->time->gameDeltaTime;
+	timer += player->App->time->fullGameDeltaTime;
 }
