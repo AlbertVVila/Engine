@@ -165,7 +165,6 @@ void ComponentAnimation::DrawProperties()
 					}
 					stateMachine->SetClipName(j, HashString(clipName));
 
-					ImGui::SameLine();
 					ImGui::PushItemWidth(60);
 					float speed = stateMachine->GetClipSpeed(j);
 					if (ImGui::DragFloat("Clip speed", &speed, 0.1f, 0.f, 30.f))
