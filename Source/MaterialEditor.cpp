@@ -72,6 +72,10 @@ void MaterialEditor::Draw()
 			ImGui::ColorEdit3("Dissolve Color", (float*)&material->dissolveColor);
 		}
 	}
+	else
+	{
+		ImGui::DragFloat("Bloom intensity", &material->bloomIntenstiy, 0.01f, 1.0f, 10.0f);
+	}
 	ImGui::SetCursorPosX(ImGui::GetWindowWidth()/2 - ImGui::CalcTextSize("Cancel Changes").x /2);
 	if (ImGui::Button("Cancel Changes"))
 	{
