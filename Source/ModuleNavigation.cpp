@@ -1416,7 +1416,7 @@ bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vecto
 }
 
 bool ModuleNavigation::NavigateTowardsCursor(math::float3 start, std::vector<math::float3>& path, 
-											 math::float3 positionCorrection, math::float3& intersectionPos, float maxPathDistance) const
+											 math::float3 positionCorrection, math::float3& intersectionPos, float maxPathDistance, PathFindType type) const
 {
 	float2 mouse((float*)& App->input->GetMousePosition());
 	LineSegment line;
@@ -1439,7 +1439,7 @@ bool ModuleNavigation::NavigateTowardsCursor(math::float3 start, std::vector<mat
 	line.Intersects(plane, &dist);
 	intersectionPos = line.GetPoint(dist);
 
-	return FindPath(start, intersectionPos, path, PathFindType::FOLLOW, positionCorrection, maxPathDistance);
+	return FindPath(start, intersectionPos, path, type, positionCorrection, maxPathDistance);
 }
 
 void ModuleNavigation::RecalcPath(math::float3 point)
