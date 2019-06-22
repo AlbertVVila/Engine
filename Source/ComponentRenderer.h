@@ -44,7 +44,7 @@ public:
 	float dissolveAmount = 0.f;
 	float borderAmount = 0.5f;
 
-	bool water = true;
+	bool water = false;
 	float waterAmplitude1 = 10.f;
 	float waterFrequency1 = 10.f;
 	float waterDecay1 = 1.f;
@@ -54,7 +54,7 @@ public:
 	float waterFrequency2 = 10.f;
 	float waterDecay2 = 1.f;
 	math::float3 waterSource2 = math::float3::zero;
-
+	float waterSpeed = 2.f;
 	math::float3 highlightColor = math::float3::one;
 
 private:

@@ -48,7 +48,6 @@ void ModuleTime::UpdateTime()
 
 	//Gamedeltatime is partitioned if it is too high
 	fullGameDeltaTime = gameDeltaTime * gameTimeScale;
-	ellapsedTime += gameDeltaTime;
 	gameTime += gameDeltaTime * gameTimeScale;
 	
 	frameTimer.Reset();

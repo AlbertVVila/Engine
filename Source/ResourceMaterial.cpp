@@ -420,7 +420,7 @@ void ResourceMaterial::SetUniforms(unsigned shader, bool isFx, ComponentRenderer
 		glUniform1i(glGetUniformLocation(shader, "f2Xpos"), cRenderer->f2Xpos);
 		glUniform1i(glGetUniformLocation(shader, "f2Ypos"), cRenderer->f2Ypos);
 		glUniform1f(glGetUniformLocation(shader, "mixAmount"), cRenderer->frameMix);		
-		glUniform1f(glGetUniformLocation(shader, "time"), App->time->ellapsedTime);
+		glUniform1f(glGetUniformLocation(shader, "time"), App->time->realTime);
 		glUniform2fv(glGetUniformLocation(shader, "uvSpeed"), 1, &cRenderer->texSpeed[0]);
 	}
 	else

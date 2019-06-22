@@ -429,7 +429,6 @@
     <ClCompile Include="Soloud\fractal_includes\soloud_wavstream.cpp" />
     <ClCompile Include="Soloud\fractal_includes\stb_vorbis.c" />
     <ClCompile Include="ResourceStateMachine.cpp" />
-    <ClCompile Include="Source.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Viewport.cpp" />
   </ItemGroup>

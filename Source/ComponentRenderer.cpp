@@ -128,6 +128,7 @@ void ComponentRenderer::DrawProperties()
 			ImGui::Checkbox("Water", &water);
 			if (water)
 			{
+				ImGui::DragFloat("Water speed", &waterSpeed, 0.1f, 0.1f, 2000.0f);
 				if (ImGui::CollapsingHeader("Source 1"))
 				{
 					ImGui::PushID(0);
@@ -288,6 +289,7 @@ void ComponentRenderer::Save(JSON_value* value) const
 	value->AddFloat("waterFrequency2", waterFrequency2);
 	value->AddFloat3("waterSource2", waterSource2);
 	value->AddFloat2("texSpeed", texSpeed);
+	value->AddFloat("waterSpeed", waterSpeed);
 }
 
 void ComponentRenderer::Load(JSON_value* value)
@@ -316,6 +318,7 @@ void ComponentRenderer::Load(JSON_value* value)
 	waterFrequency2 = value->GetFloat("waterFrequency2", waterFrequency2);
 	waterDecay2 = value->GetFloat("waterDecay2", waterDecay2);
 	waterAmplitude2 = value->GetFloat("waterAmplitude2", waterAmplitude2);
+	waterSpeed = value->GetFloat("waterSpeed", waterSpeed);
 	waterSource2 = value->GetFloat3("waterSource2");
 	texSpeed = value->GetFloat2("texSpeed");
 }
