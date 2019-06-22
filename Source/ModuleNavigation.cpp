@@ -96,9 +96,17 @@ void ModuleNavigation::sceneLoaded(JSON * config)
 	//load the nav data size from the scene_datasize file
 	std::stringstream path;
 	path << "Resources/NavigationMeshes/navMesh" << sceneName << "_DataSize" << ".bin";
-	char* navSizeTmp;
+	char* navSizeTmp = nullptr;
 	App->fsystem->Load(path.str().c_str(), &navSizeTmp);
-	navDataSize = (int)navSizeTmp;
+	if (navSizeTmp == nullptr)
+	{
+		LOG("could not find a size of navmesh");
+		CleanValuesPOST();
+		CleanValuesPRE();
+		return;
+	}
+	std::string chartoIntConverter = navSizeTmp;
+	navDataSize = std::stoi(chartoIntConverter);
 	if (navDataSize == 0)
 	{
 		CleanValuesPOST();
@@ -108,7 +116,7 @@ void ModuleNavigation::sceneLoaded(JSON * config)
 	path.str(std::string());//more efficient way to clear stringstream values
 	//now we load mesh and generate its last part
 	path << "Resources/NavigationMeshes/navMesh" << sceneName << ".bin";
-	char* navData2 = 0;
+	char* navData2 = nullptr;
 	App->fsystem->Load(path.str().c_str(), &navData2);
 	if (navData2 == nullptr)
 	{
@@ -426,7 +434,7 @@ void ModuleNavigation::generateNavigability(bool render)
 	{
 		if (meshboxes[i]->minPoint.x < bmin[0]) bmin[0] = meshboxes[i]->minPoint.x;
 		if (meshboxes[i]->minPoint.y < bmin[1]) bmin[1] = meshboxes[i]->minPoint.y;
-		if (meshboxes[i]->minPoint.x < bmin[2]) bmin[2] = meshboxes[i]->minPoint.z;
+		if (meshboxes[i]->minPoint.z < bmin[2]) bmin[2] = meshboxes[i]->minPoint.z;
 
 		if (meshboxes[i]->maxPoint.x > bmax[0]) bmax[0] = meshboxes[i]->maxPoint.x;
 		if (meshboxes[i]->maxPoint.y > bmax[1]) bmax[1] = meshboxes[i]->maxPoint.y;

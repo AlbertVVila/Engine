@@ -2,7 +2,7 @@
 #define  __GameLoop_h__
 
 #include "BaseScript.h"
-
+#include "Application.h"
 #include "Math/float3.h"
 
 #ifdef GameLoop_EXPORTS
@@ -26,35 +26,35 @@ class AABB;
 class JSON_value;
 class ComponentAudioSource;
 
+class LoopState;
+class LoopStateControls;
+class LoopStateCredits;
+class LoopStateDead;
+class LoopStateIntro;
+class LoopStateLoading;
+class LoopStateMenu;
+class LoopStateOptions;
+class LoopStatePaused;
+class LoopStatePlaying;
+class LoopStateQuit;
+class LoopStateWin;
+
 class GameLoop_API GameLoop : public Script
 {
-	enum class GameState
-	{		
-		MENU,
-		INTRO,
-		PLAYING,
-		DEAD,
-		WIN,
-		PAUSED,
-		OPTIONS,
-		CREDITS,
-		CONTROLS,
-		QUIT,
-		LOADING
-	};
-
 	enum class GameScene
 	{
 		MENU,
 		CEMENTERY,
 		HUD
 	};
+
 public :
 	void Expose(ImGuiContext* context) override;
 
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
-private:
+
+public:
 
 	void Start() override;
 	void Update() override;
@@ -63,20 +63,12 @@ private:
 	void LoadCementeryScene();
 	void LoadHUDScene();
 
-	void ManageDead();
-	void ManageMenu();
-	void ManageIntro();
-	void ManagePlaying();
-	void ManageWin();
-	void ManagePaused();
-	void ManageOptions();
-	void ManageCredits();
-	void ManageControls();
-	void ManageQuit();
-	void ManageLoading();
+	void CreateGameStates();
+	void CheckStates(LoopState* previous);
 
 	void EnableMenuButtons(bool enable);
 
+	void GetStateAfterLoad();
 	void VolumeManagement();
 	void SoundManagement();
 	void VsyncManagement();
@@ -84,16 +76,29 @@ private:
 
 	void ResetPositions();
 
-	void ChangeGameState(GameState newState); //Set initial conditions for each state here if required
-
 	bool HasImageHoveredInChildren(const GameObject* go) const;
 
-	GameState gameState = GameState::MENU;
+	LoopState* currentLoopState = nullptr;
+
+	LoopStateControls* controlsState = nullptr;
+	LoopStateCredits* creditsState = nullptr;
+	LoopStateDead* deadState = nullptr;
+	LoopStateIntro* introState = nullptr;
+	LoopStateLoading* loadingState = nullptr;
+	LoopStateMenu* menuState = nullptr;
+	LoopStateOptions* optionsState = nullptr;
+	LoopStatePaused* pausedState = nullptr;
+	LoopStatePlaying* playingState = nullptr;
+	LoopStateQuit* quitState = nullptr;
+	LoopStateWin* winState = nullptr;
+
 	GameScene gameScene = GameScene::MENU;
+	std::vector<LoopState*> loopStates;
+
 public:
 	int volume = 10;
 
-private:
+public:
 	//UI Values
 	int minVolume = 0;
 	int maxVolume = 10;
@@ -170,7 +175,8 @@ private:
 	bool vsync = false;
 
 	std::string sceneToLoad = "";
-	int actionAfterLoad = -1;
+	LoopState* stateAfterLoad = nullptr;
+	bool actionAfterLoad = false;
 };
 
 #endif __GameLoop_h__

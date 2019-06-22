@@ -323,9 +323,33 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GameLoop.cpp" />
+    <ClCompile Include="LoopState.cpp" />
+    <ClCompile Include="LoopStateControls.cpp" />
+    <ClCompile Include="LoopStateCredits.cpp" />
+    <ClCompile Include="LoopStateDead.cpp" />
+    <ClCompile Include="LoopStateIntro.cpp" />
+    <ClCompile Include="LoopStateLoading.cpp" />
+    <ClCompile Include="LoopStateMenu.cpp" />
+    <ClCompile Include="LoopStateOptions.cpp" />
+    <ClCompile Include="LoopStatePaused.cpp" />
+    <ClCompile Include="LoopStatePlaying.cpp" />
+    <ClCompile Include="LoopStateQuit.cpp" />
+    <ClCompile Include="LoopStateWin.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameLoop.h" />
+    <ClInclude Include="LoopState.h" />
+    <ClInclude Include="LoopStateControls.h" />
+    <ClInclude Include="LoopStateCredits.h" />
+    <ClInclude Include="LoopStateDead.h" />
+    <ClInclude Include="LoopStateIntro.h" />
+    <ClInclude Include="LoopStateLoading.h" />
+    <ClInclude Include="LoopStateMenu.h" />
+    <ClInclude Include="LoopStateOptions.h" />
+    <ClInclude Include="LoopStatePaused.h" />
+    <ClInclude Include="LoopStatePlaying.h" />
+    <ClInclude Include="LoopStateQuit.h" />
+    <ClInclude Include="LoopStateWin.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CreditsScript\CreditsScript.vcxproj">

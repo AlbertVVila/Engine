@@ -119,7 +119,7 @@ void PlayerStateWalk::CheckInput()
 	}
 	else if (player->IsUsingFirstSkill())
 	{
-		player->currentState = (PlayerState*)player->dash;
+		player->currentState = player->allSkills[player->activeSkills[0]]->state;
 		if (dustParticles)
 		{
 			dustParticles->SetActive(false);
@@ -131,7 +131,7 @@ void PlayerStateWalk::CheckInput()
 	}
 	else if (player->IsUsingSecondSkill())
 	{
-		player->currentState = (PlayerState*)player->uppercut;
+		player->currentState = player->allSkills[player->activeSkills[1]]->state;
 		if (dustParticles)
 		{
 			dustParticles->SetActive(false);

@@ -183,9 +183,8 @@ public:
 
 	float walkingSpeed = 300.0f;
 	float dashSpeed = 10.0f;
-	//const float fullHealth = 100.0f;
+
 	float health = 100.0f;
-	//const float fullMana = 100.0f;
 	float mana = 100.0f;
 	//bool IsManaUsed = false;
 	float attackDuration = 1.0f;
@@ -197,6 +196,8 @@ public:
 	float manaRegenMaxTime = 5.0f;
 
 	PlayerStats stats = { 100.0f, 100.0f, 10U, 10U, 5.0f, 5.0f };
+	std::unordered_map<SkillType, PlayerSkill*> allSkills;
+	SkillType activeSkills[4] = { SkillType::NONE, SkillType::NONE, SkillType::NONE, SkillType::NONE };
 
 	float OutOfMeshCorrectionXZ = 500.f;
 	float OutOfMeshCorrectionY = 300.0f;
