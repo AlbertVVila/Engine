@@ -28,7 +28,8 @@ void BombDropSkill::Start()
 	MeleeSkill::Start();
 
 	if (player->App->navigation->NavigateTowardsCursor(player->gameobject->transform->position, path,
-		math::float3(player->OutOfMeshCorrectionXZ, player->OutOfMeshCorrectionY, player->OutOfMeshCorrectionXZ), intersectionPoint))
+		math::float3(player->OutOfMeshCorrectionXZ, player->OutOfMeshCorrectionY, player->OutOfMeshCorrectionXZ),
+		intersectionPoint, bombDropMaxDistance, PathFindType::STRAIGHT))
 	{
 		pathIndex = 0;
 		player->gameobject->transform->LookAt(intersectionPoint);

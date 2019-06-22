@@ -64,7 +64,7 @@ enum SamplePartitionType
 	SAMPLE_PARTITION_LAYERS,
 };
 
-enum class PathFindType
+ENGINE_API enum class PathFindType
 {
 	FOLLOW,
 	STRAIGHT
@@ -96,7 +96,7 @@ public:
 	//there is a default really big limitating path distance for the calls that are not supposed to be limitated
 	ENGINE_API bool NavigateTowardsCursor(math::float3 start, std::vector<math::float3>& path, 
 										  math::float3 positionCorrection, math::float3& intersectionPos, 
-										  float maxPathDistance = 10000.0f) const;
+										  float maxPathDistance = 10000.0f, PathFindType type = PathFindType::FOLLOW) const;
 
 	void RecalcPath(math::float3 point);
 
