@@ -153,6 +153,8 @@ void ComponentRenderer::DrawProperties()
 		{
 			if (ImGui::CollapsingHeader("FX settings"))
 			{
+				ImGui::Checkbox("Use Alpha", &useAlpha);
+				ImGui::DragFloat2("texture speed", &texSpeed[0], 0.01f, -1000.f, 1000.f);
 				ImGui::InputInt("X Tiles", &xTiles);
 				ImGui::InputInt("Y Tiles", &yTiles);
 				xTiles = MAX(xTiles, 1);
@@ -285,6 +287,7 @@ void ComponentRenderer::Save(JSON_value* value) const
 	value->AddFloat("waterDecay2", waterDecay2);
 	value->AddFloat("waterFrequency2", waterFrequency2);
 	value->AddFloat3("waterSource2", waterSource2);
+	value->AddFloat2("texSpeed", texSpeed);
 }
 
 void ComponentRenderer::Load(JSON_value* value)
@@ -314,6 +317,7 @@ void ComponentRenderer::Load(JSON_value* value)
 	waterDecay2 = value->GetFloat("waterDecay2", waterDecay2);
 	waterAmplitude2 = value->GetFloat("waterAmplitude2", waterAmplitude2);
 	waterSource2 = value->GetFloat3("waterSource2");
+	texSpeed = value->GetFloat2("texSpeed");
 }
 
 void ComponentRenderer::SetMaterial(const char* materialName)
