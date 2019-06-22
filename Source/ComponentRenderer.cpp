@@ -116,7 +116,7 @@ void ComponentRenderer::DrawProperties()
 			ImGui::Text("Num triangles : %d", mesh->meshIndices.size() / 3);
 		}
 		ImGui::Spacing();
-		if (material && !material->shader->isFX)
+		if (material && material->shader && !material->shader->isFX)
 		{
 			ImGui::Checkbox("Cast shadows", &castShadows);
 			ImGui::Checkbox("Use Alpha", &useAlpha);

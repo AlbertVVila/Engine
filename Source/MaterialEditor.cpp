@@ -31,7 +31,7 @@ void MaterialEditor::Draw()
 	}
 
 	ImGui::Spacing();
-	if (!material->shader->isFX)
+	if (material->shader && !material->shader->isFX)
 	{
 		ImGui::ColorEdit3("Specular Color", (float*)&material->specularColor);
 		ImGui::DragFloat("Roughness", &material->roughness, .01f, .001f, 1.f);
@@ -46,7 +46,7 @@ void MaterialEditor::Draw()
 		ImGui::Separator();
 		ImGui::PopID();
 	}
-	if (!material->shader->isFX)
+	if (material->shader && !material->shader->isFX)
 	{
 		if (ImGui::CollapsingHeader("Occlusion"))
 		{

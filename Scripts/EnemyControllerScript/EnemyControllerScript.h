@@ -19,6 +19,7 @@ class DamageController;
 class EnemyLifeBarController;
 class PlayerMovement;
 class ExperienceController;
+class ResourceMaterial;
 
 class EnemyControllerScript_API EnemyControllerScript : public Script
 {
@@ -54,6 +55,7 @@ public:
 	std::string playerName = "Player";
 	std::string playerBboxName = "PlayerMesh";
 	std::string myBboxName = "EnemyMesh";
+	std::string hitMaterialName = "HitMaterial";
 	ComponentAnimation* anim = nullptr;
 	ComponentRenderer* myRender;
 
@@ -69,11 +71,16 @@ public:
 	ComponentBoxTrigger* attackBoxTrigger = nullptr;
 	ComponentBoxTrigger* playerHitBox = nullptr;
 
+	ResourceMaterial* hitMaterial = nullptr;
+	ResourceMaterial* defaultMaterial = nullptr;
+
 private:
 	int actualHealth = 20;
 	int maxHealth = 20;
 	int experience = 20;
 
+	float hitColorDuration = 0.2f;
+	float timer = 0.f;
 	bool isDead = false;
 };
 
