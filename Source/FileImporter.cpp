@@ -88,6 +88,10 @@ void FileImporter::ImportAsset(const char *file, const char *folder)
 	{
 		App->resManager->ImportFile(file, folder, TYPE::STATEMACHINE);
 	}
+	else if (extension == OGGEXTENSION || extension == MP3EXTENSION || extension == WAVEXTENSION)
+	{
+		App->resManager->ImportFile(file, folder, TYPE::AUDIO);
+	}
 	else if (extension == PREFABEXTENSION)
 	{
 		App->resManager->ImportFile(file, folder, TYPE::PREFAB);
@@ -418,6 +422,10 @@ void FileImporter::ImportAnimation(const aiAnimation& animation, char* data)
 			cursor += sizeof(math::Quat);
 		}
 	}
+
+	int events = 0;
+	memcpy(cursor, &events, sizeof(int));
+	cursor += sizeof(int);
 }
 
 //TODO: Obtain animations size in order to store their content
@@ -445,6 +453,8 @@ unsigned FileImporter::GetAnimationSize(const aiAnimation& animation) const
 			size += sizeof(math::Quat);
 		}
 	}
+
+	size += sizeof(int);
 
 	return size;
 }

@@ -18,6 +18,7 @@ class ComponentBoxTrigger;
 class DamageController;
 class EnemyLifeBarController;
 class PlayerMovement;
+class ExperienceController;
 
 class EnemyControllerScript_API EnemyControllerScript : public Script
 {
@@ -42,9 +43,8 @@ public:
 
 	inline bool IsCollidingWithPlayer() const;
 
-	void Move(float speed, math::float3& direction) const;
+	void Move(float speed, math::float3& direction) const;		// Warning: doesn't use nav mesh
 	void Move(float speed, float& refreshTime, math::float3 position, std::vector<float3>& path) const; // Move using nav mesh
-	void MoveTowards(float speed) const;
 	void LookAt2D(math::float3& position);
 
 	void OnTriggerEnter(GameObject* go) override;
@@ -59,6 +59,7 @@ public:
 
 	DamageController* damageController = nullptr;
 	EnemyLifeBarController* enemyLifeBar = nullptr;
+	ExperienceController* experienceController = nullptr;
 	
 	// BBoxes
 	math::AABB* myBbox = nullptr;
@@ -71,6 +72,7 @@ public:
 private:
 	int actualHealth = 20;
 	int maxHealth = 20;
+	int experience = 20;
 
 	bool isDead = false;
 };

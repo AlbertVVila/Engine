@@ -111,6 +111,7 @@ bool ModuleScene::Start()
 		defaultScene = (ResourceScene*)App->resManager->Get(defaultSceneUID);
 		if (defaultScene != nullptr)
 		{
+			App->navigation->sceneName = defaultScene->GetName();
 			defaultScene->Load();
 		}
 	}
@@ -415,6 +416,10 @@ void ModuleScene::DrawGOGame(const GameObject& go)
 		{
 			variation |= (unsigned)ModuleProgram::PBR_Variations::SHADOWS_ENABLED;
 		}
+		if (crenderer->dissolve)
+		{
+			variation |= (unsigned)ModuleProgram::PBR_Variations::DISSOLVE;
+		}
 	}
 	
 	glUseProgram(shader->id[variation]);
@@ -482,6 +487,10 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 		{
 			variation |= (unsigned)ModuleProgram::PBR_Variations::EDITOR_RENDER;
 		}
+		if (crenderer->dissolve)
+		{
+			variation |= (unsigned)ModuleProgram::PBR_Variations::DISSOLVE;
+		}
 	}
 
 	glUseProgram(shader->id[variation]);
@@ -511,7 +520,8 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 		crenderer->DrawMesh(shader->id[variation]);
 	}
 	
-
+	glUniform1f(glGetUniformLocation(shader->id[variation], "sliceAmount"), crenderer->dissolveAmount);
+	glUniform1f(glGetUniformLocation(shader->id[variation], "borderAmount"), crenderer->borderAmount);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glActiveTexture(GL_TEXTURE0);
 	glUseProgram(0);
@@ -1256,6 +1266,7 @@ void ModuleScene::LoadTemporaryScene()
 bool ModuleScene::AddScene(const char* sceneName, const char* folder)
 {
 	ResourceScene* scene = (ResourceScene*)App->resManager->GetByName(sceneName, TYPE::SCENE);
+	App->navigation->sceneName = sceneName;
 	if(scene != nullptr && !scene->Load())
 	{
 		LOG("Error loading scene named: %s", sceneName);

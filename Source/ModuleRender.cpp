@@ -89,8 +89,7 @@ bool ModuleRender::Init(JSON * config)
 	bloomSpread = renderer->GetFloat("bloomSpread", bloomSpread);
 	exposure = renderer->GetFloat("exposure", exposure);
 	kernelRadius = renderer->GetInt("kernelRadius", kernelRadius);
-
-
+	
 	switch (current_scale)
 	{
 	case 1:
@@ -107,6 +106,7 @@ bool ModuleRender::Init(JSON * config)
 	glGenTextures(1, &highlightBufferGame);
 	glGenTextures(1, &renderedSceneGame);
 	glGenTextures(1, &brightnessBufferGame);
+	glGenFramebuffers(2, pingpongFBO);
 
 	float quadVertices[] =
 	{
@@ -168,6 +168,7 @@ bool ModuleRender::Start()
 	glGenTextures(1, &shadowsTex);
 	shadowsShader = App->program->GetProgram("Shadows");
 	postProcessShader = App->program->GetProgram("PostProcess");
+	blur = App->program->GetProgram("Bloom");
 	return shadowsShader && shadowsFBO > 0u && shadowsTex > 0u;
 }
 
@@ -266,19 +267,38 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 		glClearBufferfv(GL_COLOR, 1, transparent);
 		glClearBufferfv(GL_COLOR, 2, transparent);
 	}
-	
+
 	App->scene->Draw(*cam.frustum, isEditor);
 	App->particles->Render(App->time->fullGameDeltaTime, &cam);
 
 	
 	if (!isEditor)
 	{
-
-		unsigned int attachments[3] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };// , GL_COLOR_ATTACHMENT2	};// , , GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4
-		glDrawBuffers(3, attachments);
-		
 		GLint drawFboId = 0;
 		glGetIntegerv(GL_DRAW_FRAMEBUFFER_BINDING, &drawFboId);
+
+		bool horizontal = true, first_iteration = true;
+		
+		glUseProgram(blur->id[0]);
+		glUniform1fv(glGetUniformLocation(blur->id[0], "weight"), MAX_KERNEL_RADIUS, kernel);
+		glUniform1i(glGetUniformLocation(blur->id[0], "kernelRadius"), kernelRadius);
+
+		for (unsigned int i = 0; i < kernelRadius; i++)
+		{
+			glBindFramebuffer(GL_FRAMEBUFFER, pingpongFBO[horizontal]);
+			glUniform1i(glGetUniformLocation(blur->id[0], "horizontal"), horizontal);
+			glBindTexture(GL_TEXTURE_2D, first_iteration ? brightnessBufferGame : pingpongColorbuffers[!horizontal]);  // bind texture of other framebuffer (or scene if first iteration)
+			
+			glBindVertexArray(postprocessVAO);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, postprocessEBO);
+			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+			horizontal = !horizontal;
+			if (first_iteration)
+				first_iteration = false;
+		}
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		glBindVertexArray(0);
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0); //Flush textures
 
@@ -293,9 +313,6 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 		glUniform1i(glGetUniformLocation(postProcessShader->id[0], "gBrightness"), 2);
 		glUniform1f(glGetUniformLocation(postProcessShader->id[0], "gammaCorrector"), gammaCorrector);
 		glUniform1f(glGetUniformLocation(postProcessShader->id[0], "exposure"), exposure);
-		glUniform1fv(glGetUniformLocation(postProcessShader->id[0], "weight"), MAX_KERNEL_RADIUS, kernel);
-		glUniform1i(glGetUniformLocation(postProcessShader->id[0], "kernelRadius"), kernelRadius);
-
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, renderedSceneGame);
@@ -304,7 +321,7 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 		glBindTexture(GL_TEXTURE_2D, highlightBufferGame);
 
 		glActiveTexture(GL_TEXTURE2);
-		glBindTexture(GL_TEXTURE_2D, brightnessBufferGame);
+		glBindTexture(GL_TEXTURE_2D, pingpongColorbuffers[!horizontal]);
 		
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -421,6 +438,25 @@ void ModuleRender::OnResize()
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+
+
+		unsigned int attachments[3] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };// , GL_COLOR_ATTACHMENT2	};// , , GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4
+		glDrawBuffers(3, attachments);
+
+		glGenTextures(2, pingpongColorbuffers);
+		for (unsigned int i = 0; i < 2; i++)
+		{
+			glBindFramebuffer(GL_FRAMEBUFFER, pingpongFBO[i]);
+			glBindTexture(GL_TEXTURE_2D, pingpongColorbuffers[i]);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, viewGame->current_width, viewGame->current_height, 0, GL_RGB, GL_FLOAT, NULL);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, pingpongColorbuffers[i], 0);						
+		}
+
+
 	}
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindFramebuffer(GL_FRAMEBUFFER, drawFboId);
@@ -523,8 +559,8 @@ void ModuleRender::ComputeShadows()
 		//TODO: Improve this avoiding shuffle every frame
 		for (GameObject* go : App->scene->dynamicFilteredGOs) 
 		{
-			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponentOld(ComponentType::Renderer);
-			if (cr && cr->castShadows)
+			ComponentRenderer* cr = go->GetComponent<ComponentRenderer>();
+			if (cr != nullptr && cr->castShadows)
 			{
 				renderersDetected = true;
 				lightAABB.Enclose(go->bbox);
@@ -676,7 +712,6 @@ void ModuleRender::BlitShadowTexture()
 
 void ModuleRender::CreatePostProcessFramebuffer()
 {
-	LOG("DD");
 	if (postprocessFBO == 0)
 	{
 		glGenFramebuffers(1, &postprocessFBO);
@@ -789,7 +824,7 @@ void ModuleRender::DrawGUI()
 	}
 	ImGui::DragFloat("Gamma correction", &gammaCorrector, .05f, 1.2f, 3.2f);
 	ImGui::DragFloat("Exposure", &exposure, .05f, .1f, 10.0f);
-	if (ImGui::DragFloat("Bloom spread", &bloomSpread, .1f, 1.f, 100.f))
+	if (ImGui::DragFloat("Bloom spread", &bloomSpread, .1f, 1.f, 4.f))
 	{
 		ComputeBloomKernel();
 	}

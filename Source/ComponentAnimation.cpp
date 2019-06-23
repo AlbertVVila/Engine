@@ -3,14 +3,17 @@
 #include "ModuleResourceManager.h"
 #include "ModuleFileSystem.h"
 #include "ModuleTime.h"
+#include "ModuleScene.h"
 
 #include "GameObject.h"
+#include "BaseScript.h"
 #include "Resource.h"
 #include "ResourceAnimation.h"
 #include "ResourceStateMachine.h"
 #include "AnimationController.h"
 #include "ComponentAnimation.h"
 #include "ComponentTransform.h"
+#include "ComponentRenderer.h"
 
 #include "Globals.h"
 #include <stack>
@@ -413,11 +416,40 @@ void ComponentAnimation::Update()
 				SetIndexChannels(gameobject, GetAnimFromStateMachine());
 				channelsSetted = true;
 			}
+
 			controller->Update(App->time->fullGameDeltaTime);
+			ResourceAnimation* Anim = controller->current->anim;
+
+			if (controller->CheckEvents(Anim))
+			{
+				std::vector<Component*> scripts = gameobject->GetComponents(ComponentType::Script);
+
+				for (auto script : scripts)
+				{
+					Script* scr = (Script*)script;
+					scr->OnAnimationEvent(Anim->events.at(Anim->nextEvent)->name);
+				}
+
+				++Anim->nextEvent;
+			}
 
 			if (gameobject != nullptr)
 			{
-				UpdateGO(gameobject);
+				GameObject* meshGO = nullptr;
+
+				for (const auto& child : gameobject->children)
+				{
+					if (child->isVolumetric)
+					{
+						meshGO = child;
+						std::unordered_set<GameObject*>::const_iterator GO = App->scene->dynamicFilteredGOs.find(meshGO);
+						if (GO != App->scene->dynamicFilteredGOs.end())
+						{
+							UpdateGO(gameobject);
+							break;
+						}
+					}
+				}
 			}
 		}
 	}

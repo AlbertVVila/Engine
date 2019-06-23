@@ -6,6 +6,7 @@
 class ComponentImage;
 class Text;
 class Transform2D;
+class ResourceTexture;
 
 class Button :	public Component
 {
@@ -25,7 +26,13 @@ public:
 	void AssemblyButton();
 
 	ENGINE_API inline bool IsHovered() { return isHovered; };
-	ENGINE_API inline bool IsPressed() { return isPressed; };
+	ENGINE_API inline bool IsPressed() { return isKeyDown; };
+
+	ENGINE_API inline bool KeyUp()	 { return isKeyUp; }
+	ENGINE_API inline bool KeyDown() { return isKeyDown; }
+
+	ENGINE_API void UpdateImageByName(std::string name);
+	ENGINE_API void UpdateImageByResource(ResourceTexture* name);
 
 	ComponentImage* buttonImage = nullptr;
 	ComponentImage* highlightedImage = nullptr;
@@ -36,8 +43,12 @@ public:
 	Component* Clone() const override;
 
 	bool isHovered = false;
-	bool isPressed = false;
 	bool isSelected = false;
+	bool isKeyDown = false;
+	bool isKeyUp = false;
+
+	bool hoverDetectionMouse1 = true;
+	bool hoverDetectionMouse3 = true;
 };
 
 #endif // __ComponentButton_h__

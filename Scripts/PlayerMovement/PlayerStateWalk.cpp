@@ -37,13 +37,15 @@ void PlayerStateWalk::Update()
 {
 	math:float2 mouse((float*)&player->App->input->GetMousePosition());
 	if (player->App->input->GetMouseButtonDown(3) == KEY_DOWN 
-		|| (player->App->input->GetMouseButtonDown(3) == KEY_REPEAT && moveTimer > RECALC_PATH_TIME))
+		|| player->App->input->GetMouseButtonDown(3) == KEY_REPEAT)
 	{
 		moveTimer = 0.0f;
-		math::float3 intersectionPoint = math::float3::inf;
-		if (player->App->scene->Intersects(intersectionPoint, "floor"))
+		math::float3 intPos(0.f, 0.f, 0.f);
+		if (player->App->navigation->NavigateTowardsCursor(player->gameobject->transform->position, path,
+					math::float3(player->OutOfMeshCorrectionXZ, player->OutOfMeshCorrectionY, player->OutOfMeshCorrectionXZ), 
+					intPos, player->maxWalkingDistance))
 		{
-			player->App->navigation->FindPath(player->gameobject->transform->position, intersectionPoint, path);
+			//case the player clicks outside of the floor mesh but we want to get close to the floors edge
 			pathIndex = 0;
 		}
 		else
@@ -115,7 +117,7 @@ void PlayerStateWalk::CheckInput()
 	}
 	else if (player->IsUsingFirstSkill())
 	{
-		player->currentState = (PlayerState*)player->dash;
+		player->currentState = player->allSkills[player->activeSkills[0]]->state;
 		if (dustParticles)
 		{
 			dustParticles->SetActive(false);
@@ -123,7 +125,7 @@ void PlayerStateWalk::CheckInput()
 	}
 	else if (player->IsUsingSecondSkill())
 	{
-		player->currentState = (PlayerState*)player->uppercut;
+		player->currentState = player->allSkills[player->activeSkills[1]]->state;
 		if (dustParticles)
 		{
 			dustParticles->SetActive(false);

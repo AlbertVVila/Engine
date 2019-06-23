@@ -9,10 +9,15 @@
 #include "ModuleScene.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleFileSystem.h"
+#include "ModuleWindow.h"
+#include "ModuleInput.h"
+#include "ModuleRender.h"
+#include "Viewport.h"
 
 #include "Component.h"
 #include "ComponentRenderer.h"
 #include "ComponentTransform.h"
+#include "ComponentCamera.h"
 
 #include "ResourceMesh.h"
 
@@ -45,8 +50,8 @@ ModuleNavigation::ModuleNavigation()
 
 ModuleNavigation::~ModuleNavigation()
 {
-	cleanValuesPRE();
-	cleanValuesPOST();
+	CleanValuesPRE();
+	CleanValuesPOST();
 }
 
 //config
@@ -82,15 +87,42 @@ void ModuleNavigation::SaveConfig(JSON * config)
 void ModuleNavigation::sceneLoaded(JSON * config)
 {
 	JSON_value* nav = config->GetValue("navigationScene");
-	if (nav == nullptr) return;
-	navDataSize = nav->GetInt("navDataSize", 0);
-	if (navDataSize == 0) return;
-
-	char* navData2 = 0;
-	App->fsystem->Load("Assets/navigationMesh.bin", &navData2);
+	if (nav == nullptr)
+	{
+		CleanValuesPOST();
+		CleanValuesPRE();
+		return;
+	}
+	//load the nav data size from the scene_datasize file
+	std::stringstream path;
+	path << "Resources/NavigationMeshes/navMesh" << sceneName << "_DataSize" << ".bin";
+	char* navSizeTmp = nullptr;
+	App->fsystem->Load(path.str().c_str(), &navSizeTmp);
+	if (navSizeTmp == nullptr)
+	{
+		LOG("could not find a size of navmesh");
+		CleanValuesPOST();
+		CleanValuesPRE();
+		return;
+	}
+	std::string chartoIntConverter = navSizeTmp;
+	navDataSize = std::stoi(chartoIntConverter);
+	if (navDataSize == 0)
+	{
+		CleanValuesPOST();
+		CleanValuesPRE();
+		return;
+	}
+	path.str(std::string());//more efficient way to clear stringstream values
+	//now we load mesh and generate its last part
+	path << "Resources/NavigationMeshes/navMesh" << sceneName << ".bin";
+	char* navData2 = nullptr;
+	App->fsystem->Load(path.str().c_str(), &navData2);
 	if (navData2 == nullptr)
 	{
 		LOG("could not find a stored navigation mesh");
+		CleanValuesPOST();
+		CleanValuesPRE();
 		return;
 	}
 
@@ -101,7 +133,7 @@ void ModuleNavigation::sceneLoaded(JSON * config)
 		LOG("Could not create Detour navmesh");
 		meshGenerated = false;
 		renderMesh = false;
-		cleanValuesPOST();
+		CleanValuesPOST();
 		return;
 	}
 
@@ -114,7 +146,7 @@ void ModuleNavigation::sceneLoaded(JSON * config)
 		LOG("Could not init Detour navmesh");
 		meshGenerated = false;
 		renderMesh = false;
-		cleanValuesPOST();
+		CleanValuesPOST();
 		return;
 	}
 
@@ -124,14 +156,14 @@ void ModuleNavigation::sceneLoaded(JSON * config)
 		LOG("Could not init Detour navmesh query");
 		meshGenerated = false;
 		renderMesh = false;
-		cleanValuesPOST();
+		CleanValuesPOST();
 		return;
 	}
 
 	meshGenerated = true;
 	renderMesh = true;
 	LOG("Navigation mesh loaded");
-	cleanValuesPOST();
+	CleanValuesPOST();
 
 	//SetUp for Debug Draw nav mesh
 	ddi = new DetourDebugInterface;
@@ -148,7 +180,7 @@ void ModuleNavigation::sceneSaved(JSON * config)
 	config->AddValue("navigationScene", *navigation);
 }
 
-void ModuleNavigation::cleanValuesPRE()
+void ModuleNavigation::CleanValuesPRE()
 {
 	nverts = 0; ntris = 0;
 	RELEASE_ARRAY(verts);
@@ -172,7 +204,7 @@ void ModuleNavigation::cleanValuesPRE()
 	//TODO: free navquery, navmesh, crowd, rcconfig, rccontext
 }
 
-void ModuleNavigation::cleanValuesPOST()
+void ModuleNavigation::CleanValuesPOST()
 {
 	meshboxes.clear();
 	meshComponents.clear();
@@ -287,7 +319,7 @@ void ModuleNavigation::addNavigableMesh()
 			if (!it->navigable)
 			{
 				LOG("Some of the objects selected are not navigable");
-				cleanValuesPOST();
+				CleanValuesPOST();
 				return;
 			}
 			meshboxes.push_back(static_cast <const AABB*>(&it->bbox));
@@ -307,6 +339,16 @@ void ModuleNavigation::addNavigableMesh()
 		std::string s = App->scene->selected->name + " added to navigation";
 		LOG(s.c_str());
 	}
+}
+
+void ModuleNavigation::AddNavigableMeshFromObject(GameObject* obj)
+{
+	meshboxes.push_back(static_cast <const AABB*>(&obj->bbox));
+	meshComponents.push_back(static_cast <const ComponentRenderer*>(obj->GetComponentOld(ComponentType::Renderer)));
+	transformComponents.push_back(static_cast <const ComponentTransform*>(obj->GetComponentOld(ComponentType::Transform)));
+	isObstacle.push_back(obj->noWalkable);
+	std::string s = obj->name + " added to navigation";
+	LOG(s.c_str());
 }
 
 void ModuleNavigation::renderNavMesh()
@@ -377,7 +419,7 @@ void ModuleNavigation::renderNavMesh()
 void ModuleNavigation::generateNavigability(bool render)
 {
 	//clean old info
-	cleanValuesPRE();
+	CleanValuesPRE();
 
 	pointsUpdated = true;
 
@@ -392,7 +434,7 @@ void ModuleNavigation::generateNavigability(bool render)
 	{
 		if (meshboxes[i]->minPoint.x < bmin[0]) bmin[0] = meshboxes[i]->minPoint.x;
 		if (meshboxes[i]->minPoint.y < bmin[1]) bmin[1] = meshboxes[i]->minPoint.y;
-		if (meshboxes[i]->minPoint.x < bmin[2]) bmin[2] = meshboxes[i]->minPoint.z;
+		if (meshboxes[i]->minPoint.z < bmin[2]) bmin[2] = meshboxes[i]->minPoint.z;
 
 		if (meshboxes[i]->maxPoint.x > bmax[0]) bmax[0] = meshboxes[i]->maxPoint.x;
 		if (meshboxes[i]->maxPoint.y > bmax[1]) bmax[1] = meshboxes[i]->maxPoint.y;
@@ -450,7 +492,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Out of memory 'solid'.");
 		meshGenerated = false;
 		renderMesh = false;
-		cleanValuesPOST();
+		CleanValuesPOST();
 		return;
 	}
 	if (!rcCreateHeightfield(ctx, *heightField, cfg->width, cfg->height, cfg->bmin, cfg->bmax, cfg->cs, cfg->ch))
@@ -458,7 +500,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Could not create solid heightfield.");
 		meshGenerated = false;
 		renderMesh = false;
-		cleanValuesPOST();
+		CleanValuesPOST();
 		return;
 	}
 
@@ -471,7 +513,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Out of memory 'm_triareas' (%d).");
 		meshGenerated = false;
 		renderMesh = false;
-		cleanValuesPOST();
+		CleanValuesPOST();
 		return;
 	}
 
@@ -486,7 +528,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Could not rasterize triangles.");
 		meshGenerated = false;
 		renderMesh = false;
-		cleanValuesPOST();
+		CleanValuesPOST();
 		return;
 	}
 
@@ -517,7 +559,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Out of memory 'chf'.");
 		meshGenerated = false;
 		renderMesh = false;
-		cleanValuesPOST();
+		CleanValuesPOST();
 		return;
 	}
 	if (!rcBuildCompactHeightfield(ctx, cfg->walkableHeight, cfg->walkableClimb, *heightField, *chf))
@@ -525,7 +567,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Could not build compact data.");
 		meshGenerated = false;
 		renderMesh = false;
-		cleanValuesPOST();
+		CleanValuesPOST();
 		return;
 	}
 
@@ -541,7 +583,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Could not erode.");
 		meshGenerated = false;
 		renderMesh = false;
-		cleanValuesPOST();
+		CleanValuesPOST();
 		return;
 	}
 
@@ -583,7 +625,7 @@ void ModuleNavigation::generateNavigability(bool render)
 			LOG("buildNavigation: Could not build distance field.");
 			meshGenerated = false;
 			renderMesh = false;
-			cleanValuesPOST();
+			CleanValuesPOST();
 			return;
 		}
 		
@@ -593,7 +635,7 @@ void ModuleNavigation::generateNavigability(bool render)
 			LOG("buildNavigation: Could not build watershed regions.");
 			meshGenerated = false;
 			renderMesh = false;
-			cleanValuesPOST();
+			CleanValuesPOST();
 			return;
 		}
 	}
@@ -606,7 +648,7 @@ void ModuleNavigation::generateNavigability(bool render)
 			LOG("buildNavigation: Could not build monotone regions.");
 			meshGenerated = false;
 			renderMesh = false;
-			cleanValuesPOST();
+			CleanValuesPOST();
 			return;
 		}
 	}
@@ -618,7 +660,7 @@ void ModuleNavigation::generateNavigability(bool render)
 			LOG("buildNavigation: Could not build layer regions.");
 			meshGenerated = false;
 			renderMesh = false;
-			cleanValuesPOST();
+			CleanValuesPOST();
 			return;
 		}
 	}
@@ -634,7 +676,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Out of memory 'cset'.");
 		meshGenerated = false;
 		renderMesh = false;
-		cleanValuesPOST();
+		CleanValuesPOST();
 		return;
 	}
 	if (!rcBuildContours(ctx, *chf, cfg->maxSimplificationError, cfg->maxEdgeLen, *cset))
@@ -642,7 +684,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Could not create contours.");
 		meshGenerated = false;
 		renderMesh = false;
-		cleanValuesPOST();
+		CleanValuesPOST();
 		return;
 	}
 	
@@ -658,7 +700,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Out of memory 'pmesh'.");
 		meshGenerated = false;
 		renderMesh = false;
-		cleanValuesPOST();
+		CleanValuesPOST();
 		return;
 	}
 	if (!rcBuildPolyMesh(ctx, *cset, cfg->maxVertsPerPoly, *pmesh))//gotta adapt this one to fill pmesh with the values
@@ -666,7 +708,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Could not triangulate contours.");
 		meshGenerated = false;
 		renderMesh = false;
-		cleanValuesPOST();
+		CleanValuesPOST();
 		return;
 	}
 	
@@ -680,7 +722,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Out of memory 'pmdtl'.");
 		meshGenerated = false;
 		renderMesh = false;
-		cleanValuesPOST();
+		CleanValuesPOST();
 		return;
 	}
 
@@ -689,7 +731,7 @@ void ModuleNavigation::generateNavigability(bool render)
 		LOG("buildNavigation: Could not build detail mesh.");
 		meshGenerated = false;
 		renderMesh = false;
-		cleanValuesPOST();
+		CleanValuesPOST();
 		return;
 	}
 
@@ -774,14 +816,23 @@ void ModuleNavigation::generateNavigability(bool render)
 			LOG("Could not build Detour navmesh");
 			meshGenerated = false;
 			renderMesh = false;
-			cleanValuesPOST();
+			CleanValuesPOST();
 			return;
 		}
-
-		App->fsystem->Save("Assets/navigationMesh.bin", (const char*)navData, navDataSize);
+		//save data
+		std::stringstream path;
+		path << "Resources/NavigationMeshes/navMesh" << App->scene->name << ".bin";
+		App->fsystem->Save(path.str().c_str(), (const char*)navData, navDataSize);
+		//save size of the data
+		path.str(std::string());//more efficient way to clear stringstream values
+		path << "Resources/NavigationMeshes/navMesh" << App->scene->name << "_DataSize" << ".bin";
+		App->fsystem->Save(path.str().c_str(), std::to_string(navDataSize).c_str(), sizeof(int));
 		dtFree(navData);
+		//load data
 		char* navData2 = 0;
-		App->fsystem->Load("Assets/navigationMesh.bin", &navData2);
+		path.str(std::string());//clean again to load
+		path << "Resources/NavigationMeshes/navMesh" << App->scene->name << ".bin";
+		App->fsystem->Load(path.str().c_str(), &navData2);
 		
 		navMesh = dtAllocNavMesh();
 		if (!navMesh)
@@ -790,7 +841,7 @@ void ModuleNavigation::generateNavigability(bool render)
 			LOG("Could not create Detour navmesh");
 			meshGenerated = false;
 			renderMesh = false;
-			cleanValuesPOST();
+			CleanValuesPOST();
 			return;
 		}
 		
@@ -803,7 +854,7 @@ void ModuleNavigation::generateNavigability(bool render)
 			LOG("Could not init Detour navmesh");
 			meshGenerated = false;
 			renderMesh = false;
-			cleanValuesPOST();
+			CleanValuesPOST();
 			return;
 		}
 
@@ -813,7 +864,7 @@ void ModuleNavigation::generateNavigability(bool render)
 			LOG("Could not init Detour navmesh query");
 			meshGenerated = false;
 			renderMesh = false;
-			cleanValuesPOST();
+			CleanValuesPOST();
 			return;
 		}
 	}
@@ -832,7 +883,7 @@ void ModuleNavigation::generateNavigability(bool render)
 	meshGenerated = true;
 	renderMesh = render;
 	LOG("Navigation mesh generated");
-	cleanValuesPOST();
+	CleanValuesPOST();
 
 	//SetUp for Debug Draw nav mesh
 	ddi = new DetourDebugInterface;
@@ -955,89 +1006,6 @@ class myPoint : public dd::RenderInterface
 };
 
 //Detour stuff http://irrlicht.sourceforge.net/forum/viewtopic.php?f=9&t=49482
-std::vector<math::float3>  ModuleNavigation::returnPath(math::float3 pStart, math::float3 pEnd)
-{
-	std::vector<math::float3> lstPoints;
-	
-	if (navQuery)
-	{
-		if (navMesh == 0)
-		{
-			return  lstPoints;
-		}
-	/*if (pointsUpdated)
-	{
-		fillDrawPoints();
-		pointsUpdated = false;
-	}
-	myPoint* renderIface = new myPoint();
-	renderIface->drawPointList(points, nverts, false);*/
-	/*for (int i = 0; i < nverts; ++i)
-	{
-		dd::point(ddVec3(verts[i * 3], verts[i * 3+1], verts[i * 3+2]), ddVec3(0,0,1), 10.0f);
-	}
-	*/
-	
-	//dd::xzSquareGrid(-500.0f * 10, 500.0f * 10, 0.0f, 1.0f * 10, math::float3(0.65f, 0.65f, 0.65f));
-	//dtPolyRef base = navMesh->getPolyRefBase(tile);
-
-		dtQueryFilter m_filter;
-		dtPolyRef m_startRef;
-		dtPolyRef m_endRef;
-
-		dtPolyRef m_polys[MAX_POLYS];
-		dtPolyRef returnedPath[MAX_POLYS];
-		float m_straightPath[MAX_POLYS * 3];
-		int numStraightPaths;
-		float  m_spos[3] = { pStart.x, pStart.y, pStart.z };
-		float  m_epos[3] = { pEnd.x, pEnd.y, pEnd.z };
-		float m_polyPickExt[3];
-		m_polyPickExt[0] = 2;
-		m_polyPickExt[1] = 4;
-		m_polyPickExt[2] = 2;
-
-
-		navQuery->findNearestPoly(m_spos, m_polyPickExt, &m_filter, &m_startRef, 0);
-
-		if (m_startRef == 0)
-		{
-			return lstPoints;
-
-		}
-		navQuery->findNearestPoly(m_epos, m_polyPickExt, &m_filter, &m_endRef, 0);
-
-		if (m_endRef == 0)
-		{
-			return lstPoints;
-
-		}
-		dtStatus findStatus = DT_FAILURE;
-		int pathCount;
-
-		findStatus = navQuery->findPath(m_startRef, m_endRef, m_spos, m_epos, &m_filter, returnedPath, &pathCount, MAX_POLYS);
-
-
-
-		if (pathCount > 0)
-		{
-			findStatus = navQuery->findStraightPath(m_spos, m_epos, returnedPath,
-				pathCount, m_straightPath, 0, 0, &numStraightPaths, MAX_POLYS);
-
-			for (int i = 0; i < numStraightPaths; ++i)
-			{
-				float3 cpos(m_straightPath[i * 3], m_straightPath[i * 3 + 1] + 0.25,
-					m_straightPath[i * 3 + 2]);
-
-				lstPoints.push_back(cpos);
-				//path->AddNode(node);
-			}
-
-
-		}
-
-	}
-	return lstPoints;
-}
 /* TODO add where the mesh is calculated!!!
 
 	/*scene::IAnimatedMesh *terrain_model = smgr->addHillPlaneMesh("groundPlane", // Name of the scenenode
@@ -1278,7 +1246,14 @@ static int fixupShortcuts(dtPolyRef* path, int npath, dtNavMeshQuery* navQuery)
 	return npath;
 }
 
-bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vector<math::float3>& path, PathFindType type) const
+float ModuleNavigation::GetXZDistance(float3 a, float3 b) const
+{
+	math::float2 p1(a.x, a.z);
+	math::float2 p2(b.x, b.z);
+	return p1.DistanceSq(p2);
+}
+
+bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vector<math::float3>& path, PathFindType type, math::float3 diff, float maxDist) const
 {
 	path.clear();
 	dtPolyRef startPoly, endPoly;
@@ -1286,7 +1261,7 @@ bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vecto
 	filter.setIncludeFlags(SAMPLE_POLYFLAGS_ALL ^ SAMPLE_POLYFLAGS_DISABLED);
 	filter.setExcludeFlags(0);
 
-	float polyPickExt[3] = { 0,0,0 };
+	float polyPickExt[3] = {diff.x, diff.y, diff.z};
 
 	dtPolyRef polyPath[MAX_POLYS];
 	int polyCount = 0;
@@ -1398,11 +1373,15 @@ bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vecto
 					smoothNb++;
 				}
 			}
-
+			float currentPathDistance = 0;
 			path.reserve(smoothNb);
 			for (size_t i = 0; i < smoothNb; i++)
 			{
 				path.push_back(float3(smoothPath[i * 3], smoothPath[i * 3 + 1], smoothPath[i * 3 + 2]));
+				//check distance
+				//if (i != 0) currentPathDistance += path[i - 1].DistanceSq(path[i]); //3d distance
+				if (i != 0) currentPathDistance += GetXZDistance(path[i - 1], path[i]);//2d distance
+				if (currentPathDistance > maxDist)	return true;
 			}
 			return true;
 		}
@@ -1434,6 +1413,33 @@ bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vecto
 	}
 
 	return false;
+}
+
+bool ModuleNavigation::NavigateTowardsCursor(math::float3 start, std::vector<math::float3>& path, 
+											 math::float3 positionCorrection, math::float3& intersectionPos, float maxPathDistance) const
+{
+	float2 mouse((float*)& App->input->GetMousePosition());
+	LineSegment line;
+
+	float normalized_x, normalized_y;
+
+#ifndef GAME_BUILD
+	math::float2 pos = App->renderer->viewGame->winPos;
+	math::float2 size(App->renderer->viewGame->current_width, App->renderer->viewGame->current_height);
+#else
+	math::float2 pos = math::float2::zero;
+	math::float2 size(App->window->width, App->window->height);
+#endif
+	normalized_x = ((mouse.x - pos.x) / size.x) * 2 - 1; //0 to 1 -> -1 to 1
+	normalized_y = (1 - (mouse.y - pos.y) / size.y) * 2 - 1; //0 to 1 -> -1 to 1
+
+	line = App->scene->maincamera->DrawRay(normalized_x, normalized_y);
+	Plane plane(math::float3(0.f, 1.f, 0.f), start.y);
+	float dist = 0.f;
+	line.Intersects(plane, &dist);
+	intersectionPos = line.GetPoint(dist);
+
+	return FindPath(start, intersectionPos, path, PathFindType::FOLLOW, positionCorrection, maxPathDistance);
 }
 
 void ModuleNavigation::RecalcPath(math::float3 point)

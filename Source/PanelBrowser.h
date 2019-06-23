@@ -14,6 +14,18 @@ class Resource;
 class ResourceTexture;
 class GameObject;
 
+enum class BROWSER_OPTIONS
+{
+	NONE = 0,
+	IMPORT_CONFIGURTATION, 
+	LOAD_SETTINGS, 
+	RENAME_FILE, 
+	RENAME_FOLDER, 
+	DELETE_FILE, 
+	DELETE_FOLDER, 
+	NEW_FOLDER
+};
+
 class PanelBrowser :
 	public Panel
 {
@@ -36,8 +48,11 @@ private:
 	void DrawFileContextMenu();
 	void DrawFolderContextMenu();
 	void DrawImportConfigurationPopUp();
+	void DrawLoadSettingsPopUp();
 	void DrawRenameFilePopUp();
 	void DrawRenameFolderPopUp();
+	void DrawDeleteFilePopUp();
+	void DrawDeleteFolderPopUp();
 	void DrawNewFolderPopUp();
 
 public:
@@ -49,10 +64,15 @@ private:
 	std::vector<std::string> files;			// List of the files in current path
 	std::vector<std::string> dirs;			// List of the folders in current path
 
-	bool openImportConfigPopUp = false;
+	/*bool openImportConfigPopUp = false;
+	bool openLoadSettingsPopUp = false;
 	bool openRenameFilePopUp = false;
 	bool openRenameFolderPopUp = false;
-	bool openNewFolderPopUp = false;
+	bool openDeleteFilePopUp = false;
+	bool openDeleteFolderPopUp = false;
+	bool openNewFolderPopUp = false;*/
+
+	BROWSER_OPTIONS browserOption = BROWSER_OPTIONS::NONE;
 
 	Resource* fileSelected = nullptr;
 	std::string folderSelected = "";
@@ -76,6 +96,9 @@ private:
 	ResourceTexture* sc3neIcon = nullptr;
 	ResourceTexture* animati0nIcon = nullptr;
 	ResourceTexture* st4tem4chineIcon = nullptr;
+	ResourceTexture* wavIcon = nullptr;
+	ResourceTexture* oggIcon = nullptr;
+	ResourceTexture* mp3Icon = nullptr;
 	ResourceTexture* pr3fabIcon = nullptr;
 
 	//Drag N Drop
