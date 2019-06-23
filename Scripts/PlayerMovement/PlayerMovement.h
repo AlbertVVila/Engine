@@ -21,14 +21,14 @@ struct ImGuiContext;
 #endif
 
 #define HUB_BUTTON_RC 0
-#define HUB_BUTTON_Q 1
-#define HUB_BUTTON_W 2
-#define HUB_BUTTON_E 3
-#define HUB_BUTTON_R 4
-#define HUB_BUTTON_1 5
-#define HUB_BUTTON_2 6
-#define HUB_BUTTON_3 7
-#define HUB_BUTTON_4 8
+#define HUB_BUTTON_1 1
+#define HUB_BUTTON_2 2
+#define HUB_BUTTON_3 3
+#define HUB_BUTTON_4 4
+#define HUB_BUTTON_Q 5
+#define HUB_BUTTON_W 6
+#define HUB_BUTTON_E 7
+#define HUB_BUTTON_R 8
 
 class ComponentAnimation;
 class ComponentTransform;
@@ -148,17 +148,17 @@ public:
 	void Equip(const PlayerStats& equipStats);
 	void UnEquip(const PlayerStats& equipStats);
 
-	//Abstract input
+	//Abstract input. TODO: Now only returns true for skills, adapt for items
 	bool IsAtacking() const;
+	bool IsUsingOne() const;
+	bool IsUsingTwo() const;
+	bool IsUsingThree() const;
+	bool IsUsingFour() const;
 	bool IsMoving() const;
 	bool IsUsingQ() const;
 	bool IsUsingW() const;
 	bool IsUsingE() const;
 	bool IsUsingR() const;
-	bool IsUsingOne() const;
-	bool IsUsingTwo() const;
-	bool IsUsingThree() const;
-	bool IsUsingFour() const;
 	bool IsUsingSkill() const;
 
 	void ResetCooldown(unsigned int hubButtonID);
@@ -198,8 +198,6 @@ public:
 	float manaRegenMaxTime = 5.0f;
 
 	PlayerStats stats = { 100.0f, 100.0f, 10U, 10U, 5.0f, 5.0f };
-	std::unordered_map<SkillType, PlayerSkill*> allSkills;
-	SkillType activeSkills[4] = { SkillType::NONE, SkillType::NONE, SkillType::NONE, SkillType::NONE };
 
 	float OutOfMeshCorrectionXZ = 500.f;
 	float OutOfMeshCorrectionY = 300.0f;
@@ -215,7 +213,6 @@ public:
 	bool canInteract = true;
 
 	// Skills
-	//std::vector<BasicSkill*> playerSkills;	// Vector with all skill slots (Right-Click, Q, W, E, R)
 	BasicSkill* currentSkill = nullptr;
 	ChainAttackSkill* chain = nullptr;
 	DashSkill* dash = nullptr;
@@ -224,7 +221,10 @@ public:
 	CircularAttackSkill* circular = nullptr;
 	StompSkill* stomp = nullptr;
 
-	SkillType assignedSkills[6] = { SkillType::NONE, SkillType::NONE, SkillType::NONE, SkillType::NONE, SkillType::NONE, SkillType::NONE };
+	std::unordered_map<SkillType, PlayerSkill*> allSkills;
+
+	// Vector with all skill slots (Right-Click, 1, 2, 3, 4, Q, W, E, R)
+	SkillType assignedSkills[9] = { SkillType::NONE, SkillType::NONE, SkillType::NONE, SkillType::NONE, SkillType::NONE, SkillType::NONE, SkillType::NONE, SkillType::NONE, SkillType::NONE };
 
 	//Audio
 	ComponentAudioSource* gotHitAudio = nullptr;
@@ -240,9 +240,9 @@ private:
 	ComponentImage* lifeUIComponent = nullptr;
 	ComponentImage* manaUIComponent = nullptr;
 
-	float hubCooldown[8]	  = { 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F };
-	float hubCooldownMax[8] = { 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F };
-	float hubCooldownTimer[8] = { 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F };
+	float hubCooldown[9]	  = { 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F };
+	float hubCooldownMax[9] = { 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F };
+	float hubCooldownTimer[9] = { 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F };
 	ComponentImage* hubCooldownMask[9] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
 	float hubGeneralAbilityCooldown = 0.5F;
 	bool showAbilityCooldowns = true;
