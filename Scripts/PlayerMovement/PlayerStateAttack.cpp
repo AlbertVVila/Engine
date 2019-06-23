@@ -26,33 +26,33 @@ void PlayerStateAttack::Enter()
 
 	if (player->IsAtacking())
 	{
-		player->currentSkill = player->allSkills[player->assignedSkills[0]]->skill;
-		skillType = player->allSkills[player->assignedSkills[0]]->type;
+		player->currentSkill = player->allSkills[player->assignedSkills[HUB_BUTTON_RC]]->skill;
+		skillType = player->allSkills[player->assignedSkills[HUB_BUTTON_RC]]->type;
 	}
-	else if (player->IsUsingFirstSkill())
+	else if (player->IsUsingOne())
 	{
-		player->currentSkill = player->allSkills[player->assignedSkills[1]]->skill;
-		skillType = player->allSkills[player->assignedSkills[1]]->type;
+		player->currentSkill = player->allSkills[player->assignedSkills[HUB_BUTTON_1]]->skill;
+		skillType = player->allSkills[player->assignedSkills[HUB_BUTTON_1]]->type;
 	}
-	else if (player->IsUsingSecondSkill())
+	else if (player->IsUsingQ())
 	{
-		player->currentSkill = player->allSkills[player->assignedSkills[2]]->skill;
-		skillType = player->allSkills[player->assignedSkills[2]]->type;
+		player->currentSkill = player->allSkills[player->assignedSkills[HUB_BUTTON_Q]]->skill;
+		skillType = player->allSkills[player->assignedSkills[HUB_BUTTON_Q]]->type;
 	}
-	else if (player->IsUsingThirdSkill())
+	else if (player->IsUsingW())
 	{
-		player->currentSkill = player->allSkills[player->assignedSkills[3]]->skill;
-		skillType = player->allSkills[player->assignedSkills[3]]->type;
+		player->currentSkill = player->allSkills[player->assignedSkills[HUB_BUTTON_W]]->skill;
+		skillType = player->allSkills[player->assignedSkills[HUB_BUTTON_W]]->type;
 	}
-	else if (player->IsUsingFourthSkill())
+	else if (player->IsUsingE())
 	{
-		player->currentSkill = player->allSkills[player->assignedSkills[4]]->skill;
-		skillType = player->allSkills[player->assignedSkills[4]]->type;
+		player->currentSkill = player->allSkills[player->assignedSkills[HUB_BUTTON_E]]->skill;
+		skillType = player->allSkills[player->assignedSkills[HUB_BUTTON_E]]->type;
 	}
-	else if (player->IsUsingFirstItem())
+	else if (player->IsUsingR())
 	{
-		player->currentSkill = player->allSkills[player->assignedSkills[5]]->skill;
-		skillType = player->allSkills[player->assignedSkills[5]]->type;
+		player->currentSkill = player->allSkills[player->assignedSkills[HUB_BUTTON_R]]->skill;
+		skillType = player->allSkills[player->assignedSkills[HUB_BUTTON_R]]->type;
 	}
 	
 	if (player->currentSkill != nullptr)
