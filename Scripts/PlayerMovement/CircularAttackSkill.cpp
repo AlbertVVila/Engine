@@ -26,6 +26,8 @@ CircularAttackSkill::~CircularAttackSkill()
 
 void CircularAttackSkill::Start()
 {
+	fullSpinTime = player->currentState->duration;
+
 	MeleeSkill::Start();
 
 	// Create the hitbox
@@ -37,7 +39,20 @@ void CircularAttackSkill::Start()
 
 void CircularAttackSkill::Update()
 {
-	BasicSkill::Update();
+	//BasicSkill::Update() modified
+
+	timer += player->App->time->fullGameDeltaTime;
+
+	CheckInput();
+
+	if (timer < player->currentState->duration * numSpins)
+	{
+		UseSkill();
+	}
+	else
+	{
+		Reset();
+	}
 
 	// Check when is time to enable the hitbox
 	if (!atatckStarted && !attackBoxTrigger->enabled && timer > hitDelay)
@@ -51,14 +66,14 @@ void CircularAttackSkill::Update()
 
 void CircularAttackSkill::UseSkill()
 {
-	if (player->attackBoxTrigger != nullptr && !player->attackBoxTrigger->enabled && timer < player->currentState->duration)
+	if (player->attackBoxTrigger != nullptr && !player->attackBoxTrigger->enabled && timer < player->currentState->duration * numSpins)
 	{
 		// Update hitbox
 		player->attackBoxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z);
 	}
 
 	// Check spin state
-	if (player->attackBoxTrigger != nullptr && player->attackBoxTrigger->enabled)
+	if (player->attackBoxTrigger != nullptr && player->attackBoxTrigger->enabled * numSpins)
 	{
 		// Full spin performed?
 		if (spinTimer > fullSpinTime)
@@ -88,7 +103,7 @@ void CircularAttackSkill::Reset()
 void CircularAttackSkill::CheckInput()
 {
 	// Once the attack is finished
-	if (timer > player->currentState->duration)
+	if (timer > player->currentState->duration * numSpins)
 	{
 		if (player->IsUsingSkill())
 		{
@@ -102,43 +117,48 @@ void CircularAttackSkill::CheckInput()
 	else
 	{
 		// Move while using the attack
-		if (player->IsMoving())
+		MoveSpinning();
+	}
+}
+
+void CircularAttackSkill::MoveSpinning()
+{
+	if (player->IsMoving())
+	{
+	math:float2 mouse((float*)&player->App->input->GetMousePosition());
+		if (player->App->input->GetMouseButtonDown(3) == KEY_DOWN
+			|| player->App->input->GetMouseButtonDown(3) == KEY_REPEAT)
 		{
-		math:float2 mouse((float*)&player->App->input->GetMousePosition());
-			if (player->App->input->GetMouseButtonDown(3) == KEY_DOWN
-				|| player->App->input->GetMouseButtonDown(3) == KEY_REPEAT)
+			moveTimer = 0.0f;
+			math::float3 intPos(0.f, 0.f, 0.f);
+			if (player->App->navigation->NavigateTowardsCursor(player->gameobject->transform->position, path,
+				math::float3(player->OutOfMeshCorrectionXZ, player->OutOfMeshCorrectionY, player->OutOfMeshCorrectionXZ),
+				intPos, player->maxWalkingDistance))
 			{
-				moveTimer = 0.0f;
-				math::float3 intPos(0.f, 0.f, 0.f);
-				if (player->App->navigation->NavigateTowardsCursor(player->gameobject->transform->position, path,
-					math::float3(player->OutOfMeshCorrectionXZ, player->OutOfMeshCorrectionY, player->OutOfMeshCorrectionXZ),
-					intPos, player->maxWalkingDistance))
-				{
-					//case the player clicks outside of the floor mesh but we want to get close to the floors edge
-					pathIndex = 0;
-				}
-				else
-				{
-					return;
-				}
+				//case the player clicks outside of the floor mesh but we want to get close to the floors edge
+				pathIndex = 0;
 			}
-			else if (player->App->input->GetMouseButtonDown(3) == KEY_REPEAT)
+			else
 			{
-				moveTimer += player->App->time->gameDeltaTime;
+				return;
 			}
-			if (path.size() > 0)
+		}
+		else if (player->App->input->GetMouseButtonDown(3) == KEY_REPEAT)
+		{
+			moveTimer += player->App->time->gameDeltaTime;
+		}
+		if (path.size() > 0)
+		{
+			math::float3 currentPosition = player->gameobject->transform->GetPosition();
+			while (pathIndex < path.size() && currentPosition.DistanceSq(path[pathIndex]) < MINIMUM_PATH_DISTANCE)
 			{
-				math::float3 currentPosition = player->gameobject->transform->GetPosition();
-				while (pathIndex < path.size() && currentPosition.DistanceSq(path[pathIndex]) < MINIMUM_PATH_DISTANCE)
-				{
-					pathIndex++;
-				}
-				if (pathIndex < path.size())
-				{
-					player->gameobject->transform->LookAt(path[pathIndex]);
-					math::float3 direction = (path[pathIndex] - currentPosition).Normalized();
-					player->gameobject->transform->SetPosition(currentPosition + player->walkingSpeed * direction * player->App->time->gameDeltaTime);
-				}
+				pathIndex++;
+			}
+			if (pathIndex < path.size())
+			{
+				player->gameobject->transform->LookAt(path[pathIndex]);
+				math::float3 direction = (path[pathIndex] - currentPosition).Normalized();
+				player->gameobject->transform->SetPosition(currentPosition + player->walkingSpeed * direction * player->App->time->gameDeltaTime);
 			}
 		}
 	}
