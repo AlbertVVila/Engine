@@ -60,6 +60,7 @@ void BombDropSkill::UseSkill()
 		{
 			player->gameobject->transform->LookAt(path[pathIndex]);
 			math::float3 direction = (path[pathIndex] - currentPosition).Normalized();
+			//currentPosition.y = -(1/bombDropMaxDistance*pow(timer, 2) - jumpHeight);//may need to switch that to actual current distance
 			player->gameobject->transform->SetPosition(currentPosition + bombDropSpeed * direction * player->App->time->gameDeltaTime);
 		}
 	}
