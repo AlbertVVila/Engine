@@ -18,7 +18,7 @@ class GameObject;
 class Transform2D;
 class ComponentAudioSource;
 
-#define TOTAL_SLOTS 25
+#define TOTAL_SLOTS 24
 #define INVENTARY_SLOTS 18
 
 class InventoryScript_API InventoryScript : public Script

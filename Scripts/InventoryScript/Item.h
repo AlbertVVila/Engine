@@ -3,6 +3,10 @@
 
 #include <string>
 
+#include "PlayerMovement.h"
+
+class PlayerStats;
+
 enum class ItemType
 {
 	NONE = 0,
@@ -28,6 +32,7 @@ public:
 	ItemType type = ItemType::NONE;
 	//3D Material/Prefab/Mesh 
 
+	PlayerStats* stats = nullptr;
 };
 
 #endif
