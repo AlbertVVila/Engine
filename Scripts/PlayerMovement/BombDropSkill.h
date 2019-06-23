@@ -21,8 +21,6 @@ private:
 	void CheckInput() override;
 
 private:
-	float skillDistance = 0.0f;
-	float jumpHeight = 100.0f;
 	float bombDropMaxDistance = 10000.0f;
 	float bombDropSpeed = 900.0f;
 	float bombDropPreparationTime = 0.1f;

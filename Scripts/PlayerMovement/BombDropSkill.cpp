@@ -37,14 +37,14 @@ void BombDropSkill::Start()
 		{
 			bombDropFX->SetActive(true);
 		}
-		player->ResetCooldown(HUB_BUTTON_Q);
+		player->ResetCooldown(HUB_BUTTON_E);
 	}
 
 	//Create the hitbox
-	boxSize = math::float3(500.f, 500.f, 500.f);
-
+	boxSize = math::float3(250.f, 100.f, 250.f);
+	//attackBoxTrigger.set
 	// Set delay for hit
-	hitDelay = 0.8f;
+	hitDelay = 0.4f;
 }
 
 void BombDropSkill::UseSkill()
@@ -60,8 +60,7 @@ void BombDropSkill::UseSkill()
 		{
 			player->gameobject->transform->LookAt(path[pathIndex]);
 			math::float3 direction = (path[pathIndex] - currentPosition).Normalized();
-			//currentPosition.y = -(1/bombDropMaxDistance*pow(timer, 2) - jumpHeight);//may need to switch that to actual current distance
-			player->gameobject->transform->SetPosition(currentPosition + bombDropSpeed * direction * player->App->time->gameDeltaTime);
+			player->gameobject->transform->SetPosition(currentPosition + bombDropSpeed * direction * player->App->time->fullGameDeltaTime);
 		}
 	}
 
@@ -69,7 +68,7 @@ void BombDropSkill::UseSkill()
 	{
 		// Update hitbox
 		boxPosition = player->transform->up * 100.f; //this front stuff isnt working well when rotating the chicken
-		player->attackBoxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z + 100.f);
+		player->attackBoxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z + 200.f);
 	}
 }
 
