@@ -43,8 +43,6 @@ void CircularAttackSkill::Update()
 
 	timer += player->App->time->fullGameDeltaTime;
 
-	CheckInput();
-
 	if (timer < player->currentState->duration * numSpins)
 	{
 		UseSkill();
@@ -52,9 +50,12 @@ void CircularAttackSkill::Update()
 	else
 	{
 		Reset();
+		return;
 	}
 
-	// Check when is time to enable the hitbox
+	CheckInput();
+
+	// MeleeSkill::Update() modified. Check when is time to enable the hitbox
 	if (!atatckStarted && !attackBoxTrigger->enabled && timer > hitDelay)
 	{
 		spinTimer = 0.0f;
