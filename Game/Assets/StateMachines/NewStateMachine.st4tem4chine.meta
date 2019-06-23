@@ -1,1 +1,7 @@
-{"StateMachine":{"GUID":3449827542,"timeCreated":1560849872,"name":"NewStateMachine"}}
+{
+    "StateMachine": {
+        "GUID": 3449827542,
+        "timeCreated": 1561192458,
+        "name": "NewStateMachine"
+    }
+}
