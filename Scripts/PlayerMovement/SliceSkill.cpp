@@ -6,6 +6,8 @@
 #include "PlayerMovement.h"
 #include "PlayerStateAttack.h"
 
+#include "GameObject.h"
+
 #include "imgui.h"
 #include "JSON.h"
 
@@ -21,6 +23,7 @@ SliceSkill::~SliceSkill()
 void SliceSkill::Start()
 {
 	MeleeSkill::Start();
+	player->gameobject->transform->LookAtMouse();
 
 	// Create the hitbox
 	boxSize = math::float3(150.f, 100.f, 100.f);

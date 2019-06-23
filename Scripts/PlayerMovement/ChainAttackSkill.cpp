@@ -50,7 +50,7 @@ void ChainAttackSkill::Reset()
 
 void ChainAttackSkill::CheckInput()
 {
-	if (timer < player->currentState->duration)
+	if (timer < player->currentState->duration && nextInput != NextInput::SKILL)
 	{
 		if (player->IsUsingSkill())
 		{
@@ -59,14 +59,12 @@ void ChainAttackSkill::CheckInput()
 		else if (player->IsAtacking() && nextInput != NextInput::SKILL)
 		{
 			nextInput = NextInput::ATTACK;
-			//NextChainAttack();
-			//return;
 		}
 	}
 
 	if (timer > player->currentState->duration) //CAN SWITCH?
 	{
-		if (nextInput == NextInput::SKILL)
+		if (nextInput == NextInput::SKILL || player->IsUsingSkill())
 		{
 			//Reset();
 			player->currentState = (PlayerState*)player->attack;
