@@ -68,6 +68,8 @@ KDTree::~KDTree()
 }
 void KDTree::Init()
 {
+	maxDepth = 6;
+	bucketSize = 5;
 	LOG("Initializating KDTree with depth %d", maxDepth);
 	RELEASE(treeRoot);
 	std::queue<KDTNode*> Q;
