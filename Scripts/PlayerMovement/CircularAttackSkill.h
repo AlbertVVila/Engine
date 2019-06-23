@@ -1,10 +1,16 @@
 #ifndef  __CircularAttackSkill_h__
 #define  __CircularAttackSkill_h__
 
+#define MESH1_ROT_SPEED 0.5f
+#define MESH2_ROT_SPEED 1.0f
+#define MESH3_ROT_SPEED 1.5f
+
 #include "MeleeSkill.h"
 
 #include <vector>
 #include "Math/float3.h"
+
+class GameObject;
 
 class CircularAttackSkill :
 	public MeleeSkill
@@ -15,6 +21,12 @@ public:
 
 	void Start() override;
 	void Update() override;
+
+	GameObject* mesh1 = nullptr;
+	GameObject* mesh2 = nullptr;
+	GameObject* mesh3 = nullptr;
+	GameObject* particles = nullptr;
+
 
 protected:
 	void UseSkill() override;
@@ -36,6 +48,7 @@ private:
 	std::vector<float3>path;
 	unsigned pathIndex = 0;
 	float moveTimer = 0.0f;
+
 
 };
 

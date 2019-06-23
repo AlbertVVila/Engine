@@ -2,16 +2,17 @@
 
 #include "PlayerMovement.h"
 
-
 #include "ModuleTime.h"
 #include "ModuleInput.h"
 #include "ModuleNavigation.h"
+#include "ModuleScene.h"
 
 #include "GameObject.h"
 #include "ComponentTransform.h"
 #include "ComponentBoxTrigger.h"
 
 #include "PlayerState.h"
+
 
 #include "Math/float2.h"
 
@@ -37,6 +38,7 @@ void CircularAttackSkill::Start()
 
 	// Set delay for hit
 	hitDelay = 0.3f;
+
 }
 
 void CircularAttackSkill::Update()
@@ -64,6 +66,22 @@ void CircularAttackSkill::Update()
 		attackBoxTrigger->Enable(true);
 		attackBoxTrigger->SetBoxSize(boxSize);
 		atatckStarted = true;
+		if (mesh1)
+		{
+			mesh1->SetActive(true);
+		}
+		if (mesh2)
+		{
+			mesh2->SetActive(true);
+		}
+		if (mesh3)
+		{
+			mesh3->SetActive(true);
+		}
+		if (particles)
+		{
+			particles->SetActive(true);
+		}
 	}
 }
 
@@ -94,6 +112,20 @@ void CircularAttackSkill::UseSkill()
 		spinTimer = 0.0f;
 		attackBoxTrigger->Enable(true);
 	}
+
+	//Rotate meshes
+	if (mesh1)
+	{	
+		mesh1->transform->Rotate(math::float3(0, MESH1_ROT_SPEED, 0));
+	}
+	if (mesh2)
+	{
+		mesh2->transform->Rotate(math::float3(0, MESH2_ROT_SPEED, 0));
+	}
+	if (mesh3)
+	{
+		mesh3->transform->Rotate(math::float3(0, MESH3_ROT_SPEED, 0));
+	}
 }
 
 void CircularAttackSkill::Reset()
@@ -101,6 +133,22 @@ void CircularAttackSkill::Reset()
 	spinTimer = 0.0f;
 	atatckStarted = false;
 	MeleeSkill::Reset();
+	if (mesh1)
+	{
+		mesh1->SetActive(false);
+	}
+	if (mesh2)
+	{
+		mesh2->SetActive(false);
+	}
+	if (mesh3)
+	{
+		mesh3->SetActive(false);
+	}
+	if (particles)
+	{
+		particles->SetActive(false);
+	}
 }
 
 void CircularAttackSkill::CheckInput()

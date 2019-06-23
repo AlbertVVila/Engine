@@ -260,7 +260,7 @@ math::float2 ComponentTransform::GetScreenPosition()
 	return math::float2::zero;
 }
 
-void ComponentTransform::SetRotation(const math::Quat & newRotation)
+void ComponentTransform::SetRotation(const math::Quat& newRotation)
 {
 	rotation = newRotation;
 	RotationToEuler();
@@ -291,6 +291,11 @@ math::float3 ComponentTransform::GetGlobalPosition()
 		return newlocal.Col3(3);
 	}
 	return global.Col3(3);
+}
+
+ENGINE_API void ComponentTransform::Rotate(math::float3 rot)
+{
+	SetRotation(Quat::FromEulerXYZ(rot.x, rot.y, rot.z) * rotation);
 }
 
 void ComponentTransform::LookAt(const math::float3 & targetPosition)
