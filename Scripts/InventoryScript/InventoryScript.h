@@ -17,6 +17,7 @@ class Component;
 class GameObject;
 class Transform2D;
 class ComponentAudioSource;
+class PlayerMovement;
 
 #define TOTAL_SLOTS 24
 #define INVENTARY_SLOTS 18
@@ -44,6 +45,8 @@ private:
 
 	ComponentAudioSource* selectItemAudio;
 	ComponentAudioSource* dropItemAudio;
+
+	PlayerMovement* playerMovement = nullptr;
 
 	bool itemGrabbed = false; 
 };

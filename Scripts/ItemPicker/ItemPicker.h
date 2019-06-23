@@ -19,6 +19,7 @@ class JSON_value;
 
 class ItemPicker_API ItemPicker : public Script
 {
+public:
 	void Expose(ImGuiContext* context) override;
 
 	void Start() override;
