@@ -72,7 +72,7 @@ void EnemyLoot::Expose(ImGuiContext* context)
 	{
 		for (int i = 0; i < actLoot.size(); ++i)
 		{
-			GameObject* act = App->scene->FindGameObjectByName(actLoot[i].first.c_str());
+			GameObject* act = App->scene->FindGameObjectByName(actLoot[i].first.c_str(), gameobject);
 			items.push_back(std::make_pair(act, actLoot[i].second));
 		}
 		actLoot.clear();
