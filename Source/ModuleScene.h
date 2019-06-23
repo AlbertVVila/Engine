@@ -74,7 +74,7 @@ public:
 	void SetPrimitiveMesh(par_shapes_mesh_s * mesh, PRIMITIVES type);
 	unsigned SaveParShapesMesh(const par_shapes_mesh_s & mesh, char** data) const;
 
-	void SaveScene(const GameObject& rootGO, const char* sceneName, const char* folder);
+	void SaveScene(const GameObject& rootGO, const char* sceneName, const char* folder, bool selected = false);
 	void SaveTemporaryScene();
 	bool isCleared();
 	ENGINE_API void LoadScene(const char* sceneName, const char* folder);

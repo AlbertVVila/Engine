@@ -294,5 +294,5 @@ void main()
 		discard;
 	}		
 #endif	
-	//Fragcolor = vec4(normalIn,1);
+	//Fragcolor = texture2D(material.dissolve_texture, uv0);
 }

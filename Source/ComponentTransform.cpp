@@ -110,7 +110,7 @@ void ComponentTransform::MultiSelectionTransform(float4x4 &difference)
 {
 	for (GameObject* go : App->scene->selection)
 	{
-		if (go != App->scene->selected)
+		if (go != App->scene->selected && go->transform)
 		{
 			go->SetGlobalTransform(go->transform->global + difference);
 			if (go->parent->transform != nullptr)

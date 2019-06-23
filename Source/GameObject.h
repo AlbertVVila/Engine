@@ -78,7 +78,7 @@ public:
 	bool ParentPrefab() const;
 
 	bool CleanUp();
-	void Save(JSON_value *gameobjects) const;
+	void Save(JSON_value *gameobjects, bool selected = false) const;
 	void Load(JSON_value * gameobject, bool prefabObject= false);
 
 private:

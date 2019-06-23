@@ -1216,7 +1216,7 @@ void ModuleScene::UpdateScenesList()
 	sceneFiles = App->resManager->GetResourceNamesList(TYPE::SCENE, true);
 }
 
-void ModuleScene::SaveScene(const GameObject& rootGO, const char* sceneName, const char* folder)
+void ModuleScene::SaveScene(const GameObject& rootGO, const char* sceneName, const char* folder, bool selected)
 {
 	std::string sceneInAssets(folder);
 	sceneInAssets += sceneName;
@@ -1227,7 +1227,7 @@ void ModuleScene::SaveScene(const GameObject& rootGO, const char* sceneName, con
 	{
 		// Updating already created scene
 		ResourceScene* scene = (ResourceScene*)App->resManager->GetWithoutLoad(sceneUID);
-		scene->Save(rootGO);
+		scene->Save(rootGO, selected);
 	}	
 	else
 	{
