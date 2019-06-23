@@ -62,7 +62,7 @@ void EnemyLoot::GenerateLoot()
 
 		}
 	}
-	//items.clear();
+	items.clear();
 }
 
 

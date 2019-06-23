@@ -57,14 +57,14 @@ public:
 
 	void DrawHierarchy();
 
-	void UpdateGlobalTransform();
+	ENGINE_API void UpdateGlobalTransform();
 	ENGINE_API void SetGlobalTransform(const float4x4 &global);
 	ENGINE_API float4x4 GetGlobalTransform() const;
 	ENGINE_API float4x4 GetLocalTransform() const;
 
 	ENGINE_API void OnPlay();
 	void SetAllMoveFlags();
-	void UpdateTransforms(math::float4x4 parentGlobal);
+	ENGINE_API void UpdateTransforms(math::float4x4 parentGlobal);
 	bool CheckDelete();
 
 	void UpdateBBox();
