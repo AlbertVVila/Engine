@@ -833,6 +833,8 @@ void ModuleScene::ResetQuadTree() //deprecated
 bool ModuleScene::PrefabWasUpdated(unsigned UID) const
 {
 	Resource* scene = App->resManager->GetByName(name.c_str(), TYPE::SCENE);
+	if (scene == nullptr) return false;
+
 	int prefabTime = App->fsystem->GetModTime(std::string(IMPORTED_PREFABS + std::to_string(UID) + PREFABEXTENSION).c_str());
 	int sceneTime = App->fsystem->GetModTime(std::string(IMPORTED_SCENES + std::to_string(scene->GetUID()) + SCENEEXTENSION).c_str());
 	App->resManager->DeleteResource(scene->GetUID());

@@ -52,6 +52,7 @@
 #include "Geometry/LineSegment.h"
 #include "GL/glew.h"
 #include "imgui.h"
+#include "imgui_internal.h"
 
 #define MAX_NAME 128
 #define IMGUI_RIGHT_MOUSE_BUTTON 1
@@ -230,9 +231,19 @@ void GameObject::DrawProperties()
 					UpdateToPrefab(prefab->RetrievePrefab());
 				}
 			}
+			if (App->time->gameState == GameState::RUN)
+			{
+				ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+				ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+			}
 			if (ImGui::Button("Update Prefab"))
 			{
 				prefab->Update(this);
+			}
+			if (App->time->gameState == GameState::RUN)
+			{
+				ImGui::PopItemFlag();
+				ImGui::PopStyleVar();
 			}
 		}
 
@@ -811,6 +822,13 @@ void GameObject::MarkAsPrefab()
 	}
 
 	prefab = (ResourcePrefab*)App->resManager->Get(prefabUID);
+	if (prefab == nullptr)
+	{
+		prefabUID = App->scene->CreatePrefab(this);
+		prefab = (ResourcePrefab*)App->resManager->Get(prefabUID);
+		wasPrefab = false;
+	}
+
 	prefab->AddInstance(this);
 	isPrefabSync = true;
 
@@ -849,7 +867,18 @@ bool GameObject::ParentPrefab() const
 
 void GameObject::UpdateToPrefab(GameObject* prefabGo)
 {
-	Component* myTransform = transform->Clone(); //Save old transform and parent
+	if (prefabGo == nullptr)
+	{
+		LOG("Cannot update to prefab");
+		return;
+	}
+
+	Component* myTransform = nullptr;
+	if (transform != nullptr)
+	{
+		myTransform = transform->Clone();
+	}
+
 	GameObject* myParent = parent;
 	CleanUp();
 	for (auto& component: components)
@@ -863,8 +892,12 @@ void GameObject::UpdateToPrefab(GameObject* prefabGo)
 	components.clear();
 	children.clear();
 	parent = myParent;
-	components.push_back(myTransform);
-	transform = (ComponentTransform*) myTransform;
+
+	if (myTransform != nullptr)
+	{
+		components.push_back(myTransform);
+		transform = (ComponentTransform*)myTransform;
+	}
 
 	for (const auto &component : prefabGo->components)
 	{
