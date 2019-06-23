@@ -29,27 +29,27 @@ void PlayerStateAttack::Enter()
 		player->currentSkill = player->allSkills[player->assignedSkills[0]]->skill;
 		skillType = player->allSkills[player->assignedSkills[0]]->type;
 	}
-	else if (player->IsUsingFirstSkill())
+	else if (player->IsUsingQ())
 	{
 		player->currentSkill = player->allSkills[player->assignedSkills[1]]->skill;
 		skillType = player->allSkills[player->assignedSkills[1]]->type;
 	}
-	else if (player->IsUsingSecondSkill())
+	else if (player->IsUsingW())
 	{
 		player->currentSkill = player->allSkills[player->assignedSkills[2]]->skill;
 		skillType = player->allSkills[player->assignedSkills[2]]->type;
 	}
-	else if (player->IsUsingThirdSkill())
+	else if (player->IsUsingE())
 	{
 		player->currentSkill = player->allSkills[player->assignedSkills[3]]->skill;
 		skillType = player->allSkills[player->assignedSkills[3]]->type;
 	}
-	else if (player->IsUsingFourthSkill())
+	else if (player->IsUsingR())
 	{
 		player->currentSkill = player->allSkills[player->assignedSkills[4]]->skill;
 		skillType = player->allSkills[player->assignedSkills[4]]->type;
 	}
-	else if (player->IsUsingFirstItem())
+	else if (player->IsUsingOne())
 	{
 		player->currentSkill = player->allSkills[player->assignedSkills[5]]->skill;
 		skillType = player->allSkills[player->assignedSkills[5]]->type;

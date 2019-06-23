@@ -151,14 +151,14 @@ public:
 	//Abstract input
 	bool IsAtacking() const;
 	bool IsMoving() const;
-	bool IsUsingFirstSkill() const;
-	bool IsUsingSecondSkill() const;
-	bool IsUsingThirdSkill() const;
-	bool IsUsingFourthSkill() const;
-	bool IsUsingFirstItem() const;
-	bool IsUsingSecondItem() const;
-	bool IsUsingThirdItem() const;
-	bool IsUsingFourthItem() const;
+	bool IsUsingQ() const;
+	bool IsUsingW() const;
+	bool IsUsingE() const;
+	bool IsUsingR() const;
+	bool IsUsingOne() const;
+	bool IsUsingTwo() const;
+	bool IsUsingThree() const;
+	bool IsUsingFour() const;
 	bool IsUsingSkill() const;
 
 	void ResetCooldown(unsigned int hubButtonID);
