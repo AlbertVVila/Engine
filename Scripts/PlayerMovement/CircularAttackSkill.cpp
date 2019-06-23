@@ -30,6 +30,8 @@ void CircularAttackSkill::Start()
 
 	MeleeSkill::Start();
 
+	player->gameobject->transform->LookAtMouse();
+
 	// Create the hitbox
 	boxSize = math::float3(250.f, 250.f, 250.f);
 
