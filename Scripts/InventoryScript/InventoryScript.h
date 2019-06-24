@@ -31,6 +31,8 @@ public:
 
 	bool AddItem(Item item);
 	std::vector<Item> GetQuickItems();
+	void SaveInventory();
+	void LoadInventory();
 
 private:
 
@@ -48,7 +50,7 @@ private:
 
 	PlayerMovement* playerMovement = nullptr;
 
-	bool itemGrabbed = false; 
+	bool itemGrabbed = false;
 };
 
 #endif __InventoryScript_h__

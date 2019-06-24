@@ -7,6 +7,7 @@
 #include "GameLoop.h"
 
 #include "GameObject.h"
+#include "InventoryScript.h"
 
 #define MENU_SCENE "MenuScene"
 
@@ -27,6 +28,7 @@ void LoopStateWin::Update()
 	{
 		gLoop->loading = 0.0;
 		//ResetPositions();
+		gLoop->inventoryScript->SaveInventory();
 		gLoop->currentLoopState = (LoopState*)gLoop->loadingState;
 		gLoop->playerMenuGO->SetActive(false);
 		gLoop->sceneToLoad = MENU_SCENE;

@@ -22,6 +22,7 @@ class PlayerMovement;
 class EnemyMovementScript;
 class IntroScript;
 class CreditsScript;
+class InventoryScript;
 class AABB;
 class JSON_value;
 
@@ -37,7 +38,6 @@ class LoopStatePaused;
 class LoopStatePlaying;
 class LoopStateQuit;
 class LoopStateWin;
-
 class GameLoop_API GameLoop : public Script
 {
 	enum class GameScene
@@ -159,6 +159,7 @@ public:
 	EnemyMovementScript* enemyMovementScript = nullptr;
 	IntroScript* introScript = nullptr;
 	CreditsScript* creditsScript = nullptr;
+	InventoryScript* inventoryScript = nullptr;
 
 	//Camera
 	ComponentCamera* componentIntroCamera = nullptr;
