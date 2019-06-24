@@ -21,6 +21,7 @@
 #include "ComponentCamera.h"
 #include "ComponentRenderer.h"
 #include "ComponentTransform.h"
+#include "ComponentText.h"
 
 #include "ResourceTexture.h"
 #include "ResourceMesh.h"
@@ -1622,6 +1623,8 @@ GameObject* ModuleScene::FindGameObjectByName(const char* name, GameObject* pare
 	}
 	return nullptr;
 }
+
+
 
 GameObject * ModuleScene::Spawn(const char * name, GameObject * parent)
 {
