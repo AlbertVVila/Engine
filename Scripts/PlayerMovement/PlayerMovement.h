@@ -163,6 +163,7 @@ private:
 
 	void UpdateUIStats();
 	void InitializeUIStatsObjects();
+	void PersistStats();
 public:
 	bool isPlayerDead = false;
 	float3 currentPosition = float3(0, 0, 0); //TODO ZERO
