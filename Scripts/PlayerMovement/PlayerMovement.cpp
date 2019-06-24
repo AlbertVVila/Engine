@@ -29,6 +29,7 @@
 #include "BombDropSkill.h"
 #include "CircularAttackSkill.h"
 #include "StompSkill.h"
+#include "RainSkill.h"
 
 #include "JSON.h"
 #include <assert.h>
@@ -51,16 +52,20 @@ PlayerMovement::PlayerMovement()
 {
 	// Register Skills
 	allSkills[SkillType::NONE] = new PlayerSkill();
+	allSkills[SkillType::STOMP] = new PlayerSkill(SkillType::STOMP);
+	allSkills[SkillType::RAIN] = new PlayerSkill(SkillType::RAIN);
 	allSkills[SkillType::CHAIN] = new PlayerSkill(SkillType::CHAIN);
 	allSkills[SkillType::DASH] = new PlayerSkill(SkillType::DASH);
 	allSkills[SkillType::SLICE] = new PlayerSkill(SkillType::SLICE);
 	allSkills[SkillType::BOMB_DROP] = new PlayerSkill(SkillType::BOMB_DROP);
 	allSkills[SkillType::CIRCULAR] = new PlayerSkill(SkillType::CIRCULAR);
-	allSkills[SkillType::STOMP] = new PlayerSkill(SkillType::STOMP);
 
 	// Default ability keyboard allocation
 	assignedSkills[HUB_BUTTON_RC] = SkillType::CHAIN;
 	assignedSkills[HUB_BUTTON_1] = SkillType::STOMP;
+	assignedSkills[HUB_BUTTON_2] = SkillType::RAIN;
+	assignedSkills[HUB_BUTTON_3] = SkillType::NONE;
+	assignedSkills[HUB_BUTTON_4] = SkillType::NONE;
 	assignedSkills[HUB_BUTTON_Q] = SkillType::DASH;
 	assignedSkills[HUB_BUTTON_W] = SkillType::SLICE;
 	assignedSkills[HUB_BUTTON_E] = SkillType::BOMB_DROP;
@@ -80,6 +85,9 @@ void PlayerMovement::Expose(ImGuiContext* context)
 	ImGui::DragFloat("General Ability Cooldown", &hubGeneralAbilityCooldown, 1.0F, 0.0F, 10.0F);
 	ImGui::DragFloat("RC Cooldown", &hubCooldown[HUB_BUTTON_RC], 1.0F, 0.0F, 10.0F);
 	ImGui::DragFloat("1 Cooldown", &hubCooldown[HUB_BUTTON_1], 1.0F, 0.0F, 10.0F);
+	ImGui::DragFloat("2 Cooldown", &hubCooldown[HUB_BUTTON_2], 1.0F, 0.0F, 10.0F);
+	ImGui::DragFloat("3 Cooldown", &hubCooldown[HUB_BUTTON_3], 1.0F, 0.0F, 10.0F);
+	ImGui::DragFloat("4 Cooldown", &hubCooldown[HUB_BUTTON_4], 1.0F, 0.0F, 10.0F);
 	ImGui::DragFloat("Q Cooldown", &hubCooldown[HUB_BUTTON_Q], 1.0F, 0.0F, 10.0F);
 	ImGui::DragFloat("W Cooldown", &hubCooldown[HUB_BUTTON_W], 1.0F, 0.0F, 10.0F);
 	ImGui::DragFloat("E Cooldown", &hubCooldown[HUB_BUTTON_E], 1.0F, 0.0F, 10.0F);
@@ -136,6 +144,7 @@ void PlayerMovement::Expose(ImGuiContext* context)
 	else if (currentSkill == bombDrop)	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Bomb Drop");
 	else if (currentSkill == circular)	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Circular");
 	else if (currentSkill == stomp)		ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Stomp");
+	else if (currentSkill == rain)		ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Rain");
 	else 								ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "None");
 
 	for (auto it = allSkills.begin(); it != allSkills.end(); ++it)
@@ -148,6 +157,7 @@ void PlayerMovement::Expose(ImGuiContext* context)
 		case SkillType::BOMB_DROP: it->second->Expose("Bomb Drop"); break;
 		case SkillType::CIRCULAR: it->second->Expose("Circular Attack"); break;
 		case SkillType::STOMP: it->second->Expose("Stomp Attack"); break;
+		case SkillType::RAIN: it->second->Expose("Rain"); break;
 		case SkillType::NONE:
 		default:
 			break;
@@ -189,13 +199,6 @@ void PlayerMovement::CreatePlayerStates()
 
 void PlayerMovement::CreatePlayerSkills()
 {
-	/*playerSkills.reserve(SKILLS_SLOTS);
-	playerSkills.push_back(chain = new ChainAttackSkill(this, "Chain1", attackBoxTrigger));
-	playerSkills.push_back(dash = new DashSkill(this, "Dash", attackBoxTrigger));
-	playerSkills.push_back(slice = new SliceSkill(this, "Slice", attackBoxTrigger));
-	playerSkills.push_back(bombDrop = new BombDropSkill(this, "BombDrop", attackBoxTrigger));
-	playerSkills.push_back(circular = new CircularAttackSkill(this, "Circular", attackBoxTrigger));*/
-
 	chain = new ChainAttackSkill(this, "Chain1", attackBoxTrigger);
 	dash = new DashSkill(this, "Dash", attackBoxTrigger);
 	slice = new SliceSkill(this, "Slice", attackBoxTrigger);
@@ -206,6 +209,7 @@ void PlayerMovement::CreatePlayerSkills()
 	circular->mesh3 = App->scene->FindGameObjectByName("Spiral");
 	circular->particles = App->scene->FindGameObjectByName("CircularAttackParticles");
 	stomp = new StompSkill(this, "Stomp", attackBoxTrigger);
+	rain = new RainSkill(this, "Rain", "RainPrefab");
 
 	allSkills[SkillType::CHAIN]->skill = (BasicSkill*)chain;
 	allSkills[SkillType::DASH]->skill = (BasicSkill*)dash;
@@ -213,6 +217,7 @@ void PlayerMovement::CreatePlayerSkills()
 	allSkills[SkillType::BOMB_DROP]->skill = (BasicSkill*)bombDrop;
 	allSkills[SkillType::CIRCULAR]->skill = (BasicSkill*)circular;
 	allSkills[SkillType::STOMP]->skill = (BasicSkill*)stomp;
+	allSkills[SkillType::RAIN]->skill = (BasicSkill*)rain;
 }
 
 void PlayerMovement::Start()
@@ -532,6 +537,9 @@ void PlayerMovement::Serialize(JSON_value* json) const
 	json->AddFloat("General_Ability_Cooldown", hubGeneralAbilityCooldown);
 	json->AddFloat("RC_Cooldown", hubCooldown[HUB_BUTTON_RC]);
 	json->AddFloat("1_Cooldown", hubCooldown[HUB_BUTTON_1]);
+	json->AddFloat("2_Cooldown", hubCooldown[HUB_BUTTON_2]);
+	json->AddFloat("3_Cooldown", hubCooldown[HUB_BUTTON_3]);
+	json->AddFloat("4_Cooldown", hubCooldown[HUB_BUTTON_4]);
 	json->AddFloat("Q_Cooldown", hubCooldown[HUB_BUTTON_Q]);
 	json->AddFloat("W_Cooldown", hubCooldown[HUB_BUTTON_W]);
 	json->AddFloat("E_Cooldown", hubCooldown[HUB_BUTTON_E]);
@@ -548,6 +556,9 @@ void PlayerMovement::Serialize(JSON_value* json) const
 	JSON_value* keyboard_abilities = json->CreateValue();
 	keyboard_abilities->AddInt("RC", (int)assignedSkills[HUB_BUTTON_RC]);
 	keyboard_abilities->AddInt("1", (int)assignedSkills[HUB_BUTTON_1]);
+	keyboard_abilities->AddInt("2", (int)assignedSkills[HUB_BUTTON_1]);
+	keyboard_abilities->AddInt("3", (int)assignedSkills[HUB_BUTTON_1]);
+	keyboard_abilities->AddInt("4", (int)assignedSkills[HUB_BUTTON_1]);
 	keyboard_abilities->AddInt("Q", (int)assignedSkills[HUB_BUTTON_Q]);
 	keyboard_abilities->AddInt("W", (int)assignedSkills[HUB_BUTTON_W]);
 	keyboard_abilities->AddInt("E", (int)assignedSkills[HUB_BUTTON_E]);
@@ -585,6 +596,11 @@ void PlayerMovement::Serialize(JSON_value* json) const
 		if (allSkills.find(SkillType::STOMP) != allSkills.end()) allSkills.find(SkillType::STOMP)->second->Serialize(stomp_data);
 		abilities->AddValue("stomp", *stomp_data);
 	}
+	{
+		JSON_value* rain_data = json->CreateValue();
+		if (allSkills.find(SkillType::RAIN) != allSkills.end()) allSkills.find(SkillType::RAIN)->second->Serialize(rain_data);
+		abilities->AddValue("rain", *rain_data);
+	}
 	json->AddValue("abilities", *abilities);
 
 	stats.Serialize(json);
@@ -596,6 +612,9 @@ void PlayerMovement::DeSerialize(JSON_value* json)
 	hubGeneralAbilityCooldown = json->GetFloat("General_Ability_Cooldown", 0.5F);
 	hubCooldown[HUB_BUTTON_RC] = json->GetFloat("RC_Cooldown", 1.0F);
 	hubCooldown[HUB_BUTTON_1] = json->GetFloat("1_Cooldown", 1.0F);
+	hubCooldown[HUB_BUTTON_2] = json->GetFloat("2_Cooldown", 1.0F);
+	hubCooldown[HUB_BUTTON_3] = json->GetFloat("3_Cooldown", 1.0F);
+	hubCooldown[HUB_BUTTON_4] = json->GetFloat("4_Cooldown", 1.0F);
 	hubCooldown[HUB_BUTTON_Q] = json->GetFloat("Q_Cooldown", 1.0F);
 	hubCooldown[HUB_BUTTON_W] = json->GetFloat("W_Cooldown", 1.0F);
 	hubCooldown[HUB_BUTTON_E] = json->GetFloat("E_Cooldown", 1.0F);
@@ -616,6 +635,9 @@ void PlayerMovement::DeSerialize(JSON_value* json)
 	{
 		assignedSkills[HUB_BUTTON_RC] = (SkillType)keyboard_abilities->GetInt("RC");
 		//assignedSkills[HUB_BUTTON_1] = (SkillType)keyboard_abilities->GetInt("1");
+		//assignedSkills[HUB_BUTTON_2] = (SkillType)keyboard_abilities->GetInt("2");
+		//assignedSkills[HUB_BUTTON_3] = (SkillType)keyboard_abilities->GetInt("3");
+		//assignedSkills[HUB_BUTTON_4] = (SkillType)keyboard_abilities->GetInt("4");
 		assignedSkills[HUB_BUTTON_Q] = (SkillType)keyboard_abilities->GetInt("Q");
 		assignedSkills[HUB_BUTTON_W] = (SkillType)keyboard_abilities->GetInt("W");
 		assignedSkills[HUB_BUTTON_E] = (SkillType)keyboard_abilities->GetInt("E");
@@ -642,6 +664,9 @@ void PlayerMovement::DeSerialize(JSON_value* json)
 
 		JSON_value* circular_data = abilities->GetValue("circular");
 		if (circular_data) allSkills[SkillType::CIRCULAR]->DeSerialize(circular_data, circular);
+
+		JSON_value* rain_data = abilities->GetValue("rain");
+		if (rain_data) allSkills[SkillType::CIRCULAR]->DeSerialize(rain_data, rain);
 	}
 
 

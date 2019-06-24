@@ -17,11 +17,6 @@ PlayerStateAttack::~PlayerStateAttack()
 
 void PlayerStateAttack::Enter()
 {
-	/*if (player->IsAtacking()) player->currentSkill = (BasicSkill*)player->playerSkills[0];
-	if (player->IsUsingFirstSkill()) player->currentSkill = (BasicSkill*)player->playerSkills[1];
-	if (player->IsUsingSecondSkill()) player->currentSkill = (BasicSkill*)player->playerSkills[2];
-	if (player->IsUsingThirdSkill()) player->currentSkill = (BasicSkill*)player->playerSkills[3];
-	if (player->IsUsingFourthSkill()) player->currentSkill = (BasicSkill*)player->playerSkills[4];*/
 	SkillType skillType = SkillType::NONE;
 
 	if (player->IsAtacking())
@@ -33,6 +28,21 @@ void PlayerStateAttack::Enter()
 	{
 		player->currentSkill = player->allSkills[player->assignedSkills[HUB_BUTTON_1]]->skill;
 		skillType = player->allSkills[player->assignedSkills[HUB_BUTTON_1]]->type;
+	}
+	else if (player->IsUsingTwo())
+	{
+		player->currentSkill = player->allSkills[player->assignedSkills[HUB_BUTTON_2]]->skill;
+		skillType = player->allSkills[player->assignedSkills[HUB_BUTTON_2]]->type;
+	}
+	else if (player->IsUsingThree())
+	{
+		player->currentSkill = player->allSkills[player->assignedSkills[HUB_BUTTON_3]]->skill;
+		skillType = player->allSkills[player->assignedSkills[HUB_BUTTON_3]]->type;
+	}
+	else if (player->IsUsingFour())
+	{
+		player->currentSkill = player->allSkills[player->assignedSkills[HUB_BUTTON_4]]->skill;
+		skillType = player->allSkills[player->assignedSkills[HUB_BUTTON_4]]->type;
 	}
 	else if (player->IsUsingQ())
 	{
@@ -68,5 +78,9 @@ void PlayerStateAttack::Update()
 	if (player->currentSkill != nullptr)
 	{
 		player->currentSkill->Update();
+	}
+	else
+	{
+		//player->currentState = (PlayerState*)player->idle;
 	}
 }

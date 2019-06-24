@@ -52,6 +52,7 @@ class DashSkill;
 class BombDropSkill;
 class CircularAttackSkill;
 class StompSkill;
+class RainSkill;
 
 #define MAX(a,b) ((a) < (b) ? (b) : (a))
 
@@ -63,7 +64,8 @@ enum class PlayerMovement_API SkillType
 	SLICE,
 	BOMB_DROP,
 	CIRCULAR,
-	STOMP
+	STOMP,
+	RAIN
 };
 
 struct PlayerMovement_API PlayerSkill
@@ -220,6 +222,7 @@ public:
 	BombDropSkill* bombDrop = nullptr;
 	CircularAttackSkill* circular = nullptr;
 	StompSkill* stomp = nullptr;
+	RainSkill* rain = nullptr;
 
 	std::unordered_map<SkillType, PlayerSkill*> allSkills;
 
