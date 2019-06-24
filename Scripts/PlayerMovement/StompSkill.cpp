@@ -45,8 +45,23 @@ void StompSkill::UseSkill()
 	if (player->attackBoxTrigger != nullptr && !player->attackBoxTrigger->enabled)
 	{
 		// Update hitbox
-		boxPosition = player->transform->up * 100.f;
-		player->attackBoxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z + 100.f);
+		math::float3 target;
+		if (player->App->navigation->FindIntersectionPoint(target))
+		{
+			float distance = target.Distance(player->gameobject->transform->GetPosition());
+
+			if (distance < range)
+			{
+				player->attackBoxTrigger->SetBoxPosition(target.x, target.y, target.z);
+			}
+			else
+			{
+				math::float3 direction = target - player->gameobject->transform->GetPosition();
+				direction.Normalize();
+				target = player->gameobject->transform->GetPosition() + direction * range;
+				player->attackBoxTrigger->SetBoxPosition(target.x, target.y, target.z);
+			}
+		}
 	}
 }
 
