@@ -20,6 +20,7 @@ class SkillTreeController_API SkillTreeController : public Script
 {
 public:
 	void Start() override;
+	void UnlockNextLevel(int i);
 	void Update() override;
 
 	void AddSkillPoint();
@@ -42,6 +43,8 @@ private:
 
 	std::vector<std::string> textureFiles;
 	Skill skillList[13];
+
+	int a = -1;
 };
 
 #endif __SkillTreeController_h__
