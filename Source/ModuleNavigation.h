@@ -97,6 +97,7 @@ public:
 	ENGINE_API bool NavigateTowardsCursor(math::float3 start, std::vector<math::float3>& path, 
 										  math::float3 positionCorrection, math::float3& intersectionPos, 
 										  float maxPathDistance = 10000.0f, PathFindType type = PathFindType::FOLLOW) const;
+	ENGINE_API bool FindIntersectionPoint(math::float3& intersectionPoint) const;
 
 	void RecalcPath(math::float3 point);
 
