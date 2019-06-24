@@ -195,8 +195,9 @@ void ComponentParticles::DrawProperties()
 		speed[0] = Max(0.0f, speed[0]);
 		speed[1] = Max(speed[0], speed[1]);
 
-		particleSize[0] = Max(0.01f, particleSize[0]);
+		/*particleSize[0] = Max(0.01f, particleSize[0]);
 		particleSize[1] = Max(particleSize[0], particleSize[1]);
+		*/
 		//
 		ImGui::Text("Emisor type:");
 		if (ImGui::Checkbox("Quad", &quadCheck))    alternateEmisor(0);

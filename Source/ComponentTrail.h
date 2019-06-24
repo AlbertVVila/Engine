@@ -61,7 +61,8 @@ private:
 	float width = 100.f;
 	float duration = .5f;
 	float minDistance = 1.f;
-	
+	float bloomIntensity = 1.f;
+
 	math::float4 trailColor = math::float4::one;
 
 	std::string textureName = "None Selected";

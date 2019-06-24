@@ -158,7 +158,7 @@ void ModuleParticles::Render(float dt, const ComponentCamera* camera)
 		}
 	}
 
-	glDisable(GL_CULL_FACE);
+	glDisable(GL_CULL_FACE);	
 	glBlendFunc(GL_ONE, GL_ONE);	
 
 	for (ComponentTrail* trail : trails)
@@ -239,6 +239,7 @@ void ModuleParticles::RenderTrail(ComponentTrail* ct, const ComponentCamera* cam
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, ct->texture->gpuID);
 	glUniform1i(glGetUniformLocation(trailShader->id[0], "texture0"), 0);
+	glUniform1f(glGetUniformLocation(trailShader->id[0], "bloomIntensity"), ct->bloomIntensity);
 
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, (trailVertices - discarded) * 2);
 

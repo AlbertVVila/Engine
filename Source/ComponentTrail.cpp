@@ -138,6 +138,7 @@ void ComponentTrail::DrawProperties()
 		ImGui::InputFloat("Duration", &duration, .01f, .1f);
 		ImGui::InputFloat("Min. point distance", &minDistance, .01f, .1f);
 		ImGui::ColorEdit4("Color", trailColor.ptr());
+		ImGui::DragFloat("Intensity", &bloomIntensity, 0.05f, 0.01f, 10.0f);
 		for (ParticleModule* pm : modules)
 		{
 			pm->InspectorDraw();
@@ -154,7 +155,7 @@ void ComponentTrail::Save(JSON_value* value) const
 	value->AddFloat("minDistance", minDistance);
 	value->AddFloat4("trailColor", trailColor);
 	value->AddUint("textureUID", (texture != nullptr) ? texture->GetUID() : 0u);
-	
+	value->AddFloat("bloomIntensity", bloomIntensity);
 	value->AddInt("sizeOT", modules[0]->enabled);
 	
 }
@@ -168,7 +169,7 @@ void ComponentTrail::Load(JSON_value* value)
 	trailColor = value->GetFloat4("trailColor");
 	unsigned uid = value->GetUint("textureUID");
 	texture = (ResourceTexture*)App->resManager->Get(uid);
-
+	bloomIntensity = value->GetFloat("bloomIntensity", bloomIntensity);
 	modules[0]->enabled = value->GetInt("sizeOT");
 
 }
