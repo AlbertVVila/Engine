@@ -819,5 +819,6 @@
     <None Include="..\Game\Shaders\FragmentShaders\Bloom.fs">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="..\Game\Scripts\PlayerMovement.dll" />
   </ItemGroup>
 </Project>

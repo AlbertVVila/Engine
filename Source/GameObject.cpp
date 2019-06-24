@@ -568,6 +568,14 @@ void GameObject::InsertChild(GameObject* child)
 	child->parent = this;
 }
 
+void GameObject::ChangeParent(GameObject* oldParent, GameObject* newParent)
+{
+	oldParent->children.remove(this);
+	newParent->children.push_back(this);
+	this->parent = newParent;
+	this->parentUUID = newParent->UUID;
+}
+
 ENGINE_API Component * GameObject::GetComponentOld(ComponentType type) const //Deprecated
 {
 	for (auto &component : components)
