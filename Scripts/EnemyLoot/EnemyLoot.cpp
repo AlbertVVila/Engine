@@ -127,6 +127,19 @@ void EnemyLoot::Expose(ImGuiContext* context)
 		uid = 0;
 		drop = 0;
 	}
+
+	ImGui::SameLine();
+
+	if (ImGui::Button("Clear"))
+	{
+		for (int i = 0; i < items.size(); ++i)
+		{
+			go = items[i].first;
+			go->ChangeParent(gameobject, App->scene->root);
+			go->SetActive(true);
+		}
+		items.clear();
+	}
 }
 
 
@@ -143,8 +156,6 @@ void EnemyLoot::GetItems()
 			itemList.push_back(((*it)->name).c_str());
 		}
 	}
-
-
 	return;
 }
 
