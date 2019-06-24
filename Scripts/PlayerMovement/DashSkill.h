@@ -7,6 +7,7 @@
 #include <vector>
 
 class GameObject;
+class ComponentRenderer;
 
 class DashSkill :
 	public MeleeSkill
@@ -32,7 +33,10 @@ public:
 
 	GameObject* dashFX = nullptr;
 	GameObject* dashMesh = nullptr;
+	ComponentRenderer* playerRenderer = nullptr;
+
 	math::float3 meshOriginalScale = math::float3::one;
+
 
 	float originalScalator = 1.05f;
 	float scalator = originalScalator;
