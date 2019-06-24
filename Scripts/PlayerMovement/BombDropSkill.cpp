@@ -44,12 +44,12 @@ void BombDropSkill::Start()
 	boxSize = math::float3(250.f, 100.f, 250.f);
 	//attackBoxTrigger.set
 	// Set delay for hit
-	hitDelay = 0.4f;
+	hitDelay = 0.5f;
 }
 
 void BombDropSkill::UseSkill()
 {
-	if (path.size() > 0 && timer > bombDropPreparationTime)
+	if (path.size() > 0 && timer > bombDropPreparationTime && timer < hitDelay)
 	{
 		math::float3 currentPosition = player->gameobject->transform->GetPosition();
 		while (pathIndex < path.size() && currentPosition.DistanceSq(path[pathIndex]) < MINIMUM_PATH_DISTANCE)
