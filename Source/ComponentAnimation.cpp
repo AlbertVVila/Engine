@@ -163,21 +163,6 @@ void ComponentAnimation::DrawProperties()
 					}
 					stateMachine->SetClipName(j, HashString(clipName));
 
-					//if the animation must finish we must set loop to false and viceversa!
-					bool finish = stateMachine->GetClipMustFinish(j);
-					if (ImGui::Checkbox("Must end", &finish))
-					{
-						if (!finish)
-							stateMachine->SetClipMustFinish(j, false);
-						else
-						{
-							stateMachine->SetClipMustFinish(j, true);
-							stateMachine->SetClipLoop(j, false);
-						}
-
-						stateMachine->Save();
-					}
-
 					ImGui::SameLine();
 					ImGui::PushItemWidth(60);
 					float speed = stateMachine->GetClipSpeed(j);
@@ -362,7 +347,9 @@ bool ComponentAnimation::GetLoopFromStateMachine()
 
 float ComponentAnimation::GetDurationFromClip()
 {
-	float speed = stateMachine->GetClipSpeed(currentNode);
+	HashString clipName = stateMachine->GetNodeClip(currentNode);
+	unsigned clipIndex = stateMachine->FindClip(clipName);
+	float speed = stateMachine->GetClipSpeed(clipIndex);
 	float duration = GetAnimFromStateMachine()->durationInSeconds;
 	return (duration/speed);
 }

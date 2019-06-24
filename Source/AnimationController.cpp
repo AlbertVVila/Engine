@@ -62,7 +62,7 @@ void AnimationController::PlayNextNode(ResourceAnimation * anim, bool loop, bool
 	current->next->anim = anim;
 	current->next->loop = loop;
 	current->next->speed = speed;
-	current->anim->nextEvent = 0;
+	current->next->anim->nextEvent = 0;
 }
 
 
