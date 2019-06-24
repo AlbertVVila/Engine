@@ -34,10 +34,10 @@ void StompSkill::Start()
 	player->ResetCooldown(HUB_BUTTON_1);
 
 	//Create the hitbox
-	boxSize = math::float3(500.f, 500.f, 500.f);
+	boxSize = math::float3(200.f, 200.f, 200.f);
 
 	// Set delay for hit
-	hitDelay = 0.8f;
+	hitDelay = 0.7f;
 }
 
 void StompSkill::UseSkill()
@@ -52,14 +52,11 @@ void StompSkill::UseSkill()
 
 			if (distance < range)
 			{
-				player->attackBoxTrigger->SetBoxPosition(target.x, target.y, target.z);
+				player->attackBoxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z + distance);
 			}
 			else
 			{
-				math::float3 direction = target - player->gameobject->transform->GetPosition();
-				direction.Normalize();
-				target = player->gameobject->transform->GetPosition() + direction * range;
-				player->attackBoxTrigger->SetBoxPosition(target.x, target.y, target.z);
+				player->attackBoxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z + range);
 			}
 		}
 	}
