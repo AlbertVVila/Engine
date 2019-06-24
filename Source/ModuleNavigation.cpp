@@ -21,8 +21,6 @@
 
 #include "ResourceMesh.h"
 
-#include "Geometry/AABB.h"
-
 #include "imgui.h"
 #include "SDL_opengl.h"
 #include "JSON.h"
@@ -1253,6 +1251,53 @@ float ModuleNavigation::GetXZDistance(float3 a, float3 b) const
 	return p1.DistanceSq(p2);
 }
 
+float3 ModuleNavigation::getNextStraightPoint(float3 current, float3 pathDirection, float3 end, bool* destination) const
+{
+	//case we are already getting to the end
+	float smallestSide = MIN(playerBB.HalfSize().x, playerBB.HalfSize().z);
+	if (smallestSide == 0.0f)
+	{
+		smallestSide = 2.5f;
+	}
+	
+	if (Distance(current, end) < smallestSide)
+	{
+		*destination = true;
+		return end;
+	}
+	//if not, we get going
+	float3 newPos(current);
+	newPos.x += pathDirection.x * smallestSide;
+	newPos.y += pathDirection.y * smallestSide;
+	newPos.z += pathDirection.z * smallestSide;
+
+	//set values for the first query
+	dtPolyRef nextPoly;
+	dtQueryFilter filter;
+	filter.setIncludeFlags(SAMPLE_POLYFLAGS_ALL ^ SAMPLE_POLYFLAGS_DISABLED);
+	float polyPickExt[3] = { 0.f, 5.f, 0.f };
+	//first query to find nearest poly
+	navQuery->findNearestPoly((float*)& newPos, polyPickExt, &filter, &nextPoly, 0);
+	if (!nextPoly)
+	{
+		//if we cant not get any further return the current position
+		return current;
+	}
+	//set values for second query
+	float* newPosCorrected = new float[3];
+	bool overPoly = false;
+	//second query to check if we are getting out of the poly
+	navQuery->closestPointOnPoly(nextPoly, (float*)& newPos, newPosCorrected, &overPoly);
+	float3 retValue(newPosCorrected[0], newPosCorrected[1], newPosCorrected[2]);
+	//we stop if want to get out of navmesh
+	if (retValue.x != newPos.x || retValue.z != newPos.z)
+	{
+		return current;
+	}
+	//if we got here, point looks good so we get there
+	return retValue;
+}
+
 bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vector<math::float3>& path, PathFindType type, math::float3 diff, float maxDist) const
 {
 	path.clear();
@@ -1411,12 +1456,51 @@ bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vecto
 			}
 		}
 	}
+	else if (type == PathFindType::NODODGE)
+	{
+		//LOG("newPath");
+		//go to the end point in a straight line
+		if (start.x == end.x && start.y == end.y && start.z == end.z)
+		{
+			return true;
+		}
+		//prepare values
+		float currentPathDistance = 0;
+		math::float3 pathDirection(end.x-start.x, end.y-start.y, end.z-start.z);
+		pathDirection.Normalize();
+		bool destination = false;
+		
+		//first iteration done outside due to logic:
+		//calculate next point
+		float3 nextPoint = getNextStraightPoint(start, pathDirection, end, &destination);
+		path.push_back(nextPoint);
 
+		while (!destination && currentPathDistance < maxDist)
+		{
+			//calculate next point
+			nextPoint = getNextStraightPoint(path[path.size()-1], pathDirection, end, &destination);
+			//if we got as far as we can get
+			if (nextPoint.Equals(path[path.size() - 1]))
+			{
+				return true;
+			}
+			//check if next point is too far away
+			currentPathDistance += GetXZDistance(path[path.size()-1], nextPoint);//2d distance
+			if (currentPathDistance > maxDist)
+			{
+				return true;
+			}
+			//if its not too far away, its put into the path
+			path.push_back(nextPoint);
+		}
+		return true;
+	}
 	return false;
 }
 
 bool ModuleNavigation::NavigateTowardsCursor(math::float3 start, std::vector<math::float3>& path, 
-											 math::float3 positionCorrection, math::float3& intersectionPos, float maxPathDistance, PathFindType type) const
+											 math::float3 positionCorrection, math::float3& intersectionPos, 
+											 float maxPathDistance, PathFindType type) const
 {
 	float2 mouse((float*)& App->input->GetMousePosition());
 	LineSegment line;
@@ -1440,6 +1524,11 @@ bool ModuleNavigation::NavigateTowardsCursor(math::float3 start, std::vector<mat
 	intersectionPos = line.GetPoint(dist);
 
 	return FindPath(start, intersectionPos, path, type, positionCorrection, maxPathDistance);
+}
+
+void ModuleNavigation::setPlayerBB(math::AABB bbox)
+{
+	playerBB = bbox;
 }
 
 void ModuleNavigation::RecalcPath(math::float3 point)
