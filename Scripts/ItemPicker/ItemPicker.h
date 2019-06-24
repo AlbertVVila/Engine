@@ -26,6 +26,12 @@ class ItemPicker_API ItemPicker : public Script
 
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
+
+	inline virtual ItemPicker* Clone() const
+	{
+		return new ItemPicker(*this);
+	}
+
 private:
 	std::string name;
 	std::string description;

@@ -28,6 +28,11 @@ public:
 	void Start() override;
 	void Update() override;
 
+	inline virtual InventoryScript* Clone() const
+	{
+		return new InventoryScript(*this);
+	}
+
 	bool AddItem(Item item);
 	std::vector<Item> GetQuickItems();
 

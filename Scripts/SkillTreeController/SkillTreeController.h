@@ -29,6 +29,10 @@ public:
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
 
+	inline virtual SkillTreeController* Clone() const
+	{
+		return new SkillTreeController(*this);
+	}
 private:
 	int skillPoints = 0;
 
