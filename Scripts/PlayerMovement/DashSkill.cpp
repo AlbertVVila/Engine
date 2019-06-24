@@ -7,6 +7,7 @@
 #include "GameObject.h"
 #include "ComponentTransform.h"
 #include "ComponentBoxTrigger.h"
+#include "ComponentRenderer.h"
 
 #include "PlayerMovement.h"
 #include "PlayerStateAttack.h"
@@ -39,6 +40,9 @@ void DashSkill::Start()
 			dashMesh->transform->scale = meshOriginalScale;
 			dashMesh->transform->Scale(1.0f);
 			scalator = originalScalator;
+			playerRenderer->dissolve = true;
+			playerRenderer->dissolveAmount = 0.5f;
+			playerRenderer->borderAmount = 0.08f;
 		}
 		player->ResetCooldown(HUB_BUTTON_Q);
 	}
@@ -89,6 +93,7 @@ void DashSkill::Reset()
 	if (dashMesh != nullptr)
 	{
 		dashMesh->SetActive(false);
+		playerRenderer->dissolve = false;
 	}
 }
 

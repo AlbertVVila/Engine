@@ -245,7 +245,7 @@ void ModuleScene::FrustumCulling(const Frustum& frustum)
 
 void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 {
-	std::list<ComponentRenderer*> alphaRenderers;
+	alphaRenderers.clear();
 
 #ifndef GAME_BUILD
 	PROFILE;

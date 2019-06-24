@@ -126,6 +126,7 @@ private:
 	float bloomSpread = 2.2f;
 	int kernelRadius = 4.0f;
 	float* kernel = nullptr;
+	
 };
 
 #endif /* __ModuleRender_h__ */

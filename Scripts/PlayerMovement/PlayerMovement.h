@@ -34,6 +34,7 @@ class ComponentAnimation;
 class ComponentTransform;
 class ComponentBoxTrigger;
 class ComponentImage;
+class ComponentRenderer;
 class JSON_value;
 struct ImGuiContext;
 class PlayerState;
@@ -242,6 +243,7 @@ private:
 	DamageFeedbackUI* damageUIFeedback = nullptr;
 	ComponentImage* lifeUIComponent = nullptr;
 	ComponentImage* manaUIComponent = nullptr;
+
 
 	float hubCooldown[9]	  = { 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F };
 	float hubCooldownMax[9] = { 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F };
