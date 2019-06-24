@@ -27,11 +27,11 @@ void main()
 {   
 	vec2 tCoordsPanned = tCoords + uvSpeed * time;
 	float cellS = tCoordsPanned.s / float(xTiles);
-	float cellT = tCoordsPanned.t / float(yTiles);
+	float cellT = 1.0f - (tCoordsPanned.t / float(yTiles));
 	float invX = 1 / float(xTiles);
 	float invY = 1 / float(yTiles);
-	vec2 tC1 = vec2(cellS + (invX * f1Xpos), cellT + (invY * f1Ypos));
-	vec2 tC2 = vec2(cellS + (invX * f2Xpos), cellT + (invY * f2Ypos));
+	vec2 tC1 = vec2(cellS + (invX * f1Xpos), cellT - (invY * f1Ypos));
+	vec2 tC2 = vec2(cellS + (invX * f2Xpos), cellT - (invY * f2Ypos));
 	color = mix(texture2D(texture, tC1), texture2D(texture, tC2) , mixAmount) * bloomIntensity * vec4(colorIn, 1.0f);
 	highlight = vec4(0);
 	
