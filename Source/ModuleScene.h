@@ -26,6 +26,7 @@ class ResourceTexture;
 class ResourceScene;
 class myQuadTree;
 class ResourcePrefab;
+class ComponentRenderer;
 
 struct par_shapes_mesh_s;
 
@@ -123,6 +124,8 @@ private:
 
 	std::list<GameObject*> scenePhotos;
 	std::list<GameObject*> scenePhotosUndoed;
+
+	std::list<ComponentRenderer*> alphaRenderers;
 
 	unsigned defaultSceneUID = 0u;
 	std::vector<std::string> sceneFiles;

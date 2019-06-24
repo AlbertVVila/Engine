@@ -1526,9 +1526,36 @@ bool ModuleNavigation::NavigateTowardsCursor(math::float3 start, std::vector<mat
 	return FindPath(start, intersectionPos, path, type, positionCorrection, maxPathDistance);
 }
 
+
 void ModuleNavigation::setPlayerBB(math::AABB bbox)
 {
 	playerBB = bbox;
+}
+
+bool ModuleNavigation::FindIntersectionPoint(math::float3 & intersectionPoint) const
+{
+	float2 mouse((float*)& App->input->GetMousePosition());
+	LineSegment line;
+
+	float normalized_x, normalized_y;
+
+#ifndef GAME_BUILD
+	math::float2 pos = App->renderer->viewGame->winPos;
+	math::float2 size(App->renderer->viewGame->current_width, App->renderer->viewGame->current_height);
+#else
+	math::float2 pos = math::float2::zero;
+	math::float2 size(App->window->width, App->window->height);
+#endif
+	normalized_x = ((mouse.x - pos.x) / size.x) * 2 - 1; //0 to 1 -> -1 to 1
+	normalized_y = (1 - (mouse.y - pos.y) / size.y) * 2 - 1; //0 to 1 -> -1 to 1
+
+	line = App->scene->maincamera->DrawRay(normalized_x, normalized_y);
+	Plane plane(math::float3(0.f, 1.f, 0.f), start.y);
+	float dist = 0.f;
+	line.Intersects(plane, &dist);
+	intersectionPoint = line.GetPoint(dist);
+
+	return true;
 }
 
 void ModuleNavigation::RecalcPath(math::float3 point)

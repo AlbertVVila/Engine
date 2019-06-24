@@ -69,10 +69,10 @@ private:
 	std::vector<std::string> guiMeshes;
 	int xTiles = 1u;
 	int yTiles = 1u;
-	int f1Xpos;
-	int f1Ypos;
-	int f2Xpos;
-	int f2Ypos;
+	int f1Xpos = 0;
+	int f1Ypos = 0;
+	int f2Xpos = 0;
+	int f2Ypos = 0;
 	float fps = 24.f;
 	float timer = 0.f;
 	float frameMix = 0.f; 

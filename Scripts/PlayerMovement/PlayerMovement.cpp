@@ -16,6 +16,7 @@
 #include "ComponentBoxTrigger.h"
 #include "ComponentTransform.h"
 #include "ComponentImage.h"
+#include "ComponentRenderer.h"
 #include "GameObject.h"
 
 #include "DamageController.h"
@@ -416,8 +417,10 @@ void PlayerMovement::Start()
 		dashMesh->SetActive(false);
 		dash->meshOriginalScale = dashMesh->transform->scale;
 		dash->dashMesh = dashMesh;
-	}
 
+	}
+	GOtemp = App->scene->FindGameObjectByName("PlayerMesh");
+	dash->playerRenderer = GOtemp->GetComponent<ComponentRenderer>();
 	LOG("Started player movement script");
 }
 
