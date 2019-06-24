@@ -5,6 +5,7 @@
 
 #include <vector>
 #include "Math/float3.h"
+#include "MathGeoLib/Geometry/AABB.h"
 
 #define MAX_DETOUR_PATH 1024
 #define MAX_POLYS 256
@@ -67,7 +68,8 @@ enum SamplePartitionType
 ENGINE_API enum class PathFindType
 {
 	FOLLOW,
-	STRAIGHT
+	STRAIGHT,
+	NODODGE
 };
 
 
@@ -89,7 +91,6 @@ public:
 
 	void AddNavigableMeshFromObject(GameObject* obj);
 
-
 	ENGINE_API bool FindPath(	math::float3 start, math::float3 end, std::vector<math::float3> &path, 
 								PathFindType type = PathFindType::FOLLOW, math::float3 diff = math::float3(0.f, 0.f, 0.f),
 								float maxDist = 10000.0f) const;
@@ -99,11 +100,15 @@ public:
 										  float maxPathDistance = 10000.0f, PathFindType type = PathFindType::FOLLOW) const;
 	ENGINE_API bool FindIntersectionPoint(math::float3 start, math::float3& intersectionPoint) const;
 
+	ENGINE_API void setPlayerBB(math::AABB bbox);
+
 	void RecalcPath(math::float3 point);
 
 	//Constants
 	//static const int ERROR = -1;
 	static const int ERROR_NEARESTPOLY = -2;
+
+	//info from other sources
 	std::string sceneName = "";
 
 private:
@@ -131,14 +136,11 @@ private:
 
 	float GetXZDistance(float3 a, float3 b) const;
 
-	// Detour stuff
-	//void handleClick(const float* s, const float* p, bool shift);
-	//void handleClick(const float* s, const float* p, bool shift);
-	//int FindStraightPath(WOWPOS start, WOWPOS end, WOWPOS* path, int size);
+	float3 getNextStraightPoint(float3 current, float3 pathDirection, float3 end, bool* destination) const;
 	
 private:
 	//variables
-	
+	math::AABB playerBB;
 	//char newCharacter[64] = "New Character";//implementation postponed, possibly aborted
 	float characterMaxRadius = 0.6f;
 	float characterMaxHeight = 5.0f;
