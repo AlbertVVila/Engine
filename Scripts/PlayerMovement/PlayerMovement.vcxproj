@@ -329,6 +329,8 @@
     <ClCompile Include="PlayerStateDeath.cpp" />
     <ClCompile Include="PlayerStateIdle.cpp" />
     <ClCompile Include="PlayerStateWalk.cpp" />
+    <ClCompile Include="RainSkill.cpp" />
+    <ClCompile Include="RangeSkill.cpp" />
     <ClCompile Include="SliceSkill.cpp" />
     <ClCompile Include="StompSkill.cpp" />
   </ItemGroup>
@@ -345,6 +347,8 @@
     <ClInclude Include="PlayerStateDeath.h" />
     <ClInclude Include="PlayerStateIdle.h" />
     <ClInclude Include="PlayerStateWalk.h" />
+    <ClInclude Include="RainSkill.h" />
+    <ClInclude Include="RangeSkill.h" />
     <ClInclude Include="SliceSkill.h" />
     <ClInclude Include="StompSkill.h" />
   </ItemGroup>
