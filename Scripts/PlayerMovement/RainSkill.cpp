@@ -2,9 +2,9 @@
 
 #include "PlayerMovement.h"
 
-//#include "ModuleScene.h"
+#include "ModuleNavigation.h"
 
-//#include "GameObject.h"
+#include "GameObject.h"
 #include "ComponentTransform.h"
 
 //#include "Math/float2.h"
@@ -21,8 +21,15 @@ RainSkill::~RainSkill()
 void RainSkill::Start()
 {
 	//math::float2 mousePosition = player->gameobject->transform->GetScreenPosition();
-	//math::float3 mousePosition = player->App->scene->Intersects()
-	spawnPosition = player->transform->position;
+	math::float3 mousePosition;
+	if (player->App->navigation->FindIntersectionPoint(player->transform->GetPosition(), mousePosition))
+	{
+		spawnPosition = mousePosition;
+	}
+	else
+	{
+		spawnPosition = player->transform->position;
+	}
 
 	RangeSkill::Start();
 }

@@ -46,7 +46,7 @@ void StompSkill::UseSkill()
 	{
 		// Update hitbox
 		math::float3 target;
-		if (player->App->navigation->FindIntersectionPoint(target))
+		if (player->App->navigation->FindIntersectionPoint(player->gameobject->transform->GetPosition(), target))
 		{
 			float distance = target.Distance(player->gameobject->transform->GetPosition());
 
