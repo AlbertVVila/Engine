@@ -878,6 +878,14 @@ void GameObject::UpdateToPrefab(GameObject* prefabGo)
 	{
 		myTransform = transform->Clone();
 	}
+	else
+	{
+		Transform2D* transformUI = GetComponent<Transform2D>();
+		if (transformUI != nullptr)
+		{
+			myTransform = transformUI->Clone();
+		}
+	}
 
 	GameObject* myParent = parent;
 	CleanUp();
@@ -896,12 +904,16 @@ void GameObject::UpdateToPrefab(GameObject* prefabGo)
 	if (myTransform != nullptr)
 	{
 		components.push_back(myTransform);
-		transform = (ComponentTransform*)myTransform;
+		if (myTransform->type == ComponentType::Transform)
+		{
+			transform = (ComponentTransform*)myTransform;
+		}
 	}
 
 	for (const auto &component : prefabGo->components)
 	{
-		if (component->type == ComponentType::Transform) continue;
+		if (component->type == ComponentType::Transform ||
+			component->type == ComponentType::Transform2D) continue;
 		Component* newComponent = component->Clone();
 		newComponent->gameobject = this;
 		components.push_back(newComponent);
