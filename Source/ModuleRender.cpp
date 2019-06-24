@@ -156,6 +156,12 @@ bool ModuleRender::Init(JSON * config)
 	}
 
 	kernel = new float[MAX_KERNEL_RADIUS];
+	float* it = kernel;
+	for (unsigned i = 0u; i < MAX_KERNEL_RADIUS; ++i)
+	{
+		*it = 0.f;
+		++it;
+	}
 	ComputeBloomKernel();
 	return true;
 }
@@ -824,7 +830,7 @@ void ModuleRender::DrawGUI()
 	}
 	ImGui::DragFloat("Gamma correction", &gammaCorrector, .05f, 1.2f, 3.2f);
 	ImGui::DragFloat("Exposure", &exposure, .05f, .1f, 10.0f);
-	if (ImGui::DragFloat("Bloom spread", &bloomSpread, .1f, 1.f, 4.f))
+	/*if (ImGui::DragFloat("Bloom spread", &bloomSpread, .1f, 1.f, 4.f))
 	{
 		ComputeBloomKernel();
 	}
@@ -832,6 +838,7 @@ void ModuleRender::DrawGUI()
 	{
 		ComputeBloomKernel();
 	}
+	*/
 }
 
 void ModuleRender::GenBlockUniforms()

@@ -123,8 +123,8 @@ private:
 
 	float gammaCorrector = 2.2f;
 	float exposure = 1.0f;
-	float bloomSpread = 80.f;
-	int kernelRadius = 10;
+	float bloomSpread = 2.2f;
+	int kernelRadius = 4.0f;
 	float* kernel = nullptr;
 };
 
