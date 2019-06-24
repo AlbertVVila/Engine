@@ -29,6 +29,7 @@ enum class ItemPicker_API ItemRarity
 
 class ItemPicker_API ItemPicker : public Script
 {
+public:
 	void Expose(ImGuiContext* context) override;
 
 	void Start() override;

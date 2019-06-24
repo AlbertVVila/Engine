@@ -46,6 +46,7 @@ class PlayerStateUppercut;
 class PlayerStateWalk;
 class DamageController;
 class DamageFeedbackUI;
+class Text;
 
 #define MAX(a,b) ((a) < (b) ? (b) : (a))
 
@@ -160,6 +161,8 @@ private:
 
 	void ActivateHudCooldownMask(bool activate, unsigned first = HUB_BUTTON_Q, unsigned last = HUB_BUTTON_4);
 
+	void UpdateUIStats();
+	void InitializeUIStatsObjects();
 public:
 	bool isPlayerDead = false;
 	float3 currentPosition = float3(0, 0, 0); //TODO ZERO
@@ -187,7 +190,7 @@ public:
 	float manaRegenTimer = 0.0f;
 	float manaRegenMaxTime = 5.0f;
 
-	PlayerStats stats = { 100.0f, 100.0f, 10U, 10U, 5.0f, 5.0f };
+	PlayerStats stats = { 150.0f, 100.0f, 10U, 10U, 5.0f, 5.0f };
 	std::unordered_map<SkillType, PlayerSkill*> allSkills;
 	SkillType activeSkills[4] = { SkillType::NONE, SkillType::NONE, SkillType::NONE, SkillType::NONE };
 
@@ -212,6 +215,10 @@ private:
 	DamageFeedbackUI* damageUIFeedback = nullptr;
 	ComponentImage* lifeUIComponent = nullptr;
 	ComponentImage* manaUIComponent = nullptr;
+	Text* uiHealthText = nullptr;
+	Text* uiDexterityText = nullptr;
+	Text* uiStrengthText = nullptr;
+	Text* uiManaText = nullptr;
 
 	float hubCooldown[8]	  = { 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F };
 	float hubCooldownMax[8] = { 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F };
