@@ -28,6 +28,8 @@ public:
 	void Load(JSON_value* value) override;
 
 	ENGINE_API void SetMaterial(const char* materialName);
+	ENGINE_API void ResetAnimation();
+
 	void SetMesh(const char* meshfile);
 	void UpdateGameObject();
 	void LinkBones();
@@ -56,6 +58,8 @@ public:
 	math::float3 waterSource2 = math::float3::zero;
 	float waterSpeed = 2.f;
 	math::float3 highlightColor = math::float3::one;
+	bool animationEnded = false;
+
 
 private:
 
@@ -72,6 +76,7 @@ private:
 	float fps = 24.f;
 	float timer = 0.f;
 	float frameMix = 0.f; 
+	bool loop = false;
 	math::float2 texSpeed = math::float2::zero;
 
 	std::vector<BindBone> bindBones;

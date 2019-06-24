@@ -11,6 +11,7 @@
 
 class Text;
 class ComponentImage;
+class ComponentRenderer;
 class SkillTreeController;
 class GameObject;
 class JSON_value;
@@ -35,6 +36,8 @@ private:
 	ComponentImage* xpProgressInventory = nullptr;
 	SkillTreeController* skillTreeScript = nullptr;
 	GameObject* levelUPGO = nullptr;
+	ComponentRenderer* levelUpFloorMesh = nullptr;
+	GameObject* levelUpParticles = nullptr;
 
 	int currentXP = 0;
 	int previousXP = 0;

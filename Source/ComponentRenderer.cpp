@@ -167,6 +167,10 @@ void ComponentRenderer::DrawProperties()
 			}
 		}
 		// Material selector
+		if (ImGui::Button("X"))
+		{
+			ResetAnimation();
+		}
 		ImGui::Text("Material");
 		ImGui::PushID(this);
 		if (ImGui::BeginCombo("", material != nullptr ? material->GetName() : "None selected"))
@@ -457,12 +461,29 @@ void ComponentRenderer::DrawMesh(unsigned shaderProgram)
 
 void ComponentRenderer::Update()
 {
-	timer += App->time->gameDeltaTime; 
-	float currentFrame = timer / (1 / fps);
-	float frame;
-	frameMix = modf(currentFrame, &frame);
-	f1Xpos = ((int)frame) % xTiles;
-	f2Xpos = (f1Xpos + 1) % xTiles;
-	f1Ypos = (((int)frame) / xTiles) % yTiles;
-	f2Ypos = f1Xpos < f2Xpos ? f1Ypos : f1Ypos + 1;
+	float nFrames = xTiles * yTiles;
+	if (nFrames > 1)
+	{
+		timer += App->time->gameDeltaTime;
+		float currentFrame = timer / (1 / fps);
+		if (!loop && currentFrame >= nFrames)
+		{
+			animationEnded = true;
+			return;
+		}
+		float frame;
+		frameMix = modf(currentFrame, &frame);
+
+		f1Xpos = ((int)frame) % xTiles;
+		f2Xpos = (f1Xpos + 1) % xTiles;
+		f1Ypos = (((int)frame) / xTiles) % yTiles;
+		f2Ypos = f1Xpos < f2Xpos ? f1Ypos : f1Ypos + 1;		
+
+	}
+}
+
+void ComponentRenderer::ResetAnimation()
+{
+	timer = 0.f;
+	animationEnded = false;
 }

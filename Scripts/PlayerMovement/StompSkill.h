@@ -25,6 +25,8 @@ private:
 private:
 	math::float3 intersectionPoint;
 	GameObject* StompFX = nullptr;
+
+	float range = 500.f;
 };
 
 #endif // __StompSkill_h_
