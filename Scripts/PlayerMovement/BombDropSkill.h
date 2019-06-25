@@ -17,6 +17,7 @@ public:
 
 	void Start() override;
 	void UseSkill() override;
+
 private:
 	void CheckInput() override;
 

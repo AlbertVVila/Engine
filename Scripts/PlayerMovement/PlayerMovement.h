@@ -151,6 +151,9 @@ public:
 	void Equip(const PlayerStats& equipStats);
 	void UnEquip(const PlayerStats& equipStats);
 
+	void OnAnimationEvent(std::string name) override;
+
+
 	//Abstract input. TODO: Now only returns true for skills, adapt for items
 	bool IsAtacking() const;
 	bool IsUsingOne() const;
@@ -238,6 +241,8 @@ private:
 	GameObject* dustParticles = nullptr;
 	GameObject* dashFX = nullptr;
 	GameObject* dashMesh = nullptr;
+	GameObject* bombDropParticles = nullptr;
+
 
 	DamageController* damageController = nullptr;
 	DamageFeedbackUI* damageUIFeedback = nullptr;
