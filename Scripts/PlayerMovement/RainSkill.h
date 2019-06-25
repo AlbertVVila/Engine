@@ -1,4 +1,6 @@
-#pragma once
+#ifndef  __RainSkill_h__
+#define  __RainSkill_h__
+
 #include "RangeSkill.h"
 class RainSkill :
 	public RangeSkill
@@ -10,3 +12,4 @@ public:
 	void Start() override;
 };
 
+#endif
