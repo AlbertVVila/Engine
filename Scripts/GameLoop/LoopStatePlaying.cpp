@@ -6,11 +6,13 @@
 #include "ComponentButton.h"
 #include "ComponentTransform2D.h"
 
+#include "ModuleScene.h"
 #include "ModuleInput.h"
 #include "Math/float2.h"
 #include "PlayerMovement.h"
 
 #define MENU_SCENE "MenuScene"
+#define TEMPLE_SCENE "Level2-TheForbiddenTempleV1"
 
 LoopStatePlaying::LoopStatePlaying(GameLoop* GL) : LoopState(GL)
 {
@@ -77,8 +79,23 @@ void LoopStatePlaying::Update()
 	}
 	else if (gLoop->winBbox->Intersects(*(gLoop->playerBbox)))
 	{
-		gLoop->winWindow->SetActive(true);
-		gLoop->currentLoopState = (LoopState*)gLoop->winState;
+		if (gLoop->gameScene == GameScene::CEMENTERY)
+		{
+			gLoop->currentLoopState = (LoopState*)gLoop->loadingState;
+			gLoop->playerMenuGO->SetActive(false);
+			gLoop->sceneToLoad = TEMPLE_SCENE;
+			gLoop->App->scene->actionAfterLoad = true;
+			gLoop->App->scene->stateAfterLoad = "Temple";
+			gLoop->stateAfterLoad = (LoopState*)gLoop->creditsState;
+			gLoop->gameScene == GameScene::TEMPLE;
+			
+		}
+		else if (gLoop->gameScene == GameScene::TEMPLE)
+		{
+			gLoop->winWindow->SetActive(true);
+			gLoop->currentLoopState = (LoopState*)gLoop->winState;
+			gLoop->gameScene == GameScene::MENU;
+		}
 	}
 }
 

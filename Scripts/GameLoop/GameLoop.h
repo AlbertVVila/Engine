@@ -38,14 +38,16 @@ class LoopStatePlaying;
 class LoopStateQuit;
 class LoopStateWin;
 
+enum class GameScene
+{
+	MENU,
+	CEMENTERY,
+	TEMPLE,
+	HUD
+};
+
 class GameLoop_API GameLoop : public Script
 {
-	enum class GameScene
-	{
-		MENU,
-		CEMENTERY,
-		HUD
-	};
 
 public :
 	void Expose(ImGuiContext* context) override;
@@ -60,6 +62,7 @@ public:
 
 	void LoadMenuScene();
 	void LoadCementeryScene();
+	void LoadTempleScene();
 	void LoadHUDScene();
 
 	void CreateGameStates();
