@@ -8,6 +8,7 @@ class Text;
 class Transform2D;
 class ResourceTexture;
 
+
 class Button :	public Component
 {
 public:
@@ -44,7 +45,9 @@ public:
 
 	bool isHovered = false;
 	bool isSelected = false;
+
 	bool isKeyDown = false;
+	bool isPressed = false;
 	bool isKeyUp = false;
 
 	bool hoverDetectionMouse1 = true;

@@ -133,6 +133,12 @@ void Button::Load(JSON_value* value)
 
 void Button::Update()
 {
+	if (isKeyDown)
+	{
+		isPressed = true;
+		isKeyDown = false;
+	}
+
 	math::float2 mouse = reinterpret_cast<const float2&>(App->input->GetMousePosition());	
 	float screenX = mouse.x - App->renderer->viewGame->winPos.x - (App->ui->currentWidth * .5f);
 	float screenY = mouse.y - App->renderer->viewGame->winPos.y - (App->ui->currentHeight * .5f);
@@ -164,24 +170,26 @@ void Button::Update()
 		text->isHovered = false;
 	}
 
-	if (isKeyDown && !isHovered)
+	if (isPressed && !isHovered)
 	{
-		isKeyDown = false;
+		isPressed = false;
 		pressedImage->enabled = false;
 
 	}
 
 	isKeyUp = false;
-	if (isHovered && isKeyDown && App->input->GetMouseButtonDown(1) == KEY_UP)
+	if (isHovered && isPressed && App->input->GetMouseButtonDown(1) == KEY_UP)
 	{
 		isKeyUp = true;
-		isKeyDown = false;
+		isPressed = false;
 		pressedImage->enabled = false;
 	}
 
 	if (isHovered && App->input->GetMouseButtonDown(1) == KEY_DOWN)
 	{
 		isKeyDown = true;
+		isPressed = false;
+
 		buttonImage->enabled = false;
 		highlightedImage->enabled = false;
 		pressedImage->enabled = true;
@@ -192,6 +200,7 @@ void Button::Enable(bool enable)
 {
 	Component::Enable(enable);
 	isKeyDown = false;
+	isPressed = false;
 	isKeyUp = false;
 	isHovered = false;
 	isSelected = false;
