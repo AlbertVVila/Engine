@@ -1,10 +1,10 @@
 {
     "navigationScene": {
-        "navDataSize": 0
+        "navDataSize": 4347
     },
     "GameObjects": [
         {
-            "UID": 3162019494,
+            "UID": 516344531,
             "ParentUID": 1,
             "Name": "LoseWindow",
             "Tag": "Default",
@@ -39,8 +39,8 @@
             "Components": []
         },
         {
-            "UID": 687783238,
-            "ParentUID": 3162019494,
+            "UID": 2085235248,
+            "ParentUID": 516344531,
             "Name": "Background",
             "Tag": "Default",
             "Static": 0,
@@ -107,8 +107,8 @@
             ]
         },
         {
-            "UID": 3502532934,
-            "ParentUID": 3162019494,
+            "UID": 2165717299,
+            "ParentUID": 516344531,
             "Name": "Title",
             "Tag": "Default",
             "Static": 0,
@@ -187,8 +187,8 @@
             ]
         },
         {
-            "UID": 2005232636,
-            "ParentUID": 3162019494,
+            "UID": 2990221141,
+            "ParentUID": 516344531,
             "Name": "Advice1",
             "Tag": "Default",
             "Static": 0,
@@ -267,8 +267,8 @@
             ]
         },
         {
-            "UID": 2296742462,
-            "ParentUID": 3162019494,
+            "UID": 138707357,
+            "ParentUID": 516344531,
             "Name": "Advice2",
             "Tag": "Default",
             "Static": 0,
@@ -347,8 +347,8 @@
             ]
         },
         {
-            "UID": 1203784218,
-            "ParentUID": 3162019494,
+            "UID": 3794196562,
+            "ParentUID": 516344531,
             "Name": "Button",
             "Tag": "Default",
             "Static": 0,
@@ -487,7 +487,7 @@
             ]
         },
         {
-            "UID": 857749646,
+            "UID": 1667486403,
             "ParentUID": 1,
             "Name": "WinWindow",
             "Tag": "Default",
@@ -522,8 +522,8 @@
             "Components": []
         },
         {
-            "UID": 2806845911,
-            "ParentUID": 857749646,
+            "UID": 3390492574,
+            "ParentUID": 1667486403,
             "Name": "Background",
             "Tag": "Default",
             "Static": 0,
@@ -590,8 +590,8 @@
             ]
         },
         {
-            "UID": 3005265332,
-            "ParentUID": 857749646,
+            "UID": 3820538762,
+            "ParentUID": 1667486403,
             "Name": "Title",
             "Tag": "Default",
             "Static": 0,
@@ -670,8 +670,8 @@
             ]
         },
         {
-            "UID": 3938248993,
-            "ParentUID": 857749646,
+            "UID": 951370669,
+            "ParentUID": 1667486403,
             "Name": "Advice1",
             "Tag": "Default",
             "Static": 0,
@@ -750,8 +750,8 @@
             ]
         },
         {
-            "UID": 4183046208,
-            "ParentUID": 857749646,
+            "UID": 910123779,
+            "ParentUID": 1667486403,
             "Name": "Advice2",
             "Tag": "Default",
             "Static": 0,
@@ -830,8 +830,8 @@
             ]
         },
         {
-            "UID": 1793680258,
-            "ParentUID": 857749646,
+            "UID": 3519837530,
+            "ParentUID": 1667486403,
             "Name": "Loading",
             "Tag": "Default",
             "Static": 0,
@@ -910,8 +910,8 @@
             ]
         },
         {
-            "UID": 2235027826,
-            "ParentUID": 857749646,
+            "UID": 1036625721,
+            "ParentUID": 1667486403,
             "Name": "Loading icon",
             "Tag": "Default",
             "Static": 0,
@@ -978,7 +978,7 @@
             ]
         },
         {
-            "UID": 3049246102,
+            "UID": 761291719,
             "ParentUID": 1,
             "Name": "Damage",
             "Tag": "Default",
@@ -1063,8 +1063,8 @@
             ]
         },
         {
-            "UID": 3222278072,
-            "ParentUID": 3049246102,
+            "UID": 2648590424,
+            "ParentUID": 761291719,
             "Name": "Damage1",
             "Tag": "Default",
             "Static": 0,
@@ -1143,8 +1143,8 @@
             ]
         },
         {
-            "UID": 2343149139,
-            "ParentUID": 3049246102,
+            "UID": 2036387047,
+            "ParentUID": 761291719,
             "Name": "Damage2",
             "Tag": "Default",
             "Static": 0,
@@ -1223,8 +1223,8 @@
             ]
         },
         {
-            "UID": 3274154005,
-            "ParentUID": 3049246102,
+            "UID": 1655413478,
+            "ParentUID": 761291719,
             "Name": "Damage3",
             "Tag": "Default",
             "Static": 0,
@@ -1303,8 +1303,8 @@
             ]
         },
         {
-            "UID": 473271019,
-            "ParentUID": 3049246102,
+            "UID": 4279663685,
+            "ParentUID": 761291719,
             "Name": "Damage4",
             "Tag": "Default",
             "Static": 0,
@@ -1383,8 +1383,8 @@
             ]
         },
         {
-            "UID": 385816769,
-            "ParentUID": 3049246102,
+            "UID": 1199511704,
+            "ParentUID": 761291719,
             "Name": "Damage5",
             "Tag": "Default",
             "Static": 0,
@@ -1463,8 +1463,8 @@
             ]
         },
         {
-            "UID": 4266509888,
-            "ParentUID": 3049246102,
+            "UID": 4128529386,
+            "ParentUID": 761291719,
             "Name": "Damage6",
             "Tag": "Default",
             "Static": 0,
@@ -1543,8 +1543,8 @@
             ]
         },
         {
-            "UID": 3546903884,
-            "ParentUID": 3049246102,
+            "UID": 2616161221,
+            "ParentUID": 761291719,
             "Name": "Damage7",
             "Tag": "Default",
             "Static": 0,
@@ -1623,8 +1623,8 @@
             ]
         },
         {
-            "UID": 2861880082,
-            "ParentUID": 3049246102,
+            "UID": 3771698686,
+            "ParentUID": 761291719,
             "Name": "Damage8",
             "Tag": "Default",
             "Static": 0,
@@ -1703,8 +1703,8 @@
             ]
         },
         {
-            "UID": 3168152124,
-            "ParentUID": 3049246102,
+            "UID": 3918459290,
+            "ParentUID": 761291719,
             "Name": "Damage9",
             "Tag": "Default",
             "Static": 0,
@@ -1783,8 +1783,8 @@
             ]
         },
         {
-            "UID": 3170498185,
-            "ParentUID": 3049246102,
+            "UID": 1836161064,
+            "ParentUID": 761291719,
             "Name": "Damage10",
             "Tag": "Default",
             "Static": 0,
@@ -1863,7 +1863,7 @@
             ]
         },
         {
-            "UID": 224765429,
+            "UID": 390738820,
             "ParentUID": 1,
             "Name": "GameHUB",
             "Tag": "Default",
@@ -1898,8 +1898,8 @@
             "Components": []
         },
         {
-            "UID": 3594983721,
-            "ParentUID": 224765429,
+            "UID": 1145321097,
+            "ParentUID": 390738820,
             "Name": "MenuButton",
             "Tag": "Default",
             "Static": 0,
@@ -2038,8 +2038,8 @@
             ]
         },
         {
-            "UID": 2695244425,
-            "ParentUID": 224765429,
+            "UID": 2925389239,
+            "ParentUID": 390738820,
             "Name": "InventaryButton",
             "Tag": "Default",
             "Static": 0,
@@ -2178,8 +2178,8 @@
             ]
         },
         {
-            "UID": 3051581311,
-            "ParentUID": 224765429,
+            "UID": 2127362330,
+            "ParentUID": 390738820,
             "Name": "SkillsButton",
             "Tag": "Default",
             "Static": 0,
@@ -2318,8 +2318,8 @@
             ]
         },
         {
-            "UID": 2272898136,
-            "ParentUID": 224765429,
+            "UID": 1094309109,
+            "ParentUID": 390738820,
             "Name": "MissionButton",
             "Tag": "Default",
             "Static": 0,
@@ -2458,8 +2458,8 @@
             ]
         },
         {
-            "UID": 3218355914,
-            "ParentUID": 224765429,
+            "UID": 2356702360,
+            "ParentUID": 390738820,
             "Name": "Map",
             "Tag": "Default",
             "Static": 0,
@@ -2526,8 +2526,8 @@
             ]
         },
         {
-            "UID": 3493525258,
-            "ParentUID": 224765429,
+            "UID": 2890319820,
+            "ParentUID": 390738820,
             "Name": "One",
             "Tag": "Default",
             "Static": 0,
@@ -2666,8 +2666,8 @@
             ]
         },
         {
-            "UID": 3548781694,
-            "ParentUID": 3493525258,
+            "UID": 3662898945,
+            "ParentUID": 2890319820,
             "Name": "One_Cooldown",
             "Tag": "Default",
             "Static": 0,
@@ -2734,8 +2734,8 @@
             ]
         },
         {
-            "UID": 2644043559,
-            "ParentUID": 3493525258,
+            "UID": 4005451781,
+            "ParentUID": 2890319820,
             "Name": "OneText",
             "Tag": "Default",
             "Static": 0,
@@ -2814,8 +2814,8 @@
             ]
         },
         {
-            "UID": 2250530643,
-            "ParentUID": 224765429,
+            "UID": 1651507405,
+            "ParentUID": 390738820,
             "Name": "Two",
             "Tag": "Default",
             "Static": 0,
@@ -2954,8 +2954,8 @@
             ]
         },
         {
-            "UID": 1656983019,
-            "ParentUID": 2250530643,
+            "UID": 647551781,
+            "ParentUID": 1651507405,
             "Name": "Two_Cooldown",
             "Tag": "Default",
             "Static": 0,
@@ -3022,8 +3022,8 @@
             ]
         },
         {
-            "UID": 3874995765,
-            "ParentUID": 2250530643,
+            "UID": 1534714888,
+            "ParentUID": 1651507405,
             "Name": "TwoText",
             "Tag": "Default",
             "Static": 0,
@@ -3102,8 +3102,8 @@
             ]
         },
         {
-            "UID": 2426376320,
-            "ParentUID": 224765429,
+            "UID": 4018171509,
+            "ParentUID": 390738820,
             "Name": "Three",
             "Tag": "Default",
             "Static": 0,
@@ -3242,8 +3242,8 @@
             ]
         },
         {
-            "UID": 1346667313,
-            "ParentUID": 2426376320,
+            "UID": 21170673,
+            "ParentUID": 4018171509,
             "Name": "Three_Cooldown",
             "Tag": "Default",
             "Static": 0,
@@ -3310,8 +3310,8 @@
             ]
         },
         {
-            "UID": 3399689217,
-            "ParentUID": 2426376320,
+            "UID": 3831363332,
+            "ParentUID": 4018171509,
             "Name": "ThreeText",
             "Tag": "Default",
             "Static": 0,
@@ -3390,8 +3390,8 @@
             ]
         },
         {
-            "UID": 3888356070,
-            "ParentUID": 224765429,
+            "UID": 2868643481,
+            "ParentUID": 390738820,
             "Name": "For",
             "Tag": "Default",
             "Static": 0,
@@ -3530,8 +3530,8 @@
             ]
         },
         {
-            "UID": 2850137783,
-            "ParentUID": 3888356070,
+            "UID": 729848341,
+            "ParentUID": 2868643481,
             "Name": "Four_Cooldown",
             "Tag": "Default",
             "Static": 0,
@@ -3598,8 +3598,8 @@
             ]
         },
         {
-            "UID": 3427274572,
-            "ParentUID": 3888356070,
+            "UID": 821499604,
+            "ParentUID": 2868643481,
             "Name": "FourText",
             "Tag": "Default",
             "Static": 0,
@@ -3678,8 +3678,8 @@
             ]
         },
         {
-            "UID": 2125233909,
-            "ParentUID": 224765429,
+            "UID": 2197631092,
+            "ParentUID": 390738820,
             "Name": "Q",
             "Tag": "Default",
             "Static": 0,
@@ -3818,8 +3818,8 @@
             ]
         },
         {
-            "UID": 3315742168,
-            "ParentUID": 2125233909,
+            "UID": 529856574,
+            "ParentUID": 2197631092,
             "Name": "Q_Cooldown",
             "Tag": "Default",
             "Static": 0,
@@ -3886,8 +3886,8 @@
             ]
         },
         {
-            "UID": 207690597,
-            "ParentUID": 2125233909,
+            "UID": 2507422352,
+            "ParentUID": 2197631092,
             "Name": "QText",
             "Tag": "Default",
             "Static": 0,
@@ -3966,8 +3966,8 @@
             ]
         },
         {
-            "UID": 344384558,
-            "ParentUID": 224765429,
+            "UID": 258761925,
+            "ParentUID": 390738820,
             "Name": "W",
             "Tag": "Default",
             "Static": 0,
@@ -4106,8 +4106,8 @@
             ]
         },
         {
-            "UID": 2282304264,
-            "ParentUID": 344384558,
+            "UID": 3368008930,
+            "ParentUID": 258761925,
             "Name": "W_Cooldown",
             "Tag": "Default",
             "Static": 0,
@@ -4174,8 +4174,8 @@
             ]
         },
         {
-            "UID": 1295907207,
-            "ParentUID": 344384558,
+            "UID": 3847429207,
+            "ParentUID": 258761925,
             "Name": "WText",
             "Tag": "Default",
             "Static": 0,
@@ -4254,8 +4254,8 @@
             ]
         },
         {
-            "UID": 873698057,
-            "ParentUID": 224765429,
+            "UID": 556005977,
+            "ParentUID": 390738820,
             "Name": "E",
             "Tag": "Default",
             "Static": 0,
@@ -4394,8 +4394,8 @@
             ]
         },
         {
-            "UID": 571921175,
-            "ParentUID": 873698057,
+            "UID": 2719117135,
+            "ParentUID": 556005977,
             "Name": "E_Cooldown",
             "Tag": "Default",
             "Static": 0,
@@ -4462,8 +4462,8 @@
             ]
         },
         {
-            "UID": 1613375232,
-            "ParentUID": 873698057,
+            "UID": 4012304840,
+            "ParentUID": 556005977,
             "Name": "EText",
             "Tag": "Default",
             "Static": 0,
@@ -4542,8 +4542,8 @@
             ]
         },
         {
-            "UID": 491297519,
-            "ParentUID": 224765429,
+            "UID": 3117200319,
+            "ParentUID": 390738820,
             "Name": "R",
             "Tag": "Default",
             "Static": 0,
@@ -4682,8 +4682,8 @@
             ]
         },
         {
-            "UID": 474431107,
-            "ParentUID": 491297519,
+            "UID": 1321409805,
+            "ParentUID": 3117200319,
             "Name": "R_Cooldown",
             "Tag": "Default",
             "Static": 0,
@@ -4750,8 +4750,8 @@
             ]
         },
         {
-            "UID": 1709927013,
-            "ParentUID": 491297519,
+            "UID": 3234692455,
+            "ParentUID": 3117200319,
             "Name": "RText",
             "Tag": "Default",
             "Static": 0,
@@ -4830,8 +4830,8 @@
             ]
         },
         {
-            "UID": 4080498888,
-            "ParentUID": 224765429,
+            "UID": 1673147656,
+            "ParentUID": 390738820,
             "Name": "LC",
             "Tag": "Default",
             "Static": 0,
@@ -4970,8 +4970,8 @@
             ]
         },
         {
-            "UID": 2598931265,
-            "ParentUID": 224765429,
+            "UID": 24098471,
+            "ParentUID": 390738820,
             "Name": "ManaBackgroud",
             "Tag": "Default",
             "Static": 0,
@@ -5038,8 +5038,8 @@
             ]
         },
         {
-            "UID": 3991878742,
-            "ParentUID": 224765429,
+            "UID": 3674055065,
+            "ParentUID": 390738820,
             "Name": "Mana",
             "Tag": "Default",
             "Static": 0,
@@ -5106,8 +5106,8 @@
             ]
         },
         {
-            "UID": 3812580387,
-            "ParentUID": 224765429,
+            "UID": 3738399032,
+            "ParentUID": 390738820,
             "Name": "ManaBubble",
             "Tag": "Default",
             "Static": 0,
@@ -5174,8 +5174,8 @@
             ]
         },
         {
-            "UID": 3485480450,
-            "ParentUID": 224765429,
+            "UID": 4123889244,
+            "ParentUID": 390738820,
             "Name": "RC",
             "Tag": "Default",
             "Static": 0,
@@ -5314,8 +5314,8 @@
             ]
         },
         {
-            "UID": 2948695240,
-            "ParentUID": 224765429,
+            "UID": 3941237018,
+            "ParentUID": 390738820,
             "Name": "Xp",
             "Tag": "Default",
             "Static": 0,
@@ -5414,8 +5414,8 @@
             ]
         },
         {
-            "UID": 2955962369,
-            "ParentUID": 2948695240,
+            "UID": 1060063868,
+            "ParentUID": 3941237018,
             "Name": "XpProgress",
             "Tag": "Default",
             "Static": 0,
@@ -5482,8 +5482,8 @@
             ]
         },
         {
-            "UID": 1082468469,
-            "ParentUID": 224765429,
+            "UID": 2570137414,
+            "ParentUID": 390738820,
             "Name": "LifeBackgroud",
             "Tag": "Default",
             "Static": 0,
@@ -5550,8 +5550,8 @@
             ]
         },
         {
-            "UID": 13063563,
-            "ParentUID": 224765429,
+            "UID": 1824605077,
+            "ParentUID": 390738820,
             "Name": "Life",
             "Tag": "Default",
             "Static": 0,
@@ -5618,8 +5618,8 @@
             ]
         },
         {
-            "UID": 4019552734,
-            "ParentUID": 224765429,
+            "UID": 707428767,
+            "ParentUID": 390738820,
             "Name": "LifeBubble",
             "Tag": "Default",
             "Static": 0,
@@ -5686,8 +5686,8 @@
             ]
         },
         {
-            "UID": 2927722660,
-            "ParentUID": 224765429,
+            "UID": 3404846898,
+            "ParentUID": 390738820,
             "Name": "Tacometer",
             "Tag": "Default",
             "Static": 0,
@@ -5754,13 +5754,13 @@
             ]
         },
         {
-            "UID": 146532593,
+            "UID": 2896059147,
             "ParentUID": 1,
             "Name": "PlayerMenu",
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 1,
-            "ActiveSelf": 0,
+            "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
                 1.0,
@@ -5789,12 +5789,12 @@
             "Components": []
         },
         {
-            "UID": 2193792890,
-            "ParentUID": 146532593,
+            "UID": 3484978481,
+            "ParentUID": 2896059147,
             "Name": "BackgroundImage",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -5857,12 +5857,12 @@
             ]
         },
         {
-            "UID": 446972078,
-            "ParentUID": 146532593,
+            "UID": 3351724578,
+            "ParentUID": 2896059147,
             "Name": "CloseButton",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -5997,12 +5997,12 @@
             ]
         },
         {
-            "UID": 1420837616,
-            "ParentUID": 146532593,
+            "UID": 429122086,
+            "ParentUID": 2896059147,
             "Name": "Inventory",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -6039,12 +6039,12 @@
             ]
         },
         {
-            "UID": 188618343,
-            "ParentUID": 1420837616,
+            "UID": 3934529265,
+            "ParentUID": 429122086,
             "Name": "Title",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -6119,12 +6119,12 @@
             ]
         },
         {
-            "UID": 505537253,
-            "ParentUID": 1420837616,
+            "UID": 220441564,
+            "ParentUID": 429122086,
             "Name": "BackgroundEq",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -6187,12 +6187,12 @@
             ]
         },
         {
-            "UID": 2185164782,
-            "ParentUID": 1420837616,
+            "UID": 182604986,
+            "ParentUID": 429122086,
             "Name": "Siluette",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -6255,12 +6255,12 @@
             ]
         },
         {
-            "UID": 3483691639,
-            "ParentUID": 1420837616,
+            "UID": 1714949116,
+            "ParentUID": 429122086,
             "Name": "HelmetSlot",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -6323,12 +6323,12 @@
             ]
         },
         {
-            "UID": 2309704849,
-            "ParentUID": 1420837616,
+            "UID": 3567171474,
+            "ParentUID": 429122086,
             "Name": "BodySlot",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -6391,12 +6391,12 @@
             ]
         },
         {
-            "UID": 1853542137,
-            "ParentUID": 1420837616,
+            "UID": 2488465712,
+            "ParentUID": 429122086,
             "Name": "PantsSlot",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -6459,12 +6459,12 @@
             ]
         },
         {
-            "UID": 130329060,
-            "ParentUID": 1420837616,
+            "UID": 2112865653,
+            "ParentUID": 429122086,
             "Name": "BootsSlot",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -6527,12 +6527,12 @@
             ]
         },
         {
-            "UID": 2978385129,
-            "ParentUID": 1420837616,
+            "UID": 2264512691,
+            "ParentUID": 429122086,
             "Name": "WeaponSlot",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -6595,12 +6595,12 @@
             ]
         },
         {
-            "UID": 2155604908,
-            "ParentUID": 1420837616,
+            "UID": 3959891690,
+            "ParentUID": 429122086,
             "Name": "AmuletSlot",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -6663,12 +6663,12 @@
             ]
         },
         {
-            "UID": 1970379579,
-            "ParentUID": 1420837616,
+            "UID": 604101225,
+            "ParentUID": 429122086,
             "Name": "InventorySlotsBackground",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -6731,12 +6731,12 @@
             ]
         },
         {
-            "UID": 3940454496,
-            "ParentUID": 1420837616,
+            "UID": 2579870358,
+            "ParentUID": 429122086,
             "Name": "InventorySlots",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -6810,12 +6810,12 @@
             ]
         },
         {
-            "UID": 3939270852,
-            "ParentUID": 3940454496,
+            "UID": 896122210,
+            "ParentUID": 2579870358,
             "Name": "Slot1",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -6878,12 +6878,12 @@
             ]
         },
         {
-            "UID": 1579330686,
-            "ParentUID": 3940454496,
+            "UID": 3215803886,
+            "ParentUID": 2579870358,
             "Name": "Slot2",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -6946,12 +6946,12 @@
             ]
         },
         {
-            "UID": 3000870321,
-            "ParentUID": 3940454496,
+            "UID": 414727450,
+            "ParentUID": 2579870358,
             "Name": "Slot3",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -7014,12 +7014,12 @@
             ]
         },
         {
-            "UID": 4169989407,
-            "ParentUID": 3940454496,
+            "UID": 2145959594,
+            "ParentUID": 2579870358,
             "Name": "Slot4",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -7082,12 +7082,12 @@
             ]
         },
         {
-            "UID": 3945063668,
-            "ParentUID": 3940454496,
+            "UID": 2902127219,
+            "ParentUID": 2579870358,
             "Name": "Slot5",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -7150,12 +7150,12 @@
             ]
         },
         {
-            "UID": 893678792,
-            "ParentUID": 3940454496,
+            "UID": 2866106443,
+            "ParentUID": 2579870358,
             "Name": "Slot6",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -7218,12 +7218,12 @@
             ]
         },
         {
-            "UID": 1437135442,
-            "ParentUID": 3940454496,
+            "UID": 3282005556,
+            "ParentUID": 2579870358,
             "Name": "Slot7",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -7286,12 +7286,12 @@
             ]
         },
         {
-            "UID": 3916308935,
-            "ParentUID": 3940454496,
+            "UID": 3890182815,
+            "ParentUID": 2579870358,
             "Name": "Slot8",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -7354,12 +7354,12 @@
             ]
         },
         {
-            "UID": 3115891636,
-            "ParentUID": 3940454496,
+            "UID": 2101443214,
+            "ParentUID": 2579870358,
             "Name": "Slot9",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -7422,12 +7422,12 @@
             ]
         },
         {
-            "UID": 510843877,
-            "ParentUID": 3940454496,
+            "UID": 2280337697,
+            "ParentUID": 2579870358,
             "Name": "Slot10",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -7490,12 +7490,12 @@
             ]
         },
         {
-            "UID": 4176668741,
-            "ParentUID": 3940454496,
+            "UID": 1362399041,
+            "ParentUID": 2579870358,
             "Name": "Slot11",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -7558,12 +7558,12 @@
             ]
         },
         {
-            "UID": 1502294765,
-            "ParentUID": 3940454496,
+            "UID": 953526001,
+            "ParentUID": 2579870358,
             "Name": "Slot12",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -7626,12 +7626,12 @@
             ]
         },
         {
-            "UID": 812285775,
-            "ParentUID": 3940454496,
+            "UID": 2241311432,
+            "ParentUID": 2579870358,
             "Name": "Slot13",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -7694,12 +7694,12 @@
             ]
         },
         {
-            "UID": 1086371995,
-            "ParentUID": 3940454496,
+            "UID": 3809688190,
+            "ParentUID": 2579870358,
             "Name": "Slot14",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -7762,12 +7762,12 @@
             ]
         },
         {
-            "UID": 4179164776,
-            "ParentUID": 3940454496,
+            "UID": 972954601,
+            "ParentUID": 2579870358,
             "Name": "Slot15",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -7830,12 +7830,12 @@
             ]
         },
         {
-            "UID": 3662831818,
-            "ParentUID": 3940454496,
+            "UID": 2416902026,
+            "ParentUID": 2579870358,
             "Name": "Slot16",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -7898,12 +7898,12 @@
             ]
         },
         {
-            "UID": 3429926348,
-            "ParentUID": 3940454496,
+            "UID": 3186300421,
+            "ParentUID": 2579870358,
             "Name": "Slot17",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -7966,12 +7966,12 @@
             ]
         },
         {
-            "UID": 630584797,
-            "ParentUID": 3940454496,
+            "UID": 3020175694,
+            "ParentUID": 2579870358,
             "Name": "Slot18",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -8034,12 +8034,12 @@
             ]
         },
         {
-            "UID": 3567261699,
-            "ParentUID": 1420837616,
+            "UID": 418743466,
+            "ParentUID": 429122086,
             "Name": "Items",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -8113,12 +8113,12 @@
             ]
         },
         {
-            "UID": 4276831527,
-            "ParentUID": 3567261699,
+            "UID": 4019270584,
+            "ParentUID": 418743466,
             "Name": "Item1",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -8181,12 +8181,12 @@
             ]
         },
         {
-            "UID": 2316403831,
-            "ParentUID": 3567261699,
+            "UID": 2491639004,
+            "ParentUID": 418743466,
             "Name": "Item2",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -8249,12 +8249,12 @@
             ]
         },
         {
-            "UID": 1890682474,
-            "ParentUID": 3567261699,
+            "UID": 2838510763,
+            "ParentUID": 418743466,
             "Name": "Item3",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -8317,12 +8317,12 @@
             ]
         },
         {
-            "UID": 944015046,
-            "ParentUID": 3567261699,
+            "UID": 3737482415,
+            "ParentUID": 418743466,
             "Name": "Item4",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -8385,12 +8385,12 @@
             ]
         },
         {
-            "UID": 310557396,
-            "ParentUID": 3567261699,
+            "UID": 3645670761,
+            "ParentUID": 418743466,
             "Name": "Item5",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -8453,12 +8453,12 @@
             ]
         },
         {
-            "UID": 2732597528,
-            "ParentUID": 3567261699,
+            "UID": 2684081086,
+            "ParentUID": 418743466,
             "Name": "Item6",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -8521,12 +8521,12 @@
             ]
         },
         {
-            "UID": 2007321104,
-            "ParentUID": 3567261699,
+            "UID": 848902954,
+            "ParentUID": 418743466,
             "Name": "Item7",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -8589,12 +8589,12 @@
             ]
         },
         {
-            "UID": 1201838703,
-            "ParentUID": 3567261699,
+            "UID": 838401146,
+            "ParentUID": 418743466,
             "Name": "Item8",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -8657,12 +8657,12 @@
             ]
         },
         {
-            "UID": 3704886065,
-            "ParentUID": 3567261699,
+            "UID": 3016462814,
+            "ParentUID": 418743466,
             "Name": "Item9",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -8725,12 +8725,12 @@
             ]
         },
         {
-            "UID": 2199993215,
-            "ParentUID": 3567261699,
+            "UID": 4000603345,
+            "ParentUID": 418743466,
             "Name": "Item10",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -8793,12 +8793,12 @@
             ]
         },
         {
-            "UID": 3619519717,
-            "ParentUID": 3567261699,
+            "UID": 3586614327,
+            "ParentUID": 418743466,
             "Name": "Item11",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -8861,12 +8861,12 @@
             ]
         },
         {
-            "UID": 950112023,
-            "ParentUID": 3567261699,
+            "UID": 391985163,
+            "ParentUID": 418743466,
             "Name": "Item12",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -8929,12 +8929,12 @@
             ]
         },
         {
-            "UID": 1138667050,
-            "ParentUID": 3567261699,
+            "UID": 3688048115,
+            "ParentUID": 418743466,
             "Name": "Item13",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -8997,12 +8997,12 @@
             ]
         },
         {
-            "UID": 864722149,
-            "ParentUID": 3567261699,
+            "UID": 3017184058,
+            "ParentUID": 418743466,
             "Name": "Item14",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -9065,12 +9065,12 @@
             ]
         },
         {
-            "UID": 370449929,
-            "ParentUID": 3567261699,
+            "UID": 3605091529,
+            "ParentUID": 418743466,
             "Name": "Item15",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -9133,12 +9133,12 @@
             ]
         },
         {
-            "UID": 2233875790,
-            "ParentUID": 3567261699,
+            "UID": 2418691291,
+            "ParentUID": 418743466,
             "Name": "Item16",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -9201,12 +9201,12 @@
             ]
         },
         {
-            "UID": 1904606607,
-            "ParentUID": 3567261699,
+            "UID": 3756589779,
+            "ParentUID": 418743466,
             "Name": "Item17",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -9269,12 +9269,12 @@
             ]
         },
         {
-            "UID": 4226193615,
-            "ParentUID": 3567261699,
+            "UID": 2323969893,
+            "ParentUID": 418743466,
             "Name": "Item18",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -9337,12 +9337,12 @@
             ]
         },
         {
-            "UID": 1228244729,
-            "ParentUID": 3567261699,
+            "UID": 667656894,
+            "ParentUID": 418743466,
             "Name": "Item19",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -9374,8 +9374,8 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -234.6999969482422,
-                        141.6999969482422
+                        -338.29998779296877,
+                        181.39999389648438
                     ],
                     "Size": [
                         55.0,
@@ -9405,12 +9405,12 @@
             ]
         },
         {
-            "UID": 2599152561,
-            "ParentUID": 3567261699,
+            "UID": 33669150,
+            "ParentUID": 418743466,
             "Name": "Item20",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -9442,8 +9442,8 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -234.6999969482422,
-                        73.5999984741211
+                        -338.5,
+                        109.19999694824219
                     ],
                     "Size": [
                         55.0,
@@ -9473,12 +9473,12 @@
             ]
         },
         {
-            "UID": 1758318288,
-            "ParentUID": 3567261699,
+            "UID": 1685576965,
+            "ParentUID": 418743466,
             "Name": "Item21",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -9510,8 +9510,8 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -234.6999969482422,
-                        6.099999904632568
+                        -338.6000061035156,
+                        32.20000076293945
                     ],
                     "Size": [
                         55.0,
@@ -9541,12 +9541,12 @@
             ]
         },
         {
-            "UID": 3810960681,
-            "ParentUID": 3567261699,
+            "UID": 1621707076,
+            "ParentUID": 418743466,
             "Name": "Item22",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -9578,8 +9578,8 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -234.6999969482422,
-                        -61.20000076293945
+                        -337.6000061035156,
+                        -43.79999923706055
                     ],
                     "Size": [
                         55.0,
@@ -9609,12 +9609,12 @@
             ]
         },
         {
-            "UID": 1681700224,
-            "ParentUID": 3567261699,
+            "UID": 27251590,
+            "ParentUID": 418743466,
             "Name": "Item23",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -9646,8 +9646,8 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -162.39999389648438,
-                        52.900001525878909
+                        -252.10000610351563,
+                        89.0999984741211
                     ],
                     "Size": [
                         55.0,
@@ -9677,12 +9677,12 @@
             ]
         },
         {
-            "UID": 2068731209,
-            "ParentUID": 3567261699,
+            "UID": 3359666622,
+            "ParentUID": 418743466,
             "Name": "Item24",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -9714,8 +9714,8 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -377.79998779296877,
-                        94.9000015258789
+                        -252.3000030517578,
+                        155.1999969482422
                     ],
                     "Size": [
                         55.0,
@@ -9745,80 +9745,12 @@
             ]
         },
         {
-            "UID": 432736080,
-            "ParentUID": 3567261699,
-            "Name": "Item25",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 0,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -377.79998779296877,
-                        -9.899999618530274
-                    ],
-                    "Size": [
-                        55.0,
-                        55.0
-                    ],
-                    "Anchor": 5,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 7,
-                    "Enabled": 1,
-                    "textureUID": 0,
-                    "color": [
-                        0.1360805779695511,
-                        0.35655736923217776,
-                        0.01607430912554264,
-                        1.0
-                    ],
-                    "FlipVertical": 0,
-                    "FlipHorizontal": 0,
-                    "isMasked": 0,
-                    "maskAmount": 0,
-                    "isMaskHorizontal": 0,
-                    "hoverDetectionMouse1": 1,
-                    "hoverDetectionMouse3": 1
-                }
-            ]
-        },
-        {
-            "UID": 1306970928,
-            "ParentUID": 1420837616,
+            "UID": 274474372,
+            "ParentUID": 429122086,
             "Name": "LevelBackground",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -9892,12 +9824,12 @@
             ]
         },
         {
-            "UID": 3459061256,
-            "ParentUID": 1306970928,
+            "UID": 3411304941,
+            "ParentUID": 274474372,
             "Name": "ExpBar",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -9960,12 +9892,12 @@
             ]
         },
         {
-            "UID": 4068263987,
-            "ParentUID": 1306970928,
+            "UID": 2778092376,
+            "ParentUID": 274474372,
             "Name": "LevelProgressBar",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -10028,12 +9960,12 @@
             ]
         },
         {
-            "UID": 1909756821,
-            "ParentUID": 1306970928,
+            "UID": 2830292081,
+            "ParentUID": 274474372,
             "Name": "LevelActual",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -10108,12 +10040,12 @@
             ]
         },
         {
-            "UID": 1218497070,
-            "ParentUID": 1306970928,
+            "UID": 617502625,
+            "ParentUID": 274474372,
             "Name": "LevelExperience",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -10188,12 +10120,12 @@
             ]
         },
         {
-            "UID": 1988999184,
-            "ParentUID": 1420837616,
+            "UID": 823546346,
+            "ParentUID": 429122086,
             "Name": "StatsPanel",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -10267,12 +10199,12 @@
             ]
         },
         {
-            "UID": 1353169659,
-            "ParentUID": 1988999184,
+            "UID": 2695537007,
+            "ParentUID": 823546346,
             "Name": "HeartPanel",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -10346,12 +10278,12 @@
             ]
         },
         {
-            "UID": 2664618503,
-            "ParentUID": 1353169659,
+            "UID": 1591508987,
+            "ParentUID": 2695537007,
             "Name": "HeartSquare",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -10414,12 +10346,12 @@
             ]
         },
         {
-            "UID": 729791891,
-            "ParentUID": 1353169659,
+            "UID": 51115799,
+            "ParentUID": 2695537007,
             "Name": "HeartIcon",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -10482,12 +10414,12 @@
             ]
         },
         {
-            "UID": 4061494554,
-            "ParentUID": 1353169659,
+            "UID": 3076803111,
+            "ParentUID": 2695537007,
             "Name": "HeartLabel",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -10562,12 +10494,12 @@
             ]
         },
         {
-            "UID": 2847873583,
-            "ParentUID": 1353169659,
+            "UID": 2928508646,
+            "ParentUID": 2695537007,
             "Name": "HeartPositiveBoostIcon",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -10630,12 +10562,12 @@
             ]
         },
         {
-            "UID": 3486947032,
-            "ParentUID": 1353169659,
+            "UID": 103260294,
+            "ParentUID": 2695537007,
             "Name": "HeartNegativeBoostIcon",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -10698,12 +10630,12 @@
             ]
         },
         {
-            "UID": 2177278077,
-            "ParentUID": 1988999184,
+            "UID": 2022815728,
+            "ParentUID": 823546346,
             "Name": "DexterityPanel",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -10777,12 +10709,12 @@
             ]
         },
         {
-            "UID": 1094752381,
-            "ParentUID": 2177278077,
+            "UID": 3831967720,
+            "ParentUID": 2022815728,
             "Name": "DexteritySquare",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -10845,12 +10777,12 @@
             ]
         },
         {
-            "UID": 2249365501,
-            "ParentUID": 2177278077,
+            "UID": 1785296958,
+            "ParentUID": 2022815728,
             "Name": "DexterityIcon",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -10913,12 +10845,12 @@
             ]
         },
         {
-            "UID": 3017527984,
-            "ParentUID": 2177278077,
+            "UID": 403795473,
+            "ParentUID": 2022815728,
             "Name": "DexterityLabel",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -10993,12 +10925,12 @@
             ]
         },
         {
-            "UID": 1640227710,
-            "ParentUID": 2177278077,
+            "UID": 3407640984,
+            "ParentUID": 2022815728,
             "Name": "DexterityPositiveBoostIcon",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -11061,12 +10993,12 @@
             ]
         },
         {
-            "UID": 3917155467,
-            "ParentUID": 2177278077,
+            "UID": 2008488274,
+            "ParentUID": 2022815728,
             "Name": "DexterityNegativeBoostIcon",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -11129,12 +11061,12 @@
             ]
         },
         {
-            "UID": 1734072725,
-            "ParentUID": 1988999184,
+            "UID": 3475644588,
+            "ParentUID": 823546346,
             "Name": "StrPanel",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -11208,12 +11140,12 @@
             ]
         },
         {
-            "UID": 2235533738,
-            "ParentUID": 1734072725,
+            "UID": 3106071696,
+            "ParentUID": 3475644588,
             "Name": "StrSquare",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -11276,12 +11208,12 @@
             ]
         },
         {
-            "UID": 2968348592,
-            "ParentUID": 1734072725,
+            "UID": 275791865,
+            "ParentUID": 3475644588,
             "Name": "StrIcon",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -11344,12 +11276,12 @@
             ]
         },
         {
-            "UID": 3464673549,
-            "ParentUID": 1734072725,
+            "UID": 1967751418,
+            "ParentUID": 3475644588,
             "Name": "StrLabel",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -11424,12 +11356,12 @@
             ]
         },
         {
-            "UID": 2416740561,
-            "ParentUID": 1734072725,
+            "UID": 1275692967,
+            "ParentUID": 3475644588,
             "Name": "StrPositiveBoostIcon",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -11492,12 +11424,12 @@
             ]
         },
         {
-            "UID": 3009459776,
-            "ParentUID": 1734072725,
+            "UID": 528670387,
+            "ParentUID": 3475644588,
             "Name": "StrNegativeBoostIcon",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -11560,12 +11492,12 @@
             ]
         },
         {
-            "UID": 3809475450,
-            "ParentUID": 1988999184,
+            "UID": 701213766,
+            "ParentUID": 823546346,
             "Name": "SoulPanel",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -11639,12 +11571,12 @@
             ]
         },
         {
-            "UID": 2621020858,
-            "ParentUID": 3809475450,
+            "UID": 3629401786,
+            "ParentUID": 701213766,
             "Name": "SoulSquare",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -11707,12 +11639,12 @@
             ]
         },
         {
-            "UID": 3462603483,
-            "ParentUID": 3809475450,
+            "UID": 3083948064,
+            "ParentUID": 701213766,
             "Name": "SoulIcon",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -11775,12 +11707,12 @@
             ]
         },
         {
-            "UID": 3722036291,
-            "ParentUID": 3809475450,
+            "UID": 4200378545,
+            "ParentUID": 701213766,
             "Name": "SoulLabel",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -11855,12 +11787,12 @@
             ]
         },
         {
-            "UID": 928551111,
-            "ParentUID": 3809475450,
+            "UID": 1691516316,
+            "ParentUID": 701213766,
             "Name": "SoulPositiveBoostIcon",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -11923,12 +11855,12 @@
             ]
         },
         {
-            "UID": 225661894,
-            "ParentUID": 3809475450,
+            "UID": 1802623648,
+            "ParentUID": 701213766,
             "Name": "SoulNegativeBoostIcon",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -11991,12 +11923,12 @@
             ]
         },
         {
-            "UID": 2266325889,
-            "ParentUID": 146532593,
+            "UID": 995588880,
+            "ParentUID": 2896059147,
             "Name": "Quests",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -12026,8 +11958,8 @@
             "Components": []
         },
         {
-            "UID": 3175461415,
-            "ParentUID": 2266325889,
+            "UID": 1934249936,
+            "ParentUID": 995588880,
             "Name": "Title",
             "Tag": "Default",
             "Static": 0,
@@ -12106,8 +12038,8 @@
             ]
         },
         {
-            "UID": 1337921531,
-            "ParentUID": 2266325889,
+            "UID": 790199297,
+            "ParentUID": 995588880,
             "Name": "QuestMock",
             "Tag": "Default",
             "Static": 0,
@@ -12174,12 +12106,12 @@
             ]
         },
         {
-            "UID": 3505135218,
-            "ParentUID": 146532593,
+            "UID": 1866320787,
+            "ParentUID": 2896059147,
             "Name": "Skills",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -12362,8 +12294,8 @@
             ]
         },
         {
-            "UID": 969386938,
-            "ParentUID": 3505135218,
+            "UID": 3954615270,
+            "ParentUID": 1866320787,
             "Name": "Title",
             "Tag": "Default",
             "Static": 0,
@@ -12442,8 +12374,8 @@
             ]
         },
         {
-            "UID": 1749904432,
-            "ParentUID": 3505135218,
+            "UID": 619313347,
+            "ParentUID": 1866320787,
             "Name": "SkillsTree",
             "Tag": "Default",
             "Static": 0,
@@ -12510,8 +12442,8 @@
             ]
         },
         {
-            "UID": 164223484,
-            "ParentUID": 1749904432,
+            "UID": 3672644632,
+            "ParentUID": 619313347,
             "Name": "SkillConnections",
             "Tag": "Default",
             "Static": 0,
@@ -12589,8 +12521,8 @@
             ]
         },
         {
-            "UID": 566442507,
-            "ParentUID": 164223484,
+            "UID": 2112960643,
+            "ParentUID": 3672644632,
             "Name": "Connection0",
             "Tag": "Default",
             "Static": 0,
@@ -12657,8 +12589,8 @@
             ]
         },
         {
-            "UID": 1982385168,
-            "ParentUID": 164223484,
+            "UID": 1746856458,
+            "ParentUID": 3672644632,
             "Name": "Connection1",
             "Tag": "Default",
             "Static": 0,
@@ -12725,8 +12657,8 @@
             ]
         },
         {
-            "UID": 2838892174,
-            "ParentUID": 164223484,
+            "UID": 3848503039,
+            "ParentUID": 3672644632,
             "Name": "Connection2",
             "Tag": "Default",
             "Static": 0,
@@ -12793,8 +12725,8 @@
             ]
         },
         {
-            "UID": 4265165813,
-            "ParentUID": 164223484,
+            "UID": 147562154,
+            "ParentUID": 3672644632,
             "Name": "Connection3",
             "Tag": "Default",
             "Static": 0,
@@ -12861,8 +12793,8 @@
             ]
         },
         {
-            "UID": 2194671726,
-            "ParentUID": 164223484,
+            "UID": 1499285838,
+            "ParentUID": 3672644632,
             "Name": "Connection4",
             "Tag": "Default",
             "Static": 0,
@@ -12929,8 +12861,8 @@
             ]
         },
         {
-            "UID": 3367201805,
-            "ParentUID": 164223484,
+            "UID": 4122331555,
+            "ParentUID": 3672644632,
             "Name": "Connection5",
             "Tag": "Default",
             "Static": 0,
@@ -12997,8 +12929,8 @@
             ]
         },
         {
-            "UID": 3727578784,
-            "ParentUID": 164223484,
+            "UID": 2487397987,
+            "ParentUID": 3672644632,
             "Name": "Connection6",
             "Tag": "Default",
             "Static": 0,
@@ -13065,8 +12997,8 @@
             ]
         },
         {
-            "UID": 484753687,
-            "ParentUID": 164223484,
+            "UID": 3096213563,
+            "ParentUID": 3672644632,
             "Name": "Connection7",
             "Tag": "Default",
             "Static": 0,
@@ -13133,8 +13065,8 @@
             ]
         },
         {
-            "UID": 4259061987,
-            "ParentUID": 164223484,
+            "UID": 3949353138,
+            "ParentUID": 3672644632,
             "Name": "Connection8",
             "Tag": "Default",
             "Static": 0,
@@ -13201,8 +13133,8 @@
             ]
         },
         {
-            "UID": 1828477106,
-            "ParentUID": 1749904432,
+            "UID": 2360639328,
+            "ParentUID": 619313347,
             "Name": "SkillSlots",
             "Tag": "Default",
             "Static": 0,
@@ -13280,8 +13212,8 @@
             ]
         },
         {
-            "UID": 739984413,
-            "ParentUID": 1828477106,
+            "UID": 3928879543,
+            "ParentUID": 2360639328,
             "Name": "Skill0",
             "Tag": "Default",
             "Static": 0,
@@ -13348,8 +13280,8 @@
             ]
         },
         {
-            "UID": 1646609557,
-            "ParentUID": 739984413,
+            "UID": 1939169409,
+            "ParentUID": 3928879543,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -13428,8 +13360,8 @@
             ]
         },
         {
-            "UID": 1040429348,
-            "ParentUID": 1828477106,
+            "UID": 1525496658,
+            "ParentUID": 2360639328,
             "Name": "Skill1",
             "Tag": "Default",
             "Static": 0,
@@ -13496,8 +13428,8 @@
             ]
         },
         {
-            "UID": 594854317,
-            "ParentUID": 1040429348,
+            "UID": 4096408842,
+            "ParentUID": 1525496658,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -13576,8 +13508,8 @@
             ]
         },
         {
-            "UID": 100688462,
-            "ParentUID": 1828477106,
+            "UID": 3669902620,
+            "ParentUID": 2360639328,
             "Name": "Skill2",
             "Tag": "Default",
             "Static": 0,
@@ -13644,8 +13576,8 @@
             ]
         },
         {
-            "UID": 3344552268,
-            "ParentUID": 100688462,
+            "UID": 80579837,
+            "ParentUID": 3669902620,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -13724,8 +13656,8 @@
             ]
         },
         {
-            "UID": 3493008380,
-            "ParentUID": 1828477106,
+            "UID": 1825438320,
+            "ParentUID": 2360639328,
             "Name": "Skill3",
             "Tag": "Default",
             "Static": 0,
@@ -13792,8 +13724,8 @@
             ]
         },
         {
-            "UID": 3411724806,
-            "ParentUID": 3493008380,
+            "UID": 1829506554,
+            "ParentUID": 1825438320,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -13872,8 +13804,8 @@
             ]
         },
         {
-            "UID": 1226198305,
-            "ParentUID": 1828477106,
+            "UID": 2817353349,
+            "ParentUID": 2360639328,
             "Name": "Skill4",
             "Tag": "Default",
             "Static": 0,
@@ -13940,8 +13872,8 @@
             ]
         },
         {
-            "UID": 1963237495,
-            "ParentUID": 1226198305,
+            "UID": 2048494642,
+            "ParentUID": 2817353349,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -14020,8 +13952,8 @@
             ]
         },
         {
-            "UID": 3960217720,
-            "ParentUID": 1828477106,
+            "UID": 1317209311,
+            "ParentUID": 2360639328,
             "Name": "Skill5",
             "Tag": "Default",
             "Static": 0,
@@ -14088,8 +14020,8 @@
             ]
         },
         {
-            "UID": 3188738049,
-            "ParentUID": 3960217720,
+            "UID": 2735512084,
+            "ParentUID": 1317209311,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -14168,8 +14100,8 @@
             ]
         },
         {
-            "UID": 3987822655,
-            "ParentUID": 1828477106,
+            "UID": 3338575945,
+            "ParentUID": 2360639328,
             "Name": "Skill6",
             "Tag": "Default",
             "Static": 0,
@@ -14236,8 +14168,8 @@
             ]
         },
         {
-            "UID": 3483547836,
-            "ParentUID": 3987822655,
+            "UID": 2825712352,
+            "ParentUID": 3338575945,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -14316,8 +14248,8 @@
             ]
         },
         {
-            "UID": 1850458068,
-            "ParentUID": 1828477106,
+            "UID": 381298377,
+            "ParentUID": 2360639328,
             "Name": "Skill7",
             "Tag": "Default",
             "Static": 0,
@@ -14384,8 +14316,8 @@
             ]
         },
         {
-            "UID": 356671051,
-            "ParentUID": 1850458068,
+            "UID": 804016194,
+            "ParentUID": 381298377,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -14464,8 +14396,8 @@
             ]
         },
         {
-            "UID": 2612373101,
-            "ParentUID": 1828477106,
+            "UID": 2932979775,
+            "ParentUID": 2360639328,
             "Name": "Skill8",
             "Tag": "Default",
             "Static": 0,
@@ -14532,8 +14464,8 @@
             ]
         },
         {
-            "UID": 189278145,
-            "ParentUID": 2612373101,
+            "UID": 339228248,
+            "ParentUID": 2932979775,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -14612,8 +14544,8 @@
             ]
         },
         {
-            "UID": 4036738340,
-            "ParentUID": 1828477106,
+            "UID": 1326747689,
+            "ParentUID": 2360639328,
             "Name": "Skill9",
             "Tag": "Default",
             "Static": 0,
@@ -14680,8 +14612,8 @@
             ]
         },
         {
-            "UID": 3633469448,
-            "ParentUID": 4036738340,
+            "UID": 1678931343,
+            "ParentUID": 1326747689,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -14760,8 +14692,8 @@
             ]
         },
         {
-            "UID": 1245786094,
-            "ParentUID": 1828477106,
+            "UID": 3706332791,
+            "ParentUID": 2360639328,
             "Name": "Skill10",
             "Tag": "Default",
             "Static": 0,
@@ -14828,8 +14760,8 @@
             ]
         },
         {
-            "UID": 921080893,
-            "ParentUID": 1245786094,
+            "UID": 902164111,
+            "ParentUID": 3706332791,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -14908,8 +14840,8 @@
             ]
         },
         {
-            "UID": 722286132,
-            "ParentUID": 1828477106,
+            "UID": 1223255799,
+            "ParentUID": 2360639328,
             "Name": "Skill11",
             "Tag": "Default",
             "Static": 0,
@@ -14976,8 +14908,8 @@
             ]
         },
         {
-            "UID": 3673696645,
-            "ParentUID": 722286132,
+            "UID": 3891884377,
+            "ParentUID": 1223255799,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -15056,8 +14988,8 @@
             ]
         },
         {
-            "UID": 4065733986,
-            "ParentUID": 1828477106,
+            "UID": 3896936181,
+            "ParentUID": 2360639328,
             "Name": "Skill12",
             "Tag": "Default",
             "Static": 0,
@@ -15124,8 +15056,8 @@
             ]
         },
         {
-            "UID": 15203697,
-            "ParentUID": 4065733986,
+            "UID": 3940673061,
+            "ParentUID": 3896936181,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -15204,8 +15136,8 @@
             ]
         },
         {
-            "UID": 2091464178,
-            "ParentUID": 1749904432,
+            "UID": 1469318795,
+            "ParentUID": 619313347,
             "Name": "HoverGO",
             "Tag": "Default",
             "Static": 0,
@@ -15283,8 +15215,8 @@
             ]
         },
         {
-            "UID": 2868854917,
-            "ParentUID": 2091464178,
+            "UID": 1776309344,
+            "ParentUID": 1469318795,
             "Name": "SkillHover",
             "Tag": "Default",
             "Static": 0,
@@ -15351,8 +15283,8 @@
             ]
         },
         {
-            "UID": 556350217,
-            "ParentUID": 3505135218,
+            "UID": 2987305644,
+            "ParentUID": 1866320787,
             "Name": "SkillsPointsMargin",
             "Tag": "Default",
             "Static": 0,
@@ -15419,8 +15351,8 @@
             ]
         },
         {
-            "UID": 1894269015,
-            "ParentUID": 556350217,
+            "UID": 1986475359,
+            "ParentUID": 2987305644,
             "Name": "SkillsPointsBackground",
             "Tag": "Default",
             "Static": 0,
@@ -15487,8 +15419,8 @@
             ]
         },
         {
-            "UID": 166969553,
-            "ParentUID": 556350217,
+            "UID": 1383793921,
+            "ParentUID": 2987305644,
             "Name": "SkillPointsLabel",
             "Tag": "Default",
             "Static": 0,
@@ -15567,8 +15499,8 @@
             ]
         },
         {
-            "UID": 1117529238,
-            "ParentUID": 556350217,
+            "UID": 910805245,
+            "ParentUID": 2987305644,
             "Name": "SkillPoints",
             "Tag": "Default",
             "Static": 0,
@@ -15647,8 +15579,8 @@
             ]
         },
         {
-            "UID": 980987970,
-            "ParentUID": 3505135218,
+            "UID": 2091160004,
+            "ParentUID": 1866320787,
             "Name": "SkillInfo",
             "Tag": "Default",
             "Static": 0,
@@ -15715,7 +15647,7 @@
             ]
         },
         {
-            "UID": 1044256162,
+            "UID": 3593922171,
             "ParentUID": 1,
             "Name": "LevelUP",
             "Tag": "Default",
@@ -15794,8 +15726,8 @@
             ]
         },
         {
-            "UID": 1055192186,
-            "ParentUID": 1044256162,
+            "UID": 2994447826,
+            "ParentUID": 3593922171,
             "Name": "LevelUPSuperiorLine",
             "Tag": "Default",
             "Static": 0,
@@ -15862,8 +15794,8 @@
             ]
         },
         {
-            "UID": 3990741165,
-            "ParentUID": 1044256162,
+            "UID": 3800326170,
+            "ParentUID": 3593922171,
             "Name": "LevelUPInferiorLine",
             "Tag": "Default",
             "Static": 0,
@@ -15930,8 +15862,8 @@
             ]
         },
         {
-            "UID": 988567228,
-            "ParentUID": 1044256162,
+            "UID": 824125410,
+            "ParentUID": 3593922171,
             "Name": "LevelReached",
             "Tag": "Default",
             "Static": 0,
@@ -16010,8 +15942,8 @@
             ]
         },
         {
-            "UID": 1454735444,
-            "ParentUID": 1044256162,
+            "UID": 2551949301,
+            "ParentUID": 3593922171,
             "Name": "SkillPointAvailable",
             "Tag": "Default",
             "Static": 0,
@@ -16090,7 +16022,7 @@
             ]
         },
         {
-            "UID": 1497514146,
+            "UID": 1350894127,
             "ParentUID": 1,
             "Name": "EnemyLife",
             "Tag": "Default",
@@ -16175,8 +16107,8 @@
             ]
         },
         {
-            "UID": 3599022359,
-            "ParentUID": 1497514146,
+            "UID": 914564549,
+            "ParentUID": 1350894127,
             "Name": "LifeBackground",
             "Tag": "Default",
             "Static": 0,
@@ -16243,8 +16175,8 @@
             ]
         },
         {
-            "UID": 1650189404,
-            "ParentUID": 1497514146,
+            "UID": 1578495567,
+            "ParentUID": 1350894127,
             "Name": "HPbar",
             "Tag": "Default",
             "Static": 0,
@@ -16311,8 +16243,8 @@
             ]
         },
         {
-            "UID": 1336939621,
-            "ParentUID": 1497514146,
+            "UID": 253624341,
+            "ParentUID": 1350894127,
             "Name": "EnemyTypeName",
             "Tag": "Default",
             "Static": 0,
@@ -16391,8 +16323,8 @@
             ]
         },
         {
-            "UID": 3768843392,
-            "ParentUID": 1497514146,
+            "UID": 1259099151,
+            "ParentUID": 1350894127,
             "Name": "BoneRight",
             "Tag": "Default",
             "Static": 0,
@@ -16459,8 +16391,8 @@
             ]
         },
         {
-            "UID": 2374456384,
-            "ParentUID": 1497514146,
+            "UID": 2865541245,
+            "ParentUID": 1350894127,
             "Name": "BoneLeft",
             "Tag": "Default",
             "Static": 0,
@@ -16527,8 +16459,8 @@
             ]
         },
         {
-            "UID": 2391884650,
-            "ParentUID": 1497514146,
+            "UID": 3235818393,
+            "ParentUID": 1350894127,
             "Name": "Skull",
             "Tag": "Default",
             "Static": 0,
@@ -16595,7 +16527,7 @@
             ]
         },
         {
-            "UID": 640881394,
+            "UID": 1782062066,
             "ParentUID": 1,
             "Name": "PopUpBackground",
             "Tag": "Default",
@@ -16669,8 +16601,8 @@
             ]
         },
         {
-            "UID": 1795747162,
-            "ParentUID": 640881394,
+            "UID": 2322515504,
+            "ParentUID": 1782062066,
             "Name": "PopUpEquipTitle",
             "Tag": "Default",
             "Static": 0,
@@ -16749,8 +16681,8 @@
             ]
         },
         {
-            "UID": 1321217039,
-            "ParentUID": 640881394,
+            "UID": 2731338778,
+            "ParentUID": 1782062066,
             "Name": "PopUpLine",
             "Tag": "Default",
             "Static": 0,
@@ -16817,8 +16749,8 @@
             ]
         },
         {
-            "UID": 3226324021,
-            "ParentUID": 640881394,
+            "UID": 2521929671,
+            "ParentUID": 1782062066,
             "Name": "PopUpSkills",
             "Tag": "Default",
             "Static": 0,
@@ -16957,8 +16889,8 @@
             ]
         },
         {
-            "UID": 2078601646,
-            "ParentUID": 640881394,
+            "UID": 1326754584,
+            "ParentUID": 1782062066,
             "Name": "PopUpItems",
             "Tag": "Default",
             "Static": 0,
@@ -17097,8 +17029,8 @@
             ]
         },
         {
-            "UID": 3972139163,
-            "ParentUID": 640881394,
+            "UID": 4165772349,
+            "ParentUID": 1782062066,
             "Name": "PopUpSlots",
             "Tag": "Default",
             "Static": 0,
@@ -17176,8 +17108,8 @@
             ]
         },
         {
-            "UID": 2770137919,
-            "ParentUID": 3972139163,
+            "UID": 3707601375,
+            "ParentUID": 4165772349,
             "Name": "PopUPSlot1",
             "Tag": "Default",
             "Static": 0,
@@ -17244,8 +17176,8 @@
             ]
         },
         {
-            "UID": 1627005434,
-            "ParentUID": 3972139163,
+            "UID": 3091716687,
+            "ParentUID": 4165772349,
             "Name": "PopUPSlot2",
             "Tag": "Default",
             "Static": 0,
@@ -17312,8 +17244,8 @@
             ]
         },
         {
-            "UID": 1991437670,
-            "ParentUID": 3972139163,
+            "UID": 2601186160,
+            "ParentUID": 4165772349,
             "Name": "PopUPSlot3",
             "Tag": "Default",
             "Static": 0,
@@ -17380,8 +17312,8 @@
             ]
         },
         {
-            "UID": 398602711,
-            "ParentUID": 3972139163,
+            "UID": 4215739785,
+            "ParentUID": 4165772349,
             "Name": "PopUPSlot4",
             "Tag": "Default",
             "Static": 0,
@@ -17448,8 +17380,8 @@
             ]
         },
         {
-            "UID": 3313046025,
-            "ParentUID": 3972139163,
+            "UID": 2718145885,
+            "ParentUID": 4165772349,
             "Name": "PopUPSlot5",
             "Tag": "Default",
             "Static": 0,
@@ -17516,8 +17448,8 @@
             ]
         },
         {
-            "UID": 3865793377,
-            "ParentUID": 3972139163,
+            "UID": 3666924617,
+            "ParentUID": 4165772349,
             "Name": "PopUPSlot6",
             "Tag": "Default",
             "Static": 0,
@@ -17584,8 +17516,8 @@
             ]
         },
         {
-            "UID": 1459523601,
-            "ParentUID": 3972139163,
+            "UID": 779043933,
+            "ParentUID": 4165772349,
             "Name": "PopUPSlot7",
             "Tag": "Default",
             "Static": 0,
@@ -17652,8 +17584,8 @@
             ]
         },
         {
-            "UID": 1627088302,
-            "ParentUID": 3972139163,
+            "UID": 393497236,
+            "ParentUID": 4165772349,
             "Name": "PopUPSlot8",
             "Tag": "Default",
             "Static": 0,
@@ -17720,8 +17652,8 @@
             ]
         },
         {
-            "UID": 1177651681,
-            "ParentUID": 3972139163,
+            "UID": 3888583027,
+            "ParentUID": 4165772349,
             "Name": "PopUPSlot9",
             "Tag": "Default",
             "Static": 0,
@@ -17788,8 +17720,8 @@
             ]
         },
         {
-            "UID": 4167165630,
-            "ParentUID": 3972139163,
+            "UID": 2896682816,
+            "ParentUID": 4165772349,
             "Name": "PopUPSlot10",
             "Tag": "Default",
             "Static": 0,
@@ -17856,8 +17788,8 @@
             ]
         },
         {
-            "UID": 108510962,
-            "ParentUID": 3972139163,
+            "UID": 1494419261,
+            "ParentUID": 4165772349,
             "Name": "PopUPSlot11",
             "Tag": "Default",
             "Static": 0,
@@ -17924,8 +17856,8 @@
             ]
         },
         {
-            "UID": 1399894812,
-            "ParentUID": 3972139163,
+            "UID": 1617152983,
+            "ParentUID": 4165772349,
             "Name": "PopUPSlot12",
             "Tag": "Default",
             "Static": 0,
@@ -17992,8 +17924,8 @@
             ]
         },
         {
-            "UID": 3868521826,
-            "ParentUID": 3972139163,
+            "UID": 2054440920,
+            "ParentUID": 4165772349,
             "Name": "PopUPSlot13",
             "Tag": "Default",
             "Static": 0,
@@ -18060,8 +17992,8 @@
             ]
         },
         {
-            "UID": 118143709,
-            "ParentUID": 3972139163,
+            "UID": 1431517414,
+            "ParentUID": 4165772349,
             "Name": "PopUPSlot14",
             "Tag": "Default",
             "Static": 0,
@@ -18128,8 +18060,8 @@
             ]
         },
         {
-            "UID": 2633034247,
-            "ParentUID": 3972139163,
+            "UID": 3402352131,
+            "ParentUID": 4165772349,
             "Name": "PopUPSlot15",
             "Tag": "Default",
             "Static": 0,
@@ -18196,8 +18128,8 @@
             ]
         },
         {
-            "UID": 2879313337,
-            "ParentUID": 3972139163,
+            "UID": 1680517725,
+            "ParentUID": 4165772349,
             "Name": "PopUPSlot16",
             "Tag": "Default",
             "Static": 0,
@@ -18264,8 +18196,8 @@
             ]
         },
         {
-            "UID": 4240071512,
-            "ParentUID": 640881394,
+            "UID": 122110144,
+            "ParentUID": 1782062066,
             "Name": "PopUpUnequip",
             "Tag": "Default",
             "Static": 0,
@@ -18404,8 +18336,8 @@
             ]
         },
         {
-            "UID": 2786679451,
-            "ParentUID": 640881394,
+            "UID": 2441248028,
+            "ParentUID": 1782062066,
             "Name": "HoverPopUPGO",
             "Tag": "Default",
             "Static": 0,
@@ -18483,8 +18415,8 @@
             ]
         },
         {
-            "UID": 2716083767,
-            "ParentUID": 2786679451,
+            "UID": 4266138873,
+            "ParentUID": 2441248028,
             "Name": "PopUpHover",
             "Tag": "Default",
             "Static": 0,
@@ -18551,7 +18483,7 @@
             ]
         },
         {
-            "UID": 454035375,
+            "UID": 317798847,
             "ParentUID": 1,
             "Name": "ItemName",
             "Tag": "Default",
@@ -18636,8 +18568,8 @@
             ]
         },
         {
-            "UID": 899908254,
-            "ParentUID": 454035375,
+            "UID": 3839381050,
+            "ParentUID": 317798847,
             "Name": "Item0",
             "Tag": "Default",
             "Static": 0,
@@ -18664,7 +18596,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -18715,8 +18647,8 @@
             ]
         },
         {
-            "UID": 3891747934,
-            "ParentUID": 899908254,
+            "UID": 3608085864,
+            "ParentUID": 3839381050,
             "Name": "ItemBackground",
             "Tag": "Default",
             "Static": 0,
@@ -18765,7 +18697,7 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 0,
+                    "textureUID": 917851612,
                     "color": [
                         0.0,
                         0.0,
@@ -18783,8 +18715,8 @@
             ]
         },
         {
-            "UID": 82480428,
-            "ParentUID": 899908254,
+            "UID": 3895593432,
+            "ParentUID": 3839381050,
             "Name": "ItemTypeName",
             "Tag": "Default",
             "Static": 0,
@@ -18863,8 +18795,8 @@
             ]
         },
         {
-            "UID": 2745424295,
-            "ParentUID": 454035375,
+            "UID": 2484595407,
+            "ParentUID": 317798847,
             "Name": "Item1",
             "Tag": "Default",
             "Static": 0,
@@ -18891,7 +18823,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -18942,8 +18874,8 @@
             ]
         },
         {
-            "UID": 3026445533,
-            "ParentUID": 2745424295,
+            "UID": 3280811356,
+            "ParentUID": 2484595407,
             "Name": "ItemBackground",
             "Tag": "Default",
             "Static": 0,
@@ -18992,7 +18924,7 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 0,
+                    "textureUID": 917851612,
                     "color": [
                         0.0,
                         0.0,
@@ -19010,8 +18942,8 @@
             ]
         },
         {
-            "UID": 687307088,
-            "ParentUID": 2745424295,
+            "UID": 1687913666,
+            "ParentUID": 2484595407,
             "Name": "ItemTypeName",
             "Tag": "Default",
             "Static": 0,
@@ -19090,8 +19022,8 @@
             ]
         },
         {
-            "UID": 4226387334,
-            "ParentUID": 454035375,
+            "UID": 2058369149,
+            "ParentUID": 317798847,
             "Name": "Item2",
             "Tag": "Default",
             "Static": 0,
@@ -19118,7 +19050,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -19169,8 +19101,8 @@
             ]
         },
         {
-            "UID": 1621702100,
-            "ParentUID": 4226387334,
+            "UID": 3881012640,
+            "ParentUID": 2058369149,
             "Name": "ItemBackground",
             "Tag": "Default",
             "Static": 0,
@@ -19219,7 +19151,7 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 0,
+                    "textureUID": 917851612,
                     "color": [
                         0.0,
                         0.0,
@@ -19237,8 +19169,8 @@
             ]
         },
         {
-            "UID": 2854775949,
-            "ParentUID": 4226387334,
+            "UID": 4028060590,
+            "ParentUID": 2058369149,
             "Name": "ItemTypeName",
             "Tag": "Default",
             "Static": 0,
@@ -19317,8 +19249,8 @@
             ]
         },
         {
-            "UID": 51960512,
-            "ParentUID": 454035375,
+            "UID": 3129849962,
+            "ParentUID": 317798847,
             "Name": "Item3",
             "Tag": "Default",
             "Static": 0,
@@ -19345,7 +19277,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -19396,8 +19328,8 @@
             ]
         },
         {
-            "UID": 2385539848,
-            "ParentUID": 51960512,
+            "UID": 1358850536,
+            "ParentUID": 3129849962,
             "Name": "ItemBackground",
             "Tag": "Default",
             "Static": 0,
@@ -19446,7 +19378,7 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 0,
+                    "textureUID": 917851612,
                     "color": [
                         0.0,
                         0.0,
@@ -19464,8 +19396,8 @@
             ]
         },
         {
-            "UID": 3628945569,
-            "ParentUID": 51960512,
+            "UID": 164466086,
+            "ParentUID": 3129849962,
             "Name": "ItemTypeName",
             "Tag": "Default",
             "Static": 0,
@@ -19544,8 +19476,8 @@
             ]
         },
         {
-            "UID": 1948013975,
-            "ParentUID": 454035375,
+            "UID": 2561803565,
+            "ParentUID": 317798847,
             "Name": "Item4",
             "Tag": "Default",
             "Static": 0,
@@ -19572,7 +19504,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -19623,8 +19555,8 @@
             ]
         },
         {
-            "UID": 2650303980,
-            "ParentUID": 1948013975,
+            "UID": 242953392,
+            "ParentUID": 2561803565,
             "Name": "ItemBackground",
             "Tag": "Default",
             "Static": 0,
@@ -19673,7 +19605,7 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 0,
+                    "textureUID": 917851612,
                     "color": [
                         0.0,
                         0.0,
@@ -19691,8 +19623,8 @@
             ]
         },
         {
-            "UID": 1041625148,
-            "ParentUID": 1948013975,
+            "UID": 2000104871,
+            "ParentUID": 2561803565,
             "Name": "ItemTypeName",
             "Tag": "Default",
             "Static": 0,
@@ -19771,8 +19703,8 @@
             ]
         },
         {
-            "UID": 1237371804,
-            "ParentUID": 454035375,
+            "UID": 2038928875,
+            "ParentUID": 317798847,
             "Name": "Item5",
             "Tag": "Default",
             "Static": 0,
@@ -19799,7 +19731,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -19850,8 +19782,8 @@
             ]
         },
         {
-            "UID": 2323644287,
-            "ParentUID": 1237371804,
+            "UID": 822777794,
+            "ParentUID": 2038928875,
             "Name": "ItemBackground",
             "Tag": "Default",
             "Static": 0,
@@ -19900,7 +19832,7 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 0,
+                    "textureUID": 917851612,
                     "color": [
                         0.0,
                         0.0,
@@ -19918,8 +19850,8 @@
             ]
         },
         {
-            "UID": 2017505069,
-            "ParentUID": 1237371804,
+            "UID": 3885747753,
+            "ParentUID": 2038928875,
             "Name": "ItemTypeName",
             "Tag": "Default",
             "Static": 0,
@@ -19998,8 +19930,8 @@
             ]
         },
         {
-            "UID": 1313276969,
-            "ParentUID": 454035375,
+            "UID": 2173766129,
+            "ParentUID": 317798847,
             "Name": "Item6",
             "Tag": "Default",
             "Static": 0,
@@ -20026,7 +19958,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -20077,8 +20009,8 @@
             ]
         },
         {
-            "UID": 1574897753,
-            "ParentUID": 1313276969,
+            "UID": 2130426541,
+            "ParentUID": 2173766129,
             "Name": "ItemBackground",
             "Tag": "Default",
             "Static": 0,
@@ -20127,7 +20059,7 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 0,
+                    "textureUID": 917851612,
                     "color": [
                         0.0,
                         0.0,
@@ -20145,8 +20077,8 @@
             ]
         },
         {
-            "UID": 2925128938,
-            "ParentUID": 1313276969,
+            "UID": 1817257501,
+            "ParentUID": 2173766129,
             "Name": "ItemTypeName",
             "Tag": "Default",
             "Static": 0,
@@ -20225,8 +20157,8 @@
             ]
         },
         {
-            "UID": 3403565366,
-            "ParentUID": 454035375,
+            "UID": 1151135240,
+            "ParentUID": 317798847,
             "Name": "Item7",
             "Tag": "Default",
             "Static": 0,
@@ -20253,7 +20185,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -20304,8 +20236,8 @@
             ]
         },
         {
-            "UID": 451895951,
-            "ParentUID": 3403565366,
+            "UID": 4058433372,
+            "ParentUID": 1151135240,
             "Name": "ItemBackground",
             "Tag": "Default",
             "Static": 0,
@@ -20354,7 +20286,7 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 0,
+                    "textureUID": 917851612,
                     "color": [
                         0.0,
                         0.0,
@@ -20372,8 +20304,8 @@
             ]
         },
         {
-            "UID": 3581240530,
-            "ParentUID": 3403565366,
+            "UID": 3124807152,
+            "ParentUID": 1151135240,
             "Name": "ItemTypeName",
             "Tag": "Default",
             "Static": 0,
@@ -20452,8 +20384,8 @@
             ]
         },
         {
-            "UID": 32039691,
-            "ParentUID": 454035375,
+            "UID": 940905503,
+            "ParentUID": 317798847,
             "Name": "Item8",
             "Tag": "Default",
             "Static": 0,
@@ -20480,7 +20412,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -20531,8 +20463,8 @@
             ]
         },
         {
-            "UID": 544935209,
-            "ParentUID": 32039691,
+            "UID": 1305916287,
+            "ParentUID": 940905503,
             "Name": "ItemBackground",
             "Tag": "Default",
             "Static": 0,
@@ -20581,7 +20513,7 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 0,
+                    "textureUID": 917851612,
                     "color": [
                         0.0,
                         0.0,
@@ -20599,8 +20531,8 @@
             ]
         },
         {
-            "UID": 1932994261,
-            "ParentUID": 32039691,
+            "UID": 4289627939,
+            "ParentUID": 940905503,
             "Name": "ItemTypeName",
             "Tag": "Default",
             "Static": 0,
@@ -20679,8 +20611,8 @@
             ]
         },
         {
-            "UID": 4001843115,
-            "ParentUID": 454035375,
+            "UID": 1927520603,
+            "ParentUID": 317798847,
             "Name": "Item9",
             "Tag": "Default",
             "Static": 0,
@@ -20707,7 +20639,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -20758,8 +20690,8 @@
             ]
         },
         {
-            "UID": 2203365124,
-            "ParentUID": 4001843115,
+            "UID": 1814225451,
+            "ParentUID": 1927520603,
             "Name": "ItemBackground",
             "Tag": "Default",
             "Static": 0,
@@ -20808,7 +20740,7 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 0,
+                    "textureUID": 917851612,
                     "color": [
                         0.0,
                         0.0,
@@ -20826,8 +20758,8 @@
             ]
         },
         {
-            "UID": 4252664487,
-            "ParentUID": 4001843115,
+            "UID": 3975251065,
+            "ParentUID": 1927520603,
             "Name": "ItemTypeName",
             "Tag": "Default",
             "Static": 0,
@@ -20906,7 +20838,7 @@
             ]
         },
         {
-            "UID": 2618303895,
+            "UID": 2376853651,
             "ParentUID": 1,
             "Name": "RedScreen",
             "Tag": "Default",
@@ -20983,7 +20915,7 @@
             ]
         },
         {
-            "UID": 4101560495,
+            "UID": 2116515959,
             "ParentUID": 1,
             "Name": "Loading",
             "Tag": "Default",
@@ -21018,8 +20950,8 @@
             "Components": []
         },
         {
-            "UID": 4292756764,
-            "ParentUID": 4101560495,
+            "UID": 3426149212,
+            "ParentUID": 2116515959,
             "Name": "Background",
             "Tag": "Default",
             "Static": 0,
@@ -21086,8 +21018,8 @@
             ]
         },
         {
-            "UID": 2787588631,
-            "ParentUID": 4101560495,
+            "UID": 241051108,
+            "ParentUID": 2116515959,
             "Name": "Text",
             "Tag": "Default",
             "Static": 0,
@@ -21162,112 +21094,6 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0
-                }
-            ]
-        },
-        {
-            "UID": 1765526302,
-            "ParentUID": 0,
-            "Name": "Camera",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 1,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 0,
-                    "Enabled": 1,
-                    "Position": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "Rotation": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ],
-                    "Euler": [
-                        -0.0,
-                        0.0,
-                        -0.0
-                    ],
-                    "Scale": [
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "Global": [
-                        1.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
-                },
-                {
-                    "Type": 2,
-                    "Enabled": 1,
-                    "MovementSpeed": 5.0,
-                    "RotationSpeed": 200.0,
-                    "ZoomSpeed": 0.4000000059604645,
-                    "Znear": 10.0,
-                    "Zfar": 100000.0,
-                    "vFOV": 1.0471975803375245,
-                    "hFOV": 1.571840524673462,
-                    "Position": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "Front": [
-                        0.0,
-                        0.0,
-                        1.0
-                    ],
-                    "Up": [
-                        0.0,
-                        1.0,
-                        0.0
-                    ],
-                    "isMain": 1
                 }
             ]
         }
