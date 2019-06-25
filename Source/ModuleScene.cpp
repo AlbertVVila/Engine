@@ -21,6 +21,7 @@
 #include "ComponentCamera.h"
 #include "ComponentRenderer.h"
 #include "ComponentTransform.h"
+#include "BaseScript.h"
 
 #include "ResourceTexture.h"
 #include "ResourceMesh.h"
@@ -1639,6 +1640,32 @@ GameObject * ModuleScene::Spawn(const char * name, GameObject * parent)
 	instance->parent = parent;
 	instance->transform->Reset();
 	AddToSpacePartition(instance);
+	if (App->time->gameState == GameState::RUN)
+	{
+		instance->OnPlay();
+		std::queue<GameObject*> gos;
+		gos.push(instance);
+		while (!gos.empty())
+		{
+			GameObject* go = gos.front();
+			gos.pop();
+			std::vector<Component*> components = go->GetComponents(ComponentType::Script);
+			for (size_t i = 0; i < components.size(); i++)
+			{
+				if (components[i]->enabled)
+				{
+					((Script*)components[i])->Start();
+				}
+			}
+			for (const auto & child : go->children)
+			{
+				if (child->isActive())
+				{
+					gos.push(child);
+				}
+			}
+		}
+	}
 	return instance;
 }
 
