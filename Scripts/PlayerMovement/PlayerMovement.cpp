@@ -967,3 +967,69 @@ void PlayerSkill::DeSerialize(JSON_value* json, BasicSkill* playerSkill)
 	cooldown = json->GetFloat("cooldown");
 	skill = playerSkill;
 }
+
+void PlayerMovement::UpdateUIStats()
+{
+	if (uiHealthText != nullptr && uiDexterityText != nullptr && uiStrengthText != nullptr && uiManaText != nullptr)
+	{
+		uiHealthText->text = std::to_string((int)stats.health);
+		uiDexterityText->text = std::to_string(stats.dexterity);
+		uiStrengthText->text = std::to_string(stats.strength);
+		uiManaText->text = std::to_string((int)stats.mana);
+	}
+}
+
+void PlayerMovement::InitializeUIStatsObjects()
+{
+	GameObject* statsPanel = App->scene->FindGameObjectByName("StatsPanel");
+
+	if (statsPanel != nullptr)
+	{
+		GameObject* heartPanel = App->scene->FindGameObjectByName("HeartPanel", statsPanel);
+		if (heartPanel != nullptr)
+		{
+			uiHealthText = App->scene->FindGameObjectByName("HeartLabel", heartPanel)->GetComponent<Text>();
+		}
+		else
+		{
+			LOG("The Game Object 'HeartPanel' couldn't be found.");
+		}
+
+		GameObject* dexterityPanel = App->scene->FindGameObjectByName("DexterityPanel", statsPanel);
+		if (dexterityPanel != nullptr)
+		{
+			uiDexterityText = App->scene->FindGameObjectByName("DexterityLabel", dexterityPanel)->GetComponent<Text>();
+		}
+		else
+		{
+			LOG("The Game Object 'DexterityPanel' couldn't be found.");
+		}
+
+		GameObject* strPanel = App->scene->FindGameObjectByName("StrPanel", statsPanel);
+		if (strPanel != nullptr)
+		{
+			uiStrengthText = App->scene->FindGameObjectByName("StrLabel", strPanel)->GetComponent<Text>();
+		}
+		else
+		{
+			LOG("The Game Object 'StrPanel' couldn't be found.");
+		}
+
+		GameObject* soulPanel = App->scene->FindGameObjectByName("SoulPanel", statsPanel);
+		if (soulPanel != nullptr)
+		{
+			uiManaText = App->scene->FindGameObjectByName("SoulLabel", soulPanel)->GetComponent<Text>();
+		}
+		else
+		{
+			LOG("The Game Object 'SoulPanel' couldn't be found.");
+		}
+
+		UpdateUIStats();
+	}
+	else
+	{
+		LOG("The Game Object 'StatsPanel' couldn't be found.");
+	}
+}
+
