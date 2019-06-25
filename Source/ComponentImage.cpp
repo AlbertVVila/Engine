@@ -173,7 +173,7 @@ void ComponentImage::Save(JSON_value *value)const
 {
 	Component::Save(value);
 	value->AddUint("textureUID", (texture != nullptr) ? texture->GetUID() : 0u);
-	value->AddString("textureName", (texture ? texture->GetName() : ""));
+	value->AddString("textureName", texture ? texture->GetName() : "");
 	value->AddFloat4("color", color);
 	value->AddInt("FlipVertical", flipVertical);
 	value->AddInt("FlipHorizontal", flipHorizontal);
@@ -190,7 +190,10 @@ void ComponentImage::Load(JSON_value* value)
 	Component::Load(value);
 	unsigned uid = value->GetUint("textureUID");
 	texture = (ResourceTexture*)App->resManager->Get(uid);
-	if (!texture) texture = (ResourceTexture*)App->resManager->GetByName(value->GetString("textureName"), TYPE::TEXTURE);
+	if (!texture)
+	{
+		texture = (ResourceTexture*)App->resManager->GetByName(value->GetString("textureName", ""), TYPE::TEXTURE);
+	}
 	color = value->GetFloat4("color");
 	flipVertical = value->GetInt("FlipVertical");
 	flipHorizontal = value->GetInt("FlipHorizontal");
