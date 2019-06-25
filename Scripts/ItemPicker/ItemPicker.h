@@ -5,6 +5,7 @@
 #include "Item.h"
 #include "Geometry/AABB.h"
 #include <vector>
+#include <list>
 
 #ifdef ItemPicker_EXPORTS
 #define ItemPicker_API __declspec(dllexport)
@@ -12,13 +13,23 @@
 #define ItemPicker_API __declspec(dllimport)
 #endif
 
-
 class InventoryScript;
 class AABB;
 class JSON_value;
+class ComponentRenderer;
+class ItemNameController;
+
+enum class ItemPicker_API ItemRarity
+{
+	BASIC = 0,
+	RARE,
+	EPIC,
+	LEGENDARY
+};
 
 class ItemPicker_API ItemPicker : public Script
 {
+public:
 	void Expose(ImGuiContext* context) override;
 
 	void Start() override;
@@ -26,25 +37,38 @@ class ItemPicker_API ItemPicker : public Script
 
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
+	void SetItem(ItemType type, std::string name, std::string sprite);
 
 	inline virtual ItemPicker* Clone() const
 	{
 		return new ItemPicker(*this);
 	}
 
-private:
+
 	std::string name;
 	std::string description;
 	std::string sprite;
 	ItemType type = ItemType::NONE;
-
 	Item item;
+
+private:
 
 	InventoryScript* inventoryScript = nullptr;
 	math::AABB* playerBbox = nullptr;
 
 	std::vector<std::string> textureFiles;
 	const char * selectedTexture = "basicPostion";
+
+	std::string myBboxName;
+
+	ComponentRenderer* myRender;
+	ItemRarity rarity = ItemRarity::BASIC;
+	int rare = 0;
+
+	ItemNameController* itemName = nullptr;
+	std::list<unsigned> nameShowed;
+
+	float time = -1.0f;
 };
 
 #endif __ItemPicker_h__

@@ -21,6 +21,7 @@
 #include "ComponentCamera.h"
 #include "ComponentRenderer.h"
 #include "ComponentTransform.h"
+#include "ComponentText.h"
 #include "BaseScript.h"
 
 #include "ResourceTexture.h"
@@ -710,6 +711,8 @@ void ModuleScene::DrawGUI()
 	}
 	if(ImGui::Button("Reset kdTree"))
 	{
+		App->spacePartitioning->kDTree.CleanUp();
+		App->spacePartitioning->kDTree.Init();
 		App->spacePartitioning->kDTree.Calculate();
 	}
 
@@ -1623,6 +1626,8 @@ GameObject* ModuleScene::FindGameObjectByName(const char* name, GameObject* pare
 	}
 	return nullptr;
 }
+
+
 
 GameObject * ModuleScene::Spawn(const char * name, GameObject * parent)
 {

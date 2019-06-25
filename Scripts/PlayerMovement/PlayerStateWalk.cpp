@@ -74,7 +74,9 @@ void PlayerStateWalk::Update()
 		{
 			player->gameobject->transform->LookAt(path[pathIndex]);
 			math::float3 direction = (path[pathIndex] - currentPosition).Normalized();
-			player->gameobject->transform->SetPosition(currentPosition + player->walkingSpeed * direction * player->App->time->gameDeltaTime);
+			math::float3 finalWalkingSpeed = player->walkingSpeed * direction * player->App->time->gameDeltaTime;
+			finalWalkingSpeed *= (1 + (player->stats.dexterity * 0.005f));
+			player->gameobject->transform->SetPosition(currentPosition + finalWalkingSpeed);
 			playerWalking = true;
 			if (dustParticles)
 			{
@@ -101,6 +103,7 @@ void PlayerStateWalk::Enter()
 	if (dustParticles)
 	{
 		dustParticles->SetActive(true);
+		player->anim->controller->current->speed *= (1 + (player->stats.dexterity * 0.005f));
 	}
 }
 

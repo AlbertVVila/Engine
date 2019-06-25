@@ -55,13 +55,13 @@ private:
 class JSON
 {
 public:
-	JSON();
+	ENGINE_API JSON();
 	JSON(const char * data);
 	~JSON();
 
-	JSON_value* CreateValue(rapidjson::Type type = rapidjson::kObjectType);
-	void AddValue(const char * name, const JSON_value & value);
-	JSON_value * GetValue(const char * name);  //Allocates value
+	ENGINE_API JSON_value* CreateValue(rapidjson::Type type = rapidjson::kObjectType);
+	ENGINE_API void AddValue(const char * name, const JSON_value & value);
+	ENGINE_API JSON_value * GetValue(const char * name);  //Allocates value
 	std::string ToString() const;
 	unsigned Size(); //Clears old buffer
 

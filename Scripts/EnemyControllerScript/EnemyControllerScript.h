@@ -18,7 +18,9 @@ class ComponentBoxTrigger;
 class DamageController;
 class EnemyLifeBarController;
 class PlayerMovement;
+class EnemyLoot;
 class ExperienceController;
+
 
 class EnemyControllerScript_API EnemyControllerScript : public Script
 {
@@ -59,11 +61,15 @@ public:
 	std::string playerBboxName = "PlayerMesh";
 	std::string myBboxName = "EnemyMesh";
 	ComponentAnimation* anim = nullptr;
-	ComponentRenderer* myRender;
+	ComponentRenderer* myRender = nullptr;
 
 	DamageController* damageController = nullptr;
 	EnemyLifeBarController* enemyLifeBar = nullptr;
+
+	EnemyLoot* enemyLoot = nullptr;
+
 	ExperienceController* experienceController = nullptr;
+
 	
 	// BBoxes
 	math::AABB* myBbox = nullptr;
