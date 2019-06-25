@@ -30,8 +30,8 @@ private:
 	void Reset();
 
 public:
-	int hits = 5;
-	float duration = 4.0f;
+	int hits = 5;				// How many times the hitbox hits?
+	float duration = 4.0f;		// How much time the rain will last (seconds) 
 
 private:
 	float timer = 0.0f;
