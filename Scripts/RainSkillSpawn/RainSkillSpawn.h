@@ -11,6 +11,7 @@
 
 class JSON_value;
 class ComponentBoxTrigger;
+class GameObject;
 
 class RainSkillSpawn_API RainSkillSpawn : public Script
 {
@@ -22,6 +23,8 @@ public:
 
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
+
+	void OnTriggerEnter(GameObject* go);
 
 	inline virtual RainSkillSpawn* Clone() const { return new RainSkillSpawn(*this); }
 
