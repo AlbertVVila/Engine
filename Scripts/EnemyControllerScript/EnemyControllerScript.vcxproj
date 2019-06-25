@@ -165,7 +165,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;EnemyControllerScript_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\BaseScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source;$(SolutionDir)\Scripts\DamageController;$(SolutionDir)\Scripts\EnemyLifeBarController;$(SolutionDir)\Scripts\ExperienceController;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)Source\MathGeoLib</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\BaseScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source;$(SolutionDir)\Scripts\DamageController;$(SolutionDir)\Scripts\EnemyLifeBarController;$(SolutionDir)\Scripts\ExperienceController;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\EnemyLoot</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -235,7 +235,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;EnemyControllerScript_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\BaseScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source;$(SolutionDir)\Scripts\DamageController;$(SolutionDir)\Scripts\EnemyLifeBarController;$(SolutionDir)\Scripts\ExperienceController;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)Source\MathGeoLib</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\BaseScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source;$(SolutionDir)\Scripts\DamageController;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)\Scripts\EnemyLifeBarController;$(SolutionDir)\Scripts\ExperienceController;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\EnemyLoot</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -321,6 +321,9 @@
     </ProjectReference>
     <ProjectReference Include="..\EnemyLifeBarController\EnemyLifeBarController.vcxproj">
       <Project>{25a279f6-6460-43e6-83c1-59ab067f3f05}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\EnemyLoot\EnemyLoot.vcxproj">
+      <Project>{b1fc287c-6ee1-44c8-874b-9860a2d4d35a}</Project>
     </ProjectReference>
     <ProjectReference Include="..\ExperienceController\ExperienceController.vcxproj">
       <Project>{7306983d-f81f-488d-9548-d68509fef4c8}</Project>
