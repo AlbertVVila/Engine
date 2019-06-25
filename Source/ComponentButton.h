@@ -49,6 +49,7 @@ public:
 
 	bool hoverDetectionMouse1 = true;
 	bool hoverDetectionMouse3 = true;
+	int uiOrder = 0;
 };
 
 #endif // __ComponentButton_h__
