@@ -165,7 +165,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;GameLoop_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\BaseScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)\Source;$(SolutionDir)\Scripts\EnemyMovementScript;$(SolutionDir)\Scripts\CreditsScript;$(SolutionDir)\Scripts\IntroScript;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\InventoryScript</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\BaseScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)\Source;$(SolutionDir)\Scripts\EnemyMovementScript;$(SolutionDir)\Scripts\CreditsScript;$(SolutionDir)\Scripts\IntroScript;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\InventoryScript;$(SolutionDir)\Scripts\EquipPopupController</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -188,7 +188,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GAME_BUILD;WIN32;_DEBUG;GameLoop_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\BaseScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)\Source;$(SolutionDir)\Scripts\EnemyMovementScript;$(SolutionDir)\Scripts\CreditsScript;$(SolutionDir)\Scripts\IntroScript;;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\InventoryScript</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\BaseScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)\Source;$(SolutionDir)\Scripts\EnemyMovementScript;$(SolutionDir)\Scripts\CreditsScript;$(SolutionDir)\Scripts\IntroScript;;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\InventoryScript;$(SolutionDir)\Scripts\EquipPopupController</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -241,7 +241,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;GameLoop_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\BaseScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)\Source;$(SolutionDir)\Scripts\EnemyMovementScript;$(SolutionDir)\Scripts\CreditsScript;$(SolutionDir)\Scripts\IntroScript;;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\InventoryScript</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\BaseScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)\Source;$(SolutionDir)\Scripts\EnemyMovementScript;$(SolutionDir)\Scripts\CreditsScript;$(SolutionDir)\Scripts\IntroScript;;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\InventoryScript;$(SolutionDir)\Scripts\EquipPopupController</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -268,7 +268,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;GameLoop_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\BaseScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)\Source;$(SolutionDir)\Scripts\EnemyMovementScript;$(SolutionDir)\Scripts\CreditsScript;$(SolutionDir)\Scripts\IntroScript;;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\InventoryScript</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\BaseScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)\Source;$(SolutionDir)\Scripts\EnemyMovementScript;$(SolutionDir)\Scripts\CreditsScript;$(SolutionDir)\Scripts\IntroScript;;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\InventoryScript;$(SolutionDir)\Scripts\EquipPopupController</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -354,6 +354,9 @@
   <ItemGroup>
     <ProjectReference Include="..\CreditsScript\CreditsScript.vcxproj">
       <Project>{cf4ade84-8b3d-45a4-80ef-5b52cc795b6c}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\EquipPopupController\EquipPopupController.vcxproj">
+      <Project>{20271eef-b67a-4d0c-b8dc-0a4e296d710c}</Project>
     </ProjectReference>
     <ProjectReference Include="..\InventoryScript\InventoryScript.vcxproj">
       <Project>{354346cc-be0d-40fe-a8a0-4c129057c5dd}</Project>

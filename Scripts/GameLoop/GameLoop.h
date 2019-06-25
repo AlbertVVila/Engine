@@ -23,6 +23,7 @@ class EnemyMovementScript;
 class IntroScript;
 class CreditsScript;
 class InventoryScript;
+class EquipPopupController;
 class AABB;
 class JSON_value;
 
@@ -160,6 +161,7 @@ public:
 	IntroScript* introScript = nullptr;
 	CreditsScript* creditsScript = nullptr;
 	InventoryScript* inventoryScript = nullptr;
+	EquipPopupController* equipPopUpScript = nullptr;
 
 	//Camera
 	ComponentCamera* componentIntroCamera = nullptr;

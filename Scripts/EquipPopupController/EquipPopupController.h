@@ -26,17 +26,21 @@ class EquipPopupController_API EquipPopupController : public Script
 	void Start() override;
 	void Update() override;
 
-
+public:
+	void SavePopUp();
 
 
 private:
 
 	void Assign(int i);
+	void RemoveEquiped();
 	void ChangePopUpSlots();
 	void FillLists();
 	void FillSkillSlots();
 	void FillItemSlots();
 	void CleanButton();
+	void LoadPopUp();
+
 
 	InventoryScript* inventory = nullptr;
 	SkillTreeController* skillTree = nullptr;
@@ -55,6 +59,10 @@ private:
 
 	std::vector<Item> itemsList;
 	std::vector<Skill> skillsList;
+
+	std::vector<std::pair<int, Skill>> skillsEquiped;
+	std::vector<std::pair<int, Item>> itemsEquiped;
+
 
 	bool skillsShowing = true;
 };
