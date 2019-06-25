@@ -70,13 +70,28 @@ void LoopStatePlaying::Update()
 
 	if (gLoop->inventoryButton->IsPressed() || gLoop->skillsButton->IsPressed() || gLoop->missionsButton->IsPressed())
 	{
-		gLoop->playerMenuGO->SetActive(true);
-		gLoop->inventoryButton->rectTransform->setPosition(math::float2(-485, gLoop->inventoryButton->rectTransform->getPosition().y));
-		gLoop->skillsButton->rectTransform->setPosition(math::float2(-485, gLoop->skillsButton->rectTransform->getPosition().y));
-		gLoop->missionsButton->rectTransform->setPosition(math::float2(-485, gLoop->missionsButton->rectTransform->getPosition().y));
-		gLoop->inventoryMenuGO->SetActive(gLoop->inventoryButton->IsPressed());
-		gLoop->skillsMenuGO->SetActive(gLoop->skillsButton->IsPressed());
-		gLoop->missionsMenuGO->SetActive(gLoop->missionsButton->IsPressed());
+		bool alreadyOpen =  (gLoop->inventoryButton->IsPressed() && gLoop->inventoryMenuGO->isActive()) ||
+							(gLoop->skillsButton->IsPressed() && gLoop->skillsMenuGO->isActive()) ||
+							(gLoop->missionsButton->IsPressed() && gLoop->missionsMenuGO->isActive());
+		
+		if ((alreadyOpen && gLoop->playerMenuGO->isActive()))
+		{
+			gLoop->closePlayerMenuButton->isHovered = false;
+			gLoop->playerMenuGO->SetActive(false);
+			gLoop->inventoryButton->rectTransform->setPosition(math::float2(-50, gLoop->inventoryButton->rectTransform->getPosition().y));
+			gLoop->skillsButton->rectTransform->setPosition(math::float2(-50, gLoop->skillsButton->rectTransform->getPosition().y));
+			gLoop->missionsButton->rectTransform->setPosition(math::float2(-50, gLoop->missionsButton->rectTransform->getPosition().y));
+		}
+		else
+		{
+			gLoop->playerMenuGO->SetActive(true);
+			gLoop->inventoryButton->rectTransform->setPosition(math::float2(-485, gLoop->inventoryButton->rectTransform->getPosition().y));
+			gLoop->skillsButton->rectTransform->setPosition(math::float2(-485, gLoop->skillsButton->rectTransform->getPosition().y));
+			gLoop->missionsButton->rectTransform->setPosition(math::float2(-485, gLoop->missionsButton->rectTransform->getPosition().y));
+			gLoop->inventoryMenuGO->SetActive(gLoop->inventoryButton->IsPressed());
+			gLoop->skillsMenuGO->SetActive(gLoop->skillsButton->IsPressed());
+			gLoop->missionsMenuGO->SetActive(gLoop->missionsButton->IsPressed());
+		}
 	}
 
 	if (gLoop->playerScript->isPlayerDead)
