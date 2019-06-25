@@ -1652,17 +1652,20 @@ GameObject * ModuleScene::Spawn(const char * name, GameObject * parent)
 			std::vector<Component*> components = go->GetComponents(ComponentType::Script);
 			for (size_t i = 0; i < components.size(); i++)
 			{
+				if (go->isActive())
+				{
+					((Script*)components[i])->Awake();
+					((Script*)components[i])->hasBeenAwoken = true;
+				}
 				if (components[i]->enabled)
 				{
 					((Script*)components[i])->Start();
+					((Script*)components[i])->hasBeenStarted = true;
 				}
 			}
 			for (const auto & child : go->children)
 			{
-				if (child->isActive())
-				{
 					gos.push(child);
-				}
 			}
 		}
 	}
