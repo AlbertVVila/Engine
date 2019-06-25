@@ -205,8 +205,9 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d "$(OutDir)$(ProjectName).dll" "$(SolutionDir)\Game"
-xcopy /y /d "$(OutDir)$(ProjectName).lib" "$(ProjectDir)\lib"</Command>
+      <Command>if not exist  $(ProjectDir)lib mkdir $(ProjectDir)lib 
+xcopy /y /d "$(OutDir)$(ProjectName).dll" "$(SolutionDir)Game"
+xcopy /y /d "$(OutDir)$(ProjectName).lib" "$(ProjectDir)lib"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -224,8 +225,9 @@ xcopy /y /d "$(OutDir)$(ProjectName).lib" "$(ProjectDir)\lib"</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d "$(OutDir)$(ProjectName).dll" "$(SolutionDir)\Game"
-xcopy /y /d "$(OutDir)$(ProjectName).lib" "$(ProjectDir)\lib"</Command>
+      <Command>if not exist  $(ProjectDir)lib mkdir $(ProjectDir)lib 
+xcopy /y /d "$(OutDir)$(ProjectName).dll" "$(SolutionDir)Game"
+xcopy /y /d "$(OutDir)$(ProjectName).lib" "$(ProjectDir)lib"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
