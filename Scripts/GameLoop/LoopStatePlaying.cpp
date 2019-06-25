@@ -50,7 +50,7 @@ void LoopStatePlaying::Update()
 {
 	HandleHotkeys();
 
-	if (gLoop->hudBackToMenuButton->IsPressed() ||
+	if (gLoop->hudBackToMenuButton->KeyUp() ||
 		gLoop->App->input->GetKey(SDL_SCANCODE_P) == KEY_UP ||
 		(gLoop->App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_UP && !gLoop->playerMenuGO->isActive()) )
 	{

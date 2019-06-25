@@ -24,22 +24,22 @@ void LoopStatePaused::Enter()
 
 void LoopStatePaused::Update()
 {
-	if ( (gLoop->pauseResume && gLoop->pauseResume->IsPressed()) || 
+	if ( (gLoop->pauseResume && gLoop->pauseResume->KeyUp()) || 
 		gLoop->App->input->GetKey(SDL_SCANCODE_P) == KEY_UP ||
 		gLoop->App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_UP ||
-		gLoop->hudBackToMenuButton->IsPressed())
+		gLoop->hudBackToMenuButton->KeyUp())
 	{
 		gLoop->currentLoopState = (LoopState*)gLoop->playingState;
 		return;
 	}
 
-	if (gLoop->pauseOptions && gLoop->pauseOptions->IsPressed())
+	if (gLoop->pauseOptions && gLoop->pauseOptions->KeyUp())
 	{
 		LOG("OPTIONS MENU PRESSED");
 		return;
 	}
 
-	if (gLoop->pauseExit && gLoop->pauseExit->IsPressed())
+	if (gLoop->pauseExit && gLoop->pauseExit->KeyUp())
 	{
 		gLoop->currentLoopState = (LoopState*)gLoop->quitState;
 		return;
