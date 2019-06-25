@@ -72,6 +72,7 @@ void BombDropSkill::UseSkill()
 	}
 }
 
+
 void BombDropSkill::CheckInput()
 {
 	if (timer > player->currentState->duration) //CAN SWITCH?
@@ -87,3 +88,5 @@ void BombDropSkill::CheckInput()
 		}
 	}
 }
+
+

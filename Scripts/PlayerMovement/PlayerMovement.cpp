@@ -204,6 +204,7 @@ void PlayerMovement::CreatePlayerSkills()
 	dash = new DashSkill(this, "Dash", attackBoxTrigger);
 	slice = new SliceSkill(this, "Slice", attackBoxTrigger);
 	bombDrop = new BombDropSkill(this, "BombDrop", attackBoxTrigger);
+	bombDropParticles = App->scene->FindGameObjectByName("BombDropParticles", gameobject);
 	circular = new CircularAttackSkill(this, "Circular", attackBoxTrigger);
 	circular->mesh1 = App->scene->FindGameObjectByName("CircularAttackMesh1");
 	circular->mesh2 = App->scene->FindGameObjectByName("CircularAttackMesh2");
@@ -532,6 +533,18 @@ void PlayerMovement::UnEquip(const PlayerStats & equipStats)
 
 	int manaPercentage = (mana / stats.mana) * 100;
 	manaUIComponent->SetMaskAmount(manaPercentage);
+}
+
+void PlayerMovement::OnAnimationEvent(std::string name)
+{
+	if (name == "BombDropLanding")
+	{
+		bombDropParticles->SetActive(false);
+	}
+	if (name == "BombDropApex")
+	{
+		bombDropParticles->SetActive(true);
+	}
 }
 
 void PlayerMovement::Serialize(JSON_value* json) const
