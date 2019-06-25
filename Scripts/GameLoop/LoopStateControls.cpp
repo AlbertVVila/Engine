@@ -19,7 +19,7 @@ void LoopStateControls::Update()
 	if (gLoop->backControlsButton->IsPressed())
 	{
 		gLoop->backControlsButton->isHovered = false;
-		gLoop->backControlsButton->isKeyDown = false;
+		//gLoop->backControlsButton->isKeyDown = false;
 		gLoop->controls->SetActive(false);
 		gLoop->EnableMenuButtons(true);
 		gLoop->currentLoopState = (LoopState*)gLoop->menuState;

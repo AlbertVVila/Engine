@@ -133,12 +133,6 @@ void Button::Load(JSON_value* value)
 
 void Button::Update()
 {
-	if (isKeyDown)
-	{
-		isPressed = true;
-		isKeyDown = false;
-	}
-
 	math::float2 mouse = reinterpret_cast<const float2&>(App->input->GetMousePosition());	
 	float screenX = mouse.x - App->renderer->viewGame->winPos.x - (App->ui->currentWidth * .5f);
 	float screenY = mouse.y - App->renderer->viewGame->winPos.y - (App->ui->currentHeight * .5f);
@@ -170,38 +164,47 @@ void Button::Update()
 		text->isHovered = false;
 	}
 
-	if (isPressed && !isHovered)
+	switch (state)
 	{
-		isPressed = false;
-		pressedImage->enabled = false;
+	case ButtonState::NONE:
+		if (isHovered && App->input->GetMouseButtonDown(1) == KEY_DOWN) state = ButtonState::DOWN;
+		break;
 
-	}
-
-	isKeyUp = false;
-	if (isHovered && isPressed && App->input->GetMouseButtonDown(1) == KEY_UP)
-	{
-		isKeyUp = true;
-		isPressed = false;
-		pressedImage->enabled = false;
-	}
-
-	if (isHovered && App->input->GetMouseButtonDown(1) == KEY_DOWN)
-	{
-		isKeyDown = true;
-		isPressed = false;
-
+	case ButtonState::DOWN:
 		buttonImage->enabled = false;
 		highlightedImage->enabled = false;
 		pressedImage->enabled = true;
+
+		if (!isHovered) state = ButtonState::UP;
+		else if (App->input->GetMouseButtonDown(1) == KEY_UP) state = ButtonState::UP;
+		else if (App->input->GetMouseButtonDown(1) == KEY_IDLE) state = ButtonState::UP;
+		else state = ButtonState::REPEAT;				
+		break;
+
+	case ButtonState::REPEAT:
+		if (!isHovered) state = ButtonState::UP;
+		else if (App->input->GetMouseButtonDown(1) == KEY_UP) state = ButtonState::UP;
+		else if (App->input->GetMouseButtonDown(1) == KEY_IDLE) state = ButtonState::UP;
+		break;
+
+	case ButtonState::UP:
+		buttonImage->enabled = !isHovered;
+		highlightedImage->enabled = isHovered;
+		pressedImage->enabled = true;
+
+		if (isHovered && App->input->GetMouseButtonDown(1) == KEY_DOWN) state = ButtonState::DOWN;
+		else state = ButtonState::NONE;
+		break;
+
+	default:
+		break;
 	}
 }
 
 void Button::Enable(bool enable)
 {
 	Component::Enable(enable);
-	isKeyDown = false;
-	isPressed = false;
-	isKeyUp = false;
+	state = ButtonState::NONE;
 	isHovered = false;
 	isSelected = false;
 	highlightedImage->enabled = false;
