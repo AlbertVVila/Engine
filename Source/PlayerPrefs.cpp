@@ -110,7 +110,7 @@ void PlayerPrefs::DeleteAll(bool deleteJsons)
 	}
 }
 
-JSON* PlayerPrefs::LoadJson(const char * file)
+JSON* PlayerPrefs::LoadJson(const char* file)
 {
 	char* data = nullptr;
 	std::string filepath(PERSISTENCE);
@@ -126,7 +126,7 @@ JSON* PlayerPrefs::LoadJson(const char * file)
 	return nullptr;
 }
 
-bool PlayerPrefs::SaveJson(JSON * json, const char* filename)
+bool PlayerPrefs::SaveJson(JSON* json, const char* filename)
 {
 	assert(strcmp(filename, "player") != 0); //Cannot have this filename
 	std::string filepath(PERSISTENCE);
@@ -135,7 +135,7 @@ bool PlayerPrefs::SaveJson(JSON * json, const char* filename)
 	return App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
 }
 
-void PlayerPrefs::DeleteJson(const char * file)
+void PlayerPrefs::DeleteJson(const char* file)
 {
 	std::string filepath(PERSISTENCE);
 	filepath += file;
