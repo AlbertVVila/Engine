@@ -1,4 +1,6 @@
-#pragma once
+#ifndef  __RangeSkill_h__
+#define  __RangeSkill_h__
+
 #include "BasicSkill.h"
 
 #include "Math/float3.h"
@@ -18,3 +20,4 @@ protected:
 	math::float3 spawnPosition;
 };
 
+#endif __RangeSkill_h__

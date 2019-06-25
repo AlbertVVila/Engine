@@ -94,7 +94,7 @@ void CircularAttackSkill::UseSkill()
 	}
 
 	// Check spin state
-	if (player->attackBoxTrigger != nullptr && player->attackBoxTrigger->enabled * numSpins)
+	if (player->attackBoxTrigger != nullptr && player->attackBoxTrigger->enabled)
 	{
 		// Full spin performed?
 		if (spinTimer > fullSpinTime)

@@ -1,7 +1,7 @@
 {
     "GameObjects": [
         {
-            "UID": 2281889433,
+            "UID": 376315967,
             "ParentUID": 0,
             "Name": "RainPrefab",
             "Tag": "Default",
@@ -54,22 +54,22 @@
                         -0.0
                     ],
                     "Scale": [
-                        0.4000000059604645,
-                        0.4000000059604645,
-                        0.4000000059604645
+                        1.0,
+                        1.0,
+                        1.0
                     ],
                     "Global": [
-                        0.4000000059604645,
+                        1.0,
                         0.0,
                         0.0,
                         0.0,
                         0.0,
-                        0.4000000059604645,
+                        1.0,
                         0.0,
                         0.0,
                         0.0,
                         0.0,
-                        0.4000000059604645,
+                        1.0,
                         0.0,
                         0.0,
                         0.0,
@@ -78,43 +78,29 @@
                     ]
                 },
                 {
-                    "Type": 1,
+                    "Type": 15,
                     "Enabled": 1,
-                    "meshUID": 3530591418,
-                    "materialUID": 735767494,
-                    "castShadows": 0,
-                    "useAlpha": 0,
-                    "highlighted": 0,
-                    "highlightColor": [
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "xTiles": 1,
-                    "yTiles": 1,
-                    "fps": 24.0,
-                    "waterAmplitude1": 10.0,
-                    "waterDecay1": 1.0,
-                    "waterFrequency1": 10.0,
-                    "waterSource1": [
+                    "pos": [
                         0.0,
-                        0.0,
+                        250.0,
                         0.0
                     ],
-                    "waterAmplitude2": 10.0,
-                    "waterDecay2": 1.0,
-                    "waterFrequency2": 10.0,
-                    "waterSource2": [
-                        0.0,
-                        0.0,
-                        0.0
+                    "r": [
+                        500.0,
+                        250.0,
+                        500.0
                     ],
-                    "texSpeed": [
-                        0.0,
-                        0.0
-                    ],
-                    "waterSpeed": 2.0,
-                    "water": 0
+                    "is_player": 0,
+                    "debug_draw": 1
+                },
+                {
+                    "Type": 9,
+                    "Enabled": 1,
+                    "script": "RainSkillSpawn",
+                    "scriptInfo": {
+                        "hits": 5,
+                        "duration": 4.0
+                    }
                 }
             ]
         }
