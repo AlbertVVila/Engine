@@ -5,6 +5,7 @@
 #include "ModuleTime.h"
 #include "ModuleScene.h"
 #include "ModuleNavigation.h"
+#include "ModuleUI.h"
 #include "PlayerState.h"
 #include "PlayerStateAttack.h"
 #include "PlayerStateIdle.h"
@@ -17,6 +18,7 @@
 #include "ComponentTransform.h"
 #include "ComponentImage.h"
 #include "ComponentRenderer.h"
+#include "ComponentText.h"
 #include "GameObject.h"
 
 #include "DamageController.h"
@@ -107,7 +109,7 @@ void PlayerMovement::Expose(ImGuiContext* context)
 	ImGui::DragFloat("Max walking distance", &maxWalkingDistance, 100.f, 0.f, 100000.0f);
 
 	ImGui::DragFloat("Out of Combat time", &outCombatMaxTime, 1.f, 0.f, 10.f);
-
+	
 	float maxHP = stats.health;
 	float maxMP = stats.mana;
 	stats.Expose("Player Stats");
@@ -123,6 +125,8 @@ void PlayerMovement::Expose(ImGuiContext* context)
 		if (mana > stats.mana) mana = stats.mana;
 		else if (mana < 0) mana = 0;
 	}
+
+	UpdateUIStats();
 
 	ImGui::Spacing();
 	ImGui::Text("HP/MP Regen Timers");
@@ -175,7 +179,7 @@ void PlayerMovement::Expose(ImGuiContext* context)
 	ImGui::Text("Strength: %i", stats.strength);
 	ImGui::Text("Dexterity: %i", stats.dexterity);
 	ImGui::Text("HP Regen: %f pts/s", stats.hpRegen);
-	ImGui::Text("Dexterity: %f pts/s", stats.manaRegen);
+	ImGui::Text("MP Regen: %f pts/s", stats.manaRegen);
 }
 
 void PlayerMovement::CreatePlayerStates()
@@ -442,6 +446,7 @@ void PlayerMovement::Start()
 
 	bombDropParticlesLanding = App->scene->FindGameObjectByName("BombDropParticlesLanding");
 
+	InitializeUIStatsObjects();
 	LOG("Started player movement script");
 }
 
@@ -491,11 +496,11 @@ void PlayerMovement::Update()
 
 	if (outCombatTimer > 0)
 	{
-		outCombatTimer -= App->time->fullGameDeltaTime;
+		outCombatTimer -= App->time->gameDeltaTime;
 	}
 	else if (health < stats.health)
 	{
-		health += stats.hpRegen * App->time->fullGameDeltaTime;
+		health += stats.hpRegen * App->time->gameDeltaTime;
 		if (health > stats.health) health = stats.health;
 		int healthPercentage = (health / stats.health) * 100;
 		lifeUIComponent->SetMaskAmount(healthPercentage);
@@ -547,6 +552,8 @@ void PlayerMovement::Equip(const PlayerStats & equipStats)
 
 	int manaPercentage = (mana / stats.mana) * 100;
 	manaUIComponent->SetMaskAmount(manaPercentage);
+
+	UpdateUIStats();
 }
 
 void PlayerMovement::UnEquip(const PlayerStats & equipStats)
@@ -560,6 +567,8 @@ void PlayerMovement::UnEquip(const PlayerStats & equipStats)
 
 	int manaPercentage = (mana / stats.mana) * 100;
 	manaUIComponent->SetMaskAmount(manaPercentage);
+
+	UpdateUIStats();
 }
 
 void PlayerMovement::OnAnimationEvent(std::string name)
@@ -752,15 +761,15 @@ void PlayerMovement::OnTriggerExit(GameObject* go)
 
 bool PlayerMovement::IsAtacking() const
 {
-	return canInteract && App->input->GetMouseButtonDown(1) == KEY_DOWN; //Left button
+	return !App->ui->UIHovered(true,false) && App->input->GetMouseButtonDown(1) == KEY_DOWN; //Left button
 }
 
 bool PlayerMovement::IsMoving() const
 {
 	math::float3 temp;
-	return (App->input->GetMouseButtonDown(3) == KEY_DOWN && canInteract ||
-		currentState->playerWalking ||
-		(App->input->GetMouseButtonDown(3) == KEY_REPEAT && !App->scene->Intersects("PlayerMesh", false, temp))); //right button, the player is still walking or movement button is pressed and can get close to mouse pos
+	return ( (App->input->GetMouseButtonDown(3) == KEY_DOWN && !App->ui->UIHovered(false, true)) ||
+			 (currentState->playerWalking) || 
+			 (App->input->GetMouseButtonDown(3) == KEY_REPEAT && !App->ui->UIHovered(false, true) && !App->scene->Intersects("PlayerMesh", false, temp))); //right button, the player is still walking or movement button is pressed and can get close to mouse pos
 }
 
 bool PlayerMovement::IsUsingOne() const
@@ -920,8 +929,8 @@ void PlayerStats::Expose(const char* sectionTitle)
 	if (ImGui::InputInt("Strength", &uiStrength)) strength = uiStrength < 0 ? 0 : uiStrength;
 
 	int uiDexterity = (int)dexterity;
-	if (ImGui::InputInt("Strength", &uiDexterity)) dexterity = uiDexterity < 0 ? 0 : uiDexterity;
-
+	if (ImGui::InputInt("Dexterity", &uiDexterity)) dexterity = uiDexterity < 0 ? 0 : uiDexterity;
+	
 	ImGui::DragFloat("HP regen", &hpRegen, 1.0F, 0.0F, 10.0F);
 	ImGui::DragFloat("Mana regen", &manaRegen, 1.0F, 0.0F, 10.0F);
 }

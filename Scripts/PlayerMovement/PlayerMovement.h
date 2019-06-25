@@ -49,6 +49,7 @@ class DamageController;
 class DamageFeedbackUI;
 class ComponentAudioSource;
 
+class Text;
 class BasicSkill;
 class SliceSkill;
 class ChainAttackSkill;
@@ -183,6 +184,8 @@ private:
 	// Skills
 	void CreatePlayerSkills();
 
+	void UpdateUIStats();
+	void InitializeUIStatsObjects();
 public:
 	bool isPlayerDead = false;
 	float3 currentPosition = float3(0, 0, 0); //TODO ZERO
@@ -206,7 +209,7 @@ public:
 	float manaRegenTimer = 0.0f;
 	float manaRegenMaxTime = 5.0f;
 
-	PlayerStats stats = { 100.0f, 100.0f, 10U, 10U, 5.0f, 5.0f };
+	PlayerStats stats = { 150.0f, 100.0f, 10U, 10U, 5.0f, 5.0f };
 
 	float OutOfMeshCorrectionXZ = 500.f;
 	float OutOfMeshCorrectionY = 300.0f;
@@ -255,6 +258,10 @@ private:
 	DamageFeedbackUI* damageUIFeedback = nullptr;
 	ComponentImage* lifeUIComponent = nullptr;
 	ComponentImage* manaUIComponent = nullptr;
+	Text* uiHealthText = nullptr;
+	Text* uiDexterityText = nullptr;
+	Text* uiStrengthText = nullptr;
+	Text* uiManaText = nullptr;
 
 
 	float hubCooldown[9]	  = { 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F };

@@ -321,7 +321,6 @@
       <Filter>Resources</Filter>
     </ClCompile>
     <ClCompile Include="PlayerPrefs.cpp" />
-    <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
