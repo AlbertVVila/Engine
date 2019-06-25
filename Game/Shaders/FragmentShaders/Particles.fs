@@ -24,7 +24,7 @@ in vec2 tCoords;
 void main()
 {   
 	float cellS = tCoords.s / float(xTiles);
-	float cellT = 1 -(tCoords.t / float(yTiles));
+	float cellT = 1.0f -(tCoords.t / float(yTiles));
 	float invX = 1 / float(xTiles);
 	float invY = 1 / float(yTiles);
 	vec2 tC1 = vec2(cellS + (invX * f1Xpos), cellT - (invY * f1Ypos));

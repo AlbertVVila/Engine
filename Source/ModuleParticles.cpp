@@ -44,13 +44,13 @@ bool ModuleParticles::Start()
 		0.5f, -0.5f, 0.0f, // bottom right 2
 		0.5f,  0.5f, 0.0f, // top right 3
 
-		0.0f, 0.0f, // 0
-		1.0f, 0.0f, // 2
-		0.0f, 1.0f, // 1
+		1.0f, 1.0f, // 0
+		0.0f, 1.0f, // 2
+		1.0f, 0.0f, // 1
 
-		0.0f, 1.0f, // 1
-		1.0f, 0.0f, // 2
-		1.0f, 1.0f  // 3
+		1.0f, 0.0f, // 1
+		0.0f, 1.0f, // 2
+		0.0f, 0.0f  // 3
 	};
 
 	unsigned int quadIndices[] =
