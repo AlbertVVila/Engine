@@ -82,6 +82,7 @@ void LoopStatePlaying::Update()
 		if (gLoop->gameScene == GameScene::CEMENTERY)
 		{
 			gLoop->currentLoopState = (LoopState*)gLoop->loadingState;
+			gLoop->loadingGO->SetActive(true);
 			gLoop->playerMenuGO->SetActive(false);
 			gLoop->sceneToLoad = TEMPLE_SCENE;
 			gLoop->App->scene->actionAfterLoad = true;
