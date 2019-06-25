@@ -97,6 +97,7 @@ void PlayerMovement::Expose(ImGuiContext* context)
 	/*if (ImGui::Checkbox("Show Item Cooldown", &showItemCooldowns)) ActivateHudCooldownMask(showItemCooldowns, HUB_BUTTON_1, HUB_BUTTON_4);
 	ImGui::DragFloat("1 Cooldown", &hubCooldown[HUB_BUTTON_1], 1.0F, 0.0F, 10.0F);*/
 
+	ImGui::DragFloat("Bomb drop grow rate", &bombDropGrowRate, 0.01f, 1.0f, 10.0f);
 	ImGui::SetCurrentContext(context);
 
 	//Exposing durations this should access to every class instead of allocating them in PlayerMovement, but for now scripts don't allow it
@@ -427,6 +428,20 @@ void PlayerMovement::Start()
 	}
 	GOtemp = App->scene->FindGameObjectByName("PlayerMesh");
 	dash->playerRenderer = GOtemp->GetComponent<ComponentRenderer>();
+
+	bombDropMesh1 = App->scene->FindGameObjectByName("BombDropMesh1");
+
+	if (bombDropMesh1)
+	{
+		bombDropMesh1Scale = bombDropMesh1->transform->scale;
+	}
+	else
+	{
+		LOG("BombDropMesh not found");
+	}
+
+	bombDropParticlesLanding = App->scene->FindGameObjectByName("BombDropParticlesLanding");
+
 	LOG("Started player movement script");
 }
 
@@ -485,6 +500,18 @@ void PlayerMovement::Update()
 		int healthPercentage = (health / stats.health) * 100;
 		lifeUIComponent->SetMaskAmount(healthPercentage);
 	}
+	if (bombDropExpanding && bombDropMesh1)
+	{
+		if (bombDropMesh1->transform->scale.x < MAX_BOMB_DROP_SCALE)
+		{
+			bombDropMesh1->transform->Scale(bombDropGrowRate);
+		}
+		else
+		{
+			bombDropMesh1->transform->Rotate(math::float3(0.0f, BOMB_DROP_ROT, 0.0f));
+		}
+	}
+		
 
 	//Check for changes in the state to send triggers to animation SM
 }
@@ -539,11 +566,37 @@ void PlayerMovement::OnAnimationEvent(std::string name)
 {
 	if (name == "BombDropLanding")
 	{
-		bombDropParticles->SetActive(false);
+		if (bombDropParticles)
+		{
+			bombDropParticles->SetActive(false);
+		}
+		if (bombDropMesh1)
+		{
+			bombDropMesh1->SetActive(true);
+		}
+		if (bombDropParticlesLanding)
+		{
+			bombDropParticlesLanding->SetActive(true);
+		}
+		bombDropExpanding = true;
 	}
 	if (name == "BombDropApex")
 	{
-		bombDropParticles->SetActive(true);
+		bombDropParticles->SetActive(true);		
+	}
+	if (name == "BombDropEnd")
+	{
+		bombDropExpanding = false;
+		if (bombDropMesh1)
+		{
+			bombDropMesh1->transform->scale = bombDropMesh1Scale;
+			bombDropMesh1->transform->Scale(1.0f);
+			bombDropMesh1->SetActive(false);
+		}
+		if (bombDropParticlesLanding)
+		{
+			bombDropParticlesLanding->SetActive(false);
+		}
 	}
 }
 
