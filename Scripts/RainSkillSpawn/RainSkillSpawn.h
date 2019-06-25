@@ -23,6 +23,8 @@ public:
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
 
+	inline virtual RainSkillSpawn* Clone() const { return new RainSkillSpawn(*this); }
+
 private:
 	void Rain();
 	void Reset();
