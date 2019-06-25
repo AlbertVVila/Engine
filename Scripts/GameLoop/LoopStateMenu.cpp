@@ -26,7 +26,7 @@ void LoopStateMenu::Update()
 		gLoop->menu->SetActive(false);
 		gLoop->loadingGO->SetActive(true);
 		gLoop->sceneToLoad = GRAVEYARD_SCENE;
-		//PlayerPrefs::DeleteAll();
+		PlayerPrefs::DeleteAll(true);
 	}
 	else if (gLoop->optionButton->IsPressed())
 	{

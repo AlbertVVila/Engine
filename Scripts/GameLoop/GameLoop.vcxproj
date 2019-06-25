@@ -165,7 +165,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;GameLoop_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\BaseScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)\Source;$(SolutionDir)\Scripts\EnemyMovementScript;$(SolutionDir)\Scripts\CreditsScript;$(SolutionDir)\Scripts\IntroScript;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\InventoryScript;$(SolutionDir)\Scripts\EquipPopupController</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\BaseScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)\Source;$(SolutionDir)\Scripts\EnemyMovementScript;$(SolutionDir)\Scripts\CreditsScript;$(SolutionDir)\Scripts\IntroScript;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\InventoryScript;$(SolutionDir)\Scripts\EquipPopupController;$(SolutionDir)\Scripts\SkillTreeController;$(SolutionDir)\Scripts\ExperienceController</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -188,7 +188,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GAME_BUILD;WIN32;_DEBUG;GameLoop_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\BaseScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)\Source;$(SolutionDir)\Scripts\EnemyMovementScript;$(SolutionDir)\Scripts\CreditsScript;$(SolutionDir)\Scripts\IntroScript;;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\InventoryScript;$(SolutionDir)\Scripts\EquipPopupController</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\BaseScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)\Source;$(SolutionDir)\Scripts\EnemyMovementScript;$(SolutionDir)\Scripts\CreditsScript;$(SolutionDir)\Scripts\IntroScript;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\InventoryScript;$(SolutionDir)\Scripts\EquipPopupController;$(SolutionDir)\Scripts\SkillTreeController;$(SolutionDir)\Scripts\ExperienceController</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -241,7 +241,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;GameLoop_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\BaseScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)\Source;$(SolutionDir)\Scripts\EnemyMovementScript;$(SolutionDir)\Scripts\CreditsScript;$(SolutionDir)\Scripts\IntroScript;;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\InventoryScript;$(SolutionDir)\Scripts\EquipPopupController</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\BaseScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)\Source;$(SolutionDir)\Scripts\EnemyMovementScript;$(SolutionDir)\Scripts\CreditsScript;$(SolutionDir)\Scripts\IntroScript;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\InventoryScript;$(SolutionDir)\Scripts\EquipPopupController;$(SolutionDir)\Scripts\SkillTreeController;$(SolutionDir)\Scripts\ExperienceController</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -268,7 +268,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;GameLoop_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\BaseScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)\Source;$(SolutionDir)\Scripts\EnemyMovementScript;$(SolutionDir)\Scripts\CreditsScript;$(SolutionDir)\Scripts\IntroScript;;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\InventoryScript;$(SolutionDir)\Scripts\EquipPopupController</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\BaseScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)\Source;$(SolutionDir)\Scripts\EnemyMovementScript;$(SolutionDir)\Scripts\CreditsScript;$(SolutionDir)\Scripts\IntroScript;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\InventoryScript;$(SolutionDir)\Scripts\EquipPopupController;$(SolutionDir)\Scripts\SkillTreeController;$(SolutionDir)\Scripts\ExperienceController</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -358,8 +358,17 @@
     <ProjectReference Include="..\EquipPopupController\EquipPopupController.vcxproj">
       <Project>{20271eef-b67a-4d0c-b8dc-0a4e296d710c}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\ExperienceController\ExperienceController.vcxproj">
+      <Project>{7306983d-f81f-488d-9548-d68509fef4c8}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\InventoryScript\InventoryScript.vcxproj">
       <Project>{354346cc-be0d-40fe-a8a0-4c129057c5dd}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayerMovement\PlayerMovement.vcxproj">
+      <Project>{da319d4a-70a8-42c8-a54f-db7ead02ca0d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\SkillTreeController\SkillTreeController.vcxproj">
+      <Project>{55860826-2f36-4fbb-959e-e4ab93827c1f}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

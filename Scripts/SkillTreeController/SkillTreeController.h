@@ -30,7 +30,10 @@ public:
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
 
+	void SaveSkillTree();
+
 private:
+
 	int skillPoints = 0;
 
 	GameObject* skills = nullptr;

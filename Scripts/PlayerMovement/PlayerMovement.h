@@ -154,6 +154,8 @@ public:
 	//void ResetCooldown(unsigned int hubButtonID);
 	void UseSkill(SkillType skill);
 
+	void SavePlayerStats();
+
 private:
 	void CheckStates(PlayerState* previous, PlayerState* current);
 	void CreatePlayerStates();
@@ -163,7 +165,6 @@ private:
 
 	void UpdateUIStats();
 	void InitializeUIStatsObjects();
-	void PersistStats();
 public:
 	bool isPlayerDead = false;
 	float3 currentPosition = float3(0, 0, 0); //TODO ZERO
