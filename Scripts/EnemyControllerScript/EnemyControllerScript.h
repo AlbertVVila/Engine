@@ -73,6 +73,8 @@ public:
 	// BBoxes
 	math::AABB* myBbox = nullptr;
 
+	GameObject* myMesh = nullptr;
+
 	// Hitboxes
 	ComponentBoxTrigger* hpBoxTrigger = nullptr;
 	ComponentBoxTrigger* attackBoxTrigger = nullptr;
