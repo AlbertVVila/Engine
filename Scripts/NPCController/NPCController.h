@@ -21,6 +21,10 @@ class NPCController_API NPCController : public Script
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
 
+	inline virtual NPCController* Clone() const
+	{
+		return new NPCController(*this);
+	}
 private:
 	GameObject* player = nullptr;
 	std::string playerName = "Player";

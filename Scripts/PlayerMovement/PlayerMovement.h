@@ -154,6 +154,11 @@ public:
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
 
+	inline virtual PlayerMovement* Clone() const
+	{
+		return new PlayerMovement(*this);
+	}
+
 	void OnTriggerExit(GameObject* go) override;
 	void Damage(float amount);
 
@@ -178,6 +183,8 @@ public:
 
 	void ResetCooldown(unsigned int hubButtonID);
 	void UseSkill(SkillType skill);
+
+	void SavePlayerStats();
 
 private:
 	void CheckStates(PlayerState* previous, PlayerState* current);
