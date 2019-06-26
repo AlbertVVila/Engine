@@ -554,10 +554,16 @@ void PlayerMovement::Update()
 		if (bombDropMesh1->transform->scale.x < MAX_BOMB_DROP_SCALE)
 		{
 			bombDropMesh1->transform->Scale(bombDropGrowRate);
+			shaking = false;
 		}
 		else
 		{
 			bombDropMesh1->transform->Rotate(math::float3(0.0f, BOMB_DROP_ROT, 0.0f));
+			if (!shaking && playerCamera)
+			{
+				shaking = true;
+				playerCamera->GetComponent<CameraController>()->Shake(0.5f, 85.f);
+			}
 		}
 		if (bombDropMesh2->transform->scale.x < MAX_BOMB_DROP_WAVE_SCALE)
 		{
@@ -575,7 +581,7 @@ void PlayerMovement::Update()
 		{
 			if (rain->machetes->transform->GetGlobalPosition().y > rain->targetHeight)
 			{
-				rain->machetes->transform->SetGlobalPosition(rain->machetes->transform->GetGlobalPosition() - math::float3(0, 100, 0));
+				rain->machetes->transform->SetGlobalPosition(rain->machetes->transform->GetGlobalPosition() - math::float3(0, MACHETE_RAIN_SPEED * App->time->gameDeltaTime, 0));
 				macheteRainRenderer->dissolveAmount = 0.f;
 				shaking = false;
 			}
