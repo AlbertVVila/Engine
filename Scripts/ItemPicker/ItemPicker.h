@@ -39,6 +39,12 @@ public:
 	void DeSerialize(JSON_value* json) override;
 	void SetItem(ItemType type, std::string name, std::string sprite);
 
+	inline virtual ItemPicker* Clone() const
+	{
+		return new ItemPicker(*this);
+	}
+
+
 	std::string name;
 	std::string description;
 	std::string sprite;

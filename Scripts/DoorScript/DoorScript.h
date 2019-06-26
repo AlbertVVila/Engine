@@ -25,6 +25,11 @@ class DoorScript_API DoorScript : public Script
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
 
+	inline virtual DoorScript* Clone() const
+	{
+		return new DoorScript(*this);
+	}
+
 private:
 
 	GameObject* player = nullptr;

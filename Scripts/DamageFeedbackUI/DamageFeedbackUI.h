@@ -19,6 +19,10 @@ public:
 	void Expose(ImGuiContext* context) override;
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
+	inline virtual DamageFeedbackUI* Clone() const
+	{
+		return new DamageFeedbackUI(*this);
+	}
 
 	void ActivateDamageUI();
 

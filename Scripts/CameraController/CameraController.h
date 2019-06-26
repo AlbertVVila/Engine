@@ -19,6 +19,10 @@ class CameraController_API CameraController : public Script
 public:
 	void Start() override;
 	void Update() override;
+	inline virtual CameraController* Clone() const
+	{
+		return new CameraController(*this);
+	}
 
 	/** @param fadeInTime value between [0,1].
 	@@ param fadeOutTime value between [0,1].

@@ -50,8 +50,7 @@ bool ModuleWindow::Init(JSON * config)
 			int height = SCREEN_HEIGHT;
 		}
 #else
-		int width = SCREEN_WIDTH;
-		int height = SCREEN_HEIGHT;
+		fullscreen = true;
 #endif
 		//Create window
 		Uint32 flags = SDL_WINDOW_SHOWN |  SDL_WINDOW_OPENGL;
@@ -85,7 +84,7 @@ bool ModuleWindow::Init(JSON * config)
 			LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());
 			ret = false;
 		}
-
+		SDL_GetWindowSize(window, &width, &height);
 		SDL_SetWindowBrightness(window, brightness);
 	}
 
