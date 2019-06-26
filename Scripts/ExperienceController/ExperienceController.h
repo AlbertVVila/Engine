@@ -20,6 +20,11 @@ class ExperienceController_API ExperienceController : public Script
 	void Start() override;
 	void Update() override;
 
+	inline virtual ExperienceController* Clone() const
+	{
+		return new ExperienceController(*this);
+	}
+
 	void Expose(ImGuiContext* context) override;
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;

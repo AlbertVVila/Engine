@@ -32,6 +32,10 @@ class EnemyControllerScript_API EnemyControllerScript : public Script
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
 
+	inline virtual EnemyControllerScript* Clone() const
+	{
+		return new EnemyControllerScript(*this);
+	}
 public:
 	void TakeDamage(unsigned damage);
 	int GetHealth() const { return actualHealth; }

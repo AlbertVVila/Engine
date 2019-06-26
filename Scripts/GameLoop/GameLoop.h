@@ -41,20 +41,27 @@ class LoopStatePaused;
 class LoopStatePlaying;
 class LoopStateQuit;
 class LoopStateWin;
+
+enum class GameScene
+{
+	MENU,
+	CEMENTERY,
+	TEMPLE,
+	HUD
+};
+
 class GameLoop_API GameLoop : public Script
 {
-	enum class GameScene
-	{
-		MENU,
-		CEMENTERY,
-		HUD
-	};
 
 public :
 	void Expose(ImGuiContext* context) override;
 
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
+	inline virtual GameLoop* Clone() const
+	{
+		return new GameLoop(*this);
+	}
 
 public:
 
@@ -63,6 +70,7 @@ public:
 
 	void LoadMenuScene();
 	void LoadCementeryScene();
+	void LoadTempleScene();
 	void LoadHUDScene();
 
 	void CreateGameStates();

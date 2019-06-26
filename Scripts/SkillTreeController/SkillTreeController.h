@@ -32,6 +32,10 @@ public:
 
 	void SaveSkillTree();
 
+	inline virtual SkillTreeController* Clone() const
+	{
+		return new SkillTreeController(*this);
+	}
 private:
 
 	int skillPoints = 0;
