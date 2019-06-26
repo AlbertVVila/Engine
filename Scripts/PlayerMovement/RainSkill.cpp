@@ -30,6 +30,15 @@ void RainSkill::Start()
 	{
 		spawnPosition = player->transform->position;
 	}
+	if (machetes)
+	{
+		LOG("Machetes placed");
+		machetes->transform->SetGlobalPosition(spawnPosition + float3(0.f, MACHETE_RAIN_START_HEIGHT, 0.f));
+		player->macheteRainActivated = true;
+		player->macheteRainParticles->SetActive(true);
+		targetHeight = spawnPosition.y;
+	}
 
 	RangeSkill::Start();
 }
+

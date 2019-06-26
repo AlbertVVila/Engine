@@ -50,6 +50,10 @@ public:
 	void Paste() override;
 	void Reset() override;
 
+	ENGINE_API void SetGlobalPosition(const math::float3 & newPos);
+
+	void NewAttachment();
+
 private:
 	void RotationToEuler();
 

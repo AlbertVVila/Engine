@@ -34,6 +34,8 @@ struct ImGuiContext;
 #define MAX_BOMB_DROP_WAVE_SCALE 240.f
 #define BOMB_DROP_ROT 2.5f
 
+#define MACHETE_RAIN_START_HEIGHT 1300.0f
+
 class ComponentAnimation;
 class ComponentTransform;
 class ComponentBoxTrigger;
@@ -49,6 +51,7 @@ class PlayerStateWalk;
 class DamageController;
 class DamageFeedbackUI;
 class ComponentAudioSource;
+class ComponentCamera;
 
 class Text;
 class BasicSkill;
@@ -221,6 +224,8 @@ public:
 	ComponentTransform* transform = nullptr;
 	PlayerState* currentState = nullptr;
 
+	GameObject* playerCamera = nullptr;
+
 	math::float3 hpHitBoxSize = math::float3::zero;
 
 	bool canInteract = true;
@@ -234,6 +239,10 @@ public:
 	CircularAttackSkill* circular = nullptr;
 	StompSkill* stomp = nullptr;
 	RainSkill* rain = nullptr;
+
+	bool macheteRainActivated = false;
+	GameObject* macheteRainParticles = nullptr;
+	bool shaking = false;
 
 	std::unordered_map<SkillType, PlayerSkill*> allSkills;
 
@@ -260,6 +269,8 @@ private:
 
 	GameObject* slashTrail = nullptr;
 
+	ComponentRenderer* macheteRainRenderer = nullptr;
+	
 	DamageController* damageController = nullptr;
 	DamageFeedbackUI* damageUIFeedback = nullptr;
 	ComponentImage* lifeUIComponent = nullptr;

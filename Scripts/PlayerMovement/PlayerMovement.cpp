@@ -6,6 +6,7 @@
 #include "ModuleScene.h"
 #include "ModuleNavigation.h"
 #include "ModuleUI.h"
+#include "CameraController.h"
 #include "PlayerState.h"
 #include "PlayerStateAttack.h"
 #include "PlayerStateIdle.h"
@@ -18,6 +19,7 @@
 #include "ComponentTransform.h"
 #include "ComponentImage.h"
 #include "ComponentRenderer.h"
+#include "ComponentCamera.h"
 #include "ComponentText.h"
 #include "GameObject.h"
 
@@ -217,7 +219,31 @@ void PlayerMovement::CreatePlayerSkills()
 	circular->particles = App->scene->FindGameObjectByName("CircularAttackParticles");
 	stomp = new StompSkill(this, "Stomp", attackBoxTrigger);
 	rain = new RainSkill(this, "Rain", "RainPrefab");
+	rain->machetes = App->scene->FindGameObjectByName("MacheteRain");
+	if (rain->machetes)
+	{
+		macheteRainRenderer = rain->machetes->GetComponent<ComponentRenderer>();
+		if (macheteRainRenderer)
+		{
+			macheteRainRenderer->dissolve = true;
+			macheteRainRenderer->borderAmount = 0.04f;
+		}
+	}
+	else
+	{
+		LOG("Machete rain mesh not found");
+	}
+	macheteRainParticles = App->scene->FindGameObjectByName("MacheteRainParticles");
+	if (!macheteRainParticles)
+	{
+		LOG("Machete rain particles not found");
+	}
 
+	playerCamera = App->scene->FindGameObjectByName("PlayerCamera");
+	if (!playerCamera)
+	{
+		LOG("Player camera not found");
+	}
 	allSkills[SkillType::CHAIN]->skill = (BasicSkill*)chain;
 	allSkills[SkillType::DASH]->skill = (BasicSkill*)dash;
 	allSkills[SkillType::SLICE]->skill = (BasicSkill*)slice;
@@ -540,6 +566,29 @@ void PlayerMovement::Update()
 		else
 		{
 			bombDropMesh2->SetActive(false);
+		}
+	}
+
+	if (macheteRainActivated && rain->machetes)
+	{
+		if (rain->machetes && macheteRainRenderer && macheteRainParticles)
+		{
+			if (rain->machetes->transform->GetGlobalPosition().y > rain->targetHeight)
+			{
+				rain->machetes->transform->SetGlobalPosition(rain->machetes->transform->GetGlobalPosition() - math::float3(0, 100, 0));
+				macheteRainRenderer->dissolveAmount = 0.f;
+				shaking = false;
+			}
+			else
+			{
+				macheteRainRenderer->dissolveAmount += 1.0f * App->time->gameDeltaTime;
+				macheteRainParticles->SetActive(false);
+				if (!shaking && playerCamera)
+				{
+					shaking = true;
+					playerCamera->GetComponent<CameraController>()->Shake(0.5f, 25.f);
+				}
+			}
 		}
 	}
 		

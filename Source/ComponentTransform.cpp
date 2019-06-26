@@ -386,3 +386,27 @@ void ComponentTransform::Reset()
 	math::float4x4 animatedLocal = math::float4x4::identity;
 	math::float4x4 global = math::float4x4::identity;
 }
+
+ENGINE_API void ComponentTransform::SetGlobalPosition(const math::float3 & newPos)
+{
+	global.SetTranslatePart(newPos);
+	NewAttachment();
+}
+
+void ComponentTransform::NewAttachment()
+{
+	if (gameobject->parent->transform)
+	{
+		local = gameobject->parent->transform->global.Inverted().Mul(global);
+	}
+	else
+	{
+		local = global;
+	}
+
+	float3x3 rot;
+	local.Decompose(position, rot, scale);
+	rotation = rot.ToQuat();
+	UpdateGlobalTransform();
+	gameobject->movedFlag = true;
+}
