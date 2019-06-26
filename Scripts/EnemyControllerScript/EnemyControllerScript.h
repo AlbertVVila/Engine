@@ -58,10 +58,7 @@ public:
 public:
 	GameObject* player = nullptr;
 	PlayerMovement* playerMovement = nullptr;
-	std::string playerName = "Player";
-	std::string playerBboxName = "PlayerMesh";
-	std::string myBboxName = "EnemyMesh";
-	std::string hitMaterialName = "HitMaterial";
+	std::string playerTag = "Player";
 	ComponentAnimation* anim = nullptr;
 	ComponentRenderer* myRender = nullptr;
 

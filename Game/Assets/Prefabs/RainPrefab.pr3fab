@@ -1,10 +1,10 @@
 {
     "GameObjects": [
         {
-            "UID": 1776805503,
+            "UID": 1217825479,
             "ParentUID": 0,
             "Name": "RainPrefab",
-            "Tag": "Default",
+            "Tag": "PlayerHitBoxAttack",
             "Static": 0,
             "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
