@@ -22,6 +22,7 @@
 #include "ComponentRenderer.h"
 #include "ComponentTransform.h"
 #include "ComponentText.h"
+#include "BaseScript.h"
 
 #include "ResourceTexture.h"
 #include "ResourceMesh.h"
@@ -908,6 +909,8 @@ void ModuleScene::ResetQuadTree() //deprecated
 bool ModuleScene::PrefabWasUpdated(unsigned UID) const
 {
 	Resource* scene = App->resManager->GetByName(name.c_str(), TYPE::SCENE);
+	if (scene == nullptr) return false;
+
 	int prefabTime = App->fsystem->GetModTime(std::string(IMPORTED_PREFABS + std::to_string(UID) + PREFABEXTENSION).c_str());
 	int sceneTime = App->fsystem->GetModTime(std::string(IMPORTED_SCENES + std::to_string(scene->GetUID()) + SCENEEXTENSION).c_str());
 	App->resManager->DeleteResource(scene->GetUID());
@@ -1714,6 +1717,35 @@ GameObject * ModuleScene::Spawn(const char * name, GameObject * parent)
 	instance->parent = parent;
 	instance->transform->Reset();
 	AddToSpacePartition(instance);
+	if (App->time->gameState == GameState::RUN)
+	{
+		instance->OnPlay();
+		std::queue<GameObject*> gos;
+		gos.push(instance);
+		while (!gos.empty())
+		{
+			GameObject* go = gos.front();
+			gos.pop();
+			std::vector<Component*> components = go->GetComponents(ComponentType::Script);
+			for (size_t i = 0; i < components.size(); i++)
+			{
+				if (go->isActive())
+				{
+					((Script*)components[i])->Awake();
+					((Script*)components[i])->hasBeenAwoken = true;
+				}
+				if (components[i]->enabled)
+				{
+					((Script*)components[i])->Start();
+					((Script*)components[i])->hasBeenStarted = true;
+				}
+			}
+			for (const auto & child : go->children)
+			{
+					gos.push(child);
+			}
+		}
+	}
 	return instance;
 }
 

@@ -6,6 +6,15 @@
 class ComponentImage;
 class Text;
 class Transform2D;
+class ResourceTexture;
+
+enum class ButtonState
+{
+	NONE = 0,
+	DOWN,
+	REPEAT,
+	UP
+};
 
 class Button :	public Component
 {
@@ -25,10 +34,13 @@ public:
 	void AssemblyButton();
 
 	ENGINE_API inline bool IsHovered() { return isHovered; };
-	ENGINE_API inline bool IsPressed() { return isKeyDown; };
+	ENGINE_API inline bool IsPressed() { return state == ButtonState::DOWN; };
 
-	ENGINE_API inline bool KeyUp()	 { return isKeyUp; }
-	ENGINE_API inline bool KeyDown() { return isKeyDown; }
+	ENGINE_API inline bool KeyUp()	 { return state == ButtonState::UP; }
+	ENGINE_API inline bool KeyDown() { return state == ButtonState::DOWN; }
+
+	ENGINE_API void UpdateImageByName(std::string name);
+	ENGINE_API void UpdateImageByResource(ResourceTexture* name);
 
 	ComponentImage* buttonImage = nullptr;
 	ComponentImage* highlightedImage = nullptr;
@@ -40,8 +52,8 @@ public:
 
 	bool isHovered = false;
 	bool isSelected = false;
-	bool isKeyDown = false;
-	bool isKeyUp = false;
+
+	ButtonState state = ButtonState::NONE;
 
 	bool hoverDetectionMouse1 = true;
 	bool hoverDetectionMouse3 = true;

@@ -32,6 +32,11 @@ public:
 
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
+
+	inline virtual BasicEnemyAIScript* Clone() const
+	{
+		return new BasicEnemyAIScript(*this);
+	}
 private:
 	void CheckStates(EnemyState* previous, EnemyState* current);
 

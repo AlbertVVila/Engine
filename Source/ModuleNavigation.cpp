@@ -1254,11 +1254,7 @@ float ModuleNavigation::GetXZDistance(float3 a, float3 b) const
 float3 ModuleNavigation::getNextStraightPoint(float3 current, float3 pathDirection, float3 end, bool* destination) const
 {
 	//case we are already getting to the end
-	float smallestSide = MIN(playerBB.HalfSize().x, playerBB.HalfSize().z);
-	if (smallestSide == 0.0f)
-	{
-		smallestSide = 2.5f;
-	}
+	float smallestSide = 2.5f;
 	
 	if (Distance(current, end) < smallestSide)
 	{

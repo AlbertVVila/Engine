@@ -44,6 +44,7 @@
 #include "debugdraw.h"
 
 #include "ComponentAudioSource.h"
+#include "PlayerPrefs.h"
 
 #define SKILLS_SLOTS 5
 
@@ -490,6 +491,31 @@ void PlayerMovement::Start()
 		LOG("SlashTrail not found");
 	}
 
+	if (PlayerPrefs::HasKey("dexterity"))
+	{
+		stats.dexterity = PlayerPrefs::GetFloat("dexterity");
+	}
+	if (PlayerPrefs::HasKey("health"))
+	{
+		stats.health = PlayerPrefs::GetFloat("health");
+	}
+	if (PlayerPrefs::HasKey("hpRegen"))
+	{
+		stats.hpRegen = PlayerPrefs::GetFloat("hpRegen");
+	}
+	if (PlayerPrefs::HasKey("mana"))
+	{
+		stats.mana = PlayerPrefs::GetFloat("mana");
+	}
+	if (PlayerPrefs::HasKey("manaRegen"))
+	{
+		stats.manaRegen = PlayerPrefs::GetFloat("manaRegen");
+	}
+	if (PlayerPrefs::HasKey("strength"))
+	{
+		stats.strength = PlayerPrefs::GetFloat("strength");
+	}
+	
 	InitializeUIStatsObjects();
 	LOG("Started player movement script");
 }
@@ -849,10 +875,7 @@ void PlayerMovement::DeSerialize(JSON_value* json)
 
 void PlayerMovement::OnTriggerExit(GameObject* go)
 {
-	//if (go->name == "HitBoxAttack")
-	//{
-	//	Damage(10);
-	//}
+
 }
 
 bool PlayerMovement::IsAtacking() const
@@ -1129,3 +1152,12 @@ void PlayerMovement::InitializeUIStatsObjects()
 	}
 }
 
+void PlayerMovement::SavePlayerStats()
+{
+	PlayerPrefs::SetFloat("dexterity", stats.dexterity);
+	PlayerPrefs::SetFloat("health", stats.health);
+	PlayerPrefs::SetFloat("hpRegen", stats.hpRegen);
+	PlayerPrefs::SetFloat("mana", stats.mana);
+	PlayerPrefs::SetFloat("manaRegen", stats.manaRegen);
+	PlayerPrefs::SetFloat("strength", stats.strength);
+}

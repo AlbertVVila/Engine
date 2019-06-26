@@ -155,6 +155,11 @@ GameObject* ResourcePrefab::RetrievePrefab()
 
 	std::list<ComponentRenderer*> renderers;
 
+	if (prefabValue == nullptr)
+	{
+		LOG("Error retrieving prefab");
+		return nullptr;
+	}
 	unsigned size = prefabValue->Size();
 	for (unsigned i = 0; i < size; i++)
 	{
@@ -182,7 +187,11 @@ GameObject* ResourcePrefab::RetrievePrefab()
 		root->isPrefabSync = true;
 		root->isPrefab = true;
 		root->prefabUID = UID;
-		root->transform->Reset();
+
+		if (root->transform != nullptr) //TODO: Needs to adapt to transform2D for UI
+		{
+			root->transform->Reset();
+		}
 
 		ComponentRenderer* renderer = nullptr;
 		renderer = (ComponentRenderer*)gameobject->GetComponentOld(ComponentType::Renderer);

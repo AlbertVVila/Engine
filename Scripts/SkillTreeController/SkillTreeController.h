@@ -20,15 +20,24 @@ class SkillTreeController_API SkillTreeController : public Script
 {
 public:
 	void Start() override;
+	void UnlockNextLevel(int i);
 	void Update() override;
 
 	void AddSkillPoint();
+	std::vector<Skill> GetActiveSkills();
 
 	void Expose(ImGuiContext* context) override;
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
 
+	void SaveSkillTree();
+
+	inline virtual SkillTreeController* Clone() const
+	{
+		return new SkillTreeController(*this);
+	}
 private:
+
 	int skillPoints = 0;
 
 	GameObject* skills = nullptr;
@@ -41,6 +50,8 @@ private:
 
 	std::vector<std::string> textureFiles;
 	Skill skillList[13];
+
+	int a = -1;
 };
 
 #endif __SkillTreeController_h__

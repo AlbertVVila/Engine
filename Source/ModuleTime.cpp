@@ -32,8 +32,7 @@ void ModuleTime::UpdateTime()
 	realTime += realDeltaTime;
 
 	++totalFrames;
-	gameDeltaTime = frameTimer.ReadSeconds();
-	fullGameDeltaTime = gameDeltaTime;
+	gameDeltaTime = realDeltaTime;
 
 	if (temporaryFreeze)
 	{
@@ -62,6 +61,7 @@ void ModuleTime::UpdateTime()
 		fpsTimer.Reset();
 	}
 
+	gameDeltaTime *= gameTimeScale;
 	if (gameDeltaTime > MAX_FRAME_MS)
 	{
 		PartitionTime();
@@ -70,7 +70,6 @@ void ModuleTime::UpdateTime()
 	{
 		isTimePartitioned = false;
 	}
-	gameDeltaTime *= gameTimeScale;
 }
 
 void ModuleTime::ResetGameDetaTime()

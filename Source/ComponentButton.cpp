@@ -164,35 +164,47 @@ void Button::Update()
 		text->isHovered = false;
 	}
 
-	if (isKeyDown && !isHovered)
+	switch (state)
 	{
-		isKeyDown = false;
-		pressedImage->enabled = false;
+	case ButtonState::NONE:
+		if (isHovered && App->input->GetMouseButtonDown(1) == KEY_DOWN) state = ButtonState::DOWN;
+		break;
 
-	}
-
-	isKeyUp = false;
-	if (isHovered && isKeyDown && App->input->GetMouseButtonDown(1) == KEY_UP)
-	{
-		isKeyUp = true;
-		isKeyDown = false;
-		pressedImage->enabled = false;
-	}
-
-	if (isHovered && App->input->GetMouseButtonDown(1) == KEY_DOWN)
-	{
-		isKeyDown = true;
+	case ButtonState::DOWN:
 		buttonImage->enabled = false;
 		highlightedImage->enabled = false;
 		pressedImage->enabled = true;
+
+		if (!isHovered) state = ButtonState::UP;
+		else if (App->input->GetMouseButtonDown(1) == KEY_UP) state = ButtonState::UP;
+		else if (App->input->GetMouseButtonDown(1) == KEY_IDLE) state = ButtonState::UP;
+		else state = ButtonState::REPEAT;				
+		break;
+
+	case ButtonState::REPEAT:
+		if (!isHovered) state = ButtonState::UP;
+		else if (App->input->GetMouseButtonDown(1) == KEY_UP) state = ButtonState::UP;
+		else if (App->input->GetMouseButtonDown(1) == KEY_IDLE) state = ButtonState::UP;
+		break;
+
+	case ButtonState::UP:
+		buttonImage->enabled = !isHovered;
+		highlightedImage->enabled = isHovered;
+		pressedImage->enabled = true;
+
+		if (isHovered && App->input->GetMouseButtonDown(1) == KEY_DOWN) state = ButtonState::DOWN;
+		else state = ButtonState::NONE;
+		break;
+
+	default:
+		break;
 	}
 }
 
 void Button::Enable(bool enable)
 {
 	Component::Enable(enable);
-	isKeyDown = false;
-	isKeyUp = false;
+	state = ButtonState::NONE;
 	isHovered = false;
 	isSelected = false;
 	highlightedImage->enabled = false;
@@ -210,4 +222,18 @@ void Button::AssemblyButton()
 	buttonImage->enabled = true;
 	highlightedImage->enabled = false;
 	pressedImage->enabled = false;
+}
+
+void Button::UpdateImageByName(std::string name)
+{
+	buttonImage->UpdateTexture(name);
+	highlightedImage->UpdateTexture(name);
+	pressedImage->UpdateTexture(name);
+}
+
+void Button::UpdateImageByResource(ResourceTexture* texture)
+{
+	buttonImage->texture = texture;
+	highlightedImage->texture = texture;
+	pressedImage->texture = texture;
 }
