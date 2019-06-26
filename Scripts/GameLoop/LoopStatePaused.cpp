@@ -25,9 +25,9 @@ void LoopStatePaused::Enter()
 void LoopStatePaused::Update()
 {
 	if ( (gLoop->pauseResume && gLoop->pauseResume->KeyUp()) || 
-		gLoop->App->input->GetKey(SDL_SCANCODE_P) == KEY_UP ||
-		gLoop->App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_UP ||
-		gLoop->hudBackToMenuButton->KeyUp())
+		gLoop->App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN ||
+		gLoop->App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN ||
+		gLoop->hudBackToMenuButton->IsPressed())
 	{
 		gLoop->currentLoopState = (LoopState*)gLoop->playingState;
 		return;
