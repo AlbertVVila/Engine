@@ -25,6 +25,7 @@ void LoopStateMenu::Update()
 		gLoop->menu->SetActive(false);
 		gLoop->loadingGO->SetActive(true);
 		gLoop->sceneToLoad = GRAVEYARD_SCENE;
+		gLoop->gameScene = GameScene::CEMENTERY;
 	}
 	else if (gLoop->optionButton->IsPressed())
 	{
