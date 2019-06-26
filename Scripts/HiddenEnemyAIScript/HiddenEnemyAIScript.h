@@ -44,6 +44,8 @@ private:
 	void CheckStates(EnemyState* previous, EnemyState* current);
 	void DrawDebug() const;
 
+	void OnTriggerEnter(GameObject* go) override;
+
 public:
 	EnemyState* currentState = nullptr;
 
