@@ -16,6 +16,7 @@ class CombatAudioEvents_API CombatAudioEvents : public Script
 {
 public:
 	ComponentAudioSource* m1AttackSound = nullptr;
+	ComponentAudioSource* stepSound = nullptr;
 
 public:
 	void Start() override;
