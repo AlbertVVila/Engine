@@ -205,7 +205,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>if not exist  $(ProjectDir)lib mkdir $(ProjectDir)lib 
+      <Command>if not exist  "$(ProjectDir)lib" mkdir "$(ProjectDir)lib" 
 xcopy /y /d "$(OutDir)$(ProjectName).dll" "$(SolutionDir)Game"
 xcopy /y /d "$(OutDir)$(ProjectName).lib" "$(ProjectDir)lib"</Command>
     </PostBuildEvent>
@@ -225,7 +225,7 @@ xcopy /y /d "$(OutDir)$(ProjectName).lib" "$(ProjectDir)lib"</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
-      <Command>if not exist  $(ProjectDir)lib mkdir $(ProjectDir)lib 
+      <Command>if not exist  "$(ProjectDir)lib" mkdir "$(ProjectDir)lib" 
 xcopy /y /d "$(OutDir)$(ProjectName).dll" "$(SolutionDir)Game"
 xcopy /y /d "$(OutDir)$(ProjectName).lib" "$(ProjectDir)lib"</Command>
     </PostBuildEvent>
