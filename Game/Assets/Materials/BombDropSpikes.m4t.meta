@@ -1,7 +1,7 @@
 {
     "Material": {
         "GUID": 905348600,
-        "timeCreated": 1561474884,
+        "timeCreated": 1561529471,
         "DifusseColor": [
             1.0,
             1.0,
@@ -17,8 +17,6 @@
             1.0,
             1.0,
             1.0
-        ],
-        "emissiveUID": 112553618,
-        "shader": "PBR"
+        ]
     }
 }
