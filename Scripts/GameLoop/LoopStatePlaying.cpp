@@ -69,9 +69,9 @@ void LoopStatePlaying::Update()
 		gLoop->missionsButton->rectTransform->setPosition(math::float2(-50, gLoop->missionsButton->rectTransform->getPosition().y));
 
 	}
-	if (gLoop->inventoryButton->IsPressed() && !gLoop->inventoryButton->enabled) gLoop->menuButtonsSound->Play();
-	if (gLoop->skillsButton->IsPressed() && !gLoop->skillsButton->enabled) gLoop->menuButtonsSound->Play();
-	if (gLoop->missionsButton->IsPressed() && !gLoop->missionsButton->enabled) gLoop->menuButtonsSound->Play();
+	if (gLoop->inventoryButton->IsPressed() && !gLoop->inventoryMenuGO->isActive())	gLoop->menuButtonsSound->Play();
+	if (gLoop->skillsButton->IsPressed() && !gLoop->skillsMenuGO->isActive()) gLoop->menuButtonsSound->Play();
+	if (gLoop->missionsButton->IsPressed() && !gLoop->missionsMenuGO->isActive()) gLoop->menuButtonsSound->Play();
 
 	if (gLoop->inventoryButton->IsPressed() || gLoop->skillsButton->IsPressed() || gLoop->missionsButton->IsPressed())
 	{
