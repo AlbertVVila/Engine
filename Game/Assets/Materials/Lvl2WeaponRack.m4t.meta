@@ -1,0 +1,25 @@
+{
+    "Material": {
+        "GUID": 3926371926,
+        "timeCreated": 1561577896,
+        "DifusseColor": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "specularColor": [
+            9.999999974752428e-7,
+            9.999899930335233e-7,
+            9.999899930335233e-7
+        ],
+        "emissiveColor": [
+            1.0,
+            1.0,
+            1.0
+        ],
+        "diffuseUID": 3346964537,
+        "normalUID": 1474370369,
+        "shader": "PBR"
+    }
+}
