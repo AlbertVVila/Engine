@@ -444,6 +444,17 @@ void PlayerMovement::Start()
 		LOG("BombDropMesh not found");
 	}
 
+	bombDropMesh2 = App->scene->FindGameObjectByName("BombDropMesh2");
+
+	if (bombDropMesh2)
+	{
+		bombDropMesh2Scale = bombDropMesh2->transform->scale;
+	}
+	else
+	{
+		LOG("BombDropMesh not found");
+	}
+
 	bombDropParticlesLanding = App->scene->FindGameObjectByName("BombDropParticlesLanding");
 
 	InitializeUIStatsObjects();
@@ -505,7 +516,7 @@ void PlayerMovement::Update()
 		int healthPercentage = (health / stats.health) * 100;
 		lifeUIComponent->SetMaskAmount(healthPercentage);
 	}
-	if (bombDropExpanding && bombDropMesh1)
+	if (bombDropExpanding && bombDropMesh1 && bombDropMesh2)
 	{
 		if (bombDropMesh1->transform->scale.x < MAX_BOMB_DROP_SCALE)
 		{
@@ -514,6 +525,14 @@ void PlayerMovement::Update()
 		else
 		{
 			bombDropMesh1->transform->Rotate(math::float3(0.0f, BOMB_DROP_ROT, 0.0f));
+		}
+		if (bombDropMesh2->transform->scale.x < MAX_BOMB_DROP_WAVE_SCALE)
+		{
+			bombDropMesh2->transform->Scale(bombDropWaveGrowRate);
+		}
+		else
+		{
+			bombDropMesh2->SetActive(false);
 		}
 	}
 		
@@ -579,9 +598,10 @@ void PlayerMovement::OnAnimationEvent(std::string name)
 		{
 			bombDropParticles->SetActive(false);
 		}
-		if (bombDropMesh1)
+		if (bombDropMesh1 && bombDropMesh2)
 		{
 			bombDropMesh1->SetActive(true);
+			bombDropMesh2->SetActive(true);
 		}
 		if (bombDropParticlesLanding)
 		{
@@ -596,11 +616,14 @@ void PlayerMovement::OnAnimationEvent(std::string name)
 	if (name == "BombDropEnd")
 	{
 		bombDropExpanding = false;
-		if (bombDropMesh1)
+		if (bombDropMesh1 && bombDropMesh2)
 		{
 			bombDropMesh1->transform->scale = bombDropMesh1Scale;
 			bombDropMesh1->transform->Scale(1.0f);
 			bombDropMesh1->SetActive(false);
+			bombDropMesh2->transform->scale = bombDropMesh2Scale;
+			bombDropMesh2->transform->Scale(1.0f);
+			bombDropMesh2->SetActive(false);
 		}
 		if (bombDropParticlesLanding)
 		{

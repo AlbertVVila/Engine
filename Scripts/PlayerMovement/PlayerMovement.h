@@ -31,6 +31,7 @@ struct ImGuiContext;
 #define HUB_BUTTON_R 8
 
 #define MAX_BOMB_DROP_SCALE 200.f
+#define MAX_BOMB_DROP_WAVE_SCALE 240.f
 #define BOMB_DROP_ROT 2.5f
 
 class ComponentAnimation;
@@ -250,9 +251,12 @@ private:
 	GameObject* bombDropParticles = nullptr;
 	GameObject* bombDropParticlesLanding = nullptr;
 	GameObject* bombDropMesh1 = nullptr;
+	GameObject* bombDropMesh2 = nullptr;
 	math::float3 bombDropMesh1Scale = math::float3::one;
+	math::float3 bombDropMesh2Scale = math::float3::one;
 	bool bombDropExpanding = false;
 	float bombDropGrowRate = 1.3f;
+	float bombDropWaveGrowRate = 1.05f;
 
 	DamageController* damageController = nullptr;
 	DamageFeedbackUI* damageUIFeedback = nullptr;
