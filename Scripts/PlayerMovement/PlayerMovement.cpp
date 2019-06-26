@@ -457,6 +457,13 @@ void PlayerMovement::Start()
 
 	bombDropParticlesLanding = App->scene->FindGameObjectByName("BombDropParticlesLanding");
 
+	slashTrail = App->scene->FindGameObjectByName("SlashTrail");
+
+	if (!slashTrail)
+	{
+		LOG("SlashTrail not found");
+	}
+
 	InitializeUIStatsObjects();
 	LOG("Started player movement script");
 }
@@ -630,6 +637,17 @@ void PlayerMovement::OnAnimationEvent(std::string name)
 			bombDropParticlesLanding->SetActive(false);
 		}
 	}
+	if (name == "SlashStart" && slashTrail)
+	{
+		LOG("SlashStart");
+		slashTrail->SetActive(true);
+	}
+	if ((name == "SlashEnd" || name == "SlashBegin") && slashTrail)
+	{
+		LOG("SlashEnd");
+		slashTrail->SetActive(false);
+	}
+
 }
 
 void PlayerMovement::Serialize(JSON_value* json) const

@@ -258,6 +258,8 @@ private:
 	float bombDropGrowRate = 1.3f;
 	float bombDropWaveGrowRate = 1.05f;
 
+	GameObject* slashTrail = nullptr;
+
 	DamageController* damageController = nullptr;
 	DamageFeedbackUI* damageUIFeedback = nullptr;
 	ComponentImage* lifeUIComponent = nullptr;
