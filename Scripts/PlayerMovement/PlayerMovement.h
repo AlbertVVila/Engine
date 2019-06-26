@@ -133,6 +133,11 @@ public:
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
 
+	inline virtual PlayerMovement* Clone() const
+	{
+		return new PlayerMovement(*this);
+	}
+
 	void OnTriggerExit(GameObject* go) override;
 	void Damage(float amount);
 

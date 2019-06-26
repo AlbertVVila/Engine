@@ -26,6 +26,11 @@ class ChestScript_API ChestScript : public Script
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
 
+	inline virtual ChestScript* Clone() const
+	{
+		return new ChestScript(*this);
+	}
+
 private:
 	GameObject* player = nullptr;
 	std::string playerName = "Player";

@@ -27,6 +27,11 @@ public:
 	void Update() override;
 
 	void SetLifeBar(int maxHP, int actualHP, EnemyLifeBarType type, std::string name);
+	
+	inline virtual EnemyLifeBarController* Clone() const
+	{
+		return new EnemyLifeBarController(*this);
+	}
 
 private:
 	GameObject* lifeBackground = nullptr;

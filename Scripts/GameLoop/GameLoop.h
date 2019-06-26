@@ -54,6 +54,10 @@ public :
 
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
+	inline virtual GameLoop* Clone() const
+	{
+		return new GameLoop(*this);
+	}
 
 public:
 

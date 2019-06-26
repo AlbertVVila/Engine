@@ -26,7 +26,10 @@ class EquipPopupController_API EquipPopupController : public Script
 	void Start() override;
 	void Update() override;
 
-
+	inline virtual EquipPopupController* Clone() const
+	{
+		return new EquipPopupController(*this);
+	}
 
 
 private:
