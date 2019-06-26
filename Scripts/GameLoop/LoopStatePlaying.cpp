@@ -11,6 +11,12 @@
 #include "Math/float2.h"
 #include "PlayerMovement.h"
 
+#include "InventoryScript.h"
+#include "EquipPopupController.h"
+#include "SkillTreeController.h"
+#include "ExperienceController.h"
+#include "PlayerMovement.h"
+
 #define MENU_SCENE "MenuScene"
 #define TEMPLE_SCENE "Level2-TheForbiddenTempleV1"
 
@@ -79,6 +85,17 @@ void LoopStatePlaying::Update()
 	}
 	else if (gLoop->winBbox->Intersects(*(gLoop->playerBbox)))
 	{
+
+		if (gLoop->gameScene == GameScene::CEMENTERY || gLoop->gameScene == GameScene::TEMPLE)
+		{
+			gLoop->inventoryScript->SaveInventory();
+			gLoop->skillTreeScript->SaveSkillTree();
+			gLoop->experienceScript->SaveExperience();
+			gLoop->equipPopUpScript->SavePopUp();
+			gLoop->playerScript->SavePlayerStats();
+		}
+		
+
 		if (gLoop->gameScene == GameScene::CEMENTERY)
 		{
 			gLoop->currentLoopState = (LoopState*)gLoop->loadingState;

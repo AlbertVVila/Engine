@@ -159,6 +159,8 @@ public:
 	//void ResetCooldown(unsigned int hubButtonID);
 	void UseSkill(SkillType skill);
 
+	void SavePlayerStats();
+
 private:
 	void CheckStates(PlayerState* previous, PlayerState* current);
 	void CreatePlayerStates();

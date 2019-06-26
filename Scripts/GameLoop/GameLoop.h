@@ -22,6 +22,10 @@ class PlayerMovement;
 class EnemyMovementScript;
 class IntroScript;
 class CreditsScript;
+class InventoryScript;
+class EquipPopupController;
+class SkillTreeController;
+class ExperienceController;
 class AABB;
 class JSON_value;
 
@@ -166,6 +170,10 @@ public:
 	EnemyMovementScript* enemyMovementScript = nullptr;
 	IntroScript* introScript = nullptr;
 	CreditsScript* creditsScript = nullptr;
+	InventoryScript* inventoryScript = nullptr;
+	EquipPopupController* equipPopUpScript = nullptr;
+	SkillTreeController* skillTreeScript = nullptr;
+	ExperienceController* experienceScript = nullptr;
 
 	//Camera
 	ComponentCamera* componentIntroCamera = nullptr;

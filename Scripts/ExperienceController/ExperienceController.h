@@ -32,6 +32,8 @@ class ExperienceController_API ExperienceController : public Script
 public:
 	void AddXP(int xp);
 
+	void SaveExperience();
+
 private:
 	Text* xpText = nullptr;
 	Text* levelText = nullptr;
