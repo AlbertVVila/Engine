@@ -19,7 +19,7 @@
 #include "PlayerMovement.h"
 
 #define MENU_SCENE "MenuScene"
-#define TEMPLE_SCENE "Level2-TheForbiddenTempleV1"
+#define TEMPLE_SCENE "Level2-ForbiddenTemple"
 
 LoopStatePlaying::LoopStatePlaying(GameLoop* GL) : LoopState(GL)
 {
@@ -109,14 +109,14 @@ void LoopStatePlaying::Update()
 			gLoop->App->scene->actionAfterLoad = true;
 			gLoop->App->scene->stateAfterLoad = "Temple";
 			gLoop->stateAfterLoad = (LoopState*)gLoop->creditsState;
-			gLoop->gameScene == GameScene::TEMPLE;
+			gLoop->gameScene = GameScene::TEMPLE;
 			
 		}
 		else if (gLoop->gameScene == GameScene::TEMPLE)
 		{
 			gLoop->winWindow->SetActive(true);
 			gLoop->currentLoopState = (LoopState*)gLoop->winState;
-			gLoop->gameScene == GameScene::MENU;
+			gLoop->gameScene = GameScene::MENU;
 		}
 	}
 }
