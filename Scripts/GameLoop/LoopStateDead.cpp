@@ -7,7 +7,6 @@
 #include "GameObject.h"
 #include "ComponentButton.h"
 
-#define GRAVEYARD_SCENE "Level0-TheGraveyard"
 
 LoopStateDead::LoopStateDead(GameLoop* GL) : LoopState(GL)
 {
@@ -26,7 +25,14 @@ void LoopStateDead::Update()
 		gLoop->loadingGO->SetActive(true);
 		gLoop->playerMenuGO->SetActive(false);
 		gLoop->currentLoopState = (LoopState*)gLoop->loadingState;
-		gLoop->sceneToLoad = GRAVEYARD_SCENE;
+		if (gLoop->gameScene == GameScene::CEMENTERY)
+		{
+			gLoop->sceneToLoad = GRAVEYARD_SCENE;
+		}
+		else if (gLoop->gameScene == GameScene::TEMPLE)
+		{
+			gLoop->sceneToLoad = TEMPLE_SCENE;
+		}
 		gLoop->App->scene->stateAfterLoad = "Intro";
 		gLoop->stateAfterLoad = (LoopState*)gLoop->introState;
 		gLoop->actionAfterLoad = true;
