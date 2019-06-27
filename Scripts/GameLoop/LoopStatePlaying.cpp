@@ -18,9 +18,6 @@
 #include "ExperienceController.h"
 #include "PlayerMovement.h"
 
-#define MENU_SCENE "MenuScene"
-#define TEMPLE_SCENE "Level2-ForbiddenTemple"
-
 LoopStatePlaying::LoopStatePlaying(GameLoop* GL) : LoopState(GL)
 {
 }
