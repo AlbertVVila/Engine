@@ -41,7 +41,11 @@ void LoopStatePaused::Update()
 
 	if (gLoop->pauseExit && gLoop->pauseExit->KeyUp())
 	{
-		gLoop->currentLoopState = (LoopState*)gLoop->quitState;
+		gLoop->currentLoopState = (LoopState*)gLoop->loadingState;
+		gLoop->playerMenuGO->SetActive(false);
+		gLoop->hudGO->SetActive(false);
+		gLoop->loadingGO->SetActive(true);
+		gLoop->sceneToLoad = MENU_SCENE;
 		return;
 	}
 }

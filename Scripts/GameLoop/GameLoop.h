@@ -11,6 +11,8 @@
 #define GameLoop_API __declspec(dllimport)
 #endif
 
+#define MENU_SCENE "MenuScene"
+
 #include <vector>
 
 class Component;
