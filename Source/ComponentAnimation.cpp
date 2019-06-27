@@ -567,6 +567,8 @@ void ComponentAnimation::Load(JSON_value* value)
 
 void ComponentAnimation::SetIndexChannels(GameObject* GO, ResourceAnimation* anim)
 {
+	if (anim == nullptr) return;
+
 	GO->animationIndexChannel = 999u;
 	GO->animationIndexChannel = anim->GetIndexChannel(GO->name.c_str());
 
