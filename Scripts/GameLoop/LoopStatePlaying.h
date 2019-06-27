@@ -11,10 +11,13 @@ class LoopStatePlaying :
 public:
 	LoopStatePlaying(GameLoop* GL);
 	virtual ~LoopStatePlaying();
-
-	void HandleHotkeys();
-
+	
 	void Update() override;
+
+private:
+	void LoadMainMenu();
+	void OpenMenu(GameObject* menu);
+	void CloseMenu();
 };
 
 #endif // __LOOPSTATEPLAYING_H_

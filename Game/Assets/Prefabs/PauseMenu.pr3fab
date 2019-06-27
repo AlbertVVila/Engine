@@ -1,7 +1,7 @@
 {
     "GameObjects": [
         {
-            "UID": 972556916,
+            "UID": 1479348760,
             "ParentUID": 1,
             "Name": "PauseMenu",
             "Tag": "Default",
@@ -80,8 +80,8 @@
             ]
         },
         {
-            "UID": 1926486583,
-            "ParentUID": 972556916,
+            "UID": 470821047,
+            "ParentUID": 1479348760,
             "Name": "Background",
             "Tag": "Default",
             "Static": 0,
@@ -130,8 +130,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1290460716,
-                    "textureName": "backgroundPause",
+                    "textureUID": 0,
+                    "textureName": "",
                     "color": [
                         1.0,
                         1.0,
@@ -149,8 +149,8 @@
             ]
         },
         {
-            "UID": 3302590189,
-            "ParentUID": 972556916,
+            "UID": 2718471409,
+            "ParentUID": 1479348760,
             "Name": "LineTop",
             "Tag": "Default",
             "Static": 0,
@@ -199,8 +199,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3445086204,
-                    "textureName": "lineOrange",
+                    "textureUID": 0,
+                    "textureName": "",
                     "color": [
                         1.0,
                         1.0,
@@ -218,8 +218,8 @@
             ]
         },
         {
-            "UID": 3026915052,
-            "ParentUID": 972556916,
+            "UID": 1027009813,
+            "ParentUID": 1479348760,
             "Name": "Title",
             "Tag": "Default",
             "Static": 0,
@@ -298,8 +298,8 @@
             ]
         },
         {
-            "UID": 1297373224,
-            "ParentUID": 972556916,
+            "UID": 1709166940,
+            "ParentUID": 1479348760,
             "Name": "LineBot",
             "Tag": "Default",
             "Static": 0,
@@ -348,8 +348,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3445086204,
-                    "textureName": "lineOrange",
+                    "textureUID": 0,
+                    "textureName": "",
                     "color": [
                         1.0,
                         1.0,
@@ -367,8 +367,8 @@
             ]
         },
         {
-            "UID": 3206745167,
-            "ParentUID": 972556916,
+            "UID": 2348741599,
+            "ParentUID": 1479348760,
             "Name": "FlameLeft",
             "Tag": "Default",
             "Static": 0,
@@ -417,8 +417,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3226539889,
-                    "textureName": "soulSkeletonIcon",
+                    "textureUID": 0,
+                    "textureName": "",
                     "color": [
                         1.0,
                         1.0,
@@ -427,17 +427,17 @@
                     ],
                     "FlipVertical": 0,
                     "FlipHorizontal": 0,
-                    "isMasked": 1,
-                    "maskAmount": 60,
-                    "isMaskHorizontal": 1,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1
                 }
             ]
         },
         {
-            "UID": 716513426,
-            "ParentUID": 972556916,
+            "UID": 4177886226,
+            "ParentUID": 1479348760,
             "Name": "FlameRight",
             "Tag": "Default",
             "Static": 0,
@@ -486,8 +486,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3226539889,
-                    "textureName": "soulSkeletonIcon",
+                    "textureUID": 0,
+                    "textureName": "",
                     "color": [
                         1.0,
                         1.0,
@@ -496,17 +496,17 @@
                     ],
                     "FlipVertical": 0,
                     "FlipHorizontal": 1,
-                    "isMasked": 1,
-                    "maskAmount": 60,
-                    "isMaskHorizontal": 1,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1
                 }
             ]
         },
         {
-            "UID": 3477180275,
-            "ParentUID": 972556916,
+            "UID": 4181033853,
+            "ParentUID": 1479348760,
             "Name": "ResumeButton",
             "Tag": "Default",
             "Static": 0,
@@ -588,8 +588,8 @@
                     "buttonImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 2592195707,
-                        "textureName": "transparentButton",
+                        "textureUID": 0,
+                        "textureName": "",
                         "color": [
                             1.0,
                             1.0,
@@ -607,8 +607,8 @@
                     "highlightedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 2592195707,
-                        "textureName": "transparentButton",
+                        "textureUID": 0,
+                        "textureName": "",
                         "color": [
                             1.0,
                             1.0,
@@ -626,8 +626,8 @@
                     "pressedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 2592195707,
-                        "textureName": "transparentButton",
+                        "textureUID": 0,
+                        "textureName": "",
                         "color": [
                             0.29411765933036806,
                             0.29411765933036806,
@@ -648,8 +648,8 @@
             ]
         },
         {
-            "UID": 3718629539,
-            "ParentUID": 972556916,
+            "UID": 3030688229,
+            "ParentUID": 1479348760,
             "Name": "OptionsButton",
             "Tag": "Default",
             "Static": 0,
@@ -731,8 +731,8 @@
                     "buttonImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 2592195707,
-                        "textureName": "transparentButton",
+                        "textureUID": 0,
+                        "textureName": "",
                         "color": [
                             1.0,
                             1.0,
@@ -750,8 +750,8 @@
                     "highlightedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 2592195707,
-                        "textureName": "transparentButton",
+                        "textureUID": 0,
+                        "textureName": "",
                         "color": [
                             1.0,
                             1.0,
@@ -769,8 +769,8 @@
                     "pressedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 2592195707,
-                        "textureName": "transparentButton",
+                        "textureUID": 0,
+                        "textureName": "",
                         "color": [
                             0.29411765933036806,
                             0.29411765933036806,
@@ -791,8 +791,8 @@
             ]
         },
         {
-            "UID": 3284853969,
-            "ParentUID": 972556916,
+            "UID": 20662094,
+            "ParentUID": 1479348760,
             "Name": "ExitButton",
             "Tag": "Default",
             "Static": 0,
@@ -874,8 +874,8 @@
                     "buttonImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 2592195707,
-                        "textureName": "transparentButton",
+                        "textureUID": 0,
+                        "textureName": "",
                         "color": [
                             1.0,
                             1.0,
@@ -893,8 +893,8 @@
                     "highlightedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 2592195707,
-                        "textureName": "transparentButton",
+                        "textureUID": 0,
+                        "textureName": "",
                         "color": [
                             1.0,
                             1.0,
@@ -912,8 +912,8 @@
                     "pressedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 2592195707,
-                        "textureName": "transparentButton",
+                        "textureUID": 0,
+                        "textureName": "",
                         "color": [
                             0.29411765933036806,
                             0.29411765933036806,

@@ -27,6 +27,11 @@ class ProjectileScript_API ProjectileScript : public Script
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
 
+	inline virtual ProjectileScript* Clone() const
+	{
+		return new ProjectileScript(*this);
+	}
+
 public:
 	float speed = 1000.0f;
 	float lifeTime = 10.0f;

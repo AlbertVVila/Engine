@@ -5,6 +5,7 @@
 #include "GameObject.h"
 #include "ComponentButton.h"
 
+#include "PlayerPrefs.h"
 
 #define GRAVEYARD_SCENE "Level0-TheGraveyard"
 
@@ -25,6 +26,8 @@ void LoopStateMenu::Update()
 		gLoop->menu->SetActive(false);
 		gLoop->loadingGO->SetActive(true);
 		gLoop->sceneToLoad = GRAVEYARD_SCENE;
+		gLoop->gameScene = GameScene::CEMENTERY;
+		PlayerPrefs::DeleteAll(true);
 	}
 	else if (gLoop->optionButton->IsPressed())
 	{

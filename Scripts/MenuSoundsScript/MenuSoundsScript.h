@@ -21,7 +21,10 @@ public:
 	void Start() override;
 	void Update() override;
 
-
+	inline virtual MenuSoundsScript* Clone() const
+	{
+		return new MenuSoundsScript(*this);
+	}
 public:
 
 	std::vector<Component*> buttons;
