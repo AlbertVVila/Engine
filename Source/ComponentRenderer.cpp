@@ -296,6 +296,8 @@ void ComponentRenderer::Save(JSON_value* value) const
 	value->AddFloat("waterSpeed", waterSpeed);
 	value->AddInt("water", water);
 	value->AddInt("dissolve", dissolve);
+	value->AddFloat3("waterSource1", waterSource1);
+	value->AddFloat3("waterSource2", waterSource2);
 }
 
 void ComponentRenderer::Load(JSON_value* value)
@@ -329,6 +331,8 @@ void ComponentRenderer::Load(JSON_value* value)
 	water = value->GetInt("water");
 	texSpeed = value->GetFloat2("texSpeed");
 	dissolve = value->GetInt("dissolve");
+	waterSource1 = value->GetFloat3("waterSource1");
+	waterSource2 = value->GetFloat3("waterSource2");
 }
 
 void ComponentRenderer::SetMaterial(const char* materialName)

@@ -698,16 +698,19 @@ void ModuleRender::BlitShadowTexture()
 	for (ComponentRenderer* cr : shadowCasters)
 	{
 		unsigned variation = 0u;
-		if (cr->mesh->bindBones.size() > 0u)
+		if (cr->mesh)
 		{
-			variation |= (unsigned)ModuleProgram::Shadows_Variations::SKINNED;
+			if (cr->mesh->bindBones.size() > 0u)
+			{
+				variation |= (unsigned)ModuleProgram::Shadows_Variations::SKINNED;
+			}
+			glUseProgram(shadowsShader->id[variation]);
+			glUniformMatrix4fv(glGetUniformLocation(shadowsShader->id[variation],
+				"viewProjection"), 1, GL_TRUE, &shadowsFrustum.ViewProjMatrix()[0][0]);
+			glUniformMatrix4fv(glGetUniformLocation(shadowsShader->id[variation],
+				"model"), 1, GL_TRUE, &cr->gameobject->GetGlobalTransform()[0][0]);
+			cr->DrawMesh(shadowsShader->id[variation]);
 		}
-		glUseProgram(shadowsShader->id[variation]);
-		glUniformMatrix4fv(glGetUniformLocation(shadowsShader->id[variation],
-			"viewProjection"), 1, GL_TRUE, &shadowsFrustum.ViewProjMatrix()[0][0]);
-		glUniformMatrix4fv(glGetUniformLocation(shadowsShader->id[variation],
-			"model"), 1, GL_TRUE, &cr->gameobject->GetGlobalTransform()[0][0]);
-		cr->DrawMesh(shadowsShader->id[variation]);
 	}
 
 	glUseProgram(0);
