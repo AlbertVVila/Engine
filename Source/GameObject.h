@@ -97,6 +97,7 @@ private:
 
 	bool activeInHierarchy = true;
 	bool openInHierarchy = true;
+	bool showNavOptions = false;
 public:
 	unsigned UUID = 0;
 	unsigned parentUUID = 0; //only set in Save/Load scene TODO:update on parent change
