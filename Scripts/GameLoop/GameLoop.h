@@ -11,6 +11,8 @@
 #define GameLoop_API __declspec(dllimport)
 #endif
 
+#define MENU_SCENE "MenuScene"
+
 #include <vector>
 
 class Component;
@@ -136,6 +138,9 @@ public:
 	Button* missionsButton = nullptr;
 	Button* skillsButton = nullptr;
 	Button* closePlayerMenuButton = nullptr;
+	Button* pauseResume = nullptr;
+	Button* pauseOptions = nullptr;
+	Button* pauseExit = nullptr;
 	std::vector<Component*> volumeButtons;
 	std::vector<Component*> soundButtons;
 
@@ -156,6 +161,7 @@ public:
 	GameObject* inventoryMenuGO = nullptr;
 	GameObject* missionsMenuGO = nullptr;
 	GameObject* skillsMenuGO = nullptr;
+	GameObject* pauseMenuGO = nullptr;
 
 	//BBOX
 	math::AABB* playerBbox = nullptr;
