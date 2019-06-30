@@ -130,6 +130,9 @@ void ModuleUI::Draw(int currentWidth, int currentHeight)
 
 	std::queue<GameObject*> Q;
 	Q.push(App->scene->canvas);
+	unsigned count = 0U;
+
+	std::priority_queue<RenderOrdering> renderQ;
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -146,19 +149,13 @@ void ModuleUI::Draw(int currentWidth, int currentHeight)
 				switch (comp->type)
 				{
 				case ComponentType::Button:
-				{
-					Button* button = (Button*)comp;
-					RenderImage(*button->buttonImage, currentWidth, currentHeight);
-					RenderImage(*button->highlightedImage, currentWidth, currentHeight);
-					RenderImage(*button->pressedImage, currentWidth, currentHeight);
-					App->fontLoader->RenderText(*button->text, currentWidth, currentHeight);
+					renderQ.push( RenderOrdering( ((Button*)comp)->uiOrder, count++, comp ));
 					break;
-				}
 				case ComponentType::Image:
-					RenderImage(*(ComponentImage*)comp, currentWidth, currentHeight);
+					renderQ.push(RenderOrdering(((ComponentImage*)comp)->uiOrder, count++, comp));
 					break;
 				case ComponentType::Text:
-					App->fontLoader->RenderText(*(Text*)comp, currentWidth, currentHeight);
+					renderQ.push(  RenderOrdering(((Text*)comp)->uiOrder, count++, comp));
 					break;
 				}
 			}
@@ -168,6 +165,35 @@ void ModuleUI::Draw(int currentWidth, int currentHeight)
 			}
 		}
 	}
+
+	while (!renderQ.empty())
+	{
+		RenderOrdering top = renderQ.top();
+		Component* comp = top.component;
+
+		switch (comp->type)
+		{
+		case ComponentType::Button:
+		{
+			Button* button = (Button*)comp;
+			RenderImage(*button->buttonImage, currentWidth, currentHeight);
+			RenderImage(*button->highlightedImage, currentWidth, currentHeight);
+			RenderImage(*button->pressedImage, currentWidth, currentHeight);
+			App->fontLoader->RenderText(*button->text, currentWidth, currentHeight);
+			break;
+		}
+		case ComponentType::Image:
+			RenderImage(*(ComponentImage*)comp, currentWidth, currentHeight);
+			break;
+
+		case ComponentType::Text:
+			App->fontLoader->RenderText(*(Text*)comp, currentWidth, currentHeight);
+			break;
+		}
+
+		renderQ.pop();
+	}
+
 	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 }
