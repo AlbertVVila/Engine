@@ -77,6 +77,7 @@ uniform float waterMaxDistortion;
 
 out vec3 normalIn;
 out vec3 position;
+out vec3 positionWorld;
 out vec2 uv0;
 out vec3 viewPos;
 out vec3 pointPositions[MAX_POINT_LIGHTS];
@@ -84,35 +85,41 @@ out vec3 spotPositions[MAX_SPOT_LIGHTS];
 out vec3 spotDirections[MAX_SPOT_LIGHTS];
 out vec3 directionalDirections[MAX_DIRECTIONAL_LIGHTS];
 out vec4 shadow_coord;
+out vec3 eye_pos;
 
 void main()
 {
+
+	eye_pos = (transpose(mat3(view))*(-view[3].xyz));	
+
 #ifndef WATER	
 	#ifdef SKINNED
 		mat4 skin_t = palette[bone_indices[0]]*bone_weights[0]+palette[bone_indices[1]]*bone_weights[1]+
 		palette[bone_indices[2]]*bone_weights[2]+palette[bone_indices[3]]*bone_weights[3];
-		position = (skin_t*vec4(vertex_position, 1.0)).xyz;	
+		positionWorld = (skin_t*vec4(vertex_position, 1.0)).xyz;	
 		normalIn = (skin_t*vec4(vertex_normal, 0.0)).xyz; // 0.0 avoid translation
 		vec3 tan = (skin_t*vec4(vertex_tangent, 0.0)).xyz; // 0.0 avoid translation
 	#else
-		position = (model * vec4(vertex_position, 1.0)).xyz;
+		positionWorld = (model * vec4(vertex_position, 1.0)).xyz;
 		//normalIn = mat3(model) * vertex_normal;
 		normalIn = mat3(transpose(inverse(model))) * vertex_normal; //Temporary
 		vec3 tan = mat3(model) * vertex_tangent;
 	#endif
 	#ifdef SHADOWS_ENABLED
-		shadow_coord = lightProjView * vec4(position, 1.0);
+		shadow_coord = lightProjView * vec4(positionWorld, 1.0);
 	#endif
-		gl_Position = proj*view*vec4(position, 1.0);
-		vec3 bitan = cross(vertex_tangent, vertex_normal);
-		vec3 N = normalize(normalIn);
-		tan = normalize(tan - N * dot(N, tan));
-		vec3 T = normalize(tan);
-		vec3 B = cross(T, normalIn);	
-		mat3 TBNMat = transpose(mat3(T, B, N));
-		position = TBNMat * position;
-		viewPos = TBNMat * (transpose(mat3(view))*(-view[3].xyz));	
-		uv0 = vertex_uv0;
+	
+	gl_Position = proj*view*vec4(positionWorld, 1.0);
+	vec3 bitan = cross(vertex_tangent, vertex_normal);
+	vec3 N = normalize(normalIn);
+	tan = normalize(tan - N * dot(N, tan));
+	vec3 T = normalize(tan);
+	vec3 B = cross(T, normalIn);	
+	mat3 TBNMat = transpose(mat3(T, B, N));
+	position = TBNMat * positionWorld;
+	viewPos = TBNMat * eye_pos;
+	
+	uv0 = vertex_uv0;
 
 	normalIn = TBNMat * normalIn;
 
@@ -156,7 +163,10 @@ void main()
 	
 	normalIn = normalize(cross(vec3(1,0,dx), vec3(0,1,dy)));
 
-	position = (model*vec4(position, 1.0)).xyz;
+	positionWorld = position = (model*vec4(position, 1.0)).xyz;
 	gl_Position = proj*view*vec4(position, 1.0);	
+
+	viewPos = eye_pos;
+
 #endif	
 }

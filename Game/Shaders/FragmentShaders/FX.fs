@@ -33,7 +33,7 @@ void main()
 	vec2 tC1 = vec2(cellS + (invX * f1Xpos), cellT - (invY * f1Ypos));
 	vec2 tC2 = vec2(cellS + (invX * f2Xpos), cellT - (invY * f2Ypos));
 	color = mix(texture2D(texture, tC1), texture2D(texture, tC2) , mixAmount) * bloomIntensity * vec4(colorIn, 1.0f);
-	highlight = vec4(0);
+	//highlight = vec4(0);
 	
 	float brightness = dot(color.rgb, vec3(0.2126, 0.7152, 0.0722));
     if(brightness > 1)

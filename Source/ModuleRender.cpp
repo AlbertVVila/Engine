@@ -275,7 +275,7 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 	}
 
 	App->scene->Draw(*cam.frustum, isEditor);
-	App->particles->Render(App->time->fullGameDeltaTime, &cam);
+	App->particles->Render(App->time->gameDeltaTime, &cam);
 
 	
 	if (!isEditor)
@@ -319,7 +319,10 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 		glUniform1i(glGetUniformLocation(postProcessShader->id[0], "gBrightness"), 2);
 		glUniform1f(glGetUniformLocation(postProcessShader->id[0], "gammaCorrector"), gammaCorrector);
 		glUniform1f(glGetUniformLocation(postProcessShader->id[0], "exposure"), exposure);
-
+		
+		glUniform1f(glGetUniformLocation(postProcessShader->id[0], "fogFalloff"), 1.f / cam.fogFalloff);
+		glUniform1f(glGetUniformLocation(postProcessShader->id[0], "fogQuadratic"), 1.f / cam.fogQuadratic);
+		
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, renderedSceneGame);
 

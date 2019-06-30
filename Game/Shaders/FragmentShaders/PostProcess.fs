@@ -9,6 +9,9 @@ uniform sampler2D gBrightness;
 uniform float gammaCorrector;
 uniform float exposure;
 
+uniform float fogFalloff;
+uniform float fogQuadratic;
+
 in vec2 UV0;
 
 vec4 ProcessHighlights(vec4 hColorIn)
@@ -61,6 +64,12 @@ void main()
 {
 	color = GetTexel(UV0);	
 
+	float fragDistance = texture2D(gHighlight, UV0).a;	
+	float fogAmount = fogFalloff * fragDistance + fogQuadratic * fragDistance * fragDistance;	
+
+	//color = color + vec4(vec3(fogAmount, fogAmount, fogAmount) * fogParameters.fogColor, 0.f);	
+	color = color + vec4(vec3(fogAmount, fogAmount, fogAmount) * vec3(1,0,0), 0.f);	
+
 	vec3 bloomColor = texture(gBrightness, UV0).rgb;
 	
 	color += vec4(bloomColor, 1);
@@ -70,6 +79,4 @@ void main()
 	color = pow(mapped, vec4(1.0 / gammaCorrector)); // gamma correction
 	
 	color = ProcessHighlights(color);  //Draw highlights
-
-	
 }
