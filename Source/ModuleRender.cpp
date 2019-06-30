@@ -322,6 +322,7 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 		
 		glUniform1f(glGetUniformLocation(postProcessShader->id[0], "fogFalloff"), 1.f / cam.fogFalloff);
 		glUniform1f(glGetUniformLocation(postProcessShader->id[0], "fogQuadratic"), 1.f / cam.fogQuadratic);
+		glUniform3fv(glGetUniformLocation(postProcessShader->id[0], "fogColor"), 1, (GLfloat*)&cam.fogColor);
 		
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, renderedSceneGame);
@@ -426,9 +427,9 @@ void ModuleRender::OnResize()
 
 		glBindTexture(GL_TEXTURE_2D, highlightBufferGame);
 #ifndef GAME_BUILD
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, viewGame->current_width, viewGame->current_height, 0, GL_RGBA, GL_FLOAT, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, viewGame->current_width, viewGame->current_height, 0, GL_RGBA, GL_FLOAT, NULL);
 #else
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, App->window->width, App->window->height, 0, GL_RGBA, GL_FLOAT, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, App->window->width, App->window->height, 0, GL_RGBA, GL_FLOAT, NULL);
 #endif
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, highlightBufferGame, 0);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -836,6 +837,7 @@ void ModuleRender::DrawGUI()
 	}
 	ImGui::DragFloat("Gamma correction", &gammaCorrector, .05f, 1.2f, 3.2f);
 	ImGui::DragFloat("Exposure", &exposure, .05f, .1f, 10.0f);
+
 	/*if (ImGui::DragFloat("Bloom spread", &bloomSpread, .1f, 1.f, 4.f))
 	{
 		ComputeBloomKernel();

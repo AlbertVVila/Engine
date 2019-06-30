@@ -278,7 +278,7 @@ void main()
 	color = vec3(pow(color.r, (1.0 / 2.2)), pow(color.g, (1.0 / 2.2)), pow(color.b, (1.0 / 2.2)));
 #endif
 	Fragcolor = vec4(color, albedo.a);
-	highlightColor = vec4(highlightColorUniform, length(positionWorld) / 10000);
+	highlightColor = vec4(highlightColorUniform, length(positionWorld - eye_pos) / 100);
 	
 	float brightness = dot(Fragcolor.rgb, vec3(0.2126, 0.7152, 0.0722));
     if(brightness > 1)
@@ -296,6 +296,6 @@ void main()
 		discard;
 	}		
 #endif	
-		
+			
 	//Fragcolor = texture2D(material.dissolve_texture, uv0);
 }

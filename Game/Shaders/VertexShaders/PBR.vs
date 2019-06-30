@@ -71,6 +71,7 @@ uniform float waterAmplitude2;
 uniform float frequency2;
 uniform float decay2;
 uniform vec3 source2;
+uniform vec3 eyePosUniform;
 
 uniform float waterMaxDistortion;
 //
@@ -90,7 +91,7 @@ out vec3 eye_pos;
 void main()
 {
 
-	eye_pos = (transpose(mat3(view))*(-view[3].xyz));	
+	eye_pos = eyePosUniform;	
 
 #ifndef WATER	
 	#ifdef SKINNED
