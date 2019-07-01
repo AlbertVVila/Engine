@@ -70,6 +70,7 @@ Component* Button::Clone() const
 void Button::DrawProperties()
 {
 	ImGui::PushID(0);
+	ImGui::InputInt("UI Order", &uiOrder);
 	text->DrawProperties();
 	ImGui::Text("Button image");
 	ImGui::PushID(1);
@@ -106,6 +107,7 @@ void Button::Save(JSON_value* value) const
 	value->AddValue("pressedImage", *pValue);
 	value->AddInt("hoverDetectionMouse1", hoverDetectionMouse1);
 	value->AddInt("hoverDetectionMouse3", hoverDetectionMouse3);
+	value->AddInt("UIOrder", uiOrder);
 }
 
 void Button::Load(JSON_value* value)
@@ -129,6 +131,7 @@ void Button::Load(JSON_value* value)
 	AssemblyButton();
 	hoverDetectionMouse1 = value->GetInt("hoverDetectionMouse1", 1);
 	hoverDetectionMouse3 = value->GetInt("hoverDetectionMouse3", 1);
+	uiOrder = value->GetInt("UIOrder", 0);
 }
 
 void Button::Update()
