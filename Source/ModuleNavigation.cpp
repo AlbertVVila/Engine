@@ -1248,7 +1248,8 @@ float ModuleNavigation::GetXZDistance(float3 a, float3 b) const
 {
 	math::float2 p1(a.x, a.z);
 	math::float2 p2(b.x, b.z);
-	return p1.DistanceSq(p2);
+	//return p1.Distance(p2);
+	return a.DistanceSq(b);
 }
 
 float3 ModuleNavigation::getNextStraightPoint(float3 current, float3 pathDirection, float3 end, bool* destination) const
@@ -1294,7 +1295,8 @@ float3 ModuleNavigation::getNextStraightPoint(float3 current, float3 pathDirecti
 	return retValue;
 }
 
-bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vector<math::float3>& path, PathFindType type, math::float3 diff, float maxDist) const
+bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vector<math::float3>& path, 
+								PathFindType type, math::float3 diff, float maxDist, float ignoreDist) const
 {
 	path.clear();
 	dtPolyRef startPoly, endPoly;
@@ -1416,15 +1418,39 @@ bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vecto
 			}
 			float currentPathDistance = 0;
 			path.reserve(smoothNb);
-			for (size_t i = 0; i < smoothNb; i++)
+			math::float3 currentPoint, nextPoint;
+			currentPoint = nextPoint = float3(smoothPath[0], smoothPath[1], smoothPath[2]);
+			bool maxDistPassed = false;
+			for (size_t i = 0; i < smoothNb && !maxDistPassed; i++)
 			{
-				path.push_back(float3(smoothPath[i * 3], smoothPath[i * 3 + 1], smoothPath[i * 3 + 2]));
+				currentPoint = nextPoint;
+				nextPoint = float3(smoothPath[i * 3], smoothPath[i * 3 + 1], smoothPath[i * 3 + 2]);
 				//check distance
-				//if (i != 0) currentPathDistance += path[i - 1].DistanceSq(path[i]); //3d distance
-				if (i != 0) currentPathDistance += GetXZDistance(path[i - 1], path[i]);//2d distance
-				if (currentPathDistance > maxDist)	return true;
+				currentPathDistance += GetXZDistance(currentPoint, nextPoint);//2d distance
+
+				if (currentPathDistance < maxDist)
+				{
+					path.push_back(float3(smoothPath[i * 3], smoothPath[i * 3 + 1], smoothPath[i * 3 + 2]));
+				}
+				
+				if (currentPathDistance > ignoreDist)
+				{
+					std::stringstream s;
+					s << "Ignoring distance, dist = " << currentPathDistance << ", amount of points = " << path.size();
+					LOG(s.str().c_str());
+					path.clear();
+					//return true;
+					type = PathFindType::NODODGE;
+					maxDistPassed = true;
+				}
 			}
-			return true;
+			if (!maxDistPassed)
+			{
+				std::stringstream s;
+				s << "Going dodging obstacles, distance = " << currentPathDistance << ", amount of points = " << path.size();
+				LOG(s.str().c_str());
+				return true;
+			}
 		}
 	}
 	else if (type == PathFindType::STRAIGHT)
@@ -1452,7 +1478,7 @@ bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vecto
 			}
 		}
 	}
-	else if (type == PathFindType::NODODGE)
+	if (type == PathFindType::NODODGE)
 	{
 		//LOG("newPath");
 		//go to the end point in a straight line
@@ -1496,7 +1522,7 @@ bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vecto
 
 bool ModuleNavigation::NavigateTowardsCursor(math::float3 start, std::vector<math::float3>& path, 
 											 math::float3 positionCorrection, math::float3& intersectionPos, 
-											 float maxPathDistance, PathFindType type) const
+											 float maxPathDistance, PathFindType type, float ignoreDist) const
 {
 	float2 mouse((float*)& App->input->GetMousePosition());
 	LineSegment line;
@@ -1519,7 +1545,7 @@ bool ModuleNavigation::NavigateTowardsCursor(math::float3 start, std::vector<mat
 	line.Intersects(plane, &dist);
 	intersectionPos = line.GetPoint(dist);
 
-	return FindPath(start, intersectionPos, path, type, positionCorrection, maxPathDistance);
+	return FindPath(start, intersectionPos, path, type, positionCorrection, maxPathDistance, ignoreDist);
 }
 
 void ModuleNavigation::setPlayerBB(math::AABB bbox)
