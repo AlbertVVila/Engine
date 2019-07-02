@@ -44,6 +44,7 @@ public:
 
 	std::vector<std::string> textureFiles;
 	bool enabled = true;
+	int uiOrder = 0;
 private:
 	bool isMasked = false;
 	int maskAmount = 100;
