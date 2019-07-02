@@ -225,7 +225,8 @@ public:
 
 	float OutOfMeshCorrectionXZ = 500.f;
 	float OutOfMeshCorrectionY = 300.0f;
-	float maxWalkingDistance = 10000.0f;
+	float maxWalkingDistance = 50000.0f;
+	float straightPathingDistance = 100000.0f;
 	ComponentAnimation* anim = nullptr;
 	ComponentBoxTrigger* attackBoxTrigger = nullptr;
 	ComponentBoxTrigger* hpHitBoxTrigger = nullptr;

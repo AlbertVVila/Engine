@@ -250,6 +250,8 @@ private:
 
 	bool startPoint = true; //defines if we are going to select start or end point in debug mode
 	bool drawNavMesh = true;
+
+	bool logDebugPathing = false;
 };
 
 #endif __MODULENAVIGATION_H__

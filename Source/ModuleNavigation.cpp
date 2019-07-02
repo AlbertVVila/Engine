@@ -305,6 +305,7 @@ void ModuleNavigation::DrawGUI()
 			pathGenerated = FindPath(start, end, path);
 		}
 	}
+	ImGui::Checkbox("Log debug pathing", &logDebugPathing);
 }
 
 void ModuleNavigation::addNavigableMesh()
@@ -1435,20 +1436,25 @@ bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vecto
 				
 				if (currentPathDistance > ignoreDist)
 				{
-					std::stringstream s;
-					s << "Ignoring distance, dist = " << currentPathDistance << ", amount of points = " << path.size();
-					LOG(s.str().c_str());
+					if (logDebugPathing)
+					{
+						std::stringstream s;
+						s << "Ignoring distance, dist = " << currentPathDistance << ", amount of points = " << path.size();
+						LOG(s.str().c_str());
+					}
 					path.clear();
-					//return true;
 					type = PathFindType::NODODGE;
 					maxDistPassed = true;
 				}
 			}
 			if (!maxDistPassed)
 			{
-				std::stringstream s;
-				s << "Going dodging obstacles, distance = " << currentPathDistance << ", amount of points = " << path.size();
-				LOG(s.str().c_str());
+				if (logDebugPathing)
+				{
+					std::stringstream s;
+					s << "Going dodging obstacles, distance = " << currentPathDistance << ", amount of points = " << path.size();
+					LOG(s.str().c_str());
+				}
 				return true;
 			}
 		}
