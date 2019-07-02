@@ -438,6 +438,7 @@
     <None Include="..\Game\Shaders\FragmentShaders\DebugNav.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\Default.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\Fonts.fs" />
+    <None Include="..\Game\Shaders\FragmentShaders\FX.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\Particles.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\PBR.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\PostProcess.fs" />
@@ -449,6 +450,7 @@
     <None Include="..\Game\Shaders\VertexShaders\DebugNav.vs" />
     <None Include="..\Game\Shaders\VertexShaders\Default.vs" />
     <None Include="..\Game\Shaders\VertexShaders\Fonts.vs" />
+    <None Include="..\Game\Shaders\VertexShaders\FX.vs" />
     <None Include="..\Game\Shaders\VertexShaders\Particles.vs" />
     <None Include="..\Game\Shaders\VertexShaders\PBR.vs" />
     <None Include="..\Game\Shaders\VertexShaders\PostProcess.vs" />

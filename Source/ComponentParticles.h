@@ -92,7 +92,7 @@ private:
 	float fps = 24.f;
 
 	float timer = 0.f;
-	float frameMix = 0.f;
+	float frameMix = 0.f; 
 	int f1Xpos;
 	int f1Ypos;
 	int f2Xpos;

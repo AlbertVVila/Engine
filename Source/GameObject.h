@@ -80,7 +80,7 @@ public:
 	bool ParentPrefab() const;
 
 	bool CleanUp();
-	void Save(JSON_value *gameobjects) const;
+	void Save(JSON_value *gameobjects, bool selected = false) const;
 	void Load(JSON_value * gameobject, bool prefabObject= false);
 
 private:
@@ -97,6 +97,7 @@ private:
 
 	bool activeInHierarchy = true;
 	bool openInHierarchy = true;
+	bool showNavOptions = false;
 public:
 	unsigned UUID = 0;
 	unsigned parentUUID = 0; //only set in Save/Load scene TODO:update on parent change

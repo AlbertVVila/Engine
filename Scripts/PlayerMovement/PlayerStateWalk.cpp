@@ -15,6 +15,8 @@
 #include "PlayerStateWalk.h"
 #include "PlayerStateIdle.h"
 
+#include "BasicSkill.h"
+
 #include "JSON.h"
 #include <assert.h>
 #include <string>
@@ -110,9 +112,9 @@ void PlayerStateWalk::Enter()
 void PlayerStateWalk::CheckInput()
 {
 
-	if (player->IsAtacking())
+	/*if (player->IsAtacking())
 	{
-		player->currentState = (PlayerState*)player->firstAttack;
+		//player->currentState = (PlayerState*)player->firstAttack;
 		if (dustParticles)
 		{
 			dustParticles->SetActive(false);
@@ -125,6 +127,10 @@ void PlayerStateWalk::CheckInput()
 		{
 			dustParticles->SetActive(false);
 		}
+		if (dustParticles)
+		{
+			dustParticles->SetActive(false);
+		}
 	}
 	else if (player->IsUsingSecondSkill())
 	{
@@ -133,6 +139,10 @@ void PlayerStateWalk::CheckInput()
 		{
 			dustParticles->SetActive(false);
 		}
+	}*/
+	if (player->IsUsingSkill() || player->IsAtacking())
+	{
+		player->currentState = (PlayerState*)player->attack;
 	}
 	else if (player->IsMoving())
 	{

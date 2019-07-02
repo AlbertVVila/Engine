@@ -6,6 +6,8 @@
 #include "ModuleTextures.h"
 #include "ModuleResourceManager.h"
 #include "ModuleFileSystem.h"
+#include "ModuleTime.h"
+#include "ComponentRenderer.h"
 
 #include "ResourceTexture.h"
 
@@ -331,7 +333,7 @@ std::list<ResourceTexture*> ResourceMaterial::GetTextures() const
 	return mytextures;
 }
 
-void ResourceMaterial::SetUniforms(unsigned shader) const
+void ResourceMaterial::SetUniforms(unsigned shader, bool isFx, ComponentRenderer* cRenderer) const
 {
 	for (unsigned int i = 0; i < MAXTEXTURES; i++)
 	{
@@ -408,12 +410,28 @@ void ResourceMaterial::SetUniforms(unsigned shader) const
 				uniform), 1, (GLfloat*)&noColor);
 		}
 	}
-
-	glUniform1fv(glGetUniformLocation(shader,
-		"material.roughness"), 1, (GLfloat*)&roughness);
-
-	glUniform1fv(glGetUniformLocation(shader,
-		"material.bloomIntensity"), 1, (GLfloat*)&bloomIntenstiy);
-	glUniform3fv(glGetUniformLocation(shader,
-		"material.specular"), 1, (GLfloat*)&specularColor);
+	if (isFx)
+	{
+		cRenderer->Update(); 
+		glUniform1i(glGetUniformLocation(shader, "xTiles"), cRenderer->xTiles);
+		glUniform1i(glGetUniformLocation(shader, "yTiles"), cRenderer->yTiles);
+		glUniform1i(glGetUniformLocation(shader, "f1Xpos"), cRenderer->f1Xpos);
+		glUniform1i(glGetUniformLocation(shader, "f1Ypos"), cRenderer->f1Ypos);
+		glUniform1i(glGetUniformLocation(shader, "f2Xpos"), cRenderer->f2Xpos);
+		glUniform1i(glGetUniformLocation(shader, "f2Ypos"), cRenderer->f2Ypos);
+		glUniform1f(glGetUniformLocation(shader, "mixAmount"), cRenderer->frameMix);		
+		glUniform1f(glGetUniformLocation(shader, "bloomIntensity"), cRenderer->material->bloomIntenstiy);		
+		glUniform1f(glGetUniformLocation(shader, "time"), App->time->realTime);
+		glUniform2fv(glGetUniformLocation(shader, "uvSpeed"), 1, &cRenderer->texSpeed[0]);
+		glUniform3fv(glGetUniformLocation(shader, "colorIn"), 1, &cRenderer->material->diffuseColor[0]);
+	}
+	else
+	{
+		glUniform1fv(glGetUniformLocation(shader,
+			"material.roughness"), 1, (GLfloat*)&roughness);
+		glUniform3fv(glGetUniformLocation(shader,
+			"material.specular"), 1, (GLfloat*)&specularColor);
+		glUniform1fv(glGetUniformLocation(shader,
+			"material.bloomIntensity"), 1, (GLfloat*)&bloomIntenstiy);
+	}
 }

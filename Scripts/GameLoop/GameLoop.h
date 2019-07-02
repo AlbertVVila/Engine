@@ -30,6 +30,7 @@ class SkillTreeController;
 class ExperienceController;
 class AABB;
 class JSON_value;
+class ComponentAudioSource;
 
 class LoopState;
 class LoopStateControls;
@@ -183,6 +184,9 @@ public:
 
 	//Camera
 	ComponentCamera* componentIntroCamera = nullptr;
+
+	//Audio
+	ComponentAudioSource* menuButtonsSound = nullptr;
 
 	float3 playerStartPosition = float3::zero;
 	float3 enemyStartPosition = float3::zero;

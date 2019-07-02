@@ -16,17 +16,9 @@ void PlayerStateIdle::Update()
 
 void PlayerStateIdle::CheckInput()
 {
-	if (player->IsAtacking())
+	if (player->IsUsingSkill() || player->IsAtacking())
 	{
-		player->currentState = (PlayerState*)player->firstAttack;
-	}
-	else if (player->IsUsingFirstSkill())
-	{
-		player->currentState = player->allSkills[player->activeSkills[0]]->state;
-	}
-	else if (player->IsUsingSecondSkill())
-	{
-		player->currentState = player->allSkills[player->activeSkills[1]]->state;
+		player->currentState = (PlayerState*)player->attack;
 	}
 	else if (player->IsMoving())
 	{

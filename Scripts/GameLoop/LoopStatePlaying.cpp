@@ -12,13 +12,12 @@
 #include "Math/float2.h"
 #include "PlayerMovement.h"
 
+#include "ComponentAudioSource.h"
 #include "InventoryScript.h"
 #include "EquipPopupController.h"
 #include "SkillTreeController.h"
 #include "ExperienceController.h"
 #include "PlayerMovement.h"
-
-#define TEMPLE_SCENE "Level2-TheForbiddenTempleV1"
 
 LoopStatePlaying::LoopStatePlaying(GameLoop* GL) : LoopState(GL)
 {
@@ -56,6 +55,9 @@ void LoopStatePlaying::Update()
 		if (gLoop->skillsMenuGO->isActive()) CloseMenu();
 		else OpenMenu(gLoop->skillsMenuGO);
 	}
+	if (gLoop->inventoryButton->IsPressed() && !gLoop->inventoryMenuGO->isActive())	gLoop->menuButtonsSound->Play();
+	if (gLoop->skillsButton->IsPressed() && !gLoop->skillsMenuGO->isActive()) gLoop->menuButtonsSound->Play();
+	if (gLoop->missionsButton->IsPressed() && !gLoop->missionsMenuGO->isActive()) gLoop->menuButtonsSound->Play();
 
 	if (gLoop->missionsButton->IsPressed() || gLoop->App->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN)
 	{
@@ -90,14 +92,14 @@ void LoopStatePlaying::Update()
 			gLoop->App->scene->actionAfterLoad = true;
 			gLoop->App->scene->stateAfterLoad = "Temple";
 			gLoop->stateAfterLoad = (LoopState*)gLoop->creditsState;
-			gLoop->gameScene == GameScene::TEMPLE;
+			gLoop->gameScene = GameScene::TEMPLE;
 			
 		}
 		else if (gLoop->gameScene == GameScene::TEMPLE)
 		{
 			gLoop->winWindow->SetActive(true);
 			gLoop->currentLoopState = (LoopState*)gLoop->winState;
-			gLoop->gameScene == GameScene::MENU;
+			gLoop->gameScene = GameScene::MENU;
 		}
 	}
 }

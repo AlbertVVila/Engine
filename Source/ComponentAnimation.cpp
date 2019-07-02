@@ -144,10 +144,12 @@ void ComponentAnimation::DrawProperties()
 					deletePopup = false;
 				}
 			}
+			ImGui::Separator();
+			HashString currentNodeName = stateMachine->GetNodeName(currentNode);
+			ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f),("Current state: %s", currentNodeName.C_str()));
 	
 			if (!stateMachine->isClipsEmpty())
 			{
-				ImGui::Separator();
 				for (unsigned j = 0u; j < stateMachine->GetClipsSize(); ++j)
 				{
 					ImGui::PushID(j);
@@ -163,7 +165,6 @@ void ComponentAnimation::DrawProperties()
 					}
 					stateMachine->SetClipName(j, HashString(clipName));
 
-					ImGui::SameLine();
 					ImGui::PushItemWidth(60);
 					float speed = stateMachine->GetClipSpeed(j);
 					if (ImGui::DragFloat("Clip speed", &speed, 0.1f, 0.f, 30.f))
@@ -190,9 +191,11 @@ void ComponentAnimation::DrawProperties()
 					ImGui::SameLine();
 
 					unsigned clipUID = stateMachine->GetClipResource(j);
-					ResourceAnimation* animation = (ResourceAnimation*)App->resManager->GetWithoutLoad(clipUID);
-					
-					if (ImGui::BeginCombo("", clipUID != 0u ? animation->GetName() : ""))
+					ResourceAnimation* animation = nullptr;
+					if(clipUID != 0)
+						animation = (ResourceAnimation*)App->resManager->GetWithoutLoad(clipUID);
+
+					if (ImGui::BeginCombo("", animation != nullptr ? animation->GetName() : ""))
 					{
 						if (guiAnimations.empty())
 						{
@@ -564,6 +567,8 @@ void ComponentAnimation::Load(JSON_value* value)
 
 void ComponentAnimation::SetIndexChannels(GameObject* GO, ResourceAnimation* anim)
 {
+	if (anim == nullptr) return;
+
 	GO->animationIndexChannel = 999u;
 	GO->animationIndexChannel = anim->GetIndexChannel(GO->name.c_str());
 

@@ -16,6 +16,7 @@
 class InventoryScript;
 class AABB;
 class JSON_value;
+class ComponentAudioSource;
 class ComponentRenderer;
 class ItemNameController;
 
@@ -59,6 +60,7 @@ private:
 	std::vector<std::string> textureFiles;
 	const char * selectedTexture = "basicPostion";
 
+	ComponentAudioSource* itemPickedAudio = nullptr;
 	std::string myBboxName;
 
 	ComponentRenderer* myRender;

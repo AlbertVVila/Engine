@@ -5,8 +5,8 @@
 
 #include "Timer.h"
 
-enum class GameState 
-{ 
+enum class GameState
+{
 	RUN,
 	PAUSE,
 	STOP

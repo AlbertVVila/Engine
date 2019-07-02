@@ -247,7 +247,7 @@ void ModuleScene::FrustumCulling(const Frustum& frustum)
 
 void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 {
-	std::list<ComponentRenderer*> alphaRenderers;
+	alphaRenderers.clear();
 
 #ifndef GAME_BUILD
 	PROFILE;
@@ -410,23 +410,30 @@ void ModuleScene::DrawGOGame(const GameObject& go)
 	if (shader->id.size() > 1) //If exists variations use it
 	{
 		variation = material->variation;
-		if (crenderer->mesh->bindBones.size() > 0)
+		if (crenderer->water)
 		{
-			variation |= (unsigned)ModuleProgram::PBR_Variations::SKINNED;
+			variation |= (unsigned)ModuleProgram::PBR_Variations::WATER;
 		}
-		if (App->renderer->directionalLight && App->renderer->directionalLight->produceShadows)
+		else
 		{
-			variation |= (unsigned)ModuleProgram::PBR_Variations::SHADOWS_ENABLED;
-		}
-		if (crenderer->dissolve)
-		{
-			variation |= (unsigned)ModuleProgram::PBR_Variations::DISSOLVE;
+			if (crenderer->mesh->bindBones.size() > 0)
+			{
+				variation |= (unsigned)ModuleProgram::PBR_Variations::SKINNED;
+			}
+			if (App->renderer->directionalLight && App->renderer->directionalLight->produceShadows)
+			{
+				variation |= (unsigned)ModuleProgram::PBR_Variations::SHADOWS_ENABLED;
+			}
+			if (crenderer->dissolve)
+			{
+				variation |= (unsigned)ModuleProgram::PBR_Variations::DISSOLVE;
+			}
 		}
 	}
 	
 	glUseProgram(shader->id[variation]);
 
-	material->SetUniforms(shader->id[variation]);
+	material->SetUniforms(shader->id[variation], shader->isFX, crenderer);
 
 	glUniform3fv(glGetUniformLocation(shader->id[variation],
 		"lights.ambient_color"), 1, (GLfloat*)&ambientColor);
@@ -442,6 +449,39 @@ void ModuleScene::DrawGOGame(const GameObject& go)
 		glUniform3fv(glGetUniformLocation(shader->id[variation],
 			"highlightColorUniform"), 1, (GLfloat*)zero);
 	}
+
+	glUniform1f(glGetUniformLocation(shader->id[variation],
+		"time"), App->time->realTime * crenderer->waterSpeed);
+
+	glUniform1f(glGetUniformLocation(shader->id[variation],
+		"waterAmplitude1"), crenderer->waterAmplitude1);
+
+	glUniform1f(glGetUniformLocation(shader->id[variation],
+		"decay1"), crenderer->waterDecay1);
+
+	glUniform1f(glGetUniformLocation(shader->id[variation],
+		"frequency1"), crenderer->waterFrequency1);
+
+	glUniform3fv(glGetUniformLocation(shader->id[variation],
+		"source1"), 1, (GLfloat*)&crenderer->waterSource1);
+
+	glUniform1f(glGetUniformLocation(shader->id[variation],
+		"waterAmplitude2"), crenderer->waterAmplitude2);
+
+	glUniform1f(glGetUniformLocation(shader->id[variation],
+		"decay2"), crenderer->waterDecay2);
+
+	glUniform1f(glGetUniformLocation(shader->id[variation],
+		"frequency2"), crenderer->waterFrequency2);
+
+	glUniform3fv(glGetUniformLocation(shader->id[variation],
+		"source2"), 1, (GLfloat*)&crenderer->waterSource2);
+
+	glUniform3fv(glGetUniformLocation(shader->id[variation],
+		"eyePosUniform"), 1, (GLfloat*)&maincamera->frustum->pos);
+
+	glUniform1f(glGetUniformLocation(shader->id[variation], "sliceAmount"), crenderer->dissolveAmount);
+	glUniform1f(glGetUniformLocation(shader->id[variation], "borderAmount"), crenderer->borderAmount);
 
 	go.SetLightUniforms(shader->id[variation]);
 
@@ -477,31 +517,68 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 	if (shader->id.size() > 1) //If exists variations use it
 	{
 		variation = material->variation;
-		if (mesh != nullptr && mesh->bindBones.size() > 0)
+		if (crenderer->water)
 		{
-			variation |= (unsigned)ModuleProgram::PBR_Variations::SKINNED;
+			variation |= (unsigned)ModuleProgram::PBR_Variations::WATER;
 		}
-		if (App->renderer->directionalLight && App->renderer->directionalLight->produceShadows)
+		else
 		{
-			variation |= (unsigned)ModuleProgram::PBR_Variations::SHADOWS_ENABLED;
-		}
-		if (isEditor)
-		{
-			variation |= (unsigned)ModuleProgram::PBR_Variations::EDITOR_RENDER;
-		}
-		if (crenderer->dissolve)
-		{
-			variation |= (unsigned)ModuleProgram::PBR_Variations::DISSOLVE;
+			if (mesh != nullptr && mesh->bindBones.size() > 0)
+			{
+				variation |= (unsigned)ModuleProgram::PBR_Variations::SKINNED;
+			}
+			if (App->renderer->directionalLight && App->renderer->directionalLight->produceShadows)
+			{
+				variation |= (unsigned)ModuleProgram::PBR_Variations::SHADOWS_ENABLED;
+			}
+			if (isEditor)
+			{
+				variation |= (unsigned)ModuleProgram::PBR_Variations::EDITOR_RENDER;
+			}
+			if (crenderer->dissolve)
+			{
+				variation |= (unsigned)ModuleProgram::PBR_Variations::DISSOLVE;
+			}
 		}
 	}
 
 	glUseProgram(shader->id[variation]);
-
-	material->SetUniforms(shader->id[variation]);
+	  
+	material->SetUniforms(shader->id[variation], shader->isFX, crenderer);
 
 	glUniform3fv(glGetUniformLocation(shader->id[variation],
 		"lights.ambient_color"), 1, (GLfloat*)&ambientColor);
 	
+	glUniform1f(glGetUniformLocation(shader->id[variation],
+		"time"), App->time->realTime * crenderer->waterSpeed);
+
+	glUniform1f(glGetUniformLocation(shader->id[variation],
+		"waterAmplitude1"), crenderer->waterAmplitude1);
+
+	glUniform1f(glGetUniformLocation(shader->id[variation],
+		"decay1"), crenderer->waterDecay1);
+
+	glUniform1f(glGetUniformLocation(shader->id[variation],
+		"frequency1"), crenderer->waterFrequency1);
+
+	glUniform3fv(glGetUniformLocation(shader->id[variation],
+		"source1"), 1, (GLfloat*)&crenderer->waterSource1);
+
+	glUniform1f(glGetUniformLocation(shader->id[variation],
+		"waterAmplitude2"), crenderer->waterAmplitude2);
+
+	glUniform1f(glGetUniformLocation(shader->id[variation],
+		"decay2"), crenderer->waterDecay2);
+
+	glUniform1f(glGetUniformLocation(shader->id[variation],
+		"frequency2"), crenderer->waterFrequency2);
+
+	glUniform3fv(glGetUniformLocation(shader->id[variation],
+		"source2"), 1, (GLfloat*)&crenderer->waterSource2);
+
+	glUniform3fv(glGetUniformLocation(shader->id[variation],
+		"eyePosUniform"), 1, (GLfloat*)&frustum.pos);
+
 	go.SetLightUniforms(shader->id[variation]);
 
 	go.UpdateModel(shader->id[variation]);
@@ -1150,7 +1227,7 @@ void ModuleScene::UpdateScenesList()
 	sceneFiles = App->resManager->GetResourceNamesList(TYPE::SCENE, true);
 }
 
-void ModuleScene::SaveScene(const GameObject& rootGO, const char* sceneName, const char* folder)
+void ModuleScene::SaveScene(const GameObject& rootGO, const char* sceneName, const char* folder, bool selected)
 {
 	std::string sceneInAssets(folder);
 	sceneInAssets += sceneName;
@@ -1161,7 +1238,7 @@ void ModuleScene::SaveScene(const GameObject& rootGO, const char* sceneName, con
 	{
 		// Updating already created scene
 		ResourceScene* scene = (ResourceScene*)App->resManager->GetWithoutLoad(sceneUID);
-		scene->Save(rootGO);
+		scene->Save(rootGO, selected);
 	}	
 	else
 	{

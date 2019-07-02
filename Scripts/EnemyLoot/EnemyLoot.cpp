@@ -49,17 +49,17 @@ void EnemyLoot::GenerateLoot()
 		go = items[i].first;
 		if ((rand() % 100) < items[i].second)
 		{
-			go->ChangeParent(gameobject, App->scene->root);
 			go->SetActive(true);
-			math::float3 pos = gameobject->transform->GetPosition();
+			math::float3 pos = gameobject->transform->GetGlobalPosition();
 			float x = static_cast <float>(rand() / static_cast <float> (RAND_MAX / 200));
 			float z = static_cast <float>(rand() / static_cast <float> (RAND_MAX / 200));
 			pos.x += x;
 			pos.y += 30;
 			pos.z += z;
-			go->transform->SetPosition(pos);
-			go->UpdateGlobalTransform();
+			go->transform->SetGlobalPosition(pos);
+			go->ChangeParent(gameobject, list);
 
+			go->movedFlag = true;
 		}
 	}
 	items.clear();
@@ -76,6 +76,10 @@ void EnemyLoot::Expose(ImGuiContext* context)
 			items.push_back(std::make_pair(act, actLoot[i].second));
 		}
 		actLoot.clear();
+	}
+	if (list == nullptr)
+	{
+		list = App->scene->FindGameObjectByName("ItemsList");
 	}
 	ImGui::SetCurrentContext(context);
 	ImGui::Separator();
@@ -99,6 +103,7 @@ void EnemyLoot::Expose(ImGuiContext* context)
 	}
 
 	GetItems();
+
 	if (itemList.size() > 0 && ImGui::BeginCombo("Item name", itemName.c_str()))
 	{
 		for (int i = 0; i < itemList.size(); i++)
@@ -113,10 +118,10 @@ void EnemyLoot::Expose(ImGuiContext* context)
 
 	ImGui::DragInt("Drop %", &drop, 0.01f, 0, 100);
 
-	if(ImGui::Button("Add item"))
+	if (ImGui::Button("Add item"))
 	{
 		go = App->scene->FindGameObjectByName(itemName.c_str());
-		go->ChangeParent(App->scene->root, gameobject);
+		go->ChangeParent(list, gameobject);
 		items.push_back(std::make_pair(go, drop));
 		if (go->isActive())
 		{
@@ -135,7 +140,7 @@ void EnemyLoot::Expose(ImGuiContext* context)
 		for (int i = 0; i < items.size(); ++i)
 		{
 			go = items[i].first;
-			go->ChangeParent(gameobject, App->scene->root);
+			go->ChangeParent(gameobject, list);
 			go->SetActive(true);
 		}
 		items.clear();
@@ -147,7 +152,7 @@ void EnemyLoot::GetItems()
 {
 	itemList.clear();
 	std::vector<std::string> items;
-	std::list<GameObject*> GOs = App->scene->root->children;
+	std::list<GameObject*> GOs = list->children;
 
 	for (std::list<GameObject*>::iterator it = GOs.begin(); it != GOs.end(); ++it)
 	{
@@ -167,7 +172,7 @@ void EnemyLoot::Serialize(JSON_value* json) const
 	json->AddInt("numItems", items.size());
 	for (int i = 0; i < items.size(); ++i) {
 		name = "item" + std::to_string(i);
-		json->AddString(name.c_str(),items[i].first->name.c_str());
+		json->AddString(name.c_str(), items[i].first->name.c_str());
 		name = "drop" + std::to_string(i);
 		json->AddInt(name.c_str(), items[i].second);
 	}

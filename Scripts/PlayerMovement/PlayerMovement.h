@@ -20,41 +20,62 @@ struct ImGuiContext;
 #define PlayerMovement_API __declspec(dllimport)
 #endif
 
-#define HUB_BUTTON_Q 0
-#define HUB_BUTTON_W 1
-#define HUB_BUTTON_E 2
-#define HUB_BUTTON_R 3
-#define HUB_BUTTON_1 4
-#define HUB_BUTTON_2 5
-#define HUB_BUTTON_3 6
-#define HUB_BUTTON_4 7
+#define HUB_BUTTON_RC 0
+#define HUB_BUTTON_1 1
+#define HUB_BUTTON_2 2
+#define HUB_BUTTON_3 3
+#define HUB_BUTTON_4 4
+#define HUB_BUTTON_Q 5
+#define HUB_BUTTON_W 6
+#define HUB_BUTTON_E 7
+#define HUB_BUTTON_R 8
+
+#define MAX_BOMB_DROP_SCALE 200.f
+#define MAX_BOMB_DROP_WAVE_SCALE 240.f
+#define BOMB_DROP_ROT 2.5f
+
+#define MACHETE_RAIN_START_HEIGHT 3300.0f
+#define MACHETE_RAIN_SPEED 3000.0f
 
 class ComponentAnimation;
 class ComponentTransform;
 class ComponentBoxTrigger;
 class ComponentImage;
+class ComponentRenderer;
 class JSON_value;
 struct ImGuiContext;
 class PlayerState;
-class PlayerStateFirstAttack;
-class PlayerStateSecondAttack;
-class PlayerStateThirdAttack;
+class PlayerStateAttack;
 class PlayerStateIdle;
-class PlayerStateDash;
 class PlayerStateDeath;
-class PlayerStateUppercut;
 class PlayerStateWalk;
 class DamageController;
 class DamageFeedbackUI;
+class ComponentAudioSource;
+class ComponentCamera;
+
 class Text;
+class BasicSkill;
+class SliceSkill;
+class ChainAttackSkill;
+class DashSkill;
+class BombDropSkill;
+class CircularAttackSkill;
+class StompSkill;
+class RainSkill;
 
 #define MAX(a,b) ((a) < (b) ? (b) : (a))
 
 enum class PlayerMovement_API SkillType
 {
 	NONE = 0,
+	CHAIN,
 	DASH,
-	UPPERCUT
+	SLICE,
+	BOMB_DROP,
+	CIRCULAR,
+	STOMP,
+	RAIN
 };
 
 struct PlayerMovement_API PlayerSkill
@@ -64,9 +85,9 @@ public:
 	PlayerSkill(SkillType type) : type(type) {}
 	void Expose(const char* title);
 	void Serialize(JSON_value* json) const;
-	void DeSerialize(JSON_value* json, PlayerState* playerState);
+	void DeSerialize(JSON_value* json, BasicSkill* playerSkill);
 	bool IsUsable(float playerMana) const { return available && type != SkillType::NONE && (playerMana >= manaCost && cooldownTimer <= 0); }
-	float Use(float minCooldown = 0.f) { cooldownTimer = MAX(cooldown,minCooldown); maxCooldown = MAX(cooldown,minCooldown); return manaCost; }
+	float Use(float minCooldown = 0.f) { cooldownTimer = MAX(cooldown, minCooldown); maxCooldown = MAX(cooldown, minCooldown); return manaCost; }
 	void Update(float deltaTime) { if (cooldownTimer > 0) cooldownTimer -= deltaTime; }
 	void SetCooldown(float value) { if (type != SkillType::NONE && value > cooldownTimer) { cooldownTimer = value; maxCooldown = value; } }
 	float CooldownRatio() const { return cooldownTimer > 0 ? cooldownTimer / maxCooldown : 0; }
@@ -76,7 +97,7 @@ public:
 	SkillType type = SkillType::NONE;
 	float manaCost = 10.f;
 	float cooldown = 0.f;
-	PlayerState* state = nullptr;
+	BasicSkill* skill = nullptr;
 
 	float cooldownTimer = 0.f;
 	float maxCooldown = 0.f;
@@ -144,19 +165,23 @@ public:
 	void Equip(const PlayerStats& equipStats);
 	void UnEquip(const PlayerStats& equipStats);
 
-	//Abstract input
-	bool IsAtacking() const;
-	bool IsMoving() const;
-	bool IsUsingFirstSkill() const;
-	bool IsUsingSecondSkill() const;
-	bool IsUsingThirdSkill() const;
-	bool IsUsingFourthSkill() const;
-	bool IsUsingFirstItem() const;
-	bool IsUsingSecondItem() const;
-	bool IsUsingThirdItem() const;
-	bool IsUsingFourthItem() const;
+	void OnAnimationEvent(std::string name) override;
 
-	//void ResetCooldown(unsigned int hubButtonID);
+
+	//Abstract input. TODO: Now only returns true for skills, adapt for items
+	bool IsAtacking() const;
+	bool IsUsingOne() const;
+	bool IsUsingTwo() const;
+	bool IsUsingThree() const;
+	bool IsUsingFour() const;
+	bool IsMoving() const;
+	bool IsUsingQ() const;
+	bool IsUsingW() const;
+	bool IsUsingE() const;
+	bool IsUsingR() const;
+	bool IsUsingSkill() const;
+
+	void ResetCooldown(unsigned int hubButtonID);
 	void UseSkill(SkillType skill);
 
 	void SavePlayerStats();
@@ -168,19 +193,18 @@ private:
 
 	void ActivateHudCooldownMask(bool activate, unsigned first = HUB_BUTTON_Q, unsigned last = HUB_BUTTON_4);
 
+	// Skills
+	void CreatePlayerSkills();
+
 	void UpdateUIStats();
 	void InitializeUIStatsObjects();
 public:
 	bool isPlayerDead = false;
 	float3 currentPosition = float3(0, 0, 0); //TODO ZERO
 
-	PlayerStateFirstAttack* firstAttack = nullptr;
-	PlayerStateSecondAttack* secondAttack = nullptr;
-	PlayerStateThirdAttack* thirdAttack = nullptr;
+	PlayerStateAttack* attack = nullptr;
 	PlayerStateIdle* idle = nullptr;
-	PlayerStateDash* dash = nullptr;
 	PlayerStateDeath* death = nullptr;
-	PlayerStateUppercut* uppercut = nullptr;
 	PlayerStateWalk* walk = nullptr;
 
 	float walkingSpeed = 300.0f;
@@ -198,8 +222,6 @@ public:
 	float manaRegenMaxTime = 5.0f;
 
 	PlayerStats stats = { 150.0f, 100.0f, 10U, 10U, 5.0f, 5.0f };
-	std::unordered_map<SkillType, PlayerSkill*> allSkills;
-	SkillType activeSkills[4] = { SkillType::NONE, SkillType::NONE, SkillType::NONE, SkillType::NONE };
 
 	float OutOfMeshCorrectionXZ = 500.f;
 	float OutOfMeshCorrectionY = 300.0f;
@@ -210,14 +232,53 @@ public:
 	ComponentTransform* transform = nullptr;
 	PlayerState* currentState = nullptr;
 
+	GameObject* playerCamera = nullptr;
+
 	math::float3 hpHitBoxSize = math::float3::zero;
+
+	bool canInteract = true;
+
+	// Skills
+	BasicSkill* currentSkill = nullptr;
+	ChainAttackSkill* chain = nullptr;
+	DashSkill* dash = nullptr;
+	SliceSkill* slice = nullptr;
+	BombDropSkill* bombDrop = nullptr;
+	CircularAttackSkill* circular = nullptr;
+	StompSkill* stomp = nullptr;
+	RainSkill* rain = nullptr;
+
+	bool macheteRainActivated = false;
+	GameObject* macheteRainParticles = nullptr;
+	bool shaking = false;
+
+	std::unordered_map<SkillType, PlayerSkill*> allSkills;
+
+	// Vector with all skill slots (Right-Click, 1, 2, 3, 4, Q, W, E, R)
+	SkillType assignedSkills[9] = { SkillType::NONE, SkillType::NONE, SkillType::NONE, SkillType::NONE, SkillType::NONE, SkillType::NONE, SkillType::NONE, SkillType::NONE, SkillType::NONE };
+
+	//Audio
+	ComponentAudioSource* gotHitAudio = nullptr;
 
 private:
 	std::vector<PlayerState*> playerStates;	
 	GameObject* dustParticles = nullptr;
 	GameObject* dashFX = nullptr;
 	GameObject* dashMesh = nullptr;
+	GameObject* bombDropParticles = nullptr;
+	GameObject* bombDropParticlesLanding = nullptr;
+	GameObject* bombDropMesh1 = nullptr;
+	GameObject* bombDropMesh2 = nullptr;
+	math::float3 bombDropMesh1Scale = math::float3::one;
+	math::float3 bombDropMesh2Scale = math::float3::one;
+	bool bombDropExpanding = false;
+	float bombDropGrowRate = 1.3f;
+	float bombDropWaveGrowRate = 1.05f;
 
+	GameObject* slashTrail = nullptr;
+
+	ComponentRenderer* macheteRainRenderer = nullptr;
+	
 	DamageController* damageController = nullptr;
 	DamageFeedbackUI* damageUIFeedback = nullptr;
 	ComponentImage* lifeUIComponent = nullptr;
@@ -227,10 +288,11 @@ private:
 	Text* uiStrengthText = nullptr;
 	Text* uiManaText = nullptr;
 
-	float hubCooldown[8]	  = { 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F };
-	float hubCooldownMax[8] = { 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F };
-	float hubCooldownTimer[8] = { 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F };
-	ComponentImage* hubCooldownMask[8] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
+
+	float hubCooldown[9]	  = { 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F };
+	float hubCooldownMax[9] = { 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F };
+	float hubCooldownTimer[9] = { 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F };
+	ComponentImage* hubCooldownMask[9] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
 	float hubGeneralAbilityCooldown = 0.5F;
 	bool showAbilityCooldowns = true;
 	bool showItemCooldowns = true;
