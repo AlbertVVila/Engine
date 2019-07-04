@@ -58,4 +58,6 @@ private:
 	bool itemGrabbed = false;
 };
 
+extern "C" InventoryScript_API Script* CreateScript();
+
 #endif __InventoryScript_h__

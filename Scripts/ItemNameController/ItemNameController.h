@@ -51,4 +51,6 @@ private:
 
 };
 
+extern "C" ItemNameController_API Script* CreateScript();
+
 #endif __ItemNameController_h__

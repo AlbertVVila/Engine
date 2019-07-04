@@ -50,4 +50,6 @@ private:
 	bool opened = false; // Is the chest already opened?
 };
 
+extern "C" ChestScript_API Script* CreateScript();
+
 #endif __ChestScript_h__

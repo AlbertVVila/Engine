@@ -71,4 +71,6 @@ private:
 	bool skillsShowing = true;
 };
 
+extern "C" EquipPopupController_API Script* CreateScript();
+
 #endif __EquipPopupController_h__

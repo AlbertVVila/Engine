@@ -25,4 +25,6 @@ private:
 	ComponentAudioSource* audioSource = nullptr;
 };
 
+extern "C" AudioSourceScript_API Script* CreateScript();
+
 #endif __AudioSourceScript_h__
