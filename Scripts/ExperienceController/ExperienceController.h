@@ -11,6 +11,7 @@
 
 class Text;
 class ComponentImage;
+class ComponentRenderer;
 class SkillTreeController;
 class GameObject;
 class JSON_value;
@@ -20,12 +21,19 @@ class ExperienceController_API ExperienceController : public Script
 	void Start() override;
 	void Update() override;
 
+	inline virtual ExperienceController* Clone() const
+	{
+		return new ExperienceController(*this);
+	}
+
 	void Expose(ImGuiContext* context) override;
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
 
 public:
 	void AddXP(int xp);
+
+	void SaveExperience();
 
 private:
 	Text* xpText = nullptr;
@@ -35,6 +43,8 @@ private:
 	ComponentImage* xpProgressInventory = nullptr;
 	SkillTreeController* skillTreeScript = nullptr;
 	GameObject* levelUPGO = nullptr;
+	ComponentRenderer* levelUpFloorMesh = nullptr;
+	GameObject* levelUpParticles = nullptr;
 
 	int currentXP = 0;
 	int previousXP = 0;

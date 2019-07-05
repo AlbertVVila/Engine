@@ -53,7 +53,8 @@ void Text::DrawProperties()
 		{
 			return;
 		}
-		
+		ImGui::InputInt("UI Order", &uiOrder);
+
 		//text value
 		char* imguiText = new char[MAX_TEXT_LENGTH];
 		strcpy(imguiText, text.c_str());
@@ -111,6 +112,7 @@ void Text::Save(JSON_value *value)const
 	value->AddInt("IsTextWrapped", isTextWrapped);
 	value->AddFloat("WrapWidth", wrapWidth);
 	value->AddFloat("InterlineDistance", interlineDistance);
+	value->AddInt("UIOrder", uiOrder);
 }
 
 void Text::Load(JSON_value* value)
@@ -126,4 +128,5 @@ void Text::Load(JSON_value* value)
 	isTextWrapped = value->GetInt("IsTextWrapped");
 	wrapWidth = value->GetFloat("WrapWidth");
 	interlineDistance = value->GetFloat("InterlineDistance");
+	uiOrder = value->GetInt("UIOrder", 0);
 }

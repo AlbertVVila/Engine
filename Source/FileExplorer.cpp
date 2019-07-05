@@ -87,6 +87,7 @@ bool FileExplorer::Open()
 		switch (currentOperation)
 		{
 		case MenuOperations::SAVE:
+			ImGui::Checkbox("Save selected game objects only", &saveSelected);
 			if (ImGui::Button("Save", ImVec2(100, 20)))
 			{
 				openFileExplorer = false;
@@ -129,7 +130,7 @@ bool FileExplorer::Open()
 			Reset();
 			ImGui::EndPopup();
 			return false;
-		}
+		}		
 		ImGui::EndPopup();
 	}
 	return false;
@@ -147,7 +148,7 @@ void FileExplorer::Draw()
 			switch (currentOperation)
 			{
 			case MenuOperations::SAVE:
-				App->scene->SaveScene(*App->scene->root, filename, (path + "/").c_str());
+				App->scene->SaveScene(*App->scene->root, filename, (path + "/").c_str(), saveSelected);
 				break;
 			case MenuOperations::LOAD:
 				App->scene->LoadScene(filename, (path + "/").c_str());
@@ -319,4 +320,5 @@ void FileExplorer::OpenFileExplorer(MenuOperations operation, FILETYPE typeToFil
 	sprintf_s(title, windowTitle);
 	sprintf_s(filename, fileName);
 	openFileExplorer = true;
+	saveSelected = false;
 }

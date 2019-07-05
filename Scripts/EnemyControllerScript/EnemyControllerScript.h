@@ -18,7 +18,10 @@ class ComponentBoxTrigger;
 class DamageController;
 class EnemyLifeBarController;
 class PlayerMovement;
+class EnemyLoot;
 class ExperienceController;
+class ResourceMaterial;
+
 
 class EnemyControllerScript_API EnemyControllerScript : public Script
 {
@@ -30,6 +33,10 @@ class EnemyControllerScript_API EnemyControllerScript : public Script
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
 
+	inline virtual EnemyControllerScript* Clone() const
+	{
+		return new EnemyControllerScript(*this);
+	}
 public:
 	void TakeDamage(unsigned damage);
 	int GetHealth() const { return actualHealth; }
@@ -51,29 +58,39 @@ public:
 public:
 	GameObject* player = nullptr;
 	PlayerMovement* playerMovement = nullptr;
-	std::string playerName = "Player";
-	std::string playerBboxName = "PlayerMesh";
-	std::string myBboxName = "EnemyMesh";
+	std::string playerTag = "Player";
+	std::string hitMaterialName = "HitMaterial";
 	ComponentAnimation* anim = nullptr;
-	ComponentRenderer* myRender;
+	ComponentRenderer* myRender = nullptr;
 
 	DamageController* damageController = nullptr;
 	EnemyLifeBarController* enemyLifeBar = nullptr;
+
+	EnemyLoot* enemyLoot = nullptr;
+
 	ExperienceController* experienceController = nullptr;
+
 	
 	// BBoxes
 	math::AABB* myBbox = nullptr;
+
+	GameObject* myMesh = nullptr;
 
 	// Hitboxes
 	ComponentBoxTrigger* hpBoxTrigger = nullptr;
 	ComponentBoxTrigger* attackBoxTrigger = nullptr;
 	ComponentBoxTrigger* playerHitBox = nullptr;
 
+	ResourceMaterial* hitMaterial = nullptr;
+	ResourceMaterial* defaultMaterial = nullptr;
+
 private:
 	int actualHealth = 20;
 	int maxHealth = 20;
 	int experience = 20;
 
+	float hitColorDuration = 0.2f;
+	float timer = 0.f;
 	bool isDead = false;
 };
 

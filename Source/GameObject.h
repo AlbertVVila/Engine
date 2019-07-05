@@ -11,6 +11,7 @@ class Component;
 class ComponentTransform;
 class ComponentLight;
 class ComponentAnimation;
+class ComponentText;
 class ComponentRenderer;
 class AABBTreeNode;
 class ResourcePrefab;
@@ -50,25 +51,26 @@ public:
 	ENGINE_API std::vector<Component *> GetComponents(ComponentType type) const;
 	ENGINE_API std::vector<Component *> GetComponentsInChildren(ComponentType type) const;
 	void RemoveComponent(const Component & component);
-	void RemoveChild(GameObject* child);
-	void InsertChild(GameObject* child);
+	ENGINE_API void RemoveChild(GameObject* child);
+	ENGINE_API void InsertChild(GameObject* child);
+	ENGINE_API void ChangeParent(GameObject * oldParent, GameObject * newParent);
 	bool IsParented(const GameObject & gameobject) const;
 
 	void DrawHierarchy();
 
-	void UpdateGlobalTransform();
-	void SetGlobalTransform(const float4x4 &global);
-	float4x4 GetGlobalTransform() const;
-	float4x4 GetLocalTransform() const;
+	ENGINE_API void UpdateGlobalTransform();
+	ENGINE_API void SetGlobalTransform(const float4x4 &global);
+	ENGINE_API float4x4 GetGlobalTransform() const;
+	ENGINE_API float4x4 GetLocalTransform() const;
 
 	ENGINE_API void OnPlay();
 	void SetAllMoveFlags();
-	void UpdateTransforms(math::float4x4 parentGlobal);
+	ENGINE_API void UpdateTransforms(math::float4x4 parentGlobal);
 	bool CheckDelete();
 
 	void UpdateBBox();
 	void DrawBBox() const;
-	math::AABB GetBoundingBox() const;
+	ENGINE_API math::AABB GetBoundingBox() const;
 	bool Intersects(const LineSegment & line, float & distance, math::float3* intersectionPoint = nullptr) const;
 	ENGINE_API bool BboxIntersects(const GameObject* target) const;
 	void UpdateModel(unsigned int shader) const;
@@ -80,7 +82,7 @@ public:
 	bool ParentPrefab() const;
 
 	bool CleanUp();
-	void Save(JSON_value *gameobjects) const;
+	void Save(JSON_value *gameobjects, bool selected = false) const;
 	void Load(JSON_value * gameobject, bool prefabObject= false);
 
 private:
@@ -97,6 +99,7 @@ private:
 
 	bool activeInHierarchy = true;
 	bool openInHierarchy = true;
+	bool showNavOptions = false;
 public:
 	unsigned UUID = 0;
 	unsigned parentUUID = 0; //only set in Save/Load scene TODO:update on parent change

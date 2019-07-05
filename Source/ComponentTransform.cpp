@@ -110,7 +110,7 @@ void ComponentTransform::MultiSelectionTransform(float4x4 &difference)
 {
 	for (GameObject* go : App->scene->selection)
 	{
-		if (go != App->scene->selected)
+		if (go != App->scene->selected && go->transform)
 		{
 			go->SetGlobalTransform(go->transform->global + difference);
 			if (go->parent->transform != nullptr)
@@ -260,7 +260,7 @@ math::float2 ComponentTransform::GetScreenPosition()
 	return math::float2::zero;
 }
 
-void ComponentTransform::SetRotation(const math::Quat & newRotation)
+void ComponentTransform::SetRotation(const math::Quat& newRotation)
 {
 	rotation = newRotation;
 	RotationToEuler();
@@ -291,6 +291,11 @@ math::float3 ComponentTransform::GetGlobalPosition()
 		return newlocal.Col3(3);
 	}
 	return global.Col3(3);
+}
+
+ENGINE_API void ComponentTransform::Rotate(math::float3 rot)
+{
+	SetRotation(Quat::FromEulerXYZ(rot.x, rot.y, rot.z) * rotation);
 }
 
 void ComponentTransform::LookAt(const math::float3 & targetPosition)
@@ -380,4 +385,28 @@ void ComponentTransform::Reset()
 	math::float4x4 local = math::float4x4::identity;
 	math::float4x4 animatedLocal = math::float4x4::identity;
 	math::float4x4 global = math::float4x4::identity;
+}
+
+ENGINE_API void ComponentTransform::SetGlobalPosition(const math::float3 & newPos)
+{
+	global.SetTranslatePart(newPos);
+	NewAttachment();
+}
+
+void ComponentTransform::NewAttachment()
+{
+	if (gameobject->parent->transform)
+	{
+		local = gameobject->parent->transform->global.Inverted().Mul(global);
+	}
+	else
+	{
+		local = global;
+	}
+
+	float3x3 rot;
+	local.Decompose(position, rot, scale);
+	rotation = rot.ToQuat();
+	UpdateGlobalTransform();
+	gameobject->movedFlag = true;
 }

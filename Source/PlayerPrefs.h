@@ -31,10 +31,11 @@ public:
 	static bool			HasKey(const char* key);
 
 	static void			DeleteKey(const char* key);
-	static void			DeleteAll();
+	static void			DeleteAll(bool deleteJsons = false); //flag also deletes all json files saved
 
 	static JSON*		LoadJson(const char* file);
 	static bool			SaveJson(JSON* json, const char* filename);
+	static void			DeleteJson(const char* file);
 
 private:
 
@@ -78,6 +79,7 @@ private:
 	static std::map<const char*, int, ltstr> integers;
 	static std::map<const char*, float, ltstr> floats;
 	static std::map<const char*, const char*, ltstr> strings;
+	static bool hasPrefsFile;
 };
 
 template<class T>

@@ -38,8 +38,13 @@ public:
 	bool isHovered = false;
 	bool isPressed = false;
 
+	bool showHoverDetectInEditor = true;
+	bool hoverDetectionMouse1 = true;
+	bool hoverDetectionMouse3 = true;
+
 	std::vector<std::string> textureFiles;
 	bool enabled = true;
+	int uiOrder = 0;
 private:
 	bool isMasked = false;
 	int maskAmount = 100;

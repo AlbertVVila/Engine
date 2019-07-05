@@ -26,6 +26,7 @@ class ResourceTexture;
 class ResourceScene;
 class myQuadTree;
 class ResourcePrefab;
+class ComponentRenderer;
 
 struct par_shapes_mesh_s;
 
@@ -74,7 +75,7 @@ public:
 	void SetPrimitiveMesh(par_shapes_mesh_s * mesh, PRIMITIVES type);
 	unsigned SaveParShapesMesh(const par_shapes_mesh_s & mesh, char** data) const;
 
-	void SaveScene(const GameObject& rootGO, const char* sceneName, const char* folder);
+	void SaveScene(const GameObject& rootGO, const char* sceneName, const char* folder, bool selected = false);
 	void SaveTemporaryScene();
 	bool isCleared();
 	ENGINE_API void LoadScene(const char* sceneName, const char* folder);
@@ -123,6 +124,8 @@ private:
 
 	std::list<GameObject*> scenePhotos;
 	std::list<GameObject*> scenePhotosUndoed;
+
+	std::list<ComponentRenderer*> alphaRenderers;
 
 	unsigned defaultSceneUID = 0u;
 	std::vector<std::string> sceneFiles;

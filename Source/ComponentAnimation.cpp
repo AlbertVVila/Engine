@@ -144,10 +144,12 @@ void ComponentAnimation::DrawProperties()
 					deletePopup = false;
 				}
 			}
+			ImGui::Separator();
+			HashString currentNodeName = stateMachine->GetNodeName(currentNode);
+			ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f),("Current state: %s", currentNodeName.C_str()));
 	
 			if (!stateMachine->isClipsEmpty())
 			{
-				ImGui::Separator();
 				for (unsigned j = 0u; j < stateMachine->GetClipsSize(); ++j)
 				{
 					ImGui::PushID(j);
@@ -163,22 +165,6 @@ void ComponentAnimation::DrawProperties()
 					}
 					stateMachine->SetClipName(j, HashString(clipName));
 
-					//if the animation must finish we must set loop to false and viceversa!
-					bool finish = stateMachine->GetClipMustFinish(j);
-					if (ImGui::Checkbox("Must end", &finish))
-					{
-						if (!finish)
-							stateMachine->SetClipMustFinish(j, false);
-						else
-						{
-							stateMachine->SetClipMustFinish(j, true);
-							stateMachine->SetClipLoop(j, false);
-						}
-
-						stateMachine->Save();
-					}
-
-					ImGui::SameLine();
 					ImGui::PushItemWidth(60);
 					float speed = stateMachine->GetClipSpeed(j);
 					if (ImGui::DragFloat("Clip speed", &speed, 0.1f, 0.f, 30.f))
@@ -205,9 +191,11 @@ void ComponentAnimation::DrawProperties()
 					ImGui::SameLine();
 
 					unsigned clipUID = stateMachine->GetClipResource(j);
-					ResourceAnimation* animation = (ResourceAnimation*)App->resManager->GetWithoutLoad(clipUID);
-					
-					if (ImGui::BeginCombo("", clipUID != 0u ? animation->GetName() : ""))
+					ResourceAnimation* animation = nullptr;
+					if(clipUID != 0)
+						animation = (ResourceAnimation*)App->resManager->GetWithoutLoad(clipUID);
+
+					if (ImGui::BeginCombo("", animation != nullptr ? animation->GetName() : ""))
 					{
 						if (guiAnimations.empty())
 						{
@@ -362,7 +350,9 @@ bool ComponentAnimation::GetLoopFromStateMachine()
 
 float ComponentAnimation::GetDurationFromClip()
 {
-	float speed = stateMachine->GetClipSpeed(currentNode);
+	HashString clipName = stateMachine->GetNodeClip(currentNode);
+	unsigned clipIndex = stateMachine->FindClip(clipName);
+	float speed = stateMachine->GetClipSpeed(clipIndex);
 	float duration = GetAnimFromStateMachine()->durationInSeconds;
 	return (duration/speed);
 }
@@ -430,12 +420,7 @@ void ComponentAnimation::Update()
 					scr->OnAnimationEvent(Anim->events.at(Anim->nextEvent)->name);
 				}
 
-				if (Anim->nextEvent + 1 < Anim->totalEvents)
-					++Anim->nextEvent;
-				else if (Anim->nextEvent + 1 == Anim->totalEvents && Anim->totalEvents == 1)
-					++Anim->nextEvent;
-				else
-					Anim->nextEvent = 0;
+				++Anim->nextEvent;
 			}
 
 			if (gameobject != nullptr)
@@ -586,6 +571,8 @@ void ComponentAnimation::Load(JSON_value* value)
 
 void ComponentAnimation::SetIndexChannels(GameObject* GO, ResourceAnimation* anim)
 {
+	if (anim == nullptr) return;
+
 	GO->animationIndexChannel = 999u;
 	GO->animationIndexChannel = anim->GetIndexChannel(GO->name.c_str());
 

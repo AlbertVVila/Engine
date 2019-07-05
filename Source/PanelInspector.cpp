@@ -19,12 +19,12 @@
 
 PanelInspector::PanelInspector()
 {
-	componentList = { {"Transform", ComponentType::Transform}, {"Renderer", ComponentType::Renderer},
+	componentList = { {"Transform", ComponentType::Transform},{"Transform2D", ComponentType::Transform2D}, {"Renderer", ComponentType::Renderer},
 	{"Camera", ComponentType::Camera},  {"Light", ComponentType::Light},
 	{"Animation", ComponentType::Animation}, {"Particle System", ComponentType::Particles},
-	{"Trail Renderer", ComponentType::Trail}, {"Reverb Zone", ComponentType::ReverbZone}, 
-	{"Audio Listener", ComponentType::AudioListener}, {"Audio Source", ComponentType::AudioSource}, 
-	{"Box Trigger", ComponentType::BoxTrigger} };
+	{"Trail Renderer", ComponentType::Trail},
+	{"Image", ComponentType::Image}, {"Reverb Zone", ComponentType::ReverbZone}, {"Audio Listener", ComponentType::AudioListener},
+	{"Audio Source", ComponentType::AudioSource}, {"Box Trigger", ComponentType::BoxTrigger} };
 }
 
 PanelInspector::~PanelInspector()

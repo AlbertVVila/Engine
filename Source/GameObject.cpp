@@ -52,6 +52,7 @@
 #include "Geometry/LineSegment.h"
 #include "GL/glew.h"
 #include "imgui.h"
+#include "imgui_internal.h"
 
 #define MAX_NAME 128
 #define IMGUI_RIGHT_MOUSE_BUTTON 1
@@ -235,9 +236,19 @@ void GameObject::DrawProperties()
 					UpdateToPrefab(prefab->RetrievePrefab());
 				}
 			}
+			if (App->time->gameState == GameState::RUN)
+			{
+				ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+				ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+			}
 			if (ImGui::Button("Update Prefab"))
 			{
 				prefab->Update(this);
+			}
+			if (App->time->gameState == GameState::RUN)
+			{
+				ImGui::PopItemFlag();
+				ImGui::PopStyleVar();
 			}
 		}
 
@@ -253,24 +264,28 @@ void GameObject::DrawProperties()
 		if (children.size() > 1)
 		{
 			ImGui::NewLine();
-			if (ImGui::Button("Make childs static"))
+			ImGui::Checkbox("Show navigation options", &showNavOptions);
+			if (showNavOptions)
 			{
-				SetStaticAllChildsWithMesh();
-				App->spacePartitioning->kDTree.Calculate();
-			}
-			if (ImGui::Button("Make childs navigable"))
-			{
-				SetNavigableAllChildsWithMesh();
-				App->spacePartitioning->kDTree.Calculate();
-			}
-			if (ImGui::Button("Make childs obstacles"))
-			{
-				SetObstacleAllChildsWithMesh();
-				App->spacePartitioning->kDTree.Calculate();
-			}
-			if (ImGui::Button("Add childs to navMesh"))
-			{
-				AddAllNavigableChildsToNavMesh();
+				if (ImGui::Button("Make childs static"))
+				{
+					SetStaticAllChildsWithMesh();
+					App->spacePartitioning->kDTree.Calculate();
+				}
+				if (ImGui::Button("Make childs navigable"))
+				{
+					SetNavigableAllChildsWithMesh();
+					App->spacePartitioning->kDTree.Calculate();
+				}
+				if (ImGui::Button("Make childs obstacles"))
+				{
+					SetObstacleAllChildsWithMesh();
+					App->spacePartitioning->kDTree.Calculate();
+				}
+				if (ImGui::Button("Add childs to navMesh"))
+				{
+					AddAllNavigableChildsToNavMesh();
+				}
 			}
 		}
 		if (ImGui::Checkbox("Static", &isStatic))
@@ -461,8 +476,15 @@ Component* GameObject::CreateComponent(ComponentType type, JSON_value* value)
 			assert(value != nullptr); //Only used for loading from json
 			std::string name = value->GetString("script");
 			Script* script = App->scripting->GetScript(name);
-			script->SetGameObject(this);
-			component = (Component*)script;
+			if (script)
+			{
+				script->SetGameObject(this);
+				component = (Component*)script;
+			}
+			else
+			{
+				LOG("%s script not loaded", name.c_str());
+			}
 		}
 		break;
 	case ComponentType::Particles:
@@ -581,6 +603,16 @@ void GameObject::InsertChild(GameObject* child)
 {
 	children.push_back(child);
 	child->parent = this;
+}
+
+void GameObject::ChangeParent(GameObject* oldParent, GameObject* newParent)
+{
+	oldParent->children.remove(this);
+	newParent->children.push_back(this);
+	this->parent = newParent;
+	this->parentUUID = newParent->UUID;
+	transform->NewAttachment();
+	UpdateBBox();
 }
 
 ENGINE_API Component * GameObject::GetComponentOld(ComponentType type) const //Deprecated
@@ -806,9 +838,9 @@ void GameObject::SetLightUniforms(unsigned shader) const
 		glUniformMatrix4fv(glGetUniformLocation(shader,
 			"lightProjView"), 1, GL_TRUE, &App->renderer->shadowsFrustum.ViewProjMatrix()[0][0]);
 
-		glActiveTexture(GL_TEXTURE5);
+		glActiveTexture(GL_TEXTURE6);
 		glBindTexture(GL_TEXTURE_2D, App->renderer->shadowsTex);
-		glUniform1i(glGetUniformLocation(shader, "shadowTex"), 5);
+		glUniform1i(glGetUniformLocation(shader, "shadowTex"), 6);
 	}
 }
 
@@ -841,6 +873,13 @@ void GameObject::MarkAsPrefab()
 	}
 
 	prefab = (ResourcePrefab*)App->resManager->Get(prefabUID);
+	if (prefab == nullptr)
+	{
+		prefabUID = App->scene->CreatePrefab(this);
+		prefab = (ResourcePrefab*)App->resManager->Get(prefabUID);
+		wasPrefab = false;
+	}
+
 	prefab->AddInstance(this);
 	isPrefabSync = true;
 
@@ -879,7 +918,26 @@ bool GameObject::ParentPrefab() const
 
 void GameObject::UpdateToPrefab(GameObject* prefabGo)
 {
-	Component* myTransform = transform->Clone(); //Save old transform and parent
+	if (prefabGo == nullptr)
+	{
+		LOG("Cannot update to prefab");
+		return;
+	}
+
+	Component* myTransform = nullptr;
+	if (transform != nullptr)
+	{
+		myTransform = transform->Clone();
+	}
+	else
+	{
+		Transform2D* transformUI = GetComponent<Transform2D>();
+		if (transformUI != nullptr)
+		{
+			myTransform = transformUI->Clone();
+		}
+	}
+
 	GameObject* myParent = parent;
 	CleanUp();
 	for (auto& component: components)
@@ -893,12 +951,20 @@ void GameObject::UpdateToPrefab(GameObject* prefabGo)
 	components.clear();
 	children.clear();
 	parent = myParent;
-	components.push_back(myTransform);
-	transform = (ComponentTransform*) myTransform;
+
+	if (myTransform != nullptr)
+	{
+		components.push_back(myTransform);
+		if (myTransform->type == ComponentType::Transform)
+		{
+			transform = (ComponentTransform*)myTransform;
+		}
+	}
 
 	for (const auto &component : prefabGo->components)
 	{
-		if (component->type == ComponentType::Transform) continue;
+		if (component->type == ComponentType::Transform ||
+			component->type == ComponentType::Transform2D) continue;
 		Component* newComponent = component->Clone();
 		newComponent->gameobject = this;
 		components.push_back(newComponent);
@@ -1007,10 +1073,10 @@ bool GameObject::CleanUp()
 	return true;
 }
 
-void GameObject::Save(JSON_value *gameobjects) const
+void GameObject::Save(JSON_value *gameobjects, bool selected) const
 {
-	if (parent != nullptr && App->scene->canvas != this) // we don't add gameobjects without parent (ex: World)
-	{
+	if (parent != nullptr && App->scene->canvas != this && (App->scene->selected == this || !selected)) // we don't add gameobjects without parent (ex: World)
+	{		
 		JSON_value *gameobject = gameobjects->CreateValue();
 		gameobject->AddUint("UID", UUID);
 		gameobject->AddUint("ParentUID", parent->UUID);
@@ -1043,7 +1109,16 @@ void GameObject::Save(JSON_value *gameobjects) const
 
 	for (auto &child : children)
 	{
-		child->Save(gameobjects);
+		bool wasSelected = App->scene->selected == this;
+		if (selected && App->scene->selected == this)
+		{
+			App->scene->selected = child;
+		}
+		child->Save(gameobjects, selected);
+		if (wasSelected)
+		{
+			App->scene->selected = const_cast<GameObject*>(this);
+		}
 	}
 }
 
@@ -1085,7 +1160,10 @@ void GameObject::Load(JSON_value *value, bool prefabTemplate)
 		JSON_value* componentJSON = componentsJSON->GetValue(i);
 		ComponentType type = (ComponentType)componentJSON->GetUint("Type");
 		Component* component = CreateComponent(type, componentJSON);
-		component->Load(componentJSON);
+		if (component)
+		{
+			component->Load(componentJSON);
+		}
 	}
 
 	if (transform != nullptr)

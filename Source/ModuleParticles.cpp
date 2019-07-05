@@ -44,13 +44,13 @@ bool ModuleParticles::Start()
 		0.5f, -0.5f, 0.0f, // bottom right 2
 		0.5f,  0.5f, 0.0f, // top right 3
 
-		0.0f, 0.0f, // 0
-		1.0f, 0.0f, // 2
-		0.0f, 1.0f, // 1
+		1.0f, 1.0f, // 0
+		0.0f, 1.0f, // 2
+		1.0f, 0.0f, // 1
 
-		0.0f, 1.0f, // 1
-		1.0f, 0.0f, // 2
-		1.0f, 1.0f  // 3
+		1.0f, 0.0f, // 1
+		0.0f, 1.0f, // 2
+		0.0f, 0.0f  // 3
 	};
 
 	unsigned int quadIndices[] =
@@ -158,7 +158,7 @@ void ModuleParticles::Render(float dt, const ComponentCamera* camera)
 		}
 	}
 
-	glDisable(GL_CULL_FACE);
+	glDisable(GL_CULL_FACE);	
 	glBlendFunc(GL_ONE, GL_ONE);	
 
 	for (ComponentTrail* trail : trails)
@@ -239,6 +239,7 @@ void ModuleParticles::RenderTrail(ComponentTrail* ct, const ComponentCamera* cam
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, ct->texture->gpuID);
 	glUniform1i(glGetUniformLocation(trailShader->id[0], "texture0"), 0);
+	glUniform1f(glGetUniformLocation(trailShader->id[0], "bloomIntensity"), ct->bloomIntensity);
 
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, (trailVertices - discarded) * 2);
 

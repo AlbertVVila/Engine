@@ -5,7 +5,7 @@
 const float PI = 3.14159265359f; 
 
 layout (location = 0) out vec4 Fragcolor;
-layout (location = 1) out vec4 highlightColor;
+layout (location = 1) out vec4 highlightColor; //alpha channel stores fragment distance to viewer
 layout (location = 2) out vec4 brightColor;
 
 struct Material
@@ -76,8 +76,10 @@ layout (std140) uniform Matrices
 
 in vec3 normalIn;
 in vec3 position;
+in vec3 positionWorld;
 in vec2 uv0;
 in vec3 viewPos;
+in vec3 eye_pos;
 in vec4 shadow_coord;
 
 in vec3 pointPositions[MAX_POINT_LIGHTS]; //positions in tangent space
@@ -172,7 +174,11 @@ vec3 CalculateNormal()
 
 void main()
 {
+#ifndef WATER
 	vec3 normal = CalculateNormal();	
+#else
+	vec3 normal = normalIn;
+#endif
 	vec4 albedo = get_albedo();
 	
 	float metallic = length(material.specular);
@@ -192,7 +198,11 @@ void main()
 					&& sCoord.y >= .0f && sCoord.y <= 1.f
 					&& texture2D(shadowTex, sCoord.xy).x < clamp(sCoord.z, 0, 1) - 0.005f);
 #endif					
+#ifndef WATER
 		vec3 L = directionalDirections[i];
+#else
+		vec3 L = lights.directional[i].direction;
+#endif
 		vec3 H = normalize(V + L);	
 
 		vec3 radiance = lights.directional[i].color * lights.directional[i].intensity;				
@@ -214,9 +224,14 @@ void main()
 	}
 	for(int i=0; i < lights.num_points; ++i)
 	{	
+#ifndef WATER
 		vec3 lightPos = pointPositions[i];
+#else
+		vec3 lightPos = lights.points[i].position;
+#endif
 		vec3 L = normalize(lightPos - position);
 		vec3 H = normalize(V + L);
+
 		float distance = length(lightPos - position);
 
 		float att = max(get_attenuation(distance, lights.points[i].radius, lights.points[i].intensity), 0);
@@ -263,7 +278,7 @@ void main()
 	color = vec3(pow(color.r, (1.0 / 2.2)), pow(color.g, (1.0 / 2.2)), pow(color.b, (1.0 / 2.2)));
 #endif
 	Fragcolor = vec4(color, albedo.a);
-	highlightColor = vec4(highlightColorUniform, 1);
+	highlightColor = vec4(highlightColorUniform, length(positionWorld - eye_pos) / 100);
 	
 	float brightness = dot(Fragcolor.rgb, vec3(0.2126, 0.7152, 0.0722));
     if(brightness > 1)
@@ -279,6 +294,8 @@ void main()
 	else if (phi < 0)
 	{
 		discard;
-	}
-#endif
+	}		
+#endif	
+			
+	//Fragcolor = texture2D(material.dissolve_texture, uv0);
 }

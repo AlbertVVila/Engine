@@ -264,6 +264,9 @@ void ComponentCamera::DrawProperties()
 		}
 
 		ImGui::Separator();
+		ImGui::DragFloat("Fog falloff", &fogFalloff, 1.f * App->renderer->current_scale, 0.f);
+		ImGui::DragFloat("Fog quadratic", &fogQuadratic, 1.f * App->renderer->current_scale, 0.f);
+		ImGui::ColorEdit3("Fog color", &fogColor[0]);
 	}
 	ImGui::PopID();
 }
@@ -300,6 +303,9 @@ void ComponentCamera::Save(JSON_value* value) const
 	value->AddFloat3("Front", frustum->front);
 	value->AddFloat3("Up", frustum->up);
 	value->AddUint("isMain", isMainCamera);
+	value->AddFloat("fogFalloff", fogFalloff);
+	value->AddFloat("fogQuadratic", fogQuadratic);
+	value->AddFloat3("fogColor", fogColor);
 }
 
 void ComponentCamera::Load(JSON_value* value)
@@ -328,6 +334,9 @@ void ComponentCamera::Load(JSON_value* value)
 	{
 		SetAsMain();
 	}
+	fogQuadratic = value->GetFloat("fogQuadratic");
+	fogFalloff = value->GetFloat("fogFalloff");
+	fogColor = value->GetFloat3("fogColor");
 }
 
 void ComponentCamera::Paste()

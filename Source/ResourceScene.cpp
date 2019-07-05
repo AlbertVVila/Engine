@@ -72,12 +72,14 @@ void ResourceScene::LoadConfigFromMeta()
 	}
 }
 
-void ResourceScene::Save(const GameObject& rootGO)
+void ResourceScene::Save(const GameObject& rootGO, bool selected)
 {
 	JSON *json = new JSON();
 	JSON_value *array = json->CreateValue(rapidjson::kArrayType);
 	App->navigation->sceneSaved(json);
-	rootGO.Save(array);
+	rootGO.Save(array, selected);
+	App->scene->selected = nullptr;
+	App->scene->selection.clear();
 	json->AddValue("GameObjects", *array);
 
 	App->fsystem->Save(file.c_str(), json->ToString().c_str(), json->Size());

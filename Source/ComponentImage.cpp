@@ -45,7 +45,7 @@ ComponentImage::ComponentImage(const ComponentImage &copy) : Component(copy)
 	color = copy.color;
 	flipHorizontal = copy.flipHorizontal;
 	flipVertical = copy.flipVertical;
-	texture = (ResourceTexture*)App->resManager->Get(copy.texture->GetUID());
+	if (texture) texture = (ResourceTexture*)App->resManager->Get(copy.texture->GetUID());
 }
 
 ComponentImage::~ComponentImage()
@@ -71,6 +71,8 @@ void ComponentImage::DrawProperties()
 		{
 			return;
 		}
+		if (showHoverDetectInEditor) ImGui::InputInt("UI Order", &uiOrder);
+
 		//texture selector
 		if (ImGui::BeginCombo("Texture", texture != nullptr ? texture->GetName() : None))
 		{
@@ -118,6 +120,11 @@ void ComponentImage::DrawProperties()
 		ImGui::Checkbox("Has mask", &isMasked);
 		ImGui::Checkbox("Is horizontal mask?", &isMaskHorizontal);
 		ImGui::DragInt("Mask amount %", &maskAmount, 1, 0, 100);
+		if (showHoverDetectInEditor)
+		{
+			ImGui::Checkbox("Hover Detection Mouse1", &hoverDetectionMouse1);
+			ImGui::Checkbox("Hover Detection Mouse3", &hoverDetectionMouse3);
+		}
 
 		ImGui::Separator();
 	}
@@ -144,7 +151,11 @@ void ComponentImage::Update()
 	math::float2 buttonMax = float2(buttonX + size.x *.5f, -buttonY + size.y *.5f);
 
 	if (screenX > buttonMin.x && screenX < buttonMax.x && screenY > buttonMin.y && screenY < buttonMax.y)
+	{
 		isHovered = true;
+		if (hoverDetectionMouse1) App->ui->uiHoveredMouse1 = true;
+		if (hoverDetectionMouse3) App->ui->uiHoveredMouse3 = true;
+	}
 	else
 		isHovered = false;
 
@@ -164,12 +175,16 @@ void ComponentImage::Save(JSON_value *value)const
 {
 	Component::Save(value);
 	value->AddUint("textureUID", (texture != nullptr) ? texture->GetUID() : 0u);
+	value->AddString("textureName", texture ? texture->GetName() : "");
 	value->AddFloat4("color", color);
 	value->AddInt("FlipVertical", flipVertical);
 	value->AddInt("FlipHorizontal", flipHorizontal);
 	value->AddInt("isMasked", isMasked);
 	value->AddInt("maskAmount", maskAmount);
 	value->AddInt("isMaskHorizontal", isMaskHorizontal);
+	value->AddInt("hoverDetectionMouse1", hoverDetectionMouse1);
+	value->AddInt("hoverDetectionMouse3", hoverDetectionMouse3);
+	value->AddInt("UIOrder", uiOrder);
 
 }
 
@@ -178,12 +193,16 @@ void ComponentImage::Load(JSON_value* value)
 	Component::Load(value);
 	unsigned uid = value->GetUint("textureUID");
 	texture = (ResourceTexture*)App->resManager->Get(uid);
+	if (!texture) texture = (ResourceTexture*)App->resManager->GetByName(value->GetString("textureName", ""), TYPE::TEXTURE);
 	color = value->GetFloat4("color");
 	flipVertical = value->GetInt("FlipVertical");
 	flipHorizontal = value->GetInt("FlipHorizontal");
 	isMasked = value->GetInt("isMasked");
 	maskAmount = value->GetInt("maskAmount");
 	isMaskHorizontal = value->GetInt("isMaskHorizontal");
+	hoverDetectionMouse1 = value->GetInt("hoverDetectionMouse1", 1);
+	hoverDetectionMouse3 = value->GetInt("hoverDetectionMouse3", 1);
+	uiOrder = value->GetInt("UIOrder", 0);
 }
 
 ENGINE_API void ComponentImage::SetMaskAmount(int maskAmount)

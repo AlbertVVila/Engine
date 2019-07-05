@@ -11,6 +11,8 @@
 #define GameLoop_API __declspec(dllimport)
 #endif
 
+#define MENU_SCENE "MenuScene"
+
 #include <vector>
 
 class Component;
@@ -22,8 +24,13 @@ class PlayerMovement;
 class EnemyMovementScript;
 class IntroScript;
 class CreditsScript;
+class InventoryScript;
+class EquipPopupController;
+class SkillTreeController;
+class ExperienceController;
 class AABB;
 class JSON_value;
+class ComponentAudioSource;
 
 class LoopState;
 class LoopStateControls;
@@ -38,20 +45,26 @@ class LoopStatePlaying;
 class LoopStateQuit;
 class LoopStateWin;
 
+enum class GameScene
+{
+	MENU,
+	CEMENTERY,
+	TEMPLE,
+	HUD
+};
+
 class GameLoop_API GameLoop : public Script
 {
-	enum class GameScene
-	{
-		MENU,
-		CEMENTERY,
-		HUD
-	};
 
 public :
 	void Expose(ImGuiContext* context) override;
 
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
+	inline virtual GameLoop* Clone() const
+	{
+		return new GameLoop(*this);
+	}
 
 public:
 
@@ -60,6 +73,7 @@ public:
 
 	void LoadMenuScene();
 	void LoadCementeryScene();
+	void LoadTempleScene();
 	void LoadHUDScene();
 
 	void CreateGameStates();
@@ -125,6 +139,9 @@ public:
 	Button* missionsButton = nullptr;
 	Button* skillsButton = nullptr;
 	Button* closePlayerMenuButton = nullptr;
+	Button* pauseResume = nullptr;
+	Button* pauseOptions = nullptr;
+	Button* pauseExit = nullptr;
 	std::vector<Component*> volumeButtons;
 	std::vector<Component*> soundButtons;
 
@@ -145,6 +162,7 @@ public:
 	GameObject* inventoryMenuGO = nullptr;
 	GameObject* missionsMenuGO = nullptr;
 	GameObject* skillsMenuGO = nullptr;
+	GameObject* pauseMenuGO = nullptr;
 
 	//BBOX
 	math::AABB* playerBbox = nullptr;
@@ -159,9 +177,16 @@ public:
 	EnemyMovementScript* enemyMovementScript = nullptr;
 	IntroScript* introScript = nullptr;
 	CreditsScript* creditsScript = nullptr;
+	InventoryScript* inventoryScript = nullptr;
+	EquipPopupController* equipPopUpScript = nullptr;
+	SkillTreeController* skillTreeScript = nullptr;
+	ExperienceController* experienceScript = nullptr;
 
 	//Camera
 	ComponentCamera* componentIntroCamera = nullptr;
+
+	//Audio
+	ComponentAudioSource* menuButtonsSound = nullptr;
 
 	float3 playerStartPosition = float3::zero;
 	float3 enemyStartPosition = float3::zero;

@@ -36,7 +36,7 @@ public:
 	bool CleanUp();
 
 	// Check key states (includes mouse and joy buttons)
-	KeyState GetKey(int id) const
+	ENGINE_API KeyState GetKey(int id) const
 	{
 		return keyboard[id];
 	}

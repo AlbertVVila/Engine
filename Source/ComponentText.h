@@ -31,6 +31,7 @@ public:
 	bool isTextWrapped = false;
 	float wrapWidth = 100;
 	float interlineDistance = 24;
+	int uiOrder = 0;
 };
 
 #endif

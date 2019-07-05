@@ -17,7 +17,7 @@ public:
 	void LoadConfigFromMeta() override;
 
 	// Scene especific
-	void Save(const GameObject &rootGO);
+	void Save(const GameObject &rootGO, bool selected = false);
 	bool Load();
 
 private:

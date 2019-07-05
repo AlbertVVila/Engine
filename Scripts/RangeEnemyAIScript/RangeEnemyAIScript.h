@@ -34,9 +34,15 @@ public:
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
 
+	inline virtual RangeEnemyAIScript* Clone() const
+	{
+		return new RangeEnemyAIScript(*this);
+	}
 private:
 	void CheckStates(EnemyState* previous, EnemyState* current);
 	void DrawDebug() const;
+
+	void OnTriggerEnter(GameObject* go);
 
 public:
 	EnemyState* currentState = nullptr;

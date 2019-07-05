@@ -37,6 +37,7 @@ public:
 	ENGINE_API math::float2 GetScreenPosition();
 
 	ENGINE_API math::float3 GetGlobalPosition();
+	ENGINE_API void Rotate(math::float3 rotation);
 
 	ENGINE_API void LookAt(const math::float3& target);
 	ENGINE_API void LookAtMouse();
@@ -48,6 +49,10 @@ public:
 	//void Copy() override;
 	void Paste() override;
 	void Reset() override;
+
+	ENGINE_API void SetGlobalPosition(const math::float3 & newPos);
+
+	void NewAttachment();
 
 private:
 	void RotationToEuler();

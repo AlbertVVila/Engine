@@ -4,7 +4,7 @@
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+	   http://www.apache.org/licenses/LICENSE-2.0
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,9 +12,9 @@
    See the License for the specific language governing permissions and
    limitations under the License. */
 
-/** @file MathFunc.h
-	@author Jukka Jylänki
-	@brief Common mathematical functions. */
+   /** @file MathFunc.h
+	   @author Jukka Jylänki
+	   @brief Common mathematical functions. */
 #pragma once
 
 #include "myassert.h"
@@ -288,9 +288,9 @@ FORCE_INLINE float RSqrt(float x)
 
 	// Do one iteration of Newton-Rhapson:
 	// e_n = e + 0.5 * (e - x * e^3)
-	__m128 e3 = _mm_mul_ss(_mm_mul_ss(e,e), e);
+	__m128 e3 = _mm_mul_ss(_mm_mul_ss(e, e), e);
 	__m128 half = _mm_set_ss(0.5f);
-	
+
 	return M128_TO_FLOAT(_mm_add_ss(e, _mm_mul_ss(half, _mm_sub_ss(e, _mm_mul_ss(X, e3)))));
 #else
 	return 1.f / sqrtf(x);
@@ -315,7 +315,7 @@ FORCE_INLINE float Recip(float x)
 	__m128 e = _mm_rcp_ss(X);
 	// Do one iteration of Newton-Rhapson:
 	// e_n = 2*e - x*e^2
-	__m128 e2 = _mm_mul_ss(e,e);
+	__m128 e2 = _mm_mul_ss(e, e);
 	return M128_TO_FLOAT(_mm_sub_ss(_mm_add_ss(e, e), _mm_mul_ss(X, e2)));
 #else
 	return 1.f / x;
@@ -463,10 +463,10 @@ bool Equal(const T &a, const T &b)
 }
 
 /** Compares the two values for equality up to a small epsilon. */
-template<> bool FORCE_INLINE Equal(const float &a, const float &b) { return Abs(a-b) <= eps; }
-template<> bool FORCE_INLINE Equal(const double &a, const double &b) { return Abs(a-b) <= eps; }
+template<> bool FORCE_INLINE Equal(const float &a, const float &b) { return Abs(a - b) <= eps; }
+template<> bool FORCE_INLINE Equal(const double &a, const double &b) { return Abs(a - b) <= eps; }
 #ifndef EMSCRIPTEN // long double is not supported.
-template<> bool FORCE_INLINE Equal(const long double &a, const long double &b) { return Abs(a-b) <= eps; }
+template<> bool FORCE_INLINE Equal(const long double &a, const long double &b) { return Abs(a - b) <= eps; }
 #endif
 
 /** Compares the two values for equality, allowing the given amount of absolute error. */
