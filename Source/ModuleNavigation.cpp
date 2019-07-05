@@ -1474,25 +1474,24 @@ bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vecto
 					this->pathDist.emplace_back(path[path.size()-1], 1);
 				}
 			}
-			//now we calculate the distance in a smarter way
+			//now we calculate the distance in a lazier way
 			float afterPathDistance = 0.f;
-			
-			afterPathDistance += GetXZDistanceWithoutSQ(path[0], path[path.size() / 4]);//0-25%
-			afterPathDistance += GetXZDistanceWithoutSQ(path[path.size() / 4], path[path.size() / 3]);//25%-33%
-			afterPathDistance += GetXZDistanceWithoutSQ(path[path.size() / 3], path[path.size() / 2]);//33%-50%
-			afterPathDistance += GetXZDistanceWithoutSQ(path[path.size() / 2], path[path.size() / 3 * 2]);//50%-66%
-			afterPathDistance += GetXZDistanceWithoutSQ(path[path.size() / 3*2], path[path.size() / 4 * 3]);//66%-75%
-			afterPathDistance += GetXZDistanceWithoutSQ(path[path.size() / 4 * 3], path[path.size()-1]);//75%-100%
+			unsigned j = path.size() / 10;
+			//iterate over path 10 times getting the distances between points every 10% of the way
+			for (unsigned i = 1; i < 10; ++i)
+			{
+				afterPathDistance += GetXZDistanceWithoutSQ(path[j*(i-1)], path[j*i]);
+			}
 			
 			if (afterPathDistance > ignoreDist)
 			{
-				path.clear();
 				if (logDebugPathing)
 				{
 					std::stringstream s;
 					s << "Distance = " << afterPathDistance << ". Aborting";
 					LOG(s.str().c_str());
 				}
+				path.clear();
 				return false;
 			}
 			else if (logDebugPathing)

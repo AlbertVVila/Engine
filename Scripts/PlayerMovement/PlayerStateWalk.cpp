@@ -54,6 +54,7 @@ void PlayerStateWalk::Update()
 		{
 			//clicked outside of the map, stop moving
 			playerWalking = false;
+			player->currentState = player->idle;
 			if (dustParticles)
 			{
 				dustParticles->SetActive(false);
