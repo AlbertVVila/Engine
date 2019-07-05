@@ -45,7 +45,7 @@ void PlayerStateWalk::Update()
 		math::float3 intPos(0.f, 0.f, 0.f);
 		if (player->App->navigation->NavigateTowardsCursor(player->gameobject->transform->position, path,
 					math::float3(player->OutOfMeshCorrectionXZ, player->OutOfMeshCorrectionY, player->OutOfMeshCorrectionXZ), 
-					intPos, player->maxWalkingDistance, PathFindType::FOLLOW, player->straightPathingDistance))
+					intPos, 1, PathFindType::FOLLOW, player->straightPathingDistance))
 		{
 			//case the player clicks outside of the floor mesh but we want to get close to the floors edge
 			pathIndex = 0;

@@ -109,8 +109,8 @@ void PlayerMovement::Expose(ImGuiContext* context)
 	ImGui::DragFloat("Walking speed", &walkingSpeed, 0.01f, 10.f, 500.0f);
 	ImGui::DragFloat("Out of NavMesh pos correction XZ", &OutOfMeshCorrectionXZ, 1.f, 0.f, 1000.f);
 	ImGui::DragFloat("Out of NavMesh pos correction Y", &OutOfMeshCorrectionY, 1.f, 0.f, 500.f);
-	ImGui::DragFloat("Max walking distance", &maxWalkingDistance, 100.f, 0.f, 100000.0f);
-	ImGui::DragFloat("Straight pathing distance", &straightPathingDistance, 100.f, 50000.f, 1000000.f);
+	ImGui::DragFloat("Max walking distance", &maxWalkingDistance, 100.f, 0.f, 100000.f);
+	ImGui::DragFloat("Stop distance", &straightPathingDistance, 100.f, 500.f, 10000.f);
 
 	ImGui::DragFloat("Out of Combat time", &outCombatMaxTime, 1.f, 0.f, 10.f);
 	
@@ -829,7 +829,7 @@ void PlayerMovement::DeSerialize(JSON_value* json)
 	OutOfMeshCorrectionXZ = json->GetFloat("MeshCorrectionXZ", 500.f);
 	OutOfMeshCorrectionY = json->GetFloat("MeshCorrectionY", 300.f);
 	maxWalkingDistance = json->GetFloat("MaxWalkDistance", 50000.0f);
-	straightPathingDistance = json->GetFloat("StraightPathDistance", 100000.0f);
+	straightPathingDistance = json->GetFloat("StraightPathDistance", 3000.0f);
 
 	outCombatMaxTime = json->GetFloat("Out_of_combat_timer", 3.f);
 

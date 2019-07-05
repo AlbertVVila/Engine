@@ -137,6 +137,7 @@ private:
 	bool inRange(const float * v1, const float * v2, const float r, const float h) const;
 
 	float GetXZDistance(float3 a, float3 b) const;
+	float GetXZDistanceWithoutSQ(float3 a, float3 b) const;
 
 	float3 getNextStraightPoint(float3 current, float3 pathDirection, float3 end, bool* destination) const;
 	
@@ -243,8 +244,9 @@ private:
 	const AABB* meshbox = nullptr;
 
 	//Debugging
-	bool pathGenerated = false;
-	std::vector<math::float3> path;
+	mutable bool pathGenerated = false;
+	mutable std::vector<std::pair<math::float3, float>> pathDist;
+	mutable std::vector<math::float3> path;
 	math::float3 start = math::float3::inf;
 	math::float3 end = math::float3::inf;
 

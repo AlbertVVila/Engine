@@ -395,21 +395,57 @@ void ModuleNavigation::renderNavMesh()
 	//}
 
 	ddi->debugDrawNavMesh();
-	if (start != math::float3::inf)
+	if (App->renderer->pathfindingDebug)
 	{
-		dd::point(start, dd::colors::Red, 5.0f, 0, false);
-	}
-	if (end != math::float3::inf)
-	{
-		dd::point(end, dd::colors::Red, 5.0f, 0, false);
-	}
-	if (pathGenerated)
-	{
-		for (int i = 0; i < path.size(); ++i)
+		if (start != math::float3::inf)
 		{
-			if (i + 1 < path.size())
+			dd::point(start, dd::colors::Red, 5.0f, 0, false);
+		}
+		if (end != math::float3::inf)
+		{
+			dd::point(end, dd::colors::Red, 5.0f, 0, false);
+		}
+		if (pathGenerated)
+		{
+			for (int i = 0; i < pathDist.size(); ++i)
 			{
-				dd::line(path[i], path[i + 1], dd::colors::Red, 0, false);
+				if (i % 4 == 0)
+				{
+					dd::point(pathDist[i].first, dd::colors::Red, 5.0f, 0, true);
+				}
+				else if (i % 4 == 1)
+				{
+					dd::point(pathDist[i].first, dd::colors::Green, 5.0f, 0, true);
+				}
+				else if (i % 4 == 2)
+				{
+					dd::point(pathDist[i].first, dd::colors::White, 5.0f, 0, true);
+				}
+				else if (i % 4 == 3)
+				{
+					dd::point(pathDist[i].first, dd::colors::Blue, 5.0f, 0, true);
+				}
+				/*
+				if (pathDist[i].second < 200.f)
+				{
+					dd::point(pathDist[i].first, dd::colors::White, 5.0f, 0, true);
+				}
+				if (pathDist[i].second < 300.f)
+				{
+					dd::point(pathDist[i].first, dd::colors::Blue, 5.0f, 0, true);
+				}
+				else if (pathDist[i].second < 400.f)
+				{
+					dd::point(pathDist[i].first, dd::colors::Green, 5.0f, 0, true);
+				}
+				else if (pathDist[i].second < 500.f)
+				{
+					dd::point(pathDist[i].first, dd::colors::Orange, 5.0f, 0, true);
+				}
+				else
+				{
+					dd::point(pathDist[i].first, dd::colors::Red, 5.0f, 0, true);
+				}*/
 			}
 		}
 	}
@@ -1249,8 +1285,13 @@ float ModuleNavigation::GetXZDistance(float3 a, float3 b) const
 {
 	math::float2 p1(a.x, a.z);
 	math::float2 p2(b.x, b.z);
-	//return p1.Distance(p2);
-	return a.DistanceSq(b);
+	return p1.DistanceSq(p2);
+}
+float ModuleNavigation::GetXZDistanceWithoutSQ(float3 a, float3 b) const
+{
+	math::float2 p1(a.x, a.z);
+	math::float2 p2(b.x, b.z);
+	return p1.Distance(p2);
 }
 
 float3 ModuleNavigation::getNextStraightPoint(float3 current, float3 pathDirection, float3 end, bool* destination) const
@@ -1326,6 +1367,7 @@ bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vecto
 
 	if (type == PathFindType::FOLLOW) //TODO: OFF mesh link connections
 	{
+		pathDist.clear();
 		int pathIterationNb = 0;
 		dtStatus status = navQuery->findPath(startPoly, endPoly, (float*)&start, (float*)&end, &filter, polyPath, &polyCount, MAX_POLYS);
 		if (dtStatusFailed(status))
@@ -1346,13 +1388,12 @@ bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vecto
 			navQuery->closestPointOnPoly(polys[npolys - 1], (float*)&end, targetPos, 0);
 
 			static const float STEP_SIZE = 20.f;
-			static const float SLOP = 10.0f;
+			static const float SLOP = 15.0f;
 
 			float smoothPath[MAX_SMOOTH * 3];
 
 			dtVcopy(&smoothPath[smoothNb * 3], iterPos);
 			smoothNb++;
-
 			// Move towards target a small advancement at a time until target reached or
 			// when ran out of memory to store the path.
 			while (npolys && smoothNb < MAX_SMOOTH)
@@ -1364,7 +1405,9 @@ bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vecto
 
 				if (!getSteerTarget(navQuery, iterPos, targetPos, SLOP,
 					polys, npolys, steerPos, steerPosFlag, steerPosRef))
+				{
 					break;
+				}
 
 				bool endOfPath = (steerPosFlag & DT_STRAIGHTPATH_END) ? true : false;
 
@@ -1419,44 +1462,46 @@ bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vecto
 			}
 			float currentPathDistance = 0;
 			path.reserve(smoothNb);
-			math::float3 currentPoint, nextPoint;
-			currentPoint = nextPoint = float3(smoothPath[0], smoothPath[1], smoothPath[2]);
-			bool maxDistPassed = false;
-			for (size_t i = 0; i < smoothNb && !maxDistPassed; i++)
+			float2 s1, e1;
+			s1.x = start.x; s1.y = start.z;
+			e1.x = end.x; e1.y = end.z;
+			for (size_t i = 0; i < smoothNb; i++)
 			{
-				currentPoint = nextPoint;
-				nextPoint = float3(smoothPath[i * 3], smoothPath[i * 3 + 1], smoothPath[i * 3 + 2]);
-				//check distance
-				currentPathDistance += GetXZDistance(currentPoint, nextPoint);//2d distance
-
-				if (currentPathDistance < maxDist)
+				path.push_back(float3(smoothPath[i * 3], smoothPath[i * 3 + 1], smoothPath[i * 3 + 2]));
+				//filling debugging variable if flag is activated
+				if (App->renderer->pathfindingDebug)
 				{
-					path.push_back(float3(smoothPath[i * 3], smoothPath[i * 3 + 1], smoothPath[i * 3 + 2]));
-				}
-				
-				if (currentPathDistance > ignoreDist)
-				{
-					if (logDebugPathing)
-					{
-						std::stringstream s;
-						s << "Ignoring distance, dist = " << currentPathDistance << ", amount of points = " << path.size();
-						LOG(s.str().c_str());
-					}
-					path.clear();
-					type = PathFindType::NODODGE;
-					maxDistPassed = true;
+					this->pathDist.emplace_back(path[path.size()-1], 1);
 				}
 			}
-			if (!maxDistPassed)
+			//now we calculate the distance in a smarter way
+			float afterPathDistance = 0.f;
+			
+			afterPathDistance += GetXZDistanceWithoutSQ(path[0], path[path.size() / 4]);//0-25%
+			afterPathDistance += GetXZDistanceWithoutSQ(path[path.size() / 4], path[path.size() / 3]);//25%-33%
+			afterPathDistance += GetXZDistanceWithoutSQ(path[path.size() / 3], path[path.size() / 2]);//33%-50%
+			afterPathDistance += GetXZDistanceWithoutSQ(path[path.size() / 2], path[path.size() / 3 * 2]);//50%-66%
+			afterPathDistance += GetXZDistanceWithoutSQ(path[path.size() / 3*2], path[path.size() / 4 * 3]);//66%-75%
+			afterPathDistance += GetXZDistanceWithoutSQ(path[path.size() / 4 * 3], path[path.size()-1]);//75%-100%
+			
+			if (afterPathDistance > ignoreDist)
 			{
+				path.clear();
 				if (logDebugPathing)
 				{
 					std::stringstream s;
-					s << "Going dodging obstacles, distance = " << currentPathDistance << ", amount of points = " << path.size();
+					s << "Distance = " << afterPathDistance << ". Aborting";
 					LOG(s.str().c_str());
 				}
-				return true;
+				return false;
 			}
+			else if (logDebugPathing)
+			{
+				std::stringstream s;
+				s << "Distance = " << afterPathDistance << ". Going";
+				LOG(s.str().c_str());
+			}
+			return true;
 		}
 	}
 	else if (type == PathFindType::STRAIGHT)
@@ -1550,8 +1595,8 @@ bool ModuleNavigation::NavigateTowardsCursor(math::float3 start, std::vector<mat
 	float dist = 0.f;
 	line.Intersects(plane, &dist);
 	intersectionPos = line.GetPoint(dist);
-
-	return FindPath(start, intersectionPos, path, type, positionCorrection, maxPathDistance, ignoreDist);
+	pathGenerated = FindPath(start, intersectionPos, path, type, positionCorrection, maxPathDistance, ignoreDist);
+	return pathGenerated;
 }
 
 void ModuleNavigation::setPlayerBB(math::AABB bbox)
