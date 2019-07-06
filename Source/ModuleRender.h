@@ -121,6 +121,8 @@ private:
 	unsigned int pingpongFBO[2];
 	unsigned int pingpongColorbuffers[2];
 
+	unsigned depthTexture = 0u;
+
 	float gammaCorrector = 2.2f;
 	float exposure = 1.0f;
 	float bloomSpread = 2.2f;
