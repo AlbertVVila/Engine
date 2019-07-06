@@ -325,9 +325,12 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 		glUniform1f(glGetUniformLocation(postProcessShader->id[0], "exposure"), exposure);
 		
 		glUniform1f(glGetUniformLocation(postProcessShader->id[0], "fogFalloff"), 1.f / cam.fogFalloff);
-		glUniform1f(glGetUniformLocation(postProcessShader->id[0], "fogQuadratic"), 1.f / cam.fogQuadratic);
+		glUniform1f(glGetUniformLocation(postProcessShader->id[0], "fogQuadratic"), cam.fogQuadratic);
 		glUniform3fv(glGetUniformLocation(postProcessShader->id[0], "fogColor"), 1, (GLfloat*)&cam.fogColor);
 		
+		glUniform1f(glGetUniformLocation(postProcessShader->id[0], "zNear"), cam.frustum->nearPlaneDistance);
+		glUniform1f(glGetUniformLocation(postProcessShader->id[0], "zFar"), cam.frustum->farPlaneDistance);
+
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, renderedSceneGame);
 		
