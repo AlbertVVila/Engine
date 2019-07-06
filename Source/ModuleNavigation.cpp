@@ -425,27 +425,6 @@ void ModuleNavigation::renderNavMesh()
 				{
 					dd::point(pathDist[i].first, dd::colors::Blue, 5.0f, 0, true);
 				}
-				/*
-				if (pathDist[i].second < 200.f)
-				{
-					dd::point(pathDist[i].first, dd::colors::White, 5.0f, 0, true);
-				}
-				if (pathDist[i].second < 300.f)
-				{
-					dd::point(pathDist[i].first, dd::colors::Blue, 5.0f, 0, true);
-				}
-				else if (pathDist[i].second < 400.f)
-				{
-					dd::point(pathDist[i].first, dd::colors::Green, 5.0f, 0, true);
-				}
-				else if (pathDist[i].second < 500.f)
-				{
-					dd::point(pathDist[i].first, dd::colors::Orange, 5.0f, 0, true);
-				}
-				else
-				{
-					dd::point(pathDist[i].first, dd::colors::Red, 5.0f, 0, true);
-				}*/
 			}
 		}
 	}
@@ -1478,7 +1457,7 @@ bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vecto
 			float afterPathDistance = 0.f;
 			unsigned j = path.size() / 10;
 			//iterate over path 10 times getting the distances between points every 10% of the way
-			for (unsigned i = 1; i < 10; ++i)
+			for (unsigned i = 1u; i < 10; ++i)
 			{
 				afterPathDistance += GetXZDistanceWithoutSQ(path[j*(i-1)], path[j*i]);
 			}
