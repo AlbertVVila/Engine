@@ -70,6 +70,7 @@ public:
 	bool grid_debug = true;
 	bool shadowDebug = false;
 	bool boneDebug = false;
+	bool pathfindingDebug = false;
 	bool useMainCameraFrustum = false;
 	bool vsync = false;
 
