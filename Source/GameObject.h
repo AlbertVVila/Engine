@@ -12,6 +12,7 @@ class ComponentTransform;
 class ComponentLight;
 class ComponentAnimation;
 class ComponentText;
+class ComponentRenderer;
 class AABBTreeNode;
 class ResourcePrefab;
 enum class ComponentType;
@@ -74,6 +75,7 @@ public:
 	ENGINE_API bool BboxIntersects(const GameObject* target) const;
 	void UpdateModel(unsigned int shader) const;
 	void SetLightUniforms(unsigned shader) const;
+	void LinkRendererToBones(std::vector<ComponentRenderer*>& renderers);
 
 	void UpdateToPrefab(GameObject* prefab);
 	bool ChildPrefab() const;
@@ -97,6 +99,7 @@ private:
 
 	bool activeInHierarchy = true;
 	bool openInHierarchy = true;
+	bool showNavOptions = false;
 public:
 	unsigned UUID = 0;
 	unsigned parentUUID = 0; //only set in Save/Load scene TODO:update on parent change

@@ -275,7 +275,7 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 	}
 
 	App->scene->Draw(*cam.frustum, isEditor);
-	App->particles->Render(App->time->fullGameDeltaTime, &cam);
+	App->particles->Render(App->time->gameDeltaTime, &cam);
 
 	
 	if (!isEditor)
@@ -319,7 +319,11 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 		glUniform1i(glGetUniformLocation(postProcessShader->id[0], "gBrightness"), 2);
 		glUniform1f(glGetUniformLocation(postProcessShader->id[0], "gammaCorrector"), gammaCorrector);
 		glUniform1f(glGetUniformLocation(postProcessShader->id[0], "exposure"), exposure);
-
+		
+		glUniform1f(glGetUniformLocation(postProcessShader->id[0], "fogFalloff"), 1.f / cam.fogFalloff);
+		glUniform1f(glGetUniformLocation(postProcessShader->id[0], "fogQuadratic"), 1.f / cam.fogQuadratic);
+		glUniform3fv(glGetUniformLocation(postProcessShader->id[0], "fogColor"), 1, (GLfloat*)&cam.fogColor);
+		
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, renderedSceneGame);
 
@@ -423,9 +427,9 @@ void ModuleRender::OnResize()
 
 		glBindTexture(GL_TEXTURE_2D, highlightBufferGame);
 #ifndef GAME_BUILD
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, viewGame->current_width, viewGame->current_height, 0, GL_RGBA, GL_FLOAT, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, viewGame->current_width, viewGame->current_height, 0, GL_RGBA, GL_FLOAT, NULL);
 #else
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, App->window->width, App->window->height, 0, GL_RGBA, GL_FLOAT, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, App->window->width, App->window->height, 0, GL_RGBA, GL_FLOAT, NULL);
 #endif
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, highlightBufferGame, 0);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -698,16 +702,19 @@ void ModuleRender::BlitShadowTexture()
 	for (ComponentRenderer* cr : shadowCasters)
 	{
 		unsigned variation = 0u;
-		if (cr->mesh->bindBones.size() > 0u)
+		if (cr->mesh)
 		{
-			variation |= (unsigned)ModuleProgram::Shadows_Variations::SKINNED;
+			if (cr->mesh->bindBones.size() > 0u)
+			{
+				variation |= (unsigned)ModuleProgram::Shadows_Variations::SKINNED;
+			}
+			glUseProgram(shadowsShader->id[variation]);
+			glUniformMatrix4fv(glGetUniformLocation(shadowsShader->id[variation],
+				"viewProjection"), 1, GL_TRUE, &shadowsFrustum.ViewProjMatrix()[0][0]);
+			glUniformMatrix4fv(glGetUniformLocation(shadowsShader->id[variation],
+				"model"), 1, GL_TRUE, &cr->gameobject->GetGlobalTransform()[0][0]);
+			cr->DrawMesh(shadowsShader->id[variation]);
 		}
-		glUseProgram(shadowsShader->id[variation]);
-		glUniformMatrix4fv(glGetUniformLocation(shadowsShader->id[variation],
-			"viewProjection"), 1, GL_TRUE, &shadowsFrustum.ViewProjMatrix()[0][0]);
-		glUniformMatrix4fv(glGetUniformLocation(shadowsShader->id[variation],
-			"model"), 1, GL_TRUE, &cr->gameobject->GetGlobalTransform()[0][0]);
-		cr->DrawMesh(shadowsShader->id[variation]);
 	}
 
 	glUseProgram(0);
@@ -812,6 +819,7 @@ void ModuleRender::DrawGUI()
 	ImGui::Checkbox("Static KDTree Debug", &kDTreeDebug);
 	ImGui::Checkbox("Grid Debug", &grid_debug);
 	ImGui::Checkbox("Bone Debug", &boneDebug);
+	ImGui::Checkbox("Pathfinding debug", &pathfindingDebug);
 
 	const char* scales[] = { "1", "10", "100" };
 	ImGui::Combo("Scale", &item_current, scales, 3);
@@ -830,6 +838,7 @@ void ModuleRender::DrawGUI()
 	}
 	ImGui::DragFloat("Gamma correction", &gammaCorrector, .05f, 1.2f, 3.2f);
 	ImGui::DragFloat("Exposure", &exposure, .05f, .1f, 10.0f);
+
 	/*if (ImGui::DragFloat("Bloom spread", &bloomSpread, .1f, 1.f, 4.f))
 	{
 		ComputeBloomKernel();

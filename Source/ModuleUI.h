@@ -9,9 +9,20 @@
 struct Shader; 
 struct Texture;
 
+class Component;
 class ComponentCamera;
 class ComponentImage;
 class Text;
+
+struct RenderOrdering
+{
+	RenderOrdering(int order, unsigned count, Component* component) : order(order), count(count), component(component) {}
+	const bool operator<(const RenderOrdering &other) const { return (order > other.order) || (order == other.order && count > other.count); };
+
+	int order = 0;
+	unsigned count = 0U;
+	Component* component = nullptr;
+};
 
 class ModuleUI :
 	public Module

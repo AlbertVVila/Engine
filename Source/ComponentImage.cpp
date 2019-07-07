@@ -45,7 +45,7 @@ ComponentImage::ComponentImage(const ComponentImage &copy) : Component(copy)
 	color = copy.color;
 	flipHorizontal = copy.flipHorizontal;
 	flipVertical = copy.flipVertical;
-	texture = (ResourceTexture*)App->resManager->Get(copy.texture->GetUID());
+	if (texture) texture = (ResourceTexture*)App->resManager->Get(copy.texture->GetUID());
 }
 
 ComponentImage::~ComponentImage()
@@ -71,6 +71,8 @@ void ComponentImage::DrawProperties()
 		{
 			return;
 		}
+		if (showHoverDetectInEditor) ImGui::InputInt("UI Order", &uiOrder);
+
 		//texture selector
 		if (ImGui::BeginCombo("Texture", texture != nullptr ? texture->GetName() : None))
 		{
@@ -173,6 +175,7 @@ void ComponentImage::Save(JSON_value *value)const
 {
 	Component::Save(value);
 	value->AddUint("textureUID", (texture != nullptr) ? texture->GetUID() : 0u);
+	value->AddString("textureName", texture ? texture->GetName() : "");
 	value->AddFloat4("color", color);
 	value->AddInt("FlipVertical", flipVertical);
 	value->AddInt("FlipHorizontal", flipHorizontal);
@@ -181,6 +184,7 @@ void ComponentImage::Save(JSON_value *value)const
 	value->AddInt("isMaskHorizontal", isMaskHorizontal);
 	value->AddInt("hoverDetectionMouse1", hoverDetectionMouse1);
 	value->AddInt("hoverDetectionMouse3", hoverDetectionMouse3);
+	value->AddInt("UIOrder", uiOrder);
 
 }
 
@@ -189,6 +193,7 @@ void ComponentImage::Load(JSON_value* value)
 	Component::Load(value);
 	unsigned uid = value->GetUint("textureUID");
 	texture = (ResourceTexture*)App->resManager->Get(uid);
+	if (!texture) texture = (ResourceTexture*)App->resManager->GetByName(value->GetString("textureName", ""), TYPE::TEXTURE);
 	color = value->GetFloat4("color");
 	flipVertical = value->GetInt("FlipVertical");
 	flipHorizontal = value->GetInt("FlipHorizontal");
@@ -197,6 +202,7 @@ void ComponentImage::Load(JSON_value* value)
 	isMaskHorizontal = value->GetInt("isMaskHorizontal");
 	hoverDetectionMouse1 = value->GetInt("hoverDetectionMouse1", 1);
 	hoverDetectionMouse3 = value->GetInt("hoverDetectionMouse3", 1);
+	uiOrder = value->GetInt("UIOrder", 0);
 }
 
 ENGINE_API void ComponentImage::SetMaskAmount(int maskAmount)

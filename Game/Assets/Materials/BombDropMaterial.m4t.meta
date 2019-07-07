@@ -1,7 +1,7 @@
 {
     "Material": {
         "GUID": 3416466215,
-        "timeCreated": 1561453317,
+        "timeCreated": 1561610774,
         "DifusseColor": [
             1.0,
             1.0,
@@ -17,8 +17,6 @@
             1.0,
             1.0,
             1.0
-        ],
-        "diffuseUID": 797759352,
-        "shader": "FX"
+        ]
     }
 }

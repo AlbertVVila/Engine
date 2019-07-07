@@ -477,6 +477,8 @@ void ModuleScene::DrawGOGame(const GameObject& go)
 	glUniform3fv(glGetUniformLocation(shader->id[variation],
 		"source2"), 1, (GLfloat*)&crenderer->waterSource2);
 
+	glUniform3fv(glGetUniformLocation(shader->id[variation],
+		"eyePosUniform"), 1, (GLfloat*)&maincamera->frustum->pos);
 
 	glUniform1f(glGetUniformLocation(shader->id[variation], "sliceAmount"), crenderer->dissolveAmount);
 	glUniform1f(glGetUniformLocation(shader->id[variation], "borderAmount"), crenderer->borderAmount);
@@ -573,6 +575,9 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 
 	glUniform3fv(glGetUniformLocation(shader->id[variation],
 		"source2"), 1, (GLfloat*)&crenderer->waterSource2);
+
+	glUniform3fv(glGetUniformLocation(shader->id[variation],
+		"eyePosUniform"), 1, (GLfloat*)&frustum.pos);
 
 	go.SetLightUniforms(shader->id[variation]);
 

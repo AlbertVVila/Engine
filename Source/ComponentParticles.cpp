@@ -472,54 +472,30 @@ void ComponentParticles::Save(JSON_value* value) const
 	PMColorOverTime* COTAux = (PMColorOverTime*)modules[1];
 	std::list<ImGradientMark*> marks = COTAux->Imgradient->getMarks();
 
-	int colorI = 1;
-	int alphaI = 1;
+	int colorI = 0;
+	int alphaI = 0;
 	float3 colorAux;
 
-	for (int i = 0; i < 4; i++)
+	for (ImGradientMark* grad : marks)
 	{
-		// If its color
-		if (!marks.front()->alpha)
+		if (grad->alpha)
 		{
-			if (colorI == 1)
-			{
-				
-				colorAux.x = marks.front()->color[0];
-				colorAux.y = marks.front()->color[1];
-				colorAux.z = marks.front()->color[2];
-				value->AddFloat3("color1", colorAux);
-				value->AddFloat("color1Position", marks.front()->position);
-				colorI++;
-			}
-			else
-			{
-				colorAux.x = marks.front()->color[0];
-				colorAux.y = marks.front()->color[1];
-				colorAux.z = marks.front()->color[2];
-				value->AddFloat3("color2", colorAux);
-				value->AddFloat("color2Position", marks.front()->position);
-
-			}
+			value->AddFloat((std::string("alpha")+std::to_string(alphaI)).c_str(), grad->color[0]);
+			value->AddFloat((std::string("alphaPosition")+std::to_string(alphaI)).c_str(), grad->position);			
+			++alphaI;
 		}
 		else
 		{
-			if (alphaI == 1)
-			{
-				value->AddFloat("alpha1", marks.front()->color[0]);
-				value->AddFloat("alpha1Position", marks.front()->position);
-				alphaI++;
-			}
-			else
-			{
-				value->AddFloat("alpha2", marks.front()->color[0]);
-				value->AddFloat("alpha2Position", marks.front()->position);
-			}
-
+			colorAux.x = grad->color[0];
+			colorAux.y = grad->color[1];
+			colorAux.z = grad->color[2];
+			value->AddFloat3((std::string("color") + std::to_string(colorI)).c_str(), colorAux);
+			value->AddFloat((std::string("colorPosition") + std::to_string(colorI)).c_str(), grad->position);
+			++colorI;
 		}
-
-		marks.pop_front();
 	}
-
+	value->AddInt("alphas", alphaI);
+	value->AddInt("colors", colorI);
 }
 
 void ComponentParticles::Load(JSON_value* value)
@@ -565,15 +541,23 @@ void ComponentParticles::Load(JSON_value* value)
 	SOTAux->v[4] = value->GetFloat("bezier5");
 
 	PMColorOverTime* COTAux = (PMColorOverTime*)modules[1];
+	int alphaI = value->GetInt("alphas");
+	int colorI = value->GetInt("colors");
 	COTAux->Imgradient->clearMarks();
-	COTAux->Imgradient->addMark(value->GetFloat("color1Position"), ImColor(value->GetFloat3("color1").x, value->GetFloat3("color1").y, value->GetFloat3("color1").z, 1.f));
-	COTAux->Imgradient->addMark(value->GetFloat("color2Position"), ImColor(value->GetFloat3("color2").x, value->GetFloat3("color2").y, value->GetFloat3("color2").z, 1.f));
 
-	COTAux->Imgradient->addAlphaMark(value->GetFloat("alpha1Position"), value->GetFloat("alpha1"));
-	COTAux->Imgradient->addAlphaMark(value->GetFloat("alpha2Position"), value->GetFloat("alpha2"));
+	for (unsigned i = 0u; i < colorI; ++i)
+	{
+		math::float3 colorAux = value->GetFloat3((std::string("color") + std::to_string(i)).c_str());
+		COTAux->Imgradient->addMark(value->GetFloat((std::string("colorPosition") + std::to_string(i)).c_str()), ImColor(colorAux.x, colorAux.y, colorAux.z));
+	}
 
-
-
+	for (unsigned i = 0u; i < alphaI; ++i)
+	{
+		float alphaVal = value->GetFloat((std::string("alpha") + std::to_string(i)).c_str());
+		COTAux->Imgradient->addAlphaMark(value->GetFloat((std::string("alphaPosition") + std::to_string(i)).c_str()), alphaVal);
+		
+	}
+	int x = 0;
 }
 
 void ComponentParticles::alternateEmisor(int newEmisor)

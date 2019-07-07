@@ -59,6 +59,7 @@ public:
 	GameObject* player = nullptr;
 	PlayerMovement* playerMovement = nullptr;
 	std::string playerTag = "Player";
+	std::string hitMaterialName = "HitMaterial";
 	ComponentAnimation* anim = nullptr;
 	ComponentRenderer* myRender = nullptr;
 
@@ -72,6 +73,8 @@ public:
 	
 	// BBoxes
 	math::AABB* myBbox = nullptr;
+
+	GameObject* myMesh = nullptr;
 
 	// Hitboxes
 	ComponentBoxTrigger* hpBoxTrigger = nullptr;
