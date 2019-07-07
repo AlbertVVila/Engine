@@ -243,7 +243,7 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 #ifdef GAME_BUILD
 	glBindFramebuffer(GL_FRAMEBUFFER, postprocessFBO);
 #endif //  GAME_BUILD
-
+	
 	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -393,14 +393,15 @@ bool ModuleRender::CleanUp()
 
 void ModuleRender::OnResize()
 {
-	glViewport(0, 0, App->window->width, App->window->height);
 #ifndef GAME_BUILD
+	glViewport(0, 0, viewGame->current_width, viewGame->current_height);
 	App->camera->editorcamera->SetAspect((float)viewScene->current_width / (float)viewScene->current_height);
 	if (App->scene->maincamera != nullptr/* && viewGame->current_width != 0 && viewGame->current_height!=0*/)
 	{
 		App->scene->maincamera->SetAspect((float)viewGame->current_width / (float)viewGame->current_height);
 	}
 #else
+	glViewport(0, 0, App->window->width, App->window->height);
 	if (App->scene->maincamera != nullptr)
 	{
 		App->scene->maincamera->SetAspect((float)App->window->width / (float)App->window->height);
@@ -433,12 +434,10 @@ void ModuleRender::OnResize()
 
 		glBindTexture(GL_TEXTURE_2D, highlightBufferGame);
 #ifndef GAME_BUILD
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderedSceneGame, 0);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, viewGame->current_width, viewGame->current_height, 0, GL_RGBA, GL_FLOAT, NULL);
 #else
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, App->window->width, App->window->height, 0, GL_RGBA, GL_FLOAT, NULL);
-#endif
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, highlightBufferGame, 0);
+#endif		
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
@@ -449,7 +448,13 @@ void ModuleRender::OnResize()
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, viewGame->current_width, viewGame->current_height, 0, GL_RGBA, GL_FLOAT, NULL);
 #else
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, App->window->width, App->window->height, 0, GL_RGBA, GL_FLOAT, NULL);
+#endif
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
+#ifdef GAME_BUILD
 		glBindTexture(GL_TEXTURE_2D, depthTexture);
 
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, App->window->width, App->window->height, 0, GL_DEPTH_COMPONENT, GL_BYTE, NULL);
@@ -458,14 +463,12 @@ void ModuleRender::OnResize()
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthTexture, 0);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderedSceneGame, 0);
 
-#endif
+#endif		
+
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, highlightBufferGame, 0);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, brightnessBufferGame, 0);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderedSceneGame, 0);
 
 		unsigned int attachments[3] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };// , GL_COLOR_ATTACHMENT2	};// , , GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4
 		glDrawBuffers(3, attachments);

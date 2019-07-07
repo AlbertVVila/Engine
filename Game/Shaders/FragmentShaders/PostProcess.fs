@@ -66,7 +66,7 @@ vec4 GetTexel(in vec2 uv) //MSAA
 
 void main()
 {
-	float depth = texture2D(gDepth, UV0).x;
+	float depth = max(texture2D(gDepth, UV0).x, 0.0001f);
 
     depth = (2.0f * zNear) / (zFar + zNear - depth * (zFar - zNear));
 
