@@ -1315,6 +1315,7 @@ void ModuleScene::LoadScene(const char* sceneName, const char* folder)
 	App->scripting->onStart = true;
 	scenePhotos.clear();
 	App->time->ResetGameDetaTime();
+	App->renderer->OnResize();
 }
 
 void ModuleScene::LoadTemporaryScene()

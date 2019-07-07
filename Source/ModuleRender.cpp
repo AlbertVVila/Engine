@@ -86,9 +86,7 @@ bool ModuleRender::Init(JSON * config)
 	skybox->enabled = renderer->GetInt("skybox");
 	current_scale = renderer->GetInt("current_scale");
 	gammaCorrector = renderer->GetFloat("gammaCorrector", gammaCorrector);
-	bloomSpread = renderer->GetFloat("bloomSpread", bloomSpread);
 	exposure = renderer->GetFloat("exposure", exposure);
-	kernelRadius = renderer->GetInt("kernelRadius", kernelRadius);
 	
 	switch (current_scale)
 	{
@@ -164,15 +162,9 @@ bool ModuleRender::Init(JSON * config)
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
 	}
-
-	kernel = new float[MAX_KERNEL_RADIUS];
-	float* it = kernel;
-	for (unsigned i = 0u; i < MAX_KERNEL_RADIUS; ++i)
-	{
-		*it = 0.f;
-		++it;
-	}
-	ComputeBloomKernel();
+#ifdef GAME_BUILD
+	OnResize();
+#endif
 	return true;
 }
 
@@ -241,8 +233,6 @@ void ModuleRender::SaveConfig(JSON * config)
 	renderer->AddInt("skybox", skybox->enabled);
 	renderer->AddFloat("gammaCorrector", gammaCorrector);
 	renderer->AddFloat("exposure", exposure);
-	renderer->AddFloat("bloomSpread", bloomSpread);
-	renderer->AddInt("kernelRadius", kernelRadius);
 
 	config->AddValue("renderer", *renderer);
 }
@@ -254,10 +244,8 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 	glBindFramebuffer(GL_FRAMEBUFFER, postprocessFBO);
 #endif //  GAME_BUILD
 
-	glViewport(0, 0, width, height);
 	glClearColor(0.3f, 0.3f, 0.3f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 
 	SetProjectionUniform(cam);
 	SetViewUniform(cam);
@@ -287,13 +275,12 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 		bool horizontal = true, first_iteration = true;
 		
 		glUseProgram(blur->id[0]);
-		glUniform1fv(glGetUniformLocation(blur->id[0], "weight"), MAX_KERNEL_RADIUS, kernel);
-		glUniform1i(glGetUniformLocation(blur->id[0], "kernelRadius"), kernelRadius);
-
-		for (unsigned int i = 0; i < kernelRadius; i++)
+		
+		for (unsigned int i = 0; i < BLOOM_AMOUNT; i++)
 		{
 			glBindFramebuffer(GL_FRAMEBUFFER, pingpongFBO[horizontal]);
 			glUniform1i(glGetUniformLocation(blur->id[0], "horizontal"), horizontal);
+			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, first_iteration ? brightnessBufferGame : pingpongColorbuffers[!horizontal]);  // bind texture of other framebuffer (or scene if first iteration)
 			
 			glBindVertexArray(postprocessVAO);
@@ -341,7 +328,11 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 		glBindTexture(GL_TEXTURE_2D, pingpongColorbuffers[!horizontal]);
 		
 		glActiveTexture(GL_TEXTURE3);
+#ifndef GAME_BUILD
 		glBindTexture(GL_TEXTURE_2D, viewGame->depthTexture);
+#else
+		glBindTexture(GL_TEXTURE_2D, depthTexture);
+#endif
 
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -389,7 +380,6 @@ bool ModuleRender::IsSceneHovered() const
 // Called before quitting
 bool ModuleRender::CleanUp()
 {
-	RELEASE_ARRAY(kernel);
 	LOG("Destroying renderer");
 	if (UBO != 0)
 	{
@@ -424,6 +414,7 @@ void ModuleRender::OnResize()
 	if (App->scene->maincamera != nullptr)
 	{
 #ifndef GAME_BUILD
+
 		glBindFramebuffer(GL_FRAMEBUFFER, viewGame->FBO);
 #else
 		glBindFramebuffer(GL_FRAMEBUFFER, postprocessFBO);
@@ -434,8 +425,7 @@ void ModuleRender::OnResize()
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, viewGame->current_width, viewGame->current_height, 0, GL_RGBA, GL_FLOAT, NULL);
 #else
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, App->window->width, App->window->height, 0, GL_RGBA, GL_FLOAT, NULL);
-#endif
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderedSceneGame, 0);
+#endif		
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
@@ -443,6 +433,7 @@ void ModuleRender::OnResize()
 
 		glBindTexture(GL_TEXTURE_2D, highlightBufferGame);
 #ifndef GAME_BUILD
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderedSceneGame, 0);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, viewGame->current_width, viewGame->current_height, 0, GL_RGBA, GL_FLOAT, NULL);
 #else
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, App->window->width, App->window->height, 0, GL_RGBA, GL_FLOAT, NULL);
@@ -458,6 +449,17 @@ void ModuleRender::OnResize()
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, viewGame->current_width, viewGame->current_height, 0, GL_RGBA, GL_FLOAT, NULL);
 #else
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, App->window->width, App->window->height, 0, GL_RGBA, GL_FLOAT, NULL);
+
+		glBindTexture(GL_TEXTURE_2D, depthTexture);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, App->window->width, App->window->height, 0, GL_DEPTH_COMPONENT, GL_BYTE, NULL);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthTexture, 0);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, renderedSceneGame, 0);
+
 #endif
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, brightnessBufferGame, 0);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -472,7 +474,11 @@ void ModuleRender::OnResize()
 		{
 			glBindFramebuffer(GL_FRAMEBUFFER, pingpongFBO[i]);
 			glBindTexture(GL_TEXTURE_2D, pingpongColorbuffers[i]);
+#ifndef GAME_BUILD
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, viewGame->current_width, viewGame->current_height, 0, GL_RGB, GL_FLOAT, NULL);
+#else
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, App->window->width, App->window->height, 0, GL_RGB, GL_FLOAT, NULL);
+#endif
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -744,47 +750,10 @@ void ModuleRender::CreatePostProcessFramebuffer()
 	}
 	glBindFramebuffer(GL_FRAMEBUFFER, postprocessFBO);
 
-
-	if (postprocessRBO == 0)
-	{
-		glGenRenderbuffers(1, &postprocessRBO);
-	}
-
-	glBindRenderbuffer(GL_RENDERBUFFER, postprocessRBO);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, App->window->width, App->window->height);
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, postprocessRBO);
-
-	glBindRenderbuffer(GL_RENDERBUFFER, 0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		LOG("Framebuffer ERROR");
-}
-
-inline float ModuleRender::Gaussian(float x, float mu, float sigma)
-{
-	float expVal = -1 * (pow(x, 2) / pow(2 * sigma, 2));
-	float divider = sqrt(2 * M_PI * pow(sigma, 2));
-	return (1 / divider) * exp(expVal);
-}
-
-void ModuleRender::ComputeBloomKernel()
-{
-	
-	float sigma = (kernelRadius / 2);
-	int i = 0;
-	float sum = 0.f;
-	for (int x = kernelRadius; x < 2 * kernelRadius + 1; ++x)
-	{
-		float k = Gaussian(x, kernelRadius, sigma);
-		kernel[i++] = k;
-		sum += k;
-	}
-	for (i = 0; i < kernelRadius; ++i)
-	{
-		kernel[i] /= sum;
-		kernel[i] /= bloomSpread;
-	}
 }
 
 void ModuleRender::DrawGUI()
@@ -861,15 +830,6 @@ void ModuleRender::DrawGUI()
 	ImGui::DragFloat("Gamma correction", &gammaCorrector, .05f, 1.2f, 3.2f);
 	ImGui::DragFloat("Exposure", &exposure, .05f, .1f, 10.0f);
 
-	/*if (ImGui::DragFloat("Bloom spread", &bloomSpread, .1f, 1.f, 4.f))
-	{
-		ComputeBloomKernel();
-	}
-	if (ImGui::DragInt("Bloom kernel radius", &kernelRadius, 1, 2, MAX_KERNEL_RADIUS - 1))
-	{
-		ComputeBloomKernel();
-	}
-	*/
 }
 
 void ModuleRender::GenBlockUniforms()

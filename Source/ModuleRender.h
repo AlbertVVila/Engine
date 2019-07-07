@@ -1,7 +1,7 @@
 #ifndef __ModuleRender_h__
 #define __ModuleRender_h__
 
-#define MAX_KERNEL_RADIUS 10
+#define BLOOM_AMOUNT 10
 
 #include "Module.h"
 #include "Math/float3.h"
@@ -53,9 +53,7 @@ private:
 	void ShadowVolumeDrawDebug() const;
 	void BlitShadowTexture();
 	void CreatePostProcessFramebuffer();
-	inline float Gaussian(float x, float mu, float sigma);
-	void ComputeBloomKernel();
-
+		
 public:
 	void* context = nullptr;
 
@@ -125,9 +123,6 @@ private:
 
 	float gammaCorrector = 2.2f;
 	float exposure = 1.0f;
-	float bloomSpread = 2.2f;
-	int kernelRadius = 4.0f;
-	float* kernel = nullptr;
 	
 };
 

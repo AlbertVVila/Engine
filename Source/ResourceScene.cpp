@@ -7,6 +7,7 @@
 #include "ModuleSpacePartitioning.h"
 #include "ModuleNavigation.h"
 #include "ModuleResourceManager.h"
+#include "ModuleRender.h"
 
 #include "GameObject.h"
 #include "ComponentRenderer.h"
@@ -157,7 +158,7 @@ bool ResourceScene::Load()
 	//set all the game objects
 	App->scene->root->UpdateTransforms(math::float4x4::identity);
 	App->scene->root->SetAllMoveFlags();
-
+	App->renderer->OnResize();
 	return true;
 }
 

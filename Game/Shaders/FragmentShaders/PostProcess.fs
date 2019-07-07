@@ -13,6 +13,8 @@ uniform float exposure;
 uniform float fogFalloff;
 uniform float fogQuadratic;
 uniform vec3 fogColor;
+uniform float zNear;
+uniform float zFar;
 
 in vec2 UV0;
 
@@ -64,17 +66,19 @@ vec4 GetTexel(in vec2 uv) //MSAA
 
 void main()
 {
+	float depth = texture2D(gDepth, UV0).x;
+
+    depth = (2.0f * zNear) / (zFar + zNear - depth * (zFar - zNear));
 
 	color = GetTexel(UV0);	
 
 	vec3 bloomColor = texture2D(gBrightness, UV0).rgb;
 	
 	color += vec4(bloomColor, 1);
-	
-	float fragDistance = texture2D(gHighlight, UV0).a;	
-	float fogAmount = fogFalloff * fragDistance + fogQuadratic * pow(fragDistance,4);
+		
+	float fogAmount = fogFalloff * depth + fogQuadratic * pow(depth, 6);
 
-//	color = color + vec4(vec3(fogAmount, fogAmount, fogAmount) * fogColor, 0.f);	
+	color = color + vec4(vec3(fogAmount, fogAmount, fogAmount) * fogColor, 0.f);	
 
 	vec4 mapped = vec4(1.0) - exp(-color * exposure); //Tone mapping
 	
@@ -82,12 +86,7 @@ void main()
 	
 	color = ProcessHighlights(color);  //Draw highlights
 	
-	float depth = texture2D(gDepth, UV0).x;
-	float zFar = 412.0f;
-	float zNear = 10.0f;
-    depth = (2.0 * zNear) / (zFar + zNear - depth * (zFar - zNear));
 
-	color = vec4(vec3(depth), 1);
-	//color.rgb = vec3(fogAmount);
+	//color.rgb = texture2D(gBrightness, UV0).rgb;
 
 }

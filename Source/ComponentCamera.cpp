@@ -265,7 +265,7 @@ void ComponentCamera::DrawProperties()
 
 		ImGui::Separator();
 		ImGui::DragFloat("Fog falloff", &fogFalloff, 0.1f, 0.f);
-		ImGui::DragFloat("Fog quadratic", &fogQuadratic, 0.1f, 0.f);
+		ImGui::DragFloat("Fog quadratic", &fogQuadratic, 100.f * App->renderer->current_scale, 0.f);
 		ImGui::ColorEdit3("Fog color", &fogColor[0]);
 	}
 	ImGui::PopID();

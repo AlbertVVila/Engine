@@ -50,7 +50,7 @@ bool ModuleWindow::Init(JSON * config)
 			int height = SCREEN_HEIGHT;
 		}
 #else
-		fullscreen = true;
+		//fullscreen = true;
 #endif
 		//Create window
 		Uint32 flags = SDL_WINDOW_SHOWN |  SDL_WINDOW_OPENGL;
