@@ -260,6 +260,9 @@ void PlayerMovement::CheckSkillsInput()
 	// Return if a skill is in use (except for basic attack)
 	if (currentSkill != nullptr && currentSkill != chain) return;
 
+	// TODO: Avoid using previous state check
+	BasicSkill* previous = currentSkill;
+
 	SkillType skillType = SkillType::NONE;
 
 	if (IsAtacking())
@@ -308,7 +311,7 @@ void PlayerMovement::CheckSkillsInput()
 		skillType = allSkills[assignedSkills[HUB_BUTTON_R]]->type;
 	}
 
-	if (currentSkill != nullptr)
+	if (currentSkill != nullptr && previous != currentSkill)
 	{
 		// Play skill animation
 		if (anim != nullptr)
@@ -621,10 +624,14 @@ void PlayerMovement::Update()
 			}
 		}
 
+		// Skills
+		CheckSkillsInput();
+		if(currentSkill != nullptr)
+			currentSkill->Update();
+
+		// States
 		currentState->UpdateTimer();
-
 		currentState->CheckInput();
-
 		currentState->Update();
 
 		//if previous and current are different the functions Exit() and Enter() are called

@@ -83,6 +83,4 @@ void PlayerStateAttack::Update()
 	{
 		//player->currentState = (PlayerState*)player->idle;
 	}*/
-
-	player->CheckSkillsInput();
 }
