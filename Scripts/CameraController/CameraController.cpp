@@ -36,7 +36,6 @@ void CameraController::Update()
 
 void CameraController::Shake(float duration, float intensity, float fadeInTime, float fadeOutTime, bool linearfade)
 {
-	//Test modified file
 	shakeDuration = duration;
 	shakeIntensity = intensity;
 
