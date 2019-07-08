@@ -264,9 +264,14 @@ void ComponentCamera::DrawProperties()
 		}
 
 		ImGui::Separator();
-		ImGui::DragFloat("Fog falloff", &fogFalloff, 0.1f, 0.f);
-		ImGui::DragFloat("Fog quadratic", &fogQuadratic, 100.f * App->renderer->current_scale, 0.f);
-		ImGui::ColorEdit3("Fog color", &fogColor[0]);
+		ImGui::Checkbox("Fog", &fogEnabled);
+		if (fogEnabled)
+		{
+			ImGui::DragFloat("Fog falloff", &fogFalloff, 0.1f, 0.f);
+			ImGui::DragFloat("Fog quadratic", &fogQuadratic, 100.f * App->renderer->current_scale, 0.f);
+			ImGui::ColorEdit3("Fog color", &fogColor[0]);
+			ImGui::DragFloat("Max fog", &maxFog, 0.01f, 0.f, 1.f);
+		}
 	}
 	ImGui::PopID();
 }
@@ -305,7 +310,9 @@ void ComponentCamera::Save(JSON_value* value) const
 	value->AddUint("isMain", isMainCamera);
 	value->AddFloat("fogFalloff", fogFalloff);
 	value->AddFloat("fogQuadratic", fogQuadratic);
+	value->AddFloat("maxFog", maxFog);
 	value->AddFloat3("fogColor", fogColor);
+	value->AddInt("fogEnabled", fogEnabled);
 }
 
 void ComponentCamera::Load(JSON_value* value)
@@ -337,6 +344,8 @@ void ComponentCamera::Load(JSON_value* value)
 	fogQuadratic = value->GetFloat("fogQuadratic");
 	fogFalloff = value->GetFloat("fogFalloff");
 	fogColor = value->GetFloat3("fogColor");
+	fogEnabled = value->GetInt("fogEnabled");
+	maxFog = value->GetFloat("maxFog", maxFog);
 }
 
 void ComponentCamera::Paste()

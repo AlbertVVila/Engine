@@ -300,23 +300,28 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 
 		glBindFramebuffer(GL_FRAMEBUFFER, drawFboId);
 		
-		glUseProgram(postProcessShader->id[0]);
+		unsigned variation = 0u;
+		if (cam.fogEnabled)
+			variation |= (unsigned)ModuleProgram::Postprocess_Variations::FOG;
+
+		glUseProgram(postProcessShader->id[variation]);
 		glBindVertexArray(postprocessVAO);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, postprocessEBO);
 	
-		glUniform1i(glGetUniformLocation(postProcessShader->id[0], "gColor"), 0);
-		glUniform1i(glGetUniformLocation(postProcessShader->id[0], "gHighlight"), 1);
-		glUniform1i(glGetUniformLocation(postProcessShader->id[0], "gBrightness"), 2);
-		glUniform1i(glGetUniformLocation(postProcessShader->id[0], "gDepth"), 3);
-		glUniform1f(glGetUniformLocation(postProcessShader->id[0], "gammaCorrector"), gammaCorrector);
-		glUniform1f(glGetUniformLocation(postProcessShader->id[0], "exposure"), exposure);
+		glUniform1i(glGetUniformLocation(postProcessShader->id[variation], "gColor"), 0);
+		glUniform1i(glGetUniformLocation(postProcessShader->id[variation], "gHighlight"), 1);
+		glUniform1i(glGetUniformLocation(postProcessShader->id[variation], "gBrightness"), 2);
+		glUniform1i(glGetUniformLocation(postProcessShader->id[variation], "gDepth"), 3);
+		glUniform1f(glGetUniformLocation(postProcessShader->id[variation], "gammaCorrector"), gammaCorrector);
+		glUniform1f(glGetUniformLocation(postProcessShader->id[variation], "exposure"), exposure);
 		
-		glUniform1f(glGetUniformLocation(postProcessShader->id[0], "fogFalloff"), 1.f / cam.fogFalloff);
-		glUniform1f(glGetUniformLocation(postProcessShader->id[0], "fogQuadratic"), cam.fogQuadratic);
-		glUniform3fv(glGetUniformLocation(postProcessShader->id[0], "fogColor"), 1, (GLfloat*)&cam.fogColor);
+		glUniform1f(glGetUniformLocation(postProcessShader->id[variation], "fogFalloff"), 1.f / cam.fogFalloff);
+		glUniform1f(glGetUniformLocation(postProcessShader->id[variation], "fogQuadratic"), cam.fogQuadratic);
+		glUniform1f(glGetUniformLocation(postProcessShader->id[variation], "maxFog"), cam.maxFog);
+		glUniform3fv(glGetUniformLocation(postProcessShader->id[variation], "fogColor"), 1, (GLfloat*)&cam.fogColor);		
 		
-		glUniform1f(glGetUniformLocation(postProcessShader->id[0], "zNear"), cam.frustum->nearPlaneDistance);
-		glUniform1f(glGetUniformLocation(postProcessShader->id[0], "zFar"), cam.frustum->farPlaneDistance);
+		glUniform1f(glGetUniformLocation(postProcessShader->id[variation], "zNear"), cam.frustum->nearPlaneDistance);
+		glUniform1f(glGetUniformLocation(postProcessShader->id[variation], "zFar"), cam.frustum->farPlaneDistance);
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, renderedSceneGame);
