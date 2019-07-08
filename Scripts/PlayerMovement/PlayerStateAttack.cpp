@@ -17,7 +17,7 @@ PlayerStateAttack::~PlayerStateAttack()
 
 void PlayerStateAttack::Enter()
 {
-	SkillType skillType = SkillType::NONE;
+	/*SkillType skillType = SkillType::NONE;
 
 	if (player->IsAtacking())
 	{
@@ -69,18 +69,20 @@ void PlayerStateAttack::Enter()
 	{
 		player->UseSkill(skillType);
 		player->currentSkill->Start();
-	}
+	}*/
 }
 
 void PlayerStateAttack::Update()
 {
 	// Call current skill
-	if (player->currentSkill != nullptr)
+	/*if (player->currentSkill != nullptr)
 	{
 		player->currentSkill->Update();
 	}
 	else
 	{
 		//player->currentState = (PlayerState*)player->idle;
-	}
+	}*/
+
+	player->CheckSkillsInput();
 }

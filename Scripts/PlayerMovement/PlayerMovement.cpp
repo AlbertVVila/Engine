@@ -255,6 +255,74 @@ void PlayerMovement::CreatePlayerSkills()
 	allSkills[SkillType::RAIN]->skill = (BasicSkill*)rain;
 }
 
+void PlayerMovement::CheckSkillsInput()
+{
+	// Return if a skill is in use (except for basic attack)
+	if (currentSkill != nullptr && currentSkill != chain) return;
+
+	SkillType skillType = SkillType::NONE;
+
+	if (IsAtacking())
+	{
+		currentSkill = allSkills[assignedSkills[HUB_BUTTON_RC]]->skill;
+		skillType = allSkills[assignedSkills[HUB_BUTTON_RC]]->type;
+	}
+	else if (IsUsingOne())
+	{
+		currentSkill = allSkills[assignedSkills[HUB_BUTTON_1]]->skill;
+		skillType = allSkills[assignedSkills[HUB_BUTTON_1]]->type;
+	}
+	else if (IsUsingTwo())
+	{
+		currentSkill = allSkills[assignedSkills[HUB_BUTTON_2]]->skill;
+		skillType = allSkills[assignedSkills[HUB_BUTTON_2]]->type;
+	}
+	else if (IsUsingThree())
+	{
+		currentSkill = allSkills[assignedSkills[HUB_BUTTON_3]]->skill;
+		skillType = allSkills[assignedSkills[HUB_BUTTON_3]]->type;
+	}
+	else if (IsUsingFour())
+	{
+		currentSkill = allSkills[assignedSkills[HUB_BUTTON_4]]->skill;
+		skillType = allSkills[assignedSkills[HUB_BUTTON_4]]->type;
+	}
+	else if (IsUsingQ())
+	{
+		currentSkill = allSkills[assignedSkills[HUB_BUTTON_Q]]->skill;
+		skillType = allSkills[assignedSkills[HUB_BUTTON_Q]]->type;
+	}
+	else if (IsUsingW())
+	{
+		currentSkill = allSkills[assignedSkills[HUB_BUTTON_W]]->skill;
+		skillType = allSkills[assignedSkills[HUB_BUTTON_W]]->type;
+	}
+	else if (IsUsingE())
+	{
+		currentSkill = allSkills[assignedSkills[HUB_BUTTON_E]]->skill;
+		skillType = allSkills[assignedSkills[HUB_BUTTON_E]]->type;
+	}
+	else if (IsUsingR())
+	{
+		currentSkill = allSkills[assignedSkills[HUB_BUTTON_R]]->skill;
+		skillType = allSkills[assignedSkills[HUB_BUTTON_R]]->type;
+	}
+
+	if (currentSkill != nullptr)
+	{
+		// Play skill animation
+		if (anim != nullptr)
+		{
+			anim->SendTriggerToStateMachine(currentSkill->animTrigger.c_str());
+		}
+
+		currentSkill->duration = anim->GetDurationFromClip();
+
+		UseSkill(skillType);
+		currentSkill->Start();
+	}
+}
+
 void PlayerMovement::Start()
 {
 	dustParticles = App->scene->FindGameObjectByName("WalkingDust");

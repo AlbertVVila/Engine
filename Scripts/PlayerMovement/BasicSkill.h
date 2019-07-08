@@ -27,12 +27,13 @@ protected:
 	virtual void UseSkill() {}
 	virtual void Reset();
 
-protected:
-	float timer = 0.0f;
+public:
+	std::string animTrigger;
+	float duration = 0.0f;
 
 protected:
+	float timer = 0.0f;
 	PlayerMovement* player = nullptr;
-	std::string animTrigger;
 };
 
 #endif __BasicSkill_h__

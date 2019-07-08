@@ -28,7 +28,7 @@ void BasicSkill::Start()
 	{
 		LOG("Warning: Player GO pointer missing");
 	}
-	player->attack->trigger = animTrigger;
+	//player->attack->trigger = animTrigger;
 }
 
 void BasicSkill::Update()
@@ -37,7 +37,7 @@ void BasicSkill::Update()
 
 	CheckInput();
 
-	if (timer < player->currentState->duration)
+	if (timer < duration)
 	{
 		UseSkill();
 	}

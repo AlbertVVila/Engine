@@ -181,6 +181,7 @@ public:
 	bool IsUsingR() const;
 	bool IsUsingSkill() const;
 
+	void CheckSkillsInput();
 	void ResetCooldown(unsigned int hubButtonID);
 	void UseSkill(SkillType skill);
 
