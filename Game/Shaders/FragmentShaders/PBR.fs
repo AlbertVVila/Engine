@@ -183,7 +183,7 @@ void main()
 	if (albedo.a < 0.1f)
 		discard;
 
-	float metallic = length(material.specular);
+	float metallic = min(1.f, length(material.specular));
 
 	vec3 F0 = mix(albedo.rgb, material.specular, metallic);
 

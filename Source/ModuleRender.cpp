@@ -252,11 +252,13 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 
 	if (isEditor)
 	{
+		glViewport(0, 0, viewScene->current_width, viewScene->current_height);
 		DrawGizmos(cam);
 		skybox->Draw(*cam.frustum, true);
 	}
 	else 
 	{
+		glViewport(0, 0, viewGame->current_width, viewGame->current_height);
 		skybox->Draw(*cam.frustum);
 		const float transparent[] = { 0, 0, 0, 1 };
 		glClearBufferfv(GL_COLOR, 1, transparent);
@@ -398,8 +400,7 @@ bool ModuleRender::CleanUp()
 
 void ModuleRender::OnResize()
 {
-#ifndef GAME_BUILD
-	glViewport(0, 0, viewGame->current_width, viewGame->current_height);
+#ifndef GAME_BUILD	
 	App->camera->editorcamera->SetAspect((float)viewScene->current_width / (float)viewScene->current_height);
 	if (App->scene->maincamera != nullptr/* && viewGame->current_width != 0 && viewGame->current_height!=0*/)
 	{
