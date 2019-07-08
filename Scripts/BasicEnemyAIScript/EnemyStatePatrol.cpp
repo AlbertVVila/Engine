@@ -15,6 +15,10 @@ EnemyStatePatrol::~EnemyStatePatrol()
 {
 }
 
+void EnemyStatePatrol::HandleIA()
+{
+}
+
 void EnemyStatePatrol::Update()
 {
 	float distanceToPlayer = enemy->enemyController->GetDistanceToPlayer2D();

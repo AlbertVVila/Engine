@@ -18,6 +18,10 @@ EnemyStateChase::~EnemyStateChase()
 {
 }
 
+void EnemyStateChase::HandleIA()
+{
+}
+
 void EnemyStateChase::Update()
 {
 	// Move towards the player

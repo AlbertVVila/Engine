@@ -10,6 +10,7 @@ public:
 	EnemyStateChase(BasicEnemyAIScript* AIScript);
 	~EnemyStateChase();
 
+	void HandleIA() override;
 	void Update() override;
 };
 

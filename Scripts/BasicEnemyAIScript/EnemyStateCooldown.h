@@ -10,6 +10,7 @@ public:
 	EnemyStateCooldown(BasicEnemyAIScript* AIScript);
 	~EnemyStateCooldown();
 
+	void HandleIA() override;
 	void Update() override;
 };
 

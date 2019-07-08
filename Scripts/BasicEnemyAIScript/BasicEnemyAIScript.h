@@ -57,7 +57,8 @@ public:
 	bool drawDebug = true;				// If true will draw all debug for enemy behaviour
 
 	// Patrol variables
-	float activationDistance = 100.0f;	// Distance to player needed to start chasing the player (only X,Z axis is taken into account)
+	float activationDistance = 1000.0f;	// Distance to player needed to start chasing the player (only X,Z axis is taken into account)
+	float attackRange = 300.f;
 
 	// Chase variables
 	float chaseSpeed = 2.0f;			// Tranlation speed when chasing player

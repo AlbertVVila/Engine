@@ -15,6 +15,10 @@ EnemyStateReturnToStart::~EnemyStateReturnToStart()
 {
 }
 
+void EnemyStateReturnToStart::HandleIA()
+{
+}
+
 void EnemyStateReturnToStart::Update()
 {
 	// Move back to start position

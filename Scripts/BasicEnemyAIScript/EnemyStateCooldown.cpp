@@ -14,6 +14,10 @@ EnemyStateCooldown::~EnemyStateCooldown()
 {
 }
 
+void EnemyStateCooldown::HandleIA()
+{
+}
+
 void EnemyStateCooldown::Update()
 {
 	float waitedTime = (timer - auxTimer);

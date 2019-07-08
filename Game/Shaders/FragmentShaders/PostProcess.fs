@@ -73,7 +73,7 @@ void main()
 	float fogAmount = fogFalloff * fragDistance + fogQuadratic * pow(fragDistance,4);
 
 	//color = color + vec4(vec3(fogAmount, fogAmount, fogAmount) * fogParameters.fogColor, 0.f);	
-	color = color + vec4(vec3(fogAmount, fogAmount, fogAmount) * fogColor, 0.f);	
+	//color = color + vec4(vec3(fogAmount, fogAmount, fogAmount) * fogColor, 0.f);	
 
 	vec4 mapped = vec4(1.0) - exp(-color * exposure); //Tone mapping
 	
