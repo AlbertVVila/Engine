@@ -184,6 +184,7 @@ public:
 	void ResetCooldown(unsigned int hubButtonID);
 	void UseSkill(SkillType skill);
 
+	void SetGodMode(bool active);
 	void SavePlayerStats();
 
 private:
@@ -222,6 +223,7 @@ public:
 	float manaRegenMaxTime = 5.0f;
 
 	PlayerStats stats = { 150.0f, 100.0f, 10U, 10U, 5.0f, 5.0f };
+	PlayerStats previousStats;
 
 	float OutOfMeshCorrectionXZ = 500.f;
 	float OutOfMeshCorrectionY = 300.0f;

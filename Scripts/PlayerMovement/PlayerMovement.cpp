@@ -1155,6 +1155,18 @@ void PlayerMovement::InitializeUIStatsObjects()
 	}
 }
 
+void PlayerMovement::SetGodMode(bool active)
+{
+	if (active)
+	{
+		PlayerStats godStats = {400.f, 999.f, 999.f, 999.f, 999.9f, 999.9f};
+		previousStats = stats;
+		stats = godStats;
+		health = 10000.f;
+		mana = 10000.f;
+	}
+}
+
 void PlayerMovement::SavePlayerStats()
 {
 	PlayerPrefs::SetFloat("dexterity", stats.dexterity);

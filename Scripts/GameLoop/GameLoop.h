@@ -75,6 +75,7 @@ public:
 	void LoadCementeryScene();
 	void LoadTempleScene();
 	void LoadHUDScene();
+	void LoadLvl(unsigned lvl);
 
 	void CreateGameStates();
 	void CheckStates(LoopState* previous);
