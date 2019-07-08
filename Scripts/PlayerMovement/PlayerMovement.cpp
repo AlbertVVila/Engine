@@ -260,7 +260,7 @@ void PlayerMovement::CheckSkillsInput()
 	// Return if a skill is in use (except for basic attack)
 	if (currentSkill != nullptr && currentSkill != chain) return;
 
-	// TODO: Avoid using previous state check
+	// TODO: Avoid using previous skill check
 	BasicSkill* previous = currentSkill;
 
 	SkillType skillType = SkillType::NONE;
@@ -313,6 +313,16 @@ void PlayerMovement::CheckSkillsInput()
 
 	if (currentSkill != nullptr && previous != currentSkill)
 	{
+		if (previous != nullptr)
+		{
+			// TODO: Avoid saving skill (Reset sets currentSkill to nullptr)
+			BasicSkill* current = currentSkill;
+			previous->Reset();
+			currentSkill = current;
+		}
+
+		currentState = attack;
+
 		// Play skill animation
 		if (anim != nullptr)
 		{

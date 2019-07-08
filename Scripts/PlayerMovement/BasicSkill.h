@@ -17,6 +17,8 @@ public:
 	virtual void Update();
 	virtual void Exit();
 
+	virtual void Reset();
+
 	virtual void Expose(ImGuiContext* context);
 	virtual void Serialize(JSON_value* json) const;
 	virtual void DeSerialize(JSON_value* json);
@@ -25,7 +27,6 @@ public:
 
 protected:
 	virtual void UseSkill() {}
-	virtual void Reset();
 
 public:
 	std::string animTrigger;
