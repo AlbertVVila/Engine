@@ -19,11 +19,9 @@ CreditsScript_API Script* CreateScript()
 
 void CreditsScript::Expose(ImGuiContext* context)
 {
-	//Test
 	ImGui::SetCurrentContext(context);
 	ImGui::InputFloat("speed", &speed);
 	ImGui::InputFloat("stop value", &stopValue);
-	
 }
 
 void CreditsScript::Start()
