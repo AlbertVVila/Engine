@@ -1032,11 +1032,12 @@ void PlayerMovement::UseSkill(SkillType skill)
 		if (it->second->type == skill)
 		{
 			mana -= it->second->Use(hubGeneralAbilityCooldown);
+			break;
 		}
-		else
+		/*else
 		{
 			it->second->SetCooldown(hubGeneralAbilityCooldown);
-		}
+		}*/
 	}
 
 	for (unsigned i = 0; i < 4; ++i)
