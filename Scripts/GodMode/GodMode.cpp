@@ -55,14 +55,14 @@ void GodMode::ClickedGodMode()
 
 void GodMode::SwitchLevel() const
 {
-	unsigned level = 1;
+	unsigned level = 1u;
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
-		level = 1;
+		level = 1u;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 	{
-		level = 2;
+		level = 2u;
 	}
 	else
 	{
