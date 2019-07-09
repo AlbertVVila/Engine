@@ -17,7 +17,8 @@ public:
 	void Update() override;
 	void Expose(ImGuiContext* context) override;
 	void ClickedGodMode();
-	void SwitchLevel();
+	void SwitchLevel() const;
+	void AddExperience() const;
 	inline virtual GodMode* Clone() const
 	{
 		return new GodMode(*this);
@@ -28,6 +29,7 @@ private:
 	bool wasGod = false;
 	GameObject* playerGO = nullptr;
 	GameObject* gameLoopGO = nullptr;
+	GameObject* xpGO = nullptr;
 };
 
 extern "C" GodMode_API Script* CreateScript();

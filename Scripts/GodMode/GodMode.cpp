@@ -5,6 +5,7 @@
 #include "ModuleScene.h"
 #include "GameObject.h"
 #include "PlayerMovement/PlayerMovement.h"
+#include "ExperienceController/ExperienceController.h"
 #include "GameLoop/GameLoop.h"
 #include "imgui.h"
 
@@ -18,10 +19,12 @@ void GodMode::Start()
 {
 	playerGO = App->scene->FindGameObjectByName("Player");
 	gameLoopGO = App->scene->FindGameObjectByName("GameController");
+	xpGO = App->scene->FindGameObjectByName("Xp");
 }
 
 void GodMode::Update()
 {
+	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) != KEY_REPEAT) return;
 	ClickedGodMode();
 	if (isGod != wasGod)
 	{
@@ -35,6 +38,7 @@ void GodMode::Update()
 			LOG("Couldn't find player");
 		}
 	}
+	AddExperience();
 	SwitchLevel();
 }
 
@@ -45,14 +49,12 @@ void GodMode::Expose(ImGuiContext* context)
 
 void GodMode::ClickedGodMode()
 {
-	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) != KEY_REPEAT) return;
 	if (App->input->GetKey(SDL_SCANCODE_G) != KEY_DOWN) return;
 	isGod = !isGod;
 }
 
-void GodMode::SwitchLevel()
+void GodMode::SwitchLevel() const
 {
-	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) != KEY_REPEAT) return;
 	unsigned level = 1;
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
@@ -67,4 +69,10 @@ void GodMode::SwitchLevel()
 		return;
 	}
 	gameLoopGO->GetComponent<GameLoop>()->LoadLvl(level);
+}
+
+void GodMode::AddExperience() const
+{
+	if (App->input->GetKey(SDL_SCANCODE_E) != KEY_DOWN) return;
+	xpGO->GetComponent<ExperienceController>()->AddXP(100.f);
 }

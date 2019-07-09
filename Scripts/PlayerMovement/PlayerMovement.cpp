@@ -1165,6 +1165,12 @@ void PlayerMovement::SetGodMode(bool active)
 		health = 10000.f;
 		mana = 10000.f;
 	}
+	else
+	{
+		stats = previousStats;
+		health = 100.f;
+		mana = 100.f;
+	}
 }
 
 void PlayerMovement::SavePlayerStats()
