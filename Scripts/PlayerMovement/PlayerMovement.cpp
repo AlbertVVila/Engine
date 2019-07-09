@@ -60,7 +60,7 @@ PlayerMovement::PlayerMovement()
 	allSkills[SkillType::NONE] = new PlayerSkill();
 	allSkills[SkillType::STOMP] = new PlayerSkill(SkillType::STOMP);
 	allSkills[SkillType::RAIN] = new PlayerSkill(SkillType::RAIN);
-	allSkills[SkillType::CHAIN] = new PlayerSkill(SkillType::CHAIN);
+	allSkills[SkillType::CHAIN] = new PlayerSkill(SkillType::CHAIN, 0.0f, 0.0f);
 	allSkills[SkillType::DASH] = new PlayerSkill(SkillType::DASH);
 	allSkills[SkillType::SLICE] = new PlayerSkill(SkillType::SLICE);
 	allSkills[SkillType::BOMB_DROP] = new PlayerSkill(SkillType::BOMB_DROP);
@@ -339,7 +339,6 @@ void PlayerMovement::CheckSkillsInput()
 		}
 
 		currentSkill->duration = anim->GetDurationFromClip();
-		LOG("Duration: %f", currentSkill->duration);
 
 		UseSkill(skillType);
 		currentSkill->Start();
@@ -627,7 +626,7 @@ void PlayerMovement::Update()
 	//Check input here and update the state!
 	if (currentState != death)
 	{
-		for (auto it = allSkills.begin(); it != allSkills.end(); ++it) it->second->Update(App->time->fullGameDeltaTime);
+		for (auto it = allSkills.begin(); it != allSkills.end(); ++it) it->second->Update(App->time->gameDeltaTime);
 
 		// Update cooldowns
 		if (hubCooldownMask != nullptr)
@@ -1041,7 +1040,7 @@ void PlayerMovement::UseSkill(SkillType skill)
 	{
 		if (it->second->type == skill)
 		{
-			mana -= it->second->Use(hubGeneralAbilityCooldown);
+			mana -= it->second->Use(it->second->manaCost);
 			break;
 		}
 		/*else

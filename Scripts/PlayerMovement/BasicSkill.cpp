@@ -33,7 +33,7 @@ void BasicSkill::Start()
 
 void BasicSkill::Update()
 {
-	timer += player->App->time->fullGameDeltaTime;
+	timer += player->App->time->gameDeltaTime;
 
 	CheckInput();
 
