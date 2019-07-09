@@ -50,4 +50,6 @@ private:
 	bool opened = false;
 };
 
+extern "C" DoorScript_API Script* CreateScript();
+
 #endif __DoorScript_h__

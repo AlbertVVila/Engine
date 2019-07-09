@@ -27,4 +27,5 @@ private:
 	Damage damageList[10];
 };
 
+extern "C" DamageController_API Script* CreateScript();
 #endif __DamageController_h__

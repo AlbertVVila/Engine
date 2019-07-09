@@ -201,4 +201,6 @@ public:
 	bool actionAfterLoad = false;
 };
 
+extern "C" GameLoop_API Script* CreateScript();
+
 #endif __GameLoop_h__

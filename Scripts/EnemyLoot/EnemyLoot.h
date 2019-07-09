@@ -38,8 +38,8 @@ private:
 	std::vector<std::string> itemList;
 	std::vector<std::pair<std::string, int>> actLoot;
 
-	GameObject* go;
-	GameObject* list;
+	GameObject* go = nullptr;
+	GameObject* list = nullptr;
 	Script* script = nullptr;
 
 	void Expose(ImGuiContext * context);
@@ -47,5 +47,7 @@ private:
 	void Serialize(JSON_value * json) const;
 	void DeSerialize(JSON_value * json);
 };
+
+extern "C" EnemyLoot_API Script* CreateScript();
 
 #endif __EnemyLoot_h__

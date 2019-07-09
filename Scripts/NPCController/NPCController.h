@@ -43,4 +43,6 @@ private:
 	GameObject* hudGO = nullptr;
 };
 
+extern "C" NPCController_API Script* CreateScript();
+
 #endif __NPCController_h__
