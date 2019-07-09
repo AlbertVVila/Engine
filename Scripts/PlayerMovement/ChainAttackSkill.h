@@ -16,13 +16,14 @@ public:
 	void Start() override;
 	//void Update() override;
 
+	void NextChainAttack();
+
 protected:
 	void UseSkill() override;
 	void Reset() override;
 
 private:
 	void CheckInput() override;
-	void NextChainAttack();
 
 private:
 	AttackNumber attack = AttackNumber::FIRST;
