@@ -267,8 +267,17 @@ void PlayerMovement::CheckSkillsInput()
 
 	if (IsAtacking())
 	{
-		currentSkill = allSkills[assignedSkills[HUB_BUTTON_RC]]->skill;
-		skillType = allSkills[assignedSkills[HUB_BUTTON_RC]]->type;
+		// If player is already using chain attack go to second animation
+		if (currentSkill == chain)
+		{
+			ChainAttackSkill* chain = (ChainAttackSkill*)currentSkill;
+			chain->NextChainAttack();
+		}
+		else
+		{
+			currentSkill = allSkills[assignedSkills[HUB_BUTTON_RC]]->skill;
+			skillType = allSkills[assignedSkills[HUB_BUTTON_RC]]->type;
+		}
 	}
 	else if (IsUsingOne())
 	{
@@ -330,6 +339,7 @@ void PlayerMovement::CheckSkillsInput()
 		}
 
 		currentSkill->duration = anim->GetDurationFromClip();
+		LOG("Duration: %f", currentSkill->duration);
 
 		UseSkill(skillType);
 		currentSkill->Start();
