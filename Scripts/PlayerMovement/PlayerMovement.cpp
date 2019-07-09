@@ -794,7 +794,8 @@ void PlayerMovement::OnAnimationEvent(std::string name)
 	}
 	if (name == "BombDropApex")
 	{
-		bombDropParticles->SetActive(true);		
+		if(bombDropParticles != nullptr)
+			bombDropParticles->SetActive(true);		
 	}
 	if (name == "BombDropEnd")
 	{
@@ -1040,7 +1041,7 @@ void PlayerMovement::UseSkill(SkillType skill)
 	{
 		if (it->second->type == skill)
 		{
-			mana -= it->second->Use(it->second->manaCost);
+			mana -= it->second->Use(it->second->cooldown);
 			break;
 		}
 		/*else
@@ -1049,7 +1050,7 @@ void PlayerMovement::UseSkill(SkillType skill)
 		}*/
 	}
 
-	for (unsigned i = 0; i < 4; ++i)
+	for (unsigned i = 0; i < 9; ++i)
 	{
 		hubCooldownTimer[i] = allSkills[assignedSkills[i]]->cooldown;
 		hubCooldownMax[i] = allSkills[assignedSkills[i]]->cooldown;
