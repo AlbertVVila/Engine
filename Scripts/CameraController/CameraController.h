@@ -50,4 +50,6 @@ private:
 	LCG rand;
 };
 
+extern "C" CameraController_API Script* CreateScript();
+
 #endif __CameraController_h__

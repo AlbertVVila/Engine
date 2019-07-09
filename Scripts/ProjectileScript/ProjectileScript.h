@@ -51,4 +51,6 @@ private:
 	float activeTime = 0.0f;
 };
 
+extern "C" ProjectileScript_API Script* CreateScript();
+
 #endif __ProjectileScript_h__

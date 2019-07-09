@@ -299,4 +299,7 @@ private:
 	bool showAbilityCooldowns = true;
 	bool showItemCooldowns = true;
 };
+
+extern "C" PlayerMovement_API Script* CreateScript();
+
 #endif __PlayerMovement_h__
