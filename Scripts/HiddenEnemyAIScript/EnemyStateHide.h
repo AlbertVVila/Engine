@@ -10,6 +10,7 @@ public:
 	EnemyStateHide(HiddenEnemyAIScript* AIScript);
 	~EnemyStateHide();
 
+	void HandleIA() override;
 	void Update() override;
 };
 

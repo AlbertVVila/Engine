@@ -77,6 +77,7 @@ public:
 
 	// Attack variables
 	float attackDuration = 1.0f;
+	float attackRange = 300.0f;
 	float attackDamage = 20.0f;		
 										// Cooldown variables
 	float cooldownTime = 1.0f;			// Seconds to wait between attacks

@@ -21,40 +21,45 @@ EnemyStateAttack::~EnemyStateAttack()
 {
 }
 
+void EnemyStateAttack::HandleIA()
+{
+	if (timer > duration)
+	{
+		float distance = enemy->enemyController->GetDistanceToPlayer2D();
+		if (distance > enemy->attackRange) //if not in range chase
+		{
+			if (hitboxCreated)
+			{
+				// Disable hitbox
+				enemy->enemyController->attackBoxTrigger->Enable(false);
+				hitboxCreated = false;
+			}
+			enemy->currentState = (EnemyState*)enemy->chase;
+		}
+		else if (attacked)
+		{
+			if (hitboxCreated)
+			{
+				// Disable hitbox
+				enemy->enemyController->attackBoxTrigger->Enable(false);
+				hitboxCreated = false;
+			}
+			enemy->currentState = (EnemyState*)enemy->cooldown;
+			attacked = !attacked;
+		}
+	}
+}
+
 void EnemyStateAttack::Update()
 {
 	// Keep looking at player
 	math::float3 playerPosition = enemy->enemyController->GetPlayerPosition();
 	enemy->enemyController->LookAt2D(playerPosition);
 
-	if (!enemy->enemyController->IsCollidingWithPlayer())
+	assert(enemy->enemyController->attackBoxTrigger != nullptr);
+	if (!hitboxCreated)
 	{
-		if (hitboxCreated)
-		{
-			// Disable hitbox
-			enemy->enemyController->attackBoxTrigger->Enable(false);
-			hitboxCreated = false;
-		}
-		enemy->currentState = (EnemyState*)enemy->chase;
-	}
-	else
-	{
-		assert(enemy->enemyController->attackBoxTrigger != nullptr);
-		if (!hitboxCreated)
-		{
-			Attack();
-		}
-		else if (timer > auxTimer + enemy->attackDuration)
-		{
-			// End attack
-			// Disable hitbox
-			enemy->enemyController->attackBoxTrigger->Enable(false);
-			hitboxCreated = false;
-
-			// Enter cooldown state
-			auxTimer = timer;
-			enemy->currentState = (EnemyState*)enemy->cooldown;
-		}
+		Attack();
 	}
 }
 
@@ -66,6 +71,6 @@ void EnemyStateAttack::Attack()
 	boxPosition = enemy->gameobject->transform->up * 100.f;
 	enemy->enemyController->attackBoxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z + 100.f);
 	hitboxCreated = true;
-
+	attacked = true;
 	auxTimer = timer;
 }

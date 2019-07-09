@@ -16,11 +16,8 @@ EnemyStateShowUp::~EnemyStateShowUp()
 {
 }
 
-void EnemyStateShowUp::Update()
+void EnemyStateShowUp::HandleIA()
 {
-	// Translate on the Y axis
-	enemy->enemyController->Move(enemy->showUpSpeed, enemy->gameobject->transform->up);
-
 	// Check if the needed Y has been reached
 	if (enemy->startPosition.y <= enemy->enemyController->GetPosition().y)
 	{
@@ -28,4 +25,10 @@ void EnemyStateShowUp::Update()
 		enemy->currentState = (EnemyState*)enemy->chase;
 		auxTranslation = 0.0f;
 	}
+}
+
+void EnemyStateShowUp::Update()
+{
+	// Translate on the Y axis
+	enemy->enemyController->Move(enemy->showUpSpeed, enemy->gameobject->transform->up);
 }
