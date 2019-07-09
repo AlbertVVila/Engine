@@ -28,7 +28,6 @@ void BasicSkill::Start()
 	{
 		LOG("Warning: Player GO pointer missing");
 	}
-	//player->attack->trigger = animTrigger;
 }
 
 void BasicSkill::Update()
@@ -45,7 +44,6 @@ void BasicSkill::Update()
 	{
 		Reset();
 	}
-
 }
 
 void BasicSkill::Exit()

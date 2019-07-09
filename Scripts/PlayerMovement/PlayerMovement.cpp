@@ -46,7 +46,7 @@
 #include "ComponentAudioSource.h"
 #include "PlayerPrefs.h"
 
-#define SKILLS_SLOTS 5
+#define SKILLS_SLOTS 9
 
 PlayerMovement_API Script* CreateScript()
 {
@@ -1050,7 +1050,7 @@ void PlayerMovement::UseSkill(SkillType skill)
 		}*/
 	}
 
-	for (unsigned i = 0; i < 9; ++i)
+	for (unsigned i = 0u; i < SKILLS_SLOTS; ++i)
 	{
 		hubCooldownTimer[i] = allSkills[assignedSkills[i]]->cooldown;
 		hubCooldownMax[i] = allSkills[assignedSkills[i]]->cooldown;
