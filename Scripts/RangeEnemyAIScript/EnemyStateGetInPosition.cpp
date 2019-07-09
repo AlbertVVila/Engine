@@ -18,6 +18,11 @@ EnemyStateGetInPosition::~EnemyStateGetInPosition()
 {
 }
 
+void EnemyStateGetInPosition::HandleIA()
+{
+
+}
+
 void EnemyStateGetInPosition::Update()
 {
 	float distanceToPlayer = enemy->enemyController->GetDistanceToPlayer2D();

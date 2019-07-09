@@ -23,6 +23,16 @@ void EnemyStateAttack::Enter()
 	projectileShooted = false;
 }
 
+void EnemyStateAttack::HandleIA()
+{
+	if (timer > duration && projectileShooted)
+	{
+		// End attack: Enter cooldown state
+		timer = 0.f;
+		enemy->currentState = (EnemyState*)enemy->cooldown;
+	}
+}
+
 void EnemyStateAttack::Update()
 {
 	if (!projectileShooted && !enemy->projectile->isActive())
@@ -43,10 +53,5 @@ void EnemyStateAttack::Update()
 	math::float3 playerPosition = enemy->enemyController->GetPlayerPosition();
 	enemy->enemyController->LookAt2D(playerPosition);
 
-	if (timer > enemy->attackDuration && projectileShooted)
-	{
-		// End attack: Enter cooldown state
-		auxTimer = timer;
-		enemy->currentState = (EnemyState*)enemy->cooldown;
-	}
+
 }

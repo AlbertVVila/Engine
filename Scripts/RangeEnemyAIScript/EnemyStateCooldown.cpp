@@ -16,7 +16,7 @@ EnemyStateCooldown::~EnemyStateCooldown()
 {
 }
 
-void EnemyStateCooldown::Update()
+void EnemyStateCooldown::HandleIA()
 {
 	if (timer > enemy->cooldownTime)
 	{
@@ -32,11 +32,16 @@ void EnemyStateCooldown::Update()
 			// Return to start position
 			enemy->currentState = (EnemyState*)enemy->returnToStart;
 		}
-		else if(!enemy->projectile->isActive())
+		else if (!enemy->projectile->isActive())
 		{
 			// Player in range and projectile is available, change to attack
 			enemy->currentState = (EnemyState*)enemy->attack;
 			auxTimer = 0.0f;
 		}
 	}
+}
+
+void EnemyStateCooldown::Update()
+{
+	
 }

@@ -10,6 +10,7 @@ public:
 	EnemyStateGetInPosition(RangeEnemyAIScript* AIScript);
 	~EnemyStateGetInPosition();
 
+	void HandleIA() override;
 	void Update() override;
 
 private:

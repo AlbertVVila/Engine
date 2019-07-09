@@ -11,6 +11,7 @@ public:
 	~EnemyStateAttack();
 
 	void Enter() override;
+	void HandleIA() override;
 	void Update() override;
 };
 

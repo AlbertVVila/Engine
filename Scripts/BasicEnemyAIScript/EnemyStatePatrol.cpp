@@ -25,5 +25,5 @@ void EnemyStatePatrol::HandleIA()
 
 void EnemyStatePatrol::Update()
 {
-	//should patrol between places maybe
+	//should patrol between places maybe instead of staying 
 }
