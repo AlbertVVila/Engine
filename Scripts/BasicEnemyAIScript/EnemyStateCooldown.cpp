@@ -16,13 +16,9 @@ EnemyStateCooldown::~EnemyStateCooldown()
 
 void EnemyStateCooldown::HandleIA()
 {
-}
+	float distance = enemy->enemyController->GetDistanceToPlayer2D();
 
-void EnemyStateCooldown::Update()
-{
-	float waitedTime = (timer - auxTimer);
-
-	if (!enemy->enemyController->IsCollidingWithPlayer())
+	if (distance > enemy->attackRange)
 	{
 		enemy->currentState = (EnemyState*)enemy->chase;
 	}
@@ -31,4 +27,10 @@ void EnemyStateCooldown::Update()
 		enemy->currentState = (EnemyState*)enemy->attack;
 		auxTimer = 0.0f;
 	}
+}
+
+void EnemyStateCooldown::Update()
+{
+	waitedTime = (timer - auxTimer);
+
 }

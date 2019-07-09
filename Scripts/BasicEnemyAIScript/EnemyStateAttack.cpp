@@ -24,9 +24,10 @@ EnemyStateAttack::~EnemyStateAttack()
 void EnemyStateAttack::HandleIA()
 {
 	//If player is in range nothing, else if player is in range chase, if enemy has attacked cooldown
-	float distance = enemy->enemyController->GetDistanceToPlayer2D();
+	
 	if (timer > duration)
 	{
+		float distance = enemy->enemyController->GetDistanceToPlayer2D();
 		if (distance > enemy->attackRange) //if not in range chase
 		{
 			if (hitboxCreated)
@@ -73,5 +74,4 @@ void EnemyStateAttack::Attack()
 	enemy->enemyController->attackBoxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z + 100.f);
 	hitboxCreated = true;
 	attacked = true;
-	auxTimer = timer;
 }
