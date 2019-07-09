@@ -140,6 +140,7 @@ private:
 	float GetXZDistanceWithoutSQ(float3 a, float3 b) const;
 
 	float3 getNextStraightPoint(float3 current, float3 pathDirection, float3 end, bool* destination) const;
+	bool checkNododgePathPoints(int numPoints) const;
 	
 private:
 	//variables
@@ -170,6 +171,8 @@ private:
 	
 	float sampleDistance = 6;
 	float sampleMaxError = 1;
+
+	unsigned minNododgePathPoints = 10u;
 
 	//filters
 	bool filterLowHangingObstacles = true;

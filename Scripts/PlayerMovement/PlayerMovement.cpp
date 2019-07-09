@@ -829,7 +829,7 @@ void PlayerMovement::DeSerialize(JSON_value* json)
 	OutOfMeshCorrectionXZ = json->GetFloat("MeshCorrectionXZ", 500.f);
 	OutOfMeshCorrectionY = json->GetFloat("MeshCorrectionY", 300.f);
 	maxWalkingDistance = json->GetFloat("MaxWalkDistance", 50000.0f);
-	straightPathingDistance = json->GetFloat("StraightPathDistance", 3000.0f);
+	straightPathingDistance = json->GetFloat("StraightPathDistance", 2000.0f);
 
 	outCombatMaxTime = json->GetFloat("Out_of_combat_timer", 3.f);
 
