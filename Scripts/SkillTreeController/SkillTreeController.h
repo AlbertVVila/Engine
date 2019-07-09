@@ -54,4 +54,6 @@ private:
 	int a = -1;
 };
 
+extern "C" SkillTreeController_API Script* CreateScript();
+
 #endif __SkillTreeController_h__

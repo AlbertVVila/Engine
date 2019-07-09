@@ -24,4 +24,6 @@ public:
 
 };
 
+extern "C" CombatAudioEvents_API Script* CreateScript();
+
 #endif __CombatAudioEvents_h__
