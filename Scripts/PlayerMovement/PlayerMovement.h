@@ -82,7 +82,7 @@ struct PlayerMovement_API PlayerSkill
 {
 public:
 	PlayerSkill() {}
-	PlayerSkill(SkillType type) : type(type) {}
+	PlayerSkill(SkillType type, float manaCost = 10.0f, float cooldown = 0.0f) : type(type), manaCost(manaCost), cooldown(cooldown){}
 	void Expose(const char* title);
 	void Serialize(JSON_value* json) const;
 	void DeSerialize(JSON_value* json, BasicSkill* playerSkill);
@@ -181,6 +181,7 @@ public:
 	bool IsUsingR() const;
 	bool IsUsingSkill() const;
 
+	void CheckSkillsInput();
 	void ResetCooldown(unsigned int hubButtonID);
 	void UseSkill(SkillType skill);
 
@@ -226,7 +227,7 @@ public:
 	float OutOfMeshCorrectionXZ = 500.f;
 	float OutOfMeshCorrectionY = 300.0f;
 	float maxWalkingDistance = 50000.0f;
-	float straightPathingDistance = 3000.0f;
+	float straightPathingDistance = 2000.0f;
 	ComponentAnimation* anim = nullptr;
 	ComponentBoxTrigger* attackBoxTrigger = nullptr;
 	ComponentBoxTrigger* hpHitBoxTrigger = nullptr;

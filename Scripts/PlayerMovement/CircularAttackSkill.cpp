@@ -45,7 +45,7 @@ void CircularAttackSkill::Update()
 {
 	//BasicSkill::Update() modified
 
-	timer += player->App->time->fullGameDeltaTime;
+	timer += player->App->time->gameDeltaTime;
 
 	if (timer < player->currentState->duration * numSpins)
 	{

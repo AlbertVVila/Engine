@@ -29,7 +29,7 @@ void ChainAttackSkill::Start()
 	boxSize = math::float3(150.f, 100.f, 100.f);
 
 	// Set delay for hit
-	hitDelay = 0.4f;
+	hitDelay = 0.1f;
 }
 
 void ChainAttackSkill::UseSkill()
@@ -46,38 +46,15 @@ void ChainAttackSkill::Reset()
 {
 	MeleeSkill::Reset();
 	nextInput = NextInput::NONE;
+	attack = AttackNumber::FIRST;
 }
 
 void ChainAttackSkill::CheckInput()
 {
-	if (timer < player->currentState->duration && nextInput != NextInput::SKILL)
+	if (player->IsMoving())
 	{
-		if (player->IsUsingSkill())
-		{
-			nextInput = NextInput::SKILL;
-		}
-		else if (player->IsAtacking() && nextInput != NextInput::SKILL)
-		{
-			nextInput = NextInput::ATTACK;
-		}
-	}
-
-	if (timer > player->currentState->duration) //CAN SWITCH?
-	{
-		if (nextInput == NextInput::SKILL || player->IsUsingSkill())
-		{
-			//Reset();
-			player->currentState = (PlayerState*)player->attack;
-		}
-		else if (player->IsMoving())
-		{
-			//Reset();
-			player->currentState = (PlayerState*)player->walk;
-		}
-		else if (nextInput == NextInput::ATTACK)
-		{
-			NextChainAttack();
-		}
+		Reset();
+		player->currentState = (PlayerState*)player->walk;
 	}
 }
 
@@ -85,24 +62,24 @@ void ChainAttackSkill::NextChainAttack()
 {
 	if (attack == AttackNumber::FIRST)
 	{
-		attack = AttackNumber::SECOND;
 		// Go to next attack
 		Reset();
 		player->currentSkill = player->chain;
 		player->currentState = (PlayerState*)player->attack;
 		Start();
 		// Play next attack animation
+		attack = AttackNumber::SECOND;
 		player->attack->trigger = "Chain2";
 	}
 	else
 	{
-		attack = AttackNumber::FIRST;
 		// Reset attack chain
 		Reset();
 		player->currentSkill = player->chain;
 		player->currentState = (PlayerState*)player->attack;
 		Start();
 		// Play first attack animation
+		attack = AttackNumber::FIRST;
 		player->attack->trigger = "Chain1";
 	}
 

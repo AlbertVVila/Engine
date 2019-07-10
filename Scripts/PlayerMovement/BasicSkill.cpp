@@ -28,16 +28,15 @@ void BasicSkill::Start()
 	{
 		LOG("Warning: Player GO pointer missing");
 	}
-	player->attack->trigger = animTrigger;
 }
 
 void BasicSkill::Update()
 {
-	timer += player->App->time->fullGameDeltaTime;
+	timer += player->App->time->gameDeltaTime;
 
 	CheckInput();
 
-	if (timer < player->currentState->duration)
+	if (timer < duration)
 	{
 		UseSkill();
 	}
@@ -45,7 +44,6 @@ void BasicSkill::Update()
 	{
 		Reset();
 	}
-
 }
 
 void BasicSkill::Exit()

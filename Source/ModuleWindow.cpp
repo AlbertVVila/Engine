@@ -85,7 +85,7 @@ bool ModuleWindow::Init(JSON * config)
 			ret = false;
 		}
 		SDL_GetWindowSize(window, &width, &height);
-		SDL_SetWindowBrightness(window, brightness);
+		//SDL_SetWindowBrightness(window, brightness);
 	}
 
 	return ret;
