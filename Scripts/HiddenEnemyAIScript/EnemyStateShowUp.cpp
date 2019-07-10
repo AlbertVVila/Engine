@@ -2,6 +2,7 @@
 
 #include "GameObject.h"
 #include "ComponentTransform.h"
+#include "ComponentRenderer.h"
 
 #include "HiddenEnemyAIScript.h"
 #include "EnemyControllerScript.h"
@@ -16,19 +17,20 @@ EnemyStateShowUp::~EnemyStateShowUp()
 {
 }
 
+void EnemyStateShowUp::Enter()
+{
+	enemy->enemyController->myRender->Enable(true);
+}
+
 void EnemyStateShowUp::HandleIA()
 {
-	// Check if the needed Y has been reached
-	if (enemy->startPosition.y <= enemy->enemyController->GetPosition().y)
+	if (timer > enemy->currentState->duration)
 	{
-		enemy->gameobject->transform->SetPosition(enemy->startPosition);
 		enemy->currentState = (EnemyState*)enemy->chase;
-		auxTranslation = 0.0f;
 	}
 }
 
 void EnemyStateShowUp::Update()
 {
-	// Translate on the Y axis
-	enemy->enemyController->Move(enemy->showUpSpeed, enemy->gameobject->transform->up);
+
 }

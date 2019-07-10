@@ -26,6 +26,7 @@ class ResourceMaterial;
 class EnemyControllerScript_API EnemyControllerScript : public Script
 {
 	void Start() override;
+	void Awake() override;
 	void Update() override;
 
 	void Expose(ImGuiContext* context) override;

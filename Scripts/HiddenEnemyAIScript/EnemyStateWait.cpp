@@ -2,6 +2,7 @@
 
 #include "HiddenEnemyAIScript.h"
 #include "EnemyControllerScript.h"
+#include "ComponentRenderer.h"
 
 #include "Math/float3.h"
 

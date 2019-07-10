@@ -2,6 +2,7 @@
 
 #include "GameObject.h"
 #include "ComponentTransform.h"
+#include "ComponentRenderer.h"
 
 #include "HiddenEnemyAIScript.h"
 #include "EnemyControllerScript.h"
@@ -17,24 +18,19 @@ EnemyStateHide::~EnemyStateHide()
 {
 }
 
+void EnemyStateHide::Exit()
+{
+	enemy->enemyController->myRender->Enable(false);
+}
+
 void EnemyStateHide::HandleIA()
 {
-	if (enemy->startPosition.y - enemy->yTranslation >= enemy->enemyController->GetPosition().y)
+	if (timer > enemy->currentState->duration)
 	{
-		math::float3 position = enemy->startPosition;
-		position.y -= enemy->yTranslation;
-		enemy->gameobject->transform->SetPosition(position);
 		enemy->currentState = (EnemyState*)enemy->wait;
-		auxTranslation = 0.0f;
 	}
 }
 
 void EnemyStateHide::Update()
 {
-	// Translate on the Y axis
-	math::float3 direction = enemy->gameobject->transform->up;
-	direction.y *= -1.0f;
-	enemy->enemyController->Move(enemy->showUpSpeed, direction);
-	//auxTranslation += movement.y;
-	
 }

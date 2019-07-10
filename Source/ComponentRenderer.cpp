@@ -444,25 +444,28 @@ void ComponentRenderer::LinkBones()
 
 void ComponentRenderer::DrawMesh(unsigned shaderProgram)
 {
-	if (bindBones.size() > 0)
+	if (enabled)
 	{
-		std::vector<math::float4x4> palette(bindBones.size(), math::float4x4::identity); //TODO: Declare on .h
-		unsigned i = 0u;
-		for (BindBone bb : bindBones)
+		if (bindBones.size() > 0)
 		{
-			palette[i++] = bb.go->GetGlobalTransform() * bb.transform;
+			std::vector<math::float4x4> palette(bindBones.size(), math::float4x4::identity); //TODO: Declare on .h
+			unsigned i = 0u;
+			for (BindBone bb : bindBones)
+			{
+				palette[i++] = bb.go->GetGlobalTransform() * bb.transform;
+			}
+
+			glUniformMatrix4fv(glGetUniformLocation(shaderProgram,
+				"palette"), bindBones.size(), GL_TRUE, palette[0].ptr());
 		}
 
-		glUniformMatrix4fv(glGetUniformLocation(shaderProgram,
-			"palette"), bindBones.size(), GL_TRUE, palette[0].ptr());
+		glBindVertexArray(mesh->VAO);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->EBO);
+		glDrawElements(GL_TRIANGLES, mesh->meshIndices.size(), GL_UNSIGNED_INT, 0);
+
+		// We disable VAO
+		glBindVertexArray(0);
 	}
-
-	glBindVertexArray(mesh->VAO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->EBO);
-	glDrawElements(GL_TRIANGLES, mesh->meshIndices.size(), GL_UNSIGNED_INT, 0);
-
-	// We disable VAO
-	glBindVertexArray(0);
 }
 
 void ComponentRenderer::Update()
