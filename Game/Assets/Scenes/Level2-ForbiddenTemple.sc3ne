@@ -12265,28 +12265,6 @@
                                 "connection": -1,
                                 "activeTextureUID": 861238023,
                                 "inactiveTextureUID": 1368863784
-                            },
-                            {
-                                "id": 11,
-                                "name": "Skill11",
-                                "description": "",
-                                "locked": 0,
-                                "maxLevel": 3,
-                                "nextSkill": 12,
-                                "connection": 8,
-                                "activeTextureUID": 861238023,
-                                "inactiveTextureUID": 1368863784
-                            },
-                            {
-                                "id": 12,
-                                "name": "Skill12",
-                                "description": "",
-                                "locked": 1,
-                                "maxLevel": 2,
-                                "nextSkill": -1,
-                                "connection": -1,
-                                "activeTextureUID": 861238023,
-                                "inactiveTextureUID": 1368863784
                             }
                         ]
                     }
