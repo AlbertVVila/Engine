@@ -18,6 +18,9 @@ public:
 
 	void NextChainAttack();
 
+public:
+	static const float3 attackingBoxSize;
+
 protected:
 	void UseSkill() override;
 	void Reset() override;

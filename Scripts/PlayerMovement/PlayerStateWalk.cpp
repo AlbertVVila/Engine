@@ -38,8 +38,8 @@ PlayerStateWalk::~PlayerStateWalk()
 void PlayerStateWalk::Update()
 {
 	math:float2 mouse((float*)&player->App->input->GetMousePosition());
-	if (player->App->input->GetMouseButtonDown(3) == KEY_DOWN 
-		|| player->App->input->GetMouseButtonDown(3) == KEY_REPEAT)
+	if (player->App->input->GetMouseButtonDown(1) == KEY_DOWN 
+		|| player->App->input->GetMouseButtonDown(1) == KEY_REPEAT)
 	{
 		moveTimer = 0.0f;
 		math::float3 intPos(0.f, 0.f, 0.f);
@@ -62,7 +62,7 @@ void PlayerStateWalk::Update()
 			return;
 		}
 	}
-	else if (player->App->input->GetMouseButtonDown(3) == KEY_REPEAT)
+	else if (player->App->input->GetMouseButtonDown(1) == KEY_REPEAT)
 	{
 		moveTimer += player->App->time->gameDeltaTime;
 	}

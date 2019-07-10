@@ -170,11 +170,13 @@ public:
 
 	//Abstract input. TODO: Now only returns true for skills, adapt for items
 	bool IsAtacking() const;
+	bool IsMoving() const;
+	bool IsPressingMouse1() const;
+	bool IsUsingLeftClick() const;
 	bool IsUsingOne() const;
 	bool IsUsingTwo() const;
 	bool IsUsingThree() const;
 	bool IsUsingFour() const;
-	bool IsMoving() const;
 	bool IsUsingQ() const;
 	bool IsUsingW() const;
 	bool IsUsingE() const;
