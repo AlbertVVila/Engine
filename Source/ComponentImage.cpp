@@ -45,7 +45,10 @@ ComponentImage::ComponentImage(const ComponentImage &copy) : Component(copy)
 	color = copy.color;
 	flipHorizontal = copy.flipHorizontal;
 	flipVertical = copy.flipVertical;
-	if (texture) texture = (ResourceTexture*)App->resManager->Get(copy.texture->GetUID());
+	if (copy.texture != nullptr)
+	{
+		texture = (ResourceTexture*)App->resManager->Get(copy.texture->GetUID());
+	}
 }
 
 ComponentImage::~ComponentImage()
