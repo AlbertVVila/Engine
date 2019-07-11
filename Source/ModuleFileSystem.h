@@ -58,6 +58,7 @@
 #define JSONEXT ".json"
 #define METAEXT ".meta"
 #define DLL ".dll"
+#define HOT ".hot"
 #define WAVEXTENSION ".wav"
 #define WAVCAPITAL ".WAV"
 #define OGGEXTENSION ".ogg"
@@ -111,7 +112,7 @@ public:
 	bool CopyFromOutsideFS(const char* source, const char* destination) const;
 	bool Copy(const char* source, const char* destination, const char* file) const;
 	bool Copy(const char * source, const char* file, const char* dest, const char* newFile) const;
-	bool Rename(const char* route, const char* file, const char* newName) const;
+	bool Rename(const char* route, const char* file, const char* newName, const char* newExtension = nullptr) const;
 
 	bool ChangeExtension(const char* source, const char* file, const char* newExtension) const;
 

@@ -4,6 +4,7 @@
 #include "Module.h"
 #include <map>
 #include <vector>
+#include <thread>
 
 class Script;
 
@@ -21,10 +22,12 @@ public:
 	~ModuleScript();
 
 	bool Init(JSON* config) override;
+	void SaveConfig(JSON* config) override;
 	bool CleanUp() override;
 
 	update_status Update(float dt) override;
 
+	void DrawGUI() override;
 	void LoadFromMemory(int resource);
 
 	void AddScriptReference(Script* script, const std::string & name);
@@ -35,6 +38,7 @@ public:
 
 private:
 	void CheckScripts();
+	void HotSwap(std::string script);
 	void ResetScriptFlags();
 
 	std::string GetLastErrorAsString();
@@ -47,6 +51,9 @@ private:
 	std::list <Script*> componentsScript;
 	std::map<std::string, std::pair<HINSTANCE, int>> loadedDLLs; // name, dll, instances
 	std::vector<std::string>dllRemoveList;
+
+	bool hotReloading = false;
+	std::thread monitorThread;
 };
 
 #endif __ModuleScript_h__

@@ -8,12 +8,13 @@
 #include "Component.h"
 
 #include "BaseScript.h"
-//#include "engineResource.h"
 #include "MemoryModule.h"
+#include "imgui.h"
 #include "PlayerPrefs.h"
 #include <assert.h>
 #include <windows.h>
 #include <iostream>
+#include "JSON.h"
 
 typedef Script*(__cdecl *CreatePointer)();
 
@@ -37,9 +38,26 @@ bool ModuleScript::Init(JSON* config)
 {
 	PlayerPrefs::Load();
 	SetDllDirectory(SCRIPTS);
+
 	CheckScripts();
+
+	JSON_value* scriptInfo = config->GetValue("scripts");
+	if (scriptInfo == nullptr) return true;
+
+	hotReloading = scriptInfo->GetInt("hotReloading");
+	
+	//monitorThread = std::thread(&ModuleScript::CheckScripts, this);
+	//monitorThread.detach();
 	//LoadFromMemory(IDR_DLL1);
 	return true;
+}
+
+void ModuleScript::SaveConfig(JSON* config)
+{
+	JSON_value* scriptInfo = config->CreateValue();
+
+	scriptInfo->AddInt("hotReloading", hotReloading);
+	config->AddValue("scripts", *scriptInfo);
 }
 
 bool ModuleScript::CleanUp()
@@ -86,12 +104,10 @@ update_status ModuleScript::Update(float dt)
 			script->Update();
 		}
 	}
-	else
+
+	if (hotReloading)
 	{
-#ifndef GAME_BUILD
-		//TODO: We should use a thread component to listen to script folder asynchronously
 		CheckScripts();
-#endif // !GAME_BUILD
 	}
 	if (!onStart && App->time->gameState == GameState::STOP)
 	{
@@ -108,6 +124,11 @@ void ModuleScript::ResetScriptFlags()
 		script->hasBeenAwoken = false;
 		script->hasBeenStarted = false;
 	}
+}
+
+void ModuleScript::DrawGUI()
+{
+	ImGui::Checkbox("Hot Reloading", &hotReloading);
 }
 
 void ModuleScript::LoadFromMemory(int resource) //TODO: Load from memory in shipping build
@@ -233,29 +254,86 @@ bool ModuleScript::RemoveDLL(const std::string& name)
 	return true;
 }
 
-void ModuleScript::CheckScripts()
+void ModuleScript::CheckScripts() //HOT SWAP IF USED DLL
 {
-	std::vector<std::string> scriptNames = App->fsystem->GetFolderContent(SCRIPTS, false);
+	std::vector<std::string> scriptFiles = App->fsystem->GetFolderContent(SCRIPTS, true);
 	std::map<std::string, int>::iterator it;
 
-	for (const auto& script : scriptNames)
+	for (const auto& scriptFile : scriptFiles)
 	{
-		int time = App->fsystem->GetModTime((SCRIPTS + script + DLL).c_str());
-		it = scripts.find(script);
+		std::string scriptName = App->fsystem->GetFilename(scriptFile);
+
+		int time = App->fsystem->GetModTime((SCRIPTS + scriptFile).c_str());
+		it = scripts.find(scriptName);
 		if (it != scripts.end())
 		{
 			if (time > it->second)
 			{
 				//Update DLL but only if already loaded!!
 				it->second = time;
-				LOG("Scripts %s updated", script.c_str());
+				LOG("Script %s updated", scriptName.c_str());
+				if (App->fsystem->GetExtension(scriptFile) == HOT)
+				{
+					HotSwap(it->first);
+				}
 			}
 		}
 		else
 		{
-			scripts.insert(std::pair<std::string, int>(script, time));
+			scripts.insert(std::pair<std::string, int>(scriptName, time));
 		}
 	}
+}
+
+void ModuleScript::HotSwap(std::string scriptName) //only 1 script ftm
+{
+	std::vector<std::pair<JSON_value*, GameObject*>> scriptInfo;
+
+	JSON* json = new JSON();
+	for (auto& script : componentsScript)
+	{
+		if (script->name == scriptName)
+		{
+			JSON_value* value = json->CreateValue();
+			script->Serialize(value);
+			scriptInfo.push_back(std::make_pair(value, script->gameobject));
+
+			script->gameobject->RemoveComponent(*script);
+			break;
+		}
+	}
+	RemoveDLL(scriptName);
+
+	bool deleted = false;
+	while (!deleted)
+	{
+		App->fsystem->Delete((SCRIPTS + scriptName + DLL).c_str()); //Deleted old DLL
+	}
+	App->fsystem->Rename(SCRIPTS, (scriptName + HOT).c_str(), scriptName.c_str(), DLL); //Changed name new DLL
+	HINSTANCE dll = LoadLibrary((scriptName + DLL).c_str());
+	if (dll != nullptr)
+	{
+		loadedDLLs.insert(std::pair<std::string,
+			std::pair<HINSTANCE, int>>(scriptName, std::pair<HINSTANCE, int>(dll, 1)));
+	}
+
+	assert(dll != nullptr);
+	CreatePointer Create = (CreatePointer)GetProcAddress(dll, "CreateScript");
+	assert(Create != nullptr);
+	if (Create != nullptr)
+	{
+		for (const auto& info : scriptInfo)
+		{
+			Script* script = Create();
+			script->SetApp(App);
+			script->name = scriptName;
+			componentsScript.push_back(script);
+			script->DeSerialize(info.first);
+			script->gameobject = info.second;
+			info.second->components.push_back(script);
+		}
+	}
+	//TODO: maybe it's safer to re execute here awake + start
 }
 
 
