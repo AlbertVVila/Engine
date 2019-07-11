@@ -47,7 +47,7 @@ void EnemyStateAttack::HandleIA()
 				hitboxCreated = false;
 			}
 			enemy->currentState = (EnemyState*)enemy->cooldown;
-			attacked = !attacked;
+			attacked = false;
 		}
 	}
 

@@ -22,7 +22,7 @@ void EnemyStateCooldown::HandleIA()
 	{
 		enemy->currentState = (EnemyState*)enemy->chase;
 	}
-	else if (waitedTime > enemy->cooldownTime)
+	else if (timer > enemy->cooldownTime)
 	{
 		enemy->currentState = (EnemyState*)enemy->attack;
 		auxTimer = 0.0f;

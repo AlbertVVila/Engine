@@ -14,7 +14,7 @@ public:
 	void Update() override;
 
 private:
-	float waitedTime = 0.f;
+	float waitedTime = 1.f;
 };
 
 #endif __ENEMYSTATECOOLDOWN_H_

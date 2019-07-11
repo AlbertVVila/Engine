@@ -1,1 +1,7 @@
-{"StateMachine":{"GUID":3000085880,"timeCreated":1559145015,"name":"RangeEnemySM"}}
+{
+    "StateMachine": {
+        "GUID": 3000085880,
+        "timeCreated": 1562862483,
+        "name": "RangeEnemySM"
+    }
+}
