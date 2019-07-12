@@ -11,6 +11,7 @@
 #include "PlayerStateAttack.h"
 #include "PlayerStateIdle.h"
 #include "PlayerStateWalk.h"
+#include "PlayerStateWalkToHitEnemy.h"
 #include "PlayerStateDeath.h"
 #include "EnemyControllerScript.h"
 
@@ -188,9 +189,10 @@ void PlayerMovement::Expose(ImGuiContext* context)
 
 void PlayerMovement::CreatePlayerStates()
 {
-	playerStates.reserve(5);
+	playerStates.reserve(6);
 
 	playerStates.push_back(walk = new PlayerStateWalk(this, "Walk"));
+	playerStates.push_back(walkToHit = new PlayerStateWalkToHitEnemy(this, "Walk"));
 	if (dustParticles == nullptr)
 	{
 		LOG("Dust Particles not found");
@@ -265,7 +267,7 @@ void PlayerMovement::CheckSkillsInput()
 
 	SkillType skillType = SkillType::NONE;
 
-	if (IsAtacking())
+	if (IsAttacking())
 	{
 		// If player is already using chain attack go to second animation
 		if (currentSkill == chain)
@@ -643,10 +645,20 @@ void PlayerMovement::Update()
 			}
 		}
 
-		// Skills
-		CheckSkillsInput();
-		if(currentSkill != nullptr)
-			currentSkill->Update();
+		if (IsMovingToAttack())
+		{
+			previous = currentState = (PlayerState*)walkToHit;
+			currentState->Enter();
+		}
+		else
+		{
+			// Skills
+			CheckSkillsInput();
+			if (currentSkill != nullptr)
+			{
+				currentSkill->Update();
+			}
+		}
 
 		// States
 		currentState->UpdateTimer();
@@ -976,43 +988,49 @@ void PlayerMovement::OnTriggerExit(GameObject* go)
 
 }
 
-bool PlayerMovement::IsAtacking() const
+bool PlayerMovement::IsAttacking() const
 {
 	//if shift is being pressed while mouse 1
 	if (App->input->IsKeyPressed(SDL_SCANCODE_LSHIFT) == KEY_DOWN && 
 			(App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(true, false) ||
 			App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(true, false)))
 	{
-		LOG("Attacking with shift");
 		return true;
 	}
-	//trying to take advantage of the lazy evaluation: checking from less costly to most
+	//taking advantage of the lazy evaluation
 	//checking if there's any enemy targeted, really easy since its stored on a pointer
 	//then checking mouse buttons
-	//and finally if enemy is on attack range
+	float Dist = 9999.f;
 	if (App->scene->enemyHovered != nullptr)
 	{
-		std::stringstream s;
-		s << "Dist to hovered enemy = " << Distance(gameobject->transform->position, App->scene->enemyHovered->transform->position);
-		LOG(s.str().c_str());
+		Dist = Distance(gameobject->transform->position, App->scene->enemyHovered->transform->position);
 	}
+	//and finally if enemy is on attack range
 	if(App->scene->enemyHovered != nullptr &&
 		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(false, true) ||
-		App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(false, true) )&&
-		Distance(gameobject->transform->position, App->scene->enemyHovered->transform->position) < 1800.f)
+		App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(false, true) && 
+		 Dist <= basicAttackRange))
 	{
-		LOG("Attacking cuz clicking on enemy");
+			return true;
+	}
+	return false;
+}
+
+bool PlayerMovement::IsMovingToAttack() const
+{
+	if (App->scene->enemyHovered != nullptr &&
+		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(false, true) ||
+			App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(false, true)) &&
+		Distance(gameobject->transform->position, App->scene->enemyHovered->transform->position) > basicAttackRange	)
+	{
 		return true;
 	}
-	//return !App->ui->UIHovered(true,false) && App->input->GetMouseButtonDown(1) == KEY_DOWN; //Left button
-	
 	return false;
-	
 }
 
 bool PlayerMovement::IsMoving() const
 {
-	return IsPressingMouse1() && !IsAtacking();
+	return IsPressingMouse1() && !IsAttacking() && !IsMovingToAttack();
 }
 
 bool PlayerMovement::IsPressingMouse1() const

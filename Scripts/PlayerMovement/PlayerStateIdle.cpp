@@ -16,7 +16,7 @@ void PlayerStateIdle::Update()
 
 void PlayerStateIdle::CheckInput()
 {
-	if (player->IsUsingSkill() || player->IsAtacking())
+	if (player->IsUsingSkill() || player->IsAttacking())
 	{
 		player->currentState = (PlayerState*)player->attack;
 	}

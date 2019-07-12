@@ -49,6 +49,7 @@ class PlayerStateAttack;
 class PlayerStateIdle;
 class PlayerStateDeath;
 class PlayerStateWalk;
+class PlayerStateWalkToHitEnemy;
 class DamageController;
 class DamageFeedbackUI;
 class ComponentAudioSource;
@@ -169,8 +170,9 @@ public:
 
 
 	//Abstract input. TODO: Now only returns true for skills, adapt for items
-	bool IsAtacking() const;
+	bool IsAttacking() const;
 	bool IsMoving() const;
+	bool IsMovingToAttack() const;
 	bool IsPressingMouse1() const;
 	bool IsUsingLeftClick() const;
 	bool IsUsingOne() const;
@@ -209,6 +211,7 @@ public:
 	PlayerStateIdle* idle = nullptr;
 	PlayerStateDeath* death = nullptr;
 	PlayerStateWalk* walk = nullptr;
+	PlayerStateWalkToHitEnemy* walkToHit = nullptr;
 
 	float walkingSpeed = 300.0f;
 	float dashSpeed = 10.0f;
@@ -251,6 +254,7 @@ public:
 	CircularAttackSkill* circular = nullptr;
 	StompSkill* stomp = nullptr;
 	RainSkill* rain = nullptr;
+	float basicAttackRange = 200.f;
 
 	bool macheteRainActivated = false;
 	GameObject* macheteRainParticles = nullptr;

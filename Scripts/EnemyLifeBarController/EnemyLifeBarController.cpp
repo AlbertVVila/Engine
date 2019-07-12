@@ -33,19 +33,10 @@ void EnemyLifeBarController::Update()
 	skull->SetActive(false);
 	boneRight->SetActive(false);
 	boneLeft->SetActive(false);
-	//if this is the enemy that was being targeted, we untarget it from the scene
-	if (App->scene->enemyHovered != nullptr &&
-		gameobject->UUID == App->scene->enemyHovered->UUID)
-	{
-		App->scene->enemyHovered = nullptr;
-	}
 }
 
 void EnemyLifeBarController::SetLifeBar(int maxHP, int actualHP, EnemyLifeBarType type, std::string name)
 {
-	//we set the scene target to this enemy
-	App->scene->enemyHovered = gameobject;
-
 	lifeBackground->SetActive(true);
 	hPbar->SetActive(true);
 	enemyTypeName->SetActive(true);
