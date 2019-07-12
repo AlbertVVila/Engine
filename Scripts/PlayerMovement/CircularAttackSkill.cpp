@@ -27,7 +27,9 @@ CircularAttackSkill::~CircularAttackSkill()
 
 void CircularAttackSkill::Start()
 {
-	fullSpinTime = player->currentState->duration;
+	fullSpinTime = duration;
+
+	LOG("Spin time: %f", fullSpinTime);
 
 	MeleeSkill::Start();
 
@@ -47,7 +49,9 @@ void CircularAttackSkill::Update()
 
 	timer += player->App->time->gameDeltaTime;
 
-	if (timer < player->currentState->duration * numSpins)
+	LOG("TIMER: %f", timer);
+
+	if (timer < fullSpinTime * numSpins)
 	{
 		UseSkill();
 	}
@@ -104,6 +108,7 @@ void CircularAttackSkill::UseSkill()
 		else
 		{
 			spinTimer += player->App->time->gameDeltaTime;
+			LOG("Spin Timer: %f", spinTimer);
 		}
 	}
 	else if(atatckStarted)
@@ -154,7 +159,7 @@ void CircularAttackSkill::Reset()
 void CircularAttackSkill::CheckInput()
 {
 	// Once the attack is finished
-	if (timer > player->currentState->duration * numSpins)
+	if (timer > fullSpinTime * numSpins)
 	{
 		if (player->IsUsingSkill())
 		{
