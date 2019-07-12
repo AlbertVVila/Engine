@@ -29,8 +29,6 @@ void CircularAttackSkill::Start()
 {
 	fullSpinTime = duration;
 
-	LOG("Spin time: %f", fullSpinTime);
-
 	MeleeSkill::Start();
 
 	player->gameobject->transform->LookAtMouse();
@@ -48,8 +46,6 @@ void CircularAttackSkill::Update()
 	//BasicSkill::Update() modified
 
 	timer += player->App->time->gameDeltaTime;
-
-	LOG("TIMER: %f", timer);
 
 	if (timer < fullSpinTime * numSpins)
 	{
@@ -108,7 +104,6 @@ void CircularAttackSkill::UseSkill()
 		else
 		{
 			spinTimer += player->App->time->gameDeltaTime;
-			LOG("Spin Timer: %f", spinTimer);
 		}
 	}
 	else if(atatckStarted)

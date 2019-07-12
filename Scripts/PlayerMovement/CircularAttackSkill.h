@@ -44,7 +44,6 @@ private:
 	bool atatckStarted = false;
 
 	// Move variables
-	float duration = 1.5f;
 	std::vector<float3>path;
 	unsigned pathIndex = 0;
 	float moveTimer = 0.0f;
