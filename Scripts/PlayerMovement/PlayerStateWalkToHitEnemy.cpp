@@ -37,6 +37,36 @@ PlayerStateWalkToHitEnemy::~PlayerStateWalkToHitEnemy()
 
 void PlayerStateWalkToHitEnemy::Update()
 {
+	//enemy targeting check
+	if (enemyTargeted == nullptr || (player->App->scene->enemyHovered != nullptr && player->App->scene->enemyHovered != enemyTargeted))
+	{
+		if (player->App->scene->enemyHovered != nullptr)
+		{
+			enemyTargeted = player->App->scene->enemyHovered;
+			enemyPosition = enemyTargeted->transform->position;
+			math::float3 correctionPos(player->basicAttackRange, player->OutOfMeshCorrectionY, player->basicAttackRange);
+			if (player->App->navigation->FindPath(player->gameobject->transform->position, enemyPosition,
+				path, PathFindType::FOLLOW, correctionPos, defaultMaxDist, player->straightPathingDistance))
+			{
+				//case the player clicks outside of the floor mesh but we want to get close to the floors edge
+				pathIndex = 0;
+			}
+		}
+		else
+		{
+			//something went wrong, stop moving
+			LOG("Error walking to hit enemy");
+			playerWalking = false;
+			playerWalkingToHit = false;
+			player->currentState = player->idle;
+			if (dustParticles)
+			{
+				dustParticles->SetActive(false);
+			}
+			return;
+		}
+	}
+
 	//if enemy moved, re calc path towards it
 	if (enemyTargeted->transform->position != enemyPosition)
 	{
@@ -45,7 +75,8 @@ void PlayerStateWalkToHitEnemy::Update()
 		enemyPosition = enemyTargeted->transform->position;
 		//re calculate path
 		if (player->App->navigation->FindPath(player->gameobject->transform->position, enemyPosition,
-			path, PathFindType::FOLLOW, math::float3(0, player->OutOfMeshCorrectionY, 0), defaultMaxDist, player->straightPathingDistance))
+			path, PathFindType::FOLLOW, math::float3(player->basicAttackRange, player->OutOfMeshCorrectionY, player->basicAttackRange),
+			defaultMaxDist, player->straightPathingDistance))
 		{
 			pathIndex = 0;
 		}
@@ -54,6 +85,7 @@ void PlayerStateWalkToHitEnemy::Update()
 		{
 			LOG("Error walking to hit enemy along the way");
 			playerWalking = false;
+			playerWalkingToHit = false;
 			player->currentState = player->idle;
 			if (dustParticles)
 			{
@@ -82,7 +114,7 @@ void PlayerStateWalkToHitEnemy::Update()
 		{
 			pathIndex++;
 		}
-		if (pathIndex < path.size())
+		if (pathIndex < path.size() && player->basicAttackRange < Distance(player->gameobject->transform->position, enemyPosition))
 		{
 			player->gameobject->transform->LookAt(path[pathIndex]);
 			math::float3 direction = (path[pathIndex] - currentPosition).Normalized();
@@ -90,6 +122,7 @@ void PlayerStateWalkToHitEnemy::Update()
 			finalWalkingSpeed *= (1 + (player->stats.dexterity * 0.005f));
 			player->gameobject->transform->SetPosition(currentPosition + finalWalkingSpeed);
 			playerWalking = true;
+			playerWalkingToHit = true;
 			if (dustParticles)
 			{
 				dustParticles->SetActive(true);
@@ -97,7 +130,14 @@ void PlayerStateWalkToHitEnemy::Update()
 		}
 		else
 		{
-			
+			//done walking, lets hit the enemy
+
+			//lets look at the enemy, although this instruction does not seem to be working
+			player->gameobject->transform->LookAt(enemyTargeted->transform->position);
+
+			playerWalkingToHit = false;
+			playerWalking = false;
+
 			player->currentSkill = player->allSkills[player->assignedSkills[HUB_BUTTON_RC]]->skill;
 
 			SkillType skillType = player->allSkills[player->assignedSkills[HUB_BUTTON_RC]]->type;
@@ -117,13 +157,14 @@ void PlayerStateWalkToHitEnemy::Update()
 
 				player->UseSkill(skillType);
 				player->currentSkill->Start();
+
 			}
 			if (dustParticles)
 			{
 				dustParticles->SetActive(false);
 			}
 		}
-	}	
+	}
 	else
 	{
 		player->currentState = player->idle;
@@ -137,27 +178,28 @@ void PlayerStateWalkToHitEnemy::Enter()
 		dustParticles->SetActive(true);
 		player->anim->controller->current->speed *= (1 + (player->stats.dexterity * 0.005f));
 	}
-	if (player->App->scene->enemyHovered != nullptr)
+}
+
+void PlayerStateWalkToHitEnemy::CheckInput()
+{
+	if (player->IsUsingSkill() || (player->IsAttacking()))
 	{
-		enemyTargeted = player->App->scene->enemyHovered;
-		enemyPosition = enemyTargeted->transform->position;
-		moveTimer = 0.0f;
-		math::float3 intPos(0.f, 0.f, 0.f);
-		if (player->App->navigation->FindPath(player->gameobject->transform->position, enemyPosition,
-			path, PathFindType::FOLLOW, math::float3(0, player->OutOfMeshCorrectionY, 0), defaultMaxDist, player->straightPathingDistance))
+		player->currentState = (PlayerState*)player->attack;
+	}
+	else if (player->IsMovingToAttack())
+	{
+		player->currentState = (PlayerState*)player->walkToHit;
+	}
+	else if (player->IsMoving())
+	{
+		player->currentState = (PlayerState*)player->walk;
+	}
+	else if(!playerWalkingToHit)
+	{
+		player->currentState = (PlayerState*)player->idle;
+		if (dustParticles)
 		{
-			//case the player clicks outside of the floor mesh but we want to get close to the floors edge
-			pathIndex = 0;
-			return;
+			dustParticles->SetActive(false);
 		}
 	}
-	//something went wrong, stop moving
-	LOG("Error walking to hit enemy");
-	playerWalking = false;
-	player->currentState = player->idle;
-	if (dustParticles)
-	{
-		dustParticles->SetActive(false);
-	}
-	return;
 }

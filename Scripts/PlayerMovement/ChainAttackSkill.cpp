@@ -53,7 +53,12 @@ void ChainAttackSkill::Reset()
 
 void ChainAttackSkill::CheckInput()
 {
-	if (player->IsMoving())
+	if (player->IsMovingToAttack())
+	{
+		Reset();
+		player->currentState = (PlayerState*)player->walkToHit;
+	}
+	else if (player->IsMoving())
 	{
 		Reset();
 		player->currentState = (PlayerState*)player->walk;

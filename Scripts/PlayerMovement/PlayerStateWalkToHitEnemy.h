@@ -10,6 +10,7 @@ public:
 	~PlayerStateWalkToHitEnemy();
 
 	void Update() override;
+	void CheckInput() override;
 	void Enter() override;
 
 public:

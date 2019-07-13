@@ -28,6 +28,7 @@ public:
 	PlayerMovement* player = nullptr;
 	std::string trigger;
 	float timer = 0.f;
+	bool playerWalkingToHit = false;
 	bool playerWalking = false;
 	float manaCost = 0.f;
 
