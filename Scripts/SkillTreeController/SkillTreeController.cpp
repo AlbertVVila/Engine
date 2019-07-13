@@ -39,7 +39,7 @@ void SkillTreeController::Start()
 
 	skillPointsLabel = App->scene->FindGameObjectByName("SkillPoints", gameobject)->GetComponent<Text>();
 	assert(skillPointsLabel != nullptr);
-	skillPoints = PlayerPrefs::GetInt("SkillPoints", 3);
+	skillPoints = 10;//PlayerPrefs::GetInt("SkillPoints", 3);
 	skillPointsLabel->text = std::to_string(skillPoints);
 
 	hoverTransform = App->scene->FindGameObjectByName("SkillHover", gameobject)->GetComponent<Transform2D>();
@@ -49,7 +49,7 @@ void SkillTreeController::Start()
 	assert(skillInfo != nullptr);
 
 
-	for (int i = 0; i < 13; ++i)
+	for (int i = 0; i < NUM_SKILLS; ++i)
 	{
 		skillList[i].currentLevel = PlayerPrefs::GetInt(("Skill" + std::to_string(i)).c_str(), 0);
 		((Text*)skillUI[i]->GetComponentInChildren(ComponentType::Text))->text = std::to_string(skillList[i].currentLevel) + "/" + std::to_string(skillList[i].maxLevels);
@@ -64,6 +64,10 @@ void SkillTreeController::Start()
 		if (!skillList[i].locked)
 		{
 			skillUI[i]->GetComponent<ComponentImage>()->texture = skillList[i].spriteActive;
+			if (skillUI[i]->children.size()> 1)
+			{
+				((ComponentImage*)(skillUI[i]->children.front())->GetComponentInChildren(ComponentType::Image))->color = math::float4(0.972549021, 0.780392170, 0.117647059, 1);
+			}
 			((Text*)skillUI[i]->GetComponentInChildren(ComponentType::Text))->color = math::float4(0, 0, 0, 0);
 		}
 		else
@@ -82,12 +86,12 @@ void SkillTreeController::Update()
 	hoverTransform->gameobject->SetActive(false);
 	skillInfo->SetActive(false);
 
-	for (int i = 0; i < 13; ++i)
+	for (int i = 0; i < NUM_SKILLS; ++i)
 	{
 		if (!skillList[i].locked && skillUI[i]->GetComponent<ComponentImage>()->isHovered)
 		{
 			math::float2 pos = skillUI[i]->GetComponent<Transform2D>()->getPosition();
-			math::float2 newPos = math::float2(pos.x, pos.y + 7);
+			math::float2 newPos = math::float2(pos.x, pos.y);
 			hoverTransform->SetPositionUsingAligment(newPos);
 			hoverTransform->gameobject->SetActive(true);
 			skillInfo->SetActive(true);
@@ -112,6 +116,10 @@ void SkillTreeController::UnlockNextLevel(int i)
 		skillList[skillList[i].nextSkill].locked = false;
 		skillUI[skillList[i].nextSkill]->GetComponent<ComponentImage>()->texture = skillList[skillList[i].nextSkill].spriteActive;
 		((Text*)skillUI[skillList[i].nextSkill]->GetComponentInChildren(ComponentType::Text))->color = math::float4(0, 0, 0, 0);
+		if (skillUI[skillList[i].nextSkill]->children.size() > 1)
+		{
+			((ComponentImage*)skillUI[skillList[i].nextSkill]->children.front()->GetComponentInChildren(ComponentType::Image))->color = math::float4(0.972549021, 0.780392170, 0.117647059, 1);
+		}
 	}
 }
 
@@ -125,7 +133,7 @@ void SkillTreeController::AddSkillPoint()
 std::vector<Skill> SkillTreeController::GetActiveSkills()
 {
 	std::vector<Skill> skillsToReturn;
-	for (int i = 0; i < 13; ++i)
+	for (int i = 0; i < NUM_SKILLS; ++i)
 	{
 		if (skillList[i].available)
 		{
@@ -153,7 +161,7 @@ void SkillTreeController::Expose(ImGuiContext* context)
 		textureFiles = App->resManager->GetResourceNamesList(TYPE::TEXTURE, true);
 	}
 
-	for (int i = 0; i != 13; ++i) {
+	for (int i = 0; i != NUM_SKILLS; ++i) {
 
 		skillList[i].id = i;
 
@@ -287,7 +295,7 @@ void SkillTreeController::DeSerialize(JSON_value* json)
 void SkillTreeController::SaveSkillTree()
 {
 	PlayerPrefs::SetInt("SkillPoints", skillPoints);
-	for (int i = 0; i < 13; ++i)
+	for (int i = 0; i < NUM_SKILLS; ++i)
 	{
 		PlayerPrefs::SetInt(("Skill" + std::to_string(skillList[i].id)).c_str(), skillList[i].currentLevel);
 	}

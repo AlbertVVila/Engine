@@ -83,9 +83,11 @@ void InventoryScript::Start()
 	// Player
 	GameObject* player = App->scene->FindGameObjectByName("Player");
 	assert(player != nullptr);
-
-	playerMovement = player->GetComponent<PlayerMovement>();
-	assert(playerMovement != nullptr);
+	if (player != nullptr)
+	{
+		playerMovement = player->GetComponent<PlayerMovement>();
+		assert(playerMovement != nullptr);
+	}
 
 	LoadInventory();
 }
