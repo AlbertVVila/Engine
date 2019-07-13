@@ -280,7 +280,7 @@ void ModuleParticles::Reset()
 void ModuleParticles::DrawParticleSystem(ComponentParticles* cp, const ComponentCamera* camera) const
 {
 	PROFILE
-	if (cp->texture == nullptr || (!cp->Playing && !cp->ConstantPlaying))
+	if (cp->texture == nullptr)
 	{
 		return;
 	}
@@ -305,7 +305,6 @@ void ModuleParticles::DrawParticleSystem(ComponentParticles* cp, const Component
 			return cp1->position.Distance(orderPoint) > cp2->position.Distance(orderPoint);
 		});
 	}
-
 	unsigned nParticles = cp->particles.size();
 	for (; nParticles > 0; --nParticles)
 	{
@@ -331,6 +330,7 @@ void ModuleParticles::DrawParticleSystem(ComponentParticles* cp, const Component
 
 	glUnmapBuffer(GL_ARRAY_BUFFER);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glDisable(GL_CULL_FACE);
 
 	glUniformMatrix4fv(glGetUniformLocation(shader->id[0], "projection"), 1, GL_FALSE, &camera->GetProjectionMatrix()[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(shader->id[0], "view"), 1, GL_FALSE, &camera->GetViewMatrix()[0][0]);
@@ -350,6 +350,7 @@ void ModuleParticles::DrawParticleSystem(ComponentParticles* cp, const Component
 	glDrawArraysInstanced(GL_TRIANGLES,0, 6, cp->particles.size());
 
 	glBindVertexArray(0);
+	glEnable(GL_CULL_FACE);
 
 }
 

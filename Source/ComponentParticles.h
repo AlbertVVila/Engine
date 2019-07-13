@@ -53,9 +53,6 @@ public:
 	ComponentParticles(GameObject* gameobject);
 	ComponentParticles(const ComponentParticles& component);
 	~ComponentParticles();
-
-	ENGINE_API void Play(float newPlayTime);
-	ENGINE_API void Stop();
 	
 	Component* Clone() const override;
 	void DrawProperties() override;
@@ -122,10 +119,8 @@ private:
 	bool sizeOTCheck = false;
 	bool colorOTCheck = false;
 
-	bool ConstantPlaying = true;
-	bool Playing = false;
-
 	bool billboarded = true;
+	bool aligned = false;
 	bool localEmitter = false;
 	math::float3 lookAtTarget = math::float3::unitY;
 

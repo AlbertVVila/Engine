@@ -71,19 +71,6 @@ ComponentParticles::~ComponentParticles()
 	}
 }
 
-void ComponentParticles::Play(float newPlayTime)
-{
-	PlayTime = newPlayTime;
-	Playing = true;
-	Reset();
-	lastActive = timer;
-}
-
-void ComponentParticles::Stop()
-{
-	Playing = false;
-}
-
 void ComponentParticles::Reset()
 {
 	unsigned nParticles = particles.size();
@@ -109,13 +96,6 @@ void ComponentParticles::DrawProperties()
 		bool removed = Component::DrawComponentState();
 		if (removed)	
 			return;
-					
-		ImGui::Checkbox("Constant play", &ConstantPlaying);
-		if (!ConstantPlaying)
-		{
-			if (ImGui::Button("Play Demo")) Play(PlayTime);
-			ImGui::InputFloat("PlayTime", &PlayTime);
-		}
 
 		ImGui::Text("Particles active %d", particles.size());
 		//texture selector
@@ -177,6 +157,10 @@ void ComponentParticles::DrawProperties()
 
 		ImGui::Text("Particle properties:");
 		ImGui::Checkbox("Billboarded", &billboarded);
+		if (!billboarded)
+		{
+			ImGui::Checkbox("Aligned", &aligned);
+		}
 		ImGui::Checkbox("Local Emitter", &localEmitter);
 		if (!billboarded)
 		{
@@ -255,14 +239,8 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 		}
 		gameobject->particlesDirty = false;
 	}
-	if (!Playing && !ConstantPlaying) return;
-	timer += dt; 
 
-	if (timer - lastActive > PlayTime && !ConstantPlaying)
-	{
-		Playing = false;
-		return;
-	}
+	timer += dt; 
 
 	float currentFrame = timer / (1 / fps);
 	float frame;
@@ -419,13 +397,22 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 		}
 		else
 		{
-			if (localEmitter)
+			math::Quat rot;
+			if (aligned)
 			{
-				particles.front()->global = particles.front()->global.FromTRS(particles.front()->position + gameobject->transform->GetGlobalPosition(), math::Quat::LookAt(float3::unitZ, lookAtTarget.Normalized(), float3::unitY, float3::unitY), math::float3(particleSize.x, particleSize.y, 1.0f) * sizeOT);
+				rot = gameobject->transform->GetRotation();
 			}
 			else
 			{
-				particles.front()->global = particles.front()->global.FromTRS(particles.front()->position, math::Quat::LookAt(float3::unitZ, lookAtTarget.Normalized(), float3::unitY, float3::unitY), math::float3(particleSize.x, particleSize.y, 1.0f) * sizeOT);
+				rot = math::Quat::LookAt(float3::unitZ, lookAtTarget.Normalized(), float3::unitY, float3::unitY);
+			}
+			if (localEmitter)
+			{
+				particles.front()->global = particles.front()->global.FromTRS(particles.front()->position + gameobject->transform->GetGlobalPosition(), rot, math::float3(particleSize.x, particleSize.y, 1.0f) * sizeOT);
+			}
+			else
+			{
+				particles.front()->global = particles.front()->global.FromTRS(particles.front()->position, rot, math::float3(particleSize.x, particleSize.y, 1.0f) * sizeOT);
 			}
 		}
 		particles.front()->color = newColor;
@@ -443,7 +430,6 @@ void ComponentParticles::Save(JSON_value* value) const
 	value->AddFloat("fps", fps);
 	value->AddUint("textureUID", (texture != nullptr) ? texture->GetUID() : 0u);
 	value->AddFloat2("lifetime", lifetime);
-	value->AddInt("ConstantPlaying", ConstantPlaying);
 	value->AddFloat2("speed", speed);
 	value->AddFloat("rate", rate);
 	value->AddInt("maxParticles", maxParticles);
@@ -508,7 +494,6 @@ void ComponentParticles::Load(JSON_value* value)
 	unsigned uid = value->GetUint("textureUID");
 	texture = (ResourceTexture*)App->resManager->Get(uid);
   
-	ConstantPlaying = value->GetInt("ConstantPlaying");
 	lifetime = value->GetFloat2("lifetime");
 	speed = value->GetFloat2("speed");
 	rate = value->GetFloat("rate");
@@ -590,6 +575,7 @@ void ComponentParticles::DrawDebugEmisor()
 		dd::sphere(base, dd::colors::Green, sphereEmitterRadius);
 		break;
 	}
+	dd::line(gameobject->transform->GetGlobalPosition(), gameobject->transform->GetGlobalPosition() + gameobject->transform->up * App->renderer->current_scale * 10.f, dd::colors::Green);
 
 }
 
