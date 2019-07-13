@@ -447,6 +447,7 @@ void ComponentParticles::Save(JSON_value* value) const
 	value->AddFloat4("defaultColor", particleColor);
 
 	value->AddInt("billboarded", billboarded);
+	value->AddInt("aligned", aligned);
 	value->AddInt("localEmitter", localEmitter);
 	value->AddFloat3("lookAtTarget", lookAtTarget);
 
@@ -517,6 +518,7 @@ void ComponentParticles::Load(JSON_value* value)
 	localEmitter = value->GetInt("localEmitter");
 	lookAtTarget = value->GetFloat3("lookAtTarget");
 	intensity = value->GetFloat("intensity", intensity);
+	aligned = value->GetInt("aligned");
 
 	PMSizeOverTime* SOTAux = (PMSizeOverTime*)modules[0];
 	SOTAux->v[0] = value->GetFloat4("bezier14").x;
