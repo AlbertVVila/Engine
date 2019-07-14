@@ -31,6 +31,7 @@
 #include "ComponentAudioSource.h"
 #include "ComponentReverbZone.h"
 #include "ComponentBoxTrigger.h"
+#include "ComponentVolumetricLight.h"
 #include "BaseScript.h"
 
 
@@ -497,6 +498,8 @@ Component* GameObject::CreateComponent(ComponentType type, JSON_value* value)
 	case ComponentType::BoxTrigger:
 		component = new ComponentBoxTrigger(this);
 		break;
+	case ComponentType::VolumetricLight:
+		component = new ComponentVolumetricLight(this);
 	default:
 		break;
 	}

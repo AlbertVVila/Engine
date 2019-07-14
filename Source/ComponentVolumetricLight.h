@@ -6,7 +6,6 @@
 #include <vector>
 
 class GameObject;
-struct par_shapes_mesh_s;
 
 class ComponentVolumetricLight : public Component
 {
@@ -26,9 +25,12 @@ public:
 
 private:
 
-	par_shapes_mesh_s* circle1 = nullptr;
-	par_shapes_mesh_s* circle2 = nullptr;
-
+	float conePoints[192];
+	float coneUVs[128];
+	int coneIndexes[65];
+	float circle1Radius = 1.0f;
+	float circle2Radius = 5.0f;
+	float lenght = 1.0f;
 };
 
 #endif // __ComponentVolumetricLight_h__
