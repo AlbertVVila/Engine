@@ -18,7 +18,7 @@ public:
 	std::vector<float3>path;
 	unsigned pathIndex = 0;
 	GameObject* dustParticles = nullptr;
-	GameObject* enemyTargeted = nullptr;
+	GameObject* walkingEnemyTargeted = nullptr;
 
 private:
 	float moveTimer = 0.0f;

@@ -25,7 +25,18 @@ const float3 ChainAttackSkill::attackingBoxSize = math::float3(150.f, 100.f, 100
 void ChainAttackSkill::Start()
 {
 	MeleeSkill::Start();
-	player->gameobject->transform->LookAtMouse();
+	if (!player->enemyTargeted)
+	{
+		player->gameobject->transform->LookAtMouse();
+	}
+	else
+	{
+		player->enemyTargeted = false;
+		if (player->enemyTarget != nullptr)
+		{
+			player->gameobject->transform->LookAt(player->enemyTarget->transform->position);
+		}
+	}
 
 	// Create the hitbox
 	boxSize = attackingBoxSize;

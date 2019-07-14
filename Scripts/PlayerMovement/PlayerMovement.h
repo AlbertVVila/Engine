@@ -212,6 +212,9 @@ public:
 	PlayerStateDeath* death = nullptr;
 	PlayerStateWalk* walk = nullptr;
 	PlayerStateWalkToHitEnemy* walkToHit = nullptr;
+	//walking to hit player orientation necessary info:
+	bool enemyTargeted = false;
+	GameObject* enemyTarget = nullptr;
 
 	float walkingSpeed = 300.0f;
 	float dashSpeed = 10.0f;

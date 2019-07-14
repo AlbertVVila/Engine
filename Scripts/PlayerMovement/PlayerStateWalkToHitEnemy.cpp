@@ -38,12 +38,12 @@ PlayerStateWalkToHitEnemy::~PlayerStateWalkToHitEnemy()
 void PlayerStateWalkToHitEnemy::Update()
 {
 	//enemy targeting check
-	if (enemyTargeted == nullptr || (player->App->scene->enemyHovered != nullptr && player->App->scene->enemyHovered != enemyTargeted))
+	if (walkingEnemyTargeted == nullptr || (player->App->scene->enemyHovered != nullptr && player->App->scene->enemyHovered != walkingEnemyTargeted))
 	{
 		if (player->App->scene->enemyHovered != nullptr)
 		{
-			enemyTargeted = player->App->scene->enemyHovered;
-			enemyPosition = enemyTargeted->transform->position;
+			walkingEnemyTargeted = player->App->scene->enemyHovered;
+			enemyPosition = walkingEnemyTargeted->transform->position;
 			math::float3 correctionPos(player->basicAttackRange, player->OutOfMeshCorrectionY, player->basicAttackRange);
 			if (player->App->navigation->FindPath(player->gameobject->transform->position, enemyPosition,
 				path, PathFindType::FOLLOW, correctionPos, defaultMaxDist, player->straightPathingDistance))
@@ -68,11 +68,11 @@ void PlayerStateWalkToHitEnemy::Update()
 	}
 
 	//if enemy moved, re calc path towards it
-	if (enemyTargeted->transform->position != enemyPosition)
+	if (walkingEnemyTargeted->transform->position != enemyPosition)
 	{
 		//reset stuff
 		path.clear();
-		enemyPosition = enemyTargeted->transform->position;
+		enemyPosition = walkingEnemyTargeted->transform->position;
 		//re calculate path
 		if (player->App->navigation->FindPath(player->gameobject->transform->position, enemyPosition,
 			path, PathFindType::FOLLOW, math::float3(player->basicAttackRange, player->OutOfMeshCorrectionY, player->basicAttackRange),
@@ -131,9 +131,9 @@ void PlayerStateWalkToHitEnemy::Update()
 		else
 		{
 			//done walking, lets hit the enemy
-
-			//lets look at the enemy, although this instruction does not seem to be working
-			player->gameobject->transform->LookAt(enemyTargeted->transform->position);
+			//about the orientation of the player, in the chain attack state looks at the mouse automatically
+			player->enemyTargeted = true;
+			player->enemyTarget = walkingEnemyTargeted;
 
 			playerWalkingToHit = false;
 			playerWalking = false;
