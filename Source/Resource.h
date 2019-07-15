@@ -5,6 +5,8 @@
 
 class JSON_value;
 
+#define META_VERSION 2
+
 enum class TYPE
 {
 	TEXTURE,
