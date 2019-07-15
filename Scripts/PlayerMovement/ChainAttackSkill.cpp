@@ -106,11 +106,7 @@ void ChainAttackSkill::NextChainAttack()
 
 		// Send trigger
 		if (player->anim != nullptr)
-		{
-			std::stringstream s;
-			s << "Triggering " << player->currentState->trigger.c_str();
-			LOG(s.str().c_str());
-			
+		{	
 			player->anim->SendTriggerToStateMachine(player->currentState->trigger.c_str());
 		}
 
