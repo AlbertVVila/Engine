@@ -87,12 +87,25 @@ void ResourceStateMachine::SaveMetafile(const char* file) const
 	JSON_value* meta = json->CreateValue();
 	struct stat statFile;
 	stat(filepath.c_str(), &statFile);
-	meta->AddUint("GUID", UID);
+	meta->AddUint("metaVersion", META_VERSION);
 	meta->AddUint("timeCreated", statFile.st_ctime);
-	meta->AddString("name", name.c_str());
+
+	// Resource info
+	meta->AddUint("GUID", UID);
+	meta->AddString("Name", name.c_str());
+	meta->AddString("File", file);
+	meta->AddString("ExportedFile", exportedFile.c_str());
+
 	json->AddValue("StateMachine", *meta);
 	filepath += METAEXT;
+
+	// Save meta in Assets if animation comes from animation file
 	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
+
+	// Save meta in Library
+	std::string libraryPath(exportedFile + METAEXT);
+	App->fsystem->Save(libraryPath.c_str(), json->ToString().c_str(), json->Size());
+	RELEASE(json);
 }
 
 void ResourceStateMachine::LoadConfigFromMeta()
