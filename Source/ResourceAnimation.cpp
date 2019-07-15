@@ -131,6 +131,7 @@ void ResourceAnimation::SaveMetafile(const char* file) const
 	// Save meta in Library
 	std::string libraryPath(exportedFile + METAEXT);
 	App->fsystem->Save(libraryPath.c_str(), json->ToString().c_str(), json->Size());
+	RELEASE(json);
 }
 
 void ResourceAnimation::LoadConfigFromMeta()
