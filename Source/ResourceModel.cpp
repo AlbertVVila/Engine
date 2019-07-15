@@ -136,7 +136,14 @@ void ResourceModel::LoadConfigFromMeta()
 		return;
 	}
 	JSON* json = new JSON(data);
-	JSON_value* value = json->GetValue("Mesh");
+	JSON_value* value = json->GetValue("Model");
+	if (value == nullptr)
+	{
+		LOG("Warning: %s couldn't be loaded", metaFile.c_str());
+		RELEASE_ARRAY(data);
+		return;
+	}
+
 	numMeshes = value->GetUint("NumMeshes");
 	std::string name = App->fsystem->GetFilename(file);
 
@@ -175,6 +182,12 @@ void ResourceModel::LoadConfigFromMeta()
 
 		animationList.push_back(anim);
 	}
+
+	// Check the meta file version
+	if (value->GetUint("metaVersion", 0u) < META_VERSION)
+		SaveMetafile(file.c_str());
+
+	RELEASE_ARRAY(data);
 	RELEASE(json);
 }
 

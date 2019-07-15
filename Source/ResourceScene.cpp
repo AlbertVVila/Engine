@@ -84,6 +84,13 @@ void ResourceScene::LoadConfigFromMeta()
 		App->resManager->ReplaceResource(oldUID, this);
 		exportedFile = IMPORTED_SCENES + std::to_string(UID) + SCENEEXTENSION;
 	}
+
+	// Check the meta file version
+	if (value->GetUint("metaVersion", 0u) < META_VERSION)
+		SaveMetafile(file.c_str());
+
+	RELEASE_ARRAY(data);
+	RELEASE(json);
 }
 
 void ResourceScene::Save(const GameObject& rootGO, bool selected)

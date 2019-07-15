@@ -99,7 +99,13 @@ void ResourcePrefab::LoadConfigFromMeta()
 	JSON* json = new JSON(data);
 	JSON_value* value = json->GetValue("Prefab");
 	UID = value->GetUint("GUID");
-	RELEASE(data);
+	
+	// Check the meta file version
+	if (value->GetUint("metaVersion", 0u) < META_VERSION)
+		SaveMetafile(file.c_str());
+
+	RELEASE_ARRAY(data);
+	RELEASE(json);
 }
 
 

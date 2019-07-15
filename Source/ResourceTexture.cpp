@@ -334,6 +334,7 @@ void ResourceTexture::LoadConfigFromMeta()
 	if (value->GetUint("metaVersion", 0u) < META_VERSION)
 		SaveMetafile(file.c_str());
 
+	RELEASE_ARRAY(data);
 	RELEASE(json);
 }
 

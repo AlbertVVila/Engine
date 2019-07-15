@@ -121,6 +121,11 @@ void ResourceAudio::LoadConfigFromMeta()
 		App->resManager->ReplaceResource(oldUID, this);
 		exportedFile = IMPORTED_MATERIALS + std::to_string(UID) + MATERIALEXT;
 	}
+
+	// Check the meta file version
+	if (value->GetUint("metaVersion", 0u) < META_VERSION)
+		SaveMetafile(file.c_str());
+
 	RELEASE_ARRAY(data);
 	RELEASE(json);
 }

@@ -167,6 +167,13 @@ void ResourceAnimation::LoadConfigFromMeta()
 		App->resManager->ReplaceResource(oldUID, this);
 		exportedFile = IMPORTED_ANIMATIONS + std::to_string(UID) + ANIMATIONEXTENSION;
 	}
+
+	// Check the meta file version
+	if (value->GetUint("metaVersion", 0u) < META_VERSION)
+		SaveMetafile(file.c_str());
+
+	RELEASE_ARRAY(data);
+	RELEASE(json);
 }
 
 void ResourceAnimation::SetAnimation(const char* animationData)
