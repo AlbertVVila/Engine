@@ -190,8 +190,8 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 			else
 			{
 				JSON *json = new JSON(metaData);
-				JSON_value* meshValue = json->GetValue("Mesh");
-				mesh = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH, meshValue->GetUint(("Mesh" + std::to_string(totalMeshes)).c_str()));
+				JSON_value* meshValue = json->GetValue(("Mesh" + std::to_string(totalMeshes)).c_str());
+				mesh = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH, meshValue->GetUint("GUID"));
 
 				// ResourceMesh was created on .meta of model load, now replace previous resource
 				App->resManager->ReplaceResource(mesh->GetUID(), mesh);
