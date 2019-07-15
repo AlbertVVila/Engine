@@ -35,6 +35,28 @@ void CombatAudioEvents::Start()
 	{
 		LOG("Warning: stepSound game object not found");
 	}
+
+	GO = App->scene->FindGameObjectByName("bomb_take_off");
+	if (GO != nullptr)
+	{
+		bomb_take_off = GO->GetComponent<ComponentAudioSource>();
+		assert(bomb_take_off != nullptr);
+	}
+	else
+	{
+		LOG("Warning: bomb_take_off game object not found");
+	}
+
+	GO = App->scene->FindGameObjectByName("bomb_impact");
+	if (GO != nullptr)
+	{
+		bomb_impact = GO->GetComponent<ComponentAudioSource>();
+		assert(bomb_impact != nullptr);
+	}
+	else
+	{
+		LOG("Warning: bomb_impact game object not found");
+	}
 }
 
 void CombatAudioEvents::OnAnimationEvent(std::string name)
@@ -43,6 +65,14 @@ void CombatAudioEvents::OnAnimationEvent(std::string name)
 	{
 		stepSound->Play();
 	}	
+	else if (name == "bomb_take_off")
+	{
+		bomb_take_off->Play();
+	}
+	else if (name == "bomb_impact")
+	{
+		bomb_impact->Play();
+	}
 }
 
 
