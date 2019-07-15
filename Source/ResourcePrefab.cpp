@@ -75,7 +75,7 @@ void ResourcePrefab::SaveMetafile(const char * file) const
 
 	json->AddValue("Prefab", *meta);
 
-	// Save meta in Assets if animation comes from animation file
+	// Save meta in Assets
 	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
 
 	// Save meta in Library

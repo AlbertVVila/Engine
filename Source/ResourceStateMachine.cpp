@@ -99,7 +99,7 @@ void ResourceStateMachine::SaveMetafile(const char* file) const
 	json->AddValue("StateMachine", *meta);
 	filepath += METAEXT;
 
-	// Save meta in Assets if animation comes from animation file
+	// Save meta in Assets
 	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
 
 	// Save meta in Library
@@ -130,7 +130,7 @@ void ResourceStateMachine::LoadConfigFromMeta()
 	}
 	JSON* json = new JSON(data);
 	JSON_value* value = json->GetValue("StateMachine");
-	name = value->GetString("name");
+	name = value->GetString("Name");
 
 	// Make sure the UID from meta is the same
 	unsigned checkUID = value->GetUint("GUID");
