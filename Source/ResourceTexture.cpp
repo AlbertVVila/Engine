@@ -268,13 +268,7 @@ void ResourceTexture::SaveMetafile(const char* file) const
 	meta->AddString("ExportedFile", exportedFile.c_str());
 
 	// Texture info
-	meta->AddUint("height", height);
-	meta->AddUint("width", width);
-	meta->AddUint("depth", depth);
-	meta->AddUint("mips", mips);
-	meta->AddUint("format", format);
-	meta->AddUint("DX compresion", ilGetInteger(IL_DXTC_FORMAT));
-	meta->AddUint("mipmap", ilGetInteger(IL_ACTIVE_MIPMAP));
+	meta->AddUint("DX compresion", (unsigned)dxtFormat);
 	json->AddValue("Texture", *meta);
 	filepath += METAEXT;
 
@@ -335,6 +329,10 @@ void ResourceTexture::LoadConfigFromMeta()
 	case DXT::ATI1N:	compression = 5; break;
 	case DXT::DXT1A:	compression = 6; break;
 	}
+
+	// Check the meta file version
+	if (value->GetUint("metaVersion", 0u) < META_VERSION)
+		SaveMetafile(file.c_str());
 
 	RELEASE(json);
 }
