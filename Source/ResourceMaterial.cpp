@@ -183,8 +183,15 @@ void ResourceMaterial::SaveMetafile(const char* file) const
 	JSON_value* meta = json->CreateValue();
 	struct stat statFile;
 	stat(filepath.c_str(), &statFile);
-	meta->AddUint("GUID", UID);
+	meta->AddUint("metaVersion", META_VERSION);
 	meta->AddUint("timeCreated", statFile.st_ctime);
+
+	// Resource info
+	meta->AddUint("GUID", UID);
+	meta->AddString("Name", name.c_str());
+	meta->AddString("File", file);
+	meta->AddString("ExportedFile", exportedFile.c_str());
+
 	meta->AddFloat4("DifusseColor", diffuseColor);
 	meta->AddFloat3("specularColor", specularColor);
 	meta->AddFloat3("emissiveColor", emissiveColor);
@@ -219,7 +226,13 @@ void ResourceMaterial::SaveMetafile(const char* file) const
 	}
 	json->AddValue("Material", *meta);
 	filepath += METAEXT;
+
+	// Save meta in Assets
 	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
+
+	// Save meta in Library
+	std::string libraryPath(exportedFile + METAEXT);
+	App->fsystem->Save(libraryPath.c_str(), json->ToString().c_str(), json->Size());
 	RELEASE(json);
 }
 
