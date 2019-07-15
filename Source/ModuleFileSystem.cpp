@@ -514,14 +514,17 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 						{
 							// File already imported, add model to the resources list
 							ResourceModel* res = (ResourceModel*)App->resManager->AddResource(file.c_str(), currentFolder.c_str(), TYPE::MODEL, uid);
-							res->LoadConfigFromMeta();
+							if (res != nullptr)
+							{
+								res->LoadConfigFromMeta();
 
-							// Check if the meshes and animations inside ResourceModel are imported
-							if (res->CheckImportedMeshes())
-								filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
+								// Check if the meshes and animations inside ResourceModel are imported
+								if (res->CheckImportedMeshes())
+									filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
 
-							if (res->CheckImportedAnimations())
-								filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
+								if (res->CheckImportedAnimations())
+									filesToImport.push_back(std::pair<std::string, std::string>(file, currentFolder));
+							}
 						}
 						// File already imported, add it to the resources list
 						Resource* res = App->resManager->AddResource(file.c_str(), currentFolder.c_str(), App->resManager->GetResourceType(type), uid);

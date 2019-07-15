@@ -110,6 +110,33 @@ void ResourceMesh::DeleteFromMemory()
 	bindBones.clear();
 }
 
+void ResourceMesh::SaveMetafile(const char* file) const
+{
+	std::string filepath;
+	filepath.append(file);
+	JSON *json = new JSON();
+
+	// Mesh information
+	JSON_value* meshMeta = json->CreateValue();
+	struct stat statFile;
+	stat(filepath.c_str(), &statFile);
+	meshMeta->AddUint("metaVersion", META_VERSION);
+	meshMeta->AddUint("timeCreated", statFile.st_ctime);
+
+	// Resource info
+	meshMeta->AddUint("GUID", UID);
+	meshMeta->AddString("Name", name.c_str());
+	meshMeta->AddString("File", file);
+	meshMeta->AddString("ExportedFile", exportedFile.c_str());
+
+	json->AddValue("Mesh", *meshMeta);
+
+	// Save meta in Library
+	std::string libraryPath(exportedFile + METAEXT);
+	App->fsystem->Save(libraryPath.c_str(), json->ToString().c_str(), json->Size());
+	RELEASE(json);
+}
+
 void ResourceMesh::Draw(unsigned shaderProgram) const
 {
 	if (bindBones.size() > 0)

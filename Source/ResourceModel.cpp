@@ -62,31 +62,57 @@ void ResourceModel::SaveMetafile(const char* file) const
 	filepath.append(file);
 	JSON *json = new JSON();
 
-	JSON_value* meshMeta = json->CreateValue();
+	// Model information
+	JSON_value* modelMeta = json->CreateValue();
 	struct stat statFile;
 	stat(filepath.c_str(), &statFile);
-	meshMeta->AddUint("GUID", UID);
-	meshMeta->AddUint("timeCreated", statFile.st_ctime);
-	meshMeta->AddUint("NumMeshes", numMeshes);
+	modelMeta->AddUint("metaVersion", META_VERSION);
+	modelMeta->AddUint("timeCreated", statFile.st_ctime);
+	modelMeta->AddUint("NumMeshes", numMeshes);
+	modelMeta->AddUint("NumAnimations", numAnimations);
+	json->AddValue("Model", *modelMeta);
+
+	// Meshes info
 	for (int i = 0; i < numMeshes; ++i)
 	{
-		meshMeta->AddUint(("Mesh" + std::to_string(i)).c_str(), meshList[i]->GetUID());
-	}
-	json->AddValue("Mesh", *meshMeta);
+		JSON_value* meshMeta = json->CreateValue();
+		meshMeta->AddUint("MeshNumber", i);
 
-	JSON_value* animMeta = json->CreateValue();
-	struct stat statFileAnim;
-	stat(filepath.c_str(), &statFileAnim);
-	animMeta->AddUint("timeCreated", statFileAnim.st_ctime);
-	animMeta->AddUint("NumAnimations", numAnimations);
+		// Resource info
+		meshMeta->AddUint("GUID", meshList[i]->GetUID());
+		meshMeta->AddString("Name", meshList[i]->GetName());
+		meshMeta->AddString("File", file);
+		meshMeta->AddString("ExportedFile", meshList[i]->GetExportedFile());
+
+		json->AddValue(("Mesh" + std::to_string(i)).c_str(), *meshMeta);
+
+		// Save meta in Library
+		meshList[i]->SaveMetafile(file);
+		//RELEASE(meshMeta);
+	}
+
+	// Animations info
 	for (int i = 0; i < numAnimations; ++i)
 	{
-		animMeta->AddUint(("Animation" + std::to_string(i)).c_str(), animationList[i]->GetUID());
-	}
-	json->AddValue("Animation", *animMeta);
+		JSON_value* animMeta = json->CreateValue();
+		animMeta->AddUint("AnimationNumber", i);
 
+		// Resource info
+		animMeta->AddUint("GUID", animationList[i]->GetUID());
+		animMeta->AddString("Name", animationList[i]->GetName());
+		animMeta->AddString("File", file);
+		animMeta->AddString("ExportedFile", animationList[i]->GetExportedFile());
+
+		json->AddValue(("Animation" + std::to_string(i)).c_str(), *animMeta);
+
+		// Save meta in Library
+		animationList[i]->SaveMetafile(animationList[i]->GetFile());
+		//RELEASE(animMeta);
+	}
 
 	filepath += METAEXT;
+
+	// Save meta in Assets
 	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
 	RELEASE(json);
 }

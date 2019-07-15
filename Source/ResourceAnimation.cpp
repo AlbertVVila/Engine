@@ -123,10 +123,13 @@ void ResourceAnimation::SaveMetafile(const char* file) const
 	meta->AddString("ExportedFile", exportedFile.c_str());
 
 	json->AddValue("Animation", *meta);
-	filepath += METAEXT;
 
-	// Save meta in Assets
-	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
+	// Save meta in Assets if animation comes from animation file
+	if (App->fsystem->GetExtension(filepath) == ANIMATIONEXTENSION)
+	{
+		filepath += METAEXT;
+		App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
+	}
 
 	// Save meta in Library
 	std::string libraryPath(exportedFile + METAEXT);
