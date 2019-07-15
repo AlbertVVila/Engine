@@ -308,9 +308,9 @@ bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* 
 	// If export was successful, create a new resource
 	if (success) 
 	{ 
-		resource->SaveMetafile(assetPath.c_str());
 		resource->SetName(name.c_str());
 		resource->SetExportedFile(exportedFile.c_str());
+		resource->SaveMetafile(assetPath.c_str());
 		LOG("%s imported.", resource->GetFile());
 	}
 	else
