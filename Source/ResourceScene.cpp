@@ -27,17 +27,31 @@ ResourceScene::~ResourceScene()
 
 void ResourceScene::SaveMetafile(const char* file) const
 {
+	std::string filepath;
+	filepath.append(file);
 	JSON* json = new JSON();
 	JSON_value* meta = json->CreateValue();
 	struct stat statFile;
-	stat(file, &statFile);
+	stat(filepath.c_str(), &statFile);
+	meta->AddUint("metaVersion", META_VERSION);
+	meta->AddUint("timeCreated", statFile.st_ctime);
 
+	// Resource info
 	meta->AddUint("GUID", UID);
-	json->AddValue("Scene", *meta);
+	meta->AddString("Name", name.c_str());
+	meta->AddString("File", file);
+	meta->AddString("ExportedFile", exportedFile.c_str());
 
-	std::string filepath(file);
+	json->AddValue("Scene", *meta);
 	filepath += METAEXT;
+
+	// Save meta in Assets if animation comes from animation file
 	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
+
+	// Save meta in Library
+	std::string libraryPath(exportedFile + METAEXT);
+	App->fsystem->Save(libraryPath.c_str(), json->ToString().c_str(), json->Size());
+	RELEASE(json);
 }
 
 void ResourceScene::LoadConfigFromMeta()
