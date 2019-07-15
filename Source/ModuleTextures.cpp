@@ -73,30 +73,42 @@ bool ModuleTextures::ImportImage(const char* file, const char* folder, ResourceT
 	success = ilLoadImage((path+file).c_str());
 	if (success)
 	{
-		ILuint size;
-		ILubyte* data = ilGetData();
-		ilSetInteger(IL_DXTC_FORMAT, (ILint)resource->dxtFormat);	// To pick a specific DXT compression use
-		size = ilSaveL(IL_DDS, NULL, 0);		// Get the size of the data buffer
-		data = new ILubyte[size];				// allocate data buffer
-		if (ilSaveL(IL_DDS, data, size) > 0)
+		if (resource->dxtFormat == DXT::NO_COMPRESSION) 
 		{
-			// Save to buffer with the ilSaveIL function
-			std::string filepath(TEXTURES + std::to_string(resource->GetUID()) + TEXTUREEXT);	// Library path + UID + Extension
-			App->fsystem->Save(filepath.c_str(), (char*)data, size);
+			char** data = nullptr;
+			int size = App->fsystem->Size((path + file).c_str());
+			
+			std::string filepath(TEXTURES + std::to_string(resource->GetUID()) + TEXTUREEXT);    // Library path + UID + Extension
+			App->fsystem->Copy((path + file).c_str(), TEXTURES, (std::to_string(resource->GetUID())+TEXTUREEXT).c_str());
+			success = true;
+		}
+		else 
+		{
+			ILuint size;
+			ILubyte* data = ilGetData();
+			ilSetInteger(IL_DXTC_FORMAT, (ILint)resource->dxtFormat);	// To pick a specific DXT compression use
+			size = ilSaveL(IL_DDS, NULL, 0);		// Get the size of the data buffer
+			data = new ILubyte[size];				// allocate data buffer
+			if (ilSaveL(IL_DDS, data, size) > 0)
+			{
+				// Save to buffer with the ilSaveIL function
+				std::string filepath(TEXTURES + std::to_string(resource->GetUID()) + TEXTUREEXT);	// Library path + UID + Extension
+				App->fsystem->Save(filepath.c_str(), (char*)data, size);
 
-			// Save image data to resource
-			resource->width = ilGetInteger(IL_IMAGE_WIDTH);
-			resource->height = ilGetInteger(IL_IMAGE_HEIGHT);
-			resource->depth = ilGetInteger(IL_IMAGE_DEPTH);
-			resource->format = ilGetInteger(IL_IMAGE_FORMAT);
-			resource->bytes = ilGetInteger(GL_UNSIGNED_BYTE);
-		}
-		else
-		{
-			success = false;
-		}
-		ilDeleteImages(1, &imageID);
-		RELEASE_ARRAY(data);
+				// Save image data to resource
+				resource->width = ilGetInteger(IL_IMAGE_WIDTH);
+				resource->height = ilGetInteger(IL_IMAGE_HEIGHT);
+				resource->depth = ilGetInteger(IL_IMAGE_DEPTH);
+				resource->format = ilGetInteger(IL_IMAGE_FORMAT);
+				resource->bytes = ilGetInteger(GL_UNSIGNED_BYTE);
+			}
+			else
+			{
+				success = false;
+			}
+			ilDeleteImages(1, &imageID);
+			RELEASE_ARRAY(data);
+		}		
 	}
 	
 	if(!success)

@@ -102,7 +102,7 @@ bool ResourceTexture::LoadTexture()
 
 	ilGenImages(1, &imageID); 		// Generate the image ID
 	ilBindImage(imageID); 			// Bind the image
-	ILboolean success = ilLoadL(IL_DDS, data, size);
+	ILboolean success = ilLoadL(IL_TYPE_UNKNOWN, data, size);
 
 	if (success)
 	{
@@ -327,7 +327,7 @@ void ResourceTexture::LoadConfigFromMeta()
 
 void ResourceTexture::DrawImportConfiguration()
 {
-	const char* compressionTypes[] = { "DXT1", /*"DXT2",*/ "DXT3", /*"DXT4",*/ "DXT5", /*"DXT_NO_COMP", "KEEP_DXTC_DATA", "DXTC_DATA_FORMAT",*/ "THREE_DC", "RXGB", "ATI1N", "DXT1A" };
+	const char* compressionTypes[] = { "DXT1", /*"DXT2",*/ "DXT3", /*"DXT4",*/ "DXT5", /*"DXT_NO_COMP", "KEEP_DXTC_DATA", "DXTC_DATA_FORMAT",*/ "THREE_DC", "RXGB", "ATI1N", "DXT1A", "NO_COMPRESSION" };
 	if (ImGui::Combo("Compression type", &compression, compressionTypes, IM_ARRAYSIZE(compressionTypes)))
 	{
 		switch (compression)
@@ -344,6 +344,7 @@ void ResourceTexture::DrawImportConfiguration()
 		case 4:	dxtFormat = DXT::RXGB; break;
 		case 5:	dxtFormat = DXT::ATI1N; break;
 		case 6:	dxtFormat = DXT::DXT1A; break;
+		case 7: dxtFormat = DXT::NO_COMPRESSION; break;
 		}
 	}
 }

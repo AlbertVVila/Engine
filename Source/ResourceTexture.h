@@ -18,7 +18,8 @@ enum class DXT
 	THREE_DC = 0x070E,			// Working
 	RXGB = 0x070F,				// Working
 	ATI1N = 0x0710,				// Working
-	DXT1A = 0x0711				// Working
+	DXT1A = 0x0711,				// Working
+	NO_COMPRESSION = 0
 };
 
 class ResourceTexture : public Resource
