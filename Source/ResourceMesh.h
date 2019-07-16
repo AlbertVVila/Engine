@@ -36,6 +36,7 @@ class ResourceMesh : public Resource
 public:
 	ResourceMesh(unsigned uid);
 	ResourceMesh(const ResourceMesh& resource);
+	ResourceMesh(unsigned nVertices, float* vertices, unsigned nIndexes, int* indexes, unsigned nUVs, float* UVs);
 	virtual ~ResourceMesh();
 
 	// Getters

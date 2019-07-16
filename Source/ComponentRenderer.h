@@ -60,10 +60,12 @@ public:
 	math::float3 highlightColor = math::float3::one;
 	bool animationEnded = false;
 
+	bool isVolumetricLight = false;
 
 private:
 
 	void Update();
+	void PickMaterial();
 
 	std::vector<std::string> guiMaterials;
 	std::vector<std::string> guiMeshes;

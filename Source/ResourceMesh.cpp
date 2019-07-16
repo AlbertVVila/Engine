@@ -45,6 +45,10 @@ ResourceMesh::ResourceMesh(const ResourceMesh& resource) : Resource(resource)
 	meshIndices = resource.meshIndices;
 }
 
+ResourceMesh::ResourceMesh(unsigned nVertices, float* vertices, unsigned nIndexes, int* indexes, unsigned nUVs, float* UVs) : Resource(0, TYPE::MESH)
+{
+}
+
 ResourceMesh::~ResourceMesh()
 {
 	DeleteFromMemory();

@@ -23,7 +23,7 @@ MaterialEditor::~MaterialEditor()
 {
 }
 
-void MaterialEditor::Draw()
+void MaterialEditor::Draw(bool onlyDiffuse)
 {
 	if (material == NULL)
 	{
@@ -31,12 +31,13 @@ void MaterialEditor::Draw()
 	}
 
 	ImGui::Spacing();
-	if (material->shader && !material->shader->isFX)
+	if (material->shader && !material->shader->isFX && !onlyDiffuse)
 	{
 		ImGui::ColorEdit3("Specular Color", (float*)&material->specularColor);
 		ImGui::DragFloat("Roughness", &material->roughness, .01f, .001f, 1.f);
 	}
-	ShaderSelector(currentShader);
+	if (!onlyDiffuse)
+		ShaderSelector(currentShader);
 
 	if (ImGui::CollapsingHeader("Diffuse"))
 	{
@@ -46,7 +47,7 @@ void MaterialEditor::Draw()
 		ImGui::Separator();
 		ImGui::PopID();
 	}
-	if (material->shader && !material->shader->isFX)
+	if (material->shader && !material->shader->isFX && !onlyDiffuse)
 	{
 		if (ImGui::CollapsingHeader("Occlusion"))
 		{
