@@ -91,15 +91,19 @@ ModuleFileSystem::~ModuleFileSystem()
 
 bool ModuleFileSystem::Start() //TODO: Don't checkFiles in GameBuild
 {
+#ifndef GAME_BUILD
 	// Check files in Assets and add them to ResManager
 	CheckResourcesInFolder(ASSETS);
 	if (filesToImport.size() > 0) ImportFiles();
 
-#ifndef GAME_BUILD
 	// Set thread to monitorize Assets folder
 	monitor_thread = std::thread(&ModuleFileSystem::Monitorize, this, ASSETS);
 	monitor_thread.detach();
-#endif // !GAME_BUILD
+#else // !GAME_BUILD
+
+	// Add library resources to the resource list
+	AddResourcesToResourceList(LIBRARY);
+#endif
 	return true;
 }
 
@@ -332,7 +336,7 @@ void ModuleFileSystem::ListFileNamesExcludingExtension(const char* dir, std::set
 	}
 }
 
-void ModuleFileSystem::ListFilesWithExtension(const char* dir, std::set<std::string>& files)
+void ModuleFileSystem::ListFiles(const char* dir, std::set<std::string>& files)
 {
 	files.clear();
 	std::vector<std::string> foundFiles;
@@ -356,6 +360,36 @@ void ModuleFileSystem::ListFilesWithExtension(const char* dir, std::set<std::str
 			else
 			{
 				files.insert(currentFolder + file);
+			}
+		}
+	}
+}
+
+void ModuleFileSystem::ListFilesExcludingExtension(const char* dir, std::set<std::string>& files, const char* extensionToExclude)
+{
+	files.clear();
+	std::vector<std::string> foundFiles;
+	std::stack<std::string> folderStack;
+	folderStack.push(dir);
+	std::string currentFolder;
+	while (!folderStack.empty())
+	{
+		currentFolder = folderStack.top();
+		folderStack.pop();
+
+		foundFiles = GetFolderContent(currentFolder.c_str());
+		for (auto& file : foundFiles)
+		{
+			std::string filefolder(currentFolder);
+			filefolder += file;
+			if (IsDirectory((currentFolder + file).c_str()))
+			{
+				folderStack.push(dir + file + "/");
+			}
+			else
+			{
+				if (HashString(GetExtension(file).c_str()) != HashString(extensionToExclude))
+					files.insert(currentFolder + file);
 			}
 		}
 	}
@@ -615,6 +649,41 @@ void ModuleFileSystem::LookForNewResourceFiles(const char* folder)
 			}
 		}
 	}
+}
+
+#define MESHES LIBRARY "Meshes/"
+#define TEXTURES LIBRARY "Textures/"
+#define IMPORTED_MATERIALS LIBRARY "Materials/"
+#define IMPORTED_ANIMATIONS LIBRARY "Animations/"
+#define IMPORTED_STATEMACHINES LIBRARY "StateMachines/"
+#define IMPORTED_SCENES LIBRARY "Scenes/"
+#define IMPORTED_AUDIOS LIBRARY "Audios/"
+#define IMPORTED_PREFABS LIBRARY "Prefabs/"
+
+void ModuleFileSystem::AddResourcesToResourceList(const char* folder)
+{
+	// Get lists with all imported resources and materials
+	std::set<std::string> resources;
+	ListFilesExcludingExtension(folder, resources, METAEXT);
+
+	for (auto& resource : resources)
+	{
+		// Get resource type
+		TYPE resourceType = TYPE::UNKNOWN;
+		HashString folder(GetFilePath(resource).c_str());
+		if (folder == HashString(MESHES))						resourceType = TYPE::MESH;
+		else if (folder == HashString(TEXTURES))				resourceType = TYPE::TEXTURE;
+		else if (folder == HashString(IMPORTED_MATERIALS))		resourceType = TYPE::MATERIAL;
+		else if (folder == HashString(IMPORTED_ANIMATIONS))		resourceType = TYPE::ANIMATION;
+		else if (folder == HashString(IMPORTED_STATEMACHINES))	resourceType = TYPE::STATEMACHINE;
+		else if (folder == HashString(IMPORTED_SCENES))			resourceType = TYPE::SCENE;
+		else if (folder == HashString(IMPORTED_AUDIOS))			resourceType = TYPE::AUDIO;
+		else if (folder == HashString(IMPORTED_PREFABS))		resourceType = TYPE::PREFAB;
+		else continue;
+
+		App->resManager->AddResourceFromLibrary(resource.c_str(), resourceType);
+	}
+	return;
 }
 
 void ModuleFileSystem::ImportFiles()

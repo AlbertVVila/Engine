@@ -106,9 +106,10 @@ public:
 	bool IsDirectory(const char* file) const;
 	std::vector<std::string> GetFolderContent(const char* dir, bool extension=true) const;								// Returns a vector with all the files and directories found on dir
 	void ListFolderContent(const char * dir, std::vector<std::string>& files, std::vector<std::string>& dirs) const;	// Saves all file names found on dir on files vector and all directories on dirs vector
-	void ListFileNames(const char* dir, std::set<std::string>& files);													// Saves all file names found on dir and subdirs on a set
-	void ListFileNamesExcludingExtension(const char* dir, std::set<std::string>& files, const char* extensionToExclude);// Saves all file names found on dir and subdirs on a set excluding the ones with the extension given
-	void ListFilesWithExtension(const char* dir, std::set<std::string>& files);											// Saves all files found on dir and subdirs on a set
+	void ListFileNames(const char* dir, std::set<std::string>& files);													// Saves all file names found on dir and subdirs on a set [filename]
+	void ListFileNamesExcludingExtension(const char* dir, std::set<std::string>& files, const char* extensionToExclude);// Saves all file names found on dir and subdirs on a set excluding the ones with the extension given [filename]
+	void ListFiles(const char* dir, std::set<std::string>& files);														// Saves all files found on dir and subdirs on a set [dir + filename + extension]
+	void ListFilesExcludingExtension(const char* dir, std::set<std::string>& files, const char* extensionToExclude);	// Saves all files found on dir and subdirs on a set excluding the ones with the extension given [dir + filename + extension]
 	bool CopyFromOutsideFS(const char* source, const char* destination) const;
 	bool Copy(const char* source, const char* destination, const char* file) const;
 	bool Copy(const char * source, const char* file, const char* dest, const char* newFile) const;
@@ -130,6 +131,7 @@ private:
 	void Monitorize(const char* folder);				// Monitorizes the files in the selected folder to import the new ones. 
 	void CheckResourcesInFolder(const char* folder);	// Compares the resource files located in the folder to the ones already imported, these files are added to the Resource Manager and imported if not already. (Used on App start)
 	void LookForNewResourceFiles(const char* folder);	// Compares the resource files located in the folder to the ones in the Resource Manager list, if a new or modfied file is found it gets imported.
+	void AddResourcesToResourceList(const char* folder);// Gets all the resources in the folder and adds them to the resource list using the data contained on the meta file
 	void ImportFiles();									// Imports files stored on filesToImport list
 
 public:

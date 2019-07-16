@@ -800,6 +800,28 @@ Resource* ModuleResourceManager::AddResource(const char* file, const char* direc
 	}
 }
 
+Resource* ModuleResourceManager::AddResourceFromLibrary(const char* exportedFile, TYPE type)
+{
+	unsigned uid = std::stoul(App->fsystem->GetFilename(exportedFile));
+
+	// Check if resource was already added
+	if (GetWithoutLoad(uid) == nullptr)
+	{
+		// Create new resource 
+		Resource* res = CreateNewResource(type, uid);
+		res->SetExportedFile(exportedFile);
+		res->LoadConfigFromLibraryMeta();
+		return res;
+	}
+	else
+	{
+		// Resource already exist
+		return GetWithoutLoad(uid);
+	}
+
+	return nullptr;
+}
+
 Resource* ModuleResourceManager::ReplaceResource(unsigned oldResourceUID, Resource* newResource)
 {
 	DeleteResourceFromList(oldResourceUID);
@@ -849,10 +871,14 @@ unsigned ModuleResourceManager::GetUIDFromMeta(const char* metaFile, FILETYPE fi
 	}
 	if (value != nullptr)
 	{
+		RELEASE_ARRAY(data);
+		RELEASE(json);
 		return value->GetUint("GUID");
 	}
 	else
 	{
+		RELEASE_ARRAY(data);
+		RELEASE(json);
 		return 0;
 	}
 }
@@ -861,7 +887,7 @@ void ModuleResourceManager::CleanUnusedMetaFiles() const
 {
 	// Get lists with all resource files assets
 	std::set<std::string> assetFiles;
-	App->fsystem->ListFilesWithExtension(ASSETS, assetFiles);
+	App->fsystem->ListFiles(ASSETS, assetFiles);
 
 	for (auto& file : assetFiles)
 	{
@@ -877,7 +903,7 @@ void ModuleResourceManager::CleanUnusedMetaFiles() const
 
 	// Get lists with all resource files in library
 	std::set<std::string> libraryFiles;
-	App->fsystem->ListFilesWithExtension(LIBRARY, libraryFiles);
+	App->fsystem->ListFiles(LIBRARY, libraryFiles);
 
 	for (auto& file : libraryFiles)
 	{
@@ -896,7 +922,7 @@ void ModuleResourceManager::CleanUnusedExportedFiles() const
 {
 	// Get lists with all imported files
 	std::set<std::string> importedFiles;
-	App->fsystem->ListFilesWithExtension(LIBRARY, importedFiles);
+	App->fsystem->ListFiles(LIBRARY, importedFiles);
 
 	for (auto& file : importedFiles)
 	{
