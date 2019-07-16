@@ -859,11 +859,27 @@ unsigned ModuleResourceManager::GetUIDFromMeta(const char* metaFile, FILETYPE fi
 
 void ModuleResourceManager::CleanUnusedMetaFiles() const
 {
-	// Get lists with all assets
+	// Get lists with all resource files assets
 	std::set<std::string> assetFiles;
 	App->fsystem->ListFilesWithExtension(ASSETS, assetFiles);
 
 	for (auto& file : assetFiles)
+	{
+		if (HashString(App->fsystem->GetExtension(file).c_str()) == HashString(METAEXT))
+		{
+			std::string fileAssignedToMeta = App->fsystem->RemoveExtension(file);
+			if (!App->fsystem->Exists(fileAssignedToMeta.c_str()))
+			{
+				App->fsystem->Delete(file.c_str());
+			}
+		}
+	}
+
+	// Get lists with all resource files in library
+	std::set<std::string> libraryFiles;
+	App->fsystem->ListFilesWithExtension(LIBRARY, libraryFiles);
+
+	for (auto& file : libraryFiles)
 	{
 		if (HashString(App->fsystem->GetExtension(file).c_str()) == HashString(METAEXT))
 		{
@@ -884,9 +900,13 @@ void ModuleResourceManager::CleanUnusedExportedFiles() const
 
 	for (auto& file : importedFiles)
 	{
-		if (!App->resManager->Exists(file.c_str()))
+		// Exclude metas
+		if (HashString(App->fsystem->GetExtension(file).c_str()) != HashString(METAEXT))
 		{
-			App->fsystem->Delete(file.c_str());
+			if (!App->resManager->Exists(file.c_str()))
+			{
+				App->fsystem->Delete(file.c_str());
+			}
 		}
 	}
 }
