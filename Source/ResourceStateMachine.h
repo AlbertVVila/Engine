@@ -23,6 +23,7 @@ public:
 	void Delete() override;
 	void SaveMetafile(const char* file) const override;
 	void LoadConfigFromMeta() override;
+	void LoadConfigFromLibraryMeta() override;
 
 	unsigned GetStateMachineSize();
 	void SetStateMachine(const char* data);

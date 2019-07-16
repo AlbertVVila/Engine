@@ -97,6 +97,35 @@ void ResourceScene::LoadConfigFromMeta()
 	RELEASE(json);
 }
 
+void ResourceScene::LoadConfigFromLibraryMeta()
+{
+	std::string metaFile(exportedFile);
+	metaFile += ".meta";
+
+	// Check if meta file exists
+	if (!App->fsystem->Exists(metaFile.c_str()))
+		return;
+
+	char* data = nullptr;
+	unsigned oldUID = GetUID();
+
+	if (App->fsystem->Load(metaFile.c_str(), &data) == 0)
+	{
+		LOG("Warning: %s couldn't be loaded", metaFile.c_str());
+		RELEASE_ARRAY(data);
+		return;
+	}
+	JSON* json = new JSON(data);
+	JSON_value* value = json->GetValue("Scene");
+
+	// Get resource variables
+	name = value->GetString("Name");
+	file = value->GetString("File");
+
+	RELEASE_ARRAY(data);
+	RELEASE(json);
+}
+
 void ResourceScene::Save(const GameObject& rootGO, bool selected)
 {
 	JSON *json = new JSON();

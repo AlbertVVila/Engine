@@ -48,6 +48,7 @@ public:
 
 	void SaveMetafile(const char* file) const override;
 	void LoadConfigFromMeta() override {};
+	void LoadConfigFromLibraryMeta() override;
 
 	// Mesh specific
 	void LinkBones(GameObject* gameobject);

@@ -60,6 +60,7 @@ public:
 
 	virtual void SaveMetafile(const char* file) const;
 	virtual void LoadConfigFromMeta() {};
+	virtual void LoadConfigFromLibraryMeta() {};
 	virtual bool LoadInMemory() {return true;};
 	virtual bool ReloadInMemory();
 	virtual void DeleteFromMemory() { loaded = 0; };

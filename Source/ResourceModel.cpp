@@ -307,7 +307,7 @@ void ResourceModel::LoadConfigFromOlderMetaVersion()
 bool ResourceModel::CheckImportedMeshes()
 {
 	std::set<std::string> importedMeshes;
-	App->fsystem->ListFilesWithExtension(MESHES, importedMeshes);
+	App->fsystem->ListFiles(MESHES, importedMeshes);
 
 	for each(auto mesh in meshList)
 	{

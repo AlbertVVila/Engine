@@ -342,6 +342,53 @@ void ResourceTexture::LoadConfigFromMeta()
 	RELEASE(json);
 }
 
+void ResourceTexture::LoadConfigFromLibraryMeta()
+{
+	std::string metaFile(exportedFile);
+	metaFile += ".meta";
+
+	// Check if meta file exists
+	if (!App->fsystem->Exists(metaFile.c_str()))
+		return;
+
+	char* data = nullptr;
+	unsigned oldUID = GetUID();
+
+	if (App->fsystem->Load(metaFile.c_str(), &data) == 0)
+	{
+		LOG("Warning: %s couldn't be loaded", metaFile.c_str());
+		RELEASE_ARRAY(data);
+		return;
+	}
+	JSON* json = new JSON(data);
+	JSON_value* value = json->GetValue("Texture");
+
+	dxtFormat = (DXT)value->GetInt("DX compresion");
+
+	switch (dxtFormat)
+	{
+	case DXT::DXT1:	compression = 0; break;
+		//case DXT::DXT2:	compression = 1; break;
+	case DXT::DXT3:	compression = 1; break;
+		//case DXT::DXT4:	compression = 3; break;
+	case DXT::DXT5:	compression = 2; break;
+		//case DXT::DXT_NO_COMP:	compression = 5; break;
+		//case DXT::KEEP_DXTC_DATA:	compression = 3; break;
+		//case DXT::DXTC_DATA_FORMAT:	compression = 4; break;
+	case DXT::THREE_DC:	compression = 3; break;
+	case DXT::RXGB:	compression = 4; break;
+	case DXT::ATI1N:	compression = 5; break;
+	case DXT::DXT1A:	compression = 6; break;
+	}
+
+	// Get resource variables
+	name = value->GetString("Name");
+	file = value->GetString("File");
+
+	RELEASE_ARRAY(data);
+	RELEASE(json);
+}
+
 void ResourceTexture::DrawImportConfiguration()
 {
 	const char* compressionTypes[] = { "DXT1", /*"DXT2",*/ "DXT3", /*"DXT4",*/ "DXT5", /*"DXT_NO_COMP", "KEEP_DXTC_DATA", "DXTC_DATA_FORMAT",*/ "THREE_DC", "RXGB", "ATI1N", "DXT1A" };
