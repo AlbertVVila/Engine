@@ -94,19 +94,6 @@ void PlayerStateWalkToHitEnemy::Update()
 			return;
 		}
 	}
-	//maybe we need to check if still clicking on the enemy
-	/*
-	if (player->App->input->GetMouseButtonDown(1) == KEY_DOWN 
-		|| player->App->input->GetMouseButtonDown(1) == KEY_REPEAT)
-	{
-		
-		
-	}
-	else if (player->App->input->GetMouseButtonDown(1) == KEY_REPEAT)
-	{
-		moveTimer += player->App->time->gameDeltaTime;
-	}*/
-
 	if (path.size() > 0)
 	{
 		math::float3 currentPosition = player->gameobject->transform->GetPosition();

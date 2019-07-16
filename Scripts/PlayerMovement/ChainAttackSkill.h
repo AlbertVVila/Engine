@@ -19,7 +19,7 @@ public:
 	void NextChainAttack();
 
 public:
-	static const float3 attackingBoxSize;
+	static const math::float3 attackingBoxSize;
 
 protected:
 	void UseSkill() override;

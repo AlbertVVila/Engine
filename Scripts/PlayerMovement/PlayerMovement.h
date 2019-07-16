@@ -30,6 +30,8 @@ struct ImGuiContext;
 #define HUB_BUTTON_E 7
 #define HUB_BUTTON_R 8
 
+#define NUMBER_OF_PLAYERSTATES 6
+
 #define MAX_BOMB_DROP_SCALE 200.f
 #define MAX_BOMB_DROP_WAVE_SCALE 240.f
 #define BOMB_DROP_ROT 2.5f

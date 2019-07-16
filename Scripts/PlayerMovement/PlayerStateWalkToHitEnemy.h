@@ -6,7 +6,7 @@
 class PlayerStateWalkToHitEnemy :	public PlayerState
 {
 public:
-	PlayerStateWalkToHitEnemy(PlayerMovement * PM, const char * trigger);
+	PlayerStateWalkToHitEnemy(PlayerMovement* PM, const char* trigger);
 	~PlayerStateWalkToHitEnemy();
 
 	void Update() override;
@@ -16,7 +16,7 @@ public:
 public:
 	float duration = 1.5f;
 	std::vector<float3>path;
-	unsigned pathIndex = 0;
+	unsigned pathIndex = 0u;
 	GameObject* dustParticles = nullptr;
 	GameObject* walkingEnemyTargeted = nullptr;
 

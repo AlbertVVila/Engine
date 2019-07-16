@@ -189,7 +189,7 @@ void PlayerMovement::Expose(ImGuiContext* context)
 
 void PlayerMovement::CreatePlayerStates()
 {
-	playerStates.reserve(6);
+	playerStates.reserve(NUMBER_OF_PLAYERSTATES);
 
 	playerStates.push_back(walk = new PlayerStateWalk(this, "Walk"));
 	playerStates.push_back(walkToHit = new PlayerStateWalkToHitEnemy(this, "Walk"));
