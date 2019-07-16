@@ -164,7 +164,8 @@ void EnemyControllerScript::Update()
 			myRender->highlighted = true;
 
 		//we need to keep track of current targeted enemy
-		App->scene->enemyHovered = gameobject;
+		App->scene->enemyHovered.object = gameobject;
+		App->scene->enemyHovered.health = actualHealth;
 	}
 	else
 	{
@@ -173,10 +174,11 @@ void EnemyControllerScript::Update()
 			myRender->highlighted = false;
 
 			//if this is the enemy that was being targeted, we untarget it from the scene
-			if (App->scene->enemyHovered != nullptr &&
-				gameobject->UUID == App->scene->enemyHovered->UUID)
+			if (App->scene->enemyHovered.object != nullptr &&
+				gameobject->UUID == App->scene->enemyHovered.object->UUID)
 			{
-				App->scene->enemyHovered = nullptr;
+				App->scene->enemyHovered.object = nullptr;
+				App->scene->enemyHovered.health = 0;
 			}
 		}
 	}

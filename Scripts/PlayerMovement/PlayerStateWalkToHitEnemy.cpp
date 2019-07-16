@@ -38,11 +38,11 @@ PlayerStateWalkToHitEnemy::~PlayerStateWalkToHitEnemy()
 void PlayerStateWalkToHitEnemy::Update()
 {
 	//enemy targeting check
-	if (walkingEnemyTargeted == nullptr || (player->App->scene->enemyHovered != nullptr && player->App->scene->enemyHovered != walkingEnemyTargeted))
+	if (walkingEnemyTargeted == nullptr || (player->App->scene->enemyHovered.object != nullptr && player->App->scene->enemyHovered.object != walkingEnemyTargeted))
 	{
-		if (player->App->scene->enemyHovered != nullptr)
+		if (player->App->scene->enemyHovered.object != nullptr)
 		{
-			walkingEnemyTargeted = player->App->scene->enemyHovered;
+			walkingEnemyTargeted = player->App->scene->enemyHovered.object;
 			enemyPosition = walkingEnemyTargeted->transform->position;
 			math::float3 correctionPos(player->basicAttackRange, player->OutOfMeshCorrectionY, player->basicAttackRange);
 			if (player->App->navigation->FindPath(player->gameobject->transform->position, enemyPosition,

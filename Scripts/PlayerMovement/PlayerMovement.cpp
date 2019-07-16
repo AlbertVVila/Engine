@@ -992,13 +992,18 @@ bool PlayerMovement::IsAttacking() const
 	//taking advantage of the lazy evaluation
 	//checking if there's any enemy targeted, really easy since its stored on a pointer
 	//then checking mouse buttons
-	float Dist = 9999.f;
-	if (App->scene->enemyHovered != nullptr)
+	float Dist = floatMax;
+	if (App->scene->enemyHovered.object != nullptr)
 	{
-		Dist = Distance(gameobject->transform->position, App->scene->enemyHovered->transform->position);
+		//stop if dead
+		if (App->scene->enemyHovered.health <= 0)
+		{
+			return false;
+		}
+		Dist = Distance(gameobject->transform->position, App->scene->enemyHovered.object->transform->position);
 	}
 	//and finally if enemy is on attack range
-	if(App->scene->enemyHovered != nullptr &&
+	if(App->scene->enemyHovered.object != nullptr &&
 		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(false, true) ||
 		App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(false, true)) && 
 		 Dist <= basicAttackRange)
@@ -1011,10 +1016,11 @@ bool PlayerMovement::IsAttacking() const
 bool PlayerMovement::IsMovingToAttack() const
 {
 
-	if (App->scene->enemyHovered != nullptr && !App->input->IsKeyPressed(SDL_SCANCODE_LSHIFT) == KEY_DOWN &&
+	if (App->scene->enemyHovered.object != nullptr && App->scene->enemyHovered.health > 0 &&
+		!App->input->IsKeyPressed(SDL_SCANCODE_LSHIFT) == KEY_DOWN &&
 		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(false, true) ||
 			App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(false, true)) &&
-		Distance(gameobject->transform->position, App->scene->enemyHovered->transform->position) > basicAttackRange	)
+		Distance(gameobject->transform->position, App->scene->enemyHovered.object->transform->position) > basicAttackRange	)
 	{
 		return true;
 	}

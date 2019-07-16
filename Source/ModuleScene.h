@@ -161,7 +161,13 @@ public:
 	std::string stateAfterLoad = "None";
 
 	//variable that tells us if an enemy is hovered
-	GameObject* enemyHovered = nullptr;
+	struct enemyInfo
+	{
+		GameObject* object = nullptr;
+		int health = 0;
+	};
+	enemyInfo enemyHovered;
+	
 };
 
 
