@@ -20,15 +20,15 @@ struct ImGuiContext;
 #define PlayerMovement_API __declspec(dllimport)
 #endif
 
-#define HUB_BUTTON_RC 0
-#define HUB_BUTTON_1 1
-#define HUB_BUTTON_2 2
-#define HUB_BUTTON_3 3
-#define HUB_BUTTON_4 4
-#define HUB_BUTTON_Q 5
-#define HUB_BUTTON_W 6
-#define HUB_BUTTON_E 7
-#define HUB_BUTTON_R 8
+#define HUD_BUTTON_RC 0
+#define HUD_BUTTON_1 1
+#define HUD_BUTTON_2 2
+#define HUD_BUTTON_3 3
+#define HUD_BUTTON_4 4
+#define HUD_BUTTON_Q 5
+#define HUD_BUTTON_W 6
+#define HUD_BUTTON_E 7
+#define HUD_BUTTON_R 8
 
 #define MAX_BOMB_DROP_SCALE 200.f
 #define MAX_BOMB_DROP_WAVE_SCALE 240.f
@@ -184,6 +184,7 @@ public:
 	void CheckSkillsInput();
 	void ResetCooldown(unsigned int hubButtonID);
 	void UseSkill(SkillType skill);
+	void AssignSkill(SkillType skill, int position);
 
 	void SavePlayerStats();
 
@@ -192,7 +193,7 @@ private:
 	void CreatePlayerStates();
 	void ManaManagement();
 
-	void ActivateHudCooldownMask(bool activate, unsigned first = HUB_BUTTON_Q, unsigned last = HUB_BUTTON_4);
+	void ActivateHudCooldownMask(bool activate, unsigned first = HUD_BUTTON_Q, unsigned last = HUD_BUTTON_4);
 
 	// Skills
 	void CreatePlayerSkills();
