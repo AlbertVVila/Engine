@@ -302,6 +302,36 @@ void ModuleFileSystem::ListFileNames(const char* dir, std::set<std::string>& fil
 	}
 }
 
+void ModuleFileSystem::ListFileNamesExcludingExtension(const char* dir, std::set<std::string>& files, const char* extensionToExclude)
+{
+	files.clear();
+	std::vector<std::string> foundFiles;
+	std::stack<std::string> folderStack;
+	folderStack.push(dir);
+	std::string currentFolder;
+	while (!folderStack.empty())
+	{
+		currentFolder = folderStack.top();
+		folderStack.pop();
+
+		foundFiles = GetFolderContent(currentFolder.c_str());
+		for (auto& file : foundFiles)
+		{
+			std::string filefolder(currentFolder);
+			filefolder += file;
+			if (IsDirectory((currentFolder + file).c_str()))
+			{
+				folderStack.push(dir + file + "/");
+			}
+			else
+			{
+				if (HashString(GetExtension(file).c_str()) != HashString(extensionToExclude))
+					files.insert(RemoveExtension(file));
+			}
+		}
+	}
+}
+
 void ModuleFileSystem::ListFilesWithExtension(const char* dir, std::set<std::string>& files)
 {
 	files.clear();
@@ -447,7 +477,7 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 
 	// Get lists with all imported resources and materials
 	std::set<std::string> importedResources;
-	ListFileNames(LIBRARY, importedResources);
+	ListFileNamesExcludingExtension(LIBRARY, importedResources,METAEXT);
 
 	// Look for files in folder passed as argument
 	std::vector<std::string> files;
