@@ -152,8 +152,9 @@ void EquipPopupController::Assign(int i)
 		hudButtons[activeButton]->gameobject->children.front()->GetComponent<ComponentImage>()->UpdateTexture(skillsList[i].spriteActive->GetName());
 		auto it1 = std::next(hudButtons[activeButton]->gameobject->children.begin(), 1);
 		(*it1)->SetActive(true);	
-		//TODO: Pass info to player
-		player->AssignSkill((SkillType)skillsList[i].id, activeButton);
+
+		if (activeButton != 0)
+			player->AssignSkill((SkillType)skillsList[i].id, activeButton);
 		
 	}
 	else
@@ -259,17 +260,19 @@ void EquipPopupController::FillItemSlots()
 
 void EquipPopupController::CleanButton()
 {
-	//TODO: Avisar al player
 	auto it1 = std::next(hudButtons[activeButton]->gameobject->children.begin(), 1);
 	(*it1)->SetActive(false);
+
+	if (activeButton != 0)
+	player->AssignSkill(SkillType::NONE, activeButton);
 
 	RemoveEquiped();
 
 	switch (activeButton)
 	{
 	case 0:
-		hudButtons[activeButton]->UpdateImageByName("RC");
-		hudButtons[activeButton]->gameobject->children.front()->GetComponent<ComponentImage>()->UpdateTexture("RC");
+		hudButtons[activeButton]->UpdateImageByName("Right_clic");
+		hudButtons[activeButton]->gameobject->children.front()->GetComponent<ComponentImage>()->UpdateTexture("Right_clic");
 		break;
 	case 1:
 		hudButtons[activeButton]->UpdateImageByName("1");

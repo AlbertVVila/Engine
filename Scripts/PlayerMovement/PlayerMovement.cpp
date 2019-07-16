@@ -68,14 +68,14 @@ PlayerMovement::PlayerMovement()
 
 	// Default ability keyboard allocation
 	assignedSkills[HUD_BUTTON_RC] = SkillType::CHAIN;
-	assignedSkills[HUD_BUTTON_1] = SkillType::CIRCULAR;
-	assignedSkills[HUD_BUTTON_2] = SkillType::CIRCULAR;
-	assignedSkills[HUD_BUTTON_3] = SkillType::CIRCULAR;
-	assignedSkills[HUD_BUTTON_4] = SkillType::CIRCULAR;
-	assignedSkills[HUD_BUTTON_Q] = SkillType::CIRCULAR;
-	assignedSkills[HUD_BUTTON_W] = SkillType::CIRCULAR;
-	assignedSkills[HUD_BUTTON_E] = SkillType::CIRCULAR;
-	assignedSkills[HUD_BUTTON_R] = SkillType::CIRCULAR;
+	assignedSkills[HUD_BUTTON_1] = SkillType::NONE;
+	assignedSkills[HUD_BUTTON_2] = SkillType::NONE;
+	assignedSkills[HUD_BUTTON_3] = SkillType::NONE;
+	assignedSkills[HUD_BUTTON_4] = SkillType::NONE;
+	assignedSkills[HUD_BUTTON_Q] = SkillType::NONE;
+	assignedSkills[HUD_BUTTON_W] = SkillType::NONE;
+	assignedSkills[HUD_BUTTON_E] = SkillType::NONE;
+	assignedSkills[HUD_BUTTON_R] = SkillType::NONE;
 }
 
 PlayerMovement::~PlayerMovement()
@@ -606,6 +606,15 @@ void PlayerMovement::Start()
 	{
 		stats.strength = PlayerPrefs::GetFloat("strength");
 	}
+	assignedSkills[HUD_BUTTON_RC] = (SkillType)PlayerPrefs::GetInt("RC", 10);
+	assignedSkills[HUD_BUTTON_1] = (SkillType)PlayerPrefs::GetInt("1", 20);
+	assignedSkills[HUD_BUTTON_2] = (SkillType)PlayerPrefs::GetInt("2", 20);
+	assignedSkills[HUD_BUTTON_3] = (SkillType)PlayerPrefs::GetInt("3", 20);
+	assignedSkills[HUD_BUTTON_4] = (SkillType)PlayerPrefs::GetInt("4", 20);
+	assignedSkills[HUD_BUTTON_Q] = (SkillType)PlayerPrefs::GetInt("Q", 20);
+	assignedSkills[HUD_BUTTON_W] = (SkillType)PlayerPrefs::GetInt("W", 20);
+	assignedSkills[HUD_BUTTON_E] = (SkillType)PlayerPrefs::GetInt("E", 20);
+	assignedSkills[HUD_BUTTON_R] = (SkillType)PlayerPrefs::GetInt("R", 20);
 	
 	InitializeUIStatsObjects();
 	LOG("Started player movement script");
@@ -1264,4 +1273,13 @@ void PlayerMovement::SavePlayerStats()
 	PlayerPrefs::SetFloat("mana", stats.mana);
 	PlayerPrefs::SetFloat("manaRegen", stats.manaRegen);
 	PlayerPrefs::SetFloat("strength", stats.strength);
+	PlayerPrefs::SetInt("RC", (int)assignedSkills[HUD_BUTTON_RC]);
+	PlayerPrefs::SetInt("1", (int)assignedSkills[HUD_BUTTON_1]);
+	PlayerPrefs::SetInt("2", (int)assignedSkills[HUD_BUTTON_1]);
+	PlayerPrefs::SetInt("3", (int)assignedSkills[HUD_BUTTON_1]);
+	PlayerPrefs::SetInt("4", (int)assignedSkills[HUD_BUTTON_1]);
+	PlayerPrefs::SetInt("Q", (int)assignedSkills[HUD_BUTTON_Q]);
+	PlayerPrefs::SetInt("W", (int)assignedSkills[HUD_BUTTON_W]);
+	PlayerPrefs::SetInt("E", (int)assignedSkills[HUD_BUTTON_E]);
+	PlayerPrefs::SetInt("R", (int)assignedSkills[HUD_BUTTON_R]);
 }

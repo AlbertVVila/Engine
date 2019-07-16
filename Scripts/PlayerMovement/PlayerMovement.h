@@ -68,14 +68,14 @@ class RainSkill;
 
 enum class PlayerMovement_API SkillType
 {
-	NONE = 0,
-	CHAIN,
 	DASH,
-	SLICE,
-	BOMB_DROP,
 	CIRCULAR,
+	BOMB_DROP,
+	SLICE,
+	RAIN,
 	STOMP,
-	RAIN
+	CHAIN = 10,
+	NONE = 20
 };
 
 struct PlayerMovement_API PlayerSkill
