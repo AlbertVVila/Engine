@@ -183,10 +183,10 @@ void ResourceModel::LoadConfigFromMeta()
 		mesh->SetFile(file.c_str());
 
 		// Set Exported File
-		std::string exportedMeshFile((MESHES + std::to_string(mesh->GetUID()) + MESHEXTENSION));
+		std::string exportedMeshFile(meshValue->GetString("ExportedFile"));
 		mesh->SetExportedFile(exportedMeshFile.c_str());
 
-		mesh->SetName((name + "_" + std::to_string(i)).c_str());
+		mesh->SetName(meshValue->GetString("Name"));
 
 		// Check the meta saved in library, if not save it
 		if (!App->fsystem->Exists((exportedMeshFile + METAEXT).c_str()))
@@ -206,10 +206,10 @@ void ResourceModel::LoadConfigFromMeta()
 		anim->SetFile(file.c_str());
 
 		// Set Exported File
-		std::string exportedAnimFile((IMPORTED_ANIMATIONS + std::to_string(anim->GetUID()) + ANIMATIONEXTENSION));
+		std::string exportedAnimFile(animationValue->GetString("ExportedFile"));
 		anim->SetExportedFile(exportedAnimFile.c_str());
 
-		anim->SetName((name + "_" + std::to_string(i)).c_str());
+		anim->SetName(animationValue->GetString("Name"));
 
 		// Check the meta saved in library, if not save it
 		if (!App->fsystem->Exists((exportedAnimFile + METAEXT).c_str()))
