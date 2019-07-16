@@ -784,6 +784,7 @@ Resource* ModuleResourceManager::AddResource(const char* file, const char* direc
 		case TYPE::MATERIAL:	exportedFile = IMPORTED_MATERIALS		+ std::to_string(uid) + MATERIALEXT;			break;
 		case TYPE::ANIMATION:	exportedFile = IMPORTED_ANIMATIONS		+ std::to_string(uid) + ANIMATIONEXTENSION;		break;
 		case TYPE::STATEMACHINE:exportedFile = IMPORTED_STATEMACHINES	+ std::to_string(uid) + STATEMACHINEEXTENSION;	break;
+		case TYPE::PREFAB:		exportedFile = IMPORTED_PREFABS			+ std::to_string(uid) + PREFABEXTENSION;		break;
 		default:
 			break;
 			}

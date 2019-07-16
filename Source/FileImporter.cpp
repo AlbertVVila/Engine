@@ -141,7 +141,7 @@ bool FileImporter::ImportPrefab(const char * file, const char * folder, Resource
 
 bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const char* folder, ResourceModel* resource)
 {
-		GameObject* sceneGO = App->scene->CreateGameObject("Scene", App->scene->root);
+	GameObject* sceneGO = App->scene->CreateGameObject("Scene", App->scene->root);
 	sceneGO->CreateComponent(ComponentType::Transform); // To move all around
 
 	std::stack<aiNode*> stackNode;

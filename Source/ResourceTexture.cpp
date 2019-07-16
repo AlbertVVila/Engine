@@ -334,6 +334,10 @@ void ResourceTexture::LoadConfigFromMeta()
 	if (value->GetUint("metaVersion", 0u) < META_VERSION)
 		SaveMetafile(file.c_str());
 
+	// Check the meta saved in library, if not save it
+	if (!App->fsystem->Exists((exportedFile + METAEXT).c_str()))
+		SaveMetafile(file.c_str());
+
 	RELEASE_ARRAY(data);
 	RELEASE(json);
 }

@@ -86,9 +86,15 @@ void ResourcePrefab::SaveMetafile(const char * file) const
 
 void ResourcePrefab::LoadConfigFromMeta()
 {
-	char* data = nullptr;
 	std::string metaFile(file);
 	metaFile += ".meta";
+
+	// Check if meta file exists
+	if (!App->fsystem->Exists(metaFile.c_str()))
+		return;
+
+	char* data = nullptr;
+	unsigned oldUID = GetUID();
 
 	if (App->fsystem->Load(metaFile.c_str(), &data) == 0)
 	{
@@ -98,10 +104,23 @@ void ResourcePrefab::LoadConfigFromMeta()
 	}
 	JSON* json = new JSON(data);
 	JSON_value* value = json->GetValue("Prefab");
-	UID = value->GetUint("GUID");
+
+	// Make sure the UID from meta is the same
+	unsigned checkUID = value->GetUint("GUID");
+	if (oldUID != checkUID)
+	{
+		UID = checkUID;
+		// Update resource UID on resource list
+		App->resManager->ReplaceResource(oldUID, this);
+		exportedFile = IMPORTED_STATEMACHINES + std::to_string(UID) + STATEMACHINEEXTENSION;
+	}
 	
 	// Check the meta file version
 	if (value->GetUint("metaVersion", 0u) < META_VERSION)
+		SaveMetafile(file.c_str());
+
+	// Check the meta saved in library, if not save it
+	if (!App->fsystem->Exists((exportedFile + METAEXT).c_str()))
 		SaveMetafile(file.c_str());
 
 	RELEASE_ARRAY(data);
