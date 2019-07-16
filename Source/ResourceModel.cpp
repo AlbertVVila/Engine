@@ -107,7 +107,7 @@ void ResourceModel::SaveMetafile(const char* file) const
 		json->AddValue(("Animation" + std::to_string(i)).c_str(), *animMeta);
 
 		// Save meta in Library
-		animationList[i]->SaveMetafile(animationList[i]->GetFile());
+		animationList[i]->SaveMetafile(file);
 		//RELEASE(animMeta);
 	}
 
@@ -138,6 +138,7 @@ void ResourceModel::LoadConfigFromMeta()
 	}
 	JSON* json = new JSON(data);
 	JSON_value* modelValue = json->GetValue("Model");
+
 	if (modelValue == nullptr)
 	{
 		// Try with meta version 1 value
@@ -149,6 +150,8 @@ void ResourceModel::LoadConfigFromMeta()
 			return;
 		}
 	}
+
+	unsigned metaVersion = modelValue->GetUint("metaVersion", 0u);
 
 	numMeshes = modelValue->GetUint("NumMeshes");
 	std::string name = App->fsystem->GetFilename(file);
@@ -194,11 +197,20 @@ void ResourceModel::LoadConfigFromMeta()
 		meshList.push_back(mesh);
 	}
 
-	numAnimations = modelValue->GetUint("NumAnimations");
+	JSON_value* animationValue = nullptr;
+	if (metaVersion < META_VERSION)		// Old version
+	{
+		animationValue = json->GetValue("Animation");
+		numAnimations = animationValue->GetUint("NumAnimations");
+	}
+	else
+	{
+		numAnimations = modelValue->GetUint("NumAnimations");
+	}
 
 	for (int i = 0; i < numAnimations; ++i)
 	{
-		JSON_value* animationValue = json->GetValue(("Animation" + std::to_string(i)).c_str());
+		animationValue = json->GetValue(("Animation" + std::to_string(i)).c_str());
 
 		unsigned animUID = 0u;
 		if (animationValue != nullptr)
@@ -228,7 +240,7 @@ void ResourceModel::LoadConfigFromMeta()
 	}
 
 	// Check the meta file version
-	if (modelValue->GetUint("metaVersion", 0u) < META_VERSION)
+	if (metaVersion < META_VERSION)
 		SaveMetafile(file.c_str());
 
 	RELEASE_ARRAY(data);

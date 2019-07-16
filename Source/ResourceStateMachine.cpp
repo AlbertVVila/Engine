@@ -130,7 +130,10 @@ void ResourceStateMachine::LoadConfigFromMeta()
 	}
 	JSON* json = new JSON(data);
 	JSON_value* value = json->GetValue("StateMachine");
-	name = value->GetString("Name");
+	name = value->GetString("Name", "");
+
+	if(name.empty())	// Try old meta version
+		name = value->GetString("name");
 
 	// Make sure the UID from meta is the same
 	unsigned checkUID = value->GetUint("GUID");

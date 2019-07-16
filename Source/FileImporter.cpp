@@ -243,8 +243,16 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 		else
 		{
 			JSON *json = new JSON(metaData);
-			JSON_value* animValue = json->GetValue("Animation");
-			animation = (ResourceAnimation*)App->resManager->CreateNewResource(TYPE::ANIMATION, animValue->GetUint(("Animation" + std::to_string(i)).c_str()));
+			JSON_value* animValue = json->GetValue(("Animation" + std::to_string(i)).c_str());
+			if (animValue == nullptr)	// Try old meta version
+			{
+				JSON_value* animValue = json->GetValue("Animation");
+				animation = (ResourceAnimation*)App->resManager->CreateNewResource(TYPE::ANIMATION, animValue->GetUint(("Animation" + std::to_string(i)).c_str()));
+			}
+			else
+			{
+				animation = (ResourceAnimation*)App->resManager->CreateNewResource(TYPE::ANIMATION, animValue->GetUint("GUID"));
+			}	
 
 			// ResourceAniamtion was created on .meta of model load, now replace previous resource
 			App->resManager->ReplaceResource(animation->GetUID(), animation);
