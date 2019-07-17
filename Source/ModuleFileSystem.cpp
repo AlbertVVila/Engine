@@ -553,7 +553,7 @@ void ModuleFileSystem::CheckResourcesInFolder(const char* folder)
 				{
 					// Read UID from meta file and see if there is a exported file with that UID
 					uid = App->resManager->GetUIDFromMeta(metaFile.c_str(), type);
-					if (uid == 0)
+					if (uid == 0u)
 					{
 						import = true;
 					}
