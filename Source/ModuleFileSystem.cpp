@@ -434,15 +434,16 @@ bool ModuleFileSystem::Copy(const char* source, const char* destination, const c
 	return ret;
 }
 
-bool ModuleFileSystem::Copy(const char * source, const char* file, const char* dest, const char* newFile) const
+bool ModuleFileSystem::Copy(const char* source, const char* file, const char* dest, const char* newFile) const
 {
-	char * data = nullptr;
+	char* data = nullptr;
 	std::string filepath(source);
 	filepath += file;
 	unsigned size = Load(filepath.c_str(), &data);
+	if (size <= 0u) return false;
 	std::string filedest(dest);
 	filedest += newFile;
-	Save(filedest.c_str(), data, size);
+	bool ret = Save(filedest.c_str(), data, size);
 	RELEASE_ARRAY(data);
 
 	return true;
