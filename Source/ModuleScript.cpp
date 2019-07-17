@@ -420,7 +420,7 @@ void ModuleScript::SaveScript(Script* script)
 void ModuleScript::UpdateScript(std::string scriptName)
 {
 	hotJson = new JSON();
-	for (unsigned i = 0; i < componentsScript.size(); ++i)
+	for (unsigned i = 0u; i < componentsScript.size(); ++i)
 	{
 		if (componentsScript[i]->name == scriptName)
 		{
@@ -435,7 +435,7 @@ void ModuleScript::UpdateScript(std::string scriptName)
 	}
 	else //Reload All
 	{
-		for (unsigned i = 0; i < componentsScript.size(); ++i)
+		for (unsigned i = 0u; i < componentsScript.size(); ++i)
 		{
 			if (componentsScript[i]->name == scriptName) continue;
 			SaveScript(componentsScript[i]);
