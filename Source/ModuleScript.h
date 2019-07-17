@@ -40,7 +40,8 @@ public:
 	bool RemoveDLL(const std::string & name);
 
 private:
-	void CheckScripts();
+	void Monitorize();
+	void MonitorizeScripts();
 	void UpdateScript(std::string script);
 	void ReloadAll(std::string scriptName);
 	void HotSwap(std::string scriptName);
@@ -62,10 +63,13 @@ private:
 
 	typedef std::pair<JSON_value*, GameObject*> scriptProperties;
 	std::map<std::string, std::vector<scriptProperties>> scriptInfo;
-
+	JSON* hotJson = nullptr;
 	bool hotReloading = false;
-	bool hotSwapping = false;
+
+	std::string scriptToReload;
 	std::thread monitorThread;
+	bool monitorizing = true;
+	bool threadIsWorking = false;
 };
 
 #endif __ModuleScript_h__

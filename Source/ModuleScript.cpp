@@ -15,7 +15,9 @@
 #include <windows.h>
 #include <iostream>
 #include "JSON.h"
+#include "SDL_timer.h"
 
+#define MONITORIZE_TIME 1000
 typedef Script*(__cdecl *CreatePointer)();
 
 ModuleScript::ModuleScript()
@@ -39,14 +41,21 @@ bool ModuleScript::Init(JSON* config)
 	PlayerPrefs::Load();
 	SetDllDirectory(SCRIPTS);
 
-	CheckScripts();
+	MonitorizeScripts();
 
 	JSON_value* scriptJson = config->GetValue("scripts");
 	if (scriptJson == nullptr) return true;
 
 	hotReloading = scriptJson->GetInt("hotReloading");
-	//monitorThread = std::thread(&ModuleScript::CheckScripts, this);
-	//monitorThread.detach();
+
+#ifndef GAME_BUILD
+	if (hotReloading)
+	{
+		monitorThread = std::thread(&ModuleScript::Monitorize, this);
+		monitorThread.detach();
+	}
+#endif // !GAME_BUILD
+
 	//LoadFromMemory(IDR_DLL1);
 	return true;
 }
@@ -61,6 +70,13 @@ void ModuleScript::SaveConfig(JSON* config)
 
 bool ModuleScript::CleanUp()
 {
+#ifndef GAME_BUILD
+	monitorizing = false;
+	while (threadIsWorking)
+	{
+		SDL_Delay(100);
+	}
+#endif // !GAME_BUILD
 	PlayerPrefs::Save(); //Saves to Disk
 	PlayerPrefs::DeleteAll(); //Deletes All memory allocated
 	return true;
@@ -75,6 +91,11 @@ update_status ModuleScript::Update(float dt)
 			RemoveDLL(name);
 		}
 		dllRemoveList.clear();
+	}
+	if (!scriptToReload.empty())
+	{
+		UpdateScript(scriptToReload);
+		scriptToReload.clear();
 	}
 	if (App->time->gameState == GameState::RUN)
 	{
@@ -104,10 +125,6 @@ update_status ModuleScript::Update(float dt)
 		}
 	}
 
-	if (hotReloading)
-	{
-		CheckScripts();
-	}
 	if (!onStart && App->time->gameState == GameState::STOP)
 	{
 		ResetScriptFlags();
@@ -329,7 +346,18 @@ bool ModuleScript::RemoveDLL(const std::string& name)
 	return true;
 }
 
-void ModuleScript::CheckScripts() //HOT SWAP IF USED DLL
+void ModuleScript::Monitorize()
+{
+	while (monitorizing)
+	{
+		threadIsWorking = true;
+		MonitorizeScripts();
+		threadIsWorking = false;
+		SDL_Delay(MONITORIZE_TIME);
+	}
+}
+
+void ModuleScript::MonitorizeScripts() //HOT SWAP IF USED DLL
 {
 	std::vector<std::string> scriptFiles = App->fsystem->GetFolderContent(SCRIPTS, true);
 	std::map<std::string, int>::iterator it;
@@ -349,7 +377,7 @@ void ModuleScript::CheckScripts() //HOT SWAP IF USED DLL
 				LOG("Script %s updated", scriptName.c_str());
 				if (App->fsystem->GetExtension(scriptFile) == HOT)
 				{
-					UpdateScript(it->first);
+					scriptToReload = scriptName;
 				}
 			}
 		}
@@ -363,8 +391,7 @@ void ModuleScript::CheckScripts() //HOT SWAP IF USED DLL
 void ModuleScript::SaveScript(Script* script)
 {
 	std::string name = script->name;
-	JSON* json = new JSON(); //TODO: Leaks memory
-	JSON_value* value = json->CreateValue();
+	JSON_value* value = hotJson->CreateValue();
 	script->Serialize(value);
 
 	auto itInfo = scriptInfo.find(script->name);
@@ -392,6 +419,7 @@ void ModuleScript::SaveScript(Script* script)
 
 void ModuleScript::UpdateScript(std::string scriptName)
 {
+	hotJson = new JSON();
 	for (unsigned i = 0; i < componentsScript.size(); ++i)
 	{
 		if (componentsScript[i]->name == scriptName)
@@ -415,6 +443,7 @@ void ModuleScript::UpdateScript(std::string scriptName)
 		}
 		ReloadAll(scriptName);
 	}
+	RELEASE(hotJson);
 }
 
 void ModuleScript::ReloadAll(std::string scriptName)
