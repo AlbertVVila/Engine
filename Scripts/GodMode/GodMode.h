@@ -19,6 +19,10 @@ public:
 	void ClickedGodMode();
 	void SwitchLevel() const;
 	void AddExperience() const;
+	void InfiniteHealth() const;
+	void InfiniteMana() const;
+	void MaxStats() const;
+	void Exposure() const;
 	inline virtual GodMode* Clone() const
 	{
 		return new GodMode(*this);

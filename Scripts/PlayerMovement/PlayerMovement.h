@@ -184,7 +184,9 @@ public:
 	void ResetCooldown(unsigned int hubButtonID);
 	void UseSkill(SkillType skill);
 
-	void SetGodMode(bool active);
+	void ToggleMaxStats();
+	void ToggleInfiniteHealth();
+	void ToggleInfiniteMana();
 	void SavePlayerStats();
 
 private:
@@ -299,6 +301,10 @@ private:
 	float hubGeneralAbilityCooldown = 0.5F;
 	bool showAbilityCooldowns = true;
 	bool showItemCooldowns = true;
+
+	bool hasMaxStats = false;
+	bool hasInfiniteHealth = false;
+	bool hasInfiniteMana = false;
 };
 
 extern "C" PlayerMovement_API Script* CreateScript();

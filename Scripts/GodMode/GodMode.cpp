@@ -2,6 +2,7 @@
 
 #include "Application.h"
 #include "ModuleInput.h"
+#include "ModuleRender.h"
 #include "ModuleScene.h"
 #include "GameObject.h"
 #include "PlayerMovement/PlayerMovement.h"
@@ -24,22 +25,12 @@ void GodMode::Start()
 
 void GodMode::Update()
 {
-	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) != KEY_REPEAT) return;
-	ClickedGodMode();
-	if (isGod != wasGod)
-	{
-		wasGod = isGod;
-		if (playerGO != nullptr)
-		{
-			playerGO->GetComponent<PlayerMovement>()->SetGodMode(isGod);
-		}
-		else
-		{
-			LOG("Couldn't find player");
-		}
-	}
-	AddExperience();
 	SwitchLevel();
+	AddExperience();
+	InfiniteHealth();
+	InfiniteMana();
+	MaxStats();
+	Exposure();
 }
 
 void GodMode::Expose(ImGuiContext* context)
@@ -56,11 +47,11 @@ void GodMode::ClickedGodMode()
 void GodMode::SwitchLevel() const
 {
 	unsigned level = 1u;
-	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	{
 		level = 1u;
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+	else if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
 	{
 		level = 2u;
 	}
@@ -73,6 +64,45 @@ void GodMode::SwitchLevel() const
 
 void GodMode::AddExperience() const
 {
-	if (App->input->GetKey(SDL_SCANCODE_E) != KEY_DOWN) return;
+	if (App->input->GetKey(SDL_SCANCODE_F3) != KEY_DOWN) return;
 	xpGO->GetComponent<ExperienceController>()->AddXP(100.f);
+}
+
+void GodMode::InfiniteHealth() const
+{
+	if (App->input->GetKey(SDL_SCANCODE_F4) != KEY_DOWN) return;
+	if (playerGO != nullptr)
+	{
+		playerGO->GetComponent<PlayerMovement>()->ToggleInfiniteHealth();
+	}
+}
+
+void GodMode::InfiniteMana() const
+{
+	if (App->input->GetKey(SDL_SCANCODE_F5) != KEY_DOWN) return;
+	if (playerGO != nullptr)
+	{
+		playerGO->GetComponent<PlayerMovement>()->ToggleInfiniteMana();
+	}
+}
+
+void GodMode::MaxStats() const
+{
+	if (App->input->GetKey(SDL_SCANCODE_F6) != KEY_DOWN) return;
+	if (playerGO != nullptr)
+	{
+		playerGO->GetComponent<PlayerMovement>()->ToggleMaxStats();
+	}
+}
+
+void GodMode::Exposure() const
+{
+	if (App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
+	{
+		App->renderer->exposure += .2f;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
+	{
+		App->renderer->exposure -= .2f;
+	}
 }

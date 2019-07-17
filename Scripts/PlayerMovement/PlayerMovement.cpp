@@ -1155,22 +1155,45 @@ void PlayerMovement::InitializeUIStatsObjects()
 	}
 }
 
-void PlayerMovement::SetGodMode(bool active)
+void PlayerMovement::ToggleMaxStats()
 {
-	if (active)
+	if (hasMaxStats)
 	{
-		PlayerStats godStats = {400.f, 999.f, 999.f, 999.f, 999.9f, 999.9f};
-		previousStats = stats;
-		stats = godStats;
-		health = 10000.f;
-		mana = 10000.f;
+		stats = previousStats;
 	}
 	else
 	{
-		stats = previousStats;
-		health = 100.f;
-		mana = 100.f;
+		PlayerStats godStats = { 400.f, 999.f, 999.f, 999.f, 999.9f, 999.9f };
+		previousStats = stats;
+		stats = godStats;
 	}
+	hasMaxStats = !hasMaxStats;
+}
+
+void PlayerMovement::ToggleInfiniteHealth()
+{
+	if (hasInfiniteHealth)
+	{
+		health = 100.0f;
+	}
+	else
+	{
+		health = 100000.0f;
+	}
+	hasInfiniteHealth = !hasInfiniteHealth;
+}
+
+void PlayerMovement::ToggleInfiniteMana()
+{
+	if (hasInfiniteMana)
+	{
+		mana = 100.0f;
+	}
+	else
+	{
+		mana = 100000.0f;
+	}
+	hasInfiniteMana = !hasInfiniteMana;
 }
 
 void PlayerMovement::SavePlayerStats()
