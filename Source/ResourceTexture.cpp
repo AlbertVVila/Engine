@@ -102,7 +102,12 @@ bool ResourceTexture::LoadTexture()
 
 	ilGenImages(1, &imageID); 		// Generate the image ID
 	ilBindImage(imageID); 			// Bind the image
-	ILboolean success = ilLoadL(IL_DDS, data, size);
+
+	ILboolean success = 0;
+	if (dxtFormat == DXT::NO_COMPRESSION)
+		success = ilLoadL(IL_TYPE_UNKNOWN, data, size);
+	else
+		success = ilLoadL(IL_DDS, data, size);
 
 	if (success)
 	{
@@ -316,18 +321,19 @@ void ResourceTexture::LoadConfigFromMeta()
 
 	switch (dxtFormat)
 	{
-	case DXT::DXT1:	compression = 0; break;
-	//case DXT::DXT2:	compression = 1; break;
-	case DXT::DXT3:	compression = 1; break;
-	//case DXT::DXT4:	compression = 3; break;
-	case DXT::DXT5:	compression = 2; break;
-	//case DXT::DXT_NO_COMP:	compression = 5; break;
-	//case DXT::KEEP_DXTC_DATA:	compression = 3; break;
+	case DXT::DXT1:					compression = 0; break;
+	//case DXT::DXT2:				compression = 1; break;
+	case DXT::DXT3:					compression = 1; break;
+	//case DXT::DXT4:				compression = 3; break;
+	case DXT::DXT5:					compression = 2; break;
+	//case DXT::DXT_NO_COMP:		compression = 5; break;
+	//case DXT::KEEP_DXTC_DATA:		compression = 3; break;
 	//case DXT::DXTC_DATA_FORMAT:	compression = 4; break;
-	case DXT::THREE_DC:	compression = 3; break;
-	case DXT::RXGB:	compression = 4; break;
-	case DXT::ATI1N:	compression = 5; break;
-	case DXT::DXT1A:	compression = 6; break;
+	case DXT::THREE_DC:				compression = 3; break;
+	case DXT::RXGB:					compression = 4; break;
+	case DXT::ATI1N:				compression = 5; break;
+	case DXT::DXT1A:				compression = 6; break;
+	case DXT::NO_COMPRESSION:		compression = 7; break;
 	}
 
 	// Check the meta file version
@@ -367,18 +373,19 @@ void ResourceTexture::LoadConfigFromLibraryMeta()
 
 	switch (dxtFormat)
 	{
-	case DXT::DXT1:	compression = 0; break;
-		//case DXT::DXT2:	compression = 1; break;
-	case DXT::DXT3:	compression = 1; break;
-		//case DXT::DXT4:	compression = 3; break;
-	case DXT::DXT5:	compression = 2; break;
-		//case DXT::DXT_NO_COMP:	compression = 5; break;
-		//case DXT::KEEP_DXTC_DATA:	compression = 3; break;
+	case DXT::DXT1:						compression = 0; break;
+		//case DXT::DXT2:				compression = 1; break;
+	case DXT::DXT3:						compression = 1; break;
+		//case DXT::DXT4:				compression = 3; break;
+	case DXT::DXT5:						compression = 2; break;
+		//case DXT::DXT_NO_COMP:		compression = 5; break;
+		//case DXT::KEEP_DXTC_DATA:		compression = 3; break;
 		//case DXT::DXTC_DATA_FORMAT:	compression = 4; break;
-	case DXT::THREE_DC:	compression = 3; break;
-	case DXT::RXGB:	compression = 4; break;
-	case DXT::ATI1N:	compression = 5; break;
-	case DXT::DXT1A:	compression = 6; break;
+	case DXT::THREE_DC:					compression = 3; break;
+	case DXT::RXGB:						compression = 4; break;
+	case DXT::ATI1N:					compression = 5; break;
+	case DXT::DXT1A:					compression = 6; break;
+	case DXT::NO_COMPRESSION:			compression = 7; break;
 	}
 
 	// Get resource variables
@@ -391,7 +398,7 @@ void ResourceTexture::LoadConfigFromLibraryMeta()
 
 void ResourceTexture::DrawImportConfiguration()
 {
-	const char* compressionTypes[] = { "DXT1", /*"DXT2",*/ "DXT3", /*"DXT4",*/ "DXT5", /*"DXT_NO_COMP", "KEEP_DXTC_DATA", "DXTC_DATA_FORMAT",*/ "THREE_DC", "RXGB", "ATI1N", "DXT1A" };
+	const char* compressionTypes[] = { "DXT1", /*"DXT2",*/ "DXT3", /*"DXT4",*/ "DXT5", /*"DXT_NO_COMP", "KEEP_DXTC_DATA", "DXTC_DATA_FORMAT",*/ "THREE_DC", "RXGB", "ATI1N", "DXT1A", "NO_COMPRESSION" };
 	if (ImGui::Combo("Compression type", &compression, compressionTypes, IM_ARRAYSIZE(compressionTypes)))
 	{
 		switch (compression)
@@ -408,6 +415,7 @@ void ResourceTexture::DrawImportConfiguration()
 		case 4:	dxtFormat = DXT::RXGB; break;
 		case 5:	dxtFormat = DXT::ATI1N; break;
 		case 6:	dxtFormat = DXT::DXT1A; break;
+		case 7: dxtFormat = DXT::NO_COMPRESSION; break;
 		}
 	}
 }
