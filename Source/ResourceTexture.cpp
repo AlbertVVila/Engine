@@ -102,7 +102,12 @@ bool ResourceTexture::LoadTexture()
 
 	ilGenImages(1, &imageID); 		// Generate the image ID
 	ilBindImage(imageID); 			// Bind the image
-	ILboolean success = ilLoadL(IL_TYPE_UNKNOWN, data, size);
+
+	ILboolean success = 0;
+	if(dxtFormat == DXT::NO_COMPRESSION)
+		success = ilLoadL(IL_TYPE_UNKNOWN, data, size);
+	else
+		success = ilLoadL(IL_DDS, data, size);
 
 	if (success)
 	{
@@ -265,7 +270,7 @@ void ResourceTexture::SaveMetafile(const char* file) const
 	meta->AddUint("depth", depth);
 	meta->AddUint("mips", mips);
 	meta->AddUint("format", format);
-	meta->AddUint("DX compresion", ilGetInteger(IL_DXTC_FORMAT));
+	meta->AddUint("DX compresion", (unsigned)dxtFormat);
 	meta->AddUint("mipmap", ilGetInteger(IL_ACTIVE_MIPMAP));
 	json->AddValue("Texture", *meta);
 	filepath += METAEXT;
@@ -308,18 +313,19 @@ void ResourceTexture::LoadConfigFromMeta()
 
 	switch (dxtFormat)
 	{
-	case DXT::DXT1:	compression = 0; break;
-	//case DXT::DXT2:	compression = 1; break;
-	case DXT::DXT3:	compression = 1; break;
-	//case DXT::DXT4:	compression = 3; break;
-	case DXT::DXT5:	compression = 2; break;
+	case DXT::DXT1:				compression = 0; break;
+	//case DXT::DXT2:			compression = 1; break;
+	case DXT::DXT3:				compression = 1; break;
+	//case DXT::DXT4:			compression = 3; break;
+	case DXT::DXT5:				compression = 2; break;
 	//case DXT::DXT_NO_COMP:	compression = 5; break;
 	//case DXT::KEEP_DXTC_DATA:	compression = 3; break;
 	//case DXT::DXTC_DATA_FORMAT:	compression = 4; break;
-	case DXT::THREE_DC:	compression = 3; break;
-	case DXT::RXGB:	compression = 4; break;
-	case DXT::ATI1N:	compression = 5; break;
-	case DXT::DXT1A:	compression = 6; break;
+	case DXT::THREE_DC:			compression = 3; break;
+	case DXT::RXGB:				compression = 4; break;
+	case DXT::ATI1N:			compression = 5; break;
+	case DXT::DXT1A:			compression = 6; break;
+	case DXT::NO_COMPRESSION:	compression = 7; break;
 	}
 
 	RELEASE(json);

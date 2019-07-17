@@ -19,7 +19,7 @@ enum class DXT
 	RXGB = 0x070F,				// Working
 	ATI1N = 0x0710,				// Working
 	DXT1A = 0x0711,				// Working
-	NO_COMPRESSION = 0
+	NO_COMPRESSION = 0			// Our implementation
 };
 
 class ResourceTexture : public Resource
