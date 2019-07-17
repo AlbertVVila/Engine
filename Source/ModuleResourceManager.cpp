@@ -871,9 +871,10 @@ unsigned ModuleResourceManager::GetUIDFromMeta(const char* metaFile, FILETYPE fi
 	}
 	if (value != nullptr)
 	{
+		unsigned guid = value->GetUint("GUID");
 		RELEASE_ARRAY(data);
 		RELEASE(json);
-		return value->GetUint("GUID");
+		return guid;
 	}
 	else
 	{
