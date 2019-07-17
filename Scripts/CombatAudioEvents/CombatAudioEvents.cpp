@@ -107,7 +107,10 @@ void CombatAudioEvents::OnAnimationEvent(std::string name)
 {
 	if (name == "step")
 	{
+		float offset = randomOffset(0.2) - 0.1;
+		stepSound->SetPitch(0.7 + offset);
 		stepSound->Play();
+
 	}	
 	else if (name == "bomb_take_off")
 	{
@@ -119,10 +122,14 @@ void CombatAudioEvents::OnAnimationEvent(std::string name)
 	}
 	else if (name == "attack1")
 	{
+		float offset = randomOffset(0.2) - 0.1;
+		attack1->SetPitch(0.9 + offset);
 		attack1->Play();
 	}
 	else if (name == "attack2")
 	{
+		float offset = randomOffset(0.2) - 0.1;
+		attack2->SetPitch(0.9 + offset);
 		attack2->Play();
 	}
 	else if (name == "spin_attack")
@@ -133,6 +140,13 @@ void CombatAudioEvents::OnAnimationEvent(std::string name)
 	{
 		drill_attack->Play();
 	}
+}
+
+float CombatAudioEvents::randomOffset(float max)
+{
+	float random = rand() % (int)(max * 100);
+	return (float)random / 100.f;
+	
 }
 
 

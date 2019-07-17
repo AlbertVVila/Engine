@@ -28,6 +28,9 @@ public:
 	void Start() override;
 	void OnAnimationEvent(std::string name) override;
 
+private:
+	float randomOffset(float max);
+
 };
 
 extern "C" CombatAudioEvents_API Script* CreateScript();
