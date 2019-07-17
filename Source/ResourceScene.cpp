@@ -153,7 +153,10 @@ bool ResourceScene::Load()
 	JSON *json = new JSON(data);
 	JSON_value* gameobjectsJSON = json->GetValue("GameObjects");
 	std::map<unsigned, GameObject*> gameobjectsMap; //Necessary to assign parent-child efficiently
-	gameobjectsMap.insert(std::pair<unsigned, GameObject*>(App->scene->canvas->UUID, App->scene->canvas));
+	GameObject* sceneRoot = new GameObject("World", 0);
+	GameObject* sceneCanvas = new GameObject("Canvas", App->scene->canvas->UUID);
+	sceneCanvas->parentUUID = -1;
+	gameobjectsMap.insert(std::pair<unsigned, GameObject*>(App->scene->canvas->UUID, sceneCanvas));
 
 	std::list<ComponentRenderer*> renderers;
 
@@ -174,8 +177,8 @@ bool ResourceScene::Load()
 			}
 			else if (gameobject->parentUUID == 0)
 			{
-				gameobject->parent = App->scene->root;
-				gameobject->parent->children.push_back(gameobject);
+				gameobject->parent = sceneRoot;
+				sceneRoot->children.push_back(gameobject);
 			}
 
 			ComponentRenderer* renderer = nullptr;
@@ -187,10 +190,38 @@ bool ResourceScene::Load()
 		}
 	}
 
-	if (!App->scene->isCleared())
+	if (!App->scene->isCleared()) //Already a scene is loaded
 	{
 		//Recursive UID reassign
-		AssignNewUUID(App->scene->root, 0u);
+		AssignNewUUID(sceneRoot, 0u);
+		for (const auto& child : sceneRoot->children)
+		{
+			App->scene->root->children.emplace_back(child);
+			child->parent = App->scene->root;
+		}
+
+		AssignNewUUID(sceneCanvas, 1u);
+		for (const auto& child : sceneCanvas->children)
+		{
+			App->scene->canvas->children.emplace_back(child);
+			child->parent = App->scene->canvas;
+		}
+
+		sceneRoot->children.clear();
+		sceneCanvas->children.clear();
+		sceneRoot->CleanUp();
+		sceneCanvas->CleanUp();
+		RELEASE(sceneRoot);
+		RELEASE(sceneCanvas);
+	}
+	else
+	{
+		App->scene->root->CleanUp();
+		RELEASE(App->scene->root);
+		sceneCanvas->parent = sceneRoot;
+		sceneRoot->children.emplace_back(sceneCanvas);
+		App->scene->root = sceneRoot;
+		App->scene->canvas = sceneCanvas;
 	}
 
 	//Link Bones after all the hierarchy is imported
@@ -217,8 +248,7 @@ bool ResourceScene::Load()
 
 void ResourceScene::AssignNewUUID(GameObject* go, unsigned parentUID)
 {
-
-	if (go != App->scene->root && go != App->scene->canvas)
+	if (go->UUID != 0 && go->UUID != 1)
 	{
 		go->parentUUID = parentUID;
 		go->UUID = App->scene->GetNewUID();
