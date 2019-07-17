@@ -11,6 +11,7 @@
 #include "PlayerStateAttack.h"
 #include "PlayerStateIdle.h"
 #include "PlayerStateWalk.h"
+#include "PlayerStateWalkToHitEnemy.h"
 #include "PlayerStateDeath.h"
 #include "EnemyControllerScript.h"
 
@@ -188,9 +189,10 @@ void PlayerMovement::Expose(ImGuiContext* context)
 
 void PlayerMovement::CreatePlayerStates()
 {
-	playerStates.reserve(5);
+	playerStates.reserve(NUMBER_OF_PLAYERSTATES);
 
 	playerStates.push_back(walk = new PlayerStateWalk(this, "Walk"));
+	playerStates.push_back(walkToHit = new PlayerStateWalkToHitEnemy(this, "Walk"));
 	if (dustParticles == nullptr)
 	{
 		LOG("Dust Particles not found");
@@ -265,7 +267,7 @@ void PlayerMovement::CheckSkillsInput()
 
 	SkillType skillType = SkillType::NONE;
 
-	if (IsAtacking())
+	if (IsAttacking())
 	{
 		// If player is already using chain attack go to second animation
 		if (currentSkill == chain)
@@ -654,9 +656,11 @@ void PlayerMovement::Update()
 
 		// Skills
 		CheckSkillsInput();
-		if(currentSkill != nullptr)
+		if (currentSkill != nullptr)
+		{
 			currentSkill->Update();
-
+		}
+	
 		// States
 		currentState->UpdateTimer();
 		currentState->CheckInput();
@@ -985,17 +989,69 @@ void PlayerMovement::OnTriggerExit(GameObject* go)
 
 }
 
-bool PlayerMovement::IsAtacking() const
+bool PlayerMovement::IsAttacking() const
 {
-	return !App->ui->UIHovered(true,false) && App->input->GetMouseButtonDown(1) == KEY_DOWN; //Left button
+	//if shift is being pressed while mouse 1
+	if (App->input->IsKeyPressed(SDL_SCANCODE_LSHIFT) == KEY_DOWN && 
+			(App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(true, false) ||
+			App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(true, false)))
+	{
+		return true;
+	}
+	//taking advantage of the lazy evaluation
+	//checking if there's any enemy targeted, really easy since its stored on a pointer
+	//then checking mouse buttons
+	float Dist = floatMax;
+	if (App->scene->enemyHovered.object != nullptr)
+	{
+		//stop if dead
+		if (App->scene->enemyHovered.health <= 0)
+		{
+			return false;
+		}
+		Dist = Distance(gameobject->transform->position, App->scene->enemyHovered.object->transform->position);
+	}
+	//and finally if enemy is on attack range
+	if(App->scene->enemyHovered.object != nullptr &&
+		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(false, true) ||
+		App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(false, true)) && 
+		 Dist <= basicAttackRange)
+	{
+		return true;
+	}
+	return false;
+}
+
+bool PlayerMovement::IsMovingToAttack() const
+{
+
+	if (App->scene->enemyHovered.object != nullptr && App->scene->enemyHovered.health > 0 &&
+		!App->input->IsKeyPressed(SDL_SCANCODE_LSHIFT) == KEY_DOWN &&
+		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(false, true) ||
+			App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(false, true)) &&
+		Distance(gameobject->transform->position, App->scene->enemyHovered.object->transform->position) > basicAttackRange	)
+	{
+		return true;
+	}
+	return false;
 }
 
 bool PlayerMovement::IsMoving() const
 {
+	return (IsPressingMouse1() && !IsAttacking() && !IsMovingToAttack());
+}
+
+bool PlayerMovement::IsPressingMouse1() const
+{
 	math::float3 temp;
-	return ( (App->input->GetMouseButtonDown(3) == KEY_DOWN && !App->ui->UIHovered(false, true)) ||
-			 (currentState->playerWalking) || 
-			 (App->input->GetMouseButtonDown(3) == KEY_REPEAT && !App->ui->UIHovered(false, true) && !App->scene->Intersects("PlayerMesh", false, temp))); //right button, the player is still walking or movement button is pressed and can get close to mouse pos
+	return ((App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(false, true)) ||
+		(currentState->playerWalking && !currentState->playerWalkingToHit) ||
+		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(false, true) && !App->scene->Intersects("PlayerMesh", false, temp))); //right button, the player is still walking or movement button is pressed and can get close to mouse pos
+}
+
+bool PlayerMovement::IsUsingLeftClick() const
+{
+	return !App->ui->UIHovered(true, false) && App->input->GetMouseButtonDown(3) == KEY_DOWN; //Left button
 }
 
 bool PlayerMovement::IsUsingOne() const

@@ -82,6 +82,10 @@ void BombDropSkill::CheckInput()
 		{
 			player->currentState = (PlayerState*)player->attack;
 		}
+		else if (player->IsMovingToAttack())
+		{
+			player->currentState = (PlayerState*)player->walkToHit;
+		}
 		else if (player->IsMoving())
 		{
 			player->currentState = (PlayerState*)player->walk;
