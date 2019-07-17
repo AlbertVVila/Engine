@@ -55,7 +55,7 @@ void PlayerStateWalkToPickItem::Update()
 	if (player->itemClicked != nullptr)
 	{
 		itemPosition = player->itemClicked->gameobject->transform->position;
-		math::float3 correctionPos(0, player->OutOfMeshCorrectionY, 0);
+		math::float3 correctionPos(0.f, player->OutOfMeshCorrectionY, 0.f);
 		if (player->App->navigation->FindPath(player->gameobject->transform->position, itemPosition,
 			path, PathFindType::FOLLOW, correctionPos, defaultMaxDist, player->straightPathingDistance))
 		{
@@ -86,7 +86,7 @@ void PlayerStateWalkToPickItem::Update()
 				dustParticles->SetActive(true);
 			}
 		}
-		else if(currentPosition.Distance(itemPosition) < player->basicAttackRange/2)
+		else if(currentPosition.Distance(itemPosition) < player->basicAttackRange/2.f)
 		{
 			//done walking, get the item
 			player->itemClicked->pickedUpViaPlayer = true;
