@@ -5,6 +5,7 @@
 #define UV_AMOUNT 128
 #define INDEX_AMOUNT 65
 #define MAX_RADIUS 1000000.f
+
 #include "Component.h"
 #include "Math/float4.h"
 #include <vector>
@@ -15,6 +16,7 @@ class ComponentRenderer;
 
 class ComponentVolumetricLight : public Component
 {
+	friend class GameObject;
 public:
 	ComponentVolumetricLight(GameObject* gameobject);
 	ComponentVolumetricLight(const ComponentVolumetricLight &copy);
@@ -38,7 +40,7 @@ private:
 	int coneIndexes[INDEX_AMOUNT];
 	float circle1Radius = 1.0f;
 	float circle2Radius = 5.0f;
-	float lenght = 1.0f;
+	float length = 1.0f;
 
 	ResourceMesh* mesh = nullptr; //We keep a private mesh with the shape of the volumetric light
 	ComponentRenderer* renderer = nullptr;

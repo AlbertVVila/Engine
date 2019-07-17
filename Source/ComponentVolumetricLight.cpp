@@ -40,7 +40,11 @@ void ComponentVolumetricLight::DrawProperties()
 	ImGui::PushID(this);
 	if (ImGui::CollapsingHeader("Volumetric Light", ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		if (ImGui::DragFloat("Circle 1 radius", &circle1Radius, 1.f, 0.f, MAX_RADIUS) || ImGui::DragFloat("Circle 2 radius", &circle2Radius, 1.f, 0.f, MAX_RADIUS))
+		if (ImGui::DragFloat("Circle 1 radius", &circle1Radius, 1.f, 0.f, MAX_RADIUS)) 
+			UpdateMesh();
+		if (ImGui::DragFloat("Circle 2 radius", &circle2Radius, 1.f, 0.f, MAX_RADIUS))
+			UpdateMesh();
+		if (ImGui::DragFloat("Length", &length, 1.f, 0.f))
 			UpdateMesh();
 
 		renderer->DrawProperties();		
@@ -60,23 +64,25 @@ void ComponentVolumetricLight::UpdateMesh()
 {
 	int halfCone = VERT_AMOUNT / 2;
 	float cPoints[VERT_AMOUNT];
-	gameobject->bbox.SetNegativeInfinity();
+
+	unsigned yWatchDog = 1u;
+
 	for (int i = 0; i < halfCone; ++i)
 	{
 		cPoints[i] = conePoints[i] * circle1Radius;
-		cPoints[i + halfCone] = conePoints[i + halfCone] * circle2Radius;
-		if (i % 3 == 0)
-		{
-			gameobject->bbox.Enclose(math::float3(&cPoints[i]));
-			gameobject->bbox.Enclose(math::float3(&cPoints[i + halfCone]));
-		}
+		if (++yWatchDog % 3u != 0u)
+			cPoints[i + halfCone] = conePoints[i + halfCone] * circle2Radius;
+		else
+			cPoints[i + halfCone] = length;
 	}	
 	if (mesh)
 	{
 		RELEASE(mesh);
-		mesh = new ResourceMesh(VERT_AMOUNT, &conePoints[0], INDEX_AMOUNT, &coneIndexes[0], UV_AMOUNT, &coneUVs[0]);
 	}
+	mesh = new ResourceMesh(VERT_AMOUNT, &cPoints[0], INDEX_AMOUNT, &coneIndexes[0], UV_AMOUNT, &coneUVs[0]);
+	
 	renderer->mesh = mesh;
+	gameobject->UpdateBBox();	
 }
 
 void ComponentVolumetricLight::Init()
@@ -153,8 +159,8 @@ void ComponentVolumetricLight::Init()
 	{
 		coneUVs[i * 2u] = i / (float)(INDEX_AMOUNT - 1); //Circle1 s coord
 		coneUVs[(i * 2u) + 1u] = 1.f; //Circle1 t coord
-		coneUVs[(i * 2u) + 64u] = (float)(INDEX_AMOUNT - 1); //Circle2 s coord
-		coneUVs[(i * 2u) + 65u] = 0.f; //Circle1 t coord
+		coneUVs[(i * 2u) + INDEX_AMOUNT - 1] = (float)(INDEX_AMOUNT - 1); //Circle2 s coord
+		coneUVs[(i * 2u) + INDEX_AMOUNT] = 0.f; //Circle1 t coord
 	}
 
 	int halfIndex = INDEX_AMOUNT / 2;

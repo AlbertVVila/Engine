@@ -1010,6 +1010,14 @@ void GameObject::UpdateBBox()
 
 		bbox.TransformAsAABB(GetGlobalTransform());
 	}
+	ComponentVolumetricLight* volLight = (ComponentVolumetricLight*)GetComponentOld(ComponentType::VolumetricLight);
+	if (volLight != nullptr)
+	{
+		if (volLight->renderer->mesh != nullptr)
+			bbox = volLight->renderer->mesh->GetBoundingBox();
+
+		bbox.TransformAsAABB(GetGlobalTransform());
+	}
 }
 
 void GameObject::DrawBBox() const
@@ -1020,10 +1028,17 @@ void GameObject::DrawBBox() const
 	}
 
 	ComponentRenderer *renderer = (ComponentRenderer*)GetComponentOld(ComponentType::Renderer);
-	if (renderer == nullptr || renderer->mesh == nullptr) return;
+	if (renderer != nullptr && renderer->mesh != nullptr)
+	{
+		if (renderer->mesh->GetReferences() > 0u)
+			renderer->mesh->DrawBbox(App->program->defaultShader->id[0], bbox);
+	}
 
-	if (renderer->mesh->GetReferences() > 0u)
-		renderer->mesh->DrawBbox(App->program->defaultShader->id[0], bbox);
+	ComponentVolumetricLight* volLight = (ComponentVolumetricLight*)GetComponentOld(ComponentType::VolumetricLight);
+	if (volLight != nullptr && volLight->renderer && volLight->renderer->mesh)
+	{
+		volLight->renderer->mesh->DrawBbox(App->program->defaultShader->id[0], bbox);
+	}
 }
 
 bool GameObject::CleanUp()
