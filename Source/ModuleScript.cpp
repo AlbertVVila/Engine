@@ -330,7 +330,7 @@ bool ModuleScript::RemoveDLL(const std::string& name)
 		}
 		if (GetModuleHandle((name + DLL).c_str()) != 0)
 		{
-			LOG("DLL not freed properly");
+			LOG("DLL still in memory");
 			return false;
 		}
 		else
