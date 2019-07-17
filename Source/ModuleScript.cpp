@@ -41,11 +41,10 @@ bool ModuleScript::Init(JSON* config)
 
 	CheckScripts();
 
-	JSON_value* scriptInfo = config->GetValue("scripts");
-	if (scriptInfo == nullptr) return true;
+	JSON_value* scriptJson = config->GetValue("scripts");
+	if (scriptJson == nullptr) return true;
 
-	hotReloading = scriptInfo->GetInt("hotReloading");
-	
+	hotReloading = scriptJson->GetInt("hotReloading");
 	//monitorThread = std::thread(&ModuleScript::CheckScripts, this);
 	//monitorThread.detach();
 	//LoadFromMemory(IDR_DLL1);
@@ -54,10 +53,10 @@ bool ModuleScript::Init(JSON* config)
 
 void ModuleScript::SaveConfig(JSON* config)
 {
-	JSON_value* scriptInfo = config->CreateValue();
+	JSON_value* scriptJson = config->CreateValue();
 
-	scriptInfo->AddInt("hotReloading", hotReloading);
-	config->AddValue("scripts", *scriptInfo);
+	scriptJson->AddInt("hotReloading", hotReloading);
+	config->AddValue("scripts", *scriptJson);
 }
 
 bool ModuleScript::CleanUp()
@@ -175,13 +174,10 @@ Script* ModuleScript::GetScript(const std::string& name)
 		dll = itDll->second.first;
 		if (itDll->second.second == 0)
 		{
-			for (size_t i = 0; i < dllRemoveList.size(); i++)
+			std::set<std::string>::iterator itList = dllRemoveList.find(name);
+			if (itList != dllRemoveList.end())
 			{
-				if (name == dllRemoveList[i])
-				{
-					std::swap(dllRemoveList[i], dllRemoveList.back());
-					dllRemoveList.pop_back();
-				}
+				dllRemoveList.erase(itList);
 			}
 		}
 		itDll->second.second++;
@@ -192,7 +188,7 @@ Script* ModuleScript::GetScript(const std::string& name)
 		if (dll != nullptr)
 		{
 			loadedDLLs.insert(std::pair<std::string,
-				std::pair<HINSTANCE, int>>(name, std::pair<HINSTANCE, int>(dll, 1)));
+			std::pair<HINSTANCE, int>>(name, std::pair<HINSTANCE, int>(dll, 1)));
 		}
 		else
 		{
@@ -219,11 +215,18 @@ bool ModuleScript::RemoveScript(Script* script, const std::string& name)
 	std::map<std::string, std::pair<HINSTANCE,int>>::iterator itDll = loadedDLLs.find(name);
 	if (itDll != loadedDLLs.end())
 	{
-		componentsScript.remove(script);
+		for (auto it = componentsScript.begin(); it != componentsScript.end(); ++it)
+		{
+			if (*it == script)
+			{
+				componentsScript.erase(it);
+				break;
+			}
+		}
 		itDll->second.second--;
 		if(itDll->second.second == 0)
 		{
-			dllRemoveList.push_back(name);
+			dllRemoveList.insert(name);
 		}
 	}
 	else
@@ -234,21 +237,93 @@ bool ModuleScript::RemoveScript(Script* script, const std::string& name)
 	return true;
 }
 
+void ModuleScript::HotSwap(std::string scriptName)
+{
+	App->fsystem->Delete((SCRIPTS + scriptName + DLL).c_str()); //Deleted old DLL
+	App->fsystem->Rename(SCRIPTS, (scriptName + HOT).c_str(), scriptName.c_str(), DLL); //Changed name new DLL
+	HotReload(scriptName);
+	scriptInfo.clear();
+}
+
+void ModuleScript::HotReload(std::string scriptName, bool initialize) //TODO: unload properly all scripts on loading new scene
+{
+	HINSTANCE dll = LoadLibrary((scriptName + DLL).c_str());
+	if (dll != nullptr)
+	{
+		loadedDLLs.insert(std::pair<std::string,
+			std::pair<HINSTANCE, int>>(scriptName, std::pair<HINSTANCE, int>(dll, 1)));
+	}
+
+	assert(dll != nullptr);
+	CreatePointer Create = (CreatePointer)GetProcAddress(dll, "CreateScript");
+	assert(Create != nullptr);
+	if (Create != nullptr)
+	{
+		auto scripts = scriptInfo.find(scriptName);
+		if (scripts == scriptInfo.end()) return;
+
+		for (const auto& info : scripts->second)
+		{
+			Script* script = Create();
+			script->SetApp(App);
+			script->name = scriptName;
+			componentsScript.push_back(script);
+			script->DeSerialize(info.first);
+			script->SetGameObject(info.second);
+			info.second->components.push_back((Component*)script);
+
+			if (initialize)
+			{
+				InitializeScript(script);
+			}
+		}
+	}
+}
+
+void ModuleScript::InitializeScript(Script* script)
+{
+	if (script->gameobject->isActive())
+	{
+		script->Awake();
+		script->hasBeenAwoken = true;
+	}
+
+	if (script->enabled)
+	{
+		script->Start();
+		script->hasBeenStarted = true;
+	}
+}
+
 bool ModuleScript::RemoveDLL(const std::string& name)
 {
 	std::map<std::string, std::pair<HINSTANCE, int>>::iterator itDll = loadedDLLs.find(name);
 	if (itDll != loadedDLLs.end())
 	{
+		if (GetModuleHandle((name + DLL).c_str()) == 0)
+		{
+			LOG("DLL not even loaded");
+			loadedDLLs.erase(itDll);
+			return true;
+		}
 		if (!FreeLibrary(itDll->second.first))
 		{
 			LOG("CAN'T RELEASE %s", name);
 			return false;
 		}
-		loadedDLLs.erase(itDll);
+		if (GetModuleHandle((name + DLL).c_str()) != 0)
+		{
+			LOG("DLL not freed properly");
+			return false;
+		}
+		else
+		{
+			loadedDLLs.erase(itDll);
+		}
 	}
 	else
 	{
-		LOG("DLL %s Not Found!", name);
+		//LOG("DLL %s Not Found!", name); //FIXME: Not working with multithread fsystem
 		return false;
 	}
 	return true;
@@ -274,7 +349,7 @@ void ModuleScript::CheckScripts() //HOT SWAP IF USED DLL
 				LOG("Script %s updated", scriptName.c_str());
 				if (App->fsystem->GetExtension(scriptFile) == HOT)
 				{
-					HotSwap(it->first);
+					UpdateScript(it->first);
 				}
 			}
 		}
@@ -285,57 +360,93 @@ void ModuleScript::CheckScripts() //HOT SWAP IF USED DLL
 	}
 }
 
-void ModuleScript::HotSwap(std::string scriptName) //only 1 script ftm
+void ModuleScript::SaveScript(Script* script)
 {
-	std::vector<std::pair<JSON_value*, GameObject*>> scriptInfo;
+	std::string name = script->name;
+	JSON* json = new JSON(); //TODO: Leaks memory
+	JSON_value* value = json->CreateValue();
+	script->Serialize(value);
 
-	JSON* json = new JSON();
-	for (auto& script : componentsScript)
+	auto itInfo = scriptInfo.find(script->name);
+
+	scriptProperties properties = std::make_pair(value, script->gameobject);
+	if (itInfo != scriptInfo.end())
 	{
-		if (script->name == scriptName)
-		{
-			JSON_value* value = json->CreateValue();
-			script->Serialize(value);
-			scriptInfo.push_back(std::make_pair(value, script->gameobject));
-
-			script->gameobject->RemoveComponent(*script);
-			break;
-		}
+		//add instance
+		itInfo->second.emplace_back(properties);
 	}
-	RemoveDLL(scriptName);
-
-	bool deleted = false;
-	while (!deleted)
+	else
 	{
-		App->fsystem->Delete((SCRIPTS + scriptName + DLL).c_str()); //Deleted old DLL
-	}
-	App->fsystem->Rename(SCRIPTS, (scriptName + HOT).c_str(), scriptName.c_str(), DLL); //Changed name new DLL
-	HINSTANCE dll = LoadLibrary((scriptName + DLL).c_str());
-	if (dll != nullptr)
-	{
-		loadedDLLs.insert(std::pair<std::string,
-			std::pair<HINSTANCE, int>>(scriptName, std::pair<HINSTANCE, int>(dll, 1)));
+		std::vector<scriptProperties> info;
+		info.emplace_back(properties);
+		scriptInfo.insert(std::make_pair(script->name, info));
 	}
 
-	assert(dll != nullptr);
-	CreatePointer Create = (CreatePointer)GetProcAddress(dll, "CreateScript");
-	assert(Create != nullptr);
-	if (Create != nullptr)
+	script->gameobject->RemoveComponent(*script);
+	std::set<std::string>::iterator it = dllRemoveList.find(name);
+	if (it != dllRemoveList.end())
 	{
-		for (const auto& info : scriptInfo)
-		{
-			Script* script = Create();
-			script->SetApp(App);
-			script->name = scriptName;
-			componentsScript.push_back(script);
-			script->DeSerialize(info.first);
-			script->gameobject = info.second;
-			info.second->components.push_back(script);
-		}
+		dllRemoveList.erase(it);
 	}
-	//TODO: maybe it's safer to re execute here awake + start
 }
 
+void ModuleScript::UpdateScript(std::string scriptName)
+{
+	for (unsigned i = 0; i < componentsScript.size(); ++i)
+	{
+		if (componentsScript[i]->name == scriptName)
+		{
+			SaveScript(componentsScript[i]);
+			--i;
+		}
+	}
+
+	if (RemoveDLL(scriptName))
+	{
+		HotSwap(scriptName);
+	}
+	else //Reload All
+	{
+		for (unsigned i = 0; i < componentsScript.size(); ++i)
+		{
+			if (componentsScript[i]->name == scriptName) continue;
+			SaveScript(componentsScript[i]);
+			--i;
+		}
+		ReloadAll(scriptName);
+	}
+}
+
+void ModuleScript::ReloadAll(std::string scriptName)
+{
+	std::vector<std::string> dllNames;
+
+	for (const auto dll : loadedDLLs) {
+		dllNames.push_back(dll.first);
+	}
+
+	while (!loadedDLLs.empty())
+	{
+		for (const auto name : dllNames)
+		{
+			RemoveDLL(name);
+		}
+	}
+
+	App->fsystem->Delete((SCRIPTS + scriptName + DLL).c_str()); //Deleted old DLL
+	App->fsystem->Rename(SCRIPTS, (scriptName + HOT).c_str(), scriptName.c_str(), DLL); //Changed name new DLL
+
+	for (size_t i = 0; i < dllNames.size(); i++)
+	{
+		HotReload(dllNames[i], false);
+	}
+	scriptInfo.clear();
+
+	for (size_t i = 0; i < componentsScript.size(); i++)
+	{
+		InitializeScript(componentsScript[i]);
+	}
+}
 
 std::string ModuleScript::GetLastErrorAsString()
 {

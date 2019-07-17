@@ -181,9 +181,7 @@ goto exit
 echo Le HotReload
 xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts\$(ProjectName).hot"*
 :exit
-echo exiting
-set ERRORLEVEL=0
-</Command>
+set ERRORLEVEL=0</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>if not exist "..\..\Game\Scripts"  mkdir "..\..\Game\Scripts"</Command>
@@ -213,9 +211,7 @@ goto exit
 echo Le HotReload
 xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts\$(ProjectName).hot"*
 :exit
-echo exiting
-set ERRORLEVEL=0
-</Command>
+set ERRORLEVEL=0</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>if not exist "..\..\Game\Scripts"  mkdir "..\..\Game\Scripts"</Command>
@@ -277,9 +273,7 @@ goto exit
 echo Le HotReload
 xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts\$(ProjectName).hot"*
 :exit
-echo exiting
-set ERRORLEVEL=0
-</Command>
+set ERRORLEVEL=0</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>if not exist "..\..\Game\Scripts"  mkdir "..\..\Game\Scripts"</Command>
@@ -313,9 +307,7 @@ goto exit
 echo Le HotReload
 xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts\$(ProjectName).hot"*
 :exit
-echo exiting
-set ERRORLEVEL=0
-</Command>
+set ERRORLEVEL=0</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>if not exist "..\..\Game\Scripts"  mkdir "..\..\Game\Scripts"</Command>

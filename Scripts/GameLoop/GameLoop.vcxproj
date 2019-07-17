@@ -170,12 +170,18 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Source\MathGeoLib\lib;$(SolutionDir)\Source\Imgui\lib; $(SolutionDir)$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>$(SolutionName).lib;MathGeoLib.lib;ImGui.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Scripts\CreditsScript\$(Configuration);$(SolutionDir)Source\MathGeoLib\lib;$(SolutionDir)\Source\Imgui\lib; $(SolutionDir)$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(SolutionName).lib;CreditsScript.lib;MathGeoLib.lib;ImGui.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts"
-if errorlevel 1 xcopy /y /d "$(OutDir)$(ProjectName)1.dll" "..\..\Game\Scripts"</Command>
+if ERRORLEVEL 1 goto hotreload
+goto exit
+:hotreload
+echo Le HotReload
+xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts\$(ProjectName).hot"*
+:exit
+set ERRORLEVEL=0</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>if not exist "..\..\Game\Scripts"  mkdir "..\..\Game\Scripts"</Command>
@@ -194,12 +200,18 @@ if errorlevel 1 xcopy /y /d "$(OutDir)$(ProjectName)1.dll" "..\..\Game\Scripts"<
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Source\MathGeoLib\lib;..\BaseScript\$(IntDir); $(SolutionDir)\Source\Imgui\lib; $(SolutionDir)$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>$(SolutionName).lib;MathGeoLib.lib;ImGui.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Scripts\CreditsScript\$(Configuration);$(SolutionDir)Source\MathGeoLib\lib;..\BaseScript\$(IntDir); $(SolutionDir)\Source\Imgui\lib; $(SolutionDir)$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(SolutionName).lib;CreditsScript.lib;MathGeoLib.lib;ImGui.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts"
-if errorlevel 1 xcopy /y /d "$(OutDir)$(ProjectName)1.dll" "..\..\Game\Scripts"</Command>
+if ERRORLEVEL 1 goto hotreload
+goto exit
+:hotreload
+echo Le HotReload
+xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts\$(ProjectName).hot"*
+:exit
+set ERRORLEVEL=0</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>if not exist "..\..\Game\Scripts"  mkdir "..\..\Game\Scripts"</Command>
@@ -250,12 +262,18 @@ if errorlevel 1 xcopy /y /d "$(OutDir)$(ProjectName)1.dll" "..\..\Game\Scripts"<
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Source\MathGeoLib\lib;..\BaseScript\$(IntDir); $(SolutionDir)\Source\Imgui\lib; $(SolutionDir)$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>$(SolutionName).lib;MathGeoLib.lib;ImGui.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Scripts\CreditsScript\$(Configuration);$(SolutionDir)Source\MathGeoLib\lib;..\BaseScript\$(IntDir); $(SolutionDir)\Source\Imgui\lib; $(SolutionDir)$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(SolutionName).lib;CreditsScript.lib;MathGeoLib.lib;ImGui.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts"
-if errorlevel 1 xcopy /y /d "$(OutDir)$(ProjectName)1.dll" "..\..\Game\Scripts"</Command>
+if ERRORLEVEL 1 goto hotreload
+goto exit
+:hotreload
+echo Le HotReload
+xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts\$(ProjectName).hot"*
+:exit
+set ERRORLEVEL=0</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>if not exist "..\..\Game\Scripts"  mkdir "..\..\Game\Scripts"</Command>
@@ -278,12 +296,18 @@ if errorlevel 1 xcopy /y /d "$(OutDir)$(ProjectName)1.dll" "..\..\Game\Scripts"<
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Source\MathGeoLib\lib;$(SolutionDir)\Source\Imgui\lib; $(SolutionDir)$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>$(SolutionName).lib;MathGeoLib.lib;ImGui.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Scripts\CreditsScript\$(Configuration);$(SolutionDir)Source\MathGeoLib\lib;$(SolutionDir)\Source\Imgui\lib; $(SolutionDir)$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(SolutionName).lib;CreditsScript.lib;MathGeoLib.lib;ImGui.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts"
-if errorlevel 1 xcopy /y /d "$(OutDir)$(ProjectName)1.dll" "..\..\Game\Scripts"</Command>
+if ERRORLEVEL 1 goto hotreload
+goto exit
+:hotreload
+echo Le HotReload
+xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts\$(ProjectName).hot"*
+:exit
+set ERRORLEVEL=0</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>if not exist "..\..\Game\Scripts"  mkdir "..\..\Game\Scripts"</Command>
@@ -356,9 +380,6 @@ if errorlevel 1 xcopy /y /d "$(OutDir)$(ProjectName)1.dll" "..\..\Game\Scripts"<
     <ClInclude Include="LoopStateWin.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CreditsScript\CreditsScript.vcxproj">
-      <Project>{cf4ade84-8b3d-45a4-80ef-5b52cc795b6c}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\EquipPopupController\EquipPopupController.vcxproj">
       <Project>{20271eef-b67a-4d0c-b8dc-0a4e296d710c}</Project>
     </ProjectReference>

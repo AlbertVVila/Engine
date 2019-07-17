@@ -3,10 +3,13 @@
 
 #include "Module.h"
 #include <map>
+#include <set>
 #include <vector>
 #include <thread>
 
 class Script;
+class JSON_value;
+class GameObject;
 
 #ifndef _WINDEF_
 struct HINSTANCE__; // Forward or never
@@ -38,7 +41,12 @@ public:
 
 private:
 	void CheckScripts();
-	void HotSwap(std::string script);
+	void UpdateScript(std::string script);
+	void ReloadAll(std::string scriptName);
+	void HotSwap(std::string scriptName);
+	void HotReload(std::string scriptName, bool initialize = true);
+	void InitializeScript(Script* script);
+	void SaveScript(Script* script);
 	void ResetScriptFlags();
 
 	std::string GetLastErrorAsString();
@@ -48,11 +56,15 @@ public:
 	update_status status = UPDATE_CONTINUE;
 	bool onStart = true;
 private:
-	std::list <Script*> componentsScript;
+	std::vector <Script*> componentsScript;
 	std::map<std::string, std::pair<HINSTANCE, int>> loadedDLLs; // name, dll, instances
-	std::vector<std::string>dllRemoveList;
+	std::set<std::string>dllRemoveList;
+
+	typedef std::pair<JSON_value*, GameObject*> scriptProperties;
+	std::map<std::string, std::vector<scriptProperties>> scriptInfo;
 
 	bool hotReloading = false;
+	bool hotSwapping = false;
 	std::thread monitorThread;
 };
 
