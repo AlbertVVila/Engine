@@ -1316,6 +1316,11 @@ float3 ModuleNavigation::getNextStraightPoint(float3 current, float3 pathDirecti
 	return retValue;
 }
 
+bool ModuleNavigation::checkNododgePathPoints(int numPoints) const
+{
+	return (numPoints > minNododgePathPoints);
+}
+
 bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vector<math::float3>& path, 
 								PathFindType type, math::float3 diff, float maxDist, float ignoreDist) const
 {
@@ -1461,17 +1466,19 @@ bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vecto
 			{
 				afterPathDistance += GetXZDistanceWithoutSQ(path[j*(i-1)], path[j*i]);
 			}
+			bool done = true;
 			
 			if (afterPathDistance > ignoreDist)
 			{
 				if (logDebugPathing)
 				{
 					std::stringstream s;
-					s << "Distance = " << afterPathDistance << ". Aborting";
+					s << "Distance = " << afterPathDistance << ". Going straight";
 					LOG(s.str().c_str());
 				}
 				path.clear();
-				return false;
+				type = PathFindType::NODODGE;
+				done = false;
 			}
 			else if (logDebugPathing)
 			{
@@ -1479,7 +1486,10 @@ bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vecto
 				s << "Distance = " << afterPathDistance << ". Going";
 				LOG(s.str().c_str());
 			}
-			return true;
+			if (done)
+			{
+				return true;
+			}
 		}
 	}
 	else if (type == PathFindType::STRAIGHT)
@@ -1533,18 +1543,18 @@ bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vecto
 			//if we got as far as we can get
 			if (nextPoint.Equals(path[path.size() - 1]))
 			{
-				return true;
+				return checkNododgePathPoints(path.size());
 			}
 			//check if next point is too far away
 			currentPathDistance += GetXZDistance(path[path.size()-1], nextPoint);//2d distance
 			if (currentPathDistance > maxDist)
 			{
-				return true;
+				return checkNododgePathPoints(path.size());
 			}
 			//if its not too far away, its put into the path
 			path.push_back(nextPoint);
 		}
-		return true;
+		return checkNododgePathPoints(path.size());
 	}
 	return false;
 }

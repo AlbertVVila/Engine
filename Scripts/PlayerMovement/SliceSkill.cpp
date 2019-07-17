@@ -29,7 +29,7 @@ void SliceSkill::Start()
 	boxSize = math::float3(150.f, 100.f, 100.f);
 
 	// Set delay for hit
-	hitDelay = 0.8f;
+	hitDelay = 0.4f;
 }
 
 void SliceSkill::UseSkill()
