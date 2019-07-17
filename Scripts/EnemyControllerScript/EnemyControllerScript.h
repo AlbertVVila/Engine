@@ -21,6 +21,7 @@ class PlayerMovement;
 class EnemyLoot;
 class ExperienceController;
 class ResourceMaterial;
+class CombatAudioEvents;
 
 
 class EnemyControllerScript_API EnemyControllerScript : public Script
@@ -83,6 +84,8 @@ public:
 
 	ResourceMaterial* hitMaterial = nullptr;
 	ResourceMaterial* defaultMaterial = nullptr;
+
+	CombatAudioEvents* combataudioevents = nullptr;
 
 private:
 	int actualHealth = 20;

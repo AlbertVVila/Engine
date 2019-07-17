@@ -101,6 +101,17 @@ void CombatAudioEvents::Start()
 	{
 		LOG("Warning: drill_attack game object not found");
 	}
+
+	GO = App->scene->FindGameObjectByName("enemy_got_hit");
+	if (GO != nullptr)
+	{
+		enemy_got_hit = GO->GetComponent<ComponentAudioSource>();
+		assert(enemy_got_hit != nullptr);
+	}
+	else
+	{
+		LOG("Warning: enemy_got_hit game object not found");
+	}
 }
 
 void CombatAudioEvents::OnAnimationEvent(std::string name)
@@ -140,6 +151,13 @@ void CombatAudioEvents::OnAnimationEvent(std::string name)
 	{
 		drill_attack->Play();
 	}
+}
+
+void CombatAudioEvents::enemyGotHit(int i)
+{
+	float offset = randomOffset(0.3) - 0.15;
+	enemy_got_hit->SetPitch(0.9 + offset);
+	enemy_got_hit->Play();
 }
 
 float CombatAudioEvents::randomOffset(float max)
