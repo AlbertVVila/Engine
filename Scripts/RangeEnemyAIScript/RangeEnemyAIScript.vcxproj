@@ -312,9 +312,10 @@
   <ItemGroup>
     <ClCompile Include="EnemyState.cpp" />
     <ClCompile Include="EnemyStateAttack.cpp" />
-    <ClCompile Include="EnemyStateGetInPosition.cpp" />
+    <ClCompile Include="EnemyStateChase.cpp" />
     <ClCompile Include="EnemyStateCooldown.cpp" />
     <ClCompile Include="EnemyStateDeath.cpp" />
+    <ClCompile Include="EnemyStateFlee.cpp" />
     <ClCompile Include="EnemyStatePatrol.cpp" />
     <ClCompile Include="EnemyStateReturnToStart.cpp" />
     <ClCompile Include="RangeEnemyAIScript.cpp" />
@@ -322,9 +323,10 @@
   <ItemGroup>
     <ClInclude Include="EnemyState.h" />
     <ClInclude Include="EnemyStateAttack.h" />
-    <ClInclude Include="EnemyStateGetInPosition.h" />
+    <ClInclude Include="EnemyStateChase.h" />
     <ClInclude Include="EnemyStateCooldown.h" />
     <ClInclude Include="EnemyStateDeath.h" />
+    <ClInclude Include="EnemyStateFlee.h" />
     <ClInclude Include="EnemyStatePatrol.h" />
     <ClInclude Include="EnemyStateReturnToStart.h" />
     <ClInclude Include="RangeEnemyAIScript.h" />

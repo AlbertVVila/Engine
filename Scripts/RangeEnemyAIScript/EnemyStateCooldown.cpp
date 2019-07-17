@@ -25,7 +25,7 @@ void EnemyStateCooldown::HandleIA()
 		if (distanceToPlayer > enemy->maxAttackDistance || distanceToPlayer < enemy->minAttackDistance)
 		{
 			// Get in position to attack
-			enemy->currentState = (EnemyState*)enemy->getInPosition;
+			enemy->currentState = (EnemyState*)enemy->chase;
 		}
 		else if (distanceToPlayer > enemy->disengageDistance)
 		{

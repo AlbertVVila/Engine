@@ -21,7 +21,7 @@ void EnemyStateReturnToStart::HandleIA()
 	float distanceToPlayer = enemy->enemyController->GetDistanceToPlayer2D();
 	if (distanceToPlayer < enemy->activationDistance)
 	{
-		enemy->currentState = (EnemyState*)enemy->getInPosition;
+		enemy->currentState = (EnemyState*)enemy->chase;
 	}
 	else
 	{

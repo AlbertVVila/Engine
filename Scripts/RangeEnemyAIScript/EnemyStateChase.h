@@ -3,19 +3,18 @@
 
 #include "EnemyState.h"
 
-class EnemyStateGetInPosition :
+class EnemyStateChase :
 	public EnemyState
 {
 public:
-	EnemyStateGetInPosition(RangeEnemyAIScript* AIScript);
-	~EnemyStateGetInPosition();
+	EnemyStateChase(RangeEnemyAIScript* AIScript);
+	~EnemyStateChase();
 
 	void HandleIA() override;
 	void Update() override;
 
 private:
 	void AproachPlayer();
-	void MoveAwayFromPlayer();
 };
 
 #endif __ENEMYSTATECHASE_H_

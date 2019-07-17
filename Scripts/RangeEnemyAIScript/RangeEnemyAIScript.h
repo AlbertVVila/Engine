@@ -17,7 +17,8 @@ class EnemyControllerScript;
 class JSON_value;
 class EnemyState;
 class EnemyStatePatrol;
-class EnemyStateGetInPosition;
+class EnemyStateChase;
+class EnemyStateFlee;
 class EnemyStateReturnToStart;
 class EnemyStateAttack;
 class EnemyStateCooldown;
@@ -48,7 +49,8 @@ public:
 	EnemyState* currentState = nullptr;
 
 	EnemyStatePatrol* patrol = nullptr;
-	EnemyStateGetInPosition* getInPosition = nullptr;
+	EnemyStateChase* chase = nullptr;
+	EnemyStateFlee* flee = nullptr;
 	EnemyStateReturnToStart* returnToStart = nullptr;
 	EnemyStateAttack* attack = nullptr;
 	EnemyStateCooldown* cooldown = nullptr;
