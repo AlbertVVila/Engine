@@ -74,13 +74,8 @@ bool ModuleTextures::ImportImage(const char* file, const char* folder, ResourceT
 	if (success)
 	{
 		if (resource->dxtFormat == DXT::NO_COMPRESSION) 
-		{
-			char** data = nullptr;
-			int size = App->fsystem->Size((path + file).c_str());
-			
-			std::string filepath(TEXTURES + std::to_string(resource->GetUID()) + TEXTUREEXT);    // Library path + UID + Extension
-			App->fsystem->Copy((path + file).c_str(), TEXTURES, (std::to_string(resource->GetUID())+TEXTUREEXT).c_str());
-			success = true;
+		{		
+			success = App->fsystem->Copy(path.c_str(), file, TEXTURES, (std::to_string(resource->GetUID())+TEXTUREEXT).c_str());
 		}
 		else 
 		{
