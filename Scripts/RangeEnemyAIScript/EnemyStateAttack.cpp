@@ -21,6 +21,7 @@ EnemyStateAttack::~EnemyStateAttack()
 void EnemyStateAttack::Enter()
 {
 	projectileShooted = false;
+	duration = duration * 3;
 }
 
 void EnemyStateAttack::HandleIA()

@@ -18,10 +18,10 @@ EnemyStateCooldown::~EnemyStateCooldown()
 
 void EnemyStateCooldown::HandleIA()
 {
+	float distanceToPlayer = enemy->enemyController->GetDistanceToPlayer2D();
 	if (timer > enemy->cooldownTime)
 	{
 		// Check distance to player
-		float distanceToPlayer = enemy->enemyController->GetDistanceToPlayer2D();
 		if (distanceToPlayer > enemy->maxAttackDistance || distanceToPlayer < enemy->minAttackDistance)
 		{
 			// Get in position to attack
@@ -37,6 +37,13 @@ void EnemyStateCooldown::HandleIA()
 			// Player in range and projectile is available, change to attack
 			enemy->currentState = (EnemyState*)enemy->attack;
 			auxTimer = 0.0f;
+		}
+	}
+	else
+	{
+		if (distanceToPlayer < enemy->minAttackDistance)
+		{
+			enemy->currentState = (EnemyState*)enemy->flee;
 		}
 	}
 }
