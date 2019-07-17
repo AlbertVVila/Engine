@@ -151,11 +151,9 @@ void EquipPopupController::Assign(int i)
 		hudButtons[activeButton]->UpdateImageByName(skillsList[i].spriteActive->GetName());
 		hudButtons[activeButton]->gameobject->children.front()->GetComponent<ComponentImage>()->UpdateTexture(skillsList[i].spriteActive->GetName());
 		auto it1 = std::next(hudButtons[activeButton]->gameobject->children.begin(), 1);
-		(*it1)->SetActive(true);	
+		(*it1)->SetActive(true);
+		player->AssignSkill((SkillType)skillsList[i].id, activeButton);
 
-		if (activeButton != 0)
-			player->AssignSkill((SkillType)skillsList[i].id, activeButton);
-		
 	}
 	else
 	{
@@ -208,13 +206,13 @@ void EquipPopupController::ChangePopUpSlots()
 
 void EquipPopupController::FillLists()
 {
-	
+
 	skillsList.clear();
 	itemsList.clear();
 	skillsList = skillTree->GetActiveSkills();
 	itemsList = inventory->GetQuickItems();
-	
-	if (skillsShowing) 
+
+	if (skillsShowing)
 	{
 		FillSkillSlots();
 	}
@@ -226,7 +224,7 @@ void EquipPopupController::FillLists()
 
 void EquipPopupController::FillSkillSlots()
 {
-	
+
 	for (int i = 0; i < POPUP_SLOTS; ++i)
 	{
 		slots[i]->SetActive(false);
@@ -240,7 +238,7 @@ void EquipPopupController::FillSkillSlots()
 
 void EquipPopupController::FillItemSlots()
 {
-	
+
 	if (skillsShowing) {
 		return;
 	}
@@ -263,7 +261,6 @@ void EquipPopupController::CleanButton()
 	auto it1 = std::next(hudButtons[activeButton]->gameobject->children.begin(), 1);
 	(*it1)->SetActive(false);
 
-	if (activeButton != 0)
 	player->AssignSkill(SkillType::NONE, activeButton);
 
 	RemoveEquiped();

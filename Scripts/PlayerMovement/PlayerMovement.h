@@ -176,7 +176,7 @@ public:
 	bool IsMoving() const;
 	bool IsMovingToAttack() const;
 	bool IsPressingMouse1() const;
-	bool IsUsingLeftClick() const;
+	bool IsUsingRightClick() const;
 	bool IsUsingOne() const;
 	bool IsUsingTwo() const;
 	bool IsUsingThree() const;

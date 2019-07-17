@@ -68,7 +68,7 @@ PlayerMovement::PlayerMovement()
 	allSkills[SkillType::CIRCULAR] = new PlayerSkill(SkillType::CIRCULAR);
 
 	// Default ability keyboard allocation
-	assignedSkills[HUD_BUTTON_RC] = SkillType::CHAIN;
+	assignedSkills[HUD_BUTTON_RC] = SkillType::NONE;
 	assignedSkills[HUD_BUTTON_1] = SkillType::NONE;
 	assignedSkills[HUD_BUTTON_2] = SkillType::NONE;
 	assignedSkills[HUD_BUTTON_3] = SkillType::NONE;
@@ -320,6 +320,11 @@ void PlayerMovement::CheckSkillsInput()
 	{
 		currentSkill = allSkills[assignedSkills[HUD_BUTTON_R]]->skill;
 		skillType = allSkills[assignedSkills[HUD_BUTTON_R]]->type;
+	}
+	else if (IsUsingRightClick())
+	{
+		currentSkill = allSkills[assignedSkills[HUD_BUTTON_RC]]->skill;
+		skillType = allSkills[assignedSkills[HUD_BUTTON_RC]]->type;
 	}
 
 	if (currentSkill != nullptr && previous != currentSkill)
@@ -608,7 +613,7 @@ void PlayerMovement::Start()
 	{
 		stats.strength = PlayerPrefs::GetFloat("strength");
 	}
-	assignedSkills[HUD_BUTTON_RC] = (SkillType)PlayerPrefs::GetInt("RC", 10);
+	assignedSkills[HUD_BUTTON_RC] = (SkillType)PlayerPrefs::GetInt("RC", 20);
 	assignedSkills[HUD_BUTTON_1] = (SkillType)PlayerPrefs::GetInt("1", 20);
 	assignedSkills[HUD_BUTTON_2] = (SkillType)PlayerPrefs::GetInt("2", 20);
 	assignedSkills[HUD_BUTTON_3] = (SkillType)PlayerPrefs::GetInt("3", 20);
@@ -1049,9 +1054,9 @@ bool PlayerMovement::IsPressingMouse1() const
 		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(false, true) && !App->scene->Intersects("PlayerMesh", false, temp))); //right button, the player is still walking or movement button is pressed and can get close to mouse pos
 }
 
-bool PlayerMovement::IsUsingLeftClick() const
+bool PlayerMovement::IsUsingRightClick() const
 {
-	return !App->ui->UIHovered(true, false) && App->input->GetMouseButtonDown(3) == KEY_DOWN; //Left button
+	return !App->ui->UIHovered(true, false) && allSkills.find(assignedSkills[HUD_BUTTON_RC])->second->IsUsable(mana) && App->input->GetMouseButtonDown(3) == KEY_DOWN; //Left button
 }
 
 bool PlayerMovement::IsUsingOne() const
@@ -1096,7 +1101,7 @@ bool PlayerMovement::IsUsingR() const
 
 bool PlayerMovement::IsUsingSkill() const
 {
-	return (IsUsingOne() || IsUsingTwo() || IsUsingThree() || IsUsingFour()|| IsUsingQ() || IsUsingW() || IsUsingE() || IsUsingR());
+	return (IsUsingOne() || IsUsingTwo() || IsUsingThree() || IsUsingFour()|| IsUsingQ() || IsUsingW() || IsUsingE() || IsUsingR() || IsUsingRightClick());
 }
 
 void PlayerMovement::UseSkill(SkillType skill)
