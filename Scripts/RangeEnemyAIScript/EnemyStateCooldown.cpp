@@ -32,7 +32,7 @@ void EnemyStateCooldown::HandleIA()
 			// Return to start position
 			enemy->currentState = (EnemyState*)enemy->returnToStart;
 		}
-		else if (!enemy->projectile->isActive())
+		else if (!enemy->projectile1->isActive())
 		{
 			// Player in range and projectile is available, change to attack
 			enemy->currentState = (EnemyState*)enemy->attack;

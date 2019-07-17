@@ -36,16 +36,32 @@ void EnemyStateAttack::HandleIA()
 
 void EnemyStateAttack::Update()
 {
-	if (!projectileShooted && !enemy->projectile->isActive())
+	if (!projectileShooted)
 	{
 		// Delay attack
-		if (timer > enemy->projectileDelay)
+		if (timer > enemy->projectileDelay1)
 		{
 			// Reset projectile position
-			enemy->projectile->transform->SetPosition(enemy->enemyController->GetPosition());
-			enemy->projectile->transform->SetRotation(enemy->enemyController->GetRotation());
+			enemy->projectile1->transform->SetPosition(enemy->enemyController->GetPosition());
+			enemy->projectile1->transform->SetRotation(enemy->enemyController->GetRotation());
 
-			enemy->projectile->SetActive(true);
+			enemy->projectile1->SetActive(true);
+		}
+		if (timer > enemy->projectileDelay2)
+		{
+			// Reset projectile position
+			enemy->projectile2->transform->SetPosition(enemy->enemyController->GetPosition());
+			enemy->projectile2->transform->SetRotation(enemy->enemyController->GetRotation());
+
+			enemy->projectile2->SetActive(true);
+		}
+		if (timer > enemy->projectileDelay3)
+		{
+			// Reset projectile position
+			enemy->projectile3->transform->SetPosition(enemy->enemyController->GetPosition());
+			enemy->projectile3->transform->SetRotation(enemy->enemyController->GetRotation());
+
+			enemy->projectile3->SetActive(true);
 			projectileShooted = true;
 		}
 	}
