@@ -30,7 +30,7 @@ struct ImGuiContext;
 #define HUB_BUTTON_E 7
 #define HUB_BUTTON_R 8
 
-#define NUMBER_OF_PLAYERSTATES 6
+#define NUMBER_OF_PLAYERSTATES 7
 
 #define MAX_BOMB_DROP_SCALE 200.f
 #define MAX_BOMB_DROP_WAVE_SCALE 240.f
@@ -52,10 +52,12 @@ class PlayerStateIdle;
 class PlayerStateDeath;
 class PlayerStateWalk;
 class PlayerStateWalkToHitEnemy;
+class PlayerStateWalkToPickItem;
 class DamageController;
 class DamageFeedbackUI;
 class ComponentAudioSource;
 class ComponentCamera;
+class ItemPicker;
 
 class Text;
 class BasicSkill;
@@ -172,6 +174,7 @@ public:
 
 
 	//Abstract input. TODO: Now only returns true for skills, adapt for items
+	inline bool IsMovingToItem() const { return itemClicked != nullptr;};
 	bool IsAttacking() const;
 	bool IsMoving() const;
 	bool IsMovingToAttack() const;
@@ -214,9 +217,13 @@ public:
 	PlayerStateDeath* death = nullptr;
 	PlayerStateWalk* walk = nullptr;
 	PlayerStateWalkToHitEnemy* walkToHit = nullptr;
+	PlayerStateWalkToPickItem* walkToPickItem = nullptr;
 	//walking to hit player orientation necessary info:
 	bool enemyTargeted = false;
 	GameObject* enemyTarget = nullptr;
+
+	//item picked
+	ItemPicker* itemClicked = nullptr;
 
 	float walkingSpeed = 300.0f;
 	float dashSpeed = 10.0f;

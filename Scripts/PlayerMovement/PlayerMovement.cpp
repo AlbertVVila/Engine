@@ -12,8 +12,10 @@
 #include "PlayerStateIdle.h"
 #include "PlayerStateWalk.h"
 #include "PlayerStateWalkToHitEnemy.h"
+#include "PlayerStateWalkToPickItem.h"
 #include "PlayerStateDeath.h"
 #include "EnemyControllerScript.h"
+#include "ItemPicker.h"
 
 #include "ComponentAnimation.h"
 #include "ComponentBoxTrigger.h"
@@ -193,6 +195,7 @@ void PlayerMovement::CreatePlayerStates()
 
 	playerStates.push_back(walk = new PlayerStateWalk(this, "Walk"));
 	playerStates.push_back(walkToHit = new PlayerStateWalkToHitEnemy(this, "Walk"));
+	playerStates.push_back(walkToPickItem = new PlayerStateWalkToPickItem(this, "Walk"));
 	if (dustParticles == nullptr)
 	{
 		LOG("Dust Particles not found");
@@ -650,6 +653,7 @@ void PlayerMovement::Update()
 		if (currentSkill != nullptr)
 		{
 			currentSkill->Update();
+			itemClicked = nullptr;
 		}
 	
 		// States
