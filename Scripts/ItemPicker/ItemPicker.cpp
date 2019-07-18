@@ -183,8 +183,16 @@ void ItemPicker::Update()
 		//if not, player goes towards it
 		else
 		{
+			playerMovementScript->stoppedGoingToItem = false;
 			playerMovementScript->itemClicked = this;
 		}
+	}
+	//check if the player clicked outside of the item (if it was going to pick it up)
+	if (playerMovementScript->itemClicked == this && App->input->GetMouseButtonDown(1) == KEY_DOWN &&
+		!(App->scene->Intersects(closestPoint, myBboxName.c_str()) || itemName->Intersection(gameobject->UUID)))
+	{
+		playerMovementScript->stoppedGoingToItem = true;
+		playerMovementScript->itemClicked = nullptr;
 	}
 	//if the player has gotten to the item by walking towards it, this variable will be true, so we pick up
 	if (pickedUpViaPlayer)

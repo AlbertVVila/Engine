@@ -224,6 +224,7 @@ public:
 
 	//item picked
 	ItemPicker* itemClicked = nullptr;
+	bool stoppedGoingToItem = false;
 
 	float walkingSpeed = 300.0f;
 	float dashSpeed = 10.0f;

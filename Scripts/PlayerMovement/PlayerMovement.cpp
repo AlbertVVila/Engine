@@ -1033,7 +1033,7 @@ bool PlayerMovement::IsMovingToAttack() const
 
 bool PlayerMovement::IsMoving() const
 {
-	return (IsPressingMouse1() && !IsAttacking() && !IsMovingToAttack());
+	return (IsPressingMouse1() && !IsAttacking() && !IsMovingToAttack() && (!IsMovingToItem() || (IsMovingToItem() && stoppedGoingToItem)));
 }
 
 bool PlayerMovement::IsPressingMouse1() const
