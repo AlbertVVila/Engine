@@ -39,6 +39,7 @@ ModuleFileSystem::ModuleFileSystem()
 	PHYSFS_mount(RESOURCES, nullptr, 1);
 	PHYSFS_mount(SCRIPTS, nullptr, 1);
 
+#ifndef GAME_BUILD
 	// Assets Folder
 	if (!Exists(ASSETS))
 	{
@@ -51,13 +52,6 @@ ModuleFileSystem::ModuleFileSystem()
 	{
 		MakeDirectory(LIBRARY);
 	}
-	PHYSFS_mount(LIBRARY, nullptr, 1);
-
-	if (!Exists(PERSISTENCE))
-	{
-		MakeDirectory(PERSISTENCE);
-	}
-	PHYSFS_mount(PERSISTENCE, nullptr, 1);
 
 	if (!Exists(IMPORTED_MATERIALS))
 		MakeDirectory(IMPORTED_MATERIALS);
@@ -81,6 +75,15 @@ ModuleFileSystem::ModuleFileSystem()
 		MakeDirectory(IMPORTED_PREFABS);
 	if (!Exists(RESOURCE_SCENES))
 		MakeDirectory(RESOURCE_SCENES);
+#endif
+
+	PHYSFS_mount(LIBRARY, nullptr, 1);
+
+	if (!Exists(PERSISTENCE))
+	{
+		MakeDirectory(PERSISTENCE);
+	}
+	PHYSFS_mount(PERSISTENCE, nullptr, 1);
 }
 
 
