@@ -146,7 +146,7 @@ void ResourceMesh::Draw(unsigned shaderProgram) const
 
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glDrawElements(GL_TRIANGLES, meshIndices.size(), GL_UNSIGNED_INT, 0);
+	glDrawElements(drawingMode, meshIndices.size(), GL_UNSIGNED_INT, 0);
 
 	// We disable VAO
 	glBindVertexArray(0);

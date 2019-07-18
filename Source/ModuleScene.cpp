@@ -22,6 +22,7 @@
 #include "ComponentRenderer.h"
 #include "ComponentTransform.h"
 #include "ComponentText.h"
+#include "ComponentVolumetricLight.h"
 #include "BaseScript.h"
 
 #include "ResourceTexture.h"
@@ -321,6 +322,10 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 		if (camFrustum.Intersects(go->GetBoundingBox()))
 		{
 			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponentOld(ComponentType::Renderer);
+			if (!cr)
+			{
+				cr = ((ComponentVolumetricLight*)go->GetComponentOld(ComponentType::VolumetricLight))->renderer;
+			}
 			if (cr && !cr->useAlpha)
 			{
 				DrawGO(*go, camFrustum, isEditor);
@@ -506,8 +511,13 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 		}
 	}
 	ComponentRenderer* crenderer = (ComponentRenderer*)go.GetComponentOld(ComponentType::Renderer);
-	if (crenderer == nullptr || !crenderer->enabled || crenderer->material == nullptr) return;
-
+	if (crenderer == nullptr || !crenderer->enabled || crenderer->material == nullptr)
+	{
+		ComponentVolumetricLight* cVL = (ComponentVolumetricLight*)go.GetComponentOld(ComponentType::VolumetricLight);		
+		if (!cVL)
+			return;
+		crenderer = cVL->renderer;
+	}
 	ResourceMesh* mesh = crenderer->mesh;
 	ResourceMaterial* material = crenderer->material;
 	Shader* shader = material->shader;

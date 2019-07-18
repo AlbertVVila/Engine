@@ -32,6 +32,8 @@ public:
 	void UpdateMesh();
 
 	void Init();
+	
+	ComponentRenderer* renderer = nullptr;
 
 private:
 
@@ -43,7 +45,6 @@ private:
 	float length = 1.0f;
 
 	ResourceMesh* mesh = nullptr; //We keep a private mesh with the shape of the volumetric light
-	ComponentRenderer* renderer = nullptr;
 };
 
 #endif // __ComponentVolumetricLight_h__

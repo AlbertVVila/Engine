@@ -389,8 +389,7 @@ void ComponentRenderer::DrawMesh(unsigned shaderProgram)
 
 	glBindVertexArray(mesh->VAO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->EBO);
-	glDrawElements(GL_TRIANGLES, mesh->meshIndices.size(), GL_UNSIGNED_INT, 0);
-
+	glDrawElements(mesh->drawingMode, mesh->meshIndices.size(), GL_UNSIGNED_INT, 0);
 	// We disable VAO
 	glBindVertexArray(0);
 }

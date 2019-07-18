@@ -5,7 +5,7 @@
 #include "GameObject.h"
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
-
+#include "ModuleScene.h"
 #include "ComponentRenderer.h"
 #include "imgui.h"
 
@@ -14,6 +14,8 @@ ComponentVolumetricLight::ComponentVolumetricLight(GameObject* gameobject) : Com
 	Init();
 	renderer = new ComponentRenderer(gameobject);
 	renderer->isVolumetricLight = true;	
+	renderer->useAlpha = true;
+	App->scene->AddToSpacePartition(gameobject);
 }
 
 ComponentVolumetricLight::ComponentVolumetricLight(const ComponentVolumetricLight& copy) : Component(copy)
@@ -87,7 +89,7 @@ void ComponentVolumetricLight::UpdateMesh()
 
 void ComponentVolumetricLight::Init()
 {
-	float cPoints[VERT_AMOUNT] = { //2 32 vertices circles of radius 1
+	float cPoints[VERT_AMOUNT] = { //2 31 vertices circles of radius 1
 		//Circle 1
 		1.000f, 0.000f, 0.000f,
 		0.981f, -0.000f, -0.195f,
@@ -151,6 +153,8 @@ void ComponentVolumetricLight::Init()
 		0.556f, 0.000f, 0.831f,
 		0.707f, 0.000f, 0.707f,
 		0.831f, 0.000f, 0.556f,
+		0.924f, 0.000f, 0.383f,
+		0.924f, 0.000f, 0.383f,
 		0.924f, 0.000f, 0.383f
 	};
 	memcpy_s(&conePoints[0], sizeof(float) * VERT_AMOUNT, &cPoints[0], sizeof(float) * VERT_AMOUNT);
@@ -164,11 +168,11 @@ void ComponentVolumetricLight::Init()
 	}
 
 	int halfIndex = INDEX_AMOUNT / 2;
-	coneIndexes[0] = 0;
-	coneIndexes[1] = halfIndex;
+	coneIndexes[0] = halfIndex;
+	coneIndexes[1] = 0;
 	coneIndexes[2] = halfIndex + 1;
-	coneIndexes[INDEX_AMOUNT - 2] = halfIndex;
-	coneIndexes[INDEX_AMOUNT - 1] = 0;
+	coneIndexes[INDEX_AMOUNT - 2] = 0;
+	coneIndexes[INDEX_AMOUNT - 1] = halfIndex;
 
 	int c1Indexer = 1;
 	int c2Indexer = halfIndex + 2;
