@@ -40,8 +40,13 @@ void ExperienceController::Start()
 	levelReached = App->scene->FindGameObjectByName("LevelReached", levelUPGO)->GetComponent<Text>();
 	assert(levelReached != nullptr);
 	
-	levelUpFloorMesh = App->scene->FindGameObjectByName("LevelUpFloorMesh")->GetComponent<ComponentRenderer>();
-	levelUpParticles = App->scene->FindGameObjectByName("LevelUpParticles");
+	GameObject* levelUpFloorGO = App->scene->FindGameObjectByName("LevelUpFloorMesh");
+	if (levelUpFloorGO != nullptr)
+	{
+		levelUpFloorMesh = levelUpFloorGO->GetComponent<ComponentRenderer>();
+		levelUpParticles = App->scene->FindGameObjectByName("LevelUpParticles");
+	}
+
 
 	currentXP = PlayerPrefs::GetInt("currentXP", 0);
 	totalXPAcumulated = PlayerPrefs::GetInt("totalXPAcumulated", 0);

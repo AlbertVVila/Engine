@@ -38,14 +38,14 @@ PlayerStateWalk::~PlayerStateWalk()
 void PlayerStateWalk::Update()
 {
 	math:float2 mouse((float*)&player->App->input->GetMousePosition());
-	if (player->App->input->GetMouseButtonDown(3) == KEY_DOWN 
-		|| player->App->input->GetMouseButtonDown(3) == KEY_REPEAT)
+	if (player->App->input->GetMouseButtonDown(1) == KEY_DOWN 
+		|| player->App->input->GetMouseButtonDown(1) == KEY_REPEAT)
 	{
 		moveTimer = 0.0f;
 		math::float3 intPos(0.f, 0.f, 0.f);
 		if (player->App->navigation->NavigateTowardsCursor(player->gameobject->transform->position, path,
 					math::float3(player->OutOfMeshCorrectionXZ, player->OutOfMeshCorrectionY, player->OutOfMeshCorrectionXZ), 
-					intPos, 1, PathFindType::FOLLOW, player->straightPathingDistance))
+					intPos, 10000, PathFindType::FOLLOW, player->straightPathingDistance))
 		{
 			//case the player clicks outside of the floor mesh but we want to get close to the floors edge
 			pathIndex = 0;
@@ -62,7 +62,7 @@ void PlayerStateWalk::Update()
 			return;
 		}
 	}
-	else if (player->App->input->GetMouseButtonDown(3) == KEY_REPEAT)
+	else if (player->App->input->GetMouseButtonDown(1) == KEY_REPEAT)
 	{
 		moveTimer += player->App->time->gameDeltaTime;
 	}
@@ -141,9 +141,13 @@ void PlayerStateWalk::CheckInput()
 			dustParticles->SetActive(false);
 		}
 	}*/
-	if (player->IsUsingSkill() || player->IsAtacking())
+	if (player->IsUsingSkill() || player->IsAttacking())
 	{
 		player->currentState = (PlayerState*)player->attack;
+	}
+	else if (player->IsMovingToAttack())
+	{
+		player->currentState = (PlayerState*)player->walkToHit;
 	}
 	else if (player->IsMoving())
 	{

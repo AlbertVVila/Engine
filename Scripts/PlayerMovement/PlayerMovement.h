@@ -30,6 +30,8 @@ struct ImGuiContext;
 #define HUB_BUTTON_E 7
 #define HUB_BUTTON_R 8
 
+#define NUMBER_OF_PLAYERSTATES 6
+
 #define MAX_BOMB_DROP_SCALE 200.f
 #define MAX_BOMB_DROP_WAVE_SCALE 240.f
 #define BOMB_DROP_ROT 2.5f
@@ -49,6 +51,7 @@ class PlayerStateAttack;
 class PlayerStateIdle;
 class PlayerStateDeath;
 class PlayerStateWalk;
+class PlayerStateWalkToHitEnemy;
 class DamageController;
 class DamageFeedbackUI;
 class ComponentAudioSource;
@@ -82,7 +85,7 @@ struct PlayerMovement_API PlayerSkill
 {
 public:
 	PlayerSkill() {}
-	PlayerSkill(SkillType type) : type(type) {}
+	PlayerSkill(SkillType type, float manaCost = 10.0f, float cooldown = 0.0f) : type(type), manaCost(manaCost), cooldown(cooldown){}
 	void Expose(const char* title);
 	void Serialize(JSON_value* json) const;
 	void DeSerialize(JSON_value* json, BasicSkill* playerSkill);
@@ -169,18 +172,22 @@ public:
 
 
 	//Abstract input. TODO: Now only returns true for skills, adapt for items
-	bool IsAtacking() const;
+	bool IsAttacking() const;
+	bool IsMoving() const;
+	bool IsMovingToAttack() const;
+	bool IsPressingMouse1() const;
+	bool IsUsingLeftClick() const;
 	bool IsUsingOne() const;
 	bool IsUsingTwo() const;
 	bool IsUsingThree() const;
 	bool IsUsingFour() const;
-	bool IsMoving() const;
 	bool IsUsingQ() const;
 	bool IsUsingW() const;
 	bool IsUsingE() const;
 	bool IsUsingR() const;
 	bool IsUsingSkill() const;
 
+	void CheckSkillsInput();
 	void ResetCooldown(unsigned int hubButtonID);
 	void UseSkill(SkillType skill);
 
@@ -206,6 +213,10 @@ public:
 	PlayerStateIdle* idle = nullptr;
 	PlayerStateDeath* death = nullptr;
 	PlayerStateWalk* walk = nullptr;
+	PlayerStateWalkToHitEnemy* walkToHit = nullptr;
+	//walking to hit player orientation necessary info:
+	bool enemyTargeted = false;
+	GameObject* enemyTarget = nullptr;
 
 	float walkingSpeed = 300.0f;
 	float dashSpeed = 10.0f;
@@ -226,7 +237,7 @@ public:
 	float OutOfMeshCorrectionXZ = 500.f;
 	float OutOfMeshCorrectionY = 300.0f;
 	float maxWalkingDistance = 50000.0f;
-	float straightPathingDistance = 3000.0f;
+	float straightPathingDistance = 2000.0f;
 	ComponentAnimation* anim = nullptr;
 	ComponentBoxTrigger* attackBoxTrigger = nullptr;
 	ComponentBoxTrigger* hpHitBoxTrigger = nullptr;
@@ -248,6 +259,7 @@ public:
 	CircularAttackSkill* circular = nullptr;
 	StompSkill* stomp = nullptr;
 	RainSkill* rain = nullptr;
+	float basicAttackRange = 200.f;
 
 	bool macheteRainActivated = false;
 	GameObject* macheteRainParticles = nullptr;

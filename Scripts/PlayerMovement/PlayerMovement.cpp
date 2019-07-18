@@ -11,6 +11,7 @@
 #include "PlayerStateAttack.h"
 #include "PlayerStateIdle.h"
 #include "PlayerStateWalk.h"
+#include "PlayerStateWalkToHitEnemy.h"
 #include "PlayerStateDeath.h"
 #include "EnemyControllerScript.h"
 
@@ -46,7 +47,7 @@
 #include "ComponentAudioSource.h"
 #include "PlayerPrefs.h"
 
-#define SKILLS_SLOTS 5
+#define SKILLS_SLOTS 9
 
 PlayerMovement_API Script* CreateScript()
 {
@@ -60,7 +61,7 @@ PlayerMovement::PlayerMovement()
 	allSkills[SkillType::NONE] = new PlayerSkill();
 	allSkills[SkillType::STOMP] = new PlayerSkill(SkillType::STOMP);
 	allSkills[SkillType::RAIN] = new PlayerSkill(SkillType::RAIN);
-	allSkills[SkillType::CHAIN] = new PlayerSkill(SkillType::CHAIN);
+	allSkills[SkillType::CHAIN] = new PlayerSkill(SkillType::CHAIN, 0.0f, 0.0f);
 	allSkills[SkillType::DASH] = new PlayerSkill(SkillType::DASH);
 	allSkills[SkillType::SLICE] = new PlayerSkill(SkillType::SLICE);
 	allSkills[SkillType::BOMB_DROP] = new PlayerSkill(SkillType::BOMB_DROP);
@@ -188,9 +189,10 @@ void PlayerMovement::Expose(ImGuiContext* context)
 
 void PlayerMovement::CreatePlayerStates()
 {
-	playerStates.reserve(5);
+	playerStates.reserve(NUMBER_OF_PLAYERSTATES);
 
 	playerStates.push_back(walk = new PlayerStateWalk(this, "Walk"));
+	playerStates.push_back(walkToHit = new PlayerStateWalkToHitEnemy(this, "Walk"));
 	if (dustParticles == nullptr)
 	{
 		LOG("Dust Particles not found");
@@ -253,6 +255,96 @@ void PlayerMovement::CreatePlayerSkills()
 	allSkills[SkillType::CIRCULAR]->skill = (BasicSkill*)circular;
 	allSkills[SkillType::STOMP]->skill = (BasicSkill*)stomp;
 	allSkills[SkillType::RAIN]->skill = (BasicSkill*)rain;
+}
+
+void PlayerMovement::CheckSkillsInput()
+{
+	// Return if a skill is in use (except for basic attack)
+	if (currentSkill != nullptr && currentSkill != chain) return;
+
+	// TODO: Avoid using previous skill check
+	BasicSkill* previous = currentSkill;
+
+	SkillType skillType = SkillType::NONE;
+
+	if (IsAttacking())
+	{
+		// If player is already using chain attack go to second animation
+		if (currentSkill == chain)
+		{
+			ChainAttackSkill* chain = (ChainAttackSkill*)currentSkill;
+			chain->NextChainAttack();
+		}
+		else
+		{
+			currentSkill = allSkills[assignedSkills[HUB_BUTTON_RC]]->skill;
+			skillType = allSkills[assignedSkills[HUB_BUTTON_RC]]->type;
+		}
+	}
+	else if (IsUsingOne())
+	{
+		currentSkill = allSkills[assignedSkills[HUB_BUTTON_1]]->skill;
+		skillType = allSkills[assignedSkills[HUB_BUTTON_1]]->type;
+	}
+	else if (IsUsingTwo())
+	{
+		currentSkill = allSkills[assignedSkills[HUB_BUTTON_2]]->skill;
+		skillType = allSkills[assignedSkills[HUB_BUTTON_2]]->type;
+	}
+	else if (IsUsingThree())
+	{
+		currentSkill = allSkills[assignedSkills[HUB_BUTTON_3]]->skill;
+		skillType = allSkills[assignedSkills[HUB_BUTTON_3]]->type;
+	}
+	else if (IsUsingFour())
+	{
+		currentSkill = allSkills[assignedSkills[HUB_BUTTON_4]]->skill;
+		skillType = allSkills[assignedSkills[HUB_BUTTON_4]]->type;
+	}
+	else if (IsUsingQ())
+	{
+		currentSkill = allSkills[assignedSkills[HUB_BUTTON_Q]]->skill;
+		skillType = allSkills[assignedSkills[HUB_BUTTON_Q]]->type;
+	}
+	else if (IsUsingW())
+	{
+		currentSkill = allSkills[assignedSkills[HUB_BUTTON_W]]->skill;
+		skillType = allSkills[assignedSkills[HUB_BUTTON_W]]->type;
+	}
+	else if (IsUsingE())
+	{
+		currentSkill = allSkills[assignedSkills[HUB_BUTTON_E]]->skill;
+		skillType = allSkills[assignedSkills[HUB_BUTTON_E]]->type;
+	}
+	else if (IsUsingR())
+	{
+		currentSkill = allSkills[assignedSkills[HUB_BUTTON_R]]->skill;
+		skillType = allSkills[assignedSkills[HUB_BUTTON_R]]->type;
+	}
+
+	if (currentSkill != nullptr && previous != currentSkill)
+	{
+		if (previous != nullptr)
+		{
+			// TODO: Avoid saving skill (Reset sets currentSkill to nullptr)
+			BasicSkill* current = currentSkill;
+			previous->Reset();
+			currentSkill = current;
+		}
+
+		currentState = attack;
+
+		// Play skill animation
+		if (anim != nullptr)
+		{
+			anim->SendTriggerToStateMachine(currentSkill->animTrigger.c_str());
+		}
+
+		currentSkill->duration = anim->GetDurationFromClip();
+
+		UseSkill(skillType);
+		currentSkill->Start();
+	}
 }
 
 void PlayerMovement::Start()
@@ -536,7 +628,7 @@ void PlayerMovement::Update()
 	//Check input here and update the state!
 	if (currentState != death)
 	{
-		for (auto it = allSkills.begin(); it != allSkills.end(); ++it) it->second->Update(App->time->fullGameDeltaTime);
+		for (auto it = allSkills.begin(); it != allSkills.end(); ++it) it->second->Update(App->time->gameDeltaTime);
 
 		// Update cooldowns
 		if (hubCooldownMask != nullptr)
@@ -553,10 +645,16 @@ void PlayerMovement::Update()
 			}
 		}
 
+		// Skills
+		CheckSkillsInput();
+		if (currentSkill != nullptr)
+		{
+			currentSkill->Update();
+		}
+	
+		// States
 		currentState->UpdateTimer();
-
 		currentState->CheckInput();
-
 		currentState->Update();
 
 		//if previous and current are different the functions Exit() and Enter() are called
@@ -700,7 +798,8 @@ void PlayerMovement::OnAnimationEvent(std::string name)
 	}
 	if (name == "BombDropApex")
 	{
-		bombDropParticles->SetActive(true);		
+		if(bombDropParticles != nullptr)
+			bombDropParticles->SetActive(true);		
 	}
 	if (name == "BombDropEnd")
 	{
@@ -829,7 +928,7 @@ void PlayerMovement::DeSerialize(JSON_value* json)
 	OutOfMeshCorrectionXZ = json->GetFloat("MeshCorrectionXZ", 500.f);
 	OutOfMeshCorrectionY = json->GetFloat("MeshCorrectionY", 300.f);
 	maxWalkingDistance = json->GetFloat("MaxWalkDistance", 50000.0f);
-	straightPathingDistance = json->GetFloat("StraightPathDistance", 3000.0f);
+	straightPathingDistance = json->GetFloat("StraightPathDistance", 2000.0f);
 
 	outCombatMaxTime = json->GetFloat("Out_of_combat_timer", 3.f);
 
@@ -881,17 +980,69 @@ void PlayerMovement::OnTriggerExit(GameObject* go)
 
 }
 
-bool PlayerMovement::IsAtacking() const
+bool PlayerMovement::IsAttacking() const
 {
-	return !App->ui->UIHovered(true,false) && App->input->GetMouseButtonDown(1) == KEY_DOWN; //Left button
+	//if shift is being pressed while mouse 1
+	if (App->input->IsKeyPressed(SDL_SCANCODE_LSHIFT) == KEY_DOWN && 
+			(App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(true, false) ||
+			App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(true, false)))
+	{
+		return true;
+	}
+	//taking advantage of the lazy evaluation
+	//checking if there's any enemy targeted, really easy since its stored on a pointer
+	//then checking mouse buttons
+	float Dist = floatMax;
+	if (App->scene->enemyHovered.object != nullptr)
+	{
+		//stop if dead
+		if (App->scene->enemyHovered.health <= 0)
+		{
+			return false;
+		}
+		Dist = Distance(gameobject->transform->position, App->scene->enemyHovered.object->transform->position);
+	}
+	//and finally if enemy is on attack range
+	if(App->scene->enemyHovered.object != nullptr &&
+		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(false, true) ||
+		App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(false, true)) && 
+		 Dist <= basicAttackRange)
+	{
+		return true;
+	}
+	return false;
+}
+
+bool PlayerMovement::IsMovingToAttack() const
+{
+
+	if (App->scene->enemyHovered.object != nullptr && App->scene->enemyHovered.health > 0 &&
+		!App->input->IsKeyPressed(SDL_SCANCODE_LSHIFT) == KEY_DOWN &&
+		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(false, true) ||
+			App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(false, true)) &&
+		Distance(gameobject->transform->position, App->scene->enemyHovered.object->transform->position) > basicAttackRange	)
+	{
+		return true;
+	}
+	return false;
 }
 
 bool PlayerMovement::IsMoving() const
 {
+	return (IsPressingMouse1() && !IsAttacking() && !IsMovingToAttack());
+}
+
+bool PlayerMovement::IsPressingMouse1() const
+{
 	math::float3 temp;
-	return ( (App->input->GetMouseButtonDown(3) == KEY_DOWN && !App->ui->UIHovered(false, true)) ||
-			 (currentState->playerWalking) || 
-			 (App->input->GetMouseButtonDown(3) == KEY_REPEAT && !App->ui->UIHovered(false, true) && !App->scene->Intersects("PlayerMesh", false, temp))); //right button, the player is still walking or movement button is pressed and can get close to mouse pos
+	return ((App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(false, true)) ||
+		(currentState->playerWalking && !currentState->playerWalkingToHit) ||
+		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(false, true) && !App->scene->Intersects("PlayerMesh", false, temp))); //right button, the player is still walking or movement button is pressed and can get close to mouse pos
+}
+
+bool PlayerMovement::IsUsingLeftClick() const
+{
+	return !App->ui->UIHovered(true, false) && App->input->GetMouseButtonDown(3) == KEY_DOWN; //Left button
 }
 
 bool PlayerMovement::IsUsingOne() const
@@ -946,15 +1097,16 @@ void PlayerMovement::UseSkill(SkillType skill)
 	{
 		if (it->second->type == skill)
 		{
-			mana -= it->second->Use(hubGeneralAbilityCooldown);
+			mana -= it->second->Use(it->second->cooldown);
+			break;
 		}
-		else
+		/*else
 		{
 			it->second->SetCooldown(hubGeneralAbilityCooldown);
-		}
+		}*/
 	}
 
-	for (unsigned i = 0; i < 4; ++i)
+	for (unsigned i = 0u; i < SKILLS_SLOTS; ++i)
 	{
 		hubCooldownTimer[i] = allSkills[assignedSkills[i]]->cooldown;
 		hubCooldownMax[i] = allSkills[assignedSkills[i]]->cooldown;
