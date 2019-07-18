@@ -14,6 +14,7 @@
 class GameObject;
 class ComponentBoxTrigger;
 class EnemyControllerScript;
+class ProjectileScript;
 class JSON_value;
 class EnemyState;
 class EnemyStatePatrol;
@@ -92,6 +93,9 @@ public:
 
 	ComponentBoxTrigger* boxTrigger = nullptr;
 	EnemyControllerScript* enemyController = nullptr;
+	ProjectileScript* projectileScript1 = nullptr;
+	ProjectileScript* projectileScript2 = nullptr;
+	ProjectileScript* projectileScript3 = nullptr;
 
 private:
 	std::vector<EnemyState*> enemyStates;

@@ -6,6 +6,7 @@
 #include "ComponentBoxTrigger.h"
 
 #include "EnemyControllerScript.h"
+#include "ProjectileScript.h"
 #include "RangeEnemyAIScript.h"
 
 EnemyStateAttack::EnemyStateAttack(RangeEnemyAIScript* AIScript)
@@ -20,13 +21,16 @@ EnemyStateAttack::~EnemyStateAttack()
 
 void EnemyStateAttack::Enter()
 {
-	projectileShooted = false;
-	duration = duration * 3;
+	projShot1 = false;
+	projShot2 = false;
+	projShot3 = false;
+
+	duration = duration * 3; //should be exposed how many shots he does... In my dreams
 }
 
 void EnemyStateAttack::HandleIA()
 {
-	if (timer > duration && projectileShooted)
+	if (timer > duration)
 	{
 		// End attack: Enter cooldown state
 		timer = 0.f;
@@ -36,39 +40,37 @@ void EnemyStateAttack::HandleIA()
 
 void EnemyStateAttack::Update()
 {
-	if (!projectileShooted)
+
+	// Delay attack
+	if (timer > enemy->projectileDelay1 && !projShot1)
 	{
-		// Delay attack
-		if (timer > enemy->projectileDelay1)
-		{
-			// Reset projectile position
-			enemy->projectile1->transform->SetPosition(enemy->enemyController->GetPosition());
-			enemy->projectile1->transform->SetRotation(enemy->enemyController->GetRotation());
-
-			enemy->projectile1->SetActive(true);
-		}
-		if (timer > enemy->projectileDelay2)
-		{
-			// Reset projectile position
-			enemy->projectile2->transform->SetPosition(enemy->enemyController->GetPosition());
-			enemy->projectile2->transform->SetRotation(enemy->enemyController->GetRotation());
-
-			enemy->projectile2->SetActive(true);
-		}
-		if (timer > enemy->projectileDelay3)
-		{
-			// Reset projectile position
-			enemy->projectile3->transform->SetPosition(enemy->enemyController->GetPosition());
-			enemy->projectile3->transform->SetRotation(enemy->enemyController->GetRotation());
-
-			enemy->projectile3->SetActive(true);
-			projectileShooted = true;
-		}
+		// Reset projectile position
+		enemy->projectile1->transform->SetPosition(enemy->enemyController->GetPosition());
+		enemy->projectile1->transform->SetRotation(enemy->enemyController->GetRotation());
+		enemy->projectileScript1->shooted = true;
+		projShot1 = true;
+		enemy->projectile1->SetActive(true);
 	}
-
+	if (timer > enemy->projectileDelay2 && !projShot2)
+	{
+		// Reset projectile position
+		enemy->projectile2->transform->SetPosition(enemy->enemyController->GetPosition());
+		enemy->projectile2->transform->SetRotation(enemy->enemyController->GetRotation());
+		enemy->projectileScript2->shooted = true;
+		projShot2 = true;
+		enemy->projectile2->SetActive(true);
+	}
+	if (timer > enemy->projectileDelay3 && !projShot3)
+	{
+		// Reset projectile position
+		enemy->projectile3->transform->SetPosition(enemy->enemyController->GetPosition());
+		enemy->projectile3->transform->SetRotation(enemy->enemyController->GetRotation());
+		enemy->projectileScript3->shooted = true;
+		projShot3 = true;
+		enemy->projectile3->SetActive(true);
+	}
+	
 	// Keep looking at player
 	math::float3 playerPosition = enemy->enemyController->GetPlayerPosition();
 	enemy->enemyController->LookAt2D(playerPosition);
-
-
 }

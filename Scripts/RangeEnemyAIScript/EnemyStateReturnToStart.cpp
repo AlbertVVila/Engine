@@ -3,7 +3,7 @@
 #include "RangeEnemyAIScript.h"
 #include "EnemyControllerScript.h"
 
-#define START_POS_OFFSET  1.5f
+#define START_POS_OFFSET  20.f
 
 EnemyStateReturnToStart::EnemyStateReturnToStart(RangeEnemyAIScript* AIScript)
 {

@@ -3,6 +3,7 @@
 #include "GameObject.h"
 
 #include "EnemyControllerScript.h"
+#include "ProjectileScript.h"
 #include "RangeEnemyAIScript.h"
 
 EnemyStateCooldown::EnemyStateCooldown(RangeEnemyAIScript* AIScript)
@@ -32,7 +33,7 @@ void EnemyStateCooldown::HandleIA()
 			// Return to start position
 			enemy->currentState = (EnemyState*)enemy->returnToStart;
 		}
-		else if (!enemy->projectile1->isActive())
+		else if (!enemy->projectileScript1->shooted)
 		{
 			// Player in range and projectile is available, change to attack
 			enemy->currentState = (EnemyState*)enemy->attack;
