@@ -99,10 +99,10 @@ void GodMode::Exposure() const
 {
 	if (App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
 	{
-		App->renderer->exposure += .2f;
+		App->renderer->exposure += .4f;
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
 	{
-		App->renderer->exposure -= .2f;
+		App->renderer->exposure -= .4f;
 	}
 }

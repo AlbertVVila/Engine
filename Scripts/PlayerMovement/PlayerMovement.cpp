@@ -1319,6 +1319,7 @@ void PlayerMovement::ToggleMaxStats()
 		previousStats = stats;
 		stats = godStats;
 	}
+	UpdateUIStats();
 	hasMaxStats = !hasMaxStats;
 }
 
@@ -1333,6 +1334,7 @@ void PlayerMovement::ToggleInfiniteHealth()
 		health = 100000.0f;
 	}
 	hasInfiniteHealth = !hasInfiniteHealth;
+	lifeUIComponent->SetMaskAmount(100);
 }
 
 void PlayerMovement::ToggleInfiniteMana()
@@ -1346,6 +1348,7 @@ void PlayerMovement::ToggleInfiniteMana()
 		mana = 100000.0f;
 	}
 	hasInfiniteMana = !hasInfiniteMana;
+	manaUIComponent->SetMaskAmount(100);
 }
 
 void PlayerMovement::SavePlayerStats()
