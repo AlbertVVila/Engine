@@ -75,6 +75,8 @@ public:
 	// Cooldown variables
 	float cooldownTime = 1.0f;			// Seconds to wait between attacks
 
+	bool scared = false;
+
 	EnemyControllerScript* enemyController = nullptr;
 
 private:
