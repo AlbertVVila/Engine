@@ -15,7 +15,7 @@ uniform int f1Ypos;
 uniform int f2Xpos;
 uniform int f2Ypos;
 uniform float mixAmount;
-uniform vec3 colorIn;
+uniform vec4 colorIn;
 uniform vec2 uvSpeed;
 uniform float time;
 uniform float bloomIntensity;
@@ -32,7 +32,7 @@ void main()
 	float invY = 1 / float(yTiles);
 	vec2 tC1 = vec2(cellS + (invX * f1Xpos), cellT - (invY * f1Ypos));
 	vec2 tC2 = vec2(cellS + (invX * f2Xpos), cellT - (invY * f2Ypos));
-	color = mix(texture2D(texture, tC1), texture2D(texture, tC2) , mixAmount) * bloomIntensity * vec4(colorIn, 1.0f);
+	color = mix(texture2D(texture, tC1), texture2D(texture, tC2) , mixAmount) * bloomIntensity * colorIn;
 	//highlight = vec4(0);
 	
 	float brightness = dot(color.rgb, vec3(0.2126, 0.7152, 0.0722));

@@ -423,7 +423,7 @@ void ResourceMaterial::SetUniforms(unsigned shader, bool isFx, ComponentRenderer
 		glUniform1f(glGetUniformLocation(shader, "bloomIntensity"), cRenderer->material->bloomIntenstiy);		
 		glUniform1f(glGetUniformLocation(shader, "time"), App->time->realTime);
 		glUniform2fv(glGetUniformLocation(shader, "uvSpeed"), 1, &cRenderer->texSpeed[0]);
-		glUniform3fv(glGetUniformLocation(shader, "colorIn"), 1, &cRenderer->material->diffuseColor[0]);
+		glUniform4fv(glGetUniformLocation(shader, "colorIn"), 1, &cRenderer->material->diffuseColor[0]);
 	}
 	else
 	{

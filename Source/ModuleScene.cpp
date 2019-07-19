@@ -337,10 +337,10 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 		}
 	}
 
-	if (selected != nullptr && selected->GetComponentOld(ComponentType::Renderer) == nullptr)
-	{
-		DrawGO(*selected, camFrustum, isEditor); //bcause it could be an object without mesh not in staticGOs or dynamicGOs
-	}
+	//if (selected != nullptr && selected->GetComponentOld(ComponentType::Renderer) == nullptr)
+	//{
+		//DrawGO(*selected, camFrustum, isEditor); //bcause it could be an object without mesh not in staticGOs or dynamicGOs
+	//}
 	alphaRenderers.sort(
 		[camFrustum](const ComponentRenderer* cr1, const ComponentRenderer* cr2) -> bool
 	{

@@ -159,15 +159,17 @@ void ComponentVolumetricLight::Init()
 	};
 	memcpy_s(&conePoints[0], sizeof(float) * VERT_AMOUNT, &cPoints[0], sizeof(float) * VERT_AMOUNT);
 
-	for (unsigned i = 0u; i < INDEX_AMOUNT - 1; i += 2u)
+	int halfIndex = INDEX_AMOUNT / 2;
+	int halfUVs = UV_AMOUNT / 2;
+
+	for (unsigned i = 0u; i < halfUVs; i += 2u)
 	{
-		coneUVs[i * 2u] = i / (float)(INDEX_AMOUNT - 1); //Circle1 s coord
-		coneUVs[(i * 2u) + 1u] = 1.f; //Circle1 t coord
-		coneUVs[(i * 2u) + INDEX_AMOUNT - 1] = (float)(INDEX_AMOUNT - 1); //Circle2 s coord
-		coneUVs[(i * 2u) + INDEX_AMOUNT] = 0.f; //Circle1 t coord
+		coneUVs[i] = i / (float)(halfUVs); //Circle1 s coord
+		coneUVs[i + 1u] = .95f; //Circle1 t coord
+		coneUVs[i + halfUVs] = i / (float)(halfUVs); //Circle2 s coord
+		coneUVs[i + halfUVs + 1u] = 0.f; //Circle1 t coord
 	}
 
-	int halfIndex = INDEX_AMOUNT / 2;
 	coneIndexes[0] = halfIndex;
 	coneIndexes[1] = 0;
 	coneIndexes[2] = halfIndex + 1;
