@@ -64,7 +64,7 @@ private:
 	typedef std::pair<JSON_value*, GameObject*> scriptProperties;
 	std::map<std::string, std::vector<scriptProperties>> scriptInfo;
 	JSON* hotJson = nullptr;
-	bool hotReloading = false;
+	bool hotReloading = true;
 
 	std::string scriptToReload;
 	std::thread monitorThread;

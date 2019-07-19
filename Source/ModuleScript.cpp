@@ -46,7 +46,7 @@ bool ModuleScript::Init(JSON* config)
 	JSON_value* scriptJson = config->GetValue("scripts");
 	if (scriptJson == nullptr) return true;
 
-	hotReloading = scriptJson->GetInt("hotReloading");
+	hotReloading = scriptJson->GetInt("hotReloading", hotReloading);
 
 #ifndef GAME_BUILD
 	if (hotReloading)
