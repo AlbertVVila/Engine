@@ -114,7 +114,7 @@ void PlayerMovement::Expose(ImGuiContext* context)
 	ImGui::DragFloat("Stop distance", &straightPathingDistance, 100.f, 500.f, 10000.f);
 
 	ImGui::DragFloat("Out of Combat time", &outCombatMaxTime, 1.f, 0.f, 10.f);
-	
+
 	float maxHP = stats.health;
 	float maxMP = stats.mana;
 	stats.Expose("Player Stats");
@@ -277,8 +277,8 @@ void PlayerMovement::CheckSkillsInput()
 		}
 		else
 		{
-			currentSkill = allSkills[assignedSkills[HUD_BUTTON_RC]]->skill;
-			skillType = allSkills[assignedSkills[HUD_BUTTON_RC]]->type;
+			currentSkill = allSkills[SkillType::CHAIN]->skill;
+			skillType = SkillType::CHAIN;
 		}
 	}
 	else if (IsUsingOne())
@@ -385,7 +385,7 @@ void PlayerMovement::Start()
 			LOG("Damage UI feedback script couldn't be found \n");
 		}
 	}
-	
+
 	CreatePlayerStates();
 
 	currentState = idle;
@@ -622,7 +622,7 @@ void PlayerMovement::Start()
 	assignedSkills[HUD_BUTTON_W] = (SkillType)PlayerPrefs::GetInt("W", 20);
 	assignedSkills[HUD_BUTTON_E] = (SkillType)PlayerPrefs::GetInt("E", 20);
 	assignedSkills[HUD_BUTTON_R] = (SkillType)PlayerPrefs::GetInt("R", 20);
-	
+
 	InitializeUIStatsObjects();
 	LOG("Started player movement script");
 }
@@ -665,14 +665,14 @@ void PlayerMovement::Update()
 		{
 			currentSkill->Update();
 		}
-	
+
 		// States
 		currentState->UpdateTimer();
 		currentState->CheckInput();
 		currentState->Update();
 
 		//if previous and current are different the functions Exit() and Enter() are called
-		CheckStates(previous, currentState);	
+		CheckStates(previous, currentState);
 	}
 
 	ManaManagement();
@@ -736,7 +736,7 @@ void PlayerMovement::Update()
 			}
 		}
 	}
-		
+
 
 	//Check for changes in the state to send triggers to animation SM
 }
@@ -745,7 +745,7 @@ PlayerMovement_API void PlayerMovement::Damage(float amount)
 {
 	if (!isPlayerDead)
 	{
-		if(gotHitAudio != nullptr)
+		if (gotHitAudio != nullptr)
 			gotHitAudio->Play();
 		outCombatTimer = outCombatMaxTime;
 		health -= amount;
@@ -755,7 +755,7 @@ PlayerMovement_API void PlayerMovement::Damage(float amount)
 		}
 
 		damageController->AddDamage(gameobject->transform, amount, 5);
-		if(damageUIFeedback != nullptr)
+		if (damageUIFeedback != nullptr)
 			damageUIFeedback->ActivateDamageUI();
 
 		int healthPercentage = (health / stats.health) * 100;
@@ -812,8 +812,8 @@ void PlayerMovement::OnAnimationEvent(std::string name)
 	}
 	if (name == "BombDropApex")
 	{
-		if(bombDropParticles != nullptr)
-			bombDropParticles->SetActive(true);		
+		if (bombDropParticles != nullptr)
+			bombDropParticles->SetActive(true);
 	}
 	if (name == "BombDropEnd")
 	{
@@ -997,8 +997,8 @@ void PlayerMovement::OnTriggerExit(GameObject* go)
 bool PlayerMovement::IsAttacking() const
 {
 	//if shift is being pressed while mouse 1
-	if (App->input->IsKeyPressed(SDL_SCANCODE_LSHIFT) == KEY_DOWN && 
-			(App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(true, false) ||
+	if (App->input->IsKeyPressed(SDL_SCANCODE_LSHIFT) == KEY_DOWN &&
+		(App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(true, false) ||
 			App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(true, false)))
 	{
 		return true;
@@ -1017,10 +1017,10 @@ bool PlayerMovement::IsAttacking() const
 		Dist = Distance(gameobject->transform->position, App->scene->enemyHovered.object->transform->position);
 	}
 	//and finally if enemy is on attack range
-	if(App->scene->enemyHovered.object != nullptr &&
+	if (App->scene->enemyHovered.object != nullptr &&
 		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(false, true) ||
-		App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(false, true)) && 
-		 Dist <= basicAttackRange)
+			App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(false, true)) &&
+		Dist <= basicAttackRange)
 	{
 		return true;
 	}
@@ -1034,7 +1034,7 @@ bool PlayerMovement::IsMovingToAttack() const
 		!App->input->IsKeyPressed(SDL_SCANCODE_LSHIFT) == KEY_DOWN &&
 		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(false, true) ||
 			App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(false, true)) &&
-		Distance(gameobject->transform->position, App->scene->enemyHovered.object->transform->position) > basicAttackRange	)
+		Distance(gameobject->transform->position, App->scene->enemyHovered.object->transform->position) > basicAttackRange)
 	{
 		return true;
 	}
@@ -1101,7 +1101,7 @@ bool PlayerMovement::IsUsingR() const
 
 bool PlayerMovement::IsUsingSkill() const
 {
-	return (IsUsingOne() || IsUsingTwo() || IsUsingThree() || IsUsingFour()|| IsUsingQ() || IsUsingW() || IsUsingE() || IsUsingR() || IsUsingRightClick());
+	return (IsUsingOne() || IsUsingTwo() || IsUsingThree() || IsUsingFour() || IsUsingQ() || IsUsingW() || IsUsingE() || IsUsingR() || IsUsingRightClick());
 }
 
 void PlayerMovement::UseSkill(SkillType skill)
@@ -1223,7 +1223,7 @@ void PlayerStats::Expose(const char* sectionTitle)
 
 	int uiDexterity = (int)dexterity;
 	if (ImGui::InputInt("Dexterity", &uiDexterity)) dexterity = uiDexterity < 0 ? 0 : uiDexterity;
-	
+
 	ImGui::DragFloat("HP regen", &hpRegen, 1.0F, 0.0F, 10.0F);
 	ImGui::DragFloat("Mana regen", &manaRegen, 1.0F, 0.0F, 10.0F);
 }

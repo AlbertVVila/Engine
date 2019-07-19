@@ -125,9 +125,9 @@ void PlayerStateWalkToHitEnemy::Update()
 			playerWalkingToHit = false;
 			playerWalking = false;
 
-			player->currentSkill = player->allSkills[player->assignedSkills[HUD_BUTTON_RC]]->skill;
+			player->currentSkill = player->allSkills[SkillType::CHAIN]->skill;
 
-			SkillType skillType = player->allSkills[player->assignedSkills[HUD_BUTTON_RC]]->type;
+			SkillType skillType = SkillType::CHAIN;
 
 			//entering code
 			{
