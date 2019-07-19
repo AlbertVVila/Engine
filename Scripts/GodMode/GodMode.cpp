@@ -10,6 +10,10 @@
 #include "GameLoop/GameLoop.h"
 #include "imgui.h"
 
+#define EXPOSURE_OFFSET 0.5f
+#define EXPOSURE_MIN 0.5f
+#define EXPOSURE_MAX 20.0f
+
 GodMode_API Script* CreateScript()
 {
 	GodMode* instance = new GodMode;
@@ -99,10 +103,10 @@ void GodMode::Exposure() const
 {
 	if (App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
 	{
-		App->renderer->exposure += .4f;
+		App->renderer->exposure = MIN(EXPOSURE_MAX, App->renderer->exposure + EXPOSURE_OFFSET);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
 	{
-		App->renderer->exposure -= .4f;
+		App->renderer->exposure = MAX(EXPOSURE_MIN, App->renderer->exposure - EXPOSURE_OFFSET);
 	}
 }
