@@ -20,15 +20,15 @@ struct ImGuiContext;
 #define PlayerMovement_API __declspec(dllimport)
 #endif
 
-#define HUB_BUTTON_RC 0
-#define HUB_BUTTON_1 1
-#define HUB_BUTTON_2 2
-#define HUB_BUTTON_3 3
-#define HUB_BUTTON_4 4
-#define HUB_BUTTON_Q 5
-#define HUB_BUTTON_W 6
-#define HUB_BUTTON_E 7
-#define HUB_BUTTON_R 8
+#define HUD_BUTTON_RC 0
+#define HUD_BUTTON_1 1
+#define HUD_BUTTON_2 2
+#define HUD_BUTTON_3 3
+#define HUD_BUTTON_4 4
+#define HUD_BUTTON_Q 5
+#define HUD_BUTTON_W 6
+#define HUD_BUTTON_E 7
+#define HUD_BUTTON_R 8
 
 #define NUMBER_OF_PLAYERSTATES 6
 
@@ -71,14 +71,14 @@ class RainSkill;
 
 enum class PlayerMovement_API SkillType
 {
-	NONE = 0,
-	CHAIN,
 	DASH,
-	SLICE,
-	BOMB_DROP,
 	CIRCULAR,
+	BOMB_DROP,
+	SLICE,
+	RAIN,
 	STOMP,
-	RAIN
+	CHAIN = 10,
+	NONE = 20
 };
 
 struct PlayerMovement_API PlayerSkill
@@ -176,7 +176,7 @@ public:
 	bool IsMoving() const;
 	bool IsMovingToAttack() const;
 	bool IsPressingMouse1() const;
-	bool IsUsingLeftClick() const;
+	bool IsUsingRightClick() const;
 	bool IsUsingOne() const;
 	bool IsUsingTwo() const;
 	bool IsUsingThree() const;
@@ -190,6 +190,7 @@ public:
 	void CheckSkillsInput();
 	void ResetCooldown(unsigned int hubButtonID);
 	void UseSkill(SkillType skill);
+	void AssignSkill(SkillType skill, int position);
 
 	void SavePlayerStats();
 
@@ -198,7 +199,7 @@ private:
 	void CreatePlayerStates();
 	void ManaManagement();
 
-	void ActivateHudCooldownMask(bool activate, unsigned first = HUB_BUTTON_Q, unsigned last = HUB_BUTTON_4);
+	void ActivateHudCooldownMask(bool activate, unsigned first = HUD_BUTTON_Q, unsigned last = HUD_BUTTON_4);
 
 	// Skills
 	void CreatePlayerSkills();

@@ -37,7 +37,7 @@ void BombDropSkill::Start()
 		{
 			bombDropFX->SetActive(true);
 		}
-		player->ResetCooldown(HUB_BUTTON_E);
+		player->ResetCooldown(HUD_BUTTON_E);
 	}
 
 	//Create the hitbox
