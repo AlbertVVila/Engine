@@ -138,43 +138,6 @@ bool ModuleParticles::Start()
 	return true;
 }
 
-void ModuleParticles::Render(float dt, const ComponentCamera* camera) 
-{
-	BROFILER_CATEGORY("Particles Render", Profiler::Color::AliceBlue);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	particleSystems.sort(
-		[camera](const ComponentParticles* cp1, const ComponentParticles* cp2) -> bool
-		{
-			return cp1->gameobject->transform->GetGlobalPosition().Distance(camera->frustum->pos) > cp2->gameobject->transform->GetGlobalPosition().Distance(camera->frustum->pos);
-		});
-	for (ComponentParticles* cp : particleSystems)
-	{
-		if (camera->frustum->Contains(cp->gameobject->transform->GetGlobalPosition()))
-		{
-			cp->Update(dt, camera->frustum->pos);
-
-			DrawParticleSystem(cp, camera);
-		}
-	}
-
-	glDisable(GL_CULL_FACE);	
-	glBlendFunc(GL_ONE, GL_ONE);	
-
-	for (ComponentTrail* trail : trails)
-	{
-		trail->UpdateTrail();
-		if (trail->trail.size() > 1)
-		{
-			RenderTrail(trail, camera);
-		}
-	}
-	glEnable(GL_CULL_FACE);	
-	glDisable(GL_BLEND);
-
-	glUseProgram(0);
-}
-
 void ModuleParticles::RenderTrail(ComponentTrail* ct, const ComponentCamera* camera) const
 {
 	if (ct->texture == nullptr)
