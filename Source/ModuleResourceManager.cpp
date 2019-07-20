@@ -308,9 +308,9 @@ bool ModuleResourceManager::ImportFile(const char* newFileInAssets, const char* 
 	// If export was successful, create a new resource
 	if (success) 
 	{ 
-		resource->SaveMetafile(assetPath.c_str());
 		resource->SetName(name.c_str());
 		resource->SetExportedFile(exportedFile.c_str());
+		resource->SaveMetafile(assetPath.c_str());
 		LOG("%s imported.", resource->GetFile());
 	}
 	else
@@ -784,6 +784,7 @@ Resource* ModuleResourceManager::AddResource(const char* file, const char* direc
 		case TYPE::MATERIAL:	exportedFile = IMPORTED_MATERIALS		+ std::to_string(uid) + MATERIALEXT;			break;
 		case TYPE::ANIMATION:	exportedFile = IMPORTED_ANIMATIONS		+ std::to_string(uid) + ANIMATIONEXTENSION;		break;
 		case TYPE::STATEMACHINE:exportedFile = IMPORTED_STATEMACHINES	+ std::to_string(uid) + STATEMACHINEEXTENSION;	break;
+		case TYPE::PREFAB:		exportedFile = IMPORTED_PREFABS			+ std::to_string(uid) + PREFABEXTENSION;		break;
 		default:
 			break;
 			}
@@ -797,6 +798,28 @@ Resource* ModuleResourceManager::AddResource(const char* file, const char* direc
 		// Resource already exist
 		return GetWithoutLoad(uid);
 	}
+}
+
+Resource* ModuleResourceManager::AddResourceFromLibrary(const char* exportedFile, TYPE type)
+{
+	unsigned uid = std::stoul(App->fsystem->GetFilename(exportedFile));
+
+	// Check if resource was already added
+	if (GetWithoutLoad(uid) == nullptr)
+	{
+		// Create new resource 
+		Resource* res = CreateNewResource(type, uid);
+		res->SetExportedFile(exportedFile);
+		res->LoadConfigFromLibraryMeta();
+		return res;
+	}
+	else
+	{
+		// Resource already exist
+		return GetWithoutLoad(uid);
+	}
+
+	return nullptr;
 }
 
 Resource* ModuleResourceManager::ReplaceResource(unsigned oldResourceUID, Resource* newResource)
@@ -833,32 +856,57 @@ unsigned ModuleResourceManager::GetUIDFromMeta(const char* metaFile, FILETYPE fi
 	case TYPE::MATERIAL:	value = json->GetValue("Material");		break;
 	case TYPE::MESH:		value = json->GetValue("Mesh");			break;
 	case TYPE::AUDIO:		value = json->GetValue("Audio");		break;
-	case TYPE::MODEL:		value = json->GetValue("Mesh");			break;
 	case TYPE::SCENE:		value = json->GetValue("Scene");		break;
 	case TYPE::ANIMATION:	value = json->GetValue("Animation");	break;
 	case TYPE::STATEMACHINE:value = json->GetValue("StateMachine");	break;
 	case TYPE::PREFAB:      value = json->GetValue("Prefab");		break;
+	case TYPE::MODEL:		
+		value = json->GetValue("Model");	// Try old meta version
+		if (value == nullptr)
+			value = json->GetValue("Mesh");
+		break;
 	default:
 		return 0;
 		break;
 	}
 	if (value != nullptr)
 	{
-		return value->GetUint("GUID");
+		unsigned guid = value->GetUint("GUID");
+		RELEASE_ARRAY(data);
+		RELEASE(json);
+		return guid;
 	}
 	else
 	{
+		RELEASE_ARRAY(data);
+		RELEASE(json);
 		return 0;
 	}
 }
 
 void ModuleResourceManager::CleanUnusedMetaFiles() const
 {
-	// Get lists with all assets
+	// Get lists with all resource files assets
 	std::set<std::string> assetFiles;
-	App->fsystem->ListFilesWithExtension(ASSETS, assetFiles);
+	App->fsystem->ListFiles(ASSETS, assetFiles);
 
 	for (auto& file : assetFiles)
+	{
+		if (HashString(App->fsystem->GetExtension(file).c_str()) == HashString(METAEXT))
+		{
+			std::string fileAssignedToMeta = App->fsystem->RemoveExtension(file);
+			if (!App->fsystem->Exists(fileAssignedToMeta.c_str()))
+			{
+				App->fsystem->Delete(file.c_str());
+			}
+		}
+	}
+
+	// Get lists with all resource files in library
+	std::set<std::string> libraryFiles;
+	App->fsystem->ListFiles(LIBRARY, libraryFiles);
+
+	for (auto& file : libraryFiles)
 	{
 		if (HashString(App->fsystem->GetExtension(file).c_str()) == HashString(METAEXT))
 		{
@@ -875,13 +923,17 @@ void ModuleResourceManager::CleanUnusedExportedFiles() const
 {
 	// Get lists with all imported files
 	std::set<std::string> importedFiles;
-	App->fsystem->ListFilesWithExtension(LIBRARY, importedFiles);
+	App->fsystem->ListFiles(LIBRARY, importedFiles);
 
 	for (auto& file : importedFiles)
 	{
-		if (!App->resManager->Exists(file.c_str()))
+		// Exclude metas
+		if (HashString(App->fsystem->GetExtension(file).c_str()) != HashString(METAEXT))
 		{
-			App->fsystem->Delete(file.c_str());
+			if (!App->resManager->Exists(file.c_str()))
+			{
+				App->fsystem->Delete(file.c_str());
+			}
 		}
 	}
 }

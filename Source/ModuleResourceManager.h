@@ -72,6 +72,7 @@ class ModuleResourceManager :
 	void LoadEngineResources();																// Loads resources needed by the engine (Skybox, white, no camera textures...)
 	Resource* AddResource(const char* file, const char* directory, TYPE type);				// Adds a resource with the file information to the resources list
 	Resource* AddResource(const char* file, const char* directory, TYPE type, unsigned uid);// Adds a resource with the file and uid information to the resources list
+	Resource* AddResourceFromLibrary(const char* exportedFile, TYPE type);						// Adds a resource, by getting the info from the meta file in library, to the resources list
 	Resource* ReplaceResource(unsigned oldResourceUID, Resource* newResource);	
 	void DeleteResourceFromList(unsigned uid);
 

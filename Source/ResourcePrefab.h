@@ -21,6 +21,7 @@ public:
 
 	void SaveMetafile(const char* file) const override;
 	void LoadConfigFromMeta() override;
+	void LoadConfigFromLibraryMeta() override;
 
 	void AddInstance(GameObject * go);
 	bool RemoveInstance(GameObject * go);
