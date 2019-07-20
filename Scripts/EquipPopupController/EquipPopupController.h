@@ -10,6 +10,9 @@
 #define EquipPopupController_API __declspec(dllimport)
 #endif
 
+#define POPUP_SLOTS 16
+#define HUD_BUTTONS 9
+
 class GameObject;
 class Text;
 class ComponentImage;
@@ -18,6 +21,7 @@ class Item;
 class Skill;
 class SkillTreeController;
 class InventoryScript;
+class PlayerMovement;
 class Transform2D;
 
 class EquipPopupController_API EquipPopupController : public Script
@@ -48,6 +52,7 @@ private:
 
 	InventoryScript* inventory = nullptr;
 	SkillTreeController* skillTree = nullptr;
+	PlayerMovement* player = nullptr;
 
 	GameObject* popupGO = nullptr;
 	ComponentImage* background = nullptr;

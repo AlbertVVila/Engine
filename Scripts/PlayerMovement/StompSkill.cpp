@@ -31,7 +31,7 @@ void StompSkill::Start()
 	{
 		StompFX->SetActive(true);
 	}
-	player->ResetCooldown(HUB_BUTTON_1);
+	player->ResetCooldown(HUD_BUTTON_1);
 
 	//Create the hitbox
 	boxSize = math::float3(200.f, 200.f, 200.f);

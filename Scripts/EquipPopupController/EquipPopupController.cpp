@@ -12,6 +12,7 @@
 #include "ComponentImage.h"
 #include "ResourceTexture.h"
 
+#include "PlayerMovement.h"
 #include "InventoryScript.h"
 #include "SkillTreeController.h"
 #include "Item.h"
@@ -54,6 +55,7 @@ void EquipPopupController::Start()
 
 	GameObject* HUD = App->scene->FindGameObjectByName("GameHUB");
 	assert(HUD != nullptr);
+	hudButtons.emplace_back(App->scene->FindGameObjectByName("RC", HUD)->GetComponent<Button>());
 	hudButtons.emplace_back(App->scene->FindGameObjectByName("One", HUD)->GetComponent<Button>());
 	hudButtons.emplace_back(App->scene->FindGameObjectByName("Two", HUD)->GetComponent<Button>());
 	hudButtons.emplace_back(App->scene->FindGameObjectByName("Three", HUD)->GetComponent<Button>());
@@ -70,6 +72,14 @@ void EquipPopupController::Start()
 	hoverTransform = App->scene->FindGameObjectByName("PopUpHover", gameobject)->GetComponent<Transform2D>();
 	assert(hoverTransform != nullptr);
 
+	GameObject* playerGO = App->scene->FindGameObjectByName("Player");
+	assert(playerGO != nullptr);
+	if (playerGO != nullptr)
+	{
+		player = playerGO->GetComponent<PlayerMovement>();
+		assert(player != nullptr);
+	}
+
 	LoadPopUp();
 }
 
@@ -83,7 +93,7 @@ void EquipPopupController::Update()
 	}
 
 	//Check if has to open PopUp
-	for (int i = 0; i < 8; ++i)
+	for (int i = 0; i < HUD_BUTTONS; ++i)
 	{
 		if (hudButtons[i]->IsHovered() && App->input->GetMouseButtonDown(3) == KEY_DOWN) {
 			activeButton = i;
@@ -110,7 +120,7 @@ void EquipPopupController::Update()
 	}
 
 	//Check if selected
-	for (int i = 0; i < 16; ++i)
+	for (int i = 0; i < POPUP_SLOTS; ++i)
 	{
 		if (!slots[i]->isActive())
 		{
@@ -141,8 +151,9 @@ void EquipPopupController::Assign(int i)
 		hudButtons[activeButton]->UpdateImageByName(skillsList[i].spriteActive->GetName());
 		hudButtons[activeButton]->gameobject->children.front()->GetComponent<ComponentImage>()->UpdateTexture(skillsList[i].spriteActive->GetName());
 		auto it1 = std::next(hudButtons[activeButton]->gameobject->children.begin(), 1);
-		(*it1)->SetActive(true);	
-		//TODO: Pass info to player
+		(*it1)->SetActive(true);
+		player->AssignSkill((SkillType)skillsList[i].id, activeButton);
+
 	}
 	else
 	{
@@ -195,13 +206,13 @@ void EquipPopupController::ChangePopUpSlots()
 
 void EquipPopupController::FillLists()
 {
-	
+
 	skillsList.clear();
 	itemsList.clear();
 	skillsList = skillTree->GetActiveSkills();
 	itemsList = inventory->GetQuickItems();
-	
-	if (skillsShowing) 
+
+	if (skillsShowing)
 	{
 		FillSkillSlots();
 	}
@@ -213,8 +224,8 @@ void EquipPopupController::FillLists()
 
 void EquipPopupController::FillSkillSlots()
 {
-	
-	for (int i = 0; i < 16; ++i)
+
+	for (int i = 0; i < POPUP_SLOTS; ++i)
 	{
 		slots[i]->SetActive(false);
 		if (i < skillsList.size())
@@ -227,12 +238,12 @@ void EquipPopupController::FillSkillSlots()
 
 void EquipPopupController::FillItemSlots()
 {
-	
+
 	if (skillsShowing) {
 		return;
 	}
 
-	for (int i = 0; i < 16; ++i)
+	for (int i = 0; i < POPUP_SLOTS; ++i)
 	{
 		slots[i]->SetActive(false);
 
@@ -247,43 +258,48 @@ void EquipPopupController::FillItemSlots()
 
 void EquipPopupController::CleanButton()
 {
-	//TODO: Avisar al player
 	auto it1 = std::next(hudButtons[activeButton]->gameobject->children.begin(), 1);
 	(*it1)->SetActive(false);
+
+	player->AssignSkill(SkillType::NONE, activeButton);
 
 	RemoveEquiped();
 
 	switch (activeButton)
 	{
 	case 0:
+		hudButtons[activeButton]->UpdateImageByName("Right_clic");
+		hudButtons[activeButton]->gameobject->children.front()->GetComponent<ComponentImage>()->UpdateTexture("Right_clic");
+		break;
+	case 1:
 		hudButtons[activeButton]->UpdateImageByName("1");
 		hudButtons[activeButton]->gameobject->children.front()->GetComponent<ComponentImage>()->UpdateTexture("1");
 		break;
-	case 1:
+	case 2:
 		hudButtons[activeButton]->UpdateImageByName("2");
 		hudButtons[activeButton]->gameobject->children.front()->GetComponent<ComponentImage>()->UpdateTexture("2");
 		break;
-	case 2:
+	case 3:
 		hudButtons[activeButton]->UpdateImageByName("3");
 		hudButtons[activeButton]->gameobject->children.front()->GetComponent<ComponentImage>()->UpdateTexture("3");
 		break;
-	case 3:
+	case 4:
 		hudButtons[activeButton]->UpdateImageByName("4");
 		hudButtons[activeButton]->gameobject->children.front()->GetComponent<ComponentImage>()->UpdateTexture("4");
 		break;
-	case 4:
+	case 5:
 		hudButtons[activeButton]->UpdateImageByName("Q");
 		hudButtons[activeButton]->gameobject->children.front()->GetComponent<ComponentImage>()->UpdateTexture("Q");
 		break;
-	case 5:
+	case 6:
 		hudButtons[activeButton]->UpdateImageByName("W");
 		hudButtons[activeButton]->gameobject->children.front()->GetComponent<ComponentImage>()->UpdateTexture("W");
 		break;
-	case 6:
+	case 7:
 		hudButtons[activeButton]->UpdateImageByName("E");
 		hudButtons[activeButton]->gameobject->children.front()->GetComponent<ComponentImage>()->UpdateTexture("E");
 		break;
-	case 7:
+	case 8:
 		hudButtons[activeButton]->UpdateImageByName("R");
 		hudButtons[activeButton]->gameobject->children.front()->GetComponent<ComponentImage>()->UpdateTexture("R");
 		break;
