@@ -28,9 +28,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{103c14e0-9f00-4bad-885f-ec0b4dade0dd}</ProjectGuid>
+    <ProjectGuid>{70e97566-efb7-4382-a1a2-1806c1d28250}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>FearController</RootNamespace>
+    <RootNamespace>FearControllerScript</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition="'$(WindowsTargetPlatformVersion)'==''">
     <!-- Latest Target Version property -->
@@ -130,14 +130,14 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;FearController_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;FearControllerScript_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Scripts\EnemyControllerScript\;$(SolutionDir)\Scripts\BasicEnemyAIScript\;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\BaseScript;$(SolutionDir)\Source;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\BasicEnemyAIScript;$(SolutionDir)\Scripts\EnemyControllerScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\Source\Imgui\lib; $(SolutionDir)$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\Source\Imgui\lib;$(SolutionDir)\Source\MathGeoLib\lib;$(SolutionDir)$(Configuration)</AdditionalLibraryDirectories>
       <AdditionalDependencies>$(SolutionName).lib;ImGui.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
@@ -150,14 +150,14 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;FearController_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;FearControllerScript_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Scripts\EnemyControllerScript\;$(SolutionDir)\Scripts\BasicEnemyAIScript\;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\BaseScript;$(SolutionDir)\Source;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\BasicEnemyAIScript;$(SolutionDir)\Scripts\EnemyControllerScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\Source\Imgui\lib; $(SolutionDir)$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\Source\Imgui\lib;$(SolutionDir)\Source\MathGeoLib\lib;$(SolutionDir)$(Configuration)</AdditionalLibraryDirectories>
       <AdditionalDependencies>$(SolutionName).lib;ImGui.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
@@ -170,7 +170,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;FearController_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;FearControllerScript_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -186,16 +186,16 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;FearController_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;FearControllerScript_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Scripts\EnemyControllerScript\;$(SolutionDir)\Scripts\BasicEnemyAIScript\;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\BaseScript;$(SolutionDir)\Source;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\BasicEnemyAIScript;$(SolutionDir)\Scripts\EnemyControllerScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\Source\Imgui\lib; $(SolutionDir)$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\Source\Imgui\lib;$(SolutionDir)\Source\MathGeoLib\lib;$(SolutionDir)$(Configuration)</AdditionalLibraryDirectories>
       <AdditionalDependencies>$(SolutionName).lib;ImGui.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
@@ -210,16 +210,16 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;FearController_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;FearControllerScript_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Scripts\EnemyControllerScript\;$(SolutionDir)\Scripts\BasicEnemyAIScript\;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\BaseScript;$(SolutionDir)\Source;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\BasicEnemyAIScript;$(SolutionDir)\Scripts\EnemyControllerScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\Source\Imgui\lib; $(SolutionDir)$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\Source\Imgui\lib;$(SolutionDir)\Source\MathGeoLib\lib;$(SolutionDir)$(Configuration)</AdditionalLibraryDirectories>
       <AdditionalDependencies>$(SolutionName).lib;ImGui.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
@@ -234,7 +234,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;FearController_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;FearControllerScript_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -245,10 +245,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="FearController.cpp" />
+    <ClCompile Include="FearControllerScript.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FearController.h" />
+    <ClInclude Include="FearControllerScript.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

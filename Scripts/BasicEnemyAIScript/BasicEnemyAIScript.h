@@ -25,6 +25,7 @@ class EnemyStateDeath;
 class BasicEnemyAIScript_API BasicEnemyAIScript : public Script
 {
 public:
+	void Awake() override;
 	void Start() override;
 	void Update() override;
 

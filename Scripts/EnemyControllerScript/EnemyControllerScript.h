@@ -2,7 +2,6 @@
 #define  __EnemyControllerScript_h__
 
 #include "BaseScript.h"
-
 #include "Geometry/AABB.h"
 #include <vector>
 
@@ -51,13 +50,14 @@ public:
 
 	inline bool IsCollidingWithPlayer() const;
 
-	bool IsDead();
 	void Move(float speed, math::float3& direction) const;		// Warning: doesn't use nav mesh
 	void Move(float speed, float& refreshTime, math::float3 position, std::vector<float3>& path) const; // Move using nav mesh
 	void LookAt2D(math::float3& position);
 
 	void OnTriggerEnter(GameObject* go) override;
 public:
+
+	bool isDead = false;
 	GameObject* player = nullptr;
 	PlayerMovement* playerMovement = nullptr;
 	std::string playerTag = "Player";
@@ -93,7 +93,7 @@ private:
 
 	float hitColorDuration = 0.2f;
 	float timer = 0.f;
-	bool isDead = false;
+
 };
 
 #endif __EnemyControllerScript_h__
