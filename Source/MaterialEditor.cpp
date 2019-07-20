@@ -36,8 +36,8 @@ void MaterialEditor::Draw(bool onlyDiffuse)
 		ImGui::ColorEdit3("Specular Color", (float*)&material->specularColor);
 		ImGui::DragFloat("Roughness", &material->roughness, .01f, .001f, 1.f);
 	}
-	if (!onlyDiffuse)
-		ShaderSelector(currentShader);
+	
+	ShaderSelector(currentShader);
 
 	if (ImGui::CollapsingHeader("Diffuse"))
 	{
