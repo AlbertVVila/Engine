@@ -79,7 +79,6 @@ public:
 	unsigned VBObox = 0u;
 	unsigned EBObox = 0u;
 
-
 	
 public:
 

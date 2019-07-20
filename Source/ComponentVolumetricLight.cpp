@@ -6,31 +6,46 @@
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
 #include "ModuleScene.h"
+#include "ModuleRender.h"
 #include "ComponentRenderer.h"
+#include "JSON.h"
+
 #include "imgui.h"
 
 ComponentVolumetricLight::ComponentVolumetricLight(GameObject* gameobject) : Component(gameobject, ComponentType::VolumetricLight)
 {
 	Init();
 	renderer = new ComponentRenderer(gameobject);
-	renderer->isVolumetricLight = true;	
+	renderer->isVolumetricLight = true;		
 	renderer->useAlpha = true;
-	App->scene->AddToSpacePartition(gameobject);
+	circle1Radius *= App->renderer->current_scale;
+	circle2Radius *= App->renderer->current_scale;
+	length *= App->renderer->current_scale;
 }
 
 ComponentVolumetricLight::ComponentVolumetricLight(const ComponentVolumetricLight& copy) : Component(copy)
 {
+	circle1Radius = copy.circle1Radius;
+	circle2Radius = copy.circle2Radius;
+	length = copy.length;
+
+	Init();
+	renderer = (ComponentRenderer*)copy.renderer->Clone();
+	renderer->isVolumetricLight = true;
+	renderer->useAlpha = true;
+	UpdateMesh();
 }
 
 ComponentVolumetricLight::~ComponentVolumetricLight()
 {
+	App->scene->DeleteFromSpacePartition(gameobject);
 	RELEASE(mesh);
 	RELEASE(renderer);
 }
 
 Component* ComponentVolumetricLight::Clone() const
 {
-	return nullptr;
+	return new ComponentVolumetricLight(*this);
 }
 
 void ComponentVolumetricLight::Update()
@@ -40,15 +55,31 @@ void ComponentVolumetricLight::Update()
 void ComponentVolumetricLight::DrawProperties()
 {
 	ImGui::PushID(this);
+
+	bool active = enabled;
+
+	ImGui::Checkbox("Active", &active); ImGui::SameLine();
+	ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0.f, 0.6f, 0.6f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0.f / 7.0f, 0.7f, 0.7f));
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0.f / 7.0f, 0.8f, 0.8f));
+
+	bool removed = ImGui::Button("Remove");
+	ImGui::PopStyleColor(3);
+
+	if (removed) {
+		Remove();
+		ImGui::PopID();
+		return;
+	}
+	
 	if (ImGui::CollapsingHeader("Volumetric Light", ImGuiTreeNodeFlags_DefaultOpen))
 	{
-		if (ImGui::DragFloat("Circle 1 radius", &circle1Radius, 1.f, 0.f, MAX_RADIUS)) 
+		if (ImGui::DragFloat("Base radius", &circle1Radius, 1.f, 0.f, MAX_RADIUS)) 
 			UpdateMesh();
-		if (ImGui::DragFloat("Circle 2 radius", &circle2Radius, 1.f, 0.f, MAX_RADIUS))
+		if (ImGui::DragFloat("Origin radius", &circle2Radius, 1.f, 0.f, MAX_RADIUS))
 			UpdateMesh();
 		if (ImGui::DragFloat("Length", &length, 1.f, 0.f))
 			UpdateMesh();
-
 		renderer->DrawProperties();		
 	}
 	ImGui::PopID();
@@ -56,10 +87,25 @@ void ComponentVolumetricLight::DrawProperties()
 
 void ComponentVolumetricLight::Save(JSON_value* value) const
 {
+	Component::Save(value);
+
+	value->AddFloat("circle1Radius", circle1Radius);
+	value->AddFloat("circle1Radius", circle2Radius);
+	value->AddFloat("length", length);
+	JSON_value* hValue = value->CreateValue(rapidjson::kObjectType);
+	renderer->Save(hValue);
+	value->AddValue("renderer", *hValue);
 }
 
 void ComponentVolumetricLight::Load(JSON_value* value)
 {
+	Component::Load(value);
+
+	renderer->Load(value->GetValue("renderer"));
+	circle1Radius = value->GetFloat("circle1Radius");
+	circle2Radius = value->GetFloat("circle2Radius");
+	length = value->GetFloat("length");
+
 }
 
 void ComponentVolumetricLight::UpdateMesh()
@@ -84,7 +130,12 @@ void ComponentVolumetricLight::UpdateMesh()
 	mesh = new ResourceMesh(VERT_AMOUNT, &cPoints[0], INDEX_AMOUNT, &coneIndexes[0], UV_AMOUNT, &coneUVs[0]);
 	
 	renderer->mesh = mesh;
+	App->scene->DeleteFromSpacePartition(gameobject);
 	gameobject->UpdateBBox();	
+	App->scene->AddToSpacePartition(gameobject);
+	
+	gameobject->movedFlag = true;
+
 }
 
 void ComponentVolumetricLight::Init()
@@ -92,21 +143,21 @@ void ComponentVolumetricLight::Init()
 	float cPoints[VERT_AMOUNT] = { //2 31 vertices circles of radius 1
 		//Circle 1
 		1.000f, 0.000f, 0.000f,
-		0.981f, -0.000f, -0.195f,
-		0.924f, -0.000f, -0.383f,
-		0.831f, -0.000f, -0.556f,
-		0.707f, -0.000f, -0.707f,
-		0.556f, -0.000f, -0.831f,
-		0.383f, -0.000f, -0.924f,
-		0.195f, -0.000f, -0.981f,
-		-0.000f, -0.000f, -1.000f,
-		-0.195f, -0.000f, -0.981f,
-		-0.383f, -0.000f, -0.924f,
-		-0.556f, -0.000f, -0.831f,
-		-0.707f, -0.000f, -0.707f,
-		-0.831f, -0.000f, -0.556f,
-		-0.924f, -0.000f, -0.383f,
-		-0.981f, -0.000f, -0.195f,
+		0.981f, 0.000f, -0.195f,
+		0.924f, 0.000f, -0.383f,
+		0.831f, 0.000f, -0.556f,
+		0.707f, 0.000f, -0.707f,
+		0.556f, 0.000f, -0.831f,
+		0.383f, 0.000f, -0.924f,
+		0.195f, 0.000f, -0.981f,
+		-0.000f, 0.000f, -1.000f,
+		-0.195f, 0.000f, -0.981f,
+		-0.383f, 0.000f, -0.924f,
+		-0.556f, 0.000f, -0.831f,
+		-0.707f, 0.000f, -0.707f,
+		-0.831f, 0.000f, -0.556f,
+		-0.924f, 0.000f, -0.383f,
+		-0.981f, 0.000f, -0.195f,
 		-1.000f, 0.000f, 0.000f,
 		-0.981f, 0.000f, 0.195f,
 		-0.924f, 0.000f, 0.383f,
@@ -122,23 +173,25 @@ void ComponentVolumetricLight::Init()
 		0.707f, 0.000f, 0.707f,
 		0.831f, 0.000f, 0.556f,
 		0.924f, 0.000f, 0.383f,
+		0.981f, 0.000f, 0.195f,
+		1.000f, 0.000f, 0.000f,
 		// Circle2
 		1.000f, 0.000f, 0.000f,
-		0.981f, -0.000f, -0.195f,
-		0.924f, -0.000f, -0.383f,
-		0.831f, -0.000f, -0.556f,
-		0.707f, -0.000f, -0.707f,
-		0.556f, -0.000f, -0.831f,
-		0.383f, -0.000f, -0.924f,
-		0.195f, -0.000f, -0.981f,
-		-0.000f, -0.000f, -1.000f,
-		-0.195f, -0.000f, -0.981f,
-		-0.383f, -0.000f, -0.924f,
-		-0.556f, -0.000f, -0.831f,
-		-0.707f, -0.000f, -0.707f,
-		-0.831f, -0.000f, -0.556f,
-		-0.924f, -0.000f, -0.383f,
-		-0.981f, -0.000f, -0.195f,
+		0.981f, 0.000f, -0.195f,
+		0.924f, 0.000f, -0.383f,
+		0.831f, 0.000f, -0.556f,
+		0.707f, 0.000f, -0.707f,
+		0.556f, 0.000f, -0.831f,
+		0.383f, 0.000f, -0.924f,
+		0.195f, 0.000f, -0.981f,
+		-0.000f, 0.000f, -1.000f,
+		-0.195f, 0.000f, -0.981f,
+		-0.383f, 0.000f, -0.924f,
+		-0.556f, 0.000f, -0.831f,
+		-0.707f, 0.000f, -0.707f,
+		-0.831f, 0.000f, -0.556f,
+		-0.924f, 0.000f, -0.383f,
+		-0.981f, 0.000f, -0.195f,
 		-1.000f, 0.000f, 0.000f,
 		-0.981f, 0.000f, 0.195f,
 		-0.924f, 0.000f, 0.383f,
@@ -154,12 +207,11 @@ void ComponentVolumetricLight::Init()
 		0.707f, 0.000f, 0.707f,
 		0.831f, 0.000f, 0.556f,
 		0.924f, 0.000f, 0.383f,
-		0.924f, 0.000f, 0.383f,
-		0.924f, 0.000f, 0.383f
+		0.981f, 0.000f, 0.195f,
+		1.000f, 0.000f, 0.000f,
 	};
 	memcpy_s(&conePoints[0], sizeof(float) * VERT_AMOUNT, &cPoints[0], sizeof(float) * VERT_AMOUNT);
 
-	int halfIndex = INDEX_AMOUNT / 2;
 	int halfUVs = UV_AMOUNT / 2;
 
 	for (unsigned i = 0u; i < halfUVs; i += 2u)
@@ -170,28 +222,12 @@ void ComponentVolumetricLight::Init()
 		coneUVs[i + halfUVs + 1u] = 0.f; //Circle1 t coord
 	}
 
-	coneIndexes[0] = halfIndex;
-	coneIndexes[1] = 0;
-	coneIndexes[2] = halfIndex + 1;
-	coneIndexes[INDEX_AMOUNT - 2] = 0;
-	coneIndexes[INDEX_AMOUNT - 1] = halfIndex;
+	//Create triangle strip sequence 
+	int cIndexes[INDEX_AMOUNT] = { 31, 0, 32, 1, 33, 2, 34, 3, 35, 4, 36, 5, 37, 6, 38, 7, 39, 8, 40, 9, 41, 10, 42, 11, 43, 12, 44, 13, 45,
+						14,	46,	15,	47,	16,	48,	17,	49,	18,	50,	19,	51,	20,	52,	21,	53, 22,	54,	23,	55,	24,	56,	25,	57,	26,	58,	27,	
+						59,	28,	60,	29,	61,	30,	62, 31, 63, 32, 65, 65, 65};
 
-	int c1Indexer = 1;
-	int c2Indexer = halfIndex + 2;
-
-	bool c1 = true;
-	for (unsigned i = 3u; i < INDEX_AMOUNT - 2; ++i)
-	{
-		if (c1)
-		{
-			coneIndexes[i] = c1Indexer++;
-		}
-		else
-		{
-			coneIndexes[i] = c2Indexer++;
-		}
-		c1 = !c1;
-	}
-	int kk = 0;
+	memcpy_s(&coneIndexes[0], sizeof(int) * INDEX_AMOUNT, &cIndexes[0], sizeof(int) * INDEX_AMOUNT);
+	
 }
 

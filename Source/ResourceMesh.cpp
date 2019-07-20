@@ -43,6 +43,8 @@ ResourceMesh::ResourceMesh(const ResourceMesh& resource) : Resource(resource)
 	meshTangents = resource.meshTangents;
 	meshTexCoords = resource.meshTexCoords;
 	meshIndices = resource.meshIndices;
+
+	drawingMode = resource.drawingMode;
 }
 
 ResourceMesh::ResourceMesh(unsigned nVertices, float* vertices, unsigned nIndexes, int* indexes, unsigned nUVs, float* UVs) : Resource(0, TYPE::MESH)

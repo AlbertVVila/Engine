@@ -70,7 +70,7 @@ GameObject::GameObject(const float4x4 & transform, const char * name, unsigned u
 
 GameObject::GameObject(const GameObject & gameobject)
 {
-	name = gameobject.name;
+	name = gameobject.name + "(Clone)";
 	tag = gameobject.tag;
 	UUID = App->scene->GetNewUID();
 	parentUUID = gameobject.parentUUID;
@@ -122,15 +122,18 @@ GameObject::GameObject(const GameObject & gameobject)
 			case ComponentType::Light:
 				light = (ComponentLight*)componentcopy;
 				break;
+			
+			case ComponentType::VolumetricLight:
+				((ComponentVolumetricLight*)componentcopy)->renderer->gameobject = this;
 		}
 	}
-	/*if (!App->scene->photoEnabled) //FIXME: Ctrl+Z
-	{*/
-		if (GetComponentOld(ComponentType::Renderer) != nullptr || GetComponentOld(ComponentType::Light) != nullptr)
-		{
-			App->scene->AddToSpacePartition(this);
-		}
-	//}
+
+	if (GetComponentOld(ComponentType::Renderer) != nullptr || GetComponentOld(ComponentType::Light) != nullptr
+		|| GetComponentOld(ComponentType::VolumetricLight) != nullptr)
+	{
+		App->scene->AddToSpacePartition(this);
+	}
+
 	for (const auto& child : gameobject.children)
 	{
 		GameObject* childcopy = new GameObject(*child);
@@ -395,11 +398,13 @@ void GameObject::SetActiveInHierarchy(bool active)
 Component* GameObject::CreateComponent(ComponentType type, JSON_value* value)
 {
 	Component* component = nullptr;
+	ComponentVolumetricLight* volLight = nullptr;
 	switch (type)
 	{
 	case ComponentType::Transform:
 		component = new ComponentTransform(this);
 		this->transform = (ComponentTransform*)component;
+		this->transform->UpdateTransform();
 		break;
 	case ComponentType::Renderer:
 		if (!hasLight)
@@ -485,7 +490,7 @@ Component* GameObject::CreateComponent(ComponentType type, JSON_value* value)
 	case ComponentType::AudioListener:
 		component = new ComponentAudioListener(this);
 		App->audioManager->audioListeners.push_back((ComponentAudioListener*)component);
-		if (App->audioManager->audioListeners.size() == 1)
+		if (App->audioManager->audioListeners.size() == 1u)
 		{
 			App->audioManager->mainListener = (ComponentAudioListener*)component;
 			App->audioManager->mainListener->isMainListener = true; 
@@ -500,6 +505,8 @@ Component* GameObject::CreateComponent(ComponentType type, JSON_value* value)
 		break;
 	case ComponentType::VolumetricLight:
 		component = new ComponentVolumetricLight(this);
+		volLight = (ComponentVolumetricLight*)component;
+		break;
 	default:
 		break;
 	}
@@ -507,6 +514,9 @@ Component* GameObject::CreateComponent(ComponentType type, JSON_value* value)
 	{
 		components.push_back(component);
 	}
+
+	if (volLight) //Spawn default vol. light after the component creation is completed
+		volLight->UpdateMesh();
 	return component;
 }
 
@@ -1143,6 +1153,8 @@ void GameObject::Load(JSON_value *value, bool prefabTemplate)
 	}
 
 	JSON_value* componentsJSON = value->GetValue("Components");
+	ComponentVolumetricLight* volLight = nullptr;
+
 	for (unsigned i = 0; i < componentsJSON->Size(); i++)
 	{
 		JSON_value* componentJSON = componentsJSON->GetValue(i);
@@ -1151,13 +1163,13 @@ void GameObject::Load(JSON_value *value, bool prefabTemplate)
 		if (component)
 		{
 			component->Load(componentJSON);
+			if (type == ComponentType::VolumetricLight)
+				volLight = (ComponentVolumetricLight*)component;
 		}
 	}
 
-	if (transform != nullptr)
-	{
-		transform->UpdateTransform();
-	}
+	if (volLight)
+		volLight->UpdateMesh();
 
 	if (isBoneRoot)
 	{
