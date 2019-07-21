@@ -192,6 +192,9 @@ public:
 	void UseSkill(SkillType skill);
 	void AssignSkill(SkillType skill, int position);
 
+	void ToggleMaxStats();
+	void ToggleInfiniteHealth();
+	void ToggleInfiniteMana();
 	void SavePlayerStats();
 
 private:
@@ -234,6 +237,7 @@ public:
 	float manaRegenMaxTime = 5.0f;
 
 	PlayerStats stats = { 150.0f, 100.0f, 10U, 10U, 5.0f, 5.0f };
+	PlayerStats previousStats;
 
 	float OutOfMeshCorrectionXZ = 500.f;
 	float OutOfMeshCorrectionY = 300.0f;
@@ -310,6 +314,10 @@ private:
 	float hubGeneralAbilityCooldown = 0.5F;
 	bool showAbilityCooldowns = true;
 	bool showItemCooldowns = true;
+
+	bool hasMaxStats = false;
+	bool hasInfiniteHealth = false;
+	bool hasInfiniteMana = false;
 };
 
 extern "C" PlayerMovement_API Script* CreateScript();

@@ -86,6 +86,7 @@ public:
 	unsigned highlightBufferGame = 0u;
 	unsigned brightnessBufferGame = 0u;
 	unsigned renderedSceneGame = 0u;
+	float exposure = 1.0f;
 
 private:
 	unsigned UBO = 0;
@@ -123,7 +124,6 @@ private:
 	unsigned int pingpongColorbuffers[2];
 
 	float gammaCorrector = 2.2f;
-	float exposure = 1.0f;
 	float bloomSpread = 2.2f;
 	int kernelRadius = 4.0f;
 	float* kernel = nullptr;
