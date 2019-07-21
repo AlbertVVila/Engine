@@ -39,13 +39,6 @@ void GodMode::Update()
 
 void GodMode::Expose(ImGuiContext* context)
 {
-	ImGui::Checkbox("GodMode", &isGod);
-}
-
-void GodMode::ClickedGodMode()
-{
-	if (App->input->GetKey(SDL_SCANCODE_G) != KEY_DOWN) return;
-	isGod = !isGod;
 }
 
 void GodMode::SwitchLevel() const

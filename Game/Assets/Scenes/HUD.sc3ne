@@ -4,7 +4,7 @@
     },
     "GameObjects": [
         {
-            "UID": 1138038717,
+            "UID": 1325951008,
             "ParentUID": 1,
             "Name": "LoseWindow",
             "Tag": "Default",
@@ -39,8 +39,8 @@
             "Components": []
         },
         {
-            "UID": 762424266,
-            "ParentUID": 1138038717,
+            "UID": 1047185667,
+            "ParentUID": 1325951008,
             "Name": "Background",
             "Tag": "Default",
             "Static": 0,
@@ -109,8 +109,8 @@
             ]
         },
         {
-            "UID": 3739304540,
-            "ParentUID": 1138038717,
+            "UID": 3042713974,
+            "ParentUID": 1325951008,
             "Name": "Title",
             "Tag": "Default",
             "Static": 0,
@@ -190,8 +190,8 @@
             ]
         },
         {
-            "UID": 1287776659,
-            "ParentUID": 1138038717,
+            "UID": 2977488489,
+            "ParentUID": 1325951008,
             "Name": "Advice1",
             "Tag": "Default",
             "Static": 0,
@@ -271,8 +271,8 @@
             ]
         },
         {
-            "UID": 357055510,
-            "ParentUID": 1138038717,
+            "UID": 1689478843,
+            "ParentUID": 1325951008,
             "Name": "Advice2",
             "Tag": "Default",
             "Static": 0,
@@ -352,8 +352,8 @@
             ]
         },
         {
-            "UID": 2545212868,
-            "ParentUID": 1138038717,
+            "UID": 4026494973,
+            "ParentUID": 1325951008,
             "Name": "Button",
             "Tag": "Default",
             "Static": 0,
@@ -500,7 +500,7 @@
             ]
         },
         {
-            "UID": 4157931229,
+            "UID": 4189532202,
             "ParentUID": 1,
             "Name": "WinWindow",
             "Tag": "Default",
@@ -535,8 +535,8 @@
             "Components": []
         },
         {
-            "UID": 471231869,
-            "ParentUID": 4157931229,
+            "UID": 3269816912,
+            "ParentUID": 4189532202,
             "Name": "Background",
             "Tag": "Default",
             "Static": 0,
@@ -605,8 +605,8 @@
             ]
         },
         {
-            "UID": 3530587686,
-            "ParentUID": 4157931229,
+            "UID": 3193907087,
+            "ParentUID": 4189532202,
             "Name": "Title",
             "Tag": "Default",
             "Static": 0,
@@ -686,8 +686,8 @@
             ]
         },
         {
-            "UID": 4080801515,
-            "ParentUID": 4157931229,
+            "UID": 3202867262,
+            "ParentUID": 4189532202,
             "Name": "Advice1",
             "Tag": "Default",
             "Static": 0,
@@ -767,8 +767,8 @@
             ]
         },
         {
-            "UID": 2137292843,
-            "ParentUID": 4157931229,
+            "UID": 3849818314,
+            "ParentUID": 4189532202,
             "Name": "Advice2",
             "Tag": "Default",
             "Static": 0,
@@ -848,8 +848,8 @@
             ]
         },
         {
-            "UID": 1100707289,
-            "ParentUID": 4157931229,
+            "UID": 228373184,
+            "ParentUID": 4189532202,
             "Name": "Loading",
             "Tag": "Default",
             "Static": 0,
@@ -929,8 +929,8 @@
             ]
         },
         {
-            "UID": 864006058,
-            "ParentUID": 4157931229,
+            "UID": 4236881399,
+            "ParentUID": 4189532202,
             "Name": "Loading icon",
             "Tag": "Default",
             "Static": 0,
@@ -999,7 +999,7 @@
             ]
         },
         {
-            "UID": 3663558407,
+            "UID": 1895773290,
             "ParentUID": 1,
             "Name": "Damage",
             "Tag": "Default",
@@ -1084,8 +1084,8 @@
             ]
         },
         {
-            "UID": 1005786424,
-            "ParentUID": 3663558407,
+            "UID": 3904469148,
+            "ParentUID": 1895773290,
             "Name": "Damage1",
             "Tag": "Default",
             "Static": 0,
@@ -1165,8 +1165,8 @@
             ]
         },
         {
-            "UID": 969786711,
-            "ParentUID": 3663558407,
+            "UID": 2303825950,
+            "ParentUID": 1895773290,
             "Name": "Damage2",
             "Tag": "Default",
             "Static": 0,
@@ -1246,8 +1246,8 @@
             ]
         },
         {
-            "UID": 619492171,
-            "ParentUID": 3663558407,
+            "UID": 537154419,
+            "ParentUID": 1895773290,
             "Name": "Damage3",
             "Tag": "Default",
             "Static": 0,
@@ -1327,8 +1327,8 @@
             ]
         },
         {
-            "UID": 788911046,
-            "ParentUID": 3663558407,
+            "UID": 2046480203,
+            "ParentUID": 1895773290,
             "Name": "Damage4",
             "Tag": "Default",
             "Static": 0,
@@ -1408,8 +1408,8 @@
             ]
         },
         {
-            "UID": 2444591765,
-            "ParentUID": 3663558407,
+            "UID": 4246382085,
+            "ParentUID": 1895773290,
             "Name": "Damage5",
             "Tag": "Default",
             "Static": 0,
@@ -1489,8 +1489,8 @@
             ]
         },
         {
-            "UID": 3503118665,
-            "ParentUID": 3663558407,
+            "UID": 3616063286,
+            "ParentUID": 1895773290,
             "Name": "Damage6",
             "Tag": "Default",
             "Static": 0,
@@ -1570,8 +1570,8 @@
             ]
         },
         {
-            "UID": 3938138284,
-            "ParentUID": 3663558407,
+            "UID": 2463093832,
+            "ParentUID": 1895773290,
             "Name": "Damage7",
             "Tag": "Default",
             "Static": 0,
@@ -1651,8 +1651,8 @@
             ]
         },
         {
-            "UID": 1859781998,
-            "ParentUID": 3663558407,
+            "UID": 3511718312,
+            "ParentUID": 1895773290,
             "Name": "Damage8",
             "Tag": "Default",
             "Static": 0,
@@ -1732,8 +1732,8 @@
             ]
         },
         {
-            "UID": 280748868,
-            "ParentUID": 3663558407,
+            "UID": 610883650,
+            "ParentUID": 1895773290,
             "Name": "Damage9",
             "Tag": "Default",
             "Static": 0,
@@ -1813,8 +1813,8 @@
             ]
         },
         {
-            "UID": 1970729433,
-            "ParentUID": 3663558407,
+            "UID": 2157224842,
+            "ParentUID": 1895773290,
             "Name": "Damage10",
             "Tag": "Default",
             "Static": 0,
@@ -1894,7 +1894,7 @@
             ]
         },
         {
-            "UID": 3757633714,
+            "UID": 1127476258,
             "ParentUID": 1,
             "Name": "GameHUB",
             "Tag": "Default",
@@ -1929,8 +1929,8 @@
             "Components": []
         },
         {
-            "UID": 1647701047,
-            "ParentUID": 3757633714,
+            "UID": 3017918729,
+            "ParentUID": 1127476258,
             "Name": "MenuButton",
             "Tag": "Default",
             "Static": 0,
@@ -2077,8 +2077,8 @@
             ]
         },
         {
-            "UID": 142587498,
-            "ParentUID": 3757633714,
+            "UID": 3561512648,
+            "ParentUID": 1127476258,
             "Name": "InventaryButton",
             "Tag": "Default",
             "Static": 0,
@@ -2225,8 +2225,8 @@
             ]
         },
         {
-            "UID": 97398885,
-            "ParentUID": 3757633714,
+            "UID": 2926318904,
+            "ParentUID": 1127476258,
             "Name": "SkillsButton",
             "Tag": "Default",
             "Static": 0,
@@ -2373,8 +2373,8 @@
             ]
         },
         {
-            "UID": 2071727625,
-            "ParentUID": 3757633714,
+            "UID": 3031770722,
+            "ParentUID": 1127476258,
             "Name": "MissionButton",
             "Tag": "Default",
             "Static": 0,
@@ -2521,8 +2521,8 @@
             ]
         },
         {
-            "UID": 576289882,
-            "ParentUID": 3757633714,
+            "UID": 684110924,
+            "ParentUID": 1127476258,
             "Name": "Map",
             "Tag": "Default",
             "Static": 0,
@@ -2591,8 +2591,8 @@
             ]
         },
         {
-            "UID": 3839804929,
-            "ParentUID": 3757633714,
+            "UID": 3528875,
+            "ParentUID": 1127476258,
             "Name": "One",
             "Tag": "Default",
             "Static": 0,
@@ -2739,8 +2739,8 @@
             ]
         },
         {
-            "UID": 3695177260,
-            "ParentUID": 3839804929,
+            "UID": 1535196064,
+            "ParentUID": 3528875,
             "Name": "One_Cooldown",
             "Tag": "Default",
             "Static": 0,
@@ -2809,8 +2809,8 @@
             ]
         },
         {
-            "UID": 3121507317,
-            "ParentUID": 3839804929,
+            "UID": 2685180873,
+            "ParentUID": 3528875,
             "Name": "OneText",
             "Tag": "Default",
             "Static": 0,
@@ -2890,8 +2890,8 @@
             ]
         },
         {
-            "UID": 3928853195,
-            "ParentUID": 3757633714,
+            "UID": 661203207,
+            "ParentUID": 1127476258,
             "Name": "Two",
             "Tag": "Default",
             "Static": 0,
@@ -3038,8 +3038,8 @@
             ]
         },
         {
-            "UID": 401606606,
-            "ParentUID": 3928853195,
+            "UID": 1913370927,
+            "ParentUID": 661203207,
             "Name": "Two_Cooldown",
             "Tag": "Default",
             "Static": 0,
@@ -3108,8 +3108,8 @@
             ]
         },
         {
-            "UID": 1131906249,
-            "ParentUID": 3928853195,
+            "UID": 4156483567,
+            "ParentUID": 661203207,
             "Name": "TwoText",
             "Tag": "Default",
             "Static": 0,
@@ -3189,8 +3189,8 @@
             ]
         },
         {
-            "UID": 115252830,
-            "ParentUID": 3757633714,
+            "UID": 3664459056,
+            "ParentUID": 1127476258,
             "Name": "Three",
             "Tag": "Default",
             "Static": 0,
@@ -3337,8 +3337,8 @@
             ]
         },
         {
-            "UID": 1663411167,
-            "ParentUID": 115252830,
+            "UID": 130189214,
+            "ParentUID": 3664459056,
             "Name": "Three_Cooldown",
             "Tag": "Default",
             "Static": 0,
@@ -3407,8 +3407,8 @@
             ]
         },
         {
-            "UID": 523596264,
-            "ParentUID": 115252830,
+            "UID": 2689290251,
+            "ParentUID": 3664459056,
             "Name": "ThreeText",
             "Tag": "Default",
             "Static": 0,
@@ -3488,8 +3488,8 @@
             ]
         },
         {
-            "UID": 1539395215,
-            "ParentUID": 3757633714,
+            "UID": 2275749498,
+            "ParentUID": 1127476258,
             "Name": "For",
             "Tag": "Default",
             "Static": 0,
@@ -3636,8 +3636,8 @@
             ]
         },
         {
-            "UID": 2962751202,
-            "ParentUID": 1539395215,
+            "UID": 2464002558,
+            "ParentUID": 2275749498,
             "Name": "Four_Cooldown",
             "Tag": "Default",
             "Static": 0,
@@ -3706,8 +3706,8 @@
             ]
         },
         {
-            "UID": 1964144915,
-            "ParentUID": 1539395215,
+            "UID": 3883470662,
+            "ParentUID": 2275749498,
             "Name": "FourText",
             "Tag": "Default",
             "Static": 0,
@@ -3787,8 +3787,8 @@
             ]
         },
         {
-            "UID": 3481398121,
-            "ParentUID": 3757633714,
+            "UID": 789496551,
+            "ParentUID": 1127476258,
             "Name": "Q",
             "Tag": "Default",
             "Static": 0,
@@ -3935,8 +3935,8 @@
             ]
         },
         {
-            "UID": 1883444214,
-            "ParentUID": 3481398121,
+            "UID": 69459920,
+            "ParentUID": 789496551,
             "Name": "Q_Cooldown",
             "Tag": "Default",
             "Static": 0,
@@ -4005,8 +4005,8 @@
             ]
         },
         {
-            "UID": 2697942549,
-            "ParentUID": 3481398121,
+            "UID": 1841291724,
+            "ParentUID": 789496551,
             "Name": "QText",
             "Tag": "Default",
             "Static": 0,
@@ -4086,8 +4086,8 @@
             ]
         },
         {
-            "UID": 2255792616,
-            "ParentUID": 3757633714,
+            "UID": 3715438816,
+            "ParentUID": 1127476258,
             "Name": "W",
             "Tag": "Default",
             "Static": 0,
@@ -4234,8 +4234,8 @@
             ]
         },
         {
-            "UID": 2468844615,
-            "ParentUID": 2255792616,
+            "UID": 874441368,
+            "ParentUID": 3715438816,
             "Name": "W_Cooldown",
             "Tag": "Default",
             "Static": 0,
@@ -4304,8 +4304,8 @@
             ]
         },
         {
-            "UID": 2562222722,
-            "ParentUID": 2255792616,
+            "UID": 231303127,
+            "ParentUID": 3715438816,
             "Name": "WText",
             "Tag": "Default",
             "Static": 0,
@@ -4385,8 +4385,8 @@
             ]
         },
         {
-            "UID": 2189720241,
-            "ParentUID": 3757633714,
+            "UID": 1877255390,
+            "ParentUID": 1127476258,
             "Name": "E",
             "Tag": "Default",
             "Static": 0,
@@ -4533,8 +4533,8 @@
             ]
         },
         {
-            "UID": 871941423,
-            "ParentUID": 2189720241,
+            "UID": 3728681171,
+            "ParentUID": 1877255390,
             "Name": "E_Cooldown",
             "Tag": "Default",
             "Static": 0,
@@ -4603,8 +4603,8 @@
             ]
         },
         {
-            "UID": 3515445772,
-            "ParentUID": 2189720241,
+            "UID": 2747645871,
+            "ParentUID": 1877255390,
             "Name": "EText",
             "Tag": "Default",
             "Static": 0,
@@ -4684,8 +4684,8 @@
             ]
         },
         {
-            "UID": 2662771898,
-            "ParentUID": 3757633714,
+            "UID": 1647201826,
+            "ParentUID": 1127476258,
             "Name": "R",
             "Tag": "Default",
             "Static": 0,
@@ -4832,8 +4832,8 @@
             ]
         },
         {
-            "UID": 3378293353,
-            "ParentUID": 2662771898,
+            "UID": 3658360861,
+            "ParentUID": 1647201826,
             "Name": "R_Cooldown",
             "Tag": "Default",
             "Static": 0,
@@ -4902,8 +4902,8 @@
             ]
         },
         {
-            "UID": 855083910,
-            "ParentUID": 2662771898,
+            "UID": 1047528425,
+            "ParentUID": 1647201826,
             "Name": "RText",
             "Tag": "Default",
             "Static": 0,
@@ -4983,8 +4983,8 @@
             ]
         },
         {
-            "UID": 1994436736,
-            "ParentUID": 3757633714,
+            "UID": 4161254190,
+            "ParentUID": 1127476258,
             "Name": "LC",
             "Tag": "Default",
             "Static": 0,
@@ -5131,8 +5131,8 @@
             ]
         },
         {
-            "UID": 860615033,
-            "ParentUID": 3757633714,
+            "UID": 3244267934,
+            "ParentUID": 1127476258,
             "Name": "ManaBackgroud",
             "Tag": "Default",
             "Static": 0,
@@ -5201,8 +5201,8 @@
             ]
         },
         {
-            "UID": 3255277416,
-            "ParentUID": 3757633714,
+            "UID": 1152620966,
+            "ParentUID": 1127476258,
             "Name": "Mana",
             "Tag": "Default",
             "Static": 0,
@@ -5271,8 +5271,8 @@
             ]
         },
         {
-            "UID": 582423171,
-            "ParentUID": 3757633714,
+            "UID": 3098686715,
+            "ParentUID": 1127476258,
             "Name": "ManaBubble",
             "Tag": "Default",
             "Static": 0,
@@ -5341,8 +5341,8 @@
             ]
         },
         {
-            "UID": 3841373597,
-            "ParentUID": 3757633714,
+            "UID": 4257741259,
+            "ParentUID": 1127476258,
             "Name": "RC",
             "Tag": "Default",
             "Static": 0,
@@ -5369,7 +5369,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 1,
+            "openInHierarchy": 0,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -5489,8 +5489,159 @@
             ]
         },
         {
-            "UID": 3000650745,
-            "ParentUID": 3757633714,
+            "UID": 126331799,
+            "ParentUID": 4257741259,
+            "Name": "RC_Cooldown",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        126.69999694824219,
+                        74.80000305175781
+                    ],
+                    "Size": [
+                        50.0,
+                        50.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 3242354620,
+                    "textureName": "Right_clic",
+                    "color": [
+                        0.29411765933036806,
+                        0.29411765933036806,
+                        0.29411765933036806,
+                        0.686274528503418
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 1,
+                    "maskAmount": 0,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 3071593958,
+            "ParentUID": 4257741259,
+            "Name": "RCText",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 0,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        111.30000305175781,
+                        55.70000076293945
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 47.0,
+                    "text": "RC",
+                    "font": "Fonts/DroidSans.ttf",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 100.0,
+                    "InterlineDistance": 24.0,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 2173048441,
+            "ParentUID": 1127476258,
             "Name": "Xp",
             "Tag": "Default",
             "Static": 0,
@@ -5591,8 +5742,8 @@
             ]
         },
         {
-            "UID": 2289002682,
-            "ParentUID": 3000650745,
+            "UID": 1089364379,
+            "ParentUID": 2173048441,
             "Name": "XpProgress",
             "Tag": "Default",
             "Static": 0,
@@ -5661,8 +5812,8 @@
             ]
         },
         {
-            "UID": 2714399107,
-            "ParentUID": 3757633714,
+            "UID": 389141661,
+            "ParentUID": 1127476258,
             "Name": "LifeBackgroud",
             "Tag": "Default",
             "Static": 0,
@@ -5731,8 +5882,8 @@
             ]
         },
         {
-            "UID": 3400403185,
-            "ParentUID": 3757633714,
+            "UID": 1475976605,
+            "ParentUID": 1127476258,
             "Name": "Life",
             "Tag": "Default",
             "Static": 0,
@@ -5801,8 +5952,8 @@
             ]
         },
         {
-            "UID": 2505654920,
-            "ParentUID": 3757633714,
+            "UID": 1119524677,
+            "ParentUID": 1127476258,
             "Name": "LifeBubble",
             "Tag": "Default",
             "Static": 0,
@@ -5871,8 +6022,8 @@
             ]
         },
         {
-            "UID": 3187454977,
-            "ParentUID": 3757633714,
+            "UID": 106745968,
+            "ParentUID": 1127476258,
             "Name": "Tacometer",
             "Tag": "Default",
             "Static": 0,
@@ -5941,7 +6092,7 @@
             ]
         },
         {
-            "UID": 3389039714,
+            "UID": 784073150,
             "ParentUID": 1,
             "Name": "PlayerMenu",
             "Tag": "Default",
@@ -5976,8 +6127,8 @@
             "Components": []
         },
         {
-            "UID": 3237388207,
-            "ParentUID": 3389039714,
+            "UID": 3986594622,
+            "ParentUID": 784073150,
             "Name": "BackgroundImage",
             "Tag": "Default",
             "Static": 0,
@@ -6046,8 +6197,8 @@
             ]
         },
         {
-            "UID": 1631452828,
-            "ParentUID": 3389039714,
+            "UID": 3696051985,
+            "ParentUID": 784073150,
             "Name": "CloseButton",
             "Tag": "Default",
             "Static": 0,
@@ -6194,8 +6345,8 @@
             ]
         },
         {
-            "UID": 2713633994,
-            "ParentUID": 3389039714,
+            "UID": 2166448667,
+            "ParentUID": 784073150,
             "Name": "Inventory",
             "Tag": "Default",
             "Static": 0,
@@ -6236,8 +6387,8 @@
             ]
         },
         {
-            "UID": 592249002,
-            "ParentUID": 2713633994,
+            "UID": 1947631745,
+            "ParentUID": 2166448667,
             "Name": "Title",
             "Tag": "Default",
             "Static": 0,
@@ -6317,8 +6468,8 @@
             ]
         },
         {
-            "UID": 2336844963,
-            "ParentUID": 2713633994,
+            "UID": 3282360794,
+            "ParentUID": 2166448667,
             "Name": "BackgroundEq",
             "Tag": "Default",
             "Static": 0,
@@ -6387,8 +6538,8 @@
             ]
         },
         {
-            "UID": 1856130075,
-            "ParentUID": 2713633994,
+            "UID": 1555009529,
+            "ParentUID": 2166448667,
             "Name": "Siluette",
             "Tag": "Default",
             "Static": 0,
@@ -6457,8 +6608,8 @@
             ]
         },
         {
-            "UID": 2475036482,
-            "ParentUID": 2713633994,
+            "UID": 3908229201,
+            "ParentUID": 2166448667,
             "Name": "HelmetSlot",
             "Tag": "Default",
             "Static": 0,
@@ -6527,8 +6678,8 @@
             ]
         },
         {
-            "UID": 147543374,
-            "ParentUID": 2713633994,
+            "UID": 2668976285,
+            "ParentUID": 2166448667,
             "Name": "BodySlot",
             "Tag": "Default",
             "Static": 0,
@@ -6597,8 +6748,8 @@
             ]
         },
         {
-            "UID": 3131186292,
-            "ParentUID": 2713633994,
+            "UID": 1121254960,
+            "ParentUID": 2166448667,
             "Name": "PantsSlot",
             "Tag": "Default",
             "Static": 0,
@@ -6667,8 +6818,8 @@
             ]
         },
         {
-            "UID": 1282433139,
-            "ParentUID": 2713633994,
+            "UID": 3486549459,
+            "ParentUID": 2166448667,
             "Name": "BootsSlot",
             "Tag": "Default",
             "Static": 0,
@@ -6737,8 +6888,8 @@
             ]
         },
         {
-            "UID": 3489212932,
-            "ParentUID": 2713633994,
+            "UID": 1958531294,
+            "ParentUID": 2166448667,
             "Name": "WeaponSlot",
             "Tag": "Default",
             "Static": 0,
@@ -6807,8 +6958,8 @@
             ]
         },
         {
-            "UID": 1965456391,
-            "ParentUID": 2713633994,
+            "UID": 3932583497,
+            "ParentUID": 2166448667,
             "Name": "AmuletSlot",
             "Tag": "Default",
             "Static": 0,
@@ -6877,8 +7028,8 @@
             ]
         },
         {
-            "UID": 1594636141,
-            "ParentUID": 2713633994,
+            "UID": 2197210955,
+            "ParentUID": 2166448667,
             "Name": "InventorySlotsBackground",
             "Tag": "Default",
             "Static": 0,
@@ -6947,8 +7098,8 @@
             ]
         },
         {
-            "UID": 3887984847,
-            "ParentUID": 2713633994,
+            "UID": 2954400396,
+            "ParentUID": 2166448667,
             "Name": "InventorySlots",
             "Tag": "Default",
             "Static": 0,
@@ -7026,8 +7177,8 @@
             ]
         },
         {
-            "UID": 3285600286,
-            "ParentUID": 3887984847,
+            "UID": 1714081021,
+            "ParentUID": 2954400396,
             "Name": "Slot1",
             "Tag": "Default",
             "Static": 0,
@@ -7096,8 +7247,8 @@
             ]
         },
         {
-            "UID": 4026312857,
-            "ParentUID": 3887984847,
+            "UID": 4089394122,
+            "ParentUID": 2954400396,
             "Name": "Slot2",
             "Tag": "Default",
             "Static": 0,
@@ -7166,8 +7317,8 @@
             ]
         },
         {
-            "UID": 4218621000,
-            "ParentUID": 3887984847,
+            "UID": 3463037234,
+            "ParentUID": 2954400396,
             "Name": "Slot3",
             "Tag": "Default",
             "Static": 0,
@@ -7236,8 +7387,8 @@
             ]
         },
         {
-            "UID": 2042648593,
-            "ParentUID": 3887984847,
+            "UID": 3795171061,
+            "ParentUID": 2954400396,
             "Name": "Slot4",
             "Tag": "Default",
             "Static": 0,
@@ -7306,8 +7457,8 @@
             ]
         },
         {
-            "UID": 2594241846,
-            "ParentUID": 3887984847,
+            "UID": 1324720025,
+            "ParentUID": 2954400396,
             "Name": "Slot5",
             "Tag": "Default",
             "Static": 0,
@@ -7376,8 +7527,8 @@
             ]
         },
         {
-            "UID": 3618448052,
-            "ParentUID": 3887984847,
+            "UID": 2522873338,
+            "ParentUID": 2954400396,
             "Name": "Slot6",
             "Tag": "Default",
             "Static": 0,
@@ -7446,8 +7597,8 @@
             ]
         },
         {
-            "UID": 3092955742,
-            "ParentUID": 3887984847,
+            "UID": 3533033636,
+            "ParentUID": 2954400396,
             "Name": "Slot7",
             "Tag": "Default",
             "Static": 0,
@@ -7516,8 +7667,8 @@
             ]
         },
         {
-            "UID": 2075361022,
-            "ParentUID": 3887984847,
+            "UID": 1711517226,
+            "ParentUID": 2954400396,
             "Name": "Slot8",
             "Tag": "Default",
             "Static": 0,
@@ -7586,8 +7737,8 @@
             ]
         },
         {
-            "UID": 2236214981,
-            "ParentUID": 3887984847,
+            "UID": 2133824636,
+            "ParentUID": 2954400396,
             "Name": "Slot9",
             "Tag": "Default",
             "Static": 0,
@@ -7656,8 +7807,8 @@
             ]
         },
         {
-            "UID": 35384355,
-            "ParentUID": 3887984847,
+            "UID": 2403217245,
+            "ParentUID": 2954400396,
             "Name": "Slot10",
             "Tag": "Default",
             "Static": 0,
@@ -7726,8 +7877,8 @@
             ]
         },
         {
-            "UID": 1610332275,
-            "ParentUID": 3887984847,
+            "UID": 307233567,
+            "ParentUID": 2954400396,
             "Name": "Slot11",
             "Tag": "Default",
             "Static": 0,
@@ -7796,8 +7947,8 @@
             ]
         },
         {
-            "UID": 4106980650,
-            "ParentUID": 3887984847,
+            "UID": 4101899827,
+            "ParentUID": 2954400396,
             "Name": "Slot12",
             "Tag": "Default",
             "Static": 0,
@@ -7866,8 +8017,8 @@
             ]
         },
         {
-            "UID": 523926809,
-            "ParentUID": 3887984847,
+            "UID": 1107214447,
+            "ParentUID": 2954400396,
             "Name": "Slot13",
             "Tag": "Default",
             "Static": 0,
@@ -7936,8 +8087,8 @@
             ]
         },
         {
-            "UID": 1726598553,
-            "ParentUID": 3887984847,
+            "UID": 191317019,
+            "ParentUID": 2954400396,
             "Name": "Slot14",
             "Tag": "Default",
             "Static": 0,
@@ -8006,8 +8157,8 @@
             ]
         },
         {
-            "UID": 2491226870,
-            "ParentUID": 3887984847,
+            "UID": 4273908222,
+            "ParentUID": 2954400396,
             "Name": "Slot15",
             "Tag": "Default",
             "Static": 0,
@@ -8076,8 +8227,8 @@
             ]
         },
         {
-            "UID": 858932831,
-            "ParentUID": 3887984847,
+            "UID": 2737081657,
+            "ParentUID": 2954400396,
             "Name": "Slot16",
             "Tag": "Default",
             "Static": 0,
@@ -8146,8 +8297,8 @@
             ]
         },
         {
-            "UID": 3282112353,
-            "ParentUID": 3887984847,
+            "UID": 3730354223,
+            "ParentUID": 2954400396,
             "Name": "Slot17",
             "Tag": "Default",
             "Static": 0,
@@ -8216,8 +8367,8 @@
             ]
         },
         {
-            "UID": 917879190,
-            "ParentUID": 3887984847,
+            "UID": 1963141654,
+            "ParentUID": 2954400396,
             "Name": "Slot18",
             "Tag": "Default",
             "Static": 0,
@@ -8286,8 +8437,8 @@
             ]
         },
         {
-            "UID": 3016153646,
-            "ParentUID": 2713633994,
+            "UID": 1859274142,
+            "ParentUID": 2166448667,
             "Name": "Items",
             "Tag": "Default",
             "Static": 0,
@@ -8365,8 +8516,8 @@
             ]
         },
         {
-            "UID": 3609975824,
-            "ParentUID": 3016153646,
+            "UID": 2335183664,
+            "ParentUID": 1859274142,
             "Name": "Item1",
             "Tag": "Default",
             "Static": 0,
@@ -8435,8 +8586,8 @@
             ]
         },
         {
-            "UID": 1804345577,
-            "ParentUID": 3016153646,
+            "UID": 3518297291,
+            "ParentUID": 1859274142,
             "Name": "Item2",
             "Tag": "Default",
             "Static": 0,
@@ -8505,8 +8656,8 @@
             ]
         },
         {
-            "UID": 3994661190,
-            "ParentUID": 3016153646,
+            "UID": 1123669641,
+            "ParentUID": 1859274142,
             "Name": "Item3",
             "Tag": "Default",
             "Static": 0,
@@ -8575,8 +8726,8 @@
             ]
         },
         {
-            "UID": 2761721743,
-            "ParentUID": 3016153646,
+            "UID": 3973154679,
+            "ParentUID": 1859274142,
             "Name": "Item4",
             "Tag": "Default",
             "Static": 0,
@@ -8645,8 +8796,8 @@
             ]
         },
         {
-            "UID": 2623404597,
-            "ParentUID": 3016153646,
+            "UID": 4027612247,
+            "ParentUID": 1859274142,
             "Name": "Item5",
             "Tag": "Default",
             "Static": 0,
@@ -8715,8 +8866,8 @@
             ]
         },
         {
-            "UID": 3755026425,
-            "ParentUID": 3016153646,
+            "UID": 3533570961,
+            "ParentUID": 1859274142,
             "Name": "Item6",
             "Tag": "Default",
             "Static": 0,
@@ -8785,8 +8936,8 @@
             ]
         },
         {
-            "UID": 669249206,
-            "ParentUID": 3016153646,
+            "UID": 1446681929,
+            "ParentUID": 1859274142,
             "Name": "Item7",
             "Tag": "Default",
             "Static": 0,
@@ -8855,8 +9006,8 @@
             ]
         },
         {
-            "UID": 914157434,
-            "ParentUID": 3016153646,
+            "UID": 93236188,
+            "ParentUID": 1859274142,
             "Name": "Item8",
             "Tag": "Default",
             "Static": 0,
@@ -8925,8 +9076,8 @@
             ]
         },
         {
-            "UID": 2435516667,
-            "ParentUID": 3016153646,
+            "UID": 2698155735,
+            "ParentUID": 1859274142,
             "Name": "Item9",
             "Tag": "Default",
             "Static": 0,
@@ -8995,8 +9146,8 @@
             ]
         },
         {
-            "UID": 2112769551,
-            "ParentUID": 3016153646,
+            "UID": 1481300922,
+            "ParentUID": 1859274142,
             "Name": "Item10",
             "Tag": "Default",
             "Static": 0,
@@ -9065,8 +9216,8 @@
             ]
         },
         {
-            "UID": 2789841031,
-            "ParentUID": 3016153646,
+            "UID": 1890277679,
+            "ParentUID": 1859274142,
             "Name": "Item11",
             "Tag": "Default",
             "Static": 0,
@@ -9135,8 +9286,8 @@
             ]
         },
         {
-            "UID": 774506568,
-            "ParentUID": 3016153646,
+            "UID": 119534604,
+            "ParentUID": 1859274142,
             "Name": "Item12",
             "Tag": "Default",
             "Static": 0,
@@ -9205,8 +9356,8 @@
             ]
         },
         {
-            "UID": 3477680149,
-            "ParentUID": 3016153646,
+            "UID": 904447684,
+            "ParentUID": 1859274142,
             "Name": "Item13",
             "Tag": "Default",
             "Static": 0,
@@ -9275,8 +9426,8 @@
             ]
         },
         {
-            "UID": 2778693974,
-            "ParentUID": 3016153646,
+            "UID": 731723255,
+            "ParentUID": 1859274142,
             "Name": "Item14",
             "Tag": "Default",
             "Static": 0,
@@ -9345,8 +9496,8 @@
             ]
         },
         {
-            "UID": 2451959400,
-            "ParentUID": 3016153646,
+            "UID": 328299949,
+            "ParentUID": 1859274142,
             "Name": "Item15",
             "Tag": "Default",
             "Static": 0,
@@ -9415,8 +9566,8 @@
             ]
         },
         {
-            "UID": 2960971494,
-            "ParentUID": 3016153646,
+            "UID": 3350507129,
+            "ParentUID": 1859274142,
             "Name": "Item16",
             "Tag": "Default",
             "Static": 0,
@@ -9485,8 +9636,8 @@
             ]
         },
         {
-            "UID": 715817415,
-            "ParentUID": 3016153646,
+            "UID": 1436041847,
+            "ParentUID": 1859274142,
             "Name": "Item17",
             "Tag": "Default",
             "Static": 0,
@@ -9555,8 +9706,8 @@
             ]
         },
         {
-            "UID": 1251152075,
-            "ParentUID": 3016153646,
+            "UID": 3594663729,
+            "ParentUID": 1859274142,
             "Name": "Item18",
             "Tag": "Default",
             "Static": 0,
@@ -9625,8 +9776,8 @@
             ]
         },
         {
-            "UID": 2421394754,
-            "ParentUID": 3016153646,
+            "UID": 2861170025,
+            "ParentUID": 1859274142,
             "Name": "Item19",
             "Tag": "Default",
             "Static": 0,
@@ -9695,8 +9846,8 @@
             ]
         },
         {
-            "UID": 2540111363,
-            "ParentUID": 3016153646,
+            "UID": 2390663866,
+            "ParentUID": 1859274142,
             "Name": "Item20",
             "Tag": "Default",
             "Static": 0,
@@ -9765,8 +9916,8 @@
             ]
         },
         {
-            "UID": 1193993463,
-            "ParentUID": 3016153646,
+            "UID": 2349668151,
+            "ParentUID": 1859274142,
             "Name": "Item21",
             "Tag": "Default",
             "Static": 0,
@@ -9835,8 +9986,8 @@
             ]
         },
         {
-            "UID": 406820351,
-            "ParentUID": 3016153646,
+            "UID": 2060116051,
+            "ParentUID": 1859274142,
             "Name": "Item22",
             "Tag": "Default",
             "Static": 0,
@@ -9905,8 +10056,8 @@
             ]
         },
         {
-            "UID": 3696370364,
-            "ParentUID": 3016153646,
+            "UID": 2085715295,
+            "ParentUID": 1859274142,
             "Name": "Item23",
             "Tag": "Default",
             "Static": 0,
@@ -9975,8 +10126,8 @@
             ]
         },
         {
-            "UID": 1533015435,
-            "ParentUID": 3016153646,
+            "UID": 39875766,
+            "ParentUID": 1859274142,
             "Name": "Item24",
             "Tag": "Default",
             "Static": 0,
@@ -10045,8 +10196,8 @@
             ]
         },
         {
-            "UID": 3171295638,
-            "ParentUID": 2713633994,
+            "UID": 1185583722,
+            "ParentUID": 2166448667,
             "Name": "LevelBackground",
             "Tag": "Default",
             "Static": 0,
@@ -10124,8 +10275,8 @@
             ]
         },
         {
-            "UID": 3558907759,
-            "ParentUID": 3171295638,
+            "UID": 2240496415,
+            "ParentUID": 1185583722,
             "Name": "ExpBar",
             "Tag": "Default",
             "Static": 0,
@@ -10194,8 +10345,8 @@
             ]
         },
         {
-            "UID": 4175320331,
-            "ParentUID": 3171295638,
+            "UID": 3920607354,
+            "ParentUID": 1185583722,
             "Name": "LevelProgressBar",
             "Tag": "Default",
             "Static": 0,
@@ -10264,8 +10415,8 @@
             ]
         },
         {
-            "UID": 645548663,
-            "ParentUID": 3171295638,
+            "UID": 1944319516,
+            "ParentUID": 1185583722,
             "Name": "LevelActual",
             "Tag": "Default",
             "Static": 0,
@@ -10345,8 +10496,8 @@
             ]
         },
         {
-            "UID": 738918928,
-            "ParentUID": 3171295638,
+            "UID": 3777582296,
+            "ParentUID": 1185583722,
             "Name": "LevelExperience",
             "Tag": "Default",
             "Static": 0,
@@ -10426,8 +10577,8 @@
             ]
         },
         {
-            "UID": 856269907,
-            "ParentUID": 2713633994,
+            "UID": 4010397416,
+            "ParentUID": 2166448667,
             "Name": "StatsPanel",
             "Tag": "Default",
             "Static": 0,
@@ -10505,8 +10656,8 @@
             ]
         },
         {
-            "UID": 738566381,
-            "ParentUID": 856269907,
+            "UID": 1687035956,
+            "ParentUID": 4010397416,
             "Name": "HeartPanel",
             "Tag": "Default",
             "Static": 0,
@@ -10584,8 +10735,8 @@
             ]
         },
         {
-            "UID": 461685701,
-            "ParentUID": 738566381,
+            "UID": 4157366402,
+            "ParentUID": 1687035956,
             "Name": "HeartSquare",
             "Tag": "Default",
             "Static": 0,
@@ -10654,8 +10805,8 @@
             ]
         },
         {
-            "UID": 3695708900,
-            "ParentUID": 738566381,
+            "UID": 2186567867,
+            "ParentUID": 1687035956,
             "Name": "HeartIcon",
             "Tag": "Default",
             "Static": 0,
@@ -10724,8 +10875,8 @@
             ]
         },
         {
-            "UID": 3970305117,
-            "ParentUID": 738566381,
+            "UID": 841144361,
+            "ParentUID": 1687035956,
             "Name": "HeartLabel",
             "Tag": "Default",
             "Static": 0,
@@ -10805,8 +10956,8 @@
             ]
         },
         {
-            "UID": 1143922682,
-            "ParentUID": 738566381,
+            "UID": 1139310796,
+            "ParentUID": 1687035956,
             "Name": "HeartPositiveBoostIcon",
             "Tag": "Default",
             "Static": 0,
@@ -10875,8 +11026,8 @@
             ]
         },
         {
-            "UID": 1991598150,
-            "ParentUID": 738566381,
+            "UID": 1353445702,
+            "ParentUID": 1687035956,
             "Name": "HeartNegativeBoostIcon",
             "Tag": "Default",
             "Static": 0,
@@ -10945,8 +11096,8 @@
             ]
         },
         {
-            "UID": 1946351012,
-            "ParentUID": 856269907,
+            "UID": 819710967,
+            "ParentUID": 4010397416,
             "Name": "DexterityPanel",
             "Tag": "Default",
             "Static": 0,
@@ -11024,8 +11175,8 @@
             ]
         },
         {
-            "UID": 1649121166,
-            "ParentUID": 1946351012,
+            "UID": 2273427193,
+            "ParentUID": 819710967,
             "Name": "DexteritySquare",
             "Tag": "Default",
             "Static": 0,
@@ -11094,8 +11245,8 @@
             ]
         },
         {
-            "UID": 1430968299,
-            "ParentUID": 1946351012,
+            "UID": 1392744708,
+            "ParentUID": 819710967,
             "Name": "DexterityIcon",
             "Tag": "Default",
             "Static": 0,
@@ -11164,8 +11315,8 @@
             ]
         },
         {
-            "UID": 1467204445,
-            "ParentUID": 1946351012,
+            "UID": 569015622,
+            "ParentUID": 819710967,
             "Name": "DexterityLabel",
             "Tag": "Default",
             "Static": 0,
@@ -11245,8 +11396,8 @@
             ]
         },
         {
-            "UID": 2229037684,
-            "ParentUID": 1946351012,
+            "UID": 2564188632,
+            "ParentUID": 819710967,
             "Name": "DexterityPositiveBoostIcon",
             "Tag": "Default",
             "Static": 0,
@@ -11315,8 +11466,8 @@
             ]
         },
         {
-            "UID": 50983051,
-            "ParentUID": 1946351012,
+            "UID": 2866883432,
+            "ParentUID": 819710967,
             "Name": "DexterityNegativeBoostIcon",
             "Tag": "Default",
             "Static": 0,
@@ -11385,8 +11536,8 @@
             ]
         },
         {
-            "UID": 1677837103,
-            "ParentUID": 856269907,
+            "UID": 1851156110,
+            "ParentUID": 4010397416,
             "Name": "StrPanel",
             "Tag": "Default",
             "Static": 0,
@@ -11464,8 +11615,8 @@
             ]
         },
         {
-            "UID": 1430801171,
-            "ParentUID": 1677837103,
+            "UID": 3578838736,
+            "ParentUID": 1851156110,
             "Name": "StrSquare",
             "Tag": "Default",
             "Static": 0,
@@ -11534,8 +11685,8 @@
             ]
         },
         {
-            "UID": 1814450080,
-            "ParentUID": 1677837103,
+            "UID": 2915741946,
+            "ParentUID": 1851156110,
             "Name": "StrIcon",
             "Tag": "Default",
             "Static": 0,
@@ -11604,8 +11755,8 @@
             ]
         },
         {
-            "UID": 2973731206,
-            "ParentUID": 1677837103,
+            "UID": 3715870087,
+            "ParentUID": 1851156110,
             "Name": "StrLabel",
             "Tag": "Default",
             "Static": 0,
@@ -11685,8 +11836,8 @@
             ]
         },
         {
-            "UID": 1542816944,
-            "ParentUID": 1677837103,
+            "UID": 2899305887,
+            "ParentUID": 1851156110,
             "Name": "StrPositiveBoostIcon",
             "Tag": "Default",
             "Static": 0,
@@ -11755,8 +11906,8 @@
             ]
         },
         {
-            "UID": 20647939,
-            "ParentUID": 1677837103,
+            "UID": 2823102174,
+            "ParentUID": 1851156110,
             "Name": "StrNegativeBoostIcon",
             "Tag": "Default",
             "Static": 0,
@@ -11825,8 +11976,8 @@
             ]
         },
         {
-            "UID": 2300158575,
-            "ParentUID": 856269907,
+            "UID": 3609748461,
+            "ParentUID": 4010397416,
             "Name": "SoulPanel",
             "Tag": "Default",
             "Static": 0,
@@ -11904,8 +12055,8 @@
             ]
         },
         {
-            "UID": 538397406,
-            "ParentUID": 2300158575,
+            "UID": 3145647874,
+            "ParentUID": 3609748461,
             "Name": "SoulSquare",
             "Tag": "Default",
             "Static": 0,
@@ -11974,8 +12125,8 @@
             ]
         },
         {
-            "UID": 2541507792,
-            "ParentUID": 2300158575,
+            "UID": 1053336976,
+            "ParentUID": 3609748461,
             "Name": "SoulIcon",
             "Tag": "Default",
             "Static": 0,
@@ -12044,8 +12195,8 @@
             ]
         },
         {
-            "UID": 952199722,
-            "ParentUID": 2300158575,
+            "UID": 3682842364,
+            "ParentUID": 3609748461,
             "Name": "SoulLabel",
             "Tag": "Default",
             "Static": 0,
@@ -12125,8 +12276,8 @@
             ]
         },
         {
-            "UID": 1054741886,
-            "ParentUID": 2300158575,
+            "UID": 1722818034,
+            "ParentUID": 3609748461,
             "Name": "SoulPositiveBoostIcon",
             "Tag": "Default",
             "Static": 0,
@@ -12195,8 +12346,8 @@
             ]
         },
         {
-            "UID": 2613525384,
-            "ParentUID": 2300158575,
+            "UID": 4023431006,
+            "ParentUID": 3609748461,
             "Name": "SoulNegativeBoostIcon",
             "Tag": "Default",
             "Static": 0,
@@ -12265,8 +12416,8 @@
             ]
         },
         {
-            "UID": 1179591393,
-            "ParentUID": 3389039714,
+            "UID": 1479317270,
+            "ParentUID": 784073150,
             "Name": "Quests",
             "Tag": "Default",
             "Static": 0,
@@ -12300,8 +12451,8 @@
             "Components": []
         },
         {
-            "UID": 258751092,
-            "ParentUID": 1179591393,
+            "UID": 466731647,
+            "ParentUID": 1479317270,
             "Name": "Title",
             "Tag": "Default",
             "Static": 0,
@@ -12381,8 +12532,8 @@
             ]
         },
         {
-            "UID": 795188644,
-            "ParentUID": 1179591393,
+            "UID": 2154609648,
+            "ParentUID": 1479317270,
             "Name": "QuestMock",
             "Tag": "Default",
             "Static": 0,
@@ -12451,8 +12602,8 @@
             ]
         },
         {
-            "UID": 1604885201,
-            "ParentUID": 3389039714,
+            "UID": 990807230,
+            "ParentUID": 784073150,
             "Name": "Skills",
             "Tag": "Default",
             "Static": 0,
@@ -12617,8 +12768,8 @@
             ]
         },
         {
-            "UID": 2291879180,
-            "ParentUID": 1604885201,
+            "UID": 677304105,
+            "ParentUID": 990807230,
             "Name": "Title",
             "Tag": "Default",
             "Static": 0,
@@ -12698,8 +12849,8 @@
             ]
         },
         {
-            "UID": 1403683242,
-            "ParentUID": 1604885201,
+            "UID": 3541866155,
+            "ParentUID": 990807230,
             "Name": "SkillsTree",
             "Tag": "Default",
             "Static": 0,
@@ -12759,7 +12910,7 @@
                     "FlipVertical": 0,
                     "FlipHorizontal": 0,
                     "isMasked": 0,
-                    "maskAmount": 0,
+                    "maskAmount": 100,
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
@@ -12768,8 +12919,8 @@
             ]
         },
         {
-            "UID": 779698307,
-            "ParentUID": 1403683242,
+            "UID": 4264479448,
+            "ParentUID": 3541866155,
             "Name": "SkillConnections",
             "Tag": "Default",
             "Static": 0,
@@ -12847,8 +12998,8 @@
             ]
         },
         {
-            "UID": 3343591144,
-            "ParentUID": 779698307,
+            "UID": 4008617889,
+            "ParentUID": 4264479448,
             "Name": "Connection0",
             "Tag": "Default",
             "Static": 0,
@@ -12917,8 +13068,8 @@
             ]
         },
         {
-            "UID": 4085459958,
-            "ParentUID": 779698307,
+            "UID": 3789875717,
+            "ParentUID": 4264479448,
             "Name": "Connection1",
             "Tag": "Default",
             "Static": 0,
@@ -12987,8 +13138,8 @@
             ]
         },
         {
-            "UID": 1096336871,
-            "ParentUID": 779698307,
+            "UID": 3473778482,
+            "ParentUID": 4264479448,
             "Name": "Connection2",
             "Tag": "Default",
             "Static": 0,
@@ -13057,8 +13208,8 @@
             ]
         },
         {
-            "UID": 560020483,
-            "ParentUID": 779698307,
+            "UID": 3315383330,
+            "ParentUID": 4264479448,
             "Name": "Connection3",
             "Tag": "Default",
             "Static": 0,
@@ -13127,8 +13278,8 @@
             ]
         },
         {
-            "UID": 3935076875,
-            "ParentUID": 779698307,
+            "UID": 1112819866,
+            "ParentUID": 4264479448,
             "Name": "Connection4",
             "Tag": "Default",
             "Static": 0,
@@ -13197,8 +13348,8 @@
             ]
         },
         {
-            "UID": 2470835420,
-            "ParentUID": 779698307,
+            "UID": 429982551,
+            "ParentUID": 4264479448,
             "Name": "Connection5",
             "Tag": "Default",
             "Static": 0,
@@ -13267,8 +13418,8 @@
             ]
         },
         {
-            "UID": 2345433383,
-            "ParentUID": 779698307,
+            "UID": 986777595,
+            "ParentUID": 4264479448,
             "Name": "Connection6",
             "Tag": "Default",
             "Static": 0,
@@ -13337,8 +13488,8 @@
             ]
         },
         {
-            "UID": 4263193689,
-            "ParentUID": 1403683242,
+            "UID": 4114601652,
+            "ParentUID": 3541866155,
             "Name": "SkillSlots",
             "Tag": "Default",
             "Static": 0,
@@ -13416,8 +13567,8 @@
             ]
         },
         {
-            "UID": 3358427938,
-            "ParentUID": 4263193689,
+            "UID": 497117965,
+            "ParentUID": 4114601652,
             "Name": "Skill0",
             "Tag": "Default",
             "Static": 0,
@@ -13486,8 +13637,8 @@
             ]
         },
         {
-            "UID": 2731071714,
-            "ParentUID": 3358427938,
+            "UID": 2689280059,
+            "ParentUID": 497117965,
             "Name": "SkillCounterBG",
             "Tag": "Default",
             "Static": 0,
@@ -13556,8 +13707,8 @@
             ]
         },
         {
-            "UID": 2769666550,
-            "ParentUID": 3358427938,
+            "UID": 4006392358,
+            "ParentUID": 497117965,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -13637,8 +13788,8 @@
             ]
         },
         {
-            "UID": 1249576061,
-            "ParentUID": 4263193689,
+            "UID": 2174409121,
+            "ParentUID": 4114601652,
             "Name": "Skill1",
             "Tag": "Default",
             "Static": 0,
@@ -13707,8 +13858,8 @@
             ]
         },
         {
-            "UID": 2186736111,
-            "ParentUID": 1249576061,
+            "UID": 2335614148,
+            "ParentUID": 2174409121,
             "Name": "SkillCounterBG",
             "Tag": "Default",
             "Static": 0,
@@ -13777,8 +13928,8 @@
             ]
         },
         {
-            "UID": 2619112370,
-            "ParentUID": 1249576061,
+            "UID": 87030184,
+            "ParentUID": 2174409121,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -13858,8 +14009,8 @@
             ]
         },
         {
-            "UID": 1523559486,
-            "ParentUID": 4263193689,
+            "UID": 1148343273,
+            "ParentUID": 4114601652,
             "Name": "Skill2",
             "Tag": "Default",
             "Static": 0,
@@ -13928,8 +14079,8 @@
             ]
         },
         {
-            "UID": 4246498844,
-            "ParentUID": 1523559486,
+            "UID": 3815496552,
+            "ParentUID": 1148343273,
             "Name": "SkillCounterBG",
             "Tag": "Default",
             "Static": 0,
@@ -13998,8 +14149,8 @@
             ]
         },
         {
-            "UID": 2689793005,
-            "ParentUID": 1523559486,
+            "UID": 790786786,
+            "ParentUID": 1148343273,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -14079,8 +14230,8 @@
             ]
         },
         {
-            "UID": 3889420387,
-            "ParentUID": 4263193689,
+            "UID": 3868754094,
+            "ParentUID": 4114601652,
             "Name": "Skill3",
             "Tag": "Default",
             "Static": 0,
@@ -14149,8 +14300,8 @@
             ]
         },
         {
-            "UID": 2405018504,
-            "ParentUID": 3889420387,
+            "UID": 2107631486,
+            "ParentUID": 3868754094,
             "Name": "SkillCounterBG",
             "Tag": "Default",
             "Static": 0,
@@ -14219,8 +14370,8 @@
             ]
         },
         {
-            "UID": 2037250459,
-            "ParentUID": 3889420387,
+            "UID": 3980079472,
+            "ParentUID": 3868754094,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -14300,8 +14451,8 @@
             ]
         },
         {
-            "UID": 2403902569,
-            "ParentUID": 4263193689,
+            "UID": 450513103,
+            "ParentUID": 4114601652,
             "Name": "Skill4",
             "Tag": "Default",
             "Static": 0,
@@ -14370,8 +14521,8 @@
             ]
         },
         {
-            "UID": 2229426792,
-            "ParentUID": 2403902569,
+            "UID": 601966580,
+            "ParentUID": 450513103,
             "Name": "SkillCounterBG",
             "Tag": "Default",
             "Static": 0,
@@ -14440,8 +14591,8 @@
             ]
         },
         {
-            "UID": 3231564958,
-            "ParentUID": 2403902569,
+            "UID": 2198886379,
+            "ParentUID": 450513103,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -14521,8 +14672,8 @@
             ]
         },
         {
-            "UID": 1396020629,
-            "ParentUID": 4263193689,
+            "UID": 4056151603,
+            "ParentUID": 4114601652,
             "Name": "Skill5",
             "Tag": "Default",
             "Static": 0,
@@ -14591,8 +14742,8 @@
             ]
         },
         {
-            "UID": 2720083029,
-            "ParentUID": 1396020629,
+            "UID": 1836026300,
+            "ParentUID": 4056151603,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -14672,8 +14823,8 @@
             ]
         },
         {
-            "UID": 3972930175,
-            "ParentUID": 4263193689,
+            "UID": 3697027646,
+            "ParentUID": 4114601652,
             "Name": "Skill6",
             "Tag": "Default",
             "Static": 0,
@@ -14742,8 +14893,8 @@
             ]
         },
         {
-            "UID": 2959847312,
-            "ParentUID": 3972930175,
+            "UID": 1549194065,
+            "ParentUID": 3697027646,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -14823,8 +14974,8 @@
             ]
         },
         {
-            "UID": 1528098702,
-            "ParentUID": 4263193689,
+            "UID": 2616207719,
+            "ParentUID": 4114601652,
             "Name": "Skill7",
             "Tag": "Default",
             "Static": 0,
@@ -14893,8 +15044,8 @@
             ]
         },
         {
-            "UID": 2434687889,
-            "ParentUID": 1528098702,
+            "UID": 3612249465,
+            "ParentUID": 2616207719,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -14974,8 +15125,8 @@
             ]
         },
         {
-            "UID": 2815154082,
-            "ParentUID": 4263193689,
+            "UID": 1761684499,
+            "ParentUID": 4114601652,
             "Name": "Skill8",
             "Tag": "Default",
             "Static": 0,
@@ -15044,8 +15195,8 @@
             ]
         },
         {
-            "UID": 2085432131,
-            "ParentUID": 2815154082,
+            "UID": 2396504980,
+            "ParentUID": 1761684499,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -15125,8 +15276,8 @@
             ]
         },
         {
-            "UID": 1019115858,
-            "ParentUID": 4263193689,
+            "UID": 3802393282,
+            "ParentUID": 4114601652,
             "Name": "Skill9",
             "Tag": "Default",
             "Static": 0,
@@ -15195,8 +15346,8 @@
             ]
         },
         {
-            "UID": 209367918,
-            "ParentUID": 1019115858,
+            "UID": 694273409,
+            "ParentUID": 3802393282,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -15276,8 +15427,8 @@
             ]
         },
         {
-            "UID": 1466919874,
-            "ParentUID": 4263193689,
+            "UID": 2155934037,
+            "ParentUID": 4114601652,
             "Name": "Skill10",
             "Tag": "Default",
             "Static": 0,
@@ -15346,8 +15497,8 @@
             ]
         },
         {
-            "UID": 3908424319,
-            "ParentUID": 1466919874,
+            "UID": 3710753552,
+            "ParentUID": 2155934037,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -15427,8 +15578,8 @@
             ]
         },
         {
-            "UID": 4230555125,
-            "ParentUID": 1403683242,
+            "UID": 1656772954,
+            "ParentUID": 3541866155,
             "Name": "HoverGO",
             "Tag": "Default",
             "Static": 0,
@@ -15506,8 +15657,8 @@
             ]
         },
         {
-            "UID": 2909674811,
-            "ParentUID": 4230555125,
+            "UID": 2538767414,
+            "ParentUID": 1656772954,
             "Name": "SkillHover",
             "Tag": "Default",
             "Static": 0,
@@ -15576,8 +15727,8 @@
             ]
         },
         {
-            "UID": 2098287348,
-            "ParentUID": 1403683242,
+            "UID": 2047561558,
+            "ParentUID": 3541866155,
             "Name": "Candado",
             "Tag": "Default",
             "Static": 0,
@@ -15655,8 +15806,8 @@
             ]
         },
         {
-            "UID": 780089873,
-            "ParentUID": 2098287348,
+            "UID": 2703579033,
+            "ParentUID": 2047561558,
             "Name": "C1",
             "Tag": "Default",
             "Static": 0,
@@ -15725,8 +15876,8 @@
             ]
         },
         {
-            "UID": 2060253329,
-            "ParentUID": 2098287348,
+            "UID": 4062526481,
+            "ParentUID": 2047561558,
             "Name": "C2",
             "Tag": "Default",
             "Static": 0,
@@ -15795,8 +15946,8 @@
             ]
         },
         {
-            "UID": 1521204209,
-            "ParentUID": 2098287348,
+            "UID": 2192080338,
+            "ParentUID": 2047561558,
             "Name": "C3",
             "Tag": "Default",
             "Static": 0,
@@ -15865,8 +16016,8 @@
             ]
         },
         {
-            "UID": 2347798434,
-            "ParentUID": 1604885201,
+            "UID": 2724001699,
+            "ParentUID": 990807230,
             "Name": "SkillsPointsMargin",
             "Tag": "Default",
             "Static": 0,
@@ -15926,7 +16077,7 @@
                     "FlipVertical": 0,
                     "FlipHorizontal": 0,
                     "isMasked": 0,
-                    "maskAmount": 0,
+                    "maskAmount": 100,
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
@@ -15935,8 +16086,8 @@
             ]
         },
         {
-            "UID": 4160889697,
-            "ParentUID": 2347798434,
+            "UID": 2555324604,
+            "ParentUID": 2724001699,
             "Name": "SkillsPointsBackground",
             "Tag": "Default",
             "Static": 0,
@@ -16005,8 +16156,8 @@
             ]
         },
         {
-            "UID": 183652993,
-            "ParentUID": 2347798434,
+            "UID": 3491616301,
+            "ParentUID": 2724001699,
             "Name": "SkillPointsLabel",
             "Tag": "Default",
             "Static": 0,
@@ -16086,8 +16237,8 @@
             ]
         },
         {
-            "UID": 1317241746,
-            "ParentUID": 2347798434,
+            "UID": 105917570,
+            "ParentUID": 2724001699,
             "Name": "SkillPoints",
             "Tag": "Default",
             "Static": 0,
@@ -16167,8 +16318,8 @@
             ]
         },
         {
-            "UID": 2719847978,
-            "ParentUID": 1604885201,
+            "UID": 2292216727,
+            "ParentUID": 990807230,
             "Name": "SkillInfo",
             "Tag": "Default",
             "Static": 0,
@@ -16237,7 +16388,3627 @@
             ]
         },
         {
-            "UID": 4272261947,
+            "UID": 2745436618,
+            "ParentUID": 990807230,
+            "Name": "Title",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -284.79998779296877,
+                        296.1000061035156
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 14.0,
+                    "text": "Skills",
+                    "font": "Fonts/TACOSRG.ttf",
+                    "color": [
+                        0.8823529481887817,
+                        0.8705882430076599,
+                        0.16470588743686677,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        6.0,
+                        6.0
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 0.0,
+                    "InterlineDistance": 0.0,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 4207955724,
+            "ParentUID": 990807230,
+            "Name": "SkillsTree",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -229.5,
+                        26.0
+                    ],
+                    "Size": [
+                        415.5,
+                        495.5
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 1941603464,
+                    "textureName": "BgEquipment",
+                    "color": [
+                        1.0,
+                        0.9999998807907105,
+                        0.9999899864196777,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 0,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 3365378779,
+            "ParentUID": 4207955724,
+            "Name": "SkillConnections",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 0,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 0,
+                    "Enabled": 1,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Euler": [
+                        -0.0,
+                        0.0,
+                        -0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Global": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": 3771063263,
+            "ParentUID": 3365378779,
+            "Name": "Connection0",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -386.3500061035156,
+                        125.0
+                    ],
+                    "Size": [
+                        6.5,
+                        34.5
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 676697322,
+                    "textureName": "White",
+                    "color": [
+                        9.999999974752428e-7,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 999535641,
+            "ParentUID": 3365378779,
+            "Name": "Connection1",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -386.3500061035156,
+                        -41.900001525878909
+                    ],
+                    "Size": [
+                        6.5,
+                        155.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 676697322,
+                    "textureName": "White",
+                    "color": [
+                        9.999999974752428e-7,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 882914234,
+            "ParentUID": 3365378779,
+            "Name": "Connection2",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -284.54998779296877,
+                        69.0999984741211
+                    ],
+                    "Size": [
+                        6.5,
+                        148.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 676697322,
+                    "textureName": "White",
+                    "color": [
+                        9.999999974752428e-7,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 3364668384,
+            "ParentUID": 3365378779,
+            "Name": "Connection3",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -283.95001220703127,
+                        -97.0
+                    ],
+                    "Size": [
+                        6.5,
+                        42.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 676697322,
+                    "textureName": "White",
+                    "color": [
+                        9.999999974752428e-7,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 619133707,
+            "ParentUID": 3365378779,
+            "Name": "Connection4",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -183.35000610351563,
+                        125.0
+                    ],
+                    "Size": [
+                        6.5,
+                        34.5
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 676697322,
+                    "textureName": "White",
+                    "color": [
+                        9.999999974752428e-7,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 783984330,
+            "ParentUID": 3365378779,
+            "Name": "Connection5",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -182.35000610351563,
+                        -43.0
+                    ],
+                    "Size": [
+                        6.5,
+                        154.5
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 676697322,
+                    "textureName": "White",
+                    "color": [
+                        9.999999974752428e-7,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 3891330163,
+            "ParentUID": 3365378779,
+            "Name": "Connection6",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -80.3499984741211,
+                        12.0
+                    ],
+                    "Size": [
+                        6.5,
+                        263.5
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 676697322,
+                    "textureName": "White",
+                    "color": [
+                        9.999999974752428e-7,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 1293167393,
+            "ParentUID": 4207955724,
+            "Name": "SkillSlots",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 0,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 0,
+                    "Enabled": 1,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Euler": [
+                        -0.0,
+                        0.0,
+                        -0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Global": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": 2320840552,
+            "ParentUID": 1293167393,
+            "Name": "Skill0",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 0,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -386.70001220703127,
+                        186.1999969482422
+                    ],
+                    "Size": [
+                        58.0,
+                        58.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 1156722927,
+                    "textureName": "Skill_DashChickenBite",
+                    "color": [
+                        1.0,
+                        0.9999899864196777,
+                        0.9999899864196777,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 4009255840,
+            "ParentUID": 2320840552,
+            "Name": "SkillCounterBG",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -387.20001220703127,
+                        149.89999389648438
+                    ],
+                    "Size": [
+                        30.0,
+                        15.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 676697322,
+                    "textureName": "White",
+                    "color": [
+                        9.999999974752428e-7,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 1804602737,
+            "ParentUID": 2320840552,
+            "Name": "SkillCounter",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -400.0,
+                        144.8000030517578
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 14.0,
+                    "text": "0/5",
+                    "font": "Fonts/MATADOR.ttf",
+                    "color": [
+                        0.35655736923217776,
+                        0.339021772146225,
+                        0.339021772146225,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.2000000476837159,
+                        1.2000000476837159
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 0.0,
+                    "InterlineDistance": 0.0,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 3574994943,
+            "ParentUID": 1293167393,
+            "Name": "Skill1",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 0,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -386.6000061035156,
+                        78.69999694824219
+                    ],
+                    "Size": [
+                        58.0,
+                        58.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 3107165251,
+                    "textureName": "Skill_CircularAttack",
+                    "color": [
+                        1.0,
+                        0.9999899864196777,
+                        0.9999899864196777,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 1440328743,
+            "ParentUID": 3574994943,
+            "Name": "SkillCounterBG",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -387.20001220703127,
+                        41.900001525878909
+                    ],
+                    "Size": [
+                        30.0,
+                        15.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 676697322,
+                    "textureName": "White",
+                    "color": [
+                        9.999999974752428e-7,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 2514962105,
+            "ParentUID": 3574994943,
+            "Name": "SkillCounter",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -400.0,
+                        39.0
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 14.0,
+                    "text": "0/3",
+                    "font": "Fonts/MATADOR.ttf",
+                    "color": [
+                        0.35655736923217776,
+                        0.339021772146225,
+                        0.339021772146225,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.2000000476837159,
+                        1.2000000476837159
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 0.0,
+                    "InterlineDistance": 0.0,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 3620055962,
+            "ParentUID": 1293167393,
+            "Name": "Skill2",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 0,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -386.6000061035156,
+                        -146.1999969482422
+                    ],
+                    "Size": [
+                        58.0,
+                        58.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 1138650019,
+                    "textureName": "Skill_BompDrop",
+                    "color": [
+                        1.0,
+                        0.9999899864196777,
+                        0.9999899864196777,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 1929287098,
+            "ParentUID": 3620055962,
+            "Name": "SkillCounterBG",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -387.20001220703127,
+                        -183.3000030517578
+                    ],
+                    "Size": [
+                        30.0,
+                        15.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 676697322,
+                    "textureName": "White",
+                    "color": [
+                        9.999999974752428e-7,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 4219959481,
+            "ParentUID": 3620055962,
+            "Name": "SkillCounter",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -400.0,
+                        -184.3000030517578
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 14.0,
+                    "text": "0/2",
+                    "font": "Fonts/MATADOR.ttf",
+                    "color": [
+                        0.35655736923217776,
+                        0.339021772146225,
+                        0.339021772146225,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.2000000476837159,
+                        1.2000000476837159
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 0.0,
+                    "InterlineDistance": 0.0,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 2086267320,
+            "ParentUID": 1293167393,
+            "Name": "Skill3",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 0,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -284.6000061035156,
+                        186.1999969482422
+                    ],
+                    "Size": [
+                        58.0,
+                        58.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 2801513320,
+                    "textureName": "Skill_Mock_D",
+                    "color": [
+                        1.0,
+                        0.9999899864196777,
+                        0.9999899864196777,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 2211209247,
+            "ParentUID": 2086267320,
+            "Name": "SkillCounterBG",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -284.8999938964844,
+                        149.89999389648438
+                    ],
+                    "Size": [
+                        30.0,
+                        15.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 676697322,
+                    "textureName": "White",
+                    "color": [
+                        9.999999974752428e-7,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 2662965505,
+            "ParentUID": 2086267320,
+            "Name": "SkillCounter",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -297.79998779296877,
+                        144.8000030517578
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 14.0,
+                    "text": "0/5",
+                    "font": "Fonts/MATADOR.ttf",
+                    "color": [
+                        0.35655736923217776,
+                        0.339021772146225,
+                        0.339021772146225,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.2000000476837159,
+                        1.2000000476837159
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 0.0,
+                    "InterlineDistance": 0.0,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 275835363,
+            "ParentUID": 1293167393,
+            "Name": "Skill4",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 0,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -283.79998779296877,
+                        -33.20000076293945
+                    ],
+                    "Size": [
+                        58.0,
+                        58.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 734857354,
+                    "textureName": "Skill_MacheteRain",
+                    "color": [
+                        1.0,
+                        0.9999899864196777,
+                        0.9999899864196777,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 4192603812,
+            "ParentUID": 275835363,
+            "Name": "SkillCounterBG",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -283.79998779296877,
+                        -70.0999984741211
+                    ],
+                    "Size": [
+                        30.0,
+                        15.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 676697322,
+                    "textureName": "White",
+                    "color": [
+                        9.999999974752428e-7,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 143110970,
+            "ParentUID": 275835363,
+            "Name": "SkillCounter",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -297.20001220703127,
+                        -73.4000015258789
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 14.0,
+                    "text": "0/5",
+                    "font": "Fonts/MATADOR.ttf",
+                    "color": [
+                        0.35655736923217776,
+                        0.339021772146225,
+                        0.339021772146225,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.2000000476837159,
+                        1.2000000476837159
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 0.0,
+                    "InterlineDistance": 0.0,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 876443249,
+            "ParentUID": 1293167393,
+            "Name": "Skill5",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 0,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -284.6000061035156,
+                        -152.89999389648438
+                    ],
+                    "Size": [
+                        58.0,
+                        73.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 1368863784,
+                    "textureName": "Skill_Desactivada",
+                    "color": [
+                        1.0,
+                        0.9999899864196777,
+                        0.9999899864196777,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 2180354878,
+            "ParentUID": 876443249,
+            "Name": "SkillCounter",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -297.79998779296877,
+                        -185.5
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 14.0,
+                    "text": "0/1",
+                    "font": "Fonts/MATADOR.ttf",
+                    "color": [
+                        0.35655736923217776,
+                        0.339021772146225,
+                        0.339021772146225,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.2000000476837159,
+                        1.2000000476837159
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 0.0,
+                    "InterlineDistance": 0.0,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 1227774204,
+            "ParentUID": 1293167393,
+            "Name": "Skill6",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 0,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -183.39999389648438,
+                        179.5
+                    ],
+                    "Size": [
+                        58.0,
+                        73.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 1368863784,
+                    "textureName": "Skill_Desactivada",
+                    "color": [
+                        1.0,
+                        0.9999899864196777,
+                        0.9999899864196777,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 823261999,
+            "ParentUID": 1227774204,
+            "Name": "SkillCounter",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -196.60000610351563,
+                        144.8000030517578
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 14.0,
+                    "text": "0/5",
+                    "font": "Fonts/MATADOR.ttf",
+                    "color": [
+                        0.35655736923217776,
+                        0.339021772146225,
+                        0.339021772146225,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.2000000476837159,
+                        1.2000000476837159
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 0.0,
+                    "InterlineDistance": 0.0,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 1589745724,
+            "ParentUID": 1293167393,
+            "Name": "Skill7",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 0,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -183.39999389648438,
+                        71.5
+                    ],
+                    "Size": [
+                        58.0,
+                        73.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 1368863784,
+                    "textureName": "Skill_Desactivada",
+                    "color": [
+                        1.0,
+                        0.9999899864196777,
+                        0.9999899864196777,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 1159639261,
+            "ParentUID": 1589745724,
+            "Name": "SkillCounter",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -196.60000610351563,
+                        39.400001525878909
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 14.0,
+                    "text": "0/5",
+                    "font": "Fonts/MATADOR.ttf",
+                    "color": [
+                        0.35655736923217776,
+                        0.339021772146225,
+                        0.339021772146225,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.2000000476837159,
+                        1.2000000476837159
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 0.0,
+                    "InterlineDistance": 0.0,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 2638047451,
+            "ParentUID": 1293167393,
+            "Name": "Skill8",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 0,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -183.39999389648438,
+                        -153.10000610351563
+                    ],
+                    "Size": [
+                        58.0,
+                        73.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 1368863784,
+                    "textureName": "Skill_Desactivada",
+                    "color": [
+                        1.0,
+                        0.9999899864196777,
+                        0.9999899864196777,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 2606355586,
+            "ParentUID": 2638047451,
+            "Name": "SkillCounter",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -196.60000610351563,
+                        -185.10000610351563
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 14.0,
+                    "text": "0/5",
+                    "font": "Fonts/MATADOR.ttf",
+                    "color": [
+                        0.35655736923217776,
+                        0.339021772146225,
+                        0.339021772146225,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.2000000476837159,
+                        1.2000000476837159
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 0.0,
+                    "InterlineDistance": 0.0,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 3845141482,
+            "ParentUID": 1293167393,
+            "Name": "Skill9",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 0,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -81.0999984741211,
+                        179.5
+                    ],
+                    "Size": [
+                        58.0,
+                        73.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 1368863784,
+                    "textureName": "Skill_Desactivada",
+                    "color": [
+                        1.0,
+                        0.9999899864196777,
+                        0.9999899864196777,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 889799853,
+            "ParentUID": 3845141482,
+            "Name": "SkillCounter",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -94.5999984741211,
+                        144.8000030517578
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 14.0,
+                    "text": "0/5",
+                    "font": "Fonts/MATADOR.ttf",
+                    "color": [
+                        0.35655736923217776,
+                        0.339021772146225,
+                        0.339021772146225,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.2000000476837159,
+                        1.2000000476837159
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 0.0,
+                    "InterlineDistance": 0.0,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 3280854187,
+            "ParentUID": 1293167393,
+            "Name": "Skill10",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 0,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -80.69999694824219,
+                        -153.89999389648438
+                    ],
+                    "Size": [
+                        58.0,
+                        73.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 1368863784,
+                    "textureName": "Skill_Desactivada",
+                    "color": [
+                        1.0,
+                        0.9999899864196777,
+                        0.9999899864196777,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 2418654261,
+            "ParentUID": 3280854187,
+            "Name": "SkillCounter",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -96.80000305175781,
+                        -185.10000610351563
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 14.0,
+                    "text": "0/5",
+                    "font": "Fonts/MATADOR.ttf",
+                    "color": [
+                        0.35655736923217776,
+                        0.339021772146225,
+                        0.339021772146225,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.2000000476837159,
+                        1.2000000476837159
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 0.0,
+                    "InterlineDistance": 0.0,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 840787794,
+            "ParentUID": 4207955724,
+            "Name": "HoverGO",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 0,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 0,
+                    "Enabled": 1,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Euler": [
+                        -0.0,
+                        0.0,
+                        -0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Global": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": 2620303951,
+            "ParentUID": 840787794,
+            "Name": "SkillHover",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -386.5,
+                        186.39999389648438
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 258563022,
+                    "textureName": "Hover_Skill",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 3179506400,
+            "ParentUID": 4207955724,
+            "Name": "Candado",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 0,
+                    "Enabled": 1,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Euler": [
+                        -0.0,
+                        0.0,
+                        -0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Global": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": 3972628669,
+            "ParentUID": 3179506400,
+            "Name": "C1",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -207.5,
+                        208.5
+                    ],
+                    "Size": [
+                        45.0,
+                        45.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 2672060910,
+                    "textureName": "Candado",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 2444524020,
+            "ParentUID": 3179506400,
+            "Name": "C2",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -110.69999694824219,
+                        208.5
+                    ],
+                    "Size": [
+                        45.0,
+                        45.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 2672060910,
+                    "textureName": "Candado",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 831289451,
+            "ParentUID": 3179506400,
+            "Name": "C3",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -313.5,
+                        -111.69999694824219
+                    ],
+                    "Size": [
+                        45.0,
+                        45.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 2672060910,
+                    "textureName": "Candado",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 1200371037,
+            "ParentUID": 990807230,
+            "Name": "SkillsPointsMargin",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 0,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -229.6999969482422,
+                        -267.6000061035156
+                    ],
+                    "Size": [
+                        415.5,
+                        67.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 676697322,
+                    "textureName": "White",
+                    "color": [
+                        9.999999974752428e-7,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 0,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 3658869094,
+            "ParentUID": 1200371037,
+            "Name": "SkillsPointsBackground",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -229.5,
+                        -268.0
+                    ],
+                    "Size": [
+                        398.5,
+                        53.5
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 676697322,
+                    "textureName": "White",
+                    "color": [
+                        0.0,
+                        0.805853545665741,
+                        0.9467213153839111,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 212611849,
+            "ParentUID": 1200371037,
+            "Name": "SkillPointsLabel",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -377.5,
+                        -275.5
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 14.0,
+                    "text": "Skill Points:",
+                    "font": "Fonts/TACOSRG.ttf",
+                    "color": [
+                        9.999999974752428e-7,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        4.0,
+                        4.0
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 0.0,
+                    "InterlineDistance": 0.0,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 3512599349,
+            "ParentUID": 1200371037,
+            "Name": "SkillPoints",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -164.3000030517578,
+                        -275.6000061035156
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 14.0,
+                    "text": "0",
+                    "font": "Fonts/TACOSRG.ttf",
+                    "color": [
+                        9.999999974752428e-7,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        4.0,
+                        4.0
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 0.0,
+                    "InterlineDistance": 0.0,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 2488367246,
+            "ParentUID": 990807230,
+            "Name": "SkillInfo",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 0,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -744.2999877929688,
+                        0.0
+                    ],
+                    "Size": [
+                        364.0,
+                        543.5
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 3480667512,
+                    "textureName": "Info_Skill",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 127861843,
             "ParentUID": 1,
             "Name": "LevelUP",
             "Tag": "Default",
@@ -16316,8 +20087,8 @@
             ]
         },
         {
-            "UID": 462314140,
-            "ParentUID": 4272261947,
+            "UID": 368590479,
+            "ParentUID": 127861843,
             "Name": "LevelUPSuperiorLine",
             "Tag": "Default",
             "Static": 0,
@@ -16386,8 +20157,8 @@
             ]
         },
         {
-            "UID": 3618977729,
-            "ParentUID": 4272261947,
+            "UID": 4093950813,
+            "ParentUID": 127861843,
             "Name": "LevelUPInferiorLine",
             "Tag": "Default",
             "Static": 0,
@@ -16456,8 +20227,8 @@
             ]
         },
         {
-            "UID": 2226397303,
-            "ParentUID": 4272261947,
+            "UID": 1322993479,
+            "ParentUID": 127861843,
             "Name": "LevelReached",
             "Tag": "Default",
             "Static": 0,
@@ -16537,8 +20308,8 @@
             ]
         },
         {
-            "UID": 182083849,
-            "ParentUID": 4272261947,
+            "UID": 3212549567,
+            "ParentUID": 127861843,
             "Name": "SkillPointAvailable",
             "Tag": "Default",
             "Static": 0,
@@ -16618,7 +20389,7 @@
             ]
         },
         {
-            "UID": 3844781514,
+            "UID": 2641492674,
             "ParentUID": 1,
             "Name": "EnemyLife",
             "Tag": "Default",
@@ -16703,8 +20474,8 @@
             ]
         },
         {
-            "UID": 787092661,
-            "ParentUID": 3844781514,
+            "UID": 2065462883,
+            "ParentUID": 2641492674,
             "Name": "LifeBackground",
             "Tag": "Default",
             "Static": 0,
@@ -16773,8 +20544,8 @@
             ]
         },
         {
-            "UID": 3142756486,
-            "ParentUID": 3844781514,
+            "UID": 3048542948,
+            "ParentUID": 2641492674,
             "Name": "HPbar",
             "Tag": "Default",
             "Static": 0,
@@ -16843,8 +20614,8 @@
             ]
         },
         {
-            "UID": 2918517364,
-            "ParentUID": 3844781514,
+            "UID": 3505370099,
+            "ParentUID": 2641492674,
             "Name": "EnemyTypeName",
             "Tag": "Default",
             "Static": 0,
@@ -16924,8 +20695,8 @@
             ]
         },
         {
-            "UID": 3228332337,
-            "ParentUID": 3844781514,
+            "UID": 2657972678,
+            "ParentUID": 2641492674,
             "Name": "BoneRight",
             "Tag": "Default",
             "Static": 0,
@@ -16994,8 +20765,8 @@
             ]
         },
         {
-            "UID": 185288917,
-            "ParentUID": 3844781514,
+            "UID": 3903776339,
+            "ParentUID": 2641492674,
             "Name": "BoneLeft",
             "Tag": "Default",
             "Static": 0,
@@ -17064,8 +20835,8 @@
             ]
         },
         {
-            "UID": 1281703207,
-            "ParentUID": 3844781514,
+            "UID": 3763362547,
+            "ParentUID": 2641492674,
             "Name": "Skull",
             "Tag": "Default",
             "Static": 0,
@@ -17134,7 +20905,7 @@
             ]
         },
         {
-            "UID": 184973596,
+            "UID": 3662860767,
             "ParentUID": 1,
             "Name": "PopUpBackground",
             "Tag": "Default",
@@ -17210,8 +20981,8 @@
             ]
         },
         {
-            "UID": 3146150071,
-            "ParentUID": 184973596,
+            "UID": 309385629,
+            "ParentUID": 3662860767,
             "Name": "PopUpEquipTitle",
             "Tag": "Default",
             "Static": 0,
@@ -17291,8 +21062,8 @@
             ]
         },
         {
-            "UID": 3490398649,
-            "ParentUID": 184973596,
+            "UID": 661473237,
+            "ParentUID": 3662860767,
             "Name": "PopUpLine",
             "Tag": "Default",
             "Static": 0,
@@ -17361,8 +21132,8 @@
             ]
         },
         {
-            "UID": 2765519631,
-            "ParentUID": 184973596,
+            "UID": 1593655137,
+            "ParentUID": 3662860767,
             "Name": "PopUpSkills",
             "Tag": "Default",
             "Static": 0,
@@ -17509,8 +21280,8 @@
             ]
         },
         {
-            "UID": 2265721209,
-            "ParentUID": 184973596,
+            "UID": 866370053,
+            "ParentUID": 3662860767,
             "Name": "PopUpItems",
             "Tag": "Default",
             "Static": 0,
@@ -17657,8 +21428,8 @@
             ]
         },
         {
-            "UID": 3917129010,
-            "ParentUID": 184973596,
+            "UID": 2025520953,
+            "ParentUID": 3662860767,
             "Name": "PopUpSlots",
             "Tag": "Default",
             "Static": 0,
@@ -17736,8 +21507,8 @@
             ]
         },
         {
-            "UID": 1344973640,
-            "ParentUID": 3917129010,
+            "UID": 3976087575,
+            "ParentUID": 2025520953,
             "Name": "PopUPSlot1",
             "Tag": "Default",
             "Static": 0,
@@ -17806,8 +21577,8 @@
             ]
         },
         {
-            "UID": 669040068,
-            "ParentUID": 3917129010,
+            "UID": 958823553,
+            "ParentUID": 2025520953,
             "Name": "PopUPSlot2",
             "Tag": "Default",
             "Static": 0,
@@ -17876,8 +21647,8 @@
             ]
         },
         {
-            "UID": 3632356607,
-            "ParentUID": 3917129010,
+            "UID": 3456755498,
+            "ParentUID": 2025520953,
             "Name": "PopUPSlot3",
             "Tag": "Default",
             "Static": 0,
@@ -17946,8 +21717,8 @@
             ]
         },
         {
-            "UID": 2441179883,
-            "ParentUID": 3917129010,
+            "UID": 2153465688,
+            "ParentUID": 2025520953,
             "Name": "PopUPSlot4",
             "Tag": "Default",
             "Static": 0,
@@ -18016,8 +21787,8 @@
             ]
         },
         {
-            "UID": 3827178849,
-            "ParentUID": 3917129010,
+            "UID": 1609463122,
+            "ParentUID": 2025520953,
             "Name": "PopUPSlot5",
             "Tag": "Default",
             "Static": 0,
@@ -18086,8 +21857,8 @@
             ]
         },
         {
-            "UID": 247806181,
-            "ParentUID": 3917129010,
+            "UID": 2360309302,
+            "ParentUID": 2025520953,
             "Name": "PopUPSlot6",
             "Tag": "Default",
             "Static": 0,
@@ -18156,8 +21927,8 @@
             ]
         },
         {
-            "UID": 1775874574,
-            "ParentUID": 3917129010,
+            "UID": 214408018,
+            "ParentUID": 2025520953,
             "Name": "PopUPSlot7",
             "Tag": "Default",
             "Static": 0,
@@ -18226,8 +21997,8 @@
             ]
         },
         {
-            "UID": 198175515,
-            "ParentUID": 3917129010,
+            "UID": 2027429912,
+            "ParentUID": 2025520953,
             "Name": "PopUPSlot8",
             "Tag": "Default",
             "Static": 0,
@@ -18296,8 +22067,8 @@
             ]
         },
         {
-            "UID": 2995121791,
-            "ParentUID": 3917129010,
+            "UID": 3188401305,
+            "ParentUID": 2025520953,
             "Name": "PopUPSlot9",
             "Tag": "Default",
             "Static": 0,
@@ -18366,8 +22137,8 @@
             ]
         },
         {
-            "UID": 3211017328,
-            "ParentUID": 3917129010,
+            "UID": 3238272629,
+            "ParentUID": 2025520953,
             "Name": "PopUPSlot10",
             "Tag": "Default",
             "Static": 0,
@@ -18436,8 +22207,8 @@
             ]
         },
         {
-            "UID": 4240050797,
-            "ParentUID": 3917129010,
+            "UID": 2734097149,
+            "ParentUID": 2025520953,
             "Name": "PopUPSlot11",
             "Tag": "Default",
             "Static": 0,
@@ -18506,8 +22277,8 @@
             ]
         },
         {
-            "UID": 2480435269,
-            "ParentUID": 3917129010,
+            "UID": 2384977634,
+            "ParentUID": 2025520953,
             "Name": "PopUPSlot12",
             "Tag": "Default",
             "Static": 0,
@@ -18576,8 +22347,8 @@
             ]
         },
         {
-            "UID": 1985578107,
-            "ParentUID": 3917129010,
+            "UID": 4066130738,
+            "ParentUID": 2025520953,
             "Name": "PopUPSlot13",
             "Tag": "Default",
             "Static": 0,
@@ -18646,8 +22417,8 @@
             ]
         },
         {
-            "UID": 2482294467,
-            "ParentUID": 3917129010,
+            "UID": 1107817526,
+            "ParentUID": 2025520953,
             "Name": "PopUPSlot14",
             "Tag": "Default",
             "Static": 0,
@@ -18716,8 +22487,8 @@
             ]
         },
         {
-            "UID": 2951398948,
-            "ParentUID": 3917129010,
+            "UID": 1989896448,
+            "ParentUID": 2025520953,
             "Name": "PopUPSlot15",
             "Tag": "Default",
             "Static": 0,
@@ -18786,8 +22557,8 @@
             ]
         },
         {
-            "UID": 1768818357,
-            "ParentUID": 3917129010,
+            "UID": 3292072071,
+            "ParentUID": 2025520953,
             "Name": "PopUPSlot16",
             "Tag": "Default",
             "Static": 0,
@@ -18856,8 +22627,8 @@
             ]
         },
         {
-            "UID": 2948209468,
-            "ParentUID": 184973596,
+            "UID": 235147758,
+            "ParentUID": 3662860767,
             "Name": "PopUpUnequip",
             "Tag": "Default",
             "Static": 0,
@@ -19004,8 +22775,8 @@
             ]
         },
         {
-            "UID": 1829444551,
-            "ParentUID": 184973596,
+            "UID": 199878334,
+            "ParentUID": 3662860767,
             "Name": "HoverPopUPGO",
             "Tag": "Default",
             "Static": 0,
@@ -19083,8 +22854,8 @@
             ]
         },
         {
-            "UID": 2838622606,
-            "ParentUID": 1829444551,
+            "UID": 2574360288,
+            "ParentUID": 199878334,
             "Name": "PopUpHover",
             "Tag": "Default",
             "Static": 0,
@@ -19153,7 +22924,7 @@
             ]
         },
         {
-            "UID": 2846391887,
+            "UID": 3304338795,
             "ParentUID": 1,
             "Name": "ItemName",
             "Tag": "Default",
@@ -19238,8 +23009,8 @@
             ]
         },
         {
-            "UID": 4258647726,
-            "ParentUID": 2846391887,
+            "UID": 3894896670,
+            "ParentUID": 3304338795,
             "Name": "Item0",
             "Tag": "Default",
             "Static": 0,
@@ -19317,8 +23088,8 @@
             ]
         },
         {
-            "UID": 3308981778,
-            "ParentUID": 4258647726,
+            "UID": 1592169787,
+            "ParentUID": 3894896670,
             "Name": "ItemBackground",
             "Tag": "Default",
             "Static": 0,
@@ -19387,8 +23158,8 @@
             ]
         },
         {
-            "UID": 1090318254,
-            "ParentUID": 4258647726,
+            "UID": 1810068494,
+            "ParentUID": 3894896670,
             "Name": "ItemTypeName",
             "Tag": "Default",
             "Static": 0,
@@ -19468,8 +23239,8 @@
             ]
         },
         {
-            "UID": 1276593278,
-            "ParentUID": 2846391887,
+            "UID": 2314916389,
+            "ParentUID": 3304338795,
             "Name": "Item1",
             "Tag": "Default",
             "Static": 0,
@@ -19547,8 +23318,8 @@
             ]
         },
         {
-            "UID": 340537491,
-            "ParentUID": 1276593278,
+            "UID": 3626303439,
+            "ParentUID": 2314916389,
             "Name": "ItemBackground",
             "Tag": "Default",
             "Static": 0,
@@ -19617,8 +23388,8 @@
             ]
         },
         {
-            "UID": 2618953058,
-            "ParentUID": 1276593278,
+            "UID": 2965110598,
+            "ParentUID": 2314916389,
             "Name": "ItemTypeName",
             "Tag": "Default",
             "Static": 0,
@@ -19698,8 +23469,8 @@
             ]
         },
         {
-            "UID": 2009553166,
-            "ParentUID": 2846391887,
+            "UID": 1114976420,
+            "ParentUID": 3304338795,
             "Name": "Item2",
             "Tag": "Default",
             "Static": 0,
@@ -19777,8 +23548,8 @@
             ]
         },
         {
-            "UID": 2030725988,
-            "ParentUID": 2009553166,
+            "UID": 2778822762,
+            "ParentUID": 1114976420,
             "Name": "ItemBackground",
             "Tag": "Default",
             "Static": 0,
@@ -19847,8 +23618,8 @@
             ]
         },
         {
-            "UID": 664097853,
-            "ParentUID": 2009553166,
+            "UID": 2183737969,
+            "ParentUID": 1114976420,
             "Name": "ItemTypeName",
             "Tag": "Default",
             "Static": 0,
@@ -19928,8 +23699,8 @@
             ]
         },
         {
-            "UID": 1005673177,
-            "ParentUID": 2846391887,
+            "UID": 4043147507,
+            "ParentUID": 3304338795,
             "Name": "Item3",
             "Tag": "Default",
             "Static": 0,
@@ -20007,8 +23778,8 @@
             ]
         },
         {
-            "UID": 731049349,
-            "ParentUID": 1005673177,
+            "UID": 2417178981,
+            "ParentUID": 4043147507,
             "Name": "ItemBackground",
             "Tag": "Default",
             "Static": 0,
@@ -20077,8 +23848,8 @@
             ]
         },
         {
-            "UID": 412839101,
-            "ParentUID": 1005673177,
+            "UID": 2663588923,
+            "ParentUID": 4043147507,
             "Name": "ItemTypeName",
             "Tag": "Default",
             "Static": 0,
@@ -20158,8 +23929,8 @@
             ]
         },
         {
-            "UID": 4052870466,
-            "ParentUID": 2846391887,
+            "UID": 498936167,
+            "ParentUID": 3304338795,
             "Name": "Item4",
             "Tag": "Default",
             "Static": 0,
@@ -20237,8 +24008,8 @@
             ]
         },
         {
-            "UID": 1610516848,
-            "ParentUID": 4052870466,
+            "UID": 698310250,
+            "ParentUID": 498936167,
             "Name": "ItemBackground",
             "Tag": "Default",
             "Static": 0,
@@ -20307,8 +24078,8 @@
             ]
         },
         {
-            "UID": 1893617382,
-            "ParentUID": 4052870466,
+            "UID": 1635811266,
+            "ParentUID": 498936167,
             "Name": "ItemTypeName",
             "Tag": "Default",
             "Static": 0,
@@ -20388,8 +24159,8 @@
             ]
         },
         {
-            "UID": 394634090,
-            "ParentUID": 2846391887,
+            "UID": 2672136083,
+            "ParentUID": 3304338795,
             "Name": "Item5",
             "Tag": "Default",
             "Static": 0,
@@ -20467,8 +24238,8 @@
             ]
         },
         {
-            "UID": 3998873463,
-            "ParentUID": 394634090,
+            "UID": 196054135,
+            "ParentUID": 2672136083,
             "Name": "ItemBackground",
             "Tag": "Default",
             "Static": 0,
@@ -20537,8 +24308,8 @@
             ]
         },
         {
-            "UID": 1940104191,
-            "ParentUID": 394634090,
+            "UID": 2033586426,
+            "ParentUID": 2672136083,
             "Name": "ItemTypeName",
             "Tag": "Default",
             "Static": 0,
@@ -20618,8 +24389,8 @@
             ]
         },
         {
-            "UID": 2042339777,
-            "ParentUID": 2846391887,
+            "UID": 227083749,
+            "ParentUID": 3304338795,
             "Name": "Item6",
             "Tag": "Default",
             "Static": 0,
@@ -20697,8 +24468,8 @@
             ]
         },
         {
-            "UID": 3298560628,
-            "ParentUID": 2042339777,
+            "UID": 3653650979,
+            "ParentUID": 227083749,
             "Name": "ItemBackground",
             "Tag": "Default",
             "Static": 0,
@@ -20767,8 +24538,8 @@
             ]
         },
         {
-            "UID": 3866880694,
-            "ParentUID": 2042339777,
+            "UID": 702867441,
+            "ParentUID": 227083749,
             "Name": "ItemTypeName",
             "Tag": "Default",
             "Static": 0,
@@ -20848,8 +24619,8 @@
             ]
         },
         {
-            "UID": 3040702350,
-            "ParentUID": 2846391887,
+            "UID": 2048578647,
+            "ParentUID": 3304338795,
             "Name": "Item7",
             "Tag": "Default",
             "Static": 0,
@@ -20927,8 +24698,8 @@
             ]
         },
         {
-            "UID": 548674050,
-            "ParentUID": 3040702350,
+            "UID": 3416981814,
+            "ParentUID": 2048578647,
             "Name": "ItemBackground",
             "Tag": "Default",
             "Static": 0,
@@ -20997,8 +24768,8 @@
             ]
         },
         {
-            "UID": 4102997376,
-            "ParentUID": 3040702350,
+            "UID": 1534117514,
+            "ParentUID": 2048578647,
             "Name": "ItemTypeName",
             "Tag": "Default",
             "Static": 0,
@@ -21078,8 +24849,8 @@
             ]
         },
         {
-            "UID": 2700988177,
-            "ParentUID": 2846391887,
+            "UID": 2644128966,
+            "ParentUID": 3304338795,
             "Name": "Item8",
             "Tag": "Default",
             "Static": 0,
@@ -21157,8 +24928,8 @@
             ]
         },
         {
-            "UID": 1111112955,
-            "ParentUID": 2700988177,
+            "UID": 1988087231,
+            "ParentUID": 2644128966,
             "Name": "ItemBackground",
             "Tag": "Default",
             "Static": 0,
@@ -21227,8 +24998,8 @@
             ]
         },
         {
-            "UID": 491286057,
-            "ParentUID": 2700988177,
+            "UID": 2422319610,
+            "ParentUID": 2644128966,
             "Name": "ItemTypeName",
             "Tag": "Default",
             "Static": 0,
@@ -21308,8 +25079,8 @@
             ]
         },
         {
-            "UID": 1185394916,
-            "ParentUID": 2846391887,
+            "UID": 3704946936,
+            "ParentUID": 3304338795,
             "Name": "Item9",
             "Tag": "Default",
             "Static": 0,
@@ -21387,8 +25158,8 @@
             ]
         },
         {
-            "UID": 3817408922,
-            "ParentUID": 1185394916,
+            "UID": 3209361646,
+            "ParentUID": 3704946936,
             "Name": "ItemBackground",
             "Tag": "Default",
             "Static": 0,
@@ -21457,8 +25228,8 @@
             ]
         },
         {
-            "UID": 322090273,
-            "ParentUID": 1185394916,
+            "UID": 3021085894,
+            "ParentUID": 3704946936,
             "Name": "ItemTypeName",
             "Tag": "Default",
             "Static": 0,
@@ -21538,7 +25309,7 @@
             ]
         },
         {
-            "UID": 864591745,
+            "UID": 2538181729,
             "ParentUID": 1,
             "Name": "RedScreen",
             "Tag": "Default",
@@ -21617,7 +25388,7 @@
             ]
         },
         {
-            "UID": 3605398103,
+            "UID": 954320529,
             "ParentUID": 1,
             "Name": "Loading",
             "Tag": "Default",
@@ -21652,8 +25423,8 @@
             "Components": []
         },
         {
-            "UID": 4053231999,
-            "ParentUID": 3605398103,
+            "UID": 1717930547,
+            "ParentUID": 954320529,
             "Name": "Background",
             "Tag": "Default",
             "Static": 0,
@@ -21722,8 +25493,8 @@
             ]
         },
         {
-            "UID": 3760479613,
-            "ParentUID": 3605398103,
+            "UID": 3838066920,
+            "ParentUID": 954320529,
             "Name": "Text",
             "Tag": "Default",
             "Static": 0,
@@ -21803,7 +25574,7 @@
             ]
         },
         {
-            "UID": 4173483084,
+            "UID": 2306678204,
             "ParentUID": 0,
             "Name": "Camera",
             "Tag": "Default",
@@ -21888,7 +25659,7 @@
                     "Znear": 10.0,
                     "Zfar": 100000.0,
                     "vFOV": 1.0471975803375245,
-                    "hFOV": 1.5437054634094239,
+                    "hFOV": 1.5824363231658936,
                     "Position": [
                         0.0,
                         0.0,
