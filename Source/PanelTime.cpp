@@ -49,21 +49,11 @@ void PanelTime::Draw()
 			App->time->StartGameClock();
 			App->scene->SaveTemporaryScene();
 			App->scene->root->OnPlay();
-
-			HCURSOR handCursor = LoadCursorFromFile("C:\\Windows\\Cursors\\aero_link_l.cur");
-			BOOL ret = SetSystemCursor(handCursor, OCR_NORMAL);
-			assert(ret);
-			DestroyCursor(handCursor);
 		}
 		else 
 		{
 			App->time->StopGameClock();
 			App->scene->LoadTemporaryScene();
-
-			HCURSOR arrowCursor = LoadCursorFromFile("C:\\Windows\\Cursors\\aero_arrow_l.cur");
-			BOOL ret = SetSystemCursor(arrowCursor, OCR_NORMAL);
-			assert(ret); 
-			DestroyCursor(arrowCursor);
 		}
 	}
 

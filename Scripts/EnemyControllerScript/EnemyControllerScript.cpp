@@ -6,6 +6,7 @@
 #include "ModuleTime.h"
 #include "ModuleNavigation.h"
 #include "ModuleResourceManager.h"
+#include "MouseController.h"
 
 #include "GameObject.h"
 #include "ComponentRenderer.h"
@@ -44,7 +45,7 @@ void EnemyControllerScript::Start()
 		{
 			LOG("The enemy %s has no bbox \n", gameobject->name);
 		}
-		
+
 		// Get playerMesh
 		myMesh = myRender->gameobject;
 	}
@@ -157,7 +158,8 @@ void EnemyControllerScript::Update()
 	math::float3 closestPoint;
 	if (App->scene->Intersects(closestPoint, myMesh->name.c_str()))
 	{
-		if(enemyLifeBar != nullptr)
+
+		if (enemyLifeBar != nullptr)
 			enemyLifeBar->SetLifeBar(maxHealth, actualHealth, EnemyLifeBarType::NORMAL, "Skeleton");
 
 		if (myRender != nullptr)
@@ -166,6 +168,12 @@ void EnemyControllerScript::Update()
 		//we need to keep track of current targeted enemy
 		App->scene->enemyHovered.object = gameobject;
 		App->scene->enemyHovered.health = actualHealth;
+
+		if (App->scene->enemyHovered.object != nullptr &&
+			gameobject->UUID == App->scene->enemyHovered.object->UUID)
+		{
+			MouseController::ChangeCursorIcon("C:\\Windows\\Cursors\\aero_nesw.cur");
+		}
 	}
 	else
 	{
@@ -179,6 +187,7 @@ void EnemyControllerScript::Update()
 			{
 				App->scene->enemyHovered.object = nullptr;
 				App->scene->enemyHovered.health = 0;
+				MouseController::ChangeCursorIcon("C:\\Windows\\Cursors\\aero_link.cur");
 			}
 		}
 	}
@@ -232,7 +241,7 @@ void EnemyControllerScript::TakeDamage(unsigned damage)
 {
 	if (!isDead)
 	{
-		if (actualHealth - damage < 0 )
+		if (actualHealth - damage < 0)
 		{
 			actualHealth = 0;
 			enemyLoot = gameobject->GetComponent<EnemyLoot>();
@@ -241,7 +250,7 @@ void EnemyControllerScript::TakeDamage(unsigned damage)
 				enemyLoot->GenerateLoot();
 			}
 			gameobject->SetActive(false);
-			
+
 		}
 		else
 		{

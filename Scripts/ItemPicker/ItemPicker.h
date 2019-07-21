@@ -71,6 +71,9 @@ private:
 	std::list<unsigned> nameShowed;
 
 	float time = -1.0f;
+
+	bool changeItemCursorIcon = true;
+	bool changeStandarCursorIcon = true;
 };
 
 extern "C" ItemPicker_API Script* CreateScript();

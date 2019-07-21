@@ -8,6 +8,7 @@
 #include "GameObject.h"
 #include "ComponentRenderer.h"
 #include "ComponentCamera.h"
+#include "MouseController.h"
 
 #include "InventoryScript.h"
 #include "ItemNameController.h"
@@ -213,6 +214,13 @@ void ItemPicker::Update()
 
 		if (myRender != nullptr)
 			myRender->highlighted = true;
+
+		if (changeItemCursorIcon)
+		{
+			MouseController::ChangeCursorIcon("C:\\Windows\\Cursors\\cross_i.cur");
+			changeItemCursorIcon = false;
+			changeStandarCursorIcon = true;
+		}
 	}
 	else
 	{
@@ -220,6 +228,13 @@ void ItemPicker::Update()
 		{
 			myRender->highlighted = false;
 			itemName->Hovered(gameobject->UUID, false);
+
+			if (changeStandarCursorIcon)
+			{
+				MouseController::ChangeCursorIcon("C:\\Windows\\Cursors\\aero_link.cur");
+				changeStandarCursorIcon = false;
+				changeItemCursorIcon = true;
+			}
 		}
 	}
 }

@@ -321,6 +321,7 @@
       <Filter>Resources</Filter>
     </ClCompile>
     <ClCompile Include="PlayerPrefs.cpp" />
+    <ClCompile Include="MouseController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -703,6 +704,7 @@
       <Filter>Resources</Filter>
     </ClInclude>
     <ClInclude Include="PlayerPrefs.h" />
+    <ClInclude Include="MouseController.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Modules">

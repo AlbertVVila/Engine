@@ -15,6 +15,8 @@
 #include <windows.h>
 #include <iostream>
 
+#include "MouseController.h"
+
 typedef Script*(__cdecl *CreatePointer)();
 
 ModuleScript::ModuleScript()
@@ -98,6 +100,9 @@ update_status ModuleScript::Update(float dt)
 		ResetScriptFlags();
 	}
 	onStart = App->time->gameState == GameState::STOP;
+
+	ManageStartAndStopCursorIcon();
+
 	return status;
 }
 
@@ -276,4 +281,20 @@ std::string ModuleScript::GetLastErrorAsString()
 	LocalFree(messageBuffer);
 
 	return message;
+}
+
+void ModuleScript::ManageStartAndStopCursorIcon()
+{
+	if (App->time->gameState == GameState::RUN && changeStartCursorIcon)
+	{
+		MouseController::ChangeCursorIcon("C:\\Windows\\Cursors\\aero_link.cur");
+		changeStartCursorIcon = false;
+		changeStopCursorIcon = true;
+	}
+	else if (App->time->gameState == GameState::STOP && changeStopCursorIcon)
+	{
+		MouseController::ChangeCursorIcon("C:\\Windows\\Cursors\\aero_arrow.cur");
+		changeStartCursorIcon = true;
+		changeStopCursorIcon = false;
+	}
 }

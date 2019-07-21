@@ -38,7 +38,7 @@ private:
 	void ResetScriptFlags();
 
 	std::string GetLastErrorAsString();
-
+	void ManageStartAndStopCursorIcon();
 public:
 	std::map<std::string, int> scripts; //name, modification date
 	update_status status = UPDATE_CONTINUE;
@@ -47,6 +47,9 @@ private:
 	std::list <Script*> componentsScript;
 	std::map<std::string, std::pair<HINSTANCE, int>> loadedDLLs; // name, dll, instances
 	std::vector<std::string>dllRemoveList;
+
+	bool changeStartCursorIcon = true;
+	bool changeStopCursorIcon = true;
 };
 
 #endif __ModuleScript_h__
