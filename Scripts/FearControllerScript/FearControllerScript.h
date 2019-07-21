@@ -38,7 +38,9 @@ private:
 	std::string enemy2Name = "";
 	std::string enemy3Name = "";
 
-	void LaunchDeathEvent();
+	float fearDistance = 1000.0f;
+
+	void LaunchDeathEvent(math::float3 deathPosition);
 	math::float3 LocateDeath();
 	bool IsSomeoneDead();
 };
