@@ -15,6 +15,7 @@ public:
 
 	void SaveMetafile(const char* file) const override;
 	void LoadConfigFromMeta() override;
+	void LoadConfigFromLibraryMeta() override;
 
 	// Scene especific
 	void Save(const GameObject &rootGO, bool selected = false);

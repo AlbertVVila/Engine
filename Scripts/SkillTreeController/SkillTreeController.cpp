@@ -39,7 +39,7 @@ void SkillTreeController::Start()
 
 	skillPointsLabel = App->scene->FindGameObjectByName("SkillPoints", gameobject)->GetComponent<Text>();
 	assert(skillPointsLabel != nullptr);
-	skillPoints = 10;//PlayerPrefs::GetInt("SkillPoints", 3);
+	skillPoints = PlayerPrefs::GetInt("SkillPoints", initialSkillPoints);
 	skillPointsLabel->text = std::to_string(skillPoints);
 
 	hoverTransform = App->scene->FindGameObjectByName("SkillHover", gameobject)->GetComponent<Transform2D>();
@@ -160,6 +160,8 @@ void SkillTreeController::Expose(ImGuiContext* context)
 		textureFiles.clear();
 		textureFiles = App->resManager->GetResourceNamesList(TYPE::TEXTURE, true);
 	}
+
+	ImGui::InputInt("Initial Skill Points", &initialSkillPoints);
 
 	for (int i = 0; i != NUM_SKILLS; ++i) {
 
