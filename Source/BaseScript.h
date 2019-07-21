@@ -52,6 +52,4 @@ public:
 
 };
 
-extern "C" ENGINE_API Script* CreateScript();
-
 #endif __BaseScript_h__

@@ -43,4 +43,6 @@ private:
 
 };
 
+extern "C" MenuSoundsScript_API Script* CreateScript();
+
 #endif __MenuSoundsScript_h__

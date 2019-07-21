@@ -1,4 +1,4 @@
-﻿#include "EnemyLoot.h"
+#include "EnemyLoot.h"
 #include "Application.h"
 #include "Resource.h"
 #include "ModuleScene.h"

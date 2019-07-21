@@ -61,4 +61,6 @@ private:
 	float currentTime = 0.0f;
 };
 
+extern "C" ExperienceController_API Script* CreateScript();
+
 #endif __ExperienceController_h__

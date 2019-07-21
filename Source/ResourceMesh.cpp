@@ -110,6 +110,62 @@ void ResourceMesh::DeleteFromMemory()
 	bindBones.clear();
 }
 
+void ResourceMesh::SaveMetafile(const char* file) const
+{
+	std::string filepath;
+	filepath.append(file);
+	JSON *json = new JSON();
+
+	// Mesh information
+	JSON_value* meshMeta = json->CreateValue();
+	struct stat statFile;
+	stat(filepath.c_str(), &statFile);
+	meshMeta->AddUint("metaVersion", META_VERSION);
+	meshMeta->AddUint("timeCreated", statFile.st_ctime);
+
+	// Resource info
+	meshMeta->AddUint("GUID", UID);
+	meshMeta->AddString("Name", name.c_str());
+	meshMeta->AddString("File", file);
+	meshMeta->AddString("ExportedFile", exportedFile.c_str());
+
+	json->AddValue("Mesh", *meshMeta);
+
+	// Save meta in Library
+	std::string libraryPath(exportedFile + METAEXT);
+	App->fsystem->Save(libraryPath.c_str(), json->ToString().c_str(), json->Size());
+	RELEASE(json);
+}
+
+void ResourceMesh::LoadConfigFromLibraryMeta()
+{
+	std::string metaFile(exportedFile);
+	metaFile += ".meta";
+
+	// Check if meta file exists
+	if (!App->fsystem->Exists(metaFile.c_str()))
+		return;
+
+	char* data = nullptr;
+	unsigned oldUID = GetUID();
+
+	if (App->fsystem->Load(metaFile.c_str(), &data) == 0)
+	{
+		LOG("Warning: %s couldn't be loaded", metaFile.c_str());
+		RELEASE_ARRAY(data);
+		return;
+	}
+	JSON* json = new JSON(data);
+	JSON_value* value = json->GetValue("Mesh");
+
+	// Get resource variables
+	name = value->GetString("Name");
+	file = value->GetString("File");
+
+	RELEASE_ARRAY(data);
+	RELEASE(json);
+}
+
 void ResourceMesh::Draw(unsigned shaderProgram) const
 {
 	if (bindBones.size() > 0)

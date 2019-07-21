@@ -73,4 +73,6 @@ private:
 	float time = -1.0f;
 };
 
+extern "C" ItemPicker_API Script* CreateScript();
+
 #endif __ItemPicker_h__

@@ -96,4 +96,6 @@ private:
 
 };
 
+extern "C" EnemyControllerScript_API Script* CreateScript();
+
 #endif __EnemyControllerScript_h__

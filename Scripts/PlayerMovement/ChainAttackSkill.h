@@ -16,13 +16,17 @@ public:
 	void Start() override;
 	//void Update() override;
 
+	void NextChainAttack();
+
+public:
+	static const math::float3 attackingBoxSize;
+
 protected:
 	void UseSkill() override;
 	void Reset() override;
 
 private:
 	void CheckInput() override;
-	void NextChainAttack();
 
 private:
 	AttackNumber attack = AttackNumber::FIRST;

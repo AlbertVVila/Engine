@@ -101,4 +101,6 @@ private:
 	std::vector<EnemyState*> enemyStates;
 };
 
+extern "C" RangeEnemyAIScript_API Script* CreateScript();
+
 #endif __RangeEnemyAIScript_h__

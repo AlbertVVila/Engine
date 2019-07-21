@@ -89,6 +89,9 @@ private:
 	std::vector<EnemyState*> enemyStates;
 };
 
+extern "C" HiddenEnemyAIScript_API Script* CreateScript();
+
+
 #endif __HiddenEnemyAIScript_h__
 
 

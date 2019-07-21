@@ -46,4 +46,6 @@ private:
 	bool start = false;
 };
 
+extern "C" RainSkillSpawn_API Script* CreateScript();
+
 #endif __RainSkillSpawn_h__
