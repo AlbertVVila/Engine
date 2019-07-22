@@ -162,8 +162,7 @@ void EnemyControllerScript::Update()
 	math::float2 mouse = { mouse_point.x, mouse_point.y };
 	std::list<GameObject*> intersects = App->scene->SceneRaycastHit(mouse);
 
-/*if (App->scene->Intersects(closestPoint, myMesh->name.c_str()))*/
-	if(*std::find(intersects.begin(), intersects.end(), this->gameobject) == this->gameobject)
+	if(*std::find(intersects.begin(), intersects.end(), this->myMesh) == this->myMesh)
 	{
 		if(enemyLifeBar != nullptr)
 			enemyLifeBar->SetLifeBar(maxHealth, actualHealth, EnemyLifeBarType::NORMAL, "Skeleton");
