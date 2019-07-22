@@ -69,6 +69,10 @@ void ChainAttackSkill::CheckInput()
 		Reset();
 		player->currentState = (PlayerState*)player->walkToHit;
 	}
+	else if (player->IsMovingToItem())
+	{
+		player->currentState = (PlayerState*)player->walkToPickItem;
+	}
 	else if (player->IsMoving())
 	{
 		Reset();
