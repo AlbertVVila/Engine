@@ -8,6 +8,8 @@
 #include "pcg-cpp-0.98/include/pcg_random.hpp"
 #include "Math/Quat.h"
 #include "Math/float4.h"
+#include "Math/float2.h"
+#include "Geometry/LineSegment.h"
 #include "SDL/include/SDL_timer.h"
 #include <set>
 #include <unordered_set>
@@ -117,8 +119,11 @@ public:
 	ComponentLight* GetDirectionalLight() const;
 	void DeleteDirectionalLight(ComponentLight* light);
 
+	ENGINE_API math::LineSegment SceneRaycast(math::float2 position);
+	ENGINE_API std::list<GameObject*> SceneRaycastHit(math::float2 position);
+
 private:
-	std::list<std::pair<float, GameObject*>>GetDynamicIntersections(const LineSegment& line) const;
+	std::list<std::pair<float, GameObject*>>GetDynamicIntersections(const LineSegment& line, bool sort = true) const;
 	std::list<std::pair<float, GameObject*>>GetStaticIntersections(const LineSegment& line) const;
 	unsigned primitivesUID[NBPRIMITIVES] = {0};
 

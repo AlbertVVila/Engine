@@ -1,6 +1,9 @@
 #include "EnemyControllerScript.h"
 
+#include <algorithm>
+
 #include "Application.h"
+#include "ModuleInput.h"
 #include "ModuleScene.h"
 #include "ModuleScript.h"
 #include "ModuleTime.h"
@@ -155,7 +158,12 @@ void EnemyControllerScript::Start()
 void EnemyControllerScript::Update()
 {
 	math::float3 closestPoint;
-	if (App->scene->Intersects(closestPoint, myMesh->name.c_str()))
+	fPoint mouse_point = App->input->GetMousePosition();
+	math::float2 mouse = { mouse_point.x, mouse_point.y };
+	std::list<GameObject*> intersects = App->scene->SceneRaycastHit(mouse);
+
+/*if (App->scene->Intersects(closestPoint, myMesh->name.c_str()))*/
+	if(*std::find(intersects.begin(), intersects.end(), this->gameobject) == this->gameobject)
 	{
 		if(enemyLifeBar != nullptr)
 			enemyLifeBar->SetLifeBar(maxHealth, actualHealth, EnemyLifeBarType::NORMAL, "Skeleton");
