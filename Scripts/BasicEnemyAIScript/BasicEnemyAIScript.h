@@ -20,6 +20,7 @@ class EnemyStateReturnToStart;
 class EnemyStateAttack;
 class EnemyStateCooldown;
 class EnemyStateDeath;
+class EnemyStateFlee;
 
 
 class BasicEnemyAIScript_API BasicEnemyAIScript : public Script
@@ -48,6 +49,7 @@ private:
 public:
 	EnemyState* currentState = nullptr;
 
+	EnemyStateFlee* flee = nullptr;
 	EnemyStatePatrol* patrol = nullptr;
 	EnemyStateChase* chase = nullptr;
 	EnemyStateReturnToStart* returnToStart = nullptr;

@@ -1,7 +1,10 @@
 {
     "StateMachine": {
-        "GUID": 418487297,
+        "metaVersion": 2,
         "timeCreated": 1562425032,
-        "name": "BasicEnemySM"
+        "GUID": 418487297,
+        "Name": "BasicEnemySM",
+        "File": "Assets/StateMachines/BasicEnemySM.st4tem4chine",
+        "ExportedFile": "Library/StateMachines/418487297.st4tem4chine"
     }
 }

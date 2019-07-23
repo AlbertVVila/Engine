@@ -18,7 +18,11 @@ void EnemyStateCooldown::HandleIA()
 {
 	float distance = enemy->enemyController->GetDistanceToPlayer2D();
 
-	if (distance > enemy->attackRange)
+	if (enemy->scared)
+	{
+		enemy->currentState = (EnemyState*)enemy->flee;
+	}
+	else if (distance > enemy->attackRange)
 	{
 		enemy->currentState = (EnemyState*)enemy->chase;
 	}
