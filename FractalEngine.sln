@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2042
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29020.237
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Engine", "Source\Engine.vcxproj", "{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}"
 EndProject
@@ -69,6 +69,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EnemyLoot", "Scripts\EnemyLoot\EnemyLoot.vcxproj", "{B1FC287C-6EE1-44C8-874B-9860A2D4D35A}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EquipPopupController", "Scripts\EquipPopupController\EquipPopupController.vcxproj", "{20271EEF-B67A-4D0C-B8DC-0A4E296D710C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GodMode", "Scripts\GodMode\GodMode.vcxproj", "{FCC76A72-D762-4C84-82CD-075AC1B260AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -548,6 +550,20 @@ Global
 		{20271EEF-B67A-4D0C-B8DC-0A4E296D710C}.Release|Win32.Build.0 = Release|Win32
 		{20271EEF-B67A-4D0C-B8DC-0A4E296D710C}.Release|x64.ActiveCfg = Release|x64
 		{20271EEF-B67A-4D0C-B8DC-0A4E296D710C}.Release|x64.Build.0 = Release|x64
+		{FCC76A72-D762-4C84-82CD-075AC1B260AC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FCC76A72-D762-4C84-82CD-075AC1B260AC}.Debug|Win32.Build.0 = Debug|Win32
+		{FCC76A72-D762-4C84-82CD-075AC1B260AC}.Debug|x64.ActiveCfg = Debug|x64
+		{FCC76A72-D762-4C84-82CD-075AC1B260AC}.Debug|x64.Build.0 = Debug|x64
+		{FCC76A72-D762-4C84-82CD-075AC1B260AC}.GameBuild Debug|Win32.ActiveCfg = GameBuild Debug|Win32
+		{FCC76A72-D762-4C84-82CD-075AC1B260AC}.GameBuild Debug|Win32.Build.0 = GameBuild Debug|Win32
+		{FCC76A72-D762-4C84-82CD-075AC1B260AC}.GameBuild Debug|x64.ActiveCfg = GameBuild Debug|Win32
+		{FCC76A72-D762-4C84-82CD-075AC1B260AC}.GameBuild|Win32.ActiveCfg = GameBuild|Win32
+		{FCC76A72-D762-4C84-82CD-075AC1B260AC}.GameBuild|Win32.Build.0 = GameBuild|Win32
+		{FCC76A72-D762-4C84-82CD-075AC1B260AC}.GameBuild|x64.ActiveCfg = GameBuild|Win32
+		{FCC76A72-D762-4C84-82CD-075AC1B260AC}.Release|Win32.ActiveCfg = Release|Win32
+		{FCC76A72-D762-4C84-82CD-075AC1B260AC}.Release|Win32.Build.0 = Release|Win32
+		{FCC76A72-D762-4C84-82CD-075AC1B260AC}.Release|x64.ActiveCfg = Release|x64
+		{FCC76A72-D762-4C84-82CD-075AC1B260AC}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -582,6 +598,7 @@ Global
 		{FDD06A97-3850-488A-8317-B1077020E2C4} = {B0BA8D83-BE07-4405-ADE1-C771D081A8CD}
 		{B1FC287C-6EE1-44C8-874B-9860A2D4D35A} = {B0BA8D83-BE07-4405-ADE1-C771D081A8CD}
 		{20271EEF-B67A-4D0C-B8DC-0A4E296D710C} = {B0BA8D83-BE07-4405-ADE1-C771D081A8CD}
+		{FCC76A72-D762-4C84-82CD-075AC1B260AC} = {B0BA8D83-BE07-4405-ADE1-C771D081A8CD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7938FFD4-0765-4A85-95CB-3908D56E6F3D}

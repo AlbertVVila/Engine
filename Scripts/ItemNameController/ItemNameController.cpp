@@ -154,4 +154,5 @@ bool ItemNameController::Intersection(unsigned uid)
 			return(box->GetComponent<ComponentImage>()->isHovered);
 		}
 	}
+	return false;
 }

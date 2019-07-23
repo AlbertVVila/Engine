@@ -18,6 +18,9 @@ public:
 
 	void NextChainAttack();
 
+public:
+	static const math::float3 attackingBoxSize;
+
 protected:
 	void UseSkill() override;
 	void Reset() override;

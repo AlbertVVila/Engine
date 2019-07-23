@@ -27,7 +27,7 @@ CircularAttackSkill::~CircularAttackSkill()
 
 void CircularAttackSkill::Start()
 {
-	fullSpinTime = player->currentState->duration;
+	fullSpinTime = duration;
 
 	MeleeSkill::Start();
 
@@ -47,7 +47,7 @@ void CircularAttackSkill::Update()
 
 	timer += player->App->time->gameDeltaTime;
 
-	if (timer < player->currentState->duration * numSpins)
+	if (timer < fullSpinTime * (numSpins + 1u))
 	{
 		UseSkill();
 	}
@@ -59,7 +59,7 @@ void CircularAttackSkill::Update()
 
 	CheckInput();
 
-	// MeleeSkill::Update() modified. Check when is time to enable the hitbox
+	// MeleeSkill::Update() modified. Check when it is time to enable the hitbox
 	if (!atatckStarted && !attackBoxTrigger->enabled && timer > hitDelay)
 	{
 		spinTimer = 0.0f;
@@ -87,7 +87,7 @@ void CircularAttackSkill::Update()
 
 void CircularAttackSkill::UseSkill()
 {
-	if (player->attackBoxTrigger != nullptr && !player->attackBoxTrigger->enabled && timer < player->currentState->duration * numSpins)
+	if (player->attackBoxTrigger != nullptr && !player->attackBoxTrigger->enabled && timer < player->currentState->duration * (numSpins + 1u))
 	{
 		// Update hitbox
 		player->attackBoxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z);
@@ -154,11 +154,19 @@ void CircularAttackSkill::Reset()
 void CircularAttackSkill::CheckInput()
 {
 	// Once the attack is finished
-	if (timer > player->currentState->duration * numSpins)
+	if (timer > fullSpinTime * (numSpins + 1u))
 	{
 		if (player->IsUsingSkill())
 		{
 			player->currentState = (PlayerState*)player->attack;
+		}
+		else if (player->IsMovingToAttack())
+		{
+			player->currentState = (PlayerState*)player->walkToHit;
+		}
+		else if (player->IsMovingToItem())
+		{
+			player->currentState = (PlayerState*)player->walkToPickItem;
 		}
 		else if (player->IsMoving())
 		{

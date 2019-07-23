@@ -11,7 +11,6 @@
 
 #include "InventoryScript.h"
 #include "ItemNameController.h"
-#include "PlayerMovement.h"
 
 #include "JSON.h"
 #include "imgui.h"
@@ -110,6 +109,10 @@ void ItemPicker::Start()
 {
 	inventoryScript = App->scene->FindGameObjectByName("Inventory")->GetComponent<InventoryScript>();
 	GameObject* playerGO = App->scene->FindGameObjectByName("Player");
+
+	//now we store the playermovement script to tell it when item clicked and stuff
+	playerMovementScript = (PlayerMovement*)playerGO->GetComponentOld(ComponentType::Script);
+
 	playerBbox = &App->scene->FindGameObjectByName("PlayerMesh", playerGO)->bbox;
 
 	myBboxName = gameobject->name;
@@ -145,6 +148,16 @@ void ItemPicker::Start()
 	}
 }
 
+void ItemPicker::PickupItem() const
+{
+	if (inventoryScript->AddItem(item))
+	{
+		gameobject->SetActive(false);
+		if (itemPickedAudio != nullptr) itemPickedAudio->Play();
+		itemName->DisableName(gameobject->UUID);
+	}
+}
+
 void ItemPicker::Update()
 {
 	if (!gameobject->isActive())
@@ -154,22 +167,37 @@ void ItemPicker::Update()
 			nameShowed.erase(std::find(nameShowed.begin(), nameShowed.end(), gameobject->UUID));
 			itemName->DisableName(gameobject->UUID);
 		}
-		time = 0.0f;
 		return;
 	}
+	//checking if gotta pickup item
 	math::float3 closestPoint;
-	if (time < 1.5f) time += App->time->gameDeltaTime;
-	if (gameobject->bbox.Intersects(*playerBbox) && App->input->GetMouseButtonDown(1) == KEY_DOWN && time>1.5f)
+	//first check if item clicked (either the item mesh or its name)
+	if ((App->scene->Intersects(closestPoint, myBboxName.c_str()) || itemName->Intersection(gameobject->UUID)) &&
+		App->input->GetMouseButtonDown(1) == KEY_DOWN)
 	{
-		if (App->scene->Intersects(closestPoint, myBboxName.c_str()) || itemName->Intersection(gameobject->UUID))
+		//if player next to the item
+		if (gameobject->bbox.Intersects(*playerBbox))
 		{
-			if (inventoryScript->AddItem(item))
-			{
-				gameobject->SetActive(false);
-				if (itemPickedAudio != nullptr) itemPickedAudio->Play();
-				itemName->DisableName(gameobject->UUID);
-			}
+				PickupItem();
 		}
+		//if not, player goes towards it
+		else
+		{
+			playerMovementScript->stoppedGoingToItem = false;
+			playerMovementScript->itemClicked = this;
+		}
+	}
+	//check if the player clicked outside of the item (if it was going to pick it up)
+	if (playerMovementScript->itemClicked == this && App->input->GetMouseButtonDown(1) == KEY_DOWN &&
+		!(App->scene->Intersects(closestPoint, myBboxName.c_str()) || itemName->Intersection(gameobject->UUID)))
+	{
+		playerMovementScript->stoppedGoingToItem = true;
+		playerMovementScript->itemClicked = nullptr;
+	}
+	//if the player has gotten to the item by walking towards it, this variable will be true, so we pick up
+	if (pickedUpViaPlayer)
+	{
+		PickupItem();
 	}
 
 	GameObject* myRenderGO = App->scene->FindGameObjectByName(myBboxName.c_str(), gameobject);

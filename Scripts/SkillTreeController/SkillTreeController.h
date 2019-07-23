@@ -53,7 +53,7 @@ private:
 	std::vector<std::string> textureFiles;
 	Skill skillList[NUM_SKILLS];
 
-	int a = -1;
+	int initialSkillPoints = 10;
 };
 
 extern "C" SkillTreeController_API Script* CreateScript();

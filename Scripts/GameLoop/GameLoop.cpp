@@ -337,6 +337,21 @@ void GameLoop::LoadTempleScene()
 	hudGO->SetActive(false);
 }
 
+void GameLoop::LoadLvl(unsigned lvl)
+{
+	currentLoopState = deadState;
+	toTheAltarButton->state = ButtonState::DOWN;
+	switch (lvl)
+	{
+	case 1:
+		gameScene = GameScene::CEMENTERY;
+		break;
+	case 2:
+		gameScene = GameScene::TEMPLE;
+		break;
+	}
+}
+
 void GameLoop::CreateGameStates()
 {
 	loopStates.push_back(controlsState = new LoopStateControls(this));

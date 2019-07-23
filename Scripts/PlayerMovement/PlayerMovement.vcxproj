@@ -160,7 +160,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;PlayerMovement_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Scripts\CameraController;$(SolutionDir)\Scripts\DamageFeedbackUI;$(SolutionDir)\Scripts\EnemyControllerScript;$(SolutionDir)\Source\NodeEditor\Include;$(SolutionDir)\Source\rapidjson-1.1.0\include;..\BaseScript;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Scripts\DamageController;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)Source\Soloud\fractal_includes</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Scripts\CameraController;$(SolutionDir)\Scripts\DamageFeedbackUI;$(SolutionDir)\Scripts\EnemyControllerScript;$(SolutionDir)\Source\NodeEditor\Include;$(SolutionDir)\Source\rapidjson-1.1.0\include;..\BaseScript;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Scripts\DamageController;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)Source\Soloud\fractal_includes;$(SolutionDir)\Scripts\ItemPicker;$(SolutionDir)\Scripts\InventoryScript</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -183,7 +183,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;PlayerMovement_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Scripts\CameraController;$(SolutionDir)\Scripts\DamageFeedbackUI;$(SolutionDir)\Scripts\EnemyControllerScript;$(SolutionDir)\Source\NodeEditor\Include;$(SolutionDir)\Source\rapidjson-1.1.0\include;..\BaseScript;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Scripts\DamageController;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)Source\Soloud\fractal_includes</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Scripts\CameraController;$(SolutionDir)\Scripts\DamageFeedbackUI;$(SolutionDir)\Scripts\EnemyControllerScript;$(SolutionDir)\Source\NodeEditor\Include;$(SolutionDir)\Source\rapidjson-1.1.0\include;..\BaseScript;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Scripts\DamageController;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)Source\Soloud\fractal_includes;$(SolutionDir)\Scripts\ItemPicker;$(SolutionDir)\Scripts\InventoryScript</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -236,7 +236,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;PlayerMovement_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Scripts\CameraController;$(SolutionDir)\Scripts\DamageFeedbackUI;$(SolutionDir)\Scripts\EnemyControllerScript;$(SolutionDir)\Source\NodeEditor\Include;$(SolutionDir)\Source\rapidjson-1.1.0\include;..\BaseScript;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Scripts\DamageController;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)Source\Soloud\fractal_includes</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Scripts\CameraController;$(SolutionDir)\Scripts\DamageFeedbackUI;$(SolutionDir)\Scripts\EnemyControllerScript;$(SolutionDir)\Source\NodeEditor\Include;$(SolutionDir)\Source\rapidjson-1.1.0\include;..\BaseScript;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Scripts\DamageController;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)Source\Soloud\fractal_includes;$(SolutionDir)\Scripts\ItemPicker;$(SolutionDir)\Scripts\InventoryScript</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -263,7 +263,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GAME_BUILD;WIN32;NDEBUG;PlayerMovement_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Scripts\CameraController;$(SolutionDir)\Scripts\DamageFeedbackUI;$(SolutionDir)\Scripts\EnemyControllerScript;$(SolutionDir)\Source\NodeEditor\Include;$(SolutionDir)\Source\rapidjson-1.1.0\include;..\BaseScript;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Scripts\DamageController;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)Source\Soloud\fractal_includes</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Scripts\CameraController;$(SolutionDir)\Scripts\DamageFeedbackUI;$(SolutionDir)\Scripts\EnemyControllerScript;$(SolutionDir)\Source\NodeEditor\Include;$(SolutionDir)\Source\rapidjson-1.1.0\include;..\BaseScript;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Scripts\DamageController;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)Source\Soloud\fractal_includes;$(SolutionDir)\Scripts\ItemPicker;$(SolutionDir)\Scripts\InventoryScript</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -329,6 +329,8 @@
     <ClCompile Include="PlayerStateDeath.cpp" />
     <ClCompile Include="PlayerStateIdle.cpp" />
     <ClCompile Include="PlayerStateWalk.cpp" />
+    <ClCompile Include="PlayerStateWalkToHitEnemy.cpp" />
+    <ClCompile Include="PlayerStateWalkToPickItem.cpp" />
     <ClCompile Include="RainSkill.cpp" />
     <ClCompile Include="RangeSkill.cpp" />
     <ClCompile Include="SliceSkill.cpp" />
@@ -347,6 +349,8 @@
     <ClInclude Include="PlayerStateDeath.h" />
     <ClInclude Include="PlayerStateIdle.h" />
     <ClInclude Include="PlayerStateWalk.h" />
+    <ClInclude Include="PlayerStateWalkToHitEnemy.h" />
+    <ClInclude Include="PlayerStateWalkToPickItem.h" />
     <ClInclude Include="RainSkill.h" />
     <ClInclude Include="RangeSkill.h" />
     <ClInclude Include="SliceSkill.h" />
