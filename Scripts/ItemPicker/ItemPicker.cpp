@@ -175,6 +175,11 @@ void ItemPicker::Update()
 	GameObject* myRenderGO = App->scene->FindGameObjectByName(myBboxName.c_str(), gameobject);
 	if (myRenderGO != nullptr)
 		myRender = (ComponentRenderer*)myRenderGO->GetComponent<ComponentRenderer>();
+	
+
+	if (myRender != nullptr)
+		myRender->highlighted = true;
+
 	switch (rarity)
 	{
 	case ItemRarity::BASIC:
@@ -210,9 +215,6 @@ void ItemPicker::Update()
 	{
 		if (itemName != nullptr)
 			itemName->Hovered(gameobject->UUID, true);
-
-		if (myRender != nullptr)
-			myRender->highlighted = true;
 	}
 	else
 	{

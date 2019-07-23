@@ -10,6 +10,7 @@
 #include "ComponentImage.h"
 #include "ComponentTransform2D.h"
 #include "ComponentAudioSource.h"
+#include "ComponentText.h"
 
 #include "PlayerMovement.h"
 
@@ -89,6 +90,9 @@ void InventoryScript::Start()
 		assert(playerMovement != nullptr);
 	}
 
+	itemDesc = App->scene->FindGameObjectByName("ItemStats");
+	assert(itemDesc != nullptr);
+
 	LoadInventory();
 }
 
@@ -96,6 +100,7 @@ void InventoryScript::Update()
 {
 	if (!inventory->isActive()) return;
 
+	App->scene->FindGameObjectByName("NewItem")->SetActive(false);
 	math::float2 mouse = reinterpret_cast<const float2&>(App->input->GetMousePosition());
 	float screenX = mouse.x - App->renderer->viewGame->winPos.x - (App->ui->currentWidth * .5f);
 	float screenY = mouse.y - App->renderer->viewGame->winPos.y - (App->ui->currentHeight * .5f);
@@ -115,6 +120,17 @@ void InventoryScript::Update()
 			itemGrabbed = true;
 		}
 
+		if (!image->isHovered && itemDesc->isActive() && imageHover == image)
+		{
+			itemDesc->SetActive(false);
+			imageHover = nullptr;
+		}
+
+		if (image->isHovered && imageHover == nullptr && i < INVENTARY_SLOTS)
+		{
+			showDescription(i);
+			imageHover = image;
+		}
 
 		if (image->isPressed)
 		{
@@ -207,7 +223,14 @@ void InventoryScript::Update()
 							}
 							else
 							{
-								pair.first.isEquipped = !pair.first.isEquipped;
+								for (j = 0; j < items.size(); ++i)
+								{
+									if (items[j].first.name == pair.first.name)
+									{
+										items[j].first.isEquipped = !items[j].first.isEquipped;
+										break;
+									}
+								}
 							}
 							break;
 						case 22:
@@ -302,6 +325,7 @@ bool InventoryScript::AddItem(Item item)
 			ComponentImage* image = itemsSlots[i]->GetComponent<ComponentImage>();
 			image->UpdateTexture(item.sprite);
 			items.emplace_back(std::make_pair(item, i));
+			App->scene->FindGameObjectByName("NewItem")->SetActive(true);
 			return true;
 		}
 	}
@@ -377,4 +401,66 @@ void InventoryScript::LoadInventory()
 			items.emplace_back(std::make_pair(item, position));
 		}
 	}
+}
+
+void InventoryScript::showDescription(int i)
+{
+	ItemType type = items[i].first.type;
+	int health = round(items[i].first.stats.health);
+	int dex = round(items[i].first.stats.dexterity);
+	int str = round(items[i].first.stats.strength);
+	int mana = round(items[i].first.stats.mana);
+	std::string name = items[i].first.name;
+	int healthDiff = health;
+	int dexDiff = dex;
+	int strDiff = str;
+	int manaDiff = mana;
+	App->scene->FindGameObjectByName("ItemStatsName", itemDesc)->GetComponent<Text>()->text = name;
+	App->scene->FindGameObjectByName("ItemStatsHealthNum", itemDesc)->GetComponent<Text>()->text = std::to_string(health);
+	App->scene->FindGameObjectByName("ItemStatsDexNum", itemDesc)->GetComponent<Text>()->text = std::to_string(dex);
+	App->scene->FindGameObjectByName("ItemStatsStrNum", itemDesc)->GetComponent<Text>()->text = std::to_string(str);
+	App->scene->FindGameObjectByName("ItemStatsSoulNum", itemDesc)->GetComponent<Text>()->text = std::to_string(mana);
+	for (int j = 0; j < items.size(); ++j)
+	{
+		if (items[j].first.type == type && items[j].first.isEquipped)
+		{
+			healthDiff = health - round(items[j].first.stats.health);
+			dexDiff = dex - round(items[j].first.stats.dexterity);
+			strDiff = str - round(items[j].first.stats.strength);
+			manaDiff = mana - round(items[j].first.stats.mana);
+		}
+	}
+	Text* txt = App->scene->FindGameObjectByName("ItemStatsHealthDiff", itemDesc)->GetComponent<Text>();
+	txt->text = std::to_string(healthDiff);
+	if (healthDiff > 0)
+		txt->color = math::float4(0, 255, 0, 255);
+	else if (healthDiff < 0)
+		txt->color = math::float4(255, 0, 0, 255);
+	else
+		txt->color = math::float4(255, 255, 255, 255);
+	txt = App->scene->FindGameObjectByName("ItemStatsDexDiff", itemDesc)->GetComponent<Text>();
+	txt->text = std::to_string(dexDiff);
+	if (dexDiff > 0)
+		txt->color = math::float4(0, 255, 0, 255);
+	else if (dexDiff < 0)
+		txt->color = math::float4(255, 0, 0, 255);
+	else
+		txt->color = math::float4(255, 255, 255, 255);
+	txt = App->scene->FindGameObjectByName("ItemStatsStrDiff", itemDesc)->GetComponent<Text>();
+	txt->text = std::to_string(strDiff);
+	if (strDiff > 0)
+		txt->color = math::float4(0, 255, 0, 255);
+	else if (strDiff < 0)
+		txt->color = math::float4(255, 0, 0, 255);
+	else
+		txt->color = math::float4(255, 255, 255, 255);
+	txt = App->scene->FindGameObjectByName("ItemStatsSoulDiff", itemDesc)->GetComponent<Text>();
+	txt->text = std::to_string(manaDiff);
+	if (manaDiff > 0)
+		txt->color = math::float4(0, 255, 0, 255);
+	else if (manaDiff < 0)
+		txt->color = math::float4(255, 0, 0, 255);
+	else
+		txt->color = math::float4(255, 255, 255, 255);
+	itemDesc->SetActive(true);
 }
