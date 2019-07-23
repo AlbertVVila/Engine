@@ -34,6 +34,10 @@ private:
 	BasicEnemyAIScript* enemy2 = nullptr;
 	BasicEnemyAIScript* enemy3 = nullptr;
 
+	bool enemy1Dead = false;
+	bool enemy2Dead = false;
+	bool enemy3Dead = false;
+
 	std::string enemy1Name = "";
 	std::string enemy2Name = "";
 	std::string enemy3Name = "";
@@ -41,6 +45,7 @@ private:
 	float fearDistance = 1000.0f;
 
 	void LaunchDeathEvent(math::float3 deathPosition);
+	void SetDeaths();
 	math::float3 LocateDeath();
 	bool IsSomeoneDead();
 };
