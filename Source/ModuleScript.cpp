@@ -44,9 +44,10 @@ bool ModuleScript::Init(JSON* config)
 	MonitorizeScripts();
 
 	JSON_value* scriptJson = config->GetValue("scripts");
-	if (scriptJson == nullptr) return true;
-
-	hotReloading = scriptJson->GetInt("hotReloading", hotReloading);
+	if (scriptJson != nullptr)
+	{
+		hotReloading = scriptJson->GetInt("hotReloading", hotReloading);
+	}
 
 #ifndef GAME_BUILD
 	if (hotReloading)
@@ -92,10 +93,10 @@ update_status ModuleScript::Update(float dt)
 		}
 		dllRemoveList.clear();
 	}
-	if (!scriptToReload.empty())
+	if (!scriptsToReload.empty())
 	{
-		UpdateScript(scriptToReload);
-		scriptToReload.clear();
+		UpdateScript();
+		scriptsToReload.clear();
 	}
 	if (App->time->gameState == GameState::RUN)
 	{
@@ -254,12 +255,12 @@ bool ModuleScript::RemoveScript(Script* script, const std::string& name)
 	return true;
 }
 
-void ModuleScript::HotSwap(std::string scriptName)
+bool ModuleScript::HotSwap(std::string scriptName)
 {
-	App->fsystem->Delete((SCRIPTS + scriptName + DLL).c_str()); //Deleted old DLL
-	App->fsystem->Rename(SCRIPTS, (scriptName + HOT).c_str(), scriptName.c_str(), DLL); //Changed name new DLL
+	if (!App->fsystem->Delete((SCRIPTS + scriptName + DLL).c_str())) return false; //Deleted old DLL
+	if (!App->fsystem->Rename(SCRIPTS, (scriptName + HOT).c_str(), scriptName.c_str(), DLL)) return false; //Changed name new DLL
 	HotReload(scriptName);
-	scriptInfo.clear();
+	return true;
 }
 
 void ModuleScript::HotReload(std::string scriptName, bool initialize) //TODO: unload properly all scripts on loading new scene
@@ -370,14 +371,14 @@ void ModuleScript::MonitorizeScripts() //HOT SWAP IF USED DLL
 		it = scripts.find(scriptName);
 		if (it != scripts.end())
 		{
-			if (time > it->second)
+			if (time > it->second || App->fsystem->GetExtension(scriptFile) == HOT)
 			{
 				//Update DLL but only if already loaded!!
 				it->second = time;
 				LOG("Script %s updated", scriptName.c_str());
 				if (App->fsystem->GetExtension(scriptFile) == HOT)
 				{
-					scriptToReload = scriptName;
+					scriptsToReload.insert(scriptName);
 				}
 			}
 		}
@@ -417,36 +418,46 @@ void ModuleScript::SaveScript(Script* script)
 	}
 }
 
-void ModuleScript::UpdateScript(std::string scriptName)
+void ModuleScript::UpdateScript()
 {
 	hotJson = new JSON();
 	for (unsigned i = 0u; i < componentsScript.size(); ++i)
 	{
-		if (componentsScript[i]->name == scriptName)
+		if(scriptsToReload.find(componentsScript[i]->name) != scriptsToReload.end())
 		{
 			SaveScript(componentsScript[i]);
 			--i;
 		}
 	}
 
-	if (RemoveDLL(scriptName))
+	bool reloadFailed = false;
+	for (auto scriptName : scriptsToReload)
 	{
-		HotSwap(scriptName);
+		if (!RemoveDLL(scriptName) || !HotSwap(scriptName))
+		{
+			reloadFailed = true;
+		}
 	}
-	else //Reload All
+
+	if(reloadFailed)//Reload All
 	{
 		for (unsigned i = 0u; i < componentsScript.size(); ++i)
 		{
-			if (componentsScript[i]->name == scriptName) continue;
+			if (scriptsToReload.find(componentsScript[i]->name) != scriptsToReload.end()) continue;
 			SaveScript(componentsScript[i]);
 			--i;
 		}
-		ReloadAll(scriptName);
+		ReloadAll();
 	}
+	else
+	{
+		scriptInfo.clear();
+	}
+
 	RELEASE(hotJson);
 }
 
-void ModuleScript::ReloadAll(std::string scriptName)
+void ModuleScript::ReloadAll()
 {
 	std::vector<std::string> dllNames;
 
@@ -462,8 +473,11 @@ void ModuleScript::ReloadAll(std::string scriptName)
 		}
 	}
 
-	App->fsystem->Delete((SCRIPTS + scriptName + DLL).c_str()); //Deleted old DLL
-	App->fsystem->Rename(SCRIPTS, (scriptName + HOT).c_str(), scriptName.c_str(), DLL); //Changed name new DLL
+	for (auto scriptName : scriptsToReload)
+	{
+		App->fsystem->Delete((SCRIPTS + scriptName + DLL).c_str()); //Deleted old DLL
+		App->fsystem->Rename(SCRIPTS, (scriptName + HOT).c_str(), scriptName.c_str(), DLL); //Changed name new DLL
+	}
 
 	for (size_t i = 0; i < dllNames.size(); i++)
 	{

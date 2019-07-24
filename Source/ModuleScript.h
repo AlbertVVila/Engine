@@ -42,9 +42,9 @@ public:
 private:
 	void Monitorize();
 	void MonitorizeScripts();
-	void UpdateScript(std::string script);
-	void ReloadAll(std::string scriptName);
-	void HotSwap(std::string scriptName);
+	void UpdateScript();
+	void ReloadAll();
+	bool HotSwap(std::string scriptName);
 	void HotReload(std::string scriptName, bool initialize = true);
 	void InitializeScript(Script* script);
 	void SaveScript(Script* script);
@@ -66,7 +66,7 @@ private:
 	JSON* hotJson = nullptr;
 	bool hotReloading = true;
 
-	std::string scriptToReload;
+	std::set<std::string> scriptsToReload;
 	std::thread monitorThread;
 	bool monitorizing = true;
 	bool threadIsWorking = false;
