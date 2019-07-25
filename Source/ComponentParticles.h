@@ -25,10 +25,11 @@ struct Particle
 {
 	float speed = 1.f;
 
+	float axisRotation = 0.f;
 	math::float3 position = math::float3::zero;
 	math::float4x4 global = math::float4x4::zero;
 	math::float3 direction = math::float3::unitY;
-	float size = 1.f;
+	math::float2 size = math::float2::zero;
 
 	float totalLifetime = .0f;
 	float lifeTimer = totalLifetime;
@@ -47,7 +48,8 @@ public:
 	enum EmisorType
 	{
 		QUAD = 0,
-		SPHERE
+		SPHERE,
+		CONE
 	};
 
 	ComponentParticles(GameObject* gameobject);
@@ -101,9 +103,11 @@ private:
 	float rateTimer = 1.f / rate;
 	int maxParticles = 50;
 	float intensity = 1.0f;
-	math::float2 particleSize = math::float2(1.f * App->renderer->current_scale, 1.f * App->renderer->current_scale) ;
+
+	math::float2 axisRotation = math::float2::zero;
+	math::float2 particleMinSize = math::float2(1.f * App->renderer->current_scale, 1.f * App->renderer->current_scale);
+	math::float2 particleMaxSize = math::float2(1.f * App->renderer->current_scale, 1.f * App->renderer->current_scale);
 	math::float2 quadEmitterSize = math::float2(10.f * App->renderer->current_scale);
-	float sphereEmitterRadius = 5.f * App->renderer->current_scale;
 	math::float4 particleColor = math::float4::one;
 	math::float3 pDir = math::float3(-1.f, 0.f, 0.f);
 
@@ -114,7 +118,11 @@ private:
 	EmisorType actualEmisor = EmisorType::QUAD;
 	bool quadCheck = true;
 	bool sphereCheck = false;
-	std::vector<bool*> emisorsCheck = { &quadCheck,&sphereCheck};
+	bool coneCheck = false;
+	//cone properties
+	float baseRadius = 3.f;
+	float apexRadius = 1.5f;
+	std::vector<bool*> emisorsCheck = { &quadCheck,&sphereCheck, &coneCheck};
 
 	bool sizeOTCheck = false;
 	bool colorOTCheck = false;
