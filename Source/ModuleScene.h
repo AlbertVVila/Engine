@@ -159,6 +159,15 @@ public:
 	bool loadScene = false;
 	bool actionAfterLoad = false;
 	std::string stateAfterLoad = "None";
+
+	//variable that tells us if an enemy is hovered
+	struct enemyInfo
+	{
+		GameObject* object = nullptr;
+		int health = 0;
+	};
+	enemyInfo enemyHovered;
+	
 };
 
 

@@ -92,6 +92,9 @@ void Resource::Rename(const char* newName)
 		// Update file variable
 		file = ruteToFile + newName + extension;
 	}
+
+	// Update meta info
+	SaveMetafile(file.c_str());
 }
 
 void Resource::Delete()
