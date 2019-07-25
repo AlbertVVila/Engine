@@ -1,6 +1,10 @@
 {
     "Prefab": {
+        "metaVersion": 2,
+        "timeCreated": 1564058805,
         "GUID": 404080911,
-        "timeCreated": 1564055841
+        "Name": "AudioEnemy",
+        "File": "Assets/Prefabs/AudioEnemy.pr3fab",
+        "ExportedFile": "Library/Prefabs/404080911.pr3fab"
     }
 }

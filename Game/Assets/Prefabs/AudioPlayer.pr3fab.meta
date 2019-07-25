@@ -1,6 +1,10 @@
 {
     "Prefab": {
+        "metaVersion": 2,
+        "timeCreated": 1564058805,
         "GUID": 2855789593,
-        "timeCreated": 1564055838
+        "Name": "AudioPlayer",
+        "File": "Assets/Prefabs/AudioPlayer.pr3fab",
+        "ExportedFile": "Library/Prefabs/2855789593.pr3fab"
     }
 }

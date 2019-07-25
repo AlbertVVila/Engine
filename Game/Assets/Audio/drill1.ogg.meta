@@ -1,7 +1,11 @@
 {
     "Audio": {
+        "metaVersion": 2,
+        "timeCreated": 1564058805,
         "GUID": 4260307335,
-        "timeCreated": 1563274061,
+        "Name": "drill1",
+        "File": "Assets/Audio/drill1.ogg",
+        "ExportedFile": "Library/Audios/4260307335.ogg",
         "streamed": 0
     }
 }

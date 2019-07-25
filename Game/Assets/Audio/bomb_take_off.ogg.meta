@@ -1,7 +1,11 @@
 {
     "Audio": {
+        "metaVersion": 2,
+        "timeCreated": 1564058805,
         "GUID": 2332896571,
-        "timeCreated": 1563272810,
+        "Name": "bomb_take_off",
+        "File": "Assets/Audio/bomb_take_off.ogg",
+        "ExportedFile": "Library/Audios/2332896571.ogg",
         "streamed": 0
     }
 }

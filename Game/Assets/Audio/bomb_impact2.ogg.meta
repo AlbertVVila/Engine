@@ -1,7 +1,11 @@
 {
     "Audio": {
+        "metaVersion": 2,
+        "timeCreated": 1564058805,
         "GUID": 2120642690,
-        "timeCreated": 1563276086,
+        "Name": "bomb_impact2",
+        "File": "Assets/Audio/bomb_impact2.ogg",
+        "ExportedFile": "Library/Audios/2120642690.ogg",
         "streamed": 0
     }
 }
