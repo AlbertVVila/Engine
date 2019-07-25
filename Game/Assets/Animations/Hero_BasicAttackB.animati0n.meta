@@ -1,6 +1,10 @@
 {
     "Animation": {
+        "metaVersion": 2,
+        "timeCreated": 1564058805,
         "GUID": 960134802,
-        "timeCreated": 1563269082
+        "Name": "Hero_BasicAttackB",
+        "File": "Assets/Animations/Hero_BasicAttackB.animati0n",
+        "ExportedFile": "Library/Animations/960134802.animati0n"
     }
 }

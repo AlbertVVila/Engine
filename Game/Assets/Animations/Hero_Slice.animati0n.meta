@@ -1,6 +1,10 @@
 {
     "Animation": {
+        "metaVersion": 2,
+        "timeCreated": 1563181085,
         "GUID": 175724994,
-        "timeCreated": 1561613326
+        "Name": "Hero_Slice",
+        "File": "Assets/Animations/Hero_Slice.animati0n",
+        "ExportedFile": "Library/Animations/175724994.animati0n"
     }
 }
