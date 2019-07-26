@@ -1,5 +1,10 @@
 {
     "Scene": {
-        "GUID": 3727447632
+        "metaVersion": 2,
+        "timeCreated": 1564059177,
+        "GUID": 3727447632,
+        "Name": "Level0-TheGraveyard",
+        "File": "Assets/Scenes/Level0-TheGraveyard.sc3ne",
+        "ExportedFile": "Library/Scenes/3727447632.sc3ne"
     }
 }
