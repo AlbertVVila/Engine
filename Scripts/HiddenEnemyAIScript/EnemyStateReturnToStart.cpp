@@ -15,18 +15,15 @@ EnemyStateReturnToStart::~EnemyStateReturnToStart()
 {
 }
 
-void EnemyStateReturnToStart::Update()
+void EnemyStateReturnToStart::HandleIA()
 {
-	// Move back to start position
-	enemy->enemyController->Move(enemy->chaseSpeed, refreshTime, enemy->startPosition, enemyPath);
-
 	// Check distance to player
 	float distanceToPlayer = enemy->enemyController->GetDistanceToPlayer2D();
 	if (distanceToPlayer < enemy->activationDistance)
 	{
 		enemy->currentState = (EnemyState*)enemy->chase;
 	}
-	else 
+	else
 	{
 		//Check distance to start position
 		// TODO: Change to check that there is not a nearest point on the nav mesh to this
@@ -34,4 +31,10 @@ void EnemyStateReturnToStart::Update()
 		if (distanceToStartPosition < START_POS_OFFSET)
 			enemy->currentState = (EnemyState*)enemy->hide;
 	}
+}
+
+void EnemyStateReturnToStart::Update()
+{
+	// Move back to start position
+	enemy->enemyController->Move(enemy->chaseSpeed, refreshTime, enemy->startPosition, enemyPath);
 }

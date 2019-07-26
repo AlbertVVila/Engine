@@ -68,7 +68,7 @@ public:
 	float yTranslation = 20.0f;			// Y axis translation on stand-up 
 
 	// Chase variables
-	float chaseSpeed = 2.0f;			// Tranlation speed when chasing player
+	float chaseSpeed = 80.0f;			// Tranlation speed when chasing player
 
 	// Return variables
 	math::float3 startPosition;
@@ -77,7 +77,9 @@ public:
 
 	// Attack variables
 	float attackDuration = 1.0f;
-	float attackDamage = 20.0f;		
+	float attackRange = 300.0f;
+	float attackDamage = 20.0f;
+	bool shown = false;
 										// Cooldown variables
 	float cooldownTime = 1.0f;			// Seconds to wait between attacks
 

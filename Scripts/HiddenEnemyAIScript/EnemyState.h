@@ -14,6 +14,7 @@ public:
 	~EnemyState();
 
 	virtual void Enter() {};
+	virtual void HandleIA() {};
 	virtual void Update() {};
 	virtual void Exit() {};
 	void UpdateTimer();
@@ -24,6 +25,7 @@ public:
 	std::string trigger;
 
 	HiddenEnemyAIScript* enemy = nullptr;
+	float duration = 0.0f;
 
 protected:
 	math::float3 boxSize = math::float3(500.f, 500.f, 500.f);
@@ -34,6 +36,7 @@ protected:
 
 	float auxTranslation = 0.0f;
 	float auxTimer = 0.0f;
+
 
 	// Nav mesh
 	std::vector<math::float3> enemyPath;

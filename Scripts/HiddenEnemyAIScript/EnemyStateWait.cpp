@@ -2,6 +2,7 @@
 
 #include "HiddenEnemyAIScript.h"
 #include "EnemyControllerScript.h"
+#include "ComponentRenderer.h"
 
 #include "Math/float3.h"
 
@@ -15,10 +16,15 @@ EnemyStateWait::~EnemyStateWait()
 {
 }
 
-void EnemyStateWait::Update()
+void EnemyStateWait::HandleIA()
 {
 	float distanceToPlayer = enemy->enemyController->GetDistanceToPlayer2D();
 
 	if (distanceToPlayer < enemy->activationDistance)
 		enemy->currentState = (EnemyState*)enemy->showUp;
+}
+
+void EnemyStateWait::Update()
+{
+
 }
