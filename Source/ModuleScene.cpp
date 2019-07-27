@@ -510,6 +510,15 @@ void ModuleScene::DrawGOGame(const GameObject& go)
 
 	glUniform1f(glGetUniformLocation(shader->id[variation],
 		"decay2"), crenderer->waterDecay2);
+	
+	float waterMix = sin(App->time->gameTime * crenderer->distorsionSpeed);
+	waterMix = waterMix < 0.f ? -waterMix : waterMix;
+	
+	glUniform1f(glGetUniformLocation(shader->id[variation],
+		"waterMix"), waterMix);
+	
+	glUniform2fv(glGetUniformLocation(shader->id[variation],
+		"uvScaler"), 1, (GLfloat*)&crenderer->uvScaler);
 
 	glUniform1f(glGetUniformLocation(shader->id[variation],
 		"frequency2"), crenderer->waterFrequency2);
@@ -615,6 +624,15 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 	glUniform1f(glGetUniformLocation(shader->id[variation],
 		"decay2"), crenderer->waterDecay2);
 
+	float waterMix = sin(App->time->gameTime * crenderer->distorsionSpeed);
+	waterMix = waterMix < 0.f ? -waterMix : waterMix;
+
+	glUniform1f(glGetUniformLocation(shader->id[variation],
+		"waterMix"), waterMix);
+
+	glUniform2fv(glGetUniformLocation(shader->id[variation],
+		"uvScaler"), 1, (GLfloat*)&crenderer->uvScaler);
+	
 	glUniform1f(glGetUniformLocation(shader->id[variation],
 		"frequency2"), crenderer->waterFrequency2);
 

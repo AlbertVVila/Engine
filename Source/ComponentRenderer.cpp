@@ -131,6 +131,10 @@ void ComponentRenderer::DrawProperties()
 				if (water)
 				{
 					ImGui::DragFloat("Water speed", &waterSpeed, 0.1f, 0.1f, 2000.0f);
+					ImGui::Text("Distorsion uses dissolve texture");					
+					ImGui::DragFloat("Distorsion speed", &distorsionSpeed, 0.001f, 0.1f, 10.0f);
+					ImGui::DragFloat2("Water UV scaler", &uvScaler[0], 0.001f, 0.0001f, 2000.0f);
+
 					if (ImGui::CollapsingHeader("Source 1"))
 					{
 						ImGui::PushID(0);
@@ -166,13 +170,15 @@ void ComponentRenderer::DrawProperties()
 					{
 						timer = 0.f;
 					}
+					ImGui::Checkbox("Loop animation", &loop);
+					if (ImGui::Button("Reset animation"))
+					{
+						ResetAnimation();
+					}
 				}
 			}
 			// Material selector
-			if (ImGui::Button("X"))
-			{
-				ResetAnimation();
-			}
+			
 			PickMaterial();
 			ImGui::Separator();
 		}
@@ -228,6 +234,8 @@ void ComponentRenderer::Save(JSON_value* value) const
 	value->AddInt("dissolve", dissolve);
 	value->AddFloat3("waterSource1", waterSource1);
 	value->AddFloat3("waterSource2", waterSource2);
+	value->AddFloat2("uvScaler", uvScaler);
+	value->AddFloat("distorsionSpeed", distorsionSpeed);
 }
 
 void ComponentRenderer::Load(JSON_value* value)
@@ -263,6 +271,8 @@ void ComponentRenderer::Load(JSON_value* value)
 	dissolve = value->GetInt("dissolve");
 	waterSource1 = value->GetFloat3("waterSource1");
 	waterSource2 = value->GetFloat3("waterSource2");
+	uvScaler = value->GetFloat2("uvScaler");
+	distorsionSpeed = value->GetFloat("distorsionSpeed", distorsionSpeed);
 }
 
 void ComponentRenderer::SetMaterial(const char* materialName)

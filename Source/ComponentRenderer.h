@@ -55,6 +55,10 @@ public:
 	float waterAmplitude2 = 10.f;
 	float waterFrequency2 = 10.f;
 	float waterDecay2 = 1.f;
+	float distorsionSpeed = 0.001f;
+
+	math::float2 uvScaler = math::float2::one;
+
 	math::float3 waterSource2 = math::float3::zero;
 	float waterSpeed = 2.f;
 	math::float3 highlightColor = math::float3::one;

@@ -95,6 +95,9 @@ uniform vec3 highlightColorUniform;
 uniform float useHighlight;
 uniform float borderAmount;
 uniform float sliceAmount;
+uniform float time;
+uniform float waterMix;
+
 
 vec4 textureGammaCorrected(sampler2D tex)
 {
@@ -102,11 +105,17 @@ vec4 textureGammaCorrected(sampler2D tex)
 	return vec4(pow(texRaw.r, 2.2), pow(texRaw.g, 2.2), pow(texRaw.b, 2.2), texRaw.a);
 }
 
-
+#ifndef WATER
 vec4 get_albedo()
 {
 	return textureGammaCorrected(material.diffuse_texture) * material.diffuse_color;
 }
+#else
+vec4 get_albedo()
+{
+	return mix(textureGammaCorrected(material.diffuse_texture), textureGammaCorrected(material.dissolve_texture), waterMix)  * material.diffuse_color;
+}
+#endif
 
 vec3 get_occlusion_color()
 {
@@ -176,10 +185,11 @@ void main()
 {
 #ifndef WATER
 	vec3 normal = CalculateNormal();	
+	vec4 albedo = get_albedo();
 #else
 	vec3 normal = normalIn;
-#endif
 	vec4 albedo = get_albedo();
+#endif
 	if (albedo.a < 0.1f)
 		discard;
 
@@ -301,6 +311,7 @@ void main()
 	}		
 #endif	
 
+	//Fragcolor = vec4(normal,1);
 			
 	//Fragcolor = texture2D(material.dissolve_texture, uv0);
 }
