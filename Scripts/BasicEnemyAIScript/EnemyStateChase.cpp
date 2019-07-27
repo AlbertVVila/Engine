@@ -18,27 +18,23 @@ EnemyStateChase::~EnemyStateChase()
 {
 }
 
+void EnemyStateChase::HandleIA()
+{
+	float distance = enemy->enemyController->GetDistanceToPlayer2D();
+	if (distance < enemy->attackRange)
+	{
+		enemy->currentState = (EnemyState*)enemy->attack;
+	}
+	else if (distance > enemy->returnDistance)
+	{
+		enemy->currentState = (EnemyState*)enemy->returnToStart;
+	}
+}
+
 void EnemyStateChase::Update()
 {
 	// Move towards the player
 	enemy->enemyController->Move(enemy->chaseSpeed, refreshTime, enemy->enemyController->GetPlayerPosition(), enemyPath);
-
-	// Check collision
-	if (enemy->enemyController->IsCollidingWithPlayer())
-	{
-		// Player intersected, change to attack
-		enemy->currentState = (EnemyState*)enemy->attack;
-	}
-	else
-	{
-		// Check if player is too far
-		float distanceToPlayer = enemy->enemyController->GetDistanceToPlayer2D();
-		if (distanceToPlayer > enemy->returnDistance)
-		{
-			// Return to start position
-			enemy->currentState = (EnemyState*)enemy->returnToStart;
-		}
-	}
 
 	if (enemy->drawDebug)
 	{

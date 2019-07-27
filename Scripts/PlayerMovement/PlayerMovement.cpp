@@ -12,8 +12,10 @@
 #include "PlayerStateIdle.h"
 #include "PlayerStateWalk.h"
 #include "PlayerStateWalkToHitEnemy.h"
+#include "PlayerStateWalkToPickItem.h"
 #include "PlayerStateDeath.h"
 #include "EnemyControllerScript.h"
+#include "ItemPicker.h"
 
 #include "ComponentAnimation.h"
 #include "ComponentBoxTrigger.h"
@@ -193,6 +195,7 @@ void PlayerMovement::CreatePlayerStates()
 
 	playerStates.push_back(walk = new PlayerStateWalk(this, "Walk"));
 	playerStates.push_back(walkToHit = new PlayerStateWalkToHitEnemy(this, "Walk"));
+	playerStates.push_back(walkToPickItem = new PlayerStateWalkToPickItem(this, "Walk"));
 	if (dustParticles == nullptr)
 	{
 		LOG("Dust Particles not found");
@@ -664,6 +667,7 @@ void PlayerMovement::Update()
 		if (currentSkill != nullptr)
 		{
 			currentSkill->Update();
+			itemClicked = nullptr;
 		}
 
 		// States
@@ -1043,7 +1047,7 @@ bool PlayerMovement::IsMovingToAttack() const
 
 bool PlayerMovement::IsMoving() const
 {
-	return (IsPressingMouse1() && !IsAttacking() && !IsMovingToAttack());
+	return (IsPressingMouse1() && !IsAttacking() && !IsMovingToAttack() && (!IsMovingToItem() || (IsMovingToItem() && stoppedGoingToItem)));
 }
 
 bool PlayerMovement::IsPressingMouse1() const
@@ -1324,6 +1328,50 @@ void PlayerMovement::InitializeUIStatsObjects()
 	{
 		LOG("The Game Object 'StatsPanel' couldn't be found.");
 	}
+}
+
+void PlayerMovement::ToggleMaxStats()
+{
+	if (hasMaxStats)
+	{
+		stats = previousStats;
+	}
+	else
+	{
+		PlayerStats godStats = { 400.f, 999.f, 999.f, 999.f, 999.9f, 999.9f };
+		previousStats = stats;
+		stats = godStats;
+	}
+	UpdateUIStats();
+	hasMaxStats = !hasMaxStats;
+}
+
+void PlayerMovement::ToggleInfiniteHealth()
+{
+	if (hasInfiniteHealth)
+	{
+		health = 100.0f;
+	}
+	else
+	{
+		health = 100000.0f;
+	}
+	hasInfiniteHealth = !hasInfiniteHealth;
+	lifeUIComponent->SetMaskAmount(100);
+}
+
+void PlayerMovement::ToggleInfiniteMana()
+{
+	if (hasInfiniteMana)
+	{
+		mana = 100.0f;
+	}
+	else
+	{
+		mana = 100000.0f;
+	}
+	hasInfiniteMana = !hasInfiniteMana;
+	manaUIComponent->SetMaskAmount(100);
 }
 
 void PlayerMovement::SavePlayerStats()

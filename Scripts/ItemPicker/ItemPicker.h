@@ -19,6 +19,7 @@ class JSON_value;
 class ComponentAudioSource;
 class ComponentRenderer;
 class ItemNameController;
+class PlayerMovement;
 
 enum class ItemPicker_API ItemRarity
 {
@@ -40,6 +41,8 @@ public:
 	void DeSerialize(JSON_value* json) override;
 	void SetItem(ItemType type, std::string name, std::string sprite);
 
+	void PickupItem() const;
+
 	inline virtual ItemPicker* Clone() const
 	{
 		return new ItemPicker(*this);
@@ -51,9 +54,10 @@ public:
 	std::string sprite;
 	ItemType type = ItemType::NONE;
 	Item item;
+	bool pickedUpViaPlayer = false;
 
 private:
-
+	PlayerMovement* playerMovementScript = nullptr;
 	InventoryScript* inventoryScript = nullptr;
 	math::AABB* playerBbox = nullptr;
 
@@ -70,10 +74,6 @@ private:
 	ItemNameController* itemName = nullptr;
 	std::list<unsigned> nameShowed;
 
-	float time = -1.0f;
-
-	bool changeItemCursorIcon = true;
-	bool changeStandarCursorIcon = true;
 };
 
 extern "C" ItemPicker_API Script* CreateScript();

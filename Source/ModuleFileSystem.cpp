@@ -92,7 +92,7 @@ ModuleFileSystem::~ModuleFileSystem()
 	PHYSFS_deinit();
 }
 
-bool ModuleFileSystem::Start() //TODO: Don't checkFiles in GameBuild
+bool ModuleFileSystem::Start()
 {
 #ifndef GAME_BUILD
 	// Check files in Assets and add them to ResManager
@@ -452,7 +452,7 @@ bool ModuleFileSystem::Copy(const char* source, const char* file, const char* de
 	return true;
 }
 
-bool ModuleFileSystem::Rename(const char* route, const char* file, const char* newName) const
+bool ModuleFileSystem::Rename(const char* route, const char* file, const char* newName, const char* newExtension) const
 {
 	bool success = false;
 	if (route == nullptr || file == nullptr || newName == nullptr)
@@ -477,9 +477,17 @@ bool ModuleFileSystem::Rename(const char* route, const char* file, const char* n
 	}
 	else
 	{
-		std::string extension = GetExtension(file);
+		std::string extension;
+		if (newExtension != nullptr)
+		{
+			extension = newExtension;
+		}
+		else
+		{
+			extension = GetExtension(file);
+		}
 		Copy(route, file, route, (newName + extension).c_str());
-		success = Delete(filepath.c_str());
+		success = Delete(filepath.c_str()); //TODO: Only if it doesn't overwrite another file
 	}
 	return success;
 }

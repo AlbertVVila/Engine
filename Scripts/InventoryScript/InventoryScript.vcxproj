@@ -141,7 +141,14 @@
       <AdditionalDependencies>$(SolutionName).lib;MathGeoLib.lib;ImGui.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts"</Command>
+      <Command>xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts"
+if ERRORLEVEL 1 goto hotreload
+goto exit
+:hotreload
+echo Le HotReload
+xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts\$(ProjectName).hot"*
+:exit
+set ERRORLEVEL=0</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>if not exist "..\..\Game\Scripts"  mkdir "..\..\Game\Scripts"</Command>
@@ -164,7 +171,14 @@
       <AdditionalDependencies>$(SolutionName).lib;MathGeoLib.lib;ImGui.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts"</Command>
+      <Command>xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts"
+if ERRORLEVEL 1 goto hotreload
+goto exit
+:hotreload
+echo Le HotReload
+xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts\$(ProjectName).hot"*
+:exit
+set ERRORLEVEL=0</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>if not exist "..\..\Game\Scripts"  mkdir "..\..\Game\Scripts"</Command>
@@ -205,7 +219,14 @@
       <AdditionalDependencies>$(SolutionName).lib;MathGeoLib.lib;ImGui.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts"</Command>
+      <Command>xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts"
+if ERRORLEVEL 1 goto hotreload
+goto exit
+:hotreload
+echo Le HotReload
+xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts\$(ProjectName).hot"*
+:exit
+set ERRORLEVEL=0</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>if not exist "..\..\Game\Scripts"  mkdir "..\..\Game\Scripts"</Command>
@@ -232,7 +253,14 @@
       <AdditionalDependencies>$(SolutionName).lib;MathGeoLib.lib;ImGui.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts"</Command>
+      <Command>xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts"
+if ERRORLEVEL 1 goto hotreload
+goto exit
+:hotreload
+echo Le HotReload
+xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts\$(ProjectName).hot"*
+:exit
+set ERRORLEVEL=0</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>if not exist "..\..\Game\Scripts"  mkdir "..\..\Game\Scripts"</Command>

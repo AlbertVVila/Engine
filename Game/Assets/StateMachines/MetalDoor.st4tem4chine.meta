@@ -1,1 +1,7 @@
-{"StateMachine":{"GUID":2946608758,"timeCreated":1559125735,"name":"MetalDoor"}}
+{
+    "StateMachine": {
+        "GUID": 2946608758,
+        "timeCreated": 1562862483,
+        "name": "MetalDoor"
+    }
+}

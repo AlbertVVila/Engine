@@ -24,6 +24,10 @@ void PlayerStateIdle::CheckInput()
 	{
 		player->currentState = (PlayerState*)player->walkToHit;
 	}
+	else if (player->IsMovingToItem())
+	{
+		player->currentState = (PlayerState*)player->walkToPickItem;
+	}
 	else if (player->IsMoving())
 	{
 		player->currentState = (PlayerState*)player->walk;

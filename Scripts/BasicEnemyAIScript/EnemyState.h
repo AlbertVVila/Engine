@@ -15,6 +15,7 @@ public:
 	~EnemyState();
 
 	virtual void Enter() {};
+	virtual void HandleIA() {};
 	virtual void Update() {};
 	virtual void Exit() {};
 	void UpdateTimer();
@@ -23,6 +24,7 @@ public:
 public:
 	float timer = 0.f;
 	float auxTimer = 0.0f;
+	float duration = 0.0f;
 	std::string trigger;
 
 	BasicEnemyAIScript* enemy = nullptr;

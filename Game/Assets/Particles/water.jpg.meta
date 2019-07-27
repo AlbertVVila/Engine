@@ -1,11 +1,11 @@
 {
     "Texture": {
         "GUID": 3937397044,
-        "timeCreated": 1561623119,
+        "timeCreated": 1562862482,
         "height": 512,
         "width": 512,
         "depth": 1,
-        "mips": 2,
+        "mips": 0,
         "format": 6407,
         "DX compresion": 1802,
         "mipmap": 0
