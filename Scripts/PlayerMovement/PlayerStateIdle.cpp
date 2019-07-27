@@ -16,9 +16,17 @@ void PlayerStateIdle::Update()
 
 void PlayerStateIdle::CheckInput()
 {
-	if (player->IsUsingSkill() || player->IsAtacking())
+	if (player->IsUsingSkill() || player->IsAttacking())
 	{
 		player->currentState = (PlayerState*)player->attack;
+	}
+	else if (player->IsMovingToAttack())
+	{
+		player->currentState = (PlayerState*)player->walkToHit;
+	}
+	else if (player->IsMovingToItem())
+	{
+		player->currentState = (PlayerState*)player->walkToPickItem;
 	}
 	else if (player->IsMoving())
 	{

@@ -10,9 +10,12 @@ public:
 	EnemyStateAttack(BasicEnemyAIScript* AIScript);
 	~EnemyStateAttack();
 
+	void HandleIA() override;
 	void Update() override;
 
 private:
+
+	bool attacked = false;
 	void Attack();
 };
 

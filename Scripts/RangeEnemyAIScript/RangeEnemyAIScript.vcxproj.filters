@@ -39,7 +39,10 @@
     <ClCompile Include="EnemyStateReturnToStart.cpp">
       <Filter>States</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyStateGetInPosition.cpp">
+    <ClCompile Include="EnemyStateChase.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyStateFlee.cpp">
       <Filter>States</Filter>
     </ClCompile>
   </ItemGroup>
@@ -65,7 +68,10 @@
     <ClInclude Include="EnemyStateReturnToStart.h">
       <Filter>States</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyStateGetInPosition.h">
+    <ClInclude Include="EnemyStateChase.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyStateFlee.h">
       <Filter>States</Filter>
     </ClInclude>
   </ItemGroup>

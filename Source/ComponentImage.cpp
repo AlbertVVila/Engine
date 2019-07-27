@@ -49,6 +49,12 @@ ComponentImage::ComponentImage(const ComponentImage &copy) : Component(copy)
 	{
 		texture = (ResourceTexture*)App->resManager->Get(copy.texture->GetUID());
 	}
+	isMasked = copy.isMasked;
+	maskAmount = copy.maskAmount;
+	isMaskHorizontal = copy.isMaskHorizontal;
+	hoverDetectionMouse1 = copy.hoverDetectionMouse1;
+	hoverDetectionMouse3 = copy.hoverDetectionMouse3;
+	uiOrder = copy.uiOrder;
 }
 
 ComponentImage::~ComponentImage()

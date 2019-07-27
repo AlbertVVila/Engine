@@ -1,1 +1,19 @@
-{"Mesh":{"GUID":4090637421,"timeCreated":1561148161,"NumMeshes":7,"Mesh0":3486752150,"Mesh1":244729783,"Mesh2":2885013133,"Mesh3":2371637376,"Mesh4":2979575515,"Mesh5":1423194597,"Mesh6":51322431},"Animation":{"timeCreated":1561148161,"NumAnimations":1,"Animation0":3847939579}}
+{
+    "Mesh": {
+        "GUID": 4090637421,
+        "timeCreated": 1562862481,
+        "NumMeshes": 7,
+        "Mesh0": 3486752150,
+        "Mesh1": 244729783,
+        "Mesh2": 2885013133,
+        "Mesh3": 2371637376,
+        "Mesh4": 2979575515,
+        "Mesh5": 1423194597,
+        "Mesh6": 51322431
+    },
+    "Animation": {
+        "timeCreated": 1562862481,
+        "NumAnimations": 1,
+        "Animation0": 3847939579
+    }
+}

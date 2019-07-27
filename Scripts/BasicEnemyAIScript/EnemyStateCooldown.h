@@ -10,7 +10,11 @@ public:
 	EnemyStateCooldown(BasicEnemyAIScript* AIScript);
 	~EnemyStateCooldown();
 
+	void HandleIA() override;
 	void Update() override;
+
+private:
+	float waitedTime = 1.f;
 };
 
 #endif __ENEMYSTATECOOLDOWN_H_

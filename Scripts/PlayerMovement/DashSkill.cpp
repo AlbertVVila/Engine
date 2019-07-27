@@ -44,7 +44,7 @@ void DashSkill::Start()
 			playerRenderer->dissolveAmount = 0.5f;
 			playerRenderer->borderAmount = 0.08f;
 		}
-		player->ResetCooldown(HUB_BUTTON_Q);
+		player->ResetCooldown(HUD_BUTTON_Q);
 	}
 	//Create the hitbox
 	boxSize = math::float3(80.f, 100.f, 200.f);
@@ -105,6 +105,14 @@ void DashSkill::CheckInput()
 		if (player->IsUsingSkill())
 		{
 			player->currentState = (PlayerState*)player->attack;
+		}
+		else if (player->IsMovingToAttack())
+		{
+			player->currentState = (PlayerState*)player->walkToHit;
+		}
+		else if (player->IsMovingToItem())
+		{
+			player->currentState = (PlayerState*)player->walkToPickItem;
 		}
 		else if (player->IsMoving())
 		{
