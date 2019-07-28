@@ -1643,8 +1643,16 @@ bool ModuleNavigation::IsCursorPointingToNavigableZone(float xCorrection, float 
 	float dist = 0.f;
 	line.Intersects(plane, &dist);
 
+	//get all the meshes with the floor tag to intersect with the ray
+	std::vector<GameObject*> floors = App->scene->FindGameObjectsByTag("floor");
 	//prepare the values for the nav mesh query call
 	math::float3 intersectionPos = line.GetPoint(dist);
+	bool found = false;
+	for (int i = 0; i < floors.size() && !found; ++i)
+	{
+		found = floors[i]->Intersects(line, dist, &intersectionPos);
+	}
+	
 
 	dtQueryFilter filter;
 	filter.setIncludeFlags(SAMPLE_POLYFLAGS_ALL ^ SAMPLE_POLYFLAGS_DISABLED);
