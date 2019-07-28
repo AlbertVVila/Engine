@@ -131,8 +131,8 @@ void ComponentRenderer::DrawProperties()
 				if (water)
 				{
 					ImGui::DragFloat("Water speed", &waterSpeed, 0.1f, 0.1f, 2000.0f);
-					ImGui::Text("Distorsion uses dissolve texture");					
-					ImGui::DragFloat("Distorsion speed", &distorsionSpeed, 0.001f, 0.1f, 10.0f);
+					ImGui::Text("Blending uses diffuse & dissolve texture");					
+					ImGui::DragFloat("Blending speed", &distorsionSpeed, 0.001f, 0.1f, 10.0f);
 					ImGui::DragFloat2("Water UV scaler", &uvScaler[0], 0.001f, 0.0001f, 2000.0f);
 
 					if (ImGui::CollapsingHeader("Source 1"))

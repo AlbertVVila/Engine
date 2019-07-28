@@ -185,10 +185,6 @@ void main()
 	
 	position.z += offset;
 
-	//float dx = -att1 * (source1.x - position.x) * c1 -att2 * (source2.x - position.x) * c2;
-	//float dy = -att1 * (source1.y - position.y) * c1 -att2 * (source2.y - position.y) * c2;
-	
-	//normalIn = normalize(cross(vec3(1,0,dx), vec3(0,1,dy)));
 	normalIn = mat3(transpose(inverse(model))) * vertex_normal;
 	positionWorld = position = (model*vec4(position, 1.0)).xyz;
 	gl_Position = proj*view*vec4(positionWorld, 1.0);	
