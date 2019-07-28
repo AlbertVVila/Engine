@@ -1,13 +1,11 @@
 {
     "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1564303947,
         "GUID": 2994415829,
-        "timeCreated": 1564218777,
-        "height": 512,
-        "width": 512,
-        "depth": 1,
-        "mips": 0,
-        "format": 6407,
-        "DX compresion": 1800,
-        "mipmap": 0
+        "Name": "waterCartoonRotated",
+        "File": "Assets/Particles/waterCartoonRotated.jpg",
+        "ExportedFile": "Library/Textures/2994415829.dds",
+        "DX compresion": 1800
     }
 }
