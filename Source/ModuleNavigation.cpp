@@ -1618,7 +1618,7 @@ bool ModuleNavigation::FindIntersectionPoint(math::float3 start, math::float3 & 
 	return true;
 }
 
-bool ModuleNavigation::IsCursorPointingToNavigableZone(float xCorrection, float zCorrection) const
+bool ModuleNavigation::IsCursorPointingToNavigableZone(float xPickingCorrection, float yPickingCorrection, float zPickingCorrection) const
 {
 	//declare mouse position and necessary values to store data
 	float2 mouse((float*)& App->input->GetMousePosition());
@@ -1660,19 +1660,11 @@ bool ModuleNavigation::IsCursorPointingToNavigableZone(float xCorrection, float 
 	dtPolyRef resultPoly;
 
 	//distance correction on the 3 axis
-	float polyPickExt[3] = { xCorrection, yPickingCorrection, zCorrection};
+	float polyPickExt[3] = { xPickingCorrection, yPickingCorrection, zPickingCorrection };
 
 	//nav mesh query call
 	navQuery->findNearestPoly((float*)& intersectionPos, polyPickExt, &filter, &resultPoly, 0); // find closest poly
 
-	if (resultPoly)
-	{
-		LOG("NAVIGABLE");
-	}
-	else
-	{
-		LOG("NOT NAVIGABLE");
-	}
 	return resultPoly;
 }
 

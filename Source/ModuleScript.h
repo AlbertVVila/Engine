@@ -57,6 +57,7 @@ public:
 	std::map<std::string, int> scripts; //name, modification date
 	update_status status = UPDATE_CONTINUE;
 	bool onStart = true;
+	std::string gameStandarCursor = "Glow.cur";
 private:
 	std::vector <Script*> componentsScript;
 	std::map<std::string, std::pair<HINSTANCE, int>> loadedDLLs; // name, dll, instances

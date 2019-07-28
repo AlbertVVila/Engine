@@ -61,6 +61,7 @@ public:
 	GameObject* player = nullptr;
 	PlayerMovement* playerMovement = nullptr;
 	std::string playerTag = "Player";
+	std::string enemyCursor = "RedGlow.cur";
 	std::string hitMaterialName = "HitMaterial";
 	ComponentAnimation* anim = nullptr;
 	ComponentRenderer* myRender = nullptr;

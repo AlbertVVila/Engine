@@ -108,10 +108,12 @@ public:
 	GameScene gameScene = GameScene::MENU;
 	std::vector<LoopState*> loopStates;
 
+private:
+	void ManageNavigationCursorIcon();
+
 public:
 	int volume = 10;
 
-public:
 	//UI Values
 	int minVolume = 0;
 	int maxVolume = 10;
@@ -198,6 +200,12 @@ public:
 	std::string sceneToLoad = "";
 	LoopState* stateAfterLoad = nullptr;
 	bool actionAfterLoad = false;
+
+	float xPickingCorrection = 50.0f;
+	float yPickingCorrection = 10000.f;
+	float zPickingCorrection = 50.0f;
+	bool changeNavigationCursorIcon = true;
+	bool changeStandarCursorIcon = true;
 };
 
 extern "C" GameLoop_API Script* CreateScript();

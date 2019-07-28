@@ -20,7 +20,7 @@ Application* App = nullptr;
 
 void OnExit()
 {
-	MouseController::ChangeCursorIcon("C:\\Windows\\Cursors\\aero_arrow.cur");
+	MouseController::ChangeWindowsCursorIcon();
 }
 
 int main(int argc, char ** argv)
