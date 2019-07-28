@@ -28,7 +28,6 @@ class InventoryScript;
 class EquipPopupController;
 class SkillTreeController;
 class ExperienceController;
-class AABB;
 class JSON_value;
 class ComponentAudioSource;
 

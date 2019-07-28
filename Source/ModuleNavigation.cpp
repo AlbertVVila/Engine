@@ -1618,6 +1618,56 @@ bool ModuleNavigation::FindIntersectionPoint(math::float3 start, math::float3 & 
 	return true;
 }
 
+bool ModuleNavigation::IsCursorPointingToNavigableZone(float xCorrection, float zCorrection) const
+{
+	//declare mouse position and necessary values to store data
+	float2 mouse((float*)& App->input->GetMousePosition());
+	LineSegment line;
+
+	float normalized_x, normalized_y;
+
+	//get relative mouse position depending on type of build
+#ifndef GAME_BUILD
+	math::float2 pos = App->renderer->viewGame->winPos;
+	math::float2 size(App->renderer->viewGame->current_width, App->renderer->viewGame->current_height);
+#else
+	math::float2 pos = math::float2::zero;
+	math::float2 size(App->window->width, App->window->height);
+#endif
+	normalized_x = ((mouse.x - pos.x) / size.x) * 2 - 1; //0 to 1 -> -1 to 1
+	normalized_y = (1 - (mouse.y - pos.y) / size.y) * 2 - 1; //0 to 1 -> -1 to 1
+
+	//get the exact position where the mouse is pointing towards in relation to the plane 0,1,0 at y 0
+	line = App->scene->maincamera->DrawRay(normalized_x, normalized_y);
+	Plane plane(math::float3(0.f, 1.f, 0.f), 0.f);
+	float dist = 0.f;
+	line.Intersects(plane, &dist);
+
+	//prepare the values for the nav mesh query call
+	math::float3 intersectionPos = line.GetPoint(dist);
+
+	dtQueryFilter filter;
+	filter.setIncludeFlags(SAMPLE_POLYFLAGS_ALL ^ SAMPLE_POLYFLAGS_DISABLED);
+	filter.setExcludeFlags(0);
+	dtPolyRef resultPoly;
+
+	//distance correction on the 3 axis
+	float polyPickExt[3] = { xCorrection, yPickingCorrection, zCorrection};
+
+	//nav mesh query call
+	navQuery->findNearestPoly((float*)& intersectionPos, polyPickExt, &filter, &resultPoly, 0); // find closest poly
+
+	if (resultPoly)
+	{
+		LOG("NAVIGABLE");
+	}
+	else
+	{
+		LOG("NOT NAVIGABLE");
+	}
+	return resultPoly;
+}
+
 void ModuleNavigation::RecalcPath(math::float3 point)
 {
 	if (startPoint)
