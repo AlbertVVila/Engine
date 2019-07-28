@@ -6,6 +6,7 @@
 #include <vector>
 #include "Math/float3.h"
 #include "MathGeoLib/Geometry/AABB.h"
+#include "Math/MathConstants.h"
 
 #define MAX_DETOUR_PATH 1024
 #define MAX_POLYS 256
@@ -93,11 +94,12 @@ public:
 
 	ENGINE_API bool FindPath(	math::float3 start, math::float3 end, std::vector<math::float3> &path, 
 								PathFindType type = PathFindType::FOLLOW, math::float3 diff = math::float3(0.f, 0.f, 0.f),
-								float maxDist = 10000.0f) const;
+								float maxDist = 10000.0f, float ignoreDist = floatMax) const;
 	//there is a default really big limitating path distance for the calls that are not supposed to be limitated
 	ENGINE_API bool NavigateTowardsCursor(math::float3 start, std::vector<math::float3>& path, 
 										  math::float3 positionCorrection, math::float3& intersectionPos, 
-										  float maxPathDistance = 10000.0f, PathFindType type = PathFindType::FOLLOW) const;
+										  float maxPathDistance = 10000.0f, PathFindType type = PathFindType::FOLLOW,
+										  float ignoreDist = floatMax) const;
 	ENGINE_API bool FindIntersectionPoint(math::float3 start, math::float3& intersectionPoint) const;
 
 	ENGINE_API void setPlayerBB(math::AABB bbox);
@@ -135,8 +137,10 @@ private:
 	bool inRange(const float * v1, const float * v2, const float r, const float h) const;
 
 	float GetXZDistance(float3 a, float3 b) const;
+	float GetXZDistanceWithoutSQ(float3 a, float3 b) const;
 
 	float3 getNextStraightPoint(float3 current, float3 pathDirection, float3 end, bool* destination) const;
+	bool checkNododgePathPoints(int numPoints) const;
 	
 private:
 	//variables
@@ -167,6 +171,8 @@ private:
 	
 	float sampleDistance = 6;
 	float sampleMaxError = 1;
+
+	unsigned minNododgePathPoints = 10u;
 
 	//filters
 	bool filterLowHangingObstacles = true;
@@ -241,13 +247,16 @@ private:
 	const AABB* meshbox = nullptr;
 
 	//Debugging
-	bool pathGenerated = false;
-	std::vector<math::float3> path;
+	mutable bool pathGenerated = false;
+	mutable std::vector<std::pair<math::float3, float>> pathDist;
+	mutable std::vector<math::float3> path;
 	math::float3 start = math::float3::inf;
 	math::float3 end = math::float3::inf;
 
 	bool startPoint = true; //defines if we are going to select start or end point in debug mode
 	bool drawNavMesh = true;
+
+	bool logDebugPathing = false;
 };
 
 #endif __MODULENAVIGATION_H__

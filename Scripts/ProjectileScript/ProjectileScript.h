@@ -38,6 +38,8 @@ public:
 
 	std::string playerName = "Player";
 
+	bool shooted = false;
+
 private:
 	ComponentTransform* transform = nullptr;
 	ComponentBoxTrigger* boxTrigger = nullptr;
@@ -45,10 +47,12 @@ private:
 	GameObject* player = nullptr;
 	PlayerMovement* playerScript = nullptr;
 
-	bool shooted = false;
+
 
 	float auxTimer = 0.0f;
 	float activeTime = 0.0f;
 };
+
+extern "C" ProjectileScript_API Script* CreateScript();
 
 #endif __ProjectileScript_h__

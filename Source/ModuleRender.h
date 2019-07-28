@@ -68,6 +68,7 @@ public:
 	bool grid_debug = true;
 	bool shadowDebug = false;
 	bool boneDebug = false;
+	bool pathfindingDebug = false;
 	bool useMainCameraFrustum = false;
 	bool vsync = false;
 
@@ -83,6 +84,7 @@ public:
 	unsigned highlightBufferGame = 0u;
 	unsigned brightnessBufferGame = 0u;
 	unsigned renderedSceneGame = 0u;
+	float exposure = 1.0f;
 
 private:
 	unsigned UBO = 0;
@@ -122,7 +124,6 @@ private:
 	unsigned depthTexture = 0u;
 
 	float gammaCorrector = 2.2f;
-	float exposure = 1.0f;
 	
 };
 

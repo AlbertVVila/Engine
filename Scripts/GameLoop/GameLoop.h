@@ -75,6 +75,7 @@ public:
 	void LoadCementeryScene();
 	void LoadTempleScene();
 	void LoadHUDScene();
+	void LoadLvl(unsigned lvl);
 
 	void CreateGameStates();
 	void CheckStates(LoopState* previous);
@@ -199,5 +200,7 @@ public:
 	LoopState* stateAfterLoad = nullptr;
 	bool actionAfterLoad = false;
 };
+
+extern "C" GameLoop_API Script* CreateScript();
 
 #endif __GameLoop_h__

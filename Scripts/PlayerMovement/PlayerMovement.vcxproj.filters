@@ -75,6 +75,12 @@
     <ClInclude Include="StompSkill.h">
       <Filter>Skills\Melee</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerStateWalkToHitEnemy.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerStateWalkToPickItem.h">
+      <Filter>States</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PlayerMovement.cpp">
@@ -124,6 +130,12 @@
     </ClCompile>
     <ClCompile Include="StompSkill.cpp">
       <Filter>Skills\Melee</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerStateWalkToHitEnemy.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerStateWalkToPickItem.cpp">
+      <Filter>States</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

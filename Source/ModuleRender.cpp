@@ -819,6 +819,7 @@ void ModuleRender::DrawGUI()
 	ImGui::Checkbox("Static KDTree Debug", &kDTreeDebug);
 	ImGui::Checkbox("Grid Debug", &grid_debug);
 	ImGui::Checkbox("Bone Debug", &boneDebug);
+	ImGui::Checkbox("Pathfinding debug", &pathfindingDebug);
 
 	const char* scales[] = { "1", "10", "100" };
 	ImGui::Combo("Scale", &item_current, scales, 3);

@@ -44,4 +44,6 @@ private:
 	ComponentImage* lifeImage = nullptr;
 };
 
+extern "C" EnemyLifeBarController_API Script* CreateScript();
+
 #endif __EnemyLifeBarController_h__

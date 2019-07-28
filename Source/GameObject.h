@@ -12,6 +12,7 @@ class ComponentTransform;
 class ComponentLight;
 class ComponentAnimation;
 class ComponentText;
+class ComponentRenderer;
 class AABBTreeNode;
 class ResourcePrefab;
 enum class ComponentType;
@@ -74,6 +75,7 @@ public:
 	ENGINE_API bool BboxIntersects(const GameObject* target) const;
 	void UpdateModel(unsigned int shader) const;
 	void SetLightUniforms(unsigned shader) const;
+	void LinkRendererToBones(std::vector<ComponentRenderer*>& renderers);
 
 	void UpdateToPrefab(GameObject* prefab);
 	bool ChildPrefab() const;

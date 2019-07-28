@@ -41,4 +41,6 @@ private:
 	ComponentImage* image = nullptr;
 };
 
+extern "C" DamageFeedbackUI_API Script* CreateScript();
+
 #endif __DamageFeedbackUI_h__

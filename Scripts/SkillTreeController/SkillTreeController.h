@@ -16,6 +16,8 @@ class Text;
 class JSON_value;
 class Transform2D;
 
+#define NUM_SKILLS 11
+
 class SkillTreeController_API SkillTreeController : public Script
 {
 public:
@@ -49,9 +51,11 @@ private:
 	std::vector<Component*> connUI;
 
 	std::vector<std::string> textureFiles;
-	Skill skillList[13];
+	Skill skillList[NUM_SKILLS];
 
-	int a = -1;
+	int initialSkillPoints = 10;
 };
+
+extern "C" SkillTreeController_API Script* CreateScript();
 
 #endif __SkillTreeController_h__

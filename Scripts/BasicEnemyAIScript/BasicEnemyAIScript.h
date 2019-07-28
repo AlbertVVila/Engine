@@ -20,11 +20,13 @@ class EnemyStateReturnToStart;
 class EnemyStateAttack;
 class EnemyStateCooldown;
 class EnemyStateDeath;
+class EnemyStateFlee;
 
 
 class BasicEnemyAIScript_API BasicEnemyAIScript : public Script
 {
 public:
+	void Awake() override;
 	void Start() override;
 	void Update() override;
 
@@ -47,6 +49,7 @@ private:
 public:
 	EnemyState* currentState = nullptr;
 
+	EnemyStateFlee* flee = nullptr;
 	EnemyStatePatrol* patrol = nullptr;
 	EnemyStateChase* chase = nullptr;
 	EnemyStateReturnToStart* returnToStart = nullptr;
@@ -57,7 +60,8 @@ public:
 	bool drawDebug = true;				// If true will draw all debug for enemy behaviour
 
 	// Patrol variables
-	float activationDistance = 100.0f;	// Distance to player needed to start chasing the player (only X,Z axis is taken into account)
+	float activationDistance = 1000.0f;	// Distance to player needed to start chasing the player (only X,Z axis is taken into account)
+	float attackRange = 300.f;
 
 	// Chase variables
 	float chaseSpeed = 2.0f;			// Tranlation speed when chasing player
@@ -74,10 +78,14 @@ public:
 	// Cooldown variables
 	float cooldownTime = 1.0f;			// Seconds to wait between attacks
 
+	bool scared = false;
+
 	EnemyControllerScript* enemyController = nullptr;
 
 private:
 	std::vector<EnemyState*> enemyStates;
 };
+
+extern "C" BasicEnemyAIScript_API Script* CreateScript();
 
 #endif __BasicEnemyAIScript_h__

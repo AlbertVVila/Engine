@@ -19,6 +19,7 @@ public:
 	void DeleteFromMemory() override;
 	void SaveMetafile(const char* file) const override;
 	void LoadConfigFromMeta() override;
+	void LoadConfigFromLibraryMeta() override;
 
 	void DrawLoadSettings() override;
 

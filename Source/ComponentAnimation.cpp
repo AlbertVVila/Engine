@@ -530,6 +530,9 @@ ComponentAnimation::ComponentAnimation(const ComponentAnimation& component) : Co
 {
 	if(component.stateMachine != nullptr)
 		stateMachine = (ResourceStateMachine*)App->resManager->Get(component.stateMachine->GetUID());
+
+	editorController = new AnimationController();
+	controller = new AnimationController();
 }
 
 
@@ -543,6 +546,7 @@ bool ComponentAnimation::CleanUp()
 	{
 		App->resManager->DeleteResource(stateMachine->GetUID());
 	}
+
 	return true;
 }
 

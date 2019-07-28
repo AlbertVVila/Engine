@@ -2,7 +2,6 @@
 #define  __EnemyControllerScript_h__
 
 #include "BaseScript.h"
-
 #include "Geometry/AABB.h"
 #include <vector>
 
@@ -26,6 +25,7 @@ class ResourceMaterial;
 class EnemyControllerScript_API EnemyControllerScript : public Script
 {
 	void Start() override;
+	void Awake() override;
 	void Update() override;
 
 	void Expose(ImGuiContext* context) override;
@@ -56,6 +56,8 @@ public:
 
 	void OnTriggerEnter(GameObject* go) override;
 public:
+
+	bool isDead = false;
 	GameObject* player = nullptr;
 	PlayerMovement* playerMovement = nullptr;
 	std::string playerTag = "Player";
@@ -91,7 +93,9 @@ private:
 
 	float hitColorDuration = 0.2f;
 	float timer = 0.f;
-	bool isDead = false;
+
 };
+
+extern "C" EnemyControllerScript_API Script* CreateScript();
 
 #endif __EnemyControllerScript_h__

@@ -20,16 +20,29 @@ ChainAttackSkill::~ChainAttackSkill()
 {
 }
 
+const float3 ChainAttackSkill::attackingBoxSize = math::float3(150.f, 100.f, 100.f);
+
 void ChainAttackSkill::Start()
 {
 	MeleeSkill::Start();
-	player->gameobject->transform->LookAtMouse();
+	if (!player->enemyTargeted)
+	{
+		player->gameobject->transform->LookAtMouse();
+	}
+	else
+	{
+		player->enemyTargeted = false;
+		if (player->enemyTarget != nullptr)
+		{
+			player->gameobject->transform->LookAt(player->enemyTarget->transform->position);
+		}
+	}
 
 	// Create the hitbox
-	boxSize = math::float3(150.f, 100.f, 100.f);
+	boxSize = attackingBoxSize;
 
 	// Set delay for hit
-	hitDelay = 0.4f;
+	hitDelay = 0.1f;
 }
 
 void ChainAttackSkill::UseSkill()
@@ -46,71 +59,62 @@ void ChainAttackSkill::Reset()
 {
 	MeleeSkill::Reset();
 	nextInput = NextInput::NONE;
+	attack = AttackNumber::FIRST;
 }
 
 void ChainAttackSkill::CheckInput()
 {
-	if (timer < player->currentState->duration && nextInput != NextInput::SKILL)
+	if (player->IsMovingToAttack())
 	{
-		if (player->IsUsingSkill())
-		{
-			nextInput = NextInput::SKILL;
-		}
-		else if (player->IsAtacking() && nextInput != NextInput::SKILL)
-		{
-			nextInput = NextInput::ATTACK;
-		}
+		Reset();
+		player->currentState = (PlayerState*)player->walkToHit;
 	}
-
-	if (timer > player->currentState->duration) //CAN SWITCH?
+	else if (player->IsMovingToItem())
 	{
-		if (nextInput == NextInput::SKILL || player->IsUsingSkill())
-		{
-			//Reset();
-			player->currentState = (PlayerState*)player->attack;
-		}
-		else if (player->IsMoving())
-		{
-			//Reset();
-			player->currentState = (PlayerState*)player->walk;
-		}
-		else if (nextInput == NextInput::ATTACK)
-		{
-			NextChainAttack();
-		}
+		player->currentState = (PlayerState*)player->walkToPickItem;
+	}
+	else if (player->IsMoving())
+	{
+		Reset();
+		player->currentState = (PlayerState*)player->walk;
 	}
 }
 
 void ChainAttackSkill::NextChainAttack()
 {
-	if (attack == AttackNumber::FIRST)
+	if (player->currentState->timer >= player->currentState->duration)
 	{
-		attack = AttackNumber::SECOND;
-		// Go to next attack
-		Reset();
-		player->currentSkill = player->chain;
-		player->currentState = (PlayerState*)player->attack;
-		Start();
-		// Play next attack animation
-		player->attack->trigger = "Chain2";
-	}
-	else
-	{
-		attack = AttackNumber::FIRST;
-		// Reset attack chain
-		Reset();
-		player->currentSkill = player->chain;
-		player->currentState = (PlayerState*)player->attack;
-		Start();
-		// Play first attack animation
-		player->attack->trigger = "Chain1";
-	}
+		player->currentState->timer = 0.f;
+		if (attack == AttackNumber::FIRST)
+		{
+			// Go to next attack
+			Reset();
+			player->currentSkill = player->chain;
+			player->currentState = (PlayerState*)player->attack;
+			Start();
+			// Play next attack animation
+			attack = AttackNumber::SECOND;
+			player->attack->trigger = "Chain2";
+		}
+		else
+		{
+			// Reset attack chain
+			Reset();
+			player->currentSkill = player->chain;
+			player->currentState = (PlayerState*)player->attack;
+			Start();
+			// Play first attack animation
+			attack = AttackNumber::FIRST;
+			player->attack->trigger = "Chain1";
+		}
 
-	// Send trigger
-	if (player->anim != nullptr)
-	{
-		player->anim->SendTriggerToStateMachine(player->currentState->trigger.c_str());
-	}
+		// Send trigger
+		if (player->anim != nullptr)
+		{	
+			player->anim->SendTriggerToStateMachine(player->currentState->trigger.c_str());
+		}
 
-	player->currentState->duration = player->anim->GetDurationFromClip();
+		player->currentState->duration = player->anim->GetDurationFromClip();
+	}
+	
 }

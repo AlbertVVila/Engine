@@ -11,8 +11,11 @@
 #include "PlayerStateAttack.h"
 #include "PlayerStateIdle.h"
 #include "PlayerStateWalk.h"
+#include "PlayerStateWalkToHitEnemy.h"
+#include "PlayerStateWalkToPickItem.h"
 #include "PlayerStateDeath.h"
 #include "EnemyControllerScript.h"
+#include "ItemPicker.h"
 
 #include "ComponentAnimation.h"
 #include "ComponentBoxTrigger.h"
@@ -46,7 +49,7 @@
 #include "ComponentAudioSource.h"
 #include "PlayerPrefs.h"
 
-#define SKILLS_SLOTS 5
+#define SKILLS_SLOTS 9
 
 PlayerMovement_API Script* CreateScript()
 {
@@ -60,22 +63,22 @@ PlayerMovement::PlayerMovement()
 	allSkills[SkillType::NONE] = new PlayerSkill();
 	allSkills[SkillType::STOMP] = new PlayerSkill(SkillType::STOMP);
 	allSkills[SkillType::RAIN] = new PlayerSkill(SkillType::RAIN);
-	allSkills[SkillType::CHAIN] = new PlayerSkill(SkillType::CHAIN);
+	allSkills[SkillType::CHAIN] = new PlayerSkill(SkillType::CHAIN, 0.0f, 0.0f);
 	allSkills[SkillType::DASH] = new PlayerSkill(SkillType::DASH);
 	allSkills[SkillType::SLICE] = new PlayerSkill(SkillType::SLICE);
 	allSkills[SkillType::BOMB_DROP] = new PlayerSkill(SkillType::BOMB_DROP);
 	allSkills[SkillType::CIRCULAR] = new PlayerSkill(SkillType::CIRCULAR);
 
 	// Default ability keyboard allocation
-	assignedSkills[HUB_BUTTON_RC] = SkillType::CHAIN;
-	assignedSkills[HUB_BUTTON_1] = SkillType::STOMP;
-	assignedSkills[HUB_BUTTON_2] = SkillType::RAIN;
-	assignedSkills[HUB_BUTTON_3] = SkillType::NONE;
-	assignedSkills[HUB_BUTTON_4] = SkillType::NONE;
-	assignedSkills[HUB_BUTTON_Q] = SkillType::DASH;
-	assignedSkills[HUB_BUTTON_W] = SkillType::SLICE;
-	assignedSkills[HUB_BUTTON_E] = SkillType::BOMB_DROP;
-	assignedSkills[HUB_BUTTON_R] = SkillType::CIRCULAR;
+	assignedSkills[HUD_BUTTON_RC] = SkillType::NONE;
+	assignedSkills[HUD_BUTTON_1] = SkillType::NONE;
+	assignedSkills[HUD_BUTTON_2] = SkillType::NONE;
+	assignedSkills[HUD_BUTTON_3] = SkillType::NONE;
+	assignedSkills[HUD_BUTTON_4] = SkillType::NONE;
+	assignedSkills[HUD_BUTTON_Q] = SkillType::NONE;
+	assignedSkills[HUD_BUTTON_W] = SkillType::NONE;
+	assignedSkills[HUD_BUTTON_E] = SkillType::NONE;
+	assignedSkills[HUD_BUTTON_R] = SkillType::NONE;
 }
 
 PlayerMovement::~PlayerMovement()
@@ -87,17 +90,17 @@ PlayerMovement::~PlayerMovement()
 void PlayerMovement::Expose(ImGuiContext* context)
 {
 	ImGui::Text("Cooldowns");
-	if (ImGui::Checkbox("Show Ability Cooldown", &showAbilityCooldowns)) ActivateHudCooldownMask(showAbilityCooldowns, HUB_BUTTON_RC, HUB_BUTTON_R);
+	if (ImGui::Checkbox("Show Ability Cooldown", &showAbilityCooldowns)) ActivateHudCooldownMask(showAbilityCooldowns, HUD_BUTTON_RC, HUD_BUTTON_R);
 	ImGui::DragFloat("General Ability Cooldown", &hubGeneralAbilityCooldown, 1.0F, 0.0F, 10.0F);
-	ImGui::DragFloat("RC Cooldown", &hubCooldown[HUB_BUTTON_RC], 1.0F, 0.0F, 10.0F);
-	ImGui::DragFloat("1 Cooldown", &hubCooldown[HUB_BUTTON_1], 1.0F, 0.0F, 10.0F);
-	ImGui::DragFloat("2 Cooldown", &hubCooldown[HUB_BUTTON_2], 1.0F, 0.0F, 10.0F);
-	ImGui::DragFloat("3 Cooldown", &hubCooldown[HUB_BUTTON_3], 1.0F, 0.0F, 10.0F);
-	ImGui::DragFloat("4 Cooldown", &hubCooldown[HUB_BUTTON_4], 1.0F, 0.0F, 10.0F);
-	ImGui::DragFloat("Q Cooldown", &hubCooldown[HUB_BUTTON_Q], 1.0F, 0.0F, 10.0F);
-	ImGui::DragFloat("W Cooldown", &hubCooldown[HUB_BUTTON_W], 1.0F, 0.0F, 10.0F);
-	ImGui::DragFloat("E Cooldown", &hubCooldown[HUB_BUTTON_E], 1.0F, 0.0F, 10.0F);
-	ImGui::DragFloat("R Cooldown", &hubCooldown[HUB_BUTTON_R], 1.0F, 0.0F, 10.0F);
+	ImGui::DragFloat("RC Cooldown", &hubCooldown[HUD_BUTTON_RC], 1.0F, 0.0F, 10.0F);
+	ImGui::DragFloat("1 Cooldown", &hubCooldown[HUD_BUTTON_1], 1.0F, 0.0F, 10.0F);
+	ImGui::DragFloat("2 Cooldown", &hubCooldown[HUD_BUTTON_2], 1.0F, 0.0F, 10.0F);
+	ImGui::DragFloat("3 Cooldown", &hubCooldown[HUD_BUTTON_3], 1.0F, 0.0F, 10.0F);
+	ImGui::DragFloat("4 Cooldown", &hubCooldown[HUD_BUTTON_4], 1.0F, 0.0F, 10.0F);
+	ImGui::DragFloat("Q Cooldown", &hubCooldown[HUD_BUTTON_Q], 1.0F, 0.0F, 10.0F);
+	ImGui::DragFloat("W Cooldown", &hubCooldown[HUD_BUTTON_W], 1.0F, 0.0F, 10.0F);
+	ImGui::DragFloat("E Cooldown", &hubCooldown[HUD_BUTTON_E], 1.0F, 0.0F, 10.0F);
+	ImGui::DragFloat("R Cooldown", &hubCooldown[HUD_BUTTON_R], 1.0F, 0.0F, 10.0F);
 
 	/*if (ImGui::Checkbox("Show Item Cooldown", &showItemCooldowns)) ActivateHudCooldownMask(showItemCooldowns, HUB_BUTTON_1, HUB_BUTTON_4);
 	ImGui::DragFloat("1 Cooldown", &hubCooldown[HUB_BUTTON_1], 1.0F, 0.0F, 10.0F);*/
@@ -109,10 +112,11 @@ void PlayerMovement::Expose(ImGuiContext* context)
 	ImGui::DragFloat("Walking speed", &walkingSpeed, 0.01f, 10.f, 500.0f);
 	ImGui::DragFloat("Out of NavMesh pos correction XZ", &OutOfMeshCorrectionXZ, 1.f, 0.f, 1000.f);
 	ImGui::DragFloat("Out of NavMesh pos correction Y", &OutOfMeshCorrectionY, 1.f, 0.f, 500.f);
-	ImGui::DragFloat("Max walking distance", &maxWalkingDistance, 100.f, 0.f, 100000.0f);
+	ImGui::DragFloat("Max walking distance", &maxWalkingDistance, 100.f, 0.f, 100000.f);
+	ImGui::DragFloat("Stop distance", &straightPathingDistance, 100.f, 500.f, 10000.f);
 
 	ImGui::DragFloat("Out of Combat time", &outCombatMaxTime, 1.f, 0.f, 10.f);
-	
+
 	float maxHP = stats.health;
 	float maxMP = stats.mana;
 	stats.Expose("Player Stats");
@@ -138,7 +142,7 @@ void PlayerMovement::Expose(ImGuiContext* context)
 
 	ImGui::Spacing();
 	ImGui::Text("Cooldowns");
-	if (ImGui::Checkbox("Show Ability Cooldown", &showAbilityCooldowns)) ActivateHudCooldownMask(showAbilityCooldowns, HUB_BUTTON_RC, HUB_BUTTON_R);
+	if (ImGui::Checkbox("Show Ability Cooldown", &showAbilityCooldowns)) ActivateHudCooldownMask(showAbilityCooldowns, HUD_BUTTON_RC, HUD_BUTTON_R);
 	ImGui::DragFloat("General Ability Cooldown", &hubGeneralAbilityCooldown, 1.0F, 0.0F, 10.0F);
 
 	ImGui::Spacing();
@@ -187,9 +191,11 @@ void PlayerMovement::Expose(ImGuiContext* context)
 
 void PlayerMovement::CreatePlayerStates()
 {
-	playerStates.reserve(5);
+	playerStates.reserve(NUMBER_OF_PLAYERSTATES);
 
 	playerStates.push_back(walk = new PlayerStateWalk(this, "Walk"));
+	playerStates.push_back(walkToHit = new PlayerStateWalkToHitEnemy(this, "Walk"));
+	playerStates.push_back(walkToPickItem = new PlayerStateWalkToPickItem(this, "Walk"));
 	if (dustParticles == nullptr)
 	{
 		LOG("Dust Particles not found");
@@ -254,6 +260,101 @@ void PlayerMovement::CreatePlayerSkills()
 	allSkills[SkillType::RAIN]->skill = (BasicSkill*)rain;
 }
 
+void PlayerMovement::CheckSkillsInput()
+{
+	// Return if a skill is in use (except for basic attack)
+	if (currentSkill != nullptr && currentSkill != chain) return;
+
+	// TODO: Avoid using previous skill check
+	BasicSkill* previous = currentSkill;
+
+	SkillType skillType = SkillType::NONE;
+
+	if (IsAttacking())
+	{
+		// If player is already using chain attack go to second animation
+		if (currentSkill == chain)
+		{
+			ChainAttackSkill* chain = (ChainAttackSkill*)currentSkill;
+			chain->NextChainAttack();
+		}
+		else
+		{
+			currentSkill = allSkills[SkillType::CHAIN]->skill;
+			skillType = SkillType::CHAIN;
+		}
+	}
+	else if (IsUsingOne())
+	{
+		currentSkill = allSkills[assignedSkills[HUD_BUTTON_1]]->skill;
+		skillType = allSkills[assignedSkills[HUD_BUTTON_1]]->type;
+	}
+	else if (IsUsingTwo())
+	{
+		currentSkill = allSkills[assignedSkills[HUD_BUTTON_2]]->skill;
+		skillType = allSkills[assignedSkills[HUD_BUTTON_2]]->type;
+	}
+	else if (IsUsingThree())
+	{
+		currentSkill = allSkills[assignedSkills[HUD_BUTTON_3]]->skill;
+		skillType = allSkills[assignedSkills[HUD_BUTTON_3]]->type;
+	}
+	else if (IsUsingFour())
+	{
+		currentSkill = allSkills[assignedSkills[HUD_BUTTON_4]]->skill;
+		skillType = allSkills[assignedSkills[HUD_BUTTON_4]]->type;
+	}
+	else if (IsUsingQ())
+	{
+		currentSkill = allSkills[assignedSkills[HUD_BUTTON_Q]]->skill;
+		skillType = allSkills[assignedSkills[HUD_BUTTON_Q]]->type;
+	}
+	else if (IsUsingW())
+	{
+		currentSkill = allSkills[assignedSkills[HUD_BUTTON_W]]->skill;
+		skillType = allSkills[assignedSkills[HUD_BUTTON_W]]->type;
+	}
+	else if (IsUsingE())
+	{
+		currentSkill = allSkills[assignedSkills[HUD_BUTTON_E]]->skill;
+		skillType = allSkills[assignedSkills[HUD_BUTTON_E]]->type;
+	}
+	else if (IsUsingR())
+	{
+		currentSkill = allSkills[assignedSkills[HUD_BUTTON_R]]->skill;
+		skillType = allSkills[assignedSkills[HUD_BUTTON_R]]->type;
+	}
+	else if (IsUsingRightClick())
+	{
+		currentSkill = allSkills[assignedSkills[HUD_BUTTON_RC]]->skill;
+		skillType = allSkills[assignedSkills[HUD_BUTTON_RC]]->type;
+	}
+
+	if (currentSkill != nullptr && previous != currentSkill)
+	{
+		if (previous != nullptr)
+		{
+			// TODO: Avoid saving skill (Reset sets currentSkill to nullptr)
+			BasicSkill* current = currentSkill;
+			previous->Reset();
+			currentSkill = current;
+		}
+
+		currentState = attack;
+
+		// Play skill animation
+		if (anim != nullptr)
+		{
+			anim->SendTriggerToStateMachine(currentSkill->animTrigger.c_str());
+		}
+
+		currentSkill->duration = anim->GetDurationFromClip();
+
+		UseSkill(skillType);
+		currentSkill->Start();
+	}
+}
+
 void PlayerMovement::Start()
 {
 	dustParticles = App->scene->FindGameObjectByName("WalkingDust");
@@ -287,7 +388,7 @@ void PlayerMovement::Start()
 			LOG("Damage UI feedback script couldn't be found \n");
 		}
 	}
-	
+
 	CreatePlayerStates();
 
 	currentState = idle;
@@ -335,8 +436,8 @@ void PlayerMovement::Start()
 	hubCooldownGO = App->scene->FindGameObjectByName("Q_Cooldown");
 	if (hubCooldownGO != nullptr)
 	{
-		hubCooldownMask[HUB_BUTTON_Q] = hubCooldownGO->GetComponent<ComponentImage>();
-		assert(hubCooldownMask[HUB_BUTTON_Q] != nullptr);
+		hubCooldownMask[HUD_BUTTON_Q] = hubCooldownGO->GetComponent<ComponentImage>();
+		assert(hubCooldownMask[HUD_BUTTON_Q] != nullptr);
 	}
 	else
 	{
@@ -347,8 +448,8 @@ void PlayerMovement::Start()
 	hubCooldownGO = App->scene->FindGameObjectByName("W_Cooldown");
 	if (hubCooldownGO != nullptr)
 	{
-		hubCooldownMask[HUB_BUTTON_W] = hubCooldownGO->GetComponent<ComponentImage>();
-		assert(hubCooldownMask[HUB_BUTTON_W] != nullptr);
+		hubCooldownMask[HUD_BUTTON_W] = hubCooldownGO->GetComponent<ComponentImage>();
+		assert(hubCooldownMask[HUD_BUTTON_W] != nullptr);
 	}
 	else
 	{
@@ -358,8 +459,8 @@ void PlayerMovement::Start()
 	hubCooldownGO = App->scene->FindGameObjectByName("E_Cooldown");
 	if (hubCooldownGO != nullptr)
 	{
-		hubCooldownMask[HUB_BUTTON_E] = hubCooldownGO->GetComponent<ComponentImage>();
-		assert(hubCooldownMask[HUB_BUTTON_E] != nullptr);
+		hubCooldownMask[HUD_BUTTON_E] = hubCooldownGO->GetComponent<ComponentImage>();
+		assert(hubCooldownMask[HUD_BUTTON_E] != nullptr);
 	}
 	else
 	{
@@ -369,8 +470,8 @@ void PlayerMovement::Start()
 	hubCooldownGO = App->scene->FindGameObjectByName("R_Cooldown");
 	if (hubCooldownGO != nullptr)
 	{
-		hubCooldownMask[HUB_BUTTON_R] = hubCooldownGO->GetComponent<ComponentImage>();
-		assert(hubCooldownMask[HUB_BUTTON_R] != nullptr);
+		hubCooldownMask[HUD_BUTTON_R] = hubCooldownGO->GetComponent<ComponentImage>();
+		assert(hubCooldownMask[HUD_BUTTON_R] != nullptr);
 	}
 	else
 	{
@@ -380,8 +481,8 @@ void PlayerMovement::Start()
 	hubCooldownGO = App->scene->FindGameObjectByName("One_Cooldown");
 	if (hubCooldownGO != nullptr)
 	{
-		hubCooldownMask[HUB_BUTTON_1] = hubCooldownGO->GetComponent<ComponentImage>();
-		assert(hubCooldownMask[HUB_BUTTON_1] != nullptr);
+		hubCooldownMask[HUD_BUTTON_1] = hubCooldownGO->GetComponent<ComponentImage>();
+		assert(hubCooldownMask[HUD_BUTTON_1] != nullptr);
 	}
 	else
 	{
@@ -391,8 +492,8 @@ void PlayerMovement::Start()
 	hubCooldownGO = App->scene->FindGameObjectByName("Two_Cooldown");
 	if (hubCooldownGO != nullptr)
 	{
-		hubCooldownMask[HUB_BUTTON_2] = hubCooldownGO->GetComponent<ComponentImage>();
-		assert(hubCooldownMask[HUB_BUTTON_2] != nullptr);
+		hubCooldownMask[HUD_BUTTON_2] = hubCooldownGO->GetComponent<ComponentImage>();
+		assert(hubCooldownMask[HUD_BUTTON_2] != nullptr);
 	}
 	else
 	{
@@ -402,8 +503,8 @@ void PlayerMovement::Start()
 	hubCooldownGO = App->scene->FindGameObjectByName("Three_Cooldown");
 	if (hubCooldownGO != nullptr)
 	{
-		hubCooldownMask[HUB_BUTTON_3] = hubCooldownGO->GetComponent<ComponentImage>();
-		assert(hubCooldownMask[HUB_BUTTON_3] != nullptr);
+		hubCooldownMask[HUD_BUTTON_3] = hubCooldownGO->GetComponent<ComponentImage>();
+		assert(hubCooldownMask[HUD_BUTTON_3] != nullptr);
 	}
 	else
 	{
@@ -413,8 +514,8 @@ void PlayerMovement::Start()
 	hubCooldownGO = App->scene->FindGameObjectByName("Four_Cooldown");
 	if (hubCooldownGO != nullptr)
 	{
-		hubCooldownMask[HUB_BUTTON_4] = hubCooldownGO->GetComponent<ComponentImage>();
-		assert(hubCooldownMask[HUB_BUTTON_4] != nullptr);
+		hubCooldownMask[HUD_BUTTON_4] = hubCooldownGO->GetComponent<ComponentImage>();
+		assert(hubCooldownMask[HUD_BUTTON_4] != nullptr);
 	}
 	else
 	{
@@ -515,7 +616,16 @@ void PlayerMovement::Start()
 	{
 		stats.strength = PlayerPrefs::GetFloat("strength");
 	}
-	
+	assignedSkills[HUD_BUTTON_RC] = (SkillType)PlayerPrefs::GetInt("RC", 20);
+	assignedSkills[HUD_BUTTON_1] = (SkillType)PlayerPrefs::GetInt("1", 20);
+	assignedSkills[HUD_BUTTON_2] = (SkillType)PlayerPrefs::GetInt("2", 20);
+	assignedSkills[HUD_BUTTON_3] = (SkillType)PlayerPrefs::GetInt("3", 20);
+	assignedSkills[HUD_BUTTON_4] = (SkillType)PlayerPrefs::GetInt("4", 20);
+	assignedSkills[HUD_BUTTON_Q] = (SkillType)PlayerPrefs::GetInt("Q", 20);
+	assignedSkills[HUD_BUTTON_W] = (SkillType)PlayerPrefs::GetInt("W", 20);
+	assignedSkills[HUD_BUTTON_E] = (SkillType)PlayerPrefs::GetInt("E", 20);
+	assignedSkills[HUD_BUTTON_R] = (SkillType)PlayerPrefs::GetInt("R", 20);
+
 	InitializeUIStatsObjects();
 	LOG("Started player movement script");
 }
@@ -535,7 +645,7 @@ void PlayerMovement::Update()
 	//Check input here and update the state!
 	if (currentState != death)
 	{
-		for (auto it = allSkills.begin(); it != allSkills.end(); ++it) it->second->Update(App->time->fullGameDeltaTime);
+		for (auto it = allSkills.begin(); it != allSkills.end(); ++it) it->second->Update(App->time->gameDeltaTime);
 
 		// Update cooldowns
 		if (hubCooldownMask != nullptr)
@@ -545,21 +655,28 @@ void PlayerMovement::Update()
 				if (hubCooldownMask[i] != nullptr && hubCooldownMask[i]->enabled)
 					hubCooldownMask[i]->SetMaskAmount((int)(100.0F * hubCooldownTimer[i] / hubCooldownMax[i]));
 			}*/
-			for (unsigned i = HUB_BUTTON_RC; i <= HUB_BUTTON_R; ++i)
+			for (unsigned i = HUD_BUTTON_RC; i <= HUD_BUTTON_R; ++i)
 			{
 				if (hubCooldownMask[i] != nullptr && hubCooldownMask[i]->enabled)
 					hubCooldownMask[i]->SetMaskAmount((int)(100.0F * allSkills[assignedSkills[i]]->CooldownRatio()));
 			}
 		}
 
+		// Skills
+		CheckSkillsInput();
+		if (currentSkill != nullptr)
+		{
+			currentSkill->Update();
+			itemClicked = nullptr;
+		}
+
+		// States
 		currentState->UpdateTimer();
-
 		currentState->CheckInput();
-
 		currentState->Update();
 
 		//if previous and current are different the functions Exit() and Enter() are called
-		CheckStates(previous, currentState);	
+		CheckStates(previous, currentState);
 	}
 
 	ManaManagement();
@@ -623,7 +740,7 @@ void PlayerMovement::Update()
 			}
 		}
 	}
-		
+
 
 	//Check for changes in the state to send triggers to animation SM
 }
@@ -632,7 +749,7 @@ PlayerMovement_API void PlayerMovement::Damage(float amount)
 {
 	if (!isPlayerDead)
 	{
-		if(gotHitAudio != nullptr)
+		if (gotHitAudio != nullptr)
 			gotHitAudio->Play();
 		outCombatTimer = outCombatMaxTime;
 		health -= amount;
@@ -642,7 +759,7 @@ PlayerMovement_API void PlayerMovement::Damage(float amount)
 		}
 
 		damageController->AddDamage(gameobject->transform, amount, 5);
-		if(damageUIFeedback != nullptr)
+		if (damageUIFeedback != nullptr)
 			damageUIFeedback->ActivateDamageUI();
 
 		int healthPercentage = (health / stats.health) * 100;
@@ -699,7 +816,8 @@ void PlayerMovement::OnAnimationEvent(std::string name)
 	}
 	if (name == "BombDropApex")
 	{
-		bombDropParticles->SetActive(true);		
+		if (bombDropParticles != nullptr)
+			bombDropParticles->SetActive(true);
 	}
 	if (name == "BombDropEnd")
 	{
@@ -735,15 +853,15 @@ void PlayerMovement::Serialize(JSON_value* json) const
 {
 	assert(json != nullptr);
 	json->AddFloat("General_Ability_Cooldown", hubGeneralAbilityCooldown);
-	json->AddFloat("RC_Cooldown", hubCooldown[HUB_BUTTON_RC]);
-	json->AddFloat("1_Cooldown", hubCooldown[HUB_BUTTON_1]);
-	json->AddFloat("2_Cooldown", hubCooldown[HUB_BUTTON_2]);
-	json->AddFloat("3_Cooldown", hubCooldown[HUB_BUTTON_3]);
-	json->AddFloat("4_Cooldown", hubCooldown[HUB_BUTTON_4]);
-	json->AddFloat("Q_Cooldown", hubCooldown[HUB_BUTTON_Q]);
-	json->AddFloat("W_Cooldown", hubCooldown[HUB_BUTTON_W]);
-	json->AddFloat("E_Cooldown", hubCooldown[HUB_BUTTON_E]);
-	json->AddFloat("R_Cooldown", hubCooldown[HUB_BUTTON_R]);
+	json->AddFloat("RC_Cooldown", hubCooldown[HUD_BUTTON_RC]);
+	json->AddFloat("1_Cooldown", hubCooldown[HUD_BUTTON_1]);
+	json->AddFloat("2_Cooldown", hubCooldown[HUD_BUTTON_2]);
+	json->AddFloat("3_Cooldown", hubCooldown[HUD_BUTTON_3]);
+	json->AddFloat("4_Cooldown", hubCooldown[HUD_BUTTON_4]);
+	json->AddFloat("Q_Cooldown", hubCooldown[HUD_BUTTON_Q]);
+	json->AddFloat("W_Cooldown", hubCooldown[HUD_BUTTON_W]);
+	json->AddFloat("E_Cooldown", hubCooldown[HUD_BUTTON_E]);
+	json->AddFloat("R_Cooldown", hubCooldown[HUD_BUTTON_R]);
 	json->AddUint("Show_Ability_Cooldown", showAbilityCooldowns ? 1 : 0);
 	json->AddUint("Show_Items_Cooldown", showItemCooldowns ? 1 : 0);
 	json->AddFloat("Out_of_combat_timer", outCombatMaxTime);
@@ -752,17 +870,18 @@ void PlayerMovement::Serialize(JSON_value* json) const
 	json->AddFloat("MeshCorrectionXZ", OutOfMeshCorrectionXZ);
 	json->AddFloat("MeshCorrectionY", OutOfMeshCorrectionY);
 	json->AddFloat("MaxWalkDistance", maxWalkingDistance);
+	json->AddFloat("StraightPathDistance", straightPathingDistance);
 
 	JSON_value* keyboard_abilities = json->CreateValue();
-	keyboard_abilities->AddInt("RC", (int)assignedSkills[HUB_BUTTON_RC]);
-	keyboard_abilities->AddInt("1", (int)assignedSkills[HUB_BUTTON_1]);
-	keyboard_abilities->AddInt("2", (int)assignedSkills[HUB_BUTTON_1]);
-	keyboard_abilities->AddInt("3", (int)assignedSkills[HUB_BUTTON_1]);
-	keyboard_abilities->AddInt("4", (int)assignedSkills[HUB_BUTTON_1]);
-	keyboard_abilities->AddInt("Q", (int)assignedSkills[HUB_BUTTON_Q]);
-	keyboard_abilities->AddInt("W", (int)assignedSkills[HUB_BUTTON_W]);
-	keyboard_abilities->AddInt("E", (int)assignedSkills[HUB_BUTTON_E]);
-	keyboard_abilities->AddInt("R", (int)assignedSkills[HUB_BUTTON_R]);
+	keyboard_abilities->AddInt("RC", (int)assignedSkills[HUD_BUTTON_RC]);
+	keyboard_abilities->AddInt("1", (int)assignedSkills[HUD_BUTTON_1]);
+	keyboard_abilities->AddInt("2", (int)assignedSkills[HUD_BUTTON_1]);
+	keyboard_abilities->AddInt("3", (int)assignedSkills[HUD_BUTTON_1]);
+	keyboard_abilities->AddInt("4", (int)assignedSkills[HUD_BUTTON_1]);
+	keyboard_abilities->AddInt("Q", (int)assignedSkills[HUD_BUTTON_Q]);
+	keyboard_abilities->AddInt("W", (int)assignedSkills[HUD_BUTTON_W]);
+	keyboard_abilities->AddInt("E", (int)assignedSkills[HUD_BUTTON_E]);
+	keyboard_abilities->AddInt("R", (int)assignedSkills[HUD_BUTTON_R]);
 	json->AddValue("keyboard_abilities", *keyboard_abilities);
 
 	JSON_value* abilities = json->CreateValue();
@@ -810,15 +929,15 @@ void PlayerMovement::DeSerialize(JSON_value* json)
 {
 	assert(json != nullptr);
 	hubGeneralAbilityCooldown = json->GetFloat("General_Ability_Cooldown", 0.5F);
-	hubCooldown[HUB_BUTTON_RC] = json->GetFloat("RC_Cooldown", 1.0F);
-	hubCooldown[HUB_BUTTON_1] = json->GetFloat("1_Cooldown", 1.0F);
-	hubCooldown[HUB_BUTTON_2] = json->GetFloat("2_Cooldown", 1.0F);
-	hubCooldown[HUB_BUTTON_3] = json->GetFloat("3_Cooldown", 1.0F);
-	hubCooldown[HUB_BUTTON_4] = json->GetFloat("4_Cooldown", 1.0F);
-	hubCooldown[HUB_BUTTON_Q] = json->GetFloat("Q_Cooldown", 1.0F);
-	hubCooldown[HUB_BUTTON_W] = json->GetFloat("W_Cooldown", 1.0F);
-	hubCooldown[HUB_BUTTON_E] = json->GetFloat("E_Cooldown", 1.0F);
-	hubCooldown[HUB_BUTTON_R] = json->GetFloat("R_Cooldown", 1.0F);
+	hubCooldown[HUD_BUTTON_RC] = json->GetFloat("RC_Cooldown", 1.0F);
+	hubCooldown[HUD_BUTTON_1] = json->GetFloat("1_Cooldown", 1.0F);
+	hubCooldown[HUD_BUTTON_2] = json->GetFloat("2_Cooldown", 1.0F);
+	hubCooldown[HUD_BUTTON_3] = json->GetFloat("3_Cooldown", 1.0F);
+	hubCooldown[HUD_BUTTON_4] = json->GetFloat("4_Cooldown", 1.0F);
+	hubCooldown[HUD_BUTTON_Q] = json->GetFloat("Q_Cooldown", 1.0F);
+	hubCooldown[HUD_BUTTON_W] = json->GetFloat("W_Cooldown", 1.0F);
+	hubCooldown[HUD_BUTTON_E] = json->GetFloat("E_Cooldown", 1.0F);
+	hubCooldown[HUD_BUTTON_R] = json->GetFloat("R_Cooldown", 1.0F);
 
 	showAbilityCooldowns = json->GetUint("Show_Ability_Cooldown", 1U) == 1;
 	showItemCooldowns = json->GetUint("Show_Items_Cooldown", 1U) == 1;
@@ -826,22 +945,23 @@ void PlayerMovement::DeSerialize(JSON_value* json)
 	walkingSpeed = json->GetFloat("walkingSpeed", 300.0f);
 	OutOfMeshCorrectionXZ = json->GetFloat("MeshCorrectionXZ", 500.f);
 	OutOfMeshCorrectionY = json->GetFloat("MeshCorrectionY", 300.f);
-	maxWalkingDistance = json->GetFloat("MaxWalkDistance", 10000.0f);
+	maxWalkingDistance = json->GetFloat("MaxWalkDistance", 50000.0f);
+	straightPathingDistance = json->GetFloat("StraightPathDistance", 2000.0f);
 
 	outCombatMaxTime = json->GetFloat("Out_of_combat_timer", 3.f);
 
 	JSON_value* keyboard_abilities = json->GetValue("keyboard_abilities");
 	if (keyboard_abilities)
 	{
-		assignedSkills[HUB_BUTTON_RC] = (SkillType)keyboard_abilities->GetInt("RC");
+		//assignedSkills[HUD_BUTTON_RC] = (SkillType)keyboard_abilities->GetInt("RC");
 		//assignedSkills[HUB_BUTTON_1] = (SkillType)keyboard_abilities->GetInt("1");
 		//assignedSkills[HUB_BUTTON_2] = (SkillType)keyboard_abilities->GetInt("2");
 		//assignedSkills[HUB_BUTTON_3] = (SkillType)keyboard_abilities->GetInt("3");
 		//assignedSkills[HUB_BUTTON_4] = (SkillType)keyboard_abilities->GetInt("4");
-		assignedSkills[HUB_BUTTON_Q] = (SkillType)keyboard_abilities->GetInt("Q");
-		assignedSkills[HUB_BUTTON_W] = (SkillType)keyboard_abilities->GetInt("W");
-		assignedSkills[HUB_BUTTON_E] = (SkillType)keyboard_abilities->GetInt("E");
-		assignedSkills[HUB_BUTTON_R] = (SkillType)keyboard_abilities->GetInt("R");
+		/*assignedSkills[HUD_BUTTON_Q] = (SkillType)keyboard_abilities->GetInt("Q");
+		assignedSkills[HUD_BUTTON_W] = (SkillType)keyboard_abilities->GetInt("W");
+		assignedSkills[HUD_BUTTON_E] = (SkillType)keyboard_abilities->GetInt("E");
+		assignedSkills[HUD_BUTTON_R] = (SkillType)keyboard_abilities->GetInt("R");*/
 	}
 
 	JSON_value* abilities = json->GetValue("abilities");
@@ -878,62 +998,114 @@ void PlayerMovement::OnTriggerExit(GameObject* go)
 
 }
 
-bool PlayerMovement::IsAtacking() const
+bool PlayerMovement::IsAttacking() const
 {
-	return !App->ui->UIHovered(true,false) && App->input->GetMouseButtonDown(1) == KEY_DOWN; //Left button
+	//if shift is being pressed while mouse 1
+	if (App->input->IsKeyPressed(SDL_SCANCODE_LSHIFT) == KEY_DOWN &&
+		(App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(true, false) ||
+			App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(true, false)))
+	{
+		return true;
+	}
+	//taking advantage of the lazy evaluation
+	//checking if there's any enemy targeted, really easy since its stored on a pointer
+	//then checking mouse buttons
+	float Dist = floatMax;
+	if (App->scene->enemyHovered.object != nullptr)
+	{
+		//stop if dead
+		if (App->scene->enemyHovered.health <= 0)
+		{
+			return false;
+		}
+		Dist = Distance(gameobject->transform->position, App->scene->enemyHovered.object->transform->position);
+	}
+	//and finally if enemy is on attack range
+	if (App->scene->enemyHovered.object != nullptr &&
+		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(false, true) ||
+			App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(false, true)) &&
+		Dist <= basicAttackRange)
+	{
+		return true;
+	}
+	return false;
+}
+
+bool PlayerMovement::IsMovingToAttack() const
+{
+
+	if (App->scene->enemyHovered.object != nullptr && App->scene->enemyHovered.health > 0 &&
+		!App->input->IsKeyPressed(SDL_SCANCODE_LSHIFT) == KEY_DOWN &&
+		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(false, true) ||
+			App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(false, true)) &&
+		Distance(gameobject->transform->position, App->scene->enemyHovered.object->transform->position) > basicAttackRange)
+	{
+		return true;
+	}
+	return false;
 }
 
 bool PlayerMovement::IsMoving() const
 {
+	return (IsPressingMouse1() && !IsAttacking() && !IsMovingToAttack() && (!IsMovingToItem() || (IsMovingToItem() && stoppedGoingToItem)));
+}
+
+bool PlayerMovement::IsPressingMouse1() const
+{
 	math::float3 temp;
-	return ( (App->input->GetMouseButtonDown(3) == KEY_DOWN && !App->ui->UIHovered(false, true)) ||
-			 (currentState->playerWalking) || 
-			 (App->input->GetMouseButtonDown(3) == KEY_REPEAT && !App->ui->UIHovered(false, true) && !App->scene->Intersects("PlayerMesh", false, temp))); //right button, the player is still walking or movement button is pressed and can get close to mouse pos
+	return ((App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(false, true)) ||
+		(currentState->playerWalking && !currentState->playerWalkingToHit) ||
+		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(false, true) && !App->scene->Intersects("PlayerMesh", false, temp))); //right button, the player is still walking or movement button is pressed and can get close to mouse pos
+}
+
+bool PlayerMovement::IsUsingRightClick() const
+{
+	return !App->ui->UIHovered(true, false) && allSkills.find(assignedSkills[HUD_BUTTON_RC])->second->IsUsable(mana) && App->input->GetMouseButtonDown(3) == KEY_DOWN; //Left button
 }
 
 bool PlayerMovement::IsUsingOne() const
 {
-	return allSkills.find(assignedSkills[HUB_BUTTON_1])->second->IsUsable(mana) && App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN;
+	return allSkills.find(assignedSkills[HUD_BUTTON_1])->second->IsUsable(mana) && App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN;
 }
 
 bool PlayerMovement::IsUsingTwo() const
 {
-	return allSkills.find(assignedSkills[HUB_BUTTON_2])->second->IsUsable(mana) && App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN;
+	return allSkills.find(assignedSkills[HUD_BUTTON_2])->second->IsUsable(mana) && App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN;
 }
 
 bool PlayerMovement::IsUsingThree() const
 {
-	return allSkills.find(assignedSkills[HUB_BUTTON_3])->second->IsUsable(mana) && App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN;
+	return allSkills.find(assignedSkills[HUD_BUTTON_3])->second->IsUsable(mana) && App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN;
 }
 
 bool PlayerMovement::IsUsingFour() const
 {
-	return allSkills.find(assignedSkills[HUB_BUTTON_4])->second->IsUsable(mana) && App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN;
+	return allSkills.find(assignedSkills[HUD_BUTTON_4])->second->IsUsable(mana) && App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN;
 }
 
 bool PlayerMovement::IsUsingQ() const
 {
-	return allSkills.find(assignedSkills[HUB_BUTTON_Q])->second->IsUsable(mana) && App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN;
+	return allSkills.find(assignedSkills[HUD_BUTTON_Q])->second->IsUsable(mana) && App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN;
 }
 
 bool PlayerMovement::IsUsingW() const
 {
-	return allSkills.find(assignedSkills[HUB_BUTTON_W])->second->IsUsable(mana) && App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN;
+	return allSkills.find(assignedSkills[HUD_BUTTON_W])->second->IsUsable(mana) && App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN;
 }
 
 bool PlayerMovement::IsUsingE() const
 {
-	return allSkills.find(assignedSkills[HUB_BUTTON_E])->second->IsUsable(mana) && App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN;
+	return allSkills.find(assignedSkills[HUD_BUTTON_E])->second->IsUsable(mana) && App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN;
 }
 
 bool PlayerMovement::IsUsingR() const
 {
-	return allSkills.find(assignedSkills[HUB_BUTTON_R])->second->IsUsable(mana) && App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN;
+	return allSkills.find(assignedSkills[HUD_BUTTON_R])->second->IsUsable(mana) && App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN;
 }
 
 bool PlayerMovement::IsUsingSkill() const
 {
-	return (IsUsingOne() || IsUsingTwo() || IsUsingThree() || IsUsingFour()|| IsUsingQ() || IsUsingW() || IsUsingE() || IsUsingR());
+	return (IsUsingOne() || IsUsingTwo() || IsUsingThree() || IsUsingFour() || IsUsingQ() || IsUsingW() || IsUsingE() || IsUsingR() || IsUsingRightClick());
 }
 
 void PlayerMovement::UseSkill(SkillType skill)
@@ -943,26 +1115,32 @@ void PlayerMovement::UseSkill(SkillType skill)
 	{
 		if (it->second->type == skill)
 		{
-			mana -= it->second->Use(hubGeneralAbilityCooldown);
+			mana -= it->second->Use(it->second->cooldown);
+			break;
 		}
-		else
+		/*else
 		{
 			it->second->SetCooldown(hubGeneralAbilityCooldown);
-		}
+		}*/
 	}
 
-	for (unsigned i = 0; i < 4; ++i)
+	for (unsigned i = 0u; i < SKILLS_SLOTS; ++i)
 	{
 		hubCooldownTimer[i] = allSkills[assignedSkills[i]]->cooldown;
 		hubCooldownMax[i] = allSkills[assignedSkills[i]]->cooldown;
 	}
 }
 
+void PlayerMovement::AssignSkill(SkillType skill, int position)
+{
+	assignedSkills[position] = skill;
+}
+
 void PlayerMovement::ResetCooldown(unsigned int hubButtonID)
 {
-	if (hubButtonID <= HUB_BUTTON_R)
+	if (hubButtonID <= HUD_BUTTON_R)
 	{
-		for (unsigned i = HUB_BUTTON_RC; i <= HUB_BUTTON_R; ++i)
+		for (unsigned i = HUD_BUTTON_RC; i <= HUD_BUTTON_R; ++i)
 		{
 			hubCooldownTimer[i] = hubGeneralAbilityCooldown;
 			hubCooldownMax[i] = hubGeneralAbilityCooldown;
@@ -1049,7 +1227,7 @@ void PlayerStats::Expose(const char* sectionTitle)
 
 	int uiDexterity = (int)dexterity;
 	if (ImGui::InputInt("Dexterity", &uiDexterity)) dexterity = uiDexterity < 0 ? 0 : uiDexterity;
-	
+
 	ImGui::DragFloat("HP regen", &hpRegen, 1.0F, 0.0F, 10.0F);
 	ImGui::DragFloat("Mana regen", &manaRegen, 1.0F, 0.0F, 10.0F);
 }
@@ -1152,6 +1330,50 @@ void PlayerMovement::InitializeUIStatsObjects()
 	}
 }
 
+void PlayerMovement::ToggleMaxStats()
+{
+	if (hasMaxStats)
+	{
+		stats = previousStats;
+	}
+	else
+	{
+		PlayerStats godStats = { 400.f, 999.f, 999.f, 999.f, 999.9f, 999.9f };
+		previousStats = stats;
+		stats = godStats;
+	}
+	UpdateUIStats();
+	hasMaxStats = !hasMaxStats;
+}
+
+void PlayerMovement::ToggleInfiniteHealth()
+{
+	if (hasInfiniteHealth)
+	{
+		health = 100.0f;
+	}
+	else
+	{
+		health = 100000.0f;
+	}
+	hasInfiniteHealth = !hasInfiniteHealth;
+	lifeUIComponent->SetMaskAmount(100);
+}
+
+void PlayerMovement::ToggleInfiniteMana()
+{
+	if (hasInfiniteMana)
+	{
+		mana = 100.0f;
+	}
+	else
+	{
+		mana = 100000.0f;
+	}
+	hasInfiniteMana = !hasInfiniteMana;
+	manaUIComponent->SetMaskAmount(100);
+}
+
 void PlayerMovement::SavePlayerStats()
 {
 	PlayerPrefs::SetFloat("dexterity", stats.dexterity);
@@ -1160,4 +1382,13 @@ void PlayerMovement::SavePlayerStats()
 	PlayerPrefs::SetFloat("mana", stats.mana);
 	PlayerPrefs::SetFloat("manaRegen", stats.manaRegen);
 	PlayerPrefs::SetFloat("strength", stats.strength);
+	PlayerPrefs::SetInt("RC", (int)assignedSkills[HUD_BUTTON_RC]);
+	PlayerPrefs::SetInt("1", (int)assignedSkills[HUD_BUTTON_1]);
+	PlayerPrefs::SetInt("2", (int)assignedSkills[HUD_BUTTON_1]);
+	PlayerPrefs::SetInt("3", (int)assignedSkills[HUD_BUTTON_1]);
+	PlayerPrefs::SetInt("4", (int)assignedSkills[HUD_BUTTON_1]);
+	PlayerPrefs::SetInt("Q", (int)assignedSkills[HUD_BUTTON_Q]);
+	PlayerPrefs::SetInt("W", (int)assignedSkills[HUD_BUTTON_W]);
+	PlayerPrefs::SetInt("E", (int)assignedSkills[HUD_BUTTON_E]);
+	PlayerPrefs::SetInt("R", (int)assignedSkills[HUD_BUTTON_R]);
 }

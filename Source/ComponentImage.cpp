@@ -45,7 +45,16 @@ ComponentImage::ComponentImage(const ComponentImage &copy) : Component(copy)
 	color = copy.color;
 	flipHorizontal = copy.flipHorizontal;
 	flipVertical = copy.flipVertical;
-	if (texture) texture = (ResourceTexture*)App->resManager->Get(copy.texture->GetUID());
+	if (copy.texture != nullptr)
+	{
+		texture = (ResourceTexture*)App->resManager->Get(copy.texture->GetUID());
+	}
+	isMasked = copy.isMasked;
+	maskAmount = copy.maskAmount;
+	isMaskHorizontal = copy.isMaskHorizontal;
+	hoverDetectionMouse1 = copy.hoverDetectionMouse1;
+	hoverDetectionMouse3 = copy.hoverDetectionMouse3;
+	uiOrder = copy.uiOrder;
 }
 
 ComponentImage::~ComponentImage()
