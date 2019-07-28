@@ -979,6 +979,15 @@ void GameObject::UpdateToPrefab(GameObject* prefabGo)
 	{
 		App->scene->AddToSpacePartition(this);
 	}
+
+	for (Component* c : GetComponentsInChildren(ComponentType::Renderer))
+	{
+		ComponentRenderer* cr = (ComponentRenderer*)c;
+		if (cr->mesh != nullptr)
+		{
+			cr->LinkBones();
+		}
+	}
 }
 
 AABB GameObject::GetBoundingBox() const
@@ -1176,13 +1185,6 @@ void GameObject::Load(JSON_value *value, bool prefabTemplate)
 		movedFlag = true;
 	}
 
-	if (isPrefab && isPrefabSync)
-	{
-		if(!prefabTemplate && App->scene->PrefabWasUpdated(prefabUID))
-		{
-			UpdateToPrefab(prefab->RetrievePrefab());
-		}
-	}
 }
 
 bool GameObject::IsParented(const GameObject & gameobject) const
