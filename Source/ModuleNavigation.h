@@ -102,7 +102,7 @@ public:
 										  float ignoreDist = floatMax) const;
 	ENGINE_API bool FindIntersectionPoint(math::float3 start, math::float3& intersectionPoint) const;
 
-	ENGINE_API bool IsCursorPointingToNavigableZone(float xCorrection = 0.f, float zCorrection = 0.f) const;
+	ENGINE_API bool IsCursorPointingToNavigableZone(float xPickingCorrection = 0.0f, float yPickingCorrection = 0.0f, float zPickingCorrection = 0.0f) const;
 
 	ENGINE_API void setPlayerBB(math::AABB bbox);
 
@@ -259,8 +259,6 @@ private:
 	bool drawNavMesh = true;
 
 	bool logDebugPathing = false;
-
-	const float yPickingCorrection = 10000.f;
 };
 
 #endif __MODULENAVIGATION_H__

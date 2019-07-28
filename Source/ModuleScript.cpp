@@ -48,6 +48,7 @@ bool ModuleScript::Init(JSON* config)
 	if (scriptJson != nullptr)
 	{
 		hotReloading = scriptJson->GetInt("hotReloading", hotReloading);
+		gameStandarCursor = scriptJson->GetString("gameStandarCursor", "Glow.cur");
 	}
 
 #ifndef GAME_BUILD
@@ -67,6 +68,7 @@ void ModuleScript::SaveConfig(JSON* config)
 	JSON_value* scriptJson = config->CreateValue();
 
 	scriptJson->AddInt("hotReloading", hotReloading);
+	scriptJson->AddString("gameStandarCursor", gameStandarCursor.c_str());
 	config->AddValue("scripts", *scriptJson);
 }
 
@@ -118,6 +120,7 @@ update_status ModuleScript::Update(float dt)
 				{
 					script->Start();
 					script->hasBeenStarted = true;
+					script->SetGameStandarCursor(gameStandarCursor);
 				}
 			}
 		}
@@ -150,6 +153,14 @@ void ModuleScript::ResetScriptFlags()
 void ModuleScript::DrawGUI()
 {
 	ImGui::Checkbox("Hot Reloading", &hotReloading);
+
+	ImGui::Separator();
+	ImGui::Text("Game cursor:");
+	char* gameStandarCursorAux = new char[64];
+	strcpy_s(gameStandarCursorAux, strlen(gameStandarCursor.c_str()) + 1, gameStandarCursor.c_str());
+	ImGui::InputText("gameStandarCursor", gameStandarCursorAux, 64);
+	gameStandarCursor = gameStandarCursorAux;
+	delete[] gameStandarCursorAux;
 }
 
 void ModuleScript::LoadFromMemory(int resource) //TODO: Load from memory in shipping build
@@ -518,13 +529,13 @@ void ModuleScript::ManageStartAndStopCursorIcon()
 {
 	if (App->time->gameState == GameState::RUN && changeStartCursorIcon)
 	{
-		MouseController::ChangeCursorIcon("C:\\Windows\\Cursors\\aero_link.cur");
+		MouseController::ChangeCursorIcon(gameStandarCursor);
 		changeStartCursorIcon = false;
 		changeStopCursorIcon = true;
 	}
 	else if (App->time->gameState == GameState::STOP && changeStopCursorIcon)
 	{
-		MouseController::ChangeCursorIcon("C:\\Windows\\Cursors\\aero_arrow.cur");
+		MouseController::ChangeWindowsCursorIcon();
 		changeStartCursorIcon = true;
 		changeStopCursorIcon = false;
 	}

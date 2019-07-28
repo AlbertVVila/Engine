@@ -11,7 +11,8 @@ public:
 	MouseController();
 	~MouseController();
 	
-	ENGINE_API void static ChangeCursorIcon(std::string);
+	ENGINE_API void static ChangeCursorIcon(std::string cursor, bool windowsCursor = false);
+	ENGINE_API void static ChangeWindowsCursorIcon();
 };
 
 #endif //  __MOUSECONTROLLER_H_

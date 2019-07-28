@@ -29,6 +29,14 @@ ItemPicker_API Script* CreateScript()
 
 void ItemPicker::Expose(ImGuiContext* context)
 {
+	ImGui::Separator();
+	ImGui::Text("Item cursor:");
+	char* itemCursorAux = new char[64];
+	strcpy_s(itemCursorAux, strlen(itemCursor.c_str()) + 1, itemCursor.c_str());
+	ImGui::InputText("itemCursor", itemCursorAux, 64);
+	itemCursor = itemCursorAux;
+	delete[] itemCursorAux;
+	ImGui::Separator();
 
 	ImGui::SetCurrentContext(context);
 	const char * types[] = { "NONE","QUICK","KEY","MATERIAL","WEAPON","HELMET","CHEST","PANTS","BOOTS","AMULET","RING" };
@@ -245,7 +253,7 @@ void ItemPicker::Update()
 
 		if (changeItemCursorIcon)
 		{
-			MouseController::ChangeCursorIcon("C:\\Windows\\Cursors\\cross_i.cur");
+			MouseController::ChangeCursorIcon(itemCursor);
 			changeItemCursorIcon = false;
 			changeStandarCursorIcon = true;
 		}
@@ -259,7 +267,7 @@ void ItemPicker::Update()
 
 			if (changeStandarCursorIcon)
 			{
-				MouseController::ChangeCursorIcon("C:\\Windows\\Cursors\\aero_link.cur");
+				MouseController::ChangeCursorIcon(gameStandarCursor);
 				changeStandarCursorIcon = false;
 				changeItemCursorIcon = true;
 			}
@@ -281,6 +289,7 @@ void ItemPicker::Serialize(JSON_value* json) const
 	json->AddInt("dexterity", item.stats.dexterity);
 	json->AddFloat("hpRegen", item.stats.hpRegen);
 	json->AddFloat("manaRegen", item.stats.manaRegen);
+	json->AddString("itemCursor", itemCursor.c_str());
 }
 
 void ItemPicker::DeSerialize(JSON_value* json)
@@ -297,6 +306,7 @@ void ItemPicker::DeSerialize(JSON_value* json)
 	item.stats.dexterity = json->GetInt("dexterity");
 	item.stats.hpRegen = json->GetFloat("hpRegen");
 	item.stats.manaRegen = json->GetFloat("manaRegen");
+	itemCursor = json->GetString("itemCursor", "Pick.cur");
 }
 
 void ItemPicker::SetItem(ItemType type, std::string name, std::string sprite)

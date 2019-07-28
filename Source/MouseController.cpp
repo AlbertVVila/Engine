@@ -12,9 +12,15 @@ MouseController::~MouseController()
 {
 }
 
-void MouseController::ChangeCursorIcon(std::string cursorPath)
+void MouseController::ChangeWindowsCursorIcon()
 {
-	HCURSOR handCursor = LoadCursorFromFile(cursorPath.c_str());
+	ChangeCursorIcon("aero_arrow.cur", true);
+}
+
+void MouseController::ChangeCursorIcon(std::string cursor, bool windowsCursor)
+{
+	std::string cursorPath = !windowsCursor ? ".\\Resources\\Cursors\\" : "C:\\Windows\\Cursors\\";
+	HCURSOR handCursor = LoadCursorFromFile(cursorPath.append(cursor).c_str());
 	BOOL ret = SetSystemCursor(handCursor, OCR_NORMAL);
 	assert(ret);
 	DestroyCursor(handCursor);
