@@ -201,9 +201,9 @@ public:
 	LoopState* stateAfterLoad = nullptr;
 	bool actionAfterLoad = false;
 
-	float xPickingCorrection = 50.0f;
-	float yPickingCorrection = 10000.f;
-	float zPickingCorrection = 50.0f;
+	float xPickingCorrection = 0.0f;
+	float yPickingCorrection = 0.0f;
+	float zPickingCorrection = 0.0f;
 	bool changeNavigationCursorIcon = true;
 	bool changeStandarCursorIcon = true;
 };
