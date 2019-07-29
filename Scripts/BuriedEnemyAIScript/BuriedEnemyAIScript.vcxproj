@@ -37,6 +37,7 @@
     <ClInclude Include="..\TemplateScript2\EnemyStateRelocate.h" />
     <ClInclude Include="..\TemplateScript2\EnemyStateReturnToStart.h" />
     <ClInclude Include="..\TemplateScript2\EnemyStateShowUp.h" />
+    <ClInclude Include="EnemyStateDeath.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\TemplateScript2\BuriedEnemyAIScript.cpp" />
@@ -49,6 +50,7 @@
     <ClCompile Include="..\TemplateScript2\EnemyStateRelocate.cpp" />
     <ClCompile Include="..\TemplateScript2\EnemyStateReturnToStart.cpp" />
     <ClCompile Include="..\TemplateScript2\EnemyStateShowUp.cpp" />
+    <ClCompile Include="EnemyStateDeath.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EnemyControllerScript\EnemyControllerScript.vcxproj">
