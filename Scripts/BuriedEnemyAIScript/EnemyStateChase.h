@@ -6,8 +6,9 @@ class EnemyStateChase :
 	public EnemyState
 {
 public:
-	EnemyStateChase();
+	EnemyStateChase(BuriedEnemyAIScript* AIScript);
 	~EnemyStateChase();
 };
 
 #endif // __ENEMYSTATECHASE_H_
+

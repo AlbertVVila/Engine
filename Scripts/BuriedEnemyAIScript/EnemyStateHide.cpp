@@ -2,8 +2,9 @@
 
 
 
-EnemyStateHide::EnemyStateHide()
+EnemyStateHide::EnemyStateHide(BuriedEnemyAIScript* AIScript)
 {
+	enemy = AIScript;
 }
 
 

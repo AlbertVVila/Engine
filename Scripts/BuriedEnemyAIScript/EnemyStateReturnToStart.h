@@ -6,7 +6,7 @@ class EnemyStateReturnToStart :
 	public EnemyState
 {
 public:
-	EnemyStateReturnToStart();
+	EnemyStateReturnToStart(BuriedEnemyAIScript* AIScript);
 	~EnemyStateReturnToStart();
 };
 

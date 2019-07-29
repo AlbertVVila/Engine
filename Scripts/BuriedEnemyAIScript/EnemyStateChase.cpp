@@ -2,8 +2,9 @@
 
 
 
-EnemyStateChase::EnemyStateChase()
+EnemyStateChase::EnemyStateChase(BuriedEnemyAIScript* AIScript)
 {
+	enemy = AIScript;
 }
 
 

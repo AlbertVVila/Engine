@@ -6,7 +6,7 @@ class EnemyStateShowUp :
 	public EnemyState
 {
 public:
-	EnemyStateShowUp();
+	EnemyStateShowUp(BuriedEnemyAIScript* AIScript);
 	~EnemyStateShowUp();
 };
 

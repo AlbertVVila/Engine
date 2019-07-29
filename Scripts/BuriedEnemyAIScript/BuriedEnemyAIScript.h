@@ -12,9 +12,53 @@
 #include <vector>
 
 class EnemyControllerScript;
+class JSON_value;
+class EnemyState;
+class EnemyStatePatrol;
+class EnemyStateHide;
+class EnemyStateHidden;
+class EnemyStateRelocate;
+class EnemyStateChase;
+class EnemyStateShowUp;
+class EnemyStateReturnToStart;
+class EnemyStateAttack;
+class EnemyStateCooldown;
+class EnemyStateDeath;
+class EnemyStateFlee;
 
 class BuriedEnemyAIScript_API BuriedEnemyAIScript : public Script
 {
+public:
+	void Awake() override;
+	void Start() override;
+	void Update() override;
+
+	void Expose(ImGuiContext* context) override;
+
+	void Serialize(JSON_value* json) const override;
+	void DeSerialize(JSON_value* json) override;
+
+	inline virtual BuriedEnemyAIScript* Clone() const
+	{
+		return new BuriedEnemyAIScript(*this);
+	}
+
+public:
+
+	EnemyStateAttack* attack = nullptr;
+	EnemyStateChase* chase = nullptr;
+	EnemyStateCooldown* cooldown = nullptr;
+	EnemyStateHide* hide = nullptr;
+	EnemyStateHidden* hidden = nullptr;
+	EnemyStateRelocate* relocate = nullptr;
+	EnemyStateShowUp* showUp = nullptr;
+	EnemyStateDeath* death = nullptr;
+
+private:
+
+	std::vector<EnemyState*> enemyStates;
+
+public:
 
 	EnemyControllerScript* enemyController = nullptr;
 };

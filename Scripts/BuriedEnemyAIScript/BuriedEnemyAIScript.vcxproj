@@ -26,43 +26,9 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\TemplateScript2\BuriedEnemyAIScript.h" />
-    <ClInclude Include="..\TemplateScript2\EnemyState.h" />
-    <ClInclude Include="..\TemplateScript2\EnemyStateAttack.h" />
-    <ClInclude Include="..\TemplateScript2\EnemyStateChase.h" />
-    <ClInclude Include="..\TemplateScript2\EnemyStateCooldown.h" />
-    <ClInclude Include="..\TemplateScript2\EnemyStateHidden.h" />
-    <ClInclude Include="..\TemplateScript2\EnemyStateHide.h" />
-    <ClInclude Include="..\TemplateScript2\EnemyStateRelocate.h" />
-    <ClInclude Include="..\TemplateScript2\EnemyStateReturnToStart.h" />
-    <ClInclude Include="..\TemplateScript2\EnemyStateShowUp.h" />
-    <ClInclude Include="EnemyStateDeath.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\TemplateScript2\BuriedEnemyAIScript.cpp" />
-    <ClCompile Include="..\TemplateScript2\EnemyState.cpp" />
-    <ClCompile Include="..\TemplateScript2\EnemyStateAttack.cpp" />
-    <ClCompile Include="..\TemplateScript2\EnemyStateChase.cpp" />
-    <ClCompile Include="..\TemplateScript2\EnemyStateCooldown.cpp" />
-    <ClCompile Include="..\TemplateScript2\EnemyStateHidden.cpp" />
-    <ClCompile Include="..\TemplateScript2\EnemyStateHide.cpp" />
-    <ClCompile Include="..\TemplateScript2\EnemyStateRelocate.cpp" />
-    <ClCompile Include="..\TemplateScript2\EnemyStateReturnToStart.cpp" />
-    <ClCompile Include="..\TemplateScript2\EnemyStateShowUp.cpp" />
-    <ClCompile Include="EnemyStateDeath.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\EnemyControllerScript\EnemyControllerScript.vcxproj">
-      <Project>{acc36cc8-ada1-4cfa-ae5a-c51cf877b885}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\PlayerMovement\PlayerMovement.vcxproj">
-      <Project>{da319d4a-70a8-42c8-a54f-db7ead02ca0d}</Project>
-    </ProjectReference>
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{ea0444da-655d-4757-b81d-65ef51e0b793}</ProjectGuid>
+    <ProjectGuid>{42d20fdf-e4ff-46bd-8101-6798f47189c6}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>BuriedEnemyAIScript</RootNamespace>
   </PropertyGroup>
@@ -166,7 +132,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;BuriedEnemyAIScript_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\BaseScript;$(SolutionDir)\Scripts\EnemyControllerScript;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\BaseScript;$(SolutionDir)\Scripts\EnemyControllerScript;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\MathGeoLib;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -186,7 +152,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;BuriedEnemyAIScript_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\BaseScript;$(SolutionDir)\Scripts\EnemyControllerScript;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\BaseScript;$(SolutionDir)\Scripts\EnemyControllerScript;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\MathGeoLib;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -222,7 +188,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;BuriedEnemyAIScript_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\BaseScript;$(SolutionDir)\Scripts\EnemyControllerScript;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\BaseScript;$(SolutionDir)\Scripts\EnemyControllerScript;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\MathGeoLib;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -246,7 +212,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;BuriedEnemyAIScript_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\BaseScript;$(SolutionDir)\Scripts\EnemyControllerScript;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\BaseScript;$(SolutionDir)\Scripts\EnemyControllerScript;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\MathGeoLib;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -278,6 +244,40 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="BuriedEnemyAIScript.cpp" />
+    <ClCompile Include="EnemyState.cpp" />
+    <ClCompile Include="EnemyStateAttack.cpp" />
+    <ClCompile Include="EnemyStateChase.cpp" />
+    <ClCompile Include="EnemyStateCooldown.cpp" />
+    <ClCompile Include="EnemyStateDeath.cpp" />
+    <ClCompile Include="EnemyStateHidden.cpp" />
+    <ClCompile Include="EnemyStateHide.cpp" />
+    <ClCompile Include="EnemyStateRelocate.cpp" />
+    <ClCompile Include="EnemyStateReturnToStart.cpp" />
+    <ClCompile Include="EnemyStateShowUp.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BuriedEnemyAIScript.h" />
+    <ClInclude Include="EnemyState.h" />
+    <ClInclude Include="EnemyStateAttack.h" />
+    <ClInclude Include="EnemyStateChase.h" />
+    <ClInclude Include="EnemyStateCooldown.h" />
+    <ClInclude Include="EnemyStateDeath.h" />
+    <ClInclude Include="EnemyStateHidden.h" />
+    <ClInclude Include="EnemyStateHide.h" />
+    <ClInclude Include="EnemyStateRelocate.h" />
+    <ClInclude Include="EnemyStateReturnToStart.h" />
+    <ClInclude Include="EnemyStateShowUp.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EnemyControllerScript\EnemyControllerScript.vcxproj">
+      <Project>{acc36cc8-ada1-4cfa-ae5a-c51cf877b885}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayerMovement\PlayerMovement.vcxproj">
+      <Project>{da319d4a-70a8-42c8-a54f-db7ead02ca0d}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

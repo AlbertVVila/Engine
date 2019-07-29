@@ -2,8 +2,9 @@
 
 
 
-EnemyStateRelocate::EnemyStateRelocate()
+EnemyStateRelocate::EnemyStateRelocate(BuriedEnemyAIScript* AIScript)
 {
+	enemy = AIScript;
 }
 
 

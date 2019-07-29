@@ -2,8 +2,9 @@
 
 
 
-EnemyStateAttack::EnemyStateAttack()
+EnemyStateAttack::EnemyStateAttack(BuriedEnemyAIScript* AIScript)
 {
+	enemy = AIScript;
 }
 
 

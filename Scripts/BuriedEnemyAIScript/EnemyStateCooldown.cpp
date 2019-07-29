@@ -2,8 +2,9 @@
 
 
 
-EnemyStateCooldown::EnemyStateCooldown()
+EnemyStateCooldown::EnemyStateCooldown(BuriedEnemyAIScript* AIScript)
 {
+	enemy = AIScript;
 }
 
 

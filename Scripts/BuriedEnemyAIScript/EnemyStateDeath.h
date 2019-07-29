@@ -2,7 +2,6 @@
 #define __ENEMYSTATEDEATH_H_
 
 #include "EnemyState.h"
-
 class EnemyStateDeath :
 	public EnemyState
 {

@@ -6,7 +6,7 @@ class EnemyStateRelocate :
 	public EnemyState
 {
 public:
-	EnemyStateRelocate();
+	EnemyStateRelocate(BuriedEnemyAIScript* AIScript);
 	~EnemyStateRelocate();
 };
 

@@ -2,8 +2,9 @@
 
 
 
-EnemyStateReturnToStart::EnemyStateReturnToStart()
+EnemyStateReturnToStart::EnemyStateReturnToStart(BuriedEnemyAIScript* AIScript)
 {
+	enemy = AIScript;
 }
 
 

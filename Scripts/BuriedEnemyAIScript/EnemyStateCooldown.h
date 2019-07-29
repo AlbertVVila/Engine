@@ -6,7 +6,7 @@ class EnemyStateCooldown :
 	public EnemyState
 {
 public:
-	EnemyStateCooldown();
+	EnemyStateCooldown(BuriedEnemyAIScript* AIScript);
 	~EnemyStateCooldown();
 };
 

@@ -2,11 +2,12 @@
 #define __ENEMYSTATEATTACK_H_
 
 #include "EnemyState.h"
+
 class EnemyStateAttack :
 	public EnemyState
 {
 public:
-	EnemyStateAttack();
+	EnemyStateAttack(BuriedEnemyAIScript* AIScript);
 	~EnemyStateAttack();
 };
 
