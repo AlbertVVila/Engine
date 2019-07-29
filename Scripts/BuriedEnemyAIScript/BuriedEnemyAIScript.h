@@ -8,7 +8,7 @@
 #endif
 
 #include "BaseScript.h"
-
+#include "math/float3.h"
 #include <vector>
 
 class EnemyControllerScript;
@@ -43,6 +43,9 @@ public:
 		return new BuriedEnemyAIScript(*this);
 	}
 
+	void CheckStates(EnemyState* previous);
+
+
 public:
 
 	EnemyStateAttack* attack = nullptr;
@@ -52,7 +55,10 @@ public:
 	EnemyStateHidden* hidden = nullptr;
 	EnemyStateRelocate* relocate = nullptr;
 	EnemyStateShowUp* showUp = nullptr;
+	EnemyStateReturnToStart* returnToStart = nullptr;
 	EnemyStateDeath* death = nullptr;
+
+	EnemyState* currentState = nullptr;
 
 private:
 
