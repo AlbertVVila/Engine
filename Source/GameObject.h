@@ -41,7 +41,7 @@ public:
 
 	ENGINE_API void SetActive(bool active);
 
-	Component* CreateComponent(ComponentType type, JSON_value* value = nullptr);
+	Component* CreateComponent(ComponentType type, JSON_value* value = nullptr, bool prefabTemplate = false);
 
 	template <class T>
 	T* GetComponent() const;
