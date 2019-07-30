@@ -8,6 +8,9 @@ class EnemyStateShowUp :
 public:
 	EnemyStateShowUp(BuriedEnemyAIScript* AIScript);
 	~EnemyStateShowUp();
+
+	void HandleIA() override;
+	void Update() override;
 };
 
 #endif // __ENEMYSTATESHOWUP_H_

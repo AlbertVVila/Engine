@@ -6,6 +6,10 @@ class EnemyStateHidden :
 	public EnemyState
 {
 public:
+	
+	void HandleIA() override;
+	void Update() override;
+
 	EnemyStateHidden(BuriedEnemyAIScript* AIScript);
 	~EnemyStateHidden();
 };

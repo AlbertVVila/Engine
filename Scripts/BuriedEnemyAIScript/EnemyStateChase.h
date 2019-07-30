@@ -8,6 +8,9 @@ class EnemyStateChase :
 public:
 	EnemyStateChase(BuriedEnemyAIScript* AIScript);
 	~EnemyStateChase();
+
+	void HandleIA() override;
+	void Update() override;
 };
 
 #endif // __ENEMYSTATECHASE_H_

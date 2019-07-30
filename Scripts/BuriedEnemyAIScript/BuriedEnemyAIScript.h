@@ -60,6 +60,16 @@ public:
 
 	EnemyState* currentState = nullptr;
 
+	float cooldownDuration = 1.0f;
+	float activationDistance = 1000.0f;
+	float disengageDistance = 1500.0f;
+	float maxAttackRange = 700.0f;
+	float minAttackRange = 500.0f;
+	float teleportCooldown = 5.0f;
+	float runSpeed = 150.0f;
+
+	bool teleportAvailable = true;
+
 private:
 
 	std::vector<EnemyState*> enemyStates;
