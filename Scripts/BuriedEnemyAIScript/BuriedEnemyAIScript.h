@@ -63,12 +63,15 @@ public:
 	float cooldownDuration = 1.0f;
 	float activationDistance = 1000.0f;
 	float disengageDistance = 1500.0f;
+	float teleportDistance = 600.0f;
 	float maxAttackRange = 700.0f;
 	float minAttackRange = 500.0f;
 	float teleportCooldown = 5.0f;
 	float runSpeed = 150.0f;
 
 	bool teleportAvailable = true;
+
+	math::float3 startPosition = math::float3::zero;
 
 private:
 

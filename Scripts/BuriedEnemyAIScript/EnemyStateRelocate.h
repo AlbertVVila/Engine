@@ -8,6 +8,13 @@ class EnemyStateRelocate :
 public:
 	EnemyStateRelocate(BuriedEnemyAIScript* AIScript);
 	~EnemyStateRelocate();
+
+	void HandleIA() override;
+	void Update() override;
+
+	void ChangePosition();
+
+	bool finished = false;
 };
 
 #endif // __ENEMYSTATERELOCATE_H_

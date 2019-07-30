@@ -3,6 +3,8 @@
 #include "BuriedEnemyAIScript.h"
 #include "EnemyControllerScript.h"
 
+#define START_POS_OFFSET  1.5f
+
 EnemyStateReturnToStart::EnemyStateReturnToStart(BuriedEnemyAIScript* AIScript)
 {
 	enemy = AIScript;
@@ -19,6 +21,12 @@ void EnemyStateReturnToStart::HandleIA()
 	if (distanceToPlayer < enemy->activationDistance)
 	{
 		enemy->currentState = (EnemyState*)enemy->chase;
+	}
+	else
+	{
+		float distanceToStartPosition = enemy->enemyController->GetDistanceTo2D(enemy->startPosition);
+		if (distanceToStartPosition < START_POS_OFFSET)
+			enemy->currentState = (EnemyState*)enemy->hide;
 	}
 }
 

@@ -8,6 +8,9 @@ class EnemyStateHide :
 public:
 	EnemyStateHide(BuriedEnemyAIScript* AIScript);
 	~EnemyStateHide();
+
+	void HandleIA() override;
+	void Update() override;
 };
 
 #endif // __ENEMYSTATEHIDE_H_
