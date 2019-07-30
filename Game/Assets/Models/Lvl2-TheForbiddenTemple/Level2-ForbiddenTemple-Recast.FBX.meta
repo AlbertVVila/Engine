@@ -1,1 +1,12 @@
-{"Mesh":{"GUID":3426728830,"timeCreated":1561044444,"NumMeshes":1,"Mesh0":4001322292},"Animation":{"timeCreated":1561044444,"NumAnimations":0}}
+{
+    "Mesh": {
+        "GUID": 3426728830,
+        "timeCreated": 1562862481,
+        "NumMeshes": 1,
+        "Mesh0": 4001322292
+    },
+    "Animation": {
+        "timeCreated": 1562862481,
+        "NumAnimations": 0
+    }
+}

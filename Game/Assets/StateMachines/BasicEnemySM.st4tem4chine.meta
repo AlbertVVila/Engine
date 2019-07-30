@@ -1,1 +1,10 @@
-{"StateMachine":{"GUID":418487297,"timeCreated":1558785335,"name":"BasicEnemySM"}}
+{
+    "StateMachine": {
+        "metaVersion": 2,
+        "timeCreated": 1562425032,
+        "GUID": 418487297,
+        "Name": "BasicEnemySM",
+        "File": "Assets/StateMachines/BasicEnemySM.st4tem4chine",
+        "ExportedFile": "Library/StateMachines/418487297.st4tem4chine"
+    }
+}
