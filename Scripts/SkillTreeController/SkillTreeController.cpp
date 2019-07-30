@@ -84,6 +84,7 @@ void SkillTreeController::Update()
 	if (!gameobject->isActive()) return;
 
 	hoverTransform->gameobject->SetActive(false);
+	App->scene->FindGameObjectByName("NewSkill")->SetActive(false);
 	skillInfo->SetActive(false);
 
 	for (int i = 0; i < NUM_SKILLS; ++i)

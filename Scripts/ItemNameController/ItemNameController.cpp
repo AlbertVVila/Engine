@@ -44,7 +44,7 @@ void ItemNameController::Update()
 			itemList[i].actualPosition = itemList[i].transform->GetScreenPosition();
 			itemList[i].actualPosition += math::float2(0.0f, 30.0f);
 			uiName[i]->children.front()->GetComponent<Transform2D>()->SetPositionUsingAligment(itemList[i].actualPosition);
-			math::float2 pos = itemList[i].actualPosition - math::float2((itemBackground->GetComponent<Transform2D>()->getSize().x / 2) -10.0f, 5.0f);
+			math::float2 pos = itemList[i].actualPosition - math::float2((itemBackground->GetComponent<Transform2D>()->getSize().x / 2) - 10.0f, 5.0f);
 			uiName[i]->children.back()->GetComponent<Transform2D>()->SetPositionUsingAligment(pos);
 			myText = uiName[i]->children.back()->GetComponent<Text>();
 			switch (itemList[i].rarity)
@@ -52,46 +52,46 @@ void ItemNameController::Update()
 			case ItemRarity::BASIC:
 				if (itemList[i].hovered)
 				{
-					myText->color = white/255;
+					myText->color = white / 255;
 				}
 				else
 				{
-					myText->color = grey/255;
+					myText->color = grey / 255;
 				}
 				break;
 			case ItemRarity::RARE:
 				if (itemList[i].hovered)
 				{
-					myText->color = green/255;
+					myText->color = green / 255;
 				}
 				else
 				{
-					myText->color = darkGreen/255;
+					myText->color = darkGreen / 255;
 				}
 				break;
 			case ItemRarity::EPIC:
 				if (itemList[i].hovered)
 				{
-					myText->color = orange/255;
+					myText->color = orange / 255;
 				}
 				else
 				{
-					myText->color = darkOrange/255;
+					myText->color = darkOrange / 255;
 				}
 				break;
 			case ItemRarity::LEGENDARY:
 				if (itemList[i].hovered)
 				{
-					myText->color = purple/255;
+					myText->color = purple / 255;
 				}
 				else
 				{
-					myText->color = darkPurple/255;
+					myText->color = darkPurple / 255;
 				}
 				break;
 			}
+			color[i] = myText->color;
 		}
-		color[i] = myText->color;
 	}
 }
 

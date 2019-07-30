@@ -193,7 +193,14 @@ void InventoryScript::Update()
 							}
 							else
 							{
-								pair.first.isEquipped = !pair.first.isEquipped;
+								for (int l = 0; l < items.size(); ++l)
+								{
+									if (items[l].first.name == pair.first.name)
+									{
+										items[l].first.isEquipped = !items[l].first.isEquipped;
+										break;
+									}
+								}
 							}
 							break;
 						case 19:
@@ -203,7 +210,14 @@ void InventoryScript::Update()
 							}
 							else
 							{
-								pair.first.isEquipped = !pair.first.isEquipped;
+								for (int l = 0; l < items.size(); ++l)
+								{
+									if (items[l].first.name == pair.first.name)
+									{
+										items[l].first.isEquipped = !items[l].first.isEquipped;
+										break;
+									}
+								}
 							}
 							break;
 						case 20:
@@ -213,7 +227,14 @@ void InventoryScript::Update()
 							}
 							else
 							{
-								pair.first.isEquipped = !pair.first.isEquipped;
+								for (int l = 0; l < items.size(); ++l)
+								{
+									if (items[l].first.name == pair.first.name)
+									{
+										items[l].first.isEquipped = !items[l].first.isEquipped;
+										break;
+									}
+								}
 							}
 							break;
 						case 21:
@@ -223,11 +244,11 @@ void InventoryScript::Update()
 							}
 							else
 							{
-								for (j = 0; j < items.size(); ++i)
+								for (int l = 0; l < items.size(); ++l)
 								{
-									if (items[j].first.name == pair.first.name)
+									if (items[l].first.name == pair.first.name)
 									{
-										items[j].first.isEquipped = !items[j].first.isEquipped;
+										items[l].first.isEquipped = !items[l].first.isEquipped;
 										break;
 									}
 								}
@@ -235,12 +256,19 @@ void InventoryScript::Update()
 							break;
 						case 22:
 							if (pair.first.type != ItemType::WEAPON)
-							{ 
+							{
 								exit = true;
 							}
 							else
 							{
-								pair.first.isEquipped = !pair.first.isEquipped;
+								for (int l = 0; l < items.size(); ++l)
+								{
+									if (items[l].first.name == pair.first.name)
+									{
+										items[l].first.isEquipped = !items[l].first.isEquipped;
+										break;
+									}
+								}
 							}
 							break;
 						case 23:
@@ -250,7 +278,14 @@ void InventoryScript::Update()
 							}
 							else
 							{
-								pair.first.isEquipped = !pair.first.isEquipped;
+								for (int l = 0; l < items.size(); ++l)
+								{
+									if (items[l].first.name == pair.first.name)
+									{
+										items[l].first.isEquipped = !items[l].first.isEquipped;
+										break;
+									}
+								}
 							}
 							break;
 						default:
