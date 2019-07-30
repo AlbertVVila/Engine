@@ -24,6 +24,7 @@
 #include "Globals.h"
 #include "debugdraw.h"
 
+
 #define RECALC_PATH_TIME 0.3f
 
 PlayerStateWalk::PlayerStateWalk(PlayerMovement* PM, const char* trigger):
@@ -49,6 +50,24 @@ void PlayerStateWalk::Update()
 		{
 			//case the player clicks outside of the floor mesh but we want to get close to the floors edge
 			pathIndex = 0;
+			startingFront = player->gameobject->transform->front;
+			currentLerping = 0;
+			//testing logs
+			{
+				math::float3 direction = (path[pathIndex] - path[0]).Normalized();
+
+				math::float3 playerFront = player->gameobject->transform->front;
+				float angleResult = direction.AngleBetweenNorm(playerFront.Normalized());
+				std::stringstream s;
+				/*s << "Front = (" << playerFront.x << ", " << playerFront.y << ", " << playerFront.z << ")";
+				LOG(s.str().c_str());
+
+				s << "direction = (" << direction.x << ", " << direction.y << ", " << direction.z << ")";
+				LOG(s.str().c_str());*/
+				s << "Angle result = " << angleResult;
+				LOG(s.str().c_str());
+				player->gameobject->transform->LookAt(path[pathIndex]);
+			}
 		}
 		else
 		{
@@ -75,8 +94,46 @@ void PlayerStateWalk::Update()
 		}
 		if (pathIndex < path.size())
 		{
-			player->gameobject->transform->LookAt(path[pathIndex]);
+			//block of code to check how much the direction has to be changed to look at the next point
 			math::float3 direction = (path[pathIndex] - currentPosition).Normalized();
+			{
+				math::float3 playerFront = player->gameobject->transform->front;
+				float angleResult = direction.AngleBetweenNorm(playerFront.Normalized());
+				std::stringstream s;
+				/*s << "Front = (" << playerFront.x << ", " << playerFront.y << ", " << playerFront.z << ")";
+				LOG(s.str().c_str());
+
+				s << "direction = (" << direction.x << ", " << direction.y << ", " << direction.z << ")";
+				LOG(s.str().c_str());*/
+				s << "Angle result = " << angleResult;
+				LOG(s.str().c_str());
+				player->gameobject->transform->LookAt(path[pathIndex]);
+
+				//in case the difference is less that 30 degrees, we just rotate
+				//0.52 is 30 degrees in radians
+				/*if (angleResult < 0.52f && angleResult > -0.52f)
+				{
+					player->gameobject->transform->LookAt(path[pathIndex]);
+				}
+				else
+				{
+					player->gameobject->transform->LookAt(startingFront.Lerp(direction, currentLerping));
+					currentLerping += 0.25f;
+					//else we rotate 30 towards where we have to
+					//case + 30º
+					if (angleResult > 0)
+					{
+						direction.Lerp()
+					}
+					else
+					{
+
+					}
+					math::float3 newDirectionToLookAt = ( - currentPosition);
+					player->gameobject->transform->LookAt(path[pathIndex]);
+				}*/
+			}
+			
 			math::float3 finalWalkingSpeed = player->walkingSpeed * direction * player->App->time->gameDeltaTime;
 			finalWalkingSpeed *= (1 + (player->stats.dexterity * 0.005f));
 			player->gameobject->transform->SetPosition(currentPosition + finalWalkingSpeed);
