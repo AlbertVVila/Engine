@@ -21,7 +21,7 @@ public:
 
 private:
 	math::float3 startingFront = math::float3(0.f, 0.f, 0.f);
-	float currentLerping = 0.25;
+	float currentLerping = 0.25f;
 	float moveTimer = 0.0f;
 };
 

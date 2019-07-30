@@ -51,23 +51,7 @@ void PlayerStateWalk::Update()
 			//case the player clicks outside of the floor mesh but we want to get close to the floors edge
 			pathIndex = 0;
 			startingFront = player->gameobject->transform->front;
-			currentLerping = 0;
-			//testing logs
-			{
-				math::float3 direction = (path[pathIndex] - path[0]).Normalized();
-
-				math::float3 playerFront = player->gameobject->transform->front;
-				float angleResult = direction.AngleBetweenNorm(playerFront.Normalized());
-				std::stringstream s;
-				/*s << "Front = (" << playerFront.x << ", " << playerFront.y << ", " << playerFront.z << ")";
-				LOG(s.str().c_str());
-
-				s << "direction = (" << direction.x << ", " << direction.y << ", " << direction.z << ")";
-				LOG(s.str().c_str());*/
-				s << "Angle result = " << angleResult;
-				LOG(s.str().c_str());
-				player->gameobject->transform->LookAt(path[pathIndex]);
-			}
+			//currentLerping = 0;
 		}
 		else
 		{
@@ -97,41 +81,25 @@ void PlayerStateWalk::Update()
 			//block of code to check how much the direction has to be changed to look at the next point
 			math::float3 direction = (path[pathIndex] - currentPosition).Normalized();
 			{
-				math::float3 playerFront = player->gameobject->transform->front;
-				float angleResult = direction.AngleBetweenNorm(playerFront.Normalized());
+				math::float3 playerFront = -player->gameobject->transform->front;
+				float angleResult = direction.AngleBetweenNorm(player->gameobject->transform->front.Normalized());
 				std::stringstream s;
-				/*s << "Front = (" << playerFront.x << ", " << playerFront.y << ", " << playerFront.z << ")";
-				LOG(s.str().c_str());
-
-				s << "direction = (" << direction.x << ", " << direction.y << ", " << direction.z << ")";
-				LOG(s.str().c_str());*/
 				s << "Angle result = " << angleResult;
 				LOG(s.str().c_str());
-				player->gameobject->transform->LookAt(path[pathIndex]);
 
-				//in case the difference is less that 30 degrees, we just rotate
-				//0.52 is 30 degrees in radians
-				/*if (angleResult < 0.52f && angleResult > -0.52f)
+				//in case the difference is less that 90 degrees, we just rotate
+				//1.57 is 90 degrees in radians
+				/*if (angleResult < 1.57f && angleResult > -1.57f)
 				{
 					player->gameobject->transform->LookAt(path[pathIndex]);
 				}
+				//case the difference is bigger, the player lerps
 				else
-				{
-					player->gameobject->transform->LookAt(startingFront.Lerp(direction, currentLerping));
+				{*/
+					player->gameobject->transform->LookAt(player->gameobject->transform->front.Lerp(direction, currentLerping));
 					currentLerping += 0.25f;
-					//else we rotate 30 towards where we have to
-					//case + 30º
-					if (angleResult > 0)
-					{
-						direction.Lerp()
-					}
-					else
-					{
 
-					}
-					math::float3 newDirectionToLookAt = ( - currentPosition);
-					player->gameobject->transform->LookAt(path[pathIndex]);
-				}*/
+				//}
 			}
 			
 			math::float3 finalWalkingSpeed = player->walkingSpeed * direction * player->App->time->gameDeltaTime;
