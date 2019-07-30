@@ -8,6 +8,10 @@ class EnemyStateReturnToStart :
 public:
 	EnemyStateReturnToStart(BuriedEnemyAIScript* AIScript);
 	~EnemyStateReturnToStart();
+
+	void HandleIA() override;
+	void Update() override;
+
 };
 
 #endif // __ENEMYSTATERETURN_H_
