@@ -7,8 +7,8 @@ class EnemyStateAttack :
 	public EnemyState
 {
 public:
-	EnemyStateAttack(BasicEnemyAIScript* AIScript);
-	~EnemyStateAttack();
+	BasicEnemyAIScript_API EnemyStateAttack(BasicEnemyAIScript* AIScript);
+	BasicEnemyAIScript_API ~EnemyStateAttack();
 
 	void HandleIA() override;
 	void Update() override;

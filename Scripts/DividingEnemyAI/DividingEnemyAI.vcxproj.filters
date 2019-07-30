@@ -22,7 +22,10 @@
       <Filter>Archivos de origen</Filter>
     </ClCompile>
     <ClCompile Include="EnemyStateMultiply.cpp">
-      <Filter>Archivos de origen</Filter>
+      <Filter>Extra States</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyStatePatrolDivide.cpp">
+      <Filter>Extra States</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -30,7 +33,10 @@
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="EnemyStateMultiply.h">
-      <Filter>Archivos de encabezado</Filter>
+      <Filter>Extra States</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyStatePatrolDivide.h">
+      <Filter>Extra States</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
