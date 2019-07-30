@@ -1355,6 +1355,22 @@ void GameObject::UpdateTransforms(math::float4x4 parentGlobal)
 		if (transform)
 		{
 			transform->local = math::float4x4::FromTRS(transform->position, transform->rotation, transform->scale);
+
+			math::float4x4 global = math::float4x4::identity;
+			if (this != App->scene->root && transform != nullptr)
+			{
+				math::float4x4 original = transform->global;
+				transform->global = parentGlobal * transform->local;
+				global = transform->global;
+				transform->UpdateTransform();
+				if (this == App->scene->selected)
+				{
+					transform->MultiSelectionTransform(global - original);
+				}
+			}
+
+			UpdateBBox();
+
 			if (!isStatic)
 			{
 				if (treeNode != nullptr && hasLight)
@@ -1382,25 +1398,17 @@ void GameObject::UpdateTransforms(math::float4x4 parentGlobal)
 		}
 	}
 
-	math::float4x4 global = math::float4x4::identity;
-	if (this != App->scene->root && transform != nullptr)
-	{
-		math::float4x4 original = transform->global;
-		transform->global = parentGlobal * transform->local;
-		global = transform->global;
-		transform->UpdateTransform();
-		if (this == App->scene->selected)
-		{
-			transform->MultiSelectionTransform(global - original);
-		}
-	}
-
 	for (const auto& child : children)
 	{
-		child->UpdateTransforms(global);
+		if (transform != nullptr)
+		{
+			child->UpdateTransforms(transform->global);
+		}
+		else
+		{
+			child->UpdateTransforms(math::float4x4::identity);
+		}
 	}
-
-	UpdateBBox();
 }
 
 bool GameObject::CheckDelete()

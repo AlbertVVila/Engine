@@ -1709,7 +1709,12 @@ GameObject* ModuleScene::FindGameObjectByName(const char* name, GameObject* pare
 GameObject * ModuleScene::Spawn(const char * name, GameObject * parent)
 {
 	ResourcePrefab* prefab = (ResourcePrefab*) App->resManager->GetByName(name, TYPE::PREFAB);
-	assert(prefab != nullptr, "Prefab Not Found");
+	if (prefab == nullptr)
+	{
+		LOG("Prefab %s Not Found", name);
+		return nullptr;
+	}
+
 	//Instantiate prefab
 	GameObject* instance = new GameObject(*prefab->RetrievePrefab());
 	App->resManager->DeleteResource(prefab->GetUID());
@@ -1721,7 +1726,6 @@ GameObject * ModuleScene::Spawn(const char * name, GameObject * parent)
 	parent->children.push_back(instance);
 	instance->parent = parent;
 	instance->transform->Reset();
-	AddToSpacePartition(instance);
 	if (App->time->gameState == GameState::RUN)
 	{
 		instance->OnPlay();
