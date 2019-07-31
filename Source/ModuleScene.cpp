@@ -22,6 +22,9 @@
 #include "ComponentRenderer.h"
 #include "ComponentTransform.h"
 #include "ComponentText.h"
+#include "ComponentTrail.h"
+#include "ComponentParticles.h"
+#include "ComponentVolumetricLight.h"
 #include "BaseScript.h"
 
 #include "ResourceTexture.h"
@@ -294,7 +297,8 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 
 
 	}
-	Frustum camFrustum = frustum;
+	Frustum camFrustum = frustum;	
+
 	if (maincamera != nullptr && App->renderer->useMainCameraFrustum)
 	{
 		camFrustum = *maincamera->frustum;
@@ -320,6 +324,10 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 		if (camFrustum.Intersects(go->GetBoundingBox()))
 		{
 			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponentOld(ComponentType::Renderer);
+			if (!cr)
+			{
+				cr = ((ComponentVolumetricLight*)go->GetComponentOld(ComponentType::VolumetricLight))->renderer;
+			}
 			if (cr && !cr->useAlpha)
 			{
 				DrawGO(*go, camFrustum, isEditor);
@@ -331,12 +339,11 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 		}
 	}
 
-	if (selected != nullptr && selected->GetComponentOld(ComponentType::Renderer) == nullptr)
-	{
-		DrawGO(*selected, camFrustum, isEditor); //bcause it could be an object without mesh not in staticGOs or dynamicGOs
-	}
+	alphaRenderers.insert(alphaRenderers.end(), App->particles->particleSystems.begin(), App->particles->particleSystems.end());
+	alphaRenderers.insert(alphaRenderers.end(), App->particles->trails.begin(), App->particles->trails.end());
+
 	alphaRenderers.sort(
-		[camFrustum](const ComponentRenderer* cr1, const ComponentRenderer* cr2) -> bool
+		[camFrustum](const Component* cr1, const Component* cr2) -> bool
 	{
 		return cr1->gameobject->transform->GetGlobalPosition().Distance(camFrustum.pos) > cr2->gameobject->transform->GetGlobalPosition().Distance(camFrustum.pos);
 	});
@@ -380,17 +387,50 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	});
 #endif
 	
+	ComponentCamera* camera = isEditor ? App->camera->editorcamera : App->scene->maincamera;
+
+	assert(camera);
+
 	if (alphaRenderers.size() > 0)
 	{
 		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		for (ComponentRenderer* cr : alphaRenderers)
+		
+		for (Component* cr : alphaRenderers)
 		{
 #ifndef GAME_BUILD
-			DrawGO(*cr->gameobject, camFrustum, isEditor);
+			switch (cr->type)
+			{
+				case ComponentType::Renderer:
+					glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+					DrawGO(*cr->gameobject, camFrustum, isEditor);
 #else
-			DrawGOGame(*cr->gameobject);
+				DrawGOGame(*cr->gameobject);
 #endif
+				break;
+				case ComponentType::Trail:
+				{
+					ComponentTrail* trail = (ComponentTrail*)cr;
+					glDisable(GL_CULL_FACE);
+					glBlendFunc(GL_ONE, GL_ONE);
+
+					trail->UpdateTrail();
+					if (trail->trail.size() > 1)
+					{
+						App->particles->RenderTrail(trail, camera);
+					}
+
+					glEnable(GL_CULL_FACE);
+					break;
+				}
+				case ComponentType::Particles:
+				{
+					ComponentParticles* particles = (ComponentParticles*)cr;
+					glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+					particles->Update(App->time->gameDeltaTime, camFrustum.pos);
+					App->particles->DrawParticleSystem(particles, camera);
+					break;
+				}
+			}
 		}
 		glDisable(GL_BLEND);
 	}
@@ -469,6 +509,15 @@ void ModuleScene::DrawGOGame(const GameObject& go)
 
 	glUniform1f(glGetUniformLocation(shader->id[variation],
 		"decay2"), crenderer->waterDecay2);
+	
+	float waterMix = sin(App->time->gameTime * crenderer->distorsionSpeed);
+	waterMix = waterMix < 0.f ? -waterMix : waterMix;
+	
+	glUniform1f(glGetUniformLocation(shader->id[variation],
+		"waterMix"), waterMix);
+	
+	glUniform2fv(glGetUniformLocation(shader->id[variation],
+		"uvScaler"), 1, (GLfloat*)&crenderer->uvScaler);
 
 	glUniform1f(glGetUniformLocation(shader->id[variation],
 		"frequency2"), crenderer->waterFrequency2);
@@ -505,8 +554,13 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 		}
 	}
 	ComponentRenderer* crenderer = (ComponentRenderer*)go.GetComponentOld(ComponentType::Renderer);
-	if (crenderer == nullptr || !crenderer->enabled || crenderer->material == nullptr) return;
-
+	if (crenderer == nullptr || !crenderer->enabled || crenderer->material == nullptr)
+	{
+		ComponentVolumetricLight* cVL = (ComponentVolumetricLight*)go.GetComponentOld(ComponentType::VolumetricLight);		
+		if (!cVL)
+			return;
+		crenderer = cVL->renderer;
+	}
 	ResourceMesh* mesh = crenderer->mesh;
 	ResourceMaterial* material = crenderer->material;
 	Shader* shader = material->shader;
@@ -569,6 +623,15 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 	glUniform1f(glGetUniformLocation(shader->id[variation],
 		"decay2"), crenderer->waterDecay2);
 
+	float waterMix = sin(App->time->gameTime * crenderer->distorsionSpeed);
+	waterMix = waterMix < 0.f ? -waterMix : waterMix;
+
+	glUniform1f(glGetUniformLocation(shader->id[variation],
+		"waterMix"), waterMix);
+
+	glUniform2fv(glGetUniformLocation(shader->id[variation],
+		"uvScaler"), 1, (GLfloat*)&crenderer->uvScaler);
+	
 	glUniform1f(glGetUniformLocation(shader->id[variation],
 		"frequency2"), crenderer->waterFrequency2);
 
@@ -1318,6 +1381,7 @@ void ModuleScene::LoadScene(const char* sceneName, const char* folder)
 	App->scripting->onStart = true;
 	scenePhotos.clear();
 	App->time->ResetGameDetaTime();
+	App->renderer->OnResize();
 }
 
 void ModuleScene::LoadTemporaryScene()

@@ -1,13 +1,11 @@
 {
     "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1564300747,
         "GUID": 112553618,
-        "timeCreated": 1562862482,
-        "height": 1760,
-        "width": 1836,
-        "depth": 1,
-        "mips": 0,
-        "format": 6408,
-        "DX compresion": 1802,
-        "mipmap": 0
+        "Name": "Humo2",
+        "File": "Assets/Particles/Humo2.png",
+        "ExportedFile": "Library/Textures/112553618.dds",
+        "DX compresion": 1802
     }
 }

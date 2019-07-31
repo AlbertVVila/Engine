@@ -1,13 +1,11 @@
 {
     "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1564300747,
         "GUID": 809116800,
-        "timeCreated": 1562862482,
-        "height": 1024,
-        "width": 1023,
-        "depth": 1,
-        "mips": 0,
-        "format": 6408,
-        "DX compresion": 1802,
-        "mipmap": 0
+        "Name": "B01_fire_small_DF",
+        "File": "Assets/Particles/B01_fire_small_DF.png",
+        "ExportedFile": "Library/Textures/809116800.dds",
+        "DX compresion": 1802
     }
 }
