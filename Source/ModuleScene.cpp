@@ -116,8 +116,7 @@ bool ModuleScene::Start()
 		defaultScene = (ResourceScene*)App->resManager->Get(defaultSceneUID);
 		if (defaultScene != nullptr)
 		{
-			App->navigation->sceneName = defaultScene->GetName();
-			defaultScene->Load();
+			LoadScene(defaultScene->GetName(), SCENES);
 		}
 	}
 	return true;
@@ -735,6 +734,14 @@ void ModuleScene::DragNDropMove(GameObject* target)
 							droppedGo->transform->SetWorldToLocal(droppedGo->parent->GetGlobalTransform());
 						}
 
+						for (Component* c : droppedGo->GetComponentsInChildren(ComponentType::Renderer))
+						{
+							ComponentRenderer* cr = (ComponentRenderer*)c;
+							if (cr->mesh != nullptr)
+							{
+								cr->LinkBones();
+							}
+						}
 					}
 					App->editor->assets->ResetDragNDrop();
 				}
@@ -813,6 +820,14 @@ void ModuleScene::DragNDrop(GameObject* go)
 						if (droppedGo->transform != nullptr)
 						{
 							droppedGo->transform->SetWorldToLocal(droppedGo->parent->GetGlobalTransform());
+						}
+						for (Component* c : droppedGo->GetComponentsInChildren(ComponentType::Renderer))
+						{
+							ComponentRenderer* cr = (ComponentRenderer*)c;
+							if (cr->mesh != nullptr)
+							{
+								cr->LinkBones();
+							}
 						}
 					}
 					App->editor->assets->ResetDragNDrop();
@@ -977,10 +992,12 @@ void ModuleScene::ResetQuadTree() //deprecated
 bool ModuleScene::PrefabWasUpdated(unsigned UID) const
 {
 	Resource* scene = App->resManager->GetByName(name.c_str(), TYPE::SCENE);
-	if (scene == nullptr) return false;
+	Resource* prefab = App->resManager->GetWithoutLoad(UID);
 
-	int prefabTime = App->fsystem->GetModTime(std::string(IMPORTED_PREFABS + std::to_string(UID) + PREFABEXTENSION).c_str());
-	int sceneTime = App->fsystem->GetModTime(std::string(IMPORTED_SCENES + std::to_string(scene->GetUID()) + SCENEEXTENSION).c_str());
+	if (scene == nullptr || prefab == nullptr) return false;
+
+	int prefabTime = App->fsystem->GetModTime(prefab->GetFile());
+	int sceneTime = App->fsystem->GetModTime(scene->GetFile());
 	App->resManager->DeleteResource(scene->GetUID());
 	return prefabTime > sceneTime;
 }

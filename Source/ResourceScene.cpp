@@ -11,6 +11,7 @@
 
 #include "GameObject.h"
 #include "ComponentRenderer.h"
+#include "ResourcePrefab.h"
 
 #include "JSON.h"
 
@@ -160,12 +161,18 @@ bool ResourceScene::Load()
 	gameobjectsMap.insert(std::pair<unsigned, GameObject*>(App->scene->canvas->UUID, sceneCanvas));
 
 	std::list<ComponentRenderer*> renderers;
+	std::vector<GameObject*> prefabs;
 
 	for (unsigned i = 0; i < gameobjectsJSON->Size(); i++)
 	{
 		JSON_value* gameobjectJSON = gameobjectsJSON->GetValue(i);
 		GameObject *gameobject = new GameObject();
 		gameobject->Load(gameobjectJSON);
+		if (gameobject->isPrefab && gameobject->isPrefabSync)
+		{
+			prefabs.emplace_back(gameobject);
+		}
+
 		if (gameobject->UUID != 1)
 		{
 			gameobjectsMap.insert(std::pair<unsigned, GameObject*>(gameobject->UUID, gameobject));
@@ -231,6 +238,14 @@ bool ResourceScene::Load()
 		if (cr->mesh != nullptr)
 		{
 			cr->LinkBones();
+		}
+	}
+
+	for (GameObject* goPrefab : prefabs)
+	{
+		if (App->scene->PrefabWasUpdated(goPrefab->prefabUID))
+		{
+			goPrefab->UpdateToPrefab(goPrefab->prefab->RetrievePrefab());
 		}
 	}
 
