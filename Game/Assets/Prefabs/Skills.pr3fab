@@ -1,13 +1,13 @@
 {
     "GameObjects": [
         {
-            "UID": 2863463407,
-            "ParentUID": 1641896289,
+            "UID": 990807230,
+            "ParentUID": 784073150,
             "Name": "Skills",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
                 1.0,
@@ -29,7 +29,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 1,
             "isPrefabSync": 1,
             "prefabUID": 2325434735,
@@ -48,8 +48,8 @@
                                 "maxLevel": 3,
                                 "nextSkill": 1,
                                 "connection": 0,
-                                "activeTextureUID": 1156722927,
-                                "inactiveTextureUID": 4258912415
+                                "activeTextureUID": 885453344,
+                                "inactiveTextureUID": 1891334666
                             },
                             {
                                 "id": 1,
@@ -59,8 +59,8 @@
                                 "maxLevel": 2,
                                 "nextSkill": 2,
                                 "connection": 1,
-                                "activeTextureUID": 3107165251,
-                                "inactiveTextureUID": 477667108
+                                "activeTextureUID": 3774178758,
+                                "inactiveTextureUID": 1814959232
                             },
                             {
                                 "id": 2,
@@ -70,8 +70,8 @@
                                 "maxLevel": 1,
                                 "nextSkill": -1,
                                 "connection": -1,
-                                "activeTextureUID": 1138650019,
-                                "inactiveTextureUID": 4231694172
+                                "activeTextureUID": 2296932366,
+                                "inactiveTextureUID": 3063042807
                             },
                             {
                                 "id": 3,
@@ -81,8 +81,8 @@
                                 "maxLevel": 2,
                                 "nextSkill": 4,
                                 "connection": 2,
-                                "activeTextureUID": 513681470,
-                                "inactiveTextureUID": 2801513320
+                                "activeTextureUID": 4157880507,
+                                "inactiveTextureUID": 1052833000
                             },
                             {
                                 "id": 4,
@@ -92,8 +92,8 @@
                                 "maxLevel": 1,
                                 "nextSkill": -1,
                                 "connection": -1,
-                                "activeTextureUID": 734857354,
-                                "inactiveTextureUID": 2348269143
+                                "activeTextureUID": 101418882,
+                                "inactiveTextureUID": 386296996
                             },
                             {
                                 "id": 5,
@@ -103,8 +103,8 @@
                                 "maxLevel": 2,
                                 "nextSkill": 6,
                                 "connection": 4,
-                                "activeTextureUID": 861238023,
-                                "inactiveTextureUID": 1368863784
+                                "activeTextureUID": 2353223529,
+                                "inactiveTextureUID": 4140996810
                             },
                             {
                                 "id": 6,
@@ -114,8 +114,8 @@
                                 "maxLevel": 3,
                                 "nextSkill": 7,
                                 "connection": 5,
-                                "activeTextureUID": 861238023,
-                                "inactiveTextureUID": 1368863784
+                                "activeTextureUID": 4037492790,
+                                "inactiveTextureUID": 1474843939
                             },
                             {
                                 "id": 7,
@@ -125,8 +125,8 @@
                                 "maxLevel": 1,
                                 "nextSkill": -1,
                                 "connection": -1,
-                                "activeTextureUID": 861238023,
-                                "inactiveTextureUID": 1368863784
+                                "activeTextureUID": 3595172473,
+                                "inactiveTextureUID": 2604386210
                             },
                             {
                                 "id": 8,
@@ -136,8 +136,8 @@
                                 "maxLevel": 2,
                                 "nextSkill": 9,
                                 "connection": 6,
-                                "activeTextureUID": 861238023,
-                                "inactiveTextureUID": 1368863784
+                                "activeTextureUID": 2868511582,
+                                "inactiveTextureUID": 4145295781
                             },
                             {
                                 "id": 9,
@@ -147,8 +147,8 @@
                                 "maxLevel": 1,
                                 "nextSkill": 10,
                                 "connection": 7,
-                                "activeTextureUID": 861238023,
-                                "inactiveTextureUID": 1368863784
+                                "activeTextureUID": 2089509454,
+                                "inactiveTextureUID": 184765913
                             },
                             {
                                 "id": 10,
@@ -158,8 +158,8 @@
                                 "maxLevel": 1,
                                 "nextSkill": -1,
                                 "connection": -1,
-                                "activeTextureUID": 861238023,
-                                "inactiveTextureUID": 1368863784
+                                "activeTextureUID": 3921259047,
+                                "inactiveTextureUID": 472688446
                             }
                         ]
                     }
@@ -167,12 +167,12 @@
             ]
         },
         {
-            "UID": 956133772,
-            "ParentUID": 2863463407,
-            "Name": "Title",
+            "UID": 3712580878,
+            "ParentUID": 990807230,
+            "Name": "SkillsBackgroundImage",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -204,93 +204,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -284.79998779296877,
-                        296.1000061035156
+                        -234.6999969482422,
+                        0.0
                     ],
                     "Size": [
-                        100.0,
-                        100.0
-                    ],
-                    "Anchor": 5,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 6,
-                    "Enabled": 1,
-                    "FontSize": 14.0,
-                    "text": "Skills",
-                    "font": "Fonts/TACOSRG.ttf",
-                    "color": [
-                        0.8823529481887817,
-                        0.8705882430076599,
-                        0.16470588743686677,
-                        0.0
-                    ],
-                    "colorHovered": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        0.0
-                    ],
-                    "offset": [
-                        0.0,
-                        0.0
-                    ],
-                    "scaleOffset": [
-                        6.0,
-                        6.0
-                    ],
-                    "IsTextWrapped": 0,
-                    "WrapWidth": 0.0,
-                    "InterlineDistance": 0.0,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
-            "UID": 3846922656,
-            "ParentUID": 2863463407,
-            "Name": "SkillsTree",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -229.5,
-                        26.0
-                    ],
-                    "Size": [
-                        415.5,
-                        495.5
+                        455.0,
+                        679.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -298,12 +217,12 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1941603464,
-                    "textureName": "BgEquipment",
+                    "textureUID": 962080884,
+                    "textureName": "Background_skills",
                     "color": [
                         1.0,
-                        0.9999998807907105,
-                        0.9999899864196777,
+                        1.0,
+                        1.0,
                         1.0
                     ],
                     "FlipVertical": 0,
@@ -318,12 +237,12 @@
             ]
         },
         {
-            "UID": 3651917688,
-            "ParentUID": 3846922656,
+            "UID": 3141595767,
+            "ParentUID": 3712580878,
             "Name": "SkillConnections",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -357,7 +276,7 @@
                     "Position": [
                         0.0,
                         0.0,
-                        0.0
+                        -200.0
                     ],
                     "Rotation": [
                         0.0,
@@ -387,7 +306,7 @@
                         0.0,
                         0.0,
                         1.0,
-                        0.0,
+                        -200.0,
                         0.0,
                         0.0,
                         0.0,
@@ -397,12 +316,12 @@
             ]
         },
         {
-            "UID": 4088267702,
-            "ParentUID": 3651917688,
+            "UID": 69676256,
+            "ParentUID": 3141595767,
             "Name": "Connection0",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -435,10 +354,10 @@
                     "Enabled": 1,
                     "Position": [
                         -386.3500061035156,
-                        125.0
+                        116.0999984741211
                     ],
                     "Size": [
-                        6.5,
+                        9.5,
                         34.5
                     ],
                     "Anchor": 5,
@@ -447,12 +366,12 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 676697322,
-                    "textureName": "White",
+                    "textureUID": 491920706,
+                    "textureName": "Desactivated_Bar",
                     "color": [
-                        9.999999974752428e-7,
-                        0.0,
-                        0.0,
+                        1.0,
+                        0.9999899864196777,
+                        0.9999899864196777,
                         1.0
                     ],
                     "FlipVertical": 0,
@@ -467,12 +386,12 @@
             ]
         },
         {
-            "UID": 1642748115,
-            "ParentUID": 3651917688,
+            "UID": 3203755541,
+            "ParentUID": 3141595767,
             "Name": "Connection1",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -505,10 +424,10 @@
                     "Enabled": 1,
                     "Position": [
                         -386.3500061035156,
-                        -41.900001525878909
+                        -53.79999923706055
                     ],
                     "Size": [
-                        6.5,
+                        9.5,
                         155.0
                     ],
                     "Anchor": 5,
@@ -517,12 +436,12 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 676697322,
-                    "textureName": "White",
+                    "textureUID": 491920706,
+                    "textureName": "Desactivated_Bar",
                     "color": [
-                        9.999999974752428e-7,
-                        0.0,
-                        0.0,
+                        1.0,
+                        0.9999899864196777,
+                        0.9999899864196777,
                         1.0
                     ],
                     "FlipVertical": 0,
@@ -537,12 +456,12 @@
             ]
         },
         {
-            "UID": 2705826982,
-            "ParentUID": 3651917688,
+            "UID": 1596576496,
+            "ParentUID": 3141595767,
             "Name": "Connection2",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -575,10 +494,10 @@
                     "Enabled": 1,
                     "Position": [
                         -284.54998779296877,
-                        69.0999984741211
+                        59.599998474121097
                     ],
                     "Size": [
-                        6.5,
+                        9.5,
                         148.0
                     ],
                     "Anchor": 5,
@@ -587,12 +506,12 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 676697322,
-                    "textureName": "White",
+                    "textureUID": 491920706,
+                    "textureName": "Desactivated_Bar",
                     "color": [
-                        9.999999974752428e-7,
-                        0.0,
-                        0.0,
+                        1.0,
+                        0.9999899864196777,
+                        0.9999899864196777,
                         1.0
                     ],
                     "FlipVertical": 0,
@@ -607,12 +526,12 @@
             ]
         },
         {
-            "UID": 2440297366,
-            "ParentUID": 3651917688,
+            "UID": 3498562053,
+            "ParentUID": 3141595767,
             "Name": "Connection3",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -645,10 +564,10 @@
                     "Enabled": 1,
                     "Position": [
                         -283.95001220703127,
-                        -97.0
+                        -110.4000015258789
                     ],
                     "Size": [
-                        6.5,
+                        9.5,
                         42.0
                     ],
                     "Anchor": 5,
@@ -657,12 +576,12 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 676697322,
-                    "textureName": "White",
+                    "textureUID": 491920706,
+                    "textureName": "Desactivated_Bar",
                     "color": [
-                        9.999999974752428e-7,
-                        0.0,
-                        0.0,
+                        1.0,
+                        0.9999899864196777,
+                        0.9999899864196777,
                         1.0
                     ],
                     "FlipVertical": 0,
@@ -677,12 +596,12 @@
             ]
         },
         {
-            "UID": 1048401969,
-            "ParentUID": 3651917688,
+            "UID": 3905535326,
+            "ParentUID": 3141595767,
             "Name": "Connection4",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -715,11 +634,11 @@
                     "Enabled": 1,
                     "Position": [
                         -183.35000610351563,
-                        125.0
+                        115.19999694824219
                     ],
                     "Size": [
-                        6.5,
-                        34.5
+                        9.5,
+                        46.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -727,12 +646,12 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 676697322,
-                    "textureName": "White",
+                    "textureUID": 491920706,
+                    "textureName": "Desactivated_Bar",
                     "color": [
-                        9.999999974752428e-7,
-                        0.0,
-                        0.0,
+                        1.0,
+                        0.9999899864196777,
+                        0.9999899864196777,
                         1.0
                     ],
                     "FlipVertical": 0,
@@ -747,12 +666,12 @@
             ]
         },
         {
-            "UID": 2477093801,
-            "ParentUID": 3651917688,
+            "UID": 3762570365,
+            "ParentUID": 3141595767,
             "Name": "Connection5",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -785,11 +704,11 @@
                     "Enabled": 1,
                     "Position": [
                         -182.35000610351563,
-                        -43.0
+                        -53.5
                     ],
                     "Size": [
-                        6.5,
-                        154.5
+                        9.5,
+                        158.5
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -797,12 +716,12 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 676697322,
-                    "textureName": "White",
+                    "textureUID": 491920706,
+                    "textureName": "Desactivated_Bar",
                     "color": [
-                        9.999999974752428e-7,
-                        0.0,
-                        0.0,
+                        1.0,
+                        0.9999899864196777,
+                        0.9999899864196777,
                         1.0
                     ],
                     "FlipVertical": 0,
@@ -817,12 +736,12 @@
             ]
         },
         {
-            "UID": 2895844407,
-            "ParentUID": 3651917688,
+            "UID": 3878152739,
+            "ParentUID": 3141595767,
             "Name": "Connection6",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -855,11 +774,11 @@
                     "Enabled": 1,
                     "Position": [
                         -80.3499984741211,
-                        12.0
+                        1.399999976158142
                     ],
                     "Size": [
-                        6.5,
-                        263.5
+                        9.5,
+                        269.5
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -867,12 +786,12 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 676697322,
-                    "textureName": "White",
+                    "textureUID": 491920706,
+                    "textureName": "Desactivated_Bar",
                     "color": [
-                        9.999999974752428e-7,
-                        0.0,
-                        0.0,
+                        1.0,
+                        0.9999899864196777,
+                        0.9999899864196777,
                         1.0
                     ],
                     "FlipVertical": 0,
@@ -887,12 +806,12 @@
             ]
         },
         {
-            "UID": 1551237438,
-            "ParentUID": 3846922656,
+            "UID": 781745139,
+            "ParentUID": 3712580878,
             "Name": "SkillSlots",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -915,7 +834,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -926,7 +845,7 @@
                     "Position": [
                         0.0,
                         0.0,
-                        0.0
+                        -200.0
                     ],
                     "Rotation": [
                         0.0,
@@ -956,7 +875,7 @@
                         0.0,
                         0.0,
                         1.0,
-                        0.0,
+                        -200.0,
                         0.0,
                         0.0,
                         0.0,
@@ -966,12 +885,12 @@
             ]
         },
         {
-            "UID": 1493602549,
-            "ParentUID": 1551237438,
+            "UID": 2135469686,
+            "ParentUID": 781745139,
             "Name": "Skill0",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1004,11 +923,11 @@
                     "Enabled": 1,
                     "Position": [
                         -386.70001220703127,
-                        186.1999969482422
+                        170.1999969482422
                     ],
                     "Size": [
                         58.0,
-                        58.0
+                        75.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -1016,8 +935,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1156722927,
-                    "textureName": "Skill_DashChickenBite",
+                    "textureUID": 2936790765,
+                    "textureName": "Desactivated_Hability_Container",
                     "color": [
                         1.0,
                         0.9999899864196777,
@@ -1036,12 +955,12 @@
             ]
         },
         {
-            "UID": 1111854366,
-            "ParentUID": 1493602549,
-            "Name": "SkillCounterBG",
+            "UID": 232192312,
+            "ParentUID": 2135469686,
+            "Name": "SkillIcon0",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1073,12 +992,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -387.20001220703127,
-                        149.89999389648438
+                        -386.6000061035156,
+                        180.0
                     ],
                     "Size": [
-                        30.0,
-                        15.0
+                        40.0,
+                        40.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -1086,12 +1005,12 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 676697322,
-                    "textureName": "White",
+                    "textureUID": 1891334666,
+                    "textureName": "Desactivated_Hability_4",
                     "color": [
-                        9.999999974752428e-7,
-                        0.0,
-                        0.0,
+                        1.0,
+                        0.9999899864196777,
+                        0.9999899864196777,
                         1.0
                     ],
                     "FlipVertical": 0,
@@ -1106,12 +1025,12 @@
             ]
         },
         {
-            "UID": 1534979640,
-            "ParentUID": 1493602549,
+            "UID": 1315543084,
+            "ParentUID": 2135469686,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1144,7 +1063,7 @@
                     "Enabled": 1,
                     "Position": [
                         -400.0,
-                        144.8000030517578
+                        137.39999389648438
                     ],
                     "Size": [
                         100.0,
@@ -1160,9 +1079,9 @@
                     "text": "0/5",
                     "font": "Fonts/MATADOR.ttf",
                     "color": [
-                        0.35655736923217776,
-                        0.339021772146225,
-                        0.339021772146225,
+                        0.09019608050584793,
+                        0.019607843831181527,
+                        0.019607843831181527,
                         0.0
                     ],
                     "colorHovered": [
@@ -1187,12 +1106,12 @@
             ]
         },
         {
-            "UID": 949293974,
-            "ParentUID": 1551237438,
+            "UID": 3768323349,
+            "ParentUID": 781745139,
             "Name": "Skill1",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1225,11 +1144,11 @@
                     "Enabled": 1,
                     "Position": [
                         -386.6000061035156,
-                        78.69999694824219
+                        61.099998474121097
                     ],
                     "Size": [
                         58.0,
-                        58.0
+                        75.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -1237,8 +1156,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3107165251,
-                    "textureName": "Skill_CircularAttack",
+                    "textureUID": 2936790765,
+                    "textureName": "Desactivated_Hability_Container",
                     "color": [
                         1.0,
                         0.9999899864196777,
@@ -1257,12 +1176,12 @@
             ]
         },
         {
-            "UID": 2529504721,
-            "ParentUID": 949293974,
-            "Name": "SkillCounterBG",
+            "UID": 2592191082,
+            "ParentUID": 3768323349,
+            "Name": "SkillIcon1",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1295,11 +1214,11 @@
                     "Enabled": 1,
                     "Position": [
                         -387.20001220703127,
-                        41.900001525878909
+                        69.5
                     ],
                     "Size": [
-                        30.0,
-                        15.0
+                        40.0,
+                        40.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -1307,12 +1226,12 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 676697322,
-                    "textureName": "White",
+                    "textureUID": 1814959232,
+                    "textureName": "Desactivated_Hability_5",
                     "color": [
-                        9.999999974752428e-7,
-                        0.0,
-                        0.0,
+                        1.0,
+                        0.9999899864196777,
+                        0.9999899864196777,
                         1.0
                     ],
                     "FlipVertical": 0,
@@ -1327,12 +1246,12 @@
             ]
         },
         {
-            "UID": 2127841026,
-            "ParentUID": 949293974,
+            "UID": 450991340,
+            "ParentUID": 3768323349,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1365,7 +1284,7 @@
                     "Enabled": 1,
                     "Position": [
                         -400.0,
-                        39.0
+                        29.200000762939454
                     ],
                     "Size": [
                         100.0,
@@ -1381,9 +1300,9 @@
                     "text": "0/3",
                     "font": "Fonts/MATADOR.ttf",
                     "color": [
-                        0.35655736923217776,
-                        0.339021772146225,
-                        0.339021772146225,
+                        0.09019608050584793,
+                        0.019607843831181527,
+                        0.019607843831181527,
                         0.0
                     ],
                     "colorHovered": [
@@ -1408,12 +1327,12 @@
             ]
         },
         {
-            "UID": 614224957,
-            "ParentUID": 1551237438,
+            "UID": 3839293866,
+            "ParentUID": 781745139,
             "Name": "Skill2",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1446,11 +1365,11 @@
                     "Enabled": 1,
                     "Position": [
                         -386.6000061035156,
-                        -146.1999969482422
+                        -167.3000030517578
                     ],
                     "Size": [
                         58.0,
-                        58.0
+                        75.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -1458,8 +1377,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1138650019,
-                    "textureName": "Skill_BompDrop",
+                    "textureUID": 2936790765,
+                    "textureName": "Desactivated_Hability_Container",
                     "color": [
                         1.0,
                         0.9999899864196777,
@@ -1478,12 +1397,12 @@
             ]
         },
         {
-            "UID": 2168323081,
-            "ParentUID": 614224957,
-            "Name": "SkillCounterBG",
+            "UID": 1026202866,
+            "ParentUID": 3839293866,
+            "Name": "SkillIcon2",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1516,11 +1435,11 @@
                     "Enabled": 1,
                     "Position": [
                         -387.20001220703127,
-                        -183.3000030517578
+                        -158.5
                     ],
                     "Size": [
-                        30.0,
-                        15.0
+                        40.0,
+                        40.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -1528,12 +1447,12 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 676697322,
-                    "textureName": "White",
+                    "textureUID": 3063042807,
+                    "textureName": "Desactivated_Hability_2",
                     "color": [
-                        9.999999974752428e-7,
-                        0.0,
-                        0.0,
+                        1.0,
+                        0.9999899864196777,
+                        0.9999899864196777,
                         1.0
                     ],
                     "FlipVertical": 0,
@@ -1548,12 +1467,12 @@
             ]
         },
         {
-            "UID": 1085497716,
-            "ParentUID": 614224957,
+            "UID": 676617334,
+            "ParentUID": 3839293866,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1586,7 +1505,7 @@
                     "Enabled": 1,
                     "Position": [
                         -400.0,
-                        -184.3000030517578
+                        -197.3000030517578
                     ],
                     "Size": [
                         100.0,
@@ -1602,9 +1521,9 @@
                     "text": "0/2",
                     "font": "Fonts/MATADOR.ttf",
                     "color": [
-                        0.35655736923217776,
-                        0.339021772146225,
-                        0.339021772146225,
+                        0.0901639461517334,
+                        0.020323842763900758,
+                        0.020323842763900758,
                         0.0
                     ],
                     "colorHovered": [
@@ -1629,12 +1548,12 @@
             ]
         },
         {
-            "UID": 2739876903,
-            "ParentUID": 1551237438,
+            "UID": 2918445496,
+            "ParentUID": 781745139,
             "Name": "Skill3",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1667,11 +1586,11 @@
                     "Enabled": 1,
                     "Position": [
                         -284.6000061035156,
-                        186.1999969482422
+                        170.1999969482422
                     ],
                     "Size": [
                         58.0,
-                        58.0
+                        75.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -1679,8 +1598,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 2801513320,
-                    "textureName": "Skill_Mock_D",
+                    "textureUID": 2936790765,
+                    "textureName": "Desactivated_Hability_Container",
                     "color": [
                         1.0,
                         0.9999899864196777,
@@ -1699,12 +1618,12 @@
             ]
         },
         {
-            "UID": 3310495914,
-            "ParentUID": 2739876903,
-            "Name": "SkillCounterBG",
+            "UID": 826779343,
+            "ParentUID": 2918445496,
+            "Name": "SkillIcon3",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1737,11 +1656,11 @@
                     "Enabled": 1,
                     "Position": [
                         -284.8999938964844,
-                        149.89999389648438
+                        180.0
                     ],
                     "Size": [
-                        30.0,
-                        15.0
+                        40.0,
+                        40.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -1749,12 +1668,12 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 676697322,
-                    "textureName": "White",
+                    "textureUID": 1052833000,
+                    "textureName": "Desactivated_Hability_1",
                     "color": [
-                        9.999999974752428e-7,
-                        0.0,
-                        0.0,
+                        1.0,
+                        0.9999899864196777,
+                        0.9999899864196777,
                         1.0
                     ],
                     "FlipVertical": 0,
@@ -1769,12 +1688,12 @@
             ]
         },
         {
-            "UID": 717982964,
-            "ParentUID": 2739876903,
+            "UID": 1369062823,
+            "ParentUID": 2918445496,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1807,7 +1726,7 @@
                     "Enabled": 1,
                     "Position": [
                         -297.79998779296877,
-                        144.8000030517578
+                        137.8000030517578
                     ],
                     "Size": [
                         100.0,
@@ -1823,9 +1742,9 @@
                     "text": "0/5",
                     "font": "Fonts/MATADOR.ttf",
                     "color": [
-                        0.35655736923217776,
-                        0.339021772146225,
-                        0.339021772146225,
+                        0.09019608050584793,
+                        0.019607843831181527,
+                        0.019607843831181527,
                         0.0
                     ],
                     "colorHovered": [
@@ -1850,12 +1769,12 @@
             ]
         },
         {
-            "UID": 3116717740,
-            "ParentUID": 1551237438,
+            "UID": 1327795220,
+            "ParentUID": 781745139,
             "Name": "Skill4",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1888,11 +1807,11 @@
                     "Enabled": 1,
                     "Position": [
                         -283.79998779296877,
-                        -33.20000076293945
+                        -50.5
                     ],
                     "Size": [
                         58.0,
-                        58.0
+                        75.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -1900,8 +1819,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 734857354,
-                    "textureName": "Skill_MacheteRain",
+                    "textureUID": 2936790765,
+                    "textureName": "Desactivated_Hability_Container",
                     "color": [
                         1.0,
                         0.9999899864196777,
@@ -1920,12 +1839,12 @@
             ]
         },
         {
-            "UID": 3256422400,
-            "ParentUID": 3116717740,
-            "Name": "SkillCounterBG",
+            "UID": 958328719,
+            "ParentUID": 1327795220,
+            "Name": "SkillIcon4",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1958,11 +1877,11 @@
                     "Enabled": 1,
                     "Position": [
                         -283.79998779296877,
-                        -70.0999984741211
+                        -40.5
                     ],
                     "Size": [
-                        30.0,
-                        15.0
+                        40.0,
+                        40.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -1970,12 +1889,12 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 676697322,
-                    "textureName": "White",
+                    "textureUID": 386296996,
+                    "textureName": "Desactivated_Hability_7",
                     "color": [
-                        9.999999974752428e-7,
-                        0.0,
-                        0.0,
+                        1.0,
+                        0.9999899864196777,
+                        0.9999899864196777,
                         1.0
                     ],
                     "FlipVertical": 0,
@@ -1990,12 +1909,12 @@
             ]
         },
         {
-            "UID": 1885397564,
-            "ParentUID": 3116717740,
+            "UID": 473385741,
+            "ParentUID": 1327795220,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -2028,7 +1947,7 @@
                     "Enabled": 1,
                     "Position": [
                         -297.20001220703127,
-                        -73.4000015258789
+                        -80.9000015258789
                     ],
                     "Size": [
                         100.0,
@@ -2044,9 +1963,9 @@
                     "text": "0/5",
                     "font": "Fonts/MATADOR.ttf",
                     "color": [
-                        0.35655736923217776,
-                        0.339021772146225,
-                        0.339021772146225,
+                        0.09019608050584793,
+                        0.019607843831181527,
+                        0.019607843831181527,
                         0.0
                     ],
                     "colorHovered": [
@@ -2071,12 +1990,12 @@
             ]
         },
         {
-            "UID": 1729051541,
-            "ParentUID": 1551237438,
+            "UID": 4000890283,
+            "ParentUID": 781745139,
             "Name": "Skill5",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -2109,7 +2028,7 @@
                     "Enabled": 1,
                     "Position": [
                         -284.6000061035156,
-                        -152.89999389648438
+                        -167.3000030517578
                     ],
                     "Size": [
                         58.0,
@@ -2121,8 +2040,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1368863784,
-                    "textureName": "Skill_Desactivada",
+                    "textureUID": 2936790765,
+                    "textureName": "Desactivated_Hability_Container",
                     "color": [
                         1.0,
                         0.9999899864196777,
@@ -2141,12 +2060,82 @@
             ]
         },
         {
-            "UID": 1054207437,
-            "ParentUID": 1729051541,
+            "UID": 4143876108,
+            "ParentUID": 4000890283,
+            "Name": "SkillIcon5",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -283.79998779296877,
+                        -158.6999969482422
+                    ],
+                    "Size": [
+                        40.0,
+                        40.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 4140996810,
+                    "textureName": "Desactivated_Hability_9",
+                    "color": [
+                        1.0,
+                        0.9999899864196777,
+                        0.9999899864196777,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 1972640176,
+            "ParentUID": 4000890283,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -2179,7 +2168,7 @@
                     "Enabled": 1,
                     "Position": [
                         -297.79998779296877,
-                        -185.5
+                        -196.0
                     ],
                     "Size": [
                         100.0,
@@ -2195,9 +2184,9 @@
                     "text": "0/1",
                     "font": "Fonts/MATADOR.ttf",
                     "color": [
-                        0.35655736923217776,
-                        0.339021772146225,
-                        0.339021772146225,
+                        0.09019608050584793,
+                        0.019607843831181527,
+                        0.019607843831181527,
                         0.0
                     ],
                     "colorHovered": [
@@ -2222,12 +2211,12 @@
             ]
         },
         {
-            "UID": 3030126048,
-            "ParentUID": 1551237438,
+            "UID": 2012212496,
+            "ParentUID": 781745139,
             "Name": "Skill6",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -2260,11 +2249,11 @@
                     "Enabled": 1,
                     "Position": [
                         -183.39999389648438,
-                        179.5
+                        170.1999969482422
                     ],
                     "Size": [
                         58.0,
-                        73.0
+                        75.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -2272,8 +2261,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1368863784,
-                    "textureName": "Skill_Desactivada",
+                    "textureUID": 2936790765,
+                    "textureName": "Desactivated_Hability_Container",
                     "color": [
                         1.0,
                         0.9999899864196777,
@@ -2292,12 +2281,82 @@
             ]
         },
         {
-            "UID": 925586179,
-            "ParentUID": 3030126048,
+            "UID": 430878062,
+            "ParentUID": 2012212496,
+            "Name": "SkillIcon6",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -183.89999389648438,
+                        180.0
+                    ],
+                    "Size": [
+                        40.0,
+                        40.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 1474843939,
+                    "textureName": "Desactivated_Hability_3",
+                    "color": [
+                        1.0,
+                        0.9999899864196777,
+                        0.9999899864196777,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 1924171196,
+            "ParentUID": 2012212496,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -2330,7 +2389,7 @@
                     "Enabled": 1,
                     "Position": [
                         -196.60000610351563,
-                        144.8000030517578
+                        137.6999969482422
                     ],
                     "Size": [
                         100.0,
@@ -2346,9 +2405,9 @@
                     "text": "0/5",
                     "font": "Fonts/MATADOR.ttf",
                     "color": [
-                        0.35655736923217776,
-                        0.339021772146225,
-                        0.339021772146225,
+                        0.09019608050584793,
+                        0.007843137718737126,
+                        0.0,
                         0.0
                     ],
                     "colorHovered": [
@@ -2373,12 +2432,12 @@
             ]
         },
         {
-            "UID": 1148470623,
-            "ParentUID": 1551237438,
+            "UID": 2247488597,
+            "ParentUID": 781745139,
             "Name": "Skill7",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -2411,7 +2470,7 @@
                     "Enabled": 1,
                     "Position": [
                         -183.39999389648438,
-                        71.5
+                        61.099998474121097
                     ],
                     "Size": [
                         58.0,
@@ -2423,8 +2482,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1368863784,
-                    "textureName": "Skill_Desactivada",
+                    "textureUID": 2936790765,
+                    "textureName": "Desactivated_Hability_Container",
                     "color": [
                         1.0,
                         0.9999899864196777,
@@ -2443,12 +2502,82 @@
             ]
         },
         {
-            "UID": 3488408109,
-            "ParentUID": 1148470623,
+            "UID": 799522890,
+            "ParentUID": 2247488597,
+            "Name": "SkillIcon7",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -183.39999389648438,
+                        71.0
+                    ],
+                    "Size": [
+                        40.0,
+                        40.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 2604386210,
+                    "textureName": "Desactivated_Hability_6",
+                    "color": [
+                        1.0,
+                        0.9999899864196777,
+                        0.9999899864196777,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 2780155517,
+            "ParentUID": 2247488597,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -2481,7 +2610,7 @@
                     "Enabled": 1,
                     "Position": [
                         -196.60000610351563,
-                        39.400001525878909
+                        29.899999618530275
                     ],
                     "Size": [
                         100.0,
@@ -2497,9 +2626,9 @@
                     "text": "0/5",
                     "font": "Fonts/MATADOR.ttf",
                     "color": [
-                        0.35655736923217776,
-                        0.339021772146225,
-                        0.339021772146225,
+                        0.09019608050584793,
+                        0.019607843831181527,
+                        0.019607843831181527,
                         0.0
                     ],
                     "colorHovered": [
@@ -2524,12 +2653,12 @@
             ]
         },
         {
-            "UID": 747483775,
-            "ParentUID": 1551237438,
+            "UID": 3305476308,
+            "ParentUID": 781745139,
             "Name": "Skill8",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -2562,7 +2691,7 @@
                     "Enabled": 1,
                     "Position": [
                         -183.39999389648438,
-                        -153.10000610351563
+                        -167.3000030517578
                     ],
                     "Size": [
                         58.0,
@@ -2574,8 +2703,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1368863784,
-                    "textureName": "Skill_Desactivada",
+                    "textureUID": 2936790765,
+                    "textureName": "Desactivated_Hability_Container",
                     "color": [
                         1.0,
                         0.9999899864196777,
@@ -2594,12 +2723,82 @@
             ]
         },
         {
-            "UID": 2758025919,
-            "ParentUID": 747483775,
+            "UID": 1064101706,
+            "ParentUID": 3305476308,
+            "Name": "SkillIcon8",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -183.39999389648438,
+                        -158.6999969482422
+                    ],
+                    "Size": [
+                        40.0,
+                        40.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 4145295781,
+                    "textureName": "Desactivated_Hability_10",
+                    "color": [
+                        1.0,
+                        0.9999899864196777,
+                        0.9999899864196777,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 65485516,
+            "ParentUID": 3305476308,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -2632,7 +2831,7 @@
                     "Enabled": 1,
                     "Position": [
                         -196.60000610351563,
-                        -185.10000610351563
+                        -196.10000610351563
                     ],
                     "Size": [
                         100.0,
@@ -2648,9 +2847,9 @@
                     "text": "0/5",
                     "font": "Fonts/MATADOR.ttf",
                     "color": [
-                        0.35655736923217776,
-                        0.339021772146225,
-                        0.339021772146225,
+                        0.09019608050584793,
+                        0.019607843831181527,
+                        0.019607843831181527,
                         0.0
                     ],
                     "colorHovered": [
@@ -2675,12 +2874,12 @@
             ]
         },
         {
-            "UID": 3182492160,
-            "ParentUID": 1551237438,
+            "UID": 1120798241,
+            "ParentUID": 781745139,
             "Name": "Skill9",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -2713,7 +2912,7 @@
                     "Enabled": 1,
                     "Position": [
                         -81.0999984741211,
-                        179.5
+                        170.1999969482422
                     ],
                     "Size": [
                         58.0,
@@ -2725,8 +2924,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1368863784,
-                    "textureName": "Skill_Desactivada",
+                    "textureUID": 2936790765,
+                    "textureName": "Desactivated_Hability_Container",
                     "color": [
                         1.0,
                         0.9999899864196777,
@@ -2745,12 +2944,82 @@
             ]
         },
         {
-            "UID": 648687444,
-            "ParentUID": 3182492160,
+            "UID": 1244920623,
+            "ParentUID": 1120798241,
+            "Name": "SkillIcon9",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -80.69999694824219,
+                        180.0
+                    ],
+                    "Size": [
+                        40.0,
+                        40.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 184765913,
+                    "textureName": "Desactivated_Hability_8",
+                    "color": [
+                        1.0,
+                        0.9999899864196777,
+                        0.9999899864196777,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 2970314734,
+            "ParentUID": 1120798241,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -2783,7 +3052,7 @@
                     "Enabled": 1,
                     "Position": [
                         -94.5999984741211,
-                        144.8000030517578
+                        137.5
                     ],
                     "Size": [
                         100.0,
@@ -2799,9 +3068,9 @@
                     "text": "0/5",
                     "font": "Fonts/MATADOR.ttf",
                     "color": [
-                        0.35655736923217776,
-                        0.339021772146225,
-                        0.339021772146225,
+                        0.09019608050584793,
+                        0.007843137718737126,
+                        0.0,
                         0.0
                     ],
                     "colorHovered": [
@@ -2826,12 +3095,12 @@
             ]
         },
         {
-            "UID": 87199350,
-            "ParentUID": 1551237438,
+            "UID": 1962386858,
+            "ParentUID": 781745139,
             "Name": "Skill10",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -2864,7 +3133,7 @@
                     "Enabled": 1,
                     "Position": [
                         -80.69999694824219,
-                        -153.89999389648438
+                        -167.3000030517578
                     ],
                     "Size": [
                         58.0,
@@ -2876,8 +3145,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1368863784,
-                    "textureName": "Skill_Desactivada",
+                    "textureUID": 2936790765,
+                    "textureName": "Desactivated_Hability_Container",
                     "color": [
                         1.0,
                         0.9999899864196777,
@@ -2896,12 +3165,12 @@
             ]
         },
         {
-            "UID": 1001170870,
-            "ParentUID": 87199350,
-            "Name": "SkillCounter",
+            "UID": 85374028,
+            "ParentUID": 1962386858,
+            "Name": "SkillIcon10",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -2933,8 +3202,78 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -96.80000305175781,
-                        -185.10000610351563
+                        -81.30000305175781,
+                        -158.6999969482422
+                    ],
+                    "Size": [
+                        40.0,
+                        40.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 472688446,
+                    "textureName": "Desactivated_Hability_11",
+                    "color": [
+                        1.0,
+                        0.9999899864196777,
+                        0.9999899864196777,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 1679858139,
+            "ParentUID": 1962386858,
+            "Name": "SkillCounter",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -95.80000305175781,
+                        -196.8000030517578
                     ],
                     "Size": [
                         100.0,
@@ -2950,9 +3289,9 @@
                     "text": "0/5",
                     "font": "Fonts/MATADOR.ttf",
                     "color": [
-                        0.35655736923217776,
-                        0.339021772146225,
-                        0.339021772146225,
+                        0.09019608050584793,
+                        0.019607843831181527,
+                        0.019607843831181527,
                         0.0
                     ],
                     "colorHovered": [
@@ -2977,12 +3316,12 @@
             ]
         },
         {
-            "UID": 3867106971,
-            "ParentUID": 3846922656,
+            "UID": 279482628,
+            "ParentUID": 3712580878,
             "Name": "HoverGO",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -3016,7 +3355,7 @@
                     "Position": [
                         0.0,
                         0.0,
-                        0.0
+                        -200.0
                     ],
                     "Rotation": [
                         0.0,
@@ -3046,7 +3385,7 @@
                         0.0,
                         0.0,
                         1.0,
-                        0.0,
+                        -200.0,
                         0.0,
                         0.0,
                         0.0,
@@ -3056,12 +3395,12 @@
             ]
         },
         {
-            "UID": 2543935048,
-            "ParentUID": 3867106971,
+            "UID": 3833745863,
+            "ParentUID": 279482628,
             "Name": "SkillHover",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -3094,7 +3433,7 @@
                     "Enabled": 1,
                     "Position": [
                         -386.5,
-                        186.39999389648438
+                        179.10000610351563
                     ],
                     "Size": [
                         100.0,
@@ -3126,12 +3465,12 @@
             ]
         },
         {
-            "UID": 4195352167,
-            "ParentUID": 3846922656,
+            "UID": 3957147354,
+            "ParentUID": 3712580878,
             "Name": "Candado",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -3154,7 +3493,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 1,
+            "openInHierarchy": 0,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -3165,7 +3504,7 @@
                     "Position": [
                         0.0,
                         0.0,
-                        0.0
+                        -200.0
                     ],
                     "Rotation": [
                         0.0,
@@ -3195,7 +3534,7 @@
                         0.0,
                         0.0,
                         1.0,
-                        0.0,
+                        -200.0,
                         0.0,
                         0.0,
                         0.0,
@@ -3205,12 +3544,12 @@
             ]
         },
         {
-            "UID": 2651788497,
-            "ParentUID": 4195352167,
+            "UID": 3231237249,
+            "ParentUID": 3957147354,
             "Name": "C1",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -3243,7 +3582,7 @@
                     "Enabled": 1,
                     "Position": [
                         -207.5,
-                        208.5
+                        156.10000610351563
                     ],
                     "Size": [
                         45.0,
@@ -3270,17 +3609,17 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 1
                 }
             ]
         },
         {
-            "UID": 622186711,
-            "ParentUID": 4195352167,
+            "UID": 2892033927,
+            "ParentUID": 3957147354,
             "Name": "C2",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -3313,7 +3652,7 @@
                     "Enabled": 1,
                     "Position": [
                         -110.69999694824219,
-                        208.5
+                        155.8000030517578
                     ],
                     "Size": [
                         45.0,
@@ -3340,17 +3679,17 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 1
                 }
             ]
         },
         {
-            "UID": 1714511610,
-            "ParentUID": 4195352167,
+            "UID": 492188830,
+            "ParentUID": 3957147354,
             "Name": "C3",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -3383,7 +3722,7 @@
                     "Enabled": 1,
                     "Position": [
                         -313.5,
-                        -111.69999694824219
+                        -131.89999389648438
                     ],
                     "Size": [
                         45.0,
@@ -3410,238 +3749,17 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 1
                 }
             ]
         },
         {
-            "UID": 3914119530,
-            "ParentUID": 2863463407,
-            "Name": "SkillsPointsMargin",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 0,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -229.6999969482422,
-                        -267.6000061035156
-                    ],
-                    "Size": [
-                        415.5,
-                        67.0
-                    ],
-                    "Anchor": 5,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 7,
-                    "Enabled": 1,
-                    "textureUID": 676697322,
-                    "textureName": "White",
-                    "color": [
-                        9.999999974752428e-7,
-                        0.0,
-                        0.0,
-                        1.0
-                    ],
-                    "FlipVertical": 0,
-                    "FlipHorizontal": 0,
-                    "isMasked": 0,
-                    "maskAmount": 0,
-                    "isMaskHorizontal": 0,
-                    "hoverDetectionMouse1": 1,
-                    "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
-            "UID": 2408534677,
-            "ParentUID": 3914119530,
-            "Name": "SkillsPointsBackground",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -229.5,
-                        -268.0
-                    ],
-                    "Size": [
-                        398.5,
-                        53.5
-                    ],
-                    "Anchor": 5,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 7,
-                    "Enabled": 1,
-                    "textureUID": 676697322,
-                    "textureName": "White",
-                    "color": [
-                        0.0,
-                        0.805853545665741,
-                        0.9467213153839111,
-                        1.0
-                    ],
-                    "FlipVertical": 0,
-                    "FlipHorizontal": 0,
-                    "isMasked": 0,
-                    "maskAmount": 100,
-                    "isMaskHorizontal": 0,
-                    "hoverDetectionMouse1": 1,
-                    "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
-            "UID": 908569518,
-            "ParentUID": 3914119530,
-            "Name": "SkillPointsLabel",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -377.5,
-                        -275.5
-                    ],
-                    "Size": [
-                        100.0,
-                        100.0
-                    ],
-                    "Anchor": 5,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 6,
-                    "Enabled": 1,
-                    "FontSize": 14.0,
-                    "text": "Skill Points:",
-                    "font": "Fonts/TACOSRG.ttf",
-                    "color": [
-                        9.999999974752428e-7,
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "colorHovered": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        0.0
-                    ],
-                    "offset": [
-                        0.0,
-                        0.0
-                    ],
-                    "scaleOffset": [
-                        4.0,
-                        4.0
-                    ],
-                    "IsTextWrapped": 0,
-                    "WrapWidth": 0.0,
-                    "InterlineDistance": 0.0,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
-            "UID": 4158338455,
-            "ParentUID": 3914119530,
+            "UID": 3058773762,
+            "ParentUID": 3712580878,
             "Name": "SkillPoints",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -3673,8 +3791,8 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -164.3000030517578,
-                        -275.6000061035156
+                        -154.3000030517578,
+                        -290.8999938964844
                     ],
                     "Size": [
                         100.0,
@@ -3690,9 +3808,9 @@
                     "text": "0",
                     "font": "Fonts/TACOSRG.ttf",
                     "color": [
-                        9.999999974752428e-7,
-                        0.0,
-                        0.0,
+                        0.8401639461517334,
+                        0.7934237718582153,
+                        0.1274019032716751,
                         0.0
                     ],
                     "colorHovered": [
@@ -3717,12 +3835,12 @@
             ]
         },
         {
-            "UID": 1793981407,
-            "ParentUID": 2863463407,
+            "UID": 2988805521,
+            "ParentUID": 990807230,
             "Name": "SkillInfo",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 0,
+            "ActiveInHierarchy": 1,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
