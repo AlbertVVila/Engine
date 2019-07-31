@@ -3,7 +3,7 @@
 #include "BuriedEnemyAIScript.h"
 #include "EnemyControllerScript.h"
 
-#define START_POS_OFFSET  1.5f
+#define START_POS_OFFSET  25.0f
 
 EnemyStateReturnToStart::EnemyStateReturnToStart(BuriedEnemyAIScript* AIScript)
 {
