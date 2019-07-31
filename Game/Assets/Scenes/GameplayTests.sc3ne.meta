@@ -1,5 +1,10 @@
 {
     "Scene": {
-        "GUID": 3455424807
+        "metaVersion": 2,
+        "timeCreated": 1563536366,
+        "GUID": 3455424807,
+        "Name": "GameplayTests",
+        "File": "Assets/Scenes/GameplayTests.sc3ne",
+        "ExportedFile": "Library/Scenes/3455424807.sc3ne"
     }
 }

@@ -1,13 +1,11 @@
 {
     "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1563536366,
         "GUID": 3929717142,
-        "timeCreated": 1557418424,
-        "height": 1024,
-        "width": 1024,
-        "depth": 1,
-        "mips": 0,
-        "format": 6408,
-        "DX compresion": 1802,
-        "mipmap": 0
+        "Name": "ZomBunnyEmissive",
+        "File": "Assets/Models/Zombunny/ZomBunnyEmissive.png",
+        "ExportedFile": "Library/Textures/3929717142.dds",
+        "DX compresion": 1802
     }
 }

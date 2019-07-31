@@ -1,13 +1,11 @@
 {
     "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1564156739,
         "GUID": 2057694653,
-        "timeCreated": 1562862494,
-        "height": 1024,
-        "width": 1024,
-        "depth": 1,
-        "mips": 0,
-        "format": 6408,
-        "DX compresion": 1802,
-        "mipmap": 0
+        "Name": "Tree_leafs_DF",
+        "File": "Assets/TexturesLevel0/Tree_leafs/Tree_leafs_DF.png",
+        "ExportedFile": "Library/Textures/2057694653.dds",
+        "DX compresion": 1802
     }
 }
