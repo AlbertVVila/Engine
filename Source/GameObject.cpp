@@ -406,7 +406,7 @@ void GameObject::SetActiveInHierarchy(bool active)
 	OnChangeActiveState(wasActive);
 }
 
-Component* GameObject::CreateComponent(ComponentType type, JSON_value* value)
+Component* GameObject::CreateComponent(ComponentType type, JSON_value* value, bool prefabTemplate)
 {
 	Component* component = nullptr;
 	switch (type)
@@ -429,10 +429,13 @@ Component* GameObject::CreateComponent(ComponentType type, JSON_value* value)
 		if (!hasLight && !isVolumetric)
 		{
 			component = new ComponentLight(this);
-			App->scene->lights.push_back((ComponentLight*)component);
+			if (!prefabTemplate)
+			{
+				App->scene->lights.push_back((ComponentLight*)component);
+				App->spacePartitioning->aabbTreeLighting.InsertGO(this);
+			}
 			hasLight = true;
 			light = (ComponentLight*)component;
-			App->spacePartitioning->aabbTreeLighting.InsertGO(this);
 			movedFlag = true;
 		}
 		else
@@ -449,7 +452,7 @@ Component* GameObject::CreateComponent(ComponentType type, JSON_value* value)
 		break;
 	case ComponentType::Camera:
 		component = new ComponentCamera(this);
-		if (App->scene->maincamera == nullptr)
+		if (App->scene->maincamera == nullptr && !prefabTemplate)
 		{
 			App->scene->maincamera = (ComponentCamera*)component;
 			App->scene->maincamera->isMainCamera = true;
@@ -480,6 +483,11 @@ Component* GameObject::CreateComponent(ComponentType type, JSON_value* value)
 			{
 				script->SetGameObject(this);
 				component = (Component*)script;
+				if (prefabTemplate)
+				{
+					App->scripting->RemoveScript(script, name);
+				}
+				//if is prefab then remove from componentlist + remove script don't rest reference if not found
 			}
 			else
 			{
@@ -979,6 +987,15 @@ void GameObject::UpdateToPrefab(GameObject* prefabGo)
 	{
 		App->scene->AddToSpacePartition(this);
 	}
+
+	for (Component* c : GetComponentsInChildren(ComponentType::Renderer))
+	{
+		ComponentRenderer* cr = (ComponentRenderer*)c;
+		if (cr->mesh != nullptr)
+		{
+			cr->LinkBones();
+		}
+	}
 }
 
 AABB GameObject::GetBoundingBox() const
@@ -1159,7 +1176,7 @@ void GameObject::Load(JSON_value *value, bool prefabTemplate)
 	{
 		JSON_value* componentJSON = componentsJSON->GetValue(i);
 		ComponentType type = (ComponentType)componentJSON->GetUint("Type");
-		Component* component = CreateComponent(type, componentJSON);
+		Component* component = CreateComponent(type, componentJSON, prefabTemplate);
 		if (component)
 		{
 			component->Load(componentJSON);
@@ -1176,13 +1193,6 @@ void GameObject::Load(JSON_value *value, bool prefabTemplate)
 		movedFlag = true;
 	}
 
-	if (isPrefab && isPrefabSync)
-	{
-		if(!prefabTemplate && App->scene->PrefabWasUpdated(prefabUID))
-		{
-			UpdateToPrefab(prefab->RetrievePrefab());
-		}
-	}
 }
 
 bool GameObject::IsParented(const GameObject & gameobject) const

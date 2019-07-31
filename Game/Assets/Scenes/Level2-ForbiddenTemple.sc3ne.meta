@@ -1,5 +1,10 @@
 {
     "Scene": {
-        "GUID": 4063729338
+        "metaVersion": 2,
+        "timeCreated": 1563536366,
+        "GUID": 4063729338,
+        "Name": "Level2-ForbiddenTemple",
+        "File": "Assets/Scenes/Level2-ForbiddenTemple.sc3ne",
+        "ExportedFile": "Library/Scenes/4063729338.sc3ne"
     }
 }

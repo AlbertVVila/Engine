@@ -233,14 +233,18 @@ bool ModuleScript::RemoveScript(Script* script, const std::string& name)
 	std::map<std::string, std::pair<HINSTANCE,int>>::iterator itDll = loadedDLLs.find(name);
 	if (itDll != loadedDLLs.end())
 	{
+		bool scriptRemoved = false;
 		for (auto it = componentsScript.begin(); it != componentsScript.end(); ++it)
 		{
 			if (*it == script)
 			{
 				componentsScript.erase(it);
+				scriptRemoved = true;
 				break;
 			}
 		}
+		if (!scriptRemoved) return false;
+
 		itDll->second.second--;
 		if(itDll->second.second == 0)
 		{
