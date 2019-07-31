@@ -2128,8 +2128,8 @@
                     "buttonImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 870545374,
-                        "textureName": "Menu",
+                        "textureUID": 2499547453,
+                        "textureName": "Button_Menu",
                         "color": [
                             1.0,
                             1.0,
@@ -2148,8 +2148,8 @@
                     "highlightedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 870545374,
-                        "textureName": "Menu",
+                        "textureUID": 2499547453,
+                        "textureName": "Button_Menu",
                         "color": [
                             0.5882353186607361,
                             0.5882353186607361,
@@ -2168,8 +2168,8 @@
                     "pressedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 870545374,
-                        "textureName": "Menu",
+                        "textureUID": 2499547453,
+                        "textureName": "Button_Menu",
                         "color": [
                             0.19607843458652497,
                             0.19607843458652497,
@@ -2276,8 +2276,8 @@
                     "buttonImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 1938062722,
-                        "textureName": "Inventario",
+                        "textureUID": 795237118,
+                        "textureName": "Button_Inventory",
                         "color": [
                             1.0,
                             1.0,
@@ -2296,8 +2296,8 @@
                     "highlightedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 1938062722,
-                        "textureName": "Inventario",
+                        "textureUID": 795237118,
+                        "textureName": "Button_Inventory",
                         "color": [
                             0.5882353186607361,
                             0.5882353186607361,
@@ -2316,8 +2316,8 @@
                     "pressedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 1938062722,
-                        "textureName": "Inventario",
+                        "textureUID": 795237118,
+                        "textureName": "Button_Inventory",
                         "color": [
                             0.19607843458652497,
                             0.19607843458652497,
@@ -2424,8 +2424,8 @@
                     "buttonImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 4220086960,
-                        "textureName": "Skills",
+                        "textureUID": 4145752307,
+                        "textureName": "Button_skills",
                         "color": [
                             1.0,
                             1.0,
@@ -2444,8 +2444,8 @@
                     "highlightedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 4220086960,
-                        "textureName": "Skills",
+                        "textureUID": 4145752307,
+                        "textureName": "Button_skills",
                         "color": [
                             0.5882353186607361,
                             0.5882353186607361,
@@ -2464,8 +2464,8 @@
                     "pressedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 4220086960,
-                        "textureName": "Skills",
+                        "textureUID": 4145752307,
+                        "textureName": "Button_skills",
                         "color": [
                             0.19607843458652497,
                             0.19607843458652497,
@@ -2572,8 +2572,8 @@
                     "buttonImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 425469955,
-                        "textureName": "Misiones",
+                        "textureUID": 3596890692,
+                        "textureName": "Button_Quest",
                         "color": [
                             1.0,
                             1.0,
@@ -2592,8 +2592,8 @@
                     "highlightedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 425469955,
-                        "textureName": "Misiones",
+                        "textureUID": 3596890692,
+                        "textureName": "Button_Quest",
                         "color": [
                             0.5882353186607361,
                             0.5882353186607361,
@@ -2612,8 +2612,8 @@
                     "pressedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 425469955,
-                        "textureName": "Misiones",
+                        "textureUID": 3596890692,
+                        "textureName": "Button_Quest",
                         "color": [
                             0.19607843458652497,
                             0.19607843458652497,
@@ -2629,76 +2629,6 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0
                     },
-                    "hoverDetectionMouse1": 1,
-                    "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
-            "UID": 684110924,
-            "ParentUID": 1127476258,
-            "Name": "Map",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 1,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -107.5999984741211,
-                        -119.4000015258789
-                    ],
-                    "Size": [
-                        180.0,
-                        180.0
-                    ],
-                    "Anchor": 2,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 7,
-                    "Enabled": 1,
-                    "textureUID": 3058328913,
-                    "textureName": "Mapa",
-                    "color": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        0.4901960790157318
-                    ],
-                    "FlipVertical": 0,
-                    "FlipHorizontal": 0,
-                    "isMasked": 0,
-                    "maskAmount": 0,
-                    "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 0
@@ -5274,7 +5204,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 1,
+            "openInHierarchy": 0,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -5296,8 +5226,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 2448912567,
-                    "textureName": "BackgroundMana",
+                    "textureUID": 2897156129,
+                    "textureName": "Health_Mana_Container_1",
                     "color": [
                         1.0,
                         1.0,
@@ -5317,7 +5247,7 @@
         },
         {
             "UID": 1152620966,
-            "ParentUID": 1127476258,
+            "ParentUID": 3244267934,
             "Name": "Mana",
             "Tag": "Default",
             "Static": 0,
@@ -5357,8 +5287,8 @@
                         75.0
                     ],
                     "Size": [
-                        100.0,
-                        100.0
+                        85.0,
+                        85.0
                     ],
                     "Anchor": 7,
                     "Stretch": 3
@@ -5366,8 +5296,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3513235518,
-                    "textureName": "BlueCircle",
+                    "textureUID": 1994961487,
+                    "textureName": "Mana_2",
                     "color": [
                         1.0,
                         1.0,
@@ -5387,7 +5317,7 @@
         },
         {
             "UID": 3098686715,
-            "ParentUID": 1127476258,
+            "ParentUID": 3244267934,
             "Name": "ManaBubble",
             "Tag": "Default",
             "Static": 0,
@@ -5436,8 +5366,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 716063318,
-                    "textureName": "Bubble",
+                    "textureUID": 3504017917,
+                    "textureName": "Health_Mana_Bubble_3",
                     "color": [
                         1.0,
                         1.0,
@@ -5793,11 +5723,11 @@
                     "Enabled": 1,
                     "Position": [
                         0.0,
-                        29.799999237060548
+                        31.399999618530275
                     ],
                     "Size": [
-                        596.0,
-                        40.5
+                        646.5,
+                        43.5
                     ],
                     "Anchor": 7,
                     "Stretch": 3
@@ -5805,8 +5735,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3215170265,
-                    "textureName": "Experiencia_Contenedor",
+                    "textureUID": 1358843066,
+                    "textureName": "Barra_Exp_1",
                     "color": [
                         1.0,
                         0.9999899864196777,
@@ -5899,7 +5829,7 @@
                     ],
                     "Size": [
                         460.5,
-                        7.0
+                        5.0
                     ],
                     "Anchor": 7,
                     "Stretch": 3
@@ -5907,12 +5837,12 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 676697322,
-                    "textureName": "White",
+                    "textureUID": 894067112,
+                    "textureName": "Barra_Exp_2",
                     "color": [
-                        0.9058823585510254,
-                        0.4313725531101227,
-                        0.0,
+                        1.0,
+                        0.9999947547912598,
+                        0.9999899864196777,
                         1.0
                     ],
                     "FlipVertical": 0,
@@ -5920,6 +5850,76 @@
                     "isMasked": 1,
                     "maskAmount": 0,
                     "isMaskHorizontal": 1,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 1353664963,
+            "ParentUID": 2173048441,
+            "Name": "XpLines",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        0.0,
+                        14.300000190734864
+                    ],
+                    "Size": [
+                        256.0,
+                        5.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 23668328,
+                    "textureName": "Barra_Exp_3",
+                    "color": [
+                        1.0,
+                        0.9999947547912598,
+                        0.9999899864196777,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 0
@@ -5955,7 +5955,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 1,
+            "openInHierarchy": 0,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -5977,8 +5977,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3826883572,
-                    "textureName": "BackgroundLife",
+                    "textureUID": 2897156129,
+                    "textureName": "Health_Mana_Container_1",
                     "color": [
                         1.0,
                         0.9999899864196777,
@@ -5998,7 +5998,7 @@
         },
         {
             "UID": 1475976605,
-            "ParentUID": 1127476258,
+            "ParentUID": 389141661,
             "Name": "Life",
             "Tag": "Default",
             "Static": 0,
@@ -6047,8 +6047,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1160191572,
-                    "textureName": "RedCircle",
+                    "textureUID": 2515181209,
+                    "textureName": "Health_2",
                     "color": [
                         1.0,
                         1.0,
@@ -6068,7 +6068,7 @@
         },
         {
             "UID": 1119524677,
-            "ParentUID": 1127476258,
+            "ParentUID": 389141661,
             "Name": "LifeBubble",
             "Tag": "Default",
             "Static": 0,
@@ -6117,8 +6117,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 716063318,
-                    "textureName": "Bubble",
+                    "textureUID": 3504017917,
+                    "textureName": "Health_Mana_Bubble_3",
                     "color": [
                         1.0,
                         1.0,
@@ -6137,83 +6137,13 @@
             ]
         },
         {
-            "UID": 106745968,
-            "ParentUID": 1127476258,
-            "Name": "Tacometer",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 1,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        0.8999999761581421,
-                        133.39999389648438
-                    ],
-                    "Size": [
-                        297.5,
-                        47.5
-                    ],
-                    "Anchor": 7,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 7,
-                    "Enabled": 1,
-                    "textureUID": 2626235633,
-                    "textureName": "Habilidad",
-                    "color": [
-                        1.0,
-                        0.9999899864196777,
-                        0.9999899864196777,
-                        0.9960784316062927
-                    ],
-                    "FlipVertical": 0,
-                    "FlipHorizontal": 0,
-                    "isMasked": 0,
-                    "maskAmount": 0,
-                    "isMaskHorizontal": 0,
-                    "hoverDetectionMouse1": 1,
-                    "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
             "UID": 784073150,
             "ParentUID": 1,
             "Name": "PlayerMenu",
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 1,
-            "ActiveSelf": 1,
+            "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
                 1.0,
@@ -6235,7 +6165,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 1,
+            "openInHierarchy": 0,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -6247,7 +6177,7 @@
             "Name": "BackgroundImage",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -6317,7 +6247,7 @@
             "Name": "CloseButton",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -6465,7 +6395,7 @@
             "Name": "Inventory",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -12536,7 +12466,7 @@
             "Name": "Quests",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -12722,7 +12652,7 @@
             "Name": "Skills",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -12883,12 +12813,12 @@
             ]
         },
         {
-            "UID": 3712580878,
+            "UID": 574655098,
             "ParentUID": 990807230,
             "Name": "SkillsBackgroundImage",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -12953,12 +12883,12 @@
             ]
         },
         {
-            "UID": 3141595767,
-            "ParentUID": 3712580878,
+            "UID": 3852194221,
+            "ParentUID": 574655098,
             "Name": "SkillConnections",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -12992,7 +12922,7 @@
                     "Position": [
                         0.0,
                         0.0,
-                        -200.0
+                        -300.0
                     ],
                     "Rotation": [
                         0.0,
@@ -13022,7 +12952,7 @@
                         0.0,
                         0.0,
                         1.0,
-                        -200.0,
+                        -300.0,
                         0.0,
                         0.0,
                         0.0,
@@ -13032,12 +12962,12 @@
             ]
         },
         {
-            "UID": 69676256,
-            "ParentUID": 3141595767,
+            "UID": 2062086708,
+            "ParentUID": 3852194221,
             "Name": "Connection0",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -13102,12 +13032,12 @@
             ]
         },
         {
-            "UID": 3203755541,
-            "ParentUID": 3141595767,
+            "UID": 2953808684,
+            "ParentUID": 3852194221,
             "Name": "Connection1",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -13172,12 +13102,12 @@
             ]
         },
         {
-            "UID": 1596576496,
-            "ParentUID": 3141595767,
+            "UID": 4222748797,
+            "ParentUID": 3852194221,
             "Name": "Connection2",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -13242,12 +13172,12 @@
             ]
         },
         {
-            "UID": 3498562053,
-            "ParentUID": 3141595767,
+            "UID": 1478855415,
+            "ParentUID": 3852194221,
             "Name": "Connection3",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -13312,12 +13242,12 @@
             ]
         },
         {
-            "UID": 3905535326,
-            "ParentUID": 3141595767,
+            "UID": 479846205,
+            "ParentUID": 3852194221,
             "Name": "Connection4",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -13382,12 +13312,12 @@
             ]
         },
         {
-            "UID": 3762570365,
-            "ParentUID": 3141595767,
+            "UID": 219669945,
+            "ParentUID": 3852194221,
             "Name": "Connection5",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -13452,12 +13382,12 @@
             ]
         },
         {
-            "UID": 3878152739,
-            "ParentUID": 3141595767,
+            "UID": 3302271319,
+            "ParentUID": 3852194221,
             "Name": "Connection6",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -13522,12 +13452,12 @@
             ]
         },
         {
-            "UID": 781745139,
-            "ParentUID": 3712580878,
+            "UID": 1829501426,
+            "ParentUID": 574655098,
             "Name": "SkillSlots",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -13561,7 +13491,7 @@
                     "Position": [
                         0.0,
                         0.0,
-                        -200.0
+                        -300.0
                     ],
                     "Rotation": [
                         0.0,
@@ -13591,7 +13521,7 @@
                         0.0,
                         0.0,
                         1.0,
-                        -200.0,
+                        -300.0,
                         0.0,
                         0.0,
                         0.0,
@@ -13601,12 +13531,12 @@
             ]
         },
         {
-            "UID": 2135469686,
-            "ParentUID": 781745139,
+            "UID": 375706317,
+            "ParentUID": 1829501426,
             "Name": "Skill0",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -13671,12 +13601,12 @@
             ]
         },
         {
-            "UID": 232192312,
-            "ParentUID": 2135469686,
+            "UID": 231402113,
+            "ParentUID": 375706317,
             "Name": "SkillIcon0",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -13741,12 +13671,12 @@
             ]
         },
         {
-            "UID": 1315543084,
-            "ParentUID": 2135469686,
+            "UID": 1328949426,
+            "ParentUID": 375706317,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -13822,12 +13752,12 @@
             ]
         },
         {
-            "UID": 3768323349,
-            "ParentUID": 781745139,
+            "UID": 2489044440,
+            "ParentUID": 1829501426,
             "Name": "Skill1",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -13892,12 +13822,12 @@
             ]
         },
         {
-            "UID": 2592191082,
-            "ParentUID": 3768323349,
+            "UID": 1166606348,
+            "ParentUID": 2489044440,
             "Name": "SkillIcon1",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -13962,12 +13892,12 @@
             ]
         },
         {
-            "UID": 450991340,
-            "ParentUID": 3768323349,
+            "UID": 577086606,
+            "ParentUID": 2489044440,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -14043,12 +13973,12 @@
             ]
         },
         {
-            "UID": 3839293866,
-            "ParentUID": 781745139,
+            "UID": 96295048,
+            "ParentUID": 1829501426,
             "Name": "Skill2",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -14113,12 +14043,12 @@
             ]
         },
         {
-            "UID": 1026202866,
-            "ParentUID": 3839293866,
+            "UID": 3126167102,
+            "ParentUID": 96295048,
             "Name": "SkillIcon2",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -14183,12 +14113,12 @@
             ]
         },
         {
-            "UID": 676617334,
-            "ParentUID": 3839293866,
+            "UID": 1607207834,
+            "ParentUID": 96295048,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -14264,12 +14194,12 @@
             ]
         },
         {
-            "UID": 2918445496,
-            "ParentUID": 781745139,
+            "UID": 3278850556,
+            "ParentUID": 1829501426,
             "Name": "Skill3",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -14334,12 +14264,12 @@
             ]
         },
         {
-            "UID": 826779343,
-            "ParentUID": 2918445496,
+            "UID": 1224014867,
+            "ParentUID": 3278850556,
             "Name": "SkillIcon3",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -14404,12 +14334,12 @@
             ]
         },
         {
-            "UID": 1369062823,
-            "ParentUID": 2918445496,
+            "UID": 2621774954,
+            "ParentUID": 3278850556,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -14485,12 +14415,12 @@
             ]
         },
         {
-            "UID": 1327795220,
-            "ParentUID": 781745139,
+            "UID": 3014216000,
+            "ParentUID": 1829501426,
             "Name": "Skill4",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -14555,12 +14485,12 @@
             ]
         },
         {
-            "UID": 958328719,
-            "ParentUID": 1327795220,
+            "UID": 1880001792,
+            "ParentUID": 3014216000,
             "Name": "SkillIcon4",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -14625,12 +14555,12 @@
             ]
         },
         {
-            "UID": 473385741,
-            "ParentUID": 1327795220,
+            "UID": 713909531,
+            "ParentUID": 3014216000,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -14706,12 +14636,12 @@
             ]
         },
         {
-            "UID": 4000890283,
-            "ParentUID": 781745139,
+            "UID": 2222119933,
+            "ParentUID": 1829501426,
             "Name": "Skill5",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -14776,12 +14706,12 @@
             ]
         },
         {
-            "UID": 4143876108,
-            "ParentUID": 4000890283,
+            "UID": 3023532404,
+            "ParentUID": 2222119933,
             "Name": "SkillIcon5",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -14846,12 +14776,12 @@
             ]
         },
         {
-            "UID": 1972640176,
-            "ParentUID": 4000890283,
+            "UID": 3842560423,
+            "ParentUID": 2222119933,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -14927,12 +14857,12 @@
             ]
         },
         {
-            "UID": 2012212496,
-            "ParentUID": 781745139,
+            "UID": 3969406210,
+            "ParentUID": 1829501426,
             "Name": "Skill6",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -14997,12 +14927,12 @@
             ]
         },
         {
-            "UID": 430878062,
-            "ParentUID": 2012212496,
+            "UID": 2118884372,
+            "ParentUID": 3969406210,
             "Name": "SkillIcon6",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -15067,12 +14997,12 @@
             ]
         },
         {
-            "UID": 1924171196,
-            "ParentUID": 2012212496,
+            "UID": 3216538126,
+            "ParentUID": 3969406210,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -15148,12 +15078,12 @@
             ]
         },
         {
-            "UID": 2247488597,
-            "ParentUID": 781745139,
+            "UID": 623963628,
+            "ParentUID": 1829501426,
             "Name": "Skill7",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -15218,12 +15148,12 @@
             ]
         },
         {
-            "UID": 799522890,
-            "ParentUID": 2247488597,
+            "UID": 3513387643,
+            "ParentUID": 623963628,
             "Name": "SkillIcon7",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -15288,12 +15218,12 @@
             ]
         },
         {
-            "UID": 2780155517,
-            "ParentUID": 2247488597,
+            "UID": 950000364,
+            "ParentUID": 623963628,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -15369,12 +15299,12 @@
             ]
         },
         {
-            "UID": 3305476308,
-            "ParentUID": 781745139,
+            "UID": 3779655576,
+            "ParentUID": 1829501426,
             "Name": "Skill8",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -15439,12 +15369,12 @@
             ]
         },
         {
-            "UID": 1064101706,
-            "ParentUID": 3305476308,
+            "UID": 783518658,
+            "ParentUID": 3779655576,
             "Name": "SkillIcon8",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -15509,12 +15439,12 @@
             ]
         },
         {
-            "UID": 65485516,
-            "ParentUID": 3305476308,
+            "UID": 2775737436,
+            "ParentUID": 3779655576,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -15590,12 +15520,12 @@
             ]
         },
         {
-            "UID": 1120798241,
-            "ParentUID": 781745139,
+            "UID": 480839013,
+            "ParentUID": 1829501426,
             "Name": "Skill9",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -15660,12 +15590,12 @@
             ]
         },
         {
-            "UID": 1244920623,
-            "ParentUID": 1120798241,
+            "UID": 3155125025,
+            "ParentUID": 480839013,
             "Name": "SkillIcon9",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -15730,12 +15660,12 @@
             ]
         },
         {
-            "UID": 2970314734,
-            "ParentUID": 1120798241,
+            "UID": 3835991141,
+            "ParentUID": 480839013,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -15811,12 +15741,12 @@
             ]
         },
         {
-            "UID": 1962386858,
-            "ParentUID": 781745139,
+            "UID": 300718901,
+            "ParentUID": 1829501426,
             "Name": "Skill10",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -15881,12 +15811,12 @@
             ]
         },
         {
-            "UID": 85374028,
-            "ParentUID": 1962386858,
+            "UID": 3101349390,
+            "ParentUID": 300718901,
             "Name": "SkillIcon10",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -15951,12 +15881,12 @@
             ]
         },
         {
-            "UID": 1679858139,
-            "ParentUID": 1962386858,
+            "UID": 31898579,
+            "ParentUID": 300718901,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -16032,12 +15962,12 @@
             ]
         },
         {
-            "UID": 279482628,
-            "ParentUID": 3712580878,
+            "UID": 2035974109,
+            "ParentUID": 574655098,
             "Name": "HoverGO",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -16071,7 +16001,7 @@
                     "Position": [
                         0.0,
                         0.0,
-                        -200.0
+                        -300.0
                     ],
                     "Rotation": [
                         0.0,
@@ -16101,7 +16031,7 @@
                         0.0,
                         0.0,
                         1.0,
-                        -200.0,
+                        -300.0,
                         0.0,
                         0.0,
                         0.0,
@@ -16111,12 +16041,12 @@
             ]
         },
         {
-            "UID": 3833745863,
-            "ParentUID": 279482628,
+            "UID": 1812502722,
+            "ParentUID": 2035974109,
             "Name": "SkillHover",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -16181,12 +16111,12 @@
             ]
         },
         {
-            "UID": 3957147354,
-            "ParentUID": 3712580878,
+            "UID": 2238039388,
+            "ParentUID": 574655098,
             "Name": "Candado",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -16220,7 +16150,7 @@
                     "Position": [
                         0.0,
                         0.0,
-                        -200.0
+                        -300.0
                     ],
                     "Rotation": [
                         0.0,
@@ -16250,7 +16180,7 @@
                         0.0,
                         0.0,
                         1.0,
-                        -200.0,
+                        -300.0,
                         0.0,
                         0.0,
                         0.0,
@@ -16260,12 +16190,12 @@
             ]
         },
         {
-            "UID": 3231237249,
-            "ParentUID": 3957147354,
+            "UID": 2837704545,
+            "ParentUID": 2238039388,
             "Name": "C1",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -16330,12 +16260,12 @@
             ]
         },
         {
-            "UID": 2892033927,
-            "ParentUID": 3957147354,
+            "UID": 3495523978,
+            "ParentUID": 2238039388,
             "Name": "C2",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -16400,12 +16330,12 @@
             ]
         },
         {
-            "UID": 492188830,
-            "ParentUID": 3957147354,
+            "UID": 2575619305,
+            "ParentUID": 2238039388,
             "Name": "C3",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -16470,12 +16400,12 @@
             ]
         },
         {
-            "UID": 3058773762,
-            "ParentUID": 3712580878,
+            "UID": 4277214430,
+            "ParentUID": 574655098,
             "Name": "SkillPoints",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -16551,12 +16481,12 @@
             ]
         },
         {
-            "UID": 2988805521,
+            "UID": 1016573946,
             "ParentUID": 990807230,
             "Name": "SkillInfo",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
