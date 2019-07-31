@@ -6,6 +6,7 @@
 EnemyStateChase::EnemyStateChase(BuriedEnemyAIScript* AIScript)
 {
 	enemy = AIScript;
+	trigger = "Chase";
 }
 
 
@@ -38,5 +39,6 @@ void EnemyStateChase::HandleIA()
 
 void EnemyStateChase::Update()
 {
-
+	// Move towards the player
+	enemy->enemyController->Move(enemy->runSpeed, refreshTime, enemy->enemyController->GetPlayerPosition(), enemyPath);
 }

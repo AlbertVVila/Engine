@@ -6,6 +6,7 @@
 EnemyStateShowUp::EnemyStateShowUp(BuriedEnemyAIScript* AIScript)
 {
 	enemy = AIScript;
+	trigger = "ShowUp";
 }
 
 

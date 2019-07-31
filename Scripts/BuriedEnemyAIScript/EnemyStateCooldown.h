@@ -8,6 +8,9 @@ class EnemyStateCooldown :
 public:
 	EnemyStateCooldown(BuriedEnemyAIScript* AIScript);
 	~EnemyStateCooldown();
+
+	void HandleIA() override;
+	void Update() override;
 };
 
 #endif // __ENEMYSTATECOOLDOWN_H_

@@ -6,6 +6,7 @@
 EnemyStateHidden::EnemyStateHidden(BuriedEnemyAIScript* AIScript)
 {
 	enemy = AIScript;
+	trigger = "Hidden";
 }
 
 

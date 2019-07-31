@@ -8,6 +8,7 @@
 EnemyStateRelocate::EnemyStateRelocate(BuriedEnemyAIScript* AIScript)
 {
 	enemy = AIScript;
+	trigger = "Relocate";
 }
 
 

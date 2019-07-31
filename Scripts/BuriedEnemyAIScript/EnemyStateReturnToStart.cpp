@@ -8,6 +8,7 @@
 EnemyStateReturnToStart::EnemyStateReturnToStart(BuriedEnemyAIScript* AIScript)
 {
 	enemy = AIScript;
+	trigger = "Return";
 }
 
 
@@ -32,5 +33,6 @@ void EnemyStateReturnToStart::HandleIA()
 
 void EnemyStateReturnToStart::Update()
 {
-
+	// Move back to start position
+	enemy->enemyController->Move(enemy->runSpeed, refreshTime, enemy->startPosition, enemyPath);
 }

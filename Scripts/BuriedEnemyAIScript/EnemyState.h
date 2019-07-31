@@ -4,6 +4,7 @@
 class BuriedEnemyAIScript;
 
 #include <vector>
+#include "Math/float3.h"
 
 class EnemyState
 {
@@ -26,6 +27,10 @@ public:
 	std::string trigger;
 
 	BuriedEnemyAIScript* enemy = nullptr;
+
+	// Nav mesh
+	std::vector<math::float3> enemyPath;
+	float refreshTime = 0.0f;
 };
 
 #endif // __ENEMYSTATE_H_

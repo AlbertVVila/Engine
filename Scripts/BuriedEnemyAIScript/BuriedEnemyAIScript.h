@@ -11,7 +11,9 @@
 #include "math/float3.h"
 #include <vector>
 
+class GameObject;
 class EnemyControllerScript;
+class ProjectileScript;
 class JSON_value;
 class EnemyState;
 class EnemyStatePatrol;
@@ -78,6 +80,10 @@ private:
 	std::vector<EnemyState*> enemyStates;
 
 public:
+
+	std::string projectileName = "EnemyProjectile";
+	ProjectileScript* projectileScript = nullptr;
+	GameObject* projectileGO = nullptr;
 
 	EnemyControllerScript* enemyController = nullptr;
 };

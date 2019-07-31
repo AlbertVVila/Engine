@@ -9,6 +9,9 @@ class EnemyStateAttack :
 public:
 	EnemyStateAttack(BuriedEnemyAIScript* AIScript);
 	~EnemyStateAttack();
+
+	void HandleIA() override;
+	void Update() override;
 };
 
 #endif // __ENEMYSTATEATTACK_H_
