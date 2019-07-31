@@ -138,43 +138,6 @@ bool ModuleParticles::Start()
 	return true;
 }
 
-void ModuleParticles::Render(float dt, const ComponentCamera* camera) 
-{
-	BROFILER_CATEGORY("Particles Render", Profiler::Color::AliceBlue);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	particleSystems.sort(
-		[camera](const ComponentParticles* cp1, const ComponentParticles* cp2) -> bool
-		{
-			return cp1->gameobject->transform->GetGlobalPosition().Distance(camera->frustum->pos) > cp2->gameobject->transform->GetGlobalPosition().Distance(camera->frustum->pos);
-		});
-	for (ComponentParticles* cp : particleSystems)
-	{
-		if (camera->frustum->Contains(cp->gameobject->transform->GetGlobalPosition()))
-		{
-			cp->Update(dt, camera->frustum->pos);
-
-			DrawParticleSystem(cp, camera);
-		}
-	}
-
-	glDisable(GL_CULL_FACE);	
-	glBlendFunc(GL_ONE, GL_ONE);	
-
-	for (ComponentTrail* trail : trails)
-	{
-		trail->UpdateTrail();
-		if (trail->trail.size() > 1)
-		{
-			RenderTrail(trail, camera);
-		}
-	}
-	glEnable(GL_CULL_FACE);	
-	glDisable(GL_BLEND);
-
-	glUseProgram(0);
-}
-
 void ModuleParticles::RenderTrail(ComponentTrail* ct, const ComponentCamera* camera) const
 {
 	if (ct->texture == nullptr)
@@ -280,7 +243,7 @@ void ModuleParticles::Reset()
 void ModuleParticles::DrawParticleSystem(ComponentParticles* cp, const ComponentCamera* camera) const
 {
 	PROFILE
-	if (cp->texture == nullptr || (!cp->Playing && !cp->ConstantPlaying))
+	if (cp->texture == nullptr)
 	{
 		return;
 	}
@@ -305,7 +268,6 @@ void ModuleParticles::DrawParticleSystem(ComponentParticles* cp, const Component
 			return cp1->position.Distance(orderPoint) > cp2->position.Distance(orderPoint);
 		});
 	}
-
 	unsigned nParticles = cp->particles.size();
 	for (; nParticles > 0; --nParticles)
 	{
@@ -331,6 +293,7 @@ void ModuleParticles::DrawParticleSystem(ComponentParticles* cp, const Component
 
 	glUnmapBuffer(GL_ARRAY_BUFFER);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glDisable(GL_CULL_FACE);
 
 	glUniformMatrix4fv(glGetUniformLocation(shader->id[0], "projection"), 1, GL_FALSE, &camera->GetProjectionMatrix()[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(shader->id[0], "view"), 1, GL_FALSE, &camera->GetViewMatrix()[0][0]);
@@ -350,6 +313,7 @@ void ModuleParticles::DrawParticleSystem(ComponentParticles* cp, const Component
 	glDrawArraysInstanced(GL_TRIANGLES,0, 6, cp->particles.size());
 
 	glBindVertexArray(0);
+	glEnable(GL_CULL_FACE);
 
 }
 

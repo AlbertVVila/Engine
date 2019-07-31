@@ -1,12 +1,16 @@
 {
-    "Mesh": {
+    "Model": {
+        "metaVersion": 2,
+        "timeCreated": 1564300747,
         "GUID": 2165633168,
-        "timeCreated": 1562862482,
         "NumMeshes": 1,
-        "Mesh0": 3697928714
-    },
-    "Animation": {
-        "timeCreated": 1562862482,
         "NumAnimations": 0
+    },
+    "Mesh0": {
+        "MeshNumber": 0,
+        "GUID": 3697928714,
+        "Name": "plane_0",
+        "File": "Assets/Particles/plane.fbx",
+        "ExportedFile": "Library/Meshes/3697928714.m3sh"
     }
 }

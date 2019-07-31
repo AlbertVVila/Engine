@@ -22,7 +22,8 @@ enum class ComponentType
 	ReverbZone,
 	AudioListener,
 	AudioSource,
-	BoxTrigger
+	BoxTrigger,
+	VolumetricLight
 };
 
 class ENGINE_API Component

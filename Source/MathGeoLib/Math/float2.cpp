@@ -796,6 +796,11 @@ bool float2::operator !=(const float2 & other)
 	return other.x != x || other.y != y;
 }
 
+bool float2::operator ==(const float2& other)
+{
+	return other.x == x && other.y == y;
+}
+
 #ifdef MATH_ENABLE_STL_SUPPORT
 std::ostream &operator <<(std::ostream &out, const float2 &rhs)
 {

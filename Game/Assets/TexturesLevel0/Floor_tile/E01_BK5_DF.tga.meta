@@ -1,13 +1,11 @@
 {
     "Texture": {
-        "GUID": 1518489804,
-        "timeCreated": 1562862487,
-        "height": 1024,
-        "width": 1024,
-        "depth": 1,
-        "mips": 0,
-        "format": 32993,
-        "DX compresion": 1802,
-        "mipmap": 0
+        "metaVersion": 2,
+        "timeCreated": 1564156737,
+        "GUID": 4209508663,
+        "Name": "E01_BK5_DF",
+        "File": "Assets/TexturesLevel0/Floor_tile/E01_BK5_DF.tga",
+        "ExportedFile": "Library/Textures/4209508663.dds",
+        "DX compresion": 1802
     }
 }
