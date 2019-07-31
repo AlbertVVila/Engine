@@ -44,7 +44,7 @@ void SkillTreeController::Start()
 
 	hoverTransform = App->scene->FindGameObjectByName("SkillHover", gameobject)->GetComponent<Transform2D>();
 	assert(hoverTransform != nullptr);
-	
+
 	skillInfo = App->scene->FindGameObjectByName("SkillInfo", gameobject);
 	assert(skillInfo != nullptr);
 
@@ -63,16 +63,18 @@ void SkillTreeController::Start()
 
 		if (!skillList[i].locked)
 		{
-			skillUI[i]->GetComponent<ComponentImage>()->texture = skillList[i].spriteActive;
-			if (skillUI[i]->children.size()> 1)
+			skillUI[i]->GetComponent<ComponentImage>()->texture = (ResourceTexture*)App->resManager->GetByName("Activated_Hability_container", TYPE::TEXTURE);
+
+			if (skillUI[i]->children.size() > 1)
 			{
-				((ComponentImage*)(skillUI[i]->children.front())->GetComponentInChildren(ComponentType::Image))->color = math::float4(0.972549021, 0.780392170, 0.117647059, 1);
+				if (skillList[i].available) {
+					((ComponentImage*)(skillUI[i]->children.front())->GetComponentInChildren(ComponentType::Image))->texture = skillList[i].spriteActive;
+				}
+				else {
+					((ComponentImage*)(skillUI[i]->children.front())->GetComponentInChildren(ComponentType::Image))->texture = skillList[i].spriteInactive;
+				}
 			}
 			((Text*)skillUI[i]->GetComponentInChildren(ComponentType::Text))->color = math::float4(0, 0, 0, 0);
-		}
-		else
-		{
-			skillUI[i]->GetComponent<ComponentImage>()->texture = skillList[i].spriteInactive;
 		}
 	}
 }
@@ -90,7 +92,7 @@ void SkillTreeController::Update()
 	{
 		if (!skillList[i].locked && skillUI[i]->GetComponent<ComponentImage>()->isHovered)
 		{
-			math::float2 pos = skillUI[i]->GetComponent<Transform2D>()->getPosition();
+			math::float2 pos = skillUI[i]->children.front()->GetComponent<Transform2D>()->getPosition();
 			math::float2 newPos = math::float2(pos.x, pos.y);
 			hoverTransform->SetPositionUsingAligment(newPos);
 			hoverTransform->gameobject->SetActive(true);
@@ -99,6 +101,7 @@ void SkillTreeController::Update()
 			{
 				++skillList[i].currentLevel;
 				skillList[i].available = true;
+				((ComponentImage*)(skillUI[i]->children.front())->GetComponentInChildren(ComponentType::Image))->texture = skillList[i].spriteActive;
 				((Text*)skillUI[i]->GetComponentInChildren(ComponentType::Text))->text = std::to_string(skillList[i].currentLevel) + "/" + std::to_string(skillList[i].maxLevels);
 				--skillPoints;
 				skillPointsLabel->text = std::to_string(skillPoints);
@@ -112,13 +115,13 @@ void SkillTreeController::UnlockNextLevel(int i)
 {
 	if (skillList[i].currentLevel == skillList[i].maxLevels && skillList[i].nextSkill >= 0)
 	{
-		((ComponentImage*)connUI[skillList[i].connection])->color = math::float4(0.972549021, 0.780392170, 0.117647059, 1);
+		((ComponentImage*)connUI[skillList[i].connection])->texture = (ResourceTexture*)App->resManager->GetByName("Activated_Bar", TYPE::TEXTURE);
 		skillList[skillList[i].nextSkill].locked = false;
-		skillUI[skillList[i].nextSkill]->GetComponent<ComponentImage>()->texture = skillList[skillList[i].nextSkill].spriteActive;
+		skillUI[skillList[i].nextSkill]->GetComponent<ComponentImage>()->texture = (ResourceTexture*)App->resManager->GetByName("Activated_Hability_container", TYPE::TEXTURE);
 		((Text*)skillUI[skillList[i].nextSkill]->GetComponentInChildren(ComponentType::Text))->color = math::float4(0, 0, 0, 0);
 		if (skillUI[skillList[i].nextSkill]->children.size() > 1)
 		{
-			((ComponentImage*)skillUI[skillList[i].nextSkill]->children.front()->GetComponentInChildren(ComponentType::Image))->color = math::float4(0.972549021, 0.780392170, 0.117647059, 1);
+			((ComponentImage*)skillUI[skillList[i].nextSkill]->children.front()->GetComponentInChildren(ComponentType::Image))->texture = skillList[skillList[i].nextSkill].spriteInactive;
 		}
 	}
 }
