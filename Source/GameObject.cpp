@@ -867,6 +867,18 @@ void GameObject::LinkRendererToBones(std::vector<ComponentRenderer*>& renderers)
 	}
 }
 
+void GameObject::LinkBones() const
+{
+	for (Component* c : GetComponentsInChildren(ComponentType::Renderer))
+	{
+		ComponentRenderer* cr = (ComponentRenderer*)c;
+		if (cr->mesh != nullptr)
+		{
+			cr->LinkBones();
+		}
+	}
+}
+
 void GameObject::MarkAsPrefab()
 {
 	bool wasPrefab = false;
@@ -988,14 +1000,7 @@ void GameObject::UpdateToPrefab(GameObject* prefabGo)
 		App->scene->AddToSpacePartition(this);
 	}
 
-	for (Component* c : GetComponentsInChildren(ComponentType::Renderer))
-	{
-		ComponentRenderer* cr = (ComponentRenderer*)c;
-		if (cr->mesh != nullptr)
-		{
-			cr->LinkBones();
-		}
-	}
+	LinkBones();
 }
 
 AABB GameObject::GetBoundingBox() const

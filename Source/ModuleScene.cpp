@@ -671,14 +671,7 @@ void ModuleScene::DragNDropMove(GameObject* target)
 							droppedGo->transform->SetWorldToLocal(droppedGo->parent->GetGlobalTransform());
 						}
 
-						for (Component* c : droppedGo->GetComponentsInChildren(ComponentType::Renderer))
-						{
-							ComponentRenderer* cr = (ComponentRenderer*)c;
-							if (cr->mesh != nullptr)
-							{
-								cr->LinkBones();
-							}
-						}
+						droppedGo->LinkBones();
 					}
 					App->editor->assets->ResetDragNDrop();
 				}
@@ -758,14 +751,7 @@ void ModuleScene::DragNDrop(GameObject* go)
 						{
 							droppedGo->transform->SetWorldToLocal(droppedGo->parent->GetGlobalTransform());
 						}
-						for (Component* c : droppedGo->GetComponentsInChildren(ComponentType::Renderer))
-						{
-							ComponentRenderer* cr = (ComponentRenderer*)c;
-							if (cr->mesh != nullptr)
-							{
-								cr->LinkBones();
-							}
-						}
+						droppedGo->LinkBones();
 					}
 					App->editor->assets->ResetDragNDrop();
 				}
@@ -1734,6 +1720,7 @@ GameObject * ModuleScene::Spawn(const char * name, GameObject * parent)
 
 	//Instantiate prefab
 	GameObject* instance = new GameObject(*prefab->RetrievePrefab());
+	instance->LinkBones();
 	App->resManager->DeleteResource(prefab->GetUID());
 
 	if (parent == nullptr)
