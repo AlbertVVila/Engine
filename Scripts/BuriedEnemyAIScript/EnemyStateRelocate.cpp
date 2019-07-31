@@ -3,7 +3,12 @@
 #include "BuriedEnemyAIScript.h"
 #include "EnemyControllerScript.h"
 
+#include "Application.h"
+#include "ModuleNavigation.h"
+
 #include "Math/float3.h"
+#include "Math/MathFunc.h"
+#include "Geometry/Frustum.h"
 
 EnemyStateRelocate::EnemyStateRelocate(BuriedEnemyAIScript* AIScript)
 {
@@ -22,13 +27,13 @@ void EnemyStateRelocate::HandleIA()
 	{
 		enemy->currentState = (EnemyState*)enemy->showUp;
 		finished = true;
+		ChangePosition();
 	}
 }
 
 void EnemyStateRelocate::Update()
 {
-	if(finished)
-		ChangePosition();
+
 }
 
 void EnemyStateRelocate::ChangePosition()
@@ -42,6 +47,9 @@ void EnemyStateRelocate::ChangePosition()
 
 	math::float3 newPos = playerPos + direction * enemy->teleportDistance;
 	
-	enemy->enemyController->SetPosition(newPos);
 
+	if (enemy->App->navigation->FindClosestPoint2D(newPos))
+	{
+		enemy->enemyController->SetPosition(newPos);		
+	}
 }

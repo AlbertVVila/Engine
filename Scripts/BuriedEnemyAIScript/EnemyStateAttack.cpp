@@ -26,6 +26,6 @@ void EnemyStateAttack::HandleIA()
 
 void EnemyStateAttack::Update()
 {
-
+	//enemy->enemyController->LookAt(enemy->enemyController->GetPlayerPosition());
 
 }

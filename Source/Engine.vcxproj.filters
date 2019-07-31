@@ -826,5 +826,6 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\Game\Scripts\PlayerMovement.dll" />
+    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>

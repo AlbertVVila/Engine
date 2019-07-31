@@ -458,6 +458,7 @@
     <None Include="..\Game\Shaders\VertexShaders\Skybox.vs" />
     <None Include="..\Game\Shaders\VertexShaders\Trail.vs" />
     <None Include="..\Game\Shaders\VertexShaders\UI.vs" />
+    <None Include="cpp.hint" />
     <None Include="NodeEditor\Include\ax\Math2D.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
