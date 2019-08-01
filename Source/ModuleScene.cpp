@@ -397,6 +397,8 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 		
 		for (Component* cr : alphaRenderers)
 		{
+			if (!cr->enabled) continue;
+
 #ifndef GAME_BUILD
 			switch (cr->type)
 			{
