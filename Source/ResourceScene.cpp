@@ -7,9 +7,11 @@
 #include "ModuleSpacePartitioning.h"
 #include "ModuleNavigation.h"
 #include "ModuleResourceManager.h"
+#include "ModuleRender.h"
 
 #include "GameObject.h"
 #include "ComponentRenderer.h"
+#include "ResourcePrefab.h"
 
 #include "JSON.h"
 
@@ -159,12 +161,18 @@ bool ResourceScene::Load()
 	gameobjectsMap.insert(std::pair<unsigned, GameObject*>(App->scene->canvas->UUID, sceneCanvas));
 
 	std::list<ComponentRenderer*> renderers;
+	std::vector<GameObject*> prefabs;
 
 	for (unsigned i = 0; i < gameobjectsJSON->Size(); i++)
 	{
 		JSON_value* gameobjectJSON = gameobjectsJSON->GetValue(i);
 		GameObject *gameobject = new GameObject();
 		gameobject->Load(gameobjectJSON);
+		if (gameobject->isPrefab && gameobject->isPrefabSync)
+		{
+			prefabs.emplace_back(gameobject);
+		}
+
 		if (gameobject->UUID != 1)
 		{
 			gameobjectsMap.insert(std::pair<unsigned, GameObject*>(gameobject->UUID, gameobject));
@@ -233,6 +241,14 @@ bool ResourceScene::Load()
 		}
 	}
 
+	for (GameObject* goPrefab : prefabs)
+	{
+		if (App->scene->PrefabWasUpdated(goPrefab->prefabUID))
+		{
+			goPrefab->UpdateToPrefab(goPrefab->prefab->RetrievePrefab());
+		}
+	}
+
 	App->navigation->sceneLoaded(json);
 
 	RELEASE_ARRAY(data);
@@ -242,7 +258,7 @@ bool ResourceScene::Load()
 	//set all the game objects
 	App->scene->root->UpdateTransforms(math::float4x4::identity);
 	App->scene->root->SetAllMoveFlags();
-
+	App->renderer->OnResize();
 	return true;
 }
 

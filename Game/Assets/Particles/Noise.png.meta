@@ -1,13 +1,11 @@
 {
     "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1564300747,
         "GUID": 2926056757,
-        "timeCreated": 1562862482,
-        "height": 512,
-        "width": 512,
-        "depth": 1,
-        "mips": 0,
-        "format": 6409,
-        "DX compresion": 1802,
-        "mipmap": 0
+        "Name": "Noise",
+        "File": "Assets/Particles/Noise.png",
+        "ExportedFile": "Library/Textures/2926056757.dds",
+        "DX compresion": 1802
     }
 }

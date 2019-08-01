@@ -9,6 +9,8 @@
 #include "Geometry/AABB.h"
 
 #define MAX_WEIGHTS_PER_BONE 4
+#define DRAW_GL_TRIANGLES 0x004
+#define DRAW_GL_STRIP 0x005
 
 class ComponentRenderer;
 class GameObject;
@@ -36,6 +38,7 @@ class ResourceMesh : public Resource
 public:
 	ResourceMesh(unsigned uid);
 	ResourceMesh(const ResourceMesh& resource);
+	ResourceMesh(unsigned nVertices, float* vertices, unsigned nIndexes, int* indexes, unsigned nUVs, float* UVs); //This constructor is used by volumetric lights | Assume triangle strip drawing method
 	virtual ~ResourceMesh();
 
 	// Getters
@@ -78,7 +81,6 @@ public:
 	unsigned VBObox = 0u;
 	unsigned EBObox = 0u;
 
-
 	
 public:
 
@@ -91,6 +93,8 @@ public:
 	std::vector<BoneVertex> bindBoneVertexAttaches;
 	std::vector<BoneWeight> bindWeightVertexAttaches;
 	std::vector<BindBone> bindBones;
+
+	int drawingMode = DRAW_GL_TRIANGLES;
 };
 
 #endif __ResourceMesh_h__

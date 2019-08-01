@@ -321,6 +321,9 @@
       <Filter>Resources</Filter>
     </ClCompile>
     <ClCompile Include="PlayerPrefs.cpp" />
+    <ClCompile Include="ComponentVolumetricLight.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -703,6 +706,9 @@
       <Filter>Resources</Filter>
     </ClInclude>
     <ClInclude Include="PlayerPrefs.h" />
+    <ClInclude Include="ComponentVolumetricLight.h">
+      <Filter>Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Modules">

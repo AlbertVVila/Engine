@@ -68,191 +68,127 @@ Component * ComponentRenderer::Clone() const
 void ComponentRenderer::DrawProperties()
 {
 	ImGui::PushID(this);
-	if (ImGui::CollapsingHeader("Mesh Renderer", ImGuiTreeNodeFlags_DefaultOpen))
+	if (!isVolumetricLight)
 	{
-		bool removed = Component::DrawComponentState();
-		if (removed)
+		if (ImGui::CollapsingHeader("Mesh Renderer", ImGuiTreeNodeFlags_DefaultOpen))
 		{
-			ImGui::PopID();
-			return;
-		}
+			bool removed = Component::DrawComponentState();
+			if (removed)
+			{
+				ImGui::PopID();
+				return;
+			}
 
-		// Mesh selector
-		ImGui::Text("Mesh");
-		ImGui::PushID("Mesh Combo");
-		if (ImGui::BeginCombo("", mesh != nullptr ? mesh->GetName() : "None selected"))
-		{
-			if (guiMeshes.empty())
+			// Mesh selector
+			ImGui::Text("Mesh");
+			ImGui::PushID("Mesh Combo");
+			if (ImGui::BeginCombo("", mesh != nullptr ? mesh->GetName() : "None selected"))
 			{
-				guiMeshes = App->resManager->GetResourceNamesList(TYPE::MESH, true);
-			}
-			for (int n = 0; n < guiMeshes.size(); n++)
-			{
-				bool is_selected = (mesh != nullptr ? HashString(mesh->GetName()) == HashString(guiMeshes[n].c_str()) : false);
-				if (ImGui::Selectable(guiMeshes[n].c_str(), is_selected))
+				if (guiMeshes.empty())
 				{
-					if(mesh == nullptr || mesh->GetName() != guiMeshes[n])
-						SetMesh(guiMeshes[n].c_str());
+					guiMeshes = App->resManager->GetResourceNamesList(TYPE::MESH, true);
 				}
-				if (is_selected)
+				for (int n = 0; n < guiMeshes.size(); n++)
 				{
-					ImGui::SetItemDefaultFocus();
-				}
-			}
-			ImGui::EndCombo();
-		}
-		else
-		{
-			guiMeshes.clear();
-		}
-
-		if (mesh == nullptr)
-		{
-			ImGui::Text("No mesh selected.");
-		}
-		else
-		{
-			ImGui::Text("Num vertices : %d", mesh->meshVertices.size());
-			ImGui::Text("Num triangles : %d", mesh->meshIndices.size() / 3);
-		}
-		ImGui::Spacing();
-		if (material && material->shader && !material->shader->isFX)
-		{
-			ImGui::Checkbox("Cast shadows", &castShadows);
-			ImGui::Checkbox("Use Alpha", &useAlpha);
-			ImGui::Checkbox("Dissolve", &dissolve);
-			ImGui::DragFloat("Dissolve amount", &dissolveAmount, .01f, .0f, 10.f);
-			ImGui::DragFloat("Dissolve border amount", &borderAmount, .01f, .0f, 1.f);
-			ImGui::Checkbox("Highlighted", &highlighted);
-			ImGui::ColorEdit3("Highlight color", &highlightColor[0]);
-			ImGui::Checkbox("Water", &water);
-			if (water)
-			{
-				ImGui::DragFloat("Water speed", &waterSpeed, 0.1f, 0.1f, 2000.0f);
-				if (ImGui::CollapsingHeader("Source 1"))
-				{
-					ImGui::PushID(0);
-					ImGui::DragFloat("Water amplitude", &waterAmplitude1, 0.1f, 0.1f, 2000.0f);
-					ImGui::DragFloat("Water frequency", &waterFrequency1, 0.1f, 0.1f, 2000.0f);
-					ImGui::DragFloat("Water decay", &waterDecay1, 0.01f, 0.01f, 2000.0f);
-					ImGui::DragFloat2("Source pos", &waterSource1[0], 0.01f, -20000.f, 20000.f);
-					ImGui::PopID();
-				}
-				if (ImGui::CollapsingHeader("Source 2"))
-				{
-					ImGui::PushID(1);
-					ImGui::DragFloat("Water amplitude", &waterAmplitude2, 0.1f, 0.1f, 2000.0f);
-					ImGui::DragFloat("Water frequency", &waterFrequency2, 0.1f, 0.1f, 2000.0f);
-					ImGui::DragFloat("Water decay", &waterDecay2, 0.01f, 0.01f, 2000.0f);
-					ImGui::DragFloat2("Source pos", &waterSource2[0], 0.01f, -20000.f, 20000.f);
-					ImGui::PopID();
-				}
-
-			}
-		}
-		else
-		{
-			if (ImGui::CollapsingHeader("FX settings"))
-			{
-				ImGui::Checkbox("Use Alpha", &useAlpha);
-				ImGui::DragFloat2("texture speed", &texSpeed[0], 0.01f, -1000.f, 1000.f);
-				ImGui::InputInt("X Tiles", &xTiles);
-				ImGui::InputInt("Y Tiles", &yTiles);
-				xTiles = MAX(xTiles, 1);
-				yTiles = MAX(yTiles, 1);
-				if (ImGui::InputFloat("FPS", &fps, 1.f))
-				{
-					timer = 0.f;
-				}
-			}
-		}
-		// Material selector
-		if (ImGui::Button("X"))
-		{
-			ResetAnimation();
-		}
-		ImGui::Text("Material");
-		ImGui::PushID(this);
-		if (ImGui::BeginCombo("", material != nullptr ? material->GetName() : "None selected"))
-		{
-			if (guiMaterials.empty())
-			{
-				guiMaterials = App->resManager->GetResourceNamesList(TYPE::MATERIAL, true);
-			}
-			for (int n = 0; n < guiMaterials.size(); n++)
-			{
-				bool is_selected = (material != nullptr ? (HashString(material->GetName()) == HashString(guiMaterials[n].c_str())) : false);
-				if (ImGui::Selectable(guiMaterials[n].c_str(), is_selected))
-				{
-					if (material == nullptr || material->GetName() != guiMaterials[n])
-						SetMaterial(guiMaterials[n].c_str());
-
-					if (App->editor->materialEditor->open)
+					bool is_selected = (mesh != nullptr ? HashString(mesh->GetName()) == HashString(guiMeshes[n].c_str()) : false);
+					if (ImGui::Selectable(guiMeshes[n].c_str(), is_selected))
 					{
-						App->editor->materialEditor->material = material;
-						App->editor->materialEditor->previous = new ResourceMaterial(*material);
-						App->editor->materialEditor->SetCurrentTextures();
+						if (mesh == nullptr || mesh->GetName() != guiMeshes[n])
+							SetMesh(guiMeshes[n].c_str());
+					}
+					if (is_selected)
+					{
+						ImGui::SetItemDefaultFocus();
 					}
 				}
-				if (is_selected)
+				ImGui::EndCombo();
+			}
+			else
+			{
+				guiMeshes.clear();
+			}
+
+			if (mesh == nullptr)
+			{
+				ImGui::Text("No mesh selected.");
+			}
+			else
+			{
+				ImGui::Text("Num vertices : %d", mesh->meshVertices.size());
+				ImGui::Text("Num triangles : %d", mesh->meshIndices.size() / 3);
+			}
+			ImGui::Spacing();
+			if (material && material->shader && !material->shader->isFX)
+			{
+				ImGui::Checkbox("Cast shadows", &castShadows);
+				ImGui::Checkbox("Use Alpha", &useAlpha);
+				ImGui::Checkbox("Dissolve", &dissolve);
+				ImGui::DragFloat("Dissolve amount", &dissolveAmount, .01f, .0f, 10.f);
+				ImGui::DragFloat("Dissolve border amount", &borderAmount, .01f, .0f, 1.f);
+				ImGui::Checkbox("Highlighted", &highlighted);
+				ImGui::ColorEdit3("Highlight color", &highlightColor[0]);
+				ImGui::Checkbox("Water", &water);
+				if (water)
 				{
-					ImGui::SetItemDefaultFocus();
+					ImGui::DragFloat("Water speed", &waterSpeed, 0.1f, 0.1f, 2000.0f);
+					ImGui::Text("Blending uses diffuse & dissolve texture");					
+					ImGui::DragFloat("Blending speed", &distorsionSpeed, 0.001f, 0.1f, 10.0f);
+					ImGui::DragFloat2("Water UV scaler", &uvScaler[0], 0.001f, 0.0001f, 2000.0f);
+
+					if (ImGui::CollapsingHeader("Source 1"))
+					{
+						ImGui::PushID(0);
+						ImGui::DragFloat("Water amplitude", &waterAmplitude1, 0.1f, 0.1f, 2000.0f);
+						ImGui::DragFloat("Water frequency", &waterFrequency1, 0.1f, 0.1f, 2000.0f);
+						ImGui::DragFloat("Water decay", &waterDecay1, 0.01f, 0.01f, 2000.0f);
+						ImGui::DragFloat2("Source pos", &waterSource1[0], 0.01f, -20000.f, 20000.f);
+						ImGui::PopID();
+					}
+					if (ImGui::CollapsingHeader("Source 2"))
+					{
+						ImGui::PushID(1);
+						ImGui::DragFloat("Water amplitude", &waterAmplitude2, 0.1f, 0.1f, 2000.0f);
+						ImGui::DragFloat("Water frequency", &waterFrequency2, 0.1f, 0.1f, 2000.0f);
+						ImGui::DragFloat("Water decay", &waterDecay2, 0.01f, 0.01f, 2000.0f);
+						ImGui::DragFloat2("Source pos", &waterSource2[0], 0.01f, -20000.f, 20000.f);
+						ImGui::PopID();
+					}
+
 				}
 			}
-			ImGui::EndCombo();
+			else
+			{
+				if (ImGui::CollapsingHeader("FX settings"))
+				{
+					ImGui::Checkbox("Use Alpha", &useAlpha);
+					ImGui::DragFloat2("texture speed", &texSpeed[0], 0.01f, -1000.f, 1000.f);
+					ImGui::InputInt("X Tiles", &xTiles);
+					ImGui::InputInt("Y Tiles", &yTiles);
+					xTiles = MAX(xTiles, 1);
+					yTiles = MAX(yTiles, 1);
+					if (ImGui::InputFloat("FPS", &fps, 1.f))
+					{
+						timer = 0.f;
+					}
+					ImGui::Checkbox("Loop animation", &loop);
+					if (ImGui::Button("Reset animation"))
+					{
+						ResetAnimation();
+					}
+				}
+			}
+			// Material selector
+			
+			PickMaterial();
+			ImGui::Separator();
 		}
-		else
-		{
-			guiMaterials.clear();
-		}
+
 		ImGui::PopID();
-		ImGui::PopID();
-
-		ImGui::SameLine();
-		if (App->editor->materialEditor->open)
-		{
-			if (ImGui::Button("Hide"))
-			{
-				App->editor->materialEditor->open = false;
-
-				if (!App->editor->materialEditor->material->Compare(*App->editor->materialEditor->previous))
-				{
-					App->editor->materialEditor->material->Save();
-				}
-				App->editor->materialEditor->CleanUp();
-			}
-
-			if (ImGui::Button("Refresh Material"))
-			{
-				App->editor->materialEditor->UpdateTexturesList();
-			}
-		}
-		else
-		{
-			if (ImGui::Button("Show"))
-			{
-				if (material != nullptr)
-				{
-					App->editor->materialEditor->open = true;
-					App->editor->materialEditor->material = material;
-					App->editor->materialEditor->previous = new ResourceMaterial(*material);
-					App->editor->materialEditor->SetCurrentTextures();
-
-					// Update texture list
-					App->editor->materialEditor->UpdateTexturesList();
-				}
-			}
-		}
-
-		if (App->editor->materialEditor->open)
-		{
-			App->editor->materialEditor->Draw();
-		}
-		
-		ImGui::Separator();
 	}
-
-	ImGui::PopID();
+	else
+	{
+		PickMaterial();
+	}
 }
 
 bool ComponentRenderer::CleanUp()
@@ -298,6 +234,8 @@ void ComponentRenderer::Save(JSON_value* value) const
 	value->AddInt("dissolve", dissolve);
 	value->AddFloat3("waterSource1", waterSource1);
 	value->AddFloat3("waterSource2", waterSource2);
+	value->AddFloat2("uvScaler", uvScaler);
+	value->AddFloat("distorsionSpeed", distorsionSpeed);
 }
 
 void ComponentRenderer::Load(JSON_value* value)
@@ -333,6 +271,8 @@ void ComponentRenderer::Load(JSON_value* value)
 	dissolve = value->GetInt("dissolve");
 	waterSource1 = value->GetFloat3("waterSource1");
 	waterSource2 = value->GetFloat3("waterSource2");
+	uvScaler = value->GetFloat2("uvScaler");
+	distorsionSpeed = value->GetFloat("distorsionSpeed", distorsionSpeed);
 }
 
 void ComponentRenderer::SetMaterial(const char* materialName)
@@ -444,28 +384,24 @@ void ComponentRenderer::LinkBones()
 
 void ComponentRenderer::DrawMesh(unsigned shaderProgram)
 {
-	if (enabled)
+	if (bindBones.size() > 0)
 	{
-		if (bindBones.size() > 0)
+		std::vector<math::float4x4> palette(bindBones.size(), math::float4x4::identity); //TODO: Declare on .h
+		unsigned i = 0u;
+		for (BindBone bb : bindBones)
 		{
-			std::vector<math::float4x4> palette(bindBones.size(), math::float4x4::identity); //TODO: Declare on .h
-			unsigned i = 0u;
-			for (BindBone bb : bindBones)
-			{
-				palette[i++] = bb.go->GetGlobalTransform() * bb.transform;
-			}
-
-			glUniformMatrix4fv(glGetUniformLocation(shaderProgram,
-				"palette"), bindBones.size(), GL_TRUE, palette[0].ptr());
+			palette[i++] = bb.go->GetGlobalTransform() * bb.transform;
 		}
 
-		glBindVertexArray(mesh->VAO);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->EBO);
-		glDrawElements(GL_TRIANGLES, mesh->meshIndices.size(), GL_UNSIGNED_INT, 0);
-
-		// We disable VAO
-		glBindVertexArray(0);
+		glUniformMatrix4fv(glGetUniformLocation(shaderProgram,
+			"palette"), bindBones.size(), GL_TRUE, palette[0].ptr());
 	}
+
+	glBindVertexArray(mesh->VAO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->EBO);
+	glDrawElements(mesh->drawingMode, mesh->meshIndices.size(), GL_UNSIGNED_INT, 0);
+	// We disable VAO
+	glBindVertexArray(0);
 }
 
 void ComponentRenderer::Update()
@@ -489,6 +425,88 @@ void ComponentRenderer::Update()
 		f2Ypos = f1Xpos < f2Xpos ? f1Ypos : f1Ypos + 1;		
 
 	}
+}
+
+void ComponentRenderer::PickMaterial()
+{
+	ImGui::Text("Material");
+	ImGui::PushID(this);
+	if (ImGui::BeginCombo("", material != nullptr ? material->GetName() : "None selected"))
+	{
+		if (guiMaterials.empty())
+		{
+			guiMaterials = App->resManager->GetResourceNamesList(TYPE::MATERIAL, true);
+		}
+		for (int n = 0; n < guiMaterials.size(); n++)
+		{
+			bool is_selected = (material != nullptr ? (HashString(material->GetName()) == HashString(guiMaterials[n].c_str())) : false);
+			if (ImGui::Selectable(guiMaterials[n].c_str(), is_selected))
+			{
+				if (material == nullptr || material->GetName() != guiMaterials[n])
+					SetMaterial(guiMaterials[n].c_str());
+
+				if (App->editor->materialEditor->open)
+				{
+					App->editor->materialEditor->material = material;
+					App->editor->materialEditor->previous = new ResourceMaterial(*material);
+					App->editor->materialEditor->SetCurrentTextures();
+				}
+			}
+			if (is_selected)
+			{
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
+	}
+	else
+	{
+		guiMaterials.clear();
+	}
+	ImGui::PopID();
+	ImGui::PopID();
+
+	ImGui::SameLine();
+	if (App->editor->materialEditor->open)
+	{
+		if (ImGui::Button("Hide"))
+		{
+			App->editor->materialEditor->open = false;
+
+			if (!App->editor->materialEditor->material->Compare(*App->editor->materialEditor->previous))
+			{
+				App->editor->materialEditor->material->Save();
+			}
+			App->editor->materialEditor->CleanUp();
+		}
+
+		if (ImGui::Button("Refresh Material"))
+		{
+			App->editor->materialEditor->UpdateTexturesList();
+		}
+	}
+	else
+	{
+		if (ImGui::Button("Show"))
+		{
+			if (material != nullptr)
+			{
+				App->editor->materialEditor->open = true;
+				App->editor->materialEditor->material = material;
+				App->editor->materialEditor->previous = new ResourceMaterial(*material);
+				App->editor->materialEditor->SetCurrentTextures();
+
+				// Update texture list
+				App->editor->materialEditor->UpdateTexturesList();
+			}
+		}
+	}
+
+	if (App->editor->materialEditor->open)
+	{
+		App->editor->materialEditor->Draw(isVolumetricLight);
+	}
+
 }
 
 void ComponentRenderer::ResetAnimation()

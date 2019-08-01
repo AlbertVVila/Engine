@@ -1,13 +1,11 @@
 {
     "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1564300747,
         "GUID": 7905488,
-        "timeCreated": 1562862482,
-        "height": 1366,
-        "width": 1378,
-        "depth": 1,
-        "mips": 0,
-        "format": 6407,
-        "DX compresion": 1802,
-        "mipmap": 0
+        "Name": "fuego",
+        "File": "Assets/Particles/fuego.jpg",
+        "ExportedFile": "Library/Textures/7905488.dds",
+        "DX compresion": 1802
     }
 }

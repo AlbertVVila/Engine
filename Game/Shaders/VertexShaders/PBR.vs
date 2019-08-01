@@ -10,6 +10,28 @@ layout(location = 3) in vec3 vertex_tangent;
 layout(location = 4) in ivec4 bone_indices;
 layout(location = 5) in vec4 bone_weights;
 
+struct Material
+{
+    sampler2D diffuse_texture;
+    vec4      diffuse_color;
+
+    sampler2D specular_texture;
+    float     shininess;
+
+    sampler2D occlusion_texture;
+    sampler2D normal_texture;
+
+    sampler2D emissive_texture;
+    vec3      emissive_color;
+
+	sampler2D dissolve_texture;
+	vec3 dissolve_color;
+
+    float roughness;
+	float bloomIntensity;
+	vec3 specular;
+};
+
 layout (std140) uniform Matrices
 {
     mat4 proj;
@@ -70,10 +92,12 @@ uniform vec3 source1;
 uniform float waterAmplitude2;
 uniform float frequency2;
 uniform float decay2;
+uniform	vec2 uvScaler;
+
 uniform vec3 source2;
 uniform vec3 eyePosUniform;
 
-uniform float waterMaxDistortion;
+uniform Material material;
 //
 
 out vec3 normalIn;
@@ -143,6 +167,8 @@ void main()
 		}
 #else	
 	position = vertex_position;
+	uv0 = vec2(abs(vertex_position.x * uvScaler.x), abs(vertex_position.y * uvScaler.y));
+
 	float dist1 = sqrt(pow(position.x - source1.x,2) + pow(position.y - source1.y,2));
 	float dist2 = sqrt(pow(position.x - source2.x,2) + pow(position.y - source2.y,2));
 	dist1 = max(dist1, 20);
@@ -157,15 +183,11 @@ void main()
 	float c1= cos(-time + (dist1 / frequency1)) / (dist1) * frequency1;
 	float c2= cos(-time + (dist2 / frequency2)) / (dist2) * frequency2;
 	
-	position.z = offset;
+	position.z += offset;
 
-	float dx = -att1 * (source1.x - position.x) * c1 -att2 * (source2.x - position.x) * c2;
-	float dy = -att1 * (source1.y - position.y) * c1 -att2 * (source2.y - position.y) * c2;
-	
-	normalIn = normalize(cross(vec3(1,0,dx), vec3(0,1,dy)));
-
+	normalIn = mat3(transpose(inverse(model))) * vertex_normal;
 	positionWorld = position = (model*vec4(position, 1.0)).xyz;
-	gl_Position = proj*view*vec4(position, 1.0);	
+	gl_Position = proj*view*vec4(positionWorld, 1.0);	
 
 	viewPos = eye_pos;
 

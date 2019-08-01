@@ -35,8 +35,6 @@ public:
 	bool Start() override;
 	bool CleanUp() override;
 
-	void Render(float dt, const ComponentCamera* camera);
-
 	void AddParticleSystem(ComponentParticles* cp);
 	void RemoveParticleSystem(ComponentParticles * cp);
 	void AddTrailRenderer(ComponentTrail* cr);
@@ -44,12 +42,13 @@ public:
 
 	void Reset();
 
-private:
-	
 	void DrawParticleSystem(ComponentParticles* cp, const ComponentCamera* camera) const;
 	void RenderTrail(ComponentTrail* ct, const ComponentCamera* camera) const;
 
+	std::list<ComponentTrail*> trails;
 	std::list<ComponentParticles*> particleSystems;
+
+private:
 
 	unsigned billBoardVAO = 0u;
 	unsigned billBoardVBO = 0u;
@@ -62,9 +61,6 @@ private:
 
 	Shader* shader = nullptr;
 	Shader* trailShader = nullptr;
-
-
-	std::list<ComponentTrail*> trails;
 
 	float trailData[MAX_TRAIL_VERTICES];
 };
