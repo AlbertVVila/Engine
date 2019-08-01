@@ -2,6 +2,7 @@
 #define __ENEMYSTATEATTACK_H_
 
 #include "EnemyState.h"
+class ComponentTrail;
 
 class EnemyStateAttack :
 	public EnemyState
@@ -13,7 +14,10 @@ public:
 	void HandleIA() override;
 	void Update() override;
 
+	ComponentTrail* trailPunch = nullptr;
+
 private:
+	void PunchFX(bool active);
 
 	bool attacked = false;
 	void Attack();
