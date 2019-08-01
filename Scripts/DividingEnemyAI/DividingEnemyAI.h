@@ -18,6 +18,7 @@ public:
 		return new DividingEnemyAI(*this);
 	}
 	void Start() override;
+	void Update() override;
 
 public:
 	EnemyStateMultiply* multiply = nullptr;

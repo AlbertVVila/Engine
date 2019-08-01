@@ -11,6 +11,10 @@
 #include "EnemyStateMultiply.h"
 #include "EnemyControllerScript/EnemyControllerScript.h"
 
+#include "Application.h"
+#include "ModuleTime.h"
+#include "ComponentRenderer.h"
+
 DividingEnemyAI_API Script* CreateScript()
 {
 	DividingEnemyAI* instance = new DividingEnemyAI;
@@ -34,4 +38,9 @@ void DividingEnemyAI::Start()
 
 
 	startPosition = enemyController->GetPosition();
+}
+
+void DividingEnemyAI::Update()
+{
+	BasicEnemyAIScript::Update();
 }
