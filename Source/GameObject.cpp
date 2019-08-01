@@ -70,7 +70,7 @@ GameObject::GameObject(const float4x4 & transform, const char * name, unsigned u
 
 GameObject::GameObject(const GameObject & gameobject)
 {
-	name = gameobject.name + "(Clone)";
+	name = gameobject.name;
 	tag = gameobject.tag;
 	UUID = App->scene->GetNewUID();
 	parentUUID = gameobject.parentUUID;
@@ -125,6 +125,7 @@ GameObject::GameObject(const GameObject & gameobject)
 			
 			case ComponentType::VolumetricLight:
 				((ComponentVolumetricLight*)componentcopy)->renderer->gameobject = this;
+				break;
 		}
 	}
 
