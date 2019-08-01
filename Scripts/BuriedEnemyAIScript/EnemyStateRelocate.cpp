@@ -4,7 +4,10 @@
 #include "EnemyControllerScript.h"
 
 #include "Application.h"
+#include "ModuleTime.h"
 #include "ModuleNavigation.h"
+
+#include "ComponentRenderer.h"
 
 #include "Math/float3.h"
 #include "Math/MathFunc.h"
@@ -51,5 +54,11 @@ void EnemyStateRelocate::ChangePosition()
 	if (enemy->App->navigation->FindClosestPoint2D(newPos))
 	{
 		enemy->enemyController->SetPosition(newPos);		
+		enemy->StartTeleportCD();
 	}
+}
+
+void EnemyStateRelocate::Exit()
+{
+	enemy->enemyController->myRender->Enable(false);
 }

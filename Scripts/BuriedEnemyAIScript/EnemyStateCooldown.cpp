@@ -16,18 +16,11 @@ EnemyStateCooldown::~EnemyStateCooldown()
 
 void EnemyStateCooldown::HandleIA()
 {
+	float distanceToPlayer = enemy->enemyController->GetDistanceToPlayer2D();
+
 	if (timer > enemy->cooldownDuration)
 	{
-		float distanceToPlayer = enemy->enemyController->GetDistanceToPlayer2D();
-		if (distanceToPlayer > enemy->disengageDistance)
-		{
-			enemy->currentState = (EnemyState*)enemy->returnToStart;
-		}
-		else if (distanceToPlayer < enemy->disengageDistance && distanceToPlayer > enemy->maxAttackRange)
-		{
-			enemy->currentState = (EnemyState*)enemy->chase;
-		}
-		else if (distanceToPlayer < enemy->maxAttackRange && distanceToPlayer > enemy->minAttackRange)
+		if (distanceToPlayer < enemy->maxAttackRange && distanceToPlayer > enemy->minAttackRange)
 		{
 			enemy->currentState = (EnemyState*)enemy->attack;
 		}
@@ -40,6 +33,24 @@ void EnemyStateCooldown::HandleIA()
 			else
 			{
 				enemy->currentState = (EnemyState*)enemy->attack;
+			}
+		}
+	}
+	else
+	{
+		if (distanceToPlayer > enemy->disengageDistance)
+		{
+			enemy->currentState = (EnemyState*)enemy->returnToStart;
+		}
+		else if (distanceToPlayer < enemy->disengageDistance && distanceToPlayer > enemy->maxAttackRange)
+		{
+			enemy->currentState = (EnemyState*)enemy->chase;
+		}
+		else if (distanceToPlayer < enemy->minAttackRange)
+		{
+			if (enemy->teleportAvailable)
+			{
+				enemy->currentState = (EnemyState*)enemy->relocate;
 			}
 		}
 	}

@@ -3,6 +3,8 @@
 #include "BuriedEnemyAIScript.h"
 #include "EnemyControllerScript.h"
 
+#include "ComponentRenderer.h"
+
 EnemyStateShowUp::EnemyStateShowUp(BuriedEnemyAIScript* AIScript)
 {
 	enemy = AIScript;
@@ -37,4 +39,9 @@ void EnemyStateShowUp::HandleIA()
 void EnemyStateShowUp::Update()
 {
 
+}
+
+void EnemyStateShowUp::Enter()
+{
+	enemy->enemyController->myRender->Enable(true);
 }

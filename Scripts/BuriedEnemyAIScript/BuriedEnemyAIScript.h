@@ -72,6 +72,9 @@ public:
 	float runSpeed = 150.0f;
 
 	bool teleportAvailable = true;
+	float teleportTimer = 0.0f;
+	void StartTeleportCD();
+	void UpdateTeleportCD();
 
 	math::float3 startPosition = math::float3::zero;
 
@@ -84,6 +87,7 @@ public:
 	std::string projectileName = "EnemyProjectile";
 	ProjectileScript* projectileScript = nullptr;
 	GameObject* projectileGO = nullptr;
+	float projectileDelay = 0.4f;
 
 	EnemyControllerScript* enemyController = nullptr;
 };

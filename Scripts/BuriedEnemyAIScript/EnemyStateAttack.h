@@ -12,6 +12,11 @@ public:
 
 	void HandleIA() override;
 	void Update() override;
+
+	void Enter() override;
+	void Exit() override;
+
+	bool projShot = false;
 };
 
 #endif // __ENEMYSTATEATTACK_H_

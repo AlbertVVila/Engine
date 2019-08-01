@@ -11,6 +11,8 @@ public:
 
 	void HandleIA() override;
 	void Update() override;
+
+	void Exit() override;
 };
 
 #endif // __ENEMYSTATEHIDE_H_

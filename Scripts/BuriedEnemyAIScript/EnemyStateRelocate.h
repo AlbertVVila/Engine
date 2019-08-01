@@ -12,6 +12,8 @@ public:
 	void HandleIA() override;
 	void Update() override;
 
+	void Exit() override;
+
 	void ChangePosition();
 
 	bool finished = false;

@@ -3,6 +3,8 @@
 #include "EnemyControllerScript.h"
 #include "BuriedEnemyAIScript.h"
 
+#include "ComponentRenderer.h"
+
 EnemyStateHide::EnemyStateHide(BuriedEnemyAIScript* AIScript)
 {
 	enemy = AIScript;
@@ -25,4 +27,9 @@ void EnemyStateHide::HandleIA()
 void EnemyStateHide::Update()
 {
 
+}
+
+void EnemyStateHide::Exit()
+{
+	enemy->enemyController->myRender->Enable(false);
 }
