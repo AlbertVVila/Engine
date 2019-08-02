@@ -25419,119 +25419,10 @@
                     ]
                 },
                 {
-                    "Type": 9,
-                    "Enabled": 1,
-                    "script": "ProjectileScript",
-                    "scriptInfo": {
-                        "speed": 600.0,
-                        "lifeTime": 2.0,
-                        "playerName": "Player",
-                        "rotate": 1,
-                        "rotateX": 1,
-                        "rotateY": 0,
-                        "rotateZ": 0
-                    }
-                },
-                {
-                    "Type": 15,
-                    "Enabled": 0,
-                    "pos": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "r": [
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "is_player": 0,
-                    "debug_draw": 0
-                }
-            ]
-        },
-        {
-            "UID": 1262185406,
-            "ParentUID": 3565803036,
-            "Name": "ProjectileMesh",
-            "Tag": "ProjectileMesh",
-            "Static": 0,
-            "ActiveInHierarchy": 1,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 0,
-                    "Enabled": 1,
-                    "Position": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "Rotation": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ],
-                    "Euler": [
-                        -0.0,
-                        0.0,
-                        -0.0
-                    ],
-                    "Scale": [
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "Global": [
-                        2.0,
-                        0.0,
-                        0.0,
-                        1516.4356689453126,
-                        0.0,
-                        2.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        2.0,
-                        34.26518249511719,
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
-                },
-                {
                     "Type": 1,
                     "Enabled": 1,
                     "meshUID": 200180328,
-                    "materialUID": 3257774589,
+                    "materialUID": 735767494,
                     "castShadows": 0,
                     "useAlpha": 0,
                     "highlighted": 0,
@@ -25577,10 +25468,40 @@
                         0.0
                     ],
                     "uvScaler": [
+                        0.0,
+                        0.0
+                    ],
+                    "distorsionSpeed": 0.0010000000474974514
+                },
+                {
+                    "Type": 9,
+                    "Enabled": 1,
+                    "script": "ProjectileScript",
+                    "scriptInfo": {
+                        "speed": 1000.0,
+                        "lifeTime": 2.0,
+                        "playerName": "Player",
+                        "rotate": 1,
+                        "rotateX": 1,
+                        "rotateY": 1,
+                        "rotateZ": 1
+                    }
+                },
+                {
+                    "Type": 15,
+                    "Enabled": 1,
+                    "pos": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "r": [
+                        1.0,
                         1.0,
                         1.0
                     ],
-                    "distorsionSpeed": 0.0010000000474974514
+                    "is_player": 0,
+                    "debug_draw": 0
                 }
             ]
         },
