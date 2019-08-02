@@ -13,6 +13,7 @@ public:
 	void Update() override;
 
 	void Exit() override;
+	void Enter() override;
 
 	void ChangePosition();
 

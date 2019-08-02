@@ -24,6 +24,10 @@ void EnemyStateCooldown::HandleIA()
 		{
 			enemy->currentState = (EnemyState*)enemy->attack;
 		}
+		else if (distanceToPlayer < enemy->disengageDistance && distanceToPlayer > enemy->maxAttackRange)
+		{
+			enemy->currentState = (EnemyState*)enemy->chase;
+		}
 		else if (distanceToPlayer < enemy->minAttackRange)
 		{
 			if (enemy->teleportAvailable)

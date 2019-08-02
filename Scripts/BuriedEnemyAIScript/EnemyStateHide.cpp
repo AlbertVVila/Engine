@@ -4,6 +4,7 @@
 #include "BuriedEnemyAIScript.h"
 
 #include "ComponentRenderer.h"
+#include "ComponentBoxTrigger.h"
 
 EnemyStateHide::EnemyStateHide(BuriedEnemyAIScript* AIScript)
 {
@@ -32,4 +33,9 @@ void EnemyStateHide::Update()
 void EnemyStateHide::Exit()
 {
 	enemy->enemyController->myRender->Enable(false);
+}
+
+void EnemyStateHide::Enter()
+{
+	enemy->enemyController->hpBoxTrigger->Enable(false);
 }

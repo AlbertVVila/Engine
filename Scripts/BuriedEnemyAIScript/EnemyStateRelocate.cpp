@@ -8,6 +8,7 @@
 #include "ModuleNavigation.h"
 
 #include "ComponentRenderer.h"
+#include "ComponentBoxTrigger.h"
 
 #include "Math/float3.h"
 #include "Math/MathFunc.h"
@@ -61,4 +62,9 @@ void EnemyStateRelocate::ChangePosition()
 void EnemyStateRelocate::Exit()
 {
 	enemy->enemyController->myRender->Enable(false);
+}
+
+void EnemyStateRelocate::Enter()
+{
+	enemy->enemyController->hpBoxTrigger->Enable(false);
 }

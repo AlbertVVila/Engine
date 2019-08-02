@@ -4,6 +4,7 @@
 #include "EnemyControllerScript.h"
 
 #include "ComponentRenderer.h"
+#include "ComponentBoxTrigger.h"
 
 EnemyStateShowUp::EnemyStateShowUp(BuriedEnemyAIScript* AIScript)
 {
@@ -44,4 +45,11 @@ void EnemyStateShowUp::Update()
 void EnemyStateShowUp::Enter()
 {
 	enemy->enemyController->myRender->Enable(true);
+	enemy->enemyController->hpBoxTrigger->Enable(true);
+	//enemy->particles->Enable(true);
+}
+
+void EnemyStateShowUp::Exit()
+{
+	//enemy->particles->Enable(false);
 }

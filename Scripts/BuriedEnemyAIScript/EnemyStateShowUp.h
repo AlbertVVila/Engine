@@ -12,6 +12,7 @@ public:
 	void HandleIA() override;
 	void Update() override;
 	void Enter() override;
+	void Exit() override;
 };
 
 #endif // __ENEMYSTATESHOWUP_H_
