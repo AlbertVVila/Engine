@@ -43,6 +43,26 @@ ResourceMesh::ResourceMesh(const ResourceMesh& resource) : Resource(resource)
 	meshTangents = resource.meshTangents;
 	meshTexCoords = resource.meshTexCoords;
 	meshIndices = resource.meshIndices;
+
+	drawingMode = resource.drawingMode;
+}
+
+ResourceMesh::ResourceMesh(unsigned nVertices, float* vertices, unsigned nIndexes, int* indexes, unsigned nUVs, float* UVs) : Resource(0, TYPE::MESH)
+{
+	assert(nVertices % 3 == 0 && vertices && indexes && UVs); 
+	for (unsigned i = 0u; i < nVertices; i += 3)
+	{
+		meshVertices.push_back(math::float3(vertices[i], vertices[i + 1], vertices[i + 2]));
+	}
+	meshIndices.resize(nIndexes);
+	memcpy(&meshIndices[0], indexes, sizeof(unsigned) * nIndexes);
+	meshTexCoords.resize(nUVs);
+	memcpy(&meshTexCoords[0], UVs, sizeof(float) * nUVs);
+	drawingMode = DRAW_GL_STRIP;
+	SetMeshBuffers();
+	SetBboxBuffers();
+	ComputeBBox();
+
 }
 
 ResourceMesh::~ResourceMesh()
@@ -62,6 +82,7 @@ bool ResourceMesh::LoadInMemory()
 		SetMesh(data); //Deallocates data
 		SetMeshBuffers();
 		SetBboxBuffers();
+
 		++loaded;
 	}
 	return true;
@@ -183,7 +204,7 @@ void ResourceMesh::Draw(unsigned shaderProgram) const
 
 	glBindVertexArray(VAO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glDrawElements(GL_TRIANGLES, meshIndices.size(), GL_UNSIGNED_INT, 0);
+	glDrawElements(drawingMode, meshIndices.size(), GL_UNSIGNED_INT, 0);
 
 	// We disable VAO
 	glBindVertexArray(0);
@@ -381,7 +402,7 @@ void ResourceMesh::SetMesh(const char* meshData)
 
 void ResourceMesh::SetMeshBuffers()
 {
-	if (meshTangents.size() == 0) //if the mesh don't have tangents -> calculate them
+	if (meshTangents.size() == 0 && drawingMode == DRAW_GL_TRIANGLES) //if the mesh don't have tangents -> calculate them
 		CalculateTangents();
 
 	unsigned offsetTexCoords = meshVertices.size() * sizeof(math::float3);
@@ -507,8 +528,7 @@ void ResourceMesh::SetBboxBuffers()
 }
 
 void ResourceMesh::DrawBbox(unsigned shader, const AABB &globalBBOX) const
-{
-	if (globalBBOX.Volume() <= 0) return;
+{	
 	glUseProgram(shader);
 
 	float4x4 boxtransform = float4x4::FromTRS(globalBBOX.CenterPoint(), Quat::identity, globalBBOX.Size());

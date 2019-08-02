@@ -21,6 +21,7 @@ public:
 	virtual void CheckInput() {};
 	void UpdateTimer();
 	void ResetTimer() { timer = 0.f; };
+	void lerpCalculations(const math::float3& direction, math::float3 playerFront, const math::float3& nextPointPosition);
 
 public:
 	bool enabled = false;
@@ -31,6 +32,8 @@ public:
 	bool playerWalkingToHit = false;
 	bool playerWalking = false;
 	float manaCost = 0.f;
+	const float lerpingIncrement = 0.5f;
+	float currentLerping = 0.0f;
 
 protected:
 	math::float3 boxSize = math::float3::zero;
