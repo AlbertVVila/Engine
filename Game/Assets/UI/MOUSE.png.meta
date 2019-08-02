@@ -1,13 +1,11 @@
 {
     "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1563536371,
         "GUID": 2457356164,
-        "timeCreated": 1557418424,
-        "height": 579,
-        "width": 487,
-        "depth": 1,
-        "mips": 0,
-        "format": 6408,
-        "DX compresion": 1802,
-        "mipmap": 0
+        "Name": "MOUSE",
+        "File": "Assets/UI/MOUSE.png",
+        "ExportedFile": "Library/Textures/2457356164.dds",
+        "DX compresion": 1802
     }
 }

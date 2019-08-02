@@ -1,13 +1,11 @@
 {
     "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1563536371,
         "GUID": 3496832437,
-        "timeCreated": 1562862496,
-        "height": 275,
-        "width": 496,
-        "depth": 1,
-        "mips": 0,
-        "format": 6408,
-        "DX compresion": 1802,
-        "mipmap": 0
+        "Name": "SoulSquare",
+        "File": "Assets/UI/Inventory/SoulSquare.png",
+        "ExportedFile": "Library/Textures/3496832437.dds",
+        "DX compresion": 1802
     }
 }

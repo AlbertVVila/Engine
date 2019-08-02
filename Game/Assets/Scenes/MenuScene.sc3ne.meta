@@ -1,5 +1,10 @@
 {
     "Scene": {
-        "GUID": 3063813660
+        "metaVersion": 2,
+        "timeCreated": 1563536366,
+        "GUID": 3063813660,
+        "Name": "MenuScene",
+        "File": "Assets/Scenes/MenuScene.sc3ne",
+        "ExportedFile": "Library/Scenes/3063813660.sc3ne"
     }
 }

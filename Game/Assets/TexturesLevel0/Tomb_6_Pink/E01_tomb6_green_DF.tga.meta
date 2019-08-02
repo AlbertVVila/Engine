@@ -1,13 +1,11 @@
 {
     "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1564156739,
         "GUID": 1527791684,
-        "timeCreated": 1562862493,
-        "height": 1024,
-        "width": 1024,
-        "depth": 1,
-        "mips": 0,
-        "format": 32992,
-        "DX compresion": 1802,
-        "mipmap": 0
+        "Name": "E01_tomb6_green_DF",
+        "File": "Assets/TexturesLevel0/Tomb_6_Pink/E01_tomb6_green_DF.tga",
+        "ExportedFile": "Library/Textures/1527791684.dds",
+        "DX compresion": 1802
     }
 }

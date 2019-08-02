@@ -1,7 +1,11 @@
 {
     "Material": {
+        "metaVersion": 2,
+        "timeCreated": 1563536364,
         "GUID": 4292051295,
-        "timeCreated": 1562862480,
+        "Name": "Floor_5",
+        "File": "Assets/Materials/Floor_5.m4t",
+        "ExportedFile": "Library/Materials/4292051295.m4t",
         "DifusseColor": [
             1.0,
             1.0,

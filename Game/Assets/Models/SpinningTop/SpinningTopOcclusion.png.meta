@@ -1,13 +1,11 @@
 {
     "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1563536366,
         "GUID": 2988963034,
-        "timeCreated": 1557418423,
-        "height": 1024,
-        "width": 1024,
-        "depth": 1,
-        "mips": 0,
-        "format": 6408,
-        "DX compresion": 1802,
-        "mipmap": 0
+        "Name": "SpinningTopOcclusion",
+        "File": "Assets/Models/SpinningTop/SpinningTopOcclusion.png",
+        "ExportedFile": "Library/Textures/2988963034.dds",
+        "DX compresion": 1802
     }
 }

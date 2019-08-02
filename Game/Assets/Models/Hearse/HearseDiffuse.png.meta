@@ -1,13 +1,11 @@
 {
     "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1563536365,
         "GUID": 2712313797,
-        "timeCreated": 1557418423,
-        "height": 1024,
-        "width": 1024,
-        "depth": 1,
-        "mips": 0,
-        "format": 6407,
-        "DX compresion": 1802,
-        "mipmap": 0
+        "Name": "HearseDiffuse",
+        "File": "Assets/Models/Hearse/HearseDiffuse.png",
+        "ExportedFile": "Library/Textures/2712313797.dds",
+        "DX compresion": 1802
     }
 }

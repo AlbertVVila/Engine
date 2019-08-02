@@ -7,6 +7,9 @@
 
 #include "BasicEnemyAIScript.h"
 #include "EnemyControllerScript.h"
+#include "Application.h"
+#include "ModuleScene.h"
+#include "ComponentTrail.h"
 
 EnemyStateAttack::EnemyStateAttack(BasicEnemyAIScript* AIScript)
 {
@@ -15,6 +18,11 @@ EnemyStateAttack::EnemyStateAttack(BasicEnemyAIScript* AIScript)
 	boxSize = math::float3(100.f, 50.f, 50.f);
 	minTime = 0.7f;
 	maxTime = 0.9f;
+	GameObject* punchBone = enemy->App->scene->FindGameObjectByName("joint18", enemy->gameobject);
+	if (punchBone != nullptr)
+	{
+		trailPunch = punchBone->GetComponent<ComponentTrail>();
+	}
 }
 
 EnemyStateAttack::~EnemyStateAttack()
@@ -36,6 +44,7 @@ void EnemyStateAttack::HandleIA()
 				enemy->enemyController->attackBoxTrigger->Enable(false);
 				hitboxCreated = false;
 			}
+			PunchFX(false);
 			enemy->currentState = (EnemyState*)enemy->chase;
 		}
 		else if (attacked)
@@ -48,6 +57,7 @@ void EnemyStateAttack::HandleIA()
 			}
 			enemy->currentState = (EnemyState*)enemy->cooldown;
 			attacked = false;
+			PunchFX(false);
 		}
 	}
 
@@ -74,4 +84,13 @@ void EnemyStateAttack::Attack()
 	enemy->enemyController->attackBoxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z + 100.f);
 	hitboxCreated = true;
 	attacked = true;
+	PunchFX(true);
+}
+
+void EnemyStateAttack::PunchFX(bool active)
+{
+	if (trailPunch != nullptr)
+	{
+		trailPunch->Enable(active);
+	}
 }
