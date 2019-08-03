@@ -2038,9 +2038,9 @@
             "Navigable": 0,
             "No Walkable": 0,
             "openInHierarchy": 0,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
+            "isPrefab": 1,
+            "isPrefabSync": 1,
+            "prefabUID": 2092266984,
             "Components": []
         },
         {
@@ -2689,13 +2689,13 @@
                     "text": {
                         "Type": 6,
                         "Enabled": 1,
-                        "FontSize": 14.0,
+                        "FontSize": 47.0,
                         "text": "",
-                        "font": "Fonts/DroidSans.ttf",
+                        "font": "Fonts/Vision-Regular.ttf",
                         "color": [
-                            1.0,
-                            1.0,
-                            1.0,
+                            0.2049180269241333,
+                            0.051229506731033328,
+                            0.051229506731033328,
                             0.0
                         ],
                         "colorHovered": [
@@ -2720,13 +2720,13 @@
                     "buttonImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 770802012,
-                        "textureName": "1",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             1.0,
                             1.0,
                             1.0,
-                            0.686274528503418
+                            1.0
                         ],
                         "FlipVertical": 0,
                         "FlipHorizontal": 0,
@@ -2740,8 +2740,8 @@
                     "highlightedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 770802012,
-                        "textureName": "1",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.5882353186607361,
                             0.5882353186607361,
@@ -2760,8 +2760,8 @@
                     "pressedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 770802012,
-                        "textureName": "1",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.19607843458652497,
                             0.19607843458652497,
@@ -2834,8 +2834,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 770802012,
-                    "textureName": "1",
+                    "textureUID": 3131494396,
+                    "textureName": "Defaultslot",
                     "color": [
                         0.29411765933036806,
                         0.29411765933036806,
@@ -2860,7 +2860,7 @@
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 1,
-            "ActiveSelf": 0,
+            "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
                 1.0,
@@ -2891,8 +2891,8 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -80.19999694824219,
-                        80.9000015258789
+                        -79.19999694824219,
+                        97.0
                     ],
                     "Size": [
                         100.0,
@@ -2906,11 +2906,11 @@
                     "Enabled": 1,
                     "FontSize": 47.0,
                     "text": "1",
-                    "font": "Fonts/DroidSans.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
-                        1.0,
-                        1.0,
-                        1.0,
+                        0.5163934230804443,
+                        0.21798573434352876,
+                        0.21798573434352876,
                         0.0
                     ],
                     "colorHovered": [
@@ -3019,13 +3019,13 @@
                     "buttonImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 630598342,
-                        "textureName": "2",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             1.0,
                             1.0,
                             1.0,
-                            0.686274528503418
+                            1.0
                         ],
                         "FlipVertical": 0,
                         "FlipHorizontal": 0,
@@ -3039,8 +3039,8 @@
                     "highlightedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 630598342,
-                        "textureName": "2",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.5882353186607361,
                             0.5882353186607361,
@@ -3059,8 +3059,8 @@
                     "pressedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 630598342,
-                        "textureName": "2",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.19607843458652497,
                             0.19607843458652497,
@@ -3133,8 +3133,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 630598342,
-                    "textureName": "2",
+                    "textureUID": 3131494396,
+                    "textureName": "Defaultslot",
                     "color": [
                         0.29411765933036806,
                         0.29411765933036806,
@@ -3159,7 +3159,7 @@
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 1,
-            "ActiveSelf": 0,
+            "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
                 1.0,
@@ -3191,7 +3191,7 @@
                     "Enabled": 1,
                     "Position": [
                         -30.700000762939454,
-                        80.9000015258789
+                        97.0
                     ],
                     "Size": [
                         100.0,
@@ -3205,11 +3205,11 @@
                     "Enabled": 1,
                     "FontSize": 47.0,
                     "text": "2",
-                    "font": "Fonts/DroidSans.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
-                        1.0,
-                        1.0,
-                        1.0,
+                        0.5176470875740051,
+                        0.21960784494876862,
+                        0.21960784494876862,
                         0.0
                     ],
                     "colorHovered": [
@@ -3318,13 +3318,13 @@
                     "buttonImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 1661851975,
-                        "textureName": "3",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             1.0,
                             1.0,
                             1.0,
-                            0.686274528503418
+                            1.0
                         ],
                         "FlipVertical": 0,
                         "FlipHorizontal": 0,
@@ -3338,8 +3338,8 @@
                     "highlightedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 1661851975,
-                        "textureName": "3",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.5882353186607361,
                             0.5882353186607361,
@@ -3358,8 +3358,8 @@
                     "pressedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 1661851975,
-                        "textureName": "3",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.19607843458652497,
                             0.19607843458652497,
@@ -3432,8 +3432,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1661851975,
-                    "textureName": "3",
+                    "textureUID": 3131494396,
+                    "textureName": "Defaultslot",
                     "color": [
                         0.29411765933036806,
                         0.29411765933036806,
@@ -3458,7 +3458,7 @@
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 1,
-            "ActiveSelf": 0,
+            "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
                 1.0,
@@ -3490,7 +3490,7 @@
                     "Enabled": 1,
                     "Position": [
                         18.799999237060548,
-                        80.9000015258789
+                        97.0
                     ],
                     "Size": [
                         100.0,
@@ -3504,11 +3504,11 @@
                     "Enabled": 1,
                     "FontSize": 47.0,
                     "text": "3",
-                    "font": "Fonts/DroidSans.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
-                        1.0,
-                        1.0,
-                        1.0,
+                        0.5176470875740051,
+                        0.21960784494876862,
+                        0.21960784494876862,
                         0.0
                     ],
                     "colorHovered": [
@@ -3617,13 +3617,13 @@
                     "buttonImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 3649727781,
-                        "textureName": "4",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             1.0,
                             1.0,
                             1.0,
-                            0.686274528503418
+                            1.0
                         ],
                         "FlipVertical": 0,
                         "FlipHorizontal": 0,
@@ -3637,8 +3637,8 @@
                     "highlightedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 3649727781,
-                        "textureName": "4",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.5882353186607361,
                             0.5882353186607361,
@@ -3657,8 +3657,8 @@
                     "pressedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 3649727781,
-                        "textureName": "4",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.19607843458652497,
                             0.19607843458652497,
@@ -3731,8 +3731,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3649727781,
-                    "textureName": "4",
+                    "textureUID": 3131494396,
+                    "textureName": "Defaultslot",
                     "color": [
                         0.29411765933036806,
                         0.29411765933036806,
@@ -3757,7 +3757,7 @@
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 1,
-            "ActiveSelf": 0,
+            "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
                 1.0,
@@ -3789,7 +3789,7 @@
                     "Enabled": 1,
                     "Position": [
                         67.5,
-                        80.9000015258789
+                        97.0
                     ],
                     "Size": [
                         100.0,
@@ -3803,11 +3803,11 @@
                     "Enabled": 1,
                     "FontSize": 47.0,
                     "text": "4",
-                    "font": "Fonts/DroidSans.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
-                        1.0,
-                        1.0,
-                        1.0,
+                        0.5176470875740051,
+                        0.21960784494876862,
+                        0.21960784494876862,
                         0.0
                     ],
                     "colorHovered": [
@@ -3916,13 +3916,13 @@
                     "buttonImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 4258093177,
-                        "textureName": "Q",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             1.0,
                             1.0,
                             1.0,
-                            0.686274528503418
+                            1.0
                         ],
                         "FlipVertical": 0,
                         "FlipHorizontal": 0,
@@ -3936,8 +3936,8 @@
                     "highlightedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 4258093177,
-                        "textureName": "Q",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.5882353186607361,
                             0.5882353186607361,
@@ -3956,8 +3956,8 @@
                     "pressedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 4258093177,
-                        "textureName": "Q",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.19607843458652497,
                             0.19607843458652497,
@@ -4030,8 +4030,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 4258093177,
-                    "textureName": "Q",
+                    "textureUID": 3131494396,
+                    "textureName": "Defaultslot",
                     "color": [
                         0.29411765933036806,
                         0.29411765933036806,
@@ -4056,7 +4056,7 @@
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 1,
-            "ActiveSelf": 0,
+            "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
                 1.0,
@@ -4088,7 +4088,7 @@
                     "Enabled": 1,
                     "Position": [
                         -81.4000015258789,
-                        35.099998474121097
+                        47.900001525878909
                     ],
                     "Size": [
                         100.0,
@@ -4100,13 +4100,13 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 41.0,
+                    "FontSize": 47.0,
                     "text": "Q",
-                    "font": "Fonts/DroidSans.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
-                        1.0,
-                        1.0,
-                        1.0,
+                        0.5176470875740051,
+                        0.21960784494876862,
+                        0.21960784494876862,
                         0.0
                     ],
                     "colorHovered": [
@@ -4215,13 +4215,13 @@
                     "buttonImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 365894612,
-                        "textureName": "W",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             1.0,
                             1.0,
                             1.0,
-                            0.686274528503418
+                            1.0
                         ],
                         "FlipVertical": 0,
                         "FlipHorizontal": 0,
@@ -4235,8 +4235,8 @@
                     "highlightedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 365894612,
-                        "textureName": "W",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.5882353186607361,
                             0.5882353186607361,
@@ -4255,8 +4255,8 @@
                     "pressedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 365894612,
-                        "textureName": "W",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.19607843458652497,
                             0.19607843458652497,
@@ -4329,8 +4329,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 365894612,
-                    "textureName": "W",
+                    "textureUID": 3131494396,
+                    "textureName": "Defaultslot",
                     "color": [
                         0.29411765933036806,
                         0.29411765933036806,
@@ -4355,7 +4355,7 @@
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 1,
-            "ActiveSelf": 0,
+            "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
                 1.0,
@@ -4386,8 +4386,8 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -34.29999923706055,
-                        31.0
+                        -35.5,
+                        46.79999923706055
                     ],
                     "Size": [
                         100.0,
@@ -4401,11 +4401,11 @@
                     "Enabled": 1,
                     "FontSize": 47.0,
                     "text": "W",
-                    "font": "Fonts/DroidSans.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
-                        1.0,
-                        1.0,
-                        1.0,
+                        0.5176470875740051,
+                        0.21960784494876862,
+                        0.21960784494876862,
                         0.0
                     ],
                     "colorHovered": [
@@ -4514,13 +4514,13 @@
                     "buttonImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 1515148585,
-                        "textureName": "E",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             1.0,
                             1.0,
                             1.0,
-                            0.686274528503418
+                            1.0
                         ],
                         "FlipVertical": 0,
                         "FlipHorizontal": 0,
@@ -4534,8 +4534,8 @@
                     "highlightedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 1515148585,
-                        "textureName": "E",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.5882353186607361,
                             0.5882353186607361,
@@ -4554,8 +4554,8 @@
                     "pressedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 1515148585,
-                        "textureName": "E",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.19607843458652497,
                             0.19607843458652497,
@@ -4628,8 +4628,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1515148585,
-                    "textureName": "E",
+                    "textureUID": 3131494396,
+                    "textureName": "Defaultslot",
                     "color": [
                         0.29411765933036806,
                         0.29411765933036806,
@@ -4654,7 +4654,7 @@
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 1,
-            "ActiveSelf": 0,
+            "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
                 1.0,
@@ -4686,7 +4686,7 @@
                     "Enabled": 1,
                     "Position": [
                         18.899999618530275,
-                        31.0
+                        48.0
                     ],
                     "Size": [
                         100.0,
@@ -4700,11 +4700,11 @@
                     "Enabled": 1,
                     "FontSize": 47.0,
                     "text": "E",
-                    "font": "Fonts/DroidSans.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
-                        1.0,
-                        1.0,
-                        1.0,
+                        0.5176470875740051,
+                        0.21960784494876862,
+                        0.21960784494876862,
                         0.0
                     ],
                     "colorHovered": [
@@ -4813,13 +4813,13 @@
                     "buttonImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 1017670044,
-                        "textureName": "R",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             1.0,
                             1.0,
                             1.0,
-                            0.686274528503418
+                            1.0
                         ],
                         "FlipVertical": 0,
                         "FlipHorizontal": 0,
@@ -4833,8 +4833,8 @@
                     "highlightedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 1017670044,
-                        "textureName": "R",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.5882353186607361,
                             0.5882353186607361,
@@ -4853,8 +4853,8 @@
                     "pressedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 1017670044,
-                        "textureName": "R",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.19607843458652497,
                             0.19607843458652497,
@@ -4927,8 +4927,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1017670044,
-                    "textureName": "R",
+                    "textureUID": 3131494396,
+                    "textureName": "Defaultslot",
                     "color": [
                         0.29411765933036806,
                         0.29411765933036806,
@@ -4953,7 +4953,7 @@
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 1,
-            "ActiveSelf": 0,
+            "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
                 1.0,
@@ -4985,7 +4985,7 @@
                     "Enabled": 1,
                     "Position": [
                         67.5999984741211,
-                        31.0
+                        48.099998474121097
                     ],
                     "Size": [
                         100.0,
@@ -4999,11 +4999,11 @@
                     "Enabled": 1,
                     "FontSize": 47.0,
                     "text": "R",
-                    "font": "Fonts/DroidSans.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
-                        1.0,
-                        1.0,
-                        1.0,
+                        0.5176470875740051,
+                        0.21960784494876862,
+                        0.21960784494876862,
                         0.0
                     ],
                     "colorHovered": [
@@ -5056,7 +5056,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 1,
+            "openInHierarchy": 0,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -5112,13 +5112,13 @@
                     "buttonImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 2821563402,
-                        "textureName": "Item_Machete",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             1.0,
                             1.0,
                             1.0,
-                            0.686274528503418
+                            1.0
                         ],
                         "FlipVertical": 0,
                         "FlipHorizontal": 0,
@@ -5132,8 +5132,8 @@
                     "highlightedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 2821563402,
-                        "textureName": "Item_Machete",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.5882353186607361,
                             0.5882353186607361,
@@ -5152,8 +5152,8 @@
                     "pressedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 2821563402,
-                        "textureName": "Item_Machete",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.19607843458652497,
                             0.19607843458652497,
@@ -5171,6 +5171,87 @@
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 113142417,
+            "ParentUID": 4161254190,
+            "Name": "RCText",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -135.89999389648438,
+                        71.5
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 47.0,
+                    "text": "LC",
+                    "font": "Fonts/Vision-Regular.ttf",
+                    "color": [
+                        0.5176470875740051,
+                        0.21960784494876862,
+                        0.21960784494876862,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 72.0,
+                    "InterlineDistance": 110.0,
                     "UIOrder": 0
                 }
             ]
@@ -5470,13 +5551,13 @@
                     "buttonImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 3242354620,
-                        "textureName": "Right_clic",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             1.0,
                             1.0,
                             1.0,
-                            0.686274528503418
+                            1.0
                         ],
                         "FlipVertical": 0,
                         "FlipHorizontal": 0,
@@ -5490,8 +5571,8 @@
                     "highlightedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 3242354620,
-                        "textureName": "Right_clic",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.5882353186607361,
                             0.5882353186607361,
@@ -5510,8 +5591,8 @@
                     "pressedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 3242354620,
-                        "textureName": "Right_clic",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.19607843458652497,
                             0.19607843458652497,
@@ -5584,8 +5665,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3242354620,
-                    "textureName": "Right_clic",
+                    "textureUID": 3131494396,
+                    "textureName": "Defaultslot",
                     "color": [
                         0.29411765933036806,
                         0.29411765933036806,
@@ -5610,7 +5691,7 @@
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 1,
-            "ActiveSelf": 0,
+            "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
                 1.0,
@@ -5642,7 +5723,7 @@
                     "Enabled": 1,
                     "Position": [
                         111.30000305175781,
-                        55.70000076293945
+                        71.5
                     ],
                     "Size": [
                         100.0,
@@ -5656,11 +5737,11 @@
                     "Enabled": 1,
                     "FontSize": 47.0,
                     "text": "RC",
-                    "font": "Fonts/DroidSans.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
-                        1.0,
-                        1.0,
-                        1.0,
+                        0.5176470875740051,
+                        0.21960784494876862,
+                        0.21960784494876862,
                         0.0
                     ],
                     "colorHovered": [
@@ -5678,8 +5759,8 @@
                         1.0
                     ],
                     "IsTextWrapped": 0,
-                    "WrapWidth": 100.0,
-                    "InterlineDistance": 24.0,
+                    "WrapWidth": 72.0,
+                    "InterlineDistance": 110.0,
                     "UIOrder": 0
                 }
             ]
@@ -12911,7 +12992,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -13012,8 +13093,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 491920706,
-                    "textureName": "Desactivated_Bar",
+                    "textureUID": 2901523971,
+                    "textureName": "Desactivated_Bar_Short",
                     "color": [
                         1.0,
                         0.9999899864196777,
@@ -13222,8 +13303,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 491920706,
-                    "textureName": "Desactivated_Bar",
+                    "textureUID": 2901523971,
+                    "textureName": "Desactivated_Bar_Short",
                     "color": [
                         1.0,
                         0.9999899864196777,
@@ -13292,8 +13373,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 491920706,
-                    "textureName": "Desactivated_Bar",
+                    "textureUID": 2901523971,
+                    "textureName": "Desactivated_Bar_Short",
                     "color": [
                         1.0,
                         0.9999899864196777,
@@ -13480,7 +13561,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 1,
+            "openInHierarchy": 0,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,

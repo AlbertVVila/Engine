@@ -115,7 +115,14 @@ void SkillTreeController::UnlockNextLevel(int i)
 {
 	if (skillList[i].currentLevel == skillList[i].maxLevels && skillList[i].nextSkill >= 0)
 	{
-		((ComponentImage*)connUI[skillList[i].connection])->texture = (ResourceTexture*)App->resManager->GetByName("Activated_Bar", TYPE::TEXTURE);
+		if (skillList[i].connection == 0 || skillList[i].connection == 3 || skillList[i].connection == 4)
+		{
+			((ComponentImage*)connUI[skillList[i].connection])->texture = (ResourceTexture*)App->resManager->GetByName("Activated_Bar_Short", TYPE::TEXTURE);
+		}
+		else
+		{
+			((ComponentImage*)connUI[skillList[i].connection])->texture = (ResourceTexture*)App->resManager->GetByName("Activated_Bar", TYPE::TEXTURE);
+		}
 		skillList[skillList[i].nextSkill].locked = false;
 		skillUI[skillList[i].nextSkill]->GetComponent<ComponentImage>()->texture = (ResourceTexture*)App->resManager->GetByName("Activated_Hability_container", TYPE::TEXTURE);
 		((Text*)skillUI[skillList[i].nextSkill]->GetComponentInChildren(ComponentType::Text))->color = math::float4(0, 0, 0, 0);
