@@ -1,7 +1,10 @@
 {
     "StateMachine": {
+        "metaVersion": 2,
+        "timeCreated": 1563536366,
         "GUID": 839626110,
-        "timeCreated": 1562862483,
-        "name": "PlayerStateMachine"
+        "Name": "PlayerStateMachine",
+        "File": "Assets/StateMachines/PlayerStateMachine.st4tem4chine",
+        "ExportedFile": "Library/StateMachines/839626110.st4tem4chine"
     }
 }

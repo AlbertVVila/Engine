@@ -77,6 +77,8 @@ public:
 	void SetLightUniforms(unsigned shader) const;
 	void LinkRendererToBones(std::vector<ComponentRenderer*>& renderers);
 
+	void LinkBones() const;
+
 	void UpdateToPrefab(GameObject* prefab);
 	bool ChildPrefab() const;
 	bool ParentPrefab() const;

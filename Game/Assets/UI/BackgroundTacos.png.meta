@@ -1,13 +1,11 @@
 {
     "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1563536371,
         "GUID": 1477451659,
-        "timeCreated": 1557418424,
-        "height": 645,
-        "width": 900,
-        "depth": 1,
-        "mips": 0,
-        "format": 6408,
-        "DX compresion": 1802,
-        "mipmap": 0
+        "Name": "BackgroundTacos",
+        "File": "Assets/UI/BackgroundTacos.png",
+        "ExportedFile": "Library/Textures/1477451659.dds",
+        "DX compresion": 1802
     }
 }

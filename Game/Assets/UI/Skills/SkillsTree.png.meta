@@ -1,13 +1,11 @@
 {
     "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1563536371,
         "GUID": 2892806929,
-        "timeCreated": 1557418424,
-        "height": 2142,
-        "width": 1765,
-        "depth": 1,
-        "mips": 0,
-        "format": 6408,
-        "DX compresion": 1802,
-        "mipmap": 0
+        "Name": "SkillsTree",
+        "File": "Assets/UI/Skills/SkillsTree.png",
+        "ExportedFile": "Library/Textures/2892806929.dds",
+        "DX compresion": 1802
     }
 }

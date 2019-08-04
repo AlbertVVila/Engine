@@ -1,7 +1,11 @@
 {
     "Material": {
+        "metaVersion": 2,
+        "timeCreated": 1563536364,
         "GUID": 2093901485,
-        "timeCreated": 1562862480,
+        "Name": "Mist",
+        "File": "Assets/Materials/Mist.m4t",
+        "ExportedFile": "Library/Materials/2093901485.m4t",
         "DifusseColor": [
             1.0,
             1.0,

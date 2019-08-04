@@ -4,8 +4,8 @@ class EnemyStateDeath :
 	public EnemyState
 {
 public:
-	EnemyStateDeath(BasicEnemyAIScript* AIScript);
-	~EnemyStateDeath();
+	BasicEnemyAIScript_API EnemyStateDeath(BasicEnemyAIScript* AIScript);
+	BasicEnemyAIScript_API ~EnemyStateDeath();
 
 
 	void Enter() override;

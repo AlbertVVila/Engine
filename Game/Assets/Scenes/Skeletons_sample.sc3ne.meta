@@ -1,5 +1,10 @@
 {
     "Scene": {
-        "GUID": 443090313
+        "metaVersion": 2,
+        "timeCreated": 1563536366,
+        "GUID": 443090313,
+        "Name": "Skeletons_sample",
+        "File": "Assets/Scenes/Skeletons_sample.sc3ne",
+        "ExportedFile": "Library/Scenes/443090313.sc3ne"
     }
 }

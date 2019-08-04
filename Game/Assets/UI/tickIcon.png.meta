@@ -1,13 +1,11 @@
 {
     "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1563536371,
         "GUID": 308126401,
-        "timeCreated": 1557418424,
-        "height": 50,
-        "width": 50,
-        "depth": 1,
-        "mips": 0,
-        "format": 6408,
-        "DX compresion": 1802,
-        "mipmap": 0
+        "Name": "tickIcon",
+        "File": "Assets/UI/tickIcon.png",
+        "ExportedFile": "Library/Textures/308126401.dds",
+        "DX compresion": 1802
     }
 }

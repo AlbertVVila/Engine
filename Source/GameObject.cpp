@@ -70,7 +70,7 @@ GameObject::GameObject(const float4x4 & transform, const char * name, unsigned u
 
 GameObject::GameObject(const GameObject & gameobject)
 {
-	name = gameobject.name + "(Clone)";
+	name = gameobject.name;
 	tag = gameobject.tag;
 	UUID = App->scene->GetNewUID();
 	parentUUID = gameobject.parentUUID;
@@ -125,6 +125,7 @@ GameObject::GameObject(const GameObject & gameobject)
 			
 			case ComponentType::VolumetricLight:
 				((ComponentVolumetricLight*)componentcopy)->renderer->gameobject = this;
+				break;
 		}
 	}
 
@@ -875,6 +876,18 @@ void GameObject::LinkRendererToBones(std::vector<ComponentRenderer*>& renderers)
 	}
 }
 
+void GameObject::LinkBones() const
+{
+	for (Component* c : GetComponentsInChildren(ComponentType::Renderer))
+	{
+		ComponentRenderer* cr = (ComponentRenderer*)c;
+		if (cr->mesh != nullptr)
+		{
+			cr->LinkBones();
+		}
+	}
+}
+
 void GameObject::MarkAsPrefab()
 {
 	bool wasPrefab = false;
@@ -996,14 +1009,7 @@ void GameObject::UpdateToPrefab(GameObject* prefabGo)
 		App->scene->AddToSpacePartition(this);
 	}
 
-	for (Component* c : GetComponentsInChildren(ComponentType::Renderer))
-	{
-		ComponentRenderer* cr = (ComponentRenderer*)c;
-		if (cr->mesh != nullptr)
-		{
-			cr->LinkBones();
-		}
-	}
+	LinkBones();
 }
 
 AABB GameObject::GetBoundingBox() const
@@ -1390,6 +1396,22 @@ void GameObject::UpdateTransforms(math::float4x4 parentGlobal)
 		if (transform)
 		{
 			transform->local = math::float4x4::FromTRS(transform->position, transform->rotation, transform->scale);
+
+			math::float4x4 global = math::float4x4::identity;
+			if (this != App->scene->root && transform != nullptr)
+			{
+				math::float4x4 original = transform->global;
+				transform->global = parentGlobal * transform->local;
+				global = transform->global;
+				transform->UpdateTransform();
+				if (this == App->scene->selected)
+				{
+					transform->MultiSelectionTransform(global - original);
+				}
+			}
+
+			UpdateBBox();
+
 			if (!isStatic)
 			{
 				if (treeNode != nullptr && hasLight)
@@ -1417,25 +1439,17 @@ void GameObject::UpdateTransforms(math::float4x4 parentGlobal)
 		}
 	}
 
-	math::float4x4 global = math::float4x4::identity;
-	if (this != App->scene->root && transform != nullptr)
-	{
-		math::float4x4 original = transform->global;
-		transform->global = parentGlobal * transform->local;
-		global = transform->global;
-		transform->UpdateTransform();
-		if (this == App->scene->selected)
-		{
-			transform->MultiSelectionTransform(global - original);
-		}
-	}
-
 	for (const auto& child : children)
 	{
-		child->UpdateTransforms(global);
+		if (transform != nullptr)
+		{
+			child->UpdateTransforms(transform->global);
+		}
+		else
+		{
+			child->UpdateTransforms(math::float4x4::identity);
+		}
 	}
-
-	UpdateBBox();
 }
 
 bool GameObject::CheckDelete()
