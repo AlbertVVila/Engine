@@ -145,8 +145,11 @@ void ComponentAnimation::DrawProperties()
 				}
 			}
 			ImGui::Separator();
-			HashString currentNodeName = stateMachine->GetNodeName(currentNode);
-			ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f),("Current state: %s", currentNodeName.C_str()));
+			if (stateMachine->GetNodesSize() > 0u)
+			{
+				HashString currentNodeName = stateMachine->GetNodeName(currentNode);
+				ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), ("Current state: %s", currentNodeName.C_str()));
+			}
 	
 			if (!stateMachine->isClipsEmpty())
 			{
