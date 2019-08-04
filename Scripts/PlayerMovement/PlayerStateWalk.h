@@ -12,6 +12,7 @@ public:
 	void Update() override;
 	void CheckInput() override;
 	void Enter() override;
+	
 
 public:
 	float duration = 1.5f;
@@ -21,6 +22,7 @@ public:
 
 private:
 	float moveTimer = 0.0f;
+	
 };
 
 #endif // __PLAYERSTATEWALK_H_

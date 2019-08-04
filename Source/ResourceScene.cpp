@@ -7,9 +7,11 @@
 #include "ModuleSpacePartitioning.h"
 #include "ModuleNavigation.h"
 #include "ModuleResourceManager.h"
+#include "ModuleRender.h"
 
 #include "GameObject.h"
 #include "ComponentRenderer.h"
+#include "ResourcePrefab.h"
 
 #include "JSON.h"
 
@@ -27,17 +29,31 @@ ResourceScene::~ResourceScene()
 
 void ResourceScene::SaveMetafile(const char* file) const
 {
+	std::string filepath;
+	filepath.append(file);
 	JSON* json = new JSON();
 	JSON_value* meta = json->CreateValue();
 	struct stat statFile;
-	stat(file, &statFile);
+	stat(filepath.c_str(), &statFile);
+	meta->AddUint("metaVersion", META_VERSION);
+	meta->AddUint("timeCreated", statFile.st_ctime);
 
+	// Resource info
 	meta->AddUint("GUID", UID);
-	json->AddValue("Scene", *meta);
+	meta->AddString("Name", name.c_str());
+	meta->AddString("File", file);
+	meta->AddString("ExportedFile", exportedFile.c_str());
 
-	std::string filepath(file);
+	json->AddValue("Scene", *meta);
 	filepath += METAEXT;
+
+	// Save meta in Assets
 	App->fsystem->Save(filepath.c_str(), json->ToString().c_str(), json->Size());
+
+	// Save meta in Library
+	std::string libraryPath(exportedFile + METAEXT);
+	App->fsystem->Save(libraryPath.c_str(), json->ToString().c_str(), json->Size());
+	RELEASE(json);
 }
 
 void ResourceScene::LoadConfigFromMeta()
@@ -70,6 +86,46 @@ void ResourceScene::LoadConfigFromMeta()
 		App->resManager->ReplaceResource(oldUID, this);
 		exportedFile = IMPORTED_SCENES + std::to_string(UID) + SCENEEXTENSION;
 	}
+
+	// Check the meta file version
+	if (value->GetUint("metaVersion", 0u) < META_VERSION)
+		SaveMetafile(file.c_str());
+
+	// Check the meta saved in library, if not save it
+	if (!App->fsystem->Exists((exportedFile + METAEXT).c_str()))
+		SaveMetafile(file.c_str());
+
+	RELEASE_ARRAY(data);
+	RELEASE(json);
+}
+
+void ResourceScene::LoadConfigFromLibraryMeta()
+{
+	std::string metaFile(exportedFile);
+	metaFile += ".meta";
+
+	// Check if meta file exists
+	if (!App->fsystem->Exists(metaFile.c_str()))
+		return;
+
+	char* data = nullptr;
+	unsigned oldUID = GetUID();
+
+	if (App->fsystem->Load(metaFile.c_str(), &data) == 0)
+	{
+		LOG("Warning: %s couldn't be loaded", metaFile.c_str());
+		RELEASE_ARRAY(data);
+		return;
+	}
+	JSON* json = new JSON(data);
+	JSON_value* value = json->GetValue("Scene");
+
+	// Get resource variables
+	name = value->GetString("Name");
+	file = value->GetString("File");
+
+	RELEASE_ARRAY(data);
+	RELEASE(json);
 }
 
 void ResourceScene::Save(const GameObject& rootGO, bool selected)
@@ -105,12 +161,18 @@ bool ResourceScene::Load()
 	gameobjectsMap.insert(std::pair<unsigned, GameObject*>(App->scene->canvas->UUID, sceneCanvas));
 
 	std::list<ComponentRenderer*> renderers;
+	std::vector<GameObject*> prefabs;
 
 	for (unsigned i = 0; i < gameobjectsJSON->Size(); i++)
 	{
 		JSON_value* gameobjectJSON = gameobjectsJSON->GetValue(i);
 		GameObject *gameobject = new GameObject();
 		gameobject->Load(gameobjectJSON);
+		if (gameobject->isPrefab && gameobject->isPrefabSync)
+		{
+			prefabs.emplace_back(gameobject);
+		}
+
 		if (gameobject->UUID != 1)
 		{
 			gameobjectsMap.insert(std::pair<unsigned, GameObject*>(gameobject->UUID, gameobject));
@@ -179,6 +241,14 @@ bool ResourceScene::Load()
 		}
 	}
 
+	for (GameObject* goPrefab : prefabs)
+	{
+		if (App->scene->PrefabWasUpdated(goPrefab->prefabUID))
+		{
+			goPrefab->UpdateToPrefab(goPrefab->prefab->RetrievePrefab());
+		}
+	}
+
 	App->navigation->sceneLoaded(json);
 
 	RELEASE_ARRAY(data);
@@ -188,7 +258,7 @@ bool ResourceScene::Load()
 	//set all the game objects
 	App->scene->root->UpdateTransforms(math::float4x4::identity);
 	App->scene->root->SetAllMoveFlags();
-
+	App->renderer->OnResize();
 	return true;
 }
 

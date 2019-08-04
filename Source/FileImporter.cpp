@@ -141,7 +141,7 @@ bool FileImporter::ImportPrefab(const char * file, const char * folder, Resource
 
 bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const char* folder, ResourceModel* resource)
 {
-		GameObject* sceneGO = App->scene->CreateGameObject("Scene", App->scene->root);
+	GameObject* sceneGO = App->scene->CreateGameObject("Scene", App->scene->root);
 	sceneGO->CreateComponent(ComponentType::Transform); // To move all around
 
 	std::stack<aiNode*> stackNode;
@@ -190,8 +190,8 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 			else
 			{
 				JSON *json = new JSON(metaData);
-				JSON_value* meshValue = json->GetValue("Mesh");
-				mesh = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH, meshValue->GetUint(("Mesh" + std::to_string(totalMeshes)).c_str()));
+				JSON_value* meshValue = json->GetValue(("Mesh" + std::to_string(totalMeshes)).c_str());
+				mesh = (ResourceMesh*)App->resManager->CreateNewResource(TYPE::MESH, meshValue->GetUint("GUID"));
 
 				// ResourceMesh was created on .meta of model load, now replace previous resource
 				App->resManager->ReplaceResource(mesh->GetUID(), mesh);
@@ -243,13 +243,20 @@ bool FileImporter::ImportScene(const aiScene &aiscene, const char* file, const c
 		else
 		{
 			JSON *json = new JSON(metaData);
-			JSON_value* animValue = json->GetValue("Animation");
-			animation = (ResourceAnimation*)App->resManager->CreateNewResource(TYPE::ANIMATION, animValue->GetUint(("Animation" + std::to_string(i)).c_str()));
+			JSON_value* animValue = json->GetValue(("Animation" + std::to_string(i)).c_str());
+			if (animValue == nullptr)	// Try old meta version
+			{
+				JSON_value* animValue = json->GetValue("Animation");
+				animation = (ResourceAnimation*)App->resManager->CreateNewResource(TYPE::ANIMATION, animValue->GetUint(("Animation" + std::to_string(i)).c_str()));
+			}
+			else
+			{
+				animation = (ResourceAnimation*)App->resManager->CreateNewResource(TYPE::ANIMATION, animValue->GetUint("GUID"));
+			}	
 
 			// ResourceAniamtion was created on .meta of model load, now replace previous resource
 			App->resManager->ReplaceResource(animation->GetUID(), animation);
 		}
-		animationComponent->anim = animation;
 		animationData[animationSize] = 0;
 
 		std::string exportedFile(IMPORTED_ANIMATIONS + std::to_string(animation->GetUID()) + ANIMATIONEXTENSION);

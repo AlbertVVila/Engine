@@ -1,1 +1,11 @@
-{"Texture":{"GUID":716063318,"timeCreated":1560188783,"height":124,"width":124,"depth":1,"mips":0,"format":6408,"DX compresion":1802,"mipmap":0}}
+{
+    "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1563536371,
+        "GUID": 716063318,
+        "Name": "Bubble",
+        "File": "Assets/UI/HUD/Bubble.png",
+        "ExportedFile": "Library/Textures/716063318.dds",
+        "DX compresion": 1802
+    }
+}

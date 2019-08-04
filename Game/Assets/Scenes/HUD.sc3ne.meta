@@ -1,5 +1,10 @@
 {
     "Scene": {
-        "GUID": 3348871793
+        "metaVersion": 2,
+        "timeCreated": 1563536366,
+        "GUID": 3348871793,
+        "Name": "HUD",
+        "File": "Assets/Scenes/HUD.sc3ne",
+        "ExportedFile": "Library/Scenes/3348871793.sc3ne"
     }
 }

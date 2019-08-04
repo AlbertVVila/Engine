@@ -31,6 +31,7 @@
 #include "ComponentAudioSource.h"
 #include "ComponentReverbZone.h"
 #include "ComponentBoxTrigger.h"
+#include "ComponentVolumetricLight.h"
 #include "BaseScript.h"
 
 
@@ -121,9 +122,18 @@ GameObject::GameObject(const GameObject & gameobject)
 			case ComponentType::Light:
 				light = (ComponentLight*)componentcopy;
 				break;
+			
+			case ComponentType::VolumetricLight:
+				((ComponentVolumetricLight*)componentcopy)->renderer->gameobject = this;
+				break;
 		}
 	}
 
+	if (GetComponentOld(ComponentType::Renderer) != nullptr || GetComponentOld(ComponentType::Light) != nullptr
+		|| GetComponentOld(ComponentType::VolumetricLight) != nullptr)
+	{
+		App->scene->AddToSpacePartition(this);
+	}
 
 	for (const auto& child : gameobject.children)
 	{
@@ -131,16 +141,6 @@ GameObject::GameObject(const GameObject & gameobject)
 		childcopy->parent = this;
 		children.push_back(childcopy);
 	}
-
-	/*if (!App->scene->photoEnabled) //FIXME: Ctrl+Z
-	{*/
-		if (GetComponentOld(ComponentType::Renderer) != nullptr || GetComponentOld(ComponentType::Light) != nullptr)
-		{
-			App->scene->AddToSpacePartition(this);
-			//ComponentRenderer* rend = GetComponent<ComponentRenderer>();
-			//rend->LinkBones();
-		}
-	//}
 }
 
 
@@ -406,14 +406,16 @@ void GameObject::SetActiveInHierarchy(bool active)
 	OnChangeActiveState(wasActive);
 }
 
-Component* GameObject::CreateComponent(ComponentType type, JSON_value* value)
+Component* GameObject::CreateComponent(ComponentType type, JSON_value* value, bool prefabTemplate)
 {
 	Component* component = nullptr;
+	ComponentVolumetricLight* volLight = nullptr;
 	switch (type)
 	{
 	case ComponentType::Transform:
 		component = new ComponentTransform(this);
 		this->transform = (ComponentTransform*)component;
+		this->transform->UpdateTransform();
 		break;
 	case ComponentType::Renderer:
 		if (!hasLight)
@@ -429,10 +431,13 @@ Component* GameObject::CreateComponent(ComponentType type, JSON_value* value)
 		if (!hasLight && !isVolumetric)
 		{
 			component = new ComponentLight(this);
-			App->scene->lights.push_back((ComponentLight*)component);
+			if (!prefabTemplate)
+			{
+				App->scene->lights.push_back((ComponentLight*)component);
+				App->spacePartitioning->aabbTreeLighting.InsertGO(this);
+			}
 			hasLight = true;
 			light = (ComponentLight*)component;
-			App->spacePartitioning->aabbTreeLighting.InsertGO(this);
 			movedFlag = true;
 		}
 		else
@@ -449,7 +454,7 @@ Component* GameObject::CreateComponent(ComponentType type, JSON_value* value)
 		break;
 	case ComponentType::Camera:
 		component = new ComponentCamera(this);
-		if (App->scene->maincamera == nullptr)
+		if (App->scene->maincamera == nullptr && !prefabTemplate)
 		{
 			App->scene->maincamera = (ComponentCamera*)component;
 			App->scene->maincamera->isMainCamera = true;
@@ -480,6 +485,11 @@ Component* GameObject::CreateComponent(ComponentType type, JSON_value* value)
 			{
 				script->SetGameObject(this);
 				component = (Component*)script;
+				if (prefabTemplate)
+				{
+					App->scripting->RemoveScript(script, name);
+				}
+				//if is prefab then remove from componentlist + remove script don't rest reference if not found
 			}
 			else
 			{
@@ -499,7 +509,7 @@ Component* GameObject::CreateComponent(ComponentType type, JSON_value* value)
 	case ComponentType::AudioListener:
 		component = new ComponentAudioListener(this);
 		App->audioManager->audioListeners.push_back((ComponentAudioListener*)component);
-		if (App->audioManager->audioListeners.size() == 1)
+		if (App->audioManager->audioListeners.size() == 1u)
 		{
 			App->audioManager->mainListener = (ComponentAudioListener*)component;
 			App->audioManager->mainListener->isMainListener = true; 
@@ -512,6 +522,10 @@ Component* GameObject::CreateComponent(ComponentType type, JSON_value* value)
 	case ComponentType::BoxTrigger:
 		component = new ComponentBoxTrigger(this);
 		break;
+	case ComponentType::VolumetricLight:
+		component = new ComponentVolumetricLight(this);
+		volLight = (ComponentVolumetricLight*)component;
+		break;
 	default:
 		break;
 	}
@@ -519,6 +533,9 @@ Component* GameObject::CreateComponent(ComponentType type, JSON_value* value)
 	{
 		components.push_back(component);
 	}
+
+	if (volLight) //Spawn default vol. light after the component creation is completed
+		volLight->UpdateMesh();
 	return component;
 }
 
@@ -859,6 +876,18 @@ void GameObject::LinkRendererToBones(std::vector<ComponentRenderer*>& renderers)
 	}
 }
 
+void GameObject::LinkBones() const
+{
+	for (Component* c : GetComponentsInChildren(ComponentType::Renderer))
+	{
+		ComponentRenderer* cr = (ComponentRenderer*)c;
+		if (cr->mesh != nullptr)
+		{
+			cr->LinkBones();
+		}
+	}
+}
+
 void GameObject::MarkAsPrefab()
 {
 	bool wasPrefab = false;
@@ -979,6 +1008,8 @@ void GameObject::UpdateToPrefab(GameObject* prefabGo)
 	{
 		App->scene->AddToSpacePartition(this);
 	}
+
+	LinkBones();
 }
 
 AABB GameObject::GetBoundingBox() const
@@ -1037,6 +1068,14 @@ void GameObject::UpdateBBox()
 
 		bbox.TransformAsAABB(GetGlobalTransform());
 	}
+	ComponentVolumetricLight* volLight = (ComponentVolumetricLight*)GetComponentOld(ComponentType::VolumetricLight);
+	if (volLight != nullptr)
+	{
+		if (volLight->renderer->mesh != nullptr)
+			bbox = volLight->renderer->mesh->GetBoundingBox();
+
+		bbox.TransformAsAABB(GetGlobalTransform());
+	}
 }
 
 void GameObject::DrawBBox() const
@@ -1047,10 +1086,17 @@ void GameObject::DrawBBox() const
 	}
 
 	ComponentRenderer *renderer = (ComponentRenderer*)GetComponentOld(ComponentType::Renderer);
-	if (renderer == nullptr || renderer->mesh == nullptr) return;
+	if (renderer != nullptr && renderer->mesh != nullptr)
+	{
+		if (renderer->mesh->GetReferences() > 0u)
+			renderer->mesh->DrawBbox(App->program->defaultShader->id[0], bbox);
+	}
 
-	if (renderer->mesh->GetReferences() > 0u)
-		renderer->mesh->DrawBbox(App->program->defaultShader->id[0], bbox);
+	ComponentVolumetricLight* volLight = (ComponentVolumetricLight*)GetComponentOld(ComponentType::VolumetricLight);
+	if (volLight != nullptr && volLight->renderer && volLight->renderer->mesh)
+	{
+		volLight->renderer->mesh->DrawBbox(App->program->defaultShader->id[0], bbox);
+	}
 }
 
 bool GameObject::CleanUp()
@@ -1155,34 +1201,29 @@ void GameObject::Load(JSON_value *value, bool prefabTemplate)
 	}
 
 	JSON_value* componentsJSON = value->GetValue("Components");
+	ComponentVolumetricLight* volLight = nullptr;
+
 	for (unsigned i = 0; i < componentsJSON->Size(); i++)
 	{
 		JSON_value* componentJSON = componentsJSON->GetValue(i);
 		ComponentType type = (ComponentType)componentJSON->GetUint("Type");
-		Component* component = CreateComponent(type, componentJSON);
+		Component* component = CreateComponent(type, componentJSON, prefabTemplate);
 		if (component)
 		{
 			component->Load(componentJSON);
+			if (type == ComponentType::VolumetricLight)
+				volLight = (ComponentVolumetricLight*)component;
 		}
 	}
 
-	if (transform != nullptr)
-	{
-		transform->UpdateTransform();
-	}
+	if (volLight)
+		volLight->UpdateMesh();
 
 	if (isBoneRoot)
 	{
 		movedFlag = true;
 	}
 
-	if (isPrefab && isPrefabSync)
-	{
-		if(!prefabTemplate && App->scene->PrefabWasUpdated(prefabUID))
-		{
-			UpdateToPrefab(prefab->RetrievePrefab());
-		}
-	}
 }
 
 bool GameObject::IsParented(const GameObject & gameobject) const
@@ -1355,6 +1396,22 @@ void GameObject::UpdateTransforms(math::float4x4 parentGlobal)
 		if (transform)
 		{
 			transform->local = math::float4x4::FromTRS(transform->position, transform->rotation, transform->scale);
+
+			math::float4x4 global = math::float4x4::identity;
+			if (this != App->scene->root && transform != nullptr)
+			{
+				math::float4x4 original = transform->global;
+				transform->global = parentGlobal * transform->local;
+				global = transform->global;
+				transform->UpdateTransform();
+				if (this == App->scene->selected)
+				{
+					transform->MultiSelectionTransform(global - original);
+				}
+			}
+
+			UpdateBBox();
+
 			if (!isStatic)
 			{
 				if (treeNode != nullptr && hasLight)
@@ -1382,25 +1439,17 @@ void GameObject::UpdateTransforms(math::float4x4 parentGlobal)
 		}
 	}
 
-	math::float4x4 global = math::float4x4::identity;
-	if (this != App->scene->root && transform != nullptr)
-	{
-		math::float4x4 original = transform->global;
-		transform->global = parentGlobal * transform->local;
-		global = transform->global;
-		transform->UpdateTransform();
-		if (this == App->scene->selected)
-		{
-			transform->MultiSelectionTransform(global - original);
-		}
-	}
-
 	for (const auto& child : children)
 	{
-		child->UpdateTransforms(global);
+		if (transform != nullptr)
+		{
+			child->UpdateTransforms(transform->global);
+		}
+		else
+		{
+			child->UpdateTransforms(math::float4x4::identity);
+		}
 	}
-
-	UpdateBBox();
 }
 
 bool GameObject::CheckDelete()

@@ -1,13 +1,11 @@
 {
     "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1563536363,
         "GUID": 567830052,
-        "timeCreated": 1561533700,
-        "height": 1024,
-        "width": 1024,
-        "depth": 1,
-        "mips": 0,
-        "format": 32992,
-        "DX compresion": 1802,
-        "mipmap": 0
+        "Name": "Lvl2_Statue_NM",
+        "File": "Assets/Lvl2Textures/Statue/Lvl2_Statue_NM.tga",
+        "ExportedFile": "Library/Textures/567830052.dds",
+        "DX compresion": 1802
     }
 }

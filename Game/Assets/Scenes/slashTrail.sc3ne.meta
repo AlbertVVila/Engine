@@ -1,5 +1,10 @@
 {
     "Scene": {
-        "GUID": 1525003370
+        "metaVersion": 2,
+        "timeCreated": 1563536366,
+        "GUID": 1525003370,
+        "Name": "slashTrail",
+        "File": "Assets/Scenes/slashTrail.sc3ne",
+        "ExportedFile": "Library/Scenes/1525003370.sc3ne"
     }
 }

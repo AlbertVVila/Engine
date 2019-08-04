@@ -37,7 +37,7 @@ void BombDropSkill::Start()
 		{
 			bombDropFX->SetActive(true);
 		}
-		player->ResetCooldown(HUB_BUTTON_E);
+		player->ResetCooldown(HUD_BUTTON_E);
 	}
 
 	//Create the hitbox
@@ -85,6 +85,10 @@ void BombDropSkill::CheckInput()
 		else if (player->IsMovingToAttack())
 		{
 			player->currentState = (PlayerState*)player->walkToHit;
+		}
+		else if (player->IsMovingToItem())
+		{
+			player->currentState = (PlayerState*)player->walkToPickItem;
 		}
 		else if (player->IsMoving())
 		{

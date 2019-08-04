@@ -10,6 +10,7 @@ public:
 	EnemyStatePatrol(RangeEnemyAIScript* AIScript);
 	~EnemyStatePatrol();
 
+	void HandleIA() override;
 	void Update() override;
 };
 

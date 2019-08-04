@@ -1,24 +1,26 @@
 {
     "Material": {
+        "metaVersion": 2,
+        "timeCreated": 1563536364,
         "GUID": 1468034765,
-        "timeCreated": 1561624294,
+        "Name": "Lvl2Water2",
+        "File": "Assets/Materials/Lvl2Water2.m4t",
+        "ExportedFile": "Library/Materials/1468034765.m4t",
         "DifusseColor": [
-            0.0,
             1.0,
-            0.7786884307861328,
+            1.0,
+            1.0,
             1.0
         ],
         "specularColor": [
-            0.7254098653793335,
-            0.8921380639076233,
-            1.0
+            0.10000000149011612,
+            0.10000000149011612,
+            0.10000000149011612
         ],
         "emissiveColor": [
             1.0,
             1.0,
             1.0
-        ],
-        "diffuseUID": 676697322,
-        "shader": "PBR"
+        ]
     }
 }

@@ -7,10 +7,11 @@ class EnemyStatePatrol :
 	public EnemyState
 {
 public:
-	EnemyStatePatrol(BasicEnemyAIScript* AIScript);
-	~EnemyStatePatrol();
+	BasicEnemyAIScript_API EnemyStatePatrol(BasicEnemyAIScript* AIScript);
+	BasicEnemyAIScript_API ~EnemyStatePatrol();
 
-	void Update() override;
+	BasicEnemyAIScript_API void HandleIA() override;
+	BasicEnemyAIScript_API void Update() override;
 };
 
 #endif __ENEMYSTATEPATROL_H_

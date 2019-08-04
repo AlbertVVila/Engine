@@ -15,9 +15,14 @@ EnemyStatePatrol::~EnemyStatePatrol()
 {
 }
 
-void EnemyStatePatrol::Update()
+void EnemyStatePatrol::HandleIA()
 {
 	float distance = enemy->enemyController->GetDistanceToPlayer2D();
 	if (distance < enemy->activationDistance)
-		enemy->currentState = (EnemyState*)enemy->getInPosition;
+		enemy->currentState = (EnemyState*)enemy->chase;
+}
+
+void EnemyStatePatrol::Update()
+{
+	//Patrol movement should be implemented here
 }

@@ -39,6 +39,7 @@ public:
 	void Delete() override;
 	void SaveMetafile(const char* file) const override;
 	void LoadConfigFromMeta() override;
+	void LoadConfigFromLibraryMeta() override;
 
 	void SetAnimation(const char* animData);
 	unsigned GetAnimationSize();

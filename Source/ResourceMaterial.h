@@ -35,6 +35,7 @@ public:
 	void Save() const;										// Saves material file (.m4t) in Assets/Materials
 	void SaveMetafile(const char* file) const override;
 	void LoadConfigFromMeta() override;
+	void LoadConfigFromLibraryMeta() override;
 	void Reset(const ResourceMaterial& material);
 	int Compare(const ResourceMaterial& material);
 

@@ -1,1 +1,16 @@
-{"Mesh":{"GUID":3433126770,"timeCreated":1558447102,"NumMeshes":1,"Mesh0":1710716793},"Animation":{"timeCreated":1558447102,"NumAnimations":0}}
+{
+    "Model": {
+        "metaVersion": 2,
+        "timeCreated": 1563536365,
+        "GUID": 3433126770,
+        "NumMeshes": 1,
+        "NumAnimations": 0
+    },
+    "Mesh0": {
+        "MeshNumber": 0,
+        "GUID": 1710716793,
+        "Name": "Hearse_0",
+        "File": "Assets/Models/Hearse/Hearse.FBX",
+        "ExportedFile": "Library/Meshes/1710716793.m3sh"
+    }
+}

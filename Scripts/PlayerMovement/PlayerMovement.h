@@ -20,17 +20,17 @@ struct ImGuiContext;
 #define PlayerMovement_API __declspec(dllimport)
 #endif
 
-#define HUB_BUTTON_RC 0
-#define HUB_BUTTON_1 1
-#define HUB_BUTTON_2 2
-#define HUB_BUTTON_3 3
-#define HUB_BUTTON_4 4
-#define HUB_BUTTON_Q 5
-#define HUB_BUTTON_W 6
-#define HUB_BUTTON_E 7
-#define HUB_BUTTON_R 8
+#define HUD_BUTTON_RC 0
+#define HUD_BUTTON_1 1
+#define HUD_BUTTON_2 2
+#define HUD_BUTTON_3 3
+#define HUD_BUTTON_4 4
+#define HUD_BUTTON_Q 5
+#define HUD_BUTTON_W 6
+#define HUD_BUTTON_E 7
+#define HUD_BUTTON_R 8
 
-#define NUMBER_OF_PLAYERSTATES 6
+#define NUMBER_OF_PLAYERSTATES 7
 
 #define MAX_BOMB_DROP_SCALE 200.f
 #define MAX_BOMB_DROP_WAVE_SCALE 240.f
@@ -52,10 +52,12 @@ class PlayerStateIdle;
 class PlayerStateDeath;
 class PlayerStateWalk;
 class PlayerStateWalkToHitEnemy;
+class PlayerStateWalkToPickItem;
 class DamageController;
 class DamageFeedbackUI;
 class ComponentAudioSource;
 class ComponentCamera;
+class ItemPicker;
 
 class Text;
 class BasicSkill;
@@ -71,14 +73,14 @@ class RainSkill;
 
 enum class PlayerMovement_API SkillType
 {
-	NONE = 0,
-	CHAIN,
 	DASH,
-	SLICE,
-	BOMB_DROP,
 	CIRCULAR,
+	BOMB_DROP,
+	SLICE,
+	RAIN,
 	STOMP,
-	RAIN
+	CHAIN = 10,
+	NONE = 20
 };
 
 struct PlayerMovement_API PlayerSkill
@@ -172,11 +174,12 @@ public:
 
 
 	//Abstract input. TODO: Now only returns true for skills, adapt for items
+	inline bool IsMovingToItem() const { return itemClicked != nullptr;};
 	bool IsAttacking() const;
 	bool IsMoving() const;
 	bool IsMovingToAttack() const;
 	bool IsPressingMouse1() const;
-	bool IsUsingLeftClick() const;
+	bool IsUsingRightClick() const;
 	bool IsUsingOne() const;
 	bool IsUsingTwo() const;
 	bool IsUsingThree() const;
@@ -190,7 +193,11 @@ public:
 	void CheckSkillsInput();
 	void ResetCooldown(unsigned int hubButtonID);
 	void UseSkill(SkillType skill);
+	void AssignSkill(SkillType skill, int position);
 
+	void ToggleMaxStats();
+	void ToggleInfiniteHealth();
+	void ToggleInfiniteMana();
 	void SavePlayerStats();
 
 private:
@@ -198,7 +205,7 @@ private:
 	void CreatePlayerStates();
 	void ManaManagement();
 
-	void ActivateHudCooldownMask(bool activate, unsigned first = HUB_BUTTON_Q, unsigned last = HUB_BUTTON_4);
+	void ActivateHudCooldownMask(bool activate, unsigned first = HUD_BUTTON_Q, unsigned last = HUD_BUTTON_4);
 
 	// Skills
 	void CreatePlayerSkills();
@@ -214,9 +221,14 @@ public:
 	PlayerStateDeath* death = nullptr;
 	PlayerStateWalk* walk = nullptr;
 	PlayerStateWalkToHitEnemy* walkToHit = nullptr;
+	PlayerStateWalkToPickItem* walkToPickItem = nullptr;
 	//walking to hit player orientation necessary info:
 	bool enemyTargeted = false;
 	GameObject* enemyTarget = nullptr;
+
+	//item picked
+	ItemPicker* itemClicked = nullptr;
+	bool stoppedGoingToItem = false;
 
 	float walkingSpeed = 300.0f;
 	float dashSpeed = 10.0f;
@@ -233,6 +245,7 @@ public:
 	float manaRegenMaxTime = 5.0f;
 
 	PlayerStats stats = { 150.0f, 100.0f, 10U, 10U, 5.0f, 5.0f };
+	PlayerStats previousStats;
 
 	float OutOfMeshCorrectionXZ = 500.f;
 	float OutOfMeshCorrectionY = 300.0f;
@@ -309,6 +322,10 @@ private:
 	float hubGeneralAbilityCooldown = 0.5F;
 	bool showAbilityCooldowns = true;
 	bool showItemCooldowns = true;
+
+	bool hasMaxStats = false;
+	bool hasInfiniteHealth = false;
+	bool hasInfiniteMana = false;
 };
 
 extern "C" PlayerMovement_API Script* CreateScript();

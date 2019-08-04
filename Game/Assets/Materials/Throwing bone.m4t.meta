@@ -1,0 +1,27 @@
+{
+    "Material": {
+        "metaVersion": 2,
+        "timeCreated": 1564763548,
+        "GUID": 3257774589,
+        "Name": "Throwing bone",
+        "File": "Assets/Materials/Throwing bone.m4t",
+        "ExportedFile": "Library/Materials/3257774589.m4t",
+        "DifusseColor": [
+            0.44262295961380007,
+            0.31667977571487429,
+            0.003628052771091461,
+            1.0
+        ],
+        "specularColor": [
+            0.8729507923126221,
+            0.631751537322998,
+            0.03219901770353317
+        ],
+        "emissiveColor": [
+            1.0,
+            1.0,
+            1.0
+        ],
+        "shader": "PBR"
+    }
+}

@@ -7,7 +7,6 @@
 #include "ModuleNavigation.h"
 #include "ModuleTime.h"
 #include "ModuleWindow.h"
-
 #include "GameObject.h"
 #include "ComponentTransform.h"
 #include "ComponentAnimation.h"
@@ -23,6 +22,7 @@
 #include "imgui.h"
 #include "Globals.h"
 #include "debugdraw.h"
+
 
 #define RECALC_PATH_TIME 0.3f
 
@@ -75,8 +75,10 @@ void PlayerStateWalk::Update()
 		}
 		if (pathIndex < path.size())
 		{
-			player->gameobject->transform->LookAt(path[pathIndex]);
+			
 			math::float3 direction = (path[pathIndex] - currentPosition).Normalized();
+			lerpCalculations(direction, -player->gameobject->transform->front, path[pathIndex]);
+			
 			math::float3 finalWalkingSpeed = player->walkingSpeed * direction * player->App->time->gameDeltaTime;
 			finalWalkingSpeed *= (1 + (player->stats.dexterity * 0.005f));
 			player->gameobject->transform->SetPosition(currentPosition + finalWalkingSpeed);
@@ -148,6 +150,10 @@ void PlayerStateWalk::CheckInput()
 	else if (player->IsMovingToAttack())
 	{
 		player->currentState = (PlayerState*)player->walkToHit;
+	}
+	else if (player->IsMovingToItem())
+	{
+		player->currentState = (PlayerState*)player->walkToPickItem;
 	}
 	else if (player->IsMoving())
 	{

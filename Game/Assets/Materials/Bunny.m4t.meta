@@ -1,7 +1,11 @@
 {
     "Material": {
+        "metaVersion": 2,
+        "timeCreated": 1563536364,
         "GUID": 4266555239,
-        "timeCreated": 1561610584,
+        "Name": "Bunny",
+        "File": "Assets/Materials/Bunny.m4t",
+        "ExportedFile": "Library/Materials/4266555239.m4t",
         "DifusseColor": [
             1.0,
             1.0,
