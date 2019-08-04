@@ -14,6 +14,15 @@
 class GameObject;
 class EnemyControllerScript;
 class JSON_value;
+class EnemyState;
+class EnemyStatePatrol;
+class EnemyStateChase;
+class EnemyStateReturn;
+class EnemyStateAttack;
+class EnemyStateCooldown;
+class EnemyStateDeath;
+class EnemyStateFlee;
+
 
 class FlyingSkullEnemyAIScript_API FlyingSkullEnemyAIScript : public Script
 {
@@ -30,6 +39,33 @@ class FlyingSkullEnemyAIScript_API FlyingSkullEnemyAIScript : public Script
 	{
 		return new FlyingSkullEnemyAIScript(*this);
 	}
+
+public:
+
+	float cooldownDuration = 1.0f;
+	float activationDistance = 1000.0f;
+	float disengageDistance = 1500.0f;
+	float maxAttackRange = 700.0f;
+	float minAttackRange = 500.0f;
+	float runSpeed = 150.0f;
+
+public:
+
+	EnemyStateAttack* attack = nullptr;
+	EnemyStateChase* chase = nullptr;
+	EnemyStateFlee* flee = nullptr;
+	EnemyStateCooldown* cooldown = nullptr;
+	EnemyStateReturn* returnToStart = nullptr;
+	EnemyStateDeath* death = nullptr;
+	EnemyStatePatrol* patrol = nullptr;
+
+	EnemyState* currentState = nullptr;
+
+	EnemyControllerScript* enemyController = nullptr;
+
+	math::float3 startPosition = math::float3::zero;
+private:
+	std::vector<EnemyState*> enemyStates;
 
 };
 
