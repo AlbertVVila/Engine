@@ -49,6 +49,12 @@ public:
 	float maxAttackRange = 700.0f;
 	float minAttackRange = 500.0f;
 	float runSpeed = 150.0f;
+	float offsetHeight = 120.0f;
+
+	float movementConstant = 20.0f;
+	float idleMovementSpeed = 5.0f;
+	float acceleration = 0.0f;
+	float angle = 0.0f;
 
 	float projectileDelay = 0.5f;
 
@@ -61,6 +67,8 @@ public:
 	GameObject* boneCenter = nullptr;
 	GameObject* spinningBones = nullptr;
 	GameObject* particles = nullptr;
+
+	void Movement();
 
 public:
 
