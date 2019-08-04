@@ -6,6 +6,7 @@
 #include "ModuleUI.h"
 #include "ModuleInput.h"
 #include "ModuleRender.h"
+#include "ModuleFileSystem.h"
 
 #include "ResourceTexture.h"
 
@@ -16,6 +17,8 @@
 #include "Viewport.h"
 #include "GameObject.h"
 #include "ComponentTransform2D.h"
+
+#include "opencv2/opencv.hpp"
 
 #define None "None Selected"
 
@@ -135,6 +138,38 @@ void ComponentImage::DrawProperties()
 			ImGui::Checkbox("Hover Detection Mouse3", &hoverDetectionMouse3);
 		}
 
+		using namespace cv;
+		auto k = App->fsystem->Size("flame.avi");
+		cv::VideoCapture cap("flame.avi");
+		// Check if video opened successfully
+		if (!cap.isOpened()) {
+			LOG("Error opening video");
+		}
+
+		while (1) {
+
+			Mat frame;
+			// Capture frame-by-frame
+			cap >> frame;
+
+			// If the frame is empty, break immediately
+			if (frame.empty())
+				break;
+
+			// Display the resulting frame
+			imshow("Frame", frame);
+
+			// Press  ESC on keyboard to exit
+			char c = (char)waitKey(25);
+			if (c == 27)
+				break;
+		}
+
+		// When everything done, release the video capture object
+		cap.release();
+
+		// Closes all the frames
+		destroyAllWindows();
 		ImGui::Separator();
 	}
 }
