@@ -12,7 +12,6 @@
 #include <vector>
 
 class GameObject;
-class ComponentParticles;
 class EnemyControllerScript;
 class ProjectileScript;
 class JSON_value;
@@ -91,7 +90,6 @@ public:
 	float projectileDelay = 0.4f;
 
 	GameObject* dustParticlesGO = nullptr;
-	ComponentParticles* particles = nullptr;
 
 	EnemyControllerScript* enemyController = nullptr;
 };

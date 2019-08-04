@@ -25176,7 +25176,7 @@
         },
         {
             "UID": 1999147833,
-            "ParentUID": 2845117874,
+            "ParentUID": 1805931460,
             "Name": "DustParticles",
             "Tag": "DustParticles",
             "Static": 0,
@@ -25266,19 +25266,19 @@
                         100.0,
                         100.0
                     ],
-                    "rate": 10.0,
+                    "rate": 20.100000381469728,
                     "maxParticles": 50,
                     "rotation": [
                         0.0,
                         0.0
                     ],
                     "sizeMin": [
-                        100.0,
-                        100.0
+                        40.0,
+                        50.0
                     ],
                     "sizeMax": [
-                        100.0,
-                        100.0
+                        70.0,
+                        80.0
                     ],
                     "quadEmitterSize": [
                         1000.0,
@@ -25296,15 +25296,15 @@
                     "actualEmisor": 2,
                     "baseRadius": 1.600000023841858,
                     "apexRadius": 0.6000000238418579,
-                    "sizeOT": 0,
-                    "colorOT": 0,
+                    "sizeOT": 1,
+                    "colorOT": 1,
                     "defaultColor": [
                         0.6639344692230225,
                         0.4600118100643158,
                         0.05714191123843193,
                         1.0
                     ],
-                    "billboarded": 0,
+                    "billboarded": 1,
                     "aligned": 1,
                     "localEmitter": 1,
                     "lookAtTarget": [
@@ -25314,27 +25314,27 @@
                     ],
                     "intensity": 1.0,
                     "bezier14": [
-                        0.0,
-                        0.0,
-                        1.0,
+                        0.21875,
+                        0.8671875,
+                        0.9765625,
                         1.0
                     ],
                     "bezier5": 0.0,
                     "color0": [
-                        1.0,
-                        1.0,
-                        1.0
+                        0.811475396156311,
+                        0.4661719799041748,
+                        0.016628574579954149
                     ],
                     "colorPosition0": 0.0,
                     "alpha0": 1.0,
                     "alphaPosition0": 0.0,
                     "color1": [
-                        1.0,
-                        1.0,
-                        1.0
+                        0.9918032884597778,
+                        0.5337833762168884,
+                        0.04471245035529137
                     ],
                     "colorPosition1": 1.0,
-                    "alpha1": 1.0,
+                    "alpha1": 0.3089999854564667,
                     "alphaPosition1": 1.0,
                     "alphas": 2,
                     "colors": 2
@@ -25429,7 +25429,8 @@
                         "rotate": 1,
                         "rotateX": 1,
                         "rotateY": 0,
-                        "rotateZ": 0
+                        "rotateZ": 0,
+                        "rotatingSpeed": 0.07000000029802323
                     }
                 },
                 {

@@ -7,6 +7,7 @@
 #include "ModuleTime.h"
 #include "ModuleNavigation.h"
 
+#include "GameObject.h"
 #include "ComponentRenderer.h"
 #include "ComponentBoxTrigger.h"
 
@@ -62,9 +63,12 @@ void EnemyStateRelocate::ChangePosition()
 void EnemyStateRelocate::Exit()
 {
 	enemy->enemyController->myRender->Enable(false);
+	enemy->dustParticlesGO->SetActive(false);
+
 }
 
 void EnemyStateRelocate::Enter()
 {
 	enemy->enemyController->hpBoxTrigger->Enable(false);
+	enemy->dustParticlesGO->SetActive(true);
 }

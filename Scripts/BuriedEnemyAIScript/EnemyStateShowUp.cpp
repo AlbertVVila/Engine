@@ -3,6 +3,7 @@
 #include "BuriedEnemyAIScript.h"
 #include "EnemyControllerScript.h"
 
+#include "GameObject.h"
 #include "ComponentRenderer.h"
 #include "ComponentBoxTrigger.h"
 
@@ -46,10 +47,10 @@ void EnemyStateShowUp::Enter()
 {
 	enemy->enemyController->myRender->Enable(true);
 	enemy->enemyController->hpBoxTrigger->Enable(true);
-	//enemy->particles->Enable(true);
+	enemy->dustParticlesGO->SetActive(true);
 }
 
 void EnemyStateShowUp::Exit()
 {
-	//enemy->particles->Enable(false);
+	enemy->dustParticlesGO->SetActive(false);
 }
