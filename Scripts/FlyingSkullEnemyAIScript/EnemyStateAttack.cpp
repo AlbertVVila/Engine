@@ -2,7 +2,10 @@
 
 #include "EnemyControllerScript.h"
 #include "FlyingSkullEnemyAIScript.h"
+#include "ProjectileScript.h"
 
+#include "GameObject.h"
+#include "ComponentTransform.h"
 
 EnemyStateAttack::EnemyStateAttack(FlyingSkullEnemyAIScript* AIScript)
 {
@@ -27,5 +30,17 @@ void EnemyStateAttack::HandleIA()
 
 void EnemyStateAttack::Update()
 {
+	if (timer > enemy->projectileDelay && !projShot)
+	{
+		math::float3 playerPosition = enemy->enemyController->GetPlayerPosition();
+		projShot = true;
+		enemy->projectileGO->transform->SetPosition(enemy->enemyController->GetPosition() +
+			math::float3(0, enemy->projectileScript->offsetHeight, 0));
 
+		enemy->projectileGO->transform->SetRotation(enemy->enemyController->GetRotation());
+		enemy->projectileGO->transform->LookAt(playerPosition + math::float3(0, enemy->projectileScript->offsetHeight, 0));
+		enemy->projectileScript->shooted = true;
+		projShot = true;
+		enemy->projectileGO->SetActive(true);
+	}
 }

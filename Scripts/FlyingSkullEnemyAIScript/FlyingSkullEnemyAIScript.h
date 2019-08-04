@@ -13,6 +13,7 @@
 
 class GameObject;
 class EnemyControllerScript;
+class ProjectileScript;
 class JSON_value;
 class EnemyState;
 class EnemyStatePatrol;
@@ -49,6 +50,18 @@ public:
 	float minAttackRange = 500.0f;
 	float runSpeed = 150.0f;
 
+	float projectileDelay = 0.5f;
+
+	GameObject* projectileGO = nullptr;
+	ProjectileScript* projectileScript = nullptr;
+
+public:
+	//hierarchy
+
+	GameObject* boneCenter = nullptr;
+	GameObject* spinningBones = nullptr;
+	GameObject* particles = nullptr;
+
 public:
 
 	EnemyStateAttack* attack = nullptr;
@@ -67,6 +80,7 @@ public:
 private:
 	std::vector<EnemyState*> enemyStates;
 
+	void CheckStates(EnemyState* previous);
 };
 
 #endif __FlyingSkullEnemyAIScript_h__

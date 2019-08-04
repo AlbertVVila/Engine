@@ -5,7 +5,7 @@
 
 EnemyStateDeath::EnemyStateDeath(FlyingSkullEnemyAIScript* AIScript)
 {
-
+	enemy = AIScript;
 }
 
 

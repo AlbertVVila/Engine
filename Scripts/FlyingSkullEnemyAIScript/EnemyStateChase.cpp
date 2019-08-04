@@ -5,6 +5,7 @@
 
 EnemyStateChase::EnemyStateChase(FlyingSkullEnemyAIScript* AIScript)
 {
+	enemy = AIScript;
 }
 
 
@@ -20,11 +21,7 @@ void EnemyStateChase::HandleIA()
 	{
 		enemy->currentState = (EnemyState*)enemy->returnToStart;
 	}
-	else if (distanceToPlayer < enemy->maxAttackRange && distanceToPlayer > enemy->minAttackRange)
-	{
-		enemy->currentState = (EnemyState*)enemy->attack;
-	}
-	else if (distanceToPlayer < enemy->minAttackRange)
+	else if (distanceToPlayer < enemy->maxAttackRange)
 	{
 		enemy->currentState = (EnemyState*)enemy->attack;
 	}
@@ -32,5 +29,11 @@ void EnemyStateChase::HandleIA()
 
 void EnemyStateChase::Update()
 {
+	ApproachPlayer();
+}
 
+void EnemyStateChase::ApproachPlayer()
+{
+	math::float3 playerPos = enemy->enemyController->GetPlayerPosition();
+	enemy->enemyController->Move(enemy->runSpeed, refreshTime, playerPos, enemyPath);
 }

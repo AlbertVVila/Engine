@@ -12,6 +12,8 @@ public:
 
 	void HandleIA() override;
 	void Update() override;
+
+	void ApproachPlayer();
 };
 
 #endif // __ENEMYSTATECHASE_H_
