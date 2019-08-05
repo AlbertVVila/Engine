@@ -31,6 +31,7 @@ class ExperienceController;
 class AABB;
 class JSON_value;
 class ComponentAudioSource;
+class WorldControllerScript;
 
 class LoopState;
 class LoopStateControls;
@@ -176,6 +177,7 @@ public:
 	//Script
 	PlayerMovement* playerScript = nullptr;
 	EnemyMovementScript* enemyMovementScript = nullptr;
+	WorldControllerScript* worldControllerScript = nullptr;
 	IntroScript* introScript = nullptr;
 	CreditsScript* creditsScript = nullptr;
 	InventoryScript* inventoryScript = nullptr;
