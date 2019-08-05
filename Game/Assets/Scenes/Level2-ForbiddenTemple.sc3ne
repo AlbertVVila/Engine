@@ -77442,7 +77442,7 @@
             "Components": []
         },
         {
-            "UID": 4207068193,
+            "UID": 1910615500,
             "ParentUID": 2197875208,
             "Name": "MenuButton",
             "Tag": "Default",
@@ -77590,7 +77590,7 @@
             ]
         },
         {
-            "UID": 1922786058,
+            "UID": 2610959571,
             "ParentUID": 2197875208,
             "Name": "InventaryButton",
             "Tag": "Default",
@@ -77738,7 +77738,7 @@
             ]
         },
         {
-            "UID": 3134952618,
+            "UID": 1498213546,
             "ParentUID": 2197875208,
             "Name": "SkillsButton",
             "Tag": "Default",
@@ -77886,7 +77886,7 @@
             ]
         },
         {
-            "UID": 3122487776,
+            "UID": 1954985535,
             "ParentUID": 2197875208,
             "Name": "MissionButton",
             "Tag": "Default",
@@ -78034,7 +78034,7 @@
             ]
         },
         {
-            "UID": 2432929565,
+            "UID": 2880072446,
             "ParentUID": 2197875208,
             "Name": "One",
             "Tag": "Default",
@@ -78087,13 +78087,13 @@
                     "text": {
                         "Type": 6,
                         "Enabled": 1,
-                        "FontSize": 14.0,
+                        "FontSize": 47.0,
                         "text": "",
-                        "font": "Fonts/DroidSans.ttf",
+                        "font": "Fonts/Vision-Regular.ttf",
                         "color": [
-                            1.0,
-                            1.0,
-                            1.0,
+                            0.2049180269241333,
+                            0.051229506731033328,
+                            0.051229506731033328,
                             0.0
                         ],
                         "colorHovered": [
@@ -78118,13 +78118,13 @@
                     "buttonImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 770802012,
-                        "textureName": "1",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             1.0,
                             1.0,
                             1.0,
-                            0.686274528503418
+                            1.0
                         ],
                         "FlipVertical": 0,
                         "FlipHorizontal": 0,
@@ -78138,8 +78138,8 @@
                     "highlightedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 770802012,
-                        "textureName": "1",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.5882353186607361,
                             0.5882353186607361,
@@ -78158,8 +78158,8 @@
                     "pressedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 770802012,
-                        "textureName": "1",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.19607843458652497,
                             0.19607843458652497,
@@ -78182,8 +78182,8 @@
             ]
         },
         {
-            "UID": 1549202083,
-            "ParentUID": 2432929565,
+            "UID": 1080336495,
+            "ParentUID": 2880072446,
             "Name": "One_Cooldown",
             "Tag": "Default",
             "Static": 0,
@@ -78232,8 +78232,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 770802012,
-                    "textureName": "1",
+                    "textureUID": 3131494396,
+                    "textureName": "Defaultslot",
                     "color": [
                         0.29411765933036806,
                         0.29411765933036806,
@@ -78252,13 +78252,13 @@
             ]
         },
         {
-            "UID": 3008568066,
-            "ParentUID": 2432929565,
+            "UID": 3086779331,
+            "ParentUID": 2880072446,
             "Name": "OneText",
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 1,
-            "ActiveSelf": 0,
+            "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
                 1.0,
@@ -78289,8 +78289,8 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -80.19999694824219,
-                        80.9000015258789
+                        -79.19999694824219,
+                        97.0
                     ],
                     "Size": [
                         100.0,
@@ -78304,11 +78304,11 @@
                     "Enabled": 1,
                     "FontSize": 47.0,
                     "text": "1",
-                    "font": "Fonts/DroidSans.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
-                        1.0,
-                        1.0,
-                        1.0,
+                        0.5163934230804443,
+                        0.21798573434352876,
+                        0.21798573434352876,
                         0.0
                     ],
                     "colorHovered": [
@@ -78333,7 +78333,7 @@
             ]
         },
         {
-            "UID": 450621196,
+            "UID": 581459447,
             "ParentUID": 2197875208,
             "Name": "Two",
             "Tag": "Default",
@@ -78417,13 +78417,13 @@
                     "buttonImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 630598342,
-                        "textureName": "2",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             1.0,
                             1.0,
                             1.0,
-                            0.686274528503418
+                            1.0
                         ],
                         "FlipVertical": 0,
                         "FlipHorizontal": 0,
@@ -78437,8 +78437,8 @@
                     "highlightedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 630598342,
-                        "textureName": "2",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.5882353186607361,
                             0.5882353186607361,
@@ -78457,8 +78457,8 @@
                     "pressedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 630598342,
-                        "textureName": "2",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.19607843458652497,
                             0.19607843458652497,
@@ -78481,8 +78481,8 @@
             ]
         },
         {
-            "UID": 12279126,
-            "ParentUID": 450621196,
+            "UID": 1248863000,
+            "ParentUID": 581459447,
             "Name": "Two_Cooldown",
             "Tag": "Default",
             "Static": 0,
@@ -78531,8 +78531,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 630598342,
-                    "textureName": "2",
+                    "textureUID": 3131494396,
+                    "textureName": "Defaultslot",
                     "color": [
                         0.29411765933036806,
                         0.29411765933036806,
@@ -78551,13 +78551,13 @@
             ]
         },
         {
-            "UID": 3791454553,
-            "ParentUID": 450621196,
+            "UID": 469707586,
+            "ParentUID": 581459447,
             "Name": "TwoText",
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 1,
-            "ActiveSelf": 0,
+            "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
                 1.0,
@@ -78589,7 +78589,7 @@
                     "Enabled": 1,
                     "Position": [
                         -30.700000762939454,
-                        80.9000015258789
+                        97.0
                     ],
                     "Size": [
                         100.0,
@@ -78603,11 +78603,11 @@
                     "Enabled": 1,
                     "FontSize": 47.0,
                     "text": "2",
-                    "font": "Fonts/DroidSans.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
-                        1.0,
-                        1.0,
-                        1.0,
+                        0.5176470875740051,
+                        0.21960784494876862,
+                        0.21960784494876862,
                         0.0
                     ],
                     "colorHovered": [
@@ -78632,7 +78632,7 @@
             ]
         },
         {
-            "UID": 327370131,
+            "UID": 2289454872,
             "ParentUID": 2197875208,
             "Name": "Three",
             "Tag": "Default",
@@ -78716,13 +78716,13 @@
                     "buttonImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 1661851975,
-                        "textureName": "3",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             1.0,
                             1.0,
                             1.0,
-                            0.686274528503418
+                            1.0
                         ],
                         "FlipVertical": 0,
                         "FlipHorizontal": 0,
@@ -78736,8 +78736,8 @@
                     "highlightedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 1661851975,
-                        "textureName": "3",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.5882353186607361,
                             0.5882353186607361,
@@ -78756,8 +78756,8 @@
                     "pressedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 1661851975,
-                        "textureName": "3",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.19607843458652497,
                             0.19607843458652497,
@@ -78780,8 +78780,8 @@
             ]
         },
         {
-            "UID": 681423671,
-            "ParentUID": 327370131,
+            "UID": 1808203502,
+            "ParentUID": 2289454872,
             "Name": "Three_Cooldown",
             "Tag": "Default",
             "Static": 0,
@@ -78830,8 +78830,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1661851975,
-                    "textureName": "3",
+                    "textureUID": 3131494396,
+                    "textureName": "Defaultslot",
                     "color": [
                         0.29411765933036806,
                         0.29411765933036806,
@@ -78850,13 +78850,13 @@
             ]
         },
         {
-            "UID": 417911127,
-            "ParentUID": 327370131,
+            "UID": 4256023514,
+            "ParentUID": 2289454872,
             "Name": "ThreeText",
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 1,
-            "ActiveSelf": 0,
+            "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
                 1.0,
@@ -78888,7 +78888,7 @@
                     "Enabled": 1,
                     "Position": [
                         18.799999237060548,
-                        80.9000015258789
+                        97.0
                     ],
                     "Size": [
                         100.0,
@@ -78902,11 +78902,11 @@
                     "Enabled": 1,
                     "FontSize": 47.0,
                     "text": "3",
-                    "font": "Fonts/DroidSans.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
-                        1.0,
-                        1.0,
-                        1.0,
+                        0.5176470875740051,
+                        0.21960784494876862,
+                        0.21960784494876862,
                         0.0
                     ],
                     "colorHovered": [
@@ -78931,7 +78931,7 @@
             ]
         },
         {
-            "UID": 3839419307,
+            "UID": 725656777,
             "ParentUID": 2197875208,
             "Name": "For",
             "Tag": "Default",
@@ -79015,13 +79015,13 @@
                     "buttonImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 3649727781,
-                        "textureName": "4",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             1.0,
                             1.0,
                             1.0,
-                            0.686274528503418
+                            1.0
                         ],
                         "FlipVertical": 0,
                         "FlipHorizontal": 0,
@@ -79035,8 +79035,8 @@
                     "highlightedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 3649727781,
-                        "textureName": "4",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.5882353186607361,
                             0.5882353186607361,
@@ -79055,8 +79055,8 @@
                     "pressedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 3649727781,
-                        "textureName": "4",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.19607843458652497,
                             0.19607843458652497,
@@ -79079,8 +79079,8 @@
             ]
         },
         {
-            "UID": 2738789113,
-            "ParentUID": 3839419307,
+            "UID": 1211348160,
+            "ParentUID": 725656777,
             "Name": "Four_Cooldown",
             "Tag": "Default",
             "Static": 0,
@@ -79129,8 +79129,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3649727781,
-                    "textureName": "4",
+                    "textureUID": 3131494396,
+                    "textureName": "Defaultslot",
                     "color": [
                         0.29411765933036806,
                         0.29411765933036806,
@@ -79149,13 +79149,13 @@
             ]
         },
         {
-            "UID": 3120235909,
-            "ParentUID": 3839419307,
+            "UID": 4228303027,
+            "ParentUID": 725656777,
             "Name": "FourText",
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 1,
-            "ActiveSelf": 0,
+            "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
                 1.0,
@@ -79187,7 +79187,7 @@
                     "Enabled": 1,
                     "Position": [
                         67.5,
-                        80.9000015258789
+                        97.0
                     ],
                     "Size": [
                         100.0,
@@ -79201,11 +79201,11 @@
                     "Enabled": 1,
                     "FontSize": 47.0,
                     "text": "4",
-                    "font": "Fonts/DroidSans.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
-                        1.0,
-                        1.0,
-                        1.0,
+                        0.5176470875740051,
+                        0.21960784494876862,
+                        0.21960784494876862,
                         0.0
                     ],
                     "colorHovered": [
@@ -79230,7 +79230,7 @@
             ]
         },
         {
-            "UID": 930055688,
+            "UID": 1460218790,
             "ParentUID": 2197875208,
             "Name": "Q",
             "Tag": "Default",
@@ -79314,13 +79314,13 @@
                     "buttonImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 4258093177,
-                        "textureName": "Q",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             1.0,
                             1.0,
                             1.0,
-                            0.686274528503418
+                            1.0
                         ],
                         "FlipVertical": 0,
                         "FlipHorizontal": 0,
@@ -79334,8 +79334,8 @@
                     "highlightedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 4258093177,
-                        "textureName": "Q",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.5882353186607361,
                             0.5882353186607361,
@@ -79354,8 +79354,8 @@
                     "pressedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 4258093177,
-                        "textureName": "Q",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.19607843458652497,
                             0.19607843458652497,
@@ -79378,8 +79378,8 @@
             ]
         },
         {
-            "UID": 2993389523,
-            "ParentUID": 930055688,
+            "UID": 3818219289,
+            "ParentUID": 1460218790,
             "Name": "Q_Cooldown",
             "Tag": "Default",
             "Static": 0,
@@ -79428,8 +79428,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 4258093177,
-                    "textureName": "Q",
+                    "textureUID": 3131494396,
+                    "textureName": "Defaultslot",
                     "color": [
                         0.29411765933036806,
                         0.29411765933036806,
@@ -79448,13 +79448,13 @@
             ]
         },
         {
-            "UID": 1333480635,
-            "ParentUID": 930055688,
+            "UID": 2325026676,
+            "ParentUID": 1460218790,
             "Name": "QText",
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 1,
-            "ActiveSelf": 0,
+            "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
                 1.0,
@@ -79486,7 +79486,7 @@
                     "Enabled": 1,
                     "Position": [
                         -81.4000015258789,
-                        35.099998474121097
+                        47.900001525878909
                     ],
                     "Size": [
                         100.0,
@@ -79498,13 +79498,13 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 41.0,
+                    "FontSize": 47.0,
                     "text": "Q",
-                    "font": "Fonts/DroidSans.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
-                        1.0,
-                        1.0,
-                        1.0,
+                        0.5176470875740051,
+                        0.21960784494876862,
+                        0.21960784494876862,
                         0.0
                     ],
                     "colorHovered": [
@@ -79529,7 +79529,7 @@
             ]
         },
         {
-            "UID": 3775713946,
+            "UID": 716349438,
             "ParentUID": 2197875208,
             "Name": "W",
             "Tag": "Default",
@@ -79613,13 +79613,13 @@
                     "buttonImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 365894612,
-                        "textureName": "W",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             1.0,
                             1.0,
                             1.0,
-                            0.686274528503418
+                            1.0
                         ],
                         "FlipVertical": 0,
                         "FlipHorizontal": 0,
@@ -79633,8 +79633,8 @@
                     "highlightedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 365894612,
-                        "textureName": "W",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.5882353186607361,
                             0.5882353186607361,
@@ -79653,8 +79653,8 @@
                     "pressedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 365894612,
-                        "textureName": "W",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.19607843458652497,
                             0.19607843458652497,
@@ -79677,8 +79677,8 @@
             ]
         },
         {
-            "UID": 1318651032,
-            "ParentUID": 3775713946,
+            "UID": 4287687164,
+            "ParentUID": 716349438,
             "Name": "W_Cooldown",
             "Tag": "Default",
             "Static": 0,
@@ -79727,8 +79727,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 365894612,
-                    "textureName": "W",
+                    "textureUID": 3131494396,
+                    "textureName": "Defaultslot",
                     "color": [
                         0.29411765933036806,
                         0.29411765933036806,
@@ -79747,13 +79747,13 @@
             ]
         },
         {
-            "UID": 3355030040,
-            "ParentUID": 3775713946,
+            "UID": 36791568,
+            "ParentUID": 716349438,
             "Name": "WText",
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 1,
-            "ActiveSelf": 0,
+            "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
                 1.0,
@@ -79784,8 +79784,8 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -34.29999923706055,
-                        31.0
+                        -35.5,
+                        46.79999923706055
                     ],
                     "Size": [
                         100.0,
@@ -79799,11 +79799,11 @@
                     "Enabled": 1,
                     "FontSize": 47.0,
                     "text": "W",
-                    "font": "Fonts/DroidSans.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
-                        1.0,
-                        1.0,
-                        1.0,
+                        0.5176470875740051,
+                        0.21960784494876862,
+                        0.21960784494876862,
                         0.0
                     ],
                     "colorHovered": [
@@ -79828,7 +79828,7 @@
             ]
         },
         {
-            "UID": 910878807,
+            "UID": 3593904853,
             "ParentUID": 2197875208,
             "Name": "E",
             "Tag": "Default",
@@ -79912,13 +79912,13 @@
                     "buttonImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 1515148585,
-                        "textureName": "E",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             1.0,
                             1.0,
                             1.0,
-                            0.686274528503418
+                            1.0
                         ],
                         "FlipVertical": 0,
                         "FlipHorizontal": 0,
@@ -79932,8 +79932,8 @@
                     "highlightedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 1515148585,
-                        "textureName": "E",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.5882353186607361,
                             0.5882353186607361,
@@ -79952,8 +79952,8 @@
                     "pressedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 1515148585,
-                        "textureName": "E",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.19607843458652497,
                             0.19607843458652497,
@@ -79976,8 +79976,8 @@
             ]
         },
         {
-            "UID": 2124741720,
-            "ParentUID": 910878807,
+            "UID": 3061457456,
+            "ParentUID": 3593904853,
             "Name": "E_Cooldown",
             "Tag": "Default",
             "Static": 0,
@@ -80026,8 +80026,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1515148585,
-                    "textureName": "E",
+                    "textureUID": 3131494396,
+                    "textureName": "Defaultslot",
                     "color": [
                         0.29411765933036806,
                         0.29411765933036806,
@@ -80046,13 +80046,13 @@
             ]
         },
         {
-            "UID": 997936373,
-            "ParentUID": 910878807,
+            "UID": 2127884961,
+            "ParentUID": 3593904853,
             "Name": "EText",
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 1,
-            "ActiveSelf": 0,
+            "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
                 1.0,
@@ -80084,7 +80084,7 @@
                     "Enabled": 1,
                     "Position": [
                         18.899999618530275,
-                        31.0
+                        48.0
                     ],
                     "Size": [
                         100.0,
@@ -80098,11 +80098,11 @@
                     "Enabled": 1,
                     "FontSize": 47.0,
                     "text": "E",
-                    "font": "Fonts/DroidSans.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
-                        1.0,
-                        1.0,
-                        1.0,
+                        0.5176470875740051,
+                        0.21960784494876862,
+                        0.21960784494876862,
                         0.0
                     ],
                     "colorHovered": [
@@ -80127,7 +80127,7 @@
             ]
         },
         {
-            "UID": 2317197126,
+            "UID": 2299350947,
             "ParentUID": 2197875208,
             "Name": "R",
             "Tag": "Default",
@@ -80211,13 +80211,13 @@
                     "buttonImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 1017670044,
-                        "textureName": "R",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             1.0,
                             1.0,
                             1.0,
-                            0.686274528503418
+                            1.0
                         ],
                         "FlipVertical": 0,
                         "FlipHorizontal": 0,
@@ -80231,8 +80231,8 @@
                     "highlightedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 1017670044,
-                        "textureName": "R",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.5882353186607361,
                             0.5882353186607361,
@@ -80251,8 +80251,8 @@
                     "pressedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 1017670044,
-                        "textureName": "R",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.19607843458652497,
                             0.19607843458652497,
@@ -80275,8 +80275,8 @@
             ]
         },
         {
-            "UID": 1962377554,
-            "ParentUID": 2317197126,
+            "UID": 1175901684,
+            "ParentUID": 2299350947,
             "Name": "R_Cooldown",
             "Tag": "Default",
             "Static": 0,
@@ -80325,8 +80325,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1017670044,
-                    "textureName": "R",
+                    "textureUID": 3131494396,
+                    "textureName": "Defaultslot",
                     "color": [
                         0.29411765933036806,
                         0.29411765933036806,
@@ -80345,13 +80345,13 @@
             ]
         },
         {
-            "UID": 549611320,
-            "ParentUID": 2317197126,
+            "UID": 2137496754,
+            "ParentUID": 2299350947,
             "Name": "RText",
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 1,
-            "ActiveSelf": 0,
+            "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
                 1.0,
@@ -80383,7 +80383,7 @@
                     "Enabled": 1,
                     "Position": [
                         67.5999984741211,
-                        31.0
+                        48.099998474121097
                     ],
                     "Size": [
                         100.0,
@@ -80397,11 +80397,11 @@
                     "Enabled": 1,
                     "FontSize": 47.0,
                     "text": "R",
-                    "font": "Fonts/DroidSans.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
-                        1.0,
-                        1.0,
-                        1.0,
+                        0.5176470875740051,
+                        0.21960784494876862,
+                        0.21960784494876862,
                         0.0
                     ],
                     "colorHovered": [
@@ -80426,7 +80426,7 @@
             ]
         },
         {
-            "UID": 2466828988,
+            "UID": 3354077991,
             "ParentUID": 2197875208,
             "Name": "LC",
             "Tag": "Default",
@@ -80454,7 +80454,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 1,
+            "openInHierarchy": 0,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -80510,13 +80510,13 @@
                     "buttonImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 2821563402,
-                        "textureName": "Item_Machete",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             1.0,
                             1.0,
                             1.0,
-                            0.686274528503418
+                            1.0
                         ],
                         "FlipVertical": 0,
                         "FlipHorizontal": 0,
@@ -80530,8 +80530,8 @@
                     "highlightedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 2821563402,
-                        "textureName": "Item_Machete",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.5882353186607361,
                             0.5882353186607361,
@@ -80550,8 +80550,8 @@
                     "pressedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 2821563402,
-                        "textureName": "Item_Machete",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.19607843458652497,
                             0.19607843458652497,
@@ -80574,7 +80574,88 @@
             ]
         },
         {
-            "UID": 317166492,
+            "UID": 3498945926,
+            "ParentUID": 3354077991,
+            "Name": "RCText",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -135.89999389648438,
+                        71.5
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 47.0,
+                    "text": "LC",
+                    "font": "Fonts/Vision-Regular.ttf",
+                    "color": [
+                        0.5176470875740051,
+                        0.21960784494876862,
+                        0.21960784494876862,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 72.0,
+                    "InterlineDistance": 110.0,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 3392851875,
             "ParentUID": 2197875208,
             "Name": "ManaBackgroud",
             "Tag": "Default",
@@ -80644,8 +80725,8 @@
             ]
         },
         {
-            "UID": 2308894188,
-            "ParentUID": 317166492,
+            "UID": 3735417142,
+            "ParentUID": 3392851875,
             "Name": "Mana",
             "Tag": "Default",
             "Static": 0,
@@ -80714,8 +80795,8 @@
             ]
         },
         {
-            "UID": 2972952468,
-            "ParentUID": 317166492,
+            "UID": 2610287066,
+            "ParentUID": 3392851875,
             "Name": "ManaBubble",
             "Tag": "Default",
             "Static": 0,
@@ -80784,7 +80865,7 @@
             ]
         },
         {
-            "UID": 1312006332,
+            "UID": 1033525813,
             "ParentUID": 2197875208,
             "Name": "RC",
             "Tag": "Default",
@@ -80868,13 +80949,13 @@
                     "buttonImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 3242354620,
-                        "textureName": "Right_clic",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             1.0,
                             1.0,
                             1.0,
-                            0.686274528503418
+                            1.0
                         ],
                         "FlipVertical": 0,
                         "FlipHorizontal": 0,
@@ -80888,8 +80969,8 @@
                     "highlightedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 3242354620,
-                        "textureName": "Right_clic",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.5882353186607361,
                             0.5882353186607361,
@@ -80908,8 +80989,8 @@
                     "pressedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 3242354620,
-                        "textureName": "Right_clic",
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
                         "color": [
                             0.19607843458652497,
                             0.19607843458652497,
@@ -80932,8 +81013,8 @@
             ]
         },
         {
-            "UID": 1762447608,
-            "ParentUID": 1312006332,
+            "UID": 1993236030,
+            "ParentUID": 1033525813,
             "Name": "RC_Cooldown",
             "Tag": "Default",
             "Static": 0,
@@ -80982,8 +81063,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3242354620,
-                    "textureName": "Right_clic",
+                    "textureUID": 3131494396,
+                    "textureName": "Defaultslot",
                     "color": [
                         0.29411765933036806,
                         0.29411765933036806,
@@ -81002,13 +81083,13 @@
             ]
         },
         {
-            "UID": 1489196107,
-            "ParentUID": 1312006332,
+            "UID": 974541590,
+            "ParentUID": 1033525813,
             "Name": "RCText",
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 1,
-            "ActiveSelf": 0,
+            "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
                 1.0,
@@ -81040,7 +81121,7 @@
                     "Enabled": 1,
                     "Position": [
                         111.30000305175781,
-                        55.70000076293945
+                        71.5
                     ],
                     "Size": [
                         100.0,
@@ -81054,11 +81135,11 @@
                     "Enabled": 1,
                     "FontSize": 47.0,
                     "text": "RC",
-                    "font": "Fonts/DroidSans.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
-                        1.0,
-                        1.0,
-                        1.0,
+                        0.5176470875740051,
+                        0.21960784494876862,
+                        0.21960784494876862,
                         0.0
                     ],
                     "colorHovered": [
@@ -81076,14 +81157,14 @@
                         1.0
                     ],
                     "IsTextWrapped": 0,
-                    "WrapWidth": 100.0,
-                    "InterlineDistance": 24.0,
+                    "WrapWidth": 72.0,
+                    "InterlineDistance": 110.0,
                     "UIOrder": 0
                 }
             ]
         },
         {
-            "UID": 3034587410,
+            "UID": 2401585266,
             "ParentUID": 2197875208,
             "Name": "Xp",
             "Tag": "Default",
@@ -81185,8 +81266,8 @@
             ]
         },
         {
-            "UID": 1635977381,
-            "ParentUID": 3034587410,
+            "UID": 2682521720,
+            "ParentUID": 2401585266,
             "Name": "XpProgress",
             "Tag": "Default",
             "Static": 0,
@@ -81255,8 +81336,8 @@
             ]
         },
         {
-            "UID": 3582564030,
-            "ParentUID": 3034587410,
+            "UID": 4070629146,
+            "ParentUID": 2401585266,
             "Name": "XpLines",
             "Tag": "Default",
             "Static": 0,
@@ -81325,7 +81406,7 @@
             ]
         },
         {
-            "UID": 1192317726,
+            "UID": 535344379,
             "ParentUID": 2197875208,
             "Name": "LifeBackgroud",
             "Tag": "Default",
@@ -81395,8 +81476,8 @@
             ]
         },
         {
-            "UID": 736384515,
-            "ParentUID": 1192317726,
+            "UID": 3246041819,
+            "ParentUID": 535344379,
             "Name": "Life",
             "Tag": "Default",
             "Static": 0,
@@ -81465,8 +81546,8 @@
             ]
         },
         {
-            "UID": 334921642,
-            "ParentUID": 1192317726,
+            "UID": 2518408171,
+            "ParentUID": 535344379,
             "Name": "LifeBubble",
             "Tag": "Default",
             "Static": 0,
@@ -81568,76 +81649,6 @@
             "isPrefabSync": 0,
             "prefabUID": 0,
             "Components": []
-        },
-        {
-            "UID": 2886603799,
-            "ParentUID": 2933793253,
-            "Name": "BackgroundImage",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -234.6999969482422,
-                        0.0
-                    ],
-                    "Size": [
-                        455.0,
-                        679.0
-                    ],
-                    "Anchor": 5,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 7,
-                    "Enabled": 1,
-                    "textureUID": 1477451659,
-                    "textureName": "BackgroundTacos",
-                    "color": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "FlipVertical": 0,
-                    "FlipHorizontal": 0,
-                    "isMasked": 0,
-                    "maskAmount": 0,
-                    "isMaskHorizontal": 0,
-                    "hoverDetectionMouse1": 1,
-                    "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
-                }
-            ]
         },
         {
             "UID": 987599651,
@@ -81783,18 +81794,18 @@
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 1
                 }
             ]
         },
         {
-            "UID": 4021404019,
+            "UID": 389753981,
             "ParentUID": 2933793253,
             "Name": "Inventory",
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
+            "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
                 1.0,
@@ -81817,9 +81828,9 @@
             "Navigable": 0,
             "No Walkable": 0,
             "openInHierarchy": 0,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
+            "isPrefab": 1,
+            "isPrefabSync": 1,
+            "prefabUID": 3048167483,
             "Components": [
                 {
                     "Type": 9,
@@ -81830,9 +81841,9 @@
             ]
         },
         {
-            "UID": 559503146,
-            "ParentUID": 4021404019,
-            "Name": "Title",
+            "UID": 2223793876,
+            "ParentUID": 389753981,
+            "Name": "BackgroundImage",
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 0,
@@ -81867,93 +81878,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -394.3999938964844,
-                        276.1000061035156
+                        -234.6999969482422,
+                        0.0
                     ],
                     "Size": [
-                        100.0,
-                        100.0
-                    ],
-                    "Anchor": 5,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 6,
-                    "Enabled": 1,
-                    "FontSize": 17.0,
-                    "text": "Warrior",
-                    "font": "Fonts/TACOSRG.ttf",
-                    "color": [
-                        0.881147563457489,
-                        0.8694241046905518,
-                        0.16611799597740174,
-                        0.0
-                    ],
-                    "colorHovered": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        0.0
-                    ],
-                    "offset": [
-                        0.0,
-                        0.0
-                    ],
-                    "scaleOffset": [
-                        6.0,
-                        6.0
-                    ],
-                    "IsTextWrapped": 0,
-                    "WrapWidth": 0.0,
-                    "InterlineDistance": 0.0,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
-            "UID": 1454583908,
-            "ParentUID": 4021404019,
-            "Name": "BackgroundEq",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -230.89999389648438,
-                        65.5999984741211
-                    ],
-                    "Size": [
-                        435.5,
-                        365.5
+                        455.0,
+                        679.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -81961,8 +81891,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1941603464,
-                    "textureName": "BgEquipment",
+                    "textureUID": 554774745,
+                    "textureName": "Background_Inventory",
                     "color": [
                         1.0,
                         1.0,
@@ -81981,78 +81911,8 @@
             ]
         },
         {
-            "UID": 2524044067,
-            "ParentUID": 4021404019,
-            "Name": "Siluette",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -330.0,
-                        59.5
-                    ],
-                    "Size": [
-                        177.0,
-                        260.5
-                    ],
-                    "Anchor": 5,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 7,
-                    "Enabled": 1,
-                    "textureUID": 666502465,
-                    "textureName": "silouhette",
-                    "color": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "FlipVertical": 0,
-                    "FlipHorizontal": 0,
-                    "isMasked": 0,
-                    "maskAmount": 0,
-                    "isMaskHorizontal": 0,
-                    "hoverDetectionMouse1": 1,
-                    "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
-            "UID": 266543068,
-            "ParentUID": 4021404019,
+            "UID": 792805162,
+            "ParentUID": 389753981,
             "Name": "HelmetSlot",
             "Tag": "Default",
             "Static": 0,
@@ -82088,8 +81948,8 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -338.0,
-                        181.5
+                        -393.0,
+                        160.8000030517578
                     ],
                     "Size": [
                         55.0,
@@ -82101,8 +81961,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3089636142,
-                    "textureName": "helmetSlot",
+                    "textureUID": 1037144958,
+                    "textureName": "Helmet",
                     "color": [
                         1.0,
                         1.0,
@@ -82121,8 +81981,8 @@
             ]
         },
         {
-            "UID": 3423304165,
-            "ParentUID": 4021404019,
+            "UID": 2656683908,
+            "ParentUID": 389753981,
             "Name": "BodySlot",
             "Tag": "Default",
             "Static": 0,
@@ -82158,8 +82018,8 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -338.0,
-                        109.4000015258789
+                        -393.0,
+                        90.9000015258789
                     ],
                     "Size": [
                         55.0,
@@ -82171,8 +82031,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3112274695,
-                    "textureName": "chestSlot",
+                    "textureUID": 3280863454,
+                    "textureName": "Armor_slot",
                     "color": [
                         1.0,
                         1.0,
@@ -82191,8 +82051,8 @@
             ]
         },
         {
-            "UID": 3051710609,
-            "ParentUID": 4021404019,
+            "UID": 407760245,
+            "ParentUID": 389753981,
             "Name": "PantsSlot",
             "Tag": "Default",
             "Static": 0,
@@ -82228,8 +82088,8 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -338.0,
-                        31.799999237060548
+                        -393.0,
+                        20.799999237060548
                     ],
                     "Size": [
                         55.0,
@@ -82241,8 +82101,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 2584359697,
-                    "textureName": "pantsSlot",
+                    "textureUID": 804783340,
+                    "textureName": "Trausers",
                     "color": [
                         1.0,
                         1.0,
@@ -82261,8 +82121,8 @@
             ]
         },
         {
-            "UID": 4011287584,
-            "ParentUID": 4021404019,
+            "UID": 1211038837,
+            "ParentUID": 389753981,
             "Name": "BootsSlot",
             "Tag": "Default",
             "Static": 0,
@@ -82298,8 +82158,8 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -338.0,
-                        -43.70000076293945
+                        -393.0,
+                        -50.900001525878909
                     ],
                     "Size": [
                         55.0,
@@ -82311,8 +82171,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 4131981855,
-                    "textureName": "bootsSlot",
+                    "textureUID": 1974591758,
+                    "textureName": "Boots",
                     "color": [
                         1.0,
                         1.0,
@@ -82331,8 +82191,8 @@
             ]
         },
         {
-            "UID": 3881824734,
-            "ParentUID": 4021404019,
+            "UID": 3044902968,
+            "ParentUID": 389753981,
             "Name": "WeaponSlot",
             "Tag": "Default",
             "Static": 0,
@@ -82368,8 +82228,8 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -252.39999389648438,
-                        88.5999984741211
+                        -310.79998779296877,
+                        49.29999923706055
                     ],
                     "Size": [
                         55.0,
@@ -82381,8 +82241,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1222131602,
-                    "textureName": "weaponSlot",
+                    "textureUID": 3205608322,
+                    "textureName": "Weapon",
                     "color": [
                         1.0,
                         1.0,
@@ -82401,8 +82261,8 @@
             ]
         },
         {
-            "UID": 380386755,
-            "ParentUID": 4021404019,
+            "UID": 4276888751,
+            "ParentUID": 389753981,
             "Name": "AmuletSlot",
             "Tag": "Default",
             "Static": 0,
@@ -82438,8 +82298,8 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -251.8000030517578,
-                        155.5
+                        -310.79998779296877,
+                        126.5999984741211
                     ],
                     "Size": [
                         55.0,
@@ -82451,8 +82311,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3092821037,
-                    "textureName": "amuletSlot",
+                    "textureUID": 4160934145,
+                    "textureName": "Necklace",
                     "color": [
                         1.0,
                         1.0,
@@ -82471,78 +82331,8 @@
             ]
         },
         {
-            "UID": 3009063297,
-            "ParentUID": 4021404019,
-            "Name": "InventorySlotsBackground",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -232.10000610351563,
-                        -223.60000610351563
-                    ],
-                    "Size": [
-                        435.5,
-                        201.0
-                    ],
-                    "Anchor": 5,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 7,
-                    "Enabled": 1,
-                    "textureUID": 302203611,
-                    "textureName": "inventoryBackground",
-                    "color": [
-                        1.0,
-                        0.9999899864196777,
-                        0.9999899864196777,
-                        1.0
-                    ],
-                    "FlipVertical": 0,
-                    "FlipHorizontal": 0,
-                    "isMasked": 0,
-                    "maskAmount": 0,
-                    "isMaskHorizontal": 0,
-                    "hoverDetectionMouse1": 1,
-                    "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
-            "UID": 4185364519,
-            "ParentUID": 4021404019,
+            "UID": 1797482495,
+            "ParentUID": 389753981,
             "Name": "InventorySlots",
             "Tag": "Default",
             "Static": 0,
@@ -82580,7 +82370,7 @@
                     "Position": [
                         0.0,
                         0.0,
-                        0.0
+                        -100.0
                     ],
                     "Rotation": [
                         0.0,
@@ -82610,7 +82400,7 @@
                         0.0,
                         0.0,
                         1.0,
-                        0.0,
+                        -100.0,
                         0.0,
                         0.0,
                         0.0,
@@ -82620,8 +82410,8 @@
             ]
         },
         {
-            "UID": 4058114174,
-            "ParentUID": 4185364519,
+            "UID": 3097982058,
+            "ParentUID": 1797482495,
             "Name": "Slot1",
             "Tag": "Default",
             "Static": 0,
@@ -82670,8 +82460,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3700129622,
-                    "textureName": "slot",
+                    "textureUID": 3332512603,
+                    "textureName": "Inventory_place",
                     "color": [
                         1.0,
                         1.0,
@@ -82690,8 +82480,8 @@
             ]
         },
         {
-            "UID": 3561234951,
-            "ParentUID": 4185364519,
+            "UID": 1243491739,
+            "ParentUID": 1797482495,
             "Name": "Slot2",
             "Tag": "Default",
             "Static": 0,
@@ -82728,7 +82518,7 @@
                     "Enabled": 1,
                     "Position": [
                         -337.0,
-                        -162.10000610351563
+                        -160.60000610351563
                     ],
                     "Size": [
                         55.0,
@@ -82740,8 +82530,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3700129622,
-                    "textureName": "slot",
+                    "textureUID": 3332512603,
+                    "textureName": "Inventory_place",
                     "color": [
                         1.0,
                         1.0,
@@ -82760,8 +82550,8 @@
             ]
         },
         {
-            "UID": 2161077051,
-            "ParentUID": 4185364519,
+            "UID": 3493618684,
+            "ParentUID": 1797482495,
             "Name": "Slot3",
             "Tag": "Default",
             "Static": 0,
@@ -82798,7 +82588,7 @@
                     "Enabled": 1,
                     "Position": [
                         -268.0,
-                        -162.10000610351563
+                        -160.60000610351563
                     ],
                     "Size": [
                         55.0,
@@ -82810,8 +82600,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3700129622,
-                    "textureName": "slot",
+                    "textureUID": 3332512603,
+                    "textureName": "Inventory_place",
                     "color": [
                         1.0,
                         1.0,
@@ -82830,8 +82620,8 @@
             ]
         },
         {
-            "UID": 2965864726,
-            "ParentUID": 4185364519,
+            "UID": 3443532629,
+            "ParentUID": 1797482495,
             "Name": "Slot4",
             "Tag": "Default",
             "Static": 0,
@@ -82868,7 +82658,7 @@
                     "Enabled": 1,
                     "Position": [
                         -199.10000610351563,
-                        -162.10000610351563
+                        -160.60000610351563
                     ],
                     "Size": [
                         55.0,
@@ -82880,8 +82670,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3700129622,
-                    "textureName": "slot",
+                    "textureUID": 3332512603,
+                    "textureName": "Inventory_place",
                     "color": [
                         1.0,
                         1.0,
@@ -82900,8 +82690,8 @@
             ]
         },
         {
-            "UID": 1628827440,
-            "ParentUID": 4185364519,
+            "UID": 1201919157,
+            "ParentUID": 1797482495,
             "Name": "Slot5",
             "Tag": "Default",
             "Static": 0,
@@ -82938,7 +82728,7 @@
                     "Enabled": 1,
                     "Position": [
                         -129.39999389648438,
-                        -162.10000610351563
+                        -160.60000610351563
                     ],
                     "Size": [
                         55.0,
@@ -82950,8 +82740,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3700129622,
-                    "textureName": "slot",
+                    "textureUID": 3332512603,
+                    "textureName": "Inventory_place",
                     "color": [
                         1.0,
                         1.0,
@@ -82970,8 +82760,8 @@
             ]
         },
         {
-            "UID": 3706502395,
-            "ParentUID": 4185364519,
+            "UID": 2693042941,
+            "ParentUID": 1797482495,
             "Name": "Slot6",
             "Tag": "Default",
             "Static": 0,
@@ -83008,7 +82798,7 @@
                     "Enabled": 1,
                     "Position": [
                         -60.900001525878909,
-                        -162.10000610351563
+                        -160.60000610351563
                     ],
                     "Size": [
                         55.0,
@@ -83020,8 +82810,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3700129622,
-                    "textureName": "slot",
+                    "textureUID": 3332512603,
+                    "textureName": "Inventory_place",
                     "color": [
                         1.0,
                         1.0,
@@ -83040,8 +82830,8 @@
             ]
         },
         {
-            "UID": 1851088958,
-            "ParentUID": 4185364519,
+            "UID": 2451035672,
+            "ParentUID": 1797482495,
             "Name": "Slot7",
             "Tag": "Default",
             "Static": 0,
@@ -83090,8 +82880,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3700129622,
-                    "textureName": "slot",
+                    "textureUID": 3332512603,
+                    "textureName": "Inventory_place",
                     "color": [
                         1.0,
                         1.0,
@@ -83110,8 +82900,8 @@
             ]
         },
         {
-            "UID": 1318796939,
-            "ParentUID": 4185364519,
+            "UID": 1278367864,
+            "ParentUID": 1797482495,
             "Name": "Slot8",
             "Tag": "Default",
             "Static": 0,
@@ -83160,8 +82950,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3700129622,
-                    "textureName": "slot",
+                    "textureUID": 3332512603,
+                    "textureName": "Inventory_place",
                     "color": [
                         1.0,
                         1.0,
@@ -83180,8 +82970,8 @@
             ]
         },
         {
-            "UID": 3249173357,
-            "ParentUID": 4185364519,
+            "UID": 2464713430,
+            "ParentUID": 1797482495,
             "Name": "Slot9",
             "Tag": "Default",
             "Static": 0,
@@ -83230,8 +83020,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3700129622,
-                    "textureName": "slot",
+                    "textureUID": 3332512603,
+                    "textureName": "Inventory_place",
                     "color": [
                         1.0,
                         1.0,
@@ -83250,8 +83040,8 @@
             ]
         },
         {
-            "UID": 2355972516,
-            "ParentUID": 4185364519,
+            "UID": 2522363735,
+            "ParentUID": 1797482495,
             "Name": "Slot10",
             "Tag": "Default",
             "Static": 0,
@@ -83300,8 +83090,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3700129622,
-                    "textureName": "slot",
+                    "textureUID": 3332512603,
+                    "textureName": "Inventory_place",
                     "color": [
                         1.0,
                         1.0,
@@ -83320,8 +83110,8 @@
             ]
         },
         {
-            "UID": 929192414,
-            "ParentUID": 4185364519,
+            "UID": 2538411831,
+            "ParentUID": 1797482495,
             "Name": "Slot11",
             "Tag": "Default",
             "Static": 0,
@@ -83370,8 +83160,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3700129622,
-                    "textureName": "slot",
+                    "textureUID": 3332512603,
+                    "textureName": "Inventory_place",
                     "color": [
                         1.0,
                         1.0,
@@ -83390,8 +83180,8 @@
             ]
         },
         {
-            "UID": 529553061,
-            "ParentUID": 4185364519,
+            "UID": 2588674711,
+            "ParentUID": 1797482495,
             "Name": "Slot12",
             "Tag": "Default",
             "Static": 0,
@@ -83440,8 +83230,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3700129622,
-                    "textureName": "slot",
+                    "textureUID": 3332512603,
+                    "textureName": "Inventory_place",
                     "color": [
                         1.0,
                         1.0,
@@ -83460,8 +83250,8 @@
             ]
         },
         {
-            "UID": 1480685323,
-            "ParentUID": 4185364519,
+            "UID": 3672767601,
+            "ParentUID": 1797482495,
             "Name": "Slot13",
             "Tag": "Default",
             "Static": 0,
@@ -83510,8 +83300,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3700129622,
-                    "textureName": "slot",
+                    "textureUID": 3332512603,
+                    "textureName": "Inventory_place",
                     "color": [
                         1.0,
                         1.0,
@@ -83530,8 +83320,8 @@
             ]
         },
         {
-            "UID": 270735579,
-            "ParentUID": 4185364519,
+            "UID": 863850174,
+            "ParentUID": 1797482495,
             "Name": "Slot14",
             "Tag": "Default",
             "Static": 0,
@@ -83580,8 +83370,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3700129622,
-                    "textureName": "slot",
+                    "textureUID": 3332512603,
+                    "textureName": "Inventory_place",
                     "color": [
                         1.0,
                         1.0,
@@ -83600,8 +83390,8 @@
             ]
         },
         {
-            "UID": 2918355344,
-            "ParentUID": 4185364519,
+            "UID": 4260489048,
+            "ParentUID": 1797482495,
             "Name": "Slot15",
             "Tag": "Default",
             "Static": 0,
@@ -83650,8 +83440,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3700129622,
-                    "textureName": "slot",
+                    "textureUID": 3332512603,
+                    "textureName": "Inventory_place",
                     "color": [
                         1.0,
                         1.0,
@@ -83670,8 +83460,8 @@
             ]
         },
         {
-            "UID": 1963133822,
-            "ParentUID": 4185364519,
+            "UID": 2259347433,
+            "ParentUID": 1797482495,
             "Name": "Slot16",
             "Tag": "Default",
             "Static": 0,
@@ -83720,8 +83510,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3700129622,
-                    "textureName": "slot",
+                    "textureUID": 3332512603,
+                    "textureName": "Inventory_place",
                     "color": [
                         1.0,
                         1.0,
@@ -83740,8 +83530,8 @@
             ]
         },
         {
-            "UID": 2187326662,
-            "ParentUID": 4185364519,
+            "UID": 545937590,
+            "ParentUID": 1797482495,
             "Name": "Slot17",
             "Tag": "Default",
             "Static": 0,
@@ -83790,8 +83580,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3700129622,
-                    "textureName": "slot",
+                    "textureUID": 3332512603,
+                    "textureName": "Inventory_place",
                     "color": [
                         1.0,
                         1.0,
@@ -83810,8 +83600,8 @@
             ]
         },
         {
-            "UID": 2258956200,
-            "ParentUID": 4185364519,
+            "UID": 1745881505,
+            "ParentUID": 1797482495,
             "Name": "Slot18",
             "Tag": "Default",
             "Static": 0,
@@ -83860,8 +83650,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3700129622,
-                    "textureName": "slot",
+                    "textureUID": 3332512603,
+                    "textureName": "Inventory_place",
                     "color": [
                         1.0,
                         1.0,
@@ -83880,8 +83670,8 @@
             ]
         },
         {
-            "UID": 1971549114,
-            "ParentUID": 4021404019,
+            "UID": 1945975331,
+            "ParentUID": 389753981,
             "Name": "Items",
             "Tag": "Default",
             "Static": 0,
@@ -83919,7 +83709,7 @@
                     "Position": [
                         0.0,
                         0.0,
-                        0.0
+                        -100.0
                     ],
                     "Rotation": [
                         0.0,
@@ -83949,7 +83739,7 @@
                         0.0,
                         0.0,
                         1.0,
-                        0.0,
+                        -100.0,
                         0.0,
                         0.0,
                         0.0,
@@ -83959,8 +83749,8 @@
             ]
         },
         {
-            "UID": 311496586,
-            "ParentUID": 1971549114,
+            "UID": 772106276,
+            "ParentUID": 1945975331,
             "Name": "Item1",
             "Tag": "Default",
             "Static": 0,
@@ -84000,8 +83790,8 @@
                         -160.60000610351563
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        45.0,
+                        45.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -84029,8 +83819,8 @@
             ]
         },
         {
-            "UID": 191053506,
-            "ParentUID": 1971549114,
+            "UID": 1661231611,
+            "ParentUID": 1945975331,
             "Name": "Item2",
             "Tag": "Default",
             "Static": 0,
@@ -84070,8 +83860,8 @@
                         -162.10000610351563
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        45.0,
+                        45.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -84099,8 +83889,8 @@
             ]
         },
         {
-            "UID": 255853578,
-            "ParentUID": 1971549114,
+            "UID": 484887035,
+            "ParentUID": 1945975331,
             "Name": "Item3",
             "Tag": "Default",
             "Static": 0,
@@ -84140,8 +83930,8 @@
                         -162.10000610351563
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        45.0,
+                        45.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -84169,8 +83959,8 @@
             ]
         },
         {
-            "UID": 1256753794,
-            "ParentUID": 1971549114,
+            "UID": 3879127713,
+            "ParentUID": 1945975331,
             "Name": "Item4",
             "Tag": "Default",
             "Static": 0,
@@ -84210,8 +84000,8 @@
                         -162.10000610351563
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        45.0,
+                        45.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -84239,8 +84029,8 @@
             ]
         },
         {
-            "UID": 719537053,
-            "ParentUID": 1971549114,
+            "UID": 3299476880,
+            "ParentUID": 1945975331,
             "Name": "Item5",
             "Tag": "Default",
             "Static": 0,
@@ -84280,8 +84070,8 @@
                         -162.10000610351563
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        45.0,
+                        45.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -84309,8 +84099,8 @@
             ]
         },
         {
-            "UID": 3370590943,
-            "ParentUID": 1971549114,
+            "UID": 1410470842,
+            "ParentUID": 1945975331,
             "Name": "Item6",
             "Tag": "Default",
             "Static": 0,
@@ -84350,8 +84140,8 @@
                         -162.10000610351563
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        45.0,
+                        45.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -84379,8 +84169,8 @@
             ]
         },
         {
-            "UID": 2057303672,
-            "ParentUID": 1971549114,
+            "UID": 3807537136,
+            "ParentUID": 1945975331,
             "Name": "Item7",
             "Tag": "Default",
             "Static": 0,
@@ -84420,8 +84210,8 @@
                         -222.39999389648438
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        45.0,
+                        45.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -84449,8 +84239,8 @@
             ]
         },
         {
-            "UID": 869743289,
-            "ParentUID": 1971549114,
+            "UID": 3962080367,
+            "ParentUID": 1945975331,
             "Name": "Item8",
             "Tag": "Default",
             "Static": 0,
@@ -84490,8 +84280,8 @@
                         -222.39999389648438
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        45.0,
+                        45.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -84519,8 +84309,8 @@
             ]
         },
         {
-            "UID": 1059885821,
-            "ParentUID": 1971549114,
+            "UID": 1790320872,
+            "ParentUID": 1945975331,
             "Name": "Item9",
             "Tag": "Default",
             "Static": 0,
@@ -84560,8 +84350,8 @@
                         -222.39999389648438
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        45.0,
+                        45.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -84589,8 +84379,8 @@
             ]
         },
         {
-            "UID": 3840709049,
-            "ParentUID": 1971549114,
+            "UID": 3687035578,
+            "ParentUID": 1945975331,
             "Name": "Item10",
             "Tag": "Default",
             "Static": 0,
@@ -84630,8 +84420,8 @@
                         -222.39999389648438
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        45.0,
+                        45.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -84659,8 +84449,8 @@
             ]
         },
         {
-            "UID": 505770216,
-            "ParentUID": 1971549114,
+            "UID": 1475344101,
+            "ParentUID": 1945975331,
             "Name": "Item11",
             "Tag": "Default",
             "Static": 0,
@@ -84700,8 +84490,8 @@
                         -222.39999389648438
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        45.0,
+                        45.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -84729,8 +84519,8 @@
             ]
         },
         {
-            "UID": 1750125064,
-            "ParentUID": 1971549114,
+            "UID": 4014283750,
+            "ParentUID": 1945975331,
             "Name": "Item12",
             "Tag": "Default",
             "Static": 0,
@@ -84770,8 +84560,8 @@
                         -222.39999389648438
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        45.0,
+                        45.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -84799,8 +84589,8 @@
             ]
         },
         {
-            "UID": 1504891179,
-            "ParentUID": 1971549114,
+            "UID": 2067972540,
+            "ParentUID": 1945975331,
             "Name": "Item13",
             "Tag": "Default",
             "Static": 0,
@@ -84840,8 +84630,8 @@
                         -284.70001220703127
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        45.0,
+                        45.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -84869,8 +84659,8 @@
             ]
         },
         {
-            "UID": 2330810406,
-            "ParentUID": 1971549114,
+            "UID": 3023293719,
+            "ParentUID": 1945975331,
             "Name": "Item14",
             "Tag": "Default",
             "Static": 0,
@@ -84910,8 +84700,8 @@
                         -284.70001220703127
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        45.0,
+                        45.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -84939,8 +84729,8 @@
             ]
         },
         {
-            "UID": 3046918955,
-            "ParentUID": 1971549114,
+            "UID": 3682113550,
+            "ParentUID": 1945975331,
             "Name": "Item15",
             "Tag": "Default",
             "Static": 0,
@@ -84980,8 +84770,8 @@
                         -284.70001220703127
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        45.0,
+                        45.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -85009,8 +84799,8 @@
             ]
         },
         {
-            "UID": 2929537434,
-            "ParentUID": 1971549114,
+            "UID": 3293947905,
+            "ParentUID": 1945975331,
             "Name": "Item16",
             "Tag": "Default",
             "Static": 0,
@@ -85050,8 +84840,8 @@
                         -284.70001220703127
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        45.0,
+                        45.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -85079,8 +84869,8 @@
             ]
         },
         {
-            "UID": 2618139306,
-            "ParentUID": 1971549114,
+            "UID": 3116538486,
+            "ParentUID": 1945975331,
             "Name": "Item17",
             "Tag": "Default",
             "Static": 0,
@@ -85120,8 +84910,8 @@
                         -284.70001220703127
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        45.0,
+                        45.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -85149,8 +84939,8 @@
             ]
         },
         {
-            "UID": 3542748614,
-            "ParentUID": 1971549114,
+            "UID": 4073425584,
+            "ParentUID": 1945975331,
             "Name": "Item18",
             "Tag": "Default",
             "Static": 0,
@@ -85190,8 +84980,8 @@
                         -284.70001220703127
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        45.0,
+                        45.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -85219,8 +85009,8 @@
             ]
         },
         {
-            "UID": 4003989346,
-            "ParentUID": 1971549114,
+            "UID": 3869884135,
+            "ParentUID": 1945975331,
             "Name": "Item19",
             "Tag": "Default",
             "Static": 0,
@@ -85256,12 +85046,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -338.29998779296877,
-                        181.39999389648438
+                        -393.0,
+                        160.8000030517578
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        40.0,
+                        40.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -85289,8 +85079,8 @@
             ]
         },
         {
-            "UID": 3947598941,
-            "ParentUID": 1971549114,
+            "UID": 2181386238,
+            "ParentUID": 1945975331,
             "Name": "Item20",
             "Tag": "Default",
             "Static": 0,
@@ -85326,12 +85116,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -338.5,
-                        109.19999694824219
+                        -393.0,
+                        90.9000015258789
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        40.0,
+                        40.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -85359,8 +85149,8 @@
             ]
         },
         {
-            "UID": 1244693296,
-            "ParentUID": 1971549114,
+            "UID": 2058674996,
+            "ParentUID": 1945975331,
             "Name": "Item21",
             "Tag": "Default",
             "Static": 0,
@@ -85396,12 +85186,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -338.6000061035156,
-                        32.20000076293945
+                        -393.0,
+                        20.799999237060548
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        40.0,
+                        40.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -85429,8 +85219,8 @@
             ]
         },
         {
-            "UID": 3671034813,
-            "ParentUID": 1971549114,
+            "UID": 4148989693,
+            "ParentUID": 1945975331,
             "Name": "Item22",
             "Tag": "Default",
             "Static": 0,
@@ -85466,12 +85256,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -337.6000061035156,
-                        -43.79999923706055
+                        -393.0,
+                        -50.900001525878909
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        40.0,
+                        40.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -85499,8 +85289,8 @@
             ]
         },
         {
-            "UID": 2224094758,
-            "ParentUID": 1971549114,
+            "UID": 1016332089,
+            "ParentUID": 1945975331,
             "Name": "Item23",
             "Tag": "Default",
             "Static": 0,
@@ -85536,12 +85326,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -252.10000610351563,
-                        89.0999984741211
+                        -310.79998779296877,
+                        49.29999923706055
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        40.0,
+                        40.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -85569,8 +85359,8 @@
             ]
         },
         {
-            "UID": 2641093764,
-            "ParentUID": 1971549114,
+            "UID": 3179176910,
+            "ParentUID": 1945975331,
             "Name": "Item24",
             "Tag": "Default",
             "Static": 0,
@@ -85606,12 +85396,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -252.3000030517578,
-                        155.1999969482422
+                        -310.79998779296877,
+                        126.5999984741211
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        40.0,
+                        40.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -85639,8 +85429,8 @@
             ]
         },
         {
-            "UID": 438052999,
-            "ParentUID": 4021404019,
+            "UID": 3282313170,
+            "ParentUID": 389753981,
             "Name": "LevelBackground",
             "Tag": "Default",
             "Static": 0,
@@ -85678,7 +85468,7 @@
                     "Position": [
                         0.0,
                         0.0,
-                        0.0
+                        -100.0
                     ],
                     "Rotation": [
                         0.0,
@@ -85708,7 +85498,7 @@
                         0.0,
                         0.0,
                         1.0,
-                        0.0,
+                        -100.0,
                         0.0,
                         0.0,
                         0.0,
@@ -85718,78 +85508,8 @@
             ]
         },
         {
-            "UID": 2852554000,
-            "ParentUID": 438052999,
-            "Name": "ExpBar",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -89.9000015258789,
-                        269.20001220703127
-                    ],
-                    "Size": [
-                        153.0,
-                        26.0
-                    ],
-                    "Anchor": 5,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 7,
-                    "Enabled": 1,
-                    "textureUID": 1446676805,
-                    "textureName": "expBar",
-                    "color": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "FlipVertical": 0,
-                    "FlipHorizontal": 0,
-                    "isMasked": 0,
-                    "maskAmount": 100,
-                    "isMaskHorizontal": 0,
-                    "hoverDetectionMouse1": 1,
-                    "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
-            "UID": 661234383,
-            "ParentUID": 438052999,
+            "UID": 1488802819,
+            "ParentUID": 3282313170,
             "Name": "LevelProgressBar",
             "Tag": "Default",
             "Static": 0,
@@ -85825,12 +85545,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -89.9000015258789,
-                        269.20001220703127
+                        -245.89999389648438,
+                        214.60000610351563
                     ],
                     "Size": [
-                        147.0,
-                        19.0
+                        232.5,
+                        6.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -85838,8 +85558,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3792288124,
-                    "textureName": "barExp",
+                    "textureUID": 2053826570,
+                    "textureName": "Bar_Experience_2",
                     "color": [
                         1.0,
                         1.0,
@@ -85858,8 +85578,78 @@
             ]
         },
         {
-            "UID": 3225996592,
-            "ParentUID": 438052999,
+            "UID": 609778619,
+            "ParentUID": 3282313170,
+            "Name": "LevelLinesBar",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -245.89999389648438,
+                        214.8000030517578
+                    ],
+                    "Size": [
+                        119.0,
+                        11.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 4203160345,
+                    "textureName": "Experience_details_1",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 4009613584,
+            "ParentUID": 3282313170,
             "Name": "LevelActual",
             "Tag": "Default",
             "Static": 0,
@@ -85895,8 +85685,8 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -127.69999694824219,
-                        287.5
+                        -390.5,
+                        209.1999969482422
                     ],
                     "Size": [
                         100.0,
@@ -85908,13 +85698,13 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 9.0,
-                    "text": "lvl 1",
-                    "font": "Fonts/TACOSRG.ttf",
+                    "FontSize": 8.0,
+                    "text": "10",
+                    "font": "Fonts/Vision-BoldItalic.ttf",
                     "color": [
-                        9.999999974752428e-7,
-                        9.999997701015673e-7,
-                        9.999899930335233e-7,
+                        0.7686274647712708,
+                        0.5921568870544434,
+                        0.09019608050584793,
                         0.0
                     ],
                     "colorHovered": [
@@ -85939,8 +85729,8 @@
             ]
         },
         {
-            "UID": 3706452988,
-            "ParentUID": 438052999,
+            "UID": 1401516897,
+            "ParentUID": 3282313170,
             "Name": "LevelExperience",
             "Tag": "Default",
             "Static": 0,
@@ -85976,8 +85766,8 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -132.39999389648438,
-                        262.8999938964844
+                        -92.0,
+                        208.60000610351563
                     ],
                     "Size": [
                         100.0,
@@ -85990,12 +85780,12 @@
                     "Type": 6,
                     "Enabled": 1,
                     "FontSize": 7.0,
-                    "text": "0 100",
-                    "font": "Fonts/TACOSRG.ttf",
+                    "text": "0   100",
+                    "font": "Fonts/Vision-BoldItalic.ttf",
                     "color": [
-                        9.999999974752428e-7,
-                        9.999997701015673e-7,
-                        9.999899930335233e-7,
+                        0.7686274647712708,
+                        0.5921568870544434,
+                        0.09019608050584793,
                         0.0
                     ],
                     "colorHovered": [
@@ -86020,8 +85810,8 @@
             ]
         },
         {
-            "UID": 3102306441,
-            "ParentUID": 4021404019,
+            "UID": 3268637389,
+            "ParentUID": 389753981,
             "Name": "StatsPanel",
             "Tag": "Default",
             "Static": 0,
@@ -86059,7 +85849,7 @@
                     "Position": [
                         0.0,
                         0.0,
-                        0.0
+                        -100.0
                     ],
                     "Rotation": [
                         0.0,
@@ -86089,7 +85879,7 @@
                         0.0,
                         0.0,
                         1.0,
-                        0.0,
+                        -100.0,
                         0.0,
                         0.0,
                         0.0,
@@ -86099,8 +85889,8 @@
             ]
         },
         {
-            "UID": 2325275271,
-            "ParentUID": 3102306441,
+            "UID": 3974291198,
+            "ParentUID": 3268637389,
             "Name": "HeartPanel",
             "Tag": "Default",
             "Static": 0,
@@ -86168,7 +85958,7 @@
                         0.0,
                         0.0,
                         1.0,
-                        0.0,
+                        -100.0,
                         0.0,
                         0.0,
                         0.0,
@@ -86178,148 +85968,8 @@
             ]
         },
         {
-            "UID": 3213865129,
-            "ParentUID": 2325275271,
-            "Name": "HeartSquare",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -102.5999984741211,
-                        184.5
-                    ],
-                    "Size": [
-                        129.5,
-                        71.0
-                    ],
-                    "Anchor": 5,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 7,
-                    "Enabled": 1,
-                    "textureUID": 4223564204,
-                    "textureName": "HeartSquare",
-                    "color": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "FlipVertical": 0,
-                    "FlipHorizontal": 0,
-                    "isMasked": 0,
-                    "maskAmount": 100,
-                    "isMaskHorizontal": 0,
-                    "hoverDetectionMouse1": 1,
-                    "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
-            "UID": 4222157123,
-            "ParentUID": 2325275271,
-            "Name": "HeartIcon",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -129.6999969482422,
-                        185.89999389648438
-                    ],
-                    "Size": [
-                        40.5,
-                        34.5
-                    ],
-                    "Anchor": 5,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 7,
-                    "Enabled": 1,
-                    "textureUID": 3982629994,
-                    "textureName": "heart",
-                    "color": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "FlipVertical": 0,
-                    "FlipHorizontal": 0,
-                    "isMasked": 0,
-                    "maskAmount": 100,
-                    "isMaskHorizontal": 0,
-                    "hoverDetectionMouse1": 1,
-                    "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
-            "UID": 385396870,
-            "ParentUID": 2325275271,
+            "UID": 2322864887,
+            "ParentUID": 3974291198,
             "Name": "HeartLabel",
             "Tag": "Default",
             "Static": 0,
@@ -86355,8 +86005,8 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -103.69999694824219,
-                        179.0
+                        -108.69999694824219,
+                        153.39999389648438
                     ],
                     "Size": [
                         100.0,
@@ -86368,13 +86018,13 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 7.0,
+                    "FontSize": 9.0,
                     "text": "130",
-                    "font": "Fonts/TACOSRG.ttf",
+                    "font": "Fonts/Vision-BoldItalic.ttf",
                     "color": [
-                        9.999999974752428e-7,
-                        9.999997701015673e-7,
-                        9.999899930335233e-7,
+                        0.7686274647712708,
+                        0.5921568870544434,
+                        0.09019608050584793,
                         0.0
                     ],
                     "colorHovered": [
@@ -86399,8 +86049,8 @@
             ]
         },
         {
-            "UID": 444023954,
-            "ParentUID": 2325275271,
+            "UID": 1758344030,
+            "ParentUID": 3974291198,
             "Name": "HeartPositiveBoostIcon",
             "Tag": "Default",
             "Static": 0,
@@ -86469,8 +86119,8 @@
             ]
         },
         {
-            "UID": 1820266784,
-            "ParentUID": 2325275271,
+            "UID": 159941166,
+            "ParentUID": 3974291198,
             "Name": "HeartNegativeBoostIcon",
             "Tag": "Default",
             "Static": 0,
@@ -86539,8 +86189,8 @@
             ]
         },
         {
-            "UID": 4062400264,
-            "ParentUID": 3102306441,
+            "UID": 1389672121,
+            "ParentUID": 3268637389,
             "Name": "DexterityPanel",
             "Tag": "Default",
             "Static": 0,
@@ -86608,7 +86258,7 @@
                         0.0,
                         0.0,
                         1.0,
-                        0.0,
+                        -100.0,
                         0.0,
                         0.0,
                         0.0,
@@ -86618,148 +86268,8 @@
             ]
         },
         {
-            "UID": 2226614253,
-            "ParentUID": 4062400264,
-            "Name": "DexteritySquare",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -102.5,
-                        108.69999694824219
-                    ],
-                    "Size": [
-                        129.5,
-                        71.0
-                    ],
-                    "Anchor": 5,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 7,
-                    "Enabled": 1,
-                    "textureUID": 4279452241,
-                    "textureName": "dexteritySquare",
-                    "color": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "FlipVertical": 0,
-                    "FlipHorizontal": 0,
-                    "isMasked": 0,
-                    "maskAmount": 100,
-                    "isMaskHorizontal": 0,
-                    "hoverDetectionMouse1": 1,
-                    "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
-            "UID": 403232829,
-            "ParentUID": 4062400264,
-            "Name": "DexterityIcon",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -129.6999969482422,
-                        110.5999984741211
-                    ],
-                    "Size": [
-                        40.5,
-                        34.5
-                    ],
-                    "Anchor": 5,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 7,
-                    "Enabled": 1,
-                    "textureUID": 3543534611,
-                    "textureName": "boot",
-                    "color": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "FlipVertical": 0,
-                    "FlipHorizontal": 0,
-                    "isMasked": 0,
-                    "maskAmount": 100,
-                    "isMaskHorizontal": 0,
-                    "hoverDetectionMouse1": 1,
-                    "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
-            "UID": 648742259,
-            "ParentUID": 4062400264,
+            "UID": 4012883927,
+            "ParentUID": 1389672121,
             "Name": "DexterityLabel",
             "Tag": "Default",
             "Static": 0,
@@ -86795,8 +86305,8 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -103.69999694824219,
-                        104.5
+                        -108.69999694824219,
+                        81.19999694824219
                     ],
                     "Size": [
                         100.0,
@@ -86808,13 +86318,13 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 7.0,
+                    "FontSize": 9.0,
                     "text": "25",
-                    "font": "Fonts/TACOSRG.ttf",
+                    "font": "Fonts/Vision-BoldItalic.ttf",
                     "color": [
-                        9.999999974752428e-7,
-                        9.999997701015673e-7,
-                        9.999899930335233e-7,
+                        0.7686274647712708,
+                        0.5921568870544434,
+                        0.09019608050584793,
                         0.0
                     ],
                     "colorHovered": [
@@ -86839,8 +86349,8 @@
             ]
         },
         {
-            "UID": 3806995293,
-            "ParentUID": 4062400264,
+            "UID": 2225582627,
+            "ParentUID": 1389672121,
             "Name": "DexterityPositiveBoostIcon",
             "Tag": "Default",
             "Static": 0,
@@ -86909,8 +86419,8 @@
             ]
         },
         {
-            "UID": 2741346628,
-            "ParentUID": 4062400264,
+            "UID": 1729529121,
+            "ParentUID": 1389672121,
             "Name": "DexterityNegativeBoostIcon",
             "Tag": "Default",
             "Static": 0,
@@ -86979,8 +86489,8 @@
             ]
         },
         {
-            "UID": 769546431,
-            "ParentUID": 3102306441,
+            "UID": 2172171754,
+            "ParentUID": 3268637389,
             "Name": "StrPanel",
             "Tag": "Default",
             "Static": 0,
@@ -87007,7 +86517,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 1,
+            "openInHierarchy": 0,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -87048,7 +86558,7 @@
                         0.0,
                         0.0,
                         1.0,
-                        0.0,
+                        -100.0,
                         0.0,
                         0.0,
                         0.0,
@@ -87058,148 +86568,8 @@
             ]
         },
         {
-            "UID": 3557605576,
-            "ParentUID": 769546431,
-            "Name": "StrSquare",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -102.5,
-                        34.29999923706055
-                    ],
-                    "Size": [
-                        129.5,
-                        71.0
-                    ],
-                    "Anchor": 5,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 7,
-                    "Enabled": 1,
-                    "textureUID": 268177569,
-                    "textureName": "StrSquare",
-                    "color": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "FlipVertical": 0,
-                    "FlipHorizontal": 0,
-                    "isMasked": 0,
-                    "maskAmount": 100,
-                    "isMaskHorizontal": 0,
-                    "hoverDetectionMouse1": 1,
-                    "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
-            "UID": 1104938189,
-            "ParentUID": 769546431,
-            "Name": "StrIcon",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -129.6999969482422,
-                        37.599998474121097
-                    ],
-                    "Size": [
-                        40.5,
-                        34.5
-                    ],
-                    "Anchor": 5,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 7,
-                    "Enabled": 1,
-                    "textureUID": 1483507378,
-                    "textureName": "muscle",
-                    "color": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "FlipVertical": 0,
-                    "FlipHorizontal": 0,
-                    "isMasked": 0,
-                    "maskAmount": 100,
-                    "isMaskHorizontal": 0,
-                    "hoverDetectionMouse1": 1,
-                    "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
-            "UID": 1775291757,
-            "ParentUID": 769546431,
+            "UID": 3909769685,
+            "ParentUID": 2172171754,
             "Name": "StrLabel",
             "Tag": "Default",
             "Static": 0,
@@ -87235,8 +86605,8 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -103.69999694824219,
-                        27.399999618530275
+                        -108.69999694824219,
+                        8.600000381469727
                     ],
                     "Size": [
                         100.0,
@@ -87248,13 +86618,13 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 7.0,
+                    "FontSize": 9.0,
                     "text": "42",
-                    "font": "Fonts/TACOSRG.ttf",
+                    "font": "Fonts/Vision-BoldItalic.ttf",
                     "color": [
-                        9.999999974752428e-7,
-                        9.999997701015673e-7,
-                        9.999899930335233e-7,
+                        0.7686274647712708,
+                        0.5921568870544434,
+                        0.09019608050584793,
                         0.0
                     ],
                     "colorHovered": [
@@ -87279,8 +86649,8 @@
             ]
         },
         {
-            "UID": 1071106250,
-            "ParentUID": 769546431,
+            "UID": 2666523726,
+            "ParentUID": 2172171754,
             "Name": "StrPositiveBoostIcon",
             "Tag": "Default",
             "Static": 0,
@@ -87349,8 +86719,8 @@
             ]
         },
         {
-            "UID": 3761312072,
-            "ParentUID": 769546431,
+            "UID": 842425286,
+            "ParentUID": 2172171754,
             "Name": "StrNegativeBoostIcon",
             "Tag": "Default",
             "Static": 0,
@@ -87419,8 +86789,8 @@
             ]
         },
         {
-            "UID": 1067486146,
-            "ParentUID": 3102306441,
+            "UID": 3781217038,
+            "ParentUID": 3268637389,
             "Name": "SoulPanel",
             "Tag": "Default",
             "Static": 0,
@@ -87447,7 +86817,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 1,
+            "openInHierarchy": 0,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -87488,7 +86858,7 @@
                         0.0,
                         0.0,
                         1.0,
-                        0.0,
+                        -100.0,
                         0.0,
                         0.0,
                         0.0,
@@ -87498,148 +86868,8 @@
             ]
         },
         {
-            "UID": 993901455,
-            "ParentUID": 1067486146,
-            "Name": "SoulSquare",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -102.5,
-                        -41.70000076293945
-                    ],
-                    "Size": [
-                        129.5,
-                        71.0
-                    ],
-                    "Anchor": 5,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 7,
-                    "Enabled": 1,
-                    "textureUID": 3496832437,
-                    "textureName": "SoulSquare",
-                    "color": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "FlipVertical": 0,
-                    "FlipHorizontal": 0,
-                    "isMasked": 0,
-                    "maskAmount": 100,
-                    "isMaskHorizontal": 0,
-                    "hoverDetectionMouse1": 1,
-                    "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
-            "UID": 3834534134,
-            "ParentUID": 1067486146,
-            "Name": "SoulIcon",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -129.6999969482422,
-                        -41.099998474121097
-                    ],
-                    "Size": [
-                        40.5,
-                        34.5
-                    ],
-                    "Anchor": 5,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 7,
-                    "Enabled": 1,
-                    "textureUID": 117638074,
-                    "textureName": "lotus",
-                    "color": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "FlipVertical": 0,
-                    "FlipHorizontal": 0,
-                    "isMasked": 0,
-                    "maskAmount": 100,
-                    "isMaskHorizontal": 0,
-                    "hoverDetectionMouse1": 1,
-                    "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
-            "UID": 3133651606,
-            "ParentUID": 1067486146,
+            "UID": 2365492812,
+            "ParentUID": 3781217038,
             "Name": "SoulLabel",
             "Tag": "Default",
             "Static": 0,
@@ -87675,8 +86905,8 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -103.69999694824219,
-                        -46.20000076293945
+                        -108.69999694824219,
+                        -63.400001525878909
                     ],
                     "Size": [
                         100.0,
@@ -87688,13 +86918,13 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 7.0,
+                    "FontSize": 9.0,
                     "text": "42",
-                    "font": "Fonts/TACOSRG.ttf",
+                    "font": "Fonts/Vision-BoldItalic.ttf",
                     "color": [
-                        9.999999974752428e-7,
-                        9.999997701015673e-7,
-                        9.999899930335233e-7,
+                        0.7704918384552002,
+                        0.5922210216522217,
+                        0.08841708302497864,
                         0.0
                     ],
                     "colorHovered": [
@@ -87719,8 +86949,8 @@
             ]
         },
         {
-            "UID": 2188732996,
-            "ParentUID": 1067486146,
+            "UID": 2382844628,
+            "ParentUID": 3781217038,
             "Name": "SoulPositiveBoostIcon",
             "Tag": "Default",
             "Static": 0,
@@ -87789,8 +87019,8 @@
             ]
         },
         {
-            "UID": 1204690508,
-            "ParentUID": 1067486146,
+            "UID": 1724039198,
+            "ParentUID": 3781217038,
             "Name": "SoulNegativeBoostIcon",
             "Tag": "Default",
             "Static": 0,
@@ -87859,7 +87089,7 @@
             ]
         },
         {
-            "UID": 109447017,
+            "UID": 1947256022,
             "ParentUID": 2933793253,
             "Name": "Quests",
             "Tag": "Default",
@@ -87888,15 +87118,15 @@
             "Navigable": 0,
             "No Walkable": 0,
             "openInHierarchy": 0,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
+            "isPrefab": 1,
+            "isPrefabSync": 1,
+            "prefabUID": 3488247818,
             "Components": []
         },
         {
-            "UID": 3684946189,
-            "ParentUID": 109447017,
-            "Name": "Title",
+            "UID": 1497780577,
+            "ParentUID": 1947256022,
+            "Name": "BackgroundImage",
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 0,
@@ -87931,93 +87161,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -302.6000061035156,
-                        294.29998779296877
+                        -234.6999969482422,
+                        0.0
                     ],
                     "Size": [
-                        100.0,
-                        100.0
-                    ],
-                    "Anchor": 5,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 6,
-                    "Enabled": 1,
-                    "FontSize": 14.0,
-                    "text": "Quests",
-                    "font": "Fonts/TACOSRG.ttf",
-                    "color": [
-                        0.8823529481887817,
-                        0.8705882430076599,
-                        0.16470588743686677,
-                        0.0
-                    ],
-                    "colorHovered": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        0.0
-                    ],
-                    "offset": [
-                        0.0,
-                        0.0
-                    ],
-                    "scaleOffset": [
-                        6.0,
-                        6.0
-                    ],
-                    "IsTextWrapped": 0,
-                    "WrapWidth": 0.0,
-                    "InterlineDistance": 0.0,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
-            "UID": 3330317251,
-            "ParentUID": 109447017,
-            "Name": "QuestMock",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -231.1999969482422,
-                        -23.0
-                    ],
-                    "Size": [
-                        428.0,
-                        587.0
+                        455.0,
+                        679.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -88025,8 +87174,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 2180426893,
-                    "textureName": "questContent",
+                    "textureUID": 3331782174,
+                    "textureName": "Quest",
                     "color": [
                         1.0,
                         1.0,
@@ -88211,7 +87360,7 @@
             ]
         },
         {
-            "UID": 2186228634,
+            "UID": 3728618058,
             "ParentUID": 68632637,
             "Name": "SkillsBackgroundImage",
             "Tag": "Default",
@@ -88281,8 +87430,8 @@
             ]
         },
         {
-            "UID": 2092989674,
-            "ParentUID": 2186228634,
+            "UID": 1470255799,
+            "ParentUID": 3728618058,
             "Name": "SkillConnections",
             "Tag": "Default",
             "Static": 0,
@@ -88320,7 +87469,7 @@
                     "Position": [
                         0.0,
                         0.0,
-                        -300.0
+                        -400.0
                     ],
                     "Rotation": [
                         0.0,
@@ -88350,7 +87499,7 @@
                         0.0,
                         0.0,
                         1.0,
-                        -300.0,
+                        -400.0,
                         0.0,
                         0.0,
                         0.0,
@@ -88360,8 +87509,8 @@
             ]
         },
         {
-            "UID": 4091030913,
-            "ParentUID": 2092989674,
+            "UID": 3454029554,
+            "ParentUID": 1470255799,
             "Name": "Connection0",
             "Tag": "Default",
             "Static": 0,
@@ -88410,8 +87559,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 491920706,
-                    "textureName": "Desactivated_Bar",
+                    "textureUID": 2901523971,
+                    "textureName": "Desactivated_Bar_Short",
                     "color": [
                         1.0,
                         0.9999899864196777,
@@ -88430,8 +87579,8 @@
             ]
         },
         {
-            "UID": 3572816782,
-            "ParentUID": 2092989674,
+            "UID": 2085111441,
+            "ParentUID": 1470255799,
             "Name": "Connection1",
             "Tag": "Default",
             "Static": 0,
@@ -88500,8 +87649,8 @@
             ]
         },
         {
-            "UID": 1025828822,
-            "ParentUID": 2092989674,
+            "UID": 1061800447,
+            "ParentUID": 1470255799,
             "Name": "Connection2",
             "Tag": "Default",
             "Static": 0,
@@ -88570,8 +87719,8 @@
             ]
         },
         {
-            "UID": 3462731606,
-            "ParentUID": 2092989674,
+            "UID": 2853784043,
+            "ParentUID": 1470255799,
             "Name": "Connection3",
             "Tag": "Default",
             "Static": 0,
@@ -88620,8 +87769,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 491920706,
-                    "textureName": "Desactivated_Bar",
+                    "textureUID": 2901523971,
+                    "textureName": "Desactivated_Bar_Short",
                     "color": [
                         1.0,
                         0.9999899864196777,
@@ -88640,8 +87789,8 @@
             ]
         },
         {
-            "UID": 628187662,
-            "ParentUID": 2092989674,
+            "UID": 2903746901,
+            "ParentUID": 1470255799,
             "Name": "Connection4",
             "Tag": "Default",
             "Static": 0,
@@ -88690,8 +87839,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 491920706,
-                    "textureName": "Desactivated_Bar",
+                    "textureUID": 2901523971,
+                    "textureName": "Desactivated_Bar_Short",
                     "color": [
                         1.0,
                         0.9999899864196777,
@@ -88710,8 +87859,8 @@
             ]
         },
         {
-            "UID": 1729322202,
-            "ParentUID": 2092989674,
+            "UID": 1884851349,
+            "ParentUID": 1470255799,
             "Name": "Connection5",
             "Tag": "Default",
             "Static": 0,
@@ -88780,8 +87929,8 @@
             ]
         },
         {
-            "UID": 1202716912,
-            "ParentUID": 2092989674,
+            "UID": 1078175724,
+            "ParentUID": 1470255799,
             "Name": "Connection6",
             "Tag": "Default",
             "Static": 0,
@@ -88850,8 +87999,8 @@
             ]
         },
         {
-            "UID": 56185445,
-            "ParentUID": 2186228634,
+            "UID": 267463390,
+            "ParentUID": 3728618058,
             "Name": "SkillSlots",
             "Tag": "Default",
             "Static": 0,
@@ -88878,7 +88027,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 1,
+            "openInHierarchy": 0,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -88889,7 +88038,7 @@
                     "Position": [
                         0.0,
                         0.0,
-                        -300.0
+                        -400.0
                     ],
                     "Rotation": [
                         0.0,
@@ -88919,7 +88068,7 @@
                         0.0,
                         0.0,
                         1.0,
-                        -300.0,
+                        -400.0,
                         0.0,
                         0.0,
                         0.0,
@@ -88929,8 +88078,8 @@
             ]
         },
         {
-            "UID": 2268379265,
-            "ParentUID": 56185445,
+            "UID": 3912376532,
+            "ParentUID": 267463390,
             "Name": "Skill0",
             "Tag": "Default",
             "Static": 0,
@@ -88999,8 +88148,8 @@
             ]
         },
         {
-            "UID": 1712826236,
-            "ParentUID": 2268379265,
+            "UID": 277222303,
+            "ParentUID": 3912376532,
             "Name": "SkillIcon0",
             "Tag": "Default",
             "Static": 0,
@@ -89069,8 +88218,8 @@
             ]
         },
         {
-            "UID": 3581053487,
-            "ParentUID": 2268379265,
+            "UID": 439848566,
+            "ParentUID": 3912376532,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -89106,7 +88255,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -400.0,
+                        -397.5,
                         137.39999389648438
                     ],
                     "Size": [
@@ -89119,9 +88268,9 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 14.0,
+                    "FontSize": 21.0,
                     "text": "0/5",
-                    "font": "Fonts/MATADOR.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.09019608050584793,
                         0.019607843831181527,
@@ -89150,8 +88299,8 @@
             ]
         },
         {
-            "UID": 3876975778,
-            "ParentUID": 56185445,
+            "UID": 1755443848,
+            "ParentUID": 267463390,
             "Name": "Skill1",
             "Tag": "Default",
             "Static": 0,
@@ -89220,8 +88369,8 @@
             ]
         },
         {
-            "UID": 2709119645,
-            "ParentUID": 3876975778,
+            "UID": 4211623196,
+            "ParentUID": 1755443848,
             "Name": "SkillIcon1",
             "Tag": "Default",
             "Static": 0,
@@ -89290,8 +88439,8 @@
             ]
         },
         {
-            "UID": 2882338207,
-            "ParentUID": 3876975778,
+            "UID": 3702831577,
+            "ParentUID": 1755443848,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -89327,7 +88476,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -400.0,
+                        -396.20001220703127,
                         29.200000762939454
                     ],
                     "Size": [
@@ -89340,9 +88489,9 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 14.0,
+                    "FontSize": 21.0,
                     "text": "0/3",
-                    "font": "Fonts/MATADOR.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.09019608050584793,
                         0.019607843831181527,
@@ -89371,8 +88520,8 @@
             ]
         },
         {
-            "UID": 161462120,
-            "ParentUID": 56185445,
+            "UID": 997695415,
+            "ParentUID": 267463390,
             "Name": "Skill2",
             "Tag": "Default",
             "Static": 0,
@@ -89441,8 +88590,8 @@
             ]
         },
         {
-            "UID": 11311267,
-            "ParentUID": 161462120,
+            "UID": 3138118808,
+            "ParentUID": 997695415,
             "Name": "SkillIcon2",
             "Tag": "Default",
             "Static": 0,
@@ -89511,8 +88660,8 @@
             ]
         },
         {
-            "UID": 2300887030,
-            "ParentUID": 161462120,
+            "UID": 3140940282,
+            "ParentUID": 997695415,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -89548,7 +88697,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -400.0,
+                        -397.20001220703127,
                         -197.3000030517578
                     ],
                     "Size": [
@@ -89561,9 +88710,9 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 14.0,
+                    "FontSize": 21.0,
                     "text": "0/2",
-                    "font": "Fonts/MATADOR.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.0901639461517334,
                         0.020323842763900758,
@@ -89592,8 +88741,8 @@
             ]
         },
         {
-            "UID": 2190963142,
-            "ParentUID": 56185445,
+            "UID": 169380346,
+            "ParentUID": 267463390,
             "Name": "Skill3",
             "Tag": "Default",
             "Static": 0,
@@ -89662,8 +88811,8 @@
             ]
         },
         {
-            "UID": 3270798307,
-            "ParentUID": 2190963142,
+            "UID": 3002853066,
+            "ParentUID": 169380346,
             "Name": "SkillIcon3",
             "Tag": "Default",
             "Static": 0,
@@ -89732,8 +88881,8 @@
             ]
         },
         {
-            "UID": 3663313919,
-            "ParentUID": 2190963142,
+            "UID": 1065176056,
+            "ParentUID": 169380346,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -89769,7 +88918,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -297.79998779296877,
+                        -295.29998779296877,
                         137.8000030517578
                     ],
                     "Size": [
@@ -89782,9 +88931,9 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 14.0,
+                    "FontSize": 21.0,
                     "text": "0/5",
-                    "font": "Fonts/MATADOR.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.09019608050584793,
                         0.019607843831181527,
@@ -89813,8 +88962,8 @@
             ]
         },
         {
-            "UID": 2358186156,
-            "ParentUID": 56185445,
+            "UID": 2173265776,
+            "ParentUID": 267463390,
             "Name": "Skill4",
             "Tag": "Default",
             "Static": 0,
@@ -89883,8 +89032,8 @@
             ]
         },
         {
-            "UID": 2448042431,
-            "ParentUID": 2358186156,
+            "UID": 278312331,
+            "ParentUID": 2173265776,
             "Name": "SkillIcon4",
             "Tag": "Default",
             "Static": 0,
@@ -89953,8 +89102,8 @@
             ]
         },
         {
-            "UID": 4076763129,
-            "ParentUID": 2358186156,
+            "UID": 978004731,
+            "ParentUID": 2173265776,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -89990,7 +89139,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -297.20001220703127,
+                        -295.29998779296877,
                         -80.9000015258789
                     ],
                     "Size": [
@@ -90003,9 +89152,9 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 14.0,
+                    "FontSize": 21.0,
                     "text": "0/5",
-                    "font": "Fonts/MATADOR.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.09019608050584793,
                         0.019607843831181527,
@@ -90034,8 +89183,8 @@
             ]
         },
         {
-            "UID": 3311023646,
-            "ParentUID": 56185445,
+            "UID": 53564622,
+            "ParentUID": 267463390,
             "Name": "Skill5",
             "Tag": "Default",
             "Static": 0,
@@ -90104,8 +89253,8 @@
             ]
         },
         {
-            "UID": 2920874505,
-            "ParentUID": 3311023646,
+            "UID": 1110287880,
+            "ParentUID": 53564622,
             "Name": "SkillIcon5",
             "Tag": "Default",
             "Static": 0,
@@ -90174,8 +89323,8 @@
             ]
         },
         {
-            "UID": 708862146,
-            "ParentUID": 3311023646,
+            "UID": 220768285,
+            "ParentUID": 53564622,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -90211,7 +89360,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -297.79998779296877,
+                        -294.8999938964844,
                         -196.0
                     ],
                     "Size": [
@@ -90224,9 +89373,9 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 14.0,
+                    "FontSize": 21.0,
                     "text": "0/1",
-                    "font": "Fonts/MATADOR.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.09019608050584793,
                         0.019607843831181527,
@@ -90255,8 +89404,8 @@
             ]
         },
         {
-            "UID": 3046547548,
-            "ParentUID": 56185445,
+            "UID": 1088037044,
+            "ParentUID": 267463390,
             "Name": "Skill6",
             "Tag": "Default",
             "Static": 0,
@@ -90325,8 +89474,8 @@
             ]
         },
         {
-            "UID": 182609726,
-            "ParentUID": 3046547548,
+            "UID": 1812939368,
+            "ParentUID": 1088037044,
             "Name": "SkillIcon6",
             "Tag": "Default",
             "Static": 0,
@@ -90395,8 +89544,8 @@
             ]
         },
         {
-            "UID": 2059914101,
-            "ParentUID": 3046547548,
+            "UID": 2856871036,
+            "ParentUID": 1088037044,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -90432,7 +89581,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -196.60000610351563,
+                        -195.1999969482422,
                         137.6999969482422
                     ],
                     "Size": [
@@ -90445,9 +89594,9 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 14.0,
+                    "FontSize": 21.0,
                     "text": "0/5",
-                    "font": "Fonts/MATADOR.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.09019608050584793,
                         0.007843137718737126,
@@ -90476,8 +89625,8 @@
             ]
         },
         {
-            "UID": 3340754158,
-            "ParentUID": 56185445,
+            "UID": 3353201464,
+            "ParentUID": 267463390,
             "Name": "Skill7",
             "Tag": "Default",
             "Static": 0,
@@ -90546,8 +89695,8 @@
             ]
         },
         {
-            "UID": 3231806457,
-            "ParentUID": 3340754158,
+            "UID": 97472192,
+            "ParentUID": 3353201464,
             "Name": "SkillIcon7",
             "Tag": "Default",
             "Static": 0,
@@ -90616,8 +89765,8 @@
             ]
         },
         {
-            "UID": 2433086428,
-            "ParentUID": 3340754158,
+            "UID": 627144080,
+            "ParentUID": 3353201464,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -90653,7 +89802,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -196.60000610351563,
+                        -194.5,
                         29.899999618530275
                     ],
                     "Size": [
@@ -90666,9 +89815,9 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 14.0,
+                    "FontSize": 21.0,
                     "text": "0/5",
-                    "font": "Fonts/MATADOR.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.09019608050584793,
                         0.019607843831181527,
@@ -90697,8 +89846,8 @@
             ]
         },
         {
-            "UID": 1540908334,
-            "ParentUID": 56185445,
+            "UID": 518754625,
+            "ParentUID": 267463390,
             "Name": "Skill8",
             "Tag": "Default",
             "Static": 0,
@@ -90767,8 +89916,8 @@
             ]
         },
         {
-            "UID": 2869132721,
-            "ParentUID": 1540908334,
+            "UID": 459215198,
+            "ParentUID": 518754625,
             "Name": "SkillIcon8",
             "Tag": "Default",
             "Static": 0,
@@ -90837,8 +89986,8 @@
             ]
         },
         {
-            "UID": 2524819640,
-            "ParentUID": 1540908334,
+            "UID": 2864015669,
+            "ParentUID": 518754625,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -90874,7 +90023,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -196.60000610351563,
+                        -195.3000030517578,
                         -196.10000610351563
                     ],
                     "Size": [
@@ -90887,9 +90036,9 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 14.0,
+                    "FontSize": 21.0,
                     "text": "0/5",
-                    "font": "Fonts/MATADOR.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.09019608050584793,
                         0.019607843831181527,
@@ -90918,8 +90067,8 @@
             ]
         },
         {
-            "UID": 2349184109,
-            "ParentUID": 56185445,
+            "UID": 354540046,
+            "ParentUID": 267463390,
             "Name": "Skill9",
             "Tag": "Default",
             "Static": 0,
@@ -90988,8 +90137,8 @@
             ]
         },
         {
-            "UID": 1758144720,
-            "ParentUID": 2349184109,
+            "UID": 2150710696,
+            "ParentUID": 354540046,
             "Name": "SkillIcon9",
             "Tag": "Default",
             "Static": 0,
@@ -91058,8 +90207,8 @@
             ]
         },
         {
-            "UID": 3996347571,
-            "ParentUID": 2349184109,
+            "UID": 2720930644,
+            "ParentUID": 354540046,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -91095,7 +90244,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -94.5999984741211,
+                        -93.4000015258789,
                         137.5
                     ],
                     "Size": [
@@ -91108,9 +90257,9 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 14.0,
+                    "FontSize": 21.0,
                     "text": "0/5",
-                    "font": "Fonts/MATADOR.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.09019608050584793,
                         0.007843137718737126,
@@ -91139,8 +90288,8 @@
             ]
         },
         {
-            "UID": 3952158567,
-            "ParentUID": 56185445,
+            "UID": 2782228585,
+            "ParentUID": 267463390,
             "Name": "Skill10",
             "Tag": "Default",
             "Static": 0,
@@ -91209,8 +90358,8 @@
             ]
         },
         {
-            "UID": 3445449080,
-            "ParentUID": 3952158567,
+            "UID": 467608784,
+            "ParentUID": 2782228585,
             "Name": "SkillIcon10",
             "Tag": "Default",
             "Static": 0,
@@ -91279,8 +90428,8 @@
             ]
         },
         {
-            "UID": 761425982,
-            "ParentUID": 3952158567,
+            "UID": 411793967,
+            "ParentUID": 2782228585,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -91316,7 +90465,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -95.80000305175781,
+                        -92.69999694824219,
                         -196.8000030517578
                     ],
                     "Size": [
@@ -91329,9 +90478,9 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 14.0,
+                    "FontSize": 21.0,
                     "text": "0/5",
-                    "font": "Fonts/MATADOR.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.09019608050584793,
                         0.019607843831181527,
@@ -91360,8 +90509,8 @@
             ]
         },
         {
-            "UID": 899166747,
-            "ParentUID": 2186228634,
+            "UID": 2825573432,
+            "ParentUID": 3728618058,
             "Name": "HoverGO",
             "Tag": "Default",
             "Static": 0,
@@ -91399,7 +90548,7 @@
                     "Position": [
                         0.0,
                         0.0,
-                        -300.0
+                        -400.0
                     ],
                     "Rotation": [
                         0.0,
@@ -91429,7 +90578,7 @@
                         0.0,
                         0.0,
                         1.0,
-                        -300.0,
+                        -400.0,
                         0.0,
                         0.0,
                         0.0,
@@ -91439,8 +90588,8 @@
             ]
         },
         {
-            "UID": 1199114811,
-            "ParentUID": 899166747,
+            "UID": 363330507,
+            "ParentUID": 2825573432,
             "Name": "SkillHover",
             "Tag": "Default",
             "Static": 0,
@@ -91509,8 +90658,8 @@
             ]
         },
         {
-            "UID": 2517053845,
-            "ParentUID": 2186228634,
+            "UID": 3108303056,
+            "ParentUID": 3728618058,
             "Name": "Candado",
             "Tag": "Default",
             "Static": 0,
@@ -91548,7 +90697,7 @@
                     "Position": [
                         0.0,
                         0.0,
-                        -300.0
+                        -400.0
                     ],
                     "Rotation": [
                         0.0,
@@ -91578,7 +90727,7 @@
                         0.0,
                         0.0,
                         1.0,
-                        -300.0,
+                        -400.0,
                         0.0,
                         0.0,
                         0.0,
@@ -91588,8 +90737,8 @@
             ]
         },
         {
-            "UID": 2352039304,
-            "ParentUID": 2517053845,
+            "UID": 3252437887,
+            "ParentUID": 3108303056,
             "Name": "C1",
             "Tag": "Default",
             "Static": 0,
@@ -91658,8 +90807,8 @@
             ]
         },
         {
-            "UID": 3194656469,
-            "ParentUID": 2517053845,
+            "UID": 794417280,
+            "ParentUID": 3108303056,
             "Name": "C2",
             "Tag": "Default",
             "Static": 0,
@@ -91728,8 +90877,8 @@
             ]
         },
         {
-            "UID": 3366189632,
-            "ParentUID": 2517053845,
+            "UID": 1502698467,
+            "ParentUID": 3108303056,
             "Name": "C3",
             "Tag": "Default",
             "Static": 0,
@@ -91798,8 +90947,8 @@
             ]
         },
         {
-            "UID": 3836929849,
-            "ParentUID": 2186228634,
+            "UID": 2967290816,
+            "ParentUID": 3728618058,
             "Name": "SkillPoints",
             "Tag": "Default",
             "Static": 0,
@@ -91836,7 +90985,7 @@
                     "Enabled": 1,
                     "Position": [
                         -154.3000030517578,
-                        -290.8999938964844
+                        -291.3999938964844
                     ],
                     "Size": [
                         100.0,
@@ -91848,13 +90997,13 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 14.0,
+                    "FontSize": 15.0,
                     "text": "0",
-                    "font": "Fonts/TACOSRG.ttf",
+                    "font": "Fonts/Vision-BoldItalic.ttf",
                     "color": [
-                        0.8401639461517334,
-                        0.7934237718582153,
-                        0.1274019032716751,
+                        0.9139344096183777,
+                        0.6966870427131653,
+                        0.0,
                         0.0
                     ],
                     "colorHovered": [
@@ -91879,7 +91028,7 @@
             ]
         },
         {
-            "UID": 2561851855,
+            "UID": 3106175374,
             "ParentUID": 68632637,
             "Name": "SkillInfo",
             "Tag": "Default",

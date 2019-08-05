@@ -29,7 +29,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 1,
+            "openInHierarchy": 0,
             "isPrefab": 1,
             "isPrefabSync": 1,
             "prefabUID": 2325434735,
@@ -167,7 +167,7 @@
             ]
         },
         {
-            "UID": 3712580878,
+            "UID": 574655098,
             "ParentUID": 990807230,
             "Name": "SkillsBackgroundImage",
             "Tag": "Default",
@@ -237,8 +237,8 @@
             ]
         },
         {
-            "UID": 3141595767,
-            "ParentUID": 3712580878,
+            "UID": 3852194221,
+            "ParentUID": 574655098,
             "Name": "SkillConnections",
             "Tag": "Default",
             "Static": 0,
@@ -276,7 +276,7 @@
                     "Position": [
                         0.0,
                         0.0,
-                        -200.0
+                        -300.0
                     ],
                     "Rotation": [
                         0.0,
@@ -306,7 +306,7 @@
                         0.0,
                         0.0,
                         1.0,
-                        -200.0,
+                        -300.0,
                         0.0,
                         0.0,
                         0.0,
@@ -316,8 +316,8 @@
             ]
         },
         {
-            "UID": 69676256,
-            "ParentUID": 3141595767,
+            "UID": 2062086708,
+            "ParentUID": 3852194221,
             "Name": "Connection0",
             "Tag": "Default",
             "Static": 0,
@@ -366,8 +366,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 491920706,
-                    "textureName": "Desactivated_Bar",
+                    "textureUID": 2901523971,
+                    "textureName": "Desactivated_Bar_Short",
                     "color": [
                         1.0,
                         0.9999899864196777,
@@ -386,8 +386,8 @@
             ]
         },
         {
-            "UID": 3203755541,
-            "ParentUID": 3141595767,
+            "UID": 2953808684,
+            "ParentUID": 3852194221,
             "Name": "Connection1",
             "Tag": "Default",
             "Static": 0,
@@ -456,8 +456,8 @@
             ]
         },
         {
-            "UID": 1596576496,
-            "ParentUID": 3141595767,
+            "UID": 4222748797,
+            "ParentUID": 3852194221,
             "Name": "Connection2",
             "Tag": "Default",
             "Static": 0,
@@ -526,8 +526,8 @@
             ]
         },
         {
-            "UID": 3498562053,
-            "ParentUID": 3141595767,
+            "UID": 1478855415,
+            "ParentUID": 3852194221,
             "Name": "Connection3",
             "Tag": "Default",
             "Static": 0,
@@ -576,8 +576,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 491920706,
-                    "textureName": "Desactivated_Bar",
+                    "textureUID": 2901523971,
+                    "textureName": "Desactivated_Bar_Short",
                     "color": [
                         1.0,
                         0.9999899864196777,
@@ -596,8 +596,8 @@
             ]
         },
         {
-            "UID": 3905535326,
-            "ParentUID": 3141595767,
+            "UID": 479846205,
+            "ParentUID": 3852194221,
             "Name": "Connection4",
             "Tag": "Default",
             "Static": 0,
@@ -646,8 +646,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 491920706,
-                    "textureName": "Desactivated_Bar",
+                    "textureUID": 2901523971,
+                    "textureName": "Desactivated_Bar_Short",
                     "color": [
                         1.0,
                         0.9999899864196777,
@@ -666,8 +666,8 @@
             ]
         },
         {
-            "UID": 3762570365,
-            "ParentUID": 3141595767,
+            "UID": 219669945,
+            "ParentUID": 3852194221,
             "Name": "Connection5",
             "Tag": "Default",
             "Static": 0,
@@ -736,8 +736,8 @@
             ]
         },
         {
-            "UID": 3878152739,
-            "ParentUID": 3141595767,
+            "UID": 3302271319,
+            "ParentUID": 3852194221,
             "Name": "Connection6",
             "Tag": "Default",
             "Static": 0,
@@ -806,8 +806,8 @@
             ]
         },
         {
-            "UID": 781745139,
-            "ParentUID": 3712580878,
+            "UID": 1829501426,
+            "ParentUID": 574655098,
             "Name": "SkillSlots",
             "Tag": "Default",
             "Static": 0,
@@ -834,7 +834,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 1,
+            "openInHierarchy": 0,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -845,7 +845,7 @@
                     "Position": [
                         0.0,
                         0.0,
-                        -200.0
+                        -300.0
                     ],
                     "Rotation": [
                         0.0,
@@ -875,7 +875,7 @@
                         0.0,
                         0.0,
                         1.0,
-                        -200.0,
+                        -300.0,
                         0.0,
                         0.0,
                         0.0,
@@ -885,8 +885,8 @@
             ]
         },
         {
-            "UID": 2135469686,
-            "ParentUID": 781745139,
+            "UID": 375706317,
+            "ParentUID": 1829501426,
             "Name": "Skill0",
             "Tag": "Default",
             "Static": 0,
@@ -955,8 +955,8 @@
             ]
         },
         {
-            "UID": 232192312,
-            "ParentUID": 2135469686,
+            "UID": 231402113,
+            "ParentUID": 375706317,
             "Name": "SkillIcon0",
             "Tag": "Default",
             "Static": 0,
@@ -1025,8 +1025,8 @@
             ]
         },
         {
-            "UID": 1315543084,
-            "ParentUID": 2135469686,
+            "UID": 1328949426,
+            "ParentUID": 375706317,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -1062,7 +1062,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -400.0,
+                        -397.5,
                         137.39999389648438
                     ],
                     "Size": [
@@ -1075,9 +1075,9 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 14.0,
+                    "FontSize": 21.0,
                     "text": "0/5",
-                    "font": "Fonts/MATADOR.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.09019608050584793,
                         0.019607843831181527,
@@ -1106,8 +1106,8 @@
             ]
         },
         {
-            "UID": 3768323349,
-            "ParentUID": 781745139,
+            "UID": 2489044440,
+            "ParentUID": 1829501426,
             "Name": "Skill1",
             "Tag": "Default",
             "Static": 0,
@@ -1176,8 +1176,8 @@
             ]
         },
         {
-            "UID": 2592191082,
-            "ParentUID": 3768323349,
+            "UID": 1166606348,
+            "ParentUID": 2489044440,
             "Name": "SkillIcon1",
             "Tag": "Default",
             "Static": 0,
@@ -1246,8 +1246,8 @@
             ]
         },
         {
-            "UID": 450991340,
-            "ParentUID": 3768323349,
+            "UID": 577086606,
+            "ParentUID": 2489044440,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -1283,7 +1283,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -400.0,
+                        -396.20001220703127,
                         29.200000762939454
                     ],
                     "Size": [
@@ -1296,9 +1296,9 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 14.0,
+                    "FontSize": 21.0,
                     "text": "0/3",
-                    "font": "Fonts/MATADOR.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.09019608050584793,
                         0.019607843831181527,
@@ -1327,8 +1327,8 @@
             ]
         },
         {
-            "UID": 3839293866,
-            "ParentUID": 781745139,
+            "UID": 96295048,
+            "ParentUID": 1829501426,
             "Name": "Skill2",
             "Tag": "Default",
             "Static": 0,
@@ -1397,8 +1397,8 @@
             ]
         },
         {
-            "UID": 1026202866,
-            "ParentUID": 3839293866,
+            "UID": 3126167102,
+            "ParentUID": 96295048,
             "Name": "SkillIcon2",
             "Tag": "Default",
             "Static": 0,
@@ -1467,8 +1467,8 @@
             ]
         },
         {
-            "UID": 676617334,
-            "ParentUID": 3839293866,
+            "UID": 1607207834,
+            "ParentUID": 96295048,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -1504,7 +1504,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -400.0,
+                        -397.20001220703127,
                         -197.3000030517578
                     ],
                     "Size": [
@@ -1517,9 +1517,9 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 14.0,
+                    "FontSize": 21.0,
                     "text": "0/2",
-                    "font": "Fonts/MATADOR.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.0901639461517334,
                         0.020323842763900758,
@@ -1548,8 +1548,8 @@
             ]
         },
         {
-            "UID": 2918445496,
-            "ParentUID": 781745139,
+            "UID": 3278850556,
+            "ParentUID": 1829501426,
             "Name": "Skill3",
             "Tag": "Default",
             "Static": 0,
@@ -1618,8 +1618,8 @@
             ]
         },
         {
-            "UID": 826779343,
-            "ParentUID": 2918445496,
+            "UID": 1224014867,
+            "ParentUID": 3278850556,
             "Name": "SkillIcon3",
             "Tag": "Default",
             "Static": 0,
@@ -1688,8 +1688,8 @@
             ]
         },
         {
-            "UID": 1369062823,
-            "ParentUID": 2918445496,
+            "UID": 2621774954,
+            "ParentUID": 3278850556,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -1725,7 +1725,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -297.79998779296877,
+                        -295.29998779296877,
                         137.8000030517578
                     ],
                     "Size": [
@@ -1738,9 +1738,9 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 14.0,
+                    "FontSize": 21.0,
                     "text": "0/5",
-                    "font": "Fonts/MATADOR.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.09019608050584793,
                         0.019607843831181527,
@@ -1769,8 +1769,8 @@
             ]
         },
         {
-            "UID": 1327795220,
-            "ParentUID": 781745139,
+            "UID": 3014216000,
+            "ParentUID": 1829501426,
             "Name": "Skill4",
             "Tag": "Default",
             "Static": 0,
@@ -1839,8 +1839,8 @@
             ]
         },
         {
-            "UID": 958328719,
-            "ParentUID": 1327795220,
+            "UID": 1880001792,
+            "ParentUID": 3014216000,
             "Name": "SkillIcon4",
             "Tag": "Default",
             "Static": 0,
@@ -1909,8 +1909,8 @@
             ]
         },
         {
-            "UID": 473385741,
-            "ParentUID": 1327795220,
+            "UID": 713909531,
+            "ParentUID": 3014216000,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -1946,7 +1946,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -297.20001220703127,
+                        -295.29998779296877,
                         -80.9000015258789
                     ],
                     "Size": [
@@ -1959,9 +1959,9 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 14.0,
+                    "FontSize": 21.0,
                     "text": "0/5",
-                    "font": "Fonts/MATADOR.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.09019608050584793,
                         0.019607843831181527,
@@ -1990,8 +1990,8 @@
             ]
         },
         {
-            "UID": 4000890283,
-            "ParentUID": 781745139,
+            "UID": 2222119933,
+            "ParentUID": 1829501426,
             "Name": "Skill5",
             "Tag": "Default",
             "Static": 0,
@@ -2060,8 +2060,8 @@
             ]
         },
         {
-            "UID": 4143876108,
-            "ParentUID": 4000890283,
+            "UID": 3023532404,
+            "ParentUID": 2222119933,
             "Name": "SkillIcon5",
             "Tag": "Default",
             "Static": 0,
@@ -2130,8 +2130,8 @@
             ]
         },
         {
-            "UID": 1972640176,
-            "ParentUID": 4000890283,
+            "UID": 3842560423,
+            "ParentUID": 2222119933,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -2167,7 +2167,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -297.79998779296877,
+                        -294.8999938964844,
                         -196.0
                     ],
                     "Size": [
@@ -2180,9 +2180,9 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 14.0,
+                    "FontSize": 21.0,
                     "text": "0/1",
-                    "font": "Fonts/MATADOR.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.09019608050584793,
                         0.019607843831181527,
@@ -2211,8 +2211,8 @@
             ]
         },
         {
-            "UID": 2012212496,
-            "ParentUID": 781745139,
+            "UID": 3969406210,
+            "ParentUID": 1829501426,
             "Name": "Skill6",
             "Tag": "Default",
             "Static": 0,
@@ -2281,8 +2281,8 @@
             ]
         },
         {
-            "UID": 430878062,
-            "ParentUID": 2012212496,
+            "UID": 2118884372,
+            "ParentUID": 3969406210,
             "Name": "SkillIcon6",
             "Tag": "Default",
             "Static": 0,
@@ -2351,8 +2351,8 @@
             ]
         },
         {
-            "UID": 1924171196,
-            "ParentUID": 2012212496,
+            "UID": 3216538126,
+            "ParentUID": 3969406210,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -2388,7 +2388,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -196.60000610351563,
+                        -195.1999969482422,
                         137.6999969482422
                     ],
                     "Size": [
@@ -2401,9 +2401,9 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 14.0,
+                    "FontSize": 21.0,
                     "text": "0/5",
-                    "font": "Fonts/MATADOR.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.09019608050584793,
                         0.007843137718737126,
@@ -2432,8 +2432,8 @@
             ]
         },
         {
-            "UID": 2247488597,
-            "ParentUID": 781745139,
+            "UID": 623963628,
+            "ParentUID": 1829501426,
             "Name": "Skill7",
             "Tag": "Default",
             "Static": 0,
@@ -2502,8 +2502,8 @@
             ]
         },
         {
-            "UID": 799522890,
-            "ParentUID": 2247488597,
+            "UID": 3513387643,
+            "ParentUID": 623963628,
             "Name": "SkillIcon7",
             "Tag": "Default",
             "Static": 0,
@@ -2572,8 +2572,8 @@
             ]
         },
         {
-            "UID": 2780155517,
-            "ParentUID": 2247488597,
+            "UID": 950000364,
+            "ParentUID": 623963628,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -2609,7 +2609,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -196.60000610351563,
+                        -194.5,
                         29.899999618530275
                     ],
                     "Size": [
@@ -2622,9 +2622,9 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 14.0,
+                    "FontSize": 21.0,
                     "text": "0/5",
-                    "font": "Fonts/MATADOR.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.09019608050584793,
                         0.019607843831181527,
@@ -2653,8 +2653,8 @@
             ]
         },
         {
-            "UID": 3305476308,
-            "ParentUID": 781745139,
+            "UID": 3779655576,
+            "ParentUID": 1829501426,
             "Name": "Skill8",
             "Tag": "Default",
             "Static": 0,
@@ -2723,8 +2723,8 @@
             ]
         },
         {
-            "UID": 1064101706,
-            "ParentUID": 3305476308,
+            "UID": 783518658,
+            "ParentUID": 3779655576,
             "Name": "SkillIcon8",
             "Tag": "Default",
             "Static": 0,
@@ -2793,8 +2793,8 @@
             ]
         },
         {
-            "UID": 65485516,
-            "ParentUID": 3305476308,
+            "UID": 2775737436,
+            "ParentUID": 3779655576,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -2830,7 +2830,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -196.60000610351563,
+                        -195.3000030517578,
                         -196.10000610351563
                     ],
                     "Size": [
@@ -2843,9 +2843,9 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 14.0,
+                    "FontSize": 21.0,
                     "text": "0/5",
-                    "font": "Fonts/MATADOR.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.09019608050584793,
                         0.019607843831181527,
@@ -2874,8 +2874,8 @@
             ]
         },
         {
-            "UID": 1120798241,
-            "ParentUID": 781745139,
+            "UID": 480839013,
+            "ParentUID": 1829501426,
             "Name": "Skill9",
             "Tag": "Default",
             "Static": 0,
@@ -2944,8 +2944,8 @@
             ]
         },
         {
-            "UID": 1244920623,
-            "ParentUID": 1120798241,
+            "UID": 3155125025,
+            "ParentUID": 480839013,
             "Name": "SkillIcon9",
             "Tag": "Default",
             "Static": 0,
@@ -3014,8 +3014,8 @@
             ]
         },
         {
-            "UID": 2970314734,
-            "ParentUID": 1120798241,
+            "UID": 3835991141,
+            "ParentUID": 480839013,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -3051,7 +3051,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -94.5999984741211,
+                        -93.4000015258789,
                         137.5
                     ],
                     "Size": [
@@ -3064,9 +3064,9 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 14.0,
+                    "FontSize": 21.0,
                     "text": "0/5",
-                    "font": "Fonts/MATADOR.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.09019608050584793,
                         0.007843137718737126,
@@ -3095,8 +3095,8 @@
             ]
         },
         {
-            "UID": 1962386858,
-            "ParentUID": 781745139,
+            "UID": 300718901,
+            "ParentUID": 1829501426,
             "Name": "Skill10",
             "Tag": "Default",
             "Static": 0,
@@ -3165,8 +3165,8 @@
             ]
         },
         {
-            "UID": 85374028,
-            "ParentUID": 1962386858,
+            "UID": 3101349390,
+            "ParentUID": 300718901,
             "Name": "SkillIcon10",
             "Tag": "Default",
             "Static": 0,
@@ -3235,8 +3235,8 @@
             ]
         },
         {
-            "UID": 1679858139,
-            "ParentUID": 1962386858,
+            "UID": 31898579,
+            "ParentUID": 300718901,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -3272,7 +3272,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -95.80000305175781,
+                        -92.69999694824219,
                         -196.8000030517578
                     ],
                     "Size": [
@@ -3285,9 +3285,9 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 14.0,
+                    "FontSize": 21.0,
                     "text": "0/5",
-                    "font": "Fonts/MATADOR.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.09019608050584793,
                         0.019607843831181527,
@@ -3316,8 +3316,8 @@
             ]
         },
         {
-            "UID": 279482628,
-            "ParentUID": 3712580878,
+            "UID": 2035974109,
+            "ParentUID": 574655098,
             "Name": "HoverGO",
             "Tag": "Default",
             "Static": 0,
@@ -3355,7 +3355,7 @@
                     "Position": [
                         0.0,
                         0.0,
-                        -200.0
+                        -300.0
                     ],
                     "Rotation": [
                         0.0,
@@ -3385,7 +3385,7 @@
                         0.0,
                         0.0,
                         1.0,
-                        -200.0,
+                        -300.0,
                         0.0,
                         0.0,
                         0.0,
@@ -3395,8 +3395,8 @@
             ]
         },
         {
-            "UID": 3833745863,
-            "ParentUID": 279482628,
+            "UID": 1812502722,
+            "ParentUID": 2035974109,
             "Name": "SkillHover",
             "Tag": "Default",
             "Static": 0,
@@ -3465,8 +3465,8 @@
             ]
         },
         {
-            "UID": 3957147354,
-            "ParentUID": 3712580878,
+            "UID": 2238039388,
+            "ParentUID": 574655098,
             "Name": "Candado",
             "Tag": "Default",
             "Static": 0,
@@ -3504,7 +3504,7 @@
                     "Position": [
                         0.0,
                         0.0,
-                        -200.0
+                        -300.0
                     ],
                     "Rotation": [
                         0.0,
@@ -3534,7 +3534,7 @@
                         0.0,
                         0.0,
                         1.0,
-                        -200.0,
+                        -300.0,
                         0.0,
                         0.0,
                         0.0,
@@ -3544,8 +3544,8 @@
             ]
         },
         {
-            "UID": 3231237249,
-            "ParentUID": 3957147354,
+            "UID": 2837704545,
+            "ParentUID": 2238039388,
             "Name": "C1",
             "Tag": "Default",
             "Static": 0,
@@ -3614,8 +3614,8 @@
             ]
         },
         {
-            "UID": 2892033927,
-            "ParentUID": 3957147354,
+            "UID": 3495523978,
+            "ParentUID": 2238039388,
             "Name": "C2",
             "Tag": "Default",
             "Static": 0,
@@ -3684,8 +3684,8 @@
             ]
         },
         {
-            "UID": 492188830,
-            "ParentUID": 3957147354,
+            "UID": 2575619305,
+            "ParentUID": 2238039388,
             "Name": "C3",
             "Tag": "Default",
             "Static": 0,
@@ -3754,8 +3754,8 @@
             ]
         },
         {
-            "UID": 3058773762,
-            "ParentUID": 3712580878,
+            "UID": 4277214430,
+            "ParentUID": 574655098,
             "Name": "SkillPoints",
             "Tag": "Default",
             "Static": 0,
@@ -3792,7 +3792,7 @@
                     "Enabled": 1,
                     "Position": [
                         -154.3000030517578,
-                        -290.8999938964844
+                        -291.3999938964844
                     ],
                     "Size": [
                         100.0,
@@ -3804,13 +3804,13 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 14.0,
+                    "FontSize": 15.0,
                     "text": "0",
-                    "font": "Fonts/TACOSRG.ttf",
+                    "font": "Fonts/Vision-BoldItalic.ttf",
                     "color": [
-                        0.8401639461517334,
-                        0.7934237718582153,
-                        0.1274019032716751,
+                        0.9139344096183777,
+                        0.6966870427131653,
+                        0.0,
                         0.0
                     ],
                     "colorHovered": [
@@ -3835,7 +3835,7 @@
             ]
         },
         {
-            "UID": 2988805521,
+            "UID": 1016573946,
             "ParentUID": 990807230,
             "Name": "SkillInfo",
             "Tag": "Default",

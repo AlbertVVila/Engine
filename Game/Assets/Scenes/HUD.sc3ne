@@ -2038,7 +2038,7 @@
             "Navigable": 0,
             "No Walkable": 0,
             "openInHierarchy": 0,
-            "isPrefab": 1,
+            "isPrefab": 0,
             "isPrefabSync": 1,
             "prefabUID": 2092266984,
             "Components": []
@@ -6253,76 +6253,6 @@
             "Components": []
         },
         {
-            "UID": 3986594622,
-            "ParentUID": 784073150,
-            "Name": "BackgroundImage",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -234.6999969482422,
-                        0.0
-                    ],
-                    "Size": [
-                        455.0,
-                        679.0
-                    ],
-                    "Anchor": 5,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 7,
-                    "Enabled": 1,
-                    "textureUID": 1477451659,
-                    "textureName": "BackgroundTacos",
-                    "color": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "FlipVertical": 0,
-                    "FlipHorizontal": 0,
-                    "isMasked": 0,
-                    "maskAmount": 0,
-                    "isMaskHorizontal": 0,
-                    "hoverDetectionMouse1": 1,
-                    "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
             "UID": 3696051985,
             "ParentUID": 784073150,
             "Name": "CloseButton",
@@ -6500,9 +6430,9 @@
             "Navigable": 0,
             "No Walkable": 0,
             "openInHierarchy": 0,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
+            "isPrefab": 1,
+            "isPrefabSync": 1,
+            "prefabUID": 3048167483,
             "Components": [
                 {
                     "Type": 9,
@@ -6513,9 +6443,9 @@
             ]
         },
         {
-            "UID": 1947631745,
+            "UID": 615455696,
             "ParentUID": 2166448667,
-            "Name": "Title",
+            "Name": "BackgroundImage",
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 0,
@@ -6550,93 +6480,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -394.3999938964844,
-                        276.1000061035156
+                        -234.6999969482422,
+                        0.0
                     ],
                     "Size": [
-                        100.0,
-                        100.0
-                    ],
-                    "Anchor": 5,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 6,
-                    "Enabled": 1,
-                    "FontSize": 17.0,
-                    "text": "Warrior",
-                    "font": "Fonts/TACOSRG.ttf",
-                    "color": [
-                        0.881147563457489,
-                        0.8694241046905518,
-                        0.16611799597740174,
-                        0.0
-                    ],
-                    "colorHovered": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        0.0
-                    ],
-                    "offset": [
-                        0.0,
-                        0.0
-                    ],
-                    "scaleOffset": [
-                        6.0,
-                        6.0
-                    ],
-                    "IsTextWrapped": 0,
-                    "WrapWidth": 0.0,
-                    "InterlineDistance": 0.0,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
-            "UID": 3282360794,
-            "ParentUID": 2166448667,
-            "Name": "BackgroundEq",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -230.89999389648438,
-                        65.5999984741211
-                    ],
-                    "Size": [
-                        435.5,
-                        365.5
+                        455.0,
+                        679.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -6644,78 +6493,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1941603464,
-                    "textureName": "BgEquipment",
-                    "color": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "FlipVertical": 0,
-                    "FlipHorizontal": 0,
-                    "isMasked": 0,
-                    "maskAmount": 0,
-                    "isMaskHorizontal": 0,
-                    "hoverDetectionMouse1": 1,
-                    "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
-            "UID": 1555009529,
-            "ParentUID": 2166448667,
-            "Name": "Siluette",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -330.0,
-                        59.5
-                    ],
-                    "Size": [
-                        177.0,
-                        260.5
-                    ],
-                    "Anchor": 5,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 7,
-                    "Enabled": 1,
-                    "textureUID": 666502465,
-                    "textureName": "silouhette",
+                    "textureUID": 554774745,
+                    "textureName": "Background_Inventory",
                     "color": [
                         1.0,
                         1.0,
@@ -6771,8 +6550,8 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -338.0,
-                        181.5
+                        -393.0,
+                        160.8000030517578
                     ],
                     "Size": [
                         55.0,
@@ -6784,8 +6563,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3089636142,
-                    "textureName": "helmetSlot",
+                    "textureUID": 1037144958,
+                    "textureName": "Helmet",
                     "color": [
                         1.0,
                         1.0,
@@ -6841,8 +6620,8 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -338.0,
-                        109.4000015258789
+                        -393.0,
+                        90.9000015258789
                     ],
                     "Size": [
                         55.0,
@@ -6854,8 +6633,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3112274695,
-                    "textureName": "chestSlot",
+                    "textureUID": 3280863454,
+                    "textureName": "Armor_slot",
                     "color": [
                         1.0,
                         1.0,
@@ -6911,8 +6690,8 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -338.0,
-                        31.799999237060548
+                        -393.0,
+                        20.799999237060548
                     ],
                     "Size": [
                         55.0,
@@ -6924,8 +6703,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 2584359697,
-                    "textureName": "pantsSlot",
+                    "textureUID": 804783340,
+                    "textureName": "Trausers",
                     "color": [
                         1.0,
                         1.0,
@@ -6981,8 +6760,8 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -338.0,
-                        -43.70000076293945
+                        -393.0,
+                        -50.900001525878909
                     ],
                     "Size": [
                         55.0,
@@ -6994,8 +6773,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 4131981855,
-                    "textureName": "bootsSlot",
+                    "textureUID": 1974591758,
+                    "textureName": "Boots",
                     "color": [
                         1.0,
                         1.0,
@@ -7051,8 +6830,8 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -252.39999389648438,
-                        88.5999984741211
+                        -310.79998779296877,
+                        49.29999923706055
                     ],
                     "Size": [
                         55.0,
@@ -7064,8 +6843,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1222131602,
-                    "textureName": "weaponSlot",
+                    "textureUID": 3205608322,
+                    "textureName": "Weapon",
                     "color": [
                         1.0,
                         1.0,
@@ -7121,8 +6900,8 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -251.8000030517578,
-                        155.5
+                        -310.79998779296877,
+                        126.5999984741211
                     ],
                     "Size": [
                         55.0,
@@ -7134,82 +6913,12 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3092821037,
-                    "textureName": "amuletSlot",
+                    "textureUID": 4160934145,
+                    "textureName": "Necklace",
                     "color": [
                         1.0,
                         1.0,
                         1.0,
-                        1.0
-                    ],
-                    "FlipVertical": 0,
-                    "FlipHorizontal": 0,
-                    "isMasked": 0,
-                    "maskAmount": 0,
-                    "isMaskHorizontal": 0,
-                    "hoverDetectionMouse1": 1,
-                    "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
-            "UID": 2197210955,
-            "ParentUID": 2166448667,
-            "Name": "InventorySlotsBackground",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -232.10000610351563,
-                        -223.60000610351563
-                    ],
-                    "Size": [
-                        435.5,
-                        201.0
-                    ],
-                    "Anchor": 5,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 7,
-                    "Enabled": 1,
-                    "textureUID": 302203611,
-                    "textureName": "inventoryBackground",
-                    "color": [
-                        1.0,
-                        0.9999899864196777,
-                        0.9999899864196777,
                         1.0
                     ],
                     "FlipVertical": 0,
@@ -7353,8 +7062,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3700129622,
-                    "textureName": "slot",
+                    "textureUID": 3332512603,
+                    "textureName": "Inventory_place",
                     "color": [
                         1.0,
                         1.0,
@@ -7411,7 +7120,7 @@
                     "Enabled": 1,
                     "Position": [
                         -337.0,
-                        -162.10000610351563
+                        -160.60000610351563
                     ],
                     "Size": [
                         55.0,
@@ -7423,8 +7132,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3700129622,
-                    "textureName": "slot",
+                    "textureUID": 3332512603,
+                    "textureName": "Inventory_place",
                     "color": [
                         1.0,
                         1.0,
@@ -7481,7 +7190,7 @@
                     "Enabled": 1,
                     "Position": [
                         -268.0,
-                        -162.10000610351563
+                        -160.60000610351563
                     ],
                     "Size": [
                         55.0,
@@ -7493,8 +7202,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3700129622,
-                    "textureName": "slot",
+                    "textureUID": 3332512603,
+                    "textureName": "Inventory_place",
                     "color": [
                         1.0,
                         1.0,
@@ -7551,7 +7260,7 @@
                     "Enabled": 1,
                     "Position": [
                         -199.10000610351563,
-                        -162.10000610351563
+                        -160.60000610351563
                     ],
                     "Size": [
                         55.0,
@@ -7563,8 +7272,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3700129622,
-                    "textureName": "slot",
+                    "textureUID": 3332512603,
+                    "textureName": "Inventory_place",
                     "color": [
                         1.0,
                         1.0,
@@ -7621,7 +7330,7 @@
                     "Enabled": 1,
                     "Position": [
                         -129.39999389648438,
-                        -162.10000610351563
+                        -160.60000610351563
                     ],
                     "Size": [
                         55.0,
@@ -7633,8 +7342,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3700129622,
-                    "textureName": "slot",
+                    "textureUID": 3332512603,
+                    "textureName": "Inventory_place",
                     "color": [
                         1.0,
                         1.0,
@@ -7691,7 +7400,7 @@
                     "Enabled": 1,
                     "Position": [
                         -60.900001525878909,
-                        -162.10000610351563
+                        -160.60000610351563
                     ],
                     "Size": [
                         55.0,
@@ -7703,8 +7412,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3700129622,
-                    "textureName": "slot",
+                    "textureUID": 3332512603,
+                    "textureName": "Inventory_place",
                     "color": [
                         1.0,
                         1.0,
@@ -7773,8 +7482,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3700129622,
-                    "textureName": "slot",
+                    "textureUID": 3332512603,
+                    "textureName": "Inventory_place",
                     "color": [
                         1.0,
                         1.0,
@@ -7843,8 +7552,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3700129622,
-                    "textureName": "slot",
+                    "textureUID": 3332512603,
+                    "textureName": "Inventory_place",
                     "color": [
                         1.0,
                         1.0,
@@ -7913,8 +7622,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3700129622,
-                    "textureName": "slot",
+                    "textureUID": 3332512603,
+                    "textureName": "Inventory_place",
                     "color": [
                         1.0,
                         1.0,
@@ -7983,8 +7692,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3700129622,
-                    "textureName": "slot",
+                    "textureUID": 3332512603,
+                    "textureName": "Inventory_place",
                     "color": [
                         1.0,
                         1.0,
@@ -8053,8 +7762,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3700129622,
-                    "textureName": "slot",
+                    "textureUID": 3332512603,
+                    "textureName": "Inventory_place",
                     "color": [
                         1.0,
                         1.0,
@@ -8123,8 +7832,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3700129622,
-                    "textureName": "slot",
+                    "textureUID": 3332512603,
+                    "textureName": "Inventory_place",
                     "color": [
                         1.0,
                         1.0,
@@ -8193,8 +7902,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3700129622,
-                    "textureName": "slot",
+                    "textureUID": 3332512603,
+                    "textureName": "Inventory_place",
                     "color": [
                         1.0,
                         1.0,
@@ -8263,8 +7972,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3700129622,
-                    "textureName": "slot",
+                    "textureUID": 3332512603,
+                    "textureName": "Inventory_place",
                     "color": [
                         1.0,
                         1.0,
@@ -8333,8 +8042,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3700129622,
-                    "textureName": "slot",
+                    "textureUID": 3332512603,
+                    "textureName": "Inventory_place",
                     "color": [
                         1.0,
                         1.0,
@@ -8403,8 +8112,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3700129622,
-                    "textureName": "slot",
+                    "textureUID": 3332512603,
+                    "textureName": "Inventory_place",
                     "color": [
                         1.0,
                         1.0,
@@ -8473,8 +8182,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3700129622,
-                    "textureName": "slot",
+                    "textureUID": 3332512603,
+                    "textureName": "Inventory_place",
                     "color": [
                         1.0,
                         1.0,
@@ -8543,8 +8252,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3700129622,
-                    "textureName": "slot",
+                    "textureUID": 3332512603,
+                    "textureName": "Inventory_place",
                     "color": [
                         1.0,
                         1.0,
@@ -8683,8 +8392,8 @@
                         -160.60000610351563
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        45.0,
+                        45.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -8753,8 +8462,8 @@
                         -162.10000610351563
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        45.0,
+                        45.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -8823,8 +8532,8 @@
                         -162.10000610351563
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        45.0,
+                        45.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -8893,8 +8602,8 @@
                         -162.10000610351563
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        45.0,
+                        45.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -8963,8 +8672,8 @@
                         -162.10000610351563
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        45.0,
+                        45.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -9033,8 +8742,8 @@
                         -162.10000610351563
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        45.0,
+                        45.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -9103,8 +8812,8 @@
                         -222.39999389648438
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        45.0,
+                        45.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -9173,8 +8882,8 @@
                         -222.39999389648438
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        45.0,
+                        45.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -9243,8 +8952,8 @@
                         -222.39999389648438
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        45.0,
+                        45.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -9313,8 +9022,8 @@
                         -222.39999389648438
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        45.0,
+                        45.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -9383,8 +9092,8 @@
                         -222.39999389648438
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        45.0,
+                        45.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -9453,8 +9162,8 @@
                         -222.39999389648438
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        45.0,
+                        45.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -9523,8 +9232,8 @@
                         -284.70001220703127
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        45.0,
+                        45.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -9593,8 +9302,8 @@
                         -284.70001220703127
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        45.0,
+                        45.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -9663,8 +9372,8 @@
                         -284.70001220703127
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        45.0,
+                        45.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -9733,8 +9442,8 @@
                         -284.70001220703127
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        45.0,
+                        45.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -9803,8 +9512,8 @@
                         -284.70001220703127
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        45.0,
+                        45.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -9873,8 +9582,8 @@
                         -284.70001220703127
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        45.0,
+                        45.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -9939,12 +9648,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -338.29998779296877,
-                        181.39999389648438
+                        -393.0,
+                        160.8000030517578
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        40.0,
+                        40.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -10009,12 +9718,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -338.5,
-                        109.19999694824219
+                        -393.0,
+                        90.9000015258789
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        40.0,
+                        40.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -10079,12 +9788,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -338.6000061035156,
-                        32.20000076293945
+                        -393.0,
+                        20.799999237060548
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        40.0,
+                        40.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -10149,12 +9858,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -337.6000061035156,
-                        -43.79999923706055
+                        -393.0,
+                        -50.900001525878909
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        40.0,
+                        40.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -10219,12 +9928,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -252.10000610351563,
-                        89.0999984741211
+                        -310.79998779296877,
+                        49.29999923706055
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        40.0,
+                        40.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -10289,12 +9998,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -252.3000030517578,
-                        155.1999969482422
+                        -310.79998779296877,
+                        126.5999984741211
                     ],
                     "Size": [
-                        55.0,
-                        55.0
+                        40.0,
+                        40.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -10401,76 +10110,6 @@
             ]
         },
         {
-            "UID": 2240496415,
-            "ParentUID": 1185583722,
-            "Name": "ExpBar",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -89.9000015258789,
-                        269.20001220703127
-                    ],
-                    "Size": [
-                        153.0,
-                        26.0
-                    ],
-                    "Anchor": 5,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 7,
-                    "Enabled": 1,
-                    "textureUID": 1446676805,
-                    "textureName": "expBar",
-                    "color": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "FlipVertical": 0,
-                    "FlipHorizontal": 0,
-                    "isMasked": 0,
-                    "maskAmount": 100,
-                    "isMaskHorizontal": 0,
-                    "hoverDetectionMouse1": 1,
-                    "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
             "UID": 3920607354,
             "ParentUID": 1185583722,
             "Name": "LevelProgressBar",
@@ -10508,12 +10147,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -89.9000015258789,
-                        269.20001220703127
+                        -245.89999389648438,
+                        214.60000610351563
                     ],
                     "Size": [
-                        147.0,
-                        19.0
+                        232.5,
+                        6.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -10521,8 +10160,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3792288124,
-                    "textureName": "barExp",
+                    "textureUID": 2053826570,
+                    "textureName": "Bar_Experience_2",
                     "color": [
                         1.0,
                         1.0,
@@ -10534,6 +10173,76 @@
                     "isMasked": 1,
                     "maskAmount": 0,
                     "isMaskHorizontal": 1,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 3567402734,
+            "ParentUID": 1185583722,
+            "Name": "LevelLinesBar",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -245.89999389648438,
+                        214.8000030517578
+                    ],
+                    "Size": [
+                        119.0,
+                        11.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 4203160345,
+                    "textureName": "Experience_details_1",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 0
@@ -10578,8 +10287,8 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -127.69999694824219,
-                        287.5
+                        -390.5,
+                        209.1999969482422
                     ],
                     "Size": [
                         100.0,
@@ -10591,13 +10300,13 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 9.0,
-                    "text": "lvl 1",
-                    "font": "Fonts/TACOSRG.ttf",
+                    "FontSize": 8.0,
+                    "text": "10",
+                    "font": "Fonts/Vision-BoldItalic.ttf",
                     "color": [
-                        9.999999974752428e-7,
-                        9.999997701015673e-7,
-                        9.999899930335233e-7,
+                        0.7686274647712708,
+                        0.5921568870544434,
+                        0.09019608050584793,
                         0.0
                     ],
                     "colorHovered": [
@@ -10659,8 +10368,8 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -132.39999389648438,
-                        262.8999938964844
+                        -92.0,
+                        208.60000610351563
                     ],
                     "Size": [
                         100.0,
@@ -10673,12 +10382,12 @@
                     "Type": 6,
                     "Enabled": 1,
                     "FontSize": 7.0,
-                    "text": "0 100",
-                    "font": "Fonts/TACOSRG.ttf",
+                    "text": "0   100",
+                    "font": "Fonts/Vision-BoldItalic.ttf",
                     "color": [
-                        9.999999974752428e-7,
-                        9.999997701015673e-7,
-                        9.999899930335233e-7,
+                        0.7686274647712708,
+                        0.5921568870544434,
+                        0.09019608050584793,
                         0.0
                     ],
                     "colorHovered": [
@@ -10861,146 +10570,6 @@
             ]
         },
         {
-            "UID": 4157366402,
-            "ParentUID": 1687035956,
-            "Name": "HeartSquare",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -102.5999984741211,
-                        184.5
-                    ],
-                    "Size": [
-                        129.5,
-                        71.0
-                    ],
-                    "Anchor": 5,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 7,
-                    "Enabled": 1,
-                    "textureUID": 4223564204,
-                    "textureName": "HeartSquare",
-                    "color": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "FlipVertical": 0,
-                    "FlipHorizontal": 0,
-                    "isMasked": 0,
-                    "maskAmount": 100,
-                    "isMaskHorizontal": 0,
-                    "hoverDetectionMouse1": 1,
-                    "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
-            "UID": 2186567867,
-            "ParentUID": 1687035956,
-            "Name": "HeartIcon",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -129.6999969482422,
-                        185.89999389648438
-                    ],
-                    "Size": [
-                        40.5,
-                        34.5
-                    ],
-                    "Anchor": 5,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 7,
-                    "Enabled": 1,
-                    "textureUID": 3982629994,
-                    "textureName": "heart",
-                    "color": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "FlipVertical": 0,
-                    "FlipHorizontal": 0,
-                    "isMasked": 0,
-                    "maskAmount": 100,
-                    "isMaskHorizontal": 0,
-                    "hoverDetectionMouse1": 1,
-                    "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
             "UID": 841144361,
             "ParentUID": 1687035956,
             "Name": "HeartLabel",
@@ -11038,8 +10607,8 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -103.69999694824219,
-                        179.0
+                        -108.69999694824219,
+                        153.39999389648438
                     ],
                     "Size": [
                         100.0,
@@ -11051,13 +10620,13 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 7.0,
+                    "FontSize": 9.0,
                     "text": "130",
-                    "font": "Fonts/TACOSRG.ttf",
+                    "font": "Fonts/Vision-BoldItalic.ttf",
                     "color": [
-                        9.999999974752428e-7,
-                        9.999997701015673e-7,
-                        9.999899930335233e-7,
+                        0.7686274647712708,
+                        0.5921568870544434,
+                        0.09019608050584793,
                         0.0
                     ],
                     "colorHovered": [
@@ -11301,146 +10870,6 @@
             ]
         },
         {
-            "UID": 2273427193,
-            "ParentUID": 819710967,
-            "Name": "DexteritySquare",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -102.5,
-                        108.69999694824219
-                    ],
-                    "Size": [
-                        129.5,
-                        71.0
-                    ],
-                    "Anchor": 5,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 7,
-                    "Enabled": 1,
-                    "textureUID": 4279452241,
-                    "textureName": "dexteritySquare",
-                    "color": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "FlipVertical": 0,
-                    "FlipHorizontal": 0,
-                    "isMasked": 0,
-                    "maskAmount": 100,
-                    "isMaskHorizontal": 0,
-                    "hoverDetectionMouse1": 1,
-                    "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
-            "UID": 1392744708,
-            "ParentUID": 819710967,
-            "Name": "DexterityIcon",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -129.6999969482422,
-                        110.5999984741211
-                    ],
-                    "Size": [
-                        40.5,
-                        34.5
-                    ],
-                    "Anchor": 5,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 7,
-                    "Enabled": 1,
-                    "textureUID": 3543534611,
-                    "textureName": "boot",
-                    "color": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "FlipVertical": 0,
-                    "FlipHorizontal": 0,
-                    "isMasked": 0,
-                    "maskAmount": 100,
-                    "isMaskHorizontal": 0,
-                    "hoverDetectionMouse1": 1,
-                    "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
             "UID": 569015622,
             "ParentUID": 819710967,
             "Name": "DexterityLabel",
@@ -11478,8 +10907,8 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -103.69999694824219,
-                        104.5
+                        -108.69999694824219,
+                        81.19999694824219
                     ],
                     "Size": [
                         100.0,
@@ -11491,13 +10920,13 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 7.0,
+                    "FontSize": 9.0,
                     "text": "25",
-                    "font": "Fonts/TACOSRG.ttf",
+                    "font": "Fonts/Vision-BoldItalic.ttf",
                     "color": [
-                        9.999999974752428e-7,
-                        9.999997701015673e-7,
-                        9.999899930335233e-7,
+                        0.7686274647712708,
+                        0.5921568870544434,
+                        0.09019608050584793,
                         0.0
                     ],
                     "colorHovered": [
@@ -11690,7 +11119,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 1,
+            "openInHierarchy": 0,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -11741,146 +11170,6 @@
             ]
         },
         {
-            "UID": 3578838736,
-            "ParentUID": 1851156110,
-            "Name": "StrSquare",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -102.5,
-                        34.29999923706055
-                    ],
-                    "Size": [
-                        129.5,
-                        71.0
-                    ],
-                    "Anchor": 5,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 7,
-                    "Enabled": 1,
-                    "textureUID": 268177569,
-                    "textureName": "StrSquare",
-                    "color": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "FlipVertical": 0,
-                    "FlipHorizontal": 0,
-                    "isMasked": 0,
-                    "maskAmount": 100,
-                    "isMaskHorizontal": 0,
-                    "hoverDetectionMouse1": 1,
-                    "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
-            "UID": 2915741946,
-            "ParentUID": 1851156110,
-            "Name": "StrIcon",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -129.6999969482422,
-                        37.599998474121097
-                    ],
-                    "Size": [
-                        40.5,
-                        34.5
-                    ],
-                    "Anchor": 5,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 7,
-                    "Enabled": 1,
-                    "textureUID": 1483507378,
-                    "textureName": "muscle",
-                    "color": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "FlipVertical": 0,
-                    "FlipHorizontal": 0,
-                    "isMasked": 0,
-                    "maskAmount": 100,
-                    "isMaskHorizontal": 0,
-                    "hoverDetectionMouse1": 1,
-                    "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
             "UID": 3715870087,
             "ParentUID": 1851156110,
             "Name": "StrLabel",
@@ -11918,8 +11207,8 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -103.69999694824219,
-                        27.399999618530275
+                        -108.69999694824219,
+                        8.600000381469727
                     ],
                     "Size": [
                         100.0,
@@ -11931,13 +11220,13 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 7.0,
+                    "FontSize": 9.0,
                     "text": "42",
-                    "font": "Fonts/TACOSRG.ttf",
+                    "font": "Fonts/Vision-BoldItalic.ttf",
                     "color": [
-                        9.999999974752428e-7,
-                        9.999997701015673e-7,
-                        9.999899930335233e-7,
+                        0.7686274647712708,
+                        0.5921568870544434,
+                        0.09019608050584793,
                         0.0
                     ],
                     "colorHovered": [
@@ -12130,7 +11419,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 1,
+            "openInHierarchy": 0,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -12181,146 +11470,6 @@
             ]
         },
         {
-            "UID": 3145647874,
-            "ParentUID": 3609748461,
-            "Name": "SoulSquare",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -102.5,
-                        -41.70000076293945
-                    ],
-                    "Size": [
-                        129.5,
-                        71.0
-                    ],
-                    "Anchor": 5,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 7,
-                    "Enabled": 1,
-                    "textureUID": 3496832437,
-                    "textureName": "SoulSquare",
-                    "color": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "FlipVertical": 0,
-                    "FlipHorizontal": 0,
-                    "isMasked": 0,
-                    "maskAmount": 100,
-                    "isMaskHorizontal": 0,
-                    "hoverDetectionMouse1": 1,
-                    "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
-            "UID": 1053336976,
-            "ParentUID": 3609748461,
-            "Name": "SoulIcon",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -129.6999969482422,
-                        -41.099998474121097
-                    ],
-                    "Size": [
-                        40.5,
-                        34.5
-                    ],
-                    "Anchor": 5,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 7,
-                    "Enabled": 1,
-                    "textureUID": 117638074,
-                    "textureName": "lotus",
-                    "color": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "FlipVertical": 0,
-                    "FlipHorizontal": 0,
-                    "isMasked": 0,
-                    "maskAmount": 100,
-                    "isMaskHorizontal": 0,
-                    "hoverDetectionMouse1": 1,
-                    "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
             "UID": 3682842364,
             "ParentUID": 3609748461,
             "Name": "SoulLabel",
@@ -12358,8 +11507,8 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -103.69999694824219,
-                        -46.20000076293945
+                        -108.69999694824219,
+                        -63.400001525878909
                     ],
                     "Size": [
                         100.0,
@@ -12371,13 +11520,13 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 7.0,
+                    "FontSize": 9.0,
                     "text": "42",
-                    "font": "Fonts/TACOSRG.ttf",
+                    "font": "Fonts/Vision-BoldItalic.ttf",
                     "color": [
-                        9.999999974752428e-7,
-                        9.999997701015673e-7,
-                        9.999899930335233e-7,
+                        0.7704918384552002,
+                        0.5922210216522217,
+                        0.08841708302497864,
                         0.0
                     ],
                     "colorHovered": [
@@ -12548,7 +11697,7 @@
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 0,
-            "ActiveSelf": 0,
+            "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
                 1.0,
@@ -12571,15 +11720,15 @@
             "Navigable": 0,
             "No Walkable": 0,
             "openInHierarchy": 0,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
+            "isPrefab": 1,
+            "isPrefabSync": 1,
+            "prefabUID": 3488247818,
             "Components": []
         },
         {
-            "UID": 466731647,
+            "UID": 3986594622,
             "ParentUID": 1479317270,
-            "Name": "Title",
+            "Name": "BackgroundImage",
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 0,
@@ -12614,93 +11763,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -302.6000061035156,
-                        294.29998779296877
+                        -234.6999969482422,
+                        0.0
                     ],
                     "Size": [
-                        100.0,
-                        100.0
-                    ],
-                    "Anchor": 5,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 6,
-                    "Enabled": 1,
-                    "FontSize": 14.0,
-                    "text": "Quests",
-                    "font": "Fonts/TACOSRG.ttf",
-                    "color": [
-                        0.8823529481887817,
-                        0.8705882430076599,
-                        0.16470588743686677,
-                        0.0
-                    ],
-                    "colorHovered": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        0.0
-                    ],
-                    "offset": [
-                        0.0,
-                        0.0
-                    ],
-                    "scaleOffset": [
-                        6.0,
-                        6.0
-                    ],
-                    "IsTextWrapped": 0,
-                    "WrapWidth": 0.0,
-                    "InterlineDistance": 0.0,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
-            "UID": 2154609648,
-            "ParentUID": 1479317270,
-            "Name": "QuestMock",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -231.1999969482422,
-                        -23.0
-                    ],
-                    "Size": [
-                        428.0,
-                        587.0
+                        455.0,
+                        679.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -12708,8 +11776,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 2180426893,
-                    "textureName": "questContent",
+                    "textureUID": 3331782174,
+                    "textureName": "Quest",
                     "color": [
                         1.0,
                         1.0,
@@ -12734,7 +11802,7 @@
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
+            "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
                 1.0,
@@ -12992,7 +12060,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 1,
+            "openInHierarchy": 0,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -13789,7 +12857,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -400.0,
+                        -397.5,
                         137.39999389648438
                     ],
                     "Size": [
@@ -13802,9 +12870,9 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 14.0,
+                    "FontSize": 21.0,
                     "text": "0/5",
-                    "font": "Fonts/MATADOR.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.09019608050584793,
                         0.019607843831181527,
@@ -14010,7 +13078,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -400.0,
+                        -396.20001220703127,
                         29.200000762939454
                     ],
                     "Size": [
@@ -14023,9 +13091,9 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 14.0,
+                    "FontSize": 21.0,
                     "text": "0/3",
-                    "font": "Fonts/MATADOR.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.09019608050584793,
                         0.019607843831181527,
@@ -14231,7 +13299,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -400.0,
+                        -397.20001220703127,
                         -197.3000030517578
                     ],
                     "Size": [
@@ -14244,9 +13312,9 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 14.0,
+                    "FontSize": 21.0,
                     "text": "0/2",
-                    "font": "Fonts/MATADOR.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.0901639461517334,
                         0.020323842763900758,
@@ -14452,7 +13520,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -297.79998779296877,
+                        -295.29998779296877,
                         137.8000030517578
                     ],
                     "Size": [
@@ -14465,9 +13533,9 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 14.0,
+                    "FontSize": 21.0,
                     "text": "0/5",
-                    "font": "Fonts/MATADOR.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.09019608050584793,
                         0.019607843831181527,
@@ -14673,7 +13741,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -297.20001220703127,
+                        -295.29998779296877,
                         -80.9000015258789
                     ],
                     "Size": [
@@ -14686,9 +13754,9 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 14.0,
+                    "FontSize": 21.0,
                     "text": "0/5",
-                    "font": "Fonts/MATADOR.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.09019608050584793,
                         0.019607843831181527,
@@ -14894,7 +13962,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -297.79998779296877,
+                        -294.8999938964844,
                         -196.0
                     ],
                     "Size": [
@@ -14907,9 +13975,9 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 14.0,
+                    "FontSize": 21.0,
                     "text": "0/1",
-                    "font": "Fonts/MATADOR.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.09019608050584793,
                         0.019607843831181527,
@@ -15115,7 +14183,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -196.60000610351563,
+                        -195.1999969482422,
                         137.6999969482422
                     ],
                     "Size": [
@@ -15128,9 +14196,9 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 14.0,
+                    "FontSize": 21.0,
                     "text": "0/5",
-                    "font": "Fonts/MATADOR.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.09019608050584793,
                         0.007843137718737126,
@@ -15336,7 +14404,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -196.60000610351563,
+                        -194.5,
                         29.899999618530275
                     ],
                     "Size": [
@@ -15349,9 +14417,9 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 14.0,
+                    "FontSize": 21.0,
                     "text": "0/5",
-                    "font": "Fonts/MATADOR.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.09019608050584793,
                         0.019607843831181527,
@@ -15557,7 +14625,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -196.60000610351563,
+                        -195.3000030517578,
                         -196.10000610351563
                     ],
                     "Size": [
@@ -15570,9 +14638,9 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 14.0,
+                    "FontSize": 21.0,
                     "text": "0/5",
-                    "font": "Fonts/MATADOR.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.09019608050584793,
                         0.019607843831181527,
@@ -15778,7 +14846,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -94.5999984741211,
+                        -93.4000015258789,
                         137.5
                     ],
                     "Size": [
@@ -15791,9 +14859,9 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 14.0,
+                    "FontSize": 21.0,
                     "text": "0/5",
-                    "font": "Fonts/MATADOR.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.09019608050584793,
                         0.007843137718737126,
@@ -15999,7 +15067,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -95.80000305175781,
+                        -92.69999694824219,
                         -196.8000030517578
                     ],
                     "Size": [
@@ -16012,9 +15080,9 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 14.0,
+                    "FontSize": 21.0,
                     "text": "0/5",
-                    "font": "Fonts/MATADOR.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.09019608050584793,
                         0.019607843831181527,
@@ -16519,7 +15587,7 @@
                     "Enabled": 1,
                     "Position": [
                         -154.3000030517578,
-                        -290.8999938964844
+                        -291.3999938964844
                     ],
                     "Size": [
                         100.0,
@@ -16531,13 +15599,13 @@
                 {
                     "Type": 6,
                     "Enabled": 1,
-                    "FontSize": 14.0,
+                    "FontSize": 15.0,
                     "text": "0",
-                    "font": "Fonts/TACOSRG.ttf",
+                    "font": "Fonts/Vision-BoldItalic.ttf",
                     "color": [
-                        0.8401639461517334,
-                        0.7934237718582153,
-                        0.1274019032716751,
+                        0.9139344096183777,
+                        0.6966870427131653,
+                        0.0,
                         0.0
                     ],
                     "colorHovered": [
