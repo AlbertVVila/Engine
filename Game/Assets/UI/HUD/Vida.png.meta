@@ -1,1 +1,11 @@
-{"Texture":{"GUID":1039431640,"timeCreated":1556462705,"height":149,"width":149,"depth":1,"mips":0,"format":6408,"DX compresion":1802,"mipmap":0}}
+{
+    "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1563536371,
+        "GUID": 1039431640,
+        "Name": "Vida",
+        "File": "Assets/UI/HUD/Vida.png",
+        "ExportedFile": "Library/Textures/1039431640.dds",
+        "DX compresion": 1802
+    }
+}

@@ -1,13 +1,11 @@
 {
     "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1563536371,
         "GUID": 465184258,
-        "timeCreated": 1561397337,
-        "height": 32,
-        "width": 32,
-        "depth": 1,
-        "mips": 0,
-        "format": 6408,
-        "DX compresion": 1802,
-        "mipmap": 0
+        "Name": "wsdmRune",
+        "File": "Assets/UI/ItemIcons/wsdmRune.png",
+        "ExportedFile": "Library/Textures/465184258.dds",
+        "DX compresion": 1802
     }
 }

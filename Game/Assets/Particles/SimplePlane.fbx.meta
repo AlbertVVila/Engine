@@ -1,12 +1,16 @@
 {
-    "Mesh": {
+    "Model": {
+        "metaVersion": 2,
+        "timeCreated": 1563536366,
         "GUID": 3551991548,
-        "timeCreated": 1561530788,
         "NumMeshes": 1,
-        "Mesh0": 3908715504
-    },
-    "Animation": {
-        "timeCreated": 1561530788,
         "NumAnimations": 0
+    },
+    "Mesh0": {
+        "MeshNumber": 0,
+        "GUID": 3908715504,
+        "Name": "SimplePlane_0",
+        "File": "Assets/Particles/SimplePlane.fbx",
+        "ExportedFile": "Library/Meshes/3908715504.m3sh"
     }
 }

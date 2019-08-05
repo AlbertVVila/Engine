@@ -1,1 +1,11 @@
-{"Audio":{"GUID":3119511427,"timeCreated":1558894707,"streamed":1}}
+{
+    "Audio": {
+        "metaVersion": 2,
+        "timeCreated": 1563536361,
+        "GUID": 3119511427,
+        "Name": "Rodrigo y Gabriela - Tamacun",
+        "File": "Assets/Audio/Rodrigo y Gabriela - Tamacun.ogg",
+        "ExportedFile": "Library/Audios/3119511427.ogg",
+        "streamed": 1
+    }
+}

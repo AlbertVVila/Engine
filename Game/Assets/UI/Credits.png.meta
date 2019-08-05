@@ -1,1 +1,11 @@
-{"Texture":{"GUID":207791388,"timeCreated":1556293045,"height":10010,"width":1930,"depth":1,"mips":0,"format":6407,"DX compresion":1802,"mipmap":0}}
+{
+    "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1563536371,
+        "GUID": 207791388,
+        "Name": "Credits",
+        "File": "Assets/UI/Credits.png",
+        "ExportedFile": "Library/Textures/207791388.dds",
+        "DX compresion": 1802
+    }
+}

@@ -101,6 +101,8 @@ public:
 										  float maxPathDistance = 10000.0f, PathFindType type = PathFindType::FOLLOW,
 										  float ignoreDist = floatMax) const;
 	ENGINE_API bool FindIntersectionPoint(math::float3 start, math::float3& intersectionPoint) const;
+	ENGINE_API bool FindClosestPoint2D(math::float3& initial) const;
+
 
 	ENGINE_API void setPlayerBB(math::AABB bbox);
 

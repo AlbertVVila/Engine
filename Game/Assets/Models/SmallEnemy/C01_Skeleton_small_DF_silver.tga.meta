@@ -1,1 +1,11 @@
-{"Texture":{"GUID":1052085821,"timeCreated":1558461306,"height":2048,"width":2048,"depth":1,"mips":0,"format":32992,"DX compresion":1802,"mipmap":0}}
+{
+    "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1563536365,
+        "GUID": 1052085821,
+        "Name": "C01_Skeleton_small_DF_silver",
+        "File": "Assets/Models/SmallEnemy/C01_Skeleton_small_DF_silver.tga",
+        "ExportedFile": "Library/Textures/1052085821.dds",
+        "DX compresion": 1802
+    }
+}

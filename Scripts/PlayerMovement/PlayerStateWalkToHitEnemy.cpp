@@ -105,6 +105,9 @@ void PlayerStateWalkToHitEnemy::Update()
 		{
 			player->gameobject->transform->LookAt(path[pathIndex]);
 			math::float3 direction = (path[pathIndex] - currentPosition).Normalized();
+			//lerping if necessary
+			lerpCalculations(direction, -player->gameobject->transform->front, path[pathIndex]);
+
 			math::float3 finalWalkingSpeed = player->walkingSpeed * direction * player->App->time->gameDeltaTime;
 			finalWalkingSpeed *= (1 + (player->stats.dexterity * 0.005f));
 			player->gameobject->transform->SetPosition(currentPosition + finalWalkingSpeed);
@@ -176,6 +179,10 @@ void PlayerStateWalkToHitEnemy::CheckInput()
 	else if (player->IsMovingToAttack())
 	{
 		player->currentState = (PlayerState*)player->walkToHit;
+	}
+	else if (player->IsMovingToItem())
+	{
+		player->currentState = (PlayerState*)player->walkToPickItem;
 	}
 	else if (player->IsMoving())
 	{

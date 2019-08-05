@@ -50,6 +50,7 @@ public:
 	void DrawProperties() override;
 	void Save(JSON_value* value) const override;
 	void Load(JSON_value* value) override;
+	virtual void Enable(bool enable) override;
 
 	ComponentTrail* Clone() const;
 	std::queue<TrailPoint> trail;

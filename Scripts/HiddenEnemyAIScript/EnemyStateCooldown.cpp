@@ -14,17 +14,22 @@ EnemyStateCooldown::~EnemyStateCooldown()
 {
 }
 
-void EnemyStateCooldown::Update()
+void EnemyStateCooldown::HandleIA()
 {
-	float waitedTime = (timer - auxTimer);
+	float distance = enemy->enemyController->GetDistanceToPlayer2D();
 
-	if (!enemy-> enemyController->IsCollidingWithPlayer())
+	if (distance > enemy->attackRange)
 	{
 		enemy->currentState = (EnemyState*)enemy->chase;
 	}
-	else if (waitedTime > enemy->cooldownTime)
+	else if (timer > enemy->cooldownTime)
 	{
 		enemy->currentState = (EnemyState*)enemy->attack;
 		auxTimer = 0.0f;
 	}
+}
+
+void EnemyStateCooldown::Update()
+{
+	float waitedTime = (timer - auxTimer);
 }

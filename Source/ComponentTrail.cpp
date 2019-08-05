@@ -18,6 +18,7 @@
 #include "imgui.h"
 #include "debugdraw.h"
 #include "JSON.h"
+#include <algorithm>
 
 
 #define None "None Selected"
@@ -42,12 +43,17 @@ ComponentTrail::ComponentTrail(const ComponentTrail& component) : Component(comp
 	duration = component.duration;
 	minDistance = component.minDistance;
 
-	textureName = component.textureName;
-	if (textureName != "None Selected")
+	if (component.texture != nullptr)
 	{
-		texture = (ResourceTexture*)App->resManager->GetByName(textureName.c_str(), TYPE::TEXTURE);
+		textureName = component.textureName;
+		texture = (ResourceTexture*)App->resManager->Get(component.texture->GetUID());
 	}
 
+	modules.push_back(new PMSizeOverTime());
+	if (!component.modules.empty())
+	{
+		modules[0]->enabled = component.modules[0]->enabled;
+	}
 	App->particles->AddTrailRenderer(this);
 }
 
@@ -96,6 +102,13 @@ void ComponentTrail::DrawProperties()
 	ImGui::PushID(this);
 	if (ImGui::CollapsingHeader("Trail Renderer", ImGuiTreeNodeFlags_DefaultOpen))
 	{
+		bool removed = Component::DrawComponentState();
+		if (removed)
+		{
+			ImGui::PopID();
+			return;
+		}
+
 		//texture selector
 		if (ImGui::BeginCombo("Texture", texture != nullptr ? texture->GetName() : None))
 		{
@@ -111,7 +124,10 @@ void ComponentTrail::DrawProperties()
 			if (none_selected)
 				ImGui::SetItemDefaultFocus();
 
-			textureFiles = App->resManager->GetResourceNamesList(TYPE::TEXTURE, true);
+			if (textureFiles.empty())
+			{
+				textureFiles = App->resManager->GetResourceNamesList(TYPE::TEXTURE, true);
+			}
 
 			for (int n = 0; n < textureFiles.size(); n++)
 			{
@@ -169,9 +185,23 @@ void ComponentTrail::Load(JSON_value* value)
 	trailColor = value->GetFloat4("trailColor");
 	unsigned uid = value->GetUint("textureUID");
 	texture = (ResourceTexture*)App->resManager->Get(uid);
+	if (texture != nullptr)
+	{
+		textureName = texture->GetName();
+	}
 	bloomIntensity = value->GetFloat("bloomIntensity", bloomIntensity);
 	modules[0]->enabled = value->GetInt("sizeOT");
 
+}
+
+void ComponentTrail::Enable(bool enable)
+{
+	Component::Enable(enable);
+	if (!enable)
+	{
+		std::queue<TrailPoint> empty; //Clear trail points on disable
+		std::swap(trail, empty);
+	}
 }
 
 ComponentTrail * ComponentTrail::Clone() const

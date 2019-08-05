@@ -1,1 +1,11 @@
-{"Audio":{"GUID":1593130043,"timeCreated":1560867622,"streamed":0}}
+{
+    "Audio": {
+        "metaVersion": 2,
+        "timeCreated": 1563536361,
+        "GUID": 1593130043,
+        "Name": "grabItem",
+        "File": "Assets/Audio/grabItem.ogg",
+        "ExportedFile": "Library/Audios/1593130043.ogg",
+        "streamed": 0
+    }
+}

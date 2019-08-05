@@ -10,9 +10,12 @@
 #include "ComponentBoxTrigger.h"
 
 #include "EnemyControllerScript.h"
+#include "ProjectileScript.h."
+
 #include "EnemyState.h"
 #include "EnemyStatePatrol.h"
-#include "EnemyStateGetInPosition.h"
+#include "EnemyStateChase.h"
+#include "EnemyStateFlee.h"
 #include "EnemyStateReturnToStart.h"
 #include "EnemyStateAttack.h"
 #include "EnemyStateCooldown.h"
@@ -33,7 +36,8 @@ void RangeEnemyAIScript::Start()
 	enemyStates.reserve(6);
 
 	enemyStates.push_back(patrol = new EnemyStatePatrol(this));
-	enemyStates.push_back(getInPosition = new EnemyStateGetInPosition(this));
+	enemyStates.push_back(chase = new EnemyStateChase(this));
+	enemyStates.push_back(flee = new EnemyStateFlee(this));
 	enemyStates.push_back(returnToStart = new EnemyStateReturnToStart(this));
 	enemyStates.push_back(attack = new EnemyStateAttack(this));
 	enemyStates.push_back(cooldown = new EnemyStateCooldown(this));
@@ -54,10 +58,34 @@ void RangeEnemyAIScript::Start()
 		LOG("No child of the GameObject %s has a boxTrigger component attached. \n", gameobject->name);
 	}
 
-	projectile = App->scene->FindGameObjectByName(projectileName.c_str());
-	if (projectile == nullptr)
+	projectile1 = App->scene->FindGameObjectByName(projectileName1.c_str(), gameobject->parent);
+	if (projectile1 == nullptr)
 	{
-		LOG("Enemy projectile with name %s couldn't be found. \n", projectileName);
+		LOG("Enemy projectile with name %s couldn't be found. \n", projectileName1);
+	}
+	else
+	{
+		projectileScript1 = projectile1->GetComponent<ProjectileScript>();
+	}
+
+	projectile2 = App->scene->FindGameObjectByName(projectileName2.c_str(), gameobject->parent);
+	if (projectile2 == nullptr)
+	{
+		LOG("Enemy projectile with name %s couldn't be found. \n", projectileName2);
+	}
+	else
+	{
+		projectileScript2 = projectile2->GetComponent<ProjectileScript>();
+	}
+
+	projectile3 = App->scene->FindGameObjectByName(projectileName3.c_str(), gameobject->parent);
+	if (projectile3 == nullptr)
+	{
+		LOG("Enemy projectile with name %s couldn't be found. \n", projectileName3);
+	}
+	else
+	{
+		projectileScript3 = projectile3->GetComponent<ProjectileScript>();
 	}
 
 	startPosition = enemyController->GetPosition();
@@ -80,6 +108,7 @@ void RangeEnemyAIScript::Update()
 	}
 
 	currentState->UpdateTimer();
+	currentState->HandleIA();
 	currentState->Update();
 
 	// If previous and current are different the functions Exit() and Enter() are called
@@ -93,7 +122,8 @@ void RangeEnemyAIScript::Expose(ImGuiContext* context)
 	ImGui::Text("Enemy:");
 
 	if (currentState == patrol)				ImGui::TextColored(ImVec4(1, 1, 0, 1), "State: Patrol");
-	else if (currentState == getInPosition)	ImGui::TextColored(ImVec4(1, 1, 0, 1), "State: Get In Position");
+	else if (currentState == chase)			ImGui::TextColored(ImVec4(1, 1, 0, 1), "State: Chase");
+	else if (currentState == flee)			ImGui::TextColored(ImVec4(1, 1, 0, 1), "State: Flee");
 	else if (currentState == returnToStart)	ImGui::TextColored(ImVec4(1, 1, 0, 1), "State: Return");
 	else if (currentState == attack)		ImGui::TextColored(ImVec4(1, 1, 0, 1), "State: Attack");
 	else if (currentState == cooldown)		ImGui::TextColored(ImVec4(1, 1, 0, 1), "State: Cooldown");
@@ -116,11 +146,27 @@ void RangeEnemyAIScript::Expose(ImGuiContext* context)
 	ImGui::InputFloat("Attack Time", &attackDuration);
 	ImGui::InputFloat("Attack Damage", &attackDamage);
 	char* targetName = new char[64];
-	strcpy_s(targetName, strlen(projectileName.c_str()) + 1, projectileName.c_str());
-	ImGui::InputText("Projectile Name", targetName, 64);
-	projectileName = targetName;
+	strcpy_s(targetName, strlen(projectileName1.c_str()) + 1, projectileName1.c_str());
+	ImGui::InputText("Projectile Name1", targetName, 64);
+	projectileName1 = targetName;
 	delete[] targetName;
-	ImGui::DragFloat("Projectile Delay", &projectileDelay, 0.01f, 0.0f, attackDuration);
+
+	char* targetName1 = new char[64];
+	strcpy_s(targetName1, strlen(projectileName2.c_str()) + 1, projectileName2.c_str());
+	ImGui::InputText("Projectile Name2", targetName1, 64);
+	projectileName2 = targetName1;
+	delete[] targetName1;
+
+	char* targetName2 = new char[64];
+	strcpy_s(targetName2, strlen(projectileName3.c_str()) + 1, projectileName3.c_str());
+	ImGui::InputText("Projectile Name3", targetName2, 64);
+	projectileName3 = targetName2;
+	delete[] targetName2;
+
+
+	ImGui::DragFloat("Projectile Delay1", &projectileDelay1, 0.01f, 0.0f, 3.f);
+	ImGui::DragFloat("Projectile Delay2", &projectileDelay2, 0.01f, 0.0f, 3.f);
+	ImGui::DragFloat("Projectile Delay3", &projectileDelay3, 0.01f, 0.0f, 3.f);
 
 
 	ImGui::Text("Cooldown:");
@@ -146,8 +192,12 @@ void RangeEnemyAIScript::Serialize(JSON_value* json) const
 	// Attack variables
 	json->AddFloat("attackDuration", attackDuration);
 	json->AddFloat("attackDamage", attackDamage);
-	json->AddString("projectileName", projectileName.c_str());
-	json->AddFloat("projectileDelay", projectileDelay);
+	json->AddString("projectileName1", projectileName1.c_str());
+	json->AddString("projectileName2", projectileName2.c_str());
+	json->AddString("projectileName3", projectileName3.c_str());
+	json->AddFloat("projectileDelay1", projectileDelay1);
+	json->AddFloat("projectileDelay2", projectileDelay2);
+	json->AddFloat("projectileDelay3", projectileDelay3);
 
 	// Cooldown variables
 	json->AddFloat("cooldownTime", cooldownTime);
@@ -172,8 +222,12 @@ void RangeEnemyAIScript::DeSerialize(JSON_value* json)
 	// Attack variables
 	attackDuration = json->GetFloat("attackDuration");
 	attackDamage = json->GetFloat("attackDamage");
-	projectileName = json->GetString("projectileName");
-	projectileDelay = json->GetFloat("projectileDelay");
+	projectileName1 = json->GetString("projectileName1", projectileName1.c_str());
+	projectileName2 = json->GetString("projectileName2", projectileName2.c_str());
+	projectileName3 = json->GetString("projectileName3", projectileName3.c_str());
+	projectileDelay1 = json->GetFloat("projectileDelay1");
+	projectileDelay2 = json->GetFloat("projectileDelay2");
+	projectileDelay3 = json->GetFloat("projectileDelay3");
 
 	// Cooldown variables
 	cooldownTime = json->GetFloat("cooldownTime");
@@ -186,12 +240,14 @@ void RangeEnemyAIScript::CheckStates(EnemyState* previous, EnemyState* current)
 		previous->ResetTimer();
 
 		previous->Exit();
-		current->Enter();
 
 		if (enemyController->anim != nullptr)
 		{
 			enemyController->anim->SendTriggerToStateMachine(current->trigger.c_str());
+			current->duration = enemyController->anim->GetDurationFromClip();
 		}
+
+		current->Enter();
 	}
 }
 
@@ -221,7 +277,7 @@ void RangeEnemyAIScript::OnTriggerEnter(GameObject* go)
 
 		// Change state to getInPosition and update states
 		EnemyState* previous = currentState;
-		currentState = getInPosition;
+		currentState = chase;
 		CheckStates(previous, currentState);
 	}
 }

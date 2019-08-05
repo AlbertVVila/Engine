@@ -1,1 +1,16 @@
-{"Mesh":{"GUID":2234951206,"timeCreated":1558447102,"NumMeshes":1,"Mesh0":3040564422},"Animation":{"timeCreated":1558447102,"NumAnimations":0}}
+{
+    "Model": {
+        "metaVersion": 2,
+        "timeCreated": 1563536366,
+        "GUID": 2234951206,
+        "NumMeshes": 1,
+        "NumAnimations": 0
+    },
+    "Mesh0": {
+        "MeshNumber": 0,
+        "GUID": 3040564422,
+        "Name": "SpinningTop_0",
+        "File": "Assets/Models/SpinningTop/SpinningTop.fbx",
+        "ExportedFile": "Library/Meshes/3040564422.m3sh"
+    }
+}

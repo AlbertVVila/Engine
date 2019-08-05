@@ -2,7 +2,6 @@
 #define  __EnemyControllerScript_h__
 
 #include "BaseScript.h"
-
 #include "Geometry/AABB.h"
 #include <vector>
 
@@ -26,6 +25,7 @@ class ResourceMaterial;
 class EnemyControllerScript_API EnemyControllerScript : public Script
 {
 	void Start() override;
+	void Awake() override;
 	void Update() override;
 
 	void Expose(ImGuiContext* context) override;
@@ -44,6 +44,7 @@ public:
 	inline math::float3 GetPosition() const;					// Get position of the enemy (GO with this script attached)
 	inline math::Quat GetRotation() const;						// Get rotation of the enemy (GO with this script attached)
 	inline math::float3 GetPlayerPosition() const;
+	inline void SetPosition(math::float3 newPos) const;
 	inline float GetDistanceTo(math::float3& position) const;	// Get distance of the enemy to position given as argument
 	inline float GetDistanceTo2D(math::float3& position) const;	// Get distance of the enemy to position given as argument only taking XZ plane as reference
 	inline float GetDistanceToPlayer2D() const;
@@ -56,6 +57,8 @@ public:
 
 	void OnTriggerEnter(GameObject* go) override;
 public:
+
+	bool isDead = false;
 	GameObject* player = nullptr;
 	PlayerMovement* playerMovement = nullptr;
 	std::string playerTag = "Player";
@@ -91,7 +94,7 @@ private:
 
 	float hitColorDuration = 0.2f;
 	float timer = 0.f;
-	bool isDead = false;
+
 };
 
 extern "C" EnemyControllerScript_API Script* CreateScript();

@@ -130,7 +130,7 @@ private:
 	std::list<GameObject*> scenePhotos;
 	std::list<GameObject*> scenePhotosUndoed;
 
-	std::list<ComponentRenderer*> alphaRenderers;
+	std::list<Component*> alphaRenderers;
 
 	unsigned defaultSceneUID = 0u;
 	std::vector<std::string> sceneFiles;

@@ -1,1 +1,11 @@
-{"Texture":{"GUID":2514375970,"timeCreated":1558706665,"height":269,"width":500,"depth":1,"mips":0,"format":6408,"DX compresion":1802,"mipmap":0}}
+{
+    "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1563536366,
+        "GUID": 2514375970,
+        "Name": "Humo",
+        "File": "Assets/Particles/Humo.png",
+        "ExportedFile": "Library/Textures/2514375970.dds",
+        "DX compresion": 1802
+    }
+}

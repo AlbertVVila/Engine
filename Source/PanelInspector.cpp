@@ -24,7 +24,8 @@ PanelInspector::PanelInspector()
 	{"Animation", ComponentType::Animation}, {"Particle System", ComponentType::Particles},
 	{"Trail Renderer", ComponentType::Trail},
 	{"Image", ComponentType::Image}, {"Reverb Zone", ComponentType::ReverbZone}, {"Audio Listener", ComponentType::AudioListener},
-	{"Audio Source", ComponentType::AudioSource}, {"Box Trigger", ComponentType::BoxTrigger} };
+	{"Audio Source", ComponentType::AudioSource}, {"Box Trigger", ComponentType::BoxTrigger},
+	{"Volumetric light", ComponentType::VolumetricLight} };
 }
 
 PanelInspector::~PanelInspector()
