@@ -7,7 +7,7 @@
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 1,
-            "ActiveSelf": 1,
+            "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
                 1.0,
@@ -29,7 +29,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 1,
+            "openInHierarchy": 0,
             "isPrefab": 1,
             "isPrefabSync": 1,
             "prefabUID": 3048167483,
@@ -48,7 +48,7 @@
             "Name": "BackgroundImage",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -118,7 +118,7 @@
             "Name": "HelmetSlot",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -188,7 +188,7 @@
             "Name": "BodySlot",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -258,7 +258,7 @@
             "Name": "PantsSlot",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -328,7 +328,7 @@
             "Name": "BootsSlot",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -398,7 +398,7 @@
             "Name": "WeaponSlot",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -468,7 +468,7 @@
             "Name": "AmuletSlot",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -538,7 +538,7 @@
             "Name": "InventorySlots",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -617,7 +617,7 @@
             "Name": "Slot1",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -687,7 +687,7 @@
             "Name": "Slot2",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -757,7 +757,7 @@
             "Name": "Slot3",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -827,7 +827,7 @@
             "Name": "Slot4",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -897,7 +897,7 @@
             "Name": "Slot5",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -967,7 +967,7 @@
             "Name": "Slot6",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1037,7 +1037,7 @@
             "Name": "Slot7",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1107,7 +1107,7 @@
             "Name": "Slot8",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1177,7 +1177,7 @@
             "Name": "Slot9",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1247,7 +1247,7 @@
             "Name": "Slot10",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1317,7 +1317,7 @@
             "Name": "Slot11",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1387,7 +1387,7 @@
             "Name": "Slot12",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1457,7 +1457,7 @@
             "Name": "Slot13",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1527,7 +1527,7 @@
             "Name": "Slot14",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1597,7 +1597,7 @@
             "Name": "Slot15",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1667,7 +1667,7 @@
             "Name": "Slot16",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1737,7 +1737,7 @@
             "Name": "Slot17",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1807,7 +1807,7 @@
             "Name": "Slot18",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1877,7 +1877,7 @@
             "Name": "Items",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1956,7 +1956,7 @@
             "Name": "Item1",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -2026,7 +2026,7 @@
             "Name": "Item2",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -2096,7 +2096,7 @@
             "Name": "Item3",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -2166,7 +2166,7 @@
             "Name": "Item4",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -2236,7 +2236,7 @@
             "Name": "Item5",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -2306,7 +2306,7 @@
             "Name": "Item6",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -2376,7 +2376,7 @@
             "Name": "Item7",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -2446,7 +2446,7 @@
             "Name": "Item8",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -2516,7 +2516,7 @@
             "Name": "Item9",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -2586,7 +2586,7 @@
             "Name": "Item10",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -2656,7 +2656,7 @@
             "Name": "Item11",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -2726,7 +2726,7 @@
             "Name": "Item12",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -2796,7 +2796,7 @@
             "Name": "Item13",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -2866,7 +2866,7 @@
             "Name": "Item14",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -2936,7 +2936,7 @@
             "Name": "Item15",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -3006,7 +3006,7 @@
             "Name": "Item16",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -3076,7 +3076,7 @@
             "Name": "Item17",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -3146,7 +3146,7 @@
             "Name": "Item18",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -3216,7 +3216,7 @@
             "Name": "Item19",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -3286,7 +3286,7 @@
             "Name": "Item20",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -3356,7 +3356,7 @@
             "Name": "Item21",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -3426,7 +3426,7 @@
             "Name": "Item22",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -3496,7 +3496,7 @@
             "Name": "Item23",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -3566,7 +3566,7 @@
             "Name": "Item24",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -3636,7 +3636,7 @@
             "Name": "LevelBackground",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -3715,7 +3715,7 @@
             "Name": "LevelProgressBar",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -3785,7 +3785,7 @@
             "Name": "LevelLinesBar",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -3855,7 +3855,7 @@
             "Name": "LevelActual",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -3936,7 +3936,7 @@
             "Name": "LevelExperience",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -4017,7 +4017,7 @@
             "Name": "StatsPanel",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -4096,7 +4096,7 @@
             "Name": "HeartPanel",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -4119,7 +4119,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -4175,7 +4175,7 @@
             "Name": "HeartLabel",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -4207,7 +4207,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -108.69999694824219,
+                        -134.60000610351563,
                         153.39999389648438
                     ],
                     "Size": [
@@ -4256,7 +4256,7 @@
             "Name": "HeartPositiveBoostIcon",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -4288,12 +4288,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -55.0,
-                        215.89999389648438
+                        -77.9000015258789,
+                        163.39999389648438
                     ],
                     "Size": [
-                        27.5,
-                        33.5
+                        10.5,
+                        19.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -4301,8 +4301,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 2027427489,
-                    "textureName": "boosted",
+                    "textureUID": 2870881617,
+                    "textureName": "Arrow_Up",
                     "color": [
                         1.0,
                         1.0,
@@ -4326,7 +4326,7 @@
             "Name": "HeartNegativeBoostIcon",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -4358,12 +4358,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -55.0,
-                        215.89999389648438
+                        -77.9000015258789,
+                        163.39999389648438
                     ],
                     "Size": [
-                        27.5,
-                        33.5
+                        10.5,
+                        19.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -4371,8 +4371,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 4214112646,
-                    "textureName": "nerfed",
+                    "textureUID": 2876552690,
+                    "textureName": "Arrow_down",
                     "color": [
                         1.0,
                         1.0,
@@ -4396,7 +4396,7 @@
             "Name": "DexterityPanel",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -4419,7 +4419,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -4475,7 +4475,7 @@
             "Name": "DexterityLabel",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -4556,7 +4556,7 @@
             "Name": "DexterityPositiveBoostIcon",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -4588,12 +4588,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -55.0,
-                        141.3000030517578
+                        -66.69999694824219,
+                        90.4000015258789
                     ],
                     "Size": [
-                        27.5,
-                        33.5
+                        10.5,
+                        19.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -4601,8 +4601,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 2027427489,
-                    "textureName": "boosted",
+                    "textureUID": 2870881617,
+                    "textureName": "Arrow_Up",
                     "color": [
                         1.0,
                         1.0,
@@ -4626,7 +4626,7 @@
             "Name": "DexterityNegativeBoostIcon",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -4658,12 +4658,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -55.0,
-                        140.89999389648438
+                        -66.69999694824219,
+                        90.4000015258789
                     ],
                     "Size": [
-                        27.5,
-                        33.5
+                        10.5,
+                        19.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -4671,8 +4671,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 4214112646,
-                    "textureName": "nerfed",
+                    "textureUID": 2876552690,
+                    "textureName": "Arrow_down",
                     "color": [
                         1.0,
                         1.0,
@@ -4696,7 +4696,7 @@
             "Name": "StrPanel",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -4719,7 +4719,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -4775,7 +4775,7 @@
             "Name": "StrLabel",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -4807,7 +4807,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -108.69999694824219,
+                        -114.5,
                         8.600000381469727
                     ],
                     "Size": [
@@ -4856,7 +4856,7 @@
             "Name": "StrPositiveBoostIcon",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -4888,12 +4888,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -55.0,
-                        64.69999694824219
+                        -69.5,
+                        17.899999618530275
                     ],
                     "Size": [
-                        27.5,
-                        33.5
+                        10.5,
+                        19.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -4901,8 +4901,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 2027427489,
-                    "textureName": "boosted",
+                    "textureUID": 2870881617,
+                    "textureName": "Arrow_Up",
                     "color": [
                         1.0,
                         1.0,
@@ -4926,7 +4926,7 @@
             "Name": "StrNegativeBoostIcon",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -4958,12 +4958,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -55.0,
-                        64.69999694824219
+                        -69.5,
+                        17.899999618530275
                     ],
                     "Size": [
-                        27.5,
-                        33.5
+                        10.5,
+                        19.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -4971,8 +4971,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 4214112646,
-                    "textureName": "nerfed",
+                    "textureUID": 2876552690,
+                    "textureName": "Arrow_down",
                     "color": [
                         1.0,
                         1.0,
@@ -4996,7 +4996,7 @@
             "Name": "SoulPanel",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -5019,7 +5019,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -5075,7 +5075,7 @@
             "Name": "SoulLabel",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -5107,7 +5107,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -108.69999694824219,
+                        -158.0,
                         -63.400001525878909
                     ],
                     "Size": [
@@ -5156,7 +5156,7 @@
             "Name": "SoulPositiveBoostIcon",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -5188,12 +5188,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -55.0,
-                        -12.600000381469727
+                        -90.69999694824219,
+                        -53.5
                     ],
                     "Size": [
-                        27.5,
-                        33.5
+                        10.5,
+                        19.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -5201,8 +5201,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 2027427489,
-                    "textureName": "boosted",
+                    "textureUID": 2870881617,
+                    "textureName": "Arrow_Up",
                     "color": [
                         1.0,
                         1.0,
@@ -5226,7 +5226,7 @@
             "Name": "SoulNegativeBoostIcon",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -5258,12 +5258,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -55.0,
-                        -11.800000190734864
+                        -90.69999694824219,
+                        -53.5
                     ],
                     "Size": [
-                        27.5,
-                        33.5
+                        10.5,
+                        19.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -5271,8 +5271,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 4214112646,
-                    "textureName": "nerfed",
+                    "textureUID": 2876552690,
+                    "textureName": "Arrow_down",
                     "color": [
                         1.0,
                         1.0,

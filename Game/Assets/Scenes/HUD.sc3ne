@@ -10519,7 +10519,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -10607,7 +10607,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -108.69999694824219,
+                        -134.60000610351563,
                         153.39999389648438
                     ],
                     "Size": [
@@ -10688,12 +10688,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -55.0,
-                        215.89999389648438
+                        -77.9000015258789,
+                        163.39999389648438
                     ],
                     "Size": [
-                        27.5,
-                        33.5
+                        10.5,
+                        19.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -10701,8 +10701,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 2027427489,
-                    "textureName": "boosted",
+                    "textureUID": 2870881617,
+                    "textureName": "Arrow_Up",
                     "color": [
                         1.0,
                         1.0,
@@ -10758,12 +10758,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -55.0,
-                        215.89999389648438
+                        -77.9000015258789,
+                        163.39999389648438
                     ],
                     "Size": [
-                        27.5,
-                        33.5
+                        10.5,
+                        19.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -10771,8 +10771,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 4214112646,
-                    "textureName": "nerfed",
+                    "textureUID": 2876552690,
+                    "textureName": "Arrow_down",
                     "color": [
                         1.0,
                         1.0,
@@ -10819,7 +10819,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -10988,12 +10988,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -55.0,
-                        141.3000030517578
+                        -66.69999694824219,
+                        90.4000015258789
                     ],
                     "Size": [
-                        27.5,
-                        33.5
+                        10.5,
+                        19.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -11001,8 +11001,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 2027427489,
-                    "textureName": "boosted",
+                    "textureUID": 2870881617,
+                    "textureName": "Arrow_Up",
                     "color": [
                         1.0,
                         1.0,
@@ -11058,12 +11058,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -55.0,
-                        140.89999389648438
+                        -66.69999694824219,
+                        90.4000015258789
                     ],
                     "Size": [
-                        27.5,
-                        33.5
+                        10.5,
+                        19.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -11071,8 +11071,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 4214112646,
-                    "textureName": "nerfed",
+                    "textureUID": 2876552690,
+                    "textureName": "Arrow_down",
                     "color": [
                         1.0,
                         1.0,
@@ -11119,7 +11119,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -11207,7 +11207,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -108.69999694824219,
+                        -114.5,
                         8.600000381469727
                     ],
                     "Size": [
@@ -11288,12 +11288,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -55.0,
-                        64.69999694824219
+                        -69.5,
+                        17.899999618530275
                     ],
                     "Size": [
-                        27.5,
-                        33.5
+                        10.5,
+                        19.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -11301,8 +11301,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 2027427489,
-                    "textureName": "boosted",
+                    "textureUID": 2870881617,
+                    "textureName": "Arrow_Up",
                     "color": [
                         1.0,
                         1.0,
@@ -11358,12 +11358,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -55.0,
-                        64.69999694824219
+                        -69.5,
+                        17.899999618530275
                     ],
                     "Size": [
-                        27.5,
-                        33.5
+                        10.5,
+                        19.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -11371,8 +11371,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 4214112646,
-                    "textureName": "nerfed",
+                    "textureUID": 2876552690,
+                    "textureName": "Arrow_down",
                     "color": [
                         1.0,
                         1.0,
@@ -11419,7 +11419,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -11507,7 +11507,7 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -108.69999694824219,
+                        -158.0,
                         -63.400001525878909
                     ],
                     "Size": [
@@ -11588,12 +11588,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -55.0,
-                        -12.600000381469727
+                        -90.69999694824219,
+                        -53.5
                     ],
                     "Size": [
-                        27.5,
-                        33.5
+                        10.5,
+                        19.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -11601,8 +11601,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 2027427489,
-                    "textureName": "boosted",
+                    "textureUID": 2870881617,
+                    "textureName": "Arrow_Up",
                     "color": [
                         1.0,
                         1.0,
@@ -11658,12 +11658,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -55.0,
-                        -11.800000190734864
+                        -90.69999694824219,
+                        -53.5
                     ],
                     "Size": [
-                        27.5,
-                        33.5
+                        10.5,
+                        19.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -11671,8 +11671,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 4214112646,
-                    "textureName": "nerfed",
+                    "textureUID": 2876552690,
+                    "textureName": "Arrow_down",
                     "color": [
                         1.0,
                         1.0,
@@ -11697,7 +11697,7 @@
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
+            "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
                 1.0,
