@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29020.237
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.705
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Engine", "Source\Engine.vcxproj", "{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}"
 EndProject
@@ -75,6 +75,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FearControllerScript", "Scripts\FearControllerScript\FearControllerScript.vcxproj", "{70E97566-EFB7-4382-A1A2-1806C1D28250}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DividingEnemyAI", "Scripts\DividingEnemyAI\DividingEnemyAI.vcxproj", "{CAC93517-2E77-44FB-8250-273577D83769}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BuriedEnemyAIScript", "Scripts\BuriedEnemyAIScript\BuriedEnemyAIScript.vcxproj", "{42D20FDF-E4FF-46BD-8101-6798F47189C6}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WorldControllerScript", "Scripts\WorldControllerScript\WorldControllerScript.vcxproj", "{B97E59DB-AA43-47E5-B587-57A95E855C97}"
 EndProject
@@ -598,6 +600,20 @@ Global
 		{CAC93517-2E77-44FB-8250-273577D83769}.Release|Win32.Build.0 = Release|Win32
 		{CAC93517-2E77-44FB-8250-273577D83769}.Release|x64.ActiveCfg = Release|x64
 		{CAC93517-2E77-44FB-8250-273577D83769}.Release|x64.Build.0 = Release|x64
+		{42D20FDF-E4FF-46BD-8101-6798F47189C6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{42D20FDF-E4FF-46BD-8101-6798F47189C6}.Debug|Win32.Build.0 = Debug|Win32
+		{42D20FDF-E4FF-46BD-8101-6798F47189C6}.Debug|x64.ActiveCfg = Debug|x64
+		{42D20FDF-E4FF-46BD-8101-6798F47189C6}.Debug|x64.Build.0 = Debug|x64
+		{42D20FDF-E4FF-46BD-8101-6798F47189C6}.GameBuild Debug|Win32.ActiveCfg = GameBuild Debug|Win32
+		{42D20FDF-E4FF-46BD-8101-6798F47189C6}.GameBuild Debug|Win32.Build.0 = GameBuild Debug|Win32
+		{42D20FDF-E4FF-46BD-8101-6798F47189C6}.GameBuild Debug|x64.ActiveCfg = GameBuild Debug|Win32
+		{42D20FDF-E4FF-46BD-8101-6798F47189C6}.GameBuild|Win32.ActiveCfg = GameBuild|Win32
+		{42D20FDF-E4FF-46BD-8101-6798F47189C6}.GameBuild|Win32.Build.0 = GameBuild|Win32
+		{42D20FDF-E4FF-46BD-8101-6798F47189C6}.GameBuild|x64.ActiveCfg = GameBuild|Win32
+		{42D20FDF-E4FF-46BD-8101-6798F47189C6}.Release|Win32.ActiveCfg = Release|Win32
+		{42D20FDF-E4FF-46BD-8101-6798F47189C6}.Release|Win32.Build.0 = Release|Win32
+		{42D20FDF-E4FF-46BD-8101-6798F47189C6}.Release|x64.ActiveCfg = Release|x64
+		{42D20FDF-E4FF-46BD-8101-6798F47189C6}.Release|x64.Build.0 = Release|x64
 		{B97E59DB-AA43-47E5-B587-57A95E855C97}.Debug|Win32.ActiveCfg = Debug|Win32
 		{B97E59DB-AA43-47E5-B587-57A95E855C97}.Debug|Win32.Build.0 = Debug|Win32
 		{B97E59DB-AA43-47E5-B587-57A95E855C97}.Debug|x64.ActiveCfg = Debug|x64
@@ -649,6 +665,7 @@ Global
 		{FCC76A72-D762-4C84-82CD-075AC1B260AC} = {B0BA8D83-BE07-4405-ADE1-C771D081A8CD}
 		{70E97566-EFB7-4382-A1A2-1806C1D28250} = {B0BA8D83-BE07-4405-ADE1-C771D081A8CD}
 		{CAC93517-2E77-44FB-8250-273577D83769} = {81805A9C-91F4-47D8-B626-870F7D97377D}
+		{42D20FDF-E4FF-46BD-8101-6798F47189C6} = {81805A9C-91F4-47D8-B626-870F7D97377D}
 		{B97E59DB-AA43-47E5-B587-57A95E855C97} = {B0BA8D83-BE07-4405-ADE1-C771D081A8CD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
