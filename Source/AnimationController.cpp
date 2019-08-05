@@ -260,6 +260,7 @@ void AnimationController::ResetClipping()
 void AnimationController::SetNextEvent()
 {
 	ResourceAnimation* anim = current->anim;
+	if (!anim) return;
 	
 	int currentFrame = current->time * anim->framesPerSecond;
 	anim->nextEvent = 0;
