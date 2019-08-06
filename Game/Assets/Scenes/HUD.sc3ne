@@ -16597,9 +16597,9 @@
             ]
         },
         {
-            "UID": 3662860767,
+            "UID": 2368270981,
             "ParentUID": 1,
-            "Name": "PopUpBackground",
+            "Name": "PopUpEquip",
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 1,
@@ -16626,532 +16626,9 @@
             "Navigable": 0,
             "No Walkable": 0,
             "openInHierarchy": 0,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        0.0,
-                        287.20001220703127
-                    ],
-                    "Size": [
-                        197.5,
-                        281.5
-                    ],
-                    "Anchor": 7,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 7,
-                    "Enabled": 1,
-                    "textureUID": 378751714,
-                    "textureName": "bgPopup",
-                    "color": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "FlipVertical": 0,
-                    "FlipHorizontal": 0,
-                    "isMasked": 0,
-                    "maskAmount": 100,
-                    "isMaskHorizontal": 0,
-                    "hoverDetectionMouse1": 1,
-                    "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
-                },
-                {
-                    "Type": 9,
-                    "Enabled": 1,
-                    "script": "EquipPopupController",
-                    "scriptInfo": {}
-                }
-            ]
-        },
-        {
-            "UID": 309385629,
-            "ParentUID": 3662860767,
-            "Name": "PopUpEquipTitle",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -47.599998474121097,
-                        396.70001220703127
-                    ],
-                    "Size": [
-                        100.0,
-                        100.0
-                    ],
-                    "Anchor": 7,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 6,
-                    "Enabled": 1,
-                    "FontSize": 64.0,
-                    "text": "Skills",
-                    "font": "Fonts/TACOSRG.ttf",
-                    "color": [
-                        0.9426229596138,
-                        0.9271698594093323,
-                        0.0772641971707344,
-                        0.0
-                    ],
-                    "colorHovered": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        0.0
-                    ],
-                    "offset": [
-                        0.0,
-                        0.0
-                    ],
-                    "scaleOffset": [
-                        1.0,
-                        1.0
-                    ],
-                    "IsTextWrapped": 0,
-                    "WrapWidth": 100.0,
-                    "InterlineDistance": 24.0,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
-            "UID": 661473237,
-            "ParentUID": 3662860767,
-            "Name": "PopUpLine",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        0.0,
-                        388.70001220703127
-                    ],
-                    "Size": [
-                        172.5,
-                        4.0
-                    ],
-                    "Anchor": 7,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 7,
-                    "Enabled": 1,
-                    "textureUID": 676697322,
-                    "textureName": "White",
-                    "color": [
-                        0.9411764740943909,
-                        0.9254902005195618,
-                        0.0784313753247261,
-                        1.0
-                    ],
-                    "FlipVertical": 0,
-                    "FlipHorizontal": 0,
-                    "isMasked": 0,
-                    "maskAmount": 100,
-                    "isMaskHorizontal": 0,
-                    "hoverDetectionMouse1": 1,
-                    "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
-            "UID": 1593655137,
-            "ParentUID": 3662860767,
-            "Name": "PopUpSkills",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -120.0,
-                        364.70001220703127
-                    ],
-                    "Size": [
-                        40.0,
-                        40.0
-                    ],
-                    "Anchor": 7,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 8,
-                    "Enabled": 1,
-                    "text": {
-                        "Type": 6,
-                        "Enabled": 1,
-                        "FontSize": 64.0,
-                        "text": "",
-                        "font": "Fonts/DroidSans.ttf",
-                        "color": [
-                            0.5882353186607361,
-                            0.5882353186607361,
-                            0.5882353186607361,
-                            1.0
-                        ],
-                        "colorHovered": [
-                            1.0,
-                            1.0,
-                            1.0,
-                            0.0
-                        ],
-                        "offset": [
-                            0.0,
-                            0.0
-                        ],
-                        "scaleOffset": [
-                            1.0,
-                            1.0
-                        ],
-                        "IsTextWrapped": 0,
-                        "WrapWidth": 100.0,
-                        "InterlineDistance": 24.0,
-                        "UIOrder": 0
-                    },
-                    "buttonImage": {
-                        "Type": 7,
-                        "Enabled": 1,
-                        "textureUID": 4220086960,
-                        "textureName": "Skills",
-                        "color": [
-                            1.0,
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "FlipVertical": 0,
-                        "FlipHorizontal": 0,
-                        "isMasked": 0,
-                        "maskAmount": 100,
-                        "isMaskHorizontal": 0,
-                        "hoverDetectionMouse1": 1,
-                        "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
-                    },
-                    "highlightedImage": {
-                        "Type": 7,
-                        "Enabled": 1,
-                        "textureUID": 4220086960,
-                        "textureName": "Skills",
-                        "color": [
-                            0.5882353186607361,
-                            0.5882353186607361,
-                            0.5882353186607361,
-                            1.0
-                        ],
-                        "FlipVertical": 0,
-                        "FlipHorizontal": 0,
-                        "isMasked": 0,
-                        "maskAmount": 100,
-                        "isMaskHorizontal": 0,
-                        "hoverDetectionMouse1": 1,
-                        "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
-                    },
-                    "pressedImage": {
-                        "Type": 7,
-                        "Enabled": 1,
-                        "textureUID": 4220086960,
-                        "textureName": "Skills",
-                        "color": [
-                            0.5882353186607361,
-                            0.5882353186607361,
-                            0.5882353186607361,
-                            1.0
-                        ],
-                        "FlipVertical": 0,
-                        "FlipHorizontal": 0,
-                        "isMasked": 0,
-                        "maskAmount": 100,
-                        "isMaskHorizontal": 0,
-                        "hoverDetectionMouse1": 1,
-                        "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
-                    },
-                    "hoverDetectionMouse1": 1,
-                    "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
-            "UID": 866370053,
-            "ParentUID": 3662860767,
-            "Name": "PopUpItems",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -119.0999984741211,
-                        323.1000061035156
-                    ],
-                    "Size": [
-                        40.0,
-                        40.0
-                    ],
-                    "Anchor": 7,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 8,
-                    "Enabled": 1,
-                    "text": {
-                        "Type": 6,
-                        "Enabled": 1,
-                        "FontSize": 64.0,
-                        "text": "",
-                        "font": "Fonts/DroidSans.ttf",
-                        "color": [
-                            0.5882353186607361,
-                            0.5882353186607361,
-                            0.5882353186607361,
-                            1.0
-                        ],
-                        "colorHovered": [
-                            1.0,
-                            1.0,
-                            1.0,
-                            0.0
-                        ],
-                        "offset": [
-                            0.0,
-                            0.0
-                        ],
-                        "scaleOffset": [
-                            1.0,
-                            1.0
-                        ],
-                        "IsTextWrapped": 0,
-                        "WrapWidth": 100.0,
-                        "InterlineDistance": 24.0,
-                        "UIOrder": 0
-                    },
-                    "buttonImage": {
-                        "Type": 7,
-                        "Enabled": 1,
-                        "textureUID": 1938062722,
-                        "textureName": "Inventario",
-                        "color": [
-                            1.0,
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "FlipVertical": 0,
-                        "FlipHorizontal": 0,
-                        "isMasked": 0,
-                        "maskAmount": 100,
-                        "isMaskHorizontal": 0,
-                        "hoverDetectionMouse1": 1,
-                        "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
-                    },
-                    "highlightedImage": {
-                        "Type": 7,
-                        "Enabled": 1,
-                        "textureUID": 1938062722,
-                        "textureName": "Inventario",
-                        "color": [
-                            0.5882353186607361,
-                            0.5882353186607361,
-                            0.5882353186607361,
-                            1.0
-                        ],
-                        "FlipVertical": 0,
-                        "FlipHorizontal": 0,
-                        "isMasked": 0,
-                        "maskAmount": 100,
-                        "isMaskHorizontal": 0,
-                        "hoverDetectionMouse1": 1,
-                        "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
-                    },
-                    "pressedImage": {
-                        "Type": 7,
-                        "Enabled": 1,
-                        "textureUID": 1938062722,
-                        "textureName": "Inventario",
-                        "color": [
-                            0.5882353186607361,
-                            0.5882353186607361,
-                            0.5882353186607361,
-                            1.0
-                        ],
-                        "FlipVertical": 0,
-                        "FlipHorizontal": 0,
-                        "isMasked": 0,
-                        "maskAmount": 100,
-                        "isMaskHorizontal": 0,
-                        "hoverDetectionMouse1": 1,
-                        "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
-                    },
-                    "hoverDetectionMouse1": 1,
-                    "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
-            "UID": 2025520953,
-            "ParentUID": 3662860767,
-            "Name": "PopUpSlots",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 0,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
+            "isPrefab": 1,
+            "isPrefabSync": 1,
+            "prefabUID": 4204400161,
             "Components": [
                 {
                     "Type": 0,
@@ -17199,6 +16676,457 @@
             ]
         },
         {
+            "UID": 1593655137,
+            "ParentUID": 2368270981,
+            "Name": "PopUpSkills",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -203.60000610351563,
+                        242.10000610351563
+                    ],
+                    "Size": [
+                        40.0,
+                        40.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 8,
+                    "Enabled": 1,
+                    "text": {
+                        "Type": 6,
+                        "Enabled": 1,
+                        "FontSize": 64.0,
+                        "text": "",
+                        "font": "Fonts/DroidSans.ttf",
+                        "color": [
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            1.0
+                        ],
+                        "colorHovered": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            0.0
+                        ],
+                        "offset": [
+                            0.0,
+                            0.0
+                        ],
+                        "scaleOffset": [
+                            1.0,
+                            1.0
+                        ],
+                        "IsTextWrapped": 0,
+                        "WrapWidth": 100.0,
+                        "InterlineDistance": 24.0,
+                        "UIOrder": 0
+                    },
+                    "buttonImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 4145752307,
+                        "textureName": "Button_skills",
+                        "color": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 100,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "highlightedImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 4145752307,
+                        "textureName": "Button_skills",
+                        "color": [
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            1.0
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 100,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "pressedImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 4145752307,
+                        "textureName": "Button_skills",
+                        "color": [
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            1.0
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 100,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 866370053,
+            "ParentUID": 2368270981,
+            "Name": "PopUpItems",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -203.89999389648438,
+                        283.29998779296877
+                    ],
+                    "Size": [
+                        40.0,
+                        40.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 8,
+                    "Enabled": 1,
+                    "text": {
+                        "Type": 6,
+                        "Enabled": 1,
+                        "FontSize": 64.0,
+                        "text": "",
+                        "font": "Fonts/DroidSans.ttf",
+                        "color": [
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            1.0
+                        ],
+                        "colorHovered": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            0.0
+                        ],
+                        "offset": [
+                            0.0,
+                            0.0
+                        ],
+                        "scaleOffset": [
+                            1.0,
+                            1.0
+                        ],
+                        "IsTextWrapped": 0,
+                        "WrapWidth": 100.0,
+                        "InterlineDistance": 24.0,
+                        "UIOrder": 0
+                    },
+                    "buttonImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 795237118,
+                        "textureName": "Button_Inventory",
+                        "color": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 100,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "highlightedImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 795237118,
+                        "textureName": "Button_Inventory",
+                        "color": [
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            1.0
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 100,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "pressedImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 795237118,
+                        "textureName": "Button_Inventory",
+                        "color": [
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            1.0
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 100,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 3662860767,
+            "ParentUID": 2368270981,
+            "Name": "PopUpEquipSkills",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        0.0,
+                        254.1999969482422
+                    ],
+                    "Size": [
+                        369.5,
+                        235.5
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 4115206618,
+                    "textureName": "Skills_PopUp",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                },
+                {
+                    "Type": 9,
+                    "Enabled": 1,
+                    "script": "EquipPopupController",
+                    "scriptInfo": {}
+                }
+            ]
+        },
+        {
+            "UID": 2025520953,
+            "ParentUID": 3662860767,
+            "Name": "PopUpSlotsSkills",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 0,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 0,
+                    "Enabled": 1,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        -100.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Euler": [
+                        -0.0,
+                        0.0,
+                        -0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Global": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        -100.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                }
+            ]
+        },
+        {
             "UID": 3976087575,
             "ParentUID": 2025520953,
             "Name": "PopUPSlot1",
@@ -17236,12 +17164,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -66.0999984741211,
-                        360.5
+                        -136.6999969482422,
+                        267.0
                     ],
                     "Size": [
-                        40.0,
-                        40.0
+                        36.0,
+                        36.0
                     ],
                     "Anchor": 7,
                     "Stretch": 3
@@ -17249,8 +17177,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1222131602,
-                    "textureName": "weaponSlot",
+                    "textureUID": 0,
+                    "textureName": "",
                     "color": [
                         1.0,
                         1.0,
@@ -17306,12 +17234,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -20.899999618530275,
-                        360.5
+                        -81.5,
+                        266.70001220703127
                     ],
                     "Size": [
-                        40.0,
-                        40.0
+                        36.0,
+                        36.0
                     ],
                     "Anchor": 7,
                     "Stretch": 3
@@ -17319,8 +17247,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1222131602,
-                    "textureName": "weaponSlot",
+                    "textureUID": 0,
+                    "textureName": "",
                     "color": [
                         1.0,
                         1.0,
@@ -17376,12 +17304,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        23.899999618530275,
-                        360.5
+                        -26.700000762939454,
+                        266.70001220703127
                     ],
                     "Size": [
-                        40.0,
-                        40.0
+                        36.0,
+                        36.0
                     ],
                     "Anchor": 7,
                     "Stretch": 3
@@ -17389,8 +17317,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1222131602,
-                    "textureName": "weaponSlot",
+                    "textureUID": 0,
+                    "textureName": "",
                     "color": [
                         1.0,
                         1.0,
@@ -17446,12 +17374,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        68.5999984741211,
-                        360.5
+                        27.100000381469728,
+                        266.5
                     ],
                     "Size": [
-                        40.0,
-                        40.0
+                        36.0,
+                        36.0
                     ],
                     "Anchor": 7,
                     "Stretch": 3
@@ -17459,8 +17387,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1222131602,
-                    "textureName": "weaponSlot",
+                    "textureUID": 0,
+                    "textureName": "",
                     "color": [
                         1.0,
                         1.0,
@@ -17516,12 +17444,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -66.0999984741211,
-                        316.0
+                        82.4000015258789,
+                        267.0
                     ],
                     "Size": [
-                        40.0,
-                        40.0
+                        36.0,
+                        36.0
                     ],
                     "Anchor": 7,
                     "Stretch": 3
@@ -17529,8 +17457,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1222131602,
-                    "textureName": "weaponSlot",
+                    "textureUID": 0,
+                    "textureName": "",
                     "color": [
                         1.0,
                         1.0,
@@ -17586,12 +17514,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -20.5,
-                        316.0
+                        137.10000610351563,
+                        266.20001220703127
                     ],
                     "Size": [
-                        40.0,
-                        40.0
+                        36.0,
+                        36.0
                     ],
                     "Anchor": 7,
                     "Stretch": 3
@@ -17599,8 +17527,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1222131602,
-                    "textureName": "weaponSlot",
+                    "textureUID": 0,
+                    "textureName": "",
                     "color": [
                         1.0,
                         1.0,
@@ -17656,12 +17584,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        24.0,
-                        316.0
+                        -118.5999984741211,
+                        210.10000610351563
                     ],
                     "Size": [
-                        40.0,
-                        40.0
+                        36.0,
+                        36.0
                     ],
                     "Anchor": 7,
                     "Stretch": 3
@@ -17669,8 +17597,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1222131602,
-                    "textureName": "weaponSlot",
+                    "textureUID": 0,
+                    "textureName": "",
                     "color": [
                         1.0,
                         1.0,
@@ -17726,12 +17654,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        68.80000305175781,
-                        316.0
+                        -64.69999694824219,
+                        210.10000610351563
                     ],
                     "Size": [
-                        40.0,
-                        40.0
+                        36.0,
+                        36.0
                     ],
                     "Anchor": 7,
                     "Stretch": 3
@@ -17739,8 +17667,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1222131602,
-                    "textureName": "weaponSlot",
+                    "textureUID": 0,
+                    "textureName": "",
                     "color": [
                         1.0,
                         1.0,
@@ -17796,12 +17724,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -66.0999984741211,
-                        271.0
+                        -8.0,
+                        209.6999969482422
                     ],
                     "Size": [
-                        40.0,
-                        40.0
+                        36.0,
+                        36.0
                     ],
                     "Anchor": 7,
                     "Stretch": 3
@@ -17809,8 +17737,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1222131602,
-                    "textureName": "weaponSlot",
+                    "textureUID": 0,
+                    "textureName": "",
                     "color": [
                         1.0,
                         1.0,
@@ -17866,12 +17794,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -20.799999237060548,
-                        271.0
+                        46.900001525878909,
+                        210.3000030517578
                     ],
                     "Size": [
-                        40.0,
-                        40.0
+                        36.0,
+                        36.0
                     ],
                     "Anchor": 7,
                     "Stretch": 3
@@ -17879,8 +17807,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1222131602,
-                    "textureName": "weaponSlot",
+                    "textureUID": 0,
+                    "textureName": "",
                     "color": [
                         1.0,
                         1.0,
@@ -17936,12 +17864,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        24.100000381469728,
-                        271.0
+                        102.4000015258789,
+                        209.0
                     ],
                     "Size": [
-                        40.0,
-                        40.0
+                        36.0,
+                        36.0
                     ],
                     "Anchor": 7,
                     "Stretch": 3
@@ -17949,8 +17877,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1222131602,
-                    "textureName": "weaponSlot",
+                    "textureUID": 0,
+                    "textureName": "",
                     "color": [
                         1.0,
                         1.0,
@@ -17969,9 +17897,164 @@
             ]
         },
         {
-            "UID": 2384977634,
-            "ParentUID": 2025520953,
-            "Name": "PopUPSlot12",
+            "UID": 4009934960,
+            "ParentUID": 2368270981,
+            "Name": "PopUpEquipItems",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 0,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        0.0,
+                        254.1999969482422
+                    ],
+                    "Size": [
+                        369.5,
+                        235.5
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 3208987140,
+                    "textureName": "Inventory_PopUp",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                },
+                {
+                    "Type": 9,
+                    "Enabled": 1,
+                    "script": "EquipPopupController",
+                    "scriptInfo": {}
+                }
+            ]
+        },
+        {
+            "UID": 573646153,
+            "ParentUID": 4009934960,
+            "Name": "PopUpSlotsItems",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 0,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 0,
+                    "Enabled": 1,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        -100.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Euler": [
+                        -0.0,
+                        0.0,
+                        -0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Global": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        -100.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": 3630666956,
+            "ParentUID": 573646153,
+            "Name": "PopUPSlot1",
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 0,
@@ -18006,12 +18089,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        68.69999694824219,
-                        271.0
+                        -107.0999984741211,
+                        277.6000061035156
                     ],
                     "Size": [
-                        40.0,
-                        40.0
+                        30.0,
+                        30.0
                     ],
                     "Anchor": 7,
                     "Stretch": 3
@@ -18019,8 +18102,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1222131602,
-                    "textureName": "weaponSlot",
+                    "textureUID": 0,
+                    "textureName": "",
                     "color": [
                         1.0,
                         1.0,
@@ -18039,9 +18122,9 @@
             ]
         },
         {
-            "UID": 4066130738,
-            "ParentUID": 2025520953,
-            "Name": "PopUPSlot13",
+            "UID": 909836121,
+            "ParentUID": 573646153,
+            "Name": "PopUPSlot2",
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 0,
@@ -18076,12 +18159,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -66.0999984741211,
-                        227.0
+                        -64.5999984741211,
+                        277.8999938964844
                     ],
                     "Size": [
-                        40.0,
-                        40.0
+                        30.0,
+                        30.0
                     ],
                     "Anchor": 7,
                     "Stretch": 3
@@ -18089,8 +18172,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1222131602,
-                    "textureName": "weaponSlot",
+                    "textureUID": 0,
+                    "textureName": "",
                     "color": [
                         1.0,
                         1.0,
@@ -18109,9 +18192,9 @@
             ]
         },
         {
-            "UID": 1107817526,
-            "ParentUID": 2025520953,
-            "Name": "PopUPSlot14",
+            "UID": 3470695400,
+            "ParentUID": 573646153,
+            "Name": "PopUPSlot3",
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 0,
@@ -18147,11 +18230,11 @@
                     "Enabled": 1,
                     "Position": [
                         -21.200000762939454,
-                        227.0
+                        279.3999938964844
                     ],
                     "Size": [
-                        40.0,
-                        40.0
+                        30.0,
+                        30.0
                     ],
                     "Anchor": 7,
                     "Stretch": 3
@@ -18159,8 +18242,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1222131602,
-                    "textureName": "weaponSlot",
+                    "textureUID": 0,
+                    "textureName": "",
                     "color": [
                         1.0,
                         1.0,
@@ -18179,8 +18262,778 @@
             ]
         },
         {
-            "UID": 1989896448,
-            "ParentUID": 2025520953,
+            "UID": 180919406,
+            "ParentUID": 573646153,
+            "Name": "PopUPSlot4",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        21.100000381469728,
+                        278.70001220703127
+                    ],
+                    "Size": [
+                        30.0,
+                        30.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 0,
+                    "textureName": "",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 3352847618,
+            "ParentUID": 573646153,
+            "Name": "PopUPSlot5",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        64.30000305175781,
+                        278.29998779296877
+                    ],
+                    "Size": [
+                        30.0,
+                        30.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 0,
+                    "textureName": "",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 1018153765,
+            "ParentUID": 573646153,
+            "Name": "PopUPSlot6",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        107.19999694824219,
+                        279.0
+                    ],
+                    "Size": [
+                        30.0,
+                        30.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 0,
+                    "textureName": "",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 263747103,
+            "ParentUID": 573646153,
+            "Name": "PopUPSlot7",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -107.30000305175781,
+                        239.60000610351563
+                    ],
+                    "Size": [
+                        30.0,
+                        30.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 0,
+                    "textureName": "",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 1115147711,
+            "ParentUID": 573646153,
+            "Name": "PopUPSlot8",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -64.5999984741211,
+                        240.0
+                    ],
+                    "Size": [
+                        30.0,
+                        30.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 0,
+                    "textureName": "",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 1109789118,
+            "ParentUID": 573646153,
+            "Name": "PopUPSlot9",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -21.600000381469728,
+                        240.3000030517578
+                    ],
+                    "Size": [
+                        30.0,
+                        30.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 0,
+                    "textureName": "",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 2482257830,
+            "ParentUID": 573646153,
+            "Name": "PopUPSlot10",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        21.899999618530275,
+                        239.8000030517578
+                    ],
+                    "Size": [
+                        30.0,
+                        30.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 0,
+                    "textureName": "",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 708418072,
+            "ParentUID": 573646153,
+            "Name": "PopUPSlot11",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        64.30000305175781,
+                        239.0
+                    ],
+                    "Size": [
+                        30.0,
+                        30.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 0,
+                    "textureName": "",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 3543657206,
+            "ParentUID": 573646153,
+            "Name": "PopUPSlot12",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        107.80000305175781,
+                        238.89999389648438
+                    ],
+                    "Size": [
+                        30.0,
+                        30.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 0,
+                    "textureName": "",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 1114623298,
+            "ParentUID": 573646153,
+            "Name": "PopUPSlot13",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -107.0,
+                        200.8000030517578
+                    ],
+                    "Size": [
+                        30.0,
+                        30.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 0,
+                    "textureName": "",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 2765593315,
+            "ParentUID": 573646153,
+            "Name": "PopUPSlot14",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -64.5,
+                        201.3000030517578
+                    ],
+                    "Size": [
+                        30.0,
+                        30.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 0,
+                    "textureName": "",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 3446611388,
+            "ParentUID": 573646153,
             "Name": "PopUPSlot15",
             "Tag": "Default",
             "Static": 0,
@@ -18216,12 +19069,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        24.0,
-                        227.0
+                        -21.399999618530275,
+                        200.89999389648438
                     ],
                     "Size": [
-                        40.0,
-                        40.0
+                        30.0,
+                        30.0
                     ],
                     "Anchor": 7,
                     "Stretch": 3
@@ -18229,8 +19082,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1222131602,
-                    "textureName": "weaponSlot",
+                    "textureUID": 0,
+                    "textureName": "",
                     "color": [
                         1.0,
                         1.0,
@@ -18249,8 +19102,8 @@
             ]
         },
         {
-            "UID": 3292072071,
-            "ParentUID": 2025520953,
+            "UID": 1302848159,
+            "ParentUID": 573646153,
             "Name": "PopUPSlot16",
             "Tag": "Default",
             "Static": 0,
@@ -18286,12 +19139,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        68.5,
-                        227.0
+                        21.700000762939454,
+                        201.10000610351563
                     ],
                     "Size": [
-                        40.0,
-                        40.0
+                        30.0,
+                        30.0
                     ],
                     "Anchor": 7,
                     "Stretch": 3
@@ -18299,8 +19152,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1222131602,
-                    "textureName": "weaponSlot",
+                    "textureUID": 0,
+                    "textureName": "",
                     "color": [
                         1.0,
                         1.0,
@@ -18319,8 +19172,218 @@
             ]
         },
         {
-            "UID": 235147758,
-            "ParentUID": 3662860767,
+            "UID": 673266878,
+            "ParentUID": 573646153,
+            "Name": "PopUPSlot17",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        64.4000015258789,
+                        201.5
+                    ],
+                    "Size": [
+                        30.0,
+                        30.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 0,
+                    "textureName": "",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 3519797121,
+            "ParentUID": 573646153,
+            "Name": "PopUPSlot18",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        107.0999984741211,
+                        199.8000030517578
+                    ],
+                    "Size": [
+                        30.0,
+                        30.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 0,
+                    "textureName": "",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 2574360288,
+            "ParentUID": 2368270981,
+            "Name": "PopUpHover",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -137.3000030517578,
+                        265.0
+                    ],
+                    "Size": [
+                        80.0,
+                        80.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 258563022,
+                    "textureName": "Hover_Skill",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 1
+                }
+            ]
+        },
+        {
+            "UID": 3190410977,
+            "ParentUID": 2368270981,
             "Name": "PopUpUnequip",
             "Tag": "Default",
             "Static": 0,
@@ -18357,11 +19420,11 @@
                     "Enabled": 1,
                     "Position": [
                         0.0,
-                        178.8000030517578
+                        161.89999389648438
                     ],
                     "Size": [
-                        35.0,
-                        35.0
+                        47.0,
+                        28.5
                     ],
                     "Anchor": 7,
                     "Stretch": 3
@@ -18373,27 +19436,27 @@
                         "Type": 6,
                         "Enabled": 1,
                         "FontSize": 64.0,
-                        "text": "",
-                        "font": "Fonts/DroidSans.ttf",
+                        "text": "Unfit",
+                        "font": "Fonts/Vision-Regular.ttf",
                         "color": [
-                            1.0,
-                            1.0,
-                            1.0,
+                            0.4959016442298889,
+                            0.10771632939577103,
+                            0.10771632939577103,
                             0.0
                         ],
                         "colorHovered": [
-                            1.0,
-                            1.0,
-                            1.0,
+                            0.4941176474094391,
+                            0.10588235408067703,
+                            0.10588235408067703,
                             0.0
                         ],
                         "offset": [
-                            0.0,
+                            -18.0,
                             0.0
                         ],
                         "scaleOffset": [
-                            1.0,
-                            1.0
+                            1.2000000476837159,
+                            1.5
                         ],
                         "IsTextWrapped": 0,
                         "WrapWidth": 100.0,
@@ -18403,8 +19466,8 @@
                     "buttonImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 301273725,
-                        "textureName": "clearSlot",
+                        "textureUID": 2636218214,
+                        "textureName": "Button_Unfit",
                         "color": [
                             1.0,
                             1.0,
@@ -18423,8 +19486,8 @@
                     "highlightedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 301273725,
-                        "textureName": "clearSlot",
+                        "textureUID": 2636218214,
+                        "textureName": "Button_Unfit",
                         "color": [
                             0.5882353186607361,
                             0.5882353186607361,
@@ -18443,8 +19506,8 @@
                     "pressedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 301273725,
-                        "textureName": "clearSlot",
+                        "textureUID": 2636218214,
+                        "textureName": "Button_Unfit",
                         "color": [
                             0.5882353186607361,
                             0.5882353186607361,
@@ -18460,155 +19523,6 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0
                     },
-                    "hoverDetectionMouse1": 1,
-                    "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
-            "UID": 199878334,
-            "ParentUID": 3662860767,
-            "Name": "HoverPopUPGO",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 0,
-                    "Enabled": 1,
-                    "Position": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "Rotation": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ],
-                    "Euler": [
-                        -0.0,
-                        0.0,
-                        -0.0
-                    ],
-                    "Scale": [
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "Global": [
-                        1.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
-                }
-            ]
-        },
-        {
-            "UID": 2574360288,
-            "ParentUID": 199878334,
-            "Name": "PopUpHover",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -66.30000305175781,
-                        360.6000061035156
-                    ],
-                    "Size": [
-                        70.0,
-                        71.0
-                    ],
-                    "Anchor": 7,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 7,
-                    "Enabled": 1,
-                    "textureUID": 258563022,
-                    "textureName": "Hover_Skill",
-                    "color": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "FlipVertical": 0,
-                    "FlipHorizontal": 0,
-                    "isMasked": 0,
-                    "maskAmount": 100,
-                    "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 0

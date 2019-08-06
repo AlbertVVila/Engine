@@ -54,13 +54,15 @@ private:
 	SkillTreeController* skillTree = nullptr;
 	PlayerMovement* player = nullptr;
 
-	GameObject* popupGO = nullptr;
-	ComponentImage* background = nullptr;
-	Text* title = nullptr;
+	GameObject* popupGOSkills = nullptr;
+	GameObject* popupGOItems = nullptr;
+	ComponentImage* backgroundSkills = nullptr;
+	ComponentImage* backgroundItems = nullptr;
 	Button* items = nullptr;
 	Button* skills = nullptr;
 	Button* unequip = nullptr;
-	std::vector<GameObject*> slots;
+	std::vector<GameObject*> slotsSkills;
+	std::vector<GameObject*> slotsItems;
 	Transform2D* hoverTransform = nullptr;
 
 	std::vector<Button*> hudButtons;
@@ -71,9 +73,6 @@ private:
 
 	std::vector<std::pair<int, Skill>> skillsEquiped;
 	std::vector<std::pair<int, Item>> itemsEquiped;
-
-
-	bool skillsShowing = true;
 };
 
 extern "C" EquipPopupController_API Script* CreateScript();

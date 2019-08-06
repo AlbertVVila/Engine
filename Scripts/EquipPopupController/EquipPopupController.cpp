@@ -35,23 +35,23 @@ void EquipPopupController::Start()
 	skillTree = App->scene->FindGameObjectByName("Skills")->GetComponent<SkillTreeController>();
 	assert(inventory != nullptr);
 
-	popupGO = App->scene->FindGameObjectByName("PopUpBackground");
-	assert(popupGO != nullptr);
+	
+	popupGOSkills = App->scene->FindGameObjectByName("PopUpEquipSkills", gameobject);
+	popupGOItems = App->scene->FindGameObjectByName("PopUpEquipItems", gameobject);
 
-	background = popupGO->GetComponent<ComponentImage>();
-	assert(background != nullptr);
+	backgroundSkills = popupGOSkills->GetComponent<ComponentImage>();
+	assert(backgroundSkills != nullptr);
+	backgroundItems = popupGOItems->GetComponent<ComponentImage>();
+	assert(backgroundItems != nullptr);
 
-	items = App->scene->FindGameObjectByName("PopUpItems", popupGO)->GetComponent<Button>();
+	items = App->scene->FindGameObjectByName("PopUpItems", gameobject)->GetComponent<Button>();
 	assert(items != nullptr);
 
-	skills = App->scene->FindGameObjectByName("PopUpSkills", popupGO)->GetComponent<Button>();
+	skills = App->scene->FindGameObjectByName("PopUpSkills", gameobject)->GetComponent<Button>();
 	assert(skills != nullptr);
 
-	unequip = App->scene->FindGameObjectByName("PopUpUnequip", popupGO)->GetComponent<Button>();
+	unequip = App->scene->FindGameObjectByName("PopUpUnequip", gameobject)->GetComponent<Button>();
 	assert(unequip != nullptr);
-
-	title = App->scene->FindGameObjectByName("PopUpEquipTitle", popupGO)->GetComponent<Text>();
-	assert(title != nullptr);
 
 	GameObject* HUD = App->scene->FindGameObjectByName("GameHUB");
 	assert(HUD != nullptr);
@@ -65,9 +65,11 @@ void EquipPopupController::Start()
 	hudButtons.emplace_back(App->scene->FindGameObjectByName("E", HUD)->GetComponent<Button>());
 	hudButtons.emplace_back(App->scene->FindGameObjectByName("R", HUD)->GetComponent<Button>());
 
-	std::list<GameObject*> list = App->scene->FindGameObjectByName("PopUpSlots", popupGO)->children;
+	std::list<GameObject*> listSkills = App->scene->FindGameObjectByName("PopUpSlotsSkills", popupGOSkills)->children;
+	std::list<GameObject*> listItems = App->scene->FindGameObjectByName("PopUpSlotsItems", popupGOItems)->children;
 
-	slots = { std::begin(list), std::end(list) };
+	slotsSkills = { std::begin(listSkills), std::end(listSkills) };
+	slotsItems = { std::begin(listItems), std::end(listItems) };
 
 	hoverTransform = App->scene->FindGameObjectByName("PopUpHover", gameobject)->GetComponent<Transform2D>();
 	assert(hoverTransform != nullptr);
@@ -86,9 +88,9 @@ void EquipPopupController::Start()
 void EquipPopupController::Update()
 {
 	//Check if has to close PopUp
-	if (popupGO->isActive() && !background->isHovered && !items->IsHovered() && !skills->IsHovered() && (App->input->GetMouseButtonDown(1) == KEY_DOWN || App->input->GetMouseButtonDown(3) == KEY_DOWN))
+	if (gameobject->isActive() && !backgroundSkills->isHovered && !backgroundItems->isHovered && !items->IsHovered() && !skills->IsHovered() && (App->input->GetMouseButtonDown(1) == KEY_DOWN || App->input->GetMouseButtonDown(3) == KEY_DOWN))
 	{
-		popupGO->SetActive(false);
+		gameobject->SetActive(false);
 		return;
 	}
 
@@ -97,16 +99,16 @@ void EquipPopupController::Update()
 	{
 		if (hudButtons[i]->IsHovered() && App->input->GetMouseButtonDown(3) == KEY_DOWN) {
 			activeButton = i;
-			if (!popupGO->isActive())
+			if (!gameobject->isActive())
 			{
 				FillLists();
-				popupGO->SetActive(true);
+				gameobject->SetActive(true);
 			}
 			break;
 		}
 	}
 
-	if (!popupGO->isActive()) { return; }
+	if (!gameobject->isActive()) { return; }
 
 	hoverTransform->gameobject->SetActive(false);
 
@@ -122,13 +124,13 @@ void EquipPopupController::Update()
 	//Check if selected
 	for (int i = 0; i < POPUP_SLOTS; ++i)
 	{
-		if (!slots[i]->isActive())
+		if (!slotsSkills[i]->isActive())
 		{
 			break;
 		}
-		if (slots[i]->GetComponent<ComponentImage>()->isHovered)
+		if (slotsSkills[i]->GetComponent<ComponentImage>()->isHovered)
 		{
-			math::float2 pos = slots[i]->GetComponent<Transform2D>()->getPosition();
+			math::float2 pos = slotsSkills[i]->GetComponent<Transform2D>()->getPosition();
 			hoverTransform->SetPositionUsingAligment(pos);
 			hoverTransform->gameobject->SetActive(true);
 
@@ -144,7 +146,7 @@ void EquipPopupController::Update()
 
 void EquipPopupController::Assign(int i)
 {
-	if (skillsShowing)
+	if (popupGOSkills->isActive())
 	{
 		RemoveEquiped();
 		skillsEquiped.emplace_back(activeButton, skillsList[i]);
@@ -165,7 +167,7 @@ void EquipPopupController::Assign(int i)
 		(*it1)->SetActive(true);
 		//TODO: Pass info to player
 	}
-	popupGO->SetActive(false);
+	gameobject->SetActive(false);
 }
 
 void EquipPopupController::RemoveEquiped()
@@ -188,17 +190,17 @@ void EquipPopupController::RemoveEquiped()
 
 void EquipPopupController::ChangePopUpSlots()
 {
-	if (items->IsPressed() && skillsShowing)
+	if (items->IsPressed() && popupGOSkills->isActive())
 	{
-		skillsShowing = false;
-		title->text = "Items";
+		popupGOItems->SetActive(true);
+		popupGOSkills->SetActive(false);
 		FillItemSlots();
 	}
 
-	if (skills->IsPressed() && !skillsShowing)
+	if (skills->IsPressed() && !popupGOSkills->isActive())
 	{
-		skillsShowing = true;
-		title->text = "Skills";
+		popupGOItems->SetActive(false);
+		popupGOSkills->SetActive(true);
 		FillSkillSlots();
 	}
 }
@@ -212,7 +214,7 @@ void EquipPopupController::FillLists()
 	skillsList = skillTree->GetActiveSkills();
 	itemsList = inventory->GetQuickItems();
 
-	if (skillsShowing)
+	if (popupGOSkills->isActive())
 	{
 		FillSkillSlots();
 	}
@@ -227,11 +229,11 @@ void EquipPopupController::FillSkillSlots()
 
 	for (int i = 0; i < POPUP_SLOTS; ++i)
 	{
-		slots[i]->SetActive(false);
+		slotsSkills[i]->SetActive(false);
 		if (i < skillsList.size())
 		{
-			slots[i]->GetComponent<ComponentImage>()->UpdateTexture(skillsList[i].spriteActive->GetName());// = skillsList[i].spriteActive;
-			slots[i]->SetActive(true);
+			slotsSkills[i]->GetComponent<ComponentImage>()->UpdateTexture(skillsList[i].spriteActive->GetName());// = skillsList[i].spriteActive;
+			slotsSkills[i]->SetActive(true);
 		}
 	}
 }
@@ -239,18 +241,18 @@ void EquipPopupController::FillSkillSlots()
 void EquipPopupController::FillItemSlots()
 {
 
-	if (skillsShowing) {
+	if (popupGOSkills->isActive()) {
 		return;
 	}
 
 	for (int i = 0; i < POPUP_SLOTS; ++i)
 	{
-		slots[i]->SetActive(false);
+		slotsSkills[i]->SetActive(false);
 
 		if (i < itemsList.size())
 		{
-			slots[i]->GetComponent<ComponentImage>()->UpdateTexture(itemsList[i].sprite);
-			slots[i]->SetActive(true);
+			slotsSkills[i]->GetComponent<ComponentImage>()->UpdateTexture(itemsList[i].sprite);
+			slotsSkills[i]->SetActive(true);
 		}
 
 	}
