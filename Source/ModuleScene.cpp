@@ -1896,7 +1896,35 @@ void ModuleScene::DeleteDirectionalLight(ComponentLight* light)
 	}
 }
 
-std::list<std::pair<float, GameObject*>> ModuleScene::GetDynamicIntersections(const LineSegment & line) const
+math::LineSegment ModuleScene::SceneRaycast(math::float2 position)
+{
+	float normalized_x, normalized_y;
+
+#ifndef GAME_BUILD
+		math::float2 winPos = App->renderer->viewGame->winPos;
+		math::float2 size(App->renderer->viewGame->current_width, App->renderer->viewGame->current_height);
+#else
+		math::float2 pos = math::float2::zero;
+		math::float2 size(App->window->width, App->window->height);
+#endif
+		normalized_x = ((position.x - winPos.x) / size.x) * 2 - 1; //0 to 1 -> -1 to 1
+		normalized_y = (1 - (position.y - winPos.y) / size.y) * 2 - 1; //0 to 1 -> -1 to 1
+
+		return App->scene->maincamera->DrawRay(normalized_x, normalized_y);
+}
+
+std::list<GameObject*> ModuleScene::SceneRaycastHit(math::float2 position)
+{
+	std::list<GameObject*> go_list;
+	for (std::pair<float, GameObject*> item : GetDynamicIntersections(SceneRaycast(position), false))
+	{
+		go_list.emplace_back(item.second);
+	}
+
+	return go_list;
+}
+
+std::list<std::pair<float, GameObject*>> ModuleScene::GetDynamicIntersections(const LineSegment & line, bool sort) const
 {
 	std::list<std::pair<float, GameObject*>> gos; 
 	std::unordered_set<GameObject*> intersections;
@@ -1911,7 +1939,7 @@ std::list<std::pair<float, GameObject*>> ModuleScene::GetDynamicIntersections(co
 			gos.push_back(std::pair<float, GameObject*>(dNear, go));
 		}
 	}
-	gos.sort();
+	if (sort) gos.sort();
 	return gos;
 }
 
