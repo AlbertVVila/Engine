@@ -43,6 +43,7 @@ class FlyingSkullEnemyAIScript_API FlyingSkullEnemyAIScript : public Script
 
 public:
 
+	//IA parameters
 	float cooldownDuration = 1.0f;
 	float activationDistance = 1000.0f;
 	float disengageDistance = 1500.0f;
@@ -51,10 +52,20 @@ public:
 	float runSpeed = 150.0f;
 	float offsetHeight = 120.0f;
 
+	//animation paramteres
+
+	//Skull
 	float movementConstant = 20.0f;
 	float idleMovementSpeed = 5.0f;
+	float modifiedSpeed = 0.0f;
+	float maxIdleSpeed = 20.0f;
+	float minIdleSpeed = 2.0f;
 	float acceleration = 0.0f;
 	float angle = 0.0f;
+
+	//orbit bones
+	float firstRotationSpeed = 0.02f;
+	float secondRotationSpeed = 0.03f;
 
 	float projectileDelay = 0.5f;
 
@@ -65,10 +76,16 @@ public:
 	//hierarchy
 
 	GameObject* boneCenter = nullptr;
-	GameObject* spinningBones = nullptr;
+	GameObject* firstSpin = nullptr;
+	GameObject* secondSpin = nullptr;
+	GameObject* firstRotation = nullptr;
+	GameObject* secondRotation = nullptr;
+	GameObject* firstBone = nullptr;
+	GameObject* secondBone = nullptr;
 	GameObject* particles = nullptr;
 
 	void Movement();
+	void OrbitMovement();
 
 public:
 
