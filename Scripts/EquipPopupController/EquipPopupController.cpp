@@ -20,6 +20,7 @@
 
 #include "JSON.h"
 #include "PlayerPrefs.h"
+#include "Math/float2.h"
 
 EquipPopupController_API Script* CreateScript()
 {
@@ -35,7 +36,7 @@ void EquipPopupController::Start()
 	skillTree = App->scene->FindGameObjectByName("Skills")->GetComponent<SkillTreeController>();
 	assert(inventory != nullptr);
 
-	
+
 	popupGOSkills = App->scene->FindGameObjectByName("PopUpEquipSkills", gameobject);
 	popupGOItems = App->scene->FindGameObjectByName("PopUpEquipItems", gameobject);
 
@@ -64,6 +65,24 @@ void EquipPopupController::Start()
 	hudButtons.emplace_back(App->scene->FindGameObjectByName("W", HUD)->GetComponent<Button>());
 	hudButtons.emplace_back(App->scene->FindGameObjectByName("E", HUD)->GetComponent<Button>());
 	hudButtons.emplace_back(App->scene->FindGameObjectByName("R", HUD)->GetComponent<Button>());
+	hudImageSlots.emplace_back(App->scene->FindGameObjectByName("RC_Slot", HUD)->GetComponent<ComponentImage>());
+	hudImageSlots.emplace_back(App->scene->FindGameObjectByName("One_Slot", HUD)->GetComponent<ComponentImage>());
+	hudImageSlots.emplace_back(App->scene->FindGameObjectByName("Two_Slot", HUD)->GetComponent<ComponentImage>());
+	hudImageSlots.emplace_back(App->scene->FindGameObjectByName("Three_Slot", HUD)->GetComponent<ComponentImage>());
+	hudImageSlots.emplace_back(App->scene->FindGameObjectByName("Four_Slot", HUD)->GetComponent<ComponentImage>());
+	hudImageSlots.emplace_back(App->scene->FindGameObjectByName("Q_Slot", HUD)->GetComponent<ComponentImage>());
+	hudImageSlots.emplace_back(App->scene->FindGameObjectByName("W_Slot", HUD)->GetComponent<ComponentImage>());
+	hudImageSlots.emplace_back(App->scene->FindGameObjectByName("E_Slot", HUD)->GetComponent<ComponentImage>());
+	hudImageSlots.emplace_back(App->scene->FindGameObjectByName("R_Slot", HUD)->GetComponent<ComponentImage>());
+	hudButtonsText.emplace_back(App->scene->FindGameObjectByName("RCText", HUD)->GetComponent<Transform2D>(), false);
+	hudButtonsText.emplace_back(App->scene->FindGameObjectByName("OneText", HUD)->GetComponent<Transform2D>(), false);
+	hudButtonsText.emplace_back(App->scene->FindGameObjectByName("TwoText", HUD)->GetComponent<Transform2D>(), false);
+	hudButtonsText.emplace_back(App->scene->FindGameObjectByName("ThreeText", HUD)->GetComponent<Transform2D>(), false);
+	hudButtonsText.emplace_back(App->scene->FindGameObjectByName("FourText", HUD)->GetComponent<Transform2D>(), false);
+	hudButtonsText.emplace_back(App->scene->FindGameObjectByName("QText", HUD)->GetComponent<Transform2D>(), false);
+	hudButtonsText.emplace_back(App->scene->FindGameObjectByName("WText", HUD)->GetComponent<Transform2D>(), false);
+	hudButtonsText.emplace_back(App->scene->FindGameObjectByName("EText", HUD)->GetComponent<Transform2D>(), false);
+	hudButtonsText.emplace_back(App->scene->FindGameObjectByName("RText", HUD)->GetComponent<Transform2D>(), false);
 
 	std::list<GameObject*> listSkills = App->scene->FindGameObjectByName("PopUpSlotsSkills", popupGOSkills)->children;
 	std::list<GameObject*> listItems = App->scene->FindGameObjectByName("PopUpSlotsItems", popupGOItems)->children;
@@ -101,8 +120,8 @@ void EquipPopupController::Update()
 			activeButton = i;
 			if (!gameobject->isActive())
 			{
-				FillLists();
 				gameobject->SetActive(true);
+				FillLists();
 			}
 			break;
 		}
@@ -122,22 +141,47 @@ void EquipPopupController::Update()
 	}
 
 	//Check if selected
-	for (int i = 0; i < POPUP_SLOTS; ++i)
+	if (popupGOSkills->isActive())
 	{
-		if (!slotsSkills[i]->isActive())
+		for (int i = 0; i < POPUP_SKILLS_SLOTS; ++i)
 		{
-			break;
-		}
-		if (slotsSkills[i]->GetComponent<ComponentImage>()->isHovered)
-		{
-			math::float2 pos = slotsSkills[i]->GetComponent<Transform2D>()->getPosition();
-			hoverTransform->SetPositionUsingAligment(pos);
-			hoverTransform->gameobject->SetActive(true);
-
-			//TODO: Show info
-			if (App->input->GetMouseButtonDown(1) == KEY_DOWN)
+			if (!slotsSkills[i]->isActive())
 			{
-				Assign(i);
+				break;
+			}
+			if (slotsSkills[i]->GetComponent<ComponentImage>()->isHovered)
+			{
+				math::float2 pos = slotsSkills[i]->GetComponent<Transform2D>()->getPosition();
+				hoverTransform->SetPositionUsingAligment(pos);
+				hoverTransform->gameobject->SetActive(true);
+
+				//TODO: Show info
+				if (App->input->GetMouseButtonDown(1) == KEY_DOWN)
+				{
+					Assign(i);
+				}
+			}
+		}
+	}
+	else
+	{
+		for (int i = 0; i < POPUP_ITEMS_SLOTS; ++i)
+		{
+			if (!slotsItems[i]->isActive())
+			{
+				break;
+			}
+			if (slotsItems[i]->GetComponent<ComponentImage>()->isHovered)
+			{
+				math::float2 pos = slotsItems[i]->GetComponent<Transform2D>()->getPosition();
+				hoverTransform->SetPositionUsingAligment(pos);
+				hoverTransform->gameobject->SetActive(true);
+
+				//TODO: Show info
+				if (App->input->GetMouseButtonDown(1) == KEY_DOWN)
+				{
+					Assign(i);
+				}
 			}
 		}
 	}
@@ -150,24 +194,32 @@ void EquipPopupController::Assign(int i)
 	{
 		RemoveEquiped();
 		skillsEquiped.emplace_back(activeButton, skillsList[i]);
-		hudButtons[activeButton]->UpdateImageByName(skillsList[i].spriteActive->GetName());
-		hudButtons[activeButton]->gameobject->children.front()->GetComponent<ComponentImage>()->UpdateTexture(skillsList[i].spriteActive->GetName());
-		auto it1 = std::next(hudButtons[activeButton]->gameobject->children.begin(), 1);
-		(*it1)->SetActive(true);
+		hudImageSlots[activeButton]->UpdateTexture(skillsList[i].spriteActive->GetName());
+		hudImageSlots[activeButton]->gameobject->SetActive(true);
+		MoveNumber(activeButton);
 		player->AssignSkill((SkillType)skillsList[i].id, activeButton);
-
 	}
 	else
 	{
 		RemoveEquiped();
 		itemsEquiped.emplace_back(activeButton, itemsList[i]);
-		hudButtons[activeButton]->UpdateImageByName(itemsList[i].sprite);
-		hudButtons[activeButton]->gameobject->children.front()->GetComponent<ComponentImage>()->UpdateTexture(itemsList[i].sprite);
-		auto it1 = std::next(hudButtons[activeButton]->gameobject->children.begin(), 1);
-		(*it1)->SetActive(true);
+		hudImageSlots[activeButton]->UpdateTexture(itemsList[i].sprite);
+		hudImageSlots[activeButton]->gameobject->SetActive(true);
+		MoveNumber(activeButton);
 		//TODO: Pass info to player
 	}
 	gameobject->SetActive(false);
+}
+
+void EquipPopupController::MoveNumber(int number)
+{
+	if (!hudButtonsText[number].second)
+	{
+		math::float2 newPos = hudButtonsText[number].first->getPosition();
+		newPos.y -= 15.7;
+		hudButtonsText[number].first->SetPositionUsingAligment(newPos);
+		hudButtonsText[number].second = true;
+	}
 }
 
 void EquipPopupController::RemoveEquiped()
@@ -227,12 +279,12 @@ void EquipPopupController::FillLists()
 void EquipPopupController::FillSkillSlots()
 {
 
-	for (int i = 0; i < POPUP_SLOTS; ++i)
+	for (int i = 0; i < POPUP_SKILLS_SLOTS; ++i)
 	{
 		slotsSkills[i]->SetActive(false);
 		if (i < skillsList.size())
 		{
-			slotsSkills[i]->GetComponent<ComponentImage>()->UpdateTexture(skillsList[i].spriteActive->GetName());// = skillsList[i].spriteActive;
+			slotsSkills[i]->GetComponent<ComponentImage>()->UpdateTexture(skillsList[i].spriteActive->GetName());
 			slotsSkills[i]->SetActive(true);
 		}
 	}
@@ -245,14 +297,14 @@ void EquipPopupController::FillItemSlots()
 		return;
 	}
 
-	for (int i = 0; i < POPUP_SLOTS; ++i)
+	for (int i = 0; i < POPUP_ITEMS_SLOTS; ++i)
 	{
-		slotsSkills[i]->SetActive(false);
+		slotsItems[i]->SetActive(false);
 
 		if (i < itemsList.size())
 		{
-			slotsSkills[i]->GetComponent<ComponentImage>()->UpdateTexture(itemsList[i].sprite);
-			slotsSkills[i]->SetActive(true);
+			slotsItems[i]->GetComponent<ComponentImage>()->UpdateTexture(itemsList[i].sprite);
+			slotsItems[i]->SetActive(true);
 		}
 
 	}
@@ -260,55 +312,21 @@ void EquipPopupController::FillItemSlots()
 
 void EquipPopupController::CleanButton()
 {
-	auto it1 = std::next(hudButtons[activeButton]->gameobject->children.begin(), 1);
-	(*it1)->SetActive(false);
-
 	player->AssignSkill(SkillType::NONE, activeButton);
 
 	RemoveEquiped();
 
-	switch (activeButton)
+	hudImageSlots[activeButton]->gameobject->SetActive(false);
+
+	if (hudButtonsText[activeButton].second)
 	{
-	case 0:
-		hudButtons[activeButton]->UpdateImageByName("Right_clic");
-		hudButtons[activeButton]->gameobject->children.front()->GetComponent<ComponentImage>()->UpdateTexture("Right_clic");
-		break;
-	case 1:
-		hudButtons[activeButton]->UpdateImageByName("1");
-		hudButtons[activeButton]->gameobject->children.front()->GetComponent<ComponentImage>()->UpdateTexture("1");
-		break;
-	case 2:
-		hudButtons[activeButton]->UpdateImageByName("2");
-		hudButtons[activeButton]->gameobject->children.front()->GetComponent<ComponentImage>()->UpdateTexture("2");
-		break;
-	case 3:
-		hudButtons[activeButton]->UpdateImageByName("3");
-		hudButtons[activeButton]->gameobject->children.front()->GetComponent<ComponentImage>()->UpdateTexture("3");
-		break;
-	case 4:
-		hudButtons[activeButton]->UpdateImageByName("4");
-		hudButtons[activeButton]->gameobject->children.front()->GetComponent<ComponentImage>()->UpdateTexture("4");
-		break;
-	case 5:
-		hudButtons[activeButton]->UpdateImageByName("Q");
-		hudButtons[activeButton]->gameobject->children.front()->GetComponent<ComponentImage>()->UpdateTexture("Q");
-		break;
-	case 6:
-		hudButtons[activeButton]->UpdateImageByName("W");
-		hudButtons[activeButton]->gameobject->children.front()->GetComponent<ComponentImage>()->UpdateTexture("W");
-		break;
-	case 7:
-		hudButtons[activeButton]->UpdateImageByName("E");
-		hudButtons[activeButton]->gameobject->children.front()->GetComponent<ComponentImage>()->UpdateTexture("E");
-		break;
-	case 8:
-		hudButtons[activeButton]->UpdateImageByName("R");
-		hudButtons[activeButton]->gameobject->children.front()->GetComponent<ComponentImage>()->UpdateTexture("R");
-		break;
-	default:
-		break;
+		math::float2 newPos = hudButtonsText[activeButton].first->getPosition();
+		newPos.y += 15.7;
+		hudButtonsText[activeButton].first->SetPositionUsingAligment(newPos);
+		hudButtonsText[activeButton].second = false;
 	}
 }
+
 
 void EquipPopupController::SavePopUp()
 {
@@ -373,10 +391,9 @@ void EquipPopupController::LoadPopUp()
 			item.stats.strength = itemJSON->GetFloat("strength");
 
 			itemsEquiped.emplace_back(position, item);
-			hudButtons[position]->UpdateImageByName(item.sprite);
-			hudButtons[position]->gameobject->children.front()->GetComponent<ComponentImage>()->UpdateTexture(item.sprite);
-			auto it1 = std::next(hudButtons[position]->gameobject->children.begin(), 1);
-			(*it1)->SetActive(true);
+			hudImageSlots[position]->UpdateTexture(item.sprite);
+			hudImageSlots[position]->gameobject->SetActive(true);
+			MoveNumber(position);
 		}
 
 		JSON_value* skillsJSON = popup->GetValue("skills");
@@ -393,10 +410,9 @@ void EquipPopupController::LoadPopUp()
 			skill.currentLevel = skillJSON->GetInt("currentLevel");
 
 			skillsEquiped.emplace_back(position, skill);
-			hudButtons[position]->UpdateImageByName(skill.spriteActive->GetName());
-			hudButtons[position]->gameobject->children.front()->GetComponent<ComponentImage>()->UpdateTexture(skill.spriteActive->GetName());
-			auto it1 = std::next(hudButtons[position]->gameobject->children.begin(), 1);
-			(*it1)->SetActive(true);
+			hudImageSlots[position]->UpdateTexture(skill.spriteActive->GetName());
+			hudImageSlots[position]->gameobject->SetActive(true);
+			MoveNumber(position);
 		}
 
 	}

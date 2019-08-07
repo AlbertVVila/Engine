@@ -10,7 +10,8 @@
 #define EquipPopupController_API __declspec(dllimport)
 #endif
 
-#define POPUP_SLOTS 16
+#define POPUP_SKILLS_SLOTS 11
+#define POPUP_ITEMS_SLOTS 18
 #define HUD_BUTTONS 9
 
 class GameObject;
@@ -41,6 +42,7 @@ public:
 private:
 
 	void Assign(int i);
+	void MoveNumber(int pos);
 	void RemoveEquiped();
 	void ChangePopUpSlots();
 	void FillLists();
@@ -65,7 +67,9 @@ private:
 	std::vector<GameObject*> slotsItems;
 	Transform2D* hoverTransform = nullptr;
 
+	std::vector<ComponentImage*> hudImageSlots;
 	std::vector<Button*> hudButtons;
+	std::vector<std::pair<Transform2D*, bool>> hudButtonsText;
 	int activeButton = -1;
 
 	std::vector<Item> itemsList;
