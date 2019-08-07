@@ -15,7 +15,7 @@ EnemyStateFlee::~EnemyStateFlee()
 
 void EnemyStateFlee::HandleIA()
 {
-	if (timer > duration)
+	if (timer > enemy->fleeDuration)
 	{
 		float distanceToPlayer = enemy->enemyController->GetDistanceToPlayer2D();
 

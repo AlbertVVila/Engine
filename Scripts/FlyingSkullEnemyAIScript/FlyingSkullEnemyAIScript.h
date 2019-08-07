@@ -45,6 +45,8 @@ public:
 
 	//IA parameters
 	float cooldownDuration = 1.0f;
+	float fleeDuration = 1.5f;
+	float attackDuration = 1.0f;
 	float activationDistance = 1000.0f;
 	float disengageDistance = 1500.0f;
 	float maxAttackRange = 700.0f;

@@ -1177,7 +1177,7 @@
                     "Znear": 10.0,
                     "Zfar": 100000.0,
                     "vFOV": 1.0471975803375245,
-                    "hFOV": 1.4671121835708619,
+                    "hFOV": 1.5192210674285889,
                     "Position": [
                         -26.824371337890626,
                         6191.15576171875,
@@ -17489,7 +17489,7 @@
             ]
         },
         {
-            "UID": 1983575218,
+            "UID": 874746109,
             "ParentUID": 2908909124,
             "Name": "Scene",
             "Tag": "Default",
@@ -17571,6 +17571,8 @@
                     "script": "FlyingSkullEnemyAIScript",
                     "scriptInfo": {
                         "cooldownDuration": 1.0,
+                        "fleeDuration": 1.5,
+                        "attackDuration": 1.0,
                         "activationDistance": 1000.0,
                         "disengageDistance": 1500.0,
                         "maxAttackRange": 700.0,
@@ -17597,8 +17599,8 @@
             ]
         },
         {
-            "UID": 1932984763,
-            "ParentUID": 1983575218,
+            "UID": 479379725,
+            "ParentUID": 874746109,
             "Name": "BoneCenter",
             "Tag": "Default",
             "Static": 0,
@@ -17676,8 +17678,8 @@
             ]
         },
         {
-            "UID": 3916246219,
-            "ParentUID": 1932984763,
+            "UID": 2421755116,
+            "ParentUID": 479379725,
             "Name": "FirstSpinning",
             "Tag": "Default",
             "Static": 0,
@@ -17755,8 +17757,8 @@
             ]
         },
         {
-            "UID": 4035288846,
-            "ParentUID": 3916246219,
+            "UID": 3414136825,
+            "ParentUID": 2421755116,
             "Name": "Rotation",
             "Tag": "Default",
             "Static": 0,
@@ -17834,8 +17836,8 @@
             ]
         },
         {
-            "UID": 1115702766,
-            "ParentUID": 4035288846,
+            "UID": 310508317,
+            "ParentUID": 3414136825,
             "Name": "Bone",
             "Tag": "Default",
             "Static": 0,
@@ -17877,13 +17879,13 @@
                     ],
                     "Rotation": [
                         0.0,
-                        1.4901160305669237e-8,
+                        1.4901158529312397e-8,
                         0.0,
                         1.0
                     ],
                     "Euler": [
                         -0.0,
-                        0.000001707547198748216,
+                        0.0000017075468576877029,
                         -0.0
                     ],
                     "Scale": [
@@ -17914,7 +17916,7 @@
                     "Type": 1,
                     "Enabled": 1,
                     "meshUID": 200180328,
-                    "materialUID": 735767494,
+                    "materialUID": 24646905,
                     "castShadows": 0,
                     "useAlpha": 0,
                     "highlighted": 0,
@@ -17968,8 +17970,8 @@
             ]
         },
         {
-            "UID": 1215744282,
-            "ParentUID": 1932984763,
+            "UID": 734622827,
+            "ParentUID": 479379725,
             "Name": "Particles",
             "Tag": "Default",
             "Static": 0,
@@ -18047,8 +18049,8 @@
             ]
         },
         {
-            "UID": 1471178101,
-            "ParentUID": 1932984763,
+            "UID": 156794123,
+            "ParentUID": 479379725,
             "Name": "Skull",
             "Tag": "Default",
             "Static": 0,
@@ -18092,7 +18094,7 @@
                         -0.7071068286895752,
                         0.0,
                         0.0,
-                        0.7071068286895752
+                        0.7071067094802856
                     ],
                     "Euler": [
                         -90.00000762939453,
@@ -18111,10 +18113,10 @@
                         -647.4436645507813,
                         0.0,
                         -1.1920946008103784e-7,
-                        1.0000015497207642,
+                        1.000001311302185,
                         374.6413879394531,
                         0.0,
-                        -1.0000015497207642,
+                        -1.000001311302185,
                         -1.1920946008103784e-7,
                         439.3708190917969,
                         0.0,
@@ -18181,8 +18183,101 @@
             ]
         },
         {
-            "UID": 2919381603,
-            "ParentUID": 1932984763,
+            "UID": 3943020897,
+            "ParentUID": 156794123,
+            "Name": "Point",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 0,
+                    "Enabled": 1,
+                    "Position": [
+                        0.0,
+                        2.175811767578125,
+                        30.660614013671876
+                    ],
+                    "Rotation": [
+                        0.7071068286895752,
+                        0.0,
+                        0.0,
+                        0.7071067094802856
+                    ],
+                    "Euler": [
+                        90.00000762939453,
+                        0.0,
+                        -0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        0.9999818801879883,
+                        0.9999818801879883
+                    ],
+                    "Global": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        -647.4436645507813,
+                        0.0,
+                        0.9999831318855286,
+                        7.105427357601002e-15,
+                        405.3020324707031,
+                        0.0,
+                        -7.105427357601002e-15,
+                        0.9999831318855286,
+                        437.19500732421877,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "Type": 3,
+                    "Enabled": 1,
+                    "Lighttype": 1,
+                    "color": [
+                        0.0,
+                        0.8647540807723999,
+                        0.036031488329172137
+                    ],
+                    "radius": 248.0,
+                    "range": 100.0,
+                    "intensity": 21.899999618530275,
+                    "produceShadows": 0
+                }
+            ]
+        },
+        {
+            "UID": 1036143561,
+            "ParentUID": 479379725,
             "Name": "SecondSpinning",
             "Tag": "Default",
             "Static": 0,
@@ -18260,8 +18355,8 @@
             ]
         },
         {
-            "UID": 2993117968,
-            "ParentUID": 2919381603,
+            "UID": 2275050708,
+            "ParentUID": 1036143561,
             "Name": "Rotation",
             "Tag": "Default",
             "Static": 0,
@@ -18308,9 +18403,9 @@
                         1.0
                     ],
                     "Euler": [
+                        -0.0,
                         0.0,
-                        0.0,
-                        0.0
+                        -0.0
                     ],
                     "Scale": [
                         1.0000003576278687,
@@ -18339,8 +18434,8 @@
             ]
         },
         {
-            "UID": 71979896,
-            "ParentUID": 2993117968,
+            "UID": 2566174557,
+            "ParentUID": 2275050708,
             "Name": "Bone",
             "Tag": "Default",
             "Static": 0,
@@ -18419,7 +18514,314 @@
                     "Type": 1,
                     "Enabled": 1,
                     "meshUID": 200180328,
-                    "materialUID": 735767494,
+                    "materialUID": 24646905,
+                    "castShadows": 0,
+                    "useAlpha": 0,
+                    "highlighted": 0,
+                    "highlightColor": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "xTiles": 1,
+                    "yTiles": 1,
+                    "fps": 24.0,
+                    "waterAmplitude1": 10.0,
+                    "waterDecay1": 1.0,
+                    "waterFrequency1": 10.0,
+                    "waterSource1": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "waterAmplitude2": 10.0,
+                    "waterDecay2": 1.0,
+                    "waterFrequency2": 10.0,
+                    "waterSource2": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "texSpeed": [
+                        0.0,
+                        0.0
+                    ],
+                    "waterSpeed": 2.0,
+                    "water": 0,
+                    "dissolve": 0,
+                    "waterSource1": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "waterSource2": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "uvScaler": [
+                        1.0,
+                        1.0
+                    ],
+                    "distorsionSpeed": 0.0010000000474974514
+                }
+            ]
+        },
+        {
+            "UID": 2357105127,
+            "ParentUID": 2908909124,
+            "Name": "projectiles",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 0,
+                    "Enabled": 1,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Euler": [
+                        -0.0,
+                        0.0,
+                        -0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Global": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": 3211600190,
+            "ParentUID": 2357105127,
+            "Name": "Projectile",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 0,
+                    "Enabled": 1,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Euler": [
+                        -0.0,
+                        0.0,
+                        -0.0
+                    ],
+                    "Scale": [
+                        0.699999988079071,
+                        0.699999988079071,
+                        0.699999988079071
+                    ],
+                    "Global": [
+                        0.699999988079071,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.699999988079071,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.699999988079071,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "Type": 9,
+                    "Enabled": 1,
+                    "script": "ProjectileScript",
+                    "scriptInfo": {
+                        "speed": 1000.0,
+                        "lifeTime": 1.5,
+                        "playerName": "Player",
+                        "rotate": 0,
+                        "rotateX": 0,
+                        "rotateY": 0,
+                        "rotateZ": 0,
+                        "rotatingSpeed": 1.0
+                    }
+                }
+            ]
+        },
+        {
+            "UID": 1900464046,
+            "ParentUID": 3211600190,
+            "Name": "Empty",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 0,
+                    "Enabled": 1,
+                    "Position": [
+                        0.0,
+                        -14.731497764587403,
+                        0.0
+                    ],
+                    "Rotation": [
+                        -0.7313439249992371,
+                        0.0,
+                        0.0,
+                        0.6820088028907776
+                    ],
+                    "Euler": [
+                        -93.99835968017578,
+                        0.0,
+                        0.0
+                    ],
+                    "Scale": [
+                        0.699999988079071,
+                        0.7000017166137695,
+                        0.7000017166137695
+                    ],
+                    "Global": [
+                        0.4899999797344208,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        -0.03416675329208374,
+                        0.4888085424900055,
+                        -10.312047958374024,
+                        0.0,
+                        -0.4888085424900055,
+                        -0.03416675329208374,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "Type": 1,
+                    "Enabled": 1,
+                    "meshUID": 3892981501,
+                    "materialUID": 3951274881,
                     "castShadows": 0,
                     "useAlpha": 0,
                     "highlighted": 0,

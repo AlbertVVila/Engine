@@ -44,3 +44,9 @@ void EnemyStateAttack::Update()
 		enemy->projectileGO->SetActive(true);
 	}
 }
+
+void EnemyStateAttack::Enter()
+{
+	duration = enemy->attackDuration;
+	projShot = false;
+}

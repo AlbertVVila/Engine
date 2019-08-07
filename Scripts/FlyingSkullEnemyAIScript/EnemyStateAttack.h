@@ -11,7 +11,8 @@ public:
 
 	void HandleIA() override;
 	void Update() override;
-
+	
+	void Enter() override;
 private:
 	bool projShot = false;
 };

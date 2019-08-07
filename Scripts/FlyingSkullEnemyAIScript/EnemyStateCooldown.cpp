@@ -47,9 +47,12 @@ void EnemyStateCooldown::HandleIA()
 			enemy->currentState = (EnemyState*)enemy->flee;
 		}
 	}
+
+
 }
 
 void EnemyStateCooldown::Update()
 {
-
+	math::float3 playerPosition = enemy->enemyController->GetPlayerPosition();
+	enemy->enemyController->LookAt2D(playerPosition);
 }
