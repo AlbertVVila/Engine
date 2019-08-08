@@ -11,6 +11,8 @@ public:
 
 	void HandleIA() override;
 	void Update() override;
+
+	float waitTime = 5.0f;
 };
 
 #endif // __ENEMYSTATEDEATH_H_
