@@ -35,6 +35,8 @@ void ExperienceController::Start()
 	assert(levelText != nullptr);
 	xpText = App->scene->FindGameObjectByName("LevelExperience", levelInventory)->GetComponent<Text>();
 	assert(xpText != nullptr);
+	xpTextMax = App->scene->FindGameObjectByName("LevelExperienceMax", levelInventory)->GetComponent<Text>();
+	assert(xpTextMax != nullptr);
 	levelUPGO = App->scene->FindGameObjectByName("LevelUP");
 	assert(levelUPGO != nullptr);
 	levelReached = App->scene->FindGameObjectByName("LevelReached", levelUPGO)->GetComponent<Text>();
@@ -54,7 +56,8 @@ void ExperienceController::Start()
 	maxXPLevel = levelsExp[currentLevel - 1];
 
 	int mask = (currentXP * 100) / maxXPLevel;
-	xpText->text = std::to_string(currentXP) + "  " + std::to_string(maxXPLevel);
+	xpText->text = std::to_string(currentXP);
+	xpTextMax->text = std::to_string(maxXPLevel);
 	xpProgressHUD->SetMaskAmount(mask);
 	xpProgressInventory->SetMaskAmount(mask);
 	levelText->text = std::to_string(currentLevel);
@@ -119,7 +122,8 @@ void ExperienceController::AddXP(int xp)
 			levelUpParticles->SetActive(true);
 		}
 		int mask = (currentXP * 100) / maxXPLevel;
-		xpText->text = std::to_string(currentXP) + "  " + std::to_string(maxXPLevel);
+		xpText->text = std::to_string(currentXP);
+		xpTextMax->text = std::to_string(maxXPLevel);
 		xpProgressHUD->SetMaskAmount(mask);
 		xpProgressInventory->SetMaskAmount(mask);
 	}
