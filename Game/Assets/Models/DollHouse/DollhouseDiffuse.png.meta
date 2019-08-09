@@ -1,13 +1,11 @@
 {
     "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1563536364,
         "GUID": 1046049000,
-        "timeCreated": 1557418423,
-        "height": 1024,
-        "width": 1024,
-        "depth": 1,
-        "mips": 0,
-        "format": 6408,
-        "DX compresion": 1802,
-        "mipmap": 0
+        "Name": "DollhouseDiffuse",
+        "File": "Assets/Models/DollHouse/DollhouseDiffuse.png",
+        "ExportedFile": "Library/Textures/1046049000.dds",
+        "DX compresion": 1802
     }
 }

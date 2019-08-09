@@ -1,13 +1,11 @@
 {
     "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1564156736,
         "GUID": 2512732719,
-        "timeCreated": 1562862485,
-        "height": 1024,
-        "width": 1024,
-        "depth": 1,
-        "mips": 0,
-        "format": 32992,
-        "DX compresion": 1802,
-        "mipmap": 0
+        "Name": "E01_bush1_df",
+        "File": "Assets/TexturesLevel0/Bush/E01_bush1_df.tga",
+        "ExportedFile": "Library/Textures/2512732719.dds",
+        "DX compresion": 1802
     }
 }

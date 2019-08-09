@@ -97,8 +97,11 @@ void ComponentParticles::DrawProperties()
 	if (ImGui::CollapsingHeader("Particle System")) 
 	{
 		bool removed = Component::DrawComponentState();
-		if (removed)	
+		if (removed)
+		{
+			ImGui::PopID();
 			return;
+		}
 
 		ImGui::Text("Particles active %d", particles.size());
 		//texture selector
@@ -116,7 +119,10 @@ void ComponentParticles::DrawProperties()
 			if (none_selected)
 				ImGui::SetItemDefaultFocus();
 
-			textureFiles = App->resManager->GetResourceNamesList(TYPE::TEXTURE, true);
+			if (textureFiles.empty())
+			{
+				textureFiles = App->resManager->GetResourceNamesList(TYPE::TEXTURE, true);
+			}
 
 			for (int n = 0; n < textureFiles.size(); n++)
 			{

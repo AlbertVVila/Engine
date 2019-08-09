@@ -1,13 +1,11 @@
 {
     "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1563536371,
         "GUID": 3215170265,
-        "timeCreated": 1562862496,
-        "height": 49,
-        "width": 832,
-        "depth": 1,
-        "mips": 0,
-        "format": 6408,
-        "DX compresion": 1802,
-        "mipmap": 0
+        "Name": "Experiencia_Contenedor",
+        "File": "Assets/UI/HUD/Experiencia_Contenedor.png",
+        "ExportedFile": "Library/Textures/3215170265.dds",
+        "DX compresion": 1802
     }
 }

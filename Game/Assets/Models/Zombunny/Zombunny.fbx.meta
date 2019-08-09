@@ -1,14 +1,30 @@
 {
-    "Mesh": {
+    "Model": {
+        "metaVersion": 2,
+        "timeCreated": 1563536366,
         "GUID": 3026533505,
-        "timeCreated": 1557418424,
         "NumMeshes": 2,
-        "Mesh0": 2504208310,
-        "Mesh1": 670007434
+        "NumAnimations": 1
     },
-    "Animation": {
-        "timeCreated": 1557418424,
-        "NumAnimations": 1,
-        "Animation0": 2904517446
+    "Mesh0": {
+        "MeshNumber": 0,
+        "GUID": 2504208310,
+        "Name": "Zombunny_0",
+        "File": "Assets/Models/Zombunny/Zombunny.fbx",
+        "ExportedFile": "Library/Meshes/2504208310.m3sh"
+    },
+    "Mesh1": {
+        "MeshNumber": 1,
+        "GUID": 670007434,
+        "Name": "Zombunny_1",
+        "File": "Assets/Models/Zombunny/Zombunny.fbx",
+        "ExportedFile": "Library/Meshes/670007434.m3sh"
+    },
+    "Animation0": {
+        "AnimationNumber": 0,
+        "GUID": 1229014171,
+        "Name": "Zombunny_0",
+        "File": "Assets/Models/Zombunny/Zombunny.fbx",
+        "ExportedFile": "Library/Animations/1229014171.animati0n"
     }
 }

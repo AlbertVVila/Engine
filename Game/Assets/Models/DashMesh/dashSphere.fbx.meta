@@ -1,12 +1,16 @@
 {
-    "Mesh": {
+    "Model": {
+        "metaVersion": 2,
+        "timeCreated": 1563536364,
         "GUID": 791285067,
-        "timeCreated": 1562862481,
         "NumMeshes": 1,
-        "Mesh0": 2285566754
-    },
-    "Animation": {
-        "timeCreated": 1562862481,
         "NumAnimations": 0
+    },
+    "Mesh0": {
+        "MeshNumber": 0,
+        "GUID": 2285566754,
+        "Name": "dashSphere_0",
+        "File": "Assets/Models/DashMesh/dashSphere.fbx",
+        "ExportedFile": "Library/Meshes/2285566754.m3sh"
     }
 }

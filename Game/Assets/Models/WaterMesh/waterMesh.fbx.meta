@@ -1,12 +1,16 @@
 {
-    "Mesh": {
+    "Model": {
+        "metaVersion": 2,
+        "timeCreated": 1563536366,
         "GUID": 3612521595,
-        "timeCreated": 1562862482,
         "NumMeshes": 1,
-        "Mesh0": 2712690185
-    },
-    "Animation": {
-        "timeCreated": 1562862482,
         "NumAnimations": 0
+    },
+    "Mesh0": {
+        "MeshNumber": 0,
+        "GUID": 2712690185,
+        "Name": "waterMesh_0",
+        "File": "Assets/Models/WaterMesh/waterMesh.fbx",
+        "ExportedFile": "Library/Meshes/2712690185.m3sh"
     }
 }

@@ -6,16 +6,24 @@
 
 #include <vector>
 
+#ifdef BasicEnemyAIScript_EXPORTS
+#ifndef BasicEnemyAIScript_API
+#define BasicEnemyAIScript_API __declspec(dllexport)
+#endif // !BasicEnemyAIScript_API
+#else
+#define BasicEnemyAIScript_API __declspec(dllimport)
+#endif
+
 class BasicEnemyAIScript;
 
 class EnemyState
 {
 public:
-	EnemyState();
-	~EnemyState();
+	BasicEnemyAIScript_API EnemyState();
+	BasicEnemyAIScript_API ~EnemyState();
 
 	virtual void Enter() {};
-	virtual void HandleIA() {};
+	BasicEnemyAIScript_API virtual void HandleIA() {};
 	virtual void Update() {};
 	virtual void Exit() {};
 	void UpdateTimer();

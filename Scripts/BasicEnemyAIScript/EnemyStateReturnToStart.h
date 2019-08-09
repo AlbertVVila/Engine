@@ -6,8 +6,8 @@ class EnemyStateReturnToStart :
 	public EnemyState
 {
 public:
-	EnemyStateReturnToStart(BasicEnemyAIScript* AIScript);
-	~EnemyStateReturnToStart();
+	BasicEnemyAIScript_API EnemyStateReturnToStart(BasicEnemyAIScript* AIScript);
+	BasicEnemyAIScript_API ~EnemyStateReturnToStart();
 
 	void HandleIA() override;
 	void Update() override;

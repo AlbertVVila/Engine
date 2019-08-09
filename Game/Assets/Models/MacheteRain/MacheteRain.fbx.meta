@@ -1,12 +1,16 @@
 {
-    "Mesh": {
+    "Model": {
+        "metaVersion": 2,
+        "timeCreated": 1563536365,
         "GUID": 2584925438,
-        "timeCreated": 1562862481,
         "NumMeshes": 1,
-        "Mesh0": 1613369247
-    },
-    "Animation": {
-        "timeCreated": 1562862481,
         "NumAnimations": 0
+    },
+    "Mesh0": {
+        "MeshNumber": 0,
+        "GUID": 1613369247,
+        "Name": "MacheteRain_0",
+        "File": "Assets/Models/MacheteRain/MacheteRain.fbx",
+        "ExportedFile": "Library/Meshes/1613369247.m3sh"
     }
 }

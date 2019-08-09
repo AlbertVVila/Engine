@@ -397,6 +397,8 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 		
 		for (Component* cr : alphaRenderers)
 		{
+			if (!cr->enabled) continue;
+
 #ifndef GAME_BUILD
 			switch (cr->type)
 			{
@@ -734,14 +736,7 @@ void ModuleScene::DragNDropMove(GameObject* target)
 							droppedGo->transform->SetWorldToLocal(droppedGo->parent->GetGlobalTransform());
 						}
 
-						for (Component* c : droppedGo->GetComponentsInChildren(ComponentType::Renderer))
-						{
-							ComponentRenderer* cr = (ComponentRenderer*)c;
-							if (cr->mesh != nullptr)
-							{
-								cr->LinkBones();
-							}
-						}
+						droppedGo->LinkBones();
 					}
 					App->editor->assets->ResetDragNDrop();
 				}
@@ -821,14 +816,7 @@ void ModuleScene::DragNDrop(GameObject* go)
 						{
 							droppedGo->transform->SetWorldToLocal(droppedGo->parent->GetGlobalTransform());
 						}
-						for (Component* c : droppedGo->GetComponentsInChildren(ComponentType::Renderer))
-						{
-							ComponentRenderer* cr = (ComponentRenderer*)c;
-							if (cr->mesh != nullptr)
-							{
-								cr->LinkBones();
-							}
-						}
+						droppedGo->LinkBones();
 					}
 					App->editor->assets->ResetDragNDrop();
 				}
@@ -1790,9 +1778,15 @@ GameObject* ModuleScene::FindGameObjectByName(const char* name, GameObject* pare
 GameObject * ModuleScene::Spawn(const char * name, GameObject * parent)
 {
 	ResourcePrefab* prefab = (ResourcePrefab*) App->resManager->GetByName(name, TYPE::PREFAB);
-	assert(prefab != nullptr, "Prefab Not Found");
+	if (prefab == nullptr)
+	{
+		LOG("Prefab %s Not Found", name);
+		return nullptr;
+	}
+
 	//Instantiate prefab
 	GameObject* instance = new GameObject(*prefab->RetrievePrefab());
+	instance->LinkBones();
 	App->resManager->DeleteResource(prefab->GetUID());
 
 	if (parent == nullptr)
@@ -1802,7 +1796,6 @@ GameObject * ModuleScene::Spawn(const char * name, GameObject * parent)
 	parent->children.push_back(instance);
 	instance->parent = parent;
 	instance->transform->Reset();
-	AddToSpacePartition(instance);
 	if (App->time->gameState == GameState::RUN)
 	{
 		instance->OnPlay();
@@ -1903,7 +1896,35 @@ void ModuleScene::DeleteDirectionalLight(ComponentLight* light)
 	}
 }
 
-std::list<std::pair<float, GameObject*>> ModuleScene::GetDynamicIntersections(const LineSegment & line) const
+math::LineSegment ModuleScene::SceneRaycast(math::float2 position)
+{
+	float normalized_x, normalized_y;
+
+#ifndef GAME_BUILD
+		math::float2 winPos = App->renderer->viewGame->winPos;
+		math::float2 size(App->renderer->viewGame->current_width, App->renderer->viewGame->current_height);
+#else
+		math::float2 pos = math::float2::zero;
+		math::float2 size(App->window->width, App->window->height);
+#endif
+		normalized_x = ((position.x - winPos.x) / size.x) * 2 - 1; //0 to 1 -> -1 to 1
+		normalized_y = (1 - (position.y - winPos.y) / size.y) * 2 - 1; //0 to 1 -> -1 to 1
+
+		return App->scene->maincamera->DrawRay(normalized_x, normalized_y);
+}
+
+std::list<GameObject*> ModuleScene::SceneRaycastHit(math::float2 position)
+{
+	std::list<GameObject*> go_list;
+	for (std::pair<float, GameObject*> item : GetDynamicIntersections(SceneRaycast(position), false))
+	{
+		go_list.emplace_back(item.second);
+	}
+
+	return go_list;
+}
+
+std::list<std::pair<float, GameObject*>> ModuleScene::GetDynamicIntersections(const LineSegment & line, bool sort) const
 {
 	std::list<std::pair<float, GameObject*>> gos; 
 	std::unordered_set<GameObject*> intersections;
@@ -1918,7 +1939,7 @@ std::list<std::pair<float, GameObject*>> ModuleScene::GetDynamicIntersections(co
 			gos.push_back(std::pair<float, GameObject*>(dNear, go));
 		}
 	}
-	gos.sort();
+	if (sort) gos.sort();
 	return gos;
 }
 

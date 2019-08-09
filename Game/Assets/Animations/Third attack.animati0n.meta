@@ -1,6 +1,10 @@
 {
     "Animation": {
+        "metaVersion": 2,
+        "timeCreated": 1563536360,
         "GUID": 2326746610,
-        "timeCreated": 1562862477
+        "Name": "Third attack",
+        "File": "Assets/Animations/Third attack.animati0n",
+        "ExportedFile": "Library/Animations/2326746610.animati0n"
     }
 }

@@ -18,9 +18,7 @@ Component::Component(const Component & component)
 	gameobject = component.gameobject;
 	type = component.type;
 	enabled = component.enabled;
-	if (gameobject->transform != nullptr)	{
-		gameobject->transform->SetGlobalPosition(gameobject->transform->GetGlobalPosition() + gameobject->transform->front * App->renderer->current_scale);
-	}
+	//gameobject->transform->SetGlobalPosition(gameobject->transform->GetGlobalPosition() + gameobject->transform->front * App->renderer->current_scale);
 }
 
 Component::~Component()
