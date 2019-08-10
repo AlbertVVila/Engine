@@ -1667,6 +1667,39 @@ bool ModuleNavigation::IsCursorPointingToNavigableZone(float xPickingCorrection,
 	return resultPoly;
 }
 
+ENGINE_API bool ModuleNavigation::FindClosestPoint2D(math::float3& initial) const
+{
+	//Search range, 200 seems to be ok
+
+	math::float3 diff = math::float3(200.0f, 200.0f, 200.0f);
+
+	float polyPickExt[3] = { diff.x, diff.y, diff.z };
+
+	dtQueryFilter filter;
+	filter.setIncludeFlags(SAMPLE_POLYFLAGS_ALL ^ SAMPLE_POLYFLAGS_DISABLED);
+	filter.setExcludeFlags(0);
+
+	dtPolyRef startPoly;
+
+	math::float3 result;
+
+	bool overPoly = false;
+
+	navQuery->findNearestPoly((float*)&initial, polyPickExt, &filter, &startPoly, 0);
+	navQuery->closestPointOnPoly(startPoly, (float*)&initial, (float*)&result, &overPoly);
+
+	initial = result;
+
+	if (!startPoly)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
 void ModuleNavigation::RecalcPath(math::float3 point)
 {
 	if (startPoint)

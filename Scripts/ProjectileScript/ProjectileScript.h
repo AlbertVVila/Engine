@@ -35,14 +35,22 @@ class ProjectileScript_API ProjectileScript : public Script
 public:
 	float speed = 1000.0f;
 	float lifeTime = 10.0f;
+	bool rotate = false;
+	float rotationSpeed = 1.0f;
+	bool rotationX = false;
+	bool rotationY = false;
+	bool rotationZ = false;
+	float offsetHeight = 100.0f;
+
 
 	std::string playerName = "Player";
 
 	bool shooted = false;
-
+	GameObject* meshGO = nullptr;
 private:
 	ComponentTransform* transform = nullptr;
 	ComponentBoxTrigger* boxTrigger = nullptr;
+
 
 	GameObject* player = nullptr;
 	PlayerMovement* playerScript = nullptr;

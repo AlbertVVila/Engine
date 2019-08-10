@@ -82,7 +82,7 @@ public:
 
 	EnemyControllerScript* enemyController = nullptr;
 
-private:
+protected:
 	std::vector<EnemyState*> enemyStates;
 };
 

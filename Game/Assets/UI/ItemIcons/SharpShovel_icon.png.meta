@@ -1,13 +1,11 @@
 {
     "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1563536371,
         "GUID": 77304309,
-        "timeCreated": 1562862496,
-        "height": 512,
-        "width": 512,
-        "depth": 1,
-        "mips": 0,
-        "format": 6407,
-        "DX compresion": 1802,
-        "mipmap": 0
+        "Name": "SharpShovel_icon",
+        "File": "Assets/UI/ItemIcons/SharpShovel_icon.png",
+        "ExportedFile": "Library/Textures/77304309.dds",
+        "DX compresion": 1802
     }
 }

@@ -48,7 +48,7 @@ ComponentAnimation::~ComponentAnimation()
 		ax::NodeEditor::DestroyEditor(context);
 		context = nullptr;
 	}
-	anim = nullptr;
+	
 	stateMachine = nullptr;
 	gameobject->isBoneRoot = false;
 	RELEASE_ARRAY(animName);
@@ -145,8 +145,11 @@ void ComponentAnimation::DrawProperties()
 				}
 			}
 			ImGui::Separator();
-			HashString currentNodeName = stateMachine->GetNodeName(currentNode);
-			ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f),("Current state: %s", currentNodeName.C_str()));
+			if (stateMachine->GetNodesSize() > 0u)
+			{
+				HashString currentNodeName = stateMachine->GetNodeName(currentNode);
+				ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), ("Current state: %s", currentNodeName.C_str()));
+			}
 	
 			if (!stateMachine->isClipsEmpty())
 			{
@@ -266,7 +269,7 @@ void ComponentAnimation::DrawProperties()
 
 void ComponentAnimation::ResetResource()
 {
-	anim->DeleteFromMemory();
+	
 	stateMachine->DeleteFromMemory();
 }
 
@@ -285,23 +288,9 @@ void ComponentAnimation::CreateNewStateMachine()
 	RELEASE(newStateMachine);
 }
 
-void ComponentAnimation::SetAnimation(const char* animationFile)
-{
-	// Delete previous animation
-
-	if (anim != nullptr)
-		App->resManager->DeleteResource(anim->GetUID());
-
-	if (animationFile != nullptr)
-		anim = (ResourceAnimation*)App->resManager->GetByName(animationFile, TYPE::ANIMATION);
-
-	return;
-}
-
 void ComponentAnimation::SetStateMachine(const char* stateMachineFile)
 {
 	// Delete previous stateMachine
-
 	if (stateMachine != nullptr)
 		App->resManager->DeleteResource(stateMachine->GetUID());
 
@@ -538,10 +527,6 @@ ComponentAnimation::ComponentAnimation(const ComponentAnimation& component) : Co
 
 bool ComponentAnimation::CleanUp()
 {
-	if (anim != nullptr)
-	{
-		App->resManager->DeleteResource(anim->GetUID());
-	}
 	if (stateMachine != nullptr)
 	{
 		App->resManager->DeleteResource(stateMachine->GetUID());
@@ -553,16 +538,12 @@ bool ComponentAnimation::CleanUp()
 void ComponentAnimation::Save(JSON_value* value) const
 {
 	Component::Save(value);
-	value->AddUint("animUID", (anim != nullptr) ? anim->GetUID() : 0u);
 	value->AddUint("stateMachineUID", (stateMachine != nullptr) ? stateMachine->GetUID() : 0u);
 }
 
 void ComponentAnimation::Load(JSON_value* value)
 {
 	Component::Load(value);
-
-	unsigned animUID = value->GetUint("animUID");
-	anim = (ResourceAnimation*)App->resManager->Get(animUID);
 
 	unsigned stateMachineUID = value->GetUint("stateMachineUID");
 	if(stateMachineUID != 0)

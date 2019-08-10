@@ -1,12 +1,16 @@
 {
-    "Mesh": {
+    "Model": {
+        "metaVersion": 2,
+        "timeCreated": 1563536365,
         "GUID": 3426728830,
-        "timeCreated": 1562862481,
         "NumMeshes": 1,
-        "Mesh0": 4001322292
-    },
-    "Animation": {
-        "timeCreated": 1562862481,
         "NumAnimations": 0
+    },
+    "Mesh0": {
+        "MeshNumber": 0,
+        "GUID": 4001322292,
+        "Name": "Level2-ForbiddenTemple-Recast_0",
+        "File": "Assets/Models/Lvl2-TheForbiddenTemple/Level2-ForbiddenTemple-Recast.FBX",
+        "ExportedFile": "Library/Meshes/4001322292.m3sh"
     }
 }

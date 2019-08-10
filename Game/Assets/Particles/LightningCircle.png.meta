@@ -1,13 +1,11 @@
 {
     "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1563536366,
         "GUID": 797759352,
-        "timeCreated": 1562862482,
-        "height": 1024,
-        "width": 1024,
-        "depth": 1,
-        "mips": 0,
-        "format": 6408,
-        "DX compresion": 1802,
-        "mipmap": 0
+        "Name": "LightningCircle",
+        "File": "Assets/Particles/LightningCircle.png",
+        "ExportedFile": "Library/Textures/797759352.dds",
+        "DX compresion": 1802
     }
 }

@@ -321,6 +321,9 @@
       <Filter>Resources</Filter>
     </ClCompile>
     <ClCompile Include="PlayerPrefs.cpp" />
+    <ClCompile Include="ComponentVolumetricLight.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
     <ClCompile Include="MouseController.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -704,6 +707,9 @@
       <Filter>Resources</Filter>
     </ClInclude>
     <ClInclude Include="PlayerPrefs.h" />
+    <ClInclude Include="ComponentVolumetricLight.h">
+      <Filter>Component</Filter>
+    </ClInclude>
     <ClInclude Include="MouseController.h" />
   </ItemGroup>
   <ItemGroup>
@@ -828,5 +834,6 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\Game\Scripts\PlayerMovement.dll" />
+    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>

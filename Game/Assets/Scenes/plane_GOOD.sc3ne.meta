@@ -1,5 +1,10 @@
 {
     "Scene": {
-        "GUID": 2911950572
+        "metaVersion": 2,
+        "timeCreated": 1563536366,
+        "GUID": 2911950572,
+        "Name": "plane_GOOD",
+        "File": "Assets/Scenes/plane_GOOD.sc3ne",
+        "ExportedFile": "Library/Scenes/2911950572.sc3ne"
     }
 }

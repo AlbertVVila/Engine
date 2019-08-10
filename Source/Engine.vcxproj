@@ -206,6 +206,7 @@
     <ClInclude Include="ComponentTrail.h" />
     <ClInclude Include="ComponentTransform.h" />
     <ClInclude Include="ComponentTransform2D.h" />
+    <ClInclude Include="ComponentVolumetricLight.h" />
     <ClInclude Include="debugdraw.h" />
     <ClInclude Include="debug_draw.hpp" />
     <ClInclude Include="DetourDebugInterface.h" />
@@ -340,6 +341,7 @@
     <ClCompile Include="ComponentTrail.cpp" />
     <ClCompile Include="ComponentTransform.cpp" />
     <ClCompile Include="ComponentTransform2D.cpp" />
+    <ClCompile Include="ComponentVolumetricLight.cpp" />
     <ClCompile Include="DetourDebugInterface.cpp" />
     <ClCompile Include="FileExplorer.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -460,6 +462,7 @@
     <None Include="..\Game\Shaders\VertexShaders\Skybox.vs" />
     <None Include="..\Game\Shaders\VertexShaders\Trail.vs" />
     <None Include="..\Game\Shaders\VertexShaders\UI.vs" />
+    <None Include="cpp.hint" />
     <None Include="NodeEditor\Include\ax\Math2D.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

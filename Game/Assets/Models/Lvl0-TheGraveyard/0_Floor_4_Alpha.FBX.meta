@@ -1,12 +1,16 @@
 {
-    "Mesh": {
+    "Model": {
+        "metaVersion": 2,
+        "timeCreated": 1563536365,
         "GUID": 1689207998,
-        "timeCreated": 1562862481,
         "NumMeshes": 1,
-        "Mesh0": 1655672086
-    },
-    "Animation": {
-        "timeCreated": 1562862481,
         "NumAnimations": 0
+    },
+    "Mesh0": {
+        "MeshNumber": 0,
+        "GUID": 1655672086,
+        "Name": "0_Floor_4_Alpha_0",
+        "File": "Assets/Models/Lvl0-TheGraveyard/0_Floor_4_Alpha.FBX",
+        "ExportedFile": "Library/Meshes/1655672086.m3sh"
     }
 }

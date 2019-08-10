@@ -1,7 +1,11 @@
 {
     "Audio": {
+        "metaVersion": 2,
+        "timeCreated": 1563536361,
         "GUID": 987000430,
-        "timeCreated": 1557418422,
+        "Name": "asd",
+        "File": "Assets/Audio/asd.wav",
+        "ExportedFile": "Library/Audios/987000430.wav",
         "streamed": 0
     }
 }

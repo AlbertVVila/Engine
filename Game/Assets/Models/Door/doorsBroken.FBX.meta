@@ -1,12 +1,16 @@
 {
-    "Mesh": {
+    "Model": {
+        "metaVersion": 2,
+        "timeCreated": 1563536364,
         "GUID": 1495595036,
-        "timeCreated": 1562862481,
         "NumMeshes": 1,
-        "Mesh0": 1090855511
-    },
-    "Animation": {
-        "timeCreated": 1562862481,
         "NumAnimations": 0
+    },
+    "Mesh0": {
+        "MeshNumber": 0,
+        "GUID": 1090855511,
+        "Name": "doorsBroken_0",
+        "File": "Assets/Models/Door/doorsBroken.FBX",
+        "ExportedFile": "Library/Meshes/1090855511.m3sh"
     }
 }

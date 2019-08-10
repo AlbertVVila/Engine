@@ -1,13 +1,11 @@
 {
     "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1563536371,
         "GUID": 870545374,
-        "timeCreated": 1557418424,
-        "height": 71,
-        "width": 71,
-        "depth": 1,
-        "mips": 0,
-        "format": 6408,
-        "DX compresion": 1802,
-        "mipmap": 0
+        "Name": "Menu",
+        "File": "Assets/UI/HUD/Menu.png",
+        "ExportedFile": "Library/Textures/870545374.dds",
+        "DX compresion": 1802
     }
 }
