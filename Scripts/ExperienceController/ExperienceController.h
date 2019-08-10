@@ -37,6 +37,7 @@ public:
 
 private:
 	Text* xpText = nullptr;
+	Text* xpTextMax = nullptr;
 	Text* levelText = nullptr;
 	Text* levelReached = nullptr;
 	ComponentImage* xpProgressHUD = nullptr;
