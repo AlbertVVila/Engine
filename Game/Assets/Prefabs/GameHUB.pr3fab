@@ -1,0 +1,4843 @@
+{
+    "GameObjects": [
+        {
+            "UID": 1127476258,
+            "ParentUID": 1,
+            "Name": "GameHUB",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 1,
+            "isPrefabSync": 1,
+            "prefabUID": 90218084,
+            "Components": []
+        },
+        {
+            "UID": 3017918729,
+            "ParentUID": 1127476258,
+            "Name": "MenuButton",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        50.0,
+                        -65.0
+                    ],
+                    "Size": [
+                        50.0,
+                        50.0
+                    ],
+                    "Anchor": 0,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 8,
+                    "Enabled": 1,
+                    "text": {
+                        "Type": 6,
+                        "Enabled": 1,
+                        "FontSize": 14.0,
+                        "text": "",
+                        "font": "Fonts/DroidSans.ttf",
+                        "color": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            0.0
+                        ],
+                        "colorHovered": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            0.0
+                        ],
+                        "offset": [
+                            0.0,
+                            0.0
+                        ],
+                        "scaleOffset": [
+                            1.0,
+                            1.0
+                        ],
+                        "IsTextWrapped": 0,
+                        "WrapWidth": 0.0,
+                        "InterlineDistance": 0.0,
+                        "UIOrder": 0
+                    },
+                    "buttonImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 2499547453,
+                        "textureName": "Button_Menu",
+                        "color": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "highlightedImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 2499547453,
+                        "textureName": "Button_Menu",
+                        "color": [
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            1.0
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "pressedImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 2499547453,
+                        "textureName": "Button_Menu",
+                        "color": [
+                            0.19607843458652497,
+                            0.19607843458652497,
+                            0.19607843458652497,
+                            1.0
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 3561512648,
+            "ParentUID": 1127476258,
+            "Name": "InventaryButton",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -50.0,
+                        50.0
+                    ],
+                    "Size": [
+                        50.0,
+                        50.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 8,
+                    "Enabled": 1,
+                    "text": {
+                        "Type": 6,
+                        "Enabled": 1,
+                        "FontSize": 14.0,
+                        "text": "",
+                        "font": "Fonts/DroidSans.ttf",
+                        "color": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            0.0
+                        ],
+                        "colorHovered": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            0.0
+                        ],
+                        "offset": [
+                            0.0,
+                            0.0
+                        ],
+                        "scaleOffset": [
+                            1.0,
+                            1.0
+                        ],
+                        "IsTextWrapped": 0,
+                        "WrapWidth": 0.0,
+                        "InterlineDistance": 0.0,
+                        "UIOrder": 0
+                    },
+                    "buttonImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 795237118,
+                        "textureName": "Button_Inventory",
+                        "color": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "highlightedImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 795237118,
+                        "textureName": "Button_Inventory",
+                        "color": [
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            1.0
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "pressedImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 795237118,
+                        "textureName": "Button_Inventory",
+                        "color": [
+                            0.19607843458652497,
+                            0.19607843458652497,
+                            0.19607843458652497,
+                            1.0
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 2926318904,
+            "ParentUID": 1127476258,
+            "Name": "SkillsButton",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -50.0,
+                        0.0
+                    ],
+                    "Size": [
+                        50.0,
+                        50.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 8,
+                    "Enabled": 1,
+                    "text": {
+                        "Type": 6,
+                        "Enabled": 1,
+                        "FontSize": 14.0,
+                        "text": "",
+                        "font": "Fonts/DroidSans.ttf",
+                        "color": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            0.0
+                        ],
+                        "colorHovered": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            0.0
+                        ],
+                        "offset": [
+                            0.0,
+                            0.0
+                        ],
+                        "scaleOffset": [
+                            1.0,
+                            1.0
+                        ],
+                        "IsTextWrapped": 0,
+                        "WrapWidth": 0.0,
+                        "InterlineDistance": 0.0,
+                        "UIOrder": 0
+                    },
+                    "buttonImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 4145752307,
+                        "textureName": "Button_skills",
+                        "color": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "highlightedImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 4145752307,
+                        "textureName": "Button_skills",
+                        "color": [
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            1.0
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "pressedImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 4145752307,
+                        "textureName": "Button_skills",
+                        "color": [
+                            0.19607843458652497,
+                            0.19607843458652497,
+                            0.19607843458652497,
+                            1.0
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 3031770722,
+            "ParentUID": 1127476258,
+            "Name": "MissionButton",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -50.0,
+                        -50.0
+                    ],
+                    "Size": [
+                        50.0,
+                        50.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 8,
+                    "Enabled": 1,
+                    "text": {
+                        "Type": 6,
+                        "Enabled": 1,
+                        "FontSize": 14.0,
+                        "text": "",
+                        "font": "Fonts/DroidSans.ttf",
+                        "color": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            0.0
+                        ],
+                        "colorHovered": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            0.0
+                        ],
+                        "offset": [
+                            0.0,
+                            0.0
+                        ],
+                        "scaleOffset": [
+                            1.0,
+                            1.0
+                        ],
+                        "IsTextWrapped": 0,
+                        "WrapWidth": 0.0,
+                        "InterlineDistance": 0.0,
+                        "UIOrder": 0
+                    },
+                    "buttonImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 3596890692,
+                        "textureName": "Button_Quest",
+                        "color": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "highlightedImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 3596890692,
+                        "textureName": "Button_Quest",
+                        "color": [
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            1.0
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "pressedImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 3596890692,
+                        "textureName": "Button_Quest",
+                        "color": [
+                            0.19607843458652497,
+                            0.19607843458652497,
+                            0.19607843458652497,
+                            1.0
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 3528875,
+            "ParentUID": 1127476258,
+            "Name": "One",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 0,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -75.0,
+                        100.0
+                    ],
+                    "Size": [
+                        50.0,
+                        50.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 8,
+                    "Enabled": 1,
+                    "text": {
+                        "Type": 6,
+                        "Enabled": 1,
+                        "FontSize": 47.0,
+                        "text": "",
+                        "font": "Fonts/Vision-Regular.ttf",
+                        "color": [
+                            0.2049180269241333,
+                            0.051229506731033328,
+                            0.051229506731033328,
+                            0.0
+                        ],
+                        "colorHovered": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            0.0
+                        ],
+                        "offset": [
+                            0.0,
+                            0.0
+                        ],
+                        "scaleOffset": [
+                            1.0,
+                            1.0
+                        ],
+                        "IsTextWrapped": 0,
+                        "WrapWidth": 0.0,
+                        "InterlineDistance": 0.0,
+                        "UIOrder": 0
+                    },
+                    "buttonImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
+                        "color": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "highlightedImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
+                        "color": [
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            0.686274528503418
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "pressedImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
+                        "color": [
+                            0.19607843458652497,
+                            0.19607843458652497,
+                            0.19607843458652497,
+                            0.686274528503418
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 3379296079,
+            "ParentUID": 3528875,
+            "Name": "One_Slot",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -75.0,
+                        100.0
+                    ],
+                    "Size": [
+                        38.0,
+                        38.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 0,
+                    "textureName": "",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 0,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 1535196064,
+            "ParentUID": 3528875,
+            "Name": "One_Cooldown",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -75.0,
+                        100.0
+                    ],
+                    "Size": [
+                        50.0,
+                        50.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 3131494396,
+                    "textureName": "Defaultslot",
+                    "color": [
+                        0.29411765933036806,
+                        0.29411765933036806,
+                        0.29411765933036806,
+                        0.686274528503418
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 1,
+                    "maskAmount": 0,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 2685180873,
+            "ParentUID": 3528875,
+            "Name": "OneText",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -79.19999694824219,
+                        97.0
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 47.0,
+                    "text": "1",
+                    "font": "Fonts/Vision-Regular.ttf",
+                    "color": [
+                        0.5163934230804443,
+                        0.21798573434352876,
+                        0.21798573434352876,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 100.0,
+                    "InterlineDistance": 24.0,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 661203207,
+            "ParentUID": 1127476258,
+            "Name": "Two",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 0,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -25.0,
+                        100.0
+                    ],
+                    "Size": [
+                        50.0,
+                        50.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 8,
+                    "Enabled": 1,
+                    "text": {
+                        "Type": 6,
+                        "Enabled": 1,
+                        "FontSize": 14.0,
+                        "text": "",
+                        "font": "Fonts/DroidSans.ttf",
+                        "color": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            0.0
+                        ],
+                        "colorHovered": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            0.0
+                        ],
+                        "offset": [
+                            0.0,
+                            0.0
+                        ],
+                        "scaleOffset": [
+                            1.0,
+                            1.0
+                        ],
+                        "IsTextWrapped": 0,
+                        "WrapWidth": 0.0,
+                        "InterlineDistance": 0.0,
+                        "UIOrder": 0
+                    },
+                    "buttonImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
+                        "color": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "highlightedImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
+                        "color": [
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            0.686274528503418
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "pressedImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
+                        "color": [
+                            0.19607843458652497,
+                            0.19607843458652497,
+                            0.19607843458652497,
+                            0.686274528503418
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 4140408438,
+            "ParentUID": 661203207,
+            "Name": "Two_Slot",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -25.0,
+                        100.0
+                    ],
+                    "Size": [
+                        38.0,
+                        38.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 0,
+                    "textureName": "",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 0,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 1913370927,
+            "ParentUID": 661203207,
+            "Name": "Two_Cooldown",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -25.0,
+                        100.0
+                    ],
+                    "Size": [
+                        50.0,
+                        50.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 3131494396,
+                    "textureName": "Defaultslot",
+                    "color": [
+                        0.29411765933036806,
+                        0.29411765933036806,
+                        0.29411765933036806,
+                        0.686274528503418
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 1,
+                    "maskAmount": 0,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 4156483567,
+            "ParentUID": 661203207,
+            "Name": "TwoText",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -30.700000762939454,
+                        97.0
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 47.0,
+                    "text": "2",
+                    "font": "Fonts/Vision-Regular.ttf",
+                    "color": [
+                        0.5176470875740051,
+                        0.21960784494876862,
+                        0.21960784494876862,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 100.0,
+                    "InterlineDistance": 24.0,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 3664459056,
+            "ParentUID": 1127476258,
+            "Name": "Three",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 0,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        25.0,
+                        100.0
+                    ],
+                    "Size": [
+                        50.0,
+                        50.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 8,
+                    "Enabled": 1,
+                    "text": {
+                        "Type": 6,
+                        "Enabled": 1,
+                        "FontSize": 14.0,
+                        "text": "",
+                        "font": "Fonts/DroidSans.ttf",
+                        "color": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            0.0
+                        ],
+                        "colorHovered": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            0.0
+                        ],
+                        "offset": [
+                            0.0,
+                            0.0
+                        ],
+                        "scaleOffset": [
+                            1.0,
+                            1.0
+                        ],
+                        "IsTextWrapped": 0,
+                        "WrapWidth": 0.0,
+                        "InterlineDistance": 0.0,
+                        "UIOrder": 0
+                    },
+                    "buttonImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
+                        "color": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "highlightedImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
+                        "color": [
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            0.686274528503418
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "pressedImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
+                        "color": [
+                            0.19607843458652497,
+                            0.19607843458652497,
+                            0.19607843458652497,
+                            0.686274528503418
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 2922187893,
+            "ParentUID": 3664459056,
+            "Name": "Three_Slot",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        25.0,
+                        100.0
+                    ],
+                    "Size": [
+                        38.0,
+                        38.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 0,
+                    "textureName": "",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 0,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 130189214,
+            "ParentUID": 3664459056,
+            "Name": "Three_Cooldown",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        25.0,
+                        100.0
+                    ],
+                    "Size": [
+                        50.0,
+                        50.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 3131494396,
+                    "textureName": "Defaultslot",
+                    "color": [
+                        0.29411765933036806,
+                        0.29411765933036806,
+                        0.29411765933036806,
+                        0.686274528503418
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 1,
+                    "maskAmount": 0,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 2689290251,
+            "ParentUID": 3664459056,
+            "Name": "ThreeText",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        18.799999237060548,
+                        97.0
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 47.0,
+                    "text": "3",
+                    "font": "Fonts/Vision-Regular.ttf",
+                    "color": [
+                        0.5176470875740051,
+                        0.21960784494876862,
+                        0.21960784494876862,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 100.0,
+                    "InterlineDistance": 24.0,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 2275749498,
+            "ParentUID": 1127476258,
+            "Name": "For",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 0,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        75.0,
+                        100.0
+                    ],
+                    "Size": [
+                        50.0,
+                        50.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 8,
+                    "Enabled": 1,
+                    "text": {
+                        "Type": 6,
+                        "Enabled": 1,
+                        "FontSize": 14.0,
+                        "text": "",
+                        "font": "Fonts/DroidSans.ttf",
+                        "color": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            0.0
+                        ],
+                        "colorHovered": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            0.0
+                        ],
+                        "offset": [
+                            0.0,
+                            0.0
+                        ],
+                        "scaleOffset": [
+                            1.0,
+                            1.0
+                        ],
+                        "IsTextWrapped": 0,
+                        "WrapWidth": 0.0,
+                        "InterlineDistance": 0.0,
+                        "UIOrder": 0
+                    },
+                    "buttonImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
+                        "color": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "highlightedImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
+                        "color": [
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            0.686274528503418
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "pressedImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
+                        "color": [
+                            0.19607843458652497,
+                            0.19607843458652497,
+                            0.19607843458652497,
+                            0.686274528503418
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 4167334431,
+            "ParentUID": 2275749498,
+            "Name": "Four_Slot",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        75.0,
+                        100.0
+                    ],
+                    "Size": [
+                        38.0,
+                        38.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 0,
+                    "textureName": "",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 0,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 2464002558,
+            "ParentUID": 2275749498,
+            "Name": "Four_Cooldown",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        75.0,
+                        100.0
+                    ],
+                    "Size": [
+                        50.0,
+                        50.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 3131494396,
+                    "textureName": "Defaultslot",
+                    "color": [
+                        0.29411765933036806,
+                        0.29411765933036806,
+                        0.29411765933036806,
+                        0.686274528503418
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 1,
+                    "maskAmount": 0,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 3883470662,
+            "ParentUID": 2275749498,
+            "Name": "FourText",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        67.5,
+                        97.0
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 47.0,
+                    "text": "4",
+                    "font": "Fonts/Vision-Regular.ttf",
+                    "color": [
+                        0.5176470875740051,
+                        0.21960784494876862,
+                        0.21960784494876862,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 100.0,
+                    "InterlineDistance": 24.0,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 789496551,
+            "ParentUID": 1127476258,
+            "Name": "Q",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 0,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -75.0,
+                        50.0
+                    ],
+                    "Size": [
+                        50.0,
+                        50.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 8,
+                    "Enabled": 1,
+                    "text": {
+                        "Type": 6,
+                        "Enabled": 1,
+                        "FontSize": 14.0,
+                        "text": "",
+                        "font": "Fonts/DroidSans.ttf",
+                        "color": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            0.0
+                        ],
+                        "colorHovered": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            0.0
+                        ],
+                        "offset": [
+                            0.0,
+                            0.0
+                        ],
+                        "scaleOffset": [
+                            1.0,
+                            1.0
+                        ],
+                        "IsTextWrapped": 0,
+                        "WrapWidth": 0.0,
+                        "InterlineDistance": 0.0,
+                        "UIOrder": 0
+                    },
+                    "buttonImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
+                        "color": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "highlightedImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
+                        "color": [
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            0.686274528503418
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "pressedImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
+                        "color": [
+                            0.19607843458652497,
+                            0.19607843458652497,
+                            0.19607843458652497,
+                            0.686274528503418
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 2906765811,
+            "ParentUID": 789496551,
+            "Name": "Q_Slot",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -75.0,
+                        50.0
+                    ],
+                    "Size": [
+                        38.0,
+                        38.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 0,
+                    "textureName": "",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 0,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 69459920,
+            "ParentUID": 789496551,
+            "Name": "Q_Cooldown",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -75.0,
+                        50.0
+                    ],
+                    "Size": [
+                        50.0,
+                        50.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 3131494396,
+                    "textureName": "Defaultslot",
+                    "color": [
+                        0.29411765933036806,
+                        0.29411765933036806,
+                        0.29411765933036806,
+                        0.686274528503418
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 1,
+                    "maskAmount": 0,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 1841291724,
+            "ParentUID": 789496551,
+            "Name": "QText",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -81.4000015258789,
+                        47.900001525878909
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 47.0,
+                    "text": "Q",
+                    "font": "Fonts/Vision-Regular.ttf",
+                    "color": [
+                        0.5176470875740051,
+                        0.21960784494876862,
+                        0.21960784494876862,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 100.0,
+                    "InterlineDistance": 24.0,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 3715438816,
+            "ParentUID": 1127476258,
+            "Name": "W",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 0,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -25.0,
+                        50.0
+                    ],
+                    "Size": [
+                        50.0,
+                        50.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 8,
+                    "Enabled": 1,
+                    "text": {
+                        "Type": 6,
+                        "Enabled": 1,
+                        "FontSize": 14.0,
+                        "text": "",
+                        "font": "Fonts/DroidSans.ttf",
+                        "color": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            0.0
+                        ],
+                        "colorHovered": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            0.0
+                        ],
+                        "offset": [
+                            0.0,
+                            0.0
+                        ],
+                        "scaleOffset": [
+                            1.0,
+                            1.0
+                        ],
+                        "IsTextWrapped": 0,
+                        "WrapWidth": 0.0,
+                        "InterlineDistance": 0.0,
+                        "UIOrder": 0
+                    },
+                    "buttonImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
+                        "color": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "highlightedImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
+                        "color": [
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            0.686274528503418
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "pressedImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
+                        "color": [
+                            0.19607843458652497,
+                            0.19607843458652497,
+                            0.19607843458652497,
+                            0.686274528503418
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 3690654721,
+            "ParentUID": 3715438816,
+            "Name": "W_Slot",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -25.0,
+                        50.0
+                    ],
+                    "Size": [
+                        38.0,
+                        28.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 0,
+                    "textureName": "",
+                    "color": [
+                        1.0,
+                        0.9999899864196777,
+                        0.9999899864196777,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 874441368,
+            "ParentUID": 3715438816,
+            "Name": "W_Cooldown",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -25.0,
+                        50.0
+                    ],
+                    "Size": [
+                        50.0,
+                        50.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 3131494396,
+                    "textureName": "Defaultslot",
+                    "color": [
+                        0.29411765933036806,
+                        0.29411765933036806,
+                        0.29411765933036806,
+                        0.686274528503418
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 1,
+                    "maskAmount": 1,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 231303127,
+            "ParentUID": 3715438816,
+            "Name": "WText",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -35.5,
+                        46.79999923706055
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 47.0,
+                    "text": "W",
+                    "font": "Fonts/Vision-Regular.ttf",
+                    "color": [
+                        0.5176470875740051,
+                        0.21960784494876862,
+                        0.21960784494876862,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 100.0,
+                    "InterlineDistance": 24.0,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 1877255390,
+            "ParentUID": 1127476258,
+            "Name": "E",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 0,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        25.0,
+                        50.0
+                    ],
+                    "Size": [
+                        50.0,
+                        50.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 8,
+                    "Enabled": 1,
+                    "text": {
+                        "Type": 6,
+                        "Enabled": 1,
+                        "FontSize": 14.0,
+                        "text": "",
+                        "font": "Fonts/DroidSans.ttf",
+                        "color": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            0.0
+                        ],
+                        "colorHovered": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            0.0
+                        ],
+                        "offset": [
+                            0.0,
+                            0.0
+                        ],
+                        "scaleOffset": [
+                            1.0,
+                            1.0
+                        ],
+                        "IsTextWrapped": 0,
+                        "WrapWidth": 0.0,
+                        "InterlineDistance": 0.0,
+                        "UIOrder": 0
+                    },
+                    "buttonImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
+                        "color": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "highlightedImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
+                        "color": [
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            0.686274528503418
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "pressedImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
+                        "color": [
+                            0.19607843458652497,
+                            0.19607843458652497,
+                            0.19607843458652497,
+                            0.686274528503418
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 226993046,
+            "ParentUID": 1877255390,
+            "Name": "E_Slot",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        25.0,
+                        50.0
+                    ],
+                    "Size": [
+                        38.0,
+                        38.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 0,
+                    "textureName": "",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 3728681171,
+            "ParentUID": 1877255390,
+            "Name": "E_Cooldown",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        25.0,
+                        50.0
+                    ],
+                    "Size": [
+                        50.0,
+                        50.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 3131494396,
+                    "textureName": "Defaultslot",
+                    "color": [
+                        0.29411765933036806,
+                        0.29411765933036806,
+                        0.29411765933036806,
+                        0.686274528503418
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 1,
+                    "maskAmount": 0,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 2747645871,
+            "ParentUID": 1877255390,
+            "Name": "EText",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        18.899999618530275,
+                        48.0
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 47.0,
+                    "text": "E",
+                    "font": "Fonts/Vision-Regular.ttf",
+                    "color": [
+                        0.5176470875740051,
+                        0.21960784494876862,
+                        0.21960784494876862,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 100.0,
+                    "InterlineDistance": 24.0,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 1647201826,
+            "ParentUID": 1127476258,
+            "Name": "R",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 0,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        75.0,
+                        50.0
+                    ],
+                    "Size": [
+                        50.0,
+                        50.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 8,
+                    "Enabled": 1,
+                    "text": {
+                        "Type": 6,
+                        "Enabled": 1,
+                        "FontSize": 14.0,
+                        "text": "",
+                        "font": "Fonts/DroidSans.ttf",
+                        "color": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            0.0
+                        ],
+                        "colorHovered": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            0.0
+                        ],
+                        "offset": [
+                            0.0,
+                            0.0
+                        ],
+                        "scaleOffset": [
+                            1.0,
+                            1.0
+                        ],
+                        "IsTextWrapped": 0,
+                        "WrapWidth": 0.0,
+                        "InterlineDistance": 0.0,
+                        "UIOrder": 0
+                    },
+                    "buttonImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
+                        "color": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "highlightedImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
+                        "color": [
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            0.686274528503418
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "pressedImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
+                        "color": [
+                            0.19607843458652497,
+                            0.19607843458652497,
+                            0.19607843458652497,
+                            0.686274528503418
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 423802172,
+            "ParentUID": 1647201826,
+            "Name": "R_Slot",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        75.0,
+                        50.0
+                    ],
+                    "Size": [
+                        38.0,
+                        38.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 0,
+                    "textureName": "",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 3658360861,
+            "ParentUID": 1647201826,
+            "Name": "R_Cooldown",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        75.0,
+                        50.0
+                    ],
+                    "Size": [
+                        50.0,
+                        50.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 3131494396,
+                    "textureName": "Defaultslot",
+                    "color": [
+                        0.29411765933036806,
+                        0.29411765933036806,
+                        0.29411765933036806,
+                        0.686274528503418
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 1,
+                    "maskAmount": 0,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 1047528425,
+            "ParentUID": 1647201826,
+            "Name": "RText",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        67.5999984741211,
+                        48.099998474121097
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 47.0,
+                    "text": "R",
+                    "font": "Fonts/Vision-Regular.ttf",
+                    "color": [
+                        0.5176470875740051,
+                        0.21960784494876862,
+                        0.21960784494876862,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 100.0,
+                    "InterlineDistance": 24.0,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 4161254190,
+            "ParentUID": 1127476258,
+            "Name": "LC",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 0,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -125.0,
+                        75.0
+                    ],
+                    "Size": [
+                        50.0,
+                        50.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 8,
+                    "Enabled": 1,
+                    "text": {
+                        "Type": 6,
+                        "Enabled": 1,
+                        "FontSize": 14.0,
+                        "text": "",
+                        "font": "Fonts/DroidSans.ttf",
+                        "color": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            0.0
+                        ],
+                        "colorHovered": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            0.0
+                        ],
+                        "offset": [
+                            0.0,
+                            0.0
+                        ],
+                        "scaleOffset": [
+                            1.0,
+                            1.0
+                        ],
+                        "IsTextWrapped": 0,
+                        "WrapWidth": 0.0,
+                        "InterlineDistance": 0.0,
+                        "UIOrder": 0
+                    },
+                    "buttonImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
+                        "color": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "highlightedImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
+                        "color": [
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            0.686274528503418
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "pressedImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
+                        "color": [
+                            0.19607843458652497,
+                            0.19607843458652497,
+                            0.19607843458652497,
+                            0.686274528503418
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 113142417,
+            "ParentUID": 4161254190,
+            "Name": "RCText",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -135.89999389648438,
+                        71.5
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 47.0,
+                    "text": "LC",
+                    "font": "Fonts/Vision-Regular.ttf",
+                    "color": [
+                        0.5176470875740051,
+                        0.21960784494876862,
+                        0.21960784494876862,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 72.0,
+                    "InterlineDistance": 110.0,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 3244267934,
+            "ParentUID": 1127476258,
+            "Name": "ManaBackgroud",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 0,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        200.0,
+                        75.0
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 2897156129,
+                    "textureName": "Health_Mana_Container_1",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 1152620966,
+            "ParentUID": 3244267934,
+            "Name": "Mana",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        200.0,
+                        75.0
+                    ],
+                    "Size": [
+                        85.0,
+                        85.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 1994961487,
+                    "textureName": "Mana_2",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 1,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 3098686715,
+            "ParentUID": 3244267934,
+            "Name": "ManaBubble",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        200.0,
+                        75.0
+                    ],
+                    "Size": [
+                        85.0,
+                        85.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 3504017917,
+                    "textureName": "Health_Mana_Bubble_3",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 0,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 4257741259,
+            "ParentUID": 1127476258,
+            "Name": "RC",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 0,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        125.0,
+                        75.0
+                    ],
+                    "Size": [
+                        50.0,
+                        50.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 8,
+                    "Enabled": 1,
+                    "text": {
+                        "Type": 6,
+                        "Enabled": 1,
+                        "FontSize": 14.0,
+                        "text": "",
+                        "font": "Fonts/DroidSans.ttf",
+                        "color": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            0.0
+                        ],
+                        "colorHovered": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            0.0
+                        ],
+                        "offset": [
+                            0.0,
+                            0.0
+                        ],
+                        "scaleOffset": [
+                            1.0,
+                            1.0
+                        ],
+                        "IsTextWrapped": 0,
+                        "WrapWidth": 0.0,
+                        "InterlineDistance": 0.0,
+                        "UIOrder": 0
+                    },
+                    "buttonImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
+                        "color": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "highlightedImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
+                        "color": [
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            0.5882353186607361,
+                            0.686274528503418
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "pressedImage": {
+                        "Type": 7,
+                        "Enabled": 1,
+                        "textureUID": 3131494396,
+                        "textureName": "Defaultslot",
+                        "color": [
+                            0.19607843458652497,
+                            0.19607843458652497,
+                            0.19607843458652497,
+                            0.686274528503418
+                        ],
+                        "FlipVertical": 0,
+                        "FlipHorizontal": 0,
+                        "isMasked": 0,
+                        "maskAmount": 0,
+                        "isMaskHorizontal": 0,
+                        "hoverDetectionMouse1": 1,
+                        "hoverDetectionMouse3": 1,
+                        "UIOrder": 0
+                    },
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 2884154177,
+            "ParentUID": 4257741259,
+            "Name": "RC_Slot",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        126.69999694824219,
+                        74.80000305175781
+                    ],
+                    "Size": [
+                        38.0,
+                        38.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 0,
+                    "textureName": "",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 126331799,
+            "ParentUID": 4257741259,
+            "Name": "RC_Cooldown",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        126.69999694824219,
+                        74.80000305175781
+                    ],
+                    "Size": [
+                        50.0,
+                        50.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 3131494396,
+                    "textureName": "Defaultslot",
+                    "color": [
+                        0.29411765933036806,
+                        0.29411765933036806,
+                        0.29411765933036806,
+                        0.686274528503418
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 1,
+                    "maskAmount": 0,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 3071593958,
+            "ParentUID": 4257741259,
+            "Name": "RCText",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        111.30000305175781,
+                        71.5
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 47.0,
+                    "text": "RC",
+                    "font": "Fonts/Vision-Regular.ttf",
+                    "color": [
+                        0.5176470875740051,
+                        0.21960784494876862,
+                        0.21960784494876862,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 72.0,
+                    "InterlineDistance": 110.0,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 2173048441,
+            "ParentUID": 1127476258,
+            "Name": "Xp",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 0,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        0.0,
+                        31.399999618530275
+                    ],
+                    "Size": [
+                        646.5,
+                        43.5
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 1358843066,
+                    "textureName": "Barra_Exp_1",
+                    "color": [
+                        1.0,
+                        0.9999899864196777,
+                        0.9999899864196777,
+                        0.9960784316062927
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 0,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                },
+                {
+                    "Type": 9,
+                    "Enabled": 1,
+                    "script": "ExperienceController",
+                    "scriptInfo": {
+                        "timeShowing": 3.0,
+                        "numLevels": 23,
+                        "0": 100,
+                        "1": 200,
+                        "2": 300,
+                        "3": 400,
+                        "4": 500,
+                        "5": 600,
+                        "6": 700,
+                        "7": 800,
+                        "8": 900,
+                        "9": 1000,
+                        "10": 1100,
+                        "11": 1200,
+                        "12": 1300,
+                        "13": 1400,
+                        "14": 1500,
+                        "15": 1600,
+                        "16": 1700,
+                        "17": 1800,
+                        "18": 1900,
+                        "19": 2000,
+                        "20": 2100,
+                        "21": 2200,
+                        "22": 2300
+                    }
+                }
+            ]
+        },
+        {
+            "UID": 1089364379,
+            "ParentUID": 2173048441,
+            "Name": "XpProgress",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        0.0,
+                        14.300000190734864
+                    ],
+                    "Size": [
+                        460.5,
+                        5.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 894067112,
+                    "textureName": "Barra_Exp_2",
+                    "color": [
+                        1.0,
+                        0.9999947547912598,
+                        0.9999899864196777,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 1,
+                    "maskAmount": 0,
+                    "isMaskHorizontal": 1,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 1353664963,
+            "ParentUID": 2173048441,
+            "Name": "XpLines",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        0.0,
+                        14.300000190734864
+                    ],
+                    "Size": [
+                        256.0,
+                        5.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 23668328,
+                    "textureName": "Barra_Exp_3",
+                    "color": [
+                        1.0,
+                        0.9999947547912598,
+                        0.9999899864196777,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 389141661,
+            "ParentUID": 1127476258,
+            "Name": "LifeBackgroud",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 0,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -200.0,
+                        75.0
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 2897156129,
+                    "textureName": "Health_Mana_Container_1",
+                    "color": [
+                        1.0,
+                        0.9999899864196777,
+                        0.9999899864196777,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 1475976605,
+            "ParentUID": 389141661,
+            "Name": "Life",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -200.0,
+                        75.0
+                    ],
+                    "Size": [
+                        85.0,
+                        85.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 2515181209,
+                    "textureName": "Health_2",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 1,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        },
+        {
+            "UID": 1119524677,
+            "ParentUID": 389141661,
+            "Name": "LifeBubble",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -200.0,
+                        75.0
+                    ],
+                    "Size": [
+                        85.0,
+                        85.0
+                    ],
+                    "Anchor": 7,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 3504017917,
+                    "textureName": "Health_Mana_Bubble_3",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0
+                }
+            ]
+        }
+    ]
+}

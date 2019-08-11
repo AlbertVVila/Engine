@@ -127,6 +127,8 @@ bool ModuleFontLoader::Init(JSON* json)
 	LoadFonts("Fonts/MATADOR.ttf");
 	LoadFonts("Fonts/TACOM.ttf");
 	LoadFonts("Fonts/TACOSRG.ttf");
+	LoadFonts("Fonts/Vision-BoldItalic.ttf");
+	LoadFonts("Fonts/Vision-Regular.ttf");
 	return true;
 }
 
