@@ -1,5 +1,6 @@
 #include "ComponentImage.h"
 
+#include "glew-2.1.0/include/GL/glew.h"
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleResourceManager.h"
@@ -7,6 +8,7 @@
 #include "ModuleInput.h"
 #include "ModuleRender.h"
 #include "ModuleFileSystem.h"
+#include "ModuleTime.h"
 
 #include "ResourceTexture.h"
 
@@ -18,7 +20,6 @@
 #include "GameObject.h"
 #include "ComponentTransform2D.h"
 
-#include "opencv2/opencv.hpp"
 
 #define None "None Selected"
 
@@ -58,6 +59,8 @@ ComponentImage::ComponentImage(const ComponentImage &copy) : Component(copy)
 	hoverDetectionMouse1 = copy.hoverDetectionMouse1;
 	hoverDetectionMouse3 = copy.hoverDetectionMouse3;
 	uiOrder = copy.uiOrder;
+	videoPath = copy.videoPath;
+	fps = copy.fps;
 }
 
 ComponentImage::~ComponentImage()
@@ -137,39 +140,28 @@ void ComponentImage::DrawProperties()
 			ImGui::Checkbox("Hover Detection Mouse1", &hoverDetectionMouse1);
 			ImGui::Checkbox("Hover Detection Mouse3", &hoverDetectionMouse3);
 		}
+		ImGui::Separator();
+		ImGui::Text("Video");
+		ImGui::Text("Path: Game/Video/");
+		ImGui::SameLine();
+		const int bufSize = videoPath.size() + 1;
+		char buf[256];
+		memcpy(buf, videoPath.c_str(), bufSize * sizeof(char));
 
-		using namespace cv;
-		auto k = App->fsystem->Size("flame.avi");
-		cv::VideoCapture cap("flame.avi");
-		// Check if video opened successfully
-		if (!cap.isOpened()) {
-			LOG("Error opening video");
+		if (ImGui::InputText("", buf, 256 * sizeof(char))) 
+		{
+			videoPath = std::string(buf);
+		}		
+
+		if (ImGui::DragFloat("FPS", &fps))
+		{
+			frameTime = 1.0f / fps;
+		}
+		if (ImGui::Button("Play video"))
+		{
+			PlayVideo();
 		}
 
-		while (1) {
-
-			Mat frame;
-			// Capture frame-by-frame
-			cap >> frame;
-
-			// If the frame is empty, break immediately
-			if (frame.empty())
-				break;
-
-			// Display the resulting frame
-			imshow("Frame", frame);
-
-			// Press  ESC on keyboard to exit
-			char c = (char)waitKey(25);
-			if (c == 27)
-				break;
-		}
-
-		// When everything done, release the video capture object
-		cap.release();
-
-		// Closes all the frames
-		destroyAllWindows();
 		ImGui::Separator();
 	}
 }
@@ -203,6 +195,35 @@ void ComponentImage::Update()
 	else
 		isHovered = false;
 
+	if (videoPlaying)
+	{
+		frameTimer -= App->time->gameDeltaTime;
+		if (frameTimer < 0.f) 
+		{
+			cap >> frame;
+			if (!frame.empty()) 
+			{
+				cv::Mat flipped;
+				cv::flip(frame, flipped, 0);
+				frameTimer = frameTime;
+				if (videoTex == 0u)
+					glGenTextures(1, &videoTex);
+				glBindTexture(GL_TEXTURE_2D, videoTex);
+				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, frame.cols, frame.rows, 0, GL_BGR, GL_UNSIGNED_BYTE, flipped.ptr());
+			}
+			else 
+			{
+				LOG("Video finished");
+				videoFinished = true;
+				videoPlaying = false;
+			}
+		}
+	}
+
 }
 
 void ComponentImage::UpdateTexture(std::string textureName)
@@ -229,6 +250,8 @@ void ComponentImage::Save(JSON_value *value)const
 	value->AddInt("hoverDetectionMouse1", hoverDetectionMouse1);
 	value->AddInt("hoverDetectionMouse3", hoverDetectionMouse3);
 	value->AddInt("UIOrder", uiOrder);
+	value->AddString("videoPath", videoPath.c_str());
+	value->AddFloat("fps", fps);
 
 }
 
@@ -247,6 +270,8 @@ void ComponentImage::Load(JSON_value* value)
 	hoverDetectionMouse1 = value->GetInt("hoverDetectionMouse1", 1);
 	hoverDetectionMouse3 = value->GetInt("hoverDetectionMouse3", 1);
 	uiOrder = value->GetInt("UIOrder", 0);
+	videoPath = value->GetString("videoPath", videoPath.c_str());
+	fps = value->GetFloat("fps", fps);
 }
 
 ENGINE_API void ComponentImage::SetMaskAmount(int maskAmount)
@@ -262,4 +287,22 @@ int ComponentImage::GetMaskAmount() const
 bool ComponentImage::IsMasked() const
 {
 	return isMasked;
+}
+
+void ComponentImage::PlayVideo()
+{
+	using namespace cv;	
+	cap.open(std::string("../Game/Video/") + videoPath.c_str());
+	// Check if video opened successfully
+	if (!cap.isOpened()) {
+		LOG("Error opening video");
+	}
+	else
+	{
+		videoPlaying = true;
+		videoFinished = false;
+		cap >> frame;
+		frameTime = 1.0f / fps;
+		frameTimer = 0.f;
+	}
 }
