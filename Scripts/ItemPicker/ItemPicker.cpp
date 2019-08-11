@@ -4,6 +4,7 @@
 #include "ModuleInput.h"
 #include "ModuleResourceManager.h"
 #include "ModuleTime.h"
+#include "ModuleUI.h"
 
 #include "GameObject.h"
 #include "ComponentRenderer.h"
@@ -251,9 +252,10 @@ void ItemPicker::Update()
 		if (myRender != nullptr)
 			myRender->highlighted = true;
 
-		if (changeItemCursorIcon)
+		if (changeItemCursorIcon && !App->ui->IsHover())
 		{
 			MouseController::ChangeCursorIcon(itemCursor);
+			App->ui->SetIsItemHover(true);
 			changeItemCursorIcon = false;
 			changeStandarCursorIcon = true;
 		}
@@ -265,9 +267,10 @@ void ItemPicker::Update()
 			myRender->highlighted = false;
 			itemName->Hovered(gameobject->UUID, false);
 
-			if (changeStandarCursorIcon)
+			if (changeStandarCursorIcon && !App->ui->IsHover())
 			{
 				MouseController::ChangeCursorIcon(gameStandarCursor);
+				App->ui->SetIsItemHover(false);
 				changeStandarCursorIcon = false;
 				changeItemCursorIcon = true;
 			}

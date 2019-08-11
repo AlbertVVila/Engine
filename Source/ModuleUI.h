@@ -31,7 +31,8 @@ public:
 	ModuleUI();
 	virtual ~ModuleUI();
 
-	bool Init(JSON* json) override;
+	bool Init(JSON* config) override;
+	void SaveConfig(JSON* config) override;
 	update_status PreUpdate() override { uiHoveredMouse1 = false; uiHoveredMouse3 = false; return update_status::UPDATE_CONTINUE; }
 	update_status Update(float dt) override;
 	update_status PostUpdate() override;
@@ -41,6 +42,8 @@ public:
 
 	void Draw(int currentWidth, int currentHeight);
 	inline bool UIHovered(bool checkMouse1 = true, bool checkMouse3 = true) { return (uiHoveredMouse1 && checkMouse1) || (uiHoveredMouse3 && checkMouse3); }
+	ENGINE_API inline bool IsHover() { return isHover; }
+	ENGINE_API inline void SetIsItemHover(bool isItemHover) { this->isItemHover = isItemHover; }
 
 public:
 	int currentWidth;
@@ -50,6 +53,7 @@ public:
 private:
 	void GenerateVAO(unsigned& vao, float quadVertices[16]);
 	void RenderImage(const ComponentImage& componentImage, int currentWidth, int currentHeight);
+	void ManageUiHoveredCursorIcon(bool isHovered);
 
 private:
 	const char* shaderFile = "UI";
@@ -62,6 +66,12 @@ private:
 	unsigned EBO = 0;
 
 	float mask[MASK_DIVISIONS];
+
+	std::string uiCursor = "GhostGlow.cur";
+	bool isHover = false;
+	bool isItemHover = false;
+	bool changeHoverCursorIcon = true;
+	bool changeNotHoverCursorIcon = true;
 
 public:
 	bool uiHoveredMouse1 = false;
