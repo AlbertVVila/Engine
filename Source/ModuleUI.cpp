@@ -270,7 +270,11 @@ void ModuleUI::RenderImage(const ComponentImage& componentImage, int currentWidt
 		glUniformMatrix4fv(glGetUniformLocation(shader->id[0], "projection"), 1, GL_TRUE, (const float*)&projection);
 
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, componentImage.texture->gpuID);
+		if (componentImage.videoPlaying)
+			glBindTexture(GL_TEXTURE_2D, componentImage.videoTex);
+		else
+			glBindTexture(GL_TEXTURE_2D, componentImage.texture->gpuID);
+
 		glUniform1i(glGetUniformLocation(shader->id[0], "texture0"), 0);
 
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
