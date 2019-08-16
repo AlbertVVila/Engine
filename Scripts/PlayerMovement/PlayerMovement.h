@@ -37,7 +37,8 @@ struct ImGuiContext;
 #define BOMB_DROP_ROT 2.5f
 
 #define MACHETE_RAIN_START_HEIGHT 3300.0f
-#define MACHETE_RAIN_SPEED 3000.0f
+#define MACHETE_RAIN_SPEED 4000.0f
+#define MACHETE_AMOUNT 30u
 
 class ComponentAnimation;
 class ComponentTransform;

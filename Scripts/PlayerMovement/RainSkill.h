@@ -2,6 +2,7 @@
 #define  __RainSkill_h__
 
 #include "RangeSkill.h"
+#include <queue>
 
 class GameObject;
 
@@ -14,7 +15,7 @@ public:
 
 	void Start() override;
 
-	GameObject* machetes = nullptr;
+	std::queue<GameObject*> machetes;
 	float targetHeight = 0.f;
 };
 

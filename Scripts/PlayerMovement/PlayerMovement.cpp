@@ -77,8 +77,8 @@ PlayerMovement::PlayerMovement()
 	assignedSkills[HUD_BUTTON_4] = SkillType::NONE;
 	assignedSkills[HUD_BUTTON_Q] = SkillType::NONE;
 	assignedSkills[HUD_BUTTON_W] = SkillType::NONE;
-	assignedSkills[HUD_BUTTON_E] = SkillType::NONE;
-	assignedSkills[HUD_BUTTON_R] = SkillType::NONE;
+	assignedSkills[HUD_BUTTON_E] = SkillType::BOMB_DROP;
+	assignedSkills[HUD_BUTTON_R] = SkillType::RAIN;
 }
 
 PlayerMovement::~PlayerMovement()
@@ -225,15 +225,20 @@ void PlayerMovement::CreatePlayerSkills()
 	circular->mesh3 = App->scene->FindGameObjectByName("Spiral");
 	circular->particles = App->scene->FindGameObjectByName("CircularAttackParticles");
 	stomp = new StompSkill(this, "Stomp", attackBoxTrigger);
-	rain = new RainSkill(this, "Rain", "RainPrefab");
-	rain->machetes = App->scene->FindGameObjectByName("MacheteRain");
-	if (rain->machetes)
+	rain = new RainSkill(this, "Rain", "");
+	GameObject* machete = App->scene->FindGameObjectByName("MacheteRain");
+	if (machete)
 	{
-		macheteRainRenderer = rain->machetes->GetComponent<ComponentRenderer>();
-		if (macheteRainRenderer)
+		for (unsigned i = 0u; i < MACHETE_AMOUNT; ++i)
 		{
-			macheteRainRenderer->dissolve = true;
-			macheteRainRenderer->borderAmount = 0.04f;
+			GameObject* macheteClone = new GameObject(*machete);
+			macheteRainRenderer = macheteClone->GetComponent<ComponentRenderer>();
+			if (macheteRainRenderer)
+			{
+				macheteRainRenderer->dissolve = true;
+				macheteRainRenderer->borderAmount = 0.04f;
+			}
+			rain->machetes.push(macheteClone);
 		}
 	}
 	else
@@ -623,8 +628,8 @@ void PlayerMovement::Start()
 	assignedSkills[HUD_BUTTON_4] = (SkillType)PlayerPrefs::GetInt("4", 20);
 	assignedSkills[HUD_BUTTON_Q] = (SkillType)PlayerPrefs::GetInt("Q", 20);
 	assignedSkills[HUD_BUTTON_W] = (SkillType)PlayerPrefs::GetInt("W", 20);
-	assignedSkills[HUD_BUTTON_E] = (SkillType)PlayerPrefs::GetInt("E", 20);
-	assignedSkills[HUD_BUTTON_R] = (SkillType)PlayerPrefs::GetInt("R", 20);
+//	assignedSkills[HUD_BUTTON_E] = (SkillType)PlayerPrefs::GetInt("E", 20);
+//	assignedSkills[HUD_BUTTON_R] = (SkillType)PlayerPrefs::GetInt("R", 20);
 
 	InitializeUIStatsObjects();
 	LOG("Started player movement script");
@@ -718,26 +723,35 @@ void PlayerMovement::Update()
 		}
 	}
 
-	if (macheteRainActivated && rain->machetes)
+	if (macheteRainActivated && !rain->machetes.empty())
 	{
-		if (rain->machetes && macheteRainRenderer && macheteRainParticles)
+		for (unsigned i = 0u; i < MACHETE_AMOUNT; ++i)
 		{
-			if (rain->machetes->transform->GetGlobalPosition().y > rain->targetHeight)
+			GameObject* machete = rain->machetes.front();
+			macheteRainRenderer = machete->GetComponent<ComponentRenderer>();
+			if (machete && macheteRainRenderer && macheteRainParticles)
 			{
-				rain->machetes->transform->SetGlobalPosition(rain->machetes->transform->GetGlobalPosition() - math::float3(0, MACHETE_RAIN_SPEED * App->time->gameDeltaTime, 0));
-				macheteRainRenderer->dissolveAmount = 0.f;
-				shaking = false;
-			}
-			else
-			{
-				macheteRainRenderer->dissolveAmount += 1.0f * App->time->gameDeltaTime;
-				macheteRainParticles->SetActive(false);
-				if (!shaking && playerCamera)
+				if (machete->transform->GetGlobalPosition().y > rain->targetHeight)
 				{
-					shaking = true;
-					playerCamera->GetComponent<CameraController>()->Shake(0.5f, 25.f);
+					machete->transform->SetGlobalPosition(machete->transform->GetGlobalPosition() - math::float3(0, MACHETE_RAIN_SPEED * App->time->gameDeltaTime, 0));
+					macheteRainRenderer->dissolveAmount = 0.f;
+					shaking = false;
 				}
+				else
+				{
+					//macheteRainRenderer->dissolveAmount += 1.0f * App->time->gameDeltaTime;
+					macheteRainParticles->SetActive(false);
+					if (!shaking && playerCamera)
+					{
+						shaking = true;
+						playerCamera->GetComponent<CameraController>()->Shake(0.5f, 25.f);
+					}
+				}
+				machete->Update(); //Force updates due it's not in any hierarchy
+				machete->UpdateTransforms(math::float4x4::identity); //Force updates due it's not in any hierarchy
 			}
+			rain->machetes.push(machete);
+			rain->machetes.pop();
 		}
 	}
 
