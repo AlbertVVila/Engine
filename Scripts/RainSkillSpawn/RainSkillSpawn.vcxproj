@@ -97,7 +97,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;RainSkillSpawn_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\BaseScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source;$(SolutionDir)\Scripts\EnemyControllerScript</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Source\OpenCV;..\BaseScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source;$(SolutionDir)\Scripts\EnemyControllerScript</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -140,7 +140,7 @@ set ERRORLEVEL=0</Command>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;RainSkillSpawn_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\BaseScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source;$(SolutionDir)\Scripts\EnemyControllerScript</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Source\OpenCV;..\BaseScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source;$(SolutionDir)\Scripts\EnemyControllerScript</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
