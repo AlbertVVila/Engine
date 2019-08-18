@@ -379,7 +379,7 @@ void EnemyControllerScript::OnTriggerEnter(GameObject* go)
 		}
 	}
 
-	if (go->tag == "PlayerHitBoxAttack")
+	if (go->tag == "PlayerHitBoxAttack" || go->tag == "Machete")
 	{
 		TakeDamage(playerMovement->stats.strength * 0.1);
 	}

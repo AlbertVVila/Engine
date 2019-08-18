@@ -38,7 +38,8 @@ struct ImGuiContext;
 
 #define MACHETE_RAIN_START_HEIGHT 3300.0f
 #define MACHETE_RAIN_SPEED 4000.0f
-#define MACHETE_AMOUNT 30u
+#define MACHETE_RAIN_HORIZONTAL_SPEED 40.0f
+#define MACHETE_AMOUNT 80u
 
 class ComponentAnimation;
 class ComponentTransform;
@@ -190,6 +191,7 @@ public:
 	bool IsUsingE() const;
 	bool IsUsingR() const;
 	bool IsUsingSkill() const;
+	void PrepareSkills() const;
 
 	void CheckSkillsInput();
 	void ResetCooldown(unsigned int hubButtonID);
@@ -303,8 +305,6 @@ private:
 	float bombDropWaveGrowRate = 1.05f;
 
 	GameObject* slashTrail = nullptr;
-
-	ComponentRenderer* macheteRainRenderer = nullptr;
 	
 	DamageController* damageController = nullptr;
 	DamageFeedbackUI* damageUIFeedback = nullptr;

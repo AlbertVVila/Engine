@@ -6,6 +6,7 @@
 
 class PlayerMovement;
 class JSON_value;
+class GameObject;
 
 class BasicSkill
 {
@@ -24,17 +25,19 @@ public:
 	virtual void DeSerialize(JSON_value* json);
 
 	virtual void CheckInput() {};
+	virtual void Prepare() {};
 
 protected:
-	virtual void UseSkill() {}
+	virtual void UseSkill() {};	
 
 public:
 	std::string animTrigger;
 	float duration = 0.0f;
+	GameObject* decal = nullptr;
 
 protected:
 	float timer = 0.0f;
-	PlayerMovement* player = nullptr;
+	PlayerMovement* player = nullptr;	
 };
 
 #endif __BasicSkill_h__

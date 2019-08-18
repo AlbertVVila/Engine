@@ -21,6 +21,33 @@ RainSkill::~RainSkill()
 void RainSkill::Start()
 {
 	//math::float2 mousePosition = player->gameobject->transform->GetScreenPosition();
+	
+	if (!machetes.empty())
+	{
+		LOG("Machetes placed");
+		decal->SetActive(false);
+		for (unsigned i = 0u; i < MACHETE_AMOUNT; ++i)
+		{
+			GameObject* machete = machetes[i].machete;
+			const float MIN_RAND = -AREA_SIZE, MAX_RAND = AREA_SIZE;
+			const float range = MAX_RAND - MIN_RAND;
+			float x = range * ((((float)rand()) / (float)RAND_MAX)) + MIN_RAND;			
+			float z = range * ((((float)rand()) / (float)RAND_MAX)) + MIN_RAND;			
+			machete->transform->SetGlobalPosition(spawnPosition + float3(x, i * VERTICAL_OFFSET, z));
+			player->macheteRainActivated = true;
+			player->macheteRainParticles->SetActive(true);
+			targetHeight = spawnPosition.y - MACHETE_RAIN_START_HEIGHT;
+			machetes[i].landed = false;
+			machete->transform->scale = machetes[i].originalScale;
+			machete->UpdateTransforms(math::float4x4::identity);
+		}
+	}
+	
+	RangeSkill::Start();
+}
+
+void RainSkill::Prepare()
+{
 	math::float3 mousePosition;
 	if (player->App->navigation->FindIntersectionPoint(player->transform->GetPosition(), mousePosition))
 	{
@@ -30,26 +57,7 @@ void RainSkill::Start()
 	{
 		spawnPosition = player->transform->position + float3(0.f, MACHETE_RAIN_START_HEIGHT, 0.f);
 	}
-	
-	if (!machetes.empty())
-	{
-		LOG("Machetes placed");
-		for (unsigned i = 0u; i < MACHETE_AMOUNT; ++i)
-		{
-			GameObject* machete = machetes.front();
-			const float MIN_RAND = -400.0f, MAX_RAND = 400.0f;
-			const float range = MAX_RAND - MIN_RAND;
-			float x = range * ((((float)rand()) / (float)RAND_MAX)) + MIN_RAND;			
-			float z = range * ((((float)rand()) / (float)RAND_MAX)) + MIN_RAND;			
-			machete->transform->SetGlobalPosition(spawnPosition + float3(x, i * 1000.f, z));
-			player->macheteRainActivated = true;
-			player->macheteRainParticles->SetActive(true);
-			targetHeight = spawnPosition.y - MACHETE_RAIN_START_HEIGHT;
-			machetes.push(machete);
-			machetes.pop();
-		}
-	}
-	
-	RangeSkill::Start();
+	decal->transform->SetGlobalPosition(spawnPosition - float3(0.f, MACHETE_RAIN_START_HEIGHT * .98f, 0.f));
+	decal->SetActive(true);
 }
 

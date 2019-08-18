@@ -42,6 +42,36 @@ ComponentRenderer::ComponentRenderer(const ComponentRenderer& component) : Compo
 	useAlpha = component.useAlpha;
 	highlighted = component.highlighted;
 	highlightColor = component.highlightColor;
+	dissolve = component.dissolve;
+	dissolveAmount = component.dissolveAmount;
+	borderAmount = component.borderAmount;
+
+	water = component.water;
+
+	waterAmplitude1 = component.waterAmplitude1;
+	waterFrequency1 = component.waterFrequency1;
+	waterDecay1 = component.waterDecay1;
+	waterSource1 = component.waterSource1;
+
+	waterAmplitude2 = component.waterAmplitude2;
+	waterFrequency2 = component.waterFrequency2;
+	waterDecay2 = component.waterDecay2;
+	distorsionSpeed = component.distorsionSpeed;
+
+	uvScaler = component.uvScaler;
+
+	waterSource2 = component.waterSource2;
+	waterSpeed = component.waterSpeed;
+
+	isVolumetricLight = component.isVolumetricLight;
+
+	xTiles = component.xTiles;
+	yTiles = component.yTiles;
+	loop = component.loop;
+
+	texSpeed = component.texSpeed;
+
+	fps = component.fps;
 }
 
 ComponentRenderer::~ComponentRenderer()
@@ -236,6 +266,7 @@ void ComponentRenderer::Save(JSON_value* value) const
 	value->AddFloat3("waterSource2", waterSource2);
 	value->AddFloat2("uvScaler", uvScaler);
 	value->AddFloat("distorsionSpeed", distorsionSpeed);
+	value->AddInt("loop", loop);
 }
 
 void ComponentRenderer::Load(JSON_value* value)
@@ -273,6 +304,7 @@ void ComponentRenderer::Load(JSON_value* value)
 	waterSource2 = value->GetFloat3("waterSource2");
 	uvScaler = value->GetFloat2("uvScaler");
 	distorsionSpeed = value->GetFloat("distorsionSpeed", distorsionSpeed);
+	loop = value->GetInt("loop", loop);
 }
 
 void ComponentRenderer::SetMaterial(const char* materialName)
