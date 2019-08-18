@@ -1177,7 +1177,7 @@
                     "Znear": 10.0,
                     "Zfar": 100000.0,
                     "vFOV": 1.0471975803375245,
-                    "hFOV": 1.5192210674285889,
+                    "hFOV": 0.9781646132469177,
                     "Position": [
                         -26.824371337890626,
                         6191.15576171875,
@@ -1907,7 +1907,8 @@
                         0.0,
                         0.0
                     ],
-                    "distorsionSpeed": 0.0010000000474974514
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 0
                 }
             ]
         },
@@ -2314,7 +2315,8 @@
                         0.0,
                         0.0
                     ],
-                    "distorsionSpeed": 0.0010000000474974514
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 0
                 },
                 {
                     "Type": 0,
@@ -2685,7 +2687,8 @@
                         0.0,
                         0.0
                     ],
-                    "distorsionSpeed": 0.0010000000474974514
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 0
                 },
                 {
                     "Type": 0,
@@ -3135,7 +3138,8 @@
                         0.0,
                         0.0
                     ],
-                    "distorsionSpeed": 0.0010000000474974514
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 0
                 },
                 {
                     "Type": 0,
@@ -3295,7 +3299,7 @@
                             "4": 20,
                             "Q": 20,
                             "W": 20,
-                            "E": 20,
+                            "E": 2,
                             "R": 4
                         },
                         "abilities": {
@@ -3845,7 +3849,8 @@
                         0.0,
                         0.0
                     ],
-                    "distorsionSpeed": 0.0010000000474974514
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 0
                 },
                 {
                     "Type": 0,
@@ -17251,7 +17256,8 @@
                         0.0,
                         0.0
                     ],
-                    "distorsionSpeed": 0.0010000000474974514
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 0
                 },
                 {
                     "Type": 0,
@@ -25127,7 +25133,8 @@
                         0.0,
                         0.0
                     ],
-                    "distorsionSpeed": 0.0010000000474974514
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 0
                 },
                 {
                     "Type": 0,
@@ -32907,7 +32914,8 @@
                         0.0,
                         0.0
                     ],
-                    "distorsionSpeed": 0.0010000000474974514
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 0
                 },
                 {
                     "Type": 0,
@@ -42353,7 +42361,8 @@
                         0.0,
                         0.0
                     ],
-                    "distorsionSpeed": 0.0010000000474974514
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 0
                 },
                 {
                     "Type": 0,
@@ -42882,7 +42891,8 @@
                         0.0,
                         0.0
                     ],
-                    "distorsionSpeed": 0.0010000000474974514
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 0
                 },
                 {
                     "Type": 0,
@@ -43154,7 +43164,8 @@
                         0.0,
                         0.0
                     ],
-                    "distorsionSpeed": 0.0010000000474974514
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 0
                 },
                 {
                     "Type": 15,
@@ -43319,7 +43330,8 @@
                         0.0,
                         0.0
                     ],
-                    "distorsionSpeed": 0.0010000000474974514
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 0
                 },
                 {
                     "Type": 15,
@@ -43484,7 +43496,8 @@
                         0.0,
                         0.0
                     ],
-                    "distorsionSpeed": 0.0010000000474974514
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 0
                 },
                 {
                     "Type": 9,
@@ -43516,140 +43529,6 @@
                     ],
                     "is_player": 0,
                     "debug_draw": 1
-                }
-            ]
-        },
-        {
-            "UID": 1517420109,
-            "ParentUID": 0,
-            "Name": "MacheteRain",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 1,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 0,
-                    "Enabled": 1,
-                    "Position": [
-                        0.0,
-                        386.25897216796877,
-                        0.0
-                    ],
-                    "Rotation": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ],
-                    "Euler": [
-                        -0.0,
-                        0.0,
-                        -0.0
-                    ],
-                    "Scale": [
-                        45.38454055786133,
-                        45.38454055786133,
-                        45.38454055786133
-                    ],
-                    "Global": [
-                        45.38454055786133,
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        45.38454055786133,
-                        0.0,
-                        386.25897216796877,
-                        0.0,
-                        0.0,
-                        45.38454055786133,
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
-                },
-                {
-                    "Type": 1,
-                    "Enabled": 1,
-                    "meshUID": 2992830916,
-                    "materialUID": 735767494,
-                    "castShadows": 0,
-                    "useAlpha": 0,
-                    "highlighted": 0,
-                    "highlightColor": [
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "xTiles": 1,
-                    "yTiles": 1,
-                    "fps": 24.0,
-                    "waterAmplitude1": 10.0,
-                    "waterDecay1": 1.0,
-                    "waterFrequency1": 10.0,
-                    "waterSource1": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "waterAmplitude2": 10.0,
-                    "waterDecay2": 1.0,
-                    "waterFrequency2": 10.0,
-                    "waterSource2": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "texSpeed": [
-                        0.0,
-                        0.0
-                    ],
-                    "waterSpeed": 2.0,
-                    "water": 0,
-                    "dissolve": 0,
-                    "waterSource1": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "waterSource2": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "uvScaler": [
-                        1.0,
-                        1.0
-                    ],
-                    "distorsionSpeed": 0.0010000000474974514
                 }
             ]
         },
