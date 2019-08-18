@@ -4,8 +4,10 @@
 #include "Component.h"
 #include "Math/float4.h"
 #include <vector>
+#include "opencv2/opencv.hpp"
 
 class ResourceTexture;
+class Transform2D;
 
 class ComponentImage : public Component
 {
@@ -28,6 +30,7 @@ public:
 	int GetMaskAmount() const;
 
 	bool IsMasked() const;
+	void PlayVideo();
 
 	float4 color = float4(1.0f, 1.0f, 1.0f, 1.0f);
 	ResourceTexture* texture = nullptr;
@@ -43,13 +46,27 @@ public:
 	bool hoverDetectionMouse3 = true;
 
 	std::vector<std::string> textureFiles;
+	
 	bool enabled = true;
 	int uiOrder = 0;
+
+	bool videoPlaying = false;
+
+	unsigned videoTex = 0u;
+	bool videoFinished = false;
+
 private:
 	bool isMasked = false;
 	int maskAmount = 100;
 
 	bool updateImageList = false;
+
+	std::string videoPath = "flame.avi";
+	cv::Mat frame;
+	cv::VideoCapture cap;
+	float frameTime;
+	float fps = 24.0f;
+	float frameTimer;
 };
 
 #endif // __ComponentImage_h__
