@@ -764,6 +764,12 @@ void PlayerMovement::Update()
 						shaking = true;
 						playerCamera->GetComponent<CameraController>()->Shake(0.5f, 25.f);
 					}
+					if (i == MACHETE_AMOUNT - 1u && macheteRainRenderer->dissolveAmount > 1.f)
+					{
+						LOG("Machete Rain end");
+						macheteRainActivated = false;
+					}
+
 					if (macheteRainRenderer->dissolveAmount > 1.f)
 						continue;
 					machete->transform->Scale(1.f + .5f * App->time->gameDeltaTime);
@@ -771,11 +777,7 @@ void PlayerMovement::Update()
 				machete->Update(); //Force updates due it's not in any hierarchy
 				machete->UpdateTransforms(math::float4x4::identity); //Force updates due it's not in any hierarchy
 			}
-			if (i == MACHETE_AMOUNT - 1u && macheteRainRenderer->dissolveAmount > 1.f)
-			{
-				LOG("Machete Rain end");
-				macheteRainActivated = false;
-			}
+			
 		}		
 	}
 
