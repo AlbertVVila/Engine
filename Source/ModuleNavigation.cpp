@@ -1690,6 +1690,7 @@ crowdTool::crowdTool()
 crowdTool::~crowdTool()
 {
 	dtFreeObstacleAvoidanceDebugData(m_vod);
+	dtFreeCrowd(m_crowd);
 }
 
 void crowdTool::setNavMesh(dtNavMesh* nav)
