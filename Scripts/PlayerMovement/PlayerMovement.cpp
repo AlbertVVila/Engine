@@ -749,8 +749,10 @@ void PlayerMovement::Update()
 				}
 				else
 				{
-					if (!rain->machetes[i].landed)
+					if (rain->machetes[i].colliderFrames > 0u) {
 						rain->machetes[i].trigger->Enable(true);
+						--rain->machetes[i].colliderFrames;
+					}
 					else
 						rain->machetes[i].trigger->Enable(false);
 

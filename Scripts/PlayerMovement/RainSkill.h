@@ -23,6 +23,7 @@ public:
 		ComponentBoxTrigger* trigger = nullptr;
 		math::float3 originalScale;
 		bool landed = false;
+		unsigned colliderFrames = 5u;
 	};
 	RainSkill(PlayerMovement* PM, const char* trigger, const char* prefab);
 	~RainSkill();

@@ -40,6 +40,7 @@ void RainSkill::Start()
 			machetes[i].landed = false;
 			machete->transform->scale = machetes[i].originalScale;
 			machete->UpdateTransforms(math::float4x4::identity);
+			machetes[i].colliderFrames = 5u;
 		}
 	}
 	
