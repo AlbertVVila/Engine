@@ -395,6 +395,9 @@ set ERRORLEVEL=0</Command>
     <ProjectReference Include="..\SkillTreeController\SkillTreeController.vcxproj">
       <Project>{55860826-2f36-4fbb-959e-e4ab93827c1f}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\WorldControllerScript\WorldControllerScript.vcxproj">
+      <Project>{b97e59db-aa43-47e5-b587-57a95e855c97}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

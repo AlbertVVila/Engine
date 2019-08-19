@@ -16,8 +16,8 @@ public:
 	WorldControllerScript();
 	~WorldControllerScript();
 
-	void setPlayer(const GameObject* player);
-	void addEnemy(const GameObject* enemy);
+	void setPlayer(GameObject* player);
+	void addEnemy(GameObject* enemy);
 
 private:
 	//explicitly disable copy constructor and copy assignment operator
@@ -26,7 +26,7 @@ private:
 
 	//encapsulating stuff
 	std::vector<GameObject*> enemies;
-	const GameObject* player = nullptr;
+	GameObject* player = nullptr;
 
 };
 
