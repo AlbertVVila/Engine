@@ -1,1 +1,10 @@
-{"StateMachine":{"GUID":2660823773,"timeCreated":1558996143,"name":"ChestStateMachine"}}
+{
+    "StateMachine": {
+        "metaVersion": 2,
+        "timeCreated": 1563536366,
+        "GUID": 2660823773,
+        "Name": "ChestStateMachine",
+        "File": "Assets/StateMachines/ChestStateMachine.st4tem4chine",
+        "ExportedFile": "Library/StateMachines/2660823773.st4tem4chine"
+    }
+}

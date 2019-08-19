@@ -1,1 +1,11 @@
-{"Texture":{"GUID":1757485012,"timeCreated":1558451836,"height":1024,"width":1024,"depth":1,"mips":0,"format":32992,"DX compresion":1802,"mipmap":0}}
+{
+    "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1564156739,
+        "GUID": 1757485012,
+        "Name": "E01_muro0_basic_df",
+        "File": "Assets/TexturesLevel0/z_/E01_muro0_basic_df.tga",
+        "ExportedFile": "Library/Textures/1757485012.dds",
+        "DX compresion": 1802
+    }
+}

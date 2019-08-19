@@ -1,12 +1,16 @@
 {
-    "Mesh": {
+    "Model": {
+        "metaVersion": 2,
+        "timeCreated": 1563536365,
         "GUID": 2715094330,
-        "timeCreated": 1561574885,
         "NumMeshes": 1,
-        "Mesh0": 564438762
-    },
-    "Animation": {
-        "timeCreated": 1561574885,
         "NumAnimations": 0
+    },
+    "Mesh0": {
+        "MeshNumber": 0,
+        "GUID": 564438762,
+        "Name": "E02_Item_Drop_0",
+        "File": "Assets/Models/Loot/E02_Item_Drop.FBX",
+        "ExportedFile": "Library/Meshes/564438762.m3sh"
     }
 }

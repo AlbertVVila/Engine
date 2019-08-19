@@ -41,7 +41,7 @@ public:
 
 	ENGINE_API void SetActive(bool active);
 
-	Component* CreateComponent(ComponentType type, JSON_value* value = nullptr);
+	Component* CreateComponent(ComponentType type, JSON_value* value = nullptr, bool prefabTemplate = false);
 
 	template <class T>
 	T* GetComponent() const;
@@ -76,6 +76,8 @@ public:
 	void UpdateModel(unsigned int shader) const;
 	void SetLightUniforms(unsigned shader) const;
 	void LinkRendererToBones(std::vector<ComponentRenderer*>& renderers);
+
+	void LinkBones() const;
 
 	void UpdateToPrefab(GameObject* prefab);
 	bool ChildPrefab() const;

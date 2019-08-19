@@ -9,6 +9,7 @@ public:
 	EnemyStateReturnToStart(HiddenEnemyAIScript* AIScript);
 	~EnemyStateReturnToStart();
 
+	void HandleIA() override;
 	void Update() override;
 };
 

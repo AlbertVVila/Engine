@@ -1,1 +1,16 @@
-{"Mesh":{"GUID":2796218810,"timeCreated":1558882768,"NumMeshes":1,"Mesh0":1174403005},"Animation":{"timeCreated":1558882768,"NumAnimations":0}}
+{
+    "Model": {
+        "metaVersion": 2,
+        "timeCreated": 1563536364,
+        "GUID": 2796218810,
+        "NumMeshes": 1,
+        "NumAnimations": 0
+    },
+    "Mesh0": {
+        "MeshNumber": 0,
+        "GUID": 1174403005,
+        "Name": "dashMesh_0",
+        "File": "Assets/Models/Dash/dashMesh.FBX",
+        "ExportedFile": "Library/Meshes/1174403005.m3sh"
+    }
+}

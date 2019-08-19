@@ -1,7 +1,11 @@
 {
     "Material": {
+        "metaVersion": 2,
+        "timeCreated": 1563536364,
         "GUID": 1831475976,
-        "timeCreated": 1561610774,
+        "Name": "Tomb5",
+        "File": "Assets/Materials/Tomb5.m4t",
+        "ExportedFile": "Library/Materials/1831475976.m4t",
         "DifusseColor": [
             1.0,
             1.0,

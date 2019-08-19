@@ -1,13 +1,23 @@
 {
-    "Mesh": {
+    "Model": {
+        "metaVersion": 2,
+        "timeCreated": 1563536366,
         "GUID": 271687664,
-        "timeCreated": 1561563484,
         "NumMeshes": 2,
-        "Mesh0": 3299670830,
-        "Mesh1": 1162576890
-    },
-    "Animation": {
-        "timeCreated": 1561563484,
         "NumAnimations": 0
+    },
+    "Mesh0": {
+        "MeshNumber": 0,
+        "GUID": 3299670830,
+        "Name": "waterMesh_Low_0",
+        "File": "Assets/Models/WaterMesh/waterMesh_Low.fbx",
+        "ExportedFile": "Library/Meshes/3299670830.m3sh"
+    },
+    "Mesh1": {
+        "MeshNumber": 1,
+        "GUID": 1162576890,
+        "Name": "waterMesh_Low_1",
+        "File": "Assets/Models/WaterMesh/waterMesh_Low.fbx",
+        "ExportedFile": "Library/Meshes/1162576890.m3sh"
     }
 }

@@ -1,10 +1,10 @@
 {
     "Animation": {
         "metaVersion": 2,
-        "timeCreated": 1564058805,
+        "timeCreated": 1563536360,
         "GUID": 2574432138,
         "Name": "Hero_Run",
-        "File": "Assets/Animations/Hero_Run.animati0n",
+        "File": "Assets/Animations/PlayerAlpha/Hero_Run.animati0n",
         "ExportedFile": "Library/Animations/2574432138.animati0n"
     }
 }

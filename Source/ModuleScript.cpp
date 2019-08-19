@@ -102,27 +102,27 @@ update_status ModuleScript::Update(float dt)
 	{
 		if (onStart)
 		{
-			for (const auto& script : componentsScript)
+			for (size_t i = 0; i < componentsScript.size(); i++)
 			{
-				if (script->gameobject->isActive())
+				if (componentsScript[i]->gameobject->isActive())
 				{
- 					script->Awake();
-					script->hasBeenAwoken = true;
+					componentsScript[i]->Awake();
+					componentsScript[i]->hasBeenAwoken = true;
 				}
 			}
 
-			for (const auto& script : componentsScript)
+			for (size_t i = 0; i < componentsScript.size(); i++)
 			{
-				if (script->enabled)
+				if (componentsScript[i]->enabled)
 				{
-					script->Start();
-					script->hasBeenStarted = true;
+					componentsScript[i]->Start();
+					componentsScript[i]->hasBeenStarted = true;
 				}
 			}
 		}
-		for (const auto& script : componentsScript)
+		for (size_t i = 0; i < componentsScript.size(); i++)
 		{
-			script->Update();
+			componentsScript[i]->Update();
 		}
 	}
 
@@ -179,6 +179,14 @@ void ModuleScript::AddScriptReference(Script* script, const std::string&name)
 	if (itDll != loadedDLLs.end())
 	{
 		componentsScript.push_back(script);
+		if (itDll->second.second == 0)
+		{
+			std::set<std::string>::iterator itList = dllRemoveList.find(name);
+			if (itList != dllRemoveList.end())
+			{
+				dllRemoveList.erase(itList);
+			}
+		}
 		itDll->second.second++;
 	}
 }
@@ -233,14 +241,18 @@ bool ModuleScript::RemoveScript(Script* script, const std::string& name)
 	std::map<std::string, std::pair<HINSTANCE,int>>::iterator itDll = loadedDLLs.find(name);
 	if (itDll != loadedDLLs.end())
 	{
+		bool scriptRemoved = false;
 		for (auto it = componentsScript.begin(); it != componentsScript.end(); ++it)
 		{
 			if (*it == script)
 			{
 				componentsScript.erase(it);
+				scriptRemoved = true;
 				break;
 			}
 		}
+		if (!scriptRemoved) return false;
+
 		itDll->second.second--;
 		if(itDll->second.second == 0)
 		{

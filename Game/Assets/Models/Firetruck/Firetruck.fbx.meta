@@ -1,1 +1,16 @@
-{"Mesh":{"GUID":705687723,"timeCreated":1558447102,"NumMeshes":1,"Mesh0":83307436},"Animation":{"timeCreated":1558447102,"NumAnimations":0}}
+{
+    "Model": {
+        "metaVersion": 2,
+        "timeCreated": 1563536364,
+        "GUID": 705687723,
+        "NumMeshes": 1,
+        "NumAnimations": 0
+    },
+    "Mesh0": {
+        "MeshNumber": 0,
+        "GUID": 83307436,
+        "Name": "Firetruck_0",
+        "File": "Assets/Models/Firetruck/Firetruck.fbx",
+        "ExportedFile": "Library/Meshes/83307436.m3sh"
+    }
+}

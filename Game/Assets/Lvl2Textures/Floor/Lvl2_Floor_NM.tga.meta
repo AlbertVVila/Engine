@@ -1,13 +1,11 @@
 {
     "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1563536363,
         "GUID": 2716223588,
-        "timeCreated": 1561533668,
-        "height": 1024,
-        "width": 1024,
-        "depth": 1,
-        "mips": 0,
-        "format": 32993,
-        "DX compresion": 1802,
-        "mipmap": 0
+        "Name": "Lvl2_Floor_NM",
+        "File": "Assets/Lvl2Textures/Floor/Lvl2_Floor_NM.tga",
+        "ExportedFile": "Library/Textures/2716223588.dds",
+        "DX compresion": 1802
     }
 }

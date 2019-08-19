@@ -1,1 +1,11 @@
-{"Texture":{"GUID":52138187,"timeCreated":1558549794,"height":300,"width":231,"depth":1,"mips":0,"format":6408,"DX compresion":1802,"mipmap":0}}
+{
+    "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1563536371,
+        "GUID": 52138187,
+        "Name": "swordIcon",
+        "File": "Assets/UI/Inventory/swordIcon.png",
+        "ExportedFile": "Library/Textures/52138187.dds",
+        "DX compresion": 1802
+    }
+}

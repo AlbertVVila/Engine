@@ -5,7 +5,7 @@
 const float PI = 3.14159265359f; 
 
 layout (location = 0) out vec4 Fragcolor;
-layout (location = 1) out vec4 highlightColor; //alpha channel stores fragment distance to viewer
+layout (location = 1) out vec4 highlightColor; 
 layout (location = 2) out vec4 brightColor;
 
 struct Material
@@ -95,6 +95,9 @@ uniform vec3 highlightColorUniform;
 uniform float useHighlight;
 uniform float borderAmount;
 uniform float sliceAmount;
+uniform float time;
+uniform float waterMix;
+
 
 vec4 textureGammaCorrected(sampler2D tex)
 {
@@ -102,11 +105,17 @@ vec4 textureGammaCorrected(sampler2D tex)
 	return vec4(pow(texRaw.r, 2.2), pow(texRaw.g, 2.2), pow(texRaw.b, 2.2), texRaw.a);
 }
 
-
+#ifndef WATER
 vec4 get_albedo()
 {
 	return textureGammaCorrected(material.diffuse_texture) * material.diffuse_color;
 }
+#else
+vec4 get_albedo()
+{
+	return mix(textureGammaCorrected(material.diffuse_texture), textureGammaCorrected(material.dissolve_texture), waterMix)  * material.diffuse_color;
+}
+#endif
 
 vec3 get_occlusion_color()
 {
@@ -176,12 +185,15 @@ void main()
 {
 #ifndef WATER
 	vec3 normal = CalculateNormal();	
+	vec4 albedo = get_albedo();
 #else
 	vec3 normal = normalIn;
-#endif
 	vec4 albedo = get_albedo();
-	
-	float metallic = length(material.specular);
+#endif
+	if (albedo.a < 0.1f)
+		discard;
+
+	float metallic = min(1.f, length(material.specular));
 
 	vec3 F0 = mix(albedo.rgb, material.specular, metallic);
 
@@ -274,11 +286,13 @@ void main()
 	
 	//color *= get_occlusion_color();
 	color += get_emissive_color() * material.bloomIntensity;
+
 #ifdef IS_EDITOR
 	color = vec3(pow(color.r, (1.0 / 2.2)), pow(color.g, (1.0 / 2.2)), pow(color.b, (1.0 / 2.2)));
 #endif
 	Fragcolor = vec4(color, albedo.a);
-	highlightColor = vec4(highlightColorUniform, length(positionWorld - eye_pos) / 100);
+	
+	highlightColor = vec4(highlightColorUniform, 1);
 	
 	float brightness = dot(Fragcolor.rgb, vec3(0.2126, 0.7152, 0.0722));
     if(brightness > 1)
@@ -296,6 +310,8 @@ void main()
 		discard;
 	}		
 #endif	
+
+	//Fragcolor = vec4(normal,1);
 			
 	//Fragcolor = texture2D(material.dissolve_texture, uv0);
 }

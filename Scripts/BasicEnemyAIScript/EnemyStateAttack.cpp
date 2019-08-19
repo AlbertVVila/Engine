@@ -7,6 +7,9 @@
 
 #include "BasicEnemyAIScript.h"
 #include "EnemyControllerScript.h"
+#include "Application.h"
+#include "ModuleScene.h"
+#include "ComponentTrail.h"
 
 EnemyStateAttack::EnemyStateAttack(BasicEnemyAIScript* AIScript)
 {
@@ -15,10 +18,49 @@ EnemyStateAttack::EnemyStateAttack(BasicEnemyAIScript* AIScript)
 	boxSize = math::float3(100.f, 50.f, 50.f);
 	minTime = 0.7f;
 	maxTime = 0.9f;
+	GameObject* punchBone = enemy->App->scene->FindGameObjectByName("joint18", enemy->gameobject);
+	if (punchBone != nullptr)
+	{
+		trailPunch = punchBone->GetComponent<ComponentTrail>();
+	}
 }
 
 EnemyStateAttack::~EnemyStateAttack()
 {
+}
+
+void EnemyStateAttack::HandleIA()
+{
+	//If player is in range nothing, else if player is in range chase, if enemy has attacked cooldown
+	
+	if (timer > duration)
+	{
+		float distance = enemy->enemyController->GetDistanceToPlayer2D();
+		if (distance > enemy->attackRange) //if not in range chase
+		{
+			if (hitboxCreated)
+			{
+				// Disable hitbox
+				enemy->enemyController->attackBoxTrigger->Enable(false);
+				hitboxCreated = false;
+			}
+			PunchFX(false);
+			enemy->currentState = (EnemyState*)enemy->chase;
+		}
+		else if (attacked)
+		{
+			if (hitboxCreated)
+			{
+				// Disable hitbox
+				enemy->enemyController->attackBoxTrigger->Enable(false);
+				hitboxCreated = false;
+			}
+			enemy->currentState = (EnemyState*)enemy->cooldown;
+			attacked = false;
+			PunchFX(false);
+		}
+	}
+
 }
 
 void EnemyStateAttack::Update()
@@ -27,35 +69,10 @@ void EnemyStateAttack::Update()
 	math::float3 playerPosition = enemy->enemyController->GetPlayerPosition();
 	enemy->enemyController->LookAt2D(playerPosition);
 
-	if (!enemy->enemyController->IsCollidingWithPlayer())
-	{
-		if (hitboxCreated)
-		{
-			// Disable hitbox
-			enemy->enemyController->attackBoxTrigger->Enable(false);
-			hitboxCreated = false;
-		}
-		enemy->currentState = (EnemyState*)enemy->chase;
-	}
-	else
-	{
-		assert(enemy->enemyController->attackBoxTrigger != nullptr);
-		if (!hitboxCreated)
-		{
-			Attack();
-		}
-		else if (timer > auxTimer + enemy->attackDuration)
-		{
-			// End attack
-			// Disable hitbox
-			enemy->enemyController->attackBoxTrigger->Enable(false);
-			hitboxCreated = false;
 
-			// Enter cooldown state
-			auxTimer = timer;
-			enemy->currentState = (EnemyState*)enemy->cooldown;
-		}
-	}
+	assert(enemy->enemyController->attackBoxTrigger != nullptr);
+
+	Attack();
 }
 
 void EnemyStateAttack::Attack()
@@ -66,5 +83,14 @@ void EnemyStateAttack::Attack()
 	boxPosition = enemy->gameobject->transform->up * 100.f;
 	enemy->enemyController->attackBoxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z + 100.f);
 	hitboxCreated = true;
-	auxTimer = timer;
+	attacked = true;
+	PunchFX(true);
+}
+
+void EnemyStateAttack::PunchFX(bool active)
+{
+	if (trailPunch != nullptr)
+	{
+		trailPunch->Enable(active);
+	}
 }

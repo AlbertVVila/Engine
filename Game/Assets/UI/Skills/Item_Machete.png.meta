@@ -1,1 +1,11 @@
-{"Texture":{"GUID":2168689814,"timeCreated":1561151641,"height":256,"width":256,"depth":1,"mips":0,"format":6408,"DX compresion":1802,"mipmap":0}}
+{
+    "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1563536371,
+        "GUID": 2168689814,
+        "Name": "Item_Machete",
+        "File": "Assets/UI/Skills/Item_Machete.png",
+        "ExportedFile": "Library/Textures/2168689814.dds",
+        "DX compresion": 1802
+    }
+}

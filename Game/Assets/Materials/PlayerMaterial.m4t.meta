@@ -1,7 +1,11 @@
 {
     "Material": {
+        "metaVersion": 2,
+        "timeCreated": 1563536364,
         "GUID": 4092157340,
-        "timeCreated": 1561610774,
+        "Name": "PlayerMaterial",
+        "File": "Assets/Materials/PlayerMaterial.m4t",
+        "ExportedFile": "Library/Materials/4092157340.m4t",
         "DifusseColor": [
             1.0,
             1.0,

@@ -1,7 +1,11 @@
 {
     "Material": {
+        "metaVersion": 2,
+        "timeCreated": 1563536364,
         "GUID": 2268152839,
-        "timeCreated": 1561610774,
+        "Name": "Small_skeleton_silver",
+        "File": "Assets/Materials/Small_skeleton_silver.m4t",
+        "ExportedFile": "Library/Materials/2268152839.m4t",
         "DifusseColor": [
             1.0,
             1.0,

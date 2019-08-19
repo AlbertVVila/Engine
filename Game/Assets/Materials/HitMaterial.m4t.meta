@@ -1,25 +1,26 @@
 {
     "Material": {
+        "metaVersion": 2,
+        "timeCreated": 1563536364,
         "GUID": 1081699285,
-        "timeCreated": 1561613329,
+        "Name": "HitMaterial",
+        "File": "Assets/Materials/HitMaterial.m4t",
+        "ExportedFile": "Library/Materials/1081699285.m4t",
         "DifusseColor": [
-            0.9959016442298889,
-            0.044897209852933887,
-            0.044897209852933887,
+            1.0,
+            1.0,
+            1.0,
             1.0
         ],
         "specularColor": [
-            0.3360655903816223,
-            0.011018550954759121,
-            0.011018550954759121
+            0.10000000149011612,
+            0.10000000149011612,
+            0.10000000149011612
         ],
         "emissiveColor": [
-            9.999999974752428e-7,
-            9.999899930335233e-7,
-            9.999899930335233e-7
-        ],
-        "diffuseUID": 676697322,
-        "emissiveUID": 676697322,
-        "shader": "PBR"
+            1.0,
+            1.0,
+            1.0
+        ]
     }
 }

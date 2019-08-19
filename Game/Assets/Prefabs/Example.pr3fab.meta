@@ -1,1 +1,10 @@
-{"Prefab":{"GUID":520694782,"timeCreated":1559646517}}
+{
+    "Prefab": {
+        "metaVersion": 2,
+        "timeCreated": 1563536366,
+        "GUID": 520694782,
+        "Name": "Example",
+        "File": "Assets/Prefabs/Example.pr3fab",
+        "ExportedFile": "Library/Prefabs/520694782.pr3fab"
+    }
+}

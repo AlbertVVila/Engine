@@ -1,6 +1,9 @@
 #include "EnemyControllerScript.h"
 
+#include <algorithm>
+
 #include "Application.h"
+#include "ModuleInput.h"
 #include "ModuleScene.h"
 #include "ModuleScript.h"
 #include "ModuleTime.h"
@@ -36,6 +39,10 @@ EnemyControllerScript_API Script* CreateScript()
 
 void EnemyControllerScript::Start()
 {
+}
+
+void EnemyControllerScript::Awake()
+{
 	myRender = (ComponentRenderer*)gameobject->GetComponentInChildren(ComponentType::Renderer);
 	if (myRender != nullptr)
 	{
@@ -45,7 +52,7 @@ void EnemyControllerScript::Start()
 		{
 			LOG("The enemy %s has no bbox \n", gameobject->name);
 		}
-		
+
 		// Get playerMesh
 		myMesh = myRender->gameobject;
 	}
@@ -113,17 +120,20 @@ void EnemyControllerScript::Start()
 	}
 
 	GameObject* attackGameObject = App->scene->FindGameObjectByName("HitBoxAttack", gameobject);
-	assert(attackGameObject != nullptr);
-
-	attackBoxTrigger = (ComponentBoxTrigger*)attackGameObject->GetComponentInChildren(ComponentType::BoxTrigger);
-	if (attackBoxTrigger == nullptr)
+	//assert(attackGameObject != nullptr);
+	if(attackGameObject != nullptr)
 	{
-		LOG("No child of the GameObject %s has a boxTrigger component attached \n", attackGameObject->name);
+		attackBoxTrigger = (ComponentBoxTrigger*)attackGameObject->GetComponentInChildren(ComponentType::BoxTrigger);
+		if (attackBoxTrigger == nullptr)
+		{
+			LOG("No child of the GameObject %s has a boxTrigger component attached \n", attackGameObject->name);
+		}
+		else
+		{
+			attackBoxTrigger->Enable(false);
+		}
 	}
-	else
-	{
-		attackBoxTrigger->Enable(false);
-	}
+	
 
 	GameObject* xpGO = App->scene->FindGameObjectByName("Xp");
 	if (xpGO == nullptr)
@@ -170,7 +180,12 @@ void EnemyControllerScript::Start()
 void EnemyControllerScript::Update()
 {
 	math::float3 closestPoint;
-	if (App->scene->Intersects(closestPoint, myMesh->name.c_str()))
+	fPoint mouse_point = App->input->GetMousePosition();
+	math::float2 mouse = { mouse_point.x, mouse_point.y };
+	std::list<GameObject*> intersects = App->scene->SceneRaycastHit(mouse);
+
+	auto mesh = std::find(intersects.begin(), intersects.end(), this->myMesh);
+	if(mesh != std::end(intersects) && *mesh == this->myMesh)
 	{
 		if(enemyLifeBar != nullptr)
 			enemyLifeBar->SetLifeBar(maxHealth, actualHealth, EnemyLifeBarType::NORMAL, "Skeleton");
@@ -297,6 +312,12 @@ inline math::float3 EnemyControllerScript::GetPlayerPosition() const
 {
 	assert(player->transform != nullptr);
 	return player->transform->GetGlobalPosition();
+}
+
+inline void EnemyControllerScript::SetPosition(math::float3 newPos) const
+{
+	assert(gameobject->transform != nullptr);
+	gameobject->transform->SetGlobalPosition(newPos);
 }
 
 inline float EnemyControllerScript::GetDistanceTo(math::float3& position) const

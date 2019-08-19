@@ -11,7 +11,14 @@ public:
 	~EnemyStateAttack();
 
 	void Enter() override;
+	void HandleIA() override;
 	void Update() override;
+
+private:
+	bool projShot1 = false;
+	bool projShot2 = false;
+	bool projShot3 = false;
+
 };
 
 #endif __ENEMYSTATEATTACK_H_
