@@ -32,6 +32,11 @@ class rcPolyMeshDetail;
 class dtNavMesh;
 class dtNavMeshQuery;
 class DetourDebugInterface;
+//from detour crowd
+class dtCrowd;
+class dtCrowdAgentDebugInfo;
+//from obstacle avoidance
+class dtObstacleAvoidanceDebugData;
 
 namespace dd
 {
@@ -72,7 +77,6 @@ ENGINE_API enum class PathFindType
 	STRAIGHT,
 	NODODGE
 };
-
 
 class ModuleNavigation :
 	public Module
@@ -259,6 +263,35 @@ private:
 	bool drawNavMesh = true;
 
 	bool logDebugPathing = false;
+};
+
+class crowdTool
+{
+public:
+	//public functions
+	crowdTool();
+	~crowdTool();
+
+	void setNavMesh(dtNavMesh* nav);
+
+	//public variables
+
+private:
+	//private functions
+
+	//private variables
+	dtNavMesh* m_nav = nullptr;
+	dtCrowd* m_crowd = nullptr;
+
+	float m_targetPos[3];
+	dtPolyRef m_targetRef = 0;
+
+	dtObstacleAvoidanceDebugData* m_vod;
+
+	//struct that should be declared close by if needed, its for debug draw
+	//CrowdToolParams 
+
+	bool m_run = true;
 };
 
 #endif __MODULENAVIGATION_H__

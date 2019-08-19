@@ -35,6 +35,9 @@
 #include "DebugUtils/DetourDebugDraw.h"
 #include "DebugUtils/DebugDraw.h"
 #include "DetourDebugInterface.h"
+//crowd includes
+#include "DetourCrowd/DetourObstacleAvoidance.h"
+#include "DetourCrowd/DetourCrowd.h"
 
 #include <sstream>
 
@@ -1665,4 +1668,31 @@ void ModuleNavigation::RecalcPath(math::float3 point)
 	{
 		pathGenerated = FindPath(start, end, path);
 	}
+}
+
+crowdTool::crowdTool()
+{
+	m_vod = dtAllocObstacleAvoidanceDebugData();
+	m_vod->init(2048);
+
+	//set mem for crowd
+	void* mem = dtAlloc(sizeof(dtCrowd), DT_ALLOC_PERM);
+	if (!mem)
+	{
+		m_crowd = 0;
+	}
+	else
+	{
+		m_crowd = new(mem) dtCrowd;
+	}
+}
+
+crowdTool::~crowdTool()
+{
+	dtFreeObstacleAvoidanceDebugData(m_vod);
+}
+
+void crowdTool::setNavMesh(dtNavMesh* nav)
+{
+	m_nav = nav;
 }

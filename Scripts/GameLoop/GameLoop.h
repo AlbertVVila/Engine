@@ -155,6 +155,7 @@ public:
 	GameObject* winWindow = nullptr;
 	GameObject* hudGO = nullptr;
 	GameObject* playerGO = nullptr;
+	GameObject* worldControllerGO = nullptr;
 	GameObject* enemyGO = nullptr;
 	GameObject* creditsGO = nullptr;
 	GameObject* vsyncGO = nullptr;
@@ -177,7 +178,7 @@ public:
 	//Script
 	PlayerMovement* playerScript = nullptr;
 	EnemyMovementScript* enemyMovementScript = nullptr;
-	WorldControllerScript* worldControllerScript = nullptr;
+	WorldControllerScript* worldController = nullptr;
 	IntroScript* introScript = nullptr;
 	CreditsScript* creditsScript = nullptr;
 	InventoryScript* inventoryScript = nullptr;
