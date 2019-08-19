@@ -49,4 +49,7 @@ void EnemyStateAttack::Enter()
 {
 	duration = enemy->attackDuration;
 	projShot = false;
+
+	math::float3 playerPosition = enemy->enemyController->GetPlayerPosition();
+	enemy->enemyController->LookAt2D(playerPosition);
 }
