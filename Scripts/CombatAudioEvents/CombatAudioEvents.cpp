@@ -14,16 +14,7 @@ CombatAudioEvents_API Script* CreateScript()
 
 void CombatAudioEvents::Start()
 {
-	GameObject* GO = App->scene->FindGameObjectByName("m1AttackSound");
-	if (GO != nullptr)
-	{
-		m1AttackSound = GO->GetComponent<ComponentAudioSource>();
-		assert(m1AttackSound != nullptr);
-	}
-	else
-	{
-		LOG("Warning: m1AttackSound game object not found");
-	}
+	GameObject* GO = nullptr;
 
 	GO = App->scene->FindGameObjectByName("stepSound");
 	if (GO != nullptr)

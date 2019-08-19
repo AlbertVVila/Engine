@@ -16,7 +16,6 @@ class CombatAudioEvents_API CombatAudioEvents : public Script
 {
 public:
 	//Player
-	ComponentAudioSource* m1AttackSound = nullptr;
 	ComponentAudioSource* stepSound = nullptr;
 	ComponentAudioSource* bomb_take_off = nullptr;
 	ComponentAudioSource* bomb_impact = nullptr;
