@@ -26,6 +26,7 @@ public:
 
 	virtual void CheckInput() {};
 	virtual void Prepare() {};
+	virtual void OnCancel() {};
 
 protected:
 	virtual void UseSkill() {};	
@@ -34,6 +35,7 @@ public:
 	std::string animTrigger;
 	float duration = 0.0f;
 	GameObject* decal = nullptr;
+	bool canceled = false;
 
 protected:
 	float timer = 0.0f;

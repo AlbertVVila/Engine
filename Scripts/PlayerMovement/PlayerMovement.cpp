@@ -25,6 +25,7 @@
 #include "ComponentCamera.h"
 #include "ComponentText.h"
 #include "GameObject.h"
+#include "ResourceMaterial.h"
 
 #include "DamageController.h"
 #include "DamageFeedbackUI.h"
@@ -230,6 +231,8 @@ void PlayerMovement::CreatePlayerSkills()
 	GameObject* machete = App->scene->Spawn("MacheteRain");
 	if (machete)
 	{
+		rain->decalOriginalColor = ((ComponentRenderer*)rain->decal->GetComponent<ComponentRenderer>())->material->diffuseColor;
+		rain->decalMaterial = ((ComponentRenderer*)rain->decal->GetComponent<ComponentRenderer>())->material;
 		for (unsigned i = 0u; i < MACHETE_AMOUNT; ++i)
 		{
 			GameObject* macheteClone = new GameObject(*machete);
@@ -300,48 +303,93 @@ void PlayerMovement::CheckSkillsInput()
 	}
 	else if (IsUsingOne())
 	{
-		currentSkill = allSkills[assignedSkills[HUD_BUTTON_1]]->skill;
-		skillType = allSkills[assignedSkills[HUD_BUTTON_1]]->type;
+		if (!allSkills[assignedSkills[HUD_BUTTON_1]]->skill->canceled)
+		{
+			currentSkill = allSkills[assignedSkills[HUD_BUTTON_1]]->skill;
+			skillType = allSkills[assignedSkills[HUD_BUTTON_1]]->type;
+		}
+		else
+			allSkills[assignedSkills[HUD_BUTTON_1]]->skill->OnCancel();
 	}
 	else if (IsUsingTwo())
 	{
-		currentSkill = allSkills[assignedSkills[HUD_BUTTON_2]]->skill;
-		skillType = allSkills[assignedSkills[HUD_BUTTON_2]]->type;
+		if (!allSkills[assignedSkills[HUD_BUTTON_2]]->skill->canceled)
+		{
+			currentSkill = allSkills[assignedSkills[HUD_BUTTON_2]]->skill;
+			skillType = allSkills[assignedSkills[HUD_BUTTON_2]]->type;
+		}
+		else
+			allSkills[assignedSkills[HUD_BUTTON_2]]->skill->OnCancel();
 	}
 	else if (IsUsingThree())
 	{
-		currentSkill = allSkills[assignedSkills[HUD_BUTTON_3]]->skill;
-		skillType = allSkills[assignedSkills[HUD_BUTTON_3]]->type;
+		if (!allSkills[assignedSkills[HUD_BUTTON_3]]->skill->canceled)
+		{
+			currentSkill = allSkills[assignedSkills[HUD_BUTTON_3]]->skill;
+			skillType = allSkills[assignedSkills[HUD_BUTTON_3]]->type;
+		}
+		else
+			allSkills[assignedSkills[HUD_BUTTON_3]]->skill->OnCancel();
 	}
 	else if (IsUsingFour())
 	{
-		currentSkill = allSkills[assignedSkills[HUD_BUTTON_4]]->skill;
-		skillType = allSkills[assignedSkills[HUD_BUTTON_4]]->type;
+		if (!allSkills[assignedSkills[HUD_BUTTON_4]]->skill->canceled)
+		{
+			currentSkill = allSkills[assignedSkills[HUD_BUTTON_4]]->skill;
+			skillType = allSkills[assignedSkills[HUD_BUTTON_4]]->type;
+		}
+		else
+			allSkills[assignedSkills[HUD_BUTTON_4]]->skill->OnCancel();
 	}
 	else if (IsUsingQ())
 	{
-		currentSkill = allSkills[assignedSkills[HUD_BUTTON_Q]]->skill;
-		skillType = allSkills[assignedSkills[HUD_BUTTON_Q]]->type;
+		if (!allSkills[assignedSkills[HUD_BUTTON_Q]]->skill->canceled)
+		{
+			currentSkill = allSkills[assignedSkills[HUD_BUTTON_Q]]->skill;
+			skillType = allSkills[assignedSkills[HUD_BUTTON_Q]]->type;
+		}
+		else
+			allSkills[assignedSkills[HUD_BUTTON_Q]]->skill->OnCancel();
 	}
 	else if (IsUsingW())
+	{
+	if (!allSkills[assignedSkills[HUD_BUTTON_W]]->skill->canceled)
 	{
 		currentSkill = allSkills[assignedSkills[HUD_BUTTON_W]]->skill;
 		skillType = allSkills[assignedSkills[HUD_BUTTON_W]]->type;
 	}
+	else
+		allSkills[assignedSkills[HUD_BUTTON_W]]->skill->OnCancel();
+	}
 	else if (IsUsingE())
 	{
-		currentSkill = allSkills[assignedSkills[HUD_BUTTON_E]]->skill;
-		skillType = allSkills[assignedSkills[HUD_BUTTON_E]]->type;
+		if (!allSkills[assignedSkills[HUD_BUTTON_E]]->skill->canceled)
+		{
+			currentSkill = allSkills[assignedSkills[HUD_BUTTON_E]]->skill;
+			skillType = allSkills[assignedSkills[HUD_BUTTON_E]]->type;
+		}
+		else
+			allSkills[assignedSkills[HUD_BUTTON_E]]->skill->OnCancel();
 	}
 	else if (IsUsingR())
 	{
-		currentSkill = allSkills[assignedSkills[HUD_BUTTON_R]]->skill;
-		skillType = allSkills[assignedSkills[HUD_BUTTON_R]]->type;
+		if (!allSkills[assignedSkills[HUD_BUTTON_R]]->skill->canceled)
+		{
+			currentSkill = allSkills[assignedSkills[HUD_BUTTON_R]]->skill;
+			skillType = allSkills[assignedSkills[HUD_BUTTON_R]]->type;
+		}
+		else
+			allSkills[assignedSkills[HUD_BUTTON_R]]->skill->OnCancel();
 	}
 	else if (IsUsingRightClick())
 	{
-		currentSkill = allSkills[assignedSkills[HUD_BUTTON_RC]]->skill;
-		skillType = allSkills[assignedSkills[HUD_BUTTON_RC]]->type;
+		if (!allSkills[assignedSkills[HUD_BUTTON_RC]]->skill->canceled)
+		{
+			currentSkill = allSkills[assignedSkills[HUD_BUTTON_RC]]->skill;
+			skillType = allSkills[assignedSkills[HUD_BUTTON_RC]]->type;
+		}
+		else
+			allSkills[assignedSkills[HUD_BUTTON_RC]]->skill->OnCancel();
 	}
 
 	if (currentSkill != nullptr && previous != currentSkill)

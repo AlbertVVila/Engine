@@ -3,6 +3,7 @@
 
 #include "RangeSkill.h"
 #include <vector>
+#include "Math/float4.h"
 
 #define AREA_SIZE 200.f
 #define VERTICAL_OFFSET 300.f
@@ -10,6 +11,7 @@
 class GameObject;
 class ComponentRenderer;
 class ComponentBoxTrigger;
+class ResourceMaterial;
 
 class RainSkill :
 	public RangeSkill
@@ -30,9 +32,14 @@ public:
 
 	void Start() override;
 	void Prepare() override;
+	void OnCancel() override;
 	std::vector<MacheteUnit> machetes;
 
+	bool canBeLaunched = false;
 	float targetHeight = 0.f;
+	math::float4 decalOriginalColor = float4::one;
+
+	ResourceMaterial* decalMaterial = nullptr;
 };
 
 #endif

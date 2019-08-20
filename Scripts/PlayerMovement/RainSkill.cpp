@@ -6,6 +6,8 @@
 
 #include "GameObject.h"
 #include "ComponentTransform.h"
+#include "ComponentRenderer.h"
+#include "ResourceMaterial.h"
 
 //#include "Math/float2.h"
 
@@ -21,7 +23,6 @@ RainSkill::~RainSkill()
 void RainSkill::Start()
 {
 	//math::float2 mousePosition = player->gameobject->transform->GetScreenPosition();
-	
 	if (!machetes.empty())
 	{
 		LOG("Machetes placed");
@@ -58,7 +59,24 @@ void RainSkill::Prepare()
 	{
 		spawnPosition = player->transform->position + float3(0.f, MACHETE_RAIN_START_HEIGHT, 0.f);
 	}
-	decal->transform->SetGlobalPosition(spawnPosition - float3(0.f, MACHETE_RAIN_START_HEIGHT * .98f, 0.f));
+	math::float3 groundSpawnPos = spawnPosition - float3(0.f, MACHETE_RAIN_START_HEIGHT * .98f, 0.f);
+	decal->transform->SetGlobalPosition(groundSpawnPos);
 	decal->SetActive(true);
+	if (groundSpawnPos.Distance(player->transform->GetGlobalPosition()) < MACHETE_SKILL_RANGE)
+	{
+		decalMaterial->diffuseColor = decalOriginalColor;
+		canceled = false;
+	}
+	else
+	{
+		decalMaterial->diffuseColor = decalOriginalColor * .01f;
+		decalMaterial->diffuseColor.w = decalOriginalColor.w;
+		canceled = true;
+	}
+}
+
+void RainSkill::OnCancel()
+{
+	decal->SetActive(false);
 }
 
