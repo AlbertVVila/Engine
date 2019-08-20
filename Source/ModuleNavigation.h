@@ -4,6 +4,7 @@
 #include "Module.h"
 
 #include <vector>
+#include <memory>
 #include "Math/float3.h"
 #include "MathGeoLib/Geometry/AABB.h"
 #include "Math/MathConstants.h"
@@ -150,6 +151,7 @@ private:
 	
 private:
 	//variables
+
 	math::AABB playerBB;
 	//char newCharacter[64] = "New Character";//implementation postponed, possibly aborted
 	float characterMaxRadius = 0.6f;
@@ -265,14 +267,15 @@ private:
 	bool logDebugPathing = false;
 };
 
-class crowdTool
+ENGINE_API class crowdTool
 {
 public:
 	//public functions
-	crowdTool();
-	~crowdTool();
+	ENGINE_API crowdTool();
+	ENGINE_API ~crowdTool();
 
 	void setNavMesh(dtNavMesh* nav);
+	int addNewAgent();
 
 	//public variables
 
