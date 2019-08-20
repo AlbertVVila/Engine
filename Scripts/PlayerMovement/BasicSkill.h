@@ -26,7 +26,7 @@ public:
 
 	virtual void CheckInput() {};
 	virtual void Prepare() {};
-	virtual void OnCancel() {};
+	virtual bool OnCancel() { return canceled; }; //return true if cancelled
 
 protected:
 	virtual void UseSkill() {};	

@@ -228,7 +228,9 @@ void PlayerMovement::CreatePlayerSkills()
 	stomp = new StompSkill(this, "Stomp", attackBoxTrigger);
 	rain = new RainSkill(this, "Rain", "");
 	rain->decal = App->scene->Spawn("MacheteRainDecal");
-	GameObject* machete = App->scene->Spawn("MacheteRain");
+	if (rain->decal)
+		rain->decal->SetActive(false);
+	GameObject* machete = App->scene->Spawn("MacheteRain");	
 	if (machete)
 	{
 		rain->decalOriginalColor = ((ComponentRenderer*)rain->decal->GetComponent<ComponentRenderer>())->material->diffuseColor;
@@ -240,6 +242,7 @@ void PlayerMovement::CreatePlayerSkills()
 			if (macheteRainRenderer)
 			{
 				macheteRainRenderer->dissolve = true;
+				macheteRainRenderer->dissolveAmount = 2.f; //hide machetes
 				macheteRainRenderer->borderAmount = 0.04f;
 			}
 			ComponentBoxTrigger* trigger = macheteClone->GetComponent<ComponentBoxTrigger>();
@@ -251,7 +254,9 @@ void PlayerMovement::CreatePlayerSkills()
 			macheteUnit.trigger = trigger;
 			macheteUnit.originalScale = macheteClone->transform->scale;
 			rain->machetes.push_back(macheteUnit);
-		}
+		}		
+		machete->GetComponent<ComponentRenderer>()->dissolve = true; //Hide original machete
+		machete->GetComponent<ComponentRenderer>()->dissolveAmount = 2.f;
 	}
 	else
 	{
@@ -307,9 +312,7 @@ void PlayerMovement::CheckSkillsInput()
 		{
 			currentSkill = allSkills[assignedSkills[HUD_BUTTON_1]]->skill;
 			skillType = allSkills[assignedSkills[HUD_BUTTON_1]]->type;
-		}
-		else
-			allSkills[assignedSkills[HUD_BUTTON_1]]->skill->OnCancel();
+		}		
 	}
 	else if (IsUsingTwo())
 	{
@@ -317,9 +320,7 @@ void PlayerMovement::CheckSkillsInput()
 		{
 			currentSkill = allSkills[assignedSkills[HUD_BUTTON_2]]->skill;
 			skillType = allSkills[assignedSkills[HUD_BUTTON_2]]->type;
-		}
-		else
-			allSkills[assignedSkills[HUD_BUTTON_2]]->skill->OnCancel();
+		}		
 	}
 	else if (IsUsingThree())
 	{
@@ -327,9 +328,7 @@ void PlayerMovement::CheckSkillsInput()
 		{
 			currentSkill = allSkills[assignedSkills[HUD_BUTTON_3]]->skill;
 			skillType = allSkills[assignedSkills[HUD_BUTTON_3]]->type;
-		}
-		else
-			allSkills[assignedSkills[HUD_BUTTON_3]]->skill->OnCancel();
+		}		
 	}
 	else if (IsUsingFour())
 	{
@@ -337,9 +336,7 @@ void PlayerMovement::CheckSkillsInput()
 		{
 			currentSkill = allSkills[assignedSkills[HUD_BUTTON_4]]->skill;
 			skillType = allSkills[assignedSkills[HUD_BUTTON_4]]->type;
-		}
-		else
-			allSkills[assignedSkills[HUD_BUTTON_4]]->skill->OnCancel();
+		}		
 	}
 	else if (IsUsingQ())
 	{
@@ -347,19 +344,15 @@ void PlayerMovement::CheckSkillsInput()
 		{
 			currentSkill = allSkills[assignedSkills[HUD_BUTTON_Q]]->skill;
 			skillType = allSkills[assignedSkills[HUD_BUTTON_Q]]->type;
-		}
-		else
-			allSkills[assignedSkills[HUD_BUTTON_Q]]->skill->OnCancel();
+		}		
 	}
 	else if (IsUsingW())
 	{
-	if (!allSkills[assignedSkills[HUD_BUTTON_W]]->skill->canceled)
-	{
-		currentSkill = allSkills[assignedSkills[HUD_BUTTON_W]]->skill;
-		skillType = allSkills[assignedSkills[HUD_BUTTON_W]]->type;
-	}
-	else
-		allSkills[assignedSkills[HUD_BUTTON_W]]->skill->OnCancel();
+		if (!allSkills[assignedSkills[HUD_BUTTON_W]]->skill->canceled)
+		{
+			currentSkill = allSkills[assignedSkills[HUD_BUTTON_W]]->skill;
+			skillType = allSkills[assignedSkills[HUD_BUTTON_W]]->type;
+		}	
 	}
 	else if (IsUsingE())
 	{
@@ -367,9 +360,7 @@ void PlayerMovement::CheckSkillsInput()
 		{
 			currentSkill = allSkills[assignedSkills[HUD_BUTTON_E]]->skill;
 			skillType = allSkills[assignedSkills[HUD_BUTTON_E]]->type;
-		}
-		else
-			allSkills[assignedSkills[HUD_BUTTON_E]]->skill->OnCancel();
+		}		
 	}
 	else if (IsUsingR())
 	{
@@ -377,9 +368,7 @@ void PlayerMovement::CheckSkillsInput()
 		{
 			currentSkill = allSkills[assignedSkills[HUD_BUTTON_R]]->skill;
 			skillType = allSkills[assignedSkills[HUD_BUTTON_R]]->type;
-		}
-		else
-			allSkills[assignedSkills[HUD_BUTTON_R]]->skill->OnCancel();
+		}		
 	}
 	else if (IsUsingRightClick())
 	{
@@ -387,9 +376,7 @@ void PlayerMovement::CheckSkillsInput()
 		{
 			currentSkill = allSkills[assignedSkills[HUD_BUTTON_RC]]->skill;
 			skillType = allSkills[assignedSkills[HUD_BUTTON_RC]]->type;
-		}
-		else
-			allSkills[assignedSkills[HUD_BUTTON_RC]]->skill->OnCancel();
+		}		
 	}
 
 	if (currentSkill != nullptr && previous != currentSkill)
@@ -1155,42 +1142,50 @@ bool PlayerMovement::IsUsingRightClick() const
 
 bool PlayerMovement::IsUsingOne() const
 {
-	return allSkills.find(assignedSkills[HUD_BUTTON_1])->second->IsUsable(mana) && App->input->GetKey(SDL_SCANCODE_1) == KEY_UP;
+	PlayerSkill* playerSkill = allSkills.find(assignedSkills[HUD_BUTTON_1])->second;
+	return playerSkill && playerSkill->skill && (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT || !playerSkill->skill->OnCancel()) && playerSkill->IsUsable(mana) && App->input->GetKey(SDL_SCANCODE_1) == KEY_UP;
 }
 
 bool PlayerMovement::IsUsingTwo() const
 {
-	return allSkills.find(assignedSkills[HUD_BUTTON_2])->second->IsUsable(mana) && App->input->GetKey(SDL_SCANCODE_2) == KEY_UP;
+	PlayerSkill* playerSkill = allSkills.find(assignedSkills[HUD_BUTTON_2])->second;
+	return playerSkill && playerSkill->skill && (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT || !playerSkill->skill->OnCancel()) && playerSkill->IsUsable(mana) && App->input->GetKey(SDL_SCANCODE_2) == KEY_UP;
 }
 
 bool PlayerMovement::IsUsingThree() const
 {
-	return allSkills.find(assignedSkills[HUD_BUTTON_3])->second->IsUsable(mana) && App->input->GetKey(SDL_SCANCODE_3) == KEY_UP;
+	PlayerSkill* playerSkill = allSkills.find(assignedSkills[HUD_BUTTON_3])->second;
+	return playerSkill && playerSkill->skill && (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT || !playerSkill->skill->OnCancel()) && playerSkill->IsUsable(mana) && App->input->GetKey(SDL_SCANCODE_3) == KEY_UP;
 }
 
 bool PlayerMovement::IsUsingFour() const
 {
-	return allSkills.find(assignedSkills[HUD_BUTTON_4])->second->IsUsable(mana) && App->input->GetKey(SDL_SCANCODE_4) == KEY_UP;
+	PlayerSkill* playerSkill = allSkills.find(assignedSkills[HUD_BUTTON_4])->second;
+	return playerSkill && playerSkill->skill && (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT || !playerSkill->skill->OnCancel()) && playerSkill->IsUsable(mana) && App->input->GetKey(SDL_SCANCODE_4) == KEY_UP;
 }
 
 bool PlayerMovement::IsUsingQ() const
 {
-	return allSkills.find(assignedSkills[HUD_BUTTON_Q])->second->IsUsable(mana) && App->input->GetKey(SDL_SCANCODE_Q) == KEY_UP;
+	PlayerSkill* playerSkill = allSkills.find(assignedSkills[HUD_BUTTON_Q])->second;
+	return playerSkill && playerSkill->skill && (App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT || !playerSkill->skill->OnCancel()) && playerSkill->IsUsable(mana) && App->input->GetKey(SDL_SCANCODE_Q) == KEY_UP;
 }
 
 bool PlayerMovement::IsUsingW() const
 {
-	return allSkills.find(assignedSkills[HUD_BUTTON_W])->second->IsUsable(mana) && App->input->GetKey(SDL_SCANCODE_W) == KEY_UP;
+	PlayerSkill* playerSkill = allSkills.find(assignedSkills[HUD_BUTTON_W])->second;
+	return playerSkill && playerSkill->skill && (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || !playerSkill->skill->OnCancel()) && playerSkill->IsUsable(mana) && App->input->GetKey(SDL_SCANCODE_W) == KEY_UP;
 }
 
 bool PlayerMovement::IsUsingE() const
 {
-	return allSkills.find(assignedSkills[HUD_BUTTON_E])->second->IsUsable(mana) && App->input->GetKey(SDL_SCANCODE_E) == KEY_UP;
+	PlayerSkill* playerSkill = allSkills.find(assignedSkills[HUD_BUTTON_E])->second;
+	return playerSkill && playerSkill->skill && (App->input->GetKey(SDL_SCANCODE_E) == KEY_REPEAT || !playerSkill->skill->OnCancel()) && playerSkill->IsUsable(mana) && App->input->GetKey(SDL_SCANCODE_E) == KEY_UP;
 }
 
 bool PlayerMovement::IsUsingR() const
 {
-	return allSkills.find(assignedSkills[HUD_BUTTON_R])->second->IsUsable(mana) && App->input->GetKey(SDL_SCANCODE_R) == KEY_UP;
+	PlayerSkill* playerSkill = allSkills.find(assignedSkills[HUD_BUTTON_R])->second;
+	return playerSkill && playerSkill->skill && (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT || !playerSkill->skill->OnCancel()) && playerSkill->IsUsable(mana) && App->input->GetKey(SDL_SCANCODE_R) == KEY_UP;
 }
 
 bool PlayerMovement::IsUsingSkill() const

@@ -75,8 +75,14 @@ void RainSkill::Prepare()
 	}
 }
 
-void RainSkill::OnCancel()
+bool RainSkill::OnCancel()
 {
-	decal->SetActive(false);
+	if (canceled)
+	{
+		decal->SetActive(false);
+		player->currentState = (PlayerState*)player->idle;
+		return true;
+	}
+	return false;
 }
 

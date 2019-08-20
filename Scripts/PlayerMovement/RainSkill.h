@@ -32,7 +32,7 @@ public:
 
 	void Start() override;
 	void Prepare() override;
-	void OnCancel() override;
+	bool OnCancel() override;
 	std::vector<MacheteUnit> machetes;
 
 	bool canBeLaunched = false;
