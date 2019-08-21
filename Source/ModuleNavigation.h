@@ -120,6 +120,7 @@ public:
 	//info from other sources
 	std::string sceneName = "";
 	dtNavMesh* navMesh = nullptr;
+	dtNavMeshQuery* navQuery = nullptr;
 
 private:
 	// Explicitly-disabled copy constructor and copy assignment operator.
@@ -235,8 +236,6 @@ private:
 	rcPolyMesh* pmesh = nullptr;
 	rcPolyMeshDetail* dmesh = nullptr;
 
-	dtNavMeshQuery* navQuery = nullptr;
-
 	DetourDebugInterface* ddi = nullptr;
 
 	unsigned char* m_triareas = nullptr;
@@ -275,7 +274,8 @@ public:
 	ENGINE_API ~crowdTool();
 
 	ENGINE_API int AddNewAgent(const float* pos);
-	ENGINE_API void updateCrowd(float dtime);
+	ENGINE_API void UpdateCrowd(float dtime);
+	ENGINE_API void MoveRequest(int idAgent, float* startPos, float* endPos, float* correction);
 
 	//public variables
 
@@ -283,6 +283,7 @@ private:
 	//private functions
 
 	//private variables
+	dtNavMeshQuery* m_navQuery = nullptr;
 	dtNavMesh* m_nav = nullptr;
 	dtCrowd* m_crowd = nullptr;
 

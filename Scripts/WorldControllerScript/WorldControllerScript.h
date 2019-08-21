@@ -26,6 +26,9 @@ public:
 	//checks if we dont have the enemy and creates a new agent if not
 	void addEnemy(GameObject* enemy);
 
+	//move request processing
+	void moveRequest(GameObject* agent);
+
 	//the update calls detour crowds update which updates all the positions of the agents
 	void Update() override;
 
@@ -38,7 +41,7 @@ private:
 	std::unique_ptr<crowdTool> crowdToolPointer = std::make_unique<crowdTool>();
 
 	//function that adds the agent to the crowd
-	void addAgent(const float* pos);
+	int addAgent(const float* pos);
 
 
 	//private variables

@@ -1691,6 +1691,7 @@ crowdTool::crowdTool()
 	}
 	//setting nav mesh
 	m_nav = App->navigation->navMesh;
+	m_navQuery = App->navigation->navQuery;
 }
 
 crowdTool::~crowdTool()
@@ -1728,7 +1729,7 @@ int crowdTool::AddNewAgent(const float* pos)
 	return idx;
 }
 
-ENGINE_API void crowdTool::updateCrowd(float dtime)
+ENGINE_API void crowdTool::UpdateCrowd(float dtime)
 {
 	//create a quick debug info because needed
 	m_vod = dtAllocObstacleAvoidanceDebugData();
@@ -1742,4 +1743,11 @@ ENGINE_API void crowdTool::updateCrowd(float dtime)
 	debug.vod = m_vod;
 
 	m_crowd->update(dtime, &debug);
+}
+
+ENGINE_API void crowdTool::MoveRequest(int idAgent, float* startPos, float* endPos, float* correction)
+{
+	const dtQueryFilter* filter = m_crowd->getFilter(0);
+	m_navQuery->findNearestPoly(startPos, correction, filter, &m_targetRef, endPos);
+	m_crowd->requestMoveTarget(idAgent, m_targetRef, endPos);
 }
