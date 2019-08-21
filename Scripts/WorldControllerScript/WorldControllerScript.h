@@ -26,6 +26,9 @@ public:
 	//checks if we dont have the enemy and creates a new agent if not
 	void addEnemy(GameObject* enemy);
 
+	//the update calls detour crowds update which updates all the positions of the agents
+	void Update() override;
+
 private:
 	//explicitly disable copy constructor and copy assignment operator
 	WorldControllerScript(const WorldControllerScript&);
@@ -34,7 +37,11 @@ private:
 	//other functions
 	std::unique_ptr<crowdTool> crowdToolPointer = std::make_unique<crowdTool>();
 
-	//encapsulated stuff
+	//function that adds the agent to the crowd
+	void addAgent(const float* pos);
+
+
+	//private variables
 	//we are gonna start with just one crowd and each agent (any enemy or player) moves alone
 	//map UUID-agent index
 	std::map<unsigned, int> objectAgentIndexMap;

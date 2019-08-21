@@ -1669,7 +1669,11 @@ void ModuleNavigation::RecalcPath(math::float3 point)
 		pathGenerated = FindPath(start, end, path);
 	}
 }
-
+/*
+--------------------------------------------------------------------------------------------------------
+Crowd Tool
+--------------------------------------------------------------------------------------------------------
+*/
 crowdTool::crowdTool()
 {
 	m_vod = dtAllocObstacleAvoidanceDebugData();
@@ -1685,6 +1689,8 @@ crowdTool::crowdTool()
 	{
 		m_crowd = new(mem) dtCrowd;
 	}
+	//setting nav mesh
+	m_nav = App->navigation->navMesh;
 }
 
 crowdTool::~crowdTool()
@@ -1693,34 +1699,47 @@ crowdTool::~crowdTool()
 	dtFreeCrowd(m_crowd);
 }
 
-void crowdTool::setNavMesh(dtNavMesh* nav)
+int crowdTool::AddNewAgent(const float* pos)
 {
-	m_nav = nav;
-}
+	//filling everything with default values for now
+	//declaring the default variables
+	float defaultFloatValue = 5.f;
 
-int crowdTool::addNewAgent()
-{
-	/*dtCrowdAgentParams ap;
+	//setting values
+	dtCrowdAgentParams ap;
 	memset(&ap, 0, sizeof(ap));
-	ap.radius = m_sample->getAgentRadius();
-	ap.height = m_sample->getAgentHeight();
-	ap.maxAcceleration = 8.0f;
-	ap.maxSpeed = 3.5f;
+	ap.radius = defaultFloatValue;
+	ap.height = defaultFloatValue;
+	ap.maxAcceleration = defaultFloatValue;
+	ap.maxSpeed = defaultFloatValue;
 	ap.collisionQueryRange = ap.radius * 12.0f;
 	ap.pathOptimizationRange = ap.radius * 30.0f;
 	ap.updateFlags = 0;
-	if (m_toolParams.m_anticipateTurns)
-		ap.updateFlags |= DT_CROWD_ANTICIPATE_TURNS;
-	if (m_toolParams.m_optimizeVis)
-		ap.updateFlags |= DT_CROWD_OPTIMIZE_VIS;
-	if (m_toolParams.m_optimizeTopo)
-		ap.updateFlags |= DT_CROWD_OPTIMIZE_TOPO;
-	if (m_toolParams.m_obstacleAvoidance)
-		ap.updateFlags |= DT_CROWD_OBSTACLE_AVOIDANCE;
-	if (m_toolParams.m_separation)
-		ap.updateFlags |= DT_CROWD_SEPARATION;
-	ap.obstacleAvoidanceType = (unsigned char)m_toolParams.m_obstacleAvoidanceType;
-	ap.separationWeight = m_toolParams.m_separationWeight;
+	/*if (m_toolParams.m_anticipateTurns)
+		ap.updateFlags |= DT_CROWD_ANTICIPATE_TURNS;*/
+	ap.updateFlags |= DT_CROWD_OPTIMIZE_VIS;
+	ap.updateFlags |= DT_CROWD_OPTIMIZE_TOPO;
+	ap.updateFlags |= DT_CROWD_OBSTACLE_AVOIDANCE;
+	ap.updateFlags |= DT_CROWD_SEPARATION;
+	ap.obstacleAvoidanceType = (unsigned char)3.0;//float from 0 to 3 determining the quality of dodging
+	ap.separationWeight = defaultFloatValue;
 
-	int idx = crowd->addAgent(p, &ap);*/
+	int idx = m_crowd->addAgent(pos, &ap);
+	return idx;
+}
+
+ENGINE_API void crowdTool::updateCrowd(float dtime)
+{
+	//create a quick debug info because needed
+	m_vod = dtAllocObstacleAvoidanceDebugData();
+	m_vod->init(2048);
+
+	dtCrowdAgentDebugInfo debug;
+
+	memset(&debug, 0, sizeof(debug));
+
+	debug.idx = -1;
+	debug.vod = m_vod;
+
+	m_crowd->update(dtime, &debug);
 }
