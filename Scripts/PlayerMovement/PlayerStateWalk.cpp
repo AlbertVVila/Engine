@@ -13,6 +13,7 @@
 
 #include "PlayerStateWalk.h"
 #include "PlayerStateIdle.h"
+#include "WorldControllerScript.h"
 
 #include "BasicSkill.h"
 
@@ -29,6 +30,9 @@
 PlayerStateWalk::PlayerStateWalk(PlayerMovement* PM, const char* trigger):
 	PlayerState(PM, trigger)
 {
+	GameObject* worldControllerGO = player->App->scene->FindGameObjectByName("WorldController");
+	worldController = worldControllerGO->GetComponent<WorldControllerScript>();
+	
 }
 
 PlayerStateWalk::~PlayerStateWalk()
@@ -37,7 +41,12 @@ PlayerStateWalk::~PlayerStateWalk()
 
 void PlayerStateWalk::Update()
 {
-	math:float2 mouse((float*)&player->App->input->GetMousePosition());
+	//trying new update function using moving request of detour crowd
+	math:float2 mouse((float*)& player->App->input->GetMousePosition());
+	math::float3 tempCorrection = math::float3(player->OutOfMeshCorrectionXZ, player->OutOfMeshCorrectionY, player->OutOfMeshCorrectionXZ);
+	
+	//old update
+	/*math:float2 mouse((float*)&player->App->input->GetMousePosition());
 	if (player->App->input->GetMouseButtonDown(1) == KEY_DOWN 
 		|| player->App->input->GetMouseButtonDown(1) == KEY_REPEAT)
 	{
@@ -100,7 +109,7 @@ void PlayerStateWalk::Update()
 	else
 	{
 		player->currentState = player->idle;
-	}
+	}*/
 }
 
 void PlayerStateWalk::Enter()

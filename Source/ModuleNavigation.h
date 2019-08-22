@@ -108,6 +108,8 @@ public:
 	ENGINE_API bool FindIntersectionPoint(math::float3 start, math::float3& intersectionPoint) const;
 	ENGINE_API bool FindClosestPoint2D(math::float3& initial) const;
 
+	bool FindHighQualityIntersectionPoint(unsigned int* targetRef, math::float3* endPos, math::float3 correction) const;
+
 
 	ENGINE_API void setPlayerBB(math::AABB bbox);
 
@@ -276,9 +278,9 @@ public:
 	ENGINE_API crowdTool();
 	ENGINE_API ~crowdTool();
 
-	ENGINE_API int AddNewAgent(const float* pos);
+	ENGINE_API int AddNewAgent(const math::float3* pos);
 	ENGINE_API void UpdateCrowd(float dtime);
-	ENGINE_API void MoveRequest(int idAgent, float* startPos, float* endPos, float* correction);
+	ENGINE_API void MoveRequest(int idAgent, unsigned int targetRef, float* endPos);
 
 	//public variables
 

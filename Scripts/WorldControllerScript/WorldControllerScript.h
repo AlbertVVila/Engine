@@ -4,6 +4,7 @@
 #include "BaseScript.h"
 #include <map>
 #include <memory>
+#include "Math/float3.h"
 
 #ifdef WorldControllerScript_EXPORTS
 #define WorldControllerScript_API __declspec(dllexport)
@@ -41,7 +42,7 @@ private:
 	std::unique_ptr<crowdTool> crowdToolPointer = std::make_unique<crowdTool>();
 
 	//function that adds the agent to the crowd
-	int addAgent(const float* pos);
+	int addAgent(const math::float3* pos);
 
 
 	//private variables

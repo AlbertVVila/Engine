@@ -1654,6 +1654,27 @@ ENGINE_API bool ModuleNavigation::FindClosestPoint2D(math::float3& initial) cons
 	}
 }
 
+bool ModuleNavigation::FindHighQualityIntersectionPoint(unsigned int* targetRef, math::float3* endPos, math::float3 correction) const
+{
+	dtQueryFilter filter;
+	filter.setIncludeFlags(SAMPLE_POLYFLAGS_ALL ^ SAMPLE_POLYFLAGS_DISABLED);
+	filter.setExcludeFlags(0);
+
+	float polyPickExt[3] = { correction.x, correction.y, correction.z };
+
+	dtPolyRef currentPoly;
+
+	//find end pos
+	navQuery->findNearestPoly((float*)& endPos, polyPickExt, &filter, &currentPoly, (float*)& endPos);
+	if (!currentPoly)
+	{
+		LOG("Could not find any nearby poly to the end");
+		return false;
+	}
+	*targetRef = currentPoly;
+	return true;
+}
+
 void ModuleNavigation::RecalcPath(math::float3 point)
 {
 	if (startPoint)
@@ -1700,7 +1721,7 @@ crowdTool::~crowdTool()
 	dtFreeCrowd(m_crowd);
 }
 
-int crowdTool::AddNewAgent(const float* pos)
+int crowdTool::AddNewAgent(const math::float3* pos)
 {
 	//filling everything with default values for now
 	//declaring the default variables
@@ -1724,8 +1745,14 @@ int crowdTool::AddNewAgent(const float* pos)
 	ap.updateFlags |= DT_CROWD_SEPARATION;
 	ap.obstacleAvoidanceType = (unsigned char)3.0;//float from 0 to 3 determining the quality of dodging
 	ap.separationWeight = defaultFloatValue;
-
-	int idx = m_crowd->addAgent(pos, &ap);
+	
+	//get a temporary pointer to position
+	float* pointerPos = new float[3];
+	pointerPos[0] = pos->x;
+	pointerPos[1] = pos->y;
+	pointerPos[2] = pos->z;
+	int idx = m_crowd->addAgent(pointerPos, &ap);
+	delete[] pointerPos;
 	return idx;
 }
 
@@ -1745,9 +1772,9 @@ ENGINE_API void crowdTool::UpdateCrowd(float dtime)
 	m_crowd->update(dtime, &debug);
 }
 
-ENGINE_API void crowdTool::MoveRequest(int idAgent, float* startPos, float* endPos, float* correction)
+ENGINE_API void crowdTool::MoveRequest(int idAgent, unsigned int targetRef, float* endPos)
 {
-	const dtQueryFilter* filter = m_crowd->getFilter(0);
-	m_navQuery->findNearestPoly(startPos, correction, filter, &m_targetRef, endPos);
+	//const dtQueryFilter* filter = m_crowd->getFilter(0);
+	//m_navQuery->findNearestPoly(startPos, correction, filter, &m_targetRef, endPos);
 	m_crowd->requestMoveTarget(idAgent, m_targetRef, endPos);
 }
