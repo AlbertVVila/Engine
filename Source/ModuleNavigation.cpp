@@ -1752,7 +1752,7 @@ int crowdTool::AddNewAgent(const math::float3* pos)
 	pointerPos[1] = pos->y;
 	pointerPos[2] = pos->z;
 	int idx = m_crowd->addAgent(pointerPos, &ap);
-	delete[] pointerPos;
+	//delete[] pointerPos;//we probably should not call that because it points directly to the transform of a game object
 	return idx;
 }
 
