@@ -119,8 +119,6 @@ public:
 
 	//info from other sources
 	std::string sceneName = "";
-	dtNavMesh* navMesh = nullptr;
-	dtNavMeshQuery* navQuery = nullptr;
 
 private:
 	// Explicitly-disabled copy constructor and copy assignment operator.
@@ -153,6 +151,11 @@ private:
 	
 private:
 	//variables
+
+	friend class crowdTool;
+
+	dtNavMesh* navMesh = nullptr;
+	dtNavMeshQuery* navQuery = nullptr;
 
 	math::AABB playerBB;
 	//char newCharacter[64] = "New Character";//implementation postponed, possibly aborted
