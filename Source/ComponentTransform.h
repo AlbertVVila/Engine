@@ -61,9 +61,6 @@ public:
 private:
 	void RotationToEuler();
 
-	inline void syncPositions();
-	
-
 public:
 	math::float3 position = math::float3::zero;
 	float* crowdPosition = new float[3];
