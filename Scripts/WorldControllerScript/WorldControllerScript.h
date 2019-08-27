@@ -14,6 +14,7 @@
 #endif
 
 class crowdTool;
+class ComponentTransform;
 
 class WorldControllerScript_API WorldControllerScript : public Script
 {
@@ -29,7 +30,8 @@ public:
 	void addEnemy(GameObject* enemy);
 
 	//move request processing
-	void moveRequest(GameObject* agent);
+	void PlayerMoveRequest(unsigned int agentId, math::float3 correction);
+	void EnemyMoveRequest(unsigned int agentId);
 
 	//the update calls detour crowds update which updates all the positions of the agents
 	void Update() override;

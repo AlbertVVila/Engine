@@ -1654,8 +1654,45 @@ ENGINE_API bool ModuleNavigation::FindClosestPoint2D(math::float3& initial) cons
 	}
 }
 
-bool ModuleNavigation::FindHighQualityIntersectionPoint(unsigned int* targetRef, math::float3* endPos, math::float3 correction) const
+bool ModuleNavigation::HighQualityMouseDetection(math::float3* intersection) const
 {
+	//ray tracing from mouse setting the endPos variable
+	float2 mouse((float*)& App->input->GetMousePosition());
+	LineSegment line;
+
+	float normalized_x, normalized_y;
+
+#ifndef GAME_BUILD
+	math::float2 pos = App->renderer->viewGame->winPos;
+	math::float2 size(App->renderer->viewGame->current_width, App->renderer->viewGame->current_height);
+#else
+	math::float2 pos = math::float2::zero;
+	math::float2 size(App->window->width, App->window->height);
+#endif
+	normalized_x = ((mouse.x - pos.x) / size.x) * 2 - 1; //0 to 1 -> -1 to 1
+	normalized_y = (1 - (mouse.y - pos.y) / size.y) * 2 - 1; //0 to 1 -> -1 to 1
+
+	line = App->scene->maincamera->DrawRay(normalized_x, normalized_y);
+
+	float dist = 0.f;
+	//intersection between line and floor mesh
+	//SHOULD REALLY FIND A COMMON GAME OBJECT PARENT! search would be much easier, "Scene" GO, although gotta move the bridges from "Navigability" to "Scene"
+	//component mesh has a resource mesh which has a intersects function that gets a line as a parameter
+	std::vector<GameObject*> floors = App->scene->FindGameObjectsByTag("floor");
+	for (GameObject* floor : floors)
+	{
+		if (floor->GetComponent<ComponentRenderer>()->mesh->Intersects(line, &dist, intersection))
+		{
+			//if we got our point, we got what we needed
+			break;
+		}
+	};
+
+	return intersection;
+}
+ bool ModuleNavigation::NavMeshPolygonQuery(unsigned int* targetRef, math::float3* endPos, math::float3 correction) const
+{
+	//nav mesh query
 	dtQueryFilter filter;
 	filter.setIncludeFlags(SAMPLE_POLYFLAGS_ALL ^ SAMPLE_POLYFLAGS_DISABLED);
 	filter.setExcludeFlags(0);
@@ -1745,10 +1782,8 @@ int crowdTool::AddNewAgent(const float* pos)
 	ap.updateFlags |= DT_CROWD_SEPARATION;
 	ap.obstacleAvoidanceType = (unsigned char)3.0;//float from 0 to 3 determining the quality of dodging
 	ap.separationWeight = defaultFloatValue;
-	
-	//get a temporary pointer to position
-	int idx = m_crowd->addAgent(pointerPos, &ap);
-	//delete[] pointerPos;//we probably should not call that because it points directly to the transform of a game object
+
+	int idx = m_crowd->addAgent(pos, &ap);
 	return idx;
 }
 

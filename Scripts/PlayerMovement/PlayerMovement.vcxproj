@@ -250,7 +250,7 @@ set ERRORLEVEL=0</Command>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;PlayerMovement_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Source\OpenCV;$(SolutionDir)\Scripts\CameraController;$(SolutionDir)\Scripts\DamageFeedbackUI;$(SolutionDir)\Scripts\EnemyControllerScript;$(SolutionDir)\Source\NodeEditor\Include;$(SolutionDir)\Source\rapidjson-1.1.0\include;..\BaseScript;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Scripts\DamageController;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)Source\Soloud\fractal_includes;$(SolutionDir)\Scripts\ItemPicker;$(SolutionDir)\Scripts\InventoryScript</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Source\OpenCV;$(SolutionDir)\Scripts\CameraController;$(SolutionDir)\Scripts\DamageFeedbackUI;$(SolutionDir)\Scripts\EnemyControllerScript;$(SolutionDir)\Source\NodeEditor\Include;$(SolutionDir)\Source\rapidjson-1.1.0\include;..\BaseScript;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Scripts\DamageController;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)Source\Soloud\fractal_includes;$(SolutionDir)\Scripts\ItemPicker;$(SolutionDir)\Scripts\InventoryScript;$(SolutionDir)\Scripts\WorldControllerScript</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -387,6 +387,9 @@ set ERRORLEVEL=0</Command>
   <ItemGroup>
     <ProjectReference Include="..\DamageController\DamageController.vcxproj">
       <Project>{d8141fa2-e862-4706-a9f3-e8441c2b68fd}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\WorldControllerScript\WorldControllerScript.vcxproj">
+      <Project>{b97e59db-aa43-47e5-b587-57a95e855c97}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

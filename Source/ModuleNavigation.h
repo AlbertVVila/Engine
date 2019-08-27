@@ -108,7 +108,8 @@ public:
 	ENGINE_API bool FindIntersectionPoint(math::float3 start, math::float3& intersectionPoint) const;
 	ENGINE_API bool FindClosestPoint2D(math::float3& initial) const;
 
-	bool FindHighQualityIntersectionPoint(unsigned int* targetRef, math::float3* endPos, math::float3 correction) const;
+	ENGINE_API bool HighQualityMouseDetection(math::float3* intersection) const;
+	ENGINE_API bool NavMeshPolygonQuery(unsigned int* targetRef, math::float3* endPos, math::float3 correction) const;
 
 
 	ENGINE_API void setPlayerBB(math::AABB bbox);
