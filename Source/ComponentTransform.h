@@ -42,6 +42,10 @@ public:
 	ENGINE_API void LookAt(const math::float3& target);
 	ENGINE_API void LookAtMouse();
 	ENGINE_API void Align(const math::float3& target);
+	//new functions to keep updated both transforms
+	ENGINE_API inline void UpdateCrowdTransform() {	crowdPosition[0] = position.x;	crowdPosition[1] = position.y;	crowdPosition[2] = position.z;}
+	ENGINE_API inline void UpdatePositionWithCrowdValue() { position.x = crowdPosition[0];	position.y = crowdPosition[1];	position.z = crowdPosition[2];}
+
 
 	void Save(JSON_value* value) const override;
 	void Load(JSON_value* value) override;
@@ -57,8 +61,12 @@ public:
 private:
 	void RotationToEuler();
 
+	inline void syncPositions();
+	
+
 public:
 	math::float3 position = math::float3::zero;
+	float* crowdPosition = new float[3];
 	math::Quat rotation = math::Quat::identity;
 	math::float3 eulerRotation = math::float3::zero;
 	math::float3 scale = math::float3::one;

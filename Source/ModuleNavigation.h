@@ -278,7 +278,7 @@ public:
 	ENGINE_API crowdTool();
 	ENGINE_API ~crowdTool();
 
-	ENGINE_API int AddNewAgent(const math::float3* pos);
+	ENGINE_API int AddNewAgent(const float* pos);
 	ENGINE_API void UpdateCrowd(float dtime);
 	ENGINE_API void MoveRequest(int idAgent, unsigned int targetRef, float* endPos);
 

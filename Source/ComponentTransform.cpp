@@ -45,6 +45,7 @@ ComponentTransform::~ComponentTransform()
 	{
 		gameobject->transform = nullptr;
 	}
+	delete[] crowdPosition;
 }
 
 Component * ComponentTransform::Clone() const

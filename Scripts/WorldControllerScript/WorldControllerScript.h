@@ -4,6 +4,7 @@
 #include "BaseScript.h"
 #include <map>
 #include <memory>
+#include <vector>
 #include "Math/float3.h"
 
 #ifdef WorldControllerScript_EXPORTS
@@ -38,17 +39,20 @@ private:
 	WorldControllerScript(const WorldControllerScript&);
 	WorldControllerScript& operator=(const WorldControllerScript);
 
-	//other functions
-	std::unique_ptr<crowdTool> crowdToolPointer = std::make_unique<crowdTool>();
-
 	//function that adds the agent to the crowd
-	int addAgent(const math::float3* pos);
-
+	int addAgent(const float* pos);
 
 	//private variables
 	//we are gonna start with just one crowd and each agent (any enemy or player) moves alone
 	//map UUID-agent index
 	std::map<unsigned, int> objectAgentIndexMap;
+
+	//pointer to the crowd
+	std::unique_ptr<crowdTool> crowdToolPointer = std::make_unique<crowdTool>();
+
+	//since there is no easy way to conver the math::float3 to float*, we need this mapping
+	//to keep track of all the objects belonging to the crowd in order to update their transform
+	std::vector<ComponentTransform*> agentObjects;
 	
 	unsigned playerUID = 0u;
 

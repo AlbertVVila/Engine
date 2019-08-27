@@ -1721,7 +1721,7 @@ crowdTool::~crowdTool()
 	dtFreeCrowd(m_crowd);
 }
 
-int crowdTool::AddNewAgent(const math::float3* pos)
+int crowdTool::AddNewAgent(const float* pos)
 {
 	//filling everything with default values for now
 	//declaring the default variables
@@ -1747,10 +1747,6 @@ int crowdTool::AddNewAgent(const math::float3* pos)
 	ap.separationWeight = defaultFloatValue;
 	
 	//get a temporary pointer to position
-	float* pointerPos = new float[3];
-	pointerPos[0] = pos->x;
-	pointerPos[1] = pos->y;
-	pointerPos[2] = pos->z;
 	int idx = m_crowd->addAgent(pointerPos, &ap);
 	//delete[] pointerPos;//we probably should not call that because it points directly to the transform of a game object
 	return idx;
