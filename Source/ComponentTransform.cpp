@@ -36,6 +36,10 @@ ComponentTransform::ComponentTransform(const ComponentTransform& component) : Co
 	scale = component.scale;
 	local = component.local;
 	global = component.global;
+
+	up = component.up;
+	right = component.right;
+	front = component.front;
 }
 
 
