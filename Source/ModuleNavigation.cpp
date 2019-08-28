@@ -1678,7 +1678,7 @@ bool ModuleNavigation::HighQualityMouseDetection(math::float3* intersection) con
 	//intersection between line and floor mesh
 	//SHOULD REALLY FIND A COMMON GAME OBJECT PARENT! search would be much easier, "Scene" GO, although gotta move the bridges from "Navigability" to "Scene"
 	//component mesh has a resource mesh which has a intersects function that gets a line as a parameter
-	std::vector<GameObject*> floors = App->scene->FindGameObjectsByTag("floor");
+	/*std::vector<GameObject*> floors = App->scene->FindGameObjectsByTag("Floor");
 	for (GameObject* floor : floors)
 	{
 		if (floor->GetComponent<ComponentRenderer>()->mesh->Intersects(line, &dist, intersection))
@@ -1686,7 +1686,7 @@ bool ModuleNavigation::HighQualityMouseDetection(math::float3* intersection) con
 			//if we got our point, we got what we needed
 			break;
 		}
-	};
+	};*/
 
 	return intersection;
 }
@@ -1699,16 +1699,13 @@ bool ModuleNavigation::HighQualityMouseDetection(math::float3* intersection) con
 
 	float polyPickExt[3] = { correction.x, correction.y, correction.z };
 
-	dtPolyRef currentPoly;
-
 	//find end pos
-	navQuery->findNearestPoly((float*)& endPos, polyPickExt, &filter, &currentPoly, (float*)& endPos);
-	if (!currentPoly)
+	navQuery->findNearestPoly((float*)& endPos, polyPickExt, &filter, targetRef, (float*)& endPos);
+	if (!targetRef)
 	{
 		LOG("Could not find any nearby poly to the end");
 		return false;
 	}
-	*targetRef = currentPoly;
 	return true;
 }
 
@@ -1848,5 +1845,5 @@ ENGINE_API void crowdTool::MoveRequest(int idAgent, unsigned int targetRef, floa
 {
 	//const dtQueryFilter* filter = m_crowd->getFilter(0);
 	//m_navQuery->findNearestPoly(startPos, correction, filter, &m_targetRef, endPos);
-	m_crowd->requestMoveTarget(idAgent, m_targetRef, endPos);
+	m_crowd->requestMoveTarget(idAgent, targetRef, endPos);
 }

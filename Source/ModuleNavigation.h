@@ -295,7 +295,6 @@ private:
 	dtCrowd* m_crowd = nullptr;
 
 	float m_targetPos[3];
-	unsigned int m_targetRef = 0u;
 
 	dtObstacleAvoidanceDebugData* m_vod;
 

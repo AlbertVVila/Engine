@@ -44,7 +44,7 @@ void PlayerStateWalk::Update()
 	//trying new update function using moving request of detour crowd
 	math:float2 mouse((float*)& player->App->input->GetMousePosition());
 	math::float3 tempCorrection = math::float3(player->OutOfMeshCorrectionXZ, player->OutOfMeshCorrectionY, player->OutOfMeshCorrectionXZ);
-	worldController->PlayerMoveRequest(player->gameobject->UUID, tempCorrection);
+	worldController->PlayerMoveRequest(player->gameobject->UUID, player->gameobject->transform->position, tempCorrection);
 	
 	//old update
 	/*math:float2 mouse((float*)&player->App->input->GetMousePosition());
