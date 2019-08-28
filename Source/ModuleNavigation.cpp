@@ -1738,7 +1738,7 @@ crowdTool::crowdTool()
 	m_vod->init(2048);
 
 	//set mem for crowd
-	void* mem = dtAlloc(sizeof(dtCrowd), DT_ALLOC_PERM);
+	/*void* mem = dtAlloc(sizeof(dtCrowd), DT_ALLOC_PERM);
 	if (!mem)
 	{
 		m_crowd = 0;
@@ -1746,10 +1746,51 @@ crowdTool::crowdTool()
 	else
 	{
 		m_crowd = new(mem) dtCrowd;
-	}
+	}*/
+	m_crowd = 0;
+	m_crowd = dtAllocCrowd();
 	//setting nav mesh
 	m_nav = App->navigation->navMesh;
 	m_navQuery = App->navigation->navQuery;
+
+	//initialization of crowd
+	m_crowd->init(MAX_AGENTS, App->navigation->characterMaxRadius, m_nav);
+
+	// Make polygons with 'disabled' flag invalid.
+	m_crowd->getEditableFilter(0)->setExcludeFlags(SAMPLE_POLYFLAGS_DISABLED);
+
+	// Setup local avoidance params to different qualities.
+	dtObstacleAvoidanceParams params;
+	// Use mostly default settings, copy from dtCrowd.
+	memcpy(&params, m_crowd->getObstacleAvoidanceParams(0), sizeof(dtObstacleAvoidanceParams));
+	//now we set the avoidance quality filters
+	// Low (11)
+	params.velBias = 0.5f;
+	params.adaptiveDivs = 5;
+	params.adaptiveRings = 2;
+	params.adaptiveDepth = 1;
+	m_crowd->setObstacleAvoidanceParams(0, &params);
+
+	// Medium (22)
+	params.velBias = 0.5f;
+	params.adaptiveDivs = 5;
+	params.adaptiveRings = 2;
+	params.adaptiveDepth = 2;
+	m_crowd->setObstacleAvoidanceParams(1, &params);
+
+	// Good (45)
+	params.velBias = 0.5f;
+	params.adaptiveDivs = 7;
+	params.adaptiveRings = 2;
+	params.adaptiveDepth = 3;
+	m_crowd->setObstacleAvoidanceParams(2, &params);
+
+	// High (66)
+	params.velBias = 0.5f;
+	params.adaptiveDivs = 7;
+	params.adaptiveRings = 3;
+	params.adaptiveDepth = 3;
+	m_crowd->setObstacleAvoidanceParams(3, &params);
 }
 
 crowdTool::~crowdTool()

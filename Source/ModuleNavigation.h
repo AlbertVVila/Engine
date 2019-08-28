@@ -284,6 +284,7 @@ public:
 	ENGINE_API void MoveRequest(int idAgent, unsigned int targetRef, float* endPos);
 
 	//public variables
+	static const int MAX_AGENTS = 50;
 
 private:
 	//private functions
