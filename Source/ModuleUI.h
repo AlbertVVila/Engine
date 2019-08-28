@@ -12,6 +12,7 @@ struct Texture;
 class Component;
 class ComponentCamera;
 class ComponentImage;
+class Button;
 class Text;
 
 struct RenderOrdering
@@ -32,7 +33,7 @@ public:
 	virtual ~ModuleUI();
 
 	bool Init(JSON* json) override;
-	update_status PreUpdate() override { uiHoveredMouse1 = false; uiHoveredMouse3 = false; return update_status::UPDATE_CONTINUE; }
+	update_status PreUpdate() override { uiHoveredMouse1 = false; uiHoveredMouse3 = false; topButton = nullptr; return update_status::UPDATE_CONTINUE; }
 	update_status Update(float dt) override;
 	update_status PostUpdate() override;
 	bool CleanUp() override;
@@ -41,6 +42,9 @@ public:
 
 	void Draw(int currentWidth, int currentHeight);
 	inline bool UIHovered(bool checkMouse1 = true, bool checkMouse3 = true) { return (uiHoveredMouse1 && checkMouse1) || (uiHoveredMouse3 && checkMouse3); }
+	
+	void SetButtonHover(const Button* button);
+	inline const Button* GetButtonHover() { return topButton; }
 
 public:
 	int currentWidth;
@@ -62,10 +66,12 @@ private:
 	unsigned EBO = 0;
 
 	float mask[MASK_DIVISIONS];
+	const Button* topButton = nullptr;
 
 public:
 	bool uiHoveredMouse1 = false;
 	bool uiHoveredMouse3 = false;
+
 };
 
 #endif // __ModuleUI_H__
