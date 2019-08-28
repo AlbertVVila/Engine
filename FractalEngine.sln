@@ -3,174 +3,80 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.28307.757
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Engine", "Source\Engine.vcxproj", "{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}"
-	ProjectSection(ProjectDependencies) = postProject
-		{F7ECD748-47D4-4E44-959C-BC5623A1A2BB} = {F7ECD748-47D4-4E44-959C-BC5623A1A2BB}
-		{413818BF-768B-4B9F-B7A6-D5864D4759E4} = {413818BF-768B-4B9F-B7A6-D5864D4759E4}
-		{F6A7A8E0-7FB3-40EC-8ED9-B837E24FEF22} = {F6A7A8E0-7FB3-40EC-8ED9-B837E24FEF22}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PlayerMovement", "Scripts\PlayerMovement\PlayerMovement.vcxproj", "{DA319D4A-70A8-42C8-A54F-DB7EAD02CA0D}"
-	ProjectSection(ProjectDependencies) = postProject
-		{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6} = {746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{B0BA8D83-BE07-4405-ADE1-C771D081A8CD}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ImGui", "Source\Imgui\ImGui.vcxproj", "{F6A7A8E0-7FB3-40EC-8ED9-B837E24FEF22}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameLoop", "Scripts\GameLoop\GameLoop.vcxproj", "{A5975BB3-268D-4AAA-A04B-9398A16B9280}"
-	ProjectSection(ProjectDependencies) = postProject
-		{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6} = {746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IntroScript", "Scripts\IntroScript\IntroScript.vcxproj", "{55A33768-7FC9-40D5-9E16-9CC484F406BC}"
-	ProjectSection(ProjectDependencies) = postProject
-		{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6} = {746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CreditsScript", "Scripts\CreditsScript\CreditsScript.vcxproj", "{CF4ADE84-8B3D-45A4-80EF-5B52CC795B6C}"
-	ProjectSection(ProjectDependencies) = postProject
-		{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6} = {746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AudioSourceScript", "Scripts\AudioSourceScript\AudioSourceScript.vcxproj", "{AE49478A-9872-4FD7-97B4-92D1FA50CF30}"
-	ProjectSection(ProjectDependencies) = postProject
-		{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6} = {746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CameraController", "Scripts\CameraController\CameraController.vcxproj", "{EA91D26E-3AD6-4FB7-A70B-E6A0C2492857}"
-	ProjectSection(ProjectDependencies) = postProject
-		{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6} = {746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NPCController", "Scripts\NPCController\NPCController.vcxproj", "{CE7ED85F-5518-4871-BA55-1F86A12595AA}"
-	ProjectSection(ProjectDependencies) = postProject
-		{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6} = {746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ChestScript", "Scripts\ChestScript\ChestScript.vcxproj", "{6379EA41-3D83-4120-A8D0-1D1CFC523A3C}"
-	ProjectSection(ProjectDependencies) = postProject
-		{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6} = {746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BasicEnemyAIScript", "Scripts\BasicEnemyAIScript\BasicEnemyAIScript.vcxproj", "{B6EA4ADB-AB73-42A0-A2AB-D98F896178B3}"
-	ProjectSection(ProjectDependencies) = postProject
-		{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6} = {746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EnemyControllerScript", "Scripts\EnemyControllerScript\EnemyControllerScript.vcxproj", "{ACC36CC8-ADA1-4CFA-AE5A-C51CF877B885}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "InventoryScript", "Scripts\InventoryScript\InventoryScript.vcxproj", "{354346CC-BE0D-40FE-A8A0-4C129057C5DD}"
-	ProjectSection(ProjectDependencies) = postProject
-		{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6} = {746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ItemPicker", "Scripts\ItemPicker\ItemPicker.vcxproj", "{669E38D3-7845-4CA4-99E5-387855B45F5C}"
-	ProjectSection(ProjectDependencies) = postProject
-		{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6} = {746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Enemy", "Enemy", "{81805A9C-91F4-47D8-B626-870F7D97377D}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HiddenEnemyAIScript", "Scripts\HiddenEnemyAIScript\HiddenEnemyAIScript.vcxproj", "{44CB8744-9EA6-487A-B1F9-611CAA45E98B}"
-	ProjectSection(ProjectDependencies) = postProject
-		{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6} = {746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RangeEnemyAIScript", "Scripts\RangeEnemyAIScript\RangeEnemyAIScript.vcxproj", "{BFB9C14B-F509-4DF1-9C7A-1A3337DE8A21}"
-	ProjectSection(ProjectDependencies) = postProject
-		{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6} = {746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DamageController", "Scripts\DamageController\DamageController.vcxproj", "{D8141FA2-E862-4706-A9F3-E8441C2B68FD}"
-	ProjectSection(ProjectDependencies) = postProject
-		{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6} = {746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MenuSoundsScript", "Scripts\MenuSoundsScript\MenuSoundsScript.vcxproj", "{105DD75E-6745-4554-992B-E9E8A4956B53}"
-	ProjectSection(ProjectDependencies) = postProject
-		{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6} = {746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DoorScript", "Scripts\DoorScript\DoorScript.vcxproj", "{AB1D1EAB-6B69-4048-A522-11D9FE75177B}"
-	ProjectSection(ProjectDependencies) = postProject
-		{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6} = {746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ProjectileScript", "Scripts\ProjectileScript\ProjectileScript.vcxproj", "{C8F06C07-DC7E-4EA9-BAA0-D19AAD547470}"
-	ProjectSection(ProjectDependencies) = postProject
-		{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6} = {746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EnemyLifeBarController", "Scripts\EnemyLifeBarController\EnemyLifeBarController.vcxproj", "{25A279F6-6460-43E6-83C1-59AB067F3F05}"
-	ProjectSection(ProjectDependencies) = postProject
-		{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6} = {746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MathGeoLib", "Source\MathGeoLib\MathGeoLib.vcxproj", "{F7ECD748-47D4-4E44-959C-BC5623A1A2BB}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Recast", "Source\Recast\Recast.vcxproj", "{413818BF-768B-4B9F-B7A6-D5864D4759E4}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SkillTreeController", "Scripts\SkillTreeController\SkillTreeController.vcxproj", "{55860826-2F36-4FBB-959E-E4AB93827C1F}"
-	ProjectSection(ProjectDependencies) = postProject
-		{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6} = {746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ExperienceController", "Scripts\ExperienceController\ExperienceController.vcxproj", "{7306983D-F81F-488D-9548-D68509FEF4C8}"
-	ProjectSection(ProjectDependencies) = postProject
-		{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6} = {746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Player", "Player", "{70163801-DAB5-4FE1-B58E-CC8DD7CCBB1C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DamageFeedbackUI", "Scripts\DamageFeedbackUI\DamageFeedbackUI.vcxproj", "{A0EC96D9-FD95-4C0C-B500-6CF8FD9AF1F4}"
-	ProjectSection(ProjectDependencies) = postProject
-		{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6} = {746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CombatAudioEvents", "Scripts\CombatAudioEvents\CombatAudioEvents.vcxproj", "{BFF12BE8-A1DE-4CD3-ACBB-E614FD9DAFD5}"
-	ProjectSection(ProjectDependencies) = postProject
-		{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6} = {746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RainSkillSpawn", "Scripts\RainSkillSpawn\RainSkillSpawn.vcxproj", "{FCDB994C-B6DD-4F58-960D-7BB1A462DF93}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ItemNameController", "Scripts\ItemNameController\ItemNameController.vcxproj", "{FDD06A97-3850-488A-8317-B1077020E2C4}"
-	ProjectSection(ProjectDependencies) = postProject
-		{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6} = {746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EnemyLoot", "Scripts\EnemyLoot\EnemyLoot.vcxproj", "{B1FC287C-6EE1-44C8-874B-9860A2D4D35A}"
-	ProjectSection(ProjectDependencies) = postProject
-		{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6} = {746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EquipPopupController", "Scripts\EquipPopupController\EquipPopupController.vcxproj", "{20271EEF-B67A-4D0C-B8DC-0A4E296D710C}"
-	ProjectSection(ProjectDependencies) = postProject
-		{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6} = {746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GodMode", "Scripts\GodMode\GodMode.vcxproj", "{FCC76A72-D762-4C84-82CD-075AC1B260AC}"
-	ProjectSection(ProjectDependencies) = postProject
-		{7306983D-F81F-488D-9548-D68509FEF4C8} = {7306983D-F81F-488D-9548-D68509FEF4C8}
-		{DA319D4A-70A8-42C8-A54F-DB7EAD02CA0D} = {DA319D4A-70A8-42C8-A54F-DB7EAD02CA0D}
-		{A5975BB3-268D-4AAA-A04B-9398A16B9280} = {A5975BB3-268D-4AAA-A04B-9398A16B9280}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FearControllerScript", "Scripts\FearControllerScript\FearControllerScript.vcxproj", "{70E97566-EFB7-4382-A1A2-1806C1D28250}"
-	ProjectSection(ProjectDependencies) = postProject
-		{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6} = {746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DividingEnemyAI", "Scripts\DividingEnemyAI\DividingEnemyAI.vcxproj", "{CAC93517-2E77-44FB-8250-273577D83769}"
-	ProjectSection(ProjectDependencies) = postProject
-		{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6} = {746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BuriedEnemyAIScript", "Scripts\BuriedEnemyAIScript\BuriedEnemyAIScript.vcxproj", "{42D20FDF-E4FF-46BD-8101-6798F47189C6}"
-	ProjectSection(ProjectDependencies) = postProject
-		{746CC4C3-787F-4B0E-AA66-E388FE3FF4F6} = {746CC4C3-787F-4B0E-AA66-E388FE3FF4F6}
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
