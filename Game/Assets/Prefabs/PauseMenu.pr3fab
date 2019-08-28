@@ -1,13 +1,13 @@
 {
     "GameObjects": [
         {
-            "UID": 2340023531,
+            "UID": 1555091739,
             "ParentUID": 1,
             "Name": "PauseMenu",
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 1,
-            "ActiveSelf": 1,
+            "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
                 1.0,
@@ -31,8 +31,8 @@
             "No Walkable": 0,
             "openInHierarchy": 1,
             "isPrefab": 1,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
+            "isPrefabSync": 1,
+            "prefabUID": 2913454012,
             "Components": [
                 {
                     "Type": 0,
@@ -80,12 +80,12 @@
             ]
         },
         {
-            "UID": 1900538822,
-            "ParentUID": 2340023531,
+            "UID": 2477244161,
+            "ParentUID": 1555091739,
             "Name": "Background",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -145,19 +145,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0,
+                    "UIOrder": 100,
                     "videoPath": "flame.avi",
                     "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 175669634,
-            "ParentUID": 2340023531,
+            "UID": 4083725987,
+            "ParentUID": 1555091739,
             "Name": "PauseTitle",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -228,17 +228,17 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 100.0,
                     "InterlineDistance": 24.0,
-                    "UIOrder": 0
+                    "UIOrder": 100
                 }
             ]
         },
         {
-            "UID": 2303054085,
-            "ParentUID": 2340023531,
+            "UID": 4255083968,
+            "ParentUID": 1555091739,
             "Name": "ResumeButton",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -312,7 +312,7 @@
                         "IsTextWrapped": 0,
                         "WrapWidth": 100.0,
                         "InterlineDistance": 24.0,
-                        "UIOrder": 0
+                        "UIOrder": 100
                     },
                     "buttonImage": {
                         "Type": 7,
@@ -382,17 +382,17 @@
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 100
                 }
             ]
         },
         {
-            "UID": 1657923994,
-            "ParentUID": 2340023531,
+            "UID": 3714489300,
+            "ParentUID": 1555091739,
             "Name": "OptionsButton",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -466,7 +466,7 @@
                         "IsTextWrapped": 0,
                         "WrapWidth": 100.0,
                         "InterlineDistance": 24.0,
-                        "UIOrder": 0
+                        "UIOrder": 100
                     },
                     "buttonImage": {
                         "Type": 7,
@@ -536,17 +536,17 @@
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 100
                 }
             ]
         },
         {
-            "UID": 1233958479,
-            "ParentUID": 2340023531,
+            "UID": 1400821282,
+            "ParentUID": 1555091739,
             "Name": "ExitButton",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -620,7 +620,7 @@
                         "IsTextWrapped": 0,
                         "WrapWidth": 100.0,
                         "InterlineDistance": 24.0,
-                        "UIOrder": 0
+                        "UIOrder": 100
                     },
                     "buttonImage": {
                         "Type": 7,
@@ -690,17 +690,17 @@
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 100
                 }
             ]
         },
         {
-            "UID": 4045879710,
-            "ParentUID": 2340023531,
+            "UID": 1029850048,
+            "ParentUID": 1555091739,
             "Name": "OrangeLineTop",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -760,19 +760,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0,
+                    "UIOrder": 100,
                     "videoPath": "flame.avi",
                     "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 2986299172,
-            "ParentUID": 2340023531,
+            "UID": 3013590857,
+            "ParentUID": 1555091739,
             "Name": "OrangeLineBottom",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -832,19 +832,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0,
+                    "UIOrder": 100,
                     "videoPath": "flame.avi",
                     "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 3532632077,
-            "ParentUID": 2340023531,
+            "UID": 4217229277,
+            "ParentUID": 1555091739,
             "Name": "FlameRight",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -904,19 +904,19 @@
                     "isMaskHorizontal": 1,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0,
+                    "UIOrder": 100,
                     "videoPath": "flame.avi",
                     "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 2571632742,
-            "ParentUID": 2340023531,
+            "UID": 603363595,
+            "ParentUID": 1555091739,
             "Name": "FlameLeft",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -976,19 +976,19 @@
                     "isMaskHorizontal": 1,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0,
+                    "UIOrder": 100,
                     "videoPath": "flame.avi",
                     "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 3717105072,
-            "ParentUID": 2340023531,
+            "UID": 694241628,
+            "ParentUID": 1555091739,
             "Name": "BackgroundOutline",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1048,7 +1048,7 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": -1,
+                    "UIOrder": 99,
                     "videoPath": "flame.avi",
                     "fps": 24.0
                 }
