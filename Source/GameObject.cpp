@@ -336,6 +336,14 @@ void GameObject::Update()
 	{
 		if (component->enabled && component->type != ComponentType::Script)
 		{
+			component->PreUpdate();
+		}
+	}
+
+	for (auto& component : components)
+	{
+		if (component->enabled && component->type != ComponentType::Script)
+		{
 			component->Update();
 		}
 	}
