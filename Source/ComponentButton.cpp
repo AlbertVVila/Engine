@@ -146,6 +146,7 @@ void Button::Update()
 	
 	math::float2 buttonMin = float2(buttonX - size.x *.5f, -buttonY - size.y *.5f);
 	math::float2 buttonMax = float2(buttonX + size.x *.5f, -buttonY + size.y *.5f);
+	
 	if (screenX > buttonMin.x && screenX < buttonMax.x && screenY > buttonMin.y && screenY < buttonMax.y)
 	{
 		isHovered = true;
@@ -153,30 +154,28 @@ void Button::Update()
 		if (hoverDetectionMouse1) App->ui->uiHoveredMouse1 = true;
 		if (hoverDetectionMouse3) App->ui->uiHoveredMouse3 = true;
 
-		buttonImage->enabled = false;
-		highlightedImage->enabled = true;
-		pressedImage->enabled = false;
 		text->isHovered = true;
 	}
 	else
 	{
 		isHovered = false;
-		buttonImage->enabled = true && !isSelected;
-		highlightedImage->enabled = false || isSelected;
-		pressedImage->enabled = false;
 		text->isHovered = false;
 	}
 
 	switch (state)
 	{
 	case ButtonState::NONE:
+		buttonImage->enabled = !isHovered;
+		highlightedImage->enabled = isHovered;
+		pressedImage->enabled = false;
+
 		if (isHovered && App->input->GetMouseButtonDown(1) == KEY_DOWN) state = ButtonState::DOWN;
 		break;
 
 	case ButtonState::DOWN:
 		buttonImage->enabled = false;
 		highlightedImage->enabled = false;
-		pressedImage->enabled = true;
+		pressedImage->enabled = isHovered;
 
 		if (!isHovered) state = ButtonState::UP;
 		else if (App->input->GetMouseButtonDown(1) == KEY_UP) state = ButtonState::UP;
@@ -185,6 +184,10 @@ void Button::Update()
 		break;
 
 	case ButtonState::REPEAT:
+		buttonImage->enabled = false;
+		highlightedImage->enabled = false;
+		pressedImage->enabled = isHovered;
+
 		if (!isHovered) state = ButtonState::UP;
 		else if (App->input->GetMouseButtonDown(1) == KEY_UP) state = ButtonState::UP;
 		else if (App->input->GetMouseButtonDown(1) == KEY_IDLE) state = ButtonState::UP;
@@ -193,7 +196,7 @@ void Button::Update()
 	case ButtonState::UP:
 		buttonImage->enabled = !isHovered;
 		highlightedImage->enabled = isHovered;
-		pressedImage->enabled = true;
+		pressedImage->enabled = false;
 
 		if (isHovered && App->input->GetMouseButtonDown(1) == KEY_DOWN) state = ButtonState::DOWN;
 		else state = ButtonState::NONE;
