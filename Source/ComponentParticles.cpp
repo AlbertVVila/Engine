@@ -57,12 +57,12 @@ ComponentParticles::ComponentParticles(const ComponentParticles& component) : Co
 	directionNoise = component.directionNoise;
 	directionNoiseProbability = component.directionNoiseProbability;
 	directionNoiseTotalProbability = component.directionNoiseTotalProbability;
-	App->particles->AddParticleSystem(this);
-	modules.push_back(new PMSizeOverTime());
-	modules.push_back(new PMColorOverTime());
 	actualEmisor = component.actualEmisor;
 	alternateEmisor(actualEmisor);
 
+	App->particles->AddParticleSystem(this);
+	modules.push_back(new PMSizeOverTime(*(PMSizeOverTime*)component.modules[0]));
+	modules.push_back(new PMColorOverTime(*(PMColorOverTime*)component.modules[1]));
 }
 
 ComponentParticles::~ComponentParticles()
@@ -620,9 +620,7 @@ void ComponentParticles::Load(JSON_value* value)
 	{
 		float alphaVal = value->GetFloat((std::string("alpha") + std::to_string(i)).c_str());
 		COTAux->Imgradient->addAlphaMark(value->GetFloat((std::string("alphaPosition") + std::to_string(i)).c_str()), alphaVal);
-		
 	}
-	int x = 0;
 }
 
 void ComponentParticles::alternateEmisor(int newEmisor)

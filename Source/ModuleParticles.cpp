@@ -317,6 +317,17 @@ void ModuleParticles::DrawParticleSystem(ComponentParticles* cp, const Component
 
 }
 
+PMSizeOverTime::PMSizeOverTime(const PMSizeOverTime& sizeOverTime)
+{
+	type = ParticleModulesType::SIZE_OVER_TIME;
+	enabled = sizeOverTime.enabled;
+}
+
+PMSizeOverTime* PMSizeOverTime::Clone() const
+{
+	return new PMSizeOverTime(*this);
+}
+
 inline float PMSizeOverTime::GetSize(float percent, float total)
 {
 	return ImGui::BezierValue(percent, v) * total;
@@ -338,6 +349,34 @@ PMColorOverTime::PMColorOverTime()
 	Imgradient = new ImGradient();
 
 	UpdateGradientPointers();
+}
+
+PMColorOverTime::PMColorOverTime(const PMColorOverTime& colorOverTime)
+{
+	type = ParticleModulesType::COLOR_OVER_TIME;
+	Imgradient = new ImGradient();
+	UpdateGradientPointers();
+
+	Imgradient->clearMarks();
+
+	for (ImGradientMark* mark : colorOverTime.Imgradient->getMarks())
+	{
+		if (mark->alpha)
+		{
+			Imgradient->addAlphaMark(mark->position, mark->color[0]);
+		}
+		else
+		{
+			Imgradient->addMark(mark->position, ImColor(mark->color[0], mark->color[1], mark->color[2]));
+		}
+	}
+
+	enabled = colorOverTime.enabled;
+}
+
+PMColorOverTime* PMColorOverTime::Clone() const
+{
+	return new PMColorOverTime(*this);
 }
 
 void PMColorOverTime::InspectorDraw()
