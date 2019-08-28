@@ -43,7 +43,7 @@ public:
 	virtual void OnTriggerEnter(GameObject* go) {}
 	virtual void OnTrigger(GameObject* go) {}
 	virtual void OnTriggerExit(GameObject* go) {}
-	virtual void OnButtonDown() { LOG("BUTTON DOWN"); }
+	virtual void OnButtonDown() {}
 	virtual void OnButtonUp() {}
 
 public:

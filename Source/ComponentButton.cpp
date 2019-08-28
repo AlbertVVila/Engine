@@ -183,7 +183,7 @@ void Button::Update()
 		break;
 
 	case ButtonState::DOWN:
-		buttonImage->enabled = false;
+		buttonImage->enabled = !isHovered;
 		highlightedImage->enabled = false;
 		pressedImage->enabled = isHovered;
 		{
@@ -197,7 +197,7 @@ void Button::Update()
 		break;
 
 	case ButtonState::REPEAT:
-		buttonImage->enabled = false;
+		buttonImage->enabled = !isHovered;
 		highlightedImage->enabled = false;
 		pressedImage->enabled = isHovered;
 
