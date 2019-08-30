@@ -14,6 +14,7 @@
 #include "ModuleSpacePartitioning.h"
 #include "ModuleAudioManager.h"
 #include "ModuleNavigation.h"
+#include "ModuleParticles.h"
 
 #include "Component.h"
 #include "ComponentTransform.h"
@@ -244,6 +245,15 @@ void GameObject::DrawProperties()
 			if (ImGui::Button("Update Prefab"))
 			{
 				prefab->Update(this);
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Set As New Prefab"))
+			{
+				prefab->RemoveInstance(this);
+				App->resManager->DeleteResource(prefabUID);
+				prefab = nullptr;
+				prefabUID = 0;
+				MarkAsPrefab();
 			}
 			if (App->time->gameState == GameState::RUN)
 			{
@@ -1211,8 +1221,24 @@ void GameObject::Load(JSON_value *value, bool prefabTemplate)
 		if (component)
 		{
 			component->Load(componentJSON);
-			if (type == ComponentType::VolumetricLight)
+			switch (type)
+			{
+			case ComponentType::VolumetricLight:
 				volLight = (ComponentVolumetricLight*)component;
+				break;
+			case ComponentType::Particles:
+				if (prefabTemplate)
+				{
+					App->particles->RemoveParticleSystem((ComponentParticles*)component);
+				}
+				break;
+			case ComponentType::Trail:
+				if (prefabTemplate)
+				{
+					App->particles->RemoveTrailRenderer((ComponentTrail*)component);
+				}
+				break;
+			}
 		}
 	}
 
