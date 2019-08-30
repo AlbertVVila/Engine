@@ -93,7 +93,8 @@ private:
 	int experience = 20;
 
 	float hitColorDuration = 0.2f;
-	float timer = 0.f;
+	float hitColorTimer = 0.f;
+	bool enemyHit = false;
 
 };
 
