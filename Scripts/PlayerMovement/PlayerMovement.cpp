@@ -1024,8 +1024,8 @@ bool PlayerMovement::IsAttacking() const
 	}
 	//and finally if enemy is on attack range
 	if (App->scene->enemyHovered.object != nullptr &&
-		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(false, true) ||
-			App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(false, true)) &&
+		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(true, false) ||
+			App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(true, false)) &&
 		Dist <= basicAttackRange)
 	{
 		return true;
@@ -1038,8 +1038,8 @@ bool PlayerMovement::IsMovingToAttack() const
 
 	if (App->scene->enemyHovered.object != nullptr && App->scene->enemyHovered.health > 0 &&
 		!App->input->IsKeyPressed(SDL_SCANCODE_LSHIFT) == KEY_DOWN &&
-		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(false, true) ||
-			App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(false, true)) &&
+		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(true, false) ||
+			App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(true, false)) &&
 		Distance(gameobject->transform->position, App->scene->enemyHovered.object->transform->position) > basicAttackRange)
 	{
 		return true;
@@ -1055,14 +1055,14 @@ bool PlayerMovement::IsMoving() const
 bool PlayerMovement::IsPressingMouse1() const
 {
 	math::float3 temp;
-	return ((App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(false, true)) ||
+	return ((App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(true, false)) ||
 		(currentState->playerWalking && !currentState->playerWalkingToHit) ||
-		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(false, true) && !App->scene->Intersects("PlayerMesh", false, temp))); //right button, the player is still walking or movement button is pressed and can get close to mouse pos
+		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(true, false) && !App->scene->Intersects("PlayerMesh", false, temp))); //right button, the player is still walking or movement button is pressed and can get close to mouse pos
 }
 
 bool PlayerMovement::IsUsingRightClick() const
 {
-	return !App->ui->UIHovered(true, false) && allSkills.find(assignedSkills[HUD_BUTTON_RC])->second->IsUsable(mana) && App->input->GetMouseButtonDown(3) == KEY_DOWN; //Left button
+	return !App->ui->UIHovered(false, true) && allSkills.find(assignedSkills[HUD_BUTTON_RC])->second->IsUsable(mana) && App->input->GetMouseButtonDown(3) == KEY_DOWN; //Left button
 }
 
 bool PlayerMovement::IsUsingOne() const

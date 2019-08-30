@@ -86,7 +86,7 @@ void ComponentImage::DrawProperties()
 		{
 			return;
 		}
-		if (showHoverDetectInEditor) ImGui::InputInt("UI Order", &uiOrder);
+		if (showHoverDetectInEditor) ImGui::InputInt("UI Order##Image", &uiOrder);
 
 		//texture selector
 		if (ImGui::BeginCombo("Texture", texture != nullptr ? texture->GetName() : None))
