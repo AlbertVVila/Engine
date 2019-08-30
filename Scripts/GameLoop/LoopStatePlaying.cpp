@@ -34,7 +34,7 @@ void LoopStatePlaying::Update()
 	if (gLoop->skillsButton->IsPressed() && !gLoop->skillsMenuGO->isActive()) gLoop->menuButtonsSound->Play();
 	if (gLoop->missionsButton->IsPressed() && !gLoop->missionsMenuGO->isActive()) gLoop->menuButtonsSound->Play();
 
-	if (gLoop->hudBackToMenuButton->IsPressed() ||
+	if (gLoop->hudBackToMenuButton->KeyUp() ||
 	   (!gLoop->playerMenuGO->isActive() && gLoop->App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN))
 	{
 		gLoop->currentLoopState = (LoopState*)(gLoop->pausedState);
@@ -48,20 +48,20 @@ void LoopStatePlaying::Update()
 	if (gLoop->closePlayerMenuButton->KeyUp()) CloseMenu();
 	if (gLoop->playerMenuGO->isActive() && gLoop->App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) CloseMenu();
 
-	if (gLoop->inventoryButton->IsPressed() || gLoop->App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
+	if (gLoop->inventoryButton->KeyUp() || gLoop->App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
 	{
 		if (gLoop->inventoryMenuGO->isActive()) CloseMenu();
 		else OpenMenu(gLoop->inventoryMenuGO);
 	}
 
-	if (gLoop->skillsButton->IsPressed() || gLoop->App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN)
+	if (gLoop->skillsButton->KeyUp() || gLoop->App->input->GetKey(SDL_SCANCODE_V) == KEY_DOWN)
 	{
 		if (gLoop->skillsMenuGO->isActive()) CloseMenu();
 		else OpenMenu(gLoop->skillsMenuGO);
 	}
 	
 
-	if (gLoop->missionsButton->IsPressed() || gLoop->App->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN)
+	if (gLoop->missionsButton->KeyUp() || gLoop->App->input->GetKey(SDL_SCANCODE_N) == KEY_DOWN)
 	{
 		if (gLoop->missionsMenuGO->isActive()) CloseMenu();
 		else OpenMenu(gLoop->missionsMenuGO);
