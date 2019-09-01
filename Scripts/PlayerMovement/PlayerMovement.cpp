@@ -76,8 +76,8 @@ PlayerMovement::PlayerMovement()
 	assignedSkills[HUD_BUTTON_2] = SkillType::NONE;
 	assignedSkills[HUD_BUTTON_3] = SkillType::NONE;
 	assignedSkills[HUD_BUTTON_4] = SkillType::NONE;
-	assignedSkills[HUD_BUTTON_Q] = SkillType::NONE;
-	assignedSkills[HUD_BUTTON_W] = SkillType::NONE;
+	assignedSkills[HUD_BUTTON_Q] = SkillType::DASH;
+	assignedSkills[HUD_BUTTON_W] = SkillType::SLICE;
 	assignedSkills[HUD_BUTTON_E] = SkillType::BOMB_DROP;
 	assignedSkills[HUD_BUTTON_R] = SkillType::RAIN;
 }
@@ -262,11 +262,7 @@ void PlayerMovement::CreatePlayerSkills()
 	{
 		LOG("Machete rain mesh not found");
 	}
-	macheteRainParticles = App->scene->FindGameObjectByName("MacheteRainParticles");
-	if (!macheteRainParticles)
-	{
-		LOG("Machete rain particles not found");
-	}
+
 
 	playerCamera = App->scene->FindGameObjectByName("PlayerCamera");
 	if (!playerCamera)
@@ -408,7 +404,6 @@ void PlayerMovement::Start()
 {
 	dustParticles = App->scene->FindGameObjectByName("WalkingDust");
 	dashFX = App->scene->FindGameObjectByName("DashFX");
-	dashMesh = App->scene->FindGameObjectByName("DashMesh");
 
 	GameObject* damageGO = App->scene->FindGameObjectByName("Damage");
 	if (damageGO == nullptr)
@@ -595,18 +590,7 @@ void PlayerMovement::Start()
 		dash->dashFX = dashFX;
 	}
 
-	if (dashMesh == nullptr)
-	{
-		LOG("DashMesh Gameobject not found");
-	}
-	else
-	{
-		LOG("DashMesh found");
-		dashMesh->SetActive(false);
-		dash->meshOriginalScale = dashMesh->transform->scale;
-		dash->dashMesh = dashMesh;
 
-	}
 	GOtemp = App->scene->FindGameObjectByName("PlayerMesh");
 	dash->playerRenderer = GOtemp->GetComponent<ComponentRenderer>();
 
@@ -670,8 +654,8 @@ void PlayerMovement::Start()
 	assignedSkills[HUD_BUTTON_2] = (SkillType)PlayerPrefs::GetInt("2", 20);
 	assignedSkills[HUD_BUTTON_3] = (SkillType)PlayerPrefs::GetInt("3", 20);
 	assignedSkills[HUD_BUTTON_4] = (SkillType)PlayerPrefs::GetInt("4", 20);
-	assignedSkills[HUD_BUTTON_Q] = (SkillType)PlayerPrefs::GetInt("Q", 20);
-	assignedSkills[HUD_BUTTON_W] = (SkillType)PlayerPrefs::GetInt("W", 20);
+//	assignedSkills[HUD_BUTTON_Q] = (SkillType)PlayerPrefs::GetInt("Q", 20);
+//	assignedSkills[HUD_BUTTON_W] = (SkillType)PlayerPrefs::GetInt("W", 20);
 //	assignedSkills[HUD_BUTTON_E] = (SkillType)PlayerPrefs::GetInt("E", 20);
 //	assignedSkills[HUD_BUTTON_R] = (SkillType)PlayerPrefs::GetInt("R", 20);
 
@@ -774,7 +758,7 @@ void PlayerMovement::Update()
 		{
 			GameObject* machete = rain->machetes[i].machete;
 			ComponentRenderer* macheteRainRenderer = rain->machetes[i].renderer;
-			if (machete && macheteRainRenderer && macheteRainParticles)
+			if (machete && macheteRainRenderer)
 			{
 				if (machete->transform->GetGlobalPosition().y > rain->targetHeight && !rain->machetes[i].landed)
 				{
@@ -795,7 +779,6 @@ void PlayerMovement::Update()
 					macheteRainRenderer->dissolveAmount += .5f * App->time->gameDeltaTime;
 					machete->transform->SetGlobalPosition(machete->transform->GetGlobalPosition() + math::float3(MACHETE_RAIN_HORIZONTAL_SPEED * App->time->gameDeltaTime, 
 						MACHETE_RAIN_SPEED * App->time->gameDeltaTime * .005f, 0));
-					macheteRainParticles->SetActive(false);
 					if (!shaking && playerCamera)
 					{
 						shaking = true;
@@ -876,8 +859,10 @@ void PlayerMovement::OnAnimationEvent(std::string name)
 {
 	if (name == "BombDropLanding")
 	{
+		LOG("BD Landing");
 		if (bombDropParticles)
 		{
+			LOG("BD Landing P");
 			bombDropParticles->SetActive(false);
 		}
 		if (bombDropMesh1 && bombDropMesh2)
@@ -893,11 +878,16 @@ void PlayerMovement::OnAnimationEvent(std::string name)
 	}
 	if (name == "BombDropApex")
 	{
+		LOG("BD Apex");
 		if (bombDropParticles != nullptr)
+		{
+			LOG("BD Apex P");
 			bombDropParticles->SetActive(true);
+		}
 	}
 	if (name == "BombDropEnd")
 	{
+		LOG("BD End");
 		bombDropExpanding = false;
 		if (bombDropMesh1 && bombDropMesh2)
 		{
@@ -1243,8 +1233,7 @@ void PlayerMovement::UseSkill(SkillType skill)
 		{
 			it->second->SetCooldown(hubGeneralAbilityCooldown);
 		}*/
-	}
-
+	}	
 	for (unsigned i = 0u; i < SKILLS_SLOTS; ++i)
 	{
 		hubCooldownTimer[i] = allSkills[assignedSkills[i]]->cooldown;

@@ -279,7 +279,6 @@ public:
 	float basicAttackRange = 200.f;
 
 	bool macheteRainActivated = false;
-	GameObject* macheteRainParticles = nullptr;
 	bool shaking = false;
 
 	std::unordered_map<SkillType, PlayerSkill*> allSkills;
@@ -294,7 +293,6 @@ private:
 	std::vector<PlayerState*> playerStates;	
 	GameObject* dustParticles = nullptr;
 	GameObject* dashFX = nullptr;
-	GameObject* dashMesh = nullptr;
 	GameObject* bombDropParticles = nullptr;
 	GameObject* bombDropParticlesLanding = nullptr;
 	GameObject* bombDropMesh1 = nullptr;

@@ -65,12 +65,6 @@ void DashSkill::UseSkill()
 			player->gameobject->transform->LookAt(path[pathIndex]);
 			math::float3 direction = (path[pathIndex] - currentPosition).Normalized();
 			player->gameobject->transform->SetPosition(currentPosition + dashSpeed * direction * player->App->time->gameDeltaTime);
-			if (dashMesh)
-			{
-				dashMesh->transform->Scale(scalator);
-				scalator -= scalatorDecay;
-				scalator = MAX(1.0f, scalator);
-			}
 		}
 	}
 

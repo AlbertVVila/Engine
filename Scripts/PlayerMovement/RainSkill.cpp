@@ -36,7 +36,6 @@ void RainSkill::Start()
 			float z = range * ((((float)rand()) / (float)RAND_MAX)) + MIN_RAND;			
 			machete->transform->SetGlobalPosition(spawnPosition + float3(x, i * VERTICAL_OFFSET, z));
 			player->macheteRainActivated = true;
-			player->macheteRainParticles->SetActive(true);
 			targetHeight = spawnPosition.y - MACHETE_RAIN_START_HEIGHT;
 			machetes[i].landed = false;
 			machete->transform->scale = machetes[i].originalScale;
