@@ -74,6 +74,9 @@ private:
 	ItemNameController* itemName = nullptr;
 	std::list<unsigned> nameShowed;
 
+	std::string itemCursor = "Pick.cur";
+	bool changeItemCursorIcon = true;
+	bool changeStandarCursorIcon = true;
 };
 
 extern "C" ItemPicker_API Script* CreateScript();

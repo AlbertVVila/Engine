@@ -28,7 +28,6 @@ class InventoryScript;
 class EquipPopupController;
 class SkillTreeController;
 class ExperienceController;
-class AABB;
 class JSON_value;
 class ComponentAudioSource;
 
@@ -109,10 +108,12 @@ public:
 	GameScene gameScene = GameScene::MENU;
 	std::vector<LoopState*> loopStates;
 
+private:
+	void ManageNavigationCursorIcon();
+
 public:
 	int volume = 10;
 
-public:
 	//UI Values
 	int minVolume = 0;
 	int maxVolume = 10;
@@ -199,6 +200,12 @@ public:
 	std::string sceneToLoad = "";
 	LoopState* stateAfterLoad = nullptr;
 	bool actionAfterLoad = false;
+
+	float xPickingCorrection = 0.0f;
+	float yPickingCorrection = 0.0f;
+	float zPickingCorrection = 0.0f;
+	bool changeNavigationCursorIcon = true;
+	bool changeStandarCursorIcon = true;
 };
 
 extern "C" GameLoop_API Script* CreateScript();
