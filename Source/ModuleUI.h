@@ -50,6 +50,7 @@ public:
 	int currentHeight;
 	bool showUIinSceneViewport = false;
 
+	std::string gameStandarCursor = "Glow.cur";
 private:
 	void GenerateVAO(unsigned& vao, float quadVertices[16]);
 	void RenderImage(const ComponentImage& componentImage, int currentWidth, int currentHeight);

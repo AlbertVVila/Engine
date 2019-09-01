@@ -74,6 +74,7 @@ bool ModuleUI::Init(JSON* config)
 	if (scriptJson != nullptr)
 	{
 		uiCursor = scriptJson->GetString("uiCursor", "GhostGlow.cur");
+		gameStandarCursor = scriptJson->GetString("gameStandarCursor", "Glow.cur");
 	}
 
 	return true;
@@ -84,6 +85,7 @@ void ModuleUI::SaveConfig(JSON* config)
 	JSON_value* scriptJson = config->CreateValue();
 
 	scriptJson->AddString("uiCursor", uiCursor.c_str());
+	scriptJson->AddString("gameStandarCursor", gameStandarCursor.c_str());
 	config->AddValue("uiConfig", *scriptJson);
 }
 
@@ -324,6 +326,14 @@ void ModuleUI::DrawGUI()
 	ImGui::InputText("uiCursor", uiCursorAux, 64);
 	uiCursor = uiCursorAux;
 	delete[] uiCursorAux;
+
+	ImGui::Separator();
+	ImGui::Text("Game cursor:");
+	char* gameStandarCursorAux = new char[64];
+	strcpy_s(gameStandarCursorAux, strlen(gameStandarCursor.c_str()) + 1, gameStandarCursor.c_str());
+	ImGui::InputText("gameStandarCursor", gameStandarCursorAux, 64);
+	gameStandarCursor = gameStandarCursorAux;
+	delete[] gameStandarCursorAux;
 }
 
 void ModuleUI::ManageUiHoveredCursorIcon(bool isHovered)
@@ -338,7 +348,7 @@ void ModuleUI::ManageUiHoveredCursorIcon(bool isHovered)
 		}
 		else if (!isHovered && changeNotHoverCursorIcon)
 		{
-			MouseController::ChangeCursorIcon(App->scripting->gameStandarCursor);
+			MouseController::ChangeCursorIcon(gameStandarCursor);
 			changeHoverCursorIcon = true;
 			changeNotHoverCursorIcon = false;
 		}

@@ -166,6 +166,9 @@ void ItemPicker::PickupItem() const
 		if (itemPickedAudio != nullptr) itemPickedAudio->Play();
 		itemName->DisableName(gameobject->UUID);
 	}
+
+	MouseController::ChangeCursorIcon(gameStandarCursor);
+	App->ui->SetIsItemHover(false);
 }
 
 void ItemPicker::Update()
