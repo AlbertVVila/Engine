@@ -37,7 +37,7 @@ public:
 
 	Script* GetScript(const std::string& name);
 	bool RemoveScript(Script* script, const std::string& name);
-	bool RemoveDLL(const std::string & name);
+	bool RemoveDLL(const std::string & name, bool ignoreInMemory = false);
 
 private:
 	void Monitorize();
