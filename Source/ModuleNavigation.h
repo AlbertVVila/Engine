@@ -35,7 +35,7 @@ class dtNavMeshQuery;
 class DetourDebugInterface;
 //from detour crowd
 class dtCrowd;
-class dtCrowdAgentDebugInfo;
+struct dtCrowdAgentDebugInfo;
 //from obstacle avoidance
 class dtObstacleAvoidanceDebugData;
 
@@ -279,7 +279,7 @@ public:
 	ENGINE_API crowdTool();
 	ENGINE_API ~crowdTool();
 
-	ENGINE_API int AddNewAgent(const float* pos);
+	ENGINE_API int AddNewAgent(float* pos, float speed = 200.f);
 	ENGINE_API void UpdateCrowd(float dtime);
 	ENGINE_API void MoveRequest(int idAgent, unsigned int targetRef, float* endPos);
 
@@ -296,7 +296,9 @@ private:
 
 	float m_targetPos[3];
 
-	dtObstacleAvoidanceDebugData* m_vod;
+	dtObstacleAvoidanceDebugData* m_vod = nullptr;
+
+	dtCrowdAgentDebugInfo* debug;
 
 	//struct that should be declared close by if needed, its for debug draw
 	//CrowdToolParams 

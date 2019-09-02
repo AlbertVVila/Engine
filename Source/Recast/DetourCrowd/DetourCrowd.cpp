@@ -509,7 +509,7 @@ void dtCrowd::updateAgentParameters(const int idx, const dtCrowdAgentParams* par
 /// @par
 ///
 /// The agent's position will be constrained to the surface of the navigation mesh.
-int dtCrowd::addAgent(const float* pos, const dtCrowdAgentParams* params)
+int dtCrowd::addAgent(float* pos, const dtCrowdAgentParams* params)
 {
 	// Find empty slot.
 	int idx = -1;
@@ -532,7 +532,7 @@ int dtCrowd::addAgent(const float* pos, const dtCrowdAgentParams* params)
 	float nearest[3];
 	dtPolyRef ref = 0;
 	dtVcopy(nearest, pos);
-	dtStatus status = m_navquery->findNearestPoly(pos, m_agentPlacementHalfExtents, &m_filters[ag->params.queryFilterType], &ref, nearest);
+	dtStatus status = m_navquery->findNearestPoly(pos, m_agentPlacementHalfExtents, &m_filters[ag->params.queryFilterType], &ref, pos);
 	if (dtStatusFailed(status))
 	{
 		dtVcopy(nearest, pos);
@@ -550,7 +550,8 @@ int dtCrowd::addAgent(const float* pos, const dtCrowdAgentParams* params)
 	dtVset(ag->dvel, 0,0,0);
 	dtVset(ag->nvel, 0,0,0);
 	dtVset(ag->vel, 0,0,0);
-	dtVcopy(ag->npos, nearest);
+	//dtVcopy(ag->npos, nearest);
+	ag->npos = pos;
 	
 	ag->desiredSpeed = 0;
 
@@ -1052,6 +1053,8 @@ void dtCrowd::update(const float dt, dtCrowdAgentDebugInfo* debug)
 	
 	dtCrowdAgent** agents = m_activeAgents;
 	int nagents = getActiveAgents(agents, m_maxAgents);
+
+	dtCrowdAgent* ag = agents[0];
 
 	// Check that all agents still have valid paths.
 	checkPathValidity(agents, nagents, dt);

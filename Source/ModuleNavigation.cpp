@@ -1595,7 +1595,7 @@ void ModuleNavigation::setPlayerBB(math::AABB bbox)
 	playerBB = bbox;
 }
 
-bool ModuleNavigation::FindIntersectionPoint(math::float3 start, math::float3 & intersectionPoint) const
+bool ModuleNavigation::FindIntersectionPoint(math::float3 start, math::float3& intersectionPoint) const
 {
 	float2 mouse((float*)& App->input->GetMousePosition());
 	LineSegment line;
@@ -1729,6 +1729,7 @@ void ModuleNavigation::RecalcPath(math::float3 point)
 Crowd Tool
 --------------------------------------------------------------------------------------------------------
 */
+dtCrowdAgentDebugInfo debug2;
 crowdTool::crowdTool()
 {
 	m_vod = dtAllocObstacleAvoidanceDebugData();
@@ -1751,7 +1752,8 @@ crowdTool::crowdTool()
 	m_navQuery = App->navigation->navQuery;
 
 	//initialization of crowd
-	m_crowd->init(MAX_AGENTS, App->navigation->characterMaxRadius, m_nav);
+	//the magic number parameter is a radius value test
+	m_crowd->init(MAX_AGENTS, 5.0f, m_nav);
 
 	// Make polygons with 'disabled' flag invalid.
 	m_crowd->getEditableFilter(0)->setExcludeFlags(SAMPLE_POLYFLAGS_DISABLED);
@@ -1788,6 +1790,16 @@ crowdTool::crowdTool()
 	params.adaptiveRings = 3;
 	params.adaptiveDepth = 3;
 	m_crowd->setObstacleAvoidanceParams(3, &params);
+
+	//create a quick debug info because needed
+	m_vod = dtAllocObstacleAvoidanceDebugData();
+	m_vod->init(2048);
+
+	memset(&debug2, 0, sizeof(debug2));
+
+	debug2.idx = -1;
+	debug2.vod = m_vod;
+	debug = &debug2;
 }
 
 crowdTool::~crowdTool()
@@ -1796,21 +1808,23 @@ crowdTool::~crowdTool()
 	dtFreeCrowd(m_crowd);
 }
 
-int crowdTool::AddNewAgent(const float* pos)
+int crowdTool::AddNewAgent(float* pos, float speed)
 {
 	//filling everything with default values for now
 	//declaring the default variables
-	float defaultFloatValue = 5.f;
+	float defaultFloatValue = 20.f;
 
 	//setting values
 	dtCrowdAgentParams ap;
 	memset(&ap, 0, sizeof(ap));
 	ap.radius = defaultFloatValue;
 	ap.height = defaultFloatValue;
-	ap.maxAcceleration = defaultFloatValue;
-	ap.maxSpeed = defaultFloatValue;
-	ap.collisionQueryRange = ap.radius * 12.0f;
-	ap.pathOptimizationRange = ap.radius * 30.0f;
+	ap.maxAcceleration = speed;
+	ap.maxSpeed = speed;
+	//ap.collisionQueryRange = ap.radius * 12.0f;
+	//ap.pathOptimizationRange = ap.radius * 30.0f;
+	ap.collisionQueryRange = ap.radius * 5.0f;
+	ap.pathOptimizationRange = ap.radius * 20.0f;
 	ap.updateFlags = 0;
 	/*if (m_toolParams.m_anticipateTurns)
 		ap.updateFlags |= DT_CROWD_ANTICIPATE_TURNS;*/
@@ -1818,7 +1832,7 @@ int crowdTool::AddNewAgent(const float* pos)
 	ap.updateFlags |= DT_CROWD_OPTIMIZE_TOPO;
 	ap.updateFlags |= DT_CROWD_OBSTACLE_AVOIDANCE;
 	ap.updateFlags |= DT_CROWD_SEPARATION;
-	ap.obstacleAvoidanceType = (unsigned char)3.0;//float from 0 to 3 determining the quality of dodging
+	ap.obstacleAvoidanceType = (unsigned char)3;//float from 0 to 3 determining the quality of dodging
 	ap.separationWeight = defaultFloatValue;
 
 	int idx = m_crowd->addAgent(pos, &ap);
@@ -1827,23 +1841,19 @@ int crowdTool::AddNewAgent(const float* pos)
 
 ENGINE_API void crowdTool::UpdateCrowd(float dtime)
 {
-	//create a quick debug info because needed
-	m_vod = dtAllocObstacleAvoidanceDebugData();
-	m_vod->init(2048);
 
-	dtCrowdAgentDebugInfo debug;
-
-	memset(&debug, 0, sizeof(debug));
-
-	debug.idx = -1;
-	debug.vod = m_vod;
-
-	m_crowd->update(dtime, &debug);
+	m_crowd->update(dtime, debug);
 }
 
 ENGINE_API void crowdTool::MoveRequest(int idAgent, unsigned int targetRef, float* endPos)
 {
-	//const dtQueryFilter* filter = m_crowd->getFilter(0);
-	//m_navQuery->findNearestPoly(startPos, correction, filter, &m_targetRef, endPos);
+	//testing velocity modification before calling the request
+	/*float vel[3];
+	dtVsub(vel, tgt, pos);
+	vel[1] = 0.0;
+	dtVnormalize(vel);
+	dtVscale(vel, vel, speed);
+	m_crowd->requestMoveVelocity(idAgent);*/
+	m_crowd->resetMoveTarget(idAgent);
 	m_crowd->requestMoveTarget(idAgent, targetRef, endPos);
 }
