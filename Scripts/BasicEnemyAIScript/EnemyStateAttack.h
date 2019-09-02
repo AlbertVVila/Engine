@@ -17,7 +17,7 @@ public:
 	ComponentTrail* trailPunch = nullptr;
 
 protected:
-	BasicEnemyAIScript_API void PunchFX(bool active);
+	BasicEnemyAIScript_API virtual void PunchFX(bool active);
 
 	bool attacked = false;
 	BasicEnemyAIScript_API virtual void Attack();

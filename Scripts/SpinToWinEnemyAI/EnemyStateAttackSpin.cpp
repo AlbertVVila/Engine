@@ -5,8 +5,10 @@
 #include "ComponentTransform.h"
 #include "ComponentBoxTrigger.h"
 #include "ComponentRenderer.h"
+#include "ComponentTrail.h"
 
 #include "ResourceMaterial.h"
+#include "ResourceTexture.h"
 
 #include "BasicEnemyAIScript/BasicEnemyAIScript.h"
 #include "EnemyControllerScript/EnemyControllerScript.h"
@@ -18,13 +20,13 @@
 
 #include "ComponentTrail.h"
 
-#define DEFAULTMATERIAL "Small_Skeleton"
-#define ROTATIONMATERIAL "0VolLight"
-
 EnemyStateAttackSpin::EnemyStateAttackSpin(BasicEnemyAIScript* AIScript) : EnemyStateAttack(AIScript)
 {
-	trigger = "ReturnToStart";
+	trigger = "Attack";
 	enemyRenderer = (ComponentRenderer*)enemy->gameobject->GetComponentInChildren(ComponentType::Renderer);
+	dust = enemy->App->scene->FindGameObjectByName("Dust", enemy->gameobject);
+	//defaultMaterial = (ResourceMaterial*) enemy->App->resManager->GetByName(DEFAULTMATERIAL, TYPE::MATERIAL);
+	//rotationMaterial = (ResourceMaterial*) enemy->App->resManager->GetByName(ROTATIONMATERIAL, TYPE::MATERIAL);
 }
 
 EnemyStateAttackSpin::~EnemyStateAttackSpin()
@@ -38,7 +40,7 @@ void EnemyStateAttackSpin::HandleIA() //Should check spin 75% prob & heatlh < 50
 	if (timer > duration)
 	{
 		float distance = enemy->enemyController->GetDistanceToPlayer2D();
-		if (distance > enemy->attackRange) //if not in range chase
+		if (distance > enemy->attackRange && !spinning)
 		{
 			if (hitboxCreated)
 			{
@@ -68,32 +70,42 @@ void EnemyStateAttackSpin::HandleIA() //Should check spin 75% prob & heatlh < 50
 void EnemyStateAttackSpin::Update()
 {
 	// Keep looking at player
-	math::float3 playerPosition = enemy->enemyController->GetPlayerPosition();
 	//enemy->enemyController->LookAt2D(playerPosition);
-
-
 	assert(enemy->enemyController->attackBoxTrigger != nullptr);
 
 	Attack();
 }
 
+void EnemyStateAttackSpin::Enter()
+{
+}
+
+void EnemyStateAttackSpin::Exit()
+{
+	if (spinning) //Reset spinning behaviour
+	{
+		DisableSpin();
+	}
+	//math::float3 playerPosition = enemy->enemyController->GetPlayerPosition();
+	//enemy->enemyController->LookAt2D(playerPosition);
+}
+
 void EnemyStateAttackSpin::Attack() //Split into SPIN or normal ATTACK
 {
 
-	if ((lcg.Float() < 0.25 || isOnCooldown) && !spinning) //Normal attack
+	if ((!LessThanHalfHP() || lcg.Float() < 0.25 || isOnCooldown) && !spinning) //Normal attack
 	{
-		if (strcmp(enemyRenderer->material->GetName(),DEFAULTMATERIAL)== 0)
-		{
-			enemyRenderer->SetMaterial(DEFAULTMATERIAL);
-			enemy->gameobject->LinkBones();
-		}
+		//if (strcmp(enemyRenderer->material->GetName(), ROTATIONMATERIAL)== 0)
+		//{
+		//	ChangeToSpinMaterial(MATERIALTYPE::DEFAULT);
+		//}
 		enemy->enemyController->attackBoxTrigger->Enable(true);
 		enemy->enemyController->attackBoxTrigger->SetBoxSize(boxSize);
 		boxPosition = enemy->gameobject->transform->up * 100.f;
 		enemy->enemyController->attackBoxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z + 100.f);
 		hitboxCreated = true;
 		attacked = true;
-		spinTimer += enemy->App->time->gameDeltaTime;
+		spinTimer += enemy->App->time->gameDeltaTime; //Spin cooldown
 		if (spinTimer > spinCooldown)
 		{
 			isOnCooldown = false;
@@ -101,31 +113,102 @@ void EnemyStateAttackSpin::Attack() //Split into SPIN or normal ATTACK
 		}
 		PunchFX(true);
 	}
-	//Spin -> should add a cooldown timer
 	else if(spinTimer < spinDuration)
 	{
-		if (!spinning)
-		{
-			enemyRenderer->SetMaterial(ROTATIONMATERIAL);
-		}
-		spinning = true;
-		spinTimer += enemy->App->time->gameDeltaTime;
-		enemy->gameobject->transform->Rotate(math::float3(0.f,enemy->App->time->gameDeltaTime*5.f, 0.f)); //SHOULD ROTATE WITH DELTATIME
-
-		LOG("ROTATING");
+		SpinBehaviour();
 	}
 	else
 	{
-		if (strcmp(enemyRenderer->material->GetName(), DEFAULTMATERIAL) == 0)
-		{
-			enemyRenderer->SetMaterial(DEFAULTMATERIAL);
-			enemy->gameobject->LinkBones();
-		}
-		LOG("NONE");
-		spinTimer = 0.0f;
-		spinning = false;
-		isOnCooldown = true;
-		attacked = true;
+		DisableSpin();
 	}
-	//Create the hitbox
 }
+
+bool EnemyStateAttackSpin::LessThanHalfHP() const
+{
+	return enemy->enemyController->GetHealth() <= enemy->enemyController->GetMaxHealth() * 0.5f;
+}
+
+void EnemyStateAttackSpin::PunchFX(bool active)
+{
+	EnemyStateAttack::PunchFX(active);
+
+	if (spinning && active)
+	{
+		trailPunch->width = 40.0f;
+		trailPunch->bloomIntensity = 4.0f;
+		trailPunch->trailColor = math::float4(0.5f, 0.f, 0.f, 1.f);
+		dust->SetActive(true);
+	}
+	else
+	{
+		trailPunch->width = 25.0f;
+		trailPunch->bloomIntensity = 1.0f;
+		trailPunch->trailColor = math::float4(1.f, 1.f, 1.f, 1.f);
+		dust->SetActive(false);
+		//if (trailPunch->texture != nullptr)
+		//	enemy->App->resManager->DeleteResource(trailPunch->texture->GetUID());
+		//trailPunch->texture = (ResourceTexture*)enemy->App->resManager->GetByName("White", TYPE::TEXTURE);
+	}
+}
+
+void EnemyStateAttackSpin::ChangeToSpinMaterial(MATERIALTYPE type) const
+{
+	switch (type)
+	{
+	case MATERIALTYPE::ROTATION:
+		enemyRenderer->material = rotationMaterial;
+		break;
+	case MATERIALTYPE::DEFAULT:
+		enemyRenderer->material = defaultMaterial;
+		break;
+	}
+
+	enemy->gameobject->LinkBones();
+}
+
+void EnemyStateAttackSpin::EnableSpin()
+{
+	spinning = true;
+	PunchFX(true);
+	attacked = false;
+	//ChangeToSpinMaterial(MATERIALTYPE::ROTATION);
+	enemyRenderer->avoidSkinning = true;
+}
+
+void EnemyStateAttackSpin::DisableSpin()
+{
+	PunchFX(false);
+	//if (strcmp(enemyRenderer->material->GetName(), ROTATIONMATERIAL) == 0)
+	//{
+	//	ChangeToSpinMaterial(MATERIALTYPE::DEFAULT);
+	//}
+	enemyRenderer->avoidSkinning = false;
+	spinTimer = 0.0f;
+	spinning = false;
+	isOnCooldown = true;
+	attacked = true;
+	math::float3 playerPosition = enemy->enemyController->GetPlayerPosition();
+	enemy->enemyController->LookAt2D(playerPosition);
+}
+
+void EnemyStateAttackSpin::SpinBehaviour()
+{
+	//if (strcmp(enemyRenderer->material->GetName(), ROTATIONMATERIAL) != 0) 
+	//{
+	//	ChangeToSpinMaterial(MATERIALTYPE::ROTATION);
+	//}
+	if (!spinning)
+	{
+		EnableSpin();
+	}
+	spinTimer += enemy->App->time->gameDeltaTime;
+	float distance = enemy->enemyController->GetDistanceToPlayer2D();
+	if (distance > enemy->attackRange)
+	{
+		math::Quat currentRotation = enemy->gameobject->transform->GetRotation();
+		enemy->enemyController->Move(enemy->chaseSpeed*1.5f, refreshTime, enemy->enemyController->GetPlayerPosition(), enemyPath);
+		enemy->gameobject->transform->SetRotation(currentRotation);
+	}
+	enemy->gameobject->transform->Rotate(math::float3(0.f, enemy->App->time->gameDeltaTime * rotationSpeed, 0.f));
+}
+

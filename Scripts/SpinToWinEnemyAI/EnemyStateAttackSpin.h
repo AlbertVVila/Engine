@@ -5,6 +5,13 @@
 #include "Algorithm/Random/LCG.h"
 
 class ComponentRenderer;
+class ResourceMaterial;
+
+enum class MATERIALTYPE
+{
+	ROTATION,
+	DEFAULT
+};
 
 class EnemyStateAttackSpin :
 	public EnemyStateAttack
@@ -15,16 +22,29 @@ public:
 
 	void HandleIA() override;
 	void Update() override;
+	void Enter() override;
+	void Exit() override;
 
 protected:
 
 	void Attack() override;
+	bool LessThanHalfHP() const;
+	void PunchFX(bool active);
+	void EnableSpin();
+	void DisableSpin();
+	void SpinBehaviour();
+	void ChangeToSpinMaterial(MATERIALTYPE type) const;
 
 	ComponentRenderer* enemyRenderer = nullptr;
-
+	GameObject* dust = nullptr;
 	LCG lcg;
-	float spinDuration = 2.0f;
-	float spinCooldown = 4.0f;
+
+	ResourceMaterial* rotationMaterial = nullptr;
+	ResourceMaterial* defaultMaterial = nullptr;
+
+	float rotationSpeed = 20.0f;
+	float spinDuration = 3.0f;
+	float spinCooldown = 1.0f;
 
 	float spinTimer = 0.0f;
 	bool spinning = false;

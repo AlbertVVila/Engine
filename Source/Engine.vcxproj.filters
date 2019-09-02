@@ -833,5 +833,11 @@
     </None>
     <None Include="..\Game\Scripts\PlayerMovement.dll" />
     <None Include="cpp.hint" />
+    <None Include="..\Game\Shaders\VertexShaders\PBR_NoRigging.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\FragmentShaders\PBR_NoRigging.fs">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

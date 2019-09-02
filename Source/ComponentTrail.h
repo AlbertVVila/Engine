@@ -8,7 +8,7 @@
 #include "Math/float4.h"
 
 class ParticleModule;
-
+class ResourceTexture;
 
 struct TrailPoint
 {
@@ -57,7 +57,7 @@ public:
 	std::vector<ParticleModule*> modules;
 	ResourceTexture* texture = nullptr;
 
-private:
+public:
 
 	float width = 100.f;
 	float duration = .5f;
