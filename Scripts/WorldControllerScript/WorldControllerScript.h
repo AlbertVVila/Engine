@@ -24,7 +24,7 @@ public:
 
 	void resetWorldAgents();
 	//checks if we dont have the player and creates a new agent if not
-	void setPlayer(GameObject* player);
+	void setPlayer(GameObject* player, float speed);
 
 	//checks if we dont have the enemy and creates a new agent if not
 	void addEnemy(GameObject* enemy);
@@ -42,7 +42,7 @@ private:
 	WorldControllerScript& operator=(const WorldControllerScript);
 
 	//function that adds the agent to the crowd
-	int addAgent(const float* pos);
+	int addAgent(float* pos, float speed = 200.f);
 
 	//private variables
 	//we are gonna start with just one crowd and each agent (any enemy or player) moves alone
