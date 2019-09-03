@@ -6,6 +6,9 @@
 #include "ModuleTextures.h"
 #include "ModuleFontLoader.h"
 #include "ModuleScene.h"
+#include "ModuleTime.h"
+#include "MouseController.h"
+#include "ModuleScript.h"
 
 #include "GameObject.h"
 #include "ComponentTransform2D.h"
@@ -20,6 +23,7 @@
 #include "Math/float4x4.h"
 #include "Math/TransformOps.h"
 #include "Imgui.h"
+#include "JSON.h"
 
 ModuleUI::ModuleUI()
 {
@@ -31,7 +35,7 @@ ModuleUI::~ModuleUI()
 
 
 
-bool ModuleUI::Init(JSON* json)
+bool ModuleUI::Init(JSON* config)
 {
 	shader = App->program->GetProgram(shaderFile);
 
@@ -62,13 +66,27 @@ bool ModuleUI::Init(JSON* json)
 			 0.5f,  0.5f,  0.0f, 1.0f // top right
 	};
 
-
-
 	GenerateVAO(VAO, quadVertices);
 	GenerateVAO(VAO_FV, quadVerticesFlipVer);
 	GenerateVAO(VAO_FH, quadVerticesFlipHor);
 
+	JSON_value* scriptJson = config->GetValue("uiConfig");
+	if (scriptJson != nullptr)
+	{
+		uiCursor = scriptJson->GetString("uiCursor", "GhostGlow.cur");
+		gameStandarCursor = scriptJson->GetString("gameStandarCursor", "Glow.cur");
+	}
+
 	return true;
+}
+
+void ModuleUI::SaveConfig(JSON* config)
+{
+	JSON_value* scriptJson = config->CreateValue();
+
+	scriptJson->AddString("uiCursor", uiCursor.c_str());
+	scriptJson->AddString("gameStandarCursor", gameStandarCursor.c_str());
+	config->AddValue("uiConfig", *scriptJson);
 }
 
 void ModuleUI::GenerateVAO(unsigned& vao, float quadVertices[16])
@@ -166,6 +184,7 @@ void ModuleUI::Draw(int currentWidth, int currentHeight)
 		}
 	}
 
+	isHover = false;
 	while (!renderQ.empty())
 	{
 		RenderOrdering top = renderQ.top();
@@ -180,10 +199,20 @@ void ModuleUI::Draw(int currentWidth, int currentHeight)
 			RenderImage(*button->highlightedImage, currentWidth, currentHeight);
 			RenderImage(*button->pressedImage, currentWidth, currentHeight);
 			App->fontLoader->RenderText(*button->text, currentWidth, currentHeight);
+
+			if (button->isHovered && !isItemHover)
+			{
+				isHover = true;
+			}
 			break;
 		}
 		case ComponentType::Image:
 			RenderImage(*(ComponentImage*)comp, currentWidth, currentHeight);
+
+			if (((ComponentImage*)comp)->isHovered && !isItemHover)
+			{
+				isHover = true;
+			}
 			break;
 
 		case ComponentType::Text:
@@ -193,6 +222,8 @@ void ModuleUI::Draw(int currentWidth, int currentHeight)
 
 		renderQ.pop();
 	}
+
+	ManageUiHoveredCursorIcon(isHover);
 
 	glDisable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
@@ -206,7 +237,7 @@ void ModuleUI::RenderImage(const ComponentImage& componentImage, int currentWidt
 	{
 		return;
 	}
-
+	
 	if (componentImage.IsMasked())
 	{
 		int maskThreshold = ((float)componentImage.GetMaskAmount() / 100.f) * MASK_DIVISIONS;
@@ -287,4 +318,39 @@ void ModuleUI::RenderImage(const ComponentImage& componentImage, int currentWidt
 void ModuleUI::DrawGUI()
 {
 	ImGui::Checkbox("Draw UI in Scene", &showUIinSceneViewport);
+
+	ImGui::Separator();
+	ImGui::Text("UI cursor:");
+	char* uiCursorAux = new char[64];
+	strcpy_s(uiCursorAux, strlen(uiCursor.c_str()) + 1, uiCursor.c_str());
+	ImGui::InputText("uiCursor", uiCursorAux, 64);
+	uiCursor = uiCursorAux;
+	delete[] uiCursorAux;
+
+	ImGui::Separator();
+	ImGui::Text("Game cursor:");
+	char* gameStandarCursorAux = new char[64];
+	strcpy_s(gameStandarCursorAux, strlen(gameStandarCursor.c_str()) + 1, gameStandarCursor.c_str());
+	ImGui::InputText("gameStandarCursor", gameStandarCursorAux, 64);
+	gameStandarCursor = gameStandarCursorAux;
+	delete[] gameStandarCursorAux;
+}
+
+void ModuleUI::ManageUiHoveredCursorIcon(bool isHovered)
+{
+	if (App->time->gameState == GameState::RUN)
+	{
+		if (isHovered && changeHoverCursorIcon)
+		{
+			MouseController::ChangeCursorIcon(uiCursor);
+			changeHoverCursorIcon = false;
+			changeNotHoverCursorIcon = true;
+		}
+		else if (!isHovered && changeNotHoverCursorIcon)
+		{
+			MouseController::ChangeCursorIcon(gameStandarCursor);
+			changeHoverCursorIcon = true;
+			changeNotHoverCursorIcon = false;
+		}
+	}
 }

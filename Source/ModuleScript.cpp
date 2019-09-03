@@ -3,6 +3,8 @@
 #include "ModuleScript.h"
 #include "ModuleFileSystem.h"
 #include "ModuleTime.h"
+#include "ModuleUI.h"
+#include "MouseController.h"
 
 #include "GameObject.h"
 #include "Component.h"
@@ -128,6 +130,7 @@ update_status ModuleScript::Update(float dt)
 				{
 					componentsScript[i]->Start();
 					componentsScript[i]->hasBeenStarted = true;
+					componentsScript[i]->SetGameStandarCursor(App->ui->gameStandarCursor);
 				}
 			}
 		}
@@ -141,6 +144,9 @@ update_status ModuleScript::Update(float dt)
 	{
 		ResetScriptFlags();
 	}
+
+	ManageStartAndStopCursorIcon();
+
 	onStart = App->time->gameState == GameState::STOP;
 	return status;
 }
@@ -531,4 +537,20 @@ std::string ModuleScript::GetLastErrorAsString()
 	LocalFree(messageBuffer);
 
 	return message;
+}
+
+void ModuleScript::ManageStartAndStopCursorIcon()
+{
+	if (App->time->gameState == GameState::RUN && changeStartCursorIcon)
+	{
+		MouseController::ChangeCursorIcon(App->ui->gameStandarCursor);
+		changeStartCursorIcon = false;
+		changeStopCursorIcon = true;
+	}
+	else if (App->time->gameState == GameState::STOP && changeStopCursorIcon)
+	{
+		MouseController::ChangeWindowsCursorIcon();
+		changeStartCursorIcon = true;
+		changeStopCursorIcon = false;
+	}
 }

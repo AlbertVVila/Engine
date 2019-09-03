@@ -9,6 +9,7 @@
 #include "ModuleTime.h"
 #include "ModuleNavigation.h"
 #include "ModuleResourceManager.h"
+#include "MouseController.h"
 
 #include "GameObject.h"
 #include "ComponentRenderer.h"
@@ -196,6 +197,12 @@ void EnemyControllerScript::Update()
 		//we need to keep track of current targeted enemy
 		App->scene->enemyHovered.object = gameobject;
 		App->scene->enemyHovered.health = actualHealth;
+
+		if (App->scene->enemyHovered.object != nullptr &&
+			gameobject->UUID == App->scene->enemyHovered.object->UUID)
+		{
+			MouseController::ChangeCursorIcon(enemyCursor);
+		}
 	}
 	else
 	{
@@ -209,6 +216,7 @@ void EnemyControllerScript::Update()
 			{
 				App->scene->enemyHovered.object = nullptr;
 				App->scene->enemyHovered.health = 0;
+				MouseController::ChangeCursorIcon(gameStandarCursor);
 			}
 		}
 	}
@@ -239,6 +247,15 @@ void EnemyControllerScript::Expose(ImGuiContext* context)
 	ImGui::InputText("playerTag", goName, 64);
 	playerTag = goName;
 	delete[] goName;
+
+	ImGui::Separator();
+	ImGui::Text("Enemy cursor:");
+	char* enemyCursorAux = new char[64];
+	strcpy_s(enemyCursorAux, strlen(enemyCursor.c_str()) + 1, enemyCursor.c_str());
+	ImGui::InputText("enemyCursor", enemyCursorAux, 64);
+	enemyCursor = enemyCursorAux;
+	delete[] enemyCursorAux;
+	
 }
 
 void EnemyControllerScript::Serialize(JSON_value* json) const
@@ -247,6 +264,7 @@ void EnemyControllerScript::Serialize(JSON_value* json) const
 	json->AddString("playerTag", playerTag.c_str());
 	json->AddInt("health", maxHealth);
 	json->AddInt("experience", experience);
+	json->AddString("enemyCursor", enemyCursor.c_str());
 }
 
 void EnemyControllerScript::DeSerialize(JSON_value* json)
@@ -256,6 +274,7 @@ void EnemyControllerScript::DeSerialize(JSON_value* json)
 	maxHealth = json->GetInt("health", maxHealth);
 	experience = json->GetInt("experience", 20);
 	actualHealth = maxHealth;
+	enemyCursor = json->GetString("enemyCursor", "RedGlow.cur");
 }
 
 void EnemyControllerScript::TakeDamage(unsigned damage)
