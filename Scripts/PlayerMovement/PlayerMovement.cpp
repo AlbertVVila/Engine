@@ -673,10 +673,12 @@ void PlayerMovement::Update()
 		// States
 		currentState->UpdateTimer();
 		currentState->CheckInput();
-		currentState->Update();
 
 		//if previous and current are different the functions Exit() and Enter() are called
-		CheckStates(previous, currentState);
+		//We need to do this before the Update or we are updating a non-initiated State the first frame
+		CheckStates(previous, currentState); 
+
+		currentState->Update();
 	}
 
 	ManaManagement();
