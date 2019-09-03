@@ -16,11 +16,11 @@ public:
 
 	ComponentTrail* trailPunch = nullptr;
 
-private:
-	void PunchFX(bool active);
+protected:
+	BasicEnemyAIScript_API virtual void PunchFX(bool active);
 
 	bool attacked = false;
-	void Attack();
+	BasicEnemyAIScript_API virtual void Attack();
 };
 
 #endif __ENEMYSTATEATTACK_H_
