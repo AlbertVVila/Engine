@@ -25,8 +25,7 @@ EnemyStateAttackSpin::EnemyStateAttackSpin(BasicEnemyAIScript* AIScript) : Enemy
 	trigger = "Attack";
 	enemyRenderer = (ComponentRenderer*)enemy->gameobject->GetComponentInChildren(ComponentType::Renderer);
 	dust = enemy->App->scene->FindGameObjectByName("Dust", enemy->gameobject);
-	//defaultMaterial = (ResourceMaterial*) enemy->App->resManager->GetByName(DEFAULTMATERIAL, TYPE::MATERIAL);
-	//rotationMaterial = (ResourceMaterial*) enemy->App->resManager->GetByName(ROTATIONMATERIAL, TYPE::MATERIAL);
+	spinOff = enemy->App->scene->FindGameObjectByName("SpinLines", enemy->gameobject);
 }
 
 EnemyStateAttackSpin::~EnemyStateAttackSpin()
@@ -95,10 +94,6 @@ void EnemyStateAttackSpin::Attack() //Split into SPIN or normal ATTACK
 
 	if ((!LessThanHalfHP() || lcg.Float() < 0.25 || isOnCooldown) && !spinning) //Normal attack
 	{
-		//if (strcmp(enemyRenderer->material->GetName(), ROTATIONMATERIAL)== 0)
-		//{
-		//	ChangeToSpinMaterial(MATERIALTYPE::DEFAULT);
-		//}
 		enemy->enemyController->attackBoxTrigger->Enable(true);
 		enemy->enemyController->attackBoxTrigger->SetBoxSize(boxSize);
 		boxPosition = enemy->gameobject->transform->up * 100.f;
@@ -171,18 +166,14 @@ void EnemyStateAttackSpin::EnableSpin()
 	spinning = true;
 	PunchFX(true);
 	attacked = false;
-	//ChangeToSpinMaterial(MATERIALTYPE::ROTATION);
 	enemyRenderer->avoidSkinning = true;
 }
 
 void EnemyStateAttackSpin::DisableSpin()
 {
 	PunchFX(false);
-	//if (strcmp(enemyRenderer->material->GetName(), ROTATIONMATERIAL) == 0)
-	//{
-	//	ChangeToSpinMaterial(MATERIALTYPE::DEFAULT);
-	//}
 	enemyRenderer->avoidSkinning = false;
+	spinOff->SetActive(false);
 	spinTimer = 0.0f;
 	spinning = false;
 	isOnCooldown = true;
@@ -193,15 +184,15 @@ void EnemyStateAttackSpin::DisableSpin()
 
 void EnemyStateAttackSpin::SpinBehaviour()
 {
-	//if (strcmp(enemyRenderer->material->GetName(), ROTATIONMATERIAL) != 0) 
-	//{
-	//	ChangeToSpinMaterial(MATERIALTYPE::ROTATION);
-	//}
 	if (!spinning)
 	{
 		EnableSpin();
 	}
 	spinTimer += enemy->App->time->gameDeltaTime;
+	if (spinTimer >= 0.75 * spinDuration && !spinOff->isActive())
+	{
+		spinOff->SetActive(true);
+	}
 	float distance = enemy->enemyController->GetDistanceToPlayer2D();
 	if (distance > enemy->attackRange)
 	{

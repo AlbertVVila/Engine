@@ -37,6 +37,7 @@ protected:
 
 	ComponentRenderer* enemyRenderer = nullptr;
 	GameObject* dust = nullptr;
+	GameObject* spinOff = nullptr;
 	LCG lcg;
 
 	ResourceMaterial* rotationMaterial = nullptr;

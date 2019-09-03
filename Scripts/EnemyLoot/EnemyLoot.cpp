@@ -152,7 +152,11 @@ void EnemyLoot::GetItems()
 {
 	itemList.clear();
 	std::vector<std::string> items;
-	std::list<GameObject*> GOs = list->children;
+	std::list<GameObject*> GOs;
+	if (list != nullptr)
+	{
+		GOs = list->children;
+	}
 
 	for (std::list<GameObject*>::iterator it = GOs.begin(); it != GOs.end(); ++it)
 	{
