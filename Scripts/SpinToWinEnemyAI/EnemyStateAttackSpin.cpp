@@ -69,7 +69,6 @@ void EnemyStateAttackSpin::HandleIA() //Should check spin 75% prob & heatlh < 50
 void EnemyStateAttackSpin::Update()
 {
 	// Keep looking at player
-	//enemy->enemyController->LookAt2D(playerPosition);
 	assert(enemy->enemyController->attackBoxTrigger != nullptr);
 
 	Attack();
@@ -85,8 +84,6 @@ void EnemyStateAttackSpin::Exit()
 	{
 		DisableSpin();
 	}
-	//math::float3 playerPosition = enemy->enemyController->GetPlayerPosition();
-	//enemy->enemyController->LookAt2D(playerPosition);
 }
 
 void EnemyStateAttackSpin::Attack() //Split into SPIN or normal ATTACK
@@ -120,7 +117,7 @@ void EnemyStateAttackSpin::Attack() //Split into SPIN or normal ATTACK
 
 bool EnemyStateAttackSpin::LessThanHalfHP() const
 {
-	return enemy->enemyController->GetHealth() <= enemy->enemyController->GetMaxHealth() * 0.5f;
+	return enemy->enemyController->GetHealth() <= enemy->enemyController->GetMaxHealth() * 0.8f;
 }
 
 void EnemyStateAttackSpin::PunchFX(bool active)
@@ -131,7 +128,7 @@ void EnemyStateAttackSpin::PunchFX(bool active)
 	{
 		trailPunch->width = 40.0f;
 		trailPunch->bloomIntensity = 4.0f;
-		trailPunch->trailColor = math::float4(0.5f, 0.f, 0.f, 1.f);
+		trailPunch->trailColor = math::float4(0.47f, 0.f, 0.52f, 1.f);
 		dust->SetActive(true);
 	}
 	else
@@ -140,9 +137,6 @@ void EnemyStateAttackSpin::PunchFX(bool active)
 		trailPunch->bloomIntensity = 1.0f;
 		trailPunch->trailColor = math::float4(1.f, 1.f, 1.f, 1.f);
 		dust->SetActive(false);
-		//if (trailPunch->texture != nullptr)
-		//	enemy->App->resManager->DeleteResource(trailPunch->texture->GetUID());
-		//trailPunch->texture = (ResourceTexture*)enemy->App->resManager->GetByName("White", TYPE::TEXTURE);
 	}
 }
 
@@ -189,7 +183,7 @@ void EnemyStateAttackSpin::SpinBehaviour()
 		EnableSpin();
 	}
 	spinTimer += enemy->App->time->gameDeltaTime;
-	if (spinTimer >= 0.75 * spinDuration && !spinOff->isActive())
+	if (spinTimer >= 0.75f * spinDuration && !spinOff->isActive())
 	{
 		spinOff->SetActive(true);
 	}
