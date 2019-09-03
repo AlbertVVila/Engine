@@ -1177,7 +1177,7 @@
                     "Znear": 10.0,
                     "Zfar": 100000.0,
                     "vFOV": 1.0471975803375245,
-                    "hFOV": 1.3680661916732789,
+                    "hFOV": 1.5192210674285889,
                     "Position": [
                         -26.824371337890626,
                         6191.15576171875,
@@ -1772,7 +1772,10 @@
                     "Enabled": 1,
                     "script": "GameLoop",
                     "scriptInfo": {
-                        "scene": 1
+                        "scene": 1,
+                        "xPickingCorrection": 0.0,
+                        "yPickingCorrection": 0.0,
+                        "zPickingCorrection": 0.0
                     }
                 }
             ]
@@ -17493,7 +17496,8 @@
                     "scriptInfo": {
                         "playerTag": "Player",
                         "health": 20,
-                        "experience": 20
+                        "experience": 20,
+                        "enemyCursor": "RedGlow.cur"
                     }
                 },
                 {
@@ -25646,7 +25650,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -25993,7 +25999,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "highlightedImage": {
                         "Type": 7,
@@ -26013,7 +26021,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "pressedImage": {
                         "Type": 7,
@@ -26033,7 +26043,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
@@ -26142,7 +26154,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -26536,7 +26550,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -27570,7 +27586,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "highlightedImage": {
                         "Type": 7,
@@ -27590,7 +27608,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "pressedImage": {
                         "Type": 7,
@@ -27610,7 +27630,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
@@ -27718,7 +27740,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "highlightedImage": {
                         "Type": 7,
@@ -27738,7 +27762,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "pressedImage": {
                         "Type": 7,
@@ -27758,7 +27784,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
@@ -27866,7 +27894,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "highlightedImage": {
                         "Type": 7,
@@ -27886,7 +27916,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "pressedImage": {
                         "Type": 7,
@@ -27906,7 +27938,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
@@ -28014,7 +28048,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "highlightedImage": {
                         "Type": 7,
@@ -28034,7 +28070,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "pressedImage": {
                         "Type": 7,
@@ -28054,7 +28092,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
@@ -28128,7 +28168,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -28232,7 +28274,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "highlightedImage": {
                         "Type": 7,
@@ -28252,7 +28296,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "pressedImage": {
                         "Type": 7,
@@ -28272,7 +28318,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
@@ -28380,7 +28428,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "highlightedImage": {
                         "Type": 7,
@@ -28400,7 +28450,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "pressedImage": {
                         "Type": 7,
@@ -28420,7 +28472,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
@@ -28528,7 +28582,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "highlightedImage": {
                         "Type": 7,
@@ -28548,7 +28604,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "pressedImage": {
                         "Type": 7,
@@ -28568,7 +28626,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
@@ -28676,7 +28736,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "highlightedImage": {
                         "Type": 7,
@@ -28696,7 +28758,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "pressedImage": {
                         "Type": 7,
@@ -28716,7 +28780,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
@@ -28824,7 +28890,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "highlightedImage": {
                         "Type": 7,
@@ -28844,7 +28912,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "pressedImage": {
                         "Type": 7,
@@ -28864,7 +28934,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
@@ -28972,7 +29044,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "highlightedImage": {
                         "Type": 7,
@@ -28992,7 +29066,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "pressedImage": {
                         "Type": 7,
@@ -29012,7 +29088,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
@@ -29120,7 +29198,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "highlightedImage": {
                         "Type": 7,
@@ -29140,7 +29220,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "pressedImage": {
                         "Type": 7,
@@ -29160,7 +29242,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
@@ -29268,7 +29352,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "highlightedImage": {
                         "Type": 7,
@@ -29288,7 +29374,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "pressedImage": {
                         "Type": 7,
@@ -29308,7 +29396,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
@@ -29416,7 +29506,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "highlightedImage": {
                         "Type": 7,
@@ -29436,7 +29528,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "pressedImage": {
                         "Type": 7,
@@ -29456,7 +29550,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
@@ -29564,7 +29660,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "highlightedImage": {
                         "Type": 7,
@@ -29584,7 +29682,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "pressedImage": {
                         "Type": 7,
@@ -29604,7 +29704,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
@@ -29678,7 +29780,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -29748,7 +29852,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -29818,7 +29924,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -29888,7 +29996,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -29993,7 +30103,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -30097,7 +30209,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "highlightedImage": {
                         "Type": 7,
@@ -30117,7 +30231,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "pressedImage": {
                         "Type": 7,
@@ -30137,7 +30253,9 @@
                         "isMaskHorizontal": 0,
                         "hoverDetectionMouse1": 1,
                         "hoverDetectionMouse3": 1,
-                        "UIOrder": 0
+                        "UIOrder": 0,
+                        "videoPath": "flame.avi",
+                        "fps": 24.0
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
@@ -30334,7 +30452,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -30404,7 +30524,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -30474,7 +30596,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -30544,7 +30668,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -30614,7 +30740,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -30684,7 +30812,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -30754,7 +30884,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -30824,7 +30956,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -30894,7 +31028,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -30964,7 +31100,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -31034,7 +31172,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -31104,7 +31244,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -31253,7 +31395,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -31323,7 +31467,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -31393,7 +31539,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -31463,7 +31611,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -31533,7 +31683,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -31603,7 +31755,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -31673,7 +31827,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -31743,7 +31899,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -31813,7 +31971,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -31883,7 +32043,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -31953,7 +32115,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -32023,7 +32187,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -32093,7 +32259,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -32163,7 +32331,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -32233,7 +32403,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -32303,7 +32475,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -32373,7 +32547,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -32443,7 +32619,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -32592,7 +32770,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -32662,7 +32842,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -32732,7 +32914,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -32802,7 +32986,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -32872,7 +33058,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -32942,7 +33130,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -33012,7 +33202,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -33082,7 +33274,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -33152,7 +33346,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -33222,7 +33418,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -33292,7 +33490,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -33362,7 +33562,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -33432,7 +33634,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -33502,7 +33706,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -33572,7 +33778,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -33642,7 +33850,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -33712,7 +33922,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -33782,7 +33994,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -33852,7 +34066,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -33922,7 +34138,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -33992,7 +34210,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -34062,7 +34282,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -34132,7 +34354,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -34202,7 +34426,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -34272,7 +34498,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -34458,7 +34686,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -34644,7 +34874,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -34714,7 +34946,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -34869,7 +35103,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -34939,7 +35175,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -35090,7 +35328,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -35160,7 +35400,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -35230,7 +35472,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
@@ -35335,7 +35579,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 0,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },

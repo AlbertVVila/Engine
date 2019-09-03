@@ -101,10 +101,6 @@ private:
 	float hitColorTimer = 0.f;
 	bool enemyHit = false;
 
-	bool dmgCooldown = false;
-	float dmgCooldownTimer = 0.0f;
-	float dmgCooldownDuration = 0.5f;
-
 };
 
 extern "C" EnemyControllerScript_API Script* CreateScript();
