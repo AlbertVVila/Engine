@@ -10,7 +10,8 @@
 #define EquipPopupController_API __declspec(dllimport)
 #endif
 
-#define POPUP_SLOTS 16
+#define POPUP_SKILLS_SLOTS 11
+#define POPUP_ITEMS_SLOTS 18
 #define HUD_BUTTONS 9
 
 class GameObject;
@@ -41,6 +42,7 @@ public:
 private:
 
 	void Assign(int i);
+	void MoveNumber(int pos);
 	void RemoveEquiped();
 	void ChangePopUpSlots();
 	void FillLists();
@@ -54,16 +56,20 @@ private:
 	SkillTreeController* skillTree = nullptr;
 	PlayerMovement* player = nullptr;
 
-	GameObject* popupGO = nullptr;
-	ComponentImage* background = nullptr;
-	Text* title = nullptr;
+	GameObject* popupGOSkills = nullptr;
+	GameObject* popupGOItems = nullptr;
+	ComponentImage* backgroundSkills = nullptr;
+	ComponentImage* backgroundItems = nullptr;
 	Button* items = nullptr;
 	Button* skills = nullptr;
 	Button* unequip = nullptr;
-	std::vector<GameObject*> slots;
+	std::vector<GameObject*> slotsSkills;
+	std::vector<GameObject*> slotsItems;
 	Transform2D* hoverTransform = nullptr;
 
+	std::vector<ComponentImage*> hudImageSlots;
 	std::vector<Button*> hudButtons;
+	std::vector<std::pair<Transform2D*, bool>> hudButtonsText;
 	int activeButton = -1;
 
 	std::vector<Item> itemsList;
@@ -71,9 +77,6 @@ private:
 
 	std::vector<std::pair<int, Skill>> skillsEquiped;
 	std::vector<std::pair<int, Item>> itemsEquiped;
-
-
-	bool skillsShowing = true;
 };
 
 extern "C" EquipPopupController_API Script* CreateScript();

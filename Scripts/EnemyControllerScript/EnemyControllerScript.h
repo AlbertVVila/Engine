@@ -20,6 +20,7 @@ class PlayerMovement;
 class EnemyLoot;
 class ExperienceController;
 class ResourceMaterial;
+class CombatAudioEvents;
 
 
 class EnemyControllerScript_API EnemyControllerScript : public Script
@@ -63,6 +64,7 @@ public:
 	GameObject* player = nullptr;
 	PlayerMovement* playerMovement = nullptr;
 	std::string playerTag = "Player";
+	std::string enemyCursor = "RedGlow.cur";
 	std::string hitMaterialName = "HitMaterial";
 	ComponentAnimation* anim = nullptr;
 	ComponentRenderer* myRender = nullptr;
@@ -87,6 +89,8 @@ public:
 
 	ResourceMaterial* hitMaterial = nullptr;
 	ResourceMaterial* defaultMaterial = nullptr;
+
+	CombatAudioEvents* combataudioevents = nullptr;
 
 private:
 	int actualHealth = 20;

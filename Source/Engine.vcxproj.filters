@@ -324,6 +324,7 @@
     <ClCompile Include="ComponentVolumetricLight.cpp">
       <Filter>Component</Filter>
     </ClCompile>
+    <ClCompile Include="MouseController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -709,6 +710,7 @@
     <ClInclude Include="ComponentVolumetricLight.h">
       <Filter>Component</Filter>
     </ClInclude>
+    <ClInclude Include="MouseController.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Modules">
