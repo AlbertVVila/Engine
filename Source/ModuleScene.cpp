@@ -458,7 +458,7 @@ void ModuleScene::DrawGOGame(const GameObject& go)
 		}
 		else
 		{
-			if (crenderer->mesh->bindBones.size() > 0)
+			if (crenderer->mesh->bindBones.size() > 0 && !crenderer->avoidSkinning)
 			{
 				variation |= (unsigned)ModuleProgram::PBR_Variations::SKINNED;
 			}
@@ -579,7 +579,7 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 		}
 		else
 		{
-			if (mesh != nullptr && mesh->bindBones.size() > 0)
+			if (mesh != nullptr && mesh->bindBones.size() > 0 && !crenderer->avoidSkinning)
 			{
 				variation |= (unsigned)ModuleProgram::PBR_Variations::SKINNED;
 			}

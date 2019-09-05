@@ -41,6 +41,7 @@ class EnemyControllerScript_API EnemyControllerScript : public Script
 public:
 	void TakeDamage(unsigned damage);
 	int GetHealth() const { return actualHealth; }
+	int GetMaxHealth() const { return maxHealth; }
 
 	inline math::float3 GetPosition() const;					// Get position of the enemy (GO with this script attached)
 	inline math::Quat GetRotation() const;						// Get rotation of the enemy (GO with this script attached)
@@ -63,6 +64,7 @@ public:
 	GameObject* player = nullptr;
 	PlayerMovement* playerMovement = nullptr;
 	std::string playerTag = "Player";
+	std::string enemyCursor = "RedGlow.cur";
 	std::string hitMaterialName = "HitMaterial";
 	ComponentAnimation* anim = nullptr;
 	ComponentRenderer* myRender = nullptr;
@@ -96,7 +98,8 @@ private:
 	int experience = 20;
 
 	float hitColorDuration = 0.2f;
-	float timer = 0.f;
+	float hitColorTimer = 0.f;
+	bool enemyHit = false;
 
 };
 

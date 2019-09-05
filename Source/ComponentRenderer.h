@@ -47,6 +47,8 @@ public:
 	float borderAmount = 0.5f;
 
 	bool water = false;
+	bool avoidSkinning = false;
+
 	float waterAmplitude1 = 10.f;
 	float waterFrequency1 = 10.f;
 	float waterDecay1 = 1.f;

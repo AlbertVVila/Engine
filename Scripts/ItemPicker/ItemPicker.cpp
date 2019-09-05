@@ -4,10 +4,12 @@
 #include "ModuleInput.h"
 #include "ModuleResourceManager.h"
 #include "ModuleTime.h"
+#include "ModuleUI.h"
 
 #include "GameObject.h"
 #include "ComponentRenderer.h"
 #include "ComponentCamera.h"
+#include "MouseController.h"
 
 #include "InventoryScript.h"
 #include "ItemNameController.h"
@@ -28,6 +30,14 @@ ItemPicker_API Script* CreateScript()
 
 void ItemPicker::Expose(ImGuiContext* context)
 {
+	ImGui::Separator();
+	ImGui::Text("Item cursor:");
+	char* itemCursorAux = new char[64];
+	strcpy_s(itemCursorAux, strlen(itemCursor.c_str()) + 1, itemCursor.c_str());
+	ImGui::InputText("itemCursor", itemCursorAux, 64);
+	itemCursor = itemCursorAux;
+	delete[] itemCursorAux;
+	ImGui::Separator();
 
 	ImGui::SetCurrentContext(context);
 	const char * types[] = { "NONE","QUICK","KEY","MATERIAL","WEAPON","HELMET","CHEST","PANTS","BOOTS","AMULET","RING" };
@@ -156,6 +166,9 @@ void ItemPicker::PickupItem() const
 		if (itemPickedAudio != nullptr) itemPickedAudio->Play();
 		itemName->DisableName(gameobject->UUID);
 	}
+
+	MouseController::ChangeCursorIcon(gameStandarCursor);
+	App->ui->SetIsItemHover(false);
 }
 
 void ItemPicker::Update()
@@ -241,6 +254,14 @@ void ItemPicker::Update()
 
 		if (myRender != nullptr)
 			myRender->highlighted = true;
+
+		if (changeItemCursorIcon && !App->ui->IsHover())
+		{
+			MouseController::ChangeCursorIcon(itemCursor);
+			App->ui->SetIsItemHover(true);
+			changeItemCursorIcon = false;
+			changeStandarCursorIcon = true;
+		}
 	}
 	else
 	{
@@ -248,6 +269,14 @@ void ItemPicker::Update()
 		{
 			myRender->highlighted = false;
 			itemName->Hovered(gameobject->UUID, false);
+
+			if (changeStandarCursorIcon && !App->ui->IsHover())
+			{
+				MouseController::ChangeCursorIcon(gameStandarCursor);
+				App->ui->SetIsItemHover(false);
+				changeStandarCursorIcon = false;
+				changeItemCursorIcon = true;
+			}
 		}
 	}
 }
@@ -266,6 +295,7 @@ void ItemPicker::Serialize(JSON_value* json) const
 	json->AddInt("dexterity", item.stats.dexterity);
 	json->AddFloat("hpRegen", item.stats.hpRegen);
 	json->AddFloat("manaRegen", item.stats.manaRegen);
+	json->AddString("itemCursor", itemCursor.c_str());
 }
 
 void ItemPicker::DeSerialize(JSON_value* json)
@@ -282,6 +312,7 @@ void ItemPicker::DeSerialize(JSON_value* json)
 	item.stats.dexterity = json->GetInt("dexterity");
 	item.stats.hpRegen = json->GetFloat("hpRegen");
 	item.stats.manaRegen = json->GetFloat("manaRegen");
+	itemCursor = json->GetString("itemCursor", "Pick.cur");
 }
 
 void ItemPicker::SetItem(ItemType type, std::string name, std::string sprite)

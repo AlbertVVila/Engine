@@ -246,6 +246,7 @@
     <ClInclude Include="ModuleTime.h" />
     <ClInclude Include="ModuleUI.h" />
     <ClInclude Include="ModuleWindow.h" />
+    <ClInclude Include="MouseController.h" />
     <ClInclude Include="myQuadTree.h" />
     <ClInclude Include="NodeEditor\Include\ax\Math2D.h" />
     <ClInclude Include="NodeEditor\Include\NodeEditor.h" />
@@ -376,6 +377,7 @@
     <ClCompile Include="ModuleTime.cpp" />
     <ClCompile Include="ModuleUI.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
+    <ClCompile Include="MouseController.cpp" />
     <ClCompile Include="myQuadTree.cpp" />
     <ClCompile Include="NodeEditor\Source\Editor.cpp" />
     <ClCompile Include="NodeEditor\Source\NodeEditor.cpp" />
@@ -443,6 +445,7 @@
     <None Include="..\Game\Shaders\FragmentShaders\FX.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\Particles.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\PBR.fs" />
+    <None Include="..\Game\Shaders\FragmentShaders\PBR_NoRigging.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\PostProcess.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\Shadows.fs" />
     <None Include="..\Game\Shaders\FragmentShaders\Skybox.fs" />
@@ -455,6 +458,7 @@
     <None Include="..\Game\Shaders\VertexShaders\FX.vs" />
     <None Include="..\Game\Shaders\VertexShaders\Particles.vs" />
     <None Include="..\Game\Shaders\VertexShaders\PBR.vs" />
+    <None Include="..\Game\Shaders\VertexShaders\PBR_NoRigging.vs" />
     <None Include="..\Game\Shaders\VertexShaders\PostProcess.vs" />
     <None Include="..\Game\Shaders\VertexShaders\Shadows.vs" />
     <None Include="..\Game\Shaders\VertexShaders\Skybox.vs" />

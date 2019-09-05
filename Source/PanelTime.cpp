@@ -1,3 +1,6 @@
+#define OEMRESOURCE
+#include <windows.h>
+
 #include "Application.h"
 
 #include "ModuleWindow.h"
