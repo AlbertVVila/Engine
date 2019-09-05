@@ -1736,15 +1736,6 @@ crowdTool::crowdTool()
 	m_vod->init(2048);
 
 	//set mem for crowd
-	/*void* mem = dtAlloc(sizeof(dtCrowd), DT_ALLOC_PERM);
-	if (!mem)
-	{
-		m_crowd = 0;
-	}
-	else
-	{
-		m_crowd = new(mem) dtCrowd;
-	}*/
 	m_crowd = 0;
 	m_crowd = dtAllocCrowd();
 	//setting nav mesh
@@ -1753,7 +1744,7 @@ crowdTool::crowdTool()
 
 	//initialization of crowd
 	//the magic number parameter is a radius value test
-	m_crowd->init(MAX_AGENTS, 5.0f, m_nav);
+	m_crowd->init(MAX_AGENTS, 25.0f, m_nav);
 
 	// Make polygons with 'disabled' flag invalid.
 	m_crowd->getEditableFilter(0)->setExcludeFlags(SAMPLE_POLYFLAGS_DISABLED);
@@ -1820,20 +1811,19 @@ int crowdTool::AddNewAgent(float* pos, float speed)
 	ap.radius = defaultFloatValue;
 	ap.height = defaultFloatValue;
 	ap.maxAcceleration = speed;
-	ap.maxSpeed = speed;
+	ap.maxSpeed = speed/2;
 	//ap.collisionQueryRange = ap.radius * 12.0f;
 	//ap.pathOptimizationRange = ap.radius * 30.0f;
 	ap.collisionQueryRange = ap.radius * 5.0f;
 	ap.pathOptimizationRange = ap.radius * 20.0f;
 	ap.updateFlags = 0;
-	/*if (m_toolParams.m_anticipateTurns)
-		ap.updateFlags |= DT_CROWD_ANTICIPATE_TURNS;*/
+	ap.updateFlags |= DT_CROWD_ANTICIPATE_TURNS;
 	ap.updateFlags |= DT_CROWD_OPTIMIZE_VIS;
 	ap.updateFlags |= DT_CROWD_OPTIMIZE_TOPO;
 	ap.updateFlags |= DT_CROWD_OBSTACLE_AVOIDANCE;
 	ap.updateFlags |= DT_CROWD_SEPARATION;
-	ap.obstacleAvoidanceType = (unsigned char)3;//float from 0 to 3 determining the quality of dodging
-	ap.separationWeight = defaultFloatValue;
+	ap.obstacleAvoidanceType = (unsigned char)2;//float from 0 to 3 determining the quality of dodging
+	ap.separationWeight = 5.f;
 
 	int idx = m_crowd->addAgent(pos, &ap);
 	return idx;
@@ -1841,19 +1831,34 @@ int crowdTool::AddNewAgent(float* pos, float speed)
 
 ENGINE_API void crowdTool::UpdateCrowd(float dtime)
 {
-
+	const dtCrowdAgent* ag = m_crowd->getAgent(0);
+	std::stringstream s;
+	//s << "Dvel = " << ag->dvel[0] << ", " << ag->dvel[1] << ", " << ag->dvel[2] << std::endl;
+	s << "Target pos = " << ag->targetPos[0] << ", " << ag->targetPos[1] << ", " << ag->targetPos[2] << std::endl;
+	LOG(s.str().c_str());
 	m_crowd->update(dtime, debug);
 }
 
 ENGINE_API void crowdTool::MoveRequest(int idAgent, unsigned int targetRef, float* endPos)
 {
-	//testing velocity modification before calling the request
+	//velocity calculations, not needed so far
 	/*float vel[3];
+	const dtCrowdAgent* ag = m_crowd->getAgent(idAgent);
+	calcVel(vel, ag->npos, endPos, ag->params.maxSpeed);
+	m_crowd->requestMoveVelocity(idAgent, vel);*/
+	
+	//m_crowd->resetMoveTarget(idAgent);
+	const dtCrowdAgent* ag = m_crowd->getAgent(idAgent);
+	if (ag && ag->active)
+	{
+		m_crowd->requestMoveTarget(idAgent, targetRef, endPos);
+	}
+}
+
+void crowdTool::calcVel(float* vel, const float* pos, const float* tgt, const float speed)
+{
 	dtVsub(vel, tgt, pos);
 	vel[1] = 0.0;
 	dtVnormalize(vel);
 	dtVscale(vel, vel, speed);
-	m_crowd->requestMoveVelocity(idAgent);*/
-	m_crowd->resetMoveTarget(idAgent);
-	m_crowd->requestMoveTarget(idAgent, targetRef, endPos);
 }

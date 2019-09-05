@@ -288,6 +288,7 @@ public:
 
 private:
 	//private functions
+	static void calcVel(float* vel, const float* pos, const float* tgt, const float speed);
 
 	//private variables
 	dtNavMeshQuery* m_navQuery = nullptr;
