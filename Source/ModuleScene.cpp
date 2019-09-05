@@ -658,13 +658,15 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 		glUniform3fv(glGetUniformLocation(shader->id[variation],
 			"highlightColorUniform"), 1, (GLfloat*) zero);
 	}
+	
+	glUniform1f(glGetUniformLocation(shader->id[variation], "sliceAmount"), crenderer->dissolveAmount);
+	glUniform1f(glGetUniformLocation(shader->id[variation], "borderAmount"), crenderer->borderAmount);
+
 	if (mesh != nullptr)
 	{
 		crenderer->DrawMesh(shader->id[variation]);
 	}
 	
-	glUniform1f(glGetUniformLocation(shader->id[variation], "sliceAmount"), crenderer->dissolveAmount);
-	glUniform1f(glGetUniformLocation(shader->id[variation], "borderAmount"), crenderer->borderAmount);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glActiveTexture(GL_TEXTURE0);
 	glUseProgram(0);
