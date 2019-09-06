@@ -24,6 +24,7 @@
 #include "Timer.h"
 #include "JSON.h"
 #include "Brofiler.h"
+#include "PlayerPrefs.h"
 
 using namespace std;
 #define MAX_REFRESH 3
@@ -148,5 +149,6 @@ bool Application::CleanUp()
 	{
 		ret = (*it)->CleanUp();
 	}
+	PlayerPrefs::DeleteAll(true);
 	return ret;
 }
