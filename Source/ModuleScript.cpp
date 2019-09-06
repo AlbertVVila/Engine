@@ -80,8 +80,7 @@ bool ModuleScript::CleanUp()
 		SDL_Delay(100);
 	}
 #endif // !GAME_BUILD
-	PlayerPrefs::Save(); //Saves to Disk
-	PlayerPrefs::DeleteAll(); //Deletes All memory allocated
+	PlayerPrefs::DeleteAll(true); //Deletes All memory allocated and prefs files
 	return true;
 }
 
