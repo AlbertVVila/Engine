@@ -92844,7 +92844,7 @@
             ]
         },
         {
-            "UID": 3463602403,
+            "UID": 1579073046,
             "ParentUID": 1,
             "Name": "RedScreen",
             "Tag": "Default",
@@ -92873,9 +92873,9 @@
             "Navigable": 0,
             "No Walkable": 0,
             "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
+            "isPrefab": 1,
+            "isPrefabSync": 1,
+            "prefabUID": 504491251,
             "Components": [
                 {
                     "Type": 5,
@@ -92907,8 +92907,8 @@
                     "isMasked": 0,
                     "maskAmount": 100,
                     "isMaskHorizontal": 0,
-                    "hoverDetectionMouse1": 1,
-                    "hoverDetectionMouse3": 1,
+                    "hoverDetectionMouse1": 0,
+                    "hoverDetectionMouse3": 0,
                     "UIOrder": 0,
                     "videoPath": "flame.avi",
                     "fps": 24.0
