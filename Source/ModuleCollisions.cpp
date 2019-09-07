@@ -5,20 +5,38 @@
 
 update_status ModuleCollisions::Update(float dt)
 {
-	for (auto player : playerBoxes)
+	for (auto player : playerHpBoxes)
 	{
 		if (!player->enabled) continue;
 
 		const math::OBB* player_obb = player->GetOBB();
-		for (auto other : otherBoxes)
+		for (auto enemyAttack : enemyAttackBoxes)
 		{
-			if (!other->enabled) continue;
+			if (!enemyAttack->enabled) continue;
 
-			const math::OBB* other_obb = other->GetOBB();
-			if (player_obb->Intersects(*other_obb))
+			const math::OBB* enemyAttack_obb = enemyAttack->GetOBB();
+			if (player_obb->Intersects(*enemyAttack_obb))
 			{
-				player->AddOverlap(other);
-				other->AddOverlap(player);
+				player->AddOverlap(enemyAttack);
+				enemyAttack->AddOverlap(player);
+			}
+		}
+	}
+
+	for (auto enemyHp : enemyHpBoxes)
+	{
+		if (!enemyHp->enabled) continue;
+
+		const math::OBB* enemyHp_obb = enemyHp->GetOBB();
+		for (auto playerAttack : playerAttackBoxes)
+		{
+			if (!playerAttack->enabled) continue;
+
+			const math::OBB* playerAttack_obb = playerAttack->GetOBB();
+			if (enemyHp_obb->Intersects(*playerAttack_obb))
+			{
+				enemyHp->AddOverlap(playerAttack);
+				playerAttack->AddOverlap(enemyHp);
 			}
 		}
 	}
@@ -26,29 +44,63 @@ update_status ModuleCollisions::Update(float dt)
 	return update_status::UPDATE_CONTINUE;
 }
 
-void ModuleCollisions::AddBox(ComponentBoxTrigger* box, bool isPlayer)
+void ModuleCollisions::AddBox(ComponentBoxTrigger* box, BoxTriggerType boxType)
 {
 	RemoveBox(box);
-	
-	if (isPlayer) playerBoxes.push_back(box);
-	else otherBoxes.push_back(box);
+
+	switch (boxType)
+	{
+		case BoxTriggerType::Unknown:
+			break;
+		case BoxTriggerType::PlayerHp:
+			playerHpBoxes.push_back(box);
+			break;
+		case BoxTriggerType::PlayerAttack:
+			playerAttackBoxes.push_back(box);
+			break;
+		case BoxTriggerType::EnemyHp:
+			enemyHpBoxes.push_back(box);
+			break;
+		case BoxTriggerType::EnemyAttack:
+			enemyAttackBoxes.push_back(box);
+			break;
+	}
 }
 
 bool ModuleCollisions::RemoveBox(ComponentBoxTrigger* box)
 {
-	for (int i = playerBoxes.size() - 1; i >= 0; --i)
+	for (int i = playerHpBoxes.size() - 1; i >= 0; --i)
 	{
-		if (playerBoxes[i] == box)
+		if (playerHpBoxes[i] == box)
 		{
-			playerBoxes.erase(playerBoxes.begin() + i);
+			playerHpBoxes.erase(playerHpBoxes.begin() + i);
 			return true;
 		}
 	}
-	for (int i = otherBoxes.size() - 1; i >= 0; --i)
+
+	for (int i = playerAttackBoxes.size() - 1; i >= 0; --i)
 	{
-		if (otherBoxes[i] == box)
+		if (playerAttackBoxes[i] == box)
 		{
-			otherBoxes.erase(otherBoxes.begin() + i);
+			playerAttackBoxes.erase(playerAttackBoxes.begin() + i);
+			return true;
+		}
+	}
+
+	for (int i = enemyHpBoxes.size() - 1; i >= 0; --i)
+	{
+		if (enemyHpBoxes[i] == box)
+		{
+			enemyHpBoxes.erase(enemyHpBoxes.begin() + i);
+			return true;
+		}
+	}
+
+	for (int i = enemyAttackBoxes.size() - 1; i >= 0; --i)
+	{
+		if (enemyAttackBoxes[i] == box)
+		{
+			enemyAttackBoxes.erase(enemyAttackBoxes.begin() + i);
 			return true;
 		}
 	}
