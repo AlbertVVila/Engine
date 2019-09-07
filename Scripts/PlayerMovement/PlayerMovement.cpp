@@ -77,7 +77,7 @@ PlayerMovement::PlayerMovement()
 	assignedSkills[HUD_BUTTON_3] = SkillType::NONE;
 	assignedSkills[HUD_BUTTON_4] = SkillType::NONE;
 	assignedSkills[HUD_BUTTON_Q] = SkillType::DASH;
-	assignedSkills[HUD_BUTTON_W] = SkillType::SLICE;
+	assignedSkills[HUD_BUTTON_W] = SkillType::CIRCULAR;
 	assignedSkills[HUD_BUTTON_E] = SkillType::BOMB_DROP;
 	assignedSkills[HUD_BUTTON_R] = SkillType::RAIN;
 }
@@ -221,8 +221,6 @@ void PlayerMovement::CreatePlayerSkills()
 	bombDrop = new BombDropSkill(this, "BombDrop", attackBoxTrigger);
 	bombDropParticles = App->scene->FindGameObjectByName("BombDropParticles", gameobject);
 	circular = new CircularAttackSkill(this, "Circular", attackBoxTrigger);
-	circular->mesh1 = App->scene->FindGameObjectByName("CircularAttackMesh1");
-	circular->mesh2 = App->scene->FindGameObjectByName("CircularAttackMesh2");
 	circular->mesh3 = App->scene->FindGameObjectByName("Spiral");
 	circular->particles = App->scene->FindGameObjectByName("CircularAttackParticles");
 	stomp = new StompSkill(this, "Stomp", attackBoxTrigger);

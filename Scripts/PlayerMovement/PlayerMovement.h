@@ -288,6 +288,7 @@ public:
 
 	//Audio
 	ComponentAudioSource* gotHitAudio = nullptr;
+	GameObject* slashTrail = nullptr;
 
 private:
 	std::vector<PlayerState*> playerStates;	
@@ -303,7 +304,6 @@ private:
 	float bombDropGrowRate = 1.3f;
 	float bombDropWaveGrowRate = 1.05f;
 
-	GameObject* slashTrail = nullptr;
 	
 	DamageController* damageController = nullptr;
 	DamageFeedbackUI* damageUIFeedback = nullptr;

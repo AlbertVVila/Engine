@@ -52,7 +52,7 @@ void DashSkill::Start()
 
 void DashSkill::UseSkill()
 {
-
+	/*
 	if (path.size() > 0 && timer > dashPreparationTime)
 	{
 		math::float3 currentPosition = player->gameobject->transform->GetPosition();
@@ -67,7 +67,11 @@ void DashSkill::UseSkill()
 			player->gameobject->transform->SetPosition(currentPosition + dashSpeed * direction * player->App->time->gameDeltaTime);
 		}
 	}
-
+	*/
+	math::float3 currentPosition = player->gameobject->transform->GetPosition();
+	math::float3 newPosition = currentPosition + dashSpeed * (-player->transform->front) * player->App->time->gameDeltaTime;
+	//player->App->navigation->
+	player->gameobject->transform->SetPosition(newPosition);
 	if (player->attackBoxTrigger != nullptr && !player->attackBoxTrigger->enabled)
 	{
 		//Update the hitbox
