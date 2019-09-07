@@ -47,7 +47,7 @@ void EnemyControllerScript::Awake()
 	myRender = (ComponentRenderer*)gameobject->GetComponentInChildren(ComponentType::Renderer);
 	if (myRender != nullptr)
 	{
-		// Look for enemy BBox
+		// Look for enemy BBox (Will take first found)
 		myBbox = &myRender->gameobject->bbox;
 		if (myBbox == nullptr)
 		{

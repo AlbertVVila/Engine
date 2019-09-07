@@ -423,7 +423,6 @@ Resource* ModuleResourceManager::CreateNewResource(TYPE type, unsigned forceUid)
 	case TYPE::STATEMACHINE:	resource = (Resource*) new ResourceStateMachine(uid);	break;
 	case TYPE::AUDIO:			resource = (Resource*) new ResourceAudio(uid);			break;
 	case TYPE::PREFAB:          resource = (Resource*) new ResourcePrefab(uid);			break;
-	/*case TYPE::AUDIO:			resource = (Resource*) new ResourceAudio(uid);			break;*/
 	}
 
 	if (resource != nullptr)
