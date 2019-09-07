@@ -245,16 +245,17 @@ void ComponentRenderer::Save(JSON_value* value) const
 	value->AddFloat2("texSpeed", texSpeed);
 	value->AddFloat("waterSpeed", waterSpeed);
 	value->AddInt("water", water);
+	value->AddInt("dissolve", dissolve);
 	value->AddFloat3("waterSource1", waterSource1);
 	value->AddFloat3("waterSource2", waterSource2);
 	value->AddFloat2("uvScaler", uvScaler);
 	value->AddFloat("distorsionSpeed", distorsionSpeed);
 
-	if (dissolveAmount)
+	if (dissolveAmount != 0.0f) //Avoid writing in disk unused info
 	{
 		value->AddFloat("dissolveAmount", dissolveAmount);
 	}
-	if (borderAmount)
+	if (borderAmount != 0.0f)
 	{
 		value->AddFloat("borderAmount", borderAmount);
 	}
