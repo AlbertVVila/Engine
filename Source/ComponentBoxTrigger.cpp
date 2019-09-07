@@ -295,7 +295,7 @@ void ComponentBoxTrigger::Load(JSON_value * value)
 	Component::Load(value);
 	position = value->GetFloat3("pos");
 	size = value->GetFloat3("r");
-	boxType = (BoxTriggerType) value->GetUint("boxType",0u);
+	boxType = (BoxTriggerType) value->GetUint("boxType");
 	debugDraw = (value->GetInt("debug_draw") > 0);
 	SetBoxType(boxType);
 	boxTrigger->r = size;
