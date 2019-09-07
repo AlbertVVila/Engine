@@ -9,10 +9,10 @@ enum class BoxTriggerType;
 
 struct OverlapPair
 {
-	OverlapPair(ComponentBoxTrigger* player, ComponentBoxTrigger* other) : player(player), other(other) {}
+	OverlapPair(ComponentBoxTrigger* first, ComponentBoxTrigger* second) : first(first), second(second) {}
 
-	ComponentBoxTrigger* player = nullptr;
-	ComponentBoxTrigger* other  = nullptr;
+	ComponentBoxTrigger* first = nullptr;
+	ComponentBoxTrigger* second  = nullptr;
 };
 
 class ModuleCollisions : public Module
