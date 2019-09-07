@@ -42,6 +42,9 @@
     <ClCompile Include="EnemyStateFlee.cpp">
       <Filter>States</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyStateDeath.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RangeEnemyAIScript.h">
@@ -66,6 +69,9 @@
       <Filter>States</Filter>
     </ClInclude>
     <ClInclude Include="EnemyStateFlee.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyStateDeath.h">
       <Filter>States</Filter>
     </ClInclude>
   </ItemGroup>
