@@ -37,6 +37,7 @@ Transform2D::Transform2D(const Transform2D & component) : Component(component)
 	alignments[BOTTOMCENTER] = math::float2(0.0f, -1.0f);
 	alignments[BOTTOMRIGHT] = math::float2(1.0f, -1.0f);
 	currentAnchor = component.currentAnchor;
+	currentStretch = component.currentStretch;
 }
 
 Transform2D::~Transform2D()
