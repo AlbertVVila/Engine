@@ -44,18 +44,21 @@ void EnemyControllerScript::Start()
 
 void EnemyControllerScript::Awake()
 {
-	myRender = (ComponentRenderer*)gameobject->GetComponentInChildren(ComponentType::Renderer);
-	if (myRender != nullptr)
+	std::vector<Component*> renders = gameobject->GetComponentsInChildren(ComponentType::Renderer);
+	for (std::vector<Component*>::iterator it = renders.begin(); it != renders.end(); ++it)
+		myRenders.insert(myRenders.begin(), (ComponentRenderer*)(*it));
+
+	if (myRenders.size() > 0u)
 	{
 		// Look for enemy BBox (Will take first found)
-		myBbox = &myRender->gameobject->bbox;
+		myBbox = &myRenders.at(0)->gameobject->bbox;
 		if (myBbox == nullptr)
 		{
 			LOG("The enemy %s has no bbox \n", gameobject->name);
 		}
 
 		// Get playerMesh
-		myMesh = myRender->gameobject;
+		myMesh = myRenders.at(0)->gameobject;
 	}
 	else
 	{
@@ -157,7 +160,8 @@ void EnemyControllerScript::Awake()
 			hitMaterial = (ResourceMaterial*)App->resManager->GetByName(matName.c_str(), TYPE::MATERIAL);
 		}
 	}
-	defaultMaterial = myRender->material;
+	// Will only change first renderer material on hit
+	defaultMaterial = GetMainRenderer()->material;
 	if (!hitMaterial)
 	{
 		hitMaterial = defaultMaterial;
@@ -191,9 +195,10 @@ void EnemyControllerScript::Update()
 		if(enemyLifeBar != nullptr)
 			enemyLifeBar->SetLifeBar(maxHealth, actualHealth, EnemyLifeBarType::NORMAL, "Skeleton");
 
-		if (myRender != nullptr && !isDead)
+		if (myRenders.size() > 0u && !isDead)
 		{
-			myRender->highlighted = true;
+			for (std::vector<ComponentRenderer*>::iterator it = myRenders.begin(); it != myRenders.end(); ++it)
+				(*it)->highlighted = true;
 		}
 
 		//we need to keep track of current targeted enemy
@@ -208,9 +213,10 @@ void EnemyControllerScript::Update()
 	}
 	else
 	{
-		if (myRender != nullptr)
+		if (myRenders.size() > 0u)
 		{
-			myRender->highlighted = false;
+			for (std::vector<ComponentRenderer*>::iterator it = myRenders.begin(); it != myRenders.end(); ++it)
+				(*it)->highlighted = true;
 
 			//if this is the enemy that was being targeted, we untarget it from the scene
 			if (App->scene->enemyHovered.object != nullptr &&
@@ -230,7 +236,7 @@ void EnemyControllerScript::Update()
 	else if (enemyHit)
 	{
 		enemyHit = false;
-		myRender->material = defaultMaterial;
+		GetMainRenderer()->material = defaultMaterial;
 	}
 }
 
@@ -303,7 +309,7 @@ void EnemyControllerScript::TakeDamage(unsigned damage)
 		else
 		{
 			actualHealth -= damage;
-			myRender->material = hitMaterial;
+			GetMainRenderer()->material = hitMaterial;
 			hitColorTimer = hitColorDuration;
 		}
 
@@ -365,6 +371,14 @@ inline float EnemyControllerScript::GetDistanceToPlayer2D() const
 	math::float3 playerPosition = GetPlayerPosition();
 	enemyPosition.y = playerPosition.y;
 	return enemyPosition.Distance(playerPosition);
+}
+
+inline ComponentRenderer* EnemyControllerScript::GetMainRenderer() const
+{
+	if (myRenders.size() > 0u)
+		return myRenders.at(0u);
+	else
+		return nullptr;
 }
 
 inline bool EnemyControllerScript::IsCollidingWithPlayer() const

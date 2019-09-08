@@ -20,7 +20,7 @@ EnemyStateHide::~EnemyStateHide()
 
 void EnemyStateHide::Exit()
 {
-	enemy->enemyController->myRender->Enable(false);
+	enemy->enemyController->GetMainRenderer()->Enable(false);
 }
 
 void EnemyStateHide::HandleIA()

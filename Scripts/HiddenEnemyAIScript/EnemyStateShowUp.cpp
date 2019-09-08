@@ -19,7 +19,7 @@ EnemyStateShowUp::~EnemyStateShowUp()
 
 void EnemyStateShowUp::Enter()
 {
-	enemy->enemyController->myRender->Enable(true);
+	enemy->enemyController->GetMainRenderer()->Enable(true);
 }
 
 void EnemyStateShowUp::HandleIA()
