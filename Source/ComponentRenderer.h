@@ -44,7 +44,7 @@ public:
 	bool highlighted = false;
 	bool dissolve = false;
 	float dissolveAmount = 0.f;
-	float borderAmount = 0.5f;
+	float borderAmount = 0.f;
 
 	bool water = false;
 	bool avoidSkinning = false;
