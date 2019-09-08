@@ -216,7 +216,7 @@ void EnemyControllerScript::Update()
 		if (myRenders.size() > 0u)
 		{
 			for (std::vector<ComponentRenderer*>::iterator it = myRenders.begin(); it != myRenders.end(); ++it)
-				(*it)->highlighted = true;
+				(*it)->highlighted = false;
 
 			//if this is the enemy that was being targeted, we untarget it from the scene
 			if (App->scene->enemyHovered.object != nullptr &&
