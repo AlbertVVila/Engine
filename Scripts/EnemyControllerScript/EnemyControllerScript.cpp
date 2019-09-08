@@ -46,7 +46,7 @@ void EnemyControllerScript::Awake()
 {
 	std::vector<Component*> renders = gameobject->GetComponentsInChildren(ComponentType::Renderer);
 	for (std::vector<Component*>::iterator it = renders.begin(); it != renders.end(); ++it)
-		myRenders.insert(myRenders.begin(), (ComponentRenderer*)(*it));
+		myRenders.push_back((ComponentRenderer*)(*it));
 
 	if (myRenders.size() > 0u)
 	{
@@ -265,6 +265,14 @@ void EnemyControllerScript::Expose(ImGuiContext* context)
 	enemyCursor = enemyCursorAux;
 	delete[] enemyCursorAux;
 	
+	// Draw the name of every GO that has a ComponentRenderer 
+	if (myRenders.size() > 0u)
+	{
+		ImGui::Text("Renderers:");
+		for (std::vector<ComponentRenderer*>::iterator it = myRenders.begin(); it != myRenders.end(); ++it)
+			ImGui::Text(((Component*)(*it))->gameobject->name.c_str());
+	}
+
 }
 
 void EnemyControllerScript::Serialize(JSON_value* json) const
