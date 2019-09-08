@@ -45,7 +45,7 @@ void EnemyStateShowUp::Update()
 
 void EnemyStateShowUp::Enter()
 {
-	enemy->enemyController->myRender->Enable(true);
+	enemy->enemyController->GetMainRenderer()->Enable(true);
 	enemy->enemyController->hpBoxTrigger->Enable(true);
 	enemy->dustParticlesGO->SetActive(true);
 }
