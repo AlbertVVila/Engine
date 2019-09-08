@@ -97,8 +97,18 @@ void InventoryScript::Update()
 	if (!inventory->isActive()) return;
 
 	math::float2 mouse = reinterpret_cast<const float2&>(App->input->GetMousePosition());
-	float screenX = mouse.x - App->renderer->viewGame->winPos.x - (App->ui->currentWidth * .5f);
-	float screenY = mouse.y - App->renderer->viewGame->winPos.y - (App->ui->currentHeight * .5f);
+	float screenX, screenY;
+
+	if (App->renderer->viewGame != nullptr)
+	{
+		screenX = mouse.x - App->renderer->viewGame->winPos.x - (App->ui->currentWidth * .5f);
+		screenY = mouse.y - App->renderer->viewGame->winPos.y - (App->ui->currentHeight * .5f);
+	}
+	else
+	{
+		screenX = mouse.x - (App->ui->currentWidth * .5f);
+		screenY = mouse.y - (App->ui->currentHeight * .5f);
+	}
 
 	for (int i = 0; i < itemsSlots.size(); ++i)
 	{

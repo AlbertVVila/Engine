@@ -138,8 +138,13 @@ void Button::Load(JSON_value* value)
 void Button::PreUpdate()
 {
 	math::float2 mouse = reinterpret_cast<const float2&>(App->input->GetMousePosition());
+#ifndef GAME_BUILD
 	float screenX = mouse.x - App->renderer->viewGame->winPos.x - (App->ui->currentWidth * .5f);
 	float screenY = mouse.y - App->renderer->viewGame->winPos.y - (App->ui->currentHeight * .5f);
+#else
+	float screenX = mouse.x - (App->ui->currentWidth * .5f);
+	float screenY = mouse.y - (App->ui->currentHeight * .5f);
+#endif
 	math::float2 pos = rectTransform->getPosition();
 	math::float2 size = rectTransform->getSize();
 	float buttonX = pos.x;
