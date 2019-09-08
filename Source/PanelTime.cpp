@@ -11,6 +11,8 @@
 #include "PanelTime.h"
 #include "GameObject.h"
 
+#include "PlayerPrefs.h"
+
 #include "imgui.h"
 
 PanelTime::PanelTime()
@@ -54,6 +56,7 @@ void PanelTime::Draw()
 		{
 			App->time->StopGameClock();
 			App->scene->LoadTemporaryScene();
+			PlayerPrefs::DeleteAll(true);
 		}
 	}
 
