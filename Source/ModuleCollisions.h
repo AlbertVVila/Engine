@@ -5,13 +5,14 @@
 #include <vector>
 
 class ComponentBoxTrigger;
+enum class BoxTriggerType;
 
 struct OverlapPair
 {
-	OverlapPair(ComponentBoxTrigger* player, ComponentBoxTrigger* other) : player(player), other(other) {}
+	OverlapPair(ComponentBoxTrigger* first, ComponentBoxTrigger* second) : first(first), second(second) {}
 
-	ComponentBoxTrigger* player = nullptr;
-	ComponentBoxTrigger* other  = nullptr;
+	ComponentBoxTrigger* first = nullptr;
+	ComponentBoxTrigger* second  = nullptr;
 };
 
 class ModuleCollisions : public Module
@@ -19,11 +20,14 @@ class ModuleCollisions : public Module
 public:
 	virtual update_status Update(float dt) override;
 
-	void AddBox(ComponentBoxTrigger* box, bool isPlayer);
+	void AddBox(ComponentBoxTrigger* box, BoxTriggerType isPlayer);
 	bool RemoveBox(ComponentBoxTrigger* box);
 
 private:
-	std::vector<ComponentBoxTrigger*> playerBoxes;
+	std::vector<ComponentBoxTrigger*> playerHpBoxes;
+	std::vector<ComponentBoxTrigger*> playerAttackBoxes;
+	std::vector<ComponentBoxTrigger*> enemyHpBoxes;
+	std::vector<ComponentBoxTrigger*> enemyAttackBoxes;
 	std::vector<ComponentBoxTrigger*> otherBoxes;
 };
 
