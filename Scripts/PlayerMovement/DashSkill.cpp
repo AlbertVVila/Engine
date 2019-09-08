@@ -52,32 +52,21 @@ void DashSkill::Start()
 
 void DashSkill::UseSkill()
 {
-	/*
-	if (path.size() > 0 && timer > dashPreparationTime)
-	{
-		math::float3 currentPosition = player->gameobject->transform->GetPosition();
-		while (pathIndex < path.size() && currentPosition.DistanceSq(path[pathIndex]) < MINIMUM_PATH_DISTANCE)
-		{
-			pathIndex++;
-		}
-		if (pathIndex < path.size())
-		{
-			player->gameobject->transform->LookAt(path[pathIndex]);
-			math::float3 direction = (path[pathIndex] - currentPosition).Normalized();
-			player->gameobject->transform->SetPosition(currentPosition + dashSpeed * direction * player->App->time->gameDeltaTime);
-		}
-	}
-	*/
+	
 	math::float3 currentPosition = player->gameobject->transform->GetPosition();
 	math::float3 newPosition = currentPosition + dashSpeed * (-player->transform->front) * player->App->time->gameDeltaTime;
-	//player->App->navigation->
-	player->gameobject->transform->SetPosition(newPosition);
+	if (player->App->navigation->IsValidPosition(newPosition))
+	{
+		player->gameobject->transform->SetPosition(newPosition);	
+	}
+	
 	if (player->attackBoxTrigger != nullptr && !player->attackBoxTrigger->enabled)
 	{
 		//Update the hitbox
 		boxPosition = player->transform->up *100.f; //this front stuff isnt working well when rotating the chicken
 		player->attackBoxTrigger->SetBoxPosition(boxPosition.x, boxPosition.y, boxPosition.z + 100.f);
 	}
+	
 }
 
 void DashSkill::Reset()

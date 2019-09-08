@@ -76,10 +76,10 @@ PlayerMovement::PlayerMovement()
 	assignedSkills[HUD_BUTTON_2] = SkillType::NONE;
 	assignedSkills[HUD_BUTTON_3] = SkillType::NONE;
 	assignedSkills[HUD_BUTTON_4] = SkillType::NONE;
-	assignedSkills[HUD_BUTTON_Q] = SkillType::DASH;
-	assignedSkills[HUD_BUTTON_W] = SkillType::CIRCULAR;
-	assignedSkills[HUD_BUTTON_E] = SkillType::BOMB_DROP;
-	assignedSkills[HUD_BUTTON_R] = SkillType::RAIN;
+	assignedSkills[HUD_BUTTON_Q] = SkillType::NONE;
+	assignedSkills[HUD_BUTTON_W] = SkillType::NONE;
+	assignedSkills[HUD_BUTTON_E] = SkillType::NONE;
+	assignedSkills[HUD_BUTTON_R] = SkillType::NONE;
 }
 
 PlayerMovement::~PlayerMovement()
@@ -652,10 +652,10 @@ void PlayerMovement::Start()
 	assignedSkills[HUD_BUTTON_2] = (SkillType)PlayerPrefs::GetInt("2", 20);
 	assignedSkills[HUD_BUTTON_3] = (SkillType)PlayerPrefs::GetInt("3", 20);
 	assignedSkills[HUD_BUTTON_4] = (SkillType)PlayerPrefs::GetInt("4", 20);
-//	assignedSkills[HUD_BUTTON_Q] = (SkillType)PlayerPrefs::GetInt("Q", 20);
-//	assignedSkills[HUD_BUTTON_W] = (SkillType)PlayerPrefs::GetInt("W", 20);
-//	assignedSkills[HUD_BUTTON_E] = (SkillType)PlayerPrefs::GetInt("E", 20);
-//	assignedSkills[HUD_BUTTON_R] = (SkillType)PlayerPrefs::GetInt("R", 20);
+	assignedSkills[HUD_BUTTON_Q] = (SkillType)PlayerPrefs::GetInt("Q", 20);
+	assignedSkills[HUD_BUTTON_W] = (SkillType)PlayerPrefs::GetInt("W", 20);
+	assignedSkills[HUD_BUTTON_E] = (SkillType)PlayerPrefs::GetInt("E", 20);
+	assignedSkills[HUD_BUTTON_R] = (SkillType)PlayerPrefs::GetInt("R", 20);
 
 	InitializeUIStatsObjects();
 	LOG("Started player movement script");
