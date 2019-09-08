@@ -1662,7 +1662,10 @@ bool ModuleNavigation::IsCursorPointingToNavigableZone(float xPickingCorrection,
 	float polyPickExt[3] = { xPickingCorrection, yPickingCorrection, zPickingCorrection };
 
 	//nav mesh query call
-	navQuery->findNearestPoly((float*)& intersectionPos, polyPickExt, &filter, &resultPoly, 0); // find closest poly
+	if (navMesh && navQuery)
+	{
+		navQuery->findNearestPoly((float*)& intersectionPos, polyPickExt, &filter, &resultPoly, 0); // find closest poly
+	}
 
 	return resultPoly;
 }
