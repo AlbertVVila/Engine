@@ -21,6 +21,7 @@ enum class BoxTriggerType
 	PlayerAttack,
 	EnemyHp,
 	EnemyAttack,
+	Other
 };
 
 class ComponentBoxTrigger : public Component

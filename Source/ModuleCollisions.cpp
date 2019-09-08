@@ -21,6 +21,18 @@ update_status ModuleCollisions::Update(float dt)
 				enemyAttack->AddOverlap(player);
 			}
 		}
+
+		for (auto other : otherBoxes)
+		{
+			if (!other->enabled) continue;
+
+			const math::OBB* other_obb = other->GetOBB();
+			if (player_obb->Intersects(*other_obb))
+			{
+				player->AddOverlap(other);
+				other->AddOverlap(player);
+			}
+		}
 	}
 
 	for (auto enemyHp : enemyHpBoxes)
@@ -64,45 +76,66 @@ void ModuleCollisions::AddBox(ComponentBoxTrigger* box, BoxTriggerType boxType)
 		case BoxTriggerType::EnemyAttack:
 			enemyAttackBoxes.push_back(box);
 			break;
+		case BoxTriggerType::Other:
+			otherBoxes.push_back(box);
+			break;
 	}
 }
 
 bool ModuleCollisions::RemoveBox(ComponentBoxTrigger* box)
 {
-	for (int i = playerHpBoxes.size() - 1; i >= 0; --i)
+	switch (box->GetBoxTriggerType())
 	{
-		if (playerHpBoxes[i] == box)
-		{
-			playerHpBoxes.erase(playerHpBoxes.begin() + i);
-			return true;
-		}
-	}
-
-	for (int i = playerAttackBoxes.size() - 1; i >= 0; --i)
-	{
-		if (playerAttackBoxes[i] == box)
-		{
-			playerAttackBoxes.erase(playerAttackBoxes.begin() + i);
-			return true;
-		}
-	}
-
-	for (int i = enemyHpBoxes.size() - 1; i >= 0; --i)
-	{
-		if (enemyHpBoxes[i] == box)
-		{
-			enemyHpBoxes.erase(enemyHpBoxes.begin() + i);
-			return true;
-		}
-	}
-
-	for (int i = enemyAttackBoxes.size() - 1; i >= 0; --i)
-	{
-		if (enemyAttackBoxes[i] == box)
-		{
-			enemyAttackBoxes.erase(enemyAttackBoxes.begin() + i);
-			return true;
-		}
+		case BoxTriggerType::PlayerHp:
+			for (int i = playerHpBoxes.size() - 1; i >= 0; --i)
+			{
+				if (playerHpBoxes[i] == box)
+				{
+					playerHpBoxes.erase(playerHpBoxes.begin() + i);
+					return true;
+				}
+			}
+			break;
+		case BoxTriggerType::PlayerAttack:
+			for (int i = playerAttackBoxes.size() - 1; i >= 0; --i)
+			{
+				if (playerAttackBoxes[i] == box)
+				{
+					playerAttackBoxes.erase(playerAttackBoxes.begin() + i);
+					return true;
+				}
+			}
+			break;
+		case BoxTriggerType::EnemyHp:
+			for (int i = enemyHpBoxes.size() - 1; i >= 0; --i)
+			{
+				if (enemyHpBoxes[i] == box)
+				{
+					enemyHpBoxes.erase(enemyHpBoxes.begin() + i);
+					return true;
+				}
+			}
+			break;
+		case BoxTriggerType::EnemyAttack:
+			for (int i = enemyAttackBoxes.size() - 1; i >= 0; --i)
+			{
+				if (enemyAttackBoxes[i] == box)
+				{
+					enemyAttackBoxes.erase(enemyAttackBoxes.begin() + i);
+					return true;
+				}
+			}
+			break;
+		case BoxTriggerType::Other:
+			for (int i = otherBoxes.size() - 1; i >= 0; --i)
+			{
+				if (otherBoxes[i] == box)
+				{
+					otherBoxes.erase(otherBoxes.begin() + i);
+					return true;
+				}
+			}
+			break;
 	}
 
 	return false;

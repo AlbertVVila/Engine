@@ -28,6 +28,7 @@ private:
 	std::vector<ComponentBoxTrigger*> playerAttackBoxes;
 	std::vector<ComponentBoxTrigger*> enemyHpBoxes;
 	std::vector<ComponentBoxTrigger*> enemyAttackBoxes;
+	std::vector<ComponentBoxTrigger*> otherBoxes;
 };
 
 #endif // !__Module_Collisions_h__

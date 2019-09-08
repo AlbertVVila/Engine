@@ -99,6 +99,7 @@ void ComponentBoxTrigger::DrawProperties()
 		bool propIsPlayerAttack = boxType == BoxTriggerType::PlayerAttack;
 		bool propIsEnemyHp = boxType == BoxTriggerType::EnemyHp;
 		bool propIsEnemyAttack = boxType == BoxTriggerType::EnemyAttack;
+		bool propIsOther = boxType == BoxTriggerType::Other;
 
 		ImGui::Separator();
 		ImGui::Text("BoxTrigger Type"); //It's ok that you can't uncheck since you shouldnt be able to have another type
@@ -111,6 +112,7 @@ void ComponentBoxTrigger::DrawProperties()
 		ImGui::SameLine();
 		if (ImGui::Checkbox("EnemyAttack", &propIsEnemyAttack)) SetBoxType(BoxTriggerType::EnemyAttack);
 
+		if (ImGui::Checkbox("Other", &propIsOther)) SetBoxType(BoxTriggerType::Other);
 		ImGui::Separator();
 
 		ImGui::DragFloat3("Position", position.ptr(), 0.1F, 0.0F, 20.0F);
