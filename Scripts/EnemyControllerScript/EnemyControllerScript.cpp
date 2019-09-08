@@ -9,6 +9,7 @@
 #include "ModuleTime.h"
 #include "ModuleNavigation.h"
 #include "ModuleResourceManager.h"
+#include "MouseController.h"
 
 #include "GameObject.h"
 #include "ComponentRenderer.h"
@@ -21,6 +22,7 @@
 #include "DamageController.h"
 #include "EnemyLifeBarController.h"
 #include "EnemyLoot.h"
+#include "CombatAudioEvents.h"
 
 #include "imgui.h"
 #include "JSON.h"
@@ -81,7 +83,7 @@ void EnemyControllerScript::Awake()
 	anim = (ComponentAnimation*)gameobject->GetComponentInChildren(ComponentType::Animation);
 	if (anim == nullptr)
 	{
-		LOG("No child of the GameObject %s has an Animation component attached \n", gameobject->name);
+		LOG("No child of the GameObject %s has an Animation component attached \n", gameobject->name.c_str());
 	}
 
 	GameObject* damageGO = App->scene->FindGameObjectByName("Damage");
@@ -115,7 +117,7 @@ void EnemyControllerScript::Awake()
 	hpBoxTrigger = (ComponentBoxTrigger*)gameobject->GetComponentInChildren(ComponentType::BoxTrigger);
 	if (hpBoxTrigger == nullptr)
 	{
-		LOG("No child of the GameObject %s has a boxTrigger component attached \n", gameobject->name);
+		LOG("No child of the GameObject %s has a boxTrigger component attached \n", gameobject->name.c_str());
 	}
 
 	GameObject* attackGameObject = App->scene->FindGameObjectByName("HitBoxAttack", gameobject);
@@ -125,7 +127,7 @@ void EnemyControllerScript::Awake()
 		attackBoxTrigger = (ComponentBoxTrigger*)attackGameObject->GetComponentInChildren(ComponentType::BoxTrigger);
 		if (attackBoxTrigger == nullptr)
 		{
-			LOG("No child of the GameObject %s has a boxTrigger component attached \n", attackGameObject->name);
+			LOG("No child of the GameObject %s has a boxTrigger component attached \n", attackGameObject->name.c_str());
 		}
 		else
 		{
@@ -160,6 +162,20 @@ void EnemyControllerScript::Awake()
 	{
 		hitMaterial = defaultMaterial;
 	}
+
+	GameObject* playerGO = App->scene->FindGameObjectByName("Player");
+	if (playerGO == nullptr)
+	{
+		LOG("Player couldn't be found \n");
+	}
+	else
+	{
+		combataudioevents = playerGO->GetComponent<CombatAudioEvents>();
+		if (combataudioevents == nullptr)
+		{
+			LOG("combataudioevents couldn't be found \n");
+		}
+	}
 }
 
 void EnemyControllerScript::Update()
@@ -175,12 +191,20 @@ void EnemyControllerScript::Update()
 		if(enemyLifeBar != nullptr)
 			enemyLifeBar->SetLifeBar(maxHealth, actualHealth, EnemyLifeBarType::NORMAL, "Skeleton");
 
-		if (myRender != nullptr)
+		if (myRender != nullptr && !isDead)
+		{
 			myRender->highlighted = true;
+		}
 
 		//we need to keep track of current targeted enemy
 		App->scene->enemyHovered.object = gameobject;
 		App->scene->enemyHovered.health = actualHealth;
+
+		if (App->scene->enemyHovered.object != nullptr &&
+			gameobject->UUID == App->scene->enemyHovered.object->UUID)
+		{
+			MouseController::ChangeCursorIcon(enemyCursor);
+		}
 	}
 	else
 	{
@@ -194,16 +218,18 @@ void EnemyControllerScript::Update()
 			{
 				App->scene->enemyHovered.object = nullptr;
 				App->scene->enemyHovered.health = 0;
+				MouseController::ChangeCursorIcon(gameStandarCursor);
 			}
 		}
 	}
 
-	if (timer > 0.f)
+	if (enemyHit && hitColorTimer > 0.f)
 	{
-		timer -= App->time->gameDeltaTime;
+		hitColorTimer -= App->time->gameDeltaTime;
 	}
-	else
+	else if (enemyHit)
 	{
+		enemyHit = false;
 		myRender->material = defaultMaterial;
 	}
 }
@@ -224,6 +250,15 @@ void EnemyControllerScript::Expose(ImGuiContext* context)
 	ImGui::InputText("playerTag", goName, 64);
 	playerTag = goName;
 	delete[] goName;
+
+	ImGui::Separator();
+	ImGui::Text("Enemy cursor:");
+	char* enemyCursorAux = new char[64];
+	strcpy_s(enemyCursorAux, strlen(enemyCursor.c_str()) + 1, enemyCursor.c_str());
+	ImGui::InputText("enemyCursor", enemyCursorAux, 64);
+	enemyCursor = enemyCursorAux;
+	delete[] enemyCursorAux;
+	
 }
 
 void EnemyControllerScript::Serialize(JSON_value* json) const
@@ -232,6 +267,7 @@ void EnemyControllerScript::Serialize(JSON_value* json) const
 	json->AddString("playerTag", playerTag.c_str());
 	json->AddInt("health", maxHealth);
 	json->AddInt("experience", experience);
+	json->AddString("enemyCursor", enemyCursor.c_str());
 }
 
 void EnemyControllerScript::DeSerialize(JSON_value* json)
@@ -241,12 +277,18 @@ void EnemyControllerScript::DeSerialize(JSON_value* json)
 	maxHealth = json->GetInt("health", maxHealth);
 	experience = json->GetInt("experience", 20);
 	actualHealth = maxHealth;
+	enemyCursor = json->GetString("enemyCursor", "RedGlow.cur");
 }
 
 void EnemyControllerScript::TakeDamage(unsigned damage)
 {
 	if (!isDead)
 	{
+		if (combataudioevents != nullptr)
+		{
+			combataudioevents->enemyGotHit(0);
+		}
+		enemyHit = true;
 		if (actualHealth - damage < 0 )
 		{
 			actualHealth = 0;
@@ -262,7 +304,7 @@ void EnemyControllerScript::TakeDamage(unsigned damage)
 		{
 			actualHealth -= damage;
 			myRender->material = hitMaterial;
-			timer = hitColorDuration;
+			hitColorTimer = hitColorDuration;
 		}
 
 		if (actualHealth <= 0)

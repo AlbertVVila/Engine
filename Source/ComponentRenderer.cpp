@@ -72,6 +72,7 @@ ComponentRenderer::ComponentRenderer(const ComponentRenderer& component) : Compo
 	texSpeed = component.texSpeed;
 
 	fps = component.fps;
+
 }
 
 ComponentRenderer::~ComponentRenderer()
@@ -267,6 +268,8 @@ void ComponentRenderer::Save(JSON_value* value) const
 	value->AddFloat2("uvScaler", uvScaler);
 	value->AddFloat("distorsionSpeed", distorsionSpeed);
 	value->AddInt("loop", loop);
+	value->AddFloat("dissolveAmount", dissolveAmount);
+	value->AddFloat("borderAmount", borderAmount);
 }
 
 void ComponentRenderer::Load(JSON_value* value)
@@ -305,6 +308,8 @@ void ComponentRenderer::Load(JSON_value* value)
 	uvScaler = value->GetFloat2("uvScaler");
 	distorsionSpeed = value->GetFloat("distorsionSpeed", distorsionSpeed);
 	loop = value->GetInt("loop", loop);
+	dissolveAmount = value->GetFloat("dissolveAmount", dissolveAmount);
+	borderAmount = value->GetFloat("borderAmount", borderAmount);
 }
 
 void ComponentRenderer::SetMaterial(const char* materialName)

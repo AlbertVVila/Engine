@@ -89,6 +89,9 @@ public:
 
 
 	PMSizeOverTime() { type = ParticleModulesType::SIZE_OVER_TIME; };
+	PMSizeOverTime(const PMSizeOverTime& sizeOverTime);
+
+	PMSizeOverTime* Clone() const;
 
 	inline float GetSize(float percent, float total);
 	void InspectorDraw() override;
@@ -100,6 +103,10 @@ class PMColorOverTime : public ParticleModule
 {
 public:
 	PMColorOverTime();
+	PMColorOverTime(const PMColorOverTime& colorOverTime);
+
+	PMColorOverTime* Clone() const;
+
 	ImGradient* Imgradient;
 
 	//float3 color1 = math::float3::one;

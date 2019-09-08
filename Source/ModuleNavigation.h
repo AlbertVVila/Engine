@@ -104,6 +104,8 @@ public:
 	ENGINE_API bool FindClosestPoint2D(math::float3& initial) const;
 	ENGINE_API bool IsValidPosition(math::float3& position) const;
 
+	ENGINE_API bool IsCursorPointingToNavigableZone(float xPickingCorrection = 0.0f, float yPickingCorrection = 0.0f, float zPickingCorrection = 0.0f) const;
+
 	ENGINE_API void setPlayerBB(math::AABB bbox);
 
 	void RecalcPath(math::float3 point);

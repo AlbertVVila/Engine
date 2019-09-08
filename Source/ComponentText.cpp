@@ -53,7 +53,7 @@ void Text::DrawProperties()
 		{
 			return;
 		}
-		ImGui::InputInt("UI Order", &uiOrder);
+		ImGui::InputInt("UI Order##Text", &uiOrder);
 
 		//text value
 		char* imguiText = new char[MAX_TEXT_LENGTH];

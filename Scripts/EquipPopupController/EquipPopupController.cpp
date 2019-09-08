@@ -107,7 +107,7 @@ void EquipPopupController::Start()
 void EquipPopupController::Update()
 {
 	//Check if has to close PopUp
-	if (gameobject->isActive() && !backgroundSkills->isHovered && !backgroundItems->isHovered && !items->IsHovered() && !skills->IsHovered() && (App->input->GetMouseButtonDown(1) == KEY_DOWN || App->input->GetMouseButtonDown(3) == KEY_DOWN))
+	if (gameobject->isActive() && !backgroundSkills->isHovered && !backgroundItems->isHovered && !items->IsHovered() && !skills->IsHovered() && (App->input->GetMouseButtonDown(1) == KEY_UP || App->input->GetMouseButtonDown(3) == KEY_UP))
 	{
 		gameobject->SetActive(false);
 		return;
@@ -116,7 +116,7 @@ void EquipPopupController::Update()
 	//Check if has to open PopUp
 	for (int i = 0; i < HUD_BUTTONS; ++i)
 	{
-		if (hudButtons[i]->IsHovered() && App->input->GetMouseButtonDown(3) == KEY_DOWN) {
+		if (hudButtons[i]->IsHovered() && App->input->GetMouseButtonDown(3) == KEY_UP) {
 			activeButton = i;
 			if (!gameobject->isActive())
 			{
@@ -135,7 +135,7 @@ void EquipPopupController::Update()
 	ChangePopUpSlots();
 
 
-	if (unequip->IsPressed())
+	if (unequip->KeyUp())
 	{
 		CleanButton();
 	}
@@ -156,7 +156,7 @@ void EquipPopupController::Update()
 				hoverTransform->gameobject->SetActive(true);
 
 				//TODO: Show info
-				if (App->input->GetMouseButtonDown(1) == KEY_DOWN)
+				if (App->input->GetMouseButtonDown(1) == KEY_UP)
 				{
 					Assign(i);
 				}
@@ -178,7 +178,7 @@ void EquipPopupController::Update()
 				hoverTransform->gameobject->SetActive(true);
 
 				//TODO: Show info
-				if (App->input->GetMouseButtonDown(1) == KEY_DOWN)
+				if (App->input->GetMouseButtonDown(1) == KEY_UP)
 				{
 					Assign(i);
 				}
@@ -242,14 +242,14 @@ void EquipPopupController::RemoveEquiped()
 
 void EquipPopupController::ChangePopUpSlots()
 {
-	if (items->IsPressed() && popupGOSkills->isActive())
+	if (items->KeyUp() && popupGOSkills->isActive())
 	{
 		popupGOItems->SetActive(true);
 		popupGOSkills->SetActive(false);
 		FillItemSlots();
 	}
 
-	if (skills->IsPressed() && !popupGOSkills->isActive())
+	if (skills->KeyUp() && !popupGOSkills->isActive())
 	{
 		popupGOItems->SetActive(false);
 		popupGOSkills->SetActive(true);

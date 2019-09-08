@@ -33,6 +33,7 @@ public:
 	void DrawProperties();
 
 	ENGINE_API void Update();
+	void PreUpdate();
 	ENGINE_API inline bool isActive() const
 	{
 		if (!activeInHierarchy) return false;
@@ -77,7 +78,7 @@ public:
 	void SetLightUniforms(unsigned shader) const;
 	void LinkRendererToBones(std::vector<ComponentRenderer*>& renderers);
 
-	void LinkBones() const;
+	ENGINE_API void LinkBones() const;
 
 	void UpdateToPrefab(GameObject* prefab);
 	bool ChildPrefab() const;

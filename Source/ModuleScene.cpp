@@ -152,6 +152,7 @@ update_status ModuleScene::Update(float dt)
 {
 	BROFILER_CATEGORY("Scene Update", Profiler::Color::Green);
 	root->UpdateTransforms(math::float4x4::identity);
+	root->PreUpdate();
 	root->Update();
 	root->CheckDelete();
 
@@ -369,6 +370,10 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 		if (maincamera->frustum->Intersects(go->GetBoundingBox()))
 		{
 			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponentOld(ComponentType::Renderer);
+			if (!cr)
+			{
+				cr = ((ComponentVolumetricLight*)go->GetComponentOld(ComponentType::VolumetricLight))->renderer;
+			}
 			if (cr && !cr->useAlpha)
 			{
 				DrawGOGame(*go);
@@ -381,7 +386,7 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	}	
 
 	alphaRenderers.sort(
-		[frustum](const ComponentRenderer* cr1, const ComponentRenderer* cr2) -> bool
+		[frustum](const Component* cr1, const Component* cr2) -> bool
 	{
 		return cr1->gameobject->transform->GetGlobalPosition().Distance(frustum.pos) > cr2->gameobject->transform->GetGlobalPosition().Distance(frustum.pos);
 	});
@@ -399,16 +404,17 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 		{
 			if (!cr->enabled) continue;
 
-#ifndef GAME_BUILD
 			switch (cr->type)
 			{
 				case ComponentType::Renderer:
 					glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+#ifndef GAME_BUILD
+
 					DrawGO(*cr->gameobject, camFrustum, isEditor);
 #else
-				DrawGOGame(*cr->gameobject);
+					DrawGOGame(*cr->gameobject);
 #endif
-				break;
+					break;
 				case ComponentType::Trail:
 				{
 					ComponentTrail* trail = (ComponentTrail*)cr;
@@ -428,7 +434,11 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 				{
 					ComponentParticles* particles = (ComponentParticles*)cr;
 					glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+#ifndef GAME_BUILD
 					particles->Update(App->time->gameDeltaTime, camFrustum.pos);
+#else
+					particles->Update(App->time->gameDeltaTime, camera->frustum->pos);
+#endif
 					App->particles->DrawParticleSystem(particles, camera);
 					break;
 				}
@@ -457,7 +467,7 @@ void ModuleScene::DrawGOGame(const GameObject& go)
 		}
 		else
 		{
-			if (crenderer->mesh->bindBones.size() > 0)
+			if (crenderer->mesh->bindBones.size() > 0 && !crenderer->avoidSkinning)
 			{
 				variation |= (unsigned)ModuleProgram::PBR_Variations::SKINNED;
 			}
@@ -578,7 +588,7 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 		}
 		else
 		{
-			if (mesh != nullptr && mesh->bindBones.size() > 0)
+			if (mesh != nullptr && mesh->bindBones.size() > 0 && !crenderer->avoidSkinning)
 			{
 				variation |= (unsigned)ModuleProgram::PBR_Variations::SKINNED;
 			}
@@ -662,6 +672,10 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 		glUniform3fv(glGetUniformLocation(shader->id[variation],
 			"highlightColorUniform"), 1, (GLfloat*) zero);
 	}
+	
+	glUniform1f(glGetUniformLocation(shader->id[variation], "sliceAmount"), crenderer->dissolveAmount);
+	glUniform1f(glGetUniformLocation(shader->id[variation], "borderAmount"), crenderer->borderAmount);
+
 	if (mesh != nullptr)
 	{
 		crenderer->DrawMesh(shader->id[variation]);
@@ -1906,7 +1920,7 @@ math::LineSegment ModuleScene::SceneRaycast(math::float2 position)
 		math::float2 winPos = App->renderer->viewGame->winPos;
 		math::float2 size(App->renderer->viewGame->current_width, App->renderer->viewGame->current_height);
 #else
-		math::float2 pos = math::float2::zero;
+		math::float2 winPos = math::float2::zero;
 		math::float2 size(App->window->width, App->window->height);
 #endif
 		normalized_x = ((position.x - winPos.x) / size.x) * 2 - 1; //0 to 1 -> -1 to 1

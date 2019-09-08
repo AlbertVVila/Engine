@@ -3,6 +3,8 @@
 #include "ModuleScript.h"
 #include "ModuleFileSystem.h"
 #include "ModuleTime.h"
+#include "ModuleUI.h"
+#include "MouseController.h"
 
 #include "GameObject.h"
 #include "Component.h"
@@ -87,11 +89,22 @@ update_status ModuleScript::Update(float dt)
 {
 	if (dllRemoveList.size() > 0)
 	{
-		for (std::string name : dllRemoveList)
+		std::set<std::string>::iterator it;
+		while (!dllRemoveList.empty())
 		{
-			RemoveDLL(name);
+			it = dllRemoveList.begin();
+			while (it != dllRemoveList.end())
+			{
+				if (RemoveDLL(*it, true))
+				{
+					dllRemoveList.erase(it++);
+				}
+				else
+				{
+					++it;
+				}
+			}
 		}
-		dllRemoveList.clear();
 	}
 	if (!scriptsToReload.empty())
 	{
@@ -117,6 +130,7 @@ update_status ModuleScript::Update(float dt)
 				{
 					componentsScript[i]->Start();
 					componentsScript[i]->hasBeenStarted = true;
+					componentsScript[i]->SetGameStandarCursor(App->ui->gameStandarCursor);
 				}
 			}
 		}
@@ -130,6 +144,9 @@ update_status ModuleScript::Update(float dt)
 	{
 		ResetScriptFlags();
 	}
+
+	ManageStartAndStopCursorIcon();
+
 	onStart = App->time->gameState == GameState::STOP;
 	return status;
 }
@@ -325,7 +342,7 @@ void ModuleScript::InitializeScript(Script* script)
 	}
 }
 
-bool ModuleScript::RemoveDLL(const std::string& name)
+bool ModuleScript::RemoveDLL(const std::string& name, bool ignoreInMemory)
 {
 	std::map<std::string, std::pair<HINSTANCE, int>>::iterator itDll = loadedDLLs.find(name);
 	if (itDll != loadedDLLs.end())
@@ -341,7 +358,7 @@ bool ModuleScript::RemoveDLL(const std::string& name)
 			LOG("CAN'T RELEASE %s", name);
 			return false;
 		}
-		if (GetModuleHandle((name + DLL).c_str()) != 0)
+		if (!ignoreInMemory && GetModuleHandle((name + DLL).c_str()) != 0)
 		{
 			LOG("DLL still in memory");
 			return false;
@@ -520,4 +537,20 @@ std::string ModuleScript::GetLastErrorAsString()
 	LocalFree(messageBuffer);
 
 	return message;
+}
+
+void ModuleScript::ManageStartAndStopCursorIcon()
+{
+	if (App->time->gameState == GameState::RUN && changeStartCursorIcon)
+	{
+		MouseController::ChangeCursorIcon(App->ui->gameStandarCursor);
+		changeStartCursorIcon = false;
+		changeStopCursorIcon = true;
+	}
+	else if (App->time->gameState == GameState::STOP && changeStopCursorIcon)
+	{
+		MouseController::ChangeWindowsCursorIcon();
+		changeStartCursorIcon = true;
+		changeStopCursorIcon = false;
+	}
 }
