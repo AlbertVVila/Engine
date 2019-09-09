@@ -1,13 +1,11 @@
 {
     "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1563536371,
         "GUID": 1519152641,
-        "timeCreated": 1557418424,
-        "height": 1600,
-        "width": 1600,
-        "depth": 1,
-        "mips": 0,
-        "format": 6400,
-        "DX compresion": 1802,
-        "mipmap": 0
+        "Name": "armor",
+        "File": "Assets/UI/Inventory/armor.png",
+        "ExportedFile": "Library/Textures/1519152641.dds",
+        "DX compresion": 1802
     }
 }

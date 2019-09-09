@@ -37,7 +37,7 @@ public:
 
 	Script* GetScript(const std::string& name);
 	bool RemoveScript(Script* script, const std::string& name);
-	bool RemoveDLL(const std::string & name);
+	bool RemoveDLL(const std::string & name, bool ignoreInMemory = false);
 
 private:
 	void Monitorize();
@@ -49,6 +49,7 @@ private:
 	void InitializeScript(Script* script);
 	void SaveScript(Script* script);
 	void ResetScriptFlags();
+	void ManageStartAndStopCursorIcon();
 
 	std::string GetLastErrorAsString();
 
@@ -70,6 +71,9 @@ private:
 	std::thread monitorThread;
 	bool monitorizing = true;
 	bool threadIsWorking = false;
+
+	bool changeStartCursorIcon = true;
+	bool changeStopCursorIcon = true;
 };
 
 #endif __ModuleScript_h__

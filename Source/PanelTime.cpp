@@ -1,3 +1,6 @@
+#define OEMRESOURCE
+#include <windows.h>
+
 #include "Application.h"
 
 #include "ModuleWindow.h"
@@ -7,6 +10,8 @@
 
 #include "PanelTime.h"
 #include "GameObject.h"
+
+#include "PlayerPrefs.h"
 
 #include "imgui.h"
 
@@ -51,6 +56,7 @@ void PanelTime::Draw()
 		{
 			App->time->StopGameClock();
 			App->scene->LoadTemporaryScene();
+			PlayerPrefs::DeleteAll(true);
 		}
 	}
 

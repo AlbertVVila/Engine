@@ -1,14 +1,30 @@
 {
-    "Mesh": {
+    "Model": {
+        "metaVersion": 2,
+        "timeCreated": 1563536365,
         "GUID": 1687783647,
-        "timeCreated": 1557418423,
         "NumMeshes": 2,
-        "Mesh0": 1166269588,
-        "Mesh1": 3851222554
+        "NumAnimations": 1
     },
-    "Animation": {
-        "timeCreated": 1557418423,
-        "NumAnimations": 1,
-        "Animation0": 1674100658
+    "Mesh0": {
+        "MeshNumber": 0,
+        "GUID": 1166269588,
+        "Name": "Player_0",
+        "File": "Assets/Models/Player/Player.fbx",
+        "ExportedFile": "Library/Meshes/1166269588.m3sh"
+    },
+    "Mesh1": {
+        "MeshNumber": 1,
+        "GUID": 3851222554,
+        "Name": "Player_1",
+        "File": "Assets/Models/Player/Player.fbx",
+        "ExportedFile": "Library/Meshes/3851222554.m3sh"
+    },
+    "Animation0": {
+        "AnimationNumber": 0,
+        "GUID": 1483784160,
+        "Name": "Player_0",
+        "File": "Assets/Models/Player/Player.fbx",
+        "ExportedFile": "Library/Animations/1483784160.animati0n"
     }
 }

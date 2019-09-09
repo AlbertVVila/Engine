@@ -20,6 +20,7 @@ class PlayerMovement;
 class EnemyLoot;
 class ExperienceController;
 class ResourceMaterial;
+class CombatAudioEvents;
 
 
 class EnemyControllerScript_API EnemyControllerScript : public Script
@@ -40,13 +41,17 @@ class EnemyControllerScript_API EnemyControllerScript : public Script
 public:
 	void TakeDamage(unsigned damage);
 	int GetHealth() const { return actualHealth; }
+	int GetMaxHealth() const { return maxHealth; }
 
 	inline math::float3 GetPosition() const;					// Get position of the enemy (GO with this script attached)
 	inline math::Quat GetRotation() const;						// Get rotation of the enemy (GO with this script attached)
 	inline math::float3 GetPlayerPosition() const;
+	inline void SetPosition(math::float3 newPos) const;
 	inline float GetDistanceTo(math::float3& position) const;	// Get distance of the enemy to position given as argument
 	inline float GetDistanceTo2D(math::float3& position) const;	// Get distance of the enemy to position given as argument only taking XZ plane as reference
 	inline float GetDistanceToPlayer2D() const;
+
+	inline ComponentRenderer* GetMainRenderer() const;			// Gets the main renderer of the enemy (first ComponentRenderer stored in myRenders)
 
 	inline bool IsCollidingWithPlayer() const;
 
@@ -61,9 +66,10 @@ public:
 	GameObject* player = nullptr;
 	PlayerMovement* playerMovement = nullptr;
 	std::string playerTag = "Player";
+	std::string enemyCursor = "RedGlow.cur";
 	std::string hitMaterialName = "HitMaterial";
 	ComponentAnimation* anim = nullptr;
-	ComponentRenderer* myRender = nullptr;
+	std::vector<ComponentRenderer*> myRenders;
 
 	DamageController* damageController = nullptr;
 	EnemyLifeBarController* enemyLifeBar = nullptr;
@@ -86,13 +92,16 @@ public:
 	ResourceMaterial* hitMaterial = nullptr;
 	ResourceMaterial* defaultMaterial = nullptr;
 
+	CombatAudioEvents* combataudioevents = nullptr;
+
 private:
 	int actualHealth = 20;
 	int maxHealth = 20;
 	int experience = 20;
 
 	float hitColorDuration = 0.2f;
-	float timer = 0.f;
+	float hitColorTimer = 0.f;
+	bool enemyHit = false;
 
 };
 

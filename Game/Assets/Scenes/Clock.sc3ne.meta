@@ -1,5 +1,10 @@
 {
     "Scene": {
-        "GUID": 887225379
+        "metaVersion": 2,
+        "timeCreated": 1563536366,
+        "GUID": 887225379,
+        "Name": "Clock",
+        "File": "Assets/Scenes/Clock.sc3ne",
+        "ExportedFile": "Library/Scenes/887225379.sc3ne"
     }
 }

@@ -1,7 +1,11 @@
 {
     "Material": {
+        "metaVersion": 2,
+        "timeCreated": 1563536364,
         "GUID": 2579359314,
-        "timeCreated": 1562862480,
+        "Name": "Small_Skeleton",
+        "File": "Assets/Materials/Small_Skeleton.m4t",
+        "ExportedFile": "Library/Materials/2579359314.m4t",
         "DifusseColor": [
             1.0,
             1.0,
@@ -17,6 +21,10 @@
             1.0,
             1.0,
             1.0
-        ]
+        ],
+        "diffuseUID": 1427850585,
+        "normalUID": 3661103478,
+        "dissolveUID": 3100838409,
+        "shader": "PBR"
     }
 }

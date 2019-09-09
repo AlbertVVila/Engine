@@ -42,6 +42,20 @@ ComponentRenderer::ComponentRenderer(const ComponentRenderer& component) : Compo
 	useAlpha = component.useAlpha;
 	highlighted = component.highlighted;
 	highlightColor = component.highlightColor;
+	dissolve = component.dissolve;
+	dissolveAmount = component.dissolveAmount;
+	borderAmount = component.borderAmount;
+	water = component.water;
+	avoidSkinning = component.avoidSkinning;
+	waterAmplitude1 = component.waterAmplitude1;
+	waterAmplitude2 = component.waterAmplitude2;
+	waterSource1 = component.waterSource1;
+	waterSource2 = component.waterSource2;
+	waterDecay1 = component.waterDecay1;
+	waterDecay2 = component.waterDecay2;
+	uvScaler = component.uvScaler;
+	distorsionSpeed = component.distorsionSpeed;
+	isVolumetricLight = component.isVolumetricLight;
 }
 
 ComponentRenderer::~ComponentRenderer()
@@ -236,6 +250,15 @@ void ComponentRenderer::Save(JSON_value* value) const
 	value->AddFloat3("waterSource2", waterSource2);
 	value->AddFloat2("uvScaler", uvScaler);
 	value->AddFloat("distorsionSpeed", distorsionSpeed);
+
+	if (dissolveAmount != 0.0f) //Avoid writing in disk unused info
+	{
+		value->AddFloat("dissolveAmount", dissolveAmount);
+	}
+	if (borderAmount != 0.0f)
+	{
+		value->AddFloat("borderAmount", borderAmount);
+	}
 }
 
 void ComponentRenderer::Load(JSON_value* value)
@@ -273,6 +296,8 @@ void ComponentRenderer::Load(JSON_value* value)
 	waterSource2 = value->GetFloat3("waterSource2");
 	uvScaler = value->GetFloat2("uvScaler");
 	distorsionSpeed = value->GetFloat("distorsionSpeed", distorsionSpeed);
+	dissolveAmount = value->GetFloat("dissolveAmount", dissolveAmount);
+	borderAmount = value->GetFloat("borderAmount", borderAmount);
 }
 
 void ComponentRenderer::SetMaterial(const char* materialName)

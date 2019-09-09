@@ -1,13 +1,11 @@
 {
     "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1563536371,
         "GUID": 796199419,
-        "timeCreated": 1557418424,
-        "height": 64,
-        "width": 36,
-        "depth": 1,
-        "mips": 0,
-        "format": 6408,
-        "DX compresion": 1802,
-        "mipmap": 0
+        "Name": "arrowOrange",
+        "File": "Assets/UI/arrowOrange.png",
+        "ExportedFile": "Library/Textures/796199419.dds",
+        "DX compresion": 1802
     }
 }

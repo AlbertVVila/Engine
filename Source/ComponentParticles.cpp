@@ -57,12 +57,12 @@ ComponentParticles::ComponentParticles(const ComponentParticles& component) : Co
 	directionNoise = component.directionNoise;
 	directionNoiseProbability = component.directionNoiseProbability;
 	directionNoiseTotalProbability = component.directionNoiseTotalProbability;
-	App->particles->AddParticleSystem(this);
-	modules.push_back(new PMSizeOverTime());
-	modules.push_back(new PMColorOverTime());
 	actualEmisor = component.actualEmisor;
 	alternateEmisor(actualEmisor);
 
+	App->particles->AddParticleSystem(this);
+	modules.push_back(new PMSizeOverTime(*(PMSizeOverTime*)component.modules[0]));
+	modules.push_back(new PMColorOverTime(*(PMColorOverTime*)component.modules[1]));
 }
 
 ComponentParticles::~ComponentParticles()
@@ -97,8 +97,11 @@ void ComponentParticles::DrawProperties()
 	if (ImGui::CollapsingHeader("Particle System")) 
 	{
 		bool removed = Component::DrawComponentState();
-		if (removed)	
+		if (removed)
+		{
+			ImGui::PopID();
 			return;
+		}
 
 		ImGui::Text("Particles active %d", particles.size());
 		//texture selector
@@ -116,7 +119,10 @@ void ComponentParticles::DrawProperties()
 			if (none_selected)
 				ImGui::SetItemDefaultFocus();
 
-			textureFiles = App->resManager->GetResourceNamesList(TYPE::TEXTURE, true);
+			if (textureFiles.empty())
+			{
+				textureFiles = App->resManager->GetResourceNamesList(TYPE::TEXTURE, true);
+			}
 
 			for (int n = 0; n < textureFiles.size(); n++)
 			{
@@ -614,9 +620,7 @@ void ComponentParticles::Load(JSON_value* value)
 	{
 		float alphaVal = value->GetFloat((std::string("alpha") + std::to_string(i)).c_str());
 		COTAux->Imgradient->addAlphaMark(value->GetFloat((std::string("alphaPosition") + std::to_string(i)).c_str()), alphaVal);
-		
 	}
-	int x = 0;
 }
 
 void ComponentParticles::alternateEmisor(int newEmisor)

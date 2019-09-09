@@ -36,6 +36,10 @@ ComponentTransform::ComponentTransform(const ComponentTransform& component) : Co
 	scale = component.scale;
 	local = component.local;
 	global = component.global;
+
+	up = component.up;
+	right = component.right;
+	front = component.front;
 }
 
 
@@ -395,7 +399,7 @@ ENGINE_API void ComponentTransform::SetGlobalPosition(const math::float3 & newPo
 
 void ComponentTransform::NewAttachment()
 {
-	if (gameobject->parent->transform)
+	if (gameobject->parent != nullptr && gameobject->parent->transform != nullptr)
 	{
 		local = gameobject->parent->transform->global.Inverted().Mul(global);
 	}

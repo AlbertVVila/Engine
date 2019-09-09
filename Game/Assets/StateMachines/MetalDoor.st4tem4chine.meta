@@ -1,7 +1,10 @@
 {
     "StateMachine": {
+        "metaVersion": 2,
+        "timeCreated": 1563536366,
         "GUID": 2946608758,
-        "timeCreated": 1562862483,
-        "name": "MetalDoor"
+        "Name": "MetalDoor",
+        "File": "Assets/StateMachines/MetalDoor.st4tem4chine",
+        "ExportedFile": "Library/StateMachines/2946608758.st4tem4chine"
     }
 }

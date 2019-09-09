@@ -32,6 +32,7 @@ public:
 
 	void DrawProperties();
 
+	void PreUpdate();
 	void Update();
 	ENGINE_API inline bool isActive() const
 	{
@@ -76,6 +77,8 @@ public:
 	void UpdateModel(unsigned int shader) const;
 	void SetLightUniforms(unsigned shader) const;
 	void LinkRendererToBones(std::vector<ComponentRenderer*>& renderers);
+
+	ENGINE_API void LinkBones() const;
 
 	void UpdateToPrefab(GameObject* prefab);
 	bool ChildPrefab() const;

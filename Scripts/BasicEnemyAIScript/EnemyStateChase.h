@@ -7,8 +7,8 @@ class EnemyStateChase :
 	public EnemyState
 {
 public:
-	EnemyStateChase(BasicEnemyAIScript* AIScript);
-	~EnemyStateChase();
+	BasicEnemyAIScript_API EnemyStateChase(BasicEnemyAIScript* AIScript);
+	BasicEnemyAIScript_API ~EnemyStateChase();
 
 	void HandleIA() override;
 	void Update() override;

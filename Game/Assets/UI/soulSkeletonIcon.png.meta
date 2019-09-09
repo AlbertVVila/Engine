@@ -1,13 +1,11 @@
 {
     "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1563536371,
         "GUID": 3226539889,
-        "timeCreated": 1557418424,
-        "height": 50,
-        "width": 136,
-        "depth": 1,
-        "mips": 0,
-        "format": 6408,
-        "DX compresion": 1802,
-        "mipmap": 0
+        "Name": "soulSkeletonIcon",
+        "File": "Assets/UI/soulSkeletonIcon.png",
+        "ExportedFile": "Library/Textures/3226539889.dds",
+        "DX compresion": 1802
     }
 }

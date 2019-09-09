@@ -7,8 +7,8 @@ class EnemyStateCooldown :
 	public EnemyState
 {
 public:
-	EnemyStateCooldown(BasicEnemyAIScript* AIScript);
-	~EnemyStateCooldown();
+	BasicEnemyAIScript_API EnemyStateCooldown(BasicEnemyAIScript* AIScript);
+	BasicEnemyAIScript_API ~EnemyStateCooldown();
 
 	void HandleIA() override;
 	void Update() override;

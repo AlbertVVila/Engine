@@ -20,7 +20,7 @@ ComponentBoxTrigger::ComponentBoxTrigger() : Component(nullptr, ComponentType::B
 	boxTrigger->axis[1] = math::float3::unitY;
 	boxTrigger->axis[2] = math::float3::unitZ;
 
-	App->collisions->AddBox(this, isPlayer);
+	App->collisions->AddBox(this, boxType);
 }
 
 ComponentBoxTrigger::ComponentBoxTrigger(GameObject * gameobject) : Component(gameobject, ComponentType::BoxTrigger)
@@ -33,7 +33,7 @@ ComponentBoxTrigger::ComponentBoxTrigger(GameObject * gameobject) : Component(ga
 	boxTrigger->axis[1] = math::float3::unitY;
 	boxTrigger->axis[2] = math::float3::unitZ;
 
-	App->collisions->AddBox(this, isPlayer);
+	App->collisions->AddBox(this, boxType);
 }
 
 ComponentBoxTrigger::ComponentBoxTrigger(const ComponentBoxTrigger & component) : Component(component)
@@ -42,7 +42,7 @@ ComponentBoxTrigger::ComponentBoxTrigger(const ComponentBoxTrigger & component) 
 
 	size = component.size;
 	position = component.position;
-	isPlayer = component.isPlayer;
+	boxType = component.boxType;
 	debugDraw = component.debugDraw;
 
 	boxTrigger->r = size;
@@ -51,7 +51,7 @@ ComponentBoxTrigger::ComponentBoxTrigger(const ComponentBoxTrigger & component) 
 	boxTrigger->axis[1] = component.boxTrigger->axis[1];
 	boxTrigger->axis[2] = component.boxTrigger->axis[2];
 
-	App->collisions->AddBox(this, isPlayer);
+	App->collisions->AddBox(this, boxType);
 }
 
 ComponentBoxTrigger::~ComponentBoxTrigger()
@@ -95,8 +95,25 @@ void ComponentBoxTrigger::DrawProperties()
 
 		ImGui::Checkbox("Draw Debug Box", &debugDraw);
 
-		bool propIsPlayer = isPlayer;
-		if (ImGui::Checkbox("Is Player?", &propIsPlayer)) SetIsPlayer(propIsPlayer);
+		bool propIsPlayerHp = boxType == BoxTriggerType::PlayerHp;
+		bool propIsPlayerAttack = boxType == BoxTriggerType::PlayerAttack;
+		bool propIsEnemyHp = boxType == BoxTriggerType::EnemyHp;
+		bool propIsEnemyAttack = boxType == BoxTriggerType::EnemyAttack;
+		bool propIsOther = boxType == BoxTriggerType::Other;
+
+		ImGui::Separator();
+		ImGui::Text("BoxTrigger Type"); //It's ok that you can't uncheck since you shouldnt be able to have another type
+
+		if (ImGui::Checkbox("PlayerHp", &propIsPlayerHp)) SetBoxType(BoxTriggerType::PlayerHp);
+		ImGui::SameLine();
+		if (ImGui::Checkbox("PlayerAttack", &propIsPlayerAttack)) SetBoxType(BoxTriggerType::PlayerAttack);
+
+		if (ImGui::Checkbox("EnemyHp", &propIsEnemyHp)) SetBoxType(BoxTriggerType::EnemyHp);
+		ImGui::SameLine();
+		if (ImGui::Checkbox("EnemyAttack", &propIsEnemyAttack)) SetBoxType(BoxTriggerType::EnemyAttack);
+
+		if (ImGui::Checkbox("Other", &propIsOther)) SetBoxType(BoxTriggerType::Other);
+		ImGui::Separator();
 
 		ImGui::DragFloat3("Position", position.ptr(), 0.1F, 0.0F, 20.0F);
 		if (ImGui::DragFloat3("Size", size.ptr(), 0.1F, 0.0F, 20.0F)) boxTrigger->r = size;
@@ -227,10 +244,10 @@ void ComponentBoxTrigger::DrawDebug()
 	delete[] corners;
 }
 
-void ComponentBoxTrigger::SetIsPlayer(bool isPlayer)
+void ComponentBoxTrigger::SetBoxType(BoxTriggerType boxType)
 {
-	this->isPlayer = isPlayer;
-	App->collisions->AddBox(this, isPlayer);
+	this->boxType = boxType;
+	App->collisions->AddBox(this, boxType);
 }
 
 void ComponentBoxTrigger::AddOverlap(const ComponentBoxTrigger * other)
@@ -271,7 +288,7 @@ void ComponentBoxTrigger::Save(JSON_value * value) const
 	Component::Save(value);
 	value->AddFloat3("pos", position);
 	value->AddFloat3("r", size);
-	value->AddInt("is_player", isPlayer ? 1 : 0);
+	value->AddUint("boxType", (unsigned)boxType);
 	value->AddInt("debug_draw", debugDraw ? 1 : 0);
 }
 
@@ -280,9 +297,9 @@ void ComponentBoxTrigger::Load(JSON_value * value)
 	Component::Load(value);
 	position = value->GetFloat3("pos");
 	size = value->GetFloat3("r");
-	isPlayer = (value->GetInt("is_player") > 0);
+	boxType = (BoxTriggerType) value->GetUint("boxType");
 	debugDraw = (value->GetInt("debug_draw") > 0);
-	SetIsPlayer(isPlayer);
+	SetBoxType(boxType);
 	boxTrigger->r = size;
 }
 

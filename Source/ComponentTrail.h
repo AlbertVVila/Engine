@@ -8,7 +8,7 @@
 #include "Math/float4.h"
 
 class ParticleModule;
-
+class ResourceTexture;
 
 struct TrailPoint
 {
@@ -50,13 +50,14 @@ public:
 	void DrawProperties() override;
 	void Save(JSON_value* value) const override;
 	void Load(JSON_value* value) override;
+	virtual void Enable(bool enable) override;
 
 	ComponentTrail* Clone() const;
 	std::queue<TrailPoint> trail;
 	std::vector<ParticleModule*> modules;
 	ResourceTexture* texture = nullptr;
 
-private:
+public:
 
 	float width = 100.f;
 	float duration = .5f;

@@ -1,13 +1,11 @@
 {
     "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1563536371,
         "GUID": 917851612,
-        "timeCreated": 1562862496,
-        "height": 170,
-        "width": 643,
-        "depth": 1,
-        "mips": 0,
-        "format": 6408,
-        "DX compresion": 1802,
-        "mipmap": 0
+        "Name": "BackgroundNaming",
+        "File": "Assets/UI/BackgroundNaming.png",
+        "ExportedFile": "Library/Textures/917851612.dds",
+        "DX compresion": 1802
     }
 }

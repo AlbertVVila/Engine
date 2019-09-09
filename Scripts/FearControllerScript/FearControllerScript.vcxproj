@@ -132,7 +132,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;FearControllerScript_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\BaseScript;$(SolutionDir)\Source;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\BasicEnemyAIScript\;$(SolutionDir)\Scripts\EnemyControllerScript\;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Source\OpenCV;..\BaseScript;$(SolutionDir)\Source;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\BasicEnemyAIScript\;$(SolutionDir)\Scripts\EnemyControllerScript\;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -188,7 +188,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;FearControllerScript_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\BaseScript;$(SolutionDir)\Source;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\BasicEnemyAIScript\;$(SolutionDir)\Scripts\EnemyControllerScript\;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Source\OpenCV;..\BaseScript;$(SolutionDir)\Source;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\BasicEnemyAIScript\;$(SolutionDir)\Scripts\EnemyControllerScript\;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

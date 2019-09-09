@@ -2,21 +2,25 @@
 #define __ENEMYSTATEATTACK_H_
 
 #include "EnemyState.h"
+class ComponentTrail;
 
 class EnemyStateAttack :
 	public EnemyState
 {
 public:
-	EnemyStateAttack(BasicEnemyAIScript* AIScript);
-	~EnemyStateAttack();
+	BasicEnemyAIScript_API EnemyStateAttack(BasicEnemyAIScript* AIScript);
+	BasicEnemyAIScript_API ~EnemyStateAttack();
 
 	void HandleIA() override;
 	void Update() override;
 
-private:
+	ComponentTrail* trailPunch = nullptr;
+
+protected:
+	BasicEnemyAIScript_API virtual void PunchFX(bool active);
 
 	bool attacked = false;
-	void Attack();
+	BasicEnemyAIScript_API virtual void Attack();
 };
 
 #endif __ENEMYSTATEATTACK_H_

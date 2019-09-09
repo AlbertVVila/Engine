@@ -1,13 +1,11 @@
 {
     "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1564156738,
         "GUID": 2698506665,
-        "timeCreated": 1562862492,
-        "height": 1024,
-        "width": 1024,
-        "depth": 1,
-        "mips": 0,
-        "format": 32992,
-        "DX compresion": 1802,
-        "mipmap": 0
+        "Name": "E01_tomb1_cross_df",
+        "File": "Assets/TexturesLevel0/Tomb_1_Cross/E01_tomb1_cross_df.tga",
+        "ExportedFile": "Library/Textures/2698506665.dds",
+        "DX compresion": 1802
     }
 }

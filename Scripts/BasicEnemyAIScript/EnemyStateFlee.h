@@ -6,8 +6,8 @@ class EnemyStateFlee :
 	public EnemyState
 {
 public:
-	EnemyStateFlee(BasicEnemyAIScript* AIScript);
-	~EnemyStateFlee();
+	BasicEnemyAIScript_API EnemyStateFlee(BasicEnemyAIScript* AIScript);
+	BasicEnemyAIScript_API ~EnemyStateFlee();
 
 	void Enter() override;
 	void HandleIA() override;

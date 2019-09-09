@@ -1,13 +1,11 @@
 {
     "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1563536371,
         "GUID": 1938062722,
-        "timeCreated": 1557418424,
-        "height": 46,
-        "width": 46,
-        "depth": 1,
-        "mips": 0,
-        "format": 6408,
-        "DX compresion": 1802,
-        "mipmap": 0
+        "Name": "Inventario",
+        "File": "Assets/UI/HUD/Inventario.png",
+        "ExportedFile": "Library/Textures/1938062722.dds",
+        "DX compresion": 1802
     }
 }

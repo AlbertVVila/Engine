@@ -1,7 +1,11 @@
 {
     "Material": {
+        "metaVersion": 2,
+        "timeCreated": 1563536364,
         "GUID": 779578229,
-        "timeCreated": 1557418423,
+        "Name": "DollHouse",
+        "File": "Assets/Materials/DollHouse.m4t",
+        "ExportedFile": "Library/Materials/779578229.m4t",
         "DifusseColor": [
             1.0,
             1.0,
