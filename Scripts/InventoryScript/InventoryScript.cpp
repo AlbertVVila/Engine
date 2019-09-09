@@ -489,7 +489,7 @@ void InventoryScript::showDescription(int i)
 	else if (healthDiff < 0)
 		txt->color = math::float4(255, 0, 0, 255);
 	else
-		txt->color = math::float4(255, 255, 255, 255);
+		txt->color = math::float4(183, 153, 41, 255);
 	txt = App->scene->FindGameObjectByName("ItemStatsDexDiff", itemDesc)->GetComponent<Text>();
 	txt->text = std::to_string(dexDiff);
 	if (dexDiff > 0)
@@ -497,7 +497,7 @@ void InventoryScript::showDescription(int i)
 	else if (dexDiff < 0)
 		txt->color = math::float4(255, 0, 0, 255);
 	else
-		txt->color = math::float4(255, 255, 255, 255);
+		txt->color = math::float4(183, 153, 41, 255);
 	txt = App->scene->FindGameObjectByName("ItemStatsStrDiff", itemDesc)->GetComponent<Text>();
 	txt->text = std::to_string(strDiff);
 	if (strDiff > 0)
@@ -505,7 +505,7 @@ void InventoryScript::showDescription(int i)
 	else if (strDiff < 0)
 		txt->color = math::float4(255, 0, 0, 255);
 	else
-		txt->color = math::float4(255, 255, 255, 255);
+		txt->color = math::float4(183, 153, 41, 255);
 	txt = App->scene->FindGameObjectByName("ItemStatsSoulDiff", itemDesc)->GetComponent<Text>();
 	txt->text = std::to_string(manaDiff);
 	if (manaDiff > 0)
@@ -513,6 +513,6 @@ void InventoryScript::showDescription(int i)
 	else if (manaDiff < 0)
 		txt->color = math::float4(255, 0, 0, 255);
 	else
-		txt->color = math::float4(255, 255, 255, 255);
+		txt->color = math::float4(183, 153, 41, 255);
 	itemDesc->SetActive(true);
 }
