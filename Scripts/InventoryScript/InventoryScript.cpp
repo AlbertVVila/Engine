@@ -128,7 +128,14 @@ void InventoryScript::Update()
 
 		if (image->isHovered && imageHover == nullptr && i < INVENTARY_SLOTS)
 		{
-			showDescription(i);
+			for (int t = 0; t < items.size(); ++t)
+			{
+				if (items[t].second == i)
+				{
+					showDescription(t);
+					break;
+				}
+			}
 			imageHover = image;
 		}
 
