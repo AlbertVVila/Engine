@@ -59,6 +59,7 @@ private:
 	PlayerMovement* playerMovement = nullptr;
 
 	bool itemGrabbed = false;
+	bool changed = false;
 };
 
 extern "C" InventoryScript_API Script* CreateScript();

@@ -212,9 +212,10 @@ void InventoryScript::Update()
 							{
 								for (int l = 0; l < items.size(); ++l)
 								{
-									if (items[l].first.name == pair.first.name)
+									if (items[l].first.name == pair.first.name && !items[l].first.isEquipped)
 									{
-										items[l].first.isEquipped = !items[l].first.isEquipped;
+										items[l].first.isEquipped = true;
+										changed = true;
 										break;
 									}
 								}
@@ -229,9 +230,10 @@ void InventoryScript::Update()
 							{
 								for (int l = 0; l < items.size(); ++l)
 								{
-									if (items[l].first.name == pair.first.name)
+									if (items[l].first.name == pair.first.name && !items[l].first.isEquipped)
 									{
-										items[l].first.isEquipped = !items[l].first.isEquipped;
+										items[l].first.isEquipped = true;
+										changed = true;
 										break;
 									}
 								}
@@ -246,9 +248,10 @@ void InventoryScript::Update()
 							{
 								for (int l = 0; l < items.size(); ++l)
 								{
-									if (items[l].first.name == pair.first.name)
+									if (items[l].first.name == pair.first.name && !items[l].first.isEquipped)
 									{
-										items[l].first.isEquipped = !items[l].first.isEquipped;
+										items[l].first.isEquipped = true;
+										changed = true;
 										break;
 									}
 								}
@@ -263,9 +266,10 @@ void InventoryScript::Update()
 							{
 								for (int l = 0; l < items.size(); ++l)
 								{
-									if (items[l].first.name == pair.first.name)
+									if (items[l].first.name == pair.first.name && !items[l].first.isEquipped)
 									{
-										items[l].first.isEquipped = !items[l].first.isEquipped;
+										items[l].first.isEquipped = true;
+										changed = true;
 										break;
 									}
 								}
@@ -280,9 +284,10 @@ void InventoryScript::Update()
 							{
 								for (int l = 0; l < items.size(); ++l)
 								{
-									if (items[l].first.name == pair.first.name)
+									if (items[l].first.name == pair.first.name && !items[l].first.isEquipped)
 									{
-										items[l].first.isEquipped = !items[l].first.isEquipped;
+										items[l].first.isEquipped = true;
+										changed = true;
 										break;
 									}
 								}
@@ -297,9 +302,10 @@ void InventoryScript::Update()
 							{
 								for (int l = 0; l < items.size(); ++l)
 								{
-									if (items[l].first.name == pair.first.name)
+									if (items[l].first.name == pair.first.name && !items[l].first.isEquipped)
 									{
-										items[l].first.isEquipped = !items[l].first.isEquipped;
+										items[l].first.isEquipped = true;
+										changed = true;
 										break;
 									}
 								}
@@ -310,6 +316,21 @@ void InventoryScript::Update()
 						}
 
 						if (exit) break;
+					}
+					else
+					{
+						for (int l = 0; l < items.size(); ++l)
+						{
+							if (items[l].first.name == pair.first.name && items[l].first.isEquipped)
+							{
+								if (items[l].first.isEquipped)
+								{
+									items[l].first.isEquipped = false;
+								}
+								changed = true;
+								break;
+							}
+						}
 					}
 
 					moved = true;
@@ -342,15 +363,25 @@ void InventoryScript::Update()
 						}
 					}
 
-					if (pair.first.isEquipped)
+					if (changed)
 					{
-						playerMovement->Equip(pair.first.stats);
-					} 
-					else 
-					{
-						playerMovement->UnEquip(pair.first.stats);
+						for (int l = 0; l < items.size(); ++l)
+						{
+							if (items[l].first.name == pair.first.name)
+							{
+								if (items[l].first.isEquipped)
+								{
+									playerMovement->Equip(items[l].first.stats);
+								}
+								else
+								{
+									playerMovement->UnEquip(items[l].first.stats);
+								}
+								changed = false;
+								break;
+							}
+						}
 					}
-
 					break;
 				}
 			}
