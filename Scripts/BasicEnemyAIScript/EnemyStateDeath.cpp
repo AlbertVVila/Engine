@@ -2,6 +2,7 @@
 
 #include "GameObject.h"
 #include "BasicEnemyAIScript.h"
+#include "EnemyControllerScript.h"
 
 #include "Application.h"
 #include "ModuleScene.h"
@@ -12,6 +13,7 @@
 
 #include "Math/float3.h"
 #include "Algorithm/Random/LCG.h"
+
 
 EnemyStateDeath::EnemyStateDeath(BasicEnemyAIScript* AIScript)
 {
@@ -69,6 +71,8 @@ void EnemyStateDeath::Update()
 	if (waitedTime > deathDuration)
 	{
 		enemy->gameobject->SetActive(false);
+		enemy->enemyController->SetEnemyPositionAway();
+
 		if (bonesParent != nullptr)
 		{
 			bonesParent->SetActive(false);

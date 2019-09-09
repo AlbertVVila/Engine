@@ -25,5 +25,6 @@ void EnemyStateDeath::Update()
 	if (timer > waitTime)
 	{
 		enemy->gameobject->SetActive(false);
+		enemy->enemyController->SetEnemyPositionAway();
 	}
 }
