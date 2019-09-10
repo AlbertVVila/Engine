@@ -56,7 +56,8 @@ void PlayerStateWalkToHitEnemy::Update()
 		{
 			//something went wrong, stop moving
 			LOG("Error walking to hit enemy");
-			toIdle = true;
+			playerWalking = false;
+			return;
 		}
 	}
 
@@ -77,7 +78,8 @@ void PlayerStateWalkToHitEnemy::Update()
 		else
 		{
 			LOG("Error walking to hit enemy along the way");
-			toIdle = true;
+			playerWalking = false;
+			return;
 		}
 	}
 	if (path.size() > 0)
@@ -111,13 +113,13 @@ void PlayerStateWalkToHitEnemy::Update()
 	}
 	else
 	{
-		toIdle = true;
+		playerWalking = false;
 	}
 }
 
 void PlayerStateWalkToHitEnemy::Enter()
 {
-	toIdle = toAttack = false;
+	toAttack = false;
 	if (dustParticles)
 	{
 		dustParticles->SetActive(true);
@@ -127,16 +129,14 @@ void PlayerStateWalkToHitEnemy::Enter()
 
 void PlayerStateWalkToHitEnemy::CheckInput()
 {
-	if (toIdle)
+	if (!playerWalking)
 	{
-		playerWalking = false;
 		playerWalkingToHit = false;
 		player->currentState = player->idle;
 		if (dustParticles)
 		{
 			dustParticles->SetActive(false);
 		}
-		toIdle = false;
 		return;
 	}
 	if (toAttack)

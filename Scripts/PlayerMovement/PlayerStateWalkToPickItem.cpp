@@ -79,23 +79,25 @@ void PlayerStateWalkToPickItem::Update()
 		{
 			//done walking, get the item
 			player->itemClicked->pickedUpViaPlayer = true;
-			StopAndSwitchToIdle();
+			playerWalking = false;
+			return;
 		}
 		else 
 		{
-			StopAndSwitchToIdle();
+			playerWalking = false;
+			return;
 		}
 	}
 	//no path, stop
 	else
 	{
-		StopAndSwitchToIdle();
+		playerWalking = false;
+		return;
 	}
 }
 
 void PlayerStateWalkToPickItem::Enter()
 {
-	done = false;
 	if (dustParticles)
 	{
 		dustParticles->SetActive(true);
@@ -105,7 +107,7 @@ void PlayerStateWalkToPickItem::Enter()
 
 void PlayerStateWalkToPickItem::CheckInput()
 {
-	if (done)
+	if (!playerWalking)
 	{
 		//stop going after the item
 		player->itemClicked = nullptr;
@@ -116,7 +118,6 @@ void PlayerStateWalkToPickItem::CheckInput()
 		}
 		player->currentState = player->idle;
 		playerWalking = false;
-		done = false;
 		return;
 	}
 	if (player->IsUsingSkill() || (player->IsAttacking()))

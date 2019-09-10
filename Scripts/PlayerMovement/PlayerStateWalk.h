@@ -21,7 +21,6 @@ public:
 	GameObject* dustParticles = nullptr;
 
 private:
-	bool toIdle = false;
 	float moveTimer = 0.0f;
 	
 };

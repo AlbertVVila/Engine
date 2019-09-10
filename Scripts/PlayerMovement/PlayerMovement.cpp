@@ -1057,7 +1057,7 @@ bool PlayerMovement::IsPressingMouse1() const
 	math::float3 temp;
 	return ((App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(true, false)) ||
 		(currentState->playerWalking && !currentState->playerWalkingToHit) ||
-		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(true, false) && !App->scene->Intersects("PlayerMesh", false, temp))); //right button, the player is still walking or movement button is pressed and can get close to mouse pos
+		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(true, false) && !App->scene->Intersects("PlayerMesh", false, temp) && currentState->playerWalking)); //right button, the player is still walking or movement button is pressed and can get close to mouse pos
 }
 
 bool PlayerMovement::IsUsingRightClick() const
