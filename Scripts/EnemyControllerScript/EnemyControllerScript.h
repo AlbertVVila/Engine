@@ -100,6 +100,7 @@ private:
 	int maxHealth = 20;
 	int experience = 20;
 
+	math::float3 awayPosition = { 0.f,-100000.f,0.f };
 	float hitColorDuration = 0.2f;
 	float hitColorTimer = 0.f;
 	bool enemyHit = false;

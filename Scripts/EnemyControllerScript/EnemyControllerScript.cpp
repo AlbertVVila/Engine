@@ -27,8 +27,6 @@
 #include "imgui.h"
 #include "JSON.h"
 
-#define NARNIA {0,-100000,0}
-
 #define MINIMUM_PATH_DISTANCE 400.0f
 #define MOVE_REFRESH_TIME 0.3f
 
@@ -427,7 +425,7 @@ void EnemyControllerScript::Move(float speed, float& refreshTime, math::float3 p
 
 void EnemyControllerScript::SetEnemyPositionAway()
 {
-	gameobject->transform->SetGlobalPosition(NARNIA);
+	//gameobject->transform->SetGlobalPosition(awayPosition);
 }
 
 void EnemyControllerScript::LookAt2D(math::float3& position)

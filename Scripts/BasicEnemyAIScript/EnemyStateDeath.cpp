@@ -66,12 +66,15 @@ void EnemyStateDeath::Update()
 		{
 			bonesDeathFX->SetActive(false);
 		}
+		for (auto cr : enemy->enemyController->myRenders)
+		{
+			cr->castShadows = false;
+		}
 	}
 
 	if (waitedTime > deathDuration)
 	{
 		enemy->gameobject->SetActive(false);
-		enemy->enemyController->SetEnemyPositionAway();
 
 		if (bonesParent != nullptr)
 		{
