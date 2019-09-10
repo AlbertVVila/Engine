@@ -26,9 +26,13 @@ void EnemyStateDeath::Update()
 	if (timer > waitTime)
 	{
 		enemy->gameobject->SetActive(false);
-		for (auto cr : enemy->enemyController->myRenders)
-		{
-			cr->castShadows = false;
-		}
+	}
+}
+
+void EnemyStateDeath::Enter()
+{
+	for (auto cr : enemy->enemyController->myRenders)
+	{
+		cr->castShadows = false;
 	}
 }

@@ -70,10 +70,6 @@ void EnemyStateDeath::Update()
 		{
 			bonesDeathFX->SetActive(false);
 		}
-		for (auto cr : enemy->enemyController->myRenders)
-		{
-			cr->castShadows = false;
-		}
 	}
 
 	if (waitedTime > deathDuration)
@@ -108,4 +104,8 @@ void EnemyStateDeath::Enter()
 	}
 	renderer->highlighted = false;
 
+	for (auto cr : enemy->enemyController->myRenders)
+	{
+		cr->castShadows = false;
+	}
 }

@@ -53,6 +53,11 @@ void EnemyStateDeath::Enter()
 		bonesDeathFX->SetActive(true);
 	}
 	renderer->highlighted = false;
+
+	for (auto cr : enemy->enemyController->myRenders)
+	{
+		cr->castShadows = false;
+	}
 	
 }
 
@@ -65,10 +70,6 @@ void EnemyStateDeath::Update()
 		if (bonesDeathFX != nullptr && bonesDeathFX->isActive())
 		{
 			bonesDeathFX->SetActive(false);
-		}
-		for (auto cr : enemy->enemyController->myRenders)
-		{
-			cr->castShadows = false;
 		}
 	}
 

@@ -9,6 +9,7 @@ public:
 	EnemyStateDeath(FlyingSkullEnemyAIScript* AIScript);
 	~EnemyStateDeath();
 
+	void Enter() override;
 	void HandleIA() override;
 	void Update() override;
 

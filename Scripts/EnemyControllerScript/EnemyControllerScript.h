@@ -57,7 +57,6 @@ public:
 
 	void Move(float speed, math::float3& direction) const;		// Warning: doesn't use nav mesh
 	void Move(float speed, float& refreshTime, math::float3 position, std::vector<float3>& path) const; // Move using nav mesh
-	void SetEnemyPositionAway();
 	void LookAt2D(math::float3& position);
 
 	void OnTriggerEnter(GameObject* go) override;
@@ -100,7 +99,6 @@ private:
 	int maxHealth = 20;
 	int experience = 20;
 
-	math::float3 awayPosition = { 0.f,-100000.f,0.f };
 	float hitColorDuration = 0.2f;
 	float hitColorTimer = 0.f;
 	bool enemyHit = false;

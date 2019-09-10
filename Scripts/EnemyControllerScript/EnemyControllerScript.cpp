@@ -423,11 +423,6 @@ void EnemyControllerScript::Move(float speed, float& refreshTime, math::float3 p
 	refreshTime += App->time->gameDeltaTime;
 }
 
-void EnemyControllerScript::SetEnemyPositionAway()
-{
-	//gameobject->transform->SetGlobalPosition(awayPosition);
-}
-
 void EnemyControllerScript::LookAt2D(math::float3& position)
 {
 	math::float3 auxPos = position;
