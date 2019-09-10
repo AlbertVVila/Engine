@@ -136,7 +136,7 @@ void InventoryScript::Update()
 			imageHover = nullptr;
 		}
 
-		if (image->isHovered && imageHover == nullptr && i < INVENTARY_SLOTS)
+		if (image->isHovered && imageHover == nullptr /*&& i < INVENTARY_SLOTS*/)
 		{
 			for (int t = 0; t < items.size(); ++t)
 			{
