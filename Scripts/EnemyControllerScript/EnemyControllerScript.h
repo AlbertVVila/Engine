@@ -89,8 +89,8 @@ public:
 	ComponentBoxTrigger* attackBoxTrigger = nullptr;
 	ComponentBoxTrigger* playerHitBox = nullptr;
 
-	ResourceMaterial* hitMaterial = nullptr;
-	ResourceMaterial* defaultMaterial = nullptr;
+	ResourceMaterial* hitMaterial = nullptr;				// Material applied to all enemy meshes on hit
+	std::vector<ResourceMaterial*> defaultMaterials;		// Vector containing default materials of the enemy meshes
 
 	CombatAudioEvents* combataudioevents = nullptr;
 
