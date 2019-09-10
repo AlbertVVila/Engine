@@ -53,12 +53,7 @@ void PlayerStateWalk::Update()
 		else
 		{
 			//clicked outside of the map, stop moving
-			playerWalking = false;
-			player->currentState = player->idle;
-			if (dustParticles)
-			{
-				dustParticles->SetActive(false);
-			}
+			toIdle = true;
 			return;
 		}
 	}
@@ -90,16 +85,13 @@ void PlayerStateWalk::Update()
 		}
 		else
 		{
-			playerWalking = false;
-			if (dustParticles)
-			{
-				dustParticles->SetActive(false);
-			}
+			toIdle = true;
+			return;
 		}
 	}	
 	else
 	{
-		player->currentState = player->idle;
+		toIdle = true;
 	}
 }
 
@@ -143,6 +135,17 @@ void PlayerStateWalk::CheckInput()
 			dustParticles->SetActive(false);
 		}
 	}*/
+	if (toIdle)
+	{
+		playerWalking = false;
+		player->currentState = player->idle;
+		if (dustParticles)
+		{
+			dustParticles->SetActive(false);
+		}
+		toIdle = false;
+		return;
+	}
 	if (player->IsUsingSkill() || player->IsAttacking())
 	{
 		player->currentState = (PlayerState*)player->attack;

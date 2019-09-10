@@ -56,14 +56,7 @@ void PlayerStateWalkToHitEnemy::Update()
 		{
 			//something went wrong, stop moving
 			LOG("Error walking to hit enemy");
-			playerWalking = false;
-			playerWalkingToHit = false;
-			player->currentState = player->idle;
-			if (dustParticles)
-			{
-				dustParticles->SetActive(false);
-			}
-			return;
+			toIdle = true;
 		}
 	}
 
@@ -84,14 +77,7 @@ void PlayerStateWalkToHitEnemy::Update()
 		else
 		{
 			LOG("Error walking to hit enemy along the way");
-			playerWalking = false;
-			playerWalkingToHit = false;
-			player->currentState = player->idle;
-			if (dustParticles)
-			{
-				dustParticles->SetActive(false);
-			}
-			return;
+			toIdle = true;
 		}
 	}
 	if (path.size() > 0)
@@ -120,49 +106,18 @@ void PlayerStateWalkToHitEnemy::Update()
 		}
 		else
 		{
-			//done walking, lets hit the enemy
-			//about the orientation of the player, in the chain attack state looks at the mouse automatically
-			player->enemyTargeted = true;
-			player->enemyTarget = walkingEnemyTargeted;
-
-			playerWalkingToHit = false;
-			playerWalking = false;
-
-			player->currentSkill = player->allSkills[SkillType::CHAIN]->skill;
-
-			SkillType skillType = SkillType::CHAIN;
-
-			//entering code
-			{
-
-				player->currentState = (PlayerState*)player->attack;
-
-				// Play skill animation
-				if (player->anim != nullptr)
-				{
-					player->anim->SendTriggerToStateMachine(player->currentSkill->animTrigger.c_str());
-				}
-
-				player->currentSkill->duration = player->anim->GetDurationFromClip();
-
-				player->UseSkill(skillType);
-				player->currentSkill->Start();
-
-			}
-			if (dustParticles)
-			{
-				dustParticles->SetActive(false);
-			}
+			toAttack = true;
 		}
 	}
 	else
 	{
-		player->currentState = player->idle;
+		toIdle = true;
 	}
 }
 
 void PlayerStateWalkToHitEnemy::Enter()
 {
+	toIdle = toAttack = false;
 	if (dustParticles)
 	{
 		dustParticles->SetActive(true);
@@ -172,6 +127,56 @@ void PlayerStateWalkToHitEnemy::Enter()
 
 void PlayerStateWalkToHitEnemy::CheckInput()
 {
+	if (toIdle)
+	{
+		playerWalking = false;
+		playerWalkingToHit = false;
+		player->currentState = player->idle;
+		if (dustParticles)
+		{
+			dustParticles->SetActive(false);
+		}
+		toIdle = false;
+		return;
+	}
+	if (toAttack)
+	{
+		//done walking, lets hit the enemy
+		//about the orientation of the player, in the chain attack state looks at the mouse automatically
+		player->enemyTargeted = true;
+		player->enemyTarget = walkingEnemyTargeted;
+
+		playerWalkingToHit = false;
+		playerWalking = false;
+
+		player->currentSkill = player->allSkills[SkillType::CHAIN]->skill;
+
+		SkillType skillType = SkillType::CHAIN;
+
+		//entering code
+		{
+
+			player->currentState = (PlayerState*)player->attack;
+
+			// Play skill animation
+			if (player->anim != nullptr)
+			{
+				player->anim->SendTriggerToStateMachine(player->currentSkill->animTrigger.c_str());
+			}
+
+			player->currentSkill->duration = player->anim->GetDurationFromClip();
+
+			player->UseSkill(skillType);
+			player->currentSkill->Start();
+
+		}
+		if (dustParticles)
+		{
+			dustParticles->SetActive(false);
+		}
+		toAttack = false;
+		return;
+	}
 	if (player->IsUsingSkill() || (player->IsAttacking()))
 	{
 		player->currentState = (PlayerState*)player->attack;

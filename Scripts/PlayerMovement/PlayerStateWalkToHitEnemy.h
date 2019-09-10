@@ -24,6 +24,8 @@ private:
 	float moveTimer = 0.0f;
 	float defaultMaxDist = 10000.f;
 	float3 enemyPosition = float3(0.f, 0.f, 0.f);
+	bool toIdle = false;
+	bool toAttack = false;
 };
 
 #endif // __PLAYERSTATEWALKTOHIT_H_
