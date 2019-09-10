@@ -59,7 +59,8 @@ private:
 	PlayerMovement* playerMovement = nullptr;
 
 	bool itemGrabbed = false;
-	bool changed = false;
+	int itemEquiped = -1;
+	int itemUnequiped = -1;
 };
 
 extern "C" InventoryScript_API Script* CreateScript();

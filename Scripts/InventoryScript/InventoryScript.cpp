@@ -215,7 +215,16 @@ void InventoryScript::Update()
 									if (items[l].first.name == pair.first.name && !items[l].first.isEquipped)
 									{
 										items[l].first.isEquipped = true;
-										changed = true;
+										itemEquiped = l;
+										break;
+									}
+								}
+								for (int l = 0; l < items.size(); ++l)
+								{
+									if (items[l].first.name != pair.first.name && items[l].first.isEquipped && items[l].first.type == ItemType::HELMET)
+									{
+										items[l].first.isEquipped = false;
+										itemUnequiped = l;
 										break;
 									}
 								}
@@ -233,7 +242,16 @@ void InventoryScript::Update()
 									if (items[l].first.name == pair.first.name && !items[l].first.isEquipped)
 									{
 										items[l].first.isEquipped = true;
-										changed = true;
+										itemEquiped = true;
+										break;
+									}
+								}
+								for (int l = 0; l < items.size(); ++l)
+								{
+									if (items[l].first.name != pair.first.name && items[l].first.isEquipped && items[l].first.type == ItemType::CHEST)
+									{
+										items[l].first.isEquipped = false;
+										itemUnequiped = l;
 										break;
 									}
 								}
@@ -251,7 +269,16 @@ void InventoryScript::Update()
 									if (items[l].first.name == pair.first.name && !items[l].first.isEquipped)
 									{
 										items[l].first.isEquipped = true;
-										changed = true;
+										itemEquiped = l;
+										break;
+									}
+								}
+								for (int l = 0; l < items.size(); ++l)
+								{
+									if (items[l].first.name != pair.first.name && items[l].first.isEquipped && items[l].first.type == ItemType::PANTS)
+									{
+										items[l].first.isEquipped = false;
+										itemUnequiped = l;
 										break;
 									}
 								}
@@ -269,7 +296,16 @@ void InventoryScript::Update()
 									if (items[l].first.name == pair.first.name && !items[l].first.isEquipped)
 									{
 										items[l].first.isEquipped = true;
-										changed = true;
+										itemEquiped = l;
+										break;
+									}
+								}
+								for (int l = 0; l < items.size(); ++l)
+								{
+									if (items[l].first.name != pair.first.name && items[l].first.isEquipped && items[l].first.type == ItemType::BOOTS)
+									{
+										items[l].first.isEquipped = false;
+										itemUnequiped = l;
 										break;
 									}
 								}
@@ -287,7 +323,16 @@ void InventoryScript::Update()
 									if (items[l].first.name == pair.first.name && !items[l].first.isEquipped)
 									{
 										items[l].first.isEquipped = true;
-										changed = true;
+										itemEquiped = l;
+										break;
+									}
+								}
+								for (int l = 0; l < items.size(); ++l)
+								{
+									if (items[l].first.name != pair.first.name && items[l].first.isEquipped && items[l].first.type == ItemType::WEAPON)
+									{
+										items[l].first.isEquipped = false;
+										itemUnequiped = l;
 										break;
 									}
 								}
@@ -305,7 +350,16 @@ void InventoryScript::Update()
 									if (items[l].first.name == pair.first.name && !items[l].first.isEquipped)
 									{
 										items[l].first.isEquipped = true;
-										changed = true;
+										itemEquiped = l;
+										break;
+									}
+								}
+								for (int l = 0; l < items.size(); ++l)
+								{
+									if (items[l].first.name != pair.first.name && items[l].first.isEquipped && items[l].first.type == ItemType::AMULET)
+									{
+										items[l].first.isEquipped = false;
+										itemUnequiped = l;
 										break;
 									}
 								}
@@ -327,7 +381,7 @@ void InventoryScript::Update()
 								{
 									items[l].first.isEquipped = false;
 								}
-								changed = true;
+								itemUnequiped = l;
 								break;
 							}
 						}
@@ -363,24 +417,15 @@ void InventoryScript::Update()
 						}
 					}
 
-					if (changed)
+					if (itemEquiped != -1)
 					{
-						for (int l = 0; l < items.size(); ++l)
-						{
-							if (items[l].first.name == pair.first.name)
-							{
-								if (items[l].first.isEquipped)
-								{
-									playerMovement->Equip(items[l].first.stats);
-								}
-								else
-								{
-									playerMovement->UnEquip(items[l].first.stats);
-								}
-								changed = false;
-								break;
-							}
-						}
+						playerMovement->Equip(items[itemEquiped].first.stats);
+						itemEquiped = -1;
+					}
+					if (itemUnequiped != -1)
+					{
+						playerMovement->UnEquip(items[itemUnequiped].first.stats);
+						itemUnequiped = -1;
 					}
 					break;
 				}
