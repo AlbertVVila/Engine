@@ -207,6 +207,8 @@ private:
 
 	void ActivateHudCooldownMask(bool activate, unsigned first = HUD_BUTTON_Q, unsigned last = HUD_BUTTON_4);
 
+	float DistPlayerToMouse() const;
+
 	// Skills
 	void CreatePlayerSkills();
 
@@ -314,7 +316,7 @@ private:
 	Text* uiStrengthText = nullptr;
 	Text* uiManaText = nullptr;
 
-
+	float closestDistToPlayer = 31000.0f;
 	float hubCooldown[9]	  = { 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F };
 	float hubCooldownMax[9] = { 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F };
 	float hubCooldownTimer[9] = { 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F };
