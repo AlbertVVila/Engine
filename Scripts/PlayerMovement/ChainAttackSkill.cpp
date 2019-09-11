@@ -42,7 +42,7 @@ void ChainAttackSkill::Start()
 	boxSize = attackingBoxSize;
 
 	// Set delay for hit
-	hitDelay = 0.3f;
+	hitDelay = 0.1f;
 }
 
 void ChainAttackSkill::UseSkill()
