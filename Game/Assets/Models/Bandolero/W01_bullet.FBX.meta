@@ -1,0 +1,16 @@
+{
+    "Model": {
+        "metaVersion": 2,
+        "timeCreated": 1568236861,
+        "GUID": 3196576148,
+        "NumMeshes": 1,
+        "NumAnimations": 0
+    },
+    "Mesh0": {
+        "MeshNumber": 0,
+        "GUID": 2907694277,
+        "Name": "W01_bullet_0",
+        "File": "Assets/Models/Bandolero/W01_bullet.FBX",
+        "ExportedFile": "Library/Meshes/2907694277.m3sh"
+    }
+}
