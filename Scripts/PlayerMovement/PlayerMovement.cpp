@@ -64,7 +64,7 @@ PlayerMovement::PlayerMovement()
 	allSkills[SkillType::NONE] = new PlayerSkill();
 	allSkills[SkillType::STOMP] = new PlayerSkill(SkillType::STOMP);
 	allSkills[SkillType::RAIN] = new PlayerSkill(SkillType::RAIN);
-	allSkills[SkillType::CHAIN] = new PlayerSkill(SkillType::CHAIN, 0.0f, 0.0f);
+	allSkills[SkillType::CHAIN] = new PlayerSkill(SkillType::CHAIN, 10.0f, 0.0f);
 	allSkills[SkillType::DASH] = new PlayerSkill(SkillType::DASH);
 	allSkills[SkillType::SLICE] = new PlayerSkill(SkillType::SLICE);
 	allSkills[SkillType::BOMB_DROP] = new PlayerSkill(SkillType::BOMB_DROP);
