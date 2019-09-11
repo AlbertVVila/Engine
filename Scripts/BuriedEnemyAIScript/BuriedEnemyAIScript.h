@@ -90,7 +90,7 @@ public:
 	float projectileDelay = 0.4f;
 
 	GameObject* dustParticlesGO = nullptr;
-
+	GameObject* candleGO = nullptr;
 	EnemyControllerScript* enemyController = nullptr;
 };
 

@@ -48,6 +48,7 @@ void EnemyStateShowUp::Enter()
 	enemy->enemyController->GetMainRenderer()->Enable(true);
 	enemy->enemyController->hpBoxTrigger->Enable(true);
 	enemy->dustParticlesGO->SetActive(true);
+	enemy->candleGO->SetActive(true);
 }
 
 void EnemyStateShowUp::Exit()

@@ -3,6 +3,7 @@
 #include "EnemyControllerScript.h"
 #include "BuriedEnemyAIScript.h"
 
+#include "GameObject.h"
 #include "ComponentRenderer.h"
 #include "ComponentBoxTrigger.h"
 
@@ -33,6 +34,7 @@ void EnemyStateHide::Update()
 void EnemyStateHide::Exit()
 {
 	enemy->enemyController->GetMainRenderer()->Enable(false);
+	enemy->candleGO->SetActive(false);
 }
 
 void EnemyStateHide::Enter()
