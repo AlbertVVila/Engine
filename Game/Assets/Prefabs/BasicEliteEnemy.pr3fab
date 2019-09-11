@@ -87,7 +87,7 @@
                         "returnSpeed": 150.0,
                         "returnDistance": 1500.0,
                         "attackDuration": 1.0,
-                        "attackDamage": 20.0,
+                        "attackDamage": 80.0,
                         "attackRange": 100.0,
                         "cooldownTime": 1.0
                     }
