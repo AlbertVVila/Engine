@@ -599,6 +599,7 @@ void ModuleRender::ComputeShadows()
 		math::AABB lightAABB;
 		lightAABB.SetNegativeInfinity();
 		bool renderersDetected = false;
+		shadowCasters.clear();
 		//TODO: Improve this avoiding shuffle every frame
 		for (GameObject* go : App->scene->dynamicFilteredGOs) 
 		{
