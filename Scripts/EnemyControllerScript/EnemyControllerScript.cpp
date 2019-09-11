@@ -129,7 +129,7 @@ void EnemyControllerScript::Awake()
 	else
 	{
 		enemyLifeBar = enemyLifeGO->GetComponent<EnemyLifeBarController>();
-		if (enemyLifeBar != nullptr)
+		if (enemyLifeBar == nullptr)
 		{
 			LOG("Damage controller couldn't be found \n");
 		}
