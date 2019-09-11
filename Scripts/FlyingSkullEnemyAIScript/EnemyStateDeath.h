@@ -9,10 +9,11 @@ public:
 	EnemyStateDeath(FlyingSkullEnemyAIScript* AIScript);
 	~EnemyStateDeath();
 
+	void Enter() override;
 	void HandleIA() override;
 	void Update() override;
 
-	float waitTime = 5.0f;
+	float waitTime = 0.5f;
 };
 
 #endif // __ENEMYSTATEDEATH_H_

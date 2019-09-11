@@ -20,7 +20,7 @@ public:
 	GameObject* dustParticles = nullptr;
 
 private:
-	void StopAndSwitchToIdle();
+	//functions
 private:
 	float moveTimer = 0.0f;
 	float defaultMaxDist = 10000.f;
