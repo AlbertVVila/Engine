@@ -345,6 +345,17 @@ void EnemyControllerScript::TakeDamage(unsigned damage)
 			}
 			if (experienceController != nullptr)
 				experienceController->AddXP(experience);
+
+			// Disable hit boxes
+			hpBoxTrigger->Enable(false);
+			attackBoxTrigger->Enable(false);
+
+			// Unhighlight
+			if (myRenders.size() > 0u)
+			{
+				for (std::vector<ComponentRenderer*>::iterator it = myRenders.begin(); it != myRenders.end(); ++it)
+					(*it)->highlighted = false;
+			}
 		}
 		damageController->AddDamage(gameobject->transform, damage, 2);
 	}
