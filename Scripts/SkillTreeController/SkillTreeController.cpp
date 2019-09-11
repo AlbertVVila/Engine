@@ -162,7 +162,8 @@ void SkillTreeController::Expose(ImGuiContext* context)
 
 	if (textureFiles.empty())
 	{
-		textureFiles = App->resManager->GetResourceNamesList(TYPE::TEXTURE, true);
+		if(App != nullptr)
+			textureFiles = App->resManager->GetResourceNamesList(TYPE::TEXTURE, true);
 	}
 
 	if (ImGui::Button("Refresh textures List"))

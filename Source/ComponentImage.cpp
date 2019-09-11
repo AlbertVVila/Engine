@@ -176,8 +176,13 @@ void ComponentImage::UpdateTexturesList()
 void ComponentImage::Update()
 {
 	math::float2 mouse = reinterpret_cast<const float2&>(App->input->GetMousePosition());
+#ifndef GAME_BUILD
 	float screenX = mouse.x - App->renderer->viewGame->winPos.x - (App->ui->currentWidth * .5f);
 	float screenY = mouse.y - App->renderer->viewGame->winPos.y - (App->ui->currentHeight * .5f);
+#else
+	float screenX = mouse.x - (App->ui->currentWidth * .5f);
+	float screenY = mouse.y - (App->ui->currentHeight * .5f);
+#endif
 	Transform2D* rectTransform = gameobject->GetComponent<Transform2D>();
 	math::float2 pos = rectTransform->getPosition();
 	math::float2 size = rectTransform->getSize();

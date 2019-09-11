@@ -27,8 +27,6 @@
 #include "imgui.h"
 #include "JSON.h"
 
-
-
 #define MINIMUM_PATH_DISTANCE 400.0f
 #define MOVE_REFRESH_TIME 0.3f
 
@@ -44,22 +42,45 @@ void EnemyControllerScript::Start()
 
 void EnemyControllerScript::Awake()
 {
-	myRender = (ComponentRenderer*)gameobject->GetComponentInChildren(ComponentType::Renderer);
-	if (myRender != nullptr)
+	std::vector<Component*> renders = gameobject->GetComponentsInChildren(ComponentType::Renderer);
+	for (std::vector<Component*>::iterator it = renders.begin(); it != renders.end(); ++it)
+		myRenders.push_back((ComponentRenderer*)(*it));
+
+	if (myRenders.size() > 0u)
 	{
-		// Look for enemy BBox
-		myBbox = &myRender->gameobject->bbox;
+		// Look for enemy BBox (Will take first found)
+		myBbox = &myRenders.at(0)->gameobject->bbox;
 		if (myBbox == nullptr)
 		{
 			LOG("The enemy %s has no bbox \n", gameobject->name);
 		}
 
 		// Get playerMesh
-		myMesh = myRender->gameobject;
+		myMesh = myRenders.at(0)->gameobject;
 	}
 	else
 	{
 		LOG("Error: The enemy mesh couldn't be found.");
+	}
+
+	// Get hit material
+	std::vector<std::string> materials = App->resManager->GetResourceNamesList(TYPE::MATERIAL, true);
+	for (std::string matName : materials)
+	{
+		if (matName == hitMaterialName)
+		{
+			hitMaterial = (ResourceMaterial*)App->resManager->GetByName(matName.c_str(), TYPE::MATERIAL);
+		}
+	}
+	// Will only change first renderer material on hit
+	for (ComponentRenderer* renderer : myRenders)
+	{
+		defaultMaterials.push_back(renderer->material);
+	}
+
+	if (!hitMaterial)
+	{
+		hitMaterial = (ResourceMaterial*)App->resManager->GetByName(DEFAULTMAT, TYPE::MATERIAL);
 	}
 
 	// Look for player and his BBox
@@ -149,19 +170,6 @@ void EnemyControllerScript::Awake()
 			LOG("experienceController couldn't be found \n");
 		}
 	}
-	std::vector<std::string> materials = App->resManager->GetResourceNamesList(TYPE::MATERIAL, true);
-	for (std::string matName : materials)
-	{
-		if (matName == hitMaterialName)
-		{
-			hitMaterial = (ResourceMaterial*)App->resManager->GetByName(matName.c_str(), TYPE::MATERIAL);
-		}
-	}
-	defaultMaterial = myRender->material;
-	if (!hitMaterial)
-	{
-		hitMaterial = defaultMaterial;
-	}
 
 	GameObject* playerGO = App->scene->FindGameObjectByName("Player");
 	if (playerGO == nullptr)
@@ -191,9 +199,10 @@ void EnemyControllerScript::Update()
 		if(enemyLifeBar != nullptr)
 			enemyLifeBar->SetLifeBar(maxHealth, actualHealth, EnemyLifeBarType::NORMAL, "Skeleton");
 
-		if (myRender != nullptr && !isDead)
+		if (myRenders.size() > 0u && !isDead)
 		{
-			myRender->highlighted = true;
+			for (std::vector<ComponentRenderer*>::iterator it = myRenders.begin(); it != myRenders.end(); ++it)
+				(*it)->highlighted = true;
 		}
 
 		//we need to keep track of current targeted enemy
@@ -208,9 +217,10 @@ void EnemyControllerScript::Update()
 	}
 	else
 	{
-		if (myRender != nullptr)
+		if (myRenders.size() > 0u)
 		{
-			myRender->highlighted = false;
+			for (std::vector<ComponentRenderer*>::iterator it = myRenders.begin(); it != myRenders.end(); ++it)
+				(*it)->highlighted = false;
 
 			//if this is the enemy that was being targeted, we untarget it from the scene
 			if (App->scene->enemyHovered.object != nullptr &&
@@ -229,8 +239,12 @@ void EnemyControllerScript::Update()
 	}
 	else if (enemyHit)
 	{
+		// Set default material back to all meshes
+		for (unsigned i = 0u; i < myRenders.size(); i++)
+		{
+			myRenders.at(i)->material = defaultMaterials.at(i);
+		}
 		enemyHit = false;
-		myRender->material = defaultMaterial;
 	}
 }
 
@@ -259,6 +273,14 @@ void EnemyControllerScript::Expose(ImGuiContext* context)
 	enemyCursor = enemyCursorAux;
 	delete[] enemyCursorAux;
 	
+	// Draw the name of every GO that has a ComponentRenderer 
+	if (myRenders.size() > 0u)
+	{
+		ImGui::Text("Renderers:");
+		for (std::vector<ComponentRenderer*>::iterator it = myRenders.begin(); it != myRenders.end(); ++it)
+			ImGui::Text(((Component*)(*it))->gameobject->name.c_str());
+	}
+
 }
 
 void EnemyControllerScript::Serialize(JSON_value* json) const
@@ -303,7 +325,11 @@ void EnemyControllerScript::TakeDamage(unsigned damage)
 		else
 		{
 			actualHealth -= damage;
-			myRender->material = hitMaterial;
+			// Set hit material to all enemy meshes
+			for (unsigned i = 0u; i < myRenders.size(); i++)
+			{
+				myRenders.at(i)->material = hitMaterial;
+			}
 			hitColorTimer = hitColorDuration;
 		}
 
@@ -317,6 +343,17 @@ void EnemyControllerScript::TakeDamage(unsigned damage)
 			}
 			if (experienceController != nullptr)
 				experienceController->AddXP(experience);
+
+			// Disable hit boxes
+			hpBoxTrigger->Enable(false);
+			attackBoxTrigger->Enable(false);
+
+			// Unhighlight
+			if (myRenders.size() > 0u)
+			{
+				for (std::vector<ComponentRenderer*>::iterator it = myRenders.begin(); it != myRenders.end(); ++it)
+					(*it)->highlighted = false;
+			}
 		}
 		damageController->AddDamage(gameobject->transform, damage, 2);
 	}
@@ -365,6 +402,14 @@ inline float EnemyControllerScript::GetDistanceToPlayer2D() const
 	math::float3 playerPosition = GetPlayerPosition();
 	enemyPosition.y = playerPosition.y;
 	return enemyPosition.Distance(playerPosition);
+}
+
+inline ComponentRenderer* EnemyControllerScript::GetMainRenderer() const
+{
+	if (myRenders.size() > 0u)
+		return myRenders.at(0u);
+	else
+		return nullptr;
 }
 
 inline bool EnemyControllerScript::IsCollidingWithPlayer() const

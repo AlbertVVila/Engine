@@ -51,6 +51,8 @@ public:
 	inline float GetDistanceTo2D(math::float3& position) const;	// Get distance of the enemy to position given as argument only taking XZ plane as reference
 	inline float GetDistanceToPlayer2D() const;
 
+	inline ComponentRenderer* GetMainRenderer() const;			// Gets the main renderer of the enemy (first ComponentRenderer stored in myRenders)
+
 	inline bool IsCollidingWithPlayer() const;
 
 	void Move(float speed, math::float3& direction) const;		// Warning: doesn't use nav mesh
@@ -67,7 +69,7 @@ public:
 	std::string enemyCursor = "RedGlow.cur";
 	std::string hitMaterialName = "HitMaterial";
 	ComponentAnimation* anim = nullptr;
-	ComponentRenderer* myRender = nullptr;
+	std::vector<ComponentRenderer*> myRenders;
 
 	DamageController* damageController = nullptr;
 	EnemyLifeBarController* enemyLifeBar = nullptr;
@@ -87,8 +89,8 @@ public:
 	ComponentBoxTrigger* attackBoxTrigger = nullptr;
 	ComponentBoxTrigger* playerHitBox = nullptr;
 
-	ResourceMaterial* hitMaterial = nullptr;
-	ResourceMaterial* defaultMaterial = nullptr;
+	ResourceMaterial* hitMaterial = nullptr;				// Material applied to all enemy meshes on hit
+	std::vector<ResourceMaterial*> defaultMaterials;		// Vector containing default materials of the enemy meshes
 
 	CombatAudioEvents* combataudioevents = nullptr;
 

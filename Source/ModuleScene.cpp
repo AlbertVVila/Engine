@@ -340,14 +340,6 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 		}
 	}
 
-	alphaRenderers.insert(alphaRenderers.end(), App->particles->particleSystems.begin(), App->particles->particleSystems.end());
-	alphaRenderers.insert(alphaRenderers.end(), App->particles->trails.begin(), App->particles->trails.end());
-
-	alphaRenderers.sort(
-		[camFrustum](const Component* cr1, const Component* cr2) -> bool
-	{
-		return cr1->gameobject->transform->GetGlobalPosition().Distance(camFrustum.pos) > cr2->gameobject->transform->GetGlobalPosition().Distance(camFrustum.pos);
-	});
 #else
 	for (const auto &go : staticFilteredGOs)
 	{
@@ -356,7 +348,7 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 			ComponentRenderer* cr = (ComponentRenderer*)go->GetComponentOld(ComponentType::Renderer);
 			if (cr && !cr->useAlpha)
 			{
-				DrawGOGame(*go);
+				DrawGO(*go, *App->scene->maincamera->frustum);
 			}
 			else
 			{
@@ -376,7 +368,7 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 			}
 			if (cr && !cr->useAlpha)
 			{
-				DrawGOGame(*go);
+				DrawGO(*go, *App->scene->maincamera->frustum);
 			}
 			else
 			{
@@ -385,12 +377,16 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 		}
 	}	
 
+#endif
+
+	alphaRenderers.insert(alphaRenderers.end(), App->particles->particleSystems.begin(), App->particles->particleSystems.end());
+	alphaRenderers.insert(alphaRenderers.end(), App->particles->trails.begin(), App->particles->trails.end());
+
 	alphaRenderers.sort(
 		[frustum](const Component* cr1, const Component* cr2) -> bool
 	{
 		return cr1->gameobject->transform->GetGlobalPosition().Distance(frustum.pos) > cr2->gameobject->transform->GetGlobalPosition().Distance(frustum.pos);
 	});
-#endif
 	
 	ComponentCamera* camera = isEditor ? App->camera->editorcamera : App->scene->maincamera;
 
@@ -412,7 +408,7 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 
 					DrawGO(*cr->gameobject, camFrustum, isEditor);
 #else
-					DrawGOGame(*cr->gameobject);
+					DrawGO(*cr->gameobject, *camera->frustum);
 #endif
 					break;
 				case ComponentType::Trail:
@@ -448,110 +444,6 @@ void ModuleScene::Draw(const Frustum &frustum, bool isEditor)
 	}
 }
 
-void ModuleScene::DrawGOGame(const GameObject& go)
-{
-	ComponentRenderer* crenderer = (ComponentRenderer*)go.GetComponentOld(ComponentType::Renderer);
-	if (crenderer == nullptr || !crenderer->enabled || crenderer->material == nullptr) return;
-
-	ResourceMaterial* material = crenderer->material;
-	Shader* shader = material->shader;
-	if (shader == nullptr) return;
-
-	unsigned variation = 0u;
-	if (shader->id.size() > 1) //If exists variations use it
-	{
-		variation = material->variation;
-		if (crenderer->water)
-		{
-			variation |= (unsigned)ModuleProgram::PBR_Variations::WATER;
-		}
-		else
-		{
-			if (crenderer->mesh->bindBones.size() > 0 && !crenderer->avoidSkinning)
-			{
-				variation |= (unsigned)ModuleProgram::PBR_Variations::SKINNED;
-			}
-			if (App->renderer->directionalLight && App->renderer->directionalLight->produceShadows)
-			{
-				variation |= (unsigned)ModuleProgram::PBR_Variations::SHADOWS_ENABLED;
-			}
-			if (crenderer->dissolve)
-			{
-				variation |= (unsigned)ModuleProgram::PBR_Variations::DISSOLVE;
-			}
-		}
-	}
-	
-	glUseProgram(shader->id[variation]);
-
-	material->SetUniforms(shader->id[variation], shader->isFX, crenderer);
-
-	glUniform3fv(glGetUniformLocation(shader->id[variation],
-		"lights.ambient_color"), 1, (GLfloat*)&ambientColor);
-
-	if (crenderer->highlighted)
-	{
-		glUniform3fv(glGetUniformLocation(shader->id[variation],
-			"highlightColorUniform"), 1, (GLfloat*)&crenderer->highlightColor);
-	}
-	else
-	{
-		float zero[] = { .0f, .0f, .0f };
-		glUniform3fv(glGetUniformLocation(shader->id[variation],
-			"highlightColorUniform"), 1, (GLfloat*)zero);
-	}
-
-	glUniform1f(glGetUniformLocation(shader->id[variation],
-		"time"), App->time->realTime * crenderer->waterSpeed);
-
-	glUniform1f(glGetUniformLocation(shader->id[variation],
-		"waterAmplitude1"), crenderer->waterAmplitude1);
-
-	glUniform1f(glGetUniformLocation(shader->id[variation],
-		"decay1"), crenderer->waterDecay1);
-
-	glUniform1f(glGetUniformLocation(shader->id[variation],
-		"frequency1"), crenderer->waterFrequency1);
-
-	glUniform3fv(glGetUniformLocation(shader->id[variation],
-		"source1"), 1, (GLfloat*)&crenderer->waterSource1);
-
-	glUniform1f(glGetUniformLocation(shader->id[variation],
-		"waterAmplitude2"), crenderer->waterAmplitude2);
-
-	glUniform1f(glGetUniformLocation(shader->id[variation],
-		"decay2"), crenderer->waterDecay2);
-	
-	float waterMix = sin(App->time->gameTime * crenderer->distorsionSpeed);
-	waterMix = waterMix < 0.f ? -waterMix : waterMix;
-	
-	glUniform1f(glGetUniformLocation(shader->id[variation],
-		"waterMix"), waterMix);
-	
-	glUniform2fv(glGetUniformLocation(shader->id[variation],
-		"uvScaler"), 1, (GLfloat*)&crenderer->uvScaler);
-
-	glUniform1f(glGetUniformLocation(shader->id[variation],
-		"frequency2"), crenderer->waterFrequency2);
-
-	glUniform3fv(glGetUniformLocation(shader->id[variation],
-		"source2"), 1, (GLfloat*)&crenderer->waterSource2);
-
-	glUniform3fv(glGetUniformLocation(shader->id[variation],
-		"eyePosUniform"), 1, (GLfloat*)&maincamera->frustum->pos);
-
-	glUniform1f(glGetUniformLocation(shader->id[variation], "sliceAmount"), crenderer->dissolveAmount);
-	glUniform1f(glGetUniformLocation(shader->id[variation], "borderAmount"), crenderer->borderAmount);
-
-	go.SetLightUniforms(shader->id[variation]);
-
-	go.UpdateModel(shader->id[variation]);
-	crenderer->DrawMesh(shader->id[variation]);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
-	glActiveTexture(GL_TEXTURE0);
-	glUseProgram(0);
-}
 void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isEditor)
 {
 	PROFILE;
@@ -1613,7 +1505,7 @@ bool ModuleScene::Intersects(const char* tag, bool sorted, math::float3& point,
 
 	float normalized_x, normalized_y;
 
-	if (App->renderer->viewGame->hidden)
+	if (App->renderer->viewGame != nullptr && App->renderer->viewGame->hidden)
 	{
 		math::float2 pos = App->renderer->viewScene->winPos;
 		math::float2 size(App->renderer->viewScene->current_width, App->renderer->viewScene->current_height);

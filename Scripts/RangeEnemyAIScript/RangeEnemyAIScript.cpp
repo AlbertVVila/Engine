@@ -272,7 +272,7 @@ void RangeEnemyAIScript::DrawDebug() const
 
 void RangeEnemyAIScript::OnTriggerEnter(GameObject* go)
 {
-	if ((currentState == patrol || currentState == returnToStart) && go->tag == "PlayerHitBoxAttack")
+	if ((currentState == patrol || currentState == returnToStart) && go->tag.c_str() == "PlayerHitBoxAttack")
 	{
 
 		// Change state to getInPosition and update states

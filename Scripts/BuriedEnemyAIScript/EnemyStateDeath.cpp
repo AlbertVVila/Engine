@@ -9,6 +9,7 @@
 #include "ComponentRenderer.h"
 #include "ComponentTransform.h"
 #include "BuriedEnemyAIScript.h"
+#include "EnemyControllerScript.h"
 
 #include "Math/float3.h"
 #include "Algorithm/Random/LCG.h"
@@ -74,6 +75,7 @@ void EnemyStateDeath::Update()
 	if (waitedTime > deathDuration)
 	{
 		enemy->gameobject->SetActive(false);
+
 		if (bonesParent != nullptr)
 		{
 			bonesParent->SetActive(false);
@@ -102,4 +104,8 @@ void EnemyStateDeath::Enter()
 	}
 	renderer->highlighted = false;
 
+	for (auto cr : enemy->enemyController->myRenders)
+	{
+		cr->castShadows = false;
+	}
 }

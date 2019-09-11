@@ -1123,12 +1123,21 @@ bool PlayerMovement::IsMoving() const
 	return (IsPressingMouse1() && !IsAttacking() && !IsMovingToAttack() && (!IsMovingToItem() || (IsMovingToItem() && stoppedGoingToItem)));
 }
 
+float PlayerMovement::DistPlayerToMouse() const
+{
+	math::float3 destinationPoint;
+	App->navigation->FindIntersectionPoint(gameobject->transform->position, destinationPoint);
+	float dist = destinationPoint.DistanceSq(gameobject->transform->position);
+	return dist;
+}
+
 bool PlayerMovement::IsPressingMouse1() const
 {
 	math::float3 temp;
 	return ((App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(false, true)) ||
 		(currentState->playerWalking && !currentState->playerWalkingToHit) ||
-		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(false, true) && !App->scene->Intersects("PlayerMesh", false, temp))); //right button, the player is still walking or movement button is pressed and can get close to mouse pos
+		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(true, false) && !App->scene->Intersects("PlayerMesh", false, temp) && 
+		(currentState->playerWalking || DistPlayerToMouse() > closestDistToPlayer)));
 }
 
 bool PlayerMovement::IsUsingRightClick() const

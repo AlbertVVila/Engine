@@ -4,6 +4,7 @@
 #include "FlyingSkullEnemyAIScript.h"
 
 #include "GameObject.h"
+#include "ComponentRenderer.h"
 
 EnemyStateDeath::EnemyStateDeath(FlyingSkullEnemyAIScript* AIScript)
 {
@@ -25,5 +26,13 @@ void EnemyStateDeath::Update()
 	if (timer > waitTime)
 	{
 		enemy->gameobject->SetActive(false);
+	}
+}
+
+void EnemyStateDeath::Enter()
+{
+	for (auto cr : enemy->enemyController->myRenders)
+	{
+		cr->castShadows = false;
 	}
 }

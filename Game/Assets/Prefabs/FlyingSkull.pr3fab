@@ -29,7 +29,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 1,
             "isPrefabSync": 1,
             "prefabUID": 2932410394,
@@ -201,7 +201,7 @@
                         120.0,
                         70.0
                     ],
-                    "is_player": 0,
+                    "boxType": 3,
                     "debug_draw": 1
                 }
             ]
@@ -3336,7 +3336,7 @@
                         20.0,
                         20.0
                     ],
-                    "is_player": 0,
+                    "boxType": 4,
                     "debug_draw": 1
                 }
             ]

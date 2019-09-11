@@ -1480,6 +1480,10 @@ bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vecto
 				type = PathFindType::NODODGE;
 				done = false;
 			}
+			if (afterPathDistance == 0.f)
+			{
+				return false;
+			}
 			else if (logDebugPathing)
 			{
 				std::stringstream s;

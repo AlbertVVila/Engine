@@ -268,8 +268,16 @@ void ComponentRenderer::Save(JSON_value* value) const
 	value->AddFloat2("uvScaler", uvScaler);
 	value->AddFloat("distorsionSpeed", distorsionSpeed);
 	value->AddInt("loop", loop);
-	value->AddFloat("dissolveAmount", dissolveAmount);
-	value->AddFloat("borderAmount", borderAmount);
+
+	if (dissolveAmount != 0.0f) //Avoid writing in disk unused info
+	{
+		value->AddFloat("dissolveAmount", dissolveAmount);
+	}
+	if (borderAmount != 0.0f)
+	{
+		value->AddFloat("borderAmount", borderAmount);
+	}
+
 }
 
 void ComponentRenderer::Load(JSON_value* value)
