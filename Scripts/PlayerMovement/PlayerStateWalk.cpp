@@ -52,13 +52,8 @@ void PlayerStateWalk::Update()
 		}
 		else
 		{
-			//clicked outside of the map, stop moving
+			//distance 0 or clicked outside of the navmesh
 			playerWalking = false;
-			player->currentState = player->idle;
-			if (dustParticles)
-			{
-				dustParticles->SetActive(false);
-			}
 			return;
 		}
 	}
@@ -91,20 +86,18 @@ void PlayerStateWalk::Update()
 		else
 		{
 			playerWalking = false;
-			if (dustParticles)
-			{
-				dustParticles->SetActive(false);
-			}
+			return;
 		}
 	}	
 	else
 	{
-		player->currentState = player->idle;
+		playerWalking = false;
 	}
 }
 
 void PlayerStateWalk::Enter()
 {
+	playerWalking = true;
 	if (dustParticles)
 	{
 		dustParticles->SetActive(true);
@@ -143,6 +136,15 @@ void PlayerStateWalk::CheckInput()
 			dustParticles->SetActive(false);
 		}
 	}*/
+	if (!playerWalking)
+	{
+		player->currentState = player->idle;
+		if (dustParticles)
+		{
+			dustParticles->SetActive(false);
+		}
+		return;
+	}
 	if (player->IsUsingSkill() || player->IsAttacking())
 	{
 		player->currentState = (PlayerState*)player->attack;

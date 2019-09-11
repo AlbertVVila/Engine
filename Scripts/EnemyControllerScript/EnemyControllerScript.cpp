@@ -27,8 +27,6 @@
 #include "imgui.h"
 #include "JSON.h"
 
-
-
 #define MINIMUM_PATH_DISTANCE 400.0f
 #define MOVE_REFRESH_TIME 0.3f
 
