@@ -40,7 +40,7 @@ bool FileExplorer::Open()
 		// List of files and directories box: [..] [Directories] [Files]
 		std::vector<std::string> files;
 		std::vector<std::string> dirs;
-		ImGui::BeginChild("Files", ImVec2(ImGui::GetWindowContentRegionWidth(), ImGui::GetWindowContentRegionMax().y - 120), true, ImGuiWindowFlags_HorizontalScrollbar);
+		ImGui::BeginChild("Files", ImVec2(ImGui::GetWindowContentRegionWidth(), ImGui::GetWindowContentRegionMax().y - 135), true, ImGuiWindowFlags_HorizontalScrollbar);
 		App->fsystem->ListFolderContent(path.c_str(), files, dirs);
 
 		ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(.0f, 0.5f));
@@ -87,7 +87,8 @@ bool FileExplorer::Open()
 		switch (currentOperation)
 		{
 		case MenuOperations::SAVE:
-			ImGui::Checkbox("Save selected game objects only", &saveSelected);
+			ImGui::Checkbox("Save selected game objects only", &saveSelected); 
+			ImGui::SameLine();
 			if (ImGui::Button("Save", ImVec2(100, 20)))
 			{
 				openFileExplorer = false;
