@@ -1,11 +1,5 @@
 {
     "material": {
-        "diffuseColor": [
-            1.0,
-            1.0,
-            1.0,
-            1.0
-        ],
         "bloomIntenstiy": 2.109999895095825,
         "roughness": 0.5,
         "specularColor": [
@@ -22,11 +16,6 @@
             0.40252381563186648,
             0.014965740963816643,
             0.4057376980781555
-        ],
-        "diffuseUID": 766790774,
-        "emissiveUID": 766790774,
-        "normalUID": 3661103478,
-        "dissolveUID": 3100838409,
-        "shader": "PBR"
+        ]
     }
 }

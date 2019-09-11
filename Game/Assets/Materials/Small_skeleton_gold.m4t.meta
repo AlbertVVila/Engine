@@ -1,10 +1,10 @@
 {
     "Material": {
         "metaVersion": 2,
-        "timeCreated": 1568213117,
+        "timeCreated": 1561160368,
         "GUID": 959441474,
-        "Name": "Small_Skeleton_Gold",
-        "File": "Assets/Materials/Small_Skeleton_Gold.m4t",
+        "Name": "Small_skeleton_gold",
+        "File": "Assets/Materials/Small_skeleton_gold.m4t",
         "ExportedFile": "Library/Materials/959441474.m4t",
         "DifusseColor": [
             1.0,
@@ -18,11 +18,12 @@
             0.10000000149011612
         ],
         "emissiveColor": [
-            1.0,
-            1.0,
-            1.0
+            0.49180328845977785,
+            0.49179837107658389,
+            0.49179837107658389
         ],
         "diffuseUID": 1424939669,
+        "emissiveUID": 1424939669,
         "normalUID": 3661103478,
         "dissolveUID": 3100838409,
         "shader": "PBR"
