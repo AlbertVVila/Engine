@@ -1,7 +1,7 @@
 {
     "Material": {
         "metaVersion": 2,
-        "timeCreated": 1561160368,
+        "timeCreated": 1568213117,
         "GUID": 959441474,
         "Name": "Small_skeleton_gold",
         "File": "Assets/Materials/Small_skeleton_gold.m4t",
@@ -18,9 +18,9 @@
             0.10000000149011612
         ],
         "emissiveColor": [
-            0.49180328845977785,
-            0.49179837107658389,
-            0.49179837107658389
+            0.27868854999542239,
+            0.2786857485771179,
+            0.2786857485771179
         ],
         "diffuseUID": 1424939669,
         "emissiveUID": 1424939669,
