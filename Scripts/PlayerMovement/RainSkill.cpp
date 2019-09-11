@@ -3,6 +3,7 @@
 #include "PlayerMovement.h"
 
 #include "ModuleNavigation.h"
+#include "ModuleTime.h"
 
 #include "GameObject.h"
 #include "ComponentTransform.h"
@@ -27,6 +28,7 @@ void RainSkill::Start()
 	{
 		LOG("Machetes placed");
 		decal->SetActive(false);
+		decalMaterial->bloomIntenstiy = 7.0f;
 		for (unsigned i = 0u; i < MACHETE_AMOUNT; ++i)
 		{
 			GameObject* machete = machetes[i].machete;
@@ -61,15 +63,17 @@ void RainSkill::Prepare()
 	math::float3 groundSpawnPos = spawnPosition - float3(0.f, MACHETE_RAIN_START_HEIGHT * .98f, 0.f);
 	decal->transform->SetGlobalPosition(groundSpawnPos);
 	decal->SetActive(true);
+	decal->transform->Rotate(float3(0, 10 * player->deltatime, 0));
+	
+
 	if (groundSpawnPos.Distance(player->transform->GetGlobalPosition()) < MACHETE_SKILL_RANGE)
 	{
-		decalMaterial->diffuseColor = decalOriginalColor;
+		decalMaterial->bloomIntenstiy = 7.0f;
 		canceled = false;
 	}
 	else
 	{
-		decalMaterial->diffuseColor = decalOriginalColor * .01f;
-		decalMaterial->diffuseColor.w = decalOriginalColor.w;
+		decalMaterial->bloomIntenstiy = 0.3f;
 		canceled = true;
 	}
 }

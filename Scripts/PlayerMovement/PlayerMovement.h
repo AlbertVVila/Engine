@@ -290,6 +290,9 @@ public:
 	ComponentAudioSource* gotHitAudio = nullptr;
 	GameObject* slashTrail = nullptr;
 
+
+	float deltatime;
+
 private:
 	std::vector<PlayerState*> playerStates;	
 	GameObject* dustParticles = nullptr;
