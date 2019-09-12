@@ -27,8 +27,8 @@ public:
 
 	// Damage numbers color
 	math::float4 normalColor = math::float4(1.0f, 1.0f, 1.0f, 1.0f);
-	math::float4 criticalColor = math::float4(1.0f, 0.44f, 0.2f, 1.0f);
-	math::float4 pollometerColor = math::float4(1.0f, 1.0f, 1.0f, 1.0f);
+	math::float4 criticalColor = math::float4(1.0f, 0.8f, 0.2f, 1.0f);
+	math::float4 pollometerColor = math::float4(1.0f, 0.44f, 0.2f, 1.0f);
 	math::float4 healingColor = math::float4(0.0f, 1.0f, 0.0f, 1.0f);
 	math::float4 receivedColor = math::float4(1.0f, 0.0f, 0.0f, 1.0f);
 
