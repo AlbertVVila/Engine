@@ -69,23 +69,21 @@ bool DamageController::AddDamage(ComponentTransform* transform, int damage, Dama
 			uiDamage[i]->GetComponent<Text>()->text = std::to_string(damage);
 			switch ((DamageType)type)
 			{
+			default:
 			case DamageType::NORMAL:
-				uiDamage[i]->GetComponent<Text>()->color = math::float4(1.0f, 1.0f, 1.0f, 1.0f);
+				uiDamage[i]->GetComponent<Text>()->color = normalColor;
 				break;
 			case DamageType::CRITICAL:
-				uiDamage[i]->GetComponent<Text>()->color = math::float4(1.0f, 0.8f, 0.2f, 1.0f);
+				uiDamage[i]->GetComponent<Text>()->color = criticalColor;
 				break;
 			case DamageType::POLLOMETER:
-				uiDamage[i]->GetComponent<Text>()->color = math::float4(1.0f, 1.0f, 1.0f, 1.0f);
+				uiDamage[i]->GetComponent<Text>()->color = pollometerColor;
 				break;
 			case DamageType::HEALING:
-				uiDamage[i]->GetComponent<Text>()->color = math::float4(0.0f, 1.0f, 0.0f, 1.0f);
+				uiDamage[i]->GetComponent<Text>()->color = healingColor;
 				break;
 			case DamageType::RECIEVED:
-				uiDamage[i]->GetComponent<Text>()->color = math::float4(1.0f, 0.0f, 0.0f, 1.0f);
-				break;
-			default:
-				uiDamage[i]->GetComponent<Text>()->color = math::float4(1.0f, 1.0f, 1.0f, 1.0f);
+				uiDamage[i]->GetComponent<Text>()->color = receivedColor;
 				break;
 			}
 			
