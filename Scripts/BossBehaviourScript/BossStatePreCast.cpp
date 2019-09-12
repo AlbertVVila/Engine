@@ -4,6 +4,7 @@
 
 BossStatePreCast::BossStatePreCast(BossBehaviourScript* AIBoss)
 {
+	boss = AIBoss;
 }
 
 

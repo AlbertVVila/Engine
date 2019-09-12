@@ -4,6 +4,7 @@
 
 BossStateActivated::BossStateActivated(BossBehaviourScript* AIBoss)
 {
+	boss = AIBoss;
 }
 
 

@@ -9,7 +9,12 @@ public:
 	BossState();
 	virtual ~BossState();
 
-private:
+	virtual void HandleIA() {};
+	virtual void Update() {};
+	virtual void Enter() {};
+	virtual void Exit() {};
+
+protected:
 	BossBehaviourScript* boss = nullptr;
 };
 

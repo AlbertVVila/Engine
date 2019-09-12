@@ -4,6 +4,7 @@
 
 BossStateInterPhase::BossStateInterPhase(BossBehaviourScript* AIBoss)
 {
+	boss = AIBoss;
 }
 
 

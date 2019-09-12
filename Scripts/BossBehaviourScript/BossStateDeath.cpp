@@ -4,6 +4,7 @@
 
 BossStateDeath::BossStateDeath(BossBehaviourScript* AIBoss)
 {
+	boss = AIBoss;
 }
 
 

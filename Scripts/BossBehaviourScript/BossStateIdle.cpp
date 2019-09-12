@@ -4,6 +4,7 @@
 
 BossStateIdle::BossStateIdle(BossBehaviourScript* AIBoss)
 {
+	boss = AIBoss;
 }
 
 

@@ -195,7 +195,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Source\MathGeoLib\lib;$(SolutionDir)\Source\Imgui\lib;$(SolutionDir)$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Scripts\EnemyControllerScript;$(SolutionDir)Source\MathGeoLib\lib;$(SolutionDir)\Source\Imgui\lib;$(SolutionDir)$(Configuration)</AdditionalLibraryDirectories>
       <AdditionalDependencies>$(SolutionName).lib;ImGui.lib;MathGeoLib.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
@@ -265,6 +265,11 @@
     <ClInclude Include="BossStateInterPhase.h" />
     <ClInclude Include="BossStateNotActive.h" />
     <ClInclude Include="BossStatePreCast.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EnemyControllerScript\EnemyControllerScript.vcxproj">
+      <Project>{acc36cc8-ada1-4cfa-ae5a-c51cf877b885}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

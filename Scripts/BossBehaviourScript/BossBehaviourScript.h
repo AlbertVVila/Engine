@@ -59,8 +59,15 @@ public:
 	BossStateDeath* death = nullptr;
 	BossStateCast* cast = nullptr;
 
+public:
+	float firstHealthThreshold = 0.75f;
+	float secondHealthThreshold = 0.35f;
+
 private:
 	std::vector<BossState*> bossStates;
+
+	void CheckStates(BossState* previous);
+	void CheckHealth();
 };
 
 #endif __BossBehaviourScript_h__
