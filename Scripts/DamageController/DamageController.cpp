@@ -10,7 +10,7 @@
 #include "ComponentTransform.h"
 #include <list>
 #include <string>
-#include "Math/float4.h"
+#include "imgui.h"
 
 DamageController_API Script* CreateScript()
 {
@@ -49,6 +49,16 @@ void DamageController::Update()
 			}
 		}
 	}
+}
+
+void DamageController::Expose(ImGuiContext* context)
+{
+	ImGui::Text("Damage UI Numbers Color:");
+	ImGui::ColorEdit4("Nomal Color", (float*)&normalColor);
+	ImGui::ColorEdit4("Critical Color", (float*)&criticalColor);
+	ImGui::ColorEdit4("Pollometer Color", (float*)&pollometerColor);
+	ImGui::ColorEdit4("Healing Color", (float*)&healingColor);
+	ImGui::ColorEdit4("Received Color", (float*)&receivedColor);
 }
 
 bool DamageController::AddDamage(ComponentTransform* transform, int damage, DamageType type)
