@@ -138,11 +138,9 @@ public:
 	Button* toTheAltarButton = nullptr;
 	Button* hudBackToMenuButton = nullptr;
 	Button* inventoryButton = nullptr;
-	Button* missionsButton = nullptr;
 	Button* skillsButton = nullptr;
 	Button* closePlayerMenuButton = nullptr;
 	Button* pauseResume = nullptr;
-	Button* pauseOptions = nullptr;
 	Button* pauseExit = nullptr;
 	std::vector<Component*> volumeButtons;
 	std::vector<Component*> soundButtons;
@@ -162,7 +160,6 @@ public:
 	GameObject* loadingGO = nullptr;
 	GameObject* playerMenuGO = nullptr;
 	GameObject* inventoryMenuGO = nullptr;
-	GameObject* missionsMenuGO = nullptr;
 	GameObject* skillsMenuGO = nullptr;
 	GameObject* pauseMenuGO = nullptr;
 	std::vector<GameObject*> sunHoverGO;
