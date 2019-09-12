@@ -119,7 +119,7 @@
                         "abilities": {
                             "chain": {
                                 "type": 10,
-                                "mana_cost": 10.0,
+                                "mana_cost": 0.0,
                                 "cooldown": 0.0
                             },
                             "dash": {
