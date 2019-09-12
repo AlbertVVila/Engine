@@ -1,6 +1,6 @@
 {
     "navigationScene": {
-        "navDataSize": 1081
+        "navDataSize": 0
     },
     "GameObjects": [
         {
@@ -79,6 +79,12 @@
                         0.0,
                         1.0
                     ]
+                },
+                {
+                    "Type": 9,
+                    "Enabled": 1,
+                    "script": "MenuSoundsScript",
+                    "scriptInfo": {}
                 }
             ]
         },
@@ -255,7 +261,7 @@
                     "Type": 14,
                     "Enabled": 1,
                     "audioUID": 4190978870,
-                    "Volume": 0.800000011920929,
+                    "Volume": 1.0,
                     "PlayOnAwake": 1,
                     "Sound3D": 0,
                     "LimitPan": 0.5,
@@ -8682,6 +8688,15 @@
                     "UIOrder": 0,
                     "videoPath": "flame.avi",
                     "fps": 24.0
+                },
+                {
+                    "Type": 9,
+                    "Enabled": 1,
+                    "script": "CreditsScript",
+                    "scriptInfo": {
+                        "speed": 100.0,
+                        "stopValue": 900.0
+                    }
                 }
             ]
         },
