@@ -266,7 +266,7 @@ public:
 	bool canInteract = true;
 
 	// Probability of critical attack
-	float criticalChance = 5.0f;
+	float criticalChance = 10.0f;
 
 	// Skills
 	BasicSkill* currentSkill = nullptr;
