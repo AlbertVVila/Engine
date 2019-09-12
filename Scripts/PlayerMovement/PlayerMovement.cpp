@@ -134,6 +134,7 @@ void PlayerMovement::Expose(ImGuiContext* context)
 	}
 
 	UpdateUIStats();
+	ImGui::InputFloat("Chance of Critical (%)", &criticalChance);
 
 	ImGui::Spacing();
 	ImGui::Text("HP/MP Regen Timers");
@@ -176,7 +177,6 @@ void PlayerMovement::Expose(ImGuiContext* context)
 			break;
 		}
 	}
-
 	ImGui::Spacing();
 
 	// Stats Debug

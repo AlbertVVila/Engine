@@ -265,6 +265,9 @@ public:
 
 	bool canInteract = true;
 
+	// Probability of critical attack
+	float criticalChance = 5.0f;
+
 	// Skills
 	BasicSkill* currentSkill = nullptr;
 	ChainAttackSkill* chain = nullptr;
