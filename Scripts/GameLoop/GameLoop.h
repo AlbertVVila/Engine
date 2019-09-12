@@ -165,6 +165,7 @@ public:
 	GameObject* missionsMenuGO = nullptr;
 	GameObject* skillsMenuGO = nullptr;
 	GameObject* pauseMenuGO = nullptr;
+	std::vector<GameObject*> sunHoverGO;
 
 	//BBOX
 	math::AABB* playerBbox = nullptr;
