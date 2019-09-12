@@ -244,7 +244,7 @@ public:
 	float outCombatTimer = 0.0f;
 	float outCombatMaxTime = 3.0f;
 	float manaRegenTimer = 0.0f;
-	float manaRegenMaxTime = 5.0f;
+	float manaRegenMaxTime = 10.0f;
 
 	PlayerStats stats = { 150.0f, 100.0f, 10U, 10U, 5.0f, 5.0f };
 	PlayerStats previousStats;
