@@ -6,7 +6,7 @@ class BossStateInterPhase :
 	public BossState
 {
 public:
-	BossStateInterPhase();
+	BossStateInterPhase(BossBehaviourScript* AIBoss);
 	~BossStateInterPhase();
 };
 

@@ -7,7 +7,7 @@ class BossStateCast :
 	public BossState
 {
 public:
-	BossStateCast();
+	BossStateCast(BossBehaviourScript* AIBoss);
 	~BossStateCast();
 };
 

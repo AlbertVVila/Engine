@@ -7,7 +7,7 @@ class BossStateIdle :
 	public BossState
 {
 public:
-	BossStateIdle();
+	BossStateIdle(BossBehaviourScript* AIBoss);
 	~BossStateIdle();
 };
 

@@ -1,8 +1,8 @@
 #include "BossStateInterPhase.h"
 
+#include "BossBehaviourScript.h"
 
-
-BossStateInterPhase::BossStateInterPhase()
+BossStateInterPhase::BossStateInterPhase(BossBehaviourScript* AIBoss)
 {
 }
 

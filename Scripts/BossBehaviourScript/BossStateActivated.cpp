@@ -1,8 +1,8 @@
 #include "BossStateActivated.h"
 
+#include "BossBehaviourScript.h"
 
-
-BossStateActivated::BossStateActivated()
+BossStateActivated::BossStateActivated(BossBehaviourScript* AIBoss)
 {
 }
 

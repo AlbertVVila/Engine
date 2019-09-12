@@ -7,7 +7,7 @@ class BossStateNotActive :
 	public BossState
 {
 public:
-	BossStateNotActive();
+	BossStateNotActive(BossBehaviourScript* AIBoss);
 	~BossStateNotActive();
 };
 

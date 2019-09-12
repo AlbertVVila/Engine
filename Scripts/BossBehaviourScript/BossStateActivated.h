@@ -2,11 +2,12 @@
 #define _BOSSSTATEACTIVATED_H_
 
 #include "BossState.h"
+
 class BossStateActivated :
 	public BossState
 {
 public:
-	BossStateActivated();
+	BossStateActivated(BossBehaviourScript* AIBoss);
 	~BossStateActivated();
 };
 

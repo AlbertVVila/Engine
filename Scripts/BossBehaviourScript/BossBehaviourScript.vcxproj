@@ -249,6 +249,7 @@
     <ClCompile Include="BossState.cpp" />
     <ClCompile Include="BossStateActivated.cpp" />
     <ClCompile Include="BossStateCast.cpp" />
+    <ClCompile Include="BossStateDeath.cpp" />
     <ClCompile Include="BossStateIdle.cpp" />
     <ClCompile Include="BossStateInterPhase.cpp" />
     <ClCompile Include="BossStateNotActive.cpp" />
@@ -259,6 +260,7 @@
     <ClInclude Include="BossState.h" />
     <ClInclude Include="BossStateActivated.h" />
     <ClInclude Include="BossStateCast.h" />
+    <ClInclude Include="BossStateDeath.h" />
     <ClInclude Include="BossStateIdle.h" />
     <ClInclude Include="BossStateInterPhase.h" />
     <ClInclude Include="BossStateNotActive.h" />

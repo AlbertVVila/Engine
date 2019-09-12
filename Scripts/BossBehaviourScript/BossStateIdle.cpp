@@ -1,8 +1,8 @@
 #include "BossStateIdle.h"
 
+#include "BossBehaviourScript.h"
 
-
-BossStateIdle::BossStateIdle()
+BossStateIdle::BossStateIdle(BossBehaviourScript* AIBoss)
 {
 }
 

@@ -1,8 +1,8 @@
 #include "BossStateNotActive.h"
 
+#include "BossBehaviourScript.h"
 
-
-BossStateNotActive::BossStateNotActive()
+BossStateNotActive::BossStateNotActive(BossBehaviourScript* AIBoss)
 {
 }
 

@@ -2,6 +2,7 @@
 #define  __BossBehaviourScript_h__
 
 #include "BaseScript.h"
+#include <vector>
 
 #ifdef BossBehaviourScript_EXPORTS
 #define BossBehaviourScript_API __declspec(dllexport)
@@ -21,7 +22,9 @@ class BossState;
 class BossStateCast;
 class BossStatePreCast;
 class BossStateIdle;
+class BossStateDeath;
 class BossStateNotActive;
+class BossStateActivated;
 class BossStateInterPhase;
 class EnemyControllerScript;
 
@@ -47,6 +50,17 @@ public:
 	BossState* currentState = nullptr;
 
 	EnemyControllerScript* enemyController = nullptr;
+
+	BossStateActivated* activated = nullptr;
+	BossStateNotActive* notActive = nullptr;
+	BossStateIdle* idle = nullptr;
+	BossStatePreCast* precast = nullptr;
+	BossStateInterPhase* interPhase = nullptr;
+	BossStateDeath* death = nullptr;
+	BossStateCast* cast = nullptr;
+
+private:
+	std::vector<BossState*> bossStates;
 };
 
 #endif __BossBehaviourScript_h__
