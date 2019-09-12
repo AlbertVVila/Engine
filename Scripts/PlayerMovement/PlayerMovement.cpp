@@ -760,7 +760,7 @@ PlayerMovement_API void PlayerMovement::Damage(float amount)
 			isPlayerDead = true;
 		}
 
-		damageController->AddDamage(gameobject->transform, amount, 5);
+		damageController->AddDamage(gameobject->transform, amount, (DamageType)5);
 		if (damageUIFeedback != nullptr)
 			damageUIFeedback->ActivateDamageUI();
 

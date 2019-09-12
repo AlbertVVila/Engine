@@ -51,7 +51,7 @@ void DamageController::Update()
 	}
 }
 
-bool DamageController::AddDamage(ComponentTransform* transform, int damage, int type)
+bool DamageController::AddDamage(ComponentTransform* transform, int damage, DamageType type)
 {
 
 	for (int i = 0; i != 10; i++) {
@@ -70,22 +70,22 @@ bool DamageController::AddDamage(ComponentTransform* transform, int damage, int 
 			switch ((DamageType)type)
 			{
 			case DamageType::NORMAL:
-				uiDamage[i]->GetComponent<Text>()->color = math::float4(1, 1, 1, 1);
+				uiDamage[i]->GetComponent<Text>()->color = math::float4(1.0f, 1.0f, 1.0f, 1.0f);
 				break;
 			case DamageType::CRITICAL:
-				uiDamage[i]->GetComponent<Text>()->color = math::float4(1, 1, 1, 1);
+				uiDamage[i]->GetComponent<Text>()->color = math::float4(1.0f, 0.8f, 0.2f, 1.0f);
 				break;
 			case DamageType::POLLOMETER:
-				uiDamage[i]->GetComponent<Text>()->color = math::float4(1, 1, 1, 1);
+				uiDamage[i]->GetComponent<Text>()->color = math::float4(1.0f, 1.0f, 1.0f, 1.0f);
 				break;
 			case DamageType::HEALING:
-				uiDamage[i]->GetComponent<Text>()->color = math::float4(0, 1, 0, 1);
+				uiDamage[i]->GetComponent<Text>()->color = math::float4(0.0f, 1.0f, 0.0f, 1.0f);
 				break;
 			case DamageType::RECIEVED:
-				uiDamage[i]->GetComponent<Text>()->color = math::float4(1, 0, 0, 1);
+				uiDamage[i]->GetComponent<Text>()->color = math::float4(1.0f, 0.0f, 0.0f, 1.0f);
 				break;
 			default:
-				uiDamage[i]->GetComponent<Text>()->color = math::float4(1, 1, 1, 1);
+				uiDamage[i]->GetComponent<Text>()->color = math::float4(1.0f, 1.0f, 1.0f, 1.0f);
 				break;
 			}
 			

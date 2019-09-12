@@ -20,7 +20,7 @@ public:
 	void Start() override;
 	void Update() override;
 
-	bool AddDamage(ComponentTransform* position, int damage, int type);
+	bool AddDamage(ComponentTransform* position, int damage, DamageType type);
 
 private:
 	GameObject* uiDamage[10];
