@@ -468,6 +468,8 @@ void EnemyControllerScript::OnTriggerEnter(GameObject* go)
 
 	if (go->tag == "PlayerHitBoxAttack")
 	{
-		TakeDamage(playerMovement->stats.strength * 0.1);
+		// Generate a random number and if it is below the critical chance the damage will be increased
+		float damageMultiplier = ((rand() % 100u) < playerMovement->criticalChance) ? 0.2f : 0.1f;
+		TakeDamage(playerMovement->stats.strength * damageMultiplier);
 	}
 }
