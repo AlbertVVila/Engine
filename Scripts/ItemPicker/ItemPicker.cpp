@@ -170,7 +170,7 @@ void ItemPicker::Expose(ImGuiContext* context)
 					unsigned materialUID = App->resManager->FindByName(materialsList[n].c_str(), TYPE::MATERIAL);
 					if (materialUID != 0u)
 					{
-						item.meshUID = materialUID;
+						item.materialUID = materialUID;
 						itemMaterial = (ResourceMaterial*)App->resManager->GetWithoutLoad(materialUID);
 					}
 				}
