@@ -216,25 +216,14 @@ void ItemPicker::Update()
 	GameObject* myRenderGO = App->scene->FindGameObjectByName(myBboxName.c_str(), gameobject);
 	if (myRenderGO != nullptr)
 		myRender = (ComponentRenderer*)myRenderGO->GetComponent<ComponentRenderer>();
-	switch (rarity)
+
+	if (myRender != nullptr)
 	{
-	case ItemRarity::BASIC:
-		myRender->highlightColor = math::float3(211, 211, 211);
-		rare = 0;
-		break;
-	case ItemRarity::RARE:
-		myRender->highlightColor = math::float3(0, 255, 0);
-		rare = 1;
-		break;
-	case ItemRarity::EPIC:
-		myRender->highlightColor = math::float3(255, 69, 0);
-		rare = 2;
-		break;
-	case ItemRarity::LEGENDARY:
-		myRender->highlightColor = math::float3(148, 0, 211);
-		rare = 3;
-		break;
+		myRender->highlighted = true;
+		math::float4 color = itemName->GetColor(gameobject->UUID);
+		myRender->highlightColor = math::float3(color.x, color.y, color.z);
 	}
+
 	
 	if (App->scene->maincamera->frustum->Intersects(gameobject->GetBoundingBox()) && std::find(nameShowed.begin(), nameShowed.end(), gameobject->UUID) == nameShowed.end() && gameobject->isActive())
 	{
@@ -263,11 +252,12 @@ void ItemPicker::Update()
 			changeStandarCursorIcon = true;
 		}
 	}
+	
 	else
 	{
 		if (myRender != nullptr)
 		{
-			myRender->highlighted = false;
+			//myRender->highlighted = false;
 			itemName->Hovered(gameobject->UUID, false);
 
 			if (changeStandarCursorIcon && !App->ui->IsHover())
