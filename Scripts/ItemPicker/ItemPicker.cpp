@@ -122,6 +122,11 @@ void ItemPicker::Expose(ImGuiContext* context)
 	ImGui::PushID("Mesh Combo");
 	if (ImGui::BeginCombo("", itemMesh != nullptr ? itemMesh->GetName() : "None selected"))
 	{
+		if (meshesList.empty())
+		{
+			meshesList.clear();
+			meshesList = App->resManager->GetResourceNamesList(TYPE::MESH, true);
+		}
 		bool none_selected = (itemMesh == nullptr);
 		if (ImGui::Selectable(None, none_selected))
 		{
@@ -130,10 +135,7 @@ void ItemPicker::Expose(ImGuiContext* context)
 		}
 		if (none_selected)
 			ImGui::SetItemDefaultFocus();
-		/*if (meshesList.empty())
-		{
-			meshesList = App->resManager->GetResourceNamesList(TYPE::MESH, true);
-		}*/
+
 		for (int n = 0; n < meshesList.size(); n++)
 		{
 			bool is_selected = (itemMesh != nullptr ? itemMesh->GetName() == meshesList[n].c_str() : false);
@@ -161,28 +163,16 @@ void ItemPicker::Expose(ImGuiContext* context)
 		meshesList.clear();
 	}
 
-	if (ImGui::Button("Refresh Meshes"))
-	{
-		UpdateMaterialsList();
-	}
-
 	// Material selector
 	ImGui::Text("Material");
 	ImGui::PushID("Material Combo");
 	if (ImGui::BeginCombo("", itemMaterial != nullptr ? itemMaterial->GetName() : "None selected"))
 	{
-		bool none_selected = (itemMaterial == nullptr);
-		if (ImGui::Selectable(None, none_selected))
+		if (materialsList.empty())
 		{
-			item.materialUID = 0u;
-			itemMaterial = nullptr;
-		}
-		if (none_selected)
-			ImGui::SetItemDefaultFocus();
-		/*if (materialsList.empty())
-		{
+			materialsList.clear();
 			materialsList = App->resManager->GetResourceNamesList(TYPE::MATERIAL, true);
-		}*/
+		}
 		for (int n = 0; n < materialsList.size(); n++)
 		{
 			bool is_selected = (itemMaterial != nullptr ? itemMaterial->GetName() == materialsList[n].c_str() : false);
@@ -208,11 +198,6 @@ void ItemPicker::Expose(ImGuiContext* context)
 	else
 	{
 		materialsList.clear();
-	}
-
-	if (ImGui::Button("Refresh Materials"))
-	{
-		UpdateMaterialsList();
 	}
 
 	item.stats.Expose("Item Stats");
@@ -441,16 +426,4 @@ void ItemPicker::SetItem(ItemType type, std::string name, std::string sprite)
 	item.name = name;
 	item.sprite = sprite;
 	item.type = type;
-}
-
-void ItemPicker::UpdateMeshesList()
-{
-	meshesList.clear();
-	meshesList = App->resManager->GetResourceNamesList(TYPE::MESH, true);
-}
-
-void ItemPicker::UpdateMaterialsList()
-{
-	materialsList.clear();
-	materialsList = App->resManager->GetResourceNamesList(TYPE::MATERIAL, true);
 }
