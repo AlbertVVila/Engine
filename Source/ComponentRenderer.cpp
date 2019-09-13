@@ -135,10 +135,7 @@ void ComponentRenderer::DrawProperties()
 				}
 				if (none_selected)
 					ImGui::SetItemDefaultFocus();
-				if (guiMeshes.empty())
-				{
-					guiMeshes = App->resManager->GetResourceNamesList(TYPE::MESH, true);
-				}
+
 				for (int n = 0; n < guiMeshes.size(); n++)
 				{
 					bool is_selected = (mesh != nullptr ? HashString(mesh->GetName()) == HashString(guiMeshes[n].c_str()) : false);
