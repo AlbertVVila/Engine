@@ -17,7 +17,9 @@
 #include "JSON.h"
 #include "imgui.h"
 #include "Resource.h"
+#include "ResourceMesh.h"
 #include "ComponentAudioSource.h"
+#include "HashString.h"
 #include <algorithm>
 
 #pragma warning(disable : 4996)
@@ -40,8 +42,8 @@ void ItemPicker::Expose(ImGuiContext* context)
 	ImGui::Separator();
 
 	ImGui::SetCurrentContext(context);
-	const char * types[] = { "NONE","QUICK","KEY","MATERIAL","WEAPON","HELMET","CHEST","PANTS","BOOTS","AMULET","RING" };
-	const char * rarities[] = { "BASIC","RARE","EPIC","LEGENDARY" };
+	const char* types[] = { "NONE","QUICK","KEY","MATERIAL","WEAPON","HELMET","CHEST","PANTS","BOOTS","AMULET","RING" };
+	const char* rarities[] = { "BASIC","RARE","EPIC","LEGENDARY" };
 	if (ImGui::BeginCombo("Type", types[(int)type]))
 	{
 		for (int n = 0; n < 11; n++)
@@ -111,6 +113,35 @@ void ItemPicker::Expose(ImGuiContext* context)
 	ImGui::InputText("My BBox Name", bboxName, 64);
 	myBboxName = bboxName;
 	delete[] bboxName;
+
+	// Mesh selector
+	ImGui::Text("Mesh");
+	ImGui::PushID("Mesh Combo");
+	if (ImGui::BeginCombo("", newItemMesh != nullptr ? newItemMesh->GetName() : "None selected"))
+	{
+		if (guiMeshes.empty())
+		{
+			guiMeshes = App->resManager->GetResourceNamesList(TYPE::MESH, true);
+		}
+		for (int n = 0; n < guiMeshes.size(); n++)
+		{
+			bool is_selected = (newItemMesh != nullptr ? newItemMesh->GetName() == guiMeshes[n].c_str() : false);
+			if (ImGui::Selectable(guiMeshes[n].c_str(), is_selected))
+			{
+				if (newItemMesh == nullptr || newItemMesh->GetName() != guiMeshes[n])
+					newItemMesh = (ResourceMesh*)App->resManager->GetWithoutLoad(App->resManager->FindByName(guiMeshes[n].c_str(), TYPE::MESH));
+			}
+			if (is_selected)
+			{
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
+	}
+	else
+	{
+		guiMeshes.clear();
+	}
 
 	item.stats.Expose("Item Stats");
 }
@@ -296,6 +327,7 @@ void ItemPicker::Serialize(JSON_value* json) const
 	json->AddFloat("hpRegen", item.stats.hpRegen);
 	json->AddFloat("manaRegen", item.stats.manaRegen);
 	json->AddString("itemCursor", itemCursor.c_str());
+	json->AddUint("meshUID", newItemMesh != nullptr ? newItemMesh->GetUID() : 0u);
 }
 
 void ItemPicker::DeSerialize(JSON_value* json)
@@ -313,6 +345,9 @@ void ItemPicker::DeSerialize(JSON_value* json)
 	item.stats.hpRegen = json->GetFloat("hpRegen");
 	item.stats.manaRegen = json->GetFloat("manaRegen");
 	itemCursor = json->GetString("itemCursor", "Pick.cur");
+
+	unsigned meshUID = json->GetUint("meshUID");
+	newItemMesh = meshUID > 0 ? (ResourceMesh*)App->resManager->GetWithoutLoad(meshUID) : nullptr;
 }
 
 void ItemPicker::SetItem(ItemType type, std::string name, std::string sprite)
