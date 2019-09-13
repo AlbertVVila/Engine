@@ -21,6 +21,7 @@ class ComponentRenderer;
 class ItemNameController;
 class PlayerMovement;
 class ResourceMesh;
+class ResourceMaterial;
 
 enum class ItemPicker_API ItemRarity
 {
@@ -79,9 +80,13 @@ private:
 	bool changeItemCursorIcon = true;
 	bool changeStandarCursorIcon = true;
 
-	// Mesh to change to Player (only weapons)
-	ResourceMesh* newItemMesh = nullptr;
-	std::vector<std::string> guiMeshes;		// List of ResourceMeshes
+	// Mesh to change to Player item (only weapons)
+	ResourceMesh* itemMesh = nullptr;
+	std::vector<std::string> meshesList;		// List of ResourceMeshes
+
+	// Material to change to Player item (only weapons)
+	ResourceMaterial* itemMaterial = nullptr;
+	std::vector<std::string> materialsList;		// List of ResourceMeshes
 };
 
 extern "C" ItemPicker_API Script* CreateScript();

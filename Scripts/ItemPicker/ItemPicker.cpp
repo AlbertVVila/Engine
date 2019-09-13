@@ -18,6 +18,7 @@
 #include "imgui.h"
 #include "Resource.h"
 #include "ResourceMesh.h"
+#include "ResourceMaterial.h"
 #include "ComponentAudioSource.h"
 #include "HashString.h"
 #include <algorithm>
@@ -117,24 +118,24 @@ void ItemPicker::Expose(ImGuiContext* context)
 	// Mesh selector
 	ImGui::Text("Mesh");
 	ImGui::PushID("Mesh Combo");
-	if (ImGui::BeginCombo("", newItemMesh != nullptr ? newItemMesh->GetName() : "None selected"))
+	if (ImGui::BeginCombo("", itemMesh != nullptr ? itemMesh->GetName() : "None selected"))
 	{
-		if (guiMeshes.empty())
+		if (meshesList.empty())
 		{
-			guiMeshes = App->resManager->GetResourceNamesList(TYPE::MESH, true);
+			meshesList = App->resManager->GetResourceNamesList(TYPE::MESH, true);
 		}
-		for (int n = 0; n < guiMeshes.size(); n++)
+		for (int n = 0; n < meshesList.size(); n++)
 		{
-			bool is_selected = (newItemMesh != nullptr ? newItemMesh->GetName() == guiMeshes[n].c_str() : false);
-			if (ImGui::Selectable(guiMeshes[n].c_str(), is_selected))
+			bool is_selected = (itemMesh != nullptr ? itemMesh->GetName() == meshesList[n].c_str() : false);
+			if (ImGui::Selectable(meshesList[n].c_str(), is_selected))
 			{
-				if (newItemMesh == nullptr || newItemMesh->GetName() != guiMeshes[n])
+				if (itemMesh == nullptr || itemMesh->GetName() != meshesList[n])
 				{
-					unsigned meshUID = App->resManager->FindByName(guiMeshes[n].c_str(), TYPE::MESH);
+					unsigned meshUID = App->resManager->FindByName(meshesList[n].c_str(), TYPE::MESH);
 					if (meshUID != 0u)
 					{
-						item.newMeshUID = meshUID;
-						newItemMesh = (ResourceMesh*)App->resManager->GetWithoutLoad(meshUID);
+						item.meshUID = meshUID;
+						itemMesh = (ResourceMesh*)App->resManager->GetWithoutLoad(meshUID);
 					}
 				}
 			}
@@ -147,7 +148,43 @@ void ItemPicker::Expose(ImGuiContext* context)
 	}
 	else
 	{
-		guiMeshes.clear();
+		meshesList.clear();
+	}
+
+	// Material selector
+	ImGui::Text("Material");
+	ImGui::PushID("Material Combo");
+	if (ImGui::BeginCombo("", itemMaterial != nullptr ? itemMaterial->GetName() : "None selected"))
+	{
+		if (materialsList.empty())
+		{
+			materialsList = App->resManager->GetResourceNamesList(TYPE::MATERIAL, true);
+		}
+		for (int n = 0; n < materialsList.size(); n++)
+		{
+			bool is_selected = (itemMaterial != nullptr ? itemMaterial->GetName() == materialsList[n].c_str() : false);
+			if (ImGui::Selectable(materialsList[n].c_str(), is_selected))
+			{
+				if (itemMaterial == nullptr || itemMaterial->GetName() != materialsList[n])
+				{
+					unsigned materialUID = App->resManager->FindByName(materialsList[n].c_str(), TYPE::MATERIAL);
+					if (materialUID != 0u)
+					{
+						item.meshUID = materialUID;
+						itemMaterial = (ResourceMaterial*)App->resManager->GetWithoutLoad(materialUID);
+					}
+				}
+			}
+			if (is_selected)
+			{
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
+	}
+	else
+	{
+		materialsList.clear();
 	}
 
 	item.stats.Expose("Item Stats");
@@ -334,7 +371,8 @@ void ItemPicker::Serialize(JSON_value* json) const
 	json->AddFloat("hpRegen", item.stats.hpRegen);
 	json->AddFloat("manaRegen", item.stats.manaRegen);
 	json->AddString("itemCursor", itemCursor.c_str());
-	json->AddUint("meshUID", item.newMeshUID);
+	json->AddUint("meshUID", item.meshUID);
+	json->AddUint("materialUID", item.materialUID);
 }
 
 void ItemPicker::DeSerialize(JSON_value* json)
@@ -353,11 +391,20 @@ void ItemPicker::DeSerialize(JSON_value* json)
 	item.stats.manaRegen = json->GetFloat("manaRegen");
 	itemCursor = json->GetString("itemCursor", "Pick.cur");
 
-	unsigned meshUID = json->GetUint("meshUID");
-	if (meshUID > 0u)
+	// Mesh
+	unsigned resourceMeshUID = json->GetUint("meshUID");
+	if (resourceMeshUID > 0u)
 	{
-		item.newMeshUID = meshUID;
-		newItemMesh =(ResourceMesh*)App->resManager->GetWithoutLoad(meshUID);
+		item.meshUID = resourceMeshUID;
+		itemMesh =(ResourceMesh*)App->resManager->GetWithoutLoad(resourceMeshUID);
+	}
+
+	//Material
+	unsigned resourceMaterialUID = json->GetUint("materialUID");
+	if (resourceMaterialUID > 0u)
+	{
+		item.materialUID = resourceMaterialUID;
+		itemMesh = (ResourceMesh*)App->resManager->GetWithoutLoad(resourceMaterialUID);
 	}
 }
 

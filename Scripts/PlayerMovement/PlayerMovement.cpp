@@ -875,7 +875,7 @@ void PlayerMovement::UnEquip(const PlayerStats& equipStats)
 	UpdateUIStats();
 }
 
-void PlayerMovement::EquipWeapon(const PlayerStats& equipStats, unsigned meshUID)
+void PlayerMovement::EquipWeapon(const PlayerStats& equipStats, unsigned meshUID, unsigned materialUID)
 {
 	this->stats += equipStats;
 
@@ -888,7 +888,12 @@ void PlayerMovement::EquipWeapon(const PlayerStats& equipStats, unsigned meshUID
 	UpdateUIStats();
 
 	ResourceMesh* weaponMesh = (ResourceMesh*)App->resManager->GetWithoutLoad(meshUID);
-	weaponRenderer->SetMesh(weaponMesh->GetName());
+	if(weaponMesh > 0u)
+		weaponRenderer->SetMesh(weaponMesh->GetName());
+
+	ResourceMaterial* weaponMaterial = (ResourceMaterial*)App->resManager->GetWithoutLoad(materialUID);
+	if (weaponMaterial > 0u)
+		weaponRenderer->SetMaterial(weaponMaterial->GetName());
 }
 
 void PlayerMovement::UnEquipWeapon(const PlayerStats& equipStats)
@@ -906,6 +911,7 @@ void PlayerMovement::UnEquipWeapon(const PlayerStats& equipStats)
 	UpdateUIStats();
 
 	weaponRenderer->SetMesh(nullptr);
+	weaponRenderer->SetMaterial(nullptr);
 }
 
 void PlayerMovement::OnAnimationEvent(std::string name)

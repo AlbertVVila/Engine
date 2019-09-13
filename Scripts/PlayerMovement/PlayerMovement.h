@@ -172,7 +172,7 @@ public:
 
 	void Equip(const PlayerStats& equipStats);
 	void UnEquip(const PlayerStats& equipStats);
-	void EquipWeapon(const PlayerStats& equipStats, unsigned meshUID);
+	void EquipWeapon(const PlayerStats& equipStats, unsigned meshUID, unsigned materialUID);
 	void UnEquipWeapon(const PlayerStats& equipStats);
 
 	void OnAnimationEvent(std::string name) override;
