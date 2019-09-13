@@ -129,7 +129,14 @@ void ItemPicker::Expose(ImGuiContext* context)
 			if (ImGui::Selectable(guiMeshes[n].c_str(), is_selected))
 			{
 				if (newItemMesh == nullptr || newItemMesh->GetName() != guiMeshes[n])
-					newItemMesh = (ResourceMesh*)App->resManager->GetWithoutLoad(App->resManager->FindByName(guiMeshes[n].c_str(), TYPE::MESH));
+				{
+					unsigned meshUID = App->resManager->FindByName(guiMeshes[n].c_str(), TYPE::MESH);
+					if (meshUID != 0u)
+					{
+						item.newMeshUID = meshUID;
+						newItemMesh = (ResourceMesh*)App->resManager->GetWithoutLoad(meshUID);
+					}
+				}
 			}
 			if (is_selected)
 			{
@@ -327,7 +334,7 @@ void ItemPicker::Serialize(JSON_value* json) const
 	json->AddFloat("hpRegen", item.stats.hpRegen);
 	json->AddFloat("manaRegen", item.stats.manaRegen);
 	json->AddString("itemCursor", itemCursor.c_str());
-	json->AddUint("meshUID", newItemMesh != nullptr ? newItemMesh->GetUID() : 0u);
+	json->AddUint("meshUID", item.newMeshUID);
 }
 
 void ItemPicker::DeSerialize(JSON_value* json)
@@ -347,7 +354,11 @@ void ItemPicker::DeSerialize(JSON_value* json)
 	itemCursor = json->GetString("itemCursor", "Pick.cur");
 
 	unsigned meshUID = json->GetUint("meshUID");
-	newItemMesh = meshUID > 0 ? (ResourceMesh*)App->resManager->GetWithoutLoad(meshUID) : nullptr;
+	if (meshUID > 0u)
+	{
+		item.newMeshUID = meshUID;
+		newItemMesh =(ResourceMesh*)App->resManager->GetWithoutLoad(meshUID);
+	}
 }
 
 void ItemPicker::SetItem(ItemType type, std::string name, std::string sprite)
