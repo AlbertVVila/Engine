@@ -75521,7 +75521,7 @@
             ]
         },
         {
-            "UID": 2259777728,
+            "UID": 921461951,
             "ParentUID": 1,
             "Name": "LoseWindow",
             "Tag": "Default",
@@ -75550,14 +75550,14 @@
             "Navigable": 0,
             "No Walkable": 0,
             "openInHierarchy": 0,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
+            "isPrefab": 1,
+            "isPrefabSync": 1,
+            "prefabUID": 686480184,
             "Components": []
         },
         {
-            "UID": 2245397725,
-            "ParentUID": 2259777728,
+            "UID": 2682907613,
+            "ParentUID": 921461951,
             "Name": "Background",
             "Tag": "Default",
             "Static": 0,
@@ -75606,8 +75606,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1477451659,
-                    "textureName": "BackgroundTacos",
+                    "textureUID": 557422955,
+                    "textureName": "Background_Chicken",
                     "color": [
                         1.0,
                         1.0,
@@ -75628,251 +75628,8 @@
             ]
         },
         {
-            "UID": 915622643,
-            "ParentUID": 2259777728,
-            "Name": "Title",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -37.0,
-                        0.0
-                    ],
-                    "Size": [
-                        150.0,
-                        150.0
-                    ],
-                    "Anchor": 4,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 6,
-                    "Enabled": 1,
-                    "FontSize": 64.0,
-                    "text": "YOU DIED",
-                    "font": "Fonts/TACOSRG.ttf",
-                    "color": [
-                        0.25329211354255679,
-                        0.9508196711540222,
-                        0.6933987736701965,
-                        0.0
-                    ],
-                    "colorHovered": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        0.0
-                    ],
-                    "offset": [
-                        -78.0,
-                        40.0
-                    ],
-                    "scaleOffset": [
-                        1.0,
-                        1.0
-                    ],
-                    "IsTextWrapped": 0,
-                    "WrapWidth": 0.0,
-                    "InterlineDistance": 0.0,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
-            "UID": 2598161274,
-            "ParentUID": 2259777728,
-            "Name": "Advice1",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -81.80000305175781,
-                        11.300000190734864
-                    ],
-                    "Size": [
-                        100.0,
-                        100.0
-                    ],
-                    "Anchor": 4,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 6,
-                    "Enabled": 1,
-                    "FontSize": 36.0,
-                    "text": "TRY TO FILL YOUR",
-                    "font": "Fonts/TACOSRG.ttf",
-                    "color": [
-                        1.0431373119354249,
-                        0.9512054324150086,
-                        0.023529386147856714,
-                        0.0
-                    ],
-                    "colorHovered": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        0.0
-                    ],
-                    "offset": [
-                        0.0,
-                        0.0
-                    ],
-                    "scaleOffset": [
-                        1.0,
-                        1.0
-                    ],
-                    "IsTextWrapped": 0,
-                    "WrapWidth": 0.0,
-                    "InterlineDistance": 0.0,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
-            "UID": 2351146547,
-            "ParentUID": 2259777728,
-            "Name": "Advice2",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -116.5,
-                        -10.0
-                    ],
-                    "Size": [
-                        100.0,
-                        100.0
-                    ],
-                    "Anchor": 4,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 6,
-                    "Enabled": 1,
-                    "FontSize": 36.0,
-                    "text": "TACOMETER NEXT TIME!",
-                    "font": "Fonts/TACOSRG.ttf",
-                    "color": [
-                        1.0431373119354249,
-                        0.9512054324150086,
-                        0.023529386147856714,
-                        0.0
-                    ],
-                    "colorHovered": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        0.0
-                    ],
-                    "offset": [
-                        0.0,
-                        0.0
-                    ],
-                    "scaleOffset": [
-                        1.0,
-                        1.0
-                    ],
-                    "IsTextWrapped": 0,
-                    "WrapWidth": 0.0,
-                    "InterlineDistance": 0.0,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
-            "UID": 3234392119,
-            "ParentUID": 2259777728,
+            "UID": 4050359446,
+            "ParentUID": 921461951,
             "Name": "Button",
             "Tag": "Default",
             "Static": 0,
@@ -75909,10 +75666,10 @@
                     "Enabled": 1,
                     "Position": [
                         -0.20000000298023225,
-                        -66.0999984741211
+                        -87.19999694824219
                     ],
                     "Size": [
-                        157.0,
+                        122.5,
                         46.5
                     ],
                     "Anchor": 4,
@@ -75925,7 +75682,7 @@
                         "Type": 6,
                         "Enabled": 1,
                         "FontSize": 27.0,
-                        "text": "TO ALTAR",
+                        "text": "",
                         "font": "Fonts/TACOSRG.ttf",
                         "color": [
                             1.0431373119354249,
@@ -75955,12 +75712,12 @@
                     "buttonImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 676697322,
-                        "textureName": "White",
+                        "textureUID": 2151650093,
+                        "textureName": "ToAltar_Button",
                         "color": [
-                            0.30401772260665896,
-                            0.35511013865470889,
-                            0.4098360538482666,
+                            0.9999899864196777,
+                            0.9999948740005493,
+                            1.0,
                             1.0
                         ],
                         "FlipVertical": 0,
@@ -75977,12 +75734,12 @@
                     "highlightedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 676697322,
-                        "textureName": "White",
+                        "textureUID": 2151650093,
+                        "textureName": "ToAltar_Button",
                         "color": [
-                            0.24625438451766969,
-                            0.2860504984855652,
-                            0.33196723461151125,
+                            0.6270492076873779,
+                            0.62578946352005,
+                            0.6193395853042603,
                             1.0
                         ],
                         "FlipVertical": 0,
@@ -75999,12 +75756,12 @@
                     "pressedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 676697322,
-                        "textureName": "White",
+                        "textureUID": 2151650093,
+                        "textureName": "ToAltar_Button",
                         "color": [
-                            0.2109312117099762,
-                            0.24359415471553803,
-                            0.28278690576553347,
+                            0.9999899864196777,
+                            0.9999946355819702,
+                            1.0,
                             1.0
                         ],
                         "FlipVertical": 0,
@@ -76054,9 +75811,9 @@
             "Navigable": 0,
             "No Walkable": 0,
             "openInHierarchy": 0,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
+            "isPrefab": 1,
+            "isPrefabSync": 1,
+            "prefabUID": 3578589444,
             "Components": []
         },
         {
@@ -76110,8 +75867,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1477451659,
-                    "textureName": "BackgroundTacos",
+                    "textureUID": 3808376154,
+                    "textureName": "Background_Win",
                     "color": [
                         1.0,
                         1.0,
@@ -76128,330 +75885,6 @@
                     "UIOrder": 0,
                     "videoPath": "flame.avi",
                     "fps": 24.0
-                }
-            ]
-        },
-        {
-            "UID": 345382573,
-            "ParentUID": 1270201067,
-            "Name": "Title",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -37.0,
-                        0.0
-                    ],
-                    "Size": [
-                        150.0,
-                        150.0
-                    ],
-                    "Anchor": 4,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 6,
-                    "Enabled": 1,
-                    "FontSize": 64.0,
-                    "text": "YOU WIN!",
-                    "font": "Fonts/TACOSRG.ttf",
-                    "color": [
-                        0.25329211354255679,
-                        0.9508196711540222,
-                        0.6933987736701965,
-                        0.0
-                    ],
-                    "colorHovered": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        0.0
-                    ],
-                    "offset": [
-                        -78.0,
-                        40.0
-                    ],
-                    "scaleOffset": [
-                        1.0,
-                        1.0
-                    ],
-                    "IsTextWrapped": 0,
-                    "WrapWidth": 0.0,
-                    "InterlineDistance": 0.0,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
-            "UID": 784365281,
-            "ParentUID": 1270201067,
-            "Name": "Advice1",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -152.1999969482422,
-                        12.699999809265137
-                    ],
-                    "Size": [
-                        100.0,
-                        100.0
-                    ],
-                    "Anchor": 4,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 6,
-                    "Enabled": 1,
-                    "FontSize": 36.0,
-                    "text": "WHILE YOU ARE READING THIS",
-                    "font": "Fonts/TACOSRG.ttf",
-                    "color": [
-                        1.0431373119354249,
-                        0.9512054324150086,
-                        0.023529386147856714,
-                        0.0
-                    ],
-                    "colorHovered": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        0.0
-                    ],
-                    "offset": [
-                        0.0,
-                        0.0
-                    ],
-                    "scaleOffset": [
-                        1.0,
-                        1.0
-                    ],
-                    "IsTextWrapped": 0,
-                    "WrapWidth": 0.0,
-                    "InterlineDistance": 0.0,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
-            "UID": 2120440849,
-            "ParentUID": 1270201067,
-            "Name": "Advice2",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -175.10000610351563,
-                        -10.0
-                    ],
-                    "Size": [
-                        100.0,
-                        100.0
-                    ],
-                    "Anchor": 4,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 6,
-                    "Enabled": 1,
-                    "FontSize": 36.0,
-                    "text": "WE ARE LOADING THE NEXT ZONE",
-                    "font": "Fonts/TACOSRG.ttf",
-                    "color": [
-                        1.0431373119354249,
-                        0.9512054324150086,
-                        0.023529386147856714,
-                        0.0
-                    ],
-                    "colorHovered": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        0.0
-                    ],
-                    "offset": [
-                        0.0,
-                        0.0
-                    ],
-                    "scaleOffset": [
-                        1.0,
-                        1.0
-                    ],
-                    "IsTextWrapped": 0,
-                    "WrapWidth": 0.0,
-                    "InterlineDistance": 0.0,
-                    "UIOrder": 0
-                }
-            ]
-        },
-        {
-            "UID": 2747520940,
-            "ParentUID": 1270201067,
-            "Name": "Loading",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 0,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -167.0,
-                        -95.69999694824219
-                    ],
-                    "Size": [
-                        100.0,
-                        100.0
-                    ],
-                    "Anchor": 4,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 6,
-                    "Enabled": 1,
-                    "FontSize": 36.0,
-                    "text": "LOADING...",
-                    "font": "Fonts/TACOSRG.ttf",
-                    "color": [
-                        1.0431373119354249,
-                        0.9512054324150086,
-                        0.023529386147856714,
-                        0.0
-                    ],
-                    "colorHovered": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        0.0
-                    ],
-                    "offset": [
-                        0.0,
-                        0.0
-                    ],
-                    "scaleOffset": [
-                        1.0,
-                        1.0
-                    ],
-                    "IsTextWrapped": 0,
-                    "WrapWidth": 0.0,
-                    "InterlineDistance": 0.0,
-                    "UIOrder": 0
                 }
             ]
         },
@@ -76493,12 +75926,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        155.89999389648438,
+                        156.1999969482422,
                         -85.5999984741211
                     ],
                     "Size": [
-                        50.0,
-                        50.0
+                        40.0,
+                        40.0
                     ],
                     "Anchor": 4,
                     "Stretch": 3
@@ -76506,8 +75939,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 2290551137,
-                    "textureName": "sunIcon",
+                    "textureUID": 2308678630,
+                    "textureName": "Selected",
                     "color": [
                         1.0,
                         1.0,
