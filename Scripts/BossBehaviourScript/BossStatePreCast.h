@@ -9,6 +9,12 @@ class BossStatePreCast :
 public:
 	BossStatePreCast(BossBehaviourScript* AIBoss);
 	~BossStatePreCast();
+
+private:
+	void HandleIA() override;
+	void Update() override;
+
+	void Enter() override;
 };
 
 #endif // __BOSSSTATEPRECAST_H_

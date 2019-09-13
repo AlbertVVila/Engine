@@ -9,6 +9,15 @@ class BossStateIdle :
 public:
 	BossStateIdle(BossBehaviourScript* AIBoss);
 	~BossStateIdle();
+
+	void HandleIA() override;
+	void Update() override;
+
+	void Enter() override;
+
+private:
+	float baseDuration = 2.5f;
+
 };
 
 #endif // _BOSSSTATEIDLE_H_

@@ -21,6 +21,8 @@ public:
 
 protected:
 	BossBehaviourScript* boss = nullptr;
+
+	float duration = 0.0f;
 };
 
 #endif // __BOSSSTATE_H_
