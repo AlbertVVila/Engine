@@ -52,9 +52,9 @@ void BossStateActivated::Enter()
 	timeToGround = boss->activationTime * (1 - percToHigh - percFloating);
 
 	directionToHigh = boss->highPointFirstCS - boss->startingPoint;
-	directionToHigh.Normalized();
+	directionToHigh.Normalize();
 	speedUntilHigh = (boss->startingPoint.Distance(boss->highPointFirstCS)) / timeToHighPoint;
 	directionToGround = boss->pointStartFight - boss->highPointFirstCS;
-	directionToGround.Normalized();
+	directionToGround.Normalize();
 	speedDescend = (boss->highPointFirstCS.Distance(boss->pointStartFight)) / timeToGround;
 }
