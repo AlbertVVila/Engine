@@ -172,6 +172,8 @@ public:
 
 	void Equip(const PlayerStats& equipStats);
 	void UnEquip(const PlayerStats& equipStats);
+	void EquipWeapon(const PlayerStats& equipStats, unsigned meshUID);
+	void UnEquipWeapon(const PlayerStats& equipStats);
 
 	void OnAnimationEvent(std::string name) override;
 
@@ -331,6 +333,9 @@ private:
 	bool hasMaxStats = false;
 	bool hasInfiniteHealth = false;
 	bool hasInfiniteMana = false;
+
+	// Weapon
+	ComponentRenderer* weaponRenderer = nullptr;
 };
 
 extern "C" PlayerMovement_API Script* CreateScript();

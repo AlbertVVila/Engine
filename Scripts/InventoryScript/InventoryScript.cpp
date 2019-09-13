@@ -279,11 +279,17 @@ void InventoryScript::Update()
 
 					if (pair.first.isEquipped)
 					{
-						playerMovement->Equip(pair.first.stats);
+						if(pair.first.type == ItemType::WEAPON)
+							playerMovement->EquipWeapon(pair.first.stats);
+						else
+							playerMovement->Equip(pair.first.stats);
 					} 
 					else 
 					{
-						playerMovement->UnEquip(pair.first.stats);
+						if (pair.first.type == ItemType::WEAPON)
+							playerMovement->UnEquipWeapon(pair.first.stats);
+						else
+							playerMovement->UnEquip(pair.first.stats);
 					}
 
 					break;
@@ -345,6 +351,7 @@ void InventoryScript::SaveInventory()
 		item->AddString("description", items[i].first.description.c_str());
 		item->AddString("sprite", items[i].first.sprite.c_str());
 		item->AddInt("equiped", items[i].first.isEquipped);
+		item->AddUint("meshUID", items[i].first.newMeshUID);
 		item->AddFloat("dexterity", items[i].first.stats.dexterity);
 		item->AddFloat("health", items[i].first.stats.health);
 		item->AddFloat("hpRegen", items[i].first.stats.hpRegen);
@@ -374,6 +381,7 @@ void InventoryScript::LoadInventory()
 			item.description = itemJSON->GetString("description");
 			item.sprite = itemJSON->GetString("sprite");
 			item.isEquipped = itemJSON->GetInt("equiped");
+			item.newMeshUID = itemJSON->GetUint("meshUID");
 			item.stats.dexterity = itemJSON->GetFloat("dexterity");
 			item.stats.health = itemJSON->GetFloat("health");
 			item.stats.hpRegen = itemJSON->GetFloat("hpRegen");

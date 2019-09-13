@@ -6,6 +6,7 @@
 #include "ModuleScene.h"
 #include "ModuleNavigation.h"
 #include "ModuleUI.h"
+#include "ModuleResourceManager.h"
 #include "CameraController.h"
 #include "PlayerState.h"
 #include "PlayerStateAttack.h"
@@ -26,6 +27,7 @@
 #include "ComponentText.h"
 #include "GameObject.h"
 #include "ResourceMaterial.h"
+#include "ResourceMesh.h"
 
 #include "DamageController.h"
 #include "DamageFeedbackUI.h"
@@ -265,6 +267,18 @@ void PlayerMovement::CreatePlayerSkills()
 	else
 	{
 		LOG("Machete rain mesh not found");
+	}
+
+	GameObject* playerWeapon = App->scene->FindGameObjectByTag("PlayerWeapon");
+	if (playerWeapon != nullptr)
+	{
+		weaponRenderer = playerWeapon->GetComponent<ComponentRenderer>();
+		if (weaponRenderer == nullptr)
+			LOG("Player's weapon ComponentRenderer not found");
+	}
+	else
+	{
+		LOG("Player's weapon GameObject not found");
 	}
 
 
@@ -833,7 +847,7 @@ PlayerMovement_API void PlayerMovement::Damage(float amount)
 	}
 }
 
-void PlayerMovement::Equip(const PlayerStats & equipStats)
+void PlayerMovement::Equip(const PlayerStats& equipStats)
 {
 	this->stats += equipStats;
 
@@ -846,7 +860,7 @@ void PlayerMovement::Equip(const PlayerStats & equipStats)
 	UpdateUIStats();
 }
 
-void PlayerMovement::UnEquip(const PlayerStats & equipStats)
+void PlayerMovement::UnEquip(const PlayerStats& equipStats)
 {
 	this->stats -= equipStats;
 	health = health > stats.health ? stats.health : health;
@@ -859,6 +873,39 @@ void PlayerMovement::UnEquip(const PlayerStats & equipStats)
 	manaUIComponent->SetMaskAmount(manaPercentage);
 
 	UpdateUIStats();
+}
+
+void PlayerMovement::EquipWeapon(const PlayerStats& equipStats, unsigned meshUID)
+{
+	this->stats += equipStats;
+
+	int healthPercentage = (health / stats.health) * 100;
+	lifeUIComponent->SetMaskAmount(healthPercentage);
+
+	int manaPercentage = (mana / stats.mana) * 100;
+	manaUIComponent->SetMaskAmount(manaPercentage);
+
+	UpdateUIStats();
+
+	ResourceMesh* weaponMesh = (ResourceMesh*)App->resManager->GetWithoutLoad(meshUID);
+	weaponRenderer->SetMesh(weaponMesh->GetName());
+}
+
+void PlayerMovement::UnEquipWeapon(const PlayerStats& equipStats)
+{
+	this->stats -= equipStats;
+	health = health > stats.health ? stats.health : health;
+	mana = mana > stats.mana ? stats.mana : mana;
+
+	int healthPercentage = (health / stats.health) * 100;
+	lifeUIComponent->SetMaskAmount(healthPercentage);
+
+	int manaPercentage = (mana / stats.mana) * 100;
+	manaUIComponent->SetMaskAmount(manaPercentage);
+
+	UpdateUIStats();
+
+	weaponRenderer->SetMesh(nullptr);
 }
 
 void PlayerMovement::OnAnimationEvent(std::string name)
