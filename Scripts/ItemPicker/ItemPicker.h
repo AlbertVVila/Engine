@@ -50,7 +50,12 @@ public:
 		return new ItemPicker(*this);
 	}
 
+private:
+	
+	void UpdateMeshesList();
+	void UpdateMaterialsList();
 
+public:
 	std::string name;
 	std::string description;
 	std::string sprite;
@@ -59,6 +64,7 @@ public:
 	bool pickedUpViaPlayer = false;
 
 private:
+
 	PlayerMovement* playerMovementScript = nullptr;
 	InventoryScript* inventoryScript = nullptr;
 	math::AABB* playerBbox = nullptr;

@@ -279,17 +279,11 @@ void InventoryScript::Update()
 
 					if (pair.first.isEquipped)
 					{
-						if(pair.first.type == ItemType::WEAPON)
-							playerMovement->EquipWeapon(pair.first.stats, pair.first.meshUID, pair.first.materialUID);
-						else
-							playerMovement->Equip(pair.first.stats);
+						playerMovement->Equip(pair.first.stats, (unsigned)pair.first.type ,pair.first.meshUID, pair.first.materialUID);
 					} 
 					else 
 					{
-						if (pair.first.type == ItemType::WEAPON)
-							playerMovement->UnEquipWeapon(pair.first.stats);
-						else
-							playerMovement->UnEquip(pair.first.stats);
+						playerMovement->UnEquip(pair.first.stats);
 					}
 
 					break;

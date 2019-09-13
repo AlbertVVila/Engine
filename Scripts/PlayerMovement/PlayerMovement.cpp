@@ -269,6 +269,7 @@ void PlayerMovement::CreatePlayerSkills()
 		LOG("Machete rain mesh not found");
 	}
 
+	// Player equipable parts
 	GameObject* playerWeapon = App->scene->FindGameObjectByTag("PlayerWeapon");
 	if (playerWeapon != nullptr)
 	{
@@ -279,6 +280,18 @@ void PlayerMovement::CreatePlayerSkills()
 	else
 	{
 		LOG("Player's weapon GameObject not found");
+	}
+
+	GameObject* playerHelmet = App->scene->FindGameObjectByTag("PlayerHelmet");
+	if (playerHelmet != nullptr)
+	{
+		helmetRenderer = playerHelmet->GetComponent<ComponentRenderer>();
+		if (helmetRenderer == nullptr)
+			LOG("Player's helmet ComponentRenderer not found");
+	}
+	else
+	{
+		LOG("Player's helmet GameObject not found");
 	}
 
 
@@ -860,22 +873,7 @@ void PlayerMovement::Equip(const PlayerStats& equipStats)
 	UpdateUIStats();
 }
 
-void PlayerMovement::UnEquip(const PlayerStats& equipStats)
-{
-	this->stats -= equipStats;
-	health = health > stats.health ? stats.health : health;
-	mana = mana > stats.mana ? stats.mana : mana;
-
-	int healthPercentage = (health / stats.health) * 100;
-	lifeUIComponent->SetMaskAmount(healthPercentage);
-
-	int manaPercentage = (mana / stats.mana) * 100;
-	manaUIComponent->SetMaskAmount(manaPercentage);
-
-	UpdateUIStats();
-}
-
-void PlayerMovement::EquipWeapon(const PlayerStats& equipStats, unsigned meshUID, unsigned materialUID)
+void PlayerMovement::Equip(const PlayerStats& equipStats, unsigned itemType, unsigned meshUID, unsigned materialUID)
 {
 	this->stats += equipStats;
 
@@ -887,16 +885,46 @@ void PlayerMovement::EquipWeapon(const PlayerStats& equipStats, unsigned meshUID
 
 	UpdateUIStats();
 
-	ResourceMesh* weaponMesh = (ResourceMesh*)App->resManager->GetWithoutLoad(meshUID);
-	if(weaponMesh > 0u)
-		weaponRenderer->SetMesh(weaponMesh->GetName());
+	ResourceMesh* itemMesh = nullptr;
+	ResourceMaterial* itemMaterial = nullptr;
 
-	ResourceMaterial* weaponMaterial = (ResourceMaterial*)App->resManager->GetWithoutLoad(materialUID);
-	if (weaponMaterial > 0u)
-		weaponRenderer->SetMaterial(weaponMaterial->GetName());
+	switch ((ItemType)itemType)
+	{
+	default:
+	case ItemType::QUICK:
+	case ItemType::KEY:
+	case ItemType::MATERIAL:
+	case ItemType::CHEST:
+	case ItemType::PANTS:
+	case ItemType::BOOTS:
+	case ItemType::AMULET:
+	case ItemType::RING:
+	case ItemType::NONE:
+		break;
+	case ItemType::WEAPON:
+		// Mesh
+		itemMesh = (ResourceMesh*)App->resManager->GetWithoutLoad(meshUID);
+		if (itemMesh != nullptr)
+			weaponRenderer->SetMesh(itemMesh->GetName());
+		// Material
+		itemMaterial = (ResourceMaterial*)App->resManager->GetWithoutLoad(materialUID);
+		if (itemMaterial != nullptr)
+			weaponRenderer->SetMaterial(itemMaterial->GetName());
+		break;
+	case ItemType::HELMET:
+		// Mesh
+		itemMesh = (ResourceMesh*)App->resManager->GetWithoutLoad(meshUID);
+		if (itemMesh != nullptr)
+			helmetRenderer->SetMesh(itemMesh->GetName());
+		// Material
+		itemMaterial = (ResourceMaterial*)App->resManager->GetWithoutLoad(materialUID);
+		if (itemMaterial != nullptr)
+			helmetRenderer->SetMaterial(itemMaterial->GetName());
+		break;
+	}
 }
 
-void PlayerMovement::UnEquipWeapon(const PlayerStats& equipStats)
+void PlayerMovement::UnEquip(const PlayerStats& equipStats)
 {
 	this->stats -= equipStats;
 	health = health > stats.health ? stats.health : health;
