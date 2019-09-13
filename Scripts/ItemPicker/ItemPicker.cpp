@@ -404,7 +404,7 @@ void ItemPicker::DeSerialize(JSON_value* json)
 	if (resourceMaterialUID > 0u)
 	{
 		item.materialUID = resourceMaterialUID;
-		itemMesh = (ResourceMesh*)App->resManager->GetWithoutLoad(resourceMaterialUID);
+		itemMaterial = (ResourceMaterial*)App->resManager->GetWithoutLoad(resourceMaterialUID);
 	}
 }
 
