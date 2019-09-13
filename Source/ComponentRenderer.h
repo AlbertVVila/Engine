@@ -30,7 +30,7 @@ public:
 	ENGINE_API void SetMaterial(const char* materialName);
 	ENGINE_API void ResetAnimation();
 
-	void SetMesh(const char* meshfile);
+	ENGINE_API void SetMesh(const char* meshfile);
 	void UpdateGameObject();
 	void LinkBones();
 

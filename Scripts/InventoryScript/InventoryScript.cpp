@@ -280,7 +280,7 @@ void InventoryScript::Update()
 					if (pair.first.isEquipped)
 					{
 						if(pair.first.type == ItemType::WEAPON)
-							playerMovement->EquipWeapon(pair.first.stats);
+							playerMovement->EquipWeapon(pair.first.stats, pair.first.newMeshUID);
 						else
 							playerMovement->Equip(pair.first.stats);
 					} 
