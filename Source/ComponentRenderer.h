@@ -73,6 +73,8 @@ private:
 	void Update();
 	void PickMaterial();
 
+	void UpdateMeshesList();
+
 	std::vector<std::string> guiMaterials;
 	std::vector<std::string> guiMeshes;
 	int xTiles = 1u;

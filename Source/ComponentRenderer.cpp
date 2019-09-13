@@ -28,6 +28,11 @@ ComponentRenderer::ComponentRenderer(GameObject* gameobject) : Component(gameobj
 {
 	SetMaterial(DEFAULTMAT);
 	gameobject->isVolumetric = true;
+
+	if (guiMeshes.empty())
+	{
+		UpdateMeshesList();
+	}
 }
 
 ComponentRenderer::ComponentRenderer(const ComponentRenderer& component) : Component(component)
@@ -73,6 +78,10 @@ ComponentRenderer::ComponentRenderer(const ComponentRenderer& component) : Compo
 
 	fps = component.fps;
 
+	if (guiMeshes.empty())
+	{
+		UpdateMeshesList();
+	}
 }
 
 ComponentRenderer::~ComponentRenderer()
@@ -115,6 +124,17 @@ void ComponentRenderer::DrawProperties()
 			ImGui::PushID("Mesh Combo");
 			if (ImGui::BeginCombo("", mesh != nullptr ? mesh->GetName() : "None selected"))
 			{
+				bool none_selected = (mesh == nullptr);
+				if (ImGui::Selectable(None, none_selected))
+				{
+					if (mesh != nullptr)
+					{
+						App->resManager->DeleteResource(mesh->GetUID());
+						mesh = nullptr;
+					}
+				}
+				if (none_selected)
+					ImGui::SetItemDefaultFocus();
 				if (guiMeshes.empty())
 				{
 					guiMeshes = App->resManager->GetResourceNamesList(TYPE::MESH, true);
@@ -134,9 +154,10 @@ void ComponentRenderer::DrawProperties()
 				}
 				ImGui::EndCombo();
 			}
-			else
+
+			if (ImGui::Button("Refresh List"))
 			{
-				guiMeshes.clear();
+				UpdateMeshesList();
 			}
 
 			if (mesh == nullptr)
@@ -435,7 +456,8 @@ void ComponentRenderer::DrawMesh(unsigned shaderProgram)
 		unsigned i = 0u;
 		for (BindBone bb : bindBones)
 		{
-			palette[i++] = bb.go->GetGlobalTransform() * bb.transform;
+			if(bb.go != nullptr)
+				palette[i++] = bb.go->GetGlobalTransform() * bb.transform;
 		}
 
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram,
@@ -558,4 +580,10 @@ void ComponentRenderer::ResetAnimation()
 {
 	timer = 0.f;
 	animationEnded = false;
+}
+
+void ComponentRenderer::UpdateMeshesList()
+{
+	guiMeshes.clear();
+	guiMeshes = App->resManager->GetResourceNamesList(TYPE::MESH, true);
 }
