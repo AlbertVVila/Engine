@@ -336,7 +336,7 @@ private:
 	bool hasInfiniteHealth = false;
 	bool hasInfiniteMana = false;
 
-	// Player equipable parts (Weapon, Helmet)
+	// Player equippable parts (Weapon, Helmet)
 	ComponentRenderer* weaponRenderer = nullptr;
 	ComponentRenderer* helmetRenderer = nullptr;
 };

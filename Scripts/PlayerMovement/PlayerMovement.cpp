@@ -137,6 +137,7 @@ void PlayerMovement::Expose(ImGuiContext* context)
 	}
 
 	UpdateUIStats();
+	ImGui::InputFloat("Chance of Critical (%)", &criticalChance);
 
 	ImGui::Spacing();
 	ImGui::Text("HP/MP Regen Timers");
@@ -269,7 +270,7 @@ void PlayerMovement::CreatePlayerSkills()
 		LOG("Machete rain mesh not found");
 	}
 
-	// Player equipable parts
+	// Player equippable parts
 	GameObject* playerWeapon = App->scene->FindGameObjectByTag("PlayerWeapon");
 	if (playerWeapon != nullptr)
 	{
@@ -851,7 +852,7 @@ PlayerMovement_API void PlayerMovement::Damage(float amount)
 			isPlayerDead = true;
 		}
 
-		damageController->AddDamage(gameobject->transform, amount, 5);
+		damageController->AddDamage(gameobject->transform, amount, (DamageType)5);
 		if (damageUIFeedback != nullptr)
 			damageUIFeedback->ActivateDamageUI();
 
