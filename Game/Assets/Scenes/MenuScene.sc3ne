@@ -652,7 +652,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 1,
+            "openInHierarchy": 0,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -1042,7 +1042,7 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 4071158319,
+                    "textureUID": 2308678630,
                     "textureName": "Selected",
                     "color": [
                         1.0,
@@ -1268,7 +1268,7 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 4071158319,
+                    "textureUID": 2308678630,
                     "textureName": "Selected",
                     "color": [
                         1.0,
@@ -1494,7 +1494,7 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 4071158319,
+                    "textureUID": 2308678630,
                     "textureName": "Selected",
                     "color": [
                         1.0,
@@ -1720,7 +1720,7 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 4071158319,
+                    "textureUID": 2308678630,
                     "textureName": "Selected",
                     "color": [
                         1.0,
@@ -1946,7 +1946,7 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 4071158319,
+                    "textureUID": 2308678630,
                     "textureName": "Selected",
                     "color": [
                         1.0,
@@ -5064,7 +5064,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -5121,7 +5121,7 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1794136113,
+                    "textureUID": 790382894,
                     "textureName": "Background_Controls",
                     "color": [
                         1.0,
@@ -5325,7 +5325,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 1,
+            "openInHierarchy": 0,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -7333,7 +7333,7 @@
                         "Type": 6,
                         "Enabled": 1,
                         "FontSize": 27.0,
-                        "text": "BACK",
+                        "text": "",
                         "font": "Fonts/TACOSRG.ttf",
                         "color": [
                             1.0431373119354249,
@@ -7363,12 +7363,12 @@
                     "buttonImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 676697322,
-                        "textureName": "White",
+                        "textureUID": 175155465,
+                        "textureName": "Back_Button",
                         "color": [
-                            0.30401772260665896,
-                            0.35511013865470889,
-                            0.4098360538482666,
+                            0.9999899864196777,
+                            0.9999948740005493,
+                            1.0,
                             1.0
                         ],
                         "FlipVertical": 0,
@@ -7385,12 +7385,12 @@
                     "highlightedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 676697322,
-                        "textureName": "White",
+                        "textureUID": 175155465,
+                        "textureName": "Back_Button",
                         "color": [
-                            0.24625438451766969,
-                            0.2860504984855652,
-                            0.33196723461151125,
+                            0.6926160454750061,
+                            0.6926199197769165,
+                            0.6926229596138,
                             1.0
                         ],
                         "FlipVertical": 0,
@@ -7407,8 +7407,8 @@
                     "pressedImage": {
                         "Type": 7,
                         "Enabled": 1,
-                        "textureUID": 676697322,
-                        "textureName": "White",
+                        "textureUID": 175155465,
+                        "textureName": "Back_Button",
                         "color": [
                             0.2109312117099762,
                             0.24359415471553803,
