@@ -3,6 +3,7 @@
 
 #include "BaseScript.h"
 #include <vector>
+#include "Math/float3.h"
 
 #ifdef BossBehaviourScript_EXPORTS
 #define BossBehaviourScript_API __declspec(dllexport)
@@ -66,6 +67,11 @@ public:
 	float distanceToPlayer = 0.0f;
 	float activationDistance = 800.0f;
 	float activationTime = 5.0f;
+
+	math::float3 startingPoint = math::float3::zero;
+	math::float3 highPointFirstCS = math::float3::zero;
+	math::float3 pointStartFight = math::float3::zero;
+
 private:
 	std::vector<BossState*> bossStates;
 
