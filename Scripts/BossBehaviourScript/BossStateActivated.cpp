@@ -11,3 +11,13 @@ BossStateActivated::BossStateActivated(BossBehaviourScript* AIBoss)
 BossStateActivated::~BossStateActivated()
 {
 }
+
+void BossStateActivated::HandleIA()
+{
+
+}
+
+void BossStateActivated::Update()
+{
+
+}

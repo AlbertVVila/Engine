@@ -9,6 +9,10 @@ class BossStateActivated :
 public:
 	BossStateActivated(BossBehaviourScript* AIBoss);
 	~BossStateActivated();
+
+private:
+	void HandleIA() override;
+	void Update() override;
 };
 
 #endif // _BOSSSTATEACTIVATED_H_

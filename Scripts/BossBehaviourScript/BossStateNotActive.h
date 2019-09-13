@@ -9,6 +9,8 @@ class BossStateNotActive :
 public:
 	BossStateNotActive(BossBehaviourScript* AIBoss);
 	~BossStateNotActive();
+
+	void HandleIA() override;
 };
 
 #endif // _BOSSSTATENOTACTIVE_H_

@@ -11,3 +11,11 @@ BossStateNotActive::BossStateNotActive(BossBehaviourScript* AIBoss)
 BossStateNotActive::~BossStateNotActive()
 {
 }
+
+void BossStateNotActive::HandleIA()
+{
+	if (boss->distanceToPlayer < boss->activationDistance)
+	{
+		boss->currentState = (BossState*)boss->activated;
+	}
+}

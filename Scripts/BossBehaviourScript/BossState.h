@@ -14,6 +14,11 @@ public:
 	virtual void Enter() {};
 	virtual void Exit() {};
 
+	void UpdateTimer();
+	void ResetTimer() { timer = 0.f; };
+
+	float timer = 0.0f;
+
 protected:
 	BossBehaviourScript* boss = nullptr;
 };

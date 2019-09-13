@@ -63,11 +63,23 @@ public:
 	float firstHealthThreshold = 0.75f;
 	float secondHealthThreshold = 0.35f;
 
+	float distanceToPlayer = 0.0f;
+	float activationDistance = 800.0f;
+	float activationTime = 5.0f;
 private:
 	std::vector<BossState*> bossStates;
 
 	void CheckStates(BossState* previous);
 	void CheckHealth();
+	void FloatInSpace();
+	float ReturnDistanceToPlayer();
+
+
+	bool isFloating = true;
+	float angleConstant = 1.0f;
+	float floatConstant = 1.0f;
+	float yOffset = 0.0f;
+	float angle = 0.0f;
 };
 
 #endif __BossBehaviourScript_h__
