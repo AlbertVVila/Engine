@@ -419,11 +419,13 @@ void InventoryScript::Update()
 
 					if (pair.first.isEquipped)
 					{
-						playerMovement->Equip(pair.first.stats, (unsigned)pair.first.type ,pair.first.meshUID, pair.first.materialUID);
+						// Unequip
+						playerMovement->UnEquip(pair.first.stats);
 					} 
 					else 
 					{
-						playerMovement->UnEquip(pair.first.stats);
+						// Equip
+						playerMovement->Equip(pair.first.stats, (unsigned)pair.first.type, pair.first.meshUID, pair.first.materialUID);
 					}
 
 					break;
