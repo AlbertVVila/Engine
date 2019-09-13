@@ -99025,7 +99025,7 @@
             ]
         },
         {
-            "UID": 2176394495,
+            "UID": 895865360,
             "ParentUID": 1,
             "Name": "PauseMenu",
             "Tag": "Default",
@@ -99104,8 +99104,8 @@
             ]
         },
         {
-            "UID": 1213457606,
-            "ParentUID": 2176394495,
+            "UID": 3879883422,
+            "ParentUID": 895865360,
             "Name": "Background",
             "Tag": "Default",
             "Static": 0,
@@ -99176,8 +99176,8 @@
             ]
         },
         {
-            "UID": 3880124411,
-            "ParentUID": 2176394495,
+            "UID": 4208810228,
+            "ParentUID": 895865360,
             "Name": "ResumeButton",
             "Tag": "Default",
             "Static": 0,
@@ -99255,7 +99255,7 @@
                         "IsTextWrapped": 0,
                         "WrapWidth": 100.0,
                         "InterlineDistance": 24.0,
-                        "UIOrder": 0
+                        "UIOrder": 2
                     },
                     "buttonImage": {
                         "Type": 7,
@@ -99325,13 +99325,13 @@
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 2
                 }
             ]
         },
         {
-            "UID": 3798789770,
-            "ParentUID": 2176394495,
+            "UID": 3597372038,
+            "ParentUID": 895865360,
             "Name": "ExitButton",
             "Tag": "Default",
             "Static": 0,
@@ -99409,7 +99409,7 @@
                         "IsTextWrapped": 0,
                         "WrapWidth": 100.0,
                         "InterlineDistance": 24.0,
-                        "UIOrder": 0
+                        "UIOrder": 2
                     },
                     "buttonImage": {
                         "Type": 7,
@@ -99479,7 +99479,7 @@
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 2
                 }
             ]
         },
@@ -99748,7 +99748,7 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 0
+                    "UIOrder": 101
                 }
             ]
         }
