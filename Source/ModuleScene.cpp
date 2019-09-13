@@ -545,6 +545,10 @@ void ModuleScene::DrawGO(const GameObject& go, const Frustum & frustum, bool isE
 	glUniform3fv(glGetUniformLocation(shader->id[variation],
 		"eyePosUniform"), 1, (GLfloat*)&frustum.pos);
 
+
+	glUniform1f(glGetUniformLocation(shader->id[variation], "sliceAmount"), crenderer->dissolveAmount);
+	glUniform1f(glGetUniformLocation(shader->id[variation], "borderAmount"), crenderer->borderAmount);
+
 	go.SetLightUniforms(shader->id[variation]);
 
 	go.UpdateModel(shader->id[variation]);
