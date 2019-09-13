@@ -37,7 +37,10 @@ struct ImGuiContext;
 #define BOMB_DROP_ROT 2.5f
 
 #define MACHETE_RAIN_START_HEIGHT 3300.0f
-#define MACHETE_RAIN_SPEED 3000.0f
+#define MACHETE_RAIN_SPEED 4000.0f
+#define MACHETE_RAIN_HORIZONTAL_SPEED 40.0f
+#define MACHETE_AMOUNT 40u
+#define MACHETE_SKILL_RANGE 900.f
 
 class ComponentAnimation;
 class ComponentTransform;
@@ -189,6 +192,7 @@ public:
 	bool IsUsingE() const;
 	bool IsUsingR() const;
 	bool IsUsingSkill() const;
+	void PrepareSkills() const;
 
 	void CheckSkillsInput();
 	void ResetCooldown(unsigned int hubButtonID);
@@ -280,7 +284,6 @@ public:
 	float basicAttackRange = 200.f;
 
 	bool macheteRainActivated = false;
-	GameObject* macheteRainParticles = nullptr;
 	bool shaking = false;
 
 	std::unordered_map<SkillType, PlayerSkill*> allSkills;
@@ -290,12 +293,15 @@ public:
 
 	//Audio
 	ComponentAudioSource* gotHitAudio = nullptr;
+	GameObject* slashTrail = nullptr;
+
+
+	float deltatime;
 
 private:
 	std::vector<PlayerState*> playerStates;	
 	GameObject* dustParticles = nullptr;
 	GameObject* dashFX = nullptr;
-	GameObject* dashMesh = nullptr;
 	GameObject* bombDropParticles = nullptr;
 	GameObject* bombDropParticlesLanding = nullptr;
 	GameObject* bombDropMesh1 = nullptr;
@@ -306,9 +312,6 @@ private:
 	float bombDropGrowRate = 1.3f;
 	float bombDropWaveGrowRate = 1.05f;
 
-	GameObject* slashTrail = nullptr;
-
-	ComponentRenderer* macheteRainRenderer = nullptr;
 	
 	DamageController* damageController = nullptr;
 	DamageFeedbackUI* damageUIFeedback = nullptr;

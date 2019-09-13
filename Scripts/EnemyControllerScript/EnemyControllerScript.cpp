@@ -466,7 +466,7 @@ void EnemyControllerScript::OnTriggerEnter(GameObject* go)
 		}
 	}
 
-	if (go->tag == "PlayerHitBoxAttack")
+	if (go->tag == "PlayerHitBoxAttack" || go->tag == "Machete")
 	{
 		// Generate a random number and if it is below the critical chance the damage will be increased
 		if ((rand() % 100u) < playerMovement->criticalChance)
