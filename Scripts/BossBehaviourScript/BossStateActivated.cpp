@@ -22,6 +22,7 @@ void BossStateActivated::HandleIA()
 {
 	if (timer > boss->activationTime)
 	{
+		boss->bossPhase = BossPhase::First;
 		boss->currentState = (BossState*)boss->idle;
 	}
 }

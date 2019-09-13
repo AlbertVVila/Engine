@@ -346,7 +346,10 @@ void EnemyControllerScript::TakeDamage(unsigned damage)
 
 			// Disable hit boxes
 			hpBoxTrigger->Enable(false);
-			attackBoxTrigger->Enable(false);
+			if (attackBoxTrigger != nullptr)
+			{
+				attackBoxTrigger->Enable(false);
+			}
 
 			// Unhighlight
 			if (myRenders.size() > 0u)
