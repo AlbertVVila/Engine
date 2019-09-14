@@ -234,7 +234,7 @@ void InventoryScript::Update()
 									if (items[l].first.name == pair.first.name && !items[l].first.isEquipped)
 									{
 										items[l].first.isEquipped = true;
-										playerMovement->Equip(items[l].first.stats);
+										playerMovement->Equip(pair.first.stats, (unsigned)pair.first.type, pair.first.meshUID, pair.first.materialUID);
 										break;
 									}
 								}
@@ -261,7 +261,7 @@ void InventoryScript::Update()
 									if (items[l].first.name == pair.first.name && !items[l].first.isEquipped)
 									{
 										items[l].first.isEquipped = true;
-										playerMovement->Equip(items[l].first.stats);
+										playerMovement->Equip(pair.first.stats, (unsigned)pair.first.type, pair.first.meshUID, pair.first.materialUID);
 										break;
 									}
 								}
@@ -288,7 +288,7 @@ void InventoryScript::Update()
 									if (items[l].first.name == pair.first.name && !items[l].first.isEquipped)
 									{
 										items[l].first.isEquipped = true;
-										playerMovement->Equip(items[l].first.stats);
+										playerMovement->Equip(pair.first.stats, (unsigned)pair.first.type, pair.first.meshUID, pair.first.materialUID);
 										break;
 									}
 								}
@@ -315,7 +315,7 @@ void InventoryScript::Update()
 									if (items[l].first.name == pair.first.name && !items[l].first.isEquipped)
 									{
 										items[l].first.isEquipped = true;
-										playerMovement->Equip(items[l].first.stats);
+										playerMovement->Equip(pair.first.stats, (unsigned)pair.first.type, pair.first.meshUID, pair.first.materialUID);
 										break;
 									}
 								}
@@ -342,7 +342,7 @@ void InventoryScript::Update()
 									if (items[l].first.name == pair.first.name && !items[l].first.isEquipped)
 									{
 										items[l].first.isEquipped = true;
-										playerMovement->Equip(items[l].first.stats);
+										playerMovement->Equip(pair.first.stats, (unsigned)pair.first.type, pair.first.meshUID, pair.first.materialUID);
 										break;
 									}
 								}
@@ -369,7 +369,7 @@ void InventoryScript::Update()
 									if (items[l].first.name == pair.first.name && !items[l].first.isEquipped)
 									{
 										items[l].first.isEquipped = true;
-										playerMovement->Equip(items[l].first.stats);
+										playerMovement->Equip(pair.first.stats, (unsigned)pair.first.type, pair.first.meshUID, pair.first.materialUID);
 										break;
 									}
 								}
@@ -435,6 +435,7 @@ void InventoryScript::Update()
 
 
 					}
+					break;
 				}
 			}
 
@@ -499,6 +500,8 @@ void InventoryScript::SaveInventory()
 		item->AddString("description", items[i].first.description.c_str());
 		item->AddString("sprite", items[i].first.sprite.c_str());
 		item->AddInt("equiped", items[i].first.isEquipped);
+		item->AddUint("meshUID", items[i].first.meshUID);
+		item->AddUint("materialUID", items[i].first.materialUID);
 		item->AddFloat("dexterity", items[i].first.stats.dexterity);
 		item->AddFloat("health", items[i].first.stats.health);
 		item->AddFloat("hpRegen", items[i].first.stats.hpRegen);
@@ -528,6 +531,8 @@ void InventoryScript::LoadInventory()
 			item.description = itemJSON->GetString("description");
 			item.sprite = itemJSON->GetString("sprite");
 			item.isEquipped = itemJSON->GetInt("equiped");
+			item.meshUID = itemJSON->GetUint("meshUID");
+			item.materialUID = itemJSON->GetUint("materialUID");
 			item.stats.dexterity = itemJSON->GetFloat("dexterity");
 			item.stats.health = itemJSON->GetFloat("health");
 			item.stats.hpRegen = itemJSON->GetFloat("hpRegen");

@@ -217,6 +217,7 @@ void EquipPopupController::Assign(int i)
 		hudImageSlots[activeButton]->UpdateTexture(itemsList[i].sprite);
 		hudImageSlots[activeButton]->gameobject->SetActive(true);
 		hudConsumibleItemsQuantity[activeButton]->gameobject->SetActive(true);
+		hudConsumibleItemsQuantity[activeButton]->uiOrder = 11;
 		hudConsumibleItemsQuantity[activeButton]->text = std::to_string(inventory->GetCurrentQuantity(itemsList[i]));
 		MoveNumber(activeButton);
 		//TODO: Pass info to player
