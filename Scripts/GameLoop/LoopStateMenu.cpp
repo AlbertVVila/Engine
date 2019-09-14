@@ -8,6 +8,7 @@
 #include "PlayerPrefs.h"
 
 #define GRAVEYARD_SCENE "Level0-TheGraveyard"
+#define BUTTONS_NUMBER 4
 
 LoopStateMenu::LoopStateMenu(GameLoop* GL) : LoopState(GL)
 {
@@ -20,6 +21,18 @@ LoopStateMenu::~LoopStateMenu()
 
 void LoopStateMenu::Update()
 {
+	for (int i = 0; i < gLoop->menuButtons.size(); ++i)
+	{
+		if (((Button*)gLoop->menuButtons[i])->IsHovered())
+		{
+			gLoop->sunHoverGO[BUTTONS_NUMBER - i]->SetActive(true);
+		}
+		else 
+		{
+			gLoop->sunHoverGO[BUTTONS_NUMBER - i]->SetActive(false);
+		}
+	}
+
 	if (((Button*)(gLoop->menuButtons[0]))->IsPressed()) //PlayButton
 	{
 		gLoop->currentLoopState = (LoopState*)gLoop->loadingState;

@@ -29,7 +29,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 1,
+            "openInHierarchy": 0,
             "isPrefab": 1,
             "isPrefabSync": 1,
             "prefabUID": 90218084,
@@ -344,78 +344,6 @@
             ]
         },
         {
-            "UID": 3252915578,
-            "ParentUID": 2479348851,
-            "Name": "NewItem",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 1,
-            "ActiveSelf": 0,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        512.0,
-                        71.80000305175781
-                    ],
-                    "Size": [
-                        15.0,
-                        15.0
-                    ],
-                    "Anchor": 4,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 7,
-                    "Enabled": 1,
-                    "textureUID": 2515181209,
-                    "textureName": "Health_2",
-                    "color": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "FlipVertical": 0,
-                    "FlipHorizontal": 0,
-                    "isMasked": 0,
-                    "maskAmount": 100,
-                    "isMaskHorizontal": 0,
-                    "hoverDetectionMouse1": 1,
-                    "hoverDetectionMouse3": 1,
-                    "UIOrder": 10,
-                    "videoPath": "flame.avi",
-                    "fps": 24.0
-                }
-            ]
-        },
-        {
             "UID": 3385619623,
             "ParentUID": 1811277210,
             "Name": "SkillsButton",
@@ -546,232 +474,6 @@
                         "Enabled": 1,
                         "textureUID": 4145752307,
                         "textureName": "Button_skills",
-                        "color": [
-                            0.19607843458652497,
-                            0.19607843458652497,
-                            0.19607843458652497,
-                            1.0
-                        ],
-                        "FlipVertical": 0,
-                        "FlipHorizontal": 0,
-                        "isMasked": 0,
-                        "maskAmount": 0,
-                        "isMaskHorizontal": 0,
-                        "hoverDetectionMouse1": 1,
-                        "hoverDetectionMouse3": 1,
-                        "UIOrder": 0,
-                        "videoPath": "flame.avi",
-                        "fps": 24.0
-                    },
-                    "hoverDetectionMouse1": 1,
-                    "hoverDetectionMouse3": 1,
-                    "UIOrder": 10
-                }
-            ]
-        },
-        {
-            "UID": 3677585673,
-            "ParentUID": 3385619623,
-            "Name": "NewSkillPoint",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 1,
-            "ActiveSelf": 0,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        512.0,
-                        18.899999618530275
-                    ],
-                    "Size": [
-                        15.0,
-                        15.0
-                    ],
-                    "Anchor": 4,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 7,
-                    "Enabled": 1,
-                    "textureUID": 2515181209,
-                    "textureName": "Health_2",
-                    "color": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "FlipVertical": 0,
-                    "FlipHorizontal": 0,
-                    "isMasked": 0,
-                    "maskAmount": 100,
-                    "isMaskHorizontal": 0,
-                    "hoverDetectionMouse1": 1,
-                    "hoverDetectionMouse3": 1,
-                    "UIOrder": 10,
-                    "videoPath": "flame.avi",
-                    "fps": 24.0
-                }
-            ]
-        },
-        {
-            "UID": 684428709,
-            "ParentUID": 1811277210,
-            "Name": "MissionButton",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 1,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 5,
-                    "Enabled": 1,
-                    "Position": [
-                        -50.0,
-                        -50.0
-                    ],
-                    "Size": [
-                        50.0,
-                        50.0
-                    ],
-                    "Anchor": 5,
-                    "Stretch": 3
-                },
-                {
-                    "Type": 8,
-                    "Enabled": 1,
-                    "text": {
-                        "Type": 6,
-                        "Enabled": 1,
-                        "FontSize": 14.0,
-                        "text": "",
-                        "font": "Fonts/DroidSans.ttf",
-                        "color": [
-                            1.0,
-                            1.0,
-                            1.0,
-                            0.0
-                        ],
-                        "colorHovered": [
-                            1.0,
-                            1.0,
-                            1.0,
-                            0.0
-                        ],
-                        "offset": [
-                            0.0,
-                            0.0
-                        ],
-                        "scaleOffset": [
-                            1.0,
-                            1.0
-                        ],
-                        "IsTextWrapped": 0,
-                        "WrapWidth": 0.0,
-                        "InterlineDistance": 0.0,
-                        "UIOrder": 10
-                    },
-                    "buttonImage": {
-                        "Type": 7,
-                        "Enabled": 1,
-                        "textureUID": 3596890692,
-                        "textureName": "Button_Quest",
-                        "color": [
-                            1.0,
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "FlipVertical": 0,
-                        "FlipHorizontal": 0,
-                        "isMasked": 0,
-                        "maskAmount": 0,
-                        "isMaskHorizontal": 0,
-                        "hoverDetectionMouse1": 1,
-                        "hoverDetectionMouse3": 1,
-                        "UIOrder": 0,
-                        "videoPath": "flame.avi",
-                        "fps": 24.0
-                    },
-                    "highlightedImage": {
-                        "Type": 7,
-                        "Enabled": 1,
-                        "textureUID": 3596890692,
-                        "textureName": "Button_Quest",
-                        "color": [
-                            0.5882353186607361,
-                            0.5882353186607361,
-                            0.5882353186607361,
-                            1.0
-                        ],
-                        "FlipVertical": 0,
-                        "FlipHorizontal": 0,
-                        "isMasked": 0,
-                        "maskAmount": 0,
-                        "isMaskHorizontal": 0,
-                        "hoverDetectionMouse1": 1,
-                        "hoverDetectionMouse3": 1,
-                        "UIOrder": 0,
-                        "videoPath": "flame.avi",
-                        "fps": 24.0
-                    },
-                    "pressedImage": {
-                        "Type": 7,
-                        "Enabled": 1,
-                        "textureUID": 3596890692,
-                        "textureName": "Button_Quest",
                         "color": [
                             0.19607843458652497,
                             0.19607843458652497,
@@ -5116,6 +4818,150 @@
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 12,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
+                }
+            ]
+        },
+        {
+            "UID": 1099705481,
+            "ParentUID": 1811277210,
+            "Name": "NewItem",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 0,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -73.5,
+                        69.9000015258789
+                    ],
+                    "Size": [
+                        20.0,
+                        20.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 1160191572,
+                    "textureName": "RedCircle",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 11,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
+                }
+            ]
+        },
+        {
+            "UID": 3025998661,
+            "ParentUID": 1811277210,
+            "Name": "NewSkillPoint",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 0,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -73.5,
+                        22.100000381469728
+                    ],
+                    "Size": [
+                        20.0,
+                        20.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 1160191572,
+                    "textureName": "RedCircle",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 11,
                     "videoPath": "flame.avi",
                     "fps": 24.0
                 }
