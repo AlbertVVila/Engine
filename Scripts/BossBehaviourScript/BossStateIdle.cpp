@@ -1,6 +1,7 @@
 #include "BossStateIdle.h"
 
 #include "BossBehaviourScript.h"
+#include "EnemyControllerScript/EnemyControllerScript.h"
 
 BossStateIdle::BossStateIdle(BossBehaviourScript* AIBoss)
 {
@@ -22,7 +23,7 @@ void BossStateIdle::HandleIA()
 
 void BossStateIdle::Update()
 {
-	//Allegedly nothing could be used to spawn prefabs maybe
+	boss->enemyController->LookAt2D(boss->playerPosition);
 }
 
 void BossStateIdle::Enter()

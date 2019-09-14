@@ -3,6 +3,8 @@
 
 #include "BossState.h"
 
+enum class BossSkill;
+
 class BossStateCast :
 	public BossState
 {
@@ -14,6 +16,9 @@ public:
 	void Update() override;
 
 	void Enter() override;
+
+private:
+	BossSkill SelectSkillToUse();
 };
 
 #endif // _BOSSSTATECAST_H_

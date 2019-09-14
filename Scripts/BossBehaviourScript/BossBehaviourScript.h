@@ -19,7 +19,7 @@ enum class BossPhase
 	Third
 };
 
-enum class BossSkills
+enum class BossSkill
 {
 	None,
 	Teleport,
@@ -57,6 +57,8 @@ public:
 
 	BossPhase bossPhase = BossPhase::None;
 	BossState* currentState = nullptr;
+	BossSkill lastUsedSkill = BossSkill::None;
+	BossSkill secondLastUsedSkill = BossSkill::None;
 
 	EnemyControllerScript* enemyController = nullptr;
 
@@ -67,6 +69,8 @@ public:
 	BossStateInterPhase* interPhase = nullptr;
 	BossStateDeath* death = nullptr;
 	BossStateCast* cast = nullptr;
+
+
 
 public:
 	float firstHealthThreshold = 0.75f;
@@ -79,6 +83,8 @@ public:
 	float activationTime = 5.0f;
 
 	bool circlesSpawning = false;
+	bool bossTeleporting = false;
+	bool bossSummoning = false;
 
 	math::float3 startingPoint = math::float3::zero;
 	math::float3 highPointFirstCS = math::float3::zero;
@@ -96,6 +102,10 @@ private:
 	void HandleSecondPhaseCircles();
 	void HandleThirdPhaseCircles();
 
+	void HandleFirstSummons();
+	void HandleSecondSummons();
+	void HandleThirdSummons();
+
 	int circlesInFirstPhase = 3;
 	float timeBetweenCirclesFirst = 2.0f;
 	int circlesInSecondPhase = 4;
@@ -104,6 +114,7 @@ private:
 	float timeBetweenCirclesThird = 0.8f;
 	float circlesTimer = 0.0f;
 	float circleNoise = 5.0f;
+	int circlesCast = 0;
 
 	bool isFloating = true;
 	float angleConstant = 1.0f;

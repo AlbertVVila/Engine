@@ -80,7 +80,7 @@
             ]
         },
         {
-            "UID": 2296134515,
+            "UID": 2617150143,
             "ParentUID": 2574560917,
             "Name": "Empty",
             "Tag": "Default",
@@ -193,6 +193,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -240,14 +241,15 @@
                             567.0,
                             448.0,
                             -3025.0
-                        ]
+                        ],
+                        "circleNoise": 50.0
                     }
                 }
             ]
         },
         {
-            "UID": 24138050,
-            "ParentUID": 2296134515,
+            "UID": 101506945,
+            "ParentUID": 2617150143,
             "Name": "Empty",
             "Tag": "Default",
             "Static": 0,

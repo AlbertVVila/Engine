@@ -1,6 +1,7 @@
 #include "BossStatePreCast.h"
 
 #include "BossBehaviourScript.h"
+#include "EnemyControllerScript/EnemyControllerScript.h"
 
 BossStatePreCast::BossStatePreCast(BossBehaviourScript* AIBoss)
 {
@@ -22,10 +23,11 @@ void BossStatePreCast::HandleIA()
 
 void BossStatePreCast::Update()
 {
+	boss->enemyController->LookAt2D(boss->playerPosition);
 }
 
 void BossStatePreCast::Enter()
 {
 	
-	duration = 2.0f;
+	duration = 4.0f;
 }
