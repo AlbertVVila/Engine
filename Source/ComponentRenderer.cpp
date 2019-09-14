@@ -53,6 +53,10 @@ ComponentRenderer::ComponentRenderer(const ComponentRenderer& component) : Compo
 	waterSource2 = component.waterSource2;
 	waterDecay1 = component.waterDecay1;
 	waterDecay2 = component.waterDecay2;
+	xTiles = component.xTiles;
+	yTiles = component.yTiles;
+	loop = component.loop;
+	fps = component.fps;
 	uvScaler = component.uvScaler;
 	distorsionSpeed = component.distorsionSpeed;
 	isVolumetricLight = component.isVolumetricLight;
