@@ -158,6 +158,7 @@ void EquipPopupController::Update()
 				//TODO: Show info
 				if (App->input->GetMouseButtonDown(1) == KEY_UP)
 				{
+					slotsSkills[i]->GetComponent<ComponentImage>()->isHovered = false;
 					Assign(i);
 				}
 			}
@@ -180,6 +181,7 @@ void EquipPopupController::Update()
 				//TODO: Show info
 				if (App->input->GetMouseButtonDown(1) == KEY_UP)
 				{
+					slotsItems[i]->GetComponent<ComponentImage>()->isHovered = false;
 					Assign(i);
 				}
 			}
