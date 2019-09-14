@@ -29,7 +29,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 1,
             "isPrefabSync": 1,
             "prefabUID": 3048167483,
@@ -43,7 +43,7 @@
             ]
         },
         {
-            "UID": 4233444980,
+            "UID": 1440120085,
             "ParentUID": 4232527916,
             "Name": "BackgroundImage",
             "Tag": "Default",
@@ -115,7 +115,7 @@
             ]
         },
         {
-            "UID": 1926100702,
+            "UID": 2224330212,
             "ParentUID": 4232527916,
             "Name": "HelmetSlot",
             "Tag": "Default",
@@ -187,7 +187,7 @@
             ]
         },
         {
-            "UID": 1860156805,
+            "UID": 753346923,
             "ParentUID": 4232527916,
             "Name": "BodySlot",
             "Tag": "Default",
@@ -259,7 +259,7 @@
             ]
         },
         {
-            "UID": 2094032481,
+            "UID": 3750777273,
             "ParentUID": 4232527916,
             "Name": "PantsSlot",
             "Tag": "Default",
@@ -331,7 +331,7 @@
             ]
         },
         {
-            "UID": 829599071,
+            "UID": 1874082840,
             "ParentUID": 4232527916,
             "Name": "BootsSlot",
             "Tag": "Default",
@@ -403,7 +403,7 @@
             ]
         },
         {
-            "UID": 473041120,
+            "UID": 4250810964,
             "ParentUID": 4232527916,
             "Name": "WeaponSlot",
             "Tag": "Default",
@@ -475,7 +475,7 @@
             ]
         },
         {
-            "UID": 1358593585,
+            "UID": 616442250,
             "ParentUID": 4232527916,
             "Name": "AmuletSlot",
             "Tag": "Default",
@@ -547,7 +547,7 @@
             ]
         },
         {
-            "UID": 1153228122,
+            "UID": 1405144753,
             "ParentUID": 4232527916,
             "Name": "InventorySlots",
             "Tag": "Default",
@@ -626,8 +626,8 @@
             ]
         },
         {
-            "UID": 3747148676,
-            "ParentUID": 1153228122,
+            "UID": 933218389,
+            "ParentUID": 1405144753,
             "Name": "Slot1",
             "Tag": "Default",
             "Static": 0,
@@ -698,8 +698,8 @@
             ]
         },
         {
-            "UID": 3966033209,
-            "ParentUID": 1153228122,
+            "UID": 4102773008,
+            "ParentUID": 1405144753,
             "Name": "Slot2",
             "Tag": "Default",
             "Static": 0,
@@ -770,8 +770,8 @@
             ]
         },
         {
-            "UID": 2143416148,
-            "ParentUID": 1153228122,
+            "UID": 1458175124,
+            "ParentUID": 1405144753,
             "Name": "Slot3",
             "Tag": "Default",
             "Static": 0,
@@ -842,8 +842,8 @@
             ]
         },
         {
-            "UID": 3160285465,
-            "ParentUID": 1153228122,
+            "UID": 2676597794,
+            "ParentUID": 1405144753,
             "Name": "Slot4",
             "Tag": "Default",
             "Static": 0,
@@ -914,8 +914,8 @@
             ]
         },
         {
-            "UID": 1668181961,
-            "ParentUID": 1153228122,
+            "UID": 3054209985,
+            "ParentUID": 1405144753,
             "Name": "Slot5",
             "Tag": "Default",
             "Static": 0,
@@ -986,8 +986,8 @@
             ]
         },
         {
-            "UID": 1636924488,
-            "ParentUID": 1153228122,
+            "UID": 4123885430,
+            "ParentUID": 1405144753,
             "Name": "Slot6",
             "Tag": "Default",
             "Static": 0,
@@ -1058,8 +1058,8 @@
             ]
         },
         {
-            "UID": 3451318096,
-            "ParentUID": 1153228122,
+            "UID": 734377704,
+            "ParentUID": 1405144753,
             "Name": "Slot7",
             "Tag": "Default",
             "Static": 0,
@@ -1130,8 +1130,8 @@
             ]
         },
         {
-            "UID": 4001581719,
-            "ParentUID": 1153228122,
+            "UID": 1050941744,
+            "ParentUID": 1405144753,
             "Name": "Slot8",
             "Tag": "Default",
             "Static": 0,
@@ -1202,8 +1202,8 @@
             ]
         },
         {
-            "UID": 3128524934,
-            "ParentUID": 1153228122,
+            "UID": 3855211494,
+            "ParentUID": 1405144753,
             "Name": "Slot9",
             "Tag": "Default",
             "Static": 0,
@@ -1274,8 +1274,8 @@
             ]
         },
         {
-            "UID": 434609817,
-            "ParentUID": 1153228122,
+            "UID": 1960445262,
+            "ParentUID": 1405144753,
             "Name": "Slot10",
             "Tag": "Default",
             "Static": 0,
@@ -1346,8 +1346,8 @@
             ]
         },
         {
-            "UID": 2349184939,
-            "ParentUID": 1153228122,
+            "UID": 3595463869,
+            "ParentUID": 1405144753,
             "Name": "Slot11",
             "Tag": "Default",
             "Static": 0,
@@ -1418,8 +1418,8 @@
             ]
         },
         {
-            "UID": 29546194,
-            "ParentUID": 1153228122,
+            "UID": 3009551227,
+            "ParentUID": 1405144753,
             "Name": "Slot12",
             "Tag": "Default",
             "Static": 0,
@@ -1490,8 +1490,8 @@
             ]
         },
         {
-            "UID": 1494858593,
-            "ParentUID": 1153228122,
+            "UID": 2345106835,
+            "ParentUID": 1405144753,
             "Name": "Slot13",
             "Tag": "Default",
             "Static": 0,
@@ -1562,8 +1562,8 @@
             ]
         },
         {
-            "UID": 988915877,
-            "ParentUID": 1153228122,
+            "UID": 230200951,
+            "ParentUID": 1405144753,
             "Name": "Slot14",
             "Tag": "Default",
             "Static": 0,
@@ -1634,8 +1634,8 @@
             ]
         },
         {
-            "UID": 4022375315,
-            "ParentUID": 1153228122,
+            "UID": 283464862,
+            "ParentUID": 1405144753,
             "Name": "Slot15",
             "Tag": "Default",
             "Static": 0,
@@ -1706,8 +1706,8 @@
             ]
         },
         {
-            "UID": 3168032482,
-            "ParentUID": 1153228122,
+            "UID": 1826779803,
+            "ParentUID": 1405144753,
             "Name": "Slot16",
             "Tag": "Default",
             "Static": 0,
@@ -1778,8 +1778,8 @@
             ]
         },
         {
-            "UID": 3237302664,
-            "ParentUID": 1153228122,
+            "UID": 3041501791,
+            "ParentUID": 1405144753,
             "Name": "Slot17",
             "Tag": "Default",
             "Static": 0,
@@ -1850,8 +1850,8 @@
             ]
         },
         {
-            "UID": 3483631992,
-            "ParentUID": 1153228122,
+            "UID": 1152127946,
+            "ParentUID": 1405144753,
             "Name": "Slot18",
             "Tag": "Default",
             "Static": 0,
@@ -1922,7 +1922,1544 @@
             ]
         },
         {
-            "UID": 3113865898,
+            "UID": 3047476917,
+            "ParentUID": 4232527916,
+            "Name": "InventorySlotsNumbers",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 0,
+                    "Enabled": 1,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Euler": [
+                        -0.0,
+                        0.0,
+                        -0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Global": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": 1224797788,
+            "ParentUID": 3047476917,
+            "Name": "Slot1Text",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 0,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -400.79998779296877,
+                        -156.3000030517578
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 42.0,
+                    "text": "1",
+                    "font": "Fonts/DroidSans.ttf",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 100.0,
+                    "InterlineDistance": 24.0,
+                    "UIOrder": 6
+                }
+            ]
+        },
+        {
+            "UID": 600728990,
+            "ParentUID": 3047476917,
+            "Name": "Slot2Text",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 0,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -334.20001220703127,
+                        -156.3000030517578
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 42.0,
+                    "text": "1",
+                    "font": "Fonts/DroidSans.ttf",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 100.0,
+                    "InterlineDistance": 24.0,
+                    "UIOrder": 5
+                }
+            ]
+        },
+        {
+            "UID": 1603813128,
+            "ParentUID": 3047476917,
+            "Name": "Slot3Text",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 0,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -265.3999938964844,
+                        -156.3000030517578
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 42.0,
+                    "text": "1",
+                    "font": "Fonts/DroidSans.ttf",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 100.0,
+                    "InterlineDistance": 24.0,
+                    "UIOrder": 5
+                }
+            ]
+        },
+        {
+            "UID": 660317175,
+            "ParentUID": 3047476917,
+            "Name": "Slot4Text",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 0,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -196.89999389648438,
+                        -156.3000030517578
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 42.0,
+                    "text": "1",
+                    "font": "Fonts/DroidSans.ttf",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 100.0,
+                    "InterlineDistance": 24.0,
+                    "UIOrder": 5
+                }
+            ]
+        },
+        {
+            "UID": 1720606723,
+            "ParentUID": 3047476917,
+            "Name": "Slot5Text",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 0,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -128.8000030517578,
+                        -156.3000030517578
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 42.0,
+                    "text": "1",
+                    "font": "Fonts/DroidSans.ttf",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 100.0,
+                    "InterlineDistance": 24.0,
+                    "UIOrder": 5
+                }
+            ]
+        },
+        {
+            "UID": 793620187,
+            "ParentUID": 3047476917,
+            "Name": "Slot6Text",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 0,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -59.70000076293945,
+                        -156.3000030517578
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 42.0,
+                    "text": "1",
+                    "font": "Fonts/DroidSans.ttf",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 100.0,
+                    "InterlineDistance": 24.0,
+                    "UIOrder": 6
+                }
+            ]
+        },
+        {
+            "UID": 1850077847,
+            "ParentUID": 3047476917,
+            "Name": "Slot7Text",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 0,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -401.0,
+                        -216.89999389648438
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 42.0,
+                    "text": "1",
+                    "font": "Fonts/DroidSans.ttf",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 100.0,
+                    "InterlineDistance": 24.0,
+                    "UIOrder": 6
+                }
+            ]
+        },
+        {
+            "UID": 3963634674,
+            "ParentUID": 3047476917,
+            "Name": "Slot8Text",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 0,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -333.79998779296877,
+                        -216.60000610351563
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 42.0,
+                    "text": "1",
+                    "font": "Fonts/DroidSans.ttf",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 100.0,
+                    "InterlineDistance": 24.0,
+                    "UIOrder": 6
+                }
+            ]
+        },
+        {
+            "UID": 4215022844,
+            "ParentUID": 3047476917,
+            "Name": "Slot9Text",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 0,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -264.79998779296877,
+                        -216.60000610351563
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 42.0,
+                    "text": "1",
+                    "font": "Fonts/DroidSans.ttf",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 100.0,
+                    "InterlineDistance": 24.0,
+                    "UIOrder": 6
+                }
+            ]
+        },
+        {
+            "UID": 2298214152,
+            "ParentUID": 3047476917,
+            "Name": "Slot10Text",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 0,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -195.6999969482422,
+                        -216.60000610351563
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 42.0,
+                    "text": "1",
+                    "font": "Fonts/DroidSans.ttf",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 100.0,
+                    "InterlineDistance": 24.0,
+                    "UIOrder": 5
+                }
+            ]
+        },
+        {
+            "UID": 2686587756,
+            "ParentUID": 3047476917,
+            "Name": "Slot11Text",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 0,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -126.80000305175781,
+                        -216.60000610351563
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 42.0,
+                    "text": "1",
+                    "font": "Fonts/DroidSans.ttf",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 100.0,
+                    "InterlineDistance": 24.0,
+                    "UIOrder": 5
+                }
+            ]
+        },
+        {
+            "UID": 2297369181,
+            "ParentUID": 3047476917,
+            "Name": "Slot12Text",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 0,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -59.0,
+                        -216.60000610351563
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 42.0,
+                    "text": "1",
+                    "font": "Fonts/DroidSans.ttf",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 100.0,
+                    "InterlineDistance": 24.0,
+                    "UIOrder": 5
+                }
+            ]
+        },
+        {
+            "UID": 3620060055,
+            "ParentUID": 3047476917,
+            "Name": "Slot13Text",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 0,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -400.79998779296877,
+                        -277.29998779296877
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 42.0,
+                    "text": "1",
+                    "font": "Fonts/DroidSans.ttf",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 100.0,
+                    "InterlineDistance": 24.0,
+                    "UIOrder": 5
+                }
+            ]
+        },
+        {
+            "UID": 352349187,
+            "ParentUID": 3047476917,
+            "Name": "Slot14Text",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 0,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -331.8999938964844,
+                        -277.29998779296877
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 42.0,
+                    "text": "1",
+                    "font": "Fonts/DroidSans.ttf",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 100.0,
+                    "InterlineDistance": 24.0,
+                    "UIOrder": 5
+                }
+            ]
+        },
+        {
+            "UID": 685719137,
+            "ParentUID": 3047476917,
+            "Name": "Slot15Text",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 0,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -264.6000061035156,
+                        -277.29998779296877
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 42.0,
+                    "text": "1",
+                    "font": "Fonts/DroidSans.ttf",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 100.0,
+                    "InterlineDistance": 24.0,
+                    "UIOrder": 5
+                }
+            ]
+        },
+        {
+            "UID": 3883347509,
+            "ParentUID": 3047476917,
+            "Name": "Slot16Text",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 0,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -196.39999389648438,
+                        -277.29998779296877
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 42.0,
+                    "text": "1",
+                    "font": "Fonts/DroidSans.ttf",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 100.0,
+                    "InterlineDistance": 24.0,
+                    "UIOrder": 5
+                }
+            ]
+        },
+        {
+            "UID": 4088978153,
+            "ParentUID": 3047476917,
+            "Name": "Slot17Text",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 0,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -126.5999984741211,
+                        -277.29998779296877
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 42.0,
+                    "text": "1",
+                    "font": "Fonts/DroidSans.ttf",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 100.0,
+                    "InterlineDistance": 24.0,
+                    "UIOrder": 5
+                }
+            ]
+        },
+        {
+            "UID": 1950676020,
+            "ParentUID": 3047476917,
+            "Name": "Slot18Text",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 0,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -56.70000076293945,
+                        -277.29998779296877
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 42.0,
+                    "text": "1",
+                    "font": "Fonts/DroidSans.ttf",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 100.0,
+                    "InterlineDistance": 24.0,
+                    "UIOrder": 5
+                }
+            ]
+        },
+        {
+            "UID": 2082150132,
             "ParentUID": 4232527916,
             "Name": "Items",
             "Tag": "Default",
@@ -2001,8 +3538,8 @@
             ]
         },
         {
-            "UID": 1224089088,
-            "ParentUID": 3113865898,
+            "UID": 1695972340,
+            "ParentUID": 2082150132,
             "Name": "Item1",
             "Tag": "Default",
             "Static": 0,
@@ -2073,8 +3610,8 @@
             ]
         },
         {
-            "UID": 3469648096,
-            "ParentUID": 3113865898,
+            "UID": 255062614,
+            "ParentUID": 2082150132,
             "Name": "Item2",
             "Tag": "Default",
             "Static": 0,
@@ -2145,8 +3682,8 @@
             ]
         },
         {
-            "UID": 1604574242,
-            "ParentUID": 3113865898,
+            "UID": 2471642268,
+            "ParentUID": 2082150132,
             "Name": "Item3",
             "Tag": "Default",
             "Static": 0,
@@ -2217,8 +3754,8 @@
             ]
         },
         {
-            "UID": 2645561088,
-            "ParentUID": 3113865898,
+            "UID": 650704011,
+            "ParentUID": 2082150132,
             "Name": "Item4",
             "Tag": "Default",
             "Static": 0,
@@ -2289,8 +3826,8 @@
             ]
         },
         {
-            "UID": 2765957613,
-            "ParentUID": 3113865898,
+            "UID": 103652890,
+            "ParentUID": 2082150132,
             "Name": "Item5",
             "Tag": "Default",
             "Static": 0,
@@ -2361,8 +3898,8 @@
             ]
         },
         {
-            "UID": 4216683843,
-            "ParentUID": 3113865898,
+            "UID": 1479342319,
+            "ParentUID": 2082150132,
             "Name": "Item6",
             "Tag": "Default",
             "Static": 0,
@@ -2433,8 +3970,8 @@
             ]
         },
         {
-            "UID": 1914529303,
-            "ParentUID": 3113865898,
+            "UID": 1685904002,
+            "ParentUID": 2082150132,
             "Name": "Item7",
             "Tag": "Default",
             "Static": 0,
@@ -2505,8 +4042,8 @@
             ]
         },
         {
-            "UID": 3740832394,
-            "ParentUID": 3113865898,
+            "UID": 587656218,
+            "ParentUID": 2082150132,
             "Name": "Item8",
             "Tag": "Default",
             "Static": 0,
@@ -2577,8 +4114,8 @@
             ]
         },
         {
-            "UID": 806626739,
-            "ParentUID": 3113865898,
+            "UID": 1839836909,
+            "ParentUID": 2082150132,
             "Name": "Item9",
             "Tag": "Default",
             "Static": 0,
@@ -2649,8 +4186,8 @@
             ]
         },
         {
-            "UID": 1309378294,
-            "ParentUID": 3113865898,
+            "UID": 3282512141,
+            "ParentUID": 2082150132,
             "Name": "Item10",
             "Tag": "Default",
             "Static": 0,
@@ -2721,8 +4258,8 @@
             ]
         },
         {
-            "UID": 897913729,
-            "ParentUID": 3113865898,
+            "UID": 3348646233,
+            "ParentUID": 2082150132,
             "Name": "Item11",
             "Tag": "Default",
             "Static": 0,
@@ -2793,8 +4330,8 @@
             ]
         },
         {
-            "UID": 734225606,
-            "ParentUID": 3113865898,
+            "UID": 1794981542,
+            "ParentUID": 2082150132,
             "Name": "Item12",
             "Tag": "Default",
             "Static": 0,
@@ -2865,8 +4402,8 @@
             ]
         },
         {
-            "UID": 220805990,
-            "ParentUID": 3113865898,
+            "UID": 3578417688,
+            "ParentUID": 2082150132,
             "Name": "Item13",
             "Tag": "Default",
             "Static": 0,
@@ -2937,8 +4474,8 @@
             ]
         },
         {
-            "UID": 3609995716,
-            "ParentUID": 3113865898,
+            "UID": 84334467,
+            "ParentUID": 2082150132,
             "Name": "Item14",
             "Tag": "Default",
             "Static": 0,
@@ -3009,8 +4546,8 @@
             ]
         },
         {
-            "UID": 3743012443,
-            "ParentUID": 3113865898,
+            "UID": 2310996269,
+            "ParentUID": 2082150132,
             "Name": "Item15",
             "Tag": "Default",
             "Static": 0,
@@ -3081,8 +4618,8 @@
             ]
         },
         {
-            "UID": 2620624978,
-            "ParentUID": 3113865898,
+            "UID": 1445844347,
+            "ParentUID": 2082150132,
             "Name": "Item16",
             "Tag": "Default",
             "Static": 0,
@@ -3153,8 +4690,8 @@
             ]
         },
         {
-            "UID": 1020592642,
-            "ParentUID": 3113865898,
+            "UID": 2903953625,
+            "ParentUID": 2082150132,
             "Name": "Item17",
             "Tag": "Default",
             "Static": 0,
@@ -3225,8 +4762,8 @@
             ]
         },
         {
-            "UID": 3643747848,
-            "ParentUID": 3113865898,
+            "UID": 2069550689,
+            "ParentUID": 2082150132,
             "Name": "Item18",
             "Tag": "Default",
             "Static": 0,
@@ -3297,8 +4834,8 @@
             ]
         },
         {
-            "UID": 1566289701,
-            "ParentUID": 3113865898,
+            "UID": 1708716260,
+            "ParentUID": 2082150132,
             "Name": "Item19",
             "Tag": "Default",
             "Static": 0,
@@ -3369,8 +4906,8 @@
             ]
         },
         {
-            "UID": 2350288604,
-            "ParentUID": 3113865898,
+            "UID": 3165517530,
+            "ParentUID": 2082150132,
             "Name": "Item20",
             "Tag": "Default",
             "Static": 0,
@@ -3441,8 +4978,8 @@
             ]
         },
         {
-            "UID": 4099908772,
-            "ParentUID": 3113865898,
+            "UID": 93767467,
+            "ParentUID": 2082150132,
             "Name": "Item21",
             "Tag": "Default",
             "Static": 0,
@@ -3513,8 +5050,8 @@
             ]
         },
         {
-            "UID": 3057021292,
-            "ParentUID": 3113865898,
+            "UID": 3373395554,
+            "ParentUID": 2082150132,
             "Name": "Item22",
             "Tag": "Default",
             "Static": 0,
@@ -3585,8 +5122,8 @@
             ]
         },
         {
-            "UID": 2904325307,
-            "ParentUID": 3113865898,
+            "UID": 2444769253,
+            "ParentUID": 2082150132,
             "Name": "Item23",
             "Tag": "Default",
             "Static": 0,
@@ -3657,8 +5194,8 @@
             ]
         },
         {
-            "UID": 3570135884,
-            "ParentUID": 3113865898,
+            "UID": 3557612105,
+            "ParentUID": 2082150132,
             "Name": "Item24",
             "Tag": "Default",
             "Static": 0,
@@ -3729,7 +5266,7 @@
             ]
         },
         {
-            "UID": 3610906620,
+            "UID": 3802166598,
             "ParentUID": 4232527916,
             "Name": "LevelBackground",
             "Tag": "Default",
@@ -3808,8 +5345,8 @@
             ]
         },
         {
-            "UID": 812646437,
-            "ParentUID": 3610906620,
+            "UID": 1248363464,
+            "ParentUID": 3802166598,
             "Name": "LevelProgressBar",
             "Tag": "Default",
             "Static": 0,
@@ -3880,8 +5417,8 @@
             ]
         },
         {
-            "UID": 2517250557,
-            "ParentUID": 3610906620,
+            "UID": 2579900247,
+            "ParentUID": 3802166598,
             "Name": "LevelLinesBar",
             "Tag": "Default",
             "Static": 0,
@@ -3952,8 +5489,8 @@
             ]
         },
         {
-            "UID": 1592121570,
-            "ParentUID": 3610906620,
+            "UID": 2540248946,
+            "ParentUID": 3802166598,
             "Name": "LevelActual",
             "Tag": "Default",
             "Static": 0,
@@ -4028,13 +5565,13 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 5
+                    "UIOrder": 0
                 }
             ]
         },
         {
-            "UID": 382333651,
-            "ParentUID": 3610906620,
+            "UID": 1507008173,
+            "ParentUID": 3802166598,
             "Name": "LevelExperience",
             "Tag": "Default",
             "Static": 0,
@@ -4109,13 +5646,13 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 5
+                    "UIOrder": 0
                 }
             ]
         },
         {
-            "UID": 4071785029,
-            "ParentUID": 3610906620,
+            "UID": 172630974,
+            "ParentUID": 3802166598,
             "Name": "LevelExperienceMax",
             "Tag": "Default",
             "Static": 0,
@@ -4190,12 +5727,12 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 5
+                    "UIOrder": 0
                 }
             ]
         },
         {
-            "UID": 3649632280,
+            "UID": 4173004678,
             "ParentUID": 4232527916,
             "Name": "StatsPanel",
             "Tag": "Default",
@@ -4274,8 +5811,8 @@
             ]
         },
         {
-            "UID": 1269061350,
-            "ParentUID": 3649632280,
+            "UID": 2806194692,
+            "ParentUID": 4173004678,
             "Name": "HeartPanel",
             "Tag": "Default",
             "Static": 0,
@@ -4353,8 +5890,8 @@
             ]
         },
         {
-            "UID": 897737593,
-            "ParentUID": 1269061350,
+            "UID": 752666037,
+            "ParentUID": 2806194692,
             "Name": "HeartLabel",
             "Tag": "Default",
             "Static": 0,
@@ -4429,13 +5966,13 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 5
+                    "UIOrder": 0
                 }
             ]
         },
         {
-            "UID": 2179554197,
-            "ParentUID": 1269061350,
+            "UID": 2533646262,
+            "ParentUID": 2806194692,
             "Name": "HeartPositiveBoostIcon",
             "Tag": "Default",
             "Static": 0,
@@ -4506,8 +6043,8 @@
             ]
         },
         {
-            "UID": 1030465529,
-            "ParentUID": 1269061350,
+            "UID": 3599250878,
+            "ParentUID": 2806194692,
             "Name": "HeartNegativeBoostIcon",
             "Tag": "Default",
             "Static": 0,
@@ -4578,8 +6115,8 @@
             ]
         },
         {
-            "UID": 389177048,
-            "ParentUID": 3649632280,
+            "UID": 2410612531,
+            "ParentUID": 4173004678,
             "Name": "DexterityPanel",
             "Tag": "Default",
             "Static": 0,
@@ -4657,8 +6194,8 @@
             ]
         },
         {
-            "UID": 3040300296,
-            "ParentUID": 389177048,
+            "UID": 1556216528,
+            "ParentUID": 2410612531,
             "Name": "DexterityLabel",
             "Tag": "Default",
             "Static": 0,
@@ -4733,13 +6270,13 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 5
+                    "UIOrder": 0
                 }
             ]
         },
         {
-            "UID": 1388792508,
-            "ParentUID": 389177048,
+            "UID": 1180647850,
+            "ParentUID": 2410612531,
             "Name": "DexterityPositiveBoostIcon",
             "Tag": "Default",
             "Static": 0,
@@ -4810,8 +6347,8 @@
             ]
         },
         {
-            "UID": 673825122,
-            "ParentUID": 389177048,
+            "UID": 791534430,
+            "ParentUID": 2410612531,
             "Name": "DexterityNegativeBoostIcon",
             "Tag": "Default",
             "Static": 0,
@@ -4882,8 +6419,8 @@
             ]
         },
         {
-            "UID": 2393372103,
-            "ParentUID": 3649632280,
+            "UID": 1487260087,
+            "ParentUID": 4173004678,
             "Name": "StrPanel",
             "Tag": "Default",
             "Static": 0,
@@ -4961,8 +6498,8 @@
             ]
         },
         {
-            "UID": 2406817466,
-            "ParentUID": 2393372103,
+            "UID": 2845673000,
+            "ParentUID": 1487260087,
             "Name": "StrLabel",
             "Tag": "Default",
             "Static": 0,
@@ -5037,13 +6574,13 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 5
+                    "UIOrder": 0
                 }
             ]
         },
         {
-            "UID": 3358911594,
-            "ParentUID": 2393372103,
+            "UID": 2051509973,
+            "ParentUID": 1487260087,
             "Name": "StrPositiveBoostIcon",
             "Tag": "Default",
             "Static": 0,
@@ -5114,8 +6651,8 @@
             ]
         },
         {
-            "UID": 2336191331,
-            "ParentUID": 2393372103,
+            "UID": 4061201804,
+            "ParentUID": 1487260087,
             "Name": "StrNegativeBoostIcon",
             "Tag": "Default",
             "Static": 0,
@@ -5186,8 +6723,8 @@
             ]
         },
         {
-            "UID": 1398540118,
-            "ParentUID": 3649632280,
+            "UID": 3517495618,
+            "ParentUID": 4173004678,
             "Name": "SoulPanel",
             "Tag": "Default",
             "Static": 0,
@@ -5265,8 +6802,8 @@
             ]
         },
         {
-            "UID": 1311245171,
-            "ParentUID": 1398540118,
+            "UID": 20565258,
+            "ParentUID": 3517495618,
             "Name": "SoulLabel",
             "Tag": "Default",
             "Static": 0,
@@ -5341,13 +6878,13 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 5
+                    "UIOrder": 0
                 }
             ]
         },
         {
-            "UID": 2116726511,
-            "ParentUID": 1398540118,
+            "UID": 170006592,
+            "ParentUID": 3517495618,
             "Name": "SoulPositiveBoostIcon",
             "Tag": "Default",
             "Static": 0,
@@ -5418,8 +6955,8 @@
             ]
         },
         {
-            "UID": 2210933916,
-            "ParentUID": 1398540118,
+            "UID": 391771903,
+            "ParentUID": 3517495618,
             "Name": "SoulNegativeBoostIcon",
             "Tag": "Default",
             "Static": 0,

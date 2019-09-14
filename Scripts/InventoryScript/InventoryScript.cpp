@@ -47,6 +47,13 @@ void InventoryScript::Start()
 
 	itemsSlots = { std::begin(list), std::end(list) }; //Pass gameObjects list to vector for better performance 
 
+	GameObject* inventorySlotsNumbers = App->scene->FindGameObjectByName("InventorySlotsNumbers", inventory);
+	if (inventorySlotsNumbers != nullptr)
+	{
+		std::list<GameObject*> slotsNumbersList = inventorySlotsNumbers->children;
+		itemsSlotsNumbers = { std::begin(slotsNumbersList), std::end(slotsNumbersList) };
+	}
+
 	GameObject* backgroundImage = App->scene->FindGameObjectByName("BackgroundImage", inventory->parent);
 	if (backgroundImage != nullptr)
 	{
@@ -174,6 +181,9 @@ void InventoryScript::Update()
 					if (items[j].second == i)
 					{
 						items.erase(items.begin() + j);
+
+						HideConsumableItemText(i);
+
 						return;
 					}
 				}
@@ -402,19 +412,28 @@ void InventoryScript::Update()
 
 						dropItemAudio->Play();
 
+						HideConsumableItemText(i);
+						HideConsumableItemText(j);
+
 						for (int z = 0; z < items.size(); ++z)
 						{
 							if (items[z].second == i)
 							{
-								items[z].second = j;			
+								items[z].second = j;
+								int quantity = GetCurrentQuantity(items[z].first);
+								ManageConsumableItemsQuantityText(items[z].first, quantity);
 								continue;
-							} 
+							}
 							if (items[z].second == j)
 							{
 								items[z].second = i;
+								int quantity = GetCurrentQuantity(items[z].first);
+								ManageConsumableItemsQuantityText(items[z].first, quantity);
 								continue;
 							}
 						}
+
+
 					}
 				}
 			}
@@ -432,16 +451,22 @@ void InventoryScript::Update()
 
 bool InventoryScript::AddItem(Item item)
 {
-
 	for (int i = 0; i < INVENTARY_SLOTS; ++i)
 	{
 		if (!itemsSlots[i]->activeSelf)
 		{
-			itemsSlots[i]->SetActive(true);
-			ComponentImage* image = itemsSlots[i]->GetComponent<ComponentImage>();
-			image->UpdateTexture(item.sprite);
-			items.emplace_back(std::make_pair(item, i));
-			App->scene->FindGameObjectByName("NewItem")->SetActive(true);
+			int quantity = ManageConsumableItemsQuantity(item);
+			if (quantity <= 1)
+			{
+				itemsSlots[i]->SetActive(true);
+				ComponentImage* image = itemsSlots[i]->GetComponent<ComponentImage>();
+				image->UpdateTexture(item.sprite);
+				items.emplace_back(std::make_pair(item, i));
+				App->scene->FindGameObjectByName("NewItem")->SetActive(true);
+			}
+
+			ManageConsumableItemsQuantityText(item, quantity);
+
 			return true;
 		}
 	}
@@ -579,4 +604,73 @@ void InventoryScript::showDescription(int i)
 	else
 		txt->color = math::float4(183, 153, 41, 255);
 	itemDesc->SetActive(true);
+}
+
+int InventoryScript::ManageConsumableItemsQuantity(const Item& item)
+{
+	if (item.type == ItemType::QUICK)
+	{
+		for (int i = 0; i < consumibleItems.size(); ++i)
+		{
+			if (consumibleItems[i].first == item.name)
+			{
+				consumibleItems[i].second += 1;
+				return consumibleItems[i].second;
+			}
+		}
+
+		consumibleItems.emplace_back(std::make_pair(item.name, 1));
+		return 1;
+	}
+
+	return 0;
+}
+
+int InventoryScript::GetItemIndexPosition(const Item& item)
+{
+	for (int i = 0; i < items.size(); ++i)
+	{
+		if (items[i].first.name == item.name)
+		{
+			return items[i].second;
+		}
+	}
+
+	return -1;
+}
+
+int InventoryScript::GetCurrentQuantity(const Item& item)
+{
+	for (int i = 0; i < consumibleItems.size(); ++i)
+	{
+		if (consumibleItems[i].first == item.name)
+		{
+			return consumibleItems[i].second;
+		}
+	}
+
+	return -1;
+}
+
+void InventoryScript::HideConsumableItemText(int position)
+{
+	itemsSlotsNumbers[position]->SetActive(false);
+	Text* itemsSlotNumber = itemsSlotsNumbers[position]->GetComponent<Text>();
+	itemsSlotNumber->text = std::to_string(1);
+}
+
+void InventoryScript::ManageConsumableItemsQuantityText(const Item& item, int quantity)
+{
+	if (item.type == ItemType::QUICK)
+	{
+		int itemPosition = GetItemIndexPosition(item);
+
+		if (itemPosition != -1)
+		{
+			itemsSlotsNumbers[itemPosition]->SetActive(true);
+			Text* itemsSlotNumber = itemsSlotsNumbers[itemPosition]->GetComponent<Text>();
+			itemsSlotNumber->text = std::to_string(quantity);
+			itemsSlotNumber->uiOrder = 6;
+		}
+	}
 }

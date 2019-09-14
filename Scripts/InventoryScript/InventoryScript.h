@@ -41,10 +41,17 @@ public:
 
 private:
 	void showDescription(int i);
+	int ManageConsumableItemsQuantity(const Item& item);
+	void ManageConsumableItemsQuantityText(const Item& item, int quantity);
+	int GetItemIndexPosition(const Item& item);
+	void HideConsumableItemText(int position);
+	int GetCurrentQuantity(const Item& item);
 
 	std::vector<Component*> slotsTransform;
 	std::vector<GameObject*> itemsSlots;
+	std::vector<GameObject*> itemsSlotsNumbers;
 	std::vector<std::pair<Item, int>> items;
+	std::vector<std::pair<std::string, int>> consumibleItems; //name of the item, quantity
 
 	GameObject* inventory = nullptr;
 	GameObject* itemDesc = nullptr;
