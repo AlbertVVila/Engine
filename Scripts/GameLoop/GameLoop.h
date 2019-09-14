@@ -165,6 +165,7 @@ public:
 	GameObject* missionsMenuGO = nullptr;
 	GameObject* skillsMenuGO = nullptr;
 	GameObject* pauseMenuGO = nullptr;
+	GameObject* introVideoGO = nullptr;
 
 	//BBOX
 	math::AABB* playerBbox = nullptr;
@@ -195,6 +196,7 @@ public:
 
 	bool runningCredits = false;
 	bool runningIntro = false;
+	bool introvideoPlaying = false;
 	bool vsync = false;
 
 	std::string sceneToLoad = "";
