@@ -1,0 +1,29 @@
+{
+    "Material": {
+        "metaVersion": 2,
+        "timeCreated": 1568446599,
+        "GUID": 2831604673,
+        "Name": "BirdHat",
+        "File": "Assets/Materials/BirdHat.m4t",
+        "ExportedFile": "Library/Materials/2831604673.m4t",
+        "DifusseColor": [
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ],
+        "specularColor": [
+            0.08196723461151123,
+            0.08196641504764557,
+            0.08196641504764557
+        ],
+        "emissiveColor": [
+            1.0,
+            1.0,
+            1.0
+        ],
+        "diffuseUID": 3889175794,
+        "normalUID": 1048028612,
+        "shader": "PBR"
+    }
+}
