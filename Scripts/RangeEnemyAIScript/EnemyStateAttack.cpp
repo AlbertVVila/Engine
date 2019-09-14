@@ -25,7 +25,8 @@ void EnemyStateAttack::Enter()
 	projShot2 = false;
 	projShot3 = false;
 
-	duration = duration * 3; //should be exposed how many shots he does... In my dreams
+	duration = duration * enemy->numberOfProjectiles; //should be exposed how many shots he does... In my dreams 
+													 // Update: your dream has come true
 }
 
 void EnemyStateAttack::HandleIA()
@@ -51,7 +52,7 @@ void EnemyStateAttack::Update()
 		projShot1 = true;
 		enemy->projectile1->SetActive(true);
 	}
-	if (timer > enemy->projectileDelay2 && !projShot2)
+	if (enemy->numberOfProjectiles > 1 && timer > enemy->projectileDelay2 && !projShot2)
 	{
 		// Reset projectile position
 		enemy->projectile2->transform->SetPosition(enemy->enemyController->GetPosition() + math::float3(0.f, enemy->projectileScript2->offsetHeight, 0.f));
@@ -60,7 +61,7 @@ void EnemyStateAttack::Update()
 		projShot2 = true;
 		enemy->projectile2->SetActive(true);
 	}
-	if (timer > enemy->projectileDelay3 && !projShot3)
+	if (enemy->numberOfProjectiles > 2 && timer > enemy->projectileDelay3 && !projShot3)
 	{
 		// Reset projectile position
 		enemy->projectile3->transform->SetPosition(enemy->enemyController->GetPosition() + math::float3(0.f, enemy->projectileScript3->offsetHeight, 0.f));
