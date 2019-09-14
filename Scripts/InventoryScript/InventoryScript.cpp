@@ -487,7 +487,6 @@ std::vector<Item> InventoryScript::GetQuickItems()
 	return itemsToReturn;
 }
 
-
 void InventoryScript::SaveInventory()
 {
 	JSON* inventory = new JSON();

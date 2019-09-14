@@ -83,6 +83,15 @@ void EquipPopupController::Start()
 	hudButtonsText.emplace_back(App->scene->FindGameObjectByName("WText", HUD)->GetComponent<Transform2D>(), false);
 	hudButtonsText.emplace_back(App->scene->FindGameObjectByName("EText", HUD)->GetComponent<Transform2D>(), false);
 	hudButtonsText.emplace_back(App->scene->FindGameObjectByName("RText", HUD)->GetComponent<Transform2D>(), false);
+	hudConsumibleItemsQuantity.emplace_back(App->scene->FindGameObjectByName("RC_Number", HUD)->GetComponent<Text>());
+	hudConsumibleItemsQuantity.emplace_back(App->scene->FindGameObjectByName("One_Number", HUD)->GetComponent<Text>());
+	hudConsumibleItemsQuantity.emplace_back(App->scene->FindGameObjectByName("Two_Number", HUD)->GetComponent<Text>());
+	hudConsumibleItemsQuantity.emplace_back(App->scene->FindGameObjectByName("Three_Number", HUD)->GetComponent<Text>());
+	hudConsumibleItemsQuantity.emplace_back(App->scene->FindGameObjectByName("Four_Number", HUD)->GetComponent<Text>());
+	hudConsumibleItemsQuantity.emplace_back(App->scene->FindGameObjectByName("Q_Number", HUD)->GetComponent<Text>());
+	hudConsumibleItemsQuantity.emplace_back(App->scene->FindGameObjectByName("W_Number", HUD)->GetComponent<Text>());
+	hudConsumibleItemsQuantity.emplace_back(App->scene->FindGameObjectByName("E_Number", HUD)->GetComponent<Text>());
+	hudConsumibleItemsQuantity.emplace_back(App->scene->FindGameObjectByName("R_Number", HUD)->GetComponent<Text>());
 
 	std::list<GameObject*> listSkills = App->scene->FindGameObjectByName("PopUpSlotsSkills", popupGOSkills)->children;
 	std::list<GameObject*> listItems = App->scene->FindGameObjectByName("PopUpSlotsItems", popupGOItems)->children;
@@ -207,6 +216,8 @@ void EquipPopupController::Assign(int i)
 		itemsEquiped.emplace_back(activeButton, itemsList[i]);
 		hudImageSlots[activeButton]->UpdateTexture(itemsList[i].sprite);
 		hudImageSlots[activeButton]->gameobject->SetActive(true);
+		hudConsumibleItemsQuantity[activeButton]->gameobject->SetActive(true);
+		hudConsumibleItemsQuantity[activeButton]->text = std::to_string(inventory->GetCurrentQuantity(itemsList[i]));
 		MoveNumber(activeButton);
 		//TODO: Pass info to player
 	}
@@ -326,6 +337,8 @@ void EquipPopupController::CleanButton()
 		newPos.y += 15.7;
 		hudButtonsText[activeButton].first->SetPositionUsingAligment(newPos);
 		hudButtonsText[activeButton].second = false;
+		hudConsumibleItemsQuantity[activeButton]->gameobject->SetActive(false);
+		hudConsumibleItemsQuantity[activeButton]->text = std::to_string(1);
 	}
 }
 

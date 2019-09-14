@@ -36,6 +36,7 @@ public:
 
 	bool AddItem(Item item);
 	std::vector<Item> GetQuickItems();
+	int GetCurrentQuantity(const Item& item);
 	void SaveInventory();
 	void LoadInventory();
 
@@ -45,7 +46,6 @@ private:
 	void ManageConsumableItemsQuantityText(const Item& item, int quantity);
 	int GetItemIndexPosition(const Item& item);
 	void HideConsumableItemText(int position);
-	int GetCurrentQuantity(const Item& item);
 
 	std::vector<Component*> slotsTransform;
 	std::vector<GameObject*> itemsSlots;
