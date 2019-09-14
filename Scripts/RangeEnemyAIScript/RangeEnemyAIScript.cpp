@@ -211,6 +211,7 @@ void RangeEnemyAIScript::Serialize(JSON_value* json) const
 	// Attack variables
 	json->AddFloat("attackDuration", attackDuration);
 	json->AddFloat("attackDamage", attackDamage);
+	json->AddInt("numberOfProjectiles", numberOfProjectiles);
 	json->AddString("projectileName1", projectileName1.c_str());
 	json->AddString("projectileName2", projectileName2.c_str());
 	json->AddString("projectileName3", projectileName3.c_str());
@@ -241,6 +242,7 @@ void RangeEnemyAIScript::DeSerialize(JSON_value* json)
 	// Attack variables
 	attackDuration = json->GetFloat("attackDuration");
 	attackDamage = json->GetFloat("attackDamage");
+	numberOfProjectiles = json->GetInt("numberOfProjectiles");
 	projectileName1 = json->GetString("projectileName1", projectileName1.c_str());
 	projectileName2 = json->GetString("projectileName2", projectileName2.c_str());
 	projectileName3 = json->GetString("projectileName3", projectileName3.c_str());
