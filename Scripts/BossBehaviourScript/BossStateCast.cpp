@@ -11,3 +11,17 @@ BossStateCast::BossStateCast(BossBehaviourScript* AIBoss)
 BossStateCast::~BossStateCast()
 {
 }
+
+void BossStateCast::HandleIA()
+{
+
+}
+
+void BossStateCast::Update()
+{
+}
+
+void BossStateCast::Enter()
+{
+	boss->circlesSpawning = true;
+}

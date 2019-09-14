@@ -5,6 +5,8 @@
 #include <vector>
 #include "Math/float3.h"
 
+class ComponentBoxTrigger;
+
 #ifdef AOEBossScript_EXPORTS
 #define AOEBossScript_API __declspec(dllexport)
 #else
@@ -31,7 +33,9 @@ private:
 
 	GameObject* prepParticlesGO = nullptr;
 	GameObject* beamParticlesGO = nullptr;
-	GameObject* boxTrigger = nullptr;
+	GameObject* boxTriggerGO = nullptr;
+
+	ComponentBoxTrigger* boxTrigger = nullptr;
 
 	float duration = 3.0f;
 	float timerFade = 2.0f;

@@ -19,6 +19,14 @@ enum class BossPhase
 	Third
 };
 
+enum class BossSkills
+{
+	None,
+	Teleport,
+	Aoe,
+	Summon
+};
+
 class BossState;
 class BossStateCast;
 class BossStatePreCast;
@@ -65,8 +73,12 @@ public:
 	float secondHealthThreshold = 0.35f;
 
 	float distanceToPlayer = 0.0f;
+	math::float3 playerPosition = math::float3::zero;
+
 	float activationDistance = 800.0f;
 	float activationTime = 5.0f;
+
+	bool circlesSpawning = false;
 
 	math::float3 startingPoint = math::float3::zero;
 	math::float3 highPointFirstCS = math::float3::zero;
@@ -78,8 +90,20 @@ private:
 	void CheckStates(BossState* previous);
 	void CheckHealth();
 	void FloatInSpace();
-	float ReturnDistanceToPlayer();
+	void HandleSkills();
 
+	void HandleFirstPhaseCircles();
+	void HandleSecondPhaseCircles();
+	void HandleThirdPhaseCircles();
+
+	int circlesInFirstPhase = 3;
+	float timeBetweenCirclesFirst = 2.0f;
+	int circlesInSecondPhase = 4;
+	float timeBetweenCirclesSecond = 1.5f;
+	int circlesInThirdPhase = 4;
+	float timeBetweenCirclesThird = 0.8f;
+	float circlesTimer = 0.0f;
+	float circleNoise = 5.0f;
 
 	bool isFloating = true;
 	float angleConstant = 1.0f;

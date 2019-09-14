@@ -207,6 +207,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -10842,6 +10843,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -16066,6 +16068,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -17140,7 +17143,7 @@
                     "Znear": 10.0,
                     "Zfar": 100000.0,
                     "vFOV": 1.0471975803375245,
-                    "hFOV": 1.5192210674285889,
+                    "hFOV": 0.8897905349731445,
                     "Position": [
                         1011.0794677734375,
                         1760.119140625,
@@ -17769,6 +17772,7 @@
                         0.0
                     ],
                     "waterSpeed": 12.800000190734864,
+                    "loop": 0,
                     "water": 1,
                     "dissolve": 0,
                     "waterSource1": [
@@ -18298,6 +18302,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -18827,6 +18832,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -19277,6 +19283,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -19648,6 +19655,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -20019,6 +20027,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -20548,6 +20557,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -21077,6 +21087,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -21685,6 +21696,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -22214,6 +22226,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -22743,6 +22756,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -23272,6 +23286,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -23801,6 +23816,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -24409,6 +24425,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -24859,6 +24876,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -25388,6 +25406,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -25996,6 +26015,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -26604,6 +26624,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -27054,6 +27075,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -27504,6 +27526,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -27875,6 +27898,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -28325,6 +28349,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -28696,6 +28721,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -29620,6 +29646,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -30149,6 +30176,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -30283,6 +30311,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -30539,6 +30568,7 @@
                         7.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -30844,6 +30874,7 @@
                         7.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -31145,6 +31176,7 @@
                         7.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -31448,6 +31480,7 @@
                         7.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -31749,6 +31782,7 @@
                         7.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -32050,6 +32084,7 @@
                         7.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -32413,7 +32448,7 @@
                         80.0,
                         50.0
                     ],
-                    "boxType": 0,
+                    "boxType": 1,
                     "debug_draw": 1
                 }
             ]
@@ -32884,6 +32919,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -46534,6 +46570,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -46971,6 +47008,7 @@
                         -1.0199999809265137
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -47105,6 +47143,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -47239,6 +47278,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -47373,6 +47413,7 @@
                         3.3499999046325685
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -47656,6 +47697,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -47961,6 +48003,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -48338,6 +48381,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -48472,6 +48516,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -48866,6 +48911,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 1,
                     "waterSource1": [
@@ -49580,6 +49626,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -49836,6 +49883,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 0,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -50059,11 +50107,20 @@
                         0.0,
                         1.0
                     ]
+                },
+                {
+                    "Type": 9,
+                    "Enabled": 1,
+                    "script": "AOEBossScript",
+                    "scriptInfo": {
+                        "timerFade": 2.5,
+                        "duration": 2.799999952316284
+                    }
                 }
             ]
         },
         {
-            "UID": 91221042,
+            "UID": 1067876227,
             "ParentUID": 73541707,
             "Name": "Prep Particles",
             "Tag": "Default",
@@ -50176,6 +50233,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 1,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -50197,7 +50255,7 @@
             ]
         },
         {
-            "UID": 1958092836,
+            "UID": 288154680,
             "ParentUID": 73541707,
             "Name": "Beam Particles",
             "Tag": "Default",
@@ -50281,14 +50339,14 @@
                     "fps": 24.0,
                     "textureUID": 4093146203,
                     "lifetime": [
-                        1.5,
-                        2.0
+                        0.800000011920929,
+                        1.0
                     ],
                     "speed": [
-                        400.0,
-                        500.0
+                        800.0,
+                        1000.0
                     ],
-                    "rate": 150.0,
+                    "rate": 200.0,
                     "maxParticles": 200,
                     "rotation": [
                         0.0,
@@ -50316,7 +50374,7 @@
                     "directionNoiseProbability": 5,
                     "directionNoiseTotalProbability": 500,
                     "actualEmisor": 0,
-                    "sizeOT": 1,
+                    "sizeOT": 0,
                     "colorOT": 0,
                     "defaultColor": [
                         0.41803276538848879,
@@ -50362,7 +50420,7 @@
             ]
         },
         {
-            "UID": 1868150877,
+            "UID": 3524602759,
             "ParentUID": 73541707,
             "Name": "Hitbox",
             "Tag": "Default",

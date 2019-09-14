@@ -1,9 +1,9 @@
 {
     "GameObjects": [
         {
-            "UID": 73541707,
+            "UID": 1650477312,
             "ParentUID": 0,
-            "Name": "AOEbossPrefab",
+            "Name": "AOEFirstPhase",
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 1,
@@ -76,12 +76,21 @@
                         0.0,
                         1.0
                     ]
+                },
+                {
+                    "Type": 9,
+                    "Enabled": 1,
+                    "script": "AOEBossScript",
+                    "scriptInfo": {
+                        "timerFade": 2.5,
+                        "duration": 2.799999952316284
+                    }
                 }
             ]
         },
         {
-            "UID": 91221042,
-            "ParentUID": 73541707,
+            "UID": 2092893303,
+            "ParentUID": 1650477312,
             "Name": "Prep Particles",
             "Tag": "Default",
             "Static": 0,
@@ -193,6 +202,7 @@
                         0.0
                     ],
                     "waterSpeed": 2.0,
+                    "loop": 1,
                     "water": 0,
                     "dissolve": 0,
                     "waterSource1": [
@@ -214,8 +224,8 @@
             ]
         },
         {
-            "UID": 1958092836,
-            "ParentUID": 73541707,
+            "UID": 305760238,
+            "ParentUID": 1650477312,
             "Name": "Beam Particles",
             "Tag": "Default",
             "Static": 0,
@@ -298,14 +308,14 @@
                     "fps": 24.0,
                     "textureUID": 4093146203,
                     "lifetime": [
-                        1.5,
-                        2.0
+                        0.800000011920929,
+                        1.0
                     ],
                     "speed": [
-                        400.0,
-                        500.0
+                        800.0,
+                        1000.0
                     ],
-                    "rate": 150.0,
+                    "rate": 200.0,
                     "maxParticles": 200,
                     "rotation": [
                         0.0,
@@ -333,7 +343,7 @@
                     "directionNoiseProbability": 5,
                     "directionNoiseTotalProbability": 500,
                     "actualEmisor": 0,
-                    "sizeOT": 1,
+                    "sizeOT": 0,
                     "colorOT": 0,
                     "defaultColor": [
                         0.41803276538848879,
@@ -379,8 +389,8 @@
             ]
         },
         {
-            "UID": 1868150877,
-            "ParentUID": 73541707,
+            "UID": 706613954,
+            "ParentUID": 1650477312,
             "Name": "Hitbox",
             "Tag": "Default",
             "Static": 0,
