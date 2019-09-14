@@ -6,6 +6,7 @@
 #include "ModuleScene.h"
 #include "ModuleNavigation.h"
 #include "ModuleUI.h"
+#include "ModuleResourceManager.h"
 #include "CameraController.h"
 #include "PlayerState.h"
 #include "PlayerStateAttack.h"
@@ -26,6 +27,7 @@
 #include "ComponentText.h"
 #include "GameObject.h"
 #include "ResourceMaterial.h"
+#include "ResourceMesh.h"
 
 #include "DamageController.h"
 #include "DamageFeedbackUI.h"
@@ -266,6 +268,31 @@ void PlayerMovement::CreatePlayerSkills()
 	else
 	{
 		LOG("Machete rain mesh not found");
+	}
+
+	// Player equippable parts
+	GameObject* playerWeapon = App->scene->FindGameObjectByTag("PlayerWeapon");
+	if (playerWeapon != nullptr)
+	{
+		weaponRenderer = playerWeapon->GetComponent<ComponentRenderer>();
+		if (weaponRenderer == nullptr)
+			LOG("Player's weapon ComponentRenderer not found");
+	}
+	else
+	{
+		LOG("Player's weapon GameObject not found");
+	}
+
+	GameObject* playerHelmet = App->scene->FindGameObjectByTag("PlayerHelmet");
+	if (playerHelmet != nullptr)
+	{
+		helmetRenderer = playerHelmet->GetComponent<ComponentRenderer>();
+		if (helmetRenderer == nullptr)
+			LOG("Player's helmet ComponentRenderer not found");
+	}
+	else
+	{
+		LOG("Player's helmet GameObject not found");
 	}
 
 
@@ -834,7 +861,7 @@ PlayerMovement_API void PlayerMovement::Damage(float amount)
 	}
 }
 
-void PlayerMovement::Equip(const PlayerStats & equipStats)
+void PlayerMovement::Equip(const PlayerStats& equipStats)
 {
 	this->stats += equipStats;
 
@@ -847,7 +874,58 @@ void PlayerMovement::Equip(const PlayerStats & equipStats)
 	UpdateUIStats();
 }
 
-void PlayerMovement::UnEquip(const PlayerStats & equipStats)
+void PlayerMovement::Equip(const PlayerStats& equipStats, unsigned itemType, unsigned meshUID, unsigned materialUID)
+{
+	this->stats += equipStats;
+
+	int healthPercentage = (health / stats.health) * 100;
+	lifeUIComponent->SetMaskAmount(healthPercentage);
+
+	int manaPercentage = (mana / stats.mana) * 100;
+	manaUIComponent->SetMaskAmount(manaPercentage);
+
+	UpdateUIStats();
+
+	ResourceMesh* itemMesh = nullptr;
+	ResourceMaterial* itemMaterial = nullptr;
+
+	switch ((ItemType)itemType)
+	{
+	default:
+	case ItemType::QUICK:
+	case ItemType::KEY:
+	case ItemType::MATERIAL:
+	case ItemType::CHEST:
+	case ItemType::PANTS:
+	case ItemType::BOOTS:
+	case ItemType::AMULET:
+	case ItemType::RING:
+	case ItemType::NONE:
+		break;
+	case ItemType::WEAPON:
+		// Mesh
+		itemMesh = (ResourceMesh*)App->resManager->GetWithoutLoad(meshUID);
+		if (itemMesh != nullptr)
+			weaponRenderer->SetMesh(itemMesh->GetName());
+		// Material
+		itemMaterial = (ResourceMaterial*)App->resManager->GetWithoutLoad(materialUID);
+		if (itemMaterial != nullptr)
+			weaponRenderer->SetMaterial(itemMaterial->GetName());
+		break;
+	case ItemType::HELMET:
+		// Mesh
+		itemMesh = (ResourceMesh*)App->resManager->GetWithoutLoad(meshUID);
+		if (itemMesh != nullptr)
+			helmetRenderer->SetMesh(itemMesh->GetName());
+		// Material
+		itemMaterial = (ResourceMaterial*)App->resManager->GetWithoutLoad(materialUID);
+		if (itemMaterial != nullptr)
+			helmetRenderer->SetMaterial(itemMaterial->GetName());
+		break;
+	}
+}
+
+void PlayerMovement::UnEquip(const PlayerStats& equipStats)
 {
 	this->stats -= equipStats;
 	health = health > stats.health ? stats.health : health;
@@ -860,6 +938,9 @@ void PlayerMovement::UnEquip(const PlayerStats & equipStats)
 	manaUIComponent->SetMaskAmount(manaPercentage);
 
 	UpdateUIStats();
+
+	weaponRenderer->SetMesh(nullptr);
+	weaponRenderer->SetMaterial(nullptr);
 }
 
 void PlayerMovement::OnAnimationEvent(std::string name)

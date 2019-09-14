@@ -171,6 +171,7 @@ public:
 	void Damage(float amount);
 
 	void Equip(const PlayerStats& equipStats);
+	void Equip(const PlayerStats& equipStats, unsigned itemType, unsigned meshUID, unsigned materialUID);
 	void UnEquip(const PlayerStats& equipStats);
 
 	void OnAnimationEvent(std::string name) override;
@@ -334,6 +335,10 @@ private:
 	bool hasMaxStats = false;
 	bool hasInfiniteHealth = false;
 	bool hasInfiniteMana = false;
+
+	// Player equippable parts (Weapon, Helmet)
+	ComponentRenderer* weaponRenderer = nullptr;
+	ComponentRenderer* helmetRenderer = nullptr;
 };
 
 extern "C" PlayerMovement_API Script* CreateScript();
