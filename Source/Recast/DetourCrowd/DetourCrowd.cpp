@@ -1054,8 +1054,6 @@ void dtCrowd::update(const float dt, dtCrowdAgentDebugInfo* debug)
 	dtCrowdAgent** agents = m_activeAgents;
 	int nagents = getActiveAgents(agents, m_maxAgents);
 
-	dtCrowdAgent* ag = agents[0];
-
 	// Check that all agents still have valid paths.
 	checkPathValidity(agents, nagents, dt);
 	

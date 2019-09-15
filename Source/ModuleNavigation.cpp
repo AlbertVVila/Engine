@@ -1700,7 +1700,7 @@ bool ModuleNavigation::HighQualityMouseDetection(math::float3* intersection) con
 	float polyPickExt[3] = { correction.x, correction.y, correction.z };
 
 	//find end pos
-	navQuery->findNearestPoly((float*)& endPos, polyPickExt, &filter, targetRef, (float*)& endPos);
+	navQuery->findNearestPoly((float*)endPos, polyPickExt, &filter, targetRef, (float*)endPos);
 	if (!targetRef)
 	{
 		LOG("Could not find any nearby poly to the end");
@@ -1817,11 +1817,12 @@ int crowdTool::AddNewAgent(float* pos, float speed)
 	ap.collisionQueryRange = ap.radius * 5.0f;
 	ap.pathOptimizationRange = ap.radius * 20.0f;
 	ap.updateFlags = 0;
-	ap.updateFlags |= DT_CROWD_ANTICIPATE_TURNS;
+	//temporally disallowing flags cuz complicates debugging
+	/*ap.updateFlags |= DT_CROWD_ANTICIPATE_TURNS;
 	ap.updateFlags |= DT_CROWD_OPTIMIZE_VIS;
 	ap.updateFlags |= DT_CROWD_OPTIMIZE_TOPO;
 	ap.updateFlags |= DT_CROWD_OBSTACLE_AVOIDANCE;
-	ap.updateFlags |= DT_CROWD_SEPARATION;
+	ap.updateFlags |= DT_CROWD_SEPARATION;*/
 	ap.obstacleAvoidanceType = (unsigned char)2;//float from 0 to 3 determining the quality of dodging
 	ap.separationWeight = 5.f;
 
