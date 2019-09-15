@@ -91,11 +91,16 @@ void LoopStatePlaying::Update()
 		}
 		else if (gLoop->gameScene == GameScene::TEMPLE)
 		{
-			gLoop->winWindow->SetActive(true);
-			gLoop->currentLoopState = (LoopState*)gLoop->winState;
-			gLoop->gameScene = GameScene::MENU;
+			Win();
 		}
 	}
+}
+
+void LoopStatePlaying::Win()
+{
+	//gLoop->winWindow->SetActive(true); //No win panel, directly outro video then credits
+	gLoop->currentLoopState = (LoopState*)gLoop->winState;
+	gLoop->gameScene = GameScene::MENU;
 }
 
 void LoopStatePlaying::LoadMainMenu()

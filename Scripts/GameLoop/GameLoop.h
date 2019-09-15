@@ -162,6 +162,9 @@ public:
 	GameObject* inventoryMenuGO = nullptr;
 	GameObject* skillsMenuGO = nullptr;
 	GameObject* pauseMenuGO = nullptr;
+	GameObject* audioGO = nullptr;
+	GameObject* introVideoGO = nullptr;
+	GameObject* outroVideoGO = nullptr;
 	std::vector<GameObject*> sunHoverGO;
 
 	//BBOX
@@ -193,6 +196,7 @@ public:
 
 	bool runningCredits = false;
 	bool runningIntro = false;
+	bool introvideoPlaying = false;
 	bool vsync = false;
 
 	std::string sceneToLoad = "";
