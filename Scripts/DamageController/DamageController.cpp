@@ -59,6 +59,9 @@ void DamageController::Expose(ImGuiContext* context)
 	ImGui::ColorEdit4("Pollometer Color", (float*)&pollometerColor);
 	ImGui::ColorEdit4("Healing Color", (float*)&healingColor);
 	ImGui::ColorEdit4("Received Color", (float*)&receivedColor);
+	ImGui::ColorEdit4("Mana Color", (float*)&manaColor);
+
+	
 }
 
 bool DamageController::AddDamage(ComponentTransform* transform, int damage, DamageType type)
@@ -94,6 +97,9 @@ bool DamageController::AddDamage(ComponentTransform* transform, int damage, Dama
 				break;
 			case DamageType::RECIEVED:
 				uiDamage[i]->GetComponent<Text>()->color = receivedColor;
+				break;
+			case DamageType::MANA:
+				uiDamage[i]->GetComponent<Text>()->color = manaColor;
 				break;
 			}
 			
