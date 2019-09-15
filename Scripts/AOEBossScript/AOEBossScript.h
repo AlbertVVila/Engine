@@ -45,6 +45,8 @@ private:
 	float timerFade = 2.0f;
 	float timer = 0.0f;
 	float damageToPlayer = 5.0f;
+
+	bool hasDamaged = false;
 };
 
 extern "C" AOEBossScript_API Script* CreateScript();

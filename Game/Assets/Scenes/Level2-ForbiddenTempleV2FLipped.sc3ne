@@ -49770,7 +49770,7 @@
             ]
         },
         {
-            "UID": 2263658114,
+            "UID": 3061865469,
             "ParentUID": 2574560917,
             "Name": "Empty",
             "Tag": "Default",
@@ -49850,7 +49850,7 @@
                     "Type": 1,
                     "Enabled": 1,
                     "meshUID": 3530591418,
-                    "materialUID": 735767494,
+                    "materialUID": 779578229,
                     "castShadows": 0,
                     "useAlpha": 0,
                     "highlighted": 0,
@@ -49885,7 +49885,7 @@
                     "waterSpeed": 2.0,
                     "loop": 0,
                     "water": 0,
-                    "dissolve": 0,
+                    "dissolve": 1,
                     "waterSource1": [
                         0.0,
                         0.0,
@@ -49908,7 +49908,7 @@
                     "script": "EnemyControllerScript",
                     "scriptInfo": {
                         "playerTag": "Player",
-                        "health": 200,
+                        "health": 500,
                         "experience": 20,
                         "enemyCursor": "RedGlow.cur"
                     }
@@ -49958,8 +49958,8 @@
             ]
         },
         {
-            "UID": 1795283905,
-            "ParentUID": 2263658114,
+            "UID": 3105703577,
+            "ParentUID": 3061865469,
             "Name": "Empty",
             "Tag": "Default",
             "Static": 0,
@@ -50142,7 +50142,7 @@
             ]
         },
         {
-            "UID": 1178933656,
+            "UID": 1856622456,
             "ParentUID": 73541707,
             "Name": "Prep Particles",
             "Tag": "Default",
@@ -50277,7 +50277,7 @@
             ]
         },
         {
-            "UID": 51644881,
+            "UID": 289149009,
             "ParentUID": 73541707,
             "Name": "Beam Particles",
             "Tag": "Default",
@@ -50442,7 +50442,7 @@
             ]
         },
         {
-            "UID": 286602610,
+            "UID": 524394357,
             "ParentUID": 73541707,
             "Name": "Hitbox",
             "Tag": "Default",

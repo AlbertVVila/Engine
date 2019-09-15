@@ -90,7 +90,7 @@
             ]
         },
         {
-            "UID": 1178933656,
+            "UID": 1856622456,
             "ParentUID": 73541707,
             "Name": "Prep Particles",
             "Tag": "Default",
@@ -225,7 +225,7 @@
             ]
         },
         {
-            "UID": 51644881,
+            "UID": 289149009,
             "ParentUID": 73541707,
             "Name": "Beam Particles",
             "Tag": "Default",
@@ -390,7 +390,7 @@
             ]
         },
         {
-            "UID": 286602610,
+            "UID": 524394357,
             "ParentUID": 73541707,
             "Name": "Hitbox",
             "Tag": "Default",

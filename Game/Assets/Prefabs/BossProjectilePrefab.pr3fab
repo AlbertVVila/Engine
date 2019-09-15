@@ -1,10 +1,10 @@
 {
     "GameObjects": [
         {
-            "UID": 2574560917,
+            "UID": 809814982,
             "ParentUID": 0,
-            "Name": "Boss",
-            "Tag": "Boss",
+            "Name": "BossProjectilePrefab",
+            "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
@@ -32,7 +32,7 @@
             "openInHierarchy": 1,
             "isPrefab": 1,
             "isPrefabSync": 1,
-            "prefabUID": 3166434820,
+            "prefabUID": 1445666081,
             "Components": [
                 {
                     "Type": 0,
@@ -80,10 +80,10 @@
             ]
         },
         {
-            "UID": 3061865469,
-            "ParentUID": 2574560917,
-            "Name": "Empty",
-            "Tag": "Default",
+            "UID": 2647440735,
+            "ParentUID": 809814982,
+            "Name": "Mesh",
+            "Tag": "Mesh",
             "Static": 0,
             "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
@@ -117,39 +117,39 @@
                     "Type": 0,
                     "Enabled": 1,
                     "Position": [
-                        601.8670654296875,
-                        650.4149169921875,
-                        -2604.084716796875
+                        499.8501281738281,
+                        525.89013671875,
+                        -2205.622802734375
                     ],
                     "Rotation": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
+                        -0.5,
+                        -0.5,
+                        -0.5,
+                        0.5
                     ],
                     "Euler": [
-                        -0.0,
+                        -90.0,
                         0.0,
-                        -0.0
+                        -90.0
                     ],
                     "Scale": [
-                        0.25999999046325686,
-                        0.25999999046325686,
-                        0.25999999046325686
+                        1.0000091791152955,
+                        1.0000150203704835,
+                        1.000016689300537
                     ],
                     "Global": [
-                        0.25999999046325686,
+                        0.0,
+                        1.0000150203704835,
+                        0.0,
+                        499.8501281738281,
                         0.0,
                         0.0,
-                        601.8670654296875,
-                        0.0,
-                        0.25999999046325686,
-                        0.0,
-                        650.4149169921875,
+                        1.000016689300537,
+                        525.89013671875,
+                        1.0000091791152955,
                         0.0,
                         0.0,
-                        0.25999999046325686,
-                        -2604.084716796875,
+                        -2205.622802734375,
                         0.0,
                         0.0,
                         0.0,
@@ -159,8 +159,8 @@
                 {
                     "Type": 1,
                     "Enabled": 1,
-                    "meshUID": 3530591418,
-                    "materialUID": 779578229,
+                    "meshUID": 3892981501,
+                    "materialUID": 3288872578,
                     "castShadows": 0,
                     "useAlpha": 0,
                     "highlighted": 0,
@@ -210,68 +210,16 @@
                         1.0,
                         1.0
                     ],
-                    "distorsionSpeed": 0.0010000000474974514
-                },
-                {
-                    "Type": 9,
-                    "Enabled": 1,
-                    "script": "EnemyControllerScript",
-                    "scriptInfo": {
-                        "playerTag": "Player",
-                        "health": 500,
-                        "experience": 20,
-                        "enemyCursor": "RedGlow.cur"
-                    }
-                },
-                {
-                    "Type": 9,
-                    "Enabled": 1,
-                    "script": "BossBehaviourScript",
-                    "scriptInfo": {
-                        "floatConstant": 0.699999988079071,
-                        "angleConstant": 2.5,
-                        "activationDistance": 1000.0,
-                        "activationTime": 10.0,
-                        "highPointFirstCS": [
-                            567.0,
-                            814.0,
-                            -2974.0
-                        ],
-                        "pointStartFight": [
-                            567.0,
-                            448.0,
-                            -3025.0
-                        ],
-                        "topTP": [
-                            577.0,
-                            448.0,
-                            -2940.0
-                        ],
-                        "bottomTP": [
-                            598.0,
-                            448.0,
-                            -2045.0
-                        ],
-                        "leftTP": [
-                            -344.0,
-                            448.0,
-                            -2830.0
-                        ],
-                        "rightTP": [
-                            1668.0,
-                            448.0,
-                            -2800.0
-                        ],
-                        "circleNoise": 50.0
-                    }
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "borderAmount": 0.02500000037252903
                 }
             ]
         },
         {
-            "UID": 3105703577,
-            "ParentUID": 3061865469,
-            "Name": "Empty",
-            "Tag": "Default",
+            "UID": 269088408,
+            "ParentUID": 809814982,
+            "Name": "BoxTrigger",
+            "Tag": "HitBox",
             "Static": 0,
             "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
@@ -305,9 +253,9 @@
                     "Type": 0,
                     "Enabled": 1,
                     "Position": [
-                        -20.775390625,
-                        274.323974609375,
-                        -37.3603515625
+                        0.0,
+                        0.0,
+                        0.0
                     ],
                     "Rotation": [
                         0.0,
@@ -326,39 +274,23 @@
                         1.0
                     ],
                     "Global": [
-                        0.25999999046325686,
+                        1.0,
                         0.0,
                         0.0,
-                        596.4654541015625,
-                        0.0,
-                        0.25999999046325686,
-                        0.0,
-                        721.7391357421875,
                         0.0,
                         0.0,
-                        0.25999999046325686,
-                        -2613.79833984375,
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        0.0,
                         0.0,
                         0.0,
                         0.0,
                         1.0
                     ]
-                },
-                {
-                    "Type": 15,
-                    "Enabled": 1,
-                    "pos": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "r": [
-                        300.0,
-                        600.0,
-                        300.0
-                    ],
-                    "boxType": 3,
-                    "debug_draw": 1
                 }
             ]
         }
