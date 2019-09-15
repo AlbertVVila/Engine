@@ -6,6 +6,7 @@
 #include "Math/float3.h"
 
 class ComponentBoxTrigger;
+class PlayerMovement;
 
 #ifdef AOEBossScript_EXPORTS
 #define AOEBossScript_API __declspec(dllexport)
@@ -19,7 +20,7 @@ public:
 	void Awake() override;
 	void Start() override;
 	void Update() override;
-
+	void OnTriggerEnter(GameObject* go) override;
 	void Expose(ImGuiContext* context) override;
 
 	void Serialize(JSON_value* json) const override;
@@ -36,10 +37,14 @@ private:
 	GameObject* boxTriggerGO = nullptr;
 
 	ComponentBoxTrigger* boxTrigger = nullptr;
+	
+	GameObject* playerGO = nullptr;
+	PlayerMovement* playerScript = nullptr;
 
 	float duration = 3.0f;
 	float timerFade = 2.0f;
 	float timer = 0.0f;
+	float damageToPlayer = 5.0f;
 };
 
 extern "C" AOEBossScript_API Script* CreateScript();

@@ -1,9 +1,9 @@
 {
     "GameObjects": [
         {
-            "UID": 1650477312,
+            "UID": 73541707,
             "ParentUID": 0,
-            "Name": "AOEFirstPhase",
+            "Name": "AOEbossPrefab",
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 1,
@@ -83,14 +83,15 @@
                     "script": "AOEBossScript",
                     "scriptInfo": {
                         "timerFade": 2.5,
-                        "duration": 2.799999952316284
+                        "duration": 2.799999952316284,
+                        "damageToPlayer": 5.0
                     }
                 }
             ]
         },
         {
-            "UID": 2092893303,
-            "ParentUID": 1650477312,
+            "UID": 1178933656,
+            "ParentUID": 73541707,
             "Name": "Prep Particles",
             "Tag": "Default",
             "Static": 0,
@@ -224,8 +225,8 @@
             ]
         },
         {
-            "UID": 305760238,
-            "ParentUID": 1650477312,
+            "UID": 51644881,
+            "ParentUID": 73541707,
             "Name": "Beam Particles",
             "Tag": "Default",
             "Static": 0,
@@ -389,8 +390,8 @@
             ]
         },
         {
-            "UID": 706613954,
-            "ParentUID": 1650477312,
+            "UID": 286602610,
+            "ParentUID": 73541707,
             "Name": "Hitbox",
             "Tag": "Default",
             "Static": 0,

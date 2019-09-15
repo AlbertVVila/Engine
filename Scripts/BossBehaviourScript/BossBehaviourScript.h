@@ -27,6 +27,15 @@ enum class BossSkill
 	Summon
 };
 
+enum class TPlocations
+{
+	None,
+	Top,
+	Bottom,
+	Left,
+	Right
+};
+
 class BossState;
 class BossStateCast;
 class BossStatePreCast;
@@ -54,7 +63,7 @@ public:
 		return new BossBehaviourScript(*this);
 	}
 public:
-
+	TPlocations currentLocation = TPlocations::None;
 	BossPhase bossPhase = BossPhase::None;
 	BossState* currentState = nullptr;
 	BossSkill lastUsedSkill = BossSkill::None;
@@ -86,9 +95,16 @@ public:
 	bool bossTeleporting = false;
 	bool bossSummoning = false;
 
+	//first cutscene
 	math::float3 startingPoint = math::float3::zero;
 	math::float3 highPointFirstCS = math::float3::zero;
 	math::float3 pointStartFight = math::float3::zero;
+
+	//TP points
+	math::float3 topTP = math::float3::zero;
+	math::float3 bottomTP = math::float3::zero;
+	math::float3 leftTP = math::float3::zero;
+	math::float3 rightTP = math::float3::zero;
 
 private:
 	std::vector<BossState*> bossStates;
@@ -98,10 +114,13 @@ private:
 	void FloatInSpace();
 	void HandleSkills();
 
+	void HandleFirstTP();
+	void HandleSecondTP();
+	
 	void HandleFirstPhaseCircles();
 	void HandleSecondPhaseCircles();
 	void HandleThirdPhaseCircles();
-
+	
 	void HandleFirstSummons();
 	void HandleSecondSummons();
 	void HandleThirdSummons();
