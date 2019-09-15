@@ -1,7 +1,7 @@
 {
     "StateMachine": {
         "metaVersion": 2,
-        "timeCreated": 1563536366,
+        "timeCreated": 1567941234,
         "GUID": 1220607585,
         "Name": "HiddenEnemySM",
         "File": "Assets/StateMachines/HiddenEnemySM.st4tem4chine",

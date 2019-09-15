@@ -1,7 +1,7 @@
 {
     "Material": {
         "metaVersion": 2,
-        "timeCreated": 1566925938,
+        "timeCreated": 1567941232,
         "GUID": 3642806163,
         "Name": "Candles",
         "File": "Assets/Materials/Candles.m4t",
@@ -13,18 +13,14 @@
             1.0
         ],
         "specularColor": [
-            1.0,
-            0.9999899864196777,
-            0.9999899864196777
+            0.10000000149011612,
+            0.10000000149011612,
+            0.10000000149011612
         ],
         "emissiveColor": [
             1.0,
             1.0,
             1.0
-        ],
-        "diffuseUID": 3479853741,
-        "emissiveUID": 2091530237,
-        "normalUID": 2457464074,
-        "shader": "PBR"
+        ]
     }
 }
