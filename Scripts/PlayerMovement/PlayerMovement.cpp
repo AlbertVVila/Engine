@@ -922,7 +922,7 @@ void PlayerMovement::Equip(const PlayerStats& equipStats, unsigned itemType, uns
 	}
 }
 
-void PlayerMovement::UnEquip(const PlayerStats& equipStats, unsigned itemType)
+void PlayerMovement::UnEquip(const PlayerStats& equipStats)
 {
 	this->stats -= equipStats;
 	health = health > stats.health ? stats.health : health;
@@ -936,29 +936,8 @@ void PlayerMovement::UnEquip(const PlayerStats& equipStats, unsigned itemType)
 
 	UpdateUIStats();
 
-	switch ((ItemType)itemType)
-	{
-	default:
-	case ItemType::QUICK:
-	case ItemType::KEY:
-	case ItemType::MATERIAL:
-	case ItemType::CHEST:
-	case ItemType::PANTS:
-	case ItemType::BOOTS:
-	case ItemType::AMULET:
-	case ItemType::RING:
-	case ItemType::NONE:
-		break;
-	case ItemType::WEAPON:
-		weaponRenderer->SetMesh(nullptr);
-		weaponRenderer->SetMaterial(nullptr);
-		break;
-	case ItemType::HELMET:
-		helmetRenderer->SetMesh(nullptr);
-		helmetRenderer->SetMaterial(nullptr);
-		break;
-	}
-	
+	weaponRenderer->SetMesh(nullptr);
+	weaponRenderer->SetMaterial(nullptr);
 }
 
 void PlayerMovement::ConsumeItem(const PlayerStats& equipStats)
