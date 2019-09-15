@@ -115,6 +115,19 @@ void EquipPopupController::Start()
 
 void EquipPopupController::Update()
 {
+	int positionClicked = inventory->ConsumeItemsController();
+
+	if (positionClicked != -1)
+	{
+		for (int i = 0; i < itemsEquiped.size(); ++i)
+		{
+			if (positionClicked == itemsEquiped[i].first)
+			{
+				hudConsumibleItemsQuantity[positionClicked]->text = std::to_string(inventory->GetCurrentQuantity(itemsEquiped[i].second));
+			}
+		}
+	}
+
 	//Check if has to close PopUp
 	if (gameobject->isActive() && !backgroundSkills->isHovered && !backgroundItems->isHovered && !items->IsHovered() && !skills->IsHovered() && (App->input->GetMouseButtonDown(1) == KEY_UP || App->input->GetMouseButtonDown(3) == KEY_UP))
 	{
@@ -196,7 +209,6 @@ void EquipPopupController::Update()
 			}
 		}
 	}
-
 }
 
 void EquipPopupController::Assign(int i)
@@ -207,6 +219,7 @@ void EquipPopupController::Assign(int i)
 		skillsEquiped.emplace_back(activeButton, skillsList[i]);
 		hudImageSlots[activeButton]->UpdateTexture(skillsList[i].spriteActive->GetName());
 		hudImageSlots[activeButton]->gameobject->SetActive(true);
+		hudConsumibleItemsQuantity[activeButton]->gameobject->SetActive(false);
 		MoveNumber(activeButton);
 		player->AssignSkill((SkillType)skillsList[i].id, activeButton);
 	}
@@ -220,7 +233,7 @@ void EquipPopupController::Assign(int i)
 		hudConsumibleItemsQuantity[activeButton]->uiOrder = 11;
 		hudConsumibleItemsQuantity[activeButton]->text = std::to_string(inventory->GetCurrentQuantity(itemsList[i]));
 		MoveNumber(activeButton);
-		//TODO: Pass info to player
+		inventory->AssignConsumableItem(itemsList[i], activeButton);
 	}
 	gameobject->SetActive(false);
 }
@@ -250,6 +263,7 @@ void EquipPopupController::RemoveEquiped()
 		if (itemsEquiped[j].first == activeButton)
 		{
 			itemsEquiped.erase(itemsEquiped.begin() + j);
+			inventory->UnAssignConsumableItem(activeButton);
 		}
 	}
 }
@@ -342,7 +356,6 @@ void EquipPopupController::CleanButton()
 		hudConsumibleItemsQuantity[activeButton]->text = std::to_string(1);
 	}
 }
-
 
 void EquipPopupController::SavePopUp()
 {

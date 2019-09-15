@@ -15,7 +15,6 @@
 #include "PlayerStateWalkToHitEnemy.h"
 #include "PlayerStateWalkToPickItem.h"
 #include "PlayerStateDeath.h"
-#include "EnemyControllerScript.h"
 #include "ItemPicker.h"
 
 #include "ComponentAnimation.h"
@@ -834,8 +833,6 @@ void PlayerMovement::Update()
 			
 		}		
 	}
-
-
 	//Check for changes in the state to send triggers to animation SM
 }
 
@@ -941,6 +938,12 @@ void PlayerMovement::UnEquip(const PlayerStats& equipStats)
 
 	weaponRenderer->SetMesh(nullptr);
 	weaponRenderer->SetMaterial(nullptr);
+}
+
+void PlayerMovement::ConsumeItem(const PlayerStats& equipStats)
+{
+	health = health + equipStats.health;
+	mana = mana + equipStats.mana;
 }
 
 void PlayerMovement::OnAnimationEvent(std::string name)

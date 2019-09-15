@@ -173,9 +173,9 @@ public:
 	void Equip(const PlayerStats& equipStats);
 	void Equip(const PlayerStats& equipStats, unsigned itemType, unsigned meshUID, unsigned materialUID);
 	void UnEquip(const PlayerStats& equipStats);
+	void ConsumeItem(const PlayerStats& equipStats);
 
 	void OnAnimationEvent(std::string name) override;
-
 
 	//Abstract input. TODO: Now only returns true for skills, adapt for items
 	inline bool IsMovingToItem() const { return itemClicked != nullptr;};
@@ -313,7 +313,6 @@ private:
 	float bombDropGrowRate = 1.3f;
 	float bombDropWaveGrowRate = 1.05f;
 
-	
 	DamageController* damageController = nullptr;
 	DamageFeedbackUI* damageUIFeedback = nullptr;
 	ComponentImage* lifeUIComponent = nullptr;

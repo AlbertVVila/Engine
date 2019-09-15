@@ -128,13 +128,15 @@ void InventoryScript::Update()
 
 		Transform2D* rectTransform = itemsSlots[i]->GetComponent<Transform2D>();
 		ComponentImage* image = itemsSlots[i]->GetComponent<ComponentImage>();
+		
 
 		if (image->isHovered && App->input->GetMouseButtonDown(1) == KEY_DOWN)
 		{
 			image->isPressed = true;
 			initialitemPos = rectTransform->getPosition();
 			if (!itemGrabbed) selectItemAudio->Play();
-			itemGrabbed = true;
+			itemGrabbed = true; 
+			HideConsumableItemText(i);
 		}
 
 		if (!image->isHovered && itemDesc->isActive() && imageHover == image)
@@ -614,16 +616,16 @@ int InventoryScript::ManageConsumableItemsQuantity(const Item& item)
 {
 	if (item.type == ItemType::QUICK)
 	{
-		for (int i = 0; i < consumibleItems.size(); ++i)
+		for (int i = 0; i < consumableItems.size(); ++i)
 		{
-			if (consumibleItems[i].first == item.name)
+			if (consumableItems[i].first == item.name)
 			{
-				consumibleItems[i].second += 1;
-				return consumibleItems[i].second;
+				consumableItems[i].second += 1;
+				return consumableItems[i].second;
 			}
 		}
 
-		consumibleItems.emplace_back(std::make_pair(item.name, 1));
+		consumableItems.emplace_back(std::make_pair(item.name, 1));
 		return 1;
 	}
 
@@ -643,17 +645,62 @@ int InventoryScript::GetItemIndexPosition(const Item& item)
 	return -1;
 }
 
-int InventoryScript::GetCurrentQuantity(const Item& item)
+int InventoryScript::GetCurrentQuantity(std::string itemName)
 {
-	for (int i = 0; i < consumibleItems.size(); ++i)
+	for (int i = 0; i < consumableItems.size(); ++i)
 	{
-		if (consumibleItems[i].first == item.name)
+		if (consumableItems[i].first == itemName)
 		{
-			return consumibleItems[i].second;
+			return consumableItems[i].second;
 		}
 	}
 
 	return -1;
+}
+
+void InventoryScript::UseItemConsumableOnPlayer(int itemPosition)
+{
+
+	for (int i = 0; i < consumableItems.size(); ++i)
+	{
+		if (consumableItems[i].first == assignedConsumableItem[itemPosition])
+		{
+			for (int i = 0; i < items.size(); ++i)
+			{
+				if (items[i].first.name == assignedConsumableItem[itemPosition])
+				{
+					playerMovement->ConsumeItem(items[i].first.stats);
+					consumableItems[i].second -= 1;
+
+					ManageConsumableItemsQuantityText(items[i].first, consumableItems[i].second);
+				}
+			}
+
+		}
+	}
+}
+
+int InventoryScript::GetCurrentQuantity(const Item& item)
+{
+	for (int i = 0; i < consumableItems.size(); ++i)
+	{
+		if (consumableItems[i].first == item.name)
+		{
+			return consumableItems[i].second;
+		}
+	}
+
+	return -1;
+}
+
+void InventoryScript::AssignConsumableItem(const Item& item, int position)
+{
+	assignedConsumableItem[position] = item.name;
+}
+
+void InventoryScript::UnAssignConsumableItem(int position)
+{
+	assignedConsumableItem[position] = "";
 }
 
 void InventoryScript::HideConsumableItemText(int position)
@@ -677,4 +724,91 @@ void InventoryScript::ManageConsumableItemsQuantityText(const Item& item, int qu
 			itemsSlotNumber->uiOrder = 6;
 		}
 	}
+}
+
+
+int InventoryScript::ConsumeItemsController()
+{
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_UP)
+	{
+		int itemQuantity = GetCurrentQuantity(assignedConsumableItem[HUD_BUTTON_1]);
+		if (itemQuantity > 0)
+		{
+			UseItemConsumableOnPlayer(HUD_BUTTON_1);
+		}
+
+		return HUD_BUTTON_1;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_2) == KEY_UP)
+	{
+		int itemQuantity = GetCurrentQuantity(assignedConsumableItem[HUD_BUTTON_2]);
+		if (itemQuantity > 0)
+		{
+			UseItemConsumableOnPlayer(HUD_BUTTON_2);
+		}
+
+		return HUD_BUTTON_2;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_3) == KEY_UP)
+	{
+		int itemQuantity = GetCurrentQuantity(assignedConsumableItem[HUD_BUTTON_3]);
+		if (itemQuantity > 0)
+		{
+			UseItemConsumableOnPlayer(HUD_BUTTON_3);
+		}
+
+		return HUD_BUTTON_3;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_4) == KEY_UP)
+	{
+		int itemQuantity = GetCurrentQuantity(assignedConsumableItem[HUD_BUTTON_4]);
+		if (itemQuantity > 0)
+		{
+			UseItemConsumableOnPlayer(HUD_BUTTON_4);
+		}
+
+		return HUD_BUTTON_4;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_UP)
+	{
+		int itemQuantity = GetCurrentQuantity(assignedConsumableItem[HUD_BUTTON_Q]);
+		if (itemQuantity > 0)
+		{
+			UseItemConsumableOnPlayer(HUD_BUTTON_Q);
+		}
+
+		return HUD_BUTTON_Q;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_W) == KEY_UP)
+	{
+		int itemQuantity = GetCurrentQuantity(assignedConsumableItem[HUD_BUTTON_W]);
+		if (itemQuantity > 0)
+		{
+			UseItemConsumableOnPlayer(HUD_BUTTON_W);
+		}
+
+		return HUD_BUTTON_W;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_E) == KEY_UP)
+	{
+		int itemQuantity = GetCurrentQuantity(assignedConsumableItem[HUD_BUTTON_E]);
+		if (itemQuantity > 0)
+		{
+			UseItemConsumableOnPlayer(HUD_BUTTON_E);
+		}
+
+		return HUD_BUTTON_E;
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_R) == KEY_UP)
+	{
+		int itemQuantity = GetCurrentQuantity(assignedConsumableItem[HUD_BUTTON_R]);
+		if (itemQuantity > 0)
+		{
+			UseItemConsumableOnPlayer(HUD_BUTTON_R);
+		}
+
+		return HUD_BUTTON_R;
+	}
+
+	return -1;
 }

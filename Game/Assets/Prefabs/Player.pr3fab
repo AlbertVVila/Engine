@@ -155,7 +155,7 @@
                         },
                         "stats": {
                             "health": 100.0,
-                            "mana": 10000.0,
+                            "mana": 100.0,
                             "strength": 10,
                             "dexterity": 10,
                             "hp_regen": 5.0,

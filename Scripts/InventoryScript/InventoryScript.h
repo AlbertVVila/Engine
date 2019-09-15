@@ -37,6 +37,10 @@ public:
 	bool AddItem(Item item);
 	std::vector<Item> GetQuickItems();
 	int GetCurrentQuantity(const Item& item);
+	int GetCurrentQuantity(std::string itemName);
+	void AssignConsumableItem(const Item& item, int position);
+	void UnAssignConsumableItem(int position);
+	int ConsumeItemsController();
 	void SaveInventory();
 	void LoadInventory();
 
@@ -46,12 +50,15 @@ private:
 	void ManageConsumableItemsQuantityText(const Item& item, int quantity);
 	int GetItemIndexPosition(const Item& item);
 	void HideConsumableItemText(int position);
+	void UseItemConsumableOnPlayer(int itemPosition);
 
 	std::vector<Component*> slotsTransform;
 	std::vector<GameObject*> itemsSlots;
 	std::vector<GameObject*> itemsSlotsNumbers;
 	std::vector<std::pair<Item, int>> items;
-	std::vector<std::pair<std::string, int>> consumibleItems; //name of the item, quantity
+	std::vector<std::pair<std::string, int>> consumableItems; //name of the item, quantity
+
+	std::string assignedConsumableItem[9] = { "", "", "", "", "", "", "", "", "" };
 
 	GameObject* inventory = nullptr;
 	GameObject* itemDesc = nullptr;
