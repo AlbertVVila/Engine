@@ -40,13 +40,16 @@ public:
 	void LoadInventory();
 
 private:
+	void showDescription(int i);
 
 	std::vector<Component*> slotsTransform;
 	std::vector<GameObject*> itemsSlots;
 	std::vector<std::pair<Item, int>> items;
 
 	GameObject* inventory = nullptr;
+	GameObject* itemDesc = nullptr;
 	Transform2D* menuPlayer = nullptr;
+	ComponentImage* imageHover = nullptr;
 
 	math::float2 initialitemPos = math::float2::zero;
 
@@ -56,6 +59,7 @@ private:
 	PlayerMovement* playerMovement = nullptr;
 
 	bool itemGrabbed = false;
+
 };
 
 extern "C" InventoryScript_API Script* CreateScript();

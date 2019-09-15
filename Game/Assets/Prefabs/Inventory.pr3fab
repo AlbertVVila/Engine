@@ -1,13 +1,13 @@
 {
     "GameObjects": [
         {
-            "UID": 389753981,
-            "ParentUID": 2933793253,
+            "UID": 4232527916,
+            "ParentUID": 4074180566,
             "Name": "Inventory",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
-            "ActiveSelf": 1,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
                 1.0,
@@ -29,7 +29,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 1,
+            "openInHierarchy": 0,
             "isPrefab": 1,
             "isPrefabSync": 1,
             "prefabUID": 3048167483,
@@ -43,12 +43,12 @@
             ]
         },
         {
-            "UID": 177136884,
-            "ParentUID": 389753981,
+            "UID": 4233444980,
+            "ParentUID": 4232527916,
             "Name": "BackgroundImage",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -108,17 +108,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 2408838165,
-            "ParentUID": 389753981,
+            "UID": 1926100702,
+            "ParentUID": 4232527916,
             "Name": "HelmetSlot",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -178,17 +180,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 2458113542,
-            "ParentUID": 389753981,
+            "UID": 1860156805,
+            "ParentUID": 4232527916,
             "Name": "BodySlot",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -248,17 +252,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 1789183004,
-            "ParentUID": 389753981,
+            "UID": 2094032481,
+            "ParentUID": 4232527916,
             "Name": "PantsSlot",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -318,17 +324,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 1578176481,
-            "ParentUID": 389753981,
+            "UID": 829599071,
+            "ParentUID": 4232527916,
             "Name": "BootsSlot",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -388,17 +396,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 794575592,
-            "ParentUID": 389753981,
+            "UID": 473041120,
+            "ParentUID": 4232527916,
             "Name": "WeaponSlot",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -458,17 +468,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 2527581588,
-            "ParentUID": 389753981,
+            "UID": 1358593585,
+            "ParentUID": 4232527916,
             "Name": "AmuletSlot",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -528,17 +540,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 3104565631,
-            "ParentUID": 389753981,
+            "UID": 1153228122,
+            "ParentUID": 4232527916,
             "Name": "InventorySlots",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -612,12 +626,12 @@
             ]
         },
         {
-            "UID": 1936001855,
-            "ParentUID": 3104565631,
+            "UID": 3747148676,
+            "ParentUID": 1153228122,
             "Name": "Slot1",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -677,17 +691,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 3386516857,
-            "ParentUID": 3104565631,
+            "UID": 3966033209,
+            "ParentUID": 1153228122,
             "Name": "Slot2",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -747,17 +763,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 3960966432,
-            "ParentUID": 3104565631,
+            "UID": 2143416148,
+            "ParentUID": 1153228122,
             "Name": "Slot3",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -817,17 +835,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 1043657171,
-            "ParentUID": 3104565631,
+            "UID": 3160285465,
+            "ParentUID": 1153228122,
             "Name": "Slot4",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -887,17 +907,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 1425330582,
-            "ParentUID": 3104565631,
+            "UID": 1668181961,
+            "ParentUID": 1153228122,
             "Name": "Slot5",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -957,17 +979,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 2934981126,
-            "ParentUID": 3104565631,
+            "UID": 1636924488,
+            "ParentUID": 1153228122,
             "Name": "Slot6",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1027,17 +1051,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 2391541461,
-            "ParentUID": 3104565631,
+            "UID": 3451318096,
+            "ParentUID": 1153228122,
             "Name": "Slot7",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1097,17 +1123,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 4042998012,
-            "ParentUID": 3104565631,
+            "UID": 4001581719,
+            "ParentUID": 1153228122,
             "Name": "Slot8",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1167,17 +1195,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 3279810162,
-            "ParentUID": 3104565631,
+            "UID": 3128524934,
+            "ParentUID": 1153228122,
             "Name": "Slot9",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1237,17 +1267,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 3576979148,
-            "ParentUID": 3104565631,
+            "UID": 434609817,
+            "ParentUID": 1153228122,
             "Name": "Slot10",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1307,17 +1339,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 4244345830,
-            "ParentUID": 3104565631,
+            "UID": 2349184939,
+            "ParentUID": 1153228122,
             "Name": "Slot11",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1377,17 +1411,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 4088612840,
-            "ParentUID": 3104565631,
+            "UID": 29546194,
+            "ParentUID": 1153228122,
             "Name": "Slot12",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1447,17 +1483,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 2309129118,
-            "ParentUID": 3104565631,
+            "UID": 1494858593,
+            "ParentUID": 1153228122,
             "Name": "Slot13",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1517,17 +1555,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 1083059427,
-            "ParentUID": 3104565631,
+            "UID": 988915877,
+            "ParentUID": 1153228122,
             "Name": "Slot14",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1587,17 +1627,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 114057083,
-            "ParentUID": 3104565631,
+            "UID": 4022375315,
+            "ParentUID": 1153228122,
             "Name": "Slot15",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1657,17 +1699,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 1384740351,
-            "ParentUID": 3104565631,
+            "UID": 3168032482,
+            "ParentUID": 1153228122,
             "Name": "Slot16",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1727,17 +1771,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 1122627958,
-            "ParentUID": 3104565631,
+            "UID": 3237302664,
+            "ParentUID": 1153228122,
             "Name": "Slot17",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1797,17 +1843,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 1362044254,
-            "ParentUID": 3104565631,
+            "UID": 3483631992,
+            "ParentUID": 1153228122,
             "Name": "Slot18",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1867,17 +1915,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 118083598,
-            "ParentUID": 389753981,
+            "UID": 3113865898,
+            "ParentUID": 4232527916,
             "Name": "Items",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -1951,12 +2001,12 @@
             ]
         },
         {
-            "UID": 2194963074,
-            "ParentUID": 118083598,
+            "UID": 1224089088,
+            "ParentUID": 3113865898,
             "Name": "Item1",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -2016,17 +2066,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 3327967009,
-            "ParentUID": 118083598,
+            "UID": 3469648096,
+            "ParentUID": 3113865898,
             "Name": "Item2",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -2086,17 +2138,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 3678946675,
-            "ParentUID": 118083598,
+            "UID": 1604574242,
+            "ParentUID": 3113865898,
             "Name": "Item3",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -2156,17 +2210,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 81146266,
-            "ParentUID": 118083598,
+            "UID": 2645561088,
+            "ParentUID": 3113865898,
             "Name": "Item4",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -2226,17 +2282,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 3680627242,
-            "ParentUID": 118083598,
+            "UID": 2765957613,
+            "ParentUID": 3113865898,
             "Name": "Item5",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -2296,17 +2354,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 1424349481,
-            "ParentUID": 118083598,
+            "UID": 4216683843,
+            "ParentUID": 3113865898,
             "Name": "Item6",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -2366,17 +2426,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 3999010128,
-            "ParentUID": 118083598,
+            "UID": 1914529303,
+            "ParentUID": 3113865898,
             "Name": "Item7",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -2436,17 +2498,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 785899370,
-            "ParentUID": 118083598,
+            "UID": 3740832394,
+            "ParentUID": 3113865898,
             "Name": "Item8",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -2506,17 +2570,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 878275448,
-            "ParentUID": 118083598,
+            "UID": 806626739,
+            "ParentUID": 3113865898,
             "Name": "Item9",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -2576,17 +2642,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 603109003,
-            "ParentUID": 118083598,
+            "UID": 1309378294,
+            "ParentUID": 3113865898,
             "Name": "Item10",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -2646,17 +2714,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 4204213082,
-            "ParentUID": 118083598,
+            "UID": 897913729,
+            "ParentUID": 3113865898,
             "Name": "Item11",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -2716,17 +2786,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 2946386344,
-            "ParentUID": 118083598,
+            "UID": 734225606,
+            "ParentUID": 3113865898,
             "Name": "Item12",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -2786,17 +2858,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 2652295645,
-            "ParentUID": 118083598,
+            "UID": 220805990,
+            "ParentUID": 3113865898,
             "Name": "Item13",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -2856,17 +2930,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 1906154046,
-            "ParentUID": 118083598,
+            "UID": 3609995716,
+            "ParentUID": 3113865898,
             "Name": "Item14",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -2926,17 +3002,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 2610904137,
-            "ParentUID": 118083598,
+            "UID": 3743012443,
+            "ParentUID": 3113865898,
             "Name": "Item15",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -2996,17 +3074,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 783469698,
-            "ParentUID": 118083598,
+            "UID": 2620624978,
+            "ParentUID": 3113865898,
             "Name": "Item16",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -3066,17 +3146,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 481271115,
-            "ParentUID": 118083598,
+            "UID": 1020592642,
+            "ParentUID": 3113865898,
             "Name": "Item17",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -3136,17 +3218,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 1219651482,
-            "ParentUID": 118083598,
+            "UID": 3643747848,
+            "ParentUID": 3113865898,
             "Name": "Item18",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -3206,17 +3290,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 3944605319,
-            "ParentUID": 118083598,
+            "UID": 1566289701,
+            "ParentUID": 3113865898,
             "Name": "Item19",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -3276,17 +3362,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 4063977136,
-            "ParentUID": 118083598,
+            "UID": 2350288604,
+            "ParentUID": 3113865898,
             "Name": "Item20",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -3346,17 +3434,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 3355511205,
-            "ParentUID": 118083598,
+            "UID": 4099908772,
+            "ParentUID": 3113865898,
             "Name": "Item21",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -3416,17 +3506,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 1277150922,
-            "ParentUID": 118083598,
+            "UID": 3057021292,
+            "ParentUID": 3113865898,
             "Name": "Item22",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -3486,17 +3578,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 298070289,
-            "ParentUID": 118083598,
+            "UID": 2904325307,
+            "ParentUID": 3113865898,
             "Name": "Item23",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -3556,17 +3650,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 2181245835,
-            "ParentUID": 118083598,
+            "UID": 3570135884,
+            "ParentUID": 3113865898,
             "Name": "Item24",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -3626,17 +3722,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 824638254,
-            "ParentUID": 389753981,
+            "UID": 3610906620,
+            "ParentUID": 4232527916,
             "Name": "LevelBackground",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -3710,12 +3808,12 @@
             ]
         },
         {
-            "UID": 3247246527,
-            "ParentUID": 824638254,
+            "UID": 812646437,
+            "ParentUID": 3610906620,
             "Name": "LevelProgressBar",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -3775,17 +3873,19 @@
                     "isMaskHorizontal": 1,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 2402143173,
-            "ParentUID": 824638254,
+            "UID": 2517250557,
+            "ParentUID": 3610906620,
             "Name": "LevelLinesBar",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -3845,17 +3945,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 3476778076,
-            "ParentUID": 824638254,
+            "UID": 1592121570,
+            "ParentUID": 3610906620,
             "Name": "LevelActual",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -3926,17 +4028,17 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 0
+                    "UIOrder": 5
                 }
             ]
         },
         {
-            "UID": 36916481,
-            "ParentUID": 824638254,
+            "UID": 382333651,
+            "ParentUID": 3610906620,
             "Name": "LevelExperience",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -4007,17 +4109,17 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 0
+                    "UIOrder": 5
                 }
             ]
         },
         {
-            "UID": 917013914,
-            "ParentUID": 824638254,
+            "UID": 4071785029,
+            "ParentUID": 3610906620,
             "Name": "LevelExperienceMax",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -4088,17 +4190,17 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 0
+                    "UIOrder": 5
                 }
             ]
         },
         {
-            "UID": 908868350,
-            "ParentUID": 389753981,
+            "UID": 3649632280,
+            "ParentUID": 4232527916,
             "Name": "StatsPanel",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -4172,12 +4274,12 @@
             ]
         },
         {
-            "UID": 526252937,
-            "ParentUID": 908868350,
+            "UID": 1269061350,
+            "ParentUID": 3649632280,
             "Name": "HeartPanel",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -4200,7 +4302,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 1,
+            "openInHierarchy": 0,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -4251,12 +4353,12 @@
             ]
         },
         {
-            "UID": 2721776287,
-            "ParentUID": 526252937,
+            "UID": 897737593,
+            "ParentUID": 1269061350,
             "Name": "HeartLabel",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -4327,17 +4429,17 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 0
+                    "UIOrder": 5
                 }
             ]
         },
         {
-            "UID": 2257613088,
-            "ParentUID": 526252937,
+            "UID": 2179554197,
+            "ParentUID": 1269061350,
             "Name": "HeartPositiveBoostIcon",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -4397,17 +4499,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 1444111978,
-            "ParentUID": 526252937,
+            "UID": 1030465529,
+            "ParentUID": 1269061350,
             "Name": "HeartNegativeBoostIcon",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -4467,17 +4571,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 1696931806,
-            "ParentUID": 908868350,
+            "UID": 389177048,
+            "ParentUID": 3649632280,
             "Name": "DexterityPanel",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -4500,7 +4606,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 1,
+            "openInHierarchy": 0,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -4551,12 +4657,12 @@
             ]
         },
         {
-            "UID": 1949116873,
-            "ParentUID": 1696931806,
+            "UID": 3040300296,
+            "ParentUID": 389177048,
             "Name": "DexterityLabel",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -4627,17 +4733,17 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 0
+                    "UIOrder": 5
                 }
             ]
         },
         {
-            "UID": 2657181409,
-            "ParentUID": 1696931806,
+            "UID": 1388792508,
+            "ParentUID": 389177048,
             "Name": "DexterityPositiveBoostIcon",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -4697,17 +4803,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 1950265693,
-            "ParentUID": 1696931806,
+            "UID": 673825122,
+            "ParentUID": 389177048,
             "Name": "DexterityNegativeBoostIcon",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -4767,17 +4875,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 1849052670,
-            "ParentUID": 908868350,
+            "UID": 2393372103,
+            "ParentUID": 3649632280,
             "Name": "StrPanel",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -4800,7 +4910,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 1,
+            "openInHierarchy": 0,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -4851,12 +4961,12 @@
             ]
         },
         {
-            "UID": 1043191629,
-            "ParentUID": 1849052670,
+            "UID": 2406817466,
+            "ParentUID": 2393372103,
             "Name": "StrLabel",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -4927,17 +5037,17 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 0
+                    "UIOrder": 5
                 }
             ]
         },
         {
-            "UID": 3725957614,
-            "ParentUID": 1849052670,
+            "UID": 3358911594,
+            "ParentUID": 2393372103,
             "Name": "StrPositiveBoostIcon",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -4997,17 +5107,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 2673243768,
-            "ParentUID": 1849052670,
+            "UID": 2336191331,
+            "ParentUID": 2393372103,
             "Name": "StrNegativeBoostIcon",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -5067,17 +5179,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 1830786902,
-            "ParentUID": 908868350,
+            "UID": 1398540118,
+            "ParentUID": 3649632280,
             "Name": "SoulPanel",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -5100,7 +5214,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 1,
+            "openInHierarchy": 0,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -5151,12 +5265,12 @@
             ]
         },
         {
-            "UID": 2090268808,
-            "ParentUID": 1830786902,
+            "UID": 1311245171,
+            "ParentUID": 1398540118,
             "Name": "SoulLabel",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
@@ -5227,17 +5341,17 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 0
+                    "UIOrder": 5
                 }
             ]
         },
         {
-            "UID": 136235858,
-            "ParentUID": 1830786902,
+            "UID": 2116726511,
+            "ParentUID": 1398540118,
             "Name": "SoulPositiveBoostIcon",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -5297,17 +5411,19 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         },
         {
-            "UID": 3061718191,
-            "ParentUID": 1830786902,
+            "UID": 2210933916,
+            "ParentUID": 1398540118,
             "Name": "SoulNegativeBoostIcon",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -5367,7 +5483,9 @@
                     "isMaskHorizontal": 0,
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
-                    "UIOrder": 0
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0
                 }
             ]
         }

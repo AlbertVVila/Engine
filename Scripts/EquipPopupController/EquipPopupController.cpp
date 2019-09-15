@@ -116,7 +116,7 @@ void EquipPopupController::Update()
 	//Check if has to open PopUp
 	for (int i = 0; i < HUD_BUTTONS; ++i)
 	{
-		if (hudButtons[i]->IsHovered() && App->input->GetMouseButtonDown(3) == KEY_UP) {
+		if (hudButtons[i]->IsHovered() && (App->input->GetMouseButtonDown(3) == KEY_UP || App->input->GetMouseButtonDown(1) == KEY_UP)) {
 			activeButton = i;
 			if (!gameobject->isActive())
 			{
@@ -158,6 +158,7 @@ void EquipPopupController::Update()
 				//TODO: Show info
 				if (App->input->GetMouseButtonDown(1) == KEY_UP)
 				{
+					slotsSkills[i]->GetComponent<ComponentImage>()->isHovered = false;
 					Assign(i);
 				}
 			}
@@ -180,6 +181,7 @@ void EquipPopupController::Update()
 				//TODO: Show info
 				if (App->input->GetMouseButtonDown(1) == KEY_UP)
 				{
+					slotsItems[i]->GetComponent<ComponentImage>()->isHovered = false;
 					Assign(i);
 				}
 			}
