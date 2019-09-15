@@ -227,7 +227,7 @@ void InventoryScript::Update()
 									if (items[l].first.name != pair.first.name && items[l].first.isEquipped && items[l].first.type == ItemType::HELMET)
 									{
 										items[l].first.isEquipped = false;
-										playerMovement->UnEquip(items[l].first.stats);
+										playerMovement->UnEquip(items[l].first.stats, (unsigned)items[l].first.type);
 										break;
 									}
 								}
@@ -254,7 +254,7 @@ void InventoryScript::Update()
 									if (items[l].first.name != pair.first.name && items[l].first.isEquipped && items[l].first.type == ItemType::CHEST)
 									{
 										items[l].first.isEquipped = false;
-										playerMovement->UnEquip(items[l].first.stats);
+										playerMovement->UnEquip(items[l].first.stats, (unsigned)items[l].first.type);
 										break;
 									}
 								}
@@ -281,7 +281,7 @@ void InventoryScript::Update()
 									if (items[l].first.name != pair.first.name && items[l].first.isEquipped && items[l].first.type == ItemType::PANTS)
 									{
 										items[l].first.isEquipped = false;
-										playerMovement->UnEquip(items[l].first.stats);
+										playerMovement->UnEquip(items[l].first.stats, (unsigned)items[l].first.type);
 										break;
 									}
 								}
@@ -308,7 +308,7 @@ void InventoryScript::Update()
 									if (items[l].first.name != pair.first.name && items[l].first.isEquipped && items[l].first.type == ItemType::BOOTS)
 									{
 										items[l].first.isEquipped = false;
-										playerMovement->UnEquip(items[l].first.stats);
+										playerMovement->UnEquip(items[l].first.stats, (unsigned)items[l].first.type);
 										break;
 									}
 								}
@@ -335,7 +335,7 @@ void InventoryScript::Update()
 									if (items[l].first.name != pair.first.name && items[l].first.isEquipped && items[l].first.type == ItemType::WEAPON)
 									{
 										items[l].first.isEquipped = false;
-										playerMovement->UnEquip(items[l].first.stats);
+										playerMovement->UnEquip(items[l].first.stats, (unsigned)items[l].first.type);
 										break;
 									}
 								}
@@ -362,7 +362,7 @@ void InventoryScript::Update()
 									if (items[l].first.name != pair.first.name && items[l].first.isEquipped && items[l].first.type == ItemType::AMULET)
 									{
 										items[l].first.isEquipped = false;
-										playerMovement->UnEquip(items[l].first.stats);
+										playerMovement->UnEquip(items[l].first.stats, (unsigned)items[l].first.type);
 										break;
 									}
 								}
@@ -393,7 +393,7 @@ void InventoryScript::Update()
 								{
 									items[l].first.isEquipped = false;
 								}
-								playerMovement->UnEquip(items[l].first.stats);
+								playerMovement->UnEquip(items[l].first.stats, (unsigned)items[l].first.type);
 								break;
 							}
 						}
