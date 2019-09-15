@@ -705,9 +705,15 @@ void InventoryScript::UnAssignConsumableItem(int position)
 
 void InventoryScript::HideConsumableItemText(int position)
 {
-	itemsSlotsNumbers[position]->SetActive(false);
-	Text* itemsSlotNumber = itemsSlotsNumbers[position]->GetComponent<Text>();
-	itemsSlotNumber->text = std::to_string(1);
+	if (position < 18 && itemsSlotsNumbers[position] != nullptr)
+	{
+		itemsSlotsNumbers[position]->SetActive(false);
+		Text* itemsSlotNumber = itemsSlotsNumbers[position]->GetComponent<Text>();
+		if (itemsSlotNumber != nullptr)
+		{
+			itemsSlotNumber->text = std::to_string(1);
+		}
+	}
 }
 
 void InventoryScript::ManageConsumableItemsQuantityText(const Item& item, int quantity)
