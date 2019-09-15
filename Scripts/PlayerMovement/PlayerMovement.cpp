@@ -944,6 +944,14 @@ void PlayerMovement::ConsumeItem(const PlayerStats& equipStats)
 {
 	health = health + equipStats.health;
 	mana = mana + equipStats.mana;
+
+	if (equipStats.health > 0)
+	{
+		damageController->AddDamage(gameobject->transform, equipStats.health, DamageType::HEALING);
+	} else if (equipStats.mana > 0)
+	{
+		damageController->AddDamage(gameobject->transform, equipStats.mana, DamageType::MANA);
+	}
 }
 
 void PlayerMovement::OnAnimationEvent(std::string name)
