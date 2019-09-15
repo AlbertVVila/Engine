@@ -31,7 +31,7 @@ public:
 	math::float4 pollometerColor = math::float4(1.0f, 0.44f, 0.2f, 1.0f);
 	math::float4 healingColor = math::float4(0.0f, 1.0f, 0.0f, 1.0f);
 	math::float4 receivedColor = math::float4(1.0f, 0.0f, 0.0f, 1.0f);
-	math::float4 manaColor = math::float4(0.0f, 0.0f, 1.0f, 1.0f);
+	math::float4 manaColor = math::float4(0.054f, 0.549f, 0.943f, 1.0f);
 
 private:
 	GameObject* uiDamage[10];
