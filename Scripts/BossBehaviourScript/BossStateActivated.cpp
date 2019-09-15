@@ -23,6 +23,7 @@ void BossStateActivated::HandleIA()
 	if (timer > boss->activationTime)
 	{
 		boss->bossPhase = BossPhase::First;
+		boss->currentLocation = TPlocations::None;
 		boss->currentState = (BossState*)boss->idle;
 	}
 }

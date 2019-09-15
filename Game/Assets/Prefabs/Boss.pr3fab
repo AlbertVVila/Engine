@@ -80,7 +80,7 @@
             ]
         },
         {
-            "UID": 2263658114,
+            "UID": 2640517364,
             "ParentUID": 2574560917,
             "Name": "Empty",
             "Tag": "Default",
@@ -218,7 +218,7 @@
                     "script": "EnemyControllerScript",
                     "scriptInfo": {
                         "playerTag": "Player",
-                        "health": 200,
+                        "health": 500,
                         "experience": 20,
                         "enemyCursor": "RedGlow.cur"
                     }
@@ -268,8 +268,8 @@
             ]
         },
         {
-            "UID": 1795283905,
-            "ParentUID": 2263658114,
+            "UID": 1297483665,
+            "ParentUID": 2640517364,
             "Name": "Empty",
             "Tag": "Default",
             "Static": 0,

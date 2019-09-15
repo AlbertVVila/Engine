@@ -117,6 +117,9 @@ private:
 	void HandleFirstTP();
 	void HandleSecondTP();
 	
+	TPlocations ChooseNextTP(TPlocations currentLoc);
+	void TPtoLocation(TPlocations tpLoc);
+
 	void HandleFirstPhaseCircles();
 	void HandleSecondPhaseCircles();
 	void HandleThirdPhaseCircles();
@@ -134,6 +137,10 @@ private:
 	float circlesTimer = 0.0f;
 	float circleNoise = 5.0f;
 	int circlesCast = 0;
+
+	bool tpPositionDecided = false;
+	bool fadeOutComplete = false;
+	bool fadeInComplete = false;
 
 	bool isFloating = true;
 	float angleConstant = 1.0f;

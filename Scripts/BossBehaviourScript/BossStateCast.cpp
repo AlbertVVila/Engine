@@ -47,6 +47,7 @@ void BossStateCast::Enter()
 		boss->bossSummoning = true;
 		break;
 	}
+	//I can input here different durations for each skill
 }
 
 BossSkill BossStateCast::SelectSkillToUse()
@@ -58,7 +59,7 @@ BossSkill BossStateCast::SelectSkillToUse()
 	switch (boss->lastUsedSkill)
 	{
 	case BossSkill::None:
-		skillToCast = BossSkill::Summon;
+		skillToCast = BossSkill::Teleport;
 		break;
 	case BossSkill::Aoe:
 		if (randomNumb == 0)
