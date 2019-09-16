@@ -1,0 +1,10 @@
+{
+    "Scene": {
+        "metaVersion": 2,
+        "timeCreated": 1567936048,
+        "GUID": 3981116615,
+        "Name": "EnemiesTestDeath",
+        "File": "Assets/Scenes/EnemiesTestDeath.sc3ne",
+        "ExportedFile": "Library/Scenes/3981116615.sc3ne"
+    }
+}
