@@ -55,7 +55,7 @@ void DashSkill::UseSkill()
 	
 	math::float3 currentPosition = player->gameobject->transform->GetPosition();
 	math::float3 newPosition = currentPosition + dashSpeed * (-player->transform->front) * player->App->time->gameDeltaTime;
-	if (player->App->navigation->IsValidPosition(newPosition))
+	if (player->App->navigation->FindClosestPoint2D(newPosition))
 	{
 		player->gameobject->transform->SetPosition(newPosition);	
 	}
