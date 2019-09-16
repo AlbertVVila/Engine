@@ -4,6 +4,121 @@
     },
     "GameObjects": [
         {
+            "UID": 1063327445,
+            "ParentUID": 0,
+            "Name": "Camera",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 0,
+                    "Enabled": 1,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Euler": [
+                        -0.0,
+                        0.0,
+                        -0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Global": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "Type": 2,
+                    "Enabled": 1,
+                    "MovementSpeed": 5.0,
+                    "RotationSpeed": 200.0,
+                    "ZoomSpeed": 0.4000000059604645,
+                    "Znear": 10.0,
+                    "Zfar": 100000.0,
+                    "vFOV": 1.0471975803375245,
+                    "hFOV": 1.5192210674285889,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Front": [
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Up": [
+                        0.0,
+                        1.0,
+                        0.0
+                    ],
+                    "isMain": 1,
+                    "fogFalloff": 1.0,
+                    "fogQuadratic": 1.0,
+                    "maxFog": 0.800000011920929,
+                    "fogColor": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "fogEnabled": 0
+                }
+            ]
+        },
+        {
             "UID": 2970544186,
             "ParentUID": 1,
             "Name": "LoseWindow",
@@ -16476,7 +16591,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -16653,8 +16768,8 @@
                         -86.69999694824219
                     ],
                     "Size": [
-                        263.5,
-                        53.0
+                        170.0,
+                        30.0
                     ],
                     "Anchor": 1,
                     "Stretch": 3
@@ -16662,8 +16777,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 0,
-                    "textureName": "",
+                    "textureUID": 917851612,
+                    "textureName": "BackgroundNaming",
                     "color": [
                         0.0,
                         0.0,
@@ -16735,8 +16850,8 @@
                     "Type": 6,
                     "Enabled": 1,
                     "FontSize": 10.0,
-                    "text": "Skeleton",
-                    "font": "Fonts/TACOSRG.ttf",
+                    "text": "Item",
+                    "font": "Fonts/Vision-BoldItalic.ttf",
                     "color": [
                         1.0,
                         1.0,
@@ -16885,8 +17000,8 @@
                         -86.69999694824219
                     ],
                     "Size": [
-                        263.5,
-                        53.0
+                        170.0,
+                        30.0
                     ],
                     "Anchor": 1,
                     "Stretch": 3
@@ -16894,8 +17009,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 0,
-                    "textureName": "",
+                    "textureUID": 917851612,
+                    "textureName": "BackgroundNaming",
                     "color": [
                         0.0,
                         0.0,
@@ -16967,8 +17082,8 @@
                     "Type": 6,
                     "Enabled": 1,
                     "FontSize": 10.0,
-                    "text": "Skeleton",
-                    "font": "Fonts/TACOSRG.ttf",
+                    "text": "Item",
+                    "font": "Fonts/Vision-BoldItalic.ttf",
                     "color": [
                         1.0,
                         1.0,
@@ -17117,8 +17232,8 @@
                         -86.69999694824219
                     ],
                     "Size": [
-                        263.5,
-                        53.0
+                        170.0,
+                        30.0
                     ],
                     "Anchor": 1,
                     "Stretch": 3
@@ -17126,8 +17241,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 0,
-                    "textureName": "",
+                    "textureUID": 917851612,
+                    "textureName": "BackgroundNaming",
                     "color": [
                         0.0,
                         0.0,
@@ -17199,8 +17314,8 @@
                     "Type": 6,
                     "Enabled": 1,
                     "FontSize": 10.0,
-                    "text": "Skeleton",
-                    "font": "Fonts/TACOSRG.ttf",
+                    "text": "Item",
+                    "font": "Fonts/Vision-BoldItalic.ttf",
                     "color": [
                         1.0,
                         1.0,
@@ -17349,8 +17464,8 @@
                         -86.69999694824219
                     ],
                     "Size": [
-                        263.5,
-                        53.0
+                        170.0,
+                        30.0
                     ],
                     "Anchor": 1,
                     "Stretch": 3
@@ -17358,8 +17473,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 0,
-                    "textureName": "",
+                    "textureUID": 917851612,
+                    "textureName": "BackgroundNaming",
                     "color": [
                         0.0,
                         0.0,
@@ -17431,8 +17546,8 @@
                     "Type": 6,
                     "Enabled": 1,
                     "FontSize": 10.0,
-                    "text": "Skeleton",
-                    "font": "Fonts/TACOSRG.ttf",
+                    "text": "Item",
+                    "font": "Fonts/Vision-BoldItalic.ttf",
                     "color": [
                         1.0,
                         1.0,
@@ -17581,8 +17696,8 @@
                         -86.69999694824219
                     ],
                     "Size": [
-                        263.5,
-                        53.0
+                        170.0,
+                        30.0
                     ],
                     "Anchor": 1,
                     "Stretch": 3
@@ -17590,8 +17705,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 0,
-                    "textureName": "",
+                    "textureUID": 917851612,
+                    "textureName": "BackgroundNaming",
                     "color": [
                         0.0,
                         0.0,
@@ -17663,8 +17778,8 @@
                     "Type": 6,
                     "Enabled": 1,
                     "FontSize": 10.0,
-                    "text": "Skeleton",
-                    "font": "Fonts/TACOSRG.ttf",
+                    "text": "Item",
+                    "font": "Fonts/Vision-BoldItalic.ttf",
                     "color": [
                         1.0,
                         1.0,
@@ -17813,8 +17928,8 @@
                         -86.69999694824219
                     ],
                     "Size": [
-                        263.5,
-                        53.0
+                        170.0,
+                        30.0
                     ],
                     "Anchor": 1,
                     "Stretch": 3
@@ -17822,8 +17937,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 0,
-                    "textureName": "",
+                    "textureUID": 917851612,
+                    "textureName": "BackgroundNaming",
                     "color": [
                         0.0,
                         0.0,
@@ -17895,8 +18010,8 @@
                     "Type": 6,
                     "Enabled": 1,
                     "FontSize": 10.0,
-                    "text": "Skeleton",
-                    "font": "Fonts/TACOSRG.ttf",
+                    "text": "Item",
+                    "font": "Fonts/Vision-BoldItalic.ttf",
                     "color": [
                         1.0,
                         1.0,
@@ -18045,8 +18160,8 @@
                         -86.69999694824219
                     ],
                     "Size": [
-                        263.5,
-                        53.0
+                        170.0,
+                        30.0
                     ],
                     "Anchor": 1,
                     "Stretch": 3
@@ -18054,8 +18169,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 0,
-                    "textureName": "",
+                    "textureUID": 917851612,
+                    "textureName": "BackgroundNaming",
                     "color": [
                         0.0,
                         0.0,
@@ -18127,8 +18242,8 @@
                     "Type": 6,
                     "Enabled": 1,
                     "FontSize": 10.0,
-                    "text": "Skeleton",
-                    "font": "Fonts/TACOSRG.ttf",
+                    "text": "Item",
+                    "font": "Fonts/Vision-BoldItalic.ttf",
                     "color": [
                         1.0,
                         1.0,
@@ -18277,8 +18392,8 @@
                         -86.69999694824219
                     ],
                     "Size": [
-                        263.5,
-                        53.0
+                        170.0,
+                        30.0
                     ],
                     "Anchor": 1,
                     "Stretch": 3
@@ -18286,8 +18401,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 0,
-                    "textureName": "",
+                    "textureUID": 917851612,
+                    "textureName": "BackgroundNaming",
                     "color": [
                         0.0,
                         0.0,
@@ -18359,8 +18474,8 @@
                     "Type": 6,
                     "Enabled": 1,
                     "FontSize": 10.0,
-                    "text": "Skeleton",
-                    "font": "Fonts/TACOSRG.ttf",
+                    "text": "Item",
+                    "font": "Fonts/Vision-BoldItalic.ttf",
                     "color": [
                         1.0,
                         1.0,
@@ -18509,8 +18624,8 @@
                         -86.69999694824219
                     ],
                     "Size": [
-                        263.5,
-                        53.0
+                        170.0,
+                        30.0
                     ],
                     "Anchor": 1,
                     "Stretch": 3
@@ -18518,8 +18633,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 0,
-                    "textureName": "",
+                    "textureUID": 917851612,
+                    "textureName": "BackgroundNaming",
                     "color": [
                         0.0,
                         0.0,
@@ -18591,8 +18706,8 @@
                     "Type": 6,
                     "Enabled": 1,
                     "FontSize": 10.0,
-                    "text": "Skeleton",
-                    "font": "Fonts/TACOSRG.ttf",
+                    "text": "Item",
+                    "font": "Fonts/Vision-BoldItalic.ttf",
                     "color": [
                         1.0,
                         1.0,
@@ -18741,8 +18856,8 @@
                         -86.69999694824219
                     ],
                     "Size": [
-                        263.5,
-                        53.0
+                        170.0,
+                        30.0
                     ],
                     "Anchor": 1,
                     "Stretch": 3
@@ -18750,8 +18865,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 0,
-                    "textureName": "",
+                    "textureUID": 917851612,
+                    "textureName": "BackgroundNaming",
                     "color": [
                         0.0,
                         0.0,
@@ -18823,8 +18938,8 @@
                     "Type": 6,
                     "Enabled": 1,
                     "FontSize": 10.0,
-                    "text": "Skeleton",
-                    "font": "Fonts/TACOSRG.ttf",
+                    "text": "Item",
+                    "font": "Fonts/Vision-BoldItalic.ttf",
                     "color": [
                         1.0,
                         1.0,
@@ -26448,121 +26563,6 @@
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
                     "UIOrder": 101
-                }
-            ]
-        },
-        {
-            "UID": 1063327445,
-            "ParentUID": 0,
-            "Name": "Camera",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 1,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 0,
-                    "Enabled": 1,
-                    "Position": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "Rotation": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ],
-                    "Euler": [
-                        -0.0,
-                        0.0,
-                        -0.0
-                    ],
-                    "Scale": [
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "Global": [
-                        1.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
-                },
-                {
-                    "Type": 2,
-                    "Enabled": 1,
-                    "MovementSpeed": 5.0,
-                    "RotationSpeed": 200.0,
-                    "ZoomSpeed": 0.4000000059604645,
-                    "Znear": 10.0,
-                    "Zfar": 100000.0,
-                    "vFOV": 1.0471975803375245,
-                    "hFOV": 1.5192210674285889,
-                    "Position": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "Front": [
-                        0.0,
-                        0.0,
-                        1.0
-                    ],
-                    "Up": [
-                        0.0,
-                        1.0,
-                        0.0
-                    ],
-                    "isMain": 1,
-                    "fogFalloff": 1.0,
-                    "fogQuadratic": 1.0,
-                    "maxFog": 0.800000011920929,
-                    "fogColor": [
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "fogEnabled": 0
                 }
             ]
         }
