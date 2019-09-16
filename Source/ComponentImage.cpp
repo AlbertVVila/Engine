@@ -144,6 +144,7 @@ void ComponentImage::DrawProperties()
 		ImGui::Separator();
 		ImGui::Text("Video");
 		ImGui::Text("Path: Game/Video/");
+		ImGui::Checkbox("Loop video", &loop);
 		ImGui::SameLine();
 		const int bufSize = videoPath.size() + 1;
 		char buf[256];
@@ -227,11 +228,15 @@ void ComponentImage::Update()
 				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, frame.cols, frame.rows, 0, GL_BGR, GL_UNSIGNED_BYTE, flipped.ptr());
 			}
-			else 
+			else if (!loop)
 			{
 				LOG("Video finished");
 				videoFinished = true;
 				videoPlaying = false;
+			}
+			else
+			{
+				cap.set(cv::CAP_PROP_POS_FRAMES, 0);
 			}
 		}
 	}
@@ -264,7 +269,7 @@ void ComponentImage::Save(JSON_value *value)const
 	value->AddInt("UIOrder", uiOrder);
 	value->AddString("videoPath", videoPath.c_str());
 	value->AddFloat("fps", fps);
-
+	value->AddInt("loop", loop);
 }
 
 void ComponentImage::Load(JSON_value* value)
@@ -284,6 +289,7 @@ void ComponentImage::Load(JSON_value* value)
 	uiOrder = value->GetInt("UIOrder", 0);
 	videoPath = value->GetString("videoPath", videoPath.c_str());
 	fps = value->GetFloat("fps", fps);
+	loop = value->GetInt("loop", loop);
 }
 
 ENGINE_API void ComponentImage::SetMaskAmount(int maskAmount)
