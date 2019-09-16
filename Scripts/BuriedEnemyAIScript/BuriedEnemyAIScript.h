@@ -92,6 +92,8 @@ public:
 	GameObject* dustParticlesGO = nullptr;
 	GameObject* candleGO = nullptr;
 	EnemyControllerScript* enemyController = nullptr;
+
+	const float candleOffset = 150.0f;			// Distance from the enemy head to the ground
 };
 
 extern "C" BuriedEnemyAIScript_API Script* CreateScript();

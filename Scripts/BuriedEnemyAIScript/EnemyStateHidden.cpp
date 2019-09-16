@@ -3,6 +3,9 @@
 #include "BuriedEnemyAIScript.h"
 #include "EnemyControllerScript.h"
 
+#include "GameObject.h"
+#include "ComponentTransform.h"
+
 EnemyStateHidden::EnemyStateHidden(BuriedEnemyAIScript* AIScript)
 {
 	enemy = AIScript;
@@ -23,6 +26,11 @@ void EnemyStateHidden::HandleIA()
 	{
 		enemy->currentState = (EnemyState*)enemy->showUp;
 	}
+}
+
+void EnemyStateHidden::Enter()
+{
+	enemy->candleGO->transform->position.z -= enemy->candleOffset;
 }
 
 void EnemyStateHidden::Update()

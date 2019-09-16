@@ -34,7 +34,6 @@ void EnemyStateHide::Update()
 void EnemyStateHide::Exit()
 {
 	enemy->enemyController->GetMainRenderer()->Enable(false);
-	enemy->candleGO->SetActive(false);
 }
 
 void EnemyStateHide::Enter()
