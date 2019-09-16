@@ -90,7 +90,13 @@ public:
 	BossStateDeath* death = nullptr;
 	BossStateCast* cast = nullptr;
 
+public:
 
+	GameObject* firstMeshFloor = nullptr;
+	GameObject* secondMeshFloor = nullptr;
+	std::vector<GameObject*> floorGOs;
+
+	void GenerateNewNavigability();
 
 public:
 	float firstHealthThreshold = 0.75f;

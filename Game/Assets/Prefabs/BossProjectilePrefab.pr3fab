@@ -83,15 +83,16 @@
                     "script": "BossProjectileScript",
                     "scriptInfo": {
                         "waitingTime": 2.0,
-                        "projectileSpeed": 1500.0,
+                        "projectileSpeed": 3000.0,
                         "projectileLife": 3.0,
-                        "damageAmount": 5.0
+                        "damageAmount": 5.0,
+                        "acceleration": 1000.0
                     }
                 }
             ]
         },
         {
-            "UID": 3479027822,
+            "UID": 2224071338,
             "ParentUID": 2453626250,
             "Name": "Mesh",
             "Tag": "Mesh",
@@ -228,7 +229,7 @@
             ]
         },
         {
-            "UID": 3281093890,
+            "UID": 2725443549,
             "ParentUID": 2453626250,
             "Name": "BoxTrigger",
             "Tag": "HitBox",
@@ -319,6 +320,101 @@
                     ],
                     "boxType": 4,
                     "debug_draw": 1
+                }
+            ]
+        },
+        {
+            "UID": 3589142829,
+            "ParentUID": 2453626250,
+            "Name": "Trail",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 0,
+                    "Enabled": 1,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Euler": [
+                        -0.0,
+                        0.0,
+                        -0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Global": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        158.12388610839845,
+                        0.0,
+                        1.0,
+                        0.0,
+                        719.8472900390625,
+                        0.0,
+                        0.0,
+                        1.0,
+                        -687.31591796875,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "Type": 11,
+                    "Enabled": 1,
+                    "width": 8.0,
+                    "duration": 0.15000000596046449,
+                    "minDistance": 1.5,
+                    "trailColor": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "textureUID": 2514375970,
+                    "bloomIntensity": 1.0,
+                    "sizeOT": 1
                 }
             ]
         }

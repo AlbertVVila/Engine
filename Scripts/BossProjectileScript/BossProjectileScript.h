@@ -44,6 +44,8 @@ private:
 	float projectileSpeed = 1.0f;
 	float projectileLife = 5.0f;
 	float shotTimer = 0.0f;
+	float acceleration = 10.0f;
+	float currentSpeed = 0.0f;
 
 	bool fadeInComplete = false;
 	bool waitingComplete = false;

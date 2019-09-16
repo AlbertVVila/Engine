@@ -108,6 +108,8 @@ public:
 
 	ENGINE_API void setPlayerBB(math::AABB bbox);
 
+	ENGINE_API void GenerateNavigabilityFromGOs(std::vector<GameObject*> vectorGOs);
+
 	void RecalcPath(math::float3 point);
 
 	//Constants
