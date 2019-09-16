@@ -83,10 +83,20 @@ void SkillTreeController::Start()
 
 void SkillTreeController::Update()
 {
-	if (!gameobject->isActive()) return;
+	if (!gameobject->isActive())
+	{
+		if (item) App->scene->FindGameObjectByName("NewItem")->SetActive(true);
+		item = false;
+		return;
+	}
 
 	hoverTransform->gameobject->SetActive(false);
 	App->scene->FindGameObjectByName("NewSkillPoint")->SetActive(false);
+	if (App->scene->FindGameObjectByName("NewItem")->isActive())
+	{
+		item = true;
+		App->scene->FindGameObjectByName("NewItem")->SetActive(false);
+	}
 	skillInfo->SetActive(false);
 
 	for (int i = 0; i < NUM_SKILLS; ++i)
