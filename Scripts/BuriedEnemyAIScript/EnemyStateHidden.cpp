@@ -28,11 +28,6 @@ void EnemyStateHidden::HandleIA()
 	}
 }
 
-void EnemyStateHidden::Enter()
-{
-
-}
-
 void EnemyStateHidden::Update()
 {
 	//nothing
