@@ -39,8 +39,9 @@ class EnemyControllerScript_API EnemyControllerScript : public Script
 		return new EnemyControllerScript(*this);
 	}
 public:
-	void TakeDamage(unsigned damage);
+	void TakeDamage(unsigned damage, int type = 1);
 	int GetHealth() const { return actualHealth; }
+	int GetMaxHealth() const { return maxHealth; }
 
 	inline math::float3 GetPosition() const;					// Get position of the enemy (GO with this script attached)
 	inline math::Quat GetRotation() const;						// Get rotation of the enemy (GO with this script attached)
@@ -49,6 +50,8 @@ public:
 	inline float GetDistanceTo(math::float3& position) const;	// Get distance of the enemy to position given as argument
 	inline float GetDistanceTo2D(math::float3& position) const;	// Get distance of the enemy to position given as argument only taking XZ plane as reference
 	inline float GetDistanceToPlayer2D() const;
+
+	inline ComponentRenderer* GetMainRenderer() const;			// Gets the main renderer of the enemy (first ComponentRenderer stored in myRenders)
 
 	inline bool IsCollidingWithPlayer() const;
 
@@ -63,9 +66,10 @@ public:
 	GameObject* player = nullptr;
 	PlayerMovement* playerMovement = nullptr;
 	std::string playerTag = "Player";
+	std::string enemyCursor = "RedGlow.cur";
 	std::string hitMaterialName = "HitMaterial";
 	ComponentAnimation* anim = nullptr;
-	ComponentRenderer* myRender = nullptr;
+	std::vector<ComponentRenderer*> myRenders;
 
 	DamageController* damageController = nullptr;
 	EnemyLifeBarController* enemyLifeBar = nullptr;
@@ -85,8 +89,8 @@ public:
 	ComponentBoxTrigger* attackBoxTrigger = nullptr;
 	ComponentBoxTrigger* playerHitBox = nullptr;
 
-	ResourceMaterial* hitMaterial = nullptr;
-	ResourceMaterial* defaultMaterial = nullptr;
+	ResourceMaterial* hitMaterial = nullptr;				// Material applied to all enemy meshes on hit
+	std::vector<ResourceMaterial*> defaultMaterials;		// Vector containing default materials of the enemy meshes
 
 	CombatAudioEvents* combataudioevents = nullptr;
 
@@ -96,7 +100,8 @@ private:
 	int experience = 20;
 
 	float hitColorDuration = 0.2f;
-	float timer = 0.f;
+	float hitColorTimer = 0.f;
+	bool enemyHit = false;
 
 };
 

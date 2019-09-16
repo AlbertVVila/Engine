@@ -58,8 +58,10 @@ bool ModuleRender::Init(JSON * config)
 
 	SDL_GL_SetSwapInterval((int)vsync);
 
+#ifndef GAME_BUILD
 	viewScene = new Viewport("Scene");
 	viewGame = new Viewport("Game");
+#endif // !GAME_BUILD
 
 	// Set default Skybox
 	skybox = (ResourceSkybox*)App->resManager->CreateNewResource(TYPE::SKYBOX);
@@ -258,7 +260,11 @@ void ModuleRender::Draw(const ComponentCamera &cam, int width, int height, bool 
 	}
 	else 
 	{
+#ifdef GAME_BUILD
+		glViewport(0, 0, App->window->width, App->window->height);
+#else
 		glViewport(0, 0, viewGame->current_width, viewGame->current_height);
+#endif
 		skybox->Draw(*cam.frustum);
 		const float transparent[] = { 0, 0, 0, 1 };
 		glClearBufferfv(GL_COLOR, 1, transparent);
@@ -593,6 +599,7 @@ void ModuleRender::ComputeShadows()
 		math::AABB lightAABB;
 		lightAABB.SetNegativeInfinity();
 		bool renderersDetected = false;
+		shadowCasters.clear();
 		//TODO: Improve this avoiding shuffle every frame
 		for (GameObject* go : App->scene->dynamicFilteredGOs) 
 		{

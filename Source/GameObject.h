@@ -27,12 +27,13 @@ public:
 	GameObject() {};
 	GameObject(const char* name, unsigned uuid);
 	GameObject(const float4x4& transform, const char* name, unsigned uuid);
-	GameObject(const GameObject& gameobject);
+	ENGINE_API  GameObject(const GameObject& gameobject);
 	~GameObject();
 
 	void DrawProperties();
 
-	void Update();
+	ENGINE_API void Update();
+	void PreUpdate();
 	ENGINE_API inline bool isActive() const
 	{
 		if (!activeInHierarchy) return false;
@@ -77,7 +78,7 @@ public:
 	void SetLightUniforms(unsigned shader) const;
 	void LinkRendererToBones(std::vector<ComponentRenderer*>& renderers);
 
-	void LinkBones() const;
+	ENGINE_API void LinkBones() const;
 
 	void UpdateToPrefab(GameObject* prefab);
 	bool ChildPrefab() const;

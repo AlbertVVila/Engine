@@ -37,7 +37,10 @@ struct ImGuiContext;
 #define BOMB_DROP_ROT 2.5f
 
 #define MACHETE_RAIN_START_HEIGHT 3300.0f
-#define MACHETE_RAIN_SPEED 3000.0f
+#define MACHETE_RAIN_SPEED 4000.0f
+#define MACHETE_RAIN_HORIZONTAL_SPEED 40.0f
+#define MACHETE_AMOUNT 40u
+#define MACHETE_SKILL_RANGE 900.f
 
 class ComponentAnimation;
 class ComponentTransform;
@@ -168,10 +171,11 @@ public:
 	void Damage(float amount);
 
 	void Equip(const PlayerStats& equipStats);
-	void UnEquip(const PlayerStats& equipStats);
+	void Equip(const PlayerStats& equipStats, unsigned itemType, unsigned meshUID, unsigned materialUID);
+	void UnEquip(const PlayerStats& equipStats, unsigned itemType);
+	void ConsumeItem(const PlayerStats& equipStats);
 
 	void OnAnimationEvent(std::string name) override;
-
 
 	//Abstract input. TODO: Now only returns true for skills, adapt for items
 	inline bool IsMovingToItem() const { return itemClicked != nullptr;};
@@ -189,6 +193,7 @@ public:
 	bool IsUsingE() const;
 	bool IsUsingR() const;
 	bool IsUsingSkill() const;
+	void PrepareSkills() const;
 
 	void CheckSkillsInput();
 	void ResetCooldown(unsigned int hubButtonID);
@@ -206,6 +211,8 @@ private:
 	void ManaManagement();
 
 	void ActivateHudCooldownMask(bool activate, unsigned first = HUD_BUTTON_Q, unsigned last = HUD_BUTTON_4);
+
+	float DistPlayerToMouse() const;
 
 	// Skills
 	void CreatePlayerSkills();
@@ -263,6 +270,9 @@ public:
 
 	bool canInteract = true;
 
+	// Probability of critical attack
+	float criticalChance = 10.0f;
+
 	// Skills
 	BasicSkill* currentSkill = nullptr;
 	ChainAttackSkill* chain = nullptr;
@@ -275,7 +285,6 @@ public:
 	float basicAttackRange = 200.f;
 
 	bool macheteRainActivated = false;
-	GameObject* macheteRainParticles = nullptr;
 	bool shaking = false;
 
 	std::unordered_map<SkillType, PlayerSkill*> allSkills;
@@ -285,12 +294,15 @@ public:
 
 	//Audio
 	ComponentAudioSource* gotHitAudio = nullptr;
+	GameObject* slashTrail = nullptr;
+
+
+	float deltatime;
 
 private:
 	std::vector<PlayerState*> playerStates;	
 	GameObject* dustParticles = nullptr;
 	GameObject* dashFX = nullptr;
-	GameObject* dashMesh = nullptr;
 	GameObject* bombDropParticles = nullptr;
 	GameObject* bombDropParticlesLanding = nullptr;
 	GameObject* bombDropMesh1 = nullptr;
@@ -301,10 +313,6 @@ private:
 	float bombDropGrowRate = 1.3f;
 	float bombDropWaveGrowRate = 1.05f;
 
-	GameObject* slashTrail = nullptr;
-
-	ComponentRenderer* macheteRainRenderer = nullptr;
-	
 	DamageController* damageController = nullptr;
 	DamageFeedbackUI* damageUIFeedback = nullptr;
 	ComponentImage* lifeUIComponent = nullptr;
@@ -314,7 +322,7 @@ private:
 	Text* uiStrengthText = nullptr;
 	Text* uiManaText = nullptr;
 
-
+	float closestDistToPlayer = 31000.0f;
 	float hubCooldown[9]	  = { 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F };
 	float hubCooldownMax[9] = { 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F };
 	float hubCooldownTimer[9] = { 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F };
@@ -326,6 +334,10 @@ private:
 	bool hasMaxStats = false;
 	bool hasInfiniteHealth = false;
 	bool hasInfiniteMana = false;
+
+	// Player equippable parts (Weapon, Helmet)
+	ComponentRenderer* weaponRenderer = nullptr;
+	ComponentRenderer* helmetRenderer = nullptr;
 };
 
 extern "C" PlayerMovement_API Script* CreateScript();

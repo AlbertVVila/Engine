@@ -35,20 +35,6 @@ PlayerStateWalkToPickItem::~PlayerStateWalkToPickItem()
 {
 }
 
-void PlayerStateWalkToPickItem::StopAndSwitchToIdle()
-{
-	//stop going after the item
-	player->itemClicked = nullptr;
-	//stop particles
-	if (dustParticles)
-	{
-		dustParticles->SetActive(false);
-	}
-	//and set the player to idle
-	player->currentState = player->idle;
-	playerWalking = false;
-}
-
 void PlayerStateWalkToPickItem::Update()
 {
 	//check we really got the item in check
@@ -93,17 +79,20 @@ void PlayerStateWalkToPickItem::Update()
 		{
 			//done walking, get the item
 			player->itemClicked->pickedUpViaPlayer = true;
-			StopAndSwitchToIdle();
+			playerWalking = false;
+			return;
 		}
 		else 
 		{
-			StopAndSwitchToIdle();
+			playerWalking = false;
+			return;
 		}
 	}
 	//no path, stop
 	else
 	{
-		StopAndSwitchToIdle();
+		playerWalking = false;
+		return;
 	}
 }
 
@@ -118,6 +107,19 @@ void PlayerStateWalkToPickItem::Enter()
 
 void PlayerStateWalkToPickItem::CheckInput()
 {
+	if (!playerWalking)
+	{
+		//stop going after the item
+		player->itemClicked = nullptr;
+		//stop particles
+		if (dustParticles)
+		{
+			dustParticles->SetActive(false);
+		}
+		player->currentState = player->idle;
+		playerWalking = false;
+		return;
+	}
 	if (player->IsUsingSkill() || (player->IsAttacking()))
 	{
 		player->itemClicked = nullptr;

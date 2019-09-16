@@ -30,7 +30,7 @@ public:
 	ENGINE_API void SetMaterial(const char* materialName);
 	ENGINE_API void ResetAnimation();
 
-	void SetMesh(const char* meshfile);
+	ENGINE_API void SetMesh(const char* meshfile);
 	void UpdateGameObject();
 	void LinkBones();
 
@@ -44,9 +44,11 @@ public:
 	bool highlighted = false;
 	bool dissolve = false;
 	float dissolveAmount = 0.f;
-	float borderAmount = 0.5f;
+	float borderAmount = 0.f;
 
 	bool water = false;
+	bool avoidSkinning = false;
+
 	float waterAmplitude1 = 10.f;
 	float waterFrequency1 = 10.f;
 	float waterDecay1 = 1.f;
@@ -70,6 +72,8 @@ private:
 
 	void Update();
 	void PickMaterial();
+
+	void UpdateMeshesList();
 
 	std::vector<std::string> guiMaterials;
 	std::vector<std::string> guiMeshes;

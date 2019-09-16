@@ -14,6 +14,16 @@ enum class OverlapState
 	Exit
 };
 
+enum class BoxTriggerType
+{
+	Unknown = 0,
+	PlayerHp,
+	PlayerAttack,
+	EnemyHp,
+	EnemyAttack,
+	Other
+};
+
 class ComponentBoxTrigger : public Component
 {
 public:
@@ -32,8 +42,8 @@ public:
 
 	void DrawDebug();
 
-	void SetIsPlayer(bool isPlayer);
-	inline bool GetIsPlayer() const { return isPlayer; }
+	void SetBoxType(BoxTriggerType boxType);
+	inline BoxTriggerType GetBoxTriggerType() const { return boxType; }
 
 	inline const math::OBB* GetOBB() const { return boxTrigger; }
 
@@ -63,7 +73,8 @@ private:
 	math::float3 position = math::float3::zero;
 	math::float3 size     = math::float3::one;
 
-	bool isPlayer = false;
+	BoxTriggerType boxType = BoxTriggerType::Unknown;
+
 	bool debugDraw = false;
 };
 

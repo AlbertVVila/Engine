@@ -86,6 +86,7 @@ void SkillTreeController::Update()
 	if (!gameobject->isActive()) return;
 
 	hoverTransform->gameobject->SetActive(false);
+	App->scene->FindGameObjectByName("NewSkillPoint")->SetActive(false);
 	skillInfo->SetActive(false);
 
 	for (int i = 0; i < NUM_SKILLS; ++i)
@@ -162,7 +163,8 @@ void SkillTreeController::Expose(ImGuiContext* context)
 
 	if (textureFiles.empty())
 	{
-		textureFiles = App->resManager->GetResourceNamesList(TYPE::TEXTURE, true);
+		if(App != nullptr)
+			textureFiles = App->resManager->GetResourceNamesList(TYPE::TEXTURE, true);
 	}
 
 	if (ImGui::Button("Refresh textures List"))

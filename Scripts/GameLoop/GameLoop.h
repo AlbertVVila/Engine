@@ -28,7 +28,6 @@ class InventoryScript;
 class EquipPopupController;
 class SkillTreeController;
 class ExperienceController;
-class AABB;
 class JSON_value;
 class ComponentAudioSource;
 class WorldControllerScript;
@@ -110,10 +109,12 @@ public:
 	GameScene gameScene = GameScene::MENU;
 	std::vector<LoopState*> loopStates;
 
+private:
+	void ManageNavigationCursorIcon();
+
 public:
 	int volume = 10;
 
-public:
 	//UI Values
 	int minVolume = 0;
 	int maxVolume = 10;
@@ -138,11 +139,9 @@ public:
 	Button* toTheAltarButton = nullptr;
 	Button* hudBackToMenuButton = nullptr;
 	Button* inventoryButton = nullptr;
-	Button* missionsButton = nullptr;
 	Button* skillsButton = nullptr;
 	Button* closePlayerMenuButton = nullptr;
 	Button* pauseResume = nullptr;
-	Button* pauseOptions = nullptr;
 	Button* pauseExit = nullptr;
 	std::vector<Component*> volumeButtons;
 	std::vector<Component*> soundButtons;
@@ -163,9 +162,12 @@ public:
 	GameObject* loadingGO = nullptr;
 	GameObject* playerMenuGO = nullptr;
 	GameObject* inventoryMenuGO = nullptr;
-	GameObject* missionsMenuGO = nullptr;
 	GameObject* skillsMenuGO = nullptr;
 	GameObject* pauseMenuGO = nullptr;
+	GameObject* audioGO = nullptr;
+	GameObject* introVideoGO = nullptr;
+	GameObject* outroVideoGO = nullptr;
+	std::vector<GameObject*> sunHoverGO;
 
 	//BBOX
 	math::AABB* playerBbox = nullptr;
@@ -197,11 +199,18 @@ public:
 
 	bool runningCredits = false;
 	bool runningIntro = false;
+	bool introvideoPlaying = false;
 	bool vsync = false;
 
 	std::string sceneToLoad = "";
 	LoopState* stateAfterLoad = nullptr;
 	bool actionAfterLoad = false;
+
+	float xPickingCorrection = 0.0f;
+	float yPickingCorrection = 0.0f;
+	float zPickingCorrection = 0.0f;
+	bool changeNavigationCursorIcon = true;
+	bool changeStandarCursorIcon = true;
 };
 
 extern "C" GameLoop_API Script* CreateScript();

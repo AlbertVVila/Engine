@@ -1483,6 +1483,10 @@ bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vecto
 				type = PathFindType::NODODGE;
 				done = false;
 			}
+			if (afterPathDistance == 0.f)
+			{
+				return false;
+			}
 			else if (logDebugPathing)
 			{
 				std::stringstream s;
@@ -1621,6 +1625,58 @@ bool ModuleNavigation::FindIntersectionPoint(math::float3 start, math::float3& i
 	return true;
 }
 
+bool ModuleNavigation::IsCursorPointingToNavigableZone(float xPickingCorrection, float yPickingCorrection, float zPickingCorrection) const
+{
+	//declare mouse position and necessary values to store data
+	float2 mouse((float*)& App->input->GetMousePosition());
+	LineSegment line;
+
+	float normalized_x, normalized_y;
+
+	//get relative mouse position depending on type of build
+#ifndef GAME_BUILD
+	math::float2 pos = App->renderer->viewGame->winPos;
+	math::float2 size(App->renderer->viewGame->current_width, App->renderer->viewGame->current_height);
+#else
+	math::float2 pos = math::float2::zero;
+	math::float2 size(App->window->width, App->window->height);
+#endif
+	normalized_x = ((mouse.x - pos.x) / size.x) * 2 - 1; //0 to 1 -> -1 to 1
+	normalized_y = (1 - (mouse.y - pos.y) / size.y) * 2 - 1; //0 to 1 -> -1 to 1
+
+	//get the exact position where the mouse is pointing towards in relation to the plane 0,1,0 at y 0
+	line = App->scene->maincamera->DrawRay(normalized_x, normalized_y);
+	Plane plane(math::float3(0.f, 1.f, 0.f), 0.f);
+	float dist = 0.f;
+	line.Intersects(plane, &dist);
+
+	//get all the meshes with the floor tag to intersect with the ray
+	std::vector<GameObject*> floors = App->scene->FindGameObjectsByTag("floor");
+	//prepare the values for the nav mesh query call
+	math::float3 intersectionPos(0.f, 0.f, 0.f);
+	bool found = false;
+	for (int i = 0; i < floors.size() && !found; ++i)
+	{
+		found = floors[i]->Intersects(line, dist, &intersectionPos);
+	}
+
+	dtQueryFilter filter;
+	filter.setIncludeFlags(SAMPLE_POLYFLAGS_ALL ^ SAMPLE_POLYFLAGS_DISABLED);
+	filter.setExcludeFlags(0);
+	dtPolyRef resultPoly;
+
+	//distance correction on the 3 axis
+	float polyPickExt[3] = { xPickingCorrection, yPickingCorrection, zPickingCorrection };
+
+	//nav mesh query call
+	if (navMesh && navQuery)
+	{
+		navQuery->findNearestPoly((float*)& intersectionPos, polyPickExt, &filter, &resultPoly, 0); // find closest poly
+	}
+
+	return resultPoly;
+}
+
 ENGINE_API bool ModuleNavigation::FindClosestPoint2D(math::float3& initial) const
 {
 	//Search range, 200 seems to be ok
@@ -1641,7 +1697,7 @@ ENGINE_API bool ModuleNavigation::FindClosestPoint2D(math::float3& initial) cons
 
 	navQuery->findNearestPoly((float*)&initial, polyPickExt, &filter, &startPoly, 0);
 	navQuery->closestPointOnPoly(startPoly, (float*)&initial, (float*)&result, &overPoly);
-	
+
 	initial = result;
 
 	if (!startPoly)
@@ -1707,6 +1763,23 @@ bool ModuleNavigation::HighQualityMouseDetection(math::float3* intersection) con
 		return false;
 	}
 	return true;
+}
+
+ENGINE_API bool ModuleNavigation::IsValidPosition(math::float3& position) const
+{
+	dtPolyRef startPoly;
+	dtQueryFilter filter;
+	filter.setIncludeFlags(SAMPLE_POLYFLAGS_ALL ^ SAMPLE_POLYFLAGS_DISABLED);
+	filter.setExcludeFlags(0);
+
+
+	math::float3 diff = math::float3(.1f, .1f, .1f);
+
+	float polyPickExt[3] = { diff.x, diff.y, diff.z };
+
+	auto result = navQuery->findNearestPoly((float*)&position, polyPickExt, &filter, &startPoly, diff.ptr());
+	return Distance(diff, position) < 10.f;
+	
 }
 
 void ModuleNavigation::RecalcPath(math::float3 point)

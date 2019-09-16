@@ -62,7 +62,7 @@ void EnemyStateRelocate::ChangePosition()
 
 void EnemyStateRelocate::Exit()
 {
-	enemy->enemyController->myRender->Enable(false);
+	enemy->enemyController->GetMainRenderer()->Enable(false);
 	enemy->dustParticlesGO->SetActive(false);
 
 }

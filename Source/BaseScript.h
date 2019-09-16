@@ -23,6 +23,7 @@ public:
 
 	void SetApp(Application* app);
 	void SetGameObject(GameObject* go);
+	void SetGameStandarCursor(std::string gameStandarCursor);
 	
 	void DrawProperties();
 
@@ -43,13 +44,15 @@ public:
 	virtual void OnTriggerEnter(GameObject* go) {}
 	virtual void OnTrigger(GameObject* go) {}
 	virtual void OnTriggerExit(GameObject* go) {}
+	virtual void OnButtonDown() {}
+	virtual void OnButtonUp() {}
 
 public:
 	std::string name = "Script";
 	bool hasBeenAwoken = false;
 	bool hasBeenStarted = false;
 	Application* App = nullptr;
-
+	std::string gameStandarCursor = "Glow.cur";
 };
 
 #endif __BaseScript_h__

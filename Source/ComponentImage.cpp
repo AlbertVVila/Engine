@@ -19,6 +19,7 @@
 #include "Viewport.h"
 #include "GameObject.h"
 #include "ComponentTransform2D.h"
+#include "ComponentButton.h"
 
 
 #define None "None Selected"
@@ -161,6 +162,10 @@ void ComponentImage::DrawProperties()
 		{
 			PlayVideo();
 		}
+		if (ImGui::Button("Stop video"))
+		{
+			StopVideo();
+		}
 
 		ImGui::Separator();
 	}
@@ -175,8 +180,13 @@ void ComponentImage::UpdateTexturesList()
 void ComponentImage::Update()
 {
 	math::float2 mouse = reinterpret_cast<const float2&>(App->input->GetMousePosition());
+#ifndef GAME_BUILD
 	float screenX = mouse.x - App->renderer->viewGame->winPos.x - (App->ui->currentWidth * .5f);
 	float screenY = mouse.y - App->renderer->viewGame->winPos.y - (App->ui->currentHeight * .5f);
+#else
+	float screenX = mouse.x - (App->ui->currentWidth * .5f);
+	float screenY = mouse.y - (App->ui->currentHeight * .5f);
+#endif
 	Transform2D* rectTransform = gameobject->GetComponent<Transform2D>();
 	math::float2 pos = rectTransform->getPosition();
 	math::float2 size = rectTransform->getSize();
@@ -186,7 +196,9 @@ void ComponentImage::Update()
 	math::float2 buttonMin = float2(buttonX - size.x *.5f, -buttonY - size.y *.5f);
 	math::float2 buttonMax = float2(buttonX + size.x *.5f, -buttonY + size.y *.5f);
 
-	if (screenX > buttonMin.x && screenX < buttonMax.x && screenY > buttonMin.y && screenY < buttonMax.y)
+	if ((App->ui->GetButtonHover() == nullptr || App->ui->GetButtonHover()->uiOrder <= uiOrder) && 
+		screenX > buttonMin.x && screenX < buttonMax.x && 
+		screenY > buttonMin.y && screenY < buttonMax.y)
 	{
 		isHovered = true;
 		if (hoverDetectionMouse1) App->ui->uiHoveredMouse1 = true;
@@ -289,7 +301,7 @@ bool ComponentImage::IsMasked() const
 	return isMasked;
 }
 
-void ComponentImage::PlayVideo()
+float ComponentImage::PlayVideo()
 {
 	using namespace cv;	
 	cap.open(std::string("../Game/Video/") + videoPath.c_str());
@@ -305,4 +317,16 @@ void ComponentImage::PlayVideo()
 		frameTime = 1.0f / fps;
 		frameTimer = 0.f;
 	}
+
+	fps = cap.get(cv::CAP_PROP_FPS);
+	return int(cap.get(cv::CAP_PROP_FRAME_COUNT)) / fps;
+}
+
+void ComponentImage::StopVideo()
+{
+	videoPlaying = false;
+	videoFinished = true;
+	frame.release();
+	cap.release();
+	frameTimer = 0.f;
 }

@@ -9,6 +9,7 @@
 #include "ModuleTime.h"
 #include "ModuleNavigation.h"
 #include "ModuleResourceManager.h"
+#include "MouseController.h"
 
 #include "GameObject.h"
 #include "ComponentRenderer.h"
@@ -26,8 +27,6 @@
 #include "imgui.h"
 #include "JSON.h"
 
-
-
 #define MINIMUM_PATH_DISTANCE 400.0f
 #define MOVE_REFRESH_TIME 0.3f
 
@@ -43,22 +42,45 @@ void EnemyControllerScript::Start()
 
 void EnemyControllerScript::Awake()
 {
-	myRender = (ComponentRenderer*)gameobject->GetComponentInChildren(ComponentType::Renderer);
-	if (myRender != nullptr)
+	std::vector<Component*> renders = gameobject->GetComponentsInChildren(ComponentType::Renderer);
+	for (std::vector<Component*>::iterator it = renders.begin(); it != renders.end(); ++it)
+		myRenders.push_back((ComponentRenderer*)(*it));
+
+	if (myRenders.size() > 0u)
 	{
-		// Look for enemy BBox
-		myBbox = &myRender->gameobject->bbox;
+		// Look for enemy BBox (Will take first found)
+		myBbox = &myRenders.at(0)->gameobject->bbox;
 		if (myBbox == nullptr)
 		{
 			LOG("The enemy %s has no bbox \n", gameobject->name);
 		}
 
 		// Get playerMesh
-		myMesh = myRender->gameobject;
+		myMesh = myRenders.at(0)->gameobject;
 	}
 	else
 	{
 		LOG("Error: The enemy mesh couldn't be found.");
+	}
+
+	// Get hit material
+	std::vector<std::string> materials = App->resManager->GetResourceNamesList(TYPE::MATERIAL, true);
+	for (std::string matName : materials)
+	{
+		if (matName == hitMaterialName)
+		{
+			hitMaterial = (ResourceMaterial*)App->resManager->GetByName(matName.c_str(), TYPE::MATERIAL);
+		}
+	}
+	// Will only change first renderer material on hit
+	for (ComponentRenderer* renderer : myRenders)
+	{
+		defaultMaterials.push_back(renderer->material);
+	}
+
+	if (!hitMaterial)
+	{
+		hitMaterial = (ResourceMaterial*)App->resManager->GetByName(DEFAULTMAT, TYPE::MATERIAL);
 	}
 
 	// Look for player and his BBox
@@ -82,7 +104,7 @@ void EnemyControllerScript::Awake()
 	anim = (ComponentAnimation*)gameobject->GetComponentInChildren(ComponentType::Animation);
 	if (anim == nullptr)
 	{
-		LOG("No child of the GameObject %s has an Animation component attached \n", gameobject->name);
+		LOG("No child of the GameObject %s has an Animation component attached \n", gameobject->name.c_str());
 	}
 
 	GameObject* damageGO = App->scene->FindGameObjectByName("Damage");
@@ -116,7 +138,7 @@ void EnemyControllerScript::Awake()
 	hpBoxTrigger = (ComponentBoxTrigger*)gameobject->GetComponentInChildren(ComponentType::BoxTrigger);
 	if (hpBoxTrigger == nullptr)
 	{
-		LOG("No child of the GameObject %s has a boxTrigger component attached \n", gameobject->name);
+		LOG("No child of the GameObject %s has a boxTrigger component attached \n", gameobject->name.c_str());
 	}
 
 	GameObject* attackGameObject = App->scene->FindGameObjectByName("HitBoxAttack", gameobject);
@@ -126,7 +148,7 @@ void EnemyControllerScript::Awake()
 		attackBoxTrigger = (ComponentBoxTrigger*)attackGameObject->GetComponentInChildren(ComponentType::BoxTrigger);
 		if (attackBoxTrigger == nullptr)
 		{
-			LOG("No child of the GameObject %s has a boxTrigger component attached \n", attackGameObject->name);
+			LOG("No child of the GameObject %s has a boxTrigger component attached \n", attackGameObject->name.c_str());
 		}
 		else
 		{
@@ -147,19 +169,6 @@ void EnemyControllerScript::Awake()
 		{
 			LOG("experienceController couldn't be found \n");
 		}
-	}
-	std::vector<std::string> materials = App->resManager->GetResourceNamesList(TYPE::MATERIAL, true);
-	for (std::string matName : materials)
-	{
-		if (matName == hitMaterialName)
-		{
-			hitMaterial = (ResourceMaterial*)App->resManager->GetByName(matName.c_str(), TYPE::MATERIAL);
-		}
-	}
-	defaultMaterial = myRender->material;
-	if (!hitMaterial)
-	{
-		hitMaterial = defaultMaterial;
 	}
 
 	GameObject* playerGO = App->scene->FindGameObjectByName("Player");
@@ -190,18 +199,28 @@ void EnemyControllerScript::Update()
 		if(enemyLifeBar != nullptr)
 			enemyLifeBar->SetLifeBar(maxHealth, actualHealth, EnemyLifeBarType::NORMAL, "Skeleton");
 
-		if (myRender != nullptr)
-			myRender->highlighted = true;
+		if (myRenders.size() > 0u && !isDead)
+		{
+			for (std::vector<ComponentRenderer*>::iterator it = myRenders.begin(); it != myRenders.end(); ++it)
+				(*it)->highlighted = true;
+		}
 
 		//we need to keep track of current targeted enemy
 		App->scene->enemyHovered.object = gameobject;
 		App->scene->enemyHovered.health = actualHealth;
+
+		if (App->scene->enemyHovered.object != nullptr &&
+			gameobject->UUID == App->scene->enemyHovered.object->UUID)
+		{
+			MouseController::ChangeCursorIcon(enemyCursor);
+		}
 	}
 	else
 	{
-		if (myRender != nullptr)
+		if (myRenders.size() > 0u)
 		{
-			myRender->highlighted = false;
+			for (std::vector<ComponentRenderer*>::iterator it = myRenders.begin(); it != myRenders.end(); ++it)
+				(*it)->highlighted = false;
 
 			//if this is the enemy that was being targeted, we untarget it from the scene
 			if (App->scene->enemyHovered.object != nullptr &&
@@ -209,17 +228,23 @@ void EnemyControllerScript::Update()
 			{
 				App->scene->enemyHovered.object = nullptr;
 				App->scene->enemyHovered.health = 0;
+				MouseController::ChangeCursorIcon(gameStandarCursor);
 			}
 		}
 	}
 
-	if (timer > 0.f)
+	if (enemyHit && hitColorTimer > 0.f)
 	{
-		timer -= App->time->gameDeltaTime;
+		hitColorTimer -= App->time->gameDeltaTime;
 	}
-	else
+	else if (enemyHit)
 	{
-		myRender->material = defaultMaterial;
+		// Set default material back to all meshes
+		for (unsigned i = 0u; i < myRenders.size(); i++)
+		{
+			myRenders.at(i)->material = defaultMaterials.at(i);
+		}
+		enemyHit = false;
 	}
 }
 
@@ -239,6 +264,23 @@ void EnemyControllerScript::Expose(ImGuiContext* context)
 	ImGui::InputText("playerTag", goName, 64);
 	playerTag = goName;
 	delete[] goName;
+
+	ImGui::Separator();
+	ImGui::Text("Enemy cursor:");
+	char* enemyCursorAux = new char[64];
+	strcpy_s(enemyCursorAux, strlen(enemyCursor.c_str()) + 1, enemyCursor.c_str());
+	ImGui::InputText("enemyCursor", enemyCursorAux, 64);
+	enemyCursor = enemyCursorAux;
+	delete[] enemyCursorAux;
+	
+	// Draw the name of every GO that has a ComponentRenderer 
+	if (myRenders.size() > 0u)
+	{
+		ImGui::Text("Renderers:");
+		for (std::vector<ComponentRenderer*>::iterator it = myRenders.begin(); it != myRenders.end(); ++it)
+			ImGui::Text(((Component*)(*it))->gameobject->name.c_str());
+	}
+
 }
 
 void EnemyControllerScript::Serialize(JSON_value* json) const
@@ -247,6 +289,7 @@ void EnemyControllerScript::Serialize(JSON_value* json) const
 	json->AddString("playerTag", playerTag.c_str());
 	json->AddInt("health", maxHealth);
 	json->AddInt("experience", experience);
+	json->AddString("enemyCursor", enemyCursor.c_str());
 }
 
 void EnemyControllerScript::DeSerialize(JSON_value* json)
@@ -256,13 +299,18 @@ void EnemyControllerScript::DeSerialize(JSON_value* json)
 	maxHealth = json->GetInt("health", maxHealth);
 	experience = json->GetInt("experience", 20);
 	actualHealth = maxHealth;
+	enemyCursor = json->GetString("enemyCursor", "RedGlow.cur");
 }
 
-void EnemyControllerScript::TakeDamage(unsigned damage)
+void EnemyControllerScript::TakeDamage(unsigned damage, int type)
 {
 	if (!isDead)
 	{
-		combataudioevents->enemyGotHit(0);
+		if (combataudioevents != nullptr)
+		{
+			combataudioevents->enemyGotHit(0);
+		}
+		enemyHit = true;
 		if (actualHealth - damage < 0 )
 		{
 			actualHealth = 0;
@@ -277,8 +325,12 @@ void EnemyControllerScript::TakeDamage(unsigned damage)
 		else
 		{
 			actualHealth -= damage;
-			myRender->material = hitMaterial;
-			timer = hitColorDuration;
+			// Set hit material to all enemy meshes
+			for (unsigned i = 0u; i < myRenders.size(); i++)
+			{
+				myRenders.at(i)->material = hitMaterial;
+			}
+			hitColorTimer = hitColorDuration;
 		}
 
 		if (actualHealth <= 0)
@@ -291,8 +343,19 @@ void EnemyControllerScript::TakeDamage(unsigned damage)
 			}
 			if (experienceController != nullptr)
 				experienceController->AddXP(experience);
+
+			// Disable hit boxes
+			hpBoxTrigger->Enable(false);
+			attackBoxTrigger->Enable(false);
+
+			// Unhighlight
+			if (myRenders.size() > 0u)
+			{
+				for (std::vector<ComponentRenderer*>::iterator it = myRenders.begin(); it != myRenders.end(); ++it)
+					(*it)->highlighted = false;
+			}
 		}
-		damageController->AddDamage(gameobject->transform, damage, 2);
+		damageController->AddDamage(gameobject->transform, damage, (DamageType)type);
 	}
 }
 
@@ -339,6 +402,14 @@ inline float EnemyControllerScript::GetDistanceToPlayer2D() const
 	math::float3 playerPosition = GetPlayerPosition();
 	enemyPosition.y = playerPosition.y;
 	return enemyPosition.Distance(playerPosition);
+}
+
+inline ComponentRenderer* EnemyControllerScript::GetMainRenderer() const
+{
+	if (myRenders.size() > 0u)
+		return myRenders.at(0u);
+	else
+		return nullptr;
 }
 
 inline bool EnemyControllerScript::IsCollidingWithPlayer() const
@@ -395,8 +466,16 @@ void EnemyControllerScript::OnTriggerEnter(GameObject* go)
 		}
 	}
 
-	if (go->tag == "PlayerHitBoxAttack")
+	if (go->tag == "PlayerHitBoxAttack" || go->tag == "Machete")
 	{
-		TakeDamage(playerMovement->stats.strength * 0.1);
+		// Generate a random number and if it is below the critical chance the damage will be increased
+		if ((rand() % 100u) < playerMovement->criticalChance)
+		{
+			TakeDamage(playerMovement->stats.strength * 0.2f, (int)DamageType::CRITICAL);
+		}
+		else
+		{
+			TakeDamage(playerMovement->stats.strength * 0.1f, (int)DamageType::NORMAL);
+		}
 	}
 }

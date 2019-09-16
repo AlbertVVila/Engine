@@ -107,10 +107,12 @@ public:
 										  float ignoreDist = floatMax) const;
 	ENGINE_API bool FindIntersectionPoint(math::float3 start, math::float3& intersectionPoint) const;
 	ENGINE_API bool FindClosestPoint2D(math::float3& initial) const;
+	ENGINE_API bool IsValidPosition(math::float3& position) const;
 
 	ENGINE_API bool HighQualityMouseDetection(math::float3* intersection) const;
 	ENGINE_API bool NavMeshPolygonQuery(unsigned int* targetRef, math::float3* endPos, math::float3 correction) const;
 
+	ENGINE_API bool IsCursorPointingToNavigableZone(float xPickingCorrection = 0.0f, float yPickingCorrection = 0.0f, float zPickingCorrection = 0.0f) const;
 
 	ENGINE_API void setPlayerBB(math::AABB bbox);
 

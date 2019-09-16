@@ -32,7 +32,7 @@ void EnemyStateHide::Update()
 
 void EnemyStateHide::Exit()
 {
-	enemy->enemyController->myRender->Enable(false);
+	enemy->enemyController->GetMainRenderer()->Enable(false);
 }
 
 void EnemyStateHide::Enter()
