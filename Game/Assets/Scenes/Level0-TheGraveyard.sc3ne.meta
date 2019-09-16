@@ -1,7 +1,11 @@
 {
     "Scene": {
         "metaVersion": 2,
+<<<<<<< HEAD
         "timeCreated": 1561160369,
+=======
+        "timeCreated": 1567891610,
+>>>>>>> dae7cf267b994ab79a4110ea68aebf2648fba478
         "GUID": 3727447632,
         "Name": "Level0-TheGraveyard",
         "File": "Assets/Scenes/Level0-TheGraveyard.sc3ne",

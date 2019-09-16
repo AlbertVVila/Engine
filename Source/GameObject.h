@@ -116,6 +116,7 @@ public:
 	bool isPrefab = false;
 	unsigned prefabUID = 0;
 	bool isDropablePlaceHolder = false;
+	unsigned prefabTimeStamp = 0u;
 
 	bool navigable = false;
 	bool noWalkable = false;
