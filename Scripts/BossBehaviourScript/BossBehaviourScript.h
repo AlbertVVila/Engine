@@ -37,6 +37,16 @@ enum class TPlocations
 	Right
 };
 
+enum class TPState
+{
+	None,
+	FadeOut,
+	Relocate,
+	FadeIn,
+	Projectiles,
+	Finished
+};
+
 class BossState;
 class BossStateCast;
 class BossStatePreCast;
@@ -150,6 +160,7 @@ private:
 	bool fadeOutComplete = false;
 	bool fadeInComplete = false;
 	bool skullsShot = false;
+	TPState teleportState = TPState::None;
 
 
 	bool isFloating = true;
