@@ -94,6 +94,7 @@ public:
 	EnemyControllerScript* enemyController = nullptr;
 
 	const float candleOffset = 150.0f;			// Distance from the enemy head to the ground
+	float candleStartZ = 0.0f;
 };
 
 extern "C" BuriedEnemyAIScript_API Script* CreateScript();

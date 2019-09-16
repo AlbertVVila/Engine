@@ -49,7 +49,11 @@ void EnemyStateShowUp::Enter()
 	enemy->enemyController->GetMainRenderer()->Enable(true);
 	enemy->enemyController->hpBoxTrigger->Enable(true);
 	enemy->dustParticlesGO->SetActive(true);
-	enemy->candleGO->transform->position.z += enemy->candleOffset;
+
+	// Set candle back to enemy head
+	float candleZPos = enemy->candleGO->transform->position.z;
+	if(candleZPos < candleZPos + enemy->candleOffset)
+		enemy->candleGO->transform->position.z += enemy->candleOffset;
 }
 
 void EnemyStateShowUp::Exit()

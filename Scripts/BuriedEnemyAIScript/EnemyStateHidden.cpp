@@ -30,7 +30,7 @@ void EnemyStateHidden::HandleIA()
 
 void EnemyStateHidden::Enter()
 {
-	enemy->candleGO->transform->position.z -= enemy->candleOffset;
+
 }
 
 void EnemyStateHidden::Update()
