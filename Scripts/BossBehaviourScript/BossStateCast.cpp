@@ -32,18 +32,21 @@ void BossStateCast::Update()
 
 void BossStateCast::Enter()
 {
-	duration = 1.0f;
+	
 	BossSkill nextSkill = SelectSkillToUse();
 
 	switch (nextSkill)
 	{
 	case BossSkill::Aoe:
 		boss->circlesSpawning = true;
+		duration = 1.0f;
 		break;
 	case BossSkill::Teleport:
 		boss->bossTeleporting = true;
+		duration = 5.0f;
 		break;
 	case BossSkill::Summon:
+		duration = 2.0f;
 		boss->bossSummoning = true;
 		break;
 	}

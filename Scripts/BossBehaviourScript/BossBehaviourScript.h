@@ -4,6 +4,7 @@
 #include "BaseScript.h"
 #include <vector>
 #include "Math/float3.h"
+#include "Math/Quat.h"
 
 #ifdef BossBehaviourScript_EXPORTS
 #define BossBehaviourScript_API __declspec(dllexport)
@@ -85,8 +86,11 @@ public:
 	float firstHealthThreshold = 0.75f;
 	float secondHealthThreshold = 0.35f;
 
+	void GetPositionVariables();
 	float distanceToPlayer = 0.0f;
 	math::float3 playerPosition = math::float3::zero;
+	math::float3 currentPosition = math::float3::zero;
+	math::Quat currentRotation = math::Quat::identity;
 
 	float activationDistance = 800.0f;
 	float activationTime = 5.0f;
@@ -138,9 +142,15 @@ private:
 	float circleNoise = 5.0f;
 	int circlesCast = 0;
 
+	int skullsToShootFirst = 5;
+	int numberSkullsShot = 0;
+	float skullsTimer = 0.0f;
+	float timeBetweenSkulls = 1.0f;
 	bool tpPositionDecided = false;
 	bool fadeOutComplete = false;
 	bool fadeInComplete = false;
+	bool skullsShot = false;
+
 
 	bool isFloating = true;
 	float angleConstant = 1.0f;
