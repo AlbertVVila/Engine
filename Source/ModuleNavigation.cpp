@@ -1890,14 +1890,13 @@ int crowdTool::AddNewAgent(float* pos, float speed)
 	ap.collisionQueryRange = ap.radius * 5.0f;
 	ap.pathOptimizationRange = ap.radius * 20.0f;
 	ap.updateFlags = 0;
-	//temporally disallowing flags cuz complicates debugging
-	/*ap.updateFlags |= DT_CROWD_ANTICIPATE_TURNS;
+	ap.updateFlags |= DT_CROWD_ANTICIPATE_TURNS;
 	ap.updateFlags |= DT_CROWD_OPTIMIZE_VIS;
 	ap.updateFlags |= DT_CROWD_OPTIMIZE_TOPO;
 	ap.updateFlags |= DT_CROWD_OBSTACLE_AVOIDANCE;
-	ap.updateFlags |= DT_CROWD_SEPARATION;*/
-	ap.obstacleAvoidanceType = (unsigned char)2;//float from 0 to 3 determining the quality of dodging
-	ap.separationWeight = 5.f;
+	ap.updateFlags |= DT_CROWD_SEPARATION;
+	ap.obstacleAvoidanceType = (unsigned char)3;//float from 0 to 3 determining the quality of dodging
+	ap.separationWeight = 1000.f;
 
 	int idx = m_crowd->addAgent(pos, &ap);
 	return idx;
@@ -1905,11 +1904,6 @@ int crowdTool::AddNewAgent(float* pos, float speed)
 
 ENGINE_API void crowdTool::UpdateCrowd(float dtime)
 {
-	const dtCrowdAgent* ag = m_crowd->getAgent(0);
-	std::stringstream s;
-	//s << "Dvel = " << ag->dvel[0] << ", " << ag->dvel[1] << ", " << ag->dvel[2] << std::endl;
-	s << "Target pos = " << ag->targetPos[0] << ", " << ag->targetPos[1] << ", " << ag->targetPos[2] << std::endl;
-	LOG(s.str().c_str());
 	m_crowd->update(dtime, debug);
 }
 

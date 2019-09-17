@@ -23,6 +23,7 @@
 #include "EnemyLifeBarController.h"
 #include "EnemyLoot.h"
 #include "CombatAudioEvents.h"
+#include "WorldControllerScript.h"
 
 #include "imgui.h"
 #include "JSON.h"
@@ -38,6 +39,10 @@ EnemyControllerScript_API Script* CreateScript()
 
 void EnemyControllerScript::Start()
 {
+	//add the enemy to the world controller script
+	//this should be called everytime levels are switched
+	currentWorldControllerScript = App->scene->FindGameObjectByName("WorldController")->GetComponent<WorldControllerScript>();
+	currentWorldControllerScript->addEnemy(gameobject);
 }
 
 void EnemyControllerScript::Awake()
@@ -426,7 +431,8 @@ void EnemyControllerScript::Move(float speed, math::float3& direction) const
 
 void EnemyControllerScript::Move(float speed, float& refreshTime, math::float3 position, std::vector<float3>& path) const
 {
-	if (refreshTime > MOVE_REFRESH_TIME)
+	currentWorldControllerScript->EnemyMoveRequest(gameobject->UUID, position);
+	/*if (refreshTime > MOVE_REFRESH_TIME)
 	{
 		refreshTime = 0.0f;
 		App->navigation->FindPath(gameobject->transform->position, position, path);
@@ -445,7 +451,7 @@ void EnemyControllerScript::Move(float speed, float& refreshTime, math::float3 p
 			gameobject->transform->SetPosition(currentPosition + speed * direction * App->time->gameDeltaTime);
 		}
 	}
-	refreshTime += App->time->gameDeltaTime;
+	refreshTime += App->time->gameDeltaTime;*/
 }
 
 void EnemyControllerScript::LookAt2D(math::float3& position)

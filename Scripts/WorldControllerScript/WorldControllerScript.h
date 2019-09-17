@@ -31,7 +31,7 @@ public:
 
 	//move request processing
 	void PlayerMoveRequest(unsigned int agentId, math::float3 posY, math::float3 correction);
-	void EnemyMoveRequest(unsigned int agentId);
+	void EnemyMoveRequest(unsigned int agentId, math::float3 dest, math::float3 correction = defaultCorrection);
 
 	//the update calls detour crowds update which updates all the positions of the agents
 	void Update() override;
@@ -49,12 +49,13 @@ private:
 	//map UUID-agent index
 	std::map<unsigned, int> objectAgentIndexMap;
 
+	//vector of gameobjects of agents to update their position
+	std::vector<GameObject*> agentObjects;
+
 	//pointer to the crowd
 	std::unique_ptr<crowdTool> crowdToolPointer = std::make_unique<crowdTool>();
 
-	//since there is no easy way to conver the math::float3 to float*, we need this mapping
-	//to keep track of all the objects belonging to the crowd in order to update their transform
-	std::vector<ComponentTransform*> agentObjects;
+	static const math::float3 defaultCorrection;
 	
 	unsigned playerUID = 0u;
 

@@ -166,7 +166,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;EnemyControllerScript_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)\Scripts\CombatAudioEvents;..\BaseScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source;$(SolutionDir)\Scripts\DamageController;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)\Scripts\EnemyLifeBarController;$(SolutionDir)\Scripts\ExperienceController;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\EnemyLoot</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Scripts\CombatAudioEvents;$(SolutionDir)Source\OpenCV;..\BaseScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source;$(SolutionDir)\Scripts\DamageController;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)\Scripts\EnemyLifeBarController;$(SolutionDir)\Scripts\ExperienceController;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\EnemyLoot</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Scripts\CombatAudioEvents;$(SolutionDir)Source\OpenCV;..\BaseScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source;$(SolutionDir)\Scripts\DamageController;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)\Scripts\EnemyLifeBarController;$(SolutionDir)\Scripts\ExperienceController;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\EnemyLoot;$(SolutionDir)\Scripts\WorldControllerScript</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -193,7 +193,7 @@ set ERRORLEVEL=0</Command>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;EnemyControllerScript_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Scripts\CombatAudioEvents;$(SolutionDir)\Scripts\CombatAudioEvents;..\BaseScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source;$(SolutionDir)\Scripts\DamageController;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)\Scripts\EnemyLifeBarController;$(SolutionDir)\Scripts\ExperienceController;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\EnemyLoot</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Scripts\CombatAudioEvents;$(SolutionDir)\Scripts\CombatAudioEvents;..\BaseScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source;$(SolutionDir)\Scripts\DamageController;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)\Scripts\EnemyLifeBarController;$(SolutionDir)\Scripts\ExperienceController;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\EnemyLoot;$(SolutionDir)\Scripts\WorldControllerScript</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -244,7 +244,7 @@ set ERRORLEVEL=0</Command>
       <PreprocessorDefinitions>WIN32;NDEBUG;EnemyControllerScript_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)\Scripts\CombatAudioEvents;..\BaseScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source;$(SolutionDir)\Scripts\DamageController;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)\Scripts\EnemyLifeBarController;$(SolutionDir)\Scripts\ExperienceController;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\EnemyLoot</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Scripts\CombatAudioEvents;$(SolutionDir)Source\OpenCV;..\BaseScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source;$(SolutionDir)\Scripts\DamageController;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)\Scripts\EnemyLifeBarController;$(SolutionDir)\Scripts\ExperienceController;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\EnemyLoot</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Scripts\CombatAudioEvents;$(SolutionDir)Source\OpenCV;..\BaseScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source;$(SolutionDir)\Scripts\DamageController;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)\Scripts\EnemyLifeBarController;$(SolutionDir)\Scripts\ExperienceController;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\EnemyLoot;$(SolutionDir)\Scripts\WorldControllerScript</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -275,7 +275,7 @@ set ERRORLEVEL=0</Command>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;EnemyControllerScript_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Scripts\CombatAudioEvents;$(SolutionDir)\Scripts\CombatAudioEvents;..\BaseScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source;$(SolutionDir)\Scripts\DamageController;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)\Scripts\EnemyLifeBarController;$(SolutionDir)\Scripts\ExperienceController;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\EnemyLoot</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Scripts\CombatAudioEvents;$(SolutionDir)\Scripts\CombatAudioEvents;..\BaseScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source;$(SolutionDir)\Scripts\DamageController;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)\Scripts\EnemyLifeBarController;$(SolutionDir)\Scripts\ExperienceController;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\EnemyLoot;$(SolutionDir)\Scripts\WorldControllerScript</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -349,6 +349,9 @@ set ERRORLEVEL=0</Command>
     </ProjectReference>
     <ProjectReference Include="..\PlayerMovement\PlayerMovement.vcxproj">
       <Project>{da319d4a-70a8-42c8-a54f-db7ead02ca0d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\WorldControllerScript\WorldControllerScript.vcxproj">
+      <Project>{b97e59db-aa43-47e5-b587-57a95e855c97}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -21,6 +21,7 @@ class EnemyLoot;
 class ExperienceController;
 class ResourceMaterial;
 class CombatAudioEvents;
+class WorldControllerScript;
 
 
 class EnemyControllerScript_API EnemyControllerScript : public Script
@@ -102,6 +103,8 @@ private:
 	float hitColorDuration = 0.2f;
 	float hitColorTimer = 0.f;
 	bool enemyHit = false;
+
+	WorldControllerScript* currentWorldControllerScript = nullptr;
 
 };
 
