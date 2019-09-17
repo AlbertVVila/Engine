@@ -264,7 +264,7 @@ void EnemyControllerScript::Expose(ImGuiContext* context)
 
 	// Enemy Type
 	const char* types[] = { "Skeleton", "Miner", "Sorcerer", "Spinner", "Bandolero" };
-	if (ImGui::BeginCombo("Type", types[(int)type]))
+	if (ImGui::BeginCombo("Type", types[(int)enemyType]))
 	{
 		for (int n = 0; n < 5; n++)
 		{
