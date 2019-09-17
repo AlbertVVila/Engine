@@ -38,7 +38,7 @@ private:
 	ComponentRenderer* render = nullptr;
 	ComponentBoxTrigger* trigger = nullptr;
 
-	float waitingTime = 2.0f;
+	float waitingTime = 0.8f;
 	float waitTimer = 0.0f;
 	float damageAmount = 5.0f;
 	float projectileSpeed = 1.0f;

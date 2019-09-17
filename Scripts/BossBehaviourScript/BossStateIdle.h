@@ -16,7 +16,7 @@ public:
 	void Enter() override;
 
 private:
-	float baseDuration = 6.0f;
+	float baseDuration = 2.0f;
 
 };
 

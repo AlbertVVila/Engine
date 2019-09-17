@@ -165,7 +165,7 @@ private:
 	int skullsToShootFirst = 5;
 	int numberSkullsShot = 0;
 	float skullsTimer = 0.0f;
-	float timeBetweenSkulls = 1.0f;
+	float timeBetweenSkulls = 0.2f;
 	bool tpPositionDecided = false;
 	bool fadeOutComplete = false;
 	bool fadeInComplete = false;
