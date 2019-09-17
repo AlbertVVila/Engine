@@ -30,7 +30,8 @@ public:
 	int GetMaskAmount() const;
 
 	bool IsMasked() const;
-	void PlayVideo();
+	ENGINE_API float PlayVideo(); //Returns duration
+	ENGINE_API void StopVideo();
 
 	float4 color = float4(1.0f, 1.0f, 1.0f, 1.0f);
 	ResourceTexture* texture = nullptr;
@@ -54,6 +55,7 @@ public:
 
 	unsigned videoTex = 0u;
 	bool videoFinished = false;
+	bool loop = false;
 
 private:
 	bool isMasked = false;
@@ -61,7 +63,7 @@ private:
 
 	bool updateImageList = false;
 
-	std::string videoPath = "flame.avi";
+	std::string videoPath = "Intro.mp4";
 	cv::Mat frame;
 	cv::VideoCapture cap;
 	float frameTime;

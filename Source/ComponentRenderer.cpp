@@ -28,6 +28,11 @@ ComponentRenderer::ComponentRenderer(GameObject* gameobject) : Component(gameobj
 {
 	SetMaterial(DEFAULTMAT);
 	gameobject->isVolumetric = true;
+
+	if (guiMeshes.empty())
+	{
+		UpdateMeshesList();
+	}
 }
 
 ComponentRenderer::ComponentRenderer(const ComponentRenderer& component) : Component(component)
@@ -45,21 +50,42 @@ ComponentRenderer::ComponentRenderer(const ComponentRenderer& component) : Compo
 	dissolve = component.dissolve;
 	dissolveAmount = component.dissolveAmount;
 	borderAmount = component.borderAmount;
+
 	water = component.water;
-	avoidSkinning = component.avoidSkinning;
+
 	waterAmplitude1 = component.waterAmplitude1;
-	waterAmplitude2 = component.waterAmplitude2;
-	waterSource1 = component.waterSource1;
-	waterSource2 = component.waterSource2;
+	waterFrequency1 = component.waterFrequency1;
 	waterDecay1 = component.waterDecay1;
+	waterSource1 = component.waterSource1;
+
+	waterAmplitude2 = component.waterAmplitude2;
+	waterFrequency2 = component.waterFrequency2;
 	waterDecay2 = component.waterDecay2;
+	distorsionSpeed = component.distorsionSpeed;
+
 	xTiles = component.xTiles;
 	yTiles = component.yTiles;
 	loop = component.loop;
 	fps = component.fps;
 	uvScaler = component.uvScaler;
-	distorsionSpeed = component.distorsionSpeed;
+
+	waterSource2 = component.waterSource2;
+	waterSpeed = component.waterSpeed;
+
 	isVolumetricLight = component.isVolumetricLight;
+
+	xTiles = component.xTiles;
+	yTiles = component.yTiles;
+	loop = component.loop;
+
+	texSpeed = component.texSpeed;
+
+	fps = component.fps;
+
+	if (guiMeshes.empty())
+	{
+		UpdateMeshesList();
+	}
 }
 
 ComponentRenderer::~ComponentRenderer()
@@ -102,10 +128,18 @@ void ComponentRenderer::DrawProperties()
 			ImGui::PushID("Mesh Combo");
 			if (ImGui::BeginCombo("", mesh != nullptr ? mesh->GetName() : "None selected"))
 			{
-				if (guiMeshes.empty())
+				bool none_selected = (mesh == nullptr);
+				if (ImGui::Selectable(None, none_selected))
 				{
-					guiMeshes = App->resManager->GetResourceNamesList(TYPE::MESH, true);
+					if (mesh != nullptr)
+					{
+						App->resManager->DeleteResource(mesh->GetUID());
+						mesh = nullptr;
+					}
 				}
+				if (none_selected)
+					ImGui::SetItemDefaultFocus();
+
 				for (int n = 0; n < guiMeshes.size(); n++)
 				{
 					bool is_selected = (mesh != nullptr ? HashString(mesh->GetName()) == HashString(guiMeshes[n].c_str()) : false);
@@ -121,9 +155,10 @@ void ComponentRenderer::DrawProperties()
 				}
 				ImGui::EndCombo();
 			}
-			else
+
+			if (ImGui::Button("Refresh List"))
 			{
-				guiMeshes.clear();
+				UpdateMeshesList();
 			}
 
 			if (mesh == nullptr)
@@ -255,6 +290,7 @@ void ComponentRenderer::Save(JSON_value* value) const
 	value->AddFloat3("waterSource2", waterSource2);
 	value->AddFloat2("uvScaler", uvScaler);
 	value->AddFloat("distorsionSpeed", distorsionSpeed);
+	value->AddInt("loop", loop);
 
 	if (dissolveAmount != 0.0f) //Avoid writing in disk unused info
 	{
@@ -264,6 +300,7 @@ void ComponentRenderer::Save(JSON_value* value) const
 	{
 		value->AddFloat("borderAmount", borderAmount);
 	}
+
 }
 
 void ComponentRenderer::Load(JSON_value* value)
@@ -302,6 +339,7 @@ void ComponentRenderer::Load(JSON_value* value)
 	waterSource2 = value->GetFloat3("waterSource2");
 	uvScaler = value->GetFloat2("uvScaler");
 	distorsionSpeed = value->GetFloat("distorsionSpeed", distorsionSpeed);
+	loop = value->GetInt("loop", loop);
 	dissolveAmount = value->GetFloat("dissolveAmount", dissolveAmount);
 	borderAmount = value->GetFloat("borderAmount", borderAmount);
 }
@@ -421,7 +459,8 @@ void ComponentRenderer::DrawMesh(unsigned shaderProgram)
 		unsigned i = 0u;
 		for (BindBone bb : bindBones)
 		{
-			palette[i++] = bb.go->GetGlobalTransform() * bb.transform;
+			if(bb.go != nullptr)
+				palette[i++] = bb.go->GetGlobalTransform() * bb.transform;
 		}
 
 		glUniformMatrix4fv(glGetUniformLocation(shaderProgram,
@@ -544,4 +583,10 @@ void ComponentRenderer::ResetAnimation()
 {
 	timer = 0.f;
 	animationEnded = false;
+}
+
+void ComponentRenderer::UpdateMeshesList()
+{
+	guiMeshes.clear();
+	guiMeshes = App->resManager->GetResourceNamesList(TYPE::MESH, true);
 }
