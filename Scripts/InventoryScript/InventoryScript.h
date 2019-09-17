@@ -73,6 +73,7 @@ private:
 	PlayerMovement* playerMovement = nullptr;
 
 	bool itemGrabbed = false;
+	bool skill = false;
 
 };
 
