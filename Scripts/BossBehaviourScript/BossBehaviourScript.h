@@ -120,6 +120,10 @@ public:
 	math::float3 highPointFirstCS = math::float3::zero;
 	math::float3 pointStartFight = math::float3::zero;
 
+	GameObject* closingDoor = nullptr;
+	float finalDoorHeight = 600.0f;
+	GameObject* playerCamera = nullptr;
+
 	//TP points
 	math::float3 topTP = math::float3::zero;
 	math::float3 bottomTP = math::float3::zero;

@@ -82,15 +82,15 @@
                     "Enabled": 1,
                     "script": "AOEBossScript",
                     "scriptInfo": {
-                        "timerFade": 2.5,
-                        "duration": 2.799999952316284,
-                        "damageToPlayer": 5.0
+                        "timerFade": 1.5,
+                        "duration": 2.0,
+                        "damageToPlayer": 15.0
                     }
                 }
             ]
         },
         {
-            "UID": 1856622456,
+            "UID": 3300010967,
             "ParentUID": 73541707,
             "Name": "Prep Particles",
             "Tag": "Default",
@@ -220,12 +220,13 @@
                         1.0,
                         1.0
                     ],
-                    "distorsionSpeed": 0.0010000000474974514
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 1
                 }
             ]
         },
         {
-            "UID": 289149009,
+            "UID": 2727607563,
             "ParentUID": 73541707,
             "Name": "Beam Particles",
             "Tag": "Default",
@@ -390,7 +391,7 @@
             ]
         },
         {
-            "UID": 524394357,
+            "UID": 658640639,
             "ParentUID": 73541707,
             "Name": "Hitbox",
             "Tag": "Default",
