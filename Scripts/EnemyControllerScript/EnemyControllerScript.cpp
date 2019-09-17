@@ -320,7 +320,6 @@ void EnemyControllerScript::TakeDamage(unsigned damage, int type)
 				enemyLoot->GenerateLoot();
 			}
 			gameobject->SetActive(false);
-			
 		}
 		else
 		{
@@ -336,6 +335,10 @@ void EnemyControllerScript::TakeDamage(unsigned damage, int type)
 		if (actualHealth <= 0)
 		{
 			isDead = true;
+			if ((DamageType)type == DamageType::CRITICAL)
+			{
+				isDeadCritical = true; //by default is 0 (Normal)
+			}
 			enemyLoot = gameobject->GetComponent<EnemyLoot>();
 			if (enemyLoot != nullptr)
 			{

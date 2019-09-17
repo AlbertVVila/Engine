@@ -26,7 +26,12 @@ public:
 private:
 	void BonesExplosionFX();
 	void RemainingBonesFX();
+	void ShowRemainingBones();
 
+public:
+	DEATHTYPE deathType = DEATHTYPE::NORMAL;
+
+private:
 	//BONE MESHES:
 	GameObject* bonesParent = nullptr;
 	//Explosion
@@ -47,12 +52,11 @@ private:
 
 	ComponentRenderer* renderer = nullptr;
 
-	float bonesSpeed = 2000.0f;
+	float bonesSpeed = 1000.0f;
 	float rotationSpeed = 20.f;
 	float totalRotation = 0.0f;
 
-	float deathDuration = 0.5f;
-	DEATHTYPE deathType = DEATHTYPE::NORMAL;
+	float deathDuration = 0.8f;
 };
 
 #endif __ENEMYSTATEDEATH_H_

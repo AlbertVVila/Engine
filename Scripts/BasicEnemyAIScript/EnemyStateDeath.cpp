@@ -51,15 +51,13 @@ EnemyStateDeath::~EnemyStateDeath()
 
 void EnemyStateDeath::Enter()
 {
+	if (enemy->enemyController->IsDeadCrit())
+	{
+		deathType = DEATHTYPE::CRIT;
+	}
 	GameObject* meshScene = enemy->gameobject->children.front();
 	meshScene->children.front()->SetActive(false); //disactive bones with its trails
 	auxTimer = 0.0f;
-
-	//if (bonesParent != nullptr)
-	//{
-	//	bonesParent->SetActive(true);
-	//	bonesDeathFX->SetActive(true);
-	//}
 
 	switch (deathType)
 	{
@@ -93,10 +91,15 @@ void EnemyStateDeath::Update()
 		if (waitedTime > 0.2f)
 		{
 			renderer->dissolveAmount = 0.3f + waitedTime/(deathDuration*10);
+			if (standardFX != nullptr && standardFX->children.front()->isActive())
+			{
+				standardFX->children.front()->SetActive(false);  //Disable initial smoke
+			}
 			RemainingBonesFX();
 		}
 		if (waitedTime > deathDuration)
 		{
+			ShowRemainingBones();
 			if (standardFX != nullptr && standardFX->isActive())
 			{
 				standardFX->SetActive(false);
@@ -146,7 +149,7 @@ void EnemyStateDeath::BonesExplosionFX()
 		//		boneInfo[i].second.y * rotationSpeed * enemy->App->time->gameDeltaTime,
 		//		boneInfo[i].second.z * rotationSpeed * enemy->App->time->gameDeltaTime)));
 
-		deathBones[i]->GetComponent<ComponentRenderer>()->dissolveAmount += enemy->App->time->gameDeltaTime;
+		deathBones[i]->GetComponent<ComponentRenderer>()->dissolveAmount += enemy->App->time->gameDeltaTime*0.8f;
 	}
 }
 
@@ -156,5 +159,15 @@ void EnemyStateDeath::RemainingBonesFX()
 	{
 		ComponentRenderer* boneRenderer = bone->GetComponent<ComponentRenderer>();
 		boneRenderer->dissolveAmount = MAX(0, boneRenderer->dissolveAmount - enemy->App->time->gameDeltaTime*0.3f);
+	}
+}
+
+void EnemyStateDeath::ShowRemainingBones()
+{
+	if (enemy->gameobject->isActive())
+	{
+		bonesParent->children.remove(remainingBones);
+		enemy->App->scene->root->InsertChild(remainingBones);
+		enemy->gameobject->SetActive(false);
 	}
 }
