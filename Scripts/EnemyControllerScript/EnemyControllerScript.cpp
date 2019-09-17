@@ -196,8 +196,19 @@ void EnemyControllerScript::Update()
 	auto mesh = std::find(intersects.begin(), intersects.end(), this->myMesh);
 	if(mesh != std::end(intersects) && *mesh == this->myMesh)
 	{
-		if(enemyLifeBar != nullptr)
-			enemyLifeBar->SetLifeBar(maxHealth, actualHealth, EnemyLifeBarType(enemyLevel), "Skeleton");
+		// Show enemy lifebar
+		if (enemyLifeBar != nullptr)
+		{
+			switch (enemyType)
+			{
+			default:
+			case EnemyType::SKELETON:	enemyLifeBar->SetLifeBar(maxHealth, actualHealth, EnemyLifeBarType(enemyLevel), "Skeleton");	break;
+			case EnemyType::MINER:		enemyLifeBar->SetLifeBar(maxHealth, actualHealth, EnemyLifeBarType(enemyLevel), "Miner"); 		break;
+			case EnemyType::SORCERER:	enemyLifeBar->SetLifeBar(maxHealth, actualHealth, EnemyLifeBarType(enemyLevel), "Sorcerer");	break;
+			case EnemyType::SPINNER:	enemyLifeBar->SetLifeBar(maxHealth, actualHealth, EnemyLifeBarType(enemyLevel), "Spinner"); 	break;
+			case EnemyType::BANDOLERO:	enemyLifeBar->SetLifeBar(maxHealth, actualHealth, EnemyLifeBarType(enemyLevel), "Bandolero");	break;
+			}		
+		}
 
 		if (myRenders.size() > 0u && !isDead)
 		{
@@ -250,6 +261,24 @@ void EnemyControllerScript::Update()
 
 void EnemyControllerScript::Expose(ImGuiContext* context)
 {
+
+	// Enemy Type
+	const char* types[] = { "Skeleton", "Miner", "Sorcerer", "Spinner", "Bandolero" };
+	if (ImGui::BeginCombo("Type", types[(int)type]))
+	{
+		for (int n = 0; n < 5; n++)
+		{
+			bool isSelected = ((int)enemyType == n);
+			if (ImGui::Selectable(types[n], isSelected) && (int)enemyType != n)
+			{
+				enemyType = (EnemyType)n;
+			}
+			if (isSelected)
+				ImGui::SetItemDefaultFocus();
+		}
+		ImGui::EndCombo();
+	}
+
 	ImGui::SliderInt("Level", &enemyLevel, 1, 3);
 
 	if (ImGui::InputInt("Health", &maxHealth))
@@ -288,6 +317,7 @@ void EnemyControllerScript::Expose(ImGuiContext* context)
 void EnemyControllerScript::Serialize(JSON_value* json) const
 {
 	assert(json != nullptr);
+	json->AddInt("type", (int)enemyType);
 	json->AddInt("level", enemyLevel);
 	json->AddString("playerTag", playerTag.c_str());
 	json->AddInt("health", maxHealth);
@@ -298,6 +328,7 @@ void EnemyControllerScript::Serialize(JSON_value* json) const
 void EnemyControllerScript::DeSerialize(JSON_value* json)
 {
 	assert(json != nullptr);
+	enemyType = (EnemyType)json->GetInt("type");
 	enemyLevel = json->GetInt("level");
 	playerTag = json->GetString("playerTag", "Player");
 	maxHealth = json->GetInt("health", maxHealth);
