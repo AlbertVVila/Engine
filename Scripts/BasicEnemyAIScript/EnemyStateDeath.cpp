@@ -14,7 +14,6 @@
 #include "Math/float3.h"
 #include "Algorithm/Random/LCG.h"
 
-
 EnemyStateDeath::EnemyStateDeath(BasicEnemyAIScript* AIScript)
 {
 	enemy = AIScript;
@@ -28,12 +27,20 @@ EnemyStateDeath::EnemyStateDeath(BasicEnemyAIScript* AIScript)
 
 	if (bonesParent != nullptr)
 	{
-		for (GameObject* bone : bonesParent->children)
+		explosionBones = *bonesParent->children.begin();
+		for (GameObject* bone : explosionBones->children)
 		{
 			deathBones.emplace_back(bone);
 			boneInfo.emplace_back(std::make_pair(math::float3(rand.Float() * 2 - 1, rand.Float(), rand.Float() * 2 - 1),
 				math::float3(rand.Float() * 360, rand.Float() * 360, rand.Float() * 360)));
 		}
+		remainingBones = *bonesParent->children.rbegin();
+	}
+
+	if (bonesDeathFX != nullptr)
+	{
+		explosionFX = *bonesDeathFX->children.begin();
+		standardFX = *bonesDeathFX->children.rbegin();
 	}
 }
 
@@ -47,11 +54,25 @@ void EnemyStateDeath::Enter()
 	GameObject* meshScene = enemy->gameobject->children.front();
 	meshScene->children.front()->SetActive(false); //disactive bones with its trails
 	auxTimer = 0.0f;
-	if (bonesParent != nullptr)
+
+	//if (bonesParent != nullptr)
+	//{
+	//	bonesParent->SetActive(true);
+	//	bonesDeathFX->SetActive(true);
+	//}
+
+	switch (deathType)
 	{
-		bonesParent->SetActive(true);
-		bonesDeathFX->SetActive(true);
+	case DEATHTYPE::NORMAL:
+		remainingBones->SetActive(true);
+		standardFX->SetActive(true);
+		break;
+	case DEATHTYPE::CRIT:
+		explosionBones->SetActive(true);
+		explosionFX->SetActive(true);
+		break;
 	}
+
 	renderer->highlighted = false;
 
 	for (auto cr : enemy->enemyController->myRenders)
@@ -63,37 +84,56 @@ void EnemyStateDeath::Enter()
 
 void EnemyStateDeath::Update()
 {
+
 	float waitedTime = (timer - auxTimer);
 
-	if (waitedTime > deathDuration * 0.3f)
+	switch (deathType)
 	{
-		if (bonesDeathFX != nullptr && bonesDeathFX->isActive())
+	case DEATHTYPE::NORMAL:
+		if (waitedTime > 0.2f)
 		{
-			bonesDeathFX->SetActive(false);
+			renderer->dissolveAmount = 0.3f + waitedTime/(deathDuration*10);
+			RemainingBonesFX();
 		}
-	}
+		if (waitedTime > deathDuration)
+		{
+			if (standardFX != nullptr && standardFX->isActive())
+			{
+				standardFX->SetActive(false);
+			}
+		}
+		break;
+	case DEATHTYPE::CRIT:
+		if (waitedTime > deathDuration * 0.3f)
+		{
+			if (explosionFX != nullptr && explosionFX->isActive())
+			{
+				explosionFX->SetActive(false);
+			}
+		}
+		if (waitedTime > deathDuration)
+		{
+			enemy->gameobject->SetActive(false);
 
-	if (waitedTime > deathDuration)
-	{
-		enemy->gameobject->SetActive(false);
-
-		if (bonesParent != nullptr)
-		{
-			bonesParent->SetActive(false);
+			if (explosionBones != nullptr)
+			{
+				explosionBones->SetActive(false);
+			}
 		}
-	}
-	else if(waitedTime > deathDuration*0.1f)
-	{
-		if (bonesDeathFX != nullptr && bonesDeathFX->children.front()->isActive())
+		else if (waitedTime > deathDuration * 0.1f)
 		{
-			bonesDeathFX->children.front()->SetActive(false);
+			if (explosionFX != nullptr && explosionFX->children.front()->isActive())
+			{
+				explosionFX->children.front()->SetActive(false);  //Disable initial smoke
+			}
+			renderer->dissolveAmount = waitedTime / deathDuration;
+			BonesExplosionFX();
 		}
-		renderer->dissolveAmount = waitedTime / deathDuration;
-		DeathAnimation();
+		break;
 	}
 }
 
-void EnemyStateDeath::DeathAnimation()
+void EnemyStateDeath::BonesExplosionFX()
 {
 	for (unsigned i = 0; i < deathBones.size(); ++i)
 	{
@@ -107,5 +147,14 @@ void EnemyStateDeath::DeathAnimation()
 		//		boneInfo[i].second.z * rotationSpeed * enemy->App->time->gameDeltaTime)));
 
 		deathBones[i]->GetComponent<ComponentRenderer>()->dissolveAmount += enemy->App->time->gameDeltaTime;
+	}
+}
+
+void EnemyStateDeath::RemainingBonesFX()
+{
+	for (GameObject* bone : remainingBones->children)
+	{
+		ComponentRenderer* boneRenderer = bone->GetComponent<ComponentRenderer>();
+		boneRenderer->dissolveAmount = MAX(0, boneRenderer->dissolveAmount - enemy->App->time->gameDeltaTime*0.3f);
 	}
 }

@@ -43,7 +43,7 @@ EnemyStateDeath::~EnemyStateDeath()
 {
 }
 
-void EnemyStateDeath::DeathAnimation()
+void EnemyStateDeath::BonesExplosionFX()
 {
 	for (unsigned i = 0; i < deathBones.size(); ++i)
 	{
@@ -88,7 +88,7 @@ void EnemyStateDeath::Update()
 			bonesDeathFX->children.front()->SetActive(false);
 		}
 		renderer->dissolveAmount = waitedTime / deathDuration;
-		DeathAnimation();
+		BonesExplosionFX();
 	}
 }
 
