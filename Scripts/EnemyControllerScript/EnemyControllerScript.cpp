@@ -250,7 +250,7 @@ void EnemyControllerScript::Update()
 
 void EnemyControllerScript::Expose(ImGuiContext* context)
 {
-	ImGui::SliderInt("Level", &enemyLevel, 1, 2);
+	ImGui::SliderInt("Level", &enemyLevel, 1, 3);
 
 	if (ImGui::InputInt("Health", &maxHealth))
 	{
