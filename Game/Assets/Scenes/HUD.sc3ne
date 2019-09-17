@@ -4,121 +4,6 @@
     },
     "GameObjects": [
         {
-            "UID": 1063327445,
-            "ParentUID": 0,
-            "Name": "Camera",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 1,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 0,
-                    "Enabled": 1,
-                    "Position": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "Rotation": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ],
-                    "Euler": [
-                        -0.0,
-                        0.0,
-                        -0.0
-                    ],
-                    "Scale": [
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "Global": [
-                        1.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
-                },
-                {
-                    "Type": 2,
-                    "Enabled": 1,
-                    "MovementSpeed": 5.0,
-                    "RotationSpeed": 200.0,
-                    "ZoomSpeed": 0.4000000059604645,
-                    "Znear": 10.0,
-                    "Zfar": 100000.0,
-                    "vFOV": 1.0471975803375245,
-                    "hFOV": 1.5192210674285889,
-                    "Position": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "Front": [
-                        0.0,
-                        0.0,
-                        1.0
-                    ],
-                    "Up": [
-                        0.0,
-                        1.0,
-                        0.0
-                    ],
-                    "isMain": 1,
-                    "fogFalloff": 1.0,
-                    "fogQuadratic": 1.0,
-                    "maxFog": 0.800000011920929,
-                    "fogColor": [
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "fogEnabled": 0
-                }
-            ]
-        },
-        {
             "UID": 2970544186,
             "ParentUID": 1,
             "Name": "LoseWindow",
@@ -221,7 +106,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 0,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -327,7 +213,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "highlightedImage": {
                         "Type": 7,
@@ -349,7 +236,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "pressedImage": {
                         "Type": 7,
@@ -371,7 +259,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
@@ -482,7 +371,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 0,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -554,7 +444,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 0,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -1590,7 +1481,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "highlightedImage": {
                         "Type": 7,
@@ -1612,7 +1504,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "pressedImage": {
                         "Type": 7,
@@ -1634,7 +1527,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
@@ -1752,7 +1646,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -1824,7 +1719,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -1896,7 +1792,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -1968,7 +1865,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -2040,7 +1938,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -2112,7 +2011,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -2184,7 +2084,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -2335,7 +2236,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -2407,7 +2309,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -2479,7 +2382,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -2551,7 +2455,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -2623,7 +2528,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -2695,7 +2601,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -2767,7 +2674,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -2839,7 +2747,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -2911,7 +2820,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -2983,7 +2893,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -3055,7 +2966,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -3127,7 +3039,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -3199,7 +3112,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -3271,7 +3185,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -3343,7 +3258,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -3415,7 +3331,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -3487,7 +3404,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -3559,7 +3477,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -5247,7 +5166,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -5319,7 +5239,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -5391,7 +5312,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -5463,7 +5385,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -5535,7 +5458,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -5607,7 +5531,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -5679,7 +5604,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -5751,7 +5677,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -5823,7 +5750,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -5895,7 +5823,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -5967,7 +5896,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -6039,7 +5969,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -6111,7 +6042,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -6183,7 +6115,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -6255,7 +6188,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -6327,7 +6261,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -6399,7 +6334,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -6471,7 +6407,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -6543,7 +6480,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -6615,7 +6553,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -6687,7 +6626,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -6759,7 +6699,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -6831,7 +6772,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -6903,7 +6845,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -7054,7 +6997,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -7126,7 +7070,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -7680,7 +7625,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -7752,7 +7698,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -7984,7 +7931,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -8056,7 +8004,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -8288,7 +8237,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -8360,7 +8310,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -8592,7 +8543,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -8664,7 +8616,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -8674,7 +8627,7 @@
             "Name": "Skills",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -8701,6 +8654,7 @@
             "isPrefab": 1,
             "isPrefabSync": 1,
             "prefabUID": 2325434735,
+            "prefabTimeStamp": 1568742335,
             "Components": [
                 {
                     "Type": 9,
@@ -8711,57 +8665,62 @@
                             {
                                 "id": 0,
                                 "name": "Dash",
-                                "description": "",
+                                "description": "Your new legs allow you to dash towards the cursor, damaging enemies on your path.",
                                 "locked": 0,
-                                "maxLevel": 3,
+                                "maxLevel": 1,
                                 "nextSkill": 1,
                                 "connection": 0,
+                                "mana": 20,
                                 "activeTextureUID": 885453344,
                                 "inactiveTextureUID": 1891334666
                             },
                             {
                                 "id": 1,
-                                "name": "Circular",
-                                "description": "",
+                                "name": "Circular attack",
+                                "description": "Rapidly spinning your weapon around your body allows you to damage nearby enemies.",
                                 "locked": 1,
-                                "maxLevel": 2,
+                                "maxLevel": 1,
                                 "nextSkill": 2,
                                 "connection": 1,
+                                "mana": 50,
                                 "activeTextureUID": 3774178758,
                                 "inactiveTextureUID": 1814959232
                             },
                             {
                                 "id": 2,
-                                "name": "Bomb",
-                                "description": "",
+                                "name": "Smash",
+                                "description": "Unleashing your power through your arms allows you to jump towards the cursor and smash the floor damaging enemies in small area.",
                                 "locked": 1,
                                 "maxLevel": 1,
                                 "nextSkill": -1,
                                 "connection": -1,
+                                "mana": 40,
                                 "activeTextureUID": 2296932366,
                                 "inactiveTextureUID": 3063042807
                             },
                             {
                                 "id": 3,
-                                "name": "Skill3",
-                                "description": "",
+                                "name": "Machete rain",
+                                "description": "Machetes will rain from the sky damaging enemies in a large area. Hold the KEY and select the area where you want to cast the skill, then release the same key to activate the hability.",
                                 "locked": 0,
-                                "maxLevel": 2,
-                                "nextSkill": 4,
-                                "connection": 2,
-                                "activeTextureUID": 4157880507,
-                                "inactiveTextureUID": 1052833000
+                                "maxLevel": 1,
+                                "nextSkill": -1,
+                                "connection": -1,
+                                "mana": 70,
+                                "activeTextureUID": 101418882,
+                                "inactiveTextureUID": 386296996
                             },
                             {
                                 "id": 4,
-                                "name": "Machete rain",
+                                "name": "Skill4",
                                 "description": "",
                                 "locked": 1,
                                 "maxLevel": 1,
                                 "nextSkill": -1,
                                 "connection": -1,
-                                "activeTextureUID": 101418882,
-                                "inactiveTextureUID": 386296996
+                                "mana": 0,
+                                "activeTextureUID": 4157880507,
+                                "inactiveTextureUID": 1052833000
                             },
                             {
                                 "id": 5,
@@ -8771,6 +8730,7 @@
                                 "maxLevel": 2,
                                 "nextSkill": 6,
                                 "connection": 4,
+                                "mana": 0,
                                 "activeTextureUID": 2353223529,
                                 "inactiveTextureUID": 4140996810
                             },
@@ -8782,6 +8742,7 @@
                                 "maxLevel": 3,
                                 "nextSkill": 7,
                                 "connection": 5,
+                                "mana": 0,
                                 "activeTextureUID": 4037492790,
                                 "inactiveTextureUID": 1474843939
                             },
@@ -8793,6 +8754,7 @@
                                 "maxLevel": 1,
                                 "nextSkill": -1,
                                 "connection": -1,
+                                "mana": 0,
                                 "activeTextureUID": 3595172473,
                                 "inactiveTextureUID": 2604386210
                             },
@@ -8804,6 +8766,7 @@
                                 "maxLevel": 2,
                                 "nextSkill": 9,
                                 "connection": 6,
+                                "mana": 0,
                                 "activeTextureUID": 2868511582,
                                 "inactiveTextureUID": 4145295781
                             },
@@ -8815,6 +8778,7 @@
                                 "maxLevel": 1,
                                 "nextSkill": 10,
                                 "connection": 7,
+                                "mana": 0,
                                 "activeTextureUID": 2089509454,
                                 "inactiveTextureUID": 184765913
                             },
@@ -8826,6 +8790,7 @@
                                 "maxLevel": 1,
                                 "nextSkill": -1,
                                 "connection": -1,
+                                "mana": 0,
                                 "activeTextureUID": 3921259047,
                                 "inactiveTextureUID": 472688446
                             }
@@ -8835,7 +8800,7 @@
             ]
         },
         {
-            "UID": 924868100,
+            "UID": 3394866091,
             "ParentUID": 768655444,
             "Name": "SkillsBackgroundImage",
             "Tag": "Default",
@@ -8863,7 +8828,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -8902,13 +8867,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 1519383347,
-            "ParentUID": 924868100,
+            "UID": 1160697697,
+            "ParentUID": 3394866091,
             "Name": "SkillConnections",
             "Tag": "Default",
             "Static": 0,
@@ -8986,8 +8952,8 @@
             ]
         },
         {
-            "UID": 3609736324,
-            "ParentUID": 1519383347,
+            "UID": 2502327942,
+            "ParentUID": 1160697697,
             "Name": "Connection0",
             "Tag": "Default",
             "Static": 0,
@@ -9053,13 +9019,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 1549607544,
-            "ParentUID": 1519383347,
+            "UID": 3164104109,
+            "ParentUID": 1160697697,
             "Name": "Connection1",
             "Tag": "Default",
             "Static": 0,
@@ -9125,13 +9092,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 437348536,
-            "ParentUID": 1519383347,
+            "UID": 145879550,
+            "ParentUID": 1160697697,
             "Name": "Connection2",
             "Tag": "Default",
             "Static": 0,
@@ -9197,13 +9165,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 1985538268,
-            "ParentUID": 1519383347,
+            "UID": 2034196985,
+            "ParentUID": 1160697697,
             "Name": "Connection3",
             "Tag": "Default",
             "Static": 0,
@@ -9269,13 +9238,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 1507904255,
-            "ParentUID": 1519383347,
+            "UID": 305791508,
+            "ParentUID": 1160697697,
             "Name": "Connection4",
             "Tag": "Default",
             "Static": 0,
@@ -9341,13 +9311,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 3050345485,
-            "ParentUID": 1519383347,
+            "UID": 1215969372,
+            "ParentUID": 1160697697,
             "Name": "Connection5",
             "Tag": "Default",
             "Static": 0,
@@ -9413,13 +9384,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 1931328333,
-            "ParentUID": 1519383347,
+            "UID": 2021673470,
+            "ParentUID": 1160697697,
             "Name": "Connection6",
             "Tag": "Default",
             "Static": 0,
@@ -9485,13 +9457,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 3413319786,
-            "ParentUID": 924868100,
+            "UID": 315634940,
+            "ParentUID": 3394866091,
             "Name": "SkillSlots",
             "Tag": "Default",
             "Static": 0,
@@ -9569,8 +9542,8 @@
             ]
         },
         {
-            "UID": 898213681,
-            "ParentUID": 3413319786,
+            "UID": 1049730332,
+            "ParentUID": 315634940,
             "Name": "Skill0",
             "Tag": "Default",
             "Static": 0,
@@ -9597,7 +9570,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -9636,13 +9609,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 2894135338,
-            "ParentUID": 898213681,
+            "UID": 581034639,
+            "ParentUID": 1049730332,
             "Name": "SkillIcon0",
             "Tag": "Default",
             "Static": 0,
@@ -9708,13 +9682,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 1037977584,
-            "ParentUID": 898213681,
+            "UID": 1584154498,
+            "ParentUID": 1049730332,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -9764,7 +9739,7 @@
                     "Type": 6,
                     "Enabled": 1,
                     "FontSize": 21.0,
-                    "text": "0/5",
+                    "text": "0/1",
                     "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.09019608050584793,
@@ -9789,13 +9764,13 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 0
+                    "UIOrder": 5
                 }
             ]
         },
         {
-            "UID": 1181539660,
-            "ParentUID": 3413319786,
+            "UID": 3321396843,
+            "ParentUID": 315634940,
             "Name": "Skill1",
             "Tag": "Default",
             "Static": 0,
@@ -9822,7 +9797,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -9861,13 +9836,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 1622567777,
-            "ParentUID": 1181539660,
+            "UID": 261745859,
+            "ParentUID": 3321396843,
             "Name": "SkillIcon1",
             "Tag": "Default",
             "Static": 0,
@@ -9933,13 +9909,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 885700641,
-            "ParentUID": 1181539660,
+            "UID": 3951450,
+            "ParentUID": 3321396843,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -9989,7 +9966,7 @@
                     "Type": 6,
                     "Enabled": 1,
                     "FontSize": 21.0,
-                    "text": "0/3",
+                    "text": "0/1",
                     "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.09019608050584793,
@@ -10014,13 +9991,13 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 0
+                    "UIOrder": 5
                 }
             ]
         },
         {
-            "UID": 1856274394,
-            "ParentUID": 3413319786,
+            "UID": 1872019681,
+            "ParentUID": 315634940,
             "Name": "Skill2",
             "Tag": "Default",
             "Static": 0,
@@ -10047,7 +10024,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -10086,13 +10063,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 1788355997,
-            "ParentUID": 1856274394,
+            "UID": 1359869569,
+            "ParentUID": 1872019681,
             "Name": "SkillIcon2",
             "Tag": "Default",
             "Static": 0,
@@ -10158,13 +10136,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 4121907243,
-            "ParentUID": 1856274394,
+            "UID": 2987798269,
+            "ParentUID": 1872019681,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -10214,7 +10193,7 @@
                     "Type": 6,
                     "Enabled": 1,
                     "FontSize": 21.0,
-                    "text": "0/2",
+                    "text": "0/1",
                     "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.0901639461517334,
@@ -10239,13 +10218,13 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 0
+                    "UIOrder": 5
                 }
             ]
         },
         {
-            "UID": 1792616465,
-            "ParentUID": 3413319786,
+            "UID": 2487457280,
+            "ParentUID": 315634940,
             "Name": "Skill3",
             "Tag": "Default",
             "Static": 0,
@@ -10272,7 +10251,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -10311,13 +10290,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 3587122836,
-            "ParentUID": 1792616465,
+            "UID": 1653227754,
+            "ParentUID": 2487457280,
             "Name": "SkillIcon3",
             "Tag": "Default",
             "Static": 0,
@@ -10366,8 +10346,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1052833000,
-                    "textureName": "Desactivated_Hability_1",
+                    "textureUID": 386296996,
+                    "textureName": "Desactivated_Hability_7",
                     "color": [
                         1.0,
                         0.9999899864196777,
@@ -10383,13 +10363,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 1717780102,
-            "ParentUID": 1792616465,
+            "UID": 4036781227,
+            "ParentUID": 2487457280,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -10439,7 +10420,7 @@
                     "Type": 6,
                     "Enabled": 1,
                     "FontSize": 21.0,
-                    "text": "0/5",
+                    "text": "0/1",
                     "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.09019608050584793,
@@ -10464,13 +10445,13 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 0
+                    "UIOrder": 5
                 }
             ]
         },
         {
-            "UID": 3319676719,
-            "ParentUID": 3413319786,
+            "UID": 3222461548,
+            "ParentUID": 315634940,
             "Name": "Skill4",
             "Tag": "Default",
             "Static": 0,
@@ -10497,7 +10478,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -10536,13 +10517,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 3432936942,
-            "ParentUID": 3319676719,
+            "UID": 1758463759,
+            "ParentUID": 3222461548,
             "Name": "SkillIcon4",
             "Tag": "Default",
             "Static": 0,
@@ -10591,8 +10573,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 386296996,
-                    "textureName": "Desactivated_Hability_7",
+                    "textureUID": 1052833000,
+                    "textureName": "Desactivated_Hability_1",
                     "color": [
                         1.0,
                         0.9999899864196777,
@@ -10608,13 +10590,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 3579042567,
-            "ParentUID": 3319676719,
+            "UID": 1845577475,
+            "ParentUID": 3222461548,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -10664,7 +10647,7 @@
                     "Type": 6,
                     "Enabled": 1,
                     "FontSize": 21.0,
-                    "text": "0/5",
+                    "text": "0/1",
                     "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.09019608050584793,
@@ -10689,13 +10672,13 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 0
+                    "UIOrder": 5
                 }
             ]
         },
         {
-            "UID": 1084124630,
-            "ParentUID": 3413319786,
+            "UID": 382111826,
+            "ParentUID": 315634940,
             "Name": "Skill5",
             "Tag": "Default",
             "Static": 0,
@@ -10722,7 +10705,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -10761,13 +10744,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 4141300094,
-            "ParentUID": 1084124630,
+            "UID": 4146024000,
+            "ParentUID": 382111826,
             "Name": "SkillIcon5",
             "Tag": "Default",
             "Static": 0,
@@ -10833,13 +10817,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 3151200973,
-            "ParentUID": 1084124630,
+            "UID": 3323897913,
+            "ParentUID": 382111826,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -10914,13 +10899,13 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 0
+                    "UIOrder": 5
                 }
             ]
         },
         {
-            "UID": 1814771565,
-            "ParentUID": 3413319786,
+            "UID": 3226246902,
+            "ParentUID": 315634940,
             "Name": "Skill6",
             "Tag": "Default",
             "Static": 0,
@@ -10947,7 +10932,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -10986,13 +10971,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 1928638367,
-            "ParentUID": 1814771565,
+            "UID": 4018686219,
+            "ParentUID": 3226246902,
             "Name": "SkillIcon6",
             "Tag": "Default",
             "Static": 0,
@@ -11058,13 +11044,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 354002279,
-            "ParentUID": 1814771565,
+            "UID": 285710182,
+            "ParentUID": 3226246902,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -11139,13 +11126,13 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 0
+                    "UIOrder": 5
                 }
             ]
         },
         {
-            "UID": 4128147893,
-            "ParentUID": 3413319786,
+            "UID": 1925282028,
+            "ParentUID": 315634940,
             "Name": "Skill7",
             "Tag": "Default",
             "Static": 0,
@@ -11172,7 +11159,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -11211,13 +11198,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 155340645,
-            "ParentUID": 4128147893,
+            "UID": 568346745,
+            "ParentUID": 1925282028,
             "Name": "SkillIcon7",
             "Tag": "Default",
             "Static": 0,
@@ -11283,13 +11271,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 2903963039,
-            "ParentUID": 4128147893,
+            "UID": 525235104,
+            "ParentUID": 1925282028,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -11364,13 +11353,13 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 0
+                    "UIOrder": 5
                 }
             ]
         },
         {
-            "UID": 1571749549,
-            "ParentUID": 3413319786,
+            "UID": 1439975053,
+            "ParentUID": 315634940,
             "Name": "Skill8",
             "Tag": "Default",
             "Static": 0,
@@ -11397,7 +11386,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -11436,13 +11425,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 3813996483,
-            "ParentUID": 1571749549,
+            "UID": 542888197,
+            "ParentUID": 1439975053,
             "Name": "SkillIcon8",
             "Tag": "Default",
             "Static": 0,
@@ -11508,13 +11498,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 191695149,
-            "ParentUID": 1571749549,
+            "UID": 3084690755,
+            "ParentUID": 1439975053,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -11589,13 +11580,13 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 0
+                    "UIOrder": 5
                 }
             ]
         },
         {
-            "UID": 780070103,
-            "ParentUID": 3413319786,
+            "UID": 415800510,
+            "ParentUID": 315634940,
             "Name": "Skill9",
             "Tag": "Default",
             "Static": 0,
@@ -11622,7 +11613,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -11661,13 +11652,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 4219816605,
-            "ParentUID": 780070103,
+            "UID": 2438819802,
+            "ParentUID": 415800510,
             "Name": "SkillIcon9",
             "Tag": "Default",
             "Static": 0,
@@ -11733,13 +11725,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 709305304,
-            "ParentUID": 780070103,
+            "UID": 550660468,
+            "ParentUID": 415800510,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -11814,13 +11807,13 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 0
+                    "UIOrder": 5
                 }
             ]
         },
         {
-            "UID": 2150890761,
-            "ParentUID": 3413319786,
+            "UID": 154532124,
+            "ParentUID": 315634940,
             "Name": "Skill10",
             "Tag": "Default",
             "Static": 0,
@@ -11847,7 +11840,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -11886,13 +11879,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 618534158,
-            "ParentUID": 2150890761,
+            "UID": 213484111,
+            "ParentUID": 154532124,
             "Name": "SkillIcon10",
             "Tag": "Default",
             "Static": 0,
@@ -11958,13 +11952,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 1078257935,
-            "ParentUID": 2150890761,
+            "UID": 3966040180,
+            "ParentUID": 154532124,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -12039,13 +12034,13 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 0
+                    "UIOrder": 5
                 }
             ]
         },
         {
-            "UID": 1623378724,
-            "ParentUID": 924868100,
+            "UID": 4035900593,
+            "ParentUID": 3394866091,
             "Name": "HoverGO",
             "Tag": "Default",
             "Static": 0,
@@ -12123,8 +12118,8 @@
             ]
         },
         {
-            "UID": 1225586034,
-            "ParentUID": 1623378724,
+            "UID": 4033487816,
+            "ParentUID": 4035900593,
             "Name": "SkillHover",
             "Tag": "Default",
             "Static": 0,
@@ -12190,13 +12185,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 7,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 1927744964,
-            "ParentUID": 924868100,
+            "UID": 2643701576,
+            "ParentUID": 3394866091,
             "Name": "Candado",
             "Tag": "Default",
             "Static": 0,
@@ -12274,8 +12270,8 @@
             ]
         },
         {
-            "UID": 3036126166,
-            "ParentUID": 1927744964,
+            "UID": 84804536,
+            "ParentUID": 2643701576,
             "Name": "C1",
             "Tag": "Default",
             "Static": 0,
@@ -12341,13 +12337,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 6,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 3152439904,
-            "ParentUID": 1927744964,
+            "UID": 130686425,
+            "ParentUID": 2643701576,
             "Name": "C2",
             "Tag": "Default",
             "Static": 0,
@@ -12413,13 +12410,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 6,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 3355574794,
-            "ParentUID": 1927744964,
+            "UID": 3702416994,
+            "ParentUID": 2643701576,
             "Name": "C3",
             "Tag": "Default",
             "Static": 0,
@@ -12455,8 +12453,8 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -285.70001220703127,
-                        -158.5
+                        -284.29998779296877,
+                        -41.5
                     ],
                     "Size": [
                         58.0,
@@ -12485,13 +12483,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 6,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 3957879919,
-            "ParentUID": 924868100,
+            "UID": 3685604135,
+            "ParentUID": 3394866091,
             "Name": "SkillPoints",
             "Tag": "Default",
             "Static": 0,
@@ -12566,18 +12565,91 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 0
+                    "UIOrder": 5
                 }
             ]
         },
         {
-            "UID": 1020700372,
+            "UID": 871348130,
             "ParentUID": 768655444,
             "Name": "SkillInfo",
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 0,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -744.2999877929688,
+                        0.0
+                    ],
+                    "Size": [
+                        364.0,
+                        543.5
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 1929599824,
+                    "textureName": "PopUp_Skills",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0,
+                    "loop": 0
+                }
+            ]
+        },
+        {
+            "UID": 988448186,
+            "ParentUID": 871348130,
+            "Name": "SkillInfoIcon",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
                 1.0,
@@ -12608,12 +12680,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -744.2999877929688,
-                        0.0
+                        -862.0,
+                        220.6999969482422
                     ],
                     "Size": [
-                        364.0,
-                        543.5
+                        50.0,
+                        50.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -12621,8 +12693,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3480667512,
-                    "textureName": "Info_Skill",
+                    "textureUID": 0,
+                    "textureName": "",
                     "color": [
                         1.0,
                         1.0,
@@ -12638,7 +12710,332 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
+                }
+            ]
+        },
+        {
+            "UID": 2699088609,
+            "ParentUID": 871348130,
+            "Name": "SkillInfoName",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -809.0999755859375,
+                        222.5
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 64.0,
+                    "text": "Machete Rain",
+                    "font": "Fonts/Vision-BoldItalic.ttf",
+                    "color": [
+                        0.881147563457489,
+                        0.7194998860359192,
+                        0.20223060250282288,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 100.0,
+                    "InterlineDistance": 24.0,
+                    "UIOrder": 5
+                }
+            ]
+        },
+        {
+            "UID": 2010084178,
+            "ParentUID": 871348130,
+            "Name": "SkillInfoDescription",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -888.7000122070313,
+                        155.60000610351563
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 40.0,
+                    "text": "Machete will rain from the sky damaging enemies in a large area. Hold the KEY and select the area where you want to cast the skill, then release the same key to activate the hability.",
+                    "font": "Fonts/Vision-Regular.ttf",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 1,
+                    "WrapWidth": 501.0,
+                    "InterlineDistance": 24.0,
+                    "UIOrder": 5
+                }
+            ]
+        },
+        {
+            "UID": 1349044994,
+            "ParentUID": 871348130,
+            "Name": "SkillInfoManaCostTitle",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -886.0,
+                        20.600000381469728
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 47.0,
+                    "text": "Mana Cost:",
+                    "font": "Fonts/Vision-BoldItalic.ttf",
+                    "color": [
+                        0.881147563457489,
+                        0.7194998860359192,
+                        0.20223060250282288,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 100.0,
+                    "InterlineDistance": 24.0,
+                    "UIOrder": 5
+                }
+            ]
+        },
+        {
+            "UID": 3954832541,
+            "ParentUID": 871348130,
+            "Name": "SkillInfoManaCostText",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -766.9000244140625,
+                        19.600000381469728
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 53.0,
+                    "text": "50",
+                    "font": "Fonts/Vision-Regular.ttf",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 1,
+                    "WrapWidth": 501.0,
+                    "InterlineDistance": 24.0,
+                    "UIOrder": 5
                 }
             ]
         },
@@ -12789,7 +13186,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 0,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -12861,7 +13259,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 0,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -13214,7 +13613,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "highlightedImage": {
                         "Type": 7,
@@ -13236,7 +13636,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "pressedImage": {
                         "Type": 7,
@@ -13258,7 +13659,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
@@ -13368,7 +13770,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "highlightedImage": {
                         "Type": 7,
@@ -13390,7 +13793,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "pressedImage": {
                         "Type": 7,
@@ -13412,7 +13816,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
@@ -13488,7 +13893,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 10,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -13639,7 +14045,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 11,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -13711,7 +14118,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 11,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -13783,7 +14191,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 11,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -13855,7 +14264,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 11,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -13927,7 +14337,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 11,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -13999,7 +14410,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 11,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -14071,7 +14483,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 11,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -14143,7 +14556,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 11,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -14215,7 +14629,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 11,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -14287,7 +14702,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 11,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -14359,7 +14775,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 11,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -14431,7 +14848,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 10,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -14582,7 +15000,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 11,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -14654,7 +15073,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 11,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -14726,7 +15146,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 11,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -14798,7 +15219,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 11,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -14870,7 +15292,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 11,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -14942,7 +15365,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 11,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -15014,7 +15438,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 11,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -15086,7 +15511,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 11,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -15158,7 +15584,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 11,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -15230,7 +15657,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 11,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -15302,7 +15730,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 11,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -15374,7 +15803,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 11,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -15446,7 +15876,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 11,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -15518,7 +15949,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 11,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -15590,7 +16022,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 11,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -15662,7 +16095,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 11,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -15734,7 +16168,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 11,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -15806,7 +16241,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 11,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -15878,7 +16314,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 11,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -15984,7 +16421,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "highlightedImage": {
                         "Type": 7,
@@ -16006,7 +16444,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "pressedImage": {
                         "Type": 7,
@@ -16028,7 +16467,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
@@ -16189,7 +16629,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 0,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -16261,7 +16702,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 0,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -16414,7 +16856,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 0,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -16486,7 +16929,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 0,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -16558,7 +17002,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 0,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -16591,7 +17036,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 1,
+            "openInHierarchy": 0,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -16794,7 +17239,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 0,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -17026,7 +17472,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 0,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -17258,7 +17705,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 0,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -17490,7 +17938,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 0,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -17722,7 +18171,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 0,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -17954,7 +18404,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 0,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -18186,7 +18637,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 0,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -18243,7 +18695,7 @@
                     "Enabled": 1,
                     "FontSize": 10.0,
                     "text": "Item",
-                    "font": "Fonts/Vision-BoldItalic.ttf",
+                    "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         1.0,
                         1.0,
@@ -18418,7 +18870,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 0,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -18650,7 +19103,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 0,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -18882,7 +19336,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 0,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -19085,7 +19540,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 0,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -20289,7 +20745,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 1,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -20395,7 +20852,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "highlightedImage": {
                         "Type": 7,
@@ -20417,7 +20875,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "pressedImage": {
                         "Type": 7,
@@ -20439,7 +20898,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
@@ -20549,7 +21009,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "highlightedImage": {
                         "Type": 7,
@@ -20571,7 +21032,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "pressedImage": {
                         "Type": 7,
@@ -20593,7 +21055,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
@@ -20669,7 +21132,8 @@
                     "hoverDetectionMouse3": 0,
                     "UIOrder": 0,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 },
                 {
                     "Type": 9,
@@ -20819,7 +21283,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "highlightedImage": {
                         "Type": 7,
@@ -20841,7 +21306,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "pressedImage": {
                         "Type": 7,
@@ -20863,7 +21329,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
@@ -20973,7 +21440,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "highlightedImage": {
                         "Type": 7,
@@ -20995,7 +21463,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "pressedImage": {
                         "Type": 7,
@@ -21017,7 +21486,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
@@ -21127,7 +21597,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "highlightedImage": {
                         "Type": 7,
@@ -21149,7 +21620,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "pressedImage": {
                         "Type": 7,
@@ -21171,7 +21643,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
@@ -21281,7 +21754,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "highlightedImage": {
                         "Type": 7,
@@ -21303,7 +21777,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "pressedImage": {
                         "Type": 7,
@@ -21325,7 +21800,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
@@ -21401,7 +21877,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 10,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -21473,7 +21950,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 10,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -21741,7 +22219,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "highlightedImage": {
                         "Type": 7,
@@ -21763,7 +22242,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "pressedImage": {
                         "Type": 7,
@@ -21785,7 +22265,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
@@ -21861,7 +22342,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 10,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -21933,7 +22415,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 10,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -22201,7 +22684,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "highlightedImage": {
                         "Type": 7,
@@ -22223,7 +22707,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "pressedImage": {
                         "Type": 7,
@@ -22245,7 +22730,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
@@ -22321,7 +22807,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 10,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -22393,7 +22880,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 10,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -22661,7 +23149,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "highlightedImage": {
                         "Type": 7,
@@ -22683,7 +23172,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "pressedImage": {
                         "Type": 7,
@@ -22705,7 +23195,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
@@ -22781,7 +23272,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 10,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -22853,7 +23345,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 10,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -23121,7 +23614,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "highlightedImage": {
                         "Type": 7,
@@ -23143,7 +23637,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "pressedImage": {
                         "Type": 7,
@@ -23165,7 +23660,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
@@ -23241,7 +23737,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 10,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -23313,7 +23810,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 10,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -23581,7 +24079,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "highlightedImage": {
                         "Type": 7,
@@ -23603,7 +24102,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "pressedImage": {
                         "Type": 7,
@@ -23625,7 +24125,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
@@ -23701,7 +24202,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 10,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -23773,7 +24275,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 10,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -24041,7 +24544,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "highlightedImage": {
                         "Type": 7,
@@ -24063,7 +24567,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "pressedImage": {
                         "Type": 7,
@@ -24085,7 +24590,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
@@ -24161,7 +24667,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 10,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -24233,7 +24740,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 10,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -24501,7 +25009,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "highlightedImage": {
                         "Type": 7,
@@ -24523,7 +25032,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "pressedImage": {
                         "Type": 7,
@@ -24545,7 +25055,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
@@ -24621,7 +25132,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 10,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -24693,7 +25205,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 10,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -24961,7 +25474,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "highlightedImage": {
                         "Type": 7,
@@ -24983,7 +25497,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "pressedImage": {
                         "Type": 7,
@@ -25005,7 +25520,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
@@ -25162,7 +25678,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 10,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -25234,7 +25751,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 11,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -25306,7 +25824,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 12,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -25412,7 +25931,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "highlightedImage": {
                         "Type": 7,
@@ -25434,7 +25954,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "pressedImage": {
                         "Type": 7,
@@ -25456,7 +25977,8 @@
                         "hoverDetectionMouse3": 1,
                         "UIOrder": 0,
                         "videoPath": "flame.avi",
-                        "fps": 24.0
+                        "fps": 24.0,
+                        "loop": 0
                     },
                     "hoverDetectionMouse1": 1,
                     "hoverDetectionMouse3": 1,
@@ -25532,7 +26054,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 10,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -25604,7 +26127,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 10,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -25838,7 +26362,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 10,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 },
                 {
                     "Type": 9,
@@ -25942,7 +26467,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 10,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -26014,7 +26540,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 10,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -26086,7 +26613,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 10,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -26158,7 +26686,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 11,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -26230,7 +26759,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 12,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -26302,7 +26832,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 11,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -26374,7 +26905,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 11,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -26481,7 +27013,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 100,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
@@ -26563,6 +27096,121 @@
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
                     "UIOrder": 101
+                }
+            ]
+        },
+        {
+            "UID": 1916089059,
+            "ParentUID": 0,
+            "Name": "Camera",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 0,
+                    "Enabled": 1,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Euler": [
+                        -0.0,
+                        0.0,
+                        -0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Global": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "Type": 2,
+                    "Enabled": 1,
+                    "MovementSpeed": 5.0,
+                    "RotationSpeed": 200.0,
+                    "ZoomSpeed": 0.4000000059604645,
+                    "Znear": 10.0,
+                    "Zfar": 100000.0,
+                    "vFOV": 1.0471975803375245,
+                    "hFOV": 1.421290397644043,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Front": [
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Up": [
+                        0.0,
+                        1.0,
+                        0.0
+                    ],
+                    "isMain": 1,
+                    "fogFalloff": 1.0,
+                    "fogQuadratic": 1.0,
+                    "maxFog": 0.800000011920929,
+                    "fogColor": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "fogEnabled": 0
                 }
             ]
         }

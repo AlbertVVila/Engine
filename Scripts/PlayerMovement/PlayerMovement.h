@@ -79,8 +79,8 @@ enum class PlayerMovement_API SkillType
 	DASH,
 	CIRCULAR,
 	BOMB_DROP,
-	SLICE,
 	RAIN,
+	SLICE,
 	STOMP,
 	CHAIN = 10,
 	NONE = 20

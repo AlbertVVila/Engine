@@ -111,10 +111,10 @@ void SkillTreeController::Update()
 			math::float2 newPos = math::float2(pos.x, pos.y);
 			hoverTransform->SetPositionUsingAligment(newPos);
 			hoverTransform->gameobject->SetActive(true);
-			/*skillInfoName->text = skillList[i].name;
+			skillInfoName->text = skillList[i].name;
 			skillInfoDescription->text = skillList[i].description;
 			skillInfoManaCostText->text = std::to_string(skillList[i].mana);
-			skillInfoIcon->UpdateTexture(skillList[i].spriteActive->GetName());*/
+			skillInfoIcon->UpdateTexture(skillList[i].spriteActive->GetName());
 			skillInfo->SetActive(true);
 			if (skillPoints > 0 && skillList[i].currentLevel < skillList[i].maxLevels && App->input->GetMouseButtonDown(1) == KEY_DOWN)
 			{
