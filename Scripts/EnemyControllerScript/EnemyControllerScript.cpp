@@ -197,7 +197,7 @@ void EnemyControllerScript::Update()
 	if(mesh != std::end(intersects) && *mesh == this->myMesh)
 	{
 		if(enemyLifeBar != nullptr)
-			enemyLifeBar->SetLifeBar(maxHealth, actualHealth, EnemyLifeBarType::NORMAL, "Skeleton");
+			enemyLifeBar->SetLifeBar(maxHealth, actualHealth, EnemyLifeBarType(enemyLevel), "Skeleton");
 
 		if (myRenders.size() > 0u && !isDead)
 		{
@@ -250,6 +250,8 @@ void EnemyControllerScript::Update()
 
 void EnemyControllerScript::Expose(ImGuiContext* context)
 {
+	ImGui::SliderInt("Level", &enemyLevel, 1, 2);
+
 	if (ImGui::InputInt("Health", &maxHealth))
 	{
 		actualHealth = maxHealth;
@@ -286,6 +288,7 @@ void EnemyControllerScript::Expose(ImGuiContext* context)
 void EnemyControllerScript::Serialize(JSON_value* json) const
 {
 	assert(json != nullptr);
+	json->AddInt("level", enemyLevel);
 	json->AddString("playerTag", playerTag.c_str());
 	json->AddInt("health", maxHealth);
 	json->AddInt("experience", experience);
@@ -295,6 +298,7 @@ void EnemyControllerScript::Serialize(JSON_value* json) const
 void EnemyControllerScript::DeSerialize(JSON_value* json)
 {
 	assert(json != nullptr);
+	enemyLevel = json->GetInt("level");
 	playerTag = json->GetString("playerTag", "Player");
 	maxHealth = json->GetInt("health", maxHealth);
 	experience = json->GetInt("experience", 20);
