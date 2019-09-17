@@ -29,7 +29,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 1,
+            "openInHierarchy": 0,
             "isPrefab": 1,
             "isPrefabSync": 1,
             "prefabUID": 334843179,
@@ -97,6 +97,8 @@
                     "Enabled": 1,
                     "script": "EnemyControllerScript",
                     "scriptInfo": {
+                        "type": 0,
+                        "level": 2,
                         "playerTag": "Player",
                         "health": 30,
                         "experience": 80,
@@ -150,7 +152,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 1,
+            "openInHierarchy": 0,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -234,7 +236,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -7845,7 +7847,8 @@
                         1.0,
                         1.0
                     ],
-                    "distorsionSpeed": 0.0010000000474974514
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 0
                 },
                 {
                     "Type": 0,
@@ -8058,7 +8061,8 @@
                         1.0,
                         1.0
                     ],
-                    "distorsionSpeed": 0.0010000000474974514
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 0
                 },
                 {
                     "Type": 0,
@@ -8192,7 +8196,8 @@
                         1.0,
                         1.0
                     ],
-                    "distorsionSpeed": 0.0010000000474974514
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 0
                 },
                 {
                     "Type": 0,
@@ -8326,7 +8331,8 @@
                         1.0,
                         1.0
                     ],
-                    "distorsionSpeed": 0.0010000000474974514
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 0
                 },
                 {
                     "Type": 0,
@@ -8460,7 +8466,8 @@
                         1.0,
                         1.0
                     ],
-                    "distorsionSpeed": 0.0010000000474974514
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 0
                 },
                 {
                     "Type": 0,
@@ -8594,7 +8601,8 @@
                         1.0,
                         1.0
                     ],
-                    "distorsionSpeed": 0.0010000000474974514
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 0
                 },
                 {
                     "Type": 0,
@@ -8728,7 +8736,8 @@
                         1.0,
                         1.0
                     ],
-                    "distorsionSpeed": 0.0010000000474974514
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 0
                 },
                 {
                     "Type": 0,
@@ -8862,7 +8871,8 @@
                         1.0,
                         1.0
                     ],
-                    "distorsionSpeed": 0.0010000000474974514
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 0
                 },
                 {
                     "Type": 0,
@@ -8996,7 +9006,8 @@
                         1.0,
                         1.0
                     ],
-                    "distorsionSpeed": 0.0010000000474974514
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 0
                 },
                 {
                     "Type": 0,

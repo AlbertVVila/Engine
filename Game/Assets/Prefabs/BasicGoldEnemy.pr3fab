@@ -97,6 +97,8 @@
                     "Enabled": 1,
                     "script": "EnemyControllerScript",
                     "scriptInfo": {
+                        "type": 0,
+                        "level": 1,
                         "playerTag": "Player",
                         "health": 15,
                         "experience": 40,
@@ -7655,7 +7657,8 @@
                         1.0,
                         1.0
                     ],
-                    "distorsionSpeed": 0.0010000000474974514
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 0
                 },
                 {
                     "Type": 0,
@@ -7868,7 +7871,8 @@
                         1.0,
                         1.0
                     ],
-                    "distorsionSpeed": 0.0010000000474974514
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 0
                 },
                 {
                     "Type": 0,
@@ -8002,7 +8006,8 @@
                         1.0,
                         1.0
                     ],
-                    "distorsionSpeed": 0.0010000000474974514
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 0
                 },
                 {
                     "Type": 0,
@@ -8136,7 +8141,8 @@
                         1.0,
                         1.0
                     ],
-                    "distorsionSpeed": 0.0010000000474974514
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 0
                 },
                 {
                     "Type": 0,
@@ -8270,7 +8276,8 @@
                         1.0,
                         1.0
                     ],
-                    "distorsionSpeed": 0.0010000000474974514
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 0
                 },
                 {
                     "Type": 0,
@@ -8404,7 +8411,8 @@
                         1.0,
                         1.0
                     ],
-                    "distorsionSpeed": 0.0010000000474974514
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 0
                 },
                 {
                     "Type": 0,
@@ -8538,7 +8546,8 @@
                         1.0,
                         1.0
                     ],
-                    "distorsionSpeed": 0.0010000000474974514
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 0
                 },
                 {
                     "Type": 0,
@@ -8672,7 +8681,8 @@
                         1.0,
                         1.0
                     ],
-                    "distorsionSpeed": 0.0010000000474974514
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 0
                 },
                 {
                     "Type": 0,
@@ -8806,7 +8816,8 @@
                         1.0,
                         1.0
                     ],
-                    "distorsionSpeed": 0.0010000000474974514
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 0
                 },
                 {
                     "Type": 0,
