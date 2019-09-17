@@ -181,6 +181,7 @@ void ComponentBoxTrigger::Update()
 		default:
 			break;
 		}
+		if (!enabled) return;
 	}
 
 	for (auto item : toRemove) overlapList.erase(item);
