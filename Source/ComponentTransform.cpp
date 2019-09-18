@@ -283,6 +283,21 @@ math::Quat ComponentTransform::GetRotation()
 	return rotation;
 }
 
+ENGINE_API math::Quat ComponentTransform::GetGlobalRotation()
+{
+	if (gameobject->movedFlag)
+	{
+		float4x4 newlocal = math::float4x4::FromTRS(position, rotation, scale);
+		if (gameobject->parent != nullptr)
+		{
+			return gameobject->parent->GetGlobalTransform().RotatePart().ToQuat()
+				* newlocal.RotatePart().ToQuat();
+		}
+		return newlocal.RotatePart().ToQuat();
+	}
+	return global.RotatePart().ToQuat();
+}
+
 math::float3 ComponentTransform::GetGlobalPosition()
 {
 	if (gameobject->movedFlag)

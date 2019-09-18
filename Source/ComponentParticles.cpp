@@ -461,7 +461,7 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 			math::Quat rot;
 			if (aligned)
 			{
-				rot = gameobject->transform->GetRotation();
+				rot = gameobject->transform->GetGlobalRotation();
 			}
 			else
 			{
