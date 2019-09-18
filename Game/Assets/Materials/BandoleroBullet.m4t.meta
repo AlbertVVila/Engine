@@ -1,0 +1,28 @@
+{
+    "Material": {
+        "metaVersion": 2,
+        "timeCreated": 1568445692,
+        "GUID": 2984823950,
+        "Name": "BandoleroBullet",
+        "File": "Assets/Materials/BandoleroBullet.m4t",
+        "ExportedFile": "Library/Materials/2984823950.m4t",
+        "DifusseColor": [
+            0.040983617305755618,
+            0.03963989019393921,
+            0.03963989019393921,
+            1.0
+        ],
+        "specularColor": [
+            0.10000000149011612,
+            0.10000000149011612,
+            0.10000000149011612
+        ],
+        "emissiveColor": [
+            1.0,
+            1.0,
+            1.0
+        ],
+        "diffuseUID": 676697322,
+        "shader": "PBR"
+    }
+}

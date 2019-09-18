@@ -25,10 +25,11 @@ void EnemyStateAttack::Enter()
 	projShot2 = false;
 	projShot3 = false;
 
-	duration = duration * 3; //should be exposed how many shots he does... In my dreams
-
 	//make the enemy stop moving
 	enemy->enemyController->Move(enemy->runSpeed, refreshTime, enemy->gameobject->transform->position, enemyPath);
+
+	duration = duration * enemy->numberOfProjectiles; //should be exposed how many shots he does... In my dreams 
+													 // Update: your dream has come true
 }
 
 void EnemyStateAttack::HandleIA()
@@ -48,25 +49,25 @@ void EnemyStateAttack::Update()
 	if (timer > enemy->projectileDelay1 && !projShot1)
 	{
 		// Reset projectile position
-		enemy->projectile1->transform->SetPosition(enemy->enemyController->GetPosition());
+		enemy->projectile1->transform->SetPosition(enemy->enemyController->GetPosition() + math::float3(0.f,enemy->projectileScript1->offsetHeight,0.f));
 		enemy->projectile1->transform->SetRotation(enemy->enemyController->GetRotation());
 		enemy->projectileScript1->shooted = true;
 		projShot1 = true;
 		enemy->projectile1->SetActive(true);
 	}
-	if (timer > enemy->projectileDelay2 && !projShot2)
+	if (enemy->numberOfProjectiles > 1 && timer > enemy->projectileDelay2 && !projShot2)
 	{
 		// Reset projectile position
-		enemy->projectile2->transform->SetPosition(enemy->enemyController->GetPosition());
+		enemy->projectile2->transform->SetPosition(enemy->enemyController->GetPosition() + math::float3(0.f, enemy->projectileScript2->offsetHeight, 0.f));
 		enemy->projectile2->transform->SetRotation(enemy->enemyController->GetRotation());
 		enemy->projectileScript2->shooted = true;
 		projShot2 = true;
 		enemy->projectile2->SetActive(true);
 	}
-	if (timer > enemy->projectileDelay3 && !projShot3)
+	if (enemy->numberOfProjectiles > 2 && timer > enemy->projectileDelay3 && !projShot3)
 	{
 		// Reset projectile position
-		enemy->projectile3->transform->SetPosition(enemy->enemyController->GetPosition());
+		enemy->projectile3->transform->SetPosition(enemy->enemyController->GetPosition() + math::float3(0.f, enemy->projectileScript3->offsetHeight, 0.f));
 		enemy->projectile3->transform->SetRotation(enemy->enemyController->GetRotation());
 		enemy->projectileScript3->shooted = true;
 		projShot3 = true;

@@ -76,6 +76,8 @@ public:
 	float attackDuration = 1.0f;
 	float attackDamage = 20.0f;
 
+	int numberOfProjectiles = 1u;
+
 	std::string projectileName1 = "EnemyProjectile1";
 	std::string projectileName2 = "EnemyProjectile2";
 	std::string projectileName3 = "EnemyProjectile3";
