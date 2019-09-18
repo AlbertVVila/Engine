@@ -1,6 +1,6 @@
 {
     "navigationScene": {
-        "navDataSize": 2728
+        "navDataSize": 29316
     },
     "GameObjects": [
         {
@@ -7016,7 +7016,7 @@
         {
             "UID": 3676264178,
             "ParentUID": 956803539,
-            "Name": "Flame",
+            "Name": "FlameFirstR",
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 1,
@@ -7053,7 +7053,7 @@
                     "Position": [
                         1020.5003662109375,
                         511.3785400390625,
-                        3841.808837890625
+                        3886.166748046875
                     ],
                     "Rotation": [
                         0.0,
@@ -7083,7 +7083,7 @@
                         0.0,
                         0.0,
                         1.0,
-                        3841.808837890625,
+                        3886.166748046875,
                         0.0,
                         0.0,
                         0.0,
@@ -10739,155 +10739,6 @@
             ]
         },
         {
-            "UID": 1371476145,
-            "ParentUID": 956803539,
-            "Name": "Flame",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 1,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 0,
-                    "Enabled": 1,
-                    "Position": [
-                        -18.415023803710939,
-                        511.3785400390625,
-                        3859.160888671875
-                    ],
-                    "Rotation": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ],
-                    "Euler": [
-                        -0.0,
-                        0.0,
-                        -0.0
-                    ],
-                    "Scale": [
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "Global": [
-                        1.0,
-                        0.0,
-                        0.0,
-                        -18.415023803710939,
-                        0.0,
-                        1.0,
-                        0.0,
-                        511.3785400390625,
-                        0.0,
-                        0.0,
-                        1.0,
-                        3859.160888671875,
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
-                },
-                {
-                    "Type": 10,
-                    "Enabled": 1,
-                    "xTiles": 6,
-                    "yTiles": 3,
-                    "fps": 16.0,
-                    "textureUID": 809116800,
-                    "lifetime": [
-                        2.0,
-                        2.0
-                    ],
-                    "speed": [
-                        0.10000000149011612,
-                        0.10000000149011612
-                    ],
-                    "rate": 10.0,
-                    "maxParticles": 1,
-                    "rotation": [
-                        0.0,
-                        0.0
-                    ],
-                    "sizeMin": [
-                        100.0,
-                        200.0
-                    ],
-                    "sizeMax": [
-                        100.0,
-                        200.0
-                    ],
-                    "quadEmitterSize": [
-                        1.0,
-                        1.0
-                    ],
-                    "particleColor": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "directionNoise": 0,
-                    "directionNoiseProbability": 5,
-                    "directionNoiseTotalProbability": 500,
-                    "actualEmisor": 0,
-                    "sizeOT": 0,
-                    "colorOT": 0,
-                    "defaultColor": [
-                        1.0,
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "billboarded": 1,
-                    "aligned": 0,
-                    "localEmitter": 0,
-                    "lookAtTarget": [
-                        0.0,
-                        1.0,
-                        0.0
-                    ],
-                    "intensity": 4.099999904632568,
-                    "bezier14": [
-                        0.0,
-                        0.0,
-                        1.0,
-                        1.0
-                    ],
-                    "bezier5": 0.0,
-                    "alphas": 0,
-                    "colors": 0
-                }
-            ]
-        },
-        {
             "UID": 961685087,
             "ParentUID": 956803539,
             "Name": "Flame",
@@ -11107,6 +10958,155 @@
                         0.0,
                         1.0,
                         -995.2301025390625,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                },
+                {
+                    "Type": 10,
+                    "Enabled": 1,
+                    "xTiles": 6,
+                    "yTiles": 3,
+                    "fps": 16.0,
+                    "textureUID": 809116800,
+                    "lifetime": [
+                        2.0,
+                        2.0
+                    ],
+                    "speed": [
+                        0.10000000149011612,
+                        0.10000000149011612
+                    ],
+                    "rate": 10.0,
+                    "maxParticles": 1,
+                    "rotation": [
+                        0.0,
+                        0.0
+                    ],
+                    "sizeMin": [
+                        100.0,
+                        200.0
+                    ],
+                    "sizeMax": [
+                        100.0,
+                        200.0
+                    ],
+                    "quadEmitterSize": [
+                        1.0,
+                        1.0
+                    ],
+                    "particleColor": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "directionNoise": 0,
+                    "directionNoiseProbability": 5,
+                    "directionNoiseTotalProbability": 500,
+                    "actualEmisor": 0,
+                    "sizeOT": 0,
+                    "colorOT": 0,
+                    "defaultColor": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "billboarded": 1,
+                    "aligned": 0,
+                    "localEmitter": 0,
+                    "lookAtTarget": [
+                        0.0,
+                        1.0,
+                        0.0
+                    ],
+                    "intensity": 1.0,
+                    "bezier14": [
+                        0.0,
+                        0.0,
+                        1.0,
+                        1.0
+                    ],
+                    "bezier5": 0.0,
+                    "alphas": 0,
+                    "colors": 0
+                }
+            ]
+        },
+        {
+            "UID": 3243489603,
+            "ParentUID": 956803539,
+            "Name": "FlameFirstL",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 0,
+                    "Enabled": 1,
+                    "Position": [
+                        -33.94727325439453,
+                        511.3785400390625,
+                        3919.207275390625
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Euler": [
+                        -0.0,
+                        0.0,
+                        -0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Global": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        -33.94727325439453,
+                        0.0,
+                        1.0,
+                        0.0,
+                        511.3785400390625,
+                        0.0,
+                        0.0,
+                        1.0,
+                        3919.207275390625,
                         0.0,
                         0.0,
                         0.0,
@@ -17410,7 +17410,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 1,
+            "openInHierarchy": 0,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -17891,7 +17891,7 @@
                     "Znear": 10.0,
                     "Zfar": 100000.0,
                     "vFOV": 1.0471975803375245,
-                    "hFOV": 1.5192210674285889,
+                    "hFOV": 1.637596607208252,
                     "Position": [
                         991.5123291015625,
                         1760.119140625,
@@ -20275,85 +20275,6 @@
             "isPrefab": 1,
             "isPrefabSync": 1,
             "prefabUID": 2741727646,
-            "Components": [
-                {
-                    "Type": 0,
-                    "Enabled": 1,
-                    "Position": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "Rotation": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ],
-                    "Euler": [
-                        -0.0,
-                        0.0,
-                        -0.0
-                    ],
-                    "Scale": [
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "Global": [
-                        1.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
-                }
-            ]
-        },
-        {
-            "UID": 1403100637,
-            "ParentUID": 0,
-            "Name": "RecastScene",
-            "Tag": "Default",
-            "Static": 1,
-            "ActiveInHierarchy": 1,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
             "Components": [
                 {
                     "Type": 0,
@@ -45203,142 +45124,6 @@
             ]
         },
         {
-            "UID": 125842377,
-            "ParentUID": 2032723243,
-            "Name": "mesh",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 1,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 1,
-                    "Enabled": 1,
-                    "meshUID": 1477978020,
-                    "materialUID": 3666397436,
-                    "castShadows": 0,
-                    "useAlpha": 0,
-                    "highlighted": 0,
-                    "highlightColor": [
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "xTiles": 1,
-                    "yTiles": 1,
-                    "fps": 24.0,
-                    "waterAmplitude1": 10.0,
-                    "waterDecay1": 1.0,
-                    "waterFrequency1": 10.0,
-                    "waterSource1": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "waterAmplitude2": 10.0,
-                    "waterDecay2": 1.0,
-                    "waterFrequency2": 10.0,
-                    "waterSource2": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "texSpeed": [
-                        0.0,
-                        0.0
-                    ],
-                    "waterSpeed": 2.0,
-                    "loop": 0,
-                    "water": 0,
-                    "dissolve": 0,
-                    "waterSource1": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "waterSource2": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "uvScaler": [
-                        1.0,
-                        1.0
-                    ],
-                    "distorsionSpeed": 0.0010000000474974514,
-                    "loop": 0
-                },
-                {
-                    "Type": 0,
-                    "Enabled": 1,
-                    "Position": [
-                        -1758.880126953125,
-                        240.77731323242188,
-                        3184.01318359375
-                    ],
-                    "Rotation": [
-                        -0.7071068286895752,
-                        0.0,
-                        0.0,
-                        0.7071067094802856
-                    ],
-                    "Euler": [
-                        -90.00000762939453,
-                        0.0,
-                        0.0
-                    ],
-                    "Scale": [
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "Global": [
-                        1.0,
-                        0.0,
-                        0.0,
-                        -1758.880126953125,
-                        0.0,
-                        -1.1920928955078126e-7,
-                        0.9999999403953552,
-                        240.77731323242188,
-                        0.0,
-                        -0.9999999403953552,
-                        -1.1920928955078126e-7,
-                        3184.01318359375,
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
-                }
-            ]
-        },
-        {
             "UID": 1246140315,
             "ParentUID": 2032723243,
             "Name": "Lvl2_Candles_$AssimpFbx$_Translation",
@@ -45938,142 +45723,6 @@
                         347.6253662109375,
                         0.0,
                         -1.0000001192092896,
-                        -1.1920928955078126e-7,
-                        4359.5546875,
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
-                }
-            ]
-        },
-        {
-            "UID": 3167418441,
-            "ParentUID": 2032723243,
-            "Name": "mesh",
-            "Tag": "Default",
-            "Static": 1,
-            "ActiveInHierarchy": 1,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 1,
-            "No Walkable": 1,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 1,
-                    "Enabled": 1,
-                    "meshUID": 940594850,
-                    "materialUID": 3273516252,
-                    "castShadows": 0,
-                    "useAlpha": 0,
-                    "highlighted": 0,
-                    "highlightColor": [
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "xTiles": 1,
-                    "yTiles": 1,
-                    "fps": 24.0,
-                    "waterAmplitude1": 10.0,
-                    "waterDecay1": 1.0,
-                    "waterFrequency1": 10.0,
-                    "waterSource1": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "waterAmplitude2": 10.0,
-                    "waterDecay2": 1.0,
-                    "waterFrequency2": 10.0,
-                    "waterSource2": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "texSpeed": [
-                        0.0,
-                        0.0
-                    ],
-                    "waterSpeed": 2.0,
-                    "loop": 0,
-                    "water": 0,
-                    "dissolve": 0,
-                    "waterSource1": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "waterSource2": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "uvScaler": [
-                        1.0,
-                        1.0
-                    ],
-                    "distorsionSpeed": 0.0010000000474974514,
-                    "loop": 0
-                },
-                {
-                    "Type": 0,
-                    "Enabled": 1,
-                    "Position": [
-                        -53.91717529296875,
-                        347.6253662109375,
-                        4359.5546875
-                    ],
-                    "Rotation": [
-                        -0.7071068286895752,
-                        0.0,
-                        0.0,
-                        0.7071067094802856
-                    ],
-                    "Euler": [
-                        -90.00000762939453,
-                        0.0,
-                        0.0
-                    ],
-                    "Scale": [
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "Global": [
-                        1.0,
-                        0.0,
-                        0.0,
-                        -53.91717529296875,
-                        0.0,
-                        -1.1920928955078126e-7,
-                        0.9999999403953552,
-                        347.6253662109375,
-                        0.0,
-                        -0.9999999403953552,
                         -1.1920928955078126e-7,
                         4359.5546875,
                         0.0,
@@ -48560,142 +48209,6 @@
             ]
         },
         {
-            "UID": 3956627778,
-            "ParentUID": 2032723243,
-            "Name": "mesh",
-            "Tag": "Default",
-            "Static": 1,
-            "ActiveInHierarchy": 1,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 1,
-            "No Walkable": 1,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 1,
-                    "Enabled": 1,
-                    "meshUID": 1271817965,
-                    "materialUID": 3926371926,
-                    "castShadows": 0,
-                    "useAlpha": 0,
-                    "highlighted": 0,
-                    "highlightColor": [
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "xTiles": 1,
-                    "yTiles": 1,
-                    "fps": 24.0,
-                    "waterAmplitude1": 10.0,
-                    "waterDecay1": 1.0,
-                    "waterFrequency1": 10.0,
-                    "waterSource1": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "waterAmplitude2": 10.0,
-                    "waterDecay2": 1.0,
-                    "waterFrequency2": 10.0,
-                    "waterSource2": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "texSpeed": [
-                        0.0,
-                        0.0
-                    ],
-                    "waterSpeed": 2.0,
-                    "loop": 0,
-                    "water": 0,
-                    "dissolve": 0,
-                    "waterSource1": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "waterSource2": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "uvScaler": [
-                        1.0,
-                        1.0
-                    ],
-                    "distorsionSpeed": 0.0010000000474974514,
-                    "loop": 0
-                },
-                {
-                    "Type": 0,
-                    "Enabled": 1,
-                    "Position": [
-                        763.75146484375,
-                        411.1789855957031,
-                        -172.4970703125
-                    ],
-                    "Rotation": [
-                        -0.7071068286895752,
-                        0.0,
-                        0.0,
-                        0.7071067094802856
-                    ],
-                    "Euler": [
-                        -90.00000762939453,
-                        0.0,
-                        0.0
-                    ],
-                    "Scale": [
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "Global": [
-                        1.0,
-                        0.0,
-                        0.0,
-                        763.75146484375,
-                        0.0,
-                        -1.1920928955078126e-7,
-                        0.9999999403953552,
-                        411.1789855957031,
-                        0.0,
-                        -0.9999999403953552,
-                        -1.1920928955078126e-7,
-                        -172.4970703125,
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
-                }
-            ]
-        },
-        {
             "UID": 1179081754,
             "ParentUID": 2032723243,
             "Name": "Lvl2_Wall_$AssimpFbx$_Translation",
@@ -49306,142 +48819,6 @@
             ]
         },
         {
-            "UID": 1656956859,
-            "ParentUID": 2032723243,
-            "Name": "mesh",
-            "Tag": "Default",
-            "Static": 1,
-            "ActiveInHierarchy": 1,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 1,
-            "No Walkable": 1,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 1,
-                    "Enabled": 1,
-                    "meshUID": 2097229018,
-                    "materialUID": 3200460851,
-                    "castShadows": 0,
-                    "useAlpha": 0,
-                    "highlighted": 0,
-                    "highlightColor": [
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "xTiles": 1,
-                    "yTiles": 1,
-                    "fps": 24.0,
-                    "waterAmplitude1": 10.0,
-                    "waterDecay1": 1.0,
-                    "waterFrequency1": 10.0,
-                    "waterSource1": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "waterAmplitude2": 10.0,
-                    "waterDecay2": 1.0,
-                    "waterFrequency2": 10.0,
-                    "waterSource2": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "texSpeed": [
-                        0.0,
-                        0.0
-                    ],
-                    "waterSpeed": 2.0,
-                    "loop": 0,
-                    "water": 0,
-                    "dissolve": 0,
-                    "waterSource1": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "waterSource2": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "uvScaler": [
-                        1.0,
-                        1.0
-                    ],
-                    "distorsionSpeed": 0.0010000000474974514,
-                    "loop": 0
-                },
-                {
-                    "Type": 0,
-                    "Enabled": 1,
-                    "Position": [
-                        -760.2908935546875,
-                        426.8882751464844,
-                        -892.5659790039063
-                    ],
-                    "Rotation": [
-                        -0.7071068286895752,
-                        0.0,
-                        0.0,
-                        0.7071067094802856
-                    ],
-                    "Euler": [
-                        -90.00000762939453,
-                        0.0,
-                        0.0
-                    ],
-                    "Scale": [
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "Global": [
-                        1.0,
-                        0.0,
-                        0.0,
-                        -760.2908935546875,
-                        0.0,
-                        -1.1920928955078126e-7,
-                        0.9999999403953552,
-                        426.8882751464844,
-                        0.0,
-                        -0.9999999403953552,
-                        -1.1920928955078126e-7,
-                        -892.5659790039063,
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
-                }
-            ]
-        },
-        {
             "UID": 681532424,
             "ParentUID": 2032723243,
             "Name": "Lvl2_Cauldron_$AssimpFbx$_Translation",
@@ -49668,142 +49045,6 @@
                         258.3153381347656,
                         0.0,
                         -1.0000001192092896,
-                        -1.1920928955078126e-7,
-                        2732.796875,
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
-                }
-            ]
-        },
-        {
-            "UID": 3753071136,
-            "ParentUID": 2032723243,
-            "Name": "mesh",
-            "Tag": "Default",
-            "Static": 1,
-            "ActiveInHierarchy": 1,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 1,
-            "No Walkable": 1,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 1,
-                    "Enabled": 1,
-                    "meshUID": 3544331277,
-                    "materialUID": 4290014581,
-                    "castShadows": 0,
-                    "useAlpha": 0,
-                    "highlighted": 0,
-                    "highlightColor": [
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "xTiles": 1,
-                    "yTiles": 1,
-                    "fps": 24.0,
-                    "waterAmplitude1": 10.0,
-                    "waterDecay1": 1.0,
-                    "waterFrequency1": 10.0,
-                    "waterSource1": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "waterAmplitude2": 10.0,
-                    "waterDecay2": 1.0,
-                    "waterFrequency2": 10.0,
-                    "waterSource2": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "texSpeed": [
-                        0.0,
-                        0.0
-                    ],
-                    "waterSpeed": 2.0,
-                    "loop": 0,
-                    "water": 0,
-                    "dissolve": 0,
-                    "waterSource1": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "waterSource2": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "uvScaler": [
-                        1.0,
-                        1.0
-                    ],
-                    "distorsionSpeed": 0.0010000000474974514,
-                    "loop": 0
-                },
-                {
-                    "Type": 0,
-                    "Enabled": 1,
-                    "Position": [
-                        -1328.1500244140626,
-                        258.3153381347656,
-                        2732.796875
-                    ],
-                    "Rotation": [
-                        -0.7071068286895752,
-                        0.0,
-                        0.0,
-                        0.7071067094802856
-                    ],
-                    "Euler": [
-                        -90.00000762939453,
-                        0.0,
-                        0.0
-                    ],
-                    "Scale": [
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "Global": [
-                        1.0,
-                        0.0,
-                        0.0,
-                        -1328.1500244140626,
-                        0.0,
-                        -1.1920928955078126e-7,
-                        0.9999999403953552,
-                        258.3153381347656,
-                        0.0,
-                        -0.9999999403953552,
                         -1.1920928955078126e-7,
                         2732.796875,
                         0.0,
@@ -50179,537 +49420,6 @@
                         -0.9999999403953552,
                         -1.1920928955078126e-7,
                         5176.119140625,
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
-                }
-            ]
-        },
-        {
-            "UID": 3627372511,
-            "ParentUID": 0,
-            "Name": "Scene",
-            "Tag": "Default",
-            "Static": 1,
-            "ActiveInHierarchy": 1,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 0,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 0,
-                    "Enabled": 1,
-                    "Position": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "Rotation": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ],
-                    "Euler": [
-                        -0.0,
-                        0.0,
-                        -0.0
-                    ],
-                    "Scale": [
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "Global": [
-                        1.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
-                }
-            ]
-        },
-        {
-            "UID": 1257571276,
-            "ParentUID": 3627372511,
-            "Name": "0_Recast_$AssimpFbx$_Translation",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 1,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 0,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 0,
-                    "Enabled": 1,
-                    "Position": [
-                        553.7891845703125,
-                        255.67926025390626,
-                        752.1688232421875
-                    ],
-                    "Rotation": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ],
-                    "Euler": [
-                        -0.0,
-                        0.0,
-                        -0.0
-                    ],
-                    "Scale": [
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "Global": [
-                        1.0,
-                        0.0,
-                        0.0,
-                        553.7891845703125,
-                        0.0,
-                        1.0,
-                        0.0,
-                        255.67926025390626,
-                        0.0,
-                        0.0,
-                        1.0,
-                        752.1688232421875,
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
-                }
-            ]
-        },
-        {
-            "UID": 4016920110,
-            "ParentUID": 1257571276,
-            "Name": "0_Recast_$AssimpFbx$_PreRotation",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 1,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 0,
-                    "Enabled": 1,
-                    "Position": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "Rotation": [
-                        -0.7071068286895752,
-                        0.0,
-                        0.0,
-                        0.7071068286895752
-                    ],
-                    "Euler": [
-                        -90.00000762939453,
-                        0.0,
-                        0.0
-                    ],
-                    "Scale": [
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "Global": [
-                        1.0,
-                        0.0,
-                        0.0,
-                        553.7891845703125,
-                        0.0,
-                        -1.1920928955078126e-7,
-                        1.0000001192092896,
-                        255.67926025390626,
-                        0.0,
-                        -1.0000001192092896,
-                        -1.1920928955078126e-7,
-                        752.1688232421875,
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
-                }
-            ]
-        },
-        {
-            "UID": 2530381009,
-            "ParentUID": 4016920110,
-            "Name": "0_Recast_$AssimpFbx$_Scaling",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 1,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 0,
-                    "Enabled": 1,
-                    "Position": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "Rotation": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ],
-                    "Euler": [
-                        -0.0,
-                        0.0,
-                        -0.0
-                    ],
-                    "Scale": [
-                        0.5990660190582275,
-                        0.5990660190582275,
-                        0.5990660190582275
-                    ],
-                    "Global": [
-                        0.5990660190582275,
-                        0.0,
-                        0.0,
-                        553.7891845703125,
-                        0.0,
-                        -7.141423452594609e-8,
-                        0.5990660786628723,
-                        255.67926025390626,
-                        0.0,
-                        -0.5990660786628723,
-                        -7.141423452594609e-8,
-                        752.1688232421875,
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
-                }
-            ]
-        },
-        {
-            "UID": 3196895382,
-            "ParentUID": 2530381009,
-            "Name": "0_Recast",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 1,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 0,
-                    "Enabled": 1,
-                    "Position": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "Rotation": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ],
-                    "Euler": [
-                        -0.0,
-                        0.0,
-                        -0.0
-                    ],
-                    "Scale": [
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "Global": [
-                        0.5990660190582275,
-                        0.0,
-                        0.0,
-                        553.7891845703125,
-                        0.0,
-                        -7.141423452594609e-8,
-                        0.5990660786628723,
-                        255.67926025390626,
-                        0.0,
-                        -0.5990660786628723,
-                        -7.141423452594609e-8,
-                        752.1688232421875,
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
-                }
-            ]
-        },
-        {
-            "UID": 548955449,
-            "ParentUID": 3627372511,
-            "Name": "mesh",
-            "Tag": "Default",
-            "Static": 1,
-            "ActiveInHierarchy": 1,
-            "ActiveSelf": 0,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 1,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 1,
-                    "Enabled": 1,
-                    "meshUID": 1892728384,
-                    "materialUID": 735767494,
-                    "castShadows": 0,
-                    "useAlpha": 0,
-                    "highlighted": 0,
-                    "highlightColor": [
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "xTiles": 1,
-                    "yTiles": 1,
-                    "fps": 24.0,
-                    "waterAmplitude1": 10.0,
-                    "waterDecay1": 1.0,
-                    "waterFrequency1": 10.0,
-                    "waterSource1": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "waterAmplitude2": 10.0,
-                    "waterDecay2": 1.0,
-                    "waterFrequency2": 10.0,
-                    "waterSource2": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "texSpeed": [
-                        0.0,
-                        0.0
-                    ],
-                    "waterSpeed": 2.0,
-                    "loop": 0,
-                    "water": 0,
-                    "dissolve": 0,
-                    "waterSource1": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "waterSource2": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "uvScaler": [
-                        1.0,
-                        1.0
-                    ],
-                    "distorsionSpeed": 0.0010000000474974514,
-                    "loop": 0
-                },
-                {
-                    "Type": 0,
-                    "Enabled": 1,
-                    "Position": [
-                        553.7891845703125,
-                        255.67926025390626,
-                        752.1688232421875
-                    ],
-                    "Rotation": [
-                        -0.7071068286895752,
-                        0.0,
-                        0.0,
-                        0.7071067094802856
-                    ],
-                    "Euler": [
-                        -90.00000762939453,
-                        0.0,
-                        0.0
-                    ],
-                    "Scale": [
-                        0.5990660190582275,
-                        0.5990660190582275,
-                        0.5990660190582275
-                    ],
-                    "Global": [
-                        0.5990660190582275,
-                        0.0,
-                        0.0,
-                        553.7891845703125,
-                        0.0,
-                        -7.141423452594609e-8,
-                        0.5990659594535828,
-                        255.67926025390626,
-                        0.0,
-                        -0.5990659594535828,
-                        -7.141423452594609e-8,
-                        752.1688232421875,
                         0.0,
                         0.0,
                         0.0,
@@ -75961,6 +74671,1217 @@
                     "videoPath": "flame.avi",
                     "fps": 24.0,
                     "loop": 0
+                }
+            ]
+        },
+        {
+            "UID": 1595315706,
+            "ParentUID": 0,
+            "Name": "Navigation",
+            "Tag": "Default",
+            "Static": 1,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 0,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 0,
+                    "Enabled": 1,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Euler": [
+                        -0.0,
+                        0.0,
+                        -0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Global": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": 3167418441,
+            "ParentUID": 1595315706,
+            "Name": "mesh",
+            "Tag": "Default",
+            "Static": 1,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 1,
+            "No Walkable": 1,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 1,
+                    "Enabled": 1,
+                    "meshUID": 940594850,
+                    "materialUID": 3273516252,
+                    "castShadows": 0,
+                    "useAlpha": 0,
+                    "highlighted": 0,
+                    "highlightColor": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "xTiles": 1,
+                    "yTiles": 1,
+                    "fps": 24.0,
+                    "waterAmplitude1": 10.0,
+                    "waterDecay1": 1.0,
+                    "waterFrequency1": 10.0,
+                    "waterSource1": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "waterAmplitude2": 10.0,
+                    "waterDecay2": 1.0,
+                    "waterFrequency2": 10.0,
+                    "waterSource2": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "texSpeed": [
+                        0.0,
+                        0.0
+                    ],
+                    "waterSpeed": 2.0,
+                    "loop": 0,
+                    "water": 0,
+                    "dissolve": 0,
+                    "waterSource1": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "waterSource2": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "uvScaler": [
+                        1.0,
+                        1.0
+                    ],
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 0
+                },
+                {
+                    "Type": 0,
+                    "Enabled": 1,
+                    "Position": [
+                        -53.91717529296875,
+                        347.6253662109375,
+                        4359.5546875
+                    ],
+                    "Rotation": [
+                        -0.7071068286895752,
+                        0.0,
+                        0.0,
+                        0.7071067094802856
+                    ],
+                    "Euler": [
+                        -90.00000762939453,
+                        0.0,
+                        0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        0.9999999403953552,
+                        0.9999999403953552
+                    ],
+                    "Global": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        -53.91717529296875,
+                        0.0,
+                        -1.1920928955078126e-7,
+                        0.9999999403953552,
+                        347.6253662109375,
+                        0.0,
+                        -0.9999999403953552,
+                        -1.1920928955078126e-7,
+                        4359.5546875,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": 3753071136,
+            "ParentUID": 1595315706,
+            "Name": "mesh",
+            "Tag": "Default",
+            "Static": 1,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 1,
+            "No Walkable": 1,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 1,
+                    "Enabled": 1,
+                    "meshUID": 3544331277,
+                    "materialUID": 4290014581,
+                    "castShadows": 0,
+                    "useAlpha": 0,
+                    "highlighted": 0,
+                    "highlightColor": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "xTiles": 1,
+                    "yTiles": 1,
+                    "fps": 24.0,
+                    "waterAmplitude1": 10.0,
+                    "waterDecay1": 1.0,
+                    "waterFrequency1": 10.0,
+                    "waterSource1": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "waterAmplitude2": 10.0,
+                    "waterDecay2": 1.0,
+                    "waterFrequency2": 10.0,
+                    "waterSource2": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "texSpeed": [
+                        0.0,
+                        0.0
+                    ],
+                    "waterSpeed": 2.0,
+                    "loop": 0,
+                    "water": 0,
+                    "dissolve": 0,
+                    "waterSource1": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "waterSource2": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "uvScaler": [
+                        1.0,
+                        1.0
+                    ],
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 0
+                },
+                {
+                    "Type": 0,
+                    "Enabled": 1,
+                    "Position": [
+                        -1328.1500244140626,
+                        258.3153381347656,
+                        2732.796875
+                    ],
+                    "Rotation": [
+                        -0.7071068286895752,
+                        0.0,
+                        0.0,
+                        0.7071067094802856
+                    ],
+                    "Euler": [
+                        -90.00000762939453,
+                        0.0,
+                        0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        0.9999999403953552,
+                        0.9999999403953552
+                    ],
+                    "Global": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        -1328.1500244140626,
+                        0.0,
+                        -1.1920928955078126e-7,
+                        0.9999999403953552,
+                        258.3153381347656,
+                        0.0,
+                        -0.9999999403953552,
+                        -1.1920928955078126e-7,
+                        2732.796875,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": 1656956859,
+            "ParentUID": 1595315706,
+            "Name": "mesh",
+            "Tag": "Default",
+            "Static": 1,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 1,
+            "No Walkable": 1,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 1,
+                    "Enabled": 1,
+                    "meshUID": 2097229018,
+                    "materialUID": 3200460851,
+                    "castShadows": 0,
+                    "useAlpha": 0,
+                    "highlighted": 0,
+                    "highlightColor": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "xTiles": 1,
+                    "yTiles": 1,
+                    "fps": 24.0,
+                    "waterAmplitude1": 10.0,
+                    "waterDecay1": 1.0,
+                    "waterFrequency1": 10.0,
+                    "waterSource1": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "waterAmplitude2": 10.0,
+                    "waterDecay2": 1.0,
+                    "waterFrequency2": 10.0,
+                    "waterSource2": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "texSpeed": [
+                        0.0,
+                        0.0
+                    ],
+                    "waterSpeed": 2.0,
+                    "loop": 0,
+                    "water": 0,
+                    "dissolve": 0,
+                    "waterSource1": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "waterSource2": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "uvScaler": [
+                        1.0,
+                        1.0
+                    ],
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 0
+                },
+                {
+                    "Type": 0,
+                    "Enabled": 1,
+                    "Position": [
+                        -760.2908935546875,
+                        426.8882751464844,
+                        -892.5659790039063
+                    ],
+                    "Rotation": [
+                        -0.7071068286895752,
+                        0.0,
+                        0.0,
+                        0.7071067094802856
+                    ],
+                    "Euler": [
+                        -90.00000762939453,
+                        0.0,
+                        0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        0.9999999403953552,
+                        0.9999999403953552
+                    ],
+                    "Global": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        -760.2908935546875,
+                        0.0,
+                        -1.1920928955078126e-7,
+                        0.9999999403953552,
+                        426.8882751464844,
+                        0.0,
+                        -0.9999999403953552,
+                        -1.1920928955078126e-7,
+                        -892.5659790039063,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": 3956627778,
+            "ParentUID": 1595315706,
+            "Name": "mesh",
+            "Tag": "Default",
+            "Static": 1,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 1,
+            "No Walkable": 1,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 1,
+                    "Enabled": 1,
+                    "meshUID": 1271817965,
+                    "materialUID": 3926371926,
+                    "castShadows": 0,
+                    "useAlpha": 0,
+                    "highlighted": 0,
+                    "highlightColor": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "xTiles": 1,
+                    "yTiles": 1,
+                    "fps": 24.0,
+                    "waterAmplitude1": 10.0,
+                    "waterDecay1": 1.0,
+                    "waterFrequency1": 10.0,
+                    "waterSource1": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "waterAmplitude2": 10.0,
+                    "waterDecay2": 1.0,
+                    "waterFrequency2": 10.0,
+                    "waterSource2": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "texSpeed": [
+                        0.0,
+                        0.0
+                    ],
+                    "waterSpeed": 2.0,
+                    "loop": 0,
+                    "water": 0,
+                    "dissolve": 0,
+                    "waterSource1": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "waterSource2": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "uvScaler": [
+                        1.0,
+                        1.0
+                    ],
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 0
+                },
+                {
+                    "Type": 0,
+                    "Enabled": 1,
+                    "Position": [
+                        763.75146484375,
+                        411.1789855957031,
+                        -172.4970703125
+                    ],
+                    "Rotation": [
+                        -0.7071068286895752,
+                        0.0,
+                        0.0,
+                        0.7071067094802856
+                    ],
+                    "Euler": [
+                        -90.00000762939453,
+                        0.0,
+                        0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        0.9999999403953552,
+                        0.9999999403953552
+                    ],
+                    "Global": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        763.75146484375,
+                        0.0,
+                        -1.1920928955078126e-7,
+                        0.9999999403953552,
+                        411.1789855957031,
+                        0.0,
+                        -0.9999999403953552,
+                        -1.1920928955078126e-7,
+                        -172.4970703125,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": 125842377,
+            "ParentUID": 1595315706,
+            "Name": "mesh",
+            "Tag": "Default",
+            "Static": 1,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 1,
+            "No Walkable": 1,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 1,
+                    "Enabled": 1,
+                    "meshUID": 1477978020,
+                    "materialUID": 3666397436,
+                    "castShadows": 0,
+                    "useAlpha": 0,
+                    "highlighted": 0,
+                    "highlightColor": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "xTiles": 1,
+                    "yTiles": 1,
+                    "fps": 24.0,
+                    "waterAmplitude1": 10.0,
+                    "waterDecay1": 1.0,
+                    "waterFrequency1": 10.0,
+                    "waterSource1": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "waterAmplitude2": 10.0,
+                    "waterDecay2": 1.0,
+                    "waterFrequency2": 10.0,
+                    "waterSource2": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "texSpeed": [
+                        0.0,
+                        0.0
+                    ],
+                    "waterSpeed": 2.0,
+                    "loop": 0,
+                    "water": 0,
+                    "dissolve": 0,
+                    "waterSource1": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "waterSource2": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "uvScaler": [
+                        1.0,
+                        1.0
+                    ],
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 0
+                },
+                {
+                    "Type": 0,
+                    "Enabled": 1,
+                    "Position": [
+                        -1758.880126953125,
+                        240.77731323242188,
+                        3184.01318359375
+                    ],
+                    "Rotation": [
+                        -0.7071068286895752,
+                        0.0,
+                        0.0,
+                        0.7071067094802856
+                    ],
+                    "Euler": [
+                        -90.00000762939453,
+                        0.0,
+                        0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        0.9999999403953552,
+                        0.9999999403953552
+                    ],
+                    "Global": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        -1758.880126953125,
+                        0.0,
+                        -1.1920928955078126e-7,
+                        0.9999999403953552,
+                        240.77731323242188,
+                        0.0,
+                        -0.9999999403953552,
+                        -1.1920928955078126e-7,
+                        3184.01318359375,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": 548955449,
+            "ParentUID": 1595315706,
+            "Name": "mesh",
+            "Tag": "Default",
+            "Static": 1,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 0,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 1,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 1,
+                    "Enabled": 1,
+                    "meshUID": 1892728384,
+                    "materialUID": 735767494,
+                    "castShadows": 0,
+                    "useAlpha": 0,
+                    "highlighted": 0,
+                    "highlightColor": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "xTiles": 1,
+                    "yTiles": 1,
+                    "fps": 24.0,
+                    "waterAmplitude1": 10.0,
+                    "waterDecay1": 1.0,
+                    "waterFrequency1": 10.0,
+                    "waterSource1": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "waterAmplitude2": 10.0,
+                    "waterDecay2": 1.0,
+                    "waterFrequency2": 10.0,
+                    "waterSource2": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "texSpeed": [
+                        0.0,
+                        0.0
+                    ],
+                    "waterSpeed": 2.0,
+                    "loop": 0,
+                    "water": 0,
+                    "dissolve": 0,
+                    "waterSource1": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "waterSource2": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "uvScaler": [
+                        1.0,
+                        1.0
+                    ],
+                    "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 0
+                },
+                {
+                    "Type": 0,
+                    "Enabled": 1,
+                    "Position": [
+                        553.7891845703125,
+                        255.67926025390626,
+                        752.1688232421875
+                    ],
+                    "Rotation": [
+                        -0.7071068286895752,
+                        0.0,
+                        0.0,
+                        0.7071067094802856
+                    ],
+                    "Euler": [
+                        -90.00000762939453,
+                        0.0,
+                        0.0
+                    ],
+                    "Scale": [
+                        0.5990660190582275,
+                        0.5990659594535828,
+                        0.5990659594535828
+                    ],
+                    "Global": [
+                        0.5990660190582275,
+                        0.0,
+                        0.0,
+                        553.7891845703125,
+                        0.0,
+                        -7.141423452594609e-8,
+                        0.5990659594535828,
+                        255.67926025390626,
+                        0.0,
+                        -0.5990659594535828,
+                        -7.141423452594609e-8,
+                        752.1688232421875,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": 1257571276,
+            "ParentUID": 1595315706,
+            "Name": "0_Recast_$AssimpFbx$_Translation",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 0,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 0,
+                    "Enabled": 1,
+                    "Position": [
+                        553.7891845703125,
+                        255.67926025390626,
+                        752.1688232421875
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Euler": [
+                        -0.0,
+                        0.0,
+                        -0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Global": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        553.7891845703125,
+                        0.0,
+                        1.0,
+                        0.0,
+                        255.67926025390626,
+                        0.0,
+                        0.0,
+                        1.0,
+                        752.1688232421875,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": 4016920110,
+            "ParentUID": 1257571276,
+            "Name": "0_Recast_$AssimpFbx$_PreRotation",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 0,
+                    "Enabled": 1,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        -0.7071068286895752,
+                        0.0,
+                        0.0,
+                        0.7071068286895752
+                    ],
+                    "Euler": [
+                        -90.00000762939453,
+                        0.0,
+                        0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Global": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        553.7891845703125,
+                        0.0,
+                        -1.1920928955078126e-7,
+                        1.0000001192092896,
+                        255.67926025390626,
+                        0.0,
+                        -1.0000001192092896,
+                        -1.1920928955078126e-7,
+                        752.1688232421875,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": 2530381009,
+            "ParentUID": 4016920110,
+            "Name": "0_Recast_$AssimpFbx$_Scaling",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 0,
+                    "Enabled": 1,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Euler": [
+                        -0.0,
+                        0.0,
+                        -0.0
+                    ],
+                    "Scale": [
+                        0.5990660190582275,
+                        0.5990660190582275,
+                        0.5990660190582275
+                    ],
+                    "Global": [
+                        0.5990660190582275,
+                        0.0,
+                        0.0,
+                        553.7891845703125,
+                        0.0,
+                        -7.141423452594609e-8,
+                        0.5990660786628723,
+                        255.67926025390626,
+                        0.0,
+                        -0.5990660786628723,
+                        -7.141423452594609e-8,
+                        752.1688232421875,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": 3196895382,
+            "ParentUID": 2530381009,
+            "Name": "0_Recast",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 0,
+                    "Enabled": 1,
+                    "Position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Euler": [
+                        -0.0,
+                        0.0,
+                        -0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Global": [
+                        0.5990660190582275,
+                        0.0,
+                        0.0,
+                        553.7891845703125,
+                        0.0,
+                        -7.141423452594609e-8,
+                        0.5990660786628723,
+                        255.67926025390626,
+                        0.0,
+                        -0.5990660786628723,
+                        -7.141423452594609e-8,
+                        752.1688232421875,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
                 }
             ]
         }
