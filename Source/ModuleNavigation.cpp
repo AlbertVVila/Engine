@@ -1923,6 +1923,12 @@ ENGINE_API void crowdTool::MoveRequest(int idAgent, unsigned int targetRef, floa
 	}
 }
 
+ENGINE_API void crowdTool::ChangeVelocity(int idAgent, float velocity)
+{
+	dtCrowdAgent* ag = m_crowd->getEditableAgent(idAgent);
+	ag->params.maxSpeed = velocity;
+}
+
 void crowdTool::calcVel(float* vel, const float* pos, const float* tgt, const float speed)
 {
 	dtVsub(vel, tgt, pos);
