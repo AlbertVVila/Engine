@@ -57,6 +57,7 @@ class BossStateActivated;
 class BossStateInterPhase;
 class BossStateSummonArmy;
 class EnemyControllerScript;
+class GameLoop;
 
 class BossBehaviourScript_API BossBehaviourScript : public Script
 {
@@ -93,6 +94,8 @@ public:
 	BossStateCast* cast = nullptr;
 
 public:
+	GameObject* gameLoopGO = nullptr;
+	GameLoop* gLoop = nullptr;
 
 	GameObject* firstMeshFloor = nullptr;
 	GameObject* secondMeshFloor = nullptr;

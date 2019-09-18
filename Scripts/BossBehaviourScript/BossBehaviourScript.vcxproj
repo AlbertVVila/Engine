@@ -287,6 +287,9 @@
     <ProjectReference Include="..\EnemyControllerScript\EnemyControllerScript.vcxproj">
       <Project>{acc36cc8-ada1-4cfa-ae5a-c51cf877b885}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\GameLoop\GameLoop.vcxproj">
+      <Project>{a5975bb3-268d-4aaa-a04b-9398a16b9280}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

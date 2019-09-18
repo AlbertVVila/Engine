@@ -10,6 +10,7 @@
 
 #include "BossBehaviourScript.h"
 #include "EnemyControllerScript/EnemyControllerScript.h"
+#include "GameLoop/GameLoop.h"
 
 BossStateDeath::BossStateDeath(BossBehaviourScript* AIBoss)
 {
@@ -32,5 +33,6 @@ void BossStateDeath::Update()
 	else
 	{
 		//superdead, allegedly
+		boss->gLoop->bossDeath = true;
 	}
 }
