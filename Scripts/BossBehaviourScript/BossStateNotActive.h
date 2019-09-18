@@ -11,6 +11,8 @@ public:
 	~BossStateNotActive();
 
 	void HandleIA() override;
+
+	bool particlesShut = false;
 };
 
 #endif // _BOSSSTATENOTACTIVE_H_

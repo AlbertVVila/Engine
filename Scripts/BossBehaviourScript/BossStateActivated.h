@@ -23,7 +23,6 @@ private:
 	math::float3 directionToGround = math::float3::zero;
 
 	bool cameraShaking = false;
-	float wallSpeed = 0.0f;
 	float percToHigh = 0.3f;
 	float percFloating = 0.4f;
 	float timeToHighPoint = 0.0f;

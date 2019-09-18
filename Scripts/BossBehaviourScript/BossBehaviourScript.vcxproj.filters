@@ -45,6 +45,9 @@
     <ClCompile Include="BossStateDeath.cpp">
       <Filter>States</Filter>
     </ClCompile>
+    <ClCompile Include="BossStateSummonArmy.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BossBehaviourScript.h">
@@ -72,6 +75,9 @@
       <Filter>States</Filter>
     </ClInclude>
     <ClInclude Include="BossStateDeath.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="BossStateSummonArmy.h">
       <Filter>States</Filter>
     </ClInclude>
   </ItemGroup>

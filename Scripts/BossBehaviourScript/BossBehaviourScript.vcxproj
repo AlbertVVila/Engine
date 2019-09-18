@@ -263,6 +263,7 @@
     <ClCompile Include="BossStateInterPhase.cpp" />
     <ClCompile Include="BossStateNotActive.cpp" />
     <ClCompile Include="BossStatePreCast.cpp" />
+    <ClCompile Include="BossStateSummonArmy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BossBehaviourScript.h" />
@@ -274,8 +275,12 @@
     <ClInclude Include="BossStateInterPhase.h" />
     <ClInclude Include="BossStateNotActive.h" />
     <ClInclude Include="BossStatePreCast.h" />
+    <ClInclude Include="BossStateSummonArmy.h" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BasicEnemyAIScript\BasicEnemyAIScript.vcxproj">
+      <Project>{b6ea4adb-ab73-42a0-a2ab-d98f896178b3}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\CameraController\CameraController.vcxproj">
       <Project>{ea91d26e-3ad6-4fb7-a70b-e6a0c2492857}</Project>
     </ProjectReference>

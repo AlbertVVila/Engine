@@ -1,7 +1,7 @@
 {
     "Material": {
         "metaVersion": 2,
-        "timeCreated": 1568746086,
+        "timeCreated": 1568803428,
         "GUID": 2160207956,
         "Name": "Boss Material",
         "File": "Assets/Materials/Boss Material.m4t",
@@ -24,6 +24,7 @@
         ],
         "diffuseUID": 1306319091,
         "normalUID": 1505903866,
+        "dissolveUID": 3100838409,
         "shader": "PBR"
     }
 }

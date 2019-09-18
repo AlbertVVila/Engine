@@ -39,10 +39,6 @@ void BossStateActivated::Update()
 		//Go high
 		math::float3 newPosition = boss->enemyController->GetPosition() + directionToHigh * speedUntilHigh * boss->App->time->gameDeltaTime;
 		boss->enemyController->SetPosition(newPosition);
-
-		//Close the door in this time
-		math::float3 newDoorPosition = boss->closingDoor->transform->GetPosition() + wallSpeed * math::float3::unitY * boss->App->time->gameDeltaTime;
-		boss->closingDoor->transform->SetPosition(newDoorPosition);
 	}
 	else if (timer > (timeFloating + timeToHighPoint))
 	{
@@ -66,7 +62,4 @@ void BossStateActivated::Enter()
 	directionToGround = boss->pointStartFight - boss->highPointFirstCS;
 	directionToGround.Normalize();
 	speedDescend = (boss->highPointFirstCS.Distance(boss->pointStartFight)) / timeToGround;
-	wallSpeed = (boss->finalDoorHeight - boss->closingDoor->transform->GetPosition().y) / timeToHighPoint;
-
-	boss->playerCamera->GetComponent<CameraController>()->Shake(timeToHighPoint, 20.0f, timeToHighPoint * 0.2f, timeToHighPoint * 0.3f, true);
 }

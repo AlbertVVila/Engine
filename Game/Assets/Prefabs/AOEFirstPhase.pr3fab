@@ -33,6 +33,7 @@
             "isPrefab": 1,
             "isPrefabSync": 1,
             "prefabUID": 1857248747,
+            "prefabTimeStamp": 1568818067,
             "Components": [
                 {
                     "Type": 0,
@@ -90,7 +91,7 @@
             ]
         },
         {
-            "UID": 3300010967,
+            "UID": 3338360313,
             "ParentUID": 73541707,
             "Name": "Prep Particles",
             "Tag": "Default",
@@ -226,7 +227,7 @@
             ]
         },
         {
-            "UID": 2727607563,
+            "UID": 1515147958,
             "ParentUID": 73541707,
             "Name": "Beam Particles",
             "Tag": "Default",
@@ -391,7 +392,7 @@
             ]
         },
         {
-            "UID": 658640639,
+            "UID": 2953409092,
             "ParentUID": 73541707,
             "Name": "Hitbox",
             "Tag": "Default",

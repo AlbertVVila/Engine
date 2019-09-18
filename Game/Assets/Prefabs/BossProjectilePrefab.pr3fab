@@ -82,17 +82,17 @@
                     "Enabled": 1,
                     "script": "BossProjectileScript",
                     "scriptInfo": {
-                        "waitingTime": 2.0,
+                        "waitingTime": 0.800000011920929,
                         "projectileSpeed": 3000.0,
                         "projectileLife": 3.0,
                         "damageAmount": 5.0,
-                        "acceleration": 1000.0
+                        "acceleration": 1500.0
                     }
                 }
             ]
         },
         {
-            "UID": 2224071338,
+            "UID": 2380708656,
             "ParentUID": 2453626250,
             "Name": "Mesh",
             "Tag": "Mesh",
@@ -223,13 +223,14 @@
                         1.0
                     ],
                     "distorsionSpeed": 0.0010000000474974514,
+                    "loop": 0,
                     "dissolveAmount": 1.0,
                     "borderAmount": 0.02500000037252903
                 }
             ]
         },
         {
-            "UID": 2725443549,
+            "UID": 2324871401,
             "ParentUID": 2453626250,
             "Name": "BoxTrigger",
             "Tag": "HitBox",
@@ -324,7 +325,7 @@
             ]
         },
         {
-            "UID": 3589142829,
+            "UID": 1264528127,
             "ParentUID": 2453626250,
             "Name": "Trail",
             "Tag": "Default",

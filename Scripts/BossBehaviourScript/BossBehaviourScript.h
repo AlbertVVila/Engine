@@ -55,6 +55,7 @@ class BossStateDeath;
 class BossStateNotActive;
 class BossStateActivated;
 class BossStateInterPhase;
+class BossStateSummonArmy;
 class EnemyControllerScript;
 
 class BossBehaviourScript_API BossBehaviourScript : public Script
@@ -86,6 +87,7 @@ public:
 	BossStateNotActive* notActive = nullptr;
 	BossStateIdle* idle = nullptr;
 	BossStatePreCast* precast = nullptr;
+	BossStateSummonArmy* summonArmy = nullptr;
 	BossStateInterPhase* interPhase = nullptr;
 	BossStateDeath* death = nullptr;
 	BossStateCast* cast = nullptr;
@@ -109,6 +111,8 @@ public:
 	math::Quat currentRotation = math::Quat::identity;
 
 	float activationDistance = 800.0f;
+	float doorClosingDistance = 2000.0f;
+	float doorClosingTime = 2.0f;
 	float activationTime = 5.0f;
 
 	bool circlesSpawning = false;
@@ -121,6 +125,7 @@ public:
 	math::float3 pointStartFight = math::float3::zero;
 
 	GameObject* closingDoor = nullptr;
+	GameObject* doorParticles = nullptr;
 	float finalDoorHeight = 600.0f;
 	GameObject* playerCamera = nullptr;
 
@@ -129,6 +134,12 @@ public:
 	math::float3 bottomTP = math::float3::zero;
 	math::float3 leftTP = math::float3::zero;
 	math::float3 rightTP = math::float3::zero;
+
+	//Summon in summon phase
+	int summonSkeletonsNumber = 20;
+	float timerBetweenSummons = 4.0f;
+	math::float3 firstSpawnLocation = math::float3::zero;
+	math::float3 secondSpawnLocation = math::float3::zero;
 
 private:
 	std::vector<BossState*> bossStates;

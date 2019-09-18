@@ -1,15 +1,15 @@
 {
     "Material": {
         "metaVersion": 2,
-        "timeCreated": 1568400168,
+        "timeCreated": 1568803428,
         "GUID": 1634342396,
         "Name": "BossAOEFloorMaterial",
         "File": "Assets/Materials/BossAOEFloorMaterial.m4t",
         "ExportedFile": "Library/Materials/1634342396.m4t",
         "DifusseColor": [
-            0.43979087471961977,
-            0.22776135802268983,
-            0.9262294769287109,
+            1.0,
+            1.0,
+            1.0,
             1.0
         ],
         "specularColor": [
@@ -21,8 +21,6 @@
             1.0,
             1.0,
             1.0
-        ],
-        "diffuseUID": 2838531059,
-        "shader": "FX"
+        ]
     }
 }
