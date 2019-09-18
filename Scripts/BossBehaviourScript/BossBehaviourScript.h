@@ -96,9 +96,12 @@ public:
 
 	GameObject* firstMeshFloor = nullptr;
 	GameObject* secondMeshFloor = nullptr;
-	std::vector<GameObject*> floorGOs;
+	GameObject* mainFirstFloor = nullptr;
+	GameObject* mainSecondFloor = nullptr;
+	std::vector<GameObject*> floorBossGOs;
+	std::vector<GameObject*> floorMainGOs;
 
-	void GenerateNewNavigability();
+	void GenerateNewNavigability(std::vector<GameObject*> vectorGOs);
 
 public:
 	float firstHealthThreshold = 0.75f;
