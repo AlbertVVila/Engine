@@ -881,7 +881,7 @@ void ModuleScene::ResetQuadTree() //deprecated
 	}
 }
 
-bool ModuleScene::PrefabWasUpdated(unsigned UID) const
+bool ModuleScene::SceneIsOlderThanPrefab(unsigned UID) const
 {
 	Resource* scene = App->resManager->GetByName(name.c_str(), TYPE::SCENE);
 	Resource* prefab = App->resManager->GetWithoutLoad(UID);
@@ -916,6 +916,8 @@ unsigned ModuleScene::CreatePrefab(GameObject* go)
 	prefab->SetName(go->name.c_str());
 	prefab->SetExportedFile(exportedFile.c_str());
 	prefab->Save(go); //We leave the resource loaded for getting it later
+	go->prefabTimeStamp = App->fsystem->GetModTime(prefab->GetFile());
+
 	if (!App->resManager->ImportFile((go->name + PREFABEXTENSION).c_str(), filepath.c_str(), TYPE::PREFAB))
 	{
 		LOG("Could not import Prefab %s!!", go->name);

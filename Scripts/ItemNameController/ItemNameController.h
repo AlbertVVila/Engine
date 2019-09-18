@@ -32,9 +32,8 @@ public:
 	float4 GetColor(unsigned uid);
 
 private:
-	GameObject* itemName = nullptr;
 	GameObject* uiName[10];
-	GameObject* itemBackground = nullptr;
+	GameObject* itemBackground[10];
 	GameObject* itemTypeName = nullptr;
 
 	math::float4 grey = math::float4(147.0f, 147.0f, 147.0f, 255.0f);

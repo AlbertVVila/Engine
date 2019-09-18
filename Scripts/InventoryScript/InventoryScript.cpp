@@ -105,9 +105,19 @@ void InventoryScript::Start()
 
 void InventoryScript::Update()
 {
-	if (!inventory->isActive()) return;
+	if (!inventory->isActive())
+	{
+		if (skill) App->scene->FindGameObjectByName("NewSkillPoint")->SetActive(true);
+		skill = false;
+		return;
+	}
 
 	App->scene->FindGameObjectByName("NewItem")->SetActive(false);
+	if (App->scene->FindGameObjectByName("NewSkillPoint")->isActive())
+	{
+		skill = true;
+		App->scene->FindGameObjectByName("NewSkillPoint")->SetActive(false);
+	}
 	math::float2 mouse = reinterpret_cast<const float2&>(App->input->GetMousePosition());
 	float screenX, screenY;
 

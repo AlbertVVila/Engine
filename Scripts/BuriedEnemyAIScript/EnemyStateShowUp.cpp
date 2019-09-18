@@ -6,6 +6,7 @@
 #include "GameObject.h"
 #include "ComponentRenderer.h"
 #include "ComponentBoxTrigger.h"
+#include "ComponentTransform.h"
 
 EnemyStateShowUp::EnemyStateShowUp(BuriedEnemyAIScript* AIScript)
 {
@@ -48,6 +49,11 @@ void EnemyStateShowUp::Enter()
 	enemy->enemyController->GetMainRenderer()->Enable(true);
 	enemy->enemyController->hpBoxTrigger->Enable(true);
 	enemy->dustParticlesGO->SetActive(true);
+
+	// Set candle back to enemy head
+	float candleZPos = enemy->candleGO->transform->position.z;
+	if(candleZPos < candleZPos + enemy->candleOffset)
+		enemy->candleGO->transform->position.z += enemy->candleOffset;
 }
 
 void EnemyStateShowUp::Exit()
