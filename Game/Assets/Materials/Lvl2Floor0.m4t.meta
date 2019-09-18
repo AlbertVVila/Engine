@@ -1,7 +1,7 @@
 {
     "Material": {
         "metaVersion": 2,
-        "timeCreated": 1568822948,
+        "timeCreated": 1568826156,
         "GUID": 1808725985,
         "Name": "Lvl2Floor0",
         "File": "Assets/Materials/Lvl2Floor0.m4t",
@@ -21,9 +21,6 @@
             1.0,
             1.0,
             1.0
-        ],
-        "diffuseUID": 2015705537,
-        "normalUID": 1306547991,
-        "shader": "PBR"
+        ]
     }
 }

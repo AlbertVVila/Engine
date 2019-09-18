@@ -1,7 +1,7 @@
 {
     "Material": {
         "metaVersion": 2,
-        "timeCreated": 1565207367,
+        "timeCreated": 1568802784,
         "GUID": 3951274881,
         "Name": "Skull_projectile",
         "File": "Assets/Materials/Skull_projectile.m4t",
@@ -18,11 +18,9 @@
             0.10000000149011612
         ],
         "emissiveColor": [
-            0.01973593421280384,
-            0.9631147384643555,
-            0.1047946885228157
-        ],
-        "emissiveUID": 676697322,
-        "shader": "PBR"
+            1.0,
+            1.0,
+            1.0
+        ]
     }
 }
