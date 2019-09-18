@@ -99,6 +99,7 @@ private:
 	int actualHealth = 20;
 	int maxHealth = 20;
 	int experience = 20;
+	mutable float currentSpeed = 100.f;
 
 	float hitColorDuration = 0.2f;
 	float hitColorTimer = 0.f;

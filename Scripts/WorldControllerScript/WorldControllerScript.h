@@ -36,6 +36,9 @@ public:
 	//the update calls detour crowds update which updates all the positions of the agents
 	void Update() override;
 
+	//function to change the velocity of a certain agent
+	void changeVelocity(unsigned int goID, float newVel);
+
 private:
 	//explicitly disable copy constructor and copy assignment operator
 	WorldControllerScript(const WorldControllerScript&);

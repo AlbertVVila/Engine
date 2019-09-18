@@ -431,27 +431,14 @@ void EnemyControllerScript::Move(float speed, math::float3& direction) const
 
 void EnemyControllerScript::Move(float speed, float& refreshTime, math::float3 position, std::vector<float3>& path) const
 {
+	if (speed != currentSpeed)
+	{
+		//update our
+		currentSpeed = speed;
+		//now we change the corresponding agent's speed
+		currentWorldControllerScript->changeVelocity(gameobject->UUID, currentSpeed);
+	}
 	currentWorldControllerScript->EnemyMoveRequest(gameobject->UUID, position);
-	/*if (refreshTime > MOVE_REFRESH_TIME)
-	{
-		refreshTime = 0.0f;
-		App->navigation->FindPath(gameobject->transform->position, position, path);
-	}
-	if (path.size() > 0)
-	{
-		math::float3 currentPosition = gameobject->transform->GetPosition();
-		while (path.size() > 0 && currentPosition.DistanceSq(path[0]) < MINIMUM_PATH_DISTANCE)
-		{
-			path.erase(path.begin());
-		}
-		if (path.size() > 0)
-		{
-			gameobject->transform->LookAt(path[0]);
-			math::float3 direction = (path[0] - currentPosition).Normalized();
-			gameobject->transform->SetPosition(currentPosition + speed * direction * App->time->gameDeltaTime);
-		}
-	}
-	refreshTime += App->time->gameDeltaTime;*/
 }
 
 void EnemyControllerScript::LookAt2D(math::float3& position)
