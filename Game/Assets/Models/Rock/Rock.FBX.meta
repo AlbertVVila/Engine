@@ -1,0 +1,16 @@
+{
+    "Model": {
+        "metaVersion": 2,
+        "timeCreated": 1568812802,
+        "GUID": 1623966048,
+        "NumMeshes": 1,
+        "NumAnimations": 0
+    },
+    "Mesh0": {
+        "MeshNumber": 0,
+        "GUID": 2806157570,
+        "Name": "Rock_0",
+        "File": "Assets/Models/Rock/Rock.FBX",
+        "ExportedFile": "Library/Meshes/2806157570.m3sh"
+    }
+}
