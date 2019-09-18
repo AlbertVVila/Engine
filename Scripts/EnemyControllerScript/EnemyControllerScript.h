@@ -22,6 +22,8 @@ class ExperienceController;
 class ResourceMaterial;
 class CombatAudioEvents;
 
+enum class EnemyType {SKELETON, MINER, SORCERER, SPINNER, BANDOLERO};
+
 
 class EnemyControllerScript_API EnemyControllerScript : public Script
 {
@@ -60,6 +62,7 @@ public:
 	void LookAt2D(math::float3& position);
 
 	void OnTriggerEnter(GameObject* go) override;
+
 public:
 
 	bool isDead = false;
@@ -93,6 +96,10 @@ public:
 	std::vector<ResourceMaterial*> defaultMaterials;		// Vector containing default materials of the enemy meshes
 
 	CombatAudioEvents* combataudioevents = nullptr;
+
+	// Enemy Type and level (1 = NORMAL, 2 = HARD, 3 = BOSS)
+	int enemyLevel = 1u;			
+	EnemyType enemyType = EnemyType::SKELETON;
 
 private:
 	int actualHealth = 20;

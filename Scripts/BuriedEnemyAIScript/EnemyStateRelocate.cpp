@@ -10,6 +10,7 @@
 #include "GameObject.h"
 #include "ComponentRenderer.h"
 #include "ComponentBoxTrigger.h"
+#include "ComponentTransform.h"
 
 #include "Math/float3.h"
 #include "Math/MathFunc.h"
@@ -65,6 +66,10 @@ void EnemyStateRelocate::Exit()
 	enemy->enemyController->GetMainRenderer()->Enable(false);
 	enemy->dustParticlesGO->SetActive(false);
 
+	// Set candle on the ground
+	float candleZPos = enemy->candleGO->transform->position.z;
+	if (candleZPos > candleZPos - enemy->candleOffset)
+		enemy->candleGO->transform->position.z -= enemy->candleOffset;
 }
 
 void EnemyStateRelocate::Enter()

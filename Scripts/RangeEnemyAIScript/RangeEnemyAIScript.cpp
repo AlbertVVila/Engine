@@ -67,25 +67,31 @@ void RangeEnemyAIScript::Start()
 	{
 		projectileScript1 = projectile1->GetComponent<ProjectileScript>();
 	}
+	
+	if (numberOfProjectiles > 1)
+	{
+		projectile2 = App->scene->FindGameObjectByName(projectileName2.c_str(), gameobject->parent);
+		if (projectile2 == nullptr)
+		{
+			LOG("Enemy projectile with name %s couldn't be found. \n", projectileName2);
+		}
+		else
+		{
+			projectileScript2 = projectile2->GetComponent<ProjectileScript>();
+		}
+	}
 
-	projectile2 = App->scene->FindGameObjectByName(projectileName2.c_str(), gameobject->parent);
-	if (projectile2 == nullptr)
+	if (numberOfProjectiles > 2)
 	{
-		LOG("Enemy projectile with name %s couldn't be found. \n", projectileName2);
-	}
-	else
-	{
-		projectileScript2 = projectile2->GetComponent<ProjectileScript>();
-	}
-
-	projectile3 = App->scene->FindGameObjectByName(projectileName3.c_str(), gameobject->parent);
-	if (projectile3 == nullptr)
-	{
-		LOG("Enemy projectile with name %s couldn't be found. \n", projectileName3);
-	}
-	else
-	{
-		projectileScript3 = projectile3->GetComponent<ProjectileScript>();
+		projectile3 = App->scene->FindGameObjectByName(projectileName3.c_str(), gameobject->parent);
+		if (projectile3 == nullptr)
+		{
+			LOG("Enemy projectile with name %s couldn't be found. \n", projectileName3);
+		}
+		else
+		{
+			projectileScript3 = projectile3->GetComponent<ProjectileScript>();
+		}
 	}
 
 	startPosition = enemyController->GetPosition();
@@ -145,27 +151,40 @@ void RangeEnemyAIScript::Expose(ImGuiContext* context)
 	ImGui::Text("Attack:");
 	ImGui::InputFloat("Attack Time", &attackDuration);
 	ImGui::InputFloat("Attack Damage", &attackDamage);
+
+	ImGui::SliderInt("N. of Projectiles", &numberOfProjectiles, 1, 3);
+
 	char* targetName = new char[64];
 	strcpy_s(targetName, strlen(projectileName1.c_str()) + 1, projectileName1.c_str());
 	ImGui::InputText("Projectile Name1", targetName, 64);
 	projectileName1 = targetName;
 	delete[] targetName;
 
-	char* targetName1 = new char[64];
-	strcpy_s(targetName1, strlen(projectileName2.c_str()) + 1, projectileName2.c_str());
-	ImGui::InputText("Projectile Name2", targetName1, 64);
-	projectileName2 = targetName1;
-	delete[] targetName1;
+	if (numberOfProjectiles > 1)
+	{
+		char* targetName1 = new char[64];
+		strcpy_s(targetName1, strlen(projectileName2.c_str()) + 1, projectileName2.c_str());
+		ImGui::InputText("Projectile Name2", targetName1, 64);
+		projectileName2 = targetName1;
+		delete[] targetName1;
+	}
 
-	char* targetName2 = new char[64];
-	strcpy_s(targetName2, strlen(projectileName3.c_str()) + 1, projectileName3.c_str());
-	ImGui::InputText("Projectile Name3", targetName2, 64);
-	projectileName3 = targetName2;
-	delete[] targetName2;
+	if (numberOfProjectiles > 2)
+	{
+		char* targetName2 = new char[64];
+		strcpy_s(targetName2, strlen(projectileName3.c_str()) + 1, projectileName3.c_str());
+		ImGui::InputText("Projectile Name3", targetName2, 64);
+		projectileName3 = targetName2;
+		delete[] targetName2;
+	}
 
 
 	ImGui::DragFloat("Projectile Delay1", &projectileDelay1, 0.01f, 0.0f, 3.f);
-	ImGui::DragFloat("Projectile Delay2", &projectileDelay2, 0.01f, 0.0f, 3.f);
+
+	if (numberOfProjectiles > 1)
+		ImGui::DragFloat("Projectile Delay2", &projectileDelay2, 0.01f, 0.0f, 3.f);
+
+	if (numberOfProjectiles > 2)
 	ImGui::DragFloat("Projectile Delay3", &projectileDelay3, 0.01f, 0.0f, 3.f);
 
 
@@ -192,6 +211,7 @@ void RangeEnemyAIScript::Serialize(JSON_value* json) const
 	// Attack variables
 	json->AddFloat("attackDuration", attackDuration);
 	json->AddFloat("attackDamage", attackDamage);
+	json->AddInt("numberOfProjectiles", numberOfProjectiles);
 	json->AddString("projectileName1", projectileName1.c_str());
 	json->AddString("projectileName2", projectileName2.c_str());
 	json->AddString("projectileName3", projectileName3.c_str());
@@ -222,6 +242,7 @@ void RangeEnemyAIScript::DeSerialize(JSON_value* json)
 	// Attack variables
 	attackDuration = json->GetFloat("attackDuration");
 	attackDamage = json->GetFloat("attackDamage");
+	numberOfProjectiles = json->GetInt("numberOfProjectiles");
 	projectileName1 = json->GetString("projectileName1", projectileName1.c_str());
 	projectileName2 = json->GetString("projectileName2", projectileName2.c_str());
 	projectileName3 = json->GetString("projectileName3", projectileName3.c_str());

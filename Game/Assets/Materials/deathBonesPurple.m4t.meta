@@ -1,0 +1,30 @@
+{
+    "Material": {
+        "metaVersion": 2,
+        "timeCreated": 1568213813,
+        "GUID": 1307196681,
+        "Name": "deathBonesPurple",
+        "File": "Assets/Materials/deathBonesPurple.m4t",
+        "ExportedFile": "Library/Materials/1307196681.m4t",
+        "DifusseColor": [
+            0.7354083061218262,
+            0.05643642321228981,
+            0.8606557250022888,
+            1.0
+        ],
+        "specularColor": [
+            0.5409836173057556,
+            0.540978193283081,
+            0.540978193283081
+        ],
+        "emissiveColor": [
+            1.0,
+            1.0,
+            1.0
+        ],
+        "diffuseUID": 2946751613,
+        "normalUID": 2827041712,
+        "dissolveUID": 3100838409,
+        "shader": "PBR"
+    }
+}

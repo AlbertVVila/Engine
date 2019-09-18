@@ -1,0 +1,28 @@
+{
+    "Material": {
+        "metaVersion": 2,
+        "timeCreated": 1568445563,
+        "GUID": 3755561079,
+        "Name": "BandoleroGun",
+        "File": "Assets/Materials/BandoleroGun.m4t",
+        "ExportedFile": "Library/Materials/3755561079.m4t",
+        "DifusseColor": [
+            0.3647540807723999,
+            0.3647504150867462,
+            0.3647504150867462,
+            1.0
+        ],
+        "specularColor": [
+            0.10000000149011612,
+            0.10000000149011612,
+            0.10000000149011612
+        ],
+        "emissiveColor": [
+            1.0,
+            1.0,
+            1.0
+        ],
+        "diffuseUID": 2653893106,
+        "shader": "PBR"
+    }
+}
