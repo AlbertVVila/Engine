@@ -51,7 +51,7 @@ EnemyStateDeath::~EnemyStateDeath()
 
 void EnemyStateDeath::Enter()
 {
-	if (enemy->enemyController->IsDeadCrit())
+	if (enemy->enemyController->IsDeadCritOrSkill())
 	{
 		deathType = DEATHTYPE::CRIT;
 	}

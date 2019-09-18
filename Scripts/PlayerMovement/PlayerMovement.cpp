@@ -699,7 +699,7 @@ void PlayerMovement::Update()
 	if (App->time->gameTimeScale == 0) return;
 
 	deltatime = App->time->gameDeltaTime;
-
+	LOG("%d", IsExecutingSkill());
 	if (health <= 0.f)
 	{
 		currentState = (PlayerState*)death;
@@ -1310,6 +1310,11 @@ bool PlayerMovement::IsUsingR() const
 bool PlayerMovement::IsUsingSkill() const
 {
 	return (IsUsingOne() || IsUsingTwo() || IsUsingThree() || IsUsingFour() || IsUsingQ() || IsUsingW() || IsUsingE() || IsUsingR() || IsUsingRightClick());
+}
+
+bool PlayerMovement::IsExecutingSkill() const
+{
+	return currentSkill != nullptr && currentSkill != chain;
 }
 
 void PlayerMovement::PrepareSkills() const

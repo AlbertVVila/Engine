@@ -335,9 +335,9 @@ void EnemyControllerScript::TakeDamage(unsigned damage, int type)
 		if (actualHealth <= 0)
 		{
 			isDead = true;
-			if ((DamageType)type == DamageType::CRITICAL)
+			if ((DamageType)type == DamageType::CRITICAL || playerMovement->IsExecutingSkill())
 			{
-				isDeadCritical = true; //by default is 0 (Normal)
+				isDeadByCritOrSkill = true; //by default is false (Normal)
 			}
 			enemyLoot = gameobject->GetComponent<EnemyLoot>();
 			if (enemyLoot != nullptr)
