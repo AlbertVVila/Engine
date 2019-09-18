@@ -5,6 +5,7 @@
 
 #include "GameObject.h"
 #include "ComponentImage.h"
+#include "ComponentText.h"
 
 EnemyLifeBarController_API Script* CreateScript()
 {
@@ -14,7 +15,7 @@ EnemyLifeBarController_API Script* CreateScript()
 
 void EnemyLifeBarController::Start()
 {
-	GameObject* enemyLife = App->scene->FindGameObjectByName("EnemyLife");
+	enemyLife = App->scene->FindGameObjectByName("EnemyLife");
 	lifeBackground = App->scene->FindGameObjectByName("LifeBackground", enemyLife);
 	hPbar = App->scene->FindGameObjectByName("HPbar", enemyLife);
 	enemyTypeName = App->scene->FindGameObjectByName("EnemyTypeName", enemyLife);
@@ -27,16 +28,22 @@ void EnemyLifeBarController::Start()
 
 void EnemyLifeBarController::Update()
 {
-	lifeBackground->SetActive(false);
-	hPbar->SetActive(false);
-	enemyTypeName->SetActive(false);
-	skull->SetActive(false);
-	boneRight->SetActive(false);
-	boneLeft->SetActive(false);
+	if (draw)
+	{
+		enemyLife->SetActive(true);
+		draw = false;
+	}
+	else
+	{
+		enemyLife->SetActive(false);
+	}
 }
 
 void EnemyLifeBarController::SetLifeBar(int maxHP, int actualHP, EnemyLifeBarType type, std::string name)
 {
+	draw = true;
+	enemyTypeName->GetComponent<Text>()->text = name;
+
 	lifeBackground->SetActive(true);
 	hPbar->SetActive(true);
 	enemyTypeName->SetActive(true);

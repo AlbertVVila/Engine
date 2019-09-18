@@ -98,6 +98,11 @@ public:
 	GameObject* secondMeshFloor = nullptr;
 	GameObject* mainFirstFloor = nullptr;
 	GameObject* mainSecondFloor = nullptr;
+	GameObject* mainThirdFloor = nullptr;
+	GameObject* mainFourthFloor = nullptr;
+	GameObject* mainFifthFloor = nullptr;
+	GameObject* mainSixthFloor = nullptr;
+
 	std::vector<GameObject*> floorBossGOs;
 	std::vector<GameObject*> floorMainGOs;
 

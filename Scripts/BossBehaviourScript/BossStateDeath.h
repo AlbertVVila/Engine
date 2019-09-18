@@ -9,6 +9,8 @@ class BossStateDeath :
 public:
 	BossStateDeath(BossBehaviourScript* AIBoss);
 	~BossStateDeath();
+
+	void Update() override;
 };
 
 #endif // __BOSSSTATEDEATH_H_
