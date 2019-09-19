@@ -35,7 +35,7 @@ public:
 		return new InventoryScript(*this);
 	}
 
-	bool AddItem(Item item);
+	bool AddItem(Item item, unsigned amount = 1u);
 	std::vector<Item> GetQuickItems();
 	int GetCurrentQuantity(const Item& item);
 	int GetCurrentQuantity(std::string itemName);

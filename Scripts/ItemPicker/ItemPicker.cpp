@@ -249,7 +249,7 @@ void ItemPicker::Start()
 
 void ItemPicker::PickupItem() const
 {
-	if (inventoryScript->AddItem(item))
+	if (inventoryScript->AddItem(item, amount))
 	{
 		gameobject->SetActive(false);
 		if (itemPickedAudio != nullptr) itemPickedAudio->Play();

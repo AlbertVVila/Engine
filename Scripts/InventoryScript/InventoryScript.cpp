@@ -14,6 +14,7 @@
 #include "ComponentTransform.h"
 
 #include "PlayerMovement.h"
+#include "../ItemPicker/ItemPicker.h"
 
 #include "GameObject.h"
 #include "Viewport.h"
@@ -198,9 +199,11 @@ void InventoryScript::Update()
 					if (items[j].second == i)
 					{
 						GameObject* go = App->scene->FindGameObjectByUID(items[j].first.gameobjectUID);
+						int amount = static_cast<int>(GetCurrentQuantity(items[j].first));
 						if (go) 
 						{
 							go->transform->SetGlobalPosition(player->transform->GetGlobalPosition());
+							go->GetComponent<ItemPicker>()->amount = amount;
 							go->SetActive(true);
 						}
 
@@ -208,7 +211,7 @@ void InventoryScript::Update()
 						{
 							playerMovement->UnEquip(items[j].first.stats, (unsigned)items[j].first.type);
 						}
-						ManageConsumableItemsQuantity(items[j].first, -1);
+						ManageConsumableItemsQuantity(items[j].first, -amount);
 
 						items.erase(items.begin() + j);
 
@@ -484,14 +487,14 @@ void InventoryScript::Update()
 	slotsToActivate.clear();
 }
 
-bool InventoryScript::AddItem(Item item)
+bool InventoryScript::AddItem(Item item, unsigned amount)
 {
 	for (int i = 0; i < INVENTARY_SLOTS; ++i)
 	{
 		if (!itemsSlots[i]->activeSelf)
 		{
-			int quantity = ManageConsumableItemsQuantity(item);
-			if (quantity <= 1)
+			int quantity = ManageConsumableItemsQuantity(item, amount);
+			if (quantity <= 1 || item.type == ItemType::QUICK)
 			{
 				//itemsSlots[i]->SetActive(true);
 				slotsToActivate.emplace_back(itemsSlots[i]);

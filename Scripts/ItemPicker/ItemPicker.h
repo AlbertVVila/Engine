@@ -56,6 +56,7 @@ public:
 	ItemType type = ItemType::NONE;
 	Item item;
 	bool pickedUpViaPlayer = false;
+	unsigned amount = 1;
 
 private:
 
