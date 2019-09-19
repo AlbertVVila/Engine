@@ -107,10 +107,19 @@ void InventoryScript::Start()
 
 void InventoryScript::Update()
 {
+	// All return paths should check for slots activation! (code as follows:)
+	/* 
+		for (GameObject* slot : slotsToActivate) slot->SetActive(true);
+		slotsToActivate.clear();
+	 */
+
 	if (!inventory->isActive())
 	{
 		if (skill) App->scene->FindGameObjectByName("NewSkillPoint")->SetActive(true);
 		skill = false;
+
+		for (GameObject* slot : slotsToActivate) slot->SetActive(true);
+		slotsToActivate.clear();
 		return;
 	}
 
@@ -217,9 +226,13 @@ void InventoryScript::Update()
 
 						HideConsumableItemText(i);
 
+						for (GameObject* slot : slotsToActivate) slot->SetActive(true);
+						slotsToActivate.clear();
 						return;
 					}
 				}
+				for (GameObject* slot : slotsToActivate) slot->SetActive(true);
+				slotsToActivate.clear();
 				return;
 			}
 
@@ -476,6 +489,9 @@ void InventoryScript::Update()
 			{
 				rectTransform->SetPositionUsingAligment(initialitemPos);
 				initialitemPos = math::float2::zero;
+
+				for (GameObject* slot : slotsToActivate) slot->SetActive(true);
+				slotsToActivate.clear();
 				return;
 			}
 
@@ -494,7 +510,7 @@ bool InventoryScript::AddItem(Item item, unsigned amount)
 		if (!itemsSlots[i]->activeSelf)
 		{
 			int quantity = ManageConsumableItemsQuantity(item, amount);
-			if (quantity <= 1 || item.type == ItemType::QUICK)
+			if (quantity <= amount)
 			{
 				//itemsSlots[i]->SetActive(true);
 				slotsToActivate.emplace_back(itemsSlots[i]);
