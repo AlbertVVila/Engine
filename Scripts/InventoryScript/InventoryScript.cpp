@@ -203,6 +203,8 @@ void InventoryScript::Update()
 							go->SetActive(true);
 						}
 
+						ManageConsumableItemsQuantity(items[j].first, -1);
+
 						items.erase(items.begin() + j);
 
 						HideConsumableItemText(i);
@@ -633,7 +635,7 @@ void InventoryScript::showDescription(int i)
 	itemDesc->SetActive(true);
 }
 
-int InventoryScript::ManageConsumableItemsQuantity(const Item& item)
+int InventoryScript::ManageConsumableItemsQuantity(const Item& item, int value)
 {
 	if (item.type == ItemType::QUICK)
 	{
@@ -641,13 +643,16 @@ int InventoryScript::ManageConsumableItemsQuantity(const Item& item)
 		{
 			if (consumableItems[i].first == item.name)
 			{
-				consumableItems[i].second += 1;
+				consumableItems[i].second += value;
 				return consumableItems[i].second;
 			}
 		}
-
-		consumableItems.emplace_back(std::make_pair(item.name, 1));
-		return 1;
+		
+		if (value > 0)
+		{
+			consumableItems.emplace_back(std::make_pair(item.name, value));
+			return value;
+		}
 	}
 
 	return 0;

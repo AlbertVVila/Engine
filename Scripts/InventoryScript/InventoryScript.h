@@ -46,7 +46,7 @@ public:
 
 private:
 	void showDescription(int i);
-	int ManageConsumableItemsQuantity(const Item& item);
+	int ManageConsumableItemsQuantity(const Item& item, int value = 1);
 	void ManageConsumableItemsQuantityText(const Item& item, int quantity);
 	int GetItemIndexPosition(const Item& item);
 	void HideConsumableItemText(int position);
