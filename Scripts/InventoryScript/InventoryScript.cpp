@@ -203,6 +203,10 @@ void InventoryScript::Update()
 							go->SetActive(true);
 						}
 
+						if (items[j].first.isEquipped)
+						{
+							playerMovement->UnEquip(items[j].first.stats, (unsigned)items[j].first.type);
+						}
 						ManageConsumableItemsQuantity(items[j].first, -1);
 
 						items.erase(items.begin() + j);
