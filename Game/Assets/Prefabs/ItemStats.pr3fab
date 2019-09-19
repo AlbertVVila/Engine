@@ -29,7 +29,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 1,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -118,7 +118,8 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 0,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
