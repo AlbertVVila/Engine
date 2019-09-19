@@ -1883,8 +1883,8 @@ int crowdTool::AddNewAgent(float* pos, float speed)
 	memset(&ap, 0, sizeof(ap));
 	ap.radius = defaultFloatValue;
 	ap.height = defaultFloatValue;
-	ap.maxAcceleration = speed;
-	ap.maxSpeed = speed/2;
+	ap.maxAcceleration = 10000.f;//high enough value to stops the drifting of the agents
+	ap.maxSpeed = speed;
 	//ap.collisionQueryRange = ap.radius * 12.0f;
 	//ap.pathOptimizationRange = ap.radius * 30.0f;
 	ap.collisionQueryRange = ap.radius * 5.0f;
