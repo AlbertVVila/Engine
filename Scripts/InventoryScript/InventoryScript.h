@@ -70,6 +70,7 @@ private:
 	ComponentAudioSource* selectItemAudio;
 	ComponentAudioSource* dropItemAudio;
 
+	GameObject* player = nullptr;
 	PlayerMovement* playerMovement = nullptr;
 
 	bool skill = false;

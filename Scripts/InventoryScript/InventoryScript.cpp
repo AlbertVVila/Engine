@@ -11,6 +11,7 @@
 #include "ComponentTransform2D.h"
 #include "ComponentAudioSource.h"
 #include "ComponentText.h"
+#include "ComponentTransform.h"
 
 #include "PlayerMovement.h"
 
@@ -89,7 +90,7 @@ void InventoryScript::Start()
 	}
 
 	// Player
-	GameObject* player = App->scene->FindGameObjectByName("Player");
+	player = App->scene->FindGameObjectByName("Player");
 	assert(player != nullptr);
 	if (player != nullptr)
 	{
@@ -198,7 +199,7 @@ void InventoryScript::Update()
 						GameObject* go = App->scene->FindGameObjectByUID(items[j].first.gameobjectUID);
 						if (go) 
 						{
-							LOG("OBJECT %s", go->name);
+							go->transform->SetGlobalPosition(player->transform->GetGlobalPosition());
 							go->SetActive(true);
 						}
 
