@@ -24,6 +24,7 @@
             1.0
         ],
         "diffuseUID": 2653893106,
+        "dissolveUID": 3100838409,
         "shader": "PBR"
     }
 }

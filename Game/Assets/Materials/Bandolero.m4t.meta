@@ -21,6 +21,10 @@
             1.0,
             1.0,
             1.0
-        ]
+        ],
+        "diffuseUID": 1671879696,
+        "normalUID": 504248161,
+        "dissolveUID": 3100838409,
+        "shader": "PBR"
     }
 }
