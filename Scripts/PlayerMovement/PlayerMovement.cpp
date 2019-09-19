@@ -699,7 +699,6 @@ void PlayerMovement::Update()
 	if (App->time->gameTimeScale == 0) return;
 
 	deltatime = App->time->gameDeltaTime;
-	LOG("%d", IsExecutingSkill());
 	if (health <= 0.f)
 	{
 		currentState = (PlayerState*)death;

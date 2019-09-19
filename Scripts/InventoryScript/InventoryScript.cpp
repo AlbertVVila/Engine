@@ -98,7 +98,6 @@ void InventoryScript::Start()
 	}
 
 	itemDesc = App->scene->FindGameObjectByName("ItemStats");
-	//assert(itemDesc != nullptr);
 
 	LoadInventory();
 }

@@ -55,12 +55,7 @@ void EnemyStateAttack::HandleIA()
 void EnemyStateAttack::Update()
 {
 	ProcessGunFx();
-	// Delay attack
-	//if (timer > enemy->projectileDelay1 && !projShot1)
-	//{
-	//	// Reset projectile position
 
-	//}
 	if (enemy->numberOfProjectiles > 1 && timer > enemy->projectileDelay2 && !projShot2)
 	{
 		ShowGunFX();
