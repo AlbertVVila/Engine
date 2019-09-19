@@ -10,6 +10,7 @@
 #endif
 
 #include <vector>
+#include <list>
 #include "Math/float2.h"
 #include "Item.h"
 
@@ -74,6 +75,8 @@ private:
 	PlayerMovement* playerMovement = nullptr;
 
 	bool skill = false;
+
+	std::list<GameObject*> slotsToActivate;
 
 public:
 	bool itemGrabbed = false;

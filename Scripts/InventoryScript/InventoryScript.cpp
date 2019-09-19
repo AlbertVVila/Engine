@@ -191,6 +191,7 @@ void InventoryScript::Update()
 				rectTransform->SetPositionUsingAligment(initialitemPos);
 				itemsSlots[i]->SetActive(false);
 				itemDesc->SetActive(false);
+				imageHover = nullptr;
 
 				for (int j = 0; j < items.size(); ++j)
 				{
@@ -477,6 +478,10 @@ void InventoryScript::Update()
 
 		}
 	}
+
+
+	for (GameObject* slot : slotsToActivate) slot->SetActive(true);
+	slotsToActivate.clear();
 }
 
 bool InventoryScript::AddItem(Item item)
@@ -488,7 +493,8 @@ bool InventoryScript::AddItem(Item item)
 			int quantity = ManageConsumableItemsQuantity(item);
 			if (quantity <= 1)
 			{
-				itemsSlots[i]->SetActive(true);
+				//itemsSlots[i]->SetActive(true);
+				slotsToActivate.emplace_back(itemsSlots[i]);
 				ComponentImage* image = itemsSlots[i]->GetComponent<ComponentImage>();
 				image->UpdateTexture(item.sprite);
 				items.emplace_back(std::make_pair(item, i));
