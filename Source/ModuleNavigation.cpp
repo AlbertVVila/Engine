@@ -1599,6 +1599,21 @@ void ModuleNavigation::setPlayerBB(math::AABB bbox)
 	playerBB = bbox;
 }
 
+ENGINE_API void ModuleNavigation::GenerateNavigabilityFromGOs(std::vector<GameObject*> vectorGOs)
+{
+	CleanValuesPOST();
+	CleanValuesPRE();
+	for (auto go : vectorGOs)
+	{
+		AddNavigableMeshFromObject(go);
+	}
+	if (meshComponents.size() > 0)
+	{
+		generateNavigability(true);
+	}
+	CleanValuesPOST();
+}
+
 bool ModuleNavigation::FindIntersectionPoint(math::float3 start, math::float3& intersectionPoint) const
 {
 	float2 mouse((float*)& App->input->GetMousePosition());

@@ -205,6 +205,7 @@ public:
 	std::string sceneToLoad = "";
 	LoopState* stateAfterLoad = nullptr;
 	bool actionAfterLoad = false;
+	bool bossDeath = false;
 
 	float xPickingCorrection = 0.0f;
 	float yPickingCorrection = 0.0f;

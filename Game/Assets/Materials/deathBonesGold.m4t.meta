@@ -1,30 +1,26 @@
 {
     "Material": {
         "metaVersion": 2,
-        "timeCreated": 1568213804,
+        "timeCreated": 1568818792,
         "GUID": 63561716,
         "Name": "deathBonesGold",
         "File": "Assets/Materials/deathBonesGold.m4t",
         "ExportedFile": "Library/Materials/63561716.m4t",
         "DifusseColor": [
-            0.8729507923126221,
-            0.7489237785339356,
-            0.1287960261106491,
+            1.0,
+            1.0,
+            1.0,
             1.0
         ],
         "specularColor": [
-            1.0,
-            0.9999997615814209,
-            0.9999899864196777
+            0.10000000149011612,
+            0.10000000149011612,
+            0.10000000149011612
         ],
         "emissiveColor": [
             1.0,
             1.0,
             1.0
-        ],
-        "diffuseUID": 2946751613,
-        "normalUID": 2827041712,
-        "dissolveUID": 3100838409,
-        "shader": "PBR"
+        ]
     }
 }

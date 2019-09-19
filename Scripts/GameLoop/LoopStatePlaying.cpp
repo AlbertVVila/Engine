@@ -64,7 +64,7 @@ void LoopStatePlaying::Update()
 		gLoop->loseWindow->SetActive(true);
 		gLoop->currentLoopState = (LoopState*)gLoop->deadState;
 	}
-	else if (gLoop->winBbox->Intersects(*(gLoop->playerBbox)))
+	else if (gLoop->winBbox->Intersects(*(gLoop->playerBbox)) || gLoop->bossDeath)
 	{
 
 		if (gLoop->gameScene == GameScene::CEMENTERY || gLoop->gameScene == GameScene::TEMPLE)

@@ -1187,6 +1187,8 @@ void PlayerMovement::OnTriggerExit(GameObject* go)
 
 bool PlayerMovement::IsAttacking() const
 {
+	if (isPlayerDead) return false;
+
 	//if shift is being pressed while mouse 1
 	if (App->input->IsKeyPressed(SDL_SCANCODE_LSHIFT) == KEY_DOWN &&
 		(App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(true, false) ||
