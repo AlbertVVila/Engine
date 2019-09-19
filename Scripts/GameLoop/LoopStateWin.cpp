@@ -24,6 +24,7 @@ LoopStateWin::~LoopStateWin()
 void LoopStateWin::Update()
 {
 	//First Outro video then loading for credits
+	//TODO Disable UI!!
 	if (outroVideo == nullptr && gLoop->outroVideoGO != nullptr)
 	{
 		gLoop->outroVideoGO->SetActive(true);

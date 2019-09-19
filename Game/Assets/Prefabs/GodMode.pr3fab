@@ -1,7 +1,7 @@
 {
     "GameObjects": [
         {
-            "UID": 3567157729,
+            "UID": 2196095305,
             "ParentUID": 0,
             "Name": "GodMode",
             "Tag": "Default",
@@ -32,7 +32,7 @@
             "openInHierarchy": 1,
             "isPrefab": 1,
             "isPrefabSync": 1,
-            "prefabUID": 2099314518,
+            "prefabUID": 2741727646,
             "Components": [
                 {
                     "Type": 0,
