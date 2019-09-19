@@ -190,10 +190,18 @@ void InventoryScript::Update()
 				rectTransform->SetPositionUsingAligment(initialitemPos);
 				itemsSlots[i]->SetActive(false);
 				itemDesc->SetActive(false);
+
 				for (int j = 0; j < items.size(); ++j)
 				{
 					if (items[j].second == i)
 					{
+						GameObject* go = App->scene->FindGameObjectByUID(items[j].first.gameobjectUID);
+						if (go) 
+						{
+							LOG("OBJECT %s", go->name);
+							go->SetActive(true);
+						}
+
 						items.erase(items.begin() + j);
 
 						HideConsumableItemText(i);
