@@ -460,6 +460,8 @@ void InventoryScript::Update()
 
 		}
 	}
+
+	if (itemGrabbed) LOG("ITEM GRABBED");
 }
 
 bool InventoryScript::AddItem(Item item)

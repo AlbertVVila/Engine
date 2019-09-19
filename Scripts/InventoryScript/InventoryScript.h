@@ -72,9 +72,10 @@ private:
 
 	PlayerMovement* playerMovement = nullptr;
 
-	bool itemGrabbed = false;
 	bool skill = false;
 
+public:
+	bool itemGrabbed = false;
 };
 
 extern "C" InventoryScript_API Script* CreateScript();
