@@ -186,8 +186,10 @@ void InventoryScript::Update()
 			math::float2 menuMax = float2(menuPos.x + menuSize.x *.5f, -menuPos.y + menuSize.y *.5f);
 			if (!(screenX > menuMin.x && screenX < menuMax.x && screenY > menuMin.y && screenY < menuMax.y))
 			{
+				// Drop Outside the menu
 				rectTransform->SetPositionUsingAligment(initialitemPos);
 				itemsSlots[i]->SetActive(false);
+				itemDesc->SetActive(false);
 				for (int j = 0; j < items.size(); ++j)
 				{
 					if (items[j].second == i)
@@ -460,8 +462,6 @@ void InventoryScript::Update()
 
 		}
 	}
-
-	if (itemGrabbed) LOG("ITEM GRABBED");
 }
 
 bool InventoryScript::AddItem(Item item)
