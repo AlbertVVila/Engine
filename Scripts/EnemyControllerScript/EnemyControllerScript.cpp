@@ -193,6 +193,8 @@ void EnemyControllerScript::Update()
 	math::float2 mouse = { mouse_point.x, mouse_point.y };
 	std::list<GameObject*> intersects = App->scene->SceneRaycastHit(mouse);
 
+	if (playerMovement->isPlayerDead) return;
+
 	auto mesh = std::find(intersects.begin(), intersects.end(), this->myMesh);
 	if(mesh != std::end(intersects) && *mesh == this->myMesh)
 	{

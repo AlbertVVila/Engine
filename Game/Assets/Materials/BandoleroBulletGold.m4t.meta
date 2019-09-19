@@ -1,15 +1,15 @@
 {
     "Material": {
         "metaVersion": 2,
-        "timeCreated": 1568462115,
+        "timeCreated": 1568818792,
         "GUID": 4181802202,
         "Name": "BandoleroBulletGold",
         "File": "Assets/Materials/BandoleroBulletGold.m4t",
         "ExportedFile": "Library/Materials/4181802202.m4t",
         "DifusseColor": [
-            0.9959016442298889,
-            0.9101536273956299,
-            0.044897209852933887,
+            1.0,
+            1.0,
+            1.0,
             1.0
         ],
         "specularColor": [
@@ -18,12 +18,9 @@
             0.10000000149011612
         ],
         "emissiveColor": [
-            0.43852460384368899,
-            0.39936894178390505,
-            0.0
-        ],
-        "diffuseUID": 676697322,
-        "emissiveUID": 676697322,
-        "shader": "PBR"
+            1.0,
+            1.0,
+            1.0
+        ]
     }
 }

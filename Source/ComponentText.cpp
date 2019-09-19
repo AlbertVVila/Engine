@@ -28,6 +28,7 @@ Text::Text(const Text &copy) : Component(copy)
 	text = copy.text;
 	color = copy.color;
 	colorHovered = copy.colorHovered;
+	uiOrder = copy.uiOrder;
 	offset = copy.offset;
 	scaleOffset = copy.scaleOffset;
 	isTextWrapped = copy.isTextWrapped;
