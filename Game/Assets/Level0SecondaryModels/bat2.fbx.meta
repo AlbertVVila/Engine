@@ -1,0 +1,30 @@
+{
+    "Model": {
+        "metaVersion": 2,
+        "timeCreated": 1568990669,
+        "GUID": 599496138,
+        "NumMeshes": 2,
+        "NumAnimations": 1
+    },
+    "Mesh0": {
+        "MeshNumber": 0,
+        "GUID": 1940998758,
+        "Name": "bat2_0",
+        "File": "Assets/Level0SecondaryModels/bat2.fbx",
+        "ExportedFile": "Library/Meshes/1940998758.m3sh"
+    },
+    "Mesh1": {
+        "MeshNumber": 1,
+        "GUID": 1281827140,
+        "Name": "bat2_1",
+        "File": "Assets/Level0SecondaryModels/bat2.fbx",
+        "ExportedFile": "Library/Meshes/1281827140.m3sh"
+    },
+    "Animation0": {
+        "AnimationNumber": 0,
+        "GUID": 2562543502,
+        "Name": "bat2_0",
+        "File": "Assets/Level0SecondaryModels/bat2.fbx",
+        "ExportedFile": "Library/Animations/2562543502.animati0n"
+    }
+}

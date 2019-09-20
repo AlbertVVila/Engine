@@ -1,0 +1,28 @@
+{
+    "Material": {
+        "metaVersion": 2,
+        "timeCreated": 1568991274,
+        "GUID": 1146484471,
+        "Name": "batMaterial",
+        "File": "Assets/Materials/batMaterial.m4t",
+        "ExportedFile": "Library/Materials/1146484471.m4t",
+        "DifusseColor": [
+            9.999999974752428e-7,
+            9.999899930335233e-7,
+            9.999899930335233e-7,
+            1.0
+        ],
+        "specularColor": [
+            0.8483606576919556,
+            0.8483521342277527,
+            0.8483521342277527
+        ],
+        "emissiveColor": [
+            1.0,
+            1.0,
+            1.0
+        ],
+        "diffuseUID": 676697322,
+        "shader": "PBR"
+    }
+}
