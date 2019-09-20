@@ -271,18 +271,14 @@ void AnimationController::SetNextEvent()
 	int currentFrame = current->next->time * anim->framesPerSecond;
 	anim->nextEvent = 0;
 
-	//LOG("Current next time = %f", current->next->time);
-
 	for (std::vector<Event*>::iterator it = anim->events.begin(); it != anim->events.end(); ++it)
 	{
 		if (currentFrame < (*it)->frame)
 		{
-			LOG("Current nextEvent = %i", anim->nextEvent);
 			return;
 		}
 		++anim->nextEvent;
 	}
-	//LOG("Current nextEvent = %i", anim->nextEvent);
 }
 
 bool AnimationController::CheckEvents(ResourceAnimation* anim)
@@ -297,7 +293,6 @@ bool AnimationController::CheckEvents(ResourceAnimation* anim)
 			int currentFrame = current->time * anim->framesPerSecond;
 			if (currentFrame >= (*it)->frame)
 			{
-				LOG("EVENT RETURNED TRUE!!!!!!!!!!!!");
 				return true;
 			}
 			return false;
