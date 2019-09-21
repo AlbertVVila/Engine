@@ -289,6 +289,7 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 	//Create new Particle P
 	if (gameobject->isActive() && rateTimer <= 0.f && particles.size() < maxParticles)
 	{
+		timer = float(rand() % 1000) / 1000.f;
 		int amount = MIN(MAX(dt / (1.f / rate), 1), maxParticles);
 		for (; amount > 0; --amount)
 		{
