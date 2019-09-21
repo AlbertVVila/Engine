@@ -44,6 +44,7 @@ public:
 	void TakeDamage(unsigned damage, int type = 1);
 	int GetHealth() const { return actualHealth; }
 	int GetMaxHealth() const { return maxHealth; }
+	int IsDeadCritOrSkill() const { return isDeadByCritOrSkill; } //0 normal - 1 crit or skill
 
 	inline math::float3 GetPosition() const;					// Get position of the enemy (GO with this script attached)
 	inline math::Quat GetRotation() const;						// Get rotation of the enemy (GO with this script attached)
@@ -105,6 +106,7 @@ private:
 	int actualHealth = 20;
 	int maxHealth = 20;
 	int experience = 20;
+	int isDeadByCritOrSkill = 0;
 
 	float hitColorDuration = 0.2f;
 	float hitColorTimer = 0.f;

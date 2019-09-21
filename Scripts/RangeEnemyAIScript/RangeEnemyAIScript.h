@@ -86,9 +86,9 @@ public:
 	GameObject* projectile2 = nullptr;
 	GameObject* projectile3 = nullptr;
 
-	float projectileDelay1 = 0.6f;
-	float projectileDelay2 = 1.0f;
-	float projectileDelay3 = 1.4f;
+	float projectileDelay1 = 0.f;
+	float projectileDelay2 = 0.6f;
+	float projectileDelay3 = 1.0f;
 
 	// Cooldown variables
 	float cooldownTime = 1.0f;			// Seconds to wait between attacks
