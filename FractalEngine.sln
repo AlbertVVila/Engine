@@ -88,6 +88,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AOEBossScript", "Scripts\AO
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BossProjectileScript", "Scripts\BossProjectileScript\BossProjectileScript.vcxproj", "{12D323E6-7EE5-4036-86DD-E7612035D018}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DissolveScript", "Scripts\DissolveScript\DissolveScript.vcxproj", "{388BD8A5-C2C0-4228-BDF4-22664DADF8B9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -676,6 +678,20 @@ Global
 		{12D323E6-7EE5-4036-86DD-E7612035D018}.Release|Win32.Build.0 = Release|Win32
 		{12D323E6-7EE5-4036-86DD-E7612035D018}.Release|x64.ActiveCfg = Release|x64
 		{12D323E6-7EE5-4036-86DD-E7612035D018}.Release|x64.Build.0 = Release|x64
+		{388BD8A5-C2C0-4228-BDF4-22664DADF8B9}.Debug|Win32.ActiveCfg = Debug|Win32
+		{388BD8A5-C2C0-4228-BDF4-22664DADF8B9}.Debug|Win32.Build.0 = Debug|Win32
+		{388BD8A5-C2C0-4228-BDF4-22664DADF8B9}.Debug|x64.ActiveCfg = Debug|x64
+		{388BD8A5-C2C0-4228-BDF4-22664DADF8B9}.Debug|x64.Build.0 = Debug|x64
+		{388BD8A5-C2C0-4228-BDF4-22664DADF8B9}.GameBuild Debug|Win32.ActiveCfg = GameBuild Debug|Win32
+		{388BD8A5-C2C0-4228-BDF4-22664DADF8B9}.GameBuild Debug|Win32.Build.0 = GameBuild Debug|Win32
+		{388BD8A5-C2C0-4228-BDF4-22664DADF8B9}.GameBuild Debug|x64.ActiveCfg = GameBuild Debug|Win32
+		{388BD8A5-C2C0-4228-BDF4-22664DADF8B9}.GameBuild|Win32.ActiveCfg = GameBuild|Win32
+		{388BD8A5-C2C0-4228-BDF4-22664DADF8B9}.GameBuild|Win32.Build.0 = GameBuild|Win32
+		{388BD8A5-C2C0-4228-BDF4-22664DADF8B9}.GameBuild|x64.ActiveCfg = GameBuild|Win32
+		{388BD8A5-C2C0-4228-BDF4-22664DADF8B9}.Release|Win32.ActiveCfg = Release|Win32
+		{388BD8A5-C2C0-4228-BDF4-22664DADF8B9}.Release|Win32.Build.0 = Release|Win32
+		{388BD8A5-C2C0-4228-BDF4-22664DADF8B9}.Release|x64.ActiveCfg = Release|x64
+		{388BD8A5-C2C0-4228-BDF4-22664DADF8B9}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -719,6 +735,7 @@ Global
 		{DBB9B5DF-829A-47D8-AFE5-5E54BE12182F} = {B0BA8D83-BE07-4405-ADE1-C771D081A8CD}
 		{BDEBA268-3739-4870-AEC1-EAC031A408F6} = {DBB9B5DF-829A-47D8-AFE5-5E54BE12182F}
 		{12D323E6-7EE5-4036-86DD-E7612035D018} = {DBB9B5DF-829A-47D8-AFE5-5E54BE12182F}
+		{388BD8A5-C2C0-4228-BDF4-22664DADF8B9} = {DBB9B5DF-829A-47D8-AFE5-5E54BE12182F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7938FFD4-0765-4A85-95CB-3908D56E6F3D}
