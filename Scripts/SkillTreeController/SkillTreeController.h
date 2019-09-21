@@ -54,6 +54,7 @@ private:
 	Skill skillList[NUM_SKILLS];
 
 	int initialSkillPoints = 0;
+	bool item = false;
 };
 
 extern "C" SkillTreeController_API Script* CreateScript();

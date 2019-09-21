@@ -34,6 +34,7 @@ public:
 	}
 
 private:
+	GameObject* enemyLife = nullptr;
 	GameObject* lifeBackground = nullptr;
 	GameObject* hPbar = nullptr;
 	GameObject* enemyTypeName = nullptr;
@@ -42,6 +43,8 @@ private:
 	GameObject* skull = nullptr;
 
 	ComponentImage* lifeImage = nullptr;
+
+	bool draw = false;
 };
 
 extern "C" EnemyLifeBarController_API Script* CreateScript();

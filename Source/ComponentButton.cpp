@@ -52,6 +52,7 @@ Button::Button(const Button& copy) : Component(copy)
 	highlightedImage = (ComponentImage*)copy.highlightedImage->Clone();
 	pressedImage = (ComponentImage*)copy.pressedImage->Clone();
 	rectTransform = (Transform2D*)copy.rectTransform->Clone();
+	uiOrder = copy.uiOrder;
 }
 
 

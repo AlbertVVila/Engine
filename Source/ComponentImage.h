@@ -55,6 +55,7 @@ public:
 
 	unsigned videoTex = 0u;
 	bool videoFinished = false;
+	bool loop = false;
 
 private:
 	bool isMasked = false;
