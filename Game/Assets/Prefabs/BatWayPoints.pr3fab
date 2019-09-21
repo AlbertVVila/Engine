@@ -1,7 +1,7 @@
 {
     "GameObjects": [
         {
-            "UID": 3028629257,
+            "UID": 3058767822,
             "ParentUID": 0,
             "Name": "BatWayPoints",
             "Tag": "Default",
@@ -80,14 +80,488 @@
                 {
                     "Type": 9,
                     "Enabled": 1,
-                    "script": "BatBehaviour",
+                    "script": "SceneEffects",
                     "scriptInfo": {}
                 }
             ]
         },
         {
-            "UID": 4221186821,
-            "ParentUID": 3028629257,
+            "UID": 1300278050,
+            "ParentUID": 3058767822,
+            "Name": "WayPoint",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 0,
+                    "Enabled": 1,
+                    "Position": [
+                        -3003.420654296875,
+                        803.4906005859375,
+                        -1918.22900390625
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Euler": [
+                        -0.0,
+                        0.0,
+                        -0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Global": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        -3003.420654296875,
+                        0.0,
+                        1.0,
+                        0.0,
+                        803.4906005859375,
+                        0.0,
+                        0.0,
+                        1.0,
+                        -1918.22900390625,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": 593729121,
+            "ParentUID": 3058767822,
+            "Name": "WayPoint",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 0,
+                    "Enabled": 1,
+                    "Position": [
+                        -1713.6044921875,
+                        803.4906005859375,
+                        -1874.901611328125
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Euler": [
+                        -0.0,
+                        0.0,
+                        -0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Global": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        -1713.6044921875,
+                        0.0,
+                        1.0,
+                        0.0,
+                        803.4906005859375,
+                        0.0,
+                        0.0,
+                        1.0,
+                        -1874.901611328125,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": 3347142168,
+            "ParentUID": 3058767822,
+            "Name": "WayPoint",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 0,
+                    "Enabled": 1,
+                    "Position": [
+                        -3442.350341796875,
+                        803.4906005859375,
+                        -2200.791015625
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Euler": [
+                        -0.0,
+                        0.0,
+                        -0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Global": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        -3442.350341796875,
+                        0.0,
+                        1.0,
+                        0.0,
+                        803.4906005859375,
+                        0.0,
+                        0.0,
+                        1.0,
+                        -2200.791015625,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": 1037497775,
+            "ParentUID": 3058767822,
+            "Name": "WayPoint",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 0,
+                    "Enabled": 1,
+                    "Position": [
+                        -439.24468994140627,
+                        803.4906005859375,
+                        -4291.83544921875
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Euler": [
+                        -0.0,
+                        0.0,
+                        -0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Global": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        -439.24468994140627,
+                        0.0,
+                        1.0,
+                        0.0,
+                        803.4906005859375,
+                        0.0,
+                        0.0,
+                        1.0,
+                        -4291.83544921875,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": 1176725344,
+            "ParentUID": 3058767822,
+            "Name": "WayPoint",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 0,
+                    "Enabled": 1,
+                    "Position": [
+                        -2837.38623046875,
+                        803.4906005859375,
+                        -4484.5419921875
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Euler": [
+                        -0.0,
+                        0.0,
+                        -0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Global": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        -2837.38623046875,
+                        0.0,
+                        1.0,
+                        0.0,
+                        803.4906005859375,
+                        0.0,
+                        0.0,
+                        1.0,
+                        -4484.5419921875,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": 3930157391,
+            "ParentUID": 3058767822,
+            "Name": "WayPoint",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 0,
+                    "Enabled": 1,
+                    "Position": [
+                        -3711.895263671875,
+                        803.4905395507813,
+                        -3668.465087890625
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Euler": [
+                        -0.0,
+                        0.0,
+                        -0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Global": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        -3711.895263671875,
+                        0.0,
+                        1.0,
+                        0.0,
+                        803.4905395507813,
+                        0.0,
+                        0.0,
+                        1.0,
+                        -3668.465087890625,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": 1635828147,
+            "ParentUID": 3058767822,
             "Name": "WayPoint",
             "Tag": "Default",
             "Static": 0,
@@ -165,8 +639,8 @@
             ]
         },
         {
-            "UID": 1849891080,
-            "ParentUID": 3028629257,
+            "UID": 1212307434,
+            "ParentUID": 3058767822,
             "Name": "WayPoint",
             "Tag": "Default",
             "Static": 0,
@@ -244,8 +718,8 @@
             ]
         },
         {
-            "UID": 2445871042,
-            "ParentUID": 3028629257,
+            "UID": 869545498,
+            "ParentUID": 3058767822,
             "Name": "WayPoint",
             "Tag": "Default",
             "Static": 0,
@@ -323,8 +797,8 @@
             ]
         },
         {
-            "UID": 389786566,
-            "ParentUID": 3028629257,
+            "UID": 2540883446,
+            "ParentUID": 3058767822,
             "Name": "WayPoint",
             "Tag": "Default",
             "Static": 0,
@@ -402,8 +876,8 @@
             ]
         },
         {
-            "UID": 1505580463,
-            "ParentUID": 3028629257,
+            "UID": 3516171993,
+            "ParentUID": 3058767822,
             "Name": "WayPoint",
             "Tag": "Default",
             "Static": 0,
@@ -481,8 +955,87 @@
             ]
         },
         {
-            "UID": 3802975509,
-            "ParentUID": 3028629257,
+            "UID": 4022145999,
+            "ParentUID": 3058767822,
+            "Name": "WayPoint",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 0,
+                    "Enabled": 1,
+                    "Position": [
+                        -1529.7786865234376,
+                        803.4906616210938,
+                        2532.226318359375
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Euler": [
+                        -0.0,
+                        0.0,
+                        -0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Global": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        -1529.7786865234376,
+                        0.0,
+                        1.0,
+                        0.0,
+                        803.4906616210938,
+                        0.0,
+                        0.0,
+                        1.0,
+                        2532.226318359375,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": 1202549362,
+            "ParentUID": 3058767822,
             "Name": "WayPoint",
             "Tag": "Default",
             "Static": 0,
@@ -551,6 +1104,85 @@
                         0.0,
                         1.0,
                         -1124.8212890625,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ]
+                }
+            ]
+        },
+        {
+            "UID": 3272958782,
+            "ParentUID": 3058767822,
+            "Name": "WayPoint",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 1,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 0,
+                    "Enabled": 1,
+                    "Position": [
+                        -3858.334228515625,
+                        803.4906616210938,
+                        2888.3017578125
+                    ],
+                    "Rotation": [
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "Euler": [
+                        -0.0,
+                        0.0,
+                        -0.0
+                    ],
+                    "Scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "Global": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        -3858.334228515625,
+                        0.0,
+                        1.0,
+                        0.0,
+                        803.4906616210938,
+                        0.0,
+                        0.0,
+                        1.0,
+                        2888.3017578125,
                         0.0,
                         0.0,
                         0.0,
