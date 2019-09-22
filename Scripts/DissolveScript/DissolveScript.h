@@ -16,7 +16,6 @@ class DissolveScript_API DissolveScript : public Script
 public:
 	void Start() override;
 	void Update() override;
-	void OnTriggerEnter(GameObject* go) override;
 	void Expose(ImGuiContext* context) override;
 
 	void Serialize(JSON_value* json) const override;
@@ -30,9 +29,14 @@ public:
 private:
 	ComponentRenderer* myRender = nullptr;
 
+	bool finished = false;
+	float dissolveDifference = 0.0f;
 	float initialDissolveAmount = 0.0f;
 	float finalDissolveAmount = 0.0f;
 	float dissolveSpeed = 0.0f;
 };
 
+extern "C" DissolveScript_API Script* CreateScript();
+
 #endif __DissolveScript_h__
+
