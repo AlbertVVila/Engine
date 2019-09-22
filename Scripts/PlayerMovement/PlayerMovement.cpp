@@ -699,7 +699,6 @@ void PlayerMovement::Update()
 	if (App->time->gameTimeScale == 0) return;
 
 	deltatime = App->time->gameDeltaTime;
-
 	if (health <= 0.f)
 	{
 		currentState = (PlayerState*)death;
@@ -1187,6 +1186,8 @@ void PlayerMovement::OnTriggerExit(GameObject* go)
 
 bool PlayerMovement::IsAttacking() const
 {
+	if (isPlayerDead) return false;
+
 	//if shift is being pressed while mouse 1
 	if (App->input->IsKeyPressed(SDL_SCANCODE_LSHIFT) == KEY_DOWN &&
 		(App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(true, false) ||
@@ -1310,6 +1311,11 @@ bool PlayerMovement::IsUsingR() const
 bool PlayerMovement::IsUsingSkill() const
 {
 	return (IsUsingOne() || IsUsingTwo() || IsUsingThree() || IsUsingFour() || IsUsingQ() || IsUsingW() || IsUsingE() || IsUsingR() || IsUsingRightClick());
+}
+
+bool PlayerMovement::IsExecutingSkill() const
+{
+	return currentSkill != nullptr && currentSkill != chain;
 }
 
 void PlayerMovement::PrepareSkills() const

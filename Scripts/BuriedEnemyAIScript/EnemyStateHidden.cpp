@@ -3,6 +3,9 @@
 #include "BuriedEnemyAIScript.h"
 #include "EnemyControllerScript.h"
 
+#include "GameObject.h"
+#include "ComponentTransform.h"
+
 EnemyStateHidden::EnemyStateHidden(BuriedEnemyAIScript* AIScript)
 {
 	enemy = AIScript;

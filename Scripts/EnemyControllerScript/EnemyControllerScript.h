@@ -22,6 +22,8 @@ class ExperienceController;
 class ResourceMaterial;
 class CombatAudioEvents;
 
+enum class EnemyType {SKELETON, MINER, SORCERER, SPINNER, BANDOLERO};
+
 
 class EnemyControllerScript_API EnemyControllerScript : public Script
 {
@@ -42,6 +44,7 @@ public:
 	void TakeDamage(unsigned damage, int type = 1);
 	int GetHealth() const { return actualHealth; }
 	int GetMaxHealth() const { return maxHealth; }
+	int IsDeadCritOrSkill() const { return isDeadByCritOrSkill; } //0 normal - 1 crit or skill
 
 	inline math::float3 GetPosition() const;					// Get position of the enemy (GO with this script attached)
 	inline math::Quat GetRotation() const;						// Get rotation of the enemy (GO with this script attached)
@@ -60,6 +63,7 @@ public:
 	void LookAt2D(math::float3& position);
 
 	void OnTriggerEnter(GameObject* go) override;
+
 public:
 
 	bool isDead = false;
@@ -94,10 +98,15 @@ public:
 
 	CombatAudioEvents* combataudioevents = nullptr;
 
+	// Enemy Type and level (1 = NORMAL, 2 = HARD, 3 = BOSS)
+	int enemyLevel = 1u;			
+	EnemyType enemyType = EnemyType::SKELETON;
+
 private:
 	int actualHealth = 20;
 	int maxHealth = 20;
 	int experience = 20;
+	int isDeadByCritOrSkill = 0;
 
 	float hitColorDuration = 0.2f;
 	float hitColorTimer = 0.f;
