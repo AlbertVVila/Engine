@@ -1,7 +1,7 @@
 {
     "GameObjects": [
         {
-            "UID": 768655444,
+            "UID": 336147222,
             "ParentUID": 4074180566,
             "Name": "Skills",
             "Tag": "Default",
@@ -29,7 +29,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 1,
             "isPrefabSync": 1,
             "prefabUID": 2325434735,
@@ -178,8 +178,8 @@
             ]
         },
         {
-            "UID": 924868100,
-            "ParentUID": 768655444,
+            "UID": 1306854157,
+            "ParentUID": 336147222,
             "Name": "SkillsBackgroundImage",
             "Tag": "Default",
             "Static": 0,
@@ -206,7 +206,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -251,8 +251,8 @@
             ]
         },
         {
-            "UID": 1519383347,
-            "ParentUID": 924868100,
+            "UID": 4095466823,
+            "ParentUID": 1306854157,
             "Name": "SkillConnections",
             "Tag": "Default",
             "Static": 0,
@@ -330,8 +330,8 @@
             ]
         },
         {
-            "UID": 3609736324,
-            "ParentUID": 1519383347,
+            "UID": 2395280322,
+            "ParentUID": 4095466823,
             "Name": "Connection0",
             "Tag": "Default",
             "Static": 0,
@@ -403,8 +403,8 @@
             ]
         },
         {
-            "UID": 1549607544,
-            "ParentUID": 1519383347,
+            "UID": 1455775278,
+            "ParentUID": 4095466823,
             "Name": "Connection1",
             "Tag": "Default",
             "Static": 0,
@@ -476,8 +476,8 @@
             ]
         },
         {
-            "UID": 437348536,
-            "ParentUID": 1519383347,
+            "UID": 4195432578,
+            "ParentUID": 4095466823,
             "Name": "Connection2",
             "Tag": "Default",
             "Static": 0,
@@ -549,8 +549,8 @@
             ]
         },
         {
-            "UID": 1985538268,
-            "ParentUID": 1519383347,
+            "UID": 2767846983,
+            "ParentUID": 4095466823,
             "Name": "Connection3",
             "Tag": "Default",
             "Static": 0,
@@ -622,8 +622,8 @@
             ]
         },
         {
-            "UID": 1507904255,
-            "ParentUID": 1519383347,
+            "UID": 2367589939,
+            "ParentUID": 4095466823,
             "Name": "Connection4",
             "Tag": "Default",
             "Static": 0,
@@ -695,8 +695,8 @@
             ]
         },
         {
-            "UID": 3050345485,
-            "ParentUID": 1519383347,
+            "UID": 3869345039,
+            "ParentUID": 4095466823,
             "Name": "Connection5",
             "Tag": "Default",
             "Static": 0,
@@ -768,8 +768,8 @@
             ]
         },
         {
-            "UID": 1931328333,
-            "ParentUID": 1519383347,
+            "UID": 2969907254,
+            "ParentUID": 4095466823,
             "Name": "Connection6",
             "Tag": "Default",
             "Static": 0,
@@ -841,8 +841,8 @@
             ]
         },
         {
-            "UID": 3413319786,
-            "ParentUID": 924868100,
+            "UID": 1994955300,
+            "ParentUID": 1306854157,
             "Name": "SkillSlots",
             "Tag": "Default",
             "Static": 0,
@@ -920,8 +920,8 @@
             ]
         },
         {
-            "UID": 898213681,
-            "ParentUID": 3413319786,
+            "UID": 3854178428,
+            "ParentUID": 1994955300,
             "Name": "Skill0",
             "Tag": "Default",
             "Static": 0,
@@ -993,8 +993,8 @@
             ]
         },
         {
-            "UID": 2894135338,
-            "ParentUID": 898213681,
+            "UID": 3314799403,
+            "ParentUID": 3854178428,
             "Name": "SkillIcon0",
             "Tag": "Default",
             "Static": 0,
@@ -1066,8 +1066,8 @@
             ]
         },
         {
-            "UID": 1037977584,
-            "ParentUID": 898213681,
+            "UID": 1929567271,
+            "ParentUID": 3854178428,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -1142,13 +1142,13 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 0
+                    "UIOrder": 5
                 }
             ]
         },
         {
-            "UID": 1181539660,
-            "ParentUID": 3413319786,
+            "UID": 1371115465,
+            "ParentUID": 1994955300,
             "Name": "Skill1",
             "Tag": "Default",
             "Static": 0,
@@ -1220,8 +1220,8 @@
             ]
         },
         {
-            "UID": 1622567777,
-            "ParentUID": 1181539660,
+            "UID": 1506457175,
+            "ParentUID": 1371115465,
             "Name": "SkillIcon1",
             "Tag": "Default",
             "Static": 0,
@@ -1293,8 +1293,8 @@
             ]
         },
         {
-            "UID": 885700641,
-            "ParentUID": 1181539660,
+            "UID": 2038784504,
+            "ParentUID": 1371115465,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -1369,13 +1369,13 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 0
+                    "UIOrder": 5
                 }
             ]
         },
         {
-            "UID": 1856274394,
-            "ParentUID": 3413319786,
+            "UID": 1938576968,
+            "ParentUID": 1994955300,
             "Name": "Skill2",
             "Tag": "Default",
             "Static": 0,
@@ -1447,8 +1447,8 @@
             ]
         },
         {
-            "UID": 1788355997,
-            "ParentUID": 1856274394,
+            "UID": 555480386,
+            "ParentUID": 1938576968,
             "Name": "SkillIcon2",
             "Tag": "Default",
             "Static": 0,
@@ -1520,8 +1520,8 @@
             ]
         },
         {
-            "UID": 4121907243,
-            "ParentUID": 1856274394,
+            "UID": 2008317325,
+            "ParentUID": 1938576968,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -1596,13 +1596,13 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 0
+                    "UIOrder": 5
                 }
             ]
         },
         {
-            "UID": 1792616465,
-            "ParentUID": 3413319786,
+            "UID": 604574894,
+            "ParentUID": 1994955300,
             "Name": "Skill3",
             "Tag": "Default",
             "Static": 0,
@@ -1674,8 +1674,8 @@
             ]
         },
         {
-            "UID": 3587122836,
-            "ParentUID": 1792616465,
+            "UID": 1850769417,
+            "ParentUID": 604574894,
             "Name": "SkillIcon3",
             "Tag": "Default",
             "Static": 0,
@@ -1747,8 +1747,8 @@
             ]
         },
         {
-            "UID": 1717780102,
-            "ParentUID": 1792616465,
+            "UID": 54650402,
+            "ParentUID": 604574894,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -1823,13 +1823,13 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 0
+                    "UIOrder": 5
                 }
             ]
         },
         {
-            "UID": 3319676719,
-            "ParentUID": 3413319786,
+            "UID": 2793076516,
+            "ParentUID": 1994955300,
             "Name": "Skill4",
             "Tag": "Default",
             "Static": 0,
@@ -1901,8 +1901,8 @@
             ]
         },
         {
-            "UID": 3432936942,
-            "ParentUID": 3319676719,
+            "UID": 1463492838,
+            "ParentUID": 2793076516,
             "Name": "SkillIcon4",
             "Tag": "Default",
             "Static": 0,
@@ -1974,8 +1974,8 @@
             ]
         },
         {
-            "UID": 3579042567,
-            "ParentUID": 3319676719,
+            "UID": 3338615963,
+            "ParentUID": 2793076516,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -2050,13 +2050,13 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 0
+                    "UIOrder": 5
                 }
             ]
         },
         {
-            "UID": 1084124630,
-            "ParentUID": 3413319786,
+            "UID": 1415491653,
+            "ParentUID": 1994955300,
             "Name": "Skill5",
             "Tag": "Default",
             "Static": 0,
@@ -2128,8 +2128,8 @@
             ]
         },
         {
-            "UID": 4141300094,
-            "ParentUID": 1084124630,
+            "UID": 809589207,
+            "ParentUID": 1415491653,
             "Name": "SkillIcon5",
             "Tag": "Default",
             "Static": 0,
@@ -2201,8 +2201,8 @@
             ]
         },
         {
-            "UID": 3151200973,
-            "ParentUID": 1084124630,
+            "UID": 1782110344,
+            "ParentUID": 1415491653,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -2277,13 +2277,13 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 0
+                    "UIOrder": 5
                 }
             ]
         },
         {
-            "UID": 1814771565,
-            "ParentUID": 3413319786,
+            "UID": 1953516591,
+            "ParentUID": 1994955300,
             "Name": "Skill6",
             "Tag": "Default",
             "Static": 0,
@@ -2355,8 +2355,8 @@
             ]
         },
         {
-            "UID": 1928638367,
-            "ParentUID": 1814771565,
+            "UID": 3330109572,
+            "ParentUID": 1953516591,
             "Name": "SkillIcon6",
             "Tag": "Default",
             "Static": 0,
@@ -2428,8 +2428,8 @@
             ]
         },
         {
-            "UID": 354002279,
-            "ParentUID": 1814771565,
+            "UID": 1849832111,
+            "ParentUID": 1953516591,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -2504,13 +2504,13 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 0
+                    "UIOrder": 5
                 }
             ]
         },
         {
-            "UID": 4128147893,
-            "ParentUID": 3413319786,
+            "UID": 3158717343,
+            "ParentUID": 1994955300,
             "Name": "Skill7",
             "Tag": "Default",
             "Static": 0,
@@ -2582,8 +2582,8 @@
             ]
         },
         {
-            "UID": 155340645,
-            "ParentUID": 4128147893,
+            "UID": 510246000,
+            "ParentUID": 3158717343,
             "Name": "SkillIcon7",
             "Tag": "Default",
             "Static": 0,
@@ -2655,8 +2655,8 @@
             ]
         },
         {
-            "UID": 2903963039,
-            "ParentUID": 4128147893,
+            "UID": 4026835439,
+            "ParentUID": 3158717343,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -2731,13 +2731,13 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 0
+                    "UIOrder": 5
                 }
             ]
         },
         {
-            "UID": 1571749549,
-            "ParentUID": 3413319786,
+            "UID": 2103252585,
+            "ParentUID": 1994955300,
             "Name": "Skill8",
             "Tag": "Default",
             "Static": 0,
@@ -2809,8 +2809,8 @@
             ]
         },
         {
-            "UID": 3813996483,
-            "ParentUID": 1571749549,
+            "UID": 4129215127,
+            "ParentUID": 2103252585,
             "Name": "SkillIcon8",
             "Tag": "Default",
             "Static": 0,
@@ -2882,8 +2882,8 @@
             ]
         },
         {
-            "UID": 191695149,
-            "ParentUID": 1571749549,
+            "UID": 829743560,
+            "ParentUID": 2103252585,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -2958,13 +2958,13 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 0
+                    "UIOrder": 5
                 }
             ]
         },
         {
-            "UID": 780070103,
-            "ParentUID": 3413319786,
+            "UID": 2778831358,
+            "ParentUID": 1994955300,
             "Name": "Skill9",
             "Tag": "Default",
             "Static": 0,
@@ -3036,8 +3036,8 @@
             ]
         },
         {
-            "UID": 4219816605,
-            "ParentUID": 780070103,
+            "UID": 558301429,
+            "ParentUID": 2778831358,
             "Name": "SkillIcon9",
             "Tag": "Default",
             "Static": 0,
@@ -3109,8 +3109,8 @@
             ]
         },
         {
-            "UID": 709305304,
-            "ParentUID": 780070103,
+            "UID": 1147513129,
+            "ParentUID": 2778831358,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -3185,13 +3185,13 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 0
+                    "UIOrder": 5
                 }
             ]
         },
         {
-            "UID": 2150890761,
-            "ParentUID": 3413319786,
+            "UID": 1387534604,
+            "ParentUID": 1994955300,
             "Name": "Skill10",
             "Tag": "Default",
             "Static": 0,
@@ -3263,8 +3263,8 @@
             ]
         },
         {
-            "UID": 618534158,
-            "ParentUID": 2150890761,
+            "UID": 2190133059,
+            "ParentUID": 1387534604,
             "Name": "SkillIcon10",
             "Tag": "Default",
             "Static": 0,
@@ -3336,8 +3336,8 @@
             ]
         },
         {
-            "UID": 1078257935,
-            "ParentUID": 2150890761,
+            "UID": 3906134891,
+            "ParentUID": 1387534604,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -3412,13 +3412,13 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 0
+                    "UIOrder": 5
                 }
             ]
         },
         {
-            "UID": 1623378724,
-            "ParentUID": 924868100,
+            "UID": 3983926908,
+            "ParentUID": 1306854157,
             "Name": "HoverGO",
             "Tag": "Default",
             "Static": 0,
@@ -3496,8 +3496,8 @@
             ]
         },
         {
-            "UID": 1225586034,
-            "ParentUID": 1623378724,
+            "UID": 3463676512,
+            "ParentUID": 3983926908,
             "Name": "SkillHover",
             "Tag": "Default",
             "Static": 0,
@@ -3569,8 +3569,8 @@
             ]
         },
         {
-            "UID": 1927744964,
-            "ParentUID": 924868100,
+            "UID": 4235914040,
+            "ParentUID": 1306854157,
             "Name": "Candado",
             "Tag": "Default",
             "Static": 0,
@@ -3648,8 +3648,8 @@
             ]
         },
         {
-            "UID": 3036126166,
-            "ParentUID": 1927744964,
+            "UID": 2618884812,
+            "ParentUID": 4235914040,
             "Name": "C1",
             "Tag": "Default",
             "Static": 0,
@@ -3721,8 +3721,8 @@
             ]
         },
         {
-            "UID": 3152439904,
-            "ParentUID": 1927744964,
+            "UID": 3210615039,
+            "ParentUID": 4235914040,
             "Name": "C2",
             "Tag": "Default",
             "Static": 0,
@@ -3794,8 +3794,8 @@
             ]
         },
         {
-            "UID": 3355574794,
-            "ParentUID": 1927744964,
+            "UID": 1927356968,
+            "ParentUID": 4235914040,
             "Name": "C3",
             "Tag": "Default",
             "Static": 0,
@@ -3867,8 +3867,8 @@
             ]
         },
         {
-            "UID": 3957879919,
-            "ParentUID": 924868100,
+            "UID": 451375207,
+            "ParentUID": 1306854157,
             "Name": "SkillPoints",
             "Tag": "Default",
             "Static": 0,
@@ -3943,13 +3943,13 @@
                     "IsTextWrapped": 0,
                     "WrapWidth": 0.0,
                     "InterlineDistance": 0.0,
-                    "UIOrder": 0
+                    "UIOrder": 5
                 }
             ]
         },
         {
-            "UID": 1020700372,
-            "ParentUID": 768655444,
+            "UID": 2503792638,
+            "ParentUID": 336147222,
             "Name": "SkillInfo",
             "Tag": "Default",
             "Static": 0,
@@ -4021,8 +4021,8 @@
             ]
         },
         {
-            "UID": 4065570660,
-            "ParentUID": 1020700372,
+            "UID": 2865128019,
+            "ParentUID": 2503792638,
             "Name": "SkillInfoIcon",
             "Tag": "Default",
             "Static": 0,
@@ -4094,8 +4094,8 @@
             ]
         },
         {
-            "UID": 2217478293,
-            "ParentUID": 1020700372,
+            "UID": 1030017003,
+            "ParentUID": 2503792638,
             "Name": "SkillInfoName",
             "Tag": "Default",
             "Static": 0,
@@ -4175,8 +4175,8 @@
             ]
         },
         {
-            "UID": 1834262333,
-            "ParentUID": 1020700372,
+            "UID": 1769238872,
+            "ParentUID": 2503792638,
             "Name": "SkillInfoDescription",
             "Tag": "Default",
             "Static": 0,
@@ -4256,8 +4256,8 @@
             ]
         },
         {
-            "UID": 4202670392,
-            "ParentUID": 1020700372,
+            "UID": 4188150626,
+            "ParentUID": 2503792638,
             "Name": "SkillInfoManaCostTitle",
             "Tag": "Default",
             "Static": 0,
@@ -4337,8 +4337,8 @@
             ]
         },
         {
-            "UID": 2611620268,
-            "ParentUID": 1020700372,
+            "UID": 3886036119,
+            "ParentUID": 2503792638,
             "Name": "SkillInfoManaCostText",
             "Tag": "Default",
             "Static": 0,
