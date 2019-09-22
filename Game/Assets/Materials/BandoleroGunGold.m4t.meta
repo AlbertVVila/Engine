@@ -1,15 +1,15 @@
 {
     "Material": {
         "metaVersion": 2,
-        "timeCreated": 1568461890,
+        "timeCreated": 1569050015,
         "GUID": 1210557230,
         "Name": "BandoleroGunGold",
         "File": "Assets/Materials/BandoleroGunGold.m4t",
         "ExportedFile": "Library/Materials/1210557230.m4t",
         "DifusseColor": [
             1.0,
-            0.8360655307769775,
-            0.0,
+            1.0,
+            1.0,
             1.0
         ],
         "specularColor": [
@@ -18,12 +18,9 @@
             0.10000000149011612
         ],
         "emissiveColor": [
-            0.9508196711540222,
-            0.9111995697021484,
-            0.0
-        ],
-        "diffuseUID": 2653893106,
-        "emissiveUID": 2653893106,
-        "shader": "PBR"
+            1.0,
+            1.0,
+            1.0
+        ]
     }
 }
