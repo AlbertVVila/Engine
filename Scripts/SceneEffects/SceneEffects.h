@@ -9,11 +9,13 @@
 #define SceneEffects_API __declspec(dllimport)
 #endif
 
-#include "Math/float3.h"
 #include <vector>
+#include "Math/float3.h"
 
 #define BAT_SPEED 450.f
 #define BAT_STOP_DISTANCE 100.f
+
+class ComponentLight;
 
 class SceneEffects_API SceneEffects : public Script
 {
@@ -50,7 +52,16 @@ class SceneEffects_API SceneEffects : public Script
 	std::vector<math::float3> waypoints;
 
 	int batAmount = 5;
+	
 	//Storm stuff
+	
+	ComponentLight* originalDirectionalLight = nullptr;
+	std::vector<ComponentLight*> lightingLights;
+
+	float stormTimer = 0.f;
+	float stormDuration = 1.f;
+	float stormCooldown = 4.f;
+	float stormCooldownTimer = 0.f;
 };
 
 
