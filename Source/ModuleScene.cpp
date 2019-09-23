@@ -1685,7 +1685,7 @@ GameObject* ModuleScene::FindGameObjectByName(const char* name, GameObject* pare
 
 
 
-GameObject * ModuleScene::Spawn(const char * name, GameObject * parent)
+GameObject* ModuleScene::Spawn(const char * name, GameObject * parent, math::float3 position)
 {
 	ResourcePrefab* prefab = (ResourcePrefab*) App->resManager->GetByName(name, TYPE::PREFAB);
 	if (prefab == nullptr)
@@ -1698,6 +1698,10 @@ GameObject * ModuleScene::Spawn(const char * name, GameObject * parent)
 	GameObject* instance = new GameObject(*prefab->RetrievePrefab());
 	instance->LinkBones();
 	App->resManager->DeleteResource(prefab->GetUID());
+
+	//since the spawning enemies of the naruto enemy made the crowding crash
+	//its necessary having the position before initializing the EnemyControllerScript
+	instance->transform->SetPosition(position);
 
 	if (parent == nullptr)
 	{
@@ -1740,7 +1744,7 @@ GameObject * ModuleScene::Spawn(const char * name, GameObject * parent)
 
 GameObject * ModuleScene::Spawn(const char * name, math::float3 position, math::Quat rotation, GameObject * parent)
 {
-	GameObject* instance = Spawn(name, parent);
+	GameObject* instance = Spawn(name, parent, position);
 	instance->transform->SetPosition(position);
 	instance->transform->SetRotation(rotation);
 	return instance;
