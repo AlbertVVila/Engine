@@ -25,7 +25,8 @@ enum class BossSkill
 	None,
 	Teleport,
 	Aoe,
-	Summon
+	Summon,
+	Bombs
 };
 
 enum class TPlocations
@@ -129,6 +130,7 @@ public:
 	bool circlesSpawning = false;
 	bool bossTeleporting = false;
 	bool bossSummoning = false;
+	bool bossExplosives = false;
 
 	//first cutscene
 	math::float3 startingPoint = math::float3::zero;
@@ -174,6 +176,10 @@ private:
 	void HandleSecondSummons();
 	void HandleThirdSummons();
 
+	void HandleFirstBombs();
+	void HandleSecondBombs();
+	void HandleThirdBombs();
+
 	int circlesInFirstPhase = 3;
 	float timeBetweenCirclesFirst = 2.0f;
 	int circlesInSecondPhase = 4;
@@ -194,6 +200,9 @@ private:
 	bool skullsShot = false;
 	TPState teleportState = TPState::None;
 
+	float timeBetweenBombsFirst = 0.5f;
+	int totalBombsFirst = 5;
+	int currentBombsThrown = 0;
 
 	bool isFloating = true;
 	float angleConstant = 1.0f;
