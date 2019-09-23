@@ -15,6 +15,7 @@ class GameObject;
 class Text;
 class JSON_value;
 class Transform2D;
+class ComponentImage;
 
 #define NUM_SKILLS 11
 
@@ -46,6 +47,10 @@ private:
 	GameObject* skillInfo = nullptr;
 	Text* skillPointsLabel = nullptr;
 	Transform2D* hoverTransform = nullptr;
+	Text* skillInfoName = nullptr;
+	Text* skillInfoDescription = nullptr;
+	Text* skillInfoManaCostText = nullptr;
+	ComponentImage* skillInfoIcon = nullptr;
 
 	std::vector<GameObject*> skillUI;
 	std::vector<Component*> connUI;
