@@ -24,6 +24,23 @@ class Item
 {
 
 public:
+
+	Item() {};
+	Item(const Item& item)		// Copy constructor
+	{
+		name = item.name;
+		description = item.description;
+		sprite = item.sprite;
+		type = item.type;
+		isEquipped = item.isEquipped;
+		meshUID = item.meshUID;
+		materialUID = item.materialUID;
+		stats = item.stats;
+	}
+
+	inline bool isEqual(const Item& item) const {return this == &item;}
+	friend bool operator==(const Item& lhs, const Item& rhs) { return lhs.isEqual(rhs); }
+
 	std::string name;
 	std::string description;
 	std::string sprite;
