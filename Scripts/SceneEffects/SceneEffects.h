@@ -15,6 +15,9 @@
 #define BAT_SPEED 450.f
 #define BAT_STOP_DISTANCE 100.f
 
+#define SPIDER_SPEED .3f
+#define SPIDER_STOP_DISTANCE .05f
+
 class ComponentLight;
 
 class SceneEffects_API SceneEffects : public Script
@@ -24,7 +27,8 @@ class SceneEffects_API SceneEffects : public Script
 	{
 		NONE,
 		BATS,
-		STORM
+		STORM,
+		SPIDER
 	};
 
 	void Expose(ImGuiContext* context) override;
@@ -34,7 +38,7 @@ class SceneEffects_API SceneEffects : public Script
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
 
-	const char* behaviours[3]  = {"None", "Bats", "Storm" };
+	const char* behaviours[4]  = {"None", "Bats", "Storm", "Spider" };
 	const char* item_current = behaviours[0];
 
 	Behaviours behaviour = Behaviours::NONE;
@@ -62,6 +66,13 @@ class SceneEffects_API SceneEffects : public Script
 	float stormDuration = 1.f;
 	float stormCooldown = 4.f;
 	float stormCooldownTimer = 0.f;
+
+	//Spider stuff
+
+	GameObject* spider = nullptr;
+	std::vector<math::float3> spiderWaypoints;
+	math::float3 spiderDestination = math::float3::zero;
+	float spiderTimer = .0f;
 };
 
 
