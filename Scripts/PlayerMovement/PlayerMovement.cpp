@@ -1210,8 +1210,8 @@ bool PlayerMovement::IsAttacking() const
 	}
 	//and finally if enemy is on attack range
 	if (App->scene->enemyHovered.object != nullptr &&
-		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(false, true) ||
-			App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(false, true)) &&
+		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(true, false) ||
+			App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(true, false)) &&
 		Dist <= basicAttackRange)
 	{
 		return true;
@@ -1224,8 +1224,8 @@ bool PlayerMovement::IsMovingToAttack() const
 
 	if (App->scene->enemyHovered.object != nullptr && App->scene->enemyHovered.health > 0 &&
 		!App->input->IsKeyPressed(SDL_SCANCODE_LSHIFT) == KEY_DOWN &&
-		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(false, true) ||
-			App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(false, true)) &&
+		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(true, false) ||
+			App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(true, false)) &&
 		Distance(gameobject->transform->position, App->scene->enemyHovered.object->transform->position) > basicAttackRange)
 	{
 		return true;
@@ -1249,9 +1249,10 @@ float PlayerMovement::DistPlayerToMouse() const
 bool PlayerMovement::IsPressingMouse1() const
 {
 	math::float3 temp;
-	return ((App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(false, true)) ||
+	return (
+		(App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(true, false)) ||
 		(currentState->playerWalking && !currentState->playerWalkingToHit) ||
-		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(true, false) && !App->scene->Intersects("PlayerMesh", false, temp) && 
+		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(true, false) && !App->scene->Intersects("PlayerMesh", false, temp) &&
 		(currentState->playerWalking || DistPlayerToMouse() > closestDistToPlayer)));
 }
 
