@@ -882,6 +882,12 @@ void PlayerMovement::Equip(const PlayerStats& equipStats, unsigned itemType, uns
 
 	UpdateUIStats();
 
+	// Equip item mesh and material
+	EquipMesh(itemType, meshUID, materialUID);
+}
+
+void PlayerMovement::EquipMesh(unsigned itemType, unsigned meshUID, unsigned materialUID)
+{
 	ResourceMesh* itemMesh = nullptr;
 	ResourceMaterial* itemMaterial = nullptr;
 
