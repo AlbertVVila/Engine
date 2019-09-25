@@ -1599,7 +1599,7 @@ void ModuleNavigation::setPlayerBB(math::AABB bbox)
 	playerBB = bbox;
 }
 
-ENGINE_API void ModuleNavigation::GenerateNavigabilityFromGOs(std::vector<GameObject*> vectorGOs)
+ENGINE_API void ModuleNavigation::GenerateNavigabilityFromGOs(std::vector<GameObject*>& vectorGOs)
 {
 	CleanValuesPOST();
 	CleanValuesPRE();
