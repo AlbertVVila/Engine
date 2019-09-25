@@ -220,6 +220,7 @@ void InventoryScript::Update()
 				math::float2 slotMax = float2(posSlot.x + sizeSlot.x *.5f, -posSlot.y + sizeSlot.y *.5f);
 				if (screenX > slotMin.x && screenX < slotMax.x && screenY > slotMin.y && screenY < slotMax.y)
 				{
+					// See if the item has been dropped inside player equip slots
 					if (j >= INVENTARY_SLOTS)
 					{
 						bool exit = false;
@@ -234,7 +235,8 @@ void InventoryScript::Update()
 							{
 								for (int l = 0; l < items.size(); ++l)
 								{
-									if (items[l].first->name != pair.first->name && items[l].first->isEquipped && items[l].first->type == ItemType::HELMET)
+									// Unequip previous item (if there was an item equipped)
+									if (items[l].first != pair.first && items[l].first->isEquipped && items[l].first->type == ItemType::HELMET)
 									{
 										items[l].first->isEquipped = false;
 										playerMovement->UnEquip(items[l].first->stats, (unsigned)items[l].first->type);
@@ -243,7 +245,8 @@ void InventoryScript::Update()
 								}
 								for (int l = 0; l < items.size(); ++l)
 								{
-									if (items[l].first->name == pair.first->name && !items[l].first->isEquipped)
+									// Equip new item
+									if (items[l].first == pair.first && !items[l].first->isEquipped)
 									{
 										items[l].first->isEquipped = true;
 										playerMovement->Equip(pair.first->stats, (unsigned)pair.first->type, pair.first->meshUID, pair.first->materialUID);
@@ -261,7 +264,8 @@ void InventoryScript::Update()
 							{
 								for (int l = 0; l < items.size(); ++l)
 								{
-									if (items[l].first->name != pair.first->name && items[l].first->isEquipped && items[l].first->type == ItemType::CHEST)
+									// Unequip previous item (if there was an item equipped)
+									if (items[l].first != pair.first && items[l].first->isEquipped && items[l].first->type == ItemType::CHEST)
 									{
 										items[l].first->isEquipped = false;
 										playerMovement->UnEquip(items[l].first->stats, (unsigned)items[l].first->type);
@@ -270,7 +274,8 @@ void InventoryScript::Update()
 								}
 								for (int l = 0; l < items.size(); ++l)
 								{
-									if (items[l].first->name == pair.first->name && !items[l].first->isEquipped)
+									// Equip new item
+									if (items[l].first == pair.first && !items[l].first->isEquipped)
 									{
 										items[l].first->isEquipped = true;
 										playerMovement->Equip(pair.first->stats, (unsigned)pair.first->type, pair.first->meshUID, pair.first->materialUID);
@@ -288,7 +293,8 @@ void InventoryScript::Update()
 							{
 								for (int l = 0; l < items.size(); ++l)
 								{
-									if (items[l].first->name != pair.first->name && items[l].first->isEquipped && items[l].first->type == ItemType::PANTS)
+									// Unequip previous item (if there was an item equipped)
+									if (items[l].first != pair.first && items[l].first->isEquipped && items[l].first->type == ItemType::PANTS)
 									{
 										items[l].first->isEquipped = false;
 										playerMovement->UnEquip(items[l].first->stats, (unsigned)items[l].first->type);
@@ -297,7 +303,8 @@ void InventoryScript::Update()
 								}
 								for (int l = 0; l < items.size(); ++l)
 								{
-									if (items[l].first->name == pair.first->name && !items[l].first->isEquipped)
+									// Equip new item
+									if (items[l].first == pair.first && !items[l].first->isEquipped)
 									{
 										items[l].first->isEquipped = true;
 										playerMovement->Equip(pair.first->stats, (unsigned)pair.first->type, pair.first->meshUID, pair.first->materialUID);
@@ -315,7 +322,8 @@ void InventoryScript::Update()
 							{
 								for (int l = 0; l < items.size(); ++l)
 								{
-									if (items[l].first->name != pair.first->name && items[l].first->isEquipped && items[l].first->type == ItemType::BOOTS)
+									// Unequip previous item (if there was an item equipped)
+									if (items[l].first != pair.first && items[l].first->isEquipped && items[l].first->type == ItemType::BOOTS)
 									{
 										items[l].first->isEquipped = false;
 										playerMovement->UnEquip(items[l].first->stats, (unsigned)items[l].first->type);
@@ -324,7 +332,8 @@ void InventoryScript::Update()
 								}
 								for (int l = 0; l < items.size(); ++l)
 								{
-									if (items[l].first->name == pair.first->name && !items[l].first->isEquipped)
+									// Equip new item
+									if (items[l].first == pair.first && !items[l].first->isEquipped)
 									{
 										items[l].first->isEquipped = true;
 										playerMovement->Equip(pair.first->stats, (unsigned)pair.first->type, pair.first->meshUID, pair.first->materialUID);
@@ -342,7 +351,8 @@ void InventoryScript::Update()
 							{
 								for (int l = 0; l < items.size(); ++l)
 								{
-									if (items[l].first->name != pair.first->name && items[l].first->isEquipped && items[l].first->type == ItemType::WEAPON)
+									// Unequip previous item (if there was an item equipped)
+									if (items[l].first != pair.first && items[l].first->isEquipped && items[l].first->type == ItemType::WEAPON)
 									{
 										items[l].first->isEquipped = false;
 										playerMovement->UnEquip(items[l].first->stats, (unsigned)items[l].first->type);
@@ -351,7 +361,8 @@ void InventoryScript::Update()
 								}
 								for (int l = 0; l < items.size(); ++l)
 								{
-									if (items[l].first->name == pair.first->name && !items[l].first->isEquipped)
+									// Equip new item
+									if (items[l].first == pair.first && !items[l].first->isEquipped)
 									{
 										items[l].first->isEquipped = true;
 										playerMovement->Equip(pair.first->stats, (unsigned)pair.first->type, pair.first->meshUID, pair.first->materialUID);
@@ -369,7 +380,8 @@ void InventoryScript::Update()
 							{
 								for (int l = 0; l < items.size(); ++l)
 								{
-									if (items[l].first->name != pair.first->name && items[l].first->isEquipped && items[l].first->type == ItemType::AMULET)
+									// Unequip previous item (if there was an item equipped)
+									if (items[l].first != pair.first && items[l].first->isEquipped && items[l].first->type == ItemType::AMULET)
 									{
 										items[l].first->isEquipped = false;
 										playerMovement->UnEquip(items[l].first->stats, (unsigned)items[l].first->type);
@@ -378,7 +390,8 @@ void InventoryScript::Update()
 								}
 								for (int l = 0; l < items.size(); ++l)
 								{
-									if (items[l].first->name == pair.first->name && !items[l].first->isEquipped)
+									// Equip new item
+									if (items[l].first == pair.first && !items[l].first->isEquipped)
 									{
 										items[l].first->isEquipped = true;
 										playerMovement->Equip(pair.first->stats, (unsigned)pair.first->type, pair.first->meshUID, pair.first->materialUID);
@@ -395,6 +408,7 @@ void InventoryScript::Update()
 					}
 					else
 					{
+					// It has been dropped inside an inventory slot
 						for (int l = 0; l < items.size(); ++l)
 						{
 							if (items[l].first->isEqual(*pair.first) && pair.first->isEquipped)
