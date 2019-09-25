@@ -42,6 +42,8 @@ ComponentTrail::ComponentTrail(const ComponentTrail& component) : Component(comp
 	width = component.width;
 	duration = component.duration;
 	minDistance = component.minDistance;
+	bloomIntensity = component.bloomIntensity;
+	trailColor = component.trailColor;
 
 	if (component.texture != nullptr)
 	{
@@ -55,6 +57,8 @@ ComponentTrail::ComponentTrail(const ComponentTrail& component) : Component(comp
 		modules[0]->enabled = component.modules[0]->enabled;
 	}
 	App->particles->AddTrailRenderer(this);
+
+
 }
 
 void ComponentTrail::UpdateTrail()

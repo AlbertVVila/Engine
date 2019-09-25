@@ -51,9 +51,9 @@ void LoopStateWin::StopLvlMusic() //Temporal Fix to stop all music //TODO: we sh
 {
 	if (gLoop->audioGO == nullptr) return;
 
-	for (GameObject* audio : gLoop->audioGO->children)
+	for (Component* audioSource : gLoop->audioGO->GetComponentsInChildren(ComponentType::AudioSource))
 	{
-		audio->GetComponent<ComponentAudioSource>()->Stop();
+		((ComponentAudioSource*) audioSource)->Stop();
 	}
 	gLoop->audioGO->SetActive(false);
 }

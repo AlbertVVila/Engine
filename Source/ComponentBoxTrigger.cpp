@@ -181,7 +181,7 @@ void ComponentBoxTrigger::Update()
 		default:
 			break;
 		}
-
+		
 		if (!enabled) return;
 	}
 

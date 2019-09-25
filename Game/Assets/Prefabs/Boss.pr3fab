@@ -166,8 +166,8 @@
                     "highlighted": 0,
                     "highlightColor": [
                         1.0,
-                        1.0,
-                        1.0
+                        0.0,
+                        0.0
                     ],
                     "xTiles": 1,
                     "yTiles": 1,
@@ -222,7 +222,7 @@
                         "type": 0,
                         "level": 0,
                         "playerTag": "Player",
-                        "health": 500,
+                        "health": 100,
                         "experience": 20,
                         "enemyCursor": "RedGlow.cur"
                     }

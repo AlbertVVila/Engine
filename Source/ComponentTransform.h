@@ -36,6 +36,7 @@ public:
 	ENGINE_API math::float3 GetPosition();
 	ENGINE_API math::float2 GetScreenPosition();
 
+	ENGINE_API math::Quat GetGlobalRotation();
 	ENGINE_API math::float3 GetGlobalPosition();
 	ENGINE_API void Rotate(math::float3 rotation);
 
