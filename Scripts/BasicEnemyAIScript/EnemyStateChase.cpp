@@ -39,8 +39,8 @@ void EnemyStateChase::Update()
 	if (diffX > 50.f || diffZ > 50.f)
 	{
 		// Move towards the player
-		enemy->enemyController->Move(enemy->chaseSpeed, refreshTime, enemy->enemyController->GetPlayerPosition(), enemyPath);
 		positionGoingTowards = enemy->enemyController->GetPlayerPosition();
+		enemy->enemyController->Move(enemy->chaseSpeed, refreshTime, positionGoingTowards, enemyPath);
 		enemy->gameobject->transform->LookAt(positionGoingTowards);
 	}
 

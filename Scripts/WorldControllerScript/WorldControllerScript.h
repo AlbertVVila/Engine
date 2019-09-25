@@ -39,6 +39,9 @@ public:
 	//function to change the velocity of a certain agent
 	void changeVelocity(unsigned int goID, float newVel);
 
+	//fuunction that deletes all agents and enemies, and returns the gameObject* of the player
+	GameObject* DeleteEnemiesFromWorld();
+
 private:
 	//explicitly disable copy constructor and copy assignment operator
 	WorldControllerScript(const WorldControllerScript&);

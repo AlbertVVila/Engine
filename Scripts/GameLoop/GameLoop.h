@@ -92,6 +92,12 @@ public:
 
 	bool HasImageHoveredInChildren(const GameObject* go) const;
 
+	//world controller management
+	GameObject* DeleteAllEnemies();
+	void AddPlayerToWorld(GameObject* Player);
+	void navMeshReloaded();
+
+
 	LoopState* currentLoopState = nullptr;
 
 	LoopStateControls* controlsState = nullptr;
