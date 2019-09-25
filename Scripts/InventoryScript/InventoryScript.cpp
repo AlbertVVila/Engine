@@ -201,6 +201,7 @@ void InventoryScript::Update()
 				return;
 			}
 
+			// Get the item that was dropped in an inventory slot
 			std::pair<Item*, int> pair;
 			for (int t = 0; t < items.size(); ++t)
 			{
@@ -396,12 +397,9 @@ void InventoryScript::Update()
 					{
 						for (int l = 0; l < items.size(); ++l)
 						{
-							if (items[l].first == pair.first)
+							if (items[l].first->isEqual(*pair.first) && pair.first->isEquipped)
 							{
-								if (items[l].first->isEquipped)
-								{
-									items[l].first->isEquipped = false;
-								}
+								items[l].first->isEquipped = false;
 								playerMovement->UnEquip(items[l].first->stats, (unsigned)items[l].first->type);
 								break;
 							}
