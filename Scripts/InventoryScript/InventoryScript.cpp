@@ -548,25 +548,25 @@ void InventoryScript::LoadInventory()
 		{
 			JSON_value* itemJSON = itemsJSON->GetValue(i);
 			int position = itemJSON->GetInt("position");
-			Item item;
-			item.type = (ItemType)itemJSON->GetInt("type");
-			item.name = itemJSON->GetString("name");
-			item.description = itemJSON->GetString("description");
-			item.sprite = itemJSON->GetString("sprite");
-			item.isEquipped = itemJSON->GetInt("equiped");
-			item.meshUID = itemJSON->GetUint("meshUID");
-			item.materialUID = itemJSON->GetUint("materialUID");
-			item.stats.dexterity = itemJSON->GetFloat("dexterity");
-			item.stats.health = itemJSON->GetFloat("health");
-			item.stats.hpRegen = itemJSON->GetFloat("hpRegen");
-			item.stats.mana = itemJSON->GetFloat("mana");
-			item.stats.manaRegen = itemJSON->GetFloat("manaRegen");
-			item.stats.strength = itemJSON->GetFloat("strength");
+			Item* item = new Item;
+			item->type = (ItemType)itemJSON->GetInt("type");
+			item->name = itemJSON->GetString("name");
+			item->description = itemJSON->GetString("description");
+			item->sprite = itemJSON->GetString("sprite");
+			item->isEquipped = itemJSON->GetInt("equiped");
+			item->meshUID = itemJSON->GetUint("meshUID");
+			item->materialUID = itemJSON->GetUint("materialUID");
+			item->stats.dexterity = itemJSON->GetFloat("dexterity");
+			item->stats.health = itemJSON->GetFloat("health");
+			item->stats.hpRegen = itemJSON->GetFloat("hpRegen");
+			item->stats.mana = itemJSON->GetFloat("mana");
+			item->stats.manaRegen = itemJSON->GetFloat("manaRegen");
+			item->stats.strength = itemJSON->GetFloat("strength");
 
 			itemsSlots[position]->SetActive(true);
 			ComponentImage* image = itemsSlots[position]->GetComponent<ComponentImage>();
-			image->UpdateTexture(item.sprite);
-			items.emplace_back(std::make_pair(&item, position));
+			image->UpdateTexture(item->sprite);
+			items.emplace_back(std::make_pair(item, position));
 		}
 	}
 }
