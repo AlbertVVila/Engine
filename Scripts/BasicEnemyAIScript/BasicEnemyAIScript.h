@@ -61,7 +61,7 @@ public:
 
 	// Patrol variables
 	float activationDistance = 1000.0f;	// Distance to player needed to start chasing the player (only X,Z axis is taken into account)
-	float attackRange = 300.f;
+	float attackRange = 400.f;
 
 	// Chase variables
 	float chaseSpeed = 2.0f;			// Tranlation speed when chasing player

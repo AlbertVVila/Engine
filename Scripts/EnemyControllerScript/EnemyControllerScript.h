@@ -21,6 +21,7 @@ class ExperienceController;
 class ResourceMaterial;
 class CombatAudioEvents;
 class LootDropScript;
+class WorldControllerScript;
 
 enum class EnemyType {SKELETON, MINER, SORCERER, SPINNER, BANDOLERO};
 
@@ -104,6 +105,7 @@ private:
 	int actualHealth = 20;
 	int maxHealth = 20;
 	int experience = 20;
+	mutable float currentSpeed = 100.f;
 	int isDeadByCritOrSkill = 0;
 
 	float hitColorDuration = 0.2f;
@@ -111,6 +113,7 @@ private:
 	bool enemyHit = false;
 
 	LootDropScript* lootDrop = nullptr;		// If != nullptr on enemy death will drop item(s) (The variable is set automatically if the LootDropScript is found on Start)
+	WorldControllerScript* currentWorldControllerScript = nullptr;
 
 };
 

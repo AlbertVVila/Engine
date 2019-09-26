@@ -12,6 +12,8 @@ public:
 
 	void HandleIA() override;
 	void Update() override;
+private:
+	math::float3 positionGoingTowards = math::float3(0.f,0.f,0.f);
 };
 
 #endif __ENEMYSTATECHASE_H_

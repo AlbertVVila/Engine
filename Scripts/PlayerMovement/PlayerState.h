@@ -5,6 +5,7 @@
 #include "Math/float3.h"
 
 class PlayerMovement;
+class WorldControllerScript;
 
 class PlayerState
 {
@@ -21,7 +22,7 @@ public:
 	virtual void CheckInput() {};
 	void UpdateTimer();
 	void ResetTimer() { timer = 0.f; };
-	void lerpCalculations(const math::float3& direction, math::float3 playerFront, const math::float3& nextPointPosition);
+	
 
 public:
 	bool enabled = false;
@@ -36,12 +37,16 @@ public:
 	float currentLerping = 0.0f;
 
 protected:
+	void lerpCalculations(const math::float3& direction, math::float3 playerFront, const math::float3& nextPointPosition);
+
 	math::float3 boxSize = math::float3::zero;
 	math::float3 boxPosition = math::float3::zero;
 	float minTime = 0.f;
 	float maxTime = 0.f;
 
 	bool hitboxCreated = false;
+
+	WorldControllerScript* worldController = nullptr;
 };
 
 #endif // _PLAYERSTATE_H_

@@ -32,6 +32,9 @@ void EnemyStateAttack::Enter()
 	projShot2 = false;
 	projShot3 = false;
 
+	//make the enemy stop moving
+	enemy->enemyController->Move(enemy->runSpeed, refreshTime, enemy->gameobject->transform->position, enemyPath);
+
 	duration = duration * enemy->numberOfProjectiles; //should be exposed how many shots he does... In my dreams 
 													 // Update: your dream has come true
 

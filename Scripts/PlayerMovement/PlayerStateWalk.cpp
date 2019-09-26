@@ -14,6 +14,7 @@
 
 #include "PlayerStateWalk.h"
 #include "PlayerStateIdle.h"
+#include "WorldControllerScript.h"
 
 #include "BasicSkill.h"
 
@@ -30,6 +31,9 @@
 PlayerStateWalk::PlayerStateWalk(PlayerMovement* PM, const char* trigger):
 	PlayerState(PM, trigger)
 {
+	GameObject* worldControllerGO = player->App->scene->FindGameObjectByName("WorldController");
+	worldController = worldControllerGO->GetComponent<WorldControllerScript>();
+	
 }
 
 PlayerStateWalk::~PlayerStateWalk()
