@@ -1887,7 +1887,7 @@ crowdTool::~crowdTool()
 	dtFreeCrowd(m_crowd);
 }
 
-int crowdTool::AddNewAgent(float* pos, float speed)
+int crowdTool::AddNewAgent(float* pos, float* vel, float speed)
 {
 	//filling everything with default values for now
 	//declaring the default variables
@@ -1913,7 +1913,7 @@ int crowdTool::AddNewAgent(float* pos, float speed)
 	ap.obstacleAvoidanceType = (unsigned char)3;//float from 0 to 3 determining the quality of dodging
 	ap.separationWeight = 1000.f;
 
-	int idx = m_crowd->addAgent(pos, &ap);
+	int idx = m_crowd->addAgent(pos, &ap, vel);
 	return idx;
 }
 

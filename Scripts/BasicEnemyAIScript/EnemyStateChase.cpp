@@ -41,7 +41,7 @@ void EnemyStateChase::Update()
 		// Move towards the player
 		positionGoingTowards = enemy->enemyController->GetPlayerPosition();
 		enemy->enemyController->Move(enemy->chaseSpeed, refreshTime, positionGoingTowards, enemyPath);
-		enemy->gameobject->transform->LookAt(positionGoingTowards);
+		//enemy->gameobject->transform->LookAt(positionGoingTowards);
 	}
 
 	if (enemy->drawDebug)
