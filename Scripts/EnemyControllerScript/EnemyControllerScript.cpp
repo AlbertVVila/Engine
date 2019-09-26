@@ -21,8 +21,8 @@
 #include "ExperienceController.h"
 #include "DamageController.h"
 #include "EnemyLifeBarController.h"
-#include "EnemyLoot.h"
 #include "CombatAudioEvents.h"
+#include "LootDropScript.h"
 
 #include "imgui.h"
 #include "JSON.h"
@@ -184,6 +184,9 @@ void EnemyControllerScript::Awake()
 			LOG("combataudioevents couldn't be found \n");
 		}
 	}
+
+	// Look for LootDropScript
+	lootDrop = gameobject->GetComponent<LootDropScript>();
 }
 
 void EnemyControllerScript::Update()
@@ -351,11 +354,10 @@ void EnemyControllerScript::TakeDamage(unsigned damage, int type)
 		if (actualHealth - damage < 0 )
 		{
 			actualHealth = 0;
-			enemyLoot = gameobject->GetComponent<EnemyLoot>();
-			if (enemyLoot != nullptr)
-			{
-				enemyLoot->GenerateLoot();
-			}
+
+			if (lootDrop != nullptr)
+				lootDrop->DropItems();
+
 			gameobject->SetActive(false);
 		}
 		else
@@ -376,11 +378,9 @@ void EnemyControllerScript::TakeDamage(unsigned damage, int type)
 			{
 				isDeadByCritOrSkill = true; //by default is false (Normal)
 			}
-			enemyLoot = gameobject->GetComponent<EnemyLoot>();
-			if (enemyLoot != nullptr)
-			{
-				enemyLoot->GenerateLoot();
-			}
+			if (lootDrop != nullptr)
+				lootDrop->DropItems();
+
 			if (experienceController != nullptr)
 				experienceController->AddXP(experience);
 

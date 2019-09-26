@@ -244,7 +244,7 @@ set ERRORLEVEL=0</Command>
       <PreprocessorDefinitions>WIN32;NDEBUG;EnemyControllerScript_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)\Scripts\CombatAudioEvents;..\BaseScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source;$(SolutionDir)\Scripts\DamageController;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)\Scripts\EnemyLifeBarController;$(SolutionDir)\Scripts\ExperienceController;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\EnemyLoot</AdditionalIncludeDirectories>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Scripts\CombatAudioEvents;$(SolutionDir)Source\OpenCV;..\BaseScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source;$(SolutionDir)\Scripts\DamageController;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)\Scripts\EnemyLifeBarController;$(SolutionDir)\Scripts\ExperienceController;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\EnemyLoot</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Scripts\CombatAudioEvents;$(SolutionDir)Source\OpenCV;..\BaseScript;$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source;$(SolutionDir)\Scripts\DamageController;$(SolutionDir)\Scripts\PlayerMovement;$(SolutionDir)\Scripts\EnemyLifeBarController;$(SolutionDir)\Scripts\ExperienceController;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Scripts\EnemyLoot;$(SolutionDir)\Scripts\LootDropScript</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -346,6 +346,9 @@ set ERRORLEVEL=0</Command>
     </ProjectReference>
     <ProjectReference Include="..\ExperienceController\ExperienceController.vcxproj">
       <Project>{7306983d-f81f-488d-9548-d68509fef4c8}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\LootDropScript\LootDropScript.vcxproj">
+      <Project>{da1500b1-4822-4064-bd5f-851bc4ecba92}</Project>
     </ProjectReference>
     <ProjectReference Include="..\PlayerMovement\PlayerMovement.vcxproj">
       <Project>{da319d4a-70a8-42c8-a54f-db7ead02ca0d}</Project>

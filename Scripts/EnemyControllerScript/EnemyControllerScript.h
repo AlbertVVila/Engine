@@ -17,10 +17,10 @@ class ComponentBoxTrigger;
 class DamageController;
 class EnemyLifeBarController;
 class PlayerMovement;
-class EnemyLoot;
 class ExperienceController;
 class ResourceMaterial;
 class CombatAudioEvents;
+class LootDropScript;
 
 enum class EnemyType {SKELETON, MINER, SORCERER, SPINNER, BANDOLERO};
 
@@ -78,8 +78,6 @@ public:
 	DamageController* damageController = nullptr;
 	EnemyLifeBarController* enemyLifeBar = nullptr;
 
-	EnemyLoot* enemyLoot = nullptr;
-
 	ExperienceController* experienceController = nullptr;
 
 	
@@ -111,6 +109,8 @@ private:
 	float hitColorDuration = 0.2f;
 	float hitColorTimer = 0.f;
 	bool enemyHit = false;
+
+	LootDropScript* lootDrop = nullptr;		// If != nullptr on enemy death will drop item(s) (The variable is set automatically if the LootDropScript is found on Start)
 
 };
 
