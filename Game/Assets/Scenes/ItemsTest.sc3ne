@@ -1321,7 +1321,7 @@
                     "Znear": 10.0,
                     "Zfar": 100000.0,
                     "vFOV": 1.0471975803375245,
-                    "hFOV": 0.0,
+                    "hFOV": 1.5192210674285889,
                     "Position": [
                         374.6440734863281,
                         7210.78076171875,
@@ -5132,9 +5132,10 @@
             "Navigable": 0,
             "No Walkable": 0,
             "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
+            "isPrefab": 1,
+            "isPrefabSync": 1,
+            "prefabUID": 426311,
+            "prefabTimeStamp": 1569519728,
             "Components": [
                 {
                     "Type": 0,
@@ -53973,7 +53974,7 @@
                         "type": 0,
                         "level": 2,
                         "playerTag": "Player",
-                        "health": 10,
+                        "health": 1,
                         "experience": 40,
                         "enemyCursor": "RedGlow.cur"
                     }
@@ -53999,7 +54000,9 @@
                     "Enabled": 1,
                     "script": "LootDropScript",
                     "scriptInfo": {
-                        "ItemPrefabName": "Shovel"
+                        "NumberOfItems": 2,
+                        "ItemPrefabName0": "Shovel",
+                        "ItemPrefabName1": "Health Potion"
                     }
                 }
             ]
