@@ -563,6 +563,10 @@ void InventoryScript::LoadInventory()
 			item->stats.manaRegen = itemJSON->GetFloat("manaRegen");
 			item->stats.strength = itemJSON->GetFloat("strength");
 
+			// Equip item mesh (if any)
+			if (item->isEquipped && item->meshUID > 0)
+				playerMovement->EquipMesh((unsigned)item->type, item->meshUID, item->materialUID);
+
 			itemsSlots[position]->SetActive(true);
 			ComponentImage* image = itemsSlots[position]->GetComponent<ComponentImage>();
 			image->UpdateTexture(item->sprite);
