@@ -4,7 +4,6 @@
 #include "BaseScript.h"
 #include <vector>
 
-#include "Item.h"
 #include "Math\float3.h"
 
 class ImGuiContext;
