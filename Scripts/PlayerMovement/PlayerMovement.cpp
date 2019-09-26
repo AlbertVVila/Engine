@@ -1249,11 +1249,13 @@ float PlayerMovement::DistPlayerToMouse() const
 bool PlayerMovement::IsPressingMouse1() const
 {
 	math::float3 temp;
+	
 	return (
 		(App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(true, false)) ||
-		(currentState->playerWalking && !currentState->playerWalkingToHit) ||
+		(currentState != nullptr && currentState->playerWalking && !currentState->playerWalkingToHit) ||
 		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(true, false) && !App->scene->Intersects("PlayerMesh", false, temp) &&
-		(currentState->playerWalking || DistPlayerToMouse() > closestDistToPlayer)));
+		(currentState != nullptr && currentState->playerWalking || DistPlayerToMouse() > closestDistToPlayer)));
+
 }
 
 bool PlayerMovement::IsUsingRightClick() const

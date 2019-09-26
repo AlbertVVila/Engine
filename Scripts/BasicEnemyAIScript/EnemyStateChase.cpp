@@ -33,8 +33,16 @@ void EnemyStateChase::HandleIA()
 
 void EnemyStateChase::Update()
 {
-	// Move towards the player
-	enemy->enemyController->Move(enemy->chaseSpeed, refreshTime, enemy->enemyController->GetPlayerPosition(), enemyPath);
+	//if player has moved since last time we checked, make a new move request
+	float diffX = abs(positionGoingTowards.x - enemy->enemyController->GetPlayerPosition().x);
+	float diffZ = abs(positionGoingTowards.z - enemy->enemyController->GetPlayerPosition().z);
+	if (diffX > 50.f || diffZ > 50.f)
+	{
+		// Move towards the player
+		positionGoingTowards = enemy->enemyController->GetPlayerPosition();
+		enemy->enemyController->Move(enemy->chaseSpeed, refreshTime, positionGoingTowards, enemyPath);
+		enemy->gameobject->transform->LookAt(positionGoingTowards);
+	}
 
 	if (enemy->drawDebug)
 	{

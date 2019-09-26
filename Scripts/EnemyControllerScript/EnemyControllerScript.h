@@ -21,6 +21,7 @@ class EnemyLoot;
 class ExperienceController;
 class ResourceMaterial;
 class CombatAudioEvents;
+class WorldControllerScript;
 
 enum class EnemyType {SKELETON, MINER, SORCERER, SPINNER, BANDOLERO};
 
@@ -106,11 +107,14 @@ private:
 	int actualHealth = 20;
 	int maxHealth = 20;
 	int experience = 20;
+	mutable float currentSpeed = 100.f;
 	int isDeadByCritOrSkill = 0;
 
 	float hitColorDuration = 0.2f;
 	float hitColorTimer = 0.f;
 	bool enemyHit = false;
+
+	WorldControllerScript* currentWorldControllerScript = nullptr;
 
 };
 
