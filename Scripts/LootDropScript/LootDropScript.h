@@ -26,10 +26,8 @@ class LootDropScript_API LootDropScript : public Script
 public:
 	void DropItems();
 
-	std::string itemPrefabName = "";
+	std::vector<std::string> itemList;
 	math::float3 rotationOffset = math::float3(-90.0f, 0.0f, 0.0f);
-	//int numberOfItems = 1;
-	//std::vector<std::string> itemList;
 
 private:
 	GameObject* itemListGO = nullptr;
