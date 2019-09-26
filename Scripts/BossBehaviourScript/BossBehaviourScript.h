@@ -154,6 +154,20 @@ public:
 	math::float3 firstSpawnLocation = math::float3::zero;
 	math::float3 secondSpawnLocation = math::float3::zero;
 
+	//Skulls in second phase
+	int numberSkullsSecondTotal = 8;
+	float timeBetweenSkullsSecond = 0.0f;
+	math::float3 northSecondSkull = math::float3::zero;
+	math::float3 northEastSecondSkull = math::float3::zero;
+	math::float3 eastSecondSkull = math::float3::zero;
+	math::float3 southEastSecondSkull = math::float3::zero;
+	math::float3 southSecondSkull = math::float3::zero;
+	math::float3 southWestSecondSkull = math::float3::zero;
+	math::float3 westSecondSkull = math::float3::zero;
+	math::float3 northWestSecondSkull = math::float3::zero;
+	std::vector<math::float3> positionsSkullsSecond;
+	int positionsIt = 0;
+
 private:
 	std::vector<BossState*> bossStates;
 

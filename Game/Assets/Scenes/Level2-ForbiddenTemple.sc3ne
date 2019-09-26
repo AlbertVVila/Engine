@@ -18829,7 +18829,7 @@
                     "Znear": 10.0,
                     "Zfar": 100000.0,
                     "vFOV": 1.0471975803375245,
-                    "hFOV": 1.5192210674285889,
+                    "hFOV": 0.0,
                     "Position": [
                         991.5123291015625,
                         1760.119140625,
@@ -21298,6 +21298,7 @@
             "isPrefab": 1,
             "isPrefabSync": 1,
             "prefabUID": 3166434820,
+            "prefabTimeStamp": 1569478448,
             "Components": [
                 {
                     "Type": 0,
@@ -21345,9 +21346,9 @@
             ]
         },
         {
-            "UID": 2890115572,
+            "UID": 884249322,
             "ParentUID": 2574560917,
-            "Name": "Empty",
+            "Name": "Main",
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 1,
@@ -21544,14 +21545,54 @@
                             448.0,
                             -2800.0
                         ],
+                        "northSecondSkull": [
+                            530.0,
+                            740.0,
+                            -4079.0
+                        ],
+                        "northEastSecondSkull": [
+                            1380.0,
+                            740.0,
+                            -3811.0
+                        ],
+                        "eastSecondSkull": [
+                            1470.0,
+                            740.0,
+                            -3069.0
+                        ],
+                        "southEastSecondSkull": [
+                            1278.0,
+                            740.0,
+                            -2427.0
+                        ],
+                        "southSecondSkull": [
+                            493.0,
+                            740.0,
+                            -2279.0
+                        ],
+                        "southWestSecondSkull": [
+                            -325.0,
+                            740.0,
+                            -2400.0
+                        ],
+                        "westSecondSkull": [
+                            -416.0,
+                            740.0,
+                            -3121.0
+                        ],
+                        "northWestSecondSkull": [
+                            -372.0,
+                            740.0,
+                            -3827.0
+                        ],
                         "circleNoise": 50.0
                     }
                 }
             ]
         },
         {
-            "UID": 342604326,
-            "ParentUID": 2890115572,
+            "UID": 2297120266,
+            "ParentUID": 884249322,
             "Name": "Empty",
             "Tag": "Default",
             "Static": 0,
@@ -21645,8 +21686,8 @@
             ]
         },
         {
-            "UID": 2059439700,
-            "ParentUID": 2890115572,
+            "UID": 3144938919,
+            "ParentUID": 884249322,
             "Name": "Point",
             "Tag": "Default",
             "Static": 0,
@@ -21724,7 +21765,7 @@
                 {
                     "Type": 3,
                     "Enabled": 1,
-                    "Lighttype": 2,
+                    "Lighttype": 1,
                     "color": [
                         0.636124849319458,
                         0.13050927221775056,
@@ -21732,8 +21773,6 @@
                     ],
                     "radius": 631.1321411132813,
                     "range": 572.0,
-                    "inner": 21.5,
-                    "outer": 25.0,
                     "intensity": 49.0,
                     "produceShadows": 0
                 }
@@ -52278,99 +52317,6 @@
                     "alphaPosition1": 1.0,
                     "alphas": 2,
                     "colors": 5
-                }
-            ]
-        },
-        {
-            "UID": 3264705,
-            "ParentUID": 1672641101,
-            "Name": "Light",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 1,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 0,
-                    "Enabled": 1,
-                    "Position": [
-                        0.0,
-                        86.76531982421875,
-                        62.5048828125
-                    ],
-                    "Rotation": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ],
-                    "Euler": [
-                        -0.0,
-                        0.0,
-                        -0.0
-                    ],
-                    "Scale": [
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "Global": [
-                        1.0,
-                        0.0,
-                        0.0,
-                        317.8525085449219,
-                        0.0,
-                        1.0,
-                        0.0,
-                        806.6124267578125,
-                        0.0,
-                        0.0,
-                        1.0,
-                        3749.7548828125,
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
-                },
-                {
-                    "Type": 3,
-                    "Enabled": 1,
-                    "Lighttype": 1,
-                    "color": [
-                        0.8969138264656067,
-                        0.20874764025211335,
-                        0.9795082211494446
-                    ],
-                    "radius": 176.0,
-                    "range": 100.0,
-                    "intensity": 52.70000076293945,
-                    "produceShadows": 0
                 }
             ]
         },

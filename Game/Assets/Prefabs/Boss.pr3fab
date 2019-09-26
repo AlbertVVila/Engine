@@ -82,7 +82,7 @@
         {
             "UID": 2890115572,
             "ParentUID": 2574560917,
-            "Name": "Empty",
+            "Name": "Main",
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 1,
@@ -278,6 +278,46 @@
                             1668.0,
                             448.0,
                             -2800.0
+                        ],
+                        "northSecondSkull": [
+                            530.0,
+                            740.0,
+                            -4079.0
+                        ],
+                        "northEastSecondSkull": [
+                            1380.0,
+                            740.0,
+                            -3811.0
+                        ],
+                        "eastSecondSkull": [
+                            1470.0,
+                            740.0,
+                            -3069.0
+                        ],
+                        "southEastSecondSkull": [
+                            1278.0,
+                            740.0,
+                            -2427.0
+                        ],
+                        "southSecondSkull": [
+                            493.0,
+                            740.0,
+                            -2279.0
+                        ],
+                        "southWestSecondSkull": [
+                            -325.0,
+                            740.0,
+                            -2400.0
+                        ],
+                        "westSecondSkull": [
+                            -416.0,
+                            740.0,
+                            -3121.0
+                        ],
+                        "northWestSecondSkull": [
+                            -372.0,
+                            740.0,
+                            -3827.0
                         ],
                         "circleNoise": 50.0
                     }
