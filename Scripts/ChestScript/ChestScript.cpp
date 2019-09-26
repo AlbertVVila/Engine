@@ -8,6 +8,8 @@
 #include "ComponentAnimation.h"
 #include "ComponentRenderer.h"
 
+#include "LootDropScript.h"
+
 #include "imgui.h"
 #include "JSON.h"
 
@@ -33,7 +35,8 @@ void ChestScript::Start()
 	if(myRender != nullptr)
 		myBbox = &App->scene->FindGameObjectByName(myBboxName.c_str(), gameobject)->bbox;
 	
-
+	// Look for LootDropScript
+	lootDrop = gameobject->GetComponent<LootDropScript>();
 }
 
 void ChestScript::Update()
@@ -45,6 +48,8 @@ void ChestScript::Update()
 		{
 			// Open chest:
 			anim->SendTriggerToStateMachine("Open");
+			if (lootDrop != nullptr)
+				lootDrop->DropItems();
 			opened = true;
 		}
 	}

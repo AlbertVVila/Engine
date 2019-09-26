@@ -15,6 +15,7 @@
 class GameObject;
 class ComponentRenderer;
 class ComponentAnimation;
+class LootDropScript;
 
 class ChestScript_API ChestScript : public Script
 {
@@ -48,6 +49,8 @@ private:
 	std::string spawnGOName = "SpawnableGO";
 
 	bool opened = false; // Is the chest already opened?
+
+	LootDropScript* lootDrop = nullptr;		// If != nullptr on chest open will drop item(s) (The variable is set automatically if the LootDropScript is found on Start)
 };
 
 extern "C" ChestScript_API Script* CreateScript();
