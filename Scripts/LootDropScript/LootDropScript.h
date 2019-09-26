@@ -27,6 +27,7 @@ public:
 	void DropItems();
 
 	std::string itemPrefabName = "";
+	math::float3 rotationOffset = math::float3(-90.0f, 0.0f, 0.0f);
 	//int numberOfItems = 1;
 	//std::vector<std::string> itemList;
 
