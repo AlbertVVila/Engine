@@ -20,6 +20,9 @@ class LootDropScript_API LootDropScript : public Script
 	void Start() override;
 	void Expose(ImGuiContext* context);
 
+	void Serialize(JSON_value* json) const;
+	void DeSerialize(JSON_value* json);
+
 public:
 	void DropItems();
 
