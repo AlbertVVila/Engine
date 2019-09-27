@@ -26,6 +26,7 @@ public:
 	void DropItems();
 
 	std::vector<std::string> itemList;
+	math::float3 positionOffset = math::float3(0.0f, 0.0f, 0.0f);
 	math::float3 rotationOffset = math::float3(-90.0f, 0.0f, 0.0f);
 
 private:
