@@ -25,7 +25,6 @@ class WorldControllerScript;
 
 enum class EnemyType {SKELETON, MINER, SORCERER, SPINNER, BANDOLERO};
 
-
 class EnemyControllerScript_API EnemyControllerScript : public Script
 {
 	void Start() override;
@@ -112,9 +111,12 @@ private:
 	float hitColorTimer = 0.f;
 	bool enemyHit = false;
 
+	// Loot variables
 	LootDropScript* lootDrop = nullptr;		// If != nullptr on enemy death will drop item(s) (The variable is set automatically if the LootDropScript is found on Start)
 	WorldControllerScript* currentWorldControllerScript = nullptr;
-
+	bool lootDropped = false;
+	float deathTimer = 0.0f;				// Time since enemy died untill loot is spawned
+	float lootDelay = 1.5f;
 };
 
 extern "C" EnemyControllerScript_API Script* CreateScript();

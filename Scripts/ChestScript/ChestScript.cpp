@@ -44,10 +44,10 @@ void ChestScript::Start()
 
 void ChestScript::Update()
 {
-	// Check collision with player
 	switch (state)
 	{
 	case chestState::CLOSED:
+		// Check collision with player
 		if (myBbox != nullptr && myBbox->Intersects(*playerBbox))
 		{
 			// Open chest:

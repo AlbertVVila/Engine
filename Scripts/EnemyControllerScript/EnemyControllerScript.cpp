@@ -272,6 +272,26 @@ void EnemyControllerScript::Update()
 		}
 		enemyHit = false;
 	}
+
+	if (isDead && !lootDropped)
+	{
+		if (deathTimer > lootDelay)
+		{
+			if (lootDrop != nullptr)
+			{
+				// If chest has more than one item drop them in circle
+				if (lootDrop->itemList.size() > 1)
+					lootDrop->DropItemsInCircle(100);
+				else
+					lootDrop->DropItems();
+			}
+			lootDropped = true;
+		}
+		else
+		{
+			deathTimer += App->time->gameDeltaTime;
+		}
+	}
 }
 
 void EnemyControllerScript::Expose(ImGuiContext* context)
@@ -364,16 +384,6 @@ void EnemyControllerScript::TakeDamage(unsigned damage, int type)
 		if (actualHealth - damage < 0 )
 		{
 			actualHealth = 0;
-
-			if (lootDrop != nullptr)
-			{
-				// If chest has more than one item drop them in circle
-				if (lootDrop->itemList.size() > 1)
-					lootDrop->DropItemsInCircle(100);
-				else
-					lootDrop->DropItems();
-			}
-
 			gameobject->SetActive(false);
 		}
 		else
@@ -393,14 +403,6 @@ void EnemyControllerScript::TakeDamage(unsigned damage, int type)
 			if ((DamageType)type == DamageType::CRITICAL || playerMovement->IsExecutingSkill())
 			{
 				isDeadByCritOrSkill = true; //by default is false (Normal)
-			}
-			if (lootDrop != nullptr)
-			{
-				// If chest has more than one item drop them in circle
-				if (lootDrop->itemList.size() > 1)
-					lootDrop->DropItemsInCircle(100);
-				else
-					lootDrop->DropItems();
 			}
 
 			if (experienceController != nullptr)
