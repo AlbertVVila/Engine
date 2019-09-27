@@ -24,7 +24,8 @@ class LootDropScript_API LootDropScript : public Script
 
 public:
 	void DropItems();
-	void DropItemsInCircle(float radius);
+	void DropItemsInCircle(float radius);			// Sapwns Items following a circle
+	void DropItemsInSemiCircle(float radius);		// Sapwns Items following a semicircle
 
 	std::vector<std::string> itemList;
 	math::float3 positionOffset = math::float3(0.0f, 0.0f, 0.0f);
