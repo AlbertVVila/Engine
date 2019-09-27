@@ -64,7 +64,7 @@ void ChestScript::Update()
 		{
 			// If chest has more than one item drop them in circle
 			if (lootDrop->itemList.size() > 1)
-				lootDrop->DropItemsInCircle(100);
+				lootDrop->DropItemsInSemiCircle(100);
 			else
 				lootDrop->DropItems();
 
