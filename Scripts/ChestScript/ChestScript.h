@@ -51,6 +51,7 @@ private:
 	bool opened = false; // Is the chest already opened?
 
 	LootDropScript* lootDrop = nullptr;		// If != nullptr on chest open will drop item(s) (The variable is set automatically if the LootDropScript is found on Start)
+	math::float3 lootPosition = math::float3(0.0f, 0.f, 100.f);
 };
 
 extern "C" ChestScript_API Script* CreateScript();

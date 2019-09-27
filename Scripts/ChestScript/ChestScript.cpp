@@ -37,6 +37,8 @@ void ChestScript::Start()
 	
 	// Look for LootDropScript
 	lootDrop = gameobject->GetComponent<LootDropScript>();
+	if (lootDrop != nullptr)
+		lootDrop->positionOffset = lootPosition;
 }
 
 void ChestScript::Update()
@@ -84,6 +86,8 @@ void ChestScript::Expose(ImGuiContext* context)
 	ImGui::InputText("GO to spawn Name", spawnName, 64);
 	spawnGOName = spawnName;
 	delete[] spawnName;
+
+	ImGui::DragFloat3("Loot Position", (float*)&lootPosition);
 }
 
 void ChestScript::Serialize(JSON_value* json) const
@@ -94,6 +98,7 @@ void ChestScript::Serialize(JSON_value* json) const
 	json->AddString("myBboxName", myBboxName.c_str());
 	json->AddString("spawnGOName", spawnGOName.c_str());
 	json->AddUint("opened", opened);
+	json->AddFloat3("lootPosition", lootPosition);
 }
 
 void ChestScript::DeSerialize(JSON_value* json)
@@ -104,4 +109,5 @@ void ChestScript::DeSerialize(JSON_value* json)
 	myBboxName = json->GetString("myBboxName");
 	spawnGOName = json->GetString("spawnGOName");
 	opened = json->GetUint("opened");
+	lootPosition = json->GetFloat3("lootPosition");
 }
