@@ -64,7 +64,7 @@ void ChestScript::Update()
 		{
 			// If chest has more than one item drop them in circle
 			if (lootDrop->itemList.size() > 1)
-				lootDrop->DropItemsInSemiCircle(100);
+				lootDrop->DropItemsInSemiCircle(lootRadius);
 			else
 				lootDrop->DropItems();
 
@@ -118,8 +118,9 @@ void ChestScript::Expose(ImGuiContext* context)
 	delete[] spawnName;
 
 	ImGui::Text("Loot Variables:");
-	ImGui::DragFloat3("Loot Position", (float*)&lootPosition);
 	ImGui::DragFloat("Loot Delay", &lootDelay);
+	ImGui::DragFloat3("Loot Position", (float*)&lootPosition);
+	ImGui::DragFloat("Loot Radius", &lootRadius);
 }
 
 void ChestScript::Serialize(JSON_value* json) const
@@ -132,6 +133,7 @@ void ChestScript::Serialize(JSON_value* json) const
 	json->AddUint("state", (unsigned)state);
 	json->AddFloat3("lootPosition", lootPosition);
 	json->AddFloat("lootDelay", lootDelay);
+	json->AddFloat("lootRadius", lootRadius);
 }
 
 void ChestScript::DeSerialize(JSON_value* json)
@@ -143,5 +145,6 @@ void ChestScript::DeSerialize(JSON_value* json)
 	spawnGOName = json->GetString("spawnGOName");
 	state = (chestState)json->GetUint("opened");
 	lootPosition = json->GetFloat3("lootPosition");
-	lootDelay = json->GetFloat("lootDelay");
+	lootDelay = json->GetFloat("lootDelay", 2.5f);
+	lootRadius = json->GetFloat("lootRadius", 100.0f);
 }

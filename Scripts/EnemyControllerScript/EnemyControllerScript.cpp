@@ -281,7 +281,7 @@ void EnemyControllerScript::Update()
 			{
 				// If chest has more than one item drop them in circle
 				if (lootDrop->itemList.size() > 1)
-					lootDrop->DropItemsInCircle(100);
+					lootDrop->DropItemsInCircle(lootRadius);
 				else
 					lootDrop->DropItems();
 			}
@@ -338,7 +338,7 @@ void EnemyControllerScript::Expose(ImGuiContext* context)
 	ImGui::InputText("enemyCursor", enemyCursorAux, 64);
 	enemyCursor = enemyCursorAux;
 	delete[] enemyCursorAux;
-	
+
 	// Draw the name of every GO that has a ComponentRenderer 
 	if (myRenders.size() > 0u)
 	{
@@ -346,7 +346,10 @@ void EnemyControllerScript::Expose(ImGuiContext* context)
 		for (std::vector<ComponentRenderer*>::iterator it = myRenders.begin(); it != myRenders.end(); ++it)
 			ImGui::Text(((Component*)(*it))->gameobject->name.c_str());
 	}
-
+	ImGui::Separator();
+	ImGui::Text("Loot Variables:");
+	ImGui::DragFloat("Loot Delay", &lootDelay);
+	ImGui::DragFloat("Loot Radius", &lootRadius);
 }
 
 void EnemyControllerScript::Serialize(JSON_value* json) const
@@ -358,6 +361,8 @@ void EnemyControllerScript::Serialize(JSON_value* json) const
 	json->AddInt("health", maxHealth);
 	json->AddInt("experience", experience);
 	json->AddString("enemyCursor", enemyCursor.c_str());
+	json->AddFloat("lootDelay", lootDelay);
+	json->AddFloat("lootRadius", lootRadius);
 }
 
 void EnemyControllerScript::DeSerialize(JSON_value* json)
@@ -370,6 +375,8 @@ void EnemyControllerScript::DeSerialize(JSON_value* json)
 	experience = json->GetInt("experience", 20);
 	actualHealth = maxHealth;
 	enemyCursor = json->GetString("enemyCursor", "RedGlow.cur");
+	lootDelay = json->GetFloat("lootDelay", 1.0f);
+	lootRadius = json->GetFloat("lootRadius", 100.0f);
 }
 
 void EnemyControllerScript::TakeDamage(unsigned damage, int type)
