@@ -509,7 +509,7 @@ void dtCrowd::updateAgentParameters(const int idx, const dtCrowdAgentParams* par
 /// @par
 ///
 /// The agent's position will be constrained to the surface of the navigation mesh.
-int dtCrowd::addAgent(float* pos, const dtCrowdAgentParams* params)
+int dtCrowd::addAgent(float* pos, const dtCrowdAgentParams* params, float* vel)
 {
 	// Find empty slot.
 	int idx = -1;
@@ -550,6 +550,7 @@ int dtCrowd::addAgent(float* pos, const dtCrowdAgentParams* params)
 	dtVset(ag->dvel, 0,0,0);
 	dtVset(ag->nvel, 0,0,0);
 	dtVset(ag->vel, 0,0,0);
+	ag->publicVel = vel;
 	//dtVcopy(ag->npos, nearest);
 	ag->npos = pos;
 	
@@ -1445,5 +1446,10 @@ void dtCrowd::update(const float dt, dtCrowdAgentDebugInfo* debug)
 		dtVset(ag->vel, 0,0,0);
 		dtVset(ag->dvel, 0,0,0);
 	}
-	
+	//update vel of agents
+	for (int i = 0; i < nagents; ++i)
+	{
+		dtCrowdAgent* ag = agents[i];
+		ag->updateVel();
+	}
 }
