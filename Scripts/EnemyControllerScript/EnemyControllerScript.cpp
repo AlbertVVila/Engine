@@ -488,6 +488,7 @@ void EnemyControllerScript::Move(float speed, float& refreshTime, math::float3 p
 		currentWorldControllerScript->changeVelocity(gameobject->UUID, currentSpeed);
 	}
 	currentWorldControllerScript->EnemyMoveRequest(gameobject->UUID, position);
+	gameobject->transform->LookAt(gameobject->transform->movingOrientation);
 }
 
 void EnemyControllerScript::LookAt2D(math::float3& position)

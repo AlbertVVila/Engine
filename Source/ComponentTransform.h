@@ -68,6 +68,9 @@ public:
 	math::float4x4 animatedLocal = math::float4x4::identity;
 	math::float4x4 global = math::float4x4::identity;
 
+	//variable that holds the orientation of the gameobject used by enemies in crowding system
+	math::float3 movingOrientation = math::float3::zero;
+
 	math::float3 up = math::float3::zero;
 	math::float3 right = math::float3::zero;
 	math::float3 front = math::float3::zero;
