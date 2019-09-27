@@ -24,13 +24,14 @@ class LootDropScript_API LootDropScript : public Script
 
 public:
 	void DropItems();
+	void DropItemsInCircle(float radius);
 
 	std::vector<std::string> itemList;
 	math::float3 positionOffset = math::float3(0.0f, 0.0f, 0.0f);
 	math::float3 rotationOffset = math::float3(-90.0f, 0.0f, 0.0f);
 
 private:
-	GameObject* itemListGO = nullptr;
+	GameObject* itemListGO = nullptr;		// Game Object were all items are set as a child
 };
 
 #endif __LootDropScript_h__
