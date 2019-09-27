@@ -366,7 +366,13 @@ void EnemyControllerScript::TakeDamage(unsigned damage, int type)
 			actualHealth = 0;
 
 			if (lootDrop != nullptr)
-				lootDrop->DropItems();
+			{
+				// If chest has more than one item drop them in circle
+				if (lootDrop->itemList.size() > 1)
+					lootDrop->DropItemsInCircle(100);
+				else
+					lootDrop->DropItems();
+			}
 
 			gameobject->SetActive(false);
 		}
@@ -389,7 +395,13 @@ void EnemyControllerScript::TakeDamage(unsigned damage, int type)
 				isDeadByCritOrSkill = true; //by default is false (Normal)
 			}
 			if (lootDrop != nullptr)
-				lootDrop->DropItems();
+			{
+				// If chest has more than one item drop them in circle
+				if (lootDrop->itemList.size() > 1)
+					lootDrop->DropItemsInCircle(100);
+				else
+					lootDrop->DropItems();
+			}
 
 			if (experienceController != nullptr)
 				experienceController->AddXP(experience);

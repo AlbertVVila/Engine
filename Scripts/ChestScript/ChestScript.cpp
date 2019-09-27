@@ -51,7 +51,13 @@ void ChestScript::Update()
 			// Open chest:
 			anim->SendTriggerToStateMachine("Open");
 			if (lootDrop != nullptr)
-				lootDrop->DropItems();
+			{
+				// If chest has more than one item drop them in circle
+				if (lootDrop->itemList.size() > 1)
+					lootDrop->DropItemsInCircle(100);
+				else
+					lootDrop->DropItems();
+			}
 			opened = true;
 		}
 	}
