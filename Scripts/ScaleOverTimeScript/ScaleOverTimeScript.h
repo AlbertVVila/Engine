@@ -3,13 +3,15 @@
 
 #include "BaseScript.h"
 
-#include "MathGeoLib/Math/float3.h"
+#include "Math/float3.h"
 
 #ifdef ScaleOverTimeScript_EXPORTS
 #define ScaleOverTimeScript_API __declspec(dllexport)
 #else
 #define ScaleOverTimeScript_API __declspec(dllimport)
 #endif
+
+class ComponentTransform;
 
 class ScaleOverTimeScript_API ScaleOverTimeScript : public Script
 {
@@ -24,6 +26,9 @@ class ScaleOverTimeScript_API ScaleOverTimeScript : public Script
 public:
 	float speed = 1.0f;
 	math::float3 finalScale = math::float3::one;
+
+private:
+	ComponentTransform* transform = nullptr;
 	float timer = 0.0f;
 };
 
