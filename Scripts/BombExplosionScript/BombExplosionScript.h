@@ -14,8 +14,13 @@ enum class ExplosionState
 	None,
 	Appear,
 	Grow,
-	Explode
+	Explode,
+	Finished
 };
+
+class ComponentRenderer;
+class GameObject;
+class PlayerMovement;
 
 class BombExplosionScript_API BombExplosionScript : public Script
 {
@@ -34,6 +39,23 @@ class BombExplosionScript_API BombExplosionScript : public Script
 	}
 private:
 	ExplosionState currentState = ExplosionState::None;
+
+	ComponentTransform* myTransform = nullptr;
+	ComponentRenderer* myRenderer = nullptr;
+	GameObject* renderGO = nullptr;
+	GameObject* hitboxGO = nullptr;
+	GameObject* particlesGO = nullptr;
+	GameObject* playerGO = nullptr;
+
+	PlayerMovement* playerScript = nullptr;
+
+private:
+
+	float damageToPlayer = 10.0f;
+	float dissolveSpeed = 1.0f;
+	float scalingSpeed = 1.0f;
+	float finalScale = 2.0f;
+	bool hasDamaged = false;
 };
 
 #endif __BombExplosionScript_h__
