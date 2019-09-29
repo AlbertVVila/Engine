@@ -30,7 +30,7 @@ public:
 	void DeSerialize(JSON_value* json);
 
 public:
-	float speed = 1.0f;
+	float speed = 0.1f;
 	math::float3 finalScale = math::float3::one;
 
 private:
