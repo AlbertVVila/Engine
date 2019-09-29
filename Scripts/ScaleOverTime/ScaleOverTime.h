@@ -30,6 +30,9 @@ private:
 	void Serialize(JSON_value* json) const;
 	void DeSerialize(JSON_value* json);
 
+	void ComputeScale();
+	void ComputeScalePingPong();
+
 public:
 	float speed = 0.1f;
 	math::float3 finalScale = math::float3::one;		// Scale to reach
@@ -37,12 +40,14 @@ public:
 private:
 	math::float3 startScale = math::float3::one;		// Scale of the GO at the start of the script
 	ComponentTransform* transform = nullptr;
-	float timer = 0.0f;
+	float timerX = 0.0f;
+	float timerY = 0.0f;
+	float timerZ = 0.0f;
 
 	bool loop = false;									// If true once the final scale has been reached the scale goes back to start scale
 	bool acceleration = true;							// If true each frame the animation will play faster (once looped it gets reseted) else speed is constant
-	//bool pingPong = false;
-	//math::float3 reverse = math::float3::zero;
+	bool pingPong = false;
+	unsigned reverse[3] = { 0u,0u,0u };					// Array of booleans, if true scale backwards. 1st: X, 2nd: Y, 3rd: X 
 };
 
 extern "C" ScaleOverTime_API Script* CreateScript();
