@@ -33,20 +33,38 @@ void ScaleOverTime::Start()
 
 void ScaleOverTime::Update()
 {
-	timer = App->time->gameDeltaTime;
+	if(acceleration)
+		timer += App->time->gameDeltaTime;
+	else
+		timer = App->time->gameDeltaTime;
+
 	math::float3 newScale = transform->scale;
 
+	// X
 	if (transform->scale.x < finalScale.x) newScale.x += speed * timer;
-	else if (loop) newScale.x = startScale.x;
+	else if (loop)
+	{
+		newScale.x = startScale.x;
+		timer = 0.0f;
+	}
 	else newScale.x = finalScale.x;
 		
-
+	// Y
 	if (transform->scale.y < finalScale.y) newScale.y += speed * timer;
-	else if (loop) newScale.y = startScale.y;
+	else if (loop)
+	{
+		newScale.y = startScale.y;
+		timer = 0.0f;
+	}
 	else newScale.y = finalScale.y;
 
+	// Z
 	if (transform->scale.z < finalScale.z) newScale.z += speed * timer;
-	else if (loop) newScale.z = startScale.z;
+	else if (loop)
+	{
+		newScale.z = startScale.z;
+		timer = 0.0f;
+	}
 	else newScale.z = finalScale.z;
 
 	if (finalScale != newScale)
@@ -60,6 +78,10 @@ void ScaleOverTime::Expose(ImGuiContext* context)
 	ImGui::DragFloat("Speed", &speed, 0.01f);
 	ImGui::DragFloat3("Final Scale", (float*)&finalScale);
 	ImGui::Checkbox("Loop", &loop);
+	if (ImGui::Checkbox("Acceleration", &acceleration))
+	{
+		timer = 0.0f;
+	}
 }
 
 void ScaleOverTime::Serialize(JSON_value* json) const
@@ -68,6 +90,7 @@ void ScaleOverTime::Serialize(JSON_value* json) const
 	json->AddFloat("speed", speed);
 	json->AddFloat3("finalScale", finalScale);
 	json->AddInt("loop", loop);
+	json->AddInt("acceleration", acceleration);
 }
 
 void ScaleOverTime::DeSerialize(JSON_value* json)
@@ -76,5 +99,6 @@ void ScaleOverTime::DeSerialize(JSON_value* json)
 	speed = json->GetFloat("speed", 0.1f);
 	finalScale = json->GetFloat3("finalScale");
 	loop = json->GetInt("loop");
+	acceleration = json->GetInt("acceleration", 1);
 }
 

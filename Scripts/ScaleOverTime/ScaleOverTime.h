@@ -40,6 +40,7 @@ private:
 	float timer = 0.0f;
 
 	bool loop = false;									// If true once the final scale has been reached the scale goes back to start scale
+	bool acceleration = true;							// If true each frame the animation will play faster (once looped it gets reseted) else speed is constant
 	//bool pingPong = false;
 	//math::float3 reverse = math::float3::zero;
 };
