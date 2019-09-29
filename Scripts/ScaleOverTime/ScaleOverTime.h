@@ -32,11 +32,16 @@ private:
 
 public:
 	float speed = 0.1f;
-	math::float3 finalScale = math::float3::one;
+	math::float3 finalScale = math::float3::one;		// Scale to reach
 
 private:
+	math::float3 startScale = math::float3::one;		// Scale of the GO at the start of the script
 	ComponentTransform* transform = nullptr;
 	float timer = 0.0f;
+
+	bool loop = false;									// If true once the final scale has been reached the scale goes back to start scale
+	//bool pingPong = false;
+	//math::float3 reverse = math::float3::zero;
 };
 
 extern "C" ScaleOverTime_API Script* CreateScript();
