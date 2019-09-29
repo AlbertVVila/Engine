@@ -92,6 +92,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LootDropScript", "Scripts\L
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ScaleOverTimeScript", "Scripts\ScaleOverTimeScript\ScaleOverTimeScript.vcxproj", "{48137D34-01C9-485A-A0BF-17A2D6409C45}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ScaleOverTime", "Scripts\ScaleOverTime\ScaleOverTime.vcxproj", "{4C7867AB-7818-4E7E-8512-607606DE9C86}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -712,6 +714,20 @@ Global
 		{48137D34-01C9-485A-A0BF-17A2D6409C45}.Release|Win32.Build.0 = Release|Win32
 		{48137D34-01C9-485A-A0BF-17A2D6409C45}.Release|x64.ActiveCfg = Release|x64
 		{48137D34-01C9-485A-A0BF-17A2D6409C45}.Release|x64.Build.0 = Release|x64
+		{4C7867AB-7818-4E7E-8512-607606DE9C86}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4C7867AB-7818-4E7E-8512-607606DE9C86}.Debug|Win32.Build.0 = Debug|Win32
+		{4C7867AB-7818-4E7E-8512-607606DE9C86}.Debug|x64.ActiveCfg = Debug|x64
+		{4C7867AB-7818-4E7E-8512-607606DE9C86}.Debug|x64.Build.0 = Debug|x64
+		{4C7867AB-7818-4E7E-8512-607606DE9C86}.GameBuild Debug|Win32.ActiveCfg = GameBuild Debug|Win32
+		{4C7867AB-7818-4E7E-8512-607606DE9C86}.GameBuild Debug|Win32.Build.0 = GameBuild Debug|Win32
+		{4C7867AB-7818-4E7E-8512-607606DE9C86}.GameBuild Debug|x64.ActiveCfg = GameBuild Debug|Win32
+		{4C7867AB-7818-4E7E-8512-607606DE9C86}.GameBuild|Win32.ActiveCfg = GameBuild|Win32
+		{4C7867AB-7818-4E7E-8512-607606DE9C86}.GameBuild|Win32.Build.0 = GameBuild|Win32
+		{4C7867AB-7818-4E7E-8512-607606DE9C86}.GameBuild|x64.ActiveCfg = GameBuild|Win32
+		{4C7867AB-7818-4E7E-8512-607606DE9C86}.Release|Win32.ActiveCfg = Release|Win32
+		{4C7867AB-7818-4E7E-8512-607606DE9C86}.Release|Win32.Build.0 = Release|Win32
+		{4C7867AB-7818-4E7E-8512-607606DE9C86}.Release|x64.ActiveCfg = Release|x64
+		{4C7867AB-7818-4E7E-8512-607606DE9C86}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -757,6 +773,7 @@ Global
 		{12D323E6-7EE5-4036-86DD-E7612035D018} = {DBB9B5DF-829A-47D8-AFE5-5E54BE12182F}
 		{DA1500B1-4822-4064-BD5F-851BC4ECBA92} = {B0BA8D83-BE07-4405-ADE1-C771D081A8CD}
 		{48137D34-01C9-485A-A0BF-17A2D6409C45} = {B0BA8D83-BE07-4405-ADE1-C771D081A8CD}
+		{4C7867AB-7818-4E7E-8512-607606DE9C86} = {B0BA8D83-BE07-4405-ADE1-C771D081A8CD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7938FFD4-0765-4A85-95CB-3908D56E6F3D}

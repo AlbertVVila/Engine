@@ -1,20 +1,26 @@
-#ifndef  __ScaleOverTimeScript_h__
-#define  __ScaleOverTimeScript_h__
+#ifndef  __ScaleOverTime_h__
+#define  __ScaleOverTime_h__
 
 #include "BaseScript.h"
 
 #include "Math/float3.h"
 
-#ifdef ScaleOverTimeScript_EXPORTS
-#define ScaleOverTimeScript_API __declspec(dllexport)
+#ifdef ScaleOverTime_EXPORTS
+#define ScaleOverTime_API __declspec(dllexport)
 #else
-#define ScaleOverTimeScript_API __declspec(dllimport)
+#define ScaleOverTime_API __declspec(dllimport)
 #endif
 
 class ComponentTransform;
 
-class ScaleOverTimeScript_API ScaleOverTimeScript : public Script
+class ScaleOverTime_API ScaleOverTime : public Script
 {
+public:
+	inline virtual ScaleOverTime* Clone() const
+	{
+		return new ScaleOverTime(*this);
+	}
+
 	void Start() override;
 	void Update() override;
 
@@ -32,4 +38,5 @@ private:
 	float timer = 0.0f;
 };
 
-#endif __ScaleOverTimeScript_h__
+extern "C" ScaleOverTime_API Script* CreateScript();
+#endif __ScaleOverTime_h__
