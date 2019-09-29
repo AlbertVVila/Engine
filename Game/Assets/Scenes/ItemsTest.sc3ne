@@ -1321,7 +1321,7 @@
                     "Znear": 10.0,
                     "Zfar": 100000.0,
                     "vFOV": 1.0471975803375245,
-                    "hFOV": 0.8797577619552612,
+                    "hFOV": 1.5192210674285889,
                     "Position": [
                         374.6440734863281,
                         7210.78076171875,
@@ -4846,22 +4846,22 @@
                         0.0
                     ],
                     "Scale": [
-                        0.0010000000474974514,
-                        0.0010000000474974514,
-                        0.0010000000474974514
+                        1.0,
+                        1.0,
+                        1.0
                     ],
                     "Global": [
-                        0.0010000000474974514,
+                        1.0,
                         0.0,
                         0.0,
                         -5450.34716796875,
                         0.0,
-                        -1.1920929521291868e-10,
-                        0.0009999999310821295,
+                        -1.1920928955078126e-7,
+                        0.9999999403953552,
                         787.4401245117188,
                         0.0,
-                        -0.0009999999310821295,
-                        -1.1920929521291868e-10,
+                        -0.9999999403953552,
+                        -1.1920928955078126e-7,
                         1330.8565673828126,
                         0.0,
                         0.0,
@@ -4952,7 +4952,14 @@
                     "Type": 9,
                     "Enabled": 1,
                     "script": "ScaleOverTime",
-                    "scriptInfo": {}
+                    "scriptInfo": {
+                        "speed": 0.10000000149011612,
+                        "finalScale": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ]
+                    }
                 }
             ]
         },
@@ -53539,9 +53546,9 @@
                     "script": "LootDropScript",
                     "scriptInfo": {
                         "NumberOfItems": 3,
-                        "ItemPrefabName0": "Shovel",
-                        "ItemPrefabName1": "Health Potion",
-                        "ItemPrefabName2": "Mana Potion"
+                        "ItemPrefabName0": "Shovel_animated",
+                        "ItemPrefabName1": "Health Potion_animated",
+                        "ItemPrefabName2": "Mana Potion_animated"
                     }
                 }
             ]
