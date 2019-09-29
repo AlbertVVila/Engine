@@ -7,6 +7,7 @@
 #include "ComponentTransform.h"
 
 #include "imgui.h"
+#include "JSON.h"
 #include <assert.h>
 
 ScaleOverTime_API Script* CreateScript()
@@ -46,8 +47,14 @@ void ScaleOverTime::Expose(ImGuiContext* context)
 
 void ScaleOverTime::Serialize(JSON_value* json) const
 {
+	assert(json != nullptr);
+	json->AddFloat("speed", speed);
+	json->AddFloat3("finalScale", finalScale);
 }
 
 void ScaleOverTime::DeSerialize(JSON_value* json)
 {
+	assert(json != nullptr);
+	speed = json->GetFloat("speed", 0.1f);
+	finalScale = json->GetFloat3("finalScale");
 }
