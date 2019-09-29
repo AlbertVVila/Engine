@@ -28,8 +28,9 @@ public:
 	void SetGlobalTransform(const math::float4x4& newglobal, const math::float4x4& parentglobal);
 	void SetLocalTransform(const math::float4x4& newLocal, const math::float4x4& parentGlobal); //only for importing purposes / if used later watch the trees
 
-	ENGINE_API void SetPosition(const math::float3& position);
+	ENGINE_API void SetPosition(const math::float3& newPosition);
 	ENGINE_API void SetRotation(const math::Quat & newRotation);
+	ENGINE_API void SetScale(const math::float3& newScale);
 	ENGINE_API void Scale(float scalar);
 	
 	ENGINE_API math::Quat GetRotation();
