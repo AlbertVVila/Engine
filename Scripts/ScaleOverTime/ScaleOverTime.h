@@ -21,6 +21,7 @@ public:
 		return new ScaleOverTime(*this);
 	}
 
+private:
 	void Start() override;
 	void Update() override;
 
