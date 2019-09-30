@@ -4958,7 +4958,10 @@
                             0.0,
                             0.0,
                             0.0
-                        ]
+                        ],
+                        "loop": 0,
+                        "pingPong": 0,
+                        "acceleration": 1
                     }
                 }
             ]
@@ -64592,7 +64595,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 1,
             "isPrefabSync": 1,
             "prefabUID": 201218189,
@@ -64650,10 +64653,7 @@
                     "Enabled": 1,
                     "script": "ChestScript",
                     "scriptInfo": {
-                        "playerName": "Player",
-                        "playerBboxName": "PlayerMesh",
-                        "myBboxName": "ChestMesh",
-                        "spawnGOName": "SpawnableGO",
+                        "playerTag": "Player",
                         "state": 0,
                         "lootPosition": [
                             0.0,
@@ -64958,9 +64958,9 @@
                     "useAlpha": 0,
                     "highlighted": 0,
                     "highlightColor": [
-                        1.0,
-                        1.0,
-                        1.0
+                        0.7295081615447998,
+                        0.5288003087043762,
+                        0.029897883534431459
                     ],
                     "xTiles": 1,
                     "yTiles": 1,

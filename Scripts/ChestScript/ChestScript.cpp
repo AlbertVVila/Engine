@@ -3,6 +3,9 @@
 #include "Application.h"
 #include "ModuleScene.h"
 #include "ModuleTime.h"
+#include "ModuleNavigation.h"
+#include "MouseController.h"
+#include "ModuleInput.h"
 
 #include "GameObject.h"
 #include "ComponentTransform.h"
@@ -55,6 +58,36 @@ void ChestScript::Start()
 
 void ChestScript::Update()
 {
+	math::float3 closestPoint;
+	fPoint mouse_point = App->input->GetMousePosition();
+	math::float2 mouse = { mouse_point.x, mouse_point.y };
+	std::list<GameObject*> intersects = App->scene->SceneRaycastHit(mouse);
+
+	auto mesh = std::find(intersects.begin(), intersects.end(), myRender->gameobject);
+	if (mesh != std::end(intersects) && *mesh == myRender->gameobject)
+	{
+		if(myRender != nullptr)
+			myRender->highlighted = true;
+
+		/*if (App->scene->enemyHovered.object != nullptr && gameobject->UUID == App->scene->enemyHovered.object->UUID)
+		{
+			MouseController::ChangeCursorIcon(enemyCursor);
+		}*/
+	}
+	else
+	{
+		if (myRender != nullptr)
+			myRender->highlighted = false;
+
+		//if this is the enemy that was being targeted, we untarget it from the scene
+		/*if (App->scene->enemyHovered.object != nullptr &&
+			gameobject->UUID == App->scene->enemyHovered.object->UUID)
+		{
+			MouseController::ChangeCursorIcon(gameStandarCursor);
+		}*/
+	}
+
+
 	switch (state)
 	{
 	case chestState::CLOSED:
