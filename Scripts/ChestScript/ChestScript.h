@@ -34,9 +34,12 @@ class ChestScript_API ChestScript : public Script
 		return new ChestScript(*this);
 	}
 
+	void OnChestClosedHover();	// Shows the highlight and changes the cursor if the chest is hovered
+
 private:
 	GameObject* player = nullptr;
 	std::string playerTag = "Player";
+	std::string pickCursor = "Pick.cur";
 
 	ComponentRenderer* myRender = nullptr;
 	ComponentAnimation* anim = nullptr;

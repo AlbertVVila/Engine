@@ -58,39 +58,12 @@ void ChestScript::Start()
 
 void ChestScript::Update()
 {
-	math::float3 closestPoint;
-	fPoint mouse_point = App->input->GetMousePosition();
-	math::float2 mouse = { mouse_point.x, mouse_point.y };
-	std::list<GameObject*> intersects = App->scene->SceneRaycastHit(mouse);
-
-	auto mesh = std::find(intersects.begin(), intersects.end(), myRender->gameobject);
-	if (mesh != std::end(intersects) && *mesh == myRender->gameobject)
-	{
-		if(myRender != nullptr)
-			myRender->highlighted = true;
-
-		/*if (App->scene->enemyHovered.object != nullptr && gameobject->UUID == App->scene->enemyHovered.object->UUID)
-		{
-			MouseController::ChangeCursorIcon(enemyCursor);
-		}*/
-	}
-	else
-	{
-		if (myRender != nullptr)
-			myRender->highlighted = false;
-
-		//if this is the enemy that was being targeted, we untarget it from the scene
-		/*if (App->scene->enemyHovered.object != nullptr &&
-			gameobject->UUID == App->scene->enemyHovered.object->UUID)
-		{
-			MouseController::ChangeCursorIcon(gameStandarCursor);
-		}*/
-	}
-
-
 	switch (state)
 	{
 	case chestState::CLOSED:
+		// Check hover
+		OnChestClosedHover();
+
 		// Check collision with player
 		if (myBbox != nullptr && myBbox->Intersects(*playerBbox))
 		{
@@ -137,11 +110,18 @@ void ChestScript::Expose(ImGuiContext* context)
 
 	ImGui::Separator();
 	ImGui::Text("Player:");
-	char* goName = new char[64];
-	strcpy_s(goName, strlen(playerTag.c_str()) + 1, playerTag.c_str());
-	ImGui::InputText("Player Tag", goName, 64);
-	playerTag = goName;
-	delete[] goName;
+	char* goTag = new char[64];
+	strcpy_s(goTag, strlen(playerTag.c_str()) + 1, playerTag.c_str());
+	ImGui::InputText("Player Tag", goTag, 64);
+	playerTag = goTag;
+	delete[] goTag;
+
+	ImGui::Text("Chest cursor:");
+	char* pickCursorAux = new char[64];
+	strcpy_s(pickCursorAux, strlen(pickCursor.c_str()) + 1, pickCursor.c_str());
+	ImGui::InputText("pickCursor", pickCursorAux, 64);
+	pickCursor = pickCursorAux;
+	delete[] pickCursorAux;
 
 	ImGui::Text("Loot Variables:");
 	ImGui::DragFloat("Loot Delay", &lootDelay);
@@ -153,6 +133,7 @@ void ChestScript::Serialize(JSON_value* json) const
 {
 	assert(json != nullptr);
 	json->AddString("playerTag", playerTag.c_str());
+	json->AddString("pickCursor", pickCursor.c_str());
 	json->AddUint("state", (unsigned)state);
 	json->AddFloat3("lootPosition", lootPosition);
 	json->AddFloat("lootDelay", lootDelay);
@@ -163,8 +144,41 @@ void ChestScript::DeSerialize(JSON_value* json)
 {
 	assert(json != nullptr);
 	playerTag = json->GetString("playerTag");
+	pickCursor = json->GetString("pickCursor", "Pick.cur");
 	state = (chestState)json->GetUint("opened");
 	lootPosition = json->GetFloat3("lootPosition");
 	lootDelay = json->GetFloat("lootDelay", 2.5f);
 	lootRadius = json->GetFloat("lootRadius", 100.0f);
+}
+
+void ChestScript::OnChestClosedHover()
+{
+	math::float3 closestPoint;
+	fPoint mouse_point = App->input->GetMousePosition();
+	math::float2 mouse = { mouse_point.x, mouse_point.y };
+	std::list<GameObject*> intersects = App->scene->SceneRaycastHit(mouse);
+
+	auto mesh = std::find(intersects.begin(), intersects.end(), myRender->gameobject);
+	if (mesh != std::end(intersects) && *mesh == myRender->gameobject)
+	{
+		if (myRender != nullptr)
+			myRender->highlighted = true;
+
+		if (App->scene->enemyHovered.object != nullptr && gameobject->UUID == App->scene->enemyHovered.object->UUID)
+		{
+			MouseController::ChangeCursorIcon(pickCursor);
+		}
+	}
+	else
+	{
+		if (myRender != nullptr)
+			myRender->highlighted = false;
+
+		//if this is the enemy that was being targeted, we untarget it from the scene
+		if (App->scene->enemyHovered.object != nullptr &&
+			gameobject->UUID == App->scene->enemyHovered.object->UUID)
+		{
+			MouseController::ChangeCursorIcon(gameStandarCursor);
+		}
+	}
 }
