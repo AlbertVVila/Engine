@@ -33,6 +33,148 @@ ItemPicker_API Script* CreateScript()
 	return instance;
 }
 
+ItemPicker::ItemPicker(const ItemPicker& itemPicker) : Script(itemPicker)
+{
+	name = itemPicker.name;
+	description = itemPicker.description;
+	sprite = itemPicker.sprite;
+	type = itemPicker.type;
+	item = new Item(*itemPicker.item);
+	pickedUpViaPlayer = itemPicker.pickedUpViaPlayer;
+
+	if(itemPicker.playerMovementScript != nullptr) 
+		playerMovementScript = new PlayerMovement(*itemPicker.playerMovementScript);
+	else 
+		playerMovementScript = nullptr;
+
+	if (itemPicker.inventoryScript != nullptr)
+		inventoryScript = new InventoryScript(*itemPicker.inventoryScript);
+	else
+		inventoryScript = nullptr;
+
+	if (itemPicker.playerBbox != nullptr)
+	playerBbox = new math::AABB(*itemPicker.playerBbox);
+	else
+		playerBbox = nullptr;
+
+	textureFiles = itemPicker.textureFiles;
+	selectedTexture = itemPicker.selectedTexture;
+
+	if (itemPicker.itemPickedAudio != nullptr)
+		itemPickedAudio = new ComponentAudioSource(*itemPicker.itemPickedAudio);
+	else
+		itemPickedAudio = nullptr;
+
+	myBboxName = itemPicker.myBboxName;
+
+	if (itemPicker.myRender != nullptr)
+		myRender = new ComponentRenderer((ComponentRenderer&)itemPicker.myRender);
+	else
+		myRender = nullptr;
+
+	rarity = itemPicker.rarity;
+	rare = itemPicker.rare;
+
+	if (itemPicker.itemName != nullptr)
+		itemName = new ItemNameController(*itemPicker.itemName);
+	else
+		itemName = nullptr;
+
+	nameShowed = itemPicker.nameShowed;
+
+	itemCursor = itemPicker.itemCursor;
+	changeItemCursorIcon = itemPicker.changeItemCursorIcon;
+	changeStandarCursorIcon = itemPicker.changeStandarCursorIcon;
+
+	// Mesh to change to Player item (only weapons)
+	if (itemPicker.itemMesh != nullptr)
+		itemMesh = new ResourceMesh(*itemPicker.itemMesh);
+	else
+		itemMesh = nullptr;
+
+	meshesList = itemPicker.meshesList;
+
+	// Material to change to Player item (only weapons)
+	if (itemPicker.itemMaterial != nullptr)
+		itemMaterial = new ResourceMaterial(*itemPicker.itemMaterial);
+	else
+		itemMaterial = nullptr;
+
+	materialsList = itemPicker.materialsList;
+}
+
+ItemPicker& ItemPicker::operator=(const ItemPicker& itemPicker)
+{
+	name = itemPicker.name;
+	description = itemPicker.description;
+	sprite = itemPicker.sprite;
+	type = itemPicker.type;
+	item = new Item(*itemPicker.item);
+	pickedUpViaPlayer = itemPicker.pickedUpViaPlayer;
+
+	if (itemPicker.playerMovementScript != nullptr)
+		playerMovementScript = new PlayerMovement(*itemPicker.playerMovementScript);
+	else
+		playerMovementScript = nullptr;
+
+	if (itemPicker.inventoryScript != nullptr)
+		inventoryScript = new InventoryScript(*itemPicker.inventoryScript);
+	else
+		inventoryScript = nullptr;
+
+	if (itemPicker.playerBbox != nullptr)
+		playerBbox = new math::AABB(*itemPicker.playerBbox);
+	else
+		playerBbox = nullptr;
+
+	textureFiles = itemPicker.textureFiles;
+	selectedTexture = itemPicker.selectedTexture;
+
+	if (itemPicker.itemPickedAudio != nullptr)
+		itemPickedAudio = new ComponentAudioSource(*itemPicker.itemPickedAudio);
+	else
+		itemPickedAudio = nullptr;
+
+	myBboxName = itemPicker.myBboxName;
+
+	if (itemPicker.myRender != nullptr)
+		myRender = new ComponentRenderer((ComponentRenderer&)itemPicker.myRender);
+	else
+		myRender = nullptr;
+
+	rarity = itemPicker.rarity;
+	rare = itemPicker.rare;
+
+	if (itemPicker.itemName != nullptr)
+		itemName = new ItemNameController(*itemPicker.itemName);
+	else
+		itemName = nullptr;
+
+	nameShowed = itemPicker.nameShowed;
+
+	itemCursor = itemPicker.itemCursor;
+	changeItemCursorIcon = itemPicker.changeItemCursorIcon;
+	changeStandarCursorIcon = itemPicker.changeStandarCursorIcon;
+
+	// Mesh to change to Player item (only weapons)
+	if (itemPicker.itemMesh != nullptr)
+		itemMesh = new ResourceMesh(*itemPicker.itemMesh);
+	else
+		itemMesh = nullptr;
+
+	meshesList = itemPicker.meshesList;
+
+	// Material to change to Player item (only weapons)
+	if (itemPicker.itemMaterial != nullptr)
+		itemMaterial = new ResourceMaterial(*itemPicker.itemMaterial);
+	else
+		itemMaterial = nullptr;
+
+	materialsList = itemPicker.materialsList;
+
+	return *this;
+}
+
 void ItemPicker::Expose(ImGuiContext* context)
 {
 	ImGui::Separator();
@@ -426,6 +568,78 @@ void ItemPicker::DeSerialize(JSON_value* json)
 		itemMaterial = (ResourceMaterial*)App->resManager->GetWithoutLoad(resourceMaterialUID);
 	}
 }
+
+/*ItemPicker* ItemPicker::Clone() const
+{
+	ItemPicker* newItemPicker = new ItemPicker(*this);
+	newItemPicker->name = name;
+	newItemPicker->description = description;
+	newItemPicker->sprite = sprite;
+	newItemPicker->type = type;
+	newItemPicker->item = new Item(*item);
+	newItemPicker->pickedUpViaPlayer = pickedUpViaPlayer;
+
+	if (playerMovementScript != nullptr)
+		newItemPicker->playerMovementScript = new PlayerMovement(*playerMovementScript);
+	else
+		newItemPicker->playerMovementScript = nullptr;
+
+	if (inventoryScript != nullptr)
+		newItemPicker->inventoryScript = new InventoryScript(*inventoryScript);
+	else
+		newItemPicker->playerMovementScript = nullptr;
+
+	if (playerBbox != nullptr)
+		newItemPicker->playerBbox = new math::AABB(*playerBbox);
+	else
+		newItemPicker->playerBbox = nullptr;
+
+	newItemPicker->textureFiles = textureFiles;
+	newItemPicker->selectedTexture = selectedTexture;
+
+	if (itemPickedAudio != nullptr)
+		newItemPicker->itemPickedAudio = new ComponentAudioSource(*itemPickedAudio);
+	else
+		newItemPicker->itemPickedAudio = nullptr;
+
+	newItemPicker->myBboxName = myBboxName;
+
+	if (myRender != nullptr)
+		newItemPicker->myRender = new ComponentRenderer((ComponentRenderer&)myRender);
+	else
+		newItemPicker->myRender = nullptr;
+
+	newItemPicker->rarity = rarity;
+	newItemPicker->rare = rare;
+
+	if (itemName != nullptr)
+		newItemPicker->itemName = new ItemNameController(*itemName);
+	else
+		newItemPicker->itemName = nullptr;
+
+	newItemPicker->nameShowed = nameShowed;
+
+	newItemPicker->itemCursor = itemCursor;
+	newItemPicker->changeItemCursorIcon = changeItemCursorIcon;
+	newItemPicker->changeStandarCursorIcon = changeStandarCursorIcon;
+
+	// Mesh to change to Player item (only weapons)
+	if (itemMesh != nullptr)
+		newItemPicker->itemMesh = new ResourceMesh(*itemMesh);
+	else
+		newItemPicker->itemMesh = nullptr;
+
+	newItemPicker->meshesList = meshesList;
+
+	// Material to change to Player item (only weapons)
+	if (itemMaterial != nullptr)
+		newItemPicker->itemMaterial = new ResourceMaterial(*itemMaterial);
+	else
+		newItemPicker->itemMaterial = nullptr;
+
+	newItemPicker->materialsList = materialsList;
+	return newItemPicker;
+}*/
 
 void ItemPicker::SetItem(ItemType type, std::string name, std::string sprite)
 {
