@@ -16,6 +16,7 @@ class GameObject;
 class ComponentRenderer;
 class ComponentAnimation;
 class LootDropScript;
+class PlayerMovement;
 
 enum class chestState { CLOSED, OPENING, OPENED};
 
@@ -40,6 +41,8 @@ private:
 	GameObject* player = nullptr;
 	std::string playerTag = "Player";
 	std::string pickCursor = "Pick.cur";
+
+	PlayerMovement* playerMovementScript = nullptr;
 
 	ComponentRenderer* myRender = nullptr;
 	ComponentAnimation* anim = nullptr;

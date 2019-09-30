@@ -13,6 +13,7 @@
 #include "ComponentRenderer.h"
 
 #include "LootDropScript.h"
+#include "PlayerMovement.h"
 
 #include "imgui.h"
 #include "JSON.h"
@@ -32,11 +33,13 @@ void ChestScript::Start()
 	}
 	else
 	{
-		playerBbox = &player->bbox;
+		playerBbox = &App->scene->FindGameObjectByName("PlayerMesh", player)->bbox;
 		if (playerBbox == nullptr)
 		{
 			LOG("The GameObject %s has no bbox attached \n", player->name.c_str());
 		}
+
+		playerMovementScript = player->GetComponent<PlayerMovement>();
 	}
 
 	anim = gameobject->GetComponent<ComponentAnimation>();
@@ -65,7 +68,7 @@ void ChestScript::Update()
 		OnChestClosedHover();
 
 		// Check collision with player
-		if (myBbox != nullptr && myBbox->Intersects(*playerBbox))
+		/*if (myBbox != nullptr && myBbox->Intersects(*playerBbox))
 		{
 			// Open chest:
 			anim->SendTriggerToStateMachine("Open");
@@ -74,7 +77,7 @@ void ChestScript::Update()
 			else
 				state = chestState::OPENED;
 			
-		}
+		}*/
 		break;
 	case chestState::OPENING:
 		if (chestTimer > lootDelay)
@@ -158,27 +161,41 @@ void ChestScript::OnChestClosedHover()
 	math::float2 mouse = { mouse_point.x, mouse_point.y };
 	std::list<GameObject*> intersects = App->scene->SceneRaycastHit(mouse);
 
+	//first check if chest clicked (either the item mesh or its name)
+	if ((App->scene->Intersects(closestPoint, myRender->gameobject->name.c_str()) &&
+		App->input->GetMouseButtonDown(1) == KEY_DOWN))
+	{
+		//if player next to the item
+		if (myRender->gameobject->bbox.Intersects(*playerBbox))
+		{
+			// Open chest:
+			anim->SendTriggerToStateMachine("Open");
+			if (lootDrop != nullptr)
+				state = chestState::OPENING;
+			else
+				state = chestState::OPENED;
+		}
+		//if not, player goes towards it
+		else
+		{
+			playerMovementScript->stoppedGoingToItem = false;
+		}
+	}
+
+	// Highlight and cursor
 	auto mesh = std::find(intersects.begin(), intersects.end(), myRender->gameobject);
 	if (mesh != std::end(intersects) && *mesh == myRender->gameobject)
 	{
 		if (myRender != nullptr)
 			myRender->highlighted = true;
 
-		if (App->scene->enemyHovered.object != nullptr && gameobject->UUID == App->scene->enemyHovered.object->UUID)
-		{
-			MouseController::ChangeCursorIcon(pickCursor);
-		}
+		MouseController::ChangeCursorIcon(pickCursor);
 	}
 	else
 	{
 		if (myRender != nullptr)
 			myRender->highlighted = false;
 
-		//if this is the enemy that was being targeted, we untarget it from the scene
-		if (App->scene->enemyHovered.object != nullptr &&
-			gameobject->UUID == App->scene->enemyHovered.object->UUID)
-		{
-			MouseController::ChangeCursorIcon(gameStandarCursor);
-		}
+		MouseController::ChangeCursorIcon(gameStandarCursor);
 	}
 }
