@@ -1,7 +1,7 @@
 {
     "Material": {
         "metaVersion": 2,
-        "timeCreated": 1568802784,
+        "timeCreated": 1568580553,
         "GUID": 1934277314,
         "Name": "deathBones",
         "File": "Assets/Materials/deathBones.m4t",
@@ -13,14 +13,18 @@
             1.0
         ],
         "specularColor": [
-            0.10000000149011612,
-            0.10000000149011612,
-            0.10000000149011612
+            1.0,
+            0.9999899864196777,
+            0.9999899864196777
         ],
         "emissiveColor": [
             1.0,
             1.0,
             1.0
-        ]
+        ],
+        "diffuseUID": 2946751613,
+        "normalUID": 2827041712,
+        "dissolveUID": 3100838409,
+        "shader": "PBR"
     }
 }

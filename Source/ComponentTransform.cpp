@@ -312,6 +312,20 @@ math::float3 ComponentTransform::GetGlobalPosition()
 	return global.Col3(3);
 }
 
+math::Quat ComponentTransform::GetGlobalRotation()
+{
+	if (gameobject->movedFlag)
+	{
+		float4x4 newlocal = math::float4x4::FromTRS(position, rotation, scale);
+		if (gameobject->parent != nullptr)
+		{
+			return (gameobject->parent->GetGlobalTransform() * newlocal).RotatePart().ToQuat();
+		}
+		return newlocal.RotatePart().ToQuat();
+	}
+	return global.RotatePart().ToQuat();
+}
+
 ENGINE_API void ComponentTransform::Rotate(math::float3 rot)
 {
 	SetRotation(Quat::FromEulerXYZ(rot.x, rot.y, rot.z) * rotation);
@@ -320,8 +334,8 @@ ENGINE_API void ComponentTransform::Rotate(math::float3 rot)
 void ComponentTransform::LookAt(const math::float3 & targetPosition)
 {
 	math::float3 direction = (targetPosition - GetGlobalPosition());
-	math::Quat newRotation = rotation.LookAt(float3::unitZ, direction.Normalized(), float3::unitY, float3::unitY);	
-	SetRotation(newRotation);
+	math::Quat newRotation = GetGlobalRotation().LookAt(float3::unitZ, direction.Normalized(), float3::unitY, float3::unitY);	
+	SetGlobalRotation(newRotation);
 }
 
 ENGINE_API void ComponentTransform::LookAtMouse() //POS SIZE!!
@@ -409,6 +423,14 @@ void ComponentTransform::Reset()
 ENGINE_API void ComponentTransform::SetGlobalPosition(const math::float3 & newPos)
 {
 	global.SetTranslatePart(newPos);
+	NewAttachment();
+}
+
+ENGINE_API void ComponentTransform::SetGlobalRotation(const math::Quat& newRotation)
+{
+	math::float3 scale = global.ExtractScale();
+	global.SetRotatePart(newRotation.ToFloat3x3());
+	global = global.Mul(global.Scale(scale, math::float3::zero));
 	NewAttachment();
 }
 

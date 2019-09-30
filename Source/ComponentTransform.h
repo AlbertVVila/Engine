@@ -38,6 +38,7 @@ public:
 
 	ENGINE_API math::Quat GetGlobalRotation();
 	ENGINE_API math::float3 GetGlobalPosition();
+	ENGINE_API math::Quat GetGlobalRotation();
 	ENGINE_API void Rotate(math::float3 rotation);
 
 	ENGINE_API void LookAt(const math::float3& target);
@@ -52,7 +53,8 @@ public:
 	void Paste() override;
 	void Reset() override;
 
-	ENGINE_API void SetGlobalPosition(const math::float3 & newPos);
+	ENGINE_API void SetGlobalPosition(const math::float3& newPos);
+	ENGINE_API void SetGlobalRotation(const math::Quat& newRotation);
 
 	void NewAttachment();
 

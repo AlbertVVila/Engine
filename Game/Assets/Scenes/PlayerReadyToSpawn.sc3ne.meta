@@ -1,7 +1,7 @@
 {
     "Scene": {
         "metaVersion": 2,
-        "timeCreated": 1563536366,
+        "timeCreated": 1567891611,
         "GUID": 2589847087,
         "Name": "PlayerReadyToSpawn",
         "File": "Assets/Scenes/PlayerReadyToSpawn.sc3ne",

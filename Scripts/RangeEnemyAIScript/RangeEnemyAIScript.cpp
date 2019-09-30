@@ -95,7 +95,7 @@ void RangeEnemyAIScript::Start()
 	}
 
 	startPosition = enemyController->GetPosition();
-
+	currentState->Enter();
 	LOG("Started range enemy AI script");
 }
 
@@ -302,3 +302,9 @@ void RangeEnemyAIScript::OnTriggerEnter(GameObject* go)
 		CheckStates(previous, currentState);
 	}
 }
+
+
+//GameObject* RangeEnemyAIScript::InstantiateProjectile() const
+//{
+//	return App->scene->Spawn("BandoleroProjectile");
+//}

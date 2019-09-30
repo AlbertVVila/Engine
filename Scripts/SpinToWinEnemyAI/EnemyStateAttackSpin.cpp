@@ -127,15 +127,15 @@ void EnemyStateAttackSpin::PunchFX(bool active)
 	if (spinning && active)
 	{
 		trailPunch->width = 40.0f;
-		trailPunch->bloomIntensity = 4.0f;
-		trailPunch->trailColor = math::float4(0.47f, 0.f, 0.52f, 1.f);
+		trailPunch->bloomIntensity = 1.0f;
+		//trailPunch->trailColor = math::float4(0.47f, 0.f, 0.52f, 1.f);
 		dust->SetActive(true);
 	}
 	else
 	{
 		trailPunch->width = 25.0f;
 		trailPunch->bloomIntensity = 1.0f;
-		trailPunch->trailColor = math::float4(1.f, 1.f, 1.f, 1.f);
+		//trailPunch->trailColor = math::float4(1.f, 1.f, 1.f, 1.f);
 		dust->SetActive(false);
 	}
 }
