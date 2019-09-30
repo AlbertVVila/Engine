@@ -33,7 +33,7 @@
             "isPrefab": 1,
             "isPrefabSync": 1,
             "prefabUID": 2896294178,
-            "prefabTimeStamp": 1569853872,
+            "prefabTimeStamp": 1569853990,
             "Components": [
                 {
                     "Type": 0,
@@ -143,7 +143,7 @@
                     "scriptInfo": {
                         "name": "Shovel",
                         "description": "Seems like its brand new, good for you!",
-                        "sprite": "Item_Machete",
+                        "sprite": "Shovel_icon",
                         "type": 4,
                         "rarity": 0,
                         "isEquipped": 0,
