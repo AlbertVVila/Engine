@@ -58,6 +58,7 @@ void EnemyStateRelocate::ChangePosition()
 	{
 		enemy->enemyController->SetPosition(newPos);		
 		enemy->StartTeleportCD();
+		enemy->enemyController->Move(enemy->runSpeed, refreshTime, enemy->enemyController->GetPosition(), enemyPath);
 	}
 }
 
@@ -76,4 +77,5 @@ void EnemyStateRelocate::Enter()
 {
 	enemy->enemyController->hpBoxTrigger->Enable(false);
 	enemy->dustParticlesGO->SetActive(true);
+	enemy->enemyController->Move(enemy->runSpeed, refreshTime, enemy->enemyController->GetPosition(), enemyPath);
 }
