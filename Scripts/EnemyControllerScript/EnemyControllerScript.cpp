@@ -97,14 +97,14 @@ void EnemyControllerScript::Awake()
 	player = App->scene->FindGameObjectByTag(playerTag.c_str());
 	if (player == nullptr)
 	{
-		LOG("The Player GO with tag %s couldn't be found \n", playerTag);
+		LOG("The Player GO with tag %s couldn't be found \n", playerTag.c_str());
 	}
 	else
 	{
 		playerHitBox = player->GetComponent<ComponentBoxTrigger>();
 		if (playerHitBox == nullptr)
 		{
-			LOG("The GameObject %s has no bbox attached \n", player->name);
+			LOG("The GameObject %s has no ComponentTrigger attached \n", player->name.c_str());
 		}
 
 		playerMovement = (PlayerMovement*)player->GetComponentInChildren(ComponentType::Script);

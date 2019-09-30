@@ -22,19 +22,30 @@ ChestScript_API Script* CreateScript()
 
 void ChestScript::Start()
 {
-	player = App->scene->FindGameObjectByName(playerName.c_str());
-	playerBbox = &App->scene->FindGameObjectByName(playerBboxName.c_str(), player)->bbox;
+	player = App->scene->FindGameObjectByTag(playerTag.c_str());
+	if (player == nullptr)
+	{
+		LOG("The Player GO with tag %s couldn't be found \n", playerTag.c_str());
+	}
+	else
+	{
+		playerBbox = &player->bbox;
+		if (playerBbox == nullptr)
+		{
+			LOG("The GameObject %s has no bbox attached \n", player->name.c_str());
+		}
+	}
 
 	anim = gameobject->GetComponent<ComponentAnimation>();
 	if (anim == nullptr)
 	{
-		LOG("The GameObject %s has no Animation component attached \n", gameobject->name);
+		LOG("The GameObject %s has no Animation component attached \n", gameobject->name.c_str());
 	}
 	
-	myRender = (App->scene->FindGameObjectByName(myBboxName.c_str(), gameobject))->GetComponent<ComponentRenderer>();
+	myRender = (ComponentRenderer*)gameobject->GetComponentInChildren(ComponentType::Renderer);
 
 	if(myRender != nullptr)
-		myBbox = &App->scene->FindGameObjectByName(myBboxName.c_str(), gameobject)->bbox;
+		myBbox = &gameobject->bbox;
 	
 	// Look for LootDropScript
 	lootDrop = gameobject->GetComponent<LootDropScript>();
@@ -83,12 +94,6 @@ void ChestScript::Update()
 
 void ChestScript::Expose(ImGuiContext* context)
 {
-	char* bboxName = new char[64];
-	strcpy_s(bboxName, strlen(myBboxName.c_str()) + 1, myBboxName.c_str());
-	ImGui::InputText("My BBox Name", bboxName, 64);
-	myBboxName = bboxName;
-	delete[] bboxName;
-
 	switch (state)
 	{
 	case chestState::CLOSED:	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Closed");	break;
@@ -100,22 +105,10 @@ void ChestScript::Expose(ImGuiContext* context)
 	ImGui::Separator();
 	ImGui::Text("Player:");
 	char* goName = new char[64];
-	strcpy_s(goName, strlen(playerName.c_str()) + 1, playerName.c_str());
-	ImGui::InputText("Player Name", goName, 64);
-	playerName = goName;
+	strcpy_s(goName, strlen(playerTag.c_str()) + 1, playerTag.c_str());
+	ImGui::InputText("Player Tag", goName, 64);
+	playerTag = goName;
 	delete[] goName;
-
-	char* targetBboxName = new char[64];
-	strcpy_s(targetBboxName, strlen(playerBboxName.c_str()) + 1, playerBboxName.c_str());
-	ImGui::InputText("Player BBox Name", targetBboxName, 64);
-	playerBboxName = targetBboxName;
-	delete[] targetBboxName;
-
-	char* spawnName = new char[64];
-	strcpy_s(spawnName, strlen(spawnGOName.c_str()) + 1, spawnGOName.c_str());
-	ImGui::InputText("GO to spawn Name", spawnName, 64);
-	spawnGOName = spawnName;
-	delete[] spawnName;
 
 	ImGui::Text("Loot Variables:");
 	ImGui::DragFloat("Loot Delay", &lootDelay);
@@ -126,10 +119,7 @@ void ChestScript::Expose(ImGuiContext* context)
 void ChestScript::Serialize(JSON_value* json) const
 {
 	assert(json != nullptr);
-	json->AddString("playerName", playerName.c_str());
-	json->AddString("playerBboxName", playerBboxName.c_str());
-	json->AddString("myBboxName", myBboxName.c_str());
-	json->AddString("spawnGOName", spawnGOName.c_str());
+	json->AddString("playerTag", playerTag.c_str());
 	json->AddUint("state", (unsigned)state);
 	json->AddFloat3("lootPosition", lootPosition);
 	json->AddFloat("lootDelay", lootDelay);
@@ -139,10 +129,7 @@ void ChestScript::Serialize(JSON_value* json) const
 void ChestScript::DeSerialize(JSON_value* json)
 {
 	assert(json != nullptr);
-	playerName = json->GetString("playerName");
-	playerBboxName = json->GetString("playerBboxName");
-	myBboxName = json->GetString("myBboxName");
-	spawnGOName = json->GetString("spawnGOName");
+	playerTag = json->GetString("playerTag");
 	state = (chestState)json->GetUint("opened");
 	lootPosition = json->GetFloat3("lootPosition");
 	lootDelay = json->GetFloat("lootDelay", 2.5f);

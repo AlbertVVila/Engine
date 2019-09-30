@@ -36,9 +36,7 @@ class ChestScript_API ChestScript : public Script
 
 private:
 	GameObject* player = nullptr;
-	std::string playerName = "Player";
-	std::string playerBboxName = "PlayerMesh";
-	std::string myBboxName = "ChestMesh";
+	std::string playerTag = "Player";
 
 	ComponentRenderer* myRender = nullptr;
 	ComponentAnimation* anim = nullptr;
@@ -46,9 +44,6 @@ private:
 	// BBoxes
 	math::AABB* myBbox = nullptr;
 	math::AABB* playerBbox = nullptr;
-
-	// GO to spawn
-	std::string spawnGOName = "SpawnableGO";
 
 	chestState state = chestState::CLOSED; // Is the chest already opened?
 
