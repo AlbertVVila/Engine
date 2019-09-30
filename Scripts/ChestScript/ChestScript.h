@@ -51,7 +51,9 @@ private:
 	math::AABB* myBbox = nullptr;
 	math::AABB* playerBbox = nullptr;
 
-	chestState state = chestState::CLOSED; // Is the chest already opened?
+	chestState state = chestState::CLOSED;	// Is the chest already opened?
+
+	bool lastClickOnChest = false;			// True if last click was done on chest
 
 	// Loot variables
 	LootDropScript* lootDrop = nullptr;							// If != nullptr on chest open will drop item(s) (The variable is set automatically if the LootDropScript is found on Start)

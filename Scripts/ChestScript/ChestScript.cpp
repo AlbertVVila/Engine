@@ -66,18 +66,6 @@ void ChestScript::Update()
 	case chestState::CLOSED:
 		// Check hover
 		OnChestClosedHover();
-
-		// Check collision with player
-		/*if (myBbox != nullptr && myBbox->Intersects(*playerBbox))
-		{
-			// Open chest:
-			anim->SendTriggerToStateMachine("Open");
-			if (lootDrop != nullptr)
-				state = chestState::OPENING;
-			else
-				state = chestState::OPENED;
-			
-		}*/
 		break;
 	case chestState::OPENING:
 		if (chestTimer > lootDelay)
@@ -86,17 +74,19 @@ void ChestScript::Update()
 			if (lootDrop->itemList.size() > 1)
 				lootDrop->DropItemsInSemiCircle(lootRadius);
 			else
-				lootDrop->DropItems();
+lootDrop->DropItems();
 
-			state = chestState::OPENED;
+state = chestState::OPENED;
 		}
 		else
 		{
-			chestTimer += App->time->gameDeltaTime;
+		chestTimer += App->time->gameDeltaTime;
 		}
 		break;
 	default:
 	case chestState::OPENED:
+		if (myRender != nullptr)
+			myRender->highlighted = false;
 		break;
 	}
 }
@@ -161,11 +151,11 @@ void ChestScript::OnChestClosedHover()
 	math::float2 mouse = { mouse_point.x, mouse_point.y };
 	std::list<GameObject*> intersects = App->scene->SceneRaycastHit(mouse);
 
-	//first check if chest clicked (either the item mesh or its name)
+	// First check if chest clicked (either the item mesh or its name)
 	if ((App->scene->Intersects(closestPoint, myRender->gameobject->name.c_str()) &&
 		App->input->GetMouseButtonDown(1) == KEY_DOWN))
 	{
-		//if player next to the item
+		// If player next to the item
 		if (myRender->gameobject->bbox.Intersects(*playerBbox))
 		{
 			// Open chest:
@@ -175,11 +165,28 @@ void ChestScript::OnChestClosedHover()
 			else
 				state = chestState::OPENED;
 		}
-		//if not, player goes towards it
+		// If not, player goes towards it
 		else
 		{
 			playerMovementScript->stoppedGoingToItem = false;
 		}
+
+		lastClickOnChest = true;
+	}
+	else if (App->input->GetMouseButtonDown(1) == KEY_DOWN)
+	{
+		lastClickOnChest = false;
+	}
+
+	// If player is next to the item and last click was done to the chest
+	if (lastClickOnChest && myRender->gameobject->bbox.Intersects(*playerBbox))
+	{
+		// Open chest:
+		anim->SendTriggerToStateMachine("Open");
+		if (lootDrop != nullptr)
+			state = chestState::OPENING;
+		else
+			state = chestState::OPENED;
 	}
 
 	// Highlight and cursor
