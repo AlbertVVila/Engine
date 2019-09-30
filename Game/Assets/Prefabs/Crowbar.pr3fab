@@ -1,9 +1,9 @@
 {
     "GameObjects": [
         {
-            "UID": 3785875303,
+            "UID": 116771679,
             "ParentUID": 3067108787,
-            "Name": "Shovel",
+            "Name": "Crowbar",
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 1,
@@ -32,16 +32,16 @@
             "openInHierarchy": 1,
             "isPrefab": 1,
             "isPrefabSync": 1,
-            "prefabUID": 2896294178,
-            "prefabTimeStamp": 1569853872,
+            "prefabUID": 3240788338,
+            "prefabTimeStamp": 1569853760,
             "Components": [
                 {
                     "Type": 0,
                     "Enabled": 1,
                     "Position": [
-                        -5450.34716796875,
-                        787.4401245117188,
-                        1330.8565673828126
+                        -5483.2763671875,
+                        787.4400634765625,
+                        1613.305419921875
                     ],
                     "Rotation": [
                         -0.7071068286895752,
@@ -56,22 +56,22 @@
                     ],
                     "Scale": [
                         1.0,
-                        1.0,
-                        1.0
+                        0.999989926815033,
+                        0.999989926815033
                     ],
                     "Global": [
                         1.0,
                         0.0,
                         0.0,
-                        -5450.34716796875,
+                        -5483.2763671875,
                         0.0,
-                        -1.1920928955078126e-7,
-                        0.9999999403953552,
-                        787.4401245117188,
+                        -1.1920808873355782e-7,
+                        0.9999898672103882,
+                        787.4400634765625,
                         0.0,
-                        -0.9999999403953552,
-                        -1.1920928955078126e-7,
-                        1330.8565673828126,
+                        -0.9999898672103882,
+                        -1.1920808873355782e-7,
+                        1613.305419921875,
                         0.0,
                         0.0,
                         0.0,
@@ -141,21 +141,21 @@
                     "Enabled": 1,
                     "script": "ItemPicker",
                     "scriptInfo": {
-                        "name": "Shovel",
-                        "description": "Seems like its brand new, good for you!",
-                        "sprite": "Item_Machete",
+                        "name": "Crowbar",
+                        "description": "A used crowbar with the initials 'G.F' engraved.",
+                        "sprite": "Item_Rusty legendary machete",
                         "type": 4,
-                        "rarity": 0,
+                        "rarity": 2,
                         "isEquipped": 0,
                         "health": 0.0,
                         "mana": 0.0,
-                        "strength": 5,
+                        "strength": 12,
                         "dexterity": 0,
                         "hpRegen": 0.0,
                         "manaRegen": 0.0,
                         "itemCursor": "Pick.cur",
-                        "meshUID": 244729783,
-                        "materialUID": 3187938879
+                        "meshUID": 3486752150,
+                        "materialUID": 774644223
                     }
                 }
             ]

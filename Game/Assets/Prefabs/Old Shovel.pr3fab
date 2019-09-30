@@ -1,9 +1,9 @@
 {
     "GameObjects": [
         {
-            "UID": 3785875303,
+            "UID": 4103328492,
             "ParentUID": 3067108787,
-            "Name": "Shovel",
+            "Name": "Old Shovel",
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 1,
@@ -32,16 +32,15 @@
             "openInHierarchy": 1,
             "isPrefab": 1,
             "isPrefabSync": 1,
-            "prefabUID": 2896294178,
-            "prefabTimeStamp": 1569853872,
+            "prefabUID": 0,
             "Components": [
                 {
                     "Type": 0,
                     "Enabled": 1,
                     "Position": [
-                        -5450.34716796875,
+                        -5044.03369140625,
                         787.4401245117188,
-                        1330.8565673828126
+                        1055.4952392578126
                     ],
                     "Rotation": [
                         -0.7071068286895752,
@@ -56,22 +55,22 @@
                     ],
                     "Scale": [
                         1.0,
-                        1.0,
-                        1.0
+                        0.9999887347221375,
+                        0.9999887347221375
                     ],
                     "Global": [
                         1.0,
                         0.0,
                         0.0,
-                        -5450.34716796875,
+                        -5044.03369140625,
                         0.0,
-                        -1.1920928955078126e-7,
-                        0.9999999403953552,
+                        -1.1920794662501067e-7,
+                        0.9999886751174927,
                         787.4401245117188,
                         0.0,
-                        -0.9999999403953552,
-                        -1.1920928955078126e-7,
-                        1330.8565673828126,
+                        -0.9999886751174927,
+                        -1.1920794662501067e-7,
+                        1055.4952392578126,
                         0.0,
                         0.0,
                         0.0,
@@ -141,21 +140,21 @@
                     "Enabled": 1,
                     "script": "ItemPicker",
                     "scriptInfo": {
-                        "name": "Shovel",
-                        "description": "Seems like its brand new, good for you!",
+                        "name": "Old Shovel",
+                        "description": "This shovel has seen better days...",
                         "sprite": "Item_Machete",
                         "type": 4,
                         "rarity": 0,
                         "isEquipped": 0,
                         "health": 0.0,
                         "mana": 0.0,
-                        "strength": 5,
+                        "strength": 1,
                         "dexterity": 0,
                         "hpRegen": 0.0,
                         "manaRegen": 0.0,
                         "itemCursor": "Pick.cur",
-                        "meshUID": 244729783,
-                        "materialUID": 3187938879
+                        "meshUID": 2371637376,
+                        "materialUID": 2098963584
                     }
                 }
             ]

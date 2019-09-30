@@ -1,9 +1,9 @@
 {
     "GameObjects": [
         {
-            "UID": 3785875303,
+            "UID": 178951389,
             "ParentUID": 3067108787,
-            "Name": "Shovel",
+            "Name": "Gold Machete",
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 1,
@@ -32,16 +32,16 @@
             "openInHierarchy": 1,
             "isPrefab": 1,
             "isPrefabSync": 1,
-            "prefabUID": 2896294178,
-            "prefabTimeStamp": 1569853872,
+            "prefabUID": 3228857965,
+            "prefabTimeStamp": 1569851891,
             "Components": [
                 {
                     "Type": 0,
                     "Enabled": 1,
                     "Position": [
-                        -5450.34716796875,
+                        -5132.0634765625,
                         787.4401245117188,
-                        1330.8565673828126
+                        1427.9990234375
                     ],
                     "Rotation": [
                         -0.7071068286895752,
@@ -56,22 +56,22 @@
                     ],
                     "Scale": [
                         1.0,
-                        1.0,
-                        1.0
+                        0.9999729990959168,
+                        0.9999729990959168
                     ],
                     "Global": [
                         1.0,
                         0.0,
                         0.0,
-                        -5450.34716796875,
+                        -5132.0634765625,
                         0.0,
-                        -1.1920928955078126e-7,
-                        0.9999999403953552,
+                        -1.1920607079218826e-7,
+                        0.999972939491272,
                         787.4401245117188,
                         0.0,
-                        -0.9999999403953552,
-                        -1.1920928955078126e-7,
-                        1330.8565673828126,
+                        -0.999972939491272,
+                        -1.1920607079218826e-7,
+                        1427.9990234375,
                         0.0,
                         0.0,
                         0.0,
@@ -141,21 +141,21 @@
                     "Enabled": 1,
                     "script": "ItemPicker",
                     "scriptInfo": {
-                        "name": "Shovel",
-                        "description": "Seems like its brand new, good for you!",
-                        "sprite": "Item_Machete",
+                        "name": "Gold Machete",
+                        "description": "Forged in the Forbiden Temple.",
+                        "sprite": "Item_MacheteAura",
                         "type": 4,
-                        "rarity": 0,
+                        "rarity": 3,
                         "isEquipped": 0,
                         "health": 0.0,
                         "mana": 0.0,
-                        "strength": 5,
+                        "strength": 20,
                         "dexterity": 0,
                         "hpRegen": 0.0,
                         "manaRegen": 0.0,
                         "itemCursor": "Pick.cur",
-                        "meshUID": 244729783,
-                        "materialUID": 3187938879
+                        "meshUID": 2979575515,
+                        "materialUID": 1015163954
                     }
                 }
             ]
