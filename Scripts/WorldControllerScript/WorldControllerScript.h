@@ -71,7 +71,7 @@ private:
 	unsigned playerUID = 0u;
 	
 	int playerAgentsPosition = -1;
-	float* playerPos = new float[3];
+	float* playerPos = nullptr;
 
 };
 
