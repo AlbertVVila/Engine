@@ -1,9 +1,9 @@
 {
     "GameObjects": [
         {
-            "UID": 178951389,
+            "UID": 116771679,
             "ParentUID": 3067108787,
-            "Name": "Gold Machete",
+            "Name": "Crowbar",
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 1,
@@ -32,16 +32,16 @@
             "openInHierarchy": 1,
             "isPrefab": 1,
             "isPrefabSync": 1,
-            "prefabUID": 3228857965,
-            "prefabTimeStamp": 1569851891,
+            "prefabUID": 3240788338,
+            "prefabTimeStamp": 1569854012,
             "Components": [
                 {
                     "Type": 0,
                     "Enabled": 1,
                     "Position": [
-                        -5132.0634765625,
-                        787.4401245117188,
-                        1427.9990234375
+                        -5483.2763671875,
+                        787.4400634765625,
+                        1613.305419921875
                     ],
                     "Rotation": [
                         -0.7071068286895752,
@@ -56,22 +56,22 @@
                     ],
                     "Scale": [
                         1.0,
-                        0.9999729990959168,
-                        0.9999729990959168
+                        0.999989926815033,
+                        0.999989926815033
                     ],
                     "Global": [
                         1.0,
                         0.0,
                         0.0,
-                        -5132.0634765625,
+                        -5483.2763671875,
                         0.0,
-                        -1.1920607079218826e-7,
-                        0.999972939491272,
-                        787.4401245117188,
+                        -1.1920808873355782e-7,
+                        0.9999898672103882,
+                        787.4400634765625,
                         0.0,
-                        -0.999972939491272,
-                        -1.1920607079218826e-7,
-                        1427.9990234375,
+                        -0.9999898672103882,
+                        -1.1920808873355782e-7,
+                        1613.305419921875,
                         0.0,
                         0.0,
                         0.0,
@@ -141,21 +141,21 @@
                     "Enabled": 1,
                     "script": "ItemPicker",
                     "scriptInfo": {
-                        "name": "Gold Machete",
-                        "description": "Forged in the Forbiden Temple.",
-                        "sprite": "Item_MacheteAura",
+                        "name": "Crowbar",
+                        "description": "A used crowbar with the initials 'G.F' engraved.",
+                        "sprite": "Crowbar_Icon",
                         "type": 4,
-                        "rarity": 3,
+                        "rarity": 2,
                         "isEquipped": 0,
                         "health": 0.0,
                         "mana": 0.0,
-                        "strength": 20,
+                        "strength": 12,
                         "dexterity": 0,
                         "hpRegen": 0.0,
                         "manaRegen": 0.0,
                         "itemCursor": "Pick.cur",
-                        "meshUID": 2979575515,
-                        "materialUID": 1015163954
+                        "meshUID": 3486752150,
+                        "materialUID": 774644223
                     }
                 }
             ]

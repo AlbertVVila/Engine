@@ -1,9 +1,9 @@
 {
     "GameObjects": [
         {
-            "UID": 116771679,
+            "UID": 2276881255,
             "ParentUID": 3067108787,
-            "Name": "Crowbar",
+            "Name": "Machete",
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 1,
@@ -32,16 +32,16 @@
             "openInHierarchy": 1,
             "isPrefab": 1,
             "isPrefabSync": 1,
-            "prefabUID": 3240788338,
-            "prefabTimeStamp": 1569853760,
+            "prefabUID": 2405749781,
+            "prefabTimeStamp": 1569853838,
             "Components": [
                 {
                     "Type": 0,
                     "Enabled": 1,
                     "Position": [
-                        -5483.2763671875,
-                        787.4400634765625,
-                        1613.305419921875
+                        -4901.4208984375,
+                        787.4401245117188,
+                        1076.50634765625
                     ],
                     "Rotation": [
                         -0.7071068286895752,
@@ -56,22 +56,22 @@
                     ],
                     "Scale": [
                         1.0,
-                        0.999989926815033,
-                        0.999989926815033
+                        0.9999743700027466,
+                        0.9999743700027466
                     ],
                     "Global": [
                         1.0,
                         0.0,
                         0.0,
-                        -5483.2763671875,
+                        -4901.4208984375,
                         0.0,
-                        -1.1920808873355782e-7,
-                        0.9999898672103882,
-                        787.4400634765625,
+                        -1.1920623421701748e-7,
+                        0.9999743103981018,
+                        787.4401245117188,
                         0.0,
-                        -0.9999898672103882,
-                        -1.1920808873355782e-7,
-                        1613.305419921875,
+                        -0.9999743103981018,
+                        -1.1920623421701748e-7,
+                        1076.50634765625,
                         0.0,
                         0.0,
                         0.0,
@@ -141,21 +141,21 @@
                     "Enabled": 1,
                     "script": "ItemPicker",
                     "scriptInfo": {
-                        "name": "Crowbar",
-                        "description": "A used crowbar with the initials 'G.F' engraved.",
-                        "sprite": "Item_Rusty legendary machete",
+                        "name": "Machete",
+                        "description": "Machete calling for revenge.",
+                        "sprite": "Machete_icon",
                         "type": 4,
-                        "rarity": 2,
+                        "rarity": 1,
                         "isEquipped": 0,
                         "health": 0.0,
                         "mana": 0.0,
-                        "strength": 12,
+                        "strength": 10,
                         "dexterity": 0,
                         "hpRegen": 0.0,
                         "manaRegen": 0.0,
                         "itemCursor": "Pick.cur",
-                        "meshUID": 3486752150,
-                        "materialUID": 774644223
+                        "meshUID": 1423194597,
+                        "materialUID": 2582063686
                     }
                 }
             ]

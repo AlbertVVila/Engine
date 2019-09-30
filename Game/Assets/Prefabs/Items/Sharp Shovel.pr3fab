@@ -1,9 +1,9 @@
 {
     "GameObjects": [
         {
-            "UID": 2276881255,
+            "UID": 4064132985,
             "ParentUID": 3067108787,
-            "Name": "Machete",
+            "Name": "Sharp Shovel",
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 1,
@@ -32,16 +32,15 @@
             "openInHierarchy": 1,
             "isPrefab": 1,
             "isPrefabSync": 1,
-            "prefabUID": 2405749781,
-            "prefabTimeStamp": 1569852233,
+            "prefabUID": 0,
             "Components": [
                 {
                     "Type": 0,
                     "Enabled": 1,
                     "Position": [
-                        -4901.4208984375,
+                        -5450.34716796875,
                         787.4401245117188,
-                        1076.50634765625
+                        1330.8565673828126
                     ],
                     "Rotation": [
                         -0.7071068286895752,
@@ -56,22 +55,22 @@
                     ],
                     "Scale": [
                         1.0,
-                        0.9999743700027466,
-                        0.9999743700027466
+                        1.0,
+                        1.0
                     ],
                     "Global": [
                         1.0,
                         0.0,
                         0.0,
-                        -4901.4208984375,
+                        -5450.34716796875,
                         0.0,
-                        -1.1920623421701748e-7,
-                        0.9999743103981018,
+                        -1.1920928955078126e-7,
+                        0.9999999403953552,
                         787.4401245117188,
                         0.0,
-                        -0.9999743103981018,
-                        -1.1920623421701748e-7,
-                        1076.50634765625,
+                        -0.9999999403953552,
+                        -1.1920928955078126e-7,
+                        1330.8565673828126,
                         0.0,
                         0.0,
                         0.0,
@@ -141,21 +140,21 @@
                     "Enabled": 1,
                     "script": "ItemPicker",
                     "scriptInfo": {
-                        "name": "Machete",
-                        "description": "Machete calling for revenge.",
-                        "sprite": "Item_Machete",
+                        "name": "Sharp Shovel",
+                        "description": "A shovel with sharp edges.",
+                        "sprite": "SharpShovel_icon",
                         "type": 4,
                         "rarity": 1,
                         "isEquipped": 0,
                         "health": 0.0,
                         "mana": 0.0,
-                        "strength": 10,
+                        "strength": 8,
                         "dexterity": 0,
                         "hpRegen": 0.0,
                         "manaRegen": 0.0,
                         "itemCursor": "Pick.cur",
-                        "meshUID": 1423194597,
-                        "materialUID": 2582063686
+                        "meshUID": 2885013133,
+                        "materialUID": 3510550151
                     }
                 }
             ]
