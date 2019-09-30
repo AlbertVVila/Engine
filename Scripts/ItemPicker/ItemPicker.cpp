@@ -253,9 +253,9 @@ void ItemPicker::Expose(ImGuiContext* context)
 	name = imguiText;
 	delete[] imguiText;
 
-	char* auxDescription = new char[64];
+	char* auxDescription = new char[300];
 	strcpy(auxDescription, description.c_str());
-	ImGui::InputText("Description", auxDescription, 64);
+	ImGui::InputText("Description", auxDescription, 300);
 	description = auxDescription;
 	delete[] auxDescription;
 
