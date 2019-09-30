@@ -107,15 +107,17 @@ void ItemPicker::Expose(ImGuiContext* context)
 
 	char* imguiText = new char[64];
 	strcpy(imguiText, name.c_str());
-	ImGui::InputText("##", imguiText, 64);
+	ImGui::InputText("Name", imguiText, 64);
 	name = imguiText;
 	delete[] imguiText;
 
-	char* bboxName = new char[64];
-	strcpy_s(bboxName, strlen(myBboxName.c_str()) + 1, myBboxName.c_str());
-	ImGui::InputText("My BBox Name", bboxName, 64);
-	myBboxName = bboxName;
-	delete[] bboxName;
+	char* auxDescription = new char[64];
+	strcpy(auxDescription, description.c_str());
+	ImGui::InputText("Description", auxDescription, 64);
+	description = auxDescription;
+	delete[] auxDescription;
+
+	ImGui::Separator();
 
 	// Mesh selector
 	ImGui::Text("Mesh");
@@ -368,7 +370,8 @@ void ItemPicker::Update()
 void ItemPicker::Serialize(JSON_value* json) const
 {
 	assert(json != nullptr);
-	json->AddString("name", name.c_str());
+	json->AddString("name", name.c_str());	
+	json->AddString("description", description.c_str());
 	json->AddString("sprite", sprite.c_str());
 	json->AddInt("type", (int)type);
 	json->AddInt("rarity", (int)rarity);
@@ -387,8 +390,9 @@ void ItemPicker::Serialize(JSON_value* json) const
 void ItemPicker::DeSerialize(JSON_value* json)
 {
 	assert(json != nullptr);
-	name = json->GetString("name");
-	sprite = json->GetString("sprite");
+	name = json->GetString("name", "");
+	description = json->GetString("description", "");
+	sprite = json->GetString("sprite", "");
 	type = (ItemType)json->GetInt("type");
 	rarity = (ItemRarity)json->GetInt("rarity");
 
