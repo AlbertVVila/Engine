@@ -32,15 +32,16 @@
             "openInHierarchy": 1,
             "isPrefab": 1,
             "isPrefabSync": 1,
-            "prefabUID": 0,
+            "prefabUID": 2914377128,
+            "prefabTimeStamp": 1569872028,
             "Components": [
                 {
                     "Type": 0,
                     "Enabled": 1,
                     "Position": [
-                        -5450.34716796875,
+                        -5227.30029296875,
                         787.4401245117188,
-                        1330.8565673828126
+                        1065.5550537109376
                     ],
                     "Rotation": [
                         -0.7071068286895752,
@@ -55,22 +56,22 @@
                     ],
                     "Scale": [
                         1.0,
-                        1.0,
-                        1.0
+                        0.9999797344207764,
+                        0.9999797344207764
                     ],
                     "Global": [
                         1.0,
                         0.0,
                         0.0,
-                        -5450.34716796875,
+                        -5227.30029296875,
                         0.0,
-                        -1.1920928955078126e-7,
-                        0.9999999403953552,
+                        -1.1920687370547967e-7,
+                        0.9999796748161316,
                         787.4401245117188,
                         0.0,
-                        -0.9999999403953552,
-                        -1.1920928955078126e-7,
-                        1330.8565673828126,
+                        -0.9999796748161316,
+                        -1.1920687370547967e-7,
+                        1065.5550537109376,
                         0.0,
                         0.0,
                         0.0,
@@ -141,7 +142,7 @@
                     "script": "ItemPicker",
                     "scriptInfo": {
                         "name": "Sharp Shovel",
-                        "description": "A shovel with sharp edges.",
+                        "description": "A shovel with sharp edges, someone thought that this could be a good idea.",
                         "sprite": "SharpShovel_icon",
                         "type": 4,
                         "rarity": 1,
