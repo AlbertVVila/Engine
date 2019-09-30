@@ -16,7 +16,7 @@ void BossStateNotActive::HandleIA()
 {
 	if (boss->distanceToPlayer < boss->activationDistance)
 	{
-		boss->currentState = (BossState*)boss->summonArmy;
+		boss->currentState = (BossState*)boss->cutscene;
 		
 		boss->GenerateNewNavigability(boss->floorBossGOs);
 	}

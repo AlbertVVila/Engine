@@ -53,7 +53,7 @@ private:
 
 	float damageToPlayer = 10.0f;
 	float dissolveSpeed = 1.0f;
-	float scalingSpeed = 1.0f;
+	float scalingSpeed = 0.002f;
 	float finalScale = 2.0f;
 	bool hasDamaged = false;
 };

@@ -57,6 +57,7 @@ class BossStateNotActive;
 class BossStateActivated;
 class BossStateInterPhase;
 class BossStateSummonArmy;
+class BossStateCutScene;
 class EnemyControllerScript;
 class GameLoop;
 
@@ -93,6 +94,7 @@ public:
 	BossStateInterPhase* interPhase = nullptr;
 	BossStateDeath* death = nullptr;
 	BossStateCast* cast = nullptr;
+	BossStateCutScene* cutscene = nullptr;
 
 public:
 	GameObject* gameLoopGO = nullptr;
@@ -167,6 +169,12 @@ public:
 	math::float3 northWestSecondSkull = math::float3::zero;
 	std::vector<math::float3> positionsSkullsSecond;
 	int positionsIt = 0;
+
+private:
+	math::float3 cameraPositionCS = math::float3::zero;
+	math::Quat cameraRotationCS = math::Quat::identity;
+	math::float3 cameraRotationEuler = math::float3::zero;
+	float cutsceneDuration = 10.0f;
 
 private:
 	std::vector<BossState*> bossStates;
