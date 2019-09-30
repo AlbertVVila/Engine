@@ -28,9 +28,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{b97e59db-aa43-47e5-b587-57a95e855c97}</ProjectGuid>
+    <ProjectGuid>{4C7867AB-7818-4E7E-8512-607606DE9C86}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>WorldControllerScript</RootNamespace>
+    <RootNamespace>ScaleOverTime</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition="'$(WindowsTargetPlatformVersion)'==''">
     <!-- Latest Target Version property -->
@@ -130,18 +130,25 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;WorldControllerScript_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;ScaleOverTime_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source;$(SolutionDir)\Source\MathGeoLib;$(SolutionDir)Source\MathGeoLib</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source;$(SolutionDir)\Scripts;$(SolutionDir)Source\MathGeoLib</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\Source\Imgui\lib;$(SolutionDir)$(Configuration);;$(SolutionDir)Source\MathGeoLib\lib;$(SolutionDir)Source\MathGeoLib\lib;$(SolutionDir)Source\MathGeoLib\lib;$(SolutionDir)Source\MathGeoLib\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\Source\Imgui\lib; $(SolutionDir)\Source\MathGeoLib\lib;$(SolutionDir)$(Configuration)</AdditionalLibraryDirectories>
       <AdditionalDependencies>$(SolutionName).lib;ImGui.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;MathGeoLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts"</Command>
+      <Command>xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts"
+if ERRORLEVEL 1 goto hotreload
+goto exit
+:hotreload
+echo Le HotReload
+xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts\$(ProjectName).hot"*
+:exit
+set ERRORLEVEL=0</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='GameBuild Debug|Win32'">
@@ -150,18 +157,25 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;WorldControllerScript_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;ScaleOverTime_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source;$(SolutionDir)Source\MathGeoLib</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source;$(SolutionDir)\Scripts;$(SolutionDir)Source\MathGeoLib</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\Source\Imgui\lib;$(SolutionDir)$(Configuration);;$(SolutionDir)Source\MathGeoLib\lib;$(SolutionDir)Source\MathGeoLib\lib;$(SolutionDir)Source\MathGeoLib\lib;$(SolutionDir)Source\MathGeoLib\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\Source\Imgui\lib; $(SolutionDir)\Source\MathGeoLib\lib; $(SolutionDir)$(Configuration)</AdditionalLibraryDirectories>
       <AdditionalDependencies>$(SolutionName).lib;ImGui.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;MathGeoLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts"</Command>
+      <Command>xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts"
+if ERRORLEVEL 1 goto hotreload
+goto exit
+:hotreload
+echo Le HotReload
+xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts\$(ProjectName).hot"*
+:exit
+set ERRORLEVEL=0</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -170,7 +184,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;WorldControllerScript_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;ScaleOverTime_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -186,20 +200,27 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;WorldControllerScript_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;ScaleOverTime_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)Source\MathGeoLib;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source;$(SolutionDir)\Scripts\PlayerMovement;../BaseScript;$(SolutionDir)Source\MathGeoLib</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source;$(SolutionDir)\Scripts;$(SolutionDir)Source\MathGeoLib</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\Source\Imgui\lib;$(SolutionDir)$(Configuration);(SolutionDir)Source\MathGeoLib\lib;$(SolutionDir)Source\MathGeoLib\lib;$(SolutionDir)Source\MathGeoLib\lib;$(SolutionDir)Source\MathGeoLib\lib;$(SolutionDir)Source\MathGeoLib\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>$(SolutionName).lib;ImGui.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;MathGeoLib.lib;MathGeoLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\Source\Imgui\lib; $(SolutionDir)\Source\MathGeoLib\lib; $(SolutionDir)$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(SolutionName).lib;ImGui.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;MathGeoLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts"</Command>
+      <Command>xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts"
+if ERRORLEVEL 1 goto hotreload
+goto exit
+:hotreload
+echo Le HotReload
+xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts\$(ProjectName).hot"*
+:exit
+set ERRORLEVEL=0</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='GameBuild|Win32'">
@@ -210,20 +231,27 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;WorldControllerScript_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;ScaleOverTime_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib\include;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source;$(SolutionDir)Source\MathGeoLib</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Source\rapidjson-1.1.0\include;$(SolutionDir)\Source\MathGeoLib;$(SolutionDir)\Source\Imgui\include;$(SolutionDir)\Source;$(SolutionDir)\Scripts;$(SolutionDir)Source\MathGeoLib</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\Source\Imgui\lib;$(SolutionDir)$(Configuration);;$(SolutionDir)Source\MathGeoLib\lib;$(SolutionDir)Source\MathGeoLib\lib;$(SolutionDir)Source\MathGeoLib\lib;$(SolutionDir)Source\MathGeoLib\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\Source\Imgui\lib; $(SolutionDir)\Source\MathGeoLib\lib; $(SolutionDir)$(Configuration)</AdditionalLibraryDirectories>
       <AdditionalDependencies>$(SolutionName).lib;ImGui.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;MathGeoLib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts"</Command>
+      <Command>xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts"
+if ERRORLEVEL 1 goto hotreload
+goto exit
+:hotreload
+echo Le HotReload
+xcopy /y /d "$(OutDir)$(ProjectName).dll" "..\..\Game\Scripts\$(ProjectName).hot"*
+:exit
+set ERRORLEVEL=0</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -234,7 +262,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;WorldControllerScript_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;ScaleOverTime_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -245,10 +273,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="WorldControllerScript.cpp" />
+    <ClCompile Include="ScaleOverTime.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="WorldControllerScript.h" />
+    <ClInclude Include="ScaleOverTime.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

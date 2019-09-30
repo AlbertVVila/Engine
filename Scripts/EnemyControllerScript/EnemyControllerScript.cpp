@@ -21,8 +21,8 @@
 #include "ExperienceController.h"
 #include "DamageController.h"
 #include "EnemyLifeBarController.h"
-#include "EnemyLoot.h"
 #include "CombatAudioEvents.h"
+#include "LootDropScript.h"
 #include "WorldControllerScript.h"
 
 #include "imgui.h"
@@ -194,6 +194,9 @@ void EnemyControllerScript::Awake()
 			LOG("combataudioevents couldn't be found \n");
 		}
 	}
+
+	// Look for LootDropScript
+	lootDrop = gameobject->GetComponent<LootDropScript>();
 }
 
 void EnemyControllerScript::Update()
@@ -269,6 +272,26 @@ void EnemyControllerScript::Update()
 		}
 		enemyHit = false;
 	}
+
+	if (isDead && !lootDropped)
+	{
+		if (deathTimer > lootDelay)
+		{
+			if (lootDrop != nullptr)
+			{
+				// If chest has more than one item drop them in circle
+				if (lootDrop->itemList.size() > 1)
+					lootDrop->DropItemsInCircle(lootRadius);
+				else
+					lootDrop->DropItems();
+			}
+			lootDropped = true;
+		}
+		else
+		{
+			deathTimer += App->time->gameDeltaTime;
+		}
+	}
 }
 
 void EnemyControllerScript::Expose(ImGuiContext* context)
@@ -315,7 +338,7 @@ void EnemyControllerScript::Expose(ImGuiContext* context)
 	ImGui::InputText("enemyCursor", enemyCursorAux, 64);
 	enemyCursor = enemyCursorAux;
 	delete[] enemyCursorAux;
-	
+
 	// Draw the name of every GO that has a ComponentRenderer 
 	if (myRenders.size() > 0u)
 	{
@@ -323,7 +346,10 @@ void EnemyControllerScript::Expose(ImGuiContext* context)
 		for (std::vector<ComponentRenderer*>::iterator it = myRenders.begin(); it != myRenders.end(); ++it)
 			ImGui::Text(((Component*)(*it))->gameobject->name.c_str());
 	}
-
+	ImGui::Separator();
+	ImGui::Text("Loot Variables:");
+	ImGui::DragFloat("Loot Delay", &lootDelay);
+	ImGui::DragFloat("Loot Radius", &lootRadius);
 }
 
 void EnemyControllerScript::Serialize(JSON_value* json) const
@@ -335,6 +361,8 @@ void EnemyControllerScript::Serialize(JSON_value* json) const
 	json->AddInt("health", maxHealth);
 	json->AddInt("experience", experience);
 	json->AddString("enemyCursor", enemyCursor.c_str());
+	json->AddFloat("lootDelay", lootDelay);
+	json->AddFloat("lootRadius", lootRadius);
 }
 
 void EnemyControllerScript::DeSerialize(JSON_value* json)
@@ -347,6 +375,8 @@ void EnemyControllerScript::DeSerialize(JSON_value* json)
 	experience = json->GetInt("experience", 20);
 	actualHealth = maxHealth;
 	enemyCursor = json->GetString("enemyCursor", "RedGlow.cur");
+	lootDelay = json->GetFloat("lootDelay", 1.0f);
+	lootRadius = json->GetFloat("lootRadius", 100.0f);
 }
 
 void EnemyControllerScript::TakeDamage(unsigned damage, int type)
@@ -361,11 +391,6 @@ void EnemyControllerScript::TakeDamage(unsigned damage, int type)
 		if (actualHealth - damage < 0 )
 		{
 			actualHealth = 0;
-			enemyLoot = gameobject->GetComponent<EnemyLoot>();
-			if (enemyLoot != nullptr)
-			{
-				enemyLoot->GenerateLoot();
-			}
 			gameobject->SetActive(false);
 		}
 		else
@@ -386,11 +411,7 @@ void EnemyControllerScript::TakeDamage(unsigned damage, int type)
 			{
 				isDeadByCritOrSkill = true; //by default is false (Normal)
 			}
-			enemyLoot = gameobject->GetComponent<EnemyLoot>();
-			if (enemyLoot != nullptr)
-			{
-				enemyLoot->GenerateLoot();
-			}
+
 			if (experienceController != nullptr)
 				experienceController->AddXP(experience);
 

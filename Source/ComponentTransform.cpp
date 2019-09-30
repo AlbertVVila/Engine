@@ -239,7 +239,7 @@ void ComponentTransform::SetLocalTransform(const math::float4x4& newLocal, const
 	RotationToEuler();
 }
 
-void ComponentTransform::SetPosition(const math::float3 & newPosition)
+void ComponentTransform::SetPosition(const math::float3& newPosition)
 {
 	position = newPosition;
 	gameobject->movedFlag = true;
@@ -270,6 +270,12 @@ void ComponentTransform::SetRotation(const math::Quat& newRotation)
 	RotationToEuler();
 	gameobject->movedFlag = true;
 	UpdateTransform();
+}
+
+void ComponentTransform::SetScale(const math::float3& newScale)
+{
+	scale = newScale;
+	gameobject->movedFlag = true;
 }
 
 ENGINE_API void ComponentTransform::Scale(float scalar)
