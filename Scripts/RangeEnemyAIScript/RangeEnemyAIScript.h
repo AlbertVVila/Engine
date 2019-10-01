@@ -42,6 +42,7 @@ public:
 	}
 private:
 	void CheckStates(EnemyState* previous, EnemyState* current);
+	GameObject* InstantiateProjectile(const char* projectilePrefab);
 	void DrawDebug() const;
 
 	void OnTriggerEnter(GameObject* go);

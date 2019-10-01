@@ -25,6 +25,8 @@
 #include "JSON.h"
 #include "debugdraw.h"
 
+#define PROJECTILE "BandoleroProjectile"
+
 RangeEnemyAIScript_API Script* CreateScript()
 {
 	RangeEnemyAIScript* instance = new RangeEnemyAIScript;
@@ -58,10 +60,10 @@ void RangeEnemyAIScript::Start()
 		LOG("No child of the GameObject %s has a boxTrigger component attached. \n", gameobject->name);
 	}
 
-	projectile1 = App->scene->FindGameObjectByName(projectileName1.c_str(), gameobject->parent);
+	projectile1 = InstantiateProjectile(PROJECTILE);
 	if (projectile1 == nullptr)
 	{
-		LOG("Enemy projectile with name %s couldn't be found. \n", projectileName1);
+		LOG("Enemy projectile couldn't be instantiated");
 	}
 	else
 	{
@@ -70,10 +72,10 @@ void RangeEnemyAIScript::Start()
 	
 	if (numberOfProjectiles > 1)
 	{
-		projectile2 = App->scene->FindGameObjectByName(projectileName2.c_str(), gameobject->parent);
+		projectile2 = InstantiateProjectile(PROJECTILE);
 		if (projectile2 == nullptr)
 		{
-			LOG("Enemy projectile with name %s couldn't be found. \n", projectileName2);
+			LOG("Enemy projectile couldn't be instantiated");
 		}
 		else
 		{
@@ -83,10 +85,10 @@ void RangeEnemyAIScript::Start()
 
 	if (numberOfProjectiles > 2)
 	{
-		projectile3 = App->scene->FindGameObjectByName(projectileName3.c_str(), gameobject->parent);
+		projectile3 = InstantiateProjectile(PROJECTILE);
 		if (projectile3 == nullptr)
 		{
-			LOG("Enemy projectile with name %s couldn't be found. \n", projectileName3);
+			LOG("Enemy projectile couldn't be instantiated");
 		}
 		else
 		{
@@ -270,6 +272,11 @@ void RangeEnemyAIScript::CheckStates(EnemyState* previous, EnemyState* current)
 
 		current->Enter();
 	}
+}
+
+GameObject* RangeEnemyAIScript::InstantiateProjectile(const char* projectilePrefab)
+{
+	return App->scene->Spawn(projectilePrefab);
 }
 
 void RangeEnemyAIScript::DrawDebug() const

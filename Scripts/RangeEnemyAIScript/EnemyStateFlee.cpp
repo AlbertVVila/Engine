@@ -57,6 +57,7 @@ void EnemyStateFlee::Enter()
 {
 	duration = 2.0f;
 	FindFleeDirection();
+	enemy->enemyController->Move(enemy->runSpeed, refreshTime, fleeDestiny, enemyPath);
 }
 
 void EnemyStateFlee::Exit()
@@ -84,13 +85,10 @@ void EnemyStateFlee::MoveAwayFromPlayer()
 		skipFlee = true;
 		return;
 	}
-
-	if (!enemy->enemyController->Move(enemy->runSpeed, refreshTime, fleeDestiny, enemyPath))
+	if (enemy->enemyController->IsStuck())
 	{
-		LOG("CANNOT MOVE THERE");
 		ChangeDirection();
 	}
-	enemy->enemyController->LookAt2D(newPosition);
 
 	if (enemy->drawDebug)
 	{
@@ -106,7 +104,7 @@ void EnemyStateFlee::ChangeDirection()
 
 	if (changedTimes < 3)
 	{
-		quat = Quat::RotateY(math::DegToRad(rand.Float() * 20 - 10));
+		quat = Quat::RotateY(math::DegToRad(rand.Float() * 40 - 20));
 	}
 
 	std::vector<math::float3> path;
@@ -120,5 +118,9 @@ void EnemyStateFlee::ChangeDirection()
 	if (changedTimes > 3)
 	{
 		skipFlee = true;
+	}
+	else
+	{
+		enemy->enemyController->Move(enemy->runSpeed, refreshTime, fleeDestiny, enemyPath);
 	}
 }
