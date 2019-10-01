@@ -43,9 +43,14 @@ private:
 	float firstCameraSpeed = 0.0f;
 	float secondCameraSpeed = 0.0f;
 
-	float doorTimer = 0.0f;
+	float doorLerpTimer = 0.0f;
+	float doorClosingTimer = 0.0f;
+	float bossLerpTimer = 0.0f;
+	float playerLerpTimer = 0.0f;
+
 	float firstLambda = 0.0f;
 	float secondLambda = 0.0f;
+	float thirdLambda = 0.0f;
 
 	float CalculateDoorLambda();
 	float CalculateBossLambda();
@@ -56,7 +61,6 @@ private:
 	void SetPlayerCameraPosition(math::float3 newPosition);
 	void SetPlayerCameraRotation(math::Quat newRotation);
 	
-	bool ReachedPosition(math::float3 initial, math::float3 final);
 	CutsceneState csState = CutsceneState::None;
 
 };

@@ -144,6 +144,8 @@ public:
 
 	float cutsceneDoorDuration = 10.0f;
 	float cutsceneBossDuration = 10.0f;
+	float cutsceneBackToPlayerDuration = 10.0f;
+	float cutsceneDoorRisingDuration = 2.0f;
 
 	//first cutscene
 	math::float3 startingPoint = math::float3::zero;
