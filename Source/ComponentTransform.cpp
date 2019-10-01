@@ -246,6 +246,11 @@ void ComponentTransform::SetPosition(const math::float3 & newPosition)
 	
 }
 
+void ComponentTransform::UpdateLocalTransform()
+{
+	local = float4x4::FromTRS(position, rotation.ToFloat4x4(), scale);
+}
+
 math::float3 ComponentTransform::GetPosition()
 {
 	return position;
@@ -281,21 +286,6 @@ ENGINE_API void ComponentTransform::Scale(float scalar)
 math::Quat ComponentTransform::GetRotation()
 {
 	return rotation;
-}
-
-ENGINE_API math::Quat ComponentTransform::GetGlobalRotation()
-{
-	if (gameobject->movedFlag)
-	{
-		float4x4 newlocal = math::float4x4::FromTRS(position, rotation, scale);
-		if (gameobject->parent != nullptr)
-		{
-			return gameobject->parent->GetGlobalTransform().RotatePart().ToQuat()
-				* newlocal.RotatePart().ToQuat();
-		}
-		return newlocal.RotatePart().ToQuat();
-	}
-	return global.RotatePart().ToQuat();
 }
 
 math::float3 ComponentTransform::GetGlobalPosition()
@@ -336,6 +326,13 @@ void ComponentTransform::LookAt(const math::float3 & targetPosition)
 	math::float3 direction = (targetPosition - GetGlobalPosition());
 	math::Quat newRotation = GetGlobalRotation().LookAt(float3::unitZ, direction.Normalized(), float3::unitY, float3::unitY);	
 	SetGlobalRotation(newRotation);
+}
+
+void ComponentTransform::LookAtLocal(const math::float3& localTarget)
+{
+	math::float3 direction = (localTarget - position);
+	math::Quat newRotation = rotation.LookAt(float3::unitZ, direction.Normalized(), float3::unitY, float3::unitY);
+	SetRotation(newRotation);
 }
 
 ENGINE_API void ComponentTransform::LookAtMouse() //POS SIZE!!
@@ -429,7 +426,7 @@ ENGINE_API void ComponentTransform::SetGlobalPosition(const math::float3 & newPo
 ENGINE_API void ComponentTransform::SetGlobalRotation(const math::Quat& newRotation)
 {
 	math::float3 scale = global.ExtractScale();
-	global.SetRotatePart(newRotation.ToFloat3x3());
+	global.SetRotatePart(newRotation);
 	global = global.Mul(global.Scale(scale, math::float3::zero));
 	NewAttachment();
 }

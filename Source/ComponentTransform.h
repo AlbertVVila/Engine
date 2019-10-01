@@ -21,13 +21,14 @@ public:
 
 	void UpdateTransform();
 	void UpdateOldTransform();
-	void UpdateGlobalTransform();
+	ENGINE_API void UpdateGlobalTransform();
 
 	void SetLocalToWorld();
 	void SetWorldToLocal(const math::float4x4& newparentGlobalMatrix);
 	void SetGlobalTransform(const math::float4x4& newglobal, const math::float4x4& parentglobal);
 	void SetLocalTransform(const math::float4x4& newLocal, const math::float4x4& parentGlobal); //only for importing purposes / if used later watch the trees
 
+	ENGINE_API void UpdateLocalTransform();
 	ENGINE_API void SetPosition(const math::float3& position);
 	ENGINE_API void SetRotation(const math::Quat & newRotation);
 	ENGINE_API void Scale(float scalar);
@@ -38,10 +39,10 @@ public:
 
 	ENGINE_API math::Quat GetGlobalRotation();
 	ENGINE_API math::float3 GetGlobalPosition();
-	ENGINE_API math::Quat GetGlobalRotation();
 	ENGINE_API void Rotate(math::float3 rotation);
 
 	ENGINE_API void LookAt(const math::float3& target);
+	ENGINE_API void LookAtLocal(const math::float3& localTarget);
 	ENGINE_API void LookAtMouse();
 	ENGINE_API void Align(const math::float3& target);
 

@@ -488,27 +488,22 @@ bool EnemyControllerScript::Move(float speed, float& refreshTime, math::float3 p
 		currentWorldControllerScript->changeVelocity(gameobject->UUID, currentSpeed);
 	}
 	currentWorldControllerScript->EnemyMoveRequest(gameobject->UUID, position);
-//=======
-//		refreshTime = 0.0f;
-//		bool isNavigable = App->navigation->FindPath(GetPosition(), position, path);
-//		if (!isNavigable) return false;
-//	}
-//	if (path.size() > 0)
-//	{
-//		math::float3 currentPosition = GetPosition();
-//		while (path.size() > 0 && currentPosition.DistanceSq(path[0]) < MINIMUM_PATH_DISTANCE)
-//		{
-//			path.erase(path.begin());
-//		}
-//		if (path.size() > 0)
-//		{
-//			gameobject->transform->LookAt(path[0]);
-//			math::float3 direction = (path[0] - currentPosition).Normalized();
-//			SetPosition(currentPosition + speed * direction * App->time->gameDeltaTime);
-//		}
-//	}
-//	refreshTime += App->time->gameDeltaTime;
 	return true;
+}
+
+bool EnemyControllerScript::IsIdle() const
+{
+	return currentWorldControllerScript->IsAgentIdle(gameobject->UUID);
+}
+
+bool EnemyControllerScript::IsStuck() const
+{
+	return currentWorldControllerScript->IsAgentStuck(gameobject->UUID);
+}
+
+void EnemyControllerScript::Stop()
+{
+	currentWorldControllerScript->StopAgent(gameobject->UUID);
 }
 
 void EnemyControllerScript::LookAt2D(math::float3& position)

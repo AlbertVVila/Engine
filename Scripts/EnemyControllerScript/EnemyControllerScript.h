@@ -61,6 +61,9 @@ public:
 
 	void Move(float speed, math::float3& direction) const;		// Warning: doesn't use nav mesh
 	bool Move(float speed, float& refreshTime, math::float3 position, std::vector<float3>& path) const; // Move using nav mesh
+	bool IsIdle() const;
+	bool IsStuck() const;
+	void Stop();
 	void LookAt2D(math::float3& position);
 
 	void OnTriggerEnter(GameObject* go) override;
