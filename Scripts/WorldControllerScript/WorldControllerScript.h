@@ -16,6 +16,8 @@
 class crowdTool;
 class ComponentTransform;
 
+typedef std::pair<GameObject*, float*> objVel;
+
 class WorldControllerScript_API WorldControllerScript : public Script
 {
 public:
@@ -30,7 +32,7 @@ public:
 	void addEnemy(GameObject* enemy);
 
 	//move request processing
-	void PlayerMoveRequest(unsigned int agentId, math::float3 posY, math::float3 correction);
+	bool PlayerMoveRequest(unsigned int agentId, math::float3 posY, math::float3 correction = defaultCorrection);
 	void EnemyMoveRequest(unsigned int agentId, math::float3 dest, math::float3 correction = defaultCorrection);
 
 	//the update calls detour crowds update which updates all the positions of the agents
@@ -48,7 +50,10 @@ private:
 	WorldControllerScript& operator=(const WorldControllerScript);
 
 	//function that adds the agent to the crowd
-	int addAgent(float* pos, float speed = 200.f);
+	int addAgent(float* pos, float* vel, float speed = 200.f);
+
+	//clear agent objects velocities
+	void clearAgentsInfo();
 
 	//private variables
 	//we are gonna start with just one crowd and each agent (any enemy or player) moves alone
@@ -56,7 +61,7 @@ private:
 	std::map<unsigned, int> objectAgentIndexMap;
 
 	//vector of gameobjects of agents to update their position
-	std::vector<GameObject*> agentObjects;
+	std::vector<objVel> agentObjectsVelocity;
 
 	//pointer to the crowd
 	std::unique_ptr<crowdTool> crowdToolPointer = std::make_unique<crowdTool>();

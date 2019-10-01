@@ -41,5 +41,5 @@ void EnemyStateReturnToStart::Update()
 
 void EnemyStateReturnToStart::Enter()
 {
-	enemy->gameobject->transform->LookAt(enemy->startPosition);
+	//enemy->gameobject->transform->LookAt(enemy->startPosition);
 }

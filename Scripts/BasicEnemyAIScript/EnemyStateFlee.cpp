@@ -57,7 +57,7 @@ void EnemyStateFlee::MoveAwayFromPlayer()
 	newPosition.y = enemyPos.y;
 	newPosition.z = ((float)playerPos.z + z * (1000.0f));
 
-	enemy->gameobject->transform->LookAt(newPosition);
+	//enemy->gameobject->transform->LookAt(newPosition);
 
 	// Move to that point
 	enemy->enemyController->Move(enemy->chaseSpeed, refreshTime, newPosition, enemyPath);
