@@ -11,6 +11,7 @@ enum class CutsceneState
 	DoorLerping,
 	DoorClosing,
 	BossLerping,
+	BossWatching,
 	PlayerLerping,
 	Finished
 };
@@ -46,6 +47,7 @@ private:
 	float doorLerpTimer = 0.0f;
 	float doorClosingTimer = 0.0f;
 	float bossLerpTimer = 0.0f;
+	float bossWatchingTimer = 0.0f;
 	float playerLerpTimer = 0.0f;
 
 	float firstLambda = 0.0f;
@@ -63,6 +65,10 @@ private:
 	
 	CutsceneState csState = CutsceneState::None;
 
+private:
+	bool particlesShut = false;
+	bool doorClosed = false;
+	float wallSpeed = 0.0f;
 };
 
 #endif

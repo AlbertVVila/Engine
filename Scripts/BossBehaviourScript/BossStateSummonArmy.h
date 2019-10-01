@@ -24,9 +24,6 @@ private:
 	int enemiesSpawned = 0;
 	std::vector<EnemyControllerScript*> enemies;
 
-	bool particlesShut = false;
-	bool doorClosed = false;
-	float wallSpeed = 0.0f;
 	float downTime = 8.0f; //time until she starts summoning
 	float timerSkeletons = 0.0f;
 	bool AllEnemiesDead();

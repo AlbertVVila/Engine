@@ -21298,7 +21298,7 @@
             "isPrefab": 1,
             "isPrefabSync": 1,
             "prefabUID": 3166434820,
-            "prefabTimeStamp": 1569935087,
+            "prefabTimeStamp": 1569968382,
             "Components": [
                 {
                     "Type": 0,
@@ -21346,7 +21346,7 @@
             ]
         },
         {
-            "UID": 2744830136,
+            "UID": 3312201353,
             "ParentUID": 2574560917,
             "Name": "Main",
             "Tag": "Default",
@@ -21587,10 +21587,10 @@
                         ],
                         "circleNoise": 50.0,
                         "cameraRotationDoorCS": [
-                            0.23199287056922913,
-                            -0.15928883850574494,
-                            -0.0002344623499084264,
-                            0.9595866203308106
+                            0.0018143121851608158,
+                            -0.0012096164282411337,
+                            -0.000284666137304157,
+                            0.9999976754188538
                         ],
                         "cameraPositionDoorCS": [
                             864.0,
@@ -21598,25 +21598,27 @@
                             -2806.0
                         ],
                         "cameraRotationBossCS": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
+                            0.01831427589058876,
+                            -0.9713834524154663,
+                            0.23358675837516786,
+                            -0.03893603757023811
                         ],
                         "cameraPositionBossCS": [
-                            0.0,
-                            0.0,
-                            0.0
+                            455.0,
+                            1389.6099853515626,
+                            -2820.0
                         ],
-                        "cutsceneDoorDuration": 10.0,
-                        "cutsceneBossDuration": 10.0
+                        "cutsceneDoorDuration": 4.0,
+                        "cutsceneBossDuration": 4.0,
+                        "cutsceneBackToPlayerDuration": 5.0,
+                        "cutsceneDoorRisingDuration": 2.0
                     }
                 }
             ]
         },
         {
-            "UID": 4052103542,
-            "ParentUID": 2744830136,
+            "UID": 2911372823,
+            "ParentUID": 3312201353,
             "Name": "Empty",
             "Tag": "Default",
             "Static": 0,
@@ -21710,8 +21712,8 @@
             ]
         },
         {
-            "UID": 3075964830,
-            "ParentUID": 2744830136,
+            "UID": 2966063594,
+            "ParentUID": 3312201353,
             "Name": "Point",
             "Tag": "Default",
             "Static": 0,

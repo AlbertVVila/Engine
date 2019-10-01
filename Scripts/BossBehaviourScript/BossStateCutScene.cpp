@@ -5,6 +5,8 @@
 #include "BossStateCutScene.h"
 
 #include "BossBehaviourScript.h"
+#include "PlayerMovement/PlayerMovement.h"
+#include "CameraController/CameraController.h"
 #include "EnemyControllerScript/EnemyControllerScript.h"
 
 #include "GameObject.h"
@@ -13,8 +15,6 @@
 BossStateCutScene::BossStateCutScene(BossBehaviourScript* AIBoss)
 {
 	boss = AIBoss;
-
-
 }
 
 BossStateCutScene::~BossStateCutScene()
@@ -39,56 +39,79 @@ void BossStateCutScene::Update()
 			break;
 		case CutsceneState::DoorLerping:
 
-			doorLerpTimer += boss->App->time->gameDeltaTime;
-
-			firstLambda = CalculateDoorLambda();
-			SetPlayerCameraPosition(boss->InterpolateFloat3(cameraResetPosition, boss->cameraPositionDoorCS, firstLambda)); 
-			SetPlayerCameraRotation(boss->InterpolateQuat(cameraResetRotation, boss->cameraRotationDoorCS, firstLambda));
-
 			if (doorLerpTimer >= boss->cutsceneDoorDuration)
 			{
-				csState = CutsceneState::DoorClosing;
+					csState = CutsceneState::DoorClosing;
+					boss->doorParticles->SetActive(true);
+					wallSpeed = (boss->finalDoorHeight - boss->closingDoor->transform->GetPosition().y) / boss->cutsceneDoorRisingDuration;
+			}
+			else
+			{
+				doorLerpTimer += boss->App->time->gameDeltaTime;
+
+				firstLambda = CalculateDoorLambda();
+				SetPlayerCameraPosition(boss->InterpolateFloat3(cameraResetPosition, boss->cameraPositionDoorCS, firstLambda)); 
+				SetPlayerCameraRotation(boss->InterpolateQuat(cameraResetRotation, boss->cameraRotationDoorCS, firstLambda));
 			}
 			break;
 
 		case CutsceneState::DoorClosing:
-
+		{
 			doorClosingTimer += boss->App->time->gameDeltaTime;
+
+			math::float3 newDoorPosition = boss->closingDoor->transform->GetPosition() + wallSpeed * math::float3::unitY * boss->App->time->gameDeltaTime;
+			boss->closingDoor->transform->SetPosition(newDoorPosition);
 
 			if (doorClosingTimer >= boss->cutsceneDoorRisingDuration)
 			{
+				boss->doorParticles->SetActive(false);
 				csState = CutsceneState::BossLerping;
 			}
 			break;
-
+		}
 		case CutsceneState::BossLerping:
 
-			bossLerpTimer += boss->App->time->gameDeltaTime;
+			if (bossLerpTimer >= boss->cutsceneBossDuration)
+			{
+				csState = CutsceneState::BossWatching;
+			}
+			else
+			{
+				bossLerpTimer += boss->App->time->gameDeltaTime;
 
-			secondLambda = CalculateBossLambda();
-			SetPlayerCameraPosition(boss->InterpolateFloat3(boss->cameraPositionDoorCS, boss->cameraPositionBossCS, secondLambda));
-			SetPlayerCameraRotation(boss->InterpolateQuat(boss->cameraRotationDoorCS, boss->cameraRotationBossCS, secondLambda));
+				secondLambda = CalculateBossLambda();
+				SetPlayerCameraPosition(boss->InterpolateFloat3(boss->cameraPositionDoorCS, boss->cameraPositionBossCS, secondLambda));
+				SetPlayerCameraRotation(boss->InterpolateQuat(boss->cameraRotationDoorCS, boss->cameraRotationBossCS, secondLambda));
+			}
+			break;
+		case CutsceneState::BossWatching:
 
-			if (doorLerpTimer >= boss->cutsceneBossDuration)
+			if (bossWatchingTimer >= 4.0f)
 			{
 				csState = CutsceneState::PlayerLerping;
 			}
+			else
+			{
+				bossWatchingTimer += boss->App->time->gameDeltaTime;
+			}
 			break;
-
 		case CutsceneState::PlayerLerping:
-
-			playerLerpTimer += boss->App->time->gameDeltaTime;
-
-			thirdLambda = CalculatePlayerLambda();
-			SetPlayerCameraPosition(boss->InterpolateFloat3(boss->cameraPositionBossCS, cameraResetPosition, thirdLambda));
-			SetPlayerCameraRotation(boss->InterpolateQuat(boss->cameraRotationBossCS, cameraResetRotation, thirdLambda));
 
 			if (playerLerpTimer >= boss->cutsceneBackToPlayerDuration)
 			{
 				csState = CutsceneState::Finished;
 			}
+			else
+			{
+				playerLerpTimer += boss->App->time->gameDeltaTime;
 
+				thirdLambda = CalculatePlayerLambda();
+				SetPlayerCameraPosition(boss->InterpolateFloat3(boss->cameraPositionBossCS, cameraResetPosition, thirdLambda));
+				SetPlayerCameraRotation(boss->InterpolateQuat(boss->cameraRotationBossCS, cameraResetRotation, thirdLambda));
+
+			}
 			break;
+
 		case CutsceneState::Finished:
 			finished = true;
 			break;
@@ -121,13 +144,17 @@ void BossStateCutScene::Enter()
 	secondCameraDirection.Normalize();
 
 	//Deactivate player script
+	boss->playerScript->Enable(false);
 	//Deactivate camera script
+	boss->playerCamera->GetComponent<CameraController>()->Enable(false);
 }
 
 void BossStateCutScene::Exit()
 {
 	//Activate player script
+	boss->playerScript->Enable(true);
 	//Activate camera script
+	boss->playerCamera->GetComponent<CameraController>()->Enable(true);
 }
 
 float BossStateCutScene::CalculateDoorLambda()

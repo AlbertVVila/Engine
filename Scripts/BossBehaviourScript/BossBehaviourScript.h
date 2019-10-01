@@ -59,6 +59,7 @@ class BossStateInterPhase;
 class BossStateSummonArmy;
 class BossStateCutScene;
 class EnemyControllerScript;
+class PlayerMovement;
 class GameLoop;
 
 class BossBehaviourScript_API BossBehaviourScript : public Script
@@ -100,6 +101,9 @@ public:
 	GameObject* gameLoopGO = nullptr;
 	GameLoop* gLoop = nullptr;
 
+	GameObject* playerGO = nullptr;
+	PlayerMovement* playerScript = nullptr;
+
 	GameObject* firstMeshFloor = nullptr;
 	GameObject* secondMeshFloor = nullptr;
 	GameObject* mainFirstFloor = nullptr;
@@ -126,7 +130,6 @@ public:
 
 	float activationDistance = 800.0f;
 	float doorClosingDistance = 2000.0f;
-	float doorClosingTime = 2.0f;
 	float activationTime = 5.0f;
 
 	bool circlesSpawning = false;
@@ -140,6 +143,7 @@ public:
 	math::float3 cameraRotationDoorEulerCS = math::float3::zero;
 	math::Quat cameraRotationDoorCS = math::Quat::identity;
 	math::float3 cameraPositionBossCS = math::float3::zero;
+	math::float3 cameraRotationBossEulerCS = math::float3::zero;
 	math::Quat cameraRotationBossCS = math::Quat::identity;
 
 	float cutsceneDoorDuration = 10.0f;

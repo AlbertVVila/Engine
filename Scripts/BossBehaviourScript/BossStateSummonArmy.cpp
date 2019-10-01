@@ -35,27 +35,6 @@ void BossStateSummonArmy::HandleIA()
 
 void BossStateSummonArmy::Update()
 {
-	if (!doorClosed)
-	{
-		//Close the door in this time
-		math::float3 newDoorPosition = boss->closingDoor->transform->GetPosition() + wallSpeed * math::float3::unitY * boss->App->time->gameDeltaTime;
-		boss->closingDoor->transform->SetPosition(newDoorPosition);
-
-		if (timer > boss->doorClosingTime)
-		{
-			doorClosed = true;
-		}
-	}
-
-	if (timer > boss->doorClosingTime * 0.8f)
-	{
-		if (!particlesShut)
-		{
-			boss->doorParticles->SetActive(false);
-			particlesShut = true;
-		}
-	}
-
 	if (timer > downTime)
 	{
 		timerSkeletons += boss->App->time->gameDeltaTime;
@@ -93,9 +72,6 @@ void BossStateSummonArmy::Update()
 
 void BossStateSummonArmy::Enter()
 {
-	boss->playerCamera->GetComponent<CameraController>()->Shake(boss->doorClosingTime, 20.0f, boss->doorClosingTime * 0.2f, boss->doorClosingTime * 0.3f, true);
-	boss->doorParticles->SetActive(true);
-	wallSpeed = (boss->finalDoorHeight - boss->closingDoor->transform->GetPosition().y) / boss->doorClosingTime;
 }
 
 void BossStateSummonArmy::Exit()
