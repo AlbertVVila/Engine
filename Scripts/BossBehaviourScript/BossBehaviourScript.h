@@ -134,6 +134,17 @@ public:
 	bool bossSummoning = false;
 	bool bossExplosives = false;
 
+	//Cutscene state variables
+
+	math::float3 cameraPositionDoorCS = math::float3::zero;
+	math::float3 cameraRotationDoorEulerCS = math::float3::zero;
+	math::Quat cameraRotationDoorCS = math::Quat::identity;
+	math::float3 cameraPositionBossCS = math::float3::zero;
+	math::Quat cameraRotationBossCS = math::Quat::identity;
+
+	float cutsceneDoorDuration = 10.0f;
+	float cutsceneBossDuration = 10.0f;
+
 	//first cutscene
 	math::float3 startingPoint = math::float3::zero;
 	math::float3 highPointFirstCS = math::float3::zero;
@@ -170,11 +181,9 @@ public:
 	std::vector<math::float3> positionsSkullsSecond;
 	int positionsIt = 0;
 
-private:
-	math::float3 cameraPositionCS = math::float3::zero;
-	math::Quat cameraRotationCS = math::Quat::identity;
-	math::float3 cameraRotationEuler = math::float3::zero;
-	float cutsceneDuration = 10.0f;
+public:
+		math::Quat InterpolateQuat(const math::Quat first, const math::Quat second, float lambda);
+		math::float3 InterpolateFloat3(const math::float3 first, const math::float3 second, float lambda);
 
 private:
 	std::vector<BossState*> bossStates;

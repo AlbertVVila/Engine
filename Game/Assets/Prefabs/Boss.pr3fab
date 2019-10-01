@@ -33,6 +33,7 @@
             "isPrefab": 1,
             "isPrefabSync": 1,
             "prefabUID": 3166434820,
+            "prefabTimeStamp": 1569935087,
             "Components": [
                 {
                     "Type": 0,
@@ -80,7 +81,7 @@
             ]
         },
         {
-            "UID": 2890115572,
+            "UID": 2744830136,
             "ParentUID": 2574560917,
             "Name": "Main",
             "Tag": "Default",
@@ -319,14 +320,38 @@
                             740.0,
                             -3827.0
                         ],
-                        "circleNoise": 50.0
+                        "circleNoise": 50.0,
+                        "cameraRotationDoorCS": [
+                            0.23199287056922913,
+                            -0.15928883850574494,
+                            -0.0002344623499084264,
+                            0.9595866203308106
+                        ],
+                        "cameraPositionDoorCS": [
+                            864.0,
+                            1141.0,
+                            -2806.0
+                        ],
+                        "cameraRotationBossCS": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "cameraPositionBossCS": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "cutsceneDoorDuration": 10.0,
+                        "cutsceneBossDuration": 10.0
                     }
                 }
             ]
         },
         {
-            "UID": 342604326,
-            "ParentUID": 2890115572,
+            "UID": 4052103542,
+            "ParentUID": 2744830136,
             "Name": "Empty",
             "Tag": "Default",
             "Static": 0,
@@ -420,8 +445,8 @@
             ]
         },
         {
-            "UID": 2059439700,
-            "ParentUID": 2890115572,
+            "UID": 3075964830,
+            "ParentUID": 2744830136,
             "Name": "Point",
             "Tag": "Default",
             "Static": 0,
@@ -499,7 +524,7 @@
                 {
                     "Type": 3,
                     "Enabled": 1,
-                    "Lighttype": 2,
+                    "Lighttype": 1,
                     "color": [
                         0.636124849319458,
                         0.13050927221775056,
@@ -507,8 +532,6 @@
                     ],
                     "radius": 631.1321411132813,
                     "range": 572.0,
-                    "inner": 21.5,
-                    "outer": 25.0,
                     "intensity": 49.0,
                     "produceShadows": 0
                 }

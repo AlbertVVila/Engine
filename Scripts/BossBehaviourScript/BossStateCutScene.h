@@ -2,6 +2,18 @@
 #define _BOSSSTATECUTSCENE_H_
 
 #include "BossState.h"
+#include "Math/float3.h"
+#include "Math/Quat.h"
+
+enum class CutsceneState
+{
+	None,
+	DoorLerping,
+	DoorClosing,
+	BossLerping,
+	PlayerLerping,
+	Finished
+};
 
 class BossStateCutScene :
 	public BossState
@@ -17,6 +29,36 @@ private:
 
 	void Enter() override;
 	void Exit() override;
+
+	bool finished = false;
+
+	math::float3 firstCameraDirection = math::float3::zero;
+	math::float3 secondCameraDirection = math::float3::zero;
+	math::float3 cameraResetPosition = math::float3::zero;
+	math::Quat cameraResetRotation = math::Quat::identity;
+
+	float doorDistance = 0.0f;
+	float bossDistance = 0.0f;
+
+	float firstCameraSpeed = 0.0f;
+	float secondCameraSpeed = 0.0f;
+
+	float doorTimer = 0.0f;
+	float firstLambda = 0.0f;
+	float secondLambda = 0.0f;
+
+	float CalculateDoorLambda();
+	float CalculateBossLambda();
+	float CalculatePlayerLambda();
+
+	math::float3 GetPlayerCameraPosition();
+	math::Quat GetPlayerCameraRotation();
+	void SetPlayerCameraPosition(math::float3 newPosition);
+	void SetPlayerCameraRotation(math::Quat newRotation);
+	
+	bool ReachedPosition(math::float3 initial, math::float3 final);
+	CutsceneState csState = CutsceneState::None;
+
 };
 
 #endif

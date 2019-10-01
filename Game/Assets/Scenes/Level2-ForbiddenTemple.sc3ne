@@ -18829,7 +18829,7 @@
                     "Znear": 10.0,
                     "Zfar": 100000.0,
                     "vFOV": 1.0471975803375245,
-                    "hFOV": 0.0,
+                    "hFOV": 1.5224454402923585,
                     "Position": [
                         991.5123291015625,
                         1760.119140625,
@@ -21298,7 +21298,7 @@
             "isPrefab": 1,
             "isPrefabSync": 1,
             "prefabUID": 3166434820,
-            "prefabTimeStamp": 1569478448,
+            "prefabTimeStamp": 1569935087,
             "Components": [
                 {
                     "Type": 0,
@@ -21346,7 +21346,7 @@
             ]
         },
         {
-            "UID": 884249322,
+            "UID": 2744830136,
             "ParentUID": 2574560917,
             "Name": "Main",
             "Tag": "Default",
@@ -21585,14 +21585,38 @@
                             740.0,
                             -3827.0
                         ],
-                        "circleNoise": 50.0
+                        "circleNoise": 50.0,
+                        "cameraRotationDoorCS": [
+                            0.23199287056922913,
+                            -0.15928883850574494,
+                            -0.0002344623499084264,
+                            0.9595866203308106
+                        ],
+                        "cameraPositionDoorCS": [
+                            864.0,
+                            1141.0,
+                            -2806.0
+                        ],
+                        "cameraRotationBossCS": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "cameraPositionBossCS": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "cutsceneDoorDuration": 10.0,
+                        "cutsceneBossDuration": 10.0
                     }
                 }
             ]
         },
         {
-            "UID": 2297120266,
-            "ParentUID": 884249322,
+            "UID": 4052103542,
+            "ParentUID": 2744830136,
             "Name": "Empty",
             "Tag": "Default",
             "Static": 0,
@@ -21686,8 +21710,8 @@
             ]
         },
         {
-            "UID": 3144938919,
-            "ParentUID": 884249322,
+            "UID": 3075964830,
+            "ParentUID": 2744830136,
             "Name": "Point",
             "Tag": "Default",
             "Static": 0,
@@ -51750,7 +51774,7 @@
             "isPrefab": 1,
             "isPrefabSync": 1,
             "prefabUID": 1445666081,
-            "prefabTimeStamp": 1569028791,
+            "prefabTimeStamp": 1569481436,
             "Components": [
                 {
                     "Type": 0,
@@ -51810,7 +51834,7 @@
             ]
         },
         {
-            "UID": 3719210752,
+            "UID": 559473555,
             "ParentUID": 1672641101,
             "Name": "Mesh",
             "Tag": "Mesh",
@@ -51948,7 +51972,7 @@
             ]
         },
         {
-            "UID": 2725463538,
+            "UID": 3802909474,
             "ParentUID": 1672641101,
             "Name": "BoxTrigger",
             "Tag": "HitBox",
@@ -52043,7 +52067,7 @@
             ]
         },
         {
-            "UID": 3985159181,
+            "UID": 2184468047,
             "ParentUID": 1672641101,
             "Name": "Trail",
             "Tag": "Default",
@@ -52138,7 +52162,7 @@
             ]
         },
         {
-            "UID": 1454529866,
+            "UID": 1802537287,
             "ParentUID": 1672641101,
             "Name": "Particles",
             "Tag": "Default",
