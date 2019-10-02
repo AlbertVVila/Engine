@@ -33,7 +33,7 @@
             "isPrefab": 1,
             "isPrefabSync": 1,
             "prefabUID": 3166434820,
-            "prefabTimeStamp": 1570008478,
+            "prefabTimeStamp": 1570010163,
             "Components": [
                 {
                     "Type": 0,
@@ -81,7 +81,7 @@
             ]
         },
         {
-            "UID": 2368471188,
+            "UID": 352014778,
             "ParentUID": 2574560917,
             "Name": "Main",
             "Tag": "Default",
@@ -221,9 +221,9 @@
                     "script": "EnemyControllerScript",
                     "scriptInfo": {
                         "type": 0,
-                        "level": 0,
+                        "level": 3,
                         "playerTag": "Player",
-                        "health": 500,
+                        "health": 120,
                         "experience": 20,
                         "enemyCursor": "RedGlow.cur"
                     }
@@ -362,8 +362,8 @@
             ]
         },
         {
-            "UID": 534986720,
-            "ParentUID": 2368471188,
+            "UID": 326108142,
+            "ParentUID": 352014778,
             "Name": "Empty",
             "Tag": "Default",
             "Static": 0,
@@ -457,8 +457,8 @@
             ]
         },
         {
-            "UID": 3249625018,
-            "ParentUID": 2368471188,
+            "UID": 1558676944,
+            "ParentUID": 352014778,
             "Name": "Point",
             "Tag": "Default",
             "Static": 0,
