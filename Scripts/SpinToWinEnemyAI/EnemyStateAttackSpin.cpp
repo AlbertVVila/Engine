@@ -12,6 +12,7 @@
 
 #include "BasicEnemyAIScript/BasicEnemyAIScript.h"
 #include "EnemyControllerScript/EnemyControllerScript.h"
+#include "SpinToWinEnemyAI.h"
 
 #include "Application.h"
 #include "ModuleScene.h"
@@ -127,16 +128,14 @@ void EnemyStateAttackSpin::PunchFX(bool active)
 	if (spinning && active)
 	{
 		trailPunch->width = 40.0f;
-		trailPunch->bloomIntensity = 4.0f;
-		trailPunch->trailColor = math::float4(0.47f, 0.f, 0.52f, 1.f);
 		dust->SetActive(true);
+		SpinBones(false);
 	}
 	else
 	{
 		trailPunch->width = 25.0f;
-		trailPunch->bloomIntensity = 1.0f;
-		trailPunch->trailColor = math::float4(1.f, 1.f, 1.f, 1.f);
 		dust->SetActive(false);
+		SpinBones(true);
 	}
 }
 
@@ -197,3 +196,10 @@ void EnemyStateAttackSpin::SpinBehaviour()
 	enemy->gameobject->transform->Rotate(math::float3(0.f, enemy->App->time->gameDeltaTime * rotationSpeed, 0.f));
 }
 
+void EnemyStateAttackSpin::SpinBones(bool active)
+{
+	for (auto spinBone : ((SpinToWinEnemyAI*)enemy)->spinBones)
+	{
+		spinBone->SetActive(active);
+	}
+}
