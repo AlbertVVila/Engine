@@ -3,6 +3,9 @@
 #include "EnemyControllerScript.h"
 #include "RangeEnemyAIScript.h"
 
+#include "GameObject.h"
+#include "ComponentTransform.h"
+
 #include "debugdraw.h"
 
 EnemyStateFlee::EnemyStateFlee(RangeEnemyAIScript* AIScript)
@@ -74,6 +77,7 @@ void EnemyStateFlee::MoveAwayFromPlayer()
 
 	// Move to that point
 	enemy->enemyController->Move(enemy->runSpeed, refreshTime, newPosition, enemyPath);
+	enemy->gameobject->transform->LookAt(newPosition);
 
 	if (enemy->drawDebug)
 	{

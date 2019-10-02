@@ -35,6 +35,9 @@
 #include "DebugUtils/DetourDebugDraw.h"
 #include "DebugUtils/DebugDraw.h"
 #include "DetourDebugInterface.h"
+//crowd includes
+#include "DetourCrowd/DetourObstacleAvoidance.h"
+#include "DetourCrowd/DetourCrowd.h"
 
 #include <sstream>
 
@@ -1596,7 +1599,7 @@ void ModuleNavigation::setPlayerBB(math::AABB bbox)
 	playerBB = bbox;
 }
 
-ENGINE_API void ModuleNavigation::GenerateNavigabilityFromGOs(std::vector<GameObject*> vectorGOs)
+ENGINE_API void ModuleNavigation::GenerateNavigabilityFromGOs(std::vector<GameObject*>& vectorGOs)
 {
 	CleanValuesPOST();
 	CleanValuesPRE();
@@ -1611,7 +1614,7 @@ ENGINE_API void ModuleNavigation::GenerateNavigabilityFromGOs(std::vector<GameOb
 	CleanValuesPOST();
 }
 
-bool ModuleNavigation::FindIntersectionPoint(math::float3 start, math::float3 & intersectionPoint) const
+bool ModuleNavigation::FindIntersectionPoint(math::float3 start, math::float3& intersectionPoint) const
 {
 	float2 mouse((float*)& App->input->GetMousePosition());
 	LineSegment line;
@@ -1722,6 +1725,61 @@ ENGINE_API bool ModuleNavigation::FindClosestPoint2D(math::float3& initial) cons
 	}
 }
 
+bool ModuleNavigation::HighQualityMouseDetection(math::float3* intersection) const
+{
+	//ray tracing from mouse setting the endPos variable
+	float2 mouse((float*)& App->input->GetMousePosition());
+	LineSegment line;
+
+	float normalized_x, normalized_y;
+
+#ifndef GAME_BUILD
+	math::float2 pos = App->renderer->viewGame->winPos;
+	math::float2 size(App->renderer->viewGame->current_width, App->renderer->viewGame->current_height);
+#else
+	math::float2 pos = math::float2::zero;
+	math::float2 size(App->window->width, App->window->height);
+#endif
+	normalized_x = ((mouse.x - pos.x) / size.x) * 2 - 1; //0 to 1 -> -1 to 1
+	normalized_y = (1 - (mouse.y - pos.y) / size.y) * 2 - 1; //0 to 1 -> -1 to 1
+
+	line = App->scene->maincamera->DrawRay(normalized_x, normalized_y);
+
+	float dist = 0.f;
+	//intersection between line and floor mesh
+	//SHOULD REALLY FIND A COMMON GAME OBJECT PARENT! search would be much easier, "Scene" GO, although gotta move the bridges from "Navigability" to "Scene"
+	//component mesh has a resource mesh which has a intersects function that gets a line as a parameter
+	/*std::vector<GameObject*> floors = App->scene->FindGameObjectsByTag("Floor");
+	for (GameObject* floor : floors)
+	{
+		if (floor->GetComponent<ComponentRenderer>()->mesh->Intersects(line, &dist, intersection))
+		{
+			//if we got our point, we got what we needed
+			break;
+		}
+	};*/
+
+	return intersection;
+}
+ bool ModuleNavigation::NavMeshPolygonQuery(unsigned int* targetRef, math::float3* endPos, math::float3 correction) const
+{
+	//nav mesh query
+	dtQueryFilter filter;
+	filter.setIncludeFlags(SAMPLE_POLYFLAGS_ALL ^ SAMPLE_POLYFLAGS_DISABLED);
+	filter.setExcludeFlags(0);
+
+	float polyPickExt[3] = { correction.x, correction.y, correction.z };
+
+	//find end pos
+	navQuery->findNearestPoly((float*)endPos, polyPickExt, &filter, targetRef, (float*)endPos);
+	if (!targetRef)
+	{
+		LOG("Could not find any nearby poly to the end");
+		return false;
+	}
+	return true;
+}
+
 ENGINE_API bool ModuleNavigation::IsValidPosition(math::float3& position) const
 {
 	dtPolyRef startPoly;
@@ -1753,4 +1811,143 @@ void ModuleNavigation::RecalcPath(math::float3 point)
 	{
 		pathGenerated = FindPath(start, end, path);
 	}
+}
+/*
+--------------------------------------------------------------------------------------------------------
+Crowd Tool
+--------------------------------------------------------------------------------------------------------
+*/
+dtCrowdAgentDebugInfo debug2;
+crowdTool::crowdTool()
+{
+	m_vod = dtAllocObstacleAvoidanceDebugData();
+	m_vod->init(2048);
+
+	//set mem for crowd
+	m_crowd = 0;
+	m_crowd = dtAllocCrowd();
+	//setting nav mesh
+	m_nav = App->navigation->navMesh;
+	m_navQuery = App->navigation->navQuery;
+
+	//initialization of crowd
+	//the magic number parameter is a radius value test
+	m_crowd->init(MAX_AGENTS, 25.0f, m_nav);
+
+	// Make polygons with 'disabled' flag invalid.
+	m_crowd->getEditableFilter(0)->setExcludeFlags(SAMPLE_POLYFLAGS_DISABLED);
+
+	// Setup local avoidance params to different qualities.
+	dtObstacleAvoidanceParams params;
+	// Use mostly default settings, copy from dtCrowd.
+	memcpy(&params, m_crowd->getObstacleAvoidanceParams(0), sizeof(dtObstacleAvoidanceParams));
+	//now we set the avoidance quality filters
+	// Low (11)
+	params.velBias = 0.5f;
+	params.adaptiveDivs = 5;
+	params.adaptiveRings = 2;
+	params.adaptiveDepth = 1;
+	m_crowd->setObstacleAvoidanceParams(0, &params);
+
+	// Medium (22)
+	params.velBias = 0.5f;
+	params.adaptiveDivs = 5;
+	params.adaptiveRings = 2;
+	params.adaptiveDepth = 2;
+	m_crowd->setObstacleAvoidanceParams(1, &params);
+
+	// Good (45)
+	params.velBias = 0.5f;
+	params.adaptiveDivs = 7;
+	params.adaptiveRings = 2;
+	params.adaptiveDepth = 3;
+	m_crowd->setObstacleAvoidanceParams(2, &params);
+
+	// High (66)
+	params.velBias = 0.5f;
+	params.adaptiveDivs = 7;
+	params.adaptiveRings = 3;
+	params.adaptiveDepth = 3;
+	m_crowd->setObstacleAvoidanceParams(3, &params);
+
+	//create a quick debug info because needed
+	m_vod = dtAllocObstacleAvoidanceDebugData();
+	m_vod->init(2048);
+
+	memset(&debug2, 0, sizeof(debug2));
+
+	debug2.idx = -1;
+	debug2.vod = m_vod;
+	debug = &debug2;
+}
+
+crowdTool::~crowdTool()
+{
+	dtFreeObstacleAvoidanceDebugData(m_vod);
+	dtFreeCrowd(m_crowd);
+}
+
+int crowdTool::AddNewAgent(float* pos, float* vel, float speed)
+{
+	//filling everything with default values for now
+	//declaring the default variables
+	float defaultFloatValue = 20.f;
+
+	//setting values
+	dtCrowdAgentParams ap;
+	memset(&ap, 0, sizeof(ap));
+	ap.radius = defaultFloatValue;
+	ap.height = defaultFloatValue;
+	ap.maxAcceleration = 10000.f;//high enough value to stops the drifting of the agents
+	ap.maxSpeed = speed;
+	//ap.collisionQueryRange = ap.radius * 12.0f;
+	//ap.pathOptimizationRange = ap.radius * 30.0f;
+	ap.collisionQueryRange = ap.radius * 5.0f;
+	ap.pathOptimizationRange = ap.radius * 20.0f;
+	ap.updateFlags = 0;
+	ap.updateFlags |= DT_CROWD_ANTICIPATE_TURNS;
+	ap.updateFlags |= DT_CROWD_OPTIMIZE_VIS;
+	ap.updateFlags |= DT_CROWD_OPTIMIZE_TOPO;
+	ap.updateFlags |= DT_CROWD_OBSTACLE_AVOIDANCE;
+	ap.updateFlags |= DT_CROWD_SEPARATION;
+	ap.obstacleAvoidanceType = (unsigned char)3;//float from 0 to 3 determining the quality of dodging
+	ap.separationWeight = 1000.f;
+
+	int idx = m_crowd->addAgent(pos, &ap, vel);
+	return idx;
+}
+
+ENGINE_API void crowdTool::UpdateCrowd(float dtime)
+{
+	m_crowd->update(dtime, debug);
+}
+
+ENGINE_API void crowdTool::MoveRequest(int idAgent, unsigned int targetRef, float* endPos)
+{
+	//velocity calculations, not needed so far
+	/*float vel[3];
+	const dtCrowdAgent* ag = m_crowd->getAgent(idAgent);
+	calcVel(vel, ag->npos, endPos, ag->params.maxSpeed);
+	m_crowd->requestMoveVelocity(idAgent, vel);*/
+	
+	//m_crowd->resetMoveTarget(idAgent);
+	const dtCrowdAgent* ag = m_crowd->getAgent(idAgent);
+	if (ag && ag->active)
+	{
+		m_crowd->requestMoveTarget(idAgent, targetRef, endPos);
+	}
+}
+
+ENGINE_API void crowdTool::ChangeVelocity(int idAgent, float velocity)
+{
+	dtCrowdAgent* ag = m_crowd->getEditableAgent(idAgent);
+	ag->params.maxSpeed = velocity;
+}
+
+void crowdTool::calcVel(float* vel, const float* pos, const float* tgt, const float speed)
+{
+	dtVsub(vel, tgt, pos);
+	vel[1] = 0.0;
+	dtVnormalize(vel);
+	dtVscale(vel, vel, speed);
 }

@@ -79,8 +79,8 @@ enum class PlayerMovement_API SkillType
 	DASH,
 	CIRCULAR,
 	BOMB_DROP,
-	SLICE,
 	RAIN,
+	SLICE,
 	STOMP,
 	CHAIN = 10,
 	NONE = 20
@@ -172,7 +172,8 @@ public:
 	void Damage(float amount);
 
 	void Equip(const PlayerStats& equipStats);
-	void Equip(const PlayerStats& equipStats, unsigned itemType, unsigned meshUID, unsigned materialUID);
+	void Equip(const PlayerStats& equipStats, unsigned itemType, unsigned meshUID, unsigned materialUID);	// Equip item stats and mesh (Calls EquipMesh())
+	void EquipMesh(unsigned itemType, unsigned meshUID, unsigned materialUID);								// Equip only the item mesh
 	void UnEquip(const PlayerStats& equipStats, unsigned itemType);
 	void ConsumeItem(const PlayerStats& equipStats);
 

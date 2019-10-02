@@ -51,6 +51,7 @@ bool ModuleWindow::Init(JSON * config)
 		}
 #else
 		//fullscreen = true;
+		fullscreen_desktop = true;
 #endif
 		//Create window
 		Uint32 flags = SDL_WINDOW_SHOWN |  SDL_WINDOW_OPENGL;

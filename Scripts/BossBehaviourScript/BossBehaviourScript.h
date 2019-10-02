@@ -116,7 +116,8 @@ public:
 	std::vector<GameObject*> floorBossGOs;
 	std::vector<GameObject*> floorMainGOs;
 
-	void GenerateNewNavigability(std::vector<GameObject*> vectorGOs);
+	void PrepareBossFight(std::vector<GameObject*>& vectorGOs);
+	void GenerateNewNavigability(std::vector<GameObject*>& vectorGOs);
 
 public:
 	float firstHealthThreshold = 0.75f;

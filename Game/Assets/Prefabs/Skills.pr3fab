@@ -1,12 +1,12 @@
 {
     "GameObjects": [
         {
-            "UID": 1415627840,
+            "UID": 336147222,
             "ParentUID": 4074180566,
             "Name": "Skills",
             "Tag": "Default",
             "Static": 0,
-            "ActiveInHierarchy": 1,
+            "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
             "isBoneRoot": 0,
             "baseState": [
@@ -29,7 +29,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 1,
             "isPrefabSync": 1,
             "prefabUID": 2325434735,
@@ -43,57 +43,62 @@
                             {
                                 "id": 0,
                                 "name": "Dash",
-                                "description": "",
+                                "description": "Your new legs allow you to dash towards the cursor, damaging enemies on your path.",
                                 "locked": 0,
-                                "maxLevel": 3,
+                                "maxLevel": 1,
                                 "nextSkill": 1,
                                 "connection": 0,
+                                "mana": 20,
                                 "activeTextureUID": 885453344,
                                 "inactiveTextureUID": 1891334666
                             },
                             {
                                 "id": 1,
-                                "name": "Circular",
-                                "description": "",
+                                "name": "Circular attack",
+                                "description": "Rapidly spinning your weapon around your body allows you to damage nearby enemies.",
                                 "locked": 1,
-                                "maxLevel": 2,
+                                "maxLevel": 1,
                                 "nextSkill": 2,
                                 "connection": 1,
+                                "mana": 50,
                                 "activeTextureUID": 3774178758,
                                 "inactiveTextureUID": 1814959232
                             },
                             {
                                 "id": 2,
-                                "name": "Bomb",
-                                "description": "",
+                                "name": "Smash",
+                                "description": "Unleashing your power through your arms allows you to jump towards the cursor and smash the floor damaging enemies in small area.",
                                 "locked": 1,
                                 "maxLevel": 1,
                                 "nextSkill": -1,
                                 "connection": -1,
+                                "mana": 40,
                                 "activeTextureUID": 2296932366,
                                 "inactiveTextureUID": 3063042807
                             },
                             {
                                 "id": 3,
-                                "name": "Skill3",
-                                "description": "",
+                                "name": "Machete rain",
+                                "description": "Machetes will rain from the sky damaging enemies in a large area. Hold the KEY and select the area where you want to cast the skill, then release the same key to activate the hability.",
                                 "locked": 0,
-                                "maxLevel": 2,
-                                "nextSkill": 4,
-                                "connection": 2,
-                                "activeTextureUID": 4157880507,
-                                "inactiveTextureUID": 1052833000
+                                "maxLevel": 1,
+                                "nextSkill": -1,
+                                "connection": -1,
+                                "mana": 70,
+                                "activeTextureUID": 101418882,
+                                "inactiveTextureUID": 386296996
                             },
                             {
                                 "id": 4,
-                                "name": "Machete rain",
+                                "name": "Skill4",
                                 "description": "",
                                 "locked": 1,
                                 "maxLevel": 1,
                                 "nextSkill": -1,
                                 "connection": -1,
-                                "activeTextureUID": 101418882,
-                                "inactiveTextureUID": 386296996
+                                "mana": 0,
+                                "activeTextureUID": 4157880507,
+                                "inactiveTextureUID": 1052833000
                             },
                             {
                                 "id": 5,
@@ -103,6 +108,7 @@
                                 "maxLevel": 2,
                                 "nextSkill": 6,
                                 "connection": 4,
+                                "mana": 0,
                                 "activeTextureUID": 2353223529,
                                 "inactiveTextureUID": 4140996810
                             },
@@ -114,6 +120,7 @@
                                 "maxLevel": 3,
                                 "nextSkill": 7,
                                 "connection": 5,
+                                "mana": 0,
                                 "activeTextureUID": 4037492790,
                                 "inactiveTextureUID": 1474843939
                             },
@@ -125,6 +132,7 @@
                                 "maxLevel": 1,
                                 "nextSkill": -1,
                                 "connection": -1,
+                                "mana": 0,
                                 "activeTextureUID": 3595172473,
                                 "inactiveTextureUID": 2604386210
                             },
@@ -136,6 +144,7 @@
                                 "maxLevel": 2,
                                 "nextSkill": 9,
                                 "connection": 6,
+                                "mana": 0,
                                 "activeTextureUID": 2868511582,
                                 "inactiveTextureUID": 4145295781
                             },
@@ -147,6 +156,7 @@
                                 "maxLevel": 1,
                                 "nextSkill": 10,
                                 "connection": 7,
+                                "mana": 0,
                                 "activeTextureUID": 2089509454,
                                 "inactiveTextureUID": 184765913
                             },
@@ -158,6 +168,7 @@
                                 "maxLevel": 1,
                                 "nextSkill": -1,
                                 "connection": -1,
+                                "mana": 0,
                                 "activeTextureUID": 3921259047,
                                 "inactiveTextureUID": 472688446
                             }
@@ -167,8 +178,8 @@
             ]
         },
         {
-            "UID": 769443353,
-            "ParentUID": 1415627840,
+            "UID": 1306854157,
+            "ParentUID": 336147222,
             "Name": "SkillsBackgroundImage",
             "Tag": "Default",
             "Static": 0,
@@ -195,7 +206,7 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 0,
+            "openInHierarchy": 1,
             "isPrefab": 0,
             "isPrefabSync": 0,
             "prefabUID": 0,
@@ -234,13 +245,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 2181196537,
-            "ParentUID": 769443353,
+            "UID": 4095466823,
+            "ParentUID": 1306854157,
             "Name": "SkillConnections",
             "Tag": "Default",
             "Static": 0,
@@ -318,8 +330,8 @@
             ]
         },
         {
-            "UID": 1758795702,
-            "ParentUID": 2181196537,
+            "UID": 2395280322,
+            "ParentUID": 4095466823,
             "Name": "Connection0",
             "Tag": "Default",
             "Static": 0,
@@ -385,13 +397,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 743235559,
-            "ParentUID": 2181196537,
+            "UID": 1455775278,
+            "ParentUID": 4095466823,
             "Name": "Connection1",
             "Tag": "Default",
             "Static": 0,
@@ -457,13 +470,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 1686755064,
-            "ParentUID": 2181196537,
+            "UID": 4195432578,
+            "ParentUID": 4095466823,
             "Name": "Connection2",
             "Tag": "Default",
             "Static": 0,
@@ -529,13 +543,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 2452132181,
-            "ParentUID": 2181196537,
+            "UID": 2767846983,
+            "ParentUID": 4095466823,
             "Name": "Connection3",
             "Tag": "Default",
             "Static": 0,
@@ -601,13 +616,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 905331875,
-            "ParentUID": 2181196537,
+            "UID": 2367589939,
+            "ParentUID": 4095466823,
             "Name": "Connection4",
             "Tag": "Default",
             "Static": 0,
@@ -673,13 +689,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 3275062694,
-            "ParentUID": 2181196537,
+            "UID": 3869345039,
+            "ParentUID": 4095466823,
             "Name": "Connection5",
             "Tag": "Default",
             "Static": 0,
@@ -745,13 +762,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 253403009,
-            "ParentUID": 2181196537,
+            "UID": 2969907254,
+            "ParentUID": 4095466823,
             "Name": "Connection6",
             "Tag": "Default",
             "Static": 0,
@@ -817,13 +835,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 145302029,
-            "ParentUID": 769443353,
+            "UID": 1994955300,
+            "ParentUID": 1306854157,
             "Name": "SkillSlots",
             "Tag": "Default",
             "Static": 0,
@@ -901,8 +920,8 @@
             ]
         },
         {
-            "UID": 558353069,
-            "ParentUID": 145302029,
+            "UID": 3854178428,
+            "ParentUID": 1994955300,
             "Name": "Skill0",
             "Tag": "Default",
             "Static": 0,
@@ -968,13 +987,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 2486110505,
-            "ParentUID": 558353069,
+            "UID": 3314799403,
+            "ParentUID": 3854178428,
             "Name": "SkillIcon0",
             "Tag": "Default",
             "Static": 0,
@@ -1040,13 +1060,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 4278587385,
-            "ParentUID": 558353069,
+            "UID": 1929567271,
+            "ParentUID": 3854178428,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -1096,7 +1117,7 @@
                     "Type": 6,
                     "Enabled": 1,
                     "FontSize": 21.0,
-                    "text": "0/5",
+                    "text": "0/1",
                     "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.09019608050584793,
@@ -1126,8 +1147,8 @@
             ]
         },
         {
-            "UID": 2027789886,
-            "ParentUID": 145302029,
+            "UID": 1371115465,
+            "ParentUID": 1994955300,
             "Name": "Skill1",
             "Tag": "Default",
             "Static": 0,
@@ -1193,13 +1214,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 58488762,
-            "ParentUID": 2027789886,
+            "UID": 1506457175,
+            "ParentUID": 1371115465,
             "Name": "SkillIcon1",
             "Tag": "Default",
             "Static": 0,
@@ -1265,13 +1287,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 3145329261,
-            "ParentUID": 2027789886,
+            "UID": 2038784504,
+            "ParentUID": 1371115465,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -1321,7 +1344,7 @@
                     "Type": 6,
                     "Enabled": 1,
                     "FontSize": 21.0,
-                    "text": "0/3",
+                    "text": "0/1",
                     "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.09019608050584793,
@@ -1351,8 +1374,8 @@
             ]
         },
         {
-            "UID": 4183701628,
-            "ParentUID": 145302029,
+            "UID": 1938576968,
+            "ParentUID": 1994955300,
             "Name": "Skill2",
             "Tag": "Default",
             "Static": 0,
@@ -1418,13 +1441,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 2389377942,
-            "ParentUID": 4183701628,
+            "UID": 555480386,
+            "ParentUID": 1938576968,
             "Name": "SkillIcon2",
             "Tag": "Default",
             "Static": 0,
@@ -1490,13 +1514,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 2773936994,
-            "ParentUID": 4183701628,
+            "UID": 2008317325,
+            "ParentUID": 1938576968,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -1546,7 +1571,7 @@
                     "Type": 6,
                     "Enabled": 1,
                     "FontSize": 21.0,
-                    "text": "0/2",
+                    "text": "0/1",
                     "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.0901639461517334,
@@ -1576,8 +1601,8 @@
             ]
         },
         {
-            "UID": 3050071781,
-            "ParentUID": 145302029,
+            "UID": 604574894,
+            "ParentUID": 1994955300,
             "Name": "Skill3",
             "Tag": "Default",
             "Static": 0,
@@ -1643,13 +1668,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 2677041751,
-            "ParentUID": 3050071781,
+            "UID": 1850769417,
+            "ParentUID": 604574894,
             "Name": "SkillIcon3",
             "Tag": "Default",
             "Static": 0,
@@ -1698,8 +1724,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 1052833000,
-                    "textureName": "Desactivated_Hability_1",
+                    "textureUID": 386296996,
+                    "textureName": "Desactivated_Hability_7",
                     "color": [
                         1.0,
                         0.9999899864196777,
@@ -1715,13 +1741,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 451663679,
-            "ParentUID": 3050071781,
+            "UID": 54650402,
+            "ParentUID": 604574894,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -1771,7 +1798,7 @@
                     "Type": 6,
                     "Enabled": 1,
                     "FontSize": 21.0,
-                    "text": "0/5",
+                    "text": "0/1",
                     "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.09019608050584793,
@@ -1801,8 +1828,8 @@
             ]
         },
         {
-            "UID": 4199512543,
-            "ParentUID": 145302029,
+            "UID": 2793076516,
+            "ParentUID": 1994955300,
             "Name": "Skill4",
             "Tag": "Default",
             "Static": 0,
@@ -1868,13 +1895,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 2641918777,
-            "ParentUID": 4199512543,
+            "UID": 1463492838,
+            "ParentUID": 2793076516,
             "Name": "SkillIcon4",
             "Tag": "Default",
             "Static": 0,
@@ -1923,8 +1951,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 386296996,
-                    "textureName": "Desactivated_Hability_7",
+                    "textureUID": 1052833000,
+                    "textureName": "Desactivated_Hability_1",
                     "color": [
                         1.0,
                         0.9999899864196777,
@@ -1940,13 +1968,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 2374667069,
-            "ParentUID": 4199512543,
+            "UID": 3338615963,
+            "ParentUID": 2793076516,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -1996,7 +2025,7 @@
                     "Type": 6,
                     "Enabled": 1,
                     "FontSize": 21.0,
-                    "text": "0/5",
+                    "text": "0/1",
                     "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         0.09019608050584793,
@@ -2026,8 +2055,8 @@
             ]
         },
         {
-            "UID": 913525859,
-            "ParentUID": 145302029,
+            "UID": 1415491653,
+            "ParentUID": 1994955300,
             "Name": "Skill5",
             "Tag": "Default",
             "Static": 0,
@@ -2093,13 +2122,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 3147588403,
-            "ParentUID": 913525859,
+            "UID": 809589207,
+            "ParentUID": 1415491653,
             "Name": "SkillIcon5",
             "Tag": "Default",
             "Static": 0,
@@ -2165,13 +2195,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 1229317339,
-            "ParentUID": 913525859,
+            "UID": 1782110344,
+            "ParentUID": 1415491653,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -2251,8 +2282,8 @@
             ]
         },
         {
-            "UID": 1674614676,
-            "ParentUID": 145302029,
+            "UID": 1953516591,
+            "ParentUID": 1994955300,
             "Name": "Skill6",
             "Tag": "Default",
             "Static": 0,
@@ -2318,13 +2349,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 2105913284,
-            "ParentUID": 1674614676,
+            "UID": 3330109572,
+            "ParentUID": 1953516591,
             "Name": "SkillIcon6",
             "Tag": "Default",
             "Static": 0,
@@ -2390,13 +2422,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 771466954,
-            "ParentUID": 1674614676,
+            "UID": 1849832111,
+            "ParentUID": 1953516591,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -2476,8 +2509,8 @@
             ]
         },
         {
-            "UID": 2423956249,
-            "ParentUID": 145302029,
+            "UID": 3158717343,
+            "ParentUID": 1994955300,
             "Name": "Skill7",
             "Tag": "Default",
             "Static": 0,
@@ -2543,13 +2576,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 2062889698,
-            "ParentUID": 2423956249,
+            "UID": 510246000,
+            "ParentUID": 3158717343,
             "Name": "SkillIcon7",
             "Tag": "Default",
             "Static": 0,
@@ -2615,13 +2649,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 3154753014,
-            "ParentUID": 2423956249,
+            "UID": 4026835439,
+            "ParentUID": 3158717343,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -2701,8 +2736,8 @@
             ]
         },
         {
-            "UID": 408858752,
-            "ParentUID": 145302029,
+            "UID": 2103252585,
+            "ParentUID": 1994955300,
             "Name": "Skill8",
             "Tag": "Default",
             "Static": 0,
@@ -2768,13 +2803,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 2368419081,
-            "ParentUID": 408858752,
+            "UID": 4129215127,
+            "ParentUID": 2103252585,
             "Name": "SkillIcon8",
             "Tag": "Default",
             "Static": 0,
@@ -2840,13 +2876,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 2607113461,
-            "ParentUID": 408858752,
+            "UID": 829743560,
+            "ParentUID": 2103252585,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -2926,8 +2963,8 @@
             ]
         },
         {
-            "UID": 443727577,
-            "ParentUID": 145302029,
+            "UID": 2778831358,
+            "ParentUID": 1994955300,
             "Name": "Skill9",
             "Tag": "Default",
             "Static": 0,
@@ -2993,13 +3030,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 452904087,
-            "ParentUID": 443727577,
+            "UID": 558301429,
+            "ParentUID": 2778831358,
             "Name": "SkillIcon9",
             "Tag": "Default",
             "Static": 0,
@@ -3065,13 +3103,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 4006234131,
-            "ParentUID": 443727577,
+            "UID": 1147513129,
+            "ParentUID": 2778831358,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -3151,8 +3190,8 @@
             ]
         },
         {
-            "UID": 2564483268,
-            "ParentUID": 145302029,
+            "UID": 1387534604,
+            "ParentUID": 1994955300,
             "Name": "Skill10",
             "Tag": "Default",
             "Static": 0,
@@ -3218,13 +3257,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 2795860998,
-            "ParentUID": 2564483268,
+            "UID": 2190133059,
+            "ParentUID": 1387534604,
             "Name": "SkillIcon10",
             "Tag": "Default",
             "Static": 0,
@@ -3290,13 +3330,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 62190427,
-            "ParentUID": 2564483268,
+            "UID": 3906134891,
+            "ParentUID": 1387534604,
             "Name": "SkillCounter",
             "Tag": "Default",
             "Static": 0,
@@ -3376,8 +3417,8 @@
             ]
         },
         {
-            "UID": 1954923973,
-            "ParentUID": 769443353,
+            "UID": 3983926908,
+            "ParentUID": 1306854157,
             "Name": "HoverGO",
             "Tag": "Default",
             "Static": 0,
@@ -3455,8 +3496,8 @@
             ]
         },
         {
-            "UID": 2837909827,
-            "ParentUID": 1954923973,
+            "UID": 3463676512,
+            "ParentUID": 3983926908,
             "Name": "SkillHover",
             "Tag": "Default",
             "Static": 0,
@@ -3522,13 +3563,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 7,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 4178960298,
-            "ParentUID": 769443353,
+            "UID": 4235914040,
+            "ParentUID": 1306854157,
             "Name": "Candado",
             "Tag": "Default",
             "Static": 0,
@@ -3606,8 +3648,8 @@
             ]
         },
         {
-            "UID": 3637391495,
-            "ParentUID": 4178960298,
+            "UID": 2618884812,
+            "ParentUID": 4235914040,
             "Name": "C1",
             "Tag": "Default",
             "Static": 0,
@@ -3673,13 +3715,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 6,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 1845020860,
-            "ParentUID": 4178960298,
+            "UID": 3210615039,
+            "ParentUID": 4235914040,
             "Name": "C2",
             "Tag": "Default",
             "Static": 0,
@@ -3745,13 +3788,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 6,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 3006858969,
-            "ParentUID": 4178960298,
+            "UID": 1927356968,
+            "ParentUID": 4235914040,
             "Name": "C3",
             "Tag": "Default",
             "Static": 0,
@@ -3787,8 +3831,8 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -285.70001220703127,
-                        -158.5
+                        -284.29998779296877,
+                        -41.5
                     ],
                     "Size": [
                         58.0,
@@ -3817,13 +3861,14 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 6,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
                 }
             ]
         },
         {
-            "UID": 868030443,
-            "ParentUID": 769443353,
+            "UID": 451375207,
+            "ParentUID": 1306854157,
             "Name": "SkillPoints",
             "Tag": "Default",
             "Static": 0,
@@ -3903,13 +3948,86 @@
             ]
         },
         {
-            "UID": 2398477182,
-            "ParentUID": 1415627840,
+            "UID": 2503792638,
+            "ParentUID": 336147222,
             "Name": "SkillInfo",
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 0,
             "ActiveSelf": 0,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 0,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -744.2999877929688,
+                        0.0
+                    ],
+                    "Size": [
+                        364.0,
+                        543.5
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 1929599824,
+                    "textureName": "PopUp_Skills",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 5,
+                    "videoPath": "flame.avi",
+                    "fps": 24.0,
+                    "loop": 0
+                }
+            ]
+        },
+        {
+            "UID": 2865128019,
+            "ParentUID": 2503792638,
+            "Name": "SkillInfoIcon",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
             "isBoneRoot": 0,
             "baseState": [
                 1.0,
@@ -3940,12 +4058,12 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -744.2999877929688,
-                        0.0
+                        -862.0,
+                        220.6999969482422
                     ],
                     "Size": [
-                        364.0,
-                        543.5
+                        50.0,
+                        50.0
                     ],
                     "Anchor": 5,
                     "Stretch": 3
@@ -3953,8 +4071,8 @@
                 {
                     "Type": 7,
                     "Enabled": 1,
-                    "textureUID": 3480667512,
-                    "textureName": "Info_Skill",
+                    "textureUID": 0,
+                    "textureName": "",
                     "color": [
                         1.0,
                         1.0,
@@ -3970,7 +4088,332 @@
                     "hoverDetectionMouse3": 1,
                     "UIOrder": 5,
                     "videoPath": "flame.avi",
-                    "fps": 24.0
+                    "fps": 24.0,
+                    "loop": 0
+                }
+            ]
+        },
+        {
+            "UID": 1030017003,
+            "ParentUID": 2503792638,
+            "Name": "SkillInfoName",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -809.0999755859375,
+                        222.5
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 64.0,
+                    "text": "Machete Rain",
+                    "font": "Fonts/Vision-BoldItalic.ttf",
+                    "color": [
+                        0.881147563457489,
+                        0.7194998860359192,
+                        0.20223060250282288,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 100.0,
+                    "InterlineDistance": 24.0,
+                    "UIOrder": 5
+                }
+            ]
+        },
+        {
+            "UID": 1769238872,
+            "ParentUID": 2503792638,
+            "Name": "SkillInfoDescription",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -888.7000122070313,
+                        155.60000610351563
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 40.0,
+                    "text": "Machete will rain from the sky damaging enemies in a large area. Hold the KEY and select the area where you want to cast the skill, then release the same key to activate the hability.",
+                    "font": "Fonts/Vision-Regular.ttf",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 1,
+                    "WrapWidth": 501.0,
+                    "InterlineDistance": 24.0,
+                    "UIOrder": 5
+                }
+            ]
+        },
+        {
+            "UID": 4188150626,
+            "ParentUID": 2503792638,
+            "Name": "SkillInfoManaCostTitle",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -886.0,
+                        20.600000381469728
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 47.0,
+                    "text": "Mana Cost:",
+                    "font": "Fonts/Vision-BoldItalic.ttf",
+                    "color": [
+                        0.881147563457489,
+                        0.7194998860359192,
+                        0.20223060250282288,
+                        0.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 0,
+                    "WrapWidth": 100.0,
+                    "InterlineDistance": 24.0,
+                    "UIOrder": 5
+                }
+            ]
+        },
+        {
+            "UID": 3886036119,
+            "ParentUID": 2503792638,
+            "Name": "SkillInfoManaCostText",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -766.9000244140625,
+                        19.600000381469728
+                    ],
+                    "Size": [
+                        100.0,
+                        100.0
+                    ],
+                    "Anchor": 5,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 6,
+                    "Enabled": 1,
+                    "FontSize": 53.0,
+                    "text": "50",
+                    "font": "Fonts/Vision-Regular.ttf",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "colorHovered": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        0.0
+                    ],
+                    "offset": [
+                        0.0,
+                        0.0
+                    ],
+                    "scaleOffset": [
+                        1.0,
+                        1.0
+                    ],
+                    "IsTextWrapped": 1,
+                    "WrapWidth": 501.0,
+                    "InterlineDistance": 24.0,
+                    "UIOrder": 5
                 }
             ]
         }

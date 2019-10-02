@@ -34,7 +34,7 @@ public:
 		return new InventoryScript(*this);
 	}
 
-	bool AddItem(Item item);
+	bool AddItem(Item* item);
 	std::vector<Item> GetQuickItems();
 	int GetCurrentQuantity(const Item& item);
 	int GetCurrentQuantity(std::string itemName);
@@ -55,7 +55,7 @@ private:
 	std::vector<Component*> slotsTransform;
 	std::vector<GameObject*> itemsSlots;
 	std::vector<GameObject*> itemsSlotsNumbers;
-	std::vector<std::pair<Item, int>> items;
+	std::vector<std::pair<Item*, int>> items;
 	std::vector<std::pair<std::string, int>> consumableItems; //name of the item, quantity
 
 	std::string assignedConsumableItem[9] = { "", "", "", "", "", "", "", "", "" };
