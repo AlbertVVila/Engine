@@ -2,6 +2,18 @@
 #define __BOSSSTATEINTERPHASE_H_
 
 #include "BossState.h"
+
+enum class IpState
+{
+	None,
+	Fadeoff,
+	TP,
+	FadeIn,
+	Powerup,
+	Relocate,
+	Finished
+};
+
 class BossStateInterPhase :
 	public BossState
 {
@@ -15,6 +27,12 @@ private:
 	void Update() override;
 	void Enter() override;
 	void Exit() override;
+
+	IpState ipState = IpState::None;
+
+	bool finished = false;
+	float powerUpTimer = 0.0f;
+	float relocateTimer = 0.0f;
 };
 
 #endif // __BOSSSTATEINTERPHASE_H_

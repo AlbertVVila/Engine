@@ -178,6 +178,9 @@ public:
 
 	//Variables for the first interphase
 	float firstInterphaseDuration = 0.0f;
+	math::float3 firstInterphasePosition = math::float3::zero;
+	math::float3 pointToLookAtFirstInterphase = math::float3::zero;
+	float relocateInterPhaseTime = 0.0f;
 
 	//Skulls in second phase
 	int numberSkullsSecondTotal = 8;
