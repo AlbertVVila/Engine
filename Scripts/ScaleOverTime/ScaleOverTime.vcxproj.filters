@@ -15,15 +15,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="EnemyLoot.cpp">
+    <ClCompile Include="ScaleOverTime.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EnemyLoot.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="..\InventoryScript\Item.h">
+    <ClInclude Include="ScaleOverTime.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>

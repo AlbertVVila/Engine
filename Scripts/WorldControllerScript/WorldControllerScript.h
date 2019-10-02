@@ -80,6 +80,9 @@ private:
 	static const math::float3 defaultCorrection;
 	
 	unsigned playerUID = 0u;
+	
+	int playerAgentsPosition = -1;
+	float* playerPos = nullptr;
 
 };
 

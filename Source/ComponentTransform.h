@@ -29,8 +29,9 @@ public:
 	void SetLocalTransform(const math::float4x4& newLocal, const math::float4x4& parentGlobal); //only for importing purposes / if used later watch the trees
 
 	ENGINE_API void UpdateLocalTransform();
-	ENGINE_API void SetPosition(const math::float3& position);
+	ENGINE_API void SetPosition(const math::float3& newPosition);
 	ENGINE_API void SetRotation(const math::Quat & newRotation);
+	ENGINE_API void SetScale(const math::float3& newScale);
 	ENGINE_API void Scale(float scalar);
 	
 	ENGINE_API math::Quat GetRotation();
@@ -70,6 +71,9 @@ public:
 	math::float4x4 local = math::float4x4::identity;
 	math::float4x4 animatedLocal = math::float4x4::identity;
 	math::float4x4 global = math::float4x4::identity;
+
+	//variable that holds the orientation of the gameobject used by enemies in crowding system
+	math::float3 movingOrientation = math::float3::zero;
 
 	math::float3 up = math::float3::zero;
 	math::float3 right = math::float3::zero;
