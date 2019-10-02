@@ -2,6 +2,7 @@
 #define  __SpinToWinEnemyAI_h__
 
 #include "BasicEnemyAIScript/BasicEnemyAIScript.h"
+#include <vector>
 
 #ifdef SpinToWinEnemyAI_EXPORTS
 #define SpinToWinEnemyAI_API __declspec(dllexport)
@@ -18,8 +19,12 @@ public:
 	}
 	void Start() override;
 	void Update() override;
+	std::vector<GameObject*> spinBones;
 
-public:
+private:
+	void RotateSpinBone();
+
+	float boneRotationSpeed = 5.0f;
 };
 
 extern "C" SpinToWinEnemyAI_API Script* CreateScript();
