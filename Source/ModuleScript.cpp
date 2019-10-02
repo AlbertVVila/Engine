@@ -135,7 +135,10 @@ update_status ModuleScript::Update(float dt)
 		}
 		for (size_t i = 0; i < componentsScript.size(); i++)
 		{
-			componentsScript[i]->Update();
+			if (componentsScript[i]->enabled)
+			{
+				componentsScript[i]->Update();
+			}
 		}
 	}
 
