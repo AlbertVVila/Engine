@@ -51,6 +51,9 @@
     <ClCompile Include="BossStateCutScene.cpp">
       <Filter>States</Filter>
     </ClCompile>
+    <ClCompile Include="BossStateSecondInterPhase.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BossBehaviourScript.h">
@@ -84,6 +87,9 @@
       <Filter>States</Filter>
     </ClInclude>
     <ClInclude Include="BossStateCutScene.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="BossStateSecondInterPhase.h">
       <Filter>States</Filter>
     </ClInclude>
   </ItemGroup>

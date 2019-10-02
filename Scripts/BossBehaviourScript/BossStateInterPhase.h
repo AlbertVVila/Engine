@@ -8,6 +8,13 @@ class BossStateInterPhase :
 public:
 	BossStateInterPhase(BossBehaviourScript* AIBoss);
 	~BossStateInterPhase();
+
+private:
+
+	void HandleIA() override;
+	void Update() override;
+	void Enter() override;
+	void Exit() override;
 };
 
 #endif // __BOSSSTATEINTERPHASE_H_

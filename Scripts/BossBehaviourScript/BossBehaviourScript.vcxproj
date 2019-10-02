@@ -264,6 +264,7 @@
     <ClCompile Include="BossStateInterPhase.cpp" />
     <ClCompile Include="BossStateNotActive.cpp" />
     <ClCompile Include="BossStatePreCast.cpp" />
+    <ClCompile Include="BossStateSecondInterPhase.cpp" />
     <ClCompile Include="BossStateSummonArmy.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -277,6 +278,7 @@
     <ClInclude Include="BossStateInterPhase.h" />
     <ClInclude Include="BossStateNotActive.h" />
     <ClInclude Include="BossStatePreCast.h" />
+    <ClInclude Include="BossStateSecondInterPhase.h" />
     <ClInclude Include="BossStateSummonArmy.h" />
   </ItemGroup>
   <ItemGroup>
