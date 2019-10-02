@@ -11,6 +11,7 @@
 
 #include "GameObject.h"
 #include "ComponentTransform.h"
+#include "ComponentAnimation.h"
 
 BossStateCutScene::BossStateCutScene(BossBehaviourScript* AIBoss)
 {
@@ -144,6 +145,7 @@ void BossStateCutScene::Enter()
 	secondCameraDirection.Normalize();
 
 	//Deactivate player script
+	boss->playerScript->anim->SendTriggerToStateMachine("Idle");
 	boss->playerScript->Enable(false);
 	//Deactivate camera script
 	boss->playerCamera->GetComponent<CameraController>()->Enable(false);
