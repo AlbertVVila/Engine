@@ -18,6 +18,6 @@ void BossStateNotActive::HandleIA()
 	{
 		boss->currentState = (BossState*)boss->cutscene;
 		
-		boss->GenerateNewNavigability(boss->floorBossGOs);
+		boss->PrepareBossFight(boss->floorBossGOs);
 	}
 }

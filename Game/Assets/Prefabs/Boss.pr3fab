@@ -1,7 +1,7 @@
 {
     "GameObjects": [
         {
-            "UID": 2574560917,
+            "UID": 17377664,
             "ParentUID": 0,
             "Name": "Boss",
             "Tag": "Boss",
@@ -33,7 +33,6 @@
             "isPrefab": 1,
             "isPrefabSync": 1,
             "prefabUID": 3166434820,
-            "prefabTimeStamp": 1570010163,
             "Components": [
                 {
                     "Type": 0,
@@ -81,10 +80,10 @@
             ]
         },
         {
-            "UID": 352014778,
-            "ParentUID": 2574560917,
+            "UID": 2399448192,
+            "ParentUID": 17377664,
             "Name": "Main",
-            "Tag": "Default",
+            "Tag": "Boss",
             "Static": 0,
             "ActiveInHierarchy": 1,
             "ActiveSelf": 1,
@@ -225,7 +224,9 @@
                         "playerTag": "Player",
                         "health": 120,
                         "experience": 20,
-                        "enemyCursor": "RedGlow.cur"
+                        "enemyCursor": "RedGlow.cur",
+                        "lootDelay": 1.0,
+                        "lootRadius": 100.0
                     }
                 },
                 {
@@ -362,8 +363,8 @@
             ]
         },
         {
-            "UID": 326108142,
-            "ParentUID": 352014778,
+            "UID": 523591386,
+            "ParentUID": 2399448192,
             "Name": "Empty",
             "Tag": "Default",
             "Static": 0,
@@ -457,8 +458,8 @@
             ]
         },
         {
-            "UID": 1558676944,
-            "ParentUID": 352014778,
+            "UID": 797441131,
+            "ParentUID": 2399448192,
             "Name": "Point",
             "Tag": "Default",
             "Static": 0,
