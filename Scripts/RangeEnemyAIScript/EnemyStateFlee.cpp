@@ -62,6 +62,7 @@ void EnemyStateFlee::Enter()
 
 void EnemyStateFlee::Exit()
 {
+	enemy->enemyController->LookAt2D(enemy->enemyController->GetPlayerPosition());
 	changedTimes = 0;
 	skipFlee = false;
 }
