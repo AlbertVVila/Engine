@@ -1,7 +1,7 @@
 {
     "GameObjects": [
         {
-            "UID": 73541707,
+            "UID": 307415450,
             "ParentUID": 0,
             "Name": "AOEbossPrefab",
             "Tag": "Default",
@@ -33,7 +33,6 @@
             "isPrefab": 1,
             "isPrefabSync": 1,
             "prefabUID": 1857248747,
-            "prefabTimeStamp": 1568818067,
             "Components": [
                 {
                     "Type": 0,
@@ -85,14 +84,15 @@
                     "scriptInfo": {
                         "timerFade": 1.5,
                         "duration": 2.0,
-                        "damageToPlayer": 15.0
+                        "damageToPlayer": 15.0,
+                        "spawnRadius": 200.0
                     }
                 }
             ]
         },
         {
-            "UID": 3338360313,
-            "ParentUID": 73541707,
+            "UID": 347961214,
+            "ParentUID": 307415450,
             "Name": "Prep Particles",
             "Tag": "Default",
             "Static": 0,
@@ -227,8 +227,8 @@
             ]
         },
         {
-            "UID": 1515147958,
-            "ParentUID": 73541707,
+            "UID": 445564721,
+            "ParentUID": 307415450,
             "Name": "Beam Particles",
             "Tag": "Default",
             "Static": 0,
@@ -392,8 +392,8 @@
             ]
         },
         {
-            "UID": 2953409092,
-            "ParentUID": 73541707,
+            "UID": 4050126198,
+            "ParentUID": 307415450,
             "Name": "Hitbox",
             "Tag": "Default",
             "Static": 0,

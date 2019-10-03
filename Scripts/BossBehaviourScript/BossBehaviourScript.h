@@ -25,7 +25,8 @@ enum class BossSkill
 	None,
 	Teleport,
 	Aoe,
-	Summon
+	Summon,
+	Bombs
 };
 
 enum class TPlocations
@@ -56,7 +57,9 @@ class BossStateNotActive;
 class BossStateActivated;
 class BossStateInterPhase;
 class BossStateSummonArmy;
+class BossStateCutScene;
 class EnemyControllerScript;
+class PlayerMovement;
 class GameLoop;
 
 class BossBehaviourScript_API BossBehaviourScript : public Script
@@ -92,10 +95,14 @@ public:
 	BossStateInterPhase* interPhase = nullptr;
 	BossStateDeath* death = nullptr;
 	BossStateCast* cast = nullptr;
+	BossStateCutScene* cutscene = nullptr;
 
 public:
 	GameObject* gameLoopGO = nullptr;
 	GameLoop* gLoop = nullptr;
+
+	GameObject* playerGO = nullptr;
+	PlayerMovement* playerScript = nullptr;
 
 	GameObject* firstMeshFloor = nullptr;
 	GameObject* secondMeshFloor = nullptr;
@@ -124,12 +131,26 @@ public:
 
 	float activationDistance = 800.0f;
 	float doorClosingDistance = 2000.0f;
-	float doorClosingTime = 2.0f;
 	float activationTime = 5.0f;
 
 	bool circlesSpawning = false;
 	bool bossTeleporting = false;
 	bool bossSummoning = false;
+	bool bossExplosives = false;
+
+	//Cutscene state variables
+
+	math::float3 cameraPositionDoorCS = math::float3::zero;
+	math::float3 cameraRotationDoorEulerCS = math::float3::zero;
+	math::Quat cameraRotationDoorCS = math::Quat::identity;
+	math::float3 cameraPositionBossCS = math::float3::zero;
+	math::float3 cameraRotationBossEulerCS = math::float3::zero;
+	math::Quat cameraRotationBossCS = math::Quat::identity;
+
+	float cutsceneDoorDuration = 10.0f;
+	float cutsceneBossDuration = 10.0f;
+	float cutsceneBackToPlayerDuration = 10.0f;
+	float cutsceneDoorRisingDuration = 2.0f;
 
 	//first cutscene
 	math::float3 startingPoint = math::float3::zero;
@@ -153,6 +174,24 @@ public:
 	math::float3 firstSpawnLocation = math::float3::zero;
 	math::float3 secondSpawnLocation = math::float3::zero;
 
+	//Skulls in second phase
+	int numberSkullsSecondTotal = 8;
+	float timeBetweenSkullsSecond = 0.0f;
+	math::float3 northSecondSkull = math::float3::zero;
+	math::float3 northEastSecondSkull = math::float3::zero;
+	math::float3 eastSecondSkull = math::float3::zero;
+	math::float3 southEastSecondSkull = math::float3::zero;
+	math::float3 southSecondSkull = math::float3::zero;
+	math::float3 southWestSecondSkull = math::float3::zero;
+	math::float3 westSecondSkull = math::float3::zero;
+	math::float3 northWestSecondSkull = math::float3::zero;
+	std::vector<math::float3> positionsSkullsSecond;
+	int positionsIt = 0;
+
+public:
+		math::Quat InterpolateQuat(const math::Quat first, const math::Quat second, float lambda);
+		math::float3 InterpolateFloat3(const math::float3 first, const math::float3 second, float lambda);
+
 private:
 	std::vector<BossState*> bossStates;
 
@@ -175,6 +214,10 @@ private:
 	void HandleSecondSummons();
 	void HandleThirdSummons();
 
+	void HandleFirstBombs();
+	void HandleSecondBombs();
+	void HandleThirdBombs();
+
 	int circlesInFirstPhase = 3;
 	float timeBetweenCirclesFirst = 2.0f;
 	int circlesInSecondPhase = 4;
@@ -195,6 +238,9 @@ private:
 	bool skullsShot = false;
 	TPState teleportState = TPState::None;
 
+	float timeBetweenBombsFirst = 0.5f;
+	int totalBombsFirst = 5;
+	int currentBombsThrown = 0;
 
 	bool isFloating = true;
 	float angleConstant = 1.0f;

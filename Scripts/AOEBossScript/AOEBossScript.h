@@ -5,6 +5,8 @@
 #include <vector>
 #include "Math/float3.h"
 
+
+
 class ComponentBoxTrigger;
 class PlayerMovement;
 
@@ -30,6 +32,8 @@ public:
 	{
 		return new AOEBossScript(*this);
 	}
+
+	int circleType = 1;
 private:
 
 	GameObject* prepParticlesGO = nullptr;
@@ -37,9 +41,11 @@ private:
 	GameObject* boxTriggerGO = nullptr;
 
 	ComponentBoxTrigger* boxTrigger = nullptr;
-	
+
 	GameObject* playerGO = nullptr;
 	PlayerMovement* playerScript = nullptr;
+
+	
 
 	float duration = 3.0f;
 	float timerFade = 2.0f;
@@ -47,6 +53,10 @@ private:
 	float damageToPlayer = 5.0f;
 
 	bool hasDamaged = false;
+
+	float spawnRadius = 0.0f;
+
+	void SpawnSecondaryCircles();
 };
 
 extern "C" AOEBossScript_API Script* CreateScript();
