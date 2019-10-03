@@ -74,13 +74,13 @@ void ChestScript::Update()
 			if (lootDrop->itemList.size() > 1)
 				lootDrop->DropItemsInSemiCircle(lootRadius);
 			else
-lootDrop->DropItems();
+				lootDrop->DropItems();
 
-state = chestState::OPENED;
+			state = chestState::OPENED;
 		}
 		else
 		{
-		chestTimer += App->time->gameDeltaTime;
+			chestTimer += App->time->gameDeltaTime;
 		}
 		break;
 	default:

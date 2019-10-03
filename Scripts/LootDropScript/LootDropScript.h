@@ -24,6 +24,7 @@ public:
 
 private:
 	void Start() override;
+	void Update() override;
 	void Expose(ImGuiContext* context);
 
 	void Serialize(JSON_value* json) const;
@@ -40,6 +41,12 @@ public:
 
 private:
 	GameObject* itemListGO = nullptr;		// Game Object were all items are set as a child
+	std::vector<GameObject*> spawnedGOList;
+	std::vector<math::float3> itemsPosTarget;
+	bool spawned = false;
+	bool animate = true;
+	float timer = 0.0f;
+	float seconds = 1.0f;
 };
 
 #endif __LootDropScript_h__
