@@ -39,14 +39,18 @@ public:
 	math::float3 positionOffset = math::float3(0.0f, 0.0f, 0.0f);
 	math::float3 rotationOffset = math::float3(-90.0f, 0.0f, 0.0f);
 
+	float animHigh = 200.0f;		// How high the items will jump on spawn animation
+
 private:
-	GameObject* itemListGO = nullptr;		// Game Object were all items are set as a child
-	std::vector<GameObject*> spawnedGOList;
-	std::vector<math::float3> itemsPosTarget;
-	bool spawned = false;
-	bool animate = true;
-	float timer = 0.0f;
-	float seconds = 1.0f;
+	GameObject* itemListGO = nullptr;			// Game Object were all items are set as a child
+	std::vector<GameObject*> spawnedGOList;		// Vector with pointers to all spawned items
+	std::vector<math::float3> itemsPosTarget;	// Vector with difference between target position and start position for each spawned item
+	bool spawned = false;						// Have the items been spawned?
+
+	// Animation variables
+	bool animate = true;						// Spawn the items with animation?
+	float timer = 0.0f;					
+	float animDuration = 1.0f;					// How much time the animation lasts
 };
 
 #endif __LootDropScript_h__
