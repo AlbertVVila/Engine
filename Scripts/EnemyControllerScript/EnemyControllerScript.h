@@ -63,7 +63,7 @@ public:
 	bool IsIdle() const;
 	bool IsStuck() const;
 	void Stop();
-	void LookAt2D(math::float3& position);
+	void LookAt2D(const math::float3& position);
 
 	void OnTriggerEnter(GameObject* go) override;
 

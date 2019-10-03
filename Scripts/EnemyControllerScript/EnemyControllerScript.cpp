@@ -509,7 +509,7 @@ bool EnemyControllerScript::Move(float speed, float& refreshTime, math::float3 p
 		currentWorldControllerScript->changeVelocity(gameobject->UUID, currentSpeed);
 	}
 	currentWorldControllerScript->EnemyMoveRequest(gameobject->UUID, position);
-	gameobject->transform->LookAt(gameobject->transform->movingOrientation);
+	//gameobject->transform->LookAt(gameobject->transform->movingOrientation);
 	return true;
 }
 
@@ -528,7 +528,7 @@ void EnemyControllerScript::Stop()
 	currentWorldControllerScript->StopAgent(gameobject->UUID);
 }
 
-void EnemyControllerScript::LookAt2D(math::float3& position)
+void EnemyControllerScript::LookAt2D(const math::float3& position)
 {
 	math::float3 auxPos = position;
 	auxPos.y = GetPosition().y;
