@@ -326,7 +326,7 @@ private:
 	Text* uiStrengthText = nullptr;
 	Text* uiManaText = nullptr;
 
-	float closestDistToPlayer = 31000.0f;
+	float closestDistToPlayer = 1000.0f;
 	float hubCooldown[9]	  = { 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F };
 	float hubCooldownMax[9] = { 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F };
 	float hubCooldownTimer[9] = { 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F };
