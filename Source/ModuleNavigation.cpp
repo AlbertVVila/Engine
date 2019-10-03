@@ -1646,7 +1646,7 @@ bool ModuleNavigation::FindIntersectionPoint(math::float3 start, math::float3& i
 	return true;
 }
 
-bool ModuleNavigation::IsCursorPointingToNavigableZone(float xPickingCorrection, float yPickingCorrection, float zPickingCorrection) const
+bool ModuleNavigation::IsCursorPointingToNavigableZone(float xPickingCorrection, float yPickingCorrection, float zPickingCorrection, bool player) const
 {
 	//declare mouse position and necessary values to store data
 	float2 mouse((float*)& App->input->GetMousePosition());
@@ -1674,11 +1674,14 @@ bool ModuleNavigation::IsCursorPointingToNavigableZone(float xPickingCorrection,
 	//get all the meshes with the floor tag to intersect with the ray
 	std::vector<GameObject*> floors = App->scene->FindGameObjectsByTag("floor");
 	//prepare the values for the nav mesh query call
-	math::float3 intersectionPos(0.f, 0.f, 0.f);
-	bool found = false;
-	for (int i = 0; i < floors.size() && !found; ++i)
+	math::float3 intersectionPos = line.GetPoint(dist);;
+	if (!player) 
 	{
-		found = floors[i]->Intersects(line, dist, &intersectionPos);
+		bool found = false;
+		for (int i = 0; i < floors.size() && !found; ++i)
+		{
+			found = floors[i]->Intersects(line, dist, &intersectionPos);
+		}
 	}
 
 	dtQueryFilter filter;

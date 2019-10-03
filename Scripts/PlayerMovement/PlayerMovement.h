@@ -184,6 +184,7 @@ public:
 	bool IsAttacking() const;
 	bool IsMoving() const;
 	bool IsMovingToAttack() const;
+	bool CorrectMousePosition() const;
 	bool IsPressingMouse1() const;
 	bool IsUsingRightClick() const;
 	bool IsUsingOne() const;

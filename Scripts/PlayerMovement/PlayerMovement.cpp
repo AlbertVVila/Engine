@@ -1244,23 +1244,25 @@ bool PlayerMovement::IsMoving() const
 	return (IsPressingMouse1() && !IsAttacking() && !IsMovingToAttack() && (!IsMovingToItem() || (IsMovingToItem() && stoppedGoingToItem)));
 }
 
-float PlayerMovement::DistPlayerToMouse() const
+//this functionchecks the mouse position, which includes 2 things:
+//1- the distance between the mouse and the player (if both point to the same position, FALSe)
+//2- if the cursor points to a navigable zone
+bool PlayerMovement::CorrectMousePosition() const 
 {
 	math::float3 destinationPoint;
 	App->navigation->FindIntersectionPoint(gameobject->transform->position, destinationPoint);
 	float dist = destinationPoint.DistanceSq(gameobject->transform->position);
-	return dist;
+	return (dist > closestDistToPlayer && App->navigation->IsCursorPointingToNavigableZone(0.f, 1000.f, 0.f, true));
 }
 
 bool PlayerMovement::IsPressingMouse1() const
 {
 	math::float3 temp;
-	
 	return (
 		(App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(true, false)) ||
 		(currentState != nullptr && currentState->playerWalking && !currentState->playerWalkingToHit) ||
 		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(true, false) && !App->scene->Intersects("PlayerMesh", false, temp) &&
-		(currentState != nullptr && currentState->playerWalking || DistPlayerToMouse() > closestDistToPlayer)));
+		(CorrectMousePosition())));
 
 }
 
