@@ -1452,9 +1452,15 @@ bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vecto
 			float2 s1, e1;
 			s1.x = start.x; s1.y = start.z;
 			e1.x = end.x; e1.y = end.z;
+			//for a certain check we need the actual dist in a more precise manner
+			float duringPathDistance = 0.f;
 			for (size_t i = 0; i < smoothNb; i++)
 			{
 				path.push_back(float3(smoothPath[i * 3], smoothPath[i * 3 + 1], smoothPath[i * 3 + 2]));
+				if (i > 0)
+				{
+					duringPathDistance += GetXZDistanceWithoutSQ(path[path.size()-2], path[path.size() - 1]);
+				}
 				//filling debugging variable if flag is activated
 				if (App->renderer->pathfindingDebug)
 				{
@@ -1483,7 +1489,7 @@ bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vecto
 				type = PathFindType::NODODGE;
 				done = false;
 			}
-			if (afterPathDistance == 0.f)
+			if (duringPathDistance == 0.f)
 			{
 				return false;
 			}
