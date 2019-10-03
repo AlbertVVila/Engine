@@ -56,6 +56,7 @@ class BossStateDeath;
 class BossStateNotActive;
 class BossStateActivated;
 class BossStateInterPhase;
+class BossStateSecondInterPhase;
 class BossStateSummonArmy;
 class BossStateCutScene;
 class EnemyControllerScript;
@@ -93,6 +94,7 @@ public:
 	BossStatePreCast* precast = nullptr;
 	BossStateSummonArmy* summonArmy = nullptr;
 	BossStateInterPhase* interPhase = nullptr;
+	BossStateSecondInterPhase* secondInterphase = nullptr;
 	BossStateDeath* death = nullptr;
 	BossStateCast* cast = nullptr;
 	BossStateCutScene* cutscene = nullptr;
@@ -174,6 +176,12 @@ public:
 	math::float3 firstSpawnLocation = math::float3::zero;
 	math::float3 secondSpawnLocation = math::float3::zero;
 
+	//Variables for the first interphase
+	float firstInterphaseDuration = 0.0f;
+	math::float3 firstInterphasePosition = math::float3::zero;
+	math::float3 pointToLookAtFirstInterphase = math::float3::zero;
+	float relocateInterPhaseTime = 0.0f;
+
 	//Skulls in second phase
 	int numberSkullsSecondTotal = 8;
 	float timeBetweenSkullsSecond = 0.0f;
@@ -191,6 +199,8 @@ public:
 public:
 		math::Quat InterpolateQuat(const math::Quat first, const math::Quat second, float lambda);
 		math::float3 InterpolateFloat3(const math::float3 first, const math::float3 second, float lambda);
+
+		void ResetVariables();
 
 private:
 	std::vector<BossState*> bossStates;

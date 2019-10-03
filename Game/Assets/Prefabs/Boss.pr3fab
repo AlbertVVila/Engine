@@ -33,6 +33,7 @@
             "isPrefab": 1,
             "isPrefabSync": 1,
             "prefabUID": 3166434820,
+            "prefabTimeStamp": 1570042622,
             "Components": [
                 {
                     "Type": 0,
@@ -80,7 +81,7 @@
             ]
         },
         {
-            "UID": 2399448192,
+            "UID": 2210171138,
             "ParentUID": 17377664,
             "Name": "Main",
             "Tag": "Boss",
@@ -119,7 +120,7 @@
                     "Position": [
                         530.9488525390625,
                         629.8148803710938,
-                        -3870.121826171875
+                        -3870.77294921875
                     ],
                     "Rotation": [
                         0.0,
@@ -149,7 +150,7 @@
                         0.0,
                         0.0,
                         1.5,
-                        -3870.121826171875,
+                        -3870.77294921875,
                         0.0,
                         0.0,
                         0.0,
@@ -281,6 +282,7 @@
                             448.0,
                             -2800.0
                         ],
+                        "firstInterphaseDuration": 4.0,
                         "northSecondSkull": [
                             530.0,
                             740.0,
@@ -354,17 +356,29 @@
                             1078.0,
                             -2920.0
                         ],
+                        "firstInterphaseDuration": 4.0,
+                        "firstInterphasePosition": [
+                            531.0,
+                            630.0,
+                            -3870.0
+                        ],
+                        "pointToLookAtFirstInterphase": [
+                            531.0,
+                            630.0,
+                            -1583.0
+                        ],
                         "cutsceneDoorDuration": 4.0,
                         "cutsceneBossDuration": 4.0,
                         "cutsceneBackToPlayerDuration": 5.0,
-                        "cutsceneDoorRisingDuration": 2.0
+                        "cutsceneDoorRisingDuration": 2.0,
+                        "relocateInterPhaseTime": 3.0
                     }
                 }
             ]
         },
         {
-            "UID": 523591386,
-            "ParentUID": 2399448192,
+            "UID": 1044520944,
+            "ParentUID": 2210171138,
             "Name": "Empty",
             "Tag": "Default",
             "Static": 0,
@@ -432,7 +446,7 @@
                         0.0,
                         0.0,
                         0.46682435274124148,
-                        -3878.341064453125,
+                        -3878.9921875,
                         0.0,
                         0.0,
                         0.0,
@@ -458,8 +472,8 @@
             ]
         },
         {
-            "UID": 797441131,
-            "ParentUID": 2399448192,
+            "UID": 3917896782,
+            "ParentUID": 2210171138,
             "Name": "Point",
             "Tag": "Default",
             "Static": 0,
@@ -527,7 +541,7 @@
                         0.0,
                         -1.3011491298675538,
                         0.7463344931602478,
-                        -3668.72900390625,
+                        -3669.3798828125,
                         0.0,
                         0.0,
                         0.0,
