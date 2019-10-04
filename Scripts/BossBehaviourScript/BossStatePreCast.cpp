@@ -2,10 +2,12 @@
 
 #include "BossBehaviourScript.h"
 #include "EnemyControllerScript/EnemyControllerScript.h"
+#include "ComponentAnimation.h"
 
 BossStatePreCast::BossStatePreCast(BossBehaviourScript* AIBoss)
 {
 	boss = AIBoss;
+	trigger = "PrecastNL";
 }
 
 
@@ -28,6 +30,6 @@ void BossStatePreCast::Update()
 
 void BossStatePreCast::Enter()
 {
-	
-	duration = 4.0f;
+	boss->anim->SendTriggerToStateMachine(trigger.c_str());
+	duration = boss->anim->GetDurationFromClip();
 }

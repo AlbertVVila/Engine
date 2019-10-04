@@ -62,6 +62,7 @@ class BossStateCutScene;
 class EnemyControllerScript;
 class PlayerMovement;
 class GameLoop;
+class ComponentAnimation;
 
 class BossBehaviourScript_API BossBehaviourScript : public Script
 {
@@ -100,6 +101,8 @@ public:
 	BossStateCutScene* cutscene = nullptr;
 
 public:
+	ComponentAnimation* anim = nullptr;
+
 	GameObject* gameLoopGO = nullptr;
 	GameLoop* gLoop = nullptr;
 

@@ -4,12 +4,15 @@
 
 #include "BossStateCast.h"
 
+#include "ComponentAnimation.h"
+
 #include "BossBehaviourScript.h"
 #include "EnemyControllerScript/EnemyControllerScript.h"
 
 BossStateCast::BossStateCast(BossBehaviourScript* AIBoss)
 {
 	boss = AIBoss;
+	trigger = "Cast";
 }
 
 
@@ -55,6 +58,8 @@ void BossStateCast::Enter()
 		break;
 	}
 	//I can input here different durations for each skill
+
+	boss->anim->SendTriggerToStateMachine(trigger.c_str());
 }
 
 BossSkill BossStateCast::SelectSkillToUse()

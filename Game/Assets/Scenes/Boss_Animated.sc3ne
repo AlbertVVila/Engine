@@ -11385,85 +11385,6 @@
             ]
         },
         {
-            "UID": 1013902435,
-            "ParentUID": 3876349348,
-            "Name": "Maya_Boss_23:Maya_Boss_13:Neta_Boss",
-            "Tag": "Default",
-            "Static": 0,
-            "ActiveInHierarchy": 1,
-            "ActiveSelf": 1,
-            "isBoneRoot": 0,
-            "baseState": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "Navigable": 0,
-            "No Walkable": 0,
-            "openInHierarchy": 1,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
-            "Components": [
-                {
-                    "Type": 0,
-                    "Enabled": 1,
-                    "Position": [
-                        0.0,
-                        0.0,
-                        0.0
-                    ],
-                    "Rotation": [
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ],
-                    "Euler": [
-                        -0.0,
-                        0.0,
-                        -0.0
-                    ],
-                    "Scale": [
-                        1.0,
-                        1.0,
-                        1.0
-                    ],
-                    "Global": [
-                        1.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        0.0,
-                        1.0
-                    ]
-                }
-            ]
-        },
-        {
             "UID": 3912003029,
             "ParentUID": 3876349348,
             "Name": "mesh",
@@ -11501,7 +11422,7 @@
                     "Type": 1,
                     "Enabled": 1,
                     "meshUID": 2500217147,
-                    "materialUID": 735767494,
+                    "materialUID": 2160207956,
                     "castShadows": 0,
                     "useAlpha": 0,
                     "highlighted": 0,

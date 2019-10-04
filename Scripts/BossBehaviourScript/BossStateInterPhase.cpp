@@ -7,6 +7,7 @@
 
 #include "BossBehaviourScript.h"
 #include "EnemyControllerScript/EnemyControllerScript.h"
+#include "ComponentAnimation.h"
 
 BossStateInterPhase::BossStateInterPhase(BossBehaviourScript* AIBoss)
 {
@@ -70,9 +71,13 @@ void BossStateInterPhase::Update()
 				render->dissolveAmount -= boss->App->time->gameDeltaTime;
 			}
 		}
+		boss->enemyController->LookAt2D(boss->pointToLookAtFirstInterphase);
 
 		break;
 	case IpState::Powerup:
+
+		boss->anim->SendTriggerToStateMachine("PowerUp");
+
 		//this could be better animation driven, but w/e
 		if (powerUpTimer < boss->firstInterphaseDuration)
 		{
@@ -82,6 +87,7 @@ void BossStateInterPhase::Update()
 		{
 			powerUpTimer += boss->App->time->gameDeltaTime;
 		}
+		boss->enemyController->LookAt2D(boss->pointToLookAtFirstInterphase);
 
 		break;
 
@@ -92,12 +98,13 @@ void BossStateInterPhase::Update()
 
 		float lambda = relocateTimer / boss->relocateInterPhaseTime;
 
-		boss->InterpolateFloat3(boss->firstInterphasePosition, boss->topTP, lambda);
+		boss->enemyController->SetPosition(boss->InterpolateFloat3(boss->firstInterphasePosition, boss->topTP, lambda));
 
 		if (lambda >= 1.0f)
 		{
 			ipState = IpState::Finished;
 		}
+		boss->enemyController->LookAt2D(boss->pointToLookAtFirstInterphase);
 	}
 		break;
 
