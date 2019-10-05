@@ -7889,9 +7889,9 @@
             ]
         },
         {
-            "UID": 4267448783,
+            "UID": 38054932,
             "ParentUID": 1776634627,
-            "Name": "IntroSkipText",
+            "Name": "IntroSkipBackground",
             "Tag": "Default",
             "Static": 0,
             "ActiveInHierarchy": 0,
@@ -7926,21 +7926,94 @@
                     "Type": 5,
                     "Enabled": 1,
                     "Position": [
-                        -236.5,
-                        53.400001525878909
+                        -201.60000610351563,
+                        53.099998474121097
+                    ],
+                    "Size": [
+                        400.0,
+                        80.0
+                    ],
+                    "Anchor": 8,
+                    "Stretch": 3
+                },
+                {
+                    "Type": 7,
+                    "Enabled": 1,
+                    "textureUID": 1507220943,
+                    "textureName": "PressAnykeyBackground",
+                    "color": [
+                        1.0,
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "FlipVertical": 0,
+                    "FlipHorizontal": 0,
+                    "isMasked": 0,
+                    "maskAmount": 100,
+                    "isMaskHorizontal": 0,
+                    "hoverDetectionMouse1": 1,
+                    "hoverDetectionMouse3": 1,
+                    "UIOrder": 0,
+                    "videoPath": "Intro.mp4",
+                    "fps": 24.0,
+                    "loop": 0
+                }
+            ]
+        },
+        {
+            "UID": 4267448783,
+            "ParentUID": 38054932,
+            "Name": "IntroSkipText",
+            "Tag": "Default",
+            "Static": 0,
+            "ActiveInHierarchy": 0,
+            "ActiveSelf": 1,
+            "isBoneRoot": 0,
+            "baseState": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "Navigable": 0,
+            "No Walkable": 0,
+            "openInHierarchy": 1,
+            "isPrefab": 0,
+            "isPrefabSync": 0,
+            "prefabUID": 0,
+            "Components": [
+                {
+                    "Type": 5,
+                    "Enabled": 1,
+                    "Position": [
+                        -316.0,
+                        46.599998474121097
                     ],
                     "Size": [
                         100.0,
                         100.0
                     ],
-                    "Anchor": 7,
+                    "Anchor": 8,
                     "Stretch": 3
                 },
                 {
                     "Type": 6,
                     "Enabled": 1,
                     "FontSize": 64.0,
-                    "text": "Press SPACE again to skip the intro",
+                    "text": "Press any key to skip",
                     "font": "Fonts/Vision-Regular.ttf",
                     "color": [
                         1.0,

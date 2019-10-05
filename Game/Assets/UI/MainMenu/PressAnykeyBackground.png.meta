@@ -1,0 +1,11 @@
+{
+    "Texture": {
+        "metaVersion": 2,
+        "timeCreated": 1570270306,
+        "GUID": 1507220943,
+        "Name": "PressAnykeyBackground",
+        "File": "Assets/UI/MainMenu/PressAnykeyBackground.png",
+        "ExportedFile": "Library/Textures/1507220943.dds",
+        "DX compresion": 1802
+    }
+}

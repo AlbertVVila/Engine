@@ -40,7 +40,7 @@ void LoopStateMenu::Update()
 	{
 		videoTimer += gLoop->App->time->gameDeltaTime;
 
-		if (gLoop->App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		if (gLoop->App->input->AnyKeyPressed())
 		{
 			if (gLoop->introSkipTextGO->isActive())
 			{
