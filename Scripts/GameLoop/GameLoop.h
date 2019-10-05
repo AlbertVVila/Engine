@@ -174,6 +174,7 @@ public:
 	GameObject* introVideoGO = nullptr;
 	GameObject* outroVideoGO = nullptr;
 	GameObject* introSkipTextGO = nullptr;
+	GameObject* outroSkipTextGO = nullptr;
 	std::vector<GameObject*> sunHoverGO;
 
 	//BBOX
