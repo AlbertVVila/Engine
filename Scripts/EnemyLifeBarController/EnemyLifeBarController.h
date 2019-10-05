@@ -41,12 +41,10 @@ private:
 	GameObject* boneRight = nullptr;
 	GameObject* boneLeft = nullptr;
 	GameObject* skull = nullptr;
-	GameObject* enemyLife = nullptr;
 	bool draw = false;
 
 	ComponentImage* lifeImage = nullptr;
 
-	bool draw = false;
 };
 
 extern "C" EnemyLifeBarController_API Script* CreateScript();
