@@ -1,7 +1,7 @@
 {
     "Scene": {
         "metaVersion": 2,
-        "timeCreated": 1568580553,
+        "timeCreated": 1567530661,
         "GUID": 1837716550,
         "Name": "FlyingEnemy",
         "File": "Assets/Scenes/FlyingEnemy.sc3ne",
