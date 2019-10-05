@@ -3,6 +3,9 @@
 #include "RangeEnemyAIScript.h"
 #include "EnemyControllerScript.h"
 
+#include "GameObject.h"
+#include "ComponentTransform.h"
+
 #define START_POS_OFFSET  20.f
 
 EnemyStateReturnToStart::EnemyStateReturnToStart(RangeEnemyAIScript* AIScript)
@@ -37,4 +40,5 @@ void EnemyStateReturnToStart::Update()
 {
 	// Go back to start position
 	enemy->enemyController->Move(enemy->returnSpeed, refreshTime, enemy->startPosition, enemyPath);
+	enemy->gameobject->transform->LookAt(enemy->startPosition);
 }

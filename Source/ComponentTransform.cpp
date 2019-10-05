@@ -239,7 +239,7 @@ void ComponentTransform::SetLocalTransform(const math::float4x4& newLocal, const
 	RotationToEuler();
 }
 
-void ComponentTransform::SetPosition(const math::float3 & newPosition)
+void ComponentTransform::SetPosition(const math::float3& newPosition)
 {
 	position = newPosition;
 	gameobject->movedFlag = true;
@@ -272,6 +272,12 @@ void ComponentTransform::SetRotation(const math::Quat& newRotation)
 	UpdateTransform();
 }
 
+void ComponentTransform::SetScale(const math::float3& newScale)
+{
+	scale = newScale;
+	gameobject->movedFlag = true;
+}
+
 ENGINE_API void ComponentTransform::Scale(float scalar)
 {
 	scale *= scalar;
@@ -281,6 +287,21 @@ ENGINE_API void ComponentTransform::Scale(float scalar)
 math::Quat ComponentTransform::GetRotation()
 {
 	return rotation;
+}
+
+ENGINE_API math::Quat ComponentTransform::GetGlobalRotation()
+{
+	if (gameobject->movedFlag)
+	{
+		float4x4 newlocal = math::float4x4::FromTRS(position, rotation, scale);
+		if (gameobject->parent != nullptr)
+		{
+			return gameobject->parent->GetGlobalTransform().RotatePart().ToQuat()
+				* newlocal.RotatePart().ToQuat();
+		}
+		return newlocal.RotatePart().ToQuat();
+	}
+	return global.RotatePart().ToQuat();
 }
 
 math::float3 ComponentTransform::GetGlobalPosition()

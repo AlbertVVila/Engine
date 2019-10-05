@@ -17,13 +17,13 @@ class ComponentBoxTrigger;
 class DamageController;
 class EnemyLifeBarController;
 class PlayerMovement;
-class EnemyLoot;
 class ExperienceController;
 class ResourceMaterial;
 class CombatAudioEvents;
+class LootDropScript;
+class WorldControllerScript;
 
 enum class EnemyType {SKELETON, MINER, SORCERER, SPINNER, BANDOLERO};
-
 
 class EnemyControllerScript_API EnemyControllerScript : public Script
 {
@@ -44,6 +44,7 @@ public:
 	void TakeDamage(unsigned damage, int type = 1);
 	int GetHealth() const { return actualHealth; }
 	int GetMaxHealth() const { return maxHealth; }
+	int IsDeadCritOrSkill() const { return isDeadByCritOrSkill; } //0 normal - 1 crit or skill
 
 	inline math::float3 GetPosition() const;					// Get position of the enemy (GO with this script attached)
 	inline math::Quat GetRotation() const;						// Get rotation of the enemy (GO with this script attached)
@@ -77,8 +78,6 @@ public:
 	DamageController* damageController = nullptr;
 	EnemyLifeBarController* enemyLifeBar = nullptr;
 
-	EnemyLoot* enemyLoot = nullptr;
-
 	ExperienceController* experienceController = nullptr;
 
 	
@@ -105,11 +104,20 @@ private:
 	int actualHealth = 20;
 	int maxHealth = 20;
 	int experience = 20;
+	mutable float currentSpeed = 100.f;
+	int isDeadByCritOrSkill = 0;
 
 	float hitColorDuration = 0.2f;
 	float hitColorTimer = 0.f;
 	bool enemyHit = false;
 
+	// Loot variables
+	LootDropScript* lootDrop = nullptr;		// If != nullptr on enemy death will drop item(s) (The variable is set automatically if the LootDropScript is found on Start)
+	WorldControllerScript* currentWorldControllerScript = nullptr;
+	bool lootDropped = false;
+	float deathTimer = 0.0f;				
+	float lootDelay = 1.0f;					// Time since enemy died untill loot is spawned
+	float lootRadius = 100.0f;				// Distance from enemy position to drop Items around (only if Items to drop > 1)
 };
 
 extern "C" EnemyControllerScript_API Script* CreateScript();

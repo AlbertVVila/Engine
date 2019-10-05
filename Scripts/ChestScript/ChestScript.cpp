@@ -2,11 +2,14 @@
 
 #include "Application.h"
 #include "ModuleScene.h"
+#include "ModuleTime.h"
 
 #include "GameObject.h"
 #include "ComponentTransform.h"
 #include "ComponentAnimation.h"
 #include "ComponentRenderer.h"
+
+#include "LootDropScript.h"
 
 #include "imgui.h"
 #include "JSON.h"
@@ -33,20 +36,48 @@ void ChestScript::Start()
 	if(myRender != nullptr)
 		myBbox = &App->scene->FindGameObjectByName(myBboxName.c_str(), gameobject)->bbox;
 	
-
+	// Look for LootDropScript
+	lootDrop = gameobject->GetComponent<LootDropScript>();
+	if (lootDrop != nullptr)
+		lootDrop->positionOffset = lootPosition;
 }
 
 void ChestScript::Update()
 {
-	// Check collision with player
-	if (!opened)
+	switch (state)
 	{
+	case chestState::CLOSED:
+		// Check collision with player
 		if (myBbox != nullptr && myBbox->Intersects(*playerBbox))
 		{
 			// Open chest:
 			anim->SendTriggerToStateMachine("Open");
-			opened = true;
+			if (lootDrop != nullptr)
+				state = chestState::OPENING;
+			else
+				state = chestState::OPENED;
+			
 		}
+		break;
+	case chestState::OPENING:
+		if (chestTimer > lootDelay)
+		{
+			// If chest has more than one item drop them in circle
+			if (lootDrop->itemList.size() > 1)
+				lootDrop->DropItemsInSemiCircle(lootRadius);
+			else
+				lootDrop->DropItems();
+
+			state = chestState::OPENED;
+		}
+		else
+		{
+			chestTimer += App->time->gameDeltaTime;
+		}
+		break;
+	default:
+	case chestState::OPENED:
+		break;
 	}
 }
 
@@ -58,7 +89,13 @@ void ChestScript::Expose(ImGuiContext* context)
 	myBboxName = bboxName;
 	delete[] bboxName;
 
-	ImGui::Checkbox("Opened", &opened);
+	switch (state)
+	{
+	case chestState::CLOSED:	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Closed");	break;
+	case chestState::OPENING:	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Opening");	break;
+	case chestState::OPENED:	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Opened");	break;
+	default: break;
+	}
 
 	ImGui::Separator();
 	ImGui::Text("Player:");
@@ -79,6 +116,11 @@ void ChestScript::Expose(ImGuiContext* context)
 	ImGui::InputText("GO to spawn Name", spawnName, 64);
 	spawnGOName = spawnName;
 	delete[] spawnName;
+
+	ImGui::Text("Loot Variables:");
+	ImGui::DragFloat("Loot Delay", &lootDelay);
+	ImGui::DragFloat3("Loot Position", (float*)&lootPosition);
+	ImGui::DragFloat("Loot Radius", &lootRadius);
 }
 
 void ChestScript::Serialize(JSON_value* json) const
@@ -88,7 +130,10 @@ void ChestScript::Serialize(JSON_value* json) const
 	json->AddString("playerBboxName", playerBboxName.c_str());
 	json->AddString("myBboxName", myBboxName.c_str());
 	json->AddString("spawnGOName", spawnGOName.c_str());
-	json->AddUint("opened", opened);
+	json->AddUint("state", (unsigned)state);
+	json->AddFloat3("lootPosition", lootPosition);
+	json->AddFloat("lootDelay", lootDelay);
+	json->AddFloat("lootRadius", lootRadius);
 }
 
 void ChestScript::DeSerialize(JSON_value* json)
@@ -98,5 +143,8 @@ void ChestScript::DeSerialize(JSON_value* json)
 	playerBboxName = json->GetString("playerBboxName");
 	myBboxName = json->GetString("myBboxName");
 	spawnGOName = json->GetString("spawnGOName");
-	opened = json->GetUint("opened");
+	state = (chestState)json->GetUint("opened");
+	lootPosition = json->GetFloat3("lootPosition");
+	lootDelay = json->GetFloat("lootDelay", 2.5f);
+	lootRadius = json->GetFloat("lootRadius", 100.0f);
 }

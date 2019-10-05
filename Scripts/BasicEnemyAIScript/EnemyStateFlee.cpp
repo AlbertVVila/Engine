@@ -3,6 +3,9 @@
 #include "BasicEnemyAIScript.h"
 #include "EnemyControllerScript.h"
 
+#include "GameObject.h"
+#include "ComponentTransform.h"
+
 EnemyStateFlee::EnemyStateFlee(BasicEnemyAIScript* AIScript)
 {
 	enemy = AIScript;
@@ -53,6 +56,8 @@ void EnemyStateFlee::MoveAwayFromPlayer()
 	newPosition.x = ((float)playerPos.x + x * (1000.0f));
 	newPosition.y = enemyPos.y;
 	newPosition.z = ((float)playerPos.z + z * (1000.0f));
+
+	//enemy->gameobject->transform->LookAt(newPosition);
 
 	// Move to that point
 	enemy->enemyController->Move(enemy->chaseSpeed, refreshTime, newPosition, enemyPath);

@@ -130,7 +130,7 @@ void ItemPicker::Expose(ImGuiContext* context)
 		bool none_selected = (itemMesh == nullptr);
 		if (ImGui::Selectable(None, none_selected))
 		{
-			item.meshUID = 0u;
+			item->meshUID = 0u;
 			itemMesh = nullptr;
 		}
 		if (none_selected)
@@ -146,7 +146,7 @@ void ItemPicker::Expose(ImGuiContext* context)
 					unsigned meshUID = App->resManager->FindByName(meshesList[n].c_str(), TYPE::MESH);
 					if (meshUID != 0u)
 					{
-						item.meshUID = meshUID;
+						item->meshUID = meshUID;
 						itemMesh = (ResourceMesh*)App->resManager->GetWithoutLoad(meshUID);
 					}
 				}
@@ -183,7 +183,7 @@ void ItemPicker::Expose(ImGuiContext* context)
 					unsigned materialUID = App->resManager->FindByName(materialsList[n].c_str(), TYPE::MATERIAL);
 					if (materialUID != 0u)
 					{
-						item.materialUID = materialUID;
+						item->materialUID = materialUID;
 						itemMaterial = (ResourceMaterial*)App->resManager->GetWithoutLoad(materialUID);
 					}
 				}
@@ -200,11 +200,17 @@ void ItemPicker::Expose(ImGuiContext* context)
 		materialsList.clear();
 	}
 
-	item.stats.Expose("Item Stats");
+	item->stats.Expose("Item Stats");
 }
 
 void ItemPicker::Start()
 {
+	if (item == nullptr)
+	{
+		// Create Item
+		item = new Item();
+	}
+
 	inventoryScript = App->scene->FindGameObjectByName("Inventory")->GetComponent<InventoryScript>();
 	GameObject* playerGO = App->scene->FindGameObjectByName("Player");
 
@@ -215,10 +221,10 @@ void ItemPicker::Start()
 
 	myBboxName = gameobject->name;
 
-	item.name = this->name;
-	item.description = this->description;
-	item.sprite = this->sprite;
-	item.type = this->type;
+	item->name = this->name;
+	item->description = this->description;
+	item->sprite = this->sprite;
+	item->type = this->type;
 
 	GameObject* GOtemp = App->scene->FindGameObjectByName("itemPickedAudio");
 	if (GOtemp != nullptr)
@@ -366,16 +372,16 @@ void ItemPicker::Serialize(JSON_value* json) const
 	json->AddString("sprite", sprite.c_str());
 	json->AddInt("type", (int)type);
 	json->AddInt("rarity", (int)rarity);
-	json->AddInt("isEquipped", (int)item.isEquipped);
-	json->AddFloat("health", item.stats.health);
-	json->AddFloat("mana", item.stats.mana);
-	json->AddInt("strength", item.stats.strength);
-	json->AddInt("dexterity", item.stats.dexterity);
-	json->AddFloat("hpRegen", item.stats.hpRegen);
-	json->AddFloat("manaRegen", item.stats.manaRegen);
+	json->AddInt("isEquipped", (int)item->isEquipped);
+	json->AddFloat("health", item->stats.health);
+	json->AddFloat("mana", item->stats.mana);
+	json->AddInt("strength", item->stats.strength);
+	json->AddInt("dexterity", item->stats.dexterity);
+	json->AddFloat("hpRegen", item->stats.hpRegen);
+	json->AddFloat("manaRegen", item->stats.manaRegen);
 	json->AddString("itemCursor", itemCursor.c_str());
-	json->AddUint("meshUID", item.meshUID);
-	json->AddUint("materialUID", item.materialUID);
+	json->AddUint("meshUID", item->meshUID);
+	json->AddUint("materialUID", item->materialUID);
 }
 
 void ItemPicker::DeSerialize(JSON_value* json)
@@ -385,20 +391,26 @@ void ItemPicker::DeSerialize(JSON_value* json)
 	sprite = json->GetString("sprite");
 	type = (ItemType)json->GetInt("type");
 	rarity = (ItemRarity)json->GetInt("rarity");
-	item.isEquipped = json->GetInt("isEquipped");
-	item.stats.health = json->GetFloat("health");
-	item.stats.mana = json->GetFloat("mana");
-	item.stats.strength = json->GetInt("strength");
-	item.stats.dexterity = json->GetInt("dexterity");
-	item.stats.hpRegen = json->GetFloat("hpRegen");
-	item.stats.manaRegen = json->GetFloat("manaRegen");
+
+	if (item == nullptr)
+	{
+		// Create Item
+		item = new Item();
+	}
+	item->isEquipped = json->GetInt("isEquipped");
+	item->stats.health = json->GetFloat("health");
+	item->stats.mana = json->GetFloat("mana");
+	item->stats.strength = json->GetInt("strength");
+	item->stats.dexterity = json->GetInt("dexterity");
+	item->stats.hpRegen = json->GetFloat("hpRegen");
+	item->stats.manaRegen = json->GetFloat("manaRegen");
 	itemCursor = json->GetString("itemCursor", "Pick.cur");
 
 	// Mesh
 	unsigned resourceMeshUID = json->GetUint("meshUID");
 	if (resourceMeshUID > 0u)
 	{
-		item.meshUID = resourceMeshUID;
+		item->meshUID = resourceMeshUID;
 		itemMesh =(ResourceMesh*)App->resManager->GetWithoutLoad(resourceMeshUID);
 	}
 
@@ -406,14 +418,14 @@ void ItemPicker::DeSerialize(JSON_value* json)
 	unsigned resourceMaterialUID = json->GetUint("materialUID");
 	if (resourceMaterialUID > 0u)
 	{
-		item.materialUID = resourceMaterialUID;
+		item->materialUID = resourceMaterialUID;
 		itemMaterial = (ResourceMaterial*)App->resManager->GetWithoutLoad(resourceMaterialUID);
 	}
 }
 
 void ItemPicker::SetItem(ItemType type, std::string name, std::string sprite)
 {
-	item.name = name;
-	item.sprite = sprite;
-	item.type = type;
+	item->name = name;
+	item->sprite = sprite;
+	item->type = type;
 }

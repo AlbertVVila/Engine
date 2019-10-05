@@ -4,6 +4,7 @@
 #include "Module.h"
 
 #include <vector>
+#include <memory>
 #include "Math/float3.h"
 #include "MathGeoLib/Geometry/AABB.h"
 #include "Math/MathConstants.h"
@@ -32,6 +33,11 @@ class rcPolyMeshDetail;
 class dtNavMesh;
 class dtNavMeshQuery;
 class DetourDebugInterface;
+//from detour crowd
+class dtCrowd;
+struct dtCrowdAgentDebugInfo;
+//from obstacle avoidance
+class dtObstacleAvoidanceDebugData;
 
 namespace dd
 {
@@ -73,7 +79,6 @@ ENGINE_API enum class PathFindType
 	NODODGE
 };
 
-
 class ModuleNavigation :
 	public Module
 {
@@ -104,9 +109,14 @@ public:
 	ENGINE_API bool FindClosestPoint2D(math::float3& initial) const;
 	ENGINE_API bool IsValidPosition(math::float3& position) const;
 
+	ENGINE_API bool HighQualityMouseDetection(math::float3* intersection) const;
+	ENGINE_API bool NavMeshPolygonQuery(unsigned int* targetRef, math::float3* endPos, math::float3 correction) const;
+
 	ENGINE_API bool IsCursorPointingToNavigableZone(float xPickingCorrection = 0.0f, float yPickingCorrection = 0.0f, float zPickingCorrection = 0.0f) const;
 
 	ENGINE_API void setPlayerBB(math::AABB bbox);
+
+	ENGINE_API void GenerateNavigabilityFromGOs(std::vector<GameObject*>& vectorGOs);
 
 	void RecalcPath(math::float3 point);
 
@@ -148,6 +158,12 @@ private:
 	
 private:
 	//variables
+
+	friend class crowdTool;
+
+	dtNavMesh* navMesh = nullptr;
+	dtNavMeshQuery* navQuery = nullptr;
+
 	math::AABB playerBB;
 	//char newCharacter[64] = "New Character";//implementation postponed, possibly aborted
 	float characterMaxRadius = 0.6f;
@@ -230,9 +246,6 @@ private:
 	rcPolyMesh* pmesh = nullptr;
 	rcPolyMeshDetail* dmesh = nullptr;
 
-	dtNavMesh* navMesh = nullptr;
-	dtNavMeshQuery* navQuery = nullptr;
-
 	DetourDebugInterface* ddi = nullptr;
 
 	unsigned char* m_triareas = nullptr;
@@ -261,6 +274,42 @@ private:
 	bool drawNavMesh = true;
 
 	bool logDebugPathing = false;
+};
+
+ENGINE_API class crowdTool
+{
+public:
+	//public functions
+	ENGINE_API crowdTool();
+	ENGINE_API ~crowdTool();
+
+	ENGINE_API int AddNewAgent(float* pos, float* vel, float speed = 200.f);
+	ENGINE_API void UpdateCrowd(float dtime);
+	ENGINE_API void MoveRequest(int idAgent, unsigned int targetRef, float* endPos);
+	ENGINE_API void ChangeVelocity(int idAgent, float velocity);
+
+	//public variables
+	static const int MAX_AGENTS = 50;
+
+private:
+	//private functions
+	static void calcVel(float* vel, const float* pos, const float* tgt, const float speed);
+
+	//private variables
+	dtNavMeshQuery* m_navQuery = nullptr;
+	dtNavMesh* m_nav = nullptr;
+	dtCrowd* m_crowd = nullptr;
+
+	float m_targetPos[3];
+
+	dtObstacleAvoidanceDebugData* m_vod = nullptr;
+
+	dtCrowdAgentDebugInfo* debug;
+
+	//struct that should be declared close by if needed, its for debug draw
+	//CrowdToolParams 
+
+	bool m_run = true;
 };
 
 #endif __MODULENAVIGATION_H__

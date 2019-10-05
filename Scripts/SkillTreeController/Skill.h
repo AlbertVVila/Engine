@@ -20,6 +20,7 @@ public:
 	int currentLevel = 0;
 	int nextSkill = -1;
 	int connection = -1;
+	int mana = 0;
 };
 
 #endif

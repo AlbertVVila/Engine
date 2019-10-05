@@ -25,6 +25,11 @@ void EnemyStateAttack::HandleIA()
 	if (timer > duration)
 	{
 		// End attack: Enter cooldown state
+		//but first we make sure it does not move while on cooldown
+		enemy->enemyController->Move(enemy->runSpeed, refreshTime, enemy->enemyController->GetPosition(), enemyPath);
+		//also that it keeps looking at the player
+		enemy->enemyController->gameobject->transform->LookAt(enemy->enemyController->GetPlayerPosition());
+		//now switches state
 		timer = 0.f;
 		enemy->currentState = (EnemyState*)enemy->cooldown;
 	}

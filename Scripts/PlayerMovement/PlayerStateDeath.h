@@ -10,6 +10,7 @@ class PlayerStateDeath :
 {
 public:
 	PlayerStateDeath(PlayerMovement* PM, const char* trigger);
+	void Enter() override;
 	~PlayerStateDeath();
 };
 

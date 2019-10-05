@@ -7,7 +7,7 @@
             1.0
         ],
         "bloomIntenstiy": 1.0,
-        "roughness": 0.0010000000474974514,
+        "roughness": 0.5,
         "specularColor": [
             0.5409836173057556,
             0.540978193283081,

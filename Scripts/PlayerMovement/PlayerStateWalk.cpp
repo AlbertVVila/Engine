@@ -7,12 +7,14 @@
 #include "ModuleNavigation.h"
 #include "ModuleTime.h"
 #include "ModuleWindow.h"
+#include "ModuleUI.h"
 #include "GameObject.h"
 #include "ComponentTransform.h"
 #include "ComponentAnimation.h"
 
 #include "PlayerStateWalk.h"
 #include "PlayerStateIdle.h"
+#include "WorldControllerScript.h"
 
 #include "BasicSkill.h"
 
@@ -29,6 +31,9 @@
 PlayerStateWalk::PlayerStateWalk(PlayerMovement* PM, const char* trigger):
 	PlayerState(PM, trigger)
 {
+	GameObject* worldControllerGO = player->App->scene->FindGameObjectByName("WorldController");
+	worldController = worldControllerGO->GetComponent<WorldControllerScript>();
+	
 }
 
 PlayerStateWalk::~PlayerStateWalk()
@@ -38,8 +43,8 @@ PlayerStateWalk::~PlayerStateWalk()
 void PlayerStateWalk::Update()
 {
 	math:float2 mouse((float*)&player->App->input->GetMousePosition());
-	if (player->App->input->GetMouseButtonDown(1) == KEY_DOWN 
-		|| player->App->input->GetMouseButtonDown(1) == KEY_REPEAT)
+	if ((player->App->input->GetMouseButtonDown(1) == KEY_DOWN 
+		|| player->App->input->GetMouseButtonDown(1) == KEY_REPEAT) && !player->App->ui->UIHovered(true,false))
 	{
 		moveTimer = 0.0f;
 		math::float3 intPos(0.f, 0.f, 0.f);

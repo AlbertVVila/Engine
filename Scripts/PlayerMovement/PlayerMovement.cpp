@@ -699,7 +699,6 @@ void PlayerMovement::Update()
 	if (App->time->gameTimeScale == 0) return;
 
 	deltatime = App->time->gameDeltaTime;
-
 	if (health <= 0.f)
 	{
 		currentState = (PlayerState*)death;
@@ -883,6 +882,12 @@ void PlayerMovement::Equip(const PlayerStats& equipStats, unsigned itemType, uns
 
 	UpdateUIStats();
 
+	// Equip item mesh and material
+	EquipMesh(itemType, meshUID, materialUID);
+}
+
+void PlayerMovement::EquipMesh(unsigned itemType, unsigned meshUID, unsigned materialUID)
+{
 	ResourceMesh* itemMesh = nullptr;
 	ResourceMaterial* itemMaterial = nullptr;
 
@@ -1187,6 +1192,8 @@ void PlayerMovement::OnTriggerExit(GameObject* go)
 
 bool PlayerMovement::IsAttacking() const
 {
+	if (isPlayerDead) return false;
+
 	//if shift is being pressed while mouse 1
 	if (App->input->IsKeyPressed(SDL_SCANCODE_LSHIFT) == KEY_DOWN &&
 		(App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(true, false) ||
@@ -1209,8 +1216,8 @@ bool PlayerMovement::IsAttacking() const
 	}
 	//and finally if enemy is on attack range
 	if (App->scene->enemyHovered.object != nullptr &&
-		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(false, true) ||
-			App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(false, true)) &&
+		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(true, false) ||
+			App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(true, false)) &&
 		Dist <= basicAttackRange)
 	{
 		return true;
@@ -1223,8 +1230,8 @@ bool PlayerMovement::IsMovingToAttack() const
 
 	if (App->scene->enemyHovered.object != nullptr && App->scene->enemyHovered.health > 0 &&
 		!App->input->IsKeyPressed(SDL_SCANCODE_LSHIFT) == KEY_DOWN &&
-		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(false, true) ||
-			App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(false, true)) &&
+		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(true, false) ||
+			App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(true, false)) &&
 		Distance(gameobject->transform->position, App->scene->enemyHovered.object->transform->position) > basicAttackRange)
 	{
 		return true;
@@ -1248,10 +1255,13 @@ float PlayerMovement::DistPlayerToMouse() const
 bool PlayerMovement::IsPressingMouse1() const
 {
 	math::float3 temp;
-	return ((App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(false, true)) ||
-		(currentState->playerWalking && !currentState->playerWalkingToHit) ||
-		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(true, false) && !App->scene->Intersects("PlayerMesh", false, temp) && 
-		(currentState->playerWalking || DistPlayerToMouse() > closestDistToPlayer)));
+	
+	return (
+		(App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(true, false)) ||
+		(currentState != nullptr && currentState->playerWalking && !currentState->playerWalkingToHit) ||
+		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(true, false) && !App->scene->Intersects("PlayerMesh", false, temp) &&
+		(currentState != nullptr && currentState->playerWalking || DistPlayerToMouse() > closestDistToPlayer)));
+
 }
 
 bool PlayerMovement::IsUsingRightClick() const
@@ -1310,6 +1320,11 @@ bool PlayerMovement::IsUsingR() const
 bool PlayerMovement::IsUsingSkill() const
 {
 	return (IsUsingOne() || IsUsingTwo() || IsUsingThree() || IsUsingFour() || IsUsingQ() || IsUsingW() || IsUsingE() || IsUsingR() || IsUsingRightClick());
+}
+
+bool PlayerMovement::IsExecutingSkill() const
+{
+	return currentSkill != nullptr && currentSkill != chain;
 }
 
 void PlayerMovement::PrepareSkills() const

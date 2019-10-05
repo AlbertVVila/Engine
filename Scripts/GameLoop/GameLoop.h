@@ -30,6 +30,7 @@ class SkillTreeController;
 class ExperienceController;
 class JSON_value;
 class ComponentAudioSource;
+class WorldControllerScript;
 
 class LoopState;
 class LoopStateControls;
@@ -90,6 +91,12 @@ public:
 	void ResetPositions();
 
 	bool HasImageHoveredInChildren(const GameObject* go) const;
+
+	//world controller management
+	GameObject* DeleteAllEnemies();
+	void AddPlayerToWorld(GameObject* Player);
+	void navMeshReloaded();
+
 
 	LoopState* currentLoopState = nullptr;
 
@@ -153,6 +160,7 @@ public:
 	GameObject* winWindow = nullptr;
 	GameObject* hudGO = nullptr;
 	GameObject* playerGO = nullptr;
+	GameObject* worldControllerGO = nullptr;
 	GameObject* enemyGO = nullptr;
 	GameObject* creditsGO = nullptr;
 	GameObject* vsyncGO = nullptr;
@@ -178,6 +186,7 @@ public:
 	//Script
 	PlayerMovement* playerScript = nullptr;
 	EnemyMovementScript* enemyMovementScript = nullptr;
+	WorldControllerScript* worldController = nullptr;
 	IntroScript* introScript = nullptr;
 	CreditsScript* creditsScript = nullptr;
 	InventoryScript* inventoryScript = nullptr;
@@ -202,6 +211,7 @@ public:
 	std::string sceneToLoad = "";
 	LoopState* stateAfterLoad = nullptr;
 	bool actionAfterLoad = false;
+	bool bossDeath = false;
 
 	float xPickingCorrection = 0.0f;
 	float yPickingCorrection = 0.0f;

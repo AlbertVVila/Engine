@@ -79,8 +79,8 @@ enum class PlayerMovement_API SkillType
 	DASH,
 	CIRCULAR,
 	BOMB_DROP,
-	SLICE,
 	RAIN,
+	SLICE,
 	STOMP,
 	CHAIN = 10,
 	NONE = 20
@@ -94,6 +94,7 @@ public:
 	void Expose(const char* title);
 	void Serialize(JSON_value* json) const;
 	void DeSerialize(JSON_value* json, BasicSkill* playerSkill);
+
 	bool IsUsable(float playerMana) const { return available && type != SkillType::NONE && (playerMana >= manaCost && cooldownTimer <= 0); }
 	float Use(float minCooldown = 0.f) { cooldownTimer = MAX(cooldown, minCooldown); maxCooldown = MAX(cooldown, minCooldown); return manaCost; }
 	void Update(float deltaTime) { if (cooldownTimer > 0) cooldownTimer -= deltaTime; }
@@ -171,7 +172,8 @@ public:
 	void Damage(float amount);
 
 	void Equip(const PlayerStats& equipStats);
-	void Equip(const PlayerStats& equipStats, unsigned itemType, unsigned meshUID, unsigned materialUID);
+	void Equip(const PlayerStats& equipStats, unsigned itemType, unsigned meshUID, unsigned materialUID);	// Equip item stats and mesh (Calls EquipMesh())
+	void EquipMesh(unsigned itemType, unsigned meshUID, unsigned materialUID);								// Equip only the item mesh
 	void UnEquip(const PlayerStats& equipStats, unsigned itemType);
 	void ConsumeItem(const PlayerStats& equipStats);
 
@@ -193,6 +195,8 @@ public:
 	bool IsUsingE() const;
 	bool IsUsingR() const;
 	bool IsUsingSkill() const;
+	bool IsExecutingSkill() const;
+
 	void PrepareSkills() const;
 
 	void CheckSkillsInput();

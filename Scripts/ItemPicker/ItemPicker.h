@@ -54,7 +54,7 @@ public:
 	std::string description;
 	std::string sprite;
 	ItemType type = ItemType::NONE;
-	Item item;
+	Item* item = nullptr;
 	bool pickedUpViaPlayer = false;
 
 private:
