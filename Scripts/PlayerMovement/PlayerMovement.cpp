@@ -1252,7 +1252,8 @@ bool PlayerMovement::CorrectMousePosition() const
 	math::float3 destinationPoint;
 	App->navigation->FindIntersectionPoint(gameobject->transform->position, destinationPoint);
 	float dist = destinationPoint.DistanceSq(gameobject->transform->position);
-	return (dist > closestDistToPlayer && App->navigation->IsCursorPointingToNavigableZone(0.f, 1000.f, 0.f, true));
+
+	return (dist > closestDistToPlayer && dist < furthestDistToPlayer && App->navigation->IsCursorPointingToNavigableZone(0.f, 1000.f, 0.f, true));
 }
 
 bool PlayerMovement::IsPressingMouse1() const
