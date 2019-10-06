@@ -41,6 +41,17 @@ public:
 	//function to change the velocity of a certain agent
 	void changeVelocity(unsigned int goID, float newVel);
 
+	//function to stop agent
+	void StopAgent(unsigned goID);
+
+	bool IsAgentRequesting(unsigned goID);
+
+	//Function to detect if an agent is idling
+	bool IsAgentIdle(unsigned goID);
+
+	//Function to detect if an agent is stuck in a movement request
+	bool IsAgentStuck(unsigned goID);
+
 	//fuunction that deletes all agents and enemies, and returns the gameObject* of the player
 	GameObject* DeleteEnemiesFromWorld();
 
@@ -69,6 +80,9 @@ private:
 	static const math::float3 defaultCorrection;
 	
 	unsigned playerUID = 0u;
+	
+	int playerAgentsPosition = -1;
+	float* playerPos = nullptr;
 
 };
 

@@ -16,7 +16,8 @@ void BossStateNotActive::HandleIA()
 {
 	if (boss->distanceToPlayer < boss->activationDistance)
 	{
+		boss->currentState = (BossState*)boss->cutscene;
+		
 		boss->PrepareBossFight(boss->floorBossGOs);
-		boss->currentState = (BossState*)boss->summonArmy;
 	}
 }

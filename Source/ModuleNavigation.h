@@ -287,6 +287,10 @@ public:
 	ENGINE_API void UpdateCrowd(float dtime);
 	ENGINE_API void MoveRequest(int idAgent, unsigned int targetRef, float* endPos);
 	ENGINE_API void ChangeVelocity(int idAgent, float velocity);
+	ENGINE_API void StopAgent(int idAgent);
+	ENGINE_API bool IsAgentRequesting(int idAgent);
+	ENGINE_API bool IsAgentIdle(int idAgent);
+	ENGINE_API bool IsAgentStuck(int idAgent);
 
 	//public variables
 	static const int MAX_AGENTS = 50;

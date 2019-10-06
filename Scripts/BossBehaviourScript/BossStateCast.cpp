@@ -49,6 +49,10 @@ void BossStateCast::Enter()
 		duration = 2.0f;
 		boss->bossSummoning = true;
 		break;
+	case BossSkill::Bombs:
+		duration = 2.0f;
+		boss->bossExplosives = true;
+		break;
 	}
 	//I can input here different durations for each skill
 }
@@ -57,48 +61,31 @@ BossSkill BossStateCast::SelectSkillToUse()
 {
 	int randomNumb = rand() % 2;
 
-	BossSkill skillToCast;
+	BossSkill skillToCast = boss->lastUsedSkill;
 
-	switch (boss->lastUsedSkill)
+	while (skillToCast == boss->lastUsedSkill || skillToCast == boss->secondLastUsedSkill)
 	{
-	case BossSkill::None:
-		skillToCast = BossSkill::Teleport;
-		break;
-	case BossSkill::Aoe:
-		if (randomNumb == 0)
+		int randomNumb = rand() % 4;
+
+		switch (randomNumb)
 		{
-			skillToCast = BossSkill::Summon;
-		}
-		else if (randomNumb == 1)
-		{
+		case 0:
 			skillToCast = BossSkill::Teleport;
-		}
-		break;
-	case BossSkill::Summon:
-		if (randomNumb == 0)
-		{
-			skillToCast = BossSkill::Aoe;
-		}
-		else if (randomNumb == 1)
-		{
-			skillToCast = BossSkill::Teleport;
-		}
-		break;
-	case BossSkill::Teleport:
-		if (randomNumb == 0)
-		{
+			break;
+		case 1:
 			skillToCast = BossSkill::Summon;
-		}
-		else if (randomNumb == 1)
-		{
+			break;
+		case 2:
 			skillToCast = BossSkill::Aoe;
+			break;
+		case 3:
+			skillToCast = BossSkill::Bombs;
+			break;
 		}
-		break;
 	}
 
 	boss->secondLastUsedSkill = boss->lastUsedSkill;
 	boss->lastUsedSkill = skillToCast;
 
 	return skillToCast;
-	
 }

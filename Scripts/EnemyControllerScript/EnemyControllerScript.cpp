@@ -42,7 +42,7 @@ void EnemyControllerScript::Start()
 	//add the enemy to the world controller script
 	//this should be called everytime levels are switched
 	
-	if (gameobject->name != "Empty")
+	if (gameobject->tag != "Boss")
 	{
 		currentWorldControllerScript = App->scene->FindGameObjectByName("WorldController")->GetComponent<WorldControllerScript>();
 		currentWorldControllerScript->addEnemy(gameobject);
@@ -443,7 +443,7 @@ inline math::float3 EnemyControllerScript::GetPosition() const
 inline math::Quat EnemyControllerScript::GetRotation() const
 {
 	assert(gameobject->transform != nullptr);
-	return gameobject->transform->GetRotation();
+	return gameobject->transform->GetGlobalRotation();
 }
 
 inline math::float3 EnemyControllerScript::GetPlayerPosition() const
@@ -499,7 +499,7 @@ void EnemyControllerScript::Move(float speed, math::float3& direction) const
 	gameobject->transform->SetPosition(gameobject->transform->GetPosition() + movement);
 }
 
-void EnemyControllerScript::Move(float speed, float& refreshTime, math::float3 position, std::vector<float3>& path) const
+bool EnemyControllerScript::Move(float speed, float& refreshTime, math::float3 position, std::vector<float3>& path) const
 {
 	if (speed != currentSpeed)
 	{
@@ -509,13 +509,30 @@ void EnemyControllerScript::Move(float speed, float& refreshTime, math::float3 p
 		currentWorldControllerScript->changeVelocity(gameobject->UUID, currentSpeed);
 	}
 	currentWorldControllerScript->EnemyMoveRequest(gameobject->UUID, position);
+	//gameobject->transform->LookAt(gameobject->transform->movingOrientation);
+	return true;
 }
 
-void EnemyControllerScript::LookAt2D(math::float3& position)
+bool EnemyControllerScript::IsIdle() const
+{
+	return currentWorldControllerScript->IsAgentIdle(gameobject->UUID);
+}
+
+bool EnemyControllerScript::IsStuck() const
+{
+	return currentWorldControllerScript->IsAgentStuck(gameobject->UUID);
+}
+
+void EnemyControllerScript::Stop()
+{
+	currentWorldControllerScript->StopAgent(gameobject->UUID);
+}
+
+void EnemyControllerScript::LookAt2D(const math::float3& position)
 {
 	math::float3 auxPos = position;
 	auxPos.y = GetPosition().y;
-	gameobject->transform->LookAt(auxPos);
+	gameobject->transform->LookAtLocal(auxPos);
 }
 
 void EnemyControllerScript::OnTriggerEnter(GameObject* go)

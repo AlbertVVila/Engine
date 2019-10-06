@@ -21,6 +21,10 @@ EnemyStateChase::~EnemyStateChase()
 void EnemyStateChase::HandleIA()
 {
 	float distance = enemy->enemyController->GetDistanceToPlayer2D();
+	if (enemy->scared)
+	{
+		enemy->currentState = (EnemyState*)enemy->flee;
+	}
 	if (distance < enemy->attackRange)
 	{
 		enemy->currentState = (EnemyState*)enemy->attack;

@@ -33,16 +33,9 @@ void EnemyStateAttack::Enter()
 	projShot3 = false;
 
 	//make the enemy stop moving
-	enemy->enemyController->Move(enemy->runSpeed, refreshTime, enemy->gameobject->transform->position, enemyPath);
+	enemy->enemyController->Stop();
 
-	duration = duration * enemy->numberOfProjectiles; //should be exposed how many shots he does... In my dreams 
-													 // Update: your dream has come true
-
-	enemy->projectile1->transform->SetPosition(enemy->enemyController->GetPosition() + math::float3(0.f, enemy->projectileScript1->offsetHeight, 0.f));
-	enemy->projectile1->transform->SetRotation(enemy->enemyController->GetRotation());
-	enemy->projectileScript1->shooted = true;
-	projShot1 = true;
-	enemy->projectile1->SetActive(true);
+	duration = duration * enemy->numberOfProjectiles;
 }
 
 void EnemyStateAttack::HandleIA()
@@ -59,12 +52,22 @@ void EnemyStateAttack::Update()
 {
 	ProcessGunFx();
 
+	// Delay attack
+	if (timer > enemy->projectileDelay1 && !projShot1)
+	{
+		// Reset projectile position
+		enemy->projectile1->transform->SetGlobalPosition(enemy->enemyController->GetPosition() + math::float3(0.f,enemy->projectileScript1->offsetHeight,0.f));
+		enemy->projectile1->transform->SetGlobalRotation(enemy->enemyController->GetRotation());
+		enemy->projectileScript1->shooted = true;
+		projShot1 = true;
+		enemy->projectile1->SetActive(true);
+	}
 	if (enemy->numberOfProjectiles > 1 && timer > enemy->projectileDelay2 && !projShot2)
 	{
 		ShowGunFX();
 		// Reset projectile position
-		enemy->projectile2->transform->SetPosition(enemy->enemyController->GetPosition() + math::float3(0.f, enemy->projectileScript2->offsetHeight, 0.f));
-		enemy->projectile2->transform->SetRotation(enemy->enemyController->GetRotation());
+		enemy->projectile2->transform->SetGlobalPosition(enemy->enemyController->GetPosition() + math::float3(0.f, enemy->projectileScript2->offsetHeight, 0.f));
+		enemy->projectile2->transform->SetGlobalRotation(enemy->enemyController->GetRotation());
 		enemy->projectileScript2->shooted = true;
 		projShot2 = true;
 		enemy->projectile2->SetActive(true);
@@ -73,8 +76,8 @@ void EnemyStateAttack::Update()
 	{
 		ShowGunFX();
 		// Reset projectile position
-		enemy->projectile3->transform->SetPosition(enemy->enemyController->GetPosition() + math::float3(0.f, enemy->projectileScript3->offsetHeight, 0.f));
-		enemy->projectile3->transform->SetRotation(enemy->enemyController->GetRotation());
+		enemy->projectile3->transform->SetGlobalPosition(enemy->enemyController->GetPosition() + math::float3(0.f, enemy->projectileScript3->offsetHeight, 0.f));
+		enemy->projectile3->transform->SetGlobalRotation(enemy->enemyController->GetRotation());
 		enemy->projectileScript3->shooted = true;
 		projShot3 = true;
 		enemy->projectile3->SetActive(true);

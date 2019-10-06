@@ -33,6 +33,7 @@ protected:
 	void EnableSpin();
 	void DisableSpin();
 	void SpinBehaviour();
+	void SpinBones(bool active);
 	void ChangeToSpinMaterial(MATERIALTYPE type) const;
 
 	ComponentRenderer* enemyRenderer = nullptr;
