@@ -435,7 +435,7 @@ void GameObject::SetActiveInHierarchy(bool active)
 	OnChangeActiveState(wasActive);
 }
 
-Component* GameObject::CreateComponent(ComponentType type, JSON_value* value, bool prefabTemplate)
+ENGINE_API Component* GameObject::CreateComponent(ComponentType type, JSON_value* value, bool prefabTemplate)
 {
 	Component* component = nullptr;
 	ComponentVolumetricLight* volLight = nullptr;
