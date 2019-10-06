@@ -1,7 +1,7 @@
 {
     "Material": {
         "metaVersion": 2,
-        "timeCreated": 1569050015,
+        "timeCreated": 1570385231,
         "GUID": 2743230110,
         "Name": "Player",
         "File": "Assets/Materials/Player.m4t",
@@ -13,9 +13,9 @@
             1.0
         ],
         "specularColor": [
-            9.999999974752428e-7,
-            9.999899930335233e-7,
-            9.999899930335233e-7
+            0.25819671154022219,
+            0.24867305159568788,
+            0.24867305159568788
         ],
         "emissiveColor": [
             9.999999974752428e-7,
