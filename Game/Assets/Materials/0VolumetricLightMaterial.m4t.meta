@@ -1,7 +1,7 @@
 {
     "Material": {
         "metaVersion": 2,
-        "timeCreated": 1569050015,
+        "timeCreated": 1570385231,
         "GUID": 2165503361,
         "Name": "0VolumetricLightMaterial",
         "File": "Assets/Materials/0VolumetricLightMaterial.m4t",
@@ -22,7 +22,7 @@
             1.0,
             1.0
         ],
-        "diffuseUID": 464919953,
+        "diffuseUID": 3047309232,
         "shader": "FX"
     }
 }
