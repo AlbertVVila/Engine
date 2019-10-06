@@ -1,7 +1,7 @@
 {
     "GameObjects": [
         {
-            "UID": 2831997266,
+            "UID": 2813779958,
             "ParentUID": 0,
             "Name": "LeChesto",
             "Tag": "Default",
@@ -46,11 +46,11 @@
                         0.0,
                         0.06537523865699768,
                         0.0,
-                        0.997860848903656
+                        0.9978607296943665
                     ],
                     "Euler": [
                         -0.0,
-                        7.496795654296875,
+                        7.496796607971191,
                         -0.0
                     ],
                     "Scale": [
@@ -95,7 +95,7 @@
                             0.0,
                             100.0
                         ],
-                        "lootDelay": 2.5,
+                        "lootDelay": 2.0,
                         "lootRadius": 100.0
                     }
                 },
@@ -106,16 +106,19 @@
                     "scriptInfo": {
                         "NumberOfItems": 4,
                         "ItemPrefabName0": "Mana Potion_animated",
-                        "ItemPrefabName1": "Shovel",
+                        "ItemPrefabName1": "Shovel_animated",
                         "ItemPrefabName2": "Health Potion_animated",
-                        "ItemPrefabName3": "Health Potion_animated"
+                        "ItemPrefabName3": "Health Potion_animated",
+                        "animate": 1,
+                        "animDuration": 0.800000011920929,
+                        "animHigh": 200.0
                     }
                 }
             ]
         },
         {
-            "UID": 3783735418,
-            "ParentUID": 2831997266,
+            "UID": 1134863193,
+            "ParentUID": 2813779958,
             "Name": "transform1",
             "Tag": "Default",
             "Static": 0,
@@ -193,8 +196,8 @@
             ]
         },
         {
-            "UID": 2789726843,
-            "ParentUID": 3783735418,
+            "UID": 4893367,
+            "ParentUID": 1134863193,
             "Name": "joint2",
             "Tag": "Default",
             "Static": 0,
@@ -272,8 +275,8 @@
             ]
         },
         {
-            "UID": 2217334247,
-            "ParentUID": 2789726843,
+            "UID": 3687983440,
+            "ParentUID": 4893367,
             "Name": "joint1",
             "Tag": "Default",
             "Static": 0,
@@ -351,8 +354,8 @@
             ]
         },
         {
-            "UID": 2706178598,
-            "ParentUID": 2831997266,
+            "UID": 1964559097,
+            "ParentUID": 2813779958,
             "Name": "ChestMesh",
             "Tag": "Default",
             "Static": 0,
