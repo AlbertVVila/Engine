@@ -17,7 +17,6 @@ BossStateActivated::BossStateActivated(BossBehaviourScript* AIBoss)
 	trigger = "Idle";
 }
 
-
 BossStateActivated::~BossStateActivated()
 {
 }
@@ -47,9 +46,7 @@ void BossStateActivated::Update()
 		math::float3 newPosition = boss->enemyController->GetPosition() + directionToGround * speedDescend * boss->App->time->gameDeltaTime;
 		boss->enemyController->SetPosition(newPosition);
 	}
-
 }
-
 
 void BossStateActivated::Enter()
 {

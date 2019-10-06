@@ -22,15 +22,14 @@ BossStateSummonArmy::BossStateSummonArmy(BossBehaviourScript* AIBoss)
 
 BossStateSummonArmy::~BossStateSummonArmy()
 {
-	enemies.clear();
 }
 
 void BossStateSummonArmy::HandleIA()
 {
-	//if (AllEnemiesDead())
-	//{
+	if (AllEnemiesAppeared())
+	{
 		boss->currentState = (BossState*)boss->activated;
-	//}
+	}
 }
 
 void BossStateSummonArmy::Update()
@@ -50,17 +49,15 @@ void BossStateSummonArmy::Update()
 			GameObject* firstSkeleton = boss->App->scene->Spawn(BASICSUMMON, spawnLocation + sideVector * 200.0f, math::Quat::identity);
 			GameObject* secondSkeleton = boss->App->scene->Spawn(BASICSUMMON, spawnLocation - sideVector * 200.0f, math::Quat::identity);
 
+			//We need this so they agro automatically
 			firstSkeleton->GetComponent<BasicEnemyAIScript>()->activationDistance = 9000.0f;
 			firstSkeleton->GetComponent<BasicEnemyAIScript>()->returnDistance = 9000.0f;
 			secondSkeleton->GetComponent<BasicEnemyAIScript>()->activationDistance = 9000.0f;
 			secondSkeleton->GetComponent<BasicEnemyAIScript>()->returnDistance = 9000.0f;
 
-
 			enemiesSpawned += 2;
 
-			enemies.push_back(firstSkeleton->GetComponent<EnemyControllerScript>());
-			enemies.push_back(secondSkeleton->GetComponent<EnemyControllerScript>());
-
+			//Check if these lookats are really needed
 			firstSkeleton->transform->LookAt(boss->playerPosition);
 			secondSkeleton->transform->LookAt(boss->playerPosition);
 
@@ -78,25 +75,18 @@ void BossStateSummonArmy::Exit()
 {
 }
 
-bool BossStateSummonArmy::AllEnemiesDead()
+bool BossStateSummonArmy::AllEnemiesAppeared()
 {
 	bool ret = false;
 
 	if (enemiesSpawned >= boss->summonSkeletonsNumber)
 	{
-		for (auto enemy : enemies)
-		{
-			if (!enemy->isDead)
-			{
-				ret = false;
-				break;
-			}
-		}
 		ret = true;
 	}
 	return ret;
 }
 
+//Will be substituted for an alternate version that will chose randomly without repeating the previous from at least 6 spawn points
 math::float3 BossStateSummonArmy::ChooseFurthestSpawn()
 {
 	float distanceFirst = boss->playerPosition.DistanceSq(boss->firstSpawnLocation);

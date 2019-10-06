@@ -157,6 +157,11 @@ public:
 	float cutsceneBackToPlayerDuration = 10.0f;
 	float cutsceneDoorRisingDuration = 2.0f;
 
+	//Second interphase variables
+	float secondInterphaseDisappearTime = 0.0f;
+	float secondInterphaseAppearTime = 0.0f;
+	/*float secondInterphase*/
+
 	//Casting variables
 	float percOrbs = 0.0f;
 	float percOrbsDisappear = 0.0f;
