@@ -45,7 +45,6 @@ void BossStateSummonArmy::Update()
 			math::float3 sideVector = directionToPlayer.Cross(math::float3::unitY);
 			sideVector.Normalize();
 
-
 			GameObject* firstSkeleton = boss->App->scene->Spawn(BASICSUMMON, spawnLocation + sideVector * 200.0f, math::Quat::identity);
 			GameObject* secondSkeleton = boss->App->scene->Spawn(BASICSUMMON, spawnLocation - sideVector * 200.0f, math::Quat::identity);
 
