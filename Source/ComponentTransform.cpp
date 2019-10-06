@@ -323,7 +323,7 @@ ENGINE_API void ComponentTransform::Rotate(math::float3 rot)
 	SetRotation(Quat::FromEulerXYZ(rot.x, rot.y, rot.z) * rotation);
 }
 
-void ComponentTransform::LookAt(const math::float3 & targetPosition)
+ENGINE_API void ComponentTransform::LookAt(const math::float3& targetPosition)
 {
 	math::float3 direction = (targetPosition - GetGlobalPosition());
 	math::Quat newRotation = rotation.LookAt(float3::unitZ, direction.Normalized(), float3::unitY, float3::unitY);	
