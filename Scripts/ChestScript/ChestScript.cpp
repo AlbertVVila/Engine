@@ -136,7 +136,7 @@ void ChestScript::Serialize(JSON_value* json) const
 void ChestScript::DeSerialize(JSON_value* json)
 {
 	assert(json != nullptr);
-	playerTag = json->GetString("playerTag");
+	playerTag = json->GetString("playerTag", "Player");
 	pickCursor = json->GetString("pickCursor", "Pick.cur");
 	state = (chestState)json->GetUint("opened");
 	lootPosition = json->GetFloat3("lootPosition");
