@@ -1,6 +1,6 @@
 {
     "material": {
-        "bloomIntenstiy": 5.710000038146973,
+        "bloomIntenstiy": 1.0,
         "roughness": 0.0010000000474974514,
         "specularColor": [
             9.999999974752428e-7,

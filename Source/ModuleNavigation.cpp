@@ -1944,6 +1944,29 @@ ENGINE_API void crowdTool::ChangeVelocity(int idAgent, float velocity)
 	ag->params.maxSpeed = velocity;
 }
 
+ENGINE_API void crowdTool::StopAgent(int idAgent)
+{
+	m_crowd->resetMoveTarget(idAgent);
+}
+
+ENGINE_API bool crowdTool::IsAgentRequesting(int idAgent)
+{
+	const dtCrowdAgent* agent = m_crowd->getAgent(idAgent);
+	return agent->targetState == DT_CROWDAGENT_TARGET_REQUESTING;
+}
+
+ENGINE_API bool crowdTool::IsAgentIdle(int idAgent)
+{
+	const dtCrowdAgent* agent = m_crowd->getAgent(idAgent);
+	return agent->targetState == DT_CROWDAGENT_TARGET_NONE && agent->targetRef == 0;
+}
+
+ENGINE_API bool crowdTool::IsAgentStuck(int idAgent)
+{
+	const dtCrowdAgent* agent = m_crowd->getAgent(idAgent);
+	return agent->targetState == DT_CROWDAGENT_TARGET_FAILED || agent->targetState == DT_CROWDAGENT_TARGET_NONE;
+}
+
 void crowdTool::calcVel(float* vel, const float* pos, const float* tgt, const float speed)
 {
 	dtVsub(vel, tgt, pos);
