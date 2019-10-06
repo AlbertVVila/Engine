@@ -1,7 +1,7 @@
 {
     "Material": {
         "metaVersion": 2,
-        "timeCreated": 1570178108,
+        "timeCreated": 1570305956,
         "GUID": 734010681,
         "Name": "EnergyBall",
         "File": "Assets/Materials/EnergyBall.m4t",
@@ -13,9 +13,9 @@
             1.0
         ],
         "specularColor": [
-            0.10000000149011612,
-            0.10000000149011612,
-            0.10000000149011612
+            0.5291376709938049,
+            0.200450137257576,
+            0.6270492076873779
         ],
         "emissiveColor": [
             0.6959363222122192,
@@ -23,6 +23,7 @@
             0.7745901346206665
         ],
         "emissiveUID": 676697322,
+        "dissolveUID": 3100838409,
         "shader": "PBR"
     }
 }

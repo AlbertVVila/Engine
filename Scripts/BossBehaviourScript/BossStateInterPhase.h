@@ -33,6 +33,7 @@ private:
 	bool finished = false;
 	float powerUpTimer = 0.0f;
 	float relocateTimer = 0.0f;
+	bool durationPowerSet = false;
 };
 
 #endif // __BOSSSTATEINTERPHASE_H_

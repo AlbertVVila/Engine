@@ -157,6 +157,14 @@ public:
 	float cutsceneBackToPlayerDuration = 10.0f;
 	float cutsceneDoorRisingDuration = 2.0f;
 
+	//Casting variables
+	float percOrbs = 0.0f;
+	float percOrbsDisappear = 0.0f;
+	GameObject* leftHandParticles = nullptr;
+	GameObject* rightHandParticles = nullptr;
+	GameObject* rightHandBall = nullptr;
+	GameObject* leftHandBall = nullptr;
+
 	//first cutscene
 	math::float3 startingPoint = math::float3::zero;
 	math::float3 highPointFirstCS = math::float3::zero;

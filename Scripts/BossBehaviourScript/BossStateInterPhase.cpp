@@ -76,12 +76,18 @@ void BossStateInterPhase::Update()
 		break;
 	case IpState::Powerup:
 
-		boss->anim->SendTriggerToStateMachine("PowerUp");
+		if (!durationPowerSet)
+		{
+			boss->anim->SendTriggerToStateMachine("PowerUp");
+			boss->firstInterphaseDuration = boss->anim->GetDurationFromClip();
+			durationPowerSet = true;
+		}
 
 		//this could be better animation driven, but w/e
-		if (powerUpTimer < boss->firstInterphaseDuration)
+		if (powerUpTimer > boss->firstInterphaseDuration)
 		{
 			ipState = IpState::Relocate;
+			durationPowerSet = false;
 		}
 		else
 		{
