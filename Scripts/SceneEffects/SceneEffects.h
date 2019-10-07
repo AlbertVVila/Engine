@@ -35,6 +35,12 @@ class SceneEffects_API SceneEffects : public Script
 	void Start() override;
 	void Update() override;
 
+
+	inline virtual SceneEffects* Clone() const
+	{
+		return new SceneEffects(*this);
+	}
+
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
 

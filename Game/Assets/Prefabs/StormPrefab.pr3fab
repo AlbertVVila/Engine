@@ -29,11 +29,11 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 1,
+            "openInHierarchy": 0,
             "isPrefab": 1,
             "isPrefabSync": 1,
             "prefabUID": 976526296,
-            "prefabTimeStamp": 1569144606,
+            "prefabTimeStamp": 1570442832,
             "Components": [
                 {
                     "Type": 0,
@@ -90,7 +90,7 @@
             ]
         },
         {
-            "UID": 1431926275,
+            "UID": 3553041292,
             "ParentUID": 3651060673,
             "Name": "Light1",
             "Tag": "Default",
@@ -169,7 +169,7 @@
             ]
         },
         {
-            "UID": 1757454884,
+            "UID": 2682794807,
             "ParentUID": 3651060673,
             "Name": "Light2",
             "Tag": "Default",
@@ -248,7 +248,7 @@
             ]
         },
         {
-            "UID": 65032051,
+            "UID": 1573563304,
             "ParentUID": 3651060673,
             "Name": "Light3",
             "Tag": "Default",
