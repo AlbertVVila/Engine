@@ -8,6 +8,14 @@ class BossStateThirdDeath :
 public:
 	BossStateThirdDeath(BossBehaviourScript* AIBoss);
 	~BossStateThirdDeath();
+
+	void HandleIA() override;
+	void Update() override;
+
+	void Enter() override;
+	void Exit() override;
+
+	float deathTimeout = 5.0f;
 };
 
 #endif

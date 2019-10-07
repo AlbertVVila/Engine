@@ -9,6 +9,12 @@ class BossStateThirdLeft :
 public:
 	BossStateThirdLeft(BossBehaviourScript* AIBoss);
 	~BossStateThirdLeft();
+
+	void HandleIA() override;
+	void Update() override;
+
+	void Enter() override;
+	void Exit() override;
 };
 
 #endif // __BOSSSTATETHIRDLEFT_H_

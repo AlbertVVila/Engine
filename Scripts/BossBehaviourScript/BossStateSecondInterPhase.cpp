@@ -39,11 +39,13 @@ void BossStateSecondInterPhase::Update()
 	{
 		case InterphaseState::None:
 			state = InterphaseState::Kneel;
+			boss->enemyController->anim->SendTriggerToStateMachine("Kneel");
 			break;
 		case InterphaseState::Kneel:
 			if (kneelTimer > boss->secondInterphaseKneelTime)
 			{
 				state = InterphaseState::Cry;
+				boss->enemyController->anim->SendTriggerToStateMachine("Cry");
 
 			}
 			else
@@ -80,27 +82,31 @@ void BossStateSecondInterPhase::Update()
 		case InterphaseState::FloorVanish:
 			//just vanish everything
 			//I need to load a vector with all the renders..
-			/*if (floorVanishTimer / boss->secondInterphaseFloorVanishTime < 1.0f)
+			if (floorVanishTimer / boss->secondInterphaseFloorVanishTime < 1.0f)
 			{
-				for (auto render : boss->enemyController->myRenders)
+				for (auto vanishGO : boss->secondInterphaseVanishGOs)
 				{
-					render->dissolveAmount = floorVanishTimer / boss->secondInterphaseFloorVanishTime;
+					vanishGO->GetComponent<ComponentRenderer>()->dissolveAmount = floorVanishTimer / boss->secondInterphaseFloorVanishTime;
 				}
+				//for (auto flameGO : boss->secondInterphaseFlameGOs)
+				//{
+				//	float newScale = 
+				//}
 			}
 			else
 			{
 				state = InterphaseState::Teleport;
 			}
 
-			floorVanishTimer += boss->App->time->gameDeltaTime;*/
+			floorVanishTimer += boss->App->time->gameDeltaTime;
 
-			state = InterphaseState::Teleport;
+			//state = InterphaseState::Teleport;
 
 			break;
 		case InterphaseState::Teleport:
 
 			boss->enemyController->SetPosition(boss->secondInterphaseFinalPosition);
-
+			boss->enemyController->anim->SendTriggerToStateMachine("ThirdIdle");
 			state = InterphaseState::FadeIn;
 			break;
 		case InterphaseState::FadeIn:

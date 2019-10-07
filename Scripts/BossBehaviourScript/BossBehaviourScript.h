@@ -173,7 +173,8 @@ public:
 	float secondInterphaseFloorVanishTime = 0.0f;
 	float secondInterphaseFadeOffTime = 0.0f;
 	float secondInterphaseFadeInTime = 0.0f;
-	
+	std::vector<GameObject*> secondInterphaseVanishGOs;
+	std::vector<GameObject*> secondInterphaseFlameGOs;
 
 	//Casting variables
 	float percOrbs = 0.0f;
