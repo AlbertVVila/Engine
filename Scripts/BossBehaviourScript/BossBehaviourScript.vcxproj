@@ -266,6 +266,10 @@
     <ClCompile Include="BossStatePreCast.cpp" />
     <ClCompile Include="BossStateSecondInterPhase.cpp" />
     <ClCompile Include="BossStateSummonArmy.cpp" />
+    <ClCompile Include="BossStateThirdDeath.cpp" />
+    <ClCompile Include="BossStateThirdIdle.cpp" />
+    <ClCompile Include="BossStateThirdLeft.cpp" />
+    <ClCompile Include="BossStateThirdRight.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BossBehaviourScript.h" />
@@ -280,6 +284,10 @@
     <ClInclude Include="BossStatePreCast.h" />
     <ClInclude Include="BossStateSecondInterPhase.h" />
     <ClInclude Include="BossStateSummonArmy.h" />
+    <ClInclude Include="BossStateThirdDeath.h" />
+    <ClInclude Include="BossStateThirdIdle.h" />
+    <ClInclude Include="BossStateThirdLeft.h" />
+    <ClInclude Include="BossStateThirdRight.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BasicEnemyAIScript\BasicEnemyAIScript.vcxproj">

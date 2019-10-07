@@ -2,6 +2,19 @@
 #define __BOSSSTATESECONDINTERPHASE_H_
 
 #include "BossState.h"
+
+enum class InterphaseState
+{
+	None,
+	Kneel,
+	Cry,
+	FadeOff,
+	Teleport,
+	FloorVanish,
+	FadeIn,
+	Finished
+};
+
 class BossStateSecondInterPhase :
 	public BossState
 {
@@ -14,6 +27,10 @@ private:
 	void Update() override;
 	void Enter() override;
 	void Exit() override;
+
+	InterphaseState state = InterphaseState::None;
+
+	bool finished = false;
 };
 
 #endif 

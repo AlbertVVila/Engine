@@ -15,12 +15,43 @@ BossStateSecondInterPhase::~BossStateSecondInterPhase()
 void BossStateSecondInterPhase::HandleIA()
 {
 	//this will have a fixed duration
+	if (finished)
+	{
+	
+	}
 }
 
 void BossStateSecondInterPhase::Update()
 {
 	//Update parts
 
+	switch (state)
+	{
+		case InterphaseState::None:
+			state = InterphaseState::Kneel;
+			break;
+		case InterphaseState::Kneel:
+			state = InterphaseState::Cry;
+			break;
+		case InterphaseState::Cry:
+			state = InterphaseState::FadeOff;
+			break;
+		case InterphaseState::FadeOff:
+			state = InterphaseState::FloorVanish;
+			break;
+		case InterphaseState::FloorVanish:
+			state = InterphaseState::Teleport;
+			break;
+		case InterphaseState::Teleport:
+			state = InterphaseState::FadeIn;
+			break;
+		case InterphaseState::FadeIn:
+			state = InterphaseState::Finished;
+			break;
+		case InterphaseState::Finished:
+
+			break;
+	}
 	//Make her kneel
 
 	//Disappear

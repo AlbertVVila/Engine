@@ -59,6 +59,10 @@ class BossStateInterPhase;
 class BossStateSecondInterPhase;
 class BossStateSummonArmy;
 class BossStateCutScene;
+class BossStateThirdIdle;
+class BossStateThirdRight;
+class BossStateThirdLeft;
+class BossStateThirdDeath;
 class EnemyControllerScript;
 class PlayerMovement;
 class GameLoop;
@@ -99,6 +103,10 @@ public:
 	BossStateDeath* death = nullptr;
 	BossStateCast* cast = nullptr;
 	BossStateCutScene* cutscene = nullptr;
+	BossStateThirdIdle* thirdIdle = nullptr;
+	BossStateThirdRight* thirdRight = nullptr;
+	BossStateThirdLeft* thirdLeft = nullptr;
+	BossStateThirdDeath* thirdDeath = nullptr;
 
 public:
 	ComponentAnimation* anim = nullptr;
