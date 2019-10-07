@@ -1256,6 +1256,28 @@ bool PlayerMovement::CorrectMousePosition() const
 	return (dist > closestDistToPlayer && dist < furthestDistToPlayer && App->navigation->IsCursorPointingToNavigableZone(0.f, 1000.f, 0.f, true));
 }
 
+/*
+function that does a path finding call to see if values are correct. It also modifies a bool
+that avoids a pathfinding call if we end up actually entering the walk state
+*/
+
+bool PlayerMovement::PathFindingCall() const
+{
+	math::float3 intPos(0.f, 0.f, 0.f);
+	bool path = App->navigation->NavigateTowardsCursor(gameobject->transform->position, walk->path,
+		math::float3(OutOfMeshCorrectionXZ, OutOfMeshCorrectionY, OutOfMeshCorrectionXZ),
+		intPos, 10000, PathFindType::FOLLOW, straightPathingDistance);
+	if (path && walk->path.size() > 2)
+	{
+		walk->pathIndex = 0;
+		walk->currentPathAlreadyCalculated = true;
+		return true;
+	}
+	return false;
+}
+
+
+
 bool PlayerMovement::IsPressingMouse1() const
 {
 	math::float3 temp;
@@ -1263,7 +1285,7 @@ bool PlayerMovement::IsPressingMouse1() const
 		(App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(true, false)) ||
 		(currentState != nullptr && currentState->playerWalking && !currentState->playerWalkingToHit) ||
 		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(true, false) && !App->scene->Intersects("PlayerMesh", false, temp) &&
-		(CorrectMousePosition())));
+		(PathFindingCall())));
 
 }
 
