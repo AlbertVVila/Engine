@@ -39,26 +39,20 @@ void BossStateSummonArmy::Update()
 		timerSkeletons += boss->App->time->gameDeltaTime;
 		if (timerSkeletons > boss->timerBetweenSummons)
 		{
-			//SPAWN two guys
-			math::float3 spawnLocation = ChooseFurthestSpawn();
-			math::float3 directionToPlayer = boss->playerPosition - spawnLocation;
-			math::float3 sideVector = directionToPlayer.Cross(math::float3::unitY);
-			sideVector.Normalize();
+			//SPAWN one enemy at a random spawn location
+			math::float3 spawnLocation = ChooseRandomSpawn();
 
-			GameObject* firstSkeleton = boss->App->scene->Spawn(BASICSUMMON, spawnLocation + sideVector * 200.0f, math::Quat::identity);
-			GameObject* secondSkeleton = boss->App->scene->Spawn(BASICSUMMON, spawnLocation - sideVector * 200.0f, math::Quat::identity);
+			GameObject* firstSkeleton = boss->App->scene->Spawn(BASICSUMMON, spawnLocation, math::Quat::identity);
 
 			//We need this so they agro automatically
 			firstSkeleton->GetComponent<BasicEnemyAIScript>()->activationDistance = 9000.0f;
 			firstSkeleton->GetComponent<BasicEnemyAIScript>()->returnDistance = 9000.0f;
-			secondSkeleton->GetComponent<BasicEnemyAIScript>()->activationDistance = 9000.0f;
-			secondSkeleton->GetComponent<BasicEnemyAIScript>()->returnDistance = 9000.0f;
 
-			enemiesSpawned += 2;
+			enemiesSpawned += 1;
 
 			//Check if these lookats are really needed
-			firstSkeleton->transform->LookAt(boss->playerPosition);
-			secondSkeleton->transform->LookAt(boss->playerPosition);
+			/*firstSkeleton->transform->LookAt(boss->playerPosition);
+			secondSkeleton->transform->LookAt(boss->playerPosition);*/
 
 			timerSkeletons = 0.0f;
 		}
@@ -86,17 +80,8 @@ bool BossStateSummonArmy::AllEnemiesAppeared()
 }
 
 //Will be substituted for an alternate version that will chose randomly without repeating the previous from at least 6 spawn points
-math::float3 BossStateSummonArmy::ChooseFurthestSpawn()
+math::float3 BossStateSummonArmy::ChooseRandomSpawn()
 {
-	float distanceFirst = boss->playerPosition.DistanceSq(boss->firstSpawnLocation);
-	float distanceSecond = boss->playerPosition.DistanceSq(boss->secondSpawnLocation);
-	if (distanceFirst > distanceSecond)
-	{
-		return boss->firstSpawnLocation;
-	}
-	else
-	{
-		return boss->secondSpawnLocation;
-	}
-
+	int spawnIndex = rand()%6;
+	return *boss->spawns[spawnIndex];
 }

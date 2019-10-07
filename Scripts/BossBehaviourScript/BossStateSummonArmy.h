@@ -26,7 +26,7 @@ private:
 	float downTime = 8.0f; //time until she starts summoning
 	float timerSkeletons = 0.0f;
 	bool AllEnemiesAppeared();
-	math::float3 ChooseFurthestSpawn();
+	math::float3 ChooseRandomSpawn();
 };
 
 #endif // __BOSSSTATESUMMONARMY_H_
