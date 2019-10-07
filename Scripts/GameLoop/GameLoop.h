@@ -149,6 +149,7 @@ public:
 	Button* closePlayerMenuButton = nullptr;
 	Button* pauseResume = nullptr;
 	Button* pauseExit = nullptr;
+	Button* pauseControls = nullptr;
 	std::vector<Component*> volumeButtons;
 	std::vector<Component*> soundButtons;
 

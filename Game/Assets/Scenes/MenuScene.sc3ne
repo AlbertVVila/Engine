@@ -1,6 +1,6 @@
 {
     "navigationScene": {
-        "navDataSize": 0
+        "navDataSize": 7028
     },
     "GameObjects": [
         {
@@ -589,7 +589,7 @@
                     "Znear": 10.0,
                     "Zfar": 100000.0,
                     "vFOV": 1.0471975803375245,
-                    "hFOV": 1.520550012588501,
+                    "hFOV": 1.4374819993972779,
                     "Position": [
                         0.0,
                         0.0,
@@ -5132,9 +5132,10 @@
             "Navigable": 0,
             "No Walkable": 0,
             "openInHierarchy": 0,
-            "isPrefab": 0,
-            "isPrefabSync": 0,
-            "prefabUID": 0,
+            "isPrefab": 1,
+            "isPrefabSync": 1,
+            "prefabUID": 2983922135,
+            "prefabTimeStamp": 1570468978,
             "Components": []
         },
         {
