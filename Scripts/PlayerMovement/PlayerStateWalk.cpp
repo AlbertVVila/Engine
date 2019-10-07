@@ -42,7 +42,6 @@ PlayerStateWalk::~PlayerStateWalk()
 
 void PlayerStateWalk::Update()
 {
-	math:float2 mouse((float*)&player->App->input->GetMousePosition());
 	if ((player->App->input->GetMouseButtonDown(1) == KEY_DOWN 
 		|| player->App->input->GetMouseButtonDown(1) == KEY_REPEAT) && !player->App->ui->UIHovered(true,false))
 	{
