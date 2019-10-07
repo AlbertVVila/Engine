@@ -1452,9 +1452,15 @@ bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vecto
 			float2 s1, e1;
 			s1.x = start.x; s1.y = start.z;
 			e1.x = end.x; e1.y = end.z;
+			//for a certain check we need the actual dist in a more precise manner
+			float duringPathDistance = 0.f;
 			for (size_t i = 0; i < smoothNb; i++)
 			{
 				path.push_back(float3(smoothPath[i * 3], smoothPath[i * 3 + 1], smoothPath[i * 3 + 2]));
+				if (i > 0)
+				{
+					duringPathDistance += GetXZDistanceWithoutSQ(path[path.size()-2], path[path.size() - 1]);
+				}
 				//filling debugging variable if flag is activated
 				if (App->renderer->pathfindingDebug)
 				{
@@ -1483,7 +1489,7 @@ bool ModuleNavigation::FindPath(math::float3 start, math::float3 end, std::vecto
 				type = PathFindType::NODODGE;
 				done = false;
 			}
-			if (afterPathDistance == 0.f)
+			if (duringPathDistance == 0.f)
 			{
 				return false;
 			}
@@ -1640,7 +1646,7 @@ bool ModuleNavigation::FindIntersectionPoint(math::float3 start, math::float3& i
 	return true;
 }
 
-bool ModuleNavigation::IsCursorPointingToNavigableZone(float xPickingCorrection, float yPickingCorrection, float zPickingCorrection) const
+bool ModuleNavigation::IsCursorPointingToNavigableZone(float xPickingCorrection, float yPickingCorrection, float zPickingCorrection, bool player) const
 {
 	//declare mouse position and necessary values to store data
 	float2 mouse((float*)& App->input->GetMousePosition());
@@ -1668,11 +1674,14 @@ bool ModuleNavigation::IsCursorPointingToNavigableZone(float xPickingCorrection,
 	//get all the meshes with the floor tag to intersect with the ray
 	std::vector<GameObject*> floors = App->scene->FindGameObjectsByTag("floor");
 	//prepare the values for the nav mesh query call
-	math::float3 intersectionPos(0.f, 0.f, 0.f);
-	bool found = false;
-	for (int i = 0; i < floors.size() && !found; ++i)
+	math::float3 intersectionPos = line.GetPoint(dist);;
+	if (!player) 
 	{
-		found = floors[i]->Intersects(line, dist, &intersectionPos);
+		bool found = false;
+		for (int i = 0; i < floors.size() && !found; ++i)
+		{
+			found = floors[i]->Intersects(line, dist, &intersectionPos);
+		}
 	}
 
 	dtQueryFilter filter;

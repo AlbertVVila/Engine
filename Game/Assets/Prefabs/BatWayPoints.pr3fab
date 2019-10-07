@@ -1,7 +1,7 @@
 {
     "GameObjects": [
         {
-            "UID": 3058767822,
+            "UID": 1047311835,
             "ParentUID": 0,
             "Name": "BatWayPoints",
             "Tag": "Default",
@@ -29,10 +29,11 @@
             ],
             "Navigable": 0,
             "No Walkable": 0,
-            "openInHierarchy": 1,
+            "openInHierarchy": 0,
             "isPrefab": 1,
             "isPrefabSync": 1,
             "prefabUID": 3497864486,
+            "prefabTimeStamp": 1570444747,
             "Components": [
                 {
                     "Type": 0,
@@ -81,13 +82,16 @@
                     "Type": 9,
                     "Enabled": 1,
                     "script": "SceneEffects",
-                    "scriptInfo": {}
+                    "scriptInfo": {
+                        "behaviour": 1,
+                        "batAmount": 5
+                    }
                 }
             ]
         },
         {
-            "UID": 1300278050,
-            "ParentUID": 3058767822,
+            "UID": 33695746,
+            "ParentUID": 1047311835,
             "Name": "WayPoint",
             "Tag": "Default",
             "Static": 0,
@@ -165,8 +169,8 @@
             ]
         },
         {
-            "UID": 593729121,
-            "ParentUID": 3058767822,
+            "UID": 743451736,
+            "ParentUID": 1047311835,
             "Name": "WayPoint",
             "Tag": "Default",
             "Static": 0,
@@ -244,8 +248,8 @@
             ]
         },
         {
-            "UID": 3347142168,
-            "ParentUID": 3058767822,
+            "UID": 3535891608,
+            "ParentUID": 1047311835,
             "Name": "WayPoint",
             "Tag": "Default",
             "Static": 0,
@@ -323,8 +327,8 @@
             ]
         },
         {
-            "UID": 1037497775,
-            "ParentUID": 3058767822,
+            "UID": 1279411894,
+            "ParentUID": 1047311835,
             "Name": "WayPoint",
             "Tag": "Default",
             "Static": 0,
@@ -402,8 +406,8 @@
             ]
         },
         {
-            "UID": 1176725344,
-            "ParentUID": 3058767822,
+            "UID": 3427733805,
+            "ParentUID": 1047311835,
             "Name": "WayPoint",
             "Tag": "Default",
             "Static": 0,
@@ -481,8 +485,8 @@
             ]
         },
         {
-            "UID": 3930157391,
-            "ParentUID": 3058767822,
+            "UID": 2552119900,
+            "ParentUID": 1047311835,
             "Name": "WayPoint",
             "Tag": "Default",
             "Static": 0,
@@ -560,8 +564,8 @@
             ]
         },
         {
-            "UID": 1635828147,
-            "ParentUID": 3058767822,
+            "UID": 1889826402,
+            "ParentUID": 1047311835,
             "Name": "WayPoint",
             "Tag": "Default",
             "Static": 0,
@@ -639,8 +643,8 @@
             ]
         },
         {
-            "UID": 1212307434,
-            "ParentUID": 3058767822,
+            "UID": 3462772156,
+            "ParentUID": 1047311835,
             "Name": "WayPoint",
             "Tag": "Default",
             "Static": 0,
@@ -718,8 +722,8 @@
             ]
         },
         {
-            "UID": 869545498,
-            "ParentUID": 3058767822,
+            "UID": 1600850942,
+            "ParentUID": 1047311835,
             "Name": "WayPoint",
             "Tag": "Default",
             "Static": 0,
@@ -797,8 +801,8 @@
             ]
         },
         {
-            "UID": 2540883446,
-            "ParentUID": 3058767822,
+            "UID": 878335013,
+            "ParentUID": 1047311835,
             "Name": "WayPoint",
             "Tag": "Default",
             "Static": 0,
@@ -876,8 +880,8 @@
             ]
         },
         {
-            "UID": 3516171993,
-            "ParentUID": 3058767822,
+            "UID": 3643640986,
+            "ParentUID": 1047311835,
             "Name": "WayPoint",
             "Tag": "Default",
             "Static": 0,
@@ -955,8 +959,8 @@
             ]
         },
         {
-            "UID": 4022145999,
-            "ParentUID": 3058767822,
+            "UID": 1717297236,
+            "ParentUID": 1047311835,
             "Name": "WayPoint",
             "Tag": "Default",
             "Static": 0,
@@ -1034,8 +1038,8 @@
             ]
         },
         {
-            "UID": 1202549362,
-            "ParentUID": 3058767822,
+            "UID": 269873533,
+            "ParentUID": 1047311835,
             "Name": "WayPoint",
             "Tag": "Default",
             "Static": 0,
@@ -1113,8 +1117,8 @@
             ]
         },
         {
-            "UID": 3272958782,
-            "ParentUID": 3058767822,
+            "UID": 4144903558,
+            "ParentUID": 1047311835,
             "Name": "WayPoint",
             "Tag": "Default",
             "Static": 0,

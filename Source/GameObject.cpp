@@ -773,7 +773,7 @@ void GameObject::SetLightUniforms(unsigned shader) const
 	unsigned directionals = 0u;
 	unsigned points = 0u;
 	unsigned spots = 0u;
-	char buffer[32];
+	char buffer[64];
 	//LOG("%s got %d lights", name.c_str(), lights.size());
 	for (GameObject* go : lights)
 	{
