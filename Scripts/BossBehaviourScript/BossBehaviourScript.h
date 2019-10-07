@@ -196,7 +196,7 @@ public:
 
 	//Summon in summon phase
 	int summonSkeletonsNumber = 20;
-	float timerBetweenSummons = 4.0f;
+	float timerBetweenSummons = 2.0f;
 	math::float3 firstSpawnLocation = math::float3::zero;
 	//giving default intended values to the spawn locations
 	math::float3 secondSpawnLocation = math::float3(1654.f, 370.f, -3333.f);
@@ -204,6 +204,7 @@ public:
 	math::float3 fourthSpawnLocation = math::float3(466.f, 370.f, -1796.f);
 	math::float3 fifthSpawnLocation = math::float3(1240.f, 370.f, -2320.f);
 	math::float3 sixthSpawnLocation = math::float3(1675.f, 370.f, -2796.f);
+	std::vector<math::float3*> spawns;//array of locations
 
 	//Variables for the first interphase
 	float firstInterphaseDuration = 0.0f;
@@ -256,6 +257,8 @@ private:
 	void HandleFirstBombs();
 	void HandleSecondBombs();
 	void HandleThirdBombs();
+
+	void loadSpawningPositions(JSON_value* json);
 
 	int circlesInFirstPhase = 3;
 	float timeBetweenCirclesFirst = 2.0f;
