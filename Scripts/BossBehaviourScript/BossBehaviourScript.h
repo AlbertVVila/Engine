@@ -229,6 +229,7 @@ public:
 public:
 		math::Quat InterpolateQuat(const math::Quat first, const math::Quat second, float lambda);
 		math::float3 InterpolateFloat3(const math::float3 first, const math::float3 second, float lambda);
+		math::float3 ChooseRandomSpawn();
 
 		void ResetVariables();
 
@@ -239,6 +240,7 @@ private:
 	void CheckHealth();
 	void FloatInSpace();
 	void HandleSkills();
+	void HandleSummon();
 
 	void HandleFirstTP();
 	void HandleSecondTP();
@@ -250,9 +252,7 @@ private:
 	void HandleSecondPhaseCircles();
 	void HandleThirdPhaseCircles();
 	
-	void HandleFirstSummons();
-	void HandleSecondSummons();
-	void HandleThirdSummons();
+	void ActuallySummon(int type);
 
 	void HandleFirstBombs();
 	void HandleSecondBombs();
@@ -279,6 +279,7 @@ private:
 	bool fadeInComplete = false;
 	bool skullsShot = false;
 	TPState teleportState = TPState::None;
+	float summonTimer = 0.0f;
 
 	float timeBetweenBombsFirst = 0.5f;
 	int totalBombsFirst = 5;
