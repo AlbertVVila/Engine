@@ -31,6 +31,14 @@ private:
 	InterphaseState state = InterphaseState::None;
 
 	bool finished = false;
+
+private:
+	//timers yay
+	float kneelTimer = 0.0f;
+	float cryTimer = 0.0f;
+	float fadeOffTimer = 0.0f;
+	float fadeInTimer = 0.0f;
+	float floorVanishTimer = 0.0f;
 };
 
 #endif 

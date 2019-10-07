@@ -166,9 +166,14 @@ public:
 	float cutsceneDoorRisingDuration = 2.0f;
 
 	//Second interphase variables
-	float secondInterphaseDisappearTime = 0.0f;
-	float secondInterphaseAppearTime = 0.0f;
-	/*float secondInterphase*/
+	math::float3 secondInterphaseFinalPosition = math::float3::zero;
+	float secondInterphaseFinalScale = 2.0f;
+	float secondInterphaseKneelTime = 0.0f;
+	float secondInterphaseCryTime = 0.0f;
+	float secondInterphaseFloorVanishTime = 0.0f;
+	float secondInterphaseFadeOffTime = 0.0f;
+	float secondInterphaseFadeInTime = 0.0f;
+	
 
 	//Casting variables
 	float percOrbs = 0.0f;

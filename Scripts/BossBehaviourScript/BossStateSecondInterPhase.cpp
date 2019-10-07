@@ -1,6 +1,16 @@
+#include "Application.h"
+#include "ModuleScene.h"
+#include "ModuleTime.h"
+
+#include "GameObject.h"
+#include "ComponentRenderer.h"
+#include "ComponentAnimation.h"
+#include "ComponentTransform.h"
+
 #include "BossStateSecondInterPhase.h"
+#include "EnemyControllerScript/EnemyControllerScript.h"
 
-
+#include "BossBehaviourScript.h"
 
 BossStateSecondInterPhase::BossStateSecondInterPhase(BossBehaviourScript* AIboss)
 {
@@ -17,7 +27,7 @@ void BossStateSecondInterPhase::HandleIA()
 	//this will have a fixed duration
 	if (finished)
 	{
-	
+		boss->currentState = (BossState*)boss->thirdIdle;
 	}
 }
 
@@ -31,25 +41,88 @@ void BossStateSecondInterPhase::Update()
 			state = InterphaseState::Kneel;
 			break;
 		case InterphaseState::Kneel:
-			state = InterphaseState::Cry;
+			if (kneelTimer > boss->secondInterphaseKneelTime)
+			{
+				state = InterphaseState::Cry;
+
+			}
+			else
+			{
+				kneelTimer += boss->App->time->gameDeltaTime;
+			}
 			break;
 		case InterphaseState::Cry:
-			state = InterphaseState::FadeOff;
+			if (cryTimer > boss->secondInterphaseCryTime)
+			{
+				state = InterphaseState::FadeOff;
+			}
+			else
+			{
+				cryTimer += boss->App->time->gameDeltaTime;
+			}
 			break;
 		case InterphaseState::FadeOff:
-			state = InterphaseState::FloorVanish;
+
+			if (fadeOffTimer / boss->secondInterphaseFadeOffTime < 1.0f)
+			{
+				for (auto render : boss->enemyController->myRenders)
+				{
+					render->dissolveAmount = fadeOffTimer / boss->secondInterphaseFadeOffTime;
+				}	
+			}
+			else
+			{
+				state = InterphaseState::FloorVanish;
+			}
+
+			fadeOffTimer += boss->App->time->gameDeltaTime;
 			break;
 		case InterphaseState::FloorVanish:
+			//just vanish everything
+			//I need to load a vector with all the renders..
+			/*if (floorVanishTimer / boss->secondInterphaseFloorVanishTime < 1.0f)
+			{
+				for (auto render : boss->enemyController->myRenders)
+				{
+					render->dissolveAmount = floorVanishTimer / boss->secondInterphaseFloorVanishTime;
+				}
+			}
+			else
+			{
+				state = InterphaseState::Teleport;
+			}
+
+			floorVanishTimer += boss->App->time->gameDeltaTime;*/
+
 			state = InterphaseState::Teleport;
+
 			break;
 		case InterphaseState::Teleport:
+
+			boss->enemyController->SetPosition(boss->secondInterphaseFinalPosition);
+
 			state = InterphaseState::FadeIn;
 			break;
 		case InterphaseState::FadeIn:
-			state = InterphaseState::Finished;
+
+			if (fadeInTimer / boss->secondInterphaseFadeInTime < 1.0f)
+			{
+				for (auto render : boss->enemyController->myRenders)
+				{
+					render->dissolveAmount = 1 - (fadeInTimer / boss->secondInterphaseFadeInTime);
+				}
+
+			}
+			else
+			{
+				state = InterphaseState::Finished;
+			}
+
+			fadeInTimer += boss->App->time->gameDeltaTime;
+			
 			break;
 		case InterphaseState::Finished:
-
+			finished = true;
 			break;
 	}
 	//Make her kneel
