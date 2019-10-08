@@ -26,10 +26,10 @@ BossStateSummonArmy::~BossStateSummonArmy()
 
 void BossStateSummonArmy::HandleIA()
 {
-	if (AllEnemiesAppeared())
-	{
+	//if (AllEnemiesAppeared())
+	//{
 		boss->currentState = (BossState*)boss->activated;
-	}
+	/*}*/
 }
 
 void BossStateSummonArmy::Update()

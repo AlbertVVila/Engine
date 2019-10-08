@@ -18,7 +18,7 @@ BossStateThirdRight::~BossStateThirdRight()
 
 void BossStateThirdRight::HandleIA()
 {
-	if (duration > timer)
+	if (duration < timer)
 	{
 		boss->currentState = (BossState*)boss->thirdIdle;
 	}

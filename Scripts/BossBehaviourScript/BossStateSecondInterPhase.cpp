@@ -40,6 +40,7 @@ void BossStateSecondInterPhase::Update()
 		case InterphaseState::None:
 			state = InterphaseState::Kneel;
 			boss->enemyController->anim->SendTriggerToStateMachine("Kneel");
+			boss->secondInterphaseKneelTime = boss->enemyController->anim->GetDurationFromClip();
 			break;
 		case InterphaseState::Kneel:
 			if (kneelTimer > boss->secondInterphaseKneelTime)
@@ -106,6 +107,7 @@ void BossStateSecondInterPhase::Update()
 		case InterphaseState::Teleport:
 
 			boss->enemyController->SetPosition(boss->secondInterphaseFinalPosition);
+			boss->gameobject->transform->SetScale(math::float3(boss->secondInterphaseFinalScale, boss->secondInterphaseFinalScale, boss->secondInterphaseFinalScale));
 			boss->enemyController->anim->SendTriggerToStateMachine("ThirdIdle");
 			state = InterphaseState::FadeIn;
 			break;
@@ -147,8 +149,7 @@ void BossStateSecondInterPhase::Update()
 void BossStateSecondInterPhase::Enter()
 {
 	//We need to reset variables and get everything ready
-
-	//get the duration to be a sum of all the durations
+	boss->ResetVariables();
 }
 
 void BossStateSecondInterPhase::Exit()

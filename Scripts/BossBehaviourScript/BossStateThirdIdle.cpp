@@ -52,7 +52,7 @@ void BossStateThirdIdle::Exit()
 
 Fist BossStateThirdIdle::ChooseNextFist()
 {
-	while (nextFist != lastFist && nextFist != secondLastFist)
+	while (nextFist == lastFist && nextFist == secondLastFist)
 	{
 		int randomNumb = rand() % 2;
 
