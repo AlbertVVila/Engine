@@ -207,8 +207,8 @@ void InventoryScript::Update()
 				{
 					if (items[j].second == i)
 					{
-						GameObject* go = App->scene->FindGameObjectByUID(items[j].first.gameobjectUID);
-						int amount = static_cast<int>(GetCurrentQuantity(items[j].first));
+						GameObject* go = App->scene->FindGameObjectByUID(items[j].first->gameobjectUID);
+						int amount = static_cast<int>(GetCurrentQuantity(*items[j].first));
 						if (go) 
 						{
 							go->transform->SetGlobalPosition(player->transform->GetGlobalPosition());
@@ -216,20 +216,20 @@ void InventoryScript::Update()
 							go->SetActive(true);
 						}
 
-						if (items[j].first.isEquipped)
+						if (items[j].first->isEquipped)
 						{
-							playerMovement->UnEquip(items[j].first.stats, (unsigned)items[j].first.type);
+							playerMovement->UnEquip(items[j].first->stats, (unsigned)items[j].first->type);
 						}
 
 						for (int h = 0; h < ASSIGNED_CONSUMABLES_SIZE; ++h)
 						{
-							if (items[j].first.name == assignedConsumableItem[h])
+							if (items[j].first->name == assignedConsumableItem[h])
 							{
 								equipedConsumablesToRemove.emplace_back(h);
 							}
 						}
 
-						ManageConsumableItemsQuantity(items[j].first, -amount);
+						ManageConsumableItemsQuantity(*items[j].first, -amount);
 						items.erase(items.begin() + j);
 						HideConsumableItemText(i);
 
@@ -534,12 +534,12 @@ bool InventoryScript::AddItem(Item item, unsigned amount)
 				//itemsSlots[i]->SetActive(true);
 				slotsToActivate.emplace_back(itemsSlots[i]);
 				ComponentImage* image = itemsSlots[i]->GetComponent<ComponentImage>();
-				image->UpdateTexture(item->sprite);
-				items.emplace_back(std::make_pair(item, i));
+				image->UpdateTexture(item.sprite);
+				items.emplace_back(std::make_pair(&item, i));
 				App->scene->FindGameObjectByName("NewItem")->SetActive(true);
 			}
 
-			ManageConsumableItemsQuantityText(*item, quantity);
+			ManageConsumableItemsQuantityText(item, quantity);
 
 			return true;
 		}
