@@ -33,7 +33,7 @@
             "isPrefab": 1,
             "isPrefabSync": 1,
             "prefabUID": 3140851128,
-            "prefabTimeStamp": 1570484495,
+            "prefabTimeStamp": 1570548634,
             "Components": [
                 {
                     "Type": 0,
@@ -79,21 +79,6 @@
                     ]
                 },
                 {
-                    "Type": 9,
-                    "Enabled": 1,
-                    "script": "ProjectileScript",
-                    "scriptInfo": {
-                        "speed": 1200.0,
-                        "lifeTime": 2.0,
-                        "playerName": "Player",
-                        "rotate": 1,
-                        "rotateX": 1,
-                        "rotateY": 0,
-                        "rotateZ": 0,
-                        "rotatingSpeed": 0.009999999776482582
-                    }
-                },
-                {
                     "Type": 15,
                     "Enabled": 1,
                     "pos": [
@@ -108,11 +93,26 @@
                     ],
                     "boxType": 4,
                     "debug_draw": 0
+                },
+                {
+                    "Type": 9,
+                    "Enabled": 1,
+                    "script": "ProjectileScript",
+                    "scriptInfo": {
+                        "speed": 1200.0,
+                        "lifeTime": 2.0,
+                        "playerName": "Player",
+                        "rotate": 1,
+                        "rotateX": 1,
+                        "rotateY": 0,
+                        "rotateZ": 0,
+                        "rotatingSpeed": 7.0
+                    }
                 }
             ]
         },
         {
-            "UID": 3656026198,
+            "UID": 2932530668,
             "ParentUID": 264278140,
             "Name": "ProjectileMesh",
             "Tag": "ProjectileMesh",
