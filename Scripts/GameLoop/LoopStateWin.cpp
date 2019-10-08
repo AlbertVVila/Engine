@@ -3,6 +3,7 @@
 
 #include "ModuleTime.h"
 #include "ModuleScene.h"
+#include "ModuleInput.h"
 
 #include "ComponentAudioSource.h"
 #include "ComponentImage.h"
@@ -24,6 +25,7 @@ LoopStateWin::~LoopStateWin()
 void LoopStateWin::Update()
 {
 	//First Outro video then loading for credits
+	//TODO Disable UI!!
 	if (outroVideo == nullptr && gLoop->outroVideoGO != nullptr)
 	{
 		gLoop->outroVideoGO->SetActive(true);
@@ -32,7 +34,27 @@ void LoopStateWin::Update()
 		StopLvlMusic();
 	}
 
-	if (outroVideo != nullptr && !outroVideo->videoFinished) return;
+	if (outroVideo != nullptr && !outroVideo->videoFinished)
+	{
+		if (gLoop->App->input->AnyKeyPressed())
+		{
+			if (!gLoop->outroSkipTextGO->isActive())
+			{
+				gLoop->outroSkipTextGO->SetActive(true);
+				return;
+			}
+			else 
+			{
+				outroVideo->StopVideo();
+			}
+		}
+		else 
+		{
+			return;
+		}
+	}
+
+
 	if (!gLoop->loadingGO->isActive())
 	{
 		gLoop->loadingGO->SetActive(true);
@@ -50,9 +72,9 @@ void LoopStateWin::StopLvlMusic() //Temporal Fix to stop all music //TODO: we sh
 {
 	if (gLoop->audioGO == nullptr) return;
 
-	for (GameObject* audio : gLoop->audioGO->children)
+	for (Component* audioSource : gLoop->audioGO->GetComponentsInChildren(ComponentType::AudioSource))
 	{
-		audio->GetComponent<ComponentAudioSource>()->Stop();
+		((ComponentAudioSource*) audioSource)->Stop();
 	}
 	gLoop->audioGO->SetActive(false);
 }

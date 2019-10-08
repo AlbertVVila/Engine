@@ -14,7 +14,7 @@ class ComponentImage;
 
 enum class EnemyLifeBarType
 {
-	NORMAL = 0,
+	NORMAL = 1,
 	HARD,
 	BOSS
 };
@@ -34,14 +34,17 @@ public:
 	}
 
 private:
+	GameObject* enemyLife = nullptr;
 	GameObject* lifeBackground = nullptr;
 	GameObject* hPbar = nullptr;
 	GameObject* enemyTypeName = nullptr;
 	GameObject* boneRight = nullptr;
 	GameObject* boneLeft = nullptr;
 	GameObject* skull = nullptr;
+	bool draw = false;
 
 	ComponentImage* lifeImage = nullptr;
+
 };
 
 extern "C" EnemyLifeBarController_API Script* CreateScript();

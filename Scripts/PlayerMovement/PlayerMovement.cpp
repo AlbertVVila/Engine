@@ -706,7 +706,6 @@ void PlayerMovement::Update()
 	if (App->time->gameTimeScale == 0) return;
 
 	deltatime = App->time->gameDeltaTime;
-
 	if (health <= 0.f)
 	{
 		currentState = (PlayerState*)death;
@@ -890,6 +889,12 @@ void PlayerMovement::Equip(const PlayerStats& equipStats, unsigned itemType, uns
 
 	UpdateUIStats();
 
+	// Equip item mesh and material
+	EquipMesh(itemType, meshUID, materialUID);
+}
+
+void PlayerMovement::EquipMesh(unsigned itemType, unsigned meshUID, unsigned materialUID)
+{
 	ResourceMesh* itemMesh = nullptr;
 	ResourceMaterial* itemMaterial = nullptr;
 
@@ -1194,6 +1199,8 @@ void PlayerMovement::OnTriggerExit(GameObject* go)
 
 bool PlayerMovement::IsAttacking() const
 {
+	if (isPlayerDead) return false;
+
 	//if shift is being pressed while mouse 1
 	if (App->input->IsKeyPressed(SDL_SCANCODE_LSHIFT) == KEY_DOWN &&
 		(App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(true, false) ||
@@ -1216,8 +1223,8 @@ bool PlayerMovement::IsAttacking() const
 	}
 	//and finally if enemy is on attack range
 	if (App->scene->enemyHovered.object != nullptr &&
-		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(false, true) ||
-			App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(false, true)) &&
+		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(true, false) ||
+			App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(true, false)) &&
 		Dist <= basicAttackRange)
 	{
 		return true;
@@ -1230,8 +1237,8 @@ bool PlayerMovement::IsMovingToAttack() const
 
 	if (App->scene->enemyHovered.object != nullptr && App->scene->enemyHovered.health > 0 &&
 		!App->input->IsKeyPressed(SDL_SCANCODE_LSHIFT) == KEY_DOWN &&
-		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(false, true) ||
-			App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(false, true)) &&
+		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(true, false) ||
+			App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(true, false)) &&
 		Distance(gameobject->transform->position, App->scene->enemyHovered.object->transform->position) > basicAttackRange)
 	{
 		return true;
@@ -1244,21 +1251,49 @@ bool PlayerMovement::IsMoving() const
 	return (IsPressingMouse1() && !IsAttacking() && !IsMovingToAttack() && !inventoryScript->itemGrabbed && (!IsMovingToItem() || (IsMovingToItem() && stoppedGoingToItem)));
 }
 
-float PlayerMovement::DistPlayerToMouse() const
+//this functionchecks the mouse position, which includes 2 things:
+//1- the distance between the mouse and the player (if both point to the same position, FALSe)
+//2- if the cursor points to a navigable zone
+bool PlayerMovement::CorrectMousePosition() const 
 {
 	math::float3 destinationPoint;
 	App->navigation->FindIntersectionPoint(gameobject->transform->position, destinationPoint);
 	float dist = destinationPoint.DistanceSq(gameobject->transform->position);
-	return dist;
+
+	return (dist > closestDistToPlayer && dist < furthestDistToPlayer && App->navigation->IsCursorPointingToNavigableZone(0.f, 1000.f, 0.f, true));
 }
+
+/*
+function that does a path finding call to see if values are correct. It also modifies a bool
+that avoids a pathfinding call if we end up actually entering the walk state
+*/
+
+bool PlayerMovement::PathFindingCall() const
+{
+	math::float3 intPos(0.f, 0.f, 0.f);
+	bool path = App->navigation->NavigateTowardsCursor(gameobject->transform->position, walk->path,
+		math::float3(OutOfMeshCorrectionXZ, OutOfMeshCorrectionY, OutOfMeshCorrectionXZ),
+		intPos, 10000, PathFindType::FOLLOW, straightPathingDistance);
+	if (path && walk->path.size() > 2)
+	{
+		walk->pathIndex = 0;
+		walk->currentPathAlreadyCalculated = true;
+		return true;
+	}
+	return false;
+}
+
+
 
 bool PlayerMovement::IsPressingMouse1() const
 {
 	math::float3 temp;
-	return ((App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(false, true)) ||
-		(currentState->playerWalking && !currentState->playerWalkingToHit) ||
-		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(true, false) && !App->scene->Intersects("PlayerMesh", false, temp) && 
-		(currentState->playerWalking || DistPlayerToMouse() > closestDistToPlayer)));
+	return (
+		(App->input->GetMouseButtonDown(1) == KEY_DOWN && !App->ui->UIHovered(true, false)) ||
+		(currentState != nullptr && currentState->playerWalking && !currentState->playerWalkingToHit) ||
+		(App->input->GetMouseButtonDown(1) == KEY_REPEAT && !App->ui->UIHovered(true, false) && !App->scene->Intersects("PlayerMesh", false, temp) &&
+		(PathFindingCall())));
+
 }
 
 bool PlayerMovement::IsUsingRightClick() const
@@ -1317,6 +1352,11 @@ bool PlayerMovement::IsUsingR() const
 bool PlayerMovement::IsUsingSkill() const
 {
 	return (IsUsingOne() || IsUsingTwo() || IsUsingThree() || IsUsingFour() || IsUsingQ() || IsUsingW() || IsUsingE() || IsUsingR() || IsUsingRightClick());
+}
+
+bool PlayerMovement::IsExecutingSkill() const
+{
+	return currentSkill != nullptr && currentSkill != chain;
 }
 
 void PlayerMovement::PrepareSkills() const

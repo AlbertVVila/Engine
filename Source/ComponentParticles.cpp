@@ -59,6 +59,8 @@ ComponentParticles::ComponentParticles(const ComponentParticles& component) : Co
 	directionNoiseTotalProbability = component.directionNoiseTotalProbability;
 	actualEmisor = component.actualEmisor;
 	alternateEmisor(actualEmisor);
+	baseRadius = component.baseRadius;
+	apexRadius = component.apexRadius;
 
 	App->particles->AddParticleSystem(this);
 	modules.push_back(new PMSizeOverTime(*(PMSizeOverTime*)component.modules[0]));
@@ -289,6 +291,7 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 	//Create new Particle P
 	if (gameobject->isActive() && rateTimer <= 0.f && particles.size() < maxParticles)
 	{
+		timer = float(rand() % 1000);
 		int amount = MIN(MAX(dt / (1.f / rate), 1), maxParticles);
 		for (; amount > 0; --amount)
 		{
@@ -459,7 +462,7 @@ void ComponentParticles::Update(float dt, const math::float3& camPos)
 			math::Quat rot;
 			if (aligned)
 			{
-				rot = gameobject->transform->GetRotation();
+				rot = gameobject->transform->GetGlobalRotation();
 			}
 			else
 			{
@@ -584,8 +587,8 @@ void ComponentParticles::Load(JSON_value* value)
 	actualEmisor = static_cast<EmisorType>(value->GetInt("actualEmisor"));
 	if (actualEmisor == EmisorType::CONE)
 	{
-		baseRadius = value->GetFloat("baseRadius", baseRadius);
-		apexRadius = value->GetFloat("apexRadius", apexRadius);
+		baseRadius = value->GetFloat("baseRadius");
+		apexRadius = value->GetFloat("apexRadius");
 	}
 
 	alternateEmisor(actualEmisor);

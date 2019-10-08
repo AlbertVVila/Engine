@@ -6,7 +6,7 @@
 #include "ModuleFontLoader.h"
 #include "ModuleUI.h"
 #include <vector>
-#define MAX_TEXT_LENGTH 64
+#define MAX_TEXT_LENGTH 300
 #define MAX_FONT_SIZE 64
 #define MAX_WRAP_WIDTH 10000
 #define MAX_INTERLINE_DISTANCE 10000
@@ -28,11 +28,13 @@ Text::Text(const Text &copy) : Component(copy)
 	text = copy.text;
 	color = copy.color;
 	colorHovered = copy.colorHovered;
+	uiOrder = copy.uiOrder;
 	offset = copy.offset;
 	scaleOffset = copy.scaleOffset;
 	isTextWrapped = copy.isTextWrapped;
 	wrapWidth = copy.wrapWidth;
 	interlineDistance = copy.interlineDistance;
+	uiOrder = copy.uiOrder;
 }
 
 Text::~Text()

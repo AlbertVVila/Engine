@@ -19,7 +19,6 @@ class GameObject;
 class Transform2D;
 class ComponentAudioSource;
 class PlayerMovement;
-class EquipPopupController;
 
 #define TOTAL_SLOTS 24
 #define INVENTARY_SLOTS 18
@@ -58,7 +57,7 @@ private:
 	std::vector<Component*> slotsTransform;
 	std::vector<GameObject*> itemsSlots;
 	std::vector<GameObject*> itemsSlotsNumbers;
-	std::vector<std::pair<Item, int>> items;
+	std::vector<std::pair<Item*, int>> items;
 	std::vector<std::pair<std::string, int>> consumableItems; //name of the item, quantity
 
 	std::string assignedConsumableItem[ASSIGNED_CONSUMABLES_SIZE] = { "", "", "", "", "", "", "", "", "" };
@@ -72,8 +71,6 @@ private:
 
 	ComponentAudioSource* selectItemAudio;
 	ComponentAudioSource* dropItemAudio;
-	
-	EquipPopupController* equipPopupController;
 
 	GameObject* player = nullptr;
 	PlayerMovement* playerMovement = nullptr;

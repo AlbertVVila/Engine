@@ -17,7 +17,7 @@ public:
 	void Update() override;
 
 private:
-	void DeathAnimation();
+	void BonesExplosionFX();
 
 	GameObject* bonesParent = nullptr;
 	GameObject* bonesDeathFX = nullptr;

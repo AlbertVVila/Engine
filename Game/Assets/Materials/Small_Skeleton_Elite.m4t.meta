@@ -1,7 +1,7 @@
 {
     "Material": {
         "metaVersion": 2,
-        "timeCreated": 1568214427,
+        "timeCreated": 1569050015,
         "GUID": 2848982438,
         "Name": "Small_Skeleton_Elite",
         "File": "Assets/Materials/Small_Skeleton_Elite.m4t",
@@ -18,9 +18,9 @@
             0.10000000149011612
         ],
         "emissiveColor": [
-            0.061475396156311038,
-            0.0005038960953243077,
-            0.05312816798686981
+            1.0,
+            1.0,
+            1.0
         ]
     }
 }

@@ -15,6 +15,10 @@
 class GameObject;
 class ComponentRenderer;
 class ComponentAnimation;
+class LootDropScript;
+class PlayerMovement;
+
+enum class chestState { CLOSED, OPENING, OPENED};
 
 class ChestScript_API ChestScript : public Script
 {
@@ -31,11 +35,14 @@ class ChestScript_API ChestScript : public Script
 		return new ChestScript(*this);
 	}
 
+	void OnChestClosedHover();	// Shows the highlight and changes the cursor if the chest is hovered
+
 private:
 	GameObject* player = nullptr;
-	std::string playerName = "Player";
-	std::string playerBboxName = "PlayerMesh";
-	std::string myBboxName = "ChestMesh";
+	std::string playerTag = "Player";
+	std::string pickCursor = "Pick.cur";
+
+	PlayerMovement* playerMovementScript = nullptr;
 
 	ComponentRenderer* myRender = nullptr;
 	ComponentAnimation* anim = nullptr;
@@ -44,10 +51,16 @@ private:
 	math::AABB* myBbox = nullptr;
 	math::AABB* playerBbox = nullptr;
 
-	// GO to spawn
-	std::string spawnGOName = "SpawnableGO";
+	chestState state = chestState::CLOSED;	// Is the chest already opened?
 
-	bool opened = false; // Is the chest already opened?
+	bool lastClickOnChest = false;			// True if last click was done on chest
+
+	// Loot variables
+	LootDropScript* lootDrop = nullptr;							// If != nullptr on chest open will drop item(s) (The variable is set automatically if the LootDropScript is found on Start)
+	math::float3 lootPosition = math::float3(0.0f, 0.f, 100.f);	// Position to spawn the loot
+	float chestTimer = 0.0f;										
+	float lootDelay = 2.5f;										// Time since chest is opened untill loot is spawned
+	float lootRadius = 100.0f;									// Distance from enemy position to drop Items around (only if Items to drop > 1)
 };
 
 extern "C" ChestScript_API Script* CreateScript();

@@ -1,7 +1,7 @@
 {
     "Material": {
         "metaVersion": 2,
-        "timeCreated": 1563536364,
+        "timeCreated": 1569050015,
         "GUID": 2579359314,
         "Name": "Small_Skeleton",
         "File": "Assets/Materials/Small_Skeleton.m4t",
@@ -21,10 +21,6 @@
             1.0,
             1.0,
             1.0
-        ],
-        "diffuseUID": 1427850585,
-        "normalUID": 3661103478,
-        "dissolveUID": 3100838409,
-        "shader": "PBR"
+        ]
     }
 }
