@@ -27,6 +27,7 @@ class PlayerMovement;
 class InventoryScript_API InventoryScript : public Script
 {
 public:
+	~InventoryScript();
 	void Awake() override;
 	void Start() override;
 	void Update() override;

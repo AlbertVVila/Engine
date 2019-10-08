@@ -26,6 +26,16 @@ InventoryScript_API Script* CreateScript()
 	return instance;
 }
 
+InventoryScript::~InventoryScript()
+{
+	for (auto x : items)
+	{
+		delete x.first;
+		x.first = nullptr;
+	}
+	items.clear();
+}
+
 void InventoryScript::Awake()
 {
 
@@ -535,7 +545,7 @@ bool InventoryScript::AddItem(Item item, unsigned amount)
 				slotsToActivate.emplace_back(itemsSlots[i]);
 				ComponentImage* image = itemsSlots[i]->GetComponent<ComponentImage>();
 				image->UpdateTexture(item.sprite);
-				items.emplace_back(std::make_pair(&item, i));
+				items.emplace_back(std::make_pair(new Item(item), i));
 				App->scene->FindGameObjectByName("NewItem")->SetActive(true);
 			}
 
@@ -575,6 +585,7 @@ void InventoryScript::SaveInventory()
 		item->AddInt("equiped", items[i].first->isEquipped);
 		item->AddUint("meshUID", items[i].first->meshUID);
 		item->AddUint("materialUID", items[i].first->materialUID);
+		item->AddUint("UID", items[i].first->gameobjectUID);
 		item->AddFloat("dexterity", items[i].first->stats.dexterity);
 		item->AddFloat("health", items[i].first->stats.health);
 		item->AddFloat("hpRegen", items[i].first->stats.hpRegen);
@@ -606,6 +617,7 @@ void InventoryScript::LoadInventory()
 			item->isEquipped = itemJSON->GetInt("equiped");
 			item->meshUID = itemJSON->GetUint("meshUID");
 			item->materialUID = itemJSON->GetUint("materialUID");
+			item->gameobjectUID = itemJSON->GetUint("UID");
 			item->stats.dexterity = itemJSON->GetFloat("dexterity");
 			item->stats.health = itemJSON->GetFloat("health");
 			item->stats.hpRegen = itemJSON->GetFloat("hpRegen");

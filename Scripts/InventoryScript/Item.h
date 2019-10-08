@@ -36,6 +36,7 @@ public:
 		meshUID = item.meshUID;
 		materialUID = item.materialUID;
 		stats = item.stats;
+		gameobjectUID = item.gameobjectUID;
 	}
 
 	inline bool isEqual(const Item& item) const {return this == &item;}
