@@ -18,7 +18,7 @@ class ThirdPhaseAOE_API ThirdPhaseAOE : public Script
 	void Start() override;
 	void Update() override;
 	void Expose(ImGuiContext* context) override;
-
+	void OnTriggerEnter(GameObject* go) override;
 	void Serialize(JSON_value* json) const override;
 	void DeSerialize(JSON_value* json) override;
 
@@ -28,7 +28,10 @@ class ThirdPhaseAOE_API ThirdPhaseAOE : public Script
 	}
 public:
 	int aoeType = 0;
-	int repetitions = 0;
+	int repetitions = 15;
+	bool hasDamaged = false;
+	float damageFirst = 15.0f;
+	float damageSecond = 10.0f;
 
 	void HandleFirstAOE();
 	void HandleReplicas();
@@ -36,16 +39,18 @@ public:
 	//First AOE variables
 	float timeToExplodeFirstAOE = 1.5f;
 	float timeToFinishFirstAOE = 3.0f;
-
+	float firstAOEtimer = 0.0f;
+	bool firstExploded = false;
 	GameObject* prepParticlesFirstAOEGO = nullptr;
 	GameObject* hitParticlesFirstAOEGO = nullptr;
 	GameObject* boxTriggerFirstAOEGO = nullptr;
 	ComponentBoxTrigger* boxTriggerComponentFirst = nullptr;
 
 	//second AOE variables
-	float timeToExplodeRepetition = 0.5f;
-	float timeToFinishRepetition = 0.8f;
-
+	float timeToExplodeRepetition = 0.7f;
+	float timeToFinishRepetition = 1.5f;
+	float secondAOEtimer = 0.0f;
+	float secondExploded = false;
 	GameObject* prepParticlesSecondAOEGO = nullptr;
 	GameObject* hitParticlesSecondAOEGO = nullptr;
 	GameObject* boxTriggerSecondAOEGO = nullptr;

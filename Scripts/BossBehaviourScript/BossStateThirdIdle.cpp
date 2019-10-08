@@ -40,7 +40,7 @@ void BossStateThirdIdle::Update()
 
 void BossStateThirdIdle::Enter()
 {
-	duration = (std::rand() % 100) / 100.f;
+	duration = 2.0f + (std::rand() % 100) / 100.f;
 	nextFist = ChooseNextFist();
 	boss->enemyController->anim->SendTriggerToStateMachine(trigger.c_str());
 }
