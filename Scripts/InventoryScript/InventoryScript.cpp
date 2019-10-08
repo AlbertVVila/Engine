@@ -538,6 +538,17 @@ bool InventoryScript::AddItem(Item item, unsigned amount)
 	{
 		if (!itemsSlots[i]->activeSelf)
 		{
+			bool found = false;
+			for (GameObject* slot : slotsToActivate)
+			{
+				if (itemsSlots[i] == slot)
+				{
+					found = true;
+					break;
+				}
+			}
+			if (found) continue;
+
 			int quantity = ManageConsumableItemsQuantity(item, amount);
 			if (quantity <= amount)
 			{
