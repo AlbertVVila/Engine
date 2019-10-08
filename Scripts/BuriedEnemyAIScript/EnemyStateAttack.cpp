@@ -45,18 +45,14 @@ void EnemyStateAttack::Update()
 	{
 		math::float3 playerPosition = enemy->enemyController->GetPlayerPosition();
 		projShot = true;
-		enemy->projectileGO->transform->SetPosition(enemy->enemyController->GetPosition() + 
+		enemy->projectileGO->transform->SetGlobalPosition(enemy->enemyController->GetPosition() + 
 			math::float3(0, enemy->projectileScript->offsetHeight, 0));
-
 		enemy->projectileGO->transform->SetRotation(enemy->enemyController->GetRotation());
-		enemy->projectileGO->transform->LookAt(playerPosition + math::float3(0, enemy->projectileScript->offsetHeight, 0));
+		//enemy->projectileGO->transform->LookAtLocal(playerPosition + math::float3(0, enemy->projectileScript->offsetHeight, 0));
 		enemy->projectileScript->shooted = true;
 		projShot = true;
 		enemy->projectileGO->SetActive(true);
 	}
-
-	//enemy->enemyController->LookAt(enemy->enemyController->GetPlayerPosition());
-
 }
 
 void EnemyStateAttack::Enter()
@@ -64,10 +60,9 @@ void EnemyStateAttack::Enter()
 	projShot = false;
 
 	math::float3 playerPosition = enemy->enemyController->GetPlayerPosition();
-	enemy->enemyController->LookAt2D(playerPosition);
+	enemy->enemyController->LookAt2D(playerPosition + math::float3(0, enemy->projectileScript->offsetHeight, 0));
 }
 
 void EnemyStateAttack::Exit()
 {
-
 }
