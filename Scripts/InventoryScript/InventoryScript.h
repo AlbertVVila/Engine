@@ -19,9 +19,11 @@ class GameObject;
 class Transform2D;
 class ComponentAudioSource;
 class PlayerMovement;
+class EquipPopupController;
 
 #define TOTAL_SLOTS 24
 #define INVENTARY_SLOTS 18
+#define ASSIGNED_CONSUMABLES_SIZE 9
 
 class InventoryScript_API InventoryScript : public Script
 {
@@ -59,7 +61,7 @@ private:
 	std::vector<std::pair<Item, int>> items;
 	std::vector<std::pair<std::string, int>> consumableItems; //name of the item, quantity
 
-	std::string assignedConsumableItem[9] = { "", "", "", "", "", "", "", "", "" };
+	std::string assignedConsumableItem[ASSIGNED_CONSUMABLES_SIZE] = { "", "", "", "", "", "", "", "", "" };
 
 	GameObject* inventory = nullptr;
 	GameObject* itemDesc = nullptr;
@@ -70,6 +72,8 @@ private:
 
 	ComponentAudioSource* selectItemAudio;
 	ComponentAudioSource* dropItemAudio;
+	
+	EquipPopupController* equipPopupController;
 
 	GameObject* player = nullptr;
 	PlayerMovement* playerMovement = nullptr;
@@ -80,6 +84,7 @@ private:
 
 public:
 	bool itemGrabbed = false;
+	std::list<int> equipedConsumablesToRemove;
 };
 
 extern "C" InventoryScript_API Script* CreateScript();

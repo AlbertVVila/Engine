@@ -202,6 +202,7 @@ void InventoryScript::Update()
 				itemsSlots[i]->SetActive(false);
 				itemDesc->SetActive(false);
 				imageHover = nullptr;
+		
 
 				for (int j = 0; j < items.size(); ++j)
 				{
@@ -220,10 +221,17 @@ void InventoryScript::Update()
 						{
 							playerMovement->UnEquip(items[j].first.stats, (unsigned)items[j].first.type);
 						}
+
+						for (int h = 0; h < ASSIGNED_CONSUMABLES_SIZE; ++h)
+						{
+							if (items[j].first.name == assignedConsumableItem[h])
+							{
+								equipedConsumablesToRemove.emplace_back(h);
+							}
+						}
+
 						ManageConsumableItemsQuantity(items[j].first, -amount);
-
 						items.erase(items.begin() + j);
-
 						HideConsumableItemText(i);
 
 						for (GameObject* slot : slotsToActivate) slot->SetActive(true);
