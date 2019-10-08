@@ -104,7 +104,7 @@ void EnemyControllerScript::Awake()
 		playerHitBox = player->GetComponent<ComponentBoxTrigger>();
 		if (playerHitBox == nullptr)
 		{
-			LOG("The GameObject %s has no bbox attached \n", player->name.c_str());
+			LOG("The GameObject %s has no ComponentTrigger attached \n", player->name.c_str());
 		}
 
 		playerMovement = (PlayerMovement*)player->GetComponentInChildren(ComponentType::Script);
