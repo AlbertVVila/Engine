@@ -201,8 +201,8 @@ public:
 	math::float3 rightTP = math::float3::zero;
 
 	//Summon in summon phase
-	int summonSkeletonsNumber = 20;
-	float timerBetweenSummons = 2.0f;
+	int summonSkeletonsNumber = 10;
+	float timerBetweenSummons = 5.0f;
 	math::float3 firstSpawnLocation = math::float3::zero;
 	//giving default intended values to the spawn locations
 	math::float3 secondSpawnLocation = math::float3(1654.f, 370.f, -3333.f);
