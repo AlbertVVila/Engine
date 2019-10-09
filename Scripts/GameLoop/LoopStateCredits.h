@@ -4,6 +4,7 @@
 #include "LoopState.h"
 
 class CreditsScript;
+class Button;
 
 class LoopStateCredits :
 	public LoopState
@@ -14,6 +15,12 @@ public:
 
 	void Enter() override;
 	void Update() override;
+
+private:
+	GameObject* backButtonGO = nullptr;
+	Button* backButton = nullptr;
+	float videoDuration = 0.0f;
+	float videoTimer = 0.0f;
 };
 
 #endif // __LOOPSTATECREDITS_H_
