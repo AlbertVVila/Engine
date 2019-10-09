@@ -4,6 +4,7 @@
 
 #include "GameObject.h"
 #include "ComponentRenderer.h"
+#include "ComponentBoxTrigger.h"
 #include "ComponentAnimation.h"
 #include "ComponentTransform.h"
 
@@ -40,6 +41,7 @@ void BossStateSecondInterPhase::Update()
 		case InterphaseState::None:
 			state = InterphaseState::Kneel;
 			boss->enemyController->anim->SendTriggerToStateMachine("Kneel");
+			startingKneelY = boss->currentPosition.y;
 			boss->secondInterphaseKneelTime = boss->enemyController->anim->GetDurationFromClip();
 			break;
 		case InterphaseState::Kneel:
@@ -52,6 +54,13 @@ void BossStateSecondInterPhase::Update()
 			else
 			{
 				kneelTimer += boss->App->time->gameDeltaTime;
+				float lambda = 5 * kneelTimer / boss->secondInterphaseKneelTime;
+				if (lambda > 1.0f)
+				{
+					lambda = 1.0f;
+				}
+				float newY = boss->InterpolateFloat(startingKneelY, boss->endingHeightKneel, lambda);
+				boss->enemyController->SetPosition(math::float3(boss->currentPosition.x, newY, boss->currentPosition.z));
 			}
 			break;
 		case InterphaseState::Cry:
@@ -107,6 +116,7 @@ void BossStateSecondInterPhase::Update()
 		case InterphaseState::Teleport:
 
 			boss->enemyController->SetPosition(boss->secondInterphaseFinalPosition);
+			boss->enemyController->LookAt2D(boss->playerPosition);
 			boss->gameobject->transform->SetScale(math::float3(boss->secondInterphaseFinalScale, boss->secondInterphaseFinalScale, boss->secondInterphaseFinalScale));
 			boss->enemyController->anim->SendTriggerToStateMachine("ThirdIdle");
 			state = InterphaseState::FadeIn;
@@ -150,9 +160,10 @@ void BossStateSecondInterPhase::Enter()
 {
 	//We need to reset variables and get everything ready
 	boss->ResetVariables();
+	boss->enemyController->hpBoxTrigger->Enable(false);
 }
 
 void BossStateSecondInterPhase::Exit()
 {
-
+	boss->enemyController->hpBoxTrigger->Enable(true);
 }

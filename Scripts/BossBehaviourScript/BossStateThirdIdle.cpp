@@ -18,7 +18,7 @@ BossStateThirdIdle::~BossStateThirdIdle()
 
 void BossStateThirdIdle::HandleIA()
 {
-	if (duration > timer)
+	if (duration < timer)
 	{
 		switch (nextFist)
 		{

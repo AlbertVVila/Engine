@@ -2,6 +2,8 @@
 #include "ModuleTime.h"
 
 #include "ComponentRenderer.h"
+#include "ComponentTransform.h"
+#include "ComponentBoxTrigger.h"
 
 #include "BossStateInterPhase.h"
 
@@ -75,7 +77,7 @@ void BossStateInterPhase::Update()
 
 		break;
 	case IpState::Powerup:
-
+	{
 		if (!durationPowerSet)
 		{
 			boss->anim->SendTriggerToStateMachine("PowerUp");
@@ -83,10 +85,12 @@ void BossStateInterPhase::Update()
 			durationPowerSet = true;
 		}
 
+
 		//this could be better animation driven, but w/e
 		if (powerUpTimer > boss->firstInterphaseDuration)
 		{
 			ipState = IpState::Relocate;
+			boss->anim->SendTriggerToStateMachine("Idle");
 			durationPowerSet = false;
 		}
 		else
@@ -95,6 +99,12 @@ void BossStateInterPhase::Update()
 		}
 		boss->enemyController->LookAt2D(boss->pointToLookAtFirstInterphase);
 
+		float lambdaBis = 3 * powerUpTimer / boss->firstInterphaseDuration;
+		if (lambdaBis < 1.0f)
+		{
+			boss->enemyController->SetPosition(boss->InterpolateFloat3(boss->firstInterphasePosition, boss->firstInterphasePowerUpPosition, lambdaBis));
+		}
+	}
 		break;
 
 	case IpState::Relocate:
@@ -104,7 +114,7 @@ void BossStateInterPhase::Update()
 
 		float lambda = relocateTimer / boss->relocateInterPhaseTime;
 
-		boss->enemyController->SetPosition(boss->InterpolateFloat3(boss->firstInterphasePosition, boss->topTP, lambda));
+		boss->enemyController->SetPosition(boss->InterpolateFloat3(boss->firstInterphasePowerUpPosition, boss->topTP, lambda));
 
 		if (lambda >= 1.0f)
 		{
@@ -118,27 +128,16 @@ void BossStateInterPhase::Update()
 		finished = true;
 		break;
 	}
-	// disappear
-
-
-
-	
-
-	//Go the throne
-
-	//appear
-
-	//do the full animation
-
-	//make her do the TP
 }
 
 void BossStateInterPhase::Enter()
 {
 	//Here we reset all bosses variables for the next phase
 	boss->ResetVariables();
+	boss->enemyController->hpBoxTrigger->Enable(false);
 }
 
 void BossStateInterPhase::Exit()
 {
+	boss->enemyController->hpBoxTrigger->Enable(true);
 }

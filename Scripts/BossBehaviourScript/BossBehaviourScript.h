@@ -214,6 +214,7 @@ public:
 
 	//Variables for the first interphase
 	float firstInterphaseDuration = 0.0f;
+	math::float3 firstInterphasePowerUpPosition = math::float3::zero;
 	math::float3 firstInterphasePosition = math::float3::zero;
 	math::float3 pointToLookAtFirstInterphase = math::float3::zero;
 	float relocateInterPhaseTime = 0.0f;
@@ -221,6 +222,7 @@ public:
 	//Skulls in second phase
 	int numberSkullsSecondTotal = 8;
 	float timeBetweenSkullsSecond = 0.0f;
+	float endingHeightKneel = 0.0f;
 	math::float3 northSecondSkull = math::float3::zero;
 	math::float3 northEastSecondSkull = math::float3::zero;
 	math::float3 eastSecondSkull = math::float3::zero;
@@ -232,9 +234,14 @@ public:
 	std::vector<math::float3> positionsSkullsSecond;
 	int positionsIt = 0;
 
+	//ThirdPhase
+	GameObject* leftFist = nullptr;
+	GameObject* rightFist = nullptr;
+
 public:
 		math::Quat InterpolateQuat(const math::Quat first, const math::Quat second, float lambda);
 		math::float3 InterpolateFloat3(const math::float3 first, const math::float3 second, float lambda);
+		float InterpolateFloat(const float first, const float second, float lambda);
 		math::float3 ChooseRandomSpawn();
 
 		void ResetVariables();

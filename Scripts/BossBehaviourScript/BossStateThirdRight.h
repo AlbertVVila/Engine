@@ -2,6 +2,7 @@
 #define __BOSSSTATETHIRDRIGHT_H_
 
 #include "BossState.h"
+#include "Math/float3.h"
 
 class BossStateThirdRight :
 	public BossState
@@ -15,6 +16,9 @@ public:
 
 	void Enter() override;
 	void Exit() override;
+
+	bool prefabSpawned = false;
+	math::float3 GetFistPosition();
 };
 
 #endif // __BOSSSTATETHIRDRIGHT_H_

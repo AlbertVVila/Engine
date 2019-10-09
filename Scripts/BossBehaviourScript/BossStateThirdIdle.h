@@ -2,6 +2,7 @@
 #define __BOSSSTATETHIRDIDLE_H_
 
 #include "BossState.h"
+#include "Math/float3.h"
 
 enum class Fist
 {
@@ -28,7 +29,6 @@ public:
 	Fist nextFist = Fist::None;
 
 private:
-
 	Fist ChooseNextFist();
 };
 

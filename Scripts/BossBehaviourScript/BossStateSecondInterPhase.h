@@ -39,6 +39,8 @@ private:
 	float fadeOffTimer = 0.0f;
 	float fadeInTimer = 0.0f;
 	float floorVanishTimer = 0.0f;
+
+	float startingKneelY = 0.0f;
 };
 
 #endif 
