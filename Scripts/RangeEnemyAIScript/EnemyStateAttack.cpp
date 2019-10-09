@@ -59,6 +59,7 @@ void EnemyStateAttack::Update()
 		math::float3 dir = (enemy->enemyController->GetPosition() - enemy->enemyController->
 		GetPlayerPosition()).Normalized();
 		enemy->projectileScript1->direction = math::float3(dir.x, 0, dir.z);
+		enemy->projectileScript1->CleanTrailFX();
 
 		enemy->projectile1->transform->SetGlobalPosition(enemy->enemyController->GetPosition() + math::float3(0.f,enemy->projectileScript1->offsetHeight,0.f));
 		enemy->projectile1->transform->SetGlobalRotation(enemy->enemyController->GetRotation());
@@ -73,6 +74,7 @@ void EnemyStateAttack::Update()
 		math::float3 dir = (enemy->enemyController->GetPosition() - enemy->enemyController->
 			GetPlayerPosition()).Normalized();
 		enemy->projectileScript2->direction = math::float3(dir.x, 0, dir.z);
+		enemy->projectileScript2->CleanTrailFX();
 
 		enemy->projectile2->transform->SetGlobalPosition(enemy->enemyController->GetPosition() + math::float3(0.f, enemy->projectileScript2->offsetHeight, 0.f));
 		enemy->projectile2->transform->SetGlobalRotation(enemy->enemyController->GetRotation());
@@ -87,6 +89,7 @@ void EnemyStateAttack::Update()
 		math::float3 dir = (enemy->enemyController->GetPosition() - enemy->enemyController->
 			GetPlayerPosition()).Normalized();
 		enemy->projectileScript3->direction = math::float3(dir.x, 0, dir.z);
+		enemy->projectileScript3->CleanTrailFX();
 
 		enemy->projectile3->transform->SetGlobalPosition(enemy->enemyController->GetPosition() + math::float3(0.f, enemy->projectileScript3->offsetHeight, 0.f));
 		enemy->projectile3->transform->SetGlobalRotation(enemy->enemyController->GetRotation());
