@@ -1,7 +1,11 @@
 {
     "Material": {
         "metaVersion": 2,
+<<<<<<< HEAD
         "timeCreated": 1562520198,
+=======
+        "timeCreated": 1569050015,
+>>>>>>> develop
         "GUID": 2484584972,
         "Name": "Lvl2HandTorch",
         "File": "Assets/Materials/Lvl2HandTorch.m4t",
