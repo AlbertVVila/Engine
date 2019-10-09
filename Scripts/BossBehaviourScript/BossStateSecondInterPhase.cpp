@@ -10,6 +10,7 @@
 
 #include "BossStateSecondInterPhase.h"
 #include "EnemyControllerScript/EnemyControllerScript.h"
+#include "GameLoop/GameLoop.h"
 
 #include "BossBehaviourScript.h"
 
@@ -91,17 +92,13 @@ void BossStateSecondInterPhase::Update()
 			break;
 		case InterphaseState::FloorVanish:
 			//just vanish everything
-			//I need to load a vector with all the renders..
+			//I need to load a vector with all the renders.. not yet finished
 			if (floorVanishTimer / boss->secondInterphaseFloorVanishTime < 1.0f)
 			{
 				for (auto vanishGO : boss->secondInterphaseVanishGOs)
 				{
 					vanishGO->GetComponent<ComponentRenderer>()->dissolveAmount = floorVanishTimer / boss->secondInterphaseFloorVanishTime;
 				}
-				//for (auto flameGO : boss->secondInterphaseFlameGOs)
-				//{
-				//	float newScale = 
-				//}
 			}
 			else
 			{
@@ -165,5 +162,6 @@ void BossStateSecondInterPhase::Enter()
 
 void BossStateSecondInterPhase::Exit()
 {
+	boss->gLoop->DeleteAllEnemies();
 	boss->enemyController->hpBoxTrigger->Enable(true);
 }

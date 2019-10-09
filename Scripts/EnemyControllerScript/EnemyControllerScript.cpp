@@ -532,14 +532,26 @@ void EnemyControllerScript::OnTriggerEnter(GameObject* go)
 
 	if (go->tag == "PlayerHitBoxAttack" || go->tag == "Machete")
 	{
-		// Generate a random number and if it is below the critical chance the damage will be increased
-		if ((rand() % 100u) < playerMovement->criticalChance)
+		if (gameobject->tag.c_str() != "Boss")
 		{
-			TakeDamage(playerMovement->stats.strength * 0.2f, (int)DamageType::CRITICAL);
+			// Generate a random number and if it is below the critical chance the damage will be increased
+			if ((rand() % 100u) < playerMovement->criticalChance)
+			{
+				TakeDamage(playerMovement->stats.strength * 0.2f, (int)DamageType::CRITICAL);
+			}
+			else
+			{
+				TakeDamage(playerMovement->stats.strength * 0.1f, (int)DamageType::NORMAL);
+			}
 		}
-		else
-		{
-			TakeDamage(playerMovement->stats.strength * 0.1f, (int)DamageType::NORMAL);
-		}
+		//else
+		//{
+		//	float distanceToPlayer = GetDistanceToPlayer2D();
+		//	if (distanceToPlayer > 500.0f)
+		//	{
+
+		//	}
+		//}
+
 	}
 }
