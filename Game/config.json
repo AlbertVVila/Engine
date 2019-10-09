@@ -19,7 +19,7 @@
         "depthTest": 1,
         "wireframe": 0,
         "vsync": 0,
-        "frustumMainCamera": 1,
+        "frustumMainCamera": 0,
         "skybox": 1,
         "gammaCorrector": 2.200000047683716,
         "exposure": 3.5

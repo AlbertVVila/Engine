@@ -46,6 +46,7 @@ public:
 	std::string playerName = "Player";
 
 	bool shooted = false;
+	bool exploded = false;
 	GameObject* meshGO = nullptr;
 private:
 	ComponentTransform* transform = nullptr;
