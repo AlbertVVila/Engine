@@ -1263,6 +1263,7 @@ that avoids a pathfinding call if we end up actually entering the walk state
 
 bool PlayerMovement::PathFindingCall() const
 {
+	if (walk == nullptr) return false;
 	math::float3 intPos(0.f, 0.f, 0.f);
 	bool path = App->navigation->NavigateTowardsCursor(gameobject->transform->position, walk->path,
 		math::float3(OutOfMeshCorrectionXZ, OutOfMeshCorrectionY, OutOfMeshCorrectionXZ),

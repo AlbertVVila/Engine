@@ -1950,7 +1950,10 @@ ENGINE_API void crowdTool::MoveRequest(int idAgent, unsigned int targetRef, floa
 ENGINE_API void crowdTool::ChangeVelocity(int idAgent, float velocity)
 {
 	dtCrowdAgent* ag = m_crowd->getEditableAgent(idAgent);
-	ag->params.maxSpeed = velocity;
+	if (ag && ag->active)
+	{
+		ag->params.maxSpeed = velocity;
+	}
 }
 
 ENGINE_API void crowdTool::StopAgent(int idAgent)
