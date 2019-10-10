@@ -104,7 +104,7 @@ void EnemyControllerScript::Awake()
 		playerHitBox = player->GetComponent<ComponentBoxTrigger>();
 		if (playerHitBox == nullptr)
 		{
-			LOG("The GameObject %s has no bbox attached \n", player->name.c_str());
+			LOG("The GameObject %s has no ComponentTrigger attached \n", player->name.c_str());
 		}
 
 		playerMovement = (PlayerMovement*)player->GetComponentInChildren(ComponentType::Script);
@@ -291,6 +291,12 @@ void EnemyControllerScript::Update()
 		{
 			deathTimer += App->time->gameDeltaTime;
 		}
+	}
+	if (isDead && !removedFromCrowd)
+	{
+		//remove the enemy from the crowd
+		currentWorldControllerScript->RemoveEnemy(gameobject->UUID);
+		removedFromCrowd = true;
 	}
 }
 
@@ -548,14 +554,26 @@ void EnemyControllerScript::OnTriggerEnter(GameObject* go)
 
 	if (go->tag == "PlayerHitBoxAttack" || go->tag == "Machete")
 	{
-		// Generate a random number and if it is below the critical chance the damage will be increased
-		if ((rand() % 100u) < playerMovement->criticalChance)
+		if (gameobject->tag.c_str() != "Boss")
 		{
-			TakeDamage(playerMovement->stats.strength * 0.2f, (int)DamageType::CRITICAL);
+			// Generate a random number and if it is below the critical chance the damage will be increased
+			if ((rand() % 100u) < playerMovement->criticalChance)
+			{
+				TakeDamage(playerMovement->stats.strength * 0.2f, (int)DamageType::CRITICAL);
+			}
+			else
+			{
+				TakeDamage(playerMovement->stats.strength * 0.1f, (int)DamageType::NORMAL);
+			}
 		}
-		else
-		{
-			TakeDamage(playerMovement->stats.strength * 0.1f, (int)DamageType::NORMAL);
-		}
+		//else
+		//{
+		//	float distanceToPlayer = GetDistanceToPlayer2D();
+		//	if (distanceToPlayer > 500.0f)
+		//	{
+
+		//	}
+		//}
+
 	}
 }
