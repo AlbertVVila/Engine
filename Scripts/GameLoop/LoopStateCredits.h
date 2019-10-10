@@ -21,6 +21,7 @@ private:
 	Button* backButton = nullptr;
 	float videoDuration = 0.0f;
 	float videoTimer = 0.0f;
+	bool started = false;
 };
 
 #endif // __LOOPSTATECREDITS_H_

@@ -36,17 +36,24 @@ void LoopStateCredits::Enter()
 		gLoop->currentLoopState = (LoopState*)gLoop->menuState;
 		return;
 	}
-	gLoop->menuMusic->GetComponent<ComponentAudioSource>()->Stop();
+	if (gLoop->menuMusic != nullptr)
+	{
+		gLoop->menuMusic->GetComponent<ComponentAudioSource>()->Stop();
+	}
 	gLoop->creditsAudio->GetComponent<ComponentAudioSource>()->Play();
 	gLoop->creditsGO->SetActive(true);
 	gLoop->creditsVideoGO->SetActive(true);
 	videoDuration = gLoop->creditsVideo->PlayVideo();
 	gLoop->menu->SetActive(false);
-
+	started = true;
 }
 
 void LoopStateCredits::Update()
 {
+	if (!started)
+	{
+		Enter();
+	}
 	if (gLoop->creditsVideo != nullptr && gLoop->creditsVideo->videoPlaying)
 	{
 		videoTimer += gLoop->App->time->gameDeltaTime;
@@ -59,6 +66,7 @@ void LoopStateCredits::Update()
 			gLoop->menuMusic->GetComponent<ComponentAudioSource>()->Play();
 			gLoop->creditsAudio->GetComponent<ComponentAudioSource>()->Stop();
 			gLoop->currentLoopState = (LoopState*)gLoop->menuState;
+			started = false;
 		}
 	}
 }
