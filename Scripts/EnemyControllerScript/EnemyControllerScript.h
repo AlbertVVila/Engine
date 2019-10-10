@@ -70,6 +70,7 @@ public:
 public:
 
 	bool isDead = false;
+	bool hasFreeRotation = false;
 	GameObject* player = nullptr;
 	PlayerMovement* playerMovement = nullptr;
 	std::string playerTag = "Player";
