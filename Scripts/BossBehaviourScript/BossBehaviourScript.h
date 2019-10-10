@@ -129,6 +129,10 @@ public:
 	GameObject* mainFourthFloor = nullptr;
 	GameObject* mainFifthFloor = nullptr;
 	GameObject* mainSixthFloor = nullptr;
+	GameObject* stairsObstacle1 = nullptr;
+	GameObject* stairsObstacle2 = nullptr;
+	GameObject* stairsObstacle3 = nullptr;
+	GameObject* stairsObstacle4 = nullptr;
 
 	std::vector<GameObject*> floorBossGOs;
 	std::vector<GameObject*> floorMainGOs;
